@@ -1,0 +1,13 @@
+{
+  "_comment": "Цільові діапазони метрик уроку за діапазоном класів. Перевіряє tools/stats.mjs і tools/validate.mjs (як попередження). Змінювати лише через рішення в memory/long/decisions.md. Калібровано 2026-09-27 на 28 уроках 4–5 класу.",
+  "_default": {
+    "4":     { "screens": [5, 9],  "gradedShare": [0.5, 0.9], "readWordsPerScreen": [6, 25], "maxReadWords": [0, 45], "sentenceWords": [4, 9],  "longWordShare": [0, 0.06], "typeVariety": [2, 5] },
+    "5-6":   { "screens": [5, 10], "gradedShare": [0.5, 0.9], "readWordsPerScreen": [7, 35], "maxReadWords": [0, 60], "sentenceWords": [5, 11], "longWordShare": [0, 0.09], "typeVariety": [2, 6] },
+    "7-9":   { "screens": [5, 11], "gradedShare": [0.5, 0.9], "readWordsPerScreen": [8, 45], "maxReadWords": [0, 75], "sentenceWords": [6, 13], "longWordShare": [0, 0.11], "typeVariety": [2, 6] },
+    "10-11": { "screens": [5, 12], "gradedShare": [0.5, 0.9], "readWordsPerScreen": [8, 55], "maxReadWords": [0, 90], "sentenceWords": [7, 15], "longWordShare": [0, 0.13], "typeVariety": [2, 6] }
+  },
+  "math": {
+    "4":     { "screens": [5, 9],  "gradedShare": [0.55, 0.95], "readWordsPerScreen": [5, 25], "maxReadWords": [0, 45], "sentenceWords": [4, 9],  "longWordShare": [0, 0.05], "typeVariety": [2, 6] },
+    "5-6":   { "screens": [5, 10], "gradedShare": [0.55, 0.95], "readWordsPerScreen": [5, 30], "maxReadWords": [0, 60], "sentenceWords": [4, 10], "longWordShare": [0, 0.06], "typeVariety": [2, 6] }
+  }
+}

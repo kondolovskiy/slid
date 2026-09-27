@@ -1,0 +1,15 @@
+[
+  "app/registry.js",
+  "content/subjects/hist.js",
+  "content/subjects/math.js",
+  "content/hist/plan.js",
+  "content/hist/g5-s1.js",
+  "content/hist/g5-s2.js",
+  "content/hist/g5-s3.js",
+  "content/hist/g5-s4.js",
+  "content/math/plan.js",
+  "content/math/g4-m4s1.js",
+  "content/math/g5-ms1.js",
+  "content/catalog.js",
+  "app/app.js"
+]

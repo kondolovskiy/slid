@@ -1,0 +1,19 @@
+{
+  "date": "2026-09-27T13:55:10.250Z",
+  "errors": [],
+  "warnings": [
+    "content/hist/g5-s1.js#l4: жодної підказки hint у звичайному уроці",
+    "content/hist/g5-s1.js#l5: жодної підказки hint у звичайному уроці",
+    "content/hist/g5-s2.js#h22: жодної підказки hint у звичайному уроці",
+    "content/hist/g5-s2.js#h23: жодної підказки hint у звичайному уроці",
+    "content/hist/g5-s2.js#h24: жодної підказки hint у звичайному уроці",
+    "content/hist/g5-s3.js#h31: жодної підказки hint у звичайному уроці",
+    "content/hist/g5-s3.js#h32: жодної підказки hint у звичайному уроці",
+    "content/hist/g5-s3.js#h33: жодної підказки hint у звичайному уроці",
+    "content/hist/g5-s4.js#h41: жодної підказки hint у звичайному уроці",
+    "content/hist/g5-s4.js#h42: жодної підказки hint у звичайному уроці",
+    "content/hist/g5-s4.js#h43: typeVariety=1 поза профілем [2; 6] для hist, 5-6 кл.",
+    "content/hist/g5-s4.js#h43: жодної підказки hint у звичайному уроці",
+    "content/hist/g5-s4.js#h44: жодної підказки hint у звичайному уроці"
+  ]
+}
