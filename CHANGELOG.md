@@ -1,5 +1,10 @@
 # Зміни
 
+## 0.2.0 — 2026-09-28
+- PWA: `manifest.webmanifest`, іконки, service worker з офлайн-кешем усіх уроків і зображень (генерується `tools/build.mjs`), позначка «офлайн», встановлення з профілю.
+- `index.html` — повноцінний HTML-документ; для артефакту Claude — `tools/artifact.mjs`.
+- GitHub Pages: `.github/workflows/pages.yml` (збирання + валідатор + перевірка згенерованих файлів).
+
 ## 0.1.0 — 2026-09-27 (сесія 1)
 ### Застосунок
 - Рушій уроків: екрани intro, info, choice (+poll, +hyp), multi, sort, order, slider, align (кільця дерев), shade, numline, number, fracin.

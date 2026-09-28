@@ -1,0 +1,53 @@
+# Слід · публікація на GitHub Pages при кожному пуші в main.
+# Одноразово: Settings → Pages → Build and deployment → Source: «GitHub Actions».
+name: Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Зібрати й перевірити контент
+        run: |
+          node tools/build.mjs
+          node tools/validate.mjs --quiet
+      - name: Згенеровані файли закомічені
+        run: |
+          git diff --exit-code -- index.html sw.js content/manifest.json \
+            || (echo "::error::Запусти локально node tools/build.mjs і закоміть index.html, sw.js, content/manifest.json" && exit 1)
+      - name: Зібрати сайт (лише файли застосунку)
+        run: |
+          mkdir _site
+          cp -r index.html manifest.webmanifest sw.js app content img icons _site/
+          touch _site/.nojekyll
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

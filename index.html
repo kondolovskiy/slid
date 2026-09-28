@@ -1,5 +1,19 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Слід</title>
-<meta name="theme-color" content="#F1F0EC">
+<meta name="description" content="Інтерактивні уроки українською для 4–11 класів. Працює без інтернету.">
+<meta name="theme-color" content="#F1F0EC" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#161311" media="(prefers-color-scheme: dark)">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Слід">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Onest:wght@400;500;600;700&family=Noto+Serif:ital,wght@0,400;0,600;1,400&display=swap">
 <style>
@@ -387,11 +401,22 @@ button.nowrow{cursor:pointer} button.nowrow:hover{background:var(--chip)} button
 .plan ol{margin:6px 0 0;padding-left:20px;display:grid;gap:3px;color:var(--ink)}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 @media (min-width:520px){.app,.player .inner{box-shadow:0 0 0 1px var(--line)}}
+/* PWA: офлайн-індикатор і встановлення */
+.chip.net{color:var(--muted)} .chip.net[hidden]{display:none}
+.install-card{display:grid;gap:10px}
+.install-card ol{margin:0;padding-left:20px;font-size:14px;color:var(--muted)}
+html,body{margin:0}
+[hidden]{display:none!important}
+img{max-width:100%}
+body{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 </style>
+</head>
+<body>
 
 <div class="app" id="app">
   <header class="top">
     <div class="brand"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M16 16a2 2 0 1 1 2 2a4.5 4.5 0 1 1-4.5-4.5a7 7 0 1 1 7 7a9.5 9.5 0 0 1-9.5-9.5"/></svg>Слід</div>
+    <div class="chip net" id="chipNet" title="Немає інтернету — уроки працюють офлайн" hidden>офлайн</div>
     <div class="chip flame" id="chipStreak" title="Серія днів"></div>
     <div class="chip xp" id="chipXp" title="Досвід"></div>
     <div class="ring" id="goalRing" title="Денна ціль"></div>
@@ -439,3 +464,6 @@ button.nowrow{cursor:pointer} button.nowrow:hover{background:var(--chip)} button
 <script src="content/catalog.js"></script>
 <script src="app/app.js"></script>
 <!-- CONTENT:END -->
+<script src="app/pwa.js"></script>
+</body>
+</html>

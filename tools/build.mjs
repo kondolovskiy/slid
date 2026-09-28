@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Слід · збирач: знаходить усі файли контенту й прописує їх у index.html між маркерами CONTENT:START/END.
 // Запуск: node tools/build.mjs   (після додавання чи видалення файлу в content/)
-import fs from "node:fs"; import path from "node:path"; import { fileURLToPath } from "node:url";
+import fs from "node:fs"; import path from "node:path"; import crypto from "node:crypto"; import { fileURLToPath } from "node:url";
 export const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
 export function manifest() {
@@ -32,4 +32,20 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   fs.writeFileSync(idx, out);
   fs.writeFileSync(path.join(ROOT, "content/manifest.json"), JSON.stringify(files, null, 2) + "\n");
   console.log(`index.html: ${files.length} скриптів`);
+  writeServiceWorker(files);
+}
+
+/** Генерує sw.js: список файлів для офлайн-кешу + версія (хеш вмісту). Змінився будь-який файл — нова версія кешу. */
+export function writeServiceWorker(files = manifest()) {
+  const walk = d => fs.existsSync(path.join(ROOT, d)) ? fs.readdirSync(path.join(ROOT, d), { withFileTypes: true })
+    .sort((a, b) => a.name.localeCompare(b.name, "en")).flatMap(e => e.isDirectory() ? walk(`${d}/${e.name}`) : [`${d}/${e.name}`]) : [];
+  const assets = ["index.html", "manifest.webmanifest", "app/pwa.js", ...files,
+    ...walk("img").filter(f => /\.(jpe?g|png|webp|svg)$/i.test(f)), ...walk("icons")];
+  const uniq = [...new Set(assets)];
+  const h = crypto.createHash("sha1");
+  for (const f of uniq) h.update(f).update(fs.readFileSync(path.join(ROOT, f)));
+  const version = h.digest("hex").slice(0, 10);
+  const tpl = fs.readFileSync(path.join(ROOT, "tools/sw.template.js"), "utf8");
+  fs.writeFileSync(path.join(ROOT, "sw.js"), tpl.replace("__VERSION__", version).replace("__ASSETS__", JSON.stringify(uniq.map(f => "./" + f), null, 2)));
+  console.log(`sw.js: версія ${version}, ${uniq.length} файлів для офлайну`);
 }

@@ -351,6 +351,7 @@ function viewProfile(){
       <button class="btn ghost" id="demo" type="button">Заповнити демо-прогресом</button>
       <button class="btn ${confirmReset?"danger":"ghost"}" id="reset" type="button">${confirmReset?"Натисни ще раз, щоб стерти все":"Скинути прогрес"}</button>
     </div>
+    ${installCard()}
     <div class="card" style="display:grid;gap:8px">
       <h3>Про прототип</h3>
       <p class="muted" style="font-size:14px;margin:0">Уроки, картинки й прогрес зберігаються на пристрої, тож застосунок працює без інтернету — і в укритті під час тривоги теж. Демо-прогрес — це приклад, а не справжні результати.</p>
@@ -358,6 +359,13 @@ function viewProfile(){
         <ul class="credits">${SUBJ.flatMap(c=>c.credits||[]).map(c=>`<li>${c[0]} — ${c[1]}, ${c[2]} (<a href="${c[3]}" target="_blank" rel="noopener">Вікісховище</a>)</li>`).join("")}</ul></details>
     </div>
   </div>`;
+}
+function installCard(){
+  const P=window.SLID_PWA; if(!P || P.standalone) return "";
+  if(P.deferred) return `<div class="card install-card"><h3>Встановити застосунок</h3><p class="muted" style="font-size:14px;margin:0">Слід з'явиться на головному екрані й відкриватиметься без інтернету.</p><button class="btn" id="installBtn" type="button">Встановити</button></div>`;
+  if(P.ios) return `<div class="card install-card"><h3>Додати на головний екран</h3><ol><li>Натисни «Поділитися» в Safari</li><li>Обери «На початковий екран»</li><li>Натисни «Додати»</li></ol></div>`;
+  if(P.swReady) return `<div class="card install-card"><h3>Працює офлайн</h3><p class="muted" style="font-size:14px;margin:0">Уроки збережено на пристрої. Щоб додати застосунок на робочий стіл, скористайся меню браузера «Встановити».</p></div>`;
+  return "";
 }
 function fillDemo(){
   const rec={l1:[95,3],l2:[88,2],l3:[74,3],l4:[62,2],m1:[110,3],m2:[92,2]};
@@ -390,6 +398,7 @@ function bindView(){
   const ni=$("#nameIn"); if(ni) ni.addEventListener("change",()=>{ S.name=ni.value.trim(); save(); render(); });
   document.querySelectorAll("#themeSeg button").forEach(b=>b.onclick=()=>{ S.theme=b.dataset.v; save(); render(); });
   const sw=$("#swUnlock"); if(sw) sw.onclick=()=>{ S.unlockAll=!S.unlockAll; save(); render(); };
+  const ib=$("#installBtn"); if(ib) ib.onclick=async()=>{ if(await window.SLID_PWA.install()) toast(ic("check")+"Встановлено"); render(); };
   const dm=$("#demo"); if(dm) dm.onclick=()=>{ fillDemo(); save(); toast(ic("check")+"Демо-прогрес заповнено"); tab="progress"; render(); };
   const rs=$("#reset"); if(rs) rs.onclick=()=>{ if(!confirmReset){ confirmReset=true; render(); setTimeout(()=>{ confirmReset=false; if(tab==="profile") render(); },4000); return; }
     const keep={name:S.name,theme:S.theme,subject:S.subject,grade:S.grade}; S=Object.assign(fresh(),keep); confirmReset=false; save(); toast(ic("check")+"Прогрес скинуто"); render(); };
@@ -738,6 +747,7 @@ function confetti(stars){
   let t=0; (function f(){ x.clearRect(0,0,W,H); ps.forEach(p=>{ p.vy+=.28; p.x+=p.vx; p.y+=p.vy; p.a+=.2; x.save(); x.translate(p.x,p.y); x.rotate(p.a); x.fillStyle=p.c; x.fillRect(-p.r/2,-p.r/4,p.r,p.r/2); x.restore(); }); if(++t<110) requestAnimationFrame(f); else cv.remove(); })();
 }
 
+document.addEventListener("slid:pwa",()=>{ if(tab==="profile" && $("#player").hidden) render(); });
 document.addEventListener("keydown",e=>{ if(e.key!=="Escape") return; if($("#sheetHost").innerHTML){ $("#sheetHost").innerHTML=""; return; } if($("#player").hidden && tab==="path") up(); });
 render();
 })();

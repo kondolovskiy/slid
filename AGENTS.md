@@ -17,6 +17,9 @@
 | Шлях | Що це | Хто змінює |
 |---|---|---|
 | `index.html` | оболонка застосунку, CSS, список скриптів між `CONTENT:START/END` | блок скриптів — лише `tools/build.mjs`; решта — розробник |
+| `sw.js`, `content/manifest.json` | **згенеровані** `tools/build.mjs` (офлайн-кеш PWA, список скриптів) | ніхто вручну; коміть після build |
+| `manifest.webmanifest`, `icons/`, `app/pwa.js` | PWA: встановлення, іконки, service worker | розробник |
+| `.github/workflows/pages.yml` | публікація на GitHub Pages при пуші в main | розробник |
 | `app/registry.js` | реєстр `SLID.subject / section / soon` | розробник |
 | `app/app.js` | рушій: навігація, типи екранів, гейміфікація, збереження | розробник |
 | `content/subjects/<предмет>.js` | метадані предмета: кольори, навички, значки | **лише куратор** |
@@ -35,7 +38,7 @@
 ## 2. Команди
 
 ```bash
-node tools/build.mjs                       # оновити список скриптів у index.html (після додавання файлу в content/)
+node tools/build.mjs                       # список скриптів у index.html + sw.js (після БУДЬ-ЯКОЇ зміни в content/, app/, img/)
 node tools/validate.mjs [--section ID]     # помилки (блокують) + попередження стилю
 node tools/stats.mjs [--subject hist]      # метрики складності, звіт reports/style-<предмет>.md
 node tools/make-tasks.mjs [--subject math] # задачі на написання з плану
@@ -108,6 +111,8 @@ python3 tools/playtest.py [--section ID] [--shots]   # пройти уроки �
 - Щоб 5 авторів писали однаково: однакові еталони в задачах, спільний профіль складності, після запуску — style-sync. Докладніше: docs/WORKFLOW.md.
 
 ## 6. Готово означає
+
+- `node tools/build.mjs` запущено, `index.html`, `sw.js`, `content/manifest.json` закомічені (інакше CI не опублікує, а PWA не оновиться).
 
 - `node tools/validate.mjs` — 0 помилок; `python3 tools/playtest.py --section <id>` — зелено.
 - Уроки розділу без прапорців у stats або з поясненням.
