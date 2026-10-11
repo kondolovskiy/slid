@@ -34,7 +34,11 @@ async def answer(pg, s):
     elif t == "shade":
         for k in range(s["target"]): await pg.click(f'#shade [data-p="{k}"]')
     elif t == "numline": await pg.eval_on_selector("#nlrng", f"e=>{{e.value={s['answer']};e.dispatchEvent(new Event('input'))}}")
-    elif t in ("number", "fracin"): await pg.fill("#numIn", str(s["answer"]))
+    elif t == "fracin": await pg.fill("#numIn", str(s["answer"]))
+    elif t == "number":
+        v = s["answer"]; txt = (str(int(v)) if float(v).is_integer() else repr(v)).replace(".", ",")
+        await pg.fill("#numIn", txt); await pg.dispatch_event("#numIn", "input")
+    elif t == "lab": await pg.evaluate("sol => window.__slidLab.set(sol)", s["solution"])
 
 async def main():
     async with async_playwright() as p:
@@ -63,9 +67,9 @@ async def main():
                             await pg.wait_for_timeout(350); await pg.screenshot(path=os.path.join(ROOT, f"reports/shots/{l['id']}-{si+1}.png"))
                         await answer(pg, s); await pg.click("#action")
                         cls = await pg.get_attribute("#dock", "class")
-                        if t not in ("intro", "info") and "ok" not in cls and "info" not in cls:
+                        if t not in ("intro", "info", "explore") and "ok" not in cls and "info" not in cls:
                             errs.append(f"{c['id']} {l['id']} екран {si+1} ({t}): правильну відповідь не зараховано")
-                        if t not in ("intro", "info"): await pg.click("#action")
+                        if t not in ("intro", "info", "explore"): await pg.click("#action")
                     await pg.wait_for_timeout(80); await pg.click("#action")
                     await pg.click('[data-tab="path"]'); await pg.click('[data-tab="path"]')
                     played += 1

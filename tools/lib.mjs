@@ -18,11 +18,11 @@ export function loadContent() {
     for (const m of src.matchAll(/SLID\.section\(\s*"[^"]+",\s*\{\s*id:\s*"([^"]+)"/g)) origin[m[1]] = f;
   }
   ctx.SLID.finalize();
-  return { subjects: ctx.SLID_SUBJECTS, soon: ctx.SLID_SOON, files, origin };
+  return { subjects: ctx.SLID_SUBJECTS, soon: ctx.SLID_SOON, files, origin, lab: ctx.SLID_LAB };
 }
 
-export const GRADED = ["choice","multi","sort","slider","order","align","shade","numline","number","fracin"];
-export const TYPES = ["intro","info", ...GRADED];
+export const GRADED = ["choice","multi","sort","slider","order","align","shade","numline","number","fracin","lab"];
+export const TYPES = ["intro","info","explore", ...GRADED];
 
 /** Прибирає HTML і формули, повертає чистий текст. */
 export function plain(s = "") {

@@ -17,26 +17,29 @@ function schoolWeek(){ if(S.weekOverride) return S.weekOverride; const now=new D
   const d0=new Date(y,8,1); d0.setDate(d0.getDate()-((d0.getDay()+6)%7)); return Math.max(1, Math.min(35, Math.floor((now-d0)/(7*864e5))+1)); }
 
 /* ---------- Формули: $…$ у рядку, $$…$$ окремим рядком ---------- */
-const MTOK = /"[^"]*"|\([^()]*\)|\d+(?:,\d+)?|[a-zA-Z]|\?|~|\/|\*|:|<|>|=|\+|-|\s+|[^\s]/g;
+const MTOK = /"[^"]*"|\((?:[^()]|\([^()]*\))*\)|\d{1,3}(?:[  ]\d{3})+(?:,\d+)?(?!\d)|\d+(?:,\d+)?|[a-zA-Z]|\?|~|\/|\*|:|\^|<|>|=|≈|≠|≤|≥|\+|-|\s+|[^\s]/g;
 const isAtom = t => t && (/^\(.*\)$/.test(t) || /^\d/.test(t) || /^[a-zA-Z?]$/.test(t));
 function atomHTML(t, inFrac){
   if(/^\(.*\)$/.test(t)) return inFrac ? mathHTML(t.slice(1,-1)) : `(${mathHTML(t.slice(1,-1))})`;
   if(/^[a-zA-Z]$/.test(t)) return `<i class="mv">${t}</i>`;
   if(t==="?") return `<span class="mq">?</span>`;
-  return t;
+  return /^\d/.test(t) ? t.replace(/ /g,"\u202F") : t;   // 10 000 — розряди вузьким нерозривним пробілом
 }
 function mathHTML(src){
   const T = src.match(MTOK) || []; let out = "";
-  const OPS = {"*":"·","-":"−","+":"+","=":"=",":":":","<":"&lt;",">":"&gt;"};
+  const OPS = {"*":"·","-":"−","+":"+","=":"=",":":":","<":"&lt;",">":"&gt;","≈":"≈","≠":"≠","≤":"≤","≥":"≥"};
+  let operand=false;   // чи перед поточним знаком стоїть число/змінна: якщо ні, «−» — унарний (−3x), без відступів
   for(let i=0;i<T.length;i++){
     const t=T[i];
     if(/^\s+$/.test(t) || t==="~") continue;
-    if(t[0]==='"'){ out += `<span class="mt">${t.slice(1,-1)}</span>`; continue; }
+    if(t[0]==='"'){ out += `<span class="mt">${t.slice(1,-1)}</span>`; operand=true; continue; }
+    if(t==="^" && isAtom(T[i+1])){ out += `<sup class="mp">${atomHTML(T[i+1],true)}</sup>`; i++; operand=true; continue; }
     if(isAtom(t) && T[i+1]==="/" && isAtom(T[i+2])){
-      out += `<span class="fr"><span class="nu">${atomHTML(t,true)}</span><span class="sr">/</span><span class="de">${atomHTML(T[i+2],true)}</span></span>`; i+=2; continue;
+      out += `<span class="fr"><span class="nu">${atomHTML(t,true)}</span><span class="sr">/</span><span class="de">${atomHTML(T[i+2],true)}</span></span>`; i+=2; operand=true; continue;
     }
-    if(OPS[t]) { out += `<span class="mo">${OPS[t]}</span>`; continue; }
-    out += isAtom(t) ? atomHTML(t,false) : t;
+    if((t==="-"||t==="+") && !operand){ out += `<span class="mu">${OPS[t]}</span>`; continue; }
+    if(OPS[t]) { out += `<span class="mo">${OPS[t]}</span>`; operand=false; continue; }
+    out += isAtom(t) ? atomHTML(t,false) : t; operand = isAtom(t) || t===")" || t==="°" || t==="%";
   }
   return out;
 }
@@ -242,7 +245,7 @@ function viewTopic(){
       </div>`; }).join("")}
   </div>`;
 }
-const GRADED=["choice","multi","sort","slider","order","align","shade","numline","number","fracin"];
+const GRADED=["choice","multi","sort","slider","order","align","shade","numline","number","fracin","lab"];
 function openSheet(i){
   const c=course(nav.id), sec=c.sections[nav.sec], LS=sec.lessons, l=LS[i], u=unlocked(sec,i), rec=S.lessons[l.id];
   const graded=l.screens.filter(s=>GRADED.includes(s.type) && !s.hyp && !s.poll).length;
@@ -307,8 +310,8 @@ function viewProgress(){
     </div>
     <div class="card">
       <h3 style="margin-bottom:4px">Навички</h3>
-      ${subs.map(c=>`<div class="skillgroup"><div class="eyebrow"><span class="dot sm s-${c.id}"></span>${c.short}</div>${Object.entries(c.skills).map(([k,v])=>{ const s=S.skills[skey(c,k)]||{ok:0,total:0}; const p=s.total? s.ok/s.total : 0;
-        return `<div class="skill"><div class="row"><b>${v.name}</b><span class="muted">${s.total? Math.round(p*100)+"%":"ще не тренувалась"}</span></div><div class="bar s-${c.id}"><i style="width:${p*100}%"></i></div></div>`; }).join("")}</div>`).join("")}
+      ${subs.map(c=>{ const used=new Set(lessonsOf(c).flatMap(l=>l.screens.map(x=>x.sk)).filter(Boolean)); return `<div class="skillgroup"><div class="eyebrow"><span class="dot sm s-${c.id}"></span>${c.short}</div>${Object.entries(c.skills).filter(([k])=>used.has(k)||S.skills[skey(c,k)]).map(([k,v])=>{ const s=S.skills[skey(c,k)]||{ok:0,total:0}; const p=s.total? s.ok/s.total : 0;
+        return `<div class="skill"><div class="row"><b>${v.name}</b><span class="muted">${s.total? Math.round(p*100)+"%":"ще не тренувалась"}</span></div><div class="bar s-${c.id}"><i style="width:${p*100}%"></i></div></div>`; }).join("")}</div>`; }).join("")}
     </div>
     <div class="card">
       <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px"><h3>Значки</h3><span class="muted" style="font-size:13px">${BADGES.filter(b=>S.badges[b.id]).length} з ${BADGES.length}</span></div>
@@ -527,6 +530,7 @@ function fig(s){
   if(s.img) return `<figure class="${s.tall?"tall":s.fit?"fit":""}"><img src="${s.img}" alt="${esc(s.cap)}"><figcaption>${s.cap}</figcaption></figure>`;
   if(s.svg) return `<figure class="svgfig">${svgFig(s.svg)}</figure>`;
   if(s.fig) return `<figure class="svgfig">${mathFig(s.fig)}</figure>`;
+  if(s.lab) return `<div id="labHost"></div>`;
   return "";
 }
 function renderScreen(){
@@ -555,12 +559,13 @@ function renderScreen(){
   if(s.type==="align"){ st=0; h+=alignHtml(s); }
   if(s.type==="shade"){ st=new Set(); h+=`<div class="shade" id="shade"></div><div class="counter" id="shcount"></div>`; }
   if(s.type==="numline"){ st=0; h+=`<div class="numline"><div id="nlsvg"></div><div class="readout"><span>Точка:</span><b id="nlval"></b></div><input id="nlrng" type="range" min="0" max="${s.max*s.den}" step="1" value="0" aria-label="Положення точки на промені"></div>`; }
-  if(s.type==="number"){ st=""; h+=`<div class="numbox"><input id="numIn" inputmode="numeric" pattern="[0-9]*" autocomplete="off" placeholder="?" aria-label="Відповідь"><span class="unit">${s.unit||""}</span></div>`; }
+  if(s.type==="number"){ st=""; const dec=numDecimal(s), sg=s.signed||s.answer<0||SEC.signed||SEC.grade>=7;   // «±» не має видавати знак відповіді: з 7 класу (або в розділі з signed) — завжди
+    h+=`<div class="numbox">${sg?`<button type="button" class="sgn" id="numSign" aria-label="Змінити знак" aria-pressed="false">±</button>`:""}<input id="numIn" inputmode="${dec?"decimal":"numeric"}" ${dec?"":'pattern="[0-9]*"'} autocomplete="off" placeholder="?" aria-label="Відповідь"><span class="unit">${s.unit||""}</span></div>`; }
   if(s.type==="fracin"){ st=""; h+=`<div class="numbox big"><span class="m">${mathHTML(s.expr)}<span class="mo">=</span><span class="fr"><span class="nu"><input id="numIn" inputmode="numeric" pattern="[0-9]*" autocomplete="off" placeholder="?" aria-label="Чисельник відповіді"></span><span class="sr">/</span><span class="de">${s.den}</span></span></span></div>`; }
   h+=`<div id="hintHost"></div></section>`;
   $("#stage").innerHTML=fmt(h);
-  if(s.type==="intro"||s.type==="info") setDock("","","",s.cta||"Далі");
-  else if(["slider","align","numline"].includes(s.type)) setDock("","","","Перевірити");
+  if(s.type==="intro"||s.type==="info"||s.type==="explore") setDock("","","",s.cta||"Далі");
+  else if(["slider","align","numline","lab"].includes(s.type)) setDock("","","","Перевірити");
   else setDock("","","","Перевірити",false);
   bindScreen(s);
 }
@@ -604,8 +609,17 @@ function numlineUpdate(s){
   $("#nlval").innerHTML = fmt(`$${st}/${s.den}$`) + (whole && rem ? ` <span class="muted" style="font:500 15px var(--body)">=</span> ${fmt(`$${whole}~${rem}/${s.den}$`)}` : (st&&!rem? ` <span class="muted" style="font:500 15px var(--body)">= ${whole}</span>`:""));
 }
 
+/* числове поле: десяткові й від'ємні відповіді */
+const numDecimal = s => true;   // кома дозволена завжди: інакше цифрова клавіатура підказує, що відповідь ціла
+const numParse = v => +String(v).replace(/\u2212/g,"-").replace(",",".");
+const numOk = (s,v) => String(v).trim()!=="" && Math.abs(numParse(v)-s.answer) <= (s.tol ?? 1e-9);
+const numShow = v => String(v).replace(".",",").replace("-","−");
+/* лабораторія: інтерактивна модель на екрані (app/lab.js) */
+let LAB=null;
 function bindScreen(s){
   const stage=$("#stage");
+  LAB=null; window.__slidLab=null;
+  if(s.lab && window.SLID_LAB){ LAB=window.SLID_LAB.mount($("#labHost"), s.lab, { fmt, onChange:()=>{ if(checked) return; clearMarks(); LAB.mark(""); if(s.type==="lab") setDock("","","","Перевірити"); } }); window.__slidLab=LAB; }
   if(s.type==="choice"||s.type==="multi") stage.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{
     if(checked) return; const k=+b.dataset.k;
     if(s.type==="choice"){ stage.querySelectorAll(".opt").forEach(x=>x.setAttribute("aria-pressed","false")); b.setAttribute("aria-pressed","true"); st=k; }
@@ -627,11 +641,12 @@ function bindScreen(s){
   const al=$("#alrng"); if(al){ alignUpdate(s); al.oninput=()=>{ if(checked) return; st=+al.value; alignUpdate(s); }; }
   if(s.type==="shade") shadeUpdate(s);
   const nl=$("#nlrng"); if(nl){ numlineUpdate(s); nl.oninput=()=>{ if(checked) return; st=+nl.value; numlineUpdate(s); }; }
-  const ni=$("#numIn"); if(ni){ ni.oninput=()=>{ ni.value=ni.value.replace(/[^0-9]/g,"").slice(0,6); st=ni.value; ni.classList.remove("is-ok","is-bad"); setDock("","","","Перевірити", st.length>0); };
+  const sgn=$("#numSign"); if(sgn) sgn.onclick=()=>{ if(checked) return; const ni=$("#numIn"); ni.value= ni.value.startsWith("-")? ni.value.slice(1) : "-"+ni.value; ni.oninput(); ni.focus(); };
+  const ni=$("#numIn"); if(ni){ ni.oninput=()=>{ ni.value= s.type==="number"&&numDecimal(s) ? ni.value.replace(/\./g,",").replace(/[^0-9,-]/g,"").replace(/(?!^)-/g,"").replace(/(,.*),/g,"$1").slice(0,10) : ni.value.replace(/[^0-9]/g,"").slice(0,6); st=ni.value; ni.classList.remove("is-ok","is-bad"); setDock("","","","Перевірити", st.length>0); };
     ni.onkeydown=e=>{ if(e.key==="Enter" && !$("#action").disabled) $("#action").click(); }; setTimeout(()=>ni.focus({preventScroll:true}),350); }
 }
 function clearMarks(){ $("#stage").querySelectorAll(".is-ok,.is-bad").forEach(e=>e.classList.remove("is-ok","is-bad")); }
-function lock(){ $("#stage").querySelectorAll(".opt,.seg button,input").forEach(b=>b.disabled=true); }
+function lock(){ $("#stage").querySelectorAll(".opt,.seg button,input,.sgn").forEach(b=>b.disabled=true); if(LAB) LAB.lock(); }
 
 function gradeNow(s){
   switch(s.type){
@@ -643,7 +658,9 @@ function gradeNow(s){
     case "align": return s.ref.from+st+s.sample.len-1===s.sample.endYear;
     case "shade": return st.size===s.target;
     case "numline": return st===s.answer;
-    case "number": case "fracin": return parseInt(st,10)===s.answer;
+    case "number": return numOk(s,st);
+    case "fracin": return parseInt(st,10)===s.answer;
+    case "lab": return window.SLID_LAB.check(s.lab, LAB.get(), s.goal);
   }
 }
 function showMarks(s, reveal){
@@ -652,7 +669,8 @@ function showMarks(s, reveal){
   if(s.type==="multi"){ const c=new Set(s.correct); stage.querySelectorAll(".opt").forEach((el,k)=>{ el.classList.remove("is-ok","is-bad"); if(st.has(k)) el.classList.add(c.has(k)?"is-ok":"is-bad"); else if(reveal&&c.has(k)) el.classList.add("is-ok"); }); }
   if(s.type==="sort") stage.querySelectorAll(".srow").forEach((el,k)=>{ el.classList.remove("is-ok","is-bad"); el.classList.add(st[k]===s.items[k][1]?"is-ok":"is-bad"); if(reveal&&st[k]!==s.items[k][1]) el.insertAdjacentHTML("beforeend",`<span class="fix">Правильно: ${fmt(s.bins[s.items[k][1]])}</span>`); });
   if(s.type==="order") stage.querySelectorAll("#ord .opt").forEach(el=>{ const k=+el.dataset.k, p=st.indexOf(k); el.classList.remove("is-ok","is-bad"); el.classList.add(p===k?"is-ok":"is-bad"); if(reveal&&p!==k) el.querySelector(".k").textContent=`${p+1}→${k+1}`; });
-  if(s.type==="number"||s.type==="fracin"){ const ni=$("#numIn"); ni.classList.remove("is-ok","is-bad"); ni.classList.add(parseInt(st,10)===s.answer?"is-ok":"is-bad"); if(reveal && parseInt(st,10)!==s.answer){ $("#hintHost").innerHTML=`<div class="hint">${ic("check")}<span>Правильна відповідь: <b>${s.answer}</b></span></div>`; } }
+  if(s.type==="number"||s.type==="fracin"){ const ni=$("#numIn"), ok=gradeNow(s); ni.classList.remove("is-ok","is-bad"); ni.classList.add(ok?"is-ok":"is-bad"); if(reveal && !ok){ $("#hintHost").innerHTML=`<div class="hint">${ic("check")}<span>Правильна відповідь: <b>${numShow(s.answer)}</b></span></div>`; } }
+  if(s.type==="lab"){ const ok=gradeNow(s); if(reveal && !ok){ LAB.set(s.solution); LAB.mark("is-ok"); $("#hintHost").innerHTML=fmt(`<div class="hint">${ic("check")}<span>${s.reveal||"Ось як має бути — подивись на модель."}</span></div>`); } else LAB.mark(ok?"is-ok":"is-bad"); }
   if(s.type==="shade"){ const box=$("#shade"); box.classList.remove("is-ok","is-bad"); box.classList.add(st.size===s.target?"is-ok":"is-bad"); }
   if(s.type==="numline"){ if(reveal){ st=s.answer; $("#nlrng").value=st; } numlineUpdate(s); }
 }
@@ -674,6 +692,7 @@ function check(){
              : s.type==="align"? "Посувай колоду, поки всі стовпчики не стануть зеленими."
              : s.type==="shade"? `Потрібно зафарбувати ${s.target} ${s.target===1?"частину":s.target<5?"частини":"частин"}, а зафарбовано ${st.size}.`
              : s.type==="numline"? "Точка стоїть не там. Порахуй поділки від нуля."
+             : s.type==="lab"? "Ще не те. Зміни модель і перевір ще раз."
              : "Спробуй ще раз.";
     return setDock("bad", s.fbBad||"Не зовсім.", msg+preNote, "Спробувати ще раз");
   }
@@ -695,7 +714,7 @@ function check(){
 $("#action").onclick=()=>{
   if(idx>=L.screens.length) return closePlayer();
   const s=L.screens[idx];
-  if(s.type==="intro"||s.type==="info"||checked){ idx++; renderScreen(); return; }
+  if(s.type==="intro"||s.type==="info"||s.type==="explore"||checked){ idx++; renderScreen(); return; }
   check();
 };
 

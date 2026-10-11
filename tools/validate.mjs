@@ -10,9 +10,11 @@ const onlySec = args.includes("--section") ? args[args.indexOf("--section") + 1]
 const quiet = args.includes("--quiet");
 let content;
 try { content = loadContent(); } catch (e) { console.error("ПОМИЛКА ЗАВАНТАЖЕННЯ:", e.message); process.exit(1); }
-const { subjects, soon, origin } = content;
+const { subjects, soon, origin, lab } = content;
 const profiles = readJSON("style/profiles.json");
 const banned = fs.readFileSync(path.join(ROOT, "style/banned-phrases.txt"), "utf8").split("\n").map(s => s.trim()).filter(s => s && !s.startsWith("#"));
+// заборонені фрази шукаємо як цілі слова: «вірно» не має ловити «ймовірно»
+const bannedRe = banned.map(b => [b, new RegExp(`(?<![\\p{L}'’ʼ])${b.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(?![\\p{L}])`, "iu")]);
 const errors = [], warnings = [];
 const E = (where, msg) => errors.push(`${where}: ${msg}`);
 const W = (where, msg) => warnings.push(`${where}: ${msg}`);
@@ -61,12 +63,15 @@ for (const c of subjects) for (const sec of c.sections.filter(s => s.lessons)) {
       const txt = [s.title, s.body, s.fbText, s.fbOk, s.fbBad, s.hint, ...(s.opts || []), ...(s.items || []).flat()].filter(x => typeof x === "string").join(" ");
       if (/\$\{/.test(txt)) E(S, "у тексті лишилось «${» — шаблонний рядок з'їв формулу");
       for (const t of [s.title, s.body, s.fbText, s.hint, ...(s.opts || [])].filter(Boolean)) if (((String(t).match(/\$/g) || []).length) % 2) E(S, "непарна кількість $ — формула не закрита");
-      for (const b of banned) if (txt.toLowerCase().includes(b.toLowerCase())) W(S, `заборонена фраза «${b}» (style/banned-phrases.txt)`);
+      for (const [b, re] of bannedRe) if (re.test(txt)) W(S, `заборонена фраза «${b}» (style/banned-phrases.txt)`);
       if (/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/u.test(txt)) W(S, "емодзі в тексті уроку");
       if (s.img && !fs.existsSync(path.join(ROOT, s.img))) E(S, `немає файлу ${s.img}`);
       if (s.img && !s.cap) E(S, "у фото має бути підпис cap (що, де, коли)");
       if (s.svg && !SVGS.includes(s.svg)) E(S, `немає SVG-ілюстрації «${s.svg}» у svgFig()`);
       if (s.fig && !FIGS.includes(s.fig.kind)) E(S, `невідомий fig.kind «${s.fig.kind}»`);
+      if (s.lab) for (const m of lab.validate(s.lab, s)) E(S, "lab: " + m);
+      if ((s.type === "explore" || s.type === "lab") && !s.lab) E(S, `${s.type} потребує поле lab (інтерактивну модель)`);
+      if ([s.img, s.svg, s.fig, s.lab].filter(Boolean).length > 1) E(S, "на екрані може бути лише одна ілюстрація: img, svg, fig або lab");
       if (s.pre && !allLessonIds.has(s.pre)) E(S, `pre: немає уроку ${s.pre}`);
       if (s.sk && !c.skills[s.sk]) E(S, `навичка «${s.sk}» не оголошена в content/subjects/${c.id}.js`);
       if (GRADED.includes(s.type) && !s.poll && !s.hyp) {
@@ -91,8 +96,10 @@ for (const c of subjects) for (const sec of c.sections.filter(s => s.lessons)) {
         case "align": { const n = s.ref.to - s.ref.from + 1; if (s.sample.len > n || s.sample.endYear > s.ref.to || s.sample.endYear - s.sample.len + 1 < s.ref.from) E(S, "зразок не вміщується в еталон"); break; }
         case "shade": if (!(s.target >= 1 && s.target <= s.n)) E(S, "target має бути 1..n"); if (!["bar","circle"].includes(s.shape)) E(S, "shape: bar | circle"); break;
         case "numline": if (!(Number.isInteger(s.answer) && s.answer >= 0 && s.answer <= s.max * s.den)) E(S, "answer — ціле число поділок від 0 до max·den"); break;
-        case "number": case "fracin": if (!(Number.isInteger(s.answer) && s.answer >= 0 && s.answer < 1e6)) E(S, "answer — ціле невід'ємне число (поле приймає лише цифри)");
-          if (s.type === "fracin" && !(s.expr && s.den)) E(S, "fracin потребує expr і den"); break;
+        case "number": if (!(typeof s.answer === "number" && isFinite(s.answer) && Math.abs(s.answer) < 1e9)) E(S, "answer — скінченне число (десяткові й від'ємні дозволені)");
+          if (s.tol != null && !(s.tol >= 0)) E(S, "tol — невід'ємне число (допустима похибка)"); break;
+        case "fracin": if (!(Number.isInteger(s.answer) && s.answer >= 0 && s.answer < 1e6)) E(S, "answer — ціле невід'ємне число (поле приймає лише цифри)");
+          if (!(s.expr && s.den)) E(S, "fracin потребує expr і den"); break;
       }
       // довжина речень
       const sentLong = sentences(plain([s.body].join(" "))).filter(x => words(x).length > 25);
@@ -102,6 +109,10 @@ for (const c of subjects) for (const sec of c.sections.filter(s => s.lessons)) {
     const m = lessonMetrics(l), p = profiles[c.id]?.[gradeBand(sec.grade)] || profiles._default[gradeBand(sec.grade)];
     for (const [k, [lo, hi]] of Object.entries(p)) if (m[k] < lo || m[k] > hi) W(L, `${k}=${m[k]} поза профілем [${lo}; ${hi}] для ${c.id}, ${gradeBand(sec.grade)} кл.`);
     if (!l.boss && !l.screens.some(s => s.hint)) W(L, "жодної підказки hint у звичайному уроці");
+    // правильна відповідь не має стояти завжди на тому самому місці — інакше її вгадують
+    const ch = l.screens.filter(s => s.type === "choice" && !s.poll && !s.hyp && Number.isInteger(s.correct));
+    if (ch.length >= 3) { const cnt = {}; ch.forEach(s => cnt[s.correct] = (cnt[s.correct] || 0) + 1); const [k, n] = Object.entries(cnt).sort((a, b) => b[1] - a[1])[0];
+      if (n / ch.length > 0.6) W(L, `у ${n} з ${ch.length} завдань choice правильний варіант — ${"АБВГД"[k]}: переставляй варіанти`); }
   }
 }
 for (const s of soon) if (!s.colors?.light?.accent) E(`catalog ${s.id}`, "немає colors.light.accent");

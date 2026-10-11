@@ -14,6 +14,10 @@
 - **Локально (Claude Code на вашому комп'ютері):** `curl -L -o img/... "https://upload.wikimedia.org/..."`, потім зменшити (`sips -Z 1000` на macOS або Python Pillow).
 - **З хмарної сесії Claude**, де мережа не пускає на wikimedia: відкрити `upload.wikimedia.org/<файл>` у вбудованому браузері, через JS намалювати в canvas, зменшити й завантажити як файл у «Завантаження», потім перенести в проєкт. Так зроблено в першій сесії; подробиці в memory/long/pitfalls.md.
 
+## Приватність під час завантаження
+- У запитах до Вікісховища та будь-яких сайтів **не передавай персональних даних**: жодних email, імен чи акаунтів у `User-Agent`, параметрах чи тілі запиту.
+  Використовуй нейтральний заголовок, наприклад `-A "SlidEduBot/0.1 (offline lessons project)"`.
+
 ## Пошук на Вікісховищі
 API: `https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=<запит>&gsrnamespace=6&prop=imageinfo&iiprop=url|extmetadata&iiextmetadatafilter=LicenseShortName|Artist&format=json`
 Ліцензію й автора беріть з `extmetadata`, а не вгадуйте.

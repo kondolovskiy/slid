@@ -14,6 +14,7 @@ index.html              оболонка + CSS (токени кольорів, �
   content/<предмет>/plan.js      плановані розділи (без уроків)
   content/<предмет>/g*-*.js      розділи з уроками (замінюють записи плану з тим самим id)
   content/catalog.js    предмети «скоро»
+  app/lab.js            лабораторія: інтерактивні моделі (графіки, геометрія, терези…), docs/CONTENT_SCHEMA.md §8
   app/app.js            рушій (викликає SLID.finalize())
 ```
 Порядок прописує `tools/build.mjs` (між маркерами `CONTENT:START/END`). Список дублюється в `content/manifest.json` для інструментів.
