@@ -282,6 +282,7 @@ figcaption{font-size:13px;color:var(--muted);padding:8px 12px;line-height:1.4}
 .mblock{display:block;text-align:center;font-size:1.45em;margin:6px 0;white-space:normal}
 .mv{font-style:italic}
 .mo{margin:0 .22em}
+.mu{margin:0 .04em 0 0}
 .fr{display:inline-flex;flex-direction:column;align-items:stretch;vertical-align:middle;text-align:center;font-size:.9em;line-height:1.12;margin:0 .1em}
 .fr .nu{border-bottom:.08em solid currentColor;padding:0 .18em .04em}
 .fr .de{padding:.04em .18em 0}
@@ -315,6 +316,21 @@ h1 .fr,h2 .fr{font-size:.82em}
 .numline input{width:100%;accent-color:var(--accent)}
 .numline .readout{display:flex;align-items:center;gap:8px;justify-content:center;font-size:14px;color:var(--muted)}
 .numline .readout b{font-size:22px;color:var(--accent);font-weight:400}
+/* лабораторія: інтерактивні моделі (app/lab.js) */
+.lab{background:var(--surface);border-radius:16px;padding:12px;box-shadow:var(--shadow);margin:6px 0 10px;display:grid;gap:10px;border:2px solid transparent;transition:border-color .2s}
+.lab.is-ok{border-color:var(--ok)} .lab.is-bad{border-color:var(--bad)}
+.lab-stage svg{width:100%;height:auto;touch-action:none;user-select:none;-webkit-user-select:none;font-family:var(--body)}
+.lab-read{display:grid;gap:2px;text-align:center;font-size:17px;min-height:1.5em}
+.lab-read .m,.lab-read .mblock{font-size:19px}
+sup.mp{font-size:.7em;vertical-align:.55em;line-height:0;margin-left:1px}
+.lab-ctl{display:grid;gap:6px}
+.lab-p{display:grid;grid-template-columns:minmax(28px,auto) 30px 1fr 30px 50px;align-items:center;gap:6px;font-size:15px}
+.lab-nb{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--line);background:var(--chip);font:700 17px/1 var(--body);color:var(--accent);padding:0;cursor:pointer}
+.lab-nb:active{background:var(--accent-soft)} .lab-nb:disabled{opacity:.4}
+.lab-p input{width:100%;accent-color:var(--accent);margin:0;height:28px}
+.lab-p output{font:700 15px var(--body);font-variant-numeric:tabular-nums;color:var(--accent);text-align:right}
+.lab.locked .lab-p{opacity:.6}
+.numbox .sgn{min-width:48px;height:56px;border-radius:12px;border:2px solid var(--line);background:var(--surface);font:700 22px var(--body)}
 .numbox{display:flex;align-items:center;justify-content:center;gap:10px;background:var(--surface);border-radius:16px;padding:18px;box-shadow:var(--shadow);margin-top:12px;flex-wrap:wrap}
 .numbox input{font:600 26px var(--mathf);width:4.2em;text-align:center;padding:8px 6px;border-radius:12px;border:2px solid var(--line);background:var(--bg);color:var(--ink)}
 .numbox input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
@@ -458,10 +474,36 @@ body{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset
 <script src="content/hist/g5-s2.js"></script>
 <script src="content/hist/g5-s3.js"></script>
 <script src="content/hist/g5-s4.js"></script>
+<script src="content/hist/g6-g6s1.js"></script>
+<script src="content/hist/g6-g6s2.js"></script>
+<script src="content/hist/g6-g6s3.js"></script>
+<script src="content/hist/g6-g6s4.js"></script>
+<script src="content/hist/g6-g6s5.js"></script>
+<script src="content/hist/g7-g7s1.js"></script>
+<script src="content/hist/g7-g7s2.js"></script>
+<script src="content/hist/g7-g7s3.js"></script>
+<script src="content/hist/g7-g7s4.js"></script>
+<script src="content/hist/g7-g7s5.js"></script>
 <script src="content/math/plan.js"></script>
+<script src="content/math/g4-g4m1.js"></script>
+<script src="content/math/g4-g4m2.js"></script>
+<script src="content/math/g4-g4m3.js"></script>
+<script src="content/math/g4-g4m4.js"></script>
+<script src="content/math/g4-g4m5.js"></script>
 <script src="content/math/g4-m4s1.js"></script>
+<script src="content/math/g5-ms0.js"></script>
+<script src="content/math/g5-ms0b.js"></script>
 <script src="content/math/g5-ms1.js"></script>
+<script src="content/math/g5-ms2.js"></script>
+<script src="content/math/g5-ms3.js"></script>
+<script src="content/math/g5-ms4.js"></script>
+<script src="content/math/g6-g6m1.js"></script>
+<script src="content/math/g6-g6m2.js"></script>
+<script src="content/math/g6-g6m3.js"></script>
+<script src="content/math/g6-g6m4.js"></script>
+<script src="content/math/g6-g6m5.js"></script>
 <script src="content/catalog.js"></script>
+<script src="app/lab.js"></script>
 <script src="app/app.js"></script>
 <!-- CONTENT:END -->
 <script src="app/pwa.js"></script>
