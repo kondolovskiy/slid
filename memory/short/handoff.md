@@ -1,43 +1,46 @@
 # Handoff — стан проєкту
 
-_Оновлено: 2026-10-12, куратор (сесія math 9 + hist 8, journal 2026-10-12-1)._
+_Оновлено: 2026-10-12, куратор (сесія D-019 revise hist 5, journal 2026-10-12-4)._
 
 ## Стан
-- **Історія:** 5 кл. s1–s4 — verified (D-019 правки в звітах); 6–7 кл. — verified; **8 кл. g8s1–g8s3 — verified**; g8s4–s5 ще не написані.
-- **Математика:** 4–6 кл. як раніше (m4s1, ms1 verified); **7–9 кл. повністю written+verified** (g7m1–g7m8, g8m1–g8m6, g9m1–g9m7); ms2l7 verified; plan.js ms2 без теми «ділення на десятковий».
-- Жодного `approved`. Doing порожній. Todo ≈ 60 (revise + write g8s4–5, hist 9–11, math 10–11).
-- Довга пам'ять: facts/math №1–104; facts/hist №1–112; glossary math до 9 кл., hist до 8 кл.; decisions до D-019.
+- **Історія:** **5 кл. s1–s4 — verified після D-019 revise**; 6–7 кл. — verified (revise ще в todo); **8 кл. g8s1–g8s5 — written+verified**.
+- **Математика:** 4–6 кл. як раніше (revise в todo); **7–10 кл. повністю written+verified**; ms2l7 verified; plan.js ms2 без теми «ділення на десятковий».
+- Жодного `approved`. Doing порожній. Todo ≈ 48 (revise 27 + write hist 9–11 / math 11 + інше).
+- Довга пам'ять: facts/math №1–126; facts/hist №1–123 (№13, №17 оновлено); glossary math до 10 кл., hist до 8 кл.; decisions до D-019.
 
 ## У роботі (`node tools/claim.mjs list doing`)
 - порожньо.
 
 ## Що далі (пріоритет)
-1. **hist g8s4–g8s5** (`write-hist-g8s4`, `write-hist-g8s5` у todo) — дописати 8 кл.
-2. **math 10** (`write-math-g10m1`…m6) — наступний великий пакет після 9 кл.
-3. **D-019 revise:** 31 задача `revise-*` (hist 5–7, math 4–6) — «чесне завдання»; почати з історії 5 кл.
+1. **D-019 revise далі:** hist 6 (`revise-hist-g6s1`…`g6s5`) або math 4–6 (`revise-math-*`) — 27 задач лишилось; hist 7 (`g7s*`) після 6.
+2. **hist 9** (`write-hist-g9s1`…s5) — або паралельно з revise.
+3. **math 11** (`write-math-g11m1`…m6) — наступний великий пакет після 10.
 4. **plan.js ms2:** додати тему «Ділення на десятковий дріб».
-5. **profiles.json math «7-9»** (D-011): метрики після 7–9 — readWords≈19.7, sw≈6.55, typeVariety≈3.0; gradedShare non-boss≈0.57 / boss≈0.75–0.88. Окрема сім'я boss. Нижня межа sentenceWords=6 б'є короткі fbOk — потрібне decisions.md. Не змінювати style/ без рішення.
+5. **profiles.json math «7-9» / «10-11»** (D-011): sentenceWords / boss gradedShare (style-sync). Не змінювати style/ без decisions.md.
 6. Дрібні правки (оркестратор): підпис trypillia-pot (g5-s1); why g6s2; підпис Махновця g7s4; g6m5 `signed`; формулювання НСК.
 7. Тест на дітях (5–10 учнів).
 
 ## Пропозиції до style/ (лише людина / decisions.md)
 - common.md: правило D-016 (позиції choice) — у style/ ще немає (задача style-choice — done у коді).
-- math.md: `signed: true`; `show` не рахує шукане; π+`tol`; boss — окрема сім'я stats; plane fills для нерівностей/квадратичних.
+- math.md: `signed: true`; `show` не рахує шукане; π+`tol`; boss — окрема сім'я stats; plane fills; lab √ Unicode / `a^(m/n)`.
 - hist.md: цитати Махновця; «традиційно датують…»; `hyp` ∉ gradedShare; Переяслав — не «возз'єднання».
 - Рід дієслів («ти заробив») — норма.
+- **profiles.json math «7-9»:** `gradedShare` у `_default` дає boss z≈2.2; підняти діапазон і/або виключити boss з z. `typeVariety` шумить на 4 типах.
+- **profiles math «10-11»:** (1) sentenceWords нижня межа 7→6 або виключити fbOk/fbBad; (2) boss окрема сім'я / gradedShare; (3) longWordShare на формулах (g10m5, g10m6). Середні 10 кл.: screens≈9.2, read≈21, sw≈7.3, gradedShare≈0.59.
+- **hist 7–9 boss:** короткі екрани → longWordShare / readWords z знизу; не роздувати лексику.
 
 ## Запити до рушія (не реалізовано)
-- **plane:** snap 0,5 / допуск градусів; примітив `rays`; транспортир; drag по дузі.
-- **lab:** `\vec` / `\overrightarrow` у show ламають шаблони — зараз обхід текстом «a→».
+- **plane:** snap 0,5 / допуск градусів; примітив `rays`; транспортир; drag по дузі; param не `x`.
+- **lab:** `\vec` / `\overrightarrow` у show — обхід текстом «a→»; Unicode `√`, не `\sqrt`.
 - **numline / fraction / balance / column / solid / chart** — як раніше.
-- Синтаксис content JS: пропущена кома ламає наступні секції — валідатор/збирач?
+- Синтаксис content JS: пропущена кома / вкладені лапки ламають наступні секції — валідатор/збирач?
 
 ## Відкриті питання до Віктора
 Написання: 1. Тасос/Фасос. 2. кіммерійці/кімерійці. 3. Приймаченко/Примаченко. 4. Гірей/Ґерай. 5. деревляни/древляни.
 Нотація: 6. $C$ vs $l$ для кола. 7. пробіл у НСД( ). 8. $P=(a+b)·2$ vs $2a+2b$. 9. числовий vs координатний промінь; «швидкість зближення» в 4 кл.
 Дати: 10. Межиріч — у реєстрі калібр. ≈18 тис. (нові уроки); старі ≈15 тис. лишаються в контенті до revise. 11. 988/989. 12. Ігор 945/944; сармати II/III ст.
-Програма (D-012): 13. Мерзляк чи Істер?
+Програма (D-012): 13. Мерзляк чи Істер? + нумерація аксіом стереометрії (Нелін А2–А4 vs Мерзляк А3–А5; у g10m2 — Нелін).
 Старі: 14. Алгебра/геометрія з 7 кл. — окремі предмети? (D-008) 15. Хто рецензент hist/math?
 
 ## Як продовжити
-«Прочитай AGENTS.md і handoff, продовжимо з пункту 1». Далі: `/parallel 2 hist 8` (g8s4–5) або пакет math 10 / revise D-019.
+«Прочитай AGENTS.md і handoff, продовжимо з пункту 1». Далі: `/parallel` revise hist 6 або math 4–6; або write hist 9 / math 11.

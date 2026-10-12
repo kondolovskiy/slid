@@ -1,7 +1,7 @@
 /* Слід — service worker. ЗГЕНЕРОВАНО tools/build.mjs із tools/sw.template.js — не редагуй sw.js вручну.
    Стратегія: усі файли застосунку кешуються при встановленні (офлайн з першого запуску);
    свої файли — спершу з кешу; Google Fonts — з кешу з фоновим оновленням. */
-const VERSION = "e4b9e4c637";
+const VERSION = "a3e28d617c";
 const CACHE = "slid-" + VERSION;
 const FONTS = "slid-fonts";
 const ASSETS = [
@@ -29,7 +29,15 @@ const ASSETS = [
   "./content/hist/g8-g8s1.js",
   "./content/hist/g8-g8s2.js",
   "./content/hist/g8-g8s3.js",
+  "./content/hist/g8-g8s4.js",
+  "./content/hist/g8-g8s5.js",
   "./content/math/plan.js",
+  "./content/math/g10-g10m1.js",
+  "./content/math/g10-g10m2.js",
+  "./content/math/g10-g10m3.js",
+  "./content/math/g10-g10m4.js",
+  "./content/math/g10-g10m5.js",
+  "./content/math/g10-g10m6.js",
   "./content/math/g4-g4m1.js",
   "./content/math/g4-g4m2.js",
   "./content/math/g4-g4m3.js",
@@ -105,6 +113,13 @@ const ASSETS = [
   "./img/hist/g8s2/beauplan-sich.jpg",
   "./img/hist/g8s2/cossacks-boplan.jpg",
   "./img/hist/g8s2/khotyn-fortress.jpg",
+  "./img/hist/g8s3/khmelnytsky-hondius.jpg",
+  "./img/hist/g8s3/khmelnytsky-kyiv.jpg",
+  "./img/hist/g8s4/doroshenko.jpg",
+  "./img/hist/g8s4/vyhovsky.jpg",
+  "./img/hist/g8s5/mazepa.jpg",
+  "./img/hist/g8s5/poltava-martin.jpg",
+  "./img/hist/g8s5/rozumovsky-tocque.jpg",
   "./img/hist-chron.jpg",
   "./img/hist-kyi.jpg",
   "./img/hist-layer.jpg",
