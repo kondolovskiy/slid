@@ -1,7 +1,7 @@
 /* Слід — service worker. ЗГЕНЕРОВАНО tools/build.mjs із tools/sw.template.js — не редагуй sw.js вручну.
    Стратегія: усі файли застосунку кешуються при встановленні (офлайн з першого запуску);
    свої файли — спершу з кешу; Google Fonts — з кешу з фоновим оновленням. */
-const VERSION = "9844881201";
+const VERSION = "e4b9e4c637";
 const CACHE = "slid-" + VERSION;
 const FONTS = "slid-fonts";
 const ASSETS = [
@@ -26,6 +26,9 @@ const ASSETS = [
   "./content/hist/g7-g7s3.js",
   "./content/hist/g7-g7s4.js",
   "./content/hist/g7-g7s5.js",
+  "./content/hist/g8-g8s1.js",
+  "./content/hist/g8-g8s2.js",
+  "./content/hist/g8-g8s3.js",
   "./content/math/plan.js",
   "./content/math/g4-g4m1.js",
   "./content/math/g4-g4m2.js",
@@ -44,6 +47,27 @@ const ASSETS = [
   "./content/math/g6-g6m3.js",
   "./content/math/g6-g6m4.js",
   "./content/math/g6-g6m5.js",
+  "./content/math/g7-g7m1.js",
+  "./content/math/g7-g7m2.js",
+  "./content/math/g7-g7m3.js",
+  "./content/math/g7-g7m4.js",
+  "./content/math/g7-g7m5.js",
+  "./content/math/g7-g7m6.js",
+  "./content/math/g7-g7m7.js",
+  "./content/math/g7-g7m8.js",
+  "./content/math/g8-g8m1.js",
+  "./content/math/g8-g8m2.js",
+  "./content/math/g8-g8m3.js",
+  "./content/math/g8-g8m4.js",
+  "./content/math/g8-g8m5.js",
+  "./content/math/g8-g8m6.js",
+  "./content/math/g9-g9m1.js",
+  "./content/math/g9-g9m2.js",
+  "./content/math/g9-g9m3.js",
+  "./content/math/g9-g9m4.js",
+  "./content/math/g9-g9m5.js",
+  "./content/math/g9-g9m6.js",
+  "./content/math/g9-g9m7.js",
   "./content/catalog.js",
   "./app/lab.js",
   "./app/app.js",
@@ -76,6 +100,11 @@ const ASSETS = [
   "./img/hist/g7s4/lviv-1618.jpg",
   "./img/hist/g7s4/seal-yurii.jpg",
   "./img/hist/g7s5/krewo-act.jpg",
+  "./img/hist/g8s1/lublin-matejko.jpg",
+  "./img/hist/g8s1/ostroh-bible.jpg",
+  "./img/hist/g8s2/beauplan-sich.jpg",
+  "./img/hist/g8s2/cossacks-boplan.jpg",
+  "./img/hist/g8s2/khotyn-fortress.jpg",
   "./img/hist-chron.jpg",
   "./img/hist-kyi.jpg",
   "./img/hist-layer.jpg",
