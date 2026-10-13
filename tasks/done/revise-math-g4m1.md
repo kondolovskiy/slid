@@ -1,13 +1,13 @@
 ---
-claimed_from: todo
-claimed_at: 2026-10-13T12:01:23.867Z
+claimed_from: review
+claimed_at: 2026-10-13T12:04:28.892Z
 id: revise-math-g4m1
 type: revise-section
 subject: math
 grade: 4
 section: g4m1
-status: review
-claimed_by: reviser-g4m1
+status: done
+claimed_by: verifier-g4m1-d019
 created: 2026-10-11
 ---
 # Переглянути розділ «Багатоцифрові числа» за правилом чесного завдання (Математика, 4 клас)
@@ -95,3 +95,6 @@ created: 2026-10-11
 ### Для верифікатора
 - l1 #2 тепер майже «читання з екрана» — чи не стало завдання надто простим? Альтернатива — `hyp`, але тоді gradedShare l1 нетиповий.
 - l4 info: запис «0–4» / «5–9» замість переліку цифр — чи зрозуміло для 4 кл.
+
+### Верифікація (verifier-g4m1-d019, 2026-10-13)
+Усі 5 уроків verified. Правки: l4 #4 info — «0–4/5–9» → «Менше за 5 / 5 і більше»; перенос → «10 десятків — це сотня: 296 ≈ 300». Звіт: reports/verify/g4m1.md.
