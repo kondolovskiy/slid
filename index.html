@@ -433,6 +433,35 @@ html,body{margin:0}
 [hidden]{display:none!important}
 img{max-width:100%}
 body{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+/* персоналізація: тест рівня, план, поради */
+.dock #skip{padding:9px 12px;border:0;color:var(--muted);font-size:15px} .dock #skip[hidden]{display:none}
+.linkbtn{all:unset;box-sizing:border-box;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 6px;border-radius:10px;font:600 14px var(--body);color:var(--muted)}
+.linkbtn:hover{background:var(--chip)} .linkbtn:focus-visible{outline:3px solid var(--accent)} .linkbtn svg{width:18px;height:18px}
+.plancard .pill{text-transform:none;letter-spacing:0;font-size:12px} .plancard{border:2px solid var(--c)} .plancard .eyebrow{color:var(--c)} .plancard .bar i{background:var(--c)}
+button.nowrow{cursor:pointer;width:100%} button.nowrow:hover{background:var(--chip)} button.nowrow:focus-visible{outline:3px solid var(--accent)}
+.play.sm{width:32px;height:32px;align-self:center} .play.sm svg{width:14px;height:14px}
+.secitem .play.sm{background:var(--accent);color:var(--accent-ink)}
+.cont.diaginv{border-style:dashed;box-shadow:none} .cont.diaginv .chev{width:20px;height:20px;color:var(--muted)}
+.tchip{flex:none;font:700 11px var(--body);border-radius:99px;padding:3px 8px;background:var(--chip);color:var(--muted);align-self:center}
+.learned .li b{font-weight:700}
+.learned .tst-ok svg,.learned .tst-known svg{color:var(--ok)} .tst-ok .tchip,.tst-known .tchip{background:var(--ok-soft);color:var(--ok)}
+.learned .tst-shaky svg{color:var(--gold)} .tst-shaky .tchip{background:var(--gold-soft);color:var(--gold)}
+.learned .tst-gap svg{color:var(--accent)} .tst-gap .tchip{background:var(--accent-soft);color:var(--accent)}
+.learned .tst-new svg{color:var(--lock)}
+.bigicon{width:72px;height:72px;border-radius:22px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center} .bigicon svg{width:40px;height:40px}
+.gainchip{font:700 12px var(--body);color:var(--gold);background:var(--gold-soft);border-radius:99px;padding:2px 8px;letter-spacing:0;text-transform:none}
+.planok{width:100%;text-align:left;display:flex;gap:10px;align-items:flex-start;background:var(--ok-soft);border-radius:14px;padding:12px;font-size:15px}
+.planok svg{flex:none;width:20px;height:20px;color:var(--ok);margin-top:2px} .planok.soft{background:var(--gold-soft)} .planok.soft svg{color:var(--gold)}
+.knowntag{font:700 11px var(--body);color:var(--ok);background:var(--ok-soft);border-radius:99px;padding:2px 8px}
+.numbox.wide input{width:7em}
+.anskeys{display:flex;gap:8px;justify-content:center;margin-top:10px}
+.anskeys button{all:unset;box-sizing:border-box;cursor:pointer;min-width:52px;text-align:center;padding:9px 14px;border-radius:12px;background:var(--surface);border:1.5px solid var(--line);font:600 16px var(--body)}
+.anskeys button:focus-visible{outline:3px solid var(--accent)} .anskeys button:active{background:var(--chip)} .anskeys button[disabled]{opacity:.4}
+.srcnote{font-size:12px;color:var(--muted);margin-top:10px}
+.steps{display:grid;gap:3px} .steps b{font-weight:700}
+.strength{display:inline-flex;gap:3px;margin-top:2px} .strength i{width:14px;height:5px;border-radius:3px;background:var(--line)} .strength i.on{background:var(--ok)}
+.pracentry .secnum{background:var(--c);color:#fff}
+.rec.prac{border-color:var(--line)}
 </style>
 </head>
 <body>
@@ -466,6 +495,7 @@ body{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset
     <div class="in">
       <div class="fb" aria-live="polite"><strong id="fbTitle"></strong><p id="fbText"></p></div>
       <button class="btn" id="action" type="button">Далі</button>
+      <button class="btn ghost" id="skip" type="button" hidden>Ще не знаю</button>
     </div>
   </div>
 </div>
@@ -503,6 +533,7 @@ body{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset
 <script src="content/hist/g9-g9s4.js"></script>
 <script src="content/hist/g9-g9s5.js"></script>
 <script src="content/math/plan.js"></script>
+<script src="content/math/diag-g6.js"></script>
 <script src="content/math/g10-g10m1.js"></script>
 <script src="content/math/g10-g10m2.js"></script>
 <script src="content/math/g10-g10m3.js"></script>
@@ -547,8 +578,14 @@ body{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset
 <script src="content/math/g9-g9m5.js"></script>
 <script src="content/math/g9-g9m6.js"></script>
 <script src="content/math/g9-g9m7.js"></script>
+<script src="content/math/pool-g6-g6m1.js"></script>
+<script src="content/math/pool-g6-g6m2.js"></script>
+<script src="content/math/pool-g6-g6m3.js"></script>
+<script src="content/math/pool-g6-g6m4.js"></script>
+<script src="content/math/pool-g6-g6m5.js"></script>
 <script src="content/catalog.js"></script>
 <script src="app/lab.js"></script>
+<script src="app/learn.js"></script>
 <script src="app/app.js"></script>
 <!-- CONTENT:END -->
 <script src="app/pwa.js"></script>

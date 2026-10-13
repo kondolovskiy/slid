@@ -14,7 +14,9 @@ index.html              оболонка + CSS (токени кольорів, �
   content/<предмет>/plan.js      плановані розділи (без уроків)
   content/<предмет>/g*-*.js      розділи з уроками (замінюють записи плану з тим самим id)
   content/catalog.js    предмети «скоро»
+  content/<предмет>/diag-g*.js   тест рівня класу (SLID.diag), docs/CONTENT_SCHEMA.md §9
   app/lab.js            лабораторія: інтерактивні моделі (графіки, геометрія, терези…), docs/CONTENT_SCHEMA.md §8
+  app/learn.js          персоналізація: тест рівня, план, повторювані помилки (чиста логіка), docs/PERSONALIZATION.md
   app/app.js            рушій (викликає SLID.finalize())
 ```
 Порядок прописує `tools/build.mjs` (між маркерами `CONTENT:START/END`). Список дублюється в `content/manifest.json` для інструментів.
@@ -31,7 +33,10 @@ index.html              оболонка + CSS (токени кольорів, �
 ```
 { name, grade, theme, subject, unlockAll, weekOverride,
   xp, lessons: {id: {done, stars, best}}, days: {"2026-09-27": xp},
-  streak: {count, last}, badges: {id: date}, skills: {"math.frac": {ok, total}}, polls: {key: index}, bestCombo }
+  streak: {count, last}, badges: {id: date}, skills: {"math.frac": {ok, total}}, polls: {key: index}, bestCombo,
+  diag: {dg6: {done, date, res, topics}}, diagRun: {dg6: {i: 1|0|-1}}, diagSkip: {dg6: true},        // тест рівня
+  plan: {math: {diag, date, topics, steps: [{l, why, src, done}], known: [lessonId]}},                // персональний план
+  mast: {lessonId: {r: "0110", d}}, skw: {"math.cmp": "1011"}, errs: [{l, at, sk, d}] }               // останні відповіді тем і навичок, журнал помилок
 ```
 id уроків і навичок — ключі в прогресі. **Не перейменовуйте їх** після публікації.
 
@@ -47,6 +52,9 @@ id уроків і навичок — ключі в прогресі. **Не п�
 
 ## Передумови між класами
 `sec.requires` — чип на екрані розділу. `screen.pre` — якщо дитина помиляється, у фідбеку з'являється підказка, а наприкінці уроку — картка «Варто повторити» з кнопкою запуску уроку іншого класу.
+
+## Персоналізація
+Тест рівня після вибору класу, персональний план і пошук повторюваних помилок — docs/PERSONALIZATION.md. Логіка в `app/learn.js` (без DOM, тести `tools/test-learn.mjs`); id тестів і тем — теж ключі в прогресі.
 
 ## Що далі (див. ROADMAP.md)
 Обгортка Capacitor, синхронізація прогресу (Supabase), кабінет учителя, кнопка «Не розумію» → ШІ-тьютор з контекстом кроку.

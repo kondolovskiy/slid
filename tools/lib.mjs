@@ -18,10 +18,10 @@ export function loadContent() {
     for (const m of src.matchAll(/SLID\.section\(\s*"[^"]+",\s*\{\s*id:\s*"([^"]+)"/g)) origin[m[1]] = f;
   }
   ctx.SLID.finalize();
-  return { subjects: ctx.SLID_SUBJECTS, soon: ctx.SLID_SOON, files, origin, lab: ctx.SLID_LAB };
+  return { subjects: ctx.SLID_SUBJECTS, soon: ctx.SLID_SOON, files, origin, lab: ctx.SLID_LAB, learn: ctx.SLID_LEARN };
 }
 
-export const GRADED = ["choice","multi","sort","slider","order","align","shade","numline","number","fracin","lab"];
+export const GRADED = ["choice","multi","sort","slider","order","align","shade","numline","number","fracin","lab","answer"];
 export const TYPES = ["intro","info","explore", ...GRADED];
 
 /** Прибирає HTML і формули, повертає чистий текст. */
