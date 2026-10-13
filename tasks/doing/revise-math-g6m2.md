@@ -1,13 +1,13 @@
 ---
-claimed_from: todo
-claimed_at: 2026-10-13T12:13:03.164Z
+claimed_from: review
+claimed_at: 2026-10-13T12:15:30.285Z
 id: revise-math-g6m2
 type: revise-section
 subject: math
 grade: 6
 section: g6m2
 status: review
-claimed_by: reviser-g6m2
+claimed_by: verifier-g6m2-d019
 created: 2026-10-11
 ---
 # Переглянути розділ «Дії зі звичайними дробами» за правилом чесного завдання (Математика, 6 клас)

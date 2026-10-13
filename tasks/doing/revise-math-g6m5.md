@@ -1,13 +1,13 @@
 ---
-claimed_from: todo
-claimed_at: 2026-10-13T12:13:03.436Z
+claimed_from: review
+claimed_at: 2026-10-13T12:15:30.457Z
 id: revise-math-g6m5
 type: revise-section
 subject: math
 grade: 6
 section: g6m5
 status: review
-claimed_by: reviser-g6m5
+claimed_by: verifier-g6m5-d019
 created: 2026-10-11
 ---
 # Переглянути розділ «Рівняння» за правилом чесного завдання (Математика, 6 клас)
