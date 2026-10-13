@@ -1,11 +1,13 @@
 ---
+claimed_from: todo
+claimed_at: 2026-10-13T10:54:52.892Z
 id: revise-hist-g6s5
 type: revise-section
 subject: hist
 grade: 6
 section: g6s5
 status: todo
-claimed_by:
+claimed_by: reviser-g6s5
 created: 2026-10-11
 ---
 # Переглянути розділ «Слов'яни і Велике переселення народів» за правилом чесного завдання (Історія України, 6 клас)
