@@ -1,5 +1,5 @@
 /* Слід · Математика, 5 клас — «Фігури і величини»
-   Статус уроків: l1–l4 draft після ревізії D-019 (2026-10-13), l5 verified (reports/verify/ms0b.md). 5 уроків.
+   Статус уроків: l1–l5 verified (повторна верифікація після ревізії D-019, 2026-10-13, reports/verify/ms0b.md). 5 уроків.
    Інтерактив (D-014): plane без осей — перетягувані точки (відрізок, промінь, пряма, кути, трикутники); rect — периметр.
    Перевірка: node tools/validate.mjs --section ms0b && node tools/stats.mjs --subject math
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
@@ -9,7 +9,7 @@ SLID.section("math", {
   weeks: [10, 15],
   title: "Фігури і величини",
   why: "Щоб вимірювати, креслити й порівнювати: кути, відрізки, периметри — від зошита до плану кімнати.",
-  meta: { author: "claude-opus", created: "2026-10-06", factcheck: "verifier-ms0b", teacher: null },
+  meta: { author: "claude-opus", created: "2026-10-06", factcheck: "verifier-ms0b; verifier-ms0b-d019", teacher: null },
   badges: [
     { id: "kutomir", name: "Кутомір", icon: "target", desc: "Пройти урок про кути" },
     { id: "ms0bboss", name: "Помічник архітектора", icon: "map", desc: "Пройти фінальну задачу про фігури й величини" }
@@ -20,7 +20,7 @@ SLID.section("math", {
       title: "Лінія без кінця",
       short: "Відрізок, промінь, пряма",
       icon: "line",
-      status: "draft",
+      status: "verified",
       why: "Креслення, карти й плани складаються з ліній. Треба знати, яка лінія має кінці, а яка — ні.",
       screens: [
         {
@@ -156,7 +156,7 @@ SLID.section("math", {
       title: "Скільки градусів у куті?",
       short: "Кути",
       icon: "target",
-      status: "draft",
+      status: "verified",
       badge: "kutomir",
       why: "Кути є в дверях, годиннику, даху й гірці. Знаючи їх, легше креслити й будувати.",
       screens: [
@@ -305,7 +305,7 @@ SLID.section("math", {
       title: "Три кути на трьох",
       short: "Трикутники",
       icon: "flag",
-      status: "draft",
+      status: "verified",
       why: "Трикутники тримають дахи й мости. Їх легко впізнати за кутами й сторонами.",
       screens: [
         {
@@ -385,7 +385,7 @@ SLID.section("math", {
           },
           goal: "dist(A,C)==dist(B,C) && area(A,B,C)>0",
           solution: { Cx: 4, Cy: 5 },
-          reveal: "$C$ має стояти над серединою $AB$, на вертикалі через 4.",
+          reveal: "$C$ має стояти прямо над серединою $AB$ — за 3 клітинки від $A$ і від $B$.",
           hint: "Знайди середину сторони $AB$. Постав $C$ просто над нею.",
           fbOk: "Рівнобедрений.",
           fbBad: "Сторони ще різні.",
@@ -442,7 +442,7 @@ SLID.section("math", {
       title: "Скільки сітки на грядку?",
       short: "Периметр",
       icon: "home",
-      status: "draft",
+      status: "verified",
       why: "Периметр підкаже, скільки купити паркану, бордюру чи стрічки на рамку.",
       screens: [
         {

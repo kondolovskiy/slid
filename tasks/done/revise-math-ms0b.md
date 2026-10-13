@@ -6,7 +6,7 @@ type: revise-section
 subject: math
 grade: 5
 section: ms0b
-status: review
+status: done
 claimed_by: verifier-ms0b-d019
 created: 2026-10-11
 ---
@@ -100,3 +100,6 @@ created: 2026-10-11
 - l1 #2 fbText: «через одну точку — безліч прямих» з'являється лише там, але ніде не оцінюється.
 - l2 #5 fbText «прямий кут позначають квадратиком» — новий факт у fbText, не оцінюється.
 - l4 #8 після нагадування «1 дм = 10 см» підступ слабший — прийнятно?
+
+### Верифікація (verifier-ms0b-d019, 2026-10-13)
+Усі уроки l1–l5 → verified. Правка: l3 #6 reveal без «вертикалі через 4». Відповіді на питання ревізора й таблиця опори — reports/verify/ms0b.md.
