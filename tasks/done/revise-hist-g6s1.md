@@ -6,7 +6,7 @@ type: revise-section
 subject: hist
 grade: 6
 section: g6s1
-status: review
+status: done
 claimed_by: verifier-g6s1-d019
 created: 2026-10-11
 ---
@@ -107,3 +107,6 @@ created: 2026-10-11
 
 ### Validate
 `node tools/validate.mjs --section g6s1` → 0 помилок, 0 попереджень.
+
+### Верифікація (verifier-g6s1-d019, 2026-10-13)
+Звіт: `reports/verify/g6s1.md`. Правки: (1) l2 info — «Металів люди ще не знали.» (опора для sort/multi/boss); (2) l3 choice — дистрактор «Річкою возили товари на продаж» → «Річка відлякувала звірів від стоянки», fbText без факту про торгівлю. Новий факт l5 (вплив Балкан/Подунав'я, Кріш) підтверджено EoU + Залізняк (НаУКМА). l1–l6 → verified. validate 0/0.
