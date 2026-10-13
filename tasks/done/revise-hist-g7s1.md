@@ -1,13 +1,13 @@
 ---
-claimed_from: todo
-claimed_at: 2026-10-13T11:18:34.467Z
+claimed_from: review
+claimed_at: 2026-10-13T11:21:20.338Z
 id: revise-hist-g7s1
 type: revise-section
 subject: hist
 grade: 7
 section: g7s1
-status: review
-claimed_by: reviser-g7s1
+status: done
+claimed_by: verifier-g7s1-d019
 created: 2026-10-11
 ---
 # Переглянути розділ «Виникнення Русі» за правилом чесного завдання (Історія України, 7 клас)
@@ -109,3 +109,6 @@ created: 2026-10-11
 
 ### Stats
 validate --section g7s1: 0 помилок, 0 попереджень. stats --subject hist: g7s1l1 readWordsPerScreen z 2.0→2.2 і sentenceWords z 2.1; g7s1l2 typeVariety z 2 — були й до ревізії (порівняння з HEAD у scratch); l1 зросла на кілька слів опори, частину компенсовано скороченням fbText #4 і body #8. Прапорець l4 (readWordsPerScreen z 2) після ревізії зник.
+
+### Верифікація (verifier-g7s1-d019, 2026-10-13)
+Звіт: reports/verify/g7s1.md. Опора D-019 — усі оцінювані завдання мають джерело відповіді. Правки: l1 #6 варіант «Князь разом із вічем» (без неподаних «старійшин»); l2 #7 «повісив свій щит» за Махновцем + «Царград (Константинополь)»; l4 #8 title/кошик/learned без «легенди», fbText без неподаного «пишуть візантійці». l1–l5 → verified. validate: 0/0. stats: l1 readWordsPerScreen z=2, l2 typeVariety z=2 — були до ревізії.
