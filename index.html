@@ -217,6 +217,14 @@ figcaption{font-size:13px;color:var(--muted);padding:8px 12px;line-height:1.4}
 .align input{width:100%;accent-color:var(--accent)}
 .hint{background:var(--gold-soft);color:var(--ink);border-radius:12px;padding:10px 12px;font-size:15px;display:flex;gap:8px;margin-top:10px}
 .hint svg{flex:none;width:18px;height:18px;color:var(--gold);margin-top:3px}
+.note{margin-top:12px;border:1px solid var(--line);border-radius:12px;font-size:15px}
+.note summary{display:flex;gap:8px;align-items:center;padding:9px 12px;cursor:pointer;color:var(--muted);font-weight:600;list-style:none}
+.note summary::-webkit-details-marker{display:none}
+.note summary svg{flex:none;width:18px;height:18px}
+.note[open] summary{color:var(--ink)}
+.note-b{padding:0 12px 10px}
+.note-b ul{margin:6px 0 0;padding-left:18px}
+.note-b a{color:inherit}
 
 .dock{bottom:0;padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));background:var(--bg);border-top:1px solid var(--line);transition:background .2s;z-index:35}
 .dock.ok{background:var(--ok-soft);border-color:var(--ok)} .dock.bad{background:var(--bad-soft);border-color:var(--bad)} .dock.info{background:var(--accent-soft);border-color:var(--accent)}
@@ -519,6 +527,11 @@ button.nowrow{cursor:pointer;width:100%} button.nowrow:hover{background:var(--ch
 <script src="content/hist/g8-g8s3.js"></script>
 <script src="content/hist/g8-g8s4.js"></script>
 <script src="content/hist/g8-g8s5.js"></script>
+<script src="content/hist/g9-g9s1.js"></script>
+<script src="content/hist/g9-g9s2.js"></script>
+<script src="content/hist/g9-g9s3.js"></script>
+<script src="content/hist/g9-g9s4.js"></script>
+<script src="content/hist/g9-g9s5.js"></script>
 <script src="content/math/plan.js"></script>
 <script src="content/math/diag-g6.js"></script>
 <script src="content/math/g10-g10m1.js"></script>
