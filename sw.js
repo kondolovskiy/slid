@@ -1,7 +1,7 @@
 /* Слід — service worker. ЗГЕНЕРОВАНО tools/build.mjs із tools/sw.template.js — не редагуй sw.js вручну.
    Стратегія: усі файли застосунку кешуються при встановленні (офлайн з першого запуску);
    свої файли — спершу з кешу; Google Fonts — з кешу з фоновим оновленням. */
-const VERSION = "a3e28d617c";
+const VERSION = "e526f4dd73";
 const CACHE = "slid-" + VERSION;
 const FONTS = "slid-fonts";
 const ASSETS = [
@@ -31,6 +31,11 @@ const ASSETS = [
   "./content/hist/g8-g8s3.js",
   "./content/hist/g8-g8s4.js",
   "./content/hist/g8-g8s5.js",
+  "./content/hist/g9-g9s1.js",
+  "./content/hist/g9-g9s2.js",
+  "./content/hist/g9-g9s3.js",
+  "./content/hist/g9-g9s4.js",
+  "./content/hist/g9-g9s5.js",
   "./content/math/plan.js",
   "./content/math/g10-g10m1.js",
   "./content/math/g10-g10m2.js",
@@ -120,6 +125,11 @@ const ASSETS = [
   "./img/hist/g8s5/mazepa.jpg",
   "./img/hist/g8s5/poltava-martin.jpg",
   "./img/hist/g8s5/rozumovsky-tocque.jpg",
+  "./img/hist/g9s2/rusalka-title.jpg",
+  "./img/hist/g9s2/shevchenko-1840.jpg",
+  "./img/hist/g9s3/ems-plaque.jpg",
+  "./img/hist/g9s3/manifest-1861.jpg",
+  "./img/hist/g9s4/yuzivka-zavod.jpg",
   "./img/hist-chron.jpg",
   "./img/hist-kyi.jpg",
   "./img/hist-layer.jpg",
