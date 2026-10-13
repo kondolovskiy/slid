@@ -1,13 +1,13 @@
 ---
-claimed_from: todo
-claimed_at: 2026-10-13T12:07:15.824Z
+claimed_from: review
+claimed_at: 2026-10-13T12:09:58.130Z
 id: revise-math-ms0b
 type: revise-section
 subject: math
 grade: 5
 section: ms0b
 status: review
-claimed_by: reviser-ms0b
+claimed_by: verifier-ms0b-d019
 created: 2026-10-11
 ---
 # Переглянути розділ «Фігури і величини» за правилом чесного завдання (Математика, 5 клас)

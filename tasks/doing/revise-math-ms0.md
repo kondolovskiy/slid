@@ -1,13 +1,13 @@
 ---
-claimed_from: todo
-claimed_at: 2026-10-13T12:07:15.742Z
+claimed_from: review
+claimed_at: 2026-10-13T12:09:58.028Z
 id: revise-math-ms0
 type: revise-section
 subject: math
 grade: 5
 section: ms0
 status: review
-claimed_by: reviser-ms0
+claimed_by: verifier-ms0-d019
 created: 2026-10-11
 ---
 # Переглянути розділ «Натуральні числа» за правилом чесного завдання (Математика, 5 клас)

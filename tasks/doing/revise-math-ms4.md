@@ -1,13 +1,13 @@
 ---
-claimed_from: todo
-claimed_at: 2026-10-13T12:07:16.129Z
+claimed_from: review
+claimed_at: 2026-10-13T12:09:22.801Z
 id: revise-math-ms4
 type: revise-section
 subject: math
 grade: 5
 section: ms4
 status: review
-claimed_by: reviser-ms4
+claimed_by: verifier-ms4-d019
 created: 2026-10-11
 ---
 # Переглянути розділ «Площі й об'єми» за правилом чесного завдання (Математика, 5 клас)
