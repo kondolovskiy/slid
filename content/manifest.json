@@ -23,6 +23,7 @@
   "content/hist/g8-g8s4.js",
   "content/hist/g8-g8s5.js",
   "content/math/plan.js",
+  "content/math/diag-g6.js",
   "content/math/g10-g10m1.js",
   "content/math/g10-g10m2.js",
   "content/math/g10-g10m3.js",
@@ -69,5 +70,6 @@
   "content/math/g9-g9m7.js",
   "content/catalog.js",
   "app/lab.js",
+  "app/learn.js",
   "app/app.js"
 ]

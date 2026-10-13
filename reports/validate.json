@@ -1,5 +1,14 @@
 {
-  "date": "2026-10-12T18:35:26.600Z",
+  "date": "2026-10-13T18:05:45.336Z",
   "errors": [],
-  "warnings": []
+  "warnings": [
+    "content/hist/g5-s4.js#h41: gradedShare=0.4 поза профілем [0.5; 0.9] для hist, 5-6 кл.",
+    "content/hist/g5-s4.js#h41: maxReadWords=70 поза профілем [0; 60] для hist, 5-6 кл.",
+    "content/hist/g5-s4.js#h42: maxReadWords=79 поза профілем [0; 60] для hist, 5-6 кл.",
+    "content/hist/g5-s4.js#h43: gradedShare=0.43 поза профілем [0.5; 0.9] для hist, 5-6 кл.",
+    "content/hist/g5-s4.js#h44: gradedShare=0.4 поза профілем [0.5; 0.9] для hist, 5-6 кл.",
+    "content/math/g10-g10m5.js#g10m5l1: sentenceWords=6.8 поза профілем [7; 15] для math, 10-11 кл.",
+    "content/math/g10-g10m5.js#g10m5l2: sentenceWords=6.7 поза профілем [7; 15] для math, 10-11 кл.",
+    "content/math/g10-g10m5.js#g10m5l3: sentenceWords=6.8 поза профілем [7; 15] для math, 10-11 кл."
+  ]
 }

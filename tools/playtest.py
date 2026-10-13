@@ -2,7 +2,7 @@
 """Слід · плейтест: проходить уроки в справжньому браузері (Playwright + Chromium), відповідаючи правильно,
 і перевіряє, що кожне завдання зараховано, а на сторінці немає JS-помилок.
 Запуск:  python3 tools/playtest.py            — усі уроки
-         python3 tools/playtest.py --section g6s1 [--shots]   — один розділ (+ скриншоти в reports/shots/)
+         python3 tools/playtest.py --section g6s1 [--shots]   — один розділ або тест рівня (--section dg6) (+ скриншоти в reports/shots/)
 Потрібно: pip install playwright && playwright install chromium  (або вже встановлений Chromium)."""
 import asyncio, functools, http.server, os, sys, threading
 from playwright.async_api import async_playwright
@@ -34,6 +34,7 @@ async def answer(pg, s):
     elif t == "shade":
         for k in range(s["target"]): await pg.click(f'#shade [data-p="{k}"]')
     elif t == "numline": await pg.eval_on_selector("#nlrng", f"e=>{{e.value={s['answer']};e.dispatchEvent(new Event('input'))}}")
+    elif t == "answer": await pg.fill("#numIn", str(s["answer"]).replace(".", ",")); await pg.dispatch_event("#numIn", "input")
     elif t == "fracin": await pg.fill("#numIn", str(s["answer"]))
     elif t == "number":
         v = s["answer"]; txt = (str(int(v)) if float(v).is_integer() else repr(v)).replace(".", ",")
@@ -73,8 +74,32 @@ async def main():
                     await pg.wait_for_timeout(80); await pg.click("#action")
                     await pg.click('[data-tab="path"]'); await pg.click('[data-tab="path"]')
                     played += 1
+        # тести рівня (SLID.diag): усе правильно → план без кроків; усе «Ще не знаю» → у плані є кроки, кожен веде на наявний урок
+        diags = 0
+        for c in subjects:
+            for d in c.get("diags", []):
+                if ONLY and d["id"] != ONLY: continue
+                for mode in ("ok", "skip"):
+                    await pg.evaluate(f"localStorage.setItem('slid.v1', JSON.stringify({{grade:{d['grade']}}}))")
+                    await pg.goto(f"http://127.0.0.1:{PORT}/index.html")
+                    await pg.click(f'[data-diag="{c["id"]}"]'); await pg.click("[data-diag-go]")
+                    shown = 0
+                    while await pg.is_visible("#skip"):
+                        i = await pg.evaluate("(() => { const S = JSON.parse(localStorage.getItem('slid.v1')), d = SLID_SUBJECTS.flatMap(c => c.diags).find(x => x.id === '%s'); return SLID_LEARN.nextItem(d, (S.diagRun || {})[d.id] || {}); })()" % d["id"])
+                        if mode == "ok": await answer(pg, d["items"][i]); await pg.click("#action")
+                        else: await pg.click("#skip")
+                        shown += 1
+                        if shown > len(d["items"]): errs.append(f"{c['id']} {d['id']}: тест не закінчується"); break
+                    plan = await pg.evaluate("JSON.parse(localStorage.getItem('slid.v1')).plan['%s']" % c["id"])
+                    todo = [st for st in (plan or {}).get("steps", []) if not st.get("done")]
+                    if not plan: errs.append(f"{c['id']} {d['id']} ({mode}): план не збережено")
+                    elif mode == "ok" and (todo or shown != len(d["items"])): errs.append(f"{c['id']} {d['id']}: усі відповіді правильні, але в плані {len(todo)} кроків (показано {shown} з {len(d['items'])} завдань) — якусь відповідь не зараховано")
+                    elif mode == "skip" and not todo: errs.append(f"{c['id']} {d['id']}: усе пропущено, а план порожній")
+                    await pg.click("#action"); await pg.wait_for_timeout(80)
+                    if mode == "skip" and await pg.is_hidden("#player"): errs.append(f"{c['id']} {d['id']}: перший крок плану не відкрився")
+                diags += 1
         await b.close()
-        print(f"Пройдено уроків: {played}")
+        print(f"Пройдено уроків: {played}, тестів рівня: {diags}")
         for e in errs: print("ПОМИЛКА ", e)
         sys.exit(1 if errs else 0)
 

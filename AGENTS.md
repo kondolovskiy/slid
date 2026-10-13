@@ -25,6 +25,8 @@
 | `content/subjects/<предмет>.js` | метадані предмета: кольори, навички, значки | **лише куратор** |
 | `content/<предмет>/plan.js` | план років: розділи без уроків (назва, навіщо, тижні, теми) | **лише куратор** |
 | `content/<предмет>/g<клас>-<id>.js` | **один файл = один розділ з уроками** | автор цього розділу |
+| `content/<предмет>/diag-g<клас>.js` | тест рівня класу (`SLID.diag`, CONTENT_SCHEMA §9) | автор цього тесту |
+| `app/learn.js` | персоналізація: тест рівня, план, повторювані помилки (docs/PERSONALIZATION.md) | розробник |
 | `content/catalog.js` | предмети «скоро» | куратор |
 | `img/` | зображення (див. docs/IMAGES.md) | автор розділу — лише свою теку `img/<предмет>/<id>/` |
 | `style/` | стиль-гайди, профілі складності, заборонені фрази | **лише через рішення в decisions.md** |
@@ -39,7 +41,8 @@
 
 ```bash
 node tools/build.mjs                       # список скриптів у index.html + sw.js (після БУДЬ-ЯКОЇ зміни в content/, app/, img/)
-node tools/validate.mjs [--section ID]     # помилки (блокують) + попередження стилю
+node tools/validate.mjs [--section ID | --diag ID]   # помилки (блокують) + попередження стилю
+node tools/test-learn.mjs                  # тести логіки персоналізації (app/learn.js)
 node tools/stats.mjs [--subject hist]      # метрики складності, звіт reports/style-<предмет>.md
 node tools/make-tasks.mjs [--subject math] # задачі на написання з плану
 node tools/claim.mjs list|claim|move ...   # черга задач для паралельних агентів
