@@ -6,7 +6,7 @@ type: revise-section
 subject: hist
 grade: 6
 section: g6s5
-status: review
+status: done
 claimed_by: verifier-g6s5-d019
 created: 2026-10-11
 ---
@@ -108,3 +108,6 @@ created: 2026-10-11
 
 ### Stats
 validate --section g6s5: 0 помилок, 0 попереджень; stats --subject hist: прапорців для g6s5 немає.
+
+### Верифікація D-019 (verifier-g6s5-d019, 2026-10-13)
+Звіт: reports/verify/g6s5.md. Нові речення (Аттіла 434, 476, Йордан «від Данастра до Данапра», Прокопій про мову й віру, ланцюжок культур, 482/1982) — ✅. Правки: l2 #7 hyp → оцінюване з трьома версіями в body (correct 3); l5 Q4 «Нестора» → «Маврикія». l1–l5 → verified. validate 0/0, stats без прапорців.
