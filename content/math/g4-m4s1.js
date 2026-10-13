@@ -1,5 +1,5 @@
 /* Слід · Математика, 4 клас — «Ділення з остачею»
-   Статус уроків: draft (ревізія D-019, 2026-10-13). 1 урок.
+   Статус уроків: verified (ревізія D-019 + повторна верифікація, 2026-10-13). 1 урок.
    Перевірка: node tools/validate.mjs && node tools/stats.mjs
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("math", {
@@ -15,7 +15,7 @@ SLID.section("math", {
       title: "Коли порівну не ділиться",
       short: "Ділення з остачею",
       icon: "users",
-      status: "draft",
+      status: "verified",
       why: "Не все ділиться націло. Треба вміти сказати, скільки вийде кожному і скільки залишиться.",
       screens: [
         {
