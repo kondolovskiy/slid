@@ -1,13 +1,13 @@
 ---
-claimed_from: todo
-claimed_at: 2026-10-13T12:01:24.024Z
+claimed_from: review
+claimed_at: 2026-10-13T12:04:00.647Z
 id: revise-math-g4m3
 type: revise-section
 subject: math
 grade: 4
 section: g4m3
-status: review
-claimed_by: reviser-g4m3
+status: done
+claimed_by: verifier-g4m3-d019
 created: 2026-10-11
 ---
 # Переглянути розділ «Множення і ділення» за правилом чесного завдання (Математика, 4 клас)
@@ -99,3 +99,6 @@ created: 2026-10-11
 ### Stats
 `node tools/validate.mjs --section g4m3` — 0 помилок, 0 попереджень. `node tools/stats.mjs --subject math` — для g4m3 прапорців немає.
 
+
+### Верифікація (verifier-g4m3-d019, 2026-10-13)
+Повторно перевірено всі уроки (D-019). Таблиця опори, мої відповіді, відкриті питання — у reports/verify/g4m3.md. Критичних помилок немає; l4 → verified. Бажане: l4 #7 `step: 1` (десяткові в 4 кл.), l3 #8 body «Згадай ділення з остачею».

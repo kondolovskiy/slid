@@ -1,5 +1,5 @@
 /* Слід · Математика, 4 клас — «Множення і ділення»
-   Статус уроків: verified (verifier-g4m3, 2026-10-06); l4 — draft після ревізії D-019 (2026-10-13). 5 уроків.
+   Статус уроків: verified (verifier-g4m3, 2026-10-06; l4 — повторно verifier-g4m3-d019 після ревізії D-019, 2026-10-13). 5 уроків.
    Перевірка: node tools/validate.mjs && node tools/stats.mjs
    Схема й правила: docs/CONTENT_SCHEMA.md (§8 — лабораторія), style/ */
 SLID.section("math", {
@@ -425,7 +425,7 @@ SLID.section("math", {
       title: "Хто швидше?",
       short: "Задачі на рух",
       icon: "path",
-      status: "draft",
+      status: "verified",
       why: "Скільки йти до школи, коли приїде автобус, чи встигнеш на поїзд. У всіх цих питаннях працює одна формула.",
       screens: [
         {
@@ -537,7 +537,7 @@ SLID.section("math", {
             view: [0, 18],
             tick: 1,
             labels: 3,
-            params: { t: { min: 0, max: 3, step: 0.5, start: 0, label: "Час, год" } },
+            params: { t: { min: 0, max: 3, step: 1, start: 0, label: "Час, год" } },
             intervals: [
               { from: "0", to: "4*t", color: "accent" },
               { from: "18-5*t", to: "18", color: "blue" }
