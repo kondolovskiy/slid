@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-10-13T12:19:04.636Z
 id: math-notation-merzlyak
 type: style-fix
 subject: math
 status: todo
-claimed_by:
+claimed_by: fixer-notation
 created: 2026-10-13
 ---
 # Привести нотацію математики до лінії Мерзляка (D-024, D-025)
