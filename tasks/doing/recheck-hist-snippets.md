@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-10-13T12:22:17.463Z
 id: recheck-hist-snippets
 type: verify-section
 subject: hist
 status: todo
-claimed_by:
+claimed_by: verifier-recheck
 created: 2026-10-13
 ---
 # Перезвірити факти, звірені лише за витягами пошуку (D-021)
