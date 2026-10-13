@@ -11,7 +11,9 @@ _Оновлено: 2026-10-13, оркестратор (персоналізац�
 ## Нове 2026-10-13: персоналізація (docs/PERSONALIZATION.md)
 - **Рушій:** `app/learn.js` (чиста логіка, 228 тестів `tools/test-learn.mjs`, у `npm run check` і CI) + екрани в `app/app.js`: тест рівня після вибору класу, «Твій план», картки «Варто повторити · додано в план».
 - **Контент:** `content/math/diag-g6.js` (`dg6`, 18 тем, 30 завдань) — **verified** (reports/verify/dg6.md). Схема — CONTENT_SCHEMA §9; `node tools/validate.mjs --diag dg6`.
-- **Не зроблено:** пул практики з інтервальним повторенням — `tasks/todo/engine-practice-pool.md`; тести рівня для інших класів/предметів; `python3 tools/playtest.py` з новим проходом тесту **не запускався** (немає Playwright локально) — потік перевірено вручну в браузері.
+- **Тренування:** рушій (`SLID.pool`, тип `answer`, коробки Лейтнера, екран «Тренування») + пули математики 6 кл. `content/math/pool-g6-g6m1…g6m5.js` — 184 задачі з підручників, усі **verified** (reports/verify/pg6m*.md). Далі: `tasks/todo/engine-ai-solution-check.md` (ШІ-перевірка ходу розв'язання), `engine-practice-pool.md` (генератори, інші класи).
+- **PR:** kondolovskiy/slid#2, гілка `feat/personalization`.
+- **Не зроблено:** тести рівня для інших класів/предметів; `python3 tools/playtest.py` з новим проходом тесту **не запускався** (немає Playwright локально) — потік перевірено вручну в браузері.
 - **Inbox:** пропозиція D-020, 2 пастки, запити до рушія від автора dg6 — перенести куратору (`/handoff`).
 
 ## У роботі (`node tools/claim.mjs list doing`)

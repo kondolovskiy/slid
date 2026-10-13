@@ -302,7 +302,7 @@ const order = l => ({ L1: 3, L2: 1, L3: 2, L4: 4 }[l] ?? 50);
    [{ answer: "2 1/3" }, "7/3", "ok"], [{ answer: "2 1/3", mixed: true }, "7/3", "form"], [{ answer: "2 1/3", mixed: true }, "2 1/3", "ok"], [{ answer: "2 1/3" }, "1 4/3", "form"],
    [{ answer: -3.5 }, "−3,5", "ok"], [{ answer: -3.5 }, "-3.5", "ok"], [{ answer: -3.5 }, "3,5", "bad"], [{ answer: "-7/2" }, "-3 1/2", "ok"], [{ answer: "1/2" }, "0,5", "ok"], [{ answer: "0,25" }, "1/4", "ok"],
    [{ answer: 12 }, "12", "ok"], [{ answer: 12 }, "12,0", "ok"], [{ answer: 12 }, " 12 ", "ok"], [{ answer: 3 }, "6/2", "ok"], [{ answer: 3, reduced: true }, "6/2", "form"],
-   [{ answer: 5 }, "", "bad"], [{ answer: 5 }, "abc", "bad"], [{ answer: 5 }, "5/0", "bad"], [{ answer: "1/3" }, "0,33", "bad"], [{ answer: 0 }, "-0", "ok"], [{ answer: "3/4", mixed: true }, "3/4", "ok"]]
+   [{ answer: 19735 }, "19 735", "ok"], [{ answer: 1250.5 }, "1 250,5", "ok"], [{ answer: 19735 }, "19 73", "bad"], [{ answer: "2 1/3" }, "2 1/3", "ok"], [{ answer: "2/5", reduced: true }, "0,4", "form"], [{ answer: "2/5" }, "0,4", "ok"], [{ answer: 12, reduced: true, mixed: true }, "12", "ok"], [{ answer: 5 }, "", "bad"], [{ answer: 5 }, "abc", "bad"], [{ answer: 5 }, "5/0", "bad"], [{ answer: "1/3" }, "0,33", "bad"], [{ answer: 0 }, "-0", "ok"], [{ answer: "3/4", mixed: true }, "3/4", "ok"]]
     .forEach(([s, v, exp]) => eq(c(s, v), exp, `checkAns: ${JSON.stringify(s)} ← «${v}»`));
   eq(L.parseAns("2 1/3").n, 7, "parseAns: мішане → чисельник"); eq(L.parseAns("1,25").d, 100, "parseAns: десятковий → знаменник"); eq(L.parseAns("1/2/3"), null, "parseAns: сміття"); }
 

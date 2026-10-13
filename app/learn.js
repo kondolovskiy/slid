@@ -141,6 +141,7 @@ window.SLID_LEARN = (() => {
   function parseAns(v) {
     const t = String(v ?? "").replace(/[−–]/g, "-").replace(/\./g, ",").replace(/\s+/g, " ").trim();
     let m;
+    if ((m = t.match(/^(-?)(\d{1,3}(?: \d{3})+)((?:,\d+)?)$/))) return parseAns(m[1] + m[2].replace(/ /g, "") + m[3]);   // 19 735 — розряди через пробіл
     if ((m = t.match(/^(-?)(\d+)(?:,(\d+))?$/))) { const k = (m[3] || "").length, n = +(m[2] + (m[3] || "")); return { n: m[1] ? -n : n, d: 10 ** k, frac: false, proper: true, lowest: true }; }
     if ((m = t.match(/^(-?)(?:(\d+) )?(\d+) ?\/ ?(\d+)$/))) {
       const w = +(m[2] || 0), a = +m[3], b = +m[4]; if (!b) return null;
@@ -155,6 +156,7 @@ window.SLID_LEARN = (() => {
     if (!a || !u) return "bad";
     if (a.n * u.d !== u.n * a.d) return "bad";
     if (u.frac && ((s.reduced && !u.lowest) || (s.mixed && (Math.abs(u.n) >= u.d && !(u.proper && Math.abs(u.n) % u.d !== 0 && String(v).trim().includes(" ")))))) return "form";
+    if ((s.reduced || s.mixed) && a.frac && !u.frac) return "form";   // у завданні на дроби «0,4» замість 2/5 — не той запис
     if (u.frac && !u.proper) return "form";          // «1 5/3» — так мішані числа не записують
     return "ok";
   }

@@ -1,7 +1,7 @@
 /* Слід — service worker. ЗГЕНЕРОВАНО tools/build.mjs із tools/sw.template.js — не редагуй sw.js вручну.
    Стратегія: усі файли застосунку кешуються при встановленні (офлайн з першого запуску);
    свої файли — спершу з кешу; Google Fonts — з кешу з фоновим оновленням. */
-const VERSION = "113dbeff7b";
+const VERSION = "361da67340";
 const CACHE = "slid-" + VERSION;
 const FONTS = "slid-fonts";
 const ASSETS = [
@@ -77,6 +77,11 @@ const ASSETS = [
   "./content/math/g9-g9m5.js",
   "./content/math/g9-g9m6.js",
   "./content/math/g9-g9m7.js",
+  "./content/math/pool-g6-g6m1.js",
+  "./content/math/pool-g6-g6m2.js",
+  "./content/math/pool-g6-g6m3.js",
+  "./content/math/pool-g6-g6m4.js",
+  "./content/math/pool-g6-g6m5.js",
   "./content/catalog.js",
   "./app/lab.js",
   "./app/learn.js",
