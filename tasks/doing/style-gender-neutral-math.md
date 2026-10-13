@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-10-13T11:46:20.089Z
 id: style-gender-neutral-math
 type: style-fix
 subject: math
 status: todo
-claimed_by:
+claimed_by: fixer-gender-math
 created: 2026-10-13
 ---
 # Звертання до учня без роду — математика (D-020)

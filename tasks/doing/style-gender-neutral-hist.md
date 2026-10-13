@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-10-13T11:46:20.009Z
 id: style-gender-neutral-hist
 type: style-fix
 subject: hist
 status: todo
-claimed_by:
+claimed_by: fixer-gender-hist
 created: 2026-10-13
 ---
 # Звертання до учня без роду — історія (D-020)
