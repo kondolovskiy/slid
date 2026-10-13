@@ -1,5 +1,5 @@
 /* Слід · Історія, 7 клас — «Русь у часи роздробленості»
-   Статус уроків: l1–l4 draft (ревізія D-019, reviser-g7s3, 2026-10-13), l5 verified (verifier-g7s3, 2026-10-11). 5 уроків.
+   Статус уроків: l1–l5 verified (ревізія D-019 reviser-g7s3, повторна верифікація verifier-g7s3-d019, 2026-10-13). 5 уроків.
    Перевірка: node tools/validate.mjs && node tools/stats.mjs
    Схема й правила: docs/CONTENT_SCHEMA.md, style/
    Цитати літопису й «Повчання» — за перекладом Леоніда Махновця («Літопис руський», 1989; litopys.org.ua/litop/). */
@@ -9,7 +9,7 @@ SLID.section("hist", {
   weeks: [14, 19],
   title: "Русь у часи роздробленості",
   why: "Щоб розуміти, чому велика держава розпадається на князівства і що з цього вийшло.",
-  meta: { author: "claude-opus", created: "2026-10-07", factcheck: "verifier-g7s3", teacher: null },
+  meta: { author: "claude-opus", created: "2026-10-07", factcheck: "verifier-g7s3-d019", teacher: null },
   badges: [{ id: "princecouncil", name: "Миротворець князів", icon: "shield", desc: "Пройти розділ «Русь у часи роздробленості»" }],
   credits: [
     [
@@ -37,7 +37,7 @@ SLID.section("hist", {
       title: "Кожен хай держить отчину свою",
       short: "Любецький з'їзд",
       icon: "users",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, як князі пробували домовитися про мир і чому домовленість не втрималася. Це урок про те, чого варта обіцянка без сили, що її захищає.",
       screens: [
         {
@@ -165,7 +165,7 @@ SLID.section("hist", {
       title: "Князь, якого кликали двічі",
       short: "Володимир Мономах",
       icon: "shield",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, як один князь на час об'єднав Русь. А ще прочитаєш поради, які він написав власним дітям.",
       screens: [
         {
@@ -316,7 +316,7 @@ SLID.section("hist", {
       title: "Три землі навколо Києва",
       short: "Три князівства",
       icon: "map",
-      status: "draft",
+      status: "verified",
       why: "Київщина, Чернігівщина й Переяславщина були серцем Русі. Ти дізнаєшся, чим вони відрізнялися і чому сперечалися за Київ.",
       screens: [
         {
@@ -451,7 +451,7 @@ SLID.section("hist", {
       title: "Сусіди зі степу",
       short: "Русь і половці",
       icon: "path",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, ким були половці і чому з ними то воювали, то ріднилися. Так видно, що в історії рідко буває лише «свої» й «чужі».",
       screens: [
         {
