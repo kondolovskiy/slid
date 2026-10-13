@@ -60,7 +60,8 @@ for (const c of subjects) for (const sec of c.sections.filter(s => s.lessons)) {
       const S = `${L} екран ${i + 1} (${s.type})`;
       if (!TYPES.includes(s.type)) return E(S, `невідомий тип «${s.type}»`);
       if (!s.title) E(S, "немає title");
-      const txt = [s.title, s.body, s.fbText, s.fbOk, s.fbBad, s.hint, ...(s.opts || []), ...(s.items || []).flat()].filter(x => typeof x === "string").join(" ");
+      const noteTxt = typeof s.note === "string" ? s.note : s.note?.text;
+      const txt = [s.title, s.body, noteTxt, s.fbText, s.fbOk, s.fbBad, s.hint, ...(s.opts || []), ...(s.items || []).flat()].filter(x => typeof x === "string").join(" ");
       if (/\$\{/.test(txt)) E(S, "у тексті лишилось «${» — шаблонний рядок з'їв формулу");
       for (const t of [s.title, s.body, s.fbText, s.hint, ...(s.opts || [])].filter(Boolean)) if (((String(t).match(/\$/g) || []).length) % 2) E(S, "непарна кількість $ — формула не закрита");
       for (const [b, re] of bannedRe) if (re.test(txt)) W(S, `заборонена фраза «${b}» (style/banned-phrases.txt)`);
@@ -72,6 +73,11 @@ for (const c of subjects) for (const sec of c.sections.filter(s => s.lessons)) {
       if (s.lab) for (const m of lab.validate(s.lab, s)) E(S, "lab: " + m);
       if ((s.type === "explore" || s.type === "lab") && !s.lab) E(S, `${s.type} потребує поле lab (інтерактивну модель)`);
       if ([s.img, s.svg, s.fig, s.lab].filter(Boolean).length > 1) E(S, "на екрані може бути лише одна ілюстрація: img, svg, fig або lab");
+      if (s.note !== undefined) {
+        const n = typeof s.note === "string" ? { text: s.note } : s.note;
+        if (!n || typeof n.text !== "string" || !n.text.trim()) E(S, "note: потрібен текст (рядок або { text, label?, links? })");
+        for (const l of n?.links || []) if (!Array.isArray(l) || l.length !== 2 || !/^https:\/\//.test(l[1] || "")) E(S, "note.links: кожне посилання — [назва, https://…]");
+      }
       if (s.pre && !allLessonIds.has(s.pre)) E(S, `pre: немає уроку ${s.pre}`);
       if (s.sk && !c.skills[s.sk]) E(S, `навичка «${s.sk}» не оголошена в content/subjects/${c.id}.js`);
       if (GRADED.includes(s.type) && !s.poll && !s.hyp) {

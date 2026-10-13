@@ -86,7 +86,8 @@ const P = {
   book:'<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5M9 7h6"/>',
   leaf:'<path d="M5 19c0-8 6-14 15-14 0 9-6 15-14 15"/><path d="M5 19l8-8"/>',
   globe:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/>',
-  cake:'<path d="M4 21h16M5 21v-8h14v8M5 16c2 1.5 3.5-1 5 0s3 1.5 5 0 3-1 4 0"/><path d="M12 13V9M12 6.5c-.8-.8-.8-1.8 0-3 .8 1.2.8 2.2 0 3z"/>'
+  cake:'<path d="M4 21h16M5 21v-8h14v8M5 16c2 1.5 3.5-1 5 0s3 1.5 5 0 3-1 4 0"/><path d="M12 13V9M12 6.5c-.8-.8-.8-1.8 0-3 .8 1.2.8 2.2 0 3z"/>',
+  info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v6"/><circle cx="12" cy="7.5" r=".6" fill="currentColor"/>',
 };
 const ic = (n, cls="") => `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${P[n]||""}</svg>`;
 const icF = n => `<svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" aria-hidden="true">${P[n]}</svg>`;
@@ -271,7 +272,7 @@ function viewOnboarding(){
   return `<div class="onb">
     <svg class="onb-logo" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M16 16a2 2 0 1 1 2 2a4.5 4.5 0 1 1-4.5-4.5a7 7 0 1 1 7 7a9.5 9.5 0 0 1-9.5-9.5"/></svg>
     <h1>Привіт! Це Слід</h1>
-    <p class="muted">Короткі уроки, у яких ти сам знаходиш відповідь. Працюють і без інтернету.</p>
+    <p class="muted">Короткі уроки, у яких відповідь знаходиш самостійно. Працюють і без інтернету.</p>
     <div class="field" style="width:100%"><label for="onbName"><b>Як тебе звати?</b></label><input id="onbName" maxlength="24" placeholder="Ім'я (можна пропустити)" value="${esc(S.name)}"></div>
     <div style="width:100%;display:grid;gap:8px"><b>У якому ти класі?</b><div class="grades">${gradeButtons(S.grade)}</div>
     <p class="muted small" style="margin:0">Клас можна змінити в профілі. Від нього залежать предмети й теми, які ти побачиш.</p></div>
@@ -533,12 +534,19 @@ function fig(s){
   if(s.lab) return `<div id="labHost"></div>`;
   return "";
 }
+// Розгортна примітка під текстом екрана: чому джерела дають різні дати, звідки ці дати (D-022).
+function noteHtml(s){
+  if(!s.note) return "";
+  const n = typeof s.note==="string"? {text:s.note} : s.note;
+  const links = (n.links||[]).map(([t,u])=>`<li><a href="${esc(u)}" target="_blank" rel="noopener">${t}</a></li>`).join("");
+  return `<details class="note"><summary>${ic("info")}<span>${n.label||"Чому дві дати?"}</span></summary><div class="note-b">${n.text}${links?`<ul>${links}</ul>`:""}</div></details>`;
+}
 function renderScreen(){
   if(idx>=L.screens.length) return renderEnd();
   const s=L.screens[idx]; checked=false; tries=0; pProgress(); $("#player").scrollTo({top:0});
   let h=`<section class="screen"><div class="eyebrow">${s.eyebrow||""}</div>`;
   h+= s.type==="intro"? `<h1>${s.title}</h1>` : `<h2>${s.title}</h2>`;
-  h+= fig(s) + (s.body||"");
+  h+= fig(s) + (s.body||"") + noteHtml(s);
   if(s.type==="choice"||s.type==="multi"){
     st= s.type==="multi"? new Set() : null;
     if(s.type==="multi") h+=`<div class="fix">Можна обрати кілька</div>`;
@@ -737,7 +745,7 @@ function renderEnd(){
   const star=(C.badges||[]).find(b=>b.allstar); if(star && lessonsOf(C).every(l=>S.lessons[l.id]?.stars===3)) award(star.id,nb);
   save();
   const lvl=levelOf(S.xp), up=lvl.n>run.startLvl, o=L.outro||{};
-  const pollLine = (o.pollKey && S.polls[o.pollKey]!=null) ? `<p>На початку ти обрав ${o.pollText[S.polls[o.pollKey]]}. ${o.text}</p>` : `<p>${o.text||""}</p>`;
+  const pollLine = (o.pollKey && S.polls[o.pollKey]!=null) ? `<p>Твій вибір на початку: ${o.pollText[S.polls[o.pollKey]]}. ${o.text}</p>` : `<p>${o.text||""}</p>`;
   $("#stage").innerHTML=fmt(`<section class="screen endhero">
     <div class="bigstars" aria-label="${stars} з 3 зірок">${[0,1,2].map(i=>`<span class="${i<stars?"":"off"}">${icF("star")}</span>`).join("")}</div>
     <div class="eyebrow">${C.short} · ${L.boss?"фінал розділу":"урок пройдено"}</div>
