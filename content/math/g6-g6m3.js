@@ -1,5 +1,5 @@
 /* Слід · Математика, 6 клас — «Відношення і пропорції»
-   Статус уроків: g6m3l1–l4 — draft (ревізія D-019/D-020, reviser-g6m3, 2026-10-13); l5, l6 — verified (verifier-g6m3, 2026-10-11). 6 уроків.
+   Статус уроків: g6m3l1–l6 — verified (verifier-g6m3, 2026-10-11; l1–l4 після ревізії D-019/D-020 — verifier-g6m3-d019, 2026-10-13). 6 уроків.
    Перевірка: node tools/validate.mjs --section g6m3 && node tools/stats.mjs --subject math
    Схема й правила: docs/CONTENT_SCHEMA.md (§8 — лабораторія), style/ */
 SLID.section("math", {
@@ -20,7 +20,7 @@ SLID.section("math", {
       title: "Один до трьох",
       short: "Відношення",
       icon: "scale",
-      status: "draft",
+      status: "verified",
       why: "Рецепти, фарби, бетон — усюди важлива не кількість, а те, як кількості співвідносяться. Це і є відношення.",
       screens: [
         {
@@ -180,7 +180,7 @@ SLID.section("math", {
       title: "Рецепт на всіх",
       short: "Пропорція",
       icon: "cake",
-      status: "draft",
+      status: "verified",
       why: "Перерахувати рецепт, прочитати карту, обміняти гроші — усе це одна дія: знайти невідомий член пропорції.",
       screens: [
         {
@@ -193,7 +193,7 @@ SLID.section("math", {
         {
           type: "choice",
           sk: "pct",
-          eyebrow: "Здогадка",
+          eyebrow: "Подумай",
           title: "Скільки сиру треба на 10 порцій?",
           opts: ["206 г", "2000 г", "500 г"],
           correct: 2,
@@ -339,7 +339,7 @@ SLID.section("math", {
       title: "Більше — то більше?",
       short: "Пропорційність",
       icon: "line",
-      status: "draft",
+      status: "verified",
       why: "Шлях і час, ціна й кількість, швидкість і тривалість дороги. Одні величини ростуть разом, інші — навпаки.",
       screens: [
         {
@@ -531,7 +531,7 @@ SLID.section("math", {
       title: "Хто впорався краще?",
       short: "Відсоткові розрахунки",
       icon: "chart",
-      status: "draft",
+      status: "verified",
       why: "Порівняти два класи, перевірити знижку, дізнатися, скільки всього було — відсотки дають чесну відповідь.",
       screens: [
         {
@@ -544,7 +544,7 @@ SLID.section("math", {
         {
           type: "choice",
           sk: "pct",
-          eyebrow: "Здогадка",
+          eyebrow: "Подумай",
           title: "Який клас написав контрольну краще?",
           opts: ["6-А: 20 з 25", "6-Б: 21 з 30", "Однаково"],
           correct: 0,

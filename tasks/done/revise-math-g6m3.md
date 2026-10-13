@@ -6,7 +6,7 @@ type: revise-section
 subject: math
 grade: 6
 section: g6m3
-status: review
+status: done
 claimed_by: verifier-g6m3-d019
 created: 2026-10-11
 ---
@@ -108,3 +108,6 @@ created: 2026-10-11
 
 ### Stats
 `node tools/validate.mjs --section g6m3` — 0 помилок, 0 попереджень. `node tools/stats.mjs --subject math` — g6m3l1–l6 без прапорців.
+
+### Верифікація D-019 (verifier-g6m3-d019, 2026-10-13)
+Звіт: reports/verify/g6m3.md. Усі 37 оцінюваних завдань розв'язано заново, розбіжностей з ключем немає. Опора є для кожного завдання; l1 #10 чесне через міркування в 2 кроки (рекомендовано додати речення про поділ у відношенні). Правки: eyebrow «Здогадка» → «Подумай» в l2 #2 і l4 #2; g6m3l1–l4 → verified. validate 0/0, stats без прапорців, test-lab 69/69.
