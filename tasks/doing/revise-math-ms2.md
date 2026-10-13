@@ -1,13 +1,13 @@
 ---
-claimed_from: todo
-claimed_at: 2026-10-13T12:07:15.994Z
+claimed_from: review
+claimed_at: 2026-10-13T12:09:48.112Z
 id: revise-math-ms2
 type: revise-section
 subject: math
 grade: 5
 section: ms2
 status: review
-claimed_by: reviser-ms2
+claimed_by: verifier-ms2-d019
 created: 2026-10-11
 ---
 # Переглянути розділ «Десяткові дроби» за правилом чесного завдання (Математика, 5 клас)
