@@ -1,13 +1,13 @@
 ---
-claimed_from: todo
-claimed_at: 2026-10-13T12:01:24.097Z
+claimed_from: review
+claimed_at: 2026-10-13T12:03:53.810Z
 id: revise-math-g4m4
 type: revise-section
 subject: math
 grade: 4
 section: g4m4
-status: review
-claimed_by: reviser-g4m4
+status: done
+claimed_by: verifier-g4m4-d019
 created: 2026-10-11
 ---
 # Переглянути розділ «Величини» за правилом чесного завдання (Математика, 4 клас)
@@ -97,3 +97,6 @@ created: 2026-10-11
 
 ### Stats
 `validate --section g4m4`: 0 помилок, 0 попереджень. `stats --subject math`: прапорців для g4m4 немає.
+
+### Верифікація (verifier-g4m4-d019, 2026-10-13)
+Усі 26 оцінюваних завдань розв'язано незалежно — ключі збіглися; опора є для кожного. Правка: l3 #2 explore — «тобто 1 дм²» (позначення до питання #3). l3 → verified; l1, l2, l4, l5 — verified. l1 #8 (північ = 24:00) — виводиться з info (доба = 24 год, час від початку доби), достатньо. `requires: ["m4a"]` — id уроку, коректно. Звіт: reports/verify/g4m4.md.
