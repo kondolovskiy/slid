@@ -1,5 +1,5 @@
 /* Слід · Математика, 6 клас — «Дії зі звичайними дробами»
-   Статус уроків: l1–l3, l6 — verified (verifier-g6m2, 2026-10-11); l4, l5 — draft після ревізії D-019 (reviser-g6m2, 2026-10-13). 6 уроків.
+   Статус уроків: усі 6 — verified (verifier-g6m2, 2026-10-11; повторна перевірка за D-019 — verifier-g6m2-d019, 2026-10-13).
    Перевірка: node tools/validate.mjs --section g6m2 && node tools/stats.mjs --subject math
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("math", {
@@ -33,7 +33,7 @@ SLID.section("math", {
         {
           type: "choice",
           sk: "frac",
-          eyebrow: "Здогадка",
+          eyebrow: "Подумай",
           title: "То хто з'їв найбільше?",
           fig: { kind: "bars", rows: [[2, 1], [4, 2], [8, 4]], labels: ["1/2", "2/4", "4/8"] },
           body: "<p>Оля — $1/2$, Марко — $2/4$, Іра — $4/8$ піци.</p>",
@@ -179,7 +179,7 @@ SLID.section("math", {
         {
           type: "choice",
           sk: "frac",
-          eyebrow: "Здогадка",
+          eyebrow: "Подумай",
           title: "Як кажуть про 45 хвилин?",
           body: "<p>Яка це частина години?</p>",
           opts: ["Чотири п'ятих години", "Три чверті години", "Дві третини години"],
@@ -328,7 +328,7 @@ SLID.section("math", {
           type: "choice",
           sk: "cmp",
           pre: "m2",
-          eyebrow: "Здогадка",
+          eyebrow: "Подумай",
           title: "Який дріб більший?",
           body: "<p>Подумай, скільки не вистачає кожному до цілого.</p>",
           opts: ["$2/3$", "$3/4$", "Вони рівні"],
@@ -464,7 +464,7 @@ SLID.section("math", {
       title: "Додаємо різні частини",
       short: "Додавання і віднімання",
       icon: "plus",
-      status: "draft",
+      status: "verified",
       why: "Половина години на математику й третина на читання, чверть шляху пішки й половина автобусом — частини в житті рідко бувають однакові.",
       screens: [
         {
@@ -479,7 +479,7 @@ SLID.section("math", {
           type: "choice",
           sk: "ops",
           pre: "m4",
-          eyebrow: "Здогадка",
+          eyebrow: "Подумай",
           title: "$1/2 + 1/3 = ?$",
           fig: { kind: "bars", rows: [[2, 1], [3, 1]], labels: ["1/2", "1/3"] },
           body: "<p>До половини додаємо ще третину. Сума більша чи менша за $1/2$?</p>",
@@ -630,7 +630,7 @@ SLID.section("math", {
       title: "Частина від частини",
       short: "Множення і ділення",
       icon: "cake",
-      status: "draft",
+      status: "verified",
       why: "Дві третини від залишку пирога, склянки по чверть літра, половина рецепта — тут дроби треба множити й ділити.",
       screens: [
         {
