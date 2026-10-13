@@ -1,11 +1,11 @@
 ---
-claimed_from: todo
-claimed_at: 2026-10-13T12:24:45.432Z
+claimed_from: review
+claimed_at: 2026-10-13T12:53:19.151Z
 id: style-role-nouns
 type: style-fix
 subject: hist
-status: review
-claimed_by: fixer-role-nouns
+status: done
+claimed_by: orchestrator
 created: 2026-10-13
 ---
 # Рольові іменники без роду — історія і математика (D-020a)
