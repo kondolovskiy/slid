@@ -1,13 +1,13 @@
 ---
-claimed_from: todo
-claimed_at: 2026-10-13T10:54:52.642Z
+claimed_from: review
+claimed_at: 2026-10-13T11:04:49.038Z
 id: revise-hist-g6s2
 type: revise-section
 subject: hist
 grade: 6
 section: g6s2
 status: review
-claimed_by: reviser-g6s2
+claimed_by: verifier-g6s2-d019
 created: 2026-10-11
 ---
 # Переглянути розділ «Трипільська цивілізація» за правилом чесного завдання (Історія України, 6 клас)

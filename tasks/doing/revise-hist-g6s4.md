@@ -1,13 +1,13 @@
 ---
-claimed_from: todo
-claimed_at: 2026-10-13T10:54:52.823Z
+claimed_from: review
+claimed_at: 2026-10-13T11:04:49.175Z
 id: revise-hist-g6s4
 type: revise-section
 subject: hist
 grade: 6
 section: g6s4
 status: review
-claimed_by: reviser-g6s4
+claimed_by: verifier-g6s4-d019
 created: 2026-10-11
 ---
 # Переглянути розділ «Античні міста Причорномор'я» за правилом чесного завдання (Історія України, 6 клас)

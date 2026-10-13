@@ -1,13 +1,13 @@
 ---
-claimed_from: todo
-claimed_at: 2026-10-13T10:54:52.514Z
+claimed_from: review
+claimed_at: 2026-10-13T11:04:48.946Z
 id: revise-hist-g6s1
 type: revise-section
 subject: hist
 grade: 6
 section: g6s1
 status: review
-claimed_by: reviser-g6s1
+claimed_by: verifier-g6s1-d019
 created: 2026-10-11
 ---
 # Переглянути розділ «Перші люди на наших землях» за правилом чесного завдання (Історія України, 6 клас)
