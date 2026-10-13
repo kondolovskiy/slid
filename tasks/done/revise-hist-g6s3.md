@@ -6,7 +6,7 @@ type: revise-section
 subject: hist
 grade: 6
 section: g6s3
-status: review
+status: done
 claimed_by: verifier-g6s3-d019
 created: 2026-10-11
 ---
@@ -92,3 +92,6 @@ Validate `--section g6s3`: 0 помилок, 0 попереджень. Stats: g6
 
 ### Сумнівне
 - l3 slider тепер майже обчислення (1000 + 150), а не оцінка; tol 0,15 лишено.
+
+### Верифікація D-019 (verifier-g6s3-d019, 2026-10-13)
+Звіт: `reports/verify/g6s3.md`, розділ «Revise D-019». Опора всіх оцінюваних завдань l1–l5 — ✅. Правки: l3 choice «часто — і поховання коней» → «в курганах знаті — ще й поховання коней» (⚠️ узагальнення; Hdt. IV.71, Товста Могила); l3 slider `tol` 0.15 → 0.05 (раніше зараховувало 1000 г без «яблука»). Вага 1150 г узгоджена з реєстром №54 (1148 г). l1–l5 → verified. Validate 0/0, stats без прапорців.
