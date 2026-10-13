@@ -6,7 +6,7 @@ type: revise-section
 subject: math
 grade: 5
 section: ms4
-status: review
+status: done
 claimed_by: verifier-ms4-d019
 created: 2026-10-11
 ---
