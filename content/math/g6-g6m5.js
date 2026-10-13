@@ -1,5 +1,5 @@
 /* Слід · Математика, 6 клас — «Рівняння»
-   Статус уроків: l1 — draft (ревізія D-019, reviser-g6m5, 2026-10-13); l2–l5 — verified (verifier-g6m5, 2026-10-11). 5 уроків.
+   Статус уроків: l1–l5 — verified (verifier-g6m5, 2026-10-11; l1 після ревізії D-019 — verifier-g6m5-d019, 2026-10-13). 5 уроків.
    Інтерактив: лабораторія (docs/CONTENT_SCHEMA.md §8) у кожному уроці.
    Перевірка: node tools/validate.mjs --section g6m5 && node tools/stats.mjs --subject math
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
@@ -11,7 +11,7 @@ SLID.section("math", {
   title: "Рівняння",
   why: "Щоб розв'язувати задачі, записавши невідоме буквою.",
   requires: ["ms0l4"],
-  meta: { author: "claude-opus", created: "2026-10-11", factcheck: "verifier-g6m5", teacher: null },
+  meta: { author: "claude-opus", created: "2026-10-11", factcheck: "verifier-g6m5, verifier-g6m5-d019", teacher: null },
   badges: [
     { id: "g6m5boss", name: "Мисливець за іксом", icon: "lock", desc: "Пройти фінальну задачу з рівнянь" }
   ],
@@ -21,7 +21,7 @@ SLID.section("math", {
       title: "Дві грядки, одна площа",
       short: "Розкриття дужок",
       icon: "plus",
-      status: "draft",
+      status: "verified",
       why: "Дужки заважають спрощувати вирази й розв'язувати рівняння. Їх можна прибрати, якщо знати два правила.",
       screens: [
         {
