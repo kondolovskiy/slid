@@ -1,5 +1,5 @@
 /* Слід · Історія, 6 клас — «Античні міста Причорномор'я»
-   Статус уроків: h641–h644 draft (ревізія D-019, 2026-10-13), h645 verified. 5 уроків.
+   Статус уроків: h641–h645 verified (повторна верифікація D-019, 2026-10-13). 5 уроків.
    Перевірка: node tools/validate.mjs && node tools/stats.mjs
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("hist", {
@@ -8,7 +8,7 @@ SLID.section("hist", {
   weeks: [21, 27],
   title: "Античні міста Причорномор'я",
   why: "Щоб знати, що грецькі міста на нашому узбережжі пов'язували ці землі зі Середземномор'ям.",
-  meta: { author: "claude-opus", created: "2026-10-05", factcheck: "verifier-g6s4", teacher: null },
+  meta: { author: "claude-opus", created: "2026-10-05", factcheck: "verifier-g6s4-d019", teacher: null },
   badges: [{ id: "navarch", name: "Античний мореплавець", icon: "globe", desc: "Пройти розділ «Античні міста Причорномор'я»" }],
   lessons: [
     {
@@ -16,7 +16,7 @@ SLID.section("hist", {
       title: "Греки на нашому березі",
       short: "Грецькі колонії",
       icon: "city",
-      status: "draft",
+      status: "verified",
       why: "Південь України має давнє минуле. Тут стояли міста, де говорили грецькою й торгували з усім морем.",
       screens: [
         {
@@ -124,7 +124,7 @@ SLID.section("hist", {
       title: "Царство над протокою",
       short: "Боспорське царство",
       icon: "shield",
-      status: "draft",
+      status: "verified",
       why: "Міста бувають сильнішими разом. Боспор показує, як окремі громади стають однією державою.",
       screens: [
         {
@@ -167,7 +167,7 @@ SLID.section("hist", {
           correct: 0,
           fbOk: "Так.",
           fbBad: "Згадай, яка протока поруч.",
-          fbText: "Пантікапей стояв на горі Мітридат у сучасній Керчі. Біля Севастополя — руїни Херсонеса, а біля Очакова — Ольвії."
+          fbText: "Пантікапей стояв на горі Мітридат у сучасній Керчі. Біля Севастополя — руїни Херсонеса, а біля села Парутине на Миколаївщині — Ольвії."
         },
         {
           type: "number",
@@ -228,7 +228,7 @@ SLID.section("hist", {
       title: "Хліб в обмін на вино",
       short: "Торгівля",
       icon: "scale",
-      status: "draft",
+      status: "verified",
       why: "Торгівля пов'язує далекі землі. Колись зерно з наших полів годувало Афіни.",
       screens: [
         {
@@ -340,7 +340,7 @@ SLID.section("hist", {
       title: "Місто під степом",
       short: "Спадщина",
       icon: "eye",
-      status: "draft",
+      status: "verified",
       why: "Рештки давніх міст — це документи без слів. Учені вчаться їх читати, а ми — берегти.",
       screens: [
         {

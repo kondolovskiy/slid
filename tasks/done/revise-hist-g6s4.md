@@ -6,7 +6,7 @@ type: revise-section
 subject: hist
 grade: 6
 section: g6s4
-status: review
+status: done
 claimed_by: verifier-g6s4-d019
 created: 2026-10-11
 ---
