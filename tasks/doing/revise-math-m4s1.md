@@ -1,11 +1,13 @@
 ---
+claimed_from: todo
+claimed_at: 2026-10-13T12:01:24.259Z
 id: revise-math-m4s1
 type: revise-section
 subject: math
 grade: 4
 section: m4s1
 status: todo
-claimed_by:
+claimed_by: reviser-m4s1
 created: 2026-10-11
 ---
 # Переглянути розділ «Ділення з остачею» за правилом чесного завдання (Математика, 4 клас)

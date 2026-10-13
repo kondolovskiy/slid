@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-10-13T12:01:23.716Z
 id: notes-disputed-dates
 type: style-fix
 subject: hist
 status: todo
-claimed_by:
+claimed_by: writer-notes-dates
 created: 2026-10-13
 ---
 # Розгортні примітки «Чому дві дати?» для спірних дат (D-022)

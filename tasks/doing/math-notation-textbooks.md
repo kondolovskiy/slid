@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-10-13T12:01:23.795Z
 id: math-notation-textbooks
 type: style-fix
 subject: math
 status: todo
-claimed_by:
+claimed_by: researcher-notation
 created: 2026-10-13
 ---
 # Нотація математики — як у підручниках української програми (D-023)

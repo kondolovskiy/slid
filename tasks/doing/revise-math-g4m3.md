@@ -1,11 +1,13 @@
 ---
+claimed_from: todo
+claimed_at: 2026-10-13T12:01:24.024Z
 id: revise-math-g4m3
 type: revise-section
 subject: math
 grade: 4
 section: g4m3
 status: todo
-claimed_by:
+claimed_by: reviser-g4m3
 created: 2026-10-11
 ---
 # Переглянути розділ «Множення і ділення» за правилом чесного завдання (Математика, 4 клас)
