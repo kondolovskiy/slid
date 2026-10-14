@@ -7,7 +7,7 @@ subject: hist
 grade: 10
 section: g10s3
 weeks: [17, 22]
-status: review
+status: done
 claimed_by: verifier-g10s3
 created: 2026-09-27
 ---
