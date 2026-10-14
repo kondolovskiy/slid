@@ -7,7 +7,7 @@ subject: math
 grade: 11
 section: g11m1
 weeks: [1, 10]
-status: review
+status: done
 claimed_by: verifier-g11m1
 created: 2026-09-27
 ---
