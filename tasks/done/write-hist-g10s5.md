@@ -1,14 +1,14 @@
 ---
-claimed_from: todo
-claimed_at: 2026-10-14T07:23:01.954Z
+claimed_from: review
+claimed_at: 2026-10-14T07:51:47.721Z
 id: write-hist-g10s5
 type: write-section
 subject: hist
 grade: 10
 section: g10s5
 weeks: [30, 35]
-status: review
-claimed_by: writer-g10s5
+status: done
+claimed_by: verifier-g10s5
 created: 2026-09-27
 ---
 # Написати розділ «Західноукраїнські землі між війнами» (Історія України, 10 клас)

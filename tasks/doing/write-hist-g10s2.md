@@ -1,6 +1,6 @@
 ---
-claimed_from: todo
-claimed_at: 2026-10-14T07:23:01.739Z
+claimed_from: review
+claimed_at: 2026-10-14T07:51:49.077Z
 id: write-hist-g10s2
 type: write-section
 subject: hist
@@ -8,7 +8,7 @@ grade: 10
 section: g10s2
 weeks: [6, 16]
 status: review
-claimed_by: writer-g10s2
+claimed_by: verifier-g10s2
 created: 2026-09-27
 ---
 # Написати розділ «Українська революція 1917–1921» (Історія України, 10 клас)

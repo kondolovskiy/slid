@@ -1,6 +1,6 @@
 ---
-claimed_from: todo
-claimed_at: 2026-10-14T07:23:01.807Z
+claimed_from: review
+claimed_at: 2026-10-14T07:51:40.168Z
 id: write-hist-g10s3
 type: write-section
 subject: hist
@@ -8,7 +8,7 @@ grade: 10
 section: g10s3
 weeks: [17, 22]
 status: review
-claimed_by: writer-g10s3
+claimed_by: verifier-g10s3
 created: 2026-09-27
 ---
 # Написати розділ «Радянська Україна 1920-х» (Історія України, 10 клас)

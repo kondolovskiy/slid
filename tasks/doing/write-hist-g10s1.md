@@ -1,6 +1,6 @@
 ---
-claimed_from: todo
-claimed_at: 2026-10-14T07:23:01.671Z
+claimed_from: review
+claimed_at: 2026-10-14T07:51:47.635Z
 id: write-hist-g10s1
 type: write-section
 subject: hist
@@ -8,7 +8,7 @@ grade: 10
 section: g10s1
 weeks: [1, 5]
 status: review
-claimed_by: writer-g10s1
+claimed_by: verifier-g10s1
 created: 2026-09-27
 ---
 # Написати розділ «Перша світова війна» (Історія України, 10 клас)
