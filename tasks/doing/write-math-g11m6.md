@@ -1,6 +1,6 @@
 ---
-claimed_from: todo
-claimed_at: 2026-10-14T11:06:12.752Z
+claimed_from: review
+claimed_at: 2026-10-14T17:12:27.090Z
 id: write-math-g11m6
 type: write-section
 subject: math
@@ -8,7 +8,7 @@ grade: 11
 section: g11m6
 weeks: [28, 35]
 status: review
-claimed_by: writer-g11m6
+claimed_by: verifier-g11m6
 created: 2026-09-27
 ---
 # Написати розділ «Підготовка до НМТ» (Математика, 11 клас)

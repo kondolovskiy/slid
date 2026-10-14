@@ -1,6 +1,6 @@
 ---
-claimed_from: todo
-claimed_at: 2026-10-14T11:06:12.699Z
+claimed_from: review
+claimed_at: 2026-10-14T17:12:27.979Z
 id: write-math-g11m5
 type: write-section
 subject: math
@@ -8,7 +8,7 @@ grade: 11
 section: g11m5
 weeks: [19, 27]
 status: review
-claimed_by: writer-g11m5
+claimed_by: verifier-g11m5
 created: 2026-09-27
 ---
 # Написати розділ «Алгебра: комбінаторика і ймовірність» (Математика, 11 клас)

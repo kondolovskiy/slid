@@ -1,6 +1,6 @@
 ---
-claimed_from: todo
-claimed_at: 2026-10-14T11:06:12.473Z
+claimed_from: review
+claimed_at: 2026-10-14T17:12:26.962Z
 id: write-math-g11m1
 type: write-section
 subject: math
@@ -8,7 +8,7 @@ grade: 11
 section: g11m1
 weeks: [1, 10]
 status: review
-claimed_by: writer-g11m1
+claimed_by: verifier-g11m1
 created: 2026-09-27
 ---
 # Написати розділ «Алгебра: показникова й логарифмічна функції» (Математика, 11 клас)
