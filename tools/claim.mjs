@@ -40,13 +40,13 @@ if (cmd === "list" || !cmd) {
   console.log(`Взято: tasks/doing/${t.file} (${a2})`);
 } else if (cmd === "move") {
   const t = find(a1); if (!t || !STATES.includes(a2)) { console.error("move <task-id> <todo|doing|review|done>"); process.exit(2); }
-  const to = path.join(dir(a2), t.file); fs.renameSync(t.p, to);
+  const to = path.join(dir(a2), t.file); fs.mkdirSync(dir(a2), { recursive: true }); fs.renameSync(t.p, to);
   fs.writeFileSync(to, setFm(fs.readFileSync(to, "utf8"), "status", a2));
   console.log(`tasks/${t.state}/${t.file} → tasks/${a2}/`);
 } else if (cmd === "release") {
   const t = find(a1); if (!t || t.state !== "doing") { console.error("release: задача має бути в doing"); process.exit(2); }
   const txt = fs.readFileSync(t.p, "utf8"); const back = fm(txt).claimed_from || "todo";
-  fs.renameSync(t.p, path.join(dir(back), t.file));
+  fs.mkdirSync(dir(back), { recursive: true }); fs.renameSync(t.p, path.join(dir(back), t.file));
   fs.writeFileSync(path.join(dir(back), t.file), setFm(txt, "claimed_by", "").replace(/^claimed_(at|from):.*\n/gm, ""));
   console.log(`Повернуто в ${back}: ${t.file}`);
 } else { console.error("Команди: list | claim | move | release"); process.exit(2); }
