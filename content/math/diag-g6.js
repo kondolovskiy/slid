@@ -263,9 +263,10 @@ SLID.diag("math", {
     {
       topic: "g6-fadd",
       type: "fracin",
+      hideDen: true,
       sk: "ops",
       title: "Додай дроби",
-      body: "<p>Впиши чисельник.</p>",
+      body: "<p>Запиши відповідь звичайним дробом.</p>",
       expr: "1/4 + 1/6",
       den: 12,
       answer: 5

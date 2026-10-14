@@ -579,7 +579,7 @@ KINDS.balance = {
 KINDS.solid = {
   view: () => ({ yaw: -0.6, pitch: 0.42 }),
   render(spec, env, view) {
-    const names = fnNames(spec), E = ex => safe(() => compile(String(ex), names)(env)), W = 320, H = spec.h || 240;
+    const names = fnNames(spec), E = ex => safe(() => compile(String(ex), names)(env)), W = 320, H = spec.height || 240;
     const { V, F } = solidMesh(spec, E);
     if (!V.length) return { w: W, h: H, body: "", handles: [], alt: "" };
     const cyw = Math.cos(view.yaw), syw = Math.sin(view.yaw), cp = Math.cos(view.pitch), sp = Math.sin(view.pitch);

@@ -30,35 +30,7 @@ function schoolWeek(){ if(S.weekOverride) return S.weekOverride; const now=new D
   const d0=new Date(y,8,1); d0.setDate(d0.getDate()-((d0.getDay()+6)%7)); return Math.max(1, Math.min(35, Math.floor((now-d0)/(7*864e5))+1)); }
 
 /* ---------- Формули: $…$ у рядку, $$…$$ окремим рядком ---------- */
-const MTOK = /"[^"]*"|\((?:[^()]|\([^()]*\))*\)|\d{1,3}(?:[  ]\d{3})+(?:,\d+)?(?!\d)|\d+(?:,\d+)?|[a-zA-Z]|\?|~|\/|\*|:|\^|<|>|=|≈|≠|≤|≥|\+|-|\s+|[^\s]/g;
-const isAtom = t => t && (/^\(.*\)$/.test(t) || /^\d/.test(t) || /^[a-zA-Z?]$/.test(t));
-function atomHTML(t, inFrac){
-  if(/^\(.*\)$/.test(t)) return inFrac ? mathHTML(t.slice(1,-1)) : `(${mathHTML(t.slice(1,-1))})`;
-  if(/^[a-zA-Z]$/.test(t)) return `<i class="mv">${t}</i>`;
-  if(t==="?") return `<span class="mq">?</span>`;
-  return /^\d/.test(t) ? t.replace(/ /g,"\u202F") : t;   // 10 000 — розряди вузьким нерозривним пробілом
-}
-function mathHTML(src){
-  const T = src.match(MTOK) || []; let out = "";
-  const OPS = {"*":"·","-":"−","+":"+","=":"=",":":":","<":"&lt;",">":"&gt;","≈":"≈","≠":"≠","≤":"≤","≥":"≥"};
-  let operand=false;   // чи перед поточним знаком стоїть число/змінна: якщо ні, «−» — унарний (−3x), без відступів
-  for(let i=0;i<T.length;i++){
-    const t=T[i];
-    if(/^\s+$/.test(t) || t==="~") continue;
-    if(t[0]==='"'){ out += `<span class="mt">${t.slice(1,-1)}</span>`; operand=true; continue; }
-    if(t==="^" && isAtom(T[i+1])){ out += `<sup class="mp">${atomHTML(T[i+1],true)}</sup>`; i++; operand=true; continue; }
-    if(isAtom(t) && T[i+1]==="/" && isAtom(T[i+2])){
-      out += `<span class="fr"><span class="nu">${atomHTML(t,true)}</span><span class="sr">/</span><span class="de">${atomHTML(T[i+2],true)}</span></span>`; i+=2; operand=true; continue;
-    }
-    if((t==="-"||t==="+") && !operand){ out += `<span class="mu">${OPS[t]}</span>`; continue; }
-    if(OPS[t]) { out += `<span class="mo">${OPS[t]}</span>`; operand=false; continue; }
-    out += isAtom(t) ? atomHTML(t,false) : t; operand = isAtom(t) || t===")" || t==="°" || t==="%";
-  }
-  return out;
-}
-const fmt = s => String(s??"")
-  .replace(/\$\$([\s\S]+?)\$\$/g, (_,m)=>`<span class="mblock">${mathHTML(m)}</span>`)
-  .replace(/\$([^$]+)\$/g, (_,m)=>`<span class="m">${mathHTML(m)}</span>`);
+const { mathHTML, fmt } = window.SLID_MATH;
 
 /* ---------- Іконки ---------- */
 const P = {
@@ -640,7 +612,7 @@ function mathFig(f){
 
 /* ---------- Плеєр уроку ---------- */
 let C=null, L=null, li=0, idx=0, st=null, checked=false, tries=0, run=null;
-const letters="АБВГҐД";
+const letters="АБВГДЕ";
 let SEC=null;
 function startById(id){ const f=findLesson(id); if(f) startLesson(f.c.id,f.k,f.i,true); }
 function startLesson(cid,k,i,linked){
@@ -654,7 +626,7 @@ function startLesson(cid,k,i,linked){
 let afterEnd=null;
 function startDiag(cid){
   C=course(cid); const d=diagFor(C); if(!d) return;
-  SEC={ grade:d.grade, signed:true, lessons:[] }; li=0; L={ id:d.id, title:d.title, screens:d.items };   // signed: «±» у тесті завжди, щоб його поява не видавала знак відповіді
+  SEC={ grade:d.grade, signed:d.signed!==false, lessons:[] }; li=0; L={ id:d.id, title:d.title, screens:d.items };
   run={ diag:d, res:S.diagRun[d.id]||(S.diagRun[d.id]={}), linked:true, weak:new Set(), xp:0, first:0, graded:0, combo:0, best:0, mistakes:0, startLvl:levelOf(S.xp).n };
   idx=LEARN.nextItem(d,run.res); if(idx<0) idx=d.items.length;
   applyTheme(C.id);
@@ -693,7 +665,7 @@ function startPractice(cid, focus){
   if(!picked.length) return toast("Спершу пройди урок цієї теми");
   SEC={ grade:S.grade, signed:true, lessons:[] }; li=0; idx=0;
   L={ id:"practice", title: focus? findLesson(focus).l.title : "Тренування на сьогодні", screens: picked.map(it=>{ const f=findLesson(it.lesson), [sid,ref]=String(it.src).split(/\s+(.*)/s), src=it.pool.sources.find(x=>x.id===sid);
-    return { ...it, eyebrow:(it.review?"Повторення · ":"Тренування · ")+esc(f.l.title), body:(it.body||"")+`<p class="srcnote">Джерело: ${esc(src? src.short||src.title : sid)}${ref? ", "+esc(ref) : ""}</p>`,
+    return { ...it, eyebrow:(it.review?"Повторення · ":"Тренування · ")+esc(f.l.title), body:(it.body||"")+`<p class="srcnote">Джерело: ${esc(src? src.short||src.title : sid)}${ref? ", "+esc(ref) : ""}${it.srcPage? ", с. "+it.srcPage : ""}${it.adapted? " · адаптовано" : ""}</p>`,
       fbOk:it.fbOk||"Правильно.", fbBad:it.fbBad||"Не зовсім.", fbText:`<span class="steps"><b>Розв'язання</b>${it.steps.map((t,i)=>`<span>${i+1}. ${t}</span>`).join("")}</span>` }; }) };
   run={ practice:{ focus, res:[] }, linked:true, weak:new Set(), xp:0, first:0, graded:0, combo:0, best:0, mistakes:0, startLvl:levelOf(S.xp).n };
   applyTheme(C.id);
@@ -778,14 +750,12 @@ function renderScreen(){
     h+=`<div class="slider"><output id="out">${s.start.toLocaleString("uk-UA")}</output><div class="fix" style="text-align:center">${s.unit}</div><input id="rng" type="range" min="${s.min}" max="${s.max}" step="${s.step}" value="${s.start}" aria-label="Твоя оцінка"><div class="scale"><span>${s.min}</span><span>${s.max.toLocaleString("uk-UA")}</span></div></div>`;
   }
   if(s.type==="align"){ st=0; h+=alignHtml(s); }
-  if(s.type==="shade"){ st=new Set(); h+=`<div class="shade" id="shade"></div><div class="counter" id="shcount"></div>`; }
-  if(s.type==="numline"){ st=0; h+=`<div class="numline"><div id="nlsvg"></div><div class="readout"><span>Точка:</span><b id="nlval"></b></div><input id="nlrng" type="range" min="0" max="${s.max*s.den}" step="1" value="0" aria-label="Положення точки на промені"></div>`; }
+  if(s.type==="shade"){ st=new Set(); h+=`<div class="shade" id="shade"></div><div class="counter" id="shcount" ${run.diag||s.hideCount?"hidden":""}></div>`; }
+  if(s.type==="numline"){ st=0; h+=`<div class="numline"><div id="nlsvg"></div><div class="readout" ${run.diag||s.hideCount?"hidden":""}><span>Точка:</span><b id="nlval"></b></div><input id="nlrng" type="range" min="0" max="${s.max*s.den}" step="1" value="0" aria-label="Положення точки на промені"></div>`; }
   if(s.type==="number"){ st=""; const dec=numDecimal(s), sg=s.signed||s.answer<0||SEC.signed||SEC.grade>=7;   // «±» не має видавати знак відповіді: з 7 класу (або в розділі з signed) — завжди
     h+=`<div class="numbox">${sg?`<button type="button" class="sgn" id="numSign" aria-label="Змінити знак" aria-pressed="false">±</button>`:""}<input id="numIn" inputmode="${dec?"decimal":"numeric"}" ${dec?"":'pattern="[0-9]*"'} autocomplete="off" placeholder="?" aria-label="Відповідь"><span class="unit">${s.unit||""}</span></div>`; }
-  if(s.type==="answer"){ st=""; h+=`<div class="numbox wide"><input id="numIn" inputmode="decimal" autocomplete="off" placeholder="?" aria-label="Відповідь"><span class="unit">${s.unit||""}</span></div>
-    <div class="anskeys">${[["-","−","Мінус"],["/","/","Риска дробу"],[" ","пробіл","Пробіл між цілою частиною і дробом"]].map(([v,t,a])=>`<button type="button" data-ins="${v}" aria-label="${a}">${t}</button>`).join("")}</div>
-    <div class="fix" style="text-align:center">Дріб — через риску: 7/12. Мішане число — через пробіл: 2 1/3.</div>`; }
-  if(s.type==="fracin"){ st=""; h+=`<div class="numbox big"><span class="m">${mathHTML(s.expr)}<span class="mo">=</span><span class="fr"><span class="nu"><input id="numIn" inputmode="numeric" pattern="[0-9]*" autocomplete="off" placeholder="?" aria-label="Чисельник відповіді"></span><span class="sr">/</span><span class="de">${s.den}</span></span></span></div>`; }
+  if(s.type==="answer"){ st=""; h+=answerInput(s); }
+  if(s.type==="fracin"){ st=""; h+=s.hideDen? `<div class="mblock">${mathHTML(s.expr)} =</div>`+answerInput(s) : `<div class="numbox big"><span class="m">${mathHTML(s.expr)}<span class="mo">=</span><span class="fr"><span class="nu"><input id="numIn" inputmode="numeric" pattern="[0-9]*" autocomplete="off" placeholder="?" aria-label="Чисельник відповіді"></span><span class="sr">/</span><span class="de">${s.den}</span></span></span></div>`; }
   h+=`<div id="hintHost"></div></section>`;
   $("#stage").innerHTML=fmt(h);
   if(s.type==="intro"||s.type==="info"||s.type==="explore") setDock("","","",s.cta||"Далі");
@@ -814,6 +784,12 @@ function alignUpdate(s){
   $("#alyear").textContent=sy+s.sample.len-1; $("#almatch").textContent=`${Math.round(match/s.sample.len*100)}%`;
 }
 /* зафарбуй частини */
+function answerInput(s){
+  const kind=s.answerKind||"number", keys=kind==="comparison"? ["<",">","="] : kind==="list"? ["-","/",";"," "] : kind==="factors"? ["*","^"] : ["-","/"," "];
+  const help=kind==="comparison"? "Запиши знак: <, > або =." : kind==="list"? "Запиши всі числа через крапку з комою. Порядок не має значення." : kind==="factors"? "Множники — через · або *. Степінь — через ^, наприклад 2^3 · 5." : "Дріб — через риску: 7/12. Мішане число — через пробіл: 2 1/3.";
+  return `<div class="numbox wide"><input id="numIn" inputmode="${kind==="number"?"decimal":"text"}" autocomplete="off" placeholder="?" aria-label="Відповідь"><span class="unit" id="answerUnit">${esc(s.unit||"")}</span></div><div class="anskeys">${keys.map(v=>`<button type="button" data-ins="${esc(v)}" aria-label="Вставити ${esc(v===" "?"пробіл":v)}">${esc(v===" "?"пробіл":v==="-"?"−":v)}</button>`).join("")}</div><div class="fix" style="text-align:center">${esc(help)}</div>`;
+}
+const answerUnit = (s, value) => { const a=LEARN.parseAns(value); if(!s.unitForms||!a) return s.unit||""; const n=Math.abs(a.n/a.d); return Number.isInteger(n)? plural(n,s.unitForms) : s.unitForms[1]; };
 function shadeUpdate(s){
   const box=$("#shade"), click={click:true, size:230};
   box.innerHTML = s.shape==="circle" ? circleSVG(s.n, i=>st.has(i)?1:0, {...click, label:`Круг на ${s.n} частин, торкайся частин, щоб зафарбувати`}) : barSVG(Array(s.n).fill(1), i=>st.has(i)?1:0, {...click, h:70, label:`Смужка на ${s.n} частин, торкайся частин, щоб зафарбувати`});
@@ -866,7 +842,7 @@ function bindScreen(s){
   if(s.type==="shade") shadeUpdate(s);
   const nl=$("#nlrng"); if(nl){ numlineUpdate(s); nl.oninput=()=>{ if(checked) return; st=+nl.value; numlineUpdate(s); }; }
   const sgn=$("#numSign"); if(sgn) sgn.onclick=()=>{ if(checked) return; const ni=$("#numIn"); ni.value= ni.value.startsWith("-")? ni.value.slice(1) : "-"+ni.value; ni.oninput(); ni.focus(); };
-  const ni=$("#numIn"); if(ni){ ni.oninput=()=>{ ni.value= s.type==="answer" ? ni.value.replace(/\./g,",").replace(/\u2212/g,"-").replace(/[^0-9,\/ -]/g,"").replace(/(?!^)-/g,"").replace(/^ +/,"").slice(0,14) : s.type==="number"&&numDecimal(s) ? ni.value.replace(/\./g,",").replace(/[^0-9,-]/g,"").replace(/(?!^)-/g,"").replace(/(,.*),/g,"$1").slice(0,10) : ni.value.replace(/[^0-9]/g,"").slice(0,6); st=ni.value; ni.classList.remove("is-ok","is-bad"); setDock("","","","Перевірити", st.length>0); };
+  const ni=$("#numIn"); if(ni){ ni.oninput=()=>{ ni.value= s.type==="answer"||s.hideDen ? ni.value.replace(/\./g,",").replace(/\u2212/g,"-").slice(0,120) : s.type==="number"&&numDecimal(s) ? ni.value.replace(/\./g,",").replace(/[^0-9,-]/g,"").replace(/(?!^)-/g,"").replace(/(,.*),/g,"$1").slice(0,10) : ni.value.replace(/[^0-9]/g,"").slice(0,6); st=ni.value; if(s.unitForms&&$("#answerUnit")) $("#answerUnit").textContent=answerUnit(s,st); ni.classList.remove("is-ok","is-bad"); setDock("","","","Перевірити", st.trim().length>0); };
     stage.querySelectorAll(".anskeys button").forEach(b=>b.onclick=()=>{ if(checked) return; const v=b.dataset.ins; ni.value= v==="-"? (ni.value.startsWith("-")? ni.value.slice(1) : "-"+ni.value) : ni.value+v; ni.oninput(); ni.focus(); });
     ni.onkeydown=e=>{ if(e.key==="Enter" && !$("#action").disabled) $("#action").click(); }; setTimeout(()=>ni.focus({preventScroll:true}),350); }
 }
@@ -884,7 +860,7 @@ function gradeNow(s){
     case "shade": return st.size===s.target;
     case "numline": return st===s.answer;
     case "number": return numOk(s,st);
-    case "fracin": return parseInt(st,10)===s.answer;
+    case "fracin": return s.hideDen? LEARN.checkAns({answer:s.answer+"/"+s.den,fractionOnly:true},st)==="ok" : parseInt(st,10)===s.answer;
     case "answer": return LEARN.checkAns(s,st)==="ok";
     case "lab": return window.SLID_LAB.check(s.lab, LAB.get(), s.goal);
   }
@@ -895,7 +871,7 @@ function showMarks(s, reveal){
   if(s.type==="multi"){ const c=new Set(s.correct); stage.querySelectorAll(".opt").forEach((el,k)=>{ el.classList.remove("is-ok","is-bad"); if(st.has(k)) el.classList.add(c.has(k)?"is-ok":"is-bad"); else if(reveal&&c.has(k)) el.classList.add("is-ok"); }); }
   if(s.type==="sort") stage.querySelectorAll(".srow").forEach((el,k)=>{ el.classList.remove("is-ok","is-bad"); el.classList.add(st[k]===s.items[k][1]?"is-ok":"is-bad"); if(reveal&&st[k]!==s.items[k][1]) el.insertAdjacentHTML("beforeend",`<span class="fix">Правильно: ${fmt(s.bins[s.items[k][1]])}</span>`); });
   if(s.type==="order") stage.querySelectorAll("#ord .opt").forEach(el=>{ const k=+el.dataset.k, p=st.indexOf(k); el.classList.remove("is-ok","is-bad"); el.classList.add(p===k?"is-ok":"is-bad"); if(reveal&&p!==k) el.querySelector(".k").textContent=`${p+1}→${k+1}`; });
-  if(s.type==="number"||s.type==="fracin"||s.type==="answer"){ const ni=$("#numIn"), ok=gradeNow(s); ni.classList.remove("is-ok","is-bad"); ni.classList.add(ok?"is-ok":"is-bad"); if(reveal && !ok){ $("#hintHost").innerHTML=`<div class="hint">${ic("check")}<span>Правильна відповідь: <b>${s.type==="answer"? fmt("$"+String(s.answer).replace(".",",").replace(" ","~")+"$")+(s.unit?" "+s.unit:"") : numShow(s.answer)}</b></span></div>`; } }
+  if(s.type==="number"||s.type==="fracin"||s.type==="answer"){ const ni=$("#numIn"), ok=gradeNow(s); ni.classList.remove("is-ok","is-bad"); ni.classList.add(ok?"is-ok":"is-bad"); if(reveal && !ok){ const value=s.hideDen? `${s.answer}/${s.den}` : Array.isArray(s.answer)? s.answer.join("; ") : String(s.answer); const a=LEARN.parseAns(value); const unit=s.unitForms&&a? plural(a.n/a.d,s.unitForms) : s.unit||""; $("#hintHost").innerHTML=`<div class="hint">${ic("check")}<span>Правильна відповідь: <b>${s.type==="answer"||s.hideDen? fmt("$"+esc(value).replace(".",",").replace(" ","~")+"$")+(unit?" "+esc(unit):"") : numShow(s.answer)}</b></span></div>`; } }
   if(s.type==="lab"){ const ok=gradeNow(s); if(reveal && !ok){ LAB.set(s.solution); LAB.mark("is-ok"); $("#hintHost").innerHTML=fmt(`<div class="hint">${ic("check")}<span>${s.reveal||"Ось як має бути — подивись на модель."}</span></div>`); } else LAB.mark(ok?"is-ok":"is-bad"); }
   if(s.type==="shade"){ const box=$("#shade"); box.classList.remove("is-ok","is-bad"); box.classList.add(st.size===s.target?"is-ok":"is-bad"); }
   if(s.type==="numline"){ if(reveal){ st=s.answer; $("#nlrng").value=st; } numlineUpdate(s); }

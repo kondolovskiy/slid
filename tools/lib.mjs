@@ -31,19 +31,24 @@ export function plain(s = "") {
 const VOW = /[аеєиіїоуюяaeiouy]/gi;
 export const words = t => (t.match(/[\p{L}\p{N}'’ʼ-]+/gu) || []);
 export const syllables = w => (w.match(VOW) || []).length;
-export const sentences = t => t.split(/(?<=[.!?…])\s+/).map(x => x.trim()).filter(x => words(x).length > 0);
+export function sentences(t) {
+  // Protect abbreviation periods only when the following text continues the sentence.
+  const text = String(t).replace(/(?<![\p{L}])н\.(?=\s*е\.)/gu, "н\uE000")
+    .replace(/(?<![\p{L}])(?:е\.|рр?\.|ст\.|тис\.|млн\.|[Дд]ив\.)\s*(?=[\p{Ll}\d])/gu,
+    m => m.replace(/\./g, "\uE000"));
+  return text.split(/(?<=[.!?…])\s+/).map(x => x.replace(/\uE000/g, ".").trim()).filter(x => words(x).length > 0);
+}
 
 /** Текст, який дитина читає на екрані (без варіантів відповідей і фідбеку). */
 export function screenReadText(s) { return plain([s.title, s.body].filter(Boolean).join(" ")); }
 /** Увесь текст екрана, включно з варіантами й поясненнями. */
 export function screenAllText(s) {
   const parts = [s.title, s.body, s.fbText, s.fbOk, s.fbBad, s.hint, ...(s.opts || []), ...(s.items || []).map(i => Array.isArray(i) ? i[0] : i)];
-  return plain(parts.filter(Boolean).join(" "));
+  return parts.filter(Boolean).map(plain).filter(Boolean).map(t => /[.!?…]$/.test(t) ? t : t + ".").join(" ");
 }
 
 /** Метрики уроку для синхронізації стилю й складності. */
 export function lessonMetrics(l) {
-  const read = l.screens.map(screenReadText).join(" ");
   const all = l.screens.map(screenAllText).join(" ");
   const w = words(all), sents = sentences(all);
   const long = w.filter(x => syllables(x) >= 5).length;

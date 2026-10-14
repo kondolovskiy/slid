@@ -1,8 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-10-14T18:26:45.838Z
+claimed_by: orchestrator
 id: style-g8s4
 type: style-fix
 subject: hist
-status: todo
+status: done
 created: 2026-10-14
 ---
 # g8s4: римські цифри кирилицею
@@ -14,3 +17,6 @@ created: 2026-10-14
 Зміст, відповіді й порядок не змінюються, тож статус `verified` лишається.
 
 Готово, коли `grep -nP "[\x{0425}\x{0406}]{2,}\s*ст\." content/hist/*.js` (або аналог на python) нічого не знаходить і `node tools/validate.mjs --section g8s4` — 0 помилок.
+
+## Нотатки агента
+2026-10-14: кириличне ХІХ замінено латинським XIX. Ключі, порядок і статус verified збережено. Пошук `rg '[ХІ]{2,}\s*ст\.' content/hist/*.js` — збігів немає. validate g8s4 — 0 помилок; попередження sentenceWords належать новій метриці та незміненому профілю (tools-stats-sentences).

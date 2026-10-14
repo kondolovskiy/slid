@@ -8,6 +8,11 @@
   "content/hist/g10-g10s3.js",
   "content/hist/g10-g10s4.js",
   "content/hist/g10-g10s5.js",
+  "content/hist/g11-g11s1.js",
+  "content/hist/g11-g11s2.js",
+  "content/hist/g11-g11s3.js",
+  "content/hist/g11-g11s4.js",
+  "content/hist/g11-g11s5.js",
   "content/hist/g5-s1.js",
   "content/hist/g5-s2.js",
   "content/hist/g5-s3.js",
@@ -92,5 +97,6 @@
   "content/catalog.js",
   "app/lab.js",
   "app/learn.js",
+  "app/math.js",
   "app/app.js"
 ]

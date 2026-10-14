@@ -19,6 +19,7 @@ const bannedRe = banned.map(b => [b, new RegExp(`(?<![\\p{L}'’ʼ])${b.replace(
 const errors = [], warnings = [];
 const E = (where, msg) => errors.push(`${where}: ${msg}`);
 const W = (where, msg) => warnings.push(`${where}: ${msg}`);
+const MATH_COMMANDS = new Set(["sqrt","frac","dfrac","vec","overrightarrow","mathbb","text","begin","end","cdot","times","infty","ge","geq","le","leq","neq","ne","pm","to","rightarrow","leftrightarrow","parallel","perp","angle","triangle","Delta","alpha","pi","circ","in","cup","varnothing","sim","ldots","dots","quad","qquad","left","right","log","ln","sin","cos","tan","lim","int"]);
 
 const allLessonIds = new Map(), allSectionIds = new Set();
 const ICONS = fs.readFileSync(path.join(ROOT, "app/app.js"), "utf8").match(/const P = \{([\s\S]*?)\n\};/)[1].match(/^\s{2}(\w+):/gm).map(s => s.trim().slice(0, -1));
@@ -52,6 +53,7 @@ function checkScreen(S, s, c, diag) {
   const txt = [s.title, s.body, noteTxt, s.fbText, s.fbOk, s.fbBad, s.hint, ...(s.opts || []), ...(s.items || []).flat()].filter(x => typeof x === "string").join(" ");
   if (/\$\{/.test(txt)) E(S, "у тексті лишилось «${» — шаблонний рядок з'їв формулу");
   for (const t of [s.title, s.body, s.fbText, s.hint, ...(s.opts || [])].filter(Boolean)) if (((String(t).match(/\$/g) || []).length) % 2) E(S, "непарна кількість $ — формула не закрита");
+  for (const formula of txt.matchAll(/\$\$?([\s\S]+?)\$\$?/g)) for (const m of formula[1].matchAll(/\\([A-Za-z]+)/g)) if (!MATH_COMMANDS.has(m[1])) W(S, `формула містить непідтриману команду \\${m[1]}`);
   for (const [b, re] of bannedRe) if (re.test(txt)) W(S, `заборонена фраза «${b}» (style/banned-phrases.txt)`);
   if (/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/u.test(txt)) W(S, "емодзі в тексті уроку");
   if (s.img && !fs.existsSync(path.join(ROOT, s.img))) E(S, `немає файлу ${s.img}`);
@@ -59,6 +61,7 @@ function checkScreen(S, s, c, diag) {
   if (s.svg && !SVGS.includes(s.svg)) E(S, `немає SVG-ілюстрації «${s.svg}» у svgFig()`);
   if (s.fig && !FIGS.includes(s.fig.kind)) E(S, `невідомий fig.kind «${s.fig.kind}»`);
   if (s.lab) for (const m of lab.validate(s.lab, s)) E(S, "lab: " + m);
+  for (const key of ["hideCount", "hideDen"]) if (s[key] !== undefined && typeof s[key] !== "boolean") E(S, `${key}: потрібне true/false`);
   if ((s.type === "explore" || s.type === "lab") && !s.lab) E(S, `${s.type} потребує поле lab (інтерактивну модель)`);
   if ([s.img, s.svg, s.fig, s.lab].filter(Boolean).length > 1) E(S, "на екрані може бути лише одна ілюстрація: img, svg, fig або lab");
   if (s.note !== undefined) {
@@ -91,7 +94,7 @@ function checkScreen(S, s, c, diag) {
     case "shade": if (!(s.target >= 1 && s.target <= s.n)) E(S, "target має бути 1..n"); if (!["bar","circle"].includes(s.shape)) E(S, "shape: bar | circle"); break;
     case "numline": if (!(Number.isInteger(s.answer) && s.answer >= 0 && s.answer <= s.max * s.den)) E(S, "answer — ціле число поділок від 0 до max·den"); break;
     case "number": if (!(typeof s.answer === "number" && isFinite(s.answer) && Math.abs(s.answer) < 1e9)) E(S, "answer — скінченне число (десяткові й від'ємні дозволені)");
-      if (s.tol != null && !(s.tol >= 0)) E(S, "tol — невід'ємне число (допустима похибка)"); break;
+      if (s.tol != null && !(Number.isFinite(s.tol) && s.tol >= 0)) E(S, "tol — скінченне невід'ємне число (допустима похибка)"); break;
     case "answer": if (learn.checkAns(s, typeof s.answer === "number" ? String(s.answer).replace(".", ",") : s.answer) !== "ok") E(S, "answer: число або рядок («7/12», «2 1/3», «-3,5»), що сам проходить перевірку"); break;
     case "fracin": if (!(Number.isInteger(s.answer) && s.answer >= 0 && s.answer < 1e6)) E(S, "answer — ціле невід'ємне число (поле приймає лише цифри)");
       if (!(s.expr && s.den)) E(S, "fracin потребує expr і den"); break;

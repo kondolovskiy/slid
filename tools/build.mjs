@@ -17,7 +17,7 @@ export function manifest() {
     list.filter(f => f !== "plan.js").forEach(f => files.push(`content/${d}/${f}`));
   }
   if (fs.existsSync(path.join(ROOT, "content/catalog.js"))) files.push("content/catalog.js");
-  files.push("app/lab.js", "app/learn.js", "app/app.js");
+  files.push("app/lab.js", "app/learn.js", "app/math.js", "app/app.js");
   return files;
 }
 

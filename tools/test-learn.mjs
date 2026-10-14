@@ -286,6 +286,15 @@ const order = l => ({ L1: 3, L2: 1, L3: 2, L4: 4 }[l] ?? 50);
   bad(d => { delete d.id; }, "немає id", "без id");
   bad(d => { d.grade = "6"; }, "немає grade", "grade не число", false);
   bad(d => { delete d.why; }, "title і why", "без why");
+  bad(d => { d.items[1].signed = "true"; }, "signed", "signed — boolean");
+  bad(d => { d.signed = "false"; }, "signed", "signed тесту — boolean");
+  eq(L.validate({ ...clone(ok), signed: false }, vc), [], "validate: signed тесту можна вимкнути");
+  bad(d => { d.items[0].hideCount = true; }, "hideCount", "hideCount лише для лічильника");
+  bad(d => { d.items[1].hideDen = true; }, "hideDen", "hideDen лише для дробу");
+  for (const [type, flag] of [["number", "signed"], ["shade", "hideCount"], ["numline", "hideCount"], ["fracin", "hideDen"]]) {
+    const d = clone(ok); d.items[0].type = type; d.items[0][flag] = true; eq(L.validate(d, vc), [], `validate: ${type} ${flag}`);
+    d.items[0][flag] = 1; eq(L.validate(d, vc).some(e => e.includes(flag)), true, `validate: ${flag} не число`);
+  }
   eq(L.validate({ ...clone(ok), topics: [] }, vc), ["немає topics"], "validate: порожні topics");
   eq(L.validate({ ...clone(ok), items: [] }, vc), ["немає items"], "validate: порожні items");
   // pre-тема без for — дозволено
@@ -305,6 +314,66 @@ const order = l => ({ L1: 3, L2: 1, L3: 2, L4: 4 }[l] ?? 50);
    [{ answer: 19735 }, "19 735", "ok"], [{ answer: 1250.5 }, "1 250,5", "ok"], [{ answer: 19735 }, "19 73", "bad"], [{ answer: "2 1/3" }, "2 1/3", "ok"], [{ answer: "2/5", reduced: true }, "0,4", "form"], [{ answer: "2/5" }, "0,4", "ok"], [{ answer: 12, reduced: true, mixed: true }, "12", "ok"], [{ answer: 5 }, "", "bad"], [{ answer: 5 }, "abc", "bad"], [{ answer: 5 }, "5/0", "bad"], [{ answer: "1/3" }, "0,33", "bad"], [{ answer: 0 }, "-0", "ok"], [{ answer: "3/4", mixed: true }, "3/4", "ok"]]
     .forEach(([s, v, exp]) => eq(c(s, v), exp, `checkAns: ${JSON.stringify(s)} ← «${v}»`));
   eq(L.parseAns("2 1/3").n, 7, "parseAns: мішане → чисельник"); eq(L.parseAns("1,25").d, 100, "parseAns: десятковий → знаменник"); eq(L.parseAns("1/2/3"), null, "parseAns: сміття"); }
+
+// Нові формати перевіряються значенням, але не приймають довільні вирази.
+{ const cases = [
+    [{ answerKind: "comparison", answer: "<" }, " < ", "ok"],
+    [{ answerKind: "comparison", answer: "<" }, "≤", "bad"],
+    [{ answerKind: "comparison", answer: "<" }, "<<", "bad"],
+    [{ answerKind: "comparison", answer: "x" }, "x", "bad"],
+    [{ answerKind: "list", answer: [1, 2, 3] }, "3; 1; 2", "ok"],
+    [{ answerKind: "list", answer: "1, 2, 3" }, "3,2,1", "ok"],
+    [{ answerKind: "list", answer: [0.5, "2/3", -2] }, "2/3; −2; 0,5", "ok"],
+    [{ answerKind: "list", answer: [19735, "2 1/3"] }, "2 1/3; 19 735", "ok"],
+    [{ answerKind: "list", answer: [1, 2, 3] }, "1;2;2;3", "bad"],
+    [{ answerKind: "list", answer: [1, 2, 3] }, "1;2;2", "bad"],
+    [{ answerKind: "list", answer: [0.5, 2] }, "1/2;0,5;2", "bad"],
+    [{ answerKind: "list", answer: [1, 2] }, "1;2;", "bad"],
+    [{ answerKind: "list", answer: [1, 2] }, "1;3", "bad"],
+    [{ answerKind: "list", answer: [1, 1] }, "1;1", "bad"],
+    [{ answerKind: "list", answer: [] }, "", "bad"],
+    [{ answerKind: "list", answer: [1, 2] }, "1;Infinity", "bad"],
+    [{ answerKind: "list", answer: [1, NaN] }, "1;NaN", "bad"],
+    [{ answerKind: "factors", answer: "2^3 · 3" }, "3 × 2 * 2 · 2", "ok"],
+    [{ answerKind: "factors", answer: "2^3 · 3" }, "2 ^ 3 * 3", "ok"],
+    [{ answerKind: "factors", answer: "2^3 · 3" }, "4*6", "bad"],
+    [{ answerKind: "factors", answer: "2^3 · 3" }, "24", "bad"],
+    [{ answerKind: "factors", answer: "2^3 · 3" }, "2^2*3", "bad"],
+    [{ answerKind: "factors", answer: "2^3 · 3" }, "1*2^3*3", "bad"],
+    [{ answerKind: "factors", answer: "2^3 · 3" }, "2^0*2^3*3", "bad"],
+    [{ answerKind: "factors", answer: "2^3 · 3" }, "2^-1*48", "bad"],
+    [{ answerKind: "factors", answer: "2^3 · 3" }, "2^3.0*3", "bad"],
+    [{ answerKind: "factors", answer: "2" }, "2^9999999999", "bad"],
+    [{ answerKind: "factors", answer: "2" }, "2^53", "bad"],
+    [{ answerKind: "factors", answer: "2" }, "Infinity", "bad"],
+    [{ answerKind: "factors", answer: "2*2" }, "", "bad"],
+    [{ answerKind: "factors", answer: 13 }, "13", "ok"],
+    [{ answer: "2/5", fractionOnly: true }, "0,4", "form"],
+    [{ answer: "2/5", fractionOnly: true }, "4/10", "ok"],
+    [{ answer: "2/5", fractionOnly: true, reduced: true }, "4/10", "form"],
+    [{ answer: 3.14, tol: 0.01 }, "3,15", "ok"],
+    [{ answer: 3.14, tol: 0.01 }, "3,13", "ok"],
+    [{ answer: 3.14, tol: 0.01 }, "3,1500001", "bad"],
+    [{ answer: 3.14, tol: 0.01 }, "3,1299999", "bad"],
+    [{ answer: 0, tol: 0 }, "0,000000000000001", "bad"],
+    [{ answer: 1, tol: 1e-30 }, "1,000000000000001", "bad"],
+    [{ answer: 0, tol: 1e-10 }, "1/10000000000", "ok"],
+    [{ answer: 0, tol: 1e-10 }, "1/9999999999", "bad"],
+    [{ answer: 0, tol: Number.MIN_VALUE }, "0", "ok"],
+    [{ answer: 1, tol: 0 }, "2/2", "ok"],
+    [{ answer: 1, tol: -1 }, "1", "bad"],
+    [{ answer: 1, tol: Infinity }, "1", "bad"],
+    [{ answer: 1, tol: NaN }, "1", "bad"],
+    [{ answer: 1, tol: "0.1" }, "1", "bad"],
+    [{ answer: Infinity }, "Infinity", "bad"],
+    [{ answer: "number", answerKind: "unknown" }, "number", "bad"]
+  ];
+  cases.forEach(([s, v, expected], i) => eq(L.checkAns(s, v), expected, `checkAns: новий формат ${i + 1}`));
+  for (const v of ["9".repeat(400), "1/" + "9".repeat(400), "9".repeat(400) + "/2", "1," + "0".repeat(400), "9007199254740992", "1 1/0", "1e3", "Infinity", "NaN"])
+    eq(L.parseAns(v), null, "parseAns: відхиляє непідтримуване число «" + v.slice(0, 20) + "»");
+  eq(L.checkAns({ answer: "9007199254740991/9007199254740990" }, "9007199254740990/9007199254740989"), "bad", "checkAns: великі дроби не рівні через округлення добутку");
+  eq(L.checkAns({ answer: 19735 }, "19\u00a0735"), "ok", "checkAns: нерозривний пробіл між розрядами");
+}
 
 // ---------- тренування: розклад і добір сесії ----------
 { const S = { srs: {}, seen: {} }, D = "2026-10-13";
@@ -343,7 +412,19 @@ const order = l => ({ L1: 3, L2: 1, L3: 2, L4: 4 }[l] ?? 50);
   [[p => p.section = "zz", "немає розділу"], [p => p.sources = [], "немає sources"], [p => p.items[0].lesson = "zz", "не з розділу"], [p => p.items[0].lvl = 4, "lvl"],
    [p => p.items[0].type = "number", "не дозволено"], [p => p.items[0].sk = "zz", "не оголошена"], [p => p.items[0].src = "№12", "src"], [p => p.items[0].src = "bk", "src"],
    [p => p.items[0].steps = [], "steps"], [p => p.items[0].answer = "10/24", "answer"], [p => p.items[0].answer = "x", "answer"], [p => p.items.push({ ...p.items[0] }), "повторюється"],
-   [p => p.sources[0].url = "lib", "url"]].forEach(([f, part], i) => eq(mut(f).some(e => e.includes(part)), true, `validatePool: помилка №${i + 1} («${part}»)`)); }
+   [p => p.sources[0].url = "lib", "url"], [p => p.items[0].srcPage = 0, "srcPage"], [p => p.items[0].srcPage = 1.5, "srcPage"],
+   [p => p.items[0].adapted = "true", "adapted"], [p => p.items[0].unitForms = ["a", "b"], "unitForms"], [p => p.items[0].unitForms = ["a", "", "c"], "unitForms"],
+   [p => p.items[0].answerKind = "expression", "answerKind"], [p => p.items[0].fractionOnly = 1, "fractionOnly"], [p => p.items[0].mixed = "true", "mixed"],
+   [p => p.items[0].reduced = "true", "reduced"], [p => p.items[0].tol = -1, "tol"], [p => p.items[0].tol = Infinity, "tol"], [p => p.items[0].tol = NaN, "tol"],
+   [p => p.items[0].tol = "0.1", "tol"], [p => { p.items[0].answerKind = "comparison"; p.items[0].answer = "<"; }, "reduced"],
+   [p => { p.items[0].type = "choice"; p.items[0].answerKind = "number"; }, "answerKind"]]
+    .forEach(([f, part], i) => eq(mut(f).some(e => e.includes(part)), true, `validatePool: помилка №${i + 1} («${part}»)`));
+  for (const fields of [{ answerKind: "comparison", answer: "<" }, { answerKind: "list", answer: [1, 2, 3] }, { answerKind: "factors", answer: "2^2 * 3" },
+    { answer: "1/2", fractionOnly: true, srcPage: 25, adapted: true, unitForms: ["яблуко", "яблука", "яблук"] }, { answer: 3.14, tol: 0.1 }])
+    eq(mut(p => { delete p.items[0].reduced; Object.assign(p.items[0], fields); }), [], `validatePool: коректні нові поля ${JSON.stringify(fields)}`);
+  for (const fields of [{ answerKind: "list", answer: [1, 1] }, { answerKind: "factors", answer: "4*3" }, { answerKind: "comparison", answer: "≤" }, { answer: Infinity }])
+    eq(mut(p => { delete p.items[0].reduced; Object.assign(p.items[0], fields); }).some(e => e.includes("answer")), true, `validatePool: некоректна відповідь ${JSON.stringify(fields)}`);
+}
 
 console.log(`\n${n} перевірок, ${fails ? fails + " з помилками" : "усе гаразд"}`);
 if (fails) process.exit(1);

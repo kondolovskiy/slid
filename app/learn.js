@@ -142,19 +142,59 @@ window.SLID_LEARN = (() => {
     const t = String(v ?? "").replace(/[−–]/g, "-").replace(/\./g, ",").replace(/\s+/g, " ").trim();
     let m;
     if ((m = t.match(/^(-?)(\d{1,3}(?: \d{3})+)((?:,\d+)?)$/))) return parseAns(m[1] + m[2].replace(/ /g, "") + m[3]);   // 19 735 — розряди через пробіл
-    if ((m = t.match(/^(-?)(\d+)(?:,(\d+))?$/))) { const k = (m[3] || "").length, n = +(m[2] + (m[3] || "")); return { n: m[1] ? -n : n, d: 10 ** k, frac: false, proper: true, lowest: true }; }
+    if ((m = t.match(/^(-?)(\d+)(?:,(\d+))?$/))) { const k = (m[3] || "").length, n = +(m[2] + (m[3] || "")), d = 10 ** k; if (!Number.isSafeInteger(n) || !Number.isSafeInteger(d)) return null; return { n: m[1] ? -n : n, d, frac: false, proper: true, lowest: true }; }
     if ((m = t.match(/^(-?)(?:(\d+) )?(\d+) ?\/ ?(\d+)$/))) {
       const w = +(m[2] || 0), a = +m[3], b = +m[4]; if (!b) return null;
-      const n = w * b + a; return { n: m[1] ? -n : n, d: b, frac: true, proper: m[2] === undefined || a < b, lowest: gcd(a, b) === 1 };
+      const n = w * b + a; if (![w, a, b, n].every(Number.isSafeInteger)) return null; return { n: m[1] ? -n : n, d: b, frac: true, proper: m[2] === undefined || a < b, lowest: gcd(a, b) === 1 };
     }
     return null;
   }
-  /** Перевірка відповіді: "ok" | "form" (значення правильне, але дріб не скорочено чи не виділено цілу частину, а завдання цього вимагає) | "bad".
-      s.answer — число або рядок у тому ж записі; s.reduced: true — дріб має бути нескоротним; s.mixed: true — неправильний дріб треба записати мішаним числом. */
+  const sameAns = (a, b) => BigInt(a.n) * BigInt(b.d) === BigInt(b.n) * BigInt(a.d);
+  // У списку «;» відділяє числа з десятковою комою; без «;» кома є роздільником.
+  function parseList(v) {
+    const parts = Array.isArray(v) ? v : String(v ?? "").split(/[;\n]/.test(String(v)) ? /[;\n]/ : /,/);
+    const values = parts.map(parseAns);
+    if (!values.length || values.some(x => !x || !x.proper) || values.some((x, i) => values.slice(0, i).some(y => sameAns(x, y)))) return null;
+    return values;
+  }
+  function parseFactors(v) {
+    const parts = String(v ?? "").trim().split(/\s*[*·×]\s*/);
+    let product = 1n;
+    for (const part of parts) {
+      const m = part.match(/^(\d+)(?:\s*\^\s*(\d+))?$/);
+      if (!m) return null;
+      const p = Number(m[1]), power = Number(m[2] || 1);
+      if (!Number.isSafeInteger(p) || p < 2 || !Number.isSafeInteger(power) || power < 1 || power > 52) return null;
+      for (let k = 2; k <= Math.sqrt(p); k += k === 2 ? 1 : 2) if (p % k === 0) return null;
+      product *= BigInt(p) ** BigInt(power);
+      if (product > BigInt(Number.MAX_SAFE_INTEGER)) return null;
+    }
+    return product;
+  }
+  /** Перевірка відповіді: "ok" | "form" (правильне значення, потрібен інший запис дробу) | "bad".
+      answerKind: number (типово), comparison (< > =), list (без порядку і повторів), factors (прості множники).
+      Числа: reduced — нескоротний дріб; mixed — виділити цілу частину; fractionOnly — лише звичайний/мішаний дріб; tol — абсолютна похибка. */
   function checkAns(s, v) {
+    const kind = s.answerKind || "number";
+    if (kind === "comparison") return /^[<>=]$/.test(String(s.answer).trim()) && String(v).trim() === String(s.answer).trim() ? "ok" : "bad";
+    if (kind === "list") {
+      const a = parseList(s.answer), u = parseList(v);
+      return a && u && a.length === u.length && a.every(x => u.some(y => sameAns(x, y))) ? "ok" : "bad";
+    }
+    if (kind === "factors") { const a = parseFactors(s.answer), u = parseFactors(v); return a !== null && u !== null && a === u ? "ok" : "bad"; }
+    if (kind !== "number" || (s.tol !== undefined && (!Number.isFinite(s.tol) || s.tol < 0))) return "bad";
     const a = parseAns(typeof s.answer === "number" ? String(s.answer) : s.answer), u = parseAns(v);
     if (!a || !u) return "bad";
-    if (a.n * u.d !== u.n * a.d) return "bad";
+    if (s.tol > 0) {
+      // Порівнюємо десяткову межу точно: 3,15 при 3,14 ± 0,01 проходить,
+      // але навіть дуже мала похибка не перетворюється на ширший допуск через округлення JS.
+      const m = String(s.tol).match(/^(\d+)(?:\.(\d+))?(?:e([+-]?\d+))?$/);
+      const shift = Number(m[3] || 0) - (m[2] || "").length;
+      const tn = BigInt(m[1] + (m[2] || "")) * 10n ** BigInt(Math.max(0, shift)), td = 10n ** BigInt(Math.max(0, -shift));
+      const diff = BigInt(a.n) * BigInt(u.d) - BigInt(u.n) * BigInt(a.d);
+      if ((diff < 0n ? -diff : diff) * td > tn * BigInt(a.d) * BigInt(u.d)) return "bad";
+    } else if (!sameAns(a, u)) return "bad";
+    if (s.fractionOnly && !u.frac) return "form";
     if (u.frac && ((s.reduced && !u.lowest) || (s.mixed && (Math.abs(u.n) >= u.d && !(u.proper && Math.abs(u.n) % u.d !== 0 && String(v).trim().includes(" ")))))) return "form";
     if ((s.reduced || s.mixed) && a.frac && !u.frac) return "form";   // у завданні на дроби «0,4» замість 2/5 — не той запис
     if (u.frac && !u.proper) return "form";          // «1 5/3» — так мішані числа не записують
@@ -217,6 +257,15 @@ window.SLID_LEARN = (() => {
       const [sid, ref] = String(it.src || "").split(/\s+(.*)/s);
       if (!src.has(sid) || !ref) E.push(`${w}: src має бути «<id джерела> <номер вправи чи сторінка>»`);
       if (!Array.isArray(it.steps) || !it.steps.length) E.push(`${w}: немає steps — розв'язання кроками`);
+      if (it.srcPage !== undefined && (!Number.isSafeInteger(it.srcPage) || it.srcPage < 1)) E.push(`${w}: srcPage має бути додатним цілим числом`);
+      if (it.adapted !== undefined && typeof it.adapted !== "boolean") E.push(`${w}: adapted має бути boolean`);
+      if (it.unitForms !== undefined && (!Array.isArray(it.unitForms) || it.unitForms.length !== 3 || it.unitForms.some(x => typeof x !== "string" || !x.trim()))) E.push(`${w}: unitForms має містити три непорожні рядки (1 / 2–4 / 5+)`);
+      const kind = it.answerKind || "number";
+      if (it.answerKind !== undefined && (it.type !== "answer" || !["number", "comparison", "list", "factors"].includes(it.answerKind))) E.push(`${w}: answerKind має бути number | comparison | list | factors для answer`);
+      for (const flag of ["reduced", "mixed", "fractionOnly"]) {
+        if (it[flag] !== undefined && (typeof it[flag] !== "boolean" || it.type !== "answer" || kind !== "number")) E.push(`${w}: ${flag} має бути boolean для числової answer`);
+      }
+      if (it.tol !== undefined && (it.type !== "answer" || kind !== "number" || !Number.isFinite(it.tol) || it.tol < 0)) E.push(`${w}: tol має бути скінченним числом ≥ 0 для числової answer`);
       if (it.type === "answer" && checkAns(it, typeof it.answer === "number" ? String(it.answer).replace(".", ",") : it.answer) !== "ok") E.push(`${w}: answer «${it.answer}» не читається або сам не проходить перевірку (reduced/mixed)`);
     });
     return E;
@@ -228,6 +277,7 @@ window.SLID_LEARN = (() => {
     const E = [], T = new Map();
     if (!d.id) E.push("немає id"); if (!Number.isInteger(d.grade)) E.push("немає grade");
     if (!d.title || !d.why) E.push("потрібні title і why");
+    if (d.signed !== undefined && typeof d.signed !== "boolean") E.push("signed має бути boolean");
     if (!["draft", "verified", "approved"].includes(d.status)) E.push("status має бути draft | verified | approved");
     if (!Array.isArray(d.topics) || !d.topics.length) return E.concat("немає topics");
     if (!Array.isArray(d.items) || !d.items.length) return E.concat("немає items");
@@ -257,6 +307,9 @@ window.SLID_LEARN = (() => {
       if (it.poll || it.hyp) E.push(`${w}: poll/hyp у тесті не можна`);
       if (!it.title) E.push(`${w}: немає title`);
       if (!it.sk || !ctx.skills[it.sk]) E.push(`${w}: навичка sk «${it.sk}» не оголошена`);
+      for (const [flag, types] of [["signed", ["number"]], ["hideCount", ["shade", "numline"]], ["hideDen", ["fracin"]]]) {
+        if (it[flag] !== undefined && (typeof it[flag] !== "boolean" || !types.includes(it.type))) E.push(`${w}: ${flag} має бути boolean для ${types.join(" | ")}`);
+      }
       if (it.lesson && !(T.get(it.topic)?.lessons || []).includes(it.lesson)) E.push(`${w}: lesson «${it.lesson}» має бути одним з уроків теми`);
     });
     return E;
