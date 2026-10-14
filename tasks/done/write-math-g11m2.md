@@ -7,7 +7,7 @@ subject: math
 grade: 11
 section: g11m2
 weeks: [1, 12]
-status: review
+status: done
 claimed_by: writer-g11m2
 created: 2026-09-27
 ---
