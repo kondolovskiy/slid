@@ -1,5 +1,5 @@
 /* Слід · Математика, 11 клас — «Алгебра: інтеграл»
-   Статус уроків: draft. 4 уроки (3 теми + boss).
+   Статус уроків: verified (verifier-g11m3, 2026-10-14). 4 уроки (3 теми + boss).
    Інтерактив: plane — сім'я первісних x²+c, заливка під графіком (fills), integ(f,a,b).
    Нотація: Мерзляк 11 (рівень стандарту, 2019) §2 п. 9–11: первісна, F(x) + C,
    визначений інтеграл ∫<sub>a</sub><sup>b</sup>, формула Ньютона — Лейбніца, криволінійна трапеція.
@@ -15,7 +15,7 @@ SLID.section("math", {
   title: "Алгебра: інтеграл",
   why: "Щоб знаходити площі криволінійних фігур і шлях за відомою швидкістю.",
   requires: ["g10m6l2"],
-  meta: { author: "writer-g11m3", created: "2026-10-14", factcheck: "self", teacher: null },
+  meta: { author: "writer-g11m3", created: "2026-10-14", factcheck: "verifier-g11m3", teacher: null },
   badges: [
     { id: "g11m3boss", name: "Майстер площ", icon: "chart", desc: "Пройти фінальну задачу з інтеграла" }
   ],
@@ -26,7 +26,7 @@ SLID.section("math", {
       title: "Похідна навпаки",
       short: "Первісна",
       icon: "back",
-      status: "draft",
+      status: "verified",
       why: "Датчик знає швидкість, а треба знайти положення. Для цього похідну «розкручують» назад.",
       screens: [
         {
@@ -74,7 +74,7 @@ SLID.section("math", {
             view: [-3, 3, -4, 8],
             params: {
               c: { min: -3, max: 4, step: 1, start: 0, label: "$c$" },
-              a: { min: -2, max: 2, step: 0.5, start: 1, label: "$x_0$" }
+              a: { min: -2, max: 2, step: 0.5, start: 1, label: "$x$₀" }
             },
             fns: [
               { y: "x*x", color: "muted", dash: true },
@@ -194,7 +194,7 @@ SLID.section("math", {
       title: "Площа під кривою",
       short: "Визначений інтеграл",
       icon: "chart",
-      status: "draft",
+      status: "verified",
       why: "Щоб за графіком швидкості знаходити шлях, а за кривою — площу.",
       screens: [
         {
@@ -341,7 +341,7 @@ SLID.section("math", {
       title: "Скло для арки",
       short: "Площі фігур",
       icon: "target",
-      status: "draft",
+      status: "verified",
       why: "Щоб рахувати площі арок, клумб і будь-яких фігур із кривими краями.",
       screens: [
         {
@@ -449,8 +449,8 @@ SLID.section("math", {
           body: "<p>Він рахує площу між графіком $y = x^2 - 4$ і віссю $Ox$ на відрізку $[0; 2]$. Інтеграл справді вийшов $-16/3$. Що не так з відповіддю?</p>",
           opts: [
             "Усе правильно: площа буває від'ємною",
-            "Межі треба поміняти місцями",
-            "Графік нижче осі, тож площа — $16/3$",
+            "Межі треба взяти $-2$ і $2$",
+            "Графік нижче осі, тож площа дорівнює $16/3$",
             "Треба додати сталу $C$"
           ],
           correct: 2,
@@ -508,7 +508,7 @@ SLID.section("math", {
       title: "Проєкт скейт-парку",
       short: "Фінал",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "g11m3boss",
       why: "Зберемо первісну, інтеграл і площі в одному проєкті скейт-парку.",
