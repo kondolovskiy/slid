@@ -9,7 +9,7 @@
 - `memory-curator` — переносить inbox у довгу пам'ять, оновлює handoff.
 - `qa-runner` — механічний прогін build/validate/stats/test-*/playtest, звіт ✅/❌ (haiku).
 
-**Моделі:** автори — модель сесії; перевірки дешевші — `content-verifier` = sonnet, `qa-runner` = haiku (frontmatter агентів). У headless-режимі — `claude -p --model sonnet "/verify-section <id>"`.
+**Моделі:** автори й `content-verifier` — модель сесії (факти — не економимо); механічні тести дешевші — `qa-runner` = haiku (frontmatter). У headless-режимі тести: `claude -p --model haiku "..."`.
 
 ## Команди (`.claude/commands/`)
 - `/parallel <N> <предмет> [клас]` — оркестрація: взяти N задач і запустити N авторів паралельно, потім зібрати й перевірити.

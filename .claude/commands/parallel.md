@@ -5,7 +5,7 @@ argument-hint: <N> <hist|math|verify> [клас]
 
 Ти — оркестратор «Сліду» (AGENTS.md → «Оркестратор»). Аргументи: $ARGUMENTS
 
-**Моделі (економія):** автори (`content-writer`) — модель сесії (найсильніша: зміст і факти). Перевірки — дешевші: `content-verifier` — sonnet, `qa-runner` (build/validate/stats/test-*/playtest) — haiku. Модель задано у frontmatter агентів; не перевизначай `model` у виклику Agent без потреби.
+**Моделі (економія):** автори (`content-writer`) і верифікатори фактів (`content-verifier`) — модель сесії (найсильніша: зміст і факти). Механічні тести — дешевші: `qa-runner` (build/validate/stats/test-*/playtest) — haiku. Модель задано у frontmatter агентів; не перевизначай `model` у виклику Agent без потреби. (2026-10-14: верифікатори на sonnet звіряли «за власним знанням», 0 URL у звітах — повернуто на модель сесії.)
 
 1. Прочитай memory/short/handoff.md.
 2. Якщо другий аргумент `verify` — працюєш з задачами в `tasks/review/` (`node tools/claim.mjs list review`), агент `content-verifier`. Інакше — `tasks/todo/write-<предмет>-*` потрібного класу (`node tools/claim.mjs list todo --subject <предмет> --grade <клас>`), агент `content-writer`.

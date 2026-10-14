@@ -69,7 +69,7 @@ python3 tools/playtest.py [--section ID] [--shots] [--port N]   # пройти �
 1. Прочитай handoff, `node tools/claim.mjs list`.
 2. Обери N задач одного типу (краще — один предмет і клас, щоб агенти вирівнювалися по одних еталонах).
 3. Для кожної: `node tools/claim.mjs claim <task> <agent-name>` → запусти агента з промптом «Виконай задачу tasks/doing/<task>.md за AGENTS.md, роль: автор контенту». Агенти працюють паралельно — кожен у своєму файлі.
-4. Коли всі завершили: `node tools/build.mjs && node tools/validate.mjs && node tools/stats.mjs && python3 tools/playtest.py`. (у Claude Code — субагент `qa-runner` на дешевій моделі; верифікатори — sonnet).
+4. Коли всі завершили: `node tools/build.mjs && node tools/validate.mjs && node tools/stats.mjs && python3 tools/playtest.py`. (у Claude Code — субагент `qa-runner` на дешевій моделі).
 5. Для кожного розділу в `tasks/review/` запусти **іншого** агента-верифікатора (свіжий контекст; не того, хто писав).
 6. Запусти синхронізацію стилю (роль нижче), якщо з'явилося ≥ 3 нових розділів одного предмета.
 7. Наприкінці — роль «куратор пам'яті» (`/handoff`).
