@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-10-14T07:23:01.885Z
 id: write-hist-g10s4
 type: write-section
 subject: hist
@@ -6,7 +8,7 @@ grade: 10
 section: g10s4
 weeks: [23, 29]
 status: todo
-claimed_by:
+claimed_by: writer-g10s4
 created: 2026-09-27
 ---
 # Написати розділ «Сталінський режим» (Історія України, 10 клас)
