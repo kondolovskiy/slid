@@ -1,4 +1,5 @@
 ---
+write_group: personalization-shared
 id: engine-math-pool-answer-formats
 type: engine
 subject: math
@@ -11,7 +12,7 @@ depends_on: [curate-math-personalization-map]
 
 ## Межі
 
-Це виокремлена частина engine-practice-pool, пункт 3. comparison/list/factors, fractionOnly, tol, srcPage/adapted/unitForms уже реалізовані в engine-diag-pool-answers. Не реалізовувати їх повторно. Звичайний list не означає впорядковану пару координат.
+Це єдиний виконавець форматів із початкового пункту 3 engine-practice-pool; у залишковій задачі лишено лише вибір одиниці. Не реалізовувати генератори чи автоматизацію створення задач. comparison/list/factors, fractionOnly, tol, srcPage/adapted/unitForms уже реалізовані в engine-diag-pool-answers. Не реалізовувати їх повторно. Звичайний list не означає впорядковану пару координат.
 
 ## Що зробити
 
@@ -27,6 +28,10 @@ depends_on: [curate-math-personalization-map]
 - [ ] Є тести еквівалентних і неправильних відповідей, порядку координат, меж проміжків, десяткових ком і подібних записів.
 - [ ] test-learn, test-answer-ui, validate, build і регресія pg6 зелені; старі answer незмінно приймаються.
 
+
+## Правило редагування спільних файлів
+
+write_group: personalization-shared. Перед змінами оркестратор призначає єдиного активного редактора за [протоколом README](../README-math-personalization.md#спільні-файли-й-порядок-роботи). app/app.js, app/learn.js, спільна схема, тести та згенеровані файли не редагуються двома задачами одночасно. Дизайн і читання можна виконувати паралельно; після передачі редагування перечитати інтегровані зміни та зберегти їхню поведінку. write_group є організаційним правилом, claim.mjs автоматично його не перевіряє. Не додавати штучних depends_on між незалежними функціями лише заради блокування файлів.
 
 ## Перед роботою
 
