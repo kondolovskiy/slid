@@ -29,6 +29,13 @@ export function audit(subject, matrix, learn, filter = {}) {
       const actual = d.topics.find(x => x.id === t.id);
       if (!actual) { missing.push(`${d.id}: немає теми ${t.id}`); continue; }
       for (const key of ['kind', 'lessons', 'for']) if (JSON.stringify(actual[key] || []) !== JSON.stringify(t[key] || [])) missing.push(`${d.id}/${t.id}: ${key} не збігається з матрицею`);
+      const items = d.items.filter(it => it.topic === t.id);
+      const itemLessons = items.map(it => it.lesson ?? (actual.lessons?.length === 1 ? actual.lessons[0] : null));
+      const itemSkills = items.map(it => it.sk);
+      for (const [key, value] of [['itemLessons', itemLessons], ['itemSkills', itemSkills]]) {
+        if (JSON.stringify(value) !== JSON.stringify(t[key])) missing.push(`${d.id}/${t.id}: ${key} не збігається з матрицею`);
+      }
+      if (t.itemIndices && JSON.stringify(d.items.flatMap((it, i) => it.topic === t.id ? [i] : [])) !== JSON.stringify(t.itemIndices)) missing.push(`${d.id}/${t.id}: itemIndices не збігається з матрицею`);
     }
     if (d.grade === 4 && d.topics.some(t => t.baseline)) unsupported.push(`${d.id}: baseline потребує engine-math-diag-g4-baseline і його регресій`);
   }

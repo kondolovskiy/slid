@@ -5,7 +5,7 @@ write_group: personalization-shared
 id: tools-math-personalization-qa
 type: engineering
 subject: math
-status: done
+status: review
 claimed_by: codex-qa
 created: 2026-10-15
 depends_on: [curate-math-personalization-map]
@@ -54,3 +54,9 @@ write_group: personalization-shared. Перед змінами оркестра�
 ## Обсяг за матрицею 2026-10-16.v2
 
 Матриця **2026-10-16.v2**: docs/math-personalization-coverage.json. Інвентар 50 розділів / 182 уроки; required 48 пулів / 169 уроків; optional 7 і pending 6 уроків окремо. Із 48 required-пулів 5 існують (184 вправи), 43 плануються (146 required-уроків, 876–1168 нових вправ). Відкладені g11m2/g11m6 відсутні в required-списку файлів; не успішний нульовий прогін. Для кожного класу використати перелік із його verify/qa та JSON, не жорстко початкові 50 пулів. Усього 8 діагностик, межі/кількості pre/cur — у JSON. Required-частина матриці незалежно прийнята; це не засвідчує готовність самого контенту. Подальші зміни версії потребують повторної звірки знаменників.
+
+## Незалежне інженерне рев’ю (D-026)
+
+- 16.10: за прямим дорученням Віктора повернено done → review. Незалежний агент `review_personalization_qa` (свіжий контекст) перевіряє коміт `8676364`; звіт reports/review/tools-math-personalization-qa.md. До прийняття не закривати повторно.
+
+- Первинний незалежний вердикт: дві P2 (звірка itemLessons/itemSkills/itemIndices; порядок браузерної черги при однакових due). Виправив автор codex-qa як єдиний редактор personalization-shared; передано на повторне рев’ю, редагування знову вільно. QA 25/25, learn 427/427, Chrome regression + reversed-order fixture green. Остаточне прийняття очікується у незалежному звіті.

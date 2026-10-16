@@ -192,6 +192,15 @@ async def qa_page(browser, url, seed):
 async def saved_state(page):
     return await page.evaluate("JSON.parse(localStorage.getItem('slid.v1'))")
 
+async def practice_queue(page, focus=None):
+    # Match app.js: ties in SRS dates follow curriculum order, not pool item order.
+    return await page.evaluate("""focus => {
+      const c=SLID_SUBJECTS.find(c=>c.id==='math'),S=JSON.parse(localStorage.getItem('slid.v1')),order=new Map();
+      SLID_SUBJECTS.forEach(c=>c.sections.forEach(s=>(s.lessons||[]).forEach(l=>order.set(l.id,order.size))));
+      return SLID_LEARN.pickSession(S,{items:SLID_LEARN.practiceItems(S,c).filter(it=>S.lessons[it.lesson]?.done||S.unlockAll),
+        focus,n:6,day:'2026-10-16',order:id=>order.get(id)??1e9});
+    }""", focus)
+
 async def diagnostic_checks(browser, url, diag):
     for mode in ('ok', 'gap', 'shaky', 'skip'):
         context, page, errors = await qa_page(browser, url, {'grade': diag['grade'], 'unlockAll': False})
@@ -271,8 +280,7 @@ async def pool_checks(browser, url, pool):
         await page.evaluate("""arg=>{const c=SLID_SUBJECTS.find(c=>c.id==='math'), p=c.pools.find(p=>p.id===arg.id);
           c.pools=[p];p.items=arg.items;}""", {'id': pool['id'], 'items': chunk})
         await page.click('button[data-subject="math"]'); await page.click('[data-practice-view="math"]'); await page.click('[data-practice-mix]')
-        ordered = await page.evaluate("""() => {const c=SLID_SUBJECTS.find(c=>c.id==='math'),S=JSON.parse(localStorage.getItem('slid.v1'));
-          return SLID_LEARN.pickSession(S,{items:SLID_LEARN.practiceItems(S,c),n:6,day:'2026-10-16'});} """)
+        ordered = await practice_queue(page)
         assert len(ordered) == len(chunk)
         for it in ordered:
             assert 'Джерело:' in await page.locator('#stage').inner_text()
@@ -327,8 +335,7 @@ async def session_checks(browser, url):
         lvl:1,sk:'divis',src:p.sources[0].id+' №QA',type:'answer',title:'QA fixture: 2 + 3',answer:5,
         hint:'Додай два і три.',steps:['2 + 3 = 5.']}));}""")
     # Known-good is left out before unseen/failed; focus 4 + review 2, no duplicates.
-    picked = await page.evaluate("""() => {const c=SLID_SUBJECTS.find(c=>c.id==='math'),S=JSON.parse(localStorage.getItem('slid.v1'));
-      return SLID_LEARN.pickSession(S,{items:SLID_LEARN.practiceItems(S,c),focus:'g6m1l1',n:6,day:'2026-10-16'});}""")
+    picked = await practice_queue(page, 'g6m1l1')
     assert len(picked) == 6 and len({it['key'] for it in picked}) == 6
     assert sum(it['lesson'] == 'g6m1l1' for it in picked) == 4
     assert sum(it.get('review', False) for it in picked) == 2
@@ -357,6 +364,13 @@ async def session_checks(browser, url):
     assert not errors, errors
     await context.close()
     print('Session fixture: 4+2, priority, hint/retry, errors -> plan, small/exhausted, fixed SRS green', flush=True)
+    print('Reversed-order pool fixture (different answers, equal due dates):', flush=True)
+    await pool_checks(browser, url, {'id': 'pg6m1', '_grade': 6, 'items': [
+        {'id': 'qa-later', 'lesson': 'g6m1l2', 'lvl': 1, 'sk': 'divis', 'src': 'qa №2',
+         'type': 'answer', 'title': 'QA fixture: 4 + 3', 'answer': 7, 'steps': ['4 + 3 = 7.']},
+        {'id': 'qa-earlier', 'lesson': 'g6m1l1', 'lvl': 1, 'sk': 'divis', 'src': 'qa №1',
+         'type': 'answer', 'title': 'QA fixture: 2 + 3', 'answer': 5, 'steps': ['2 + 3 = 5.']}
+    ]})
 
 async def main():
     parser = argparse.ArgumentParser(description='Діагностики/пули: реальний контент і контрольовані регресії')

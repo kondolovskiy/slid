@@ -27,6 +27,14 @@ const empty = clone(); empty.diags = []; empty.pools = [];
 check(() => assert(audit(empty, matrix, learn).errors.some(e => e.includes('Нуль'))));
 const changed = JSON.parse(JSON.stringify(matrix)); changed.lessons.pop();
 check(() => assert(audit(subject, changed, learn).errors.some(e => e.includes('поза матрицею'))));
+const lostLinks = clone(); lostLinks.diags.find(d => d.id === 'dg6').items.forEach(it => { it.sk = 'num'; delete it.lesson; });
+const linksReport = audit(lostLinks, matrix, learn, { diag: 'dg6' });
+check(() => assert(linksReport.missing.some(e => e.includes('dec-ops: itemLessons'))));
+check(() => assert(linksReport.missing.some(e => e.includes('g6-eq: itemSkills'))));
+const swapped = clone(), dd = swapped.diags.find(d => d.id === 'dg6');
+[dd.items[0], dd.items[1]] = [dd.items[1], dd.items[0]];
+check(() => assert(audit(swapped, matrix, learn, { diag: 'dg6' }).missing.some(e => e.includes('itemIndices'))));
+check(() => assert.deepEqual(audit(subject, matrix, learn, { diag: 'dg6' }).missing, []));
 for (const args of [['--pool','typo'], ['--diag','typo'], ['--grade','12'], ['--pool','pg6m1','--grade','5'], ['--pool','pg6m1','--grade','7'], ['--wat'], ['--diag'], ['--diag','dg6','--pool','pg6m1']]) {
   check(() => assert.equal(spawnSync(process.execPath, ['tools/personalization-qa.mjs', ...args], { cwd: ROOT }).status, 1));
 }
