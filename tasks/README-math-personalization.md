@@ -75,7 +75,7 @@ write_group у frontmatter — позначка для оркестратора;
 - [engine-math-diag-g4-baseline](todo/engine-math-diag-g4-baseline.md)
 - [engine-math-grade-plan-context](done/engine-math-grade-plan-context.md)
 - [engine-math-pool-answer-formats](todo/engine-math-pool-answer-formats.md)
-- [tools-math-personalization-qa](todo/tools-math-personalization-qa.md)
+- [tools-math-personalization-qa](done/tools-math-personalization-qa.md)
 
 | Клас | Діагностика | Пули | Перевірка змісту й технічне приймання |
 |---|---|---|---|

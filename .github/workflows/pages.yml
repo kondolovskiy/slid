@@ -30,6 +30,7 @@ jobs:
           node tools/test-math.mjs
           node tools/test-lab.mjs
           node tools/test-learn.mjs
+          node tools/test-personalization-qa.mjs
           node tools/validate.mjs --quiet
       - name: Згенеровані файли закомічені
         run: |

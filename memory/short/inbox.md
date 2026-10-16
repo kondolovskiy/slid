@@ -11,3 +11,5 @@
 <!-- 2026-10-16: кураторські divis/prop → glossary/math і session-1; матриця v1 (review), pending й нова refine-задача → sessions/2026-10-16-2.md та handoff. -->
 <!-- 2026-10-16-3: незалежне прийняття матриці v2 й виправлення → sessions/2026-10-16-3.md, handoff; pending не розв’язано й нових математичних фактів не додано. -->
 <!-- 2026-10-16-4: класовий контекст/тренування → docs/PERSONALIZATION.md, pitfalls, sessions/2026-10-16-4.md та handoff; реальний pms2 ще не прийнято. -->
+
+<!-- 2026-10-16-5: tools-math-personalization-qa done; STATUS/ENGINE → sessions/2026-10-16-5.md, pitfalls, handoff; 11 матричних розбіжностей pg6 → reports/qa/tools-math-personalization-qa.md для наступної verify-g6. Нових FACT немає. -->
