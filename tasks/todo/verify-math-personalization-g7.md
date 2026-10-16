@@ -40,3 +40,16 @@ depends_on: [curate-math-personalization-map, write-math-diag-g7, write-math-poo
 ## Нотатки виконавця
 
 <!-- Змінені файли; джерела; рішення й обмеження; результати команд; що передано незалежному верифікатору. -->
+
+## Обсяг за матрицею 2026-10-16.v1
+
+Матриця **2026-10-16.v1** (review до кураторської перевірки required-частини). Знаменник: **26 required-уроків / 8 пулів**, мінімум 156 вправ, ціль 156–208.
+
+Очікувані required-пули: `pg7m1`, `pg7m2`, `pg7m3`, `pg7m4`, `pg7m5`, `pg7m6`, `pg7m7`, `pg7m8`.
+
+Очікувані файли: `content/math/pool-g7-g7m1.js`, `content/math/pool-g7-g7m2.js`, `content/math/pool-g7-g7m3.js`, `content/math/pool-g7-g7m4.js`, `content/math/pool-g7-g7m5.js`, `content/math/pool-g7-g7m6.js`, `content/math/pool-g7-g7m7.js`, `content/math/pool-g7-g7m8.js`; `content/math/diag-g7.js`.
+
+Required-перелік: g7m1l1, g7m1l2, g7m1l3, g7m2l1, g7m2l2, g7m2l3, g7m3l1, g7m3l2, g7m3l3, g7m3l4, g7m4l1, g7m4l2, g7m4l3, g7m5l1, g7m5l2, g7m5l3, g7m6l1, g7m6l2, g7m6l3, g7m7l1, g7m7l2, g7m7l3, g7m7l4, g7m8l1, g7m8l2, g7m8l3.
+Optional/pending окремим списком: немає.
+
+Команди: `node tools/validate.mjs --diag dg7`; для кожного переліченого пулу `node tools/validate.mjs --pool <id>`. Відсутній required-пул — помилка; відкладений — окремий неперевірений стан. Повний браузерний QA — через tools-math-personalization-qa, без дублювання раннера.

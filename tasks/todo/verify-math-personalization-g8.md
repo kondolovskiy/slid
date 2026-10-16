@@ -40,3 +40,16 @@ depends_on: [curate-math-personalization-map, write-math-diag-g8, write-math-poo
 ## Нотатки виконавця
 
 <!-- Змінені файли; джерела; рішення й обмеження; результати команд; що передано незалежному верифікатору. -->
+
+## Обсяг за матрицею 2026-10-16.v1
+
+Матриця **2026-10-16.v1** (review до кураторської перевірки required-частини). Знаменник: **21 required-уроків / 6 пулів**, мінімум 126 вправ, ціль 126–168.
+
+Очікувані required-пули: `pg8m1`, `pg8m2`, `pg8m3`, `pg8m4`, `pg8m5`, `pg8m6`.
+
+Очікувані файли: `content/math/pool-g8-g8m1.js`, `content/math/pool-g8-g8m2.js`, `content/math/pool-g8-g8m3.js`, `content/math/pool-g8-g8m4.js`, `content/math/pool-g8-g8m5.js`, `content/math/pool-g8-g8m6.js`; `content/math/diag-g8.js`.
+
+Required-перелік: g8m1l1, g8m1l2, g8m1l3, g8m1l4, g8m2l1, g8m2l2, g8m2l3, g8m2l4, g8m3l1, g8m3l2, g8m3l3, g8m3l4, g8m4l1, g8m4l2, g8m4l3, g8m5l1, g8m5l2, g8m5l3, g8m5l4, g8m6l1, g8m6l2.
+Optional/pending окремим списком: немає.
+
+Команди: `node tools/validate.mjs --diag dg8`; для кожного переліченого пулу `node tools/validate.mjs --pool <id>`. Відсутній required-пул — помилка; відкладений — окремий неперевірений стан. Повний браузерний QA — через tools-math-personalization-qa, без дублювання раннера.

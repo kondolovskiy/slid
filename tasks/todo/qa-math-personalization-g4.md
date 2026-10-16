@@ -36,3 +36,16 @@ depends_on: [verify-math-personalization-g4, tools-math-personalization-qa, engi
 ## Нотатки виконавця
 
 <!-- Змінені файли; джерела; рішення й обмеження; результати команд; що передано незалежному верифікатору. -->
+
+## Обсяг за матрицею 2026-10-16.v1
+
+Матриця **2026-10-16.v1** (review до кураторської перевірки required-частини). Знаменник: **20 required-уроків / 6 пулів**, мінімум 120 вправ, ціль 120–160.
+
+Очікувані required-пули: `pg4m1`, `pg4m2`, `pm4s1`, `pg4m3`, `pg4m4`, `pg4m5`.
+
+Очікувані файли: `content/math/pool-g4-g4m1.js`, `content/math/pool-g4-g4m2.js`, `content/math/pool-g4-m4s1.js`, `content/math/pool-g4-g4m3.js`, `content/math/pool-g4-g4m4.js`, `content/math/pool-g4-g4m5.js`; `content/math/diag-g4.js`.
+
+Required-перелік: g4m1l1, g4m1l2, g4m1l3, g4m2l1, g4m2l2, g4m2l3, g4m2l4, m4a, g4m3l1, g4m3l2, g4m3l3, g4m3l4, g4m4l1, g4m4l2, g4m4l3, g4m4l4, g4m5l1, g4m5l2, g4m5l3, g4m5l4.
+Optional/pending окремим списком: g4m1l4 (pending).
+
+Команди: `node tools/validate.mjs --diag dg4`; для кожного переліченого пулу `node tools/validate.mjs --pool <id>`. Відсутній required-пул — помилка; відкладений — окремий неперевірений стан. Повний браузерний QA — через tools-math-personalization-qa, без дублювання раннера.

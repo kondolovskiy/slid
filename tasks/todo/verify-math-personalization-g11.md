@@ -6,13 +6,13 @@ grade: 11
 status: todo
 claimed_by:
 created: 2026-10-15
-depends_on: [curate-math-personalization-map, write-math-diag-g11, write-math-pool-g11m1, write-math-pool-g11m2, write-math-pool-g11m3, write-math-pool-g11m4, write-math-pool-g11m5, write-math-pool-g11m6]
+depends_on: [curate-math-personalization-map, write-math-diag-g11, write-math-pool-g11m1, write-math-pool-g11m3, write-math-pool-g11m4, write-math-pool-g11m5]
 ---
 # Незалежно перевірити зміст діагностики й пулів 11-го класу
 
 ## Вхід і незалежність
 
-Діагностика `dg11` та пули розділів: `g11m1`, `g11m2`, `g11m3`, `g11m4`, `g11m5`, `g11m6`. Обов’язкові авторські задачі за актуальною матрицею готові до цієї перевірки у review; відкладені розділи без required-уроків куратор вилучає з depends_on і переліку очікуваних пулів із записом причини, матриця покриття готова до використання. Загальний QA та інженерні розширення інших класів не є передумовою перевірки змісту. Для 6-го контент уже verified; перевірити регресію та змістові правки curate-math-diag-g6-links, не створювати заново.
+Діагностика `dg11` та пули розділів: `g11m1`, `g11m3`, `g11m4`, `g11m5` (required); `g11m2`, `g11m6` відкладені окремо. Обов’язкові авторські задачі за актуальною матрицею готові до цієї перевірки у review; відкладені розділи без required-уроків куратор вилучає з depends_on і переліку очікуваних пулів із записом причини, матриця покриття готова до використання. Загальний QA та інженерні розширення інших класів не є передумовою перевірки змісту. Для 6-го контент уже verified; перевірити регресію та змістові правки curate-math-diag-g6-links, не створювати заново.
 
 Перевіряє інший виконавець, який не писав відповідного файла. Якщо він писав частину пакета — для цієї частини потрібен окремий незалежний верифікатор. Ця задача перевіряє зміст; інтеграційне приймання виконує qa-math-personalization-g11. Автор не ставить verified самостійно.
 
@@ -40,3 +40,18 @@ depends_on: [curate-math-personalization-map, write-math-diag-g11, write-math-po
 ## Нотатки виконавця
 
 <!-- Змінені файли; джерела; рішення й обмеження; результати команд; що передано незалежному верифікатору. -->
+
+## Обсяг за матрицею 2026-10-16.v1
+
+Матриця **2026-10-16.v1** (review до кураторської перевірки required-частини). Знаменник: **13 required-уроків / 4 пулів**, мінімум 78 вправ, ціль 78–104.
+
+Очікувані required-пули: `pg11m1`, `pg11m3`, `pg11m4`, `pg11m5`.
+
+Очікувані файли: `content/math/pool-g11-g11m1.js`, `content/math/pool-g11-g11m3.js`, `content/math/pool-g11-g11m4.js`, `content/math/pool-g11-g11m5.js`; `content/math/diag-g11.js`.
+
+Required-перелік: g11m1l1, g11m1l2, g11m1l3, g11m1l4, g11m3l1, g11m3l2, g11m3l3, g11m4l1, g11m4l2, g11m4l3, g11m4l4, g11m5l1, g11m5l2.
+Optional/pending окремим списком: g11m2l1 (pending), g11m2l2 (pending), g11m2l3 (optional), g11m5l3 (pending), g11m6l1 (optional), g11m6l2 (optional), g11m6l3 (optional), g11m6l4 (optional).
+
+Команди: `node tools/validate.mjs --diag dg11`; для кожного переліченого пулу `node tools/validate.mjs --pool <id>`. Відсутній required-пул — помилка; відкладений — окремий неперевірений стан. Повний браузерний QA — через tools-math-personalization-qa, без дублювання раннера.
+
+Необов’язкові, відкладені задачі: [write-math-pool-g11m2](write-math-pool-g11m2.md), [write-math-pool-g11m6](write-math-pool-g11m6.md). Вилучені з required depends_on/очікуваних файлів; їхня відсутність не блокує приймання required. Якщо повертається required, куратор відновлює залежності й повторює приймання.

@@ -40,3 +40,16 @@ depends_on: [curate-math-personalization-map, write-math-diag-g5, write-math-poo
 ## Нотатки виконавця
 
 <!-- Змінені файли; джерела; рішення й обмеження; результати команд; що передано незалежному верифікатору. -->
+
+## Обсяг за матрицею 2026-10-16.v1
+
+Матриця **2026-10-16.v1** (review до кураторської перевірки required-частини). Знаменник: **24 required-уроків / 6 пулів**, мінімум 144 вправ, ціль 144–192.
+
+Очікувані required-пули: `pms0`, `pms0b`, `pms1`, `pms2`, `pms3`, `pms4`.
+
+Очікувані файли: `content/math/pool-g5-ms0.js`, `content/math/pool-g5-ms0b.js`, `content/math/pool-g5-ms1.js`, `content/math/pool-g5-ms2.js`, `content/math/pool-g5-ms3.js`, `content/math/pool-g5-ms4.js`; `content/math/diag-g5.js`.
+
+Required-перелік: ms0l1, ms0l2, ms0l3, ms0l4, ms0l5, ms0bl1, ms0bl2, ms0bl4, m1, m2, m3, m4, m5, ms2l1, ms2l2, ms2l3, ms2l4, ms2l5, ms2l7, ms3l1, ms3l2, ms4l1, ms4l2, ms4l3.
+Optional/pending окремим списком: ms0bl3 (pending), ms3l3 (pending).
+
+Команди: `node tools/validate.mjs --diag dg5`; для кожного переліченого пулу `node tools/validate.mjs --pool <id>`. Відсутній required-пул — помилка; відкладений — окремий неперевірений стан. Повний браузерний QA — через tools-math-personalization-qa, без дублювання раннера.

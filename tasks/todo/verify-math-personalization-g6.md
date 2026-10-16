@@ -6,7 +6,7 @@ grade: 6
 status: todo
 claimed_by:
 created: 2026-10-15
-depends_on: [curate-math-personalization-map, curate-math-diag-g6-links]
+depends_on: [curate-math-personalization-map, curate-math-diag-g6-links, refine-math-diag-g6-coverage]
 ---
 # Незалежно перевірити зміст діагностики й пулів 6-го класу
 
@@ -40,3 +40,18 @@ depends_on: [curate-math-personalization-map, curate-math-diag-g6-links]
 ## Нотатки виконавця
 
 <!-- Змінені файли; джерела; рішення й обмеження; результати команд; що передано незалежному верифікатору. -->
+
+## Обсяг за матрицею 2026-10-16.v1
+
+Матриця **2026-10-16.v1** (review до кураторської перевірки required-частини). Знаменник: **23 required-уроків / 5 пулів**, мінімум 138 вправ, ціль 138–184.
+
+Очікувані required-пули: `pg6m1`, `pg6m2`, `pg6m3`, `pg6m4`, `pg6m5`.
+
+Очікувані файли: `content/math/pool-g6-g6m1.js`, `content/math/pool-g6-g6m2.js`, `content/math/pool-g6-g6m3.js`, `content/math/pool-g6-g6m4.js`, `content/math/pool-g6-g6m5.js`; `content/math/diag-g6.js`.
+
+Required-перелік: g6m1l1, g6m1l2, g6m1l3, g6m1l4, g6m2l1, g6m2l2, g6m2l3, g6m2l4, g6m2l5, g6m3l1, g6m3l2, g6m3l3, g6m3l4, g6m3l5, g6m4l1, g6m4l2, g6m4l3, g6m4l4, g6m4l5, g6m5l1, g6m5l2, g6m5l3, g6m5l4.
+Optional/pending окремим списком: немає.
+
+Команди: `node tools/validate.mjs --diag dg6`; для кожного переліченого пулу `node tools/validate.mjs --pool <id>`. Відсутній required-пул — помилка; відкладений — окремий неперевірений стан. Повний браузерний QA — через tools-math-personalization-qa, без дублювання раннера.
+
+Чинні 184 вправи збережено. refine-math-diag-g6-coverage — нова required-залежність перевірки/приймання: усунути ризик надто широкого known, не перевідкриваючи curate-math-diag-g6-links.

@@ -40,3 +40,16 @@ depends_on: [curate-math-personalization-map, write-math-diag-g9, write-math-poo
 ## Нотатки виконавця
 
 <!-- Змінені файли; джерела; рішення й обмеження; результати команд; що передано незалежному верифікатору. -->
+
+## Обсяг за матрицею 2026-10-16.v1
+
+Матриця **2026-10-16.v1** (review до кураторської перевірки required-частини). Знаменник: **24 required-уроків / 7 пулів**, мінімум 144 вправ, ціль 144–192.
+
+Очікувані required-пули: `pg9m1`, `pg9m2`, `pg9m3`, `pg9m4`, `pg9m5`, `pg9m6`, `pg9m7`.
+
+Очікувані файли: `content/math/pool-g9-g9m1.js`, `content/math/pool-g9-g9m2.js`, `content/math/pool-g9-g9m3.js`, `content/math/pool-g9-g9m4.js`, `content/math/pool-g9-g9m5.js`, `content/math/pool-g9-g9m6.js`, `content/math/pool-g9-g9m7.js`; `content/math/diag-g9.js`.
+
+Required-перелік: g9m1l1, g9m1l2, g9m1l3, g9m2l1, g9m2l2, g9m2l3, g9m2l4, g9m3l1, g9m3l2, g9m3l3, g9m3l4, g9m4l1, g9m4l2, g9m4l3, g9m5l1, g9m5l2, g9m5l3, g9m6l1, g9m6l2, g9m6l3, g9m6l4, g9m7l1, g9m7l2, g9m7l3.
+Optional/pending окремим списком: немає.
+
+Команди: `node tools/validate.mjs --diag dg9`; для кожного переліченого пулу `node tools/validate.mjs --pool <id>`. Відсутній required-пул — помилка; відкладений — окремий неперевірений стан. Повний браузерний QA — через tools-math-personalization-qa, без дублювання раннера.

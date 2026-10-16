@@ -36,3 +36,18 @@ depends_on: [verify-math-personalization-g11, tools-math-personalization-qa, eng
 ## Нотатки виконавця
 
 <!-- Змінені файли; джерела; рішення й обмеження; результати команд; що передано незалежному верифікатору. -->
+
+## Обсяг за матрицею 2026-10-16.v1
+
+Матриця **2026-10-16.v1** (review до кураторської перевірки required-частини). Знаменник: **13 required-уроків / 4 пулів**, мінімум 78 вправ, ціль 78–104.
+
+Очікувані required-пули: `pg11m1`, `pg11m3`, `pg11m4`, `pg11m5`.
+
+Очікувані файли: `content/math/pool-g11-g11m1.js`, `content/math/pool-g11-g11m3.js`, `content/math/pool-g11-g11m4.js`, `content/math/pool-g11-g11m5.js`; `content/math/diag-g11.js`.
+
+Required-перелік: g11m1l1, g11m1l2, g11m1l3, g11m1l4, g11m3l1, g11m3l2, g11m3l3, g11m4l1, g11m4l2, g11m4l3, g11m4l4, g11m5l1, g11m5l2.
+Optional/pending окремим списком: g11m2l1 (pending), g11m2l2 (pending), g11m2l3 (optional), g11m5l3 (pending), g11m6l1 (optional), g11m6l2 (optional), g11m6l3 (optional), g11m6l4 (optional).
+
+Команди: `node tools/validate.mjs --diag dg11`; для кожного переліченого пулу `node tools/validate.mjs --pool <id>`. Відсутній required-пул — помилка; відкладений — окремий неперевірений стан. Повний браузерний QA — через tools-math-personalization-qa, без дублювання раннера.
+
+Необов’язкові, відкладені задачі: [write-math-pool-g11m2](write-math-pool-g11m2.md), [write-math-pool-g11m6](write-math-pool-g11m6.md). Вилучені з required depends_on/очікуваних файлів; їхня відсутність не блокує приймання required. Якщо повертається required, куратор відновлює залежності й повторює приймання.
