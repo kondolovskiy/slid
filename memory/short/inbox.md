@@ -13,3 +13,5 @@
 <!-- 2026-10-16-4: класовий контекст/тренування → docs/PERSONALIZATION.md, pitfalls, sessions/2026-10-16-4.md та handoff; реальний pms2 ще не прийнято. -->
 
 <!-- 2026-10-16-5: tools-math-personalization-qa done; STATUS/ENGINE → sessions/2026-10-16-5.md, pitfalls, handoff; 11 матричних розбіжностей pg6 → reports/qa/tools-math-personalization-qa.md для наступної verify-g6. Нових FACT немає. -->
+
+<!-- 2026-10-16-6: пряме рішення Віктора про інженерне рев’ю → D-026, AGENTS.md, INDEX; незалежний review_personalization_qa знайшов 2 P2, виправлення def3428 повторно прийнято → reports/review/tools-math-personalization-qa.md, sessions/2026-10-16-6.md, handoff. Задача done лише після вердикту. -->

@@ -5,7 +5,7 @@ write_group: personalization-shared
 id: tools-math-personalization-qa
 type: engineering
 subject: math
-status: review
+status: done
 claimed_by: codex-qa
 created: 2026-10-15
 depends_on: [curate-math-personalization-map]
@@ -60,3 +60,5 @@ write_group: personalization-shared. Перед змінами оркестра�
 - 16.10: за прямим дорученням Віктора повернено done → review. Незалежний агент `review_personalization_qa` (свіжий контекст) перевіряє коміт `8676364`; звіт reports/review/tools-math-personalization-qa.md. До прийняття не закривати повторно.
 
 - Первинний незалежний вердикт: дві P2 (звірка itemLessons/itemSkills/itemIndices; порядок браузерної черги при однакових due). Виправив автор codex-qa як єдиний редактор personalization-shared; передано на повторне рев’ю, редагування знову вільно. QA 25/25, learn 427/427, Chrome regression + reversed-order fixture green. Остаточне прийняття очікується у незалежному звіті.
+
+- Повторне незалежне прийняття: агент review_personalization_qa прийняв `def3428fddd7efe5db7d4e69cae9825fe11474c7`; обидві P2 закрито, нових блокувальних немає. Власні перевірки рецензента: QA25/learn427, strict dg6, Chrome regression включно з reversed-order/offline — green. Задачу повернуто review → done після вердикту; звіт reports/review/tools-math-personalization-qa.md.
