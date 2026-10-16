@@ -12,7 +12,7 @@ SLID.diag("math", {
   meta: { author: "claude-opus", created: "2026-10-13", factcheck: "self", teacher: null },
   topics: [
     // передумови з 4–5 класів
-    { id: "ord", title: "Порядок дій", kind: "pre", lessons: ["ms0l3"], for: ["g6m5"] },
+    { id: "ord", title: "Порядок дій", kind: "pre", lessons: ["ms0l3"], for: ["g6m3", "g6m5"] },
     { id: "eq", title: "Прості рівняння", kind: "pre", lessons: ["ms0l4"], for: ["g6m3", "g6m5"] },
     { id: "rem", title: "Ділення з остачею", kind: "pre", lessons: ["m4a"], for: ["g6m1"] },
     { id: "frac", title: "Що таке дріб", kind: "pre", lessons: ["m1"], for: ["g6m2"] },
@@ -21,7 +21,7 @@ SLID.diag("math", {
     { id: "frac-add", title: "Додавання і віднімання дробів", kind: "pre", lessons: ["m4"], for: ["g6m2"] },
     { id: "mixed", title: "Мішані числа", kind: "pre", lessons: ["m5"], for: ["g6m2"] },
     { id: "dec", title: "Десяткові дроби: запис і порівняння", kind: "pre", lessons: ["ms2l1", "ms2l2"], for: ["g6m4"] },
-    { id: "dec-ops", title: "Дії з десятковими дробами", kind: "pre", lessons: ["ms2l3", "ms2l4"], for: ["g6m3", "g6m4"] },
+    { id: "dec-ops", title: "Дії з десятковими дробами", kind: "pre", lessons: ["ms2l3", "ms2l4"], for: ["g6m3"] },
     { id: "pct", title: "Відсотки", kind: "pre", lessons: ["ms3l1", "ms3l2"], for: ["g6m3"] },
     { id: "geom", title: "Периметр і площа", kind: "pre", lessons: ["ms0bl4", "ms4l1"], for: ["g6m3", "g6m5"] },
     // теми 6 класу
@@ -181,7 +181,7 @@ SLID.diag("math", {
     {
       topic: "g6-div",
       type: "multi",
-      sk: "div",
+      sk: "divis",
       title: "Які числа діляться націло на 3?",
       body: "<p>Обери всі такі числа. Ділити в стовпчик не треба.</p>",
       opts: ["143", "252", "411", "730"],
@@ -218,7 +218,7 @@ SLID.diag("math", {
     {
       topic: "g6-lcm",
       type: "number",
-      sk: "div",
+      sk: "divis",
       title: "Знайди НСК (6; 8)",
       body: "<p>Впиши найменше спільне кратне чисел 6 і 8.</p>",
       answer: 24
@@ -300,7 +300,7 @@ SLID.diag("math", {
     {
       topic: "g6-prop",
       type: "number",
-      sk: "pct",
+      sk: "prop",
       title: "Знайди $x$",
       body: "$$x : 8 = 3 : 4$$",
       answer: 6
