@@ -13,7 +13,7 @@ depends_on: [curate-math-personalization-map, engine-math-pool-answer-formats]
 
 ## Причина й межі
 
-Матриця docs/math-personalization-coverage.md/.json, версія 2026-10-16.v1, виявила наступний ризик: одна cur-проба відкриває весь урок, хоча перевіряє частину його ядра. g6-div перевіряє тільки ознаку на 3, g6-lcm — тільки НСК, g6-prop — одну пропорцію, g6-neg — одну суму. Це нова задача, а не повторне виконання закритої curate-math-diag-g6-links. Її ключі divis/prop, for, item.lesson та незмінені URL — базова лінія.
+Матриця docs/math-personalization-coverage.md/.json, версія 2026-10-16.v2, виявила наступний ризик: одна cur-проба відкриває весь урок, хоча перевіряє частину його ядра. g6-div перевіряє тільки ознаку на 3, g6-lcm — тільки НСК, g6-prop — одну пропорцію, g6-neg — одну суму. Це нова задача, а не повторне виконання закритої curate-math-diag-g6-links. Її ключі divis/prop, for, item.lesson та незмінені URL — базова лінія.
 
 ## Формати й фактичне покриття пулів
 

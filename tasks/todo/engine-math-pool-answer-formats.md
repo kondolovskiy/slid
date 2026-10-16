@@ -41,6 +41,6 @@ write_group: personalization-shared. Перед змінами оркестра�
 
 <!-- Змінені файли; джерела; рішення й обмеження; результати команд; що передано незалежному верифікатору. -->
 
-## Обсяг за матрицею 2026-10-16.v1
+## Обсяг за матрицею 2026-10-16.v2
 
-Вхід: docs/math-personalization-coverage.json **2026-10-16.v1**, поле formats кожного уроку. Number/list/comparison/factors — чинні можливості; ratio, coordinates2, exactRoot, intervalSet, expression, periodicSet — потрібні розширення required. Coordinates3/рівняння площини стосуються відкладеного g11m2 і не блокують required інших класів. Labels матриці не визначають API answerKind: узгодити мінімальний контракт, не втрачати порядок координат, знаки, точність коренів, межі/об’єднання проміжків або k∈Z. Автор не підміняє ці об’єкти одною довільною числовою компонентою.
+Вхід: docs/math-personalization-coverage.json **2026-10-16.v2**, поле formats кожного уроку. Number/list/comparison/factors — чинні можливості; ratio, coordinates2, exactRoot, intervalSet, expression, periodicSet — потрібні розширення required. Coordinates3/рівняння площини стосуються відкладеного g11m2 і не блокують required інших класів. Labels матриці не визначають API answerKind: узгодити мінімальний контракт, не втрачати порядок координат, знаки, точність коренів, межі/об’єднання проміжків або k∈Z. Автор не підміняє ці об’єкти одною довільною числовою компонентою.
