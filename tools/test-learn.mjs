@@ -426,5 +426,75 @@ const order = l => ({ L1: 3, L2: 1, L3: 2, L4: 4 }[l] ?? 50);
     eq(mut(p => { delete p.items[0].reduced; Object.assign(p.items[0], fields); }).some(e => e.includes("answer")), true, `validatePool: некоректна відповідь ${JSON.stringify(fields)}`);
 }
 
+/* Класовий контекст: міграція, 6 → 7 → 6, повторний тест і старі результати. */
+{
+  const d6 = { ...clone(D), id: "dg6", grade: 6 }, d7 = { ...clone(D), id: "dg7", grade: 7 };
+  const S = { ...fresh(), grade: 6, diagRun: { dg6: { 0: OK }, dg7: { 1: BAD } }, lessons: { a1: { done: true } }, seen: { "pool:i": 1 }, srs: { a1: { box: 2, due: "2026-10-20" } } };
+  const dataBefore = JSON.stringify([S.diagRun, S.lessons, S.seen, S.srs]);
+  S.plan.math = { diag: "dg6", steps: [{ l: "a1", src: "err", done: false }], known: ["x1"] };
+  const ctx = grade => ({ grade, diags: [d6, d7], hasLesson: id => id !== "future" });
+  const old = L.planFor(S, "math", ctx(6));
+  eq(old.grade, 6, "context: legacy plan derives grade from diagnostic");
+  eq(S.planByGrade.math[6] === old, true, "context: migration preserves original plan");
+  S.grade = 7;
+  eq(L.planFor(S, "math", ctx(7)), undefined, "context: no grade 6 plan in grade 7");
+  eq(L.isKnown(S, "math", "x1", ctx(7)), false, "context: known does not leak to grade 7");
+  L.finishDiag(S, "math", d7, {}, ctx(7));
+  eq(S.plan.math.steps.some(st => st.src === "err"), false, "context: grade 7 test does not inherit grade 6 errors");
+  S.plan.math.known = ["only7"];
+  L.syncPlan(S, "math", [{ l: "future", n: 3, of: 4 }, { l: "grade7", n: 2, of: 3 }], "2026-10-16", ctx(7));
+  eq(S.plan.math.steps.some(st => st.l === "future"), false, "context: syncPlan filters invalid recommendations");
+  S.grade = 6;
+  eq(L.planFor(S, "math", ctx(6)) === old, true, "context: grade 6 plan restored");
+  eq(L.isKnown(S, "math", "only7", ctx(6)), false, "context: grade 7 known does not leak back");
+  L.lessonDone(S, "math", "a1", 1, "2026-10-16", ctx(6));
+  eq(old.steps[0].done, true, "context: prerequisite closes active grade 6 step");
+  const copy = clone(S);
+  eq(L.planFor(copy, "math", ctx(7)).known, ["only7"], "context: grade 7 survives reload");
+  eq(L.planFor(copy, "math", ctx(6)).steps[0].done, true, "context: grade 6 completion survives reload");
+  eq(JSON.stringify([S.diagRun, S.lessons, S.seen, S.srs]), dataBefore, "context: partial tests, lessons, seen and SRS unchanged");
+  const stale = { ...fresh(), grade: 7, plan: { math: { diag: "dg6", steps: [], known: ["old6"] } } };
+  eq(L.planFor(stale, "math", ctx(7)), undefined, "context: legacy plan identified by diag even after profile switched");
+  eq(L.planFor(stale, "math", ctx(6)).known, ["old6"], "context: legacy grade 6 plan retained");
+  const lost = { ...fresh(), grade: 6, diag: { dg6: { done: true, date: "2026-10-13", res: { 0: BAD } } } };
+  const rebuilt = L.planFor(lost, "math", ctx(6));
+  eq(rebuilt.diag, "dg6", "context: missing plan rebuilt from saved result");
+  eq(rebuilt.date, "2026-10-13", "context: reconstruction preserves original date");
+  eq(rebuilt.steps.length > 0, true, "context: reconstruction restores prerequisites");
+  const err = { ...fresh(), grade: 6, plan: { math: { grade: 6, steps: [{ l: "future", src: "err" }, { l: "valid", src: "err" }], known: [] } } };
+  eq(L.finishDiag(err, "math", d6, {}, ctx(6)).steps.filter(st => st.src === "err").map(st => st.l), ["valid"], "context: retest keeps valid same-context errors only");
+  const noDiag = { ...fresh(), grade: 6, plan: { math: { diag: null, steps: [], known: [] } } };
+  L.planFor(noDiag, "math", ctx(6)); noDiag.grade = 7;
+  eq(L.planFor(noDiag, "math", ctx(7)), undefined, "context: errors-only legacy plan remains at original grade");
+  eq(L.planFor({ ...fresh(), grade: 6 }, "math", ctx(6)), undefined, "context: fresh profile has no invented plan");
+}
+/* Міжкласове тренування: пул з’явився пізніше, майбутні/непройдені теми, SRS. */
+{
+  const S = { grade: 6, lessons: {}, seen: {}, srs: {} };
+  const c = { sections: [
+    { id: "s5", grade: 5, lessons: [{ id: "pre5" }, { id: "closed5" }] },
+    { id: "s6", grade: 6, lessons: [{ id: "current6" }] },
+    { id: "s7", grade: 7, lessons: [{ id: "future7" }] }], pools: [] };
+  const pool = (id, section, ls) => ({ id, section, items: ls.map((lesson, i) => ({ id: "i" + i, lesson, lvl: 1 })) });
+  const previous = pool("p5", "s5", ["pre5", "closed5"]);
+  c.pools.push(previous, pool("p6", "s6", ["current6"]), pool("p7", "s7", ["future7"]));
+  eq(L.practiceItems(S, c).map(it => it.lesson), ["current6"], "practice context: older uncompleted and future topics excluded");
+  S.lessons.pre5 = { done: true }; S.lessons.future7 = { done: true }; S.unlockAll = true;
+  eq(L.practiceItems(S, c).map(it => it.lesson), ["pre5", "current6"], "practice context: completed prerequisite available; future and uncompleted older excluded even with debug flag");
+  S.unlockAll = false;
+  c.pools.shift();
+  eq(L.practiceItems(S, c).some(it => it.lesson === "pre5"), false, "practice context: absent prerequisite pool has no link");
+  c.pools.push(previous);
+  const items = L.practiceItems(S, c).filter(it => S.lessons[it.lesson]?.done);
+  eq(items.map(it => it.key), ["p5:i0"], "practice context: late pool opens without repeating lesson");
+  const picked = L.pickSession(S, { items, focus: "pre5", day: "2026-10-16" });
+  eq(picked.map(it => it.lesson), ["pre5"], "practice context: selection includes older prerequisite");
+  L.srsInit(S, "pre5", "2026-10-16");
+  eq(L.isDue(S, "pre5", "2026-10-17"), true, "practice context: prerequisite becomes due");
+  L.srsUpdate(S, [{ lesson: "pre5", ok: true }], "2026-10-17");
+  eq(S.srs.pre5, { box: 1, due: "2026-10-20" }, "practice context: prerequisite SRS advances");
+  eq(S.grade, 6, "practice context: grade never changed");
+}
+
 console.log(`\n${n} перевірок, ${fails ? fails + " з помилками" : "усе гаразд"}`);
 if (fails) process.exit(1);

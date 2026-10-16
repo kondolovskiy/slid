@@ -9,6 +9,33 @@ window.SLID_LEARN = (() => {
 
   /* ---------- Діагностика ---------- */
   const DIAG_TYPES = ["choice", "multi", "sort", "order", "number", "fracin", "shade", "numline", "lab"];
+  /** Активний план предмета/класу. Старий S.plan лишається сумісним активним посиланням;
+      planByGrade зберігає плани інших класів, не чіпаючи загальний прогрес. */
+  function planFor(S, subjectId, ctx = {}) {
+    const grade = ctx.grade ?? S.grade;
+    S.plan ||= {};
+    if (!Number.isInteger(grade)) return S.plan[subjectId];
+    S.planByGrade ||= {};
+    const plans = S.planByGrade[subjectId] ||= {}, legacy = S.plan[subjectId];
+    if (legacy) {
+      const oldGrade = legacy.grade ?? (ctx.diags || []).find(d => d.id === legacy.diag)?.grade ?? grade;
+      if (!plans[oldGrade]) { legacy.grade = oldGrade; plans[oldGrade] = legacy; }
+    }
+    // Старий профіль міг мати результати кількох тестів, але тільки останній план.
+    const d = (ctx.diags || []).find(d => d.grade === grade), rec = d && S.diag?.[d.id];
+    if (!plans[grade] && rec?.done && rec.res) plans[grade] = buildPlan(d, rec.res, { ...ctx, day: rec.date });
+    if (plans[grade]) S.plan[subjectId] = plans[grade]; else delete S.plan[subjectId];
+    return plans[grade];
+  }
+  function storePlan(S, subjectId, plan, grade) {
+    S.plan ||= {};
+    if (Number.isInteger(grade)) {
+      plan.grade = grade; S.planByGrade ||= {};
+      (S.planByGrade[subjectId] ||= {})[grade] = plan;
+    }
+    S.plan[subjectId] = plan;
+    return plan;
+  }
   /** Наступне завдання: перше без відповіді, якщо раніше в цій темі не було помилки (складніше після провалу базового не питаємо). */
   function nextItem(d, res) {
     const failed = new Set();
@@ -65,14 +92,14 @@ window.SLID_LEARN = (() => {
       .forEach(x => { const own = x.st === "shaky" ? [...new Set(d.items.filter((it, i) => it.topic === x.t.id && it.lesson && i in res && res[i] !== OK).map(it => it.lesson))] : [];
         (own.length ? own : x.t.lessons || []).forEach(l => { if (has(l) && !seen.has(l)) { seen.add(l); steps.push({ l, why: x.st, topic: x.t.id, src: "diag", done: false }); } }); });
     const known = [...new Set(d.topics.filter(t => t.kind === "cur" && topics[t.id] === "known").flatMap(t => t.lessons || []).filter(has))];
-    return { diag: d.id, date: ctx.day || null, topics, steps, known };
+    return { diag: d.id, grade: d.grade, date: ctx.day || null, topics, steps, known };
   }
   /** Зберігає результат тесту й план у стані. Незакриті кроки з помилок в уроках (src: "err") переходять у новий план; решту тест перераховує заново. */
-  function finishDiag(S, subjectId, d, res, ctx) {
-    const plan = buildPlan(d, res, ctx), old = S.plan[subjectId];
-    if (old) for (const st of old.steps) if (st.src === "err" && !st.done && !plan.steps.some(x => x.l === st.l)) plan.steps.push(st);
+  function finishDiag(S, subjectId, d, res, ctx = {}) {
+    const old = planFor(S, subjectId, { ...ctx, grade: d.grade }), plan = buildPlan(d, res, ctx);
+    if (old) for (const st of old.steps) if (st.src === "err" && !st.done && (!ctx.hasLesson || ctx.hasLesson(st.l)) && !plan.steps.some(x => x.l === st.l)) plan.steps.push(st);
     S.diag[d.id] = { done: true, date: plan.date, res: { ...res }, topics: plan.topics };
-    S.plan[subjectId] = plan;
+    storePlan(S, subjectId, plan, d.grade);
     return plan;
   }
 
@@ -106,10 +133,11 @@ window.SLID_LEARN = (() => {
     return out.sort((a, b) => b.n / b.of - a.n / a.of || order(a.l) - order(b.l));
   }
   /** Додає знайдені теми в план предмета (створює план, якщо його ще не було). Повертає нові кроки. */
-  function syncPlan(S, subjectId, recs, day) {
-    const plan = S.plan[subjectId] || (S.plan[subjectId] = { diag: null, date: day || null, topics: {}, steps: [], known: [] });
+  function syncPlan(S, subjectId, recs, day, ctx = {}) {
+    const plan = planFor(S, subjectId, ctx) || storePlan(S, subjectId, { diag: null, date: day || null, topics: {}, steps: [], known: [] }, ctx.grade ?? S.grade);
     const added = [];
     for (const r of recs) {
+      if (ctx.hasLesson && !ctx.hasLesson(r.l)) continue;
       if (plan.steps.some(st => st.l === r.l && !st.done)) continue;
       const st = { l: r.l, why: "errors", src: "err", n: r.n, of: r.of, done: false, date: day || null };
       if (r.sk) st.sk = r.sk;
@@ -119,8 +147,8 @@ window.SLID_LEARN = (() => {
   }
   /** Урок пройдено з часткою acc з першої спроби. Якщо це крок плану й результат добрий — крок виконано, «пам'ять» про помилки теми стирається.
       Повертає { closed: [кроки], retry: чи лишився незакритий крок із цим уроком }. */
-  function lessonDone(S, subjectId, lessonId, acc, day) {
-    const plan = S.plan[subjectId], out = { closed: [], retry: false };
+  function lessonDone(S, subjectId, lessonId, acc, day, ctx = {}) {
+    const plan = planFor(S, subjectId, ctx), out = { closed: [], retry: false };
     const mine = plan ? plan.steps.filter(st => st.l === lessonId && !st.done) : [];
     if (acc >= PASS) {
       mine.forEach(st => { st.done = true; st.doneAt = day || null; out.closed.push(st); });
@@ -133,7 +161,7 @@ window.SLID_LEARN = (() => {
     return out;
   }
   const todo = plan => plan ? plan.steps.filter(st => !st.done) : [];
-  const isKnown = (S, subjectId, lessonId) => !!(S.plan[subjectId] && (S.plan[subjectId].known || []).includes(lessonId));
+  const isKnown = (S, subjectId, lessonId, ctx) => !!planFor(S, subjectId, ctx)?.known?.includes(lessonId);
 
   /* ---------- Відповідь, яку дитина записує сама (тип екрана answer) ---------- */
   const gcd = (a, b) => { a = Math.abs(a); b = Math.abs(b); while (b) [a, b] = [b, a % b]; return a; };
@@ -203,6 +231,17 @@ window.SLID_LEARN = (() => {
 
   /* ---------- Тренування: пул задач і інтервальне повторення (коробки Лейтнера на рівні теми) ---------- */
   const BOX_DAYS = [1, 3, 7, 16, 35];
+  /** У поточному класі видно також закриті теми; у молодших — лише справді пройдені.
+      Пули шукаємо заново: доданий пізніше пул відкриється без повторного уроку. */
+  function practiceItems(S, subject) {
+    return (subject.pools || []).flatMap(pool => {
+      const sec = subject.sections.find(s => s.id === pool.section);
+      if (!sec || sec.grade > S.grade) return [];
+      const ids = new Set((sec.lessons || []).map(l => l.id));
+      return pool.items.filter(it => ids.has(it.lesson) && (sec.grade === S.grade || S.lessons?.[it.lesson]?.done))
+        .map(it => ({ ...it, key: pool.id + ":" + it.id, pool }));
+    });
+  }
   const addDay = (day, n) => new Date(Date.parse(day + "T00:00:00Z") + n * 864e5).toISOString().slice(0, 10);
   /** Тему пройдено вперше — перше повторення завтра. */
   function srsInit(S, lesson, day) { if (!S.srs[lesson]) S.srs[lesson] = { box: 0, due: addDay(day, BOX_DAYS[0]) }; }
@@ -315,6 +354,6 @@ window.SLID_LEARN = (() => {
     return E;
   }
 
-  return { OK, BAD, SKIP, PASS, DIAG_TYPES, nextItem, remaining, topicStatus, level, buildPlan, finishDiag, record, detect, syncPlan, lessonDone, todo, isKnown, validate,
+  return { OK, BAD, SKIP, PASS, DIAG_TYPES, planFor, practiceItems, nextItem, remaining, topicStatus, level, buildPlan, finishDiag, record, detect, syncPlan, lessonDone, todo, isKnown, validate,
     parseAns, checkAns, BOX_DAYS, srsInit, srsUpdate, isDue, pickSession, POOL_TYPES, validatePool };
 })();
