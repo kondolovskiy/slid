@@ -5,7 +5,7 @@ id: write-math-diag-g4
 type: write-diag
 subject: math
 grade: 4
-status: review
+status: done
 claimed_by: writer-dg4
 created: 2026-10-15
 depends_on: [curate-math-personalization-map, engine-math-diag-g4-baseline]
