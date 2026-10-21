@@ -16,3 +16,4 @@
 
 <!-- 2026-10-16-6: пряме рішення Віктора про інженерне рев’ю → D-026, AGENTS.md, INDEX; незалежний review_personalization_qa знайшов 2 P2, виправлення def3428 повторно прийнято → reports/review/tools-math-personalization-qa.md, sessions/2026-10-16-6.md, handoff. Задача done лише після вердикту. -->
 - 2026-10-21 engine-math-diag-g4-baseline → review: контракт `baseline: true` для pre без уроків 1–3 кл. (CONTENT_SCHEMA §9, PERSONALIZATION «Baseline»); plan.base, «До першого уроку»; знято «НЕ ПІДТРИМАНО» в personalization-qa. write-math-diag-g4 тепер може писати dg4. Чекає незалежного рев’ю (D-026).
+- 2026-10-21 engine-math-diag-g4-baseline → done: незалежне рев’ю прийняло 6761302 (P3 закрито). personalization-shared вільна. Наступна за порядком — write-math-diag-g4.
