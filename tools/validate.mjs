@@ -130,15 +130,17 @@ for (const c of subjects) for (const sec of c.sections.filter(s => s.lessons)) {
   }
 }
 // діагностика класів (SLID.diag, docs/CONTENT_SCHEMA.md §9)
-const lessonGrade = new Map(), sectionGrade = new Map();
-for (const c of subjects) for (const sec of c.sections) { sectionGrade.set(sec.id, { grade: sec.grade }); (sec.lessons || []).forEach(l => lessonGrade.set(l.id, { grade: sec.grade })); }
+const sectionGrade = new Map();
+for (const c of subjects) for (const sec of c.sections) sectionGrade.set(sec.id, { grade: sec.grade });
 const diagIds = new Set();
 for (const c of subjects) for (const d of c.diags || []) {
   if (onlySec || (onlyDiag && d.id !== onlyDiag)) continue;
   const D = `content/${c.id}/diag-g${d.grade}.js#${d.id}`;
   if (diagIds.has(d.id)) E(D, "id діагностики не унікальний"); diagIds.add(d.id);
   if (c.diags.filter(x => x.grade === d.grade).length > 1) E(D, `для ${d.grade} класу вже є діагностика з цього предмета`);
-  for (const m of learn.validate(d, { lessons: lessonGrade, sections: sectionGrade, skills: c.skills })) E(D, m);
+  // уроки лише цього предмета: baseline-опора дозволена, коли молодших класів у предметі немає
+  const own = new Map(c.sections.flatMap(sec => (sec.lessons || []).map(l => [l.id, { grade: sec.grade }])));
+  for (const m of learn.validate(d, { lessons: own, sections: sectionGrade, skills: c.skills })) E(D, m);
   if (!d.meta) W(D, "немає meta {author, created, factcheck, teacher}");
   (d.items || []).forEach((s, i) => { if (TYPES.includes(s.type)) checkScreen(`${D} завдання ${i + 1} (${s.type})`, s, c, true); });
   const ch = (d.items || []).filter(s => s.type === "choice" && Number.isInteger(s.correct));

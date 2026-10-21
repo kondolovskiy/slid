@@ -71,28 +71,38 @@ window.SLID_LEARN = (() => {
     const share = pre.length ? score / pre.length : 1;
     const gaps = pre.filter(t => topics[t.id] === "gap").length, shaky = pre.filter(t => topics[t.id] === "shaky").length;
     const k = share >= 0.85 ? 2 : share >= 0.55 ? 1 : 0;
-    return { share, gaps, shaky, ok: pre.length - gaps - shaky, total: pre.length, k,
+    // baseline-опори не мають уроків у застосунку: радимо потренувати їх з дорослим, а не «пройти ще раз»
+    const weak = pre.filter(t => topics[t.id] === "gap" || topics[t.id] === "shaky"), base = weak.length > 0 && weak.every(t => t.baseline);
+    return { share, gaps, shaky, ok: pre.length - gaps - shaky, total: pre.length, k, base,
       title: ["Почнемо з основ", "Добра база", "Міцна база"][k],
-      text: ["Кілька тем із попередніх класів варто пройти ще раз — тоді нові уроки стануть набагато легшими.",
-             "Більшість тем ти пам'ятаєш. Закриємо кілька прогалин — і рухаємось далі.",
-             "Попередні класи ти пам'ятаєш добре. Можна сміливо братися за нове."][k] };
+      text: (base ? ["Кілька вмінь із попередніх класів варто потренувати з учителем або дорослим — тоді нові уроки стануть набагато легшими.",
+                     "Більшість умінь ти пам'ятаєш. Кілька варто потренувати з учителем або дорослим — і рухаємось далі.",
+                     "Попередні класи ти пам'ятаєш добре. Можна сміливо братися за нове."]
+                  : ["Кілька тем із попередніх класів варто пройти ще раз — тоді нові уроки стануть набагато легшими.",
+                     "Більшість тем ти пам'ятаєш. Закриємо кілька прогалин — і рухаємось далі.",
+                     "Попередні класи ти пам'ятаєш добре. Можна сміливо братися за нове."])[k] };
   }
-  /** План із результату тесту. ctx: { week, sections: [{id, weeks}] поточного класу, hasLesson(id) }.
-      Порядок: спершу теми, потрібні для найближчого розділу; серед них прогалини раніше за хиткі; далі — як у тесті. */
+  /** План із результату тесту. ctx: { week, sections: [{id, weeks, lessons: [id]}] поточного класу, hasLesson(id) }.
+      Порядок: спершу теми, потрібні для найближчого розділу; серед них прогалини раніше за хиткі; далі — як у тесті.
+      Baseline-опора (topic.baseline, уроків немає) кроком не стає: вона йде в plan.base з next — першим уроком
+      найтерміновішого розділу з for. base не закривається уроками, лише повторним тестом. */
   function buildPlan(d, res, ctx = {}) {
     const topics = topicStatus(d, res), has = ctx.hasLesson || (() => true);
     const secs = ctx.sections || [], week = ctx.week || 1;
     // терміновість розділу: скільки тижнів до його початку (0 — уже йде); розділи, що минули, — у кінець
     const urg = id => { const s = secs.find(x => x.id === id); if (!s || !s.weeks) return 99; return s.weeks[1] < week ? 60 + (week - s.weeks[1]) : Math.max(0, s.weeks[0] - week); };
-    const steps = [], seen = new Set();
+    const steps = [], seen = new Set(), base = [];
     d.topics.map((t, n) => ({ t, n, st: topics[t.id] }))
       .filter(x => x.t.kind !== "cur" && (x.st === "gap" || x.st === "shaky"))
       .map(x => ({ ...x, u: Math.min(99, ...(x.t.for || []).map(urg)) }))
       .sort((a, b) => a.u - b.u || (a.st === "gap" ? 0 : 1) - (b.st === "gap" ? 0 : 1) || a.n - b.n)
-      .forEach(x => { const own = x.st === "shaky" ? [...new Set(d.items.filter((it, i) => it.topic === x.t.id && it.lesson && i in res && res[i] !== OK).map(it => it.lesson))] : [];
+      .forEach(x => { if (x.t.baseline) {
+          const sec = [...(x.t.for || [])].sort((a, b) => urg(a) - urg(b)).map(id => secs.find(s => s.id === id)).find(s => s && (s.lessons || []).some(has));
+          base.push({ topic: x.t.id, why: x.st, next: sec ? sec.lessons.find(has) : null }); return; }
+        const own = x.st === "shaky" ? [...new Set(d.items.filter((it, i) => it.topic === x.t.id && it.lesson && i in res && res[i] !== OK).map(it => it.lesson))] : [];
         (own.length ? own : x.t.lessons || []).forEach(l => { if (has(l) && !seen.has(l)) { seen.add(l); steps.push({ l, why: x.st, topic: x.t.id, src: "diag", done: false }); } }); });
     const known = [...new Set(d.topics.filter(t => t.kind === "cur" && topics[t.id] === "known").flatMap(t => t.lessons || []).filter(has))];
-    return { diag: d.id, grade: d.grade, date: ctx.day || null, topics, steps, known };
+    return { diag: d.id, grade: d.grade, date: ctx.day || null, topics, steps, known, base };
   }
   /** Зберігає результат тесту й план у стані. Незакриті кроки з помилок в уроках (src: "err") переходять у новий план; решту тест перераховує заново. */
   function finishDiag(S, subjectId, d, res, ctx = {}) {
@@ -311,9 +321,10 @@ window.SLID_LEARN = (() => {
   }
 
   /* ---------- Перевірка тесту (валідатор) ---------- */
-  /** Помилки в описі діагностики. ctx: { lessons: Map id → {grade}, sections: Map id → {grade}, skills: {} }. */
+  /** Помилки в описі діагностики. ctx: { lessons: Map id → {grade} уроків предмета, sections: Map id → {grade}, skills: {} }. */
   function validate(d, ctx) {
     const E = [], T = new Map();
+    const younger = [...ctx.lessons].filter(([, L]) => L.grade < d.grade).map(([id]) => id);
     if (!d.id) E.push("немає id"); if (!Number.isInteger(d.grade)) E.push("немає grade");
     if (!d.title || !d.why) E.push("потрібні title і why");
     if (d.signed !== undefined && typeof d.signed !== "boolean") E.push("signed має бути boolean");
@@ -326,7 +337,14 @@ window.SLID_LEARN = (() => {
       T.set(t.id, t);
       if (!t.title) E.push(`${w}: немає title`);
       if (!["pre", "cur"].includes(t.kind)) E.push(`${w}: kind має бути pre | cur`);
-      if (!Array.isArray(t.lessons) || !t.lessons.length || t.lessons.length > 2) E.push(`${w}: lessons — 1–2 id уроків`);
+      if (t.baseline !== undefined && typeof t.baseline !== "boolean") E.push(`${w}: baseline має бути boolean`);
+      if (t.baseline === true) {
+        // опора з класів, яких у застосунку немає: виміряне вміння без уроку повторення
+        if (t.kind !== "pre") E.push(`${w}: baseline лише для kind: pre`);
+        if (t.lessons !== undefined && !(Array.isArray(t.lessons) && !t.lessons.length)) E.push(`${w}: baseline-тема не має lessons (уроків молодших класів немає)`);
+        if (!Array.isArray(t.for) || !t.for.length) E.push(`${w}: baseline-тема потребує for — розділи ${d.grade} класу, з яких почати`);
+        if (younger.length) E.push(`${w}: baseline заборонено — у предмета є уроки молодших класів (${younger.slice(0, 3).join(", ")}); посилайся на них у lessons`);
+      } else if (!Array.isArray(t.lessons) || !t.lessons.length || t.lessons.length > 2) E.push(`${w}: lessons — 1–2 id уроків`);
       for (const l of t.lessons || []) {
         const L = ctx.lessons.get(l);
         if (!L) E.push(`${w}: немає уроку ${l}`);

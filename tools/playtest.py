@@ -76,7 +76,8 @@ async def main():
                     await pg.wait_for_timeout(80); await pg.click("#action")
                     await pg.click('[data-tab="path"]'); await pg.click('[data-tab="path"]')
                     played += 1
-        # тести рівня (SLID.diag): усе правильно → план без кроків; усе «Ще не знаю» → у плані є кроки, кожен веде на наявний урок
+        # тести рівня (SLID.diag): усе правильно → план без кроків; усе «Ще не знаю» → у плані є кроки, кожен веде на наявний урок.
+        # Baseline-опори (уроків молодших класів немає) кроків не дають: вони мають бути в plan.base, а кнопка — відкрити урок класу.
         diags = 0
         for c in subjects:
             for d in c.get("diags", []):
@@ -94,11 +95,15 @@ async def main():
                         if shown > len(d["items"]): errs.append(f"{c['id']} {d['id']}: тест не закінчується"); break
                     plan = await pg.evaluate("JSON.parse(localStorage.getItem('slid.v1')).plan['%s']" % c["id"])
                     todo = [st for st in (plan or {}).get("steps", []) if not st.get("done")]
+                    base = (plan or {}).get("base", [])
+                    pre_lessons = any(t["kind"] != "cur" and not t.get("baseline") for t in d["topics"])
+                    pre_base = sorted(t["id"] for t in d["topics"] if t.get("baseline"))
                     if not plan: errs.append(f"{c['id']} {d['id']} ({mode}): план не збережено")
-                    elif mode == "ok" and (todo or shown != len(d["items"])): errs.append(f"{c['id']} {d['id']}: усі відповіді правильні, але в плані {len(todo)} кроків (показано {shown} з {len(d['items'])} завдань) — якусь відповідь не зараховано")
-                    elif mode == "skip" and not todo: errs.append(f"{c['id']} {d['id']}: усе пропущено, а план порожній")
+                    elif mode == "ok" and (todo or base or shown != len(d["items"])): errs.append(f"{c['id']} {d['id']}: усі відповіді правильні, але в плані {len(todo)} кроків (показано {shown} з {len(d['items'])} завдань) — якусь відповідь не зараховано")
+                    elif mode == "skip" and pre_lessons and not todo: errs.append(f"{c['id']} {d['id']}: усе пропущено, а план порожній")
+                    elif mode == "skip" and sorted(b["topic"] for b in base) != pre_base: errs.append(f"{c['id']} {d['id']}: усе пропущено, а baseline-прогалини {pre_base} не видно в плані ({base})")
                     await pg.click("#action"); await pg.wait_for_timeout(80)
-                    if mode == "skip" and await pg.is_hidden("#player"): errs.append(f"{c['id']} {d['id']}: перший крок плану не відкрився")
+                    if mode == "skip" and await pg.is_hidden("#player"): errs.append(f"{c['id']} {d['id']}: перший крок плану чи перший урок класу не відкрився")
                 diags += 1
         await b.close()
         print(f"Пройдено уроків: {played}, тестів рівня: {diags}")

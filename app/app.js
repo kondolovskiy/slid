@@ -17,13 +17,18 @@ function findLesson(id){ for(const c of SUBJ) for(let k=0;k<c.sections.length;k+
 const LEARN = window.SLID_LEARN;
 const LORD = new Map(); SUBJ.forEach(c=>c.sections.forEach(x=>(x.lessons||[]).forEach(l=>LORD.set(l.id,LORD.size))));
 const diagFor = (c, g) => (c.diags||[]).find(d=>d.grade===(g??S.grade));
-const planCtx = c => ({ grade:S.grade, diags:c.diags||[], day:dkey(), week:schoolWeek(), sections:secsFor(c).map(x=>({id:x.id,weeks:x.weeks})), hasLesson:id=>{ const f=findLesson(id); return !!f && f.c.id===c.id && f.sec.grade<=S.grade; } });
+const planCtx = c => ({ grade:S.grade, diags:c.diags||[], day:dkey(), week:schoolWeek(), sections:secsFor(c).map(x=>({id:x.id,weeks:x.weeks,lessons:(x.lessons||[]).map(l=>l.id)})), hasLesson:id=>{ const f=findLesson(id); return !!f && f.c.id===c.id && f.sec.grade<=S.grade; } });
 const activePlan = c => LEARN.planFor(S,c.id,planCtx(c));
 const learnCtx = c => {
   const plan=activePlan(c), pre=new Set([...(diagFor(c)?.topics||[]).filter(t=>t.kind!=="cur").flatMap(t=>t.lessons||[]), ...(plan?.steps||[]).map(st=>st.l)]);
   return { ...planCtx(c), hasLesson:id=>{ const f=findLesson(id); return !!f && f.c.id===c.id && f.sec.grade<=S.grade && (f.sec.grade===S.grade || pre.has(id)); }, order:id=>LORD.get(id)??1e9 };
 };
 const stepsTodo = c => LEARN.todo(activePlan(c)).filter(st=>planCtx(c).hasLesson(st.l));
+/* baseline-опори (уроків молодших класів немає): лишаються видимими до повторного тесту, кроками не стають */
+const baseTopics = c => { const p=activePlan(c), d=p&&(c.diags||[]).find(x=>x.id===p.diag); return d? (p.base||[]).map(b=>({...b,t:d.topics.find(t=>t.id===b.topic)})).filter(b=>b.t) : []; };
+/** Доступний урок, з якого почати навчання класу: next найтерміновішої опори, або перший непройдений відкритий урок того самого розділу. */
+const baseStart = c => { for(const b of baseTopics(c)){ const f=b.next&&findLesson(b.next); if(!f||f.c.id!==c.id||f.sec.grade!==S.grade) continue;
+  const i=f.sec.lessons.findIndex((l,j)=>!done(l.id)&&unlocked(f.sec,j)); if(i>=0) return f.sec.lessons[i].id; } return null; };
 const known = id => { const f=findLesson(id); return !!f && f.sec.grade===S.grade && LEARN.isKnown(S,f.c.id,id,planCtx(f.c)); };
 /* тренування: пул задач (SLID.pool) — відкриті лише задачі пройдених тем */
 const poolItems = c => LEARN.practiceItems(S,c);
@@ -208,8 +213,22 @@ function stepRow(st, cls, extra=""){
   const f=findLesson(st.l);
   return `<button type="button" class="${cls} s-${f.c.id}" data-lesson="${st.l}"><span class="dot s-${f.c.id}">${ic(f.l.icon)}</span><span class="grow"><span class="muted small">${WHY[st.why]||""} · ${f.sec.grade} клас</span><b>${esc(f.l.title)}</b>${extra}</span><span class="play sm">${icF("play")}</span></button>`;
 }
+function baseRow(id){ const f=findLesson(id);
+  return `<button type="button" class="nowrow s-${f.c.id}" data-lesson="${id}"><span class="dot s-${f.c.id}">${ic(f.l.icon)}</span><span class="grow"><span class="muted small">з чого почати · ${f.sec.grade} клас</span><b>${esc(f.l.title)}</b></span><span class="play sm">${icF("play")}</span></button>`; }
+const baseNames = B => B.map(b=>`«${esc(b.t.title)}»`).join(", ");
+function baseBlock(c, withRow=true){
+  const B=baseTopics(c); if(!B.length) return ""; const st=baseStart(c);
+  return `<div class="rec basegap"><div class="eyebrow">Потренуй з учителем або дорослим</div>
+    <p style="margin:0">${B.length>1?"Ці вміння":"Це вміння"} з молодших класів варто потренувати: ${baseNames(B)}. Уроків на ${B.length>1?"них":"нього"} у застосунку поки немає — попроси вчителя або дорослого дати кілька прикладів. Уроки ${S.grade} класу можна починати вже зараз.</p>
+    ${withRow&&st? baseRow(st) : ""}</div>`;
+}
 function planCard(c){
-  const td=stepsTodo(c); if(!td.length) return "";
+  const td=stepsTodo(c);
+  if(!td.length){ const B=baseTopics(c); if(!B.length) return ""; const st=baseStart(c);
+    return `<div class="card now plancard s-${c.id}"><div class="nowhead"><span class="eyebrow">Твій план · ${c.short}</span><span class="pill">${B.length} ${plural(B.length,["вміння","вміння","вмінь"])}</span></div>
+    <p class="small" style="margin:0">Потренуй з учителем або дорослим: ${baseNames(B)}.</p>
+    ${st? baseRow(st) : ""}
+    <button type="button" class="linkbtn" data-plan="${c.id}">Увесь план${ic("chev","chev")}</button></div>`; }
   const n=activePlan(c).steps.filter(st=>planCtx(c).hasLesson(st.l)).length, dn=n-td.length;
   return `<div class="card now plancard s-${c.id}"><div class="nowhead"><span class="eyebrow">Твій план · ${c.short}</span><span class="pill">${dn} з ${n}</span></div>
     <div class="bar s-${c.id}"><i style="width:${dn/n*100}%"></i></div>
@@ -263,7 +282,7 @@ function viewDiag(){
     <div class="li">${ic("shield")}<span><b>Без оцінок.</b> Під час тесту не видно, правильно чи ні: це не контрольна, а спосіб знайти, що варто згадати.</span></div>
     <div class="li">${ic("bolt")}<span><b>До ${d.items.length} завдань, ≈ ${diagMins(d)} хв.</b> Можна перерватися й продовжити пізніше.</span></div>
     <div class="li">${ic("bulb")}<span><b>Не знаєш — тисни «Ще не знаю».</b> Вгадувати не треба: так план вийде точнішим.</span></div>
-    <div class="li">${ic("path")}<span><b>Наприкінці — твій план:</b> спершу теми, які варто повторити, далі уроки ${d.grade} класу.</span></div>
+    <div class="li">${ic("path")}<span><b>Наприкінці — твій план:</b> ${d.topics.some(t=>t.kind!=="cur"&&!t.baseline)? "спершу теми, які варто повторити," : "які вміння варто потренувати і з чого почати —"} далі уроки ${d.grade} класу.</span></div>
   </div>
   <div style="display:grid;gap:10px">
     <button class="btn" type="button" data-diag-go>${part?"Продовжити тест":was?"Пройти ще раз":"Почати тест"}</button>
@@ -294,7 +313,8 @@ function viewPlan(){
     ${levelStats(lv)}
     <details class="plan"><summary>Теми тесту (${d.topics.length})</summary><div class="learned" style="margin-top:8px">${topicsHtml(d,rec.topics,"pre")}${topicsHtml(d,rec.topics,"cur")}</div></details></div>`:""}
   ${td.length?`<div class="eyebrow">Спершу повтори</div><div class="seclist">${td.map((st,i)=>{ const f=findLesson(st.l); return `<button type="button" class="secitem" data-lesson="${st.l}"><span class="secnum">${i+1}</span><span class="grow"><b>${esc(f.l.title)}</b><span class="muted small">${WHY[st.why]} · ${f.sec.grade} клас · ${f.l.screens.length} кроків</span>${topicOf(st)}</span><span class="play sm">${icF("play")}</span></button>`; }).join("")}</div>`
-    : `<div class="empty">${steps.length?"Усі кроки на повторення виконано.":"Тем на повторення зараз немає."} Якщо в уроках повторюватимуться схожі помилки, тут з'явиться нова порада.</div>`}
+    : `<div class="empty">${steps.length?"Усі кроки на повторення виконано.":baseTopics(c).length?"Уроків на повторення в застосунку зараз немає.":"Тем на повторення зараз немає."} Якщо в уроках повторюватимуться схожі помилки, тут з'явиться нова порада.</div>`}
+  ${baseBlock(c)}
   ${kn.length?`<div class="eyebrow">Уже знайоме з ${S.grade} класу</div><div class="learned">${kn.map(id=>{ const f=findLesson(id); return `<div class="li">${ic("check")}<span class="grow">${esc(f.l.title)}<span class="muted small" style="display:block">${esc(f.sec.title)} · урок відкрито без черги</span></span></div>`; }).join("")}</div>`:""}
   ${steps.some(st=>st.done)?`<details class="plan"><summary>Виконано (${steps.length-td.length})</summary><ol>${steps.filter(st=>st.done).map(st=>`<li>${esc(findLesson(st.l).l.title)}</li>`).join("")}</ol></details>`:""}
   <div class="eyebrow">Далі</div>
@@ -646,7 +666,7 @@ function renderDiagEnd(){
   const d=run.diag, plan=LEARN.finishDiag(S, C.id, d, run.res, learnCtx(C));
   delete S.diagRun[d.id]; delete S.diagSkip[d.id];
   const g=gain(20); touchStreak(); save(); renderTop(); pProgress();
-  const lv=LEARN.level(d,plan.topics), td=stepsTodo(C), kn=plan.known.length, cid=C.id;
+  const lv=LEARN.level(d,plan.topics), td=stepsTodo(C), kn=plan.known.length, cid=C.id, start=td.length? null : baseStart(C);
   nav={v:"plan",id:cid}; tab="path";
   $("#stage").innerHTML=fmt(`<section class="screen endhero">
     <div class="bigicon">${ic("target")}</div>
@@ -656,13 +676,16 @@ function renderDiagEnd(){
     ${levelStats(lv)}
     <div class="rec"><div class="eyebrow">Твій план</div>
       ${td.length? `<p style="margin:0">Спершу ${td.length} ${plural(td.length,["короткий урок","короткі уроки","коротких уроків"])} на повторення, далі — програма ${d.grade} класу.</p>${td.slice(0,3).map(st=>stepRow(st,"nowrow")).join("")}${td.length>3?`<p class="muted small" style="margin:0">…і ще ${td.length-3}. Увесь план — на головному екрані.</p>`:""}`
+        : start? `<p style="margin:0">Уроків на повторення в застосунку немає. Почни з уроків ${d.grade} класу.</p>${baseRow(start)}`
         : `<p style="margin:0">Тем на повторення не знайшлося. Берися за уроки ${d.grade} класу.</p>`}
     </div>
+    ${baseBlock(C,false)}
     <div class="learned"><div class="eyebrow">Теми попередніх класів</div>${topicsHtml(d,plan.topics,"pre")}</div>
     ${kn?`<div class="learned"><div class="eyebrow">З програми ${d.grade} класу</div>${topicsHtml(d,plan.topics,"cur")}<p class="muted small" style="margin:0">Уроки тем, які ти вже вмієш, відкрито без черги.</p></div>`:""}
   </section>`);
-  setDock("","","", td.length? "Почати з першого кроку" : "До уроків");
-  afterEnd = td.length? ()=>startById(td[0].l) : ()=>go({v:"subject",id:cid});
+  setDock("","","", td.length? "Почати з першого кроку" : start? "До першого уроку" : "До уроків");
+  // baseline-прогалина не закривається переходом: start — лише доступний урок класу
+  afterEnd = td.length? ()=>startById(td[0].l) : start? ()=>startById(start) : ()=>go({v:"subject",id:cid});
   $("#stage").querySelectorAll("[data-lesson]").forEach(b=>b.onclick=()=>startById(b.dataset.lesson));
 }
 /* тренування — теж у плеєрі: звичайна перевірка (підказка → друга спроба → розв'язання), наприкінці оновлюється розклад повторень */
