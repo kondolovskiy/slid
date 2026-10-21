@@ -529,6 +529,9 @@ const order = l => ({ L1: 3, L2: 1, L3: 2, L4: 4 }[l] ?? 50);
   const okP = L.buildPlan(B, all(OK), ctx);
   eq([okP.steps, okP.base, okP.known], [[], [], ["s1a"]], "baseline plan: усе правильно → без кроків і прогалин, cur знайомий");
   eq(L.level(B, okP.topics).title, "Міцна база", "baseline level: усе правильно → Міцна база");
+  const one = L.level({ ...B, topics: B.topics.concat(Array.from({ length: 6 }, (_, i) => ({ id: "q" + i, kind: "pre", baseline: true }))) }, { ...okP.topics, p1: "gap", ...Object.fromEntries(Array.from({ length: 6 }, (_, i) => ["q" + i, "ok"])) });
+  eq([one.title, /учителем або дорослим/.test(one.text)], ["Міцна база", true], "baseline level: Міцна база з однією baseline-прогалиною радить дорослого");
+  eq(/Можна сміливо/.test(L.level(B, okP.topics).text), true, "baseline level: без прогалин — звичайний текст Міцної бази");
   // усе пропущено: прогалини видно, «Міцна база» неможлива
   const skip = { 0: SKIP, 1: SKIP, 4: SKIP };
   eq(L.nextItem(B, skip), -1, "baseline: після «Ще не знаю» на базових складніші не показуються");

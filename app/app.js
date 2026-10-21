@@ -219,7 +219,7 @@ const baseNames = B => B.map(b=>`«${esc(b.t.title)}»`).join(", ");
 function baseBlock(c, withRow=true){
   const B=baseTopics(c); if(!B.length) return ""; const st=baseStart(c);
   return `<div class="rec basegap"><div class="eyebrow">Потренуй з учителем або дорослим</div>
-    <p style="margin:0">${B.length>1?"Ці вміння":"Це вміння"} з молодших класів варто потренувати: ${baseNames(B)}. Уроків на ${B.length>1?"них":"нього"} у застосунку поки немає — попроси вчителя або дорослого дати кілька прикладів. Уроки ${S.grade} класу можна починати вже зараз.</p>
+    <p style="margin:0">${B.length>1?"Ці вміння":"Це вміння"} з молодших класів варто потренувати: ${baseNames(B)}. Уроків на ${B.length>1?"них":"нього"} у застосунку поки немає — попроси вчителя або дорослого дати кілька прикладів.${st?` Уроки ${S.grade} класу можна починати вже зараз.`:""}</p>
     ${withRow&&st? baseRow(st) : ""}</div>`;
 }
 function planCard(c){
@@ -677,6 +677,7 @@ function renderDiagEnd(){
     <div class="rec"><div class="eyebrow">Твій план</div>
       ${td.length? `<p style="margin:0">Спершу ${td.length} ${plural(td.length,["короткий урок","короткі уроки","коротких уроків"])} на повторення, далі — програма ${d.grade} класу.</p>${td.slice(0,3).map(st=>stepRow(st,"nowrow")).join("")}${td.length>3?`<p class="muted small" style="margin:0">…і ще ${td.length-3}. Увесь план — на головному екрані.</p>`:""}`
         : start? `<p style="margin:0">Уроків на повторення в застосунку немає. Почни з уроків ${d.grade} класу.</p>${baseRow(start)}`
+        : baseTopics(C).length? `<p style="margin:0">Уроків на повторення в застосунку немає. Уроки ${d.grade} класу — на сторінці предмета.</p>`
         : `<p style="margin:0">Тем на повторення не знайшлося. Берися за уроки ${d.grade} класу.</p>`}
     </div>
     ${baseBlock(C,false)}
