@@ -1,10 +1,12 @@
 ---
+claimed_from: todo
+claimed_at: 2026-10-21T14:12:51.281Z
 id: write-math-pool-g4m1
 type: write-pool
 subject: math
 grade: 4
 status: todo
-claimed_by:
+claimed_by: writer-pg4m1
 created: 2026-10-15
 depends_on: [curate-math-personalization-map]
 ---
