@@ -496,5 +496,100 @@ const order = l => ({ L1: 3, L2: 1, L3: 2, L4: 4 }[l] ?? 50);
   eq(S.grade, 6, "practice context: grade never changed");
 }
 
+/* 12. Ділення з остачею: answerKind divrem */
+{ const s = { answerKind: "divrem", answer: [3, 2] };
+  for (const v of ["3 ост. 2", "3 (ост. 2)", "3 ост 2", "3ост2", "3 ост, 2", "3 (ОСТ. 2)", "  3   ост.  2 ", "3 ост. 2.", "3 (ост. 2).", "3 ( ост . 2 )", "3 oст. 2", "3 ocт. 2"]) eq(L.checkAns(s, v), "ok", `divrem: «${v}» приймається`);
+  for (const v of ["3 ост. 3", "4 ост. 2", "2 ост. 3", "3; 2", "3, 2", "3 ост. ", "ост. 2", "3 (ост. 2", "3,5 ост. 2", "-3 ост. 2", "3 ост. -2", "", "3 2"]) eq(L.checkAns(s, v), "bad", `divrem: «${v}» не приймається`);
+  eq(L.checkAns(s, "3"), "form", "divrem: лише правильна частка при остачі 2 — дописати остачу");
+  eq(L.checkAns(s, "4"), "bad", "divrem: лише неправильна частка — bad");
+  eq([L.checkAns({ answerKind: "divrem", answer: [5, 0] }, "5"), L.checkAns({ answerKind: "divrem", answer: [5, 0] }, "5 ост. 0")], ["ok", "ok"], "divrem: остача 0 — можна без неї");
+  eq(L.checkAns({ answerKind: "divrem", answer: [1234, 5] }, "1 234 ост. 5"), "ok", "divrem: розряди через пробіл");
+  eq(L.checkAns({ answerKind: "divrem", answer: "3 ост. 2" }, "3 ост. 2"), "bad", "divrem: ключ лише масивом");
+  eq(L.checkAns({ answerKind: "divrem", answer: [3, 2.5] }, "3 ост. 2"), "bad", "divrem: ключ — цілі числа");
+  eq(L.checkAns({ answer: 3 }, "3 ост. 2"), "bad", "number: запис з остачею не число");
+  eq(L.parseDivrem([3, 2]), { q: 3, r: 2 }, "parseDivrem: масив");
+  const sec = new Map([["s4", { grade: 4, lessons: ["l4"] }]]);
+  const pool = { id: "pd", section: "s4", status: "draft", sources: [{ id: "g", title: "G", url: "https://x" }],
+    items: [{ id: "a", lesson: "l4", lvl: 1, sk: "num", src: "g №1", type: "answer", title: "17 : 5", answerKind: "divrem", answer: [3, 2], steps: ["5 · 3 = 15, 17 − 15 = 2."] }] };
+  eq(L.validatePool(pool, { sections: sec, skills: { num: 1 } }), [], "validatePool: divrem дозволено");
+  const bad = (mut, sub, what) => { const p = clone(pool); mut(p.items[0]); const E = L.validatePool(p, { sections: sec, skills: { num: 1 } }); eq(E.some(e => e.includes(sub)), true, `validatePool divrem: ${what} (${JSON.stringify(E)})`); };
+  bad(it => { it.answer = "3 ост. 2"; }, "не читається", "ключ рядком");
+  bad(it => { it.answer = [3]; }, "не читається", "ключ з одного числа");
+  bad(it => { it.type = "choice"; }, "answerKind", "divrem не для choice");
+  bad(it => { it.reduced = true; }, "reduced", "reduced лише для числової");
+  bad(it => { it.tol = 1; }, "tol", "tol лише для числової");
+  bad(it => { it.unitForms = ["цукерка", "цукерки", "цукерок"]; }, "unitForms не для divrem", "unitForms для divrem");
+}
+
+/* 11. Baseline 4 класу: опори 1–3 класів без уроків у застосунку */
+{ const B = { id: "dgb", grade: 4, title: "T", why: "W", status: "draft",
+    topics: [{ id: "p1", title: "P1", kind: "pre", baseline: true, lessons: [], for: ["s2"] },
+             { id: "p2", title: "P2", kind: "pre", baseline: true, for: ["s2", "s1"] },
+             { id: "c1", title: "C1", kind: "cur", lessons: ["s1a"] }],
+    items: [{ topic: "p1", type: "number", sk: "m.add", title: "q1" }, { topic: "p2", type: "choice", sk: "m.add", title: "q2" },
+            { topic: "p1", type: "number", sk: "m.add", title: "q3" }, { topic: "p2", type: "choice", sk: "m.add", title: "q4" },
+            { topic: "c1", type: "multi", sk: "m.cmp", title: "q5" }] };
+  const vc = { lessons: new Map([["s1a", { grade: 4 }], ["s1b", { grade: 4 }], ["s2a", { grade: 4 }]]),
+    sections: new Map([["s1", { grade: 4 }], ["s2", { grade: 4 }]]), skills: { "m.cmp": 1, "m.add": 1 } };
+  eq(L.validate(B, vc), [], "baseline validate: коректний тест 4 класу → []");
+  const bad = (mut, sub, what, ctx = vc) => { const d = clone(B); mut(d); const E = L.validate(d, ctx); eq(E.some(e => e.includes(sub)), true, `baseline validate: ${what} (є «${sub}»; отримано ${JSON.stringify(E)})`); };
+  bad(d => { d.topics[0].lessons = ["s1a"]; }, "не має lessons", "baseline з уроком");
+  bad(d => { d.topics[0].lessons = ["zz3"]; }, "не має lessons", "baseline з вигаданим уроком");
+  bad(d => { delete d.topics[0].for; }, "потребує for", "baseline без for");
+  bad(d => { d.topics[0].for = []; }, "потребує for", "baseline з порожнім for");
+  bad(d => { d.topics[2].baseline = true; }, "лише для kind: pre", "baseline у cur");
+  bad(d => { d.topics[0].baseline = "yes"; }, "baseline має бути boolean", "baseline не boolean");
+  bad(d => { d.items[0].lesson = "s1a"; }, "lesson «s1a» має бути одним з уроків теми", "item.lesson у baseline-темі");
+  bad(d => { d.topics[0].baseline = false; }, "1–2 id уроків", "звичайна pre без уроків, як і раніше, — помилка");
+  bad(d => { d.topics[0].for = ["s9"]; }, "немає розділу s9", "baseline for — невідомий розділ");
+  const withYounger = { ...vc, lessons: new Map([...vc.lessons, ["g3x", { grade: 3 }]]) };
+  bad(() => {}, "baseline заборонено", "baseline, коли в предмета є уроки молодшого класу", withYounger);
+  const plain = clone(B); plain.topics.slice(0, 2).forEach(t => { delete t.baseline; t.lessons = ["g3x"]; });
+  eq(L.validate(plain, withYounger), [], "baseline validate: звичайні pre з уроками молодшого класу запобіжник не зачіпає");
+
+  const secs = [{ id: "s1", weeks: [1, 4], lessons: ["s1a", "s1b"] }, { id: "s2", weeks: [5, 8], lessons: ["s2a"] }];
+  const ctx = { week: 1, sections: secs, hasLesson: () => true, day: "2026-10-21" };
+  const all = r => Object.fromEntries(B.items.map((_, i) => [i, r]));
+  // усе правильно
+  const okP = L.buildPlan(B, all(OK), ctx);
+  eq([okP.steps, okP.base, okP.known], [[], [], ["s1a"]], "baseline plan: усе правильно → без кроків і прогалин, cur знайомий");
+  eq(L.level(B, okP.topics).title, "Міцна база", "baseline level: усе правильно → Міцна база");
+  const one = L.level({ ...B, topics: B.topics.concat(Array.from({ length: 6 }, (_, i) => ({ id: "q" + i, kind: "pre", baseline: true }))) }, { ...okP.topics, p1: "gap", ...Object.fromEntries(Array.from({ length: 6 }, (_, i) => ["q" + i, "ok"])) });
+  eq([one.title, /учителем або дорослим/.test(one.text)], ["Міцна база", true], "baseline level: Міцна база з однією baseline-прогалиною радить дорослого");
+  eq(/Можна сміливо/.test(L.level(B, okP.topics).text), true, "baseline level: без прогалин — звичайний текст Міцної бази");
+  // усе пропущено: прогалини видно, «Міцна база» неможлива
+  const skip = { 0: SKIP, 1: SKIP, 4: SKIP };
+  eq(L.nextItem(B, skip), -1, "baseline: після «Ще не знаю» на базових складніші не показуються");
+  const skP = L.buildPlan(B, skip, ctx), skL = L.level(B, skP.topics);
+  eq(skP.steps, [], "baseline plan: усе пропущено → кроків до вигаданих уроків немає");
+  eq(skP.base, [{ topic: "p2", why: "gap", next: "s1a" }, { topic: "p1", why: "gap", next: "s2a" }], "baseline plan: обидві прогалини видно, найтерміновіша перша, next — перший урок розділу");
+  eq([skL.share, skL.gaps, skL.k, skL.title, skL.base], [0, 2, 0, "Почнемо з основ", true], "baseline level: усе пропущено → не Міцна база");
+  eq(/учителем або дорослим/.test(skL.text), true, "baseline level: текст радить дорослого, а не «пройти ще раз»");
+  eq(/пройти ще раз/.test(L.level(D, L.topicStatus(D, {})).text), true, "level: звичайний тест зберігає старий текст");
+  // змішаний: p1 засвоєно, p2 хитко
+  const mix = { 0: OK, 1: OK, 2: OK, 3: BAD, 4: BAD };
+  const mxP = L.buildPlan(B, mix, ctx);
+  eq([mxP.topics.p1, mxP.topics.p2, mxP.topics.c1], ["ok", "shaky", "new"], "baseline mixed: ok / shaky / new");
+  eq([mxP.steps, mxP.base, mxP.known], [[], [{ topic: "p2", why: "shaky", next: "s1a" }], []], "baseline mixed: лише хитка опора в base");
+  eq(L.level(B, mxP.topics).k, 1, "baseline mixed: 1,5 з 2 → Добра база");
+  // терміновість: s1 минув → next з поточного s2; недоступний урок → наступний доступний розділ
+  eq(L.buildPlan(B, skip, { ...ctx, week: 6 }).base.map(b => b.next), ["s2a", "s2a"], "baseline next: розділ, що вже минув, — у кінець");
+  eq(L.buildPlan(B, skip, { ...ctx, hasLesson: l => l !== "s1a" }).base[0].next, "s1b", "baseline next: перший доступний урок розділу");
+  eq(L.buildPlan(B, skip, { ...ctx, sections: [] }).base.map(b => b.next), [null, null], "baseline next: без розділів — null, без битого id");
+  // збереження: уроки не закривають baseline, повторний тест — так
+  const S = fresh(); S.grade = 4; L.finishDiag(S, "math", B, skip, ctx);
+  eq(S.plan.math.base.length, 2, "baseline finishDiag: base збережено");
+  eq(L.todo(S.plan.math), [], "baseline finishDiag: base не є кроками плану");
+  L.lessonDone(S, "math", "s1a", 1, "2026-10-22", { grade: 4 });
+  eq(S.plan.math.base.length, 2, "baseline: пройдений перший урок класу не закриває прогалину");
+  L.finishDiag(S, "math", B, all(OK), { ...ctx, grade: 4 });
+  eq([S.plan.math.base, S.planByGrade.math[4].base], [[], []], "baseline: повторний тест перераховує base");
+  // відновлення плану зі старого результату тесту містить base
+  const R = fresh(); R.grade = 4; R.diag.dgb = { done: true, date: "2026-10-20", res: skip };
+  eq(L.planFor(R, "math", { ...ctx, grade: 4, diags: [B] }).base.length, 2, "baseline planFor: відновлений план має base");
+  // старий план без base (dg6) лишається робочим
+  eq(L.todo({ steps: [{ l: "a", done: false }] }).length, 1, "старий план без base: todo працює");
+}
+
 console.log(`\n${n} перевірок, ${fails ? fails + " з помилками" : "усе гаразд"}`);
 if (fails) process.exit(1);

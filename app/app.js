@@ -17,13 +17,18 @@ function findLesson(id){ for(const c of SUBJ) for(let k=0;k<c.sections.length;k+
 const LEARN = window.SLID_LEARN;
 const LORD = new Map(); SUBJ.forEach(c=>c.sections.forEach(x=>(x.lessons||[]).forEach(l=>LORD.set(l.id,LORD.size))));
 const diagFor = (c, g) => (c.diags||[]).find(d=>d.grade===(g??S.grade));
-const planCtx = c => ({ grade:S.grade, diags:c.diags||[], day:dkey(), week:schoolWeek(), sections:secsFor(c).map(x=>({id:x.id,weeks:x.weeks})), hasLesson:id=>{ const f=findLesson(id); return !!f && f.c.id===c.id && f.sec.grade<=S.grade; } });
+const planCtx = c => ({ grade:S.grade, diags:c.diags||[], day:dkey(), week:schoolWeek(), sections:secsFor(c).map(x=>({id:x.id,weeks:x.weeks,lessons:(x.lessons||[]).map(l=>l.id)})), hasLesson:id=>{ const f=findLesson(id); return !!f && f.c.id===c.id && f.sec.grade<=S.grade; } });
 const activePlan = c => LEARN.planFor(S,c.id,planCtx(c));
 const learnCtx = c => {
   const plan=activePlan(c), pre=new Set([...(diagFor(c)?.topics||[]).filter(t=>t.kind!=="cur").flatMap(t=>t.lessons||[]), ...(plan?.steps||[]).map(st=>st.l)]);
   return { ...planCtx(c), hasLesson:id=>{ const f=findLesson(id); return !!f && f.c.id===c.id && f.sec.grade<=S.grade && (f.sec.grade===S.grade || pre.has(id)); }, order:id=>LORD.get(id)??1e9 };
 };
 const stepsTodo = c => LEARN.todo(activePlan(c)).filter(st=>planCtx(c).hasLesson(st.l));
+/* baseline-опори (уроків молодших класів немає): лишаються видимими до повторного тесту, кроками не стають */
+const baseTopics = c => { const p=activePlan(c), d=p&&(c.diags||[]).find(x=>x.id===p.diag); return d? (p.base||[]).map(b=>({...b,t:d.topics.find(t=>t.id===b.topic)})).filter(b=>b.t) : []; };
+/** Доступний урок, з якого почати навчання класу: next найтерміновішої опори, або перший непройдений відкритий урок того самого розділу. */
+const baseStart = c => { for(const b of baseTopics(c)){ const f=b.next&&findLesson(b.next); if(!f||f.c.id!==c.id||f.sec.grade!==S.grade) continue;
+  const i=f.sec.lessons.findIndex((l,j)=>!done(l.id)&&unlocked(f.sec,j)); if(i>=0) return f.sec.lessons[i].id; } return null; };
 const known = id => { const f=findLesson(id); return !!f && f.sec.grade===S.grade && LEARN.isKnown(S,f.c.id,id,planCtx(f.c)); };
 /* тренування: пул задач (SLID.pool) — відкриті лише задачі пройдених тем */
 const poolItems = c => LEARN.practiceItems(S,c);
@@ -208,8 +213,22 @@ function stepRow(st, cls, extra=""){
   const f=findLesson(st.l);
   return `<button type="button" class="${cls} s-${f.c.id}" data-lesson="${st.l}"><span class="dot s-${f.c.id}">${ic(f.l.icon)}</span><span class="grow"><span class="muted small">${WHY[st.why]||""} · ${f.sec.grade} клас</span><b>${esc(f.l.title)}</b>${extra}</span><span class="play sm">${icF("play")}</span></button>`;
 }
+function baseRow(id){ const f=findLesson(id);
+  return `<button type="button" class="nowrow s-${f.c.id}" data-lesson="${id}"><span class="dot s-${f.c.id}">${ic(f.l.icon)}</span><span class="grow"><span class="muted small">з чого почати · ${f.sec.grade} клас</span><b>${esc(f.l.title)}</b></span><span class="play sm">${icF("play")}</span></button>`; }
+const baseNames = B => B.map(b=>`«${esc(b.t.title)}»`).join(", ");
+function baseBlock(c, withRow=true){
+  const B=baseTopics(c); if(!B.length) return ""; const st=baseStart(c);
+  return `<div class="rec basegap"><div class="eyebrow">Потренуй з учителем або дорослим</div>
+    <p style="margin:0">${B.length>1?"Ці вміння":"Це вміння"} з молодших класів варто потренувати: ${baseNames(B)}. Уроків на ${B.length>1?"них":"нього"} у застосунку поки немає — попроси вчителя або дорослого дати кілька прикладів.${st?` Уроки ${S.grade} класу можна починати вже зараз.`:""}</p>
+    ${withRow&&st? baseRow(st) : ""}</div>`;
+}
 function planCard(c){
-  const td=stepsTodo(c); if(!td.length) return "";
+  const td=stepsTodo(c);
+  if(!td.length){ const B=baseTopics(c); if(!B.length) return ""; const st=baseStart(c);
+    return `<div class="card now plancard s-${c.id}"><div class="nowhead"><span class="eyebrow">Твій план · ${c.short}</span><span class="pill">${B.length} ${plural(B.length,["вміння","вміння","вмінь"])}</span></div>
+    <p class="small" style="margin:0">Потренуй з учителем або дорослим: ${baseNames(B)}.</p>
+    ${st? baseRow(st) : ""}
+    <button type="button" class="linkbtn" data-plan="${c.id}">Увесь план${ic("chev","chev")}</button></div>`; }
   const n=activePlan(c).steps.filter(st=>planCtx(c).hasLesson(st.l)).length, dn=n-td.length;
   return `<div class="card now plancard s-${c.id}"><div class="nowhead"><span class="eyebrow">Твій план · ${c.short}</span><span class="pill">${dn} з ${n}</span></div>
     <div class="bar s-${c.id}"><i style="width:${dn/n*100}%"></i></div>
@@ -263,7 +282,7 @@ function viewDiag(){
     <div class="li">${ic("shield")}<span><b>Без оцінок.</b> Під час тесту не видно, правильно чи ні: це не контрольна, а спосіб знайти, що варто згадати.</span></div>
     <div class="li">${ic("bolt")}<span><b>До ${d.items.length} завдань, ≈ ${diagMins(d)} хв.</b> Можна перерватися й продовжити пізніше.</span></div>
     <div class="li">${ic("bulb")}<span><b>Не знаєш — тисни «Ще не знаю».</b> Вгадувати не треба: так план вийде точнішим.</span></div>
-    <div class="li">${ic("path")}<span><b>Наприкінці — твій план:</b> спершу теми, які варто повторити, далі уроки ${d.grade} класу.</span></div>
+    <div class="li">${ic("path")}<span><b>Наприкінці — твій план:</b> ${d.topics.some(t=>t.kind!=="cur"&&!t.baseline)? "спершу теми, які варто повторити," : "які вміння варто потренувати і з чого почати —"} далі уроки ${d.grade} класу.</span></div>
   </div>
   <div style="display:grid;gap:10px">
     <button class="btn" type="button" data-diag-go>${part?"Продовжити тест":was?"Пройти ще раз":"Почати тест"}</button>
@@ -294,7 +313,8 @@ function viewPlan(){
     ${levelStats(lv)}
     <details class="plan"><summary>Теми тесту (${d.topics.length})</summary><div class="learned" style="margin-top:8px">${topicsHtml(d,rec.topics,"pre")}${topicsHtml(d,rec.topics,"cur")}</div></details></div>`:""}
   ${td.length?`<div class="eyebrow">Спершу повтори</div><div class="seclist">${td.map((st,i)=>{ const f=findLesson(st.l); return `<button type="button" class="secitem" data-lesson="${st.l}"><span class="secnum">${i+1}</span><span class="grow"><b>${esc(f.l.title)}</b><span class="muted small">${WHY[st.why]} · ${f.sec.grade} клас · ${f.l.screens.length} кроків</span>${topicOf(st)}</span><span class="play sm">${icF("play")}</span></button>`; }).join("")}</div>`
-    : `<div class="empty">${steps.length?"Усі кроки на повторення виконано.":"Тем на повторення зараз немає."} Якщо в уроках повторюватимуться схожі помилки, тут з'явиться нова порада.</div>`}
+    : `<div class="empty">${steps.length?"Усі кроки на повторення виконано.":baseTopics(c).length?"Уроків на повторення в застосунку зараз немає.":"Тем на повторення зараз немає."} Якщо в уроках повторюватимуться схожі помилки, тут з'явиться нова порада.</div>`}
+  ${baseBlock(c)}
   ${kn.length?`<div class="eyebrow">Уже знайоме з ${S.grade} класу</div><div class="learned">${kn.map(id=>{ const f=findLesson(id); return `<div class="li">${ic("check")}<span class="grow">${esc(f.l.title)}<span class="muted small" style="display:block">${esc(f.sec.title)} · урок відкрито без черги</span></span></div>`; }).join("")}</div>`:""}
   ${steps.some(st=>st.done)?`<details class="plan"><summary>Виконано (${steps.length-td.length})</summary><ol>${steps.filter(st=>st.done).map(st=>`<li>${esc(findLesson(st.l).l.title)}</li>`).join("")}</ol></details>`:""}
   <div class="eyebrow">Далі</div>
@@ -646,7 +666,7 @@ function renderDiagEnd(){
   const d=run.diag, plan=LEARN.finishDiag(S, C.id, d, run.res, learnCtx(C));
   delete S.diagRun[d.id]; delete S.diagSkip[d.id];
   const g=gain(20); touchStreak(); save(); renderTop(); pProgress();
-  const lv=LEARN.level(d,plan.topics), td=stepsTodo(C), kn=plan.known.length, cid=C.id;
+  const lv=LEARN.level(d,plan.topics), td=stepsTodo(C), kn=plan.known.length, cid=C.id, start=td.length? null : baseStart(C);
   nav={v:"plan",id:cid}; tab="path";
   $("#stage").innerHTML=fmt(`<section class="screen endhero">
     <div class="bigicon">${ic("target")}</div>
@@ -656,13 +676,17 @@ function renderDiagEnd(){
     ${levelStats(lv)}
     <div class="rec"><div class="eyebrow">Твій план</div>
       ${td.length? `<p style="margin:0">Спершу ${td.length} ${plural(td.length,["короткий урок","короткі уроки","коротких уроків"])} на повторення, далі — програма ${d.grade} класу.</p>${td.slice(0,3).map(st=>stepRow(st,"nowrow")).join("")}${td.length>3?`<p class="muted small" style="margin:0">…і ще ${td.length-3}. Увесь план — на головному екрані.</p>`:""}`
+        : start? `<p style="margin:0">Уроків на повторення в застосунку немає. Почни з уроків ${d.grade} класу.</p>${baseRow(start)}`
+        : baseTopics(C).length? `<p style="margin:0">Уроків на повторення в застосунку немає. Уроки ${d.grade} класу — на сторінці предмета.</p>`
         : `<p style="margin:0">Тем на повторення не знайшлося. Берися за уроки ${d.grade} класу.</p>`}
     </div>
+    ${baseBlock(C,false)}
     <div class="learned"><div class="eyebrow">Теми попередніх класів</div>${topicsHtml(d,plan.topics,"pre")}</div>
     ${kn?`<div class="learned"><div class="eyebrow">З програми ${d.grade} класу</div>${topicsHtml(d,plan.topics,"cur")}<p class="muted small" style="margin:0">Уроки тем, які ти вже вмієш, відкрито без черги.</p></div>`:""}
   </section>`);
-  setDock("","","", td.length? "Почати з першого кроку" : "До уроків");
-  afterEnd = td.length? ()=>startById(td[0].l) : ()=>go({v:"subject",id:cid});
+  setDock("","","", td.length? "Почати з першого кроку" : start? "До першого уроку" : "До уроків");
+  // baseline-прогалина не закривається переходом: start — лише доступний урок класу
+  afterEnd = td.length? ()=>startById(td[0].l) : start? ()=>startById(start) : ()=>go({v:"subject",id:cid});
   $("#stage").querySelectorAll("[data-lesson]").forEach(b=>b.onclick=()=>startById(b.dataset.lesson));
 }
 /* тренування — теж у плеєрі: звичайна перевірка (підказка → друга спроба → розв'язання), наприкінці оновлюється розклад повторень */
@@ -795,9 +819,9 @@ function alignUpdate(s){
 }
 /* зафарбуй частини */
 function answerInput(s){
-  const kind=s.answerKind||"number", keys=kind==="comparison"? ["<",">","="] : kind==="list"? ["-","/",";"," "] : kind==="factors"? ["*","^"] : ["-","/"," "];
-  const help=kind==="comparison"? "Запиши знак: <, > або =." : kind==="list"? "Запиши всі числа через крапку з комою. Порядок не має значення." : kind==="factors"? "Множники — через · або *. Степінь — через ^, наприклад 2^3 · 5." : "Дріб — через риску: 7/12. Мішане число — через пробіл: 2 1/3.";
-  return `<div class="numbox wide"><input id="numIn" inputmode="${kind==="number"?"decimal":"text"}" autocomplete="off" placeholder="?" aria-label="Відповідь"><span class="unit" id="answerUnit">${esc(s.unit||"")}</span></div><div class="anskeys">${keys.map(v=>`<button type="button" data-ins="${esc(v)}" aria-label="Вставити ${esc(v===" "?"пробіл":v)}">${esc(v===" "?"пробіл":v==="-"?"−":v)}</button>`).join("")}</div><div class="fix" style="text-align:center">${esc(help)}</div>`;
+  const kind=s.answerKind||"number", keys=kind==="comparison"? ["<",">","="] : kind==="list"? ["-","/",";"," "] : kind==="factors"? ["*","^"] : kind==="divrem"? [" ост. "] : ["-","/"," "];
+  const help=kind==="comparison"? "Запиши знак: <, > або =." : kind==="list"? "Запиши всі числа через крапку з комою. Порядок не має значення." : kind==="factors"? "Множники — через · або *. Степінь — через ^, наприклад 2^3 · 5." : kind==="divrem"? "Запиши неповну частку, потім кнопкою «ост.» — остачу: 3 ост. 2." : "Дріб — через риску: 7/12. Мішане число — через пробіл: 2 1/3.";
+  return `<div class="numbox wide"><input id="numIn" inputmode="${kind==="number"?"decimal":kind==="divrem"?"numeric":"text"}" autocomplete="off" placeholder="?" aria-label="Відповідь"><span class="unit" id="answerUnit">${esc(s.unit||"")}</span></div><div class="anskeys">${keys.map(v=>`<button type="button" data-ins="${esc(v)}" aria-label="Вставити ${esc(v===" "?"пробіл":v.trim()==="ост."?"остачу":v)}">${esc(v===" "?"пробіл":v==="-"?"−":v.trim())}</button>`).join("")}</div><div class="fix" style="text-align:center">${esc(help)}</div>`;
 }
 const answerUnit = (s, value) => { const a=LEARN.parseAns(value); if(!s.unitForms||!a) return s.unit||""; const n=Math.abs(a.n/a.d); return Number.isInteger(n)? plural(n,s.unitForms) : s.unitForms[1]; };
 function shadeUpdate(s){
@@ -852,8 +876,8 @@ function bindScreen(s){
   if(s.type==="shade") shadeUpdate(s);
   const nl=$("#nlrng"); if(nl){ numlineUpdate(s); nl.oninput=()=>{ if(checked) return; st=+nl.value; numlineUpdate(s); }; }
   const sgn=$("#numSign"); if(sgn) sgn.onclick=()=>{ if(checked) return; const ni=$("#numIn"); ni.value= ni.value.startsWith("-")? ni.value.slice(1) : "-"+ni.value; ni.oninput(); ni.focus(); };
-  const ni=$("#numIn"); if(ni){ ni.oninput=()=>{ ni.value= s.type==="answer"||s.hideDen ? ni.value.replace(/\./g,",").replace(/\u2212/g,"-").slice(0,120) : s.type==="number"&&numDecimal(s) ? ni.value.replace(/\./g,",").replace(/[^0-9,-]/g,"").replace(/(?!^)-/g,"").replace(/(,.*),/g,"$1").slice(0,10) : ni.value.replace(/[^0-9]/g,"").slice(0,6); st=ni.value; if(s.unitForms&&$("#answerUnit")) $("#answerUnit").textContent=answerUnit(s,st); ni.classList.remove("is-ok","is-bad"); setDock("","","","Перевірити", st.trim().length>0); };
-    stage.querySelectorAll(".anskeys button").forEach(b=>b.onclick=()=>{ if(checked) return; const v=b.dataset.ins; ni.value= v==="-"? (ni.value.startsWith("-")? ni.value.slice(1) : "-"+ni.value) : ni.value+v; ni.oninput(); ni.focus(); });
+  const ni=$("#numIn"); if(ni){ ni.oninput=()=>{ ni.value= s.answerKind==="divrem" ? ni.value.replace(/\s+/g," ").slice(0,40) : s.type==="answer"||s.hideDen ? ni.value.replace(/\./g,",").replace(/\u2212/g,"-").slice(0,120) : s.type==="number"&&numDecimal(s) ? ni.value.replace(/\./g,",").replace(/[^0-9,-]/g,"").replace(/(?!^)-/g,"").replace(/(,.*),/g,"$1").slice(0,10) : ni.value.replace(/[^0-9]/g,"").slice(0,6); st=ni.value; if(s.unitForms&&$("#answerUnit")) $("#answerUnit").textContent=answerUnit(s,st); ni.classList.remove("is-ok","is-bad"); setDock("","","","Перевірити", st.trim().length>0); };
+    stage.querySelectorAll(".anskeys button").forEach(b=>b.onclick=()=>{ if(checked) return; const v=b.dataset.ins; if(v.trim()==="ост." && (!/\d/.test(ni.value) || /ост/i.test(ni.value))) return ni.focus(); ni.value= v==="-"? (ni.value.startsWith("-")? ni.value.slice(1) : "-"+ni.value) : ni.value+v; ni.oninput(); ni.focus(); });
     ni.onkeydown=e=>{ if(e.key==="Enter" && !$("#action").disabled) $("#action").click(); }; setTimeout(()=>ni.focus({preventScroll:true}),350); }
 }
 function clearMarks(){ $("#stage").querySelectorAll(".is-ok,.is-bad").forEach(e=>e.classList.remove("is-ok","is-bad")); }
@@ -881,7 +905,7 @@ function showMarks(s, reveal){
   if(s.type==="multi"){ const c=new Set(s.correct); stage.querySelectorAll(".opt").forEach((el,k)=>{ el.classList.remove("is-ok","is-bad"); if(st.has(k)) el.classList.add(c.has(k)?"is-ok":"is-bad"); else if(reveal&&c.has(k)) el.classList.add("is-ok"); }); }
   if(s.type==="sort") stage.querySelectorAll(".srow").forEach((el,k)=>{ el.classList.remove("is-ok","is-bad"); el.classList.add(st[k]===s.items[k][1]?"is-ok":"is-bad"); if(reveal&&st[k]!==s.items[k][1]) el.insertAdjacentHTML("beforeend",`<span class="fix">Правильно: ${fmt(s.bins[s.items[k][1]])}</span>`); });
   if(s.type==="order") stage.querySelectorAll("#ord .opt").forEach(el=>{ const k=+el.dataset.k, p=st.indexOf(k); el.classList.remove("is-ok","is-bad"); el.classList.add(p===k?"is-ok":"is-bad"); if(reveal&&p!==k) el.querySelector(".k").textContent=`${p+1}→${k+1}`; });
-  if(s.type==="number"||s.type==="fracin"||s.type==="answer"){ const ni=$("#numIn"), ok=gradeNow(s); ni.classList.remove("is-ok","is-bad"); ni.classList.add(ok?"is-ok":"is-bad"); if(reveal && !ok){ const value=s.hideDen? `${s.answer}/${s.den}` : Array.isArray(s.answer)? s.answer.join("; ") : String(s.answer); const a=LEARN.parseAns(value); const unit=s.unitForms&&a? plural(a.n/a.d,s.unitForms) : s.unit||""; $("#hintHost").innerHTML=`<div class="hint">${ic("check")}<span>Правильна відповідь: <b>${s.type==="answer"||s.hideDen? fmt("$"+esc(value).replace(".",",").replace(" ","~")+"$")+(unit?" "+esc(unit):"") : numShow(s.answer)}</b></span></div>`; } }
+  if(s.type==="number"||s.type==="fracin"||s.type==="answer"){ const ni=$("#numIn"), ok=gradeNow(s); ni.classList.remove("is-ok","is-bad"); ni.classList.add(ok?"is-ok":"is-bad"); if(reveal && !ok){ const value=s.hideDen? `${s.answer}/${s.den}` : Array.isArray(s.answer)? s.answer.join("; ") : String(s.answer); const a=LEARN.parseAns(value); const unit=s.unitForms&&a? plural(a.n/a.d,s.unitForms) : s.unit||""; $("#hintHost").innerHTML=`<div class="hint">${ic("check")}<span>Правильна відповідь: <b>${s.answerKind==="divrem"? `${s.answer[0]} (ост. ${s.answer[1]})`+(s.unit?" "+esc(s.unit):"") : s.type==="answer"||s.hideDen? fmt("$"+esc(value).replace(".",",").replace(" ","~")+"$")+(unit?" "+esc(unit):"") : numShow(s.answer)}</b></span></div>`; } }
   if(s.type==="lab"){ const ok=gradeNow(s); if(reveal && !ok){ LAB.set(s.solution); LAB.mark("is-ok"); $("#hintHost").innerHTML=fmt(`<div class="hint">${ic("check")}<span>${s.reveal||"Ось як має бути — подивись на модель."}</span></div>`); } else LAB.mark(ok?"is-ok":"is-bad"); }
   if(s.type==="shade"){ const box=$("#shade"); box.classList.remove("is-ok","is-bad"); box.classList.add(st.size===s.target?"is-ok":"is-bad"); }
   if(s.type==="numline"){ if(reveal){ st=s.answer; $("#nlrng").value=st; } numlineUpdate(s); }
@@ -906,7 +930,7 @@ function check(){
              : s.type==="shade"? `Потрібно зафарбувати ${s.target} ${s.target===1?"частину":s.target<5?"частини":"частин"}, а зафарбовано ${st.size}.`
              : s.type==="numline"? "Точка стоїть не там. Порахуй поділки від нуля."
              : s.type==="lab"? "Ще не те. Зміни модель і перевір ще раз."
-             : s.type==="answer" && LEARN.checkAns(s,st)==="form"? (!LEARN.parseAns(st).frac? "Значення правильне. Запиши відповідь звичайним дробом." : s.reduced && !LEARN.parseAns(st).lowest? "Значення правильне, але дріб ще можна скоротити." : "Значення правильне. Запиши відповідь мішаним числом: ціла частина, пробіл, дріб.")
+             : s.type==="answer" && LEARN.checkAns(s,st)==="form"? (s.answerKind==="divrem"? "Неповну частку знайдено. Допиши остачу: кнопка «ост.» і число." : !LEARN.parseAns(st).frac? "Значення правильне. Запиши відповідь звичайним дробом." : s.reduced && !LEARN.parseAns(st).lowest? "Значення правильне, але дріб ще можна скоротити." : "Значення правильне. Запиши відповідь мішаним числом: ціла частина, пробіл, дріб.")
              : "Спробуй ще раз.";
     return setDock("bad", s.fbBad||"Не зовсім.", msg+preNote, "Спробувати ще раз");
   }
