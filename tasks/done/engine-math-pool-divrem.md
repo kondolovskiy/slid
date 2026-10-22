@@ -6,7 +6,7 @@ id: engine-math-pool-divrem
 type: engine
 subject: math
 grade: 4
-status: review
+status: done
 claimed_by: main-session
 created: 2026-10-22
 depends_on: [write-math-pool-m4s1]
@@ -25,9 +25,9 @@ depends_on: [write-math-pool-m4s1]
 
 ## Готово, коли
 
-- [ ] Еквівалентні й неправильні записи покрито модульними тестами; браузерний сценарій divrem зелений.
-- [ ] test-learn, test-answer-ui, validate, build, регресія pg6/pg4 зелені.
-- [ ] Незалежне рев'ю (D-026) прийнято.
+- [x] Еквівалентні й неправильні записи покрито модульними тестами; браузерний сценарій divrem зелений.
+- [x] test-learn, test-answer-ui, validate, build, регресія pg6/pg4 зелені.
+- [x] Незалежне рев'ю (D-026) прийнято.
 
 ## Нотатки виконавця
 - 2026-10-22: редактор групи personalization-shared: main-session; редагування розпочато.
@@ -41,3 +41,6 @@ depends_on: [write-math-pool-m4s1]
 **Результати (2026-10-22):** npm run check зелений (math 17, lab 69, learn 495, QA 27, validate 0/255); test-answer-ui regression зелений (новий divrem: часткова відповідь → підказка, кнопка, остача 0, показ після двох помилок); content --grade 4 (dg4 + pg4m1/pg4m2/pm4s1, 64 вправи) і --grade 6 (dg6 + 5 пулів, 184 вправи) зелені; playtest dg4 зелений.
 
 **Не зроблено (наступний крок контенту):** pm4s1 поки без divrem-вправ; після прийняття — окремою контентною правкою додати вправи «знайди неповну частку й остачу» (Логачевська №3, №11) з верифікацією.
+
+- Незалежне рев’ю (D-026): 447b6e4 прийнято з трьома P3; виправлено в 4d721d5 (unitForms заборонено, кнопка «ост.», природні записи; test-learn 501/501). Повторна перевірка 4d721d5 — **прийнято** (reports/review/engine-math-pool-divrem.md).
+- редагування передано: вільно.
