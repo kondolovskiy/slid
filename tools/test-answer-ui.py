@@ -389,10 +389,12 @@ async def divrem_checks(browser, url):
     await page.click('[data-tab="path"]'); await page.click('[data-tab="path"]')
     await page.click('button[data-subject="math"]'); await page.click('[data-practice-view="math"]'); await page.click('[data-practice-mix]')
     assert await page.locator('#numIn').get_attribute('inputmode') == 'numeric'
-    assert 'ост.' in await page.locator('#stage').inner_text()
+    await page.click('.anskeys button')  # empty field: the button inserts nothing
+    assert await page.input_value('#numIn') == ''
     await page.fill('#numIn', '3'); await page.click('#action')
     assert 'Допиши остачу' in await page.locator('#dock').inner_text()
-    await page.click('.anskeys button'); await page.locator('#numIn').press_sequentially('2')
+    await page.click('.anskeys button'); await page.click('.anskeys button')  # second press is ignored
+    await page.locator('#numIn').press_sequentially('2')
     assert await page.input_value('#numIn') == '3 ост. 2'
     await page.click('#action')
     assert 'ok' in await page.locator('#dock').get_attribute('class'); await page.click('#action')

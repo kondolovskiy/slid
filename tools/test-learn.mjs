@@ -498,7 +498,7 @@ const order = l => ({ L1: 3, L2: 1, L3: 2, L4: 4 }[l] ?? 50);
 
 /* 12. Ділення з остачею: answerKind divrem */
 { const s = { answerKind: "divrem", answer: [3, 2] };
-  for (const v of ["3 ост. 2", "3 (ост. 2)", "3 ост 2", "3ост2", "3 ост, 2", "3 (ОСТ. 2)", "  3   ост.  2 "]) eq(L.checkAns(s, v), "ok", `divrem: «${v}» приймається`);
+  for (const v of ["3 ост. 2", "3 (ост. 2)", "3 ост 2", "3ост2", "3 ост, 2", "3 (ОСТ. 2)", "  3   ост.  2 ", "3 ост. 2.", "3 (ост. 2).", "3 ( ост . 2 )", "3 oст. 2", "3 ocт. 2"]) eq(L.checkAns(s, v), "ok", `divrem: «${v}» приймається`);
   for (const v of ["3 ост. 3", "4 ост. 2", "2 ост. 3", "3; 2", "3, 2", "3 ост. ", "ост. 2", "3 (ост. 2", "3,5 ост. 2", "-3 ост. 2", "3 ост. -2", "", "3 2"]) eq(L.checkAns(s, v), "bad", `divrem: «${v}» не приймається`);
   eq(L.checkAns(s, "3"), "form", "divrem: лише правильна частка при остачі 2 — дописати остачу");
   eq(L.checkAns(s, "4"), "bad", "divrem: лише неправильна частка — bad");
@@ -518,6 +518,7 @@ const order = l => ({ L1: 3, L2: 1, L3: 2, L4: 4 }[l] ?? 50);
   bad(it => { it.type = "choice"; }, "answerKind", "divrem не для choice");
   bad(it => { it.reduced = true; }, "reduced", "reduced лише для числової");
   bad(it => { it.tol = 1; }, "tol", "tol лише для числової");
+  bad(it => { it.unitForms = ["цукерка", "цукерки", "цукерок"]; }, "unitForms не для divrem", "unitForms для divrem");
 }
 
 /* 11. Baseline 4 класу: опори 1–3 класів без уроків у застосунку */

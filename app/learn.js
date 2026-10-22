@@ -213,9 +213,10 @@ window.SLID_LEARN = (() => {
       Кома замість крапки після «ост» допустима (поле відповіді замінює крапки на коми). */
   function parseDivrem(v) {
     if (Array.isArray(v)) return v.length === 2 && v.every(x => Number.isSafeInteger(x) && x >= 0) ? { q: v[0], r: v[1] } : null;
-    const t = String(v ?? "").replace(/\s+/g, " ").trim().toLowerCase(), num = x => { const n = Number(x.replace(/ /g, "")); return Number.isSafeInteger(n) ? n : null; };
+    // латинські o/c замість кириличних і крапка в кінці («3 ост. 2.») не роблять відповідь неправильною
+    const t = String(v ?? "").toLowerCase().replace(/o/g, "о").replace(/c/g, "с").replace(/\s+/g, " ").trim().replace(/ ?\.$/, ""), num = x => { const n = Number(x.replace(/ /g, "")); return Number.isSafeInteger(n) ? n : null; };
     const D = "(\\d{1,3}(?: \\d{3})+|\\d+)";
-    let m = t.match(new RegExp(`^${D} ?(?:\\( ?ост[.,]? ?${D} ?\\)|ост[.,]? ?${D})$`));
+    let m = t.match(new RegExp(`^${D} ?(?:\\( ?ост ?[.,]? ?${D} ?\\)|ост ?[.,]? ?${D})$`));
     if (m) { const q = num(m[1]), r = num(m[2] ?? m[3]); return q === null || r === null ? null : { q, r }; }
     if ((m = t.match(new RegExp(`^${D}$`)))) { const q = num(m[1]); return q === null ? null : { q, r: null }; }
     return null;
@@ -325,6 +326,7 @@ window.SLID_LEARN = (() => {
       if (!Array.isArray(it.steps) || !it.steps.length) E.push(`${w}: немає steps — розв'язання кроками`);
       if (it.srcPage !== undefined && (!Number.isSafeInteger(it.srcPage) || it.srcPage < 1)) E.push(`${w}: srcPage має бути додатним цілим числом`);
       if (it.adapted !== undefined && typeof it.adapted !== "boolean") E.push(`${w}: adapted має бути boolean`);
+      if (it.unitForms !== undefined && it.answerKind === "divrem") E.push(`${w}: unitForms не для divrem — лише unit`);
       if (it.unitForms !== undefined && (!Array.isArray(it.unitForms) || it.unitForms.length !== 3 || it.unitForms.some(x => typeof x !== "string" || !x.trim()))) E.push(`${w}: unitForms має містити три непорожні рядки (1 / 2–4 / 5+)`);
       const kind = it.answerKind || "number";
       if (it.answerKind !== undefined && (it.type !== "answer" || !["number", "comparison", "list", "factors", "divrem"].includes(it.answerKind))) E.push(`${w}: answerKind має бути number | comparison | list | factors | divrem для answer`);
