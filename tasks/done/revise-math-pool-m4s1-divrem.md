@@ -5,7 +5,7 @@ id: revise-math-pool-m4s1-divrem
 type: write-pool
 subject: math
 grade: 4
-status: review
+status: done
 claimed_by: writer-pm4s1-divrem
 created: 2026-10-22
 depends_on: [write-math-pool-m4s1, engine-math-pool-divrem]
