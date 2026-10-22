@@ -5,7 +5,7 @@ id: write-math-pool-m4s1
 type: write-pool
 subject: math
 grade: 4
-status: review
+status: done
 claimed_by: writer-pm4s1
 created: 2026-10-15
 depends_on: [curate-math-personalization-map]
