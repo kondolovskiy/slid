@@ -496,6 +496,30 @@ const order = l => ({ L1: 3, L2: 1, L3: 2, L4: 4 }[l] ?? 50);
   eq(S.grade, 6, "practice context: grade never changed");
 }
 
+/* 12. Ділення з остачею: answerKind divrem */
+{ const s = { answerKind: "divrem", answer: [3, 2] };
+  for (const v of ["3 ост. 2", "3 (ост. 2)", "3 ост 2", "3ост2", "3 ост, 2", "3 (ОСТ. 2)", "  3   ост.  2 "]) eq(L.checkAns(s, v), "ok", `divrem: «${v}» приймається`);
+  for (const v of ["3 ост. 3", "4 ост. 2", "2 ост. 3", "3; 2", "3, 2", "3 ост. ", "ост. 2", "3 (ост. 2", "3,5 ост. 2", "-3 ост. 2", "3 ост. -2", "", "3 2"]) eq(L.checkAns(s, v), "bad", `divrem: «${v}» не приймається`);
+  eq(L.checkAns(s, "3"), "form", "divrem: лише правильна частка при остачі 2 — дописати остачу");
+  eq(L.checkAns(s, "4"), "bad", "divrem: лише неправильна частка — bad");
+  eq([L.checkAns({ answerKind: "divrem", answer: [5, 0] }, "5"), L.checkAns({ answerKind: "divrem", answer: [5, 0] }, "5 ост. 0")], ["ok", "ok"], "divrem: остача 0 — можна без неї");
+  eq(L.checkAns({ answerKind: "divrem", answer: [1234, 5] }, "1 234 ост. 5"), "ok", "divrem: розряди через пробіл");
+  eq(L.checkAns({ answerKind: "divrem", answer: "3 ост. 2" }, "3 ост. 2"), "bad", "divrem: ключ лише масивом");
+  eq(L.checkAns({ answerKind: "divrem", answer: [3, 2.5] }, "3 ост. 2"), "bad", "divrem: ключ — цілі числа");
+  eq(L.checkAns({ answer: 3 }, "3 ост. 2"), "bad", "number: запис з остачею не число");
+  eq(L.parseDivrem([3, 2]), { q: 3, r: 2 }, "parseDivrem: масив");
+  const sec = new Map([["s4", { grade: 4, lessons: ["l4"] }]]);
+  const pool = { id: "pd", section: "s4", status: "draft", sources: [{ id: "g", title: "G", url: "https://x" }],
+    items: [{ id: "a", lesson: "l4", lvl: 1, sk: "num", src: "g №1", type: "answer", title: "17 : 5", answerKind: "divrem", answer: [3, 2], steps: ["5 · 3 = 15, 17 − 15 = 2."] }] };
+  eq(L.validatePool(pool, { sections: sec, skills: { num: 1 } }), [], "validatePool: divrem дозволено");
+  const bad = (mut, sub, what) => { const p = clone(pool); mut(p.items[0]); const E = L.validatePool(p, { sections: sec, skills: { num: 1 } }); eq(E.some(e => e.includes(sub)), true, `validatePool divrem: ${what} (${JSON.stringify(E)})`); };
+  bad(it => { it.answer = "3 ост. 2"; }, "не читається", "ключ рядком");
+  bad(it => { it.answer = [3]; }, "не читається", "ключ з одного числа");
+  bad(it => { it.type = "choice"; }, "answerKind", "divrem не для choice");
+  bad(it => { it.reduced = true; }, "reduced", "reduced лише для числової");
+  bad(it => { it.tol = 1; }, "tol", "tol лише для числової");
+}
+
 /* 11. Baseline 4 класу: опори 1–3 класів без уроків у застосунку */
 { const B = { id: "dgb", grade: 4, title: "T", why: "W", status: "draft",
     topics: [{ id: "p1", title: "P1", kind: "pre", baseline: true, lessons: [], for: ["s2"] },

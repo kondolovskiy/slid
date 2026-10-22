@@ -209,8 +209,20 @@ window.SLID_LEARN = (() => {
     }
     return product;
   }
+  /** Ділення з остачею: «3 ост. 2», «3 (ост. 2)», «3 ост 2» або масив [3, 2]. Лише частка («3») — { q, r: null }.
+      Кома замість крапки після «ост» допустима (поле відповіді замінює крапки на коми). */
+  function parseDivrem(v) {
+    if (Array.isArray(v)) return v.length === 2 && v.every(x => Number.isSafeInteger(x) && x >= 0) ? { q: v[0], r: v[1] } : null;
+    const t = String(v ?? "").replace(/\s+/g, " ").trim().toLowerCase(), num = x => { const n = Number(x.replace(/ /g, "")); return Number.isSafeInteger(n) ? n : null; };
+    const D = "(\\d{1,3}(?: \\d{3})+|\\d+)";
+    let m = t.match(new RegExp(`^${D} ?(?:\\( ?ост[.,]? ?${D} ?\\)|ост[.,]? ?${D})$`));
+    if (m) { const q = num(m[1]), r = num(m[2] ?? m[3]); return q === null || r === null ? null : { q, r }; }
+    if ((m = t.match(new RegExp(`^${D}$`)))) { const q = num(m[1]); return q === null ? null : { q, r: null }; }
+    return null;
+  }
   /** Перевірка відповіді: "ok" | "form" (правильне значення, потрібен інший запис дробу) | "bad".
-      answerKind: number (типово), comparison (< > =), list (без порядку і повторів), factors (прості множники).
+      answerKind: number (типово), comparison (< > =), list (без порядку і повторів), factors (прості множники),
+      divrem (частка й остача; лише частка при ненульовій остачі — "form", при нульовій — "ok"). 
       Числа: reduced — нескоротний дріб; mixed — виділити цілу частину; fractionOnly — лише звичайний/мішаний дріб; tol — абсолютна похибка. */
   function checkAns(s, v) {
     const kind = s.answerKind || "number";
@@ -220,6 +232,11 @@ window.SLID_LEARN = (() => {
       return a && u && a.length === u.length && a.every(x => u.some(y => sameAns(x, y))) ? "ok" : "bad";
     }
     if (kind === "factors") { const a = parseFactors(s.answer), u = parseFactors(v); return a !== null && u !== null && a === u ? "ok" : "bad"; }
+    if (kind === "divrem") {
+      const a = Array.isArray(s.answer) ? parseDivrem(s.answer) : null, u = parseDivrem(v);
+      if (!a || !u || u.q !== a.q) return "bad";
+      return u.r === null ? (a.r === 0 ? "ok" : "form") : u.r === a.r ? "ok" : "bad";
+    }
     if (kind !== "number" || (s.tol !== undefined && (!Number.isFinite(s.tol) || s.tol < 0))) return "bad";
     const a = parseAns(typeof s.answer === "number" ? String(s.answer) : s.answer), u = parseAns(v);
     if (!a || !u) return "bad";
@@ -310,7 +327,7 @@ window.SLID_LEARN = (() => {
       if (it.adapted !== undefined && typeof it.adapted !== "boolean") E.push(`${w}: adapted має бути boolean`);
       if (it.unitForms !== undefined && (!Array.isArray(it.unitForms) || it.unitForms.length !== 3 || it.unitForms.some(x => typeof x !== "string" || !x.trim()))) E.push(`${w}: unitForms має містити три непорожні рядки (1 / 2–4 / 5+)`);
       const kind = it.answerKind || "number";
-      if (it.answerKind !== undefined && (it.type !== "answer" || !["number", "comparison", "list", "factors"].includes(it.answerKind))) E.push(`${w}: answerKind має бути number | comparison | list | factors для answer`);
+      if (it.answerKind !== undefined && (it.type !== "answer" || !["number", "comparison", "list", "factors", "divrem"].includes(it.answerKind))) E.push(`${w}: answerKind має бути number | comparison | list | factors | divrem для answer`);
       for (const flag of ["reduced", "mixed", "fractionOnly"]) {
         if (it[flag] !== undefined && (typeof it[flag] !== "boolean" || it.type !== "answer" || kind !== "number")) E.push(`${w}: ${flag} має бути boolean для числової answer`);
       }
@@ -373,5 +390,5 @@ window.SLID_LEARN = (() => {
   }
 
   return { OK, BAD, SKIP, PASS, DIAG_TYPES, planFor, practiceItems, nextItem, remaining, topicStatus, level, buildPlan, finishDiag, record, detect, syncPlan, lessonDone, todo, isKnown, validate,
-    parseAns, checkAns, BOX_DAYS, srsInit, srsUpdate, isDue, pickSession, POOL_TYPES, validatePool };
+    parseAns, parseDivrem, checkAns, BOX_DAYS, srsInit, srsUpdate, isDue, pickSession, POOL_TYPES, validatePool };
 })();

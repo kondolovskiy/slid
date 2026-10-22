@@ -36,7 +36,9 @@ async def answer(pg, s):
     elif t == "shade":
         for k in range(s["target"]): await pg.click(f'#shade [data-p="{k}"]')
     elif t == "numline": await pg.eval_on_selector("#nlrng", f"e=>{{e.value={s['answer']};e.dispatchEvent(new Event('input'))}}")
-    elif t == "answer": await pg.fill("#numIn", str(s["answer"]).replace(".", ",")); await pg.dispatch_event("#numIn", "input")
+    elif t == "answer":
+        v = f'{s["answer"][0]} ост. {s["answer"][1]}' if s.get("answerKind") == "divrem" else "; ".join(map(str, s["answer"])) if isinstance(s["answer"], list) else str(s["answer"])
+        await pg.fill("#numIn", v.replace(".", ",") if s.get("answerKind") != "divrem" else v); await pg.dispatch_event("#numIn", "input")
     elif t == "fracin": await pg.fill("#numIn", f"{s['answer']}/{s['den']}" if s.get("hideDen") else str(s["answer"]))
     elif t == "number":
         v = s["answer"]; txt = (str(int(v)) if float(v).is_integer() else repr(v)).replace(".", ",")
