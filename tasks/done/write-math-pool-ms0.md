@@ -5,7 +5,7 @@ id: write-math-pool-ms0
 type: write-pool
 subject: math
 grade: 5
-status: review
+status: done
 claimed_by: writer-write-math-pool-ms0
 created: 2026-10-15
 depends_on: [curate-math-personalization-map]

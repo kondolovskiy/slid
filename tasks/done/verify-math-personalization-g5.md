@@ -5,7 +5,7 @@ id: verify-math-personalization-g5
 type: verify-personalization
 subject: math
 grade: 5
-status: todo
+status: done
 claimed_by: orchestrator-verify-g5
 created: 2026-10-15
 depends_on: [curate-math-personalization-map, write-math-diag-g5, write-math-pool-ms0, write-math-pool-ms0b, write-math-pool-ms2, write-math-pool-ms3, write-math-pool-ms4, write-math-pool-ms1]
@@ -42,6 +42,8 @@ depends_on: [curate-math-personalization-map, write-math-diag-g5, write-math-poo
 ## Нотатки виконавця
 
 <!-- Змінені файли; джерела; рішення й обмеження; результати команд; що передано незалежному верифікатору. -->
+
+- 2026-10-30: 7 незалежних верифікаторів (по одному на файл, не автори) → усі verified; підсумок reports/verify/math-personalization-g5.md. strict --grade 5 зелений. Браузерне приймання → qa-math-personalization-g5.
 
 ## Обсяг за матрицею 2026-10-16.v2
 
