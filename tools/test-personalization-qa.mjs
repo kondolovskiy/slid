@@ -35,6 +35,16 @@ const swapped = clone(), dd = swapped.diags.find(d => d.id === 'dg6');
 [dd.items[0], dd.items[1]] = [dd.items[1], dd.items[0]];
 check(() => assert(audit(swapped, matrix, learn, { diag: 'dg6' }).missing.some(e => e.includes('itemIndices'))));
 check(() => assert.deepEqual(audit(subject, matrix, learn, { diag: 'dg6' }).missing, []));
+// baseline 4 класу: тест за матрицею проходить структурно, без «не підтримано»; розбіжність прапорця видно
+const dg4 = matrix.diagnostics.find(d => d.id === 'dg4'), withDg4 = clone();
+withDg4.diags = withDg4.diags.filter(d => d.grade !== 4).concat({ id: 'dg4', grade: 4, title: 'QA', why: 'QA', status: 'verified',
+  topics: dg4.topics.map(t => ({ id: t.id, title: t.title, kind: t.kind, lessons: t.lessons, ...(t.for?.length ? { for: t.for } : {}), ...(t.baseline ? { baseline: true } : {}) })),
+  items: dg4.topics.flatMap(t => t.itemSkills.map((sk, i) => ({ topic: t.id, type: 'number', sk, title: 'QA', answer: 1, ...(t.itemLessons[i] && t.lessons.length > 1 ? { lesson: t.itemLessons[i] } : {}) }))) });
+const base4 = audit(withDg4, matrix, learn, { diag: 'dg4' });
+check(() => assert.deepEqual([base4.errors, base4.missing, base4.unsupported], [[], [], []], JSON.stringify(base4)));
+const noFlag = JSON.parse(JSON.stringify(withDg4)); delete noFlag.diags.find(d => d.id === 'dg4').topics[0].baseline;
+const noFlagReport = audit(noFlag, matrix, learn, { diag: 'dg4' });
+check(() => assert(noFlagReport.errors.some(e => e.includes('1–2 id уроків')) && noFlagReport.missing.some(e => e.includes('place: baseline'))));
 for (const args of [['--pool','typo'], ['--diag','typo'], ['--grade','12'], ['--pool','pg6m1','--grade','5'], ['--pool','pg6m1','--grade','7'], ['--wat'], ['--diag'], ['--diag','dg6','--pool','pg6m1']]) {
   check(() => assert.equal(spawnSync(process.execPath, ['tools/personalization-qa.mjs', ...args], { cwd: ROOT }).status, 1));
 }

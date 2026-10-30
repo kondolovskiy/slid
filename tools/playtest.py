@@ -36,7 +36,9 @@ async def answer(pg, s):
     elif t == "shade":
         for k in range(s["target"]): await pg.click(f'#shade [data-p="{k}"]')
     elif t == "numline": await pg.eval_on_selector("#nlrng", f"e=>{{e.value={s['answer']};e.dispatchEvent(new Event('input'))}}")
-    elif t == "answer": await pg.fill("#numIn", str(s["answer"]).replace(".", ",")); await pg.dispatch_event("#numIn", "input")
+    elif t == "answer":
+        v = f'{s["answer"][0]} ост. {s["answer"][1]}' if s.get("answerKind") == "divrem" else (" : " if s.get("answerKind") == "ratio" else "; ").join(map(str, s["answer"])) if isinstance(s["answer"], list) else str(s["answer"])
+        await pg.fill("#numIn", v.replace(".", ",") if s.get("answerKind") != "divrem" else v); await pg.dispatch_event("#numIn", "input")
     elif t == "fracin": await pg.fill("#numIn", f"{s['answer']}/{s['den']}" if s.get("hideDen") else str(s["answer"]))
     elif t == "number":
         v = s["answer"]; txt = (str(int(v)) if float(v).is_integer() else repr(v)).replace(".", ",")
@@ -77,8 +79,7 @@ async def main():
                     await pg.click('[data-tab="path"]'); await pg.click('[data-tab="path"]')
                     played += 1
         # тести рівня (SLID.diag): усе правильно → план без кроків; усе «Ще не знаю» → у плані є кроки, кожен веде на наявний урок.
-        # Виняток — тест, де всі передумови базові (baseline, уроків молодших класів немає): тоді кроків немає, але кожна
-        # прогалина є в plan.base і веде на перший урок свого розділу, який і відкриває кнопка.
+        # Baseline-опори (уроків молодших класів немає) кроків не дають: вони мають бути в plan.base, а кнопка — відкрити урок класу.
         diags = 0
         for c in subjects:
             for d in c.get("diags", []):
@@ -96,16 +97,16 @@ async def main():
                         if shown > len(d["items"]): errs.append(f"{c['id']} {d['id']}: тест не закінчується"); break
                     plan = await pg.evaluate("JSON.parse(localStorage.getItem('slid.v1')).plan['%s']" % c["id"])
                     todo = [st for st in (plan or {}).get("steps", []) if not st.get("done")]
+                    base = (plan or {}).get("base", [])
+                    pre_lessons = any(t["kind"] != "cur" and not t.get("baseline") for t in d["topics"])
+                    pre_base = sorted(t["id"] for t in d["topics"] if t.get("baseline"))
                     if not plan: errs.append(f"{c['id']} {d['id']} ({mode}): план не збережено")
-                    elif mode == "ok" and (todo or shown != len(d["items"])): errs.append(f"{c['id']} {d['id']}: усі відповіді правильні, але в плані {len(todo)} кроків (показано {shown} з {len(d['items'])} завдань) — якусь відповідь не зараховано")
-                    elif mode == "skip" and any(t["kind"] == "pre" and not t.get("baseline") for t in d["topics"]) and not todo: errs.append(f"{c['id']} {d['id']}: усе пропущено, а план порожній")
-                    elif mode == "skip" and not todo:
-                        base = (plan or {}).get("base", [])
-                        pre = [t["id"] for t in d["topics"] if t["kind"] == "pre"]
-                        if sorted(b["topic"] for b in base) != sorted(pre) or not all(b.get("l") for b in base):
-                            errs.append(f"{c['id']} {d['id']}: усе пропущено, а базові прогалини не всі в плані або без уроку: {base}")
+                    elif mode == "ok" and (todo or base or shown != len(d["items"])): errs.append(f"{c['id']} {d['id']}: усі відповіді правильні, але в плані {len(todo)} кроків (показано {shown} з {len(d['items'])} завдань) — якусь відповідь не зараховано")
+                    elif mode == "skip" and pre_lessons and not todo: errs.append(f"{c['id']} {d['id']}: усе пропущено, а план порожній")
+                    elif mode == "skip" and sorted(b["topic"] for b in base) != pre_base: errs.append(f"{c['id']} {d['id']}: усе пропущено, а baseline-прогалини {pre_base} не видно в плані ({base})")
+                    elif mode == "skip" and not todo and not all(b.get("next") for b in base): errs.append(f"{c['id']} {d['id']}: усе пропущено, а baseline-прогалина без уроку, з якого почати: {base}")
                     await pg.click("#action"); await pg.wait_for_timeout(80)
-                    if mode == "skip" and await pg.is_hidden("#player"): errs.append(f"{c['id']} {d['id']}: перший крок плану не відкрився")
+                    if mode == "skip" and await pg.is_hidden("#player"): errs.append(f"{c['id']} {d['id']}: перший крок плану чи перший урок класу не відкрився")
                 diags += 1
         await b.close()
         print(f"Пройдено уроків: {played}, тестів рівня: {diags}")
