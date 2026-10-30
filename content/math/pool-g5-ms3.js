@@ -1,5 +1,5 @@
 /* Слід · Математика, 5 клас — пул задач для тренування до розділу «Відсотки й діаграми» (ms3)
-   Статус: draft. 16 задач: по 8 на required-уроки ms3l1 і ms3l2 (матриця покриття 2026-10-16.v2).
+   Статус: verified (verifier-pms3, 2026-10-30; звіт reports/verify/pms3.md). 16 задач: по 8 на required-уроки ms3l1 і ms3l2 (матриця покриття 2026-10-16.v2).
    ms3l3 (діаграми) — pending за матрицею: задач у пулі немає, причина — docs/math-personalization-coverage.md.
    Усі задачі — з підручника Мерзляка 5 (2022), п. 37, с. 313–316; умови й числа звірено з відрендереними сторінками PDF 2026-10-30.
    Перевірка: node tools/validate.mjs --pool pms3
@@ -7,8 +7,8 @@
 SLID.pool("math", {
   id: "pms3",
   section: "ms3",
-  status: "draft",
-  meta: { author: "claude-opus", created: "2026-10-30", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "claude-opus", created: "2026-10-30", factcheck: "verifier-pms3", teacher: null },
   sources: [
     { id: "mer5", title: "Мерзляк А. Г., Полонський В. Б., Якір М. С. Математика. 5 клас. — Харків: Гімназія, 2022 (дзеркало PDF 4book.org)", url: "https://file.4book.org/images/shcoolbook_ua/5/5_m_m_2022.pdf" }
   ],
