@@ -5,7 +5,7 @@ id: verify-math-personalization-g4
 type: verify-personalization
 subject: math
 grade: 4
-status: todo
+status: done
 claimed_by: orchestrator-verify-g4
 created: 2026-10-15
 depends_on: [curate-math-personalization-map, write-math-diag-g4, write-math-pool-g4m1, write-math-pool-g4m2, write-math-pool-g4m3, write-math-pool-g4m4, write-math-pool-g4m5, write-math-pool-m4s1]
@@ -40,6 +40,8 @@ depends_on: [curate-math-personalization-map, write-math-diag-g4, write-math-poo
 Прочитати AGENTS.md, актуальні handoff та INDEX, релевантні довгу пам’ять і style/math.md; docs/PERSONALIZATION.md, docs/CONTENT_SCHEMA.md §9–10; tasks/README-math-personalization.md. Аналіз цього пакета спирається на origin/main, коміт 8d438ca; у старому коміті 57f9fc6 потрібної реалізації немає. Виконувати на версії з чинними SLID.diag / SLID.pool. Не повертати застарілі обмеження зі старих задач: engine-diag-pool-answers уже done.
 
 ## Нотатки виконавця
+
+- 2026-10-30: 7 незалежних верифікаторів (по одному на файл, не автори) → dg4 і 6 пулів verified; підсумок reports/verify/math-personalization-g4.md. Браузерне приймання → qa-math-personalization-g4.
 
 <!-- Змінені файли; джерела; рішення й обмеження; результати команд; що передано незалежному верифікатору. -->
 
