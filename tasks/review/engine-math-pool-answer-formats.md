@@ -5,7 +5,7 @@ write_group: personalization-shared
 id: engine-math-pool-answer-formats
 type: engine
 subject: math
-status: todo
+status: review
 claimed_by: engineer-formats
 created: 2026-10-15
 depends_on: [curate-math-personalization-map]
