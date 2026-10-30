@@ -6,7 +6,7 @@ id: engine-math-diag-g4-baseline
 type: engine
 subject: math
 grade: 4
-status: review
+status: done
 claimed_by: orchestrator-g4
 created: 2026-10-15
 depends_on: [curate-math-personalization-map]
@@ -47,6 +47,7 @@ write_group: personalization-shared. Перед змінами оркестра�
 - Змінено: app/learn.js (validate/level/buildPlan, `plan.base`), app/app.js (підсумок тесту, картка плану, екран плану), tools/validate.mjs (карти свого предмета), tools/personalization-qa.mjs (знято unsupported, звірка baseline), tools/playtest.py (виняток лише для тестів із самими baseline-pre), tools/test-learn.mjs (+24), tools/test-answer-ui.py (fixture dg4 ok/skip/mixed), docs CONTENT_SCHEMA §9, PERSONALIZATION, PERSONALIZATION_QA; build.
 - Результати й межі: reports/qa/engine-math-diag-g4-baseline.md. Learn 451/451, QA 25/25, validate 0/255, test-answer-ui all зелений, playtest dg6 зелений.
 - Передано незалежному рецензенту (engineering-reviewer); до прийняття — review.
+- 2026-10-30: незалежне рев’ю — **прийнято** (reports/review/engine-math-diag-g4-baseline.md), P1/P2 немає; три P3 → inbox. Редагування передано: вільно.
 
 ## Обсяг за матрицею 2026-10-16.v2
 
