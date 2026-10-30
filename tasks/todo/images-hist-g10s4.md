@@ -7,7 +7,7 @@ subject: hist
 grade: 10
 section: g10s4
 status: todo
-claimed_by: w-images-hist-g10s4
+claimed_by:
 created: 2026-10-30
 depends_on: []
 ---
