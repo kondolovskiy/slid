@@ -1,14 +1,10 @@
 {
-  "date": "2026-10-30T19:16:51.841Z",
+  "date": "2026-10-30T19:23:20.980Z",
   "errors": [],
   "warnings": [
     "content/hist/g10-g10s1.js#g10s1l1: sentenceWords=6.6 поза профілем [7; 15] для hist, 10-11 кл.",
-    "content/hist/g10-g10s1.js#g10s1l1: урок без зображення img (D-027: обов'язкове фото чи джерело з відкритою ліцензією; svg/fig не рахуються)",
     "content/hist/g10-g10s1.js#g10s1l2: sentenceWords=6.6 поза профілем [7; 15] для hist, 10-11 кл.",
-    "content/hist/g10-g10s1.js#g10s1l2: урок без зображення img (D-027: обов'язкове фото чи джерело з відкритою ліцензією; svg/fig не рахуються)",
     "content/hist/g10-g10s1.js#g10s1l3: sentenceWords=6.4 поза профілем [7; 15] для hist, 10-11 кл.",
-    "content/hist/g10-g10s1.js#g10s1l3: урок без зображення img (D-027: обов'язкове фото чи джерело з відкритою ліцензією; svg/fig не рахуються)",
-    "content/hist/g10-g10s1.js#g10s1l4: sentenceWords=5.8 поза профілем [7; 15] для hist, 10-11 кл.",
-    "content/hist/g10-g10s1.js#g10s1l4: урок без зображення img (D-027: обов'язкове фото чи джерело з відкритою ліцензією; svg/fig не рахуються)"
+    "content/hist/g10-g10s1.js#g10s1l4: sentenceWords=5.7 поза профілем [7; 15] для hist, 10-11 кл."
   ]
 }
