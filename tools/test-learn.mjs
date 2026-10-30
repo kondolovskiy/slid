@@ -529,6 +529,22 @@ const order = l => ({ L1: 3, L2: 1, L3: 2, L4: 4 }[l] ?? 50);
     [K("periodicSet", "πk"), Array(10).fill("±πk/7±1±2±3").join(";")], [K("expression", "x"), "(x+1)^12·(y+2)^12-(x+y)^12"], [K("expression", "x"), "(".repeat(60) + "x" + ")".repeat(60)]]) {
     const t = Date.now(); L.checkAns(s, v); eq(Date.now() - t < 1000, true, `час перевірки < 1 с: ${v.slice(0, 30)}`);
   }
+  // повторне рев’ю 65cbcd5: P1-3 вкладені степені й великі числа — межа 2048 біт і час; P2-n1, P2-n2, P3
+  for (const [s, v] of [[K("expression", "x"), "((((x+1)^12)^12)^12)^12"], [K("expression", "x"), "(((((x+1)^12)^12)^12)^12)^12"], [K("expression", "x"), "((((((((x^12)^12)^12)^12)^12)^12)^12)^12)^12"],
+    [K("expression", "x"), "(((((((((9999999999999999^12)^12)^12)^12)^12)^12)^12)^12)^12)"], [K("exactRoot", "√2"), "((((9999999999999999/9999999999999997)^12)^12)^12)^12"],
+    [K("expression", "x"), "(x+√2+√3+√5+√7+√11+√13)^12"], [K("expression", "(x+1)^12", { form: "factored" }), "(x+y+z+a+b+c+d+e+f+g+h)^12·(x+y+z+a+b+c+d+e+f+g+h)^12"],
+    [K("periodicSet", "πk"), "((((k^12)^12)^12)^12)^12"], [K("list", "√2; √3"), Array(10).fill("(√2+√3+√5)^12").join(";")]]) {
+    const t = Date.now(); eq(L.checkAns(s, v), "bad", `великі числа → bad: ${v.slice(0, 30)}`); eq(Date.now() - t < 1000, true, `час перевірки < 1 с: ${v.slice(0, 30)}`);
+  }
+  [[K("expression", "(2x - 1)(x + 1)", { form: "factored" }), "2(x - 0,5)(x + 1)", "ok"], [K("expression", "(2x - 1)(x + 1)", { form: "factored" }), "2(x - 1/2)(x + 1)", "ok"],
+   [K("expression", "(x - 1/2)(x + 1)", { form: "factored" }), "(x - 0,5)(x + 1)", "ok"], [K("expression", "2(x + 2)", { form: "factored" }), "4(0,5x + 1)", "form"],
+   [K("expression", "sin x(1 + cos x)", { form: "factored" }), "sin x(1 + cos x)", "ok"], [K("expression", "sin x(1 + cos x)", { form: "factored" }), "sin x + sin x cos x", "form"],
+   [K("exactRoot", "2 + 2√5"), "2(1 + √5)", "ok"], [K("exactRoot", "-1 - √2"), "-(1 + √2)", "ok"], [K("exactRoot", "√3/3"), "(1/3)√3", "ok"], [K("exactRoot", "16π/3"), "(16/3)π", "ok"],
+   [K("exactRoot", "2 + 2√5"), "2(1 + √5 + √5 - √5)", "form"], [K("expression", "sin x + 0,25"), "sin x + 0,250", "ok"],
+   [K("periodicSet", "arctg 2 + πk"), "110714871779/100000000000 + πk", "bad"], [K("expression", "√2·sin x"), "sin x · 14142135624/10000000000", "bad"]]
+    .forEach(([s, v, expected]) => eq(L.checkAns(s, v), expected, `повторне рев’ю ${s.answerKind}${s.form ? "/" + s.form : ""}: ${JSON.stringify(s.answer)} ← «${v}»`));
+  eq(L.validatePool({ id: "p", section: "s", status: "draft", sources: [{ id: "b", title: "t", url: "https://x" }], items: [{ id: "a", lesson: "l", lvl: 1, sk: "num", src: "b 1", type: "answer", title: "t", steps: ["s"], answerKind: "expression", answer: "(x - 1/2)(x + 1)", form: "factored" }] },
+    { sections: new Map([["s", { grade: 8, lessons: ["l"] }]]), skills: { num: {} } }), [], "validatePool: ключ factored із дробовим коренем (x − 1/2)");
   const vp = it => L.validatePool({ id: "p", section: "s", status: "draft", sources: [{ id: "b", title: "t", url: "https://x" }], items: [{ id: "a", lesson: "l", lvl: 1, sk: "num", src: "b 1", type: "answer", title: "t", steps: ["s"], ...it }] },
     { sections: new Map([["s", { grade: 7, lessons: ["l"] }]]), skills: { num: {} } }).length > 0;
   for (const it of [K("exactRoot", "√3 + √3"), K("exactRoot", "√2·√3"), K("exactRoot", "π - π + √2"), K("intervalSet", "(-∞; 1] ∪ [1; 2]"), K("expression", "x", { form: "factored" }), K("expression", "x + x", { form: "simplified" })])

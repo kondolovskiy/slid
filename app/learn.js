@@ -220,7 +220,12 @@ window.SLID_LEARN = (() => {
     return out.length && out.length <= 240 ? out : null;
   }
   const bgcd = (a, b) => { a = a < 0n ? -a : a; b = b < 0n ? -b : b; while (b) [a, b] = [b, a % b]; return a; };
-  const Q = (p, q = 1n) => { if (q === 0n) return null; if (q < 0n) { p = -p; q = -q; } const g = bgcd(p, q) || 1n; return [p / g, q / g]; };
+  // Межа розміру й часу точної арифметики: вкладені степені ((x+1)^12)^12… дають числа на мільйони біт.
+  // Переповнення кидає TOO; checkAns відповідає «bad», точне порівняння виразів переходить на числове.
+  const TOO = { tooBig: true }, BIG = 1n << 2048n;
+  let DEADLINE = Infinity;
+  const guard = () => { if (Date.now() > DEADLINE) throw TOO; };
+  const Q = (p, q = 1n) => { if (q === 0n) return null; if (q < 0n) { p = -p; q = -q; } if (p > BIG || -p > BIG || q > BIG) throw TOO; const g = bgcd(p, q) || 1n; return [p / g, q / g]; };
   const qadd = (a, b) => Q(a[0] * b[1] + b[0] * a[1], a[1] * b[1]), qmul = (a, b) => Q(a[0] * b[0], a[1] * b[1]);
   function parseTree(tokens) {
     let i = 0, inAbs = 0;
@@ -247,7 +252,7 @@ window.SLID_LEARN = (() => {
     }
     function atom() {
       const tk = tokens[i++]; if (!tk) return null;
-      if (tk.t === "num") { const [w, f = ""] = tk.v.split(","); return { k: "num", v: Q(BigInt(w + f), 10n ** BigInt(f.length)), dd: f.length }; }
+      if (tk.t === "num") { const [w, f = ""] = tk.v.split(","); return { k: "num", v: Q(BigInt(w + f), 10n ** BigInt(f.length)), dd: f ? f.replace(/0+$/, "").length : w.length >= 7 ? w.length : 0 }; }
       if (tk.t === "id") return { k: "var", n: tk.v };
       if (tk.t === "pi") return { k: "pi" };
       if (tk.t === "(") { const e = sum(); return e && take(")") ? e : null; }
@@ -258,9 +263,9 @@ window.SLID_LEARN = (() => {
       if (tk.v === "log" && (!take("_") || !(base = atom()))) return null;
       if (take("^") && !(pw = atom())) return null;                       // sin^2 x
       if (peek()?.t === "(") a = atom();
-      else {                                                              // sin 2x, cos πk: аргумент — множники до оператора чи наступної функції
+      else {                                                              // sin 2x, cos πk: аргумент — множники до оператора, дужки чи наступної функції; sin x(1 + cos x) = sin x · (1 + cos x)
         const f = []; let e = power(); if (!e) return null; f.push({ d: false, e });
-        while (peek() && ["id", "pi", "root", "("].includes(peek().t)) { if (!(e = power())) return null; f.push({ d: false, e }); }
+        while (peek() && ["id", "pi", "root"].includes(peek().t)) { if (!(e = power())) return null; f.push({ d: false, e }); }
         a = f.length === 1 ? f[0].e : { k: "mul", f };
       }
       if (!a) return null;
@@ -279,7 +284,8 @@ window.SLID_LEARN = (() => {
   const treeSize = n => 1 + kids(n).reduce((s, k) => s + treeSize(k), 0);
   const isConst = n => !varsOf(n).length;
   const natNum = n => n.k === "num" && n.v[1] === 1n && n.v[0] >= 0n ? n.v[0] : null;
-  const maxDec = n => Math.max(n.dd || 0, ...kids(n).map(maxDec));   // найдовша десяткова частина в записі
+  // Найдовша значуща десяткова частина в записі; ціле від 7 цифр (110714871779/100000000000) теж вважається наближенням.
+  const maxDec = n => Math.max(n.dd || 0, ...kids(n).map(maxDec));
   // Рядок-підпис дерева (для пошуку однакових доданків і множників).
   const sig = n => n.k === "num" ? n.v.join("/") : n.k === "var" ? n.n : n.k === "pi" ? "π" : n.k === "add" ? "(" + n.a.map(t => (t.s < 0 ? "-" : "+") + sig(t.e)).join("") + ")"
     : n.k === "mul" ? "[" + n.f.map(t => (t.d ? "/" : "*") + sig(t.e)).join("") + "]" : n.k + (n.fn || n.n || "") + "{" + kids(n).map(sig).join(",") + "}";
@@ -327,6 +333,7 @@ window.SLID_LEARN = (() => {
     return m;
   }
   function xmul(a, b) {
+    guard();
     if (a.size * b.size > 1024 || (BUDGET -= a.size * b.size) < 0) return null;
     let m = new Map();
     for (const [ka, qa] of a) for (const [kb, qb] of b) {
@@ -382,11 +389,12 @@ window.SLID_LEARN = (() => {
   }
   /* Канонічний точний запис: доданки c · ⁿ√r · π / d (не більше одного числа, кореня, π і цілого дільника), кожен радикал
      і раціональна частина — лише раз; або (така сума) / ціле. Інакше значення правильне, але запис не спрощено (√3+√3, 2√3·√6, 32−24). */
+  const ratLit = e => e.k === "num" || (e.k === "mul" && e.f.every(t => t.e.k === "num") && e.f.length === 2 && e.f[1].d);   // 2 або (1/3)
   function canonTerm(t) {
     let num = 0, root = 0, pi = 0, den = 0;
     for (const { d, e } of t.k === "mul" ? t.f : [{ d: false, e: t }]) {
       if (d) { if (e.k !== "num" || e.v[1] !== 1n || ++den > 1) return false; }
-      else if (e.k === "num") { if (++num > 1) return false; } else if (e.k === "root") { if (++root > 1) return false; } else if (e.k === "pi") { if (++pi > 1) return false; } else return false;
+      else if (ratLit(e)) { if (++num > 1) return false; } else if (e.k === "root") { if (++root > 1) return false; } else if (e.k === "pi") { if (++pi > 1) return false; } else return false;
     }
     return true;
   }
@@ -399,16 +407,26 @@ window.SLID_LEARN = (() => {
   function canonExact(t) {
     if (!tidyRoots(t)) return false;
     if (canonSum(t)) return true;
-    const u = t.k === "add" && t.a.length === 1 ? t.a[0].e : t;
-    return u.k === "mul" && u.f.length === 2 && !u.f[0].d && u.f[0].e.k === "add" && u.f[1].d && natNum(u.f[1].e) > 1n && canonSum(u.f[0].e);
+    const u = t.k === "add" && t.a.length === 1 ? t.a[0].e : t;          // −(1 + √2)
+    if (u !== t && canonSum(u)) return true;
+    // c · (сума) / d: 2(1 + √5), (−1 + √5)/2, (1/3)(3 + √3) — одна канонічна сума, число й цілий дільник
+    if (u.k !== "mul") return false;
+    let sum = 0, num = 0, den = 0;
+    for (const { d, e } of u.f) {
+      if (d) { if (natNum(e) === null || natNum(e) < 2n || ++den > 1) return false; }
+      else if (e.k === "add") { if (++sum > 1 || !canonSum(e)) return false; }
+      else if (ratLit(e)) { if (++num > 1) return false; } else return false;
+    }
+    return sum === 1;
   }
   const ratOf = a => a && a.proper ? { x: X(Q(BigInt(a.n), BigInt(a.d))), tidy: true } : null;
   /** Точне число з рядка: { x — Map, tidy — канонічний запис } або null. Спершу звичайний запис числа (розряди, мішані дроби), далі корені й π. */
   function exactOf(v) {
     const a = parseAns(v);
     if (a) return ratOf(a);
-    const t = parseExpr(v), x = t && t.k !== "eq" && isConst(t) && xval(t);
-    return x ? { x, tidy: canonExact(t) } : null;
+    const t = parseExpr(v);
+    try { const x = t && t.k !== "eq" && isConst(t) && xval(t); return x ? { x, tidy: canonExact(t) } : null; }
+    catch (e) { if (e === TOO) return null; throw e; }
   }
   /** Елемент списку, координата, межа: якщо ключ не містить коренів/π — лише число, як у чинному list; інакше точне значення. */
   const exactKey = v => /[√∛∜π±∓]|sqrt|pi/.test(Array.isArray(v) ? v.join(";") : String(v ?? ""));
@@ -506,7 +524,7 @@ window.SLID_LEARN = (() => {
       степінь — у 48 числових точках, і тоді десяткові дроби, довші за ключ (і за 2 знаки), — наближення, не зараховуються.
       Рівняння рівносильні, якщо L − R пропорційні. */
   function sameExpr(a, b) {
-    const ex = sameExact(a, b);
+    let ex; try { ex = sameExact(a, b); } catch (e) { if (e !== TOO) throw e; ex = null; DEADLINE = Date.now() + 400; }
     if (ex !== null) return ex;
     if (maxDec(b) > Math.max(2, maxDec(a))) return false;
     return sameNum(a, b);
@@ -582,6 +600,7 @@ window.SLID_LEARN = (() => {
   const P1 = () => new Map([["", [1n, 1n]]]);
   function padd(a, b, s = 1n) { const m = new Map(a); for (const [k, q] of b) { const v = m.has(k) ? qadd(m.get(k), [s * q[0], q[1]]) : [s * q[0], q[1]]; if (v[0] === 0n) m.delete(k); else m.set(k, v); } return m; }
   function pmul(a, b) {
+    guard();
     if (a.size * b.size > 400 || (BUDGET -= a.size * b.size) < 0) return null;
     let m = new Map();
     for (const [ka, qa] of a) for (const [kb, qb] of b) {
@@ -603,13 +622,19 @@ window.SLID_LEARN = (() => {
   // Зміст многочлена: НСД цілих коефіцієнтів; null — якщо коефіцієнт не цілий або це не многочлен.
   const content = p => p && [...p.values()].every(q => q[1] === 1n) ? [...p.values()].reduce((g, q) => bgcd(g, q[0]), 0n) : null;
   const factorsOf = n => { n = unNeg(n); return n.k === "mul" ? n.f : [{ d: false, e: n }]; };
+  // Зведений многочлен з дробовими коефіцієнтами (x − 1/2, x + 0,5): старший коефіцієнт ±1 — розклад a(x − x₁)(x − x₂) повний.
+  function monic(p) {
+    const deg = k => k.split(",").filter(Boolean).reduce((s, x) => s + +x.split(":")[1], 0), top = Math.max(...[...p.keys()].map(deg));
+    const lead = [...p].filter(([k]) => deg(k) === top);
+    return lead.length === 1 && lead[0][1][1] === 1n && (lead[0][1][0] === 1n || lead[0][1][0] === -1n);
+  }
   // Кожен множник зі змінною — примітивний: цілі коефіцієнти без спільного дільника (3x + 6, 0,5x + 1 — не до кінця).
   function primitive(n) {
     for (const { d, e } of factorsOf(n)) {
       if (isConst(e)) continue;
       if (d) return false;                      // множник зі змінною в знаменнику — це не розклад
       const base = e.k === "pow" && natNum(e.e) ? e.b : e, p = base.k === "var" ? null : poly(base);
-      if (p && content(p) !== 1n) return false;
+      if (p && content(p) !== 1n && !monic(p)) return false;
     }
     return true;
   }
@@ -668,6 +693,10 @@ window.SLID_LEARN = (() => {
       ratio, coordinates2, coordinates3, exactRoot, intervalSet, expression, periodicSet (docs/CONTENT_SCHEMA.md §10).
       Числа: reduced — нескоротний дріб; mixed — виділити цілу частину; fractionOnly — лише звичайний/мішаний дріб; tol — абсолютна похибка. */
   function checkAns(s, v) {
+    DEADLINE = Date.now() + 800;
+    try { return checkAns0(s, v); } catch (e) { if (e === TOO) return "bad"; throw e; } finally { DEADLINE = Infinity; }
+  }
+  function checkAns0(s, v) {
     const kind = s.answerKind || "number", tidy = xs => xs.every(x => x.tidy) ? "ok" : "form", ex = exactKey(s.answer);
     BUDGET = 50000;
     if (kind === "comparison") return /^[<>=]$/.test(String(s.answer).trim()) && String(v).trim() === String(s.answer).trim() ? "ok" : "bad";
