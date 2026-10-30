@@ -6,7 +6,7 @@ type: images
 subject: hist
 grade: 10
 section: g10s2
-status: review
+status: done
 claimed_by: w-images-hist-g10s2
 created: 2026-10-30
 depends_on: []

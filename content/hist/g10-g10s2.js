@@ -72,12 +72,6 @@ SLID.section("hist", {
       "невідомий автор, 1920",
       "суспільне надбання",
       "https://commons.wikimedia.org/wiki/File:Symon_Petliura_and_Antoni_Listowski_during_Polish-Soviet_War.PNG"
-    ],
-    [
-      "Плакат «За волю України. Поляглим синам в борні під Крутами», 1918 р.",
-      "Богуш Шиппіх (за Вікісховищем), 1918",
-      "суспільне надбання",
-      "https://commons.wikimedia.org/wiki/File:UPR_Poster_-_Kruty.jpg"
     ]
   ],
   lessons: [
@@ -86,7 +80,7 @@ SLID.section("hist", {
       title: "Рада, що писала універсали",
       short: "Центральна Рада",
       icon: "scroll",
-      status: "draft",
+      status: "verified",
       why: "Ти простежиш, як за вісім місяців 1917 р. українці пройшли шлях від прохань до власної республіки.",
       screens: [
         {
@@ -253,7 +247,7 @@ SLID.section("hist", {
       title: "Однині — самостійна",
       short: "IV Універсал",
       icon: "flag",
-      status: "draft",
+      status: "verified",
       why: "Ти зрозумієш, чому Центральна Рада проголосила незалежність саме в січні 1918 р.",
       screens: [
         {
@@ -387,7 +381,7 @@ SLID.section("hist", {
       title: "Станція Крути",
       short: "Бій під Крутами",
       icon: "shield",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, що сталося під Крутами, і навчишся відрізняти дослідження від міфу.",
       screens: [
         {
@@ -538,7 +532,7 @@ SLID.section("hist", {
       title: "Гетьман у XX столітті",
       short: "Гетьманат",
       icon: "shield",
-      status: "draft",
+      status: "verified",
       why: "Ти побачиш, чого досягла Українська Держава гетьмана Скоропадського і чому вона впала.",
       screens: [
         {
@@ -683,7 +677,7 @@ SLID.section("hist", {
       title: "Директорія в кільці фронтів",
       short: "Директорія",
       icon: "users",
-      status: "draft",
+      status: "verified",
       why: "Ти зрозумієш, чому відновлена УНР воювала одразу з кількома противниками.",
       screens: [
         {
@@ -820,7 +814,7 @@ SLID.section("hist", {
       title: "Ніч на 1 листопада",
       short: "ЗУНР",
       icon: "city",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, як у Галичині постала друга українська держава і чому їй довелося воювати за Львів.",
       screens: [
         {
@@ -967,7 +961,7 @@ SLID.section("hist", {
       title: "Соборна площа",
       short: "Акт Злуки",
       icon: "flag",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, як дві українські республіки об'єдналися і чому 22 січня — День Соборності.",
       screens: [
         {
@@ -1111,7 +1105,7 @@ SLID.section("hist", {
       title: "Чому держава не встояла",
       short: "Причини поразки",
       icon: "scale",
-      status: "draft",
+      status: "verified",
       why: "Ти зважиш причини поразки революції й побачиш, як історики сперечаються про головне.",
       screens: [
         {
@@ -1265,7 +1259,7 @@ SLID.section("hist", {
       title: "Архів революції",
       short: "Фінал розділу",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "zlukaseal",
       why: "Перевірка всього розділу. Бали подвоєні.",
@@ -1299,9 +1293,8 @@ SLID.section("hist", {
           sk: "crit",
           eyebrow: "Завдання 2",
           title: "Підпис до стенда",
-          img: "img/hist/g10s2/kruty-poster-1918.jpg",
-          cap: "Плакат «За волю України. Поляглим синам в борні під Крутами», Київ, 1918 р. Такі плакати могли б стати експонатами виставки.",
-          fit: true,
+          img: "img/hist/g10s2/kruty-funeral-1918.jpg",
+          cap: "Похід із вінками під час похорону героїв Крут у Києві, 19 березня 1918 р. Цей знімок з уроку 3 стане експонатом стенда.",
           body: "<p>Для стенда про Крути екскурсовод пропонує підпис: «Під Крутами загинули 300 гімназистів, які не вміли стріляти». Що з ним не так?</p>",
           opts: [
             "Усе правильно, так і пишуть дослідники",
