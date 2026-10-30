@@ -1,5 +1,5 @@
 /* Слід · Математика, 4 клас — пул задач для тренування до розділу «Ділення з остачею» (m4s1)
-   Статус: draft. 8 задач на урок m4a (3 рівня 1, 3 рівня 2, 2 рівня 3). Boss у розділі немає.
+   Статус: verified (незалежна верифікація verifier-pool-m4s1, 2026-10-30, reports/verify/pm4s1.md). 8 задач на урок m4a (3 рівня 1, 3 рівня 2, 2 рівня 3). Boss у розділі немає.
    Обсяг — за матрицею docs/math-personalization-coverage.md, версія 2026-10-16.v2 (m4a required, формат number).
    Задачі взято з підручників Гісь, Філяк (g4a, урок 19, с. 61–64) і Логачевська, Ларіна, Паук (l4a, с. 18);
    умови й числа звірено 2026-10-30 за текстом PDF і за відрендереними сторінками.
@@ -10,8 +10,8 @@
 SLID.pool("math", {
   id: "pm4s1",
   section: "m4s1",
-  status: "draft",
-  meta: { author: "claude-opus", created: "2026-10-30", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "claude-opus", created: "2026-10-30", factcheck: "verifier-pool-m4s1", teacher: null },
   sources: [
     { id: "g4a", title: "Гісь О. М., Філяк І. В. Математика : підручник для 4 класу закладів загальної середньої освіти (у 2-х ч.). Ч. 1. — Харків : Ранок, 2026 (наказ МОН № 111 від 27.01.2026). PDF-дзеркало 4book.org", url: "https://file.4book.org/images/shcoolbook_ua/4/4_m_gis_2026-1.pdf" },
     { id: "l4a", title: "Логачевська С. П., Ларіна О. В., Паук Л. О. Математика : підручник для 4 класу закладів загальної середньої освіти (у 2-х ч.). Ч. 1. — Київ : Літера ЛТД, 2026 (наказ МОН № 111 від 27.01.2026). PDF-дзеркало 4book.org", url: "https://file.4book.org/images/shcoolbook_ua/4/4_m_log_2026-1.pdf" }
