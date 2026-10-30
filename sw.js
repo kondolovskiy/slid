@@ -1,7 +1,7 @@
 /* Слід — service worker. ЗГЕНЕРОВАНО tools/build.mjs із tools/sw.template.js — не редагуй sw.js вручну.
    Стратегія: усі файли застосунку кешуються при встановленні (офлайн з першого запуску);
    свої файли — спершу з кешу; Google Fonts — з кешу з фоновим оновленням. */
-const VERSION = "fc33f550a8";
+const VERSION = "e696e23355";
 const CACHE = "slid-" + VERSION;
 const FONTS = "slid-fonts";
 const ASSETS = [
@@ -100,6 +100,12 @@ const ASSETS = [
   "./content/math/g9-g9m5.js",
   "./content/math/g9-g9m6.js",
   "./content/math/g9-g9m7.js",
+  "./content/math/pool-g4-g4m1.js",
+  "./content/math/pool-g4-g4m2.js",
+  "./content/math/pool-g4-g4m3.js",
+  "./content/math/pool-g4-g4m4.js",
+  "./content/math/pool-g4-g4m5.js",
+  "./content/math/pool-g4-m4s1.js",
   "./content/math/pool-g5-ms0.js",
   "./content/math/pool-g5-ms0b.js",
   "./content/math/pool-g5-ms1.js",
@@ -123,6 +129,10 @@ const ASSETS = [
   "./img/h5-petryk.jpg",
   "./img/h5-sikorsky.jpg",
   "./img/h5-tryzub.jpg",
+  "./img/hist/g10s1/border-map-1914.jpg",
+  "./img/hist/g10s1/makivka-1915.jpg",
+  "./img/hist/g10s1/sheptytsky-1905.jpg",
+  "./img/hist/g10s1/stepaniv-1915.jpg",
   "./img/hist/g6s2/animal-pot.jpg",
   "./img/hist/g6s2/house.jpg",
   "./img/hist/g6s2/pottery-making.jpg",
