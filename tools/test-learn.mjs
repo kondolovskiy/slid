@@ -490,12 +490,49 @@ const order = l => ({ L1: 3, L2: 1, L3: 2, L4: 4 }[l] ?? 50);
   // ключ сам проходить перевірку; підказки «form» конкретні
   eq(L.checkAns(K("coordinates2", [3, -2]), [3, -2]), "ok", "checkAns: масив координат як ключ");
   eq(L.formHint(K("ratio", "2 : 3", { reduced: true }), "4 : 6").includes("натуральними"), true, "formHint: відношення");
-  eq(L.formHint(K("exactRoot", "2√3"), "√12").includes("з-під знака кореня"), true, "formHint: корінь");
+  eq(L.formHint(K("exactRoot", "2√3"), "√12").includes("з-під кореня"), true, "formHint: корінь");
   eq(L.formHint(K("expression", "x^2 - 4", { form: "expanded" }), "x·x - 4").includes("Розкрий дужки"), true, "formHint: стандартний вигляд");
   eq(L.formHint({ answer: "2/5", fractionOnly: true }, "0,4"), "Значення правильне. Запиши відповідь звичайним дробом.", "formHint: чинний текст числа");
   eq([L.ansText(K("coordinates2", [3, -2])), L.ansText(K("ratio", [2, 3])), L.ansText(K("periodicSet", "πk")), L.ansText(K("list", ["2 + √3", "2 - √3"]))],
     ["(3; -2)", "2 : 3", "πk, k ∈ ℤ", "2 + √3; 2 - √3"], "ansText: показ ключа");
   eq(L.ANSWER_KINDS.length, 11, "ANSWER_KINDS: чинні 4 + 7 нових");
+}
+
+// ---------- після незалежного рев’ю 9c7696b: наближення, числовий множник, арифметика в елементах, канонічні корені, час ----------
+{ const K = (answerKind, answer, extra = {}) => ({ answerKind, answer, ...extra });
+  const cases = [
+    // P1-1: десяткові наближення з 7–12 знаками не зараховуються; точні десяткові — так
+    [K("periodicSet", "arctg 2 + πk"), "1,1071487 + πk", "bad"], [K("periodicSet", "arctg 2 + πk"), "arctg 2 + πk", "ok"], [K("periodicSet", "π/6 + 2πk"), "0,5235988 + 2πk", "bad"],
+    [K("periodicSet", "(-1)^k · π/6 + πk"), "(-1)^k · 0,52359877559 + πk", "bad"], [K("periodicSet", "π/2 + πk"), "π/2 + πk + 0,000000001", "bad"], [K("periodicSet", "π/2 + πk"), "0,5π + πk", "ok"],
+    [K("expression", "√2·x"), "1,41421356237x", "bad"], [K("expression", "x/3"), "0,3333333333x", "bad"], [K("expression", "πx"), "3,14159265359x", "bad"], [K("expression", "7√2"), "9,899494937", "bad"],
+    [K("expression", "x"), "x + 0,00000000001", "bad"], [K("expression", "2 sin x"), "2,0000000001 sin x", "bad"], [K("expression", "x/2"), "0,5x", "ok"], [K("expression", "√2·x"), "x√2", "ok"],
+    [K("expression", "sin 2x"), "2 sin x cos x", "ok"], [K("expression", "x^2 + y^2 = 4"), "2x^2 + 2y^2 - 8 = 0", "ok"],
+    // P1-2: невинесений / нескорочений числовий множник
+    [K("expression", "3x(x + 2)", { form: "factored" }), "x(3x + 6)", "form"], [K("expression", "3x(x + 2)", { form: "factored" }), "(3x + 6)·x", "form"], [K("expression", "5x(x - 2)", { form: "factored" }), "x(5x - 10)", "form"],
+    [K("expression", "4(x + 1)(x - 1)", { form: "factored" }), "(2x + 2)(2x - 2)", "form"], [K("expression", "2(x + 3)", { form: "factored" }), "(2x + 6)·1", "form"], [K("expression", "2(x + 2)", { form: "factored" }), "4(0,5x + 1)", "form"],
+    [K("expression", "(x - 1)(x + 1)", { form: "factored" }), "(x^2 - 1)^2/(x^2 - 1)", "form"], [K("expression", "3x(x + 2)", { form: "factored" }), "-3x(-x - 2)", "ok"],
+    [K("expression", "2x/3", { form: "reduced" }), "6x/9", "form"], [K("expression", "(x + 1)/2", { form: "reduced" }), "(2x + 2)/4", "form"], [K("expression", "3a/(4b)", { form: "reduced" }), "6a/(8b)", "form"],
+    [K("expression", "1/(x + 1)", { form: "reduced" }), "2/(2x + 2)", "form"], [K("expression", "2x/3", { form: "reduced" }), "2x/3", "ok"],
+    // P2-1: без коренів у ключі елементи — лише числа, як у чинному list
+    [K("list", [8, 56]), "32 - 24; 32 + 24", "bad"], [K("list", [8, 56]), "32 ± 24", "bad"], [K("list", [5, 6, 7, 8, 9]), "5; 6; 7; 8; 3·3", "bad"], [K("list", [1, 2]), "+1; 2", "bad"], [K("list", [1, 2]), "1; 2^1", "bad"],
+    [K("coordinates2", "(3; -2)"), "((1 + 5)/2; (2 - 6)/2)", "bad"], [K("intervalSet", "[2; 5)"), "[6/3; 10:2)", "bad"], [K("coordinates2", "(3; -2)"), "(3 ; - 2)", "ok"],
+    // P2-2: канонічна точна форма
+    [K("exactRoot", "7√2"), "3√2 + 5√2 - √2", "form"], [K("exactRoot", "6√2"), "2√3·√6", "form"], [K("exactRoot", "2√3"), "√3 + √3", "form"], [K("exactRoot", "√3"), "√3·(2 - 1)", "form"],
+    [K("exactRoot", "-(1 + √5)/2"), "-(1 + √5)/2", "ok"], [K("exactRoot", "0,5√2"), "0.5√2", "ok"], [K("list", "2 ± √3"), "2 + 1 - 1 + √3; 2 - √3", "form"],
+    // P2-4, P3
+    [K("expression", "2x", { form: "simplified" }), "x + x", "form"], [K("expression", "x^2", { form: "simplified" }), "x·x", "form"],
+    [K("intervalSet", "(-∞; 1] ∪ [4; +∞)"), "(-∞ ; 1 ] ∪ [ 4 ; + ∞ )", "ok"], [K("intervalSet", "∅"), "Ø", "ok"], [K("periodicSet", "πk"), "πk, де k ∈ Z", "ok"], [K("periodicSet", "πk"), "πk; 27 + 0·k", "bad"]
+  ];
+  cases.forEach(([s, v, expected]) => eq(L.checkAns(s, v), expected, `рев’ю ${s.answerKind}${s.form ? "/" + s.form : ""}: ${JSON.stringify(s.answer)} ← «${v}»`));
+  // P2-3: короткий запис не підвішує перевірку
+  for (const [s, v] of [[K("exactRoot", "√2"), "(√2+√3+√5+√7+√11+√13+√17+√19+√23+√29+√31+√37+√41+√43)^12"], [K("periodicSet", "πk"), Array(12).fill("±1±1±1±1k").join(";")],
+    [K("periodicSet", "πk"), Array(10).fill("±πk/7±1±2±3").join(";")], [K("expression", "x"), "(x+1)^12·(y+2)^12-(x+y)^12"], [K("expression", "x"), "(".repeat(60) + "x" + ")".repeat(60)]]) {
+    const t = Date.now(); L.checkAns(s, v); eq(Date.now() - t < 1000, true, `час перевірки < 1 с: ${v.slice(0, 30)}`);
+  }
+  const vp = it => L.validatePool({ id: "p", section: "s", status: "draft", sources: [{ id: "b", title: "t", url: "https://x" }], items: [{ id: "a", lesson: "l", lvl: 1, sk: "num", src: "b 1", type: "answer", title: "t", steps: ["s"], ...it }] },
+    { sections: new Map([["s", { grade: 7, lessons: ["l"] }]]), skills: { num: {} } }).length > 0;
+  for (const it of [K("exactRoot", "√3 + √3"), K("exactRoot", "√2·√3"), K("exactRoot", "π - π + √2"), K("intervalSet", "(-∞; 1] ∪ [1; 2]"), K("expression", "x", { form: "factored" }), K("expression", "x + x", { form: "simplified" })])
+    eq(vp(it), true, `validatePool: неканонічний ключ ${JSON.stringify(it.answer)} ${it.form || ""}`);
 }
 
 /* Класовий контекст: міграція, 6 → 7 → 6, повторний тест і старі результати. */

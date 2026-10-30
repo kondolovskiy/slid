@@ -319,7 +319,7 @@ FORMAT_FIXTURES = [
     ({'answerKind': 'ratio', 'answer': '2 : 3', 'reduced': True}, '4 : 6', 'натуральними', '2:3'),
     ({'answerKind': 'coordinates2', 'answer': [3, -2]}, '(-2; 3)', 'Спробуй ще раз', 'A(3; −2)'),
     ({'answerKind': 'coordinates3', 'answer': '(1; -2; 3)'}, '(1; -2)', 'Спробуй ще раз', '(1; -2; 3)'),
-    ({'answerKind': 'exactRoot', 'answer': '2√3'}, '√12', 'з-під знака кореня', '√3·2'),
+    ({'answerKind': 'exactRoot', 'answer': '2√3'}, '√12', 'з-під кореня', '√3·2'),
     ({'answerKind': 'intervalSet', 'answer': '(-∞; 1] ∪ [4; +∞)'}, '(-∞; 1) ∪ (4; +∞)', 'Спробуй ще раз', 'x ∈ [4; +∞) ∪ (−∞; 1]'),
     ({'answerKind': 'list', 'answer': '(-1 ± √5)/2'}, '0,62; -1,62', 'Спробуй ще раз', '(−1 − √5)/2; (−1 + √5)/2'),
     ({'answerKind': 'expression', 'answer': '3a - 2b + 5', 'form': 'expanded'}, '3(a + 1) - 2b + 2', 'Розкрий дужки', '5 − 2b + 3a'),

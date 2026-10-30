@@ -195,7 +195,7 @@ window.SLID_LEARN = (() => {
      root {n — показник 2|3|4, a}, abs {a}, fn {fn, a, base — для log_a}, eq {l, r}. */
   const SUP = "⁰¹²³⁴⁵⁶⁷⁸⁹";
   const FN = ["arcctg", "arcsin", "arccos", "arctan", "arctg", "sqrt", "sin", "cos", "ctg", "cot", "tan", "tg", "ln", "lg", "log", "pi"];
-  const norm = v => String(v ?? "").replace(/[−–—]/g, "-").replace(/[*×∙⋅]/g, "·").replace(/÷/g, ":").replace(/[  ]/g, " ")
+  const norm = v => String(v ?? "").replace(/(\d)\.(?=\d)/g, "$1,").replace(/[−–—]/g, "-").replace(/[*×∙⋅]/g, "·").replace(/÷/g, ":").replace(/[  ]/g, " ")
     .replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹]+/g, m => "^(" + [...m].map(c => SUP.indexOf(c)).join("") + ")").trim();
   function lex(t) {
     const out = []; let i = 0, m;
@@ -247,7 +247,7 @@ window.SLID_LEARN = (() => {
     }
     function atom() {
       const tk = tokens[i++]; if (!tk) return null;
-      if (tk.t === "num") { const [w, f = ""] = tk.v.split(","); return { k: "num", v: Q(BigInt(w + f), 10n ** BigInt(f.length)) }; }
+      if (tk.t === "num") { const [w, f = ""] = tk.v.split(","); return { k: "num", v: Q(BigInt(w + f), 10n ** BigInt(f.length)), dd: f.length }; }
       if (tk.t === "id") return { k: "var", n: tk.v };
       if (tk.t === "pi") return { k: "pi" };
       if (tk.t === "(") { const e = sum(); return e && take(")") ? e : null; }
@@ -279,6 +279,12 @@ window.SLID_LEARN = (() => {
   const treeSize = n => 1 + kids(n).reduce((s, k) => s + treeSize(k), 0);
   const isConst = n => !varsOf(n).length;
   const natNum = n => n.k === "num" && n.v[1] === 1n && n.v[0] >= 0n ? n.v[0] : null;
+  const maxDec = n => Math.max(n.dd || 0, ...kids(n).map(maxDec));   // найдовша десяткова частина в записі
+  // Рядок-підпис дерева (для пошуку однакових доданків і множників).
+  const sig = n => n.k === "num" ? n.v.join("/") : n.k === "var" ? n.n : n.k === "pi" ? "π" : n.k === "add" ? "(" + n.a.map(t => (t.s < 0 ? "-" : "+") + sig(t.e)).join("") + ")"
+    : n.k === "mul" ? "[" + n.f.map(t => (t.d ? "/" : "*") + sig(t.e)).join("") + "]" : n.k + (n.fn || n.n || "") + "{" + kids(n).map(sig).join(",") + "}";
+  // Бюджет точних обчислень на одну перевірку: короткий запис на кшталт (√2+√3+…)^12 не має підвішувати сторінку.
+  let BUDGET = 0;
 
   // Наближене значення для перевірки тотожності виразів у випадкових точках.
   const FNUM = { sin: Math.sin, cos: Math.cos, tg: Math.tan, tan: Math.tan, ctg: x => 1 / Math.tan(x), cot: x => 1 / Math.tan(x), arcsin: Math.asin,
@@ -299,8 +305,13 @@ window.SLID_LEARN = (() => {
   }
 
   // Точне число: сума q · ⁿ√r · π^k, q раціональне, r без n-х степенів. Map "n:r:k" → [p, q].
+  const RED = new Map();
   function rootRed(n, r) {                       // ⁿ√r = c · ⁿ'√r', r ≥ 1 ціле
     if (r < 1n || r > 10n ** 10n) return null;   // шкільні підкореневі малі; межа тримає розклад швидким
+    const key = n + ":" + r; if (RED.has(key)) return RED.get(key); if (RED.size > 5000) RED.clear();
+    const res = rootRed0(n, r); RED.set(key, res); return res;
+  }
+  function rootRed0(n, r) {
     const fs = []; let c = 1n, rr = r;
     for (let p = 2n; p * p <= rr; p++) { let e = 0; while (rr % p === 0n) { rr /= p; e++; } if (e) fs.push([p, e]); }
     if (rr > 1n) fs.push([rr, 1]);
@@ -316,6 +327,7 @@ window.SLID_LEARN = (() => {
     return m;
   }
   function xmul(a, b) {
+    if (a.size * b.size > 1024 || (BUDGET -= a.size * b.size) < 0) return null;
     let m = new Map();
     for (const [ka, qa] of a) for (const [kb, qb] of b) {
       const [na, ra, pa] = ka.split(":"), [nb, rb, pb] = kb.split(":"), k = +pa + +pb;
@@ -325,7 +337,7 @@ window.SLID_LEARN = (() => {
       if (!red || k > 3) return null;
       m = xadd(m, X(qmul(qmul(qa, qb), red[0]), red[1], red[2], k));
     }
-    return m;
+    return m.size > 64 ? null : m;
   }
   const xrat = m => !m.size ? [0n, 1n] : m.size === 1 && m.has("1:1:0") ? m.get("1:1:0") : null;
   const xnum = m => [...m].reduce((s, [key, q]) => { const [n, r, k] = key.split(":"); return s + Number(q[0]) / Number(q[1]) * Math.pow(Number(r), 1 / n) * Math.PI ** k; }, 0);
@@ -342,20 +354,22 @@ window.SLID_LEARN = (() => {
     const red = rootRed(+n, BigInt(r) ** BigInt(n - 1));
     return red && X(qmul(red[0], Q(q[1], q[0] * BigInt(r))), red[1], red[2]);
   }
-  function xval(n) {
+  function xval(n, env) {
+    const xv = c => xval(c, env);
     switch (n.k) {
       case "num": return X(n.v);
+      case "var": return env && n.n in env ? X(env[n.n]) : null;
       case "pi": return X([1n, 1n], 1, 1n, 1);
-      case "add": { let m = new Map(); for (const t of n.a) { const v = xval(t.e); if (!v) return null; m = xadd(m, v, BigInt(t.s)); } return m; }
-      case "mul": { let m = X([1n, 1n]); for (const t of n.f) { let v = xval(t.e); if (v && t.d) v = xinv(v); if (!v || !(m = xmul(m, v))) return null; } return m; }
+      case "add": { let m = new Map(); for (const t of n.a) { const v = xv(t.e); if (!v) return null; m = xadd(m, v, BigInt(t.s)); } return m.size > 64 ? null : m; }
+      case "mul": { let m = X([1n, 1n]); for (const t of n.f) { let v = xv(t.e); if (v && t.d) v = xinv(v); if (!v || !(m = xmul(m, v))) return null; } return m; }
       case "pow": {
-        const e = xval(n.e), q = e && xrat(e), b = xval(n.b);
+        const e = xv(n.e), q = e && xrat(e), b = xv(n.b);
         if (!b || !q || q[1] !== 1n || q[0] > 12n || q[0] < -12n) return null;
         let m = X([1n, 1n]); for (let j = 0n; j < (q[0] < 0n ? -q[0] : q[0]); j++) if (!(m = xmul(m, b))) return null;
         return q[0] < 0n ? xinv(m) : m;
       }
-      case "root": { const a = xval(n.a), q = a && xrat(a); return q && xroot(n.n, q); }
-      case "abs": { const a = xval(n.a); return a && (xnum(a) < 0 ? xadd(new Map(), a, -1n) : a); }
+      case "root": { const a = xv(n.a), q = a && xrat(a); return q && xroot(n.n, q); }
+      case "abs": { const a = xv(n.a); return a && (xnum(a) < 0 ? xadd(new Map(), a, -1n) : a); }
       default: return null;
     }
   }
@@ -366,30 +380,56 @@ window.SLID_LEARN = (() => {
     if (n.k === "pow") return !has(n.b, "root") && tidyRoots(n.e, den);
     return kids(n).every(k => tidyRoots(k, den));
   }
-  /** Точне число з рядка: { x — Map, tidy } або null. Спершу звичайний запис числа (розряди, мішані дроби), далі корені й π. */
+  /* Канонічний точний запис: доданки c · ⁿ√r · π / d (не більше одного числа, кореня, π і цілого дільника), кожен радикал
+     і раціональна частина — лише раз; або (така сума) / ціле. Інакше значення правильне, але запис не спрощено (√3+√3, 2√3·√6, 32−24). */
+  function canonTerm(t) {
+    let num = 0, root = 0, pi = 0, den = 0;
+    for (const { d, e } of t.k === "mul" ? t.f : [{ d: false, e: t }]) {
+      if (d) { if (e.k !== "num" || e.v[1] !== 1n || ++den > 1) return false; }
+      else if (e.k === "num") { if (++num > 1) return false; } else if (e.k === "root") { if (++root > 1) return false; } else if (e.k === "pi") { if (++pi > 1) return false; } else return false;
+    }
+    return true;
+  }
+  function canonSum(t) {
+    const terms = t.k === "add" ? t.a.map(x => x.e) : [t];
+    if (!terms.every(canonTerm)) return false;
+    const keys = terms.map(e => { const v = xval(e); return v && v.size === 1 ? [...v.keys()][0] : null; });
+    return keys.every(Boolean) && new Set(keys).size === keys.length;
+  }
+  function canonExact(t) {
+    if (!tidyRoots(t)) return false;
+    if (canonSum(t)) return true;
+    const u = t.k === "add" && t.a.length === 1 ? t.a[0].e : t;
+    return u.k === "mul" && u.f.length === 2 && !u.f[0].d && u.f[0].e.k === "add" && u.f[1].d && natNum(u.f[1].e) > 1n && canonSum(u.f[0].e);
+  }
+  const ratOf = a => a && a.proper ? { x: X(Q(BigInt(a.n), BigInt(a.d))), tidy: true } : null;
+  /** Точне число з рядка: { x — Map, tidy — канонічний запис } або null. Спершу звичайний запис числа (розряди, мішані дроби), далі корені й π. */
   function exactOf(v) {
     const a = parseAns(v);
-    if (a) return a.proper ? { x: X(Q(BigInt(a.n), BigInt(a.d))), tidy: true } : null;
+    if (a) return ratOf(a);
     const t = parseExpr(v), x = t && t.k !== "eq" && isConst(t) && xval(t);
-    return x ? { x, tidy: tidyRoots(t) } : null;
+    return x ? { x, tidy: canonExact(t) } : null;
   }
+  /** Елемент списку, координата, межа: якщо ключ не містить коренів/π — лише число, як у чинному list; інакше точне значення. */
+  const exactKey = v => /[√∛∜π±∓]|sqrt|pi/.test(Array.isArray(v) ? v.join(";") : String(v ?? ""));
+  const elemOf = (v, exact) => exact ? exactOf(v) : ratOf(parseAns(v));
   /** «±» і «∓» → усі варіанти знаків (не більше 4 знаків у записі). */
   function expandPM(t) {
     const n = (t.match(/[±∓]/g) || []).length; if (n > 4) return [];
     return Array.from({ length: 2 ** n }, (_, mask) => { let j = 0; return t.replace(/[±∓]/g, c => { const plus = !((mask >> j++) & 1); return (c === "±") === plus ? "+" : "-"; }); });
   }
   // У списку «;» відділяє числа з десятковою комою; без «;» кома є роздільником. Елементи — числа або точні значення (√, π, ±).
-  function parseList(v) {
+  function parseList(v, exact) {
     const parts = Array.isArray(v) ? v : String(v ?? "").split(/[;\n]/.test(String(v)) ? /[;\n]/ : /,/);
-    const values = parts.flatMap(p => /[±∓]/.test(String(p)) ? expandPM(String(p)) : [p]).map(exactOf);
+    const values = parts.flatMap(p => exact && /[±∓]/.test(String(p)) ? expandPM(String(p)) : [p]).map(p => elemOf(p, exact));
     if (!values.length || values.some(x => !x) || values.some((x, i) => values.slice(0, i).some(y => xeq(x.x, y.x)))) return null;
     return values;
   }
   /** Впорядковані координати (3; −2) / A(3; -2) / [3, -2]: рівно n компонент, порядок і знак важливі. */
-  function parsePoint(v, n) {
+  function parsePoint(v, n, exact) {
     let parts = Array.isArray(v) ? v.map(String) : null;
     if (!parts) { let t = norm(v).replace(/^[A-Za-z]\s*(?=\()/, ""); const m = t.match(/^\((.*)\)$/s); if (m) t = m[1]; parts = t.split(t.includes(";") ? ";" : ","); }
-    const xs = parts.length === n ? parts.map(exactOf) : [];
+    const xs = parts.length === n ? parts.map(p => elemOf(String(p).replace(/^\s*-\s+/, "-"), exact)) : [];
     return xs.length && xs.every(Boolean) ? xs : null;
   }
   /** Відношення a : b (: c) додатних чисел; порядок членів важливий. */
@@ -399,18 +439,18 @@ window.SLID_LEARN = (() => {
     return xs.length && xs.every(x => x && x.proper && x.n > 0) ? xs : null;
   }
   /** Проміжок або об'єднання: (-∞; 3], [1; 2) ∪ {5}, ∅, R. Повертає канонічний відсортований список злитих проміжків або null. */
-  function parseSet(v) {
-    const t = norm(v).replace(/^[A-Za-z](?:\s*\([A-Za-z]\))?\s*[=∈]\s*/, "");
-    if (/^(∅|\{\s*\})$/.test(t)) return [];
+  function parseSet(v, exact) {
+    const t = norm(v).replace(/[Øø]/g, "∅").replace(/^[A-Za-z](?:\s*\([A-Za-z]\))?\s*[=∈]\s*/, "");
+    if (/^(∅|\{\s*\})$/.test(t)) return Object.assign([], { raw: 0 });
     const INF = /^([+-]?)(?:∞|inf)$/, ivs = [];
     const split2 = s => s.includes(";") ? s.split(";") : s.split(",");
     for (const part of t.split(/\s*[∪U]\s*/)) {
       let m;
       if (/^(R|ℝ)$/.test(part)) { ivs.push({ lo: -1, hi: 1, lc: false, hc: false }); continue; }
-      if ((m = part.match(/^\{(.+)\}$/))) { for (const p of split2(m[1])) { const e = exactOf(p.trim()); if (!e) return null; ivs.push({ lo: e, hi: e, lc: true, hc: true }); } continue; }
+      if ((m = part.match(/^\{(.+)\}$/))) { for (const p of split2(m[1])) { const e = elemOf(p.trim(), exact); if (!e) return null; ivs.push({ lo: e, hi: e, lc: true, hc: true }); } continue; }
       if (!(m = part.match(/^([[(])(.*)([\])])$/))) return null;
       const ends = split2(m[2]).map(s => s.trim()); if (ends.length !== 2) return null;
-      const [lo, hi] = ends.map((s, j) => { const inf = s.match(INF); if (!inf) return exactOf(s); return (inf[1] === "-" ? j === 0 : j === 1) ? (j ? 1 : -1) : null; });
+      const [lo, hi] = ends.map((s, j) => { const inf = s.replace(/\s+/g, "").match(INF); if (!inf) return elemOf(s, exact); return (inf[1] === "-" ? j === 0 : j === 1) ? (j ? 1 : -1) : null; });
       const lc = m[1] === "[", hc = m[3] === "]";
       if (lo === null || hi === null || (lo === -1 && lc) || (hi === 1 && hc)) return null;
       const c = cmpEnd(lo, hi); if (c > 0 || (c === 0 && !(lc && hc))) return null;
@@ -423,6 +463,7 @@ window.SLID_LEARN = (() => {
       if (cur && (c < 0 || (c === 0 && (cur.hc || iv.lc)))) { const h = cmpEnd(iv.hi, cur.hi); if (h > 0) { cur.hi = iv.hi; cur.hc = iv.hc; } else if (h === 0) cur.hc ||= iv.hc; }
       else out.push({ ...iv });
     }
+    out.raw = ivs.length;                       // скільки частин записано: більше, ніж після злиття, — ключ неканонічний
     return out;
   }
   // Межа проміжку: −1 = −∞, 1 = +∞, інакше точне число.
@@ -431,23 +472,26 @@ window.SLID_LEARN = (() => {
     return xeq(a.x, b.x) ? 0 : Math.sign(xnum(a.x) - xnum(b.x));
   }
   /** Періодична множина: серії з параметром k (n, m) ∈ ℤ, «;» між серіями, ± і (−1)^k. Повертає відсортовані значення у вікні або null. */
-  const PER_W = 30, PER_K = 3000;
+  const PER_W = 30, PER_K = 1000, PER_MAX = 8;
   function periodicValues(v) {
-    const out = [];
+    const out = []; let fams = 0, dec = 0;
     for (let t of Array.isArray(v) ? v.map(String) : [String(v ?? "")]) {
-      t = norm(t).replace(/[,;]?\s*[kmn]\s*[∈є]\s*[ZzℤΖ]\s*\.?$/, "");
+      t = norm(t).replace(/[,;]?\s*(?:де\s*)?[kmn]\s*[∈є]\s*[ZzℤΖ]\s*\.?$/, "");
       for (const fam of t.split(/;|,\s*(?=[a-zA-ZͰ-Ͽ]\s*=)/).flatMap(f => expandPM(f.trim().replace(/^[a-jo-zA-ZͰ-Ͽ]\s*=\s*/, "")))) {
         const tree = parseExpr(fam), vars = tree && tree.k !== "eq" ? varsOf(tree) : [];
-        if (vars.length !== 1 || !"kmn".includes(vars[0])) return null;
+        if (vars.length !== 1 || !"kmn".includes(vars[0]) || ++fams > PER_MAX) return null;
+        const f = k => fval(tree, { [vars[0]]: k });
+        if (Math.abs(f(1) - f(0)) < 1e-9 && Math.abs(f(2) - f(0)) < 1e-9) return null;   // «серія»-стала без k
+        dec = Math.max(dec, maxDec(tree));
         let n = 0;
-        for (let k = -PER_K; k <= PER_K; k++) { const x = fval(tree, { [vars[0]]: k }); if (Math.abs(x) <= PER_W) { out.push(x); n++; } }
+        for (let k = -PER_K; k <= PER_K; k++) { const x = f(k); if (Math.abs(x) <= PER_W) { out.push(x); n++; } }
         if (n < 2) return null;
       }
     }
-    return out.length ? out.sort((a, b) => a - b) : null;
+    return out.length ? Object.assign(out.sort((a, b) => a - b), { dec }) : null;
   }
   function samePeriodic(a, b) {
-    const near = (x, ys) => { let lo = 0, hi = ys.length - 1; while (lo < hi) { const mid = (lo + hi) >> 1; if (ys[mid] < x - 1e-7) lo = mid + 1; else hi = mid; } return Math.abs(ys[lo] - x) <= 1e-7 * (1 + Math.abs(x)); };
+    const near = (x, ys) => { let lo = 0, hi = ys.length - 1; while (lo < hi) { const mid = (lo + hi) >> 1; if (ys[mid] < x - 1e-9) lo = mid + 1; else hi = mid; } return Math.abs(ys[lo] - x) <= 1e-9 * (1 + Math.abs(x)); };
     const inner = x => Math.abs(x) <= PER_W - 4;
     return a.filter(inner).every(x => near(x, b)) && b.filter(inner).every(x => near(x, a));
   }
@@ -458,8 +502,34 @@ window.SLID_LEARN = (() => {
     return parseExpr(t);
   }
   function rng(seed) { return () => { seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
-  /** Тотожність у 48 детермінованих точках (половина — з додатними значеннями змінних). Рівняння рівносильні, якщо L − R пропорційні. */
+  /** Тотожність. Спершу точно в 12 раціональних точках (многочлени, дроби, корені, π, модуль); якщо вираз має sin/log/дробовий
+      степінь — у 48 числових точках, і тоді десяткові дроби, довші за ключ (і за 2 знаки), — наближення, не зараховуються.
+      Рівняння рівносильні, якщо L − R пропорційні. */
   function sameExpr(a, b) {
+    const ex = sameExact(a, b);
+    if (ex !== null) return ex;
+    if (maxDec(b) > Math.max(2, maxDec(a))) return false;
+    return sameNum(a, b);
+  }
+  function sameExact(a, b) {
+    const vars = [...new Set([...varsOf(a), ...varsOf(b)])], R = rng(1030), pairs = [];
+    const xf = (n, env) => { if (n.k !== "eq") return xval(n, env); const l = xval(n.l, env), r = l && xval(n.r, env); return r && xadd(l, r, -1n); };
+    const ff = (n, env) => n.k === "eq" ? fval(n.l, env) - fval(n.r, env) : fval(n, env);
+    let keyOk = 0;
+    for (let i = 0; i < 12; i++) {
+      const env = {}, fenv = {};
+      for (const x of vars) { let p = BigInt(1 + Math.floor(R() * 19)), q = BigInt(1 + Math.floor(R() * 6)); if (i % 2 && R() < 0.5) p = -p; env[x] = Q(p, q); fenv[x] = Number(env[x][0]) / Number(env[x][1]); }
+      const xa = xf(a, env), xb = xf(b, env);
+      if ((!xa && Number.isFinite(ff(a, fenv))) || (!xb && Number.isFinite(ff(b, fenv)))) return null;   // поза точною арифметикою
+      if (xa) { keyOk++; if (xb) pairs.push([xa, xb]); }
+    }
+    if (pairs.length < 6 || pairs.length * 2 < keyOk) return false;
+    if (a.k !== "eq") return pairs.every(([x, y]) => xeq(x, y));
+    const p0 = pairs.find(([x, y]) => x.size && y.size); if (!p0) return false;
+    for (const [x, y] of pairs) { const l = xmul(x, p0[1]), r = xmul(p0[0], y); if (!l || !r) return null; if (!xeq(l, r)) return false; }
+    return true;
+  }
+  function sameNum(a, b) {
     const vars = [...new Set([...varsOf(a), ...varsOf(b)])], R = rng(20261030), pairs = [];
     const f = (n, env) => n.k === "eq" ? fval(n.l, env) - fval(n.r, env) : fval(n, env);
     let keyOk = 0;
@@ -508,11 +578,57 @@ window.SLID_LEARN = (() => {
     if (n.k !== "mul") return [polyDeg(n), 0];
     return n.f.reduce(([a, b], t) => t.d ? [a, b + polyDeg(t.e)] : [a + polyDeg(t.e), b], [0, 0]);
   }
+  // Многочлен з раціональними коефіцієнтами: Map "x:2,y:1" → [p, q] або null.
+  const P1 = () => new Map([["", [1n, 1n]]]);
+  function padd(a, b, s = 1n) { const m = new Map(a); for (const [k, q] of b) { const v = m.has(k) ? qadd(m.get(k), [s * q[0], q[1]]) : [s * q[0], q[1]]; if (v[0] === 0n) m.delete(k); else m.set(k, v); } return m; }
+  function pmul(a, b) {
+    if (a.size * b.size > 400 || (BUDGET -= a.size * b.size) < 0) return null;
+    let m = new Map();
+    for (const [ka, qa] of a) for (const [kb, qb] of b) {
+      const e = {}; for (const part of (ka + "," + kb).split(",").filter(Boolean)) { const [x, n] = part.split(":"); e[x] = (e[x] || 0) + +n; }
+      m = padd(m, new Map([[Object.keys(e).sort().map(x => x + ":" + e[x]).join(","), qmul(qa, qb)]]));
+    }
+    return m.size > 200 ? null : m;
+  }
+  function poly(n) {
+    switch (n.k) {
+      case "num": return n.v[0] === 0n ? new Map() : new Map([["", n.v]]);
+      case "var": return new Map([[n.n + ":1", [1n, 1n]]]);
+      case "add": { let m = new Map(); for (const t of n.a) { const p = poly(t.e); if (!p) return null; m = padd(m, p, BigInt(t.s)); } return m; }
+      case "mul": { let m = P1(); for (const t of n.f) { let p = poly(t.e); if (p && t.d) { const c = p.size === 1 && p.get(""); p = c ? new Map([["", Q(c[1], c[0])]]) : null; } if (!p || !(m = pmul(m, p))) return null; } return m; }
+      case "pow": { const e = natNum(n.e), b = poly(n.b); if (e === null || e > 12n || !b) return null; let m = P1(); for (let i = 0n; i < e; i++) if (!(m = pmul(m, b))) return null; return m; }
+      default: return null;
+    }
+  }
+  // Зміст многочлена: НСД цілих коефіцієнтів; null — якщо коефіцієнт не цілий або це не многочлен.
+  const content = p => p && [...p.values()].every(q => q[1] === 1n) ? [...p.values()].reduce((g, q) => bgcd(g, q[0]), 0n) : null;
+  const factorsOf = n => { n = unNeg(n); return n.k === "mul" ? n.f : [{ d: false, e: n }]; };
+  // Кожен множник зі змінною — примітивний: цілі коефіцієнти без спільного дільника (3x + 6, 0,5x + 1 — не до кінця).
+  function primitive(n) {
+    for (const { d, e } of factorsOf(n)) {
+      if (isConst(e)) continue;
+      if (d) return false;                      // множник зі змінною в знаменнику — це не розклад
+      const base = e.k === "pow" && natNum(e.e) ? e.b : e, p = base.k === "var" ? null : poly(base);
+      if (p && content(p) !== 1n) return false;
+    }
+    return true;
+  }
+  // Немає однакових доданків (x + x) чи однакових множників (x · x) ніде в записі.
+  function noRepeats(n) {
+    if (n.k === "add") { const ks = n.a.map(t => { const e = t.e, f = e.k === "mul" && e.f[0].e.k === "num" && !e.f[0].d ? { k: "mul", f: e.f.slice(1) } : e; return e.k === "num" ? "#" : sig(f.k === "mul" && f.f.length === 1 && !f.f[0].d ? f.f[0].e : f); }); if (new Set(ks).size < ks.length) return false; }
+    if (n.k === "mul") { const ks = n.f.filter(t => !t.d && t.e.k !== "num").map(t => sig(t.e)); if (new Set(ks).size < ks.length) return false; }
+    return kids(n).every(noRepeats);
+  }
   function exprForm(form, key, u) {
-    if (form === "expanded") { const sig = (u.k === "add" ? u.a.map(t => t.e) : [u]).map(monomial); return sig.every(x => x !== null) && new Set(sig).size === sig.length; }
-    if (form === "factored") return (!isProduct(key) || isProduct(u)) && factorCount(u) >= factorCount(key);
-    if (form === "reduced") { const [a, b] = fracDeg(u), [ka, kb] = fracDeg(key); return a <= ka && b <= kb; }
-    if (form === "simplified") return treeSize(u) <= treeSize(key);
+    if (form === "expanded") { const sg = (u.k === "add" ? u.a.map(t => t.e) : [u]).map(monomial); return sg.every(x => x !== null) && new Set(sg).size === sg.length; }
+    if (form === "factored") return isProduct(u) && factorCount(u) >= factorCount(key) && primitive(u);
+    if (form === "reduced") {
+      const [a, b] = fracDeg(u), [ka, kb] = fracDeg(key); if (!(a <= ka && b <= kb)) return false;
+      const fs = factorsOf(u), part = d => fs.filter(t => t.d === d).reduce((m, t) => m && (m = pmul(m, poly(t.e) || new Map([["?", [1n, 1n]]]))), P1());
+      const cn = content(part(false)), cd = content(part(true));
+      return cn !== null && cd !== null && bgcd(cn, cd) === 1n;
+    }
+    if (form === "simplified") return treeSize(u) <= treeSize(key) && noRepeats(u);
     return true;
   }
   const EXPR_FORMS = ["expanded", "factored", "reduced", "simplified"];
@@ -523,7 +639,7 @@ window.SLID_LEARN = (() => {
     if (kind === "ratio") return "Відношення правильне. Запиши його натуральними числами без спільного дільника, наприклад 2 : 3.";
     if (kind === "expression") return { expanded: "Вираз правильний. Розкрий дужки й зведи подібні доданки.", factored: "Вираз правильний. Розклади його на множники до кінця.",
       reduced: "Вираз правильний. Скороти дріб.", simplified: "Вираз правильний, але його можна спростити." }[s.form] || "Спробуй ще раз.";
-    return "Значення правильне. Спрости корінь: винеси множник з-під знака кореня й позбудься кореня в знаменнику.";
+    return "Значення правильне, але запис не спрощено: обчисли, зведи подібні, винеси множник з-під кореня й позбудься кореня в знаменнику.";
   }
   /** Ключ для показу «Правильна відповідь». */
   function ansText(s) {
@@ -552,14 +668,15 @@ window.SLID_LEARN = (() => {
       ratio, coordinates2, coordinates3, exactRoot, intervalSet, expression, periodicSet (docs/CONTENT_SCHEMA.md §10).
       Числа: reduced — нескоротний дріб; mixed — виділити цілу частину; fractionOnly — лише звичайний/мішаний дріб; tol — абсолютна похибка. */
   function checkAns(s, v) {
-    const kind = s.answerKind || "number", tidy = xs => xs.every(x => x.tidy) ? "ok" : "form";
+    const kind = s.answerKind || "number", tidy = xs => xs.every(x => x.tidy) ? "ok" : "form", ex = exactKey(s.answer);
+    BUDGET = 50000;
     if (kind === "comparison") return /^[<>=]$/.test(String(s.answer).trim()) && String(v).trim() === String(s.answer).trim() ? "ok" : "bad";
     if (kind === "list") {
-      const a = parseList(s.answer), u = parseList(v);
+      const a = parseList(s.answer, ex), u = parseList(v, ex);
       return a && u && a.length === u.length && a.every(x => u.some(y => xeq(x.x, y.x))) ? tidy(u) : "bad";
     }
     if (kind === "coordinates2" || kind === "coordinates3") {
-      const n = kind === "coordinates2" ? 2 : 3, a = parsePoint(s.answer, n), u = parsePoint(v, n);
+      const n = kind === "coordinates2" ? 2 : 3, a = parsePoint(s.answer, n, ex), u = parsePoint(v, n, ex);
       return a && u && a.every((x, i) => xeq(x.x, u[i].x)) ? tidy(u) : "bad";
     }
     if (kind === "exactRoot") { const a = exactOf(s.answer), u = exactOf(v); return a && u && xeq(a.x, u.x) ? tidy([u]) : "bad"; }
@@ -569,11 +686,14 @@ window.SLID_LEARN = (() => {
       return s.reduced && !(u.every(x => !x.frac && x.d === 1) && u.reduce((g, x) => gcd(g, x.n), 0) === 1) ? "form" : "ok";
     }
     if (kind === "intervalSet") {
-      const a = parseSet(s.answer), u = parseSet(v), same = (x, y) => cmpEnd(x, y) === 0 && typeof x === typeof y;
+      const a = parseSet(s.answer, ex), u = parseSet(v, ex), same = (x, y) => cmpEnd(x, y) === 0 && typeof x === typeof y;
       if (!a || !u || a.length !== u.length || !a.every((x, i) => same(x.lo, u[i].lo) && same(x.hi, u[i].hi) && x.lc === u[i].lc && x.hc === u[i].hc)) return "bad";
       return tidy(u.flatMap(x => [x.lo, x.hi]).filter(x => typeof x === "object"));
     }
-    if (kind === "periodicSet") { const a = periodicValues(s.answer), u = periodicValues(v); return a && u && samePeriodic(a, u) ? "ok" : "bad"; }
+    if (kind === "periodicSet") {   // десяткові дроби, довші за ключ і за 2 знаки, — наближення (arctg 2 ≈ 1,1071487)
+      const a = periodicValues(s.answer), u = periodicValues(v);
+      return a && u && u.dec <= Math.max(2, a.dec) && samePeriodic(a, u) ? "ok" : "bad";
+    }
     if (kind === "expression") {
       const a = exprOf(s.answer); let u = exprOf(v);
       if (!a || !u || (s.form !== undefined && (!EXPR_FORMS.includes(s.form) || a.k === "eq"))) return "bad";
@@ -680,6 +800,8 @@ window.SLID_LEARN = (() => {
         if (it[flag] !== undefined && (typeof it[flag] !== "boolean" || it.type !== "answer" || !(kind === "number" || (flag === "reduced" && kind === "ratio")))) E.push(`${w}: ${flag} має бути boolean для числової answer${flag === "reduced" ? " або ratio" : ""}`);
       }
       if (it.form !== undefined && (kind !== "expression" || !EXPR_FORMS.includes(it.form) || exprOf(it.answer)?.k === "eq")) E.push(`${w}: form (${EXPR_FORMS.join(" | ")}) — лише для expression без «=»`);
+      if (it.form === "factored" && exprOf(it.answer) && !isProduct(exprOf(it.answer))) E.push(`${w}: form factored — ключ має бути добутком`);
+      if (kind === "intervalSet" && it.type === "answer") { BUDGET = 50000; const set = parseSet(it.answer, exactKey(it.answer)); if (set && set.raw !== set.length) E.push(`${w}: intervalSet — частини ключа перетинаються або дотикаються, злий їх`); }
       if (kind === "exactRoot" && it.type === "answer" && ![...(exactOf(it.answer)?.x.keys() || [])].some(k => !k.startsWith("1:1:0"))) E.push(`${w}: exactRoot потребує кореня або π у відповіді; раціональне число — answerKind number`);
       if (it.tol !== undefined && (it.type !== "answer" || kind !== "number" || !Number.isFinite(it.tol) || it.tol < 0)) E.push(`${w}: tol має бути скінченним числом ≥ 0 для числової answer`);
       if (it.type === "answer" && checkAns(it, typeof it.answer === "number" ? String(it.answer).replace(".", ",") : it.answer) !== "ok") E.push(`${w}: answer «${it.answer}» не читається або сам не проходить перевірку (reduced/mixed)`);
