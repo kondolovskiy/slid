@@ -1,5 +1,5 @@
 /* Слід · Математика, 4 клас — діагностика «Що ти вже вмієш?»
-   Статус: verified. Злиття двох verified-версій (compare_dg4.md): основа — PR #5 (reports/verify/write-math-diag-g4.md);
+   Статус: verified. Злиття двох verified-версій (reports/merge/compare-dg4.md): основа — PR #5 (reports/verify/write-math-diag-g4.md);
    з PR #6 (reports/verify/dg4.md) дослівно перенесено signed: false, cur-g4m2 (№ 20) і cur-g4m5 (№ 22).
    8 baseline-опор 1–3 кл. (по 2 завдання) + 6 тем 4 класу (по 1 завданню) = 22 завдання.
    Обсяг і прив'язки — docs/math-personalization-coverage.md, розділ «dg4 · 4 клас» (матриця 2026-10-16.v2).

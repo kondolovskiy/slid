@@ -9,7 +9,7 @@
    sk: усі вправи "num" (матриця v2; g4m1l3 — відкрите питання куратору: cmp/num).
    Чотирицифрові числа записано без пробілу (глосарій), хоча в Гісь — з пробілом.
    srcPage — друкований номер сторінки; в обох PDF він збігається з номером сторінки PDF.
-   Порівняння версій: compare_pg4m1.md. Перевірка: node tools/validate.mjs --pool pg4m1
+   Порівняння версій: reports/merge/compare-pg4m1.md. Перевірка: node tools/validate.mjs --pool pg4m1
    Схема: docs/CONTENT_SCHEMA.md §10 */
 SLID.pool("math", {
   id: "pg4m1",
@@ -49,7 +49,7 @@ SLID.pool("math", {
       answer: 803000,
       hint: "Десятків тисяч немає — у цей розряд став нуль. Клас одиниць теж порожній.",
       steps: ["Клас тисяч: 8 сотень тисяч, 0 десятків тисяч, 3 одиниці тисяч — 803.", "У класі одиниць нічого немає — 000.", "Відповідь: 803 000."] },
-    { id: "a10", lesson: "g4m1l1", lvl: 2, sk: "num", src: "l4a №16", srcPage: 29, adapted: true,
+    { id: "a10", lesson: "g4m1l1", lvl: 2, sk: "num", src: "l4a с. 29, №16", srcPage: 29, adapted: true,
       type: "answer", title: "1 сот. тис. = … дес. тис.",
       body: "<p>Скільки десятків тисяч в одній сотні тисяч?</p>",
       answer: 10,

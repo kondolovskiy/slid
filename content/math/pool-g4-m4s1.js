@@ -2,7 +2,7 @@
    Статус: verified. Злиття двох незалежних версій (main/PR #5 і PR #6), 2026-10-30.
    Усі 8 вправ дослівно з verified-версії main (verifier-pm4s1 + повторна перевірка divrem verifier-pm4s1-divrem,
    reports/verify/write-math-pool-m4s1.md). Із PR #6 (reports/verify/pm4s1.md) взято лише повніші бібліографічні описи sources.
-   Порівняння версій і чому так: compare_pm4s1.md.
+   Порівняння версій і чому так: reports/merge/compare-pm4s1.md.
    8 задач на урок m4a (3 рівня 1, 3 рівня 2, 2 рівня 3). Boss у розділі немає.
    a09–a11 — answerKind "divrem" (answer: [неповна частка, остача]); id a01, a02, a04 видалено в main — не перевикористовувати.
    Слово «ділене» урок m4a не вводить — в умовах його не вживаємо, у steps лише з поясненням.
