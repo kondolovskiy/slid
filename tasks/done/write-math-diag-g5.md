@@ -5,7 +5,7 @@ id: write-math-diag-g5
 type: write-diag
 subject: math
 grade: 5
-status: review
+status: done
 claimed_by: writer-write-math-diag-g5
 created: 2026-10-15
 depends_on: [curate-math-personalization-map]
