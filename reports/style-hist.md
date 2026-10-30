@@ -1,6 +1,6 @@
 # Стиль і складність: hist
 
-Згенеровано: 2026-10-14 · tools/stats.mjs
+Згенеровано: 2026-10-30 · tools/stats.mjs
 
 | урок | клас | екр. | частка завдань | слів/екран | макс. слів | слів/речення | довгі слова | типів | прапорці |
 |---|---|---|---|---|---|---|---|---|---|
@@ -134,7 +134,7 @@
 | g10s1l1 Два береги Збруча | 10 | 10 | 0.6 | 34 | 62 | 6.6 | 0.036 | 4 | sentenceWords=6.6 поза [7; 15] |
 | g10s1l2 Стрільці під калиною | 10 | 10 | 0.5 | 30 | 67 | 6.6 | 0.045 | 4 | sentenceWords=6.6 поза [7; 15] |
 | g10s1l3 Львів під чужою владою | 10 | 11 | 0.55 | 32 | 59 | 6.4 | 0.062 | 4 | sentenceWords=6.4 поза [7; 15] |
-| g10s1l4 Фільм про Велику війну (фінал) | 10 | 7 | 0.86 | 22 | 44 | 5.8 | 0.043 | 3 | sentenceWords=5.8 поза [7; 15] |
+| g10s1l4 Фільм про Велику війну (фінал) | 10 | 7 | 0.86 | 22 | 44 | 5.7 | 0.043 | 3 | sentenceWords=5.7 поза [7; 15] |
 | g10s2l1 Рада, що писала універсали | 10 | 10 | 0.5 | 32 | 61 | 6.2 | 0.083 | 3 | sentenceWords=6.2 поза [7; 15] |
 | g10s2l2 Однині — самостійна | 10 | 8 | 0.63 | 34 | 65 | 6.3 | 0.074 | 3 | sentenceWords=6.3 поза [7; 15] |
 | g10s2l3 Станція Крути | 10 | 10 | 0.5 | 28 | 71 | 6.4 | 0.04 | 4 | sentenceWords=6.4 поза [7; 15] |
@@ -163,7 +163,7 @@
 | g11s1l5 Вигнання з Криму | 11 | 7 | 0.57 | 25 | 59 | 7.1 | 0.11 | 3 | — |
 | g11s1l6 Перемога без монополії | 11 | 7 | 0.57 | 26 | 61 | 7.6 | 0.049 | 3 | — |
 | g11s1boss Архівна справа № 1939–1945 (фінал) | 11 | 7 | 0.86 | 27 | 51 | 7.6 | 0.066 | 4 | sentenceWords нетипово для сім'ї (z=2.4) |
-| g11s2l1 Хліб після перемоги | 11 | 9 | 0.56 | 18 | 48 | 5.5 | 0.051 | 4 | sentenceWords=5.5 поза [7; 15] |
+| g11s2l1 Хліб після перемоги | 11 | 9 | 0.56 | 20 | 48 | 5.6 | 0.049 | 4 | sentenceWords=5.6 поза [7; 15] |
 | g11s2l2 Тріщина в цензурі | 11 | 9 | 0.56 | 21 | 49 | 6.4 | 0.076 | 3 | sentenceWords=6.4 поза [7; 15] |
 | g11s2l3 Право говорити | 11 | 10 | 0.6 | 21 | 48 | 6 | 0.109 | 4 | sentenceWords=6 поза [7; 15] |
 | g11s2l4 Невидима загроза | 11 | 10 | 0.6 | 24 | 58 | 6.6 | 0.108 | 4 | sentenceWords=6.6 поза [7; 15] |
@@ -192,5 +192,5 @@
 - **5-6:boss**: screens 6.44±0.5, gradedShare 0.84±0.01, readWordsPerScreen 12.33±2.94, maxReadWords 22.78±7.36, sentenceWords 4.88±0.41, longWordShare 0.05±0.01, typeVariety 3.33±0.47
 - **7-9:lesson**: screens 7.91±0.76, gradedShare 0.58±0.06, readWordsPerScreen 24.28±2.82, maxReadWords 60.74±7.56, sentenceWords 5.9±0.41, longWordShare 0.04±0.01, typeVariety 3.29±0.45
 - **7-9:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 21.4±2.8, maxReadWords 42.6±5.04, sentenceWords 5.47±0.45, longWordShare 0.03±0.01, typeVariety 3.13±0.34
-- **10-11:lesson**: screens 8.93±1.24, gradedShare 0.55±0.05, readWordsPerScreen 26.95±4.82, maxReadWords 61.12±8.34, sentenceWords 6.42±0.49, longWordShare 0.07±0.03, typeVariety 3.45±0.5
-- **10-11:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 23.6±2.54, maxReadWords 47.2±7.19, sentenceWords 6.13±0.61, longWordShare 0.07±0.02, typeVariety 3.6±0.49
+- **10-11:lesson**: screens 8.93±1.24, gradedShare 0.55±0.05, readWordsPerScreen 27±4.74, maxReadWords 61.12±8.34, sentenceWords 6.42±0.49, longWordShare 0.07±0.03, typeVariety 3.45±0.5
+- **10-11:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 23.6±2.54, maxReadWords 47.2±7.19, sentenceWords 6.12±0.62, longWordShare 0.07±0.02, typeVariety 3.6±0.49
