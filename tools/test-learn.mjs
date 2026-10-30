@@ -496,5 +496,60 @@ const order = l => ({ L1: 3, L2: 1, L3: 2, L4: 4 }[l] ?? 50);
   eq(S.grade, 6, "practice context: grade never changed");
 }
 
+/* 12. baseline: діагностика наймолодшого класу без уроків 1–3 класів (engine-math-diag-g4-baseline) */
+{ const lessons4 = new Map([["g1", { grade: 4 }], ["g2", { grade: 4 }], ["h1", { grade: 4 }], ["h2", { grade: 4 }], ["m5", { grade: 5 }]]);
+  const sections4 = new Map([["sA", { grade: 4, lessons: ["g1", "g2"] }], ["sB", { grade: 4, lessons: ["h1", "h2"] }], ["sE", { grade: 4, lessons: [] }], ["s5", { grade: 5, lessons: ["m5"] }]]);
+  const vc = { lessons: lessons4, sections: sections4, skills: { "m.num": 1 } };
+  const d4 = { id: "dgb", grade: 4, title: "T", why: "W", status: "draft",
+    topics: [{ id: "p", title: "P", kind: "pre", baseline: true, lessons: [], for: ["sA"] },
+             { id: "q", title: "Q", kind: "pre", baseline: true, for: ["sB", "sA"] },
+             { id: "k", title: "K", kind: "cur", lessons: ["g1"] }],
+    items: [{ topic: "p", type: "number", sk: "m.num", title: "p1" }, { topic: "q", type: "number", sk: "m.num", title: "q1" },
+            { topic: "p", type: "number", sk: "m.num", title: "p2" }, { topic: "q", type: "number", sk: "m.num", title: "q2" },
+            { topic: "k", type: "number", sk: "m.num", title: "k1" }] };
+  eq(L.validate(d4, vc), [], "baseline validate: коректний тест 4 класу → []");
+  const bad = (mut, sub, what) => { const d = clone(d4); mut(d); const E = L.validate(d, vc); eq(E.length === 1 && E[0].includes(sub), true, `baseline validate: ${what} (отримано ${JSON.stringify(E)})`); };
+  eq((() => { const d = clone(d4); d.topics[0].lessons = ["g1"]; return L.validate(d, vc).some(e => e.includes("не має lessons")); })(), true, "baseline validate: baseline з уроком");
+  bad(d => { d.topics[0].baseline = 1; }, "baseline має бути true", "baseline не boolean true");
+  bad(d => { d.topics[2].baseline = true; }, "лише для kind: pre", "baseline для cur");
+  bad(d => { delete d.topics[0].for; }, "потребує for", "baseline без for");
+  bad(d => { d.topics[0].for = ["sE"]; }, "немає уроків", "baseline веде в розділ без уроків");
+  bad(d => { d.items[0].lesson = "g1"; }, "lesson «g1» має бути одним з уроків теми", "lesson на завданні baseline");
+  bad(d => { delete d.topics[1].baseline; }, "lessons — 1–2", "звичайна pre без lessons, як і раніше, помилка");
+  // в предметі є молодші класи → baseline заборонено (не обхід перевірки класу)
+  const d5 = clone(d4); d5.id = "dg5b"; d5.grade = 5; d5.topics = [{ id: "p", title: "P", kind: "pre", baseline: true, for: ["s5"] }, { id: "k", title: "K", kind: "cur", lessons: ["m5"] }];
+  d5.items = [{ topic: "p", type: "number", sk: "m.num", title: "p1" }, { topic: "p", type: "number", sk: "m.num", title: "p2" }, { topic: "k", type: "number", sk: "m.num", title: "k1" }];
+  eq(L.validate(d5, vc).some(e => e.includes("baseline заборонено")), true, "baseline validate: заборонено, якщо є уроки молодших класів");
+
+  const ctx4 = { week: 1, sections: [{ id: "sA", weeks: [1, 6], lessons: ["g1", "g2"] }, { id: "sB", weeks: [7, 12], lessons: ["h1", "h2"] }] };
+  // усе правильно
+  const all = { 0: OK, 1: OK, 2: OK, 3: OK, 4: OK }, pOk = L.buildPlan(d4, all, ctx4), lvOk = L.level(d4, pOk.topics);
+  eq([pOk.steps, pOk.base, pOk.known, lvOk.k, lvOk.base], [[], [], ["g1"], 2, 0], "baseline: усе правильно → без кроків і прогалин, «Міцна база», known");
+  // усе пропущено: прогалини видно, «Міцної бази» немає, кроків-уроків немає, є перший урок найтерміновішого розділу
+  const skip = { 0: SKIP, 1: SKIP, 4: SKIP }, pS = L.buildPlan(d4, skip, ctx4), lvS = L.level(d4, pS.topics);
+  eq(pS.topics, { p: "gap", q: "gap", k: "new" }, "baseline: усе пропущено → обидві теми gap");
+  eq([lvS.k, lvS.gaps, lvS.base, lvS.title], [0, 2, 2, "Почнемо з основ"], "baseline: усе пропущено → не «Міцна база»");
+  eq(lvS.text.includes("з учителем або дорослим"), true, "baseline: текст радить потренувати з дорослим, а не неіснуючий урок");
+  eq(pS.steps, [], "baseline: без вигаданих кроків-уроків");
+  eq(pS.base, [{ topic: "p", why: "gap", l: "g1" }, { topic: "q", why: "gap", l: "g1" }], "baseline: q веде в найтерміновіший розділ із for (sA), а не за порядком for");
+  eq(L.buildPlan(d4, skip, { ...ctx4, hasLesson: l => l !== "g1" }).base[0].l, "g2", "baseline: недоступний урок пропускається");
+  eq(L.buildPlan(d4, skip, {}).base.map(b => b.l), [null, null], "baseline: без уроків розділу → l: null, не битий id");
+  // змішано: p засвоєно, q — хитко
+  const mix = { 0: OK, 1: OK, 2: OK, 3: BAD, 4: BAD }, pM = L.buildPlan(d4, mix, ctx4), lvM = L.level(d4, pM.topics);
+  eq([pM.topics.p, pM.topics.q, pM.base.map(b => b.topic + ":" + b.why).join(), lvM.k, lvM.ok, lvM.shaky], ["ok", "shaky", "q:shaky", 1, 1, 1], "baseline: змішаний результат (1,5 з 2 → «Добра база»)");
+  // перехід до першого уроку не закриває прогалину; новий тест — так
+  const S = fresh(); const fp = L.finishDiag(S, "math", d4, skip, { ...ctx4, day: "2026-10-30" });
+  eq(L.lessonDone(S, "math", "g1", 1, "2026-10-30").closed, [], "baseline: пройдений перший урок не закриває baseline");
+  eq(S.plan.math.base.length, 2, "baseline: прогалини лишаються в плані до нового тесту");
+  eq(L.todo(fp), [], "baseline: todo порожній");
+  eq(L.finishDiag(S, "math", d4, all, ctx4).base, [], "baseline: новий тест закриває прогалини");
+  // помилки уроків поряд із baseline: syncPlan працює, base не губиться
+  L.finishDiag(S, "math", d4, skip, ctx4); L.syncPlan(S, "math", [{ l: "g2", n: 2, of: 3 }], "2026-10-30");
+  eq([S.plan.math.base.length, L.todo(S.plan.math).map(s => s.l)], [2, ["g2"]], "baseline: err-крок додається, base лишається");
+  // змішаний тест (звичайна pre + baseline): текст як для звичайних прогалин
+  const dm = { topics: [{ id: "a", kind: "pre", lessons: ["x"] }, { id: "b", kind: "pre", baseline: true }] };
+  eq(L.level(dm, { a: "gap", b: "gap" }).text.includes("пройти ще раз"), true, "baseline: є прогалина з уроком → звичайний текст");
+}
+
 console.log(`\n${n} перевірок, ${fails ? fails + " з помилками" : "усе гаразд"}`);
 if (fails) process.exit(1);

@@ -130,15 +130,19 @@ for (const c of subjects) for (const sec of c.sections.filter(s => s.lessons)) {
   }
 }
 // діагностика класів (SLID.diag, docs/CONTENT_SCHEMA.md §9)
-const lessonGrade = new Map(), sectionGrade = new Map();
-for (const c of subjects) for (const sec of c.sections) { sectionGrade.set(sec.id, { grade: sec.grade }); (sec.lessons || []).forEach(l => lessonGrade.set(l.id, { grade: sec.grade })); }
+// уроки й розділи лише свого предмета: план веде тільки на них, а baseline перевіряє, чи є в предметі молодші класи
+const subjectMaps = c => {
+  const lessons = new Map(), sections = new Map();
+  for (const sec of c.sections) { sections.set(sec.id, { grade: sec.grade, lessons: (sec.lessons || []).filter(l => !l.boss).map(l => l.id) }); (sec.lessons || []).forEach(l => lessons.set(l.id, { grade: sec.grade })); }
+  return { lessons, sections };
+};
 const diagIds = new Set();
 for (const c of subjects) for (const d of c.diags || []) {
   if (onlySec || (onlyDiag && d.id !== onlyDiag)) continue;
   const D = `content/${c.id}/diag-g${d.grade}.js#${d.id}`;
   if (diagIds.has(d.id)) E(D, "id діагностики не унікальний"); diagIds.add(d.id);
   if (c.diags.filter(x => x.grade === d.grade).length > 1) E(D, `для ${d.grade} класу вже є діагностика з цього предмета`);
-  for (const m of learn.validate(d, { lessons: lessonGrade, sections: sectionGrade, skills: c.skills })) E(D, m);
+  for (const m of learn.validate(d, { ...subjectMaps(c), skills: c.skills })) E(D, m);
   if (!d.meta) W(D, "немає meta {author, created, factcheck, teacher}");
   (d.items || []).forEach((s, i) => { if (TYPES.includes(s.type)) checkScreen(`${D} завдання ${i + 1} (${s.type})`, s, c, true); });
   const ch = (d.items || []).filter(s => s.type === "choice" && Number.isInteger(s.correct));

@@ -372,6 +372,69 @@ async def session_checks(browser, url):
          'type': 'answer', 'title': 'QA fixture: 2 + 3', 'answer': 5, 'steps': ['2 + 3 = 5.']}
     ]})
 
+async def baseline_checks(browser, url):
+    """Grade 4 baseline: fixture dg4 (no grade 1–3 lessons exist); real content keeps its own checks."""
+    install = """() => {
+      const c=SLID_SUBJECTS.find(c=>c.id==='math');
+      c.diags=c.diags.filter(d=>d.grade!==4);
+      c.diags.push({id:'dg4',grade:4,title:'Тест 4: fixture',why:'Контрольований baseline-тест.',status:'draft',
+        topics:[{id:'place',title:'Розряди до тисячі',kind:'pre',baseline:true,lessons:[],for:['g4m1','g4m2']},
+                {id:'add',title:'Додавання до тисячі',kind:'pre',baseline:true,lessons:[],for:['g4m2']},
+                {id:'cur-g4m1',title:'Класи і розряди',kind:'cur',lessons:['g4m1l1']}],
+        items:[{topic:'place',type:'number',sk:'num',title:'1',answer:1},{topic:'add',type:'number',sk:'num',title:'2',answer:2},
+               {topic:'place',type:'number',sk:'num',title:'3',answer:3},{topic:'add',type:'number',sk:'num',title:'4',answer:4},
+               {topic:'cur-g4m1',type:'number',sk:'num',title:'5',answer:5}]});
+    }"""
+    for mode in ('ok', 'skip', 'mixed'):
+        context, page, errors = await qa_page(browser, url, {'grade': 4, 'unlockAll': False})
+        await page.evaluate(install)
+        assert not await page.evaluate("SLID_LEARN.validate(SLID_SUBJECTS.find(c=>c.id==='math').diags.find(d=>d.id==='dg4'),{lessons:new Map(SLID_SUBJECTS.find(c=>c.id==='math').sections.flatMap(s=>(s.lessons||[]).map(l=>[l.id,{grade:s.grade}]))),sections:new Map(SLID_SUBJECTS.find(c=>c.id==='math').sections.map(s=>[s.id,{grade:s.grade,lessons:(s.lessons||[]).map(l=>l.id)}])),skills:SLID_SUBJECTS.find(c=>c.id==='math').skills})")
+        await page.click('[data-tab="path"]')
+        await page.click('[data-diag="math"]'); await page.click('[data-diag-go]')
+        while await page.locator('#skip').is_visible():
+            i = await page.evaluate("() => {const d=SLID_SUBJECTS.find(c=>c.id==='math').diags.find(d=>d.id==='dg4'),S=JSON.parse(localStorage.getItem('slid.v1'));return SLID_LEARN.nextItem(d,S.diagRun.dg4||{});}")
+            if mode == 'skip' or (mode == 'mixed' and i == 3):
+                await page.click('#skip')
+            else:
+                await page.fill('#numIn', str(i + 1)); await page.click('#action')
+        state = await saved_state(page)
+        plan = state['plan']['math']
+        title = await page.locator('#stage h1').inner_text()
+        dock = await page.locator('#action').inner_text()
+        assert plan['steps'] == [] and plan['grade'] == 4, plan
+        if mode == 'ok':
+            assert plan['base'] == [] and title == 'Міцна база' and 'До уроків' in dock, (plan, title, dock)
+        elif mode == 'skip':
+            assert [b['topic'] for b in plan['base']] == ['place', 'add'] and all(b['l'] == 'g4m1l1' or b['l'] == 'g4m2l1' for b in plan['base']), plan
+            assert title != 'Міцна база' and 'з учителем або дорослим' in await page.locator('#stage').inner_text(), title
+            assert 'Почати з першого уроку' in dock, dock
+        else:
+            assert plan['topics']['place'] == 'ok' and [(b['topic'], b['why']) for b in plan['base']] == [('add', 'shaky')], plan
+        if mode != 'ok':
+            nxt = plan['base'][0]['l']
+            await page.click('#action')
+            first = await page.evaluate("id => SLID_SUBJECTS.flatMap(c=>c.sections).flatMap(s=>s.lessons||[]).find(l=>l.id===id).screens[0].title.replace(/<[^>]+>|\\$/g,'')", nxt)
+            assert await page.locator('#player').is_visible() and first in await page.locator('#stage').inner_text(), (nxt, first)
+            await page.click('#pClose'); await page.click('#pClose')  # lesson exit asks for a second press
+            await page.click('[data-tab="path"]')
+            assert await page.locator(f'.plancard [data-lesson="{nxt}"]').count() == 1
+            await page.click('.plancard [data-plan="math"]')
+            text = (await page.locator('#view').inner_text()).lower()
+            assert 'потренуй з учителем або дорослим' in text and 'додавання до тисячі' in text, text
+            ids = await page.evaluate("[...document.querySelectorAll('#view [data-lesson]')].map(b=>b.dataset.lesson)")
+            known = set(await page.evaluate("SLID_SUBJECTS.flatMap(c=>c.sections).flatMap(s=>s.lessons||[]).map(l=>l.id)"))
+            assert ids and all(i in known for i in ids), ids
+            # Passing the first lesson does not close the baseline gap; it stays until a new test.
+            await page.evaluate("id => {const S=JSON.parse(localStorage.getItem('slid.v1'));S.lessons[id]={done:true,stars:3};localStorage.setItem('slid.v1',JSON.stringify(S));}", nxt)
+            await page.reload()
+            assert len((await saved_state(page))['plan']['math']['base']) == len(plan['base'])
+            await page.click('[data-tab="path"]')
+            assert await page.locator('.plancard').count() == 0
+            await page.click('[data-tab="path"]')
+        assert not errors, errors
+        await context.close()
+        print(f"dg4 fixture: {mode}, baseline green", flush=True)
+
 async def main():
     parser = argparse.ArgumentParser(description='Діагностики/пули: реальний контент і контрольовані регресії')
     parser.add_argument('--grade', type=int, choices=range(4, 12))
@@ -476,6 +539,7 @@ async def main():
                     await page.click('#action')
                 assert not errors, errors
                 await grade_context_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
+                await baseline_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
             await browser.close()
             print('Обрані браузерні сценарії: green')
     finally:

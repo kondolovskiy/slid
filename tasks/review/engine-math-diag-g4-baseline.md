@@ -1,11 +1,13 @@
 ---
+claimed_from: todo
+claimed_at: 2026-10-30T18:03:02.812Z
 write_group: personalization-shared
 id: engine-math-diag-g4-baseline
 type: engine
 subject: math
 grade: 4
-status: todo
-claimed_by:
+status: review
+claimed_by: orchestrator-g4
 created: 2026-10-15
 depends_on: [curate-math-personalization-map]
 ---
@@ -40,6 +42,11 @@ write_group: personalization-shared. Перед змінами оркестра�
 ## Нотатки виконавця
 
 <!-- Змінені файли; джерела; рішення й обмеження; результати команд; що передано незалежному верифікатору. -->
+
+- 2026-10-30: редактор групи personalization-shared: orchestrator-g4; редагування розпочато. Інших doing-задач групи немає.
+- Змінено: app/learn.js (validate/level/buildPlan, `plan.base`), app/app.js (підсумок тесту, картка плану, екран плану), tools/validate.mjs (карти свого предмета), tools/personalization-qa.mjs (знято unsupported, звірка baseline), tools/playtest.py (виняток лише для тестів із самими baseline-pre), tools/test-learn.mjs (+24), tools/test-answer-ui.py (fixture dg4 ok/skip/mixed), docs CONTENT_SCHEMA §9, PERSONALIZATION, PERSONALIZATION_QA; build.
+- Результати й межі: reports/qa/engine-math-diag-g4-baseline.md. Learn 451/451, QA 25/25, validate 0/255, test-answer-ui all зелений, playtest dg6 зелений.
+- Передано незалежному рецензенту (engineering-reviewer); до прийняття — review.
 
 ## Обсяг за матрицею 2026-10-16.v2
 

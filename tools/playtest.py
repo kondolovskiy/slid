@@ -76,7 +76,9 @@ async def main():
                     await pg.wait_for_timeout(80); await pg.click("#action")
                     await pg.click('[data-tab="path"]'); await pg.click('[data-tab="path"]')
                     played += 1
-        # тести рівня (SLID.diag): усе правильно → план без кроків; усе «Ще не знаю» → у плані є кроки, кожен веде на наявний урок
+        # тести рівня (SLID.diag): усе правильно → план без кроків; усе «Ще не знаю» → у плані є кроки, кожен веде на наявний урок.
+        # Виняток — тест, де всі передумови базові (baseline, уроків молодших класів немає): тоді кроків немає, але кожна
+        # прогалина є в plan.base і веде на перший урок свого розділу, який і відкриває кнопка.
         diags = 0
         for c in subjects:
             for d in c.get("diags", []):
@@ -96,7 +98,12 @@ async def main():
                     todo = [st for st in (plan or {}).get("steps", []) if not st.get("done")]
                     if not plan: errs.append(f"{c['id']} {d['id']} ({mode}): план не збережено")
                     elif mode == "ok" and (todo or shown != len(d["items"])): errs.append(f"{c['id']} {d['id']}: усі відповіді правильні, але в плані {len(todo)} кроків (показано {shown} з {len(d['items'])} завдань) — якусь відповідь не зараховано")
-                    elif mode == "skip" and not todo: errs.append(f"{c['id']} {d['id']}: усе пропущено, а план порожній")
+                    elif mode == "skip" and any(t["kind"] == "pre" and not t.get("baseline") for t in d["topics"]) and not todo: errs.append(f"{c['id']} {d['id']}: усе пропущено, а план порожній")
+                    elif mode == "skip" and not todo:
+                        base = (plan or {}).get("base", [])
+                        pre = [t["id"] for t in d["topics"] if t["kind"] == "pre"]
+                        if sorted(b["topic"] for b in base) != sorted(pre) or not all(b.get("l") for b in base):
+                            errs.append(f"{c['id']} {d['id']}: усе пропущено, а базові прогалини не всі в плані або без уроку: {base}")
                     await pg.click("#action"); await pg.wait_for_timeout(80)
                     if mode == "skip" and await pg.is_hidden("#player"): errs.append(f"{c['id']} {d['id']}: перший крок плану не відкрився")
                 diags += 1
