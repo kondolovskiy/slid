@@ -1,10 +1,12 @@
 ---
+claimed_from: todo
+claimed_at: 2026-10-30T18:27:45.673Z
 id: write-math-diag-g4
 type: write-diag
 subject: math
 grade: 4
 status: todo
-claimed_by:
+claimed_by: writer-write-math-diag-g4
 created: 2026-10-15
 depends_on: [curate-math-personalization-map, engine-math-diag-g4-baseline]
 ---

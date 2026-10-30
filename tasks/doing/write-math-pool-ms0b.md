@@ -1,26 +1,29 @@
 ---
-id: write-math-pool-ms4
+claimed_from: todo
+claimed_at: 2026-10-30T18:27:45.843Z
+id: write-math-pool-ms0b
 type: write-pool
 subject: math
 grade: 5
 status: todo
-claimed_by:
+claimed_by: writer-write-math-pool-ms0b
 created: 2026-10-15
 depends_on: [curate-math-personalization-map]
 ---
-# Зібрати пул «Площі й об'єми» (5 клас, ms4)
+# Зібрати пул «Фігури і величини» (5 клас, ms0b)
 
 ## Результат
 
-Один файл `content/math/pool-g5-ms4.js`: `SLID.pool("math", { id: "pms4", section: "ms4", status: "draft", sources: [...], items: [...] })`. Клас визначається розділом. Зразки — content/math/pool-g6-*.js і tasks/done/write-math-pool-g6m*.md; чинний контракт — CONTENT_SCHEMA §10.
+Один файл `content/math/pool-g5-ms0b.js`: `SLID.pool("math", { id: "pms0b", section: "ms0b", status: "draft", sources: [...], items: [...] })`. Клас визначається розділом. Зразки — content/math/pool-g6-*.js і tasks/done/write-math-pool-g6m*.md; чинний контракт — CONTENT_SCHEMA §10.
 
 ## Уроки для покриття
 
-- `ms4l1` — Скільки плит на терасу? **[required]**
-- `ms4l2` — Коробка з дванадцятьма ребрами **[required]**
-- `ms4l3` — Скільки води в акваріумі? **[required]**
+- `ms0bl1` — Лінія без кінця **[required]**
+- `ms0bl2` — Скільки градусів у куті? **[required]**
+- `ms0bl3` — Три кути на трьох **[pending]**
+- `ms0bl4` — Скільки сітки на грядку? **[required]**
 
-Усього 3 тематичних уроків. Boss не потребує окремого дубльованого пулу. Для m4s1 це повноцінний окремий пул навіть без запису в plan.js.
+Усього 4 тематичних уроків. Boss не потребує окремого дубльованого пулу. Для m4s1 це повноцінний окремий пул навіть без запису в plan.js.
 
 ## Навчальний обсяг
 
@@ -38,7 +41,7 @@ depends_on: [curate-math-personalization-map]
 ## Готово, коли
 
 - [ ] Усі required-уроки з узгодженої матриці мають мінімальне покриття й три рівні; optional/pending перелічено окремо без хибної позначки виконання; таблиця lesson → кількість/рівні/джерела й винятки є в нотатках.
-- [ ] `node tools/validate.mjs --pool pms4` — 0 помилок; усі джерела відкрито, числа звірено, відповіді й steps перевірено.
+- [ ] `node tools/validate.mjs --pool pms0b` — 0 помилок; усі джерела відкрито, числа звірено, відповіді й steps перевірено.
 - [ ] Змінено лише свій файл пулу, цю задачу та дописано inbox; status draft. Оркестратор запускає build.
 - [ ] Задача через claim.mjs передана в review; незалежне розв’язання й звірка джерел — verify-math-personalization-g5; браузерне приймання — qa-math-personalization-g5.
 
@@ -57,8 +60,10 @@ depends_on: [curate-math-personalization-map]
 
 | Урок | Scope | Обов’язкові вправи | Формати / джерело |
 |---|---|---|---|
-| ms4l1 | required | 6–8 (3/2/1 за рівнями мінімум) | number; m5:167–175 |
-| ms4l2 | required | 6–8 (3/2/1 за рівнями мінімум) | number, choice, multi; m5:176–184 |
-| ms4l3 | required | 6–8 (3/2/1 за рівнями мінімум) | number; m5:185–193 |
+| ms0bl1 | required | 6–8 (3/2/1 за рівнями мінімум) | number, choice, multi; m5:19–46 |
+| ms0bl2 | required | 6–8 (3/2/1 за рівнями мінімум) | number; m5:90–103 |
+| ms0bl3 | pending | 0; відкладено | number; m5:108–114; g7:149–157 |
+| ms0bl4 | required | 6–8 (3/2/1 за рівнями мінімум) | number; m5:104–121 |
 
 Покриття: **3 required-уроків, 18–24 вправ**. Optional/pending не включати у файл пулу цієї версії; boss не дублювати.
+- ms0bl3: Види трикутників є у 5 кл., але урок також оцінює суму кутів (Мерзляк 7, с.149). Потрібне рішення Віктора про межі цього уроку; до того не тестувати і не відкривати як required.

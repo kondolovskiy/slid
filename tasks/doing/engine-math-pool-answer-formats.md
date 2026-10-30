@@ -1,10 +1,12 @@
 ---
+claimed_from: todo
+claimed_at: 2026-10-30T18:27:46.046Z
 write_group: personalization-shared
 id: engine-math-pool-answer-formats
 type: engine
 subject: math
 status: todo
-claimed_by:
+claimed_by: engineer-formats
 created: 2026-10-15
 depends_on: [curate-math-personalization-map]
 ---

@@ -1,26 +1,28 @@
 ---
-id: write-math-pool-ms1
+claimed_from: todo
+claimed_at: 2026-10-30T18:27:45.803Z
+id: write-math-pool-ms0
 type: write-pool
 subject: math
 grade: 5
 status: todo
-claimed_by:
+claimed_by: writer-write-math-pool-ms0
 created: 2026-10-15
 depends_on: [curate-math-personalization-map]
 ---
-# Зібрати пул «Звичайні дроби» (5 клас, ms1)
+# Зібрати пул «Натуральні числа» (5 клас, ms0)
 
 ## Результат
 
-Один файл `content/math/pool-g5-ms1.js`: `SLID.pool("math", { id: "pms1", section: "ms1", status: "draft", sources: [...], items: [...] })`. Клас визначається розділом. Зразки — content/math/pool-g6-*.js і tasks/done/write-math-pool-g6m*.md; чинний контракт — CONTENT_SCHEMA §10.
+Один файл `content/math/pool-g5-ms0.js`: `SLID.pool("math", { id: "pms0", section: "ms0", status: "draft", sources: [...], items: [...] })`. Клас визначається розділом. Зразки — content/math/pool-g6-*.js і tasks/done/write-math-pool-g6m*.md; чинний контракт — CONTENT_SCHEMA §10.
 
 ## Уроки для покриття
 
-- `m1` — Що таке дріб? **[required]**
-- `m2` — Який дріб більший? **[required]**
-- `m3` — Дріб від числа **[required]**
-- `m4` — Додаємо дроби **[required]**
-- `m5` — Більше, ніж ціле **[required]**
+- `ms0l1` — Скільки нулів у мільйоні? **[required]**
+- `ms0l2` — Майже дві тисячі **[required]**
+- `ms0l3` — Калькулятор помилився? **[required]**
+- `ms0l4` — Терези й невідоме **[required]**
+- `ms0l5` — Чому квадрат, а не «двійка»? **[required]**
 
 Усього 5 тематичних уроків. Boss не потребує окремого дубльованого пулу. Для m4s1 це повноцінний окремий пул навіть без запису в plan.js.
 
@@ -40,7 +42,7 @@ depends_on: [curate-math-personalization-map]
 ## Готово, коли
 
 - [ ] Усі required-уроки з узгодженої матриці мають мінімальне покриття й три рівні; optional/pending перелічено окремо без хибної позначки виконання; таблиця lesson → кількість/рівні/джерела й винятки є в нотатках.
-- [ ] `node tools/validate.mjs --pool pms1` — 0 помилок; усі джерела відкрито, числа звірено, відповіді й steps перевірено.
+- [ ] `node tools/validate.mjs --pool pms0` — 0 помилок; усі джерела відкрито, числа звірено, відповіді й steps перевірено.
 - [ ] Змінено лише свій файл пулу, цю задачу та дописано inbox; status draft. Оркестратор запускає build.
 - [ ] Задача через claim.mjs передана в review; незалежне розв’язання й звірка джерел — verify-math-personalization-g5; браузерне приймання — qa-math-personalization-g5.
 
@@ -59,10 +61,10 @@ depends_on: [curate-math-personalization-map]
 
 | Урок | Scope | Обов’язкові вправи | Формати / джерело |
 |---|---|---|---|
-| m1 | required | 6–8 (3/2/1 за рівнями мінімум) | number; m5:203–215 |
-| m2 | required | 6–8 (3/2/1 за рівнями мінімум) | number; m5:216–224 |
-| m3 | required | 6–8 (3/2/1 за рівнями мінімум) | number; m5:206–207 |
-| m4 | required | 6–8 (3/2/1 за рівнями мінімум) | number; m5:225–229 |
-| m5 | required | 6–8 (3/2/1 за рівнями мінімум) | number; m5:230–244 |
+| ms0l1 | required | 6–8 (3/2/1 за рівнями мінімум) | number; m5:9–19 |
+| ms0l2 | required | 6–8 (3/2/1 за рівнями мінімум) | number; m5:47–54,261–267 |
+| ms0l3 | required | 6–8 (3/2/1 за рівнями мінімум) | number; m5:74–83,124–156 |
+| ms0l4 | required | 6–8 (3/2/1 за рівнями мінімум) | number; m5:84–89 |
+| ms0l5 | required | 6–8 (3/2/1 за рівнями мінімум) | number; m5:163–166 |
 
 Покриття: **5 required-уроків, 30–40 вправ**. Optional/pending не включати у файл пулу цієї версії; boss не дублювати.
