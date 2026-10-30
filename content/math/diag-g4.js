@@ -1,5 +1,5 @@
 /* Слід · Математика, 4 клас — діагностика «Що ти вже вмієш?»
-   Статус: draft. 8 базових тем 1–3 класів (baseline, по 2 завдання) + 6 тем 4 класу (по 1 завданню) = 22 завдання.
+   Статус: verified (reports/verify/dg4.md). 8 базових тем 1–3 класів (baseline, по 2 завдання) + 6 тем 4 класу (по 1 завданню) = 22 завдання.
    Обсяг — docs/math-personalization-coverage.md (версія 2026-10-16.v2, розділ dg4).
    Порядок: спершу базові завдання всіх baseline-тем, далі складніші впереміш із темами 4 класу (з 12-го).
    Перевірка: node tools/validate.mjs --diag dg4; node tools/personalization-qa.mjs --diag dg4
@@ -9,7 +9,7 @@ SLID.diag("math", {
   grade: 4,
   title: "Що ти вже вмієш?",
   why: "Згадаємо, що ти вивчив у 1–3 класах, і знайдемо, з чого почати 4 клас.",
-  status: "draft",
+  status: "verified",
   signed: false,
   meta: { author: "claude-opus", created: "2026-10-30", factcheck: "self", teacher: null },
   topics: [
