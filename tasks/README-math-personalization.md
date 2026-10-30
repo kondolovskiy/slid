@@ -72,7 +72,7 @@ write_group у frontmatter — позначка для оркестратора;
 ## Посилання на задачі
 
 - [curate-math-personalization-map](done/curate-math-personalization-map.md)
-- [engine-math-diag-g4-baseline](todo/engine-math-diag-g4-baseline.md)
+- [engine-math-diag-g4-baseline](done/engine-math-diag-g4-baseline.md)
 - [engine-math-grade-plan-context](done/engine-math-grade-plan-context.md)
 - [engine-math-pool-answer-formats](todo/engine-math-pool-answer-formats.md)
 - [tools-math-personalization-qa](done/tools-math-personalization-qa.md)
