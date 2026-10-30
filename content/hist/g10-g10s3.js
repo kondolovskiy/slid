@@ -1,5 +1,5 @@
 /* Слід · Історія, 10 клас — «Радянська Україна 1920-х»
-   Статус уроків: draft. 4 уроки (3 + boss).
+   Статус уроків: verified (повторно після D-027, 30.10.2026). 4 уроки (3 + boss).
    Перевірка: node tools/validate.mjs --section g10s3
    Схема й правила: docs/CONTENT_SCHEMA.md, style/; D-019, D-020, D-021, D-022.
    Факти: EoU (New Economic Policy, Famine of 1921–3, Ukrainization, Skrypnyk, Orthography,
@@ -54,7 +54,7 @@ SLID.section("hist", {
       title: "Хліб, податок і базар",
       short: "НЕП",
       icon: "leaf",
-      status: "draft",
+      status: "verified",
       why: "Ти зрозумієш, чому більшовики 1921 року дозволили ринок і чому це не вберегло південь України від голоду.",
       screens: [
         {
@@ -196,7 +196,7 @@ SLID.section("hist", {
       title: "Влада вчить українську",
       short: "Українізація",
       icon: "voice",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, навіщо більшовики запровадили українізацію, що вона змінила і чому її згорнули.",
       screens: [
         {
@@ -353,7 +353,7 @@ SLID.section("hist", {
       title: "Відродження, яке розстріляли",
       short: "Розстріляне відродження",
       icon: "book",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, хто творив українську культуру 1920-х років і що з цими людьми зробив сталінський режим.",
       screens: [
         {
@@ -505,7 +505,7 @@ SLID.section("hist", {
       title: "Журнал про 1920-ті",
       short: "Фінал розділу",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "renaissancekeeper",
       why: "Перевірка всього розділу. Бали подвоєні.",
