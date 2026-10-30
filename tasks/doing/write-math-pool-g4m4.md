@@ -1,25 +1,27 @@
 ---
-id: write-math-pool-g4m3
+claimed_from: todo
+claimed_at: 2026-10-30T18:54:58.663Z
+id: write-math-pool-g4m4
 type: write-pool
 subject: math
 grade: 4
 status: todo
-claimed_by:
+claimed_by: w-write-math-pool-g4m4
 created: 2026-10-15
 depends_on: [curate-math-personalization-map]
 ---
-# Зібрати пул «Множення і ділення» (4 клас, g4m3)
+# Зібрати пул «Величини» (4 клас, g4m4)
 
 ## Результат
 
-Один файл `content/math/pool-g4-g4m3.js`: `SLID.pool("math", { id: "pg4m3", section: "g4m3", status: "draft", sources: [...], items: [...] })`. Клас визначається розділом. Зразки — content/math/pool-g6-*.js і tasks/done/write-math-pool-g6m*.md; чинний контракт — CONTENT_SCHEMA §10.
+Один файл `content/math/pool-g4-g4m4.js`: `SLID.pool("math", { id: "pg4m4", section: "g4m4", status: "draft", sources: [...], items: [...] })`. Клас визначається розділом. Зразки — content/math/pool-g6-*.js і tasks/done/write-math-pool-g6m*.md; чинний контракт — CONTENT_SCHEMA §10.
 
 ## Уроки для покриття
 
-- `g4m3l1` — Розріж і помнож **[required]**
-- `g4m3l2` — Десятки й одиниці **[required]**
-- `g4m3l3` — Стрибки по 7 **[required]**
-- `g4m3l4` — Хто швидше? **[required]**
+- `g4m4l1` — Встигнеш на тренування? **[required]**
+- `g4m4l2` — Тонна і центнер **[required]**
+- `g4m4l3` — Скільки клітинок у дециметрі? **[required]**
+- `g4m4l4` — Метри й сантиметри разом **[required]**
 
 Усього 4 тематичних уроків. Boss не потребує окремого дубльованого пулу. Для m4s1 це повноцінний окремий пул навіть без запису в plan.js.
 
@@ -39,7 +41,7 @@ depends_on: [curate-math-personalization-map]
 ## Готово, коли
 
 - [ ] Усі required-уроки з узгодженої матриці мають мінімальне покриття й три рівні; optional/pending перелічено окремо без хибної позначки виконання; таблиця lesson → кількість/рівні/джерела й винятки є в нотатках.
-- [ ] `node tools/validate.mjs --pool pg4m3` — 0 помилок; усі джерела відкрито, числа звірено, відповіді й steps перевірено.
+- [ ] `node tools/validate.mjs --pool pg4m4` — 0 помилок; усі джерела відкрито, числа звірено, відповіді й steps перевірено.
 - [ ] Змінено лише свій файл пулу, цю задачу та дописано inbox; status draft. Оркестратор запускає build.
 - [ ] Задача через claim.mjs передана в review; незалежне розв’язання й звірка джерел — verify-math-personalization-g4; браузерне приймання — qa-math-personalization-g4.
 
@@ -58,9 +60,9 @@ depends_on: [curate-math-personalization-map]
 
 | Урок | Scope | Обов’язкові вправи | Формати / джерело |
 |---|---|---|---|
-| g4m3l1 | required | 6–8 (3/2/1 за рівнями мінімум) | number; g4a:176–181; l4b:pdf-с.13–20 |
-| g4m3l2 | required | 6–8 (3/2/1 за рівнями мінімум) | number; g4b:14–17,61–66; l4b:pdf-с.74–81 |
-| g4m3l3 | required | 6–8 (3/2/1 за рівнями мінімум) | number; g4a:182–191; l4b:pdf-с.15–18,32–35 |
-| g4m3l4 | required | 6–8 (3/2/1 за рівнями мінімум) | number; g4b:21–42; l4a:pdf-с.90–99 |
+| g4m4l1 | required | 6–8 (3/2/1 за рівнями мінімум) | number; g4a:132–149; l4a:pdf-с.83–85 |
+| g4m4l2 | required | 6–8 (3/2/1 за рівнями мінімум) | number; g4a:119–129; l4a:pdf-с.80–82 |
+| g4m4l3 | required | 6–8 (3/2/1 за рівнями мінімум) | number; g4b:139–156; l4b:pdf-с.39–45 |
+| g4m4l4 | required | 6–8 (3/2/1 за рівнями мінімум) | number; g4a:122–129,143–149; l4a:pdf-с.77–85 |
 
 Покриття: **4 required-уроків, 24–32 вправ**. Optional/pending не включати у файл пулу цієї версії; boss не дублювати.

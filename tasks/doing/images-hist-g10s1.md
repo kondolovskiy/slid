@@ -1,11 +1,13 @@
 ---
+claimed_from: todo
+claimed_at: 2026-10-30T18:54:58.437Z
 id: images-hist-g10s1
 type: images
 subject: hist
 grade: 10
 section: g10s1
 status: todo
-claimed_by:
+claimed_by: w-images-hist-g10s1
 created: 2026-10-30
 depends_on: []
 ---
