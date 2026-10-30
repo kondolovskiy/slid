@@ -10,6 +10,7 @@ import subprocess
 import functools
 import http.server
 import pathlib
+import re
 import threading
 from playwright.async_api import async_playwright
 
@@ -24,7 +25,8 @@ async def answer_context_screen(page, screen):
     if kind == 'choice':
         await page.click(f'#stage .opt[data-k="{screen["correct"]}"]')
     elif kind == 'number' or kind == 'answer':
-        await page.fill('#numIn', ('; '.join(map(str, screen['answer'])) if isinstance(screen['answer'], list) else str(screen['answer'])).replace('.', ','))
+        sep = ' : ' if screen.get('answerKind') == 'ratio' else '; '
+        await page.fill('#numIn', (sep.join(map(str, screen['answer'])) if isinstance(screen['answer'], list) else str(screen['answer'])).replace('.', ','))
         await page.dispatch_event('#numIn', 'input')
     elif kind == 'multi':
         for k in screen['correct']:
@@ -311,6 +313,68 @@ async def pool_checks(browser, url, pool):
     print(f"{pool['id']}: locked/open, {count} вправ, steps/source, SRS/reload/offline green", flush=True)
     return count
 
+# Symbolic answer kinds (engine-math-pool-answer-formats): fixture items, not production content.
+# Each: fields, first attempt and the expected dock text, then an equivalent correct record.
+FORMAT_FIXTURES = [
+    ({'answerKind': 'ratio', 'answer': '2 : 3', 'reduced': True}, '4 : 6', 'натуральними', '2:3'),
+    ({'answerKind': 'coordinates2', 'answer': [3, -2]}, '(-2; 3)', 'Спробуй ще раз', 'A(3; −2)'),
+    ({'answerKind': 'coordinates3', 'answer': '(1; -2; 3)'}, '(1; -2)', 'Спробуй ще раз', '(1; -2; 3)'),
+    ({'answerKind': 'exactRoot', 'answer': '2√3'}, '√12', 'з-під кореня', '√3·2'),
+    ({'answerKind': 'intervalSet', 'answer': '(-∞; 1] ∪ [4; +∞)'}, '(-∞; 1) ∪ (4; +∞)', 'Спробуй ще раз', 'x ∈ [4; +∞) ∪ (−∞; 1]'),
+    ({'answerKind': 'list', 'answer': '(-1 ± √5)/2'}, '0,62; -1,62', 'Спробуй ще раз', '(−1 − √5)/2; (−1 + √5)/2'),
+    ({'answerKind': 'expression', 'answer': '3a - 2b + 5', 'form': 'expanded'}, '3(a + 1) - 2b + 2', 'Розкрий дужки', '5 − 2b + 3a'),
+    ({'answerKind': 'expression', 'answer': '(x - 2)(x + 2)', 'form': 'factored'}, 'x^2 - 4', 'на множники', '(x + 2)(x − 2)'),
+    ({'answerKind': 'expression', 'answer': '(x - 2)^2 + (y + 1)^2 = 9'}, '(x - 2)^2 + (y - 1)^2 = 9', 'Спробуй ще раз', 'x² − 4x + y² + 2y − 4 = 0'),
+    ({'answerKind': 'periodicSet', 'answer': '(-1)^k · π/6 + πk'}, 'π/6 + πk', 'Спробуй ще раз', 'x = π/6 + 2πn; 5π/6 + 2πn, n ∈ Z'),
+]
+
+async def answer_format_checks(browser, url):
+    context, page, errors = await qa_page(browser, url, {'grade': 6, 'unlockAll': True, 'lessons': {}, 'srs': {}, 'seen': {}})
+    checked = 0
+    for offset in range(0, len(FORMAT_FIXTURES) + 1, 6):
+        batch = FORMAT_FIXTURES[offset:offset + 6]
+        if not batch:
+            break
+        await page.reload()
+        await page.evaluate("""([fx,offset]) => {const c=SLID_SUBJECTS.find(c=>c.id==='math');c.pools=c.pools.filter(p=>p.id==='pg6m1');
+          c.pools[0].items=fx.map((f,i)=>({...f[0],id:'fmt'+(offset+i),lesson:'g6m1l1',lvl:1,sk:'num',src:c.pools[0].sources[0].id+' №1',type:'answer',title:'Формат '+i,steps:['Пояснення.']}));
+          const E=c.pools[0].items.flatMap(it=>SLID_LEARN.validatePool({...c.pools[0],items:[it]},{sections:new Map([['g6m1',{grade:6,lessons:['g6m1l1']}]]),skills:c.skills}));
+          if(E.length) throw new Error(E.join('; '));}""", [[list(x) for x in batch], offset])
+        await page.click('[data-tab="path"]')
+        await page.click('button[data-subject="math"]'); await page.click('[data-practice-view="math"]'); await page.click('[data-practice-mix]')
+        for it in await practice_queue(page):
+            fields, wrong, message, right = FORMAT_FIXTURES[int(it['id'][3:])]
+            sym = await page.locator('.anskeys.sym').count()
+            assert sym == (0 if fields['answerKind'] == 'list' else 1), fields
+            if fields['answerKind'] == 'periodicSet':
+                assert await page.locator('#answerUnit').inner_text() == 'k ∈ ℤ'
+            await page.fill('#numIn', wrong); await page.dispatch_event('#numIn', 'input'); await page.click('#action')
+            dock = await page.locator('#dock').inner_text()
+            assert 'bad' in await page.locator('#dock').get_attribute('class') and message in dock, (fields, dock)
+            if fields['answerKind'] == 'exactRoot':
+                # Symbolic keys insert at the caret, not at the end: 2|3 + √ → 2√3.
+                await page.fill('#numIn', '23'); await page.eval_on_selector('#numIn', 'e=>e.setSelectionRange(1,1)')
+                await page.click('.anskeys button[data-ins="√"]')
+                assert await page.input_value('#numIn') == '2√3'
+                await page.fill('#numIn', '')
+            await page.fill('#numIn', right); await page.dispatch_event('#numIn', 'input'); await page.click('#action')
+            assert 'ok' in await page.locator('#dock').get_attribute('class'), (fields, right, await page.locator('#dock').inner_text())
+            await page.click('#action'); checked += 1
+    # Two wrong attempts reveal the ordered key in its canonical spelling.
+    await page.reload()
+    await page.evaluate("""() => {const c=SLID_SUBJECTS.find(c=>c.id==='math');c.pools=c.pools.filter(p=>p.id==='pg6m1');const p=c.pools[0];
+      p.items=[{id:'reveal',lesson:'g6m1l1',lvl:1,sk:'num',src:p.sources[0].id+' №1',type:'answer',title:'Точка',answerKind:'coordinates2',answer:[3,-2],steps:['Пояснення.']}];}""")
+    await page.click('[data-tab="path"]')
+    await page.click('button[data-subject="math"]'); await page.click('[data-practice-view="math"]'); await page.click('[data-practice-mix]')
+    for attempt in ('(-2; 3)', '(-2; 3)'):
+        await page.fill('#numIn', attempt); await page.dispatch_event('#numIn', 'input'); await page.click('#action')
+    host = await page.locator('#hintHost').inner_text()
+    assert 'Правильна відповідь' in host and re.search(r'3\s*;\s*[−-]\s*2', host), host
+    assert not errors, errors
+    await context.close()
+    assert checked == len(FORMAT_FIXTURES)
+    print(f'Формати відповідей: {checked} fixture-вправ (form/bad → еквівалентний запис), reveal green', flush=True)
+
 async def content_checks(browser, url, report):
     count = 0
     for diag in report['diags']:
@@ -540,6 +604,7 @@ async def main():
                 assert not errors, errors
                 await grade_context_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
                 await baseline_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
+                await answer_format_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
             await browser.close()
             print('Обрані браузерні сценарії: green')
     finally:

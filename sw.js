@@ -1,7 +1,7 @@
 /* Слід — service worker. ЗГЕНЕРОВАНО tools/build.mjs із tools/sw.template.js — не редагуй sw.js вручну.
    Стратегія: усі файли застосунку кешуються при встановленні (офлайн з першого запуску);
    свої файли — спершу з кешу; Google Fonts — з кешу з фоновим оновленням. */
-const VERSION = "e696e23355";
+const VERSION = "0d7207cb70";
 const CACHE = "slid-" + VERSION;
 const FONTS = "slid-fonts";
 const ASSETS = [
@@ -133,6 +133,20 @@ const ASSETS = [
   "./img/hist/g10s1/makivka-1915.jpg",
   "./img/hist/g10s1/sheptytsky-1905.jpg",
   "./img/hist/g10s1/stepaniv-1915.jpg",
+  "./img/hist/g10s2/directory-1919.jpg",
+  "./img/hist/g10s2/kruty-funeral-1918.jpg",
+  "./img/hist/g10s2/kruty-poster-1918.jpg",
+  "./img/hist/g10s2/petliura-listowski-1920.jpg",
+  "./img/hist/g10s2/skoropadsky-wilhelm-1918.jpg",
+  "./img/hist/g10s2/universal-1-1917.jpg",
+  "./img/hist/g10s2/universal-4.jpg",
+  "./img/hist/g10s2/zluka-1919.jpg",
+  "./img/hist/g10s2/zunr-law-1918.jpg",
+  "./img/hist/g11s2/bread-card-1947.jpg",
+  "./img/hist/g11s2/chnpp-unit4-1986.jpg",
+  "./img/hist/g11s2/helsinki-1975.jpg",
+  "./img/hist/g11s2/khrushchev-1963.jpg",
+  "./img/hist/g11s2/pripyat-2005.jpg",
   "./img/hist/g6s2/animal-pot.jpg",
   "./img/hist/g6s2/house.jpg",
   "./img/hist/g6s2/pottery-making.jpg",
