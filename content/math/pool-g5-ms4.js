@@ -1,5 +1,5 @@
 /* Слід · Математика, 5 клас — пул задач для тренування до розділу «Площі й об'єми» (ms4)
-   Статус: draft. 24 задачі: по 8 на кожен урок ms4l1–ms4l3 (3 рівня 1, 3 рівня 2, 2 рівня 3).
+   Статус: verified (верифікатор 2026-10-30, reports/verify/pms4.md). 24 задачі: по 8 на кожен урок ms4l1–ms4l3 (3 рівня 1, 3 рівня 2, 2 рівня 3).
    Усі задачі — з підручника Мерзляка 5 кл. (sources); умови й числа звірено за відрендереними
    сторінками PDF 2026-10-30. srcPage — друкований номер сторінки підручника (у PDF — на 1 більше).
    Перевірка: node tools/validate.mjs --pool pms4 && node tools/personalization-qa.mjs --pool pms4
@@ -7,8 +7,8 @@
 SLID.pool("math", {
   id: "pms4",
   section: "ms4",
-  status: "draft",
-  meta: { author: "claude-opus", created: "2026-10-30", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "claude-opus", created: "2026-10-30", factcheck: "verifier-pms4", teacher: null },
   sources: [
     { id: "mer5", title: "Мерзляк А. Г., Полонський В. Б., Якір М. С. Математика. 5 клас. — Харків: Гімназія, 2022 (дзеркало PDF на 4book.org)", url: "https://file.4book.org/images/shcoolbook_ua/5/5_m_m_2022.pdf" }
   ],
@@ -90,7 +90,7 @@ SLID.pool("math", {
       answer: 6, unit: "см",
       hint: "Скільки однакових ребер у куба?",
       steps: ["У куба 12 рівних ребер.", "Одне ребро: $72 : 12 = 6$ см."] },
-    { id: "b06", lesson: "ms4l2", lvl: 2, sk: "meas", src: "mer5 №635(1)", srcPage: 181, adapted: true,
+    { id: "b06", lesson: "ms4l2", lvl: 2, sk: "meas", src: "mer5 №635(1)", srcPage: 182, adapted: true,
       type: "answer", title: "Площа нижньої грані",
       body: "<p>Прямокутний паралелепіпед має довжину 9 см, ширину 5 см і висоту 6 см. Знайди площу нижньої грані, на якій він стоїть.</p>",
       answer: 45, unit: "см²",
