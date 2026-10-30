@@ -104,6 +104,9 @@ function checkScreen(S, s, c, diag) {
   if (sentLong.length) W(S, `дуже довге речення (${words(sentLong[0]).length} слів): «${sentLong[0].slice(0, 60)}…»`);
 }
 
+// D-027: у кожному уроці предмета — хоча б одне справжнє зображення (img: фото, репродукція, документ).
+// Схеми svg/fig не зараховуються. "warn" — поки дороблюються чинні уроки; після доробки — "error".
+const IMG_REQUIRED = { hist: "warn" };
 for (const c of subjects) for (const sec of c.sections.filter(s => s.lessons)) {
   if (onlyDiag) continue;
   if (onlySec && sec.id !== onlySec) continue;
@@ -123,6 +126,7 @@ for (const c of subjects) for (const sec of c.sections.filter(s => s.lessons)) {
     const m = lessonMetrics(l), p = profiles[c.id]?.[gradeBand(sec.grade)] || profiles._default[gradeBand(sec.grade)];
     for (const [k, [lo, hi]] of Object.entries(p)) if (m[k] < lo || m[k] > hi) W(L, `${k}=${m[k]} поза профілем [${lo}; ${hi}] для ${c.id}, ${gradeBand(sec.grade)} кл.`);
     if (!l.boss && !l.screens.some(s => s.hint)) W(L, "жодної підказки hint у звичайному уроці");
+    if (IMG_REQUIRED[c.id] && !l.screens.some(s => s.img)) (IMG_REQUIRED[c.id] === "error" ? E : W)(L, "урок без зображення img (D-027: обов'язкове фото чи джерело з відкритою ліцензією; svg/fig не рахуються)");
     // правильна відповідь не має стояти завжди на тому самому місці — інакше її вгадують
     const ch = l.screens.filter(s => s.type === "choice" && !s.poll && !s.hyp && Number.isInteger(s.correct));
     if (ch.length >= 3) { const cnt = {}; ch.forEach(s => cnt[s.correct] = (cnt[s.correct] || 0) + 1); const [k, n] = Object.entries(cnt).sort((a, b) => b[1] - a[1])[0];
