@@ -189,12 +189,349 @@ window.SLID_LEARN = (() => {
     return null;
   }
   const sameAns = (a, b) => BigInt(a.n) * BigInt(b.d) === BigInt(b.n) * BigInt(a.d);
-  // У списку «;» відділяє числа з десятковою комою; без «;» кома є роздільником.
+
+  /* ---------- Точні й символьні відповіді: власний розбір у дерево, жодного eval учнівського вводу ----------
+     Вузли: num {v: [p, q] BigInt}, var {n}, pi, add {a: [{s: ±1, e}]}, mul {f: [{d — ділення, e}]}, pow {b, e},
+     root {n — показник 2|3|4, a}, abs {a}, fn {fn, a, base — для log_a}, eq {l, r}. */
+  const SUP = "⁰¹²³⁴⁵⁶⁷⁸⁹";
+  const FN = ["arcctg", "arcsin", "arccos", "arctan", "arctg", "sqrt", "sin", "cos", "ctg", "cot", "tan", "tg", "ln", "lg", "log", "pi"];
+  const norm = v => String(v ?? "").replace(/[−–—]/g, "-").replace(/[*×∙⋅]/g, "·").replace(/÷/g, ":").replace(/[  ]/g, " ")
+    .replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹]+/g, m => "^(" + [...m].map(c => SUP.indexOf(c)).join("") + ")").trim();
+  function lex(t) {
+    const out = []; let i = 0, m;
+    while (i < t.length) {
+      const c = t[i], rest = t.slice(i);
+      if (c === " ") i++;
+      else if ((m = /^\d+(?:,\d+)?/.exec(rest))) { if (m[0].length > 16) return null; out.push({ t: "num", v: m[0] }); i += m[0].length; }
+      else if ((m = /^[a-zA-Z]+/.exec(rest))) {
+        for (let j = 0; j < m[0].length;) {
+          const f = FN.find(f => m[0].startsWith(f, j));
+          if (f) { out.push(f === "pi" ? { t: "pi" } : f === "sqrt" ? { t: "root", v: 2 } : { t: "fn", v: f }); j += f.length; }
+          else out.push({ t: "id", v: m[0][j++] });
+        }
+        i += m[0].length;
+      }
+      else if (c === "π") { out.push({ t: "pi" }); i++; }
+      else if (/[Ͱ-Ͽ]/.test(c)) { out.push({ t: "id", v: c }); i++; }
+      else if ("√∛∜".includes(c)) { out.push({ t: "root", v: "√∛∜".indexOf(c) + 2 }); i++; }
+      else if ("+-·/:^()|=_".includes(c)) { out.push({ t: c }); i++; }
+      else return null;
+    }
+    return out.length && out.length <= 240 ? out : null;
+  }
+  const bgcd = (a, b) => { a = a < 0n ? -a : a; b = b < 0n ? -b : b; while (b) [a, b] = [b, a % b]; return a; };
+  const Q = (p, q = 1n) => { if (q === 0n) return null; if (q < 0n) { p = -p; q = -q; } const g = bgcd(p, q) || 1n; return [p / g, q / g]; };
+  const qadd = (a, b) => Q(a[0] * b[1] + b[0] * a[1], a[1] * b[1]), qmul = (a, b) => Q(a[0] * b[0], a[1] * b[1]);
+  function parseTree(tokens) {
+    let i = 0, inAbs = 0;
+    const peek = () => tokens[i], take = t => tokens[i]?.t === t ? tokens[i++] : null;
+    // множення без знака: 2x, 3ab, 2√3, 2(x + 1); число після іншого множника без «·» — помилка (2 1/3, x2)
+    const implicit = tk => tk && (["id", "pi", "fn", "root", "("].includes(tk.t) || (tk.t === "|" && !inAbs));
+    function sum() {
+      const a = []; let s = take("-") ? -1 : (take("+"), 1);
+      for (;;) { const e = term(); if (!e) return null; a.push({ s, e }); if (take("+")) s = 1; else if (take("-")) s = -1; else break; }
+      return a.length === 1 && a[0].s === 1 ? a[0].e : { k: "add", a };
+    }
+    function term() {
+      const f = [];
+      for (let d = false; ; ) {
+        const e = power(); if (!e) return null; f.push({ d, e });
+        if (take("·")) d = false; else if (take("/") || take(":")) d = true; else if (implicit(peek())) d = false; else break;
+      }
+      return f.length === 1 ? f[0].e : { k: "mul", f };
+    }
+    function power() {
+      const b = atom(); if (!b || !take("^")) return b;
+      const neg = !!take("-"), e = power();
+      return e && { k: "pow", b, e: neg ? { k: "add", a: [{ s: -1, e }] } : e };
+    }
+    function atom() {
+      const tk = tokens[i++]; if (!tk) return null;
+      if (tk.t === "num") { const [w, f = ""] = tk.v.split(","); return { k: "num", v: Q(BigInt(w + f), 10n ** BigInt(f.length)) }; }
+      if (tk.t === "id") return { k: "var", n: tk.v };
+      if (tk.t === "pi") return { k: "pi" };
+      if (tk.t === "(") { const e = sum(); return e && take(")") ? e : null; }
+      if (tk.t === "|") { if (inAbs) return null; inAbs++; const e = sum(); inAbs--; return e && take("|") ? { k: "abs", a: e } : null; }
+      if (tk.t === "root") { const a = atom(); return a && { k: "root", n: tk.v, a }; }   // √ бере один множник: 2√3x = 2·√3·x; √(3x) — у дужках
+      if (tk.t !== "fn") return null;
+      let base = null, pw = null, a;
+      if (tk.v === "log" && (!take("_") || !(base = atom()))) return null;
+      if (take("^") && !(pw = atom())) return null;                       // sin^2 x
+      if (peek()?.t === "(") a = atom();
+      else {                                                              // sin 2x, cos πk: аргумент — множники до оператора чи наступної функції
+        const f = []; let e = power(); if (!e) return null; f.push({ d: false, e });
+        while (peek() && ["id", "pi", "root", "("].includes(peek().t)) { if (!(e = power())) return null; f.push({ d: false, e }); }
+        a = f.length === 1 ? f[0].e : { k: "mul", f };
+      }
+      if (!a) return null;
+      const node = { k: "fn", fn: tk.v, a, base };
+      return pw ? { k: "pow", b: node, e: pw } : node;
+    }
+    const l = sum(); if (!l) return null;
+    const r = take("=") ? sum() : undefined;
+    return r === null || i !== tokens.length ? null : r ? { k: "eq", l, r } : l;
+  }
+  const parseExpr = v => { const t = lex(norm(v)); return t && parseTree(t); };
+  const kids = n => n.k === "add" ? n.a.map(t => t.e) : n.k === "mul" ? n.f.map(t => t.e) : n.k === "pow" ? [n.b, n.e] : n.k === "eq" ? [n.l, n.r]
+    : n.k === "fn" ? (n.base ? [n.a, n.base] : [n.a]) : n.k === "root" || n.k === "abs" ? [n.a] : [];
+  const varsOf = (n, out = new Set()) => { if (n.k === "var") out.add(n.n); kids(n).forEach(k => varsOf(k, out)); return [...out]; };
+  const has = (n, k) => n.k === k || kids(n).some(x => has(x, k));
+  const treeSize = n => 1 + kids(n).reduce((s, k) => s + treeSize(k), 0);
+  const isConst = n => !varsOf(n).length;
+  const natNum = n => n.k === "num" && n.v[1] === 1n && n.v[0] >= 0n ? n.v[0] : null;
+
+  // Наближене значення для перевірки тотожності виразів у випадкових точках.
+  const FNUM = { sin: Math.sin, cos: Math.cos, tg: Math.tan, tan: Math.tan, ctg: x => 1 / Math.tan(x), cot: x => 1 / Math.tan(x), arcsin: Math.asin,
+    arccos: Math.acos, arctg: Math.atan, arctan: Math.atan, arcctg: x => Math.PI / 2 - Math.atan(x), ln: Math.log, lg: Math.log10 };
+  function fval(n, env) {
+    switch (n.k) {
+      case "num": return Number(n.v[0]) / Number(n.v[1]);
+      case "var": return n.n in env ? env[n.n] : NaN;
+      case "pi": return Math.PI;
+      case "add": return n.a.reduce((s, t) => s + t.s * fval(t.e, env), 0);
+      case "mul": return n.f.reduce((s, t) => { const x = fval(t.e, env); return t.d ? s / x : s * x; }, 1);
+      case "pow": { const b = fval(n.b, env), e = fval(n.e, env); return b < 0 && !Number.isInteger(e) ? NaN : Math.pow(b, e); }
+      case "root": { const a = fval(n.a, env); return n.n === 3 ? Math.cbrt(a) : a < 0 ? NaN : n.n === 2 ? Math.sqrt(a) : Math.pow(a, 1 / n.n); }
+      case "abs": return Math.abs(fval(n.a, env));
+      case "fn": { const a = fval(n.a, env); if (n.fn !== "log") return FNUM[n.fn](a); const b = fval(n.base, env); return b > 0 && b !== 1 && a > 0 ? Math.log(a) / Math.log(b) : NaN; }
+      default: return NaN;
+    }
+  }
+
+  // Точне число: сума q · ⁿ√r · π^k, q раціональне, r без n-х степенів. Map "n:r:k" → [p, q].
+  function rootRed(n, r) {                       // ⁿ√r = c · ⁿ'√r', r ≥ 1 ціле
+    if (r < 1n || r > 10n ** 10n) return null;   // шкільні підкореневі малі; межа тримає розклад швидким
+    const fs = []; let c = 1n, rr = r;
+    for (let p = 2n; p * p <= rr; p++) { let e = 0; while (rr % p === 0n) { rr /= p; e++; } if (e) fs.push([p, e]); }
+    if (rr > 1n) fs.push([rr, 1]);
+    const left = fs.map(([p, e]) => { c *= p ** BigInt(Math.floor(e / n)); return [p, e % n]; }).filter(x => x[1]);
+    let g = n; for (const [, e] of left) { let a = g, b = e; while (b) [a, b] = [b, a % b]; g = a; }
+    const r2 = left.reduce((s, [p, e]) => s * p ** BigInt(e / g), 1n);
+    return [[c, 1n], r2 === 1n ? 1 : n / g, r2];
+  }
+  const X = (q, n = 1, r = 1n, k = 0) => q[0] === 0n ? new Map() : new Map([[`${n}:${r}:${k}`, q]]);
+  function xadd(a, b, s = 1n) {
+    const m = new Map(a);
+    for (const [key, q] of b) { const v = m.has(key) ? qadd(m.get(key), [s * q[0], q[1]]) : [s * q[0], q[1]]; if (v[0] === 0n) m.delete(key); else m.set(key, v); }
+    return m;
+  }
+  function xmul(a, b) {
+    let m = new Map();
+    for (const [ka, qa] of a) for (const [kb, qb] of b) {
+      const [na, ra, pa] = ka.split(":"), [nb, rb, pb] = kb.split(":"), k = +pa + +pb;
+      let red;
+      if (na === "1") red = [[1n, 1n], +nb, BigInt(rb)]; else if (nb === "1") red = [[1n, 1n], +na, BigInt(ra)];
+      else if (na === nb) red = rootRed(+na, BigInt(ra) * BigInt(rb)); else return null;   // корені різних степенів не змішуємо
+      if (!red || k > 3) return null;
+      m = xadd(m, X(qmul(qmul(qa, qb), red[0]), red[1], red[2], k));
+    }
+    return m;
+  }
+  const xrat = m => !m.size ? [0n, 1n] : m.size === 1 && m.has("1:1:0") ? m.get("1:1:0") : null;
+  const xnum = m => [...m].reduce((s, [key, q]) => { const [n, r, k] = key.split(":"); return s + Number(q[0]) / Number(q[1]) * Math.pow(Number(r), 1 / n) * Math.PI ** k; }, 0);
+  const xeq = (a, b) => xadd(a, b, -1n).size === 0;
+  function xroot(n, q) {
+    if (q[0] < 0n) { if (n % 2 === 0) return null; const x = xroot(n, [-q[0], q[1]]); return x && xadd(new Map(), x, -1n); }
+    const red = rootRed(n, q[0] * q[1] ** BigInt(n - 1));                 // ⁿ√(p/q) = ⁿ√(p·qⁿ⁻¹) / q
+    return q[0] === 0n ? new Map() : red && X(qmul(red[0], [1n, q[1]]), red[1], red[2]);
+  }
+  function xinv(m) {                                                        // лише одночлен без π: 1/(q·ⁿ√r) = ⁿ√(rⁿ⁻¹)/(q·r)
+    if (m.size !== 1) return null;
+    const [[key, q]] = m, [n, r, k] = key.split(":");
+    if (k !== "0") return null;
+    const red = rootRed(+n, BigInt(r) ** BigInt(n - 1));
+    return red && X(qmul(red[0], Q(q[1], q[0] * BigInt(r))), red[1], red[2]);
+  }
+  function xval(n) {
+    switch (n.k) {
+      case "num": return X(n.v);
+      case "pi": return X([1n, 1n], 1, 1n, 1);
+      case "add": { let m = new Map(); for (const t of n.a) { const v = xval(t.e); if (!v) return null; m = xadd(m, v, BigInt(t.s)); } return m; }
+      case "mul": { let m = X([1n, 1n]); for (const t of n.f) { let v = xval(t.e); if (v && t.d) v = xinv(v); if (!v || !(m = xmul(m, v))) return null; } return m; }
+      case "pow": {
+        const e = xval(n.e), q = e && xrat(e), b = xval(n.b);
+        if (!b || !q || q[1] !== 1n || q[0] > 12n || q[0] < -12n) return null;
+        let m = X([1n, 1n]); for (let j = 0n; j < (q[0] < 0n ? -q[0] : q[0]); j++) if (!(m = xmul(m, b))) return null;
+        return q[0] < 0n ? xinv(m) : m;
+      }
+      case "root": { const a = xval(n.a), q = a && xrat(a); return q && xroot(n.n, q); }
+      case "abs": { const a = xval(n.a); return a && (xnum(a) < 0 ? xadd(new Map(), a, -1n) : a); }
+      default: return null;
+    }
+  }
+  // Запис коренів «спрощений»: ціле підкореневе без n-х степенів, без кореня в знаменнику, без кореня в степені чи під коренем.
+  function tidyRoots(n, den = false) {
+    if (n.k === "root") { const r = natNum(n.a), red = r && rootRed(n.n, r); return !den && !!red && red[0][0] === 1n && red[1] === n.n && red[2] === r; }
+    if (n.k === "mul") return n.f.every(t => tidyRoots(t.e, den || t.d));
+    if (n.k === "pow") return !has(n.b, "root") && tidyRoots(n.e, den);
+    return kids(n).every(k => tidyRoots(k, den));
+  }
+  /** Точне число з рядка: { x — Map, tidy } або null. Спершу звичайний запис числа (розряди, мішані дроби), далі корені й π. */
+  function exactOf(v) {
+    const a = parseAns(v);
+    if (a) return a.proper ? { x: X(Q(BigInt(a.n), BigInt(a.d))), tidy: true } : null;
+    const t = parseExpr(v), x = t && t.k !== "eq" && isConst(t) && xval(t);
+    return x ? { x, tidy: tidyRoots(t) } : null;
+  }
+  /** «±» і «∓» → усі варіанти знаків (не більше 4 знаків у записі). */
+  function expandPM(t) {
+    const n = (t.match(/[±∓]/g) || []).length; if (n > 4) return [];
+    return Array.from({ length: 2 ** n }, (_, mask) => { let j = 0; return t.replace(/[±∓]/g, c => { const plus = !((mask >> j++) & 1); return (c === "±") === plus ? "+" : "-"; }); });
+  }
+  // У списку «;» відділяє числа з десятковою комою; без «;» кома є роздільником. Елементи — числа або точні значення (√, π, ±).
   function parseList(v) {
     const parts = Array.isArray(v) ? v : String(v ?? "").split(/[;\n]/.test(String(v)) ? /[;\n]/ : /,/);
-    const values = parts.map(parseAns);
-    if (!values.length || values.some(x => !x || !x.proper) || values.some((x, i) => values.slice(0, i).some(y => sameAns(x, y)))) return null;
+    const values = parts.flatMap(p => /[±∓]/.test(String(p)) ? expandPM(String(p)) : [p]).map(exactOf);
+    if (!values.length || values.some(x => !x) || values.some((x, i) => values.slice(0, i).some(y => xeq(x.x, y.x)))) return null;
     return values;
+  }
+  /** Впорядковані координати (3; −2) / A(3; -2) / [3, -2]: рівно n компонент, порядок і знак важливі. */
+  function parsePoint(v, n) {
+    let parts = Array.isArray(v) ? v.map(String) : null;
+    if (!parts) { let t = norm(v).replace(/^[A-Za-z]\s*(?=\()/, ""); const m = t.match(/^\((.*)\)$/s); if (m) t = m[1]; parts = t.split(t.includes(";") ? ";" : ","); }
+    const xs = parts.length === n ? parts.map(exactOf) : [];
+    return xs.length && xs.every(Boolean) ? xs : null;
+  }
+  /** Відношення a : b (: c) додатних чисел; порядок членів важливий. */
+  function parseRatio(v) {
+    const parts = Array.isArray(v) ? v.map(String) : norm(v).split(/[:∶]/);
+    const xs = parts.length >= 2 && parts.length <= 3 ? parts.map(p => parseAns(String(p).trim())) : [];
+    return xs.length && xs.every(x => x && x.proper && x.n > 0) ? xs : null;
+  }
+  /** Проміжок або об'єднання: (-∞; 3], [1; 2) ∪ {5}, ∅, R. Повертає канонічний відсортований список злитих проміжків або null. */
+  function parseSet(v) {
+    const t = norm(v).replace(/^[A-Za-z](?:\s*\([A-Za-z]\))?\s*[=∈]\s*/, "");
+    if (/^(∅|\{\s*\})$/.test(t)) return [];
+    const INF = /^([+-]?)(?:∞|inf)$/, ivs = [];
+    const split2 = s => s.includes(";") ? s.split(";") : s.split(",");
+    for (const part of t.split(/\s*[∪U]\s*/)) {
+      let m;
+      if (/^(R|ℝ)$/.test(part)) { ivs.push({ lo: -1, hi: 1, lc: false, hc: false }); continue; }
+      if ((m = part.match(/^\{(.+)\}$/))) { for (const p of split2(m[1])) { const e = exactOf(p.trim()); if (!e) return null; ivs.push({ lo: e, hi: e, lc: true, hc: true }); } continue; }
+      if (!(m = part.match(/^([[(])(.*)([\])])$/))) return null;
+      const ends = split2(m[2]).map(s => s.trim()); if (ends.length !== 2) return null;
+      const [lo, hi] = ends.map((s, j) => { const inf = s.match(INF); if (!inf) return exactOf(s); return (inf[1] === "-" ? j === 0 : j === 1) ? (j ? 1 : -1) : null; });
+      const lc = m[1] === "[", hc = m[3] === "]";
+      if (lo === null || hi === null || (lo === -1 && lc) || (hi === 1 && hc)) return null;
+      const c = cmpEnd(lo, hi); if (c > 0 || (c === 0 && !(lc && hc))) return null;
+      ivs.push({ lo, hi, lc, hc });
+    }
+    ivs.sort((a, b) => cmpEnd(a.lo, b.lo) || (b.lc - a.lc));
+    const out = [];
+    for (const iv of ivs) {
+      const cur = out[out.length - 1], c = cur && cmpEnd(iv.lo, cur.hi);
+      if (cur && (c < 0 || (c === 0 && (cur.hc || iv.lc)))) { const h = cmpEnd(iv.hi, cur.hi); if (h > 0) { cur.hi = iv.hi; cur.hc = iv.hc; } else if (h === 0) cur.hc ||= iv.hc; }
+      else out.push({ ...iv });
+    }
+    return out;
+  }
+  // Межа проміжку: −1 = −∞, 1 = +∞, інакше точне число.
+  function cmpEnd(a, b) {
+    if (typeof a === "number" || typeof b === "number") return (typeof a === "number" ? a * 2 : 0) - (typeof b === "number" ? b * 2 : 0) || 0;
+    return xeq(a.x, b.x) ? 0 : Math.sign(xnum(a.x) - xnum(b.x));
+  }
+  /** Періодична множина: серії з параметром k (n, m) ∈ ℤ, «;» між серіями, ± і (−1)^k. Повертає відсортовані значення у вікні або null. */
+  const PER_W = 30, PER_K = 3000;
+  function periodicValues(v) {
+    const out = [];
+    for (let t of Array.isArray(v) ? v.map(String) : [String(v ?? "")]) {
+      t = norm(t).replace(/[,;]?\s*[kmn]\s*[∈є]\s*[ZzℤΖ]\s*\.?$/, "");
+      for (const fam of t.split(/;|,\s*(?=[a-zA-ZͰ-Ͽ]\s*=)/).flatMap(f => expandPM(f.trim().replace(/^[a-jo-zA-ZͰ-Ͽ]\s*=\s*/, "")))) {
+        const tree = parseExpr(fam), vars = tree && tree.k !== "eq" ? varsOf(tree) : [];
+        if (vars.length !== 1 || !"kmn".includes(vars[0])) return null;
+        let n = 0;
+        for (let k = -PER_K; k <= PER_K; k++) { const x = fval(tree, { [vars[0]]: k }); if (Math.abs(x) <= PER_W) { out.push(x); n++; } }
+        if (n < 2) return null;
+      }
+    }
+    return out.length ? out.sort((a, b) => a - b) : null;
+  }
+  function samePeriodic(a, b) {
+    const near = (x, ys) => { let lo = 0, hi = ys.length - 1; while (lo < hi) { const mid = (lo + hi) >> 1; if (ys[mid] < x - 1e-7) lo = mid + 1; else hi = mid; } return Math.abs(ys[lo] - x) <= 1e-7 * (1 + Math.abs(x)); };
+    const inner = x => Math.abs(x) <= PER_W - 4;
+    return a.filter(inner).every(x => near(x, b)) && b.filter(inner).every(x => near(x, a));
+  }
+  /** Вираз або рівняння. Префікс f(x) =, y' = знімається; «y = …» лишається рівнянням. */
+  const FPREF = /^\s*[A-Za-z](?:['′]+(?:\([A-Za-z]\))?|\([A-Za-z]\))\s*=/;
+  function exprOf(v) {
+    let t = norm(v); if (FPREF.test(t) && !t.replace(FPREF, "").includes("=")) t = t.replace(FPREF, "");
+    return parseExpr(t);
+  }
+  function rng(seed) { return () => { seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  /** Тотожність у 48 детермінованих точках (половина — з додатними значеннями змінних). Рівняння рівносильні, якщо L − R пропорційні. */
+  function sameExpr(a, b) {
+    const vars = [...new Set([...varsOf(a), ...varsOf(b)])], R = rng(20261030), pairs = [];
+    const f = (n, env) => n.k === "eq" ? fval(n.l, env) - fval(n.r, env) : fval(n, env);
+    let keyOk = 0;
+    for (let i = 0; i < 48; i++) {
+      const env = {}; for (const x of vars) { const r = 0.2 + 2.8 * R(); env[x] = i % 2 && R() < 0.5 ? -r : r; }
+      const x = f(a, env), y = f(b, env);
+      if (Number.isFinite(x)) { keyOk++; if (Number.isFinite(y)) pairs.push([x, y]); }
+    }
+    if (pairs.length < 6 || pairs.length * 2 < keyOk) return false;
+    let c = 1;
+    if (a.k === "eq") { const [x0, y0] = pairs.reduce((m, p) => Math.abs(p[1]) > Math.abs(m[1]) ? p : m); if (Math.abs(x0) < 1e-9 || Math.abs(y0) < 1e-9) return false; c = x0 / y0; }
+    return pairs.every(([x, y]) => Math.abs(x - c * y) <= 1e-10 * (1 + Math.abs(x) + Math.abs(c * y)));
+  }
+  // Форми виразу: expanded — стандартний вигляд многочлена; factored — добуток не менше ніж із стількох множників, як у ключі;
+  // reduced — нескоротний дріб (степені чисельника й знаменника не вищі, ніж у ключі); simplified — не довший за ключ.
+  function monomial(n) {
+    const fs = n.k === "mul" ? n.f : [{ d: false, e: n }], seen = {};
+    for (let i = 0; i < fs.length; i++) {
+      const { d, e } = fs[i];
+      if (e.k === "num") { if (!d && i > 0) return null; continue; }
+      const v = d ? null : e.k === "var" ? e : e.k === "pow" && e.b.k === "var" && natNum(e.e) >= 2n ? e.b : null;
+      if (!v || v.n in seen) return null; seen[v.n] = e.k === "var" ? 1 : String(natNum(e.e));
+    }
+    return Object.keys(seen).sort().map(x => x + "^" + seen[x]).join("·");
+  }
+  const unNeg = n => n.k === "add" && n.a.length === 1 ? unNeg(n.a[0].e) : n;
+  function factorCount(n) {
+    n = unNeg(n); if (isConst(n)) return 0;
+    if (n.k === "mul") return n.f.reduce((s, t) => s + (t.d ? 0 : factorCount(t.e)), 0);
+    const p = n.k === "pow" ? natNum(n.e) : null;
+    return p ? Number(p) * factorCount(n.b) : 1;
+  }
+  const isProduct = n => { n = unNeg(n); return (n.k === "mul" && n.f.length > 1) || (n.k === "pow" && !isConst(n.b)); };
+  function polyDeg(n) {
+    if (isConst(n)) return 0;
+    switch (n.k) {
+      case "var": return 1;
+      case "add": return Math.max(...n.a.map(t => polyDeg(t.e)));
+      case "mul": return n.f.reduce((s, t) => t.d ? (isConst(t.e) ? s : Infinity) : s + polyDeg(t.e), 0);
+      case "pow": { const p = natNum(n.e); return p === null ? Infinity : polyDeg(n.b) * Number(p); }
+      default: return Infinity;
+    }
+  }
+  function fracDeg(n) {
+    n = unNeg(n);
+    if (n.k !== "mul") return [polyDeg(n), 0];
+    return n.f.reduce(([a, b], t) => t.d ? [a, b + polyDeg(t.e)] : [a + polyDeg(t.e), b], [0, 0]);
+  }
+  function exprForm(form, key, u) {
+    if (form === "expanded") { const sig = (u.k === "add" ? u.a.map(t => t.e) : [u]).map(monomial); return sig.every(x => x !== null) && new Set(sig).size === sig.length; }
+    if (form === "factored") return (!isProduct(key) || isProduct(u)) && factorCount(u) >= factorCount(key);
+    if (form === "reduced") { const [a, b] = fracDeg(u), [ka, kb] = fracDeg(key); return a <= ka && b <= kb; }
+    if (form === "simplified") return treeSize(u) <= treeSize(key);
+    return true;
+  }
+  const EXPR_FORMS = ["expanded", "factored", "reduced", "simplified"];
+  /** Пояснення для результату "form": що саме не так із записом. */
+  function formHint(s, v) {
+    const kind = s.answerKind || "number";
+    if (kind === "number") { const u = parseAns(v); return !u?.frac ? "Значення правильне. Запиши відповідь звичайним дробом." : s.reduced && !u.lowest ? "Значення правильне, але дріб ще можна скоротити." : "Значення правильне. Запиши відповідь мішаним числом: ціла частина, пробіл, дріб."; }
+    if (kind === "ratio") return "Відношення правильне. Запиши його натуральними числами без спільного дільника, наприклад 2 : 3.";
+    if (kind === "expression") return { expanded: "Вираз правильний. Розкрий дужки й зведи подібні доданки.", factored: "Вираз правильний. Розклади його на множники до кінця.",
+      reduced: "Вираз правильний. Скороти дріб.", simplified: "Вираз правильний, але його можна спростити." }[s.form] || "Спробуй ще раз.";
+    return "Значення правильне. Спрости корінь: винеси множник з-під знака кореня й позбудься кореня в знаменнику.";
+  }
+  /** Ключ для показу «Правильна відповідь». */
+  function ansText(s) {
+    const a = s.answer, kind = s.answerKind || "number";
+    if (!Array.isArray(a)) return String(a) + (kind === "periodicSet" ? ", k ∈ ℤ" : "");
+    if (kind === "ratio") return a.join(" : ");
+    if (kind === "coordinates2" || kind === "coordinates3") return "(" + a.join("; ") + ")";
+    return a.join("; ") + (kind === "periodicSet" ? ", k ∈ ℤ" : "");
   }
   function parseFactors(v) {
     const parts = String(v ?? "").trim().split(/\s*[*·×]\s*/);
@@ -210,15 +547,41 @@ window.SLID_LEARN = (() => {
     }
     return product;
   }
-  /** Перевірка відповіді: "ok" | "form" (правильне значення, потрібен інший запис дробу) | "bad".
-      answerKind: number (типово), comparison (< > =), list (без порядку і повторів), factors (прості множники).
+  /** Перевірка відповіді: "ok" | "form" (правильне значення, потрібен інший запис) | "bad".
+      answerKind: number (типово), comparison (< > =), list (без порядку і повторів), factors (прості множники),
+      ratio, coordinates2, coordinates3, exactRoot, intervalSet, expression, periodicSet (docs/CONTENT_SCHEMA.md §10).
       Числа: reduced — нескоротний дріб; mixed — виділити цілу частину; fractionOnly — лише звичайний/мішаний дріб; tol — абсолютна похибка. */
   function checkAns(s, v) {
-    const kind = s.answerKind || "number";
+    const kind = s.answerKind || "number", tidy = xs => xs.every(x => x.tidy) ? "ok" : "form";
     if (kind === "comparison") return /^[<>=]$/.test(String(s.answer).trim()) && String(v).trim() === String(s.answer).trim() ? "ok" : "bad";
     if (kind === "list") {
       const a = parseList(s.answer), u = parseList(v);
-      return a && u && a.length === u.length && a.every(x => u.some(y => sameAns(x, y))) ? "ok" : "bad";
+      return a && u && a.length === u.length && a.every(x => u.some(y => xeq(x.x, y.x))) ? tidy(u) : "bad";
+    }
+    if (kind === "coordinates2" || kind === "coordinates3") {
+      const n = kind === "coordinates2" ? 2 : 3, a = parsePoint(s.answer, n), u = parsePoint(v, n);
+      return a && u && a.every((x, i) => xeq(x.x, u[i].x)) ? tidy(u) : "bad";
+    }
+    if (kind === "exactRoot") { const a = exactOf(s.answer), u = exactOf(v); return a && u && xeq(a.x, u.x) ? tidy([u]) : "bad"; }
+    if (kind === "ratio") {
+      const a = parseRatio(s.answer), u = parseRatio(v), B = BigInt;
+      if (!a || !u || a.length !== u.length || !a.every((x, i) => B(x.n) * B(a[0].d) * B(u[i].d) * B(u[0].n) === B(u[i].n) * B(u[0].d) * B(x.d) * B(a[0].n))) return "bad";
+      return s.reduced && !(u.every(x => !x.frac && x.d === 1) && u.reduce((g, x) => gcd(g, x.n), 0) === 1) ? "form" : "ok";
+    }
+    if (kind === "intervalSet") {
+      const a = parseSet(s.answer), u = parseSet(v), same = (x, y) => cmpEnd(x, y) === 0 && typeof x === typeof y;
+      if (!a || !u || a.length !== u.length || !a.every((x, i) => same(x.lo, u[i].lo) && same(x.hi, u[i].hi) && x.lc === u[i].lc && x.hc === u[i].hc)) return "bad";
+      return tidy(u.flatMap(x => [x.lo, x.hi]).filter(x => typeof x === "object"));
+    }
+    if (kind === "periodicSet") { const a = periodicValues(s.answer), u = periodicValues(v); return a && u && samePeriodic(a, u) ? "ok" : "bad"; }
+    if (kind === "expression") {
+      const a = exprOf(s.answer); let u = exprOf(v);
+      if (!a || !u || (s.form !== undefined && (!EXPR_FORMS.includes(s.form) || a.k === "eq"))) return "bad";
+      // ключ «y = …», а дитина записала лише праву частину; або навпаки — зайвий «y =» з нової змінної
+      if (a.k === "eq" && u.k !== "eq" && a.l.k === "var") u = { k: "eq", l: a.l, r: u };
+      else if (a.k !== "eq" && u.k === "eq" && u.l.k === "var" && !varsOf(a).includes(u.l.n)) u = u.r;
+      if ((a.k === "eq") !== (u.k === "eq") || !sameExpr(a, u)) return "bad";
+      return exprForm(s.form, a, u) ? "ok" : "form";
     }
     if (kind === "factors") { const a = parseFactors(s.answer), u = parseFactors(v); return a !== null && u !== null && a === u ? "ok" : "bad"; }
     if (kind !== "number" || (s.tol !== undefined && (!Number.isFinite(s.tol) || s.tol < 0))) return "bad";
@@ -289,6 +652,7 @@ window.SLID_LEARN = (() => {
   }
   /** Перевірка пулу (валідатор). ctx: { sections: Map id → { grade, lessons: [id] }, skills }. */
   const POOL_TYPES = ["answer", "choice", "multi"];
+  const ANSWER_KINDS = ["number", "comparison", "list", "factors", "ratio", "coordinates2", "coordinates3", "exactRoot", "intervalSet", "expression", "periodicSet"];
   function validatePool(p, ctx) {
     const E = [], sec = ctx.sections.get(p.section), ids = new Set(), src = new Set((p.sources || []).map(x => x.id));
     if (!p.id) E.push("немає id"); if (!sec) return E.concat(`немає розділу «${p.section}»`);
@@ -311,10 +675,12 @@ window.SLID_LEARN = (() => {
       if (it.adapted !== undefined && typeof it.adapted !== "boolean") E.push(`${w}: adapted має бути boolean`);
       if (it.unitForms !== undefined && (!Array.isArray(it.unitForms) || it.unitForms.length !== 3 || it.unitForms.some(x => typeof x !== "string" || !x.trim()))) E.push(`${w}: unitForms має містити три непорожні рядки (1 / 2–4 / 5+)`);
       const kind = it.answerKind || "number";
-      if (it.answerKind !== undefined && (it.type !== "answer" || !["number", "comparison", "list", "factors"].includes(it.answerKind))) E.push(`${w}: answerKind має бути number | comparison | list | factors для answer`);
+      if (it.answerKind !== undefined && (it.type !== "answer" || !ANSWER_KINDS.includes(it.answerKind))) E.push(`${w}: answerKind має бути ${ANSWER_KINDS.join(" | ")} для answer`);
       for (const flag of ["reduced", "mixed", "fractionOnly"]) {
-        if (it[flag] !== undefined && (typeof it[flag] !== "boolean" || it.type !== "answer" || kind !== "number")) E.push(`${w}: ${flag} має бути boolean для числової answer`);
+        if (it[flag] !== undefined && (typeof it[flag] !== "boolean" || it.type !== "answer" || !(kind === "number" || (flag === "reduced" && kind === "ratio")))) E.push(`${w}: ${flag} має бути boolean для числової answer${flag === "reduced" ? " або ratio" : ""}`);
       }
+      if (it.form !== undefined && (kind !== "expression" || !EXPR_FORMS.includes(it.form) || exprOf(it.answer)?.k === "eq")) E.push(`${w}: form (${EXPR_FORMS.join(" | ")}) — лише для expression без «=»`);
+      if (kind === "exactRoot" && it.type === "answer" && ![...(exactOf(it.answer)?.x.keys() || [])].some(k => !k.startsWith("1:1:0"))) E.push(`${w}: exactRoot потребує кореня або π у відповіді; раціональне число — answerKind number`);
       if (it.tol !== undefined && (it.type !== "answer" || kind !== "number" || !Number.isFinite(it.tol) || it.tol < 0)) E.push(`${w}: tol має бути скінченним числом ≥ 0 для числової answer`);
       if (it.type === "answer" && checkAns(it, typeof it.answer === "number" ? String(it.answer).replace(".", ",") : it.answer) !== "ok") E.push(`${w}: answer «${it.answer}» не читається або сам не проходить перевірку (reduced/mixed)`);
     });
@@ -377,5 +743,5 @@ window.SLID_LEARN = (() => {
   }
 
   return { OK, BAD, SKIP, PASS, DIAG_TYPES, planFor, practiceItems, nextItem, remaining, topicStatus, level, buildPlan, finishDiag, record, detect, syncPlan, lessonDone, todo, isKnown, validate,
-    parseAns, checkAns, BOX_DAYS, srsInit, srsUpdate, isDue, pickSession, POOL_TYPES, validatePool };
+    parseAns, checkAns, formHint, ansText, ANSWER_KINDS, BOX_DAYS, srsInit, srsUpdate, isDue, pickSession, POOL_TYPES, validatePool };
 })();

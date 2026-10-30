@@ -414,7 +414,7 @@ const order = l => ({ L1: 3, L2: 1, L3: 2, L4: 4 }[l] ?? 50);
    [p => p.items[0].steps = [], "steps"], [p => p.items[0].answer = "10/24", "answer"], [p => p.items[0].answer = "x", "answer"], [p => p.items.push({ ...p.items[0] }), "повторюється"],
    [p => p.sources[0].url = "lib", "url"], [p => p.items[0].srcPage = 0, "srcPage"], [p => p.items[0].srcPage = 1.5, "srcPage"],
    [p => p.items[0].adapted = "true", "adapted"], [p => p.items[0].unitForms = ["a", "b"], "unitForms"], [p => p.items[0].unitForms = ["a", "", "c"], "unitForms"],
-   [p => p.items[0].answerKind = "expression", "answerKind"], [p => p.items[0].fractionOnly = 1, "fractionOnly"], [p => p.items[0].mixed = "true", "mixed"],
+   [p => p.items[0].answerKind = "matrix", "answerKind"], [p => p.items[0].fractionOnly = 1, "fractionOnly"], [p => p.items[0].mixed = "true", "mixed"],
    [p => p.items[0].reduced = "true", "reduced"], [p => p.items[0].tol = -1, "tol"], [p => p.items[0].tol = Infinity, "tol"], [p => p.items[0].tol = NaN, "tol"],
    [p => p.items[0].tol = "0.1", "tol"], [p => { p.items[0].answerKind = "comparison"; p.items[0].answer = "<"; }, "reduced"],
    [p => { p.items[0].type = "choice"; p.items[0].answerKind = "number"; }, "answerKind"]]
@@ -424,6 +424,78 @@ const order = l => ({ L1: 3, L2: 1, L3: 2, L4: 4 }[l] ?? 50);
     eq(mut(p => { delete p.items[0].reduced; Object.assign(p.items[0], fields); }), [], `validatePool: коректні нові поля ${JSON.stringify(fields)}`);
   for (const fields of [{ answerKind: "list", answer: [1, 1] }, { answerKind: "factors", answer: "4*3" }, { answerKind: "comparison", answer: "≤" }, { answer: Infinity }])
     eq(mut(p => { delete p.items[0].reduced; Object.assign(p.items[0], fields); }).some(e => e.includes("answer")), true, `validatePool: некоректна відповідь ${JSON.stringify(fields)}`);
+  // символьні формати пулів 7–11 класів (engine-math-pool-answer-formats)
+  for (const fields of [{ answerKind: "ratio", answer: "2 : 3", reduced: true }, { answerKind: "ratio", answer: [1, 3] }, { answerKind: "coordinates2", answer: "(3; -2)" },
+    { answerKind: "coordinates2", answer: [1.5, -2] }, { answerKind: "coordinates3", answer: "(1; -2; 3)" }, { answerKind: "exactRoot", answer: "2√3" }, { answerKind: "exactRoot", answer: "16π/3" },
+    { answerKind: "list", answer: "(-1 ± √5)/2" }, { answerKind: "intervalSet", answer: "(-∞; 1] ∪ [4; +∞)" }, { answerKind: "intervalSet", answer: "∅" },
+    { answerKind: "expression", answer: "3a - 2b + 5", form: "expanded" }, { answerKind: "expression", answer: "(x - 2)(x + 2)", form: "factored" },
+    { answerKind: "expression", answer: "(a + 1)/(a - 1)", form: "reduced" }, { answerKind: "expression", answer: "tg α", form: "simplified" },
+    { answerKind: "expression", answer: "(x - 2)^2 + (y + 1)^2 = 9" }, { answerKind: "periodicSet", answer: "(-1)^k · π/6 + πk" }, { answerKind: "periodicSet", answer: ["π/2 + πk"] }])
+    eq(mut(p => { delete p.items[0].reduced; Object.assign(p.items[0], fields); }), [], `validatePool: коректний формат ${JSON.stringify(fields)}`);
+  for (const [fields, part] of [[{ answerKind: "ratio", answer: "4 : 6", reduced: true }, "answer"], [{ answerKind: "ratio", answer: "2 : -3" }, "answer"],
+    [{ answerKind: "coordinates2", answer: "(1; 2; 3)" }, "answer"], [{ answerKind: "coordinates3", answer: [1, 2] }, "answer"], [{ answerKind: "exactRoot", answer: "√12" }, "answer"],
+    [{ answerKind: "exactRoot", answer: "5" }, "exactRoot"], [{ answerKind: "exactRoot", answer: "√(1+√2)" }, "answer"], [{ answerKind: "intervalSet", answer: "[-∞; 2)" }, "answer"],
+    [{ answerKind: "intervalSet", answer: "(5; 2)" }, "answer"], [{ answerKind: "expression", answer: "x +" }, "answer"], [{ answerKind: "expression", answer: "(x+1)^2", form: "expanded" }, "answer"],
+    [{ answerKind: "expression", answer: "x + 1", form: "short" }, "form"], [{ answerKind: "expression", answer: "y = 2x", form: "expanded" }, "form"],
+    [{ answerKind: "number", answer: 2, form: "expanded" }, "form"], [{ answerKind: "periodicSet", answer: "π/6" }, "answer"], [{ answerKind: "periodicSet", answer: "π/6 + 2πt" }, "answer"],
+    [{ answerKind: "coordinates2", answer: "(1; 2)", mixed: true }, "mixed"], [{ answerKind: "expression", answer: "x", reduced: true }, "reduced"]])
+    eq(mut(p => { delete p.items[0].reduced; Object.assign(p.items[0], fields); }).some(e => e.includes(part)), true, `validatePool: некоректний формат ${JSON.stringify(fields)} («${part}»)`);
+}
+
+// ---------- символьні формати: еквівалентні й неправильні записи ----------
+{ const K = (answerKind, answer, extra = {}) => ({ answerKind, answer, ...extra });
+  const cases = [
+    // відношення: рівні відношення, порядок, натуральні члени без спільного дільника лише з reduced
+    [K("ratio", "2 : 3"), "4 : 6", "ok"], [K("ratio", "2 : 3"), "0,4 : 0,6", "ok"], [K("ratio", "2 : 3"), "2/3 : 1", "ok"], [K("ratio", "2 : 3"), "3 : 2", "bad"],
+    [K("ratio", "2 : 3"), "2/3", "bad"], [K("ratio", "2 : 3"), "-2 : -3", "bad"], [K("ratio", "2 : 3"), "2 : 3 : 1", "bad"], [K("ratio", "2 : 3", { reduced: true }), "4 : 6", "form"],
+    [K("ratio", "2 : 3", { reduced: true }), "2 : 3", "ok"], [K("ratio", "2 : 3", { reduced: true }), "1 : 1,5", "form"], [K("ratio", [1, 3], { reduced: true }), "1∶3", "ok"], [K("ratio", "2 : 3 : 5"), "4 : 6 : 10", "ok"], [K("ratio", "2 : 3 : 5"), "4 : 6 : 11", "bad"],
+    // впорядкована пара/трійка: порядок і знак, кома лише без «;», десяткова кома з «;»
+    [K("coordinates2", "(3; -2)"), "(3; −2)", "ok"], [K("coordinates2", "(3; -2)"), "A(3;-2)", "ok"], [K("coordinates2", "(3; -2)"), "3; -2", "ok"], [K("coordinates2", "(3; -2)"), "(3, -2)", "ok"],
+    [K("coordinates2", "(3; -2)"), "(-2; 3)", "bad"], [K("coordinates2", "(3; -2)"), "(3; 2)", "bad"], [K("coordinates2", "(3; -2)"), "(3; -2; 0)", "bad"], [K("coordinates2", "(3; -2)"), "3", "bad"], [K("coordinates2", "(3; -2)"), "(3; -2", "bad"],
+    [K("coordinates2", [1.5, 2]), "(1,5; 2)", "ok"], [K("coordinates2", [1.5, 2]), "(3/2; 2)", "ok"], [K("coordinates2", [1.5, 2]), "(1,5, 2)", "bad"], [K("coordinates2", "(√2; -√2)"), "(√2; -√8/2)", "form"],
+    [K("coordinates3", "(1; -2; 3)"), "(1; −2; 3)", "ok"], [K("coordinates3", "(1; -2; 3)"), "(1; 3; -2)", "bad"], [K("coordinates3", "(1; -2; 3)"), "(1; -2)", "bad"],
+    // точні корені й π: значення точне, наближення не зараховується, корінь спрощено
+    [K("exactRoot", "2√3"), "2√3", "ok"], [K("exactRoot", "2√3"), "2sqrt(3)", "ok"], [K("exactRoot", "2√3"), "√3·2", "ok"], [K("exactRoot", "2√3"), "√12", "form"], [K("exactRoot", "2√3"), "3,464", "bad"], [K("exactRoot", "2√3"), "3√2", "bad"],
+    [K("exactRoot", "√2/2"), "1/√2", "form"], [K("exactRoot", "√2/2"), "0,5√2", "ok"], [K("exactRoot", "-√3/3"), "−√3/3", "ok"], [K("exactRoot", "-√3/3"), "√3/3", "bad"],
+    [K("exactRoot", "16π/3"), "16/3 · π", "ok"], [K("exactRoot", "16π/3"), "5 1/3π", "bad"], [K("exactRoot", "16π/3"), "16,755", "bad"], [K("exactRoot", "4π"), "4pi", "ok"],
+    [K("exactRoot", "3 + 2√5"), "2√5 + 3", "ok"], [K("exactRoot", "(3 + √5)/2"), "1,5 + √5/2", "ok"], [K("exactRoot", "2∛3"), "∛24", "form"], [K("exactRoot", "2∛3"), "2∛3", "ok"], [K("exactRoot", "√2"), "∜4", "form"],
+    [K("exactRoot", "√2"), "√2 + x - x", "bad"], [K("exactRoot", "√2"), "√-2", "bad"], [K("exactRoot", "√2"), "", "bad"],
+    // список із коренями квадратного рівняння: обидві гілки, порядок довільний, ± розгортається
+    [K("list", "2 ± √3"), "2 - √3; 2 + √3", "ok"], [K("list", "2 ± √3"), "2 + √3", "bad"], [K("list", "(-1 ± √5)/2"), "(−1 + √5)/2; (−1 − √5)/2", "ok"], [K("list", "2 ± √3"), "2 ± √12/2", "form"], [K("list", "2 ± √3"), "3,73; 0,27", "bad"],
+    // проміжки: відкриті/закриті межі, об'єднання, точки, нескінченність лише з круглою дужкою
+    [K("intervalSet", "(-∞; 3]"), "(−∞; 3]", "ok"], [K("intervalSet", "(-∞; 3]"), "x ∈ (-∞;3]", "ok"], [K("intervalSet", "(-∞; 3]"), "(-∞; 3)", "bad"], [K("intervalSet", "(-∞; 3]"), "[3; +∞)", "bad"],
+    [K("intervalSet", "(-∞; -1) ∪ (3; +∞)"), "(3; ∞) ∪ (-∞; -1)", "ok"], [K("intervalSet", "(-∞; -1) ∪ (3; +∞)"), "(-∞; -1) U (3; +∞)", "ok"], [K("intervalSet", "(-∞; -1) ∪ (3; +∞)"), "(-1; 3)", "bad"],
+    [K("intervalSet", "(-∞; 5]"), "(-∞; 2) ∪ [2; 5]", "ok"], [K("intervalSet", "(-∞; 5]"), "(-∞; 2) ∪ (2; 5]", "bad"], [K("intervalSet", "(-∞; 1] ∪ {3}"), "{3} ∪ (-∞; 1]", "ok"], [K("intervalSet", "(-∞; 1] ∪ {3}"), "(-∞; 1]", "bad"],
+    [K("intervalSet", "[1,5; 2)"), "[1,5; 2)", "ok"], [K("intervalSet", "[1,5; 2)"), "[3/2; 2)", "ok"], [K("intervalSet", "(2; 5)"), "(5; 2)", "bad"], [K("intervalSet", "(2; 5)"), "[-∞; 5)", "bad"], [K("intervalSet", "(-√3; √3)"), "(−√3; √3)", "ok"],
+    [K("intervalSet", "(-√3; √3)"), "(-1,73; 1,73)", "bad"], [K("intervalSet", "∅"), "∅", "ok"], [K("intervalSet", "∅"), "{}", "ok"], [K("intervalSet", "R"), "(-∞; +∞)", "ok"], [K("intervalSet", "{2}"), "[2; 2]", "ok"], [K("intervalSet", "(0; +∞)"), "x > 0", "bad"],
+    // періодичні множини: серії з k ∈ ℤ, ±, (−1)^k, інша літера параметра; наближення й одна точка не зараховуються
+    [K("periodicSet", "±π/3 + 2πk"), "π/3 + 2πk; -π/3 + 2πk", "ok"], [K("periodicSet", "±π/3 + 2πk"), "x = ±π/3 + 2πn, n ∈ Z", "ok"], [K("periodicSet", "±π/3 + 2πk"), "π/3 + 2πk", "bad"],
+    [K("periodicSet", "(-1)^k · π/6 + πk"), "π/6 + 2πk; 5π/6 + 2πk", "ok"], [K("periodicSet", "(-1)^k · π/6 + πk"), "π/6 + πk", "bad"], [K("periodicSet", "π/2 + πk"), "-π/2 + πk, k ∈ ℤ", "ok"],
+    [K("periodicSet", "π/2 + πk"), "π/2 + 2πk", "bad"], [K("periodicSet", "π/2 + πk"), "1,5708 + πk", "bad"], [K("periodicSet", "π/2 + πk"), "π/2", "bad"], [K("periodicSet", "πk/2"), "πk; π/2 + πk", "ok"], [K("periodicSet", "πk"), "πk + x", "bad"],
+    // вирази: тотожність без eval, форма за ключем
+    [K("expression", "3a - 2b + 5", { form: "expanded" }), "5 − 2b + 3a", "ok"], [K("expression", "3a - 2b + 5", { form: "expanded" }), "3(a + 1) - 2b + 2", "form"], [K("expression", "3a - 2b + 5", { form: "expanded" }), "3a - 2b + 4", "bad"],
+    [K("expression", "3a - 2b + 5", { form: "expanded" }), "a + 2a - 2b + 5", "form"], [K("expression", "x^2 - 4", { form: "expanded" }), "x² − 4", "ok"], [K("expression", "x^2 - 4", { form: "expanded" }), "x·x − 4", "form"],
+    [K("expression", "(x - 2)(x + 2)", { form: "factored" }), "(x + 2)(x − 2)", "ok"], [K("expression", "(x - 2)(x + 2)", { form: "factored" }), "x^2 - 4", "form"], [K("expression", "2(x + 2)", { form: "factored" }), "2x + 4", "form"],
+    [K("expression", "2x(x - 2)^2", { form: "factored" }), "2x(x − 2)(x − 2)", "ok"], [K("expression", "2x(x - 2)^2", { form: "factored" }), "2x(x^2 - 4x + 4)", "form"], [K("expression", "2x(x - 2)^2", { form: "factored" }), "-2x(2 - x)(x - 2)", "ok"],
+    [K("expression", "(a + 1)/(a - 1)", { form: "reduced" }), "(a + 1)/(a − 1)", "ok"], [K("expression", "(a + 1)/(a - 1)", { form: "reduced" }), "(a^2 - 1)/(a - 1)^2", "form"], [K("expression", "(a + 1)/(a - 1)", { form: "reduced" }), "(a - 1)/(a + 1)", "bad"],
+    [K("expression", "tg α", { form: "simplified" }), "sin α / cos α", "form"], [K("expression", "tg α", { form: "simplified" }), "tgα", "ok"], [K("expression", "2 sin x cos x"), "sin 2x", "ok"], [K("expression", "cos^2 x - sin^2 x"), "cos 2x", "ok"],
+    [K("expression", "6x^2 - 2"), "f'(x) = 6x² − 2", "ok"], [K("expression", "6x^2 - 2"), "6x^2 - 2,0001", "bad"], [K("expression", "x^3 + C"), "F(x) = x^3 + C", "ok"], [K("expression", "x^3 + C"), "x^3", "bad"],
+    [K("expression", "(x - 2)^2 + (y + 1)^2 = 9"), "x² − 4x + y² + 2y − 4 = 0", "ok"], [K("expression", "(x - 2)^2 + (y + 1)^2 = 9"), "(x - 2)^2 + (y - 1)^2 = 9", "bad"], [K("expression", "(x - 2)^2 + (y + 1)^2 = 9"), "(x - 2)^2 + (y + 1)^2", "bad"],
+    [K("expression", "y = 2x + 1"), "2x + 1", "ok"], [K("expression", "y = 2x + 1"), "2y = 4x + 2", "ok"], [K("expression", "y = 2x + 1"), "y = 2x - 1", "bad"], [K("expression", "2x + 1"), "y = 2x + 1", "ok"],
+    [K("expression", "log_2 7"), "log_2(7)", "ok"], [K("expression", "log_2 7"), "2,807", "bad"], [K("expression", "|x|"), "√(x^2)", "ok"], [K("expression", "x"), "√(x^2)", "bad"], [K("expression", "a^5"), "a^2 · a^3", "ok"],
+    [K("expression", "x^(1/3)"), "∛x", "ok"], [K("expression", "x + 1"), "alert(1)", "bad"], [K("expression", "x + 1"), "constructor", "bad"], [K("expression", "x + 1"), "x + 1;", "bad"], [K("expression", "x + 1"), "", "bad"], [K("expression", "x + 1"), "x^99999", "bad"],
+    [K("expression", "x + 1", { form: "nonsense" }), "x + 1", "bad"], [K("expression", "x + 1"), "(".repeat(300) + "x", "bad"]
+  ];
+  cases.forEach(([s, v, expected]) => eq(L.checkAns(s, v), expected, `checkAns ${s.answerKind}${s.form ? "/" + s.form : ""}: ${JSON.stringify(s.answer)} ← «${v}»`));
+  // ключ сам проходить перевірку; підказки «form» конкретні
+  eq(L.checkAns(K("coordinates2", [3, -2]), [3, -2]), "ok", "checkAns: масив координат як ключ");
+  eq(L.formHint(K("ratio", "2 : 3", { reduced: true }), "4 : 6").includes("натуральними"), true, "formHint: відношення");
+  eq(L.formHint(K("exactRoot", "2√3"), "√12").includes("з-під знака кореня"), true, "formHint: корінь");
+  eq(L.formHint(K("expression", "x^2 - 4", { form: "expanded" }), "x·x - 4").includes("Розкрий дужки"), true, "formHint: стандартний вигляд");
+  eq(L.formHint({ answer: "2/5", fractionOnly: true }, "0,4"), "Значення правильне. Запиши відповідь звичайним дробом.", "formHint: чинний текст числа");
+  eq([L.ansText(K("coordinates2", [3, -2])), L.ansText(K("ratio", [2, 3])), L.ansText(K("periodicSet", "πk")), L.ansText(K("list", ["2 + √3", "2 - √3"]))],
+    ["(3; -2)", "2 : 3", "πk, k ∈ ℤ", "2 + √3; 2 - √3"], "ansText: показ ключа");
+  eq(L.ANSWER_KINDS.length, 11, "ANSWER_KINDS: чинні 4 + 7 нових");
 }
 
 /* Класовий контекст: міграція, 6 → 7 → 6, повторний тест і старі результати. */

@@ -814,10 +814,23 @@ function alignUpdate(s){
   $("#alyear").textContent=sy+s.sample.len-1; $("#almatch").textContent=`${Math.round(match/s.sample.len*100)}%`;
 }
 /* зафарбуй частини */
+/* символьні формати (docs/CONTENT_SCHEMA.md §10): кнопки вставляють знак у місце курсора, «−» — звичайний мінус */
+const ANS_UI={
+  ratio:[[":","/"],"Запиши відношення через двокрапку: 2 : 3. Порядок чисел важливий."],
+  coordinates2:[["(",";",")","-","/","√"],"Координати — у дужках через крапку з комою: (3; −2). Спершу x, потім y."],
+  coordinates3:[["(",";",")","-","/","√"],"Координати — у дужках через крапку з комою: (1; −2; 3). Порядок: x, y, z."],
+  exactRoot:[["√","π","/","-","(",")"],"Точна відповідь без округлення: 2√3, √2/2, 4π. Корінь спрости."],
+  intervalSet:[["(","[",";","]",")","∞","∪","∅","-"],"Проміжок — через крапку з комою: [2; 5), (−∞; 3]. Кілька — через ∪, порожня множина — ∅."],
+  expression:[["^","(",")","·","/","√"],"Степінь — ^ (x^2), множення — · або без знака (3ab), дріб — / з дужками: (a + 1)/(a − 1)."],
+  periodicSet:[["π","k","±","/","(",")","^",";"],"Серія розв'язків через k: π/6 + 2πk. Кілька серій — через ; або ±."]};
 function answerInput(s){
-  const kind=s.answerKind||"number", keys=kind==="comparison"? ["<",">","="] : kind==="list"? ["-","/",";"," "] : kind==="factors"? ["*","^"] : ["-","/"," "];
-  const help=kind==="comparison"? "Запиши знак: <, > або =." : kind==="list"? "Запиши всі числа через крапку з комою. Порядок не має значення." : kind==="factors"? "Множники — через · або *. Степінь — через ^, наприклад 2^3 · 5." : "Дріб — через риску: 7/12. Мішане число — через пробіл: 2 1/3.";
-  return `<div class="numbox wide"><input id="numIn" inputmode="${kind==="number"?"decimal":"text"}" autocomplete="off" placeholder="?" aria-label="Відповідь"><span class="unit" id="answerUnit">${esc(s.unit||"")}</span></div><div class="anskeys">${keys.map(v=>`<button type="button" data-ins="${esc(v)}" aria-label="Вставити ${esc(v===" "?"пробіл":v)}">${esc(v===" "?"пробіл":v==="-"?"−":v)}</button>`).join("")}</div><div class="fix" style="text-align:center">${esc(help)}</div>`;
+  const kind=s.answerKind||"number", sym=ANS_UI[kind];
+  let keys=sym? sym[0].slice() : kind==="comparison"? ["<",">","="] : kind==="list"? ["-","/",";"," "] : kind==="factors"? ["*","^"] : ["-","/"," "];
+  if(kind==="list" && /[√±]/.test(String(s.answer))) keys.push("√","±");
+  if(kind==="expression") for(const c of new Set(String(s.answer).match(/[\u0370-\u03ff]/g)||[])) if(c!=="π") keys.push(c);   // α, β… з ключа
+  const help=sym? sym[1] : kind==="comparison"? "Запиши знак: <, > або =." : kind==="list"? "Запиши всі числа через крапку з комою. Порядок не має значення." : kind==="factors"? "Множники — через · або *. Степінь — через ^, наприклад 2^3 · 5." : "Дріб — через риску: 7/12. Мішане число — через пробіл: 2 1/3.";
+  const unit=s.unit||(kind==="periodicSet"? "k ∈ ℤ" : "");
+  return `<div class="numbox wide"><input id="numIn" inputmode="${kind==="number"?"decimal":"text"}" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="?" aria-label="Відповідь"><span class="unit" id="answerUnit">${esc(unit)}</span></div><div class="anskeys${sym?" sym":""}">${keys.map(v=>`<button type="button" data-ins="${esc(v)}" aria-label="Вставити ${esc(v===" "?"пробіл":v)}">${esc(v===" "?"пробіл":v==="-"?"−":v)}</button>`).join("")}</div><div class="fix" style="text-align:center">${esc(help)}</div>`;
 }
 const answerUnit = (s, value) => { const a=LEARN.parseAns(value); if(!s.unitForms||!a) return s.unit||""; const n=Math.abs(a.n/a.d); return Number.isInteger(n)? plural(n,s.unitForms) : s.unitForms[1]; };
 function shadeUpdate(s){
@@ -873,7 +886,9 @@ function bindScreen(s){
   const nl=$("#nlrng"); if(nl){ numlineUpdate(s); nl.oninput=()=>{ if(checked) return; st=+nl.value; numlineUpdate(s); }; }
   const sgn=$("#numSign"); if(sgn) sgn.onclick=()=>{ if(checked) return; const ni=$("#numIn"); ni.value= ni.value.startsWith("-")? ni.value.slice(1) : "-"+ni.value; ni.oninput(); ni.focus(); };
   const ni=$("#numIn"); if(ni){ ni.oninput=()=>{ ni.value= s.type==="answer"||s.hideDen ? ni.value.replace(/\./g,",").replace(/\u2212/g,"-").slice(0,120) : s.type==="number"&&numDecimal(s) ? ni.value.replace(/\./g,",").replace(/[^0-9,-]/g,"").replace(/(?!^)-/g,"").replace(/(,.*),/g,"$1").slice(0,10) : ni.value.replace(/[^0-9]/g,"").slice(0,6); st=ni.value; if(s.unitForms&&$("#answerUnit")) $("#answerUnit").textContent=answerUnit(s,st); ni.classList.remove("is-ok","is-bad"); setDock("","","","Перевірити", st.trim().length>0); };
-    stage.querySelectorAll(".anskeys button").forEach(b=>b.onclick=()=>{ if(checked) return; const v=b.dataset.ins; ni.value= v==="-"? (ni.value.startsWith("-")? ni.value.slice(1) : "-"+ni.value) : ni.value+v; ni.oninput(); ni.focus(); });
+    stage.querySelectorAll(".anskeys button").forEach(b=>b.onclick=()=>{ if(checked) return; const v=b.dataset.ins;
+      if(b.parentNode.classList.contains("sym")){ const a=ni.selectionStart??ni.value.length, z=ni.selectionEnd??a; ni.value=ni.value.slice(0,a)+v+ni.value.slice(z); ni.oninput(); ni.focus(); ni.setSelectionRange(a+v.length,a+v.length); return; }
+      ni.value= v==="-"? (ni.value.startsWith("-")? ni.value.slice(1) : "-"+ni.value) : ni.value+v; ni.oninput(); ni.focus(); });
     ni.onkeydown=e=>{ if(e.key==="Enter" && !$("#action").disabled) $("#action").click(); }; setTimeout(()=>ni.focus({preventScroll:true}),350); }
 }
 function clearMarks(){ $("#stage").querySelectorAll(".is-ok,.is-bad").forEach(e=>e.classList.remove("is-ok","is-bad")); }
@@ -901,7 +916,7 @@ function showMarks(s, reveal){
   if(s.type==="multi"){ const c=new Set(s.correct); stage.querySelectorAll(".opt").forEach((el,k)=>{ el.classList.remove("is-ok","is-bad"); if(st.has(k)) el.classList.add(c.has(k)?"is-ok":"is-bad"); else if(reveal&&c.has(k)) el.classList.add("is-ok"); }); }
   if(s.type==="sort") stage.querySelectorAll(".srow").forEach((el,k)=>{ el.classList.remove("is-ok","is-bad"); el.classList.add(st[k]===s.items[k][1]?"is-ok":"is-bad"); if(reveal&&st[k]!==s.items[k][1]) el.insertAdjacentHTML("beforeend",`<span class="fix">Правильно: ${fmt(s.bins[s.items[k][1]])}</span>`); });
   if(s.type==="order") stage.querySelectorAll("#ord .opt").forEach(el=>{ const k=+el.dataset.k, p=st.indexOf(k); el.classList.remove("is-ok","is-bad"); el.classList.add(p===k?"is-ok":"is-bad"); if(reveal&&p!==k) el.querySelector(".k").textContent=`${p+1}→${k+1}`; });
-  if(s.type==="number"||s.type==="fracin"||s.type==="answer"){ const ni=$("#numIn"), ok=gradeNow(s); ni.classList.remove("is-ok","is-bad"); ni.classList.add(ok?"is-ok":"is-bad"); if(reveal && !ok){ const value=s.hideDen? `${s.answer}/${s.den}` : Array.isArray(s.answer)? s.answer.join("; ") : String(s.answer); const a=LEARN.parseAns(value); const unit=s.unitForms&&a? plural(a.n/a.d,s.unitForms) : s.unit||""; $("#hintHost").innerHTML=`<div class="hint">${ic("check")}<span>Правильна відповідь: <b>${s.type==="answer"||s.hideDen? fmt("$"+esc(value).replace(".",",").replace(" ","~")+"$")+(unit?" "+esc(unit):"") : numShow(s.answer)}</b></span></div>`; } }
+  if(s.type==="number"||s.type==="fracin"||s.type==="answer"){ const ni=$("#numIn"), ok=gradeNow(s); ni.classList.remove("is-ok","is-bad"); ni.classList.add(ok?"is-ok":"is-bad"); if(reveal && !ok){ const sym=s.type==="answer"&&ANS_UI[s.answerKind]; const value=s.hideDen? `${s.answer}/${s.den}` : sym? LEARN.ansText(s) : Array.isArray(s.answer)? s.answer.join("; ") : String(s.answer); const a=LEARN.parseAns(value); const unit=s.unitForms&&a? plural(a.n/a.d,s.unitForms) : s.unit||""; $("#hintHost").innerHTML=`<div class="hint">${ic("check")}<span>Правильна відповідь: <b>${sym? fmt("$"+esc(value).replace(/\./g,",")+"$")+(unit?" "+esc(unit):"") : s.type==="answer"||s.hideDen? fmt("$"+esc(value).replace(".",",").replace(" ","~")+"$")+(unit?" "+esc(unit):"") : numShow(s.answer)}</b></span></div>`; } }
   if(s.type==="lab"){ const ok=gradeNow(s); if(reveal && !ok){ LAB.set(s.solution); LAB.mark("is-ok"); $("#hintHost").innerHTML=fmt(`<div class="hint">${ic("check")}<span>${s.reveal||"Ось як має бути — подивись на модель."}</span></div>`); } else LAB.mark(ok?"is-ok":"is-bad"); }
   if(s.type==="shade"){ const box=$("#shade"); box.classList.remove("is-ok","is-bad"); box.classList.add(st.size===s.target?"is-ok":"is-bad"); }
   if(s.type==="numline"){ if(reveal){ st=s.answer; $("#nlrng").value=st; } numlineUpdate(s); }
@@ -926,7 +941,7 @@ function check(){
              : s.type==="shade"? `Потрібно зафарбувати ${s.target} ${s.target===1?"частину":s.target<5?"частини":"частин"}, а зафарбовано ${st.size}.`
              : s.type==="numline"? "Точка стоїть не там. Порахуй поділки від нуля."
              : s.type==="lab"? "Ще не те. Зміни модель і перевір ще раз."
-             : s.type==="answer" && LEARN.checkAns(s,st)==="form"? (!LEARN.parseAns(st).frac? "Значення правильне. Запиши відповідь звичайним дробом." : s.reduced && !LEARN.parseAns(st).lowest? "Значення правильне, але дріб ще можна скоротити." : "Значення правильне. Запиши відповідь мішаним числом: ціла частина, пробіл, дріб.")
+             : s.type==="answer" && LEARN.checkAns(s,st)==="form"? LEARN.formHint(s,st)
              : "Спробуй ще раз.";
     return setDock("bad", s.fbBad||"Не зовсім.", msg+preNote, "Спробувати ще раз");
   }
