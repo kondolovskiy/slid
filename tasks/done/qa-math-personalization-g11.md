@@ -5,7 +5,7 @@ id: qa-math-personalization-g11
 type: qa
 subject: math
 grade: 11
-status: todo
+status: done
 claimed_by: agent-qa-g11
 created: 2026-10-15
 depends_on: [verify-math-personalization-g11, tools-math-personalization-qa, engine-math-grade-plan-context, engine-math-pool-answer-formats]
@@ -26,9 +26,9 @@ depends_on: [verify-math-personalization-g11, tools-math-personalization-qa, eng
 
 ## Готово, коли
 
-- [ ] reports/qa/math-personalization-g11.md містить версію матриці, перевірені required-об’єкти, команди, сценарії, виправлення та межі перевірки.
-- [ ] validate, test-learn, застосовні цільові браузерні сценарії й покриття класу зелені; build виконано, згенеровані файли включено в результат.
-- [ ] Критичні дефекти цього класу закрито; optional/pending і ще недоступні міжкласові пули не приховані та не оголошені виконаними. Фінальне наскрізне приймання — окрема задача.
+- [x] reports/qa/math-personalization-g11.md містить версію матриці, перевірені required-об’єкти, команди, сценарії, виправлення та межі перевірки.
+- [x] validate, test-learn, застосовні цільові браузерні сценарії й покриття класу зелені; build виконано, згенеровані файли включено в результат.
+- [x] Критичні дефекти цього класу закрито; optional/pending і ще недоступні міжкласові пули не приховані та не оголошені виконаними. Фінальне наскрізне приймання — окрема задача.
 
 
 ## Перед роботою
@@ -36,8 +36,22 @@ depends_on: [verify-math-personalization-g11, tools-math-personalization-qa, eng
 Прочитати AGENTS.md, актуальні handoff та INDEX, релевантні довгу пам’ять і style/math.md; docs/PERSONALIZATION.md, docs/CONTENT_SCHEMA.md §9–10; tasks/README-math-personalization.md. Аналіз цього пакета спирається на origin/main, коміт 8d438ca; у старому коміті 57f9fc6 потрібної реалізації немає. Виконувати на версії з чинними SLID.diag / SLID.pool. Не повертати застарілі обмеження зі старих задач: engine-diag-pool-answers уже done.
 
 ## Нотатки виконавця
-
 <!-- Змінені файли; джерела; рішення й обмеження; результати команд; що передано незалежному верифікатору. -->
+
+2026-10-31, agent-qa-g11. Звіт: reports/qa/math-personalization-g11.md. Вердикт — **прийнято**, P1 немає.
+- Версія: 46812c7 → 5301949 (змінився лише reports/validate.json). Build у тимчасовому worktree нічого не змінив (150 скриптів, sw ab3932948c, 331 файл). Worktree видалено.
+- Змінено лише reports/qa/math-personalization-g11.md, ця задача й рядок у memory/short/inbox.md; reports/validate.json перезаписано повним прогоном validate. app/, tools/, content/ не чіпав.
+- Команди (rc 0): personalization-qa --grade 11 --strict (13 req / 4 пули / 104 вправи, missing 0, optional 5, pending 3); test-learn 1353; test-personalization-qa 96; test-validate 25; validate 0 помилок; validate --diag dg11 і --pool pg11m1/m3/m4/m5 0/0 (pg11m2/m6 — rc 1, пулу немає); test-answer-ui content --grade 11 --strict і regression (окремо) green; playtest dg11 і g11m1–m6 (1 тест + 27 уроків).
+- Власні Playwright-сценарії: dg11 змішаний / усе правильно / усе пропущено, «Пізніше», resume, retest; перехід 10 → 11, 11 ↔ 10, міграція старого плану; g10m4l2 → pg10m4 в 11 кл.; g11m1l1 → pg11m1 з hint, другою спробою і SRS; повторювані помилки → план; відкладені g11m2l1, g11m5l3, g11m6l1 без тренування; офлайн; 360/320 px, темна тема.
+- Вплив відомих вад: R-2 (`$` у підписах lab, 9 екранів уроків), A-2 (`x =` у list) — задачі engine-math-render-tex-gaps, engine-math-answer-g10-issues.
+- P3 без задачі (не блокують, рядок в inbox):
+  - A-5: стала первісної лише велика латинська C;
+  - A-6: мішане число у виразі;
+  - A-7 (нове): кирилиця х/а/С/Н у expression → bad;
+  - A-8: `√576` → bad, а не form;
+  - R-3: показник кореня «√³x²»;
+  - D-4': крива по підписах dg11 №6.
+- Межі: відкладені пули не перевірялися, бо їх немає; пули 9 кл. перевірено структурно; release-ланцюжок — qa-math-personalization-release.
 
 ## Обсяг за матрицею 2026-10-16.v2
 
