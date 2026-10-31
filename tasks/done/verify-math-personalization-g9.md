@@ -5,7 +5,7 @@ id: verify-math-personalization-g9
 type: verify-personalization
 subject: math
 grade: 9
-status: todo
+status: done
 claimed_by: orchestrator-verify-g9
 created: 2026-10-15
 depends_on: [curate-math-personalization-map, write-math-diag-g9, write-math-pool-g9m1, write-math-pool-g9m2, write-math-pool-g9m3, write-math-pool-g9m4, write-math-pool-g9m5, write-math-pool-g9m6, write-math-pool-g9m7]
@@ -55,3 +55,5 @@ Required-перелік: g9m1l1, g9m1l2, g9m1l3, g9m2l1, g9m2l2, g9m2l3, g9m2l4,
 Optional/pending окремим списком: немає.
 
 Команди: `node tools/validate.mjs --diag dg9`; для кожного переліченого пулу `node tools/validate.mjs --pool <id>`. Відсутній required-пул — помилка; відкладений — окремий неперевірений стан. Повний браузерний QA — через tools-math-personalization-qa, без дублювання раннера.
+
+Підсумок: reports/verify/math-personalization-g9.md. dg9 і 7 пулів verified; strict rc 1 лише g9m2l3 expression — чекає engine-coordinates2-expression.
