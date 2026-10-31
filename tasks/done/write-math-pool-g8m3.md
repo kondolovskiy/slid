@@ -5,7 +5,7 @@ id: write-math-pool-g8m3
 type: write-pool
 subject: math
 grade: 8
-status: review
+status: done
 claimed_by: agent-write-math-pool-g8m3
 created: 2026-10-15
 depends_on: [curate-math-personalization-map, engine-math-pool-answer-formats]
@@ -115,3 +115,5 @@ depends_on: [curate-math-personalization-map, engine-math-pool-answer-formats]
 | g8m3l4 | required | 6–8 (3/2/1 за рівнями мінімум) | number, exactRoot, list; a8:165–173 |
 
 Покриття: **4 required-уроків, 24–32 вправ**. Optional/pending не включати у файл пулу цієї версії; boss не дублювати.
+
+**Верифікація (verifier-pg8m3, 2026-10-31):** verified, звіт reports/verify/pg8m3.md. Правки: a05→a09 (№567), b02→b09 (№568), d08→d09 (exactRoot), опора c06/c08/d07. Відкрито: формат list для g8m3l3 — куратору.
