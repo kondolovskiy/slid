@@ -691,7 +691,7 @@ SLID.section("math", {
               { x: "p", color: "blue", dash: true },
               { x: "q", color: "gold", dash: true }
             ],
-            show: ["Смуга від ${p|0} до ${q|0}$"],
+            show: ["Смуга від ${p|0}$ до ${q|0}$"],
             alt: "Виставити смугу 2 ≤ x ≤ 5"
           },
           goal: "p==2 && q==5",

@@ -46,7 +46,7 @@ SLID.section("math", {
             params: {
               s: { min: 1, max: 10, step: 1, start: 4, label: "сторона $s$" }
             },
-            show: ["Сторона ${s|0}", "Площа $s^2 = {s*s|0}$"],
+            show: ["Сторона ${s|0}$", "Площа $s^2 = {s*s|0}$"],
             alt: "Квадрат зі стороною s і площею s²"
           },
           cta: "Далі"
@@ -122,7 +122,7 @@ SLID.section("math", {
             points: {
               P: { x: "p", y: "0", drag: true, color: "red", label: "?" }
             },
-            show: "Точка на ${p}",
+            show: "Точка на ${p}$",
             alt: "Поставити точку на √9"
           },
           goal: "p==3",
@@ -191,7 +191,7 @@ SLID.section("math", {
     /* ───────── 2. Дійсні числа ───────── */
     {
       id: "g8m3l2",
-      title: "Де живе $\\sqrt{2}$?",
+      title: "Де живе √2?",
       short: "Дійсні",
       icon: "line",
       status: "verified",
@@ -547,7 +547,7 @@ SLID.section("math", {
     /* ───────── 4. Функція y = √x ───────── */
     {
       id: "g8m3l4",
-      title: "Графік $y = \\sqrt{x}$",
+      title: "Графік y = √x",
       short: "$y = \\sqrt{x}$",
       icon: "chart",
       status: "verified",

@@ -280,7 +280,7 @@ SLID.section("math", {
               "$a=BC={dist(B,C)|1}$, $b=AC={dist(A,C)|1}$, $c=AB={dist(A,B)|1}$",
               "∠A = {angle(B,A,C)|deg}",
               "$a^2 = {dist(B,C)^2|1}$",
-              `$b^2 + c^2 - 2bc\\,"cos"\\,A = {dist(A,C)^2 + dist(A,B)^2 - 2*dist(A,C)*dist(A,B)*cosd(angle(B,A,C))|1}`
+              `$b^2 + c^2 - 2bc\\,"cos"\\,A = {dist(A,C)^2 + dist(A,B)^2 - 2*dist(A,C)*dist(A,B)*cosd(angle(B,A,C))|1}$`
             ],
             alt: "Трикутник із порівнянням a² і правої частини теореми косинусів"
           },
@@ -334,7 +334,7 @@ SLID.section("math", {
             show: [
               "∠A = {ang|0}°",
               "$BC = {dist(B,C)|1}$",
-              `$"cos"\\,A = {cosd(ang)}`
+              `$"cos"\\,A = {cosd(ang)}$`
             ],
             alt: "Дві сторони по 5, кут змінюється повзунком"
           },
@@ -472,8 +472,8 @@ SLID.section("math", {
             show: [
               "$a={dist(B,C)|1}$, ∠A={angle(B,A,C)|deg}",
               "$b={dist(A,C)|1}$, ∠B={angle(A,B,C)|deg}",
-              `$a/"sin"\\,A = {dist(B,C)/sind(angle(B,A,C))|2}`,
-              `$b/"sin"\\,B = {dist(A,C)/sind(angle(A,B,C))|2}`
+              `$a/"sin"\\,A = {dist(B,C)/sind(angle(B,A,C))|2}$`,
+              `$b/"sin"\\,B = {dist(A,C)/sind(angle(A,B,C))|2}$`
             ],
             alt: "Трикутник: відношення сторони до синуса протилежного кута"
           },
@@ -537,7 +537,7 @@ SLID.section("math", {
             show: [
               "$R = 5$, $2R = 10$",
               "$a = BC = {dist(B,C)|1}$, ∠A = {angle(B,A,C)|deg}",
-              `$a/"sin"\\,A = {dist(B,C)/sind(angle(B,A,C))|2}`
+              `$a/"sin"\\,A = {dist(B,C)/sind(angle(B,A,C))|2}$`
             ],
             alt: "Трикутник, вписаний у коло R=5"
           },
@@ -569,7 +569,7 @@ SLID.section("math", {
             show: [
               "$BC = {dist(B,C)|1}$",
               "∠A = {angle(B,A,C)|deg}",
-              `$a/"sin"\\,A = {dist(B,C)/sind(angle(B,A,C))|2}`
+              `$a/"sin"\\,A = {dist(B,C)/sind(angle(B,A,C))|2}$`
             ],
             alt: "Зробити хорду BC = 5 у колі R = 5"
           },

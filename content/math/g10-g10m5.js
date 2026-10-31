@@ -307,7 +307,7 @@ SLID.section("math", {
             },
             show: [
               "$t = {t|pi}$",
-              `$"sin"\\,t = {sin(t)}`
+              `$"sin"\\,t = {sin(t)}$`
             ],
             alt: "Графік y=sin x на [0; 2π]"
           },
@@ -332,7 +332,7 @@ SLID.section("math", {
             points: {
               P: { x: "t", y: "sin(t)", color: "red", label: "$P$", coords: true }
             },
-            show: [`$t = {t|pi}$, $"sin"\\,t = {sin(t)}`],
+            show: [`$t = {t|pi}$, $"sin"\\,t = {sin(t)}$`],
             alt: "Знайти максимум синуса"
           },
           goal: "abs(sin(t)-1)<0.01",
@@ -452,7 +452,7 @@ SLID.section("math", {
             },
             segs: [{ a: "O", b: "M", color: "accent" }],
             show: [
-              `$"sin"^2 t + "cos"^2 t = {sin(t)^2 + cos(t)^2}`
+              `$"sin"^2 t + "cos"^2 t = {sin(t)^2 + cos(t)^2}$`
             ],
             alt: "Перевірка основної тотожності"
           },
@@ -506,8 +506,8 @@ SLID.section("math", {
             },
             show: [
               `$α = {a|pi}$`,
-              `$"sin"\\,2α = {sin(2*a)}`,
-              `$2\\,"sin"\\,α\\,"cos"\\,α = {2*sin(a)*cos(a)}`
+              `$"sin"\\,2α = {sin(2*a)}$`,
+              `$2\\,"sin"\\,α\\,"cos"\\,α = {2*sin(a)*cos(a)}$`
             ],
             alt: "Графік sin 2α і добутку 2 sin cos"
           },
@@ -632,7 +632,7 @@ SLID.section("math", {
             },
             show: [
               `$t = {t|pi}$`,
-              `$"sin"\\,t = {sin(t)}`
+              `$"sin"\\,t = {sin(t)}$`
             ],
             alt: "Графік sin і пряма y=1/2"
           },
@@ -682,7 +682,7 @@ SLID.section("math", {
               M: { x: "cos(t)", y: "sin(t)", color: "accent", label: "$M$", coords: true }
             },
             segs: [{ a: "O", b: "M", color: "accent" }],
-            show: [`$t = {t|pi}$, $"sin"\\,t = {sin(t)}`],
+            show: [`$t = {t|pi}$, $"sin"\\,t = {sin(t)}$`],
             alt: "Знайти t=π/6 на одиничному колі"
           },
           goal: "abs(sin(t)-0.5)<0.02 && t>0 && t<1.2",
@@ -813,7 +813,7 @@ SLID.section("math", {
             points: {
               P: { x: "t", y: "sin(t)", color: "red", label: "$P$" }
             },
-            show: [`$t = {t|pi}$, $"sin"\\,t = {sin(t)}`],
+            show: [`$t = {t|pi}$, $"sin"\\,t = {sin(t)}$`],
             alt: "Розминка: графік синуса"
           },
           cta: "До завдань"

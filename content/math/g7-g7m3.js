@@ -46,8 +46,8 @@ SLID.section("math", {
               a: { min: -3, max: 5, start: 2, label: "основа $a$" },
               n: { min: 1, max: 5, start: 3, label: "показник $n$" }
             },
-            points: { P: { x: "a^n", label: "${a}^{n} = {a^n}" } },
-            show: "${a}^{n} = {a^n}",
+            points: { P: { x: "a^n", label: "${a}^{n} = {a^n}$" } },
+            show: "${a}^{n} = {a^n}$",
             alt: "Числова пряма зі значенням степеня a у степені n"
           },
           cta: "Далі"
