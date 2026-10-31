@@ -30,3 +30,8 @@ depends_on: [engine-math-answer-formats-followup]
 - Одиниці: «Перевір одиницю» навіть коли хибне число; coordinates2/ratio з unit «°» `(30°; 60°)` → bad; `60 грн.`, «5 разів», `70º`.
 - Межа часу від годинника (до ~2,4 с на bad у expression); у браузерних тестах Date.now заморожений.
 - test-personalization-qa: прив'язки до живого змісту (counts, pending = 6, optional = 7, pg8m5) — перевести на фікстури.
+
+## З inbox 31.10 (куратор; ще не в жодній задачі)
+- number: префікс «b = 1», «k = 3» → bad (expression знімає «y =», number — ні; pg7m5 c05/c06) — знімати «<буква> =».
+- number/list: кінцева крапка « 3.» → bad (verifier-pool-g7m2).
+- list із повторами елементів (мультимножина) зараз заборонено — mer8g №655/656/661 у пул не взяти (pg8m6); чи потрібен прапорець.

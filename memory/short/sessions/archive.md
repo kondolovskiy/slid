@@ -11,3 +11,4 @@
 - **2026-10-12-4** — D-019 revise hist 5 кл. (s1–s4) + re-verify; facts/hist №13, №17 → verified; pitfalls дистрактори/boss без чужих фактів.
 - **2026-10-13-1** — D-019 revise hist 6 (g6s1–g6s5) + незалежна перевірка; facts/hist №124–128; pitfalls git stash, проксі, Playwright.
 - **2026-10-13-2** — D-019 revise hist 7 (g7s1–g7s5, 26 уроків) + незалежна перевірка; facts/hist №129–130; pitfalls століття↔роки в hint, eyebrow «Здогадка».
+- **2026-10-13-3** — D-019 revise math 4–6 (17 розділів) + hist 9 (g9s1–g9s5) written + verified; перезвірка D-021 (33 факти); рішення D-020a, D-024 (Мерзляк), D-025; facts/hist №131–154, facts/math №127–131.
