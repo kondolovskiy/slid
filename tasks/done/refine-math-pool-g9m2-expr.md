@@ -3,7 +3,7 @@ id: refine-math-pool-g9m2-expr
 type: refine
 subject: math
 grade: 9
-status: review
+status: done
 claimed_by: writer-pg9m2-expr
 created: 2026-10-31
 depends_on: [engine-coordinates2-expression]

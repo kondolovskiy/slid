@@ -1,5 +1,5 @@
 /* Слід · Математика, 9 клас — пул задач для тренування до розділу «Геометрія: координати і вектори» (g9m2)
-   Статус: draft (2026-10-31: c06 №13.9 замінено на c09 №13.5(4) — coordinates2 з виразами; до повторної верифікації. Попередня верифікація: reports/verify/pg9m2.md). 32 задачі: g9m2l1 — 8, g9m2l2 — 8, g9m2l3 — 8, g9m2l4 — 8 (boss g9m2boss без задач).
+   Статус: verified (verifier-pg9m2, 2026-10-31; reports/verify/pg9m2.md; c06 №13.9 замінено на c09 №13.5(4) — coordinates2 з виразами, повторна верифікація reports/verify/refine-pg9m2.md). 32 задачі: g9m2l1 — 8, g9m2l2 — 8, g9m2l3 — 8, g9m2l4 — 8 (boss g9m2boss без задач).
    Матриця docs/math-personalization-coverage.md 2026-10-16.v2: усі чотири уроки required, sk coord,
    формати number, coordinates2, expression, exactRoot (+ list там, де в умові кілька значень).
    Усі задачі — з підручника Мерзляк, Якір. Геометрія 9 (2026), п. 8–10, 13–16; умови й числа звірено
@@ -9,8 +9,8 @@
 SLID.pool("math", {
   id: "pg9m2",
   section: "g9m2",
-  status: "draft",
-  meta: { author: "agent-write-math-pool-g9m2", created: "2026-10-31", factcheck: null, teacher: null },
+  status: "verified",
+  meta: { author: "agent-write-math-pool-g9m2", created: "2026-10-31", factcheck: "verifier-refine-pg9m2", teacher: null },
   sources: [
     { id: "mer9g", title: "Мерзляк А. Г., Якір М. С. Геометрія: підручник для 9 класу. — Харків: Гімназія, 2026 (п. 8–10, 13–16; дзеркало file.4book.org)", url: "https://file.4book.org/images/shcoolbook_ua/9/9_geom_m_2026.pdf" }
   ],

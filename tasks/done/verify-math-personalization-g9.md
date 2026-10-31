@@ -56,4 +56,4 @@ Optional/pending окремим списком: немає.
 
 Команди: `node tools/validate.mjs --diag dg9`; для кожного переліченого пулу `node tools/validate.mjs --pool <id>`. Відсутній required-пул — помилка; відкладений — окремий неперевірений стан. Повний браузерний QA — через tools-math-personalization-qa, без дублювання раннера.
 
-Підсумок: reports/verify/math-personalization-g9.md. dg9 і 7 пулів verified; strict rc 1 лише g9m2l3 expression — чекає engine-coordinates2-expression.
+Підсумок: reports/verify/math-personalization-g9.md. dg9 і 7 пулів verified; strict rc 1 лише g9m2l3 expression — закрито: engine-coordinates2-expression + №13.5(4) (reports/verify/refine-pg9m2.md), strict rc 0.
