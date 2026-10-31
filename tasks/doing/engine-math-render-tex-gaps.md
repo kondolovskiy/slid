@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-10-31T22:04:22.839Z
 id: engine-math-render-tex-gaps
 type: engine
 subject: math
 status: todo
-claimed_by:
+claimed_by: engineer-render
 created: 2026-10-31
 depends_on: []
 ---
