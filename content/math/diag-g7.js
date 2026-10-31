@@ -30,7 +30,7 @@ SLID.diag("math", {
     { id: "cur-g7m3", title: "Степінь", kind: "cur", lessons: ["g7m3l1"] },
     { id: "cur-g7m4", title: "Ознаки рівності", kind: "cur", lessons: ["g7m4l1"] },
     { id: "cur-g7m5", title: "Функція", kind: "cur", lessons: ["g7m5l1"] },
-    { id: "cur-g7m6", title: "Ознаки", kind: "cur", lessons: ["g7m6l1"] },
+    { id: "cur-g7m6", title: "Паралельні прямі", kind: "cur", lessons: ["g7m6l1"] },
     { id: "cur-g7m7", title: "Дві змінні", kind: "cur", lessons: ["g7m7l1"] },
     { id: "cur-g7m8", title: "Коло і круг", kind: "cur", lessons: ["g7m8l1"] }
   ],
