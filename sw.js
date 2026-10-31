@@ -1,7 +1,7 @@
 /* Слід — service worker. ЗГЕНЕРОВАНО tools/build.mjs із tools/sw.template.js — не редагуй sw.js вручну.
    Стратегія: усі файли застосунку кешуються при встановленні (офлайн з першого запуску);
    свої файли — спершу з кешу; Google Fonts — з кешу з фоновим оновленням. */
-const VERSION = "4af14dcbe8";
+const VERSION = "8a7bae4a1f";
 const CACHE = "slid-" + VERSION;
 const FONTS = "slid-fonts";
 const ASSETS = [
@@ -222,11 +222,22 @@ const ASSETS = [
   "./img/hist/g7s3/dolobsk.jpg",
   "./img/hist/g7s3/spas.jpg",
   "./img/hist/g7s3/vasylko-fetters.jpg",
+  "./img/hist/g7s4/desyatynna-foundations.jpg",
+  "./img/hist/g7s4/dorohychyn-castle-hill.jpg",
+  "./img/hist/g7s4/hypatian-f245.jpg",
   "./img/hist/g7s4/lviv-1618.jpg",
+  "./img/hist/g7s4/panteleimon-halych.jpg",
   "./img/hist/g7s4/seal-yurii.jpg",
+  "./img/hist/g7s5/gedimin-letter.jpg",
+  "./img/hist/g7s5/kafa-tower.jpg",
   "./img/hist/g7s5/krewo-act.jpg",
+  "./img/hist/g7s5/synyukha.jpg",
+  "./img/hist/g7s5/vilnius-tower.jpg",
+  "./img/hist/g8s1/clement-viii-medal-1596.jpg",
+  "./img/hist/g8s1/lublin-1618.jpg",
   "./img/hist/g8s1/lublin-matejko.jpg",
   "./img/hist/g8s1/ostroh-bible.jpg",
+  "./img/hist/g8s1/sejm-lauro-1622.jpg",
   "./img/hist/g8s2/beauplan-sich.jpg",
   "./img/hist/g8s2/cossacks-boplan.jpg",
   "./img/hist/g8s2/khotyn-fortress.jpg",
