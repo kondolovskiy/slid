@@ -73,3 +73,19 @@
 - `python3 tools/playtest.py --section g8m3` (5 уроків), `--section g10m3` (4) і `--section g6s1` (6): rc 0.
 - Мутації, скан і крайні випадки — див. вище.
 - Згенеровані sw.js і reports/validate.json повернуто до стану, в якому я їх знайшов, і не закомічено.
+
+## Доробка 538ec17 (повторне рев'ю): **прийнято**
+
+- Diff: `git show 538ec17 -- tools/test-answer-ui.py`. Тепер `attr_math_checks` сам задає назви g8m3 l2/l4 з `$` (`Де живе $\sqrt{2}$?`, `Графік $y = \sqrt{x}$`). Раніше він покладався на зміст. Причина в тому, що fix-math-tex-content прибрала `$` з цих назв (у змісті 538ec17: «Де живе √2?», «Графік y = √x»).
+- Назви підмінено до кліку на мапу. Рендер мапи й шторки бере їх із `SLID_SUBJECTS`, тож перевірки aria-label, `.nlabel .m .sqrt` = 2 і `h2 .sqrt` = 1 стосуються саме цих фікстур. Очікувані рядки aria-label не змінились.
+- Мутації на копії 538ec17 (`git worktree add --detach` у scratchpad, потім видалено):
+
+| Мутація | Результат |
+|---|---|
+| без змін | проходить |
+| app.js з 8fe52e5 (стара вада) | падає: `'Де живе <span class='`, видимий текст `2\n?">` |
+| aria-label кнопки мапи `attr` → `esc` | падає |
+| aria-label шторки `attr` → `esc` | падає |
+
+- `test-answer-ui.py --browser /opt/pw-browsers/chromium --suite regression` на 538ec17: green.
+- Нових знахідок немає. P3-1…P3-5 з першого проходу лишаються чинними.

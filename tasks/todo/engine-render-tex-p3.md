@@ -18,3 +18,9 @@ depends_on: [engine-math-render-tex-gaps]
 Готово: тести на кожен пункт; незалежне рев'ю (D-026).
 
 ## Нотатки виконавця
+
+## Також P3 з reports/review/engine-lesson-title-aria.md
+- тест на одиночний `$` в attr (мутація `$`→`&#36;` не ловиться);
+- `attr(l.title)` розбирає назву як HTML (`a<b` → `a`), видима назва — через esc;
+- індекси в plainText: `$x_1$` → «x1», `log<sub>2</sub>` → «log2»;
+- urlAttr: пропускати лише `https?:`.
