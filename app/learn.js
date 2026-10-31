@@ -706,7 +706,7 @@ window.SLID_LEARN = (() => {
     if (kind === "divrem") return "Неповну частку знайдено. Допиши остачу: кнопка «ост.» і число.";
     if (kind === "ratio") return "Відношення правильне. Запиши його натуральними числами без спільного дільника, наприклад 2 : 3.";
     if (kind === "coordinates2" && s.form !== undefined && symPair(s)) {   // «form» дала компонента-вираз — підказка expression, інакше — про корені
-      let rs = null; DEADLINE = Date.now() + 800;
+      let rs = null; DEADLINE = Date.now() + 800; BUDGET = 50000;
       try { rs = pairSym(s, v, symPair(s)); } catch (e) { if (e !== TOO) throw e; } finally { DEADLINE = Infinity; }
       if (rs && rs.some(x => x.sym && x.r === "form")) return formHint({ answerKind: "expression", form: s.form }, v);
     }
@@ -799,7 +799,7 @@ window.SLID_LEARN = (() => {
       null — не coordinates2, числовий ключ або ключ не розібрано. Потрібно tools/personalization-qa.mjs (пара виразів закриває формат expression)
       і клавішам поля (app.js). Не викликати зсередини checkAns: скидає DEADLINE. */
   function pairKey(s) {
-    DEADLINE = Date.now() + 800;
+    DEADLINE = Date.now() + 800; BUDGET = 50000;          // як checkAns0: результат не залежить від попередніх викликів
     try {
       const a = symPair(s), r = a && pairSym(s, s.answer, a), t = splitPair(s.answer);
       return r && r.map((x, i) => ({ expr: x.sym, vars: varsOf(a[i]), tidy: x.r === "ok", text: t[i].trim() }));

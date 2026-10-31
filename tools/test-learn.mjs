@@ -826,6 +826,10 @@ const order = l => ({ L1: 3, L2: 1, L3: 2, L4: 4 }[l] ?? 50);
   eq([L.pairKey(K("(3; -2)")), L.pairKey(K([1.5, -2])), L.pairKey({ answerKind: "list", answer: "a; b" }), L.pairKey({ answerKind: "coordinates3", answer: "(a; b; c)" }), L.pairKey(K("(a; b; c)"))],
     [null, null, null, null, null], "pairKey: числовий ключ, інший формат, не дві компоненти — null");
   eq(L.pairKey(K("(a + a; b)", { form: "simplified" }))?.[0]?.tidy, false, "pairKey: неканонічний ключ — tidy false");
+  // рев'ю P3-1: pairKey і formHint самі задають BUDGET — у свіжому модулі першим викликом числова компонента з коренем канонічна
+  const fresh = () => { const c = { console }; c.window = c; vm.createContext(c); vm.runInContext(fs.readFileSync(path.join(ROOT, "app/learn.js"), "utf8"), c); return c.SLID_LEARN; };
+  eq(JSON.stringify(fresh().pairKey(K("(√6/2; p - m)")).map(c => c.tidy)), "[true,true]", "pairKey у свіжому модулі: (√6/2; p - m) — обидві компоненти канонічні");
+  eq(fresh().formHint(K("(√6/2; p - m)", { form: "simplified" }), "(√6/2; p - m + p - p)"), "Вираз правильний, але його можна спростити.", "formHint у свіжому модулі: підказка форми виразу (вихід від BUDGET не залежить: компонента-вираз сама скидає бюджет)");
   // межі часу й біт: кожна компонента має половину з ~0,8 с; разом — менше 1 с
   for (const v of ["(((((x+1)^12)^12)^12)^12; ((((y+1)^12)^12)^12)^12)", "((x+√2+√3+√5+√7+√11+√13)^12; (x+√2+√3+√5+√7+√11+√13)^12)",
     "((((((((x^12)^12)^12)^12)^12)^12)^12)^12; (((((((9999999999999999^12)^12)^12)^12)^12)^12)^12)"]) {

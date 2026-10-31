@@ -86,6 +86,8 @@ check(() => assert.equal(qa.exprPair(pairItem, { ...learn, checkAns: () => 'ok' 
 check(() => assert.equal(qa.exprPair(pairItem, keyOnly), false));
 check(() => assert.equal(qa.exprPair(pairItem, { ...learn, checkAns: (it, v) => /0,0000001/.test(v) ? 'ok' : learn.checkAns(it, v) }), false));
 check(() => assert.equal(qa.exprPair(pairItem, { ...learn, pairKey: undefined }), false));
+// рев'ю P3-3: «усе без десяткових — ok» відкидає лише проба «(…) + змінна»
+check(() => assert.equal(qa.exprPair(pairItem, { ...learn, checkAns: (it, v) => /\d,\d/.test(v) ? 'bad' : 'ok' }), false));
 for (const args of [['--pool','typo'], ['--diag','typo'], ['--grade','12'], ['--pool','pg6m1','--grade','5'], ['--pool','pg6m1','--grade','7'], ['--wat'], ['--diag'], ['--diag','dg6','--pool','pg6m1']]) {
   check(() => assert.equal(spawnSync(process.execPath, ['tools/personalization-qa.mjs', ...args], { cwd: ROOT }).status, 1));
 }

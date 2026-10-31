@@ -341,7 +341,7 @@ FORMAT_FIXTURES = [
 
 async def answer_format_checks(browser, url):
     context, page, errors = await qa_page(browser, url, {'grade': 6, 'unlockAll': True, 'lessons': {}, 'srs': {}, 'seen': {}})
-    checked = 0
+    checked, helps = 0, []
     for offset in range(0, len(FORMAT_FIXTURES) + 1, 6):
         batch = FORMAT_FIXTURES[offset:offset + 6]
         if not batch:
@@ -359,6 +359,8 @@ async def answer_format_checks(browser, url):
             assert sym == (0 if fields['answerKind'] == 'list' else 1), fields
             if fields['answerKind'] == 'periodicSet':
                 assert await page.locator('#answerUnit').inner_text() == 'k ∈ ℤ'
+            if fields['answerKind'] == 'coordinates2':
+                helps.append(await page.locator('#stage .anskeys + .fix').inner_text())
             await page.fill('#numIn', wrong); await page.dispatch_event('#numIn', 'input'); await page.click('#action')
             dock = await page.locator('#dock').inner_text()
             assert 'bad' in await page.locator('#dock').get_attribute('class') and message in dock, (fields, dock)
@@ -368,7 +370,7 @@ async def answer_format_checks(browser, url):
                 if letters:
                     # Expression components: ^, · and the key's variable letters next to the coordinate keys.
                     assert ins == ['(', ';', ')', '-', '/', '√', '^', '·', *letters], ins
-                    assert '(p − m; k − n)' in await page.locator('#stage').inner_text()
+                    assert '(2a; b − 1)' in helps[-1] and '(p − m; k − n)' not in helps[-1], helps[-1]
                 else:
                     assert ins == ['(', ';', ')', '-', '/', '√'], ins
             if fields['answer'] == '(p - m; k - n)':
@@ -387,6 +389,16 @@ async def answer_format_checks(browser, url):
             await page.fill('#numIn', right); await page.dispatch_event('#numIn', 'input'); await page.click('#action')
             assert 'ok' in await page.locator('#dock').get_attribute('class'), (fields, right, await page.locator('#dock').inner_text())
             await page.click('#action'); checked += 1
+    # The examples in the coordinates2 field hints (numeric and expression) must not be the answer of any real exercise:
+    # every «(…)» in a hint is checked against every coordinates2 key of all pools, diagnostics and lesson screens.
+    assert len(helps) == 3 and len(set(helps)) == 2, helps
+    await page.reload()
+    hits = await page.evaluate("""(helps) => {const ex=[...new Set(helps.flatMap(h=>h.match(/\\([^()]*;[^()]*\\)/g)||[]))];
+      const items=SLID_SUBJECTS.flatMap(c=>(c.pools||[]).flatMap(p=>p.items).concat((c.diags||[]).flatMap(d=>d.items),
+        c.sections.flatMap(s=>(s.lessons||[]).flatMap(l=>l.screens||[])))).filter(it=>it.answerKind==='coordinates2');
+      if(ex.length<2||items.length<40) return ['мало прикладів чи ключів: '+ex.length+'/'+items.length];
+      return items.flatMap(it=>ex.filter(e=>SLID_LEARN.checkAns(it,e)!=='bad').map(e=>e+' ← '+JSON.stringify(it.answer)));}""", helps)
+    assert hits == [], hits
     # Two wrong attempts reveal the ordered key in its canonical spelling.
     await page.reload()
     await page.evaluate("""() => {const c=SLID_SUBJECTS.find(c=>c.id==='math');c.pools=c.pools.filter(p=>p.id==='pg6m1');const p=c.pools[0];
