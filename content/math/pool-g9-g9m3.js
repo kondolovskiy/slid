@@ -1,5 +1,5 @@
 /* Слід · Математика, 9 клас — пул задач для тренування до розділу «Алгебра: квадратична функція» (g9m3)
-   Статус: draft. 32 задачі: по 8 на кожен урок g9m3l1–g9m3l4; boss g9m3l5 без задач.
+   Статус: verified (автор agent-write-math-pool-g9m3, 2026-10-31; верифікатор verifier-pg9m3, 2026-10-31, reports/verify/pg9m3.md). 32 задачі: по 8 на кожен урок g9m3l1–g9m3l4; boss g9m3l5 без задач.
    Усі задачі — з підручника Мерзляка, Якіра «Алгебра. 9 клас» (2026), п. 7–12 (sources).
    Умови й числа звірено за відрендереними сторінками PDF 2026-10-31. У цьому PDF друкований номер сторінки = номер сторінки PDF.
    Проміжки — answerKind "intervalSet"; формули — "expression"; вершини — "coordinates2"; нулі — "list".
@@ -8,8 +8,8 @@
 SLID.pool("math", {
   id: "pg9m3",
   section: "g9m3",
-  status: "draft",
-  meta: { author: "claude-opus", created: "2026-10-31", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "claude-opus", created: "2026-10-31", factcheck: "verifier-pg9m3", teacher: null },
   sources: [
     { id: "a9", title: "Мерзляк А. Г., Якір М. С. Алгебра. 9 клас. — Харків: Гімназія, 2026 (п. 7–12; дзеркало PDF на 4book.org)", url: "https://file.4book.org/images/shcoolbook_ua/9/9_a_m_2026.pdf" }
   ],
@@ -81,7 +81,7 @@ SLID.pool("math", {
       type: "answer", answerKind: "expression", title: "Праворуч на 2 і вниз на 3",
       body: "<p>Графік функції $y = x^2$ паралельно перенесли на 2 одиниці вправо вздовж осі абсцис і на 3 одиниці вниз уздовж осі ординат. Графік якої функції отримали? Запиши формулу.</p>",
       answer: "y = (x - 2)^2 - 3",
-      hint: "Нова вершина — у точці $(2;\\,-3)$. Підстав її у $y = (x - h)^2 + k$.",
+      hint: "Вершина $y = x^2$ — у точці $(0;\\,0)$. Куди вона переїде після обох зсувів? Тоді підстав її у $y = (x - h)^2 + k$.",
       steps: ["Зсув праворуч на 2: $h = 2$, у дужках $x - 2$.", "Зсув униз на 3: $k = -3$.", "$y = (x - 2)^2 - 3$."] },
     { id: "b05", lesson: "g9m3l2", lvl: 2, sk: "func", src: "a9 №9.8", srcPage: 87,
       type: "answer", title: "$M(3;\\,-6)$ на графіку $y = ax^2$",

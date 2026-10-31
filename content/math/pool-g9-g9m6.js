@@ -1,5 +1,5 @@
 /* Слід · Математика, 9 клас — пул задач для тренування до розділу «Геометрія: правильні многокутники і перетворення» (g9m6)
-   Статус: draft (agent-write-math-pool-g9m6, 2026-10-31). 32 задачі: g9m6l1 — 8, g9m6l2 — 8, g9m6l3 — 8, g9m6l4 — 8 (boss g9m6l5 без задач).
+   Статус: verified (verifier-pool-g9m6, 2026-10-31; звіт reports/verify/pg9m6.md). Автор: agent-write-math-pool-g9m6. 32 задачі: g9m6l1 — 8, g9m6l2 — 8, g9m6l3 — 8, g9m6l4 — 8 (boss g9m6l5 без задач).
    Матриця docs/math-personalization-coverage.md 2026-10-16.v2: усі чотири уроки required, формати number, coordinates2, exactRoot.
    Прогалини форматів (у відповідних пунктах підручника таких вправ немає): l1 і l2 — coordinates2; l3 — exactRoot. Див. нотатки задачі.
    Усі задачі — з підручника Мерзляк, Якір. Геометрія 9 (2026), п. 6, 7, 17–20 і оповідання «Гомотетія»; умови й числа звірено за відрендереними сторінками PDF.
@@ -9,8 +9,8 @@
 SLID.pool("math", {
   id: "pg9m6",
   section: "g9m6",
-  status: "draft",
-  meta: { author: "agent-write-math-pool-g9m6", created: "2026-10-31", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "agent-write-math-pool-g9m6", created: "2026-10-31", factcheck: "verifier-pool-g9m6", teacher: null },
   sources: [
     { id: "mer9g", title: "Мерзляк А. Г., Якір М. С. Геометрія: підручник для 9 класу. — Харків: Гімназія, 2026 (п. 6, 7, 17–20; дзеркало file.4book.org)", url: "https://file.4book.org/images/shcoolbook_ua/9/9_geom_m_2026.pdf" }
   ],
@@ -67,12 +67,12 @@ SLID.pool("math", {
       type: "answer", answerKind: "exactRoot", title: "Коло радіуса $6$ см",
       body: "<p>Знайди довжину кола, радіус якого дорівнює $6$ см.</p><p>Запиши відповідь точно, через $π$.</p>",
       answer: "12π", unit: "см",
-      steps: ["Довжина кола: $C = 2πR$.", "$C = 2 · π · 6 = 12π$ см."] },
+      steps: ["Довжина кола: $C = 2πR$, де $R$ — радіус (в уроці його позначено $r$).", "$C = 2 · π · 6 = 12π$ см."] },
     { id: "b02", lesson: "g9m6l2", lvl: 1, sk: "geom", src: "mer9g №7.3(1)", srcPage: 88,
       type: "answer", answerKind: "exactRoot", title: "Круг радіуса $4$ см",
       body: "<p>Знайди площу круга, радіус якого дорівнює $4$ см.</p><p>Запиши відповідь точно, через $π$.</p>",
       answer: "16π", unit: "см²",
-      steps: ["Площа круга: $S = πR^2$.", "$S = π · 4^2 = 16π$ см²."] },
+      steps: ["Площа круга: $S = πR^2$, де $R$ — радіус (в уроці його позначено $r$).", "$S = π · 4^2 = 16π$ см²."] },
     { id: "b03", lesson: "g9m6l2", lvl: 1, sk: "geom", src: "mer9g №7.4(1)", srcPage: 88,
       type: "answer", answerKind: "exactRoot", title: "Круг діаметра $20$ см",
       body: "<p>Знайди площу круга, діаметр якого дорівнює $20$ см.</p><p>Запиши відповідь точно, через $π$.</p>",
