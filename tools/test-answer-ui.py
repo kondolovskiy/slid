@@ -972,7 +972,10 @@ async def attr_math_checks(browser, url):
     (aria-label of lesson buttons/sheet, img alt, badge title, href). Attributes get plain readable text instead."""
     context, page, errors = await qa_page(browser, url, {'grade': 8, 'unlockAll': True})
     k, lessons = await page.evaluate("""() => {const c=SLID_SUBJECTS.find(c=>c.id==='math'),k=c.sections.findIndex(s=>s.id==='g8m3');
-      const L=c.sections[k].lessons; L[1].screens[0]={...L[1].screens[0],img:'icons/icon-192.png',cap:'Квадрат зі стороною $\\\\sqrt{2}$ і площею <i>$x^2$</i>',
+      const L=c.sections[k].lessons;
+      // fixture titles: content no longer has `$` in g8m3 titles (fix-math-tex-content), the engine must still cope
+      L[1].title='Де живе $\\\\sqrt{2}$?'; L[3].title='Графік $y = \\\\sqrt{x}$';
+      L[1].screens[0]={...L[1].screens[0],img:'icons/icon-192.png',cap:'Квадрат зі стороною $\\\\sqrt{2}$ і площею <i>$x^2$</i>',
         note:{text:'Примітка',links:[['Джерело','https://example.org/a$b$c']]}};
       const b=c.badges&&c.badges[0]; if(b) b.desc='Знайди $x^2 = 81$ і $1/2 + 1/3$';
       (c.credits||(c.credits=[])).unshift(['QA','автор','CC0','https://example.org/$x$']);
