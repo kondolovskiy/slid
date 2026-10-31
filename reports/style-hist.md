@@ -110,7 +110,7 @@
 | g9s1l3 Землі під цісарем | 9 | 9 | 0.56 | 26 | 66 | 5.5 | 0.045 | 4 | sentenceWords=5.5 поза [6; 13] |
 | g9s1l4 Селянин без права піти | 9 | 9 | 0.56 | 24 | 56 | 6 | 0.049 | 4 | — |
 | g9s1l5 Архів двох кордонів (фінал) | 9 | 7 | 0.86 | 26 | 54 | 5.4 | 0.042 | 4 | sentenceWords=5.4 поза [6; 13]; maxReadWords нетипово для сім'ї (z=2.3); typeVariety нетипово для сім'ї (z=2.5) |
-| g9s2l1 Еней — парубок моторний | 9 | 7 | 0.57 | 28 | 73 | 6.1 | 0.051 | 3 | — |
+| g9s2l1 Еней — парубок моторний | 9 | 8 | 0.63 | 29 | 73 | 6.2 | 0.052 | 3 | — |
 | g9s2l2 Університет, зібраний містом | 9 | 7 | 0.57 | 25 | 66 | 5.7 | 0.04 | 4 | sentenceWords=5.7 поза [6; 13] |
 | g9s2l3 Книжка під арештом | 9 | 7 | 0.57 | 22 | 64 | 5.1 | 0.04 | 3 | sentenceWords=5.1 поза [6; 13] |
 | g9s2l4 Кріпак, що став Кобзарем | 9 | 7 | 0.57 | 26 | 75 | 5.4 | 0.029 | 4 | sentenceWords=5.4 поза [6; 13] |
@@ -190,7 +190,7 @@
 
 - **5-6:lesson**: screens 7±1.03, gradedShare 0.6±0.09, readWordsPerScreen 22.34±4.07, maxReadWords 53.29±7.4, sentenceWords 6.06±0.38, longWordShare 0.04±0.02, typeVariety 3.18±0.76
 - **5-6:boss**: screens 6.44±0.5, gradedShare 0.84±0.01, readWordsPerScreen 12.56±2.59, maxReadWords 23.22±6.99, sentenceWords 4.9±0.39, longWordShare 0.05±0.01, typeVariety 3.33±0.47
-- **7-9:lesson**: screens 7.92±0.75, gradedShare 0.58±0.06, readWordsPerScreen 24.34±2.8, maxReadWords 60.74±7.56, sentenceWords 5.9±0.41, longWordShare 0.04±0.01, typeVariety 3.29±0.45
+- **7-9:lesson**: screens 7.94±0.74, gradedShare 0.59±0.06, readWordsPerScreen 24.35±2.82, maxReadWords 60.74±7.56, sentenceWords 5.9±0.41, longWordShare 0.04±0.01, typeVariety 3.29±0.45
 - **7-9:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 21.4±2.8, maxReadWords 42.6±5.04, sentenceWords 5.47±0.45, longWordShare 0.03±0.01, typeVariety 3.13±0.34
 - **10-11:lesson**: screens 8.93±1.24, gradedShare 0.55±0.05, readWordsPerScreen 27.07±4.71, maxReadWords 61.12±8.34, sentenceWords 6.42±0.49, longWordShare 0.07±0.03, typeVariety 3.45±0.5
 - **10-11:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 23.6±2.54, maxReadWords 47.2±7.19, sentenceWords 6.12±0.62, longWordShare 0.07±0.02, typeVariety 3.6±0.49
