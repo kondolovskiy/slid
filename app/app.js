@@ -160,9 +160,11 @@ function render(){
 /* ---------- Навчання: предмети → розділи → уроки ---------- */
 function starsHtml(n){ return `<div class="stars" aria-label="${n} з 3 зірок">${[0,1,2].map(i=>`<span class="${i<n?"":"off"}">${icF("star")}</span>`).join("")}</div>`; }
 function activeSec(c){ const secs=c.sections, ok=x=>x.lessons && x.grade===S.grade; let k=secs.findIndex(x=>ok(x) && !x.lessons.every(l=>done(l.id))); if(k<0) k=secs.findIndex(ok); return k; }
-/** «Продовжити» на головній — та сама точка старту, що й у плані: спершу baseline-старт (baseStart), далі перший відкритий
+/** «Продовжити» на головній — та сама точка старту, що й у плані: спершу перший невиконаний крок плану (stepsTodo, як рядок
+    картки «Твій план»; step — запускається так само, через data-lesson), далі baseline-старт (baseStart), далі перший відкритий
     непройдений урок класу, який тест не позначив «уже вмієш» (known; фінал розділу — лише після всіх його уроків); якщо таких немає — як раніше, перший непройдений активного розділу. */
 function nextLesson(c){
+  const td=stepsTodo(c), fs=td.length&&findLesson(td[0].l); if(fs) return {c, k:fs.k, sec:fs.sec, i:fs.i, l:fs.l, step:true};
   const bs=baseStart(c), fb=bs&&findLesson(bs); if(fb) return {c, k:fb.k, sec:fb.sec, i:fb.i, l:fb.l};
   for(let k=0;k<c.sections.length;k++){ const sec=c.sections[k]; if(!sec.lessons||sec.grade!==S.grade) continue;
     const i=sec.lessons.findIndex((l,j)=>!done(l.id)&&!known(l.id)&&unlocked(sec,j)&&(!l.boss||sec.lessons.every(x=>x.boss||done(x.id)))); if(i>=0) return {c, k, sec, i, l:sec.lessons[i]}; }
@@ -179,9 +181,9 @@ function viewHome(){
     <div><h1 style="margin-top:2px">Привіт${nm}!</h1><p class="muted" style="margin:4px 0 0">Що вивчаємо сьогодні?</p></div>
     ${subs.map(c=>planCard(c)||diagInvite(c)).join("")}
     ${subs.map(c=>openItems(c).length? practiceEntry(c) : "").join("")}
-    ${nx? `<button type="button" class="cont s-${nx.c.id}" data-start="${nx.c.id}|${nx.k}|${nx.i}">
+    ${nx? `<button type="button" class="cont s-${nx.c.id}" ${nx.step? `data-lesson="${nx.l.id}"` : `data-start="${nx.c.id}|${nx.k}|${nx.i}"`}>
         <span class="dot lg s-${nx.c.id}">${ic(nx.l.icon)}</span>
-        <span class="grow"><span class="eyebrow">Продовжити · ${nx.c.short}</span><b>${esc(nx.l.title)}</b><span class="muted" style="font-size:13px">${esc(nx.sec.title)} · урок ${nx.i+1} з ${nx.sec.lessons.length}</span></span>
+        <span class="grow"><span class="eyebrow">Продовжити · ${nx.c.short}</span><b>${esc(nx.l.title)}</b><span class="muted" style="font-size:13px">${nx.step? `Крок плану · ${nx.sec.grade} клас` : `${esc(nx.sec.title)} · урок ${nx.i+1} з ${nx.sec.lessons.length}`}</span></span>
         <span class="play">${icF("play")}</span></button>` : ""}
     ${now.length? `<div class="card now"><div class="nowhead"><span class="eyebrow">Зараз у школі</span><span class="pill">${S.grade} клас · тиждень ${wk}</span></div>
       ${now.map(({c,sec})=>{ const k=c.sections.indexOf(sec); return sec.lessons
@@ -643,9 +645,17 @@ function mathFig(f){
 
 /* ---------- Плеєр уроку ---------- */
 let C=null, L=null, li=0, idx=0, st=null, checked=false, tries=0, tried=null, run=null;
-/* відбиток відповіді: друга спроба зараховується лише після зміни відповіді (повторний Enter не витрачає її) */
-const answerSig = () => { const v= LAB && L.screens[idx]?.type==="lab"? LAB.get() : st; return v instanceof Set? JSON.stringify([...v].sort((a,b)=>a-b)) : typeof v==="string"? v.replace(/\s+/g," ").trim() : JSON.stringify(v); };
-const sameAsTried = () => tried!==null && !checked && answerSig()===tried;
+/* відбиток відповіді: друга спроба зараховується лише після зміни відповіді (повторний Enter не витрачає її).
+   Записи порівнюємо за значенням: «5,», «05», « 5 » після «5» — та сама відповідь (LEARN.answerSig). */
+const answerSig = () => { const s=L.screens[idx], v= LAB && s?.type==="lab"? LAB.get() : st;
+  if(typeof v==="string" && s){ const t=v.replace(/\s+/g," ").trim();
+    if(s.type==="number"){ const n=numParse(t); return t && Number.isFinite(n)? "n:"+n : "s:"+t; }
+    if(s.type==="fracin" && !s.hideDen){ const n=parseInt(t,10); return Number.isFinite(n)? "i:"+n : "s:"+t; }
+    if(s.type==="answer") return LEARN.answerSig(s, t);
+    if(s.type==="fracin") return LEARN.answerSig({answerKind:"number"}, t); }
+  return v instanceof Set? JSON.stringify([...v].sort((a,b)=>a-b)) : typeof v==="string"? v.replace(/\s+/g," ").trim() : JSON.stringify(v); };
+/* правильну відповідь не блокуємо ніколи, навіть якщо відбиток збігся (напр. «5,» без цифри після коми, а потім «5») */
+const sameAsTried = () => tried!==null && !checked && answerSig()===tried && !gradeNow(L.screens[idx]);
 const letters="АБВГДЕ";
 let SEC=null;
 function startById(id){ const f=findLesson(id); if(f) startLesson(f.c.id,f.k,f.i,true); }
@@ -746,19 +756,27 @@ function renderPracticeEnd(){
 const PLAYER_BG = ["#app","#tabs","#sheetHost"];
 function openPlayer(){ $("#player").hidden=false; document.body.style.overflow="hidden"; $("#pClose").innerHTML=ic("x"); PLAYER_BG.forEach(q=>{ const e=$(q); if(e) e.inert=true; }); }
 function closePlayer(){ $("#player").hidden=true; document.body.style.overflow=""; PLAYER_BG.forEach(q=>{ const e=$(q); if(e) e.inert=false; }); render(); }
-/** Фокус на головну дію (Далі / Перевірити / Готово), щоб Enter вів далі; якщо вона неактивна — на перший елемент екрана. */
+/** Фокус на головну дію (Далі / Перевірити / Готово), щоб Enter вів далі. Якщо вона неактивна — на обраний варіант
+    (спершу позначений помилкою), далі на перший елемент екрана, а якщо їх немає (lab із самими SVG) — на сам екран.
+    Ніколи не на ✕: два Enter на ній за 2,5 с закривають урок без збереження. */
 function focusAction(){ const a=$("#action"); if(!a.disabled) return a.focus({preventScroll:true});
-  const el=$("#stage").querySelector('[aria-pressed="true"]:not(:disabled), button:not(:disabled), input:not(:disabled), [tabindex="0"]'); (el||$("#pClose")).focus({preventScroll:true}); }
+  const g=$("#stage"), q=sel=>g.querySelector(sel);
+  const el=q('.is-bad[aria-pressed="true"]:not(:disabled), .is-bad [aria-pressed="true"]:not(:disabled)') || q('[aria-pressed="true"]:not(:disabled)')
+    || q('button:not(:disabled), input:not(:disabled), [tabindex="0"]') || q('.screen');
+  if(el) el.focus({preventScroll:true}); }
 $("#pClose").onclick=()=>{ if(idx>=L.screens.length) return closePlayer();
   if(run.diag){ closePlayer(); return toast("Тест збережено. Продовжиш з того самого місця"); }
   if($("#pClose").dataset.armed){ closePlayer(); } else { $("#pClose").dataset.armed="1"; toast("Натисни ✕ ще раз, щоб вийти. Прогрес уроку не збережеться"); setTimeout(()=>delete $("#pClose").dataset.armed,2500); } };
 
+const SAME_MSG="Це та сама відповідь, що й минулого разу. Зміни її, щоб перевірити ще раз.";
 function setDock(kind,title,text,label,enabled=true){
-  if(label==="Перевірити" && sameAsTried()) enabled=false;
+  if(label==="Перевірити" && sameAsTried()){ enabled=false; if(!title&&!text) text=SAME_MSG; }
   const d=$("#dock"); d.className="dock fixed"+(kind?" "+kind:"");
   $("#fbTitle").innerHTML=fmt(title); $("#fbText").innerHTML=fmt(text);
   const dg=!!(run&&run.diag) && idx<L.screens.length;
   $("#action").textContent= dg&&label==="Перевірити"? "Відповісти" : label; $("#action").disabled=!enabled;
+  // неактивна кнопка пояснює себе: текст у #fbText (aria-live) — і як опис кнопки для читача екрана
+  if(!enabled && tried!==null && text) $("#action").setAttribute("aria-describedby","fbText"); else $("#action").removeAttribute("aria-describedby");
   $("#skip").hidden=!dg;
 }
 function pProgress(){ const na=run.diag? Object.keys(run.res).length : 0, p= run.diag? Math.round(na/Math.max(1,na+LEARN.remaining(run.diag,run.res))*100) : Math.round(idx/L.screens.length*100); $("#pBar").style.width=p+"%"; $("#pBar").parentElement.setAttribute("aria-valuenow",p);
@@ -781,7 +799,7 @@ function renderScreen(){
   $("#player").scrollTo({top:0, behavior:"instant"});   // і для підсумку: інакше він відкривається з прокруткою попереднього екрана
   if(idx>=L.screens.length){ if(run.diag) renderDiagEnd(); else if(run.practice) renderPracticeEnd(); else renderEnd(); $("#player").scrollTo({top:0, behavior:"instant"}); return focusAction(); }
   const s=L.screens[idx]; checked=false; tries=0; tried=null; pProgress();
-  let h=`<section class="screen"><div class="eyebrow">${run.diag? `Тест рівня · завдання ${Object.keys(run.res).length+1}` : s.eyebrow||""}</div>`;
+  let h=`<section class="screen" tabindex="-1"><div class="eyebrow">${run.diag? `Тест рівня · завдання ${Object.keys(run.res).length+1}` : s.eyebrow||""}</div>`;
   h+= s.type==="intro"? `<h1>${s.title}</h1>` : `<h2>${s.title}</h2>`;
   h+= fig(s) + (s.body||"") + noteHtml(s);
   if(s.type==="choice"||s.type==="multi"){
@@ -968,7 +986,9 @@ function check(){
              : s.type==="numline"? "Точка стоїть не там. Порахуй поділки від нуля."
              : s.type==="lab"? "Ще не те. Зміни модель і перевір ще раз."
              : s.type==="answer" && LEARN.checkAns(s,st)==="form"? LEARN.formHint(s,st)
-             : "Спробуй ще раз.";
+             : s.type==="choice"? "Обери інший варіант і перевір ще раз."
+             : s.type==="multi"? "Зміни вибір і перевір ще раз."
+             : "Зміни відповідь і перевір ще раз.";
     tried=answerSig();
     setDock("bad", s.fbBad||"Не зовсім.", msg+preNote, "Спробувати ще раз", false);   // активна знову, щойно відповідь змінено
     return refocusAnswer();
@@ -993,8 +1013,15 @@ function check(){
   setDock(ok?"ok":"bad", `${title}${g?` <span class="gain">+${g}</span>`:""}`, s.fbText+(ok?"":preNote), "Далі");
   focusAction();   // поле заблоковано — без цього фокус падає на BODY і Enter нікуди не веде
 }
-/** Після першої помилки: фокус назад у поле відповіді (текст виділено, щоб одразу виправити) або на обраний елемент. */
-function refocusAnswer(){ const ni=$("#numIn"); if(ni && !ni.disabled){ ni.focus({preventScroll:true}); ni.select(); return; }
+/** Після першої помилки: фокус назад у поле відповіді (текст виділено, щоб одразу виправити) або на обраний елемент.
+    Після дотику (телефон, планшет) поле не фокусуємо: інакше знову відкриється екранна клавіатура й закриє підказку
+    та пояснення. Фокус — на екран, підказку прокручуємо у видиму частину; поле дитина торкне сама. */
+let lastPointer="";
+document.addEventListener("pointerdown", e=>{ lastPointer=e.pointerType; }, true);
+document.addEventListener("keydown", ()=>{ lastPointer="key"; }, true);
+function refocusAnswer(){ const ni=$("#numIn"), touch= lastPointer==="touch"||lastPointer==="pen";
+  if(touch){ const h=$("#hintHost .hint"); if(h) h.scrollIntoView({block:"nearest"}); const a=document.activeElement; if(a && a!==document.body && $("#stage").contains(a) && a!==ni) return; $("#stage .screen")?.focus({preventScroll:true}); return; }
+  if(ni && !ni.disabled){ ni.focus({preventScroll:true}); ni.select(); return; }
   const a=document.activeElement; if(a && a!==document.body && $("#stage").contains(a)) return; focusAction(); }
 $("#action").onclick=()=>{
   if(idx>=L.screens.length){ const f=afterEnd; afterEnd=null; closePlayer(); if(f) f(); return; }

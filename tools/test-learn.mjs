@@ -780,5 +780,31 @@ const order = l => ({ L1: 3, L2: 1, L3: 2, L4: 4 }[l] ?? 50);
   eq(pool({ signed: true, answerKind: "comparison", answer: "<" }).some(e => e.includes("signed")), true, "validatePool: signed лише для number");
 }
 
+// answerSig: друга спроба не витрачається на той самий запис іншими символами (engine-player-focus-followup)
+{ const S = (s, a, b) => L.answerSig(s, a) === L.answerSig(s, b), num = { answer: 7 };
+  for (const v of ["5,", "05", " 5 ", "5,0", "5."]) eq(S(num, "5", v), true, `answerSig: «${v}» = «5»`);
+  for (const v of ["6", "-5", "5/1", "50", "0,5"]) eq(S(num, "5", v), false, `answerSig: «${v}» ≠ «5»`);
+  eq(S(num, "19 735", "19735"), true, "answerSig: розряди через пробіл — те саме число");
+  eq(S(num, "2/4", "1/2"), false, "answerSig: нескоротний і скоротний дріб — різний запис (reduced → form)");
+  eq(S(num, "2/4", " 2/4 "), true, "answerSig: пробіли довкола дробу");
+  eq(S(num, "7 /3", "7/3"), false, "answerSig: пробіл у дробу лишаємо — від нього залежить перевірка mixed");
+  eq(S(num, "2 1/3", "7/3"), false, "answerSig: мішане число й неправильний дріб — різні (mixed → form)");
+  eq(S(num, "2 1/3", "21/3"), false, "answerSig: «2 1/3» ≠ «21/3»");
+  eq(S(num, "0,6", "3/5"), false, "answerSig: десятковий і звичайний дріб — різний запис (fractionOnly)");
+  const dr = { answerKind: "divrem", answer: [4, 5] };
+  eq(S(dr, "4 ост. 6", "4, остача 6"), true, "answerSig divrem: той самий запис іншими словами");
+  eq(S(dr, "4 ост. 6", "4 ост. 5"), false, "answerSig divrem: інша остача");
+  eq(S(dr, "4", "4 ост. 0"), false, "answerSig divrem: лише частка ≠ остача 0");
+  const ls = { answerKind: "list", answer: "1; 2" };
+  eq(S(ls, "1;3", "1 ; 3"), true, "answerSig list: пробіли біля «;»");
+  eq(S(ls, "1; 3", "3; 1"), false, "answerSig list: інший порядок — інший запис (перевіряє checkAns)");
+  const ex = { answerKind: "expression", answer: "x^2 + 1" };
+  eq(S(ex, "x^2+2", "x ^ 2 + 2"), true, "answerSig expression: пробіли біля знаків дій");
+  eq(S(ex, "x^2+2", "x^2+3"), false, "answerSig expression: інший вираз");
+  eq(S({ answerKind: "coordinates2", answer: [1, 2] }, "(1;−3)", "( 1 ; -3 )"), true, "answerSig coordinates: «−» і пробіли");
+  eq(S({ answerKind: "comparison", answer: "<" }, ">", " > "), true, "answerSig comparison: пробіли");
+  eq(S({ answerKind: "comparison", answer: "<" }, ">", "="), false, "answerSig comparison: інший знак");
+}
+
 console.log(`\n${n} перевірок, ${fails ? fails + " з помилками" : "усе гаразд"}`);
 if (fails) process.exit(1);
