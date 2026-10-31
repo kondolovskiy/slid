@@ -5,7 +5,7 @@ write_group: personalization-shared
 id: engine-math-answer-formats-followup
 type: engine
 subject: math
-status: review
+status: done
 claimed_by: engineer-formats-followup
 created: 2026-10-30
 depends_on: [engine-math-pool-answer-formats]

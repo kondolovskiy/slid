@@ -21,3 +21,12 @@ depends_on: [engine-math-answer-formats-followup]
 Вимоги як у попередніх задачах: регресії, диференційна регресія на всіх verified пулах, CONTENT_SCHEMA §10, незалежне рев'ю (D-026).
 
 ## Нотатки виконавця
+
+## P3 з рев'ю engine-math-answer-formats-followup (reports/review/engine-math-answer-formats-followup.md)
+- P2-r1 не повністю: `(1/2)(2 + 2√5)`, `(1/3)(3 + 3√3)` ok — знаменник раціонального множника поза НСД (canonExact, гілка c·(сума)/d).
+- intervalSet `(-∞; 2√2/2]` → form із загальною підказкою (unreducedOnly не обробляє intervalSet).
+- Перевірка «підказка ≠ ключ» — ручний список прикладів; витягати приклади з текстів підказок автоматично, звіряти й числові (7/12, 2 1/3, 2,5).
+- `window.SLID_ANS_UI` — віддавати Object.freeze-копію.
+- Одиниці: «Перевір одиницю» навіть коли хибне число; coordinates2/ratio з unit «°» `(30°; 60°)` → bad; `60 грн.`, «5 разів», `70º`.
+- Межа часу від годинника (до ~2,4 с на bad у expression); у браузерних тестах Date.now заморожений.
+- test-personalization-qa: прив'язки до живого змісту (counts, pending = 6, optional = 7, pg8m5) — перевести на фікстури.
