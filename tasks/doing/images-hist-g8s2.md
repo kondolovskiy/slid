@@ -1,11 +1,13 @@
 ---
+claimed_from: todo
+claimed_at: 2026-10-31T18:15:28.819Z
 id: images-hist-g8s2
 type: images
 subject: hist
 grade: 8
 section: g8s2
 status: todo
-claimed_by:
+claimed_by: photo-g8s2
 created: 2026-10-30
 depends_on: []
 ---
