@@ -226,8 +226,12 @@ window.SLID_LEARN = (() => {
   // Переповнення кидає TOO; checkAns відповідає «bad», точне порівняння виразів переходить на числове.
   const TOO = { tooBig: true }, BIG = 1n << 2048n;
   let DEADLINE = Infinity;
-  const guard = () => { if (Date.now() > DEADLINE) throw TOO; };
-  const Q = (p, q = 1n) => { if (q === 0n) return null; if (q < 0n) { p = -p; q = -q; } if (p > BIG || -p > BIG || q > BIG) throw TOO; const g = bgcd(p, q) || 1n; return [p / g, q / g]; };
+  // LIMIT — у цій перевірці спрацювала межа часу, розміру чи бюджету: «bad» тоді означає «не вдалося перевірити», і дитина
+  // бачить «запис занадто складний, спрости» (badHint), а не звичайне «неправильно». На саму відповідь checkAns не впливає.
+  let LIMIT = false;
+  const tooBig = () => { LIMIT = true; return TOO; };
+  const guard = () => { if (Date.now() > DEADLINE) throw tooBig(); };
+  const Q = (p, q = 1n) => { if (q === 0n) return null; if (q < 0n) { p = -p; q = -q; } if (p > BIG || -p > BIG || q > BIG) throw tooBig(); const g = bgcd(p, q) || 1n; return [p / g, q / g]; };
   const qadd = (a, b) => Q(a[0] * b[1] + b[0] * a[1], a[1] * b[1]), qmul = (a, b) => Q(a[0] * b[0], a[1] * b[1]);
   function parseTree(tokens) {
     let i = 0, inAbs = 0;
@@ -336,7 +340,7 @@ window.SLID_LEARN = (() => {
   }
   function xmul(a, b) {
     guard();
-    if (a.size * b.size > 1024 || (BUDGET -= a.size * b.size) < 0) return null;
+    if (a.size * b.size > 1024 || (BUDGET -= a.size * b.size) < 0) { LIMIT = true; return null; }
     let m = new Map();
     for (const [ka, qa] of a) for (const [kb, qb] of b) {
       const [na, ra, pa] = ka.split(":"), [nb, rb, pb] = kb.split(":"), k = +pa + +pb;
@@ -346,7 +350,8 @@ window.SLID_LEARN = (() => {
       if (!red || k > 3) return null;
       m = xadd(m, X(qmul(qmul(qa, qb), red[0]), red[1], red[2], k));
     }
-    return m.size > 64 ? null : m;
+    if (m.size > 64) { LIMIT = true; return null; }
+    return m;
   }
   const xrat = m => !m.size ? [0n, 1n] : m.size === 1 && m.has("1:1:0") ? m.get("1:1:0") : null;
   const xnum = m => [...m].reduce((s, [key, q]) => { const [n, r, k] = key.split(":"); return s + Number(q[0]) / Number(q[1]) * Math.pow(Number(r), 1 / n) * Math.PI ** k; }, 0);
@@ -390,15 +395,19 @@ window.SLID_LEARN = (() => {
     return kids(n).every(k => tidyRoots(k, den));
   }
   /* Канонічний точний запис: доданки c · ⁿ√r · π / d (не більше одного числа, кореня, π і цілого дільника), кожен радикал
-     і раціональна частина — лише раз; або (така сума) / ціле. Інакше значення правильне, але запис не спрощено (√3+√3, 2√3·√6, 32−24). */
+     і раціональна частина — лише раз; або (така сума) / ціле. Інакше значення правильне, але запис не спрощено (√3+√3, 2√3·√6, 32−24).
+     Ціле число й цілий дільник — без спільного множника: 2√2/2, (2 + 2√5)/2, (−6 + 2√14)/2, (2/4)√3 — нескорочений дріб, "form". */
   const ratLit = e => e.k === "num" || (e.k === "mul" && e.f.every(t => t.e.k === "num") && e.f.length === 2 && e.f[1].d);   // 2 або (1/3)
+  const intLit = e => e.k === "num" && e.v[1] === 1n ? e.v[0] : null;
+  let NOGCD = false;                             // formHint: чи стане запис канонічним, якщо лише скоротити дріб
+  const litReduced = e => NOGCD || e.k !== "mul" || intLit(e.f[0].e) === null || intLit(e.f[1].e) === null || bgcd(e.f[0].e.v[0], e.f[1].e.v[0]) === 1n;
   function canonTerm(t) {
-    let num = 0, root = 0, pi = 0, den = 0;
+    let num = 0, root = 0, pi = 0, den = 0, c = 1n, dv = 1n;
     for (const { d, e } of t.k === "mul" ? t.f : [{ d: false, e: t }]) {
-      if (d) { if (e.k !== "num" || e.v[1] !== 1n || ++den > 1) return false; }
-      else if (ratLit(e)) { if (++num > 1) return false; } else if (e.k === "root") { if (++root > 1) return false; } else if (e.k === "pi") { if (++pi > 1) return false; } else return false;
+      if (d) { if (e.k !== "num" || e.v[1] !== 1n || ++den > 1) return false; dv = e.v[0]; }
+      else if (ratLit(e)) { if (++num > 1 || !litReduced(e)) return false; c = intLit(e) ?? 1n; } else if (e.k === "root") { if (++root > 1) return false; } else if (e.k === "pi") { if (++pi > 1) return false; } else return false;
     }
-    return true;
+    return NOGCD || bgcd(c, dv) === 1n;
   }
   function canonSum(t) {
     const terms = t.k === "add" ? t.a.map(x => x.e) : [t];
@@ -413,13 +422,16 @@ window.SLID_LEARN = (() => {
     if (u !== t && canonSum(u)) return true;
     // c · (сума) / d: 2(1 + √5), (−1 + √5)/2, (1/3)(3 + √3) — одна канонічна сума, число й цілий дільник
     if (u.k !== "mul") return false;
-    let sum = 0, num = 0, den = 0;
+    let sum = null, num = 0, den = 0, c = 1n, dv = 1n;
     for (const { d, e } of u.f) {
-      if (d) { if (natNum(e) === null || natNum(e) < 2n || ++den > 1) return false; }
-      else if (e.k === "add") { if (++sum > 1 || !canonSum(e)) return false; }
-      else if (ratLit(e)) { if (++num > 1) return false; } else return false;
+      if (d) { if (natNum(e) === null || natNum(e) < 2n || ++den > 1) return false; dv = natNum(e); }
+      else if (e.k === "add") { if (sum || !canonSum(e)) return false; sum = e; }
+      else if (ratLit(e)) { if (++num > 1 || !litReduced(e)) return false; c = intLit(e) ?? 1n; } else return false;
     }
-    return sum === 1;
+    if (!sum) return false;
+    // (сума)/d: спільний множник числа перед дужками, цілих коефіцієнтів суми й дільника — нескорочений дріб
+    const cs = sum.a.map(t => { const v = xval(t.e); return v && v.size === 1 ? [...v.values()][0] : null; });
+    return NOGCD || dv === 1n || !cs.every(q => q && q[1] === 1n) || cs.reduce((g, q) => bgcd(g, c * q[0]), dv) === 1n;
   }
   const ratOf = a => a && a.proper ? { x: X(Q(BigInt(a.n), BigInt(a.d))), tidy: true } : null;
   /** Точне число з рядка: { x — Map, tidy — канонічний запис } або null. Спершу звичайний запис числа (розряди, мішані дроби), далі корені й π. */
@@ -487,10 +499,15 @@ window.SLID_LEARN = (() => {
       if (ka.k === "eq" || !u || u.k === "eq") return { sym: true, r: "bad" };
       const stop = i ? end : Date.now() + (end - Date.now()) / 2;
       DEADLINE = stop; BUDGET = 50000;
-      const same = sameExpr(ka, u); DEADLINE = Math.min(DEADLINE, stop);
-      return { sym: true, r: !same ? "bad" : exprForm(s.form, ka, u) ? "ok" : "form" };
+      // форма — з тим запасом, який sameExpr дав собі після переходу на числове порівняння (+400 мс), як у звичайному expression;
+      // лише потім межа повертається до половини часу пари, щоб друга компонента не втратила свою частку
+      const same = sameExpr(ka, u), r = !same ? "bad" : exprForm(s.form, ka, u) ? "ok" : "form";
+      DEADLINE = Math.min(DEADLINE, stop);
+      return { sym: true, r };
     });
   }
+  // Останній результат pairSym з checkAns: formHint одразу після checkAns не перевіряє пару вдруге.
+  let PAIR_LAST = null;
   const worst = rs => rs.some(x => x.r === "bad") ? "bad" : rs.some(x => x.r === "form") ? "form" : "ok";
   /** Відношення a : b (: c) додатних чисел; порядок членів важливий. */
   function parseRatio(v) {
@@ -643,7 +660,7 @@ window.SLID_LEARN = (() => {
   function padd(a, b, s = 1n) { const m = new Map(a); for (const [k, q] of b) { const v = m.has(k) ? qadd(m.get(k), [s * q[0], q[1]]) : [s * q[0], q[1]]; if (v[0] === 0n) m.delete(k); else m.set(k, v); } return m; }
   function pmul(a, b) {
     guard();
-    if (a.size * b.size > 400 || (BUDGET -= a.size * b.size) < 0) return null;
+    if (a.size * b.size > 400 || (BUDGET -= a.size * b.size) < 0) { LIMIT = true; return null; }
     let m = new Map();
     for (const [ka, qa] of a) for (const [kb, qb] of b) {
       const e = {}; for (const part of (ka + "," + kb).split(",").filter(Boolean)) { const [x, n] = part.split(":"); e[x] = (e[x] || 0) + +n; }
@@ -671,10 +688,11 @@ window.SLID_LEARN = (() => {
     return lead.length === 1 && lead[0][1][1] === 1n && (lead[0][1][0] === 1n || lead[0][1][0] === -1n);
   }
   // Кожен множник зі змінною — примітивний: цілі коефіцієнти без спільного дільника (3x + 6, 0,5x + 1 — не до кінця).
+  const varDen = n => (n.k === "mul" && n.f.some(t => t.d && !isConst(t.e))) || kids(n).some(varDen);
   function primitive(n) {
     for (const { d, e } of factorsOf(n)) {
       if (isConst(e)) continue;
-      if (d) return false;                      // множник зі змінною в знаменнику — це не розклад
+      if (d || varDen(e)) return false;         // змінна в знаменнику — це не розклад: 1/x · …, x^2(3 + 6/x)
       const base = e.k === "pow" && natNum(e.e) ? e.b : e, p = base.k === "var" ? null : poly(base);
       if (p && content(p) !== 1n && !monic(p)) return false;
     }
@@ -701,18 +719,52 @@ window.SLID_LEARN = (() => {
   const EXPR_FORMS = ["expanded", "factored", "reduced", "simplified"];
   /** Пояснення для результату "form": що саме не так із записом. */
   function formHint(s, v) {
-    const kind = s.answerKind || "number";
+    const kind = s.answerKind || "number"; v = stripUnit(s, v);
     if (kind === "number") { const u = parseAns(v); return !u?.frac ? "Значення правильне. Запиши відповідь звичайним дробом." : s.reduced && !u.lowest ? "Значення правильне, але дріб ще можна скоротити." : "Значення правильне. Запиши відповідь мішаним числом: ціла частина, пробіл, дріб."; }
     if (kind === "divrem") return "Неповну частку знайдено. Допиши остачу: кнопка «ост.» і число.";
     if (kind === "ratio") return "Відношення правильне. Запиши його натуральними числами без спільного дільника, наприклад 2 : 3.";
     if (kind === "coordinates2" && s.form !== undefined && symPair(s)) {   // «form» дала компонента-вираз — підказка expression, інакше — про корені
-      let rs = null; DEADLINE = Date.now() + 800; BUDGET = 50000;
-      try { rs = pairSym(s, v, symPair(s)); } catch (e) { if (e !== TOO) throw e; } finally { DEADLINE = Infinity; }
-      if (rs && rs.some(x => x.sym && x.r === "form")) return formHint({ answerKind: "expression", form: s.form }, v);
+      const a = symPair(s), up = splitPair(v);
+      let rs = PAIR_LAST && PAIR_LAST.s === s && PAIR_LAST.v === v ? PAIR_LAST.rs : null;
+      if (!rs) { DEADLINE = Date.now() + 800; BUDGET = 50000; try { rs = pairSym(s, v, a); } catch (e) { if (e !== TOO) throw e; } finally { DEADLINE = Infinity; } }
+      const i = rs ? rs.findIndex(x => x.sym && x.r === "form") : -1;
+      if (i >= 0) return exprHint(s.form, a[i], up[i]);
     }
-    if (kind === "expression") return { expanded: "Вираз правильний. Розкрий дужки й зведи подібні доданки.", factored: "Вираз правильний. Розклади його на множники до кінця.",
-      reduced: "Вираз правильний. Скороти дріб.", simplified: "Вираз правильний, але його можна спростити." }[s.form] || "Спробуй ще раз.";
+    if (kind === "expression") return exprHint(s.form, exprOf(s.answer), v);
+    if (["exactRoot", "list", "coordinates2", "coordinates3"].includes(kind) && unreducedOnly(kind, v)) return "Значення правильне. Скороти дріб: поділи числа в чисельнику й знаменник на спільний дільник.";
     return "Значення правильне, але запис не спрощено: обчисли, зведи подібні, винеси множник з-під кореня й позбудься кореня в знаменнику.";
+  }
+  // Хоч один елемент запису неканонічний лише через нескорочений дріб (2√2/2, (2 ± 2√5)/2), а без вимоги НСД — канонічний.
+  function unreducedOnly(kind, v) {
+    const parts = kind === "exactRoot" ? [String(v ?? "")] : kind === "list" ? String(v ?? "").split(/[;\n]/.test(String(v)) ? /[;\n]/ : /,/) : splitPair(v);
+    const loose = t => { NOGCD = true; try { return canonExact(t); } finally { NOGCD = false; } };
+    DEADLINE = Date.now() + 800; BUDGET = 50000;
+    try { return parts.flatMap(p => expandPM(String(p))).some(p => { const t = parseExpr(p); return t && t.k !== "eq" && isConst(t) && !canonExact(t) && loose(t); }); }
+    catch (e) { if (e === TOO) return false; throw e; } finally { DEADLINE = Infinity; }
+  }
+  /** Підказка «form» для виразу (key — дерево ключа, v — запис дитини або компоненти пари). */
+  function exprHint(form, key, v) {
+    if (form === "expanded") return /[()]/.test(String(v)) ? "Вираз правильний. Розкрий дужки й зведи подібні доданки." : "Вираз правильний. Зведи подібні доданки й запиши многочлен стандартного вигляду.";
+    if (form === "simplified" && key) { const k = unNeg(key), u = exprOf(v);   // «подай у вигляді степеня»: ключ — один степінь, запис — ні
+      if (k.k === "pow" && !isConst(k.b) && !(u && unNeg(u).k === "pow")) return "Вираз правильний. Запиши його одним степенем: основа, ^ і показник."; }
+    return { expanded: "", factored: "Вираз правильний. Розклади його на множники до кінця.",
+      reduced: "Вираз правильний. Скороти дріб.", simplified: "Вираз правильний, але його можна спростити." }[form] || "Спробуй ще раз.";
+  }
+  /** Пояснення для «bad», коли звичайне «Зміни відповідь» не допоможе (app.js, після checkAns === "bad"); null — звичайне повідомлення.
+      Межа часу чи розміру — «запис занадто складний»; чужа одиниця при unit; знаменник-добуток без дужок (k/6p), якщо з дужками
+      значення збігається з ключем. Приклади в текстах не збігаються з ключами вправ (test-answer-ui).
+      r — результат checkAns(s, v), щойно обчислений тим самим викликом (app.js): тоді перевірка не повторюється, LIMIT — від неї. */
+  function badHint(s, v, r) {
+    if ((r === undefined ? checkAns(s, v) : r) !== "bad") return null;
+    if (LIMIT) return "Запис занадто складний для перевірки. Спрости його й спробуй ще раз.";
+    const t = String(v ?? "");
+    if (s.unit && foreignUnit(s, t)) return `Перевір одиницю: тут відповідь записують у «${s.unit}». Одиницю можна й не писати.`;
+    const kind = s.answerKind || "number";
+    if (kind === "expression" || (kind === "coordinates2" && symPair(s))) {
+      const w = norm(t).replace(/\/\s*(\d+(?:,\d+)?[A-Za-zͰ-Ͽ][A-Za-zͰ-Ͽ\d^]*|[A-Za-zͰ-Ͽ](?:\^\d+)?[A-Za-zͰ-Ͽ][A-Za-zͰ-Ͽ\d^]*)/g, "/($1)");
+      if (w !== norm(t) && checkAns(s, w) !== "bad") return "Знаменник-добуток візьми в дужки: 1/(3y), бо 1/3y — це y/3.";
+    }
+    return null;
   }
   /** Відбиток записаної відповіді для другої спроби: однакові відбитки — та сама відповідь іншим записом («5», «05», « 5 »),
       і повторна перевірка нічого б не змінила. Число й частка з остачею — за розібраним значенням разом із ознаками запису,
@@ -720,7 +772,7 @@ window.SLID_LEARN = (() => {
       нормалізований рядок: пробіли згорнуто, біля знаків пунктуації й дій прибрано, «−» → «-», крапка → кома.
       Плеєр усе одно не блокує відповідь, яку checkAns приймає (app.js sameAsTried), тож відбиток лише економить спробу. */
   function answerSig(s, v) {
-    const kind = s?.answerKind || "number", t = String(v ?? "").replace(/\s+/g, " ").trim();
+    const kind = s?.answerKind || "number", t = String(stripUnit(s, String(v ?? "")) ?? "").replace(/\s+/g, " ").trim();   // «7 см» = «7» при unit «см»
     if (kind === "number") {
       const u = parseAns(t) || parseAns(t.replace(/[,.]$/, ""));   // «5,» — недописана кома, те саме число
       if (u) { const g = gcd(u.n, u.d) || 1; return `n:${u.n / g}/${u.d / g}` + (u.frac ? `|f${+u.lowest}${+u.proper}${+/ /.test(t)}` : ""); }
@@ -788,12 +840,35 @@ window.SLID_LEARN = (() => {
       ratio, coordinates2, coordinates3, exactRoot, intervalSet, expression, periodicSet (docs/CONTENT_SCHEMA.md §10).
       Числа: reduced — нескоротний дріб; mixed — виділити цілу частину; fractionOnly — лише звичайний/мішаний дріб; tol — абсолютна похибка. */
   function checkAns(s, v) {
-    DEADLINE = Date.now() + 800;
-    try { return checkAns0(s, v); } catch (e) { if (e === TOO) return "bad"; throw e; } finally { DEADLINE = Infinity; }
+    DEADLINE = Date.now() + 800; LIMIT = false; PAIR_LAST = null;
+    try { return checkAns0(s, stripUnit(s, v)); } catch (e) { if (e === TOO) { LIMIT = true; return "bad"; } throw e; } finally { DEADLINE = Infinity; }
   }
+  /* Одиниця в полі (CONTENT_SCHEMA §10): якщо в задачі є unit (і unitForms), дописана та сама одиниця після числа — після
+     кожного елемента list чи всього запису — знімається: «70°; 110°», «7 см», «60 грн», «8 %», «12 см2» = без одиниці.
+     Одиниця знімається лише після цифри, «)» чи π і лише перед «;», переносом, «,» без цифри за нею або кінцем запису,
+     тож «5 км» при unit «м» не стає «5 к». Чужа одиниця лишається в записі (bad), badHint пояснює. Без unit — без змін. */
+  const reEsc = x => x.replace(/[.*+?^${}()|[\]\\/]/g, "\\$&");
+  const unitAlts = forms => [...new Set(forms.filter(f => typeof f === "string" && f.trim()).map(f => f.trim())
+    .flatMap(f => [f, f.replace(/²/g, "2"), f.replace(/²/g, "^2"), f.replace(/³/g, "3"), f.replace(/³/g, "^3")]))]
+    .sort((a, b) => b.length - a.length).map(f => reEsc(f).replace(/\s+/g, "\\s*").replace(/C$/, "[CС]"));
+  const unitRe = alts => new RegExp(`([\\d)π])\\s*(?:${alts.join("|")})(?=\\s*(?:[;\\n]|,(?!\\d)|$))`, "giu");
+  const UNIT_RE = new Map();
+  const ownUnit = s => { const forms = [s.unit, ...(Array.isArray(s.unitForms) ? s.unitForms : [])], key = forms.join("\u0001");
+    if (!UNIT_RE.has(key)) { if (UNIT_RE.size > 500) UNIT_RE.clear(); const alts = unitAlts(forms); UNIT_RE.set(key, alts.length ? unitRe(alts) : null); } return UNIT_RE.get(key); };
+  function stripUnit(s, v) {
+    if (!s || typeof s.unit !== "string" || !s.unit.trim() || typeof v !== "string" || s.answerKind === "comparison") return v;
+    const re = ownUnit(s); return re ? v.replace(re, "$1") : v;
+  }
+  // Поширені одиниці шкільних задач: чужа з них після числа — підказка «перевір одиницю».
+  const UNITS = ["мм", "см", "дм", "м", "км", "мм²", "см²", "дм²", "м²", "км²", "га", "мм³", "см³", "дм³", "м³", "мг", "г", "кг", "ц", "т", "с", "хв", "год",
+    "грн", "коп", "%", "°", "°C", "л", "мл", "км/год", "м/с", "м/хв", "км/хв"];
+  const FOREIGN_RE = unitRe(unitAlts(UNITS));
+  function foreignUnit(s, v) { FOREIGN_RE.lastIndex = 0; const t = stripUnit(s, v); return typeof t === "string" && FOREIGN_RE.test(t); }
   /** Ключ answerKind "list" так, як його розбирає checkAns (той самий parseList і exactKey): для кожного елемента
-      { exact — точний розбір (корені/π), root — є радикал ⁿ√ з n ≥ 2, tidy — канонічний запис, approx — наближене значення }.
-      null — не list або ключ не розібрано. Потрібно tools/personalization-qa.mjs (list із коренями закриває формат exactRoot). */
+      { exact — точний розбір (корені/π), root — є радикал ⁿ√ з n ≥ 2, tidy — канонічний запис, approx — наближене значення,
+      rat — точний запис раціонального елемента «p/q» або «p» (інакше null) }.
+      null — не list або ключ не розібрано. Потрібно tools/personalization-qa.mjs (list із коренями закриває формат exactRoot).
+      Не викликати зсередини checkAns: як і pairKey, задає BUDGET і скидає DEADLINE у finally в Infinity — межа часу checkAns зникла б. */
   /** Ключ coordinates2 з компонентами-виразами так, як його розбирає checkAns (splitPair, symPair, pairSym):
       для кожної компоненти { expr — перевіряється як expression, vars — змінні, tidy — ключ сам проходить перевірку (з form), text — запис }.
       null — не coordinates2, числовий ключ або ключ не розібрано. Потрібно tools/personalization-qa.mjs (пара виразів закриває формат expression)
@@ -810,7 +885,8 @@ window.SLID_LEARN = (() => {
     DEADLINE = Date.now() + 800; BUDGET = 50000;
     try {
       const ex = exactKey(s.answer), a = parseList(s.answer, ex);
-      return a && a.map(x => ({ exact: ex, root: [...x.x.keys()].some(k => !k.startsWith("1:")), tidy: x.tidy, approx: xnum(x.x) }));
+      const rat = m => { const q = xrat(m); return q ? (q[1] === 1n ? String(q[0]) : `${q[0]}/${q[1]}`) : null; };
+      return a && a.map(x => ({ exact: ex, root: [...x.x.keys()].some(k => !k.startsWith("1:")), tidy: x.tidy, approx: xnum(x.x), rat: rat(x.x) }));
     } catch (e) { if (e === TOO) return null; throw e; } finally { DEADLINE = Infinity; }
   }
   function checkAns0(s, v) {
@@ -822,7 +898,7 @@ window.SLID_LEARN = (() => {
       return a && u && a.length === u.length && a.every(x => u.some(y => xeq(x.x, y.x))) ? tidy(u) : "bad";
     }
     if (kind === "coordinates2" || kind === "coordinates3") {
-      const sp = symPair(s); if (sp) { const rs = pairSym(s, v, sp); return rs ? worst(rs) : "bad"; }
+      const sp = symPair(s); if (sp) { const rs = pairSym(s, v, sp); PAIR_LAST = rs && { s, v, rs }; return rs ? worst(rs) : "bad"; }
       const n = kind === "coordinates2" ? 2 : 3, a = parsePoint(s.answer, n, ex), u = parsePoint(v, n, ex);
       return a && u && a.every((x, i) => xeq(x.x, u[i].x)) ? tidy(u) : "bad";
     }
@@ -958,6 +1034,7 @@ window.SLID_LEARN = (() => {
       if (it.form === "factored" && sp && sp.some(t => varsOf(t).length && !isProduct(t))) E.push(`${w}: form factored — кожна компонента-вираз ключа має бути добутком`);
       if (sp && sp.some(t => t.k === "eq")) E.push(`${w}: coordinates2 — компонента ключа не може бути рівнянням`);
       if (kind === "intervalSet" && it.type === "answer") { BUDGET = 50000; const set = parseSet(it.answer, exactKey(it.answer)); if (set && set.raw !== set.length) E.push(`${w}: intervalSet — частини ключа перетинаються або дотикаються, злий їх`); }
+      if (kind === "periodicSet" && it.type === "answer" && (periodicValues(it.answer)?.dec || 0) > 2) E.push(`${w}: periodicSet — десятковий запис ключа довший за 2 знаки, це наближення; запиши точно (π/6, arctg 2)`);
       if (kind === "exactRoot" && it.type === "answer" && ![...(exactOf(it.answer)?.x.keys() || [])].some(k => !k.startsWith("1:1:0"))) E.push(`${w}: exactRoot потребує кореня або π у відповіді; раціональне число — answerKind number`);
       if (it.signed !== undefined && (typeof it.signed !== "boolean" || it.type !== "answer" || kind !== "number")) E.push(`${w}: signed має бути boolean для числової answer`);
       if (it.tol !== undefined && (it.type !== "answer" || kind !== "number" || !Number.isFinite(it.tol) || it.tol < 0)) E.push(`${w}: tol має бути скінченним числом ≥ 0 для числової answer`);
@@ -1020,5 +1097,5 @@ window.SLID_LEARN = (() => {
   }
 
   return { OK, BAD, SKIP, PASS, DIAG_TYPES, planFor, practiceItems, nextItem, remaining, topicStatus, level, buildPlan, finishDiag, record, detect, syncPlan, lessonDone, todo, isKnown, validate,
-    parseAns, parseDivrem, checkAns, listKey, pairKey, answerSig, formHint, ansText, srcRef, numberKeys, ANSWER_KINDS, BOX_DAYS, srsInit, srsUpdate, isDue, pickSession, POOL_TYPES, validatePool };
+    parseAns, parseDivrem, checkAns, badHint, stripUnit, listKey, pairKey, answerSig, formHint, ansText, srcRef, numberKeys, ANSWER_KINDS, BOX_DAYS, srsInit, srsUpdate, isDue, pickSession, POOL_TYPES, validatePool };
 })();
