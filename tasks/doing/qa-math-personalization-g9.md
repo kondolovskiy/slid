@@ -26,9 +26,9 @@ depends_on: [verify-math-personalization-g9, tools-math-personalization-qa, engi
 
 ## Готово, коли
 
-- [ ] reports/qa/math-personalization-g9.md містить версію матриці, перевірені required-об’єкти, команди, сценарії, виправлення та межі перевірки.
-- [ ] validate, test-learn, застосовні цільові браузерні сценарії й покриття класу зелені; build виконано, згенеровані файли включено в результат.
-- [ ] Критичні дефекти цього класу закрито; optional/pending і ще недоступні міжкласові пули не приховані та не оголошені виконаними. Фінальне наскрізне приймання — окрема задача.
+- [x] reports/qa/math-personalization-g9.md містить версію матриці, перевірені required-об’єкти, команди, сценарії, виправлення та межі перевірки.
+- [x] validate, test-learn, застосовні цільові браузерні сценарії й покриття класу зелені; build виконано, згенеровані файли включено в результат.
+- [x] Критичні дефекти цього класу закрито; optional/pending і ще недоступні міжкласові пули не приховані та не оголошені виконаними. Фінальне наскрізне приймання — окрема задача.
 
 
 ## Перед роботою
@@ -38,6 +38,20 @@ depends_on: [verify-math-personalization-g9, tools-math-personalization-qa, engi
 ## Нотатки виконавця
 
 <!-- Змінені файли; джерела; рішення й обмеження; результати команд; що передано незалежному верифікатору. -->
+
+2026-10-31, agent-qa-g9 (worktree на 1e72d2a). Звіт: reports/qa/math-personalization-g9.md. **Клас прийнято, P1 у класі немає; P1 в інструменті T-1 (CI) — передано.**
+- Змінені файли: reports/qa/math-personalization-g9.md; ця задача; 3 рядки в memory/short/inbox.md. Build на 1e72d2a нічого не змінив (sw 4027ec6493, 236 файлів; index.html, manifest без змін). app/, tools/ і зміст 9 кл. не редагував; reports/validate.json не комічу.
+- Матриця 2026-10-16.v2: 24 required / 7 пулів / 191 вправа + dg9 (27). Optional/pending немає. Пули-передумови dg9 (pg7m1, pg6m4, pg8m5, pg8m3, pg7m5, pg7m3, pg8m4, pg8m6, pms2) є й verified.
+- Команди: build 0; validate --diag dg9 і --pool pg9m1…m7 → 0/0 (неіснуючий pg9m8 → exit 1); validate 0 помилок; test-learn 909 ok; personalization-qa --grade 9 --strict 0 (бракує 0); test-answer-ui --grade 9 --strict 0 (191 вправа, 3 хв 10 с); playtest dg9 + g9m1…g9m7 0 × 8 (31 урок + тест); ca.mjs — 187 ключів через ansText → ok. **test-personalization-qa → exit 1 (T-1).**
+- Власний Playwright (scratchpad/qa-g9/s1–s8, 360 px): «Пізніше»; змішаний dg9 з оракулом topics/steps/known (number/choice/multi/sort); переривання/відновлення; повторний тест; перший крок → урок 7 кл. при grade 9; графік №20 і діаграма №22 (розміри підписів, перекриття, обрізання, 360/320 px, темна тема, клавіатура); g8m3l1→pg8m3 і ms2l5→pms2 при 9 кл.; g9m2l1→pg9m2 (друга спроба, та сама відповідь, SRS); формати coordinates2 з виразами (c09), exactRoot (з π), expression (рівняння кола, factored), intervalSet (∪, R, ∅), ratio, comparison, list; помилки→план; 9→8→9; міграція dg9 і dg8→9→8; офлайн із першого завантаження (dg9, урок g9m1l1, pg9m1); одиниця в полі dg9.
+- Дефекти (змісту не виправляв):
+  - **P1 T-1** (інструмент, не клас): test-personalization-qa.mjs:68, 73–79, 82 прив'язані до живого pg9m2 («№13.5(4) ще немає»). Після e6860a4 тест падає, а pages.yml його запускає. Inbox.
+  - P2 D-1: дописана одиниця, зокрема після exactRoot/π («√29 см», «12π см»), у 55/191 вправах. Уже є в engine-math-answer-formats-followup.
+  - P3 D-2: префікс `AB =` у coordinates2. Є в inbox, задачі немає.
+  - P3 D-3: префікс `-n ∈` в intervalSet. Є в inbox, задачі немає.
+  - P3 D-4 (нове): у dg9 №20 крива перекриває підписи «−1» і «3».
+- Межі: зміст вправ не перерозв'язував (verify-math-personalization-g9, refine-pg9m2); 9→10 не перевіряв; dg6 → ms2l4 → реальний pms2 — у qa-math-personalization-release; «≈ 9 хв» не оцінювався; лише Chromium, без реальних телефонів.
+- Незалежному верифікатору нічого не передано: змін змісту немає.
 
 ## Обсяг за матрицею 2026-10-16.v2
 
