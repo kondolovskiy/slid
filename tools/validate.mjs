@@ -45,6 +45,31 @@ for (const c of subjects) {
 }
 const allBadges = new Set(subjects.flatMap(c => c.badges.map(b => b.id)).concat(["first","perfect","combo5","streak3","multi"]));
 
+// TeX, який учень побачить сирим (engine-math-render-tex-gaps). app/math.js рендерить лише $…$ у HTML-текстах;
+// підписи SVG лабораторії — безпечну підмножину (SLID_LAB.svgTexIssues); атрибути (alt, aria-label) — нічого.
+const TEX_RAW = /\\(?:[A-Za-z]+|[,;:!])|\{,\}/g;
+const outsideMath = str => String(str).replace(/\$\$[\s\S]+?\$\$/g, "").replace(/\$[^$]+\$/g, "");
+function strings(o, skip, acc = []) {
+  if (typeof o === "string") acc.push(o);
+  else if (Array.isArray(o)) o.forEach(v => strings(v, skip, acc));
+  else if (o && typeof o === "object") for (const [k, v] of Object.entries(o)) if (!skip.includes(k)) strings(v, skip, acc);
+  return acc;
+}
+function checkTex(S, s) {
+  // 1) TeX поза формулою в текстах, що проходять fmt: «,\;» між формулами, «0{,}5» без $ — видно буквально
+  const html = strings(s, ["lab", "img", "svg", "fig", "type", "sk", "id", "pre"]);
+  if (s.lab) html.push(...[].concat(s.lab.show || []), ...Object.values(s.lab.params || {}).map(p => p?.label).filter(x => typeof x === "string"));
+  const odd = x => (x.match(/\$/g) || []).length % 2 === 1;   // рядок з непарним $ — окремі перевірки (текст екрана — помилка вище, lab — п. 2), не дублюємо
+  const raw = [...new Set(html.filter(x => !odd(x)).flatMap(x => outsideMath(x).match(TEX_RAW) || []))];
+  if (raw.length) W(S, `TeX поза $…$ покажеться буквально: ${raw.join(" ")} — перенеси у формулу або заміни звичайним пробілом/комою`);
+  // 2) lab.show і підписи повзунків рендерить fmt після fill(): непарний $ лишає формулу сирою
+  if (s.lab) for (const x of [].concat(s.lab.show || [], Object.values(s.lab.params || {}).map(p => p?.label))) if (typeof x === "string" && odd(x)) W(S, `lab: непарна кількість $ у «${x}» — формула покажеться сирою${/\$\{/.test(x) ? " (зайвий $ перед шаблоном {…}?)" : ""}`);
+  // 3) підписи SVG лабораторії
+  if (s.lab) for (const [path, x] of lab.svgLabels(s.lab)) for (const is of lab.svgTexIssues(x)) (is.level === "error" ? E : W)(S, `lab.${path} «${x}»: ${is.msg}`);
+  // 4) атрибути без рендеру: alt фото й моделі
+  for (const [k, x] of [["cap", s.cap], ["lab.alt", s.lab?.alt]]) if (typeof x === "string" && /\$|\\[A-Za-z,;]/.test(x)) E(S, `${k}: формула або TeX потрапляє в атрибут alt/aria-label і показується сирою — пиши звичайним текстом (√2, x₁)`);
+}
+
 // перевірка одного екрана; diag — завдання діагностики (без фідбеку: дитина не бачить, правильно чи ні)
 function checkScreen(S, s, c, diag) {
   if (!TYPES.includes(s.type)) return E(S, `невідомий тип «${s.type}»`);
@@ -61,6 +86,7 @@ function checkScreen(S, s, c, diag) {
   if (s.svg && !SVGS.includes(s.svg)) E(S, `немає SVG-ілюстрації «${s.svg}» у svgFig()`);
   if (s.fig && !FIGS.includes(s.fig.kind)) E(S, `невідомий fig.kind «${s.fig.kind}»`);
   if (s.lab) for (const m of lab.validate(s.lab, s)) E(S, "lab: " + m);
+  checkTex(S, s);
   for (const key of ["hideCount", "hideDen"]) if (s[key] !== undefined && typeof s[key] !== "boolean") E(S, `${key}: потрібне true/false`);
   if ((s.type === "explore" || s.type === "lab") && !s.lab) E(S, `${s.type} потребує поле lab (інтерактивну модель)`);
   if ([s.img, s.svg, s.fig, s.lab].filter(Boolean).length > 1) E(S, "на екрані може бути лише одна ілюстрація: img, svg, fig або lab");
@@ -116,6 +142,8 @@ for (const c of subjects) for (const sec of c.sections.filter(s => s.lessons)) {
   for (const l of sec.lessons) {
     const L = `${file}#${l.id}`;
     if (!l.title || !l.why || !l.icon) E(L, "уроку потрібні title, why, icon");
+    // назва уроку йде в aria-label кнопки на мапі, а fmt вставляє туди HTML формули — кнопка ламається (див. engine-math-render-tex-gaps)
+    if (/\$|\\[A-Za-z,;]/.test(l.title || "")) W(L, "формула в назві уроку ламає aria-label кнопки на мапі розділу — пиши назву звичайним текстом (√2) або чекай виправлення рушія");
     if (l.icon && !ICONS.includes(l.icon)) E(L, `немає іконки «${l.icon}» (див. const P в app/app.js)`);
     if (!["draft","verified","approved"].includes(l.status)) E(L, "status має бути draft | verified | approved");
     if (l.badge && !allBadges.has(l.badge)) E(L, `badge «${l.badge}» не оголошено`);

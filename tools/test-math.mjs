@@ -18,5 +18,11 @@ ok(M.mathHTML("x₁ - x₂").includes('class="mo">−'), "мінус після 
 ok(M.mathHTML("3/4").includes('class="fr"'), "звичайний дріб лишився стовпчиком");
 ok(M.fmt("$x_0$ і $$\\sqrt{x}$$").includes("mblock"), "рядкова й блокова формули");
 ok(!M.mathHTML("P(4;\\,2)").includes("\\"), "тонкий пробіл не показує сирий слеш");
+// {,} — TeX-запис десяткової коми (engine-math-render-tex-gaps): так само, як «0,6», без сирих дужок
+ok(M.mathHTML("M(-0{,}6;\\,0{,}8)") === M.mathHTML("M(-0,6;\\,0,8)") && !/[{}]/.test(M.mathHTML("M(-0{,}6;\\,0{,}8)")), "{,} у координатах");
+ok(M.mathHTML("2 · (-0{,}6) · 0{,}8 = -0{,}96") === M.mathHTML("2 · (-0,6) · 0,8 = -0,96"), "{,} у добутку з унарним мінусом");
+ok(M.mathHTML("0{,}6/2").includes('class="nu">0,6<'), "{,} у чисельнику дробу");
+ok(M.mathHTML("\\begin{cases}x=0{,}5\\\\y=1\\end{cases}").includes("0,5"), "{,} у системі");
+ok(M.fmt("$k = 0{,}5$").includes("0,5") && !M.fmt("$k = 0{,}5$").includes("{"), "{,} через fmt");
 console.log(`${n - fails}/${n} тестів формул пройдено`);
 process.exit(fails ? 1 : 0);
