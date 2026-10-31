@@ -3,7 +3,7 @@ write_group: personalization-shared
 id: tools-pqa-exactroot-in-list
 type: engine
 subject: math
-status: review
+status: done
 claimed_by: engineer-pqa
 created: 2026-10-31
 depends_on: [verify-math-personalization-g8]
