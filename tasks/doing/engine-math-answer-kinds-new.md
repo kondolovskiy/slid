@@ -1,4 +1,7 @@
 ---
+claimed_from: todo
+claimed_at: 2026-10-31T16:54:13.938Z
+claimed_by: engineer-answer-kinds
 id: engine-math-answer-kinds-new
 type: engine
 subject: math
