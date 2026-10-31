@@ -5,7 +5,7 @@ claimed_by: engineer-answer-kinds
 id: engine-math-answer-kinds-new
 type: engine
 subject: math
-status: review
+status: done
 created: 2026-10-31
 depends_on: [engine-math-answer-formats-followup]
 ---
