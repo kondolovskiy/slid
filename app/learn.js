@@ -746,6 +746,17 @@ window.SLID_LEARN = (() => {
     DEADLINE = Date.now() + 800;
     try { return checkAns0(s, v); } catch (e) { if (e === TOO) return "bad"; throw e; } finally { DEADLINE = Infinity; }
   }
+  /** Ключ answerKind "list" так, як його розбирає checkAns (той самий parseList і exactKey): для кожного елемента
+      { exact — точний розбір (корені/π), root — є радикал ⁿ√ з n ≥ 2, tidy — канонічний запис, approx — наближене значення }.
+      null — не list або ключ не розібрано. Потрібно tools/personalization-qa.mjs (list із коренями закриває формат exactRoot). */
+  function listKey(s) {
+    if ((s?.answerKind || "number") !== "list") return null;
+    DEADLINE = Date.now() + 800; BUDGET = 50000;
+    try {
+      const ex = exactKey(s.answer), a = parseList(s.answer, ex);
+      return a && a.map(x => ({ exact: ex, root: [...x.x.keys()].some(k => !k.startsWith("1:")), tidy: x.tidy, approx: xnum(x.x) }));
+    } catch (e) { if (e === TOO) return null; throw e; } finally { DEADLINE = Infinity; }
+  }
   function checkAns0(s, v) {
     const kind = s.answerKind || "number", tidy = xs => xs.every(x => x.tidy) ? "ok" : "form", ex = exactKey(s.answer);
     BUDGET = 50000;
@@ -949,5 +960,5 @@ window.SLID_LEARN = (() => {
   }
 
   return { OK, BAD, SKIP, PASS, DIAG_TYPES, planFor, practiceItems, nextItem, remaining, topicStatus, level, buildPlan, finishDiag, record, detect, syncPlan, lessonDone, todo, isKnown, validate,
-    parseAns, parseDivrem, checkAns, answerSig, formHint, ansText, srcRef, numberKeys, ANSWER_KINDS, BOX_DAYS, srsInit, srsUpdate, isDue, pickSession, POOL_TYPES, validatePool };
+    parseAns, parseDivrem, checkAns, listKey, answerSig, formHint, ansText, srcRef, numberKeys, ANSWER_KINDS, BOX_DAYS, srsInit, srsUpdate, isDue, pickSession, POOL_TYPES, validatePool };
 })();
