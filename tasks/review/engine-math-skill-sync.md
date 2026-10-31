@@ -36,12 +36,12 @@ created: 2026-10-31
 | g4m3l3 | num → div | div | div ×6, num ×2 | pg4m3 c07, c08: num → div (текстові задачі на ділення, як екрани «Пачки олівців», «Ціна книжки») |
 | ms0l5 | num → expr | expr | num ×8 | pms0 e01–e08: num → expr (степені) |
 | ms0bl4 | geom → meas | meas | meas ×7, geom ×1 | pms0b d05: geom → meas (периметр п'ятикутника) |
-| ms3l1 | pct → frac | frac | pct ×8 | pms3 a01–a08: pct → frac (відсоток як сота частина, дріб ↔ %) |
-| ms3l2 | pct → part | part | pct ×8 | pms3 b01–b08: pct → part (відсоток від числа = частина від числа) |
+| ms3l1 | pct (без змін) | frac → **pct** | pct ×8 | після рев'ю: екрани ms3l1 (7) frac → pct, пул pms3 a01–a08 лишився pct (усі вправи — про відсотки, суто дробових немає) |
+| ms3l2 | pct (без змін) | part → **pct** | pct ×8 | після рев'ю: екрани ms3l2 (7) part → pct, пул pms3 b01–b08 лишився pct |
 | g6m2l1, l2 | ops → frac | frac | frac | лише матриця |
 | g6m2l3 | ops → cmp | cmp | cmp | лише матриця |
-| g7m7l2 | eq → func | func | eq ×8 | pg7m7 b03–b07: eq → func (розв'язати графічно, кількість розв'язків за прямими — як екрани). b01, b02 (перевірка пари підстановкою), b08 (параметр) лишились eq — справді рівняння → попередження |
-| g8m1l2 | expr → ops | ops | ops ×4, expr ×4 | без змін пулу: b04–b07 (скорочення через розклад) — справжній expr, верифікатор pg8m1 визнав точнішим → попередження |
+| g7m7l2 | eq → func | func | eq ×8 | pg7m7 b03–b08: eq → func (розв'язати графічно, кількість розв'язків і параметр a — через прямі, як екрани). b01, b02 (перевірка пари підстановкою) лишились eq — справді рівняння → попередження |
+| g8m1l2 | expr → ops | ops | ops ×4, expr ×4 | pg8m1 b05, b06: expr → ops (множення/ділення й скорочення без розкладу — дія з екранів). b04, b07 (скорочення через розклад різниці квадратів) лишились expr → попередження |
 | g8m1l4 | expr → func | func | func ×7, expr ×1 | pg8m1 d06: expr → func (формула t = 12/v — обернена пропорційність, тема уроку) |
 | g8m3l2 | expr → num | num | num ×5, expr ×3 | pg8m3 b05, b07, b09: expr → num («між якими цілими лежить √…», як екран «Де лежить √2») |
 | g8m3l4 | expr → func | func | func ×6, expr ×2 | pg8m3 d03: expr → func (порівняння √86, √78 — зростання y = √x); d09 (внесення множника під корінь) лишилась expr → попередження |
@@ -51,13 +51,13 @@ created: 2026-10-31
 | g9m6l2 | geom → meas | meas | geom ×8 | pg9m6 b01–b08: geom → meas (довжина кола, площа круга) |
 | g10m3l3 | expr → eq | eq | — | лише матриця (пулу ще немає) |
 | g11m4l1, l2 | meas → geom | geom | — | лише матриця (пулу ще немає) |
-| dg5 cmp / quot / cur-ms3 | itemSkills num,num / num,num / pct → cmp,cmp / div,div / frac | | | diag-g5 №4, №13: num → cmp; №9, №23: num → div; №26: pct → frac |
-| dg6 pct | pct,pct → frac,part | | | diag-g6 №7 (ms3l1, зафарбуй 30 %): pct → frac; №27 (ms3l2, 15 % від 400): pct → part |
+| dg5 cmp / quot | itemSkills num,num / num,num → cmp,cmp / div,div | | | diag-g5 №4, №13: num → cmp; №9, №23: num → div; №26 (cur-ms3) лишився pct |
+| ms3l3 (pending) | data (без змін) | cmp, part → **data** | — | після рев'ю: екрани ms3l3 (8) → data (діаграми) |
 | dg8 cur-g8m6 | meas → geom | | | diag-g8 №26: meas → geom (сума кутів) |
 | dg9 polygon / cur-g9m5 | meas,meas / expr → geom,geom / num | | | diag-g9 №2, №12: meas → geom; №22: expr → num |
 | dg11 ineq / circle / cur-g11m4 | func,func / geom,geom / meas → eq,eq / meas,meas / geom | | | лише матриця (тесту ще немає) |
 
-Разом у content/: 89 замін sk (78 у 11 пулах, 11 у 4 діагностиках); інші поля, ключі, умови й статуси не змінено. Після змін — 10 попереджень (усі «справжні суміжні навички», перелічено вище), 0 розбіжностей матриці з уроками.
+Разом у content/ (після рев'ю): 73 заміни sk у пулах і діагностиках (від бази 1b3819d) + 22 на екранах g5-ms3.js (див. «Виправлення після рев'ю»); інші поля, ключі, умови й статуси не змінено. Після змін — 10 попереджень (усі «справжні суміжні навички», перелічено вище), 0 розбіжностей матриці з уроками серед required (після рев'ю й ms3l3 — також серед pending; лишаються g11m6l2–l4, optional, попередження).
 
 **На незалежну перевірку змісту (verified-файли, статус не чіпав):** pool-g4-g4m1.js, pool-g4-g4m3.js, pool-g5-ms0.js, pool-g5-ms0b.js, pool-g5-ms3.js, pool-g7-g7m7.js, pool-g8-g8m1.js, pool-g8-g8m3.js, pool-g9-g9m3.js, pool-g9-g9m5.js, pool-g9-g9m6.js, diag-g5.js, diag-g6.js, diag-g8.js, diag-g9.js — лише `sk` за таблицею. Сумнівні рішення для рецензента: ms3 (`frac`/`part` замість `pct` — за правилом «екрани»; альтернатива — перетегувати екрани ms3l1/l2 на `pct`), g7m7l2 b01/b02/b08 і g8m1l2 b04–b07 (лишено інший sk), g4m1l3 (`cmp` описано в subjects як порівняння дробів — пропозиція куратору розширити hint), dg6 (6 кл. — окрема refine-math-diag-g6-coverage; змінено лише 2 sk).
 
@@ -66,3 +66,25 @@ created: 2026-10-31
 **Перевірки (rc):** build 0; test-learn 0 (1046); test-personalization-qa 0 (76); validate 0 (0 помилок); personalization-qa --strict --grade 4/5/7/8/9 — 0 (6 кл.: «немає навички матриці ops» зникли, решта прогалин — форматні, задача g6); test-answer-ui --suite regression --browser /opt/pw-browsers/chromium — 0.
 
 **Злиття з паралельним інженером (формати):** personalization-qa — лише rowSkills/lessonSkills, warnings, рядок sk у циклі required і друк; learn.js — новий блок після isKnown і два імені в першому рядку return (можливий тривіальний конфлікт із рядком експорту); app.js — один рядок після `save`; test-personalization-qa — окремий блок перед циклом аргументів.
+
+### Виправлення після рев'ю (reports/review/engine-math-skill-sync.md, reports/verify/math-skill-sync.md; рішення оркестратора)
+
+Інженерне:
+- P2-1: `migrateSk` скидає `S.skw[from]` для кожної старої навички, з якої щось перенесено. Тест: ручне копіювання вікна прибрано; сценарій рецензента «3 помилки expr → міграція → lessonDone(g9m5l1) → немає поради за expr», потім нові помилки num → порада за num.
+- P3-1: sk рядка перевіряється для всіх рядків (без пулу, optional/pending) — тест на g10m3l3 і pending.
+- P3-2: personalization-qa: sk матриці ∉ sk екранів уроку — required: `БРАКУЄ` (strict), optional/pending: попередження (g11m6l2–l4).
+- P3-3: `migrateSk` стійка до пошкодженого стану (`Array.isArray`, перевірка записів, `S` не об'єкт), виклик в app.js у try/catch; тести на 9 видів пошкодження.
+
+Змістове (файл/id: було → стало, чому):
+- pool-g8-g8m1.js b05, b06: expr → ops — розкладу немає, дія з екранів g8m1l2 (верифікатор: критично).
+- pool-g7-g7m7.js b08: eq → func — hint і steps графічні («прямі збігаються»), як b07.
+- g5-ms3.js (урок, verified): ms3l1 7 екранів frac → pct; ms3l2 7 екранів part → pct; ms3l3 8 екранів cmp/part → data. Усі екрани ms3l1/l2 про відсотки, ms3l3 — про діаграми. Boss ms3l4 не чіпав.
+- pool-g5-ms3.js a01–a08 frac → pct, b01–b08 part → pct (назад до вихідного): кожна вправа — переведення або обчислення відсотків; суто дробових вправ немає (a03/a07 «25 %/75 % звичайним дробом» — теж про відсоток).
+- diag-g5.js №26 (cur-ms3), diag-g6.js №7, №27: назад до pct (вихідне значення).
+- Матриця: ms3l1, ms3l2 — знову pct (вихідне), ms3l3 — data (вихідне); dg5 cur-ms3, dg6 pct — itemSkills вихідні. Примітку ³ оновлено.
+- SK_RETAG: правила ms3 pct→frac/part прибрано; додано ms3l1 frac→pct, ms3l2 part→pct, ms3l3 cmp→data, part→data (журнал помилок з екранів уроків).
+- content/subjects/math.js (рішення оркестратора): cmp — «Порівнювати й упорядковувати числа та дроби, ставити їх на промінь»; div — назва «Ділення», «Ділити частинами й письмово — без остачі та з остачею»; num — + «дійсні числа, послідовності й прогресії».
+
+Попереджень після виправлень — 7 (pg7m7 b01, b02; pg8m1 b04, b07; pg8m3 d09; pg8m6 a06; pg9m3 d06) + 3 рядки optional g11m6l2–l4.
+
+На повторну незалежну перевірку змісту: g5-ms3.js (екрани), pool-g5-ms3.js, pool-g8-g8m1.js b05/b06, pool-g7-g7m7.js b08, diag-g5.js №26, diag-g6.js №7/№27, subjects/math.js (описи навичок).

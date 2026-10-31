@@ -122,6 +122,19 @@ for (const sk of [[], 'nope', ['geom', 'nope'], null]) check(() => assert(skAudi
 check(() => assert.deepEqual(skAudit([]).warnings, []));
 check(() => assert.deepEqual(skAudit(sideMeas).warnings, ['pg8m6/q7: sk meas не тренує урок g8m6l1 (geom)']));
 check(() => assert.deepEqual([skAudit(sideMeas).errors, skAudit(sideMeas).missing.filter(e => e.includes('g8m6l1'))], [[], []]));   // попередження не блокує
+// рев'ю P3-2: sk матриці має тренуватися екранами уроку — required: прогалина strict; optional/pending: попередження
+const notTrained = (r, sk) => r.missing.includes(`g8m6l1: sk матриці ${sk} не тренує урок (екрани: geom)`);
+check(() => assert(notTrained(skAudit(sideMeas, 'meas'), 'meas')));
+check(() => assert(notTrained(skAudit(sideMeas, ['geom', 'meas']), 'meas') && !notTrained(skAudit(sideMeas, ['geom', 'meas']), 'geom')));
+check(() => assert(!notTrained(skAudit([]), 'geom')));
+const scoped = (scope, sk) => { const m = skMatrix(sk); m.lessons.find(r => r.lesson === 'g8m6l1').curricularScope = scope; return audit(skFixture(), m, learn, { pool: 'pg8m6' }); };
+check(() => assert(scoped('optional', 'meas').warnings.includes('g8m6l1: sk матриці meas не тренує урок (екрани: geom)') && !notTrained(scoped('optional', 'meas'), 'meas')));
+// рев'ю P3-1: sk рядка перевіряється і без пулу, і для optional/pending
+const noPool = sk => { const m = JSON.parse(JSON.stringify(matrix)); m.lessons.find(r => r.lesson === 'g10m3l3').sk = sk; return audit(subject, m, learn, { grade: 10 }); };
+check(() => assert(noPool('nope').errors.some(e => e.startsWith('g10m3l3: sk матриці'))));
+check(() => assert(!noPool('eq').errors.some(e => e.startsWith('g10m3l3:'))));
+check(() => assert(noPool('geom').missing.some(e => e.startsWith('g10m3l3: sk матриці geom не тренує урок'))));
+check(() => assert(scoped('pending', []).errors.some(e => e.startsWith('g8m6l1: sk матриці'))));
 const skDiag = sk => { const c = skFixture(); c.diags.find(d => d.id === 'dg8').items.filter(it => it.topic === 'cur-g8m6').forEach(it => { it.sk = sk; }); return audit(c, matrix, learn, { diag: 'dg8' }); };
 check(() => assert(skDiag('meas').warnings.some(w => w.startsWith('dg8/cur-g8m6 №') && w.includes('sk meas не тренує урок g8m6l1 (geom)'))));
 check(() => assert(skDiag('meas').missing.includes('dg8/cur-g8m6: itemSkills не збігається з матрицею')));

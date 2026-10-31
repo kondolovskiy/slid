@@ -83,6 +83,13 @@ export function audit(subject, matrix, learn, filter = {}) {
     for (const it of p.items) { const sks = lessonSkills(lessons.get(it.lesson));
       if (sks.size && !sks.has(it.sk)) warnings.push(`${p.id}/${it.id}: sk ${it.sk} не тренує урок ${it.lesson} (${[...sks].join(', ')})`); }
   }
+  // sk рядка — для кожного рядка (і без пулу, і optional/pending): оголошений і тренується екранами уроку (джерело правди).
+  // Розбіжність з екранами: required — прогалина strict, optional/pending — попередження.
+  for (const r of rows.filter(() => !filter.diag)) {
+    const sks = rowSkills(r), own = lessonSkills(lessons.get(r.lesson));
+    if (!sks.length || sks.some(sk => typeof sk !== 'string' || !subject.skills[sk])) { errors.push(`${r.lesson}: sk матриці ${JSON.stringify(r.sk)} не оголошена`); continue; }
+    for (const sk of sks) if (own.size && !own.has(sk)) (r.curricularScope === 'required' ? missing : warnings).push(`${r.lesson}: sk матриці ${sk} не тренує урок (екрани: ${[...own].join(', ')})`);
+  }
   for (const r of rows.filter(r => r.curricularScope === 'required' && !filter.diag)) {
     const p = pools.get(r.pool), items = p?.items.filter(it => it.lesson === r.lesson) || [];
     if (!p) { missing.push(`${r.pool}: відсутній пул для ${r.lesson}`); continue; }
@@ -93,9 +100,7 @@ export function audit(subject, matrix, learn, filter = {}) {
       const present = items.some(it => (it.answerKind || (it.type === 'answer' ? 'number' : it.type)) === format || (format === 'exactRoot' && rootList(it, learn)) || (format === 'expression' && exprPair(it, learn)));
       if (!present) missing.push(`${r.pool}/${r.lesson}: немає формату ${format}`);
     }
-    const sks = rowSkills(r);
-    if (!sks.length || sks.some(sk => typeof sk !== 'string' || !subject.skills[sk])) errors.push(`${r.lesson}: sk матриці ${JSON.stringify(r.sk)} не оголошена`);
-    for (const sk of sks) if (!items.some(it => it.sk === sk)) missing.push(`${r.pool}/${r.lesson}: немає навички матриці ${sk}`);
+    for (const sk of rowSkills(r)) if (!items.some(it => it.sk === sk)) missing.push(`${r.pool}/${r.lesson}: немає навички матриці ${sk}`);
   }
   if (!diags.length && !selectedPools.length) errors.push('Нуль доступних об’єктів для перевірки');
   return { version: matrix.version, errors, missing, unsupported, warnings,

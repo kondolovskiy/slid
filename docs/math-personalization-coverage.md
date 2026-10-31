@@ -10,7 +10,7 @@
 
 ² 2026-10-31, рішення людини: прибрано формати, на які в g9 (Мерзляк, Якір, 2026) немає чесних вправ у пунктах уроку — expression з g9m2l1, coordinates2 з g9m6l1/l2, exactRoot з g9m6l3 (reports/verify/pg9m2.md, pg9m6.md). Для g9m2l3 expression лишається: рушій розширюється (coordinates2 з компонентами-виразами, задача engine-coordinates2-expression), після чого №13.5(4) стає чесною вправою.
 
-³ 2026-10-31, рішення людини (engine-math-skill-sync): `sk` рядків і `itemSkills` діагностик синхронізовано з навичками, які урок справді тренує (`sk` його екранів). Поле `sk` рядка — рядок або масив; personalization-qa вимагає в пулі вправу з кожним `sk` рядка й попереджає про вправи/проби, чий `sk` не входить у навички уроку (docs/PERSONALIZATION_QA.md, «Навички»). Інші поля й версія v2 без змін. Змінено (було → стало):
+³ 2026-10-31, рішення людини (engine-math-skill-sync): `sk` рядків і `itemSkills` діагностик синхронізовано з навичками, які урок справді тренує (`sk` його екранів). Поле `sk` рядка — рядок або масив; personalization-qa вимагає в пулі вправу з кожним `sk` рядка й попереджає про вправи/проби, чий `sk` не входить у навички уроку (docs/PERSONALIZATION_QA.md, «Навички»). Інші поля й версія v2 без змін. Розбіжностей рядків з екранами уроків після цього немає, крім g11m6l2–l4 (optional, `expr` при екранах eq / func, calc / meas, geom — попередження). Описи навичок `cmp`, `div`, `num` у subjects/math.js розширено під фактичне вживання. Змінено (було → стало):
 
 | Рядок / тема | Було | Стало | Чому |
 |---|---|---|---|
@@ -18,8 +18,7 @@
 | g4m3l3 | num | div | ділення частинами — екрани `div` |
 | ms0l5 | num | expr | степінь — екрани `expr` |
 | ms0bl4 | geom | meas | периметр — екрани `meas` |
-| ms3l1 | pct | frac | відсоток як сота частина — екрани `frac` |
-| ms3l2 | pct | part | відсоток від числа — екрани `part` |
+| ms3l1, ms3l2, ms3l3 | pct, pct, data | без змін | рядки правильні; змінено екрани уроків: ms3l1 frac → pct, ms3l2 part → pct (усі екрани — про відсотки), ms3l3 cmp/part → data (діаграми); пул pms3 лишився pct |
 | g6m2l1, g6m2l2 | ops | frac | основна властивість, скорочення — екрани й пул pg6m2 `frac` |
 | g6m2l3 | ops | cmp | спільний знаменник, порівняння — екрани й пул `cmp` |
 | g7m7l2 | eq | func | графічний спосіб — екрани `func` |
@@ -32,8 +31,7 @@
 | g9m6l2 | geom | meas | довжина кола, площа круга — екрани `meas` |
 | g10m3l3 | expr | eq | ірраціональні рівняння — екрани `eq` (пулу ще немає) |
 | g11m4l1, g11m4l2 | meas | geom | елементи призми, піраміди, тіл обертання — екрани `geom` (пулу ще немає) |
-| dg5 `cmp` / `quot` / `cur-ms3` | num, num / num, num / pct | cmp, cmp / div, div / frac | за уроками g4m1l3, g4m3l3, ms3l1 |
-| dg6 `pct` | pct, pct | frac, part | за уроками ms3l1, ms3l2 |
+| dg5 `cmp` / `quot` | num, num / num, num | cmp, cmp / div, div | за уроками g4m1l3, g4m3l3 (`cur-ms3` і dg6 `pct` лишаються pct — за екранами ms3l1/l2) |
 | dg8 `cur-g8m6` | meas | geom | g8m6l1 |
 | dg9 `polygon` / `cur-g9m5` | meas, meas / expr | geom, geom / num | g8m6l1, g9m5l1 |
 | dg11 `ineq` / `circle` / `cur-g11m4` | func, func / geom, geom / meas | eq, eq / meas, meas / geom | g9m3l4, g9m6l2, g11m4l1 (тесту ще немає) |

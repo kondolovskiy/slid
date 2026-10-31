@@ -945,18 +945,33 @@ const order = l => ({ L1: 3, L2: 1, L3: 2, L4: 4 }[l] ?? 50);
     skw: { "m.old": "000" }, skills: { "m.old": { ok: 1, total: 4 } } };
   eq(L.migrateSk(S, fix), 3, "migrateSk: змінено записи за уроком at (і l, якщо at немає)");
   eq(S.errs.map(e => e.sk), ["m.new", "m.new", "m.other", "m.old", "m.b", null], "migrateSk: інша навичка й інший урок не чіпаються; помилка з pre — за at");
-  eq([S.skw, S.skills], [{ "m.old": "000" }, { "m.old": { ok: 1, total: 4 } }], "migrateSk: вікна й лічильники без уроку не змінюються");
+  eq([S.skw, S.skills], [{ "m.old": "" }, { "m.old": { ok: 1, total: 4 } }], "migrateSk: вікно старої навички з нуля (P2-1), лічильники «Прогрес» не змінюються");
   eq(S.skFix, ["t1"], "migrateSk: позначка виконаної міграції");
   S.errs.push({ l: "u1", at: "u1", sk: "m.old" });
   eq(L.migrateSk(S, fix), 0, "migrateSk: удруге не виконується");
   eq(S.errs.at(-1).sk, "m.old", "migrateSk: новий запис після міграції не чіпається");
   const E = {}; eq(L.migrateSk(E), 0, "migrateSk: порожній профіль"); eq(E.skFix, [L.SK_RETAG.id], "migrateSk: порожній профіль позначено");
-  // після міграції порада «за навичкою» йде за новою навичкою
-  const T = { mast: {}, errs: [], skw: {} };
-  for (const l of ["g9m5l1", "g9m5l2", "g9m5l3"]) { L.record(T, { l, at: l, sk: "math.expr", ok: false, day: "2026-10-30" }); }
-  T.skw["math.num"] = T.skw["math.expr"]; T.skw["math.expr"] = "";
-  L.migrateSk(T);
-  eq(L.detect(T, { day: "2026-10-31", order: id => ["g9m5l1", "g9m5l2", "g9m5l3"].indexOf(id) }).find(r => r.why === "skill")?.sk, "math.num", "migrateSk: detect за новою навичкою");
+  const U = { errs: [{ l: "u9", at: "u9", sk: "m.old" }], skw: { "m.old": "00", "m.other": "0" } };
+  eq([L.migrateSk(U, fix), U.skw], [0, { "m.old": "00", "m.other": "0" }], "migrateSk: вікно скидається лише для навички, з якої щось перенесено");
+  // рев'ю P2-1 (skw_stale): міграція → lessonDone перетегованого уроку → немає поради за старою навичкою
+  const ord = id => ["g8m1l2", "g9m3l4", "g9m5l1", "g9m5l2", "g9m5l3"].indexOf(id);
+  const mk = () => { const T = { mast: {}, errs: [], skw: {}, plan: {}, planByGrade: {}, grade: 9 };
+    for (const l of ["g8m1l2", "g9m3l4", "g9m5l1"]) L.record(T, { l, at: l, sk: "math.expr", ok: false, day: "2026-10-30" }); return T; };
+  const skillRecs = T => L.detect(T, { day: "2026-10-31", order: ord }).filter(r => r.why === "skill");
+  { const T = mk(); L.lessonDone(T, "math", "g9m5l1", 1, "2026-10-31", { grade: 9 }); eq(skillRecs(T), [], "без міграції: lessonDone скидає вікно, поради немає"); }
+  { const T = mk(); eq(L.migrateSk(T), 1, "міграція: g9m5l1 expr → num"); eq(T.skw["math.expr"], "", "міграція: вікно expr з нуля");
+    L.lessonDone(T, "math", "g9m5l1", 1, "2026-10-31", { grade: 9 });
+    eq(skillRecs(T), [], "міграція → lessonDone: немає поради за старою навичкою expr");
+    // нові помилки ведуть до поради за новою навичкою
+    for (const l of ["g9m5l1", "g9m5l2", "g9m5l3"]) L.record(T, { l, at: l, sk: "math.num", ok: false, day: "2026-10-31" });
+    eq(skillRecs(T).map(r => [r.sk, r.l]), [["math.num", "g9m5l1"]], "після міграції порада — за новою навичкою num"); }
+  // рев'ю P3-3: пошкоджений стан не валить міграцію
+  for (const [what, X] of [["skFix — об'єкт", { skFix: {}, errs: [] }], ["skFix — рядок", { skFix: "x" }], ["errs — об'єкт", { errs: {} }],
+    ["errs — рядок", { errs: "x" }], ["skw — null", { errs: [{ at: "u1", sk: "m.old" }], skw: null }], ["записи не об'єкти", { errs: [null, 5, "x", { at: "u1", sk: "m.old" }] }]]) {
+    let r; try { r = L.migrateSk(X, fix); } catch (e) { r = "throw " + e.message; }
+    eq(typeof r, "number", `migrateSk: пошкоджений стан (${what}) — без винятку`); eq(X.skFix, ["t1"], `migrateSk: пошкоджений стан (${what}) — позначено`);
+  }
+  for (const X of [null, undefined, 7]) { let r; try { r = L.migrateSk(X, fix); } catch (e) { r = "throw"; } eq(r, 0, `migrateSk(${X}) — 0`); }
 }
 /* Правила SK_RETAG звірено з реальним контентом: в уроці at старого sk немає ні на екранах, ні в пулі, новий — є */
 { const { loadContent } = await import("./lib.mjs");
@@ -965,7 +980,7 @@ const order = l => ({ L1: 3, L2: 1, L3: 2, L4: 4 }[l] ?? 50);
     const [subj, f] = from.split("."), t = to.split(".")[1], c = subjects.find(s => s.id === subj);
     const lesson = c.sections.flatMap(s => s.lessons || []).find(l => l.id === at), items = (c.pools || []).flatMap(p => p.items).filter(it => it.lesson === at);
     eq(!!lesson && [...lesson.screens, ...items].some(x => x.sk === f), false, `SK_RETAG ${at}: старого ${f} у змісті немає`);
-    eq(items.some(it => it.sk === t) && lesson.screens.some(s => s.sk === t), true, `SK_RETAG ${at}: новий ${t} є в уроці й пулі`);
+    eq((!items.length || items.some(it => it.sk === t)) && lesson.screens.some(s => s.sk === t), true, `SK_RETAG ${at}: новий ${t} є в уроці (і в пулі, якщо він є)`);
     eq(!!c.skills[f] && !!c.skills[t], true, `SK_RETAG ${at}: навички оголошено`);
   }
 }
