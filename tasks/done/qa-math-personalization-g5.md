@@ -5,7 +5,7 @@ id: qa-math-personalization-g5
 type: qa
 subject: math
 grade: 5
-status: todo
+status: done
 claimed_by: w-qa-math-personalization-g5
 created: 2026-10-15
 depends_on: [verify-math-personalization-g5, tools-math-personalization-qa, engine-math-grade-plan-context]
@@ -38,6 +38,13 @@ depends_on: [verify-math-personalization-g5, tools-math-personalization-qa, engi
 ## Нотатки виконавця
 
 <!-- Змінені файли; джерела; рішення й обмеження; результати команд; що передано незалежному верифікатору. -->
+
+2026-10-31, w-qa-math-personalization-g5. Звіт: reports/qa/math-personalization-g5.md. **Прийнято, P1 немає.**
+- Змінені файли: лише reports/qa/math-personalization-g5.md, ця задача, рядок у memory/short/inbox.md (validate перезаписав reports/validate.json). app/, tools/, content/ не редагував; build не запускав (актуальний, sw 378b207bb9), git-операцій не робив.
+- Матриця 2026-10-16.v2: 24 required / 6 пулів / 192 вправи + dg5 (26). Pending ms0bl3, ms3l3 не перевірено.
+- Команди: validate --diag dg5 і --pool ×6 → 0/0; validate → 0 помилок; test-learn 780 ok; test-personalization-qa 27 green; personalization-qa --grade 5 --strict exit 0; test-answer-ui --grade 5 --strict (--browser Chromium 1243) exit 0, 192 вправи; playtest dg5 + ms0…ms4 (32 уроки) зелений.
+- Власний Playwright (scratchpad/qa-g5, 360 px): «Пізніше», змішаний dg5 з оракулом topics/steps/known, Enter/Tab, переривання/відновлення, повторний тест, 5→6→5 з reload, міграція плану старого формату, g4m1l1 → pg4m1 при 5 кл., ms0l1 → pms0, hint/друга спроба, comparison/list/mixed/fractionOnly, повторювані помилки → план, офлайн після першого завантаження (dg5, урок, тренування).
+- Дефекти: P2 D-1 «Спробувати ще раз» без зміни відповіді витрачає 2-гу спробу; P3 D-2 фокус на BODY після перевірки; D-3 test-answer-ui без фолбеку на Chromium 1243; D-4 validate --pool друкує «діагностика»; D-5 різні title джерела mer5 у pms0 vs pms1/pms3.
 
 ## Обсяг за матрицею 2026-10-16.v2
 
