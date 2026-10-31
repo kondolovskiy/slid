@@ -3,7 +3,7 @@ write_group: personalization-shared
 id: engine-math-skill-sync
 type: engine
 subject: math
-status: review
+status: done
 claimed_by: engineer-skill-sync
 created: 2026-10-31
 ---
