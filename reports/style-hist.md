@@ -116,21 +116,21 @@
 | g9s2l4 Кріпак, що став Кобзарем | 9 | 7 | 0.57 | 26 | 75 | 5.4 | 0.029 | 4 | sentenceWords=5.4 поза [6; 13] |
 | g9s2l5 Таємне братство в Києві | 9 | 8 | 0.5 | 29 | 67 | 5.7 | 0.037 | 4 | sentenceWords=5.7 поза [6; 13] |
 | g9s2l6 Шафа з першодруками (фінал) | 9 | 7 | 0.86 | 25 | 40 | 5.3 | 0.029 | 4 | sentenceWords=5.3 поза [6; 13]; typeVariety нетипово для сім'ї (z=2.5) |
-| g9s3l1 Весна, що скасувала панщину | 9 | 7 | 0.57 | 27 | 66 | 5.9 | 0.034 | 3 | sentenceWords=5.9 поза [6; 13] |
+| g9s3l1 Весна, що скасувала панщину | 9 | 7 | 0.57 | 28 | 66 | 6 | 0.033 | 3 | — |
 | g9s3l2 Рада біля собору Юра | 9 | 9 | 0.56 | 25 | 58 | 6 | 0.037 | 3 | — |
 | g9s3l3 Маніфест 19 лютого | 9 | 7 | 0.57 | 23 | 63 | 5.2 | 0.034 | 3 | sentenceWords=5.2 поза [6; 13] |
 | g9s3l4 Мова під забороною | 9 | 8 | 0.5 | 27 | 51 | 5.8 | 0.052 | 3 | sentenceWords=5.8 поза [6; 13] |
-| g9s3l5 Довідка для видавця (фінал) | 9 | 7 | 0.86 | 25 | 51 | 5.8 | 0.021 | 3 | sentenceWords=5.8 поза [6; 13] |
+| g9s3l5 Довідка для видавця (фінал) | 9 | 7 | 0.86 | 26 | 51 | 5.8 | 0.023 | 3 | sentenceWords=5.8 поза [6; 13] |
 | g9s4l1 Колія до моря | 9 | 8 | 0.63 | 23 | 56 | 5.7 | 0.027 | 3 | sentenceWords=5.7 поза [6; 13] |
 | g9s4l2 Місто з димарів | 9 | 8 | 0.75 | 22 | 60 | 5.5 | 0.027 | 4 | sentenceWords=5.5 поза [6; 13]; gradedShare нетипово для сім'ї (z=2.6) |
-| g9s4l3 Чия мова на вулиці? | 9 | 8 | 0.63 | 21 | 60 | 5.7 | 0.029 | 3 | sentenceWords=5.7 поза [6; 13] |
+| g9s4l3 Чия мова на вулиці? | 9 | 8 | 0.63 | 22 | 60 | 5.7 | 0.029 | 3 | sentenceWords=5.7 поза [6; 13] |
 | g9s4l4 Земля за океаном | 9 | 9 | 0.56 | 25 | 65 | 5.5 | 0.05 | 3 | sentenceWords=5.5 поза [6; 13] |
 | g9s4l5 Номер до друку (фінал) | 9 | 7 | 0.86 | 20 | 49 | 5.8 | 0.021 | 3 | sentenceWords=5.8 поза [6; 13] |
 | g9s5l1 Від гуртка до партії | 9 | 8 | 0.63 | 29 | 62 | 5.9 | 0.049 | 3 | sentenceWords=5.9 поза [6; 13] |
 | g9s5l2 Рік, що розхитав імперію | 9 | 8 | 0.5 | 28 | 61 | 5.5 | 0.046 | 3 | sentenceWords=5.5 поза [6; 13] |
 | g9s5l3 Історик, що написав націю | 9 | 7 | 0.57 | 29 | 65 | 5.6 | 0.053 | 3 | sentenceWords=5.6 поза [6; 13] |
 | g9s5l4 Літо, коли все змінилося | 9 | 7 | 0.57 | 29 | 65 | 5.7 | 0.041 | 3 | sentenceWords=5.7 поза [6; 13] |
-| g9s5l5 Архів редакції (фінал) | 9 | 7 | 0.86 | 23 | 38 | 4.9 | 0.048 | 3 | sentenceWords=4.9 поза [6; 13] |
+| g9s5l5 Архів редакції (фінал) | 9 | 7 | 0.86 | 23 | 38 | 4.9 | 0.048 | 3 | sentenceWords=4.9 поза [6; 13]; longWordShare нетипово для сім'ї (z=2) |
 | g10s1l1 Два береги Збруча | 10 | 10 | 0.6 | 34 | 62 | 6.6 | 0.036 | 4 | sentenceWords=6.6 поза [7; 15] |
 | g10s1l2 Стрільці під калиною | 10 | 10 | 0.5 | 30 | 67 | 6.6 | 0.045 | 4 | sentenceWords=6.6 поза [7; 15] |
 | g10s1l3 Львів під чужою владою | 10 | 11 | 0.55 | 32 | 59 | 6.4 | 0.062 | 4 | sentenceWords=6.4 поза [7; 15] |
@@ -190,7 +190,7 @@
 
 - **5-6:lesson**: screens 7±1.03, gradedShare 0.6±0.09, readWordsPerScreen 22.34±4.07, maxReadWords 53.29±7.4, sentenceWords 6.06±0.38, longWordShare 0.04±0.02, typeVariety 3.18±0.76
 - **5-6:boss**: screens 6.44±0.5, gradedShare 0.84±0.01, readWordsPerScreen 12.56±2.59, maxReadWords 23.22±6.99, sentenceWords 4.9±0.39, longWordShare 0.05±0.01, typeVariety 3.33±0.47
-- **7-9:lesson**: screens 7.94±0.74, gradedShare 0.59±0.06, readWordsPerScreen 24.35±2.82, maxReadWords 60.74±7.56, sentenceWords 5.9±0.41, longWordShare 0.04±0.01, typeVariety 3.29±0.45
-- **7-9:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 21.4±2.8, maxReadWords 42.6±5.04, sentenceWords 5.47±0.45, longWordShare 0.03±0.01, typeVariety 3.13±0.34
+- **7-9:lesson**: screens 7.94±0.74, gradedShare 0.59±0.06, readWordsPerScreen 24.38±2.82, maxReadWords 60.74±7.56, sentenceWords 5.91±0.41, longWordShare 0.04±0.01, typeVariety 3.29±0.45
+- **7-9:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 21.47±2.9, maxReadWords 42.6±5.04, sentenceWords 5.47±0.45, longWordShare 0.03±0.01, typeVariety 3.13±0.34
 - **10-11:lesson**: screens 8.93±1.24, gradedShare 0.55±0.05, readWordsPerScreen 27.07±4.71, maxReadWords 61.12±8.34, sentenceWords 6.42±0.49, longWordShare 0.07±0.03, typeVariety 3.45±0.5
 - **10-11:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 23.6±2.54, maxReadWords 47.2±7.19, sentenceWords 6.12±0.62, longWordShare 0.07±0.02, typeVariety 3.6±0.49
