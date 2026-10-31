@@ -6,7 +6,7 @@ type: images
 subject: hist
 grade: 5
 section: s2
-status: review
+status: done
 claimed_by: photo-s2
 created: 2026-10-30
 depends_on: []
@@ -54,3 +54,6 @@ depends_on: []
 - File:Ненаситець.jpg (Брокгауз і Ефрон, ~1900, PD) — вертикальна гравюра 834×2684, гірша за листівку.
 - File:Map of the Kingdom of Galicia, 1914.jpg — сучасна схема 2008 р. (CC BY 3.0), не джерело.
 - Commons API (list=search) — 429 одразу; пошук через WebFetch сторінок категорій і Special:Search. upload.wikimedia: усі три мініатюри 960 px — перша спроба 429, друга після 65–75 с — 200 (по 2 спроби на файл, разом 6 запитів).
+
+## Верифікація
+verifier-images-s1-s4, 2026-10-31: звіт reports/verify/images-hist-s2.md. Ліцензії, підписи, розміри перевірено; змінені уроки → verified.

@@ -6,7 +6,7 @@ type: images
 subject: hist
 grade: 5
 section: s3
-status: review
+status: done
 claimed_by: photo-s3
 created: 2026-10-30
 depends_on: []
@@ -60,3 +60,6 @@ depends_on: []
 
 ### Запити до Commons
 api.php — 429 з першого запиту (пошук далі через WebFetch сторінок категорій). upload thumb 960: Sich rada — 429, 200 (2-га спроба через 65 с); Pravda — 200; Zde-остраки — 429, 429 (зупинився); Dall'Orto-остраки — 200.
+
+## Верифікація
+verifier-images-s1-s4, 2026-10-31: звіт reports/verify/images-hist-s3.md. Ліцензії, підписи, розміри перевірено; змінені уроки → verified.

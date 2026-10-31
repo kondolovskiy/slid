@@ -1,7 +1,7 @@
 /* Слід — service worker. ЗГЕНЕРОВАНО tools/build.mjs із tools/sw.template.js — не редагуй sw.js вручну.
    Стратегія: усі файли застосунку кешуються при встановленні (офлайн з першого запуску);
    свої файли — спершу з кешу; Google Fonts — з кешу з фоновим оновленням. */
-const VERSION = "e0a6420b9a";
+const VERSION = "65e7e3e052";
 const CACHE = "slid-" + VERSION;
 const FONTS = "slid-fonts";
 const ASSETS = [
@@ -188,19 +188,31 @@ const ASSETS = [
   "./img/hist/g11s2/helsinki-1975.jpg",
   "./img/hist/g11s2/khrushchev-1963.jpg",
   "./img/hist/g11s2/pripyat-2005.jpg",
+  "./img/hist/g6s1/handaxe-venerque.jpg",
+  "./img/hist/g6s1/korolevo-quarry.jpg",
+  "./img/hist/g6s1/mezin-bracelet-1925.jpg",
+  "./img/hist/g6s1/quern-danube.jpg",
   "./img/hist/g6s2/animal-pot.jpg",
   "./img/hist/g6s2/house.jpg",
   "./img/hist/g6s2/pottery-making.jpg",
   "./img/hist/g6s2/talianky.jpg",
+  "./img/hist/g6s3/herodotus.jpg",
+  "./img/hist/g6s3/homer.jpg",
   "./img/hist/g6s3/pectoral.jpg",
   "./img/hist/g6s3/sarmatians-trajan.jpg",
   "./img/hist/g6s3/solokha-comb.jpg",
+  "./img/hist/g6s4/olbia-dolphin.jpg",
+  "./img/hist/g6s4/olbia-quarter.jpg",
+  "./img/hist/g6s4/panticapaeum-stater.jpg",
+  "./img/hist/g6s4/rhodian-amphora.jpg",
+  "./img/hist/g6s4/spruner-pontus-1855.jpg",
   "./img/hist/g6s5/chern.jpg",
   "./img/hist/g6s5/penk.jpg",
   "./img/hist/g6s5/zarub.jpg",
   "./img/hist/g7s1/oleg-igor.jpg",
   "./img/hist/g7s1/olga.jpg",
   "./img/hist/g7s1/svyatoslav.jpg",
+  "./img/hist/g7s1/tribute-khazars.jpg",
   "./img/hist/g7s2/oranta.jpg",
   "./img/hist/g7s2/sofia.jpg",
   "./img/hist/g7s2/zlatnyky.jpg",
@@ -227,6 +239,15 @@ const ASSETS = [
   "./img/hist/g9s3/ems-plaque.jpg",
   "./img/hist/g9s3/manifest-1861.jpg",
   "./img/hist/g9s4/yuzivka-zavod.jpg",
+  "./img/hist/s1/khmelnytsky-hondius.jpg",
+  "./img/hist/s2/dnipro-rapids.jpg",
+  "./img/hist/s2/kiepert-1849.jpg",
+  "./img/hist/s2/panteleimon-halych.jpg",
+  "./img/hist/s3/lviv-1618.jpg",
+  "./img/hist/s3/ostraka.jpg",
+  "./img/hist/s3/ruska-pravda.jpg",
+  "./img/hist/s3/sich-rada.jpg",
+  "./img/hist/s4/zlatnyky.jpg",
   "./img/hist-chron.jpg",
   "./img/hist-kyi.jpg",
   "./img/hist-layer.jpg",

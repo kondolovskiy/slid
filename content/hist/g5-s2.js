@@ -1,5 +1,5 @@
 /* Слід · Історія, 5 клас — «Історична карта»
-   Статус: h21, h25 verified (D-019 re-verify 2026-10-12); h22–h24 draft (D-027: додано фото, 2026-10-31). 5 уроків.
+   Статус: усі уроки verified (D-019 re-verify 2026-10-12; h22–h24 — фото D-027, verify 2026-10-31). 5 уроків.
    Перевірка: node tools/validate.mjs && node tools/stats.mjs
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("hist", {
@@ -32,7 +32,7 @@ SLID.section("hist", {
     [
       "Polen, Westrussland bis zum Dniepr… (фрагмент), Веймар, Geographisches Institut, 1849",
       "Heinrich Kiepert; скан Bibliothèque nationale de France (Gallica)",
-      "суспільне надбання (PD-old, PD-US)",
+      "суспільне надбання (PD-France, PD-US)",
       "https://commons.wikimedia.org/wiki/File:Polen,_Westrussland_bis_zum_Dniepr,_die_Ostseeprovinzen_und_die_Nieder-Donauländer_nebst_Übersicht_der_Theilung_-_von_Polen._1_-_1_700_000_Entw._v._h._Kiepert_-_btv1b53099761p_(2_of_4).jpg"
     ]
   ],
@@ -148,7 +148,7 @@ SLID.section("hist", {
       title: "Чому Київ стоїть на Дніпрі?",
       short: "Природа й історія",
       icon: "river",
-      status: "draft",
+      status: "verified",
       why: "Річки, ліси й степи вирішували, де виростуть міста і де пройдуть війни. Без географії історія незрозуміла.",
       screens: [
         {
@@ -260,7 +260,7 @@ SLID.section("hist", {
       title: "Галичина, Поділля, Слобожанщина",
       short: "Історичні землі",
       icon: "map",
-      status: "draft",
+      status: "verified",
       why: "Назви регіонів — живі сліди минулого. Вони пояснюють діалекти, архітектуру й традиції.",
       screens: [
         {
@@ -360,7 +360,7 @@ SLID.section("hist", {
       title: "Кордони змінюються",
       short: "Кордони",
       icon: "line",
-      status: "draft",
+      status: "verified",
       why: "Кордони — не лінії, дані природою. Їх встановлювали війни й договори. Це допомагає розуміти й сьогоднішні події.",
       screens: [
         {
@@ -376,7 +376,7 @@ SLID.section("hist", {
           eyebrow: "Дві імперії",
           title: "Львів і Київ у XIX столітті",
           img: "img/hist/s2/kiepert-1849.jpg",
-          cap: "Карта Генріха Кіперта, видана у Ваймарі 1849 р. (фрагмент). Ліворуч — Galizien (Галичина) в Австрійській імперії, праворуч — Wolhynien і Podolien (Волинь і Поділля) в Російській. Між ними — кольорова лінія кордону.",
+          cap: "Карта Генріха Кіперта, видана у Веймарі 1849 р. (фрагмент). Ліворуч — Galizien (Галичина) в Австрійській імперії, праворуч — Wolhynien і Podolien (Волинь і Поділля) в Російській. Між цими землями пролягав кордон двох імперій.",
           body: `<p>Наприкінці XVIII ст. українські землі поділили дві імперії: <b>Галичина з Львовом</b> — до <b>Австрії</b> (з 1867 р. — Австро-Угорщина), <b>Наддніпрянщина з Києвом</b> — до <b>Російської імперії</b>. У XIX ст. міста опинилися в різних державах.</p>
         <p>Кордони змінювали <b>війни</b>, <b>договори</b> між державами й інколи <b>шлюби</b> правителів — не погода.</p>`,
           cta: "Далі"

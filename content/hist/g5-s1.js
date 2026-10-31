@@ -1,5 +1,5 @@
 /* Слід · Історія, 5 клас — «Як історики пізнають минуле»
-   Статус: l1, l2, l4–l6 verified (l5 після D-019 revise + verify 2026-10-12); l3 draft після D-027 (фото, 2026-10-31). 6 уроків.
+   Статус: l1–l6 verified (l5 після D-019 revise + verify 2026-10-12; l3 — фото D-027, verify 2026-10-31). 6 уроків.
    Перевірка: node tools/validate.mjs && node tools/stats.mjs
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("hist", {
@@ -386,7 +386,7 @@ SLID.section("hist", {
       title: "Лінія часу",
       short: "Роки й століття",
       icon: "line",
-      status: "draft",
+      status: "verified",
       badge: "chrono",
       why: "Без лінії часу події злипаються в кашу. З нею видно, що було раніше, що пізніше і скільки між ними.",
       screens: [
