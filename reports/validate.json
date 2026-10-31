@@ -1,8 +1,5 @@
 {
-  "date": "2026-10-31T09:06:21.752Z",
+  "date": "2026-10-31T09:15:36.648Z",
   "errors": [],
-  "warnings": [
-    "content/hist/g11-g11s1.js#g11s1l1: sentenceWords=6.7 поза профілем [7; 15] для hist, 10-11 кл.",
-    "content/hist/g11-g11s1.js#g11s1l2: sentenceWords=6.8 поза профілем [7; 15] для hist, 10-11 кл."
-  ]
+  "warnings": []
 }

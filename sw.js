@@ -1,7 +1,7 @@
 /* Слід — service worker. ЗГЕНЕРОВАНО tools/build.mjs із tools/sw.template.js — не редагуй sw.js вручну.
    Стратегія: усі файли застосунку кешуються при встановленні (офлайн з першого запуску);
    свої файли — спершу з кешу; Google Fonts — з кешу з фоновим оновленням. */
-const VERSION = "378b207bb9";
+const VERSION = "c202652b80";
 const CACHE = "slid-" + VERSION;
 const FONTS = "slid-fonts";
 const ASSETS = [
@@ -50,6 +50,7 @@ const ASSETS = [
   "./content/math/diag-g4.js",
   "./content/math/diag-g5.js",
   "./content/math/diag-g6.js",
+  "./content/math/diag-g7.js",
   "./content/math/g10-g10m1.js",
   "./content/math/g10-g10m2.js",
   "./content/math/g10-g10m3.js",
@@ -117,6 +118,14 @@ const ASSETS = [
   "./content/math/pool-g6-g6m3.js",
   "./content/math/pool-g6-g6m4.js",
   "./content/math/pool-g6-g6m5.js",
+  "./content/math/pool-g7-g7m1.js",
+  "./content/math/pool-g7-g7m2.js",
+  "./content/math/pool-g7-g7m3.js",
+  "./content/math/pool-g7-g7m4.js",
+  "./content/math/pool-g7-g7m5.js",
+  "./content/math/pool-g7-g7m6.js",
+  "./content/math/pool-g7-g7m7.js",
+  "./content/math/pool-g7-g7m8.js",
   "./content/catalog.js",
   "./app/lab.js",
   "./app/learn.js",
@@ -145,9 +154,20 @@ const ASSETS = [
   "./img/hist/g10s3/posvidka-1928.jpg",
   "./img/hist/g10s3/prodnalog-poster-1921.jpg",
   "./img/hist/g10s3/writers-kyiv-1923.jpg",
+  "./img/hist/g10s4/black-board-1932.jpg",
+  "./img/hist/g10s4/kurbas-portrait.jpg",
+  "./img/hist/g10s4/order-00447-1937.jpg",
+  "./img/hist/g10s4/poster-kolhosp.jpg",
   "./img/hist/g10s5/const-law-1939.jpg",
   "./img/hist/g10s5/levytsky-1930.jpg",
   "./img/hist/g10s5/reading-room-1930.jpg",
+  "./img/hist/g11s1/babyn-yar-aerial-1943.jpg",
+  "./img/hist/g11s1/crimean-tatars-exile.jpg",
+  "./img/hist/g11s1/khasevych-volia.jpg",
+  "./img/hist/g11s1/kyiv-notice-1943.jpg",
+  "./img/hist/g11s1/kyiv-order-1941.jpg",
+  "./img/hist/g11s1/secret-protocol-1939.jpg",
+  "./img/hist/g11s1/surrender-1945.jpg",
   "./img/hist/g11s2/bread-card-1947.jpg",
   "./img/hist/g11s2/chnpp-unit4-1986.jpg",
   "./img/hist/g11s2/helsinki-1975.jpg",
