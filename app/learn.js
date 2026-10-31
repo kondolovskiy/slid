@@ -107,11 +107,33 @@ window.SLID_LEARN = (() => {
     const known = [...new Set(d.topics.filter(t => t.kind === "cur" && topics[t.id] === "known").flatMap(t => t.lessons || []).filter(has))];
     return { diag: d.id, grade: d.grade, date: ctx.day || null, topics, steps, known, base };
   }
+  /* ---------- Редакції тесту (refine-math-diag-g6-coverage) ----------
+     Відповіді тесту зберігаються вердиктами (OK/BAD/SKIP) за індексом завдання: S.diagRun[id][i] — розпочатий тест,
+     S.diag[id].res[i] — завершений. Якщо завдання замінили на місці (той самий індекс і тема, інший тип/ключ/зміст), йому
+     ставлять rev: N — номер редакції тесту, з якої діє новий зміст. Редакція тесту — найбільший rev його завдань (без rev — 1).
+     Розпочатий тест пам'ятає свою редакцію (S.diagRunRev[id]; збережений до цього поля — редакція 1). При продовженні
+     вердикти завдань, новіших за редакцію запуску, відкидаються: ці завдання покажуть знову (відповідь на старий зміст не
+     зараховується новому); решта відповідей і порядок показу не змінюються. Завершений результат S.diag не перераховується
+     новою оцінкою: план, known і теми лишаються такими, як їх отримано, до повторного тесту (rev результату — для довідки).
+     Додавати, вилучати чи переставляти завдання цим механізмом не можна — для такої зміни потрібен новий id тесту. */
+  const diagRev = d => Math.max(1, ...(d?.items || []).map(it => Number.isInteger(it?.rev) && it.rev > 1 ? it.rev : 1));
+  /** Готує розпочатий тест до продовження чинною редакцією. Повертає { res, rev, dropped — індекси відкинутих вердиктів }. */
+  function resumeDiag(S, d) {
+    if (!S.diagRun || typeof S.diagRun !== "object") S.diagRun = {};
+    if (!S.diagRunRev || typeof S.diagRunRev !== "object") S.diagRunRev = {};
+    const res = S.diagRun[d.id] && typeof S.diagRun[d.id] === "object" ? S.diagRun[d.id] : (S.diagRun[d.id] = {});
+    const rev = diagRev(d), keys = Object.keys(res), saved = S.diagRunRev[d.id];
+    const from = Number.isInteger(saved) && saved >= 1 ? saved : keys.length ? 1 : rev, dropped = [];
+    if (from < rev) for (const k of keys) { const it = d.items[k]; if (!it || (it.rev || 1) > from) { delete res[k]; dropped.push(Number(k)); } }
+    S.diagRunRev[d.id] = Math.max(from, rev);
+    return { res, rev, dropped };
+  }
   /** Зберігає результат тесту й план у стані. Незакриті кроки з помилок в уроках (src: "err") переходять у новий план; решту тест перераховує заново. */
   function finishDiag(S, subjectId, d, res, ctx = {}) {
     const old = planFor(S, subjectId, { ...ctx, grade: d.grade }), plan = buildPlan(d, res, ctx);
     if (old) for (const st of old.steps) if (st.src === "err" && !st.done && (!ctx.hasLesson || ctx.hasLesson(st.l)) && !plan.steps.some(x => x.l === st.l)) plan.steps.push(st);
-    S.diag[d.id] = { done: true, date: plan.date, res: { ...res }, topics: plan.topics };
+    S.diag[d.id] = { done: true, date: plan.date, res: { ...res }, topics: plan.topics, rev: diagRev(d) };
+    if (S.diagRunRev) delete S.diagRunRev[d.id];
     storePlan(S, subjectId, plan, d.grade);
     return plan;
   }
@@ -1348,10 +1370,11 @@ window.SLID_LEARN = (() => {
         if (it[flag] !== undefined && (typeof it[flag] !== "boolean" || !types.includes(it.type))) E.push(`${w}: ${flag} має бути boolean для ${types.join(" | ")}`);
       }
       if (it.lesson && !(T.get(it.topic)?.lessons || []).includes(it.lesson)) E.push(`${w}: lesson «${it.lesson}» має бути одним з уроків теми`);
+      if (it.rev !== undefined && (!Number.isInteger(it.rev) || it.rev < 2)) E.push(`${w}: rev — ціле ≥ 2: редакція тесту, з якої діє новий зміст завдання`);
     });
     return E;
   }
 
-  return { OK, BAD, SKIP, PASS, DIAG_TYPES, planFor, practiceItems, nextItem, remaining, topicStatus, level, buildPlan, finishDiag, record, detect, syncPlan, lessonDone, todo, isKnown, SK_RETAG, migrateSk, validate,
+  return { OK, BAD, SKIP, PASS, DIAG_TYPES, planFor, practiceItems, nextItem, remaining, topicStatus, level, buildPlan, diagRev, resumeDiag, finishDiag, record, detect, syncPlan, lessonDone, todo, isKnown, SK_RETAG, migrateSk, validate,
     parseAns, parseDivrem, checkAns, badHint, hintTexts, keyInput, timeExample, quantityUnits: s => qtyUnits(s)?.units || null, stripUnit, listKey, pairKey, answerSig, formHint, ansText, srcRef, numberKeys, ANSWER_KINDS, BOX_DAYS, srsInit, srsUpdate, isDue, pickSession, POOL_TYPES, validatePool };
 })();

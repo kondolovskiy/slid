@@ -101,11 +101,13 @@ const BADGES = GLOBAL_BADGES.concat(...SUBJ.map(c=>c.badges||[]));
 
 /* ---------- Стан (зберігається на пристрої) ---------- */
 const KEY = "slid.v1";
-const fresh = () => ({ name:"", grade:null, weekOverride:null, theme:"system", subject:SUBJ[0].id, unlockAll:false, xp:0, lessons:{}, days:{}, streak:{count:0,last:null}, badges:{}, skills:{}, polls:{}, bestCombo:0, diag:{}, diagRun:{}, diagSkip:{}, plan:{}, planByGrade:{}, mast:{}, errs:[], skw:{}, srs:{}, seen:{} });
+const fresh = () => ({ name:"", grade:null, weekOverride:null, theme:"system", subject:SUBJ[0].id, unlockAll:false, xp:0, lessons:{}, days:{}, streak:{count:0,last:null}, badges:{}, skills:{}, polls:{}, bestCombo:0, diag:{}, diagRun:{}, diagRunRev:{}, diagSkip:{}, plan:{}, planByGrade:{}, mast:{}, errs:[], skw:{}, srs:{}, seen:{} });
 let S = fresh();
 try { const raw = localStorage.getItem(KEY); if (raw) S = Object.assign(fresh(), JSON.parse(raw)); } catch(e) {}
 const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e) {} };
 try { if (LEARN.migrateSk(S)) save(); } catch(e) {}   // sk, узгоджені з уроками 2026-10-31, — у журналі помилок (learn.js, SK_RETAG)
+// розпочатий до нової редакції тесту: вердикти замінених завдань відкидаються, решта й порядок лишаються (learn.js, resumeDiag)
+try { let ch=false; for (const c of SUBJ) for (const d of c.diags||[]) if (Object.keys(S.diagRun?.[d.id]||{}).length && LEARN.resumeDiag(S,d).dropped.length) ch=true; if (ch) save(); } catch(e) {}
 
 const dkey = (d=new Date()) => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
 const addDays = (d,n) => { const x=new Date(d); x.setDate(x.getDate()+n); return x; };
@@ -674,7 +676,7 @@ function startDiag(cid){
   afterEnd=null;
   C=course(cid); const d=diagFor(C); if(!d) return;
   SEC={ grade:d.grade, signed:d.signed!==false, lessons:[] }; li=0; L={ id:d.id, title:d.title, screens:d.items };
-  run={ diag:d, res:S.diagRun[d.id]||(S.diagRun[d.id]={}), linked:true, weak:new Set(), xp:0, first:0, graded:0, combo:0, best:0, mistakes:0, startLvl:levelOf(S.xp).n };
+  run={ diag:d, res:LEARN.resumeDiag(S,d).res, linked:true, weak:new Set(), xp:0, first:0, graded:0, combo:0, best:0, mistakes:0, startLvl:levelOf(S.xp).n };
   idx=LEARN.nextItem(d,run.res); if(idx<0) idx=d.items.length;
   applyTheme(C.id);
   openPlayer();
