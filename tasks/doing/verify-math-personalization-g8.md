@@ -1,10 +1,12 @@
 ---
+claimed_from: todo
+claimed_at: 2026-10-31T12:37:54.822Z
 id: verify-math-personalization-g8
 type: verify-personalization
 subject: math
 grade: 8
 status: todo
-claimed_by:
+claimed_by: orchestrator-verify-g8
 created: 2026-10-15
 depends_on: [curate-math-personalization-map, write-math-diag-g8, write-math-pool-g8m1, write-math-pool-g8m2, write-math-pool-g8m3, write-math-pool-g8m4, write-math-pool-g8m5, write-math-pool-g8m6]
 ---
