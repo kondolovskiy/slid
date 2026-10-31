@@ -86,7 +86,21 @@ async def grade_context_checks(browser, url):
             if screen['type'] not in ('intro', 'info', 'explore'):
                 assert 'ok' in await page.locator('#dock').get_attribute('class') or screen.get('hyp')
                 await page.click('#action')
-    # A real dg6 partial run, paused just before its second dec-ops item.
+    # A dg6 run saved before revision 2 (no diagRunRev): verdicts of revised cur probes are dropped on load,
+    # the other answers and their order stay, and the revised probes are asked again (learn.js resumeDiag).
+    await page.goto(url)
+    await page.evaluate("""() => {
+      const d=SLID_SUBJECTS.find(c=>c.id==='math').diags.find(d=>d.id==='dg6');
+      localStorage.setItem('slid.v1',JSON.stringify({grade:6,unlockAll:false,diagRun:{dg6:Object.fromEntries(d.items.map((_,i)=>[i,1]).slice(0,26))}}));
+    }""")
+    await page.reload()
+    legacy = await page.evaluate("""() => {const S=JSON.parse(localStorage.getItem('slid.v1')),d=SLID_SUBJECTS.find(c=>c.id==='math').diags.find(d=>d.id==='dg6');
+      return {keys:Object.keys(S.diagRun.dg6).map(Number),rev:S.diagRunRev.dg6,revised:d.items.flatMap((it,i)=>it.rev?[i]:[]),next:SLID_LEARN.nextItem(d,S.diagRun.dg6)};}""")
+    assert legacy['rev'] == 2 and set(legacy['revised']) & set(legacy['keys']) == set(), legacy
+    assert legacy['keys'] == [i for i in range(26) if i not in legacy['revised']] and legacy['next'] == legacy['revised'][0], legacy
+    assert 'Продовжити тест' in await page.locator('#view').inner_text()
+    await page.evaluate("localStorage.clear()")
+    # A real dg6 partial run of the current revision, paused just before its second dec-ops item.
     await page.goto(url)
     # A new profile can choose a grade and defer the diagnostic.
     await page.click('[data-grade="6"]')
@@ -96,7 +110,7 @@ async def grade_context_checks(browser, url):
       const d=SLID_SUBJECTS.find(c=>c.id==='math').diags.find(d=>d.id==='dg6');
       const at=d.items.map((it,i)=>it.topic==='dec-ops'?i:-1).filter(i=>i>=0).pop();
       const res=Object.fromEntries(Array.from({length:at},(_,i)=>[i,1]));
-      localStorage.setItem('slid.v1',JSON.stringify({grade:6,unlockAll:false,diagRun:{dg6:res}}));
+      localStorage.setItem('slid.v1',JSON.stringify({grade:6,unlockAll:false,diagRun:{dg6:res},diagRunRev:{dg6:SLID_LEARN.diagRev(d)}}));
     }""")
     await page.reload(); await install()
     original6 = (await state())['diagRun']['dg6']

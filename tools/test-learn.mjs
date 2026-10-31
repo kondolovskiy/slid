@@ -126,7 +126,7 @@ eq(L.topicStatus(D, { 5: SKIP }).x, "new", "topicStatus: SKIP в cur → new");
   const res = { 0: BAD, 3: BAD };                       // a gap (a1, a2), c gap (c1), b gap (b1)
   const p = L.finishDiag(S, "math", D, res, { day: "2026-10-13", week: 1 });
   eq(S.plan.math === p, true, "finishDiag: план записано в S.plan[предмет]");
-  eq(S.diag.dg, { done: true, date: "2026-10-13", res: { 0: BAD, 3: BAD }, topics: p.topics }, "finishDiag: запис у S.diag");
+  eq(S.diag.dg, { done: true, date: "2026-10-13", res: { 0: BAD, 3: BAD }, topics: p.topics, rev: 1 }, "finishDiag: запис у S.diag (rev — редакція тесту)");
   eq(S.diag.dg.res === res, false, "finishDiag: res скопійовано");
   eq(p.steps.map(s => s.l), ["a1", "a2", "b1", "c1", "E1"], "finishDiag: err-кроки зі старого плану додано, дубль E1 у старому плані відсіяно");
   eq(p.steps.filter(s => s.l === "a1").length, 1, "finishDiag: a1 (є і в диагностиці, і в err) не дублюється");
@@ -1005,6 +1005,77 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
     eq((!items.length || items.some(it => it.sk === t)) && lesson.screens.some(s => s.sk === t), true, `SK_RETAG ${at}: новий ${t} є в уроці (і в пулі, якщо він є)`);
     eq(!!c.skills[f] && !!c.skills[t], true, `SK_RETAG ${at}: навички оголошено`);
   }
+}
+/* Редакції тесту (refine-math-diag-g6-coverage): заміна завдання на місці з rev, розпочаті й завершені тести, реальний dg6 і пули 6 кл. */
+{ const R = clone(D); R.items[5].rev = 2; R.items[7].rev = 2;           // x і y (cur) замінено на місці
+  eq([L.diagRev(D), L.diagRev(R), L.diagRev({ items: [{ rev: 3 }, { rev: 1.5 }, { rev: "4" }] }), L.diagRev({})], [1, 2, 3, 1], "diagRev: найбільший цілий rev ≥ 2, інакше 1");
+  // старий розпочатий тест (без diagRunRev): вердикти замінених завдань відкидаються, решта й порядок — ні
+  const S = { ...fresh(), diagRun: { dg: { 0: OK, 1: BAD, 2: OK, 3: OK, 5: OK } } };
+  const r = L.resumeDiag(S, R);
+  eq([r.rev, r.dropped, S.diagRun.dg, S.diagRunRev.dg, r.res === S.diagRun.dg], [2, [5], { 0: OK, 1: BAD, 2: OK, 3: OK }, 2, true], "resumeDiag: legacy-запуск — відкинуто лише x (5)");
+  eq(L.nextItem(R, S.diagRun.dg), 5, "resumeDiag: замінене завдання покажуть знову, далі — як було");
+  eq(L.resumeDiag(S, R).dropped, [], "resumeDiag: повторний виклик нічого не відкидає (ідемпотентно)");
+  S.diagRun.dg[5] = BAD; eq(L.resumeDiag(S, R).dropped, [], "resumeDiag: відповідь на нову редакцію зберігається");
+  eq(S.diagRun.dg, { 0: OK, 1: BAD, 2: OK, 3: OK, 5: BAD }, "resumeDiag: вердикт нової редакції не чіпається");
+  // запуск у чинній редакції, порожній запуск, редакція 1 — без змін
+  const S2 = { ...fresh(), diagRun: { dg: { 5: OK, 7: SKIP } }, diagRunRev: { dg: 2 } };
+  eq([L.resumeDiag(S2, R).dropped, S2.diagRun.dg], [[], { 5: OK, 7: SKIP }], "resumeDiag: запуск чинної редакції не змінюється");
+  const S3 = fresh(); eq([L.resumeDiag(S3, R).dropped, S3.diagRun.dg, S3.diagRunRev.dg], [[], {}, 2], "resumeDiag: новий запуск отримує чинну редакцію");
+  const S4 = { ...fresh(), diagRun: { dg: { 0: OK, 5: OK } } };
+  eq([L.resumeDiag(S4, D).dropped, S4.diagRun.dg, S4.diagRunRev.dg], [[], { 0: OK, 5: OK }, 1], "resumeDiag: тест без rev — старі запуски як були");
+  const S5 = { diagRun: null }; eq(L.resumeDiag(S5, R).res, {}, "resumeDiag: пошкоджений стан не падає");
+  // завершений старий результат не перераховується: теми, план і known — як отримано, до повторного тесту
+  const old = { ...fresh(), grade: 6, diag: { dg: { done: true, date: "2026-10-13", res: { 0: OK, 1: OK, 2: OK, 3: OK, 4: OK, 5: OK, 6: OK, 7: OK }, topics: L.topicStatus(D, { 0: OK, 1: OK, 2: OK, 3: OK, 4: OK, 5: OK, 6: OK, 7: OK }) } } };
+  const before = JSON.stringify(old.diag);
+  const rebuilt = L.planFor(old, "math", { grade: 6, diags: [{ ...R, grade: 6 }] });
+  eq([rebuilt.known, JSON.stringify(old.diag) === before], [["x1", "y1", "y2"], true], "старий завершений результат: known і запис S.diag збережено");
+  L.resumeDiag(old, R); eq(JSON.stringify(old.diag) === before, true, "resumeDiag не чіпає завершених результатів");
+  // повторний тест у новій редакції: rev у записі, diagRunRev прибрано
+  const S6 = { ...fresh(), diagRun: { dg: {} } }; L.resumeDiag(S6, R);
+  L.finishDiag(S6, "math", R, { 0: OK, 1: OK, 2: OK, 3: OK, 4: OK, 5: BAD, 6: OK, 7: OK }, {});
+  eq([S6.diag.dg.rev, "dg" in S6.diagRunRev, S6.plan.math.known], [2, false, ["y1", "y2"]], "finishDiag: rev результату, діагностика нової редакції");
+  // валідатор: rev — ціле ≥ 2
+  const ctxV = { lessons: new Map([["p1", { grade: 5 }], ["c1", { grade: 6 }]]), sections: new Map(), skills: { num: {} } };
+  const dv = rev => L.validate({ id: "t", grade: 6, title: "t", why: "w", status: "draft", topics: [{ id: "k", title: "k", kind: "cur", lessons: ["c1"] }],
+    items: [{ topic: "k", type: "number", sk: "num", title: "t", answer: 1, rev }] }, ctxV).filter(e => /rev/.test(e)).length;
+  eq([dv(undefined), dv(2), dv(7), dv(1), dv(0), dv(1.5), dv("2")], [0, 0, 0, 1, 1, 1, 1], "validate: rev лише ціле ≥ 2");
+}
+{ const { loadContent } = await import("./lib.mjs");
+  const { subjects } = loadContent(), math = subjects.find(s => s.id === "math"), d = math.diags.find(x => x.id === "dg6");
+  // реальний dg6: 30 завдань; rev 2 — рівно п'ять cur-проб на тих самих індексах і темах; порядок тем не змінено
+  const TOPICS = "ord frac frac-cmp rem frac-add eq pct dec mixed geom frac-of dec-ops ord frac rem frac-cmp g6-div eq dec frac-add g6-lcm frac-of geom mixed g6-fadd dec-ops pct g6-prop g6-neg g6-eq".split(" ");
+  eq(d.items.map(it => it.topic), TOPICS, "dg6: теми за індексами — як у редакції 1 (збережені вердикти не зсуваються)");
+  eq(d.items.flatMap((it, i) => it.rev ? [[i, it.topic, it.rev]] : []), [[16, "g6-div", 2], [20, "g6-lcm", 2], [24, "g6-fadd", 2], [27, "g6-prop", 2], [28, "g6-neg", 2]], "dg6: rev 2 лише в замінених cur-пробах");
+  eq(L.diagRev(d), 2, "dg6: редакція 2");
+  // перерваний тест редакції 1 (усе правильно до другого dec-ops включно): п'ять проб відкинуто, решта на місці
+  const S = { grade: 6, diag: {}, plan: {}, diagRun: { dg6: Object.fromEntries(Array.from({ length: 26 }, (_, i) => [i, OK])) } };
+  const r = L.resumeDiag(S, d);
+  eq([r.dropped, Object.keys(S.diagRun.dg6).length, L.nextItem(d, S.diagRun.dg6)], [[16, 20, 24], 23, 16], "dg6: legacy-запуск — заново g6-div, g6-lcm, g6-fadd; 23 відповіді лишились");
+  // складені проби: known лише коли вся проба правильна
+  const all = Object.fromEntries(d.items.map((_, i) => [i, OK]));
+  eq(L.buildPlan(d, all, {}).known, ["g6m1l2", "g6m1l4", "g6m2l4", "g6m3l2", "g6m4l3", "g6m5l3"], "dg6: усе правильно → known шести уроків");
+  eq(L.buildPlan(d, { ...all, 24: BAD, 28: SKIP }, {}).known, ["g6m1l2", "g6m1l4", "g6m3l2", "g6m5l3"], "dg6: помилка в складеній пробі → урок не known");
+  // пули 6 кл.: id з редакції 2026-10-13 (літера уроку + 01–08) лишились у своїх уроках, крім замінених; нові — нові id
+  const REMOVED = { pg6m1: ["a01", "b03", "c03"], pg6m3: ["a05", "b05"], pg6m4: ["e05"], pg6m5: ["a03", "b01"] };
+  const ADDED = { pg6m1: ["a09", "b09", "c09"], pg6m3: ["a09", "b09"], pg6m4: ["e09"], pg6m5: ["a09", "b09"] };
+  for (const p of math.pools.filter(p => /^pg6m[1-5]$/.test(p.id))) {
+    const sec = math.sections.find(s => s.id === p.section), lessons = sec.lessons.filter(l => !l.boss).map(l => l.id);
+    const old = lessons.flatMap((l, k) => Array.from({ length: 8 }, (_, j) => [String.fromCharCode(97 + k) + "0" + (j + 1), l])).filter(([id]) => !(REMOVED[p.id] || []).includes(id));
+    eq(old.every(([id, l]) => p.items.some(it => it.id === id && it.lesson === l)), true, `${p.id}: сталі id і уроки збережено`);
+    eq(p.items.filter(it => !old.some(([id]) => id === it.id)).map(it => it.id), ADDED[p.id] || [], `${p.id}: нові вправи — лише нові id`);
+    eq(p.items.some(it => (REMOVED[p.id] || []).includes(it.id)), false, `${p.id}: вилучені id не використано знову`);
+    for (const l of lessons) { const n = p.items.filter(it => it.lesson === l).length; eq(n >= 6 && n <= 8, true, `${p.id}/${l}: 6–8 вправ (${n})`); }
+  }
+  // старий прогрес тренування: seen вилучених вправ не ламає добору, SRS теми не змінюється, нова вправа — першою (ще не бачили)
+  const lessons1 = math.sections.find(s => s.id === "g6m1").lessons.filter(l => !l.boss).map(l => l.id);
+  const P = { grade: 6, lessons: Object.fromEntries(lessons1.map(l => [l, { done: true }])), srs: { g6m1l1: { box: 3, due: "2026-11-01" } },
+    seen: Object.fromEntries(["a01", "a02", "a03", "a04", "a05", "a06", "a07", "a08"].map(id => ["pg6m1:" + id, 1])) };
+  const srsBefore = JSON.stringify(P.srs), seenBefore = JSON.stringify(P.seen);
+  const items = L.practiceItems(P, { sections: math.sections, pools: math.pools });
+  eq(items.some(it => it.key === "pg6m1:a01"), false, "тренування: вилучена a01 не з'являється");
+  const pick = L.pickSession(P, { items, focus: "g6m1l1", n: 6, day: "2026-11-01" });
+  eq(pick[0].key, "pg6m1:a09", "тренування: нова a09 (ще не бачили) — першою в темі");
+  eq([JSON.stringify(P.srs) === srsBefore, JSON.stringify(P.seen) === seenBefore], [true, true], "тренування: seen/SRS не переписано");
 }
 /* Нові формати (engine-math-answer-kinds-new, рішення 2026-10-31): time, quantity, form improper, decimals, multiset;
    префікси «x =», «AB =», «… ∈»; періодичний дріб; одиниці («60 грн.», «º», «разів»); P3 з рев'ю followup (P3-1, P3-2, P3-6).
