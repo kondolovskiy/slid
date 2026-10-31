@@ -1,11 +1,13 @@
 ---
+claimed_from: todo
+claimed_at: 2026-10-31T16:57:22.658Z
 id: images-hist-s3
 type: images
 subject: hist
 grade: 5
 section: s3
 status: todo
-claimed_by:
+claimed_by: photo-s3
 created: 2026-10-30
 depends_on: []
 ---
