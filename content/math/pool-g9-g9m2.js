@@ -1,5 +1,5 @@
 /* Слід · Математика, 9 клас — пул задач для тренування до розділу «Геометрія: координати і вектори» (g9m2)
-   Статус: verified (verifier-pg9m2, 2026-10-31; reports/verify/pg9m2.md). 32 задачі: g9m2l1 — 8, g9m2l2 — 8, g9m2l3 — 8, g9m2l4 — 8 (boss g9m2boss без задач).
+   Статус: draft (2026-10-31: c06 №13.9 замінено на c09 №13.5(4) — coordinates2 з виразами; до повторної верифікації. Попередня верифікація: reports/verify/pg9m2.md). 32 задачі: g9m2l1 — 8, g9m2l2 — 8, g9m2l3 — 8, g9m2l4 — 8 (boss g9m2boss без задач).
    Матриця docs/math-personalization-coverage.md 2026-10-16.v2: усі чотири уроки required, sk coord,
    формати number, coordinates2, expression, exactRoot (+ list там, де в умові кілька значень).
    Усі задачі — з підручника Мерзляк, Якір. Геометрія 9 (2026), п. 8–10, 13–16; умови й числа звірено
@@ -9,8 +9,8 @@
 SLID.pool("math", {
   id: "pg9m2",
   section: "g9m2",
-  status: "verified",
-  meta: { author: "agent-write-math-pool-g9m2", created: "2026-10-31", factcheck: "verifier-pg9m2", teacher: null },
+  status: "draft",
+  meta: { author: "agent-write-math-pool-g9m2", created: "2026-10-31", factcheck: null, teacher: null },
   sources: [
     { id: "mer9g", title: "Мерзляк А. Г., Якір М. С. Геометрія: підручник для 9 класу. — Харків: Гімназія, 2026 (п. 8–10, 13–16; дзеркало file.4book.org)", url: "https://file.4book.org/images/shcoolbook_ua/9/9_geom_m_2026.pdf" }
   ],
@@ -137,12 +137,12 @@ SLID.pool("math", {
       answer: [6, 10],
       hint: "Рівні вектори мають однакові координати. Знайди $\\overrightarrow{AB}$ і зроби той самий зсув від $C$.",
       steps: ["$\\overrightarrow{AB} = (4 - 3; -5 - (-7)) = (1; 2)$.", "$\\overrightarrow{CD} = (1; 2)$, тож $D = (5 + 1; 8 + 2)$.", "$D(6; 10)$."] },
-    { id: "c06", lesson: "g9m2l3", lvl: 2, sk: "coord", src: "mer9g №13.9", srcPage: 150,
-      type: "answer", title: "Довжина вектора з коренем",
-      body: "<p>Знайди модуль вектора $\\vec{a} = (-20; 2\\sqrt{21})$.</p>",
-      answer: 22,
-      hint: "$(2\\sqrt{21})^2 = 2^2 · (\\sqrt{21})^2 = 4 · 21$.",
-      steps: ["$(-20)^2 = 400$, $(2\\sqrt{21})^2 = 4 · 21 = 84$.", "$|\\vec{a}| = \\sqrt{400 + 84} = \\sqrt{484}$.", "$22^2 = 484$, тож $|\\vec{a}| = 22$."] },
+    { id: "c09", lesson: "g9m2l3", lvl: 2, sk: "coord", src: "mer9g №13.5(4)", srcPage: 150,
+      type: "answer", answerKind: "coordinates2", title: "Вектор між точками з буквами",
+      body: "<p>Знайди координати вектора $\\overrightarrow{AB}$, якщо $A(m; n)$, $B(p; k)$. Запиши відповідь як $(x; y)$, де замість $x$ і $y$ — вирази з буквами $m$, $n$, $p$, $k$.</p>",
+      answer: ["p - m", "k - n"],
+      hint: "Так само, як із числами: від координат кінця $B$ відніми координати початку $A$.",
+      steps: ["Координати вектора — кінець мінус початок: $(x_B - x_A; y_B - y_A)$.", "$x_B - x_A = p - m$, $y_B - y_A = k - n$.", "$\\overrightarrow{AB} = (p - m; k - n)$."] },
     { id: "c07", lesson: "g9m2l3", lvl: 3, sk: "coord", src: "mer9g №13.17", srcPage: 151,
       type: "answer", answerKind: "list", title: "Модуль дорівнює $13$",
       body: "<p>При яких значеннях $y$ модуль вектора $\\vec{b} = (12; y)$ дорівнює $13$? Знайди всі такі значення й запиши через крапку з комою.</p>",
