@@ -1,5 +1,5 @@
 /* Слід · Математика, 10 клас — пул задач для тренування до розділу «Геометрія: вступ до стереометрії» (g10m2)
-   Статус: draft. Автор: agent-write-math-pool-g10m2. 16 задач: g10m2l1 — 8, g10m2l2 — 8 (boss g10m2l4 без задач).
+   Статус: verified (verifier-pool-g10m2, 2026-10-31; reports/verify/pg10m2.md). Автор: agent-write-math-pool-g10m2. 16 задач: g10m2l1 — 8, g10m2l2 — 8 (boss g10m2l4 без задач).
    Матриця docs/math-personalization-coverage.md 2026-10-16.v2: g10m2l1, g10m2l2 — required; g10m2l3 (перерізи, метод слідів) — optional, відкладено, у пул не входить.
    Усі задачі — з підручника Мерзляк, Номіровський, Полонський, Якір. Математика 10 (рівень стандарту, 2018), п. 27 і 29; умови й числа звірено за відрендереними сторінками PDF.
    srcPage — друкований номер сторінки (у цьому PDF збігається з номером сторінки файлу).
@@ -8,8 +8,8 @@
 SLID.pool("math", {
   id: "pg10m2",
   section: "g10m2",
-  status: "draft",
-  meta: { author: "agent-write-math-pool-g10m2", created: "2026-10-31", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "agent-write-math-pool-g10m2", created: "2026-10-31", factcheck: "verifier-pool-g10m2", teacher: null },
   sources: [
     { id: "mer10", title: "Мерзляк А. Г., Номіровський Д. А., Полонський В. Б., Якір М. С. Математика: алгебра і початки аналізу та геометрія, рівень стандарту: підручник для 10 класу. — Харків: Гімназія, 2018 (п. 27, 29; дзеркало file.4book.org)", url: "https://file.4book.org/images/shcoolbook_ua/10/10_m_m_2018_ua.pdf" }
   ],
