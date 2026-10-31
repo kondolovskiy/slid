@@ -5,7 +5,7 @@ id: write-math-pool-g8m4
 type: write-pool
 subject: math
 grade: 8
-status: review
+status: done
 claimed_by: agent-write-math-pool-g8m4
 created: 2026-10-15
 depends_on: [curate-math-personalization-map, engine-math-pool-answer-formats]
@@ -123,3 +123,7 @@ depends_on: [curate-math-personalization-map, engine-math-pool-answer-formats]
 | g8m4l3 | required | 6–8 (3/2/1 за рівнями мінімум) | number; g8:133–137 |
 
 Покриття: **3 required-уроків, 18–24 вправ**. Optional/pending не включати у файл пулу цієї версії; boss не дублювати.
+
+## Верифікація
+
+2026-10-31, verifier-pool-g8m4: **verified**, звіт reports/verify/pg8m4.md. 23/23 ключі підтверджено; правка — «проекція» → «проєкція» в пулі; урок g8m4l3 і глосарій передано куратору (inbox).
