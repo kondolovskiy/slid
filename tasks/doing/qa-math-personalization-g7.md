@@ -26,9 +26,9 @@ depends_on: [verify-math-personalization-g7, tools-math-personalization-qa, engi
 
 ## Готово, коли
 
-- [ ] reports/qa/math-personalization-g7.md містить версію матриці, перевірені required-об’єкти, команди, сценарії, виправлення та межі перевірки.
-- [ ] validate, test-learn, застосовні цільові браузерні сценарії й покриття класу зелені; build виконано, згенеровані файли включено в результат.
-- [ ] Критичні дефекти цього класу закрито; optional/pending і ще недоступні міжкласові пули не приховані та не оголошені виконаними. Фінальне наскрізне приймання — окрема задача.
+- [x] reports/qa/math-personalization-g7.md містить версію матриці, перевірені required-об’єкти, команди, сценарії, виправлення та межі перевірки.
+- [x] validate, test-learn, застосовні цільові браузерні сценарії й покриття класу зелені; build виконано, згенеровані файли включено в результат.
+- [x] Критичні дефекти цього класу закрито; optional/pending і ще недоступні міжкласові пули не приховані та не оголошені виконаними. Фінальне наскрізне приймання — окрема задача.
 
 
 ## Перед роботою
@@ -38,6 +38,15 @@ depends_on: [verify-math-personalization-g7, tools-math-personalization-qa, engi
 ## Нотатки виконавця
 
 <!-- Змінені файли; джерела; рішення й обмеження; результати команд; що передано незалежному верифікатору. -->
+
+2026-10-31, agent-qa-math-personalization-g7 (worktree на f8fe74a). Звіт: reports/qa/math-personalization-g7.md. **Прийнято, P1 немає.**
+- Змінені файли: reports/qa/math-personalization-g7.md; content/math/diag-g7.js (D-5: title cur-g7m6 «Ознаки» → «Паралельні прямі», лише підпис теми); sw.js (build, версія 8e71e259ae); ця задача; 3 рядки в memory/short/inbox.md. app/ і tools/ не редагував; reports/validate.json не комічу.
+- Матриця 2026-10-16.v2: 26 required / 8 пулів / 206 вправ + dg7 (28). Optional/pending немає. Пули-передумови dg7 (pg6m3, pg6m4, pg6m5, pms0b) є й verified.
+- Команди (усі exit 0): build; validate --diag dg7 і --pool pg7m1…m8 → 0/0 (неіснуючий pg7m9 → exit 1); validate → 0 помилок; test-learn 839 ok; test-personalization-qa 27 green; personalization-qa --grade 7 --strict (бракує 0); test-answer-ui --grade 7 --strict (--browser /opt/pw-browsers/chromium) — 206 вправ, 3 хв 44 с; після D-5 — test-answer-ui --diag dg7 --strict, playtest dg7; playtest dg7 + g7m1…g7m8 (34 уроки + тест).
+- Власний Playwright (scratchpad/qa-g7/s1–s6, 360 px): «Пізніше», змішаний dg7 з оракулом topics/steps/known (lab/sort/multi), переривання/відновлення, повторний тест, перший крок → урок 6 кл. при grade 7, g6m4l4→pg6m4 і ms0bl2→pms0b при 7 кл., g7m1l1→pg7m1 (hint/друга спроба, та сама відповідь не витрачає спробу, SRS, помилки→план), формати expression+form/coordinates2/list/comparison/choice/multi, 7→6→7, міграція старого плану dg7 і dg6→7→6, офлайн із першого завантаження (dg7, урок g7m3l1, pg7m3).
+- Дефекти: P2 D-1 lab plane у dg7 недоступні з клавіатури (→ engine-player-a11y-followup); P2 D-2 дописана одиниця («115°», «7 см») → bad, 63/206 вправ 7 кл. з unit (→ engine-math-answer-formats-followup); P3 D-3 «√» на expression/coordinates2 у 7 кл.; P3 D-4 formHint expanded «Розкрий дужки» без дужок; P3 D-5 (зміст) виправлено. Дефекти D-1…D-4 QA 5 кл. на цій версії виправлено.
+- Межі: зміст вправ не перерозв'язував (verify-math-personalization-g7); 7→8 не перевірено (dg8/пули 8 кл. ще в роботі); dg6 → ms2l4 → реальний pms2 — у qa-math-personalization-release; час «≈ 10 хв» не оцінювався; лише Chromium, без реальних телефонів.
+- Незалежному верифікатору нічого не передано: правка D-5 — лише підпис теми (без зміни завдань і ключів); куратору — синхронізувати title у матриці (inbox).
 
 ## Обсяг за матрицею 2026-10-16.v2
 
