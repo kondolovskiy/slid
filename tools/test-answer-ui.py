@@ -177,8 +177,8 @@ async def grade_context_checks(browser, url):
 
 DAY = '2026-10-16'
 
-async def qa_page(browser, url, seed):
-    context = await browser.new_context(viewport={'width': 400, 'height': 860})
+async def qa_page(browser, url, seed, touch=False):
+    context = await browser.new_context(viewport={'width': 400, 'height': 860}, has_touch=touch)
     # Freeze the calendar for SRS/age windows, including across reloads.
     await context.add_init_script("""{const D=Date;window.Date=class extends D {
       constructor(...a){super(...(a.length?a:['2026-10-16T12:00:00Z']));}
@@ -325,15 +325,15 @@ async def pool_checks(browser, url, pool):
 # Each: fields, first attempt and the expected dock text, then an equivalent correct record.
 FORMAT_FIXTURES = [
     ({'answerKind': 'ratio', 'answer': '2 : 3', 'reduced': True}, '4 : 6', 'натуральними', '2:3'),
-    ({'answerKind': 'coordinates2', 'answer': [3, -2]}, '(-2; 3)', 'Спробуй ще раз', 'A(3; −2)'),
-    ({'answerKind': 'coordinates3', 'answer': '(1; -2; 3)'}, '(1; -2)', 'Спробуй ще раз', '(1; -2; 3)'),
+    ({'answerKind': 'coordinates2', 'answer': [3, -2]}, '(-2; 3)', 'Зміни відповідь', 'A(3; −2)'),
+    ({'answerKind': 'coordinates3', 'answer': '(1; -2; 3)'}, '(1; -2)', 'Зміни відповідь', '(1; -2; 3)'),
     ({'answerKind': 'exactRoot', 'answer': '2√3'}, '√12', 'з-під кореня', '√3·2'),
-    ({'answerKind': 'intervalSet', 'answer': '(-∞; 1] ∪ [4; +∞)'}, '(-∞; 1) ∪ (4; +∞)', 'Спробуй ще раз', 'x ∈ [4; +∞) ∪ (−∞; 1]'),
-    ({'answerKind': 'list', 'answer': '(-1 ± √5)/2'}, '0,62; -1,62', 'Спробуй ще раз', '(−1 − √5)/2; (−1 + √5)/2'),
+    ({'answerKind': 'intervalSet', 'answer': '(-∞; 1] ∪ [4; +∞)'}, '(-∞; 1) ∪ (4; +∞)', 'Зміни відповідь', 'x ∈ [4; +∞) ∪ (−∞; 1]'),
+    ({'answerKind': 'list', 'answer': '(-1 ± √5)/2'}, '0,62; -1,62', 'Зміни відповідь', '(−1 − √5)/2; (−1 + √5)/2'),
     ({'answerKind': 'expression', 'answer': '3a - 2b + 5', 'form': 'expanded'}, '3(a + 1) - 2b + 2', 'Розкрий дужки', '5 − 2b + 3a'),
     ({'answerKind': 'expression', 'answer': '(x - 2)(x + 2)', 'form': 'factored'}, 'x^2 - 4', 'на множники', '(x + 2)(x − 2)'),
-    ({'answerKind': 'expression', 'answer': '(x - 2)^2 + (y + 1)^2 = 9'}, '(x - 2)^2 + (y - 1)^2 = 9', 'Спробуй ще раз', 'x² − 4x + y² + 2y − 4 = 0'),
-    ({'answerKind': 'periodicSet', 'answer': '(-1)^k · π/6 + πk'}, 'π/6 + πk', 'Спробуй ще раз', 'x = π/6 + 2πn; 5π/6 + 2πn, n ∈ Z'),
+    ({'answerKind': 'expression', 'answer': '(x - 2)^2 + (y + 1)^2 = 9'}, '(x - 2)^2 + (y - 1)^2 = 9', 'Зміни відповідь', 'x² − 4x + y² + 2y − 4 = 0'),
+    ({'answerKind': 'periodicSet', 'answer': '(-1)^k · π/6 + πk'}, 'π/6 + πk', 'Зміни відповідь', 'x = π/6 + 2πn; 5π/6 + 2πn, n ∈ Z'),
 ]
 
 async def answer_format_checks(browser, url):
@@ -592,7 +592,8 @@ async def player_qa_checks(browser, url):
         {id:'q-page',answer:5,src:sid+' с. 56, №1',srcPage:56,title:'2 + 3'},
         {id:'q-int',answer:3826,src:sid+' №2',srcPage:9,title:'3452 + 374',hint:'Додай порозрядно.'},
         {id:'q-frac',answer:'3/5',fractionOnly:true,src:sid+' №3',title:'Яка частина?'},
-        {id:'q-choice',type:'choice',opts:['більше','менше','рівно'],correct:1,src:sid+' №4',title:'Порівняй'}]
+        {id:'q-choice',type:'choice',opts:['більше','менше','рівно'],correct:1,src:sid+' №4',title:'Порівняй'},
+        {id:'q-comma',answer:12,src:sid+' №5',title:'7 + 5'}]
         .map(it=>({type:'answer',lesson:'g4m1l1',lvl:1,sk:p.items[0].sk,steps:['Пояснення.'],...it}));}""")
     await page.click('button[data-subject="math"]'); await page.click('[data-practice-view="math"]'); await page.click('[data-practice-mix]')
     # Modal player: the background is inert and Tab never leaves the player.
@@ -601,7 +602,7 @@ async def player_qa_checks(browser, url):
         await page.keyboard.press('Tab')
         assert await page.evaluate("!document.activeElement || !document.activeElement.closest('#app,#tabs')"), await focus_id(page)
     queue = await practice_queue(page)
-    assert len(queue) == 4
+    assert len(queue) == 5
     for n, it in enumerate(queue):
         stage = await page.locator('#stage').inner_text()
         note = await page.locator('#stage .srcnote').inner_text()
@@ -617,6 +618,9 @@ async def player_qa_checks(browser, url):
             assert 'bad' in await page.locator('#dock').get_attribute('class')
             assert await page.locator('#action').is_disabled() and await page.locator('#action').inner_text() == 'Спробувати ще раз'
             assert await focus_id(page) == 'numIn'
+            # The disabled retry explains itself (aria-live dock text, and as the button's description).
+            assert 'Зміни відповідь' in await page.locator('#fbText').inner_text()
+            assert await page.locator('#action').get_attribute('aria-describedby') == 'fbText'
             # A second Enter (or click) with the same answer does not spend the second try.
             await page.keyboard.press('Enter')
             await page.locator('#action').click(force=True)
@@ -626,21 +630,41 @@ async def player_qa_checks(browser, url):
             # Typing the same value again keeps it disabled; a changed value enables the check.
             await page.fill('#numIn', '3800')
             assert await page.locator('#action').is_disabled()
+            # The same number written differently is the same answer: no new try, and the dock says why.
+            for same in ('3800,', '03800', ' 3800 ', '3 800', '3800,0'):
+                await page.fill('#numIn', same)
+                assert await page.locator('#action').is_disabled(), same
+                assert 'та сама відповідь' in await page.locator('#fbText').inner_text(), same
+            await page.keyboard.press('Enter')
+            assert 'Правильна відповідь' not in await page.locator('#hintHost').inner_text()
             await page.fill('#numIn', '3801')
             assert await page.locator('#action').is_enabled()
             await page.keyboard.press('Enter')
             assert 'Правильна відповідь' in await page.locator('#hintHost').inner_text()
             assert (await saved_state(page))['seen'][it['key']] == 0
         elif it['id'] == 'q-choice':
-            await page.click('#stage .opt[data-k="0"]'); await page.click('#action')
+            # Wrong pick is the last option: after the check focus is on it, not on option «А».
+            await page.click('#stage .opt[data-k="2"]'); await page.click('#action')
             assert 'bad' in await page.locator('#dock').get_attribute('class')
-            await page.click('#stage .opt[data-k="0"]')
-            assert await page.locator('#action').is_disabled()
+            assert await page.evaluate("document.activeElement.dataset.k") == '2', await focus_id(page)
+            assert 'Обери інший варіант' in await page.locator('#fbText').inner_text()
             await page.click('#stage .opt[data-k="2"]')
-            assert await page.locator('#action').is_enabled()
+            assert await page.locator('#action').is_disabled()
+            assert 'та сама відповідь' in await page.locator('#fbText').inner_text()
             await page.click('#stage .opt[data-k="0"]')
+            assert await page.locator('#action').is_enabled()
+            await page.click('#stage .opt[data-k="2"]')
             assert await page.locator('#action').is_disabled()
             await page.click('#stage .opt[data-k="1"]'); await page.click('#action')
+            assert 'ok' in await page.locator('#dock').get_attribute('class')
+        elif it['id'] == 'q-comma':
+            # «12,» does not parse (bad). «12» has the same fingerprint, but a correct answer is never blocked.
+            await page.wait_for_function("document.activeElement && document.activeElement.id==='numIn'")
+            await page.keyboard.type('12,'); await page.keyboard.press('Enter')
+            assert 'bad' in await page.locator('#dock').get_attribute('class')
+            await page.fill('#numIn', '12')
+            assert await page.locator('#action').is_enabled()
+            await page.keyboard.press('Enter')
             assert 'ok' in await page.locator('#dock').get_attribute('class')
         else:
             if it['id'] == 'q-frac':
@@ -718,6 +742,25 @@ async def player_qa_checks(browser, url):
     start = await page.locator('#view .cont[data-start]').get_attribute('data-start')
     lesson = await page.evaluate("v => {const [c,k,i]=v.split('|');return SLID_SUBJECTS.find(x=>x.id===c).sections[+k].lessons[+i].id;}", start)
     assert lesson == first6[1], (lesson, first6)
+    assert not errors, errors
+    await context.close()
+    # With unfinished plan steps «Продовжити» opens the first step, exactly like the plan card row.
+    probe = await browser.new_page(); await probe.goto(url)
+    step = await probe.evaluate("SLID_SUBJECTS.find(c=>c.id==='math').sections.find(s=>s.grade===5&&s.lessons).lessons[0].id")
+    await probe.close()
+    plan6s = {**plan6, 'steps': [{'l': step, 'why': 'errors', 'src': 'err', 'n': 2, 'of': 3, 'done': False, 'date': DAY}]}
+    context, page, errors = await qa_page(browser, url, {'grade': 6, 'subject': 'math', 'unlockAll': False, 'diag': {'dg6': {'done': True, 'res': {}, 'topics': {}, 'date': DAY}},
+        'plan': {'math': plan6s}, 'planByGrade': {'math': {'6': plan6s}}})
+    plan_row = await page.locator('#view .plancard [data-lesson]').evaluate_all('bs => bs.map(b => b.dataset.lesson)')
+    cont = page.locator('#view .cont').filter(has_text='Продовжити')
+    assert plan_row == [step] and await cont.get_attribute('data-lesson') == step, (plan_row, await cont.evaluate('b => b.outerHTML'))
+    await cont.click()
+    title = await page.evaluate("id => SLID_SUBJECTS.flatMap(c=>c.sections).flatMap(s=>s.lessons||[]).find(l=>l.id===id).screens[0].title", step)
+    assert await page.locator('#player').is_visible() and title in await page.locator('#stage').inner_text()
+    assert not errors, errors
+    await context.close()
+    context, page, errors = await qa_page(browser, url, {'grade': 6, 'subject': 'math', 'unlockAll': False, 'diag': {'dg6': {'done': True, 'res': {}, 'topics': {}, 'date': DAY}},
+        'plan': {'math': plan6}, 'planByGrade': {'math': {'6': plan6}}})
     # Grade 6 practice keeps «−» and «/» for every number answer (the sign/fraction is not given away).
     await page.evaluate("""() => {const c=SLID_SUBJECTS.find(c=>c.id==='math'),p=c.pools.find(p=>p.id==='pg6m1');c.pools=[p];
       p.items=[{id:'k6',lesson:'g6m1l1',lvl:1,sk:p.items[0].sk,src:p.sources[0].id+' №1',type:'answer',title:'2 + 3',answer:5,steps:['5.']}];}""")
@@ -728,9 +771,58 @@ async def player_qa_checks(browser, url):
     await page.click('button[data-subject="math"]'); await page.click('[data-practice-view="math"]'); await page.click('[data-practice-mix]')
     ins = await page.locator('#stage .anskeys button').evaluate_all('bs => bs.map(b => b.dataset.ins)')
     assert ins == ['-', '/', ' '], ins
-    print('Player QA fixes: summary top x3, retry after change (input/choice), focus/modal, source page, number keys, home start green', flush=True)
+    print('Player QA fixes: summary top x3, retry after change (input/choice, same value), focus/modal, source page, number keys, home start (plan steps) green', flush=True)
     assert not errors, errors
     await context.close()
+
+async def open_lesson_at(page, lesson, at):
+    """Open a real lesson from its section page and answer the screens before index `at` correctly."""
+    k, i, screens = await page.evaluate("""id => {const c=SLID_SUBJECTS.find(c=>c.id==='math');const k=c.sections.findIndex(s=>(s.lessons||[]).some(l=>l.id===id));
+      const L=c.sections[k].lessons;const i=L.findIndex(l=>l.id===id);return [k,i,L[i].screens];}""", lesson)
+    await page.click('button[data-subject="math"]'); await page.click(f'[data-topic="{k}"]')
+    await page.click(f'[data-open="{i}"]'); await page.click('#go')
+    for screen in screens[:at]:
+        await answer_context_screen(page, screen)
+        if screen['type'] not in ('intro', 'info', 'explore'):
+            await page.click('#action')
+        await page.click('#action')
+    return screens
+
+async def player_focus_checks(browser, url):
+    """engine-player-focus-followup: after a mistake focus never lands on ✕ (labs with SVG-only input), and after a tap
+    the answer field is not refocused (the on-screen keyboard would cover the hint)."""
+    for lesson, at in (('g4m2l1', 4), ('g4m2l2', 6)):
+        context, page, errors = await qa_page(browser, url, {'grade': 4, 'unlockAll': True})
+        screens = await open_lesson_at(page, lesson, at)
+        assert screens[at]['type'] == 'lab', (lesson, at, screens[at]['type'])
+        await page.click('#action')   # the untouched model is wrong
+        assert 'bad' in await page.locator('#dock').get_attribute('class')
+        assert await page.locator('#action').is_disabled()
+        active = await page.evaluate("(a => a.id || a.className || a.tagName)(document.activeElement)")
+        assert active != 'pClose' and await page.evaluate("document.activeElement.closest('#stage') !== null"), (lesson, active)
+        # Two quick Enters (the old trap: the first arms ✕, the second closes the lesson) keep the child in the lesson.
+        await page.keyboard.press('Enter'); await page.keyboard.press('Enter')
+        assert await page.locator('#player').is_visible(), lesson
+        assert await page.locator('#stage [data-lab], #stage #labHost').count() > 0
+        assert 'Зміни модель' in await page.locator('#fbText').inner_text()
+        assert not errors, errors
+        await context.close()
+    # Touch: a tap on «Перевірити» does not put focus (and the keyboard) back into the field; the hint stays in view.
+    context, page, errors = await qa_page(browser, url, {'grade': 4, 'unlockAll': True}, touch=True)
+    screens = await open_lesson_at(page, 'g4m2l1', 6)
+    assert screens[6]['type'] == 'number'
+    await page.tap('#numIn'); await page.fill('#numIn', '1'); await page.dispatch_event('#numIn', 'input')
+    await page.tap('#action')
+    assert 'bad' in await page.locator('#dock').get_attribute('class')
+    assert await focus_id(page) != 'numIn', await focus_id(page)
+    if screens[6].get('hint'):
+        box = await page.locator('#hintHost .hint').bounding_box(); dock = await page.locator('#dock').bounding_box()
+        assert box and box['y'] + box['height'] <= dock['y'] + 1, (box, dock)
+    await page.fill('#numIn', '2'); await page.dispatch_event('#numIn', 'input')
+    assert await page.locator('#action').is_enabled()
+    assert not errors, errors
+    await context.close()
+    print('Player focus follow-up: no focus on ✕ after a lab mistake (g4m2l1#4, g4m2l2#6), touch keeps the field unfocused: green', flush=True)
 
 FALLBACK_CHROMIUM = '/opt/pw-browsers/chromium'
 
@@ -854,6 +946,7 @@ async def main():
                 await answer_format_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
                 await divrem_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
                 await player_qa_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
+                await player_focus_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
             await browser.close()
             print('Обрані браузерні сценарії: green')
     finally:

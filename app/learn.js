@@ -669,6 +669,20 @@ window.SLID_LEARN = (() => {
       reduced: "Вираз правильний. Скороти дріб.", simplified: "Вираз правильний, але його можна спростити." }[s.form] || "Спробуй ще раз.";
     return "Значення правильне, але запис не спрощено: обчисли, зведи подібні, винеси множник з-під кореня й позбудься кореня в знаменнику.";
   }
+  /** Відбиток записаної відповіді для другої спроби: однакові відбитки — та сама відповідь іншим записом («5», «05», « 5 »),
+      і повторна перевірка нічого б не змінила. Число й частка з остачею — за розібраним значенням разом із ознаками запису,
+      від яких залежить "form" (дріб, нескоротність, мішане число, пробіл у дробу). Інші answerKind і нерозібраний запис —
+      нормалізований рядок: пробіли згорнуто, біля знаків пунктуації й дій прибрано, «−» → «-», крапка → кома.
+      Плеєр усе одно не блокує відповідь, яку checkAns приймає (app.js sameAsTried), тож відбиток лише економить спробу. */
+  function answerSig(s, v) {
+    const kind = s?.answerKind || "number", t = String(v ?? "").replace(/\s+/g, " ").trim();
+    if (kind === "number") {
+      const u = parseAns(t) || parseAns(t.replace(/[,.]$/, ""));   // «5,» — недописана кома, те саме число
+      if (u) { const g = gcd(u.n, u.d) || 1; return `n:${u.n / g}/${u.d / g}` + (u.frac ? `|f${+u.lowest}${+u.proper}${+/ /.test(t)}` : ""); }
+    }
+    if (kind === "divrem") { const u = parseDivrem(t); if (u) return `d:${u.q}|${u.r}`; }
+    return "s:" + t.replace(/[−–—]/g, "-").replace(/\./g, ",").replace(/ ?([;:,()[\]{}+\-·*×/^=<>∪]) ?/g, "$1");
+  }
   /** Ключ для показу «Правильна відповідь». */
   function ansText(s) {
     const a = s.answer, kind = s.answerKind || "number";
@@ -935,5 +949,5 @@ window.SLID_LEARN = (() => {
   }
 
   return { OK, BAD, SKIP, PASS, DIAG_TYPES, planFor, practiceItems, nextItem, remaining, topicStatus, level, buildPlan, finishDiag, record, detect, syncPlan, lessonDone, todo, isKnown, validate,
-    parseAns, parseDivrem, checkAns, formHint, ansText, srcRef, numberKeys, ANSWER_KINDS, BOX_DAYS, srsInit, srsUpdate, isDue, pickSession, POOL_TYPES, validatePool };
+    parseAns, parseDivrem, checkAns, answerSig, formHint, ansText, srcRef, numberKeys, ANSWER_KINDS, BOX_DAYS, srsInit, srsUpdate, isDue, pickSession, POOL_TYPES, validatePool };
 })();
