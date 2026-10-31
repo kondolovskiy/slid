@@ -1,5 +1,5 @@
 /* Слід · Математика, 9 клас — пул задач для тренування до розділу «Геометрія: координати і вектори» (g9m2)
-   Статус: draft. 32 задачі: g9m2l1 — 8, g9m2l2 — 8, g9m2l3 — 8, g9m2l4 — 8 (boss g9m2boss без задач).
+   Статус: verified (verifier-pg9m2, 2026-10-31; reports/verify/pg9m2.md). 32 задачі: g9m2l1 — 8, g9m2l2 — 8, g9m2l3 — 8, g9m2l4 — 8 (boss g9m2boss без задач).
    Матриця docs/math-personalization-coverage.md 2026-10-16.v2: усі чотири уроки required, sk coord,
    формати number, coordinates2, expression, exactRoot (+ list там, де в умові кілька значень).
    Усі задачі — з підручника Мерзляк, Якір. Геометрія 9 (2026), п. 8–10, 13–16; умови й числа звірено
@@ -9,8 +9,8 @@
 SLID.pool("math", {
   id: "pg9m2",
   section: "g9m2",
-  status: "draft",
-  meta: { author: "agent-write-math-pool-g9m2", created: "2026-10-31", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "agent-write-math-pool-g9m2", created: "2026-10-31", factcheck: "verifier-pg9m2", teacher: null },
   sources: [
     { id: "mer9g", title: "Мерзляк А. Г., Якір М. С. Геометрія: підручник для 9 класу. — Харків: Гімназія, 2026 (п. 8–10, 13–16; дзеркало file.4book.org)", url: "https://file.4book.org/images/shcoolbook_ua/9/9_geom_m_2026.pdf" }
   ],
@@ -180,10 +180,10 @@ SLID.pool("math", {
       steps: ["$3\\vec{m} = (-6; 12)$, $2\\vec{n} = (6; -2)$.", "$-6 + 6 = 0$, $12 + (-2) = 10$.", "$3\\vec{m} + 2\\vec{n} = (0; 10)$."] },
     { id: "d09", lesson: "g9m2l4", lvl: 2, sk: "coord", src: "mer9g №15.10(4)", srcPage: 171,
       type: "answer", answerKind: "expression", title: "Вирази $\\vec{p}$",
-      body: "<p>Вектори $\\vec{p}$ і $\\vec{q}$ пов’язані рівністю $2\\vec{p} = 3\\vec{q}$. Вирази вектор $\\vec{p}$ через $\\vec{q}$. Запиши відповідь без стрілок, наприклад $5q$.</p>",
+      body: "<p>Вектори $\\vec{p}$ і $\\vec{q}$ пов’язані рівністю $2\\vec{p} = 3\\vec{q}$. Вирази вектор $\\vec{p}$ через $\\vec{q}$. Скористайся тим, що рівні вектори мають рівні координати, а $k\\vec{a} = (ka_1; ka_2)$. Запиши відповідь без стрілок, наприклад $5q$.</p>",
       answer: "1.5q",
-      hint: "Помнож обидві частини рівності на $1/2$ — так само, як у рівнянні з числами.",
-      steps: ["Множимо обидві частини на $1/2$: $\\vec{p} = (3/2)\\vec{q}$.", "$3/2 = 1,5$.", "$\\vec{p} = 1,5\\vec{q}$."] },
+      hint: "Нехай $\\vec{p} = (p_1; p_2)$, $\\vec{q} = (q_1; q_2)$. Тоді $2p_1 = 3q_1$ і $2p_2 = 3q_2$. Вирази звідси $p_1$ і $p_2$.",
+      steps: ["За координатами: $2p_1 = 3q_1$ і $2p_2 = 3q_2$.", "Ділимо на $2$: $p_1 = 1,5q_1$, $p_2 = 1,5q_2$, тобто $\\vec{p} = (1,5q_1; 1,5q_2)$.", "Отже, $\\vec{p} = 1,5\\vec{q}$."] },
     { id: "d06", lesson: "g9m2l4", lvl: 2, sk: "coord", src: "mer9g №16.20", srcPage: 185,
       type: "answer", title: "Перпендикулярні вектори",
       body: "<p>При якому значенні $x$ вектори $\\vec{a} = (3; x)$ і $\\vec{b} = (1; 9)$ перпендикулярні?</p>",
