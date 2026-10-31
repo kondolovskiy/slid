@@ -6,7 +6,7 @@
 |---|---|---|---|---|---|---|---|---|---|
 | l1 Трипільське розслідування | 5 | 9 | 0.56 | 26 | 46 | 6.2 | 0.047 | 3 | — |
 | l2 Скільки років цій речі? | 5 | 9 | 0.67 | 33 | 55 | 6.1 | 0.036 | 4 | readWordsPerScreen нетипово для сім'ї (z=2.6) |
-| l3 Лінія часу | 5 | 7 | 0.71 | 22 | 56 | 6.4 | 0.033 | 3 | — |
+| l3 Лінія часу | 5 | 7 | 0.71 | 23 | 56 | 6.4 | 0.032 | 3 | — |
 | l4 Кому вірити? | 5 | 6 | 0.67 | 30 | 55 | 6.3 | 0.033 | 3 | — |
 | l5 Легенда чи історія? | 5 | 5 | 0.8 | 31 | 50 | 7.3 | 0.036 | 3 | gradedShare нетипово для сім'ї (z=2.1); readWordsPerScreen нетипово для сім'ї (z=2.1); sentenceWords нетипово для сім'ї (z=2.1) |
 | l6 Справа мамонтового селища (фінал) | 5 | 6 | 0.83 | 17 | 42 | 5.3 | 0.052 | 4 | maxReadWords нетипово для сім'ї (z=2.6) |
@@ -188,7 +188,7 @@
 
 Для z-оцінок sd не менше 10 % середнього; нижче наведено фактичне sd.
 
-- **5-6:lesson**: screens 7±1.03, gradedShare 0.6±0.09, readWordsPerScreen 22.29±4.1, maxReadWords 53.11±7.54, sentenceWords 6.05±0.38, longWordShare 0.04±0.02, typeVariety 3.18±0.76
+- **5-6:lesson**: screens 7±1.03, gradedShare 0.6±0.09, readWordsPerScreen 22.32±4.1, maxReadWords 53.11±7.54, sentenceWords 6.05±0.38, longWordShare 0.04±0.02, typeVariety 3.18±0.76
 - **5-6:boss**: screens 6.44±0.5, gradedShare 0.84±0.01, readWordsPerScreen 12.33±2.94, maxReadWords 22.78±7.36, sentenceWords 4.88±0.41, longWordShare 0.05±0.01, typeVariety 3.33±0.47
 - **7-9:lesson**: screens 7.91±0.76, gradedShare 0.58±0.06, readWordsPerScreen 24.28±2.82, maxReadWords 60.74±7.56, sentenceWords 5.9±0.41, longWordShare 0.04±0.01, typeVariety 3.29±0.45
 - **7-9:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 21.4±2.8, maxReadWords 42.6±5.04, sentenceWords 5.47±0.45, longWordShare 0.03±0.01, typeVariety 3.13±0.34
