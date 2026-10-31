@@ -5,7 +5,7 @@ id: write-math-pool-g7m2
 type: write-pool
 subject: math
 grade: 7
-status: review
+status: done
 claimed_by: w-write-math-pool-g7m2
 created: 2026-10-15
 depends_on: [curate-math-personalization-map, engine-math-pool-answer-formats]
