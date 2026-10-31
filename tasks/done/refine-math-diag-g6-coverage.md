@@ -6,7 +6,7 @@ id: refine-math-diag-g6-coverage
 type: engine
 subject: math
 grade: 6
-status: review
+status: done
 claimed_by: agent-refine-math-diag-g6-coverage
 created: 2026-10-16
 depends_on: [curate-math-personalization-map, engine-math-pool-answer-formats]
