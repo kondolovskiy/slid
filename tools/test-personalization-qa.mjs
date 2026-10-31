@@ -1,7 +1,8 @@
 // Guard the acceptance tool itself: missing content, invalid references, filters and denominators.
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
-import { audit } from './personalization-qa.mjs';
+import * as qa from './personalization-qa.mjs';
+const { audit } = qa;
 import { loadContent, readJSON, ROOT } from './lib.mjs';
 const { subjects, learn } = loadContent(), subject = subjects.find(s => s.id === 'math');
 const matrix = readJSON('docs/math-personalization-coverage.json');
@@ -45,6 +46,22 @@ check(() => assert.deepEqual([base4.errors, base4.missing, base4.unsupported], [
 const noFlag = JSON.parse(JSON.stringify(withDg4)); delete noFlag.diags.find(d => d.id === 'dg4').topics[0].baseline;
 const noFlagReport = audit(noFlag, matrix, learn, { diag: 'dg4' });
 check(() => assert(noFlagReport.errors.some(e => e.includes('1–2 id уроків')) && noFlagReport.missing.some(e => e.includes('place: baseline'))));
+// exactRoot закриває list із точним коренем, який checkAns перевіряє точно (рішення людини 2026-10-31, tools-pqa-exactroot-in-list)
+const rootGap = (r, l) => r.missing.includes(`pg8m5/${l}: немає формату exactRoot`);
+check(() => assert(!rootGap(audit(subject, matrix, learn, { pool: 'pg8m5' }), 'g8m5l1')));   // a04 «±√5»
+const withKey = answer => { const c = clone(); c.pools.find(p => p.id === 'pg8m5').items.find(it => it.id === 'a04').answer = answer; return audit(c, matrix, learn, { pool: 'pg8m5' }); };
+check(() => assert(rootGap(withKey([-3, 3]), 'g8m5l1')));                 // list без кореня
+check(() => assert(rootGap(withKey('2,236; -2,236'), 'g8m5l1')));         // десяткове наближення
+check(() => assert(rootGap(withKey([2.236, -2.236]), 'g8m5l1')));
+check(() => assert(rootGap(withKey('π; 2π'), 'g8m5l1')));                 // π без кореня — не корінь
+check(() => assert(!rootGap(withKey('-√5; √5'), 'g8m5l1')));
+check(() => assert(!rootGap(withKey('0; √5'), 'g8m5l1')));                // хоч один елемент — корінь
+const g8m5 = subject.pools.find(p => p.id === 'pg8m5').items, item = id => g8m5.find(it => it.id === id);
+check(() => assert.deepEqual(['a04', 'b05', 'a05', 'a01'].map(id => qa.rootList(item(id), learn)), [true, true, false, false]));
+check(() => assert.equal(qa.rootList({ ...item('a04'), answerKind: 'exactRoot' }, learn), false));
+// перевірка справді має відкидати наближення: якщо checkAns приймає будь-що, вправа не рахується
+check(() => assert.equal(qa.rootList(item('a04'), { ...learn, checkAns: () => 'ok' }), false));
+check(() => assert.equal(qa.rootList(item('a04'), { ...learn, listKey: undefined }), false));
 for (const args of [['--pool','typo'], ['--diag','typo'], ['--grade','12'], ['--pool','pg6m1','--grade','5'], ['--pool','pg6m1','--grade','7'], ['--wat'], ['--diag'], ['--diag','dg6','--pool','pg6m1']]) {
   check(() => assert.equal(spawnSync(process.execPath, ['tools/personalization-qa.mjs', ...args], { cwd: ROOT }).status, 1));
 }

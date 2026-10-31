@@ -2,6 +2,17 @@
 import { pathToFileURL } from 'node:url';
 import { loadContent, readJSON } from './lib.mjs';
 
+// Вимогу exactRoot закриває також list, у ключі якого є точний корінь (√, ∛…) і який checkAns справді перевіряє точно:
+// ключ як записано — "ok", ключ із десятковими наближеннями коренів — "bad". Наближення, π без кореня, числовий list — ні.
+export function rootList(it, learn) {
+  if (it.type !== 'answer' || it.answerKind !== 'list' || typeof learn.listKey !== 'function') return false;
+  const els = learn.listKey(it);
+  if (!els?.length || !els.some(e => e.exact && e.root) || !els.every(e => e.tidy)) return false;
+  const key = Array.isArray(it.answer) ? it.answer.join('; ') : String(it.answer);
+  const approx = els.map(e => e.root ? e.approx.toFixed(6) : String(e.approx)).join('; ');
+  return learn.checkAns(it, key) === 'ok' && learn.checkAns(it, approx) === 'bad';
+}
+
 export function audit(subject, matrix, learn, filter = {}) {
   const errors = [], missing = [], unsupported = [];
   const sections = new Map(subject.sections.filter(s => s.lessons?.length).map(s => [s.id, s]));
@@ -55,7 +66,7 @@ export function audit(subject, matrix, learn, filter = {}) {
     if (items.length < r.exercises.min || items.length > r.exercises.max) missing.push(`${r.pool}/${r.lesson}: ${items.length} вправ, потрібно ${r.exercises.min}–${r.exercises.max}`);
     for (const lvl of [1, 2, 3]) if (!items.some(it => it.lvl === lvl)) missing.push(`${r.pool}/${r.lesson}: немає рівня ${lvl}`);
     for (const format of r.formats) {
-      const present = items.some(it => (it.answerKind || (it.type === 'answer' ? 'number' : it.type)) === format);
+      const present = items.some(it => (it.answerKind || (it.type === 'answer' ? 'number' : it.type)) === format || (format === 'exactRoot' && rootList(it, learn)));
       if (!present) missing.push(`${r.pool}/${r.lesson}: немає формату ${format}`);
     }
     if (!items.some(it => it.sk === r.sk)) missing.push(`${r.pool}/${r.lesson}: немає навички матриці ${r.sk}`);
