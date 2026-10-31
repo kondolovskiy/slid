@@ -1,24 +1,26 @@
 ---
-id: write-math-pool-g7m8
+claimed_from: todo
+claimed_at: 2026-10-31T09:06:25.960Z
+id: write-math-pool-g7m5
 type: write-pool
 subject: math
 grade: 7
 status: todo
-claimed_by:
+claimed_by: w-write-math-pool-g7m5
 created: 2026-10-15
 depends_on: [curate-math-personalization-map, engine-math-pool-answer-formats]
 ---
-# Зібрати пул «Геометрія: коло» (7 клас, g7m8)
+# Зібрати пул «Алгебра: функції» (7 клас, g7m5)
 
 ## Результат
 
-Один файл `content/math/pool-g7-g7m8.js`: `SLID.pool("math", { id: "pg7m8", section: "g7m8", status: "draft", sources: [...], items: [...] })`. Клас визначається розділом. Зразки — content/math/pool-g6-*.js і tasks/done/write-math-pool-g6m*.md; чинний контракт — CONTENT_SCHEMA §10.
+Один файл `content/math/pool-g7-g7m5.js`: `SLID.pool("math", { id: "pg7m5", section: "g7m5", status: "draft", sources: [...], items: [...] })`. Клас визначається розділом. Зразки — content/math/pool-g6-*.js і tasks/done/write-math-pool-g6m*.md; чинний контракт — CONTENT_SCHEMA §10.
 
 ## Уроки для покриття
 
-- `g7m8l1` — Коло чи круг? **[required]**
-- `g7m8l2` — Дотик однієї точки **[required]**
-- `g7m8l3` — Циркуль замість лінійки **[required]**
+- `g7m5l1` — Один вхід — один вихід **[required]**
+- `g7m5l2` — Точки стають лінією **[required]**
+- `g7m5l3` — Пряма з нахилом **[required]**
 
 Усього 3 тематичних уроків. Boss не потребує окремого дубльованого пулу. Для m4s1 це повноцінний окремий пул навіть без запису в plan.js.
 
@@ -38,7 +40,7 @@ depends_on: [curate-math-personalization-map, engine-math-pool-answer-formats]
 ## Готово, коли
 
 - [ ] Усі required-уроки з узгодженої матриці мають мінімальне покриття й три рівні; optional/pending перелічено окремо без хибної позначки виконання; таблиця lesson → кількість/рівні/джерела й винятки є в нотатках.
-- [ ] `node tools/validate.mjs --pool pg7m8` — 0 помилок; усі джерела відкрито, числа звірено, відповіді й steps перевірено.
+- [ ] `node tools/validate.mjs --pool pg7m5` — 0 помилок; усі джерела відкрито, числа звірено, відповіді й steps перевірено.
 - [ ] Змінено лише свій файл пулу, цю задачу та дописано inbox; status draft. Оркестратор запускає build.
 - [ ] Задача через claim.mjs передана в review; незалежне розв’язання й звірка джерел — verify-math-personalization-g7; браузерне приймання — qa-math-personalization-g7.
 
@@ -57,8 +59,8 @@ depends_on: [curate-math-personalization-map, engine-math-pool-answer-formats]
 
 | Урок | Scope | Обов’язкові вправи | Формати / джерело |
 |---|---|---|---|
-| g7m8l1 | required | 6–8 (3/2/1 за рівнями мінімум) | number, choice, multi; g7:184–193 |
-| g7m8l2 | required | 6–8 (3/2/1 за рівнями мінімум) | number; g7:194–202 |
-| g7m8l3 | required | 6–8 (3/2/1 за рівнями мінімум) | number, choice, multi; g7:213–233 |
+| g7m5l1 | required | 6–8 (3/2/1 за рівнями мінімум) | number; a7:189–212 |
+| g7m5l2 | required | 6–8 (3/2/1 за рівнями мінімум) | number; a7:213–227 |
+| g7m5l3 | required | 6–8 (3/2/1 за рівнями мінімум) | number; a7:228–242 |
 
 Покриття: **3 required-уроків, 18–24 вправ**. Optional/pending не включати у файл пулу цієї версії; boss не дублювати.
