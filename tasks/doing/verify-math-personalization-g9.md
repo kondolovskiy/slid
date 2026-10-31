@@ -1,10 +1,12 @@
 ---
+claimed_from: todo
+claimed_at: 2026-10-31T13:52:00.474Z
 id: verify-math-personalization-g9
 type: verify-personalization
 subject: math
 grade: 9
 status: todo
-claimed_by:
+claimed_by: orchestrator-verify-g9
 created: 2026-10-15
 depends_on: [curate-math-personalization-map, write-math-diag-g9, write-math-pool-g9m1, write-math-pool-g9m2, write-math-pool-g9m3, write-math-pool-g9m4, write-math-pool-g9m5, write-math-pool-g9m6, write-math-pool-g9m7]
 ---
