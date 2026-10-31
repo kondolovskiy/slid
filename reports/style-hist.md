@@ -162,7 +162,7 @@
 | g11s1l4 Не один рух опору | 11 | 7 | 0.57 | 27 | 64 | 7.4 | 0.081 | 3 | — |
 | g11s1l5 Вигнання з Криму | 11 | 7 | 0.57 | 25 | 59 | 7.1 | 0.11 | 3 | — |
 | g11s1l6 Перемога без монополії | 11 | 7 | 0.57 | 26 | 61 | 7.6 | 0.049 | 3 | — |
-| g11s1boss Архівна справа № 1939–1945 (фінал) | 11 | 7 | 0.86 | 27 | 51 | 7.6 | 0.066 | 4 | sentenceWords нетипово для сім'ї (z=2.4) |
+| g11s1boss Архівна справа № 1939–1945 (фінал) | 11 | 7 | 0.86 | 27 | 51 | 7.6 | 0.066 | 4 | sentenceWords нетипово для сім'ї (z=2.3) |
 | g11s2l1 Хліб після перемоги | 11 | 9 | 0.56 | 20 | 48 | 5.6 | 0.049 | 4 | sentenceWords=5.6 поза [7; 15] |
 | g11s2l2 Тріщина в цензурі | 11 | 9 | 0.56 | 21 | 49 | 6.4 | 0.076 | 3 | sentenceWords=6.4 поза [7; 15] |
 | g11s2l3 Право говорити | 11 | 10 | 0.6 | 21 | 48 | 6 | 0.109 | 4 | sentenceWords=6 поза [7; 15] |
@@ -172,7 +172,7 @@
 | g11s3l2 Один день для держави | 11 | 8 | 0.63 | 19 | 54 | 6.2 | 0.118 | 4 | sentenceWords=6.2 поза [7; 15] |
 | g11s3l3 Бюлетень вирішує | 11 | 8 | 0.5 | 20 | 52 | 5.8 | 0.121 | 3 | sentenceWords=5.8 поза [7; 15] |
 | g11s3l4 Правила для держави | 11 | 8 | 0.5 | 22 | 52 | 6.5 | 0.084 | 3 | sentenceWords=6.5 поза [7; 15] |
-| g11s3l5 Конституційний маршрут (фінал) | 11 | 7 | 0.86 | 27 | 44 | 6.6 | 0.097 | 4 | sentenceWords=6.6 поза [7; 15] |
+| g11s3l5 Конституційний маршрут (фінал) | 11 | 7 | 0.86 | 28 | 49 | 6.8 | 0.098 | 4 | sentenceWords=6.8 поза [7; 15] |
 | g11s4l1 Гроші, що тануть | 11 | 10 | 0.5 | 25 | 60 | 6.6 | 0.09 | 3 | sentenceWords=6.6 поза [7; 15] |
 | g11s4l2 Голос, який рахують | 11 | 10 | 0.5 | 23 | 62 | 6.5 | 0.105 | 4 | sentenceWords=6.5 поза [7; 15] |
 | g11s4l3 Гідність виходить на площу | 11 | 10 | 0.5 | 25 | 55 | 6.7 | 0.101 | 4 | sentenceWords=6.7 поза [7; 15] |
@@ -193,4 +193,4 @@
 - **7-9:lesson**: screens 7.94±0.74, gradedShare 0.59±0.06, readWordsPerScreen 24.38±2.82, maxReadWords 60.74±7.56, sentenceWords 5.91±0.41, longWordShare 0.04±0.01, typeVariety 3.29±0.45
 - **7-9:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 21.47±2.9, maxReadWords 42.6±5.04, sentenceWords 5.47±0.45, longWordShare 0.03±0.01, typeVariety 3.13±0.34
 - **10-11:lesson**: screens 8.93±1.24, gradedShare 0.55±0.05, readWordsPerScreen 27.07±4.71, maxReadWords 61.12±8.34, sentenceWords 6.42±0.49, longWordShare 0.07±0.03, typeVariety 3.45±0.5
-- **10-11:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 23.8±2.71, maxReadWords 47.2±7.19, sentenceWords 6.11±0.61, longWordShare 0.07±0.02, typeVariety 3.6±0.49
+- **10-11:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 23.9±2.84, maxReadWords 47.7±7.13, sentenceWords 6.13±0.63, longWordShare 0.07±0.02, typeVariety 3.6±0.49
