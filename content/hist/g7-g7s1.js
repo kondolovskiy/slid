@@ -1,5 +1,5 @@
 /* Слід · Історія, 7 клас — «Виникнення Русі»
-   Статус уроків: l1 draft (фото D-027, 2026-10-31), l2–l5 verified (verifier-g7s1-d019, 2026-10-13, після ревізії D-019; звіт reports/verify/g7s1.md). 5 уроків.
+   Статус уроків: l1 verified (фото D-027, повторна верифікація verifier-images-g7s1, 2026-10-31; reports/verify/images-hist-g7s1.md), l2–l5 verified (verifier-g7s1-d019, 2026-10-13, після ревізії D-019; звіт reports/verify/g7s1.md). 5 уроків.
    Цитати з «Повісті минулих літ» — за перекладом Л. Махновця (Іпатський список, izbornyk / litopys.org.ua).
    Перевірка: node tools/validate.mjs --section g7s1 && node tools/stats.mjs --subject hist
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
@@ -44,7 +44,7 @@ SLID.section("hist", {
       title: "Поляни, деревляни, сіверяни",
       short: "Східні слов'яни",
       icon: "users",
-      status: "draft",
+      status: "verified",
       why: "До Русі на наших землях жили десятки громад зі своїми князями. Ти дізнаєшся, якими вони були і як про них читати літопис.",
       screens: [
         {
