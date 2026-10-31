@@ -4266,8 +4266,7 @@
       "pool": "pg8m5",
       "formats": [
         "number",
-        "list",
-        "exactRoot"
+        "list"
       ],
       "exercises": {
         "min": 6,

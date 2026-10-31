@@ -3,7 +3,7 @@ id: refine-math-g8m5-roots
 type: refine
 subject: math
 grade: 8
-status: review
+status: done
 claimed_by: writer-refine-g8m5
 created: 2026-10-31
 depends_on: [verify-math-personalization-g8]
@@ -44,3 +44,6 @@ depends_on: [verify-math-personalization-g8]
 Побічна рекомендація верифікатора pg8m5 §7 (речення «перевір корені умовою»): в l4 це вже є на екрані 3 («План», п. 4 — «Відкинути корені, що не мають сенсу в задачі») і на екранах 5, 9. Окремо не правив, щоб не скидати verified-урок у draft без основної зміни.
 
 Перевірки (файли не змінено): `validate --section g8m5` → 0 помилок, 5 попереджень (як і раніше, g8m5l5 sentenceWords тощо); `validate --pool pg8m5` → 0/0; `personalization-qa --pool pg8m5` → «БРАКУЄ: pg8m5/g8m5l4: немає формату exactRoot» (l1 уже не в списку); `stats --subject math` → у g8m5l1–l5 давні прапорці sentenceWords 4.7–5.4 поза [6; 13] (були й до задачі, файли не змінено), нових немає.
+
+## Рішення людини (2026-10-31)
+Прибрати exactRoot з формату g8m5l4 у матриці (зроблено оркестратором, примітка ¹ у docs/math-personalization-coverage.md). Зміст уроку й пулу не змінено.
