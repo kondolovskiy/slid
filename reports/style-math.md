@@ -187,9 +187,9 @@
 | g10m1l3 Шлях назад | 10 | 10 | 0.5 | 22 | 52 | 5.3 | 0.032 | 3 | sentenceWords=5.3 поза [7; 15] |
 | g10m1l4 Зміна аналітика (фінал) | 10 | 8 | 0.75 | 20 | 39 | 5 | 0.032 | 3 | sentenceWords=5 поза [7; 15] |
 | g10m2l1 Три точки — одна стіна | 10 | 9 | 0.56 | 23 | 43 | 5.4 | 0.037 | 2 | sentenceWords=5.4 поза [7; 15]; typeVariety нетипово для сім'ї (z=-2.4) |
-| g10m2l2 Прямі, що не зустрінуться | 10 | 10 | 0.6 | 21 | 41 | 5.3 | 0.045 | 3 | sentenceWords=5.3 поза [7; 15] |
+| g10m2l2 Прямі, що не зустрінуться | 10 | 10 | 0.6 | 25 | 56 | 5.5 | 0.039 | 3 | sentenceWords=5.5 поза [7; 15] |
 | g10m2l3 Розріз коробки | 10 | 9 | 0.56 | 23 | 52 | 4.8 | 0.022 | 2 | sentenceWords=4.8 поза [7; 15]; typeVariety нетипово для сім'ї (z=-2.4) |
-| g10m2l4 Креслення залу (фінал) | 10 | 8 | 0.75 | 17 | 25 | 4.3 | 0.047 | 2 | sentenceWords=4.3 поза [7; 15]; typeVariety нетипово для сім'ї (z=-3.1) |
+| g10m2l4 Креслення залу (фінал) | 10 | 8 | 0.75 | 17 | 25 | 4.3 | 0.051 | 2 | sentenceWords=4.3 поза [7; 15]; typeVariety нетипово для сім'ї (z=-3.1) |
 | g10m3l1 Корінь будь-якого степеня | 10 | 9 | 0.56 | 22 | 57 | 5.3 | 0.036 | 3 | sentenceWords=5.3 поза [7; 15] |
 | g10m3l2 Дробовий показник | 10 | 10 | 0.5 | 20 | 47 | 5.2 | 0.033 | 3 | sentenceWords=5.2 поза [7; 15] |
 | g10m3l3 Рівняння під коренем | 10 | 9 | 0.56 | 21 | 54 | 5.1 | 0.029 | 3 | sentenceWords=5.1 поза [7; 15] |
@@ -214,14 +214,14 @@
 | g11m1l4 Шукаємо показник | 11 | 10 | 0.6 | 23 | 48 | 5.9 | 0.025 | 3 | sentenceWords=5.9 поза [7; 15] |
 | g11m1l5 Журнал біостанції (фінал) | 11 | 8 | 0.75 | 19 | 31 | 5.5 | 0.009 | 3 | sentenceWords=5.5 поза [7; 15] |
 | g11m2l1 Адреса дрона в залі | 11 | 10 | 0.5 | 25 | 56 | 5.4 | 0.037 | 3 | sentenceWords=5.4 поза [7; 15] |
-| g11m2l2 Стрілка в просторі | 11 | 10 | 0.7 | 21 | 50 | 5.9 | 0.055 | 3 | sentenceWords=5.9 поза [7; 15]; gradedShare нетипово для сім'ї (z=2.3); longWordShare нетипово для сім'ї (z=2.1) |
+| g11m2l2 Стрілка в просторі | 11 | 10 | 0.7 | 21 | 50 | 5.9 | 0.055 | 3 | sentenceWords=5.9 поза [7; 15]; gradedShare нетипово для сім'ї (z=2.3); longWordShare нетипово для сім'ї (z=2.2) |
 | g11m2l3 Рівняння стіни | 11 | 10 | 0.7 | 22 | 47 | 5.6 | 0.054 | 3 | sentenceWords=5.6 поза [7; 15]; gradedShare нетипово для сім'ї (z=2.3); longWordShare нетипово для сім'ї (z=2.1) |
 | g11m2l4 Сцена 3D-гри (фінал) | 11 | 8 | 0.75 | 18 | 26 | 5.7 | 0.043 | 3 | sentenceWords=5.7 поза [7; 15] |
 | g11m3l1 Похідна навпаки | 11 | 9 | 0.56 | 26 | 45 | 5.9 | 0.014 | 3 | sentenceWords=5.9 поза [7; 15] |
 | g11m3l2 Площа під кривою | 11 | 8 | 0.63 | 26 | 53 | 5.8 | 0.025 | 3 | sentenceWords=5.8 поза [7; 15] |
 | g11m3l3 Скло для арки | 11 | 9 | 0.56 | 26 | 43 | 6.2 | 0.023 | 3 | sentenceWords=6.2 поза [7; 15] |
 | g11m3l4 Проєкт скейт-парку (фінал) | 11 | 8 | 0.75 | 20 | 34 | 5.5 | 0.017 | 3 | sentenceWords=5.5 поза [7; 15] |
-| g11m4l1 Коробка і намет | 11 | 10 | 0.5 | 23 | 49 | 5.9 | 0.055 | 3 | sentenceWords=5.9 поза [7; 15]; longWordShare нетипово для сім'ї (z=2.1) |
+| g11m4l1 Коробка і намет | 11 | 10 | 0.5 | 23 | 49 | 5.9 | 0.055 | 3 | sentenceWords=5.9 поза [7; 15]; longWordShare нетипово для сім'ї (z=2.2) |
 | g11m4l2 Тіла, що обертаються | 11 | 10 | 0.5 | 25 | 52 | 5.3 | 0.026 | 3 | sentenceWords=5.3 поза [7; 15] |
 | g11m4l3 Скільки вміщує цистерна | 11 | 9 | 0.67 | 22 | 44 | 5.9 | 0.007 | 3 | sentenceWords=5.9 поза [7; 15] |
 | g11m4l4 Скільки фарби на бак | 11 | 9 | 0.67 | 24 | 43 | 6 | 0.016 | 3 | sentenceWords=6 поза [7; 15] |
@@ -246,5 +246,5 @@
 - **5-6:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 18.55±2.1, maxReadWords 25.82±4.09, sentenceWords 4.65±0.39, longWordShare 0.01±0, typeVariety 3.27±0.45
 - **7-9:lesson**: screens 9.17±0.75, gradedShare 0.56±0.06, readWordsPerScreen 20.31±2.03, maxReadWords 40.11±6.77, sentenceWords 5.11±0.34, longWordShare 0.02±0.01, typeVariety 2.93±0.35
 - **7-9:boss**: screens 7.67±0.64, gradedShare 0.79±0.06, readWordsPerScreen 18.19±1.79, maxReadWords 29.43±3.23, sentenceWords 5.07±0.29, longWordShare 0.02±0.01, typeVariety 3.1±0.29
-- **10-11:lesson**: screens 9.54±0.63, gradedShare 0.57±0.06, readWordsPerScreen 22.78±1.89, maxReadWords 47.76±6.53, sentenceWords 5.51±0.39, longWordShare 0.03±0.01, typeVariety 2.9±0.37
+- **10-11:lesson**: screens 9.54±0.63, gradedShare 0.57±0.06, readWordsPerScreen 22.88±1.9, maxReadWords 48.12±6.56, sentenceWords 5.51±0.39, longWordShare 0.03±0.01, typeVariety 2.9±0.37
 - **10-11:boss**: screens 8.08±0.28, gradedShare 0.75±0.01, readWordsPerScreen 19±1.47, maxReadWords 33.58±7.36, sentenceWords 5.18±0.54, longWordShare 0.04±0.02, typeVariety 2.92±0.28
