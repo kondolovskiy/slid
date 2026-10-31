@@ -5,7 +5,7 @@ id: write-math-pool-g9m5
 type: write-pool
 subject: math
 grade: 9
-status: review
+status: done
 claimed_by: agent-write-math-pool-g9m5
 created: 2026-10-15
 depends_on: [curate-math-personalization-map, engine-math-pool-answer-formats]
@@ -104,3 +104,6 @@ depends_on: [curate-math-personalization-map, engine-math-pool-answer-formats]
 | g9m5l3 | required | 6–8 (3/2/1 за рівнями мінімум) | number; a9:167–186 |
 
 Покриття: **3 required-уроків, 18–24 вправ**. Optional/pending не включати у файл пулу цієї версії; boss не дублювати.
+
+## Верифікація
+verifier-pg9m5, 2026-10-31: **verified** — reports/verify/pg9m5.md. Правки: a08 hint (перебір без нерівності), c08 `adapted: true`; критичних помилок немає.
