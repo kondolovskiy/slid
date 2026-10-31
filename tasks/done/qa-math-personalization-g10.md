@@ -5,7 +5,7 @@ id: qa-math-personalization-g10
 type: qa
 subject: math
 grade: 10
-status: todo
+status: done
 claimed_by: agent-qa-math-personalization-g10
 created: 2026-10-15
 depends_on: [verify-math-personalization-g10, tools-math-personalization-qa, engine-math-grade-plan-context, engine-math-pool-answer-formats]
@@ -26,9 +26,9 @@ depends_on: [verify-math-personalization-g10, tools-math-personalization-qa, eng
 
 ## Готово, коли
 
-- [ ] reports/qa/math-personalization-g10.md містить версію матриці, перевірені required-об’єкти, команди, сценарії, виправлення та межі перевірки.
-- [ ] validate, test-learn, застосовні цільові браузерні сценарії й покриття класу зелені; build виконано, згенеровані файли включено в результат.
-- [ ] Критичні дефекти цього класу закрито; optional/pending і ще недоступні міжкласові пули не приховані та не оголошені виконаними. Фінальне наскрізне приймання — окрема задача.
+- [x] reports/qa/math-personalization-g10.md містить версію матриці, перевірені required-об’єкти, команди, сценарії, виправлення та межі перевірки.
+- [x] validate, test-learn, застосовні цільові браузерні сценарії й покриття класу зелені; build виконано, згенеровані файли включено в результат.
+- [x] Критичні дефекти цього класу закрито; optional/pending і ще недоступні міжкласові пули не приховані та не оголошені виконаними. Фінальне наскрізне приймання — окрема задача.
 
 
 ## Перед роботою
@@ -38,6 +38,14 @@ depends_on: [verify-math-personalization-g10, tools-math-personalization-qa, eng
 ## Нотатки виконавця
 
 <!-- Змінені файли; джерела; рішення й обмеження; результати команд; що передано незалежному верифікатору. -->
+
+2026-10-31, agent-qa-math-personalization-g10 (основне репо, d4480fe → c5f6b2c). Звіт: reports/qa/math-personalization-g10.md. **Клас прийнято, P1 немає.**
+- Змінені файли: reports/qa/math-personalization-g10.md; ця задача; 2 рядки в memory/short/inbox.md. app/, tools/, content/ не редагував; build — лише в тимчасовому worktree (без змін: 145 скриптів, sw ed869ffd1e, 326 файлів), worktree видалено. reports/validate.json перезаписано прогоном validate — не комічу.
+- Матриця 2026-10-16.v2 (примітка ⁴): 18 required / 6 пулів / 144 вправи + dg10 (26). Optional g10m1l3, g10m2l3 — без вправ, поза знаменником; pending 0. Пули всіх 12 уроків-передумов dg10 verified.
+- Команди: validate --diag dg10 і --pool pg10m1…m6 → 0/0 (pg10m7 → exit 1); validate 0 помилок; test-learn 1353 ok; test-personalization-qa 96 ok; test-validate 25 ok; personalization-qa --grade 10 --strict rc 0 (бракує 0); test-answer-ui --suite content --grade 10 --strict rc 0 (144 вправи); --suite regression: 1-й прогін (паралельно з іншими браузерами) rc 1 TimeoutError 7 с у player_qa_checks, 2 окремі прогони rc 0; playtest dg10 + g10m1…m6 rc 0 × 7 (26 уроків + тест); checkAns: 122 ключі ok.
+- Власний Playwright s1–s9 (360/320 px): «Пізніше»; змішаний dg10 з оракулом (number/fracin/choice/multi); переривання/відновлення; повторний тест; усе правильно / усе пропущено; малюнки plane/solid; g8m4l2→pg8m4 і ms4l1→pms4 при 10 кл.; g10m1l1→pg10m1 (друга спроба, та сама відповідь, SRS); формати intervalSet/expression/exactRoot/periodicSet/list; помилки→план; 10→9→10; міграція; офлайн; рендер.
+- Вплив відомих вад (не виправляв): P2 `{,}` у pg10m5:c06/c08 і `$…$` у підписах лабораторій уроків 10 кл. (engine-math-render-tex-gaps); P3 `+16`, `x =` у list, `(3x+5)4x` (engine-math-answer-g10-issues); п. 1 (validatePool BUDGET) не відтворено; P3 крива поверх підписів поділок у dg10 (як D-4 у g9) — в inbox.
+- Межі: зміст не перерозв'язував; 10→11 не перевіряв; dg6 → ms2l4 → pms2 — qa-math-personalization-release; лише Chromium.
 
 ## Обсяг за матрицею 2026-10-16.v2
 
