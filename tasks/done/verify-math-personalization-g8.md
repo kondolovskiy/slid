@@ -5,7 +5,7 @@ id: verify-math-personalization-g8
 type: verify-personalization
 subject: math
 grade: 8
-status: todo
+status: done
 claimed_by: orchestrator-verify-g8
 created: 2026-10-15
 depends_on: [curate-math-personalization-map, write-math-diag-g8, write-math-pool-g8m1, write-math-pool-g8m2, write-math-pool-g8m3, write-math-pool-g8m4, write-math-pool-g8m5, write-math-pool-g8m6]
@@ -55,3 +55,5 @@ Required-перелік: g8m1l1, g8m1l2, g8m1l3, g8m1l4, g8m2l1, g8m2l2, g8m2l3,
 Optional/pending окремим списком: немає.
 
 Команди: `node tools/validate.mjs --diag dg8`; для кожного переліченого пулу `node tools/validate.mjs --pool <id>`. Відсутній required-пул — помилка; відкладений — окремий неперевірений стан. Повний браузерний QA — через tools-math-personalization-qa, без дублювання раннера.
+
+Підсумок: reports/verify/math-personalization-g8.md. dg8 і 6 пулів verified; strict rc 1 через 3 прогалини матриці форматів (рішення куратора).
