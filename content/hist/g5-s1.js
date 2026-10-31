@@ -1,5 +1,5 @@
 /* Слід · Історія, 5 клас — «Як історики пізнають минуле»
-   Статус: l1–l6 verified (l5 після D-019 revise + verify 2026-10-12). 6 уроків.
+   Статус: l1, l2, l4–l6 verified (l5 після D-019 revise + verify 2026-10-12); l3 draft після D-027 (фото, 2026-10-31). 6 уроків.
    Перевірка: node tools/validate.mjs && node tools/stats.mjs
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("hist", {
@@ -74,6 +74,12 @@ SLID.section("hist", {
       "Momotarou2012",
       "CC BY-SA 3.0",
       "https://commons.wikimedia.org/wiki/File:Dwelling_made_with_mammoth_bones.jpg"
+    ],
+    [
+      "Віллем Гондіус. Портрет Богдана Хмельницького",
+      "Віллем Гондіус, 1651",
+      "суспільне надбання",
+      "https://commons.wikimedia.org/wiki/File:Wilhelm_Hondius_Bohdan_Chmielnicki.jpg"
     ]
   ],
   lessons: [
@@ -380,7 +386,7 @@ SLID.section("hist", {
       title: "Лінія часу",
       short: "Роки й століття",
       icon: "line",
-      status: "verified",
+      status: "draft",
       badge: "chrono",
       why: "Без лінії часу події злипаються в кашу. З нею видно, що було раніше, що пізніше і скільки між ними.",
       screens: [
@@ -420,7 +426,10 @@ SLID.section("hist", {
           sk: "time",
           eyebrow: "Задача",
           title: "У якому столітті?",
-          body: "<p>У 1648 році почалася Національно-визвольна війна під проводом Богдана Хмельницького. Яке це століття?</p>",
+          img: "img/hist/s1/khmelnytsky-hondius.jpg",
+          tall: true,
+          cap: "Віллем Гондіус. Портрет Богдана Хмельницького, гравюра 1651 р. Національна бібліотека Польщі.",
+          body: "<p>У 1648 році почалася Національно-визвольна війна під проводом Богдана Хмельницького. Гравюру з його портретом зробили ще за життя гетьмана. Яке століття було 1648 року?</p>",
           opts: ["XVI ст.", "XVII ст.", "XVIII ст.", "XLVIII ст."],
           correct: 1,
           hint: "2026 рік — це XXI століття, а не XX. Бачиш закономірність?",
