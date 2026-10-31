@@ -10,6 +10,8 @@
 
 ² 2026-10-31, рішення людини: прибрано формати, на які в g9 (Мерзляк, Якір, 2026) немає чесних вправ у пунктах уроку — expression з g9m2l1, coordinates2 з g9m6l1/l2, exactRoot з g9m6l3 (reports/verify/pg9m2.md, pg9m6.md). Для g9m2l3 expression лишається: рушій розширюється (coordinates2 з компонентами-виразами, задача engine-coordinates2-expression), після чого №13.5(4) стає чесною вправою.
 
+⁴ 2026-10-31, за тим самим рішенням людини, що й ² (недосяжні формати прибирати з матриці): прибрано формати, на які в m10 (Мерзляк та ін., 10 кл., рівень стандарту, 2018) немає чесних вправ у пунктах уроку — list з g10m3l2, expression з g10m3l3, exactRoot з g10m4l1, periodicSet з g10m5l3, expression з g10m5l4, intervalSet з g10m6l1/l2, expression з g10m6l3, expression і intervalSet з g10m6l4. Підтверджено автором і незалежним верифікатором кожного пулу (reports/verify/pg10m3.md, pg10m4.md, pg10m5.md, pg10m6.md, підсумок math-personalization-g10.md).
+
 ³ 2026-10-31, рішення людини (engine-math-skill-sync): `sk` рядків і `itemSkills` діагностик синхронізовано з навичками, які урок справді тренує (`sk` його екранів). Поле `sk` рядка — рядок або масив; personalization-qa вимагає в пулі вправу з кожним `sk` рядка й попереджає про вправи/проби, чий `sk` не входить у навички уроку (docs/PERSONALIZATION_QA.md, «Навички»). Інші поля й версія v2 без змін. Розбіжностей рядків з екранами уроків після цього немає, крім g11m6l2–l4 (optional, `expr` при екранах eq / func, calc / meas, geom — попередження). Описи навичок `cmp`, `div`, `num` у subjects/math.js розширено під фактичне вживання. Змінено (було → стало):
 
 | Рядок / тема | Було | Стало | Чому |
@@ -472,19 +474,19 @@ Cur для g11m2/g11m6 немає: у них немає required-уроків. 4
 | g10m2 / `g10m2l2` | Розміщення | required | g7m6l1, g7m2l3 | — | pg10m2 | number, choice, multi | 6–8 | m10:154–168 |
 | g10m2 / `g10m2l3` | Перерізи | optional | g7m6l1, g7m2l3 | — | pg10m2 | number | відкладено | prof:Геометрія 10, вступ до стереометрії, метод слідів |
 | g10m3 / `g10m3l1` | Корінь n-го | required | g8m3l1, g8m1l3, g8m5l2 | cur-g10m3 | pg10m3 | number, exactRoot, list, expression | 6–8 | m10:21–32 |
-| g10m3 / `g10m3l2` | Рац. степінь | required | g8m3l1, g8m1l3, g8m5l2 | — | pg10m3 | number, exactRoot, list, expression | 6–8 | m10:13–20,33–38 |
-| g10m3 / `g10m3l3` | Іррац. рівн. | required | g8m3l1, g8m1l3, g8m5l2 | — | pg10m3 | number, exactRoot, list, expression | 6–8 | m10:39–43 |
-| g10m4 / `g10m4l1` | Паралельність | required | g10m2l2, g8m4l2 | cur-g10m4 | pg10m4 | number, exactRoot, choice, multi | 6–8 | m10:160–175 |
+| g10m3 / `g10m3l2` | Рац. степінь | required | g8m3l1, g8m1l3, g8m5l2 | — | pg10m3 | number, exactRoot, expression ⁴ | 6–8 | m10:13–20,33–38 |
+| g10m3 / `g10m3l3` | Іррац. рівн. | required | g8m3l1, g8m1l3, g8m5l2 | — | pg10m3 | number, exactRoot, list ⁴ | 6–8 | m10:39–43 |
+| g10m4 / `g10m4l1` | Паралельність | required | g10m2l2, g8m4l2 | cur-g10m4 | pg10m4 | number, choice, multi ⁴ | 6–8 | m10:160–175 |
 | g10m4 / `g10m4l2` | Перпендикулярність | required | g10m2l2, g8m4l2 | — | pg10m4 | number, exactRoot | 6–8 | m10:180–193 |
 | g10m4 / `g10m4l3` | Кути й відстані | required | g10m2l2, g8m4l2 | — | pg10m4 | number, exactRoot | 6–8 | m10:177–208 |
 | g10m5 / `g10m5l1` | Радіани | required | g9m4l1, g7m5l2 | cur-g10m5 | pg10m5 | number, exactRoot, expression, periodicSet | 6–8 | m10:49–54 |
 | g10m5 / `g10m5l2` | Функції | required | g9m4l1, g7m5l2 | — | pg10m5 | number, exactRoot, expression, periodicSet | 6–8 | m10:55–71 |
-| g10m5 / `g10m5l3` | Формули | required | g9m4l1, g7m5l2 | — | pg10m5 | number, exactRoot, expression, periodicSet | 6–8 | m10:72–84 |
-| g10m5 / `g10m5l4` | Рівняння | required | g9m4l1, g7m5l2 | — | pg10m5 | number, exactRoot, expression, periodicSet | 6–8 | m10:85–99 |
-| g10m6 / `g10m6l1` | Похідна | required | g10m1l1, g9m3l1 | cur-g10m6 | pg10m6 | number, expression, intervalSet | 6–8 | m10:103–113 |
-| g10m6 / `g10m6l2` | Диференціювання | required | g10m1l1, g9m3l1 | — | pg10m6 | number, expression, intervalSet | 6–8 | m10:114–119 |
-| g10m6 / `g10m6l3` | Дослідження | required | g10m1l1, g9m3l1 | — | pg10m6 | number, expression, intervalSet | 6–8 | m10:120–127,131–133 |
-| g10m6 / `g10m6l4` | Оптимізація | required | g10m1l1, g9m3l1 | — | pg10m6 | number, expression, intervalSet | 6–8 | m10:128–130 |
+| g10m5 / `g10m5l3` | Формули | required | g9m4l1, g7m5l2 | — | pg10m5 | number, exactRoot, expression ⁴ | 6–8 | m10:72–84 |
+| g10m5 / `g10m5l4` | Рівняння | required | g9m4l1, g7m5l2 | — | pg10m5 | number, exactRoot, periodicSet ⁴ | 6–8 | m10:85–99 |
+| g10m6 / `g10m6l1` | Похідна | required | g10m1l1, g9m3l1 | cur-g10m6 | pg10m6 | number, expression ⁴ | 6–8 | m10:103–113 |
+| g10m6 / `g10m6l2` | Диференціювання | required | g10m1l1, g9m3l1 | — | pg10m6 | number, expression ⁴ | 6–8 | m10:114–119 |
+| g10m6 / `g10m6l3` | Дослідження | required | g10m1l1, g9m3l1 | — | pg10m6 | number, intervalSet ⁴ | 6–8 | m10:120–127,131–133 |
+| g10m6 / `g10m6l4` | Оптимізація | required | g10m1l1, g9m3l1 | — | pg10m6 | number ⁴ | 6–8 | m10:128–130 |
 
 ### Реєстр 11 класу
 
