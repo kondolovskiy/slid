@@ -541,23 +541,31 @@ window.SLID_LEARN = (() => {
     return values;
   }
   /* Префікс «x =» в list (як у number, CONTENT_SCHEMA §10): «x = 1; x = −2», «x₁ = 1; x₂ = −2», «x1 = 1, x2 = 3», «x = 1».
-     Ключ list змінної не містить, тож дозволена літера — мала латинська змінна з формул умови вправи ($…$ у title, body, q, text),
-     крім заданої в умові як ліва частина «y = …» (нулі функції $y = (x + 5)^2 - 9$ — це x, не y); кирилична «х», «у»… = латинська. Усі префікси запису — та сама літера (індекси 1–4 будь-які), префікс можна писати не
-     біля кожного елемента. Літера, якої немає в умові («y = 1» до $x^2 = 1$), різні літери («x = 1; y = 2» — це пара, не
-     корені) чи умова без формул — запис лишається як є, тобто «неправильно», як і раніше. */
+     Ключ list змінної не містить, тож префікс знімається, лише коли формули умови ($…$ у title, body, q, text) мають рівно
+     одну кандидатну змінну — малу латинську літеру, і префікс — саме вона (кирилична «х», «у»… = латинська; індекси 1–4).
+     Не кандидати: назва функції перед «(змінна)» (f(x), g(t)), літера з індексом «_» (a_n, log_a), аргумент \vec / \overline /
+     \text, ліва частина «y = …», якщо ця літера більше ніде в умові не трапляється (нулі $y = (x + 5)^2 - 9$ → лише x), і
+     літера, якій умова дає числове значення ($\sqrt{a^2}$ при $a = 4,6$ — це дане, не невідоме).
+     Кілька кандидатів (параметр і змінна $3x^2 - bx + 12 = 0$, система x і y, $y = kx + b$), жодного, різні літери в записі,
+     літера не та — запис лишається як є, тобто «неправильно», як і раніше (рев'ю P1-1). */
   const LIST_PRE = /^\s*([a-zA-Zа-яґєії])\s*(?:_?\{?[1-4]\}?|[₁₂₃₄])?\s*=\s*(?=[-−–+]?\s*(?:[\d√∛∜π(]|sqrt|pi))/u;
   const CYR_LAT = { "а": "a", "е": "e", "і": "i", "к": "k", "о": "o", "р": "p", "с": "c", "у": "y", "х": "x" };
+  const TEX_ARG = /\\(?:vec|overrightarrow|overline|bar|hat|text|mathrm|operatorname|mathbb)\s*(?:\{[^{}]*\}|[a-zA-Z])/g;
   const TEX_WORD = /\\[a-zA-Z]+|\b(?:arcsin|arccos|arctg|arcctg|arctan|sin|cos|tg|ctg|tan|cot|log|lg|ln|sqrt|max|min|mod)\b/g;
-  function taskVars(s) {
-    const text = ["title", "body", "q", "text"].map(k => typeof s?.[k] === "string" ? s[k] : "").join(" "), out = new Set();
-    const given = new Set();
+  /** Єдина кандидатна змінна умови вправи або null. */
+  function taskVar(s) {
+    const text = ["title", "body", "q", "text"].map(k => typeof s?.[k] === "string" ? s[k] : "").join(" "), all = new Map(), lhs = new Map(), skip = new Set();
+    const inc = (m, c) => m.set(c, (m.get(c) || 0) + 1);
     for (const m of text.matchAll(/\$([^$]+)\$/g)) {
-      const t = m[1].replace(TEX_WORD, " § ");   // § — не літера й не початок: «\sin x = 1» не робить x заданим
-      for (const c of t.match(/[a-z]/g) || []) out.add(c);
-      for (const g of t.matchAll(/(?:^|[,;])\s*([a-z])\s*=/g)) given.add(g[1]);   // «y = …», «x = 2» — задане, не невідоме
+      // § — не літера й не початок формули: «\sin x = 1» не робить x заданим
+      const t = m[1].replace(TEX_ARG, " § ").replace(TEX_WORD, " § ").replace(/_\s*(?:\{[^{}]*\}|[a-zA-Z0-9])/g, "_");
+      for (const [, c] of t.matchAll(/([a-z])\s*_/g)) skip.add(c);                          // a_n, log_a: назва послідовності, основа
+      for (const [, c] of t.matchAll(/([a-z])\s*\(\s*[a-z]\s*\)/g)) skip.add(c);          // f(x), g(t): назва функції
+      for (const c of t.match(/[a-z]/g) || []) inc(all, c);
+      for (const g of t.matchAll(/(?:^|[,;])\s*([a-z])\s*=(?!=)(\s*[-−–]?\s*\d[\d,.\s]*$)?/g)) { inc(lhs, g[1]); if (g[2]) skip.add(g[1]); }   // «y = …»; «a = 4,6» — дане число, не невідоме
     }
-    for (const c of given) out.delete(c);
-    return out;
+    const cand = [...all.keys()].filter(c => !skip.has(c) && all.get(c) > (lhs.get(c) || 0));
+    return cand.length === 1 ? cand[0] : null;
   }
   function listPre(s, v) {
     if (typeof v !== "string") return v;
@@ -565,7 +573,7 @@ window.SLID_LEARN = (() => {
     const bare = parts.map(p => { const m = LIST_PRE.exec(p); if (!m) return p; lets.add(CYR_LAT[m[1]] || m[1]); return p.slice(m[0].length); });
     if (!lets.size) return v;
     const [x] = lets;
-    return lets.size === 1 && taskVars(s).has(x) ? bare : v;
+    return lets.size === 1 && taskVar(s) === x ? bare : v;
   }
   /* Назва перед координатами, що не змінює відповідь (рішення 2026-10-31, п. 5): точка чи вектор з 1–2 великих латинських літер,
      можна з «=» (A(3; 1), AB = (3; 1), AB(3; 1)), \vec{AB} = (…), \overrightarrow{AB} = (…). Мала літера без «=» — лише в числовому
@@ -851,6 +859,7 @@ window.SLID_LEARN = (() => {
     simplify: "Значення правильне, але запис не спрощено: обчисли, зведи подібні, винеси множник з-під кореня й позбудься кореня в знаменнику.",
     limit: "Запис занадто складний для перевірки. Спрости його й спробуй ще раз.",
     denom: "Знаменник-добуток візьми в дужки: 1/(3y), бо 1/3y — це y/3.",
+    parenPow: "Степінь пиши через знак ^. Число одразу після дужок — це множник, а не показник.",
     expandParen: "Вираз правильний. Розкрий дужки й зведи подібні доданки.",
     expandLike: "Вираз правильний. Зведи подібні доданки й запиши многочлен стандартного вигляду.",
     power: "Вираз правильний. Запиши його одним степенем: основа, ^ і показник.",
@@ -1020,6 +1029,9 @@ window.SLID_LEARN = (() => {
     if (kind === "expression" || (kind === "coordinates2" && symPair(s))) {
       const w = norm(t).replace(/\/\s*(\d+(?:,\d+)?[A-Za-zͰ-Ͽ][A-Za-zͰ-Ͽ\d^]*|[A-Za-zͰ-Ͽ](?:\^\d+)?[A-Za-zͰ-Ͽ][A-Za-zͰ-Ͽ\d^]*)/g, "/($1)");
       if (w !== norm(t) && checkAns(s, w) !== "bad") return MSG.denom;
+      // «(x + 5)2» замість «(x + 5)^2» (рев'ю P3-1): число після дужок — множник; якщо зі «^» запис правильний — підказка
+      const p = norm(t).replace(/\)\s*(\d+)(?![\d,])/g, ")^$1");
+      if (p !== norm(t) && checkAns(s, p) !== "bad") return MSG.parenPow;
     }
     return null;
   }
@@ -1030,7 +1042,7 @@ window.SLID_LEARN = (() => {
     if (kind === "number") out.push(MSG.frac, MSG.reduce, MSG.mixed, MSG.improper, ...(s.decimals !== undefined ? [decMsg(s.decimals)] : []));
     if (kind === "divrem") out.push(MSG.divrem);
     if (kind === "ratio") out.push(MSG.ratio);
-    if (kind === "expression" || kind === "coordinates2") out.push(MSG.denom, MSG.expandParen, MSG.expandLike, MSG.power, MSG.factored, MSG.reduced, MSG.simplified);
+    if (kind === "expression" || kind === "coordinates2") out.push(MSG.denom, MSG.parenPow, MSG.expandParen, MSG.expandLike, MSG.power, MSG.factored, MSG.reduced, MSG.simplified);
     if (["exactRoot", "list", "coordinates2", "coordinates3", "intervalSet"].includes(kind)) out.push(MSG.rootReduce);
     if (kind === "time") out.push(timeMsg(s));
     if (U) out.push(qtyForeignMsg(U), qtyMissingMsg(U), qtyFormMsg(U));
@@ -1345,9 +1357,12 @@ window.SLID_LEARN = (() => {
       if (it.form === "factored" && sp && sp.some(t => varsOf(t).length && !isProduct(t))) E.push(`${w}: form factored — кожна компонента-вираз ключа має бути добутком`);
       if (sp && sp.some(t => t.k === "eq")) E.push(`${w}: coordinates2 — компонента ключа не може бути рівнянням`);
       // точна арифметика ключа — у limited, як у checkAns: вердикт не залежить від порядку вправ і попередніх викликів (BUDGET, STEPS)
-      if (kind === "intervalSet" && it.type === "answer") { const set = limited(() => parseSet(it.answer, exactKey(it.answer)), () => null); if (set && set.raw !== set.length) E.push(`${w}: intervalSet — частини ключа перетинаються або дотикаються, злий їх`); }
+      // ключ, важчий за межу перевірки (TOO), тут не оцінюємо: його відхиляє завершальна checkAns(ключ) — «не читається» (рев'ю P3-3)
+      if (kind === "intervalSet" && it.type === "answer") { const set = limited(() => parseSet(it.answer, exactKey(it.answer)), () => TOO); if (set && set !== TOO && set.raw !== set.length) E.push(`${w}: intervalSet — частини ключа перетинаються або дотикаються, злий їх`); }
       if (kind === "periodicSet" && it.type === "answer" && (periodicValues(it.answer)?.dec || 0) > 2) E.push(`${w}: periodicSet — десятковий запис ключа довший за 2 знаки, це наближення; запиши точно (π/6, arctg 2)`);
-      if (kind === "exactRoot" && it.type === "answer" && ![...(limited(() => exactOf(it.answer), () => null)?.x.keys() || [])].some(k => !k.startsWith("1:1:0"))) E.push(`${w}: exactRoot потребує кореня або π у відповіді; раціональне число — answerKind number`);
+      LIMIT = false;   // exactOf сам ловить межу й дає null, а LIMIT позначає, що null — від межі, не від ключа
+      const xr = kind === "exactRoot" && it.type === "answer" ? limited(() => exactOf(it.answer), () => null) : undefined;
+      if (xr !== undefined && !(xr === null && LIMIT) && ![...(xr?.x.keys() || [])].some(k => !k.startsWith("1:1:0"))) E.push(`${w}: exactRoot потребує кореня або π у відповіді; раціональне число — answerKind number`);
       if (it.signed !== undefined && (typeof it.signed !== "boolean" || it.type !== "answer" || kind !== "number")) E.push(`${w}: signed має бути boolean для числової answer`);
       if (it.tol !== undefined && (it.type !== "answer" || kind !== "number" || !Number.isFinite(it.tol) || it.tol < 0)) E.push(`${w}: tol має бути скінченним числом ≥ 0 для числової answer`);
       if (it.type === "answer" && checkAns(it, keyInput(it)) !== "ok") E.push(`${w}: answer «${it.answer}» не читається або сам не проходить перевірку (reduced/mixed)`);
