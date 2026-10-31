@@ -1186,5 +1186,105 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
   }
 }
 
+/* Вади перевірки відповідей, знайдені авторами пулів 10 кл. (engine-math-answer-g10-issues). */
+{
+  // кожна перевірка — у свіжому рушії: вердикт не має залежати від попередніх викликів (BUDGET = 0 до першого checkAns)
+  const freshL = () => { const c = { console }; c.window = c; vm.createContext(c); vm.runInContext(fs.readFileSync(path.join(ROOT, "app/learn.js"), "utf8"), c); return c.SLID_LEARN; };
+  const P = items => ({ id: "p", section: "s", status: "draft", sources: [{ id: "b", title: "t", url: "https://x" }],
+    items: items.map((it, i) => ({ id: "a" + i, lesson: "l", lvl: 1, sk: "num", src: "b 1", type: "answer", title: "t", steps: ["s"], ...it })) });
+  const C = { sections: new Map([["s", { grade: 10, lessons: ["l"] }]]), skills: { num: {} } };
+  // 1. validatePool і exactRoot / intervalSet першими в пулі й у свіжому рушії (pg10m5 «5π/36»)
+  for (const ans of ["5π/36", "2∛2", "√2/2", "(3 + √5)/2", "16π/3"]) {
+    eq(freshL().validatePool(P([{ answerKind: "exactRoot", answer: ans }]), C), [], `validatePool у свіжому рушії: перший ключ exactRoot «${ans}»`);
+    eq(freshL().validatePool(P([{ answerKind: "exactRoot", answer: ans }, { answer: 5 }]), C), freshL().validatePool(P([{ answer: 5 }, { answerKind: "exactRoot", answer: ans }]), C), `validatePool: порядок вправ не змінює вердикт «${ans}»`);
+  }
+  eq(freshL().validatePool(P([{ answerKind: "exactRoot", answer: "5/36" }]), C).some(e => e.includes("потребує кореня")), true, "validatePool у свіжому рушії: раціональний ключ exactRoot і далі відхиляється");
+  eq(freshL().validatePool(P([{ answerKind: "intervalSet", answer: "(-∞; √2] ∪ [√3; +∞)" }]), C), [], "validatePool у свіжому рушії: перший ключ intervalSet із коренями");
+  eq(freshL().validatePool(P([{ answerKind: "intervalSet", answer: "(-∞; √3] ∪ [√2; +∞)" }]), C).some(e => e.includes("перетинаються")), true, "validatePool у свіжому рушії: частини intervalSet перетинаються — помилка");
+  // ключ intervalSet, межа якого потребує точного множення ((1 + √5)/2), першим у свіжому рушії (рев'ю P3-2)
+  eq(freshL().validatePool(P([{ answerKind: "intervalSet", answer: "(-∞; (1 + √5)/2] ∪ [1; +∞)" }]), C).some(e => e.includes("перетинаються")), true, "validatePool у свіжому рушії: перетин intervalSet з межею (1 + √5)/2");
+  eq(freshL().validatePool(P([{ answerKind: "intervalSet", answer: "(-∞; (1 + √5)/2] ∪ [2; +∞)" }]), C), [], "validatePool у свіжому рушії: intervalSet з межею (1 + √5)/2 без перетину");
+  // раціональне значення, записане коренями (потрібне точне множення), — «потребує кореня» і в свіжому рушії
+  eq(freshL().validatePool(P([{ answerKind: "exactRoot", answer: "√2·√2" }]), C).some(e => e.includes("потребує кореня")), true, "validatePool у свіжому рушії: exactRoot √2·√2 = 2 — раціональний ключ");
+  // ключ, важчий за межу (P3-3): одна причина «не читається», без хибного «потребує кореня або π»
+  { const E = freshL().validatePool(P([{ answerKind: "exactRoot", answer: "(√2+√3+√5)^12" }]), C);
+    eq([E.length, E.some(e => e.includes("потребує кореня"))], [1, false], "validatePool: надто важкий ключ exactRoot — лише «не читається»"); }
+  { const F = freshL(); F.checkAns({ answerKind: "expression", answer: "x" }, "(x+√2+√3+√5)^12 - (x+√2+√3+√5)^12 + x");
+    eq(F.validatePool(P([{ answerKind: "exactRoot", answer: "5π/36" }]), C), [], "validatePool після важкої перевірки: бюджет не переноситься"); }
+
+  // 2. префікс «x =» у list: та сама літера, що в умові; чужа змінна чи різні літери — bad, як і раніше
+  const Li = (answer, title = "$x^2 + x - 2 = 0$", o = {}) => ({ answerKind: "list", answer, title, ...o });
+  for (const [s, v, r] of [
+    [Li("1; -2"), "x = 1; x = -2", "ok"], [Li("1; -2"), "x=1; x=−2", "ok"], [Li("1; -2"), "x = -2; x = 1", "ok"], [Li("1; -2"), "х = 1; х = -2", "ok"],
+    [Li("1; -2"), "x₁ = 1; x₂ = -2", "ok"], [Li("1; -2"), "x1 = 1, x2 = -2", "ok"], [Li("1; -2"), "x_1 = 1; x_2 = -2", "ok"], [Li("1; -2"), "x = 1; -2", "ok"],
+    [Li("1"), "x = 1", "ok"], [Li("1", "t", { body: "<p>Розв'яжи $\\sqrt{t} = 1$.</p>" }), "t = 1", "ok"], [Li("1", "$\\sin x = 1$"), "x = 1", "ok"],
+    [Li("(-1 ± √5)/2", "$x^2 + x - 1 = 0$"), "x = (-1 + √5)/2; x = (-1 - √5)/2", "ok"], [Li("(-1 ± √5)/2", "$x^2 + x - 1 = 0$"), "x = (-1 ± √5)/2", "ok"],
+    [Li("±√2", "$x^2 = 2$"), "x = 2√2/2; x = -√2", "form"], [Li("70; 110", "$x$", { unit: "°" }), "x = 70°; x = 110°", "ok"], [Li("0,5; 2", "$x$"), "x = 0,5; x = 2", "ok"],
+    // негативні: чужа змінна, різні літери, умова без змінної, повтор, не той корінь, велика літера, назва відрізка
+    [Li("1"), "y = 1", "bad"], [Li("1; -2"), "y = 1; y = -2", "bad"], [Li("1; -2"), "x = 1; y = -2", "bad"], [Li("1; -2"), "x = 1", "bad"],
+    [Li("1; -2"), "x = 1; x = 1; x = -2", "bad"], [Li("1; -2"), "x = 1; x = 2", "bad"], [Li("1; -2"), "X = 1; X = -2", "bad"], [Li("1", "$\\sqrt{t} = 1$"), "s = 1", "bad"],
+    [Li("1", "Рівняння"), "x = 1", "bad"], [{ answerKind: "list", answer: "1" }, "x = 1", "bad"], [Li("1", "$\\sin t = 1$"), "s = 1", "bad"], [Li("1", "$\\sin t = 1$"), "n = 1", "bad"],
+    [Li([3, 11], "$BM = 4$ см", { unit: "см" }), "BC = 3; 11", "bad"],
+    [Li([-8, -2], "Нулі $y = (x + 5)^2 - 9$"), "y = -8; y = -2", "bad"], [Li("1; -2"), "x = 1; x5 = -2", "bad"], [Li("1; -2"), "x5 = 1; x5 = -2", "bad"], [Li([-8, -2], "Нулі $y = (x + 5)^2 - 9$"), "x = -8; x = -2", "ok"],
+    [Li([5, -5], "t", { body: "<p>При яких $y$ модуль $\\vec{b} = (12; y)$ дорівнює $13$?</p>" }), "y = 5; y = -5", "ok"], [Li("2", "$2x = 4$"), "x = 2", "ok"],
+    [Li("3", "t", { body: "<p>При $x = 2$ розв'яжи $x + a = 5$ відносно $a$.</p>" }), "x = 3", "bad"], [Li("1; -2"), "x = 1 = -2", "bad"], [Li("1; -2"), "x = x + 1; -2", "bad"]])
+    eq(L.checkAns(s, v), r, `list із префіксом: ${JSON.stringify(v)} до ${JSON.stringify(s.answer)} (${s.title})`);
+  // рев'ю P1-1: префікс знімається лише для єдиної кандидатної змінної умови — не для назв функцій, параметрів, векторів,
+  // послідовностей, даних значень; кілька кандидатів (система, параметр і змінна) — bad для будь-якої літери
+  const two = (L0, ks) => ks.map(k => `${L0} = ${k}`).join("; ");
+  for (const [s, ok, bad] of [
+    [Li([2, -2], "Модуль $b$", { body: "<p>При яких значеннях $b$ рівняння $3x^2 - bx + 12 = 0$ має один корінь?</p>" }), [], ["b", "x"]],   // pg8m5 b08
+    [Li([0, 1], "Нулі $f(x) = x^2 - x$"), ["x"], ["f"]],                                                                             // pg9m3 a02
+    [Li([5, -7], "Нулі $g(x) = 35 - 2x - x^2$"), ["x"], ["g"]],                                                                    // pg9m3 a04
+    [Li([1, 2], "Члени", { body: "<p>Послідовність $(a_n)$ задано формулою $a_n = n^2 - 3n - 8$. Знайди номери.</p>" }), ["n"], ["a"]],   // pg9m5 a07
+    [Li([3, -3], "Два значення $x$", { body: "<p>При яких $x$ вектори $\\vec{a} = (2x; -3)$ і $\\vec b = (x; 6)$ перпендикулярні?</p>" }), ["x"], ["a", "b"]],   // pg9m2 d07
+    [Li([5, -5], "Модуль", { body: "<p>При яких $y$ модуль вектора $\\vec{b} = (12; y)$ дорівнює $13$?</p>" }), ["y"], ["b"]],           // pg9m2 c07
+    [Li([4.6, 18.6], "$\\sqrt{a^2}$ при $a = 4,6$ і $a = -18,6$"), [], ["a"]],                                                       // pg8m3 c09: a дане
+    [Li([1, 2], "Система", { body: "<p>Розв'яжи систему $x + y = 3$, $x - y = -1$.</p>" }), [], ["x", "y"]],
+    [Li([1, 2], "Ординати", { body: "<p>Знайди ординати точок перетину $y = x^2$ та $x + y = 2$.</p>" }), [], ["x", "y"]],
+    [Li([1, 2], "Пряма", { body: "<p>Знайди $k$ і $b$ для $y = kx + b$.</p>" }), [], ["k", "b", "x", "y"]],
+    [Li([1, 2], "$y = kx + b$, де $k = 2$"), [], ["x", "b", "k"]],
+    [Li([1, 2], "Сторони", { body: "<p>Сторони $a$ і $b$: $a + b = 3$, $ab = 2$.</p>" }), [], ["a", "b"]],
+    [Li([1, 2], "$\\log_a x = 0$"), ["x"], ["a"]], [Li([1, 2], "$\\text{ab} x^2 = 1$"), ["x"], ["a", "b", "t"]]])
+    for (const [ls, r] of [[ok, "ok"], [bad, "bad"]]) for (const l of ls) eq(L.checkAns(s, two(l, s.answer)), r, `list, єдина змінна умови: «${two(l, s.answer)}» (${s.title} ${s.body || ""})`);
+  // реальні вправи з рев'ю P1-1: префікс знімається лише з очікуваною літерою (або з жодною), усі інші a–z — bad
+  { const { loadContent } = await import("./lib.mjs"), pools = loadContent().subjects.flatMap(c => c.pools || []);
+    for (const [pid, iid, want] of [["pg8m5", "b08", ""], ["pg8m3", "c09", ""], ["pg9m3", "a02", "x"], ["pg9m3", "a04", "x"], ["pg9m3", "b08", "x"],
+      ["pg9m5", "a07", "n"], ["pg9m2", "d07", "x"], ["pg9m2", "c07", "y"], ["pg8m5", "a01", "x"]]) {
+      const it = pools.find(p => p.id === pid)?.items.find(x => x.id === iid), ks = it ? (Array.isArray(it.answer) ? it.answer.map(String) : String(it.answer).split(";").map(x => x.trim())) : [];
+      const acc = it ? [..."abcdefghijklmnopqrstuvwxyz"].filter(l => L.checkAns(it, ks.map(x => `${l} = ${x.replace(".", ",")}`).join("; ")) !== "bad").join("") : null;
+      eq(acc, want, `list ${pid}:${iid}: префікс знімається лише з «${want || "жодною"}»`);
+    } }
+  eq(L.formHint(Li("±√2", "$x^2 = 2$"), "x = 2√2/2; x = -√2").includes("Скороти"), true, "list із префіксом: підказка «Скороти дріб» як без префікса");
+
+  // 3. expression: число одразу після дужок-множника — множення; степені, десяткові, мішані числа — без змін
+  const Ex = (answer, o = {}) => ({ answerKind: "expression", answer, ...o });
+  for (const [s, v, r] of [
+    [Ex("12x^2 + 20x"), "(3x+5)4x", "ok"], [Ex("12x^2 + 20x"), "(3x + 5) 4x", "ok"], [Ex("12x^2 + 20x"), "(3x+5)·4x", "ok"], [Ex("12x^2 + 20x"), "4x(3x+5)", "ok"],
+    [Ex("18x^2 + 20x - 3"), "3(2x^2-1)+(3x+5)4x", "ok"], [Ex("4x(3x + 5)", { form: "factored" }), "(3x+5)4x", "ok"], [Ex("4x + 20"), "(x+5)4", "ok"],
+    [Ex("1,5x + 1,5"), "(x+1)1,5", "ok"], [Ex("6x + 3"), "(2x+1)3", "ok"], [Ex("2(x + 1)·3"), "2(x+1)3", "ok"],
+    // негативні: значення інше; число після степеня, функції, кореня, модуля чи змінної — як і раніше помилка запису
+    [Ex("(x + 5)/4"), "(x+5)4", "bad"], [Ex("12x^2 + 20x"), "(3x+5)4", "bad"], [Ex("3x^2"), "x²3", "bad"], [Ex("3(x + 1)^2"), "(x+1)^2 3", "bad"], [Ex("3(x + 1)^2"), "(x+1)²3", "bad"],
+    [Ex("2sin(x)"), "sin(x)2", "bad"], [Ex("2√3"), "√(3)2", "bad"], [Ex("2|x|"), "|x|2", "bad"], [Ex("2x"), "x2", "bad"], [Ex("40(x + 5)"), "(x+5)4 0", "bad"],
+    [Ex("x^23"), "x^23", "ok"], [Ex("x^2·3"), "x^2 3", "bad"], [Ex("x^(2)·3"), "x^(2)3", "bad"]])
+    eq(L.checkAns(s, v), r, `expression: ${JSON.stringify(v)} до ${JSON.stringify(s.answer)}`);
+  eq(L.checkAns({ answer: "7/3" }, "2 1/3"), "ok", "number: мішане число не стало множенням");
+  // P3-1: «(x + 5)2» при ключі-степені — bad, але з підказкою про «^»; без «^» правильне значення підказки не потребує
+  eq([L.checkAns(Ex("(x + 5)^2"), "(x+5)2"), L.badHint(Ex("(x + 5)^2"), "(x+5)2")], ["bad", "Степінь пиши через знак ^. Число одразу після дужок — це множник, а не показник."], "expression: (x+5)2 до (x + 5)^2 — підказка про ^");
+  eq(L.badHint(Ex("(x + 5)^2"), "(x+5)3"), null, "expression: (x+5)3 до (x + 5)^2 — звичайне «неправильно»");
+  eq(L.hintTexts(Ex("x")).includes("Степінь пиши через знак ^. Число одразу після дужок — це множник, а не показник."), true, "hintTexts: підказка про ^ є серед текстів expression");
+  eq(L.checkAns({ answer: "7/3" }, "(2) 1/3"), "bad", "number: дужки в числовій відповіді — як і раніше bad");
+
+  // 4. явний «+» перед числом у number (verify pg10m1 b02): «+16» = 16; «+» не робить від'ємне додатним і не ламає «−»
+  for (const [s, v, r] of [
+    [{ answer: 16 }, "+16", "ok"], [{ answer: 16 }, "x = +16", "ok"], [{ answer: 16 }, "16", "ok"], [{ answer: "2/3", reduced: true }, "+2/3", "ok"], [{ answer: "7/3", mixed: true }, "+2 1/3", "ok"],
+    [{ answer: "2,5" }, "+2,5", "ok"], [{ answer: "2,5", decimals: 1 }, "+2,5", "ok"], [{ answer: 16, unit: "см" }, "+16 см", "ok"],
+    [{ answer: -16 }, "-16", "ok"], [{ answer: -16 }, "x = -16", "ok"], [{ answer: -16 }, "+16", "bad"], [{ answer: -16 }, "+-16", "bad"], [{ answer: -16 }, "+−16", "bad"], [{ answer: 16 }, "+-16", "bad"],
+    [{ answer: 16 }, "++16", "bad"], [{ answer: 16 }, "+ 16", "bad"], [{ answer: 16 }, "16+", "bad"], [{ answer: 16 }, "+", "bad"], [{ answer: 16 }, "x = ++16", "bad"], [{ answer: "4/6", reduced: true }, "+4/6", "form"]])
+    eq(L.checkAns(s, v), r, `number з «+»: ${JSON.stringify(v)} до ${JSON.stringify(s.answer)}`);
+  eq(L.answerSig({ answer: 16 }, "+16"), L.answerSig({ answer: 16 }, "16"), "answerSig: «+16» і «16» — той самий запис");
+  eq(L.checkAns({ answerKind: "list", answer: "2; -2" }, "+2; -2"), "bad", "list: «+» перед елементом не розширено (лише number)");
+}
+
 console.log(`\n${n} перевірок, ${fails ? fails + " з помилками" : "усе гаразд"}`);
 if (fails) process.exit(1);
