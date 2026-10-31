@@ -5,7 +5,7 @@ id: write-math-diag-g8
 type: write-diag
 subject: math
 grade: 8
-status: review
+status: done
 claimed_by: agent-write-math-diag-g8
 created: 2026-10-15
 depends_on: [curate-math-personalization-map]
