@@ -72,7 +72,7 @@
 | g7s4l4 Місто Лева | 7 | 9 | 0.56 | 21 | 58 | 6.1 | 0.026 | 4 | — |
 | g7s4l5 Печатка короля Русі | 7 | 8 | 0.63 | 23 | 56 | 5.7 | 0.041 | 3 | sentenceWords=5.7 поза [6; 13] |
 | g7s4l6 Помічник літописця (фінал) | 7 | 7 | 0.86 | 19 | 38 | 5.8 | 0.042 | 3 | sentenceWords=5.8 поза [6; 13] |
-| g7s5l1 Король багатьох русинів | 7 | 8 | 0.63 | 25 | 66 | 6.5 | 0.04 | 4 | — |
+| g7s5l1 Король багатьох русинів | 7 | 8 | 0.63 | 27 | 66 | 6.6 | 0.039 | 4 | — |
 | g7s5l2 Битва, якої могло не бути | 7 | 8 | 0.63 | 24 | 66 | 6.9 | 0.035 | 4 | — |
 | g7s5l3 Шлюб, що змінив карту | 7 | 9 | 0.56 | 21 | 47 | 5.8 | 0.048 | 3 | sentenceWords=5.8 поза [6; 13] |
 | g7s5l4 Нова держава на півострові | 7 | 8 | 0.5 | 25 | 57 | 6.6 | 0.027 | 3 | — |
@@ -80,12 +80,12 @@
 | g8s1l1 Дві держави — одна печатка | 8 | 8 | 0.63 | 23 | 58 | 6.2 | 0.022 | 4 | — |
 | g8s1l2 Хто править у сеймі | 8 | 8 | 0.63 | 21 | 53 | 6.1 | 0.025 | 3 | — |
 | g8s1l3 Два собори в одному місті | 8 | 8 | 0.63 | 21 | 61 | 6 | 0.036 | 3 | — |
-| g8s1l4 Школа князя й братства | 8 | 9 | 0.56 | 18 | 45 | 5.5 | 0.043 | 3 | sentenceWords=5.5 поза [6; 13]; readWordsPerScreen нетипово для сім'ї (z=-2.2); maxReadWords нетипово для сім'ї (z=-2.1) |
+| g8s1l4 Школа князя й братства | 8 | 9 | 0.56 | 18 | 45 | 5.5 | 0.043 | 3 | sentenceWords=5.5 поза [6; 13]; readWordsPerScreen нетипово для сім'ї (z=-2.3); maxReadWords нетипово для сім'ї (z=-2.1) |
 | g8s1l5 Писар сейму (фінал) | 8 | 7 | 0.86 | 19 | 38 | 4.9 | 0.017 | 3 | sentenceWords=4.9 поза [6; 13] |
 | g8s2l1 Вільні люди степу | 8 | 8 | 0.5 | 25 | 50 | 6.6 | 0.027 | 3 | — |
 | g8s2l2 За порогами Дніпра | 8 | 8 | 0.5 | 20 | 51 | 5.5 | 0.034 | 3 | sentenceWords=5.5 поза [6; 13] |
 | g8s2l3 Сагайдачний під Хотином | 8 | 8 | 0.5 | 24 | 55 | 6.1 | 0.043 | 3 | — |
-| g8s2l4 Повстання перед бурею | 8 | 8 | 0.5 | 20 | 46 | 5.3 | 0.039 | 3 | sentenceWords=5.3 поза [6; 13] |
+| g8s2l4 Повстання перед бурею | 8 | 8 | 0.5 | 21 | 46 | 5.3 | 0.039 | 3 | sentenceWords=5.3 поза [6; 13] |
 | g8s2l5 Писар військової канцелярії (фінал) | 8 | 7 | 0.86 | 21 | 38 | 5 | 0.039 | 3 | sentenceWords=5 поза [6; 13] |
 | g8s3l1 Від Суботова до булави | 8 | 7 | 0.57 | 24 | 63 | 6 | 0.018 | 3 | longWordShare нетипово для сім'ї (z=-2) |
 | g8s3l2 Дві перемоги за травень | 8 | 7 | 0.57 | 24 | 56 | 6.2 | 0.034 | 3 | — |
@@ -190,7 +190,7 @@
 
 - **5-6:lesson**: screens 7±1.03, gradedShare 0.6±0.09, readWordsPerScreen 22.34±4.07, maxReadWords 53.29±7.4, sentenceWords 6.06±0.38, longWordShare 0.04±0.02, typeVariety 3.18±0.76
 - **5-6:boss**: screens 6.44±0.5, gradedShare 0.84±0.01, readWordsPerScreen 12.56±2.59, maxReadWords 23.22±6.99, sentenceWords 4.9±0.39, longWordShare 0.05±0.01, typeVariety 3.33±0.47
-- **7-9:lesson**: screens 7.92±0.75, gradedShare 0.58±0.06, readWordsPerScreen 24.29±2.8, maxReadWords 60.74±7.56, sentenceWords 5.9±0.41, longWordShare 0.04±0.01, typeVariety 3.29±0.45
+- **7-9:lesson**: screens 7.92±0.75, gradedShare 0.58±0.06, readWordsPerScreen 24.34±2.8, maxReadWords 60.74±7.56, sentenceWords 5.9±0.41, longWordShare 0.04±0.01, typeVariety 3.29±0.45
 - **7-9:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 21.4±2.8, maxReadWords 42.6±5.04, sentenceWords 5.47±0.45, longWordShare 0.03±0.01, typeVariety 3.13±0.34
 - **10-11:lesson**: screens 8.93±1.24, gradedShare 0.55±0.05, readWordsPerScreen 27.07±4.71, maxReadWords 61.12±8.34, sentenceWords 6.42±0.49, longWordShare 0.07±0.03, typeVariety 3.45±0.5
 - **10-11:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 23.6±2.54, maxReadWords 47.2±7.19, sentenceWords 6.12±0.62, longWordShare 0.07±0.02, typeVariety 3.6±0.49
