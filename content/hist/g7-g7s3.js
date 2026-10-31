@@ -29,6 +29,12 @@ SLID.section("hist", {
       "Ethan Doyle White",
       "CC BY-SA 3.0",
       "https://commons.wikimedia.org/wiki/File:Cuman_statues_from_Ukraine_in_Neues_Museum,_Berlin.jpg"
+    ],
+    [
+      "Розмова князів у палатах Святополка; накладання кайданів на Василька (Радзивіллівський літопис)",
+      "Радзивіллівський літопис, кінець XV ст.",
+      "CC BY-SA 4.0 (мініатюра XV ст. — суспільне надбання)",
+      "https://commons.wikimedia.org/wiki/File:Conversation_between_Davyd_Igorevich_Volynsky_and_Vasilko_Rostislavich_Terebovskiy_in_the_chambers_of_Svyatopolk_Izyaslavich_of_Kiev;_imposing_fetters_on_Vasilko.jpg"
     ]
   ],
   lessons: [
@@ -37,7 +43,7 @@ SLID.section("hist", {
       title: "Кожен хай держить отчину свою",
       short: "Любецький з'їзд",
       icon: "users",
-      status: "verified",
+      status: "draft",
       why: "Ти дізнаєшся, як князі пробували домовитися про мир і чому домовленість не втрималася. Це урок про те, чого варта обіцянка без сили, що її захищає.",
       screens: [
         {
@@ -109,6 +115,8 @@ SLID.section("hist", {
           sk: "crit",
           eyebrow: "Що було далі",
           title: "Чи втримався мир?",
+          img: "img/hist/g7s3/vasylko-fetters.jpg",
+          cap: "Ліворуч — розмова князів у палатах Святополка в Києві, праворуч на ноги Василькові накладають кайдани. Мініатюра Радзивіллівського літопису, кінець XV ст.",
           body: "<p>Щойно князі роз'їхалися, Давид Ігоревич намовив київського князя Святополка схопити Василька Теребовльського. Потім Василька осліпили.</p>",
           opts: [
             "Князі порушили присягу, і почалася нова війна",

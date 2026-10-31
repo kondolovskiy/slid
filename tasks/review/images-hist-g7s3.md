@@ -6,7 +6,7 @@ type: images
 subject: hist
 grade: 7
 section: g7s3
-status: todo
+status: review
 claimed_by: photo-g7s3
 created: 2026-10-30
 depends_on: []
@@ -29,3 +29,19 @@ depends_on: []
 - [ ] Нотатки: перелік зображень (урок → файл → ліцензія → URL), змінені завдання, сумнівні місця; рядок в inbox; move у review.
 
 ## Нотатки агента
+**writer photo-g7s3, 2026-10-31**
+
+Зображення:
+- g7s3l1 «Кожен хай держить отчину свою», екран 6 «Чи втримався мир?» (choice, sk crit) → `img/hist/g7s3/vasylko-fetters.jpg` (960×491, 139 КБ) → мініатюра Радзивіллівського літопису, кін. XV ст.; на Commons позначено CC BY-SA 4.0 + PD-RusEmpire (у credits — CC BY-SA 4.0) → https://commons.wikimedia.org/wiki/File:Conversation_between_Davyd_Igorevich_Volynsky_and_Vasilko_Rostislavich_Terebovskiy_in_the_chambers_of_Svyatopolk_Izyaslavich_of_Kiev;_imposing_fetters_on_Vasilko.jpg
+- Підпис: «Ліворуч — розмова князів у палатах Святополка в Києві, праворуч на ноги Василькові накладають кайдани. Мініатюра Радзивіллівського літопису, кінець XV ст.» Не містить слів правильного варіанта («присяга», «війна»); ілюструє текст екрана («схопити Василька»). Сцена не натуралістична (осліплення не показано).
+- Завдання не змінено; l1 → `status: "draft"`.
+
+Факти в cap:
+- Василька в Києві заперли й «окувавши у дві окови» (ПМЛ під 1097 р., пер. Махновця: https://osvita.ua/school/literature/l/70684/list-36.html); Давид після Любеча намовив Святополка схопити Василька, той запросив його до Києва (ЭСБЕ «Василько Ростиславич»: https://ru.wikisource.org/wiki/ЭСБЕ/Василько_Ростиславич; https://en.wikipedia.org/wiki/Council_of_Uvetichi).
+- Назва сцени й «кінець XV ст.» — з опису файлу Commons (джерело — runivers.ru); датування Радзивіллівського літопису кін. XV ст. уже вжито в g7s1.
+
+Перевірено й не взято:
+- Окремої мініатюри Любецького з'їзду на Commons не знайдено (Category:Miniatures_from_Radzivill_Chronicle, 282 файли; є лише «Congress in Uvetichi in 1100.jpg»). Сторінки uk/ru/en.wiki «Любецький з'їзд» мають лише пам'ятник Г. Єршова 1997 р. — сучасна скульптура, без свободи панорами, не взято.
+- «Ослепление.jpg» (осліплення Василька) — насильство, не взято.
+
+Сумнівне: подвійне ліцензування (CC BY-SA 4.0 від завантажувача + PD-RusEmpire) — як у Open Kurbas (handoff). Альтернатива м'якша: «Приезд Василька Ростиславича Теребовльского на двор Святополка…jpg» (та сама категорія, CC BY-SA 4.0).
