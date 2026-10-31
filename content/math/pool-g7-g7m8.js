@@ -1,5 +1,5 @@
 /* Слід · Математика, 7 клас — пул задач для тренування до розділу «Геометрія: коло» (g7m8)
-   Статус: draft. 24 задачі: по 8 на required-уроки g7m8l1, g7m8l2, g7m8l3 (3 рівня 1, 3 рівня 2, 2 рівня 3).
+   Статус: verified (verifier-pg7m8, 2026-10-31, reports/verify/pg7m8.md). 24 задачі: по 8 на required-уроки g7m8l1, g7m8l2, g7m8l3 (3 рівня 1, 3 рівня 2, 2 рівня 3).
    Boss g7m8l4 не дублюється (за задачею write-math-pool-g7m8, матриця 2026-10-16.v2).
    Усі задачі — з підручника Мерзляка, Якіра «Геометрія. 7 клас» (2024; див. sources); умови й числа звірено
    2026-10-31 за текстом PDF і за відрендереними сторінками (рисунки 314, 317, 328, 329, 342).
@@ -10,10 +10,10 @@
 SLID.pool("math", {
   id: "pg7m8",
   section: "g7m8",
-  status: "draft",
-  meta: { author: "w-write-math-pool-g7m8", created: "2026-10-31", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "w-write-math-pool-g7m8", created: "2026-10-31", factcheck: "verifier-pg7m8", teacher: null },
   sources: [
-    { id: "mer7g", title: "Мерзляк А. Г., Якір М. С. Геометрія : підручник для 7 класу закладів загальної середньої освіти. — Харків : Гімназія, 2024 (наказ МОН № 124 від 05.02.2024)", url: "https://file.4book.org/images/shcoolbook_ua/7/7_geom_m_2024.pdf" }
+    { id: "mer7g", title: "Мерзляк А. Г., Якір М. С. Геометрія : підручник для 7 класу закладів загальної середньої освіти. — Харків : Гімназія, 2024 (наказ МОН № 124 від 05.02.2024); PDF — дзеркало 4book.org", url: "https://file.4book.org/images/shcoolbook_ua/7/7_geom_m_2024.pdf" }
   ],
   items: [
     /* ───────────── Урок 1. Коло і круг ───────────── */
