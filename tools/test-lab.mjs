@@ -62,5 +62,48 @@ for (const kind of Object.keys(L.KINDS)) { const sp = { kind, params: { a: { min
 { const sp = { kind: "plane", view: [0, 6, 0, 120], grid: [1, 20], h: 240, fns: [{ y: "15*x" }] }, r = L.KINDS.plane.render(sp, L.makeEnv(sp, {}), {}); eq((r.body.match(/stroke="var\(--line\)"/g) || []).length, 7 + 7, "plane: окремий крок сітки по осях"); }
 { const tx = (a, b, st) => { const sp = { kind: "column", op: ":", a: String(a), b: String(b), params: { s: { min: 0, max: 5, start: st } }, step: "s" }; const r = L.KINDS.column.render(sp, L.makeEnv(sp, { s: st }), {}); return [[...r.body.matchAll(/>([0-9−]+)<\/text>/g)].map(m => m[1]).join(""), r.h]; };
   eq(tx(601, 3, 3)[0], "6013200−61", "ділення 601 : 3 = 200 (ост. 1): без «− 0»"); eq(tx(984, 8, 1)[1], tx(984, 8, 3)[1], "ділення: висота не залежить від кроку"); }
+
+// формули $…$ у підписах SVG (engine-math-render-tex-gaps): <text> не рендерить HTML, тож малюємо підмножину TeX
+{ const txt = s => L.svgTex(s).replace(/<[^>]*>/g, ""), IT = 'style="font-style:italic;font-family:var(--mathf)"';
+  eq(L.svgTex("$P$"), `<tspan ${IT}>P</tspan>`, "svgTex: точка курсивом, без $");
+  eq(txt("$x=2$"), "x = 2", "svgTex: бінарне «=» з тонкими пробілами");
+  eq(txt("$x_1$") + " " + txt("$a_5$") + " " + txt("$l_2$"), "x₁ a₅ l₂", "svgTex: цифрові індекси — Unicode");
+  eq(txt("$(1;\\,-4)$"), "(1; −4)", "svgTex: \\, і унарний мінус (dg10)");
+  eq(txt("$(0; 1)$"), "(0; 1)", "svgTex: пробіл після ; зберігається");
+  eq(txt("$\\Delta x$"), "Δx", "svgTex: \\Delta і пробіл, що завершує команду");
+  eq(txt("$M(-0{,}6;\\,0{,}8)$"), "M(−0,6; 0,8)", "svgTex: {,} — десяткова кома");
+  eq(txt("$a^{n}$") + " " + txt("$x^2$") + " " + txt("$x^{-3}$"), "aⁿ x² x⁻³", "svgTex: степені — Unicode");
+  eq(L.svgTex("$x_{AB}$").includes('dy="3"') && L.svgTex("$x_{AB}$").includes('font-size="9"'), true, "svgTex: індекс поза Unicode — tspan зі зсувом");
+  eq(txt("$x_{AB} + 1$"), "xAB + 1", "svgTex: після зсунутого індексу текст повертається на базову лінію");
+  eq(/dy="-3"/.test(L.svgTex("$x_{AB} + 1$")), true, "svgTex: зворотний зсув після індексу");
+  eq(txt("$+d$") + " " + txt("$-x$"), "+d −x", "svgTex: унарні знаки без пробілів");
+  eq(L.svgTex("$a<b$").includes("&lt;"), true, "svgTex: < екрановано для SVG");
+  eq(txt("сума $5/a$ кг"), "сума 5/a кг", "svgTex: текст навколо формули не змінюється");
+  eq(L.svgTex("A(0; 1)"), "A(0; 1)", "svgTex: рядок без $ — як є");
+  eq(txt("$90^\\circ$"), "90°", "svgTex: градус");
+  eq(L.svgTexIssues("$P$").length + L.svgTexIssues("$\\Delta x$").length + L.svgTexIssues("$(1;\\,-4)$").length, 0, "svgTexIssues: підмножина — без зауважень");
+  eq(L.svgTexIssues("$\\sqrt{2}$").map(i => i.level), ["error"], "svgTexIssues: \\sqrt — помилка");
+  eq(L.svgTexIssues("${a}^2").map(i => i.level), ["warn"], "svgTexIssues: непарний $ — попередження");
+  eq(L.svgTexIssues("A\\,B").map(i => i.level), ["error"], "svgTexIssues: TeX поза $…$ — помилка");
+  eq(L.fill("$x = 0{,}5$, {a|0}", { a: 3 }), "$x = 0,5$, 3", "fill: {,} — не шаблон");
+  eq(L.validate({ kind: "plane", params: { a: { min: 0, max: 2, start: 1 } }, points: { P: { x: "a", y: "1", label: "$0{,}5$" } } }, {}), [], "validate: {,} у підписі не ламає шаблон");
+  const sp = { kind: "plane", params: { a: { min: 0, max: 2, start: 1 } }, points: { P: { x: "a", y: "1", label: "$x_1={a|0}$" } }, segs: [{ a: "P", b: [0, 0], label: "$\\Delta y$" }], fns: [{ y: "x", label: "$l_1$" }] };
+  const body = L.KINDS.plane.render(sp, L.makeEnv(sp, L.startState(sp)), {}).body, texts = [...body.matchAll(/<text[^>]*>([\s\S]*?)<\/text>/g)].map(m => m[1].replace(/<[^>]*>/g, ""));
+  eq(texts.filter(x => /[$\\]/.test(x)), [], "plane: у підписах SVG немає сирого $ чи \\");
+  eq(["x₁ = 1", "Δy", "l₁"].every(x => texts.includes(x)), true, "plane: підписи точки, відрізка й графіка відрендерено");
+  eq(L.svgLabels(sp).map(x => x[0]), ["fns.0.label", "segs.0.label", "points.P.label"], "svgLabels: шляхи підписів");
+}
+// усі моделі контенту: жоден підпис SVG не показує сирий TeX, якщо validate про нього не попереджає (властивість, не лічильник)
+{ const { loadContent } = await import("./lib.mjs"); const { subjects } = loadContent(); const specs = [];
+  const walk = o => { if (!o || typeof o !== "object") return; if (Array.isArray(o)) return o.forEach(walk); if (o.lab && L.KINDS[o.lab.kind]) specs.push(o.lab); for (const v of Object.values(o)) if (v && typeof v === "object" && v !== o.lab) walk(v); };
+  for (const c of subjects) { walk(c.sections); walk(c.diags || []); walk(c.pools || []); }
+  let raw = 0, withTex = 0;
+  for (const sp of specs) { if (L.svgLabels(sp).some(([, x]) => x.includes("$"))) withTex++;
+    const known = L.svgLabels(sp).some(([, x]) => L.svgTexIssues(x).length);
+    let body = ""; try { const K = L.KINDS[sp.kind]; body = K.render(sp, L.makeEnv(sp, L.startState(sp)), K.view ? K.view() : {}).body; } catch { continue; }
+    const bad = [...body.matchAll(/<text[^>]*>([\s\S]*?)<\/text>/g)].map(m => m[1].replace(/<[^>]*>/g, "")).filter(x => /\$|\\[A-Za-z,;]/.test(x));
+    if (bad.length && !known) { raw++; if (raw <= 5) console.log(`  сирий TeX у SVG: ${bad.join(" | ")}`); } }
+  eq(raw, 0, `контент: моделей із сирим TeX у підписах SVG (з ${specs.length}, з формулами в підписах — ${withTex})`);
+  eq(specs.length > 0 && withTex > 0, true, "контент: перевірка не порожня"); }
 console.log(`${n - fails}/${n} тестів лабораторії пройдено`);
 process.exit(fails ? 1 : 0);

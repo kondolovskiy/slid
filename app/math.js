@@ -7,7 +7,8 @@ const FN = new Set(["log","ln","sin","cos","tan","lim","int"]);
 const SUBDIGIT = /[₀₁₂₃₄₅₆₇₈₉]/;
 const TOK = /\\[A-Za-z]+|\\[,;:! ]|\\\\|"[^"]*"|\((?:[^()]|\([^()]*\))*\)|\d{1,3}(?:[  ]\d{3})+(?:,\d+)?(?!\d)|\d+(?:,\d+)?|[a-zA-Z]|[₀₁₂₃₄₅₆₇₈₉]|[{}_[\]&]|\?|~|\/|\*|:|\^|<|>|=|≈|≠|≤|≥|\+|-|\s+|[^\s]/g;
 
-function tokenize(src) { return String(src).match(TOK) || []; }
+// {,} — TeX-запис десяткової коми (0{,}6): у нас кома й так не додає пробілу, тож це просто «,»
+function tokenize(src) { return String(src).replace(/\{,\}/g, ",").match(TOK) || []; }
 function isAtomToken(t) { return !!t && (/^\(.*\)$/.test(t) || /^\d/.test(t) || /^[a-zA-Z?]$/.test(t) || SUBDIGIT.test(t)); }
 function atomHTML(t, inFrac) {
   if (/^\(.*\)$/.test(t)) return inFrac ? mathHTML(t.slice(1, -1)) : `(${mathHTML(t.slice(1, -1))})`;

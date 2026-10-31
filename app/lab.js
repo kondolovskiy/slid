@@ -222,6 +222,7 @@ function poly(cs, v = "x") {
 /** Шаблон із вставками {вираз|формат}: формат — кількість знаків, c (коефіцієнт), s (доданок зі знаком), deg, pi. */
 function fill(tpl, env, names) {
   return String(tpl).replace(/\{([^{}|]+)(?:\|([a-z0-9]+))?\}/g, (_, ex, f) => {
+    if (ex === ",") return ",";   // {,} — TeX-кома в десятковому дробі, не шаблон
     if (f === "poly") { try { return poly(ex.split(";").map(x => compile(x.trim(), names)(env))); } catch (e) { return "?"; } }
     let v; try { v = compile(ex.trim(), names)(env); } catch (e) { return "?"; }
     if (f === "c") return v === 1 ? "" : v === -1 ? "-" : num(v).replace("−", "-");
@@ -238,7 +239,68 @@ function fill(tpl, env, names) {
 const COL = { accent: "var(--accent)", blue: "#3B82C4", green: "var(--ok)", red: "var(--bad)", gold: "var(--gold)", purple: "#8B5CC4", muted: "var(--muted)", ink: "var(--ink)" };
 const SERIES = ["accent", "blue", "green", "purple", "gold"];
 const col = (c, i = 0) => COL[c] || c || COL[SERIES[i % SERIES.length]];
-const t = (x, y, s, o = {}) => `<text x="${x.toFixed(1)}" y="${y.toFixed(1)}" font-size="${o.size || 12}" ${o.anchor ? `text-anchor="${o.anchor}"` : ""} fill="${o.fill || "var(--ink)"}" ${o.bold ? 'font-weight="700"' : ""} ${o.italic ? 'font-style="italic" font-family="var(--mathf)"' : ""} paint-order="stroke" stroke="var(--surface)" stroke-width="3">${s}</text>`;
+/* ---- Формули $…$ у підписах SVG: <text> не вміщує HTML із app/math.js, тож малюємо безпечну підмножину TeX
+   (літери курсивом, числа, «;», «−», індекси _ і ^, \, \; і символи з SVG_SYM). Решта команд — помилка валідатора (svgTexIssues). */
+const SVG_SYM = { cdot: "·", times: "×", pm: "±", infty: "∞", ge: "≥", geq: "≥", le: "≤", leq: "≤", ne: "≠", neq: "≠", to: "→", parallel: "∥", perp: "⊥", angle: "∠", triangle: "△", Delta: "Δ", alpha: "α", pi: "π", circ: "°", in: "∈", ldots: "…", dots: "…" };
+const SVG_SPACE = { ",": " ", ";": " ", ":": " ", "!": "", " ": " ", quad: " ", qquad: "  " };
+const SVG_BIN = { "=": "=", "+": "+", "-": "−", "−": "−", "*": "·", ":": ":", "<": "&lt;", ">": "&gt;", "≈": "≈", "≤": "≤", "≥": "≥", "≠": "≠", "·": "·", "×": "×", "±": "±" };
+const SVG_SUP = { 0: "⁰", 1: "¹", 2: "²", 3: "³", 4: "⁴", 5: "⁵", 6: "⁶", 7: "⁷", 8: "⁸", 9: "⁹", "+": "⁺", "-": "⁻", "−": "⁻", "=": "⁼", "(": "⁽", ")": "⁾", n: "ⁿ", i: "ⁱ" };
+const SVG_SUB = { 0: "₀", 1: "₁", 2: "₂", 3: "₃", 4: "₄", 5: "₅", 6: "₆", 7: "₇", 8: "₈", 9: "₉", "+": "₊", "-": "₋", "−": "₋", "=": "₌", "(": "₍", ")": "₎" };
+const SVG_BIN_CMD = new Set(["cdot", "times", "pm", "ge", "geq", "le", "leq", "ne", "neq", "to", "parallel", "perp", "in"]);
+const SVG_TOK = /\\[A-Za-z]+|\\[,;:! ]|\{,\}|[_^](?:\{[^{}]*\}|\\[A-Za-z]+|[^\s{}])|\s+|[\s\S]/gu;
+const xmlEsc = s => String(s).replace(/[&<>]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
+function svgMath(src, size = 12) {
+  const out = []; let operand = false, reset = 0, pend = "";
+  const sh = Math.round(size * 0.35);
+  // pend — пробіл, що чекає наступного знака (у кінці формули й перед бінарною операцією не потрібен)
+  const IT = ' style="font-style:italic;font-family:var(--mathf)"';
+  const emit = (txt, attrs = "") => { if (!txt) return;
+    if (pend && out.length) { if (attrs && !reset) out.push(pend); else txt = pend + txt; } pend = "";
+    if (reset) { attrs += ` dy="${reset}"`; reset = 0; }
+    const last = out.length - 1;   // літери підряд (AB, PA) — одним курсивним tspan
+    if (attrs === IT && last >= 0 && out[last].startsWith(`<tspan${IT}>`)) { out[last] = out[last].slice(0, -8) + txt + "</tspan>"; return; }
+    out.push(attrs ? `<tspan${attrs}>${txt}</tspan>` : txt); };
+  const space = s => { if (!pend) pend = s; };
+  const binary = op => { pend = ""; space("\u2009"); emit(op); pend = "\u2009"; operand = false; };
+  let prev = "";
+  for (const tk of String(src).match(SVG_TOK) || []) {
+    const afterCmd = /^\\[A-Za-z]+$/.test(prev); prev = tk;
+    if (/^\s+$/.test(tk)) { if (!afterCmd) space(" "); continue; }   // як у TeX: пробіл після \Delta лише завершує команду
+    if (tk === "~") { space(" "); continue; }
+    if (tk === "{,}") { emit(","); continue; }
+    if (tk === "{" || tk === "}") continue;
+    if (tk[0] === "_" || tk[0] === "^") {
+      let body = tk.slice(1).replace(/^\{|\}$/g, ""); const cmd = body.match(/^\\([A-Za-z]+)$/); if (cmd && SVG_SYM[cmd[1]]) body = SVG_SYM[cmd[1]];
+      const map = tk[0] === "^" ? SVG_SUP : SVG_SUB, chars = [...body];
+      if (tk[0] === "^" && body === "°") emit("°");
+      else if (chars.length && chars.every(ch => map[ch])) emit(chars.map(ch => map[ch]).join(""));
+      else { const d = tk[0] === "^" ? -sh : Math.round(sh * 0.7); emit(svgMath(body, size * 0.75), ` font-size="${Math.round(size * 0.75)}" dy="${d}"`); reset = -d; }
+      operand = true; continue;
+    }
+    if (tk[0] === "\\") {
+      const name = tk.slice(1);
+      if (name in SVG_SPACE) { space(SVG_SPACE[name]); continue; }
+      if (SVG_SYM[name]) { if (SVG_BIN_CMD.has(name)) binary(SVG_SYM[name]); else { emit(SVG_SYM[name]); operand = true; } continue; }
+      emit(xmlEsc(tk)); operand = false; continue;   // непідтримана команда лишається видимою; validate.mjs не пропускає її в контент
+    }
+    if (/^[A-Za-z]$/.test(tk)) { emit(tk, IT); operand = true; continue; }
+    if (SVG_BIN[tk]) { if ((tk === "-" || tk === "−" || tk === "+") && !operand) emit(SVG_BIN[tk]); else binary(SVG_BIN[tk]); continue; }   // унарний знак — без пробілів
+    emit(xmlEsc(tk)); operand = /[\p{L}\p{N})'′°%]/u.test(tk);
+  }
+  return out.join("");
+}
+/** Підпис SVG: формули $…$ → текст і <tspan>; рядок без $ повертається як є. */
+const svgTex = (s, size = 12) => String(s).replace(/\$([^$]+)\$/g, (_, m) => svgMath(m, size));
+const SVG_TEX_OK = new Set([...Object.keys(SVG_SYM), ...Object.keys(SVG_SPACE)]);
+/** Що в підписі SVG не буде відмальовано: непарні $, команди поза підмножиною. Для tools/validate.mjs. */
+function svgTexIssues(s) {
+  const str = String(s), issues = [];
+  if (((str.match(/\$/g) || []).length) % 2) issues.push({ level: "warn", msg: `непарна кількість $ — формула не закрита й покажеться сирим текстом${/\$\{/.test(str) ? " (зайвий $ перед шаблоном {…}?)" : ""}` });
+  for (const m of str.matchAll(/\$([^$]+)\$/g)) for (const c of m[1].matchAll(/\\([A-Za-z]+|[,;:! ])/g)) if (!SVG_TEX_OK.has(c[1])) issues.push({ level: "error", msg: `формула «${m[0]}» містить \\${c[1]} — у підписах SVG лабораторії вона не малюється (підтримано: літери, числа, _ ^, ${[...SVG_TEX_OK].filter(k => /^[A-Za-z]+$/.test(k)).map(k => "\\" + k).join(" ")})` });
+  for (const m of str.replace(/\$[^$]+\$/g, "").matchAll(/\\(?:[A-Za-z]+|[,;:!])/g)) issues.push({ level: "error", msg: `«${m[0]}» поза $…$ — TeX покажеться сирим текстом` });
+  return issues;
+}
+const t = (x, y, s, o = {}) => `<text x="${x.toFixed(1)}" y="${y.toFixed(1)}" font-size="${o.size || 12}" ${o.anchor ? `text-anchor="${o.anchor}"` : ""} fill="${o.fill || "var(--ink)"}" ${o.bold ? 'font-weight="700"' : ""} ${o.italic ? 'font-style="italic" font-family="var(--mathf)"' : ""} paint-order="stroke" stroke="var(--surface)" stroke-width="3">${svgTex(s, o.size || 12)}</text>`;
 const safe = f => { try { const v = f(); return typeof v === "number" ? v : v; } catch (e) { return NaN; } };
 
 /* ================= Види інструментів =================
@@ -685,6 +747,18 @@ function mount(host, spec, opt = {}) {
 /* ================= Перевірка ================= */
 function check(spec, state, goal) { try { return !!compile(String(goal), fnNames(spec))(makeEnv(spec, state)); } catch (e) { return false; } }
 
+/** Рядки контенту, що малюються в SVG через t() (а не через app/math.js): [шлях, рядок]. tplOnly — лише ті, що проходять fill(). */
+function svgLabels(spec, tplOnly = false) {
+  const out = [], add = (path, v) => { if (typeof v === "string") out.push([path, v]); };
+  (spec.fns || []).forEach((f, i) => add(`fns.${i}.label`, f.label)); (spec.segs || []).forEach((x, i) => add(`segs.${i}.label`, x.label));
+  (spec.angles || []).forEach((x, i) => add(`angles.${i}.label`, x.label)); (spec.texts || []).forEach((x, i) => add(`texts.${i}.t`, x.t));
+  for (const [id, p] of Object.entries(spec.points || {})) add(`points.${id}.label`, p.label);
+  (spec.jumps || []).forEach((x, i) => add(`jumps.${i}.label`, x.label)); (spec.items || []).forEach((x, i) => add(`items.${i}.label`, x.label));
+  add("aLabel", spec.aLabel); add("bLabel", spec.bLabel); (spec.splitLabels || []).forEach((x, i) => add(`splitLabels.${i}`, x)); (spec.splitYLabels || []).forEach((x, i) => add(`splitYLabels.${i}`, x));
+  if (!tplOnly) { (spec.bars || []).forEach((x, i) => add(`bars.${i}.label`, x.label)); (spec.marks || []).forEach((x, i) => add(`marks.${i}.label`, x.label)); add("xname", spec.xname); add("yname", spec.yname); }
+  return out;
+}
+
 /** Валідація для tools/validate.mjs: повертає список помилок українською. graded — чи це екран type:"lab". */
 function validate(spec, screen = {}) {
   const errs = [], graded = screen.type === "lab";
@@ -705,9 +779,8 @@ function validate(spec, screen = {}) {
   for (const [p, ex] of exprs) { if (["y2"].includes(p.split(".").pop()) && ["top", "bottom"].includes(ex)) continue; try { compile(ex, names); } catch (e) { errs.push(`${p}: ${e.message}`); } }
   for (const [id, p] of Object.entries(spec.points || {})) for (const ex of pointExprs(id, p)) try { compile(ex, names); } catch (e) { errs.push(`points.${id}: ${e.message}`); }
   for (const [id, ex] of Object.entries(spec.let || {})) try { compile(ex, names); } catch (e) { errs.push(`let.${id}: ${e.message}`); }
-  const tplExprs = s => [...String(s).matchAll(/\{([^{}|]+)(?:\|([a-z0-9]+))?\}/g)].flatMap(m => m[2] === "poly" ? m[1].split(";") : [m[1]]).map(x => x.trim());
-  const tpls = [].concat(spec.show || [], (spec.fns || []).map(f => f.label), (spec.segs || []).map(s => s.label), (spec.angles || []).map(a => a.label), (spec.texts || []).map(x => x.t),
-    Object.values(spec.points || {}).map(p => p.label), (spec.jumps || []).map(j => j.label), (spec.items || []).map(i => i.label), spec.aLabel, spec.bLabel, ...(spec.splitLabels || []), ...(spec.splitYLabels || [])).filter(x => typeof x === "string");
+  const tplExprs = s => [...String(s).matchAll(/\{([^{}|]+)(?:\|([a-z0-9]+))?\}/g)].filter(m => m[1] !== ",").flatMap(m => m[2] === "poly" ? m[1].split(";") : [m[1]]).map(x => x.trim());
+  const tpls = [].concat(spec.show || [], svgLabels(spec, true).map(x => x[1])).filter(x => typeof x === "string");
   for (const s of tpls) for (const ex of tplExprs(s)) try { compile(ex, names); } catch (e) { errs.push(`шаблон «${s}»: ${e.message}`); }
   if (errs.length) return errs;
   const st0 = startState(spec), env0 = makeEnv(spec, st0);
@@ -729,5 +802,5 @@ function validate(spec, screen = {}) {
   return errs;
 }
 
-G.SLID_LAB = { KINDS, compile, makeEnv, startState, paramList, fill, num, check, validate, mount, FN };
+G.SLID_LAB = { KINDS, compile, makeEnv, startState, paramList, fill, num, check, validate, mount, FN, svgTex, svgTexIssues, svgLabels };
 })();
