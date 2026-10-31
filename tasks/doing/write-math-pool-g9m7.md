@@ -1,24 +1,26 @@
 ---
-id: write-math-pool-g9m5
+claimed_from: todo
+claimed_at: 2026-10-31T13:42:24.693Z
+id: write-math-pool-g9m7
 type: write-pool
 subject: math
 grade: 9
 status: todo
-claimed_by:
+claimed_by: agent-write-math-pool-g9m7
 created: 2026-10-15
 depends_on: [curate-math-personalization-map, engine-math-pool-answer-formats]
 ---
-# Зібрати пул «Алгебра: прогресії» (9 клас, g9m5)
+# Зібрати пул «Алгебра: ймовірність і статистика» (9 клас, g9m7)
 
 ## Результат
 
-Один файл `content/math/pool-g9-g9m5.js`: `SLID.pool("math", { id: "pg9m5", section: "g9m5", status: "draft", sources: [...], items: [...] })`. Клас визначається розділом. Зразки — content/math/pool-g6-*.js і tasks/done/write-math-pool-g6m*.md; чинний контракт — CONTENT_SCHEMA §10.
+Один файл `content/math/pool-g9-g9m7.js`: `SLID.pool("math", { id: "pg9m7", section: "g9m7", status: "draft", sources: [...], items: [...] })`. Клас визначається розділом. Зразки — content/math/pool-g6-*.js і tasks/done/write-math-pool-g6m*.md; чинний контракт — CONTENT_SCHEMA §10.
 
 ## Уроки для покриття
 
-- `g9m5l1` — Ряд за правилом **[required]**
-- `g9m5l2` — Рівні кроки **[required]**
-- `g9m5l3` — Рівні множники **[required]**
+- `g9m7l1` — Скільки варіантів? **[required]**
+- `g9m7l2` — Який шанс? **[required]**
+- `g9m7l3` — Середнє й діаграми **[required]**
 
 Усього 3 тематичних уроків. Boss не потребує окремого дубльованого пулу. Для m4s1 це повноцінний окремий пул навіть без запису в plan.js.
 
@@ -38,7 +40,7 @@ depends_on: [curate-math-personalization-map, engine-math-pool-answer-formats]
 ## Готово, коли
 
 - [ ] Усі required-уроки з узгодженої матриці мають мінімальне покриття й три рівні; optional/pending перелічено окремо без хибної позначки виконання; таблиця lesson → кількість/рівні/джерела й винятки є в нотатках.
-- [ ] `node tools/validate.mjs --pool pg9m5` — 0 помилок; усі джерела відкрито, числа звірено, відповіді й steps перевірено.
+- [ ] `node tools/validate.mjs --pool pg9m7` — 0 помилок; усі джерела відкрито, числа звірено, відповіді й steps перевірено.
 - [ ] Змінено лише свій файл пулу, цю задачу та дописано inbox; status draft. Оркестратор запускає build.
 - [ ] Задача через claim.mjs передана в review; незалежне розв’язання й звірка джерел — verify-math-personalization-g9; браузерне приймання — qa-math-personalization-g9.
 
@@ -57,8 +59,8 @@ depends_on: [curate-math-personalization-map, engine-math-pool-answer-formats]
 
 | Урок | Scope | Обов’язкові вправи | Формати / джерело |
 |---|---|---|---|
-| g9m5l1 | required | 6–8 (3/2/1 за рівнями мінімум) | number; a9:143–152 |
-| g9m5l2 | required | 6–8 (3/2/1 за рівнями мінімум) | number; a9:153–166 |
-| g9m5l3 | required | 6–8 (3/2/1 за рівнями мінімум) | number; a9:167–186 |
+| g9m7l1 | required | 6–8 (3/2/1 за рівнями мінімум) | number; a9:192–197 |
+| g9m7l2 | required | 6–8 (3/2/1 за рівнями мінімум) | number; a9:198–222 |
+| g9m7l3 | required | 6–8 (3/2/1 за рівнями мінімум) | number; a9:223–238 |
 
 Покриття: **3 required-уроків, 18–24 вправ**. Optional/pending не включати у файл пулу цієї версії; boss не дублювати.

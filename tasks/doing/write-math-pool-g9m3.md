@@ -1,25 +1,27 @@
 ---
-id: write-math-pool-g9m2
+claimed_from: todo
+claimed_at: 2026-10-31T13:42:24.512Z
+id: write-math-pool-g9m3
 type: write-pool
 subject: math
 grade: 9
 status: todo
-claimed_by:
+claimed_by: agent-write-math-pool-g9m3
 created: 2026-10-15
 depends_on: [curate-math-personalization-map, engine-math-pool-answer-formats]
 ---
-# Зібрати пул «Геометрія: координати і вектори» (9 клас, g9m2)
+# Зібрати пул «Алгебра: квадратична функція» (9 клас, g9m3)
 
 ## Результат
 
-Один файл `content/math/pool-g9-g9m2.js`: `SLID.pool("math", { id: "pg9m2", section: "g9m2", status: "draft", sources: [...], items: [...] })`. Клас визначається розділом. Зразки — content/math/pool-g6-*.js і tasks/done/write-math-pool-g6m*.md; чинний контракт — CONTENT_SCHEMA §10.
+Один файл `content/math/pool-g9-g9m3.js`: `SLID.pool("math", { id: "pg9m3", section: "g9m3", status: "draft", sources: [...], items: [...] })`. Клас визначається розділом. Зразки — content/math/pool-g6-*.js і tasks/done/write-math-pool-g6m*.md; чинний контракт — CONTENT_SCHEMA §10.
 
 ## Уроки для покриття
 
-- `g9m2l1` — Відстань на карті **[required]**
-- `g9m2l2` — Коло й пряма числами **[required]**
-- `g9m2l3` — Стрілка з координатами **[required]**
-- `g9m2l4` — Додати, розтягнути, помножити **[required]**
+- `g9m3l1` — Що розкаже графік **[required]**
+- `g9m3l2` — Зсуви й розтяги **[required]**
+- `g9m3l3` — Вершина й вісь **[required]**
+- `g9m3l4` — Де графік вище нуля **[required]**
 
 Усього 4 тематичних уроків. Boss не потребує окремого дубльованого пулу. Для m4s1 це повноцінний окремий пул навіть без запису в plan.js.
 
@@ -39,7 +41,7 @@ depends_on: [curate-math-personalization-map, engine-math-pool-answer-formats]
 ## Готово, коли
 
 - [ ] Усі required-уроки з узгодженої матриці мають мінімальне покриття й три рівні; optional/pending перелічено окремо без хибної позначки виконання; таблиця lesson → кількість/рівні/джерела й винятки є в нотатках.
-- [ ] `node tools/validate.mjs --pool pg9m2` — 0 помилок; усі джерела відкрито, числа звірено, відповіді й steps перевірено.
+- [ ] `node tools/validate.mjs --pool pg9m3` — 0 помилок; усі джерела відкрито, числа звірено, відповіді й steps перевірено.
 - [ ] Змінено лише свій файл пулу, цю задачу та дописано inbox; status draft. Оркестратор запускає build.
 - [ ] Задача через claim.mjs передана в review; незалежне розв’язання й звірка джерел — verify-math-personalization-g9; браузерне приймання — qa-math-personalization-g9.
 
@@ -58,9 +60,9 @@ depends_on: [curate-math-personalization-map, engine-math-pool-answer-formats]
 
 | Урок | Scope | Обов’язкові вправи | Формати / джерело |
 |---|---|---|---|
-| g9m2l1 | required | 6–8 (3/2/1 за рівнями мінімум) | number, coordinates2, expression, exactRoot; g9:102–109 |
-| g9m2l2 | required | 6–8 (3/2/1 за рівнями мінімум) | number, coordinates2, expression, exactRoot; g9:110–129 |
-| g9m2l3 | required | 6–8 (3/2/1 за рівнями мінімум) | number, coordinates2, expression, exactRoot; g9:138–152 |
-| g9m2l4 | required | 6–8 (3/2/1 за рівнями мінімум) | number, coordinates2, expression, exactRoot; g9:153–186 |
+| g9m3l1 | required | 6–8 (3/2/1 за рівнями мінімум) | number, intervalSet, expression; a9:63–82 |
+| g9m3l2 | required | 6–8 (3/2/1 за рівнями мінімум) | number, intervalSet, expression; a9:83–96,107 |
+| g9m3l3 | required | 6–8 (3/2/1 за рівнями мінімум) | number, intervalSet, expression; a9:97–106 |
+| g9m3l4 | required | 6–8 (3/2/1 за рівнями мінімум) | number, intervalSet, expression; a9:111–118 |
 
 Покриття: **4 required-уроків, 24–32 вправ**. Optional/pending не включати у файл пулу цієї версії; boss не дублювати.

@@ -1,10 +1,12 @@
 ---
+claimed_from: todo
+claimed_at: 2026-10-31T13:42:24.388Z
 id: write-math-diag-g9
 type: write-diag
 subject: math
 grade: 9
 status: todo
-claimed_by:
+claimed_by: agent-write-math-diag-g9
 created: 2026-10-15
 depends_on: [curate-math-personalization-map]
 ---
