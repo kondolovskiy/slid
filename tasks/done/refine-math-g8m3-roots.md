@@ -3,7 +3,7 @@ id: refine-math-g8m3-roots
 type: refine
 subject: math
 grade: 8
-status: review
+status: done
 claimed_by: writer-refine-g8m3
 created: 2026-10-31
 depends_on: [verify-math-personalization-g8]

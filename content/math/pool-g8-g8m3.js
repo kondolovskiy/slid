@@ -1,6 +1,6 @@
 /* Слід · Математика, 8 клас — пул задач для тренування до розділу «Алгебра: квадратні корені» (g8m3)
-   Статус: draft (автор agent-write-math-pool-g8m3, 2026-10-31; верифікатор verifier-pg8m3, 2026-10-31, reports/verify/pg8m3.md;
-   2026-10-31 refine-math-g8m3-roots: c02 №472(2) замінено на c09 №470(1), list у g8m3l3 — потребує повторної верифікації). 32 задачі: по 8 на кожен required-урок
+   Статус: verified (автор agent-write-math-pool-g8m3, 2026-10-31; верифікатор verifier-pg8m3, 2026-10-31, reports/verify/pg8m3.md;
+   2026-10-31 refine-math-g8m3-roots: c02 №472(2) замінено на c09 №470(1), list у g8m3l3; повторно верифіковано 2026-10-31, reports/verify/refine-g8m3.md). 32 задачі: по 8 на кожен required-урок
    g8m3l1–g8m3l4 (boss g8m3l5 без задач). Матриця покриття 2026-10-16.v2.
    Усі задачі — з підручника Мерзляка, Якіра «Алгебра. 8 клас» (2025), § 2, п. 12, 14, 15, 16, 17;
    умови й числа звірено за відрендереними сторінками PDF (корені й показники — лише за зображенням,
@@ -10,7 +10,7 @@
 SLID.pool("math", {
   id: "pg8m3",
   section: "g8m3",
-  status: "draft",
+  status: "verified",
   meta: { author: "claude-opus", created: "2026-10-31", factcheck: "verifier-pg8m3", teacher: null },
   sources: [
     { id: "a8", title: "Мерзляк А. Г., Якір М. С. Алгебра: підручник для 8 класу закладів загальної середньої освіти. — Харків: Гімназія, 2025 (§ 2, п. 12, 14–17)", url: "https://file.4book.org/images/shcoolbook_ua/8/8_a_m_2025.pdf" }

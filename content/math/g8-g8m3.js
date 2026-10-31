@@ -1,5 +1,5 @@
 /* Слід · Математика, 8 клас — «Алгебра: квадратні корені»
-   Статус уроків: g8m3l1, g8m3l3 — draft (дописано 2026-10-31, refine-math-g8m3-roots); решта verified. 5 уроків (4 + boss).
+   Статус уроків: verified (g8m3l1, g8m3l3 дописано 2026-10-31, refine-math-g8m3-roots; повторна верифікація reports/verify/refine-g8m3.md). 5 уроків (4 + boss).
    Інтерактив: plane y=sqrt(x) / a*sqrt(x); numline для √n; explore/lab (docs/CONTENT_SCHEMA.md §8).
    Перевірка: node tools/validate.mjs --section g8m3 && node tools/stats.mjs --subject math
    Схема й правила: docs/CONTENT_SCHEMA.md, style/, D-019 */
@@ -22,7 +22,7 @@ SLID.section("math", {
       title: "Сторона за площею",
       short: "Корінь",
       icon: "target",
-      status: "draft",
+      status: "verified",
       why: "Квадратна плитка 36 м² — яка сторона? Це і є квадратний корінь.",
       screens: [
         {
@@ -370,7 +370,7 @@ SLID.section("math", {
       title: "Корінь із добутку",
       short: "Властивості",
       icon: "bolt",
-      status: "draft",
+      status: "verified",
       why: "Щоб спрощувати вирази з коренями: виносити множник і не плутати суму з добутком.",
       screens: [
         {
