@@ -182,6 +182,7 @@ p{margin:0 0 12px}
 .combo.pop{animation:pop .4s ease}
 @keyframes pop{50%{transform:scale(1.35)}}
 .screen{animation:in .3s ease both;display:grid;gap:4px}
+.screen:focus{outline:none}   /* запасна ціль фокуса (focusAction), не елемент керування */
 .screen h1,.screen h2{margin:6px 0 10px}
 .lead{font-size:18px}
 figure{margin:6px 0 14px;background:var(--surface);border-radius:16px;overflow:hidden;box-shadow:var(--shadow)}
@@ -455,7 +456,7 @@ button.nowrow{cursor:pointer;width:100%} button.nowrow:hover{background:var(--ch
 .planok svg{flex:none;width:20px;height:20px;color:var(--ok);margin-top:2px} .planok.soft{background:var(--gold-soft)} .planok.soft svg{color:var(--gold)}
 .knowntag{font:700 11px var(--body);color:var(--ok);background:var(--ok-soft);border-radius:99px;padding:2px 8px}
 .numbox.wide input{width:7em}
-.anskeys{display:flex;gap:8px;justify-content:center;margin-top:10px}
+.anskeys{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:10px} .anskeys.sym button{min-width:44px;padding:9px 10px}
 .anskeys button{all:unset;box-sizing:border-box;cursor:pointer;min-width:52px;text-align:center;padding:9px 14px;border-radius:12px;background:var(--surface);border:1.5px solid var(--line);font:600 16px var(--body)}
 .anskeys button:focus-visible{outline:3px solid var(--accent)} .anskeys button:active{background:var(--chip)} .anskeys button[disabled]{opacity:.4}
 .srcnote{font-size:12px;color:var(--muted);margin-top:10px}
@@ -545,7 +546,11 @@ button.nowrow{cursor:pointer;width:100%} button.nowrow:hover{background:var(--ch
 <script src="content/hist/g9-g9s5.js"></script>
 <script src="content/math/plan.js"></script>
 <script src="content/math/diag-g4.js"></script>
+<script src="content/math/diag-g5.js"></script>
 <script src="content/math/diag-g6.js"></script>
+<script src="content/math/diag-g7.js"></script>
+<script src="content/math/diag-g8.js"></script>
+<script src="content/math/diag-g9.js"></script>
 <script src="content/math/g10-g10m1.js"></script>
 <script src="content/math/g10-g10m2.js"></script>
 <script src="content/math/g10-g10m3.js"></script>
@@ -598,12 +603,42 @@ button.nowrow{cursor:pointer;width:100%} button.nowrow:hover{background:var(--ch
 <script src="content/math/g9-g9m7.js"></script>
 <script src="content/math/pool-g4-g4m1.js"></script>
 <script src="content/math/pool-g4-g4m2.js"></script>
+<script src="content/math/pool-g4-g4m3.js"></script>
+<script src="content/math/pool-g4-g4m4.js"></script>
+<script src="content/math/pool-g4-g4m5.js"></script>
 <script src="content/math/pool-g4-m4s1.js"></script>
+<script src="content/math/pool-g5-ms0.js"></script>
+<script src="content/math/pool-g5-ms0b.js"></script>
+<script src="content/math/pool-g5-ms1.js"></script>
+<script src="content/math/pool-g5-ms2.js"></script>
+<script src="content/math/pool-g5-ms3.js"></script>
+<script src="content/math/pool-g5-ms4.js"></script>
 <script src="content/math/pool-g6-g6m1.js"></script>
 <script src="content/math/pool-g6-g6m2.js"></script>
 <script src="content/math/pool-g6-g6m3.js"></script>
 <script src="content/math/pool-g6-g6m4.js"></script>
 <script src="content/math/pool-g6-g6m5.js"></script>
+<script src="content/math/pool-g7-g7m1.js"></script>
+<script src="content/math/pool-g7-g7m2.js"></script>
+<script src="content/math/pool-g7-g7m3.js"></script>
+<script src="content/math/pool-g7-g7m4.js"></script>
+<script src="content/math/pool-g7-g7m5.js"></script>
+<script src="content/math/pool-g7-g7m6.js"></script>
+<script src="content/math/pool-g7-g7m7.js"></script>
+<script src="content/math/pool-g7-g7m8.js"></script>
+<script src="content/math/pool-g8-g8m1.js"></script>
+<script src="content/math/pool-g8-g8m2.js"></script>
+<script src="content/math/pool-g8-g8m3.js"></script>
+<script src="content/math/pool-g8-g8m4.js"></script>
+<script src="content/math/pool-g8-g8m5.js"></script>
+<script src="content/math/pool-g8-g8m6.js"></script>
+<script src="content/math/pool-g9-g9m1.js"></script>
+<script src="content/math/pool-g9-g9m2.js"></script>
+<script src="content/math/pool-g9-g9m3.js"></script>
+<script src="content/math/pool-g9-g9m4.js"></script>
+<script src="content/math/pool-g9-g9m5.js"></script>
+<script src="content/math/pool-g9-g9m6.js"></script>
+<script src="content/math/pool-g9-g9m7.js"></script>
 <script src="content/catalog.js"></script>
 <script src="app/lab.js"></script>
 <script src="app/learn.js"></script>

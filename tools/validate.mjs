@@ -104,6 +104,9 @@ function checkScreen(S, s, c, diag) {
   if (sentLong.length) W(S, `дуже довге речення (${words(sentLong[0]).length} слів): «${sentLong[0].slice(0, 60)}…»`);
 }
 
+// D-027: у кожному уроці предмета — хоча б одне справжнє зображення (img: фото, репродукція, документ).
+// Схеми svg/fig не зараховуються. "warn" — поки дороблюються чинні уроки; після доробки — "error".
+const IMG_REQUIRED = { hist: "warn" };
 for (const c of subjects) for (const sec of c.sections.filter(s => s.lessons)) {
   if (onlyDiag) continue;
   if (onlySec && sec.id !== onlySec) continue;
@@ -123,6 +126,7 @@ for (const c of subjects) for (const sec of c.sections.filter(s => s.lessons)) {
     const m = lessonMetrics(l), p = profiles[c.id]?.[gradeBand(sec.grade)] || profiles._default[gradeBand(sec.grade)];
     for (const [k, [lo, hi]] of Object.entries(p)) if (m[k] < lo || m[k] > hi) W(L, `${k}=${m[k]} поза профілем [${lo}; ${hi}] для ${c.id}, ${gradeBand(sec.grade)} кл.`);
     if (!l.boss && !l.screens.some(s => s.hint)) W(L, "жодної підказки hint у звичайному уроці");
+    if (IMG_REQUIRED[c.id] && !l.screens.some(s => s.img)) (IMG_REQUIRED[c.id] === "error" ? E : W)(L, "урок без зображення img (D-027: обов'язкове фото чи джерело з відкритою ліцензією; svg/fig не рахуються)");
     // правильна відповідь не має стояти завжди на тому самому місці — інакше її вгадують
     const ch = l.screens.filter(s => s.type === "choice" && !s.poll && !s.hyp && Number.isInteger(s.correct));
     if (ch.length >= 3) { const cnt = {}; ch.forEach(s => cnt[s.correct] = (cnt[s.correct] || 0) + 1); const [k, n] = Object.entries(cnt).sort((a, b) => b[1] - a[1])[0];
@@ -130,17 +134,19 @@ for (const c of subjects) for (const sec of c.sections.filter(s => s.lessons)) {
   }
 }
 // діагностика класів (SLID.diag, docs/CONTENT_SCHEMA.md §9)
-const sectionGrade = new Map();
-for (const c of subjects) for (const sec of c.sections) sectionGrade.set(sec.id, { grade: sec.grade });
+// уроки й розділи лише свого предмета: план веде тільки на них, а baseline перевіряє, чи є в предметі молодші класи
+const subjectMaps = c => {
+  const lessons = new Map(), sections = new Map();
+  for (const sec of c.sections) { sections.set(sec.id, { grade: sec.grade, lessons: (sec.lessons || []).filter(l => !l.boss).map(l => l.id) }); (sec.lessons || []).forEach(l => lessons.set(l.id, { grade: sec.grade })); }
+  return { lessons, sections };
+};
 const diagIds = new Set();
 for (const c of subjects) for (const d of c.diags || []) {
   if (onlySec || (onlyDiag && d.id !== onlyDiag)) continue;
   const D = `content/${c.id}/diag-g${d.grade}.js#${d.id}`;
   if (diagIds.has(d.id)) E(D, "id діагностики не унікальний"); diagIds.add(d.id);
   if (c.diags.filter(x => x.grade === d.grade).length > 1) E(D, `для ${d.grade} класу вже є діагностика з цього предмета`);
-  // уроки лише цього предмета: baseline-опора дозволена, коли молодших класів у предметі немає
-  const own = new Map(c.sections.flatMap(sec => (sec.lessons || []).map(l => [l.id, { grade: sec.grade }])));
-  for (const m of learn.validate(d, { lessons: own, sections: sectionGrade, skills: c.skills })) E(D, m);
+  for (const m of learn.validate(d, { ...subjectMaps(c), skills: c.skills })) E(D, m);
   if (!d.meta) W(D, "немає meta {author, created, factcheck, teacher}");
   (d.items || []).forEach((s, i) => { if (TYPES.includes(s.type)) checkScreen(`${D} завдання ${i + 1} (${s.type})`, s, c, true); });
   const ch = (d.items || []).filter(s => s.type === "choice" && Number.isInteger(s.correct));
@@ -168,5 +174,5 @@ fs.mkdirSync(path.join(ROOT, "reports"), { recursive: true });
 fs.writeFileSync(path.join(ROOT, "reports/validate.json"), JSON.stringify(out, null, 2) + "\n");
 if (!quiet || errors.length) errors.forEach(e => console.log("ПОМИЛКА  " + e));
 if (!quiet) warnings.forEach(w => console.log("увага    " + w));
-console.log(`\n${errors.length} помилок, ${warnings.length} попереджень${onlySec ? ` (розділ ${onlySec})` : onlyDiag ? ` (діагностика ${onlyDiag})` : ""}. Звіт: reports/validate.json`);
+console.log(`\n${errors.length} помилок, ${warnings.length} попереджень${onlySec ? ` (розділ ${onlySec})` : onlyDiag ? ` (${args.includes("--pool") ? "пул" : "діагностика"} ${onlyDiag})` : ""}. Звіт: reports/validate.json`);
 process.exit(errors.length ? 1 : 0);

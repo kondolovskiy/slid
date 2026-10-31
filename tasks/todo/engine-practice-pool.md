@@ -51,3 +51,5 @@ write_group: personalization-shared — редактор визначаєтьс�
 - [ ] Регресія чинних діагностик, пулів, стану та потрібні цільові перевірки зелені; оновлено схему, build запущено оркестратором.
 
 ## Нотатки агента
+
+- 2026-10-30, engine-math-pool-answer-formats (у review): пункт 3 «Нові відповіді» виконано там — answerKind ratio, coordinates2/3, exactRoot, intervalSet, expression (+form), periodicSet; list з √/±. Контракт — CONTENT_SCHEMA §10. Тут лишається лише вибір одиниці відповіді; парсери форматів не дублювати, генератори (gen) інтегрувати через той самий checkAns.

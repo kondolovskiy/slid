@@ -2,6 +2,32 @@
 import { pathToFileURL } from 'node:url';
 import { loadContent, readJSON } from './lib.mjs';
 
+// Вимогу exactRoot закриває також list, у ключі якого є точний корінь (√, ∛…) і який checkAns справді перевіряє точно:
+// ключ як записано — "ok", ключ із десятковими наближеннями коренів — "bad". Наближення, π без кореня, числовий list — ні.
+export function rootList(it, learn) {
+  if (it.type !== 'answer' || it.answerKind !== 'list' || typeof learn.listKey !== 'function') return false;
+  const els = learn.listKey(it);
+  if (!els?.length || !els.some(e => e.exact && e.root) || !els.every(e => e.tidy)) return false;
+  const key = Array.isArray(it.answer) ? it.answer.join('; ') : String(it.answer);
+  // Наближення — лише для коренів; раціональний елемент лишається точним («1/3», не 0.3333333333333333 — такий запис
+  // відкидається через довжину, і проба перестала б перевіряти саме корені). Без rat (старий learn.js) — 6 знаків.
+  const approx = els.map(e => e.root ? e.approx.toFixed(6) : e.rat ?? e.approx.toFixed(6)).join('; ');
+  // Обидві умови (every tidy вище і ключ → ok) потрібні: tidy — розбір ключа, ok — повна перевірка (зокрема reduced/±).
+  return learn.checkAns(it, key) === 'ok' && learn.checkAns(it, approx) === 'bad';
+}
+
+// Вимогу expression закриває також coordinates2, у ключі якого є компонента-вираз (рішення людини 2026-10-31, №13.5(4)),
+// лише якщо checkAns справді перевіряє її як вираз: ключ як записано — "ok"; тотожний інший запис «0 + (…)» — не "bad";
+// інший вираз «(…) + змінна» і десяткове наближення «(…) + 0,0000001» — "bad". Числова пара, неканонічний ключ — ні.
+export function exprPair(it, learn) {
+  if (it.type !== 'answer' || it.answerKind !== 'coordinates2' || typeof learn.pairKey !== 'function') return false;
+  const comps = learn.pairKey(it);
+  if (comps?.length !== 2 || !comps.some(c => c.expr && c.vars.length) || !comps.every(c => c.tidy)) return false;
+  const pair = f => '(' + comps.map(c => c.expr ? f(c) : c.text).join('; ') + ')';
+  return learn.checkAns(it, pair(c => c.text)) === 'ok' && learn.checkAns(it, pair(c => `0 + (${c.text})`)) !== 'bad'
+    && learn.checkAns(it, pair(c => `(${c.text}) + ${c.vars[0]}`)) === 'bad' && learn.checkAns(it, pair(c => `(${c.text}) + 0,0000001`)) === 'bad';
+}
+
 export function audit(subject, matrix, learn, filter = {}) {
   const errors = [], missing = [], unsupported = [];
   const sections = new Map(subject.sections.filter(s => s.lessons?.length).map(s => [s.id, s]));
@@ -55,7 +81,7 @@ export function audit(subject, matrix, learn, filter = {}) {
     if (items.length < r.exercises.min || items.length > r.exercises.max) missing.push(`${r.pool}/${r.lesson}: ${items.length} вправ, потрібно ${r.exercises.min}–${r.exercises.max}`);
     for (const lvl of [1, 2, 3]) if (!items.some(it => it.lvl === lvl)) missing.push(`${r.pool}/${r.lesson}: немає рівня ${lvl}`);
     for (const format of r.formats) {
-      const present = items.some(it => (it.answerKind || (it.type === 'answer' ? 'number' : it.type)) === format);
+      const present = items.some(it => (it.answerKind || (it.type === 'answer' ? 'number' : it.type)) === format || (format === 'exactRoot' && rootList(it, learn)) || (format === 'expression' && exprPair(it, learn)));
       if (!present) missing.push(`${r.pool}/${r.lesson}: немає формату ${format}`);
     }
     if (!items.some(it => it.sk === r.sk)) missing.push(`${r.pool}/${r.lesson}: немає навички матриці ${r.sk}`);

@@ -71,11 +71,11 @@ SLID.section("math", {
           sk: "coord",
           eyebrow: "Висновок",
           title: "Чому дорівнює $AB^2$?",
-          body: "<p>У дослідженні відрізок $AB$ був гіпотенузою, а катети дорівнювали $|\Delta x|$ і $|\Delta y|$. Який вираз дає $AB^2$?</p>",
+          body: "<p>У дослідженні відрізок $AB$ був гіпотенузою, а катети дорівнювали $|\\Delta x|$ і $|\\Delta y|$. Який вираз дає $AB^2$?</p>",
           opts: [
-            "$|\Delta x| + |\Delta y|$",
+            "$|\\Delta x| + |\\Delta y|$",
             "$(\\Delta x)^2 + (\\Delta y)^2$",
-            "$|\Delta x| · |\Delta y|$"
+            "$|\\Delta x| · |\\Delta y|$"
           ],
           correct: 1,
           fbOk: "Саме так.",
@@ -479,7 +479,7 @@ SLID.section("math", {
           sk: "coord",
           eyebrow: "Зроби так, щоб…",
           title: "Зроби $\\overrightarrow{AB} = (3; 2)$",
-          body: "<p>Початок $A(1; 1)$ уже закріплено. Постав кінець $B$ так, щоб вектор $\overrightarrow{AB}$ мав числа саме $(3; 2)$.</p>",
+          body: "<p>Початок $A(1; 1)$ уже закріплено. Постав кінець $B$ так, щоб вектор $\\overrightarrow{AB}$ мав числа саме $(3; 2)$.</p>",
           lab: {
             kind: "plane",
             view: [-1, 8, -1, 7],

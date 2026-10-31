@@ -1,5 +1,5 @@
 /* Слід · Історія, 5 клас — «Історична карта»
-   Статус: усі уроки verified (D-019 re-verify 2026-10-12). 5 уроків.
+   Статус: h21, h25 verified (D-019 re-verify 2026-10-12); h22–h24 draft (D-027: додано фото, 2026-10-31). 5 уроків.
    Перевірка: node tools/validate.mjs && node tools/stats.mjs
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("hist", {
@@ -16,6 +16,24 @@ SLID.section("hist", {
       "Guillaume Le Vasseur de Beauplan",
       "суспільне надбання",
       "https://commons.wikimedia.org/wiki/File:Ukrainae_pars_quae_Kiovia_Palatinatus_vulgo_dicitur.jpg"
+    ],
+    [
+      "Дніпрові пороги, листівка (Катеринослав, бл. 1915)",
+      "автор невідомий; зі збірки Дніпропетровського музею історії лоцманів",
+      "суспільне надбання (PD-old, CC PDM 1.0)",
+      "https://commons.wikimedia.org/wiki/File:Дніпрові_пороги_1915.jpg"
+    ],
+    [
+      "Церква святого Пантелеймона, Шевченкове біля Галича",
+      "Raimond Spekking, 2012",
+      "CC BY-SA 4.0",
+      "https://commons.wikimedia.org/wiki/File:Saint_Panteleimon_Church,_Shevchenkove,_Ukraine-6264.jpg"
+    ],
+    [
+      "Polen, Westrussland bis zum Dniepr… (фрагмент), Веймар, Geographisches Institut, 1849",
+      "Heinrich Kiepert; скан Bibliothèque nationale de France (Gallica)",
+      "суспільне надбання (PD-old, PD-US)",
+      "https://commons.wikimedia.org/wiki/File:Polen,_Westrussland_bis_zum_Dniepr,_die_Ostseeprovinzen_und_die_Nieder-Donauländer_nebst_Übersicht_der_Theilung_-_von_Polen._1_-_1_700_000_Entw._v._h._Kiepert_-_btv1b53099761p_(2_of_4).jpg"
     ]
   ],
   lessons: [
@@ -130,7 +148,7 @@ SLID.section("hist", {
       title: "Чому Київ стоїть на Дніпрі?",
       short: "Природа й історія",
       icon: "river",
-      status: "verified",
+      status: "draft",
       why: "Річки, ліси й степи вирішували, де виростуть міста і де пройдуть війни. Без географії історія незрозуміла.",
       screens: [
         {
@@ -186,6 +204,8 @@ SLID.section("hist", {
           sk: "geo",
           eyebrow: "Небезпека",
           title: "Найнебезпечніша ділянка шляху",
+          img: "img/hist/s2/dnipro-rapids.jpg",
+          cap: "Дніпрові пороги: кам'яні гряди впоперек річки. Кольорова листівка з Катеринослава (тепер Дніпро), початок XX ст. Сьогодні цих порогів не видно — їх затопило водосховище.",
           body: "<p>Нижче Києва Дніпро перетинали кам'яні гряди — <b>пороги</b>. Купці витягали човни на берег і несли їх суходолом.</p><p>Чому саме тут було найнебезпечніше?</p>",
           opts: [
             "Поки човни несли берегом, купці були беззахисні",
@@ -240,13 +260,15 @@ SLID.section("hist", {
       title: "Галичина, Поділля, Слобожанщина",
       short: "Історичні землі",
       icon: "map",
-      status: "verified",
+      status: "draft",
       why: "Назви регіонів — живі сліди минулого. Вони пояснюють діалекти, архітектуру й традиції.",
       screens: [
         {
           type: "intro",
           eyebrow: "Розділ 2 · Урок 3",
           title: "Звідки взялися назви «Галичина» чи «Слобожанщина»?",
+          img: "img/hist/s2/panteleimon-halych.jpg",
+          cap: "Церква святого Пантелеймона біля міста Галич (село Шевченкове). Її збудували наприкінці XII ст., коли Галич був столицею князівства. Фото 2012 р.",
           body: `<p class="lead">На сучасній карті України — області. Але люди досі кажуть «я з Галичини», «з Поділля», «зі Слобожанщини».</p><p>Це <b>історичні землі</b>: назви, що склалися століття тому.</p>`,
           cta: "Почати"
         },
@@ -338,7 +360,7 @@ SLID.section("hist", {
       title: "Кордони змінюються",
       short: "Кордони",
       icon: "line",
-      status: "verified",
+      status: "draft",
       why: "Кордони — не лінії, дані природою. Їх встановлювали війни й договори. Це допомагає розуміти й сьогоднішні події.",
       screens: [
         {
@@ -353,6 +375,8 @@ SLID.section("hist", {
           sk: "geo",
           eyebrow: "Дві імперії",
           title: "Львів і Київ у XIX столітті",
+          img: "img/hist/s2/kiepert-1849.jpg",
+          cap: "Карта Генріха Кіперта, видана у Ваймарі 1849 р. (фрагмент). Ліворуч — Galizien (Галичина) в Австрійській імперії, праворуч — Wolhynien і Podolien (Волинь і Поділля) в Російській. Між ними — кольорова лінія кордону.",
           body: `<p>Наприкінці XVIII ст. українські землі поділили дві імперії: <b>Галичина з Львовом</b> — до <b>Австрії</b> (з 1867 р. — Австро-Угорщина), <b>Наддніпрянщина з Києвом</b> — до <b>Російської імперії</b>. У XIX ст. міста опинилися в різних державах.</p>
         <p>Кордони змінювали <b>війни</b>, <b>договори</b> між державами й інколи <b>шлюби</b> правителів — не погода.</p>`,
           cta: "Далі"

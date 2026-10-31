@@ -1,5 +1,5 @@
 /* Слід · Історія, 5 клас — «Україна у світі»
-   Статус: h41–h45 verified (D-019 re-verify 2026-10-12). 5 уроків.
+   Статус: h41–h44 verified (D-019 re-verify 2026-10-12); h45 draft (D-027, зображення 2026-10-31). 5 уроків.
    Перевірка: node tools/validate.mjs --section s4 && node tools/stats.mjs --subject hist
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("hist", {
@@ -40,6 +40,12 @@ SLID.section("hist", {
       "Anntinomy",
       "CC BY-SA 4.0",
       "https://commons.wikimedia.org/wiki/File:Kyiv-Mohyla_Academy_old_academic_building_2020.jpg"
+    ],
+    [
+      "Златники князя Володимира (таблиця з книги І. Толстого, 1882)",
+      "Петров Эдуард (скан)",
+      "CC0",
+      "https://commons.wikimedia.org/wiki/File:Zlatniks_of_prince_Vladimir.jpg"
     ]
   ],
   lessons: [
@@ -391,7 +397,7 @@ SLID.section("hist", {
       title: "Посол України",
       short: "Фінал розділу",
       icon: "star",
-      status: "verified",
+      status: "draft",
       boss: true,
       badge: "envoy",
       why: "Перевірка всього розділу і всього року. Бали подвоєні.",
@@ -400,7 +406,9 @@ SLID.section("hist", {
           type: "intro",
           eyebrow: "Фінал розділу · бали ×2",
           title: "Тебе призначено культурним послом України",
-          body: `<p class="lead">Тобі треба розповісти іноземним школярам про Україну — точно, без вигадок.</p>`,
+          img: "img/hist/s4/zlatnyky.jpg",
+          cap: "Златники князя Володимира, кінець X — початок XI ст. Малюнки з книги І. Толстого про найдавніші монети Русі, 1882 р.",
+          body: `<p class="lead">Тобі треба розповісти іноземним школярам про Україну — точно, без вигадок.</p><p>У тебе з собою малюнки давніх київських монет. Придивись: біля князя на багатьох із них — знак, який сьогодні є гербом України.</p>`,
           cta: "Почати місію"
         },
         {

@@ -37,7 +37,7 @@ async def answer(pg, s):
         for k in range(s["target"]): await pg.click(f'#shade [data-p="{k}"]')
     elif t == "numline": await pg.eval_on_selector("#nlrng", f"e=>{{e.value={s['answer']};e.dispatchEvent(new Event('input'))}}")
     elif t == "answer":
-        v = f'{s["answer"][0]} ост. {s["answer"][1]}' if s.get("answerKind") == "divrem" else "; ".join(map(str, s["answer"])) if isinstance(s["answer"], list) else str(s["answer"])
+        v = f'{s["answer"][0]} ост. {s["answer"][1]}' if s.get("answerKind") == "divrem" else (" : " if s.get("answerKind") == "ratio" else "; ").join(map(str, s["answer"])) if isinstance(s["answer"], list) else str(s["answer"])
         await pg.fill("#numIn", v.replace(".", ",") if s.get("answerKind") != "divrem" else v); await pg.dispatch_event("#numIn", "input")
     elif t == "fracin": await pg.fill("#numIn", f"{s['answer']}/{s['den']}" if s.get("hideDen") else str(s["answer"]))
     elif t == "number":
@@ -104,6 +104,7 @@ async def main():
                     elif mode == "ok" and (todo or base or shown != len(d["items"])): errs.append(f"{c['id']} {d['id']}: усі відповіді правильні, але в плані {len(todo)} кроків (показано {shown} з {len(d['items'])} завдань) — якусь відповідь не зараховано")
                     elif mode == "skip" and pre_lessons and not todo: errs.append(f"{c['id']} {d['id']}: усе пропущено, а план порожній")
                     elif mode == "skip" and sorted(b["topic"] for b in base) != pre_base: errs.append(f"{c['id']} {d['id']}: усе пропущено, а baseline-прогалини {pre_base} не видно в плані ({base})")
+                    elif mode == "skip" and not todo and not all(b.get("next") for b in base): errs.append(f"{c['id']} {d['id']}: усе пропущено, а baseline-прогалина без уроку, з якого почати: {base}")
                     await pg.click("#action"); await pg.wait_for_timeout(80)
                     if mode == "skip" and await pg.is_hidden("#player"): errs.append(f"{c['id']} {d['id']}: перший крок плану чи перший урок класу не відкрився")
                 diags += 1

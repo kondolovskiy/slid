@@ -414,7 +414,7 @@ const order = l => ({ L1: 3, L2: 1, L3: 2, L4: 4 }[l] ?? 50);
    [p => p.items[0].steps = [], "steps"], [p => p.items[0].answer = "10/24", "answer"], [p => p.items[0].answer = "x", "answer"], [p => p.items.push({ ...p.items[0] }), "повторюється"],
    [p => p.sources[0].url = "lib", "url"], [p => p.items[0].srcPage = 0, "srcPage"], [p => p.items[0].srcPage = 1.5, "srcPage"],
    [p => p.items[0].adapted = "true", "adapted"], [p => p.items[0].unitForms = ["a", "b"], "unitForms"], [p => p.items[0].unitForms = ["a", "", "c"], "unitForms"],
-   [p => p.items[0].answerKind = "expression", "answerKind"], [p => p.items[0].fractionOnly = 1, "fractionOnly"], [p => p.items[0].mixed = "true", "mixed"],
+   [p => p.items[0].answerKind = "matrix", "answerKind"], [p => p.items[0].fractionOnly = 1, "fractionOnly"], [p => p.items[0].mixed = "true", "mixed"],
    [p => p.items[0].reduced = "true", "reduced"], [p => p.items[0].tol = -1, "tol"], [p => p.items[0].tol = Infinity, "tol"], [p => p.items[0].tol = NaN, "tol"],
    [p => p.items[0].tol = "0.1", "tol"], [p => { p.items[0].answerKind = "comparison"; p.items[0].answer = "<"; }, "reduced"],
    [p => { p.items[0].type = "choice"; p.items[0].answerKind = "number"; }, "answerKind"]]
@@ -424,6 +424,132 @@ const order = l => ({ L1: 3, L2: 1, L3: 2, L4: 4 }[l] ?? 50);
     eq(mut(p => { delete p.items[0].reduced; Object.assign(p.items[0], fields); }), [], `validatePool: коректні нові поля ${JSON.stringify(fields)}`);
   for (const fields of [{ answerKind: "list", answer: [1, 1] }, { answerKind: "factors", answer: "4*3" }, { answerKind: "comparison", answer: "≤" }, { answer: Infinity }])
     eq(mut(p => { delete p.items[0].reduced; Object.assign(p.items[0], fields); }).some(e => e.includes("answer")), true, `validatePool: некоректна відповідь ${JSON.stringify(fields)}`);
+  // символьні формати пулів 7–11 класів (engine-math-pool-answer-formats)
+  for (const fields of [{ answerKind: "ratio", answer: "2 : 3", reduced: true }, { answerKind: "ratio", answer: [1, 3] }, { answerKind: "coordinates2", answer: "(3; -2)" },
+    { answerKind: "coordinates2", answer: [1.5, -2] }, { answerKind: "coordinates3", answer: "(1; -2; 3)" }, { answerKind: "exactRoot", answer: "2√3" }, { answerKind: "exactRoot", answer: "16π/3" },
+    { answerKind: "list", answer: "(-1 ± √5)/2" }, { answerKind: "intervalSet", answer: "(-∞; 1] ∪ [4; +∞)" }, { answerKind: "intervalSet", answer: "∅" },
+    { answerKind: "expression", answer: "3a - 2b + 5", form: "expanded" }, { answerKind: "expression", answer: "(x - 2)(x + 2)", form: "factored" },
+    { answerKind: "expression", answer: "(a + 1)/(a - 1)", form: "reduced" }, { answerKind: "expression", answer: "tg α", form: "simplified" },
+    { answerKind: "expression", answer: "(x - 2)^2 + (y + 1)^2 = 9" }, { answerKind: "periodicSet", answer: "(-1)^k · π/6 + πk" }, { answerKind: "periodicSet", answer: ["π/2 + πk"] }])
+    eq(mut(p => { delete p.items[0].reduced; Object.assign(p.items[0], fields); }), [], `validatePool: коректний формат ${JSON.stringify(fields)}`);
+  for (const [fields, part] of [[{ answerKind: "ratio", answer: "4 : 6", reduced: true }, "answer"], [{ answerKind: "ratio", answer: "2 : -3" }, "answer"],
+    [{ answerKind: "coordinates2", answer: "(1; 2; 3)" }, "answer"], [{ answerKind: "coordinates3", answer: [1, 2] }, "answer"], [{ answerKind: "exactRoot", answer: "√12" }, "answer"],
+    [{ answerKind: "exactRoot", answer: "5" }, "exactRoot"], [{ answerKind: "exactRoot", answer: "√(1+√2)" }, "answer"], [{ answerKind: "intervalSet", answer: "[-∞; 2)" }, "answer"],
+    [{ answerKind: "intervalSet", answer: "(5; 2)" }, "answer"], [{ answerKind: "expression", answer: "x +" }, "answer"], [{ answerKind: "expression", answer: "(x+1)^2", form: "expanded" }, "answer"],
+    [{ answerKind: "expression", answer: "x + 1", form: "short" }, "form"], [{ answerKind: "expression", answer: "y = 2x", form: "expanded" }, "form"],
+    [{ answerKind: "number", answer: 2, form: "expanded" }, "form"], [{ answerKind: "periodicSet", answer: "π/6" }, "answer"], [{ answerKind: "periodicSet", answer: "π/6 + 2πt" }, "answer"],
+    [{ answerKind: "coordinates2", answer: "(1; 2)", mixed: true }, "mixed"], [{ answerKind: "expression", answer: "x", reduced: true }, "reduced"]])
+    eq(mut(p => { delete p.items[0].reduced; Object.assign(p.items[0], fields); }).some(e => e.includes(part)), true, `validatePool: некоректний формат ${JSON.stringify(fields)} («${part}»)`);
+}
+
+// ---------- символьні формати: еквівалентні й неправильні записи ----------
+{ const K = (answerKind, answer, extra = {}) => ({ answerKind, answer, ...extra });
+  const cases = [
+    // відношення: рівні відношення, порядок, натуральні члени без спільного дільника лише з reduced
+    [K("ratio", "2 : 3"), "4 : 6", "ok"], [K("ratio", "2 : 3"), "0,4 : 0,6", "ok"], [K("ratio", "2 : 3"), "2/3 : 1", "ok"], [K("ratio", "2 : 3"), "3 : 2", "bad"],
+    [K("ratio", "2 : 3"), "2/3", "bad"], [K("ratio", "2 : 3"), "-2 : -3", "bad"], [K("ratio", "2 : 3"), "2 : 3 : 1", "bad"], [K("ratio", "2 : 3", { reduced: true }), "4 : 6", "form"],
+    [K("ratio", "2 : 3", { reduced: true }), "2 : 3", "ok"], [K("ratio", "2 : 3", { reduced: true }), "1 : 1,5", "form"], [K("ratio", [1, 3], { reduced: true }), "1∶3", "ok"], [K("ratio", "2 : 3 : 5"), "4 : 6 : 10", "ok"], [K("ratio", "2 : 3 : 5"), "4 : 6 : 11", "bad"],
+    // впорядкована пара/трійка: порядок і знак, кома лише без «;», десяткова кома з «;»
+    [K("coordinates2", "(3; -2)"), "(3; −2)", "ok"], [K("coordinates2", "(3; -2)"), "A(3;-2)", "ok"], [K("coordinates2", "(3; -2)"), "3; -2", "ok"], [K("coordinates2", "(3; -2)"), "(3, -2)", "ok"],
+    [K("coordinates2", "(3; -2)"), "(-2; 3)", "bad"], [K("coordinates2", "(3; -2)"), "(3; 2)", "bad"], [K("coordinates2", "(3; -2)"), "(3; -2; 0)", "bad"], [K("coordinates2", "(3; -2)"), "3", "bad"], [K("coordinates2", "(3; -2)"), "(3; -2", "bad"],
+    [K("coordinates2", [1.5, 2]), "(1,5; 2)", "ok"], [K("coordinates2", [1.5, 2]), "(3/2; 2)", "ok"], [K("coordinates2", [1.5, 2]), "(1,5, 2)", "bad"], [K("coordinates2", "(√2; -√2)"), "(√2; -√8/2)", "form"],
+    [K("coordinates3", "(1; -2; 3)"), "(1; −2; 3)", "ok"], [K("coordinates3", "(1; -2; 3)"), "(1; 3; -2)", "bad"], [K("coordinates3", "(1; -2; 3)"), "(1; -2)", "bad"],
+    // точні корені й π: значення точне, наближення не зараховується, корінь спрощено
+    [K("exactRoot", "2√3"), "2√3", "ok"], [K("exactRoot", "2√3"), "2sqrt(3)", "ok"], [K("exactRoot", "2√3"), "√3·2", "ok"], [K("exactRoot", "2√3"), "√12", "form"], [K("exactRoot", "2√3"), "3,464", "bad"], [K("exactRoot", "2√3"), "3√2", "bad"],
+    [K("exactRoot", "√2/2"), "1/√2", "form"], [K("exactRoot", "√2/2"), "0,5√2", "ok"], [K("exactRoot", "-√3/3"), "−√3/3", "ok"], [K("exactRoot", "-√3/3"), "√3/3", "bad"],
+    [K("exactRoot", "16π/3"), "16/3 · π", "ok"], [K("exactRoot", "16π/3"), "5 1/3π", "bad"], [K("exactRoot", "16π/3"), "16,755", "bad"], [K("exactRoot", "4π"), "4pi", "ok"],
+    [K("exactRoot", "3 + 2√5"), "2√5 + 3", "ok"], [K("exactRoot", "(3 + √5)/2"), "1,5 + √5/2", "ok"], [K("exactRoot", "2∛3"), "∛24", "form"], [K("exactRoot", "2∛3"), "2∛3", "ok"], [K("exactRoot", "√2"), "∜4", "form"],
+    [K("exactRoot", "√2"), "√2 + x - x", "bad"], [K("exactRoot", "√2"), "√-2", "bad"], [K("exactRoot", "√2"), "", "bad"],
+    // список із коренями квадратного рівняння: обидві гілки, порядок довільний, ± розгортається
+    [K("list", "2 ± √3"), "2 - √3; 2 + √3", "ok"], [K("list", "2 ± √3"), "2 + √3", "bad"], [K("list", "(-1 ± √5)/2"), "(−1 + √5)/2; (−1 − √5)/2", "ok"], [K("list", "2 ± √3"), "2 ± √12/2", "form"], [K("list", "2 ± √3"), "3,73; 0,27", "bad"],
+    // проміжки: відкриті/закриті межі, об'єднання, точки, нескінченність лише з круглою дужкою
+    [K("intervalSet", "(-∞; 3]"), "(−∞; 3]", "ok"], [K("intervalSet", "(-∞; 3]"), "x ∈ (-∞;3]", "ok"], [K("intervalSet", "(-∞; 3]"), "(-∞; 3)", "bad"], [K("intervalSet", "(-∞; 3]"), "[3; +∞)", "bad"],
+    [K("intervalSet", "(-∞; -1) ∪ (3; +∞)"), "(3; ∞) ∪ (-∞; -1)", "ok"], [K("intervalSet", "(-∞; -1) ∪ (3; +∞)"), "(-∞; -1) U (3; +∞)", "ok"], [K("intervalSet", "(-∞; -1) ∪ (3; +∞)"), "(-1; 3)", "bad"],
+    [K("intervalSet", "(-∞; 5]"), "(-∞; 2) ∪ [2; 5]", "ok"], [K("intervalSet", "(-∞; 5]"), "(-∞; 2) ∪ (2; 5]", "bad"], [K("intervalSet", "(-∞; 1] ∪ {3}"), "{3} ∪ (-∞; 1]", "ok"], [K("intervalSet", "(-∞; 1] ∪ {3}"), "(-∞; 1]", "bad"],
+    [K("intervalSet", "[1,5; 2)"), "[1,5; 2)", "ok"], [K("intervalSet", "[1,5; 2)"), "[3/2; 2)", "ok"], [K("intervalSet", "(2; 5)"), "(5; 2)", "bad"], [K("intervalSet", "(2; 5)"), "[-∞; 5)", "bad"], [K("intervalSet", "(-√3; √3)"), "(−√3; √3)", "ok"],
+    [K("intervalSet", "(-√3; √3)"), "(-1,73; 1,73)", "bad"], [K("intervalSet", "∅"), "∅", "ok"], [K("intervalSet", "∅"), "{}", "ok"], [K("intervalSet", "R"), "(-∞; +∞)", "ok"], [K("intervalSet", "{2}"), "[2; 2]", "ok"], [K("intervalSet", "(0; +∞)"), "x > 0", "bad"],
+    // періодичні множини: серії з k ∈ ℤ, ±, (−1)^k, інша літера параметра; наближення й одна точка не зараховуються
+    [K("periodicSet", "±π/3 + 2πk"), "π/3 + 2πk; -π/3 + 2πk", "ok"], [K("periodicSet", "±π/3 + 2πk"), "x = ±π/3 + 2πn, n ∈ Z", "ok"], [K("periodicSet", "±π/3 + 2πk"), "π/3 + 2πk", "bad"],
+    [K("periodicSet", "(-1)^k · π/6 + πk"), "π/6 + 2πk; 5π/6 + 2πk", "ok"], [K("periodicSet", "(-1)^k · π/6 + πk"), "π/6 + πk", "bad"], [K("periodicSet", "π/2 + πk"), "-π/2 + πk, k ∈ ℤ", "ok"],
+    [K("periodicSet", "π/2 + πk"), "π/2 + 2πk", "bad"], [K("periodicSet", "π/2 + πk"), "1,5708 + πk", "bad"], [K("periodicSet", "π/2 + πk"), "π/2", "bad"], [K("periodicSet", "πk/2"), "πk; π/2 + πk", "ok"], [K("periodicSet", "πk"), "πk + x", "bad"],
+    // вирази: тотожність без eval, форма за ключем
+    [K("expression", "3a - 2b + 5", { form: "expanded" }), "5 − 2b + 3a", "ok"], [K("expression", "3a - 2b + 5", { form: "expanded" }), "3(a + 1) - 2b + 2", "form"], [K("expression", "3a - 2b + 5", { form: "expanded" }), "3a - 2b + 4", "bad"],
+    [K("expression", "3a - 2b + 5", { form: "expanded" }), "a + 2a - 2b + 5", "form"], [K("expression", "x^2 - 4", { form: "expanded" }), "x² − 4", "ok"], [K("expression", "x^2 - 4", { form: "expanded" }), "x·x − 4", "form"],
+    [K("expression", "(x - 2)(x + 2)", { form: "factored" }), "(x + 2)(x − 2)", "ok"], [K("expression", "(x - 2)(x + 2)", { form: "factored" }), "x^2 - 4", "form"], [K("expression", "2(x + 2)", { form: "factored" }), "2x + 4", "form"],
+    [K("expression", "2x(x - 2)^2", { form: "factored" }), "2x(x − 2)(x − 2)", "ok"], [K("expression", "2x(x - 2)^2", { form: "factored" }), "2x(x^2 - 4x + 4)", "form"], [K("expression", "2x(x - 2)^2", { form: "factored" }), "-2x(2 - x)(x - 2)", "ok"],
+    [K("expression", "(a + 1)/(a - 1)", { form: "reduced" }), "(a + 1)/(a − 1)", "ok"], [K("expression", "(a + 1)/(a - 1)", { form: "reduced" }), "(a^2 - 1)/(a - 1)^2", "form"], [K("expression", "(a + 1)/(a - 1)", { form: "reduced" }), "(a - 1)/(a + 1)", "bad"],
+    [K("expression", "tg α", { form: "simplified" }), "sin α / cos α", "form"], [K("expression", "tg α", { form: "simplified" }), "tgα", "ok"], [K("expression", "2 sin x cos x"), "sin 2x", "ok"], [K("expression", "cos^2 x - sin^2 x"), "cos 2x", "ok"],
+    [K("expression", "6x^2 - 2"), "f'(x) = 6x² − 2", "ok"], [K("expression", "6x^2 - 2"), "6x^2 - 2,0001", "bad"], [K("expression", "x^3 + C"), "F(x) = x^3 + C", "ok"], [K("expression", "x^3 + C"), "x^3", "bad"],
+    [K("expression", "(x - 2)^2 + (y + 1)^2 = 9"), "x² − 4x + y² + 2y − 4 = 0", "ok"], [K("expression", "(x - 2)^2 + (y + 1)^2 = 9"), "(x - 2)^2 + (y - 1)^2 = 9", "bad"], [K("expression", "(x - 2)^2 + (y + 1)^2 = 9"), "(x - 2)^2 + (y + 1)^2", "bad"],
+    [K("expression", "y = 2x + 1"), "2x + 1", "ok"], [K("expression", "y = 2x + 1"), "2y = 4x + 2", "ok"], [K("expression", "y = 2x + 1"), "y = 2x - 1", "bad"], [K("expression", "2x + 1"), "y = 2x + 1", "ok"],
+    [K("expression", "log_2 7"), "log_2(7)", "ok"], [K("expression", "log_2 7"), "2,807", "bad"], [K("expression", "|x|"), "√(x^2)", "ok"], [K("expression", "x"), "√(x^2)", "bad"], [K("expression", "a^5"), "a^2 · a^3", "ok"],
+    [K("expression", "x^(1/3)"), "∛x", "ok"], [K("expression", "x + 1"), "alert(1)", "bad"], [K("expression", "x + 1"), "constructor", "bad"], [K("expression", "x + 1"), "x + 1;", "bad"], [K("expression", "x + 1"), "", "bad"], [K("expression", "x + 1"), "x^99999", "bad"],
+    [K("expression", "x + 1", { form: "nonsense" }), "x + 1", "bad"], [K("expression", "x + 1"), "(".repeat(300) + "x", "bad"]
+  ];
+  cases.forEach(([s, v, expected]) => eq(L.checkAns(s, v), expected, `checkAns ${s.answerKind}${s.form ? "/" + s.form : ""}: ${JSON.stringify(s.answer)} ← «${v}»`));
+  // ключ сам проходить перевірку; підказки «form» конкретні
+  eq(L.checkAns(K("coordinates2", [3, -2]), [3, -2]), "ok", "checkAns: масив координат як ключ");
+  eq(L.formHint(K("ratio", "2 : 3", { reduced: true }), "4 : 6").includes("натуральними"), true, "formHint: відношення");
+  eq(L.formHint(K("exactRoot", "2√3"), "√12").includes("з-під кореня"), true, "formHint: корінь");
+  eq(L.formHint(K("expression", "x^2 - 4", { form: "expanded" }), "x·x - 4").includes("Зведи подібні"), true, "formHint: стандартний вигляд без дужок — «зведи подібні» (QA 7 кл. D-4)");
+  eq(L.formHint(K("expression", "x^2 - 4", { form: "expanded" }), "(x - 2)(x + 2)").includes("Розкрий дужки"), true, "formHint: стандартний вигляд з дужками — «розкрий дужки»");
+  eq(L.formHint({ answer: "2/5", fractionOnly: true }, "0,4"), "Значення правильне. Запиши відповідь звичайним дробом.", "formHint: чинний текст числа");
+  eq([L.ansText(K("coordinates2", [3, -2])), L.ansText(K("ratio", [2, 3])), L.ansText(K("periodicSet", "πk")), L.ansText(K("list", ["2 + √3", "2 - √3"]))],
+    ["(3; -2)", "2 : 3", "πk, k ∈ ℤ", "2 + √3; 2 - √3"], "ansText: показ ключа");
+  eq(L.ANSWER_KINDS, ["number", "comparison", "list", "factors", "divrem", "ratio", "coordinates2", "coordinates3", "exactRoot", "intervalSet", "expression", "periodicSet"], "ANSWER_KINDS: чинні 4 + divrem + 7 нових");
+}
+
+// ---------- після незалежного рев’ю 9c7696b: наближення, числовий множник, арифметика в елементах, канонічні корені, час ----------
+{ const K = (answerKind, answer, extra = {}) => ({ answerKind, answer, ...extra });
+  const cases = [
+    // P1-1: десяткові наближення з 7–12 знаками не зараховуються; точні десяткові — так
+    [K("periodicSet", "arctg 2 + πk"), "1,1071487 + πk", "bad"], [K("periodicSet", "arctg 2 + πk"), "arctg 2 + πk", "ok"], [K("periodicSet", "π/6 + 2πk"), "0,5235988 + 2πk", "bad"],
+    [K("periodicSet", "(-1)^k · π/6 + πk"), "(-1)^k · 0,52359877559 + πk", "bad"], [K("periodicSet", "π/2 + πk"), "π/2 + πk + 0,000000001", "bad"], [K("periodicSet", "π/2 + πk"), "0,5π + πk", "ok"],
+    [K("expression", "√2·x"), "1,41421356237x", "bad"], [K("expression", "x/3"), "0,3333333333x", "bad"], [K("expression", "πx"), "3,14159265359x", "bad"], [K("expression", "7√2"), "9,899494937", "bad"],
+    [K("expression", "x"), "x + 0,00000000001", "bad"], [K("expression", "2 sin x"), "2,0000000001 sin x", "bad"], [K("expression", "x/2"), "0,5x", "ok"], [K("expression", "√2·x"), "x√2", "ok"],
+    [K("expression", "sin 2x"), "2 sin x cos x", "ok"], [K("expression", "x^2 + y^2 = 4"), "2x^2 + 2y^2 - 8 = 0", "ok"],
+    // P1-2: невинесений / нескорочений числовий множник
+    [K("expression", "3x(x + 2)", { form: "factored" }), "x(3x + 6)", "form"], [K("expression", "3x(x + 2)", { form: "factored" }), "(3x + 6)·x", "form"], [K("expression", "5x(x - 2)", { form: "factored" }), "x(5x - 10)", "form"],
+    [K("expression", "4(x + 1)(x - 1)", { form: "factored" }), "(2x + 2)(2x - 2)", "form"], [K("expression", "2(x + 3)", { form: "factored" }), "(2x + 6)·1", "form"], [K("expression", "2(x + 2)", { form: "factored" }), "4(0,5x + 1)", "form"],
+    [K("expression", "(x - 1)(x + 1)", { form: "factored" }), "(x^2 - 1)^2/(x^2 - 1)", "form"], [K("expression", "3x(x + 2)", { form: "factored" }), "-3x(-x - 2)", "ok"],
+    [K("expression", "2x/3", { form: "reduced" }), "6x/9", "form"], [K("expression", "(x + 1)/2", { form: "reduced" }), "(2x + 2)/4", "form"], [K("expression", "3a/(4b)", { form: "reduced" }), "6a/(8b)", "form"],
+    [K("expression", "1/(x + 1)", { form: "reduced" }), "2/(2x + 2)", "form"], [K("expression", "2x/3", { form: "reduced" }), "2x/3", "ok"],
+    // P2-1: без коренів у ключі елементи — лише числа, як у чинному list
+    [K("list", [8, 56]), "32 - 24; 32 + 24", "bad"], [K("list", [8, 56]), "32 ± 24", "bad"], [K("list", [5, 6, 7, 8, 9]), "5; 6; 7; 8; 3·3", "bad"], [K("list", [1, 2]), "+1; 2", "bad"], [K("list", [1, 2]), "1; 2^1", "bad"],
+    [K("coordinates2", "(3; -2)"), "((1 + 5)/2; (2 - 6)/2)", "bad"], [K("intervalSet", "[2; 5)"), "[6/3; 10:2)", "bad"], [K("coordinates2", "(3; -2)"), "(3 ; - 2)", "ok"],
+    // P2-2: канонічна точна форма
+    [K("exactRoot", "7√2"), "3√2 + 5√2 - √2", "form"], [K("exactRoot", "6√2"), "2√3·√6", "form"], [K("exactRoot", "2√3"), "√3 + √3", "form"], [K("exactRoot", "√3"), "√3·(2 - 1)", "form"],
+    [K("exactRoot", "-(1 + √5)/2"), "-(1 + √5)/2", "ok"], [K("exactRoot", "0,5√2"), "0.5√2", "ok"], [K("list", "2 ± √3"), "2 + 1 - 1 + √3; 2 - √3", "form"],
+    // P2-4, P3
+    [K("expression", "2x", { form: "simplified" }), "x + x", "form"], [K("expression", "x^2", { form: "simplified" }), "x·x", "form"],
+    [K("intervalSet", "(-∞; 1] ∪ [4; +∞)"), "(-∞ ; 1 ] ∪ [ 4 ; + ∞ )", "ok"], [K("intervalSet", "∅"), "Ø", "ok"], [K("periodicSet", "πk"), "πk, де k ∈ Z", "ok"], [K("periodicSet", "πk"), "πk; 27 + 0·k", "bad"]
+  ];
+  cases.forEach(([s, v, expected]) => eq(L.checkAns(s, v), expected, `рев’ю ${s.answerKind}${s.form ? "/" + s.form : ""}: ${JSON.stringify(s.answer)} ← «${v}»`));
+  // P2-3: короткий запис не підвішує перевірку
+  for (const [s, v] of [[K("exactRoot", "√2"), "(√2+√3+√5+√7+√11+√13+√17+√19+√23+√29+√31+√37+√41+√43)^12"], [K("periodicSet", "πk"), Array(12).fill("±1±1±1±1k").join(";")],
+    [K("periodicSet", "πk"), Array(10).fill("±πk/7±1±2±3").join(";")], [K("expression", "x"), "(x+1)^12·(y+2)^12-(x+y)^12"], [K("expression", "x"), "(".repeat(60) + "x" + ")".repeat(60)]]) {
+    const t = Date.now(); L.checkAns(s, v); eq(Date.now() - t < 1000, true, `час перевірки < 1 с: ${v.slice(0, 30)}`);
+  }
+  // повторне рев’ю 65cbcd5: P1-3 вкладені степені й великі числа — межа 2048 біт і час; P2-n1, P2-n2, P3
+  for (const [s, v] of [[K("expression", "x"), "((((x+1)^12)^12)^12)^12"], [K("expression", "x"), "(((((x+1)^12)^12)^12)^12)^12"], [K("expression", "x"), "((((((((x^12)^12)^12)^12)^12)^12)^12)^12)^12"],
+    [K("expression", "x"), "(((((((((9999999999999999^12)^12)^12)^12)^12)^12)^12)^12)^12)"], [K("exactRoot", "√2"), "((((9999999999999999/9999999999999997)^12)^12)^12)^12"],
+    [K("expression", "x"), "(x+√2+√3+√5+√7+√11+√13)^12"], [K("expression", "(x+1)^12", { form: "factored" }), "(x+y+z+a+b+c+d+e+f+g+h)^12·(x+y+z+a+b+c+d+e+f+g+h)^12"],
+    [K("periodicSet", "πk"), "((((k^12)^12)^12)^12)^12"], [K("list", "√2; √3"), Array(10).fill("(√2+√3+√5)^12").join(";")]]) {
+    const t = Date.now(); eq(L.checkAns(s, v), "bad", `великі числа → bad: ${v.slice(0, 30)}`); eq(Date.now() - t < 1000, true, `час перевірки < 1 с: ${v.slice(0, 30)}`);
+  }
+  [[K("expression", "(2x - 1)(x + 1)", { form: "factored" }), "2(x - 0,5)(x + 1)", "ok"], [K("expression", "(2x - 1)(x + 1)", { form: "factored" }), "2(x - 1/2)(x + 1)", "ok"],
+   [K("expression", "(x - 1/2)(x + 1)", { form: "factored" }), "(x - 0,5)(x + 1)", "ok"], [K("expression", "2(x + 2)", { form: "factored" }), "4(0,5x + 1)", "form"],
+   [K("expression", "sin x(1 + cos x)", { form: "factored" }), "sin x(1 + cos x)", "ok"], [K("expression", "sin x(1 + cos x)", { form: "factored" }), "sin x + sin x cos x", "form"],
+   [K("exactRoot", "2 + 2√5"), "2(1 + √5)", "ok"], [K("exactRoot", "-1 - √2"), "-(1 + √2)", "ok"], [K("exactRoot", "√3/3"), "(1/3)√3", "ok"], [K("exactRoot", "16π/3"), "(16/3)π", "ok"],
+   [K("exactRoot", "2 + 2√5"), "2(1 + √5 + √5 - √5)", "form"], [K("expression", "sin x + 0,25"), "sin x + 0,250", "ok"],
+   [K("periodicSet", "arctg 2 + πk"), "110714871779/100000000000 + πk", "bad"], [K("expression", "√2·sin x"), "sin x · 14142135624/10000000000", "bad"]]
+    .forEach(([s, v, expected]) => eq(L.checkAns(s, v), expected, `повторне рев’ю ${s.answerKind}${s.form ? "/" + s.form : ""}: ${JSON.stringify(s.answer)} ← «${v}»`));
+  eq(L.validatePool({ id: "p", section: "s", status: "draft", sources: [{ id: "b", title: "t", url: "https://x" }], items: [{ id: "a", lesson: "l", lvl: 1, sk: "num", src: "b 1", type: "answer", title: "t", steps: ["s"], answerKind: "expression", answer: "(x - 1/2)(x + 1)", form: "factored" }] },
+    { sections: new Map([["s", { grade: 8, lessons: ["l"] }]]), skills: { num: {} } }), [], "validatePool: ключ factored із дробовим коренем (x − 1/2)");
+  const vp = it => L.validatePool({ id: "p", section: "s", status: "draft", sources: [{ id: "b", title: "t", url: "https://x" }], items: [{ id: "a", lesson: "l", lvl: 1, sk: "num", src: "b 1", type: "answer", title: "t", steps: ["s"], ...it }] },
+    { sections: new Map([["s", { grade: 7, lessons: ["l"] }]]), skills: { num: {} } }).length > 0;
+  for (const it of [K("exactRoot", "√3 + √3"), K("exactRoot", "√2·√3"), K("exactRoot", "π - π + √2"), K("intervalSet", "(-∞; 1] ∪ [1; 2]"), K("expression", "x", { form: "factored" }), K("expression", "x + x", { form: "simplified" })])
+    eq(vp(it), true, `validatePool: неканонічний ключ ${JSON.stringify(it.answer)} ${it.form || ""}`);
 }
 
 /* Класовий контекст: міграція, 6 → 7 → 6, повторний тест і старі результати. */
@@ -508,6 +634,8 @@ const order = l => ({ L1: 3, L2: 1, L3: 2, L4: 4 }[l] ?? 50);
   eq(L.checkAns({ answerKind: "divrem", answer: [3, 2.5] }, "3 ост. 2"), "bad", "divrem: ключ — цілі числа");
   eq(L.checkAns({ answer: 3 }, "3 ост. 2"), "bad", "number: запис з остачею не число");
   eq(L.parseDivrem([3, 2]), { q: 3, r: 2 }, "parseDivrem: масив");
+  eq(/остачу/.test(L.formHint(s, "3")), true, "divrem formHint: «допиши остачу» (після злиття — через спільний formHint)");
+  eq(L.ansText(s), "3 (ост. 2)", "divrem ansText");
   const sec = new Map([["s4", { grade: 4, lessons: ["l4"] }]]);
   const pool = { id: "pd", section: "s4", status: "draft", sources: [{ id: "g", title: "G", url: "https://x" }],
     items: [{ id: "a", lesson: "l4", lvl: 1, sk: "num", src: "g №1", type: "answer", title: "17 : 5", answerKind: "divrem", answer: [3, 2], steps: ["5 · 3 = 15, 17 − 15 = 2."] }] };
@@ -589,6 +717,225 @@ const order = l => ({ L1: 3, L2: 1, L3: 2, L4: 4 }[l] ?? 50);
   eq(L.planFor(R, "math", { ...ctx, grade: 4, diags: [B] }).base.length, 2, "baseline planFor: відновлений план має base");
   // старий план без base (dg6) лишається робочим
   eq(L.todo({ steps: [{ l: "a", done: false }] }).length, 1, "старий план без base: todo працює");
+}
+
+/* 11б. Baseline після злиття PR #6 і main: перевірки з PR #6, яких бракувало main, і сумісність збережених планів з полем l */
+{ const B = { id: "dgb", grade: 4, title: "T", why: "W", status: "draft",
+    topics: [{ id: "p", title: "P", kind: "pre", baseline: true, lessons: [], for: ["sA"] },
+             { id: "q", title: "Q", kind: "pre", baseline: true, for: ["sB", "sA"] },
+             { id: "k", title: "K", kind: "cur", lessons: ["g1"] }],
+    items: [{ topic: "p", type: "number", sk: "m.num", title: "p1" }, { topic: "q", type: "number", sk: "m.num", title: "q1" },
+            { topic: "p", type: "number", sk: "m.num", title: "p2" }, { topic: "q", type: "number", sk: "m.num", title: "q2" },
+            { topic: "k", type: "number", sk: "m.num", title: "k1" }] };
+  // validate.mjs передає розділи свого предмета разом зі списком уроків (без boss)
+  const vc = { lessons: new Map([["g1", { grade: 4 }], ["g2", { grade: 4 }], ["h1", { grade: 4 }], ["h2", { grade: 4 }]]),
+    sections: new Map([["sA", { grade: 4, lessons: ["g1", "g2"] }], ["sB", { grade: 4, lessons: ["h1", "h2"] }], ["sE", { grade: 4, lessons: [] }]]), skills: { "m.num": 1 } };
+  eq(L.validate(B, vc), [], "baseline validate (зі списком уроків розділу): коректний тест → []");
+  const d = clone(B); d.topics[0].for = ["sE"];
+  eq(L.validate(d, vc).some(e => e.includes("у розділі sE немає уроків")), true, "baseline validate: for веде в розділ без уроків — помилка");
+  const ctx4 = { week: 1, sections: [{ id: "sA", weeks: [1, 6], lessons: ["g1", "g2"] }, { id: "sB", weeks: [7, 12], lessons: ["h1", "h2"] }] };
+  const skip = { 0: SKIP, 1: SKIP, 4: SKIP };
+  eq(L.buildPlan(B, skip, ctx4).base, [{ topic: "p", why: "gap", next: "g1" }, { topic: "q", why: "gap", next: "g1" }], "baseline: q веде в найтерміновіший розділ із for (sA), а не за порядком for");
+  // помилки уроків поряд із baseline: syncPlan працює, base не губиться
+  const S = fresh(); L.finishDiag(S, "math", B, skip, ctx4); L.syncPlan(S, "math", [{ l: "g2", n: 2, of: 3 }], "2026-10-30");
+  eq([S.plan.math.base.length, L.todo(S.plan.math).map(s => s.l)], [2, ["g2"]], "baseline: err-крок додається, base лишається");
+  // змішаний тест (звичайна pre + baseline): текст як для звичайних прогалин
+  const dm = { topics: [{ id: "a", kind: "pre", lessons: ["x"] }, { id: "b", kind: "pre", baseline: true }] };
+  eq([L.level(dm, { a: "gap", b: "gap" }).text.includes("пройти ще раз"), L.level(dm, { a: "gap", b: "gap" }).base], [true, false], "baseline: є прогалина з уроком → звичайний текст");
+  // план, збережений версією PR #6 (base[].l), читається як next ?? l
+  const O = fresh(); O.grade = 4; O.planByGrade = { math: { 4: { diag: "dgb", grade: 4, topics: {}, steps: [], known: [], base: [{ topic: "p", why: "gap", l: "g1" }, { topic: "q", why: "shaky", l: null }] } } };
+  eq(L.planFor(O, "math", { grade: 4, diags: [B] }).base.map(b => b.next), ["g1", null], "baseline compat: старий план з l → next");
+  eq(L.planFor(O, "math", { grade: 4, diags: [B] }).base[0].l, "g1", "baseline compat: поле l не видаляється");
+  const N = fresh(); N.grade = 4; N.planByGrade = { math: { 4: { diag: "dgb", grade: 4, topics: {}, steps: [], known: [], base: [{ topic: "p", why: "gap", next: "g2", l: "g1" }] } } };
+  eq(L.planFor(N, "math", { grade: 4, diags: [B] }).base[0].next, "g2", "baseline compat: next має перевагу над l");
+  const U = fresh(); U.plan = { math: { diag: "dgb", steps: [], known: [], base: [{ topic: "p", why: "gap", l: "g1" }] } }; delete U.grade;
+  eq(L.planFor(U, "math", {}).base[0].next, "g1", "baseline compat: план без класу теж читається");
+}
+
+/* 13. Плеєр після QA 4–5 кл. (engine-player-qa-fixes): джерело без подвоєння сторінки, кнопки числового поля, divrem-записи */
+{ eq(L.srcRef("№1", 56), "№1, с. 56", "srcRef: сторінку дописано");
+  eq(L.srcRef("с. 56, №1", 56), "с. 56, №1", "srcRef: сторінка вже є в src — не подвоюємо");
+  eq(L.srcRef("№3, с.18", 18), "№3, с.18", "srcRef: «с.18» без пробілу — теж сторінка");
+  eq(L.srcRef("№12(1)", undefined), "№12(1)", "srcRef: без srcPage — як є");
+  eq(L.srcRef("", 7), "с. 7", "srcRef: лише сторінка");
+  eq(L.srcRef("вправа 3", 9), "вправа 3, с. 9", "srcRef: «с.» у слові не плутаємо зі сторінкою");
+  const K = (s, g, sg) => { const k = L.numberKeys(s, g, sg); return [k.minus, k.frac, k.dec]; };
+  eq(K({ answer: 3826 }, 4), [false, false, false], "numberKeys: 4 кл., ціле — без «−» і «/»");
+  eq(K({ answer: "3/5", fractionOnly: true }, 4), [false, true, false], "numberKeys: 4 кл., дробовий ключ — «/»");
+  eq(K({ answer: 2, mixed: true }, 4), [false, true, false], "numberKeys: 4 кл., прапорець mixed — «/»");
+  eq(K({ answer: -3 }, 4), [true, false, false], "numberKeys: від'ємний ключ — «−»");
+  eq(K({ answer: 5, signed: true }, 4), [true, false, false], "numberKeys: signed — «−»");
+  eq(K({ answer: 5 }, 4, true), [true, false, false], "numberKeys: розділ зі знаком — «−»");
+  eq(K({ answer: 2.5 }, 4), [false, false, true], "numberKeys: 4 кл., десятковий — підказка про кому");
+  eq(K({ answer: 12 }, 5), [false, true, false], "numberKeys: 5 кл. — дроби завжди (не видає вигляд відповіді)");
+  eq(K({ answer: 12 }, 6), [true, true, false], "numberKeys: 6 кл. — «−» і дроби завжди");
+  eq(K({ answer: "−1/2" }, 4), [true, true, false], "numberKeys: типографський мінус у ключі");
+  const s = { answerKind: "divrem", answer: [4, 5] };
+  for (const v of ["4, ост. 5", "4 остача 5", "4, остача 5", "4 (остача 5)", "4 остача: 5", "4,ост.5", "4 ост. 5"]) eq(L.checkAns(s, v), "ok", `divrem: «${v}» приймається`);
+  for (const v of ["4, 5", "4 і 5", "4; 5", "4 остача", "4,5 ост. 5", "4 остачі 5 6"]) eq(L.checkAns(s, v), "bad", `divrem: «${v}» не приймається`);
+  const ctx = { sections: new Map([["s1", { grade: 4, lessons: ["a"] }]]), skills: { ops: {} } };
+  const pool = it => L.validatePool({ id: "p", section: "s1", status: "draft", sources: [{ id: "bk", title: "Підручник", url: "https://example.org" }],
+    items: [{ id: "t1", lesson: "a", lvl: 1, sk: "ops", src: "bk №1", type: "answer", title: "x", answer: 5, steps: ["крок"], ...it }] }, ctx);
+  eq(pool({ signed: true }), [], "validatePool: signed — boolean для числової answer");
+  eq(pool({ signed: "так" }).some(e => e.includes("signed")), true, "validatePool: signed не boolean — помилка");
+  eq(pool({ signed: true, answerKind: "comparison", answer: "<" }).some(e => e.includes("signed")), true, "validatePool: signed лише для number");
+}
+
+// answerSig: друга спроба не витрачається на той самий запис іншими символами (engine-player-focus-followup)
+{ const S = (s, a, b) => L.answerSig(s, a) === L.answerSig(s, b), num = { answer: 7 };
+  for (const v of ["5,", "05", " 5 ", "5,0", "5."]) eq(S(num, "5", v), true, `answerSig: «${v}» = «5»`);
+  for (const v of ["6", "-5", "5/1", "50", "0,5"]) eq(S(num, "5", v), false, `answerSig: «${v}» ≠ «5»`);
+  eq(S(num, "19 735", "19735"), true, "answerSig: розряди через пробіл — те саме число");
+  eq(S(num, "2/4", "1/2"), false, "answerSig: нескоротний і скоротний дріб — різний запис (reduced → form)");
+  eq(S(num, "2/4", " 2/4 "), true, "answerSig: пробіли довкола дробу");
+  eq(S(num, "7 /3", "7/3"), false, "answerSig: пробіл у дробу лишаємо — від нього залежить перевірка mixed");
+  eq(S(num, "2 1/3", "7/3"), false, "answerSig: мішане число й неправильний дріб — різні (mixed → form)");
+  eq(S(num, "2 1/3", "21/3"), false, "answerSig: «2 1/3» ≠ «21/3»");
+  eq(S(num, "0,6", "3/5"), false, "answerSig: десятковий і звичайний дріб — різний запис (fractionOnly)");
+  const dr = { answerKind: "divrem", answer: [4, 5] };
+  eq(S(dr, "4 ост. 6", "4, остача 6"), true, "answerSig divrem: той самий запис іншими словами");
+  eq(S(dr, "4 ост. 6", "4 ост. 5"), false, "answerSig divrem: інша остача");
+  eq(S(dr, "4", "4 ост. 0"), false, "answerSig divrem: лише частка ≠ остача 0");
+  const ls = { answerKind: "list", answer: "1; 2" };
+  eq(S(ls, "1;3", "1 ; 3"), true, "answerSig list: пробіли біля «;»");
+  eq(S(ls, "1; 3", "3; 1"), false, "answerSig list: інший порядок — інший запис (перевіряє checkAns)");
+  const ex = { answerKind: "expression", answer: "x^2 + 1" };
+  eq(S(ex, "x^2+2", "x ^ 2 + 2"), true, "answerSig expression: пробіли біля знаків дій");
+  eq(S(ex, "x^2+2", "x^2+3"), false, "answerSig expression: інший вираз");
+  eq(S({ answerKind: "coordinates2", answer: [1, 2] }, "(1;−3)", "( 1 ; -3 )"), true, "answerSig coordinates: «−» і пробіли");
+  eq(S({ answerKind: "comparison", answer: "<" }, ">", " > "), true, "answerSig comparison: пробіли");
+  eq(S({ answerKind: "comparison", answer: "<" }, ">", "="), false, "answerSig comparison: інший знак");
+}
+
+/* coordinates2 з компонентами-виразами (engine-coordinates2-expression, №13.5(4): A(m; n), B(p; k) → (p − m; k − n)). */
+{ const K = (answer, extra = {}) => ({ type: "answer", answerKind: "coordinates2", answer, ...extra }), key = K("(p - m; k - n)");
+  [["(p - m; k - n)", "ok"], ["(-m + p; k - n)", "ok"], ["(p − m; −n + k)", "ok"], ["p - m; k - n", "ok"], ["M(p-m; k-n)", "ok"], ["((p - m); (k - n))", "ok"], ["(p - m, k - n)", "ok"],
+   ["(m - p; k - n)", "bad"], ["(k - n; p - m)", "bad"], ["(p - m; n - k)", "bad"], ["(p - m)", "bad"], ["(p - m; k - n; 0)", "bad"], ["(p; k)", "bad"], ["(x; y)", "bad"], ["(1; 2)", "bad"],
+   ["(p - 1,0000001m; k - n)", "bad"], ["(p - m + 0,0000001; k - n)", "bad"], ["(p - m = 0; k - n)", "bad"], ["(p - m; k - n", "bad"], ["", "bad"], ["(p - m; alert(1))", "bad"], ["k(m - n); 2", "bad"]]
+    .forEach(([v, r]) => eq(L.checkAns(key, v), r, `coordinates2-вираз ${key.answer} ← «${v}»`));
+  eq(L.checkAns(K(["p - m", "k - n"]), "(p - m; k - n)"), "ok", "coordinates2-вираз: ключ-масив");
+  // форма — як у expression; числова компонента — як у числовому coordinates2 (без арифметики, корінь спрощено)
+  const simp = K("(2a; b^2)", { form: "simplified" }), mix = K("(2a; √2)");
+  [[simp, "(2a; b^2)", "ok"], [simp, "(a + a; b^2)", "form"], [simp, "(2a; b·b)", "form"], [simp, "(2a; b^3)", "bad"],
+   [K("(a^2 - 1; b)", { form: "expanded" }), "((a - 1)(a + 1); b)", "form"], [K("((a - 1)(a + 1); 2b)", { form: "factored" }), "(a^2 - 1; 2b)", "form"],
+   [mix, "(a·2; √2)", "ok"], [mix, "(2a; √8/2)", "form"], [mix, "(2a; 1,41)", "bad"], [mix, "(2a; 1 + √2 - 1)", "form"], [K("(2a; 3)"), "(2a; 1 + 2)", "bad"], [K("(2a; 3)"), "(2a; 6/2)", "ok"],
+   [K("(2 sin x; 1)"), "(sin x + sin x; 1)", "ok"], [K("(√2·x; 1)"), "(1,41421356237x; 1)", "bad"], [K("(x; 1)", { form: "short" }), "(x; 1)", "bad"]]
+    .forEach(([s, v, r]) => eq(L.checkAns(s, v), r, `coordinates2-вираз ${s.answer}${s.form ? "/" + s.form : ""} ← «${v}»`));
+  eq(L.formHint(simp, "(a + a; b^2)"), "Вираз правильний, але його можна спростити.", "formHint coordinates2-вираз: підказка форми expression");
+  eq(L.formHint(K("(2a; √2)", { form: "simplified" }), "(2a; √8/2)").includes("кореня"), true, "formHint coordinates2-вираз: неспрощений корінь — підказка про корені");
+  eq(JSON.stringify(L.pairKey(key)), JSON.stringify([{ expr: true, vars: ["p", "m"], tidy: true, text: "p - m" }, { expr: true, vars: ["k", "n"], tidy: true, text: "k - n" }]), "pairKey: компоненти-вирази");
+  eq([L.pairKey(K("(3; -2)")), L.pairKey(K([1.5, -2])), L.pairKey({ answerKind: "list", answer: "a; b" }), L.pairKey({ answerKind: "coordinates3", answer: "(a; b; c)" }), L.pairKey(K("(a; b; c)"))],
+    [null, null, null, null, null], "pairKey: числовий ключ, інший формат, не дві компоненти — null");
+  eq(L.pairKey(K("(a + a; b)", { form: "simplified" }))?.[0]?.tidy, false, "pairKey: неканонічний ключ — tidy false");
+  // рев'ю P3-1: pairKey і formHint самі задають BUDGET — у свіжому модулі першим викликом числова компонента з коренем канонічна
+  const fresh = () => { const c = { console }; c.window = c; vm.createContext(c); vm.runInContext(fs.readFileSync(path.join(ROOT, "app/learn.js"), "utf8"), c); return c.SLID_LEARN; };
+  eq(JSON.stringify(fresh().pairKey(K("(√6/2; p - m)")).map(c => c.tidy)), "[true,true]", "pairKey у свіжому модулі: (√6/2; p - m) — обидві компоненти канонічні");
+  eq(fresh().formHint(K("(√6/2; p - m)", { form: "simplified" }), "(√6/2; p - m + p - p)"), "Вираз правильний, але його можна спростити.", "formHint у свіжому модулі: підказка форми виразу (вихід від BUDGET не залежить: компонента-вираз сама скидає бюджет)");
+  // межі часу й біт: кожна компонента має половину з ~0,8 с; разом — менше 1 с
+  for (const v of ["(((((x+1)^12)^12)^12)^12; ((((y+1)^12)^12)^12)^12)", "((x+√2+√3+√5+√7+√11+√13)^12; (x+√2+√3+√5+√7+√11+√13)^12)",
+    "((((((((x^12)^12)^12)^12)^12)^12)^12)^12; (((((((9999999999999999^12)^12)^12)^12)^12)^12)^12)"]) {
+    const t = Date.now(); eq(L.checkAns(key, v), "bad", `coordinates2-вираз, великі числа → bad: ${v.slice(0, 30)}`); eq(Date.now() - t < 1000, true, `coordinates2-вираз, час < 1 с: ${v.slice(0, 30)}`);
+  }
+  { const t = Date.now(); L.checkAns(K("((x + 1)^2; y)", { form: "factored" }), "((x+y+z+a+b+c+d+e+f+g+h)^12·(x+y+z+a+b+c+d+e+f+g+h)^12; (x+y+z+a+b+c+d+e+f+g+h)^12·(x+y+z+a+b+c+d+e+f+g+h)^12)");
+    eq(Date.now() - t < 1000, true, "coordinates2-вираз factored, час < 1 с"); }
+  // валідатор пулу: ключ розбирається й канонічний; form — лише для пари з виразом
+  const vp = it => L.validatePool({ id: "p", section: "s", status: "draft", sources: [{ id: "b", title: "t", url: "https://x" }], items: [{ id: "a", lesson: "l", lvl: 1, sk: "num", src: "b 1", title: "t", steps: ["s"], ...it }] },
+    { sections: new Map([["s", { grade: 9, lessons: ["l"] }]]), skills: { num: {} } });
+  for (const it of [key, K(["p - m", "k - n"]), K("(2a; b^2)", { form: "simplified" }), K("((a - 1)(a + 1); 2b)", { form: "factored" }), K("(2a; √2)"), K("(x/2; 3)")]) eq(vp(it), [], `validatePool: коректний ключ coordinates2-вираз ${JSON.stringify(it.answer)} ${it.form || ""}`);
+  for (const [it, part] of [[K("(a + a; b)", { form: "simplified" }), "answer"], [K("(a^2 - 1; 2b)", { form: "factored" }), "добутком"], [K("(3; -2)", { form: "expanded" }), "form"],
+    [K("(p - m; k - n)", { form: "short" }), "form"], [K("(p - m = 0; k)"), "рівнянням"], [K("(p - m; 1 + 2)"), "answer"], [K("(p - m; k - n; 0)"), "answer"], [K("(p - m; √8)"), "answer"], [K("(p - m; k +)"), "answer"]])
+    eq(vp(it).some(e => e.includes(part)), true, `validatePool: помилка coordinates2-вираз ${JSON.stringify(it.answer)} ${it.form || ""} («${part}»)`);
+}
+
+/* Числові coordinates2 — побайтово як до розширення: знімок checkAns старого рушія (a12bfbd) на всіх ключах контенту й синтетичних. */
+{ const snap = JSON.parse(fs.readFileSync(path.join(ROOT, "tools/fixtures/coordinates2-numeric.json"), "utf8"));
+  // навмисні зміни після знімка (engine-math-answer-formats-followup, P2-r1): нескорочений дріб із коренем — "form"
+  const CHANGED = { [JSON.stringify(["(√2; -√2)", "(2·√2/2; -√2)"])]: "form" };
+  let diff = 0, calls = 0, changed = 0;
+  for (const c of snap.cases) {
+    const it = { type: "answer", answerKind: "coordinates2", answer: c.answer, ...(c.form !== undefined ? { form: c.form } : {}) };
+    if (L.pairKey(it) !== null) { diff++; console.log(`ПОМИЛКА знімок: числовий ключ ${JSON.stringify(c.answer)} пішов шляхом виразів`); }
+    for (const [v, r0] of Object.entries(c.results)) { calls++; const r = CHANGED[JSON.stringify([c.answer, v])] ?? r0; if (r !== r0) changed++; const got = L.checkAns(it, v); if (got !== r) { diff++; console.log(`ПОМИЛКА знімок ${c.where} ${JSON.stringify(c.answer)} ← «${v}»: ${got}, було ${r}`); } }
+    if (c.array !== null) { calls++; if (L.checkAns(it, c.answer) !== c.array) diff++; }
+  }
+  eq(diff, 0, `знімок числових coordinates2: ${snap.cases.length} ключів, ${calls} викликів без розбіжностей`);
+  eq(changed, Object.keys(CHANGED).length, "знімок: кожна навмисна зміна справді є в знімку");
+  eq(calls > 1500 && snap.cases.filter(c => c.where !== "synthetic").length >= 40, true, "знімок числових coordinates2 не порожній");
+  // ключі реального контенту: кожен числовий ключ має бути в знімку (новий числовий ключ — перегенерувати знімок на старому рушії не вийде,
+  // тож тоді досить, що він іде числовим шляхом: pairKey === null); ключ із виразами знімка не стосується
+  const { loadContent } = await import("./lib.mjs");
+  const real = loadContent().subjects.flatMap(s => (s.pools || []).flatMap(p => p.items).concat((s.diags || []).flatMap(d => d.items))).filter(it => it.answerKind === "coordinates2");
+  const known = new Set(snap.cases.map(c => JSON.stringify(c.answer))), numeric = real.filter(it => L.pairKey(it) === null);
+  eq(real.length >= 40 && numeric.filter(it => known.has(JSON.stringify(it.answer))).length >= 40, true, `ключі coordinates2 контенту в знімку: ${numeric.filter(it => known.has(JSON.stringify(it.answer))).length} з ${real.length}`);
+}
+
+/* Доробки форматів (engine-math-answer-formats-followup): одиниця в полі, нескорочений дріб із коренем, factored зі змінною
+   в знаменнику, межа перевірки, підказки form/bad, ключ periodicSet, формат pairSym. */
+{ const K = (answerKind, answer, extra = {}) => ({ answerKind, answer, ...extra });
+  const N = (answer, extra = {}) => ({ answer, ...extra });
+  [ // своя одиниця (unit, unitForms) — як без неї; після кожного елемента list; чужа — bad; без unit — без змін
+    [N("7", { unit: "см" }), "7 см", "ok"], [N("7", { unit: "см" }), "7см", "ok"], [N("7", { unit: "см" }), "7 мм", "bad"], [N("7", { unit: "см" }), "7 см²", "bad"], [N("7"), "7 см", "bad"],
+    [N("5", { unit: "м" }), "5 км", "bad"], [N("5", { unit: "м" }), "5 м", "ok"], [N("60", { unit: "грн" }), "60 грн", "ok"], [N("8", { unit: "%" }), "8 %", "ok"], [N("8", { unit: "%" }), "8%", "ok"],
+    [N("12", { unit: "см²" }), "12 см²", "ok"], [N("12", { unit: "см²" }), "12 см2", "ok"], [N("12", { unit: "см²" }), "12 см^2", "ok"], [N("-3", { unit: "°C" }), "-3 °С", "ok"], [N("2,5", { unit: "кг" }), "2,5 кг", "ok"],
+    [N("3", { unit: "яблука", unitForms: ["яблуко", "яблука", "яблук"] }), "3 яблука", "ok"], [N("3", { unit: "яблука", unitForms: ["яблуко", "яблука", "яблук"] }), "3 яблук", "ok"],
+    [N("1/2", { unit: "кг", reduced: true }), "2/4 кг", "form"], [N("7", { unit: "см" }), "8 см", "bad"], [N("7", { unit: "см" }), "см 7", "bad"],
+    [K("list", "70; 110", { unit: "°" }), "70°; 110°", "ok"], [K("list", "70; 110", { unit: "°" }), "110 °; 70", "ok"], [K("list", "70; 110", { unit: "°" }), "70°, 110°", "ok"], [K("list", "8; 40", { unit: "см" }), "8 см; 40 см", "ok"],
+    [K("list", "70; 110", { unit: "°" }), "70°; 120°", "bad"], [K("list", "70; 110"), "70°; 110°", "bad"], [K("exactRoot", "2√3", { unit: "см" }), "2√3 см", "ok"], [K("exactRoot", "2√3", { unit: "см" }), "√12 см", "form"],
+    [K("comparison", "<", { unit: "см" }), "< см", "bad"],
+    // P2-r1: нескорочений дріб із коренем → form (list, exactRoot, coordinates2); скорочений — ok
+    [K("exactRoot", "-3 + √14"), "(-6 + 2√14)/2", "form"], [K("exactRoot", "√2"), "2√2/2", "form"], [K("exactRoot", "(1 + √5)/2"), "2(1 + √5)/4", "form"], [K("exactRoot", "√3"), "(2/2)√3", "form"],
+    [K("exactRoot", "8π/3"), "16π/6", "form"], [K("exactRoot", "1 + √5"), "(2 + 2√5)/2", "form"], [K("list", "1 ± √5"), "(2 ± 2√5)/2", "form"], [K("list", "1 ± √5"), "(2 + 2√5)/2; (2 - 2√5)/2", "form"],
+    [K("list", "2 ± √3"), "(4 ± 2√3)/2", "form"], [K("coordinates2", "(1 + √2; 0)"), "((2 + 2√2)/2; 0)", "form"], [K("coordinates2", "(√2; 1)"), "(2√2/2; 1)", "form"],
+    [K("exactRoot", "-3 + √14"), "-3 + √14", "ok"], [K("exactRoot", "(1 + √5)/2"), "(1 + √5)/2", "ok"], [K("exactRoot", "(3 + √5)/2"), "1,5 + √5/2", "ok"], [K("exactRoot", "√2/2"), "√2/2", "ok"],
+    [K("exactRoot", "2 + 2√5"), "2(1 + √5)", "ok"], [K("exactRoot", "(2 + √5)/2"), "(2 + √5)/2", "ok"], [K("exactRoot", "2√3/3"), "2√3/3", "ok"], [K("list", "1 ± √5"), "1 ± √5", "ok"],
+    // P3-r1: змінна в знаменнику множника — не розклад
+    [K("expression", "3x(x + 2)", { form: "factored" }), "x^2(3 + 6/x)", "form"], [K("expression", "3x(x + 2)", { form: "factored" }), "3x(x + 2)", "ok"], [K("expression", "(x - 1)(x + 1)", { form: "factored" }), "x(x - 1/x)", "form"],
+  ].forEach(([s, v, expected]) => eq(L.checkAns(s, v), expected, `доробки ${s.answerKind || "number"}${s.unit ? " [" + s.unit + "]" : ""}: ${JSON.stringify(s.answer)} ← «${v}»`));
+  // підказки «form»
+  const fh = (s, v) => L.formHint(s, v);
+  eq(fh(K("exactRoot", "-3 + √14"), "(-6 + 2√14)/2").includes("Скороти дріб"), true, "formHint: нескорочений дріб із коренем — «скороти дріб»");
+  eq(fh(K("list", "1 ± √5"), "(2 ± 2√5)/2").includes("Скороти дріб"), true, "formHint: list — «скороти дріб»");
+  eq(fh(K("exactRoot", "2√3"), "√12").includes("з-під кореня"), true, "formHint: √12 — як і раніше, про корінь");
+  eq(fh(K("expression", "2x^2 - 4x - 2", { form: "expanded" }), "3x^2 + 6x - 5 - x^2 - 10x + 3"), "Вираз правильний. Зведи подібні доданки й запиши многочлен стандартного вигляду.", "formHint expanded без дужок (pg7m3:b02)");
+  eq(fh(K("expression", "2x^2 - 4x - 2", { form: "expanded" }), "2(x^2 - 2x - 1)"), "Вираз правильний. Розкрий дужки й зведи подібні доданки.", "formHint expanded з дужками");
+  eq(fh(K("expression", "a^(-20)", { form: "simplified" }), "1/a^20"), "Вираз правильний. Запиши його одним степенем: основа, ^ і показник.", "formHint simplified, ключ-степінь (pg8m1:c04)");
+  eq(fh(K("expression", "2x", { form: "simplified" }), "x + x"), "Вираз правильний, але його можна спростити.", "formHint simplified, ключ не степінь — як раніше");
+  eq(fh(K("coordinates2", "(2a + 2; b)", { form: "expanded" }), "(a + a + 2; b)").includes("Зведи подібні"), true, "formHint coordinates2 expanded: дужки пари не рахуються дужками виразу");
+  eq(fh(K("coordinates2", "(2a + 2; b)", { form: "expanded" }), "(2(a + 1); b)").includes("Розкрий дужки"), true, "formHint coordinates2 expanded: дужки в компоненті");
+  // підказки «bad»: межа перевірки, чужа одиниця, знаменник-добуток без дужок; інакше null
+  const bh = (s, v) => L.badHint(s, v);
+  for (const [s, v] of [[K("expression", "x"), "((((x+1)^12)^12)^12)^12"], [K("exactRoot", "√2"), "(√2+√3+√5+√7+√11+√13+√17+√19+√23+√29+√31+√37+√41+√43)^12"], [K("expression", "x"), "(((((((((9999999999999999^12)^12)^12)^12)^12)^12)^12)^12)^12)"]])
+    eq(bh(s, v), "Запис занадто складний для перевірки. Спрости його й спробуй ще раз.", `badHint межа: ${v.slice(0, 24)}`);
+  eq(bh(N("7", { unit: "см" }), "7 мм"), "Перевір одиницю: тут відповідь записують у «см». Одиницю можна й не писати.", "badHint: чужа одиниця");
+  eq(bh(K("list", "70; 110", { unit: "°" }), "70 см; 110 см")?.includes("«°»"), true, "badHint: чужа одиниця в list");
+  eq(bh(K("expression", "k/(6p)", { form: "reduced" }), "k/6p"), "Знаменник-добуток візьми в дужки: 1/(3y), бо 1/3y — це y/3.", "badHint: k/6p (pg8m1:b02)");
+  eq(bh(K("expression", "3a/(4b)", { form: "reduced" }), "3a/4b")?.includes("в дужки"), true, "badHint: 3a/4b");
+  for (const [s, v] of [[K("expression", "k/(6p)", { form: "reduced" }), "k/(6p)"], [K("expression", "k/(6p)", { form: "reduced" }), "k/7p"], [K("expression", "x/2"), "x/3"], [N("7", { unit: "см" }), "8"], [N("7"), "7 мм"], [N("7", { unit: "см" }), "7 см"], [K("expression", "x"), "x^2"]])
+    eq(bh(s, v), null, `badHint: звичайне повідомлення ${JSON.stringify(s.answer)} ← «${v}»`);
+  // межа не змінює вердикт: checkAns однаковий, LIMIT із попередньої перевірки не просочується в наступну
+  L.checkAns(K("expression", "x"), "((((x+1)^12)^12)^12)^12"); eq(L.badHint(K("expression", "x"), "x^2"), null, "badHint: LIMIT скидається кожною перевіркою");
+  // answerSig: та сама відповідь зі своєю одиницею — той самий відбиток
+  eq(L.answerSig(N("7", { unit: "см" }), "7 см") === L.answerSig(N("7", { unit: "см" }), "7"), true, "answerSig: «7 см» = «7» при unit «см»");
+  eq(L.answerSig(N("7"), "7 см") === L.answerSig(N("7"), "7"), false, "answerSig: без unit — різні записи");
+  // validatePool: ключ periodicSet, що сам не проходить, і ключ-наближення відхиляються (P3-r3)
+  const vp = it => L.validatePool({ id: "p", section: "s", status: "draft", sources: [{ id: "b", title: "t", url: "https://x" }], items: [{ id: "a", lesson: "l", lvl: 1, sk: "num", src: "b 1", type: "answer", title: "t", steps: ["s"], ...it }] },
+    { sections: new Map([["s", { grade: 10, lessons: ["l"] }]]), skills: { num: {} } });
+  eq(vp(K("periodicSet", "1234567 + πk")).some(e => e.includes("не проходить")), true, "validatePool: periodicSet «1234567 + πk» сам не проходить");
+  eq(vp(K("periodicSet", "0,5236 + πk")).some(e => e.includes("наближення")), true, "validatePool: periodicSet із десятковим наближенням у ключі");
+  eq(vp(K("periodicSet", "arctg 2 + πk")), [], "validatePool: periodicSet arctg 2 + πk — коректний");
+  eq(vp(K("periodicSet", "0,25 + πk")), [], "validatePool: periodicSet із точним десятковим (2 знаки)");
+  eq(vp(K("exactRoot", "2√2/2")).length > 0, true, "validatePool: нескорочений ключ exactRoot відхиляється");
+  // coordinates2 (рев'ю engine-coordinates2-expression P3-2): форма першої компоненти після переходу на числове порівняння —
+  // з тим самим запасом, що в expression. Годинник: кожен виклик Date.now() — +10 мс.
+  { const real = Date.now; let t = real();
+    const slow = () => { const c = { console, Date: { now: () => (t += 10) } }; c.window = c; vm.createContext(c); vm.runInContext(fs.readFileSync(path.join(ROOT, "app/learn.js"), "utf8"), c); return c.SLID_LEARN; };
+    const S = slow();
+    eq(S.checkAns(K("expression", "(p - m)/(p + m)", { form: "reduced" }), "(p - m)/(p + m)"), "ok", "повільний годинник: expression/reduced ok");
+    eq(S.checkAns(K("coordinates2", "((p - m)/(p + m); k)", { form: "reduced" }), "((p - m)/(p + m); k)"), "ok", "повільний годинник: coordinates2/reduced ok (форма після вичерпаної половини часу)"); }
+  // formHint одразу після checkAns не перевіряє пару вдруге (P3-5): результат той самий, що й зі свіжою перевіркою
+  { const s = K("coordinates2", "(2a; b^2)", { form: "simplified" }), v = "(a + a; b^2)";
+    eq(L.checkAns(s, v), "form", "pair cache: checkAns form"); eq(L.formHint(s, v), "Вираз правильний, але його можна спростити.", "pair cache: formHint з кешу");
+    L.checkAns(s, "(2a; b^2)"); eq(L.formHint(s, v), "Вираз правильний, але його можна спростити.", "pair cache: інший запис — перевірка заново"); }
 }
 
 console.log(`\n${n} перевірок, ${fails ? fails + " з помилками" : "усе гаразд"}`);

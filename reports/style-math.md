@@ -1,6 +1,6 @@
 # Стиль і складність: math
 
-Згенеровано: 2026-10-16 · tools/stats.mjs
+Згенеровано: 2026-10-31 · tools/stats.mjs
 
 | урок | клас | екр. | частка завдань | слів/екран | макс. слів | слів/речення | довгі слова | типів | прапорці |
 |---|---|---|---|---|---|---|---|---|---|
@@ -100,7 +100,7 @@
 | g7m2l4 Креслення парку (фінал) | 7 | 8 | 0.88 | 17 | 29 | 5.1 | 0.024 | 4 | sentenceWords=5.1 поза [6; 13]; typeVariety нетипово для сім'ї (z=2.9) |
 | g7m3l1 Скільки двійок у добутку? | 7 | 10 | 0.5 | 18 | 41 | 4.6 | 0.012 | 3 | sentenceWords=4.6 поза [6; 13] |
 | g7m3l2 Вираз як графік | 7 | 9 | 0.67 | 17 | 48 | 4.6 | 0.026 | 3 | sentenceWords=4.6 поза [6; 13] |
-| g7m3l3 Квадрат суми на клітинках | 7 | 9 | 0.56 | 16 | 34 | 4.4 | 0.015 | 3 | sentenceWords=4.4 поза [6; 13]; readWordsPerScreen нетипово для сім'ї (z=-2) |
+| g7m3l3 Квадрат суми на клітинках | 7 | 9 | 0.56 | 16 | 34 | 4.4 | 0.015 | 3 | sentenceWords=4.4 поза [6; 13]; readWordsPerScreen нетипово для сім'ї (z=-2.1) |
 | g7m3l4 Назад із дужок | 7 | 9 | 0.56 | 19 | 48 | 4.1 | 0.007 | 2 | sentenceWords=4.1 поза [6; 13]; sentenceWords нетипово для сім'ї (z=-2); typeVariety нетипово для сім'ї (z=-2.7) |
 | g7m3l5 Майстерня виразів (фінал) | 7 | 7 | 0.86 | 17 | 32 | 4.4 | 0.025 | 3 | sentenceWords=4.4 поза [6; 13] |
 | g7m4l1 Коли трикутники рівні? | 7 | 9 | 0.56 | 23 | 31 | 5.2 | 0.029 | 2 | sentenceWords=5.2 поза [6; 13]; typeVariety нетипово для сім'ї (z=-2.7) |
@@ -134,9 +134,9 @@
 | g8m2l3 Дві основи — один пояс | 8 | 8 | 0.63 | 22 | 49 | 5 | 0.009 | 3 | sentenceWords=5 поза [6; 13] |
 | g8m2l4 Рівні відрізки на променях | 8 | 9 | 0.56 | 23 | 44 | 5.5 | 0.006 | 3 | sentenceWords=5.5 поза [6; 13] |
 | g8m2l5 План ділянки (фінал) | 8 | 7 | 0.86 | 19 | 28 | 5.1 | 0.01 | 3 | sentenceWords=5.1 поза [6; 13]; longWordShare нетипово для сім'ї (z=-2.2) |
-| g8m3l1 Сторона за площею | 8 | 10 | 0.5 | 17 | 50 | 4.7 | 0.015 | 3 | sentenceWords=4.7 поза [6; 13] |
+| g8m3l1 Сторона за площею | 8 | 10 | 0.5 | 19 | 50 | 4.6 | 0.011 | 3 | sentenceWords=4.6 поза [6; 13] |
 | g8m3l2 Де живе $\sqrt{2}$? | 8 | 9 | 0.56 | 20 | 50 | 5.2 | 0.011 | 3 | sentenceWords=5.2 поза [6; 13] |
-| g8m3l3 Корінь із добутку | 8 | 9 | 0.67 | 18 | 36 | 4.8 | 0.01 | 3 | sentenceWords=4.8 поза [6; 13] |
+| g8m3l3 Корінь із добутку | 8 | 10 | 0.6 | 20 | 42 | 4.9 | 0.009 | 3 | sentenceWords=4.9 поза [6; 13] |
 | g8m3l4 Графік $y = \sqrt{x}$ | 8 | 10 | 0.5 | 18 | 52 | 4.9 | 0.021 | 3 | sentenceWords=4.9 поза [6; 13] |
 | g8m3l5 Плитка для шкільного двору (фінал) | 8 | 8 | 0.75 | 17 | 30 | 4.8 | 0.027 | 3 | sentenceWords=4.8 поза [6; 13] |
 | g8m4l1 Одна форма, різний розмір | 8 | 10 | 0.5 | 21 | 35 | 5.4 | 0.015 | 3 | sentenceWords=5.4 поза [6; 13] |
@@ -153,7 +153,7 @@
 | g8m6l3 План двору (фінал) | 8 | 7 | 0.86 | 16 | 29 | 5.1 | 0.031 | 3 | sentenceWords=5.1 поза [6; 13] |
 | g9m1l1 Коли знак перевертається | 9 | 9 | 0.56 | 19 | 33 | 4.6 | 0.029 | 3 | sentenceWords=4.6 поза [6; 13] |
 | g9m1l2 Проміжок на прямій | 9 | 10 | 0.5 | 18 | 46 | 4.5 | 0.037 | 3 | sentenceWords=4.5 поза [6; 13] |
-| g9m1l3 Спільна смуга | 9 | 9 | 0.56 | 16 | 31 | 5 | 0.017 | 3 | sentenceWords=5 поза [6; 13]; readWordsPerScreen нетипово для сім'ї (z=-2) |
+| g9m1l3 Спільна смуга | 9 | 9 | 0.56 | 16 | 31 | 5 | 0.017 | 3 | sentenceWords=5 поза [6; 13]; readWordsPerScreen нетипово для сім'ї (z=-2.1) |
 | g9m1l4 Диспетчер обмежень (фінал) | 9 | 8 | 0.75 | 17 | 29 | 4.6 | 0.025 | 3 | sentenceWords=4.6 поза [6; 13] |
 | g9m2l1 Відстань на карті | 9 | 9 | 0.67 | 20 | 25 | 5 | 0.035 | 3 | sentenceWords=5 поза [6; 13]; maxReadWords нетипово для сім'ї (z=-2.2) |
 | g9m2l2 Коло й пряма числами | 9 | 10 | 0.6 | 24 | 40 | 5.6 | 0.021 | 3 | sentenceWords=5.6 поза [6; 13] |
@@ -161,7 +161,7 @@
 | g9m2l4 Додати, розтягнути, помножити | 9 | 9 | 0.56 | 21 | 35 | 4.8 | 0.027 | 3 | sentenceWords=4.8 поза [6; 13] |
 | g9m2l5 Квест на карті (фінал) | 9 | 8 | 0.75 | 21 | 27 | 5.1 | 0.037 | 3 | sentenceWords=5.1 поза [6; 13] |
 | g9m3l1 Що розкаже графік | 9 | 8 | 0.5 | 19 | 42 | 4.6 | 0.026 | 3 | sentenceWords=4.6 поза [6; 13] |
-| g9m3l2 Зсуви й розтяги | 9 | 10 | 0.6 | 16 | 29 | 4.9 | 0.033 | 3 | sentenceWords=4.9 поза [6; 13]; readWordsPerScreen нетипово для сім'ї (z=-2) |
+| g9m3l2 Зсуви й розтяги | 9 | 10 | 0.6 | 16 | 29 | 4.9 | 0.033 | 3 | sentenceWords=4.9 поза [6; 13]; readWordsPerScreen нетипово для сім'ї (z=-2.1) |
 | g9m3l3 Вершина й вісь | 9 | 9 | 0.56 | 24 | 43 | 5.5 | 0.022 | 3 | sentenceWords=5.5 поза [6; 13] |
 | g9m3l4 Де графік вище нуля | 9 | 9 | 0.56 | 21 | 41 | 5.4 | 0.018 | 3 | sentenceWords=5.4 поза [6; 13] |
 | g9m3l5 Фонтан у парку (фінал) | 9 | 8 | 0.75 | 17 | 28 | 4.7 | 0.02 | 3 | sentenceWords=4.7 поза [6; 13] |
@@ -244,7 +244,7 @@
 - **4:boss**: screens 8±0, gradedShare 0.75±0, readWordsPerScreen 17.4±2.24, maxReadWords 25±4.56, sentenceWords 4.48±0.22, longWordShare 0.01±0, typeVariety 3.2±0.4
 - **5-6:lesson**: screens 9.37±0.72, gradedShare 0.66±0.06, readWordsPerScreen 18.92±2.88, maxReadWords 43.12±7.64, sentenceWords 4.82±0.5, longWordShare 0.01±0.01, typeVariety 3.53±0.64
 - **5-6:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 18.55±2.1, maxReadWords 25.82±4.09, sentenceWords 4.65±0.39, longWordShare 0.01±0, typeVariety 3.27±0.45
-- **7-9:lesson**: screens 9.15±0.74, gradedShare 0.56±0.06, readWordsPerScreen 20.25±2.08, maxReadWords 40.03±6.78, sentenceWords 5.11±0.34, longWordShare 0.02±0.01, typeVariety 2.93±0.35
+- **7-9:lesson**: screens 9.17±0.75, gradedShare 0.56±0.06, readWordsPerScreen 20.31±2.03, maxReadWords 40.11±6.77, sentenceWords 5.11±0.34, longWordShare 0.02±0.01, typeVariety 2.93±0.35
 - **7-9:boss**: screens 7.67±0.64, gradedShare 0.79±0.06, readWordsPerScreen 18.19±1.79, maxReadWords 29.43±3.23, sentenceWords 5.07±0.29, longWordShare 0.02±0.01, typeVariety 3.1±0.29
 - **10-11:lesson**: screens 9.54±0.63, gradedShare 0.57±0.06, readWordsPerScreen 22.78±1.89, maxReadWords 47.76±6.53, sentenceWords 5.51±0.39, longWordShare 0.03±0.01, typeVariety 2.9±0.37
 - **10-11:boss**: screens 8.08±0.28, gradedShare 0.75±0.01, readWordsPerScreen 19±1.47, maxReadWords 33.58±7.36, sentenceWords 5.18±0.54, longWordShare 0.04±0.02, typeVariety 2.92±0.28
