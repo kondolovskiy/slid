@@ -22,7 +22,7 @@
 | h35 Справа шкільної ради (фінал) | 5 | 6 | 0.83 | 13 | 20 | 4.7 | 0.063 | 3 | sentenceWords=4.7 поза [5; 11] |
 | h41 Знак, якому тисяча років | 5 | 5 | 0.4 | 22 | 70 | 5.2 | 0.077 | 2 | gradedShare=0.4 поза [0.5; 0.9]; maxReadWords=70 поза [0; 60]; gradedShare нетипово для сім'ї (z=-2.1); maxReadWords нетипово для сім'ї (z=2.3); longWordShare нетипово для сім'ї (z=2.5) |
 | h42 Скарби зі списку ЮНЕСКО | 5 | 5 | 0.6 | 24 | 79 | 6.3 | 0.067 | 3 | maxReadWords=79 поза [0; 60]; maxReadWords нетипово для сім'ї (z=3.5) |
-| h43 Українці, яких знає світ | 5 | 7 | 0.43 | 21 | 47 | 6.2 | 0.053 | 2 | gradedShare=0.43 поза [0.5; 0.9] |
+| h43 Українці, яких знає світ | 5 | 7 | 0.43 | 21 | 47 | 6.3 | 0.056 | 2 | gradedShare=0.43 поза [0.5; 0.9] |
 | h44 Україна і Європа | 5 | 5 | 0.4 | 22 | 57 | 6.2 | 0.083 | 2 | gradedShare=0.4 поза [0.5; 0.9]; gradedShare нетипово для сім'ї (z=-2.1); longWordShare нетипово для сім'ї (z=2.9) |
 | h45 Посол України (фінал) | 5 | 6 | 0.83 | 9 | 19 | 4.6 | 0.067 | 3 | sentenceWords=4.6 поза [5; 11] |
 | g6s1l1 Камінь, якому 1,4 мільйона років | 6 | 7 | 0.57 | 19 | 52 | 6.1 | 0.02 | 4 | — |
@@ -188,7 +188,7 @@
 
 Для z-оцінок sd не менше 10 % середнього; нижче наведено фактичне sd.
 
-- **5-6:lesson**: screens 7±1.03, gradedShare 0.6±0.09, readWordsPerScreen 22.34±4.07, maxReadWords 53.29±7.4, sentenceWords 6.05±0.38, longWordShare 0.04±0.02, typeVariety 3.18±0.76
+- **5-6:lesson**: screens 7±1.03, gradedShare 0.6±0.09, readWordsPerScreen 22.34±4.07, maxReadWords 53.29±7.4, sentenceWords 6.06±0.38, longWordShare 0.04±0.02, typeVariety 3.18±0.76
 - **5-6:boss**: screens 6.44±0.5, gradedShare 0.84±0.01, readWordsPerScreen 12.56±2.59, maxReadWords 23.22±6.99, sentenceWords 4.9±0.39, longWordShare 0.05±0.01, typeVariety 3.33±0.47
 - **7-9:lesson**: screens 7.91±0.76, gradedShare 0.58±0.06, readWordsPerScreen 24.28±2.82, maxReadWords 60.74±7.56, sentenceWords 5.9±0.41, longWordShare 0.04±0.01, typeVariety 3.29±0.45
 - **7-9:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 21.4±2.8, maxReadWords 42.6±5.04, sentenceWords 5.47±0.45, longWordShare 0.03±0.01, typeVariety 3.13±0.34
