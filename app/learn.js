@@ -185,18 +185,29 @@ window.SLID_LEARN = (() => {
      з перетегованих записів, тож лишене вікно дало б пораду за старою навичкою; ціна — щонайбільше пропущена порада, не хибна.
      Вікно нової навички наповнять нові відповіді. Не мігруються S.skills (сумарні лічильники екрана «Прогрес»: уроку в них
      немає) і кроки плану з sk (описують пораду, дану тоді). Пошкоджений стан (не масиви) міграція пропускає, а не падає. */
-  const SK_RETAG = { id: "sk-2026-10-31", rules: [
+  // id змінено на «…b», коли правила змінилися щодо першої редакції (коміт a7d2459, id без «b»). Профіль, що вже пройшов
+  // першу редакцію (prev), отримує лише правила, яких у ній не було: спільні вже застосовано, а ms3l1/ms3l2 frac/part → pct
+  // повертають і її записи pct → frac/part назад. Boss ms3l4: лише однозначні frac → pct, cmp → data (part розійшовся на pct і data).
+  const SK_RETAG = { id: "sk-2026-10-31b", rules: [
     ["g4m1l3", "math.num", "math.cmp"], ["g4m3l3", "math.num", "math.div"], ["ms0l5", "math.num", "math.expr"], ["ms0bl4", "math.geom", "math.meas"],
     ["ms3l1", "math.frac", "math.pct"], ["ms3l2", "math.part", "math.pct"], ["ms3l3", "math.cmp", "math.data"], ["ms3l3", "math.part", "math.data"],
+    ["ms3l4", "math.frac", "math.pct"], ["ms3l4", "math.cmp", "math.data"],
     ["g8m1l4", "math.expr", "math.func"], ["g8m3l2", "math.expr", "math.num"], ["g9m3l4", "math.func", "math.eq"],
-    ["g9m5l1", "math.expr", "math.num"], ["g9m5l2", "math.expr", "math.num"], ["g9m5l3", "math.expr", "math.num"], ["g9m6l2", "math.geom", "math.meas"]] };
+    ["g9m5l1", "math.expr", "math.num"], ["g9m5l2", "math.expr", "math.num"], ["g9m5l3", "math.expr", "math.num"], ["g9m6l2", "math.geom", "math.meas"]],
+    prev: { id: "sk-2026-10-31", rules: [
+      ["g4m1l3", "math.num", "math.cmp"], ["g4m3l3", "math.num", "math.div"], ["ms0l5", "math.num", "math.expr"], ["ms0bl4", "math.geom", "math.meas"],
+      ["ms3l1", "math.pct", "math.frac"], ["ms3l2", "math.pct", "math.part"], ["g8m1l4", "math.expr", "math.func"], ["g8m3l2", "math.expr", "math.num"],
+      ["g9m3l4", "math.func", "math.eq"], ["g9m5l1", "math.expr", "math.num"], ["g9m5l2", "math.expr", "math.num"], ["g9m5l3", "math.expr", "math.num"],
+      ["g9m6l2", "math.geom", "math.meas"]] } };
   /** Один раз переносить sk записів журналу помилок за SK_RETAG і скидає вікна старих навичок. Повертає кількість змінених записів. */
   function migrateSk(S, fix = SK_RETAG) {
     if (!S || typeof S !== "object") return 0;
     if (!Array.isArray(S.skFix)) S.skFix = [];
     if (S.skFix.includes(fix.id)) return 0;
+    const done = fix.prev && S.skFix.includes(fix.prev.id) ? new Set(fix.prev.rules.map(r => r.join(">"))) : null;
+    const rules = done ? fix.rules.filter(r => !done.has(r.join(">"))) : fix.rules;
     let n = 0; const moved = new Set();
-    if (Array.isArray(S.errs)) for (const e of S.errs) for (const [at, from, to] of fix.rules)
+    if (Array.isArray(S.errs)) for (const e of S.errs) for (const [at, from, to] of rules)
       if (e && typeof e === "object" && (e.at || e.l) === at && e.sk === from) { e.sk = to; moved.add(from); n++; break; }
     if (S.skw && typeof S.skw === "object") for (const sk of moved) if (sk in S.skw) S.skw[sk] = "";
     S.skFix.push(fix.id);

@@ -973,6 +973,28 @@ const order = l => ({ L1: 3, L2: 1, L3: 2, L4: 4 }[l] ?? 50);
   }
   for (const X of [null, undefined, 7]) { let r; try { r = L.migrateSk(X, fix); } catch (e) { r = "throw"; } eq(r, 0, `migrateSk(${X}) — 0`); }
 }
+/* Повнота SK_RETAG (рев'ю P3-5): знімок очікуваних правил — видалене чи змінене правило ловиться тут */
+eq(L.SK_RETAG.id, "sk-2026-10-31b", "SK_RETAG: id редакції");
+eq(L.SK_RETAG.rules.map(r => r.join(" ")).sort(), [
+  "g4m1l3 math.num math.cmp", "g4m3l3 math.num math.div", "g8m1l4 math.expr math.func", "g8m3l2 math.expr math.num", "g9m3l4 math.func math.eq",
+  "g9m5l1 math.expr math.num", "g9m5l2 math.expr math.num", "g9m5l3 math.expr math.num", "g9m6l2 math.geom math.meas", "ms0bl4 math.geom math.meas",
+  "ms0l5 math.num math.expr", "ms3l1 math.frac math.pct", "ms3l2 math.part math.pct", "ms3l3 math.cmp math.data", "ms3l3 math.part math.data",
+  "ms3l4 math.cmp math.data", "ms3l4 math.frac math.pct"], "SK_RETAG: знімок правил");
+eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "SK_RETAG: перша редакція (a7d2459) збережена як prev");
+/* Профіль, що вже пройшов першу редакцію: додатково лише нові правила, старі не застосовуються вдруге */
+{ const d = "2026-10-31";
+  const S = { skFix: ["sk-2026-10-31"], skw: { "math.frac": "00", "math.num": "0" }, errs: [
+    { l: "ms3l1", at: "ms3l1", sk: "math.frac", d },      // перша редакція: pct → frac (пул) — тепер назад у pct
+    { l: "ms3l4", at: "ms3l4", sk: "math.cmp", d },       // boss — нове правило
+    { l: "g4m1l3", at: "g4m1l3", sk: "math.num", d },     // спільне правило: уже застосовано, вдруге не чіпаємо
+    { l: "g9m5l1", at: "g9m5l1", sk: "math.expr", d }] };
+  eq(L.migrateSk(S), 2, "друга редакція після першої: змінено лише записи за новими правилами");
+  eq(S.errs.map(e => e.sk), ["math.pct", "math.data", "math.num", "math.expr"], "друга редакція: спільні правила вдруге не застосовано");
+  eq([S.skw, S.skFix], [{ "math.frac": "", "math.num": "0" }, ["sk-2026-10-31", "sk-2026-10-31b"]], "друга редакція: вікно frac з нуля, num не чіпано; позначено");
+  eq(L.migrateSk(S), 0, "друга редакція: удруге не виконується");
+  const F = { errs: [{ l: "g4m1l3", at: "g4m1l3", sk: "math.num", d }, { l: "ms3l1", at: "ms3l1", sk: "math.frac", d }] };
+  eq([L.migrateSk(F), F.errs.map(e => e.sk)], [2, ["math.cmp", "math.pct"]], "профіль без жодної редакції: усі чинні правила");
+}
 /* Правила SK_RETAG звірено з реальним контентом: в уроці at старого sk немає ні на екранах, ні в пулі, новий — є */
 { const { loadContent } = await import("./lib.mjs");
   const { subjects } = loadContent();
