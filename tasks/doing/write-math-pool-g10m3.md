@@ -1,24 +1,26 @@
 ---
-id: write-math-pool-g10m4
+claimed_from: todo
+claimed_at: 2026-10-31T21:39:40.320Z
+id: write-math-pool-g10m3
 type: write-pool
 subject: math
 grade: 10
 status: todo
-claimed_by:
+claimed_by: agent-write-math-pool-g10m3
 created: 2026-10-15
 depends_on: [curate-math-personalization-map, engine-math-pool-answer-formats]
 ---
-# Зібрати пул «Геометрія: паралельність і перпендикулярність у просторі» (10 клас, g10m4)
+# Зібрати пул «Алгебра: степенева функція і корені» (10 клас, g10m3)
 
 ## Результат
 
-Один файл `content/math/pool-g10-g10m4.js`: `SLID.pool("math", { id: "pg10m4", section: "g10m4", status: "draft", sources: [...], items: [...] })`. Клас визначається розділом. Зразки — content/math/pool-g6-*.js і tasks/done/write-math-pool-g6m*.md; чинний контракт — CONTENT_SCHEMA §10.
+Один файл `content/math/pool-g10-g10m3.js`: `SLID.pool("math", { id: "pg10m3", section: "g10m3", status: "draft", sources: [...], items: [...] })`. Клас визначається розділом. Зразки — content/math/pool-g6-*.js і tasks/done/write-math-pool-g6m*.md; чинний контракт — CONTENT_SCHEMA §10.
 
 ## Уроки для покриття
 
-- `g10m4l1` — Стеля паралельна підлозі **[required]**
-- `g10m4l2` — Стовп стоїть прямо **[required]**
-- `g10m4l3` — Кут троса й висота залу **[required]**
+- `g10m3l1` — Корінь будь-якого степеня **[required]**
+- `g10m3l2` — Дробовий показник **[required]**
+- `g10m3l3` — Рівняння під коренем **[required]**
 
 Усього 3 тематичних уроків. Boss не потребує окремого дубльованого пулу. Для m4s1 це повноцінний окремий пул навіть без запису в plan.js.
 
@@ -38,7 +40,7 @@ depends_on: [curate-math-personalization-map, engine-math-pool-answer-formats]
 ## Готово, коли
 
 - [ ] Усі required-уроки з узгодженої матриці мають мінімальне покриття й три рівні; optional/pending перелічено окремо без хибної позначки виконання; таблиця lesson → кількість/рівні/джерела й винятки є в нотатках.
-- [ ] `node tools/validate.mjs --pool pg10m4` — 0 помилок; усі джерела відкрито, числа звірено, відповіді й steps перевірено.
+- [ ] `node tools/validate.mjs --pool pg10m3` — 0 помилок; усі джерела відкрито, числа звірено, відповіді й steps перевірено.
 - [ ] Змінено лише свій файл пулу, цю задачу та дописано inbox; status draft. Оркестратор запускає build.
 - [ ] Задача через claim.mjs передана в review; незалежне розв’язання й звірка джерел — verify-math-personalization-g10; браузерне приймання — qa-math-personalization-g10.
 
@@ -57,8 +59,8 @@ depends_on: [curate-math-personalization-map, engine-math-pool-answer-formats]
 
 | Урок | Scope | Обов’язкові вправи | Формати / джерело |
 |---|---|---|---|
-| g10m4l1 | required | 6–8 (3/2/1 за рівнями мінімум) | number, exactRoot, choice, multi; m10:160–175 |
-| g10m4l2 | required | 6–8 (3/2/1 за рівнями мінімум) | number, exactRoot; m10:180–193 |
-| g10m4l3 | required | 6–8 (3/2/1 за рівнями мінімум) | number, exactRoot; m10:177–208 |
+| g10m3l1 | required | 6–8 (3/2/1 за рівнями мінімум) | number, exactRoot, list, expression; m10:21–32 |
+| g10m3l2 | required | 6–8 (3/2/1 за рівнями мінімум) | number, exactRoot, list, expression; m10:13–20,33–38 |
+| g10m3l3 | required | 6–8 (3/2/1 за рівнями мінімум) | number, exactRoot, list, expression; m10:39–43 |
 
 Покриття: **3 required-уроків, 18–24 вправ**. Optional/pending не включати у файл пулу цієї версії; boss не дублювати.

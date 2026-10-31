@@ -1,11 +1,13 @@
 ---
+claimed_from: todo
+claimed_at: 2026-10-31T21:39:40.171Z
 write_group: personalization-shared
 id: refine-math-diag-g6-coverage
 type: engine
 subject: math
 grade: 6
 status: todo
-claimed_by:
+claimed_by: agent-refine-math-diag-g6-coverage
 created: 2026-10-16
 depends_on: [curate-math-personalization-map, engine-math-pool-answer-formats]
 ---

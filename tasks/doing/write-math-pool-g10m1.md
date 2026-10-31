@@ -1,10 +1,12 @@
 ---
+claimed_from: todo
+claimed_at: 2026-10-31T21:39:40.249Z
 id: write-math-pool-g10m1
 type: write-pool
 subject: math
 grade: 10
 status: todo
-claimed_by:
+claimed_by: agent-write-math-pool-g10m1
 created: 2026-10-15
 depends_on: [curate-math-personalization-map, engine-math-pool-answer-formats]
 ---
