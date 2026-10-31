@@ -24,3 +24,9 @@ depends_on: [engine-math-render-tex-gaps]
 - `attr(l.title)` розбирає назву як HTML (`a<b` → `a`), видима назва — через esc;
 - індекси в plainText: `$x_1$` → «x1», `log<sub>2</sub>` → «log2»;
 - urlAttr: пропускати лише `https?:`.
+
+## Також (fix-math-tex-content, fix-math-trig-notation)
+- validate: попередження на латинську назву функції без лапок у `$…$` поза `{…}` (sin, cos, tg, ctg, arcsin, arccos, log, lg, ln) — так було 162 місця в g9m4/g10m5, рендерились курсивним добутком;
+- після цього підняти checkTex (непарний `$`, TeX поза `$…$`, `$` у назві) до помилок — у змісті математики 0 випадків;
+- app/math.js: відступи навколо `\to` (на 400 px стрілка зливається з числами, g7m5);
+- косметика змісту: g11m6 р. 558, 610, 776 `"sin " γ` → `"sin"\,γ`.
