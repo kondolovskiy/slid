@@ -5,7 +5,7 @@ write_group: personalization-shared
 id: engine-player-focus-followup
 type: engine
 subject: math
-status: todo
+status: done
 claimed_by: engineer-focus
 created: 2026-10-31
 depends_on: [engine-player-qa-fixes]
