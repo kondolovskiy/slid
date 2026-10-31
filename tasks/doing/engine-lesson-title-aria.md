@@ -1,8 +1,10 @@
 ---
+claimed_from: todo
+claimed_at: 2026-10-31T23:17:25.730Z
 id: engine-lesson-title-aria
 type: engine
 status: todo
-claimed_by:
+claimed_by: engineer-aria
 created: 2026-10-31
 depends_on: []
 ---
