@@ -21,4 +21,6 @@ depends_on: [engine-math-pool-answer-formats]
 
 Регресії — у чинні test-learn / test-answer-ui; диференційна регресія на всіх verified пулах 0 розбіжностей. Незалежне рев’ю (D-026).
 
+- З QA 7 класу (reports/qa/math-personalization-g7.md): D-2 відповідь з одиницею («115°; 65°», «7 см») — хибна й забирає спробу (63/206 вправ 7 кл. мають одиницю біля поля); D-3 клавіша «√» на expression/coordinates2 у 7 класі; D-4 formHint expanded «Розкрий дужки…» там, де дужок немає (pg7m3:b02).
+
 ## Нотатки виконавця
