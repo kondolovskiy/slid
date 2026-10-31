@@ -3,7 +3,7 @@ write_group: personalization-shared
 id: engine-coordinates2-expression
 type: engine
 subject: math
-status: review
+status: done
 claimed_by: engineer-coord-expr
 created: 2026-10-31
 depends_on: [verify-math-personalization-g9]
