@@ -1,6 +1,6 @@
 # Стиль і складність: hist
 
-Згенеровано: 2026-10-30 · tools/stats.mjs
+Згенеровано: 2026-10-31 · tools/stats.mjs
 
 | урок | клас | екр. | частка завдань | слів/екран | макс. слів | слів/речення | довгі слова | типів | прапорці |
 |---|---|---|---|---|---|---|---|---|---|
@@ -156,9 +156,9 @@
 | g10s5l2 Сейм чи підпілля? | 10 | 8 | 0.5 | 30 | 67 | 5.7 | 0.073 | 3 | sentenceWords=5.7 поза [7; 15] |
 | g10s5l3 Держава одного дня | 10 | 10 | 0.5 | 28 | 73 | 6.3 | 0.05 | 4 | sentenceWords=6.3 поза [7; 15] |
 | g10s5l4 Путівник трьома кордонами (фінал) | 10 | 7 | 0.86 | 24 | 48 | 5.6 | 0.047 | 4 | sentenceWords=5.6 поза [7; 15] |
-| g11s1l1 Змова за картою | 11 | 7 | 0.57 | 23 | 49 | 6.8 | 0.048 | 3 | sentenceWords=6.8 поза [7; 15] |
-| g11s1l2 Порядок окупантів | 11 | 7 | 0.57 | 26 | 55 | 6.6 | 0.105 | 3 | sentenceWords=6.6 поза [7; 15] |
-| g11s1l3 Імена проти стирання | 11 | 7 | 0.57 | 25 | 62 | 7.9 | 0.06 | 3 | sentenceWords нетипово для сім'ї (z=2.3) |
+| g11s1l1 Змова за картою | 11 | 7 | 0.57 | 24 | 49 | 6.7 | 0.048 | 3 | sentenceWords=6.7 поза [7; 15] |
+| g11s1l2 Порядок окупантів | 11 | 7 | 0.57 | 27 | 55 | 6.8 | 0.112 | 3 | sentenceWords=6.8 поза [7; 15] |
+| g11s1l3 Імена проти стирання | 11 | 7 | 0.57 | 26 | 62 | 7.9 | 0.059 | 3 | sentenceWords нетипово для сім'ї (z=2.3) |
 | g11s1l4 Не один рух опору | 11 | 7 | 0.57 | 27 | 64 | 7.4 | 0.081 | 3 | — |
 | g11s1l5 Вигнання з Криму | 11 | 7 | 0.57 | 25 | 59 | 7.1 | 0.11 | 3 | — |
 | g11s1l6 Перемога без монополії | 11 | 7 | 0.57 | 26 | 61 | 7.6 | 0.049 | 3 | — |
@@ -192,5 +192,5 @@
 - **5-6:boss**: screens 6.44±0.5, gradedShare 0.84±0.01, readWordsPerScreen 12.33±2.94, maxReadWords 22.78±7.36, sentenceWords 4.88±0.41, longWordShare 0.05±0.01, typeVariety 3.33±0.47
 - **7-9:lesson**: screens 7.91±0.76, gradedShare 0.58±0.06, readWordsPerScreen 24.28±2.82, maxReadWords 60.74±7.56, sentenceWords 5.9±0.41, longWordShare 0.04±0.01, typeVariety 3.29±0.45
 - **7-9:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 21.4±2.8, maxReadWords 42.6±5.04, sentenceWords 5.47±0.45, longWordShare 0.03±0.01, typeVariety 3.13±0.34
-- **10-11:lesson**: screens 8.93±1.24, gradedShare 0.55±0.05, readWordsPerScreen 27±4.74, maxReadWords 61.12±8.34, sentenceWords 6.42±0.49, longWordShare 0.07±0.03, typeVariety 3.45±0.5
+- **10-11:lesson**: screens 8.93±1.24, gradedShare 0.55±0.05, readWordsPerScreen 27.07±4.71, maxReadWords 61.12±8.34, sentenceWords 6.42±0.49, longWordShare 0.07±0.03, typeVariety 3.45±0.5
 - **10-11:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 23.6±2.54, maxReadWords 47.2±7.19, sentenceWords 6.12±0.62, longWordShare 0.07±0.02, typeVariety 3.6±0.49
