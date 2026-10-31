@@ -806,5 +806,60 @@ const order = l => ({ L1: 3, L2: 1, L3: 2, L4: 4 }[l] ?? 50);
   eq(S({ answerKind: "comparison", answer: "<" }, ">", "="), false, "answerSig comparison: інший знак");
 }
 
+/* coordinates2 з компонентами-виразами (engine-coordinates2-expression, №13.5(4): A(m; n), B(p; k) → (p − m; k − n)). */
+{ const K = (answer, extra = {}) => ({ type: "answer", answerKind: "coordinates2", answer, ...extra }), key = K("(p - m; k - n)");
+  [["(p - m; k - n)", "ok"], ["(-m + p; k - n)", "ok"], ["(p − m; −n + k)", "ok"], ["p - m; k - n", "ok"], ["M(p-m; k-n)", "ok"], ["((p - m); (k - n))", "ok"], ["(p - m, k - n)", "ok"],
+   ["(m - p; k - n)", "bad"], ["(k - n; p - m)", "bad"], ["(p - m; n - k)", "bad"], ["(p - m)", "bad"], ["(p - m; k - n; 0)", "bad"], ["(p; k)", "bad"], ["(x; y)", "bad"], ["(1; 2)", "bad"],
+   ["(p - 1,0000001m; k - n)", "bad"], ["(p - m + 0,0000001; k - n)", "bad"], ["(p - m = 0; k - n)", "bad"], ["(p - m; k - n", "bad"], ["", "bad"], ["(p - m; alert(1))", "bad"], ["k(m - n); 2", "bad"]]
+    .forEach(([v, r]) => eq(L.checkAns(key, v), r, `coordinates2-вираз ${key.answer} ← «${v}»`));
+  eq(L.checkAns(K(["p - m", "k - n"]), "(p - m; k - n)"), "ok", "coordinates2-вираз: ключ-масив");
+  // форма — як у expression; числова компонента — як у числовому coordinates2 (без арифметики, корінь спрощено)
+  const simp = K("(2a; b^2)", { form: "simplified" }), mix = K("(2a; √2)");
+  [[simp, "(2a; b^2)", "ok"], [simp, "(a + a; b^2)", "form"], [simp, "(2a; b·b)", "form"], [simp, "(2a; b^3)", "bad"],
+   [K("(a^2 - 1; b)", { form: "expanded" }), "((a - 1)(a + 1); b)", "form"], [K("((a - 1)(a + 1); 2b)", { form: "factored" }), "(a^2 - 1; 2b)", "form"],
+   [mix, "(a·2; √2)", "ok"], [mix, "(2a; √8/2)", "form"], [mix, "(2a; 1,41)", "bad"], [mix, "(2a; 1 + √2 - 1)", "form"], [K("(2a; 3)"), "(2a; 1 + 2)", "bad"], [K("(2a; 3)"), "(2a; 6/2)", "ok"],
+   [K("(2 sin x; 1)"), "(sin x + sin x; 1)", "ok"], [K("(√2·x; 1)"), "(1,41421356237x; 1)", "bad"], [K("(x; 1)", { form: "short" }), "(x; 1)", "bad"]]
+    .forEach(([s, v, r]) => eq(L.checkAns(s, v), r, `coordinates2-вираз ${s.answer}${s.form ? "/" + s.form : ""} ← «${v}»`));
+  eq(L.formHint(simp, "(a + a; b^2)"), "Вираз правильний, але його можна спростити.", "formHint coordinates2-вираз: підказка форми expression");
+  eq(L.formHint(K("(2a; √2)", { form: "simplified" }), "(2a; √8/2)").includes("кореня"), true, "formHint coordinates2-вираз: неспрощений корінь — підказка про корені");
+  eq(JSON.stringify(L.pairKey(key)), JSON.stringify([{ expr: true, vars: ["p", "m"], tidy: true, text: "p - m" }, { expr: true, vars: ["k", "n"], tidy: true, text: "k - n" }]), "pairKey: компоненти-вирази");
+  eq([L.pairKey(K("(3; -2)")), L.pairKey(K([1.5, -2])), L.pairKey({ answerKind: "list", answer: "a; b" }), L.pairKey({ answerKind: "coordinates3", answer: "(a; b; c)" }), L.pairKey(K("(a; b; c)"))],
+    [null, null, null, null, null], "pairKey: числовий ключ, інший формат, не дві компоненти — null");
+  eq(L.pairKey(K("(a + a; b)", { form: "simplified" }))?.[0]?.tidy, false, "pairKey: неканонічний ключ — tidy false");
+  // межі часу й біт: кожна компонента має половину з ~0,8 с; разом — менше 1 с
+  for (const v of ["(((((x+1)^12)^12)^12)^12; ((((y+1)^12)^12)^12)^12)", "((x+√2+√3+√5+√7+√11+√13)^12; (x+√2+√3+√5+√7+√11+√13)^12)",
+    "((((((((x^12)^12)^12)^12)^12)^12)^12)^12; (((((((9999999999999999^12)^12)^12)^12)^12)^12)^12)"]) {
+    const t = Date.now(); eq(L.checkAns(key, v), "bad", `coordinates2-вираз, великі числа → bad: ${v.slice(0, 30)}`); eq(Date.now() - t < 1000, true, `coordinates2-вираз, час < 1 с: ${v.slice(0, 30)}`);
+  }
+  { const t = Date.now(); L.checkAns(K("((x + 1)^2; y)", { form: "factored" }), "((x+y+z+a+b+c+d+e+f+g+h)^12·(x+y+z+a+b+c+d+e+f+g+h)^12; (x+y+z+a+b+c+d+e+f+g+h)^12·(x+y+z+a+b+c+d+e+f+g+h)^12)");
+    eq(Date.now() - t < 1000, true, "coordinates2-вираз factored, час < 1 с"); }
+  // валідатор пулу: ключ розбирається й канонічний; form — лише для пари з виразом
+  const vp = it => L.validatePool({ id: "p", section: "s", status: "draft", sources: [{ id: "b", title: "t", url: "https://x" }], items: [{ id: "a", lesson: "l", lvl: 1, sk: "num", src: "b 1", title: "t", steps: ["s"], ...it }] },
+    { sections: new Map([["s", { grade: 9, lessons: ["l"] }]]), skills: { num: {} } });
+  for (const it of [key, K(["p - m", "k - n"]), K("(2a; b^2)", { form: "simplified" }), K("((a - 1)(a + 1); 2b)", { form: "factored" }), K("(2a; √2)"), K("(x/2; 3)")]) eq(vp(it), [], `validatePool: коректний ключ coordinates2-вираз ${JSON.stringify(it.answer)} ${it.form || ""}`);
+  for (const [it, part] of [[K("(a + a; b)", { form: "simplified" }), "answer"], [K("(a^2 - 1; 2b)", { form: "factored" }), "добутком"], [K("(3; -2)", { form: "expanded" }), "form"],
+    [K("(p - m; k - n)", { form: "short" }), "form"], [K("(p - m = 0; k)"), "рівнянням"], [K("(p - m; 1 + 2)"), "answer"], [K("(p - m; k - n; 0)"), "answer"], [K("(p - m; √8)"), "answer"], [K("(p - m; k +)"), "answer"]])
+    eq(vp(it).some(e => e.includes(part)), true, `validatePool: помилка coordinates2-вираз ${JSON.stringify(it.answer)} ${it.form || ""} («${part}»)`);
+}
+
+/* Числові coordinates2 — побайтово як до розширення: знімок checkAns старого рушія (a12bfbd) на всіх ключах контенту й синтетичних. */
+{ const snap = JSON.parse(fs.readFileSync(path.join(ROOT, "tools/fixtures/coordinates2-numeric.json"), "utf8"));
+  let diff = 0, calls = 0;
+  for (const c of snap.cases) {
+    const it = { type: "answer", answerKind: "coordinates2", answer: c.answer, ...(c.form !== undefined ? { form: c.form } : {}) };
+    if (L.pairKey(it) !== null) { diff++; console.log(`ПОМИЛКА знімок: числовий ключ ${JSON.stringify(c.answer)} пішов шляхом виразів`); }
+    for (const [v, r] of Object.entries(c.results)) { calls++; const got = L.checkAns(it, v); if (got !== r) { diff++; console.log(`ПОМИЛКА знімок ${c.where} ${JSON.stringify(c.answer)} ← «${v}»: ${got}, було ${r}`); } }
+    if (c.array !== null) { calls++; if (L.checkAns(it, c.answer) !== c.array) diff++; }
+  }
+  eq(diff, 0, `знімок числових coordinates2: ${snap.cases.length} ключів, ${calls} викликів без розбіжностей`);
+  eq(calls > 1500 && snap.cases.filter(c => c.where !== "synthetic").length >= 40, true, "знімок числових coordinates2 не порожній");
+  // ключі реального контенту: кожен числовий ключ має бути в знімку (новий числовий ключ — перегенерувати знімок на старому рушії не вийде,
+  // тож тоді досить, що він іде числовим шляхом: pairKey === null); ключ із виразами знімка не стосується
+  const { loadContent } = await import("./lib.mjs");
+  const real = loadContent().subjects.flatMap(s => (s.pools || []).flatMap(p => p.items).concat((s.diags || []).flatMap(d => d.items))).filter(it => it.answerKind === "coordinates2");
+  const known = new Set(snap.cases.map(c => JSON.stringify(c.answer))), numeric = real.filter(it => L.pairKey(it) === null);
+  eq(real.length >= 40 && numeric.filter(it => known.has(JSON.stringify(it.answer))).length >= 40, true, `ключі coordinates2 контенту в знімку: ${numeric.filter(it => known.has(JSON.stringify(it.answer))).length} з ${real.length}`);
+}
+
 console.log(`\n${n} перевірок, ${fails ? fails + " з помилками" : "усе гаразд"}`);
 if (fails) process.exit(1);

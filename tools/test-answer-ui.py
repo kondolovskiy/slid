@@ -327,6 +327,9 @@ FORMAT_FIXTURES = [
     ({'answerKind': 'ratio', 'answer': '2 : 3', 'reduced': True}, '4 : 6', 'натуральними', '2:3'),
     ({'answerKind': 'coordinates2', 'answer': [3, -2]}, '(-2; 3)', 'Зміни відповідь', 'A(3; −2)'),
     ({'answerKind': 'coordinates3', 'answer': '(1; -2; 3)'}, '(1; -2)', 'Зміни відповідь', '(1; -2; 3)'),
+    # coordinates2 with expression components (engine-coordinates2-expression, mer9g №13.5(4)).
+    ({'answerKind': 'coordinates2', 'answer': '(p - m; k - n)'}, '(m - p; k - n)', 'Зміни відповідь', 'A(−m + p; −n + k)'),
+    ({'answerKind': 'coordinates2', 'answer': '(2a; b^2)', 'form': 'simplified'}, '(a + a; b^2)', 'можна спростити', '(a·2; b²)'),
     ({'answerKind': 'exactRoot', 'answer': '2√3'}, '√12', 'з-під кореня', '√3·2'),
     ({'answerKind': 'intervalSet', 'answer': '(-∞; 1] ∪ [4; +∞)'}, '(-∞; 1) ∪ (4; +∞)', 'Зміни відповідь', 'x ∈ [4; +∞) ∪ (−∞; 1]'),
     ({'answerKind': 'list', 'answer': '(-1 ± √5)/2'}, '0,62; -1,62', 'Зміни відповідь', '(−1 − √5)/2; (−1 + √5)/2'),
@@ -359,6 +362,22 @@ async def answer_format_checks(browser, url):
             await page.fill('#numIn', wrong); await page.dispatch_event('#numIn', 'input'); await page.click('#action')
             dock = await page.locator('#dock').inner_text()
             assert 'bad' in await page.locator('#dock').get_attribute('class') and message in dock, (fields, dock)
+            ins = await page.locator('#stage .anskeys button').evaluate_all('bs => bs.map(b => b.dataset.ins)')
+            if fields['answerKind'] == 'coordinates2':
+                letters = sorted(set(re.findall(r'[a-z]', str(fields['answer']))))
+                if letters:
+                    # Expression components: ^, · and the key's variable letters next to the coordinate keys.
+                    assert ins == ['(', ';', ')', '-', '/', '√', '^', '·', *letters], ins
+                    assert '(p − m; k − n)' in await page.locator('#stage').inner_text()
+                else:
+                    assert ins == ['(', ';', ')', '-', '/', '√'], ins
+            if fields['answer'] == '(p - m; k - n)':
+                # Variable keys insert at the caret: (|; k − n) + p − m → (p-m; k − n).
+                await page.fill('#numIn', '(; k − n)'); await page.eval_on_selector('#numIn', 'e=>e.setSelectionRange(1,1)')
+                for key in ('p', '-', 'm'):
+                    await page.click(f'.anskeys button[data-ins="{key}"]')
+                assert await page.input_value('#numIn') == '(p-m; k - n)', await page.input_value('#numIn')
+                await page.fill('#numIn', '')
             if fields['answerKind'] == 'exactRoot':
                 # Symbolic keys insert at the caret, not at the end: 2|3 + √ → 2√3.
                 await page.fill('#numIn', '23'); await page.eval_on_selector('#numIn', 'e=>e.setSelectionRange(1,1)')

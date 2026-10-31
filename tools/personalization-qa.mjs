@@ -13,6 +13,18 @@ export function rootList(it, learn) {
   return learn.checkAns(it, key) === 'ok' && learn.checkAns(it, approx) === 'bad';
 }
 
+// Вимогу expression закриває також coordinates2, у ключі якого є компонента-вираз (рішення людини 2026-10-31, №13.5(4)),
+// лише якщо checkAns справді перевіряє її як вираз: ключ як записано — "ok"; тотожний інший запис «0 + (…)» — не "bad";
+// інший вираз «(…) + змінна» і десяткове наближення «(…) + 0,0000001» — "bad". Числова пара, неканонічний ключ — ні.
+export function exprPair(it, learn) {
+  if (it.type !== 'answer' || it.answerKind !== 'coordinates2' || typeof learn.pairKey !== 'function') return false;
+  const comps = learn.pairKey(it);
+  if (comps?.length !== 2 || !comps.some(c => c.expr && c.vars.length) || !comps.every(c => c.tidy)) return false;
+  const pair = f => '(' + comps.map(c => c.expr ? f(c) : c.text).join('; ') + ')';
+  return learn.checkAns(it, pair(c => c.text)) === 'ok' && learn.checkAns(it, pair(c => `0 + (${c.text})`)) !== 'bad'
+    && learn.checkAns(it, pair(c => `(${c.text}) + ${c.vars[0]}`)) === 'bad' && learn.checkAns(it, pair(c => `(${c.text}) + 0,0000001`)) === 'bad';
+}
+
 export function audit(subject, matrix, learn, filter = {}) {
   const errors = [], missing = [], unsupported = [];
   const sections = new Map(subject.sections.filter(s => s.lessons?.length).map(s => [s.id, s]));
@@ -66,7 +78,7 @@ export function audit(subject, matrix, learn, filter = {}) {
     if (items.length < r.exercises.min || items.length > r.exercises.max) missing.push(`${r.pool}/${r.lesson}: ${items.length} вправ, потрібно ${r.exercises.min}–${r.exercises.max}`);
     for (const lvl of [1, 2, 3]) if (!items.some(it => it.lvl === lvl)) missing.push(`${r.pool}/${r.lesson}: немає рівня ${lvl}`);
     for (const format of r.formats) {
-      const present = items.some(it => (it.answerKind || (it.type === 'answer' ? 'number' : it.type)) === format || (format === 'exactRoot' && rootList(it, learn)));
+      const present = items.some(it => (it.answerKind || (it.type === 'answer' ? 'number' : it.type)) === format || (format === 'exactRoot' && rootList(it, learn)) || (format === 'expression' && exprPair(it, learn)));
       if (!present) missing.push(`${r.pool}/${r.lesson}: немає формату ${format}`);
     }
     if (!items.some(it => it.sk === r.sk)) missing.push(`${r.pool}/${r.lesson}: немає навички матриці ${r.sk}`);
