@@ -5,7 +5,7 @@ id: write-math-pool-g11m4
 type: write-pool
 subject: math
 grade: 11
-status: review
+status: done
 claimed_by: agent-write-math-pool-g11m4
 created: 2026-10-15
 depends_on: [curate-math-personalization-map, engine-math-pool-answer-formats]
