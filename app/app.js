@@ -860,10 +860,11 @@ const ANS_UI={
   ratio:[[":","/"],"Запиши відношення через двокрапку: 2 : 3. Порядок чисел важливий."],
   coordinates2:[["(",";",")","-","/","√"],"Координати — у дужках через крапку з комою: (3; −2). Спершу x, потім y."],
   coordinates3:[["(",";",")","-","/","√"],"Координати — у дужках через крапку з комою: (1; −2; 3). Порядок: x, y, z."],
-  exactRoot:[["√","π","/","-","(",")"],"Точна відповідь без округлення: 2√3, √2/2, 4π. Корінь спрости."],
+  exactRoot:[["√","π","/","-","(",")"],"Точна відповідь без округлення: 3√5, √2/2, 4π. Корінь спрости."],
   intervalSet:[["(","[",";","]",")","∞","∪","∅","-"],"Проміжок — через крапку з комою: [2; 5), (−∞; 3]. Кілька — через ∪, порожня множина — ∅."],
   expression:[["^","(",")","·","/","√"],"Степінь — ^ (x^2), множення — · або без знака (3ab), дріб — / з дужками: (a + 1)/(a − 1)."],
   periodicSet:[["π","k","±","/","(",")","^",";"],"Серія розв'язків через k: π/6 + 2πk. Кілька серій — через ; або ±."]};
+window.SLID_ANS_UI=ANS_UI;   // лише для читання: test-answer-ui звіряє приклади підказок із ключами вправ
 function answerInput(s){
   const kind=s.answerKind||"number", sym=ANS_UI[kind];
   // числова відповідь: «−» і дроби — лише коли їх уже вивчають або цього потребує сама вправа (LEARN.numberKeys)
@@ -873,6 +874,8 @@ function answerInput(s){
   if(kind==="expression") for(const c of new Set(String(s.answer).match(/[\u0370-\u03ff]/g)||[])) if(c!=="π") keys.push(c);   // α, β… з ключа
   const pk= kind==="coordinates2"? LEARN.pairKey(s) : null, pv= pk&&pk.some(c=>c.expr)? [...new Set(pk.flatMap(c=>c.vars))].sort() : null;   // компоненти-вирази; приклад у підказці не має збігатися з ключем жодної вправи (test-answer-ui)
   if(pv) keys.push("^","·",...pv);
+  // «√» — з 8 класу (квадратні корені) або коли корінь є в самому ключі; клас — розділу вправи, як у numberKeys (QA 7 кл. D-3)
+  if(keys.includes("√") && (Number(s.grade ?? SEC.grade)||0)<8 && !/[√∛∜]|sqrt/.test(Array.isArray(s.answer)? s.answer.join(";") : String(s.answer))) keys.splice(keys.indexOf("√"),1);
   const help=pv? "Координати — у дужках через крапку з комою: (2a; b − 1). Спершу x, потім y. Множення — · або без знака (2a), степінь — ^." : sym? sym[1] : kind==="comparison"? "Запиши знак: <, > або =." : kind==="list"? "Запиши всі числа через крапку з комою. Порядок не має значення." : kind==="factors"? "Множники — через · або *. Степінь — через ^, наприклад 2^3 · 5." : kind==="divrem"? "Запиши неповну частку, потім кнопкою «ост.» — остачу: 3 ост. 2." : nk.frac? "Дріб — через риску: 7/12. Мішане число — через пробіл: 2 1/3." : nk.dec? "Десятковий дріб — через кому: 2,5." : "";
   const unit=s.unit||(kind==="periodicSet"? "k ∈ ℤ" : "");
   return `<div class="numbox wide"><input id="numIn" inputmode="${kind==="number"?"decimal":kind==="divrem"?"numeric":"text"}" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="?" aria-label="Відповідь"><span class="unit" id="answerUnit">${esc(unit)}</span></div>${keys.length? `<div class="anskeys${sym?" sym":""}">${keys.map(v=>`<button type="button" data-ins="${esc(v)}" aria-label="Вставити ${esc(v===" "?"пробіл":v.trim()==="ост."?"остачу":v)}">${esc(v===" "?"пробіл":v==="-"?"−":v.trim())}</button>`).join("")}</div>` : ""}${help? `<div class="fix" style="text-align:center">${esc(help)}</div>` : ""}`;
@@ -987,7 +990,7 @@ function check(){
              : s.type==="shade"? `Потрібно зафарбувати ${s.target} ${s.target===1?"частину":s.target<5?"частини":"частин"}, а зафарбовано ${st.size}.`
              : s.type==="numline"? "Точка стоїть не там. Порахуй поділки від нуля."
              : s.type==="lab"? "Ще не те. Зміни модель і перевір ще раз."
-             : s.type==="answer" && LEARN.checkAns(s,st)==="form"? LEARN.formHint(s,st)
+             : s.type==="answer"? (r=>r==="form"? LEARN.formHint(s,st) : LEARN.badHint(s,st,r) || "Зміни відповідь і перевір ще раз.")(LEARN.checkAns(s,st))   // badHint: межа перевірки, чужа одиниця, знаменник без дужок
              : s.type==="choice"? "Обери інший варіант і перевір ще раз."
              : s.type==="multi"? "Зміни вибір і перевір ще раз."
              : "Зміни відповідь і перевір ще раз.";

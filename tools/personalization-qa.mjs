@@ -9,7 +9,10 @@ export function rootList(it, learn) {
   const els = learn.listKey(it);
   if (!els?.length || !els.some(e => e.exact && e.root) || !els.every(e => e.tidy)) return false;
   const key = Array.isArray(it.answer) ? it.answer.join('; ') : String(it.answer);
-  const approx = els.map(e => e.root ? e.approx.toFixed(6) : String(e.approx)).join('; ');
+  // Наближення — лише для коренів; раціональний елемент лишається точним («1/3», не 0.3333333333333333 — такий запис
+  // відкидається через довжину, і проба перестала б перевіряти саме корені). Без rat (старий learn.js) — 6 знаків.
+  const approx = els.map(e => e.root ? e.approx.toFixed(6) : e.rat ?? e.approx.toFixed(6)).join('; ');
+  // Обидві умови (every tidy вище і ключ → ok) потрібні: tidy — розбір ключа, ok — повна перевірка (зокрема reduced/±).
   return learn.checkAns(it, key) === 'ok' && learn.checkAns(it, approx) === 'bad';
 }
 
