@@ -1,5 +1,5 @@
 /* Слід · Математика, 11 клас — пул задач для тренування до розділу «Алгебра: комбінаторика і ймовірність» (g11m5)
-   Статус: draft. 16 задач: g11m5l1 — 8, g11m5l2 — 8 (boss g11m5l4 без задач).
+   Статус: verified (reports/verify/pg11m5.md). 16 задач: g11m5l1 — 8, g11m5l2 — 8 (boss g11m5l4 без задач).
    Матриця docs/math-personalization-coverage.md 2026-10-16.v2: g11m5l1 і g11m5l2 — required, формат number;
    g11m5l3 (статистика) — pending (правило медіани парного ряду, facts №150), у пулі навмисно немає жодної вправи.
    Усі задачі — з підручника Мерзляк, Номіровський, Полонський, Якір «Математика. 11 клас. Рівень стандарту» (2019), п. 12–14;
@@ -12,8 +12,8 @@
 SLID.pool("math", {
   id: "pg11m5",
   section: "g11m5",
-  status: "draft",
-  meta: { author: "agent-write-math-pool-g11m5", created: "2026-10-31", factcheck: null, teacher: null },
+  status: "verified",
+  meta: { author: "agent-write-math-pool-g11m5", created: "2026-10-31", verified: "2026-10-31", factcheck: "verifier-pg11m5 (reports/verify/pg11m5.md)", teacher: null },
   sources: [
     { id: "m11", title: "Мерзляк А. Г., Номіровський Д. А., Полонський В. Б., Якір М. С. Математика : алгебра і початки аналізу та геометрія, рівень стандарту : підруч. для 11 кл. закладів заг. серед. освіти. — Харків: Гімназія, 2019 (п. 12–14; дзеркало PDF на znayshov.com)", url: "https://znayshov.com/FR/553/2.pdf" }
   ],
