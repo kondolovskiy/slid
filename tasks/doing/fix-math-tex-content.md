@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-10-31T23:28:21.491Z
 id: fix-math-tex-content
 type: fix
 subject: math
 status: todo
-claimed_by:
+claimed_by: writer-tex
 created: 2026-10-31
 depends_on: [engine-math-render-tex-gaps]
 ---
