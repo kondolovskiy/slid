@@ -4,7 +4,7 @@
 // Для кожної вправи — ключ і типові рівні/хибні записи. Кожна розбіжність вердикту чи підказки має належати
 // дозволеній категорії (рішення 2026-10-31, engine-math-answer-kinds-new: п. 5–7 і P3 з рев'ю), інакше — «непояснена», rc 1.
 // Класифікація незалежна від реалізації: стару версію перевіряють на «очищеному» записі й порівнюють з новою.
-// Запуск: node tools/diff-answers.mjs [--old <git-rev>] [--grades 4-9] [--time] [--show N]
+// Запуск: node tools/diff-answers.mjs [--old <git-rev>] [--grades 4-9] [--time] [--show N] [--list-cat "<категорія>"] (записи однієї категорії)
 import fs from "node:fs"; import vm from "node:vm"; import path from "node:path"; import { execFileSync } from "node:child_process";
 import { loadContent, ROOT } from "./lib.mjs";
 
@@ -44,6 +44,14 @@ function records(s) {
   if (a) { out.add(String(a.n / a.d + 1).replace(".", ",")); out.add(String(-a.n / a.d).replace(".", ",")); out.add(String(a.n / a.d * 10).replace(".", ","));
     const p = periodic(a.n, a.d); if (p) { out.add(p); out.add(p.replace(/^(-?)0/, "$1")); out.add(`x = ${p}`); } }
   if (k === "number") for (const pre of ["x = ", "b=", "k = ", "у = ", "AB = "]) { out.add(pre + K); if (a) out.add(pre + String(a.n / a.d + 1).replace(".", ",")); }
+  // g10-issues п. 4: явний «+» перед числом; «+» перед від'ємним і подвійний знак — bad, як і раніше
+  if (k === "number") for (const r of [`+${K}`, `x = +${K}`, `+ ${K}`, `++${K}`, `+-${K}`]) out.add(r);
+  // g10-issues п. 2: префікс «x =» / «x₁ =» в list; чужа літера «y =», різні літери
+  if (k === "list") { const ps = K.split(/[;\n]/.test(K) ? /[;\n]/ : /,/).map(x => x.trim());
+    for (const L of ["x", "y", "t", "х"]) { out.add(ps.map(x => `${L} = ${x}`).join("; ")); out.add(ps.map((x, i) => `${L}${"₁₂₃₄"[i] || ""} = ${x}`).join("; ")); }
+    out.add(ps.map((x, i) => `${i ? "y" : "x"} = ${x}`).join("; ")); out.add(`x = ${ps[0]}`); }
+  // g10-issues п. 3: число після дужок-множника — 4x(3x + 5) → (3x + 5)4x
+  if (k === "expression") { const m = K.match(/^(\d+(?:,\d+)?[a-z]*(?:\^\d+)?)\s*\(([^()]+)\)$/); if (m) { out.add(`(${m[2]})${m[1]}`); out.add(`(${m[2]}) ${m[1]}`); out.add(`(${m[2]})^2 ${m[1]}`); } }
   if (k === "list" || k === "coordinates2" || k === "coordinates3" || k === "ratio") {
     const sep = k === "ratio" ? ":" : ";", parts = K.replace(/^\(|\)$/g, "").split(sep).map(x => x.trim());
     const wrap = xs => k.startsWith("coord") ? `(${xs.join("; ")})` : xs.join(k === "ratio" ? " : " : "; ");
@@ -88,6 +96,10 @@ const CATS = [
   ["п.7 «Перевір одиницю» лише коли число без одиниці правильне", (s, v, o, n) => o.r === "bad" && n.r === "bad" && UNIT_HINT.test(o.h || "") && n.h === null
     && OLD.checkAns(s, v.replace(new RegExp(`\\s*(?:${FOREIGN.join("|")})(?=\\s*(?:[;)]|$))`, "g"), "")) === "bad"],
   ["P3-1 (p/q)(сума) і 2(сума)/2 — нескорочений дріб", (s, v, o, n) => /^(\(1\/2\)\(|2\()/.test(v) && o.r === "ok" && n.r === "form"],
+  // engine-math-answer-g10-issues: старий рушій на записі без нововведення дає те саме, що новий на записі з ним
+  ["g10 п.2 префікс «x =» / «x₁ =» в list", (s, v, o, n) => s.answerKind === "list" && v.includes("=") && same(verdict(OLD, s, v.split(";").map(x => x.replace(/^\s*[a-zа-яії][₁₂₃₄1-4]?\s*=\s*/u, "")).join(";")), n)],
+  ["g10 п.3 число після дужок-множника в expression", (s, v, o, n) => s.answerKind === "expression" && /\)\s*\d/.test(v) && same(verdict(OLD, s, v.replace(/\)(\s*)(?=\d)/g, ")·")), n)],
+  ["g10 п.4 «+» перед числом у number", (s, v, o, n) => (s.answerKind || "number") === "number" && /^(?:x = )?\+\d/.test(v) && same(verdict(OLD, s, v.replace("+", "")), n)],
   ["P3-2 «Скороти дріб» для меж intervalSet", (s, v, o, n) => s.answerKind === "intervalSet" && o.r === "form" && n.r === "form" && /Скороти дріб/.test(n.h)],
 ];
 
@@ -102,7 +114,7 @@ for (const { id, s } of items) {
     const o = verdict(OLD, s, v), n = verdict(NEW, s, v);
     if (same(o, n)) continue;
     const cat = CATS.find(([, f]) => f(s, v, o, n));
-    if (cat) counts[cat[0]]++; else unexplained.push(`${id} ${JSON.stringify(s.answer)} ← «${v}»: ${o.r}${o.h ? " «" + o.h + "»" : ""} → ${n.r}${n.h ? " «" + n.h + "»" : ""}`);
+    if (cat) { counts[cat[0]]++; if (args.includes("--list-cat") && cat[0] === opt("--list-cat")) console.log(`    ${id} «${v}»: ${o.r} → ${n.r}`); } else unexplained.push(`${id} ${JSON.stringify(s.answer)} ← «${v}»: ${o.r}${o.h ? " «" + o.h + "»" : ""} → ${n.r}${n.h ? " «" + n.h + "»" : ""}`);
   }
 }
 console.log(`Старий learn.js: ${OLD_REV}. Вправ ${items.length} (класи ${G0}–${G1}), записів ${total}.`);
