@@ -1,25 +1,27 @@
 ---
-id: write-math-pool-g8m1
+claimed_from: todo
+claimed_at: 2026-10-31T12:28:18.922Z
+id: write-math-pool-g8m2
 type: write-pool
 subject: math
 grade: 8
 status: todo
-claimed_by:
+claimed_by: agent-write-math-pool-g8m2
 created: 2026-10-15
 depends_on: [curate-math-personalization-map, engine-math-pool-answer-formats]
 ---
-# Зібрати пул «Алгебра: раціональні вирази» (8 клас, g8m1)
+# Зібрати пул «Геометрія: чотирикутники» (8 клас, g8m2)
 
 ## Результат
 
-Один файл `content/math/pool-g8-g8m1.js`: `SLID.pool("math", { id: "pg8m1", section: "g8m1", status: "draft", sources: [...], items: [...] })`. Клас визначається розділом. Зразки — content/math/pool-g6-*.js і tasks/done/write-math-pool-g6m*.md; чинний контракт — CONTENT_SCHEMA §10.
+Один файл `content/math/pool-g8-g8m2.js`: `SLID.pool("math", { id: "pg8m2", section: "g8m2", status: "draft", sources: [...], items: [...] })`. Клас визначається розділом. Зразки — content/math/pool-g6-*.js і tasks/done/write-math-pool-g6m*.md; чинний контракт — CONTENT_SCHEMA §10.
 
 ## Уроки для покриття
 
-- `g8m1l1` — Дріб зі змінною **[required]**
-- `g8m1l2` — Додати, помножити, поділити **[required]**
-- `g8m1l3` — Показник може бути мінусом **[required]**
-- `g8m1l4` — Крива сталого добутку **[required]**
+- `g8m2l1` — Коли сторони біжать поруч **[required]**
+- `g8m2l2` — Прямі кути й рівні сторони **[required]**
+- `g8m2l3` — Дві основи — один пояс **[required]**
+- `g8m2l4` — Рівні відрізки на променях **[required]**
 
 Усього 4 тематичних уроків. Boss не потребує окремого дубльованого пулу. Для m4s1 це повноцінний окремий пул навіть без запису в plan.js.
 
@@ -39,7 +41,7 @@ depends_on: [curate-math-personalization-map, engine-math-pool-answer-formats]
 ## Готово, коли
 
 - [ ] Усі required-уроки з узгодженої матриці мають мінімальне покриття й три рівні; optional/pending перелічено окремо без хибної позначки виконання; таблиця lesson → кількість/рівні/джерела й винятки є в нотатках.
-- [ ] `node tools/validate.mjs --pool pg8m1` — 0 помилок; усі джерела відкрито, числа звірено, відповіді й steps перевірено.
+- [ ] `node tools/validate.mjs --pool pg8m2` — 0 помилок; усі джерела відкрито, числа звірено, відповіді й steps перевірено.
 - [ ] Змінено лише свій файл пулу, цю задачу та дописано inbox; status draft. Оркестратор запускає build.
 - [ ] Задача через claim.mjs передана в review; незалежне розв’язання й звірка джерел — verify-math-personalization-g8; браузерне приймання — qa-math-personalization-g8.
 
@@ -58,9 +60,9 @@ depends_on: [curate-math-personalization-map, engine-math-pool-answer-formats]
 
 | Урок | Scope | Обов’язкові вправи | Формати / джерело |
 |---|---|---|---|
-| g8m1l1 | required | 6–8 (3/2/1 за рівнями мінімум) | number, expression; a8:6–21 |
-| g8m1l2 | required | 6–8 (3/2/1 за рівнями мінімум) | number, expression; a8:22–60 |
-| g8m1l3 | required | 6–8 (3/2/1 за рівнями мінімум) | number, expression; a8:71–88 |
-| g8m1l4 | required | 6–8 (3/2/1 за рівнями мінімум) | number, expression; a8:89–102 |
+| g8m2l1 | required | 6–8 (3/2/1 за рівнями мінімум) | number; g8:16–32 |
+| g8m2l2 | required | 6–8 (3/2/1 за рівнями мінімум) | number; g8:33–45 |
+| g8m2l3 | required | 6–8 (3/2/1 за рівнями мінімум) | number; g8:51–61 |
+| g8m2l4 | required | 6–8 (3/2/1 за рівнями мінімум) | number; g8:89–101 |
 
 Покриття: **4 required-уроків, 24–32 вправ**. Optional/pending не включати у файл пулу цієї версії; boss не дублювати.

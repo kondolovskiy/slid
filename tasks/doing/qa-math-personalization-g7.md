@@ -1,10 +1,12 @@
 ---
+claimed_from: todo
+claimed_at: 2026-10-31T12:28:18.807Z
 id: qa-math-personalization-g7
 type: qa
 subject: math
 grade: 7
 status: todo
-claimed_by:
+claimed_by: agent-qa-math-personalization-g7
 created: 2026-10-15
 depends_on: [verify-math-personalization-g7, tools-math-personalization-qa, engine-math-grade-plan-context, engine-math-pool-answer-formats]
 ---
