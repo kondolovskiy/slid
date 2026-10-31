@@ -1,5 +1,5 @@
 /* Слід · Математика, 10 клас — пул задач для тренування до розділу «Геометрія: паралельність і перпендикулярність у просторі» (g10m4)
-   Статус: draft (автор agent-write-math-pool-g10m4, 2026-10-31). 24 задачі: по 8 на кожен урок g10m4l1–g10m4l3 (3 рівня 1, 3 рівня 2, 2 рівня 3); boss g10m4l4 без задач.
+   Статус: verified (автор agent-write-math-pool-g10m4, 2026-10-31; незалежна перевірка verifier-pg10m4, 2026-10-31, reports/verify/pg10m4.md). 24 задачі: по 8 на кожен урок g10m4l1–g10m4l3 (3 рівня 1, 3 рівня 2, 2 рівня 3); boss g10m4l4 без задач.
    Усі задачі — з підручника Мерзляка, Номіровського, Полонського, Якіра «Математика. 10 клас. Рівень стандарту» (2018), п. 30, 31, 34–36 (sources).
    Умови й числа звірено за відрендереними сторінками PDF 2026-10-31. У цьому PDF друкований номер сторінки = номер сторінки PDF.
    Матриця docs/math-personalization-coverage.md 2026-10-16.v2: усі три уроки required; формати l1 — number, exactRoot, choice, multi; l2, l3 — number, exactRoot.
@@ -9,8 +9,8 @@
 SLID.pool("math", {
   id: "pg10m4",
   section: "g10m4",
-  status: "draft",
-  meta: { author: "claude-opus", created: "2026-10-31", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "claude-opus", created: "2026-10-31", factcheck: "verifier-pg10m4", teacher: null },
   sources: [
     { id: "m10", title: "Мерзляк А. Г., Номіровський Д. А., Полонський В. Б., Якір М. С. Математика: алгебра і початки аналізу та геометрія. Рівень стандарту. 10 клас. — Харків: Гімназія, 2018 (п. 30, 31, 34–36; дзеркало PDF на 4book.org)", url: "https://file.4book.org/images/shcoolbook_ua/10/10_m_m_2018_ua.pdf" }
   ],
