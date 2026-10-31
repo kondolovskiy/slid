@@ -1,5 +1,6 @@
 /* Слід · Історія, 7 клас — «Галицько-Волинська держава»
    6 уроків. Ревізія D-019 (2026-10-13); повторна верифікація verifier-g7s4-d019 — усі уроки verified.
+   2026-10-31 (photo-g7s4, D-027): зображення в l1, l2, l3, l6; повторна верифікація verifier-images-g7s4g7s5 — verified (reports/verify/images-hist-g7s4.md).
    Перевірка: node tools/validate.mjs && node tools/stats.mjs
    Схема й правила: docs/CONTENT_SCHEMA.md, style/
    Цитати літопису — за перекладом Леоніда Махновця («Літопис руський», 1989; litopys.org.ua/litop/). */
@@ -55,7 +56,7 @@ SLID.section("hist", {
       title: "Хоробрий, як тур",
       short: "Роман Мстиславич",
       icon: "user",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, хто об'єднав Галичину й Волинь, і навчишся відділяти похвалу літописця від фактів.",
       screens: [
         {
@@ -183,7 +184,7 @@ SLID.section("hist", {
       title: "Корона з Дорогичина",
       short: "Король Данило",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       why: "Ти побачиш, як князь-вигнанець повернув батькову державу і навіщо йому знадобилася корона.",
       screens: [
         {
@@ -319,7 +320,7 @@ SLID.section("hist", {
       title: "Київ, 1240",
       short: "Монгольська навала",
       icon: "shield",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, як навала змінила життя Русі, і навчишся працювати з джерелами, що суперечать одне одному.",
       screens: [
         {
@@ -701,7 +702,7 @@ SLID.section("hist", {
       title: "Помічник літописця",
       short: "Фінал розділу",
       icon: "star",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "rusking",
       why: "Перевірка всього розділу. Бали подвоєні.",
