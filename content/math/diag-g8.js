@@ -294,7 +294,7 @@ SLID.diag("math", {
     {
       topic: "cur-g8m6",
       type: "multi",
-      sk: "meas",
+      sk: "geom",
       title: "Що правда про многокутники?",
       body: "<p>Обери всі правильні твердження.</p>",
       opts: [

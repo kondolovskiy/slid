@@ -28,8 +28,13 @@ export function exprPair(it, learn) {
     && learn.checkAns(it, pair(c => `(${c.text}) + ${c.vars[0]}`)) === 'bad' && learn.checkAns(it, pair(c => `(${c.text}) + 0,0000001`)) === 'bad';
 }
 
+// Навички (sk) рядка матриці: рядок або масив (рішення людини 2026-10-31, engine-math-skill-sync).
+export const rowSkills = r => [].concat(r.sk ?? []);
+// Навички, які урок справді тренує: sk його екранів. Джерело правди для sk матриці, пулу й проб діагностики.
+export const lessonSkills = l => new Set((l?.screens || []).map(s => s.sk).filter(Boolean));
+
 export function audit(subject, matrix, learn, filter = {}) {
-  const errors = [], missing = [], unsupported = [];
+  const errors = [], missing = [], unsupported = [], warnings = [];
   const sections = new Map(subject.sections.filter(s => s.lessons?.length).map(s => [s.id, s]));
   const lessons = new Map([...sections.values()].flatMap(s => s.lessons.map(l => [l.id, { ...l, grade: s.grade, section: s.id }])));
   const pools = new Map(subject.pools.map(p => [p.id, p]));
@@ -59,6 +64,8 @@ export function audit(subject, matrix, learn, filter = {}) {
       const items = d.items.filter(it => it.topic === t.id);
       const itemLessons = items.map(it => it.lesson ?? (actual.lessons?.length === 1 ? actual.lessons[0] : null));
       const itemSkills = items.map(it => it.sk);
+      items.forEach((it, i) => { const sks = lessonSkills(lessons.get(itemLessons[i]));
+        if (sks.size && !sks.has(it.sk)) warnings.push(`${d.id}/${t.id} №${d.items.indexOf(it) + 1}: sk ${it.sk} не тренує урок ${itemLessons[i]} (${[...sks].join(', ')})`); });
       for (const [key, value] of [['itemLessons', itemLessons], ['itemSkills', itemSkills]]) {
         if (JSON.stringify(value) !== JSON.stringify(t[key])) missing.push(`${d.id}/${t.id}: ${key} не збігається з матрицею`);
       }
@@ -73,6 +80,15 @@ export function audit(subject, matrix, learn, filter = {}) {
     if (!['verified', 'approved'].includes(p.status)) missing.push(`${p.id}: ще не verified`);
     if (subject.pools.filter(x => x.id === p.id).length !== 1) errors.push(`Повторений пул ${p.id}`);
     for (const it of p.items) if (lessons.get(it.lesson)?.boss) errors.push(`${p.id}/${it.id}: boss не тренується`);
+    for (const it of p.items) { const sks = lessonSkills(lessons.get(it.lesson));
+      if (sks.size && !sks.has(it.sk)) warnings.push(`${p.id}/${it.id}: sk ${it.sk} не тренує урок ${it.lesson} (${[...sks].join(', ')})`); }
+  }
+  // sk рядка — для кожного рядка (і без пулу, і optional/pending): оголошений і тренується екранами уроку (джерело правди).
+  // Розбіжність з екранами: required — прогалина strict, optional/pending — попередження.
+  for (const r of rows.filter(() => !filter.diag)) {
+    const sks = rowSkills(r), own = lessonSkills(lessons.get(r.lesson));
+    if (!sks.length || sks.some(sk => typeof sk !== 'string' || !subject.skills[sk])) { errors.push(`${r.lesson}: sk матриці ${JSON.stringify(r.sk)} не оголошена`); continue; }
+    for (const sk of sks) if (own.size && !own.has(sk)) (r.curricularScope === 'required' ? missing : warnings).push(`${r.lesson}: sk матриці ${sk} не тренує урок (екрани: ${[...own].join(', ')})`);
   }
   for (const r of rows.filter(r => r.curricularScope === 'required' && !filter.diag)) {
     const p = pools.get(r.pool), items = p?.items.filter(it => it.lesson === r.lesson) || [];
@@ -84,10 +100,10 @@ export function audit(subject, matrix, learn, filter = {}) {
       const present = items.some(it => (it.answerKind || (it.type === 'answer' ? 'number' : it.type)) === format || (format === 'exactRoot' && rootList(it, learn)) || (format === 'expression' && exprPair(it, learn)));
       if (!present) missing.push(`${r.pool}/${r.lesson}: немає формату ${format}`);
     }
-    if (!items.some(it => it.sk === r.sk)) missing.push(`${r.pool}/${r.lesson}: немає навички матриці ${r.sk}`);
+    for (const sk of rowSkills(r)) if (!items.some(it => it.sk === sk)) missing.push(`${r.pool}/${r.lesson}: немає навички матриці ${sk}`);
   }
   if (!diags.length && !selectedPools.length) errors.push('Нуль доступних об’єктів для перевірки');
-  return { version: matrix.version, errors, missing, unsupported,
+  return { version: matrix.version, errors, missing, unsupported, warnings,
     counts: { sections: sections.size, lessons: actual.length, required: rows.filter(r => r.curricularScope === 'required').length,
       requiredPools: new Set(rows.filter(r => r.curricularScope === 'required').map(r => r.pool)).size,
       diagnostics: diags.length, pools: selectedPools.length, exercises: selectedPools.reduce((n, p) => n + p.items.length, 0) },
@@ -116,7 +132,7 @@ export function run(args) {
   if (args.includes('--json')) console.log(JSON.stringify(report));
   else {
     console.log(`Матриця ${report.version}: ${JSON.stringify(report.counts)}`);
-    for (const [label, key] of [['ПОМИЛКА', 'errors'], ['БРАКУЄ', 'missing'], ['НЕ ПІДТРИМАНО', 'unsupported']]) for (const line of report[key]) console.log(`${label}: ${line}`);
+    for (const [label, key] of [['ПОМИЛКА', 'errors'], ['БРАКУЄ', 'missing'], ['НЕ ПІДТРИМАНО', 'unsupported'], ['ПОПЕРЕДЖЕННЯ', 'warnings']]) for (const line of report[key]) console.log(`${label}: ${line}`);
     console.log(`Optional (${report.optional.length}): ${report.optional.join(', ')}\nPending (${report.pending.length}): ${report.pending.join(', ')}`);
     for (const x of report.exceptions) console.log(`Виняток: ${JSON.stringify(x)}`);
   }

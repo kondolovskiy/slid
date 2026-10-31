@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Слід · модульні тести персоналізації (app/learn.js): діагностика, план, повторювані помилки, валідатор тесту.
-// Запуск: node tools/test-learn.mjs   (без залежностей; дані синтетичні, не з реального контенту)
+// Запуск: node tools/test-learn.mjs   (без залежностей; дані синтетичні; лише правила SK_RETAG звіряються з реальним контентом)
 import fs from "node:fs"; import vm from "node:vm"; import path from "node:path"; import { fileURLToPath } from "node:url";
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
 const ctx = { console }; ctx.window = ctx; vm.createContext(ctx);
@@ -936,6 +936,75 @@ const order = l => ({ L1: 3, L2: 1, L3: 2, L4: 4 }[l] ?? 50);
   { const s = K("coordinates2", "(2a; b^2)", { form: "simplified" }), v = "(a + a; b^2)";
     eq(L.checkAns(s, v), "form", "pair cache: checkAns form"); eq(L.formHint(s, v), "Вираз правильний, але його можна спростити.", "pair cache: formHint з кешу");
     L.checkAns(s, "(2a; b^2)"); eq(L.formHint(s, v), "Вираз правильний, але його можна спростити.", "pair cache: інший запис — перевірка заново"); }
+}
+
+/* Перетегування sk у збереженому журналі помилок (engine-math-skill-sync) */
+{ const fix = { id: "t1", rules: [["u1", "m.old", "m.new"], ["u2", "m.a", "m.b"]] };
+  const S = { errs: [{ l: "u1", at: "u1", sk: "m.old", d: "2026-10-30" }, { l: "pre", at: "u1", sk: "m.old", d: "2026-10-30" },
+    { l: "u1", at: "u1", sk: "m.other", d: "2026-10-30" }, { l: "u3", at: "u3", sk: "m.old", d: "2026-10-30" }, { l: "u2", sk: "m.a", d: "2026-10-30" }, { l: "u1", at: "u1", sk: null }],
+    skw: { "m.old": "000" }, skills: { "m.old": { ok: 1, total: 4 } } };
+  eq(L.migrateSk(S, fix), 3, "migrateSk: змінено записи за уроком at (і l, якщо at немає)");
+  eq(S.errs.map(e => e.sk), ["m.new", "m.new", "m.other", "m.old", "m.b", null], "migrateSk: інша навичка й інший урок не чіпаються; помилка з pre — за at");
+  eq([S.skw, S.skills], [{ "m.old": "" }, { "m.old": { ok: 1, total: 4 } }], "migrateSk: вікно старої навички з нуля (P2-1), лічильники «Прогрес» не змінюються");
+  eq(S.skFix, ["t1"], "migrateSk: позначка виконаної міграції");
+  S.errs.push({ l: "u1", at: "u1", sk: "m.old" });
+  eq(L.migrateSk(S, fix), 0, "migrateSk: удруге не виконується");
+  eq(S.errs.at(-1).sk, "m.old", "migrateSk: новий запис після міграції не чіпається");
+  const E = {}; eq(L.migrateSk(E), 0, "migrateSk: порожній профіль"); eq(E.skFix, [L.SK_RETAG.id], "migrateSk: порожній профіль позначено");
+  const U = { errs: [{ l: "u9", at: "u9", sk: "m.old" }], skw: { "m.old": "00", "m.other": "0" } };
+  eq([L.migrateSk(U, fix), U.skw], [0, { "m.old": "00", "m.other": "0" }], "migrateSk: вікно скидається лише для навички, з якої щось перенесено");
+  // рев'ю P2-1 (skw_stale): міграція → lessonDone перетегованого уроку → немає поради за старою навичкою
+  const ord = id => ["g8m1l2", "g9m3l4", "g9m5l1", "g9m5l2", "g9m5l3"].indexOf(id);
+  const mk = () => { const T = { mast: {}, errs: [], skw: {}, plan: {}, planByGrade: {}, grade: 9 };
+    for (const l of ["g8m1l2", "g9m3l4", "g9m5l1"]) L.record(T, { l, at: l, sk: "math.expr", ok: false, day: "2026-10-30" }); return T; };
+  const skillRecs = T => L.detect(T, { day: "2026-10-31", order: ord }).filter(r => r.why === "skill");
+  { const T = mk(); L.lessonDone(T, "math", "g9m5l1", 1, "2026-10-31", { grade: 9 }); eq(skillRecs(T), [], "без міграції: lessonDone скидає вікно, поради немає"); }
+  { const T = mk(); eq(L.migrateSk(T), 1, "міграція: g9m5l1 expr → num"); eq(T.skw["math.expr"], "", "міграція: вікно expr з нуля");
+    L.lessonDone(T, "math", "g9m5l1", 1, "2026-10-31", { grade: 9 });
+    eq(skillRecs(T), [], "міграція → lessonDone: немає поради за старою навичкою expr");
+    // нові помилки ведуть до поради за новою навичкою
+    for (const l of ["g9m5l1", "g9m5l2", "g9m5l3"]) L.record(T, { l, at: l, sk: "math.num", ok: false, day: "2026-10-31" });
+    eq(skillRecs(T).map(r => [r.sk, r.l]), [["math.num", "g9m5l1"]], "після міграції порада — за новою навичкою num"); }
+  // рев'ю P3-3: пошкоджений стан не валить міграцію
+  for (const [what, X] of [["skFix — об'єкт", { skFix: {}, errs: [] }], ["skFix — рядок", { skFix: "x" }], ["errs — об'єкт", { errs: {} }],
+    ["errs — рядок", { errs: "x" }], ["skw — null", { errs: [{ at: "u1", sk: "m.old" }], skw: null }], ["записи не об'єкти", { errs: [null, 5, "x", { at: "u1", sk: "m.old" }] }]]) {
+    let r; try { r = L.migrateSk(X, fix); } catch (e) { r = "throw " + e.message; }
+    eq(typeof r, "number", `migrateSk: пошкоджений стан (${what}) — без винятку`); eq(X.skFix, ["t1"], `migrateSk: пошкоджений стан (${what}) — позначено`);
+  }
+  for (const X of [null, undefined, 7]) { let r; try { r = L.migrateSk(X, fix); } catch (e) { r = "throw"; } eq(r, 0, `migrateSk(${X}) — 0`); }
+}
+/* Повнота SK_RETAG (рев'ю P3-5): знімок очікуваних правил — видалене чи змінене правило ловиться тут */
+eq(L.SK_RETAG.id, "sk-2026-10-31b", "SK_RETAG: id редакції");
+eq(L.SK_RETAG.rules.map(r => r.join(" ")).sort(), [
+  "g4m1l3 math.num math.cmp", "g4m3l3 math.num math.div", "g8m1l4 math.expr math.func", "g8m3l2 math.expr math.num", "g9m3l4 math.func math.eq",
+  "g9m5l1 math.expr math.num", "g9m5l2 math.expr math.num", "g9m5l3 math.expr math.num", "g9m6l2 math.geom math.meas", "ms0bl4 math.geom math.meas",
+  "ms0l5 math.num math.expr", "ms3l1 math.frac math.pct", "ms3l2 math.part math.pct", "ms3l3 math.cmp math.data", "ms3l3 math.part math.data",
+  "ms3l4 math.cmp math.data", "ms3l4 math.frac math.pct"], "SK_RETAG: знімок правил");
+eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "SK_RETAG: перша редакція (a7d2459) збережена як prev");
+/* Профіль, що вже пройшов першу редакцію: додатково лише нові правила, старі не застосовуються вдруге */
+{ const d = "2026-10-31";
+  const S = { skFix: ["sk-2026-10-31"], skw: { "math.frac": "00", "math.num": "0" }, errs: [
+    { l: "ms3l1", at: "ms3l1", sk: "math.frac", d },      // перша редакція: pct → frac (пул) — тепер назад у pct
+    { l: "ms3l4", at: "ms3l4", sk: "math.cmp", d },       // boss — нове правило
+    { l: "g4m1l3", at: "g4m1l3", sk: "math.num", d },     // спільне правило: уже застосовано, вдруге не чіпаємо
+    { l: "g9m5l1", at: "g9m5l1", sk: "math.expr", d }] };
+  eq(L.migrateSk(S), 2, "друга редакція після першої: змінено лише записи за новими правилами");
+  eq(S.errs.map(e => e.sk), ["math.pct", "math.data", "math.num", "math.expr"], "друга редакція: спільні правила вдруге не застосовано");
+  eq([S.skw, S.skFix], [{ "math.frac": "", "math.num": "0" }, ["sk-2026-10-31", "sk-2026-10-31b"]], "друга редакція: вікно frac з нуля, num не чіпано; позначено");
+  eq(L.migrateSk(S), 0, "друга редакція: удруге не виконується");
+  const F = { errs: [{ l: "g4m1l3", at: "g4m1l3", sk: "math.num", d }, { l: "ms3l1", at: "ms3l1", sk: "math.frac", d }] };
+  eq([L.migrateSk(F), F.errs.map(e => e.sk)], [2, ["math.cmp", "math.pct"]], "профіль без жодної редакції: усі чинні правила");
+}
+/* Правила SK_RETAG звірено з реальним контентом: в уроці at старого sk немає ні на екранах, ні в пулі, новий — є */
+{ const { loadContent } = await import("./lib.mjs");
+  const { subjects } = loadContent();
+  for (const [at, from, to] of L.SK_RETAG.rules) {
+    const [subj, f] = from.split("."), t = to.split(".")[1], c = subjects.find(s => s.id === subj);
+    const lesson = c.sections.flatMap(s => s.lessons || []).find(l => l.id === at), items = (c.pools || []).flatMap(p => p.items).filter(it => it.lesson === at);
+    eq(!!lesson && [...lesson.screens, ...items].some(x => x.sk === f), false, `SK_RETAG ${at}: старого ${f} у змісті немає`);
+    eq((!items.length || items.some(it => it.sk === t)) && lesson.screens.some(s => s.sk === t), true, `SK_RETAG ${at}: новий ${t} є в уроці (і в пулі, якщо він є)`);
+    eq(!!c.skills[f] && !!c.skills[t], true, `SK_RETAG ${at}: навички оголошено`);
+  }
 }
 
 console.log(`\n${n} перевірок, ${fails ? fails + " з помилками" : "усе гаразд"}`);

@@ -180,7 +180,7 @@
       "reason": "Базове вміння відповідного класу за вказаними пунктами; охоплювати лише вміння, уже пояснені цим уроком.",
       "evidence": "g4a:103–109; l4a:pdf-с.39,47–48",
       "prerequisites": [],
-      "sk": "num",
+      "sk": "cmp",
       "pool": "pg4m1",
       "formats": [
         "number"
@@ -492,7 +492,7 @@
       "prerequisites": [
         "g4m1l1"
       ],
-      "sk": "num",
+      "sk": "div",
       "pool": "pg4m3",
       "formats": [
         "number"
@@ -979,7 +979,7 @@
         "g4m1l2",
         "g4m2l4"
       ],
-      "sk": "num",
+      "sk": "expr",
       "pool": "pms0",
       "formats": [
         "number"
@@ -1119,7 +1119,7 @@
       "prerequisites": [
         "g4m5l3"
       ],
-      "sk": "geom",
+      "sk": "meas",
       "pool": "pms0b",
       "formats": [
         "number"
@@ -1915,7 +1915,7 @@
       "prerequisites": [
         "m1"
       ],
-      "sk": "ops",
+      "sk": "frac",
       "pool": "pg6m2",
       "formats": [
         "number"
@@ -1953,7 +1953,7 @@
         "g6m2l1",
         "g6m1l4"
       ],
-      "sk": "ops",
+      "sk": "frac",
       "pool": "pg6m2",
       "formats": [
         "number"
@@ -1992,7 +1992,7 @@
         "g6m1l4",
         "g6m2l1"
       ],
-      "sk": "ops",
+      "sk": "cmp",
       "pool": "pg6m2",
       "formats": [
         "number"
@@ -3356,7 +3356,7 @@
         "g7m1l2",
         "g7m5l3"
       ],
-      "sk": "eq",
+      "sk": "func",
       "pool": "pg7m7",
       "formats": [
         "number",
@@ -3621,7 +3621,7 @@
         "g7m3l4",
         "g7m5l1"
       ],
-      "sk": "expr",
+      "sk": "ops",
       "pool": "pg8m1",
       "formats": [
         "number",
@@ -3701,7 +3701,7 @@
         "g7m3l4",
         "g7m5l1"
       ],
-      "sk": "expr",
+      "sk": "func",
       "pool": "pg8m1",
       "formats": [
         "number",
@@ -3925,7 +3925,7 @@
         "ms0l5",
         "g7m5l1"
       ],
-      "sk": "expr",
+      "sk": "num",
       "pool": "pg8m3",
       "formats": [
         "number",
@@ -3999,7 +3999,7 @@
         "ms0l5",
         "g7m5l1"
       ],
-      "sk": "expr",
+      "sk": "func",
       "pool": "pg8m3",
       "formats": [
         "number",
@@ -4301,7 +4301,7 @@
         "g7m4l3",
         "ms4l1"
       ],
-      "sk": "meas",
+      "sk": "geom",
       "pool": "pg8m6",
       "formats": [
         "number"
@@ -4758,7 +4758,7 @@
         "g7m5l3",
         "g8m5l2"
       ],
-      "sk": "func",
+      "sk": "eq",
       "pool": "pg9m3",
       "formats": [
         "number",
@@ -4908,7 +4908,7 @@
         "g7m3l1",
         "g7m1l2"
       ],
-      "sk": "expr",
+      "sk": "num",
       "pool": "pg9m5",
       "formats": [
         "number"
@@ -4945,7 +4945,7 @@
         "g7m3l1",
         "g7m1l2"
       ],
-      "sk": "expr",
+      "sk": "num",
       "pool": "pg9m5",
       "formats": [
         "number"
@@ -4980,7 +4980,7 @@
         "g7m3l1",
         "g7m1l2"
       ],
-      "sk": "expr",
+      "sk": "num",
       "pool": "pg9m5",
       "formats": [
         "number"
@@ -5053,7 +5053,7 @@
         "g8m6l1",
         "g8m4l1"
       ],
-      "sk": "geom",
+      "sk": "meas",
       "pool": "pg9m6",
       "formats": [
         "number",
@@ -5571,7 +5571,7 @@
         "g8m1l3",
         "g8m5l2"
       ],
-      "sk": "expr",
+      "sk": "eq",
       "pool": "pg10m3",
       "formats": [
         "number",
@@ -6387,7 +6387,7 @@
         "g10m4l2",
         "g9m6l2"
       ],
-      "sk": "meas",
+      "sk": "geom",
       "pool": "pg11m4",
       "formats": [
         "number",
@@ -6428,7 +6428,7 @@
         "g10m4l2",
         "g9m6l2"
       ],
-      "sk": "meas",
+      "sk": "geom",
       "pool": "pg11m4",
       "formats": [
         "number",
@@ -7263,8 +7263,8 @@
             }
           ],
           "itemSkills": [
-            "num",
-            "num"
+            "cmp",
+            "cmp"
           ]
         },
         {
@@ -7373,8 +7373,8 @@
             }
           ],
           "itemSkills": [
-            "num",
-            "num"
+            "div",
+            "div"
           ]
         },
         {
@@ -9389,7 +9389,7 @@
           ],
           "baseline": false,
           "itemSkills": [
-            "meas"
+            "geom"
           ],
           "knownPolicy": "known лише для вказаного одного уроку і лише коли всі компоненти ядра перевірені на цьому екрані та відповідь цілком правильна. Не додавати неіснуючого прапорця вимкнення known; якщо достатню пробу не вдається скласти, перед авторством повернути вибір цільового уроку/проби куратору для нової версії матриці.",
           "coverageObjectives": [
@@ -9716,8 +9716,8 @@
             }
           ],
           "itemSkills": [
-            "meas",
-            "meas"
+            "geom",
+            "geom"
           ]
         },
         {
@@ -9871,7 +9871,7 @@
           ],
           "baseline": false,
           "itemSkills": [
-            "expr"
+            "num"
           ],
           "knownPolicy": "known лише для вказаного одного уроку і лише коли всі компоненти ядра перевірені на цьому екрані та відповідь цілком правильна. Не додавати неіснуючого прапорця вимкнення known; якщо достатню пробу не вдається скласти, перед авторством повернути вибір цільового уроку/проби куратору для нової версії матриці.",
           "coverageObjectives": [
@@ -10544,8 +10544,8 @@
             }
           ],
           "itemSkills": [
-            "func",
-            "func"
+            "eq",
+            "eq"
           ]
         },
         {
@@ -10699,8 +10699,8 @@
             }
           ],
           "itemSkills": [
-            "geom",
-            "geom"
+            "meas",
+            "meas"
           ]
         },
         {
@@ -10833,7 +10833,7 @@
           ],
           "baseline": false,
           "itemSkills": [
-            "meas"
+            "geom"
           ],
           "knownPolicy": "known лише для вказаного одного уроку і лише коли всі компоненти ядра перевірені на цьому екрані та відповідь цілком правильна. Не додавати неіснуючого прапорця вимкнення known; якщо достатню пробу не вдається скласти, перед авторством повернути вибір цільового уроку/проби куратору для нової версії матриці.",
           "coverageObjectives": [
