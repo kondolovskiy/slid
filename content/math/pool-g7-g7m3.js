@@ -1,5 +1,5 @@
 /* Слід · Математика, 7 клас — пул задач для тренування до розділу «Алгебра: цілі вирази» (g7m3)
-   Статус: draft (автор w-write-math-pool-g7m3, 2026-10-31). 32 задачі: по 8 на кожен required-урок
+   Статус: verified (verifier-pool-g7m3, 2026-10-31; автор w-write-math-pool-g7m3). 32 задачі: по 8 на кожен required-урок
    g7m3l1–g7m3l4 (boss g7m3l5 без задач). Матриця покриття 2026-10-16.v2.
    Усі задачі — з підручника Мерзляка, Якіра «Алгебра. 7 клас» (2024), § 1, п. 5–9, 12–17, 19;
    умови й числа звірено за відрендереними сторінками PDF. srcPage — друкований номер сторінки
@@ -11,8 +11,8 @@
 SLID.pool("math", {
   id: "pg7m3",
   section: "g7m3",
-  status: "draft",
-  meta: { author: "claude-opus", created: "2026-10-31", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "claude-opus", created: "2026-10-31", factcheck: "verifier-pool-g7m3", teacher: null },
   sources: [
     { id: "a7", title: "Мерзляк А. Г., Якір М. С. Алгебра: підручник для 7 класу закладів загальної середньої освіти. — Харків: Гімназія, 2024 (§ 1, п. 5–9, 12–17, 19)", url: "https://file.4book.org/images/shcoolbook_ua/7/7_a_m_2024.pdf" }
   ],
