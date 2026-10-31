@@ -4489,7 +4489,6 @@
       "formats": [
         "number",
         "coordinates2",
-        "expression",
         "exactRoot"
       ],
       "exercises": {
@@ -5020,7 +5019,6 @@
       "pool": "pg9m6",
       "formats": [
         "number",
-        "coordinates2",
         "exactRoot"
       ],
       "exercises": {
@@ -5059,7 +5057,6 @@
       "pool": "pg9m6",
       "formats": [
         "number",
-        "coordinates2",
         "exactRoot"
       ],
       "exercises": {
@@ -5096,8 +5093,7 @@
       "pool": "pg9m6",
       "formats": [
         "number",
-        "coordinates2",
-        "exactRoot"
+        "coordinates2"
       ],
       "exercises": {
         "min": 6,

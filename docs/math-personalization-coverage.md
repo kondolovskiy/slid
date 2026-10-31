@@ -8,6 +8,8 @@
 
 ¹ 2026-10-31, рішення людини: exactRoot прибрано з g8m5l4 — у сюжетних задачах a8 п. 18–23 немає жодної з однією ірраціональною відповіддю (reports/verify/pg8m5.md, tasks/done/refine-math-g8m5-roots.md). Решта версії v2 без змін.
 
+² 2026-10-31, рішення людини: прибрано формати, на які в g9 (Мерзляк, Якір, 2026) немає чесних вправ у пунктах уроку — expression з g9m2l1, coordinates2 з g9m6l1/l2, exactRoot з g9m6l3 (reports/verify/pg9m2.md, pg9m6.md). Для g9m2l3 expression лишається: рушій розширюється (coordinates2 з компонентами-виразами, задача engine-coordinates2-expression), після чого №13.5(4) стає чесною вправою.
+
 ## Обсяг
 
 На required-урок — 6–8 реальних вправ: мінімум 3 рівня 1 + 2 рівня 2 + 1 рівня 3; для 8 — 3+3+2. Поняттєвим урокам теж плануємо 6 (числа, choice/multi на властивості та схеми); винятків до 5 немає. Вправи з підручника добирає автор після читання уроку, зі сторінкою/номером і незалежною перевіркою. Не дописувати ще не пояснену в уроці підтематику для кількості.
@@ -411,7 +413,7 @@ Cur для g11m2/g11m6 немає: у них немає required-уроків. 4
 | g9m1 / `g9m1l1` | Властивості | required | g7m1l2, g6m4l3 | cur-g9m1 | pg9m1 | number, intervalSet | 6–8 | a9:6–31 |
 | g9m1 / `g9m1l2` | Лінійні | required | g7m1l2, g6m4l3 | — | pg9m1 | number, intervalSet | 6–8 | a9:32–45 |
 | g9m1 / `g9m1l3` | Системи | required | g7m1l2, g6m4l3 | — | pg9m1 | number, intervalSet | 6–8 | a9:46–56 |
-| g9m2 / `g9m2l1` | Координати | required | g6m4l5, g8m4l2 | cur-g9m2 | pg9m2 | number, coordinates2, expression, exactRoot | 6–8 | g9:102–109 |
+| g9m2 / `g9m2l1` | Координати | required | g6m4l5, g8m4l2 | cur-g9m2 | pg9m2 | number, coordinates2, exactRoot ² | 6–8 | g9:102–109 |
 | g9m2 / `g9m2l2` | Коло і пряма | required | g6m4l5, g8m4l2 | — | pg9m2 | number, coordinates2, expression, exactRoot | 6–8 | g9:110–129 |
 | g9m2 / `g9m2l3` | Вектори | required | g6m4l5, g8m4l2 | — | pg9m2 | number, coordinates2, expression, exactRoot | 6–8 | g9:138–152 |
 | g9m2 / `g9m2l4` | Дії | required | g6m4l5, g8m4l2 | — | pg9m2 | number, coordinates2, expression, exactRoot | 6–8 | g9:153–186 |
@@ -425,9 +427,9 @@ Cur для g11m2/g11m6 немає: у них немає required-уроків. 4
 | g9m5 / `g9m5l1` | Послідовності | required | g7m3l1, g7m1l2 | cur-g9m5 | pg9m5 | number | 6–8 | a9:143–152 |
 | g9m5 / `g9m5l2` | Арифметична | required | g7m3l1, g7m1l2 | — | pg9m5 | number | 6–8 | a9:153–166 |
 | g9m5 / `g9m5l3` | Геометрична | required | g7m3l1, g7m1l2 | — | pg9m5 | number | 6–8 | a9:167–186 |
-| g9m6 / `g9m6l1` | Правильні | required | g8m6l1, g8m4l1 | cur-g9m6 | pg9m6 | number, coordinates2, exactRoot | 6–8 | g9:67–81 |
-| g9m6 / `g9m6l2` | Коло і круг | required | g8m6l1, g8m4l1 | — | pg9m6 | number, coordinates2, exactRoot | 6–8 | g9:82–97 |
-| g9m6 / `g9m6l3` | Переміщення | required | g8m6l1, g8m4l1 | — | pg9m6 | number, coordinates2, exactRoot | 6–8 | g9:194–227 |
+| g9m6 / `g9m6l1` | Правильні | required | g8m6l1, g8m4l1 | cur-g9m6 | pg9m6 | number, exactRoot ² | 6–8 | g9:67–81 |
+| g9m6 / `g9m6l2` | Коло і круг | required | g8m6l1, g8m4l1 | — | pg9m6 | number, exactRoot ² | 6–8 | g9:82–97 |
+| g9m6 / `g9m6l3` | Переміщення | required | g8m6l1, g8m4l1 | — | pg9m6 | number, coordinates2 ² | 6–8 | g9:194–227 |
 | g9m6 / `g9m6l4` | Подібність | required | g8m6l1, g8m4l1 | — | pg9m6 | number, coordinates2, exactRoot | 6–8 | g9:228–245 |
 | g9m7 / `g9m7l1` | Комбінаторика | required | ms2l5, m1 | cur-g9m7 | pg9m7 | number | 6–8 | a9:192–197 |
 | g9m7 / `g9m7l2` | Ймовірність | required | ms2l5, m1 | — | pg9m7 | number | 6–8 | a9:198–222 |
