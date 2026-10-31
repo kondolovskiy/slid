@@ -24,6 +24,9 @@ async def answer_context_screen(page, screen):
     kind = screen['type']
     if kind == 'choice':
         await page.click(f'#stage .opt[data-k="{screen["correct"]}"]')
+    elif kind == 'answer' and screen.get('answerKind') == 'quantity':
+        await page.fill('#numIn', await page.evaluate('s => SLID_LEARN.ansText(s)', screen))
+        await page.dispatch_event('#numIn', 'input')
     elif kind == 'answer' and screen.get('answerKind') == 'divrem':
         await page.fill('#numIn', f"{screen['answer'][0]} ост. {screen['answer'][1]}")
         await page.dispatch_event('#numIn', 'input')
@@ -324,9 +327,9 @@ async def pool_checks(browser, url, pool):
 # Symbolic answer kinds (engine-math-pool-answer-formats): fixture items, not production content.
 # Each: fields, first attempt and the expected dock text, then an equivalent correct record.
 FORMAT_FIXTURES = [
-    ({'answerKind': 'ratio', 'answer': '2 : 3', 'reduced': True}, '4 : 6', 'натуральними', '2:3'),
-    ({'answerKind': 'coordinates2', 'answer': [3, -2]}, '(-2; 3)', 'Зміни відповідь', 'A(3; −2)'),
-    ({'answerKind': 'coordinates3', 'answer': '(1; -2; 3)'}, '(1; -2)', 'Зміни відповідь', '(1; -2; 3)'),
+    ({'answerKind': 'ratio', 'answer': '3 : 5', 'reduced': True}, '6 : 10', 'натуральними', '3:5'),
+    ({'answerKind': 'coordinates2', 'answer': [5, -2]}, '(-2; 5)', 'Зміни відповідь', 'A(5; −2)'),
+    ({'answerKind': 'coordinates3', 'answer': '(2; -1; 3)'}, '(2; -1)', 'Зміни відповідь', '(2; -1; 3)'),
     # coordinates2 with expression components (engine-coordinates2-expression, mer9g №13.5(4)).
     ({'answerKind': 'coordinates2', 'answer': '(p - m; k - n)'}, '(m - p; k - n)', 'Зміни відповідь', 'A(−m + p; −n + k)'),
     ({'answerKind': 'coordinates2', 'answer': '(2a; b^2)', 'form': 'simplified'}, '(a + a; b^2)', 'можна спростити', '(a·2; b²)'),
@@ -344,6 +347,19 @@ FORMAT_FIXTURES = [
     ({'answerKind': 'expression', 'answer': 'k/(6p)', 'form': 'reduced'}, 'k/6p', 'в дужки', 'k/(6p)'),
     ({'answerKind': 'coordinates2', 'answer': '(√2; 1)'}, '(1; √2)', 'Зміни відповідь', '(√2; 1)'),
     ({'answerKind': 'expression', 'answer': 'x'}, '((((x+1)^12)^12)^12)^12', 'занадто складний', 'x'),
+    # engine-math-answer-kinds-new: time, quantity, decimals, improper, multiset, prefixes, periodic decimal, units.
+    ({'answerKind': 'time', 'answer': '9:55'}, '9:5', 'двома цифрами', '9 год 55 хв'),
+    ({'answerKind': 'time', 'answer': '21:05'}, '2105', 'двокрапку', '21.05'),
+    ({'answerKind': 'quantity', 'answer': 245, 'units': ['м', 'см'], 'form': 'compound'}, '245 см', 'спершу більші', '2 м. 45 см.'),
+    ({'answerKind': 'quantity', 'answer': 200, 'units': ['год', 'хв']}, '3 кг 20 г', 'Перевір одиницю', '200 хв'),
+    ({'answerKind': 'quantity', 'answer': 1200, 'units': ['кг', 'г']}, '1200', 'Допиши одиниці', '1,2 кг'),
+    ({'answer': '37,0', 'decimals': 1}, '37', 'одним знаком після коми', '37.0'),
+    ({'answer': '3,1', 'decimals': 1, 'tol': 0.05}, '3,14', 'одним знаком після коми', '3,1'),
+    ({'answer': '9/4', 'form': 'improper'}, '2 1/4', 'неправильним дробом', '18/8'),
+    ({'answerKind': 'list', 'answer': '2; 2; 3', 'multiset': True}, '2; 3', 'Зміни відповідь', '3; 2; 2'),
+    ({'answerKind': 'coordinates2', 'answer': '(4; -1)'}, '(-1; 4)', 'Зміни відповідь', 'AB = (4; −1)'),
+    ({'answer': '-1/3'}, 'x = -0,(4)', 'Зміни відповідь', 'x = −0,(3)'),
+    ({'answer': '60', 'unit': 'грн'}, '61 мм', 'Зміни відповідь', '60 грн.'),
 ]
 
 async def answer_format_checks(browser, url):
@@ -385,6 +401,23 @@ async def answer_format_checks(browser, url):
                     assert ins == ['(', ';', ')', '-', '/', *(['√'] if '√' in str(fields['answer']) else [])], ins
             if fields.get('answerKind') == 'list' and fields.get('unit'):
                 assert await page.locator('#answerUnit').inner_text() == fields['unit']
+            if fields.get('answerKind') == 'time':
+                # «:» inserts at the caret; the format example under the field is never the key itself.
+                assert ins == [':'], ins
+                help_text = await page.locator('#stage .anskeys + .fix').inner_text()
+                assert re.search(r'\d{1,2}:\d{2}', help_text) and fields['answer'] not in help_text, help_text
+                assert await page.get_attribute('#numIn', 'inputmode') == 'decimal'
+                await page.fill('#numIn', '955'); await page.eval_on_selector('#numIn', 'e=>e.setSelectionRange(1,1)')
+                await page.click('.anskeys button[data-ins=":"]')
+                assert await page.input_value('#numIn') == '9:55'
+                await page.fill('#numIn', '')
+            if fields.get('answerKind') == 'quantity':
+                # Unit buttons from the larger unit; no number in the hint under the field.
+                assert ins == sorted(fields['units'], key=lambda u: -['мм', 'см', 'м', 'г', 'кг', 'с', 'хв', 'год'].index(u)), ins
+                help_text = await page.locator('#stage .anskeys + .fix').inner_text()
+                assert not re.search(r'\d', help_text) and all(u in help_text for u in fields['units']), help_text
+            if 'decimals' in fields or fields.get('form') == 'improper':
+                assert sym == 0 and await page.locator('#stage .anskeys').count() == 1
             if fields['answer'] == '(p - m; k - n)':
                 # Variable keys insert at the caret: (|; k − n) + p − m → (p-m; k − n).
                 await page.fill('#numIn', '(; k − n)'); await page.eval_on_selector('#numIn', 'e=>e.setSelectionRange(1,1)')
@@ -403,30 +436,55 @@ async def answer_format_checks(browser, url):
             await page.click('#action'); checked += 1
     # The examples in the coordinates2 field hints (numeric and expression) must not be the answer of any real exercise:
     # every «(…)» in a hint is checked against every coordinates2 key of all pools, diagnostics and lesson screens.
-    assert len(helps) == 4 and len(set(helps)) == 2, helps
+    assert len(helps) == 5 and len(set(helps)) == 2, helps
+    # «Підказка ≠ ключ» (рев'ю followup P3-3): приклади витягуються автоматично з усіх текстів, які дитина бачить у вправі —
+    # підказки під полем (SLID_ANS_UI.field: help для класу й ключа вправи) і текстів form/bad (SLID_LEARN.hintTexts) —
+    # і жоден не має зараховуватися (checkAns ≠ bad) як відповідь самої вправи. Перевіряються всі answer-вправи змісту
+    # (пули, екрани уроків) і fixture-вправи цього файла (time, quantity… яких у змісті ще немає).
     await page.reload()
-    hits = await page.evaluate("""(helps) => {const ex=[...new Set(helps.flatMap(h=>h.match(/\\([^()]*;[^()]*\\)/g)||[]))];
-      const items=SLID_SUBJECTS.flatMap(c=>(c.pools||[]).flatMap(p=>p.items).concat((c.diags||[]).flatMap(d=>d.items),
-        c.sections.flatMap(s=>(s.lessons||[]).flatMap(l=>l.screens||[])))).filter(it=>it.answerKind==='coordinates2');
-      if(ex.length<2||items.length<40) return ['мало прикладів чи ключів: '+ex.length+'/'+items.length];
-      return items.flatMap(it=>ex.filter(e=>SLID_LEARN.checkAns(it,e)!=='bad').map(e=>e+' ← '+JSON.stringify(it.answer)));}""", helps)
+    hits = await page.evaluate(r"""(fx) => {
+      // Приклад — сусідні «математичні» токени між роздільниками: кириличне слово (крім слова між цифрами: «3 ост. 2»),
+      // тире, кінцева пунктуація на глибині дужок 0. «2 : 3», «(3; −2)», «[2; 5), (−∞; 3]» лишаються цілими.
+      const examples = text => {
+        const toks = String(text).split(/\s+/).filter(Boolean), out = []; let cur = [], depth = 0;
+        const cyr = t => /^[«(]*[\u0400-\u04ff'’ʼ-]+[.,:;!?»)]*$/.test(t), flush = () => { if (cur.length) out.push(cur.join(' ')); cur = []; };
+        toks.forEach((t, i) => {
+          const prevDigit = i > 0 && /\d[.,]?$/.test(toks[i - 1]), nextDigit = i + 1 < toks.length && /^[(\-−]?\d/.test(toks[i + 1]);
+          if ((cyr(t) && !(prevDigit && nextDigit)) || t === '—' || t === '–') return flush();
+          for (const c of t) { if ('([{'.includes(c)) depth++; else if (')]}'.includes(c)) depth = Math.max(0, depth - 1); }
+          cur.push(t.replace(/^«/, ''));
+          if (/[^,.:;!?]+[,.:;!?»]$/.test(t) && depth === 0 && !(cyr(t) && nextDigit)) flush();
+        });
+        flush();
+        return out.map(w => w.replace(/[,.:;!?»]+$/, '').replace(/^[\^·*/]+\s*/, '').trim()).filter(w => /[\dπ√]|^[A-Za-z(]/.test(w));
+      };
+      const math = SLID_SUBJECTS.find(c => c.id === 'math'), items = [];
+      for (const c of SLID_SUBJECTS) {
+        for (const p of c.pools || []) { const sec = c.sections.find(s => s.id === p.section); p.items.forEach(it => it.type === 'answer' && items.push([it, sec?.grade ?? 0, false, p.id + ':' + it.id])); }
+        for (const sec of c.sections) for (const l of sec.lessons || []) l.screens.forEach((it, i) => it.type === 'answer' && items.push([it, sec.grade, !!sec.signed, l.id + '#' + i]));
+      }
+      fx.forEach((f, i) => items.push([{ ...f[0], type: 'answer' }, 6, false, 'fixture' + i]));
+      // проби, щоб витяг побачив підказки, яких зараз не показує жодна вправа змісту (десятковий ключ 4 кл., factors)
+      items.push([{ type: 'answer', answer: '0,7' }, 4, false, 'probe-dec4'], [{ type: 'answer', answerKind: 'factors', answer: '2 · 7' }, 6, false, 'probe-factors']);
+      const kinds = new Set(items.map(([it]) => it.answerKind || 'number'));
+      if (items.length < 900 || !['expression', 'coordinates2', 'exactRoot', 'list', 'time', 'quantity', 'divrem', 'ratio'].every(k => kinds.has(k))) return ['мало вправ: ' + items.length + ' ' + [...kinds]];
+      const cache = new Map(), seen = new Set(), out = [];
+      for (const [it, grade, signed, id] of items) {
+        const texts = [SLID_ANS_UI.field(it, grade, signed).help, ...SLID_LEARN.hintTexts(it)];
+        for (const t of texts) { if (!cache.has(t)) cache.set(t, examples(t)); for (const e of cache.get(t)) { seen.add(e);
+          if (SLID_LEARN.checkAns(it, e) !== 'bad') out.push(id + ': «' + e + '» ← ' + JSON.stringify(it.answer) + ' у «' + t + '»'); } }
+      }
+      // витяг справді знаходить приклади всіх форматів (інакше перевірка порожня)
+      const need = ['7/12', '2 1/3', '2,5', '(3; −2)', '(1; −2; 3)', '(2a; b − 1)', '3√5', '√2/2', '4π', '2 : 3', '[2; 5)', '(−∞; 3]', '(x^2)', '(3ab)', '(a + 1)/(a − 1)',
+        'π/6 + 2πk', '2^3 · 5', '3 ост. 2', '1/(3y)', '1/3y', '7:05'];
+      return need.filter(e => !seen.has(e)).map(e => 'не витягнуто приклад: ' + e).concat(out);
+    }""", [[x[0]] for x in FORMAT_FIXTURES])
     assert hits == [], hits
-    # Every example in the field hints and the bad/form hints of every format (ANS_UI, the expression-pair hint, badHint)
-    # must not be accepted for any real key of the same format: the hint must not hand out an answer.
-    hits = await page.evaluate("""(helps) => {
-      const EX={ratio:['2 : 3'],coordinates2:['(3; −2)','(2a; b − 1)'],coordinates3:['(1; −2; 3)'],exactRoot:['3√5','√2/2','4π'],
-        intervalSet:['[2; 5)','(−∞; 3]'],expression:['x^2','3ab','(a + 1)/(a − 1)','1/(3y)'],periodicSet:['π/6 + 2πk'],
-        factors:['2^3 · 5'],divrem:['3 ост. 2'],ratio2:[]};
-      const miss=[];
-      for(const [k,xs] of Object.entries(EX)) if(SLID_ANS_UI[k]) for(const x of xs) if(!SLID_ANS_UI[k][1].includes(x) && !helps.some(h=>h.includes(x))
-        && !SLID_LEARN.badHint({answerKind:'expression',answer:'k/(6p)',form:'reduced'},'k/6p').includes(x)) miss.push('немає в підказці: '+k+' '+x);
-      const items=SLID_SUBJECTS.flatMap(c=>(c.pools||[]).flatMap(p=>p.items).concat((c.diags||[]).flatMap(d=>d.items),
-        c.sections.flatMap(s=>(s.lessons||[]).flatMap(l=>l.screens||[])))).filter(it=>it.type==='answer');
-      const kinds=new Set(items.map(it=>it.answerKind||'number'));
-      if(items.length<900||!['expression','coordinates2','exactRoot','list'].every(k=>kinds.has(k))) return ['мало ключів: '+items.length];
-      const out=items.flatMap(it=>(EX[it.answerKind||'number']||[]).filter(e=>SLID_LEARN.checkAns(it,e)!=='bad').map(e=>e+' ← '+JSON.stringify(it.answer)));
-      return miss.concat(out);}""", helps)
-    assert hits == [], hits
+    # SLID_ANS_UI — deep-frozen copy (review followup P3-4): changing it does not reach the player.
+    frozen = await page.evaluate("""() => { 'use strict'; let threw = 0;
+      for (const f of [() => { SLID_ANS_UI.ratio[1] = 'x'; }, () => { SLID_ANS_UI.ratio[0].push('x'); }, () => { SLID_ANS_UI.time = []; }]) { try { f(); } catch (e) { threw++; } }
+      return [threw, Object.isFrozen(SLID_ANS_UI), SLID_ANS_UI.ratio[1].includes('2 : 3')]; }""")
+    assert frozen == [3, True, True], frozen
     # Two wrong attempts reveal the ordered key in its canonical spelling.
     await page.reload()
     await page.evaluate("""() => {const c=SLID_SUBJECTS.find(c=>c.id==='math');c.pools=c.pools.filter(p=>p.id==='pg6m1');const p=c.pools[0];
@@ -437,6 +495,15 @@ async def answer_format_checks(browser, url):
         await page.fill('#numIn', attempt); await page.dispatch_event('#numIn', 'input'); await page.click('#action')
     host = await page.locator('#hintHost').inner_text()
     assert 'Правильна відповідь' in host and re.search(r'3\s*;\s*[−-]\s*2', host), host
+    await page.reload()
+    await page.evaluate("""() => {const c=SLID_SUBJECTS.find(c=>c.id==='math');c.pools=c.pools.filter(p=>p.id==='pg6m1');const p=c.pools[0];
+      p.items=[{id:'revealq',lesson:'g6m1l1',lvl:1,sk:'num',src:p.sources[0].id+' №1',type:'answer',title:'Довжина',answerKind:'quantity',answer:245,units:['см','м'],form:'compound',steps:['Пояснення.']}];}""")
+    await page.click('[data-tab="path"]')
+    await page.click('button[data-subject="math"]'); await page.click('[data-practice-view="math"]'); await page.click('[data-practice-mix]')
+    for attempt in ('2 м 40 см', '2 м 50 см'):
+        await page.fill('#numIn', attempt); await page.dispatch_event('#numIn', 'input'); await page.click('#action')
+    host = await page.locator('#hintHost').inner_text()
+    assert 'Правильна відповідь: 2 м 45 см' in host, host
     assert not errors, errors
     await context.close()
     assert checked == len(FORMAT_FIXTURES)

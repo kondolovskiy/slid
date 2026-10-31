@@ -864,22 +864,38 @@ const ANS_UI={
   exactRoot:[["√","π","/","-","(",")"],"Точна відповідь без округлення: 3√5, √2/2, 4π. Корінь спрости."],
   intervalSet:[["(","[",";","]",")","∞","∪","∅","-"],"Проміжок — через крапку з комою: [2; 5), (−∞; 3]. Кілька — через ∪, порожня множина — ∅."],
   expression:[["^","(",")","·","/","√"],"Степінь — ^ (x^2), множення — · або без знака (3ab), дріб — / з дужками: (a + 1)/(a − 1)."],
-  periodicSet:[["π","k","±","/","(",")","^",";"],"Серія розв'язків через k: π/6 + 2πk. Кілька серій — через ; або ±."]};
-window.SLID_ANS_UI=ANS_UI;   // лише для читання: test-answer-ui звіряє приклади підказок із ключами вправ
-function answerInput(s){
+  periodicSet:[["π","k","±","/","(",")","^",";"],"Серія розв'язків через k: π/6 + 2πk. Кілька серій — через ; або ±."],
+  // час і величини: приклад і одиниці — з самої вправи (answerUI), тож підказка не збігається з ключем
+  time:[[":"],""],
+  quantity:[[],""]};
+/** Кнопки й підказка під полем answer: { keys, help, sym }. grade — клас вправи, signed — розділ зі знаковими числами.
+    Чиста функція (лише LEARN): test-answer-ui звіряє приклади з help із ключем кожної вправи (SLID_ANS_UI.field). */
+function answerUI(s, grade, signed){
   const kind=s.answerKind||"number", sym=ANS_UI[kind];
   // числова відповідь: «−» і дроби — лише коли їх уже вивчають або цього потребує сама вправа (LEARN.numberKeys)
-  const nk= kind==="number"? LEARN.numberKeys(s, s.grade ?? SEC.grade, !run.practice && SEC.signed) : null;
+  const nk= kind==="number"? LEARN.numberKeys(s, grade, signed) : null;
   const keys=sym? sym[0].slice() : kind==="comparison"? ["<",">","="] : kind==="list"? ["-","/",";"," "] : kind==="factors"? ["*","^"] : kind==="divrem"? [" ост. "] : [...(nk.minus?["-"]:[]), ...(nk.frac?["/"," "]:[])];
   if(kind==="list" && /[√±]/.test(String(s.answer))) keys.push("√","±");
   if(kind==="expression") for(const c of new Set(String(s.answer).match(/[\u0370-\u03ff]/g)||[])) if(c!=="π") keys.push(c);   // α, β… з ключа
+  const units= kind==="quantity"? LEARN.quantityUnits(s)||[] : null;
+  if(units) keys.push(...units);
   const pk= kind==="coordinates2"? LEARN.pairKey(s) : null, pv= pk&&pk.some(c=>c.expr)? [...new Set(pk.flatMap(c=>c.vars))].sort() : null;   // компоненти-вирази; приклад у підказці не має збігатися з ключем жодної вправи (test-answer-ui)
   if(pv) keys.push("^","·",...pv);
   // «√» — з 8 класу (квадратні корені) або коли корінь є в самому ключі; клас — розділу вправи, як у numberKeys (QA 7 кл. D-3)
-  if(keys.includes("√") && (Number(s.grade ?? SEC.grade)||0)<8 && !/[√∛∜]|sqrt/.test(Array.isArray(s.answer)? s.answer.join(";") : String(s.answer))) keys.splice(keys.indexOf("√"),1);
-  const help=pv? "Координати — у дужках через крапку з комою: (2a; b − 1). Спершу x, потім y. Множення — · або без знака (2a), степінь — ^." : sym? sym[1] : kind==="comparison"? "Запиши знак: <, > або =." : kind==="list"? "Запиши всі числа через крапку з комою. Порядок не має значення." : kind==="factors"? "Множники — через · або *. Степінь — через ^, наприклад 2^3 · 5." : kind==="divrem"? "Запиши неповну частку, потім кнопкою «ост.» — остачу: 3 ост. 2." : nk.frac? "Дріб — через риску: 7/12. Мішане число — через пробіл: 2 1/3." : nk.dec? "Десятковий дріб — через кому: 2,5." : "";
+  if(keys.includes("√") && (Number(grade)||0)<8 && !/[√∛∜]|sqrt/.test(Array.isArray(s.answer)? s.answer.join(";") : String(s.answer))) keys.splice(keys.indexOf("√"),1);
+  const help=pv? "Координати — у дужках через крапку з комою: (2a; b − 1). Спершу x, потім y. Множення — · або без знака (2a), степінь — ^."
+    : kind==="time"? `Час — години й хвилини через двокрапку: ${LEARN.timeExample(s)}.`
+    : units? `Запиши число й одиницю (${units.join(", ")}). Кілька одиниць — через пробіл, спершу більші.`
+    : sym? sym[1] : kind==="comparison"? "Запиши знак: <, > або =." : kind==="list"? "Запиши всі числа через крапку з комою. Порядок не має значення." : kind==="factors"? "Множники — через · або *. Степінь — через ^, наприклад 2^3 · 5." : kind==="divrem"? "Запиши неповну частку, потім кнопкою «ост.» — остачу: 3 ост. 2." : nk.frac? "Дріб — через риску: 7/12. Мішане число — через пробіл: 2 1/3." : nk.dec? "Десятковий дріб — через кому: 2,5." : "";
+  return { keys, help, sym:!!sym };
+}
+// Лише для читання (глибоко заморожена копія, рев'ю followup P3-4): test-answer-ui звіряє приклади підказок із ключами вправ.
+const deepFreeze=o=>{ Object.values(o).forEach(v=>{ if(v&&typeof v==="object") deepFreeze(v); }); return Object.freeze(o); };
+window.SLID_ANS_UI=deepFreeze({...JSON.parse(JSON.stringify(ANS_UI)), field:answerUI});
+function answerInput(s){
+  const kind=s.answerKind||"number", { keys, help, sym }=answerUI(s, s.grade ?? SEC.grade, !run.practice && SEC.signed);
   const unit=s.unit||(kind==="periodicSet"? "k ∈ ℤ" : "");
-  return `<div class="numbox wide"><input id="numIn" inputmode="${kind==="number"?"decimal":kind==="divrem"?"numeric":"text"}" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="?" aria-label="Відповідь"><span class="unit" id="answerUnit">${esc(unit)}</span></div>${keys.length? `<div class="anskeys${sym?" sym":""}">${keys.map(v=>`<button type="button" data-ins="${esc(v)}" aria-label="Вставити ${esc(v===" "?"пробіл":v.trim()==="ост."?"остачу":v)}">${esc(v===" "?"пробіл":v==="-"?"−":v.trim())}</button>`).join("")}</div>` : ""}${help? `<div class="fix" style="text-align:center">${esc(help)}</div>` : ""}`;
+  return `<div class="numbox wide"><input id="numIn" inputmode="${kind==="number"||kind==="time"?"decimal":kind==="divrem"?"numeric":"text"}" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="?" aria-label="Відповідь"><span class="unit" id="answerUnit">${esc(unit)}</span></div>${keys.length? `<div class="anskeys${sym?" sym":""}">${keys.map(v=>`<button type="button" data-ins="${esc(v)}" aria-label="Вставити ${esc(v===" "?"пробіл":v.trim()==="ост."?"остачу":v)}">${esc(v===" "?"пробіл":v==="-"?"−":v.trim())}</button>`).join("")}</div>` : ""}${help? `<div class="fix" style="text-align:center">${esc(help)}</div>` : ""}`;
 }
 const answerUnit = (s, value) => { const a=LEARN.parseAns(value); if(!s.unitForms||!a) return s.unit||""; const n=Math.abs(a.n/a.d); return Number.isInteger(n)? plural(n,s.unitForms) : s.unitForms[1]; };
 function shadeUpdate(s){
@@ -965,7 +981,7 @@ function showMarks(s, reveal){
   if(s.type==="multi"){ const c=new Set(s.correct); stage.querySelectorAll(".opt").forEach((el,k)=>{ el.classList.remove("is-ok","is-bad"); if(st.has(k)) el.classList.add(c.has(k)?"is-ok":"is-bad"); else if(reveal&&c.has(k)) el.classList.add("is-ok"); }); }
   if(s.type==="sort") stage.querySelectorAll(".srow").forEach((el,k)=>{ el.classList.remove("is-ok","is-bad"); el.classList.add(st[k]===s.items[k][1]?"is-ok":"is-bad"); if(reveal&&st[k]!==s.items[k][1]) el.insertAdjacentHTML("beforeend",`<span class="fix">Правильно: ${fmt(s.bins[s.items[k][1]])}</span>`); });
   if(s.type==="order") stage.querySelectorAll("#ord .opt").forEach(el=>{ const k=+el.dataset.k, p=st.indexOf(k); el.classList.remove("is-ok","is-bad"); el.classList.add(p===k?"is-ok":"is-bad"); if(reveal&&p!==k) el.querySelector(".k").textContent=`${p+1}→${k+1}`; });
-  if(s.type==="number"||s.type==="fracin"||s.type==="answer"){ const ni=$("#numIn"), ok=gradeNow(s); ni.classList.remove("is-ok","is-bad"); ni.classList.add(ok?"is-ok":"is-bad"); if(reveal && !ok){ const sym=s.type==="answer"&&ANS_UI[s.answerKind]; const value=s.hideDen? `${s.answer}/${s.den}` : sym? LEARN.ansText(s) : Array.isArray(s.answer)? s.answer.join("; ") : String(s.answer); const a=LEARN.parseAns(value); const unit=s.unitForms&&a? plural(a.n/a.d,s.unitForms) : s.unit||""; $("#hintHost").innerHTML=`<div class="hint">${ic("check")}<span>Правильна відповідь: <b>${s.answerKind==="divrem"? `${s.answer[0]} (ост. ${s.answer[1]})`+(s.unit?" "+esc(s.unit):"") : sym? fmt("$"+esc(value).replace(/\./g,",")+"$")+(unit?" "+esc(unit):"") : s.type==="answer"||s.hideDen? fmt("$"+esc(value).replace(".",",").replace(" ","~")+"$")+(unit?" "+esc(unit):"") : numShow(s.answer)}</b></span></div>`; } }
+  if(s.type==="number"||s.type==="fracin"||s.type==="answer"){ const ni=$("#numIn"), ok=gradeNow(s); ni.classList.remove("is-ok","is-bad"); ni.classList.add(ok?"is-ok":"is-bad"); if(reveal && !ok){ const sym=s.type==="answer"&&ANS_UI[s.answerKind]; const value=s.hideDen? `${s.answer}/${s.den}` : sym? LEARN.ansText(s) : Array.isArray(s.answer)? s.answer.join("; ") : String(s.answer); const a=LEARN.parseAns(value); const unit=s.unitForms&&a? plural(a.n/a.d,s.unitForms) : s.unit||""; $("#hintHost").innerHTML=`<div class="hint">${ic("check")}<span>Правильна відповідь: <b>${s.answerKind==="divrem"? `${s.answer[0]} (ост. ${s.answer[1]})`+(s.unit?" "+esc(s.unit):"") : s.answerKind==="quantity"? esc(value) : sym? fmt("$"+esc(value).replace(/\./g,",")+"$")+(unit?" "+esc(unit):"") : s.type==="answer"||s.hideDen? fmt("$"+esc(value).replace(".",",").replace(" ","~")+"$")+(unit?" "+esc(unit):"") : numShow(s.answer)}</b></span></div>`; } }
   if(s.type==="lab"){ const ok=gradeNow(s); if(reveal && !ok){ LAB.set(s.solution); LAB.mark("is-ok"); $("#hintHost").innerHTML=fmt(`<div class="hint">${ic("check")}<span>${s.reveal||"Ось як має бути — подивись на модель."}</span></div>`); } else LAB.mark(ok?"is-ok":"is-bad"); }
   if(s.type==="shade"){ const box=$("#shade"); box.classList.remove("is-ok","is-bad"); box.classList.add(st.size===s.target?"is-ok":"is-bad"); }
   if(s.type==="numline"){ if(reveal){ st=s.answer; $("#nlrng").value=st; } numlineUpdate(s); }
