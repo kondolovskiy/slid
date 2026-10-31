@@ -224,7 +224,7 @@ window.SLID_LEARN = (() => {
     if ((m = t.match(/^(-?)(\d+)(?:,(\d+))?$/))) { const k = (m[3] || "").length, n = +(m[2] + (m[3] || "")), d = 10 ** k; if (!Number.isSafeInteger(n) || !Number.isSafeInteger(d)) return null; return { n: m[1] ? -n : n, d, frac: false, proper: true, lowest: true }; }
     if ((m = t.match(/^(-?)(?:(\d+) )?(\d+) ?\/ ?(\d+)$/))) {
       const w = +(m[2] || 0), a = +m[3], b = +m[4]; if (!b) return null;
-      const n = w * b + a; if (![w, a, b, n].every(Number.isSafeInteger)) return null; return { n: m[1] ? -n : n, d: b, frac: true, proper: m[2] === undefined || a < b, lowest: gcd(a, b) === 1 };
+      const n = w * b + a; if (![w, a, b, n].every(Number.isSafeInteger)) return null; return { n: m[1] ? -n : n, d: b, frac: true, proper: m[2] === undefined || a < b, lowest: gcd(a, b) === 1, whole: m[2] !== undefined };
     }
     return null;
   }
@@ -259,16 +259,30 @@ window.SLID_LEARN = (() => {
     }
     return out.length && out.length <= 240 ? out : null;
   }
-  const bgcd = (a, b) => { a = a < 0n ? -a : a; b = b < 0n ? -b : b; while (b) [a, b] = [b, a % b]; return a; };
+  const bgcd = (a, b) => { a = a < 0n ? -a : a; b = b < 0n ? -b : b; let i = 0; while (b) { const t = a % b; a = b; b = t; i++; } if (STEPS !== Infinity) spend(i); return a; };
   // Межа розміру й часу точної арифметики: вкладені степені ((x+1)^12)^12… дають числа на мільйони біт.
   // Переповнення кидає TOO; checkAns відповідає «bad», точне порівняння виразів переходить на числове.
   const TOO = { tooBig: true }, BIG = 1n << 2048n;
-  let DEADLINE = Infinity;
-  // LIMIT — у цій перевірці спрацювала межа часу, розміру чи бюджету: «bad» тоді означає «не вдалося перевірити», і дитина
+  /* Межа роботи однієї перевірки — бюджет операцій STEPS, а не годинник: той самий запис дає той самий вердикт на швидкому
+     й повільному пристрої (рев'ю engine-math-answer-formats-followup P3-6). Крок — ітерація НСД (bgcd), розкладу підкореневого
+     (rootRed0), множення точних чисел і многочленів (xmul, pmul). Найважчим правильним записам (12-й степінь суми з коренями,
+     дроби з 8-значними знаменниками) треба < 10⁵ кроків; STEP_MAX = 3·10⁶ вичерпується за ≈ 0,05–0,1 с на ноутбуці 2026 р.
+     (tools/diff-answers.mjs --time). Межі розміру (2048 біт, 64 доданки, BUDGET) — як і раніше. Годинник DEADLINE лишився
+     лише запобіжником (CLOCK_MS = 3 с, перевірка раз на 65536 кроків) для шляху, якого лічильник не бачить, на дуже
+     повільному пристрої; на звичайних записах він не спрацьовує, тож вердикт від швидкості пристрою не залежить. */
+  const STEP_MAX = 3e6, STEP_GRANT = 1.5e6, CLOCK_MS = 3000;
+  let DEADLINE = Infinity, STEPS = Infinity, CLOCK = 0;
+  // LIMIT — у цій перевірці спрацювала межа кроків, розміру чи бюджету: «bad» тоді означає «не вдалося перевірити», і дитина
   // бачить «запис занадто складний, спрости» (badHint), а не звичайне «неправильно». На саму відповідь checkAns не впливає.
   let LIMIT = false;
   const tooBig = () => { LIMIT = true; return TOO; };
-  const guard = () => { if (Date.now() > DEADLINE) throw tooBig(); };
+  const spend = n => { if ((STEPS -= n) < 0) throw tooBig(); if ((CLOCK += n) >= 65536) { CLOCK = 0; if (Date.now() > DEADLINE) throw tooBig(); } };
+  const guard = () => spend(1);
+  /** Межі на один виклик fn (checkAns, listKey, pairKey, підказки): кроки й годинник-запобіжник; після — без меж. */
+  function limited(fn, onTooBig) {
+    DEADLINE = Date.now() + CLOCK_MS; STEPS = STEP_MAX; CLOCK = 0; BUDGET = 50000;
+    try { return fn(); } catch (e) { if (e === TOO) return onTooBig(); throw e; } finally { DEADLINE = Infinity; STEPS = Infinity; }
+  }
   const Q = (p, q = 1n) => { if (q === 0n) return null; if (q < 0n) { p = -p; q = -q; } if (p > BIG || -p > BIG || q > BIG) throw tooBig(); const g = bgcd(p, q) || 1n; return [p / g, q / g]; };
   const qadd = (a, b) => Q(a[0] * b[1] + b[0] * a[1], a[1] * b[1]), qmul = (a, b) => Q(a[0] * b[0], a[1] * b[1]);
   function parseTree(tokens) {
@@ -363,7 +377,9 @@ window.SLID_LEARN = (() => {
   }
   function rootRed0(n, r) {
     const fs = []; let c = 1n, rr = r;
-    for (let p = 2n; p * p <= rr; p++) { let e = 0; while (rr % p === 0n) { rr /= p; e++; } if (e) fs.push([p, e]); }
+    let n0 = 0;
+    for (let p = 2n; p * p <= rr; p++) { n0++; let e = 0; while (rr % p === 0n) { rr /= p; e++; } if (e) fs.push([p, e]); }
+    if (STEPS !== Infinity) spend(n0);                              // не більше 10⁵ ітерацій на виклик (r ≤ 10¹⁰)
     if (rr > 1n) fs.push([rr, 1]);
     const left = fs.map(([p, e]) => { c *= p ** BigInt(Math.floor(e / n)); return [p, e % n]; }).filter(x => x[1]);
     let g = n; for (const [, e] of left) { let a = g, b = e; while (b) [a, b] = [b, a % b]; g = a; }
@@ -437,6 +453,7 @@ window.SLID_LEARN = (() => {
      Ціле число й цілий дільник — без спільного множника: 2√2/2, (2 + 2√5)/2, (−6 + 2√14)/2, (2/4)√3 — нескорочений дріб, "form". */
   const ratLit = e => e.k === "num" || (e.k === "mul" && e.f.every(t => t.e.k === "num") && e.f.length === 2 && e.f[1].d);   // 2 або (1/3)
   const intLit = e => e.k === "num" && e.v[1] === 1n ? e.v[0] : null;
+  const ratVal = e => e.k === "num" ? e.v : Q(e.f[0].e.v[0] * e.f[1].e.v[1], e.f[0].e.v[1] * e.f[1].e.v[0]);   // 2, 0,5, (1/3) → [p, q]
   let NOGCD = false;                             // formHint: чи стане запис канонічним, якщо лише скоротити дріб
   const litReduced = e => NOGCD || e.k !== "mul" || intLit(e.f[0].e) === null || intLit(e.f[1].e) === null || bgcd(e.f[0].e.v[0], e.f[1].e.v[0]) === 1n;
   function canonTerm(t) {
@@ -460,13 +477,15 @@ window.SLID_LEARN = (() => {
     if (u !== t && canonSum(u)) return true;
     // c · (сума) / d: 2(1 + √5), (−1 + √5)/2, (1/3)(3 + √3) — одна канонічна сума, число й цілий дільник
     if (u.k !== "mul") return false;
-    let sum = null, num = 0, den = 0, c = 1n, dv = 1n;
+    let sum = null, num = 0, den = 0, c = 1n, dv = 1n, cq = 1n;
     for (const { d, e } of u.f) {
       if (d) { if (natNum(e) === null || natNum(e) < 2n || ++den > 1) return false; dv = natNum(e); }
       else if (e.k === "add") { if (sum || !canonSum(e)) return false; sum = e; }
-      else if (ratLit(e)) { if (++num > 1 || !litReduced(e)) return false; c = intLit(e) ?? 1n; } else return false;
+      else if (ratLit(e)) { if (++num > 1 || !litReduced(e)) return false; const q = ratVal(e); c = q[0]; cq = q[1]; } else return false;
     }
     if (!sum) return false;
+    // (p/q)(сума) — те саме, що p(сума)/q: знаменник множника йде в НСД разом із дільником (рев'ю followup P3-1, (1/2)(2 + 2√5))
+    dv *= cq;
     // (сума)/d: спільний множник числа перед дужками, цілих коефіцієнтів суми й дільника — нескорочений дріб
     const cs = sum.a.map(t => { const v = xval(t.e); return v && v.size === 1 ? [...v.values()][0] : null; });
     return NOGCD || dv === 1n || !cs.every(q => q && q[1] === 1n) || cs.reduce((g, q) => bgcd(g, c * q[0]), dv) === 1n;
@@ -489,16 +508,22 @@ window.SLID_LEARN = (() => {
     return Array.from({ length: 2 ** n }, (_, mask) => { let j = 0; return t.replace(/[±∓]/g, c => { const plus = !((mask >> j++) & 1); return (c === "±") === plus ? "+" : "-"; }); });
   }
   // У списку «;» відділяє числа з десятковою комою; без «;» кома є роздільником. Елементи — числа або точні значення (√, π, ±).
-  function parseList(v, exact) {
+  // multi — ключ із multiset: повтори дозволено (мультимножина, рішення 2026-10-31, п. 8); інакше повтор — null, як і раніше.
+  function parseList(v, exact, multi = false) {
     const parts = Array.isArray(v) ? v : String(v ?? "").split(/[;\n]/.test(String(v)) ? /[;\n]/ : /,/);
     const values = parts.flatMap(p => exact && /[±∓]/.test(String(p)) ? expandPM(String(p)) : [p]).map(p => elemOf(p, exact));
-    if (!values.length || values.some(x => !x) || values.some((x, i) => values.slice(0, i).some(y => xeq(x.x, y.x)))) return null;
+    if (!values.length || values.some(x => !x) || (!multi && values.some((x, i) => values.slice(0, i).some(y => xeq(x.x, y.x))))) return null;
     return values;
   }
-  /** Впорядковані координати (3; −2) / A(3; -2) / [3, -2]: рівно n компонент, порядок і знак важливі. */
+  /* Назва перед координатами, що не змінює відповідь (рішення 2026-10-31, п. 5): точка чи вектор з 1–2 великих латинських літер,
+     можна з «=» (A(3; 1), AB = (3; 1), AB(3; 1)), \vec{AB} = (…), \overrightarrow{AB} = (…). Мала літера без «=» — лише в числовому
+     шляху (m(-4; 0), як і раніше); у символьному ключі k(p − m; k − n) — множник, не назва. */
+  const VEC_NAME = "(?:\\\\(?:vec|overrightarrow)\\s*\\{\\s*[A-Z]{1,2}\\s*\\}|[A-Z]{1,2})\\s*=?";
+  const NAME_RE = new RegExp(`^${VEC_NAME}\\s*(?=\\()`), NAME_LOW_RE = new RegExp(`^(?:${VEC_NAME}|[a-z])\\s*(?=\\()`);
+  /** Впорядковані координати (3; −2) / A(3; -2) / AB = (3; −2) / [3, -2]: рівно n компонент, порядок і знак важливі. */
   function parsePoint(v, n, exact) {
     let parts = Array.isArray(v) ? v.map(String) : null;
-    if (!parts) { let t = norm(v).replace(/^[A-Za-z]\s*(?=\()/, ""); const m = t.match(/^\((.*)\)$/s); if (m) t = m[1]; parts = t.split(t.includes(";") ? ";" : ","); }
+    if (!parts) { let t = norm(v).replace(NAME_LOW_RE, ""); const m = t.match(/^\((.*)\)$/s); if (m) t = m[1]; parts = t.split(t.includes(";") ? ";" : ","); }
     const xs = parts.length === n ? parts.map(p => elemOf(String(p).replace(/^\s*-\s+/, "-"), exact)) : [];
     return xs.length && xs.every(Boolean) ? xs : null;
   }
@@ -506,11 +531,12 @@ window.SLID_LEARN = (() => {
      інакше працює числовий parsePoint без змін. Компонента зі змінною перевіряється як answerKind "expression" (sameExpr, form),
      числова компонента — як у числовому coordinates2 (число чи точний корінь, без арифметики). */
   // Компоненти верхнього рівня: назва точки A(…) і зовнішні дужки знімаються, лише якщо дужка закривається в кінці запису.
-  function splitPair(v) {
+  // sym — запис дитини до символьного ключа: мала літера перед дужками — множник (k(p − m; k − n)), не назва точки.
+  function splitPair(v, sym = false) {
     if (Array.isArray(v)) return v.map(String);
     let t = norm(v);
     const close = i => { let d = 0; for (let j = i; j < t.length; j++) { if (t[j] === "(") d++; else if (t[j] === ")" && !--d) return j; } return -1; };
-    const m = /^[A-Za-z]\s*(?=\()/.exec(t); if (m && close(m[0].length) === t.length - 1) t = t.slice(m[0].length);
+    const m = (sym ? NAME_RE : NAME_LOW_RE).exec(t); if (m && close(m[0].length) === t.length - 1) t = t.slice(m[0].length);
     if (t[0] === "(" && close(0) === t.length - 1) t = t.slice(1, -1);
     const sep = t.includes(";") ? ";" : ",", parts = []; let d = 0, from = 0;
     for (let j = 0; j < t.length; j++) { if (t[j] === "(") d++; else if (t[j] === ")") d--; else if (t[j] === sep && !d) { parts.push(t.slice(from, j)); from = j + 1; } }
@@ -524,9 +550,10 @@ window.SLID_LEARN = (() => {
     return ts.every(Boolean) && ts.some(t => varsOf(t).length) ? ts : null;
   }
   /** Перевірка кожної компоненти: [{ sym — компонента-вираз, r: "ok" | "form" | "bad" }] або null (не дві компоненти, невідома form).
-      Час ділиться навпіл: перша компонента — до половини залишку DEADLINE, друга — до кінця; бюджет BUDGET — на кожну. */
+      Кожна компонента-вираз має власну половину кроків (STEP_MAX / 2) і власний бюджет BUDGET: важка перша компонента
+      не забирає перевірку в другої. */
   function pairSym(s, v, a) {
-    const kp = splitPair(s.answer), up = splitPair(v), ex = exactKey(s.answer), end = DEADLINE;
+    const kp = splitPair(s.answer), up = splitPair(v, true), ex = exactKey(s.answer);
     if (up.length !== 2 || (s.form !== undefined && !EXPR_FORMS.includes(s.form))) return null;
     return a.map((ka, i) => {
       if (!varsOf(ka).length) {
@@ -535,12 +562,9 @@ window.SLID_LEARN = (() => {
       }
       const u = parseExpr(up[i]);
       if (ka.k === "eq" || !u || u.k === "eq") return { sym: true, r: "bad" };
-      const stop = i ? end : Date.now() + (end - Date.now()) / 2;
-      DEADLINE = stop; BUDGET = 50000;
-      // форма — з тим запасом, який sameExpr дав собі після переходу на числове порівняння (+400 мс), як у звичайному expression;
-      // лише потім межа повертається до половини часу пари, щоб друга компонента не втратила свою частку
+      STEPS = STEP_MAX / 2; BUDGET = 50000;
+      // форма — з тим запасом, який sameExpr дав собі після переходу на числове порівняння (STEP_GRANT), як у звичайному expression
       const same = sameExpr(ka, u), r = !same ? "bad" : exprForm(s.form, ka, u) ? "ok" : "form";
-      DEADLINE = Math.min(DEADLINE, stop);
       return { sym: true, r };
     });
   }
@@ -554,8 +578,15 @@ window.SLID_LEARN = (() => {
     return xs.length && xs.every(x => x && x.proper && x.n > 0) ? xs : null;
   }
   /** Проміжок або об'єднання: (-∞; 3], [1; 2) ∪ {5}, ∅, R. Повертає канонічний відсортований список злитих проміжків або null. */
+  function setText(v) {
+    let t = norm(v).replace(/[Øø]/g, "∅").replace(/^[A-Za-z](?:\s*\([A-Za-z]\))?\s*[=∈]\s*/, "");
+    // будь-який вираз перед «∈» не змінює множину (рішення 2026-10-31, п. 5): -n ∈ (…), 2x − 1 ∈ […]
+    const inAt = t.indexOf("∈"), pre = inAt > 0 ? t.slice(0, inAt) : "";
+    if (pre && !/[[\]{};∪]/.test(pre) && parseExpr(pre)) t = t.slice(inAt + 1).trim();
+    return t;
+  }
   function parseSet(v, exact) {
-    const t = norm(v).replace(/[Øø]/g, "∅").replace(/^[A-Za-z](?:\s*\([A-Za-z]\))?\s*[=∈]\s*/, "");
+    const t = setText(v);
     if (/^(∅|\{\s*\})$/.test(t)) return Object.assign([], { raw: 0 });
     const INF = /^([+-]?)(?:∞|inf)$/, ivs = [];
     const split2 = s => s.includes(";") ? s.split(";") : s.split(",");
@@ -621,7 +652,7 @@ window.SLID_LEARN = (() => {
       степінь — у 48 числових точках, і тоді десяткові дроби, довші за ключ (і за 2 знаки), — наближення, не зараховуються.
       Рівняння рівносильні, якщо L − R пропорційні. */
   function sameExpr(a, b) {
-    let ex; try { ex = sameExact(a, b); } catch (e) { if (e !== TOO) throw e; ex = null; DEADLINE = Date.now() + 400; }
+    let ex; try { ex = sameExact(a, b); } catch (e) { if (e !== TOO) throw e; ex = null; if (STEPS !== Infinity) { STEPS = STEP_GRANT; DEADLINE = Math.max(DEADLINE, Date.now() + 400); } }
     if (ex !== null) return ex;
     if (maxDec(b) > Math.max(2, maxDec(a))) return false;
     return sameNum(a, b);
@@ -755,78 +786,228 @@ window.SLID_LEARN = (() => {
     return true;
   }
   const EXPR_FORMS = ["expanded", "factored", "reduced", "simplified"];
+  /* ---------- Тексти підказок «form» / «bad» — одним словником: hintTexts(s) віддає всі, які дитина може побачити у вправі s,
+     і tools/test-answer-ui.py звіряє кожен приклад із них (та з підказки під полем) з ключем самої вправи. ---------- */
+  const MSG = {
+    frac: "Значення правильне. Запиши відповідь звичайним дробом.",
+    reduce: "Значення правильне, але дріб ще можна скоротити.",
+    mixed: "Значення правильне. Запиши відповідь мішаним числом: ціла частина, пробіл, дріб.",
+    improper: "Значення правильне. Запиши відповідь неправильним дробом — без цілої частини.",
+    divrem: "Неповну частку знайдено. Допиши остачу: кнопка «ост.» і число.",
+    ratio: "Відношення правильне. Запиши його натуральними числами без спільного дільника, наприклад 2 : 3.",
+    rootReduce: "Значення правильне. Скороти дріб: поділи числа в чисельнику й знаменник на спільний дільник.",
+    simplify: "Значення правильне, але запис не спрощено: обчисли, зведи подібні, винеси множник з-під кореня й позбудься кореня в знаменнику.",
+    limit: "Запис занадто складний для перевірки. Спрости його й спробуй ще раз.",
+    denom: "Знаменник-добуток візьми в дужки: 1/(3y), бо 1/3y — це y/3.",
+    expandParen: "Вираз правильний. Розкрий дужки й зведи подібні доданки.",
+    expandLike: "Вираз правильний. Зведи подібні доданки й запиши многочлен стандартного вигляду.",
+    power: "Вираз правильний. Запиши його одним степенем: основа, ^ і показник.",
+    factored: "Вираз правильний. Розклади його на множники до кінця.",
+    reduced: "Вираз правильний. Скороти дріб.",
+    simplified: "Вираз правильний, але його можна спростити.",
+    retry: "Спробуй ще раз."
+  };
+  const DEC_WORD = ["цілим числом, без коми", "з одним знаком після коми", "з двома знаками після коми", "з трьома знаками після коми"];
+  const decMsg = n => n === 0 ? "Значення правильне. Запиши відповідь цілим числом, без коми." : `Значення правильне. Запиши відповідь десятковим дробом ${DEC_WORD[n] || `з ${n} знаками після коми`}.`;
+  const unitMsg = s => `Перевір одиницю: тут відповідь записують у «${s.unit}». Одиницю можна й не писати.`;
+
+  /* ---------- Час (answerKind "time", рішення 2026-10-31, п. 1): ключ «9:55», 24-годинний ---------- */
+  const TIME_KEY = /^([01]?\d|2[0-3]):[0-5]\d$/;
+  /** Хвилини від півночі: «9:55», «09:55», «9.55» (у полі — «9,55»), «9 год 55 хв», «9 год. 55 хв.», «9 год»; інакше null.
+      Після «:»/«.» хвилини — рівно дві цифри («9:5», «955» — null: дитина бачить формат). */
+  function parseTime(v) {
+    const t = String(v ?? "").toLowerCase().replace(/\s+/g, " ").trim();
+    const m = t.match(/^(\d{1,2}) ?[:.,] ?(\d{2})$/) || t.match(/^(\d{1,2}) ?год[.,]?(?: ?(\d{1,2}) ?хв[.,]?)?$/);
+    if (!m) return null;
+    const h = +m[1], mi = +(m[2] || 0);
+    return h <= 23 && mi <= 59 ? h * 60 + mi : null;
+  }
+  // Приклад формату під полем і в підказці — завжди не ключ цієї вправи.
+  const TIME_EX = ["7:05", "8:40"];
+  const timeExample = s => TIME_EX.find(e => parseTime(e) !== parseTime(s?.answer));
+  const timeMsg = s => `Запиши час годинами й хвилинами через двокрапку, хвилини — двома цифрами: ${timeExample(s)}.`;
+
+  /* ---------- Складені величини (answerKind "quantity", п. 2): ключ — число в найменшій з units ---------- */
+  const QTY = [
+    ["довжина", { "мм": 1, "см": 10, "дм": 100, "м": 1000, "км": 1e6 }],
+    ["маса", { "г": 1, "кг": 1e3, "ц": 1e5, "т": 1e6 }],
+    ["час", { "с": 1, "хв": 60, "год": 3600, "доба": 86400 }],
+    ["гроші", { "коп": 1, "грн": 100 }]];
+  const QTY_ALIAS = { "доби": "доба", "діб": "доба" };
+  const qtyDim = u => QTY.find(([, t]) => u in t);
+  const QTY_NAMES = [...QTY.flatMap(([, t]) => Object.keys(t)), ...Object.keys(QTY_ALIAS)].sort((a, b) => b.length - a.length);
+  const QTY_RE = new RegExp(`^(\\d{1,15}(?:,\\d{1,15})?) ?(${QTY_NAMES.join("|")})(?![\\p{L}])[.,]?(?: |$|(?=\\d))`, "u");
+  /** units вправи: { dim, table, units — від більшої до меншої } або null (порожньо, різні величини, повтор, невідома одиниця). */
+  function qtyUnits(s) {
+    const us = Array.isArray(s?.units) ? s.units : [], d = typeof us[0] === "string" && qtyDim(us[0]);
+    return d && us.every(u => typeof u === "string" && u in d[1]) && new Set(us).size === us.length ? { dim: d[0], table: d[1], units: [...us].sort((a, b) => d[1][b] - d[1][a]) } : null;
+  }
+  /** Запис величини: «2 м 45 см», «245 см», «2,45 м», «3 год. 20 хв.» → [{ v — [p, q], u, dim, f — множник до найменшої одиниці таблиці, int }] або null.
+      Кожна одиниця — щонайбільше раз; між частинами — пробіл. */
+  function parseQty(v) {
+    let t = String(v ?? "").toLowerCase().replace(/(\d)\.(?=\d)/g, "$1,").replace(/\s+/g, " ").trim();
+    const parts = [];
+    while (t) {
+      const m = QTY_RE.exec(t); if (!m) return null;
+      const u = QTY_ALIAS[m[2]] || m[2], d = qtyDim(u), [w, f = ""] = m[1].split(",");
+      parts.push({ v: Q(BigInt(w + f), 10n ** BigInt(f.length)), u, dim: d[0], f: d[1][u], int: !f });
+      t = t.slice(m[0].length).trim();
+    }
+    return parts.length && new Set(parts.map(p => p.u)).size === parts.length ? parts : null;
+  }
+  const qtyKey = s => { const a = parseAns(String(s.answer ?? "").replace(".", ",")); return a && !a.frac && a.n >= 0 ? [BigInt(a.n), BigInt(a.d)] : null; };
+  // «form: compound» — складений запис у units: цілі частини від більшої одиниці до меншої, кожна менша за одну більшу одиницю
+  // (2 м 45 см; 245 см чи 2 м 145 см — ні). Нульову частину можна писати або ні.
+  function compoundOk(U, parts) {
+    let prev = -1;
+    for (const p of parts) {
+      const i = U.units.indexOf(p.u);
+      if (i < 0 || i <= prev || !p.int || (i > 0 && p.v[0] >= BigInt(U.table[U.units[i - 1]] / U.table[p.u]))) return false;
+      prev = i;
+    }
+    return true;
+  }
+  function checkQty(s, v) {
+    const U = qtyUnits(s), key = qtyKey(s), parts = parseQty(v);
+    if (!U || !key || !parts || parts.some(p => p.dim !== U.dim)) return "bad";
+    const total = parts.reduce((acc, p) => qadd(acc, qmul(p.v, [BigInt(p.f), 1n])), [0n, 1n]);
+    const want = qmul(key, [BigInt(U.table[U.units[U.units.length - 1]]), 1n]);
+    if (total[0] * want[1] !== want[0] * total[1]) return "bad";
+    return s.form === "compound" && !compoundOk(U, parts) ? "form" : "ok";
+  }
+  const decStr = q => { for (let k = 0n; k < 16n; k++) if ((10n ** k) % q[1] === 0n) { const n = q[0] * 10n ** k / q[1], t = String(n).padStart(Number(k) + 1, "0"); return k ? t.slice(0, -Number(k)) + "," + t.slice(-Number(k)) : t; } return `${q[0]}/${q[1]}`; };
+  /** Ключ величини у складеному записі: 245 при [м, см] → «2 м 45 см»; дробова частина — у найменшій одиниці. */
+  function qtyText(s) {
+    const U = qtyUnits(s), key = qtyKey(s); if (!U || !key) return String(s.answer ?? "");
+    const last = U.units[U.units.length - 1]; let rest = qmul(key, [BigInt(U.table[last]), 1n]); const out = [];
+    for (const u of U.units) {
+      const f = BigInt(U.table[u]);
+      if (u === last) { const q = Q(rest[0], rest[1] * f); if (q[0] || !out.length) out.push(decStr(q) + " " + u); }
+      else { const n = rest[0] / (rest[1] * f); if (n) { out.push(n + " " + u); rest = Q(rest[0] - n * rest[1] * f, rest[1]); } }
+    }
+    return out.join(" ");
+  }
+  const qtyList = U => U.units.join(", ");
+  const qtyForeignMsg = U => `Перевір одиницю: тут відповідь записують у ${qtyList(U)}.`;
+  const qtyMissingMsg = U => `Допиши одиниці: ${qtyList(U)}.`;
+  const qtyFormMsg = U => `Значення правильне. Запиши його в ${U.units.join(" і ")}: спершу більші одиниці, потім менші, цілими числами.`;
+
+  /* ---------- Число: префікс «x =», періодичний дріб, decimals, improper ---------- */
+  // «x = 5», «b = 1» у number — та сама відповідь (п. 5); одна латинська чи кирилична літера перед «=» і число після нього.
+  const NUM_PREFIX = /^\s*[A-Za-zА-ЯҐЄІЇа-яґєії]\s*=\s*(?=[-−–]?\d)/u;
+  const numPre = v => typeof v === "string" ? v.replace(NUM_PREFIX, "") : v;
+  /** Періодичний десятковий дріб «-0,(3)», «1,2(36)» → { n, d, frac: false, periodic: true } (п. 6) або null. */
+  function parsePeriodic(v) {
+    const m = String(v ?? "").replace(/[−–]/g, "-").replace(/\./g, ",").replace(/\s+/g, "").match(/^(-?)(\d{1,6}),(\d{0,6})\((\d{1,6})\)$/);
+    if (!m) return null;
+    const a = BigInt(m[2] + m[3]), full = BigInt(m[2] + m[3] + m[4]);
+    let n = full - a, d = 10n ** BigInt(m[3].length) * (10n ** BigInt(m[4].length) - 1n); const g = bgcd(n, d) || 1n; n /= g; d /= g;
+    return { n: Number(m[1] ? -n : n), d: Number(d), frac: false, proper: true, lowest: true, periodic: true };
+  }
+  const numOf = v => { const t = numPre(v); return parseAns(t) || parsePeriodic(t); };
+  const decCount = u => u.frac || u.periodic ? -1 : String(u.d).length - 1;   // знаків після коми в записі (d = 10^k)
+
   /** Пояснення для результату "form": що саме не так із записом. */
   function formHint(s, v) {
     const kind = s.answerKind || "number"; v = stripUnit(s, v);
-    if (kind === "number") { const u = parseAns(v); return !u?.frac ? "Значення правильне. Запиши відповідь звичайним дробом." : s.reduced && !u.lowest ? "Значення правильне, але дріб ще можна скоротити." : "Значення правильне. Запиши відповідь мішаним числом: ціла частина, пробіл, дріб."; }
-    if (kind === "divrem") return "Неповну частку знайдено. Допиши остачу: кнопка «ост.» і число.";
-    if (kind === "ratio") return "Відношення правильне. Запиши його натуральними числами без спільного дільника, наприклад 2 : 3.";
+    if (kind === "number") {
+      const u = numOf(v);
+      if (s.decimals !== undefined && u && decCount(u) !== s.decimals) return decMsg(s.decimals);
+      if (s.form === "improper" && u?.frac && u.whole) return MSG.improper;
+      return !u?.frac ? MSG.frac : s.reduced && !u.lowest ? MSG.reduce : MSG.mixed;
+    }
+    if (kind === "divrem") return MSG.divrem;
+    if (kind === "ratio") return MSG.ratio;
+    if (kind === "quantity") { const U = qtyUnits(s); return U ? qtyFormMsg(U) : MSG.retry; }
     if (kind === "coordinates2" && s.form !== undefined && symPair(s)) {   // «form» дала компонента-вираз — підказка expression, інакше — про корені
-      const a = symPair(s), up = splitPair(v);
+      const a = symPair(s), up = splitPair(v, true);
       let rs = PAIR_LAST && PAIR_LAST.s === s && PAIR_LAST.v === v ? PAIR_LAST.rs : null;
-      if (!rs) { DEADLINE = Date.now() + 800; BUDGET = 50000; try { rs = pairSym(s, v, a); } catch (e) { if (e !== TOO) throw e; } finally { DEADLINE = Infinity; } }
+      if (!rs) rs = limited(() => pairSym(s, v, a), () => null);
       const i = rs ? rs.findIndex(x => x.sym && x.r === "form") : -1;
       if (i >= 0) return exprHint(s.form, a[i], up[i]);
     }
     if (kind === "expression") return exprHint(s.form, exprOf(s.answer), v);
-    if (["exactRoot", "list", "coordinates2", "coordinates3"].includes(kind) && unreducedOnly(kind, v)) return "Значення правильне. Скороти дріб: поділи числа в чисельнику й знаменник на спільний дільник.";
-    return "Значення правильне, але запис не спрощено: обчисли, зведи подібні, винеси множник з-під кореня й позбудься кореня в знаменнику.";
+    if (["exactRoot", "list", "coordinates2", "coordinates3", "intervalSet"].includes(kind) && unreducedOnly(s, kind, v)) return MSG.rootReduce;
+    return MSG.simplify;
   }
+  // Межі проміжків запису (без ∞): для «Скороти дріб» у intervalSet (рев'ю followup P3-2, (-∞; 2√2/2]).
+  const setBounds = v => setText(v).split(/\s*[∪U]\s*/).flatMap(part => part.replace(/^[[({]|[\])}]$/g, "").split(part.includes(";") ? ";" : ",")).filter(x => !/∞|inf/.test(x));
   // Хоч один елемент запису неканонічний лише через нескорочений дріб (2√2/2, (2 ± 2√5)/2), а без вимоги НСД — канонічний.
-  function unreducedOnly(kind, v) {
-    const parts = kind === "exactRoot" ? [String(v ?? "")] : kind === "list" ? String(v ?? "").split(/[;\n]/.test(String(v)) ? /[;\n]/ : /,/) : splitPair(v);
+  function unreducedOnly(s, kind, v) {
+    const parts = kind === "exactRoot" ? [String(v ?? "")] : kind === "list" ? String(v ?? "").split(/[;\n]/.test(String(v)) ? /[;\n]/ : /,/)
+      : kind === "intervalSet" ? setBounds(v) : splitPair(v, kind === "coordinates2" && !!symPair(s));
     const loose = t => { NOGCD = true; try { return canonExact(t); } finally { NOGCD = false; } };
-    DEADLINE = Date.now() + 800; BUDGET = 50000;
-    try { return parts.flatMap(p => expandPM(String(p))).some(p => { const t = parseExpr(p); return t && t.k !== "eq" && isConst(t) && !canonExact(t) && loose(t); }); }
-    catch (e) { if (e === TOO) return false; throw e; } finally { DEADLINE = Infinity; }
+    return limited(() => parts.flatMap(p => expandPM(String(p))).some(p => { const t = parseExpr(p); return t && t.k !== "eq" && isConst(t) && !canonExact(t) && loose(t); }), () => false);
   }
   /** Підказка «form» для виразу (key — дерево ключа, v — запис дитини або компоненти пари). */
   function exprHint(form, key, v) {
-    if (form === "expanded") return /[()]/.test(String(v)) ? "Вираз правильний. Розкрий дужки й зведи подібні доданки." : "Вираз правильний. Зведи подібні доданки й запиши многочлен стандартного вигляду.";
+    if (form === "expanded") return /[()]/.test(String(v)) ? MSG.expandParen : MSG.expandLike;
     if (form === "simplified" && key) { const k = unNeg(key), u = exprOf(v);   // «подай у вигляді степеня»: ключ — один степінь, запис — ні
-      if (k.k === "pow" && !isConst(k.b) && !(u && unNeg(u).k === "pow")) return "Вираз правильний. Запиши його одним степенем: основа, ^ і показник."; }
-    return { expanded: "", factored: "Вираз правильний. Розклади його на множники до кінця.",
-      reduced: "Вираз правильний. Скороти дріб.", simplified: "Вираз правильний, але його можна спростити." }[form] || "Спробуй ще раз.";
+      if (k.k === "pow" && !isConst(k.b) && !(u && unNeg(u).k === "pow")) return MSG.power; }
+    return { factored: MSG.factored, reduced: MSG.reduced, simplified: MSG.simplified }[form] || MSG.retry;
   }
   /** Пояснення для «bad», коли звичайне «Зміни відповідь» не допоможе (app.js, після checkAns === "bad"); null — звичайне повідомлення.
-      Межа часу чи розміру — «запис занадто складний»; чужа одиниця при unit; знаменник-добуток без дужок (k/6p), якщо з дужками
-      значення збігається з ключем. Приклади в текстах не збігаються з ключами вправ (test-answer-ui).
+      Межа кроків чи розміру — «запис занадто складний»; чужа одиниця при unit — лише якщо без неї число правильне (п. 7);
+      знаменник-добуток без дужок (k/6p), якщо з дужками значення збігається з ключем; час не в форматі ГГ:ХХ; величина
+      без одиниць чи в одиницях іншої величини. Приклади в текстах не збігаються з ключем вправи (hintTexts, test-answer-ui).
       r — результат checkAns(s, v), щойно обчислений тим самим викликом (app.js): тоді перевірка не повторюється, LIMIT — від неї. */
   function badHint(s, v, r) {
     if ((r === undefined ? checkAns(s, v) : r) !== "bad") return null;
-    if (LIMIT) return "Запис занадто складний для перевірки. Спрости його й спробуй ще раз.";
-    const t = String(v ?? "");
-    if (s.unit && foreignUnit(s, t)) return `Перевір одиницю: тут відповідь записують у «${s.unit}». Одиницю можна й не писати.`;
-    const kind = s.answerKind || "number";
+    if (LIMIT) return MSG.limit;
+    const t = String(v ?? ""), kind = s.answerKind || "number";
+    if (s.unit && foreignUnit(s, t)) { const bare = stripUnit(s, t).replace(foreignRe(s), "$1"); return checkAns(s, bare) !== "bad" ? unitMsg(s) : null; }
+    if (kind === "time") return parseTime(t) === null ? timeMsg(s) : null;
+    if (kind === "quantity") {
+      const U = qtyUnits(s), parts = parseQty(t); if (!U) return null;
+      if (parts && parts.some(p => p.dim !== U.dim)) return qtyForeignMsg(U);
+      return !parts && numOf(t) ? qtyMissingMsg(U) : null;
+    }
     if (kind === "expression" || (kind === "coordinates2" && symPair(s))) {
       const w = norm(t).replace(/\/\s*(\d+(?:,\d+)?[A-Za-zͰ-Ͽ][A-Za-zͰ-Ͽ\d^]*|[A-Za-zͰ-Ͽ](?:\^\d+)?[A-Za-zͰ-Ͽ][A-Za-zͰ-Ͽ\d^]*)/g, "/($1)");
-      if (w !== norm(t) && checkAns(s, w) !== "bad") return "Знаменник-добуток візьми в дужки: 1/(3y), бо 1/3y — це y/3.";
+      if (w !== norm(t) && checkAns(s, w) !== "bad") return MSG.denom;
     }
     return null;
   }
+  /** Усі тексти «form»/«bad», які дитина може побачити у вправі s (formHint, badHint): для звірки «підказка ≠ ключ». */
+  function hintTexts(s) {
+    const kind = s?.answerKind || "number", out = [MSG.limit, MSG.simplify, MSG.retry], U = kind === "quantity" && qtyUnits(s);
+    if (s?.unit) out.push(unitMsg(s));
+    if (kind === "number") out.push(MSG.frac, MSG.reduce, MSG.mixed, MSG.improper, ...(s.decimals !== undefined ? [decMsg(s.decimals)] : []));
+    if (kind === "divrem") out.push(MSG.divrem);
+    if (kind === "ratio") out.push(MSG.ratio);
+    if (kind === "expression" || kind === "coordinates2") out.push(MSG.denom, MSG.expandParen, MSG.expandLike, MSG.power, MSG.factored, MSG.reduced, MSG.simplified);
+    if (["exactRoot", "list", "coordinates2", "coordinates3", "intervalSet"].includes(kind)) out.push(MSG.rootReduce);
+    if (kind === "time") out.push(timeMsg(s));
+    if (U) out.push(qtyForeignMsg(U), qtyMissingMsg(U), qtyFormMsg(U));
+    return out;
+  }
   /** Відбиток записаної відповіді для другої спроби: однакові відбитки — та сама відповідь іншим записом («5», «05», « 5 »),
       і повторна перевірка нічого б не змінила. Число й частка з остачею — за розібраним значенням разом із ознаками запису,
-      від яких залежить "form" (дріб, нескоротність, мішане число, пробіл у дробу). Інші answerKind і нерозібраний запис —
-      нормалізований рядок: пробіли згорнуто, біля знаків пунктуації й дій прибрано, «−» → «-», крапка → кома.
-      Плеєр усе одно не блокує відповідь, яку checkAns приймає (app.js sameAsTried), тож відбиток лише економить спробу. */
+      від яких залежить "form" (дріб, нескоротність, мішане число, пробіл у дробу, кількість знаків після коми). Час — за хвилинами.
+      Інші answerKind і нерозібраний запис — нормалізований рядок: пробіли згорнуто, біля знаків пунктуації й дій прибрано,
+      «−» → «-», крапка → кома. Плеєр усе одно не блокує відповідь, яку checkAns приймає (app.js sameAsTried), тож відбиток лише економить спробу. */
   function answerSig(s, v) {
     const kind = s?.answerKind || "number", t = String(stripUnit(s, String(v ?? "")) ?? "").replace(/\s+/g, " ").trim();   // «7 см» = «7» при unit «см»
     if (kind === "number") {
-      const u = parseAns(t) || parseAns(t.replace(/[,.]$/, ""));   // «5,» — недописана кома, те саме число
-      if (u) { const g = gcd(u.n, u.d) || 1; return `n:${u.n / g}/${u.d / g}` + (u.frac ? `|f${+u.lowest}${+u.proper}${+/ /.test(t)}` : ""); }
+      const n = numPre(t), u = parseAns(n) || parseAns(n.replace(/[,.]$/, ""));   // «5,» — недописана кома, те саме число
+      if (u) { const g = gcd(u.n, u.d) || 1; return `n:${u.n / g}/${u.d / g}` + (u.frac ? `|f${+u.lowest}${+u.proper}${+/ /.test(n)}` : "") + (s.decimals !== undefined ? `|k${decCount(u)}` : ""); }
     }
     if (kind === "divrem") { const u = parseDivrem(t); if (u) return `d:${u.q}|${u.r}`; }
+    if (kind === "time") { const u = parseTime(t); if (u !== null) return `t:${u}`; }
     return "s:" + t.replace(/[−–—]/g, "-").replace(/\./g, ",").replace(/ ?([;:,()[\]{}+\-·*×/^=<>∪]) ?/g, "$1");
   }
   /** Ключ для показу «Правильна відповідь». */
   function ansText(s) {
     const a = s.answer, kind = s.answerKind || "number";
+    if (kind === "quantity") return qtyText(s);
     if (!Array.isArray(a)) return String(a) + (kind === "periodicSet" ? ", k ∈ ℤ" : "");
     if (kind === "divrem") return `${a[0]} (ост. ${a[1]})`;
     if (kind === "ratio") return a.join(" : ");
     if (kind === "coordinates2" || kind === "coordinates3") return "(" + a.join("; ") + ")";
     return a.join("; ") + (kind === "periodicSet" ? ", k ∈ ℤ" : "");
   }
+  /** Запис ключа, який сам має проходити перевірку (validatePool, tools/validate.mjs): число — з комою, величина — складеним записом. */
+  const keyInput = s => (s.answerKind || "number") === "quantity" ? qtyText(s) : typeof s.answer === "number" ? String(s.answer).replace(".", ",") : s.answer;
   /** Посилання на джерело вправи: «№1» + srcPage → «№1, с. 56»; якщо сторінка вже є в посиланні («с. 56, №1»), srcPage не дописуємо (CONTENT_SCHEMA §10). */
   function srcRef(ref, page) {
     const r = String(ref ?? "").trim();
@@ -836,12 +1017,12 @@ window.SLID_LEARN = (() => {
   /** Які кнопки й підказку показати під полем числової відповіді (answerKind number), щоб не підказувати
       учню 4 класу дроби й мінус, яких у програмі ще немає. grade — клас вправи; signed — розділ зі знаковими числами.
       «−»: прапорець signed, від'ємний ключ або 6+ клас (від'ємні числа — 6 клас: у класі знак з'являється завжди й не видає відповіді).
-      «/» і пробіл (дроби, мішані числа): дробовий ключ, прапорці fractionOnly / mixed / reduced або 5+ клас (звичайні дроби).
+      «/» і пробіл (дроби, мішані числа): дробовий ключ, прапорці fractionOnly / mixed / reduced / form improper або 5+ клас (звичайні дроби).
       dec: десятковий ключ без дробових кнопок — підказка про кому. */
   function numberKeys(s, grade, signed) {
     const a = String(s.answer ?? "").replace(/[−–]/g, "-").trim(), g = Number(grade) || 0;
     const minus = !!s.signed || !!signed || /^-/.test(a) || g >= 6;
-    const frac = /\//.test(a) || !!(s.fractionOnly || s.mixed || s.reduced) || g >= 5;
+    const frac = /\//.test(a) || !!(s.fractionOnly || s.mixed || s.reduced || s.form === "improper") || g >= 5;
     return { minus, frac, dec: !frac && /[.,]/.test(a) };
   }
   function parseFactors(v) {
@@ -873,26 +1054,33 @@ window.SLID_LEARN = (() => {
     return null;
   }
   /** Перевірка відповіді: "ok" | "form" (правильне значення, потрібен інший запис) | "bad".
-      answerKind: number (типово), comparison (< > =), list (без порядку і повторів), factors (прості множники),
+      answerKind: number (типово), comparison (< > =), list (без порядку; повтори — лише з multiset), factors (прості множники),
       divrem (частка й остача; лише частка при ненульовій остачі — "form", при нульовій — "ok"),
-      ratio, coordinates2, coordinates3, exactRoot, intervalSet, expression, periodicSet (docs/CONTENT_SCHEMA.md §10).
-      Числа: reduced — нескоротний дріб; mixed — виділити цілу частину; fractionOnly — лише звичайний/мішаний дріб; tol — абсолютна похибка. */
+      ratio, coordinates2, coordinates3, exactRoot, intervalSet, expression, periodicSet, time, quantity (docs/CONTENT_SCHEMA.md §10).
+      Числа: reduced — нескоротний дріб; mixed — виділити цілу частину; form improper — без цілої частини; fractionOnly — лише
+      звичайний/мішаний дріб; decimals — рівно n знаків після коми; tol — абсолютна похибка. Межа — limited (кроки, не годинник). */
   function checkAns(s, v) {
-    DEADLINE = Date.now() + 800; LIMIT = false; PAIR_LAST = null;
-    try { return checkAns0(s, stripUnit(s, v)); } catch (e) { if (e === TOO) { LIMIT = true; return "bad"; } throw e; } finally { DEADLINE = Infinity; }
+    LIMIT = false; PAIR_LAST = null;
+    return limited(() => checkAns0(s, stripUnit(s, v)), () => { LIMIT = true; return "bad"; });
   }
   /* Одиниця в полі (CONTENT_SCHEMA §10): якщо в задачі є unit (і unitForms), дописана та сама одиниця після числа — після
-     кожного елемента list чи всього запису — знімається: «70°; 110°», «7 см», «60 грн», «8 %», «12 см2» = без одиниці.
-     Одиниця знімається лише після цифри, «)» чи π і лише перед «;», переносом, «,» без цифри за нею або кінцем запису,
-     тож «5 км» при unit «м» не стає «5 к». Чужа одиниця лишається в записі (bad), badHint пояснює. Без unit — без змін. */
+     кожного елемента list чи всього запису — знімається: «70°; 110°», «7 см», «60 грн», «60 грн.», «8 %», «12 см2», «70º» = без одиниці.
+     Одиниця знімається лише після цифри, «)» чи π і лише перед «;», переносом, «,» без цифри за нею або кінцем запису
+     (у coordinates2/3 і ratio — ще перед «)» і «:»), тож «5 км» при unit «м» не стає «5 к». Крапка (у полі — кома) одразу після
+     одиниці в кінці запису чи елемента знімається разом з нею. Чужа одиниця лишається в записі (bad), badHint пояснює. Без unit — без змін. */
   const reEsc = x => x.replace(/[.*+?^${}()|[\]\\/]/g, "\\$&");
+  // «раз»: «рази», «разів», «раза» — та сама одиниця (п. 7); «º» (порядковий індикатор) замість «°».
+  const UNIT_SYN = { "раз": ["рази", "разів", "раза"] };
   const unitAlts = forms => [...new Set(forms.filter(f => typeof f === "string" && f.trim()).map(f => f.trim())
-    .flatMap(f => [f, f.replace(/²/g, "2"), f.replace(/²/g, "^2"), f.replace(/³/g, "3"), f.replace(/³/g, "^3")]))]
+    .flatMap(f => [f, ...(UNIT_SYN[f] || [])])
+    .flatMap(f => [f, f.replace(/²/g, "2"), f.replace(/²/g, "^2"), f.replace(/³/g, "3"), f.replace(/³/g, "^3")])
+    .flatMap(f => f.includes("°") ? [f, f.replace(/°/g, "º")] : [f]))]
     .sort((a, b) => b.length - a.length).map(f => reEsc(f).replace(/\s+/g, "\\s*").replace(/C$/, "[CС]"));
-  const unitRe = alts => new RegExp(`([\\d)π])\\s*(?:${alts.join("|")})(?=\\s*(?:[;\\n]|,(?!\\d)|$))`, "giu");
+  const PAIRISH = ["coordinates2", "coordinates3", "ratio"];
+  const unitRe = (alts, pair) => new RegExp(`([\\d)π])\\s*(?:${alts.join("|")})(?:\\s*[.,](?=\\s*(?:[;\\n]|$)))?(?=\\s*(?:[;\\n${pair ? ")" : ""}]${pair ? "|:" : ""}|,(?!\\d)|$))`, "giu");
   const UNIT_RE = new Map();
-  const ownUnit = s => { const forms = [s.unit, ...(Array.isArray(s.unitForms) ? s.unitForms : [])], key = forms.join("\u0001");
-    if (!UNIT_RE.has(key)) { if (UNIT_RE.size > 500) UNIT_RE.clear(); const alts = unitAlts(forms); UNIT_RE.set(key, alts.length ? unitRe(alts) : null); } return UNIT_RE.get(key); };
+  const ownUnit = s => { const forms = [s.unit, ...(Array.isArray(s.unitForms) ? s.unitForms : [])], pair = PAIRISH.includes(s.answerKind), key = forms.join("\u0001") + pair;
+    if (!UNIT_RE.has(key)) { if (UNIT_RE.size > 500) UNIT_RE.clear(); const alts = unitAlts(forms); UNIT_RE.set(key, alts.length ? unitRe(alts, pair) : null); } return UNIT_RE.get(key); };
   function stripUnit(s, v) {
     if (!s || typeof s.unit !== "string" || !s.unit.trim() || typeof v !== "string" || s.answerKind === "comparison") return v;
     const re = ownUnit(s); return re ? v.replace(re, "$1") : v;
@@ -900,47 +1088,52 @@ window.SLID_LEARN = (() => {
   // Поширені одиниці шкільних задач: чужа з них після числа — підказка «перевір одиницю».
   const UNITS = ["мм", "см", "дм", "м", "км", "мм²", "см²", "дм²", "м²", "км²", "га", "мм³", "см³", "дм³", "м³", "мг", "г", "кг", "ц", "т", "с", "хв", "год",
     "грн", "коп", "%", "°", "°C", "л", "мл", "км/год", "м/с", "м/хв", "км/хв"];
-  const FOREIGN_RE = unitRe(unitAlts(UNITS));
-  function foreignUnit(s, v) { FOREIGN_RE.lastIndex = 0; const t = stripUnit(s, v); return typeof t === "string" && FOREIGN_RE.test(t); }
+  const FOREIGN_RE = [unitRe(unitAlts(UNITS), false), unitRe(unitAlts(UNITS), true)];
+  const foreignRe = s => FOREIGN_RE[+PAIRISH.includes(s.answerKind)];
+  function foreignUnit(s, v) { const re = foreignRe(s); re.lastIndex = 0; const t = stripUnit(s, v); return typeof t === "string" && re.test(t); }
+  /** Ключ coordinates2 з компонентами-виразами так, як його розбирає checkAns (splitPair, symPair, pairSym):
+      для кожної компоненти { expr — перевіряється як expression, vars — змінні, tidy — ключ сам проходить перевірку (з form), text — запис }.
+      null — не coordinates2, числовий ключ або ключ не розібрано. Потрібно tools/personalization-qa.mjs (пара виразів закриває формат expression)
+      і клавішам поля (app.js). Не викликати зсередини checkAns: limited після себе знімає межі. */
+  function pairKey(s) {
+    return limited(() => {          // як checkAns0: результат не залежить від попередніх викликів
+      const a = symPair(s), r = a && pairSym(s, s.answer, a), t = splitPair(s.answer);
+      return r && r.map((x, i) => ({ expr: x.sym, vars: varsOf(a[i]), tidy: x.r === "ok", text: t[i].trim() }));
+    }, () => null);
+  }
   /** Ключ answerKind "list" так, як його розбирає checkAns (той самий parseList і exactKey): для кожного елемента
       { exact — точний розбір (корені/π), root — є радикал ⁿ√ з n ≥ 2, tidy — канонічний запис, approx — наближене значення,
       rat — точний запис раціонального елемента «p/q» або «p» (інакше null) }.
       null — не list або ключ не розібрано. Потрібно tools/personalization-qa.mjs (list із коренями закриває формат exactRoot).
-      Не викликати зсередини checkAns: як і pairKey, задає BUDGET і скидає DEADLINE у finally в Infinity — межа часу checkAns зникла б. */
-  /** Ключ coordinates2 з компонентами-виразами так, як його розбирає checkAns (splitPair, symPair, pairSym):
-      для кожної компоненти { expr — перевіряється як expression, vars — змінні, tidy — ключ сам проходить перевірку (з form), text — запис }.
-      null — не coordinates2, числовий ключ або ключ не розібрано. Потрібно tools/personalization-qa.mjs (пара виразів закриває формат expression)
-      і клавішам поля (app.js). Не викликати зсередини checkAns: скидає DEADLINE. */
-  function pairKey(s) {
-    DEADLINE = Date.now() + 800; BUDGET = 50000;          // як checkAns0: результат не залежить від попередніх викликів
-    try {
-      const a = symPair(s), r = a && pairSym(s, s.answer, a), t = splitPair(s.answer);
-      return r && r.map((x, i) => ({ expr: x.sym, vars: varsOf(a[i]), tidy: x.r === "ok", text: t[i].trim() }));
-    } catch (e) { if (e === TOO) return null; throw e; } finally { DEADLINE = Infinity; }
-  }
+      Не викликати зсередини checkAns: limited після себе знімає межі. */
   function listKey(s) {
     if ((s?.answerKind || "number") !== "list") return null;
-    DEADLINE = Date.now() + 800; BUDGET = 50000;
-    try {
-      const ex = exactKey(s.answer), a = parseList(s.answer, ex);
+    return limited(() => {
+      const ex = exactKey(s.answer), a = parseList(s.answer, ex, s.multiset === true);
       const rat = m => { const q = xrat(m); return q ? (q[1] === 1n ? String(q[0]) : `${q[0]}/${q[1]}`) : null; };
       return a && a.map(x => ({ exact: ex, root: [...x.x.keys()].some(k => !k.startsWith("1:")), tidy: x.tidy, approx: xnum(x.x), rat: rat(x.x) }));
-    } catch (e) { if (e === TOO) return null; throw e; } finally { DEADLINE = Infinity; }
+    }, () => null);
   }
   function checkAns0(s, v) {
     const kind = s.answerKind || "number", tidy = xs => xs.every(x => x.tidy) ? "ok" : "form", ex = exactKey(s.answer);
     BUDGET = 50000;
     if (kind === "comparison") return /^[<>=]$/.test(String(s.answer).trim()) && String(v).trim() === String(s.answer).trim() ? "ok" : "bad";
     if (kind === "list") {
-      const a = parseList(s.answer, ex), u = parseList(v, ex);
-      return a && u && a.length === u.length && a.every(x => u.some(y => xeq(x.x, y.x))) ? tidy(u) : "bad";
+      const ms = s.multiset === true, a = parseList(s.answer, ex, ms), u = parseList(v, ex, ms);
+      if (!a || !u || a.length !== u.length) return "bad";
+      if (ms) { const left = [...u]; for (const x of a) { const i = left.findIndex(y => xeq(x.x, y.x)); if (i < 0) return "bad"; left.splice(i, 1); } return tidy(u); }   // мультимножина (п. 8)
+      return a.every(x => u.some(y => xeq(x.x, y.x))) ? tidy(u) : "bad";
     }
     if (kind === "coordinates2" || kind === "coordinates3") {
       const sp = symPair(s); if (sp) { const rs = pairSym(s, v, sp); PAIR_LAST = rs && { s, v, rs }; return rs ? worst(rs) : "bad"; }
       const n = kind === "coordinates2" ? 2 : 3, a = parsePoint(s.answer, n, ex), u = parsePoint(v, n, ex);
       return a && u && a.every((x, i) => xeq(x.x, u[i].x)) ? tidy(u) : "bad";
     }
-    if (kind === "exactRoot") { const a = exactOf(s.answer), u = exactOf(v); return a && u && xeq(a.x, u.x) ? tidy([u]) : "bad"; }
+    if (kind === "exactRoot") {
+      const a = exactOf(s.answer); let u = exactOf(v);
+      if (!u && a && xrat(a.x)) { const p = parsePeriodic(v); u = p && ratOf(p); }   // -0,(3) до раціонального ключа (п. 6)
+      return a && u && xeq(a.x, u.x) ? tidy([u]) : "bad";
+    }
     if (kind === "ratio") {
       const a = parseRatio(s.answer), u = parseRatio(v), B = BigInt;
       if (!a || !u || a.length !== u.length || !a.every((x, i) => B(x.n) * B(a[0].d) * B(u[i].d) * B(u[0].n) === B(u[i].n) * B(u[0].d) * B(x.d) * B(a[0].n))) return "bad";
@@ -970,8 +1163,10 @@ window.SLID_LEARN = (() => {
       if (!a || !u || u.q !== a.q) return "bad";
       return u.r === null ? (a.r === 0 ? "ok" : "form") : u.r === a.r ? "ok" : "bad";
     }
+    if (kind === "time") { const a = TIME_KEY.test(String(s.answer ?? "").trim()) ? parseTime(s.answer) : null, u = parseTime(v); return a !== null && a === u ? "ok" : "bad"; }
+    if (kind === "quantity") return checkQty(s, v);
     if (kind !== "number" || (s.tol !== undefined && (!Number.isFinite(s.tol) || s.tol < 0))) return "bad";
-    const a = parseAns(typeof s.answer === "number" ? String(s.answer) : s.answer), u = parseAns(v);
+    const a = parseAns(typeof s.answer === "number" ? String(s.answer) : s.answer), u = numOf(v);
     if (!a || !u) return "bad";
     if (s.tol > 0) {
       // Порівнюємо десяткову межу точно: 3,15 при 3,14 ± 0,01 проходить,
@@ -982,8 +1177,11 @@ window.SLID_LEARN = (() => {
       const diff = BigInt(a.n) * BigInt(u.d) - BigInt(u.n) * BigInt(a.d);
       if ((diff < 0n ? -diff : diff) * td > tn * BigInt(a.d) * BigInt(u.d)) return "bad";
     } else if (!sameAns(a, u)) return "bad";
+    // decimals — запис: рівно n знаків після коми (37,0 при «округли до десятих»); tol перевіряє значення (п. 4)
+    if (s.decimals !== undefined && decCount(u) !== s.decimals) return "form";
+    if (s.form === "improper" && (!u.frac || u.whole)) return "form";   // лише неправильний дріб (п. 3)
     if (s.fractionOnly && !u.frac) return "form";
-    if (u.frac && ((s.reduced && !u.lowest) || (s.mixed && (Math.abs(u.n) >= u.d && !(u.proper && Math.abs(u.n) % u.d !== 0 && String(v).trim().includes(" ")))))) return "form";
+    if (u.frac && ((s.reduced && !u.lowest) || (s.mixed && (Math.abs(u.n) >= u.d && !(u.proper && Math.abs(u.n) % u.d !== 0 && String(numPre(v)).trim().includes(" ")))))) return "form";
     if ((s.reduced || s.mixed) && a.frac && !u.frac) return "form";   // у завданні на дроби «0,4» замість 2/5 — не той запис
     if (u.frac && !u.proper) return "form";          // «1 5/3» — так мішані числа не записують
     return "ok";
@@ -1038,7 +1236,7 @@ window.SLID_LEARN = (() => {
   }
   /** Перевірка пулу (валідатор). ctx: { sections: Map id → { grade, lessons: [id] }, skills }. */
   const POOL_TYPES = ["answer", "choice", "multi"];
-  const ANSWER_KINDS = ["number", "comparison", "list", "factors", "divrem", "ratio", "coordinates2", "coordinates3", "exactRoot", "intervalSet", "expression", "periodicSet"];
+  const ANSWER_KINDS = ["number", "comparison", "list", "factors", "divrem", "ratio", "coordinates2", "coordinates3", "exactRoot", "intervalSet", "expression", "periodicSet", "time", "quantity"];
   function validatePool(p, ctx) {
     const E = [], sec = ctx.sections.get(p.section), ids = new Set(), src = new Set((p.sources || []).map(x => x.id));
     if (!p.id) E.push("немає id"); if (!sec) return E.concat(`немає розділу «${p.section}»`);
@@ -1067,7 +1265,27 @@ window.SLID_LEARN = (() => {
         if (it[flag] !== undefined && (typeof it[flag] !== "boolean" || it.type !== "answer" || !(kind === "number" || (flag === "reduced" && kind === "ratio")))) E.push(`${w}: ${flag} має бути boolean для числової answer${flag === "reduced" ? " або ratio" : ""}`);
       }
       const sp = it.type === "answer" && kind === "coordinates2" ? symPair(it) : null;
-      if (it.form !== undefined && !(sp ? EXPR_FORMS.includes(it.form) : kind === "expression" && EXPR_FORMS.includes(it.form) && exprOf(it.answer)?.k !== "eq")) E.push(`${w}: form (${EXPR_FORMS.join(" | ")}) — лише для expression без «=» або coordinates2 з компонентами-виразами`);
+      const formOk = sp ? EXPR_FORMS.includes(it.form) : kind === "expression" ? EXPR_FORMS.includes(it.form) && exprOf(it.answer)?.k !== "eq"
+        : kind === "number" ? it.form === "improper" : kind === "quantity" ? it.form === "compound" : false;
+      if (it.form !== undefined && (it.type !== "answer" || !formOk)) E.push(`${w}: form (${EXPR_FORMS.join(" | ")}) — лише для expression без «=» або coordinates2 з компонентами-виразами; improper — для number; compound — для quantity`);
+      // нові поля (рішення 2026-10-31): improper, decimals, multiset, time, quantity
+      const ka = kind === "number" && it.type === "answer" ? parseAns(typeof it.answer === "number" ? String(it.answer) : it.answer) : null;
+      if (it.form === "improper" && kind === "number" && (!ka?.frac || ka.whole || Math.abs(ka.n) < ka.d || it.mixed)) E.push(`${w}: form improper — ключ має бути неправильним дробом без цілої частини («7/3»), без mixed`);
+      if (it.decimals !== undefined) {
+        if (!Number.isInteger(it.decimals) || it.decimals < 0 || it.decimals > 6 || it.type !== "answer" || kind !== "number") E.push(`${w}: decimals — ціле 0–6 для числової answer`);
+        else if (typeof it.answer !== "string" || !ka || ka.frac || decCount(ka) !== it.decimals) E.push(`${w}: decimals ${it.decimals} — ключ рядком рівно з ${it.decimals} знаками після коми («37,0»)`);
+        if (it.fractionOnly || it.mixed || it.reduced || it.form !== undefined) E.push(`${w}: decimals не поєднується з fractionOnly / mixed / reduced / form`);
+      }
+      if (it.multiset !== undefined && (typeof it.multiset !== "boolean" || it.type !== "answer" || kind !== "list")) E.push(`${w}: multiset має бути boolean для answerKind list`);
+      if ((kind === "time" || kind === "quantity") && it.type === "answer" && (it.unit !== undefined || it.unitForms !== undefined)) E.push(`${w}: ${kind} — без unit/unitForms${kind === "quantity" ? " (одиниці — у units)" : ""}`);
+      if (kind === "time" && it.type === "answer" && !TIME_KEY.test(String(it.answer ?? "").trim())) E.push(`${w}: time — ключ «Г:ХХ» або «ГГ:ХХ» у 24-годинному форматі («9:55»)`);
+      if (it.units !== undefined && (it.type !== "answer" || kind !== "quantity")) E.push(`${w}: units — лише для answerKind quantity`);
+      if (kind === "quantity" && it.type === "answer") {
+        const U = qtyUnits(it), key = qtyKey(it);
+        if (!U) E.push(`${w}: quantity — units: непорожній масив різних одиниць однієї величини (${QTY.map(([d, t]) => d + ": " + Object.keys(t).join(" ")).join("; ")})`);
+        if (!key || (typeof it.answer !== "number" && typeof it.answer !== "string")) E.push(`${w}: quantity — ключ: невід'ємне число в найменшій з units`);
+        else if (it.form === "compound" && key[1] !== 1n) E.push(`${w}: quantity form compound — ключ має бути цілим числом найменшої одиниці`);
+      }
       if (it.form === "factored" && !sp && exprOf(it.answer) && !isProduct(exprOf(it.answer))) E.push(`${w}: form factored — ключ має бути добутком`);
       if (it.form === "factored" && sp && sp.some(t => varsOf(t).length && !isProduct(t))) E.push(`${w}: form factored — кожна компонента-вираз ключа має бути добутком`);
       if (sp && sp.some(t => t.k === "eq")) E.push(`${w}: coordinates2 — компонента ключа не може бути рівнянням`);
@@ -1076,7 +1294,7 @@ window.SLID_LEARN = (() => {
       if (kind === "exactRoot" && it.type === "answer" && ![...(exactOf(it.answer)?.x.keys() || [])].some(k => !k.startsWith("1:1:0"))) E.push(`${w}: exactRoot потребує кореня або π у відповіді; раціональне число — answerKind number`);
       if (it.signed !== undefined && (typeof it.signed !== "boolean" || it.type !== "answer" || kind !== "number")) E.push(`${w}: signed має бути boolean для числової answer`);
       if (it.tol !== undefined && (it.type !== "answer" || kind !== "number" || !Number.isFinite(it.tol) || it.tol < 0)) E.push(`${w}: tol має бути скінченним числом ≥ 0 для числової answer`);
-      if (it.type === "answer" && checkAns(it, typeof it.answer === "number" ? String(it.answer).replace(".", ",") : it.answer) !== "ok") E.push(`${w}: answer «${it.answer}» не читається або сам не проходить перевірку (reduced/mixed)`);
+      if (it.type === "answer" && checkAns(it, keyInput(it)) !== "ok") E.push(`${w}: answer «${it.answer}» не читається або сам не проходить перевірку (reduced/mixed)`);
     });
     return E;
   }
@@ -1135,5 +1353,5 @@ window.SLID_LEARN = (() => {
   }
 
   return { OK, BAD, SKIP, PASS, DIAG_TYPES, planFor, practiceItems, nextItem, remaining, topicStatus, level, buildPlan, finishDiag, record, detect, syncPlan, lessonDone, todo, isKnown, SK_RETAG, migrateSk, validate,
-    parseAns, parseDivrem, checkAns, badHint, stripUnit, listKey, pairKey, answerSig, formHint, ansText, srcRef, numberKeys, ANSWER_KINDS, BOX_DAYS, srsInit, srsUpdate, isDue, pickSession, POOL_TYPES, validatePool };
+    parseAns, parseDivrem, checkAns, badHint, hintTexts, keyInput, timeExample, quantityUnits: s => qtyUnits(s)?.units || null, stripUnit, listKey, pairKey, answerSig, formHint, ansText, srcRef, numberKeys, ANSWER_KINDS, BOX_DAYS, srsInit, srsUpdate, isDue, pickSession, POOL_TYPES, validatePool };
 })();
