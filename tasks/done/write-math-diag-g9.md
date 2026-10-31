@@ -5,7 +5,7 @@ id: write-math-diag-g9
 type: write-diag
 subject: math
 grade: 9
-status: review
+status: done
 claimed_by: agent-write-math-diag-g9
 created: 2026-10-15
 depends_on: [curate-math-personalization-map]
@@ -131,3 +131,7 @@ sk — точно за `itemSkills` матриці (personalization-qa: збіг
 
 Required-уроки для вибору цілей: `g9m1l1`, `g9m1l2`, `g9m1l3`, `g9m2l1`, `g9m2l2`, `g9m2l3`, `g9m2l4`, `g9m3l1`, `g9m3l2`, `g9m3l3`, `g9m3l4`, `g9m4l1`, `g9m4l2`, `g9m4l3`, `g9m5l1`, `g9m5l2`, `g9m5l3`, `g9m6l1`, `g9m6l2`, `g9m6l3`, `g9m6l4`, `g9m7l1`, `g9m7l2`, `g9m7l3`.
 Не включати до обов’язкових pre/cur: немає відкладених уроків цього класу.
+
+## Верифікація
+
+2026-10-31, verifier-dg9: **verified** — reports/verify/dg9.md. Правка: №16 Г уточнено умовою «не паралельний жодній осі координат» (ключ без змін). Відкрите некритичне: формулювання проби cur-g9m5 «на прямій» у матриці (куратору).
