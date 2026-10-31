@@ -5,7 +5,7 @@ id: verify-math-personalization-g11
 type: verify-personalization
 subject: math
 grade: 11
-status: todo
+status: done
 claimed_by: orchestrator
 created: 2026-10-15
 depends_on: [curate-math-personalization-map, write-math-diag-g11, write-math-pool-g11m1, write-math-pool-g11m3, write-math-pool-g11m4, write-math-pool-g11m5]

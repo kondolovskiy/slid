@@ -6067,8 +6067,7 @@
       "pool": "pg11m1",
       "formats": [
         "number",
-        "expression",
-        "intervalSet"
+        "expression"
       ],
       "exercises": {
         "min": 6,
@@ -6105,7 +6104,6 @@
       "pool": "pg11m1",
       "formats": [
         "number",
-        "expression",
         "intervalSet"
       ],
       "exercises": {
@@ -6269,7 +6267,6 @@
       "sk": "calc",
       "pool": "pg11m3",
       "formats": [
-        "number",
         "expression"
       ],
       "exercises": {
@@ -6307,8 +6304,7 @@
       "sk": "calc",
       "pool": "pg11m3",
       "formats": [
-        "number",
-        "expression"
+        "number"
       ],
       "exercises": {
         "min": 6,
@@ -6343,8 +6339,7 @@
       "sk": "calc",
       "pool": "pg11m3",
       "formats": [
-        "number",
-        "expression"
+        "number"
       ],
       "exercises": {
         "min": 6,
@@ -6422,8 +6417,7 @@
       "pool": "pg11m4",
       "formats": [
         "number",
-        "exactRoot",
-        "expression"
+        "exactRoot"
       ],
       "exercises": {
         "min": 6,

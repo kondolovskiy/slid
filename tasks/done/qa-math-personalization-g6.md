@@ -5,7 +5,7 @@ id: qa-math-personalization-g6
 type: qa
 subject: math
 grade: 6
-status: todo
+status: done
 claimed_by: agent-qa-g6
 created: 2026-10-15
 depends_on: [verify-math-personalization-g6, tools-math-personalization-qa, engine-math-grade-plan-context, refine-math-diag-g6-coverage]
@@ -38,6 +38,25 @@ depends_on: [verify-math-personalization-g6, tools-math-personalization-qa, engi
 ## Нотатки виконавця
 
 <!-- Змінені файли; джерела; рішення й обмеження; результати команд; що передано незалежному верифікатору. -->
+
+2026-10-31, agent-qa-g6. Звіт: reports/qa/math-personalization-g6.md. **Вердикт: прийнято**, P1/P2/P3 класу немає, виправлень не було.
+- Змінені файли: лише цей звіт, ці нотатки й рядок у memory/short/inbox.md. app/, tools/, content/ не редагував. Build запускав тільки у worktree на c5f6b2c: без змін (sw ed869ffd1e, 326 файлів), тобто згенеровані файли оркестратора актуальні для 6 кл.
+- Прогони rc 0:
+  - personalization-qa --grade 6 --strict (23/5/184, optional 0, pending 0);
+  - test-learn (1353), test-personalization-qa (96), test-validate (25), validate (0 помилок), validate --diag dg6 і --pool pg6m1–m5;
+  - test-answer-ui --suite content --grade 6 --strict (dg6 ok/gap/shaky/skip, 184 вправи) і --suite regression;
+  - playtest --section dg6 і g6m1–g6m5.
+- Ручні сценарії (Playwright, 360/320 px):
+  - змішаний dg6 через UI з незалежним оракулом;
+  - міграція ред. 1 → 2: перерваний запуск, перезавантаження посеред тесту після кожної rev-2 проби, завершений результат без rev, повторний тест;
+  - тренування з hint/другою спробою/steps/джерелом, SRS, повторювані помилки → план;
+  - 6 → 5 → 7 → 6 з перезавантаженнями, m3 → pms1;
+  - офлайн.
+- Межі:
+  - P2-1/P3-1 рев'ю — прогалини автотестів (tests-diag-rev-p2), поведінку перевірено вручну;
+  - реальний pms2 у ланцюжку dg6 → ms2l4 — qa-math-personalization-release;
+  - лише Chromium.
+- Поза класом: HEAD 753b6bc після правок верифікаторів пулів 11 кл. потребує повторного build (sw 874d416be8 ≠ закомічений 2fe9b02c76).
 
 ## Обсяг за матрицею 2026-10-16.v2
 

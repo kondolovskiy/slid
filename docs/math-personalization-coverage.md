@@ -12,6 +12,8 @@
 
 ⁴ 2026-10-31, за тим самим рішенням людини, що й ² (недосяжні формати прибирати з матриці): прибрано формати, на які в m10 (Мерзляк та ін., 10 кл., рівень стандарту, 2018) немає чесних вправ у пунктах уроку — list з g10m3l2, expression з g10m3l3, exactRoot з g10m4l1, periodicSet з g10m5l3, expression з g10m5l4, intervalSet з g10m6l1/l2, expression з g10m6l3, expression і intervalSet з g10m6l4. Підтверджено автором і незалежним верифікатором кожного пулу (reports/verify/pg10m3.md, pg10m4.md, pg10m5.md, pg10m6.md, підсумок math-personalization-g10.md).
 
+⁵ 2026-10-31, за тим самим рішенням людини, що й ² і ⁴: прибрано формати, на які в m11 (Мерзляк та ін., 11 кл., рівень стандарту, 2019) немає чесних вправ у пунктах уроку — intervalSet з g11m1l2, expression з g11m1l3, number з g11m3l1, expression з g11m3l2/l3, expression з g11m4l2 (буквені вправи п. 19–21 потребують тригонометрії, якої немає в уроці й передумовах). Підтверджено автором і незалежним верифікатором кожного пулу (reports/verify/pg11m1.md, pg11m3.md, pg11m4.md, підсумок math-personalization-g11.md).
+
 ³ 2026-10-31, рішення людини (engine-math-skill-sync): `sk` рядків і `itemSkills` діагностик синхронізовано з навичками, які урок справді тренує (`sk` його екранів). Поле `sk` рядка — рядок або масив; personalization-qa вимагає в пулі вправу з кожним `sk` рядка й попереджає про вправи/проби, чий `sk` не входить у навички уроку (docs/PERSONALIZATION_QA.md, «Навички»). Інші поля й версія v2 без змін. Розбіжностей рядків з екранами уроків після цього немає, крім g11m6l2–l4 (optional, `expr` при екранах eq / func, calc / meas, geom — попередження). Описи навичок `cmp`, `div`, `num` у subjects/math.js розширено під фактичне вживання. Змінено (було → стало):
 
 | Рядок / тема | Було | Стало | Чому |
@@ -493,17 +495,17 @@ Cur для g11m2/g11m6 немає: у них немає required-уроків. 4
 | Розділ / урок | Зміст | Scope | Передумови | Diag cur | Пул | Формати | Вправи | Джерело |
 |---|---|---|---|---|---|---|---|---|
 | g11m1 / `g11m1l1` | Функція a^x | required | g10m3l2, g10m1l2 | cur-g11m1 | pg11m1 | number, expression, intervalSet | 6–8 | m11:6–12 |
-| g11m1 / `g11m1l2` | Логарифм | required | g10m3l2 | — | pg11m1 | number, expression, intervalSet | 6–8 | m11:20–26 |
-| g11m1 / `g11m1l3` | Функція log | required | g10m3l2, g10m1l2 | — | pg11m1 | number, expression, intervalSet | 6–8 | m11:27–31 |
+| g11m1 / `g11m1l2` | Логарифм | required | g10m3l2 | — | pg11m1 | number, expression ⁵ | 6–8 | m11:20–26 |
+| g11m1 / `g11m1l3` | Функція log | required | g10m3l2, g10m1l2 | — | pg11m1 | number, intervalSet ⁵ | 6–8 | m11:27–31 |
 | g11m1 / `g11m1l4` | Рівняння | required | g10m3l2, g10m1l2 | — | pg11m1 | number, expression, intervalSet | 6–8 | m11:13–19,32–39 |
 | g11m2 / `g11m2l1` | Координати | pending | g9m2l1, g9m2l3 | — | pg11m2 | number, coordinates3, expression, exactRoot | відкладено | m10:210–214 |
 | g11m2 / `g11m2l2` | Вектори | pending | g9m2l1, g9m2l3 | — | pg11m2 | number, coordinates3, expression, exactRoot | відкладено | m10:215–231 |
 | g11m2 / `g11m2l3` | Площина | optional | g9m2l1, g9m2l3 | — | pg11m2 | expression | відкладено | prof:Геометрія 10, координати і вектори, рівняння площини |
-| g11m3 / `g11m3l1` | Первісна | required | g10m6l2 | cur-g11m3 | pg11m3 | number, expression | 6–8 | m11:49–56 |
-| g11m3 / `g11m3l2` | Визначений інтеграл | required | g10m6l2, g10m6l3 | — | pg11m3 | number, expression | 6–8 | m11:57–64 |
-| g11m3 / `g11m3l3` | Площі фігур | required | g10m6l2, g10m6l3 | — | pg11m3 | number, expression | 6–8 | m11:57–64 |
+| g11m3 / `g11m3l1` | Первісна | required | g10m6l2 | cur-g11m3 | pg11m3 | expression ⁵ | 6–8 | m11:49–56 |
+| g11m3 / `g11m3l2` | Визначений інтеграл | required | g10m6l2, g10m6l3 | — | pg11m3 | number ⁵ | 6–8 | m11:57–64 |
+| g11m3 / `g11m3l3` | Площі фігур | required | g10m6l2, g10m6l3 | — | pg11m3 | number ⁵ | 6–8 | m11:57–64 |
 | g11m4 / `g11m4l1` | Призма і піраміда | required | g10m2l2, g10m4l2, g9m6l2 | cur-g11m4 | pg11m4 | number, exactRoot, expression | 6–8 | m11:98–120 |
-| g11m4 / `g11m4l2` | Тіла обертання | required | g10m2l2, g10m4l2, g9m6l2 | — | pg11m4 | number, exactRoot, expression | 6–8 | m11:122–140 |
+| g11m4 / `g11m4l2` | Тіла обертання | required | g10m2l2, g10m4l2, g9m6l2 | — | pg11m4 | number, exactRoot ⁵ | 6–8 | m11:122–140 |
 | g11m4 / `g11m4l3` | Об'єми | required | g10m2l2, g10m4l2, g9m6l2 | — | pg11m4 | number, exactRoot, expression | 6–8 | m11:141–154 |
 | g11m4 / `g11m4l4` | Площі поверхонь | required | g10m2l2, g10m4l2, g9m6l2 | — | pg11m4 | number, exactRoot, expression | 6–8 | m11:98–154 |
 | g11m5 / `g11m5l1` | Комбінаторика | required | g9m7l1, g9m7l2, g9m7l3 | cur-g11m5 | pg11m5 | number | 6–8 | m11:70–77 |
