@@ -5,7 +5,7 @@ id: verify-math-personalization-g10
 type: verify-personalization
 subject: math
 grade: 10
-status: todo
+status: done
 claimed_by: orchestrator-verify-g10
 created: 2026-10-15
 depends_on: [curate-math-personalization-map, write-math-diag-g10, write-math-pool-g10m1, write-math-pool-g10m2, write-math-pool-g10m3, write-math-pool-g10m4, write-math-pool-g10m5, write-math-pool-g10m6]
