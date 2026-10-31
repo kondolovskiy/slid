@@ -41,6 +41,32 @@ function schoolWeek(){ if(S.weekOverride) return S.weekOverride; const now=new D
 
 /* ---------- Формули: $…$ у рядку, $$…$$ окремим рядком ---------- */
 const { mathHTML, fmt } = window.SLID_MATH;
+/* Атрибути (aria-label, title, alt, href): fmt() обробляє вже зібраний HTML-рядок і вставив би
+   розмітку формули всередину атрибута. Тому текст зі змісту в атрибут — лише через attr()/urlAttr():
+   формули → простий читабельний текст, теги прибрано, «$» заекрановано (&#36; fmt не бачить). */
+const SUPC = {"0":"⁰","1":"¹","2":"²","3":"³","4":"⁴","5":"⁵","6":"⁶","7":"⁷","8":"⁸","9":"⁹","−":"⁻","-":"⁻","+":"⁺","n":"ⁿ","°":"°"};
+const wrapT = x => /^[\p{L}\p{N},.°]+$|^\(.*\)$/u.test(x) ? x : `(${x})`;
+function plainNode(n){
+  if(n.nodeType===3) return n.nodeValue;
+  const kids = el => [...(el?el.childNodes:[])].map(plainNode).join(""), c=n.classList, one = s => n.querySelector(`:scope>${s}`);
+  if(n.nodeType===11) return kids(n);
+  if(n.nodeType!==1) return "";
+  if(n.tagName==="BR") return "; ";
+  if(c.contains("mspace")) return " ";
+  if(c.contains("case-brace")) return "";
+  if(c.contains("case-rows")) return [...n.children].map(plainNode).join("; ");
+  if(c.contains("mo")) return ` ${kids(n)} `;
+  if(c.contains("m")||c.contains("mblock")) return kids(n).replace(/\s*([≤≥≠→↔∈∪∼⊥∥×])\s*/g," $1 ");
+  if(c.contains("fr")) return `${wrapT(kids(one(".nu")).trim())}/${wrapT(kids(one(".de")).trim())}`;
+  if(c.contains("sqrt")){ const ix=one(".root-index"), i=ix? kids(ix).trim() : "";
+    return (i? ([...i].every(ch=>SUPC[ch])? [...i].map(ch=>SUPC[ch]).join("") : `корінь ${i}-го степеня з `) : "")+"√"+wrapT(kids(one(".radicand")).trim()); }
+  if(c.contains("mover")) return `вектор ${kids(n).trim()}`;
+  if(n.tagName==="SUP"){ const v=kids(n).trim(); return [...v].every(ch=>SUPC[ch])? [...v].map(ch=>SUPC[ch]).join("") : `^${wrapT(v)}`; }
+  return kids(n);
+}
+const plainText = s => { const t=document.createElement("template"); t.innerHTML=fmt(s); return plainNode(t.content).replace(/\s+/g," ").trim(); };
+const attr = s => esc(plainText(s??"")).replace(/\$/g,"&#36;");
+const urlAttr = u => esc(u??"").replace(/\$/g,"%24");
 
 /* ---------- Іконки ---------- */
 const P = {
@@ -374,7 +400,7 @@ function viewTopic(){
       const d=done(l.id), u=unlocked(sec,i), cur=i===curIdx;
       return `<div class="${["node", d?"done":"", cur?"cur":"", !u?"lock":"", l.boss?"boss":""].join(" ")}">
         ${cur?`<div class="bubble">Почати</div>`:""}
-        <button class="nbtn" type="button" data-open="${i}" aria-label="${esc(l.title)}${u?"":", закрито"}">${ic(u?l.icon:"lock")}</button>
+        <button class="nbtn" type="button" data-open="${i}" aria-label="${attr(l.title)}${u?"":", закрито"}">${ic(u?l.icon:"lock")}</button>
         ${d?starsHtml(S.lessons[l.id].stars):""}
         <div class="nlabel">${esc(l.title)}</div>${!d&&known(l.id)?`<div class="knowntag">знайоме</div>`:""}
       </div>`; }).join("")}
@@ -384,7 +410,7 @@ const GRADED=["choice","multi","sort","slider","order","align","shade","numline"
 function openSheet(i){
   const c=course(nav.id), sec=c.sections[nav.sec], LS=sec.lessons, l=LS[i], u=unlocked(sec,i), rec=S.lessons[l.id];
   const graded=l.screens.filter(s=>GRADED.includes(s.type) && !s.hyp && !s.poll).length;
-  $("#sheetHost").innerHTML=fmt(`<div class="scrim" id="scrim"><div class="sheet" role="dialog" aria-modal="true" aria-label="${esc(l.title)}">
+  $("#sheetHost").innerHTML=fmt(`<div class="scrim" id="scrim"><div class="sheet" role="dialog" aria-modal="true" aria-label="${attr(l.title)}">
     <div class="grab"></div>
     <div class="eyebrow">${c.short} · Урок ${i+1}${l.boss?" · фінал":""}</div>
     <h2>${esc(l.title)}</h2>
@@ -451,7 +477,7 @@ function viewProgress(){
     </div>
     <div class="card">
       <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px"><h3>Значки</h3><span class="muted" style="font-size:13px">${BADGES.filter(b=>S.badges[b.id]).length} з ${BADGES.length}</span></div>
-      <div class="badges">${BADGES.map(b=>{ const on=!!S.badges[b.id]; return `<div class="bdg ${on?"":"off"}" title="${esc(b.desc)}"><div class="medal">${ic(on?b.icon:"lock")}</div>${b.name}</div>`; }).join("")}</div>
+      <div class="badges">${BADGES.map(b=>{ const on=!!S.badges[b.id]; return `<div class="bdg ${on?"":"off"}" title="${attr(b.desc)}"><div class="medal">${ic(on?b.icon:"lock")}</div>${b.name}</div>`; }).join("")}</div>
     </div>
     ${tot? "" : `<div class="empty">Пройди перший урок, і тут з'явиться статистика. Щоб подивитися на заповнений прогрес, увімкни демо-дані в «Профілі».</div>`}
   </div>`;
@@ -495,7 +521,7 @@ function viewProfile(){
       <h3>Про прототип</h3>
       <p class="muted" style="font-size:14px;margin:0">Уроки, картинки й прогрес зберігаються на пристрої, тож застосунок працює без інтернету — і в укритті під час тривоги теж. Демо-прогрес — це приклад, а не справжні результати.</p>
       <details><summary class="muted" style="font-size:14px;cursor:pointer">Джерела зображень</summary>
-        <ul class="credits">${SUBJ.flatMap(c=>c.credits||[]).map(c=>`<li>${c[0]} — ${c[1]}, ${c[2]} (<a href="${c[3]}" target="_blank" rel="noopener">Вікісховище</a>)</li>`).join("")}</ul></details>
+        <ul class="credits">${SUBJ.flatMap(c=>c.credits||[]).map(c=>`<li>${c[0]} — ${c[1]}, ${c[2]} (<a href="${urlAttr(c[3])}" target="_blank" rel="noopener">Вікісховище</a>)</li>`).join("")}</ul></details>
     </div>
   </div>`;
 }
@@ -785,7 +811,7 @@ function setDock(kind,title,text,label,enabled=true){
 function pProgress(){ const na=run.diag? Object.keys(run.res).length : 0, p= run.diag? Math.round(na/Math.max(1,na+LEARN.remaining(run.diag,run.res))*100) : Math.round(idx/L.screens.length*100); $("#pBar").style.width=p+"%"; $("#pBar").parentElement.setAttribute("aria-valuenow",p);
   $("#pCombo").innerHTML= run.combo>=2? icF("flame")+"×"+run.combo : ""; }
 function fig(s){
-  if(s.img) return `<figure class="${s.tall?"tall":s.fit?"fit":""}"><img src="${s.img}" alt="${esc(s.cap)}"><figcaption>${s.cap}</figcaption></figure>`;
+  if(s.img) return `<figure class="${s.tall?"tall":s.fit?"fit":""}"><img src="${s.img}" alt="${attr(s.cap)}"><figcaption>${s.cap}</figcaption></figure>`;
   if(s.svg) return `<figure class="svgfig">${svgFig(s.svg)}</figure>`;
   if(s.fig) return `<figure class="svgfig">${mathFig(s.fig)}</figure>`;
   if(s.lab) return `<div id="labHost"></div>`;
@@ -795,7 +821,7 @@ function fig(s){
 function noteHtml(s){
   if(!s.note) return "";
   const n = typeof s.note==="string"? {text:s.note} : s.note;
-  const links = (n.links||[]).map(([t,u])=>`<li><a href="${esc(u)}" target="_blank" rel="noopener">${t}</a></li>`).join("");
+  const links = (n.links||[]).map(([t,u])=>`<li><a href="${urlAttr(u)}" target="_blank" rel="noopener">${t}</a></li>`).join("");
   return `<details class="note"><summary>${ic("info")}<span>${n.label||"Чому дві дати?"}</span></summary><div class="note-b">${n.text}${links?`<ul>${links}</ul>`:""}</div></details>`;
 }
 function renderScreen(){

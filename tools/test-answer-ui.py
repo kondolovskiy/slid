@@ -964,6 +964,49 @@ async def player_focus_checks(browser, url):
     await context.close()
     print('Player focus follow-up: no focus on ✕ after a lab mistake (g4m2l1#4, g4m2l2#6), touch keeps the field unfocused: green', flush=True)
 
+BAD_ATTRS = """root => [...document.querySelectorAll(root+' *')].flatMap(el=>[...el.attributes]
+  .filter(a=>/[<>$]|class=/.test(a.value)).map(a=>el.tagName+'['+a.name+']='+a.value))"""
+
+async def attr_math_checks(browser, url):
+    """engine-lesson-title-aria: fmt() runs over assembled HTML, so `$…$` from content must never reach an attribute
+    (aria-label of lesson buttons/sheet, img alt, badge title, href). Attributes get plain readable text instead."""
+    context, page, errors = await qa_page(browser, url, {'grade': 8, 'unlockAll': True})
+    k, lessons = await page.evaluate("""() => {const c=SLID_SUBJECTS.find(c=>c.id==='math'),k=c.sections.findIndex(s=>s.id==='g8m3');
+      const L=c.sections[k].lessons; L[1].screens[0]={...L[1].screens[0],img:'icons/icon-192.png',cap:'Квадрат зі стороною $\\\\sqrt{2}$ і площею <i>$x^2$</i>',
+        note:{text:'Примітка',links:[['Джерело','https://example.org/a$b$c']]}};
+      const b=c.badges&&c.badges[0]; if(b) b.desc='Знайди $x^2 = 81$ і $1/2 + 1/3$';
+      (c.credits||(c.credits=[])).unshift(['QA','автор','CC0','https://example.org/$x$']);
+      return [k, L.map(l=>l.title)];}""")
+    assert '$' in lessons[1] and '$' in lessons[3], lessons
+    await page.click('button[data-subject="math"]'); await page.click(f'[data-topic="{k}"]')
+    labels = await page.eval_on_selector_all('.nbtn', 'bs=>bs.map(b=>[b.getAttribute("aria-label"), b.innerText.trim()])')
+    assert [l for l, _ in labels][1:4:2] == ['Де живе √2?', 'Графік y = √x'], labels
+    assert all(not text for _, text in labels), labels   # the old bug leaked «2 ?">» as visible button text
+    assert await page.locator('.nlabel .m .sqrt').count() == 2   # the visible label still renders the formula
+    assert not await page.evaluate(BAD_ATTRS, '#view'), await page.evaluate(BAD_ATTRS, '#view')
+    await page.click('[data-open="1"]')
+    assert await page.get_attribute('#sheetHost [role="dialog"]', 'aria-label') == 'Де живе √2?'
+    assert await page.locator('#sheetHost h2 .sqrt').count() == 1
+    assert not await page.evaluate(BAD_ATTRS, '#sheetHost'), await page.evaluate(BAD_ATTRS, '#sheetHost')
+    await page.click('#go')
+    assert await page.get_attribute('#stage figure img', 'alt') == 'Квадрат зі стороною √2 і площею x²'
+    assert await page.locator('#stage figcaption .m').count() == 2
+    assert await page.get_attribute('#stage .note a', 'href') == 'https://example.org/a%24b%24c'
+    assert not await page.evaluate(BAD_ATTRS, '#stage'), await page.evaluate(BAD_ATTRS, '#stage')
+    await page.click('#pClose')
+    if await page.locator('#pClose').is_visible(): await page.click('#pClose')
+    await page.click('[data-tab="progress"]')
+    if await page.evaluate("!!SLID_SUBJECTS.find(c=>c.id==='math').badges?.length"):
+        titles = await page.eval_on_selector_all('.bdg', 'bs=>bs.map(b=>b.title)')
+        assert 'Знайди x² = 81 і 1/2 + 1/3' in titles, titles
+    assert not await page.evaluate(BAD_ATTRS, '#view'), await page.evaluate(BAD_ATTRS, '#view')
+    await page.click('[data-tab="profile"]')
+    assert await page.locator('.credits a[href="https://example.org/%24x%24"]').count() == 1
+    assert not await page.evaluate(BAD_ATTRS, '#view'), await page.evaluate(BAD_ATTRS, '#view')
+    assert not errors, errors
+    await context.close()
+    print('Formulas in attributes (g8m3 lesson buttons/sheet, img alt, badge title, href): plain text, green', flush=True)
+
 FALLBACK_CHROMIUM = '/opt/pw-browsers/chromium'
 
 async def launch_browser(p, path=None):
@@ -1087,6 +1130,7 @@ async def main():
                 await divrem_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
                 await player_qa_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
                 await player_focus_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
+                await attr_math_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
             await browser.close()
             print('Обрані браузерні сценарії: green')
     finally:
