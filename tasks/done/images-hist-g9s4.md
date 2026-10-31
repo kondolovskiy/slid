@@ -6,7 +6,7 @@ type: images
 subject: hist
 grade: 9
 section: g9s4
-status: review
+status: done
 claimed_by: photo-g9s4
 created: 2026-10-30
 depends_on: []

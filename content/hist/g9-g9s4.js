@@ -1,5 +1,5 @@
 /* Слід · Історія, 9 клас — «Модернізація»
-   Статус уроків: draft. 5 уроків (4 теми + boss).
+   Статус уроків: verified (verifier-g9s4; зображення D-027 — verifier-images-g9s4, 31.10.2026). 5 уроків (4 теми + boss).
    Перевірка: node tools/validate.mjs --section g9s4 && node tools/stats.mjs --subject hist
    Схема й правила: docs/CONTENT_SCHEMA.md, style/; D-019, D-020, D-021, D-022.
    Факти: ЕСУ (Залізниця, Одеська залізниця, Донецьк); EoU (Donetsk, Donets Basin, Canada, Emigration,
@@ -21,7 +21,7 @@ SLID.section("hist", {
       "https://commons.wikimedia.org/wiki/File:Общий_вид_завода_Новороссийского_общества.jpg"
     ],
     [
-      "Чумак із возом і волами. Гравюра з журналу «Tygodnik Illustrowany», 1860 р.",
+      "Чумак із возом і волами. Гравюра; за описом Вікісховища — з варшавського журналу «Tygodnik Illustrowany», 1860, № 66",
       "невідомий автор",
       "суспільне надбання (PD-old, CC PDM 1.0)",
       "https://commons.wikimedia.org/wiki/File:Chumak_z_Balandyne_1860.jpg"
@@ -45,7 +45,7 @@ SLID.section("hist", {
       title: "Колія до моря",
       short: "Залізниці",
       icon: "path",
-      status: "draft",
+      status: "verified",
       why: "Ти побачиш, як паровоз і парова машина змінили господарство українських земель.",
       screens: [
         {
@@ -53,7 +53,7 @@ SLID.section("hist", {
           eyebrow: "Розділ 4 · Урок 1",
           title: "Як швидше довезти хліб до моря?",
           img: "img/hist/g9s4/chumak-1860.jpg",
-          cap: "Чумак із возом, запряженим волами. Гравюра з варшавського журналу «Tygodnik Illustrowany», 1860 р.",
+          cap: "Чумак із возом, запряженим волами. Гравюра XIX ст.",
           body: `<p class="lead">Середина XIX ст. Зерно з українських степів везуть до Одеси чумаки — возами, запряженими волами.</p><p>Це повільно й дорого. А в Європі вже їздять поїзди. Що зміниться, коли колія дійде сюди?</p>`,
           cta: "Розслідувати"
         },
@@ -309,7 +309,7 @@ SLID.section("hist", {
       title: "Чия мова на вулиці?",
       short: "Українці в містах",
       icon: "city",
-      status: "draft",
+      status: "verified",
       why: "Ти прочитаєш дані перепису й зрозумієш, чому міста наприкінці XIX ст. говорили не українською.",
       screens: [
         {
@@ -438,7 +438,7 @@ SLID.section("hist", {
       title: "Земля за океаном",
       short: "Еміграція",
       icon: "globe",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, чому сотні тисяч українців вирушили до Канади, США й Бразилії.",
       screens: [
         {
