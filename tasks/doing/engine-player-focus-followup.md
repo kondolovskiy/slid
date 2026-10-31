@@ -1,10 +1,12 @@
 ---
+claimed_from: todo
+claimed_at: 2026-10-31T10:10:12.584Z
 write_group: personalization-shared
 id: engine-player-focus-followup
 type: engine
 subject: math
 status: todo
-claimed_by:
+claimed_by: engineer-focus
 created: 2026-10-31
 depends_on: [engine-player-qa-fixes]
 ---
