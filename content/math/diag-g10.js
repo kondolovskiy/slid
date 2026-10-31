@@ -342,6 +342,7 @@ SLID.diag("math", {
       type: "choice",
       sk: "trig",
       title: `Чому дорівнює $"cos"\\,150°$?`,
+      body: `<p>Відомо, що $"cos"\\,30° = √3/2$.</p>`,
       opts: ["$1/2$", "$\\sqrt{3}/2$", "$-\\sqrt{3}/2$", "$-1/2$"],
       correct: 2
     },

@@ -1,5 +1,5 @@
 /* Слід · Математика, 10 клас — пул задач для тренування до розділу «Алгебра: тригонометрія» (g10m5)
-   Статус: draft. 32 задачі: g10m5l1 — 8, g10m5l2 — 8, g10m5l3 — 8, g10m5l4 — 8 (boss g10m5l5 без задач).
+   Статус: verified (reports/verify/pg10m5.md). 32 задачі: g10m5l1 — 8, g10m5l2 — 8, g10m5l3 — 8, g10m5l4 — 8 (boss g10m5l5 без задач).
    Матриця docs/math-personalization-coverage.md 2026-10-16.v2: усі чотири уроки required, формати number, exactRoot,
    expression, periodicSet.
    Усі задачі — з підручника Мерзляк, Номіровський, Полонський, Якір «Математика. 10 клас. Рівень стандарту» (2018), п. 8–16;
@@ -15,8 +15,8 @@
 SLID.pool("math", {
   id: "pg10m5",
   section: "g10m5",
-  status: "draft",
-  meta: { author: "agent-write-math-pool-g10m5", created: "2026-10-31", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "agent-write-math-pool-g10m5", created: "2026-10-31", verified: "2026-10-31", factcheck: "verifier-pg10m5 (reports/verify/pg10m5.md)", teacher: null },
   sources: [
     { id: "m10", title: "Мерзляк А. Г., Номіровський Д. А., Полонський В. Б., Якір М. С. Математика : алгебра і початки аналізу та геометрія, рівень стандарту : підруч. для 10 кл. закладів заг. серед. освіти. — Харків: Гімназія, 2018 (п. 8–16; дзеркало PDF на 4book.org)", url: "https://file.4book.org/images/shcoolbook_ua/10/10_m_m_2018_ua.pdf" }
   ],
@@ -185,7 +185,7 @@ SLID.pool("math", {
       type: "answer", answerKind: "periodicSet", title: `$"cos"\\,x = -1/2$`,
       body: `<p>Розв'яжи рівняння $"cos"\\,x = -1/2$.</p><p>Відомо: $"arccos"(-1/2) = 2π/3$.</p>`,
       answer: "±2π/3 + 2πk",
-      hint: `Формула та сама, що для $"cos"\\,x = 1/2$, лише арккосинус інший. Не пиши $±(-π/3)$: арккосинус від'ємного числа — тупий кут.`,
+      hint: `Формула та сама, що для $"cos"\\,x = 1/2$, лише арккосинус інший. Не пиши $±(-π/3)$: арккосинус від'ємного числа лежить між $π/2$ і $π$.`,
       steps: [`$x = ±"arccos"(-1/2) + 2πk$.`, `$"arccos"(-1/2) = 2π/3$.`, `$x = ±2π/3 + 2πk$, $k ∈ ℤ$.`] },
     { id: "d05", lesson: "g10m5l4", lvl: 2, sk: "trig", src: "m10 №16.4(2)", srcPage: 95,
       type: "answer", answerKind: "periodicSet", title: `$"sin"(x/7) = 0$`,
