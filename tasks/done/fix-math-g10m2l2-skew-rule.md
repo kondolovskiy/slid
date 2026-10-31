@@ -5,7 +5,7 @@ id: fix-math-g10m2l2-skew-rule
 type: fix
 subject: math
 grade: 10
-status: review
+status: done
 claimed_by: writer-skew
 created: 2026-10-31
 depends_on: []
