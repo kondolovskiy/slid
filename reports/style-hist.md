@@ -9,7 +9,7 @@
 | l3 Лінія часу | 5 | 7 | 0.71 | 23 | 56 | 6.4 | 0.032 | 3 | — |
 | l4 Кому вірити? | 5 | 6 | 0.67 | 30 | 55 | 6.3 | 0.033 | 3 | — |
 | l5 Легенда чи історія? | 5 | 5 | 0.8 | 31 | 50 | 7.3 | 0.036 | 3 | gradedShare нетипово для сім'ї (z=2.1); readWordsPerScreen нетипово для сім'ї (z=2.1); sentenceWords нетипово для сім'ї (z=2.1) |
-| l6 Справа мамонтового селища (фінал) | 5 | 6 | 0.83 | 17 | 42 | 5.3 | 0.052 | 4 | maxReadWords нетипово для сім'ї (z=2.6) |
+| l6 Справа мамонтового селища (фінал) | 5 | 6 | 0.83 | 17 | 42 | 5.3 | 0.052 | 4 | maxReadWords нетипово для сім'ї (z=2.2) |
 | h21 Карта, якій 370 років | 5 | 7 | 0.57 | 21 | 53 | 5.9 | 0.027 | 4 | — |
 | h22 Чому Київ стоїть на Дніпрі? | 5 | 7 | 0.57 | 19 | 52 | 6 | 0.043 | 3 | — |
 | h23 Галичина, Поділля, Слобожанщина | 5 | 7 | 0.71 | 16 | 54 | 5.5 | 0.042 | 3 | — |
@@ -24,7 +24,7 @@
 | h42 Скарби зі списку ЮНЕСКО | 5 | 5 | 0.6 | 24 | 79 | 6.3 | 0.067 | 3 | maxReadWords=79 поза [0; 60]; maxReadWords нетипово для сім'ї (z=3.4) |
 | h43 Українці, яких знає світ | 5 | 7 | 0.43 | 21 | 47 | 6.2 | 0.053 | 2 | gradedShare=0.43 поза [0.5; 0.9] |
 | h44 Україна і Європа | 5 | 5 | 0.4 | 22 | 57 | 6.2 | 0.083 | 2 | gradedShare=0.4 поза [0.5; 0.9]; gradedShare нетипово для сім'ї (z=-2.1); longWordShare нетипово для сім'ї (z=2.9) |
-| h45 Посол України (фінал) | 5 | 6 | 0.83 | 7 | 15 | 4.6 | 0.071 | 3 | sentenceWords=4.6 поза [5; 11] |
+| h45 Посол України (фінал) | 5 | 6 | 0.83 | 11 | 36 | 4.8 | 0.065 | 3 | sentenceWords=4.8 поза [5; 11] |
 | g6s1l1 Камінь, якому 1,4 мільйона років | 6 | 7 | 0.57 | 19 | 52 | 6.1 | 0.02 | 4 | — |
 | g6s1l2 Гострий край і теплий вогонь | 6 | 8 | 0.63 | 17 | 44 | 5.4 | 0.025 | 4 | — |
 | g6s1l3 Дім з кісток мамонта | 6 | 7 | 0.71 | 21 | 56 | 5.8 | 0.022 | 4 | — |
@@ -189,7 +189,7 @@
 Для z-оцінок sd не менше 10 % середнього; нижче наведено фактичне sd.
 
 - **5-6:lesson**: screens 7±1.03, gradedShare 0.6±0.09, readWordsPerScreen 22.32±4.1, maxReadWords 53.11±7.54, sentenceWords 6.05±0.38, longWordShare 0.04±0.02, typeVariety 3.18±0.76
-- **5-6:boss**: screens 6.44±0.5, gradedShare 0.84±0.01, readWordsPerScreen 12.33±2.94, maxReadWords 22.78±7.36, sentenceWords 4.88±0.41, longWordShare 0.05±0.01, typeVariety 3.33±0.47
+- **5-6:boss**: screens 6.44±0.5, gradedShare 0.84±0.01, readWordsPerScreen 12.78±2.35, maxReadWords 25.11±7.84, sentenceWords 4.9±0.4, longWordShare 0.05±0.01, typeVariety 3.33±0.47
 - **7-9:lesson**: screens 7.91±0.76, gradedShare 0.58±0.06, readWordsPerScreen 24.28±2.82, maxReadWords 60.74±7.56, sentenceWords 5.9±0.41, longWordShare 0.04±0.01, typeVariety 3.29±0.45
 - **7-9:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 21.4±2.8, maxReadWords 42.6±5.04, sentenceWords 5.47±0.45, longWordShare 0.03±0.01, typeVariety 3.13±0.34
 - **10-11:lesson**: screens 8.93±1.24, gradedShare 0.55±0.05, readWordsPerScreen 27.07±4.71, maxReadWords 61.12±8.34, sentenceWords 6.42±0.49, longWordShare 0.07±0.03, typeVariety 3.45±0.5
