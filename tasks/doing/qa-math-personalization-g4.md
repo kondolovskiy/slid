@@ -1,10 +1,12 @@
 ---
+claimed_from: todo
+claimed_at: 2026-10-31T08:44:18.080Z
 id: qa-math-personalization-g4
 type: qa
 subject: math
 grade: 4
 status: todo
-claimed_by:
+claimed_by: w-qa-math-personalization-g4
 created: 2026-10-15
 depends_on: [verify-math-personalization-g4, tools-math-personalization-qa, engine-math-grade-plan-context, engine-math-diag-g4-baseline]
 ---
