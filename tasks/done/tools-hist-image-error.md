@@ -4,7 +4,7 @@ claimed_at: 2026-10-31T20:17:27.365Z
 id: tools-hist-image-error
 type: engine
 subject: hist
-status: review
+status: done
 claimed_by: engineer-hist-img
 created: 2026-10-30
 depends_on: [images-hist-g10s1, images-hist-g10s2, images-hist-g10s3, images-hist-g10s4, images-hist-g10s5, images-hist-g11s1, images-hist-g11s2, images-hist-g11s3, images-hist-g11s4, images-hist-g11s5, images-hist-g6s1, images-hist-g6s3, images-hist-g6s4, images-hist-g7s1, images-hist-g7s2, images-hist-g7s3, images-hist-g7s4, images-hist-g7s5, images-hist-g8s1, images-hist-g8s2, images-hist-g8s3, images-hist-g8s4, images-hist-g8s5, images-hist-g9s1, images-hist-g9s2, images-hist-g9s3, images-hist-g9s4, images-hist-g9s5, images-hist-s1, images-hist-s2, images-hist-s3, images-hist-s4]
