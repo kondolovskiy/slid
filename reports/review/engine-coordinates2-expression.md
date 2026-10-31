@@ -5,11 +5,11 @@
 - Файли: app/learn.js (`splitPair`, `symPair`, `pairSym`, `pairKey`, `checkAns0`, `formHint`, `validatePool`), app/app.js (`answerInput`), tools/personalization-qa.mjs (`exprPair`), tools/test-learn.mjs, tools/test-personalization-qa.mjs, tools/test-answer-ui.py, tools/fixtures/coordinates2-numeric.json, docs/CONTENT_SCHEMA.md §10, docs/PERSONALIZATION_QA.md, sw.js.
 - Власні скрипти: `/tmp/claude-0/-home-user-slid/019b4ace-7221-55df-8577-39871bfa5ec5/scratchpad/review-c2/` (old/ і new/ — `git archive` a12bfbd і a9b34da).
 
-## Вердикт: **потрібні виправлення**
+## Вердикт: **прийнято** (фінальний коміт 5058fe4, повторна перевірка нижче)
 
-Перевірка відповідей сама по собі коректна. Хибних зарахувань я не знайшов, числовий шлях не змінився, межі часу дотримано. Але є одна блокувальна знахідка (P2-1): підказка під полем показує готову відповідь саме тієї вправи (№13.5(4)), заради якої зроблено розширення. Решта зауважень (P3) не блокують задачу.
+Перший прохід (a9b34da) дав вердикт «потрібні виправлення» через P2-1. Автор закрив P2-1, P3-1 і P3-3 у коміті 5058fe4, а P3-2, P3-4 і P3-5 записав у нотатки задачі як відомі обмеження. Я перевірив виправлення сам. Відкритих блокувальних знахідок немає.
 
-## Знахідки
+## Знахідки (перший прохід, a9b34da)
 
 **P2-1. Підказка поля розкриває відповідь №13.5(4).** У app/app.js:875, коли в ключі є компонента-вираз (`pv`), під полем завжди стоїть текст «Координати — у дужках через крапку з комою: **(p − m; k − n)**. Спершу x, потім y…». За reports/verify/pg9m2.md:75 і задачею, ключ вправи, яку потім додадуть у pool-g9-g9m2.js, саме `(p - m; k - n)`. Учень побачить правильну відповідь просто під полем, і вправа перестане бути чесною (style/common.md, «Чесне завдання»). Регресія ще й закріплює цей текст: tools/test-answer-ui.py:371 перевіряє `'(p − m; k − n)' in stage`.
 Відтворення: fixture `{answerKind:'coordinates2', answer:'(p - m; k - n)'}` у практиці. Під полем видно «(p − m; k − n)», а введення цього самого рядка дає `ok`. Я перевірив власним браузерним прогоном (`ui-probe.py`).
@@ -80,3 +80,29 @@
 | `python3 tools/test-answer-ui.py --browser /opt/pw-browsers/chromium` (повний) | rc 0, 13 хв 18 с; «Формати відповідей: 12 fixture-вправ … reveal green», «Обрані браузерні сценарії: green» |
 
 Неперевірене: реальний мобільний пристрій (лише емуляція Chromium); Safari/Firefox.
+
+## Повторна перевірка (5058fe4)
+
+- Diff: `git diff 5fdc131 5058fe4`. Змінено: app/app.js (текст підказки), app/learn.js (`BUDGET = 50000` у `pairKey` і `formHint`), tools/test-answer-ui.py, tools/test-learn.mjs (+2), tools/test-personalization-qa.mjs (+1), нотатки задачі, sw.js (build).
+
+| Знахідка | Стан | Як перевірено |
+|---|---|---|
+| P2-1 підказка розкриває відповідь | **закрито** | Символьна підказка тепер «(2a; b − 1)». Новий тест (test-answer-ui.py:392–401) збирає текст підказки з усіх 3 fixture coordinates2: 2 різні підказки, числову й символьну (`len(helps) == 3 and len(set(helps)) == 2`). Звідти він бере кожен приклад «(…;…)» і перевіряє `checkAns` проти всіх ключів coordinates2 пулів, діагностик і екранів уроків після reload, тобто на повному змісті. Захист від порожнього прогону: `ex < 2 або items < 40` → провал. Окремо стоїть assert, що в символьній підказці немає «(p − m; k − n)». **Мутація:** числовий приклад «(3; −2)» замінив на «(−4; 0)», ключ pg7m5/c07. `--suite regression` → rc 1, `AssertionError: ['(−4; 0) ← "(-4; 0)"']`, тож тест справді ловить збіг з реальним ключем. Без мутації `--suite regression` → rc 0. |
+| P3-1 BUDGET у pairKey/formHint | **закрито** | Власна проба на свіжому модулі: `pairKey("(√6/2; p - m)")` → tidy `[true,true]` (було `[false,true]`). **Мутація:** прибрав `BUDGET` з `pairKey` → test-learn rc 1 («pairKey у свіжому модулі…: [false,true]»). Якщо прибрати `BUDGET` з `formHint`, тест не падає. Але, як і пише автор, вихід `formHint` від бюджету не залежить: компонента-вираз скидає бюджет сама, а числова на вибір підказки не впливає. Тож це лише страховка. |
+| P3-3 проба «(…) + змінна» без тесту | **закрито** | **Мутація:** прибрав пробу з `exprPair` → test-personalization-qa rc 1. З пробою — rc 0, 57 перевірок. |
+| P3-2, P3-4, P3-5 | відомі обмеження, записані в нотатках задачі | Не блокують. Погоджуюся залишити їх так. |
+
+Залишкове P3 (не блокує): тест підказок охоплює лише coordinates2. Підказка coordinates3 «(1; −2; 3)» і приклади інших форматів (`2√3`, `2 : 3`, `7/12` тощо) так не звіряються з ключами. Наразі збігів немає. Узагальнити перевірку на всі ANS_UI-підказки можна окремою задачею.
+
+### Прогін на 5058fe4 (власний, worktree)
+
+| Команда | Результат |
+|---|---|
+| `node tools/build.mjs` | rc 0, робоче дерево чисте (index.html/sw.js актуальні) |
+| `node tools/test-learn.mjs` | rc 0, 909 перевірок |
+| `node tools/test-personalization-qa.mjs` | rc 0, 57 перевірок |
+| `node tools/validate.mjs` | rc 0, 0 помилок, 339 попереджень стилю |
+| `personalization-qa --grade 4/5/7/8 --strict` | rc 0 / 0 / 0 / 0 |
+| `personalization-qa --grade 9 --strict` | rc 1, єдиний рядок `БРАКУЄ: pg9m2/g9m2l3: немає формату expression` (очікувано до вправи №13.5(4)) |
+| `python3 tools/test-answer-ui.py --suite regression --browser /opt/pw-browsers/chromium` | rc 0; «Формати відповідей: 12 fixture-вправ … reveal green», «Обрані браузерні сценарії: green» |
+| `python3 tools/test-answer-ui.py --browser /opt/pw-browsers/chromium` (повний) | rc 0, 13 хв 21 с; «Формати відповідей: 12 fixture-вправ … reveal green», «Обрані браузерні сценарії: green» |
