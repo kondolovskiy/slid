@@ -105,6 +105,7 @@ const fresh = () => ({ name:"", grade:null, weekOverride:null, theme:"system", s
 let S = fresh();
 try { const raw = localStorage.getItem(KEY); if (raw) S = Object.assign(fresh(), JSON.parse(raw)); } catch(e) {}
 const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e) {} };
+if (LEARN.migrateSk(S)) save();   // sk вправ, узгоджені з уроками 2026-10-31, — у журналі помилок (learn.js, SK_RETAG)
 
 const dkey = (d=new Date()) => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
 const addDays = (d,n) => { const x=new Date(d); x.setDate(x.getDate()+n); return x; };

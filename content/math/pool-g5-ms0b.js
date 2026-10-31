@@ -132,7 +132,7 @@ SLID.pool("math", {
       answer: 46, unit: "см",
       hint: "Спершу знайди сусідню сторону: вона на 5 см коротша.",
       steps: ["Сусідня сторона: $14 - 5 = 9$ см.", "$P = 2 * 14 + 2 * 9 = 28 + 18 = 46$ см."] },
-    { id: "d05", lesson: "ms0bl4", lvl: 2, sk: "geom", src: "mer5 №351", srcPage: 106, adapted: true,
+    { id: "d05", lesson: "ms0bl4", lvl: 2, sk: "meas", src: "mer5 №351", srcPage: 106, adapted: true,
       type: "answer", title: "Периметр п'ятикутника",
       body: "<p>Сторони п'ятикутника дорівнюють 2 см, 4 см, 6 см, 5 см 5 мм і 7 см. Обчисли його периметр. Запиши відповідь у міліметрах.</p>",
       answer: 245, unit: "мм",

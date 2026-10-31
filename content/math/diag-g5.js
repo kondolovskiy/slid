@@ -65,7 +65,7 @@ SLID.diag("math", {
     {
       topic: "cmp",
       type: "choice",
-      sk: "num",
+      sk: "cmp",
       title: "407 816 … 407 681",
       body: "<p>Який знак поставити?</p>",
       opts: ["&lt;", "&gt;", "="],
@@ -110,7 +110,7 @@ SLID.diag("math", {
     {
       topic: "quot",
       type: "number",
-      sk: "num",
+      sk: "div",
       title: "$92 : 4$",
       body: "<p>Знайди частку.</p>",
       answer: 23
@@ -146,7 +146,7 @@ SLID.diag("math", {
     {
       topic: "cmp",
       type: "order",
-      sk: "num",
+      sk: "cmp",
       title: "Від найменшого до найбільшого",
       body: "<p>Торкайся чисел по черзі.</p>",
       items: ["38 795", "38 957", "39 578", "309 587"],
@@ -258,7 +258,7 @@ SLID.diag("math", {
     {
       topic: "quot",
       type: "choice",
-      sk: "num",
+      sk: "div",
       title: "Михайло записав: $816 : 8 = 12$",
       body: "<p>Перевір множенням. Яка частка правильна?</p>",
       opts: ["12 — усе правильно", "120", "1002", "102"],
@@ -291,7 +291,7 @@ SLID.diag("math", {
     {
       topic: "cur-ms3",
       type: "sort",
-      sk: "pct",
+      sk: "frac",
       title: "Скільки це відсотків?",
       body: "<p>Поклади кожен запис у кошик з його значенням.</p>",
       bins: ["1 %", "10 %", "25 %", "50 %"],
