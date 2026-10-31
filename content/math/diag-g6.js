@@ -1,5 +1,5 @@
 /* Слід · Математика, 6 клас — діагностика «Що ти вже вмієш?»
-   Статус: draft після редакції 2 (refine-math-diag-g6-coverage, 2026-10-31): cur-проби g6-div, g6-lcm, g6-fadd, g6-prop, g6-neg
+   Статус: verified (verifier-refine-math-diag-g6-coverage, 2026-10-31; reports/verify/refine-math-diag-g6-coverage.md) після редакції 2 (refine-math-diag-g6-coverage, 2026-10-31): cur-проби g6-div, g6-lcm, g6-fadd, g6-prop, g6-neg
    замінено на місці (ті самі індекси 16, 20, 24, 27, 28 і теми) складеними multi/sort, що перевіряють усе ядро уроку; у них rev: 2.
    Збережені відповіді — вердикти за індексом: розпочатий раніше тест покаже ці п'ять завдань знову (SLID_LEARN.resumeDiag),
    завершений результат не перераховується. Не додавати, не вилучати й не переставляти завдання — лише заміна на місці з rev.
@@ -12,8 +12,8 @@ SLID.diag("math", {
   grade: 6,
   title: "Що ти вже вмієш?",
   why: "Знайдемо теми, які варто згадати, щоб нові уроки давалися легше.",
-  status: "draft",
-  meta: { author: "claude-opus", created: "2026-10-13", factcheck: null, revised: "2026-10-31 refine-math-diag-g6-coverage", teacher: null },
+  status: "verified",
+  meta: { author: "claude-opus", created: "2026-10-13", factcheck: "verifier-refine-math-diag-g6-coverage", revised: "2026-10-31 refine-math-diag-g6-coverage", teacher: null },
   topics: [
     // передумови з 4–5 класів
     { id: "ord", title: "Порядок дій", kind: "pre", lessons: ["ms0l3"], for: ["g6m3", "g6m5"] },

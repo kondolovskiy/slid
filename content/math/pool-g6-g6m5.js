@@ -1,5 +1,5 @@
 /* Слід · Математика, 6 клас — пул задач для тренування до розділу «Рівняння» (g6m5)
-   Статус: draft після refine-math-diag-g6-coverage (2026-10-31): a03 → a09 (mer6 №1056(1)), b01 → b09 (mer6 №1063(3)), весь вираз — формат матриці expression / expression; повторна незалежна
+   Статус: verified (verifier-refine-math-diag-g6-coverage, 2026-10-31; reports/verify/refine-math-diag-g6-coverage.md) після refine-math-diag-g6-coverage (2026-10-31): a03 → a09 (mer6 №1056(1)), b01 → b09 (mer6 №1063(3)), весь вираз — формат матриці expression / expression; повторна незалежна
    верифікація нових вправ (verify-math-personalization-g6). Решта вправ і їхні id не змінені; вилучених id не використовувати знову.
    Попередня редакція — verified (verifier-pool-g6m5, 2026-10-13). 32 задачі: по 8 на кожен урок g6m5l1–g6m5l4 (boss без задач).
    Усі задачі — з підручників (див. sources); умови й числа звірено за сторінками PDF.
@@ -8,8 +8,8 @@
 SLID.pool("math", {
   id: "pg6m5",
   section: "g6m5",
-  status: "draft",
-  meta: { author: "claude-opus", created: "2026-10-13", factcheck: null, revised: "2026-10-31 refine-math-diag-g6-coverage", teacher: null },
+  status: "verified",
+  meta: { author: "claude-opus", created: "2026-10-13", factcheck: "verifier-refine-math-diag-g6-coverage", revised: "2026-10-31 refine-math-diag-g6-coverage", teacher: null },
   sources: [
     { id: "mer6", title: "Мерзляк А. Г., Полонський В. Б., Якір М. С. Математика. 6 клас. Ч. 2. — Харків: Гімназія, 2023 (п. 37, 39, 40)", url: "https://znayshov.com/FR/23001/matematika_6kl_Merzlyak_2023_2.pdf" },
     { id: "kra6", title: "Кравчук В. Р., Янченко Г. М. Математика. 6 клас. — Тернопіль: Підручники і посібники, 2023 (п. 36, 39, 41, 42)", url: "https://znayshov.com/FR/23005/matematika_6kl_Kravchuk_2023.pdf" }

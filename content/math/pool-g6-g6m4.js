@@ -1,5 +1,5 @@
 /* Слід · Математика, 6 клас — пул задач для тренування до розділу «Раціональні числа» (g6m4)
-   Статус: draft після refine-math-diag-g6-coverage (2026-10-31): e05 → e09 (mer6 №1231(2), уся пара координат) — формат матриці coordinates2; повторна незалежна
+   Статус: verified (verifier-refine-math-diag-g6-coverage, 2026-10-31; reports/verify/refine-math-diag-g6-coverage.md) після refine-math-diag-g6-coverage (2026-10-31): e05 → e09 (mer6 №1231(2), уся пара координат) — формат матриці coordinates2; повторна незалежна
    верифікація нових вправ (verify-math-personalization-g6). Решта вправ і їхні id не змінені; вилучених id не використовувати знову.
    Попередня редакція — verified (верифікатор, 2026-10-13). 40 задач: по 8 на кожен урок g6m4l1–g6m4l5 (boss без задач).
    Усі задачі — з підручників (див. sources); умови й числа звірено за текстом і сторінками PDF.
@@ -8,8 +8,8 @@
 SLID.pool("math", {
   id: "pg6m4",
   section: "g6m4",
-  status: "draft",
-  meta: { author: "claude-opus", created: "2026-10-13", factcheck: null, revised: "2026-10-31 refine-math-diag-g6-coverage", teacher: null },
+  status: "verified",
+  meta: { author: "claude-opus", created: "2026-10-13", factcheck: "verifier-refine-math-diag-g6-coverage", revised: "2026-10-31 refine-math-diag-g6-coverage", teacher: null },
   sources: [
     { id: "ist6", title: "Істер О. С. Математика. 6 клас. Ч. 2. — Київ: Генеза, 2023 (§ 26–32, 34, 36, 40, 46)", url: "https://www.geneza.ua/sites/default/files/%D0%86%D1%81%D1%82%D0%B5%D1%80_%D0%9C%D0%B0%D1%82_%D0%9F(%D1%87.2)_6.pdf" },
     { id: "mer6", title: "Мерзляк А. Г., Полонський В. Б., Якір М. С. Математика. 6 клас. Ч. 2. — Харків: Гімназія, 2023 (п. 28, 30–32, 34, 35, 38, 43)", url: "https://znayshov.com/FR/23001/matematika_6kl_Merzlyak_2023_2.pdf" }

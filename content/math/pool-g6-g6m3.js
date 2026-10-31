@@ -1,5 +1,5 @@
 /* Слід · Математика, 6 клас — пул задач для тренування до розділу «Відношення і пропорції» (g6m3)
-   Статус: draft після refine-math-diag-g6-coverage (2026-10-31): a05 → a09 (mer6a №558(2)), b05 → b09 (mer6a №592(1)) — формат матриці ratio / ratio; повторна незалежна
+   Статус: verified (verifier-refine-math-diag-g6-coverage, 2026-10-31; reports/verify/refine-math-diag-g6-coverage.md) після refine-math-diag-g6-coverage (2026-10-31): a05 → a09 (mer6a №558(2)), b05 → b09 (mer6a №592(1)) — формат матриці ratio / ratio; повторна незалежна
    верифікація нових вправ (verify-math-personalization-g6). Решта вправ і їхні id не змінені; вилучених id не використовувати знову.
    Попередня редакція — verified. 40 задач: по 8 на кожен урок g6m3l1–g6m3l5 (3 рівня 1, 3 рівня 2, 2 рівня 3).
    Усі задачі — з підручників (див. sources); умови й числа звірено за текстом PDF 2026-10-13.
@@ -8,8 +8,8 @@
 SLID.pool("math", {
   id: "pg6m3",
   section: "g6m3",
-  status: "draft",
-  meta: { author: "claude-opus", created: "2026-10-13", factcheck: null, revised: "2026-10-31 refine-math-diag-g6-coverage", teacher: null },
+  status: "verified",
+  meta: { author: "claude-opus", created: "2026-10-13", factcheck: "verifier-refine-math-diag-g6-coverage", revised: "2026-10-31 refine-math-diag-g6-coverage", teacher: null },
   sources: [
     { id: "mer6a", title: "Мерзляк А. Г., Полонський В. Б., Якір М. С. Математика. 6 клас. Частина 1. — Харків: Гімназія, 2023", url: "https://znayshov.com/FR/23000/matematika_6kl_Merzlyak_2023_1.pdf" },
     { id: "mer6b", title: "Мерзляк А. Г., Полонський В. Б., Якір М. С. Математика. 6 клас. Частина 2. — Харків: Гімназія, 2023", url: "https://znayshov.com/FR/23001/matematika_6kl_Merzlyak_2023_2.pdf" },

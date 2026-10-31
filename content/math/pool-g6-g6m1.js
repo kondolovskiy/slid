@@ -1,5 +1,5 @@
 /* Слід · Математика, 6 клас — пул задач для тренування до розділу «Подільність чисел» (g6m1)
-   Статус: draft після refine-math-diag-g6-coverage (2026-10-31): a01 → a09 (mer6 №4(1)), b03 → b09 (mer6 №80(2)), c03 → c09 (mer6 №113(2)) — формат матриці list / list / factors; повторна незалежна
+   Статус: verified (verifier-refine-math-diag-g6-coverage, 2026-10-31; reports/verify/refine-math-diag-g6-coverage.md) після refine-math-diag-g6-coverage (2026-10-31): a01 → a09 (mer6 №4(1)), b03 → b09 (mer6 №80(2)), c03 → c09 (mer6 №113(2)) — формат матриці list / list / factors; повторна незалежна
    верифікація нових вправ (verify-math-personalization-g6). Решта вправ і їхні id не змінені; вилучених id не використовувати знову.
    Попередня редакція — verified (verifier-pool-g6m1, 2026-10-13). 32 задачі: по 8 на кожен урок g6m1l1–g6m1l4 (3 рівня 1, 3 рівня 2, 2 рівня 3).
    Усі задачі взято з підручників (див. sources); умови й числа звірено за текстом PDF 2026-10-13.
@@ -9,8 +9,8 @@
 SLID.pool("math", {
   id: "pg6m1",
   section: "g6m1",
-  status: "draft",
-  meta: { author: "claude-opus", created: "2026-10-13", factcheck: null, revised: "2026-10-31 refine-math-diag-g6-coverage", teacher: null },
+  status: "verified",
+  meta: { author: "claude-opus", created: "2026-10-13", factcheck: "verifier-refine-math-diag-g6-coverage", revised: "2026-10-31 refine-math-diag-g6-coverage", teacher: null },
   sources: [
     { id: "mer6", title: "Мерзляк А. Г., Полонський В. Б., Якір М. С. Математика : підручник для 6 класу (у 2-х ч.). Ч. 1. — Харків : Гімназія, 2023", url: "https://znayshov.com/FR/23000/matematika_6kl_Merzlyak_2023_1.pdf" },
     { id: "krav6", title: "Кравчук В., Янченко Г. Математика : підручник для 6 класу. — Тернопіль : Підручники і посібники, 2023", url: "https://znayshov.com/FR/23005/matematika_6kl_Kravchuk_2023.pdf" },
