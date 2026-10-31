@@ -5,7 +5,7 @@ id: qa-math-personalization-g4
 type: qa
 subject: math
 grade: 4
-status: todo
+status: done
 claimed_by: w-qa-math-personalization-g4
 created: 2026-10-15
 depends_on: [verify-math-personalization-g4, tools-math-personalization-qa, engine-math-grade-plan-context, engine-math-diag-g4-baseline]
@@ -26,9 +26,9 @@ depends_on: [verify-math-personalization-g4, tools-math-personalization-qa, engi
 
 ## Готово, коли
 
-- [ ] reports/qa/math-personalization-g4.md містить версію матриці, перевірені required-об’єкти, команди, сценарії, виправлення та межі перевірки.
-- [ ] validate, test-learn, застосовні цільові браузерні сценарії й покриття класу зелені; build виконано, згенеровані файли включено в результат.
-- [ ] Критичні дефекти цього класу закрито; optional/pending і ще недоступні міжкласові пули не приховані та не оголошені виконаними. Фінальне наскрізне приймання — окрема задача.
+- [x] reports/qa/math-personalization-g4.md містить версію матриці, перевірені required-об’єкти, команди, сценарії, виправлення та межі перевірки.
+- [x] validate, test-learn, застосовні цільові браузерні сценарії й покриття класу зелені; build виконано, згенеровані файли включено в результат.
+- [x] Критичні дефекти цього класу закрито; optional/pending і ще недоступні міжкласові пули не приховані та не оголошені виконаними. Фінальне наскрізне приймання — окрема задача.
 
 
 ## Перед роботою
@@ -38,6 +38,14 @@ depends_on: [verify-math-personalization-g4, tools-math-personalization-qa, engi
 ## Нотатки виконавця
 
 <!-- Змінені файли; джерела; рішення й обмеження; результати команд; що передано незалежному верифікатору. -->
+
+2026-10-31, w-qa-math-personalization-g4. Звіт: reports/qa/math-personalization-g4.md. Змінено лише цей файл, звіт і рядок в inbox. app/, tools/, content/ не редагувались; build і git не запускались (build актуальний, sw 378b207bb9).
+- Матриця 2026-10-16.v2: 20 required / 6 пулів / 159 вправ, dg4 22 завдання; pending g4m1l4 не перевірявся й не оголошений виконаним.
+- validate --diag dg4 і --pool ×6: 0/0; validate 0 помилок; test-learn 780 ok; test-personalization-qa 27 green; personalization-qa --grade 4 --strict: exit 0.
+- test-answer-ui.py --grade 4 (--browser Chromium 1243): dg4 ok/gap/shaky/skip, 6 пулів 159 вправ, fixtures green. playtest g4m1–g4m5, m4s1, dg4: 26 уроків + тест, зелено.
+- Власний Playwright (scratchpad/qa-g4/qa_g4.py): 193/195. Перевірено: реальний змішаний dg4 з клавіатури на 360 px, baseline-план, урок → тренування, hint, друга спроба, показ ключа, SRS, errors → план разом із base, divrem з клавіатури, 4→5→4 з reload, тренування 5 кл. з пулами 4 кл., повторний тест, офлайн з першого завантаження (115/115 скриптів у кеші). 2 fail — це дефект D-3.
+- Дефекти: P1 немає. P2: D-1 — підсумок відкривається з прокруткою попереднього екрана; D-2 — другий Enter без зміни відповіді витрачає другу спробу. P3: D-3 — фокус і Tab у плеєрі; D-4 — подвоєна сторінка в «Джерело:» (38 вправ 4 кл.); D-5 — підказка про дроби/«−» у 4 кл.; D-6 — divrem «4, ост. 5»; D-7 — «Продовжити» ≠ старт плану; D-8 — інструменти.
+- Чекбокси: звіт ✓; validate/test-learn/браузер/покриття зелені ✓ (build — оркестратором, не мною); критичних дефектів класу немає ✓, pending не приховано ✓.
 
 ## Обсяг за матрицею 2026-10-16.v2
 
