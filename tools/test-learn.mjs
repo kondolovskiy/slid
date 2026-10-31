@@ -751,5 +751,34 @@ const order = l => ({ L1: 3, L2: 1, L3: 2, L4: 4 }[l] ?? 50);
   eq(L.planFor(U, "math", {}).base[0].next, "g1", "baseline compat: план без класу теж читається");
 }
 
+/* 13. Плеєр після QA 4–5 кл. (engine-player-qa-fixes): джерело без подвоєння сторінки, кнопки числового поля, divrem-записи */
+{ eq(L.srcRef("№1", 56), "№1, с. 56", "srcRef: сторінку дописано");
+  eq(L.srcRef("с. 56, №1", 56), "с. 56, №1", "srcRef: сторінка вже є в src — не подвоюємо");
+  eq(L.srcRef("№3, с.18", 18), "№3, с.18", "srcRef: «с.18» без пробілу — теж сторінка");
+  eq(L.srcRef("№12(1)", undefined), "№12(1)", "srcRef: без srcPage — як є");
+  eq(L.srcRef("", 7), "с. 7", "srcRef: лише сторінка");
+  eq(L.srcRef("вправа 3", 9), "вправа 3, с. 9", "srcRef: «с.» у слові не плутаємо зі сторінкою");
+  const K = (s, g, sg) => { const k = L.numberKeys(s, g, sg); return [k.minus, k.frac, k.dec]; };
+  eq(K({ answer: 3826 }, 4), [false, false, false], "numberKeys: 4 кл., ціле — без «−» і «/»");
+  eq(K({ answer: "3/5", fractionOnly: true }, 4), [false, true, false], "numberKeys: 4 кл., дробовий ключ — «/»");
+  eq(K({ answer: 2, mixed: true }, 4), [false, true, false], "numberKeys: 4 кл., прапорець mixed — «/»");
+  eq(K({ answer: -3 }, 4), [true, false, false], "numberKeys: від'ємний ключ — «−»");
+  eq(K({ answer: 5, signed: true }, 4), [true, false, false], "numberKeys: signed — «−»");
+  eq(K({ answer: 5 }, 4, true), [true, false, false], "numberKeys: розділ зі знаком — «−»");
+  eq(K({ answer: 2.5 }, 4), [false, false, true], "numberKeys: 4 кл., десятковий — підказка про кому");
+  eq(K({ answer: 12 }, 5), [false, true, false], "numberKeys: 5 кл. — дроби завжди (не видає вигляд відповіді)");
+  eq(K({ answer: 12 }, 6), [true, true, false], "numberKeys: 6 кл. — «−» і дроби завжди");
+  eq(K({ answer: "−1/2" }, 4), [true, true, false], "numberKeys: типографський мінус у ключі");
+  const s = { answerKind: "divrem", answer: [4, 5] };
+  for (const v of ["4, ост. 5", "4 остача 5", "4, остача 5", "4 (остача 5)", "4 остача: 5", "4,ост.5", "4 ост. 5"]) eq(L.checkAns(s, v), "ok", `divrem: «${v}» приймається`);
+  for (const v of ["4, 5", "4 і 5", "4; 5", "4 остача", "4,5 ост. 5", "4 остачі 5 6"]) eq(L.checkAns(s, v), "bad", `divrem: «${v}» не приймається`);
+  const ctx = { sections: new Map([["s1", { grade: 4, lessons: ["a"] }]]), skills: { ops: {} } };
+  const pool = it => L.validatePool({ id: "p", section: "s1", status: "draft", sources: [{ id: "bk", title: "Підручник", url: "https://example.org" }],
+    items: [{ id: "t1", lesson: "a", lvl: 1, sk: "ops", src: "bk №1", type: "answer", title: "x", answer: 5, steps: ["крок"], ...it }] }, ctx);
+  eq(pool({ signed: true }), [], "validatePool: signed — boolean для числової answer");
+  eq(pool({ signed: "так" }).some(e => e.includes("signed")), true, "validatePool: signed не boolean — помилка");
+  eq(pool({ signed: true, answerKind: "comparison", answer: "<" }).some(e => e.includes("signed")), true, "validatePool: signed лише для number");
+}
+
 console.log(`\n${n} перевірок, ${fails ? fails + " з помилками" : "усе гаразд"}`);
 if (fails) process.exit(1);

@@ -160,7 +160,13 @@ function render(){
 /* ---------- Навчання: предмети → розділи → уроки ---------- */
 function starsHtml(n){ return `<div class="stars" aria-label="${n} з 3 зірок">${[0,1,2].map(i=>`<span class="${i<n?"":"off"}">${icF("star")}</span>`).join("")}</div>`; }
 function activeSec(c){ const secs=c.sections, ok=x=>x.lessons && x.grade===S.grade; let k=secs.findIndex(x=>ok(x) && !x.lessons.every(l=>done(l.id))); if(k<0) k=secs.findIndex(ok); return k; }
-function nextLesson(c){ const k=activeSec(c); if(k<0) return null; const sec=c.sections[k]; const i=sec.lessons.findIndex((l,j)=>!done(l.id)&&unlocked(sec,j)); return i<0? null : {c, k, sec, i, l:sec.lessons[i]}; }
+/** «Продовжити» на головній — та сама точка старту, що й у плані: спершу baseline-старт (baseStart), далі перший відкритий
+    непройдений урок класу, який тест не позначив «уже вмієш» (known; фінал розділу — лише після всіх його уроків); якщо таких немає — як раніше, перший непройдений активного розділу. */
+function nextLesson(c){
+  const bs=baseStart(c), fb=bs&&findLesson(bs); if(fb) return {c, k:fb.k, sec:fb.sec, i:fb.i, l:fb.l};
+  for(let k=0;k<c.sections.length;k++){ const sec=c.sections[k]; if(!sec.lessons||sec.grade!==S.grade) continue;
+    const i=sec.lessons.findIndex((l,j)=>!done(l.id)&&!known(l.id)&&unlocked(sec,j)&&(!l.boss||sec.lessons.every(x=>x.boss||done(x.id)))); if(i>=0) return {c, k, sec, i, l:sec.lessons[i]}; }
+  const k=activeSec(c); if(k<0) return null; const sec=c.sections[k]; const i=sec.lessons.findIndex((l,j)=>!done(l.id)&&unlocked(sec,j)); return i<0? null : {c, k, sec, i, l:sec.lessons[i]}; }
 const plural=(n,f)=>{ const a=n%10,b=n%100; return f[a===1&&b!==11?0: a>=2&&a<=4&&(b<10||b>=20)?1:2]; };
 const backBtn = label => `<button class="back" type="button" data-up>${ic("back")}<span>${label}</span></button>`;
 
@@ -636,7 +642,10 @@ function mathFig(f){
 }
 
 /* ---------- Плеєр уроку ---------- */
-let C=null, L=null, li=0, idx=0, st=null, checked=false, tries=0, run=null;
+let C=null, L=null, li=0, idx=0, st=null, checked=false, tries=0, tried=null, run=null;
+/* відбиток відповіді: друга спроба зараховується лише після зміни відповіді (повторний Enter не витрачає її) */
+const answerSig = () => { const v= LAB && L.screens[idx]?.type==="lab"? LAB.get() : st; return v instanceof Set? JSON.stringify([...v].sort((a,b)=>a-b)) : typeof v==="string"? v.replace(/\s+/g," ").trim() : JSON.stringify(v); };
+const sameAsTried = () => tried!==null && !checked && answerSig()===tried;
 const letters="АБВГДЕ";
 let SEC=null;
 function startById(id){ const f=findLesson(id); if(f) startLesson(f.c.id,f.k,f.i,true); }
@@ -645,7 +654,7 @@ function startLesson(cid,k,i,linked){
   C=course(cid); SEC=C.sections[k]; li=i; L=SEC.lessons[i]; idx=0;
   run={ linked:!!linked, weak:new Set(), xp:0, first:0, graded:0, combo:0, best:0, mistakes:0, startLvl:levelOf(S.xp).n };
   applyTheme(C.id);
-  $("#player").hidden=false; document.body.style.overflow="hidden"; $("#pClose").innerHTML=ic("x");
+  openPlayer();
   renderScreen();
 }
 /* тест рівня йде в тому самому плеєрі: без підказок і фідбеку, з кнопкою «Ще не знаю»; відповіді зберігаються одразу */
@@ -657,7 +666,7 @@ function startDiag(cid){
   run={ diag:d, res:S.diagRun[d.id]||(S.diagRun[d.id]={}), linked:true, weak:new Set(), xp:0, first:0, graded:0, combo:0, best:0, mistakes:0, startLvl:levelOf(S.xp).n };
   idx=LEARN.nextItem(d,run.res); if(idx<0) idx=d.items.length;
   applyTheme(C.id);
-  $("#player").hidden=false; document.body.style.overflow="hidden"; $("#pClose").innerHTML=ic("x");
+  openPlayer();
   renderScreen();
 }
 function diagAnswer(v){ run.res[idx]=v; save(); idx=LEARN.nextItem(run.diag,run.res); if(idx<0) idx=L.screens.length; renderScreen(); }
@@ -699,11 +708,12 @@ function startPractice(cid, focus){
   afterEnd=null;
   SEC={ grade:S.grade, signed:true, lessons:[] }; li=0; idx=0;
   L={ id:"practice", title: focus? findLesson(focus).l.title : "Тренування на сьогодні", screens: picked.map(it=>{ const f=findLesson(it.lesson), [sid,ref]=String(it.src).split(/\s+(.*)/s), src=it.pool.sources.find(x=>x.id===sid);
-    return { ...it, eyebrow:(it.review?"Повторення · ":"Тренування · ")+esc(f.l.title), body:(it.body||"")+`<p class="srcnote">Джерело: ${esc(src? src.short||src.title : sid)}${ref? ", "+esc(ref) : ""}${it.srcPage? ", с. "+it.srcPage : ""}${it.adapted? " · адаптовано" : ""}</p>`,
+    const where=LEARN.srcRef(ref, it.srcPage);   // «с. N» не подвоюється, якщо сторінка вже є в src
+    return { ...it, grade:f.sec.grade, eyebrow:(it.review?"Повторення · ":"Тренування · ")+esc(f.l.title), body:(it.body||"")+`<p class="srcnote">Джерело: ${esc(src? src.short||src.title : sid)}${where? ", "+esc(where) : ""}${it.adapted? " · адаптовано" : ""}</p>`,
       fbOk:it.fbOk||"Правильно.", fbBad:it.fbBad||"Не зовсім.", fbText:`<span class="steps"><b>Розв'язання</b>${it.steps.map((t,i)=>`<span>${i+1}. ${t}</span>`).join("")}</span>` }; }) };
   run={ practice:{ focus, res:[] }, linked:true, weak:new Set(), xp:0, first:0, graded:0, combo:0, best:0, mistakes:0, startLvl:levelOf(S.xp).n };
   applyTheme(C.id);
-  $("#player").hidden=false; document.body.style.overflow="hidden"; $("#pClose").innerHTML=ic("x");
+  openPlayer();
   renderScreen();
 }
 function renderPracticeEnd(){
@@ -732,12 +742,19 @@ function renderPracticeEnd(){
   $("#stage").querySelectorAll("[data-lesson]").forEach(b=>b.onclick=()=>startById(b.dataset.lesson));
   confetti(run.first===run.graded?3:1);
 }
-function closePlayer(){ $("#player").hidden=true; document.body.style.overflow=""; render(); }
+/* плеєр модальний: фон (застосунок і вкладки) inert, поки урок відкрито — Tab не виходить за межі плеєра (QA 4–5 кл.) */
+const PLAYER_BG = ["#app","#tabs","#sheetHost"];
+function openPlayer(){ $("#player").hidden=false; document.body.style.overflow="hidden"; $("#pClose").innerHTML=ic("x"); PLAYER_BG.forEach(q=>{ const e=$(q); if(e) e.inert=true; }); }
+function closePlayer(){ $("#player").hidden=true; document.body.style.overflow=""; PLAYER_BG.forEach(q=>{ const e=$(q); if(e) e.inert=false; }); render(); }
+/** Фокус на головну дію (Далі / Перевірити / Готово), щоб Enter вів далі; якщо вона неактивна — на перший елемент екрана. */
+function focusAction(){ const a=$("#action"); if(!a.disabled) return a.focus({preventScroll:true});
+  const el=$("#stage").querySelector('[aria-pressed="true"]:not(:disabled), button:not(:disabled), input:not(:disabled), [tabindex="0"]'); (el||$("#pClose")).focus({preventScroll:true}); }
 $("#pClose").onclick=()=>{ if(idx>=L.screens.length) return closePlayer();
   if(run.diag){ closePlayer(); return toast("Тест збережено. Продовжиш з того самого місця"); }
   if($("#pClose").dataset.armed){ closePlayer(); } else { $("#pClose").dataset.armed="1"; toast("Натисни ✕ ще раз, щоб вийти. Прогрес уроку не збережеться"); setTimeout(()=>delete $("#pClose").dataset.armed,2500); } };
 
 function setDock(kind,title,text,label,enabled=true){
+  if(label==="Перевірити" && sameAsTried()) enabled=false;
   const d=$("#dock"); d.className="dock fixed"+(kind?" "+kind:"");
   $("#fbTitle").innerHTML=fmt(title); $("#fbText").innerHTML=fmt(text);
   const dg=!!(run&&run.diag) && idx<L.screens.length;
@@ -761,8 +778,9 @@ function noteHtml(s){
   return `<details class="note"><summary>${ic("info")}<span>${n.label||"Чому дві дати?"}</span></summary><div class="note-b">${n.text}${links?`<ul>${links}</ul>`:""}</div></details>`;
 }
 function renderScreen(){
-  if(idx>=L.screens.length) return run.diag? renderDiagEnd() : run.practice? renderPracticeEnd() : renderEnd();
-  const s=L.screens[idx]; checked=false; tries=0; pProgress(); $("#player").scrollTo({top:0});
+  $("#player").scrollTo({top:0, behavior:"instant"});   // і для підсумку: інакше він відкривається з прокруткою попереднього екрана
+  if(idx>=L.screens.length){ if(run.diag) renderDiagEnd(); else if(run.practice) renderPracticeEnd(); else renderEnd(); $("#player").scrollTo({top:0, behavior:"instant"}); return focusAction(); }
+  const s=L.screens[idx]; checked=false; tries=0; tried=null; pProgress();
   let h=`<section class="screen"><div class="eyebrow">${run.diag? `Тест рівня · завдання ${Object.keys(run.res).length+1}` : s.eyebrow||""}</div>`;
   h+= s.type==="intro"? `<h1>${s.title}</h1>` : `<h2>${s.title}</h2>`;
   h+= fig(s) + (s.body||"") + noteHtml(s);
@@ -796,6 +814,7 @@ function renderScreen(){
   else if(["slider","align","numline","lab"].includes(s.type)) setDock("","","","Перевірити");
   else setDock("","","","Перевірити",false);
   bindScreen(s);
+  if(!$("#numIn")) focusAction();   // поле відповіді отримує фокус саме (bindScreen)
 }
 
 /* кільця дерев */
@@ -829,12 +848,14 @@ const ANS_UI={
   periodicSet:[["π","k","±","/","(",")","^",";"],"Серія розв'язків через k: π/6 + 2πk. Кілька серій — через ; або ±."]};
 function answerInput(s){
   const kind=s.answerKind||"number", sym=ANS_UI[kind];
-  const keys=sym? sym[0].slice() : kind==="comparison"? ["<",">","="] : kind==="list"? ["-","/",";"," "] : kind==="factors"? ["*","^"] : kind==="divrem"? [" ост. "] : ["-","/"," "];
+  // числова відповідь: «−» і дроби — лише коли їх уже вивчають або цього потребує сама вправа (LEARN.numberKeys)
+  const nk= kind==="number"? LEARN.numberKeys(s, s.grade ?? SEC.grade, !run.practice && SEC.signed) : null;
+  const keys=sym? sym[0].slice() : kind==="comparison"? ["<",">","="] : kind==="list"? ["-","/",";"," "] : kind==="factors"? ["*","^"] : kind==="divrem"? [" ост. "] : [...(nk.minus?["-"]:[]), ...(nk.frac?["/"," "]:[])];
   if(kind==="list" && /[√±]/.test(String(s.answer))) keys.push("√","±");
   if(kind==="expression") for(const c of new Set(String(s.answer).match(/[\u0370-\u03ff]/g)||[])) if(c!=="π") keys.push(c);   // α, β… з ключа
-  const help=sym? sym[1] : kind==="comparison"? "Запиши знак: <, > або =." : kind==="list"? "Запиши всі числа через крапку з комою. Порядок не має значення." : kind==="factors"? "Множники — через · або *. Степінь — через ^, наприклад 2^3 · 5." : kind==="divrem"? "Запиши неповну частку, потім кнопкою «ост.» — остачу: 3 ост. 2." : "Дріб — через риску: 7/12. Мішане число — через пробіл: 2 1/3.";
+  const help=sym? sym[1] : kind==="comparison"? "Запиши знак: <, > або =." : kind==="list"? "Запиши всі числа через крапку з комою. Порядок не має значення." : kind==="factors"? "Множники — через · або *. Степінь — через ^, наприклад 2^3 · 5." : kind==="divrem"? "Запиши неповну частку, потім кнопкою «ост.» — остачу: 3 ост. 2." : nk.frac? "Дріб — через риску: 7/12. Мішане число — через пробіл: 2 1/3." : nk.dec? "Десятковий дріб — через кому: 2,5." : "";
   const unit=s.unit||(kind==="periodicSet"? "k ∈ ℤ" : "");
-  return `<div class="numbox wide"><input id="numIn" inputmode="${kind==="number"?"decimal":kind==="divrem"?"numeric":"text"}" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="?" aria-label="Відповідь"><span class="unit" id="answerUnit">${esc(unit)}</span></div><div class="anskeys${sym?" sym":""}">${keys.map(v=>`<button type="button" data-ins="${esc(v)}" aria-label="Вставити ${esc(v===" "?"пробіл":v.trim()==="ост."?"остачу":v)}">${esc(v===" "?"пробіл":v==="-"?"−":v.trim())}</button>`).join("")}</div><div class="fix" style="text-align:center">${esc(help)}</div>`;
+  return `<div class="numbox wide"><input id="numIn" inputmode="${kind==="number"?"decimal":kind==="divrem"?"numeric":"text"}" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="?" aria-label="Відповідь"><span class="unit" id="answerUnit">${esc(unit)}</span></div>${keys.length? `<div class="anskeys${sym?" sym":""}">${keys.map(v=>`<button type="button" data-ins="${esc(v)}" aria-label="Вставити ${esc(v===" "?"пробіл":v.trim()==="ост."?"остачу":v)}">${esc(v===" "?"пробіл":v==="-"?"−":v.trim())}</button>`).join("")}</div>` : ""}${help? `<div class="fix" style="text-align:center">${esc(help)}</div>` : ""}`;
 }
 const answerUnit = (s, value) => { const a=LEARN.parseAns(value); if(!s.unitForms||!a) return s.unit||""; const n=Math.abs(a.n/a.d); return Number.isInteger(n)? plural(n,s.unitForms) : s.unitForms[1]; };
 function shadeUpdate(s){
@@ -885,15 +906,15 @@ function bindScreen(s){
     clearMarks(); setDock("","","","Перевірити", st.every(x=>x!==null));
   });
   const rng=$("#rng"); if(rng) rng.oninput=()=>{ if(checked) return; st=+rng.value; $("#out").textContent=st.toLocaleString("uk-UA"); };
-  const al=$("#alrng"); if(al){ alignUpdate(s); al.oninput=()=>{ if(checked) return; st=+al.value; alignUpdate(s); }; }
+  const al=$("#alrng"); if(al){ alignUpdate(s); al.oninput=()=>{ if(checked) return; st=+al.value; alignUpdate(s); if(tries) setDock("","","","Перевірити"); }; }
   if(s.type==="shade") shadeUpdate(s);
-  const nl=$("#nlrng"); if(nl){ numlineUpdate(s); nl.oninput=()=>{ if(checked) return; st=+nl.value; numlineUpdate(s); }; }
+  const nl=$("#nlrng"); if(nl){ numlineUpdate(s); nl.oninput=()=>{ if(checked) return; st=+nl.value; numlineUpdate(s); if(tries) setDock("","","","Перевірити"); }; }
   const sgn=$("#numSign"); if(sgn) sgn.onclick=()=>{ if(checked) return; const ni=$("#numIn"); ni.value= ni.value.startsWith("-")? ni.value.slice(1) : "-"+ni.value; ni.oninput(); ni.focus(); };
   const ni=$("#numIn"); if(ni){ ni.oninput=()=>{ ni.value= s.answerKind==="divrem" ? ni.value.replace(/\s+/g," ").slice(0,40) : s.type==="answer"||s.hideDen ? ni.value.replace(/\./g,",").replace(/\u2212/g,"-").slice(0,120) : s.type==="number"&&numDecimal(s) ? ni.value.replace(/\./g,",").replace(/[^0-9,-]/g,"").replace(/(?!^)-/g,"").replace(/(,.*),/g,"$1").slice(0,10) : ni.value.replace(/[^0-9]/g,"").slice(0,6); st=ni.value; if(s.unitForms&&$("#answerUnit")) $("#answerUnit").textContent=answerUnit(s,st); ni.classList.remove("is-ok","is-bad"); setDock("","","","Перевірити", st.trim().length>0); };
     stage.querySelectorAll(".anskeys button").forEach(b=>b.onclick=()=>{ if(checked) return; const v=b.dataset.ins;
       if(b.parentNode.classList.contains("sym")){ const a=ni.selectionStart??ni.value.length, z=ni.selectionEnd??a; ni.value=ni.value.slice(0,a)+v+ni.value.slice(z); ni.oninput(); ni.focus(); ni.setSelectionRange(a+v.length,a+v.length); return; }
       if(v.trim()==="ост." && (!/\d/.test(ni.value) || /ост/i.test(ni.value))) return ni.focus(); ni.value= v==="-"? (ni.value.startsWith("-")? ni.value.slice(1) : "-"+ni.value) : ni.value+v; ni.oninput(); ni.focus(); });
-    ni.onkeydown=e=>{ if(e.key==="Enter" && !$("#action").disabled) $("#action").click(); }; setTimeout(()=>ni.focus({preventScroll:true}),350); }
+    ni.onkeydown=e=>{ if(e.key!=="Enter") return; e.preventDefault(); if(!$("#action").disabled) $("#action").click(); };   /* preventDefault: той самий Enter не «натисне» ще й «Далі», на яку перейшов фокус */ setTimeout(()=>ni.focus({preventScroll:true}),350); }
 }
 function clearMarks(){ $("#stage").querySelectorAll(".is-ok,.is-bad").forEach(e=>e.classList.remove("is-ok","is-bad")); }
 function lock(){ $("#stage").querySelectorAll(".opt,.seg button,input,.sgn,.anskeys button").forEach(b=>b.disabled=true); if(LAB) LAB.lock(); }
@@ -932,7 +953,8 @@ function check(){
   const s=L.screens[idx];
   if(run.diag) return diagAnswer(gradeNow(s)? LEARN.OK : LEARN.BAD);
   if(s.poll||s.hyp){ if(s.poll) S.polls[s.poll]=st; const g=gain(5); checked=true; lock();
-    return setDock("info", `${s.fbTitle} <span class="gain">+${g}</span>`, s.fbText, "Далі"); }
+    setDock("info", `${s.fbTitle} <span class="gain">+${g}</span>`, s.fbText, "Далі"); return focusAction(); }
+  if(sameAsTried()) return refocusAnswer();
   const ok=gradeNow(s);
   if(!ok && s.pre) run.weak.add(s.pre);
   const preNote = (!ok && s.pre) ? (()=>{ const f=findLesson(s.pre); return f? `<span class="prenote">${ic("bulb")}Ця задача спирається на тему «${f.l.title}» (${f.sec.grade} клас). Наприкінці уроку запропоную її повторити.</span>` : ""; })() : "";
@@ -947,7 +969,9 @@ function check(){
              : s.type==="lab"? "Ще не те. Зміни модель і перевір ще раз."
              : s.type==="answer" && LEARN.checkAns(s,st)==="form"? LEARN.formHint(s,st)
              : "Спробуй ще раз.";
-    return setDock("bad", s.fbBad||"Не зовсім.", msg+preNote, "Спробувати ще раз");
+    tried=answerSig();
+    setDock("bad", s.fbBad||"Не зовсім.", msg+preNote, "Спробувати ще раз", false);   // активна знову, щойно відповідь змінено
+    return refocusAnswer();
   }
   checked=true; lock(); run.graded++;
   let g=0;
@@ -967,7 +991,11 @@ function check(){
   pProgress(); save(); renderTop();
   const title = ok? s.fbOk : (s.type==="slider"? s.fbBad : "Ось правильна відповідь.");
   setDock(ok?"ok":"bad", `${title}${g?` <span class="gain">+${g}</span>`:""}`, s.fbText+(ok?"":preNote), "Далі");
+  focusAction();   // поле заблоковано — без цього фокус падає на BODY і Enter нікуди не веде
 }
+/** Після першої помилки: фокус назад у поле відповіді (текст виділено, щоб одразу виправити) або на обраний елемент. */
+function refocusAnswer(){ const ni=$("#numIn"); if(ni && !ni.disabled){ ni.focus({preventScroll:true}); ni.select(); return; }
+  const a=document.activeElement; if(a && a!==document.body && $("#stage").contains(a)) return; focusAction(); }
 $("#action").onclick=()=>{
   if(idx>=L.screens.length){ const f=afterEnd; afterEnd=null; closePlayer(); if(f) f(); return; }
   const s=L.screens[idx];

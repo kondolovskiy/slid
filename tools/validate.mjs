@@ -174,5 +174,5 @@ fs.mkdirSync(path.join(ROOT, "reports"), { recursive: true });
 fs.writeFileSync(path.join(ROOT, "reports/validate.json"), JSON.stringify(out, null, 2) + "\n");
 if (!quiet || errors.length) errors.forEach(e => console.log("ПОМИЛКА  " + e));
 if (!quiet) warnings.forEach(w => console.log("увага    " + w));
-console.log(`\n${errors.length} помилок, ${warnings.length} попереджень${onlySec ? ` (розділ ${onlySec})` : onlyDiag ? ` (діагностика ${onlyDiag})` : ""}. Звіт: reports/validate.json`);
+console.log(`\n${errors.length} помилок, ${warnings.length} попереджень${onlySec ? ` (розділ ${onlySec})` : onlyDiag ? ` (${args.includes("--pool") ? "пул" : "діагностика"} ${onlyDiag})` : ""}. Звіт: reports/validate.json`);
 process.exit(errors.length ? 1 : 0);
