@@ -374,7 +374,7 @@ async def answer_format_checks(browser, url):
       p.items=[{id:'reveal',lesson:'g6m1l1',lvl:1,sk:'num',src:p.sources[0].id+' №1',type:'answer',title:'Точка',answerKind:'coordinates2',answer:[3,-2],steps:['Пояснення.']}];}""")
     await page.click('[data-tab="path"]')
     await page.click('button[data-subject="math"]'); await page.click('[data-practice-view="math"]'); await page.click('[data-practice-mix]')
-    for attempt in ('(-2; 3)', '(-2; 3)'):
+    for attempt in ('(-2; 3)', '(-3; 2)'):  # the second try needs a changed answer
         await page.fill('#numIn', attempt); await page.dispatch_event('#numIn', 'input'); await page.click('#action')
     host = await page.locator('#hintHost').inner_text()
     assert 'Правильна відповідь' in host and re.search(r'3\s*;\s*[−-]\s*2', host), host
@@ -569,6 +569,182 @@ async def baseline_compat_checks(browser, url):
     await context.close()
     print('baseline compat: saved plan with l green', flush=True)
 
+SPACER = "() => { const d=document.createElement('div'); d.className='qa-spacer'; d.style.height='3000px'; document.querySelector('#stage .screen').appendChild(d); const p=document.querySelector('#player'); p.scrollTop=p.scrollHeight; return p.scrollTop; }"
+
+async def scroll_long(page):
+    """Make the current screen long and scroll to its bottom, as a child would on a long task."""
+    top = await page.evaluate(SPACER)
+    assert top > 500, top
+
+async def player_top(page):
+    return await page.evaluate("document.querySelector('#player').scrollTop")
+
+async def focus_id(page):
+    return await page.evaluate("document.activeElement && (document.activeElement.id || document.activeElement.tagName)")
+
+async def player_qa_checks(browser, url):
+    """QA 4-5 кл. (engine-player-qa-fixes): summary from top, retry only after a change, focus on the action,
+    modal player, source without a doubled page, number keys by grade/key, home start point."""
+    context, page, errors = await qa_page(browser, url, {'grade': 4, 'unlockAll': False,
+        'lessons': {'g4m1l1': {'done': True, 'stars': 2}}, 'srs': {'g4m1l1': {'box': 0, 'due': DAY}}})
+    await page.evaluate("""() => {const c=SLID_SUBJECTS.find(c=>c.id==='math'),p=c.pools.find(p=>p.id==='pg4m1');c.pools=[p];const sid=p.sources[0].id;
+      p.items=[
+        {id:'q-page',answer:5,src:sid+' с. 56, №1',srcPage:56,title:'2 + 3'},
+        {id:'q-int',answer:3826,src:sid+' №2',srcPage:9,title:'3452 + 374',hint:'Додай порозрядно.'},
+        {id:'q-frac',answer:'3/5',fractionOnly:true,src:sid+' №3',title:'Яка частина?'},
+        {id:'q-choice',type:'choice',opts:['більше','менше','рівно'],correct:1,src:sid+' №4',title:'Порівняй'}]
+        .map(it=>({type:'answer',lesson:'g4m1l1',lvl:1,sk:p.items[0].sk,steps:['Пояснення.'],...it}));}""")
+    await page.click('button[data-subject="math"]'); await page.click('[data-practice-view="math"]'); await page.click('[data-practice-mix]')
+    # Modal player: the background is inert and Tab never leaves the player.
+    assert await page.evaluate("document.querySelector('#app').inert && document.querySelector('#tabs').inert")
+    for _ in range(14):
+        await page.keyboard.press('Tab')
+        assert await page.evaluate("!document.activeElement || !document.activeElement.closest('#app,#tabs')"), await focus_id(page)
+    queue = await practice_queue(page)
+    assert len(queue) == 4
+    for n, it in enumerate(queue):
+        stage = await page.locator('#stage').inner_text()
+        note = await page.locator('#stage .srcnote').inner_text()
+        ins = await page.locator('#stage .anskeys button').evaluate_all('bs => bs.map(b => b.dataset.ins)')
+        if it['id'] == 'q-page':
+            assert note.count('с. 56') == 1, note
+        if it['id'] == 'q-int':
+            assert '№2, с. 9' in note, note
+            # Grade 4, integer key: no «−», «/», space or fraction hint.
+            assert ins == [] and 'Дріб' not in stage and 'Мішане' not in stage, (ins, stage)
+            await page.wait_for_function("document.activeElement && document.activeElement.id==='numIn'")
+            await page.keyboard.type('3800'); await page.keyboard.press('Enter')
+            assert 'bad' in await page.locator('#dock').get_attribute('class')
+            assert await page.locator('#action').is_disabled() and await page.locator('#action').inner_text() == 'Спробувати ще раз'
+            assert await focus_id(page) == 'numIn'
+            # A second Enter (or click) with the same answer does not spend the second try.
+            await page.keyboard.press('Enter')
+            await page.locator('#action').click(force=True)
+            assert 'Правильна відповідь' not in await page.locator('#hintHost').inner_text()
+            assert it['key'] not in (await saved_state(page)).get('seen', {})
+            assert 'Підказка:' in await page.locator('#hintHost').inner_text()
+            # Typing the same value again keeps it disabled; a changed value enables the check.
+            await page.fill('#numIn', '3800')
+            assert await page.locator('#action').is_disabled()
+            await page.fill('#numIn', '3801')
+            assert await page.locator('#action').is_enabled()
+            await page.keyboard.press('Enter')
+            assert 'Правильна відповідь' in await page.locator('#hintHost').inner_text()
+            assert (await saved_state(page))['seen'][it['key']] == 0
+        elif it['id'] == 'q-choice':
+            await page.click('#stage .opt[data-k="0"]'); await page.click('#action')
+            assert 'bad' in await page.locator('#dock').get_attribute('class')
+            await page.click('#stage .opt[data-k="0"]')
+            assert await page.locator('#action').is_disabled()
+            await page.click('#stage .opt[data-k="2"]')
+            assert await page.locator('#action').is_enabled()
+            await page.click('#stage .opt[data-k="0"]')
+            assert await page.locator('#action').is_disabled()
+            await page.click('#stage .opt[data-k="1"]'); await page.click('#action')
+            assert 'ok' in await page.locator('#dock').get_attribute('class')
+        else:
+            if it['id'] == 'q-frac':
+                # A fraction key in grade 4 shows «/» and the fraction hint, still without «−».
+                assert '/' in ins and '-' not in ins and 'Дріб' in stage, (ins, stage)
+            if it['id'] == 'q-page':
+                assert ins == [], ins
+            await page.wait_for_function("document.activeElement && document.activeElement.id==='numIn'")
+            await page.keyboard.type(str(it['answer'])); await page.keyboard.press('Enter')
+            assert 'ok' in await page.locator('#dock').get_attribute('class'), (it['id'], await page.input_value('#numIn'), await page.locator('#dock').inner_text())
+        # After the check focus is on «Далі», so Enter goes on.
+        assert await focus_id(page) == 'action', await focus_id(page)
+        if n == len(queue) - 1:
+            await scroll_long(page)
+        await page.keyboard.press('Enter')
+    assert 'тренування завершено' in (await page.locator('#stage').inner_text()).lower()
+    assert await player_top(page) == 0
+    assert await focus_id(page) == 'action'
+    await page.keyboard.press('Enter')
+    assert await page.locator('#player').is_hidden()
+    assert await page.evaluate("!document.querySelector('#app').inert && !document.querySelector('#tabs').inert")
+    assert not errors, errors
+    await context.close()
+    # Lesson summary also opens from the top: real g4m1l2, its last screen made long.
+    context, page, errors = await qa_page(browser, url, {'grade': 4, 'unlockAll': True})
+    k = await page.evaluate("SLID_SUBJECTS.find(c=>c.id==='math').sections.findIndex(s=>s.id==='g4m1')")
+    screens = await page.evaluate("SLID_SUBJECTS.find(c=>c.id==='math').sections.flatMap(s=>s.lessons||[]).find(l=>l.id==='g4m1l2').screens")
+    await page.click('button[data-subject="math"]'); await page.click(f'[data-topic="{k}"]')
+    await page.click('[data-open="1"]'); await page.click('#go')
+    for i, screen in enumerate(screens):
+        assert await player_top(page) == 0, (i, await player_top(page))
+        await answer_context_screen(page, screen)
+        graded = screen['type'] not in ('intro', 'info', 'explore')
+        if graded:
+            await page.click('#action')
+            assert await focus_id(page) == 'action', (i, await focus_id(page))
+        else:
+            assert await focus_id(page) == 'action', (i, await focus_id(page))
+        if i == len(screens) - 1:
+            await scroll_long(page)
+        await page.click('#action')
+    assert 'урок пройдено' in (await page.locator('#stage').inner_text()).lower()
+    assert await player_top(page) == 0
+    assert await focus_id(page) == 'action'
+    assert not errors, errors
+    await context.close()
+    # Diagnostic summary from the top (fixture dg4; every screen made long before answering).
+    context, page, errors = await qa_page(browser, url, {'grade': 4, 'unlockAll': False})
+    await page.evaluate(BASELINE_FIXTURE)
+    await page.click('[data-tab="path"]'); await page.click('[data-tab="path"]')
+    await page.click('[data-diag="math"]'); await page.click('[data-diag-go]')
+    while await page.locator('#skip').is_visible():
+        assert await player_top(page) == 0
+        await scroll_long(page)
+        await page.click('#skip')
+    assert 'Почнемо з основ' in await page.locator('#stage').inner_text()
+    assert await player_top(page) == 0
+    assert await focus_id(page) == 'action'
+    # Home: «Продовжити» starts where the plan does (baseline start g4m2l1), not at a lesson the test marked known.
+    await page.click('#pClose')
+    await page.click('[data-tab="path"]'); await page.click('[data-tab="path"]')
+    start = await page.locator('#view .cont[data-start]').get_attribute('data-start')
+    lesson = await page.evaluate("v => {const [c,k,i]=v.split('|');return SLID_SUBJECTS.find(x=>x.id===c).sections[+k].lessons[+i].id;}", start)
+    plan_row = await page.locator('#view .plancard [data-lesson]').evaluate_all('bs => bs.map(b => b.dataset.lesson)')
+    assert plan_row == ['g4m2l1'] and lesson == 'g4m2l1', (plan_row, lesson)
+    assert not errors, errors
+    await context.close()
+    # Without a baseline gap, known lessons are skipped: the first grade-6 lesson known -> continue with the second.
+    probe = await browser.new_page(); await probe.goto(url)
+    first6 = await probe.evaluate("SLID_SUBJECTS.find(c=>c.id==='math').sections.find(s=>s.grade===6&&s.lessons).lessons.slice(0,2).map(l=>l.id)")
+    await probe.close()
+    plan6 = {'diag': 'dg6', 'grade': 6, 'date': DAY, 'topics': {}, 'steps': [], 'known': [first6[0]], 'base': []}
+    context, page, errors = await qa_page(browser, url, {'grade': 6, 'subject': 'math', 'unlockAll': False, 'diag': {'dg6': {'done': True, 'res': {}, 'topics': {}, 'date': DAY}},
+        'plan': {'math': plan6}, 'planByGrade': {'math': {'6': plan6}}})
+    start = await page.locator('#view .cont[data-start]').get_attribute('data-start')
+    lesson = await page.evaluate("v => {const [c,k,i]=v.split('|');return SLID_SUBJECTS.find(x=>x.id===c).sections[+k].lessons[+i].id;}", start)
+    assert lesson == first6[1], (lesson, first6)
+    # Grade 6 practice keeps «−» and «/» for every number answer (the sign/fraction is not given away).
+    await page.evaluate("""() => {const c=SLID_SUBJECTS.find(c=>c.id==='math'),p=c.pools.find(p=>p.id==='pg6m1');c.pools=[p];
+      p.items=[{id:'k6',lesson:'g6m1l1',lvl:1,sk:p.items[0].sk,src:p.sources[0].id+' №1',type:'answer',title:'2 + 3',answer:5,steps:['5.']}];}""")
+    await page.evaluate("()=>{const S=JSON.parse(localStorage.getItem('slid.v1'));S.lessons={g6m1l1:{done:true}};localStorage.setItem('slid.v1',JSON.stringify(S));}")
+    await page.reload()
+    await page.evaluate("""() => {const c=SLID_SUBJECTS.find(c=>c.id==='math'),p=c.pools.find(p=>p.id==='pg6m1');c.pools=[p];
+      p.items=[{id:'k6',lesson:'g6m1l1',lvl:1,sk:p.items[0].sk,src:p.sources[0].id+' №1',type:'answer',title:'2 + 3',answer:5,steps:['5.']}];}""")
+    await page.click('button[data-subject="math"]'); await page.click('[data-practice-view="math"]'); await page.click('[data-practice-mix]')
+    ins = await page.locator('#stage .anskeys button').evaluate_all('bs => bs.map(b => b.dataset.ins)')
+    assert ins == ['-', '/', ' '], ins
+    print('Player QA fixes: summary top x3, retry after change (input/choice), focus/modal, source page, number keys, home start green', flush=True)
+    assert not errors, errors
+    await context.close()
+
+FALLBACK_CHROMIUM = '/opt/pw-browsers/chromium'
+
+async def launch_browser(p, path=None):
+    """--browser / SLID_BROWSER wins; otherwise the same fallback as playtest.py (preinstalled Chromium, then Playwright's own)."""
+    if path:
+        return await p.chromium.launch(executable_path=path)
+    if os.path.exists(FALLBACK_CHROMIUM) and not os.environ.get('PW_DEFAULT'):
+        try:
+            return await p.chromium.launch(executable_path=FALLBACK_CHROMIUM)
+        except Exception:
+            pass
+    return await p.chromium.launch()
+
 async def main():
     parser = argparse.ArgumentParser(description='Діагностики/пули: реальний контент і контрольовані регресії')
     parser.add_argument('--grade', type=int, choices=range(4, 12))
@@ -600,7 +776,7 @@ async def main():
     threading.Thread(target=server.serve_forever, daemon=True).start()
     try:
         async with async_playwright() as p:
-            browser = await p.chromium.launch(**({'executable_path': options.browser} if options.browser else {}))
+            browser = await launch_browser(p, options.browser)
             url = f"http://127.0.0.1:{server.server_address[1]}/index.html"
             if options.suite in ("all", "content"):
                 await content_checks(browser, url, report)
@@ -677,6 +853,7 @@ async def main():
                 await baseline_compat_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
                 await answer_format_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
                 await divrem_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
+                await player_qa_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
             await browser.close()
             print('Обрані браузерні сценарії: green')
     finally:

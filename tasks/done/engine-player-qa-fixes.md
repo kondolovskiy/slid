@@ -5,7 +5,7 @@ write_group: personalization-shared
 id: engine-player-qa-fixes
 type: engine
 subject: math
-status: review
+status: done
 claimed_by: w-engine-player-qa-fixes
 created: 2026-10-31
 depends_on: [qa-math-personalization-g4, qa-math-personalization-g5]
@@ -29,3 +29,18 @@ depends_on: [qa-math-personalization-g4, qa-math-personalization-g5]
 Регресії — у чинні test-learn / test-answer-ui; браузерні сценарії для прокрутки, другої спроби, фокусу. Незалежне рев'ю (D-026).
 
 ## Нотатки виконавця
+- 2026-10-31, w-engine-player-qa-fixes. Звіт: reports/qa/engine-player-qa-fixes.md. Зміст не змінено.
+- P2: підсумок завжди з верху (`renderScreen` скидає прокрутку до/після end-рендеру). Друга спроба — лише після зміни відповіді (`answerSig`/`sameAsTried`: кнопка неактивна, Enter і клік ігноруються).
+- P3:
+  - фокус на `#action` після перевірки, на новому екрані й на підсумку; Enter у полі з `preventDefault`;
+  - фон плеєра `inert`;
+  - `srcRef` не дописує srcPage, якщо «с. N» уже є в src (CONTENT_SCHEMA §10);
+  - `numberKeys`: «−» з 6 кл. / signed / від'ємний ключ, «/» з 5 кл. / дробовий ключ / fractionOnly·mixed·reduced; `signed` валідується в пулі;
+  - divrem приймає «4, ост. 5», «4 остача 5»;
+  - «Продовжити» = baseStart, далі пропускає known;
+  - `validate --pool` → «пул»;
+  - test-answer-ui.py має запасний шлях до Chromium.
+- Регресії: test-learn §13 (+38), test-answer-ui `player_qa_checks`.
+- Потрібне незалежне рев'ю (D-026). Для куратора: g5 D-5 (єдиний title `mer5`), за бажання — прибрати сторінку з `src` 38+5 вправ (рушій уже не подвоює).
+
+- 2026-10-31 (оркестратор): незалежне рев'ю 9e03a3a — **прийнято** (reports/review/engine-player-qa-fixes.md), P1/P2 немає; 6 × P3 → engine-player-focus-followup. Злито; build після злиття, test-learn 812, validate 0, strict 4/5/7 зелені.

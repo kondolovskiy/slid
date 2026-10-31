@@ -678,6 +678,23 @@ window.SLID_LEARN = (() => {
     if (kind === "coordinates2" || kind === "coordinates3") return "(" + a.join("; ") + ")";
     return a.join("; ") + (kind === "periodicSet" ? ", k ∈ ℤ" : "");
   }
+  /** Посилання на джерело вправи: «№1» + srcPage → «№1, с. 56»; якщо сторінка вже є в посиланні («с. 56, №1»), srcPage не дописуємо (CONTENT_SCHEMA §10). */
+  function srcRef(ref, page) {
+    const r = String(ref ?? "").trim();
+    if (page === undefined || page === null || /(^|[^\p{L}])с\.\s*\d/u.test(r)) return r;
+    return r ? `${r}, с. ${page}` : `с. ${page}`;
+  }
+  /** Які кнопки й підказку показати під полем числової відповіді (answerKind number), щоб не підказувати
+      учню 4 класу дроби й мінус, яких у програмі ще немає. grade — клас вправи; signed — розділ зі знаковими числами.
+      «−»: прапорець signed, від'ємний ключ або 6+ клас (від'ємні числа — 6 клас: у класі знак з'являється завжди й не видає відповіді).
+      «/» і пробіл (дроби, мішані числа): дробовий ключ, прапорці fractionOnly / mixed / reduced або 5+ клас (звичайні дроби).
+      dec: десятковий ключ без дробових кнопок — підказка про кому. */
+  function numberKeys(s, grade, signed) {
+    const a = String(s.answer ?? "").replace(/[−–]/g, "-").trim(), g = Number(grade) || 0;
+    const minus = !!s.signed || !!signed || /^-/.test(a) || g >= 6;
+    const frac = /\//.test(a) || !!(s.fractionOnly || s.mixed || s.reduced) || g >= 5;
+    return { minus, frac, dec: !frac && /[.,]/.test(a) };
+  }
   function parseFactors(v) {
     const parts = String(v ?? "").trim().split(/\s*[*·×]\s*/);
     let product = 1n;
@@ -692,14 +709,16 @@ window.SLID_LEARN = (() => {
     }
     return product;
   }
-  /** Ділення з остачею: «3 ост. 2», «3 (ост. 2)», «3 ост 2» або масив [3, 2]. Лише частка («3») — { q, r: null }.
+  /** Ділення з остачею: «3 ост. 2», «3 (ост. 2)», «3 ост 2», «3, ост. 2», «3 остача 2» або масив [3, 2]. Лише частка («3») — { q, r: null }.
       Кома замість крапки після «ост» допустима (поле відповіді замінює крапки на коми). */
   function parseDivrem(v) {
     if (Array.isArray(v)) return v.length === 2 && v.every(x => Number.isSafeInteger(x) && x >= 0) ? { q: v[0], r: v[1] } : null;
     // латинські o/c замість кириличних і крапка в кінці («3 ост. 2.») не роблять відповідь неправильною
     const t = String(v ?? "").toLowerCase().replace(/o/g, "о").replace(/c/g, "с").replace(/\s+/g, " ").trim().replace(/ ?\.$/, ""), num = x => { const n = Number(x.replace(/ /g, "")); return Number.isSafeInteger(n) ? n : null; };
     const D = "(\\d{1,3}(?: \\d{3})+|\\d+)";
-    let m = t.match(new RegExp(`^${D} ?(?:\\( ?ост ?[.,]? ?${D} ?\\)|ост ?[.,]? ?${D})$`));
+    // «4, ост. 5», «4 остача 5», «4 (остача: 5)» — та сама відповідь іншим записом (QA 4 кл., D-6)
+    const O = "ост(?:ача)? ?[.,:]? ?";
+    let m = t.match(new RegExp(`^${D} ?,? ?(?:\\( ?${O}${D} ?\\)|${O}${D})$`));
     if (m) { const q = num(m[1]), r = num(m[2] ?? m[3]); return q === null || r === null ? null : { q, r }; }
     if ((m = t.match(new RegExp(`^${D}$`)))) { const q = num(m[1]); return q === null ? null : { q, r: null }; }
     return null;
@@ -855,6 +874,7 @@ window.SLID_LEARN = (() => {
       if (it.form === "factored" && exprOf(it.answer) && !isProduct(exprOf(it.answer))) E.push(`${w}: form factored — ключ має бути добутком`);
       if (kind === "intervalSet" && it.type === "answer") { BUDGET = 50000; const set = parseSet(it.answer, exactKey(it.answer)); if (set && set.raw !== set.length) E.push(`${w}: intervalSet — частини ключа перетинаються або дотикаються, злий їх`); }
       if (kind === "exactRoot" && it.type === "answer" && ![...(exactOf(it.answer)?.x.keys() || [])].some(k => !k.startsWith("1:1:0"))) E.push(`${w}: exactRoot потребує кореня або π у відповіді; раціональне число — answerKind number`);
+      if (it.signed !== undefined && (typeof it.signed !== "boolean" || it.type !== "answer" || kind !== "number")) E.push(`${w}: signed має бути boolean для числової answer`);
       if (it.tol !== undefined && (it.type !== "answer" || kind !== "number" || !Number.isFinite(it.tol) || it.tol < 0)) E.push(`${w}: tol має бути скінченним числом ≥ 0 для числової answer`);
       if (it.type === "answer" && checkAns(it, typeof it.answer === "number" ? String(it.answer).replace(".", ",") : it.answer) !== "ok") E.push(`${w}: answer «${it.answer}» не читається або сам не проходить перевірку (reduced/mixed)`);
     });
@@ -915,5 +935,5 @@ window.SLID_LEARN = (() => {
   }
 
   return { OK, BAD, SKIP, PASS, DIAG_TYPES, planFor, practiceItems, nextItem, remaining, topicStatus, level, buildPlan, finishDiag, record, detect, syncPlan, lessonDone, todo, isKnown, validate,
-    parseAns, parseDivrem, checkAns, formHint, ansText, ANSWER_KINDS, BOX_DAYS, srsInit, srsUpdate, isDue, pickSession, POOL_TYPES, validatePool };
+    parseAns, parseDivrem, checkAns, formHint, ansText, srcRef, numberKeys, ANSWER_KINDS, BOX_DAYS, srsInit, srsUpdate, isDue, pickSession, POOL_TYPES, validatePool };
 })();
