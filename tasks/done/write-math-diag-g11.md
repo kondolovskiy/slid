@@ -5,7 +5,7 @@ id: write-math-diag-g11
 type: write-diag
 subject: math
 grade: 11
-status: review
+status: done
 claimed_by: agent-write-math-diag-g11
 created: 2026-10-15
 depends_on: [curate-math-personalization-map]
