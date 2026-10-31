@@ -43,6 +43,7 @@
 node tools/build.mjs                       # список скриптів у index.html + sw.js (після БУДЬ-ЯКОЇ зміни в content/, app/, img/)
 node tools/validate.mjs [--section ID | --diag ID]   # помилки (блокують) + попередження стилю
 node tools/test-learn.mjs                  # тести логіки персоналізації (app/learn.js)
+node tools/test-validate.mjs               # регресійні тести валідатора на фікстурах (D-027 тощо)
 node tools/stats.mjs [--subject hist]      # метрики складності, звіт reports/style-<предмет>.md
 node tools/make-tasks.mjs [--subject math] # задачі на написання з плану
 node tools/claim.mjs list|claim|move ...   # черга задач для паралельних агентів

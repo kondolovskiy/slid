@@ -105,8 +105,8 @@ function checkScreen(S, s, c, diag) {
 }
 
 // D-027: у кожному уроці предмета — хоча б одне справжнє зображення (img: фото, репродукція, документ).
-// Схеми svg/fig не зараховуються. "warn" — поки дороблюються чинні уроки; після доробки — "error".
-const IMG_REQUIRED = { hist: "warn" };
+// Схеми svg/fig не зараховуються. Для історії — помилка (усі уроки доповнено; регресійний тест: tools/test-validate.mjs).
+const IMG_REQUIRED = { hist: "error" };
 for (const c of subjects) for (const sec of c.sections.filter(s => s.lessons)) {
   if (onlyDiag) continue;
   if (onlySec && sec.id !== onlySec) continue;
