@@ -1,10 +1,12 @@
 ---
+claimed_from: todo
+claimed_at: 2026-10-31T22:22:09.204Z
 id: engine-math-answer-g10-issues
 type: engine
 subject: math
 grade: 10
 status: todo
-claimed_by:
+claimed_by: agent-engine-math-answer-g10-issues
 created: 2026-10-31
 depends_on: []
 ---

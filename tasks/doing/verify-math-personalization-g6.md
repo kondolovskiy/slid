@@ -1,10 +1,12 @@
 ---
+claimed_from: todo
+claimed_at: 2026-10-31T22:22:09.128Z
 id: verify-math-personalization-g6
 type: verify-personalization
 subject: math
 grade: 6
 status: todo
-claimed_by:
+claimed_by: agent-verify-math-personalization-g6
 created: 2026-10-15
 depends_on: [curate-math-personalization-map, curate-math-diag-g6-links, refine-math-diag-g6-coverage]
 ---
