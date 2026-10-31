@@ -452,6 +452,46 @@ window.SLID_LEARN = (() => {
     const xs = parts.length === n ? parts.map(p => elemOf(String(p).replace(/^\s*-\s+/, "-"), exact)) : [];
     return xs.length && xs.every(Boolean) ? xs : null;
   }
+  /* coordinates2 з компонентами-виразами: (p − m; k − n). Символьний ключ — якщо хоч одна компонента ключа містить змінну;
+     інакше працює числовий parsePoint без змін. Компонента зі змінною перевіряється як answerKind "expression" (sameExpr, form),
+     числова компонента — як у числовому coordinates2 (число чи точний корінь, без арифметики). */
+  // Компоненти верхнього рівня: назва точки A(…) і зовнішні дужки знімаються, лише якщо дужка закривається в кінці запису.
+  function splitPair(v) {
+    if (Array.isArray(v)) return v.map(String);
+    let t = norm(v);
+    const close = i => { let d = 0; for (let j = i; j < t.length; j++) { if (t[j] === "(") d++; else if (t[j] === ")" && !--d) return j; } return -1; };
+    const m = /^[A-Za-z]\s*(?=\()/.exec(t); if (m && close(m[0].length) === t.length - 1) t = t.slice(m[0].length);
+    if (t[0] === "(" && close(0) === t.length - 1) t = t.slice(1, -1);
+    const sep = t.includes(";") ? ";" : ",", parts = []; let d = 0, from = 0;
+    for (let j = 0; j < t.length; j++) { if (t[j] === "(") d++; else if (t[j] === ")") d--; else if (t[j] === sep && !d) { parts.push(t.slice(from, j)); from = j + 1; } }
+    return parts.concat(t.slice(from));
+  }
+  /** Дерева компонент символьного ключа coordinates2 або null (числовий ключ — старий шлях). */
+  function symPair(s) {
+    if (s?.answerKind !== "coordinates2") return null;
+    const parts = splitPair(s.answer); if (parts.length !== 2) return null;
+    const ts = parts.map(p => parseExpr(p));
+    return ts.every(Boolean) && ts.some(t => varsOf(t).length) ? ts : null;
+  }
+  /** Перевірка кожної компоненти: [{ sym — компонента-вираз, r: "ok" | "form" | "bad" }] або null (не дві компоненти, невідома form).
+      Час ділиться навпіл: перша компонента — до половини залишку DEADLINE, друга — до кінця; бюджет BUDGET — на кожну. */
+  function pairSym(s, v, a) {
+    const kp = splitPair(s.answer), up = splitPair(v), ex = exactKey(s.answer), end = DEADLINE;
+    if (up.length !== 2 || (s.form !== undefined && !EXPR_FORMS.includes(s.form))) return null;
+    return a.map((ka, i) => {
+      if (!varsOf(ka).length) {
+        const x = elemOf(kp[i].replace(/^\s*-\s+/, "-"), ex), y = elemOf(up[i].replace(/^\s*-\s+/, "-"), ex);
+        return { sym: false, r: x && y && xeq(x.x, y.x) ? (y.tidy ? "ok" : "form") : "bad" };
+      }
+      const u = parseExpr(up[i]);
+      if (ka.k === "eq" || !u || u.k === "eq") return { sym: true, r: "bad" };
+      const stop = i ? end : Date.now() + (end - Date.now()) / 2;
+      DEADLINE = stop; BUDGET = 50000;
+      const same = sameExpr(ka, u); DEADLINE = Math.min(DEADLINE, stop);
+      return { sym: true, r: !same ? "bad" : exprForm(s.form, ka, u) ? "ok" : "form" };
+    });
+  }
+  const worst = rs => rs.some(x => x.r === "bad") ? "bad" : rs.some(x => x.r === "form") ? "form" : "ok";
   /** Відношення a : b (: c) додатних чисел; порядок членів важливий. */
   function parseRatio(v) {
     const parts = Array.isArray(v) ? v.map(String) : norm(v).split(/[:∶]/);
@@ -665,6 +705,11 @@ window.SLID_LEARN = (() => {
     if (kind === "number") { const u = parseAns(v); return !u?.frac ? "Значення правильне. Запиши відповідь звичайним дробом." : s.reduced && !u.lowest ? "Значення правильне, але дріб ще можна скоротити." : "Значення правильне. Запиши відповідь мішаним числом: ціла частина, пробіл, дріб."; }
     if (kind === "divrem") return "Неповну частку знайдено. Допиши остачу: кнопка «ост.» і число.";
     if (kind === "ratio") return "Відношення правильне. Запиши його натуральними числами без спільного дільника, наприклад 2 : 3.";
+    if (kind === "coordinates2" && s.form !== undefined && symPair(s)) {   // «form» дала компонента-вираз — підказка expression, інакше — про корені
+      let rs = null; DEADLINE = Date.now() + 800; BUDGET = 50000;
+      try { rs = pairSym(s, v, symPair(s)); } catch (e) { if (e !== TOO) throw e; } finally { DEADLINE = Infinity; }
+      if (rs && rs.some(x => x.sym && x.r === "form")) return formHint({ answerKind: "expression", form: s.form }, v);
+    }
     if (kind === "expression") return { expanded: "Вираз правильний. Розкрий дужки й зведи подібні доданки.", factored: "Вираз правильний. Розклади його на множники до кінця.",
       reduced: "Вираз правильний. Скороти дріб.", simplified: "Вираз правильний, але його можна спростити." }[s.form] || "Спробуй ще раз.";
     return "Значення правильне, але запис не спрощено: обчисли, зведи подібні, винеси множник з-під кореня й позбудься кореня в знаменнику.";
@@ -749,6 +794,17 @@ window.SLID_LEARN = (() => {
   /** Ключ answerKind "list" так, як його розбирає checkAns (той самий parseList і exactKey): для кожного елемента
       { exact — точний розбір (корені/π), root — є радикал ⁿ√ з n ≥ 2, tidy — канонічний запис, approx — наближене значення }.
       null — не list або ключ не розібрано. Потрібно tools/personalization-qa.mjs (list із коренями закриває формат exactRoot). */
+  /** Ключ coordinates2 з компонентами-виразами так, як його розбирає checkAns (splitPair, symPair, pairSym):
+      для кожної компоненти { expr — перевіряється як expression, vars — змінні, tidy — ключ сам проходить перевірку (з form), text — запис }.
+      null — не coordinates2, числовий ключ або ключ не розібрано. Потрібно tools/personalization-qa.mjs (пара виразів закриває формат expression)
+      і клавішам поля (app.js). Не викликати зсередини checkAns: скидає DEADLINE. */
+  function pairKey(s) {
+    DEADLINE = Date.now() + 800; BUDGET = 50000;          // як checkAns0: результат не залежить від попередніх викликів
+    try {
+      const a = symPair(s), r = a && pairSym(s, s.answer, a), t = splitPair(s.answer);
+      return r && r.map((x, i) => ({ expr: x.sym, vars: varsOf(a[i]), tidy: x.r === "ok", text: t[i].trim() }));
+    } catch (e) { if (e === TOO) return null; throw e; } finally { DEADLINE = Infinity; }
+  }
   function listKey(s) {
     if ((s?.answerKind || "number") !== "list") return null;
     DEADLINE = Date.now() + 800; BUDGET = 50000;
@@ -766,6 +822,7 @@ window.SLID_LEARN = (() => {
       return a && u && a.length === u.length && a.every(x => u.some(y => xeq(x.x, y.x))) ? tidy(u) : "bad";
     }
     if (kind === "coordinates2" || kind === "coordinates3") {
+      const sp = symPair(s); if (sp) { const rs = pairSym(s, v, sp); return rs ? worst(rs) : "bad"; }
       const n = kind === "coordinates2" ? 2 : 3, a = parsePoint(s.answer, n, ex), u = parsePoint(v, n, ex);
       return a && u && a.every((x, i) => xeq(x.x, u[i].x)) ? tidy(u) : "bad";
     }
@@ -895,8 +952,11 @@ window.SLID_LEARN = (() => {
       for (const flag of ["reduced", "mixed", "fractionOnly"]) {
         if (it[flag] !== undefined && (typeof it[flag] !== "boolean" || it.type !== "answer" || !(kind === "number" || (flag === "reduced" && kind === "ratio")))) E.push(`${w}: ${flag} має бути boolean для числової answer${flag === "reduced" ? " або ratio" : ""}`);
       }
-      if (it.form !== undefined && (kind !== "expression" || !EXPR_FORMS.includes(it.form) || exprOf(it.answer)?.k === "eq")) E.push(`${w}: form (${EXPR_FORMS.join(" | ")}) — лише для expression без «=»`);
-      if (it.form === "factored" && exprOf(it.answer) && !isProduct(exprOf(it.answer))) E.push(`${w}: form factored — ключ має бути добутком`);
+      const sp = it.type === "answer" && kind === "coordinates2" ? symPair(it) : null;
+      if (it.form !== undefined && !(sp ? EXPR_FORMS.includes(it.form) : kind === "expression" && EXPR_FORMS.includes(it.form) && exprOf(it.answer)?.k !== "eq")) E.push(`${w}: form (${EXPR_FORMS.join(" | ")}) — лише для expression без «=» або coordinates2 з компонентами-виразами`);
+      if (it.form === "factored" && !sp && exprOf(it.answer) && !isProduct(exprOf(it.answer))) E.push(`${w}: form factored — ключ має бути добутком`);
+      if (it.form === "factored" && sp && sp.some(t => varsOf(t).length && !isProduct(t))) E.push(`${w}: form factored — кожна компонента-вираз ключа має бути добутком`);
+      if (sp && sp.some(t => t.k === "eq")) E.push(`${w}: coordinates2 — компонента ключа не може бути рівнянням`);
       if (kind === "intervalSet" && it.type === "answer") { BUDGET = 50000; const set = parseSet(it.answer, exactKey(it.answer)); if (set && set.raw !== set.length) E.push(`${w}: intervalSet — частини ключа перетинаються або дотикаються, злий їх`); }
       if (kind === "exactRoot" && it.type === "answer" && ![...(exactOf(it.answer)?.x.keys() || [])].some(k => !k.startsWith("1:1:0"))) E.push(`${w}: exactRoot потребує кореня або π у відповіді; раціональне число — answerKind number`);
       if (it.signed !== undefined && (typeof it.signed !== "boolean" || it.type !== "answer" || kind !== "number")) E.push(`${w}: signed має бути boolean для числової answer`);
@@ -960,5 +1020,5 @@ window.SLID_LEARN = (() => {
   }
 
   return { OK, BAD, SKIP, PASS, DIAG_TYPES, planFor, practiceItems, nextItem, remaining, topicStatus, level, buildPlan, finishDiag, record, detect, syncPlan, lessonDone, todo, isKnown, validate,
-    parseAns, parseDivrem, checkAns, listKey, answerSig, formHint, ansText, srcRef, numberKeys, ANSWER_KINDS, BOX_DAYS, srsInit, srsUpdate, isDue, pickSession, POOL_TYPES, validatePool };
+    parseAns, parseDivrem, checkAns, listKey, pairKey, answerSig, formHint, ansText, srcRef, numberKeys, ANSWER_KINDS, BOX_DAYS, srsInit, srsUpdate, isDue, pickSession, POOL_TYPES, validatePool };
 })();

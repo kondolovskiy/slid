@@ -62,6 +62,32 @@ check(() => assert.equal(qa.rootList({ ...item('a04'), answerKind: 'exactRoot' }
 // перевірка справді має відкидати наближення: якщо checkAns приймає будь-що, вправа не рахується
 check(() => assert.equal(qa.rootList(item('a04'), { ...learn, checkAns: () => 'ok' }), false));
 check(() => assert.equal(qa.rootList(item('a04'), { ...learn, listKey: undefined }), false));
+// expression закриває coordinates2 з компонентою-виразом, яку checkAns справді перевіряє як вираз (рішення людини 2026-10-31, engine-coordinates2-expression)
+const exprGap = r => r.missing.includes('pg9m2/g9m2l3: немає формату expression');
+const withPair = (answer, extra = {}) => { const c = clone(); Object.assign(c.pools.find(p => p.id === 'pg9m2').items.find(it => it.id === 'c01'), { answer }, extra); return audit(c, matrix, learn, { pool: 'pg9m2' }); };
+check(() => assert(exprGap(audit(subject, matrix, learn, { pool: 'pg9m2' }))));       // вправи №13.5(4) ще немає
+check(() => assert(!exprGap(withPair('(p - m; k - n)'))));
+check(() => assert(!exprGap(withPair(['p - m', 'k - n']))));
+check(() => assert(!exprGap(withPair('(2a; 3)'))));                                   // одна компонента-вираз
+check(() => assert(!exprGap(withPair('(2a; b^2)', { form: 'simplified' }))));
+check(() => assert(exprGap(withPair('(-3; 1)'))));                                    // числова пара
+check(() => assert(exprGap(withPair([-3, 1]))));
+check(() => assert(exprGap(withPair('(√2; π)'))));                                    // точні числа — не вирази
+check(() => assert(exprGap(withPair('(a + a; b)', { form: 'simplified' }))));         // неканонічний ключ
+check(() => assert(exprGap(withPair('(p - m; k - n; 0)'))));                         // не пара
+check(() => assert(exprGap(withPair('(p - m = 0; k)'))));
+const pairItem = { ...subject.pools.find(p => p.id === 'pg9m2').items.find(it => it.id === 'c01'), answer: '(p - m; k - n)' };
+check(() => assert.equal(qa.exprPair(pairItem, learn), true));
+check(() => assert.equal(qa.exprPair({ ...pairItem, answerKind: 'expression' }, learn), false));
+check(() => assert.equal(subject.pools.flatMap(p => p.items).filter(it => qa.exprPair(it, learn)).length, 0));
+// перевірка справді має розбирати вирази: «приймає все», лише рядок ключа, наближення чи немає pairKey — не рахується
+const keyOnly = { ...learn, checkAns: (it, v) => String(v).replace(/\s/g, '') === '(p-m;k-n)' ? 'ok' : 'bad' };
+check(() => assert.equal(qa.exprPair(pairItem, { ...learn, checkAns: () => 'ok' }), false));
+check(() => assert.equal(qa.exprPair(pairItem, keyOnly), false));
+check(() => assert.equal(qa.exprPair(pairItem, { ...learn, checkAns: (it, v) => /0,0000001/.test(v) ? 'ok' : learn.checkAns(it, v) }), false));
+check(() => assert.equal(qa.exprPair(pairItem, { ...learn, pairKey: undefined }), false));
+// рев'ю P3-3: «усе без десяткових — ok» відкидає лише проба «(…) + змінна»
+check(() => assert.equal(qa.exprPair(pairItem, { ...learn, checkAns: (it, v) => /\d,\d/.test(v) ? 'bad' : 'ok' }), false));
 for (const args of [['--pool','typo'], ['--diag','typo'], ['--grade','12'], ['--pool','pg6m1','--grade','5'], ['--pool','pg6m1','--grade','7'], ['--wat'], ['--diag'], ['--diag','dg6','--pool','pg6m1']]) {
   check(() => assert.equal(spawnSync(process.execPath, ['tools/personalization-qa.mjs', ...args], { cwd: ROOT }).status, 1));
 }
