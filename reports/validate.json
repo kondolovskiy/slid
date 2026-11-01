@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-01T15:01:41.039Z",
+  "date": "2026-11-01T15:12:17.403Z",
   "errors": [],
   "warnings": [
     "content/hist/g5-s1.js#l5 екран 4 (sort): дуже довге речення (28 слів): «Відомо з уроку й досліджень: легенду про Кия записано в «Пов…»",
@@ -256,27 +256,6 @@
     "content/math/g11-g11m6.js#g11m6l2: sentenceWords=5.7 поза профілем [7; 15] для math, 10-11 кл.",
     "content/math/g11-g11m6.js#g11m6l3: sentenceWords=5.2 поза профілем [7; 15] для math, 10-11 кл.",
     "content/math/g11-g11m6.js#g11m6l4: sentenceWords=5.6 поза профілем [7; 15] для math, 10-11 кл.",
-    "content/math/g11-g11m6.js#g11m6l5: sentenceWords=5 поза профілем [7; 15] для math, 10-11 кл.",
-    "content/math/pool#pg11m1 задача 11 «b03» (answer): формула містить непідтриману команду \\lg",
-    "content/math/pool#pg11m1 задача 11 «b03» (answer): формула містить непідтриману команду \\lg",
-    "content/math/pool#pg11m1 задача 15 «b07» (answer): формула містить непідтриману команду \\lg",
-    "content/math/pool#pg11m1 задача 15 «b07» (answer): формула містить непідтриману команду \\lg",
-    "content/math/pool#pg11m1 задача 15 «b07» (answer): формула містить непідтриману команду \\lg",
-    "content/math/pool#pg11m1 задача 15 «b07» (answer): формула містить непідтриману команду \\lg",
-    "content/math/pool#pg11m1 задача 15 «b07» (answer): формула містить непідтриману команду \\lg",
-    "content/math/pool#pg11m1 задача 15 «b07» (answer): формула містить непідтриману команду \\lg",
-    "content/math/pool#pg11m1 задача 15 «b07» (answer): формула містить непідтриману команду \\lg",
-    "content/math/pool#pg11m1 задача 15 «b07» (answer): формула містить непідтриману команду \\lg",
-    "content/math/pool#pg11m1 задача 15 «b07» (answer): формула містить непідтриману команду \\lg",
-    "content/math/pool#pg11m1 задача 15 «b07» (answer): формула містить непідтриману команду \\lg",
-    "content/math/pool#pg11m1 задача 15 «b07» (answer): формула містить непідтриману команду \\lg",
-    "content/math/pool#pg11m1 задача 15 «b07» (answer): формула містить непідтриману команду \\lg",
-    "content/math/pool#pg11m1 задача 15 «b07» (answer): формула містить непідтриману команду \\lg",
-    "content/math/pool#pg11m1 задача 15 «b07» (answer): формула містить непідтриману команду \\lg",
-    "content/math/pool#pg11m1 задача 18 «c02» (answer): формула містить непідтриману команду \\lg",
-    "content/math/pool#pg11m1 задача 18 «c02» (answer): формула містить непідтриману команду \\lg",
-    "content/math/pool#pg11m1 задача 18 «c02» (answer): формула містить непідтриману команду \\lg",
-    "content/math/pool#pg11m1 задача 18 «c02» (answer): формула містить непідтриману команду \\lg",
-    "content/math/pool#pg11m1 задача 18 «c02» (answer): формула містить непідтриману команду \\lg"
+    "content/math/g11-g11m6.js#g11m6l5: sentenceWords=5 поза профілем [7; 15] для math, 10-11 кл."
   ]
 }

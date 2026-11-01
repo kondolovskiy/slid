@@ -4,7 +4,7 @@ claimed_at: 2026-11-01T14:38:27.299Z
 id: engine-lab-aria-p3d
 type: engine
 subject: math
-status: review
+status: done
 claimed_by: agent-engine-lab-aria-p3d
 created: 2026-11-01
 depends_on: [tools-lab-validate-p3c]
