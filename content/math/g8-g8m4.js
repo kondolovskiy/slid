@@ -27,7 +27,7 @@ SLID.section("math", {
       title: "Одна форма, різний розмір",
       short: "Подібність",
       icon: "scale",
-      status: "draft",
+      status: "verified",
       why: "Щоб міряти висоту дерева або ширину річки за маленьким трикутником-моделлю.",
       screens: [
         {
