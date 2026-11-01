@@ -5,7 +5,7 @@ write_group: personalization-shared
 id: engine-practice-pool
 type: engine
 subject: math
-status: todo
+status: review
 claimed_by: agent-engine-practice-pool
 created: 2026-10-13
 ---
@@ -83,6 +83,6 @@ write_group: personalization-shared — редактор визначаєтьс�
 
 **Делеговане (не дубльовано):** формати відповідей — engine-math-pool-answer-formats (done); браузерний QA — tools-math-personalization-qa (done); 45 + 5 задач write-math-pool-* — авторам; ШІ — engine-ai-solution-check (todo).
 
-**Перевірки (мій прогін у worktree):** test-learn 2044, test-validate 571, test-lab 150, test-math 36, test-metrics 20, test-personalization-qa 105, test-make-tasks 22 — усі зелені; validate — 0 помилок, 255 попереджень; diff-answers `--old 3d4e229 --grades 4-11` — 0 непояснених, `--old 2a3d977 --grades 4-11` — 0 змінених вердиктів на змісті (P3 не змінюють поведінки на вправах), `--content-old 3d4e229` — 0 змінених; test-answer-ui `--suite regression` — rc 0 (повторний прогін — див. рядок нижче).
+**Перевірки (мій прогін у worktree):** test-learn 2044, test-validate 571, test-lab 150, test-math 36, test-metrics 20, test-personalization-qa 105, test-make-tasks 22 — усі зелені; validate — 0 помилок, 255 попереджень; diff-answers `--old 3d4e229 --grades 4-11` — 0 непояснених, `--old 2a3d977 --grades 4-11` — 0 змінених вердиктів на змісті (P3 не змінюють поведінки на вправах), `--content-old 3d4e229` — 0 змінених; test-answer-ui `--suite regression` — rc 0 на фінальному дереві (f7e0223); один проміжний прогін упав на таймауті фокуса `#numIn` у player_qa_checks (чужий сценарій, без змін у ньому) — окремо 3 × зелено, повний повтор зелений: схоже на флейк під навантаженням.
 
 **Відкриті питання:** (а) чи відкривати тренування для тем pre з ok без пройденого уроку (зараз ні); (б) запропоновані питання в engine-diag-retest-from-pool; (в) досвід 10/5 за тренування й показ розкладу — без змін, продуктовий скоуп.
