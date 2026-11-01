@@ -4,7 +4,7 @@ claimed_at: 2026-11-01T16:33:48.271Z
 id: engine-p3-1101
 type: engine
 subject: math
-status: todo
+status: review
 claimed_by: engineer-p3e
 created: 2026-11-01
 write_group: personalization-shared
@@ -55,7 +55,7 @@ depends_on: []
 - неправильне значення → bad;
 - без назви в заголовку `K(1; 2)` → form (objs), `M(1; 2)` → ok.
 
-**4. test-make-tasks** — у `npm run check` (після test-validate) і в `.github/workflows/pages.yml` (крок «Зібрати й перевірити контент», після test-validate). Інших змін у цих файлах немає. Тест перевіряє реальну чергу tasks/ лише в `--dry-run` (нічого не пише) і залежить від закоміченого стану черги: ≥ 45 задач write-math-pool-*, відкладені g11m2 і g11m6. Прогін на чистому експорті коміту (`git archive`) — див. нижче.
+**4. test-make-tasks** — у `npm run check` (після test-validate) і в `.github/workflows/pages.yml` (крок «Зібрати й перевірити контент», після test-validate). Інших змін у цих файлах немає. Тест перевіряє реальну чергу tasks/ лише в `--dry-run` (нічого не пише) і залежить від закоміченого стану черги: ≥ 45 задач write-math-pool-*, відкладені g11m2 і g11m6. На чистому експорті коміту (`git archive HEAD`, як checkout у CI) після build зелені всі кроки CI: 6 тестів і validate --quiet (0 помилок).
 
 **5. Запрошення до тесту.** Тест уже є в `srs_retest_p3_checks` (додано в engine-practice-pool). Мутант `planOrDiag = pc + diagInvite(c)` на копії дерева (scratchpad/p3e-mut5): `--suite regression` → rc 1, AssertionError у `srs_retest_p3_checks` («home»: на головній є картка «ТЕСТ РІВНЯ» поряд з планом). **Мутант гине**; код не змінювався.
 
