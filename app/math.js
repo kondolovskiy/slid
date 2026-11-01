@@ -19,6 +19,9 @@ function atomHTML(t, inFrac) {
   if (SUBDIGIT.test(t)) return `<sub class="mp">${t}</sub>`;
   return /^\d/.test(t) ? t.replace(/ /g, "\u202f") : esc(t);
 }
+const ROOT = /^[√∛∜]$/;
+// знак кореня в tokens[j] і атом упритул за ним: { html: «√» + атом (дужки групи лишаються), end: індекс після атома }
+function rootAt(tokens, j) { return ROOT.test(tokens[j] || "") && isAtomToken(tokens[j + 1]) ? { html: esc(tokens[j]) + atomHTML(tokens[j + 1], false), end: j + 2 } : null; }
 function group(tokens, state, open = "{", close = "}") {
   while (/^\s+$/.test(tokens[state.i] || "")) state.i++;
   if (tokens[state.i] !== open) return null;
@@ -90,6 +93,17 @@ function render(tokens) {
       operand = true; continue;
     }
     if (t[0] === '"') { push(`<span class="mt">${esc(t.slice(1,-1))}</span>`, true); continue; }
+    // «√» без дужок бере найближчий атом (число, змінну, групу в дужках), як у шкільному записі: √3/2 = (√3)/2, а не √(3/2);
+    // корінь із дробу пишуть з дужками — √(3/2). Число впритул перед знаком — коефіцієнт у тому ж чисельнику: 2√3/3 = (2√3)/3
+    // (інакше «2» перед дробом стовпчиком читалося б як мішане число). Без «/» за коренем розмітка та сама, що й раніше.
+    const lead = /^\d/.test(t) && rootAt(tokens, state.i) ? 1 : 0, r = ROOT.test(t) ? rootAt(tokens, state.i - 1) : lead && rootAt(tokens, state.i);
+    if (r && (!lead || tokens[r.end] === "/")) {
+      const nu = (lead ? atomHTML(t, false) : "") + r.html; state.i = r.end;
+      if (tokens[state.i] === "/" && isAtomToken(tokens[state.i + 1])) {
+        push(`<span class="fr"><span class="nu">${nu}</span><span class="sr">/</span><span class="de">${atomHTML(tokens[state.i + 1],true)}</span></span>`, true); state.i += 2;
+      } else push(nu, true);
+      continue;
+    }
     if (isAtomToken(t) && tokens[state.i] === "/" && isAtomToken(tokens[state.i + 1])) {
       push(`<span class="fr"><span class="nu">${atomHTML(t,true)}</span><span class="sr">/</span><span class="de">${atomHTML(tokens[state.i + 1],true)}</span></span>`, true); state.i += 2; continue;
     }
