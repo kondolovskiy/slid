@@ -1287,12 +1287,19 @@ async def open_screen_only(page, lesson, at):
       l.screens=[l.screens[0], l.screens[at]];}""", [lesson, at])
     return (await open_lesson_at(page, lesson, 1))[1]
 
+async def make_point_dead(page, lesson, at, point):
+    """Fixture: turn a draggable point's bare-parameter coordinates into expressions (`(dy)+0`), so no input moves it.
+    Content no longer has dead points (fix-math-dead-drag-points), the engine must still treat them right."""
+    await page.evaluate("""([id, at, pt]) => {const l=SLID_SUBJECTS.find(c=>c.id==='math').sections.flatMap(s=>s.lessons||[]).find(l=>l.id===id);
+      const P=l.screens[at].lab.points[pt]; for (const k of ['x','y']) if (typeof P[k]==='string') P[k]='('+P[k]+')+0';}""", [lesson, at, point])
+
 async def player_a11y_p3_checks(browser, url):
     """engine-player-a11y-p3: a point that no input moves is not a Tab stop (g8m2l1#2, g8m4l1#6), the number line
     reads values instead of letters (g4m1l3#2), Home/End/PageUp/PageDown on a handle (g4m4l1#4), rotating a solid
     from the keyboard and leaving Tab after the model locks (g4m5l4#5). Screen numbers are 0-based here."""
     # Dead point D (x: "1", y: "1+dx", drag: true) next to the working point E: only E is focusable, with its own data-h.
     context, page, errors = await qa_page(browser, url, {'grade': 8, 'unlockAll': True})
+    await make_point_dead(page, 'g8m4l1', 6, 'D')
     await open_screen_only(page, 'g8m4l1', 6)
     labels = await page.eval_on_selector_all('#stage .lab-h', 'hs=>hs.map(h=>[h.dataset.h,h.getAttribute("aria-label")])')
     assert len(labels) == 1 and labels[0][1].startswith('Точка E') and labels[0][0] == '1', labels
@@ -1311,6 +1318,7 @@ async def player_a11y_p3_checks(browser, url):
     await context.close()
     # Only a dead point: no Tab stop at all, and the SVG is a plain image again.
     context, page, errors = await qa_page(browser, url, {'grade': 8, 'unlockAll': True})
+    await make_point_dead(page, 'g8m2l1', 2, 'D')
     await open_screen_only(page, 'g8m2l1', 2)
     assert await page.locator('#stage .lab-h').count() == 0
     assert await page.get_attribute('#stage .lab-stage svg', 'role') == 'img'

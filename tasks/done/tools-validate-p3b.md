@@ -3,7 +3,7 @@ claimed_from: todo
 claimed_at: 2026-11-01T12:09:26.939Z
 id: tools-validate-p3b
 type: engine
-status: review
+status: done
 claimed_by: agent-tools-validate-p3b
 created: 2026-11-01
 depends_on: [tools-validate-tex-escapes]
