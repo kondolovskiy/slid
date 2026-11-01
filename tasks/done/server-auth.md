@@ -2,7 +2,7 @@
 id: server-auth
 type: engine
 subject: server
-status: review
+status: done
 claimed_by: claude-backend
 created: 2026-11-01
 ---
@@ -20,7 +20,7 @@ created: 2026-11-01
 
 ## Готово, коли
 - [x] unit 91/91, e2e 14/14 (Postgres 16), build.
-- [ ] Незалежне рев’ю (D-026) — reports/review/server-auth.md, «прийнято».
+- [x] Незалежне рев’ю (D-026) — reports/review/server-auth.md, «прийнято» (e577c63, повторно b3b9aa7).
 
 ## Нотатки
 - Рев’ю 1 (e577c63): прийнято, 6 бажаних. Виправлено: Б-1 (привʼязка лише з `link: true`), Б-3 (тест на справжньому OAuth2Client з локальним RSA-ключем, e2e двох анонімних сесій), Б-4 (503 при недоступних сертифікатах — перевірено на справжньому клієнті без мережі; ознака `GaxiosError` не працює: бібліотека обгортає помилку), Б-5 (lock table у 002), Б-2 частково (`TRUST_PROXY` типово 0), Б-6 частково (регістр доменів, зайвий параметр, docs про ліміти). Решта → tasks/todo/server-hardening.md. Автор: unit 100/100, e2e 16/16.
