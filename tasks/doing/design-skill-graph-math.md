@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-01T20:58:23.268Z
 id: design-skill-graph-math
 type: engine
 subject: math
 status: todo
-claimed_by:
+claimed_by: designer-skg
 created: 2026-11-01
 depends_on: [engine-evidence-v2]
 ---
