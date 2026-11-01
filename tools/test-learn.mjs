@@ -1286,5 +1286,85 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
   eq(L.checkAns({ answerKind: "list", answer: "2; -2" }, "+2; -2"), "bad", "list: «+» перед елементом не розширено (лише number)");
 }
 
+/* Вади перевірки відповідей з пакета 11 кл. (engine-math-answer-g11-issues). Кожне послаблення — з негативами: хибне «ok»
+   гірше за хибне «неправильно» (рев'ю engine-math-answer-g10-issues). */
+{
+  const freshL = () => { const c = { console }; c.window = c; vm.createContext(c); vm.runInContext(fs.readFileSync(path.join(ROOT, "app/learn.js"), "utf8"), c); return c.SLID_LEARN; };
+  const Ex = (answer, o = {}) => ({ answerKind: "expression", answer, ...o }), K = (answerKind, answer, o = {}) => ({ answerKind, answer, ...o });
+  const run = (rows, what) => { for (const [s, v, r] of rows) eq(freshL().checkAns(s, v), r, `${what}: ${JSON.stringify(v)} до ${JSON.stringify(s.answer)}${s.body ? " (" + s.body + ")" : ""}`); };
+
+  // 1. кириличні двійники латинських літер у символьних записах = латинські; інші кириличні літери — як і раніше bad
+  run([
+    [Ex("5x + C"), "5х + C", "ok"], [Ex("5x + C"), "5x + С", "ok"], [Ex("5x + C"), "5х + С", "ok"], [Ex("2a^2 + 4aH"), "2а^2 + 4аН", "ok"], [Ex("8 · 7^x"), "8 · 7^х", "ok"],
+    [Ex("y = 2x + 1"), "у = 2х + 1", "ok"], [Ex("cos x"), "соs х", "ok"], [K("coordinates2", "(p - m; k - n)"), "(р - m; к - n)", "ok"], [K("coordinates2", "(3; -2)"), "А(3; -2)", "ok"],
+    [K("periodicSet", "π/6 + 2πk"), "х = π/6 + 2πк, де к ∈ Z", "ok"], [K("intervalSet", "(1; 2)"), "х ∈ (1; 2)", "ok"], [K("intervalSet", "(0; +∞)"), "Е(f) = (0; +∞)", "ok"],
+    // негативи: двійник іншої змінної, не-двійник, слово, хибне значення
+    [Ex("5x + C"), "5у + C", "bad"], [Ex("5x + C"), "5ж + C", "bad"], [Ex("5x + C"), "5x + C, де C — стала", "bad"], [Ex("y = 2x + 1"), "у = 2х + 2", "bad"], [Ex("x + y"), "х + х", "bad"],
+    [K("periodicSet", "π/6 + 2πk"), "х = π/6 + πк", "bad"], [K("intervalSet", "(1; 2)"), "х ∈ (1; 2]", "bad"], [Ex("3x"), "3 см", "bad"], [Ex("2x"), "2х або 3х", "bad"],
+    // інші формати — без змін
+    [{ answer: 3 }, "х = 3", "ok"], [K("divrem", [3, 2]), "3 ост. 2", "ok"], [K("time", "9:55"), "9 год 55 хв", "ok"], [{ answer: 7, unit: "см" }, "7 см", "ok"], [{ answer: 7, unit: "см" }, "7 кг", "bad"]],
+    "g11 п.1 кирилиця");
+
+  // 2. стала первісної малою c (латинською чи кириличною) — "form" з підказкою, лише коли в умові немає іншої c
+  const Cn = (answer, body = "<p>Сталу запиши великою літерою $C$.</p>") => Ex(answer, { title: "Первісні для $f(x) = 5$", body });
+  run([
+    [Cn("5x + C"), "5x + C", "ok"], [Cn("5x + C"), "5x + c", "form"], [Cn("5x + C"), "5х + с", "form"], [Cn("5x + C"), "c + 5x", "form"], [Cn("x^3/3 + 2x^2 - x + C"), "x^3/3 + 2x^2 - x + c", "form"],
+    [Cn("5x + C"), "5x + K", "bad"], [Cn("5x + C"), "5x", "bad"], [Cn("5x + C"), "5c + C", "bad"], [Cn("5x + C"), "5x + c + C", "bad"], [Cn("5x + C"), "5x + C + c - C", "bad"], [Cn("5x + C"), "5x + c + 1", "bad"], [Cn("5x + C"), "6x + c", "bad"],
+    [Cn("5x + C", "<p>Відомо, що $a + b + c = 1$.</p>"), "5x + c", "bad"], [Cn("5x + C", "<p>Сторона $c$ трикутника.</p>"), "5x + c", "bad"], [Cn("Cx + 1"), "cx + 1", "bad"], [Cn("5x + 2C"), "5x + 2c", "bad"]],
+    "g11 п.2 стала c");
+  eq(freshL().formHint(Cn("5x + C"), "5x + c"), "Вираз правильний. Сталу запиши великою латинською літерою C.", "g11 п.2: підказка про велику C");
+  eq(freshL().badHint(Cn("5x + C", "<p>$a + b + c = 1$</p>"), "5x + c"), null, "g11 п.2: c з умови — звичайне «неправильно»");
+  eq(freshL().hintTexts(Cn("5x + C")).includes("Вираз правильний. Сталу запиши великою латинською літерою C."), true, "g11 п.2: підказка серед hintTexts");
+  { const it = (await import("./lib.mjs")).loadContent().subjects.flatMap(c => c.pools || []).find(p => p.id === "pg11m3")?.items.find(x => x.id === "a01");
+    eq(it && [freshL().checkAns(it, "5x + c"), freshL().checkAns(it, "5х + С"), freshL().checkAns(it, "5x + K")], ["form", "ok", "bad"], "g11 п.2: pg11m3:a01 — c → form, кирилична С → ok, K → bad"); }
+
+  // 3. мішане число як окремий доданок виразу; в інших позиціях — як і раніше помилка запису
+  run([
+    [Ex("x^3/3 + 10/3"), "x^3/3 + 3 1/3", "ok"], [Ex("x^3/3 + 10/3"), "x^3/3+3 1/3", "ok"], [Ex("x - 7/3"), "-2 1/3 + x", "ok"], [Ex("7x/3"), "(2 1/3)x", "ok"],
+    [Ex("|x| + 7/3"), "|x| + 2 1/3", "ok"], [Ex("y = 2x + 7/3"), "y = 2x + 2 1/3", "ok"], [K("exactRoot", "7/3 + √2"), "2 1/3 + √2", "ok"],
+    [Ex("x^3/3 + 10/3"), "x^3/3 + 31/3", "bad"], [Ex("10x/3"), "3 1/3x", "bad"], [Ex("3 + x/3"), "3 1/3x", "bad"], [Ex("x/3 + 3"), "3 1/3·x", "bad"], [Ex("8/3"), "2·1 1/3", "bad"],
+    [Ex("x^(7/3)"), "x^2 1/3", "bad"], [Ex("x^2/3"), "x^2 1/3", "bad"], [Ex("3/7"), "1/2 1/3", "bad"], [Ex("1/6"), "1/2 1/3", "bad"], [Ex("13/3"), "3 4/3", "bad"], [Ex("x + 3"), "x + 3 0/3", "bad"],
+    [Ex("x + 4"), "x + 3,5 1/2", "bad"], [Ex("x + 10/3"), "x + 3 1/3^2", "bad"], [Ex("x + 10/3"), "x + 3 1/3(1)", "bad"], [Ex("x^3/3 + 10/3"), "x^3/3 + 3 2/3", "bad"], [{ answer: "7/3" }, "2 1/3", "ok"], [{ answer: "7/3", mixed: true }, "7/3", "form"]],
+    "g11 п.3 мішане число");
+
+  // 4. number: ціле число коренем — "form" «обчисли корінь», ніколи "ok"; інше значення, вираз без кореня — bad
+  run([
+    [{ answer: 24, unit: "см" }, "√576", "form"], [{ answer: 24, unit: "см" }, "√576 см", "form"], [{ answer: 24 }, "√(576)", "form"], [{ answer: 24 }, "2√144", "form"], [{ answer: 3 }, "∛27", "form"],
+    [{ answer: -24 }, "-√576", "form"], [{ answer: 12 }, "√576/2", "form"], [{ answer: "24,0", decimals: 1 }, "√576", "form"],
+    [{ answer: 24 }, "-√576", "bad"], [{ answer: 25 }, "√576", "bad"], [{ answer: 24 }, "√577", "bad"], [{ answer: 24 }, "√576 + 1", "bad"], [{ answer: 24 }, "20 + 4", "bad"], [{ answer: 24 }, "√x", "bad"],
+    [{ answer: 24 }, "√576 кг", "bad"], [{ answer: 24 }, "√(10^40)", "bad"]], "g11 п.4 корінь у number");
+  eq(freshL().formHint({ answer: 24 }, "√576"), "Значення правильне. Обчисли корінь і запиши відповідь числом.", "g11 п.4: підказка «Обчисли корінь»");
+  eq([freshL().badHint({ answer: 24 }, "√577"), freshL().badHint({ answer: 24 }, "√(10^40)"), freshL().badHint({ answer: 24 }, "(√2+√3+√5+√7+√11+√13+√17+√19)^12")], [null, null, null], "g11 п.4: невдала спроба кореня — звичайне «неправильно», не «запис занадто складний»");
+  eq(freshL().hintTexts({ answer: 24 }).includes("Значення правильне. Обчисли корінь і запиши відповідь числом."), true, "g11 п.4: підказка серед hintTexts");
+
+  // 5. періодичний дріб у межі чи елементі intervalSet; list і координати — без змін
+  run([
+    [K("intervalSet", "[1/3; 27]"), "[0,(3); 27]", "ok"], [K("intervalSet", "(-∞; 1/3)"), "(-∞; 0,(3))", "ok"], [K("intervalSet", "[1/3; √2]"), "[0,(3); √2]", "ok"], [K("intervalSet", "{1/3; 2}"), "{0,(3); 2}", "ok"],
+    [K("intervalSet", "[1/3; 27]"), "x ∈ [0.(3); 27]", "ok"], [K("intervalSet", "[-1/3; 27]"), "[-0,(3); 27]", "ok"],
+    [K("intervalSet", "[1/3; 27]"), "[0,(4); 27]", "bad"], [K("intervalSet", "[1/3; 27]"), "[0,(3); 27)", "bad"], [K("intervalSet", "[1/3; 27]"), "[0,3; 27]", "bad"], [K("intervalSet", "[1/3; 27]"), "[-0,(3); 27]", "bad"],
+    [K("list", "1/3; 2"), "0,(3); 2", "bad"], [K("coordinates2", "(1/3; 1)"), "(0,(3); 1)", "bad"]], "g11 п.5 періодичний дріб у межі");
+
+  // 8. «x₁,₂ = ±…» у list: лише для ключа з «±»/коренем і єдиної змінної умови
+  const Lq = (answer, title) => K("list", answer, { title });
+  run([
+    [Lq("±3", "$x^2 = 9$"), "x₁,₂ = ±3", "ok"], [Lq("±3", "$x^2 = 9$"), "x_{1,2} = ±3", "ok"], [Lq("±3", "$x^2 = 9$"), "x1,2 = ±3", "ok"], [Lq("±3", "$x^2 = 9$"), "х₁,₂ = ±3", "ok"],
+    [Lq("(1 ± √5)/2", "$x^2 - x - 1 = 0$"), "x₁,₂ = (1 ± √5)/2", "ok"], [Lq("(1 ± √5)/2", "$x^2 - x - 1 = 0$"), "x₁,₂ = (1 ∓ √5)/2", "ok"],
+    [Lq("±3", "$x^2 = 9$"), "y₁,₂ = ±3", "bad"], [Lq("3; -3", "$x^2 = 9$"), "x₁,₂ = ±3", "bad"], [Lq("±3", "$x^2 = 9$"), "x₁,₂ = 3", "bad"], [Lq("±3", "$x^2 = 9$"), "x₁,₂ = ±3; x = 1", "bad"],
+    [Lq("±3", "$x^2 = 9$"), "x₁,₂ = ±2", "bad"], [Lq("±3", "$x^2 + y = 9$"), "x₁,₂ = ±3", "bad"], [Lq("±3", "Знайди $b$: $x^2 = b$"), "x₁,₂ = ±3", "bad"], [Lq("±3", "$x^2 = 9$"), "x₁,₂ = x₃ = ±3", "bad"]],
+    "g11 п.8 x₁,₂");
+  { const pools = (await import("./lib.mjs")).loadContent().subjects.flatMap(c => c.pools || []);
+    for (const [pid, iid] of [["pg8m5", "a04"], ["pg8m5", "b05"], ["pg10m3", "a07"]]) {
+      const it = pools.find(p => p.id === pid)?.items.find(x => x.id === iid);
+      eq(it ? [..."abcdefghijklmnopqrstuvwxyz"].filter(l => freshL().checkAns(it, `${l}₁,₂ = ${it.answer}`) !== "bad").join("") : null, "x", `g11 п.8 ${pid}:${iid}: «L₁,₂ = …» лише з x`);
+    } }
+
+  // 8. мутація «!(xr === null && LIMIT)» у validatePool: ключ exactRoot за межею перевірки — лише «не читається»
+  const C = { sections: new Map([["s", { grade: 11, lessons: ["l"] }]]), skills: { num: {} } };
+  const P = items => ({ id: "p", section: "s", status: "draft", sources: [{ id: "b", title: "t", url: "https://x" }],
+    items: items.map((it, i) => ({ id: "a" + i, lesson: "l", lvl: 1, sk: "num", src: "b 1", type: "answer", title: "t", steps: ["s"], ...it })) });
+  { const E = freshL().validatePool(P([{ answerKind: "exactRoot", answer: "(√2+√3+√5+√7+√11+√13+√17+√19)^12" }]), C);
+    eq([E.length, E.some(e => e.includes("потребує кореня")), E.some(e => e.includes("не читається"))], [1, false, true], "g11 п.8: ключ exactRoot за межею (TOO у exactOf) — лише «не читається»"); }
+}
+
 console.log(`\n${n} перевірок, ${fails ? fails + " з помилками" : "усе гаразд"}`);
 if (fails) process.exit(1);

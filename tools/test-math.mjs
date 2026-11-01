@@ -24,5 +24,18 @@ ok(M.mathHTML("2 · (-0{,}6) · 0{,}8 = -0{,}96") === M.mathHTML("2 · (-0,6) ·
 ok(M.mathHTML("0{,}6/2").includes('class="nu">0,6<'), "{,} у чисельнику дробу");
 ok(M.mathHTML("\\begin{cases}x=0{,}5\\\\y=1\\end{cases}").includes("0,5"), "{,} у системі");
 ok(M.fmt("$k = 0{,}5$").includes("0,5") && !M.fmt("$k = 0{,}5$").includes("{"), "{,} через fmt");
+// engine-math-answer-g11-issues п. 6–7, engine-render-tex-p3: \lg, показник кореня перед знаком, відступи навколо \to
+ok(M.commands.has("lg") && !M.mathHTML("\\lg 100").includes("munknown") && M.mathHTML("\\lg 100").startsWith('<span class="mfn">lg</span>'), "\\lg — назва функції прямим шрифтом, як \\log");
+ok(M.mathHTML("\\lg 100") === '<span class="mfn">lg</span><span class="mspace thin"></span>100', "\\lg 100: тонкий пробіл перед аргументом («lg 100», як в уроках)");
+ok(M.mathHTML("\\ln x").includes('mfn">ln</span><span class="mspace thin">'), "\\ln x: пробіл перед аргументом");
+for (const [src, what] of [["\\lg(25 \\cdot 4)", "дужки"], ["\\log_2 8", "індекс"], ["\\sin^2 x", "степінь"], ["\\lim_{h \\to 0} f", "границя"], ["\\lg = 3", "оператор"]])
+  ok(!/mfn">[^<]+<\/span><span class="mspace thin">/.test(M.mathHTML(src)), `після назви функції без пробілу: ${what} (${M.mathHTML(src)})`);
+ok(M.mathHTML("\\lg\\,x").split("mspace thin").length === 2, "\\lg\\,x: один тонкий пробіл, не два");
+{ const h = M.mathHTML("\\sqrt[3]{x^2}"), i = h.indexOf("root-index"), r = h.indexOf("radicand");
+  ok(i > 0 && i < r && /root-index" style="order:-1"/.test(h) && h.startsWith('<span class="sqrt">'), `показник кореня — перед знаком √ (order:-1) і всередині .sqrt (${h})`); }
+ok(!M.mathHTML("\\sqrt{x}").includes("root-index"), "квадратний корінь без показника");
+ok(M.mathHTML("1 \\to 4") === '1<span class="mo">→</span>4', "\\to — бінарний знак з відступами (.mo)");
+ok(M.mathHTML("0 \\to -1").includes('<span class="mo">→</span><span class="mu">−</span>1'), "\\to: мінус після стрілки унарний");
+ok(M.mathHTML("A \\rightarrow B").includes('class="mo">→') && M.mathHTML("a \\leftrightarrow b").includes('class="mo">↔'), "\\rightarrow, \\leftrightarrow — теж з відступами");
 console.log(`${n - fails}/${n} тестів формул пройдено`);
 process.exit(fails ? 1 : 0);
