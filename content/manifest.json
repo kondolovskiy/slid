@@ -149,5 +149,6 @@
   "app/lab.js",
   "app/learn.js",
   "app/math.js",
+  "app/hyp.js",
   "app/app.js"
 ]
