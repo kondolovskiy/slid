@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-01T15:15:30.571Z
 id: research-math-diag-duration
 type: research
 subject: math
 status: todo
-claimed_by:
+claimed_by: agent-research-math-diag-duration
 created: 2026-10-15
 depends_on: []
 ---

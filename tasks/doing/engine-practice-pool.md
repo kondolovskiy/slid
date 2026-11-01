@@ -1,10 +1,12 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-01T15:15:30.467Z
 write_group: personalization-shared
 id: engine-practice-pool
 type: engine
 subject: math
 status: todo
-claimed_by:
+claimed_by: agent-engine-practice-pool
 created: 2026-10-13
 ---
 # Тренування: залишкові можливості після першої версії
@@ -53,3 +55,7 @@ write_group: personalization-shared — редактор визначаєтьс�
 ## Нотатки агента
 
 - 2026-10-30, engine-math-pool-answer-formats (у review): пункт 3 «Нові відповіді» виконано там — answerKind ratio, coordinates2/3, exactRoot, intervalSet, expression (+form), periodicSet; list з √/±. Контракт — CONTENT_SCHEMA §10. Тут лишається лише вибір одиниці відповіді; парсери форматів не дублювати, генератори (gen) інтегрувати через той самий checkAns.
+
+## Також (P3 з рев'ю 2026-11-01, оркестратор — той самий app/learn.js)
+- askedPoint: брати назву із заголовка лише якщо в тілі умови вона не трапляється окремою назвою (reports/review/engine-lab-aria-p3d.md P3-1, відтворення scratchpad/syn-ask.mjs); «середин» у ASK_WORD з негативним тестом; фікстури DIAG_FORMAT fractionOnly / form improper; евристика формату — «десятковий дріб», «до цілих», «до 0,1».
+- test-answer-ui: план з помилок + непочатий тест → запрошення до тесту НЕ показується (reports/review/engine-srs-retest-p3.md P3).

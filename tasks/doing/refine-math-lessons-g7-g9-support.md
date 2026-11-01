@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-01T15:15:30.519Z
 id: refine-math-lessons-g7-g9-support
 type: content
 subject: math
 status: todo
-claimed_by:
+claimed_by: agent-refine-math-lessons-g7-g9-support
 created: 2026-10-31
 ---
 # Бажані речення-опори в уроки 7–9 кл. (D-019, м'яке; з верифікації пулів 31.10)
