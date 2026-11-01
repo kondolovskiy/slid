@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-01T18:49:40.240Z
 id: engine-hyp-e1-module
 type: engine
 subject: math
 status: todo
-claimed_by:
+claimed_by: engineer-hyp-e1
 created: 2026-11-01
 depends_on: [engine-diag-hypothesis-math]
 ---
