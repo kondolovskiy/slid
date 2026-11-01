@@ -36,7 +36,7 @@
 | ms0l4 Терези й невідоме | 5 | 9 | 0.67 | 18 | 36 | 4.1 | 0.006 | 3 | — |
 | ms0l5 Чому квадрат, а не «двійка»? | 5 | 10 | 0.6 | 15 | 50 | 4.5 | 0.006 | 3 | — |
 | ms0l6 Скарбник походу (фінал) | 5 | 7 | 0.86 | 17 | 21 | 4.1 | 0.011 | 4 | — |
-| ms0bl1 Лінія без кінця | 5 | 8 | 0.63 | 20 | 41 | 5.1 | 0.005 | 3 | — |
+| ms0bl1 Лінія без кінця | 5 | 8 | 0.63 | 22 | 59 | 5.1 | 0.005 | 3 | — |
 | ms0bl2 Скільки градусів у куті? | 5 | 9 | 0.67 | 20 | 39 | 4.5 | 0.008 | 4 | — |
 | ms0bl3 Три кути на трьох | 5 | 9 | 0.56 | 19 | 40 | 5 | 0.022 | 4 | — |
 | ms0bl4 Скільки сітки на грядку? | 5 | 9 | 0.67 | 17 | 35 | 4.6 | 0.015 | 3 | — |
@@ -58,7 +58,7 @@
 | ms3l2 Скільки це гривень? | 5 | 9 | 0.67 | 18 | 48 | 5.4 | 0 | 3 | — |
 | ms3l3 Що показує діаграма? | 5 | 10 | 0.7 | 19 | 33 | 5.3 | 0.021 | 4 | — |
 | ms3l4 Шкільна газета (фінал) | 5 | 7 | 0.86 | 19 | 23 | 5 | 0.01 | 3 | — |
-| ms4l1 Скільки плит на терасу? | 5 | 9 | 0.67 | 23 | 59 | 5.1 | 0.016 | 3 | maxReadWords нетипово для сім'ї (z=2.1) |
+| ms4l1 Скільки плит на терасу? | 5 | 9 | 0.67 | 23 | 59 | 5.1 | 0.016 | 3 | — |
 | ms4l2 Коробка з дванадцятьма ребрами | 5 | 9 | 0.67 | 20 | 49 | 4.9 | 0.023 | 4 | — |
 | ms4l3 Скільки води в акваріумі? | 5 | 8 | 0.63 | 21 | 47 | 5 | 0.013 | 3 | — |
 | ms4l4 Ремонт у класі (фінал) | 5 | 7 | 0.86 | 18 | 26 | 4.8 | 0.014 | 3 | — |
@@ -99,7 +99,7 @@
 | g7m2l3 Чому, а не «бо так вийшло» | 7 | 9 | 0.56 | 18 | 32 | 5.1 | 0.021 | 4 | sentenceWords=5.1 поза [6; 13]; typeVariety нетипово для сім'ї (z=3.1) |
 | g7m2l4 Креслення парку (фінал) | 7 | 8 | 0.88 | 17 | 29 | 5.1 | 0.024 | 4 | sentenceWords=5.1 поза [6; 13]; typeVariety нетипово для сім'ї (z=2.9) |
 | g7m3l1 Скільки двійок у добутку? | 7 | 10 | 0.5 | 18 | 41 | 4.6 | 0.012 | 3 | sentenceWords=4.6 поза [6; 13] |
-| g7m3l2 Вираз як графік | 7 | 9 | 0.67 | 17 | 48 | 4.6 | 0.026 | 3 | sentenceWords=4.6 поза [6; 13] |
+| g7m3l2 Вираз як графік | 7 | 10 | 0.6 | 19 | 48 | 4.7 | 0.024 | 3 | sentenceWords=4.7 поза [6; 13] |
 | g7m3l3 Квадрат суми на клітинках | 7 | 9 | 0.56 | 16 | 34 | 4.4 | 0.015 | 3 | sentenceWords=4.4 поза [6; 13]; readWordsPerScreen нетипово для сім'ї (z=-2.1) |
 | g7m3l4 Назад із дужок | 7 | 9 | 0.56 | 19 | 48 | 4.1 | 0.007 | 2 | sentenceWords=4.1 поза [6; 13]; sentenceWords нетипово для сім'ї (z=-2); typeVariety нетипово для сім'ї (z=-2.7) |
 | g7m3l5 Майстерня виразів (фінал) | 7 | 7 | 0.86 | 17 | 32 | 4.4 | 0.025 | 3 | sentenceWords=4.4 поза [6; 13] |
@@ -242,9 +242,9 @@
 
 - **4:lesson**: screens 8.71±0.55, gradedShare 0.66±0.02, readWordsPerScreen 17.38±2.54, maxReadWords 36.19±5.93, sentenceWords 4.48±0.32, longWordShare 0.01±0, typeVariety 3.24±0.53
 - **4:boss**: screens 8±0, gradedShare 0.75±0, readWordsPerScreen 17.4±2.24, maxReadWords 25±4.56, sentenceWords 4.48±0.22, longWordShare 0.01±0, typeVariety 3.2±0.4
-- **5-6:lesson**: screens 9.37±0.72, gradedShare 0.66±0.06, readWordsPerScreen 18.92±2.88, maxReadWords 43.12±7.64, sentenceWords 4.82±0.5, longWordShare 0.01±0.01, typeVariety 3.53±0.64
+- **5-6:lesson**: screens 9.37±0.72, gradedShare 0.66±0.06, readWordsPerScreen 18.96±2.91, maxReadWords 43.49±7.96, sentenceWords 4.82±0.5, longWordShare 0.01±0.01, typeVariety 3.53±0.64
 - **5-6:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 18.55±2.1, maxReadWords 25.82±4.09, sentenceWords 4.65±0.39, longWordShare 0.01±0, typeVariety 3.27±0.45
-- **7-9:lesson**: screens 9.17±0.75, gradedShare 0.56±0.06, readWordsPerScreen 20.31±2.03, maxReadWords 40.11±6.77, sentenceWords 5.11±0.34, longWordShare 0.02±0.01, typeVariety 2.93±0.35
+- **7-9:lesson**: screens 9.18±0.76, gradedShare 0.56±0.06, readWordsPerScreen 20.34±2, maxReadWords 40.11±6.77, sentenceWords 5.11±0.34, longWordShare 0.02±0.01, typeVariety 2.93±0.35
 - **7-9:boss**: screens 7.67±0.64, gradedShare 0.79±0.06, readWordsPerScreen 18.19±1.79, maxReadWords 29.43±3.23, sentenceWords 5.07±0.29, longWordShare 0.02±0.01, typeVariety 3.1±0.29
 - **10-11:lesson**: screens 9.54±0.63, gradedShare 0.57±0.06, readWordsPerScreen 22.88±1.9, maxReadWords 48.12±6.56, sentenceWords 5.51±0.39, longWordShare 0.03±0.01, typeVariety 2.9±0.37
 - **10-11:boss**: screens 8.08±0.28, gradedShare 0.75±0.01, readWordsPerScreen 19±1.47, maxReadWords 33.58±7.36, sentenceWords 5.18±0.54, longWordShare 0.04±0.02, typeVariety 2.92±0.28
