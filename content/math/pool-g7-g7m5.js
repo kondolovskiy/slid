@@ -1,5 +1,5 @@
 /* Слід · Математика, 7 клас — пул задач для тренування до розділу «Алгебра: функції» (g7m5)
-   Статус: verified (verifier-pg7m5, 2026-10-31, reports/verify/pg7m5.md). 24 задачі: по 8 на кожен урок g7m5l1–g7m5l3 (3 рівня 1, 3 рівня 2, 2 рівня 3); boss g7m5l4 без задач.
+   Статус: draft (2026-11-01, fix-math-terms-g8m4-g9m1: автори a7 звірено з титулом: Мерзляк, Якір — повторна верифікація змінених місць; раніше verified: verifier-pg7m5, 2026-10-31, reports/verify/pg7m5.md). 24 задачі: по 8 на кожен урок g7m5l1–g7m5l3 (3 рівня 1, 3 рівня 2, 2 рівня 3); boss g7m5l4 без задач.
    Усі задачі — з підручника Мерзляка, Якіра «Алгебра. 7 клас» (2024), п. 20–23 (sources).
    Умови й числа звірено за відрендереними сторінками PDF 2026-10-31. У цьому PDF друкований номер сторінки = номер сторінки PDF.
    Перевірка: node tools/validate.mjs --pool pg7m5 && node tools/personalization-qa.mjs --pool pg7m5
@@ -7,10 +7,10 @@
 SLID.pool("math", {
   id: "pg7m5",
   section: "g7m5",
-  status: "verified",
+  status: "draft",
   meta: { author: "claude-opus", created: "2026-10-31", factcheck: "verifier-pg7m5 (reports/verify/pg7m5.md)", teacher: null },
   sources: [
-    { id: "a7", title: "Мерзляк А. Г., Полонський В. Б., Якір М. С. Алгебра. 7 клас. — Харків: Гімназія, 2024 (п. 20–23; дзеркало PDF на 4book.org)", url: "https://file.4book.org/images/shcoolbook_ua/7/7_a_m_2024.pdf" }
+    { id: "a7", title: "Мерзляк А. Г., Якір М. С. Алгебра. 7 клас. — Харків: Гімназія, 2024 (п. 20–23; дзеркало PDF на 4book.org)", url: "https://file.4book.org/images/shcoolbook_ua/7/7_a_m_2024.pdf" }
   ],
   items: [
     /* ───────────── Урок 1. Один вхід — один вихід (функція, f(a), значення аргументу) ───────────── */
