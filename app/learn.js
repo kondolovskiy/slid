@@ -1887,6 +1887,43 @@ window.SLID_LEARN = (() => {
     return E;
   }
 
+  /* ---------- Гіпотези «обчислення чи поняття» (app/hyp.js, docs/design/diag-hypothesis-math.md §3.1, §5.2; етап E1) ----------
+     Лише нові функції поверх наявного розбору; наявні функції не змінено. Глобальний LIMIT вони не змінюють. */
+  const finDen = q => { let d = q < 0n ? -q : q; for (const f of [2n, 5n]) while (d % f === 0n) d /= f; return d === 1n; };
+  /** Значення точного запису (§5.2, правило «наближення»): число, звичайний чи мішаний дріб, періодичний дріб «0,(4)»,
+      корені й π — тим самим розбором, що exactRoot (exactOf). Префікс «x =» знімається, як у number.
+      { x — значення числом, rat — раціональне, fin — скінченний десятковий дріб (раціональне зі знаменником 2ᵃ·5ᵇ), p, q — BigInt
+      для раціонального } або null (не число, змінні, межа точної арифметики). */
+  function numVal(v) {
+    const lim = LIMIT;
+    try {
+      return limited(() => {
+        const t = numPre(typeof v === "number" ? String(v).replace(".", ",") : String(v ?? "")).trim(); if (!t) return null;
+        const per = parsePeriodic(t);
+        const e = per ? ratOf(per) : exactOf(t); if (!e) return null;
+        const q = xrat(e.x);
+        return q ? { x: Number(q[0]) / Number(q[1]), rat: true, fin: finDen(q[1]), p: q[0], q: q[1] } : { x: xnum(e.x), rat: false, fin: false };
+      }, () => null);
+    } finally { LIMIT = lim; }
+  }
+  /** Код причини «form» (журнал hyp_fmt.fc, §3.1) — той самий вибір, що й текст formHint (код ↔ текст: formHint(s, v) дає саме
+      текст цього коду). Ключі MSG: reduce, frac, mixed, improper, divrem, ratio, rootNum, rootCopy, rootReduce, simplify, constC,
+      expandParen, expandLike, power, factored, reduced, simplified, retry; «name» — відкинута назва (точка, проміжок);
+      «decimals» — кількість знаків після коми; «units» — одиниці величини. null — запис не «form» (checkAns). Як і formHint
+      у плеєрі, викликається після checkAns того самого запису (тут — власного). */
+  const NAME_CODES = ["setRange", "setName", "pointName", "pointImage"];
+  function formCode(s, v) {
+    if (checkAns(s, v) !== "form") return null;
+    const t = formHint(s, v), kind = s.answerKind || "number";
+    const k = Object.keys(MSG).find(x => MSG[x] === t);
+    if (k) return NAME_CODES.includes(k) ? "name" : k;
+    if (kind === "number" && s.decimals !== undefined && t === decMsg(s.decimals)) return "decimals";
+    if (kind === "quantity") { const U = qtyUnits(s); if (U && t === qtyFormMsg(U)) return "units"; }
+    if (/^(?:Координати|Проміжок) правильн/.test(t)) return "name";
+    return "other";
+  }
+
   return { OK, BAD, SKIP, PASS, DIAG_TYPES, DIAG_ANSWER_KINDS, planFor, practiceItems, nextItem, remaining, topicStatus, level, buildPlan, diagRev, resumeDiag, finishDiag, record, detect, syncPlan, lessonDone, todo, isKnown, diagOpen, work, SK_RETAG, SK_RETAG2, SK_MIGRATIONS, migrateSk, validate,
-    parseAns, parseDivrem, checkAns, diagAnswerOk, badHint, hintTexts, keyInput, timeExample, quantityUnits: s => qtyUnits(s)?.units || null, stripUnit, listKey, pairKey, answerSig, formHint, ansText, srcRef, numberKeys, numberHelp, ANSWER_KINDS, BOX_DAYS, srsInit, srsUpdate, srsFromDiag, DIAG_BOX, genAll, genInstance, genIssues, genHash, GEN_MAX, isDue, pickSession, POOL_TYPES, validatePool };
+    parseAns, parseDivrem, checkAns, diagAnswerOk, badHint, hintTexts, keyInput, timeExample, quantityUnits: s => qtyUnits(s)?.units || null, stripUnit, listKey, pairKey, answerSig, formHint, ansText, srcRef, numberKeys, numberHelp, ANSWER_KINDS, BOX_DAYS, srsInit, srsUpdate, srsFromDiag, DIAG_BOX, genAll, genInstance, genIssues, genHash, GEN_MAX, isDue, pickSession, POOL_TYPES, validatePool,
+    numVal, formCode };
 })();
