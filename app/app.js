@@ -1041,10 +1041,16 @@ function showMarks(s, reveal){
 function gain(n){ const m=L.boss?2:1; const v=n*m; run.xp+=v; addXp(v); return v; }
 function skillHit(s, ok){ if(!s.sk) return; const k=skey(C,s.sk); const r=S.skills[k]||(S.skills[k]={ok:0,total:0}); r.total++; if(ok) r.ok++; }
 
+/* тест рівня, answer: півбала (LEARN.HALF; engine-diag-half-credit) — значення правильне, а вимоганого умовою вигляду немає чи корінь
+   не обчислено (LEARN.diagVerdict). Вердикт зберігається одразу (закритий плеєр не дасть відповісти вдруге); далі короткий екран-пояснення
+   з наявним текстом formHint, без другої спроби й без «Ще не знаю»; «Далі» — наступне завдання тесту (diagNext). */
+function diagHalf(s){ run.res[idx]=LEARN.HALF; save(); checked=true; lock(); pProgress();
+  setDock("info","Зараховано півбала.",LEARN.formHint(s,st),"Далі"); $("#skip").hidden=true; focusAction(); }
+function diagNext(){ idx=LEARN.nextItem(run.diag,run.res); if(idx<0) idx=L.screens.length; renderScreen(); }
 function check(){
   const s=L.screens[idx];
-  // answer у тесті: «form» (значення правильне, запис ні) — OK (рішення людини 2026-11-01; LEARN.diagAnswerOk)
-  if(run.diag) return diagAnswer((s.type==="answer"? LEARN.diagAnswerOk(s,st) : gradeNow(s))? LEARN.OK : LEARN.BAD);
+  // answer у тесті: OK / HALF / BAD за LEARN.diagVerdict (інший запис того самого — OK; вимаганий умовою вигляд не показано — HALF)
+  if(run.diag){ const v= s.type==="answer"? LEARN.diagVerdict(s,st) : gradeNow(s)? LEARN.OK : LEARN.BAD; return v===LEARN.HALF? diagHalf(s) : diagAnswer(v); }
   if(s.poll||s.hyp){ if(s.poll) S.polls[s.poll]=st; const g=gain(5); checked=true; lock();
     setDock("info", `${s.fbTitle} <span class="gain">+${g}</span>`, s.fbText, "Далі"); return focusAction(); }
   if(sameAsTried()) return refocusAnswer();
@@ -1105,6 +1111,7 @@ function refocusAnswer(){ const ni=$("#numIn"), touch= lastPointer==="touch"||la
 $("#action").onclick=()=>{
   if(idx>=L.screens.length){ const f=afterEnd; afterEnd=null; closePlayer(); if(f) f(); return; }
   const s=L.screens[idx];
+  if(checked&&run.diag) return diagNext();   // після екрана-пояснення HALF
   if(s.type==="intro"||s.type==="info"||s.type==="explore"||checked){ idx++; renderScreen(); return; }
   check();
 };

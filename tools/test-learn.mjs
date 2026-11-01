@@ -1685,28 +1685,32 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
 }
 /* engine-practice-pool: початкові коробки SRS з нового результату тесту (ok → box 2 / shaky → box 0; D-030 BOX_DAYS не змінено) */
 { const day = "2026-11-01";
-  eq(L.BOX_DAYS, [1, 3, 7, 16, 35], "srs з тесту: інтервали D-030 незмінні"); eq(L.DIAG_BOX, { ok: 2, shaky: 0 }, "srs з тесту: ok → третя, shaky → перша");
+  eq(L.BOX_DAYS, [1, 3, 7, 16, 35], "srs з тесту: інтервали D-030 незмінні"); eq(L.DIAG_BOX, { ok: 2, shaky: 0, known: 2 }, "srs з тесту: ok і cur «знайоме» → третя, shaky → перша");
   // D: a (a1, a2) — 0 і 2; b (b1) — 1 і 4; c (c1) — 3 і 6; x, y — cur
   const resA = { 0: OK, 1: OK, 2: OK, 3: OK, 4: BAD, 5: OK, 6: BAD, 7: OK };   // a ok, b shaky, c shaky
   { const S = { ...fresh(), srs: {} }; L.finishDiag(S, "m", D, resA, { day, grade: 6 });
     eq(S.srs, { a1: { box: 2, due: "2026-11-08", src: "diag", diag: "dg", rev: 1 }, a2: { box: 2, due: "2026-11-08", src: "diag", diag: "dg", rev: 1 },
-      b1: { box: 0, due: "2026-11-02", src: "diag", diag: "dg", rev: 1 }, c1: { box: 0, due: "2026-11-02", src: "diag", diag: "dg", rev: 1 } }, "srs з тесту: ok → box 2 (7 днів), shaky → box 0 (завтра); cur — без коробок");
+      b1: { box: 0, due: "2026-11-02", src: "diag", diag: "dg", rev: 1 }, c1: { box: 0, due: "2026-11-02", src: "diag", diag: "dg", rev: 1 },
+      x1: { box: 2, due: "2026-11-08", src: "diag", diag: "dg", rev: 1 }, y1: { box: 2, due: "2026-11-08", src: "diag", diag: "dg", rev: 1 }, y2: { box: 2, due: "2026-11-08", src: "diag", diag: "dg", rev: 1 } },
+      "srs з тесту: ok → box 2 (7 днів), shaky → box 0 (завтра); cur «знайоме» → box 2 (half-credit P3-2)");
+    eq(L.isDue(S, "x1", day), false, "srs з тесту: урок «знайоме» не чекає повторення одразу (P3-2)");
     eq(L.isDue(S, "a1", "2026-11-07"), false, "srs з тесту: ok не чекає до 7-го дня"); eq(L.isDue(S, "a1", "2026-11-08"), true, "srs з тесту: ok — на 7-й день");
     // перша вдала сесія піднімає з коробки тесту; запис тренування вже без src — наступний тест його не чіпає
     L.srsUpdate(S, [{ lesson: "a1", ok: true }], "2026-11-08"); eq(S.srs.a1, { box: 3, due: "2026-11-24" }, "srs з тесту: сесія піднімає з box 2 на box 3");
     const allBad = Object.fromEntries(D.items.map((_, i) => [i, BAD]));
     L.finishDiag(S, "m", D, allBad, { day: "2026-11-10", grade: 6 });
     eq(S.srs.a1, { box: 3, due: "2026-11-24" }, "srs з тесту: запис тренування повторний тест не змінює");
-    eq([S.srs.a2, S.srs.b1, S.srs.c1], [undefined, undefined, undefined], "srs з тесту: gap знімає запис попереднього тесту (тренування його не чіпало)"); }
+    eq([S.srs.a2, S.srs.b1, S.srs.c1], [undefined, undefined, undefined], "srs з тесту: gap знімає запис попереднього тесту (тренування його не чіпало)");
+    eq([S.srs.x1, S.srs.y1], [undefined, undefined], "srs з тесту: cur new після «знайоме» знімає запис попереднього тесту"); }
   { // наявні записи уроку/тренування (без src) не змінюються; gap не створює запису; без дня — нічого
     const S = { ...fresh(), srs: { a1: { box: 0, due: "2026-10-20" }, b1: { box: 4, due: "2026-12-01" } } };
     L.finishDiag(S, "m", D, resA, { day, grade: 6 });
     eq([S.srs.a1, S.srs.b1, S.srs.a2.box, S.srs.c1.box], [{ box: 0, due: "2026-10-20" }, { box: 4, due: "2026-12-01" }, 2, 0], "srs з тесту: записи уроку/тренування не переінтерпретуються");
-    const G = fresh(); L.finishDiag(G, "m", D, { 0: BAD, 1: BAD, 3: BAD, 5: OK, 7: OK }, { day, grade: 6 });
-    eq(G.srs, undefined, "srs з тесту: усе gap/cur — S.srs не створюється");
+    const G = fresh(); L.finishDiag(G, "m", D, { 0: BAD, 1: BAD, 3: BAD, 5: BAD, 7: SKIP }, { day, grade: 6 });
+    eq(G.srs, undefined, "srs з тесту: усе gap / cur new — S.srs не створюється");
     const N = fresh(); L.finishDiag(N, "m", D, resA, { grade: 6 }); eq(N.srs, undefined, "srs з тесту: без дня — нічого");
     const H = fresh(); L.finishDiag(H, "m", D, resA, { day, grade: 6, hasLesson: id => id !== "a2" });
-    eq(Object.keys(H.srs).sort(), ["a1", "b1", "c1"], "srs з тесту: лише уроки з hasLesson"); }
+    eq(Object.keys(H.srs).sort(), ["a1", "b1", "c1", "x1", "y1", "y2"], "srs з тесту: лише уроки з hasLesson"); }
   { // рев'ю engine-practice-pool P3-1: пройдений урок робить запис тесту записом уроку — повторний тест його не змінює
     const S = { ...fresh(), srs: {}, lessons: {} }; L.finishDiag(S, "m", D, resA, { day, grade: 6 });
     S.lessons.a1 = { done: true }; L.srsInit(S, "a1", "2026-11-03"); eq(S.srs.a1, { box: 2, due: "2026-11-08" }, "srs з тесту: srsInit після уроку знімає src, коробку й строк лишає");
@@ -1816,12 +1820,12 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
 
 /* engine-decisions-1101 (рішення людини 2026-11-01): (1) form у тесті рівня — OK; (2) A₁/A′ для образу точки A — ok;
    (3) тренування тем, які тест рівня позначив ok / «знайоме», відкрите без пройденого уроку. */
-{ // (1) diagAnswerOk: ok і form — true; bad — false; число коренем (√576) — false: значення не обчислено
+{ // (1) diagAnswerOk (з engine-diag-half-credit — лише OK): ok і form без вимоги вигляду — true; вимаганий вигляд, корінь, bad — false
   const Q = { type: "answer", answerKind: "quantity", answer: 245, units: ["см", "м"], form: "compound" };
   const DEC = { type: "answer", answer: "37,0", decimals: 1 }, RED = { type: "answer", answer: "3/4", reduced: true }, IMP = { type: "answer", answer: "7/3", form: "improper" };
   const RT = { type: "answer", answer: 24, body: "<p>Знайди сторону квадрата площею 576 см².</p>" }, TM = { type: "answer", answerKind: "time", answer: "10:05" };
-  for (const [s, v, r, ok] of [[Q, "2 м 45 см", "ok", true], [Q, "245 см", "form", true], [Q, "2,45 м", "form", true], [Q, "245", "bad", false], [Q, "2 м 54 см", "bad", false],
-    [DEC, "37,0", "ok", true], [DEC, "37", "form", true], [DEC, "37,1", "bad", false], [RED, "6/8", "form", true], [RED, "3/5", "bad", false], [IMP, "2 1/3", "form", true],
+  for (const [s, v, r, ok] of [[Q, "2 м 45 см", "ok", true], [Q, "245 см", "form", false], [Q, "2,45 м", "form", false], [Q, "245", "bad", false], [Q, "2 м 54 см", "bad", false],
+    [DEC, "37,0", "ok", true], [DEC, "37", "form", true], [DEC, "37,1", "bad", false], [RED, "6/8", "form", false], [RED, "3/5", "bad", false], [IMP, "2 1/3", "form", false],
     [RT, "24", "ok", true], [RT, "√576", "form", false], [RT, "2√144", "form", false], [RT, "√577", "bad", false], [TM, "10:05", "ok", true], [TM, "10:5", "bad", false]]) {
     eq(L.checkAns(s, v), r, `decisions-1101 (1) checkAns «${v}»`); eq(L.diagAnswerOk(s, v), ok, `decisions-1101 (1) diagAnswerOk «${v}»`); }
 }
@@ -1875,6 +1879,71 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
   eq(["l6a", "l6b", "l7a", "l7b"].filter(l => L.diagOpen(legacy, "math", l, ctx(7))), ["l6a", "l7b"], "decisions-1101 (3) старий S.plan без grade — читається як план класу");
   const old = { diag: {}, plan: { math: { diag: "dg-old", topics: { p1: "ok" }, steps: [], known: [] } }, mast: {}, errs: [], skw: {}, grade: 7 };
   eq(L.diagOpen(old, "math", "l6a", ctx(7)), false, "decisions-1101 (3) тест плану зник із змісту — не відкриває");
+}
+/* engine-diag-half-credit (рішення людини й методичне правило 2026-11-01): HALF — значення правильне, а вимоганого умовою вигляду
+   немає (reduced, mixed, form improper, compound) чи обчислення не завершено (√576); інший запис без вимоги вигляду — OK. */
+{ const HALF = L.HALF;
+  eq([HALF, L.OK, L.BAD, L.SKIP], [0.5, 1, 0, -1], "half: HALF = 0.5, старі вердикти без змін");
+  const Q = { type: "answer", answerKind: "quantity", answer: 245, units: ["см", "м"], form: "compound" }, QF = { type: "answer", answerKind: "quantity", answer: 245, units: ["см", "м"] };
+  const DEC = { type: "answer", answer: "37,0", decimals: 1 }, RED = { type: "answer", answer: "3/4", reduced: true }, REDF = { ...RED, fractionOnly: true };
+  const FO = { type: "answer", answer: "3/4", fractionOnly: true }, IMP = { type: "answer", answer: "7/3", form: "improper" }, MIX = { type: "answer", answer: "2 1/3", mixed: true };
+  const PL = { type: "answer", answer: "8/3" }, RT = { type: "answer", answer: 24, body: "<p>Знайди сторону квадрата площею 576 см².</p>" };
+  const RTC = { type: "answer", answer: 24, body: "<p>Обчисли $\\sqrt{576}$.</p>" }, RTU = { ...RT, unit: "см" }, TM = { type: "answer", answerKind: "time", answer: "10:05" };
+  const V = { [L.OK]: "OK", [HALF]: "HALF", [L.BAD]: "BAD" };
+  for (const [name, s, v, want] of [
+    ["compound, складений запис", Q, "2 м 45 см", "OK"], ["compound, 245 см", Q, "245 см", "HALF"], ["compound, 2,45 м", Q, "2,45 м", "HALF"], ["compound, без одиниць", Q, "245", "BAD"], ["compound, хибне", Q, "2 м 54 см", "BAD"],
+    ["quantity без compound, 245 см", QF, "245 см", "OK"], ["quantity без compound, 2 м 45 см", QF, "2 м 45 см", "OK"],
+    ["decimals — інший запис, 37", DEC, "37", "OK"], ["decimals, 37,0", DEC, "37,0", "OK"], ["decimals, хибне", DEC, "37,1", "BAD"],
+    ["reduced, 6/8", RED, "6/8", "HALF"], ["reduced, 3/4", RED, "3/4", "OK"], ["reduced, 0,75 (не дріб)", RED, "0,75", "HALF"], ["reduced, хибне", RED, "3/5", "BAD"],
+    ["reduced + fractionOnly, 0,75", REDF, "0,75", "HALF"], ["reduced + fractionOnly, 6/8", REDF, "6/8", "HALF"],
+    ["fractionOnly — інший запис, 0,75", FO, "0,75", "OK"], ["improper, 2 1/3", IMP, "2 1/3", "HALF"], ["improper, 7/3", IMP, "7/3", "OK"],
+    ["mixed, 7/3", MIX, "7/3", "HALF"], ["mixed, 14/6", MIX, "14/6", "HALF"], ["mixed, 2 1/3", MIX, "2 1/3", "OK"], ["mixed, хибне", MIX, "2 1/4", "BAD"],
+    ["без вимоги вигляду, 1 5/3", PL, "1 5/3", "OK"], ["без вимоги вигляду, 2 2/3", PL, "2 2/3", "OK"],
+    ["√576 при 24", RT, "√576", "HALF"], ["2√144 при 24", RT, "2√144", "HALF"], ["√576 см при unit", RTU, "√576 см", "HALF"], ["24", RT, "24", "OK"], ["√577", RT, "√577", "BAD"],
+    ["копія виразу умови √576", RTC, "√576", "BAD"], ["2√144 при «Обчисли √576»", RTC, "2√144", "HALF"],
+    ["time ok", TM, "10:05", "OK"], ["time bad", TM, "10:5", "BAD"], ["порожньо", RED, "", "BAD"]])
+    eq(V[L.diagVerdict(s, v)], want, `half: diagVerdict ${name} «${v}»`);
+  // пояснення — наявні тексти formHint; не HALF — null
+  eq(L.diagHalfHint(RED, "6/8"), "Значення правильне, але дріб ще можна скоротити.", "half: пояснення reduced");
+  eq(L.diagHalfHint(Q, "245 см"), "Значення правильне. Запиши його в м і см: спершу більші одиниці, потім менші, цілими числами.", "half: пояснення compound");
+  eq(L.diagHalfHint(RT, "√576"), "Значення правильне. Обчисли корінь і запиши відповідь числом.", "half: пояснення кореня");
+  eq(L.diagHalfHint(IMP, "2 1/3"), "Значення правильне. Запиши відповідь неправильним дробом — без цілої частини.", "half: пояснення improper");
+  eq(L.diagHalfHint(MIX, "7/3"), "Значення правильне. Запиши відповідь мішаним числом: ціла частина, пробіл, дріб.", "half: пояснення mixed");
+  eq([L.diagHalfHint(RED, "3/4"), L.diagHalfHint(DEC, "37"), L.diagHalfHint(RED, "3/5"), L.diagHalfHint(RTC, "√576")], [null, null, null, null], "half: OK і BAD — без пояснення");
+  eq([L.DIAG_FORM(RED), L.DIAG_FORM(MIX), L.DIAG_FORM(IMP), L.DIAG_FORM(Q), L.DIAG_FORM(DEC), L.DIAG_FORM(FO), L.DIAG_FORM(QF), L.DIAG_FORM({ answerKind: "expression", form: "reduced" })],
+    [true, true, true, true, false, false, false, false], "half: DIAG_FORM — лише reduced, mixed, improper, compound");
+  // наступне завдання і смужка: HALF — не провал теми, складніше завдання теми показують
+  eq([L.nextItem(D, { 0: HALF }), L.nextItem(D, { 0: HALF, 1: BAD }), L.remaining(D, { 0: HALF }), L.remaining(D, { 0: BAD })], [1, 2, 7, 6], "half: nextItem/remaining — тему пробуємо далі");
+  eq(L.nextItem(D, { 0: BAD, 1: HALF, 3: BAD, 5: OK }), 4, "half: HALF на базовому b → складніше b (4)");
+  // підсумок теми: HALF — щонайбільше shaky; перше HALF — shaky, не gap; cur з HALF — new
+  const ts = r => L.topicStatus(D, r);
+  eq([ts({ 0: HALF, 2: OK }).a, ts({ 0: OK, 2: HALF }).a, ts({ 0: HALF, 2: HALF }).a, ts({ 0: HALF }).a, ts({ 0: HALF, 2: BAD }).a, ts({ 0: OK, 2: OK }).a, ts({ 0: BAD, 2: HALF }).a, ts({ 5: HALF }).x, ts({ 5: OK }).x],
+    ["shaky", "shaky", "shaky", "shaky", "shaky", "ok", "gap", "new", "known"], "half: topicStatus — HALF не ok, перше HALF — shaky");
+  // рівень: HALF дає частку, як shaky (0,5)
+  eq(L.level(D, ts({ 0: HALF, 2: OK, 1: OK, 4: OK, 3: OK, 6: OK })).share, 2.5 / 3, "half: level — тема з HALF = 0,5");
+  // план: shaky-тема з HALF — урок завдання з HALF; SRS — box 0, як shaky
+  const D4 = { id: "d4", grade: 6, topics: [{ id: "a", kind: "pre", lessons: ["a1", "a2"] }, { id: "b", kind: "pre", lessons: ["b1"] }, { id: "x", kind: "cur", lessons: ["x1"] }],
+    items: [{ topic: "a", lesson: "a1" }, { topic: "a", lesson: "a2" }, { topic: "b" }, { topic: "b" }, { topic: "x" }] };
+  const S = { ...fresh(), srs: {} }, plan = L.finishDiag(S, "m", D4, { 0: OK, 1: HALF, 2: HALF, 3: OK, 4: HALF }, { day: "2026-11-01", grade: 6 });
+  eq([plan.topics, plan.steps.map(st => [st.l, st.why]), plan.known], [{ a: "shaky", b: "shaky", x: "new" }, [["a2", "shaky"], ["b1", "shaky"]], []], "half: buildPlan — shaky, урок завдання з HALF");
+  eq([S.srs.a1?.box, S.srs.a2?.box, S.srs.b1?.box, S.srs.x1], [0, 0, 0, undefined], "half: srsFromDiag — shaky → box 0; cur new — без запису");
+  eq(S.diag.d4.res, { 0: OK, 1: HALF, 2: HALF, 3: OK, 4: HALF }, "half: результат зберігає HALF як 0,5");
+  // старий збережений результат (1/0/-1) читається як раніше: planFor будує той самий план
+  const O = { ...fresh(), grade: 6, diag: { d4: { done: true, date: "2026-10-01", res: { 0: OK, 1: BAD, 2: SKIP, 4: OK } } } };
+  eq(L.planFor(O, "m", { grade: 6, diags: [D4] }).topics, { a: "shaky", b: "gap", x: "known" }, "half: старий res без HALF — як раніше");
+}
+/* P3-3 (рев'ю engine-decisions-1101): мутанти, що вижили — diagOpen без hasLesson; practiceItems з ctx || {} */
+{ const d7 = { id: "dg7", grade: 7, topics: [{ id: "p1", kind: "pre", lessons: ["l6a"] }, { id: "k1", kind: "cur", lessons: ["l7a"] }], items: [{ topic: "p1" }, { topic: "p1" }, { topic: "k1" }] };
+  const subj = { id: "math", diags: [d7], sections: [{ id: "s6", grade: 6, lessons: [{ id: "l6a" }, { id: "l6z" }] }, { id: "s7", grade: 7, lessons: [{ id: "l7a" }, { id: "l7b" }] }] };
+  subj.pools = subj.sections.map(sec => ({ id: "p" + sec.id, section: sec.id, items: sec.lessons.map((l, i) => ({ id: "i" + i, lesson: l.id, lvl: 1 })) }));
+  const all = new Set(["l6a", "l6z", "l7a", "l7b"]), ctx = (has = id => all.has(id)) => ({ grade: 7, diags: [d7], day: "2026-11-01", hasLesson: has });
+  const S = { ...fresh(), grade: 7, lessons: {}, srs: {} }; L.finishDiag(S, "math", d7, { 0: OK, 1: OK, 2: OK }, ctx());
+  eq([L.diagOpen(S, "math", "l6a", ctx()), L.diagOpen(S, "math", "l6a", ctx(id => id !== "l6a")), L.diagOpen(S, "math", "l7a", ctx(id => id !== "l7a"))], [true, false, false],
+    "P3-3: diagOpen — урок поза hasLesson не відкривається, навіть якщо тема ok / «знайоме»");
+  // план, де known містить урок молодшого класу (старий чи пошкоджений профіль): без ctx practiceItems не відкриває нічого тестом
+  const K = { ...fresh(), grade: 7, lessons: {}, plan: { math: { diag: "dg7", grade: 7, topics: { p1: "ok" }, steps: [], known: ["l6z"] } } };
+  eq(L.practiceItems(K, subj).map(it => it.lesson), ["l7a", "l7b"], "P3-3: practiceItems без ctx — лише поточний клас, навіть коли план щось відкриває");
+  eq(L.practiceItems(K, subj, ctx()).map(it => it.lesson), ["l6a", "l6z", "l7a", "l7b"], "P3-3: practiceItems з ctx — відкрите планом (p1 ok, known)");
 }
 console.log(`\n${n} перевірок, ${fails ? fails + " з помилками" : "усе гаразд"}`);
 if (fails) process.exit(1);

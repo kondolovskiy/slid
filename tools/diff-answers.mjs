@@ -10,6 +10,9 @@
 // хибні назви («n ∈», «CD = », «E(f) = »), більше мішаних чисел і періодичних меж (рев'ю g11 P3-4, kinds-new P3-3).
 // engine-learn-prefixes-p3b — «p3b …»: назви об'єктів умови без координат (BC, AO, X, OX) і назви образу з індексом/штрихом (A₁, A').
 // engine-decisions-1101 — «dec-1101 …»: назва образу даної точки (A₁, A′ при «образ точки $A(…)$» / «симетричної точці $A(…)$») — ok.
+// engine-diag-half-credit — «half …»: вердикт тесту рівня (старий diagAnswerOk → новий diagVerdict: OK / HALF / BAD) на всіх вправах
+// answer з DIAG_ANSWER_KINDS, ніби вони стояли в тесті (чинні SLID.diag answer ще не мають); пробні записи — нескорочений дріб,
+// мішане/неправильне число, десятковий запис, √(K²), 2√(K²/4), інші одиниці величини. Старий learn.js без diagAnswerOk — блок пропущено.
 // engine-diag-answer-kinds — answer у діагностиках (SLID.diag) теж у прогоні; режим --content-old: старий і новий ЗМІСТ на одному
 // (поточному) learn.js — які вердикти змінила правка вправ (ключ, answerKind, умова з назвами), а не рушія.
 // Межі --content-old: рушій зміст старої ревізії бере з неї ж (ревізії без app/lab.js, learn.js, math.js чи registry.js — rc 2);
@@ -314,4 +317,43 @@ if (args.includes("--time")) {
       if (dt > worst[0]) worst = [dt, `${s.answerKind} ← ${v.slice(0, 40)}`]; }
     console.log(`Час (${L[0]}): найгірший checkAns + підказка ${worst[0].toFixed(0)} мс — ${worst[1]}`); }
 }
-process.exit(unexplained.length || keyBad.length ? 1 : 0);
+// ---------- half: вердикт тесту рівня (engine-diag-half-credit) ----------
+// Класифікація незалежна від diagVerdict: «вимаганий вигляд» — поле reduced/mixed/improper/compound є, запис зі знятими ВСІМА полями вигляду
+// дає ok (значення правильне), а зі знятими лише decimals/fractionOnly лишається form; «корінь» — запис із √/∛, checkAns form, і запис не
+// трапляється дослівно серед формул умови (інакше — копія умови, BAD як і раніше).
+const halfCounts = { "half вимаганий вигляд (reduced, mixed, improper, compound): OK → HALF": 0, "half корінь не обчислено (√576 при 24): BAD → HALF": 0 }, halfBad = [];
+let halfTotal = 0;
+if (typeof OLD.diagAnswerOk === "function" && typeof NEW.diagVerdict === "function") {
+  const V = { [NEW.OK]: "OK", [NEW.HALF]: "HALF", [NEW.BAD]: "BAD" }, kinds = NEW.DIAG_ANSWER_KINDS || ["number", "time", "quantity"];
+  const strip = (s, ks) => Object.fromEntries(Object.entries(s).filter(([k, x]) => !(ks.includes(k) || (k === "form" && ks.includes("form") && x !== undefined))));
+  const formTex = s => [...stmt(s).matchAll(/\$([^$]+)\$/g)].flatMap(m => m[1].replace(/\\sqrt\s*\{([^{}]*)\}/g, "√$1").replace(/\s+/g, "").split("="));
+  const probes = s => { const out = new Set(records(s)), K = keyText(s), a = NEW.parseAns(K);
+    if ((s.answerKind || "number") === "number" && a) {
+      const w = Math.trunc(a.n / a.d), r = Math.abs(a.n % a.d);
+      out.add(`${a.n * 2}/${a.d * 2}`); out.add(`${a.n * 3}/${a.d * 3}`); out.add(`${a.n}/${a.d}`); if (w && r) out.add(`${w} ${r}/${a.d}`); if (r && w) out.add(`${w} ${r * 2}/${a.d * 2}`);
+      if ([2, 4, 5, 8, 10, 20, 25, 50].includes(a.d)) out.add(String(a.n / a.d).replace(".", ","));
+      if (a.d === 1 && a.n > 0 && a.n < 1e4) { out.add(`√${a.n * a.n}`); if (a.n % 2 === 0) out.add(`2√${(a.n / 2) ** 2}`); out.add(`∛${a.n ** 3}`); } }
+    if (s.answerKind === "quantity") { const U = NEW.quantityUnits(s); if (U) for (const u of U) { out.add(`${s.answer} ${u}`); } }
+    return [...out]; };
+  for (const { id, s } of items) {
+    if (!kinds.includes(s.answerKind || "number")) continue;
+    for (const v of probes(s)) {
+      halfTotal++;
+      const o = OLD.diagAnswerOk(s, v) ? "OK" : "BAD", n = V[NEW.diagVerdict(s, v)], r = NEW.checkAns(s, v);
+      if (o === n) continue;
+      const need = !!(s.reduced || s.mixed || s.form === "improper" || (s.answerKind === "quantity" && s.form === "compound"));
+      const isForm = o === "OK" && n === "HALF" && r === "form" && need && NEW.checkAns(strip(s, ["reduced", "mixed", "form", "decimals", "fractionOnly"]), v) === "ok"
+        && NEW.checkAns(strip(s, ["decimals", "fractionOnly"]), v) === "form";
+      const isRoot = o === "BAD" && n === "HALF" && r === "form" && /[√∛]|sqrt/.test(v) && !formTex(s).includes(v.replace(/\s+/g, ""));
+      if (isForm) halfCounts["half вимаганий вигляд (reduced, mixed, improper, compound): OK → HALF"]++;
+      else if (isRoot) halfCounts["half корінь не обчислено (√576 при 24): BAD → HALF"]++;
+      else halfBad.push(`${id} ${JSON.stringify(s.answer)} ← «${v}»: тест ${o} → ${n} (checkAns ${r})`);
+      if (args.includes("--list-cat") && /^half/.test(opt("--list-cat")) && (isForm || isRoot)) console.log(`    ${id} «${v}»: ${o} → ${n}`);
+    }
+  }
+  console.log(`Вердикт тесту рівня (diagAnswerOk → diagVerdict), записів ${halfTotal}:`);
+  for (const [c, k] of Object.entries(halfCounts)) console.log(`  ${String(k).padStart(5)}  ${c}`);
+  console.log(`  ${String(halfBad.length).padStart(5)}  НЕПОЯСНЕНІ (тест рівня)`);
+  halfBad.slice(0, SHOW).forEach(x => console.log("    " + x));
+} else console.log("Вердикт тесту рівня: у старому learn.js немає diagAnswerOk (чи в новому diagVerdict) — порівняння пропущено.");
+process.exit(unexplained.length || keyBad.length || halfBad.length ? 1 : 0);
