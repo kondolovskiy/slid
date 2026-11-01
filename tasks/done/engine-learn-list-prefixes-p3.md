@@ -4,7 +4,7 @@ claimed_at: 2026-11-01T12:09:26.784Z
 id: engine-learn-list-prefixes-p3
 type: engine
 subject: math
-status: review
+status: done
 claimed_by: agent-engine-learn-list-prefixes-p3
 created: 2026-11-01
 depends_on: [engine-math-answer-g11-issues, engine-player-a11y-followup]
