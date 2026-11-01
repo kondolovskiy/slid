@@ -18,6 +18,7 @@ export class AppModule {}
 
 export async function createApp() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, { logger: ['error', 'warn'] });
+  app.disable('x-powered-by');
   app.useBodyParser('json', { limit: '512kb' });
   const origins = process.env.CORS_ORIGINS?.split(',').map((s) => s.trim()).filter(Boolean);
   if (origins?.length) app.enableCors({ origin: origins });

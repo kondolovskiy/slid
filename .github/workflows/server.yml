@@ -35,4 +35,6 @@ jobs:
       - run: npm ci
       - run: npm run check
       - run: npm run build
+      - run: npm run migrate   # міграції з dist, як на проді
+      - run: npm run migrate   # повторно — без змін
       - run: npm run test:e2e

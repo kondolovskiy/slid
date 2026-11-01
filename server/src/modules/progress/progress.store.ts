@@ -37,7 +37,7 @@ export class PgProgressStore implements ProgressStore {
 
 export class MemoryProgressStore implements ProgressStore {
   private readonly docs = new Map<string, ProgressDoc>();
-  async get(learnerId: string) { return this.docs.get(learnerId) ?? EMPTY; }
+  async get(learnerId: string) { return structuredClone(this.docs.get(learnerId) ?? EMPTY); }
   async compareAndSet(learnerId: string, rev: number, data: Json) {
     if ((await this.get(learnerId)).rev !== rev) return null;
     this.docs.set(learnerId, { rev: rev + 1, data: structuredClone(data) });

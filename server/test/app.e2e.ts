@@ -20,7 +20,10 @@ describe('API (e2e, Postgres)', () => {
   });
   afterAll(() => app?.close());
 
-  it('health', () => api.get('/health').expect(200, { ok: true }));
+  it('health без X-Powered-By', async () => {
+    const r = await api.get('/health').expect(200, { ok: true });
+    expect(r.headers['x-powered-by']).toBeUndefined();
+  });
 
   it('прогрес без токена або з чужим токеном — 401', async () => {
     await api.get('/v1/progress').expect(401);
@@ -50,6 +53,16 @@ describe('API (e2e, Postgres)', () => {
     expect(codes.filter((c) => c === 409)).toHaveLength(4);
   });
 
+  it('паралельні оновлення з однаковим rev > 0: рівно одне успішне', async () => {
+    const { body: me } = await api.post('/v1/learners').expect(201);
+    const auth = { Authorization: `Bearer ${me.token}` };
+    await api.put('/v1/progress').set(auth).send({ rev: 0, data: { xp: 0 } }).expect(200);
+    const codes = await Promise.all([1, 2, 3, 4, 5].map((xp) =>
+      api.put('/v1/progress').set(auth).send({ rev: 1, data: { xp } }).then((r) => r.status)));
+    expect(codes.sort()).toEqual([200, 409, 409, 409, 409]);
+    await api.get('/v1/progress').set(auth).expect(200).then((r) => expect(r.body.rev).toBe(2));
+  });
+
   it('учні ізольовані', async () => {
     const a = (await api.post('/v1/learners')).body;
     const b = (await api.post('/v1/learners')).body;
@@ -57,8 +70,15 @@ describe('API (e2e, Postgres)', () => {
     await api.get('/v1/progress').set('Authorization', `Bearer ${b.token}`).expect(200, { rev: 0, data: null });
   });
 
-  it('некоректне тіло — 400', async () => {
+  it('некоректне тіло — 400, а не 500', async () => {
     const { body: me } = await api.post('/v1/learners');
-    await api.put('/v1/progress').set('Authorization', `Bearer ${me.token}`).send({ rev: -1, data: {} }).expect(400);
+    const put = (body: object) => api.put('/v1/progress').set('Authorization', `Bearer ${me.token}`).send(body);
+    await put({ rev: -1, data: {} }).expect(400);
+    await put({ rev: 3000000000, data: {} }).expect(400);
+    await put({ rev: 2147483647, data: {} }).expect(400);
+    await put({ rev: 0, data: { s: 'a\u0000b' } }).expect(400);
+    await put({ rev: 0, data: { s: 'x'.repeat(300 * 1024) } }).expect(400);
+    await put({ rev: 0, data: { s: 'x'.repeat(600 * 1024) } }).expect(413);
+    await put({ rev: 0, data: { s: '\\u0000' } }).expect(200);
   });
 });
