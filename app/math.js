@@ -20,8 +20,15 @@ function atomHTML(t, inFrac) {
   return /^\d/.test(t) ? t.replace(/ /g, "\u202f") : esc(t);
 }
 const ROOT = /^[√∛∜]$/;
-// знак кореня в tokens[j] і атом упритул за ним: { html: «√» + атом (дужки групи лишаються), end: індекс після атома }
-function rootAt(tokens, j) { return ROOT.test(tokens[j] || "") && isAtomToken(tokens[j + 1]) ? { html: esc(tokens[j]) + atomHTML(tokens[j + 1], false), end: j + 2 } : null; }
+// знак кореня в tokens[j] і атом упритул за ним: { html: «√» + атом (дужки групи лишаються), end: індекс після атома }.
+// Корінь із кореня (√√2) — теж атом: √√2/2 = (√√2)/2, зовнішній знак не стоїть над дробом (рев'ю engine-math-sqrt-precedence, P3-3)
+function rootAt(tokens, j) {
+  if (!ROOT.test(tokens[j] || "")) return null;
+  const inner = rootAt(tokens, j + 1); if (inner) return { html: esc(tokens[j]) + inner.html, end: inner.end };
+  return isAtomToken(tokens[j + 1]) ? { html: esc(tokens[j]) + atomHTML(tokens[j + 1], false), end: j + 2 } : null;
+}
+// індекс першого токена після пробілів і «~» (нерозривний пробіл TeX) — для коефіцієнта «2 √3/3», «2~√3/3»
+function skipGap(tokens, j) { while (/^\s+$/.test(tokens[j] || "") || tokens[j] === "~") j++; return j; }
 function group(tokens, state, open = "{", close = "}") {
   while (/^\s+$/.test(tokens[state.i] || "")) state.i++;
   if (tokens[state.i] !== open) return null;
@@ -96,8 +103,13 @@ function render(tokens) {
     // «√» без дужок бере найближчий атом (число, змінну, групу в дужках), як у шкільному записі: √3/2 = (√3)/2, а не √(3/2);
     // корінь із дробу пишуть з дужками — √(3/2). Число впритул перед знаком — коефіцієнт у тому ж чисельнику: 2√3/3 = (2√3)/3
     // (інакше «2» перед дробом стовпчиком читалося б як мішане число). Без «/» за коренем розмітка та сама, що й раніше.
-    const lead = /^\d/.test(t) && rootAt(tokens, state.i) ? 1 : 0, r = ROOT.test(t) ? rootAt(tokens, state.i - 1) : lead && rootAt(tokens, state.i);
-    if (r && (!lead || tokens[r.end] === "/")) {
+    // Коефіцієнт через пробіл чи «~» («2 √3/3», «2~√3/3») — так само, лише коли за коренем стоїть «/»: learn.js читає такий запис
+    // як 2√3/3 (рев'ю engine-math-sqrt-precedence, P3-2); «2 √25», «2 3/4» — як були.
+    let r = null, lead = false;
+    if (ROOT.test(t)) r = rootAt(tokens, state.i - 1);
+    else if (/^\d/.test(t)) { const k = skipGap(tokens, state.i), q = rootAt(tokens, k);
+      if (q && tokens[q.end] === "/") { r = q; lead = true; } }
+    if (r) {
       const nu = (lead ? atomHTML(t, false) : "") + r.html; state.i = r.end;
       if (tokens[state.i] === "/" && isAtomToken(tokens[state.i + 1])) {
         push(`<span class="fr"><span class="nu">${nu}</span><span class="sr">/</span><span class="de">${atomHTML(tokens[state.i + 1],true)}</span></span>`, true); state.i += 2;

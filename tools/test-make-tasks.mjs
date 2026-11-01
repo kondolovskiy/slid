@@ -10,14 +10,23 @@ const ok = (cond, what, extra = "") => { n++; if (!cond) { fails++; console.log(
 const run = (...a) => { const r = spawnSync(process.execPath, [path.join(ROOT, "tools/make-tasks.mjs"), "--write-pool", ...a], { cwd: ROOT, encoding: "utf8" }); return { out: r.stdout + r.stderr, status: r.status }; };
 const listTasks = dir => ["todo", "doing", "review", "done"].flatMap(d => fs.existsSync(path.join(dir, d)) ? fs.readdirSync(path.join(dir, d)).map(f => d + "/" + f) : []).sort();
 
-// 1. Справжня черга: dry-run не створює жодної задачі й нічого не пише (50 наявних write-math-pool-*, відкладені g11m2/g11m6)
+// 1. Справжня черга — лише інваріанти (рев'ю engine-p3-1101, P2-1): тест у CI, а черга tasks/ і матриця змінюються звичайною роботою
+//    (урок стає required, закриті задачі архівують), тож точні кількості й імена розділів — лише на фікстурі (блок 2).
+//    Інваріанти: код 0; dry-run нічого не записав; кожен розділ матриці потрапив рівно в одну групу (made + task + pool + deferred =
+//    кількість розділів); у deferred — саме розділи з deferredSections або без required-уроків.
 { const before = listTasks(path.join(ROOT, "tasks"));
   const r = run("--dry-run");
   ok(r.status === 0, "реальна черга: код 0", r.out);
-  ok(/створилося б задач на пули: 0\b/.test(r.out), "реальна черга: 0 нових задач — без дублів ручних write-math-pool-*", r.out);
-  ok(/задача вже є — \d+/.test(r.out) && +r.out.match(/задача вже є — (\d+)/)[1] >= 45, "реальна черга: щонайменше 45 наявних задач розпізнано", r.out);
-  ok(/відкладено — 2 \(g11m2, g11m6\)/.test(r.out), "реальна черга: відкладені розділи не генеруються", r.out);
-  ok(JSON.stringify(listTasks(path.join(ROOT, "tasks"))) === JSON.stringify(before), "реальна черга: dry-run нічого не записав"); }
+  ok(JSON.stringify(listTasks(path.join(ROOT, "tasks"))) === JSON.stringify(before), "реальна черга: dry-run нічого не записав");
+  const M = JSON.parse(fs.readFileSync(path.join(ROOT, "docs/math-personalization-coverage.json"), "utf8")), secs = new Map();
+  for (const l of M.lessons || []) (secs.get(l.section) || secs.set(l.section, []).get(l.section)).push(l);
+  const dset = new Set(M.deferredSections || []);
+  const expDeferred = [...secs].filter(([id, ls]) => dset.has(id) || !ls.some(l => l.curricularScope === "required")).map(([id]) => id).sort();
+  const made = r.out.match(/створилося б задач на пули: (\d+)/), sk = r.out.match(/задача вже є — (\d+); пул уже є — (\d+)(?: \([^)]*\))?; без required \/ відкладено — (\d+)(?: \(([^)]*)\))?/);
+  ok(made && sk, "реальна черга: вивід dry-run розібрано", r.out);
+  if (made && sk) {
+    ok(+made[1] + +sk[1] + +sk[2] + +sk[3] === secs.size, `реальна черга: made + task + pool + deferred = ${secs.size} розділів матриці`, r.out);
+    ok(JSON.stringify((sk[4] ? sk[4].split(", ") : []).sort()) === JSON.stringify(expDeferred), `реальна черга: відкладено саме ${expDeferred.join(", ") || "—"} (deferredSections або без required)`, r.out); } }
 
 // 2. Фікстури: тимчасова тека задач і матриця
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "slid-test-make-tasks-"));
