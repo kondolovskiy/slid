@@ -43,8 +43,10 @@ function schoolWeek(){ if(S.weekOverride) return S.weekOverride; const now=new D
 const { mathHTML, fmt } = window.SLID_MATH;
 /* Атрибути (aria-label, title, alt, href): fmt() обробляє вже зібраний HTML-рядок і вставив би
    розмітку формули всередину атрибута. Тому текст зі змісту в атрибут — лише через attr()/urlAttr():
-   формули → простий читабельний текст, теги прибрано, «$» заекрановано (&#36; fmt не бачить). */
+   формули → простий читабельний текст, теги прибрано, «$» заекрановано (&#36; fmt не бачить).
+   Назву уроку видно через esc(l.title), тож і в атрибут — attr(esc(l.title)): «a<b» лишається «a<b», а не тегом. */
 const SUPC = {"0":"⁰","1":"¹","2":"²","3":"³","4":"⁴","5":"⁵","6":"⁶","7":"⁷","8":"⁸","9":"⁹","−":"⁻","-":"⁻","+":"⁺","n":"ⁿ","°":"°"};
+const SUBC = {"0":"₀","1":"₁","2":"₂","3":"₃","4":"₄","5":"₅","6":"₆","7":"₇","8":"₈","9":"₉","₀":"₀","₁":"₁","₂":"₂","₃":"₃","₄":"₄","₅":"₅","₆":"₆","₇":"₇","₈":"₈","₉":"₉","−":"₋","-":"₋","+":"₊"};
 const wrapT = x => /^[\p{L}\p{N},.°]+$|^\(.*\)$/u.test(x) ? x : `(${x})`;
 function plainNode(n){
   if(n.nodeType===3) return n.nodeValue;
@@ -61,12 +63,14 @@ function plainNode(n){
   if(c.contains("sqrt")){ const ix=one(".root-index"), i=ix? kids(ix).trim() : "";
     return (i? ([...i].every(ch=>SUPC[ch])? [...i].map(ch=>SUPC[ch]).join("") : `корінь ${i}-го степеня з `) : "")+"√"+wrapT(kids(one(".radicand")).trim()); }
   if(c.contains("mover")) return `вектор ${kids(n).trim()}`;
+  if(n.tagName==="SUB"){ const v=kids(n).trim(); return [...v].every(ch=>SUBC[ch])? [...v].map(ch=>SUBC[ch]).join("") : v; }   // x₁, log₂; x_{AB} → xAB
   if(n.tagName==="SUP"){ const v=kids(n).trim(); return [...v].every(ch=>SUPC[ch])? [...v].map(ch=>SUPC[ch]).join("") : `^${wrapT(v)}`; }
   return kids(n);
 }
 const plainText = s => { const t=document.createElement("template"); t.innerHTML=fmt(s); return plainNode(t.content).replace(/\s+/g," ").trim(); };
 const attr = s => esc(plainText(s??"")).replace(/\$/g,"&#36;");
-const urlAttr = u => esc(u??"").replace(/\$/g,"%24");
+// лише http(s): javascript:, data: тощо не потрапляють у href навіть зі змісту з неперевіреного джерела
+const urlAttr = u => { const s=String(u??"").trim(); return /^https?:\/\//i.test(s)? esc(s).replace(/\$/g,"%24") : "#"; };
 
 /* ---------- Іконки ---------- */
 const P = {
@@ -400,7 +404,7 @@ function viewTopic(){
       const d=done(l.id), u=unlocked(sec,i), cur=i===curIdx;
       return `<div class="${["node", d?"done":"", cur?"cur":"", !u?"lock":"", l.boss?"boss":""].join(" ")}">
         ${cur?`<div class="bubble">Почати</div>`:""}
-        <button class="nbtn" type="button" data-open="${i}" aria-label="${attr(l.title)}${u?"":", закрито"}">${ic(u?l.icon:"lock")}</button>
+        <button class="nbtn" type="button" data-open="${i}" aria-label="${attr(esc(l.title))}${u?"":", закрито"}">${ic(u?l.icon:"lock")}</button>
         ${d?starsHtml(S.lessons[l.id].stars):""}
         <div class="nlabel">${esc(l.title)}</div>${!d&&known(l.id)?`<div class="knowntag">знайоме</div>`:""}
       </div>`; }).join("")}
@@ -410,7 +414,7 @@ const GRADED=["choice","multi","sort","slider","order","align","shade","numline"
 function openSheet(i){
   const c=course(nav.id), sec=c.sections[nav.sec], LS=sec.lessons, l=LS[i], u=unlocked(sec,i), rec=S.lessons[l.id];
   const graded=l.screens.filter(s=>GRADED.includes(s.type) && !s.hyp && !s.poll).length;
-  $("#sheetHost").innerHTML=fmt(`<div class="scrim" id="scrim"><div class="sheet" role="dialog" aria-modal="true" aria-label="${attr(l.title)}">
+  $("#sheetHost").innerHTML=fmt(`<div class="scrim" id="scrim"><div class="sheet" role="dialog" aria-modal="true" aria-label="${attr(esc(l.title))}">
     <div class="grab"></div>
     <div class="eyebrow">${c.short} · Урок ${i+1}${l.boss?" · фінал":""}</div>
     <h2>${esc(l.title)}</h2>

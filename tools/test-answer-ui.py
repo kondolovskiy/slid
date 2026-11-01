@@ -965,7 +965,7 @@ async def player_focus_checks(browser, url):
     print('Player focus follow-up: no focus on ✕ after a lab mistake (g4m2l1#4, g4m2l2#6), touch keeps the field unfocused: green', flush=True)
 
 BAD_ATTRS = """root => [...document.querySelectorAll(root+' *')].flatMap(el=>[...el.attributes]
-  .filter(a=>/[<>$]|class=/.test(a.value)).map(a=>el.tagName+'['+a.name+']='+a.value))"""
+  .filter(a=>/[<>$]|class=/.test(a.value) && !['Чи a<b?','Ціна 5 $'].includes(a.value)).map(a=>el.tagName+'['+a.name+']='+a.value))"""
 
 async def attr_math_checks(browser, url):
     """engine-lesson-title-aria: fmt() runs over assembled HTML, so `$…$` from content must never reach an attribute
@@ -975,15 +975,19 @@ async def attr_math_checks(browser, url):
       const L=c.sections[k].lessons;
       // fixture titles: content no longer has `$` in g8m3 titles (fix-math-tex-content), the engine must still cope
       L[1].title='Де живе $\\\\sqrt{2}$?'; L[3].title='Графік $y = \\\\sqrt{x}$';
-      L[1].screens[0]={...L[1].screens[0],img:'icons/icon-192.png',cap:'Квадрат зі стороною $\\\\sqrt{2}$ і площею <i>$x^2$</i>',
-        note:{text:'Примітка',links:[['Джерело','https://example.org/a$b$c']]}};
+      L[2].title='Чи a<b?';   // P3-2: назва — текст (видно через esc), не HTML: «<b» не тег
+      L[1].screens[0]={...L[1].screens[0],img:'icons/icon-192.png',cap:'Квадрат зі стороною $\\\\sqrt{2}$ і площею <i>$x^2$</i>, $x_1$ і log<sub>2</sub> 8',
+        note:{text:'Примітка',links:[['Джерело','https://example.org/a$b$c'],['Скрипт',' javascript:alert(1)']]}};
       const b=c.badges&&c.badges[0]; if(b) b.desc='Знайди $x^2 = 81$ і $1/2 + 1/3$';
-      (c.credits||(c.credits=[])).unshift(['QA','автор','CC0','https://example.org/$x$']);
+      // P3-1: одиночний $ в атрибуті не має спаровуватися з формулою у видимому тексті після нього
+      const b2=SLID_SUBJECTS.flatMap(s=>s.badges||[]).find(x=>x!==b); if(b2){ b2.desc='Ціна 5 $'; b2.name='Знак $x$'; }
+      (c.credits||(c.credits=[])).unshift(['QA','автор','CC0','https://example.org/$x$'],['QA2','автор','CC0','javascript:alert(1)']);
       return [k, L.map(l=>l.title)];}""")
     assert '$' in lessons[1] and '$' in lessons[3], lessons
     await page.click('button[data-subject="math"]'); await page.click(f'[data-topic="{k}"]')
     labels = await page.eval_on_selector_all('.nbtn', 'bs=>bs.map(b=>[b.getAttribute("aria-label"), b.innerText.trim()])')
     assert [l for l, _ in labels][1:4:2] == ['Де живе √2?', 'Графік y = √x'], labels
+    assert labels[2][0] == 'Чи a<b?', labels
     assert all(not text for _, text in labels), labels   # the old bug leaked «2 ?">» as visible button text
     assert await page.locator('.nlabel .m .sqrt').count() == 2   # the visible label still renders the formula
     assert not await page.evaluate(BAD_ATTRS, '#view'), await page.evaluate(BAD_ATTRS, '#view')
@@ -992,9 +996,10 @@ async def attr_math_checks(browser, url):
     assert await page.locator('#sheetHost h2 .sqrt').count() == 1
     assert not await page.evaluate(BAD_ATTRS, '#sheetHost'), await page.evaluate(BAD_ATTRS, '#sheetHost')
     await page.click('#go')
-    assert await page.get_attribute('#stage figure img', 'alt') == 'Квадрат зі стороною √2 і площею x²'
-    assert await page.locator('#stage figcaption .m').count() == 2
-    assert await page.get_attribute('#stage .note a', 'href') == 'https://example.org/a%24b%24c'
+    assert await page.get_attribute('#stage figure img', 'alt') == 'Квадрат зі стороною √2 і площею x², x₁ і log₂ 8'
+    assert await page.locator('#stage figcaption .m').count() == 3
+    hrefs = await page.eval_on_selector_all('#stage .note a', 'as=>as.map(a=>a.getAttribute("href"))')
+    assert hrefs == ['https://example.org/a%24b%24c', '#'], hrefs   # P3-4: лише http(s)
     assert not await page.evaluate(BAD_ATTRS, '#stage'), await page.evaluate(BAD_ATTRS, '#stage')
     await page.click('#pClose')
     if await page.locator('#pClose').is_visible(): await page.click('#pClose')
@@ -1002,9 +1007,12 @@ async def attr_math_checks(browser, url):
     if await page.evaluate("!!SLID_SUBJECTS.find(c=>c.id==='math').badges?.length"):
         titles = await page.eval_on_selector_all('.bdg', 'bs=>bs.map(b=>b.title)')
         assert 'Знайди x² = 81 і 1/2 + 1/3' in titles, titles
+        assert 'Ціна 5 $' in titles, titles   # без &#36; fmt спарував би цей $ з «Знак $x$» і зламав атрибут
+        assert await page.locator('.bdg .m').count() == 1, 'Знак $x$: формула в назві значка не відрендерилась'
     assert not await page.evaluate(BAD_ATTRS, '#view'), await page.evaluate(BAD_ATTRS, '#view')
     await page.click('[data-tab="profile"]')
     assert await page.locator('.credits a[href="https://example.org/%24x%24"]').count() == 1
+    assert await page.locator('.credits a[href="#"]').count() == 1
     assert not await page.evaluate(BAD_ATTRS, '#view'), await page.evaluate(BAD_ATTRS, '#view')
     assert not errors, errors
     await context.close()
