@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-01T16:33:48.271Z
 id: engine-p3-1101
 type: engine
 subject: math
 status: todo
-claimed_by:
+claimed_by: engineer-p3e
 created: 2026-11-01
 write_group: personalization-shared
 depends_on: []
