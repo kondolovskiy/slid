@@ -1432,9 +1432,12 @@ async def open_screen_only(page, lesson, at):
 
 async def make_point_dead(page, lesson, at, point):
     """Fixture: turn a draggable point's bare-parameter coordinates into expressions (`(dy)+0`), so no input moves it.
-    Content no longer has dead points (fix-math-dead-drag-points), the engine must still treat them right."""
-    await page.evaluate("""([id, at, pt]) => {const l=SLID_SUBJECTS.find(c=>c.id==='math').sections.flatMap(s=>s.lessons||[]).find(l=>l.id===id);
-      const P=l.screens[at].lab.points[pt]; for (const k of ['x','y']) if (typeof P[k]==='string') P[k]='('+P[k]+')+0';}""", [lesson, at, point])
+    Content no longer has dead points (fix-math-dead-drag-points), the engine must still treat them right.
+    Fails loudly when nothing was rewritten (point gone, or moved to `at: [...]`), so a later assertion is not the first clue."""
+    changed = await page.evaluate("""([id, at, pt]) => {const l=SLID_SUBJECTS.find(c=>c.id==='math').sections.flatMap(s=>s.lessons||[]).find(l=>l.id===id);
+      const P=l?.screens?.[at]?.lab?.points?.[pt]; if (!P) return -1; let n=0;
+      for (const k of ['x','y']) if (typeof P[k]==='string') { P[k]='('+P[k]+')+0'; n++; } return n;}""", [lesson, at, point])
+    assert changed >= 1, f'make_point_dead: {lesson} screen {at} point {point}: ' + ('no such point' if changed < 0 else 'no string coordinate to rewrite (content changed?)')
 
 async def player_a11y_p3_checks(browser, url):
     """engine-player-a11y-p3: a point that no input moves is not a Tab stop (g8m2l1#2, g8m4l1#6), the number line

@@ -300,12 +300,19 @@ function svgTex(s, size = 12) {
   return out;
 }
 const SVG_TEX_OK = new Set([...Object.keys(SVG_SYM), ...Object.keys(SVG_SPACE)]);
-/** Що в підписі SVG не буде відмальовано: непарні $, команди поза підмножиною. Для tools/validate.mjs. */
-function svgTexIssues(s) {
-  const str = String(s), issues = [];
+/** Що в підписі SVG не буде відмальовано: непарні $, команди поза підмножиною. Для tools/validate.mjs.
+    tpl — підпис проходить fill() (svgLabels(spec, true)): {вираз} там — вставка значення, {,} — кома, тож вкладеність дужок
+    в індексі перевіряємо на рядку після підстановки (рев'ю engine-player-a11y-p3, P3-2: $x^{2{,}5}$, $a^{{n}}$ малюються правильно). */
+const TPL_RE = /\{([^{}|]+)(?:\|([a-z0-9]+))?\}/g;
+function svgTexIssues(s, tpl = false) {
+  const str = String(s), issues = [], shape = tpl ? str.replace(TPL_RE, (_, ex) => ex === "," ? "," : "0") : str;
   if (((str.match(/\$/g) || []).length) % 2) issues.push({ level: "warn", msg: `непарна кількість $ — формула не закрита й покажеться сирим текстом${/\$\{/.test(str) ? " (зайвий $ перед шаблоном {…}?)" : ""}` });
   for (const m of str.matchAll(/\$([^$]+)\$/g)) for (const c of m[1].matchAll(/\\([A-Za-z]+|[,;:! ])/g)) if (!SVG_TEX_OK.has(c[1])) issues.push({ level: "error", msg: `формула «${m[0]}» містить \\${c[1]} — у підписах SVG лабораторії вона не малюється (підтримано: літери, числа, _ ^, ${[...SVG_TEX_OK].filter(k => /^[A-Za-z]+$/.test(k)).map(k => "\\" + k).join(" ")})` });
-  for (const m of str.matchAll(/\$([^$]+)\$/g)) if (/[_^]\{[^{}]*\{/.test(m[1])) issues.push({ level: "error", msg: `формула «${m[0]}»: дужки всередині індексу чи степеня (x_{a_{b}}, x_{0{,}5}) у підписах SVG не малюються — спрости індекс (x_{a_b}, x_{ab})` });
+  const raws = [...str.matchAll(/\$([^$]+)\$/g)];   // підстановка не чіпає $, тож формули в str і shape йдуть одна в одну
+  [...shape.matchAll(/\$([^$]+)\$/g)].forEach((m, k) => { if (!/[_^]\{[^{}]*\{/.test(m[1])) return; const raw = raws[k]?.[0] ?? m[0];
+    issues.push({ level: "error", msg: tpl
+      ? `формула «${raw}»: після підстановки шаблону («${m[0]}») всередині індексу чи степеня лишаються дужки — у підписах SVG вони не малюються; {…} тут — вставка значення, тож пиши індекс без дужок (x_a, x_1) або однією вставкою (x_{{n}})`
+      : `формула «${raw}»: дужки всередині індексу чи степеня (x_{a_{b}}, x_{0{,}5}) у підписах SVG не малюються — спрости індекс (x_{a_b}, x_{ab})` }); });
   for (const m of str.replace(/\$[^$]+\$/g, "").matchAll(/\\(?:[A-Za-z]+|[,;:!])/g)) issues.push({ level: "error", msg: `«${m[0]}» поза $…$ — TeX покажеться сирим текстом` });
   return issues;
 }
@@ -463,7 +470,9 @@ KINDS.numline = {
       const [xe] = pointExprs(id, p);
       // значення для читача екрана: підпис, якщо він сам є числом чи часом ({t|time}, {n|0}); літера чи «?» — лише назва, тож додаємо число
       const vs = spec.pi ? piLabel(xv) : spec.fmt ? fill(`{v|${spec.fmt}}`, { v: xv }) : num(xv), lt = label.replace(/[$\\]/g, "").trim();
-      if (p.drag && /^[A-Za-z_]\w*$/.test(xe)) handles.push({ x: sx, y, kx: xe, name: `Точка ${id}`, value: !lt ? vs : /\d/.test(lt) ? lt : /\p{L}/u.test(lt) ? `${lt}, ${vs}` : vs, set: px => ({ [xe]: a + (px - pad) / (W - 2 * pad) * (b - a) }) });
+      // підпис-шаблон ({t|0}, {t|time}) і є значенням; цифра в незмінному підписі ($x_1$, «A1») — ні, тож число додаємо (рев'ю a11y-p3, P3-6)
+      const isVal = typeof p.label === "string" && [...p.label.matchAll(TPL_RE)].some(m => m[1] !== ",") || lt === vs;
+      if (p.drag && /^[A-Za-z_]\w*$/.test(xe)) handles.push({ x: sx, y, kx: xe, name: `Точка ${id}`, value: !lt ? vs : isVal ? lt : /[\p{L}\p{N}]/u.test(lt) ? `${lt}, ${vs}` : vs, set: px => ({ [xe]: a + (px - pad) / (W - 2 * pad) * (b - a) }) });
     });
     return { w: W, h: H, body: g, handles, alt: spec.alt || "Числова пряма" };
   }

@@ -75,7 +75,9 @@ function checkTex(S, s) {
   // 2) lab.show і підписи повзунків рендерить fmt після fill(): непарний $ лишає формулу сирою
   for (const x of labHtml) if (odd(x)) E(S, `lab: непарна кількість $ у «${x}» — формула покажеться сирою${/\$\{/.test(x) ? " (зайвий $ перед шаблоном {…}?)" : ""}`);
   // 3) підписи SVG лабораторії (svgTexIssues: непарний $ там — «warn», але сирий текст однаково видно — помилка)
-  if (s.lab) for (const [path, x] of lab.svgLabels(s.lab)) for (const is of lab.svgTexIssues(x)) E(S, `lab.${path} «${x}»: ${is.msg}`);
+  //    підписи-шаблони (svgLabels(…, true)) перевіряємо так, як їх намалює fill(): {вираз} — значення, {,} — кома
+  if (s.lab) { const tpl = new Set(lab.svgLabels(s.lab, true).map(([p]) => p));
+    for (const [path, x] of lab.svgLabels(s.lab)) for (const is of lab.svgTexIssues(x, tpl.has(path))) E(S, `lab.${path} «${x}»: ${is.msg}`); }
   // 3а) назва функції без лапок — попередження (звичайні змінні sin не утворюють, але це не помилка рушія)
   const fns = [...new Set(html.flatMap(bareFns))];
   if (fns.length) W(S, `у формулі назва функції без лапок: ${fns.join(", ")} — покажеться курсивом як добуток літер; пиши "${fns[0]}" (у лапках) або \\${fns[0]}, якщо команда є в app/math.js`);
@@ -93,6 +95,9 @@ const TEX_NAMES = new Set([...MATH_COMMANDS, "theta", "beta", "nu", "tg", "ctg",
 // (у них «\d» — не рядок, а «/» всередині не відкриває коментар), String.raw`…` теж (там «\Delta» лишається «\Delta»),
 // а в шаблоні `…${вираз}…` вираз розбираємо як код — вкладені рядки й шаблони перевіряються самі.
 // Регулярний вираз чи ділення — за попереднім значущим фрагментом коду, як у самому JS: після «(», «,», «=», «:», «return»… — regex.
+// Дві відомі неоднозначності без повного синтаксичного розбору (рев'ю engine-player-a11y-p3, P3-3): «a++ / 2» (після «++» — ділення,
+// а тут береться regex до кінця рядка, і рядки за ним випадають) і «if (a) /re/» (після «)» — regex, а тут ділення). У файлах змісту
+// (дані) таких конструкцій немає; якщо з'являться — розділи вираз (a++; x = a / 2) або винеси regex у змінну.
 const REGEX_AFTER = /^(?:[(,=:[!&|?{};+\-*%<>~^]|return|typeof|case|do|else|in|of|new|delete|void|throw|yield|await)?$/;
 function jsLiterals(src) {
   const out = [], n = src.length, isId = ch => /[\w$]/.test(ch); let i = 0;
@@ -141,12 +146,14 @@ function jsEscapeIssues(src) {
 
 // answer в уроці чи діагностиці — ті самі правила полів, що в пулі (engine-answer-kinds-p3): answerKind, decimals, form, units лише
 // для quantity, time без unit… Беремо саме learn.validatePool, щоб правила не розійшлися: екран загортаємо в пул з однією задачею.
-// Поля самого пулу (lesson, lvl, src, steps, sk) підставлено коректні; «ключ не читається» вже дає checkScreen — його не дублюємо.
-function answerFieldIssues(s, c) {
-  const it = { ...s, id: "x", lesson: "l", lvl: 1, sk: Object.keys(c.skills)[0], src: "s 1", steps: ["."] };
+// Поля самого пулу (lesson, lvl, src, steps, sk) підставлено коректні й своя навичка — навички предмета й sk екрана перевіряє checkScreen,
+// а предмет може не мати skills зовсім (рев'ю engine-player-a11y-p3, P3-5). «немає title» і «ключ не читається» теж дає checkScreen — не дублюємо.
+const POOL_ONLY = [/^немає title$/, /не читається або сам не проходить/, /^навичка sk /];
+function answerFieldIssues(s) {
+  const it = { ...s, id: "x", lesson: "l", lvl: 1, sk: "x", src: "s 1", steps: ["."] };
   const pool = { id: "x", section: "x", status: "draft", sources: [{ id: "s", title: "s", url: "https://x" }], items: [it] };
-  return learn.validatePool(pool, { sections: new Map([["x", { lessons: ["l"] }]]), skills: c.skills })
-    .filter(m => m.startsWith("задача 1 «x»: ") && !/не читається або сам не проходить/.test(m)).map(m => "answer: " + m.slice("задача 1 «x»: ".length));
+  return learn.validatePool(pool, { sections: new Map([["x", { lessons: ["l"] }]]), skills: { x: {} } })
+    .filter(m => m.startsWith("задача 1 «x»: ")).map(m => m.slice("задача 1 «x»: ".length)).filter(m => !POOL_ONLY.some(re => re.test(m))).map(m => "answer: " + m);
 }
 
 // перевірка одного екрана; diag — завдання діагностики (без фідбеку: дитина не бачить, правильно чи ні)
@@ -204,7 +211,8 @@ function checkScreen(S, s, c, diag, pool = false) {
     case "number": if (!(typeof s.answer === "number" && isFinite(s.answer) && Math.abs(s.answer) < 1e9)) E(S, "answer — скінченне число (десяткові й від'ємні дозволені)");
       if (s.tol != null && !(Number.isFinite(s.tol) && s.tol >= 0)) E(S, "tol — скінченне невід'ємне число (допустима похибка)"); break;
     case "answer": if (learn.checkAns(s, learn.keyInput(s)) !== "ok") E(S, "answer: число або рядок («7/12», «2 1/3», «-3,5»), що сам проходить перевірку (величина quantity — у складеному записі)");
-      if (!pool) for (const m of answerFieldIssues(s, c)) E(S, m); break;
+      // у діагностиці — лише коли тип answer там дозволено (learn.DIAG_TYPES); інакше вже є помилка «тип не дозволено в тесті»
+      if (!pool && (!diag || learn.DIAG_TYPES.includes("answer"))) for (const m of answerFieldIssues(s)) E(S, m); break;
     case "fracin": if (!(Number.isInteger(s.answer) && s.answer >= 0 && s.answer < 1e6)) E(S, "answer — ціле невід'ємне число (поле приймає лише цифри)");
       if (!(s.expr && s.den)) E(S, "fracin потребує expr і den"); break;
   }
@@ -213,12 +221,13 @@ function checkScreen(S, s, c, diag, pool = false) {
   if (sentLong.length) W(S, `дуже довге речення (${words(sentLong[0]).length} слів): «${sentLong[0].slice(0, 60)}…»`);
 }
 
-// credits: [назва, автор, ліцензія, https://…] — рушій (urlAttr) не-https посилання мовчки робить href="#" (рев'ю engine-render-tex-p3, P3-5)
+// credits: [назва, автор, ліцензія, https://…] — правило змісту: лише https (рев'ю engine-render-tex-p3, P3-5). Рушій (urlAttr)
+// http:// пропускає як є (незахищене посилання), а решту (відносний шлях, javascript:) мовчки робить href="#" (рев'ю a11y-p3, P3-4)
 function creditIssues(list) {
   if (list === undefined) return [];
   if (!Array.isArray(list)) return ["credits: потрібен масив записів [назва, автор, ліцензія, https://…]"];
   return list.flatMap((x, k) => !Array.isArray(x) || x.length < 4 || x.slice(0, 3).some(v => typeof v !== "string" || !v.trim()) ? [`credits ${k + 1}: потрібно [назва, автор, ліцензія, https://…]`]
-    : /^https:\/\/[^\s/]+\.[^\s]+$/.test(x[3]) ? [] : [`credits ${k + 1} «${String(x[0]).slice(0, 40)}»: посилання «${x[3]}» — лише https://… (інше застосунок показує як href="#")`]);
+    : /^https:\/\/[^\s/]+\.[^\s]+$/.test(x[3]) ? [] : [`credits ${k + 1} «${String(x[0]).slice(0, 40)}»: посилання «${x[3]}» — лише https://… (${/^http:\/\//i.test(String(x[3])) ? "http:// — незахищене посилання" : "застосунок покаже його як href=\"#\""})`]);
 }
 // кредити, оголошені в самому предметі (SLID.subject), а не в розділі
 if (!onlySec && !onlyDiag) for (const c of subjects) { const own = new Set(c.sections.flatMap(s => s.credits || []));
@@ -227,10 +236,12 @@ if (!onlySec && !onlyDiag) for (const c of subjects) { const own = new Set(c.sec
 // D-027: у кожному уроці предмета — хоча б одне справжнє зображення (img: фото, репродукція, документ).
 // Схеми svg/fig не зараховуються. Для історії — помилка (усі уроки доповнено; регресійний тест: tools/test-validate.mjs).
 const IMG_REQUIRED = { hist: "error" };
-for (const c of subjects) for (const sec of c.sections.filter(s => s.lessons)) {
+for (const c of subjects) for (const sec of c.sections) {
   if (onlyDiag) continue;
   if (onlySec && sec.id !== onlySec) continue;
   const file = origin[sec.id] || c.id;
+  // розділ плану без уроків: його credits не перевіряє ні цей цикл, ні цикл предмета (вони в own) — рев'ю a11y-p3, P3-4
+  if (!sec.lessons) { creditIssues(sec.credits).forEach(m => E(`${file}#${sec.id}`, m)); continue; }
   (sec.requires || []).forEach(r => { if (!allLessonIds.has(r)) E(`${file}#${sec.id}`, `requires: немає уроку ${r}`); });
   for (const b of sec.badges || []) if (!ICONS.includes(b.icon)) E(`${file}#${sec.id}`, `значок ${b.id}: немає іконки «${b.icon}»`);
   creditIssues(sec.credits).forEach(m => E(`${file}#${sec.id}`, m));

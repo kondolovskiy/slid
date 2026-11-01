@@ -228,7 +228,12 @@ for (const [name, lit, tail, err] of [
   ["regex /a\\/*b/ не відкриває коментар — справжня \\Delta після нього знайдена", `"Тіло."`, `const re = /a\\/*b/; const s = "Приріст $|\\Delta x|$";\n`, "«\\Delta»"],
   ["ділення 4 / \"…\" / 2 — це не regex, рядок між знаками перевіряється", `"Тіло."`, `const q = 4 / "\\Delta".length / 2;\n`, "«\\Delta»"],
   ["String.raw`$\\Delta$` — чисто", "String.raw`Приріст $\\Delta x$.`", "", null],
-  ["вкладений шаблон у ${…} перевіряється", "`Приріст ${ `$\\Delta x$` }.`", "", "«\\Delta»"]]) {
+  ["вкладений шаблон у ${…} перевіряється", "`Приріст ${ `$\\Delta x$` }.`", "", "«\\Delta»"],
+  // P3-7 (рев'ю engine-player-a11y-p3): об'єктний літерал у ${…} — його «}» не закриває вставку. Без лічильника «{» решта
+  // вставки («.a /* \Delta */ }») стала б текстом шаблону, і коментар чи regex у ній дали б хибну помилку
+  ["об'єкт {a: 1} у ${…}, коментар після нього — чисто", "`Сума ${ {a: 1}.a /* \\Delta */ } — так.`", "", null],
+  ["об'єкт {a: 1} у ${…}, regex після нього — чисто", "`Сума ${ {a: 1}.a + /\\Delta/.source.length } — так.`", "", null],
+  ["об'єкт {a: \"…\"} у ${…}: справжня \\Delta у хвості шаблону знайдена", "`Сума ${ {a: \"x\"}.a } і $\\Delta x$.`", "", "«\\Delta»"]]) {
   const id = `fxr${name.length}`;
   expectRun(`lexer: ${name}`, { [`content/math/g8-${id}.js`]: rawSec(id, lit, tail) }, ["--section", id], { err });
 }
@@ -247,11 +252,21 @@ expectRun("escape: \"\\frac{1}{2}\" без $ перед { — помилка", {
 // (xname — підпис осі без шаблонів {…}; у підписах точок {…} — це вирази lab)
 expectRun("SVG: $x_{a_{bc}}$ у підписі осі — помилка", one("fxs", { lab: plane({ xname: "$x_{a_{bc}}$" }) }), ["--section", "fxs"], { err: "дужки всередині індексу" });
 expectRun("SVG: $x_{a_b}$ і $t_{AB}$ у підписах осей — чисто", one("fxs", { lab: plane({ xname: "$x_{a_b}$", yname: "$t_{AB}$" }) }), ["--section", "fxs"], {});
+// P3-2 (рев'ю engine-player-a11y-p3): у підписах-шаблонах (точки, відрізки…) {…} — вставка, перевіряємо рядок після підстановки
+expectRun("SVG tpl: $x^{2{,}5}$, $a^{{a}}$, $x_{{a}0}$ у підписах точок — чисто", one("fxs", { lab: plane({ points: { P: { x: "a", y: "1", label: "$x^{2{,}5}$" }, Q: { x: "1", y: "a", label: "$a^{{a}}$" }, R: { x: "2", y: "2", label: "$x_{{a}0}$" } } }) }), ["--section", "fxs"], {});
+{ const r = expectRun("SVG tpl: $x_{a_{{a}}}$ — дужки лишаються після підстановки — помилка", one("fxs", { lab: pt("$x_{a_{{a}}}$") }), ["--section", "fxs"], { err: "після підстановки шаблону" });
+  ok(r && r.errors.every(e => !e.includes("x_{ab}")), "SVG tpl: порада x_{ab} лише для полів без шаблонів", r && r.errors.join("\n  ")); }
+expectRun("SVG: $x^{2{,}5}$ у підписі осі (без шаблонів) — помилка, як і раніше", one("fxs", { lab: plane({ xname: "$x^{2{,}5}$" }) }), ["--section", "fxs"], { err: "дужки всередині індексу" });
 // P3-5: credits — лише https://; запис із чотирьох полів; і в розділі, і в самому предметі
 { const cred = (id, credits) => { const sec = mathSec(id); sec.credits = credits; return { [`content/math/g8-${id}.js`]: secJS("math", sec) }; };
   expectRun("credits: https — чисто", cred("fxc", [["Фото", "Автор", "CC BY 4.0", "https://commons.wikimedia.org/wiki/File:X.jpg"]]), ["--section", "fxc"], {});
-  expectRun("credits: http:// — помилка", cred("fxc", [["Фото", "Автор", "CC BY 4.0", "http://commons.wikimedia.org/wiki/File:X.jpg"]]), ["--section", "fxc"], { err: "лише https" });
-  expectRun("credits: відносний шлях — помилка", cred("fxc", [["Фото", "Автор", "CC0", "img/a.png"]]), ["--section", "fxc"], { err: "лише https" });
+  expectRun("credits: http:// — помилка", cred("fxc", [["Фото", "Автор", "CC BY 4.0", "http://commons.wikimedia.org/wiki/File:X.jpg"]]), ["--section", "fxc"], { err: "лише https://… (http:// — незахищене" });
+  expectRun("credits: відносний шлях — помилка", cred("fxc", [["Фото", "Автор", "CC0", "img/a.png"]]), ["--section", "fxc"], { err: "лише https://… (застосунок покаже його як href=\"#\")" });
+  // P3-4: розділ плану без уроків — його credits раніше не перевіряв ніхто
+  const planSec = credits => `SLID.section("math", ${JSON.stringify({ id: "fxpl", grade: 8, weeks: [3, 4], title: "План", why: "Розділ плану без уроків для регресійного тесту.", plan: ["Тема"], credits })});\n`;
+  expectRun("credits розділу плану: javascript: — помилка (повний прогін)", { ...one("fxc"), "content/math/plan.js": planSec([["Фото", "Автор", "CC0", "javascript:alert(1)"]]) }, [], { err: "#fxpl: credits 1" });
+  expectRun("credits розділу плану: javascript: — помилка (--section)", { ...one("fxc"), "content/math/plan.js": planSec([["Фото", "Автор", "CC0", "javascript:alert(1)"]]) }, ["--section", "fxpl"], { err: "#fxpl: credits 1" });
+  expectRun("credits розділу плану: https — чисто", { ...one("fxc"), "content/math/plan.js": planSec([["Фото", "Автор", "CC0", "https://example.org/a.png"]]) }, [], {});
   expectRun("credits: три поля замість чотирьох — помилка", cred("fxc", [["Фото", "Автор", "https://commons.wikimedia.org/wiki/File:X.jpg"]]), ["--section", "fxc"], { err: "потрібно [назва, автор, ліцензія" });
   const subj = c => `SLID.subject(${JSON.stringify({ id: "fxsubj", subject: "Фікстура", short: "Ф", icon: "frac", colors: { light: { accent: "#000" }, dark: { accent: "#fff" } }, skills: {}, credits: c })});\n`;
   expectRun("credits предмета: javascript: — помилка (повний прогін)", { ...one("fxc"), "content/math/zz-subj.js": subj([["Фото", "Автор", "CC0", "javascript:alert(1)"]]) }, [], { err: "предмет fxsubj" });
@@ -281,7 +296,39 @@ expectRun("drag: at і без drag — без попередження", one("fx
     sources: [{ id: "src", title: "Фікстура", url: "https://example.org/" }],
     items: [{ id: "a01", lesson: "fxpl1", lvl: 1, sk: Object.keys(MATH_SKILLS)[0], src: "src №1", type: "answer", title: "Обчисли", body: "<p>Скільки?</p>", answer: 5, units: ["м", "см"], steps: ["Пояснення."] }] }, null, 1)});\n`;
   const rp = expectRun("answer у пулі: units поза quantity — помилка один раз", { "content/math/g8-fxp.js": secJS("math", mathSec("fxp")), "content/math/pool-g8-fxp.js": bad }, ["--pool", "pfx"], { err: "units — лише для answerKind quantity" });
-  ok(rp && rp.errors.length === 1, "answer у пулі: без дубля з checkScreen", rp && rp.errors.join("\n  ")); }
+  ok(rp && rp.errors.length === 1, "answer у пулі: без дубля з checkScreen", rp && rp.errors.join("\n  "));
+  // P3-5 (рев'ю engine-player-a11y-p3): «немає title» — один раз (від checkScreen), без «answer: немає title»
+  { const r = expectRun("answer в уроці без title — одна помилка «немає title»", ans("fxk", { title: "", answer: 5 }), ["--section", "fxk"], { err: "немає title" });
+    ok(r && r.errors.length === 1 && !r.errors[0].includes("answer: "), "answer в уроці без title: без дубля «answer: немає title»", r && r.errors.join("\n  ")); }
+  // предмет без skills: власні поля answer перевіряються, а хибної «answer: навичка sk «undefined»» немає
+  { const subj = `SLID.subject(${JSON.stringify({ id: "fxns", subject: "Фікстура", short: "Ф", icon: "frac", colors: { light: { accent: "#000" }, dark: { accent: "#fff" } } })});\n`;
+    const sec = mathSec("fxns"); sec.lessons[0].screens.push({ type: "answer", title: "Обчисли", body: "Скільки?", answer: 5, fbOk: "Так.", fbText: "Пояснення, чому саме так, для фікстури." });
+    sec.lessons[0].screens.forEach(x => delete x.sk);
+    const files = s2 => ({ "content/fxns/aa-subj.js": subj, "content/fxns/g8-fxns.js": secJS("fxns", s2) });
+    expectRun("answer у предметі без skills — без хибної помилки sk", files(sec), ["--section", "fxns"], {});
+    const bad = JSON.parse(JSON.stringify(sec)); bad.lessons[0].screens.at(-1).units = ["м", "см"];
+    expectRun("answer у предметі без skills — поля перевіряються (units поза quantity)", files(bad), ["--section", "fxns"], { err: "answer: units — лише для answerKind quantity" });
+    fs.rmSync(path.join(tmp, "content/fxns"), { recursive: true, force: true }); }
+  // діагностика: поля answer перевіряються лише тоді, коли answer дозволено в тесті (learn.DIAG_TYPES). Обидва стани задаємо явно
+  // в копії app/learn.js, щоб тест не залежав від того, чи дозволено answer у діагностиці зараз (engine-diag-answer-kinds)
+  { const lp = path.join(tmp, "app/learn.js"), orig = fs.readFileSync(lp, "utf8"), DT = /const DIAG_TYPES = \[[^\]]*\];/;
+    ok(DT.test(orig), "diag answer: у app/learn.js знайдено const DIAG_TYPES");
+    const withTypes = extra => fs.writeFileSync(lp, orig.replace(DT, `const DIAG_TYPES = ${JSON.stringify(["choice", "multi", "sort", "order", "number", "fracin", "shade", "numline", "lab", ...extra])};`));
+    const diag = item => `SLID.diag("math", ${JSON.stringify({ id: "dfx", grade: 8, title: "Тест", why: "Регресійний тест валідатора: answer у діагностиці.", status: "draft",
+      meta: { author: "test", created: "2026-11-01", factcheck: null, teacher: null }, topics: [{ id: "t1", title: "Тема", kind: "cur", lessons: ["fxql1"] }],
+      items: [{ topic: "t1", type: "answer", title: "Обчисли", body: "Скільки?", answer: 5, sk: Object.keys(MATH_SKILLS)[0], ...item }] }, null, 1)});\n`;
+    const dfiles = item => ({ "content/math/g8-fxq.js": secJS("math", mathSec("fxq")), "content/math/diag-g8.js": diag(item) });
+    try {
+      withTypes([]);
+      { const r = expectRun("diag: answer не дозволено — лише «тип не дозволено», без рядків answer:", dfiles({ units: ["м", "см"] }), ["--diag", "dfx"], { err: "тип не дозволено в тесті" });
+        ok(r && r.errors.length === 1, "diag: answer не дозволено — рівно одна помилка", r && r.errors.join("\n  ")); }
+      withTypes(["answer"]);
+      expectRun("diag: answer дозволено — коректне завдання чисте", dfiles({}), ["--diag", "dfx"], {});
+      { const r = expectRun("diag: answer дозволено — units поза quantity — помилка", dfiles({ units: ["м", "см"] }), ["--diag", "dfx"], { err: "answer: units — лише для answerKind quantity" });
+        ok(r && r.errors.length === 1 && r.errors[0].includes("diag-g8.js#dfx завдання 1 (answer)"), "diag: помилка answer один раз і вказує на завдання", r && r.errors.join("\n  ")); }
+      { const r = expectRun("diag: answer дозволено, без title — «немає title» без «answer: немає title»", dfiles({ title: "" }), ["--diag", "dfx"], { err: "немає title" });
+        ok(r && !r.errors.some(e => e.includes("answer: ")), "diag: без рядків answer: для title", r && r.errors.join("\n  ")); }
+    } finally { fs.writeFileSync(lp, orig); } } }
 
 // ---- engine-diag-answer-kinds: answer з answerKind у тесті рівня (SLID.diag) — окремий блок (паралельна гілка змінює validate вище) ----
 // learn.validate: answer дозволено лише з number | time | quantity; поля answer перевіряє той самий answerFieldIssues, що в уроці
