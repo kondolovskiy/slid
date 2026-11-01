@@ -1,5 +1,5 @@
 /* Слід · Математика, 8 клас — пул задач для тренування до розділу «Алгебра: квадратні корені» (g8m3)
-   Статус: verified (автор agent-write-math-pool-g8m3, 2026-10-31; верифікатор verifier-pg8m3, 2026-10-31, reports/verify/pg8m3.md;
+   Статус: draft (2026-11-01 refine-math-pools-new-kinds: b08 — ключ "1,73", decimals 2; чекає повторної верифікації). Раніше verified (автор agent-write-math-pool-g8m3, 2026-10-31; верифікатор verifier-pg8m3, 2026-10-31, reports/verify/pg8m3.md;
    2026-10-31 refine-math-g8m3-roots: c02 №472(2) замінено на c09 №470(1), list у g8m3l3; повторно верифіковано 2026-10-31, reports/verify/refine-g8m3.md). 32 задачі: по 8 на кожен required-урок
    g8m3l1–g8m3l4 (boss g8m3l5 без задач). Матриця покриття 2026-10-16.v2.
    Усі задачі — з підручника Мерзляка, Якіра «Алгебра. 8 клас» (2025), § 2, п. 12, 14, 15, 16, 17;
@@ -10,8 +10,8 @@
 SLID.pool("math", {
   id: "pg8m3",
   section: "g8m3",
-  status: "verified",
-  meta: { author: "claude-opus", created: "2026-10-31", factcheck: "verifier-pg8m3", teacher: null },
+  status: "draft",
+  meta: { author: "claude-opus", created: "2026-10-31", factcheck: "self (refine-math-pools-new-kinds, 2026-11-01: b08; решта — verifier-pg8m3)", teacher: null },
   sources: [
     { id: "a8", title: "Мерзляк А. Г., Якір М. С. Алгебра: підручник для 8 класу закладів загальної середньої освіти. — Харків: Гімназія, 2025 (§ 2, п. 12, 14–17)", url: "https://file.4book.org/images/shcoolbook_ua/8/8_a_m_2025.pdf" }
   ],
@@ -131,7 +131,7 @@ SLID.pool("math", {
     { id: "b08", lesson: "g8m3l2", lvl: 3, sk: "num", src: "a8 №448(1)", srcPage: 138, adapted: true,
       type: "answer", title: "$\\sqrt{3}$ до сотих",
       body: "<p>Знайди наближене значення $\\sqrt{3}$ з точністю до 0,01 за нестачею, тобто найбільше число з двома знаками після коми, яке не перевищує $\\sqrt{3}$.</p><p>Можна обійтися без калькулятора: підноси кандидатів до квадрата.</p>",
-      answer: 1.73,
+      answer: "1,73", decimals: 2,
       hint: "Як у уроці з $\\sqrt{2}$: порівнюй квадрати з числом 3. Спершу знайди десяті ($1,7^2$ і $1,8^2$), потім соті.",
       steps: ["$1,7^2 = 2,89 < 3$, а $1,8^2 = 3,24 > 3$, тож $1,7 < \\sqrt{3} < 1,8$.", "$1,73^2 = 2,9929 < 3$, а $1,74^2 = 3,0276 > 3$.", "Отже, $1,73 < \\sqrt{3} < 1,74$, і наближення за нестачею — 1,73."] },
 
