@@ -227,6 +227,65 @@ const flushAll = async J => { await J.flush(); await J.flush(); };
   const J = C.create(C.idbBackend(F, "t4", KR), env({ setTimeout, clearTimeout }), E.LIMITS); J.log("boot", {}); await flushAll(J);
   eq((await J.export()).events.map(e => [e.seq, e.type]), [[1, "old"], [2, "boot"]], "версія 1 → 2: індекс eid додано, події лишились"); }
 
+{ // пакет «в дорозі» (inflight): append ще не завершився, а сторінка вже ховається — він теж у копії черги (рев'ю P3-5)
+  const b = mem(), orig = b.append.bind(b); let release = null;
+  b.append = list => new Promise(ok => { release = () => ok(orig(list)); });
+  let box = [];
+  const J = C.create(b, env({ setTimeout, clearTimeout, stash: l => { box = box.concat(JSON.parse(JSON.stringify(l))); } }), { ...E.LIMITS, delay: 1e9 });
+  J.log("screen", { i: 1 }); J.log("answer", { i: 1 }); const f = J.flush();
+  for (let i = 0; i < 50 && !release; i++) await new Promise(r => setTimeout(r, 0));
+  truthy(release, "inflight: append почався й чекає");
+  J.log("close", { end: false });
+  eq(J.stash(), 3, "inflight: stash бере пакет у дорозі й чергу");
+  eq(box.map(e => e.type), ["screen", "answer", "close"], "inflight: спершу пакет у дорозі, далі черга");
+  truthy(box.every(e => e.seq === undefined), "inflight: у копії без seq");
+  b.append = orig; release(); await f; await J.flush();
+  eq([...b.st.ev.values()].map(e => e.type), ["screen", "answer", "close"], "inflight: після завершення все записано"); }
+
+// ---------- 10. slid.evidence.pending: межі розміру, квота localStorage, пріоритет slid.v1 (рев'ю P3-6) ----------
+const fakeLS = quota => { const m = new Map(), used = () => [...m].reduce((a, [k, v]) => a + k.length + v.length, 0);
+  return { m, getItem: k => m.has(k) ? m.get(k) : null, removeItem: k => { m.delete(k); },
+    setItem(k, v) { v = String(v); if (used() - (m.has(k) ? k.length + m.get(k).length : 0) + k.length + v.length > quota) { const e = new Error("quota"); e.name = "QuotaExceededError"; throw e; } m.set(k, v); } }; };
+const evs = (k, pad = 80, p = "s") => Array.from({ length: k }, (_, i) => ({ v: 1, eid: p + "." + i, type: "screen", d: { x: "y".repeat(pad) } }));
+{ const f = C.fitStash(evs(400, 1));
+  eq([f.length, f[0].eid, f[f.length - 1].eid], [300, "s.100", "s.399"], "fitStash: ≤ stash подій, найновіші");
+  const g = C.fitStash(evs(300, 8000));
+  truthy(g.length >= 1 && JSON.stringify(g).length <= E.LIMITS.stashBytes, "fitStash: ≤ stashBytes (" + JSON.stringify(g).length + ")");
+  eq(g[g.length - 1].eid, "s.299", "fitStash: за байтами лишаються найновіші");
+  eq(C.fitStash([{ eid: "x", d: "z".repeat(E.LIMITS.stashBytes) }]), [], "fitStash: одна завелика подія — нічого"); }
+{ // справжні env.stash / env.forget на localStorage з квотою
+  const ls = fakeLS(1e7), K = load({ localStorage: ls }).SLID_EVIDENCE._core;
+  K.env.stash(evs(300, 8000));
+  const p = JSON.parse(ls.getItem(K.PENDING));
+  truthy(ls.getItem(K.PENDING).length <= E.LIMITS.stashBytes && p.length >= 1 && p[p.length - 1].eid === "s.299", "env.stash: ключ ≤ stashBytes, найновіші");
+  K.env.stash(evs(2, 10, "t")); eq(JSON.parse(ls.getItem(K.PENDING)).slice(-2).map(e => e.eid), ["t.0", "t.1"], "env.stash: дописує, не затираючи");
+  K.env.forget(["t.0", "t.1", ...p.map(e => e.eid)]); eq(ls.getItem(K.PENDING), null, "env.forget: усе записано — ключа немає"); }
+{ // квоти бракує: pending скорочується, далі зникає; slid.v1 не чіпає й не кидає
+  const Q = 20000, ls = fakeLS(Q), K = load({ localStorage: ls }).SLID_EVIDENCE._core, prog = "p".repeat(15000);
+  ls.setItem("slid.v1", prog);
+  K.env.stash(evs(100));
+  const p = JSON.parse(ls.getItem(K.PENDING) || "[]");
+  truthy(p.length > 0 && p.length < 100 && p[p.length - 1].eid === "s.99", `квота: лишилась новіша частина (${p.length})`);
+  eq(ls.getItem("slid.v1"), prog, "квота: slid.v1 не змінився");
+  ls.removeItem(K.PENDING); const prog2 = "p".repeat(Q - 7 - 60); ls.setItem("slid.v1", prog2);
+  ls.setItem(K.PENDING, "[]"); K.env.stash(evs(5));
+  eq([ls.getItem(K.PENDING), ls.getItem("slid.v1") === prog2], [null, true], "квота: не вміщується й одна подія — ключ видалено, slid.v1 цілий");
+  const throwing = { getItem: () => { throw new Error("SecurityError"); }, setItem: () => { throw new Error("SecurityError"); }, removeItem: () => { throw new Error("SecurityError"); } };
+  const K2 = load({ localStorage: throwing }).SLID_EVIDENCE._core; let ok = true;
+  try { K2.env.stash(evs(3)); K2.env.forget(["s.0"]); eq(K2.env.unstash(), [], "localStorage кидає: unstash порожній"); } catch (e) { ok = false; }
+  truthy(ok, "localStorage кидає: stash/forget без винятків"); }
+{ // записане прибирається з копії черги одразу (не накопичується з кожним visibilitychange); чуже (інша вкладка) лишається
+  const ls = fakeLS(1e7), K = load({ localStorage: ls }).SLID_EVIDENCE._core, b = mem();
+  const J = C.create(b, env({ setTimeout, clearTimeout, stash: K.env.stash, unstash: K.env.unstash, forget: K.env.forget }), { ...E.LIMITS, delay: 1e9 });
+  await flushAll(J);
+  ls.setItem(K.PENDING, JSON.stringify([{ v: 1, eid: "other.1", type: "x" }]));
+  J.log("screen", { i: 1 }); J.log("answer", { i: 1 }); J.stash();
+  eq(JSON.parse(ls.getItem(K.PENDING)).map(e => e.eid).length, 3, "pending: своя черга дописана до чужої");
+  await flushAll(J);
+  eq(JSON.parse(ls.getItem(K.PENDING)).map(e => e.eid), ["other.1"], "pending: записані свої прибрано, чуже лишилось");
+  J.log("close", {}); J.stash(); b.st.failNext = 1; await flushAll(J);
+  eq(JSON.parse(ls.getItem(K.PENDING)).map(e => e.type), ["x", "close"], "pending: пакет не записано — лишається для наступного завантаження"); }
+
 // ---------- 9. розмір підсумкових подій на справжньому змісті (рев'ю P2-1) ----------
 // Перший і повторний (інший день, інші статуси) тест рівня кожного SLID.diag: зміни SRS-коробок (srsFromDiag), план (finishDiag)
 // і diag_end — без trunc; частини srs разом дають усі зміни.

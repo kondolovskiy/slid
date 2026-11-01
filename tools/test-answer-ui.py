@@ -1766,7 +1766,11 @@ async def evidence_checks(browser, url):
     no_idb = "Object.defineProperty(window,'indexedDB',{configurable:true,get(){throw new DOMException('blocked','SecurityError');}});"
     fixture = """() => {const c=SLID_SUBJECTS.find(c=>c.id==='math'),p=c.pools.find(p=>p.id==='pg6m1');c.pools=[p];
       p.items=[0,1,2].map(i=>({id:'ev'+i,lesson:'g6m1l1',lvl:1,sk:'divis',src:p.sources[0].id+' №QA',type:'answer',title:'QA: 2 + 3',answer:5,
-        hint:'Додай два і три.',steps:['2 + 3 = 5.']}));}"""
+        hint:'Додай два і три.',steps:['2 + 3 = 5.']}));
+      // рев'ю P3-4: два завдання dg6 — типу answer (у справжніх тестах рівня його ще немає), щоб журнал бачив bad і form
+      const d=c.diags.find(d=>d.id==='dg6');
+      d.items[0]={...d.items[0],type:'answer',answer:8,title:'QA: 4 + 4'};
+      d.items[3]={...d.items[3],type:'answer',answer:3.5,decimals:2,title:'QA: 7 : 2 (до сотих)'};}"""
     async def screen_of(page, lid):
         return await page.evaluate("id=>SLID_SUBJECTS.find(c=>c.id==='math').sections.flatMap(s=>s.lessons||[]).find(l=>l.id===id).screens", lid)
     async def route(mode):
@@ -1794,7 +1798,8 @@ async def evidence_checks(browser, url):
                 assert 'Підказка:' in await page.locator('#hintHost').inner_text()
             await page.fill('#numIn', '5'); await page.click('#action'); await page.click('#action')
         await page.click('#action')   # «Готово»
-        # 2) тест рівня dg6: три відповіді, далі «Ще не знаю» до кінця
+        # 2) тест рівня dg6: чотири відповіді (перша — хибна, четверта — правильне значення в неналежному записі: form → OK),
+        #    далі «Ще не знаю» до кінця. Остання спроба тренування — ok: застарілий lastAns дав би ok замість bad (рев'ю P3-4)
         await page.click('[data-tab="path"]'); await page.click('[data-tab="path"]')
         await page.click('button[data-subject="math"]')
         await page.click('#view [data-diag="math"]'); await page.click('[data-diag-go]')
@@ -1802,12 +1807,17 @@ async def evidence_checks(browser, url):
         while await page.locator('#skip').is_visible():
             i_item = await page.evaluate("""() => {const S=JSON.parse(localStorage.getItem('slid.v1')),d=SLID_SUBJECTS.find(c=>c.id==='math').diags.find(d=>d.id==='dg6');
               const i=SLID_LEARN.nextItem(d,(S.diagRun||{}).dg6||{}); return [i, d.items[i]];}""")
-            asked.append((i_item[0], i_item[1]['type'], i_item[1].get('topic'), 'ok' if k < 3 else 'skip'))
-            if k < 3:
+            typed = {0: ('99', 'bad'), 3: ('3,5', 'form')}.get(i_item[0]) if k < 4 else None
+            asked.append((i_item[0], i_item[1]['type'], i_item[1].get('topic'), typed[1] if typed else 'ok' if k < 4 else 'skip'))
+            if typed:
+                assert i_item[1]['type'] == 'answer', i_item
+                await page.fill('#numIn', typed[0]); await page.dispatch_event('#numIn', 'input'); await page.click('#action')
+            elif k < 4:
                 await answer_context_screen(page, i_item[1]); await page.click('#action')
             else:
                 await page.click('#skip')
             k += 1
+        assert [a[3] for a in asked[:4]] == ['bad', 'ok', 'ok', 'form'], asked[:4]
         # 3) перший крок плану — справжній урок, усе правильно
         lid = await page.locator('#stage [data-lesson]').first.get_attribute('data-lesson')
         await page.locator('#stage [data-lesson]').first.click()
@@ -1855,10 +1865,10 @@ async def evidence_checks(browser, url):
             assert all(isinstance(e.get('dt'), int) and e['dt'] >= 0 for e in ev if e['type'] == 'answer'), 'dt'
             dg = [e['d'] for e in ev if e['type'] == 'answer' and e['d']['mode'] == 'diag']
             assert dg and all(a['l'] == 'dg6' and a['hint'] is False for a in dg), dg[:2]
-            assert [a['verdict'] for a in dg].count('skip') == len(dg) - 3 and all(a['res'] == -1 for a in dg if a['verdict'] == 'skip'), [a['verdict'] for a in dg]
+            assert [a['verdict'] for a in dg].count('skip') == len(dg) - 4 and all(a['res'] == -1 for a in dg if a['verdict'] == 'skip'), [a['verdict'] for a in dg]
             # кожна спроба тесту — про те завдання, яке дитина бачила, з її вердиктом
             assert [(a['i'], a['type'], a['topic'], a['verdict']) for a in dg] == asked, ([(a['i'], a['verdict']) for a in dg], asked)
-            assert all(a['res'] == 1 for a in dg[:3]), dg[:3]
+            assert [(a['verdict'], a['res']) for a in dg[:4]] == [('bad', 0), ('ok', 1), ('ok', 1), ('form', 1)] and [dg[0]['raw'], dg[3]['raw']] == ['99', '3,5'], dg[:4]
             assert not [e for e in ev if isinstance(e['d'], dict) and e['d'].get('trunc')], 'обрізані події'
             assert (await page.evaluate("SLID_EVIDENCE.stats()"))['truncated'] == 0
             de = next(e['d'] for e in ev if e['type'] == 'diag_end')
@@ -1943,6 +1953,42 @@ async def evidence_checks(browser, url):
     assert [e['seq'] for e in kept[:len(off)]] == [e['seq'] for e in off] and kept[len(off)]['type'] == 'boot', 'офлайн-події не збереглися'
     assert not errors, errors
     await context.close()
-    print(f'Журнал подій (IndexedDB): схема, спроби, srs/plan/grade, без імені, перезавантаження, офлайн (cv {ver}); стан однаковий з журналом, без IndexedDB і без модуля: green', flush=True)
+    # «Пізніше» тесту рівня (рішення людини 2026-11-01): подія diag_later; localStorage переповнено копією черги журналу —
+    # slid.v1 все одно зберігається, ключ slid.evidence.pending поступається (рев'ю P3-6)
+    context = await browser.new_context(viewport={'width': 400, 'height': 860}, service_workers='block')
+    page = await context.new_page()
+    errors = []
+    page.on('pageerror', lambda error: errors.append(str(error)))
+    await page.route('**/fonts.googleapis.com/**', lambda r: r.abort())
+    await page.goto(url)
+    await page.evaluate('s => localStorage.setItem("slid.v1",JSON.stringify(s))', seed)
+    await page.reload()
+    page.set_default_timeout(7000)
+    await page.click('button[data-subject="math"]'); await page.click('#view [data-diag="math"]'); await page.click('[data-diag-go]')
+    await page.click('#skip')
+    i_item = await page.evaluate("""() => {const S=JSON.parse(localStorage.getItem('slid.v1')),d=SLID_SUBJECTS.find(c=>c.id==='math').diags.find(d=>d.id==='dg6');
+      return d.items[SLID_LEARN.nextItem(d,(S.diagRun||{}).dg6||{})];}""")
+    await answer_context_screen(page, i_item); await page.click('#action')
+    await page.click('#pClose')   # тест рівня закривається одним ✕ (прогрес збережено)
+    assert len((await page.evaluate("JSON.parse(localStorage.getItem('slid.v1'))"))['diagRun']['dg6']) == 2
+    await page.evaluate("SLID_EVIDENCE.flush()")
+    filled = await page.evaluate("""() => { const K=SLID_EVIDENCE._core.PENDING; let lo=0, hi=12e6;
+      while (hi - lo > 1) { const mid=Math.floor((lo + hi) / 2); try { localStorage.setItem(K, '"' + 'x'.repeat(mid) + '"'); lo = mid; } catch (e) { hi = mid; } }
+      localStorage.setItem(K, '"' + 'x'.repeat(lo) + '"');
+      let full = false; try { localStorage.setItem('slid.qa', 'xx'); } catch (e) { full = true; } localStorage.removeItem('slid.qa'); return [lo, full]; }""")
+    assert filled[1] and filled[0] > 100000, filled
+    await page.click('[data-diag-skip="dg6"]')
+    st = await page.evaluate("JSON.parse(localStorage.getItem('slid.v1'))")
+    assert st['diagSkip'] == {'dg6': True} and len(st['diagRun']['dg6']) == 2, 'переповнене сховище: slid.v1 не збережено'
+    assert await page.evaluate("localStorage.getItem(SLID_EVIDENCE._core.PENDING)") is None
+    later = [e['d'] for e in (await page.evaluate("SLID_EVIDENCE.export()"))['events'] if e['type'] == 'diag_later']
+    assert later == [{'c': 'math', 'diag': 'dg6', 'answered': 2, 'skipped': 1}], later
+    await page.evaluate("SLID_EVIDENCE.log('qa_after', {}); SLID_EVIDENCE.stash()")   # місце знову є: копія черги працює
+    assert len(await page.evaluate("JSON.parse(localStorage.getItem(SLID_EVIDENCE._core.PENDING))")) >= 1
+    await page.evaluate("SLID_EVIDENCE.flush()")
+    assert await page.evaluate("localStorage.getItem(SLID_EVIDENCE._core.PENDING)") is None, 'записане не прибрано з копії черги'
+    assert not errors, errors
+    await context.close()
+    print(f'Журнал подій (IndexedDB): схема, спроби, srs/plan/grade, без імені, перезавантаження, офлайн (cv {ver}); стан однаковий з журналом, без IndexedDB і без модуля; «Пізніше» і переповнене сховище: green', flush=True)
 
 asyncio.run(main())

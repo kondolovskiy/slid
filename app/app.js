@@ -140,7 +140,8 @@ const fresh = () => ({ name:"", grade:null, weekOverride:null, theme:"system", s
 let S = fresh();
 try { const raw = localStorage.getItem(KEY); if (raw) S = Object.assign(fresh(), JSON.parse(raw)); } catch(e) {}
 EV.observe(S); EV.log("boot", ()=>({ grade:S.grade, subj:S.subject, lessons:Object.keys(S.lessons||{}).length, diags:Object.keys(S.diag||{}), srs:Object.keys(S.srs||{}).length }));
-const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e) {} EV.observe(S); };
+// квоти бракує — спершу звільнити місце копією черги журналу (docs/EVIDENCE.md): прогрес slid.v1 важливіший за незаписані події
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e) { try { localStorage.removeItem("slid.evidence.pending"); localStorage.setItem(KEY, JSON.stringify(S)); } catch(e) {} } EV.observe(S); };
 try { const fx=JSON.stringify(S.skFix); if (LEARN.migrateSk(S) || JSON.stringify(S.skFix)!==fx) save(); } catch(e) {}   // позначка міграції зберігається й без перенесених записів (рев'ю P3-2); sk, узгоджені з уроками 2026-10-31, — у журналі помилок (learn.js, SK_RETAG)
 // розпочатий до нової редакції тесту: вердикти замінених завдань відкидаються, решта й порядок лишаються (learn.js, resumeDiag)
 try { let ch=false; for (const c of SUBJ) for (const d of c.diags||[]) if (Object.keys(S.diagRun?.[d.id]||{}).length && LEARN.resumeDiag(S,d).dropped.length) ch=true; if (ch) save(); } catch(e) {}
@@ -573,7 +574,9 @@ function bindView(){
   document.querySelectorAll("[data-plan]").forEach(b=>b.onclick=()=>go({v:"plan",id:b.dataset.plan}));
   document.querySelectorAll("[data-diag]").forEach(b=>b.onclick=()=>go({v:"diag",id:b.dataset.diag}));
   document.querySelectorAll("[data-diag-go]").forEach(b=>b.onclick=()=>startDiag(nav.id));
-  document.querySelectorAll("[data-diag-skip]").forEach(b=>b.onclick=()=>{ S.diagSkip[b.dataset.diagSkip]=true; save(); go({v:"home"}); });
+  document.querySelectorAll("[data-diag-skip]").forEach(b=>b.onclick=()=>{ const id=b.dataset.diagSkip, r=Object.values(S.diagRun[id]||{});
+    EV.log("diag_later", ()=>({ c:nav.id, diag:id, answered:r.length, skipped:r.filter(v=>v===LEARN.SKIP).length }));
+    S.diagSkip[id]=true; save(); go({v:"home"}); });
   const wsel=$("#weekSel"); if(wsel) wsel.onchange=()=>{ S.weekOverride= +wsel.value || null; save(); render(); };
   document.querySelectorAll("[data-goto]").forEach(b=>b.onclick=()=>go({v:"subject",id:b.dataset.goto}));
   document.querySelectorAll("[data-start]").forEach(b=>b.onclick=()=>{ const [cid,k,i]=b.dataset.start.split("|"); nav={v:"topic",id:cid,sec:+k}; S.subject=cid; startLesson(cid,+k,+i); });

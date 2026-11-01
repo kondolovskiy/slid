@@ -12,11 +12,13 @@
    - ротація: понад LIMITS.max подій — найстаріші видаляються до LIMITS.keep; подія обрізається до LIMITS.bytes
      (підсумкові типи BIG — до LIMITS.bigBytes; srs ділиться на частини part/parts, тож не обрізається);
    - перехід зі сторінки: незаписана черга синхронно скидається в localStorage «slid.evidence.pending» (не slid.v1)
-     і дописується під час наступного завантаження; дублікати відкидає унікальний eid.
+     і дописується під час наступного завантаження; дублікати відкидає унікальний eid. Ключ ≤ LIMITS.stash подій і
+     ≤ LIMITS.stashBytes символів JSON; бракує квоти — скорочується, далі видаляється (slid.v1 не чіпає); записані події
+     прибираються з нього одразу. Пріоритет slid.v1: save() у app.js за браку квоти видаляє цей ключ і пише slid.v1 знову.
    Консоль: SLID_EVIDENCE.stats(), SLID_EVIDENCE.export() (об'єкт), SLID_EVIDENCE.download() (файл JSON). */
 (() => {
   const SCHEMA = 1, DB_NAME = "slid-evidence", DB_VER = 2, EV = "events", META = "meta", PENDING = "slid.evidence.pending";
-  const LIMITS = { max: 15000, keep: 13500, queue: 1000, batch: 40, delay: 1200, str: 300, arr: 60, depth: 6, bytes: 2048, bigBytes: 8192, part: 1500, stash: 300, versionWait: 1000 };
+  const LIMITS = { max: 15000, keep: 13500, queue: 1000, batch: 40, delay: 1200, str: 300, arr: 60, depth: 6, bytes: 2048, bigBytes: 8192, part: 1500, stash: 300, stashBytes: 64 * 1024, versionWait: 1000 };
   /** Підсумкові події: більший ліміт розміру. */
   const BIG = new Set(["srs", "plan", "diag_start", "diag_end", "lesson_end", "practice_start", "practice_end"]);
 
@@ -67,6 +69,14 @@
   }
   /** Скільки найстаріших подій видалити: нічого, доки count ≤ max; інакше — до keep. */
   const trimCount = (count, lim = LIMITS) => count > lim.max ? count - lim.keep : 0;
+  /** Найновіші події для slid.evidence.pending: не більше lim.stash штук і lim.stashBytes символів JSON (рев'ю P3-6). */
+  function fitStash(list, lim = LIMITS) {
+    const out = []; let size = 2;
+    for (let i = list.length - 1; i >= 0 && out.length < lim.stash; i--) { const k = JSON.stringify(list[i]).length + 1;
+      if (size + k > lim.stashBytes) break;
+      out.push(list[i]); size += k; }
+    return out.reverse();
+  }
   const rid = () => { try { if (crypto.randomUUID) return crypto.randomUUID(); const b = crypto.getRandomValues(new Uint8Array(16)); return [...b].map(x => x.toString(16).padStart(2, "0")).join(""); } catch (e) { return Math.random().toString(36).slice(2) + Date.now().toString(36); } };
 
   /** Порівняння знімків стану після save(): зміни SRS-коробок, планів (за предметом і класом) і класу. */
@@ -151,6 +161,7 @@
   const MICRO = {};   // позначка «запис уже заплановано мікрозадачею» (не id таймера)
   function create(backend, env, lim = LIMITS) {
     let queue = [], inflight = [], timer = null, chain = Promise.resolve(), ready = null, ids = null, cv, enabled = !!backend, fails = 0, dropped = 0, written = 0, dup = 0, truncated = 0, recovered = 0, n = 0, snap = null, cause = null, scrT = null, pidNew = null;
+    const stashed = new Set();   // eid, скинуті цією сторінкою в env.stash: після запису прибираються звідти (env.forget)
     const sid = rid();
     const disable = () => { enabled = false; dropped += queue.length; queue = []; };
     if (backend) ready = backend.init().then(r => { ids = r; }, () => disable());
@@ -170,7 +181,9 @@
       while (queue.length && enabled) {
         const list = inflight = queue.splice(0, lim.batch);
         for (const e of list) { e.did = e.did || ids.did; if (!e.pid) e.pid = ids.pid; if (e.cv === undefined) { e.cv = cv; e.cvs = cv ? "sw" : null; } }
-        try { const k = await backend.append(list); written += k; dup += list.length - k; fails = 0; }
+        try { const k = await backend.append(list); written += k; dup += list.length - k; fails = 0;
+          const gone = stashed.size ? list.map(e => e.eid).filter(id => stashed.delete(id)) : [];
+          if (gone.length && env.forget) try { env.forget(gone); } catch (e) {} }
         catch (e) { dropped += list.length; if (++fails >= 3) disable(); }
         inflight = [];
       }
@@ -207,7 +220,7 @@
       /** Синхронно скинути незаписане (пакет у дорозі + черга) у env.stash: pagehide / сторінка ховається. */
       stash() {
         try { if (!enabled || !env.stash) return 0; const list = [...inflight, ...queue].slice(-lim.stash).map(e => { const c = { ...e }; delete c.seq; if (c.cv === undefined && cv !== undefined) { c.cv = cv; c.cvs = cv ? "sw" : null; } return c; });
-          if (list.length) env.stash(list); return list.length; } catch (e) { return 0; }
+          if (list.length) { env.stash(list); for (const e of list) stashed.add(e.eid); } return list.length; } catch (e) { return 0; }
       },
       /** SW змінився (controllerchange): наступний запис спитає версію змісту знову. */
       resetVersion() { cv = undefined; },
@@ -236,14 +249,24 @@
   let idb = null;
   try { idb = g.indexedDB || null; if (idb && typeof idb.open !== "function") idb = null; } catch (e) { idb = null; }
   const perf = () => { try { return performance.now(); } catch (e) { return 0; } };
+  const readPending = () => { try { const v = JSON.parse(localStorage.getItem(PENDING) || "[]"); return Array.isArray(v) ? v : []; } catch (e) { return []; } };
+  const dedup = list => { const seen = new Set(); return list.filter(e => e && e.eid && !seen.has(e.eid) && seen.add(e.eid)); };
+  function writePending(list) {
+    try { if (!list.length) return localStorage.removeItem(PENDING); } catch (e) { return; }
+    for (let k = list; k.length; k = k.slice(Math.ceil(k.length / 2))) try { localStorage.setItem(PENDING, JSON.stringify(k)); return; } catch (e) {}
+    try { localStorage.removeItem(PENDING); } catch (e) {}
+  }
   const env = {
     now: () => Date.now(), tzo: () => new Date().getTimezoneOffset(), mono: perf,
     online: () => { try { return navigator.onLine !== false; } catch (e) { return true; } },
     setTimeout: (f, ms) => setTimeout(f, ms), clearTimeout: t => clearTimeout(t),
-    /** Окремий ключ localStorage (не slid.v1): кілька вкладок дописують, не затираючи одна одну; ≤ LIMITS.stash подій. */
-    stash: list => { let old = []; try { old = JSON.parse(localStorage.getItem(PENDING) || "[]"); } catch (e) {}
-      const seen = new Set(), all = [...(Array.isArray(old) ? old : []), ...list].filter(e => e && e.eid && !seen.has(e.eid) && seen.add(e.eid));
-      try { localStorage.setItem(PENDING, JSON.stringify(all.slice(-LIMITS.stash))); } catch (e) {} },
+    /** Окремий ключ localStorage (не slid.v1): кілька вкладок дописують, не затираючи одна одну; ≤ LIMITS.stash подій
+        і ≤ LIMITS.stashBytes символів. Квоти бракує — лишається новіша половина, потім чверть…; не вміщується й одна — ключ видаляється. */
+    stash: list => { const all = fitStash(dedup([...readPending(), ...list]));
+      writePending(all); },
+    /** Події, які вже записано в IndexedDB, — геть із ключа (інакше він ріс би з кожним visibilitychange). */
+    forget: eids => { const drop = new Set(eids), old = readPending(), rest = old.filter(e => !drop.has(e.eid));
+      if (rest.length !== old.length) writePending(rest); },
     unstash: () => { try { const v = JSON.parse(localStorage.getItem(PENDING) || "[]"); localStorage.removeItem(PENDING); return Array.isArray(v) ? v : []; } catch (e) { return []; } },
     /** Версія змісту = VERSION активного service worker (sw.js); без нього — null. */
     version: () => new Promise(ok => {
@@ -267,7 +290,7 @@
       return data.events.length;
     } catch (e) { return 0; }
   };
-  api._core = { sanitize, makeEvent, trimCount, chunk, stateSnap, stateDiff, create, idbBackend, env, BIG, PENDING };
+  api._core = { sanitize, makeEvent, trimCount, fitStash, chunk, stateSnap, stateDiff, create, idbBackend, env, BIG, PENDING };
   try {
     // транзакція IndexedDB, почата в pagehide, може не встигнути: спершу синхронна копія черги, потім спроба запису
     addEventListener("pagehide", () => { api.stash(); api.flush(); });
