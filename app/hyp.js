@@ -361,7 +361,7 @@ window.SLID_HYP = (() => {
   function tracker(opts = {}) {
     const seed = String(opts.seed || randId()).slice(0, 12);
     let persist = opts.persist ? 1 : 0, cnt = 0, scr = 0;
-    let open = [], errs = [], gens = {}, shown = {}, passed = {}, runRes = { run: null, list: [] }, pend = null, closed = [];
+    let open = [], errs = [], gens = {}, shown = {}, passed = {}, runRes = { run: null, list: [] }, pend = null, closed = [], dskip = {};
     const nid = () => `${seed}.${++cnt}`;
     const pk = (l, sk) => `${l}|${sk ?? ""}`;
     const inPair = (h, l, sk) => h.ls.includes(l) && (h.sk ?? null) === (sk ?? null);
@@ -460,7 +460,9 @@ window.SLID_HYP = (() => {
       // P1: form, а в тесті рівня й half (півбала, LEARN.diagVerdict: вимаганого вигляду немає чи корінь не обчислено) — гіпотези немає
       if (tr === 1 && (a.verdict === "form" || a.verdict === "half")) ev.push({ type: "hyp_fmt", d: { key: it.key ?? null, l: it.l, i: it.i ?? null,
         fc: LEARN().formCode(a.s, a.raw), ...(a.verdict === "half" ? { half: 1 } : {}), rv: RULES_VERSION } });
-      if (tr === 1 && (a.verdict === "bad" || a.verdict === "skip")) {
+      // «Ще не знаю» в тесті рівня — не гіпотеза (завжди P9, top unk), лише лічильник за тестом: його пише diag_end (onDiagEnd, §9 [E2-p3])
+      if (tr === 1 && a.verdict === "skip" && it.mode === "diag") dskip[it.l] = (dskip[it.l] || 0) + 1;
+      else if (tr === 1 && (a.verdict === "bad" || a.verdict === "skip")) {
         const ls = a.ls && a.ls.length ? a.ls.slice() : [it.l], key = pk(it.l, it.sk);
         const hist = errs.filter(e => e.pk === key && t - e.t <= TH.patDays * DAY);
         const preHit = !!a.preWeak || ((a.pres || []).length && errs.some(e => a.pres.includes(e.l) && t - e.t <= TH.preDays * DAY));
@@ -505,31 +507,36 @@ window.SLID_HYP = (() => {
       return ev;
     }
     /** «Скинути прогрес»: усі відкриті → reset (до EV.log("reset"), §3.3); стан очищено. */
-    function onReset() { const ev = [...flush(), ...open.map(h => closeEv(h, "reset"))]; open = []; errs = []; gens = {}; shown = {}; passed = {}; closed = []; runRes = { run: null, list: [] }; return ev; }
+    function onReset() { const ev = [...flush(), ...open.map(h => closeEv(h, "reset"))]; open = []; errs = []; gens = {}; shown = {}; passed = {}; closed = []; dskip = {}; runRes = { run: null, list: [] }; return ev; }
+    /** Тест рівня завершено (diag_end): підсумок для поля hyp події diag_end — скільки «Ще не знаю» з минулого diag_end цього тесту
+        (разом з відповідями до перезавантаження чи «Пізніше»); лічильник обнуляється. Не подія: app.js кладе його в diag_end. */
+    function onDiagEnd(x) { const id = x && x.diag, n = dskip[id] || 0; delete dskip[id]; return { skip: n, rv: RULES_VERSION }; }
     /** Старт / час минув: старші за 7 днів без перевірки → expired. */
     function tick(x) { return [...expire(tOf(x))]; }
     /** Стан для slid.hyp (§3.3): крім open/probed/gens — errs, shown, passed (§9 п. 11), closed (hid закритих — злиття вкладок),
         scr (лічильник екранів — gap.scr після перезавантаження) і pend (гіпотеза, що чекає другої спроби, без s — вправу app.js
-        знаходить знову за item; §9 п. 17 [E2]). */
-    const state = () => JSON.parse(JSON.stringify({ v: 1, rv: RULES_VERSION, open, probed: {}, gens, errs, shown, passed, closed, cnt, scr,
+        знаходить знову за item; §9 п. 17 [E2]), dskip — «Ще не знаю» тестів рівня до їх diag_end ({ id тесту: n }, §9 [E2-p3]). */
+    const state = () => JSON.parse(JSON.stringify({ v: 1, rv: RULES_VERSION, open, probed: {}, gens, errs, shown, passed, closed, cnt, scr, dskip,
       pend: pend ? { ...pend, a: { ...pend.a, s: undefined } } : null }));
     /** resolve(a) → вправа/екран зі змісту для відкладеного pend (a.item, a.genAt); немає — pend відкидається. */
     function load(st, resolve) {
       if (!st || st.v !== 1) return false;
       open = Array.isArray(st.open) ? st.open : []; gens = st.gens || {}; errs = st.errs || []; shown = st.shown || {}; passed = st.passed || {};
       closed = Array.isArray(st.closed) ? st.closed : []; cnt = st.cnt || cnt; scr = Number.isInteger(st.scr) ? st.scr : scr; pend = null;
+      dskip = st.dskip && typeof st.dskip === "object" ? st.dskip : {};
       if (st.pend && st.pend.a && resolve) { let s = null; try { s = resolve(st.pend.a); } catch (e) {} if (s) pend = { ...st.pend, a: { ...st.pend.a, s } }; }
       return true;
     }
     /** Закриті в іншій вкладці (злиття slid.hyp) — геть із пам'яті без подій. */
     function drop(hids) { const x = new Set(hids || []); if (x.size) open = open.filter(h => !x.has(h.hid)); }
-    return { onAnswer, onScreen, onLessonEnd, onReset, tick, flush, state, load, drop, setPersist: v => { persist = v ? 1 : 0; },
+    return { onAnswer, onScreen, onLessonEnd, onReset, onDiagEnd, tick, flush, state, load, drop, setPersist: v => { persist = v ? 1 : 0; },
       get open() { return open.map(h => ({ ...h })); }, get pending() { return !!pend; }, seed };
   }
 
   /** Злиття стану цієї вкладки (mine) зі збереженим іншою (stored), §3.3 «Кілька вкладок»: закриті в будь-якій — закриті (closed);
       відкриті — об'єднання за hid (версія mine має пріоритет), ≤ cap.open найновіших; errs — об'єднання за 14 днів; shown, passed —
-      пізніший день; gens — об'єднання наборів за gv (≤ cap.gens); cnt, scr, pend — лише mine (pend іншої вкладки там і лишається). */
+      пізніший день; gens — об'єднання наборів за gv (≤ cap.gens); cnt, scr, pend, dskip — лише mine (pend іншої вкладки там і лишається;
+      dskip — лічильник «Ще не знаю» тесту, який іде в цій вкладці). */
   function mergeState(mine, stored) {
     if (!stored || stored.v !== 1) return mine;
     const C = TH.cap, later = (a, b) => (typeof a === "string" && typeof b === "string" ? (a > b ? a : b) : a || b);
