@@ -525,7 +525,7 @@ function viewProfile(){
       <h3>Про прототип</h3>
       <p class="muted" style="font-size:14px;margin:0">Уроки, картинки й прогрес зберігаються на пристрої, тож застосунок працює без інтернету — і в укритті під час тривоги теж. Демо-прогрес — це приклад, а не справжні результати.</p>
       <details><summary class="muted" style="font-size:14px;cursor:pointer">Джерела зображень</summary>
-        <ul class="credits">${SUBJ.flatMap(c=>c.credits||[]).map(c=>`<li>${c[0]} — ${c[1]}, ${c[2]} (<a href="${urlAttr(c[3])}" target="_blank" rel="noopener">Вікісховище</a>)</li>`).join("")}</ul></details>
+        <ul class="credits">${SUBJ.flatMap(c=>c.credits||[]).map(c=>`<li>${c[0]} — ${c[1]}, ${c[2]} (<a href="${urlAttr(c[3])}" target="_blank" rel="noopener">${esc(srcSite(c[3]))}</a>)</li>`).join("")}</ul></details>
     </div>
   </div>`;
 }
@@ -648,23 +648,29 @@ function svgFig(name){
   return "";
 }
 
+/** Підпис посилання на джерело зображення: Вікісховище лише для Commons, інакше — домен (digitallibrary.un.org, …). */
+function srcSite(u){ let h=""; try{ h=new URL(String(u)).hostname.toLowerCase(); }catch(e){ return "джерело"; }
+  return /(^|\.)(commons|upload)\.wikimedia\.org$/.test(h)? "Вікісховище" : h.replace(/^www\./,"") || "джерело"; }
+
 /* ---------- Ілюстрації: математика (за описом) ---------- */
+/** «на 2 рівні частини», «на 5 рівних частин», «на 21 рівну частину» (знахідний відмінок після «на»). */
+const partsAcc=(n,eq)=> n+" "+plural(n, eq? ["рівну частину","рівні частини","рівних частин"] : ["частину","частини","частин"]);
 function sectorPath(cx,cy,r,a0,a1){ const p=a=>[cx+r*Math.cos(a), cy+r*Math.sin(a)]; const [x0,y0]=p(a0),[x1,y1]=p(a1); return `M${cx} ${cy} L${x0.toFixed(2)} ${y0.toFixed(2)} A${r} ${r} 0 ${a1-a0>Math.PI?1:0} 1 ${x1.toFixed(2)} ${y1.toFixed(2)} Z`; }
 function circleSVG(n, shaded, opt={}){ // shaded: (i)=> 0 | 1 | 2
   const r=opt.r||70, cx=r+6, cy=r+6, A=-Math.PI/2;
   const parts=[...Array(n)].map((_,i)=>{ const s=shaded(i); const fill= s===2? "var(--accent-mid)" : s? "var(--accent)" : "var(--surface)";
     return `<path class="${opt.click?"part":""}" ${opt.click?`data-p="${i}" tabindex="0" role="button" aria-label="Частина ${i+1}"`:""} d="${sectorPath(cx,cy,r,A+i*2*Math.PI/n,A+(i+1)*2*Math.PI/n)}" fill="${fill}" stroke="var(--ink)" stroke-width="1.6" stroke-linejoin="round"/>`; }).join("");
-  return `<svg viewBox="0 0 ${2*r+12} ${2*r+12}" style="max-width:${opt.size||200}px" role="img" aria-label="${opt.label||"Круг, поділений на "+n+" рівних частин"}">${parts}</svg>`;
+  return `<svg viewBox="0 0 ${2*r+12} ${2*r+12}" style="max-width:${opt.size||200}px" role="img" aria-label="${opt.label||"Круг, поділений на "+partsAcc(n,true)}">${parts}</svg>`;
 }
 function barSVG(weights, shaded, opt={}){
   const W=300, H=opt.h||56, tot=weights.reduce((a,b)=>a+b,0); let x=3;
   const parts=weights.map((w,i)=>{ const pw=(W-6)*w/tot, s=shaded(i), fill= s===2? "var(--accent-mid)" : s? "var(--accent)" : "var(--surface)";
     const el=`<rect class="${opt.click?"part":""}" ${opt.click?`data-p="${i}" tabindex="0" role="button" aria-label="Частина ${i+1}"`:""} x="${x.toFixed(2)}" y="3" width="${pw.toFixed(2)}" height="${H-6}" fill="${fill}" stroke="var(--ink)" stroke-width="1.6"/>`; x+=pw; return el; }).join("");
-  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${opt.label||"Смужка з "+weights.length+" частин"}">${parts}</svg>`;
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${opt.label||"Смужка з "+weights.length+" "+(weights.length%10===1&&weights.length%100!==11?"частини":"частин")}">${parts}</svg>`;
 }
 function mathFig(f){
-  if(f.kind==="circle") return `<div class="mfig">${circleSVG(f.n, i=> i<f.k ? (f.split && i<f.split ? 1 : f.split ? 2 : 1) : 0, {label:`Круг на ${f.n} рівних частин, зафарбовано ${f.k}`})}</div>`;
-  if(f.kind==="circles"){ let left=f.k; return `<div class="mfig row">${[...Array(f.count)].map(()=>{ const kk=Math.min(f.n,Math.max(0,left)); left-=f.n; return circleSVG(f.n,i=>i<kk?1:0,{size:120,label:`Круг на ${f.n} частин, зафарбовано ${kk}`}); }).join("")}</div>`; }
+  if(f.kind==="circle") return `<div class="mfig">${circleSVG(f.n, i=> i<f.k ? (f.split && i<f.split ? 1 : f.split ? 2 : 1) : 0, {label:`Круг на ${partsAcc(f.n,true)}, зафарбовано ${f.k}`})}</div>`;
+  if(f.kind==="circles"){ let left=f.k; return `<div class="mfig row">${[...Array(f.count)].map(()=>{ const kk=Math.min(f.n,Math.max(0,left)); left-=f.n; return circleSVG(f.n,i=>i<kk?1:0,{size:120,label:`Круг на ${partsAcc(f.n)}, зафарбовано ${kk}`}); }).join("")}</div>`; }
   if(f.kind==="bar") return `<div class="mfig">${barSVG(Array(f.n).fill(1), i=>i<f.k?1:0)}</div>`;
   if(f.kind==="unequal") return `<div class="mfig">${barSVG(f.parts, i=>i<f.k?1:0, {label:"Смужка з чотирьох неоднакових частин, зафарбовано найменшу"})}</div>`;
   if(f.kind==="bars") return `<div class="mfig bars">${f.rows.map((r,j)=>`<div class="barrow"><span class="m blab">${mathHTML(f.labels[j])}</span>${barSVG(Array(r[0]).fill(1), i=>i<r[1]?1:0, {h:40})}</div>`).join("")}</div>`;
@@ -932,7 +938,7 @@ function answerInput(s){
 const answerUnit = (s, value) => { const a=LEARN.parseAns(value); if(!s.unitForms||!a) return s.unit||""; const n=Math.abs(a.n/a.d); return Number.isInteger(n)? plural(n,s.unitForms) : s.unitForms[1]; };
 function shadeUpdate(s){
   const box=$("#shade"), click={click:true, size:230};
-  box.innerHTML = s.shape==="circle" ? circleSVG(s.n, i=>st.has(i)?1:0, {...click, label:`Круг на ${s.n} частин, торкайся частин, щоб зафарбувати`}) : barSVG(Array(s.n).fill(1), i=>st.has(i)?1:0, {...click, h:70, label:`Смужка на ${s.n} частин, торкайся частин, щоб зафарбувати`});
+  box.innerHTML = s.shape==="circle" ? circleSVG(s.n, i=>st.has(i)?1:0, {...click, label:`Круг на ${partsAcc(s.n)}, торкайся частин, щоб зафарбувати`}) : barSVG(Array(s.n).fill(1), i=>st.has(i)?1:0, {...click, h:70, label:`Смужка на ${partsAcc(s.n)}, торкайся частин, щоб зафарбувати`});
   $("#shcount").innerHTML = `Зафарбовано: ${fmt(`$${st.size}/${s.n}$`)}`;
   box.querySelectorAll(".part").forEach(p=>{ const tog=()=>{ if(checked) return; const i=+p.dataset.p; st.has(i)?st.delete(i):st.add(i); shadeUpdate(s); clearMarks(); setDock("","","","Перевірити", st.size>0); const np=$(`#shade [data-p="${i}"]`); if(np) np.focus(); };
     p.addEventListener("click",tog); p.addEventListener("keydown",e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); tog(); } }); });
@@ -944,7 +950,7 @@ function numlineUpdate(s){
   for(let i=0;i<=N;i++){ const whole=i%s.den===0; g+=`<line x1="${x(i)}" x2="${x(i)}" y1="${whole?30:34}" y2="${whole?50:46}" stroke="var(--ink)" stroke-width="${whole?2:1.2}"/>`; if(whole) g+=`<text x="${x(i)}" y="70" text-anchor="middle" font-size="15" font-weight="700" fill="var(--ink)" font-family="var(--mathf)">${i/s.den}</text>`; }
   const col = checked? (st===s.answer?"var(--ok)":"var(--bad)") : "var(--accent)";
   g+=`<circle cx="${x(st)}" cy="40" r="9" fill="${col}" stroke="var(--surface)" stroke-width="3"/>`;
-  $("#nlsvg").innerHTML=`<svg viewBox="0 0 ${W} 80" role="img" aria-label="Координатний промінь від 0 до ${s.max}, кожна одиниця поділена на ${s.den} частин">${g}</svg>`;
+  $("#nlsvg").innerHTML=`<svg viewBox="0 0 ${W} 80" role="img" aria-label="Координатний промінь від 0 до ${s.max}, кожна одиниця поділена на ${partsAcc(s.den)}">${g}</svg>`;
   const whole=Math.floor(st/s.den), rem=st%s.den;
   $("#nlval").innerHTML = fmt(`$${st}/${s.den}$`) + (whole && rem ? ` <span class="muted" style="font:500 15px var(--body)">=</span> ${fmt(`$${whole}~${rem}/${s.den}$`)}` : (st&&!rem? ` <span class="muted" style="font:500 15px var(--body)">= ${whole}</span>`:""));
 }
@@ -986,7 +992,10 @@ function bindScreen(s){
     stage.querySelectorAll(".anskeys button").forEach(b=>b.onclick=()=>{ if(checked) return; const v=b.dataset.ins;
       if(b.parentNode.classList.contains("sym")){ const a=ni.selectionStart??ni.value.length, z=ni.selectionEnd??a; ni.value=ni.value.slice(0,a)+v+ni.value.slice(z); ni.oninput(); ni.focus(); ni.setSelectionRange(a+v.length,a+v.length); return; }
       if(v.trim()==="ост." && (!/\d/.test(ni.value) || /ост/i.test(ni.value))) return ni.focus(); ni.value= v==="-"? (ni.value.startsWith("-")? ni.value.slice(1) : "-"+ni.value) : ni.value+v; ni.oninput(); ni.focus(); });
-    ni.onkeydown=e=>{ if(e.key!=="Enter") return; e.preventDefault(); if(!$("#action").disabled) $("#action").click(); };   /* preventDefault: той самий Enter не «натисне» ще й «Далі», на яку перейшов фокус */ setTimeout(()=>ni.focus({preventScroll:true}),350); }
+    ni.onkeydown=e=>{ if(e.key!=="Enter") return; e.preventDefault(); if(!$("#action").disabled) $("#action").click(); };   /* preventDefault: той самий Enter не «натисне» ще й «Далі», на яку перейшов фокус */
+    // Автофокус поля — лише з мишею/клавіатурою. На телефоні й планшеті (основний вказівник — палець) фокус у полі відкрив би
+    // екранну клавіатуру ще до того, як дитина прочитала умову (Android); поле вона торкне сама. Фокус — на екран, щоб Tab вів з його початку.
+    if(coarse()) $("#stage .screen")?.focus({preventScroll:true}); else setTimeout(()=>ni.focus({preventScroll:true}),350); }
 }
 function clearMarks(){ $("#stage").querySelectorAll(".is-ok,.is-bad").forEach(e=>e.classList.remove("is-ok","is-bad")); }
 function lock(){ $("#stage").querySelectorAll(".opt,.seg button,input,.sgn,.anskeys button").forEach(b=>b.disabled=true); if(LAB) LAB.lock(); }
@@ -1069,11 +1078,15 @@ function check(){
 }
 /** Після першої помилки: фокус назад у поле відповіді (текст виділено, щоб одразу виправити) або на обраний елемент.
     Після дотику (телефон, планшет) поле не фокусуємо: інакше знову відкриється екранна клавіатура й закриє підказку
-    та пояснення. Фокус — на екран, підказку прокручуємо у видиму частину; поле дитина торкне сама. */
+    та пояснення. Фокус — на екран, підказку прокручуємо у видиму частину; поле дитина торкне сама.
+    Так само на пристрої, де основний вказівник — палець (pointer: coarse), навіть якщо перевірку запустив Enter:
+    «Готово/Go» екранної клавіатури приходить як звичайний keydown Enter, і відрізнити його від фізичної клавіатури не можна.
+    Ціна для планшета з фізичною клавіатурою — один Tab або дотик до поля після помилки. */
+function coarse(){ try{ return !!(window.matchMedia && matchMedia("(pointer: coarse)").matches); }catch(e){ return false; } }
 let lastPointer="";
 document.addEventListener("pointerdown", e=>{ lastPointer=e.pointerType; }, true);
 document.addEventListener("keydown", ()=>{ lastPointer="key"; }, true);
-function refocusAnswer(){ const ni=$("#numIn"), touch= lastPointer==="touch"||lastPointer==="pen";
+function refocusAnswer(){ const ni=$("#numIn"), touch= lastPointer==="touch"||lastPointer==="pen"||coarse();
   if(touch){ const h=$("#hintHost .hint"); if(h) h.scrollIntoView({block:"nearest"}); const a=document.activeElement; if(a && a!==document.body && $("#stage").contains(a) && a!==ni) return; $("#stage .screen")?.focus({preventScroll:true}); return; }
   if(ni && !ni.disabled){ ni.focus({preventScroll:true}); ni.select(); return; }
   const a=document.activeElement; if(a && a!==document.body && $("#stage").contains(a)) return; focusAction(); }
