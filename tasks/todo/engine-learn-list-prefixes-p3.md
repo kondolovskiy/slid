@@ -20,3 +20,4 @@ depends_on: [engine-math-answer-g11-issues, engine-player-a11y-followup]
 Хибні ok гірші за хибні bad: негативні тести й скан реальних вправ (diff-answers). Незалежне рев'ю (D-026).
 
 ## Нотатки виконавця
+- SK_RETAG: правило `["g8m6l1", "math.meas", "math.geom"]` (pg8m6 a06 sk meas → geom, write-math-pools-multiset-compound) — нова міграція з новим id.

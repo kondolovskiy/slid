@@ -1,18 +1,19 @@
 /* Слід · Математика, 4 клас — пул задач для тренування до розділу «Величини» (g4m4)
-   Статус: verified (2026-11-01, змінено a08, d06, d07; повторно перевірено verifier-refine-math-pools-new-kinds, 2026-11-01, reports/verify/refine-math-pools-new-kinds.md); раніше verified (verifier-pg4m4, 2026-10-30; звіт reports/verify/pg4m4.md). 32 задачі: по 8 на кожен урок g4m4l1–g4m4l4 (3 рівня 1, 3 рівня 2, 2 рівня 3). Boss g4m4l5 не дублюємо.
+   Статус: draft (2026-11-01, write-math-pools-multiset-compound: у g4m4l4 вилучено d02 і d05, додано d09 l4a №4 і d10 g4a №321(1) — quantity, form compound, «… кг = … т … кг»). Раніше: verified (2026-11-01, змінено a08, d06, d07; повторно перевірено verifier-refine-math-pools-new-kinds, 2026-11-01, reports/verify/refine-math-pools-new-kinds.md); раніше verified (verifier-pg4m4, 2026-10-30; звіт reports/verify/pg4m4.md). 32 задачі: по 8 на кожен урок g4m4l1–g4m4l4 (3 рівня 1, 3 рівня 2, 2 рівня 3). Boss g4m4l5 не дублюємо.
    Обсяг — за матрицею docs/math-personalization-coverage.md, версія 2026-10-16.v2 (усі чотири уроки required, формат number).
    Задачі взято з підручників Гісь, Філяк (g4a, g4b) і Логачевська, Ларіна, Паук (l4a, l4b), видання 2026 р.;
    умови й числа звірено 2026-10-30 за текстом PDF і за відрендереними сторінками.
    srcPage — друкований номер сторінки; в усіх чотирьох PDF він збігається з номером сторінки PDF.
    Підпункти з кількома відповідями розділено: у задачі питаємо одне число (adapted).
    2026-11-01: a08 і d07 («о котрій», «котра година») — answerKind time; d06 — quantity (м і см). Повторно перевірено.
+   2026-11-01: d09, d10 — зворотні перетворення (менші одиниці в більші), quantity + form compound; ще не перевірено незалежно.
    Перевірка: node tools/validate.mjs --pool pg4m4 && node tools/personalization-qa.mjs --pool pg4m4
    Схема: docs/CONTENT_SCHEMA.md §10 */
 SLID.pool("math", {
   id: "pg4m4",
   section: "g4m4",
-  status: "verified",
-  meta: { author: "claude-opus", created: "2026-10-30", factcheck: "verifier-refine-math-pools-new-kinds (2026-11-01: a08, d06, d07); решта — verifier-pg4m4", teacher: null },
+  status: "draft",
+  meta: { author: "claude-opus", created: "2026-10-30", factcheck: "self (2026-11-01: d09, d10); verifier-refine-math-pools-new-kinds (a08, d06, d07); решта — verifier-pg4m4", revised: "2026-11-01 write-math-pools-multiset-compound", teacher: null },
   sources: [
     { id: "g4a", title: "Гісь О. М., Філяк І. В. Математика : підручник для 4 класу закладів загальної середньої освіти (у 2-х ч.). Ч. 1. — Харків : Ранок, 2026 (наказ МОН № 111 від 27.01.2026). PDF-дзеркало 4book.org", url: "https://file.4book.org/images/shcoolbook_ua/4/4_m_gis_2026-1.pdf" },
     { id: "g4b", title: "Гісь О. М., Філяк І. В. Математика : підручник для 4 класу закладів загальної середньої освіти (у 2-х ч.). Ч. 2. — Харків : Ранок, 2026 (наказ МОН № 111 від 27.01.2026). PDF-дзеркало 4book.org", url: "https://file.4book.org/images/shcoolbook_ua/4/4_m_gis_2026-2.pdf" },
@@ -167,34 +168,35 @@ SLID.pool("math", {
       body: "<p>Переведи більші одиниці в менші: 25 м = … см.</p>",
       answer: 2500, unit: "см",
       steps: ["Великі одиниці в дрібні — множимо.", "1 м = 100 см, тож $25 * 100 = 2500$ см."] },
-    { id: "d02", lesson: "g4m4l4", lvl: 1, sk: "meas", src: "g4a №329", srcPage: 127, adapted: true,
-      type: "answer", title: "7 кг 10 г — скільки це грамів?",
-      body: "<p>Переведи в грами: 7 кг 10 г = … г.</p>",
-      answer: 7010, unit: "г",
-      steps: ["1 кг = 1000 г, тож 7 кг = $7 * 1000 = 7000$ г.", "Додаємо 10 г: $7000 + 10 = 7010$ г."] },
     { id: "d03", lesson: "g4m4l4", lvl: 1, sk: "meas", src: "g4a №329", srcPage: 127, adapted: true,
       type: "answer", title: "62 м 4 см — скільки це сантиметрів?",
       body: "<p>Переведи в сантиметри: 62 м 4 см = … см.</p>",
       answer: 6204, unit: "см",
       steps: ["1 м = 100 см, тож 62 м = $62 * 100 = 6200$ см.", "Додаємо 4 см: $6200 + 4 = 6204$ см."] },
+    { id: "d09", lesson: "g4m4l4", lvl: 1, sk: "meas", src: "l4a №4", srcPage: 80,
+      type: "answer", answerKind: "quantity", form: "compound", title: "3250 кг — скільки це тонн і кілограмів?",
+      body: "<p>Запиши в більших одиницях маси: 3250 кг = … т … кг.</p>",
+      answer: 3250, units: ["т", "кг"],
+      hint: "1 т = 1000 кг. Скільки повних тонн уміщується в 3250 кг?",
+      steps: ["Дрібні одиниці у великі — ділимо з остачею. 1 т = 1000 кг.", "$3250 : 1000 = 3 \"(ост. 250)\"$.", "Отже, 3250 кг = 3 т 250 кг."] },
     { id: "d04", lesson: "g4m4l4", lvl: 2, sk: "meas", src: "g4a №311", srcPage: 120, adapted: true,
       type: "answer", answerKind: "comparison", title: "185 см … 1085 мм",
       body: "<p>Порівняй довжини. Введи знак &lt;, &gt; або =.</p><p>185 см … 1085 мм</p>",
       answer: ">",
       hint: "Переведи сантиметри в міліметри: 1 см = 10 мм.",
       steps: ["185 см = $185 * 10 = 1850$ мм.", "1850 мм більше, ніж 1085 мм.", "Отже, 185 см > 1085 мм."] },
-    { id: "d05", lesson: "g4m4l4", lvl: 2, sk: "meas", src: "g4a №383", srcPage: 148, adapted: true,
-      type: "answer", title: "2 год 40 хв і 240 хв",
-      body: "<p>Порівняй 2 год 40 хв і 240 хв. На скільки хвилин одне менше від іншого?</p>",
-      answer: 80, unit: "хв",
-      hint: "Переведи 2 год 40 хв у хвилини, а тоді порівняй.",
-      steps: ["2 год = $2 * 60 = 120$ хв. Разом із 40 хв: $120 + 40 = 160$ хв.", "160 хв < 240 хв.", "Різниця: $240 - 160 = 80$ хв."] },
     { id: "d06", lesson: "g4m4l4", lvl: 2, sk: "meas", src: "l4a №11", srcPage: 78, adapted: true,
       type: "answer", answerKind: "quantity", title: "26 м − 57 см",
       body: "<p>Обчисли значення виразу: 26 м − 57 см.</p>",
       answer: 2543, units: ["м", "см"],
       hint: "Спершу переведи 26 м у сантиметри.",
       steps: ["26 м = $26 * 100 = 2600$ см.", "$2600 - 57 = 2543$ см.", "Це 25 м 43 см."] },
+    { id: "d10", lesson: "g4m4l4", lvl: 2, sk: "meas", src: "g4a №321(1)", srcPage: 124,
+      type: "answer", answerKind: "quantity", form: "compound", title: "40 205 кг — скільки це тонн і кілограмів?",
+      body: "<p>Перетвори менші одиниці в більші: 40 205 кг = … т … кг.</p>",
+      answer: 40205, units: ["т", "кг"],
+      hint: "1 т = 1000 кг. Поділи 40 205 на 1000 з остачею.",
+      steps: ["1 т = 1000 кг. Ділимо з остачею: $40205 : 1000 = 40 \"(ост. 205)\"$.", "Неповна частка — тонни, остача — кілограми.", "Отже, 40 205 кг = 40 т 205 кг."] },
     { id: "d07", lesson: "g4m4l4", lvl: 3, sk: "meas", src: "l4a №8", srcPage: 84,
       type: "answer", answerKind: "time", title: "Минула 31 година",
       body: "<p>Від початку доби минула 31 год. Котра зараз година?</p>",
