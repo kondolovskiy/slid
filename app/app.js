@@ -212,7 +212,7 @@ function viewHome(){
   const now=subs.flatMap(c=>secsFor(c).filter(x=>x.weeks && wk>=x.weeks[0] && wk<=x.weeks[1]).map(sec=>({c,sec})));
   return `<div class="stack">
     <div><h1 style="margin-top:2px">Привіт${nm}!</h1><p class="muted" style="margin:4px 0 0">Що вивчаємо сьогодні?</p></div>
-    ${subs.map(c=>planCard(c)||diagInvite(c)).join("")}
+    ${subs.map(planOrDiag).join("")}
     ${subs.map(c=>openItems(c).length? practiceEntry(c) : "").join("")}
     ${nx? `<button type="button" class="cont s-${nx.c.id}" ${nx.step? `data-lesson="${nx.l.id}"` : `data-start="${nx.c.id}|${nx.k}|${nx.i}"`}>
         <span class="dot lg s-${nx.c.id}">${ic(nx.l.icon)}</span>
@@ -242,14 +242,19 @@ function viewHome(){
 const WHY = { gap:"прогалина з тесту", shaky:"варто закріпити", errors:"повторюються помилки" };
 const TST = { ok:["check","засвоєно"], shaky:["bulb","хитко"], gap:["target","прогалина"], known:["check","уже вмієш"], new:["path","попереду"] };
 const diagMins = d => Math.max(5, Math.round(d.items.length*0.35));
+/** Перерваний запуск тесту рівня поточного класу (зокрема повторний — після завершеного результату). */
+const diagPart = c => { const d=diagFor(c); return !!d && Object.keys(S.diagRun[d.id]||{}).length>0; };
+/** Запрошення на тест рівня на головній: тест ще не пройдено або його перервано (engine-srs-retest-p3: перерваний повторний тест
+    видно на головній поряд із карткою плану, а не лише через «Твій план і тест рівня»). */
 function diagInvite(c){
-  const d=diagFor(c); if(!d || S.diag[d.id]?.done) return "";
-  const part=Object.keys(S.diagRun[d.id]||{}).length>0;
+  const d=diagFor(c), part=diagPart(c), was=d&&S.diag[d.id]?.done; if(!d || was&&!part) return "";
   return `<button type="button" class="cont diaginv s-${c.id}" data-diag="${c.id}">
     <span class="dot lg s-${c.id}">${ic("target")}</span>
-    <span class="grow"><span class="eyebrow">Тест рівня · ${c.short} · ≈ ${diagMins(d)} хв</span><b>${part?"Продовжити тест":esc(d.title)}</b><span class="muted" style="font-size:13px">Складемо план саме для тебе</span></span>
+    <span class="grow"><span class="eyebrow">Тест рівня · ${c.short} · ≈ ${diagMins(d)} хв</span><b>${part?"Продовжити тест":esc(d.title)}</b><span class="muted" style="font-size:13px">${was?"Оновимо твій план":"Складемо план саме для тебе"}</span></span>
     ${ic("chev","chev")}</button>`;
 }
+/** Картка плану; запрошення до тесту рівня (diagInvite) — коли картки плану немає або тест перервано (тоді обидві). */
+const planOrDiag = c => { const pc=planCard(c); return pc&&!diagPart(c)? pc : pc+diagInvite(c); };
 function stepRow(st, cls, extra=""){
   const f=findLesson(st.l);
   return `<button type="button" class="${cls} s-${f.c.id}" data-lesson="${st.l}"><span class="dot s-${f.c.id}">${ic(f.l.icon)}</span><span class="grow"><span class="muted small">${WHY[st.why]||""} · ${f.sec.grade} клас</span><b>${esc(f.l.title)}</b>${extra}</span><span class="play sm">${icF("play")}</span></button>`;
@@ -373,7 +378,7 @@ function viewSubject(){
     <div class="pbar"><i style="width:${LS.length? d/LS.length*100:0}%"></i></div>
     <div style="font:600 13px var(--body)">${LS.length? `${d} з ${LS.length} уроків · ${stars} ★` : `План на рік готовий · уроки в розробці`}</div>
   </section>
-  <div style="display:grid;gap:10px;margin-top:14px">${practiceEntry(c)}${planCard(c)||diagInvite(c)||(activePlan(c)||diagFor(c)?`<button type="button" class="linkbtn" data-plan="${c.id}">Твій план і тест рівня${ic("chev","chev")}</button>`:"")}</div>
+  <div style="display:grid;gap:10px;margin-top:14px">${practiceEntry(c)}${planOrDiag(c)||(activePlan(c)||diagFor(c)?`<button type="button" class="linkbtn" data-plan="${c.id}">Твій план і тест рівня${ic("chev","chev")}</button>`:"")}</div>
   <div class="eyebrow" style="margin:18px 0 10px">План на рік</div>
   <div class="seclist">
     ${SECS.map((x,num)=>{ const k=c.sections.indexOf(x), open=!!x.lessons, n=open? x.lessons.filter(l=>done(l.id)).length:0, isNow=x.weeks && wk>=x.weeks[0] && wk<=x.weeks[1];

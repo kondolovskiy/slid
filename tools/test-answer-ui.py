@@ -1320,6 +1320,7 @@ async def main():
                 await player_a11y_p3_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
                 await diag_answer_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
                 await sk_mark_saved_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
+                await srs_retest_p3_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
             await browser.close()
             print('Обрані браузерні сценарії: green')
     finally:
@@ -1517,5 +1518,67 @@ async def player_a11y_p3_checks(browser, url):
     assert not errors, errors
     await context.close()
     print('Player a11y P3: dead point off Tab (g8m4l1#6, g8m2l1#2), number-line values (g4m1l3#2), Home/End/PageUp/PageDown (g4m4l1#4), solid rotation keys and lock (g4m5l4#5): green', flush=True)
+
+async def srs_retest_p3_checks(browser, url):
+    """engine-srs-retest-p3 (P3 приймання reports/qa/math-personalization-release.md).
+    P3-1: тема, чий пул з'явився після уроку (урок пройдено, запису SRS немає), після першої вдалої сесії стає в коробку 1
+    (3 дні), як тема, пройдена з пулом (srsInit → box 0 → вдала сесія → box 1). Старий код давав box 0 (завтра).
+    P3-2: перерваний повторний dg6 після завершеного результату видно на головній («Продовжити тест»), і з планом без кроків,
+    і поряд з карткою плану з кроками; завершений тест без перерваного запуску карток не додає (як раніше)."""
+    context, page, errors = await qa_page(browser, url, {'grade': 6, 'unlockAll': False,
+        'lessons': {'g6m1l1': {'done': True}, 'g6m1l2': {'done': True}},
+        'srs': {'g6m1l2': {'box': 0, 'due': DAY}}})  # g6m1l2 — як після уроку з пулом (srsInit учора); g6m1l1 — пул з'явився пізніше
+    await page.evaluate("""() => {const c=SLID_SUBJECTS.find(c=>c.id==='math'),p=c.pools.find(p=>p.id==='pg6m1');c.pools=[p];
+      p.items=Array.from({length:6},(_,i)=>({id:'s'+i,lesson:i<3?'g6m1l1':'g6m1l2',
+        lvl:1,sk:'divis',src:p.sources[0].id+' №QA',type:'answer',title:'QA fixture: 2 + 3',answer:5,steps:['2 + 3 = 5.']}));}""")
+    await page.click('button[data-subject="math"]'); await page.click('[data-practice-view="math"]')
+    assert '2 теми чекають на повторення' in await page.locator('#view').inner_text(), await page.locator('#view').inner_text()
+    await page.click('[data-practice-mix]')
+    for _ in range(6):
+        await page.fill('#numIn', '5'); await page.click('#action')
+        assert 'ok' in await page.locator('#dock').get_attribute('class')
+        await page.click('#action')
+    end = await page.locator('#stage').inner_text()
+    state = await saved_state(page)
+    assert state['srs'] == {'g6m1l1': {'box': 1, 'due': '2026-10-19'}, 'g6m1l2': {'box': 1, 'due': '2026-10-19'}}, state['srs']
+    assert end.count('Повернемося до теми через 3 дні') == 2, end
+    assert not errors, errors
+    await context.close()
+    # P3-2: dg6 завершено (усе правильно → план без кроків), повторний запуск перервано після 2 відповідей.
+    async def seeded(wrong):
+        context, page, errors = await qa_page(browser, url, {'grade': 6, 'unlockAll': False})
+        await page.evaluate("""wrong => {const d=SLID_SUBJECTS.find(c=>c.id==='math').diags.find(d=>d.id==='dg6');
+          const res=Object.fromEntries(d.items.map((it,i)=>[i,wrong.includes(d.topics.find(t=>t.id===it.topic)?.kind)?0:1]));
+          const S={grade:6,unlockAll:false,diag:{},plan:{},planByGrade:{}};
+          SLID_LEARN.finishDiag(S,'math',d,res,{}); localStorage.setItem('slid.v1',JSON.stringify(S));}""", wrong)
+        await page.reload()
+        return context, page, errors
+    for wrong, steps in (([], False), (['pre'], True)):
+        context, page, errors = await seeded(wrong)
+        st0 = await saved_state(page)
+        has_steps = any(not x.get('done') for x in st0['plan']['math']['steps'])
+        assert has_steps == steps, st0['plan']
+        view = await page.locator('#view').inner_text()
+        assert 'Продовжити тест' not in view and (await page.locator('#view [data-diag="math"]').count()) == 0, view[:300]  # без перерваного запуску — як раніше
+        await page.evaluate("""() => {const S=JSON.parse(localStorage.getItem('slid.v1'));S.diagRun={dg6:{0:1,1:0}};S.diagRunRev={dg6:2};
+          localStorage.setItem('slid.v1',JSON.stringify(S));}""")
+        await page.reload()
+        view = await page.locator('#view').inner_text()
+        assert 'Продовжити тест' in view and 'Оновимо твій план' in view, view[:400]
+        assert (await page.locator('#view .plancard').count() == 1) == steps, view[:400]
+        await page.click('button[data-subject="math"]')
+        assert 'Продовжити тест' in await page.locator('#view').inner_text()
+        await page.click('[data-tab="path"]'); await page.click('[data-tab="path"]')
+        await page.click('#view [data-diag="math"]')
+        assert 'Продовжити тест' in await page.locator('[data-diag-go]').inner_text()
+        await page.click('[data-diag-go]')
+        nxt = await page.evaluate("""() => {const S=JSON.parse(localStorage.getItem('slid.v1')),d=SLID_SUBJECTS.find(c=>c.id==='math').diags.find(d=>d.id==='dg6');return SLID_LEARN.nextItem(d,S.diagRun.dg6);}""")
+        assert nxt not in (0, 1) and nxt >= 0, nxt
+        await page.click('#pClose')
+        st1 = await saved_state(page)
+        assert st1['diag'] == st0['diag'] and st1['diagRun']['dg6'] == {'0': 1, '1': 0} and st1['plan']['math'] == st0['plan']['math'], st1
+        assert not errors, errors
+        await context.close()
+    print('SRS late pool (box 1, 3 дні як з пулом) і «Продовжити тест» повторного dg6 на головній (план без кроків / з кроками): green', flush=True)
 
 asyncio.run(main())
