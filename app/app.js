@@ -757,7 +757,9 @@ function startPractice(cid, focus){
   C=course(cid);
   const items=openItems(C);
   if(focus && !items.some(it=>it.lesson===focus)) return toast("Для цієї теми тренування поки недоступне");
-  const picked=LEARN.pickSession(S, { items, focus, n:6, day:dkey(), order:id=>LORD.get(id)??1e9 });
+  // генеровані вправи (gen): числа сталі в межах сесії й різні між сесіями; ключ seen/SRS — той самий id вправи (engine-practice-pool)
+  S.prN=(Number.isSafeInteger(S.prN)? S.prN : 0)+1;
+  const picked=LEARN.pickSession(S, { items, focus, n:6, day:dkey(), order:id=>LORD.get(id)??1e9 }).map(it=>LEARN.genInstance(it, "s"+S.prN)).filter(Boolean);
   if(!picked.length) return toast("Спершу пройди урок цієї теми");
   afterEnd=null;
   SEC={ grade:S.grade, signed:true, lessons:[] }; li=0; idx=0;

@@ -1660,6 +1660,90 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
   const M2 = { answerKind: "coordinates2", answer: "(3; 2)", body: "<p>Дано $A(1; 1)$ і $B(5; 3)$. Знайди координати середини відрізка $AB$.</p>" };
   T(M2, "AB = (3; 2)", "form", "середини відрізка $AB$ — AB не шукана"); T(M2, "M(3; 2)", "ok", "вільна назва"); T(M2, "AB(3; 2)", "form", "AB без =");
 }
+/* engine-practice-pool: початкові коробки SRS з нового результату тесту (ok → box 2 / shaky → box 0; D-030 BOX_DAYS не змінено) */
+{ const day = "2026-11-01";
+  eq(L.BOX_DAYS, [1, 3, 7, 16, 35], "srs з тесту: інтервали D-030 незмінні"); eq(L.DIAG_BOX, { ok: 2, shaky: 0 }, "srs з тесту: ok → третя, shaky → перша");
+  // D: a (a1, a2) — 0 і 2; b (b1) — 1 і 4; c (c1) — 3 і 6; x, y — cur
+  const resA = { 0: OK, 1: OK, 2: OK, 3: OK, 4: BAD, 5: OK, 6: BAD, 7: OK };   // a ok, b shaky, c shaky
+  { const S = { ...fresh(), srs: {} }; L.finishDiag(S, "m", D, resA, { day, grade: 6 });
+    eq(S.srs, { a1: { box: 2, due: "2026-11-08", src: "diag", diag: "dg", rev: 1 }, a2: { box: 2, due: "2026-11-08", src: "diag", diag: "dg", rev: 1 },
+      b1: { box: 0, due: "2026-11-02", src: "diag", diag: "dg", rev: 1 }, c1: { box: 0, due: "2026-11-02", src: "diag", diag: "dg", rev: 1 } }, "srs з тесту: ok → box 2 (7 днів), shaky → box 0 (завтра); cur — без коробок");
+    eq(L.isDue(S, "a1", "2026-11-07"), false, "srs з тесту: ok не чекає до 7-го дня"); eq(L.isDue(S, "a1", "2026-11-08"), true, "srs з тесту: ok — на 7-й день");
+    // перша вдала сесія піднімає з коробки тесту; запис тренування вже без src — наступний тест його не чіпає
+    L.srsUpdate(S, [{ lesson: "a1", ok: true }], "2026-11-08"); eq(S.srs.a1, { box: 3, due: "2026-11-24" }, "srs з тесту: сесія піднімає з box 2 на box 3");
+    const allBad = Object.fromEntries(D.items.map((_, i) => [i, BAD]));
+    L.finishDiag(S, "m", D, allBad, { day: "2026-11-10", grade: 6 });
+    eq(S.srs.a1, { box: 3, due: "2026-11-24" }, "srs з тесту: запис тренування повторний тест не змінює");
+    eq([S.srs.a2, S.srs.b1, S.srs.c1], [undefined, undefined, undefined], "srs з тесту: gap знімає запис попереднього тесту (тренування його не чіпало)"); }
+  { // наявні записи уроку/тренування (без src) не змінюються; gap не створює запису; без дня — нічого
+    const S = { ...fresh(), srs: { a1: { box: 0, due: "2026-10-20" }, b1: { box: 4, due: "2026-12-01" } } };
+    L.finishDiag(S, "m", D, resA, { day, grade: 6 });
+    eq([S.srs.a1, S.srs.b1, S.srs.a2.box, S.srs.c1.box], [{ box: 0, due: "2026-10-20" }, { box: 4, due: "2026-12-01" }, 2, 0], "srs з тесту: записи уроку/тренування не переінтерпретуються");
+    const G = fresh(); L.finishDiag(G, "m", D, { 0: BAD, 1: BAD, 3: BAD, 5: OK, 7: OK }, { day, grade: 6 });
+    eq(G.srs, undefined, "srs з тесту: усе gap/cur — S.srs не створюється");
+    const N = fresh(); L.finishDiag(N, "m", D, resA, { grade: 6 }); eq(N.srs, undefined, "srs з тесту: без дня — нічого");
+    const H = fresh(); L.finishDiag(H, "m", D, resA, { day, grade: 6, hasLesson: id => id !== "a2" });
+    eq(Object.keys(H.srs).sort(), ["a1", "b1", "c1"], "srs з тесту: лише уроки з hasLesson"); }
+  { // урок двох тем — найслабший статус; baseline без уроків
+    const D2 = { id: "d2", grade: 6, topics: [{ id: "p", kind: "pre", lessons: ["u"] }, { id: "q", kind: "pre", lessons: ["u", "w"] }, { id: "z", kind: "pre", baseline: true, lessons: [], for: ["s"] }],
+      items: [{ topic: "p" }, { topic: "p" }, { topic: "q" }, { topic: "q" }, { topic: "z" }, { topic: "z" }] };
+    const S = { ...fresh(), srs: {} }; L.finishDiag(S, "m", D2, { 0: OK, 1: OK, 2: OK, 3: BAD, 4: OK, 5: OK }, { day, grade: 6 });
+    eq([S.srs.u.box, S.srs.w.box, Object.keys(S.srs).length], [0, 0, 2], "srs з тесту: спільний урок — найслабший статус (shaky); baseline — без коробки");
+    // старий завершений результат (до цієї зміни) не перераховується: resumeDiag/planFor коробок не створюють
+    const O = { ...fresh(), grade: 6, srs: {}, diag: { d2: { done: true, res: { 0: OK, 1: OK }, topics: { p: "ok" } } } };
+    L.resumeDiag(O, D2); L.planFor(O, "m", { grade: 6, diags: [D2] }); eq(O.srs, {}, "srs з тесту: старі результати без нового тесту — без коробок"); }
+}
+/* engine-practice-pool: генератори gen (вирази лабораторії, детермінований вибір, той самий ключ seen/SRS) */
+{ const c = { console }; c.window = c; vm.createContext(c);
+  for (const f of ["app/lab.js", "app/learn.js"]) vm.runInContext(fs.readFileSync(path.join(ROOT, f), "utf8"), c, { filename: f });
+  const GL = c.SLID_LEARN;
+  eq(L.genIssues({ gen: { vars: { a: { min: 1, max: 3 } }, answer: "a" } }), ["gen: рушій лабораторії (app/lab.js) не завантажено"], "gen: без lab — помилка, а не мовчазний успіх");
+  const base = { id: "g1", key: "pfx:g1", lesson: "l1", lvl: 1, sk: "ops", src: "s №1", adapted: true, type: "answer", steps: ["{a} · {b} = {a*b}."],
+    title: "$ {a} · {b} $", body: "<p>Обчисли добуток.</p>", gen: { vars: { a: { min: 2, max: 9 }, b: { values: [11, 12, 13] } }, where: "mod(a, 2) == 0", answer: "a*b" } };
+  const all = GL.genAll(base);
+  eq([all.envs.length, all.envs[0].a, all.envs[0].b, all.envs.every(e => e.a % 2 === 0)], [12, 2, 11, true], "gen: перелік наборів з where, сталий порядок");
+  const i1 = GL.genInstance(base, "s1"), i1b = GL.genInstance(base, "s1"), i2 = GL.genInstance(base, "s2");
+  eq(i1, i1b, "gen: та сама сесія — той самий набір (детерміновано)");
+  eq([i1.key, i1.id, i1.gen, typeof i1.answer], ["pfx:g1", "g1", undefined, "number"], "gen: ключ seen/SRS і id незмінні, gen знято, answer — число");
+  const env = all.envs[i1.genAt]; eq([i1.answer, i1.title, i1.steps[0]], [env.a * env.b, `$ ${env.a} · ${env.b} $`, `${env.a} · ${env.b} = ${env.a * env.b}.`], "gen: підстановка в title і steps");
+  eq(GL.checkAns(i1, String(i1.answer)), "ok", "gen: ключ набору зараховується"); eq(GL.checkAns(i1, String(i1.answer + 1)), "bad", "gen: інше число — bad");
+  const seeds = new Set(Array.from({ length: 30 }, (_, k) => GL.genInstance(base, "s" + k).genAt)); eq(seeds.size > 4, true, "gen: різні сесії дають різні набори");
+  eq(GL.genHash("pfx:g1|s1"), GL.genHash("pfx:g1|s1"), "gen: хеш сталий"); eq(GL.genHash("abc"), 440920331, "gen: FNV-1a — те саме значення в будь-якому середовищі");
+  eq(GL.genInstance({ id: "n", answer: 5 }, "s1"), { id: "n", answer: 5 }, "gen: вправа без gen — без змін");
+  eq(GL.genIssues(base), [], "gen: коректний генератор — без помилок");
+  const T = (patch, frag, what) => { const it = { ...base, ...patch, gen: { ...base.gen, ...(patch.gen || {}) } }; const e = GL.genIssues(it);
+    eq(e.some(m => m.includes(frag)), true, `gen: ${what} → «${frag}» (${e.join(" | ")})`); };
+  T({ lvl: 2 }, "лише для вправ рівня 1", "lvl 2");
+  T({ answerKind: "list" }, "лише для числової answer", "list");
+  T({ answer: 5 }, "поле answer не пиши", "answer поряд з gen");
+  T({ reduced: true }, "reduced не підтримано", "reduced");
+  T({ adapted: undefined }, "adapted: true", "без adapted");
+  T({ gen: { answer: "a/b" } }, "не скінченний десятковий дріб", "a/b — нескінченний дріб");
+  T({ gen: { answer: "a/(b-11)" } }, "не скінченне число", "ділення на нуль");
+  T({ gen: { where: "a > 100" } }, "щонайменше 2", "where без наборів");
+  T({ gen: { vars: { a: { min: 1, max: 1e9 } } } }, "не більше", "завеликий діапазон");
+  T({ gen: { vars: { ab: { min: 1, max: 3 } } } }, "одна мала латинська літера", "довга назва");
+  T({ gen: { answer: "a**b" } }, "не розбирається", "синтаксична помилка");
+  T({ title: "$ {a} · 12 $", steps: ["."] }, "змінна b не показана", "змінна не в умові");
+  T({ title: "Обчисли", body: "<p>Добуток.</p>", steps: ["."] }, "немає жодної вставки", "без вставок");
+  T({ gen: { vars: { a: { values: [0.125, 0.25] }, b: { values: [2, 4] } }, where: undefined } }, "показується округлено", "0,125 з 2 знаками");
+  T({ title: "$ {a|deg} · {b} $" }, "не підтримано", "формат deg");
+  T({ title: "$\\text{см} {a} · {b}$" }, "не обчислюється", "TeX-група у вставці");
+  eq(GL.genIssues({ ...base, title: "$ {a|3} · {b} $", steps: ["{a|3} · {b} = {a*b|3}."], gen: { ...base.gen, vars: { a: { values: [0.125, 0.25] }, b: { values: [2, 4] } }, where: undefined } }), [], "gen: {a|3} показує 0,125 точно");
+  // validatePool бачить генератор: помилки gen і решта правил на першому наборі
+  const pool = it => ({ id: "pfx", section: "x", status: "draft", sources: [{ id: "s", title: "S", url: "https://x" }], items: [it] });
+  const pctx = { sections: new Map([["x", { lessons: ["l1"] }]]), skills: { ops: {} } };
+  const { key, ...item } = base;
+  eq(GL.validatePool(pool(item), pctx), [], "gen: validatePool — коректний генератор чистий");
+  eq(GL.validatePool(pool({ ...item, lvl: 3 }), pctx), ["задача 1 «g1»: gen — лише для вправ рівня 1 (lvl: 1)"], "gen: validatePool — помилка gen з номером задачі");
+  eq(GL.validatePool(pool({ ...item, steps: [] }), pctx).some(m => m.includes("немає steps")), true, "gen: validatePool — звичайні правила на наборі");
+  // практика: practiceItems/pickSession — та сама вправа одним ключем
+  const subj = { pools: [{ ...pool(item), id: "pfx" }], sections: [{ id: "x", grade: 6, lessons: [{ id: "l1" }] }] };
+  const its = GL.practiceItems({ grade: 6, lessons: { l1: { done: true } } }, subj);
+  eq(its.map(x => x.key), ["pfx:g1"], "gen: у пулі тренування — одна задача з ключем pfx:g1");
+  const S = { srs: {}, seen: {} }, pk = GL.pickSession(S, { items: its, focus: "l1", n: 6, day: "2026-11-01" }).map(x => GL.genInstance(x, "s7"));
+  eq([pk.length, pk[0].key, typeof pk[0].answer], [1, "pfx:g1", "number"], "gen: сесія — конкретний набір, ключ сталий");
+}
 // P3-2 (рев'ю engine-learn-list-prefixes-p3): мутаційний сторож для app.js (позначка skFix зберігається й без перенесених записів) —
 // tools/test-answer-ui.py, regression: setItem одразу після migrateSk, до наступного виклику SLID_LEARN.
 

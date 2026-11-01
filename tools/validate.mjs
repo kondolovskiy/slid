@@ -330,7 +330,9 @@ for (const c of subjects) for (const p of c.pools || []) {
   const D = `content/${c.id}/pool#${p.id}`; diagIds.add(p.id);
   for (const m of learn.validatePool(p, { sections: sectionLessons, skills: c.skills })) E(D, m);
   if (!p.meta) W(D, "немає meta {author, created, factcheck, teacher}");
-  (p.items || []).forEach((s, i) => { if (TYPES.includes(s.type)) checkScreen(`${D} задача ${i + 1} «${s.id}» (${s.type})`, { ...s, fbText: (s.steps || []).join(" ") }, c, true, true); });
+  // генератор (gen): екран перевіряємо на першому наборі значень — так, як його побачить дитина (правила gen — learn.validatePool)
+  (p.items || []).forEach((s0, i) => { const s = s0.gen !== undefined ? learn.genInstance(s0, "validate") || s0 : s0;
+    if (TYPES.includes(s.type)) checkScreen(`${D} задача ${i + 1} «${s.id}» (${s.type})`, { ...s, fbText: (s.steps || []).join(" ") }, c, true, true); });
   const per = {}; (p.items || []).forEach(s => per[s.lesson] = (per[s.lesson] || 0) + 1);
   for (const [l, n] of Object.entries(per)) if (n < 5) W(D, `урок ${l}: лише ${n} задач — для чергування треба щонайменше 5`);
 }
