@@ -15,3 +15,4 @@
 - **2026-10-14-1** — hist 10 (g10s1–g10s5) і math 11 (g11m1–g11m6) written + verified; оркестрація на кількох моделях (qa-runner — haiku); dg6/пули pg6m1–m5; facts/hist №155–185, facts/math №132–152.
 - **2026-10-14-2** — engine-tex-render (офлайн app/math.js), hist 11 (g11s1–g11s5, 27 уроків) written + verified, tools-stats-sentences (нова метрика речень → калібрування D-011), engine-diag-pool-answers (comparison/list/factors); facts/hist №186–220, glossary hist 11 кл.
 - **2026-10-16-1** — curate-math-diag-g6-links: навички divis і prop, узгоджено dg6, g6m1/g6m3 і пули (id не змінено); verify_curate_g6 — критичних немає; Кравчук на lib.imzo — 502, URL дзеркал не змінено.
+- **2026-10-16-2** — curate-math-personalization-map: docs/math-personalization-coverage.md/.json v1 (50 розділів, 182 уроки, 169 required, 48 required-пулів, 8 специфікацій діагностик); передано в review, не прийнято незалежно.
