@@ -147,5 +147,45 @@ for (const kind of Object.keys(L.KINDS)) { const sp = { kind, params: { a: { min
   eq(/role="spinbutton"/.test(L.handleTargets(hc, cs, L.paramList(col), false)), true, "column: цифра — spinbutton");
   const dv = { kind: "column", op: ":", a: "84", b: "6", input: true }, hd = L.KINDS.column.render(dv, L.makeEnv(dv, L.startState(dv)), {}).handles;
   eq(hd.map(x => x.name), ["Цифра частки, розряд десятків", "Цифра частки, розряд одиниць"], "ділення: цифри частки зліва направо з назвами розрядів"); }
+// engine-player-a11y-p3 (рев'ю engine-player-a11y-followup P3-1…3)
+// P3-1: «мертва» ручка — точка drag із координатами-виразами — не потрапляє в Tab; data-h живих ручок не зсувається; validate — dragIssues
+{ const sp = { kind: "plane", view: [-1, 8, -1, 8], params: { t: { min: 0, max: 4, start: 1 } }, points: { D: { x: "2+t", y: "4", drag: true }, E: { at: [3, 3], drag: true } } };
+  const st = L.startState(sp), ps = L.paramList(sp), hs = L.KINDS.plane.render(sp, L.makeEnv(sp, st), {}).handles;
+  eq(hs.map(h => [h.name, L.liveHandle(h, ps)]), [["Точка D", false], ["Точка E", true]], "мертва ручка: D без параметрів, E жива");
+  const tg = L.handleTargets(hs, st, ps, false);
+  eq([...tg.matchAll(/data-h="(\d+)"/g)].map(m => m[1]), ["1"], "мертва ручка: у Tab лише E, і з тим самим номером data-h=1");
+  eq(/Точка D/.test(tg), false, "мертва ручка: «Точка D, стрілки змінюють» не озвучується");
+  eq(["ArrowRight", "ArrowUp", "Home", "End", "PageUp"].map(k => L.handleKey(hs[0], k, st, ps)), [null, null, null, null, null], "мертва ручка: жодна клавіша нічого не змінює");
+  eq(L.liveHandle({ kx: "zz" }, ps), false, "ручка з kx, якого немає серед параметрів, — мертва");
+  eq(L.liveHandle({ digit: "d0" }, []) && L.liveHandle({ tap: () => ({}) }, []), true, "цифра стовпчика — жива");
+  eq(L.dragIssues(sp).length === 1 && /точка D/.test(L.dragIssues(sp)[0]) && /«2\+t», «4»/.test(L.dragIssues(sp)[0]), true, "dragIssues: D — попередження з виразами");
+  const ok = (pts, kind = "plane", extra = {}) => L.dragIssues({ kind, view: kind === "numline" ? [0, 10] : [-5, 5, -5, 5], params: { t: { min: 0, max: 4, start: 1 } }, let: { k: "t+1" }, points: pts, ...extra }).length;
+  eq([ok({ M: { x: "t", y: "2*t", drag: true } }), ok({ M: { x: "3", y: "t", drag: true } }), ok({ A: { at: [1, 1], drag: true } }), ok({ P: { x: "t", drag: true } }, "numline"), ok({ P: { x: "2+t" } })], [0, 0, 0, 0, 0],
+    "dragIssues: рух вздовж однієї осі, at, числова пряма з параметром, точка без drag — без попереджень");
+  eq([ok({ M: { x: "t", y: "1", drag: "u" } }), ok({ P: { x: "t+1", drag: true } }, "numline"), ok({ M: { x: "k", y: "1", drag: true } }), ok({ M: { x: "t", y: "1", drag: true } }, "rect")], [1, 1, 1, 0],
+    "dragIssues: drag не по своєму параметру, вираз на прямій, ім'я з let — попередження; інші види — без");
+  // роль SVG: група лише коли є жива ручка (у role="img" вкладені ручки не існують, а без них — це просто зображення)
+  eq(L.handleTargets(L.KINDS.plane.render({ ...sp, points: { D: sp.points.D } }, L.makeEnv(sp, st), {}).handles, st, ps, false), "", "лише мертві ручки — жодної цілі фокуса"); }
+// P3-2: aria-valuetext числової прямої — значення, а не літера чи «?» (g4m1l3, g4m1l4, g4m4l3)
+{ const nv = (label, extra = {}) => { const sp = { kind: "numline", view: [0, 4000], params: { t: { min: 0, max: 4000, step: 50, start: 3000, hide: true } }, points: { A: { x: "t", drag: true, ...(label === undefined ? {} : { label }) } }, ...extra };
+    return L.KINDS.numline.render(sp, L.makeEnv(sp, L.startState(sp)), {}).handles[0].value; };
+  eq([nv("A"), nv("?"), nv(undefined), nv(false), nv("{t|0}"), nv("$x$")], ["A, 3000", "3000", "A, 3000", "3000", "3000", "x, 3000"], "numline: літера → «A, 3000», «?» і без підпису → число, числовий підпис — як є");
+  eq(nv("?", { view: [15, 17], params: { t: { min: 15, max: 17, step: 0.25, start: 16.5, hide: true } }, fmt: "time" }), "16:30", "numline: «?» на шкалі часу → «16:30»");
+  eq(nv("{t|time}", { view: [15, 17], params: { t: { min: 15, max: 17, step: 0.25, start: 16.5, hide: true } } }), "16:30", "numline: підпис-час лишається");
+  eq(nv("P", { view: [0, 7], pi: true, params: { t: { min: 0, max: 2 * Math.PI, step: Math.PI / 2, start: Math.PI, hide: true } } }), "P, π", "numline: шкала π"); }
+// P3-3: Home/End — межі, PageUp/PageDown — великий крок; rect (up: false) і залежні межі; цифри стовпчика їх не беруть
+{ const pl = { kind: "plane", view: [-6, 6, -6, 6], points: { A: { at: [1, 2], drag: true } } }, ps = L.paramList(pl), st = L.startState(pl), h = L.KINDS.plane.render(pl, L.makeEnv(pl, st), {}).handles[0];
+  eq(["Home", "End", "PageUp", "PageDown"].map(k => L.handleKey(h, k, st, ps)), [{ Ax: -6 }, { Ax: 6 }, { Ay: 4 }, { Ay: 0 }], "plane: Home/End — x до меж поля, PageUp/PageDown — y на великий крок (2)");
+  const nl = { kind: "numline", view: [0, 10], params: { t: { min: 0, max: 10, step: 0.5, start: 2, hide: true } }, points: { P: { x: "t", drag: true } } }, hn = L.KINDS.numline.render(nl, L.makeEnv(nl, L.startState(nl)), {}).handles[0];
+  eq(["Home", "End", "PageUp", "PageDown"].map(k => L.handleKey(hn, k, { t: 2 }, L.paramList(nl))), [{ t: 0 }, { t: 10 }, { t: 4 }, { t: 0 }], "numline: Home/End — межі, PageUp/PageDown — ±2 (п’ята частина шкали, кратна кроку)");
+  const rc = { kind: "rect", params: { a: { min: 1, max: 10, start: 3 }, b: { min: 1, max: "a", start: 2 } } }, rs = L.startState(rc), hr = L.KINDS.rect.render(rc, L.makeEnv(rc, rs), {}).handles[0];
+  eq(["Home", "End", "PageUp", "PageDown"].map(k => L.handleKey(hr, k, rs, L.paramList(rc))), [{ a: 1 }, { a: 10 }, { b: 0 }, { b: 4 }], "rect: Home/End — a, PageUp тягне кут угору — b менше (up: false)");
+  const dep = { kind: "plane", view: [-5, 5, -5, 5], params: { n: { min: 1, max: 9, start: 4 }, k: { min: 0, max: "n", start: 1 } }, points: { K: { x: "k", y: "0", drag: true } } }, ds = L.startState(dep), hd = L.KINDS.plane.render(dep, L.makeEnv(dep, ds), {}).handles[0];
+  eq(L.handleKey(hd, "End", ds, L.paramList(dep)), { k: 4 }, "End: межа-вираз (max: \"n\") — за поточним станом");
+  const col = { kind: "column", op: "+", a: "478", b: "256", input: true }, cs = L.startState(col), hc = L.KINDS.column.render(col, L.makeEnv(col, cs), {}).handles[0];
+  eq(["Home", "End", "PageUp", "PageDown"].map(k => L.handleKey(hc, k, cs, L.paramList(col))), [null, null, null, null], "column: цифра не реагує на Home/End/PageUp/PageDown"); }
+// SVG: вкладені дужки в індексі (рев'ю engine-render-tex-p3 P3-4) — svgTexIssues позначає, x_{a_b} лишається чистим
+eq([L.svgTexIssues("$x_{a_{bc}}$").map(i => i.level), L.svgTexIssues("$x^{2{,}5}$").map(i => i.level), L.svgTexIssues("$x_{a_b}$").length, L.svgTexIssues("$x_{AB} + y^{2}$").length, L.svgTexIssues("$x_{0{,}5}$").length > 0],
+  [["error"], ["error"], 0, 0, true], "svgTexIssues: дужки всередині індексу/степеня — помилка, x_{a_b} і x_{AB} — чисто");
 console.log(`${n - fails}/${n} тестів лабораторії пройдено`);
 process.exit(fails ? 1 : 0);

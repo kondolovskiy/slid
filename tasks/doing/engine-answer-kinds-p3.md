@@ -22,3 +22,6 @@ depends_on: [engine-math-answer-kinds-new]
 ## Також (reports/verify/refine-math-pools-new-kinds.md)
 - підказка під полем для `decimals` і `form: "improper"` — своя, а не загальна «Мішане число — через пробіл: 2 1/3»;
 - `quantity` не приймає «2 543 см» (пробіл між розрядами).
+
+## Нотатки (частково, wt-lab3)
+- Пункт «validate.mjs для екранів `answer` в уроках — ті самі правила, що validatePool» **зроблено в гілці wt-lab3** (комплект engine-player-a11y-p3 + tools-validate-p3b, одне рев'ю): `answerFieldIssues` у tools/validate.mjs загортає екран у пул з однією задачею й викликає саме `SLID_LEARN.validatePool` (правила не розійдуться: answerKind, decimals, form/improper, units лише для quantity, time/quantity без unit, multiset, signed, tol, unitForms…); «ключ не читається» не дублюється. Діє для уроків і діагностик; задачі пулу не перевіряються двічі. На змісті 0 екранів `answer` в уроках і діагностиках — 0 нових помилок. Фікстури: 10 випадків у test-validate + «пул без дубля». app/learn.js не змінювався.

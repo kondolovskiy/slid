@@ -305,6 +305,7 @@ function svgTexIssues(s) {
   const str = String(s), issues = [];
   if (((str.match(/\$/g) || []).length) % 2) issues.push({ level: "warn", msg: `непарна кількість $ — формула не закрита й покажеться сирим текстом${/\$\{/.test(str) ? " (зайвий $ перед шаблоном {…}?)" : ""}` });
   for (const m of str.matchAll(/\$([^$]+)\$/g)) for (const c of m[1].matchAll(/\\([A-Za-z]+|[,;:! ])/g)) if (!SVG_TEX_OK.has(c[1])) issues.push({ level: "error", msg: `формула «${m[0]}» містить \\${c[1]} — у підписах SVG лабораторії вона не малюється (підтримано: літери, числа, _ ^, ${[...SVG_TEX_OK].filter(k => /^[A-Za-z]+$/.test(k)).map(k => "\\" + k).join(" ")})` });
+  for (const m of str.matchAll(/\$([^$]+)\$/g)) if (/[_^]\{[^{}]*\{/.test(m[1])) issues.push({ level: "error", msg: `формула «${m[0]}»: дужки всередині індексу чи степеня (x_{a_{b}}, x_{0{,}5}) у підписах SVG не малюються — спрости індекс (x_{a_b}, x_{ab})` });
   for (const m of str.replace(/\$[^$]+\$/g, "").matchAll(/\\(?:[A-Za-z]+|[,;:!])/g)) issues.push({ level: "error", msg: `«${m[0]}» поза $…$ — TeX покажеться сирим текстом` });
   return issues;
 }
@@ -460,7 +461,9 @@ KINDS.numline = {
       if (label && !(spec.jumps || []).length) g += t(sx, y - 14, label, { anchor: "middle", bold: true, fill: c });
       else if (label) g += t(sx, y + 42, label, { anchor: "middle", bold: true, fill: c, size: 11 });
       const [xe] = pointExprs(id, p);
-      if (p.drag && /^[A-Za-z_]\w*$/.test(xe)) handles.push({ x: sx, y, kx: xe, name: `Точка ${id}`, value: label ? label.replace(/[$\\]/g, "") : spec.pi ? piLabel(xv) : num(xv), set: px => ({ [xe]: a + (px - pad) / (W - 2 * pad) * (b - a) }) });
+      // значення для читача екрана: підпис, якщо він сам є числом чи часом ({t|time}, {n|0}); літера чи «?» — лише назва, тож додаємо число
+      const vs = spec.pi ? piLabel(xv) : spec.fmt ? fill(`{v|${spec.fmt}}`, { v: xv }) : num(xv), lt = label.replace(/[$\\]/g, "").trim();
+      if (p.drag && /^[A-Za-z_]\w*$/.test(xe)) handles.push({ x: sx, y, kx: xe, name: `Точка ${id}`, value: !lt ? vs : /\d/.test(lt) ? lt : /\p{L}/u.test(lt) ? `${lt}, ${vs}` : vs, set: px => ({ [xe]: a + (px - pad) / (W - 2 * pad) * (b - a) }) });
     });
     return { w: W, h: H, body: g, handles, alt: spec.alt || "Числова пряма" };
   }
@@ -719,7 +722,7 @@ function mount(host, spec, opt = {}) {
     // фокус на ручці переживає перемальовування: ручки створюються наново, тож повертаємо його за номером
     const ae = G.document && G.document.activeElement, fi = ae && svg.contains(ae) && ae.dataset && ae.dataset.h != null ? +ae.dataset.h : -1;
     last = r; svg.setAttribute("viewBox", `0 0 ${r.w} ${r.h}`); svg.innerHTML = r.body + handleTargets(r.handles || [], state, params, locked);
-    svg.setAttribute("role", (r.handles || []).length ? "group" : "img");   // у role="img" вкладені ручки для читача екрана не існують
+    svg.setAttribute("role", (r.handles || []).some(h => liveHandle(h, params)) ? "group" : "img");   // у role="img" вкладені ручки для читача екрана не існують
     if (r.rotate) { svg.setAttribute("tabindex", locked ? "-1" : "0"); svg.setAttribute("aria-label", alt + ". Стрілки обертають тіло"); }
     if (fi >= 0) { const h = svg.querySelector(`.lab-h[data-h="${fi}"]`); if (h) h.focus({ preventScroll: true }); }
     if (read) read.innerHTML = [].concat(spec.show).map(s => `<div>${fmt(fill(s, env, names))}</div>`).join("");
@@ -772,11 +775,17 @@ function mount(host, spec, opt = {}) {
   };
 }
 
+/** Чи може дитина змінити ручку: вона рухає параметр моделі (kx/ky) або вписує цифру (digit/tap).
+    «Мертва» ручка — точка drag, у якої обидві координати — вирази (x: "2+t"): її не рухає ні миша, ні клавіші. */
+function liveHandle(h, params) { return !!(h.digit || h.tap || [h.kx, h.ky].some(k => k && params.some(p => p.id === k))); }
 /** Невидимі цілі фокуса поверх ручок: Tab доходить до кожної, читач екрана чує назву й значення. Дотик і миша
-    їх не помічають (pointer-events: none) — перетягування працює, як і раніше, через найближчу ручку. */
+    їх не помічають (pointer-events: none) — перетягування працює, як і раніше, через найближчу ручку.
+    «Мертві» ручки (liveHandle) у Tab не потрапляють: повзунок, який стрілки не змінюють, лише заплутує (рев'ю a11y-followup P3-1).
+    data-h — номер у handles, тож пропуск не зсуває відповідність ручок і цілей. */
 function handleTargets(handles, state, params, locked) {
   const q = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
   return handles.map((h, i) => {
+    if (!liveHandle(h, params)) return "";
     const p = params.find(x => x.id === (h.digit || h.kx || h.ky)), v = p ? state[p.id] : 0;
     const role = h.digit ? "spinbutton" : "slider", hint = h.digit ? "стрілки або цифра змінюють" : h.kx && h.ky ? "стрілки рухають" : "стрілки змінюють";
     const range = p ? ` aria-valuemin="${typeof p.min === "number" ? p.min : 0}" aria-valuemax="${typeof p.max === "number" ? p.max : 100}"` : "";
@@ -784,6 +793,7 @@ function handleTargets(handles, state, params, locked) {
   }).join("");
 }
 /** Нові значення параметрів за клавішею на ручці або null. Стрілки — на крок параметра (межі й крок — snap у setParams);
+    Home/End — до меж (kx, а якщо його немає — ky), PageUp/PageDown — великий крок (ky, а якщо його немає — kx; ↑ — більше, як стрілка);
     на цифрі: стрілки — наступна/попередня, 0–9 — вписати, Backspace/Delete — стерти («?»). */
 function handleKey(h, key, state, params) {
   const step = id => (params.find(p => p.id === id) || {}).step || 1;
@@ -793,12 +803,29 @@ function handleKey(h, key, state, params) {
     if (key === "ArrowDown" || key === "ArrowLeft") return { [h.digit]: v <= 0 ? 9 : v - 1 };
     if (key === "Backspace" || key === "Delete") return { [h.digit]: -1 };
     return null; }
+  const par = id => id && params.find(p => p.id === id);
+  if (key === "Home" || key === "End") { const p = par(h.kx) || par(h.ky); if (!p) return null; const [lo, hi] = bounds(p, state); return { [p.id]: key === "Home" ? lo : hi }; }
+  if (key === "PageUp" || key === "PageDown") { const p = par(h.ky) || par(h.kx); if (!p) return null; const [lo, hi] = bounds(p, state);
+    const big = p.step * Math.max(2, Math.round((hi - lo) / p.step / 5)), sg = (key === "PageUp" ? 1 : -1) * (p.id === h.ky && h.up === false ? -1 : 1);
+    return { [p.id]: state[p.id] + sg * big }; }
   const dx = { ArrowRight: 1, ArrowLeft: -1 }[key], dy = { ArrowUp: 1, ArrowDown: -1 }[key];
   if (dx && h.kx) return { [h.kx]: state[h.kx] + dx * step(h.kx) };
   if (dy && h.ky) return { [h.ky]: state[h.ky] + dy * (h.up === false ? -1 : 1) * step(h.ky) };
   if (dy && h.kx && !h.ky) return { [h.kx]: state[h.kx] + dy * step(h.kx) };   // одновимірна ручка (числова пряма): ↑ — більше, як у повзунка
   if (dx && h.ky && !h.kx) return { [h.ky]: state[h.ky] + dx * (h.up === false ? -1 : 1) * step(h.ky) };
   return null;
+}
+
+/** Точки з drag, яких не рухає ні миша, ні клавіатура: кожна перетягувана координата — вираз (x: "2+t") або не параметр.
+    Для tools/validate.mjs (попередження: модель працює, але ореол «тягни мене» обманює). Рух лише вздовж однієї осі — не вада. */
+function dragIssues(spec) {
+  if (!spec || !["plane", "numline"].includes(spec.kind)) return [];
+  const ids = new Set(paramList(spec).map(p => p.id)), out = [];
+  for (const [id, p] of Object.entries(spec.points || {})) { if (!p || !p.drag) continue;
+    const ex = pointExprs(id, p), dims = spec.kind === "numline" ? ex.slice(0, 1) : ex, only = typeof p.drag === "string" ? p.drag.split(/\s*,\s*/) : null;
+    if (!dims.some(e => /^[A-Za-z_]\w*$/.test(e) && ids.has(e) && (!only || only.includes(e))))
+      out.push(`точка ${id}: drag, але ${dims.length > 1 ? "координати" : "координата"} ${dims.map(e => `«${e}»`).join(", ")} — ${dims.length > 1 ? "вирази" : "вираз"}, а не параметр${only ? ` (drag: "${p.drag}")` : ""}: її не рухає ні миша, ні клавіатура — прибери drag або зроби координату параметром`); }
+  return out;
 }
 
 /* ================= Перевірка ================= */
@@ -859,5 +886,5 @@ function validate(spec, screen = {}) {
   return errs;
 }
 
-G.SLID_LAB = { KINDS, compile, makeEnv, startState, paramList, fill, num, check, validate, mount, FN, svgTex, svgTexIssues, svgLabels, handleKey, handleTargets };
+G.SLID_LAB = { KINDS, compile, makeEnv, startState, paramList, fill, num, check, validate, mount, FN, svgTex, svgTexIssues, svgLabels, handleKey, handleTargets, liveHandle, dragIssues };
 })();
