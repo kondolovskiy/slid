@@ -242,6 +242,9 @@ expectRun("escape: \"x\\ne\" поза формулою — попереджен�
 expectRun("escape: \"a\\to\" поза формулою — попередження", { "content/math/g8-fxn.js": rawSec("fxn", String.raw`"Стрілка a\to."`) }, ["--section", "fxn"], { warn: "«\\to»" });
 expectRun("escape: \"$a \\to b$\" у формулі — помилка", { "content/math/g8-fxn.js": rawSec("fxn", String.raw`"Стрілка $a \to b$."`) }, ["--section", "fxn"], { err: "«\\to»" });
 expectRun("escape: \"\\frac{1}{2}\" без $ перед { — помилка", { "content/math/g8-fxn.js": rawSec("fxn", String.raw`"Половина \frac{1}{2}."`) }, ["--section", "fxn"], { err: "«\\frac»" });
+// MATH_COMMANDS береться з app/math.js (SLID_MATH.commands): \\lg рушій підтримує — попередження «непідтримана команда» немає; \\foo — є
+expectRun("формула: $\\lg 100$ — без попередження (команда з рушія)", one("fxg", { body: "Обчисли $\\lg 100$." }), ["--section", "fxg"], { noWarn: "непідтриману команду \\lg" });
+expectRun("формула: $\\foo x$ — попередження, як і раніше", one("fxg", { body: "Обчисли $\\foo x$." }), ["--section", "fxg"], { warn: "непідтриману команду \\foo" });
 // P3-3: --section сканує сирий текст лише файлу свого розділу; зіпсований чужий файл не блокує автора
 { const files = { ...one("fxa"), "content/math/g8-fxb.js": rawSec("fxb", String.raw`"Приріст $|\Delta x|$."`) };
   expectRun("скоуп: --section fxa — помилок чужого файлу немає", files, ["--section", "fxa"], {});
@@ -267,6 +270,12 @@ expectRun("SVG: $x^{2{,}5}$ у підписі осі (без шаблонів) �
   expectRun("credits розділу плану: javascript: — помилка (повний прогін)", { ...one("fxc"), "content/math/plan.js": planSec([["Фото", "Автор", "CC0", "javascript:alert(1)"]]) }, [], { err: "#fxpl: credits 1" });
   expectRun("credits розділу плану: javascript: — помилка (--section)", { ...one("fxc"), "content/math/plan.js": planSec([["Фото", "Автор", "CC0", "javascript:alert(1)"]]) }, ["--section", "fxpl"], { err: "#fxpl: credits 1" });
   expectRun("credits розділу плану: https — чисто", { ...one("fxc"), "content/math/plan.js": planSec([["Фото", "Автор", "CC0", "https://example.org/a.png"]]) }, [], {});
+  // P3-3 (рев'ю tools-lab-validate-p3c): requires і badges розділу плану після continue раніше мовчки пропускались
+  const planX = extra => `SLID.section("math", ${JSON.stringify({ id: "fxpl", grade: 8, weeks: [3, 4], title: "План", why: "Розділ плану без уроків для регресійного тесту.", plan: ["Тема"], ...extra })});\n`;
+  expectRun("план: requires на неіснуючий урок — попередження, не помилка", { ...one("fxc"), "content/math/plan.js": planX({ requires: ["nope-l1"] }) }, [], { warn: "#fxpl: requires: немає уроку nope-l1" });
+  expectRun("план: requires на наявний урок — чисто", { ...one("fxc"), "content/math/plan.js": planX({ requires: ["fxcl1"] }) }, [], { noWarn: "requires: немає уроку" });
+  expectRun("план: значок з неіснуючою іконкою — помилка", { ...one("fxc"), "content/math/plan.js": planX({ badges: [{ id: "fxb", icon: "nope-icon", title: "Б" }] }) }, ["--section", "fxpl"], { err: "значок fxb: немає іконки «nope-icon»" });
+  expectRun("план: значок без уроків — попередження", { ...one("fxc"), "content/math/plan.js": planX({ badges: [{ id: "fxb", icon: "pot", title: "Б" }] }) }, [], { warn: "значок fxb: у розділі плану без уроків" });
   expectRun("credits: три поля замість чотирьох — помилка", cred("fxc", [["Фото", "Автор", "https://commons.wikimedia.org/wiki/File:X.jpg"]]), ["--section", "fxc"], { err: "потрібно [назва, автор, ліцензія" });
   const subj = c => `SLID.subject(${JSON.stringify({ id: "fxsubj", subject: "Фікстура", short: "Ф", icon: "frac", colors: { light: { accent: "#000" }, dark: { accent: "#fff" } }, skills: {}, credits: c })});\n`;
   expectRun("credits предмета: javascript: — помилка (повний прогін)", { ...one("fxc"), "content/math/zz-subj.js": subj([["Фото", "Автор", "CC0", "javascript:alert(1)"]]) }, [], { err: "предмет fxsubj" });
@@ -355,6 +364,26 @@ expectRun("drag: at і без drag — без попередження", one("fx
     ["ключ, що сам не проходить, — помилка", { type: "answer", answer: "abc" }, "сам проходить перевірку"]]) {
     const rep = expectRun(`diag answer: ${name}`, tree(item), ["--diag", "dgfx"], { err, also: err && "сам проходить перевірку" });
     if (rep && err) ok(rep.errors.every(e => e.includes("diag-g8.js#dgfx")), `diag answer: ${name}: помилка вказує на тест`, rep.errors.join("\n  ")); }
+  // P3-3 (рев'ю engine-diag-answer-kinds): формат запису, якого не називає підказка під полем, має назвати умова — інакше попередження
+  const FMT = "тест рівня: «form» тут зараховується як помилка без пояснення";
+  const Q = { type: "answer", answerKind: "quantity", answer: 245, units: ["м", "см"], form: "compound" };
+  for (const [name, item, warn] of [
+    ["compound без формату в умові — попередження", { ...Q, body: "<p>Довжина стрічки 245 см. Запиши її.</p>" }, "form compound"],
+    ["compound «у метрах і сантиметрах» — без попередження", { ...Q, body: "<p>Довжина стрічки 245 см. Запиши її в метрах і сантиметрах.</p>" }, null],
+    ["reduced без формату — попередження", { type: "answer", answer: "2/5", reduced: true, body: "<p>Скороти дріб $4/10$.</p>" }, "reduced — нескоротний"],
+    ["reduced «нескоротним дробом» — без попередження", { type: "answer", answer: "2/5", reduced: true, body: "<p>Запиши $4/10$ нескоротним дробом.</p>" }, null],
+    ["mixed без формату — попередження", { type: "answer", answer: "2 1/3", mixed: true, body: "<p>Обчисли $7/3$.</p>" }, "mixed — мішане"],
+    ["decimals «до десятих» — без попередження", { type: "answer", answer: "37,0", decimals: 1, body: "<p>Округли 36,96 до десятих.</p>" }, null],
+    ["time — без попередження", { type: "answer", answerKind: "time", answer: "9:55" }, null]]) {
+    expectRun(`diag answer: ${name}`, tree(item), ["--diag", "dgfx"], warn ? { warn: `${FMT} — ${warn}` } : { noWarn: FMT }); }
+  // той самий запис в уроці — без попередження (там form пояснюють і дають другу спробу)
+  expectRun("урок: compound без формату — без попередження тесту рівня", one("fxu", { extra: { ...Q, title: "Запиши", body: "<p>Довжина стрічки 245 см. Запиши її.</p>" } }), ["--section", "fxu"], { noWarn: FMT });
+  // P3-4: signed для answer у тесті — лише числова (як правило пулу); повідомлення одне, від learn.validate
+  { const r = expectRun("diag answer: signed для time — одна помилка", tree({ type: "answer", answerKind: "time", answer: "9:55", signed: true }), ["--diag", "dgfx"], { err: "signed має бути boolean для number | числової answer" });
+    ok(r && r.errors.length === 1, "diag answer: signed для time — без дубля з правила пулу", r && r.errors.join("\n  ")); }
+  expectRun("diag answer: signed для числової — чисто", tree({ type: "answer", answer: -3, signed: true }), ["--diag", "dgfx"], {});
+  { const r = expectRun("diag answer: без title — «немає title» рівно один раз", tree({ type: "answer", answerKind: "time", answer: "9:55", title: "" }), ["--diag", "dgfx"], { err: "немає title" });
+    ok(r && r.errors.length === 1, "diag answer: без title — одна помилка", r && r.errors.join("\n  ")); }
   // повний прогін теж бачить тест (не лише --diag)
   expectRun("diag answer: повний прогін, answer list — помилка", tree({ type: "answer", answerKind: "list", answer: [1, 2] }), [], { err: "у тесті не дозволено" }); }
 

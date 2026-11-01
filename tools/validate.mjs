@@ -19,7 +19,9 @@ const bannedRe = banned.map(b => [b, new RegExp(`(?<![\\p{L}'’ʼ])${b.replace(
 const errors = [], warnings = [];
 const E = (where, msg) => errors.push(`${where}: ${msg}`);
 const W = (where, msg) => warnings.push(`${where}: ${msg}`);
-const MATH_COMMANDS = new Set(["sqrt","frac","dfrac","vec","overrightarrow","mathbb","text","begin","end","cdot","times","infty","ge","geq","le","leq","neq","ne","pm","to","rightarrow","leftrightarrow","parallel","perp","angle","triangle","Delta","alpha","pi","circ","in","cup","varnothing","sim","ldots","dots","quad","qquad","left","right","log","ln","sin","cos","tan","lim","int"]);
+// команди формул беремо з рушія (app/math.js, SLID_MATH.commands), щоб списки не розходились (\\lg був у рушії, але не тут)
+const MATH_COMMANDS = new Set(content.math?.commands || []);
+if (!MATH_COMMANDS.size) { console.error("ПОМИЛКА ЗАВАНТАЖЕННЯ: app/math.js не віддав SLID_MATH.commands"); process.exit(1); }
 
 const allLessonIds = new Map(), allSectionIds = new Set();
 const ICONS = fs.readFileSync(path.join(ROOT, "app/app.js"), "utf8").match(/const P = \{([\s\S]*?)\n\};/)[1].match(/^\s{2}(\w+):/gm).map(s => s.trim().slice(0, -1));
@@ -149,18 +151,35 @@ function jsEscapeIssues(src) {
 // Поля самого пулу (lesson, lvl, src, steps, sk) підставлено коректні й своя навичка — навички предмета й sk екрана перевіряє checkScreen,
 // а предмет може не мати skills зовсім (рев'ю engine-player-a11y-p3, P3-5). «немає title» і «ключ не читається» теж дає checkScreen — не дублюємо.
 const POOL_ONLY = [/^немає title$/, /не читається або сам не проходить/, /^навичка sk /];
-function answerFieldIssues(s) {
+// у тесті рівня signed для answer перевіряє learn.validate (лише числова) — правило пулу тут не дублюємо
+const DIAG_DUP = [/^signed має бути boolean/];
+function answerFieldIssues(s, diag = false) {
   const it = { ...s, id: "x", lesson: "l", lvl: 1, sk: "x", src: "s 1", steps: ["."] };
   const pool = { id: "x", section: "x", status: "draft", sources: [{ id: "s", title: "s", url: "https://x" }], items: [it] };
   return learn.validatePool(pool, { sections: new Map([["x", { lessons: ["l"] }]]), skills: { x: {} } })
-    .filter(m => m.startsWith("задача 1 «x»: ")).map(m => m.slice("задача 1 «x»: ".length)).filter(m => !POOL_ONLY.some(re => re.test(m))).map(m => "answer: " + m);
+    .filter(m => m.startsWith("задача 1 «x»: ")).map(m => m.slice("задача 1 «x»: ".length)).filter(m => !POOL_ONLY.some(re => re.test(m)) && !(diag && DIAG_DUP.some(re => re.test(m)))).map(m => "answer: " + m);
+}
+
+// У тесті рівня «form» (значення правильне, запис ні) тихо стає BAD: ні підказки, ні другої спроби (learn.js, DIAG_ANSWER_KINDS).
+// Тож вимогу запису, якої підказка під полем не називає (compound, reduced, mixed, fractionOnly, improper, decimals), має назвати умова —
+// попередження, якщо в title/body немає слова про цей формат (рев'ю engine-diag-answer-kinds, P3-3; евристика, тому не помилка)
+const DIAG_FORMAT = [
+  [s => s.answerKind === "quantity" && s.form === "compound", /складен|\p{L}+[ая]х\s+(?:і|й|та)\s+\p{L}+[ая]х/iu, "form compound — складений запис («2 м 45 см»): напиши в умові «у метрах і сантиметрах» чи «складеним іменованим числом»"],
+  [s => s.reduced, /нескоротн/iu, "reduced — нескоротний дріб: напиши в умові «нескоротним дробом»"],
+  [s => s.mixed, /мішан|ціл\p{L}* частин/iu, "mixed — мішане число: напиши в умові «мішаним числом»"],
+  [s => s.fractionOnly, /звичайн\p{L}* дроб|дробом/iu, "fractionOnly — лише звичайний дріб: напиши в умові «звичайним дробом»"],
+  [s => (s.answerKind || "number") === "number" && s.form === "improper", /неправильн\p{L}* дроб/iu, "form improper — неправильний дріб: напиши в умові «неправильним дробом»"],
+  [s => s.decimals !== undefined, /десятков|після коми|до (?:десят|сот|тисячн)/iu, "decimals — кількість знаків після коми: напиши в умові «з одним знаком після коми» чи «до десятих»"]];
+function diagFormatIssues(s) {
+  const txt = plain([s.title, s.body].filter(x => typeof x === "string").join(" "));
+  return DIAG_FORMAT.filter(([when, re]) => when(s) && !re.test(txt)).map(([, , msg]) => `тест рівня: «form» тут зараховується як помилка без пояснення — ${msg}`);
 }
 
 // перевірка одного екрана; diag — завдання діагностики (без фідбеку: дитина не бачить, правильно чи ні)
 // pool — задача пулу: її поля answer уже перевірив learn.validatePool
 function checkScreen(S, s, c, diag, pool = false) {
   if (!TYPES.includes(s.type)) return E(S, `невідомий тип «${s.type}»`);
-  if (!s.title) E(S, "немає title");
+  if (!s.title && !(diag && !pool)) E(S, "немає title");   // у тесті рівня «немає title» уже дає learn.validate — не дублюємо (рев'ю diag-answer-kinds, P3-4)
   const noteTxt = typeof s.note === "string" ? s.note : s.note?.text;
   const txt = [s.title, s.body, noteTxt, s.fbText, s.fbOk, s.fbBad, s.hint, ...(s.opts || []), ...(s.items || []).flat()].filter(x => typeof x === "string").join(" ");
   if (/\$\{/.test(txt)) E(S, "у тексті лишилось «${» — шаблонний рядок з'їв формулу");
@@ -212,7 +231,8 @@ function checkScreen(S, s, c, diag, pool = false) {
       if (s.tol != null && !(Number.isFinite(s.tol) && s.tol >= 0)) E(S, "tol — скінченне невід'ємне число (допустима похибка)"); break;
     case "answer": if (learn.checkAns(s, learn.keyInput(s)) !== "ok") E(S, "answer: число або рядок («7/12», «2 1/3», «-3,5»), що сам проходить перевірку (величина quantity — у складеному записі)");
       // у діагностиці — лише коли тип answer там дозволено (learn.DIAG_TYPES); інакше вже є помилка «тип не дозволено в тесті»
-      if (!pool && (!diag || learn.DIAG_TYPES.includes("answer"))) for (const m of answerFieldIssues(s)) E(S, m); break;
+      if (!pool && (!diag || learn.DIAG_TYPES.includes("answer"))) for (const m of answerFieldIssues(s, diag)) E(S, m);
+      if (diag && !pool) for (const m of diagFormatIssues(s)) W(S, m); break;
     case "fracin": if (!(Number.isInteger(s.answer) && s.answer >= 0 && s.answer < 1e6)) E(S, "answer — ціле невід'ємне число (поле приймає лише цифри)");
       if (!(s.expr && s.den)) E(S, "fracin потребує expr і den"); break;
   }
@@ -241,10 +261,14 @@ for (const c of subjects) for (const sec of c.sections) {
   if (onlySec && sec.id !== onlySec) continue;
   const file = origin[sec.id] || c.id;
   // розділ плану без уроків: його credits не перевіряє ні цей цикл, ні цикл предмета (вони в own) — рев'ю a11y-p3, P3-4
-  if (!sec.lessons) { creditIssues(sec.credits).forEach(m => E(`${file}#${sec.id}`, m)); continue; }
-  (sec.requires || []).forEach(r => { if (!allLessonIds.has(r)) E(`${file}#${sec.id}`, `requires: немає уроку ${r}`); });
-  for (const b of sec.badges || []) if (!ICONS.includes(b.icon)) E(`${file}#${sec.id}`, `значок ${b.id}: немає іконки «${b.icon}»`);
+  // requires і badges перевіряємо й у розділі плану (рев'ю p3c, P3-3): у плані requires може вести на ще не написаний урок — попередження,
+  // значок без уроків не отримати — попередження; неіснуюча іконка — помилка, як і в розділі з уроками
+  const plan = !sec.lessons;
+  (sec.requires || []).forEach(r => { if (!allLessonIds.has(r)) (plan ? W : E)(`${file}#${sec.id}`, `requires: немає уроку ${r}${plan ? " (розділ плану: урок ще не написано?)" : ""}`); });
+  for (const b of sec.badges || []) { if (!ICONS.includes(b.icon)) E(`${file}#${sec.id}`, `значок ${b.id}: немає іконки «${b.icon}»`);
+    if (plan) W(`${file}#${sec.id}`, `значок ${b.id}: у розділі плану без уроків його не отримати`); }
   creditIssues(sec.credits).forEach(m => E(`${file}#${sec.id}`, m));
+  if (plan) continue;
   for (const l of sec.lessons) {
     const L = `${file}#${l.id}`;
     if (!l.title || !l.why || !l.icon) E(L, "уроку потрібні title, why, icon");

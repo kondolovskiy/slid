@@ -18,7 +18,7 @@ export function loadContent(root = ROOT) {
     for (const m of src.matchAll(/SLID\.section\(\s*"[^"]+",\s*\{\s*id:\s*"([^"]+)"/g)) origin[m[1]] = f;
   }
   ctx.SLID.finalize();
-  return { subjects: ctx.SLID_SUBJECTS, soon: ctx.SLID_SOON, files, origin, lab: ctx.SLID_LAB, learn: ctx.SLID_LEARN };
+  return { subjects: ctx.SLID_SUBJECTS, soon: ctx.SLID_SOON, files, origin, lab: ctx.SLID_LAB, learn: ctx.SLID_LEARN, math: ctx.SLID_MATH };
 }
 
 export const GRADED = ["choice","multi","sort","slider","order","align","shade","numline","number","fracin","lab","answer"];

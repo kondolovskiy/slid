@@ -173,7 +173,15 @@ for (const kind of Object.keys(L.KINDS)) { const sp = { kind, params: { a: { min
   eq(nv("?", { view: [15, 17], params: { t: { min: 15, max: 17, step: 0.25, start: 16.5, hide: true } }, fmt: "time" }), "16:30", "numline: «?» на шкалі часу → «16:30»");
   eq(nv("{t|time}", { view: [15, 17], params: { t: { min: 15, max: 17, step: 0.25, start: 16.5, hide: true } } }), "16:30", "numline: підпис-час лишається");
   // P3-6: цифра в незмінному підписі ($x_1$, «A1») — не значення: додаємо число; підпис, що збігається зі значенням, — як є
-  eq([nv("$x_1$"), nv("A1"), nv("3000"), nv("5"), nv("t = {t|0}"), nv("{,}")], ["x_1, 3000", "A1, 3000", "3000", "5, 3000", "t = 3000", "3000"], "numline: $x_1$ / A1 → з числом, шаблон і рівний значенню підпис — як є");
+  eq([nv("$x_1$"), nv("A1"), nv("3000"), nv("5"), nv("t = {t|0}"), nv("{,}")], ["x₁, 3000", "A1, 3000", "3000", "5, 3000", "t = 3000", "3000"], "numline: $x_1$ / A1 → з числом, шаблон і рівний значенню підпис — як є");
+  // P3-1 (рев'ю tools-lab-validate-p3c): у aria немає «_», «^», «{}» — індекси й степені Unicode або словами, як plainText у app.js
+  // підпис проходить fill(), тож {12} у ньому — вставка; багатоцифровий індекс і x_{AB} перевіряємо на ariaTex напряму
+  eq([nv("$x_1$"), nv("$x_A$"), nv("$x^2$"), nv("$x^a$"), nv("$x_0^2$"), nv("$-3000$", { view: [-4000, 0], params: { t: { min: -4000, max: 0, step: 50, start: -3000, hide: true } } })], ["x₁, 3000", "x A, 3000", "x², 3000", "x в степені a, 3000", "x₀², 3000", "−3000"], "numline: Unicode-індекси/степені в aria-valuetext");
+  eq([L.ariaTex("$x_{12}$"), L.ariaTex("$x_{AB}$ і $y^{n+1}$"), L.ariaTex("$2{,}5$ км"), L.ariaTex("$a \\cdot b$"), L.ariaTex("$x_{a_b}$"), L.ariaTex("$t^{\\circ}$"), L.ariaTex("$x^{2k}$")],
+    ["x₁₂", "x AB і yⁿ⁺¹", "2,5 км", "a · b", "x a b", "t°", "x в степені 2k"], "ariaTex: x₁₂, x AB, {,}, \\cdot, вкладений індекс, градус, степінь словами");
+  // P3-2: шаблон, що вставляє не координату (індекс $x_{{k}}$, «P{n|0}»), — не значення: число додаємо; «{ t |0}» — значення
+  { const ix = { params: { t: { min: 0, max: 4000, step: 50, start: 3000, hide: true }, k: { min: 1, max: 5, start: 2, hide: true }, n: { min: 1, max: 5, start: 4, hide: true } } };
+    eq([nv("$x_{{k}}$", ix), nv("P{n|0}", ix), nv("{ t |0}", ix), nv("$x_{{k}}$ = {t|0}", ix)], ["x₂, 3000", "P4, 3000", "3000", "x₂ = 3000"], "numline: шаблон-індекс → з числом, шаблон координати — як є"); }
   eq(nv("P", { view: [0, 7], pi: true, params: { t: { min: 0, max: 2 * Math.PI, step: Math.PI / 2, start: Math.PI, hide: true } } }), "P, π", "numline: шкала π"); }
 // P3-3: Home/End — межі, PageUp/PageDown — великий крок; rect (up: false) і залежні межі; цифри стовпчика їх не беруть
 { const pl = { kind: "plane", view: [-6, 6, -6, 6], points: { A: { at: [1, 2], drag: true } } }, ps = L.paramList(pl), st = L.startState(pl), h = L.KINDS.plane.render(pl, L.makeEnv(pl, st), {}).handles[0];
