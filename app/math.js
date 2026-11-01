@@ -1,9 +1,11 @@
 /* Слід — мініпарсер шкільних формул. Без залежностей, працює офлайн. */
 (() => {
 const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-const COMMANDS = new Set(["sqrt","frac","dfrac","vec","overrightarrow","mathbb","text","begin","end","cdot","times","infty","ge","geq","le","leq","neq","ne","pm","to","rightarrow","leftrightarrow","parallel","perp","angle","triangle","Delta","alpha","pi","circ","in","cup","varnothing","sim","ldots","dots","quad","qquad","left","right","log","ln","sin","cos","tan","lim","int"]);
+const COMMANDS = new Set(["sqrt","frac","dfrac","vec","overrightarrow","mathbb","text","begin","end","cdot","times","infty","ge","geq","le","leq","neq","ne","pm","to","rightarrow","leftrightarrow","parallel","perp","angle","triangle","Delta","alpha","pi","circ","in","cup","varnothing","sim","ldots","dots","quad","qquad","left","right","log","lg","ln","sin","cos","tan","lim","int"]);
 const SYMBOL = { cdot:"·", times:"×", infty:"∞", ge:"≥", geq:"≥", le:"≤", leq:"≤", neq:"≠", ne:"≠", pm:"±", to:"→", rightarrow:"→", leftrightarrow:"↔", parallel:"∥", perp:"⊥", angle:"∠", triangle:"△", Delta:"Δ", alpha:"α", pi:"π", circ:"°", in:"∈", cup:"∪", varnothing:"∅", sim:"∼", ldots:"…", dots:"…" };
-const FN = new Set(["log","ln","sin","cos","tan","lim","int"]);
+const ARROW = new Set(["to","rightarrow","leftrightarrow"]);
+const FN = new Set(["log","lg","ln","sin","cos","tan","lim","int"]);
+const OPERATOR = /^(?:[*\-+=:<>≈≠≤≥,;.]|\\\\)$/;
 const SUBDIGIT = /[₀₁₂₃₄₅₆₇₈₉]/;
 const TOK = /\\[A-Za-z]+|\\[,;:! ]|\\\\|"[^"]*"|\((?:[^()]|\([^()]*\))*\)|\d{1,3}(?:[  ]\d{3})+(?:,\d+)?(?!\d)|\d+(?:,\d+)?|[a-zA-Z]|[₀₁₂₃₄₅₆₇₈₉]|[{}_[\]&]|\?|~|\/|\*|:|\^|<|>|=|≈|≠|≤|≥|\+|-|\s+|[^\s]/g;
 
@@ -38,12 +40,16 @@ function nextUnit(tokens, state) {
 }
 function command(tokens, state, name) {
   if (/^[,;:! ]$/.test(name)) return { html:'<span class="mspace thin"></span>', atom:false };
+  // стрілки — бінарні знаки з відступами, як «=»: «0 → −1», а не «0→−1» (на 400 px стрілка зливалася з числами, g7m5)
+  if (ARROW.has(name)) return { html:`<span class="mo">${SYMBOL[name]}</span>`, atom:false };
   if (SYMBOL[name]) return { html: SYMBOL[name], atom: !["cdot","times","ge","geq","le","leq","neq","ne","pm","to","rightarrow","leftrightarrow","parallel","perp","in","cup","sim"].includes(name) };
   if (name === "quad" || name === "qquad") return { html:`<span class="mspace ${name}"></span>`, atom:false };
   if (name === "left" || name === "right") return { html:"", atom:false };
   if (name === "sqrt") {
     let idx = ""; const save = state.i; const g = group(tokens, state, "[", "]"); if (g) idx = render(g); else state.i = save;
     const body = parsedGroup(tokens, state);
+    // показник — у «гачку» перед знаком «√» (³√x², як у підручнику): знак малює .sqrt::before, а .root-index (index.html) має order:-1
+    // і опущений відступ, тож показник не злипається з коефіцієнтом (2³√2). Розмітка та сама: plainNode в app.js дає той самий текст
     return { html:`<span class="sqrt">${idx ? `<sup class="root-index">${idx}</sup>` : ""}<span class="radicand">${body}</span></span>`, atom:true };
   }
   if (name === "frac" || name === "dfrac") {
@@ -53,7 +59,12 @@ function command(tokens, state, name) {
   if (name === "vec" || name === "overrightarrow") return { html:`<span class="mover">${nextUnit(tokens, state)}</span>`, atom:true };
   if (name === "mathbb") return { html:`<span class="mbb">${esc(rawGroup(tokens, state))}</span>`, atom:true };
   if (name === "text") return { html:`<span class="mt">${esc(rawGroup(tokens, state).trim())}</span>`, atom:true };
-  if (FN.has(name)) return { html:`<span class="mfn">${name === "int" ? "∫" : name}</span>`, atom:true };
+  // назва функції прямим шрифтом; перед аргументом без дужок — тонкий пробіл, як у TeX і в уроках («lg 100», «ln x»), а не «lg100»
+  if (FN.has(name)) {
+    let j = state.i; while (/^\s+$/.test(tokens[j] || "")) j++;
+    const next = tokens[j], gap = next != null && !/^[_^({\\]$|^\\[,;:! ]$|^\\(?:left|right)$|^\(/.test(next) && !OPERATOR.test(next);
+    return { html:`<span class="mfn">${name === "int" ? "∫" : name}</span>${gap ? '<span class="mspace thin"></span>' : ""}`, atom:true };
+  }
   return { html:`<span class="munknown">\\${esc(name)}</span>`, atom:false };
 }
 function render(tokens) {

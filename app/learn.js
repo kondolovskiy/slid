@@ -257,7 +257,14 @@ window.SLID_LEARN = (() => {
      root {n — показник 2|3|4, a}, abs {a}, fn {fn, a, base — для log_a}, eq {l, r}. */
   const SUP = "⁰¹²³⁴⁵⁶⁷⁸⁹";
   const FN = ["arcctg", "arcsin", "arccos", "arctan", "arctg", "sqrt", "sin", "cos", "ctg", "cot", "tan", "tg", "ln", "lg", "log", "pi"];
-  const norm = v => String(v ?? "").replace(/(\d)\.(?=\d)/g, "$1,").replace(/[−–—]/g, "-").replace(/[*×∙⋅]/g, "·").replace(/÷/g, ":").replace(/[  ]/g, " ")
+  /* Кириличні двійники латинських літер (engine-math-answer-g11-issues п. 1): на українській розкладці «5х + С» виглядає так само,
+     як «5x + C», а кнопок літер у полі немає. У символьних записах (вирази, координати-вирази, межі, серії) кирилична літера, яка
+     зовні збігається з латинською, читається як латинська; інші кириличні літери, як і раніше, роблять запис нерозбірним (bad).
+     Нові «ok» можливі лише там, де раніше запис не розбирався взагалі. number має власний префікс («х = 3»), list — CYR_LAT. */
+  const CYR_TWIN = { "а": "a", "е": "e", "і": "i", "к": "k", "о": "o", "р": "p", "с": "c", "у": "y", "х": "x",
+    "А": "A", "В": "B", "Е": "E", "І": "I", "К": "K", "М": "M", "Н": "H", "О": "O", "Р": "P", "С": "C", "Т": "T", "Х": "X" };
+  const latin = t => t.replace(/[аеікорсухАВЕІКМНОРСТХ]/g, c => CYR_TWIN[c]);
+  const norm = v => latin(String(v ?? "")).replace(/(\d)\.(?=\d)/g, "$1,").replace(/[−–—]/g, "-").replace(/[*×∙⋅]/g, "·").replace(/÷/g, ":").replace(/[  ]/g, " ")
     .replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹]+/g, m => "^(" + [...m].map(c => SUP.indexOf(c)).join("") + ")").trim();
   function lex(t) {
     const out = []; let i = 0, m;
@@ -317,8 +324,18 @@ window.SLID_LEARN = (() => {
       for (;;) { const e = term(); if (!e) return null; a.push({ s, e }); if (take("+")) s = 1; else if (take("-")) s = -1; else break; }
       return a.length === 1 && a[0].s === 1 ? a[0].e : { k: "add", a };
     }
+    // Мішане число «3 1/3» — окремий доданок виразу (x^3/3 + 3 1/3, п. 3): ціле, ціле, «/», ціле, правильний дріб, на початку
+    // доданка, далі — лише «+», «−», «)», «=», «|» чи кінець. В інших місцях (2·3 1/3, x^2 1/3, 1/2 1/3, 3 1/3x) — як і раніше помилка.
+    // Два числа поспіль лексер дає лише з пробілом між ними, тож «31/3» лишається 31/3.
+    function mixedNum() {
+      const [w, a, sl, b] = tokens.slice(i, i + 4);   // після числа доданок закінчується: «3 1/3x», «3 1/3·x», «3 1/3^2» лишають зайві лексеми → null
+      if (!w || w.t !== "num" || a?.t !== "num" || sl?.t !== "/" || b?.t !== "num" || [w, a, b].some(x => x.v.includes(","))) return null;
+      const W = BigInt(w.v), A = BigInt(a.v), B = BigInt(b.v);
+      if (B === 0n || A >= B || A === 0n) return null;
+      i += 4; return { k: "num", v: Q(W * B + A, B), dd: 0 };
+    }
     function term() {
-      const f = [];
+      const f = [], mx = mixedNum(); if (mx) return mx;
       for (let d = false; ; ) {
         const at = i, e = power(); if (!e) return null; f.push({ d, e });
         // число одразу після дужок-множника — теж множення: (3x + 5)4x = (3x + 5)·4x. Лише після «( … )» без степеня:
@@ -526,7 +543,7 @@ window.SLID_LEARN = (() => {
   }
   /** Елемент списку, координата, межа: якщо ключ не містить коренів/π — лише число, як у чинному list; інакше точне значення. */
   const exactKey = v => /[√∛∜π±∓]|sqrt|pi/.test(Array.isArray(v) ? v.join(";") : String(v ?? ""));
-  const elemOf = (v, exact) => exact ? exactOf(v) : ratOf(parseAns(v));
+  const elemOf = (v, exact) => exact ? exactOf(v) : ratOf(parseAns(v)), elemOf0 = elemOf;
   /** «±» і «∓» → усі варіанти знаків (не більше 4 знаків у записі). */
   function expandPM(t) {
     const n = (t.match(/[±∓]/g) || []).length; if (n > 4) return [];
@@ -567,8 +584,12 @@ window.SLID_LEARN = (() => {
     const cand = [...all.keys()].filter(c => !skip.has(c) && all.get(c) > (lhs.get(c) || 0));
     return cand.length === 1 ? cand[0] : null;
   }
+  // «x₁,₂ = ±3», «x_{1,2} = (1 ± √5)/2» (п. 8): один запис з «±» на обидва корені — та сама літера умови, що й для «x₁ = …»
+  const LIST_PM = /^\s*([a-zA-Zа-яґєії])\s*(?:₁\s*,\s*₂|_?\{?\s*1\s*,\s*2\s*\}?)\s*=\s*([^;\n=]*[±∓][^;\n=]*)$/u;
   function listPre(s, v) {
     if (typeof v !== "string") return v;
+    const pm = LIST_PM.exec(v);
+    if (pm) return taskVar(s) === (CYR_LAT[pm[1]] || pm[1]) ? [pm[2].trim()] : v;
     const parts = v.split(/[;\n]/.test(v) ? /[;\n]/ : /,/), lets = new Set();
     const bare = parts.map(p => { const m = LIST_PRE.exec(p); if (!m) return p; lets.add(CYR_LAT[m[1]] || m[1]); return p.slice(m[0].length); });
     if (!lets.size) return v;
@@ -646,6 +667,8 @@ window.SLID_LEARN = (() => {
     return t;
   }
   function parseSet(v, exact) {
+    // межа чи елемент — періодичний дріб «0,(3)» = 1/3 (п. 5), як у number; ключ із коренями — так само
+    const elemOf = (p, ex) => elemOf0(p, ex) || ratOf(parsePeriodic(p));
     const t = setText(v);
     if (/^(∅|\{\s*\})$/.test(t)) return Object.assign([], { raw: 0 });
     const INF = /^([+-]?)(?:∞|inf)$/, ivs = [];
@@ -682,7 +705,7 @@ window.SLID_LEARN = (() => {
   function periodicValues(v) {
     const out = []; let fams = 0, dec = 0;
     for (let t of Array.isArray(v) ? v.map(String) : [String(v ?? "")]) {
-      t = norm(t).replace(/[,;]?\s*(?:де\s*)?[kmn]\s*[∈є]\s*[ZzℤΖ]\s*\.?$/, "");
+      t = norm(t).replace(/[,;]?\s*(?:д[еe]\s*)?[kmn]\s*[∈є]\s*[ZzℤΖ]\s*\.?$/, "");   // norm: «де» → «дe», «к» → «k»
       for (const fam of t.split(/;|,\s*(?=[a-zA-ZͰ-Ͽ]\s*=)/).flatMap(f => expandPM(f.trim().replace(/^[a-jo-zA-ZͰ-Ͽ]\s*=\s*/, "")))) {
         const tree = parseExpr(fam), vars = tree && tree.k !== "eq" ? varsOf(tree) : [];
         if (vars.length !== 1 || !"kmn".includes(vars[0]) || ++fams > PER_MAX) return null;
@@ -858,6 +881,8 @@ window.SLID_LEARN = (() => {
     rootReduce: "Значення правильне. Скороти дріб: поділи числа в чисельнику й знаменник на спільний дільник.",
     simplify: "Значення правильне, але запис не спрощено: обчисли, зведи подібні, винеси множник з-під кореня й позбудься кореня в знаменнику.",
     limit: "Запис занадто складний для перевірки. Спрости його й спробуй ще раз.",
+    rootNum: "Значення правильне. Обчисли корінь і запиши відповідь числом.",
+    constC: "Вираз правильний. Сталу запиши великою латинською літерою C.",
     denom: "Знаменник-добуток візьми в дужки: 1/(3y), бо 1/3y — це y/3.",
     parenPow: "Степінь пиши через знак ^. Число одразу після дужок — це множник, а не показник.",
     expandParen: "Вираз правильний. Розкрий дужки й зведи подібні доданки.",
@@ -975,6 +1000,7 @@ window.SLID_LEARN = (() => {
     const kind = s.answerKind || "number"; v = stripUnit(s, v);
     if (kind === "number") {
       const u = numOf(v);
+      if (!u && limited(() => { const a = parseAns(typeof s.answer === "number" ? String(s.answer) : s.answer); return !!a && rootNum(v, a); }, () => false)) return MSG.rootNum;
       if (s.decimals !== undefined && u && decCount(u) !== s.decimals) return decMsg(s.decimals);
       if (s.form === "improper" && u?.frac && u.whole) return MSG.improper;
       return !u?.frac ? MSG.frac : s.reduced && !u.lowest ? MSG.reduce : MSG.mixed;
@@ -989,7 +1015,11 @@ window.SLID_LEARN = (() => {
       const i = rs ? rs.findIndex(x => x.sym && x.r === "form") : -1;
       if (i >= 0) return exprHint(s.form, a[i], up[i]);
     }
-    if (kind === "expression") return exprHint(s.form, exprOf(s.answer), v);
+    if (kind === "expression") {
+      const a = exprOf(s.answer), u = exprOf(v);
+      if (a && u && limited(() => !!constC(s, a, u), () => false)) return MSG.constC;
+      return exprHint(s.form, a, v);
+    }
     if (["exactRoot", "list", "coordinates2", "coordinates3", "intervalSet"].includes(kind) && unreducedOnly(s, kind, v)) return MSG.rootReduce;
     return MSG.simplify;
   }
@@ -1039,9 +1069,10 @@ window.SLID_LEARN = (() => {
   function hintTexts(s) {
     const kind = s?.answerKind || "number", out = [MSG.limit, MSG.simplify, MSG.retry], U = kind === "quantity" && qtyUnits(s);
     if (s?.unit) out.push(unitMsg(s));
-    if (kind === "number") out.push(MSG.frac, MSG.reduce, MSG.mixed, MSG.improper, ...(s.decimals !== undefined ? [decMsg(s.decimals)] : []));
+    if (kind === "number") out.push(MSG.rootNum, MSG.frac, MSG.reduce, MSG.mixed, MSG.improper, ...(s.decimals !== undefined ? [decMsg(s.decimals)] : []));
     if (kind === "divrem") out.push(MSG.divrem);
     if (kind === "ratio") out.push(MSG.ratio);
+    if (kind === "expression") out.push(MSG.constC);
     if (kind === "expression" || kind === "coordinates2") out.push(MSG.denom, MSG.parenPow, MSG.expandParen, MSG.expandLike, MSG.power, MSG.factored, MSG.reduced, MSG.simplified);
     if (["exactRoot", "list", "coordinates2", "coordinates3", "intervalSet"].includes(kind)) out.push(MSG.rootReduce);
     if (kind === "time") out.push(timeMsg(s));
@@ -1181,6 +1212,34 @@ window.SLID_LEARN = (() => {
       return a && a.map(x => ({ exact: ex, root: [...x.x.keys()].some(k => !k.startsWith("1:")), tidy: x.tidy, approx: xnum(x.x), rat: rat(x.x) }));
     }, () => null);
   }
+  /* Стала первісної (п. 2): умова про первісну чи інтеграл, ключ має доданок «+ C» (велика латинська C, малої c у ключі немає), запис — малу c (латинську чи
+     кириличну) і жодної великої C, а в умові вправи (title, body, q, text, hint — формули й текст поза тегами) окремої латинської
+     «c» немає: тоді c — та сама стала, і запис з C замість c порівнюємо з ключем. Повертає дерево з C замість c або null. */
+  const constTerm = a => a.k === "add" && a.a.some(t => t.e.k === "var" && t.e.n === "C");
+  const swapVar = (n, from, to) => n.k === "var" ? (n.n === from ? { k: "var", n: to } : n)
+    : n.k === "add" ? { ...n, a: n.a.map(t => ({ ...t, e: swapVar(t.e, from, to) })) } : n.k === "mul" ? { ...n, f: n.f.map(t => ({ ...t, e: swapVar(t.e, from, to) })) }
+    : n.k === "pow" ? { ...n, b: swapVar(n.b, from, to), e: swapVar(n.e, from, to) } : n.k === "eq" ? { ...n, l: swapVar(n.l, from, to), r: swapVar(n.r, from, to) }
+    : n.k === "fn" ? { ...n, a: swapVar(n.a, from, to), base: n.base && swapVar(n.base, from, to) } : n.k === "root" || n.k === "abs" ? { ...n, a: swapVar(n.a, from, to) } : n;
+  // C — стала первісної, лише якщо вправа про первісну чи інтеграл (рев'ю P3-1: у ключі «a + b + C» C — просто змінна)
+  const stmtInt = s => /первісн|інтеграл|\\int|∫/i.test(["title", "body", "q", "text"].map(k => typeof s?.[k] === "string" ? s[k] : "").join(" "));
+  const stmtC = s => /(^|[^a-zA-Z])c(?![a-zA-Z])/.test(["title", "body", "q", "text", "hint"].map(k => typeof s?.[k] === "string" ? s[k] : "").join(" ")
+    .replace(/<[^>]*>/g, " ").replace(/\\[a-zA-Z]+/g, " ").replace(/[a-zA-Z]{2,}/g, " "));
+  function constC(s, a, u) {
+    if (a.k === "eq" || !constTerm(a)) return null;
+    const ka = varsOf(a), ku = varsOf(u);
+    return ka.includes("C") && !ka.includes("c") && ku.includes("c") && !ku.includes("C") && !stmtC(s) && stmtInt(s) ? swapVar(u, "c", "C") : null;
+  }
+  /* Число коренем (п. 4): запис — стала з коренем (√576, 2√9, ∛27), точне значення якої раціональне й дорівнює ключу.
+     Лише "form" («обчисли корінь»), ніколи "ok"; межа точної арифметики — не "form", а звичайне "bad". */
+  function rootNum(v, a) {
+    const t = parseExpr(numPre(v)); if (!t || t.k === "eq" || !isConst(t) || !has(t, "root")) return false;
+    const lim = LIMIT;
+    let ok = false;
+    try { const x = xval(t), q = x && xrat(x); ok = !!q && BigInt(a.n) * q[1] === q[0] * BigInt(a.d); }
+    catch (e) { if (e !== TOO) throw e; }
+    if (!ok) LIMIT = lim;   // невдала спроба не змінює підказку до «bad» (раніше такий запис просто не розбирався)
+    return ok;
+  }
   function checkAns0(s, v) {
     const kind = s.answerKind || "number", tidy = xs => xs.every(x => x.tidy) ? "ok" : "form", ex = exactKey(s.answer);
     BUDGET = 50000;
@@ -1218,6 +1277,8 @@ window.SLID_LEARN = (() => {
     if (kind === "expression") {
       const a = exprOf(s.answer); let u = exprOf(v);
       if (!a || !u || (s.form !== undefined && (!EXPR_FORMS.includes(s.form) || a.k === "eq"))) return "bad";
+      // стала первісної малою «c» замість «C» (п. 2): значення правильне, але умова просить велику C — "form" з підказкою, не "ok"
+      const cu = constC(s, a, u); if (cu && !sameExpr(a, u)) return sameExpr(a, cu) ? "form" : "bad";
       // ключ «y = …», а дитина записала лише праву частину; або навпаки — зайвий «y =» з нової змінної
       if (a.k === "eq" && u.k !== "eq" && a.l.k === "var") u = { k: "eq", l: a.l, r: u };
       else if (a.k !== "eq" && u.k === "eq" && u.l.k === "var" && !varsOf(a).includes(u.l.n)) u = u.r;
@@ -1234,6 +1295,7 @@ window.SLID_LEARN = (() => {
     if (kind === "quantity") return checkQty(s, v);
     if (kind !== "number" || (s.tol !== undefined && (!Number.isFinite(s.tol) || s.tol < 0))) return "bad";
     const a = parseAns(typeof s.answer === "number" ? String(s.answer) : s.answer), u = numOf(v);
+    if (a && !u && rootNum(v, a)) return "form";   // √576 при ключі 24 (п. 4): значення правильне, корінь не обчислено
     if (!a || !u) return "bad";
     if (s.tol > 0) {
       // Порівнюємо десяткову межу точно: 3,15 при 3,14 ± 0,01 проходить,

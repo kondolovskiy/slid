@@ -4,6 +4,7 @@
 // Для кожної вправи — ключ і типові рівні/хибні записи. Кожна розбіжність вердикту чи підказки має належати
 // дозволеній категорії (рішення 2026-10-31, engine-math-answer-kinds-new: п. 5–7 і P3 з рев'ю), інакше — «непояснена», rc 1.
 // Класифікація незалежна від реалізації: стару версію перевіряють на «очищеному» записі й порівнюють з новою.
+// engine-math-answer-g11-issues додала записи й категорії «g11 п.1–п.8» (кирилиця, стала c, мішане число, √n², 0,(3) у межі, x₁,₂).
 // Запуск: node tools/diff-answers.mjs [--old <git-rev>] [--grades 4-9] [--time] [--show N] [--list-cat "<категорія>"] (записи однієї категорії)
 import fs from "node:fs"; import vm from "node:vm"; import path from "node:path"; import { execFileSync } from "node:child_process";
 import { loadContent, ROOT } from "./lib.mjs";
@@ -29,6 +30,11 @@ const stmt = s => ["title", "body", "q", "text"].map(k => typeof s[k] === "strin
 const keyText = s => { const k = s.answerKind || "number", a = s.answer;
   if (Array.isArray(a)) return k === "ratio" ? a.join(" : ") : k === "coordinates2" || k === "coordinates3" ? "(" + a.join("; ") + ")" : k === "divrem" ? `${a[0]} ост. ${a[1]}` : a.join("; ");
   return typeof a === "number" ? String(a).replace(".", ",") : String(a); };
+const SYM = ["expression", "coordinates2", "coordinates3", "intervalSet", "periodicSet", "exactRoot", "list"];
+// латинські літери, що мають кириличного двійника (g11 п.1), — на кириличні; і зворотна заміна для класифікації
+const TWIN = { a: "а", e: "е", i: "і", k: "к", o: "о", p: "р", c: "с", y: "у", x: "х", A: "А", B: "В", E: "Е", I: "І", K: "К", M: "М", H: "Н", O: "О", P: "Р", C: "С", T: "Т", X: "Х" };
+const cyr = r => r.replace(/\\[a-zA-Z]+|sqrt|pi|inf|[a-zA-Z]/g, m => m.length === 1 ? TWIN[m] || m : m);
+const lat = r => r.replace(/[аеікорсухАВЕІКМНОРСТХ]/g, c => Object.keys(TWIN).find(k => TWIN[k] === c));
 const FOREIGN = ["мм", "см", "м", "км", "г", "кг", "%", "°", "грн", "шт"];
 // Значення раціонального числа як періодичного дробу, якщо знаменник має множники, крім 2 і 5: 1/3 → «0,(3)».
 function periodic(n, d) {
@@ -68,6 +74,17 @@ function records(s) {
     // P3-1: a ± b√c → (1/2)(2a ± 2b√c)
     const m = K.match(/^(-?\d+) ([+±-]) (\d*)√(\d+)$/); if (m) out.add(`(1/2)(${2 * m[1]} ${m[2]} ${2 * (m[3] || 1)}√${m[4]})`);
   }
+  // engine-math-answer-g11-issues
+  // п.1: кириличні двійники латинських літер у символьних записах (ключ і хибні записи); п.2: стала «c» / «С» / «K»
+  if (SYM.includes(k)) for (const r of [...out]) if (/[a-zA-Z]/.test(r.replace(/sqrt|pi|inf/g, ""))) out.add(cyr(r));
+  if (k === "expression" && /\bC\b/.test(K)) for (const r of [K.replace(/\bC\b/g, "c"), K.replace(/\bC\b/g, "с"), K.replace(/\bC\b/g, "K"), K.replace(/\bC\b/g, "c") + " + 1"]) out.add(r);
+  // п.3: дріб-доданок ключа виразу мішаним числом (10/3 → 3 1/3); п.4: ціле число ключа коренем (24 → √576, √577)
+  if (k === "expression") for (const m of K.matchAll(/(^|[+-] )(\d+)\/(\d+)(?=$| [+-])/g)) { const p = +m[2], q = +m[3]; if (p > q && p % q) { out.add(K.replace(m[0], `${m[1]}${Math.floor(p / q)} ${p % q}/${q}`)); out.add(K.replace(m[0], `${m[1]}${Math.floor(p / q)} ${p % q + 1}/${q + 2}`)); } }
+  if (k === "number" && a && a.d === 1 && Math.abs(a.n) <= 1000) { const n = Math.abs(a.n), sg = a.n < 0 ? "-" : ""; out.add(`${sg}√${n * n}`); out.add(`${sg}√${n * n + 1}`); out.add(`√${n * n}`); out.add(`${sg}2√${n * n}`); }
+  // п.5: межа проміжку періодичним дробом (1/3 → 0,(3)); п.8: «x₁,₂ = …» з «±» у list
+  if (k === "intervalSet") { const per = K.replace(/(-?\d+)\/(\d+)/g, (m0, p, q) => periodic(p, q) || m0); if (per !== K) { out.add(per); out.add(per.replace(/\((\d+)\)/, (m0, d) => `(${(+d + 1) % 10})`)); } }
+  if (k === "list" && /[±∓]/.test(K)) { const lets = new Set(["x", "y", "х", "f", "k", "b"]); for (const m of stmt(s).matchAll(/\$([^$]+)\$/g)) for (const c of m[1].replace(/\\[a-zA-Z]+/g, " ").match(/[a-z]/g) || []) lets.add(c);
+    for (const L of lets) { out.add(`${L}₁,₂ = ${K}`); out.add(`${L}_{1,2} = ${K}`); } }
   if (s.unit) {
     const u = s.unit, alt = u.replace(/°/g, "º");
     for (const r of [`${K} ${u}`, `${K}${u}`, `${K} ${u}.`, `${K} ${u},`, `${K}${alt}`, `${K} ${alt}.`]) out.add(r);
@@ -87,6 +104,8 @@ const exactVal = (s, v) => { const a = NEW.parseAns(keyText(s)), m = String(v).r
   if (!a || !m) return false; const A = BigInt(m[2] + m[3]), F = BigInt(m[2] + m[3] + m[4]), n = (F - A) * (m[1] ? -1n : 1n), d = 10n ** BigInt(m[3].length) * (10n ** BigInt(m[4].length) - 1n);
   return n * BigInt(a.d) === BigInt(a.n) * d; };
 const CATS = [
+  // g11 п.1 першою: кириличний запис інакше потрапив би в категорію іншого нововведення (х ∈ …)
+  ["g11 п.1 кириличні двійники латинських літер", (s, v, o, n) => SYM.includes(s.answerKind) && lat(v) !== v && /^[^а-яґєіїА-ЯҐЄІЇ]*$/u.test(lat(v)) && same(verdict(OLD, s, lat(v)), n)],
   ["п.5 префікс «x =» у number", (s, v, o, n) => (s.answerKind || "number") === "number" && /^\s*[A-Za-zА-Яа-яіїєґ]\s*=\s*/u.test(v) && same(verdict(OLD, s, v.replace(/^\s*[A-Za-zА-Яа-яіїєґ]\s*=\s*/u, "")), n)],
   ["п.5 назва вектора AB = (…) / AB(…) / \\vec{AB}", (s, v, o, n) => /^coordinates[23]$/.test(s.answerKind) && /^(?:\\vec\{[A-Z]{1,2}\}|[A-Z]{1,2})\s*=?\s*\(/.test(v) && same(verdict(OLD, s, v.replace(/^(?:\\vec\{[A-Z]{1,2}\}|[A-Z]{1,2})\s*=?\s*/, "")), n)],
   ["п.5 мала літера перед дужками в символьному coordinates2 — множник", (s, v, o, n) => symCoord(s) && /^[a-z]\(/.test(v) && o.r !== "bad" && n.r === "bad"],
@@ -110,6 +129,17 @@ const CATS = [
     P2.add(`${s.__id} ${lat}`); return true; }],
   ["g10 п.3 число після дужок-множника в expression", (s, v, o, n) => s.answerKind === "expression" && /\)\s*\d/.test(v) && same(verdict(OLD, s, v.replace(/\)(\s*)(?=\d)/g, ")·")), n)],
   ["g10 п.4 «+» перед числом у number", (s, v, o, n) => (s.answerKind || "number") === "number" && /^(?:x = )?\+\d/.test(v) && same(verdict(OLD, s, v.replace("+", "")), n)],
+  // engine-math-answer-g11-issues: так само — старий рушій на «очищеному» записі (латиниця, C, неправильний дріб, дріб) дає те саме
+  ["g11 п.2 стала «c» замість «C» — form", (s, v, o, n) => s.answerKind === "expression" && /\bC\b/.test(keyText(s)) && /(^|[^a-zA-Zа-я])[cс](?![a-zA-Zа-я])/u.test(v) && o.r === "bad" && n.r === "form"
+    && /Сталу запиши великою/.test(n.h) && !/(^|[^a-zA-Z])c(?![a-zA-Z])/.test(stmt(s).replace(/<[^>]*>/g, " ").replace(/\\[a-zA-Z]+/g, " ").replace(/[a-zA-Z]{2,}/g, " ")) && OLD.checkAns(s, lat(v).replace(/(^|[^a-zA-Z])c(?![a-zA-Z])/g, "$1C")) === "ok"],
+  ["g11 п.3 мішане число-доданок у виразі", (s, v, o, n) => s.answerKind === "expression" && /\d \d+\/\d+/.test(v) && same(verdict(OLD, s, v.replace(/(\d+) (\d+)\/(\d+)/g, (m0, w, p, q) => `${+w * +q + +p}/${q}`)), n)],
+  ["g11 п.4 ціле число коренем у number — form", (s, v, o, n) => (s.answerKind || "number") === "number" && /^-?\d*√\d+$/.test(v) && o.r === "bad" && n.r === "form" && /Обчисли корінь/.test(n.h)
+    && (() => { const m = v.match(/^(-?)(\d*)√(\d+)$/), r = Math.sqrt(+m[3]), a = NEW.parseAns(keyText(s)); return Number.isInteger(r) && a.d === 1 && (m[1] ? -1 : 1) * (+(m[2] || 1)) * r === a.n; })()],
+  ["g11 п.5 періодичний дріб у межі проміжку", (s, v, o, n) => s.answerKind === "intervalSet" && /,\d*\(\d+\)/.test(v) && same(verdict(OLD, s, v.replace(/(-?)(\d+),(\d*)\((\d+)\)/g, (m0, sg, w, pre, rep) => {
+      const A = BigInt(w + pre), F = BigInt(w + pre + rep), d = 10n ** BigInt(pre.length) * (10n ** BigInt(rep.length) - 1n); return `${sg}${F - A}/${d}`; })), n)],
+  ["g11 п.8 «x₁,₂ = …» з «±» у list", (s, v, o, n) => { const m = v.match(/^\s*([a-zа-яії])(?:₁,₂|_\{1,2\}) = (.*)$/u); if (s.answerKind !== "list" || !m || !same(verdict(OLD, s, m[2]), n)) return false;
+    const lt = { "х": "x", "у": "y", "а": "a", "і": "i" }[m[1]] || m[1], ok = [..."abcdefghijklmnopqrstuvwxyz"].filter(l => NEW.checkAns(s, `${l}₁,₂ = ${m[2]}`) !== "bad");
+    if (ok.length !== 1 || ok[0] !== lt) return false; P2.add(`${s.__id} ${lt}₁,₂`); return true; }],
   ["P3-2 «Скороти дріб» для меж intervalSet", (s, v, o, n) => s.answerKind === "intervalSet" && o.r === "form" && n.r === "form" && /Скороти дріб/.test(n.h)],
 ];
 
@@ -133,7 +163,7 @@ console.log(`Старий learn.js: ${OLD_REV}. Вправ ${items.length} (кл
 for (const [c, k] of Object.entries(counts)) console.log(`  ${String(k).padStart(5)}  ${c}`);
 console.log(`  ${String(unexplained.length).padStart(5)}  НЕПОЯСНЕНІ`);
 unexplained.slice(0, SHOW).forEach(x => console.log("    " + x));
-if (P2.size) console.log(`  g10 п.2 — вправи й літера, з якою префікс тепер знімається (звір з умовою): ${[...P2].join(", ")}`);
+if (P2.size) console.log(`  g10 п.2 і g11 п.8 — вправи й літера, з якою префікс тепер знімається (звір з умовою): ${[...P2].join(", ")}`);
 keyBad.forEach(x => console.log("  КЛЮЧ: " + x));
 
 // ---------- --time: найгірший час перевірки на важких записах (межа — кроки, а не годинник) ----------

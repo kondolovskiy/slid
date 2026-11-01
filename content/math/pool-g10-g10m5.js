@@ -9,7 +9,6 @@
    формули довжини дуги і значень arccos(−1/2), arccos(√3/2), arccos(√2/2), arcsin(√2/2) —
    їх дано в умовах (D-019). Прогалини формату (немає чесних вправ у пунктах уроку): periodicSet у g10m5l3,
    expression у g10m5l4 — див. нотатки задачі.
-   Порядок: a01 (number) стоїть першим — validatePool без попереднього checkAns хибно відхиляє перший exactRoot-ключ (BUDGET = 0 у app/learn.js, передано в inbox ENGINE).
    Перевірка: node tools/validate.mjs --pool pg10m5
    Схема: docs/CONTENT_SCHEMA.md §10 */
 SLID.pool("math", {
