@@ -4,7 +4,7 @@ claimed_at: 2026-11-01T14:38:27.230Z
 id: engine-srs-retest-p3
 type: engine
 subject: math
-status: review
+status: done
 claimed_by: agent-engine-srs-retest-p3
 created: 2026-11-01
 depends_on: [qa-math-personalization-release]
