@@ -61,3 +61,28 @@ write_group: personalization-shared — редактор визначаєтьс�
 - test-answer-ui: план з помилок + непочатий тест → запрошення до тесту НЕ показується (reports/review/engine-srs-retest-p3.md P3).
 
 - 2026-11-01, agent-engine-practice-pool: редактор групи personalization-shared: agent-engine-practice-pool (worktree wt-practice); редагування розпочато. Інші задачі групи — лише читання до передачі.
+
+### 2026-11-01, agent-engine-practice-pool — виконано (worktree wt-practice, гілка wt-practice)
+
+Редактор групи personalization-shared — лише цей агент; інші задачі групи не змінювали спільних файлів. **Редагування передано: вільно** (після злиття оркестратором і незалежного рев'ю).
+
+**1. P3 з розділу «Також»** (коміт 1cc8686 + уточнення в наступному коміті):
+- `askedPoint` (app/learn.js): назва із заголовка — лише якщо в самій умові (без заголовка) її немає окремим токеном (P3-1 рев'ю engine-lab-aria-p3d; відтворення scratchpad/syn-ask.mjs: «Точка $A$ і симетрія» → A(…) form, B(…) ok; «Точка $K$ на прямій» → K form). «середини $M$ відрізка $AB$» — M шукана (P3-2), але окремим правилом `ASK_MID` і лише для назви з однієї літери: «Середина $BC$» у заголовку (теги знято, заголовок зливається з умовою — pg9m2 a03) і «середини відрізка $AB$» шуканого не дають (негативні тести). Мутаційний сторож для `!names.size` (умова дала C, заголовок «Вершина $D$» → M(…) form).
+- `DIAG_FORMAT` (tools/validate.mjs): compound — «складен…» або ≥ 2 одиниці самої вправи (скорочення чи слово: «в м і см» без попередження, «у задачах і прикладах» — з попередженням); decimals — саме n знаків («до цілих» для 0, «до 0,1»/«до десятих» для 1, «до сотих» при decimals 1 — попередження; «десятковий дріб» без кількості — попередження). Фікстури fractionOnly і form improper (test-validate).
+- test-answer-ui (`srs_retest_p3_checks`): план з помилок + тест не починали → лише картка плану, без запрошення (головна й предмет). Мутацію `planOrDiag = pc + diagInvite(c)` перевірено — тепер падає.
+
+**2. Початкові коробки SRS з діагностики** (25fda48): `SLID_LEARN.srsFromDiag`, викликається з `finishDiag` (лише новий/повторний тест; старі `S.diag` не переінтерпретуються). pre ok → box 2 (7 днів), shaky → box 0 (завтра); урок кількох тем — найслабший; запис `{ box, due, src: "diag", diag, rev }` лише для уроку без запису або поверх запису попереднього тесту, якого тренування не чіпало (srsUpdate пише без src); gap знімає такий запис, але не створює; cur і baseline — без коробок; без `day` — нічого. BOX_DAYS (D-030) не змінено. Видимість у тренуванні не змінено (молодші класи — лише пройдені уроки) — консервативно; якщо треба відкривати тренування для ok-тем без уроку — рішення людини.
+
+**3. Генератори gen** (25fda48): CONTENT_SCHEMA §10 «Генератор gen». vars (min/max/step або values), where, let, answer — вирази SLID_LAB.compile; усі набори перелічуються (2…5000), вибір = FNV-1a(`pool:id|s<S.prN>`) mod N; S.prN збільшує startPractice; ключ seen/SRS — той самий `pool:id`. Лише lvl 1, числова answer без answerKind/reduced/mixed/fractionOnly/decimals/form, `adapted: true` обов'язкове, кожна змінна показана в умові, вставки — `{вираз}`, `{вираз|n}`, `|s`, `|c`. validatePool перевіряє всі набори (скінченна відповідь ≤ 6 знаків, ключ проходить checkAns, вставки обчислюються й показуються без округлення); validate.mjs перевіряє екран на першому наборі. **Генерованих вправ у змісті немає** — лише рушій, схема й fixtures (test-learn, test-validate, test-answer-ui `gen_diag_srs_checks`).
+
+**4. make-tasks --write-pool** (9fbacc6): `node tools/make-tasks.mjs --write-pool [--grade N] [--dry-run] [--matrix FILE] [--tasks DIR]` — за матрицею (v3) і шаблоном пакета; лише розділи з required; пропуск, якщо задача з таким id (ім'я файлу чи `id:` у frontmatter) є в todo/doing/review/done або пул уже є в змісті. На чинній черзі dry-run: 0 нових (48 наявних, відкладені g11m2/g11m6). Тести: tools/test-make-tasks.mjs (22). **Пропозиція оркестратору:** додати test-make-tasks у `npm run check` і .github/workflows/pages.yml (спільні файли — не змінював).
+
+**5. Не виконано — перенесено окремими задачами:**
+- добір діагностики з пулу для повторного тесту → tasks/todo/engine-diag-retest-from-pool.md (потребує рішення людини; контракт «порядок items розпочатого тесту не змінюється» записано там);
+- вибір одиниці відповіді → tasks/todo/engine-answer-unit-choice.md (спершу перевірити, чи потрібен узагалі: quantity вже покриває складені величини).
+
+**Делеговане (не дубльовано):** формати відповідей — engine-math-pool-answer-formats (done); браузерний QA — tools-math-personalization-qa (done); 45 + 5 задач write-math-pool-* — авторам; ШІ — engine-ai-solution-check (todo).
+
+**Перевірки (мій прогін у worktree):** test-learn 2044, test-validate 571, test-lab 150, test-math 36, test-metrics 20, test-personalization-qa 105, test-make-tasks 22 — усі зелені; validate — 0 помилок, 255 попереджень; diff-answers `--old 3d4e229 --grades 4-11` — 0 непояснених, `--old 2a3d977 --grades 4-11` — 0 змінених вердиктів на змісті (P3 не змінюють поведінки на вправах), `--content-old 3d4e229` — 0 змінених; test-answer-ui `--suite regression` — rc 0 (повторний прогін — див. рядок нижче).
+
+**Відкриті питання:** (а) чи відкривати тренування для тем pre з ok без пройденого уроку (зараз ні); (б) запропоновані питання в engine-diag-retest-from-pool; (в) досвід 10/5 за тренування й показ розкладу — без змін, продуктовий скоуп.
