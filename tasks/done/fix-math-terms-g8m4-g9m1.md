@@ -4,7 +4,7 @@ claimed_at: 2026-11-01T10:43:55.957Z
 id: fix-math-terms-g8m4-g9m1
 type: content
 subject: math
-status: review
+status: done
 claimed_by: agent-fix-math-terms-g8m4-g9m1
 created: 2026-10-31
 ---

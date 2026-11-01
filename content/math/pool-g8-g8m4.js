@@ -1,5 +1,5 @@
 /* Слід · Математика, 8 клас — пул задач для тренування до розділу «Геометрія: подібність і теорема Піфагора» (g8m4)
-   Статус: draft (2026-11-01, fix-math-terms-g8m4-g9m1: c06 (g8m4l3): «Проекції» → «Проєкції» в hint і steps — повторна верифікація змінених місць; раніше verified: verifier-pool-g8m4, 2026-10-31, reports/verify/pg8m4.md). 23 задачі: g8m4l1 — 8, g8m4l2 — 8, g8m4l3 — 7 (boss g8m4l4 без задач).
+   Статус: verified (повторно 2026-11-01, verifier-fix-math-terms-g8m4-g9m1, reports/verify/fix-math-terms-g8m4-g9m1.md; правка fix-math-terms-g8m4-g9m1: c06 (g8m4l3): «Проекції» → «Проєкції» в hint і steps — повторна верифікація змінених місць; раніше verified: verifier-pool-g8m4, 2026-10-31, reports/verify/pg8m4.md). 23 задачі: g8m4l1 — 8, g8m4l2 — 8, g8m4l3 — 7 (boss g8m4l4 без задач).
    Матриця docs/math-personalization-coverage.md 2026-10-16.v2: усі три уроки required, формат number (+ choice/list за умовою).
    Усі задачі — з підручника Мерзляк, Якір «Геометрія. 8 клас» (2025), п. 12–13, 15–16; умови, числа й рисунки звірено
    за відрендереними сторінками PDF 2026-10-31. srcPage — друкований номер сторінки (у цьому PDF збігається з номером сторінки файлу).
@@ -9,7 +9,7 @@
 SLID.pool("math", {
   id: "pg8m4",
   section: "g8m4",
-  status: "draft",
+  status: "verified",
   meta: { author: "agent-write-math-pool-g8m4", created: "2026-10-31", factcheck: "verifier-pool-g8m4", teacher: null },
   sources: [
     { id: "mer8g", title: "Мерзляк А. Г., Якір М. С. Геометрія : підруч. для 8 кл. закладів заг. серед. освіти. — Харків: Гімназія, 2025 (п. 12–13, 15–16)", url: "https://file.4book.org/images/shcoolbook_ua/8/8_geom_m_2025.pdf" }

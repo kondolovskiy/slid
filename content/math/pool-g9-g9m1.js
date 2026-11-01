@@ -1,5 +1,5 @@
 /* Слід · Математика, 9 клас — пул задач для тренування до розділу «Алгебра: нерівності» (g9m1)
-   Статус: draft (2026-11-01, fix-math-terms-g8m4-g9m1: c01: «переріз» → «перетин» — повторна верифікація змінених місць; раніше verified: автор agent-write-math-pool-g9m1, 2026-10-31; верифікатор verifier-pg9m1, звіт reports/verify/pg9m1.md). 24 задачі: по 8 на кожен required-урок
+   Статус: verified (повторно 2026-11-01, verifier-fix-math-terms-g8m4-g9m1, reports/verify/fix-math-terms-g8m4-g9m1.md; правка fix-math-terms-g8m4-g9m1: c01: «переріз» → «перетин» — повторна верифікація змінених місць; раніше verified: автор agent-write-math-pool-g9m1, 2026-10-31; верифікатор verifier-pg9m1, звіт reports/verify/pg9m1.md). 24 задачі: по 8 на кожен required-урок
    g9m1l1–g9m1l3 (boss g9m1l4 без задач). Матриця покриття 2026-10-16.v2.
    Усі задачі — з підручника Мерзляка, Якіра «Алгебра. 9 клас» (2026), § 1, п. 2, 5, 6;
    умови й числа звірено за відрендереними сторінками PDF. srcPage — друкований номер сторінки
@@ -11,7 +11,7 @@
 SLID.pool("math", {
   id: "pg9m1",
   section: "g9m1",
-  status: "draft",
+  status: "verified",
   meta: { author: "claude-opus", created: "2026-10-31", factcheck: "verifier-pg9m1", teacher: null },
   sources: [
     { id: "a9", title: "Мерзляк А. Г., Якір М. С. Алгебра: підручник для 9 класу закладів загальної середньої освіти. — Харків: Гімназія, 2026 (§ 1, п. 2, 5, 6)", url: "https://file.4book.org/images/shcoolbook_ua/9/9_a_m_2026.pdf" }

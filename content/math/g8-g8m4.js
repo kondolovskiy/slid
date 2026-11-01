@@ -1,5 +1,5 @@
 /* Слід · Математика, 8 клас — «Геометрія: подібність і теорема Піфагора»
-   Статус уроків: l1–l2 verified; l3, l4 — draft (2026-11-01, fix-math-terms-g8m4-g9m1: «проекція» → «проєкція»). 4 уроки (3 теми + boss).
+   Статус уроків: verified (l3, l4 — повторно 2026-11-01, verifier-fix-math-terms-g8m4-g9m1: «проекція» → «проєкція»). 4 уроки (3 теми + boss).
    Інтерактив (D-014): plane axes:false — подібні трикутники drag; a²+b²=c² у goal.
    Перевірка: node tools/validate.mjs --section g8m4 && node tools/stats.mjs --subject math
    Схема й правила: docs/CONTENT_SCHEMA.md §8, style/, D-019.
@@ -460,7 +460,7 @@ SLID.section("math", {
       title: "Висота й проєкції",
       short: "Проєкції",
       icon: "line",
-      status: "draft",
+      status: "verified",
       why: "Щоб знаходити висоту до гіпотенузи й катети через відрізки на гіпотенузі.",
       screens: [
         {
@@ -655,7 +655,7 @@ SLID.section("math", {
       title: "Міряємо недосяжне",
       short: "Фінал розділу",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "g8m4boss",
       why: "Подібність, Піфагор і проєкції — на одній виїзній зйомці. Бали подвоєні.",

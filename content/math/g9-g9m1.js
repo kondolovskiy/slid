@@ -1,5 +1,5 @@
 /* Слід · Математика, 9 клас — «Алгебра: нерівності»
-   Статус уроків: l1–l2 verified; l3, l4 — draft (2026-11-01, fix-math-terms-g8m4-g9m1: «переріз» → «перетин»). 4 уроки (3 теми + boss).
+   Статус уроків: verified (l3, l4 — повторно 2026-11-01, verifier-fix-math-terms-g8m4-g9m1: «переріз» → «перетин»). 4 уроки (3 теми + boss).
    Інтерактив: numline з intervals; plane fills для напівплощин; ≥2 explore/lab на урок.
    Перевірка: node tools/validate.mjs --section g9m1 && node tools/stats.mjs --subject math
    Схема й правила: docs/CONTENT_SCHEMA.md §8, style/, D-019.
@@ -390,7 +390,7 @@ SLID.section("math", {
       title: "Спільна смуга",
       short: "Системи",
       icon: "path",
-      status: "draft",
+      status: "verified",
       why: "Система нерівностей — це «і»: підходять лише числа, що задовольняють усі умови разом.",
       screens: [
         {
@@ -574,7 +574,7 @@ SLID.section("math", {
       title: "Диспетчер обмежень",
       short: "Фінал",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "g9m1boss",
       why: "Зберемо властивості, лінійні нерівності й системи — як правила для зміни в таборі.",
