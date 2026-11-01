@@ -1,5 +1,6 @@
 /* Слід · Математика, 8 клас — пул задач для тренування до розділу «Алгебра: раціональні вирази» (g8m1)
-   Статус: verified (автор agent-write-math-pool-g8m1, 2026-10-31; верифікатор verifier-pg8m1, 2026-10-31). 32 задачі: по 8 на кожен required-урок
+   Статус: draft після refine-math-content-from-matrix-v3 (2026-11-01): b04, b07: sk expr → ops (навичка екранів g8m1l2); зміст вправ не змінено — потрібна повторна незалежна верифікація тегів.
+   Попередня редакція — verified (автор agent-write-math-pool-g8m1, 2026-10-31; верифікатор verifier-pg8m1, 2026-10-31). 32 задачі: по 8 на кожен required-урок
    g8m1l1–g8m1l4 (boss g8m1l5 без задач). Матриця покриття 2026-10-16.v2.
    Усі задачі — з підручника Мерзляка, Якіра «Алгебра. 8 клас» (2025), § 1, п. 1–3, 5, 8–10;
    умови й числа звірено за відрендереними сторінками PDF. srcPage — друкований номер сторінки
@@ -11,8 +12,8 @@
 SLID.pool("math", {
   id: "pg8m1",
   section: "g8m1",
-  status: "verified",
-  meta: { author: "claude-opus", created: "2026-10-31", factcheck: "verifier-pg8m1", teacher: null },
+  status: "draft",
+  meta: { author: "claude-opus", created: "2026-10-31", factcheck: null, revised: "2026-11-01 refine-math-content-from-matrix-v3", teacher: null },
   sources: [
     { id: "a8", title: "Мерзляк А. Г., Якір М. С. Алгебра: підручник для 8 класу закладів загальної середньої освіти. — Харків: Гімназія, 2025 (§ 1, п. 1–3, 5, 8–10)", url: "https://file.4book.org/images/shcoolbook_ua/8/8_a_m_2025.pdf" }
   ],
@@ -69,7 +70,7 @@ SLID.pool("math", {
       type: "answer", title: "$(8m)/n : (4m)/n$", body: "<p>Виконай ділення.</p>",
       answer: 2,
       steps: ["Ділення на дріб — множення на обернений: $(8m)/n * n/(4m)$.", "$(8m * n)/(n * 4m)$: скорочуємо $n$ і $m$.", "Лишається $8/4 = 2$."] },
-    { id: "b04", lesson: "g8m1l2", lvl: 2, sk: "expr", src: "a8 №65(2)", srcPage: 24,
+    { id: "b04", lesson: "g8m1l2", lvl: 2, sk: "ops", src: "a8 №65(2)", srcPage: 24,
       type: "answer", title: "$t/(t^2 - 16) - 4/(t^2 - 16)$", body: "<p>Спрости вираз.</p>",
       answerKind: "expression", answer: "1/(t + 4)", form: "reduced",
       hint: "Після віднімання чисельників розклади знаменник як різницю квадратів.",
@@ -84,7 +85,7 @@ SLID.pool("math", {
       answerKind: "expression", answer: "b/a", form: "reduced",
       hint: "Заміни ділення множенням на обернений дріб $(7b)/(a - b)$.",
       steps: ["$(a - b)/(7a) * (7b)/(a - b)$.", "Скорочуємо на $a - b$ і на 7.", "Лишається $b/a$."] },
-    { id: "b07", lesson: "g8m1l2", lvl: 3, sk: "expr", src: "a8 №144(4)", srcPage: 42,
+    { id: "b07", lesson: "g8m1l2", lvl: 3, sk: "ops", src: "a8 №144(4)", srcPage: 42,
       type: "answer", title: "$(a^2 - 16)/(a - 3) : (a + 4)/(a - 3)$", body: "<p>Виконай ділення.</p>",
       answerKind: "expression", answer: "a - 4", form: "reduced",
       hint: "Помнож на обернений дріб, а $a^2 - 16$ розклади як різницю квадратів.",

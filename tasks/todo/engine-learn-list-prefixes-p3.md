@@ -21,3 +21,4 @@ depends_on: [engine-math-answer-g11-issues, engine-player-a11y-followup]
 
 ## Нотатки виконавця
 - SK_RETAG: правило `["g8m6l1", "math.meas", "math.geom"]` (pg8m6 a06 sk meas → geom, write-math-pools-multiset-compound) — нова міграція з новим id.
+- SK_RETAG (refine-math-content-from-matrix-v3, п. 7): pg7m7 b01/b02 eq→func (g7m7l2), pg8m1 b04/b07 expr→ops, pg8m3 d09 expr→func, pg9m3 d06 expr→eq — правила для уроків цих вправ; перевір, що міграція не переносить записи з інших вправ того ж уроку.

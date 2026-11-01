@@ -1,5 +1,6 @@
 /* Слід · Математика, 9 клас — пул задач для тренування до розділу «Алгебра: квадратична функція» (g9m3)
-   Статус: verified (автор agent-write-math-pool-g9m3, 2026-10-31; верифікатор verifier-pg9m3, 2026-10-31, reports/verify/pg9m3.md). 32 задачі: по 8 на кожен урок g9m3l1–g9m3l4; boss g9m3l5 без задач.
+   Статус: draft після refine-math-content-from-matrix-v3 (2026-11-01): d06: sk expr → eq (навичка екранів g9m3l4); зміст вправ не змінено — потрібна повторна незалежна верифікація тегів.
+   Попередня редакція — verified (автор agent-write-math-pool-g9m3, 2026-10-31; верифікатор verifier-pg9m3, 2026-10-31, reports/verify/pg9m3.md). 32 задачі: по 8 на кожен урок g9m3l1–g9m3l4; boss g9m3l5 без задач.
    Усі задачі — з підручника Мерзляка, Якіра «Алгебра. 9 клас» (2026), п. 7–12 (sources).
    Умови й числа звірено за відрендереними сторінками PDF 2026-10-31. У цьому PDF друкований номер сторінки = номер сторінки PDF.
    Проміжки — answerKind "intervalSet"; формули — "expression"; вершини — "coordinates2"; нулі — "list".
@@ -8,8 +9,8 @@
 SLID.pool("math", {
   id: "pg9m3",
   section: "g9m3",
-  status: "verified",
-  meta: { author: "claude-opus", created: "2026-10-31", factcheck: "verifier-pg9m3", teacher: null },
+  status: "draft",
+  meta: { author: "claude-opus", created: "2026-10-31", factcheck: null, revised: "2026-11-01 refine-math-content-from-matrix-v3", teacher: null },
   sources: [
     { id: "a9", title: "Мерзляк А. Г., Якір М. С. Алгебра. 9 клас. — Харків: Гімназія, 2026 (п. 7–12; дзеркало PDF на 4book.org)", url: "https://file.4book.org/images/shcoolbook_ua/9/9_a_m_2026.pdf" }
   ],
@@ -184,7 +185,7 @@ SLID.pool("math", {
       answer: "R",
       hint: "Обчисли дискримінант. Чи перетинає парабола вісь $Ox$?",
       steps: ["$D = (-1)^2 - 4 \\cdot 2 \\cdot 3 = 1 - 24 = -23 < 0$: коренів немає.", "$a = 2 > 0$: парабола цілком над віссю $Ox$.", "Нерівність виконується при всіх $x$: $R$."] },
-    { id: "d06", lesson: "g9m3l4", lvl: 2, sk: "expr", src: "a9 №7.29(1)", srcPage: 71,
+    { id: "d06", lesson: "g9m3l4", lvl: 2, sk: "eq", src: "a9 №7.29(1)", srcPage: 71,
       type: "answer", answerKind: "expression", form: "factored", title: "$x^2 - x - 12$ на множники",
       body: "<p>Щоб розв'язати нерівність, тричлен зручно записати через корені: якщо $x_1$ і $x_2$ — корені $ax^2 + bx + c$, то $ax^2 + bx + c = a(x - x_1)(x - x_2)$.</p><p>Розклади на множники квадратний тричлен $x^2 - x - 12$.</p>",
       answer: "(x - 4)(x + 3)",

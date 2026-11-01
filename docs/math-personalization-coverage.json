@@ -390,7 +390,8 @@
       "sk": "div",
       "pool": "pm4s1",
       "formats": [
-        "number"
+        "number",
+        "list"
       ],
       "exercises": {
         "min": 6,
@@ -1708,7 +1709,10 @@
         "g4m5l3",
         "g4m5l4"
       ],
-      "sk": "meas",
+      "sk": [
+        "geom",
+        "meas"
+      ],
       "pool": "pms4",
       "formats": [
         "number",
@@ -4089,7 +4093,9 @@
       "sk": "geom",
       "pool": "pg8m4",
       "formats": [
-        "number"
+        "number",
+        "list",
+        "exactRoot"
       ],
       "exercises": {
         "min": 6,
@@ -4125,7 +4131,8 @@
       "pool": "pg8m4",
       "formats": [
         "number",
-        "list"
+        "list",
+        "exactRoot"
       ],
       "exercises": {
         "min": 6,
@@ -4655,7 +4662,7 @@
       "title": "Властивості",
       "curricularScope": "required",
       "reason": "Базове вміння відповідного класу за вказаними пунктами; охоплювати лише вміння, уже пояснені цим уроком.",
-      "evidence": "a9:63–82",
+      "evidence": "a9:63–82,104",
       "prerequisites": [
         "g7m5l3",
         "g8m5l2"
@@ -9000,7 +9007,7 @@
         },
         {
           "id": "factor",
-          "title": "Розкладання",
+          "title": "Розкладання на множники",
           "kind": "pre",
           "lessons": [
             "g7m3l4"
@@ -9171,7 +9178,7 @@
         },
         {
           "id": "tri-angles",
-          "title": "Сума кутів",
+          "title": "Сума кутів трикутника",
           "kind": "pre",
           "lessons": [
             "g7m4l3"
@@ -9243,7 +9250,7 @@
         },
         {
           "id": "cur-g8m1",
-          "title": "Рац. дроби",
+          "title": "Раціональні дроби",
           "kind": "cur",
           "lessons": [
             "g8m1l1"
@@ -9296,7 +9303,7 @@
         },
         {
           "id": "cur-g8m3",
-          "title": "Корінь",
+          "title": "Квадратний корінь",
           "kind": "cur",
           "lessons": [
             "g8m3l1"
@@ -9322,7 +9329,7 @@
         },
         {
           "id": "cur-g8m4",
-          "title": "Подібність",
+          "title": "Подібні трикутники",
           "kind": "cur",
           "lessons": [
             "g8m4l1"
@@ -9349,7 +9356,7 @@
         },
         {
           "id": "cur-g8m5",
-          "title": "Неповні",
+          "title": "Неповні квадратні рівняння",
           "kind": "cur",
           "lessons": [
             "g8m5l1"
@@ -9551,7 +9558,7 @@
         },
         {
           "id": "func",
-          "title": "Лінійний графік",
+          "title": "Лінійна функція",
           "kind": "pre",
           "lessons": [
             "g7m5l3"
@@ -9618,7 +9625,7 @@
         },
         {
           "id": "pyth",
-          "title": "Піфагор",
+          "title": "Теорема Піфагора",
           "kind": "pre",
           "lessons": [
             "g8m4l2"
@@ -9654,7 +9661,7 @@
         },
         {
           "id": "similar",
-          "title": "Подібність",
+          "title": "Подібні трикутники",
           "kind": "pre",
           "lessons": [
             "g8m4l1"
@@ -9690,7 +9697,7 @@
         },
         {
           "id": "polygon",
-          "title": "Многокутники",
+          "title": "Сума кутів многокутника",
           "kind": "pre",
           "lessons": [
             "g8m6l1"
@@ -9752,7 +9759,7 @@
         },
         {
           "id": "cur-g9m1",
-          "title": "Властивості",
+          "title": "Властивості нерівностей",
           "kind": "cur",
           "lessons": [
             "g9m1l1"
@@ -9778,7 +9785,7 @@
         },
         {
           "id": "cur-g9m2",
-          "title": "Координати",
+          "title": "Відстань і середина",
           "kind": "cur",
           "lessons": [
             "g9m2l1"
@@ -9804,7 +9811,7 @@
         },
         {
           "id": "cur-g9m3",
-          "title": "Властивості",
+          "title": "Графік квадратичної функції",
           "kind": "cur",
           "lessons": [
             "g9m3l1"
@@ -9830,7 +9837,7 @@
         },
         {
           "id": "cur-g9m4",
-          "title": "sin, cos, tg",
+          "title": "Синус і косинус до 180°",
           "kind": "cur",
           "lessons": [
             "g9m4l1"
@@ -9857,7 +9864,7 @@
         },
         {
           "id": "cur-g9m5",
-          "title": "Послідовності",
+          "title": "Числові послідовності",
           "kind": "cur",
           "lessons": [
             "g9m5l1"
@@ -9883,7 +9890,7 @@
         },
         {
           "id": "cur-g9m6",
-          "title": "Правильні",
+          "title": "Правильні многокутники",
           "kind": "cur",
           "lessons": [
             "g9m6l1"
@@ -9909,7 +9916,7 @@
         },
         {
           "id": "cur-g9m7",
-          "title": "Комбінаторика",
+          "title": "Правило добутку і суми",
           "kind": "cur",
           "lessons": [
             "g9m7l1"
@@ -10883,8 +10890,15 @@
     "reviewer": "review_math_map",
     "report": "reports/verify/math-personalization-coverage.md",
     "scope": "required-частина 2026-10-16.v2; optional/pending відкладені, не прийняті як обов’язкові",
-    "date": "2026-10-16"
+    "date": "2026-10-16",
+    "v3": {
+      "reviewer": "review_math_matrix_v3",
+      "report": "reports/verify/math-matrix-v3.md",
+      "scope": "зміни 2026-10-16.v2 → 2026-11-01.v3 (sk, формати, evidence, проби й назви)",
+      "date": "2026-11-01",
+      "verdict": "прийнято; бажані уточнення 1–4 закрито refine-math-content-from-matrix-v3"
+    }
   },
   "previous": "2026-10-16.v2",
-  "changes": "docs/math-personalization-coverage.md, «Зміни v3» (було → стало); curate-math-matrix-v3"
+  "changes": "docs/math-personalization-coverage.md, «Зміни v3» (було → стало); curate-math-matrix-v3; доповнення v3 — refine-math-content-from-matrix-v3 (2026-11-01)"
 }

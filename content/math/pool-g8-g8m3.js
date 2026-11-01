@@ -1,5 +1,6 @@
 /* Слід · Математика, 8 клас — пул задач для тренування до розділу «Алгебра: квадратні корені» (g8m3)
-   Статус: verified (2026-11-01 refine-math-pools-new-kinds: b08 — ключ "1,73", decimals 2; повторно перевірено verifier-refine-math-pools-new-kinds, 2026-11-01, reports/verify/refine-math-pools-new-kinds.md). Раніше verified (автор agent-write-math-pool-g8m3, 2026-10-31; верифікатор verifier-pg8m3, 2026-10-31, reports/verify/pg8m3.md;
+   Статус: draft після refine-math-content-from-matrix-v3 (2026-11-01): d09: sk expr → func (навичка екранів g8m3l4); зміст вправ не змінено — потрібна повторна незалежна верифікація тегів.
+   Попередня редакція — verified (2026-11-01 refine-math-pools-new-kinds: b08 — ключ "1,73", decimals 2; повторно перевірено verifier-refine-math-pools-new-kinds, 2026-11-01, reports/verify/refine-math-pools-new-kinds.md). Раніше verified (автор agent-write-math-pool-g8m3, 2026-10-31; верифікатор verifier-pg8m3, 2026-10-31, reports/verify/pg8m3.md;
    2026-10-31 refine-math-g8m3-roots: c02 №472(2) замінено на c09 №470(1), list у g8m3l3; повторно верифіковано 2026-10-31, reports/verify/refine-g8m3.md). 32 задачі: по 8 на кожен required-урок
    g8m3l1–g8m3l4 (boss g8m3l5 без задач). Матриця покриття 2026-10-16.v2.
    Усі задачі — з підручника Мерзляка, Якіра «Алгебра. 8 клас» (2025), § 2, п. 12, 14, 15, 16, 17;
@@ -10,8 +11,8 @@
 SLID.pool("math", {
   id: "pg8m3",
   section: "g8m3",
-  status: "verified",
-  meta: { author: "claude-opus", created: "2026-10-31", factcheck: "verifier-refine-math-pools-new-kinds (2026-11-01: b08); решта — verifier-pg8m3", teacher: null },
+  status: "draft",
+  meta: { author: "claude-opus", created: "2026-10-31", factcheck: null, revised: "2026-11-01 refine-math-content-from-matrix-v3", teacher: null },
   sources: [
     { id: "a8", title: "Мерзляк А. Г., Якір М. С. Алгебра: підручник для 8 класу закладів загальної середньої освіти. — Харків: Гімназія, 2025 (§ 2, п. 12, 14–17)", url: "https://file.4book.org/images/shcoolbook_ua/8/8_a_m_2025.pdf" }
   ],
@@ -216,7 +217,7 @@ SLID.pool("math", {
       answer: "[0; 16)",
       hint: "Запиши 4 як $\\sqrt{16}$ і скористайся тим, що функція зростає. Не забудь, для яких $x$ корінь узагалі існує.",
       steps: ["$4 = \\sqrt{16}$, тож нерівність має вигляд $\\sqrt{x} < \\sqrt{16}$.", "Функція $y = \\sqrt{x}$ зростає, тому $x < 16$.", "Корінь має зміст лише при $x \\ge 0$. Отже, $0 \\le x < 16$, тобто $x \\in [0;\\,16)$."] },
-    { id: "d09", lesson: "g8m3l4", lvl: 3, sk: "expr", src: "a8 №566", srcPage: 169,
+    { id: "d09", lesson: "g8m3l4", lvl: 3, sk: "func", src: "a8 №566", srcPage: 169,
       type: "answer", answerKind: "exactRoot", title: "Між 8 і 9",
       body: "<p>Яке з чисел $5\\sqrt{3}$, $7\\sqrt{2}$, $\\sqrt{83}$, $2\\sqrt{21}$ задовольняє нерівність $8 < x < 9$?</p><p>Запиши це число так, як воно записане в умові.</p>",
       answer: "5√3",
