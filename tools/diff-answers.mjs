@@ -8,25 +8,39 @@
 // engine-learn-list-prefixes-p3 / engine-answer-kinds-p3 — категорії «p3 …»: назва з умови перед множиною й координатами,
 // підказки формату (list «;», величини, mixed, √ з умови), розряди в quantity; записи — змінена лише друга/третя компонента,
 // хибні назви («n ∈», «CD = », «E(f) = »), більше мішаних чисел і періодичних меж (рев'ю g11 P3-4, kinds-new P3-3).
+// engine-learn-prefixes-p3b — «p3b …»: назви об'єктів умови без координат (BC, AO, X, OX) і назви образу з індексом/штрихом (A₁, A').
+// engine-diag-answer-kinds — answer у діагностиках (SLID.diag) теж у прогоні; режим --content-old: старий і новий ЗМІСТ на одному
+// (поточному) learn.js — які вердикти змінила правка вправ (ключ, answerKind, умова з назвами), а не рушія.
 // Запуск: node tools/diff-answers.mjs [--old <git-rev>] [--grades 4-9] [--time] [--show N] [--list-cat "<категорія>"] (записи однієї категорії)
-import fs from "node:fs"; import vm from "node:vm"; import path from "node:path"; import { execFileSync } from "node:child_process";
+//         node tools/diff-answers.mjs --content-old <git-rev> [--grades 4-11] [--show N]   (зміст <rev> проти поточного, обидва — поточним learn.js)
+import fs from "node:fs"; import os from "node:os"; import vm from "node:vm"; import path from "node:path"; import { execFileSync } from "node:child_process";
 import { loadContent, ROOT } from "./lib.mjs";
 
 const args = process.argv.slice(2), opt = (k, d) => args.includes(k) ? args[args.indexOf(k) + 1] : d;
+const CONTENT_OLD = opt("--content-old", null);
+if (CONTENT_OLD !== null && (!CONTENT_OLD || CONTENT_OLD.startsWith("--"))) { console.error("--content-old потребує git-ревізію"); process.exit(2); }
+if (CONTENT_OLD && args.includes("--old")) { console.error("--content-old і --old взаємовиключні: у режимі змісту обидві сторони — поточний learn.js"); process.exit(2); }
 const OLD_REV = opt("--old", "1b3819d"), [G0, G1] = opt("--grades", "4-9").split("-").map(Number), SHOW = +opt("--show", 5);
 const load = src => { const c = { console }; c.window = c; vm.createContext(c); vm.runInContext(src, c); return c.SLID_LEARN; };
-const OLD = load(execFileSync("git", ["show", `${OLD_REV}:app/learn.js`], { cwd: ROOT, encoding: "utf8" }));
 const NEW = load(fs.readFileSync(path.join(ROOT, "app/learn.js"), "utf8"));
+const OLD = CONTENT_OLD ? NEW : load(execFileSync("git", ["show", `${OLD_REV}:app/learn.js`], { cwd: ROOT, encoding: "utf8" }));
 const { subjects } = loadContent();
 
 // ---------- вправи ----------
-const items = [];
-for (const c of subjects) {
-  const grade = new Map(c.sections.map(s => [s.id, s.grade]));
-  for (const p of c.pools || []) { const g = grade.get(p.section); if (g >= G0 && g <= G1) for (const it of p.items) if (it.type === "answer") items.push({ id: `${p.id}:${it.id}`, s: it }); }
-  for (const d of c.diags || []) if (d.grade >= G0 && d.grade <= G1) d.items.forEach((it, i) => { if (it.type === "fracin" && it.hideDen) items.push({ id: `${d.id}#${i}`, s: { answer: it.answer + "/" + it.den, fractionOnly: true } }); });
-  for (const sec of c.sections) if (sec.grade >= G0 && sec.grade <= G1) for (const l of sec.lessons || []) l.screens.forEach((s, i) => { if (s.type === "answer") items.push({ id: `${l.id}#${i}`, s }); });
+// fracin hideDen у тесті плеєр перевіряє як дріб (app.js gradeNow); answer — як є (у тесті й уроці той самий checkAns)
+function collect(subjects) {
+  const items = [];
+  for (const c of subjects) {
+    const grade = new Map(c.sections.map(s => [s.id, s.grade]));
+    for (const p of c.pools || []) { const g = grade.get(p.section); if (g >= G0 && g <= G1) for (const it of p.items) if (it.type === "answer") items.push({ id: `${p.id}:${it.id}`, s: it }); }
+    for (const d of c.diags || []) if (d.grade >= G0 && d.grade <= G1) d.items.forEach((it, i) => {
+      if (it.type === "fracin" && it.hideDen) items.push({ id: `${d.id}#${i}`, s: { answer: it.answer + "/" + it.den, fractionOnly: true } });
+      if (it.type === "answer") items.push({ id: `${d.id}#${i}`, s: it }); });
+    for (const sec of c.sections) if (sec.grade >= G0 && sec.grade <= G1) for (const l of sec.lessons || []) l.screens.forEach((s, i) => { if (s.type === "answer") items.push({ id: `${l.id}#${i}`, s }); });
+  }
+  return items;
 }
+const items = collect(subjects);
 
 // ---------- записи: ключ, рівні й хибні варіанти ----------
 const stmt = s => ["title", "body", "q", "text"].map(k => typeof s[k] === "string" ? s[k] : "").join(" ");
@@ -68,7 +82,8 @@ function records(s) {
     const sep = k === "ratio" ? ":" : ";", parts = K.replace(/^\(|\)$/g, "").split(sep).map(x => x.trim());
     const wrap = xs => k.startsWith("coord") ? `(${xs.join("; ")})` : xs.join(k === "ratio" ? " : " : "; ");
     out.add(wrap([...parts].reverse())); out.add(wrap(parts.map((x, i) => i ? x : x.startsWith("-") ? x.slice(1) : "-" + x))); out.add(wrap(parts.concat(parts[0])));
-    if (k.startsWith("coord")) for (const pre of ["A", "AB", "AB = ", "AB=", "\\vec{AB} = ", "a", "k", "m = ", "B", "B = ", "C", "D", "D = ", "M", "M = ", "CD = ", "BA = ", "A = "]) out.add(pre + wrap(parts));
+    if (k.startsWith("coord")) for (const pre of ["A", "AB", "AB = ", "AB=", "\\vec{AB} = ", "a", "k", "m = ", "B", "B = ", "C", "D", "D = ", "M", "M = ", "CD = ", "BA = ", "A = ",
+      "BC = ", "AO = ", "X", "X = ", "OX = ", "O", "KL = ", "\\vec{BC} = ", "A_1", "A_1 = ", "A₁", "A1", "A'", "A′ = ", "X_1", "B_1", "M'", "A_1 = A", "a_1"]) out.add(pre + wrap(parts));   // p3b: назви умови й образу
     // рев'ю kinds-new P3-3: змінено лише другу (третю) компоненту — перша правильна
     for (let i = 1; i < parts.length; i++) { const p = parts[i], a1 = NEW.parseAns(p); for (const alt of [a1 ? String(a1.n / a1.d + 1).replace(".", ",") : p + " + 1", p.startsWith("-") ? p.slice(1) : "-" + p, "0"]) if (alt !== p) out.add(wrap(parts.map((x, j) => j === i ? alt : x))); }
     if (s.unit) { out.add(wrap(parts.map(x => x + s.unit))); out.add(wrap(parts.map(x => x + " " + s.unit))); }
@@ -167,9 +182,67 @@ const CATS = [
   ["p3 √ дослівно з умови — інша підказка", (s, v, o, n) => o.r === "form" && n.r === "form" && /Обчисли корінь/.test(o.h) && /^Це вираз з умови/.test(n.h)
     && stmt(s).replace(/\\sqrt\s*\{([^{}]*)\}/g, "√$1").replace(/\s+/g, "").includes(v.replace(/\s+/g, ""))],
   ["p3 quantity: розряди через пробіл", (s, v, o, n) => s.answerKind === "quantity" && /\d \d{3}(?!\d)/.test(v) && same(verdict(OLD, s, v.replace(/(\d) (?=\d{3}(?!\d))/g, "$1")), n)],
+  // p3b: «A₁(…)», «A'(…)» — правильне значення з назвою образу: раніше bad без підказки, тепер form «лише координати» (не ok)
+  ["p3b назва образу з індексом/штрихом — form з поясненням", (s, v, o, n) => /^coordinates[23]$/.test(s.answerKind) && IMG0.test(lat(v)) && o.r === "bad" && n.r === "form"
+    && /^Координати правильні(?:\. Назву з індексом|, але тут шукають [A-Z]{1,2}\.$)/.test(n.h || "") && NEW.checkAns(s, lat(v).replace(IMG0, "")) !== "bad"],
   ["p3 quantity: підказка формату («2 м 45», дріб, «3:20»)", (s, v, o, n) => s.answerKind === "quantity" && o.r === "bad" && n.r === "bad" && !o.h && /^(Після кожного числа|Звичайний дріб тут|Тут час записують)/.test(n.h || "")],
 ];
 const NAME0 = /^(?:\\vec\{[A-Z]{1,2}\}|[A-Z]{1,2})\s*=?\s*(?=\()/;
+const IMG0 = /^[A-Z]{1,2}\s*(?:_\{?\d{1,2}\}?|[₀-₉]{1,2}|\d{1,2}|['’′ʼ]{1,2})\s*=?\s*(?=\()/;
+
+// ---------- --content-old: старий і новий зміст на одному (поточному) learn.js ----------
+// Вправи зіставляються за id (пул:вправа, урок#екран, тест#індекс). Для кожної спільної вправи — записи з обох версій (ключі,
+// рівні й хибні варіанти); вердикт старої вправи проти нової. Розбіжність можлива лише там, де вправа змінилась, — інакше «непояснена».
+// Тести рівня (SLID.diag): завдання, змінене по суті (тип, ключ, варіанти, answerKind…) без нового rev, — помилка: збережена
+// відповідь на старий зміст зарахувалася б новому (resumeDiag, CONTENT_SCHEMA §9). Зміна кількості, порядку чи тем — потрібен новий id.
+const TEXT_ONLY = new Set(["title", "body", "eyebrow", "note", "hint", "fbOk", "fbBad", "fbText", "fbTitle", "cap", "rev", "steps", "src", "srcPage"]);
+const core = it => JSON.stringify(Object.keys(it).filter(k => !TEXT_ONLY.has(k)).sort().map(k => [k, it[k]]));
+function contentDiff() {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "slid-content-old-"));
+  let before, oldSubjects;
+  try {
+    execFileSync("tar", ["-x", "-C", dir], { input: execFileSync("git", ["archive", CONTENT_OLD, "app", "content"], { cwd: ROOT, maxBuffer: 1 << 30 }) });
+    oldSubjects = loadContent(dir).subjects; before = collect(oldSubjects);
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+  const A = new Map(before.map(x => [x.id, x.s])), B = new Map(items.map(x => [x.id, x.s]));
+  const added = [...B.keys()].filter(id => !A.has(id)), removed = [...A.keys()].filter(id => !B.has(id));
+  const unexplained = [], keyBad = [], diagBad = [], changed = [];
+  let total = 0, common = 0, edited = 0;
+  for (const [id, s] of B) if (NEW.checkAns(s, NEW.keyInput(s)) !== "ok") keyBad.push(`${id}: ключ «${keyText(s)}» не проходить перевірку`);
+  for (const [id, n] of B) {
+    const o = A.get(id); if (!o) continue; common++;
+    const same0 = JSON.stringify(o) === JSON.stringify(n); if (!same0) edited++;
+    const recs = [...new Set([...records(o), ...records(n)])], moves = {}, ex = [];
+    for (const v of recs) {
+      total++;
+      const a = verdict(NEW, o, v), b = verdict(NEW, n, v);
+      if (same(a, b)) continue;
+      if (same0) { unexplained.push(`${id} «${v}»: ${a.r} → ${b.r} (вправа не змінилась)`); continue; }
+      const k = `${a.r}→${b.r}`; moves[k] = (moves[k] || 0) + 1; if (ex.length < SHOW) ex.push(`«${v}» ${a.r}${a.h ? " «" + a.h + "»" : ""} → ${b.r}${b.h ? " «" + b.h + "»" : ""}`);
+    }
+    if (Object.keys(moves).length) changed.push({ id, key: [keyText(o), keyText(n)], moves, ex });
+  }
+  // тести рівня: заміна на місці лише з rev; кількість і теми — без змін
+  for (const c of subjects) for (const d of c.diags || []) {
+    const od = oldSubjects.find(x => x.id === c.id)?.diags.find(x => x.id === d.id); if (!od) continue;
+    const from = NEW.diagRev(od), itemRev = it => Number.isInteger(it?.rev) && it.rev > 1 ? it.rev : 1;
+    if (od.items.length !== d.items.length) diagBad.push(`${d.id}: кількість завдань ${od.items.length} → ${d.items.length} — потрібен новий id тесту`);
+    d.items.forEach((it, i) => { const was = od.items[i]; if (!was) return;
+      if (was.topic !== it.topic) diagBad.push(`${d.id}#${i}: тема «${was.topic}» → «${it.topic}» — заміна на місці лише в тій самій темі`);
+      else if (core(was) !== core(it) && itemRev(it) <= from) diagBad.push(`${d.id}#${i}: зміст змінено (${was.type} → ${it.type}) без rev > ${from} — збережену відповідь зарахувало б новому завданню`); });
+  }
+  console.log(`Зміст: ${CONTENT_OLD} → робоче дерево; обидва — поточним app/learn.js. Класи ${G0}–${G1}.`);
+  console.log(`  Вправ: було ${A.size}, стало ${B.size}; спільних ${common}, змінених ${edited}; записів ${total}.`);
+  console.log(`  ${String(changed.length).padStart(5)}  вправ зі зміненими вердиктами (лише змінені вправи):`);
+  for (const x of changed) { console.log(`    ${x.id}: ключ ${x.key[0] === x.key[1] ? `«${x.key[1]}»` : `«${x.key[0]}» → «${x.key[1]}»`}; ${Object.entries(x.moves).map(([k, v]) => `${k} ${v}`).join(", ")}`); x.ex.forEach(e => console.log(`      ${e}`)); }
+  console.log(`  ${String(added.length).padStart(5)}  нових вправ${added.length ? ": " + added.slice(0, 20).join(", ") + (added.length > 20 ? " …" : "") : ""}`);
+  console.log(`  ${String(removed.length).padStart(5)}  вилучених вправ${removed.length ? ": " + removed.slice(0, 20).join(", ") + (removed.length > 20 ? " …" : "") : ""}`);
+  console.log(`  ${String(diagBad.length).padStart(5)}  ТЕСТИ РІВНЯ без rev / зі зміненою структурою`); diagBad.forEach(x => console.log("    " + x));
+  console.log(`  ${String(unexplained.length).padStart(5)}  НЕПОЯСНЕНІ`); unexplained.slice(0, SHOW).forEach(x => console.log("    " + x));
+  keyBad.forEach(x => console.log("  КЛЮЧ: " + x));
+  process.exit(unexplained.length || keyBad.length || diagBad.length ? 1 : 0);
+}
+if (CONTENT_OLD) contentDiff();
 
 // ---------- прогін ----------
 const P2 = new Set();

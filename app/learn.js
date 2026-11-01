@@ -8,7 +8,13 @@ window.SLID_LEARN = (() => {
   const ERR_DAYS = 14, ERR_CAP = 80;             // журнал помилок: давність і розмір
 
   /* ---------- Діагностика ---------- */
-  const DIAG_TYPES = ["choice", "multi", "sort", "order", "number", "fracin", "shade", "numline", "lab"];
+  const DIAG_TYPES = ["choice", "multi", "sort", "order", "number", "fracin", "shade", "numline", "lab", "answer"];
+  /* answer у тесті (engine-diag-answer-kinds): лише формати, де вердикт — «правильно / ні» без розмови. Плеєр у тесті не показує
+     ні фідбеку, ні підказки form/bad і не дає другої спроби, тож зараховується лише checkAns === "ok": «form» (значення правильне,
+     запис ні — «2 м 45», «245 см» при compound, «37» при decimals 1) — BAD, як і остаточний вердикт уроку. Тому формат запису
+     має бути зрозумілий з умови й підказки під полем (answerUI): час «Г:ХХ», величина з одиницями, десятковий дріб.
+     Інші answerKind (вирази, множини, координати…) — після окремого рішення: у них багато form-вердиктів, які в уроці пояснюють. */
+  const DIAG_ANSWER_KINDS = ["number", "time", "quantity"];
   /** Активний план предмета/класу. Старий S.plan лишається сумісним активним посиланням;
       planByGrade зберігає плани інших класів, не чіпаючи загальний прогрес. */
   // План, збережений до злиття PR #6 і main, мав у base поле l замість next: читаємо next ?? l (l лишається, нічого не губиться).
@@ -623,15 +629,19 @@ window.SLID_LEARN = (() => {
      «B = (3; 5)»), крім назв даних точок умови («A(3; 5)», коли $A(4; -3)$ — дана) — варіант B оркестратора, уточнення D-030 (2).
      Значення правильне, а назву відкинуто — «form» з поясненням (nameMsg), не «ok». */
   const NAME_AT = /^(?:\\(?:vec|overrightarrow)\s*\{\s*([A-Z]{1,2})\s*\}|([A-Z]{1,2})|([a-z]))\s*(=?)\s*(?=\()/;
+  // Назва з індексом чи штрихом — образ точки «A_1(…)», «A₁(…)», «A1(…)», «A'(…)» (engine-learn-prefixes-p3b). Ніколи не зараховується
+  // (нове правило назви — рішення людини), але якщо значення правильне — «form» з поясненням «запиши лише координати», а не мовчазне «bad».
+  const IMG_AT = /^([A-Z]{1,2})\s*(?:_\s*\{?\s*\d{1,2}\s*\}?|[₀-₉]{1,2}|\d{1,2}|['’′ʼ]{1,2})\s*=?\s*(?=\()/;
   // Текст умови для пошуку назви: без HTML-тегів (лише справжніх — «<» у формулі лишається) і без прикладів формату
   // («Наприклад, $(1; 5]$ — це всі числа $y$…» до кінця абзацу): приклад не називає шукане.
   const stmtText = s => ["title", "body", "q", "text"].map(k => typeof s?.[k] === "string" ? s[k] : "").join(" </p> ")
     .replace(/наприклад[^]*?(?=<\/p>|$)/giu, " ").replace(/<\/?[a-zA-Z][^<>]*>/g, " ");
   // Слово перед формулою, що називає шукане: «координати точки $B$», «вектора $\vec{AB}$», «вершини $C$», «кінця», «центра», «образ».
   const ASK_WORD = /(?:^|[^а-яґєії])(?:точк|вершин|вектор|кін[еця]|центр|образ)[а-яґєії]*\s*$/iu;
-  const ASKED = new WeakMap();
+  const ASKED = new WeakMap(), NO_NAMES = { ask: null, given: new Set(), objs: new Set() };
   /** Назви умови: { ask — єдина назва точки чи вектора, про яку питає умова (формула-назва без координат, перед нею — ASK_WORD), або null;
-      given — назви точок і векторів із даними координатами ($A(4; -3)$, $\\vec{AB} = (…)$) }. */
+      given — назви точок і векторів із даними координатами ($A(4; -3)$, $\\vec{AB} = (…)$);
+      objs — решта назв з формул умови, без координат: відрізок $BC$, пряма $AO$, довільна точка $X$ з означення, промінь $OX$ (p3b) }. */
   function askedPoint(s) {
     if (!s || typeof s !== "object") return null;
     if (ASKED.has(s)) return ASKED.get(s);
@@ -646,18 +656,22 @@ window.SLID_LEARN = (() => {
     // точка з даними координатами — дане, не шукане: «симетрична точці A відносно точки $M(2; -3)$» (заголовок «…точки $M$»)
     for (const [, f] of text.matchAll(/\$([^$]+)\$/g)) for (const g of f.matchAll(/(?:\\(?:vec|overrightarrow)\s*\{\s*([A-Z]{1,2})\s*\}|(?<![A-Za-z])([A-Z]{1,2}))\s*=?\s*\(/g)) given.add(g[1] || g[2]);
     for (const g of given) names.delete(g);
-    const r = { ask: names.size === 1 ? [...names][0] : null, given };
+    // назви об'єктів умови: окремий токен з 1–2 великих латинських літер у формулі (не частина слова чи TeX-команди: \Delta, ABCD), \vec{AB}
+    const objs = new Set();
+    for (const [, f] of text.matchAll(/\$([^$]+)\$/g)) for (const g of f.matchAll(/\\(?:vec|overrightarrow)\s*\{\s*([A-Z]{1,2})\s*\}|(?<![A-Za-z\\])([A-Z]{1,2})(?![A-Za-z])/g)) { const n = g[1] || g[2]; if (!given.has(n)) objs.add(n); }
+    const r = { ask: names.size === 1 ? [...names][0] : null, given, objs };
     ASKED.set(s, r); return r;
   }
   /** Довжина назви на початку запису t (0 — назви немає або її не можна зняти). low — мала літера дозволена (числовий шлях). */
   // Варіант B (рев'ю engine-learn-list-prefixes-p3, уточнення D-030 (2)): шукана назва є — лише вона; немає — будь-яка назва
-  // з 1–2 великих літер, з «=» чи \vec (D-030 (2)), крім назв даних точок умови (given): «A(3; 5)», коли $A(4; -3)$ — дана початкова точка.
+  // з 1–2 великих літер, з «=» чи \vec (D-030 (2)), крім назв даних точок умови (given): «A(3; 5)», коли $A(4; -3)$ — дана початкова точка,
+  // і крім інших назв з формул умови (objs, p3b): «BC = (…)» для середини відрізка $BC$, «AO = (…)», «X(…)», «OX = (…)».
   function nameLen(s, t, low) {
     const m = NAME_AT.exec(t); if (!m) return 0;
     if (m[3]) return low && !m[4] ? m[0].length : 0;
-    const { ask, given } = askedPoint(s) || { ask: null, given: new Set() }, big = m[1] || m[2];
+    const { ask, given, objs } = askedPoint(s) || NO_NAMES, big = m[1] || m[2];
     if (ask) return big === ask ? m[0].length : 0;
-    return given.has(big) ? 0 : m[0].length;
+    return given.has(big) || objs.has(big) ? 0 : m[0].length;
   }
   /** Впорядковані координати (3; −2) / A(3; -2) / AB = (3; −2) / [3, -2]: рівно n компонент, порядок і знак важливі. s — вправа (назва з умови). */
   function parsePoint(v, n, exact, s) {
@@ -983,11 +997,14 @@ window.SLID_LEARN = (() => {
     setRange: "Проміжок правильний, але тут шукають значення функції (y, E(f)), а не аргументу.",
     setName: "Проміжок правильний, але назва перед ним не та. Запиши лише проміжок.",
     pointName: "Координати правильні, але назва перед ними не та. Запиши лише координати.",
+    pointImage: "Координати правильні. Назву з індексом чи штрихом тут не пишуть — запиши лише координати.",
     listSep: "Без «;» кома розділяє числа. Якщо в числах є десяткова кома, відокремлюй їх знаком «;».",
     retry: "Спробуй ще раз."
   };
   const DEC_WORD = ["цілим числом, без коми", "з одним знаком після коми", "з двома знаками після коми", "з трьома знаками після коми"];
   const decMsg = n => n === 0 ? "Значення правильне. Запиши відповідь цілим числом, без коми." : `Значення правильне. Запиши відповідь десятковим дробом ${DEC_WORD[n] || `з ${n} знаками після коми`}.`;
+  const givenMsg = g => `Координати правильні, але ${g} — дана точка умови. Запиши лише координати.`;
+  const objMsg = g => `Координати правильні, але ${g} — інше позначення з умови, а не шукана точка. Запиши лише координати.`;
   const unitMsg = s => `Перевір одиницю: тут відповідь записують у «${s.unit}». Одиницю можна й не писати.`;
 
   /* ---------- Час (answerKind "time", рішення 2026-10-31, п. 1): ключ «9:55», 24-годинний ---------- */
@@ -1189,8 +1206,8 @@ window.SLID_LEARN = (() => {
     if (["exactRoot", "list", "coordinates2", "coordinates3", "intervalSet"].includes(kind)) out.push(MSG.rootReduce);
     if (kind === "list") out.push(MSG.listSep);
     if (kind === "intervalSet") { const lab = askedSet(s)?.label; out.push(MSG.setRange, MSG.setName, ...(lab && lab !== "range" ? [`Проміжок правильний, але тут шукають значення ${lab.replace(/-/g, "−")}.`] : [])); }
-    if (kind === "coordinates2" || kind === "coordinates3") { const { ask, given } = askedPoint(s) || { ask: null, given: new Set() };
-      out.push(MSG.pointName, ...(ask ? [`Координати правильні, але тут шукають ${ask}.`] : []), ...[...given].map(g => `Координати правильні, але ${g} — дана точка умови. Запиши лише координати.`)); }
+    if (kind === "coordinates2" || kind === "coordinates3") { const { ask, given, objs } = askedPoint(s) || NO_NAMES;
+      out.push(MSG.pointName, MSG.pointImage, ...(ask ? [`Координати правильні, але тут шукають ${ask}.`] : []), ...[...given].map(givenMsg), ...[...objs].map(objMsg)); }
     if (kind === "time") out.push(timeMsg(s));
     if (U) out.push(qtyForeignMsg(U), qtyMissingMsg(U), qtyFormMsg(U), qtyTailMsg(U), qtyFracMsg(U), ...(U.dim === "час" ? [qtyClockMsg(U)] : []));
     return out;
@@ -1384,7 +1401,7 @@ window.SLID_LEARN = (() => {
   function dropName(s, v) {
     const kind = s.answerKind || "number", t = norm(v);
     if (kind === "intervalSet") { const at = t.search(/[=∈]/), pre = at > 0 ? t.slice(0, at) : ""; const rest = t.slice(at + 1).trim(); return pre && !/[[\]{};∪∞]/.test(pre) && !/[=∈]/.test(rest) ? rest : null; }   // «x ∈ y ∈ …» — bad
-    if (kind === "coordinates2" || kind === "coordinates3") { const m = NAME_AT.exec(t), rest = m && t.slice(m[0].length); return m && !m[3] && !NAME_AT.test(rest) ? rest : null; }   // «AB = AB = (…)» — bad
+    if (kind === "coordinates2" || kind === "coordinates3") { const m = NAME_AT.exec(t) || IMG_AT.exec(t), rest = m && t.slice(m[0].length); return m && !m[3] && !NAME_AT.test(rest) && !IMG_AT.test(rest) ? rest : null; }   // «AB = AB = (…)», «A₁ = A(…)» — bad
     return null;
   }
   function checkAns0(s, v) {
@@ -1402,8 +1419,8 @@ window.SLID_LEARN = (() => {
       const names = askedSet(s), lab = names?.label;
       return lab === "range" ? MSG.setRange : lab ? `Проміжок правильний, але тут шукають значення ${lab.replace(/-/g, "−")}.` : MSG.setName;
     }
-    const m = NAME_AT.exec(norm(v)), { ask, given } = askedPoint(s) || { ask: null, given: new Set() }, big = m && (m[1] || m[2]);
-    return ask ? `Координати правильні, але тут шукають ${ask}.` : big && given.has(big) ? `Координати правильні, але ${big} — дана точка умови. Запиши лише координати.` : MSG.pointName;
+    const t = norm(v), m = NAME_AT.exec(t), { ask, given, objs } = askedPoint(s) || NO_NAMES, big = m && (m[1] || m[2]);
+    return ask ? `Координати правильні, але тут шукають ${ask}.` : !m && IMG_AT.test(t) ? MSG.pointImage : big && given.has(big) ? givenMsg(big) : big && objs.has(big) ? objMsg(big) : MSG.pointName;
   }
   function checkCore(s, v) {
     const kind = s.answerKind || "number", tidy = xs => xs.every(x => x.tidy) ? "ok" : "form", ex = exactKey(s.answer);
@@ -1639,10 +1656,11 @@ window.SLID_LEARN = (() => {
       const w = `завдання ${i + 1} (${it.type})`;
       if (!T.has(it.topic)) E.push(`${w}: невідома тема «${it.topic}»`);
       if (!DIAG_TYPES.includes(it.type)) E.push(`${w}: тип не дозволено в тесті`);
+      if (it.type === "answer" && !DIAG_ANSWER_KINDS.includes(it.answerKind || "number")) E.push(`${w}: answerKind «${it.answerKind}» у тесті не дозволено — лише ${DIAG_ANSWER_KINDS.join(" | ")} (вердикт без фідбеку)`);
       if (it.poll || it.hyp) E.push(`${w}: poll/hyp у тесті не можна`);
       if (!it.title) E.push(`${w}: немає title`);
       if (!it.sk || !ctx.skills[it.sk]) E.push(`${w}: навичка sk «${it.sk}» не оголошена`);
-      for (const [flag, types] of [["signed", ["number"]], ["hideCount", ["shade", "numline"]], ["hideDen", ["fracin"]]]) {
+      for (const [flag, types] of [["signed", ["number", "answer"]], ["hideCount", ["shade", "numline"]], ["hideDen", ["fracin"]]]) {
         if (it[flag] !== undefined && (typeof it[flag] !== "boolean" || !types.includes(it.type))) E.push(`${w}: ${flag} має бути boolean для ${types.join(" | ")}`);
       }
       if (it.lesson && !(T.get(it.topic)?.lessons || []).includes(it.lesson)) E.push(`${w}: lesson «${it.lesson}» має бути одним з уроків теми`);
@@ -1651,6 +1669,6 @@ window.SLID_LEARN = (() => {
     return E;
   }
 
-  return { OK, BAD, SKIP, PASS, DIAG_TYPES, planFor, practiceItems, nextItem, remaining, topicStatus, level, buildPlan, diagRev, resumeDiag, finishDiag, record, detect, syncPlan, lessonDone, todo, isKnown, work, SK_RETAG, SK_RETAG2, SK_MIGRATIONS, migrateSk, validate,
+  return { OK, BAD, SKIP, PASS, DIAG_TYPES, DIAG_ANSWER_KINDS, planFor, practiceItems, nextItem, remaining, topicStatus, level, buildPlan, diagRev, resumeDiag, finishDiag, record, detect, syncPlan, lessonDone, todo, isKnown, work, SK_RETAG, SK_RETAG2, SK_MIGRATIONS, migrateSk, validate,
     parseAns, parseDivrem, checkAns, badHint, hintTexts, keyInput, timeExample, quantityUnits: s => qtyUnits(s)?.units || null, stripUnit, listKey, pairKey, answerSig, formHint, ansText, srcRef, numberKeys, numberHelp, ANSWER_KINDS, BOX_DAYS, srsInit, srsUpdate, isDue, pickSession, POOL_TYPES, validatePool };
 })();

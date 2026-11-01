@@ -283,5 +283,33 @@ expectRun("drag: at і без drag — без попередження", one("fx
   const rp = expectRun("answer у пулі: units поза quantity — помилка один раз", { "content/math/g8-fxp.js": secJS("math", mathSec("fxp")), "content/math/pool-g8-fxp.js": bad }, ["--pool", "pfx"], { err: "units — лише для answerKind quantity" });
   ok(rp && rp.errors.length === 1, "answer у пулі: без дубля з checkScreen", rp && rp.errors.join("\n  ")); }
 
+// ---- engine-diag-answer-kinds: answer з answerKind у тесті рівня (SLID.diag) — окремий блок (паралельна гілка змінює validate вище) ----
+// learn.validate: answer дозволено лише з number | time | quantity; поля answer перевіряє той самий answerFieldIssues, що в уроці
+{ const sk = Object.keys(MATH_SKILLS)[0], pre7 = { ...mathSec("fxq"), grade: 7 };
+  const diagJS = item => `SLID.diag("math", ${JSON.stringify({ id: "dgfx", grade: 8, title: "Тест-фікстура", why: "Регресійний тест валідатора: answer у тесті.", status: "draft",
+    meta: { author: "test", created: "2026-11-01", factcheck: null, teacher: null },
+    topics: [{ id: "p", title: "Передумова", kind: "pre", lessons: ["fxql1"] }, { id: "c", title: "Тема класу", kind: "cur", lessons: ["fxcl1"] }],
+    items: [{ topic: "p", type: "choice", sk, title: "Обери", opts: ["1", "2"], correct: 0 }, { topic: "p", type: "number", sk, title: "Скільки?", answer: 2 },
+      { topic: "c", sk, title: "Запиши", body: "<p>Урок почався о 9:10 і тривав 45 хв. Коли він закінчився?</p>", ...item }] }, null, 1)});\n`;
+  const tree = item => ({ "content/math/g7-fxq.js": secJS("math", pre7), "content/math/g8-fxc.js": secJS("math", mathSec("fxc")), "content/math/diag-g8.js": diagJS(item) });
+  for (const [name, item, err] of [
+    ["answer time — чисто", { type: "answer", answerKind: "time", answer: "9:55" }, null],
+    ["answer quantity compound — чисто", { type: "answer", answerKind: "quantity", answer: 245, units: ["см", "м"], form: "compound" }, null],
+    ["answer decimals — чисто", { type: "answer", answer: "37,0", decimals: 1 }, null],
+    ["answer без answerKind (число) — чисто", { type: "answer", answer: "2 1/3" }, null],
+    ["answer з rev 2 — чисто", { type: "answer", answerKind: "time", answer: "9:55", rev: 2 }, null],
+    ["answer list — помилка", { type: "answer", answerKind: "list", answer: [1, 2] }, "answerKind «list» у тесті не дозволено"],
+    ["answer expression — помилка", { type: "answer", answerKind: "expression", answer: "2x" }, "answerKind «expression» у тесті не дозволено"],
+    ["answer coordinates2 — помилка", { type: "answer", answerKind: "coordinates2", answer: [1, 2] }, "answerKind «coordinates2» у тесті не дозволено"],
+    ["time з ключем «9.55» — помилка поля", { type: "answer", answerKind: "time", answer: "9.55" }, "time — ключ «Г:ХХ»"],
+    ["time з unit — помилка поля", { type: "answer", answerKind: "time", answer: "9:55", unit: "год" }, "time — без unit"],
+    ["quantity без units — помилка поля", { type: "answer", answerKind: "quantity", answer: 245 }, "quantity — units"],
+    ["decimals 1 з ключем «37» — помилка поля", { type: "answer", answer: "37", decimals: 1 }, "decimals 1 — ключ рядком"],
+    ["ключ, що сам не проходить, — помилка", { type: "answer", answer: "abc" }, "сам проходить перевірку"]]) {
+    const rep = expectRun(`diag answer: ${name}`, tree(item), ["--diag", "dgfx"], { err, also: err && "сам проходить перевірку" });
+    if (rep && err) ok(rep.errors.every(e => e.includes("diag-g8.js#dgfx")), `diag answer: ${name}: помилка вказує на тест`, rep.errors.join("\n  ")); }
+  // повний прогін теж бачить тест (не лише --diag)
+  expectRun("diag answer: повний прогін, answer list — помилка", tree({ type: "answer", answerKind: "list", answer: [1, 2] }), [], { err: "у тесті не дозволено" }); }
+
 console.log(fails ? `\n${fails} з ${n} перевірок не пройшли` : `test-validate: усі ${n} перевірок пройшли`);
 process.exit(fails ? 1 : 0);

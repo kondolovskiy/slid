@@ -106,8 +106,8 @@ async def grade_context_checks(browser, url):
     await page.goto(url)
     await page.evaluate("localStorage.setItem('slid.v1',JSON.stringify({grade:6,unlockAll:false}))")
     await page.reload()
-    # review P3-2 (smoke): the sk migration mark is in the saved state after load with empty errs. Not a mutation guard:
-    # another save during the first render also writes S.skFix, so the old `if (migrateSk(S)) save()` passes here too.
+    # review P3-2 (smoke): the sk migration mark is in the saved state after load with empty errs. The final save() of app.js
+    # also writes S.skFix, so this alone does not catch the old `if (migrateSk(S)) save()` — sk_mark_saved_checks does (p3b).
     fixed = (await state()).get('skFix')
     assert fixed == await page.evaluate("SLID_LEARN.SK_MIGRATIONS.map(f=>f.id)"), fixed
     await page.click('[data-diag="math"]'); await page.click('[data-diag-go]')
@@ -517,6 +517,8 @@ async def answer_format_checks(browser, url):
       for (const c of SLID_SUBJECTS) {
         for (const p of c.pools || []) { const sec = c.sections.find(s => s.id === p.section); p.items.forEach(it => it.type === 'answer' && items.push([it, sec?.grade ?? 0, false, p.id + ':' + it.id])); }
         for (const sec of c.sections) for (const l of sec.lessons || []) l.screens.forEach((it, i) => it.type === 'answer' && items.push([it, sec.grade, !!sec.signed, l.id + '#' + i]));
+        // тест рівня (engine-diag-answer-kinds): підказка під полем видна й у тесті (form/bad-тексти — ні, але звіряємо все)
+        for (const d of c.diags || []) d.items.forEach((it, i) => it.type === 'answer' && items.push([it, d.grade, d.signed !== false, d.id + '#' + i]));
       }
       fx.forEach((f, i) => items.push([{ ...f[0], type: 'answer' }, 6, false, 'fixture' + i]));
       // проби, щоб витяг побачив підказки, яких зараз не показує жодна вправа змісту (десятковий ключ 4 кл., factors)
@@ -1316,10 +1318,110 @@ async def main():
                 await root_index_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
                 await player_a11y_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
                 await player_a11y_p3_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
+                await diag_answer_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
+                await sk_mark_saved_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
             await browser.close()
             print('Обрані браузерні сценарії: green')
     finally:
         server.shutdown()
+
+async def diag_answer_checks(browser, url):
+    """engine-diag-answer-kinds: answer з answerKind time / quantity / decimals у тесті рівня через справжній плеєр.
+    Вердикт без фідбеку (ні fb, ні is-ok/is-bad, ні підказки form/bad, без другої спроби); OK лише для checkAns === "ok",
+    «form» — BAD; підказка формату під полем не видає ключа; збережений запуск ред. 1 після заміни завдання на answer (rev 2)
+    відкидає старий вердикт цього завдання, решту — ні (resumeDiag у startDiag)."""
+    context, page, errors = await qa_page(browser, url, {'grade': 6, 'unlockAll': False,
+        'diagRun': {'dg6': {'0': 1, '3': 0}}, 'diagRunRev': {'dg6': 1}})
+    await page.evaluate("""() => {
+      const c=SLID_SUBJECTS.find(c=>c.id==='math'), d=c.diags.find(d=>d.id==='dg6');
+      d.items=[
+        {type:'answer',answerKind:'time',answer:'10:05',title:'Коли закінчився урок?',body:'<p>Урок почався о 9:20 і тривав 45 хв.</p>',topic:'t',sk:'meas',rev:3},
+        {type:'answer',answerKind:'quantity',answer:245,units:['см','м'],form:'compound',title:'Запиши в метрах і сантиметрах',body:'<p>245 см — це скільки м і см?</p>',topic:'q',sk:'meas'},
+        {type:'answer',answer:'37,0',decimals:1,title:'Температура',body:'<p>Запиши з одним знаком після коми.</p>',topic:'d',sk:'num'},
+        {type:'answer',answerKind:'quantity',answer:150,units:['хв','год'],title:'Скільки хвилин?',body:'<p>2 год 30 хв — це скільки хвилин?</p>',topic:'m',sk:'meas'}];
+      d.topics=d.items.map(it=>({id:it.topic,title:it.title,kind:'cur',lessons:['g6m1l1']}));
+    }""")
+    await page.click('[data-diag="math"]'); await page.click('[data-diag-go]')
+    # The real dg6 is revision 2 (boot already moved this run to 2: its indices 0 and 3 were not revised). The fixture's item 0
+    # has rev 3 > 2: startDiag (resumeDiag, in memory; written with the next answer) drops its old verdict and asks it again,
+    # item 3 (no rev) keeps its BAD — checked in storage after the first answer below.
+    assert (await saved_state(page))['diagRun']['dg6'] == {'0': 1, '3': 0}
+    async def no_feedback():
+        assert not await page.locator('#fbTitle').inner_text() and not await page.locator('#fbText').inner_text()
+        assert await page.locator('#hintHost .hint').count() == 0
+        assert await page.locator('#stage .is-ok, #stage .is-bad').count() == 0
+    plan = [('10:05', 1, 'time'), ('245 см', 0, 'form'), ('37', 0, 'form')]
+    for i, (value, verdict, why) in enumerate(plan):
+        item = await page.evaluate("i => SLID_SUBJECTS.find(c=>c.id==='math').diags.find(d=>d.id==='dg6').items[i]", i)
+        assert await page.locator('#stage h2').inner_text() == item['title'], (i, await page.locator('#stage h2').inner_text())
+        help_text = await page.locator('#stage .fix').last.inner_text()
+        assert help_text and await page.evaluate("([s, t]) => !t.includes(SLID_LEARN.ansText ? SLID_LEARN.ansText(s) : String(s.answer))", [item, help_text]), (i, help_text)
+        if why == 'time':
+            assert await page.locator('#stage .anskeys button[data-ins=":"]').count() == 1
+        if why == 'form':
+            assert await page.evaluate("([s, v]) => SLID_LEARN.checkAns(s, v)", [item, value]) == 'form', (i, value)
+        await page.fill('#numIn', value); await page.dispatch_event('#numIn', 'input')
+        await no_feedback()
+        await page.click('#action')
+        await no_feedback()
+        st = await saved_state(page)
+        if i == len(plan) - 1:   # the last open item finishes the test: the run moves to S.diag (checked below)
+            assert 'dg6' not in st['diagRun'] and st['diag']['dg6']['res'][str(i)] == verdict, st['diag']
+            continue
+        assert st['diagRun']['dg6'][str(i)] == verdict and st['diagRunRev']['dg6'] == 3, (i, value, st['diagRun']['dg6'])
+        if i == 0:   # item 0 was asked first (its rev-1 verdict was dropped), item 3 kept its BAD
+            assert st['diagRun']['dg6'] == {'0': 1, '3': 0}, st['diagRun']
+        if i == 0:   # resume after a reload: the answer survives, the run continues at the next item
+            await page.click('#pClose'); await page.reload()
+            await page.evaluate("""() => { const d=SLID_SUBJECTS.find(c=>c.id==='math').diags.find(d=>d.id==='dg6');
+              d.items=[{type:'answer',answerKind:'time',answer:'10:05',title:'Коли закінчився урок?',topic:'t',sk:'meas',rev:3},
+                {type:'answer',answerKind:'quantity',answer:245,units:['см','м'],form:'compound',title:'Запиши в метрах і сантиметрах',topic:'q',sk:'meas'},
+                {type:'answer',answer:'37,0',decimals:1,title:'Температура',topic:'d',sk:'num'},
+                {type:'answer',answerKind:'quantity',answer:150,units:['хв','год'],title:'Скільки хвилин?',topic:'m',sk:'meas'}];
+              d.topics=d.items.map(it=>({id:it.topic,title:it.title,kind:'cur',lessons:['g6m1l1']})); }""")
+            assert (await saved_state(page))['diagRun']['dg6'] == {'0': 1, '3': 0}
+            await page.click('[data-diag="math"]'); await page.click('[data-diag-go]')
+    result = (await saved_state(page))['diag']['dg6']
+    assert result['res'] == {'0': 1, '1': 0, '2': 0, '3': 0} and result['rev'] == 3, result
+    assert not errors, errors
+    await context.close()
+    print('diag answer (time/quantity/decimals): verdicts без фідбеку, form → BAD, rev 3 — green', flush=True)
+
+async def sk_mark_saved_checks(browser, url):
+    """P3-2 (рев'ю engine-learn-list-prefixes-p3), мутаційний сторож: позначку skFix app.js зберігає одразу після migrateSk,
+    навіть коли нічого не перенесено. Підсумковий save() наприкінці app.js теж пише skFix, тож перевіряємо саме
+    момент: між поверненням migrateSk і наступним викликом SLID_LEARN має бути setItem зі skFix (стара умова
+    `if (migrateSk(S)) save()` тут не пише нічого)."""
+    context = await browser.new_context()
+    await context.add_init_script("""(() => {
+      const log = window.__skLog = []; const set = Storage.prototype.setItem;
+      Storage.prototype.setItem = function(k, v) { log.push(['set', String(v).includes('"skFix"')]); return set.call(this, k, v); };
+      let L;
+      Object.defineProperty(window, 'SLID_LEARN', { configurable: true, get: () => L, set: v => {
+        L = new Proxy(v, { get: (o, k) => typeof o[k] === 'function' ? (...a) => { log.push(['call', k]); const r = o[k](...a); if (k === 'migrateSk') log.push(['ret', k]); return r; } : o[k] }); } });
+    })()""")
+    page = await context.new_page()
+    errors = []
+    page.on('pageerror', lambda error: errors.append(str(error)))
+    await page.route('**/fonts.googleapis.com/**', lambda route: route.abort())
+    await page.goto(url)
+    await page.evaluate("localStorage.setItem('slid.v1', JSON.stringify({grade:6, unlockAll:false, errs:[]}))")
+    await page.reload()
+    log = await page.evaluate("window.__skLog")
+    at = next(i for i, e in enumerate(log) if e == ['ret', 'migrateSk'])
+    nxt = next((i for i in range(at + 1, len(log)) if log[i][0] == 'call'), len(log))
+    between = log[at + 1:nxt]
+    assert ['set', True] in between, (log[max(0, at - 2):nxt + 2])
+    assert (await page.evaluate("JSON.parse(localStorage.getItem('slid.v1')).skFix")) == await page.evaluate("SLID_LEARN.SK_MIGRATIONS.map(f=>f.id)")
+    # already migrated profile: no extra save is needed at that point (the condition is a change, not «always»)
+    await page.reload()
+    log = await page.evaluate("window.__skLog")
+    at = next(i for i, e in enumerate(log) if e == ['ret', 'migrateSk'])
+    nxt = next((i for i in range(at + 1, len(log)) if log[i][0] == 'call'), len(log))
+    assert not [e for e in log[at + 1:nxt] if e[0] == 'set'], log[at:nxt + 1]
+    assert not errors, errors
+    await context.close()
+    print('skFix: позначку збережено одразу після migrateSk — green', flush=True)
 
 async def open_screen_only(page, lesson, at):
     """Open screen `at` of a real lesson right after its intro (screens in between are dropped in this page only),
