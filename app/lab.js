@@ -299,6 +299,23 @@ function svgTex(s, size = 12) {
   plain(str.slice(last));
   return out;
 }
+/** Текст підпису для читача екрана (aria-valuetext): як plainText у app.js — індекси й степені з цифр → Unicode (x₁, x²),
+    інший індекс — через пробіл (x AB), інший степінь — «в степені …»; {,} → кома, дужки й \ не озвучуються (рев'ю p3c, P3-1). */
+function ariaTex(s) {
+  const math = src => { let out = "";
+    for (const tk of String(src).match(SVG_TOK) || []) {
+      if (tk === "{,}") { out += ","; continue; }
+      if (tk === "{" || tk === "}" || tk === "~") { if (tk === "~") out += " "; continue; }
+      if (tk[0] === "_" || tk[0] === "^") {
+        let body = tk.slice(1).replace(/^\{|\}$/g, ""); const cmd = body.match(/^\\([A-Za-z]+)$/); if (cmd && SVG_SYM[cmd[1]]) body = SVG_SYM[cmd[1]];
+        const map = tk[0] === "^" ? SVG_SUP : SVG_SUB, chars = [...body], inner = math(body).trim();
+        out += tk[0] === "^" && body === "°" ? "°" : chars.length && chars.every(ch => map[ch]) ? chars.map(ch => map[ch]).join("") : tk[0] === "^" ? ` в степені ${inner} ` : ` ${inner} `;
+        continue; }
+      if (tk[0] === "\\") { const name = tk.slice(1); out += name in SVG_SPACE ? " " : SVG_SYM[name] ? (SVG_BIN_CMD.has(name) ? ` ${SVG_SYM[name]} ` : SVG_SYM[name]) : name; continue; }
+      out += tk === "-" ? "−" : tk; }
+    return out; };
+  return String(s).replace(/\$([^$]+)\$/g, (_, m) => math(m)).replace(/[$\\]/g, "").replace(/\s+/g, " ").trim();
+}
 const SVG_TEX_OK = new Set([...Object.keys(SVG_SYM), ...Object.keys(SVG_SPACE)]);
 /** Що в підписі SVG не буде відмальовано: непарні $, команди поза підмножиною. Для tools/validate.mjs.
     tpl — підпис проходить fill() (svgLabels(spec, true)): {вираз} там — вставка значення, {,} — кома, тож вкладеність дужок
@@ -469,9 +486,10 @@ KINDS.numline = {
       else if (label) g += t(sx, y + 42, label, { anchor: "middle", bold: true, fill: c, size: 11 });
       const [xe] = pointExprs(id, p);
       // значення для читача екрана: підпис, якщо він сам є числом чи часом ({t|time}, {n|0}); літера чи «?» — лише назва, тож додаємо число
-      const vs = spec.pi ? piLabel(xv) : spec.fmt ? fill(`{v|${spec.fmt}}`, { v: xv }) : num(xv), lt = label.replace(/[$\\]/g, "").trim();
-      // підпис-шаблон ({t|0}, {t|time}) і є значенням; цифра в незмінному підписі ($x_1$, «A1») — ні, тож число додаємо (рев'ю a11y-p3, P3-6)
-      const isVal = typeof p.label === "string" && [...p.label.matchAll(TPL_RE)].some(m => m[1] !== ",") || lt === vs;
+      const vs = spec.pi ? piLabel(xv) : spec.fmt ? fill(`{v|${spec.fmt}}`, { v: xv }) : num(xv), lt = ariaTex(label);
+      // підпис-шаблон, що вставляє саму координату ({t|0}, {t|time}, «t = {t}»), і є значенням; цифра в незмінному підписі ($x_1$, «A1»)
+      // чи шаблон-індекс ($x_{{k}}$, «P{n|0}») — ні, тож число додаємо (рев'ю a11y-p3, P3-6; рев'ю p3c, P3-2)
+      const isVal = typeof p.label === "string" && [...p.label.matchAll(TPL_RE)].some(m => m[1].trim() === xe) || lt === vs;
       if (p.drag && /^[A-Za-z_]\w*$/.test(xe)) handles.push({ x: sx, y, kx: xe, name: `Точка ${id}`, value: !lt ? vs : isVal ? lt : /[\p{L}\p{N}]/u.test(lt) ? `${lt}, ${vs}` : vs, set: px => ({ [xe]: a + (px - pad) / (W - 2 * pad) * (b - a) }) });
     });
     return { w: W, h: H, body: g, handles, alt: spec.alt || "Числова пряма" };
@@ -895,5 +913,5 @@ function validate(spec, screen = {}) {
   return errs;
 }
 
-G.SLID_LAB = { KINDS, compile, makeEnv, startState, paramList, fill, num, check, validate, mount, FN, svgTex, svgTexIssues, svgLabels, handleKey, handleTargets, liveHandle, dragIssues };
+G.SLID_LAB = { KINDS, compile, makeEnv, startState, paramList, fill, num, check, validate, mount, FN, svgTex, svgTexIssues, ariaTex, svgLabels, handleKey, handleTargets, liveHandle, dragIssues };
 })();

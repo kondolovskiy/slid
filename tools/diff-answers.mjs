@@ -11,6 +11,8 @@
 // engine-learn-prefixes-p3b — «p3b …»: назви об'єктів умови без координат (BC, AO, X, OX) і назви образу з індексом/штрихом (A₁, A').
 // engine-diag-answer-kinds — answer у діагностиках (SLID.diag) теж у прогоні; режим --content-old: старий і новий ЗМІСТ на одному
 // (поточному) learn.js — які вердикти змінила правка вправ (ключ, answerKind, умова з назвами), а не рушія.
+// Межі --content-old: рушій зміст старої ревізії бере з неї ж (ревізії без app/lab.js, learn.js, math.js чи registry.js — rc 2);
+// зміна лише текстових полів (title, body, hint… — TEXT_ONLY) вважається редакторською і rev у тесті рівня не вимагає.
 // Запуск: node tools/diff-answers.mjs [--old <git-rev>] [--grades 4-9] [--time] [--show N] [--list-cat "<категорія>"] (записи однієї категорії)
 //         node tools/diff-answers.mjs --content-old <git-rev> [--grades 4-11] [--show N]   (зміст <rev> проти поточного, обидва — поточним learn.js)
 import fs from "node:fs"; import os from "node:os"; import vm from "node:vm"; import path from "node:path"; import { execFileSync } from "node:child_process";
@@ -20,7 +22,14 @@ const args = process.argv.slice(2), opt = (k, d) => args.includes(k) ? args[args
 const CONTENT_OLD = opt("--content-old", null);
 if (CONTENT_OLD !== null && (!CONTENT_OLD || CONTENT_OLD.startsWith("--"))) { console.error("--content-old потребує git-ревізію"); process.exit(2); }
 if (CONTENT_OLD && args.includes("--old")) { console.error("--content-old і --old взаємовиключні: у режимі змісту обидві сторони — поточний learn.js"); process.exit(2); }
-const OLD_REV = opt("--old", "1b3819d"), [G0, G1] = opt("--grades", "4-9").split("-").map(Number), SHOW = +opt("--show", 5);
+// ревізія — лише коміт, перевірений git rev-parse: значення на «-» (напр. «-o<шлях>») не потрапить у git archive/show як опція,
+// а неіснуюча ревізія дає зрозуміле повідомлення й rc 2 замість траси стеку (рев'ю engine-diag-answer-kinds, P3-1)
+function commitOf(flag, rev) {
+  if (/^-/.test(rev)) { console.error(`${flag}: «${rev}» — не git-ревізія (починається з «-»)`); process.exit(2); }
+  try { return execFileSync("git", ["rev-parse", "--verify", "--quiet", "--end-of-options", `${rev}^{commit}`], { cwd: ROOT, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim(); }
+  catch { console.error(`${flag}: ревізії «${rev}» немає в git (або це не коміт)`); process.exit(2); }
+}
+const OLD_REV = CONTENT_OLD ? null : commitOf("--old", opt("--old", "1b3819d")), CONTENT_REV = CONTENT_OLD ? commitOf("--content-old", CONTENT_OLD) : null, [G0, G1] = opt("--grades", "4-9").split("-").map(Number), SHOW = +opt("--show", 5);
 const load = src => { const c = { console }; c.window = c; vm.createContext(c); vm.runInContext(src, c); return c.SLID_LEARN; };
 const NEW = load(fs.readFileSync(path.join(ROOT, "app/learn.js"), "utf8"));
 const OLD = CONTENT_OLD ? NEW : load(execFileSync("git", ["show", `${OLD_REV}:app/learn.js`], { cwd: ROOT, encoding: "utf8" }));
@@ -195,13 +204,19 @@ const IMG0 = /^[A-Z]{1,2}\s*(?:_\{?\d{1,2}\}?|[₀-₉]{1,2}|\d{1,2}|['’′ʼ]
 // рівні й хибні варіанти); вердикт старої вправи проти нової. Розбіжність можлива лише там, де вправа змінилась, — інакше «непояснена».
 // Тести рівня (SLID.diag): завдання, змінене по суті (тип, ключ, варіанти, answerKind…) без нового rev, — помилка: збережена
 // відповідь на старий зміст зарахувалася б новому (resumeDiag, CONTENT_SCHEMA §9). Зміна кількості, порядку чи тем — потрібен новий id.
+// Евристика TEXT_ONLY (рев'ю engine-diag-answer-kinds, P3-5): ці поля вважаються текстом, тож зміна лише title/body (і решти нижче)
+// НЕ вимагає rev, навіть якщо змінилось саме запитання за того самого ключа. Автор, що міняє суть умови, ставить rev сам.
 const TEXT_ONLY = new Set(["title", "body", "eyebrow", "note", "hint", "fbOk", "fbBad", "fbText", "fbTitle", "cap", "rev", "steps", "src", "srcPage"]);
 const core = it => JSON.stringify(Object.keys(it).filter(k => !TEXT_ONLY.has(k)).sort().map(k => [k, it[k]]));
 function contentDiff() {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), "slid-content-old-"));
   let before, oldSubjects;
   try {
-    execFileSync("tar", ["-x", "-C", dir], { input: execFileSync("git", ["archive", CONTENT_OLD, "app", "content"], { cwd: ROOT, maxBuffer: 1 << 30 }) });
+    execFileSync("tar", ["-x", "-C", dir], { input: execFileSync("git", ["archive", CONTENT_REV, "app", "content"], { cwd: ROOT, maxBuffer: 1 << 30 }) });
+    // рушій (registry/lab/learn/math) береться зі старої ревізії — так старий зміст завантажується тим кодом, з яким його писали;
+    // ревізія, де якогось із цих файлів ще не було, не підтримується (рев'ю engine-diag-answer-kinds, P3-5)
+    const miss = ["app/registry.js", "app/lab.js", "app/learn.js", "app/math.js"].filter(f => !fs.existsSync(path.join(dir, f)));
+    if (miss.length) { console.error(`--content-old ${CONTENT_OLD}: у ревізії немає ${miss.join(", ")} — старий зміст нічим завантажити; візьми пізнішу ревізію`); process.exitCode = 2; return; }
     oldSubjects = loadContent(dir).subjects; before = collect(oldSubjects);
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
   const A = new Map(before.map(x => [x.id, x.s])), B = new Map(items.map(x => [x.id, x.s]));
@@ -242,7 +257,7 @@ function contentDiff() {
   keyBad.forEach(x => console.log("  КЛЮЧ: " + x));
   process.exit(unexplained.length || keyBad.length || diagBad.length ? 1 : 0);
 }
-if (CONTENT_OLD) contentDiff();
+if (CONTENT_OLD) { contentDiff(); process.exit(process.exitCode ?? 0); }
 
 // ---------- прогін ----------
 const P2 = new Set();
@@ -260,7 +275,7 @@ for (const { id, s } of items) {
     if (cat) { counts[cat[0]]++; if (args.includes("--list-cat") && cat[0] === opt("--list-cat")) console.log(`    ${id} «${v}»: ${o.r} → ${n.r}`); } else unexplained.push(`${id} ${JSON.stringify(s.answer)} ← «${v}»: ${o.r}${o.h ? " «" + o.h + "»" : ""} → ${n.r}${n.h ? " «" + n.h + "»" : ""}`);
   }
 }
-console.log(`Старий learn.js: ${OLD_REV}. Вправ ${items.length} (класи ${G0}–${G1}), записів ${total}.`);
+console.log(`Старий learn.js: ${opt("--old", "1b3819d")} (${OLD_REV.slice(0, 10)}). Вправ ${items.length} (класи ${G0}–${G1}), записів ${total}.`);
 for (const [c, k] of Object.entries(counts)) console.log(`  ${String(k).padStart(5)}  ${c}`);
 console.log(`  ${String(unexplained.length).padStart(5)}  НЕПОЯСНЕНІ`);
 unexplained.slice(0, SHOW).forEach(x => console.log("    " + x));

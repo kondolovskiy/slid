@@ -1619,6 +1619,29 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
   const SP = { answerKind: "coordinates2", answer: "(p - m; k - n)", body: "<p>Знайди координати вектора $\\overrightarrow{AB}$, якщо $A(m; n)$, $B(p; k)$.</p>" };
   T(SP, "AB = (p - m; k - n)", "ok", "символьний, шукана AB"); T(SP, "A(p - m; k - n)", "form", "символьний, дана A"); T(SP, "A_1(p - m; k - n)", "form", "символьний, образ");
 }
+/* P3-2 (рев'ю engine-diag-answer-kinds): шукана назва без слова-маркера («Знайди координати $D$», «Знайди $D$») чи лише в заголовку —
+   це ask, а не objs: природне «D(…)» — ok; інші назви — form, як за будь-якої шуканої назви. Негативні: маркер не з того речення,
+   «образ» у заголовку, довжина відрізка — назва лишається в objs (form), хибних ok немає */
+{ const T = (s, v, r, what) => eq(L.checkAns(s, v), r, `ask-bare ${what}: «${v}» → ${r}`);
+  const R = "$A(1; 1)$, $B(3; 1)$ і $C(3; 4)$ — вершини прямокутника $ABCD$";
+  const K1 = { answerKind: "coordinates2", answer: "(1; 4)", body: `<p>Точки ${R}. Знайди координати $D$.</p>` };
+  const K2 = { answerKind: "coordinates2", answer: "(1; 4)", body: `<p>Точки ${R}. Знайди $D$.</p>` };
+  const K3 = { answerKind: "coordinates2", answer: "(1; 4)", title: "Вершина $D$", body: `<p>Точки ${R}. Знайди координати четвертої вершини.</p>` };
+  const K4 = { answerKind: "coordinates2", answer: "(1; 4)", title: "Вершина $D$", body: `<p>Точки ${R}. Знайди координати вершини $D$.</p>` };
+  for (const [s, w] of [[K1, "координати $D$"], [K2, "Знайди $D$"], [K3, "лише в заголовку"], [K4, "маркер і заголовок"]]) {
+    for (const v of ["D(1; 4)", "D = (1; 4)", "(1; 4)"]) T(s, v, "ok", w);
+    for (const v of ["M(1; 4)", "A(1; 4)", "CD = (1; 4)", "D_1(1; 4)"]) T(s, v, "form", w);
+    for (const v of ["D(1; 3)", "D(4; 1)", "ABCD(1; 4)", "D D(1; 4)"]) T(s, v, "bad", w);
+    eq(L.formHint(s, "M(1; 4)"), "Координати правильні, але тут шукають D.", `ask-bare ${w}: пояснення називає D`); }
+  // негативні: назва не шукана — лишається в objs
+  const N1 = { answerKind: "coordinates2", answer: "(-3; 1)", title: "Образ точки $A$", body: "<p>Точку $A$ відбили симетрично відносно початку координат. Знайди координати образу, якщо $A$ мала координати $(3; -1)$.</p>" };
+  const N2 = { answerKind: "coordinates2", answer: "(1; 2)", body: "<p>Дано $P(0; 0)$ і $Q(2; 4)$. Знайди довжину $PQ$ і координати середини відрізка $PQ$. Запиши координати середини.</p>" };
+  const N3 = { answerKind: "coordinates2", answer: "(1; 2)", title: "Відрізок $PQ$", body: "<p>Дано $P(0; 0)$ і $Q(2; 4)$. Знайди координати середини відрізка.</p>" };
+  const N4 = { answerKind: "coordinates2", answer: "(1; 2)", body: "<p>Пряма $KM$ перетинає вісь. Знайди координати точки перетину.</p><p>Точка $K$ лежить вище.</p>" };
+  T(N1, "A(-3; 1)", "form", "«образ» у заголовку — A не шукана"); T(N1, "(-3; 1)", "ok", "образ без назви");
+  T(N2, "PQ = (1; 2)", "form", "«Знайди довжину $PQ$» — не шукана назва"); T(N2, "M(1; 2)", "ok", "вільна назва M");
+  T(N3, "PQ = (1; 2)", "form", "заголовок «Відрізок» — не маркер"); T(N4, "K(1; 2)", "form", "K з іншого речення"); T(N4, "KM = (1; 2)", "form", "пряма KM");
+}
 // P3-2 (рев'ю engine-learn-list-prefixes-p3): мутаційний сторож для app.js (позначка skFix зберігається й без перенесених записів) —
 // tools/test-answer-ui.py, regression: setItem одразу після migrateSk, до наступного виклику SLID_LEARN.
 

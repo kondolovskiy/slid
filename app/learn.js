@@ -638,6 +638,9 @@ window.SLID_LEARN = (() => {
     .replace(/наприклад[^]*?(?=<\/p>|$)/giu, " ").replace(/<\/?[a-zA-Z][^<>]*>/g, " ");
   // Слово перед формулою, що називає шукане: «координати точки $B$», «вектора $\vec{AB}$», «вершини $C$», «кінця», «центра», «образ».
   const ASK_WORD = /(?:^|[^а-яґєії])(?:точк|вершин|вектор|кін[еця]|центр|образ)[а-яґєії]*\s*$/iu;
+  const ASK_BARE = /(?:^|[^а-яґєії])(?:знайд|визнач)[а-яґєії]*(?:\s+(?:координат|положенн)[а-яґєії]*)?\s*$/iu;
+  // заголовок-назва шуканого: маркер на самому початку («Вершина $D$», «Координати точки $D$»), не «Образ точки $A$» чи «Середина відрізка $AB$»
+  const ASK_TITLE = /^\s*(?:координат[а-яґєії]*\s+)?(?:точк|вершин|вектор|кін[еця]|центр)[а-яґєії]*\s*$/iu;
   const ASKED = new WeakMap(), NO_NAMES = { ask: null, given: new Set(), objs: new Set() };
   /** Назви умови: { ask — єдина назва точки чи вектора, про яку питає умова (формула-назва без координат, перед нею — ASK_WORD), або null;
       given — назви точок і векторів із даними координатами ($A(4; -3)$, $\\vec{AB} = (…)$);
@@ -648,14 +651,22 @@ window.SLID_LEARN = (() => {
     const text = stmtText(s), names = new Set(), given = new Set();
     // шукане — лише в реченні із запитанням («Знайди координати точки $B$»), не в означенні («кожна точка $X$ переходить…»)
     const ask = text.split(/(?<=[.?!])\s+(?=[^$]*(?:\$[^$]*\$[^$]*)*$)|<\/p>/).filter(x => /знайд|визнач|які координати|яких координат/i.test(x)).join(" </p> ");
+    const bare = f => f.trim().match(/^(?:\\(?:vec|overrightarrow)\s*\{\s*([A-Z]{1,2})\s*\}|([A-Z]{1,2}))$/);
+    // перед назвою — ASK_WORD або саме запитання без слова-маркера: «Знайди координати $D$», «Знайди $D$» (рев'ю diag-answer-kinds, P3-2)
     for (const m of ask.matchAll(/\$([^$]+)\$/g)) {
-      if (!ASK_WORD.test(ask.slice(Math.max(0, m.index - 40), m.index))) continue;
-      const n = m[1].trim().match(/^(?:\\(?:vec|overrightarrow)\s*\{\s*([A-Z]{1,2})\s*\}|([A-Z]{1,2}))$/);
-      if (n) names.add(n[1] || n[2]);
+      const before = ask.slice(Math.max(0, m.index - 40), m.index);
+      if (!ASK_WORD.test(before) && !ASK_BARE.test(before)) continue;
+      const n = bare(m[1]); if (n) names.add(n[1] || n[2]);
     }
     // точка з даними координатами — дане, не шукане: «симетрична точці A відносно точки $M(2; -3)$» (заголовок «…точки $M$»)
     for (const [, f] of text.matchAll(/\$([^$]+)\$/g)) for (const g of f.matchAll(/(?:\\(?:vec|overrightarrow)\s*\{\s*([A-Z]{1,2})\s*\}|(?<![A-Za-z])([A-Z]{1,2}))\s*=?\s*\(/g)) given.add(g[1] || g[2]);
     for (const g of given) names.delete(g);
+    // назва шуканого лише в заголовку («Вершина $D$», а в умові — «Знайди її координати»): з заголовка, якщо умова назви не дала;
+    // лише заголовок, що починається маркером: у «Образ точки $A$» названо дану точку, а не шукану
+    if (!names.size && typeof s.title === "string") for (const m of s.title.matchAll(/\$([^$]+)\$/g)) {
+      if (!ASK_TITLE.test(s.title.slice(0, m.index))) continue;
+      const n = bare(m[1]); if (n && !given.has(n[1] || n[2])) names.add(n[1] || n[2]);
+    }
     // назви об'єктів умови: окремий токен з 1–2 великих латинських літер у формулі (не частина слова чи TeX-команди: \Delta, ABCD), \vec{AB}
     const objs = new Set();
     for (const [, f] of text.matchAll(/\$([^$]+)\$/g)) for (const g of f.matchAll(/\\(?:vec|overrightarrow)\s*\{\s*([A-Z]{1,2})\s*\}|(?<![A-Za-z\\])([A-Z]{1,2})(?![A-Za-z])/g)) { const n = g[1] || g[2]; if (!given.has(n)) objs.add(n); }
@@ -1663,7 +1674,9 @@ window.SLID_LEARN = (() => {
       if (!it.title) E.push(`${w}: немає title`);
       if (!it.sk || !ctx.skills[it.sk]) E.push(`${w}: навичка sk «${it.sk}» не оголошена`);
       for (const [flag, types] of [["signed", ["number", "answer"]], ["hideCount", ["shade", "numline"]], ["hideDen", ["fracin"]]]) {
-        if (it[flag] !== undefined && (typeof it[flag] !== "boolean" || !types.includes(it.type))) E.push(`${w}: ${flag} має бути boolean для ${types.join(" | ")}`);
+        // signed в answer — лише для числової, як і правило пулу (validatePool): знак у time чи quantity нічого не означає (рев'ю diag-answer-kinds, P3-4)
+        const sg = flag === "signed" && it.type === "answer";
+        if (it[flag] !== undefined && (typeof it[flag] !== "boolean" || !types.includes(it.type) || sg && (it.answerKind || "number") !== "number")) E.push(`${w}: ${flag} має бути boolean для ${flag === "signed" ? "number | числової answer" : types.join(" | ")}`);
       }
       if (it.lesson && !(T.get(it.topic)?.lessons || []).includes(it.lesson)) E.push(`${w}: lesson «${it.lesson}» має бути одним з уроків теми`);
       if (it.rev !== undefined && (!Number.isInteger(it.rev) || it.rev < 2)) E.push(`${w}: rev — ціле ≥ 2: редакція тесту, з якої діє новий зміст завдання`);
