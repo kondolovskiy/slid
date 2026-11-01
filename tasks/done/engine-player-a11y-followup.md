@@ -5,7 +5,7 @@ write_group: personalization-shared
 id: engine-player-a11y-followup
 type: engine
 subject: math
-status: review
+status: done
 claimed_by: agent-engine-player-a11y-followup
 created: 2026-10-31
 depends_on: [engine-player-focus-followup]
