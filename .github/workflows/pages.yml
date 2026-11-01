@@ -24,6 +24,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      # tools/test-diff-answers.mjs — навмисно лише в npm run check (потребує git-історії робочої гілки; docs/PERSONALIZATION_QA.md)
       - name: Зібрати й перевірити контент
         run: |
           node tools/build.mjs
