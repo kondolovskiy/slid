@@ -4,7 +4,7 @@ claimed_at: 2026-11-01T11:44:08.359Z
 id: refine-math-content-from-matrix-v3
 type: content
 subject: math
-status: review
+status: done
 claimed_by: agent-refine-math-content-from-matrix-v3
 created: 2026-11-01
 depends_on: [curate-math-matrix-v3]

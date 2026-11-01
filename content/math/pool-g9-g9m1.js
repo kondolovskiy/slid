@@ -1,5 +1,5 @@
 /* Слід · Математика, 9 клас — пул задач для тренування до розділу «Алгебра: нерівності» (g9m1)
-   Статус: draft після refine-math-content-from-matrix-v3 (2026-11-01): a08 (№2.26(3), знижка — радше арифметика різниці) вилучено, замість неї a09 №2.14(1), comparison, с. 19 (бажане з reports/verify/pg9m1.md); id a08 не використовувати знову. Рівні g9m1l1: 3/4/1.
+   Статус: verified (verifier-refine-math-content-from-matrix-v3, 2026-11-01, reports/verify/refine-math-content-from-matrix-v3.md) після refine-math-content-from-matrix-v3 (2026-11-01): a08 (№2.26(3), знижка — радше арифметика різниці) вилучено, замість неї a09 №2.14(1), comparison, с. 19 (бажане з reports/verify/pg9m1.md); id a08 не використовувати знову. Рівні g9m1l1: 3/4/1.
    Попередня редакція — verified (повторно 2026-11-01, verifier-fix-math-terms-g8m4-g9m1, reports/verify/fix-math-terms-g8m4-g9m1.md; правка fix-math-terms-g8m4-g9m1: c01: «переріз» → «перетин» — повторна верифікація змінених місць; раніше verified: автор agent-write-math-pool-g9m1, 2026-10-31; верифікатор verifier-pg9m1, звіт reports/verify/pg9m1.md). 24 задачі: по 8 на кожен required-урок
    g9m1l1–g9m1l3 (boss g9m1l4 без задач). Матриця покриття 2026-10-16.v2.
    Усі задачі — з підручника Мерзляка, Якіра «Алгебра. 9 клас» (2026), § 1, п. 2, 5, 6;
@@ -12,8 +12,8 @@
 SLID.pool("math", {
   id: "pg9m1",
   section: "g9m1",
-  status: "draft",
-  meta: { author: "claude-opus", created: "2026-10-31", factcheck: null, revised: "2026-11-01 refine-math-content-from-matrix-v3", teacher: null },
+  status: "verified",
+  meta: { author: "claude-opus", created: "2026-10-31", factcheck: "verifier-refine-math-content-from-matrix-v3", revised: "2026-11-01 refine-math-content-from-matrix-v3", teacher: null },
   sources: [
     { id: "a9", title: "Мерзляк А. Г., Якір М. С. Алгебра: підручник для 9 класу закладів загальної середньої освіти. — Харків: Гімназія, 2026 (§ 1, п. 2, 5, 6)", url: "https://file.4book.org/images/shcoolbook_ua/9/9_a_m_2026.pdf" }
   ],

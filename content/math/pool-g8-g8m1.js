@@ -1,5 +1,5 @@
 /* Слід · Математика, 8 клас — пул задач для тренування до розділу «Алгебра: раціональні вирази» (g8m1)
-   Статус: draft після refine-math-content-from-matrix-v3 (2026-11-01): b04, b07: sk expr → ops (навичка екранів g8m1l2); зміст вправ не змінено — потрібна повторна незалежна верифікація тегів.
+   Статус: verified (verifier-refine-math-content-from-matrix-v3, 2026-11-01, reports/verify/refine-math-content-from-matrix-v3.md) після refine-math-content-from-matrix-v3 (2026-11-01): b04, b07: sk expr → ops (навичка екранів g8m1l2); зміст вправ не змінено — потрібна повторна незалежна верифікація тегів.
    Попередня редакція — verified (автор agent-write-math-pool-g8m1, 2026-10-31; верифікатор verifier-pg8m1, 2026-10-31). 32 задачі: по 8 на кожен required-урок
    g8m1l1–g8m1l4 (boss g8m1l5 без задач). Матриця покриття 2026-10-16.v2.
    Усі задачі — з підручника Мерзляка, Якіра «Алгебра. 8 клас» (2025), § 1, п. 1–3, 5, 8–10;
@@ -12,8 +12,8 @@
 SLID.pool("math", {
   id: "pg8m1",
   section: "g8m1",
-  status: "draft",
-  meta: { author: "claude-opus", created: "2026-10-31", factcheck: null, revised: "2026-11-01 refine-math-content-from-matrix-v3", teacher: null },
+  status: "verified",
+  meta: { author: "claude-opus", created: "2026-10-31", factcheck: "verifier-refine-math-content-from-matrix-v3", revised: "2026-11-01 refine-math-content-from-matrix-v3", teacher: null },
   sources: [
     { id: "a8", title: "Мерзляк А. Г., Якір М. С. Алгебра: підручник для 8 класу закладів загальної середньої освіти. — Харків: Гімназія, 2025 (§ 1, п. 1–3, 5, 8–10)", url: "https://file.4book.org/images/shcoolbook_ua/8/8_a_m_2025.pdf" }
   ],

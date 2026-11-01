@@ -1,5 +1,5 @@
 /* Слід · Математика, 8 клас — пул задач для тренування до розділу «Геометрія: подібність і теорема Піфагора» (g8m4)
-   Статус: draft після refine-math-content-from-matrix-v3 (2026-11-01): g8m4l2 — b01 (№530(1), трійка 3-4-5 дублює екрани уроку) → b09 №530(2) exactRoot «3√13»; b04 (№536, «половина основи + гіпотенуза» дублює b05) → b10 №541 list «10; 24»; g8m4l3 + c08 №513 list із коренями «5√5; 10√5» (exactRoot за умовою). id b01, b04 не використовувати знову. 24 задачі: по 8 на урок.
+   Статус: verified (verifier-refine-math-content-from-matrix-v3, 2026-11-01, reports/verify/refine-math-content-from-matrix-v3.md) після refine-math-content-from-matrix-v3 (2026-11-01): g8m4l2 — b01 (№530(1), трійка 3-4-5 дублює екрани уроку) → b09 №530(2) exactRoot «3√13»; b04 (№536, «половина основи + гіпотенуза» дублює b05) → b10 №541 list «10; 24»; g8m4l3 + c08 №513 list із коренями «5√5; 10√5» (exactRoot за умовою). id b01, b04 не використовувати знову. 24 задачі: по 8 на урок.
    Попередня редакція — verified (повторно 2026-11-01, verifier-fix-math-terms-g8m4-g9m1, reports/verify/fix-math-terms-g8m4-g9m1.md; правка fix-math-terms-g8m4-g9m1: c06 (g8m4l3): «Проекції» → «Проєкції» в hint і steps — повторна верифікація змінених місць; раніше verified: verifier-pool-g8m4, 2026-10-31, reports/verify/pg8m4.md). 23 задачі (до 2026-11-01): g8m4l1 — 8, g8m4l2 — 8, g8m4l3 — 7 (boss g8m4l4 без задач).
    Матриця docs/math-personalization-coverage.md 2026-10-16.v2: усі три уроки required, формат number (+ choice/list за умовою).
    Усі задачі — з підручника Мерзляк, Якір «Геометрія. 8 клас» (2025), п. 12–13, 15–16; умови, числа й рисунки звірено
@@ -10,8 +10,8 @@
 SLID.pool("math", {
   id: "pg8m4",
   section: "g8m4",
-  status: "draft",
-  meta: { author: "agent-write-math-pool-g8m4", created: "2026-10-31", factcheck: null, revised: "2026-11-01 refine-math-content-from-matrix-v3", teacher: null },
+  status: "verified",
+  meta: { author: "agent-write-math-pool-g8m4", created: "2026-10-31", factcheck: "verifier-refine-math-content-from-matrix-v3", revised: "2026-11-01 refine-math-content-from-matrix-v3", teacher: null },
   sources: [
     { id: "mer8g", title: "Мерзляк А. Г., Якір М. С. Геометрія : підруч. для 8 кл. закладів заг. серед. освіти. — Харків: Гімназія, 2025 (п. 12–13, 15–16)", url: "https://file.4book.org/images/shcoolbook_ua/8/8_geom_m_2025.pdf" }
   ],

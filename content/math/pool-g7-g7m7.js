@@ -1,5 +1,5 @@
 /* Слід · Математика, 7 клас — пул задач для тренування до розділу «Системи рівнянь» (g7m7)
-   Статус: draft після refine-math-content-from-matrix-v3 (2026-11-01): b01, b02: sk eq → func (навичка екранів g7m7l2); зміст вправ не змінено — потрібна повторна незалежна верифікація тегів.
+   Статус: verified (verifier-refine-math-content-from-matrix-v3, 2026-11-01, reports/verify/refine-math-content-from-matrix-v3.md) після refine-math-content-from-matrix-v3 (2026-11-01): b01, b02: sk eq → func (навичка екранів g7m7l2); зміст вправ не змінено — потрібна повторна незалежна верифікація тегів.
    Попередня редакція — verified (автор w-write-math-pool-g7m7; незалежна перевірка verifier-pg7m7, 2026-10-31, reports/verify/pg7m7.md). 32 задачі: по 8 на кожен урок g7m7l1–g7m7l4 (boss без задач).
    Усі задачі — з підручника Мерзляка, Якіра «Алгебра. 7 клас» (2024), § 3, п. 24–28 (sources).
    Умови й числа звірено за відрендереними сторінками PDF 2026-10-31. srcPage — друкований номер
@@ -9,8 +9,8 @@
 SLID.pool("math", {
   id: "pg7m7",
   section: "g7m7",
-  status: "draft",
-  meta: { author: "claude-opus", created: "2026-10-31", factcheck: null, revised: "2026-11-01 refine-math-content-from-matrix-v3", teacher: null },
+  status: "verified",
+  meta: { author: "claude-opus", created: "2026-10-31", factcheck: "verifier-refine-math-content-from-matrix-v3", revised: "2026-11-01 refine-math-content-from-matrix-v3", teacher: null },
   sources: [
     { id: "a7", title: "Мерзляк А. Г., Якір М. С. Алгебра : підруч. для 7 кл. — Харків: Гімназія, 2024 (наказ МОН № 124 від 05.02.2024; дзеркало PDF на 4book.org)", url: "https://file.4book.org/images/shcoolbook_ua/7/7_a_m_2024.pdf" }
   ],

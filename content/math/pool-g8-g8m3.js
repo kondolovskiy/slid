@@ -1,5 +1,5 @@
 /* Слід · Математика, 8 клас — пул задач для тренування до розділу «Алгебра: квадратні корені» (g8m3)
-   Статус: draft після refine-math-content-from-matrix-v3 (2026-11-01): d09: sk expr → func (навичка екранів g8m3l4); зміст вправ не змінено — потрібна повторна незалежна верифікація тегів.
+   Статус: verified (verifier-refine-math-content-from-matrix-v3, 2026-11-01, reports/verify/refine-math-content-from-matrix-v3.md) після refine-math-content-from-matrix-v3 (2026-11-01): d09: sk expr → func (навичка екранів g8m3l4); зміст вправ не змінено — потрібна повторна незалежна верифікація тегів.
    Попередня редакція — verified (2026-11-01 refine-math-pools-new-kinds: b08 — ключ "1,73", decimals 2; повторно перевірено verifier-refine-math-pools-new-kinds, 2026-11-01, reports/verify/refine-math-pools-new-kinds.md). Раніше verified (автор agent-write-math-pool-g8m3, 2026-10-31; верифікатор verifier-pg8m3, 2026-10-31, reports/verify/pg8m3.md;
    2026-10-31 refine-math-g8m3-roots: c02 №472(2) замінено на c09 №470(1), list у g8m3l3; повторно верифіковано 2026-10-31, reports/verify/refine-g8m3.md). 32 задачі: по 8 на кожен required-урок
    g8m3l1–g8m3l4 (boss g8m3l5 без задач). Матриця покриття 2026-10-16.v2.
@@ -11,8 +11,8 @@
 SLID.pool("math", {
   id: "pg8m3",
   section: "g8m3",
-  status: "draft",
-  meta: { author: "claude-opus", created: "2026-10-31", factcheck: null, revised: "2026-11-01 refine-math-content-from-matrix-v3", teacher: null },
+  status: "verified",
+  meta: { author: "claude-opus", created: "2026-10-31", factcheck: "verifier-refine-math-content-from-matrix-v3", revised: "2026-11-01 refine-math-content-from-matrix-v3", teacher: null },
   sources: [
     { id: "a8", title: "Мерзляк А. Г., Якір М. С. Алгебра: підручник для 8 класу закладів загальної середньої освіти. — Харків: Гімназія, 2025 (§ 2, п. 12, 14–17)", url: "https://file.4book.org/images/shcoolbook_ua/8/8_a_m_2025.pdf" }
   ],

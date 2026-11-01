@@ -1,5 +1,5 @@
 /* Слід · Математика, 4 клас — пул задач для тренування до розділу «Ділення з остачею» (m4s1)
-   Статус: draft після refine-math-content-from-matrix-v3 (2026-11-01): a08 (g4a №168, перше питання «остача 4», одна відповідь 5) замінено на a12 — друге питання №168 «А остачу 5?», answerKind "list" (6; 8), формат list для m4a; id a08 не використовувати знову.
+   Статус: verified (verifier-refine-math-content-from-matrix-v3, 2026-11-01, reports/verify/refine-math-content-from-matrix-v3.md) після refine-math-content-from-matrix-v3 (2026-11-01): a08 (g4a №168, перше питання «остача 4», одна відповідь 5) замінено на a12 — друге питання №168 «А остачу 5?», answerKind "list" (6; 8), формат list для m4a; id a08 не використовувати знову.
    Попередня редакція — verified. Злиття двох незалежних версій (main/PR #5 і PR #6), 2026-10-30.
    Усі 8 вправ дослівно з verified-версії main (verifier-pm4s1 + повторна перевірка divrem verifier-pm4s1-divrem,
    reports/verify/write-math-pool-m4s1.md). Із PR #6 (reports/verify/pm4s1.md) взято лише повніші бібліографічні описи sources.
@@ -12,8 +12,8 @@
 SLID.pool("math", {
   id: "pm4s1",
   section: "m4s1",
-  status: "draft",
-  meta: { author: "claude-opus", created: "2026-10-22", factcheck: null, revised: "2026-11-01 refine-math-content-from-matrix-v3", teacher: null },
+  status: "verified",
+  meta: { author: "claude-opus", created: "2026-10-22", factcheck: "verifier-refine-math-content-from-matrix-v3", revised: "2026-11-01 refine-math-content-from-matrix-v3", teacher: null },
   sources: [
     { id: "g4a", title: "Гісь О. М., Філяк І. В. Математика : підручник для 4 класу закладів загальної середньої освіти (у 2-х ч.). Ч. 1. — Харків : Ранок, 2026 (наказ МОН № 111 від 27.01.2026; с. 61–64). PDF-дзеркало 4book.org", url: "https://file.4book.org/images/shcoolbook_ua/4/4_m_gis_2026-1.pdf" },
     { id: "l4a", title: "Логачевська С. П., Ларіна О. В., Паук Л. О. Математика : підручник для 4 класу закладів загальної середньої освіти (у 2-х ч.). Ч. 1. — Київ : Літера ЛТД, 2026 (наказ МОН № 111 від 27.01.2026; с. 17–18). PDF-дзеркало 4book.org", url: "https://file.4book.org/images/shcoolbook_ua/4/4_m_log_2026-1.pdf" }
