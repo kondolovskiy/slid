@@ -19,7 +19,10 @@ export function manifest(root = ROOT) {   // root — інше дерево (dif
   if (fs.existsSync(path.join(root, "content/catalog.js"))) files.push("content/catalog.js");
   // журнал подій (docs/EVIDENCE.md) — до app.js; у старих ревізіях (diff-answers --content-old) його ще немає
   if (fs.existsSync(path.join(root, "app/evidence.js"))) files.push("app/evidence.js");
-  files.push("app/lab.js", "app/learn.js", "app/math.js", "app/app.js");
+  files.push("app/lab.js", "app/learn.js", "app/math.js");
+  // гіпотези «обчислення чи поняття» (app/hyp.js, тіньовий режим E2) — після learn.js, до app.js; у старих ревізіях файлу ще немає
+  if (fs.existsSync(path.join(root, "app/hyp.js"))) files.push("app/hyp.js");
+  files.push("app/app.js");
   return files;
 }
 

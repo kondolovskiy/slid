@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Слід · тести гіпотез «обчислення чи поняття» (app/hyp.js, етап E1; docs/design/diag-hypothesis-math.md).
+// Слід · тести гіпотез «обчислення чи поняття» (app/hyp.js, етапи E1–E2; docs/design/diag-hypothesis-math.md).
 // Запуск: node tools/test-hyp.mjs   (без залежностей; приклади §1.5 — на справжніх вправах змісту, розмітка mis — фікстури тесту).
 // HYP_FILE=<шлях> — перевірити інший файл модуля (самоперевірка на мутантах).
 import fs from "node:fs"; import os from "node:os"; import path from "node:path"; import { fileURLToPath } from "node:url";
@@ -276,6 +276,10 @@ const of = (evs, t) => evs.filter(e => e.type === t);
   const T6 = H.tracker({ seed: "t6" }); err(T6, pool("pg6m2:d02"), { day: D1, raw: "100" });
   ev = T6.onAnswer(A(pair[0], { day: D2, run: 2 }));
   eq(of(ev, "hyp_close").map(e => [e.d.why, e.d.pexec, e.d.n, e.d.grp]), [["undecided", 0.624, 1, undefined]], "P10 (+ S10) + ✔ D≤ → pexec 0,624 → undecided");
+  // межа групи (P3-R2-2, R03): pexec між 0,7 і 0,8 — undecided (поріг 0,7 дав би confirmed exec)
+  const T6b = H.tracker({ seed: "t6b" }); err(T6b, pair[0], { day: D1, raw: "-17/20", v2: "bad" });
+  ev = T6b.onAnswer(A(pool("pg6m2:d02"), { day: D2, run: 2 }));
+  eq(of(ev, "hyp_close").map(e => [e.d.why, e.d.pexec, e.d.grp]), [["undecided", 0.765, undefined]], "P6 (S3, S10−) + ✔ D≤ → pexec 0,765 → undecided (межа 0,8, не 0,7)");
   // confirmed
   T = H.tracker({ seed: "t7" }); err(T, pair[0], { day: D1, raw: "4/9" });
   ev = T.onAnswer(A(pool("pg6m2:d02"), { day: D2, run: 2, verdict: "bad", raw: "4/9" }));
@@ -456,11 +460,15 @@ const sum = (R, pid) => R.events.filter(e => e.pid === pid).map(e => e.type === 
   eq(want, { "D>": [3, 1], "D≤+F": [3, 1], Dg: [1, 1], "D°": [2, 0] }, "точність: значення");
   ok(!clean.some(e => e.pid === "p3") && R1.events.some(e => e.pid === "p3" && e.type === "hyp_probe" && e.d.sol === 1), "p3 (sol 1) — поза точністю");
   eq(Object.fromEntries(Object.entries(M.accuracyNotFresh).map(([k, c]) => [k, c.n])), { "D>": 1, "D>|lvl1": 1, "D>|sol0=0": 1 }, "p5 — окремим зрізом, не в головній точності");
+  // Brier — лише профілі з початку журналу (P3-R2-2, R05): n = чисті перевірки fresh-профілів з вердиктом, p5 не входить
+  const brN = Object.values(M.brier).reduce((a, b) => a + b.n, 0), freshClean = clean.filter(e => fresh.has(e.pid) && ["ok", "form", "bad"].includes(e.d.res)).length;
+  eq([brN, freshClean, clean.filter(e => e.pid === "p5").length], [freshClean, 9, 1], "Brier: n = чисті перевірки профілів з початку (9), перевірка p5 — ні");
   eq(Object.keys(M.accuracy).filter(k => k.includes("|lvl")).sort(), ["D>|lvl1", "Dg|lvl1", "D°|lvl2", "D°|lvl3", "D≤+F|lvl1", "D≤+F|lvl3"], "зрізи за рівнями (урок і тест рівня — рівень 1)");
   const resolved = [...R1.hyps.values()].filter(h => h.probes.some(p => ["D≤", "D>", "F", "P", "Dg"].includes(p.d.kind) && p.d.gap.days <= 7)).length;
   eq([M.resolvable.hyps, resolved, M.resolvable.pairCount], [Math.round(1000 * resolved / 15) / 1000, 9, 8], "розв'язність (D≤/D>/F/P/Dg за 7 днів; A, D° — ні)");
   eq([M.missedConcept, M.falseAlarm], [{ n: 3, share: 0.333 }, { n: 3, share: 0 }], "пропущене поняття: 2 ✘ з 3 — так, 1 ✘ — ні");
   eq(Object.entries(M.closes).sort(), [["confirmed", 3], ["open", 2], ["reset", 1], ["superseded", 1], ["undecided", 8]], "закриття");
+  eq(M.supersededByMode, { lesson: 1 }, "superseded за місцем помилки (P3-R2-1)");
   // той самий вхід → ті самі події трекера; стан зберігається й відновлюється
   const run = () => { const T = H.tracker({ seed: "det" }), ev = []; ev.push(...err(T, pair[0], { day: D1, raw: "4/9" }), ...T.onAnswer(A(pair[3], { day: D2, run: 2, verdict: "bad", raw: "4/9" }))); return [ev, T.state()]; };
   const [e1, st] = run(), [e2] = run(); eq(JSON.stringify(e1), JSON.stringify(e2), "трекер детермінований");
@@ -504,12 +512,84 @@ const sum = (R, pid) => R.events.filter(e => e.pid === pid).map(e => e.type === 
   eq([M.byLvl[1].clean, M.byLvl[1].errors, M.byLvl[1].kinds, M.byLvl[2].clean, M.byLvl[2].errors, M.byLvl[2].kinds], [518, 518, { "D>": 475, F: 43 }, 157, 158, { "D≤": 144, F: 13 }], "через hyp.js: 518/518 (D> 475, F 43), 157/158 (D≤ 144, F 13)");
 }
 
-/* ---------- 11. Модуль не підключено (E1) ---------- */
+/* ---------- 11. Підключення (E2): index.html, sw.js, manifest; модуль без DOM і сховища ---------- */
 {
-  const idx = fs.readFileSync(path.join(ROOT, "index.html"), "utf8"), sw = fs.readFileSync(path.join(ROOT, "sw.js"), "utf8"), man = fs.readFileSync(path.join(ROOT, "content/manifest.json"), "utf8");
-  eq([idx.includes("app/hyp.js"), sw.includes("app/hyp.js"), man.includes("app/hyp.js")], [false, false, false], "app/hyp.js не в index.html / sw.js / manifest (E1)");
-  ok(!/SLID_HYP/.test(fs.readFileSync(path.join(ROOT, "app/app.js"), "utf8")), "app.js не викликає SLID_HYP (E1)");
+  const idx = fs.readFileSync(path.join(ROOT, "index.html"), "utf8"), sw = fs.readFileSync(path.join(ROOT, "sw.js"), "utf8"), man = JSON.parse(fs.readFileSync(path.join(ROOT, "content/manifest.json"), "utf8"));
+  eq([idx.includes('<script src="app/hyp.js">'), sw.includes('"./app/hyp.js"'), man.includes("app/hyp.js")], [true, true, true], "app/hyp.js в index.html / sw.js / manifest (E2)");
+  ok(man.indexOf("app/learn.js") < man.indexOf("app/hyp.js") && man.indexOf("app/hyp.js") < man.indexOf("app/app.js"), "порядок: learn.js → hyp.js → app.js");
+  const { manifest } = await import("./build.mjs");
+  const old = fs.mkdtempSync(path.join(os.tmpdir(), "hyp-old-")); fs.mkdirSync(path.join(old, "app")); fs.mkdirSync(path.join(old, "content"));
+  fs.writeFileSync(path.join(old, "app/registry.js"), "");
+  eq(manifest(old).filter(f => /hyp|evidence/.test(f)), [], "стара ревізія без app/hyp.js (diff-answers --content-old) — без нього в manifest");
+  fs.writeFileSync(path.join(old, "app/hyp.js"), ""); ok(manifest(old).includes("app/hyp.js"), "файл є — у manifest");
+  fs.rmSync(old, { recursive: true, force: true });
+  ok(/SLID_HYP/.test(fs.readFileSync(path.join(ROOT, "app/app.js"), "utf8")), "app.js викликає SLID_HYP (E2)");
   ok(!/document|localStorage|indexedDB/.test(fs.readFileSync(process.env.HYP_FILE || path.join(ROOT, "app/hyp.js"), "utf8").replace(/\/\*[\s\S]*?\*\/|\/\/.*$/gm, "")), "hyp.js без DOM і сховища");
+}
+
+/* ---------- 12. Стан slid.hyp (E2, §3.3): pend і scr між завантаженнями, closed, злиття вкладок, persist ---------- */
+{
+  const resolve = a => E.pool.get(a.item.key) || null;
+  // гіпотеза, що чекає другої спроби, переживає закриття вкладки (§9 п. 17): той самий hyp_open, що й без перезавантаження
+  const T1 = H.tracker({ seed: "pd" }); T1.onScreen({ item: { mode: "practice", l: pair[0].lesson, i: 0 }, t: tm(D1), day: D1 });
+  T1.onAnswer(A(pair[0], { day: D1, verdict: "bad", raw: "4/9", final: false }));
+  const st = JSON.parse(JSON.stringify(T1.state()));
+  ok(st.pend && st.pend.a && !("s" in st.pend.a) && st.pend.a.item.key === pair[0].key, "state.pend — без s (вправу знаходить app.js)");
+  eq(st.scr, 1, "state.scr — лічильник екранів");
+  const scrB = { item: { mode: "practice", l: pair[0].lesson, i: 1 }, t: tm(D1, 1), day: D1 };
+  const want = of(T1.onScreen(scrB), "hyp_open")[0];
+  const T2 = H.tracker({ seed: "pd2" }); ok(T2.load(st, resolve) && T2.pending, "load(state, resolve) → pend відновлено");
+  const got = of(T2.onScreen(scrB), "hyp_open")[0];
+  eq(got && { ...got.d, hid: null }, { ...want.d, hid: null }, "після перезавантаження — той самий hyp_open (без S10, at, h)");
+  eq(T2.state().scr, 2, "scr продовжується після load");
+  const T3 = H.tracker({ seed: "pd3" }); T3.load(st, () => null); ok(!T3.pending, "вправу не знайдено — pend відкинуто");
+  // closed, drop, setPersist
+  const Ta = H.tracker({ seed: "ta", persist: 1 }); const x = of(err(Ta, pair[0], { day: D1, raw: "4/9" }), "hyp_open")[0].d;
+  eq(x.persist, 1, "persist: 1");
+  const Tb = H.tracker({ seed: "tb" }); Tb.load(JSON.parse(JSON.stringify(Ta.state())));
+  eq(of(Tb.onAnswer(A(pair[1], { day: D2, run: 2 })), "hyp_close").map(e => e.d.hid), [x.hid], "інша вкладка закрила X");
+  const z = of(err(Tb, pair[4], { day: D2, min: 5, raw: "0", run: 2 }), "hyp_open")[0].d.hid;
+  Ta.setPersist(0); const y = of(err(Ta, pair[2], { day: D1, min: 9, raw: "0", run: 3 }), "hyp_open")[0].d;
+  eq(y.persist, 0, "setPersist(0) → наступні hyp_open з persist: 0");
+  ok(Tb.state().closed.includes(x.hid), "state.closed — hid закритих");
+  const m = H.mergeState(Ta.state(), Tb.state());
+  eq(m.open.map(h => h.hid).sort(), [y.hid, z].sort(), "злиття: X закрито в іншій вкладці, Y (ця) і Z (інша) відкриті");
+  ok(m.closed.includes(x.hid) && m.seed === undefined && m.cnt === Ta.state().cnt && m.pend === null, "closed — об'єднання; cnt, pend — цієї вкладки");
+  eq(new Set(m.errs.map(e => `${e.pk}|${e.t}`)).size, m.errs.length, "errs без дублікатів"); eq(m.errs.length, 3, "errs: X, Y (ця) і Z (інша), спільна X — один раз");
+  Ta.drop(m.closed); eq(Ta.open.map(h => h.hid), [y.hid], "drop(closed): X геть із пам'яті цієї вкладки без подій");
+  eq(H.mergeState(Ta.state(), null), Ta.state(), "немає збереженого — стан цієї вкладки");
+  const g1 = { v: 1, open: [], errs: [], closed: [], gens: { k: [{ gv: { a: 1 }, d: D1 }, { gv: { a: 2 }, d: D1 }] }, shown: { k: D1 }, passed: {} };
+  const g2 = { v: 1, open: [], errs: [], closed: [], gens: { k: [{ gv: { a: 2 }, d: D2 }, { gv: { a: 3 }, d: D2 }] }, shown: { k: D2, j: D1 }, passed: {} };
+  const gm = H.mergeState(g1, g2);
+  eq([gm.gens.k.map(g => [g.gv.a, g.d]), gm.shown], [[[2, D2], [3, D2], [1, D1]], { k: D2, j: D1 }], "gens — об'єднання за gv (пізніший показ); shown — пізніший день");
+  const many = { v: 1, open: Array.from({ length: 60 }, (_, i) => ({ hid: "o." + i, t0: i })), errs: [], closed: [], gens: {}, shown: {}, passed: {} };
+  eq(H.mergeState({ ...many, open: [] }, many).open.map(h => h.hid), many.open.slice(10).map(h => h.hid), "злиття: ≤ 50 відкритих, найновіші");
+}
+
+/* ---------- 13. Реплей = застосунок (E2): boot → tick, done, weak за останнім тестом, gen-екземпляр ---------- */
+{
+  const evs = []; let seq = 0;
+  const e = (type, d, t) => evs.push({ v: 1, eid: `q.${seq}`, seq: ++seq, type, t, tzo: 0, n: seq, ms: 0, sid: "q", did: "devq", pid: "pq", cv: "c", cvs: "sw", net: 1, synced: 0, d, ...(type === "answer" ? { dt: 9000 } : {}) });
+  const ans = (s, t, o = {}) => e("answer", { mode: o.mode || "practice", c: "math", l: o.l || s.lesson, i: o.i ?? 0, key: o.mode ? null : s.key, type: s.type, sk: s.sk, hyp: false, try: 1, verdict: o.v || "ok", raw: o.raw ?? "1", hint: false, final: true, ...(o.gv ? { gv: o.gv, genAt: o.genAt } : {}) }, t);
+  const ps = (t, ks) => e("practice_start", { prN: 1, items: ks.map(s => ({ key: s.key, l: s.lesson, review: false, lvl: s.lvl })) }, t);
+  e("boot", { grade: 6, subj: "math", lessons: 0, diags: [], srs: 0 }, tm(D1));
+  // урок пари пройдено з < 65 % (done, але не passed) → помилка в тренуванні → урок знову ≥ 65 % → superseded лише завдяки done
+  e("lesson_start", { c: "math", l: "g6m2l4" }, tm(D1, 1)); e("lesson_end", { c: "math", l: "g6m2l4", acc: 0.5 }, tm(D1, 5));
+  ps(tm(D1, 10), [pair[0]]); ans(pair[0], tm(D1, 11), { v: "bad", raw: "4/9" });
+  e("lesson_start", { c: "math", l: "g6m2l4" }, tm(D1, 20)); e("lesson_end", { c: "math", l: "g6m2l4", acc: 0.9 }, tm(D1, 25));
+  // gen: хибний запис −39 при наборі a = 3, b = 13 (genAt 5) — S3 → P6 лише на екземплярі (у шаблоні чисел немає)
+  E.pool.set(GEN.key, GEN);
+  ps(tm(D1, 30), [GEN]); ans(GEN, tm(D1, 31), { v: "bad", raw: "-39", gv: { a: 3, b: 13 }, genAt: 5 });
+  // тест рівня двічі: gap у першому, ok у другому — weak за останнім тестом (як S.diag), S12 немає
+  e("diag_end", { diag: "dg6", topics: { ord: "gap" } }, tm(D1, 40)); e("diag_end", { diag: "dg6", topics: { ord: "ok" } }, tm(D1, 41));
+  ps(tm(D1, 50), [pool("pg6m3:a01")]); ans(pool("pg6m3:a01"), tm(D1, 51), { v: "bad", raw: "7" });
+  // наступне завантаження через 8 днів: старт закриває старі гіпотези (expired) — у реплеї на boot, як у застосунку
+  e("boot", { grade: 6, subj: "math", lessons: 1, diags: [], srs: 0 }, tm("2026-11-11"));
+  const R = replay({ events: evs }, E), Sx = R.events.map(x => x.type === "hyp_open" ? ["open", x.d.h.rule, x.d.h.sig.join(",")] : x.type === "hyp_close" ? ["close", x.d.why] : [x.type]);
+  E.pool.delete(GEN.key);
+  eq(Sx, [["open", "P3", "S2:frac-add-naive"], ["close", "superseded"], ["open", "P6", "S3"], ["open", "P10", "S14"], ["close", "expired"], ["close", "expired"]],
+    "реплей: done з lesson_end (< 65 %) → superseded; gen — екземпляр за genAt (P6); weak — останній тест (без S12); boot → expired");
+  eq(R.events.filter(x => x.type === "hyp_close" && x.d.why === "expired").map(x => x.seq), [seq, seq], "expired — на події boot");
 }
 
 console.log(fails ? `test-hyp: ${fails} з ${n} перевірок не пройшли` : `test-hyp: усі ${n} перевірок пройшли`);

@@ -140,8 +140,10 @@ const fresh = () => ({ name:"", grade:null, weekOverride:null, theme:"system", s
 let S = fresh();
 try { const raw = localStorage.getItem(KEY); if (raw) S = Object.assign(fresh(), JSON.parse(raw)); } catch(e) {}
 EV.observe(S); EV.log("boot", ()=>({ grade:S.grade, subj:S.subject, lessons:Object.keys(S.lessons||{}).length, diags:Object.keys(S.diag||{}), srs:Object.keys(S.srs||{}).length }));
-// квоти бракує — спершу звільнити місце копією черги журналу (docs/EVIDENCE.md): прогрес slid.v1 важливіший за незаписані події
-const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e) { try { localStorage.removeItem("slid.evidence.pending"); localStorage.setItem(KEY, JSON.stringify(S)); } catch(e) {} } EV.observe(S); };
+// квоти бракує — спершу звільнити місце копією черги журналу й станом гіпотез (docs/EVIDENCE.md, slid.hyp): прогрес slid.v1 важливіший
+// за незаписані події й тіньові гіпотези. Потім — стан гіпотез (лише після slid.v1 і лише якщо slid.v1 записано; HYPS нижче)
+let hypAfterSave = () => {};
+const save = () => { let ok=true, squeezed=false; try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e) { squeezed=true; try { localStorage.removeItem("slid.evidence.pending"); localStorage.removeItem("slid.hyp"); localStorage.setItem(KEY, JSON.stringify(S)); } catch(e) { ok=false; } } EV.observe(S); hypAfterSave(ok, squeezed); };
 try { const fx=JSON.stringify(S.skFix); if (LEARN.migrateSk(S) || JSON.stringify(S.skFix)!==fx) save(); } catch(e) {}   // позначка міграції зберігається й без перенесених записів (рев'ю P3-2); sk, узгоджені з уроками 2026-10-31, — у журналі помилок (learn.js, SK_RETAG)
 // розпочатий до нової редакції тесту: вердикти замінених завдань відкидаються, решта й порядок лишаються (learn.js, resumeDiag)
 try { let ch=false; for (const c of SUBJ) for (const d of c.diags||[]) if (Object.keys(S.diagRun?.[d.id]||{}).length && LEARN.resumeDiag(S,d).dropped.length) ch=true; if (ch) save(); } catch(e) {}
@@ -156,6 +158,84 @@ const done = id => !!S.lessons[id]?.done;
 const unlocked = (sec,i) => S.unlockAll || i===0 || done(sec.lessons[i-1].id) || known(sec.lessons[i].id) || known(sec.lessons[i-1].id);
 function award(id, list){ if(!S.badges[id]){ S.badges[id]=dkey(); list.push(id); } }
 const skey = (c,k) => c.id+"."+k;
+
+/* ---------- Гіпотези «обчислення чи поняття» (app/hyp.js), тіньовий режим E2 ----------
+   docs/design/diag-hypothesis-math.md §2.3, §3.3. Лише математика. Трекер отримує дані спроби з app.js напряму (не з журналу): виклик
+   після setDock (повідомлення дитині вже показане), у try/catch і з бюджетом часу; події hyp_* — через EV.log. Стан — окремий ключ
+   localStorage «slid.hyp», пишеться лише після slid.v1 (save) і поступається йому: save() за браку квоти видаляє slid.hyp, а невдалий
+   запис slid.hyp видаляє ключ (гіпотези далі — лише в пам'яті, persist: 0). Дитина нічого нового не бачить; slid.v1, record/detect,
+   SRS і план від трекера не залежать. Без app/hyp.js — заглушка; без IndexedDB чи app/evidence.js трекер працює (події губляться). */
+const HYPS = (() => {
+  const H = window.SLID_HYP, M = SUBJ.find(c=>c.id==="math");
+  const off = { on:false, newRun(){}, capture(){ return null; }, answer(){}, screen(){}, lessonEnd(){}, close(){}, reset(){}, persist(){} };
+  if (!H || !M) return off;
+  const HKEY = "slid.hyp", BUDGET_MS = 400;
+  const perf = () => { try { return performance.now(); } catch(e) { return 0; } };
+  let store = true; try { localStorage.getItem(HKEY); } catch(e) { store = false; }
+  const T = H.tracker({ persist: store });
+  let on = true, dirty = false, runN = 0, scrT = perf(), pres = null, v1ok = true;   // v1ok — останній save() записав slid.v1
+  const runId = () => `${T.seed}.r${runN}`;   // id сесії плеєра (урок / тренування / тест), унікальний між завантаженнями
+  /** Виклик трекера: помилка чи перевищений бюджет вимикають тінь до перезавантаження (дитина нічого не помічає). */
+  const call = (f, quiet) => { if (!on) return []; const t0 = perf(); let ev = [];
+    try { ev = f() || []; if (!quiet || ev.length) dirty = true; } catch(e) { on = false; ev = []; }
+    if (perf() - t0 > BUDGET_MS) on = false;
+    for (const e of ev) EV.log(e.type, e.d);
+    return ev; };
+  const presOf = () => pres || (pres = (()=>{ try { return H.preIndex(M); } catch(e) { return {}; } })());
+  const poolItem = key => { const [p, id] = String(key).split(":"); const it = (M.pools||[]).find(x=>x.id===p)?.items.find(x=>x.id===id); return it ? { ...it, key, pool:(M.pools||[]).find(x=>x.id===p) } : null; };
+  /** Вправа/екран зі змісту за item (pend після перезавантаження); gen — той самий набір за genAt. */
+  const resolve = a => { const it = a.item || {};
+    if (it.mode === "practice") { const x = poolItem(it.key); return x && x.gen ? (Number.isInteger(a.genAt) ? LEARN.genInstance(x, "", a.genAt) : null) : x; }
+    if (it.mode === "diag") return (M.diags||[]).find(d=>d.id===it.l)?.items[it.i] || null;
+    const f = findLesson(it.l); return f && f.c.id === "math" ? f.l.screens[it.i] || null : null; };
+  const weakLessons = () => { const w = new Set(); for (const d of M.diags||[]) { const r = S.diag?.[d.id]; if (!r || !r.topics) continue;
+    for (const t of d.topics||[]) if (r.topics[t.id] === "gap" || r.topics[t.id] === "shaky") (t.lessons||[]).forEach(l=>w.add(l)); } return w; };
+  // невдалий запис slid.hyp або квоти забракло для slid.v1: ключ геть і до перезавантаження не пишеться (гіпотези — лише в пам'яті, persist: 0)
+  const forget = () => { store = false; T.setPersist(0); try { localStorage.removeItem(HKEY); } catch(e) {} };
+  const write = () => {
+    if (!store || !dirty || !v1ok) return;   // не записано slid.v1 — slid.hyp не пишемо (місце — прогресу)
+    try {
+      let old = null; try { old = JSON.parse(localStorage.getItem(HKEY) || "null"); } catch(e) {}
+      const st = H.mergeState(T.state(), old);
+      T.drop(st.closed);   // закриті в іншій вкладці
+      localStorage.setItem(HKEY, JSON.stringify(st)); dirty = false;
+    } catch(e) { forget(); }   // самоочищення: slid.v1 важливіший
+  };
+  // старт: стан з минулих сесій; гіпотези, старші за 7 днів без перевірки, — expired (після boot, як у реплеї)
+  if (store) { try { const st = JSON.parse(localStorage.getItem(HKEY) || "null"); if (st) T.load(st, resolve); } catch(e) {} }
+  call(() => T.tick({ t: Date.now(), day: dkey() }), true);   // без змін — без запису на старті
+  write();
+  hypAfterSave = (ok, squeezed) => { v1ok = ok; if (squeezed) forget(); else write(); };
+  // перехід зі сторінки: відкладене відкриття (pend) і лічильники — у slid.hyp; без сховища — відкрити зараз, щоб подія встигла в копію черги
+  const away = () => { try { if (!on) return; if (store) return write(); if (T.pending) { call(() => T.flush()); if (EV.stash) EV.stash(); } } catch(e) {} };
+  try { addEventListener("pagehide", away); document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") away(); }); } catch(e) {}
+  return {
+    get on() { return on; },
+    newRun() { runN++; },
+    /** Дані спроби на момент EV.log("answer") (до змін S.seen і екрана): s — вправа зі змісту, rec — те, що пише журнал. */
+    capture(s, rec) {
+      if (!on || C?.id !== "math" || !rec || rec.verdict === "hyp") return null;
+      try {
+        const it = rec, mode = it.mode, dg = mode === "diag" ? run?.diag || null : null;
+        const ls = dg ? (s.lesson ? [s.lesson] : (dg.topics||[]).find(t=>t.id===s.topic)?.lessons || [L.id]) : [it.l];
+        const P = presOf(), pr = [...new Set([...ls.flatMap(l=>P[l]||[]), ...(s.pre? [s.pre] : [])])].filter(l=>!ls.includes(l)), w = weakLessons();
+        const raw = it.raw instanceof Set ? [...it.raw].sort((a,b)=>(a>b)-(a<b)) : it.raw && typeof it.raw === "object" ? JSON.parse(JSON.stringify(it.raw)) : it.raw;
+        const a = { s: s._hs || s, item: { mode, l: it.l, i: it.i, key: it.key ?? null, type: it.type, sk: it.sk ?? null, hyp: !!it.hyp }, raw, verdict: it.verdict, try: it.try,
+          hint: !!it.hint, final: !!it.final, dt: Math.round(perf() - scrT), t: Date.now(), day: dkey(), lvl: it.key ? (s.lvl ?? null) : null,
+          unseen: it.key ? S.seen[it.key] === undefined : undefined, run: runId(), ls, pres: pr, preWeak: pr.some(l=>w.has(l)), done: ls.filter(l=>done(l)), cv: EV.cv ?? null };
+        if (s.gv) { a.gv = s.gv; a.genAt = s.genAt; a.genN = s.genN ?? 0; }
+        return a;
+      } catch(e) { return null; }
+    },
+    answer(a) { if (a) { call(() => T.onAnswer(a)); write(); } },
+    screen(s) { scrT = perf(); if (C?.id === "math") call(() => T.onScreen({ item: evItem(s), t: Date.now(), day: dkey() })); },
+    lessonEnd(l, acc) { call(() => T.onLessonEnd({ l, acc, run: runId(), t: Date.now(), day: dkey() })); },   // запис — у save() кінця уроку
+    close() { call(() => T.flush()); write(); },
+    /** «Скинути прогрес»: reset для всіх відкритих — до EV.log("reset") (старий pid), потім ключ геть. */
+    reset() { call(() => T.onReset({ t: Date.now(), day: dkey() })); dirty = false; try { localStorage.removeItem(HKEY); } catch(e) {} },
+    persist: write
+  };
+})();
 
 /* ---------- Оболонка ---------- */
 function applyTheme(subjectId){ const r=document.documentElement; if(S.theme==="system") r.removeAttribute("data-theme"); else r.setAttribute("data-theme",S.theme); if(subjectId) r.dataset.subject=subjectId; else delete r.dataset.subject; }
@@ -591,7 +671,7 @@ function bindView(){
   const ib=$("#installBtn"); if(ib) ib.onclick=async()=>{ if(await window.SLID_PWA.install()) toast(ic("check")+"Встановлено"); render(); };
   const dm=$("#demo"); if(dm) dm.onclick=()=>{ fillDemo(); save(); toast(ic("check")+"Демо-прогрес заповнено"); tab="progress"; render(); };
   const rs=$("#reset"); if(rs) rs.onclick=()=>{ if(!confirmReset){ confirmReset=true; render(); setTimeout(()=>{ confirmReset=false; if(tab==="profile") render(); },4000); return; }
-    const keep={name:S.name,theme:S.theme,subject:S.subject,grade:S.grade}; EV.log("reset"); EV.newProfile(); S=Object.assign(fresh(),keep); confirmReset=false; save(); toast(ic("check")+"Прогрес скинуто"); render(); };
+    const keep={name:S.name,theme:S.theme,subject:S.subject,grade:S.grade}; HYPS.reset(); EV.log("reset"); EV.newProfile(); S=Object.assign(fresh(),keep); confirmReset=false; save(); toast(ic("check")+"Прогрес скинуто"); render(); };
 }
 function toast(html){ const t=$("#toast"); t.innerHTML=`<div>${html}</div>`; clearTimeout(toast.t); toast.t=setTimeout(()=>t.innerHTML="",1900); }
 
@@ -716,7 +796,7 @@ function startLesson(cid,k,i,linked){
   afterEnd=null;
   C=course(cid); SEC=C.sections[k]; li=i; L=SEC.lessons[i]; idx=0;
   run={ linked:!!linked, weak:new Set(), xp:0, first:0, graded:0, combo:0, best:0, mistakes:0, startLvl:levelOf(S.xp).n };
-  EV.log("lesson_start", ()=>({ c:C.id, l:L.id, sec:SEC.id, grade:SEC.grade, boss:!!L.boss, linked:!!linked, screens:L.screens.length }));
+  EV.log("lesson_start", ()=>({ c:C.id, l:L.id, sec:SEC.id, grade:SEC.grade, boss:!!L.boss, linked:!!linked, screens:L.screens.length })); HYPS.newRun();
   applyTheme(C.id);
   openPlayer();
   renderScreen();
@@ -729,13 +809,13 @@ function startDiag(cid){
   SEC={ grade:d.grade, signed:d.signed!==false, lessons:[] }; li=0; L={ id:d.id, title:d.title, screens:d.items };
   run={ diag:d, res:LEARN.resumeDiag(S,d).res, linked:true, weak:new Set(), xp:0, first:0, graded:0, combo:0, best:0, mistakes:0, startLvl:levelOf(S.xp).n };
   idx=LEARN.nextItem(d,run.res); if(idx<0) idx=d.items.length;
-  EV.log("diag_start", ()=>({ c:C.id, diag:d.id, grade:d.grade, rev:LEARN.diagRev(d), items:d.items.length, resumed:Object.keys(run.res).length }));
+  EV.log("diag_start", ()=>({ c:C.id, diag:d.id, grade:d.grade, rev:LEARN.diagRev(d), items:d.items.length, resumed:Object.keys(run.res).length })); HYPS.newRun();
   applyTheme(C.id);
   openPlayer();
   renderScreen();
 }
-function diagAnswer(v){ EV.log("answer", ()=>({ ...evItem(L.screens[idx]), try:1, verdict: v===LEARN.SKIP? "skip" : evVerdict(L.screens[idx], v===LEARN.OK), res:v, raw: v===LEARN.SKIP? null : evRaw(L.screens[idx]), hint:false, final:true }));
-  run.res[idx]=v; save(); idx=LEARN.nextItem(run.diag,run.res); if(idx<0) idx=L.screens.length; renderScreen(); }
+function diagAnswer(v){ const s=L.screens[idx], ha=evAnswer(s, ()=>{ const vd= v===LEARN.SKIP? "skip" : evVerdict(s, v===LEARN.OK), raw= v===LEARN.SKIP? null : evRaw(s); return { ...evItem(s), try:1, verdict:vd, res:v, raw, hint:false, final:true, ...evKey(s, vd, raw) }; });
+  run.res[idx]=v; save(); HYPS.answer(ha); idx=LEARN.nextItem(run.diag,run.res); if(idx<0) idx=L.screens.length; renderScreen(); }
 $("#skip").onclick=()=>{ if(run?.diag && idx<L.screens.length) diagAnswer(LEARN.SKIP); };
 function renderDiagEnd(){
   const d=run.diag, plan=LEARN.finishDiag(S, C.id, d, run.res, learnCtx(C));
@@ -772,21 +852,24 @@ function startPractice(cid, focus){
   if(focus && !items.some(it=>it.lesson===focus)) return toast("Для цієї теми тренування поки недоступне");
   // генеровані вправи (gen): числа сталі в межах сесії й різні між сесіями; ключ seen/SRS — той самий id вправи (engine-practice-pool)
   const prN=(Number.isSafeInteger(S.prN)? S.prN : 0)+1;
-  const picked=LEARN.pickSession(S, { items, focus, n:6, day:dkey(), order:id=>LORD.get(id)??1e9 }).map(it=>LEARN.genInstance(it, "s"+prN)).filter(Boolean);
+  const picked=LEARN.pickSession(S, { items, focus, n:6, day:dkey(), order:id=>LORD.get(id)??1e9 }).map(it=>genPick(it, "s"+prN)).filter(Boolean);
   if(!picked.length) return toast("Спершу пройди урок цієї теми");
   S.prN=prN;   // лічильник — лише для справді розпочатої сесії
   afterEnd=null;
   SEC={ grade:S.grade, signed:true, lessons:[] }; li=0; idx=0;
   L={ id:"practice", title: focus? findLesson(focus).l.title : "Тренування на сьогодні", screens: picked.map(it=>{ const f=findLesson(it.lesson), [sid,ref]=String(it.src).split(/\s+(.*)/s), src=it.pool.sources.find(x=>x.id===sid);
     const where=LEARN.srcRef(ref, it.srcPage);   // «с. N» не подвоюється, якщо сторінка вже є в src
-    return { ...it, grade:f.sec.grade, eyebrow:(it.review?"Повторення · ":"Тренування · ")+esc(f.l.title), body:(it.body||"")+`<p class="srcnote">Джерело: ${esc(src? src.short||src.title : sid)}${where? ", "+esc(where) : ""}${it.adapted? " · адаптовано" : ""}</p>`,
+    return { ...it, _hs:it, grade:f.sec.grade, eyebrow:(it.review?"Повторення · ":"Тренування · ")+esc(f.l.title), body:(it.body||"")+`<p class="srcnote">Джерело: ${esc(src? src.short||src.title : sid)}${where? ", "+esc(where) : ""}${it.adapted? " · адаптовано" : ""}</p>`,
       fbOk:it.fbOk||"Правильно.", fbBad:it.fbBad||"Не зовсім.", fbText:`<span class="steps"><b>Розв'язання</b>${it.steps.map((t,i)=>`<span>${i+1}. ${t}</span>`).join("")}</span>` }; }) };
   run={ practice:{ focus, res:[] }, linked:true, weak:new Set(), xp:0, first:0, graded:0, combo:0, best:0, mistakes:0, startLvl:levelOf(S.xp).n };
-  EV.log("practice_start", ()=>({ c:C.id, focus:focus||null, prN, items:picked.map(it=>({ key:it.key, l:it.lesson, review:!!it.review, lvl:it.lvl ?? null })) }));
+  EV.log("practice_start", ()=>({ c:C.id, focus:focus||null, prN, items:picked.map(it=>({ key:it.key, l:it.lesson, review:!!it.review, lvl:it.lvl ?? null })) })); HYPS.newRun();
   applyTheme(C.id);
   openPlayer();
   renderScreen();
 }
+/** Вправа сесії: gen — конкретний набір (genInstance) і для журналу й гіпотез ще gv (значення змінних, ≤ 8) та genN (скільки наборів). */
+function genPick(it, seed){ const g=LEARN.genInstance(it, seed); if(g && it.gen){ const all=LEARN.genAll(it), env=all.envs?.[g.genAt];
+  if(env){ g.gv=Object.fromEntries(all.names.slice(0,8).map(n=>[n, env[n]])); g.genN=all.envs.length; } } return g; }
 function renderPracticeEnd(){
   pProgress(); $("#pCombo").innerHTML="";
   const pr=run.practice, cid=C.id, upd=LEARN.srsUpdate(S, pr.res, dkey());
@@ -817,7 +900,7 @@ function renderPracticeEnd(){
 /* плеєр модальний: фон (застосунок і вкладки) inert, поки урок відкрито — Tab не виходить за межі плеєра (QA 4–5 кл.) */
 const PLAYER_BG = ["#app","#tabs","#sheetHost"];
 function openPlayer(){ $("#player").hidden=false; document.body.style.overflow="hidden"; $("#pClose").innerHTML=ic("x"); PLAYER_BG.forEach(q=>{ const e=$(q); if(e) e.inert=true; }); }
-function closePlayer(){ EV.log("close", ()=>({ mode:evMode(), l:L.id, i:idx, of:L.screens.length, end:idx>=L.screens.length }));
+function closePlayer(){ EV.log("close", ()=>({ mode:evMode(), l:L.id, i:idx, of:L.screens.length, end:idx>=L.screens.length })); HYPS.close();
   $("#player").hidden=true; document.body.style.overflow=""; PLAYER_BG.forEach(q=>{ const e=$(q); if(e) e.inert=false; }); render(); }
 /** Фокус на головну дію (Далі / Перевірити / Готово), щоб Enter вів далі. Якщо вона неактивна — на обраний варіант
     (спершу позначений помилкою), далі на перший елемент екрана, а якщо їх немає (lab із самими SVG) — на сам екран.
@@ -862,7 +945,7 @@ function renderScreen(){
   $("#player").scrollTo({top:0, behavior:"instant"});   // і для підсумку: інакше він відкривається з прокруткою попереднього екрана
   if(idx>=L.screens.length){ if(run.diag) renderDiagEnd(); else if(run.practice) renderPracticeEnd(); else renderEnd(); $("#player").scrollTo({top:0, behavior:"instant"}); return focusAction(); }
   const s=L.screens[idx]; checked=false; tries=0; tried=null; pProgress();
-  lastAns=null; EV.log("screen", ()=>evItem(s));
+  lastAns=null; EV.log("screen", ()=>evItem(s)); HYPS.screen(s);
   let h=`<section class="screen" tabindex="-1"><div class="eyebrow">${run.diag? `Тест рівня · завдання ${Object.keys(run.res).length+1}` : s.eyebrow||""}</div>`;
   h+= s.type==="intro"? `<h1>${s.title}</h1>` : `<h2>${s.title}</h2>`;
   h+= fig(s) + (s.body||"") + noteHtml(s);
@@ -1058,19 +1141,31 @@ function skillHit(s, ok){ if(!s.sk) return; const k=skey(C,s.sk); const r=S.skil
 /* журнал подій: опис екрана/вправи, сирий запис і вердикт (лише читання; EV обчислює в try/catch) */
 const evMode = () => run?.diag? "diag" : run?.practice? "practice" : "lesson";
 const evItem = s => ({ mode:evMode(), c:C?.id, l: run?.practice? s.lesson : L.id, i:idx, id:s.id ?? null, key:s.key ?? null, pool:s.pool?.id ?? null,
-  type:s.type, ak:s.answerKind ?? null, sk:s.sk ?? null, pre:s.pre ?? null, topic:s.topic ?? null, rev:s.rev ?? null, boss:!!L.boss, hyp:!!(s.hyp||s.poll) });
+  type:s.type, ak:s.answerKind ?? null, sk:s.sk ?? null, pre:s.pre ?? null, topic:s.topic ?? null, rev:s.rev ?? null, boss:!!L.boss, hyp:!!(s.hyp||s.poll), lvl:s.lvl ?? null });
 const evRaw = s => LAB && s.type==="lab"? LAB.get() : st;
 // answer: ok/form/bad — той самий результат checkAns, що його щойно дав gradeNow (lastAns), без другої перевірки. У тесті рівня
 // вердикт дає diagVerdict (OK / HALF / BAD) і сам checkAns не повертає: для журналу — один checkAns (лише number/time/quantity, дешево),
 // щоб бачити form; HALF пише diagHalf з verdict "half"
 let lastAns=null;
 const evVerdict = (s, ok) => s.type!=="answer"? (ok? "ok" : "bad") : lastAns || (run?.diag? LEARN.checkAns(s,st) : ok? "ok" : "bad");
+/* answer: ключ (ans ≤ 60 символів рядком, інакше ansCut: 1; choice — індекс, multi — масив індексів), код причини form/half (fc),
+   набір gen (gv, genAt) — для гіпотез і реплею (docs/design/diag-hypothesis-math.md §3.1). fc: formCode викликає checkAns, тож у плеєрі
+   ця функція стоїть до власного checkAns гілки помилки (formHint/badHint рахуються заново) — тексти доку не змінюються */
+function evKey(s, verdict, raw){ const o={}; try{
+  const a = s.type==="choice"? s.correct : s.type==="multi"? [...s.correct] : s.type==="answer"? LEARN.ansText(s)
+    : s.type==="fracin"? (s.hideDen? `${s.answer}/${s.den}` : String(s.answer)) : ["number","numline","slider"].includes(s.type)? String(s.answer) : s.type==="shade"? String(s.target) : undefined;
+  if(typeof a==="string" && a.length>60) o.ansCut=1; else if(a!==undefined) o.ans=a;
+  if((verdict==="form"||verdict==="half") && s.type==="answer" && typeof raw==="string") o.fc=LEARN.formCode(s, raw);
+  if(s.gv && Number.isInteger(s.genAt)){ o.gv=s.gv; o.genAt=s.genAt; } }catch(e){} return o; }
+/** Подія answer у журнал і ті самі дані для трекера гіпотез (HYPS.capture) — на той самий момент, до змін S.seen і екрана.
+    Без журналу (немає модуля чи IndexedDB) дані обчислюються лише для гіпотез, і лише коли трекер увімкнено. */
+function evAnswer(s, f){ let r=null; EV.log("answer", ()=>(r=f())); if(!HYPS.on || C?.id!=="math") return null; try{ return HYPS.capture(s, r || f()); }catch(e){ return null; } }
 /* тест рівня, answer: півбала (LEARN.HALF; engine-diag-half-credit) — значення правильне, а вимоганого умовою вигляду немає чи корінь
    не обчислено (LEARN.diagVerdict). Вердикт зберігається одразу (закритий плеєр не дасть відповісти вдруге); далі короткий екран-пояснення
    з наявним текстом formHint, без другої спроби й без «Ще не знаю»; «Далі» — наступне завдання тесту (diagNext). */
-function diagHalf(s){ EV.log("answer", ()=>({ ...evItem(s), try:1, verdict:"half", res:LEARN.HALF, raw:evRaw(s), hint:false, final:true }));
+function diagHalf(s){ const ha=evAnswer(s, ()=>{ const raw=evRaw(s); return { ...evItem(s), try:1, verdict:"half", res:LEARN.HALF, raw, hint:false, final:true, ...evKey(s, "half", raw) }; });
   run.res[idx]=LEARN.HALF; save(); checked=true; lock(); pProgress();
-  setDock("info","Зараховано півбала.",LEARN.formHint(s,st),"Далі"); $("#skip").hidden=true; focusAction(); }
+  setDock("info","Зараховано півбала.",LEARN.formHint(s,st),"Далі"); $("#skip").hidden=true; HYPS.answer(ha); focusAction(); }
 function diagNext(){ idx=LEARN.nextItem(run.diag,run.res); if(idx<0) idx=L.screens.length; renderScreen(); }
 function check(){
   const s=L.screens[idx];
@@ -1081,7 +1176,7 @@ function check(){
     setDock("info", `${s.fbTitle} <span class="gain">+${g}</span>`, s.fbText, "Далі"); return focusAction(); }
   if(sameAsTried()) return refocusAnswer();
   const ok=gradeNow(s);
-  EV.log("answer", ()=>({ ...evItem(s), try:tries+1, verdict:evVerdict(s,ok), raw:evRaw(s), hint:tries>0 && !!s.hint, final: ok || tries>0 || s.type==="slider" }));
+  const ha=evAnswer(s, ()=>{ const vd=evVerdict(s,ok), raw=evRaw(s); return { ...evItem(s), try:tries+1, verdict:vd, raw, hint:tries>0 && !!s.hint, final: ok || tries>0 || s.type==="slider", ...evKey(s, vd, raw) }; });
   if(!ok && s.pre) run.weak.add(s.pre);
   const preNote = (!ok && s.pre) ? (()=>{ const f=findLesson(s.pre); return f? `<span class="prenote">${ic("bulb")}Ця задача спирається на тему «${f.l.title}» (${f.sec.grade} клас). Наприкінці уроку запропоную її повторити.</span>` : ""; })() : "";
   if(!(ok || tries>0 || s.type==="slider")){
@@ -1099,6 +1194,7 @@ function check(){
              : "Зміни відповідь і перевір ще раз.";
     tried=answerSig();
     setDock("bad", s.fbBad||"Не зовсім.", msg+preNote, "Спробувати ще раз", false);   // активна знову, щойно відповідь змінено
+    HYPS.answer(ha);   // тінь гіпотез — після показаного повідомлення (formHint/badHint уже обчислено)
     return refocusAnswer();
   }
   checked=true; lock(); run.graded++;
@@ -1119,6 +1215,7 @@ function check(){
   pProgress(); save(); renderTop();
   const title = ok? s.fbOk : (s.type==="slider"? s.fbBad : "Ось правильна відповідь.");
   setDock(ok?"ok":"bad", `${title}${g?` <span class="gain">+${g}</span>`:""}`, s.fbText+(ok?"":preNote), "Далі");
+  HYPS.answer(ha);
   focusAction();   // поле заблоковано — без цього фокус падає на BODY і Enter нікуди не веде
 }
 /** Після першої помилки: фокус назад у поле відповіді (текст виділено, щоб одразу виправити) або на обраний елемент.
@@ -1159,6 +1256,7 @@ function renderEnd(){
   const leftSteps=stepsTodo(C).length;
   const nPool=poolItems(C).filter(it=>it.lesson===L.id).length; if(nPool) LEARN.srsInit(S, L.id, dkey());
   EV.log("lesson_end", ()=>({ c:C.id, l:L.id, grade:SEC.grade, boss:!!L.boss, acc, stars, first:run.first, graded:run.graded, mistakes:run.mistakes, xp:run.xp, linked:run.linked, closed:planRes.closed.map(st=>st.l), retry:!!planRes.retry, recs:recs.map(r=>({ l:r.l, why:r.why, sk:r.sk||null })), steps:newSteps.map(st=>st.l), weak:[...run.weak] }));
+  HYPS.lessonEnd(L.id, acc);
   const nb=[];
   award("first",nb);
   if(run.mistakes===0) award("perfect",nb);

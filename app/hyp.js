@@ -1,10 +1,12 @@
-/* Слід · гіпотези «обчислення чи поняття» (математика), етап E1 — чистий модуль без DOM і без сховища.
+/* Слід · гіпотези «обчислення чи поняття» (математика), етапи E1–E2 — чистий модуль без DOM і без сховища.
    Дизайн: docs/design/diag-hypothesis-math.md (редакція 4.1). Для кожної помилки першої спроби — розподіл по класах
    slip / calc / rule / pre / unk (§1.1) за сигналами S1–S6, S8–S14 (§1.2) і правилами P1–P10, P2′ (§1.3); подальші відповіді
    на ту саму пару (урок, sk) — перевірки видів A, D≤, D>, D°, Dg, F, P (§2.1, §2.3), оновлення за таблицею L (§2.4), закриття.
    Модуль нічого не пише: tracker().onAnswer(...) повертає події [{ type, d }] (hyp_open / hyp_probe / hyp_close / hyp_fmt, §3.2),
    які app.js (етап E2) передасть у EV.log. Розбір і перевірка записів — app/learn.js (SLID_LEARN: checkAns, numVal, formCode…).
-   Етап E1: модуль ще не підключено до index.html / app.js; працюють лише tools/test-hyp.mjs і tools/hyp-replay.mjs. */
+   Етап E2 (тіньовий режим): app.js викликає трекер після setDock і пише події через EV.log, а стан — в окремий ключ localStorage
+   «slid.hyp» (state() / load() / mergeState(); сховищем керує app.js). На екран, slid.v1, record/detect/SRS/план модуль не впливає.
+   Метрики рахує лише tools/hyp-replay.mjs з журналу тим самим модулем. */
 window.SLID_HYP = (() => {
   const RULES_VERSION = "hyp-1";
   const CLS = ["slip", "calc", "rule", "pre", "unk"];
@@ -35,7 +37,7 @@ window.SLID_HYP = (() => {
     unsure: [0.2, 0.8], topMin: 0.45,
     mods: { s9: 0.5, s10ok: 2, s10okHint: 1.5, s10bad: 1.5, s11: 1.5, s12: 2.5 },
     sameRule: 2,             // L(✘ | rule) × 2, якщо помилка перевірки — той самий код mis/мутанта
-    cap: { open: 50, errs: 200, gens: 10, shown: 400, pres: 12 }
+    cap: { open: 50, errs: 200, gens: 10, shown: 400, pres: 12, closed: 200 }
   };
 
   /* ---------- Дрібні допоміжні ---------- */
@@ -288,7 +290,7 @@ window.SLID_HYP = (() => {
     const codes = mis ? mis.codes.map(String) : mut ? [mut.code] : [];
     if (mis) sig.push(...mis.codes.map(c => "S1:" + c));
     if (mut) sig.push("S2:" + mut.code);
-    // S8: на тій самій парі за 7 днів уже ≥ 2 помилки першої спроби з тим самим кодом S1/S2 (поточна не рахується, інакше P4 недосяжне)
+    // S8: на тій самій парі за 7 днів уже ≥ 2 помилки першої спроби з тим самим кодом S1/S2 (поточна не рахується; поведінка та сама, що й за буквальним прочитанням, лише S8 не дописується поруч із S1/S2, §9 п. 3)
     let s8 = null; const per = {};
     for (const e of ctx.hist || []) for (const c of e.codes || []) if ((per[c] = (per[c] || 0) + 1) >= 2 && !s8) s8 = c;
     if (s8) sig.push("S8:" + s8);
@@ -357,15 +359,15 @@ window.SLID_HYP = (() => {
   }
   /** opts: { seed — 8 символів префікса hid/prb (реплей і тести — детерміновано; інакше випадковий на завантаження), persist — 0/1 у hyp_open }. */
   function tracker(opts = {}) {
-    const seed = String(opts.seed || randId()).slice(0, 12), persist = opts.persist ? 1 : 0;
-    let cnt = 0, scr = 0;
-    let open = [], errs = [], gens = {}, shown = {}, passed = {}, runRes = { run: null, list: [] }, pend = null;
+    const seed = String(opts.seed || randId()).slice(0, 12);
+    let persist = opts.persist ? 1 : 0, cnt = 0, scr = 0;
+    let open = [], errs = [], gens = {}, shown = {}, passed = {}, runRes = { run: null, list: [] }, pend = null, closed = [];
     const nid = () => `${seed}.${++cnt}`;
     const pk = (l, sk) => `${l}|${sk ?? ""}`;
     const inPair = (h, l, sk) => h.ls.includes(l) && (h.sk ?? null) === (sk ?? null);
     const tOf = a => typeof a.t === "number" ? a.t : dayNum(a.day) * DAY;
     const grpOf = post => { const e = pexecOf(post); return e >= TH.close ? "exec" : e <= r3(1 - TH.close) ? "know" : null; };
-    const closeEv = (h, why, extra = {}) => ({ type: "hyp_close", d: { hid: h.hid, why, ...topOf(h.post), pexec: pexecOf(h.post), ...(why === "confirmed" ? { grp: grpOf(h.post) } : {}), n: h.n, rv: RULES_VERSION, ...extra } });
+    const closeEv = (h, why, extra = {}) => (closed.push(h.hid), closed.length > TH.cap.closed && closed.shift(), { type: "hyp_close", d: { hid: h.hid, why, ...topOf(h.post), pexec: pexecOf(h.post), ...(why === "confirmed" ? { grp: grpOf(h.post) } : {}), n: h.n, rv: RULES_VERSION, ...extra } });
     function expire(t) {
       const ev = [];
       open = open.filter(h => { if (t - h.t0 > TH.expDays * DAY) { ev.push(closeEv(h, "expired")); return false; } return true; });
@@ -503,16 +505,47 @@ window.SLID_HYP = (() => {
       return ev;
     }
     /** «Скинути прогрес»: усі відкриті → reset (до EV.log("reset"), §3.3); стан очищено. */
-    function onReset() { const ev = [...flush(), ...open.map(h => closeEv(h, "reset"))]; open = []; errs = []; gens = {}; shown = {}; passed = {}; runRes = { run: null, list: [] }; return ev; }
+    function onReset() { const ev = [...flush(), ...open.map(h => closeEv(h, "reset"))]; open = []; errs = []; gens = {}; shown = {}; passed = {}; closed = []; runRes = { run: null, list: [] }; return ev; }
     /** Старт / час минув: старші за 7 днів без перевірки → expired. */
     function tick(x) { return [...expire(tOf(x))]; }
-    const state = () => JSON.parse(JSON.stringify({ v: 1, rv: RULES_VERSION, open, probed: {}, gens, errs, shown, passed, cnt }));
-    function load(st) {
+    /** Стан для slid.hyp (§3.3): крім open/probed/gens — errs, shown, passed (§9 п. 11), closed (hid закритих — злиття вкладок),
+        scr (лічильник екранів — gap.scr після перезавантаження) і pend (гіпотеза, що чекає другої спроби, без s — вправу app.js
+        знаходить знову за item; §9 п. 17 [E2]). */
+    const state = () => JSON.parse(JSON.stringify({ v: 1, rv: RULES_VERSION, open, probed: {}, gens, errs, shown, passed, closed, cnt, scr,
+      pend: pend ? { ...pend, a: { ...pend.a, s: undefined } } : null }));
+    /** resolve(a) → вправа/екран зі змісту для відкладеного pend (a.item, a.genAt); немає — pend відкидається. */
+    function load(st, resolve) {
       if (!st || st.v !== 1) return false;
-      open = Array.isArray(st.open) ? st.open : []; gens = st.gens || {}; errs = st.errs || []; shown = st.shown || {}; passed = st.passed || {}; cnt = st.cnt || cnt; return true;
+      open = Array.isArray(st.open) ? st.open : []; gens = st.gens || {}; errs = st.errs || []; shown = st.shown || {}; passed = st.passed || {};
+      closed = Array.isArray(st.closed) ? st.closed : []; cnt = st.cnt || cnt; scr = Number.isInteger(st.scr) ? st.scr : scr; pend = null;
+      if (st.pend && st.pend.a && resolve) { let s = null; try { s = resolve(st.pend.a); } catch (e) {} if (s) pend = { ...st.pend, a: { ...st.pend.a, s } }; }
+      return true;
     }
-    return { onAnswer, onScreen, onLessonEnd, onReset, tick, flush, state, load, get open() { return open.map(h => ({ ...h })); }, seed };
+    /** Закриті в іншій вкладці (злиття slid.hyp) — геть із пам'яті без подій. */
+    function drop(hids) { const x = new Set(hids || []); if (x.size) open = open.filter(h => !x.has(h.hid)); }
+    return { onAnswer, onScreen, onLessonEnd, onReset, tick, flush, state, load, drop, setPersist: v => { persist = v ? 1 : 0; },
+      get open() { return open.map(h => ({ ...h })); }, get pending() { return !!pend; }, seed };
   }
 
-  return { RULES_VERSION, CLS, PRIOR, LIK, TH, tracker, assess, update, mutants, misMatch, misCodes, numSignals, preIndex, parseT, printT, evalT, topOf };
+  /** Злиття стану цієї вкладки (mine) зі збереженим іншою (stored), §3.3 «Кілька вкладок»: закриті в будь-якій — закриті (closed);
+      відкриті — об'єднання за hid (версія mine має пріоритет), ≤ cap.open найновіших; errs — об'єднання за 14 днів; shown, passed —
+      пізніший день; gens — об'єднання наборів за gv (≤ cap.gens); cnt, scr, pend — лише mine (pend іншої вкладки там і лишається). */
+  function mergeState(mine, stored) {
+    if (!stored || stored.v !== 1) return mine;
+    const C = TH.cap, later = (a, b) => (typeof a === "string" && typeof b === "string" ? (a > b ? a : b) : a || b);
+    const closed = [...new Set([...(stored.closed || []), ...(mine.closed || [])])].slice(-C.closed), shut = new Set(closed);
+    const byHid = new Map(); for (const h of [...(stored.open || []), ...(mine.open || [])]) if (h && h.hid && !shut.has(h.hid)) byHid.set(h.hid, h);
+    const open = [...byHid.values()].sort((a, b) => (a.t0 ?? 0) - (b.t0 ?? 0)).slice(-C.open);
+    const all = [...(stored.errs || []), ...(mine.errs || [])], newest = all.reduce((m, e) => Math.max(m, e.t || 0), 0), seenE = new Set();
+    const errs = all.filter(e => { const k = `${e.pk}|${e.t}|${e.l}`; if (seenE.has(k) || newest - (e.t || 0) > TH.preDays * DAY) return false; seenE.add(k); return true; })
+      .sort((a, b) => a.t - b.t).slice(-C.errs);
+    const mergeDays = (a = {}, b = {}) => { const o = { ...a }; for (const [k, v] of Object.entries(b)) o[k] = later(o[k], v); return o; };
+    const gens = {}; for (const src of [stored.gens || {}, mine.gens || {}]) for (const [k, list] of Object.entries(src)) {
+      const g = (gens[k] ||= []); for (const x of list || []) { const j = g.findIndex(y => JSON.stringify(y.gv) === JSON.stringify(x.gv));
+        if (j >= 0) { if (later(g[j].d, x.d) === g[j].d && g[j].d !== x.d) continue; g.splice(j, 1); } g.push(x); }
+      if (g.length > C.gens) g.splice(0, g.length - C.gens); }
+    return { ...mine, open, closed, errs, gens, shown: mergeDays(stored.shown, mine.shown), passed: mergeDays(stored.passed, mine.passed), probed: { ...(stored.probed || {}), ...(mine.probed || {}) } };
+  }
+
+  return { RULES_VERSION, CLS, PRIOR, LIK, TH, tracker, mergeState, assess, update, mutants, misMatch, misCodes, numSignals, preIndex, parseT, printT, evalT, topOf };
 })();

@@ -21,6 +21,9 @@
   const LIMITS = { max: 15000, keep: 13500, queue: 1000, batch: 40, delay: 1200, str: 300, arr: 60, depth: 6, bytes: 2048, bigBytes: 8192, part: 1500, stash: 300, stashBytes: 64 * 1024, versionWait: 1000 };
   /** Підсумкові події: більший ліміт розміру. */
   const BIG = new Set(["srs", "plan", "diag_start", "diag_end", "lesson_end", "practice_start", "practice_end"]);
+  /** Похідні події: by — n останньої явної події (cause). Пасивні: ні cause не змінюють, ні by не отримують — гіпотези hyp_*
+      (app/hyp.js, тіньовий режим): інакше зміни SRS/плану після practice_end приписалися б гіпотезі (docs/EVIDENCE.md). */
+  const DERIVED = new Set(["srs", "plan", "grade"]), passive = type => type.startsWith("hyp_");
 
   /* ---------- чисті функції (перевіряє tools/test-evidence.mjs) ---------- */
   /** Копія даних, придатна для JSON і structured clone: Set → відсортований масив, Map → об'єкт, функції/undefined відкинуто,
@@ -192,6 +195,8 @@
     const api = {
       SCHEMA, LIMITS: lim,
       get enabled() { return enabled; },
+      /** Версія змісту, якщо вже відома (VERSION активного sw.js), інакше null — без очікування (app/hyp.js: gens.cv). */
+      get cv() { return cv ?? null; },
       log(type, data) {
         try {
           if (!enabled) return;
@@ -201,7 +206,7 @@
           if (e.d && e.d.trunc) truncated++;
           if (type === "screen") scrT = mono;
           else if (type === "answer" && scrT !== null) e.dt = Math.round(mono - scrT);   // час від показу екрана до цієї спроби
-          if (type !== "srs" && type !== "plan" && type !== "grade") cause = e.n; else e.by = cause;
+          if (DERIVED.has(type)) e.by = cause; else if (!passive(type)) cause = e.n;
           if (queue.length >= lim.queue) { queue.shift(); dropped++; }
           queue.push(e); schedule();
         } catch (e) {}
