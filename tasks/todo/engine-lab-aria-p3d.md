@@ -16,3 +16,10 @@ depends_on: [tools-lab-validate-p3c]
 Незалежне рев'ю (D-026).
 
 ## Нотатки виконавця
+
+## Також P3 з reports/review/engine-diag-answer-kinds.md
+1. diff-answers `--content-old "-o<шлях>"` прокидається в git archive як опція; неіснуюча ревізія — траса стеку. Перевіряти `git rev-parse --verify --end-of-options`.
+2. `objs` надто широкий: «Знайди координати $D$» без слова-маркера або назва лише в заголовку → природна `D(…)` дає form. Негативний тест.
+3. У тесті рівня form тихо стає BAD; підказка під полем для quantity compound і reduced/mixed не каже, якого запису чекають; validate цього не перевіряє.
+4. «немає title» для answer у тесті — двічі після злиття; `learn.validate` дозволяє `signed` для answer будь-якого формату (у пулі — лише числовий).
+5. `--content-old` бере рушій зі старої ревізії — ревізії без якогось app/*.js падають; задокументувати евристику «title/body без rev».
