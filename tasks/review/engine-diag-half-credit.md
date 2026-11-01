@@ -4,7 +4,7 @@ claimed_at: 2026-11-01T17:42:29.084Z
 id: engine-diag-half-credit
 type: engine
 subject: math
-status: todo
+status: review
 claimed_by: engineer-half
 created: 2026-11-01
 depends_on: [engine-decisions-1101]
