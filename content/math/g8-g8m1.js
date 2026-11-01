@@ -1,5 +1,5 @@
 /* Слід · Математика, 8 клас — «Алгебра: раціональні вирази»
-   Статус уроків: verified; g8m1l2 — draft (refine-math-lessons-g7-g9-support, 2026-11-01). 5 уроків (4 теми + boss).
+   Статус уроків: verified (g8m1l2 — повторно після refine-math-lessons-g7-g9-support, reports/verify/refine-math-lessons-support-g8.md). 5 уроків (4 теми + boss).
    Інтерактив: plane y:"k/x" з повзунком k (урок 4 ≥3 explore/lab); інші ≥2 explore/lab.
    Перевірка: node tools/validate.mjs --section g8m1 && node tools/stats.mjs --subject math
    Схема й правила: docs/CONTENT_SCHEMA.md, style/, D-019 */
@@ -169,8 +169,8 @@ SLID.section("math", {
       title: "Додати, помножити, поділити",
       short: "Дії з дробами",
       icon: "plus",
-      status: "draft",
-      why: "Правила такі самі, як у звичайних дробів: шукаємо спільний знаменник, множимо навхрест і ділимо через множення на обернений дріб.",
+      status: "verified",
+      why: "Правила такі самі, як у звичайних дробів: шукаємо спільний знаменник, множимо чисельник на чисельник і ділимо через множення на обернений дріб.",
       screens: [
         {
           type: "intro",

@@ -1,5 +1,5 @@
 /* Слід · Математика, 8 клас — «Геометрія: чотирикутники»
-   Статус уроків: verified; g8m2l1, g8m2l3 — draft (refine-math-lessons-g7-g9-support, 2026-11-01). 5 уроків (4 теми + boss).
+   Статус уроків: verified (g8m2l1, g8m2l3 — повторно після refine-math-lessons-g7-g9-support, reports/verify/refine-math-lessons-support-g8.md). 5 уроків (4 теми + boss).
    Інтерактив (D-014): plane axes:false — polys, drag-вершини, angles, dist/slope у goal.
    Перевірка: node tools/validate.mjs --section g8m2 && node tools/stats.mjs --subject math
    Схема й правила: docs/CONTENT_SCHEMA.md §8, style/, D-019.
@@ -27,7 +27,7 @@ SLID.section("math", {
       title: "Коли сторони біжать поруч",
       short: "Паралелограм",
       icon: "path",
-      status: "draft",
+      status: "verified",
       why: "Щоб перевірити раму, хвіртку чи екран: чи протилежні сторони справді тримають форму.",
       screens: [
         {
@@ -429,7 +429,7 @@ SLID.section("math", {
       title: "Дві основи — один пояс",
       short: "Трапеція",
       icon: "line",
-      status: "draft",
+      status: "verified",
       why: "Щоб рахувати середню лінію ділянки, містка чи клумби з двома паралельними краями.",
       screens: [
         {
