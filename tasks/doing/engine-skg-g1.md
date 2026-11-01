@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-01T21:44:46.743Z
 id: engine-skg-g1
 type: engine
 subject: math
 status: todo
-claimed_by:
+claimed_by: engineer-skg-g1
 created: 2026-11-01
 depends_on: [design-skill-graph-math]
 ---
