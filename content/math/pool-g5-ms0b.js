@@ -1,5 +1,5 @@
 /* Слід · Математика, 5 клас — пул задач для тренування до розділу «Фігури і величини» (ms0b)
-   Статус: draft — 2026-11-01 a02, a03, d05 переведено на quantity (см і мм, як «Обчисліть довжину/периметр» у підручнику); чекає повторної верифікації.
+   Статус: verified — 2026-11-01 a02, a03, d05 переведено на quantity (см і мм, як «Обчисліть довжину/периметр» у підручнику); повторно перевірено (verifier-refine-math-pools-new-kinds, 2026-11-01, reports/verify/refine-math-pools-new-kinds.md).
    Раніше: verified (reports/verify/pms0b.md). 24 задачі: по 8 на required-уроки ms0bl1, ms0bl2, ms0bl4 (3 рівня 1, 3 рівня 2, 2 рівня 3).
    ms0bl3 («Три кути на трьох») — pending за матрицею 2026-10-16.v2: задач навмисно немає (рішення Віктора про суму кутів у 5 кл.).
    Усі задачі — з підручника Мерзляка 5 кл. (див. sources); умови й числа звірено за відрендереними сторінками PDF 2026-10-30.
@@ -9,8 +9,8 @@
 SLID.pool("math", {
   id: "pms0b",
   section: "ms0b",
-  status: "draft",
-  meta: { author: "claude-opus", created: "2026-10-30", factcheck: "self (refine-math-pools-new-kinds, 2026-11-01: a02, a03, d05; решта — verifier-pool-ms0b)", teacher: null },
+  status: "verified",
+  meta: { author: "claude-opus", created: "2026-10-30", factcheck: "verifier-refine-math-pools-new-kinds (2026-11-01: a02, a03, d05); решта — verifier-pool-ms0b", teacher: null },
   sources: [
     { id: "mer5", title: "Мерзляк А. Г., Полонський В. Б., Якір М. С. Математика. 5 клас. — Харків: Гімназія, 2022", url: "https://file.4book.org/images/shcoolbook_ua/5/5_m_m_2022.pdf" }
   ],

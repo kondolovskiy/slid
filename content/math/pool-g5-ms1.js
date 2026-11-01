@@ -1,5 +1,5 @@
 /* Слід · Математика, 5 клас — пул задач для тренування до розділу «Звичайні дроби» (ms1)
-   Статус: draft (2026-11-01: e03, e05 — form improper замість «запиши лише чисельник»); раніше verified (verifier-pool-ms1, 2026-10-30, reports/verify/pms1.md). 40 задач: по 8 на кожен урок m1–m5 (3 рівня 1, 3 рівня 2, 2 рівня 3).
+   Статус: verified (2026-11-01: e03, e05 — form improper замість «запиши лише чисельник»; повторно перевірено verifier-refine-math-pools-new-kinds, 2026-11-01, reports/verify/refine-math-pools-new-kinds.md); раніше verified (verifier-pool-ms1, 2026-10-30, reports/verify/pms1.md). 40 задач: по 8 на кожен урок m1–m5 (3 рівня 1, 3 рівня 2, 2 рівня 3).
    Усі задачі — з підручника Мерзляка 5 кл. (sources), §§ 25–29; умови й числа звірено за відрендереними
    сторінками PDF 2026-10-30. srcPage — друкований номер сторінки підручника (у PDF — на 1 більше).
    Текстові задачі переказано своїми словами зі збереженням чисел і запитання.
@@ -8,8 +8,8 @@
 SLID.pool("math", {
   id: "pms1",
   section: "ms1",
-  status: "draft",
-  meta: { author: "claude-opus", created: "2026-10-30", factcheck: "self (refine-math-pools-new-kinds, 2026-11-01: e03, e05; решта — verifier-pool-ms1)", teacher: null },
+  status: "verified",
+  meta: { author: "claude-opus", created: "2026-10-30", factcheck: "verifier-refine-math-pools-new-kinds (2026-11-01: e03, e05); решта — verifier-pool-ms1", teacher: null },
   sources: [
     { id: "mer5", title: "Мерзляк А. Г., Полонський В. Б., Якір М. С. Математика. 5 клас. — Харків: Гімназія, 2022 (дзеркало PDF на 4book.org)", url: "https://file.4book.org/images/shcoolbook_ua/5/5_m_m_2022.pdf" }
   ],

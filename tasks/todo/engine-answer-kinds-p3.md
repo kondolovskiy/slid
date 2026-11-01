@@ -16,3 +16,7 @@ depends_on: [engine-math-answer-kinds-new]
 - validate.mjs для екранів `answer` в уроках — ті самі правила, що validatePool (decimals, units поза quantity).
 - test-personalization-qa: повернути «якорі» живого змісту, що безпечні (наявність pg11m, dg6 перевіряє не лише себе) — без лічильників.
 Незалежне рев'ю (D-026).
+
+## Також (reports/verify/refine-math-pools-new-kinds.md)
+- підказка під полем для `decimals` і `form: "improper"` — своя, а не загальна «Мішане число — через пробіл: 2 1/3»;
+- `quantity` не приймає «2 543 см» (пробіл між розрядами).

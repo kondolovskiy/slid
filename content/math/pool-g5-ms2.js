@@ -1,5 +1,5 @@
 /* Слід · Математика, 5 клас — пул задач для тренування до розділу «Десяткові дроби» (ms2)
-   Статус: draft — 2026-11-01 змінено запис відповіді в b03, b05, b06 (decimals) і d07 (quantity, грн і коп, як у підручнику); чекає повторної верифікації.
+   Статус: verified — 2026-11-01 змінено запис відповіді в b03, b05, b06 (decimals) і d07 (quantity, грн і коп, як у підручнику); повторно перевірено (verifier-refine-math-pools-new-kinds, 2026-11-01, reports/verify/refine-math-pools-new-kinds.md).
    Раніше: verified (verifier-pms2, 2026-10-30; автор writer-write-math-pool-ms2). 48 задач: по 8 на кожен required-урок
    ms2l1, ms2l2, ms2l3, ms2l4, ms2l5, ms2l7 (boss ms2l6 без задач). Матриця покриття 2026-10-16.v2.
    Усі задачі — з підручника Мерзляка 5 кл. (2022), § 5, п. 30–36; умови й числа звірено
@@ -9,8 +9,8 @@
 SLID.pool("math", {
   id: "pms2",
   section: "ms2",
-  status: "draft",
-  meta: { author: "claude-opus", created: "2026-10-30", factcheck: "self (refine-math-pools-new-kinds, 2026-11-01: b03, b05, b06, d07; решта — verifier-pms2)", teacher: null },
+  status: "verified",
+  meta: { author: "claude-opus", created: "2026-10-30", factcheck: "verifier-refine-math-pools-new-kinds (2026-11-01: b03, b05, b06, d07); решта — verifier-pms2", teacher: null },
   sources: [
     { id: "mer5", title: "Мерзляк А. Г., Полонський В. Б., Якір М. С. Математика: підручник для 5 класу. — Харків: Гімназія, 2022 (§ 5, п. 30–36)", url: "https://file.4book.org/images/shcoolbook_ua/5/5_m_m_2022.pdf" }
   ],
