@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-01T11:11:33.057Z
 id: curate-math-matrix-v3
 type: curate
 subject: math
 status: todo
-claimed_by:
+claimed_by: agent-curate-math-matrix-v3
 created: 2026-10-31
 ---
 # Матриця персоналізації math v3: зібрані пропозиції авторів і верифікаторів 4–9 кл.
