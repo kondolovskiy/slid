@@ -57,7 +57,7 @@
 |---|---|---|
 | `boot` | завантаження застосунку | `grade, subj, lessons` (скільки), `diags` (id завершених), `srs` (скільки) |
 | `screen` | показ екрана в плеєрі | `item` |
-| `answer` | кожна спроба (натискання «Перевірити»/«Відповісти», «Ще не знаю») | `item` + `try` — номер спроби, `verdict` — `ok`/`form`/`bad` (answer: `checkAns`; інші типи: ok/bad), `hyp` (poll/hyp), `skip` (тест); `raw` — сирий запис (число/рядок, індекс варіанта, масив для multi/sort/order/shade, стан лабораторії); `hint` — чи була показана підказка до цієї спроби; `final` — спроба закриває екран; у тесті ще `res` — збережений вердикт (1/0/−1) |
+| `answer` | кожна спроба (натискання «Перевірити»/«Відповісти», «Ще не знаю») | `item` + `try` — номер спроби, `verdict` — `ok`/`form`/`bad` (answer: `checkAns`; інші типи: ok/bad), `hyp` (poll/hyp), `skip` (тест), `half` (тест: півбала, engine-diag-half-credit); `raw` — сирий запис (число/рядок, індекс варіанта, масив для multi/sort/order/shade, стан лабораторії); `hint` — чи була показана підказка до цієї спроби; `final` — спроба закриває екран; у тесті ще `res` — збережений вердикт (1/0/−1; 0,5 — півбала) |
 | `lesson_start` / `lesson_end` | початок / підсумок уроку | `c, l, sec, grade, boss, linked, screens` / `acc, stars, first, graded, mistakes, xp, closed` (закриті кроки плану), `retry, recs` (порада detect), `steps` (нові кроки), `weak` |
 | `practice_start` / `practice_end` | сесія тренування | `focus, prN, items: [{key, l, review, lvl}]` / `res: [{lesson, ok}], first, graded, xp, srs` (результат srsUpdate), `recs, steps` |
 | `diag_start` / `diag_end` | тест рівня | `diag, grade, rev, items, resumed` / `res, topics, steps, base, known` |

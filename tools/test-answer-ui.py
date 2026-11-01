@@ -1327,6 +1327,7 @@ async def main():
                 await gen_diag_srs_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
                 await decisions_1101_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
                 await evidence_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
+                await half_credit_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
             await browser.close()
             print('Обрані браузерні сценарії: green')
     finally:
@@ -1334,8 +1335,9 @@ async def main():
 
 async def diag_answer_checks(browser, url):
     """engine-diag-answer-kinds: answer з answerKind time / quantity / decimals у тесті рівня через справжній плеєр.
-    Вердикт без фідбеку (ні fb, ні is-ok/is-bad, ні підказки form/bad, без другої спроби); OK для checkAns «ok» і «form»
-    (рішення людини 2026-11-01, engine-decisions-1101; раніше «form» — BAD); підказка формату під полем не видає ключа; збережений запуск ред. 1 після заміни завдання на answer (rev 2)
+    Вердикт без фідбеку (ні fb, ні is-ok/is-bad, ні підказки form/bad, без другої спроби); OK для checkAns «ok» і «form» без
+    вимоги вигляду (decimals «37»; рішення людини 2026-11-01, engine-decisions-1101); вимаганий вигляд (compound «245 см») —
+    півбала з поясненням, це — half_credit_checks (engine-diag-half-credit); підказка формату під полем не видає ключа; збережений запуск ред. 1 після заміни завдання на answer (rev 2)
     відкидає старий вердикт цього завдання, решту — ні (resumeDiag у startDiag)."""
     context, page, errors = await qa_page(browser, url, {'grade': 6, 'unlockAll': False,
         'diagRun': {'dg6': {'0': 1, '3': 0}}, 'diagRunRev': {'dg6': 1}})
@@ -1357,7 +1359,7 @@ async def diag_answer_checks(browser, url):
         assert not await page.locator('#fbTitle').inner_text() and not await page.locator('#fbText').inner_text()
         assert await page.locator('#hintHost .hint').count() == 0
         assert await page.locator('#stage .is-ok, #stage .is-bad').count() == 0
-    plan = [('10:05', 1, 'time'), ('245 см', 1, 'form'), ('37', 1, 'form')]
+    plan = [('10:05', 1, 'time'), ('2 м 45 см', 1, 'quantity'), ('37', 1, 'form')]
     for i, (value, verdict, why) in enumerate(plan):
         item = await page.evaluate("i => SLID_SUBJECTS.find(c=>c.id==='math').diags.find(d=>d.id==='dg6').items[i]", i)
         assert await page.locator('#stage h2').inner_text() == item['title'], (i, await page.locator('#stage h2').inner_text())
@@ -1645,6 +1647,8 @@ async def gen_diag_srs_checks(browser, url):
       const run=Object.fromEntries(Object.entries(res).filter(([i])=>+i!==last)); res[last]=-1;
       const tp=SLID_LEARN.topicStatus(d,res), box={};
       for(const t of pre) for(const l of t.lessons) { const b={ok:2,shaky:0,gap:-1}[tp[t.id]]; box[l]=Math.min(box[l]??9,b); }
+      // engine-diag-half-credit P3-2: cur «знайоме» — box 2, як ok (урок відкрито тестом, без запису він одразу «чекав би повторення»)
+      for(const t of d.topics.filter(t=>t.kind==='cur')) for(const l of t.lessons||[]) { const b={known:2,new:-1}[tp[t.id]]; box[l]=Math.min(box[l]??9,b); }
       const S=JSON.parse(localStorage.getItem('slid.v1')); S.diagRun={dg6:run}; S.diagRunRev={dg6:SLID_LEARN.diagRev(d)};
       const keep=Object.keys(box).find(l=>box[l]===2); S.srs={[keep]:{box:4,due:'2026-12-01'}}; localStorage.setItem('slid.v1',JSON.stringify(S));
       return {box,keep,shaky:sh.id,st:tp[sh.id]};}""")
@@ -1665,7 +1669,8 @@ async def gen_diag_srs_checks(browser, url):
 
 async def decisions_1101_checks(browser, url):
     """engine-decisions-1101 (рішення людини 2026-11-01) через справжній плеєр і екрани.
-    (1) Тест рівня: «form» (6/8 при reduced) — OK, число коренем (√576 при 24) — BAD, обидва без фідбеку.
+    (1) Тест рівня: «form» без вимоги вигляду (0,75 при fractionOnly) — OK, хибний корінь (√577 при «Обчисли √576») — BAD,
+    обидва без фідбеку (вимаганий вигляд і незавершений корінь, зокрема копія з умови, — півбала, half_credit_checks, engine-diag-half-credit).
     (2) Тренування pg9m6 c02: «A₁(-3; 0)» для образу точки A — ok; «B₁(-3; 0)» — form, як раніше.
     (3) dg7 через finishDiag: тема pre «ok» (g6m4l3) відкрита в тренуванні без уроку (головна, предмет, екран тренування, сесія,
     коробка 2 з тесту); shaky (g6m4l4) і gap (g6m5l1) уроків 6 класу немає; cur «знайоме» відкрито, cur без «знайоме» — закрито;
@@ -1673,11 +1678,11 @@ async def decisions_1101_checks(browser, url):
     # (1)
     context, page, errors = await qa_page(browser, url, {'grade': 6, 'unlockAll': False})
     await page.evaluate("""() => { const d=SLID_SUBJECTS.find(c=>c.id==='math').diags.find(d=>d.id==='dg6');
-      d.items=[{type:'answer',answer:24,title:'Сторона квадрата',body:'<p>Площа квадрата — 576 см². Знайди його сторону в сантиметрах.</p>',topic:'r',sk:'num'},
-        {type:'answer',answer:'3/4',reduced:true,title:'Частина класу',body:'<p>Яку частину класу становлять 18 учнів з 24? Запиши дробом.</p>',topic:'f',sk:'frac'}];
+      d.items=[{type:'answer',answer:24,title:'Сторона квадрата',body:'<p>Обчисли $\\\\sqrt{576}$.</p>',topic:'r',sk:'num'},
+        {type:'answer',answer:'3/4',fractionOnly:true,title:'Частина класу',body:'<p>Яку частину класу становлять 18 учнів з 24? Запиши звичайним дробом.</p>',topic:'f',sk:'frac'}];
       d.topics=d.items.map(it=>({id:it.topic,title:it.title,kind:'cur',lessons:['g6m1l1']})); }""")
     await page.click('[data-diag="math"]'); await page.click('[data-diag-go]')
-    for value, want in (('√576', 'form'), ('6/8', 'form')):
+    for value, want in (('√577', 'bad'), ('0,75', 'form')):
         item = await page.evaluate("t => SLID_SUBJECTS.find(c=>c.id==='math').diags.find(d=>d.id==='dg6').items.find(it=>it.title===t)", await page.locator('#stage h2').inner_text())
         assert await page.evaluate("([s, v]) => SLID_LEARN.checkAns(s, v)", [item, value]) == want, (value, item)
         await page.fill('#numIn', value); await page.dispatch_event('#numIn', 'input'); await page.click('#action')
@@ -1749,7 +1754,82 @@ async def decisions_1101_checks(browser, url):
       return SLID_LEARN.practiceItems(S,c,{grade:7,diags:c.diags,day:'2026-10-16'}).some(it=>it.lesson==='g6m4l3');}""") is False
     assert not errors, errors
     await context.close()
-    print('decisions-1101: form у тесті → OK (√ — BAD), A₁ для образу A, тренування тем ok з тесту без уроку (старий профіль — як раніше): green', flush=True)
+    print('decisions-1101: form без вимоги вигляду у тесті → OK (хибний √ — BAD), A₁ для образу A, тренування тем ok з тесту без уроку (старий профіль — як раніше): green', flush=True)
+
+async def half_credit_checks(browser, url):
+    """engine-diag-half-credit (рішення людини й методичне правило 2026-11-01) через справжній плеєр тесту рівня.
+    Вимаганий умовою вигляд не показано (6/8 при «нескоротним дробом») чи корінь не обчислено (√576 при 24) — півбала (0,5):
+    вердикт збережено одразу, короткий екран-пояснення (dock info, текст formHint), поле заблоковано, без «Ще не знаю» й без
+    другої спроби; закритий на поясненні тест продовжується з наступного завдання. HALF — не провал теми: складніше завдання
+    тієї самої теми показують. Інший запис без вимоги вигляду (37 при decimals 1) — OK, хибна відповідь — BAD, обидва без
+    фідбеку. Підсумок: тема з HALF — «хитко» (shaky), cur з HALF — не «знайоме». Старий збережений результат (1/0/-1) читається."""
+    fixture = """() => { const c=SLID_SUBJECTS.find(c=>c.id==='math'), d=c.diags.find(d=>d.id==='dg6'), pre=d.topics.find(t=>t.kind==='pre');
+      d.items=[{type:'answer',answer:5,title:'База',body:'<p>Скільки буде $2 + 3$?</p>',topic:'g',sk:'num'},
+        {type:'answer',answer:'3/4',reduced:true,title:'Частина класу',body:'<p>Яку частину класу становлять 18 учнів з 24? Запиши нескоротним дробом.</p>',topic:'f',sk:'frac'},
+        {type:'answer',answer:12,title:'Складніше',body:'<p>Скільки буде $3 · 4$?</p>',topic:'g',sk:'num'},
+        {type:'answer',answer:24,title:'Сторона квадрата',body:'<p>Площа квадрата — 576 см². Знайди його сторону в сантиметрах.</p>',topic:'r',sk:'num'},
+        {type:'answer',answer:'2/3',reduced:true,title:'Ще дріб',body:'<p>Скороти дріб $8/12$.</p>',topic:'f',sk:'frac'},
+        {type:'answer',answer:'37,0',decimals:1,title:'Температура',body:'<p>Запиши з одним знаком після коми: 37 градусів.</p>',topic:'d',sk:'num'},
+        {type:'answer',answer:24,title:'Корінь',body:'<p>Обчисли $\\\\sqrt{576}$.</p>',topic:'c',sk:'num'}];
+      d.topics=[{id:'g',title:'Додавання',kind:'pre',lessons:pre.lessons},{id:'f',title:'Дроби',kind:'pre',lessons:pre.lessons},{id:'r',title:'Корінь',kind:'pre',lessons:pre.lessons},
+        {id:'d',title:'Десяткові',kind:'cur',lessons:['g6m1l1']},{id:'c',title:'Обчислення',kind:'cur',lessons:['g6m1l2']}]; }"""
+    context, page, errors = await qa_page(browser, url, {'grade': 6, 'unlockAll': False})
+    await page.evaluate(fixture)
+    await page.click('[data-diag="math"]'); await page.click('[data-diag-go]')
+    item = lambda t: page.evaluate("t => SLID_SUBJECTS.find(c=>c.id==='math').diags.find(d=>d.id==='dg6').items.find(it=>it.title===t)", t)
+    async def answer(title, value):
+        assert await page.locator('#stage h2').inner_text() == title, (title, await page.locator('#stage h2').inner_text())
+        await page.fill('#numIn', value); await page.dispatch_event('#numIn', 'input'); await page.click('#action')
+    async def half_screen(title, value, idx):
+        it = await item(title)
+        assert await page.evaluate("([s, v]) => SLID_LEARN.diagVerdict(s, v)", [it, value]) == 0.5, (title, value)
+        assert 'info' in (await page.locator('#dock').get_attribute('class') or '').split()
+        assert await page.locator('#fbTitle').inner_text() == 'Зараховано півбала.'
+        assert await page.locator('#fbText').inner_text() == await page.evaluate("([s, v]) => SLID_LEARN.formHint(s, v)", [it, value])
+        assert await page.locator('#stage .is-ok, #stage .is-bad').count() == 0 and await page.locator('#hintHost .hint').count() == 0
+        assert await page.locator('#numIn').is_disabled() and await page.locator('#skip').is_hidden()
+        assert await page.locator('#action').inner_text() == 'Далі' and await page.locator('#action').is_enabled()
+        assert (await saved_state(page))['diagRun']['dg6'][str(idx)] == 0.5   # saved at once, before «Далі»
+    async def no_feedback():
+        assert not await page.locator('#fbTitle').inner_text() and not await page.locator('#fbText').inner_text()
+        assert await page.locator('#stage .is-ok, #stage .is-bad').count() == 0 and await page.locator('#hintHost .hint').count() == 0
+    await answer('База', '4'); await no_feedback()
+    await answer('Частина класу', '6/8'); await half_screen('Частина класу', '6/8', 1)
+    # «Далі» goes to the next item of the test (LEARN.nextItem), not to the next screen: «Складніше» of the failed topic «g» is skipped
+    await page.click('#action')
+    await answer('Сторона квадрата', '√576'); await half_screen('Сторона квадрата', '√576', 3)
+    # closed on the explanation: no second attempt — the test resumes at the next item
+    await page.click('#pClose'); await page.reload(); await page.evaluate(fixture)
+    await page.click('[data-diag="math"]'); await page.click('[data-diag-go]')
+    # HALF on the base item of «f» is not a failed topic: its harder item is asked
+    await answer('Ще дріб', '2/3'); await no_feedback()
+    await answer('Температура', '37'); await no_feedback()
+    # дослівна копія кореня з умови — теж півбала з поясненням (рішення людини 2026-11-01); «Далі» завершує тест
+    await answer('Корінь', '√576'); await half_screen('Корінь', '√576', 6)
+    assert 'Це вираз з умови' in await page.locator('#fbText').inner_text()
+    await page.click('#action')
+    st = await saved_state(page)
+    assert st['diag']['dg6']['res'] == {'0': 0, '1': 0.5, '3': 0.5, '4': 1, '5': 1, '6': 0.5}, st['diag']['dg6']
+    assert st['diag']['dg6']['topics'] == {'g': 'gap', 'f': 'shaky', 'r': 'shaky', 'd': 'known', 'c': 'new'}, st['diag']['dg6']['topics']
+    assert await page.locator('#stage .endhero').count() == 1
+    # Evidence V2 (docs/EVIDENCE.md): HALF — подія answer з verdict "half" і res 0,5, одна на завдання (без другої спроби)
+    ev = await page.evaluate("async () => window.SLID_EVIDENCE ? (await SLID_EVIDENCE.export()).events.filter(e => e.type === 'answer' && e.d.mode === 'diag').map(e => e.d) : null")
+    assert ev, 'app/evidence.js не завантажено або журнал порожній'
+    if True:
+        got = [(e['i'], e['verdict'], e.get('res')) for e in ev]
+        assert got == [(0, 'bad', 0), (1, 'half', 0.5), (3, 'half', 0.5), (4, 'ok', 1), (5, 'form', 1), (6, 'half', 0.5)], got
+        assert next(e for e in ev if e['i'] == 1)['raw'] == '6/8'
+    assert not errors, errors
+    await context.close()
+    # an old saved result (verdicts 1/0/-1, no HALF) reads as before
+    context, page, errors = await qa_page(browser, url, {'grade': 6, 'unlockAll': False, 'diag': {'dg6': {'done': True, 'date': '2026-10-01', 'res': {'0': 1, '1': 0, '2': -1}}}})
+    got = await page.evaluate("""() => { const c=SLID_SUBJECTS.find(c=>c.id==='math'), d=c.diags.find(d=>d.id==='dg6'), S=JSON.parse(localStorage.getItem('slid.v1'));
+      const p=SLID_LEARN.planFor(S,'math',{grade:6,diags:c.diags}); return [JSON.stringify(p.topics), JSON.stringify(SLID_LEARN.topicStatus(d,{0:1,1:0,2:-1}))]; }""")
+    assert got[0] == got[1], got
+    await page.click('button[data-subject="math"]')
+    assert not errors, errors
+    await context.close()
+    print('half-credit: півбала з поясненням (вимаганий вигляд, √ не обчислено), далі наступне завдання; старий res — як раніше: green', flush=True)
 
 async def evidence_checks(browser, url):
     """engine-evidence-v2 (docs/EVIDENCE.md): журнал подій у IndexedDB. Той самий маршрут (тренування з помилкою й підказкою,

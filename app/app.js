@@ -1061,13 +1061,21 @@ const evItem = s => ({ mode:evMode(), c:C?.id, l: run?.practice? s.lesson : L.id
   type:s.type, ak:s.answerKind ?? null, sk:s.sk ?? null, pre:s.pre ?? null, topic:s.topic ?? null, rev:s.rev ?? null, boss:!!L.boss, hyp:!!(s.hyp||s.poll) });
 const evRaw = s => LAB && s.type==="lab"? LAB.get() : st;
 // answer: ok/form/bad — той самий результат checkAns, що його щойно дав gradeNow (lastAns), без другої перевірки. У тесті рівня
-// вердикт дає diagAnswerOk (form → OK) і сам checkAns не повертає: для журналу — один checkAns (лише number/time/quantity, дешево), щоб бачити form
+// вердикт дає diagVerdict (OK / HALF / BAD) і сам checkAns не повертає: для журналу — один checkAns (лише number/time/quantity, дешево),
+// щоб бачити form; HALF пише diagHalf з verdict "half"
 let lastAns=null;
 const evVerdict = (s, ok) => s.type!=="answer"? (ok? "ok" : "bad") : lastAns || (run?.diag? LEARN.checkAns(s,st) : ok? "ok" : "bad");
+/* тест рівня, answer: півбала (LEARN.HALF; engine-diag-half-credit) — значення правильне, а вимоганого умовою вигляду немає чи корінь
+   не обчислено (LEARN.diagVerdict). Вердикт зберігається одразу (закритий плеєр не дасть відповісти вдруге); далі короткий екран-пояснення
+   з наявним текстом formHint, без другої спроби й без «Ще не знаю»; «Далі» — наступне завдання тесту (diagNext). */
+function diagHalf(s){ EV.log("answer", ()=>({ ...evItem(s), try:1, verdict:"half", res:LEARN.HALF, raw:evRaw(s), hint:false, final:true }));
+  run.res[idx]=LEARN.HALF; save(); checked=true; lock(); pProgress();
+  setDock("info","Зараховано півбала.",LEARN.formHint(s,st),"Далі"); $("#skip").hidden=true; focusAction(); }
+function diagNext(){ idx=LEARN.nextItem(run.diag,run.res); if(idx<0) idx=L.screens.length; renderScreen(); }
 function check(){
   const s=L.screens[idx];
-  // answer у тесті: «form» (значення правильне, запис ні) — OK (рішення людини 2026-11-01; LEARN.diagAnswerOk)
-  if(run.diag) return diagAnswer((s.type==="answer"? LEARN.diagAnswerOk(s,st) : gradeNow(s))? LEARN.OK : LEARN.BAD);
+  // answer у тесті: OK / HALF / BAD за LEARN.diagVerdict (інший запис того самого — OK; вимаганий умовою вигляд не показано — HALF)
+  if(run.diag){ const v= s.type==="answer"? LEARN.diagVerdict(s,st) : gradeNow(s)? LEARN.OK : LEARN.BAD; return v===LEARN.HALF? diagHalf(s) : diagAnswer(v); }
   if(s.poll||s.hyp){ EV.log("answer", ()=>({ ...evItem(s), try:1, verdict:"hyp", raw:evRaw(s), hint:false, final:true }));
     if(s.poll) S.polls[s.poll]=st; const g=gain(5); checked=true; lock();
     setDock("info", `${s.fbTitle} <span class="gain">+${g}</span>`, s.fbText, "Далі"); return focusAction(); }
@@ -1130,6 +1138,7 @@ function refocusAnswer(){ const ni=$("#numIn"), touch= lastPointer==="touch"||la
 $("#action").onclick=()=>{
   if(idx>=L.screens.length){ const f=afterEnd; afterEnd=null; closePlayer(); if(f) f(); return; }
   const s=L.screens[idx];
+  if(checked&&run.diag) return diagNext();   // після екрана-пояснення HALF
   if(s.type==="intro"||s.type==="info"||s.type==="explore"||checked){ idx++; renderScreen(); return; }
   check();
 };
