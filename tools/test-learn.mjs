@@ -1649,7 +1649,18 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
   const S1 = { answerKind: "coordinates2", answer: "(-2; 3)", title: "Точка $A$ і симетрія", body: "<p>Точка $A$ має координати $(2; 3)$. Знайди координати точки, симетричної їй відносно осі $Oy$.</p>" };
   T(S1, "A(-2; 3)", "form", "A з умови — не шукана"); T(S1, "B(-2; 3)", "ok", "вільна назва"); T(S1, "(-2; 3)", "ok", "без назви");
   const S2 = { answerKind: "coordinates2", answer: "(1; 2)", title: "Точка $K$ на прямій", body: "<p>Пряма проходить через точку $K$ і початок координат. Знайди координати точки перетину прямої з прямою $y = 2$.</p>" };
-  T(S2, "K(1; 2)", "form", "K з умови"); T(S2, "M(1; 2)", "ok", "вільна назва M");
+  // рев'ю engine-practice-pool P2-1: назву заголовка відкидаємо лише тоді, коли тіло дає їй дані; тут K даних не має —
+  // шукана K із заголовка, як до P3-1 (консервативно: правильна назва з заголовка не дає хибного form)
+  T(S2, "K(1; 2)", "ok", "K без даних у тілі — шукана із заголовка"); T(S2, "M(1; 2)", "form", "інша назва при шуканій K");
+  const P1 = { answerKind: "coordinates2", answer: "(2; 3)", title: "Точка $M$", body: "<p>$M$ — середина відрізка $AB$, $A(1; 2)$, $B(3; 4)$. Знайди координати.</p>" };
+  const P2 = { answerKind: "coordinates2", answer: "(2; 3)", title: "Точка $M$", body: "<p>Точка $M$ — середина відрізка $AB$, $A(1; 2)$, $B(3; 4)$. Знайди її координати.</p>" };
+  const P3 = { answerKind: "coordinates2", answer: "(1; 1)", title: "Вершина $D$", body: "<p>У паралелограмі $ABCD$ відомі $A(0; 0)$, $B(2; 0)$, $C(3; 1)$; $D$ — четверта вершина. Знайди координати.</p>" };
+  for (const [P, nm] of [[P1, "M"], [P2, "M"], [P3, "D"]]) { const v = P.answer;
+    T(P, `${nm}${v}`, "ok", `«${P.title}» + «$${nm}$ — …» без маркера: шукана ${nm}`); T(P, `K${v}`, "form", `«${P.title}»: інша назва`);
+    T(P, `A${v}`, "form", `«${P.title}»: дана A`); T(P, v, "ok", `«${P.title}»: без назви`);
+    eq(L.formHint(P, `K${v}`), `Координати правильні, але тут шукають ${nm}.`, `ask-title: «${P.title}» — пояснення називає ${nm}`); }
+  // «має координати» — дані: A не шукана й названа даною точкою
+  eq(L.formHint(S1, "A(-2; 3)"), "Координати правильні, але A — дана точка умови. Запиши лише координати.", "ask-title: «Точка $A$ має координати» — A дана");
   const S3 = { answerKind: "coordinates2", answer: "(3; 2)", title: "Точка $M$ — середина", body: "<p>Дано $A(1; 1)$ і $B(5; 3)$. Знайди координати середини відрізка $AB$.</p>" };
   T(S3, "M(3; 2)", "ok", "назва лише в заголовку"); T(S3, "K(3; 2)", "form", "інша назва");
   const S4 = { answerKind: "coordinates2", answer: "(3; 2)", title: "Вершина $D$", body: "<p>Дано $A(1; 1)$ і $B(5; 3)$. Знайди координати вершини $C$.</p>" };
@@ -1688,6 +1699,13 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
     const N = fresh(); L.finishDiag(N, "m", D, resA, { grade: 6 }); eq(N.srs, undefined, "srs з тесту: без дня — нічого");
     const H = fresh(); L.finishDiag(H, "m", D, resA, { day, grade: 6, hasLesson: id => id !== "a2" });
     eq(Object.keys(H.srs).sort(), ["a1", "b1", "c1"], "srs з тесту: лише уроки з hasLesson"); }
+  { // рев'ю engine-practice-pool P3-1: пройдений урок робить запис тесту записом уроку — повторний тест його не змінює
+    const S = { ...fresh(), srs: {}, lessons: {} }; L.finishDiag(S, "m", D, resA, { day, grade: 6 });
+    S.lessons.a1 = { done: true }; L.srsInit(S, "a1", "2026-11-03"); eq(S.srs.a1, { box: 2, due: "2026-11-08" }, "srs з тесту: srsInit після уроку знімає src, коробку й строк лишає");
+    S.lessons.b1 = { done: true };   // урок пройдено без пулу (srsInit не викликали) — запис тесту теж не чіпаємо
+    const allBad = Object.fromEntries(D.items.map((_, i) => [i, BAD])); L.finishDiag(S, "m", D, allBad, { day: "2026-11-10", grade: 6 });
+    eq([S.srs.a1, S.srs.b1, S.srs.a2], [{ box: 2, due: "2026-11-08" }, { box: 0, due: "2026-11-02", src: "diag", diag: "dg", rev: 1 }, undefined], "srs з тесту: gap не видаляє запис пройденого уроку; непройдений — видаляє");
+    const K = { srs: { z: { box: 3, due: "2026-12-01" } } }; L.srsInit(K, "z", day); eq(K.srs.z, { box: 3, due: "2026-12-01" }, "srsInit: запис без src не змінюється"); }
   { // урок двох тем — найслабший статус; baseline без уроків
     const D2 = { id: "d2", grade: 6, topics: [{ id: "p", kind: "pre", lessons: ["u"] }, { id: "q", kind: "pre", lessons: ["u", "w"] }, { id: "z", kind: "pre", baseline: true, lessons: [], for: ["s"] }],
       items: [{ topic: "p" }, { topic: "p" }, { topic: "q" }, { topic: "q" }, { topic: "z" }, { topic: "z" }] };
@@ -1734,6 +1752,29 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
   T({ title: "$ {a|deg} · {b} $" }, "не підтримано", "формат deg");
   T({ title: "$\\text{см} {a} · {b}$" }, "не обчислюється", "TeX-група у вставці");
   eq(GL.genIssues({ ...base, title: "$ {a|3} · {b} $", steps: ["{a|3} · {b} = {a*b|3}."], gen: { ...base.gen, vars: { a: { values: [0.125, 0.25] }, b: { values: [2, 4] } }, where: undefined } }), [], "gen: {a|3} показує 0,125 точно");
+  // рев'ю engine-practice-pool: P2-2 — показ лише окремою вставкою в title/body; P3-3/4/5 — мутанти й показ чисел
+  T({ title: "Обчисли", body: "<p>Обчисли {a} · ?</p>", steps: ["{a} · {b} = {a*b}"] }, "змінна b не показана", "b лише в steps");
+  T({ title: "Обчисли", body: "<p>Обчисли {a} · ?</p>", hint: "b = {b}", steps: ["."] }, "змінна b не показана", "b лише в hint");
+  T({ title: "Обчисли", body: "<p>Сума {a+b}. Знайди добуток.</p>", steps: ["."] }, "змінна a не показана", "лише сума {a+b}");
+  T({ gen: { where: "constructor(1)" } }, "невідоме ім'я «constructor»", "прототип у where");
+  T({ gen: { answer: "toString" } }, "невідоме ім'я «toString»", "прототип в answer");
+  T({ title: "$ {a} · {b} {zz} $" }, "невідоме ім'я «zz»", "невідоме ім'я у вставці");
+  T({ fbOk: "Так, {a*b}." }, "в полі fbOk не підставляється", "вставка у fbOk");
+  T({ title: "$ {b|c}·{a} $" }, "{b|c} — формат коефіцієнта", "|c не перед літерою");
+  eq(GL.genIssues({ ...base, title: "$ {a} + {b|c}x $", body: "<p>Значення при $x = 1$.</p>", steps: ["{a} + {b} = {a+b}"], gen: { ...base.gen, answer: "a+b" } }), [], "gen: {b|c}x — коефіцієнт перед літерою");
+  T({ title: "$ {a} - {b} $", gen: { vars: { a: { min: 2, max: 9 }, b: { values: [-3, 2] } }, where: undefined, answer: "a-b" } }, "після знака дії", "від'ємне після «-» без дужок");
+  eq(GL.genIssues({ ...base, title: "$ {a} - ({b}) $", body: "<p>Обчисли.</p>", steps: ["{a} - ({b}) = {a-b}"], gen: { vars: { a: { min: 2, max: 9 }, b: { values: [-3, 2] } }, answer: "a-b" } }), [], "gen: від'ємне в дужках — чисто");
+  eq(GL.genIssues({ ...base, title: "$ {a} {b|s} $", body: "<p>Обчисли.</p>", steps: ["{a} {b|s} = {a+b}"], gen: { vars: { a: { min: 2, max: 9 }, b: { values: [-3, 2] } }, answer: "a+b" } }), [], "gen: {b|s} — знак доданка, без дужок");
+  T({ gen: { vars: { a: { min: 1, max: 100 }, b: { min: 1, max: 60 } }, where: undefined } }, "понад 5000 допустимих наборів", "GEN_MAX");
+  eq(GL.GEN_MAX, 5000, "gen: межа наборів 5000");
+  T({ title: "$ {a}^{b} $", steps: ["."], gen: { vars: { a: { min: 90, max: 99 }, b: { min: 10, max: 12 } }, where: undefined, answer: "a^b" } }, "не проходить перевірку", "ключ 3,5·10¹⁹ не проходить checkAns");
+  { // genRound: 0,1 + 0,2 — ключ 0,3, а не 0,30000000000000004
+    const R = { ...base, title: "$ {a|1} + {b|1} $", body: "<p>Обчисли.</p>", steps: ["."], gen: { vars: { a: { values: [0.1, 0.3] }, b: { values: [0.2] } }, answer: "a + b" } };
+    const r0 = GL.genInstance(R, "x", 0); eq([r0.answer, GL.checkAns(r0, "0,3"), r0.title], [0.3, "ok", "$ 0,1 + 0,2 $"], "gen: genRound — 0,1 + 0,2 = 0,3 зараховується");
+    // ключ вправи в хеші: дві вправи з однаковим gen у тій самій сесії — різні набори хоч раз за 20 сесій
+    const A = { ...base, key: "p:a" }, B = { ...base, key: "p:b" };
+    eq(Array.from({ length: 20 }, (_, k) => GL.genInstance(A, "s" + k).genAt !== GL.genInstance(B, "s" + k).genAt).some(Boolean), true, "gen: ключ вправи входить у хеш");
+    eq(GL.genInstance(base, "будь-що", 0).genAt, 0, "gen: at — явний індекс набору (валідатор — перший)"); }
   // validatePool бачить генератор: помилки gen і решта правил на першому наборі
   const pool = it => ({ id: "pfx", section: "x", status: "draft", sources: [{ id: "s", title: "S", url: "https://x" }], items: [it] });
   const pctx = { sections: new Map([["x", { lessons: ["l1"] }]]), skills: { ops: {} } };

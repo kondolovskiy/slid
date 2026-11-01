@@ -167,7 +167,7 @@ window.SLID_LEARN = (() => {
     const out = [];
     for (const [l, box] of by) {
       const cur = S.srs[l];
-      if (cur && cur.src !== "diag") continue;
+      if (cur && (cur.src !== "diag" || S.lessons?.[l]?.done)) continue;   // запис уроку чи тренування — не наш; урок уже пройдено — теж
       if (box < 0) { if (cur) { delete S.srs[l]; out.push({ lesson: l, box: -1 }); } continue; }
       S.srs[l] = { box, due: addDay(day, BOX_DAYS[box]), src: "diag", diag: d.id, rev: diagRev(d) };
       out.push({ lesson: l, box });
@@ -694,18 +694,16 @@ window.SLID_LEARN = (() => {
     }
     // точка з даними координатами — дане, не шукане: «симетрична точці A відносно точки $M(2; -3)$» (заголовок «…точки $M$»)
     for (const [, f] of text.matchAll(/\$([^$]+)\$/g)) for (const g of f.matchAll(/(?:\\(?:vec|overrightarrow)\s*\{\s*([A-Z]{1,2})\s*\}|(?<![A-Za-z])([A-Z]{1,2}))\s*=?\s*\(/g)) given.add(g[1] || g[2]);
+    // точка, якій умова дає координати словами: «Точка $A$ має координати $(2; 3)$» — теж дане (рев'ю engine-lab-aria-p3d, P3-1;
+    // рев'ю engine-practice-pool, P2-1: відкидати назву із заголовка лише тоді, коли тіло дає цій точці дані)
+    for (const g of text.matchAll(/\$\s*([A-Z]{1,2})\s*\$\s*(?:ма(?:є|ла|ють)|мали)\s+координат/gu)) given.add(g[1]);
     for (const g of given) names.delete(g);
-    // назва шуканого лише в заголовку («Вершина $D$», а в умові — «Знайди її координати»): з заголовка, якщо умова назви не дала;
-    // лише заголовок, що починається маркером: у «Образ точки $A$» названо дану точку, а не шукану.
-    // Назва заголовка, що окремим токеном трапляється в самій умові («Точка $A$ і симетрія» — «Точка $A$ має координати $(2; 3)$…»),
-    // — об'єкт умови, а не шукане: заголовок лише звужує, не розширює (рев'ю engine-lab-aria-p3d, P3-1)
-    if (!names.size && typeof s.title === "string") {
-      const inBody = new Set(), rest = stmtText({ ...s, title: "" });
-      for (const [, f] of rest.matchAll(/\$([^$]+)\$/g)) for (const g of f.matchAll(OBJ_TOK)) inBody.add(g[1] || g[2]);
-      for (const m of s.title.matchAll(/\$([^$]+)\$/g)) {
-        if (!ASK_TITLE.test(s.title.slice(0, m.index))) continue;
-        const n = bare(m[1]), nm = n && (n[1] || n[2]); if (nm && !given.has(nm) && !inBody.has(nm)) names.add(nm);
-      }
+    // назва шуканого лише в заголовку («Вершина $D$», а в умові — «Знайди її координати» чи «$D$ — четверта вершина»): з заголовка,
+    // якщо умова назви не дала; лише заголовок, що починається маркером: у «Образ точки $A$» названо дану точку, а не шукану.
+    // Назву заголовка, якій тіло дає дані (given), не беремо — заголовок лише звужує, не розширює.
+    if (!names.size && typeof s.title === "string") for (const m of s.title.matchAll(/\$([^$]+)\$/g)) {
+      if (!ASK_TITLE.test(s.title.slice(0, m.index))) continue;
+      const n = bare(m[1]), nm = n && (n[1] || n[2]); if (nm && !given.has(nm)) names.add(nm);
     }
     // назви об'єктів умови: окремий токен з 1–2 великих латинських літер у формулі (не частина слова чи TeX-команди: \Delta, ABCD), \vec{AB}
     const objs = new Set();
@@ -1564,7 +1562,9 @@ window.SLID_LEARN = (() => {
   }
   const addDay = (day, n) => new Date(Date.parse(day + "T00:00:00Z") + n * 864e5).toISOString().slice(0, 10);
   /** Тему пройдено вперше — перше повторення завтра. */
-  function srsInit(S, lesson, day) { if (!S.srs[lesson]) S.srs[lesson] = { box: 0, due: addDay(day, BOX_DAYS[0]) }; }
+  // Запис тесту рівня (src: "diag") після пройденого уроку стає записом уроку: коробка й строк ті самі, але повторний тест його вже не змінює
+  // (рев'ю engine-practice-pool, P3-1; PERSONALIZATION.md «Початкові коробки з тесту рівня»)
+  function srsInit(S, lesson, day) { const r = S.srs[lesson]; if (!r) S.srs[lesson] = { box: 0, due: addDay(day, BOX_DAYS[0]) }; else if (r.src === "diag") S.srs[lesson] = { box: r.box, due: r.due }; }
   /** Підсумок сесії: results [{ lesson, ok }]. Тема без помилок піднімається на коробку, з помилкою — повертається в першу. Повертає [{ lesson, box, was, days }].
       Пройдений урок без запису SRS (пул з'явився після уроку, srsInit не було) стартує з коробки уроку — як тема, пройдена з пулом
       (engine-srs-retest-p3). Наявні записи не змінюються; тема без запису й без пройденого уроку — як раніше, з −1. */
@@ -1634,10 +1634,13 @@ window.SLID_LEARN = (() => {
     try { where = g.where === undefined ? null : lab.compile(String(g.where)); ans = lab.compile(String(g.answer)); lc = lets.map(([k, e]) => [k, lab.compile(String(e))]); }
     catch (e) { return done({ err: `gen: вираз не розбирається — ${e.message}` }); }
     if (g.answer === undefined || g.answer === null || g.answer === "") return done({ err: "gen.answer — вираз відповіді" });
-    const out = [], env = {}, rec = i => {
+    // лише відомі імена: змінні, let, функції й сталі лабораторії (інакше «constructor», «toString» резолвилися б у прототип; рев'ю P3-4)
+    const known = genKnown(names, lets.map(([k]) => k)), unk = [g.where, g.answer, ...lets.map(([, e]) => e)].flatMap(x => genIds(x)).find(n => !known.has(n));
+    if (unk) return done({ err: `gen: невідоме ім'я «${unk}» — лише змінні vars, let, функції й сталі лабораторії` });
+    const out = [], env = Object.create(null), rec = i => {
       if (out.length > GEN_MAX) return;
       if (i === names.length) {
-        const e = { ...env }; for (const [k, c] of lc) e[k] = c(e);
+        const e = Object.assign(Object.create(null), env); for (const [k, c] of lc) e[k] = c(e);
         if (where && !where(e)) return;
         out.push(e); return;
       }
@@ -1649,13 +1652,16 @@ window.SLID_LEARN = (() => {
     return done({ envs: out, ans, names });
   }
   const genRound = v => Math.round(v * 1e9) / 1e9;
+  const genIds = x => x === undefined || x === null ? [] : String(x).match(/[A-Za-z_][A-Za-z0-9_]*/g) || [];
+  const genKnown = (vars, lets) => new Set([...vars, ...lets, ...Object.keys(genLab()?.FN || {}), "pi", "e"]);
   /** Підставляє значення в шаблон {вираз|формат} (формат — як у lab.fill: кількість знаків, s, c). */
   function genFill(str, env) { return typeof str === "string" ? genLab().fill(str, env) : str; }
-  /** Конкретна вправа для сесії: seed — рядок сесії (app.js: номер тренування). Без gen — вправа без змін. */
-  function genInstance(it, seed) {
+  /** Конкретна вправа для сесії: seed — рядок сесії (app.js: номер тренування); at — явний індекс набору (валідатор: 0, перший набір).
+      Хеш бере ключ вправи (pool:id), тож різні вправи однієї сесії отримують різні набори. Без gen — вправа без змін. */
+  function genInstance(it, seed, at) {
     if (!it || !it.gen) return it;
     const all = genAll(it); if (all.err) return null;
-    const i = genHash(`${it.key || it.id}|${seed}`) % all.envs.length, env = all.envs[i];
+    const i = Number.isInteger(at) && at >= 0 && at < all.envs.length ? at : genHash(`${it.key || it.id}|${seed}`) % all.envs.length, env = all.envs[i];
     const out = { ...it, answer: genRound(all.ans(env)), genAt: i };
     delete out.gen;
     for (const k of GEN_TEXT) if (typeof it[k] === "string") out[k] = genFill(it[k], env);
@@ -1671,11 +1677,18 @@ window.SLID_LEARN = (() => {
     for (const f of ["reduced", "mixed", "fractionOnly", "decimals", "form"]) if (it[f] !== undefined) E.push(`gen: ${f} не підтримано — відповідь генератора лише число`);
     if (it.adapted !== true) E.push("gen: числа змінено відносно джерела — потрібне adapted: true");
     const lab = genLab(), texts = [...GEN_TEXT.map(k => it[k]), ...(Array.isArray(it.steps) ? it.steps : [])].filter(x => typeof x === "string");
-    const tpls = texts.flatMap(t => [...t.matchAll(GEN_TPL)]).filter(m => m[1] !== ",");
-    if (!tpls.length) E.push("gen: у title/body немає жодної вставки {змінна} — генератор нічого не змінює");
-    const vs = new Set(all.names);
-    const used = new Set(tpls.flatMap(m => (m[1].match(/[A-Za-z_][A-Za-z0-9_]*/g) || [])));
-    for (const n of all.names) if (!used.has(n)) E.push(`gen: змінна ${n} не показана в умові — дитина не знатиме її значення`);
+    // вставки з позицією: перед від'ємним значенням не має стояти знак дії, |c — лише перед літерою чи дужкою (коефіцієнт)
+    const tpls = texts.flatMap(t => [...t.matchAll(GEN_TPL)].map(m => Object.assign(m, { src: t }))).filter(m => m[1] !== ",");
+    const stmt = ["title", "body"].map(k => it[k]).filter(x => typeof x === "string");
+    if (!stmt.some(t => [...t.matchAll(GEN_TPL)].some(m => m[1] !== ","))) E.push("gen: у title/body немає жодної вставки {змінна} — генератор нічого не змінює");
+    // «показана в умові» — окремою вставкою {a} / {a|n} у title чи body, а не в розв'язанні, підказці чи всередині виразу (рев'ю P2-2)
+    const shown = new Set(stmt.flatMap(t => [...t.matchAll(GEN_TPL)].map(m => m[1].trim())));
+    for (const n of all.names) if (!shown.has(n)) E.push(`gen: змінна ${n} не показана в умові окремою вставкою {${n}} у title чи body — дитина не знатиме її значення`);
+    const known = genKnown(all.names, Object.keys(it.gen.let || {}));
+    for (const m of tpls) { const u = genIds(m[1]).find(n => !known.has(n)); if (u) { E.push(`gen: невідоме ім'я «${u}» у вставці {${m[1]}}`); break; } }
+    // вставки поза title/body/hint/steps рушій не підставляє — дитина побачила б «{a}»
+    for (const [k, v] of Object.entries(it)) if (!GEN_TEXT.includes(k) && k !== "steps" && k !== "gen" && typeof v === "string" && [...v.matchAll(GEN_TPL)].some(m => m[1] !== "," && genIds(m[1]).some(n => known.has(n)))) E.push(`gen: вставка в полі ${k} не підставляється — лише title, body, hint, steps`);
+    for (const m of tpls) if (m[2] === "c" && !/^[A-Za-zа-яґєії(\\]/u.test(m.src.slice(m.index + m[0].length))) { E.push(`gen: {${m[1]}|c} — формат коефіцієнта, лише перед літерою чи дужкою (при 1 він порожній)`); break; }
     let bad = null;
     for (const env of all.envs) {
       const v = all.ans(env), r = genRound(v);
@@ -1688,6 +1701,7 @@ window.SLID_LEARN = (() => {
         if (typeof x !== "number" || !Number.isFinite(x)) { bad = `gen: вставка {${m[1]}} дає не число для ${JSON.stringify(env)}`; break; }
         if (d !== null && Math.abs(Math.round(x * 10 ** d) - x * 10 ** d) > 1e-6) { bad = `gen: вставка {${m[1]}} = ${x} показується округлено (${d} знаки) — додай формат {…|n} або змінити діапазон`; break; }
         if (f && !/^(\d|s|c)$/.test(f)) { bad = `gen: формат |${f} у вставці {${m[1]}} не підтримано (лише цифра, s, c)`; break; }
+        if (x < 0 && f !== "s" && /[-+−–·*×:/^]\s*$/.test(m.src.slice(0, m.index))) { bad = `gen: вставка {${m[1]}} = ${x} після знака дії — «5 − −3»; візьми її в дужки або обмеж where`; break; }
       }
       if (bad) break;
     }
@@ -1708,7 +1722,7 @@ window.SLID_LEARN = (() => {
       const w = `задача ${i + 1} «${it0.id}»`;
       // генератор: власні правила й перший набір як звичайна вправа (решта перевірок — на ньому)
       let it = it0;
-      if (it0.gen !== undefined) { for (const m of genIssues(it0)) E.push(`${w}: ${m}`); it = genInstance(it0, "validate") || { ...it0, gen: undefined }; }
+      if (it0.gen !== undefined) { for (const m of genIssues(it0)) E.push(`${w}: ${m}`); it = genInstance(it0, "validate", 0) || { ...it0, gen: undefined }; }
       if (!it.id || ids.has(it.id)) E.push(`${w}: id порожній або повторюється`); ids.add(it.id);
       if (!(sec.lessons || []).includes(it.lesson)) E.push(`${w}: урок «${it.lesson}» не з розділу ${p.section}`);
       if (![1, 2, 3].includes(it.lvl)) E.push(`${w}: lvl має бути 1, 2 або 3`);

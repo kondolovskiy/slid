@@ -72,7 +72,7 @@ ${sec.plan.length + 1}. Фінальний урок розділу (boss: true, 
 ## Нотатки агента
 <!-- Виконавець: що зроблено, спірні місця, факти з джерелами, пропозиції до style/ чи glossary/ -->
 `;
-    fs.writeFileSync(path.join(ROOT, "tasks/todo", name), body); made++;
+    fs.writeFileSync(path.join(TASKS, "todo", name), body, { flag: "wx" }); made++;
   });
 }
 console.log(`Створено задач: ${made}`);
@@ -159,7 +159,8 @@ ${ls.map(l => `| ${l.lesson} | ${l.curricularScope} | ${l.curricularScope === "r
 Покриття: **${req.length} required-уроків, ${lo}–${hi} вправ**. Optional/pending не включати у файл пулу цієї версії; boss не дублювати.
 ${ls.filter(l => l.curricularScope !== "required").map(l => `- ${l.lesson}: ${l.reason || "відкладено"}`).join("\n")}
 `;
-    if (!DRY) { fs.mkdirSync(path.join(TASKS, "todo"), { recursive: true }); fs.writeFileSync(path.join(TASKS, "todo", name), body); }
+    // wx: ніколи не перезаписувати наявний файл (гонка з claim чи ручне створення між перевіркою й записом)
+    if (!DRY) { fs.mkdirSync(path.join(TASKS, "todo"), { recursive: true }); fs.writeFileSync(path.join(TASKS, "todo", name), body, { flag: "wx" }); }
     out.made.push(secId);
   }
   console.log(`${DRY ? "[dry-run] " : ""}Матриця ${M.version}: ${DRY ? "створилося б" : "створено"} задач на пули: ${out.made.length}${out.made.length ? " (" + out.made.join(", ") + ")" : ""}`);
