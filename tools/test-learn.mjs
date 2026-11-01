@@ -1896,6 +1896,7 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
     ["decimals — інший запис, 37", DEC, "37", "OK"], ["decimals, 37,0", DEC, "37,0", "OK"], ["decimals, хибне", DEC, "37,1", "BAD"],
     ["reduced, 6/8", RED, "6/8", "HALF"], ["reduced, 3/4", RED, "3/4", "OK"], ["reduced, 0,75 (не дріб)", RED, "0,75", "HALF"], ["reduced, хибне", RED, "3/5", "BAD"],
     ["reduced + fractionOnly, 0,75", REDF, "0,75", "HALF"], ["reduced + fractionOnly, 6/8", REDF, "6/8", "HALF"],
+    ["reduced + fractionOnly, цілий ключ 3 — form лише від fractionOnly", { type: "answer", answer: "3", reduced: true, fractionOnly: true }, "3", "OK"],
     ["fractionOnly — інший запис, 0,75", FO, "0,75", "OK"], ["improper, 2 1/3", IMP, "2 1/3", "HALF"], ["improper, 7/3", IMP, "7/3", "OK"],
     ["mixed, 7/3", MIX, "7/3", "HALF"], ["mixed, 14/6", MIX, "14/6", "HALF"], ["mixed, 2 1/3", MIX, "2 1/3", "OK"], ["mixed, хибне", MIX, "2 1/4", "BAD"],
     ["без вимоги вигляду, 1 5/3", PL, "1 5/3", "OK"], ["без вимоги вигляду, 2 2/3", PL, "2 2/3", "OK"],
