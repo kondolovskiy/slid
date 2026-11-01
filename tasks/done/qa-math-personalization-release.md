@@ -4,7 +4,7 @@ claimed_at: 2026-11-01T13:38:38.707Z
 id: qa-math-personalization-release
 type: qa
 subject: math
-status: todo
+status: done
 claimed_by: agent-qa-math-personalization-release
 created: 2026-10-15
 depends_on: [qa-math-personalization-g4, qa-math-personalization-g5, qa-math-personalization-g6, qa-math-personalization-g7, qa-math-personalization-g8, qa-math-personalization-g9, qa-math-personalization-g10, qa-math-personalization-g11]
@@ -21,9 +21,9 @@ depends_on: [qa-math-personalization-g4, qa-math-personalization-g5, qa-math-per
 
 ## Готово, коли
 
-- [ ] reports/qa/math-personalization-release.md містить версію коду й матриці, required-покриття, межі, команди та успішний реальний міжкласовий сценарій.
-- [ ] Усі required-класи технічно прийнято, згенеровані index.html/sw.js/content/manifest.json включено в результат, критичних дефектів немає.
-- [ ] pending-питання явно залишені відкритими та не подані як готовий матеріал. Тривалість для учнів залишається оцінкою до окремого пілоту; це не блокує технічний звіт. approved не ставити.
+- [x] reports/qa/math-personalization-release.md містить версію коду й матриці, required-покриття, межі, команди та успішний реальний міжкласовий сценарій.
+- [x] Усі required-класи технічно прийнято, згенеровані index.html/sw.js/content/manifest.json включено в результат, критичних дефектів немає.
+- [x] pending-питання явно залишені відкритими та не подані як готовий матеріал. Тривалість для учнів залишається оцінкою до окремого пілоту; це не блокує технічний звіт. approved не ставити.
 
 
 ## Перед роботою
@@ -33,6 +33,15 @@ depends_on: [qa-math-personalization-g4, qa-math-personalization-g5, qa-math-per
 ## Нотатки виконавця
 
 <!-- Змінені файли; джерела; рішення й обмеження; результати команд; що передано незалежному верифікатору. -->
+
+2026-11-01, agent-qa-math-personalization-release. **Вердикт: прийнято** (reports/qa/math-personalization-release.md).
+- Змінені файли: reports/qa/math-personalization-release.md, ця задача, рядок у memory/short/inbox.md. `app/`, `tools/` і `content/` не редагував, build у /home/user/slid не запускав.
+- Код: worktree --detach a89ed38 (HEAD → 53a3bc6 лише з tasks/todo/engine-lab-aria-p3d.md). build там: sw 08108e182a, 331 файл, 150 скриптів. diff index.html/sw.js/manifest порожній, worktree видалено.
+- Матриця 2026-11-01.v3: required 169/169 уроків, 48/48 пулів, 8/8 діагностик, 1348 вправ (уся матриця `--strict` rc 0; по класах 4…11 rc 0, дефектних лічильників 0). Відкладено: optional 7 (g10m1l3, g10m2l3, g11m2l3, g11m6l1–l4), pending 6 (g4m1l4, ms0bl3, ms3l3, g11m2l1, g11m2l2, g11m5l3), deferredSections g11m2/g11m6.
+- Команди (rc 0): validate (0 помилок / 255 попереджень), test-learn 1804, test-validate 315, test-personalization-qa 105, test-lab 141, test-math 36, test-metrics 20; test-answer-ui content --strict для 4…11 і regression (послідовно); повний playtest — 410 уроків, 8 тестів рівня.
+- Власний Playwright r1–r4 green: dg6 → dec-ops shaky → ms2l4 з плану → реальний pms2 (grade 6, unlockAll false) → seen/SRS → повтор 05.11/06.11; пізній пул; майбутні теми закриті; 4 → 5 → 6 → 7 → 11 → 6 з перерваними тестами й поверненням з передумови g4m5l3; міграція SK_RETAG2 (A/B/C) і dg6 ред. 1; офлайн через SW.
+- Дефекти: P3-1 (srs для пізнього пулу стартує з box 0 після першої сесії), P3-2 (продовження повторного тесту не видно на головній). P1/P2 немає.
+- Межі: зміст повторно не розв'язував; лише Chromium; тривалість для учнів — оцінка до пілоту; approved не ставив.
 
 ## Обсяг за матрицею 2026-10-16.v2
 
