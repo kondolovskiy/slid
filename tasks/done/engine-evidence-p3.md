@@ -4,7 +4,7 @@ claimed_at: 2026-11-01T18:53:11.876Z
 id: engine-evidence-p3
 type: engine
 subject: all
-status: review
+status: done
 claimed_by: engineer-evid-p3
 created: 2026-11-01
 depends_on: [engine-evidence-v2]
