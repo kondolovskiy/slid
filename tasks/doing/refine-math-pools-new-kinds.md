@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-01T10:43:55.918Z
 id: refine-math-pools-new-kinds
 type: content
 subject: math
 status: todo
-claimed_by:
+claimed_by: agent-refine-math-pools-new-kinds
 created: 2026-10-31
 depends_on: [engine-math-answer-kinds-new]
 ---

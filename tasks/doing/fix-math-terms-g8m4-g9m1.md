@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-01T10:43:55.957Z
 id: fix-math-terms-g8m4-g9m1
 type: content
 subject: math
 status: todo
-claimed_by:
+claimed_by: agent-fix-math-terms-g8m4-g9m1
 created: 2026-10-31
 ---
 # Терміни й бібліографія за глосарієм 31.10 (g8m4l3, g9m1l3, pg9m1, pg7m5, g7m5l1)

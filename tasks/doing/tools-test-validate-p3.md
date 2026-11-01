@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-01T10:43:55.855Z
 id: tools-test-validate-p3
 type: engine
 subject: hist
 status: todo
-claimed_by:
+claimed_by: agent-tools-test-validate-p3
 created: 2026-10-31
 ---
 # P3 з рев'ю tools-hist-image-error (reports/review/tools-hist-image-error.md)

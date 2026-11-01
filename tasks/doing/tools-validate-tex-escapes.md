@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-01T10:43:55.819Z
 id: tools-validate-tex-escapes
 type: engine
 subject: math
 status: todo
-claimed_by:
+claimed_by: agent-tools-validate-tex-escapes
 created: 2026-10-31
 ---
 # validate: ловити TeX-команди з одним бекслешем у JS-рядках
