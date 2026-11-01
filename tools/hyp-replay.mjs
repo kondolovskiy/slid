@@ -3,7 +3,8 @@
 // Вхід — журнал у форматі SLID_EVIDENCE.export() + зміст (дерево репозиторію); той самий app/hyp.js, детерміновано.
 // Вихід — reports/hyp/<дата>.md і .json з метриками §4.1.
 //   node tools/hyp-replay.mjs <export.json> [--root DIR] [--out DIR] [--date YYYY-MM-DD]
-//   node tools/hyp-replay.mjs <export.json> --events   — лише події hyp_* реплею (JSON у stdout; «застосунок = реплей», test-answer-ui)
+//   node tools/hyp-replay.mjs <export.json> --events   — лише події hyp_* реплею і підсумки diag_end.hyp (JSON у stdout; «застосунок = реплей», test-answer-ui)
+//   --fixture FILE — JS-вираз функції без аргументів, що змінює SLID_SUBJECTS (та сама фікстура, що її регресія застосовує на сторінці)
 //   node tools/hyp-replay.mjs --content-stats [--root DIR] [--json]   — цифри §0, §2.1, §2.3 на справжньому змісті
 //     (логіка scratchpad-скриптів рецензента й автора дизайну: hyp-rev-count, -natural, -probe, hyp-fix-delayed, hyp-r3-sol-v2,
 //     hyp-r4-check) і та сама модель через app/hyp.js (види перевірок, sol/sol0).
@@ -12,9 +13,11 @@ import { loadContent, GRADED } from "./lib.mjs";
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
 
 /** Зміст, SLID_LEARN і SLID_HYP (app/hyp.js вантажиться окремо в контекст із тим самим SLID_LEARN — щоб HYP_FILE міг підмінити модуль).
-    hypFile — інший файл модуля (самоперевірка тестів на мутантах); типово root/app/hyp.js. */
-export function hypEnv(root = ROOT, hypFile = null) {
+    hypFile — інший файл модуля (самоперевірка тестів на мутантах); типово root/app/hyp.js. fixture — текст функції `() => {…}`,
+    що змінює SLID_SUBJECTS до побудови покажчиків (фікстури регресії hyp_checks: той самий зміст, що на сторінці). */
+export function hypEnv(root = ROOT, hypFile = null, fixture = null) {
   const c = loadContent(root);
+  if (fixture) vm.runInNewContext(`(${fixture})()`, { SLID_SUBJECTS: c.subjects, SLID_LEARN: c.learn }, { filename: "fixture.js" });
   const ctx = { console, SLID_LEARN: c.learn }; ctx.window = ctx; vm.createContext(ctx);
   vm.runInContext(fs.readFileSync(hypFile || path.join(root, "app/hyp.js"), "utf8"), ctx, { filename: "app/hyp.js" });
   const math = Object.values(c.subjects).find(s => s.id === "math");
@@ -37,7 +40,16 @@ export function replay(exp, E) {
   for (const e of all) { const k = (e.did ?? exp.did ?? "?") + "|" + (e.pid ?? "?"); if (!groups.has(k)) groups.set(k, []); groups.get(k).push(e); }
   const out = [], hyps = new Map(), profiles = [], notes = { unresolved: 0, cvGuess: 0, otherSubject: 0 };
   for (const [k, evs] of groups) {
-    const [did, pid] = k.split("|"), T = H.tracker({ seed: seedOf(E, k) });
+    const [did, pid] = k.split("|"), T = H.tracker({ seed: seedOf(E, k), persist: 1 });
+    // persist (§3.3): застосунок без сховища (немає localStorage, або slid.hyp самоочищено) пише hyp_open з persist: 0, і після
+    // перезавантаження таких гіпотез (і решти стану) у нього немає. Реплей бере це з журналу: з події, після якої застосунок уперше в цьому
+    // завантаженні (sid) написав hyp_open з persist: 0, — persist: 0; на boot наступного завантаження — відкласти pend (як pagehide
+    // застосунку) і почати з порожнього стану без подій. Застосунок не пише persist інакше як у hyp_open — без hyp_open втрату не видно
+    const sidOf = e => e.sid ?? "?", lost0 = new Map(); let lastX = null;
+    for (const e of evs) { if (!String(e.type).startsWith("hyp_")) { lastX = e; continue; }
+      if (e.type === "hyp_open" && e.d?.persist === 0 && !lost0.has(sidOf(e))) lost0.set(sidOf(e), lastX && sidOf(lastX) === sidOf(e) ? lastX.seq ?? 0 : -Infinity); }
+    const lostAt = e => lost0.has(sidOf(e)) && (e.seq ?? 0) >= lost0.get(sidOf(e));
+    let prevSid = null, prevLost = false;
     const prof = { did, pid, events: evs.length, fresh: false, answers: 0, cvGuess: 0 };
     // weak — уроки тем gap/shaky за останнім diag_end кожного тесту (як S.diag[id].topics у app.js); done — уроки з lesson_end
     // (S.lessons[l].done ставиться за будь-якої точності) — app.js передає їх трекеру як a.done (superseded, §9 п. 10).
@@ -52,6 +64,11 @@ export function replay(exp, E) {
     for (const e of evs) {
       const d = e.d || {}, day = localDay(e.t, e.tzo);
       if (e.cv === null || e.cv === undefined) { notes.cvGuess++; prof.cvGuess++; }
+      if (String(e.type).startsWith("hyp_")) continue;   // події застосунку — лише для persist (вище) і порівняння, реплей рахує свої
+      if (e.type === "boot" && prevSid !== null && sidOf(e) !== prevSid && prevLost) { push(e, T.flush()); T.load({ v: 1, scr: 0 }); }
+      if (sidOf(e) !== prevSid) prevLost = false;
+      prevSid = sidOf(e); if (lostAt(e)) prevLost = true;
+      T.setPersist(prevLost ? 0 : 1);
       switch (e.type) {
         case "boot": push(e, T.tick({ t: e.t, day })); break;   // app.js: старт — гіпотези, старші за 7 днів, → expired
         case "reset": push(e, T.onReset({ t: e.t, day })); break;
@@ -62,6 +79,8 @@ export function replay(exp, E) {
           const dg = E.diags.get(d.diag);
           const w = weakBy[d.diag] = new Set();
           for (const [tid, st] of Object.entries(d.topics || {})) if (st === "gap" || st === "shaky") (dg?.topics.find(t => t.id === tid)?.lessons || []).forEach(l => w.add(l));
+          // «Ще не знаю» цього тесту — лічильником (застосунок пише його в diag_end.hyp, §9 [E2-p3]); для «застосунок = реплей» — запис diag_end
+          if (!d.c || d.c === "math") { const x = { type: "diag_end", d: { hyp: T.onDiagEnd({ diag: d.diag }) } }; out.push({ ...x, did, pid, t: e.t, seq: e.seq ?? null }); prof.diagSkip = (prof.diagSkip || 0) + x.d.hyp.skip; }
           break; }
         case "screen": if (d.c && d.c !== "math") break; push(e, T.onScreen({ item: d, t: e.t, day })); break;
         case "lesson_end": if (d.l) done.add(d.l); push(e, T.onLessonEnd({ l: d.l, acc: d.acc, run, t: e.t, day })); break;
@@ -161,7 +180,7 @@ export function metrics(R, E) {
 
 function reportMd(R, M, meta) {
   const L = [`# Реплей гіпотез (${meta.date})`, "", `_tools/hyp-replay.mjs, правила ${meta.rv}, журнал ${meta.input}. Метрики — docs/design/diag-hypothesis-math.md §4.1._`, ""];
-  L.push(`Профілів (did+pid): ${R.profiles.length}; з порожнього стану: ${R.profiles.filter(p => p.fresh).length}. Відповідей математики: ${R.profiles.reduce((a, p) => a + p.answers, 0)}; не знайдено в змісті: ${R.notes.unresolved}.`);
+  L.push(`Профілів (did+pid): ${R.profiles.length}; з порожнього стану: ${R.profiles.filter(p => p.fresh).length}. Відповідей математики: ${R.profiles.reduce((a, p) => a + p.answers, 0)}; не знайдено в змісті: ${R.notes.unresolved}; «Ще не знаю» в тестах рівня (лічильник diag_end, не гіпотези): ${R.profiles.reduce((a, p) => a + (p.diagSkip || 0), 0)}.`);
   if (R.notes.cvGuess) L.push("", `**cvGuess:** ${R.notes.cvGuess} подій без \`cv\` — зміст узято з поточного дерева.`);
   L.push("", "| Метрика | Значення |", "|---|---|");
   L.push(`| Гіпотез | ${M.hypotheses} |`, `| Покриття (top ≠ unk) | ${M.coverage.known ?? "—"} |`, `| Невизначені (0,2 ≤ pexec ≤ 0,8) | ${M.coverage.unsure ?? "—"} |`,
@@ -295,12 +314,12 @@ function printStats(st) {
 /* ---------- CLI ---------- */
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const argv = process.argv.slice(2), opt = n => { const i = argv.indexOf(n); return i >= 0 ? argv[i + 1] : null; };
-  const root = path.resolve(opt("--root") || ROOT), E = hypEnv(root);
+  const root = path.resolve(opt("--root") || ROOT), E = hypEnv(root, null, opt("--fixture") ? fs.readFileSync(opt("--fixture"), "utf8") : null);
   if (argv.includes("--content-stats")) {
     const st = contentStats(E);
     if (argv.includes("--json")) console.log(JSON.stringify(st, null, 1)); else printStats(st);
   } else {
-    const input = argv.find((a, i) => !a.startsWith("--") && !["--root", "--out", "--date"].includes(argv[i - 1]));
+    const input = argv.find((a, i) => !a.startsWith("--") && !["--root", "--out", "--date", "--fixture"].includes(argv[i - 1]));
     if (!input) { console.error("Використання: node tools/hyp-replay.mjs <export.json> [--out DIR] [--date YYYY-MM-DD] | --content-stats [--json]"); process.exit(2); }
     const exp = JSON.parse(fs.readFileSync(input, "utf8")), R = replay(exp, E);
     if (argv.includes("--events")) { console.log(JSON.stringify(R.events)); process.exit(0); }

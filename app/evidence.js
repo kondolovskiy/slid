@@ -163,7 +163,7 @@
       stash(list) і unstash() → list — синхронне сховище незаписаної черги (необов'язкові) }; backend — як idbBackend або null. */
   const MICRO = {};   // позначка «запис уже заплановано мікрозадачею» (не id таймера)
   function create(backend, env, lim = LIMITS) {
-    let queue = [], inflight = [], timer = null, chain = Promise.resolve(), ready = null, ids = null, cv, enabled = !!backend, fails = 0, dropped = 0, written = 0, dup = 0, truncated = 0, recovered = 0, n = 0, snap = null, cause = null, scrT = null, pidNew = null;
+    let queue = [], inflight = [], timer = null, chain = Promise.resolve(), ready = null, ids = null, cv, enabled = !!backend, fails = 0, dropped = 0, written = 0, dup = 0, truncated = 0, recovered = 0, n = 0, snap = null, cause = null, scrT = null, lastDt = null, pidNew = null;
     const stashed = new Set();   // eid, скинуті цією сторінкою в env.stash: після запису прибираються звідти (env.forget)
     const sid = rid();
     const disable = () => { enabled = false; dropped += queue.length; queue = []; };
@@ -197,15 +197,18 @@
       get enabled() { return enabled; },
       /** Версія змісту, якщо вже відома (VERSION активного sw.js), інакше null — без очікування (app/hyp.js: gens.cv). */
       get cv() { return cv ?? null; },
+      /** dt останньої записаної події answer (мс від показу екрана) або null — той самий dt бере трекер гіпотез (app/hyp.js, поріг S11). */
+      get dt() { return enabled ? lastDt : null; },
       log(type, data) {
         try {
+          if (type === "answer") lastDt = null;
           if (!enabled) return;
           const d = typeof data === "function" ? data() : data;
           const mono = env.mono();
           const e = makeEvent(type, d, { ...env, mono: () => mono, n: ++n, sid, pid: pidNew || (ids && ids.pid) || null }, lim);
           if (e.d && e.d.trunc) truncated++;
           if (type === "screen") scrT = mono;
-          else if (type === "answer" && scrT !== null) e.dt = Math.round(mono - scrT);   // час від показу екрана до цієї спроби
+          else if (type === "answer" && scrT !== null) lastDt = e.dt = Math.round(mono - scrT);   // час від показу екрана до цієї спроби
           if (DERIVED.has(type)) e.by = cause; else if (!passive(type)) cause = e.n;
           if (queue.length >= lim.queue) { queue.shift(); dropped++; }
           queue.push(e); schedule();

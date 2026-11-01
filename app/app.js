@@ -143,7 +143,7 @@ EV.observe(S); EV.log("boot", ()=>({ grade:S.grade, subj:S.subject, lessons:Obje
 // квоти бракує — спершу звільнити місце копією черги журналу й станом гіпотез (docs/EVIDENCE.md, slid.hyp): прогрес slid.v1 важливіший
 // за незаписані події й тіньові гіпотези. Потім — стан гіпотез (лише після slid.v1 і лише якщо slid.v1 записано; HYPS нижче)
 let hypAfterSave = () => {};
-const save = () => { let ok=true, squeezed=false; try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e) { squeezed=true; try { localStorage.removeItem("slid.evidence.pending"); localStorage.removeItem("slid.hyp"); localStorage.setItem(KEY, JSON.stringify(S)); } catch(e) { ok=false; } } EV.observe(S); hypAfterSave(ok, squeezed); };
+const save = () => { let squeezed=false; try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e) { squeezed=true; try { localStorage.removeItem("slid.evidence.pending"); localStorage.removeItem("slid.hyp"); localStorage.setItem(KEY, JSON.stringify(S)); } catch(e) {} } EV.observe(S); hypAfterSave(squeezed); };
 try { const fx=JSON.stringify(S.skFix); if (LEARN.migrateSk(S) || JSON.stringify(S.skFix)!==fx) save(); } catch(e) {}   // позначка міграції зберігається й без перенесених записів (рев'ю P3-2); sk, узгоджені з уроками 2026-10-31, — у журналі помилок (learn.js, SK_RETAG)
 // розпочатий до нової редакції тесту: вердикти замінених завдань відкидаються, решта й порядок лишаються (learn.js, resumeDiag)
 try { let ch=false; for (const c of SUBJ) for (const d of c.diags||[]) if (Object.keys(S.diagRun?.[d.id]||{}).length && LEARN.resumeDiag(S,d).dropped.length) ch=true; if (ch) save(); } catch(e) {}
@@ -167,13 +167,14 @@ const skey = (c,k) => c.id+"."+k;
    SRS і план від трекера не залежать. Без app/hyp.js — заглушка; без IndexedDB чи app/evidence.js трекер працює (події губляться). */
 const HYPS = (() => {
   const H = window.SLID_HYP, M = SUBJ.find(c=>c.id==="math");
-  const off = { on:false, newRun(){}, capture(){ return null; }, answer(){}, screen(){}, lessonEnd(){}, close(){}, reset(){}, persist(){} };
+  const off = { on:false, newRun(){}, capture(){ return null; }, answer(){}, screen(){}, lessonEnd(){}, diagEnd(){ return null; }, close(){}, reset(){}, persist(){} };
   if (!H || !M) return off;
+  try {   // зламаний чи несумісний app/hyp.js (виняток у tracker() тощо) — заглушка, застосунок працює далі (рев'ю E2, P3-3)
   const HKEY = "slid.hyp", BUDGET_MS = 400;
   const perf = () => { try { return performance.now(); } catch(e) { return 0; } };
   let store = true; try { localStorage.getItem(HKEY); } catch(e) { store = false; }
   const T = H.tracker({ persist: store });
-  let on = true, dirty = false, runN = 0, scrT = perf(), pres = null, v1ok = true;   // v1ok — останній save() записав slid.v1
+  let on = true, dirty = false, held = false, runN = 0, scrT = perf(), pres = null;   // held — спробу захоплено, slid.hyp запише answer() (один запис на відповідь)
   const runId = () => `${T.seed}.r${runN}`;   // id сесії плеєра (урок / тренування / тест), унікальний між завантаженнями
   /** Виклик трекера: помилка чи перевищений бюджет вимикають тінь до перезавантаження (дитина нічого не помічає). */
   const call = (f, quiet) => { if (!on) return []; const t0 = perf(); let ev = [];
@@ -192,27 +193,35 @@ const HYPS = (() => {
     for (const t of d.topics||[]) if (r.topics[t.id] === "gap" || r.topics[t.id] === "shaky") (t.lessons||[]).forEach(l=>w.add(l)); } return w; };
   // невдалий запис slid.hyp або квоти забракло для slid.v1: ключ геть і до перезавантаження не пишеться (гіпотези — лише в пам'яті, persist: 0)
   const forget = () => { store = false; T.setPersist(0); try { localStorage.removeItem(HKEY); } catch(e) {} };
+  /** Запис slid.hyp — у бюджеті часу тіні (рев'ю E2, P3-1): довший за BUDGET_MS вимикає тінь, як і виклик трекера. */
   const write = () => {
-    if (!store || !dirty || !v1ok) return;   // не записано slid.v1 — slid.hyp не пишемо (місце — прогресу)
+    if (!on || !store || !dirty) return;
+    const t0 = perf();
     try {
       let old = null; try { old = JSON.parse(localStorage.getItem(HKEY) || "null"); } catch(e) {}
       const st = H.mergeState(T.state(), old);
       T.drop(st.closed);   // закриті в іншій вкладці
       localStorage.setItem(HKEY, JSON.stringify(st)); dirty = false;
     } catch(e) { forget(); }   // самоочищення: slid.v1 важливіший
+    if (perf() - t0 > BUDGET_MS) on = false;
   };
   // старт: стан з минулих сесій; гіпотези, старші за 7 днів без перевірки, — expired (після boot, як у реплеї)
   if (store) { try { const st = JSON.parse(localStorage.getItem(HKEY) || "null"); if (st) T.load(st, resolve); } catch(e) {} }
   call(() => T.tick({ t: Date.now(), day: dkey() }), true);   // без змін — без запису на старті
   write();
-  hypAfterSave = (ok, squeezed) => { v1ok = ok; if (squeezed) forget(); else write(); };
-  // перехід зі сторінки: відкладене відкриття (pend) і лічильники — у slid.hyp; без сховища — відкрити зараз, щоб подія встигла в копію черги
-  const away = () => { try { if (!on) return; if (store) return write(); if (T.pending) { call(() => T.flush()); if (EV.stash) EV.stash(); } } catch(e) {} };
-  try { addEventListener("pagehide", away); document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") away(); }); } catch(e) {}
+  // після save(): slid.v1 записано — slid.hyp слідом; квоти забракло (squeezed) — ключ геть до перезавантаження. Якщо спробу вже захоплено
+  // (capture → save() → answer()), пише answer(): один запис slid.hyp на відповідь, а не два
+  hypAfterSave = squeezed => { if (squeezed) forget(); else if (!held) write(); };
+  // перехід зі сторінки: відкладене відкриття (pend) і лічильники — у slid.hyp. Без сховища — відкрити pend лише коли сторінка справді
+  // вивантажується (pagehide без bfcache), щоб подія встигла в копію черги журналу; сховану вкладку (visibilitychange) дитина ще може
+  // повернути й дати другу спробу — реплей її бачить (рев'ю E2, P3-2)
+  const away = gone => { try { if (!on) return; if (store) return write(); if (gone && T.pending) { call(() => T.flush()); if (EV.stash) EV.stash(); } } catch(e) {} };
+  try { addEventListener("pagehide", e => away(!e.persisted)); document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") away(false); }); } catch(e) {}
   return {
     get on() { return on; },
     newRun() { runN++; },
-    /** Дані спроби на момент EV.log("answer") (до змін S.seen і екрана): s — вправа зі змісту, rec — те, що пише журнал. */
+    /** Дані спроби на момент EV.log("answer") (до змін S.seen і екрана): s — вправа зі змісту, rec — те, що пише журнал.
+        dt — той самий, що в журналі (EV.dt; без журналу — власний від показу екрана), тож S11 у застосунку й реплеї однаковий. */
     capture(s, rec) {
       if (!on || C?.id !== "math" || !rec || rec.verdict === "hyp") return null;
       try {
@@ -220,21 +229,26 @@ const HYPS = (() => {
         const ls = dg ? (s.lesson ? [s.lesson] : (dg.topics||[]).find(t=>t.id===s.topic)?.lessons || [L.id]) : [it.l];
         const P = presOf(), pr = [...new Set([...ls.flatMap(l=>P[l]||[]), ...(s.pre? [s.pre] : [])])].filter(l=>!ls.includes(l)), w = weakLessons();
         const raw = it.raw instanceof Set ? [...it.raw].sort((a,b)=>(a>b)-(a<b)) : it.raw && typeof it.raw === "object" ? JSON.parse(JSON.stringify(it.raw)) : it.raw;
+        const evDt = EV.dt;
         const a = { s: s._hs || s, item: { mode, l: it.l, i: it.i, key: it.key ?? null, type: it.type, sk: it.sk ?? null, hyp: !!it.hyp }, raw, verdict: it.verdict, try: it.try,
-          hint: !!it.hint, final: !!it.final, dt: Math.round(perf() - scrT), t: Date.now(), day: dkey(), lvl: it.key ? (s.lvl ?? null) : null,
+          hint: !!it.hint, final: !!it.final, dt: Number.isFinite(evDt) ? evDt : Math.round(perf() - scrT), t: Date.now(), day: dkey(), lvl: it.key ? (s.lvl ?? null) : null,
           unseen: it.key ? S.seen[it.key] === undefined : undefined, run: runId(), ls, pres: pr, preWeak: pr.some(l=>w.has(l)), done: ls.filter(l=>done(l)), cv: EV.cv ?? null };
         if (s.gv) { a.gv = s.gv; a.genAt = s.genAt; a.genN = s.genN ?? 0; }
+        held = true;
         return a;
       } catch(e) { return null; }
     },
-    answer(a) { if (a) { call(() => T.onAnswer(a)); write(); } },
-    screen(s) { scrT = perf(); if (C?.id === "math") call(() => T.onScreen({ item: evItem(s), t: Date.now(), day: dkey() })); },
+    answer(a) { held = false; if (a) call(() => T.onAnswer(a)); write(); },
+    screen(s) { held = false; scrT = perf(); if (C?.id === "math") call(() => T.onScreen({ item: evItem(s), t: Date.now(), day: dkey() })); },
     lessonEnd(l, acc) { call(() => T.onLessonEnd({ l, acc, run: runId(), t: Date.now(), day: dkey() })); },   // запис — у save() кінця уроку
-    close() { call(() => T.flush()); write(); },
+    /** Підсумок для diag_end (до EV.log("diag_end")): { skip — «Ще не знаю» цього тесту, rv }; тінь вимкнено — null. Запис — у save() після. */
+    diagEnd(id) { if (!on || C?.id !== "math") return null; try { const r = T.onDiagEnd({ diag: id }); dirty = true; return r; } catch(e) { on = false; return null; } },
+    close() { held = false; call(() => T.flush()); write(); },
     /** «Скинути прогрес»: reset для всіх відкритих — до EV.log("reset") (старий pid), потім ключ геть. */
     reset() { call(() => T.onReset({ t: Date.now(), day: dkey() })); dirty = false; try { localStorage.removeItem(HKEY); } catch(e) {} },
     persist: write
   };
+  } catch(e) { hypAfterSave = () => {}; return off; }
 })();
 
 /* ---------- Оболонка ---------- */
@@ -820,7 +834,8 @@ $("#skip").onclick=()=>{ if(run?.diag && idx<L.screens.length) diagAnswer(LEARN.
 function renderDiagEnd(){
   const d=run.diag, plan=LEARN.finishDiag(S, C.id, d, run.res, learnCtx(C));
   delete S.diagRun[d.id]; delete S.diagSkip[d.id];
-  EV.log("diag_end", ()=>({ c:C.id, diag:d.id, grade:d.grade, rev:S.diag[d.id]?.rev ?? null, res:run.res, topics:plan.topics, steps:(plan.steps||[]).map(st=>st.l), base:(plan.base||[]).map(b=>b.topic), known:plan.known||[] }));
+  const hs=HYPS.diagEnd(d.id);   // тінь гіпотез: «Ще не знаю» цього тесту — лічильником у diag_end, не hyp_open (docs/design/diag-hypothesis-math.md §9 [E2-p3])
+  EV.log("diag_end", ()=>({ c:C.id, diag:d.id, grade:d.grade, rev:S.diag[d.id]?.rev ?? null, res:run.res, topics:plan.topics, steps:(plan.steps||[]).map(st=>st.l), base:(plan.base||[]).map(b=>b.topic), known:plan.known||[], ...(hs? { hyp:hs } : {}) }));
   const g=gain(20); touchStreak(); save(); renderTop(); pProgress();
   const lv=LEARN.level(d,plan.topics), td=stepsTodo(C), kn=plan.known.length, cid=C.id, start=td.length? null : baseStart(C);
   nav={v:"plan",id:cid}; tab="path";
