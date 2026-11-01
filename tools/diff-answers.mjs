@@ -323,8 +323,12 @@ if (args.includes("--time")) {
 // дослівна копія виразу з умови (рішення людини 2026-11-01: теж півбала з поясненням).
 const halfCounts = { "half вимаганий вигляд (reduced, mixed, improper, compound): OK → HALF": 0, "half корінь не обчислено (√576 при 24, і копія з умови): BAD → HALF": 0 }, halfBad = [];
 let halfTotal = 0;
-if (typeof OLD.diagAnswerOk === "function" && typeof NEW.diagVerdict === "function") {
-  const V = { [NEW.OK]: "OK", [NEW.HALF]: "HALF", [NEW.BAD]: "BAD" }, kinds = NEW.DIAG_ANSWER_KINDS || ["number", "time", "quantity"];
+// Стара сторона: якщо в старому learn.js уже є diagVerdict (ревізії від half-credit), порівнюємо вердикт з вердиктом —
+// diagAnswerOk там = diagVerdict === OK і кожен HALF виглядав би як «BAD → HALF» (рев'ю engine-evidence-p3, T-1). Тоді будь-яка
+// різниця — справжня зміна і категорій half не має: це НЕПОЯСНЕНІ. diagAnswerOk — лише для ревізій до half-credit.
+const OLD_VERDICT = typeof OLD.diagVerdict === "function";
+if ((OLD_VERDICT || typeof OLD.diagAnswerOk === "function") && typeof NEW.diagVerdict === "function") {
+  const V = { [NEW.OK]: "OK", [NEW.HALF]: "HALF", [NEW.BAD]: "BAD" }, VO = OLD_VERDICT ? { [OLD.OK]: "OK", [OLD.HALF]: "HALF", [OLD.BAD]: "BAD" } : null, kinds = NEW.DIAG_ANSWER_KINDS || ["number", "time", "quantity"];
   const strip = (s, ks) => Object.fromEntries(Object.entries(s).filter(([k, x]) => !(ks.includes(k) || (k === "form" && ks.includes("form") && x !== undefined))));
   const probes = s => { const out = new Set(records(s)), K = keyText(s), a = NEW.parseAns(K);
     if ((s.answerKind || "number") === "number" && a) {
@@ -338,19 +342,19 @@ if (typeof OLD.diagAnswerOk === "function" && typeof NEW.diagVerdict === "functi
     if (!kinds.includes(s.answerKind || "number")) continue;
     for (const v of probes(s)) {
       halfTotal++;
-      const o = OLD.diagAnswerOk(s, v) ? "OK" : "BAD", n = V[NEW.diagVerdict(s, v)], r = NEW.checkAns(s, v);
+      const o = OLD_VERDICT ? VO[OLD.diagVerdict(s, v)] || `?${OLD.diagVerdict(s, v)}` : OLD.diagAnswerOk(s, v) ? "OK" : "BAD", n = V[NEW.diagVerdict(s, v)], r = NEW.checkAns(s, v);
       if (o === n) continue;
       const need = !!(s.reduced || s.mixed || s.form === "improper" || (s.answerKind === "quantity" && s.form === "compound"));
-      const isForm = o === "OK" && n === "HALF" && r === "form" && need && NEW.checkAns(strip(s, ["reduced", "mixed", "form", "decimals", "fractionOnly"]), v) === "ok"
+      const isForm = !OLD_VERDICT && o === "OK" && n === "HALF" && r === "form" && need && NEW.checkAns(strip(s, ["reduced", "mixed", "form", "decimals", "fractionOnly"]), v) === "ok"
         && NEW.checkAns(strip(s, ["decimals", "fractionOnly"]), v) === "form";
-      const isRoot = o === "BAD" && n === "HALF" && r === "form" && /[√∛]|sqrt/.test(v);
+      const isRoot = !OLD_VERDICT && o === "BAD" && n === "HALF" && r === "form" && /[√∛]|sqrt/.test(v);
       if (isForm) halfCounts["half вимаганий вигляд (reduced, mixed, improper, compound): OK → HALF"]++;
       else if (isRoot) halfCounts["half корінь не обчислено (√576 при 24, і копія з умови): BAD → HALF"]++;
       else halfBad.push(`${id} ${JSON.stringify(s.answer)} ← «${v}»: тест ${o} → ${n} (checkAns ${r})`);
       if (args.includes("--list-cat") && /^half/.test(opt("--list-cat")) && (isForm || isRoot)) console.log(`    ${id} «${v}»: ${o} → ${n}`);
     }
   }
-  console.log(`Вердикт тесту рівня (diagAnswerOk → diagVerdict), записів ${halfTotal}:`);
+  console.log(`Вердикт тесту рівня (${OLD_VERDICT ? "diagVerdict" : "diagAnswerOk"} → diagVerdict), записів ${halfTotal}:`);
   for (const [c, k] of Object.entries(halfCounts)) console.log(`  ${String(k).padStart(5)}  ${c}`);
   console.log(`  ${String(halfBad.length).padStart(5)}  НЕПОЯСНЕНІ (тест рівня)`);
   halfBad.slice(0, SHOW).forEach(x => console.log("    " + x));

@@ -1678,7 +1678,7 @@ async def decisions_1101_checks(browser, url):
     # (1)
     context, page, errors = await qa_page(browser, url, {'grade': 6, 'unlockAll': False})
     await page.evaluate("""() => { const d=SLID_SUBJECTS.find(c=>c.id==='math').diags.find(d=>d.id==='dg6');
-      d.items=[{type:'answer',answer:24,title:'Сторона квадрата',body:'<p>Обчисли $\\\\sqrt{576}$.</p>',topic:'r',sk:'num'},
+      d.items=[{type:'answer',answer:24,title:'Корінь',body:'<p>Обчисли $\\\\sqrt{576}$.</p>',topic:'r',sk:'num'},
         {type:'answer',answer:'3/4',fractionOnly:true,title:'Частина класу',body:'<p>Яку частину класу становлять 18 учнів з 24? Запиши звичайним дробом.</p>',topic:'f',sk:'frac'}];
       d.topics=d.items.map(it=>({id:it.topic,title:it.title,kind:'cur',lessons:['g6m1l1']})); }""")
     await page.click('[data-diag="math"]'); await page.click('[data-diag-go]')
@@ -1758,7 +1758,7 @@ async def decisions_1101_checks(browser, url):
 
 async def half_credit_checks(browser, url):
     """engine-diag-half-credit (рішення людини й методичне правило 2026-11-01) через справжній плеєр тесту рівня.
-    Вимаганий умовою вигляд не показано (6/8 при «нескоротним дробом») чи корінь не обчислено (√576 при 24) — півбала (0,5):
+    Вимаганий умовою вигляд не показано (6/8 при «нескоротним дробом», «245 см» при form:'compound') чи корінь не обчислено (√576 при 24) — півбала (0,5):
     вердикт збережено одразу, короткий екран-пояснення (dock info, текст formHint), поле заблоковано, без «Ще не знаю» й без
     другої спроби; закритий на поясненні тест продовжується з наступного завдання. HALF — не провал теми: складніше завдання
     тієї самої теми показують. Інший запис без вимоги вигляду (37 при decimals 1) — OK, хибна відповідь — BAD, обидва без
@@ -1770,9 +1770,10 @@ async def half_credit_checks(browser, url):
         {type:'answer',answer:24,title:'Сторона квадрата',body:'<p>Площа квадрата — 576 см². Знайди його сторону в сантиметрах.</p>',topic:'r',sk:'num'},
         {type:'answer',answer:'2/3',reduced:true,title:'Ще дріб',body:'<p>Скороти дріб $8/12$.</p>',topic:'f',sk:'frac'},
         {type:'answer',answer:'37,0',decimals:1,title:'Температура',body:'<p>Запиши з одним знаком після коми: 37 градусів.</p>',topic:'d',sk:'num'},
+        {type:'answer',answerKind:'quantity',answer:245,units:['см','м'],form:'compound',title:'Метри й сантиметри',body:'<p>245 см — це скільки м і см?</p>',topic:'q',sk:'meas'},
         {type:'answer',answer:24,title:'Корінь',body:'<p>Обчисли $\\\\sqrt{576}$.</p>',topic:'c',sk:'num'}];
       d.topics=[{id:'g',title:'Додавання',kind:'pre',lessons:pre.lessons},{id:'f',title:'Дроби',kind:'pre',lessons:pre.lessons},{id:'r',title:'Корінь',kind:'pre',lessons:pre.lessons},
-        {id:'d',title:'Десяткові',kind:'cur',lessons:['g6m1l1']},{id:'c',title:'Обчислення',kind:'cur',lessons:['g6m1l2']}]; }"""
+        {id:'d',title:'Десяткові',kind:'cur',lessons:['g6m1l1']},{id:'q',title:'Величини',kind:'cur',lessons:['g6m1l1']},{id:'c',title:'Обчислення',kind:'cur',lessons:['g6m1l2']}]; }"""
     context, page, errors = await qa_page(browser, url, {'grade': 6, 'unlockAll': False})
     await page.evaluate(fixture)
     await page.click('[data-diag="math"]'); await page.click('[data-diag-go]')
@@ -1804,20 +1805,24 @@ async def half_credit_checks(browser, url):
     # HALF on the base item of «f» is not a failed topic: its harder item is asked
     await answer('Ще дріб', '2/3'); await no_feedback()
     await answer('Температура', '37'); await no_feedback()
+    # compound (form:'compound'): «245 см» — значення правильне, вимаганого «м і см» немає — півбала з поясненням
+    await answer('Метри й сантиметри', '245 см'); await half_screen('Метри й сантиметри', '245 см', 6)
+    assert 'м і см' in await page.locator('#fbText').inner_text()
+    await page.click('#action')
     # дослівна копія кореня з умови — теж півбала з поясненням (рішення людини 2026-11-01); «Далі» завершує тест
-    await answer('Корінь', '√576'); await half_screen('Корінь', '√576', 6)
+    await answer('Корінь', '√576'); await half_screen('Корінь', '√576', 7)
     assert 'Це вираз з умови' in await page.locator('#fbText').inner_text()
     await page.click('#action')
     st = await saved_state(page)
-    assert st['diag']['dg6']['res'] == {'0': 0, '1': 0.5, '3': 0.5, '4': 1, '5': 1, '6': 0.5}, st['diag']['dg6']
-    assert st['diag']['dg6']['topics'] == {'g': 'gap', 'f': 'shaky', 'r': 'shaky', 'd': 'known', 'c': 'new'}, st['diag']['dg6']['topics']
+    assert st['diag']['dg6']['res'] == {'0': 0, '1': 0.5, '3': 0.5, '4': 1, '5': 1, '6': 0.5, '7': 0.5}, st['diag']['dg6']
+    assert st['diag']['dg6']['topics'] == {'g': 'gap', 'f': 'shaky', 'r': 'shaky', 'd': 'known', 'q': 'new', 'c': 'new'}, st['diag']['dg6']['topics']
     assert await page.locator('#stage .endhero').count() == 1
     # Evidence V2 (docs/EVIDENCE.md): HALF — подія answer з verdict "half" і res 0,5, одна на завдання (без другої спроби)
     ev = await page.evaluate("async () => window.SLID_EVIDENCE ? (await SLID_EVIDENCE.export()).events.filter(e => e.type === 'answer' && e.d.mode === 'diag').map(e => e.d) : null")
     assert ev, 'app/evidence.js не завантажено або журнал порожній'
     if True:
         got = [(e['i'], e['verdict'], e.get('res')) for e in ev]
-        assert got == [(0, 'bad', 0), (1, 'half', 0.5), (3, 'half', 0.5), (4, 'ok', 1), (5, 'form', 1), (6, 'half', 0.5)], got
+        assert got == [(0, 'bad', 0), (1, 'half', 0.5), (3, 'half', 0.5), (4, 'ok', 1), (5, 'form', 1), (6, 'half', 0.5), (7, 'half', 0.5)], got
         assert next(e for e in ev if e['i'] == 1)['raw'] == '6/8'
     assert not errors, errors
     await context.close()
@@ -2052,6 +2057,8 @@ async def evidence_checks(browser, url):
     await page.click('#pClose')   # тест рівня закривається одним ✕ (прогрес збережено)
     assert len((await page.evaluate("JSON.parse(localStorage.getItem('slid.v1'))"))['diagRun']['dg6']) == 2
     await page.evaluate("SLID_EVIDENCE.flush()")
+    # сторонні ключі того самого origin резерв save() не чіпає: він видаляє лише slid.evidence.pending, не localStorage.clear() (рев'ю P3-7)
+    await page.evaluate("localStorage.setItem('qa.foreign', 'keep')")
     filled = await page.evaluate("""() => { const K=SLID_EVIDENCE._core.PENDING; let lo=0, hi=12e6;
       while (hi - lo > 1) { const mid=Math.floor((lo + hi) / 2); try { localStorage.setItem(K, '"' + 'x'.repeat(mid) + '"'); lo = mid; } catch (e) { hi = mid; } }
       localStorage.setItem(K, '"' + 'x'.repeat(lo) + '"');
@@ -2061,6 +2068,7 @@ async def evidence_checks(browser, url):
     st = await page.evaluate("JSON.parse(localStorage.getItem('slid.v1'))")
     assert st['diagSkip'] == {'dg6': True} and len(st['diagRun']['dg6']) == 2, 'переповнене сховище: slid.v1 не збережено'
     assert await page.evaluate("localStorage.getItem(SLID_EVIDENCE._core.PENDING)") is None
+    assert await page.evaluate("localStorage.getItem('qa.foreign')") == 'keep', 'резерв save() видалив сторонній ключ localStorage'
     later = [e['d'] for e in (await page.evaluate("SLID_EVIDENCE.export()"))['events'] if e['type'] == 'diag_later']
     assert later == [{'c': 'math', 'diag': 'dg6', 'answered': 2, 'skipped': 1}], later
     await page.evaluate("SLID_EVIDENCE.log('qa_after', {}); SLID_EVIDENCE.stash()")   # місце знову є: копія черги працює
