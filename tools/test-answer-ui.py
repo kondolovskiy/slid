@@ -106,6 +106,10 @@ async def grade_context_checks(browser, url):
     await page.goto(url)
     await page.evaluate("localStorage.setItem('slid.v1',JSON.stringify({grade:6,unlockAll:false}))")
     await page.reload()
+    # review P3-2 (smoke): the sk migration mark is in the saved state after load with empty errs. Not a mutation guard:
+    # another save during the first render also writes S.skFix, so the old `if (migrateSk(S)) save()` passes here too.
+    fixed = (await state()).get('skFix')
+    assert fixed == await page.evaluate("SLID_LEARN.SK_MIGRATIONS.map(f=>f.id)"), fixed
     await page.click('[data-diag="math"]'); await page.click('[data-diag-go]')
     rev_items = await page.evaluate("SLID_SUBJECTS.find(c=>c.id==='math').diags.find(d=>d.id==='dg6').items.flatMap((it,i)=>it.rev?[i]:[])")
     assert rev_items, rev_items

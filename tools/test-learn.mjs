@@ -12,7 +12,10 @@ const L = ctx.SLID_LEARN;
    після переходу на числове порівняння; пара coordinates2 ділить STEP_MAX навпіл) — тобто робота обмежена лічильником. */
 const FZ = (() => { const FDate = class extends Date {}; FDate.now = () => 0; const c = { console, Date: FDate }; c.window = c; vm.createContext(c);
   vm.runInContext(fs.readFileSync(path.join(ROOT, "app/learn.js"), "utf8"), c, { filename: "app/learn.js" }); return c.SLID_LEARN; })();
-const bounded = (s, v) => { const r = FZ.checkAns(s, v), w = FZ.work(); return { r, w, ok: !w.clock && w.steps <= w.max + 2 * w.grant }; };
+// Плюс один щедрий ліміт стіночного часу (5 с на запис; найважчий зараз ≈ 0,7 с): ловить необмежену роботу поза spend() (рев'ю P3-1),
+// а під навантаженням не флейкає — запас ≈ 7×.
+const WALL_MS = 5000;
+const bounded = (s, v) => { const t0 = performance.now(), r = FZ.checkAns(s, v), ms = performance.now() - t0, w = FZ.work(); return { r, w: { ...w, ms: Math.round(ms) }, ok: !w.clock && w.steps <= w.max + 2 * w.grant && ms < WALL_MS }; };
 let fails = 0, n = 0;
 const eq = (got, exp, what) => { n++; const ok = typeof exp === "number" && typeof got === "number" ? Math.abs(got - exp) < 1e-9 : JSON.stringify(got) === JSON.stringify(exp); if (!ok) { fails++; console.log(`ПОМИЛКА ${what}: отримано ${JSON.stringify(got)}, очікувалось ${JSON.stringify(exp)}`); } };
 const { OK, BAD, SKIP } = L;
@@ -1119,13 +1122,13 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
     [K("coordinates2", "(3; -2)", { body: "<p>Знайди координати вектора $\\overrightarrow{AB}$.</p>" }), "\\vec{AB} = (3; -2)", "ok"], [K("coordinates2", "(3; -2)", { body: "<p>Знайди координати вектора $\\vec{MN}$.</p>" }), "\\overrightarrow{MN}=(3; -2)", "ok"],
     [K("coordinates2", "(3; -2)", { body: "<p>Знайди координати точки $A$.</p>" }), "A = (3; -2)", "ok"], [K("coordinates2", "(3; -2)"), "m(3; -2)", "ok"], [K("coordinates2", "(3; -2)"), "A(3; -2)", "ok"],
     [K("coordinates2", "(3; -2)"), "ABC(3; -2)", "bad"], [K("coordinates2", "(3; -2)"), "a = (3; -2)", "bad"], [K("coordinates3", "(1; -2; 3)", { body: "<p>Знайди координати вектора $\\vec{AB}$.</p>" }), "AB = (1; -2; 3)", "ok"],
-    [K("coordinates2", "(3; -2)"), "AB = (3; -2)", "bad"], [K("coordinates2", "(3; -2)"), "A = (3; -2)", "bad"], [K("coordinates2", "(3; -2)"), "\\vec{AB} = (3; -2)", "bad"],
+    [K("coordinates2", "(3; -2)"), "AB = (3; -2)", "ok"], [K("coordinates2", "(3; -2)"), "A = (3; -2)", "ok"], [K("coordinates2", "(3; -2)"), "\\vec{AB} = (3; -2)", "ok"],   // без назви в умові — D-030 (2), варіант B
     [K("coordinates2", "(p - m; k - n)", { body: "<p>Знайди координати вектора $\\overrightarrow{AB}$, якщо $A(m; n)$, $B(p; k)$.</p>" }), "AB = (p - m; k - n)", "ok"],
     [K("coordinates2", "(p - m; k - n)", { body: "<p>Знайди координати вектора $\\overrightarrow{AB}$, якщо $A(m; n)$, $B(p; k)$.</p>" }), "\\vec{AB} = (p - m; k - n)", "ok"], [K("coordinates2", "(p - m; k - n)"), "A(p - m; k - n)", "ok"],
-    [K("coordinates2", "(p - m; k - n)"), "k(p - m; k - n)", "bad"], [K("coordinates2", "(p - m; k - n)"), "a(p - m; k - n)", "bad"], [K("coordinates2", "(p - m; k - n)"), "AB = (p - m; k - n)", "bad"],
+    [K("coordinates2", "(p - m; k - n)"), "k(p - m; k - n)", "bad"], [K("coordinates2", "(p - m; k - n)"), "a(p - m; k - n)", "bad"], [K("coordinates2", "(p - m; k - n)"), "AB = (p - m; k - n)", "ok"],
     [K("intervalSet", "(2; 5)", { body: "<p>Відомо, що $-5 < n < -2$. Яких значень може набувати $-n$?</p>" }), "-n ∈ (2; 5)", "ok"],
     [K("intervalSet", "(2; 5)", { body: "<p>Відомо, що $1,5 < x < 3$. Яких значень набуває $2x - 1$?</p>" }), "2x - 1 ∈ (2; 5)", "ok"], [K("intervalSet", "(2; 5)"), "x ∈ (2; 5)", "ok"], [K("intervalSet", "(2; 5)"), "[x] ∈ (2; 5)", "bad"],
-    [K("intervalSet", "(2; 5)"), "-n ∈ (2; 5)", "bad"], [K("intervalSet", "(2; 5)"), "2x - 1 ∈ (2; 5)", "bad"],
+    [K("intervalSet", "(2; 5)"), "-n ∈ (2; 5)", "form"], [K("intervalSet", "(2; 5)"), "2x - 1 ∈ (2; 5)", "form"],   // назва не з умови, проміжок правильний — form з підказкою
     // п. 6: періодичний дріб до раціонального ключа
     [N("-1/3"), "-0,(3)", "ok"], [N("-1/3"), "−0.(3)", "ok"], [N("68/55"), "1,2(36)", "ok"], [N("1/3"), "0,(3)", "ok"], [N("1/3"), "x = 0,(3)", "ok"], [N("1/3"), "0,(33)", "ok"], [N("1/3"), "0,(4)", "bad"],
     [N("1/3", { fractionOnly: true }), "0,(3)", "form"], [N("1/3", { reduced: true }), "0,(3)", "form"], [N("1/3"), "0,(3", "bad"], [K("list", "1/3; 2"), "0,(3); 2", "bad"],
@@ -1392,47 +1395,61 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
   eq([sig("1.2", "1,2"), sig("1,2", "1, 2"), sig("1; 2", "1;2"), sig("1,5; 2", "1.5; 2"), sig("1,5; 2", "1,5, 2"), sig("2; 1", "1; 2")], [false, true, true, true, false, false],
     "answerSig list: «1.2» (одне число) ≠ «1,2» (два); пробіли й крапка/кома всередині елемента — те саме; інший поділ чи порядок — інший відбиток");
   eq(L.checkAns(K("list", [1, 2]), "1.2") !== L.checkAns(K("list", [1, 2]), "1,2"), true, "answerSig list: відбитки різні там, де різні вердикти");
-  // coordinates: назва — лише та, про яку питає умова
+  // coordinates: назва — лише та, про яку питає умова; без шуканої — будь-яка, крім назв даних точок (варіант B, уточнення D-030 (2)).
+  // Значення правильне, а назву відкинуто — «form» з поясненням, не «ok» (рев'ю P2-1); значення неправильне — «bad» без підказки.
   const VAB = K("coordinates2", [-3, 1], C("<p>Знайди координати вектора $\\overrightarrow{AB}$, якщо $A(2; 3)$, $B(-1; 4)$.</p>"));
-  for (const [v, r] of [["AB = (-3; 1)", "ok"], ["АВ = (-3; 1)", "ok"], ["\\vec{AB} = (-3; 1)", "ok"], ["AB(-3; 1)", "ok"], ["(-3; 1)", "ok"], ["CD = (-3; 1)", "bad"], ["BA = (-3; 1)", "bad"],
-    ["A(-3; 1)", "bad"], ["B = (-3; 1)", "bad"], ["\\vec{CD} = (-3; 1)", "bad"], ["AB = CD = (-3; 1)", "bad"], ["AB = (-3; 1); CD = (-3; 1)", "bad"], ["AB = AB = (-3; 1)", "bad"], ["AB = (-3; 2)", "bad"], ["AB = (1; -3)", "bad"]])
+  for (const [v, r] of [["AB = (-3; 1)", "ok"], ["АВ = (-3; 1)", "ok"], ["\\vec{AB} = (-3; 1)", "ok"], ["AB(-3; 1)", "ok"], ["(-3; 1)", "ok"], ["CD = (-3; 1)", "form"], ["BA = (-3; 1)", "form"],
+    ["A(-3; 1)", "form"], ["B = (-3; 1)", "form"], ["\\vec{CD} = (-3; 1)", "form"], ["AB = CD = (-3; 1)", "bad"], ["AB = (-3; 1); CD = (-3; 1)", "bad"], ["AB = AB = (-3; 1)", "bad"], ["AB = (-3; 2)", "bad"], ["AB = (1; -3)", "bad"], ["CD = (1; -3)", "bad"]])
     eq(L.checkAns(VAB, v), r, `назва з умови (вектор AB): «${v}»`);
+  eq([L.formHint(VAB, "CD = (-3; 1)"), L.badHint(VAB, "CD = (1; -3)")], ["Координати правильні, але тут шукають AB.", null], "назва з умови: підказка лише при правильному значенні");
   const PB = K("coordinates2", [1, 6], C("<p>Точка $C(2; 1)$ — середина відрізка $AB$, а $A(3; -4)$. Знайди координати точки $B$.</p>"));
-  for (const [v, r] of [["B(1; 6)", "ok"], ["B = (1; 6)", "ok"], ["(1; 6)", "ok"], ["A(1; 6)", "bad"], ["AB = (1; 6)", "bad"], ["C(1; 6)", "bad"]]) eq(L.checkAns(PB, v), r, `назва з умови (точка B, відрізок AB — не шукане): «${v}»`);
-  // дана точка (з координатами) і означення («кожна точка $X$…») — не шукане; тоді давнє правило: лише одна літера без «=»
+  for (const [v, r] of [["B(1; 6)", "ok"], ["B = (1; 6)", "ok"], ["(1; 6)", "ok"], ["A(1; 6)", "form"], ["AB = (1; 6)", "form"], ["C(1; 6)", "form"], ["A(1; 7)", "bad"]]) eq(L.checkAns(PB, v), r, `назва з умови (точка B, відрізок AB — не шукане): «${v}»`);
+  // шуканої назви немає: будь-яка назва (D-030 (2)), крім даних точок умови; означення («кожна точка $X$…») — не шукане
   const PM = K("coordinates2", [1, -5], { title: "Симетрія відносно точки $M$", body: "<p>Знайди координати точки, симетричної точці $A(3; -1)$ відносно точки $M(2; -3)$.</p>" });
   const PX = K("coordinates2", [-4, 2], C("<p>Кожна точка $X$ переходить у точку $X_1$ на промені $OX$.</p><p>Знайди образ точки $A(-2; 1)$.</p>"));
-  for (const [s, v, r] of [[PM, "M = (1; -5)", "bad"], [PM, "A1(1; -5)", "bad"], [PM, "B(1; -5)", "ok"], [PX, "X = (-4; 2)", "bad"], [PX, "A(-4; 2)", "ok"], [PX, "AB = (-4; 2)", "bad"]])
-    eq(L.checkAns(s, v), r, `назва: дана точка / означення не шукане: «${v}»`);
+  for (const [s, v, r] of [[PM, "M = (1; -5)", "form"], [PM, "M(1; -5)", "form"], [PM, "A(1; -5)", "form"], [PM, "A1(1; -5)", "bad"], [PM, "B(1; -5)", "ok"], [PM, "B = (1; -5)", "ok"], [PM, "M(1; 5)", "bad"],
+    [PX, "X = (-4; 2)", "ok"], [PX, "A(-4; 2)", "form"], [PX, "AB = (-4; 2)", "ok"], [PX, "B(-4; 2)", "ok"]])
+    eq(L.checkAns(s, v), r, `назва без шуканої: «${v}»`);
+  eq(L.formHint(PM, "M = (1; -5)"), "Координати правильні, але M — дана точка умови. Запиши лише координати.", "назва: дана точка — підказка");
+  for (const [v, r] of [["A = (3; -2)", "ok"], ["AB = (3; -2)", "ok"], ["\\vec{AB} = (3; -2)", "ok"], ["A(3; -2)", "ok"], ["ABC(3; -2)", "bad"], ["a = (3; -2)", "bad"]]) eq(L.checkAns(K("coordinates2", "(3; -2)"), v), r, `назва без умови (D-030 (2)): «${v}»`);
   // символьний ключ: та сама назва
   const SYM = K("coordinates2", ["p - m", "k - n"], C("<p>Знайди координати вектора $\\overrightarrow{AB}$, якщо $A(m; n)$, $B(p; k)$.</p>"));
-  for (const [v, r] of [["AB = (p - m; k - n)", "ok"], ["\\vec{AB}=(p - m; k - n)", "ok"], ["CD = (p - m; k - n)", "bad"], ["A(p - m; k - n)", "bad"], ["k(p - m; k - n)", "bad"]]) eq(L.checkAns(SYM, v), r, `назва, символьний ключ: «${v}»`);
+  for (const [v, r] of [["AB = (p - m; k - n)", "ok"], ["\\vec{AB}=(p - m; k - n)", "ok"], ["CD = (p - m; k - n)", "form"], ["A(p - m; k - n)", "form"], ["CD = (m - p; k - n)", "bad"], ["k(p - m; k - n)", "bad"]]) eq(L.checkAns(SYM, v), r, `назва, символьний ключ: «${v}»`);
   // intervalSet: префікс — назва з умови, лише один
   const NEG = K("intervalSet", "[-4; 3)", { title: "$-3 < n \\le 4$. Що з $-n$?", body: "<p>Відомо, що $-3 < n \\le 4$, тобто $n > -3$ і $n \\le 4$. Яких значень може набувати $-n$?</p><p>Запиши відповідь проміжком. Наприклад, $(1;\\,5]$ — це всі числа $y$, для яких $1 < y \\le 5$.</p>" });
-  for (const [v, r] of [["-n ∈ [-4; 3)", "ok"], ["−n ∈ [-4; 3)", "ok"], ["- n∈[-4; 3)", "ok"], ["[-4; 3)", "ok"], ["n ∈ [-4; 3)", "bad"], ["x ∈ [-4; 3)", "bad"], ["y ∈ [-4; 3)", "bad"], ["2n ∈ [-4; 3)", "bad"],
-    ["x ∈ -n ∈ [-4; 3)", "bad"], ["-n ∈ x ∈ [-4; 3)", "bad"], ["-n = [-4; 3)", "ok"], ["-n ∈ [-4; 3]", "bad"]]) eq(L.checkAns(NEG, v), r, `intervalSet, назва з умови (−n): «${v}»`);
+  for (const [v, r] of [["-n ∈ [-4; 3)", "ok"], ["−n ∈ [-4; 3)", "ok"], ["- n∈[-4; 3)", "ok"], ["[-4; 3)", "ok"], ["n ∈ [-4; 3)", "form"], ["x ∈ [-4; 3)", "form"], ["y ∈ [-4; 3)", "form"], ["2n ∈ [-4; 3)", "form"],
+    ["n ∈ [-4; 2)", "bad"], ["x ∈ -n ∈ [-4; 3)", "bad"], ["-n ∈ x ∈ [-4; 3)", "bad"], ["-n = [-4; 3)", "ok"], ["-n ∈ [-4; 3]", "bad"]]) eq(L.checkAns(NEG, v), r, `intervalSet, назва з умови (−n): «${v}»`);
+  eq([L.formHint(NEG, "n ∈ [-4; 3)"), L.badHint(NEG, "n ∈ [-4; 2)")], ["Проміжок правильний, але тут шукають значення −n.", null], "intervalSet: підказка назви лише при правильному проміжку");
   const RANGE = K("intervalSet", "(-∞; 7]", C("<p>Знайди область значень функції $f(x) = 7 - x^2$ — усі значення, яких набуває $y$.</p>"));
+  const RANGEY = K("intervalSet", "[1/3; 27]", C("<p>Аргумент функції $y = 3^x$ зростає від $-1$ до $3$ включно. У яких межах змінюється значення функції?</p>"));
   const DOM = K("intervalSet", "(-1; +∞)", C("<p>Знайди область визначення функції $f(x) = \\log_3 (x + 1)$.</p>"));
   const PAR = K("intervalSet", "(9; +∞)", C("<p>При яких значеннях $a$ функція $y = x^2 + 6x + a$ не має нулів? Запиши множину таких $a$ проміжком.</p>"));
-  for (const [s, v, r] of [[RANGE, "y ∈ (-∞; 7]", "ok"], [RANGE, "E(f) = (-∞; 7]", "ok"], [RANGE, "f(x) ∈ (-∞; 7]", "ok"], [RANGE, "D(f) = (-∞; 7]", "bad"], [RANGE, "x ∈ (-∞; 7]", "bad"],
-    [DOM, "x ∈ (-1; +∞)", "ok"], [DOM, "D(f) = (-1; +∞)", "ok"], [DOM, "E(f) = (-1; +∞)", "bad"], [DOM, "y ∈ (-1; +∞)", "bad"],
-    [PAR, "a ∈ (9; +∞)", "ok"], [PAR, "x ∈ (9; +∞)", "bad"], [PAR, "y ∈ (9; +∞)", "bad"]]) eq(L.checkAns(s, v), r, `intervalSet, назва з умови: «${v}» (${s.body.slice(3, 40)})`);
+  for (const [s, v, r] of [[RANGE, "y ∈ (-∞; 7]", "ok"], [RANGE, "E(f) = (-∞; 7]", "ok"], [RANGE, "f(x) ∈ (-∞; 7]", "ok"], [RANGE, "D(f) = (-∞; 7]", "form"], [RANGE, "x ∈ (-∞; 7]", "form"],
+    [RANGEY, "E(f) = [1/3; 27]", "ok"], [RANGEY, "E(y) = [1/3; 27]", "ok"], [RANGEY, "x ∈ [1/3; 27]", "form"],
+    [DOM, "x ∈ (-1; +∞)", "ok"], [DOM, "D(f) = (-1; +∞)", "ok"], [DOM, "E(f) = (-1; +∞)", "form"], [DOM, "y ∈ (-1; +∞)", "form"],
+    [PAR, "a ∈ (9; +∞)", "ok"], [PAR, "x ∈ (9; +∞)", "form"], [PAR, "y ∈ (9; +∞)", "form"], [PAR, "x ∈ (8; +∞)", "bad"]]) eq(L.checkAns(s, v), r, `intervalSet, назва з умови: «${v}» (${s.body.slice(3, 40)})`);
+  eq([L.formHint(RANGE, "x ∈ (-∞; 7]"), L.formHint(PAR, "x ∈ (9; +∞)")], ["Проміжок правильний, але тут шукають значення функції (y, E(f)), а не аргументу.", "Проміжок правильний, але тут шукають значення a."], "intervalSet: підказки назви");
   // дві «голі» формули й жодної єдиної змінної — назви немає, давнє правило (одна літера)
   const TWO = K("intervalSet", "(1; 2)", C("<p>Знайди спільні значення $a$ і $b$.</p>"));
-  eq([L.checkAns(TWO, "b ∈ (1; 2)"), L.checkAns(TWO, "a ∈ (1; 2)"), L.checkAns(TWO, "2b ∈ (1; 2)")], ["ok", "ok", "bad"], "intervalSet: дві голі формули — без назви, давнє правило");
+  eq([L.checkAns(TWO, "b ∈ (1; 2)"), L.checkAns(TWO, "a ∈ (1; 2)"), L.checkAns(TWO, "2b ∈ (1; 2)")], ["ok", "ok", "form"], "intervalSet: дві голі формули — без назви, давнє правило");
   // без назви в умові — давнє правило (одна літера, D(f)); «x ∈ y ∈» ніколи
-  for (const [v, r] of [["x ∈ (2; 5)", "ok"], ["D(f) = (2; 5)", "ok"], ["x ∈ y ∈ (2; 5)", "bad"], ["-n ∈ (2; 5)", "bad"], ["xy ∈ (2; 5)", "bad"]]) eq(L.checkAns(K("intervalSet", "(2; 5)"), v), r, `intervalSet без умови: «${v}»`);
+  for (const [v, r] of [["x ∈ (2; 5)", "ok"], ["D(f) = (2; 5)", "ok"], ["x ∈ y ∈ (2; 5)", "bad"], ["-n ∈ (2; 5)", "form"], ["xy ∈ (2; 5)", "form"]]) eq(L.checkAns(K("intervalSet", "(2; 5)"), v), r, `intervalSet без умови: «${v}»`);
+  eq(L.formHint(K("intervalSet", "(2; 5)"), "-n ∈ (2; 5)"), "Проміжок правильний, але назва перед ним не та. Запиши лише проміжок.", "intervalSet без умови: загальна підказка назви");
+  eq(["Проміжок правильний, але тут шукають значення −n.", "Проміжок правильний, але назва перед ним не та. Запиши лише проміжок."].every(t => L.hintTexts(NEG).includes(t)) && L.hintTexts(PM).includes("Координати правильні, але M — дана точка умови. Запиши лише координати.")
+    && L.hintTexts(VAB).includes("Координати правильні, але тут шукають AB."), true, "hintTexts: підказки назв (для «підказка ≠ ключ»)");
   // реальний зміст: назви, які тепер знімаються
   { const { loadContent } = await import("./lib.mjs"); const pools = loadContent().subjects.find(c => c.id === "math").pools, it = id => { const [p, i] = id.split(":"); return pools.find(x => x.id === p).items.find(x => x.id === i); };
     const acc = (id, pres, wrap = k => k) => pres.filter(p => L.checkAns(it(id), `${p}${wrap(it(id).answer)}`) === "ok");
     eq(acc("pg9m1:a07", ["x ∈ ", "n ∈ ", "-n ∈ ", "y ∈ "]), ["-n ∈ "], "зміст pg9m1:a07: лише «-n ∈»");
     eq(acc("pg9m3:a07", ["x ∈ ", "a ∈ ", "y ∈ "]), ["a ∈ "], "зміст pg9m3:a07: лише «a ∈»");
     eq(acc("pg10m1:a03", ["x ∈ ", "y ∈ ", "D(f) = ", "E(f) = "]), ["y ∈ ", "E(f) = "], "зміст pg10m1:a03 (область значень): y, E(f)");
-    eq(acc("pg11m1:a02", ["x ∈ ", "y ∈ "]), ["y ∈ "], "зміст pg11m1:a02 (межі значення функції): y, не x");
+    eq(acc("pg11m1:a02", ["x ∈ ", "y ∈ ", "E(f) = ", "E(y) = "]), ["y ∈ ", "E(f) = ", "E(y) = "], "зміст pg11m1:a02 (y = 3^x): y, E(f), E(y), не x");
     const pt = a => "(" + a.join("; ") + ")";
     eq(acc("pg9m2:c01", ["AB = ", "CD = ", "A", "\\vec{AB} = "], pt), ["AB = ", "\\vec{AB} = "], "зміст pg9m2:c01: вектор AB");
     eq(acc("pg9m2:c05", ["D", "D = ", "CD = ", "AB = ", "A"], pt), ["D", "D = "], "зміст pg9m2:c05: точка D (не вектори з заголовка)");
-    eq(acc("pg9m6:c07", ["M = ", "M", "A", "B", "AM = "], k => k), ["M", "A", "B"], "зміст pg9m6:c07: шуканої назви немає (M дана) — лише давнє правило: одна літера без «=»"); }
+    eq(acc("pg9m6:c07", ["M = ", "M", "A", "B", "AM = "], k => k), ["B", "AM = "], "зміст pg9m6:c07: шуканої назви немає — будь-яка, крім даних A і M");
+    eq([acc("pg9m2:c03", ["A", "B = ", "B"], pt), acc("pg9m3:c01", ["M = ", "M", "A = "], k => k), L.checkAns(it("pg9m2:c03"), "A(3; 5)")], [["B = ", "B"], ["M = ", "M", "A = "], "form"],
+      "зміст: pg9m2:c03 A — дана початкова точка (form), B = ok; pg9m3:c01 «M = (6; -33)» ok (D-030 (2))"); }
   // величини: розряди через пробіл (як у number), лише групи по 3 цифри
   const Q1 = K("quantity", 2543, { units: ["см"] }), Q2 = K("quantity", 245, { units: ["м", "см"] }), QK = K("quantity", 1200, { units: ["кг", "г"], form: "compound" });
   for (const [s, v, r] of [[Q1, "2 543 см", "ok"], [Q1, "2543 см", "ok"], [Q1, "25,43 м", "ok"], [Q1, "25 43 см", "bad"], [Q1, "2 5430 см", "bad"], [Q1, "2 543,5 см", "bad"], [Q1, "2 54 см", "bad"], [Q1, "2 543", "bad"],
@@ -1468,6 +1485,8 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
   const hb = bounded(K("expression", "x"), "(x+√2+√3+√5+√7+√11+√13)^12");
   eq([hb.r, hb.ok, hb.w.steps > 1e5], ["bad", true, true], `work(): важкий запис витрачає > 10⁵ кроків — ${hb.w.steps}`);
   eq(FZ.work().clock, false, "work(): заморожений годинник не спрацьовує");
+  // лічильник скидається між викликами: після важкого запису легкий має свої кілька кроків, а не накопичені (рев'ю P3-1)
+  FZ.checkAns(K("expression", "x"), "x + 1"); eq(FZ.work().steps < 1000, true, `work(): лічильник скинуто між викликами — ${FZ.work().steps}`);
   { const SL = (() => { let t = 0; const D = class extends Date {}; D.now = () => (t += 4000); const c = { console, Date: D }; c.window = c; vm.createContext(c); vm.runInContext(fs.readFileSync(path.join(ROOT, "app/learn.js"), "utf8"), c); return c.SLID_LEARN; })();
     eq([SL.checkAns(K("expression", "x"), "(x+√2+√3+√5+√7+√11+√13)^12"), SL.work().clock], ["bad", true], "work(): годинник, що «летить», — clock: true (тест справді розрізняє)"); }
 }

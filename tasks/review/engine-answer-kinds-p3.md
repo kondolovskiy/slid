@@ -23,6 +23,9 @@ depends_on: [engine-math-answer-kinds-new]
 - підказка під полем для `decimals` і `form: "improper"` — своя, а не загальна «Мішане число — через пробіл: 2 1/3»;
 - `quantity` не приймає «2 543 см» (пробіл між розрядами).
 
+## Нотатки (частково, wt-lab3)
+- Пункт «validate.mjs для екранів `answer` в уроках — ті самі правила, що validatePool» **зроблено в гілці wt-lab3** (комплект engine-player-a11y-p3 + tools-validate-p3b, одне рев'ю): `answerFieldIssues` у tools/validate.mjs загортає екран у пул з однією задачею й викликає саме `SLID_LEARN.validatePool` (правила не розійдуться: answerKind, decimals, form/improper, units лише для quantity, time/quantity без unit, multiset, signed, tol, unitForms…); «ключ не читається» не дублюється. Діє для уроків і діагностик; задачі пулу не перевіряються двічі. На змісті 0 екранів `answer` в уроках і діагностиках — 0 нових помилок. Фікстури: 10 випадків у test-validate + «пул без дубля». app/learn.js не змінювався.
+
 ### Виконано (2026-11-01, wt-learn3; пункт «validate.mjs для екранів answer» — інший виконавець, tools/validate.mjs не чіпав)
 - `x ∈ y ∈ (−∞; 3]` → bad: знімається лише один префікс і лише назва з умови (див. engine-learn-list-prefixes-p3, askedSet).
 - **Екстрактор прикладів** test-answer-ui: сполучник «чи/або/і/й/та/а» між цифрами — роздільник (слово-одиниця між цифрами, «ост.» — як і раніше); самоперевірка витягу («2 : 3 чи 6 : 10» → два приклади) перед основним сканом.

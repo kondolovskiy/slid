@@ -157,10 +157,11 @@ const CATS = [
   // engine-learn-list-prefixes-p3 / engine-answer-kinds-p3. Префікс-назва: зараховано раніше, тепер bad, а запис без префікса новий
   // рушій оцінює так само, як старий — тобто змінилось лише прийняття назви; які назви тепер приймаються — друкується нижче (звір з умовою).
   ["p3 лише один префікс множини («x ∈ y ∈ …»)", (s, v, o, n) => s.answerKind === "intervalSet" && /∈[^∈]*∈/.test(v) && n.r === "bad"],
-  ["p3 префікс множини — лише назва з умови", (s, v, o, n) => s.answerKind === "intervalSet" && /[∈=]/.test(v) && o.r !== "bad" && n.r === "bad"
+  // варіант B (рев'ю engine-learn-list-prefixes-p3): відкинута назва при правильному значенні — «form» з поясненням, не bad
+  ["p3 префікс множини не з умови — form з поясненням", (s, v, o, n) => s.answerKind === "intervalSet" && /[∈=]/.test(v) && o.r !== "bad" && n.r === "form" && /^Проміжок правильний, але /.test(n.h || "")
     && same(verdict(NEW, s, v.slice(v.search(/[∈=]/) + 1).trim()), o)],
-  ["p3 назва перед координатами — лише назва з умови", (s, v, o, n) => /^coordinates[23]$/.test(s.answerKind) && NAME0.test(lat(v)) && o.r !== "bad" && n.r === "bad"
-    && same(verdict(NEW, s, lat(v).replace(NAME0, "")), o)],   // lat: кирилична «АВ» — та сама назва (g11 п.1)
+  ["p3 назва перед координатами не з умови / дана точка — form з поясненням", (s, v, o, n) => /^coordinates[23]$/.test(s.answerKind) && NAME0.test(lat(v)) && o.r !== "bad" && n.r === "form"
+    && /^Координати правильні, але /.test(n.h || "") && same(verdict(NEW, s, lat(v).replace(NAME0, "")), o)],   // lat: кирилична «АВ» — та сама назва (g11 п.1)
   ["p3 list: «;» замість коми — підказка", (s, v, o, n) => s.answerKind === "list" && o.r === "bad" && n.r === "bad" && !o.h && /^Без «;» кома розділяє/.test(n.h || "") && /^[\d\s,.+-]+$/.test(v)],
   ["p3 mixed: одразу «мішаним числом»", (s, v, o, n) => !!s.mixed && o.r === "form" && n.r === "form" && /звичайним дробом/.test(o.h) && /мішаним числом/.test(n.h)],
   ["p3 √ дослівно з умови — інша підказка", (s, v, o, n) => o.r === "form" && n.r === "form" && /Обчисли корінь/.test(o.h) && /^Це вираз з умови/.test(n.h)

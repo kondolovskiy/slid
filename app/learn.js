@@ -619,8 +619,9 @@ window.SLID_LEARN = (() => {
      шляху (m(-4; 0), як і раніше); у символьному ключі k(p − m; k − n) — множник, не назва.
      Правило єдиної назви з умови (engine-learn-list-prefixes-p3): якщо умова питає про одну названу точку чи вектор
      (askedPoint: «точки $B$», «вектора $\overrightarrow{AB}$», «вершини $C$»), назва в записі має бути саме нею — «CD = (−3; 1)»
-     чи «A(1; 6)» при «знайди точку B» не зараховуються. Якщо умова такої назви не має, лишається давнє правило (до п. 5):
-     лише одна велика літера без «=» перед дужками (A(3; 1)); «AB = …», «A = …», \vec{…} тоді — запис не розбирається (bad). */
+     чи «A(1; 6)» при «знайди точку B» не зараховуються. Якщо умова такої назви не має — будь-яка назва, як у D-030 (2) («M = (6; -33)»,
+     «B = (3; 5)»), крім назв даних точок умови («A(3; 5)», коли $A(4; -3)$ — дана) — варіант B оркестратора, уточнення D-030 (2).
+     Значення правильне, а назву відкинуто — «form» з поясненням (nameMsg), не «ok». */
   const NAME_AT = /^(?:\\(?:vec|overrightarrow)\s*\{\s*([A-Z]{1,2})\s*\}|([A-Z]{1,2})|([a-z]))\s*(=?)\s*(?=\()/;
   // Текст умови для пошуку назви: без HTML-тегів (лише справжніх — «<» у формулі лишається) і без прикладів формату
   // («Наприклад, $(1; 5]$ — це всі числа $y$…» до кінця абзацу): приклад не називає шукане.
@@ -629,7 +630,8 @@ window.SLID_LEARN = (() => {
   // Слово перед формулою, що називає шукане: «координати точки $B$», «вектора $\vec{AB}$», «вершини $C$», «кінця», «центра», «образ».
   const ASK_WORD = /(?:^|[^а-яґєії])(?:точк|вершин|вектор|кін[еця]|центр|образ)[а-яґєії]*\s*$/iu;
   const ASKED = new WeakMap();
-  /** Єдина назва точки чи вектора, про яку питає умова, або null. Формула — сама назва (без координат), перед нею — ASK_WORD. */
+  /** Назви умови: { ask — єдина назва точки чи вектора, про яку питає умова (формула-назва без координат, перед нею — ASK_WORD), або null;
+      given — назви точок і векторів із даними координатами ($A(4; -3)$, $\\vec{AB} = (…)$) }. */
   function askedPoint(s) {
     if (!s || typeof s !== "object") return null;
     if (ASKED.has(s)) return ASKED.get(s);
@@ -644,16 +646,18 @@ window.SLID_LEARN = (() => {
     // точка з даними координатами — дане, не шукане: «симетрична точці A відносно точки $M(2; -3)$» (заголовок «…точки $M$»)
     for (const [, f] of text.matchAll(/\$([^$]+)\$/g)) for (const g of f.matchAll(/(?:\\(?:vec|overrightarrow)\s*\{\s*([A-Z]{1,2})\s*\}|(?<![A-Za-z])([A-Z]{1,2}))\s*=?\s*\(/g)) given.add(g[1] || g[2]);
     for (const g of given) names.delete(g);
-    const r = names.size === 1 ? [...names][0] : null;
+    const r = { ask: names.size === 1 ? [...names][0] : null, given };
     ASKED.set(s, r); return r;
   }
   /** Довжина назви на початку запису t (0 — назви немає або її не можна зняти). low — мала літера дозволена (числовий шлях). */
+  // Варіант B (рев'ю engine-learn-list-prefixes-p3, уточнення D-030 (2)): шукана назва є — лише вона; немає — будь-яка назва
+  // з 1–2 великих літер, з «=» чи \vec (D-030 (2)), крім назв даних точок умови (given): «A(3; 5)», коли $A(4; -3)$ — дана початкова точка.
   function nameLen(s, t, low) {
     const m = NAME_AT.exec(t); if (!m) return 0;
     if (m[3]) return low && !m[4] ? m[0].length : 0;
-    const ask = askedPoint(s), big = m[1] || m[2];
+    const { ask, given } = askedPoint(s) || { ask: null, given: new Set() }, big = m[1] || m[2];
     if (ask) return big === ask ? m[0].length : 0;
-    return !m[1] && big.length === 1 && !m[4] ? m[0].length : 0;
+    return given.has(big) ? 0 : m[0].length;
   }
   /** Впорядковані координати (3; −2) / A(3; -2) / AB = (3; −2) / [3, -2]: рівно n компонент, порядок і знак важливі. s — вправа (назва з умови). */
   function parsePoint(v, n, exact, s) {
@@ -730,10 +734,11 @@ window.SLID_LEARN = (() => {
     for (const f of forms) { const m = f.match(/^([DE])\s*\(\s*([a-z])\s*\)$/); if (m) out.add(`${m[1]}(${m[2]})`); }
     if (/област\S*\s+значень|меж\S*\s+змінюється\s+значення/i.test(text)) {
       if (fns.has("f")) out.add("f(x)").add("E(f)");
-      if (taskVar(s) !== "y") out.add("y").add("E(y)");
+      if (taskVar(s) !== "y") out.add("y").add("E(y)").add("E(f)");   // E(f) — і для функції, заданої як y = … (рев'ю P3-3)
+      out.label = "range";
     } else {
-      if (bare.length === 1) out.add(bare[0]);
-      else { const x = taskVar(s); if (x) out.add(x); }
+      if (bare.length === 1) out.add(out.label = bare[0]);
+      else { const x = taskVar(s); if (x) out.add(out.label = x); }
       if (/област\S*\s+визначення/i.test(text)) for (const f of fns) out.add(`D(${f})`);
     }
     const r = out.size ? out : null;
@@ -975,6 +980,9 @@ window.SLID_LEARN = (() => {
     factored: "Вираз правильний. Розклади його на множники до кінця.",
     reduced: "Вираз правильний. Скороти дріб.",
     simplified: "Вираз правильний, але його можна спростити.",
+    setRange: "Проміжок правильний, але тут шукають значення функції (y, E(f)), а не аргументу.",
+    setName: "Проміжок правильний, але назва перед ним не та. Запиши лише проміжок.",
+    pointName: "Координати правильні, але назва перед ними не та. Запиши лише координати.",
     listSep: "Без «;» кома розділяє числа. Якщо в числах є десяткова кома, відокремлюй їх знаком «;».",
     retry: "Спробуй ще раз."
   };
@@ -1088,6 +1096,7 @@ window.SLID_LEARN = (() => {
   /** Пояснення для результату "form": що саме не так із записом. */
   function formHint(s, v) {
     const kind = s.answerKind || "number"; v = stripUnit(s, v);
+    const nm = ["intervalSet", "coordinates2", "coordinates3"].includes(kind) ? limited(() => nameMsg(s, v), () => null) : null; if (nm) return nm;
     if (kind === "number") {
       const u = numOf(v);
       if (!u && limited(() => { const a = parseAns(typeof s.answer === "number" ? String(s.answer) : s.answer); return !!a && rootNum(v, a); }, () => false)) return rootCopy(s, v) ? MSG.rootCopy : MSG.rootNum;
@@ -1179,6 +1188,9 @@ window.SLID_LEARN = (() => {
     if (kind === "expression" || kind === "coordinates2") out.push(MSG.denom, MSG.parenPow, MSG.expandParen, MSG.expandLike, MSG.power, MSG.factored, MSG.reduced, MSG.simplified);
     if (["exactRoot", "list", "coordinates2", "coordinates3", "intervalSet"].includes(kind)) out.push(MSG.rootReduce);
     if (kind === "list") out.push(MSG.listSep);
+    if (kind === "intervalSet") { const lab = askedSet(s)?.label; out.push(MSG.setRange, MSG.setName, ...(lab && lab !== "range" ? [`Проміжок правильний, але тут шукають значення ${lab.replace(/-/g, "−")}.`] : [])); }
+    if (kind === "coordinates2" || kind === "coordinates3") { const { ask, given } = askedPoint(s) || { ask: null, given: new Set() };
+      out.push(MSG.pointName, ...(ask ? [`Координати правильні, але тут шукають ${ask}.`] : []), ...[...given].map(g => `Координати правильні, але ${g} — дана точка умови. Запиши лише координати.`)); }
     if (kind === "time") out.push(timeMsg(s));
     if (U) out.push(qtyForeignMsg(U), qtyMissingMsg(U), qtyFormMsg(U), qtyTailMsg(U), qtyFracMsg(U), ...(U.dim === "час" ? [qtyClockMsg(U)] : []));
     return out;
@@ -1315,7 +1327,7 @@ window.SLID_LEARN = (() => {
       null — не coordinates2, числовий ключ або ключ не розібрано. Потрібно tools/personalization-qa.mjs (пара виразів закриває формат expression)
       і клавішам поля (app.js). Не викликати зсередини checkAns: limited після себе знімає межі. */
   function pairKey(s) {
-    return limited(() => {          // як checkAns0: результат не залежить від попередніх викликів
+    return limited(() => {          // як checkAns0 (checkCore): результат не залежить від попередніх викликів
       const a = symPair(s), r = a && pairSym(s, s.answer, a), t = splitPair(s.answer);
       return r && r.map((x, i) => ({ expr: x.sym, vars: varsOf(a[i]), tidy: x.r === "ok", text: t[i].trim() }));
     }, () => null);
@@ -1367,7 +1379,33 @@ window.SLID_LEARN = (() => {
     if (!ok) LIMIT = lim;   // невдала спроба не змінює підказку до «bad» (раніше такий запис просто не розбирався)
     return ok;
   }
+  /* Назва відкинута, а значення правильне (рев'ю engine-learn-list-prefixes-p3, P2-1): «M(1; -5)», коли M — дана точка, «n ∈ [-4; 3)»
+     при −n. Не «ok» (назва хибна), а «form» з поясненням (nameMsg); якщо й без назви запис неправильний — звичайне «bad», без підказки. */
+  function dropName(s, v) {
+    const kind = s.answerKind || "number", t = norm(v);
+    if (kind === "intervalSet") { const at = t.search(/[=∈]/), pre = at > 0 ? t.slice(0, at) : ""; const rest = t.slice(at + 1).trim(); return pre && !/[[\]{};∪∞]/.test(pre) && !/[=∈]/.test(rest) ? rest : null; }   // «x ∈ y ∈ …» — bad
+    if (kind === "coordinates2" || kind === "coordinates3") { const m = NAME_AT.exec(t), rest = m && t.slice(m[0].length); return m && !m[3] && !NAME_AT.test(rest) ? rest : null; }   // «AB = AB = (…)» — bad
+    return null;
+  }
   function checkAns0(s, v) {
+    const r = checkCore(s, v);
+    if (r !== "bad" || typeof v !== "string") return r;
+    const bare = dropName(s, v);
+    return bare !== null && checkCore(s, bare) !== "bad" ? "form" : r;
+  }
+  /** Текст для «form» через відкинуту назву або null (formHint). Відповіді не розкриває: лише назву з умови. */
+  function nameMsg(s, v) {
+    const kind = s.answerKind || "number"; if (typeof v !== "string" || !["intervalSet", "coordinates2", "coordinates3"].includes(kind)) return null;
+    const bare = dropName(s, v);
+    if (bare === null || checkCore(s, v) !== "bad" || checkCore(s, bare) === "bad") return null;
+    if (kind === "intervalSet") {
+      const names = askedSet(s), lab = names?.label;
+      return lab === "range" ? MSG.setRange : lab ? `Проміжок правильний, але тут шукають значення ${lab.replace(/-/g, "−")}.` : MSG.setName;
+    }
+    const m = NAME_AT.exec(norm(v)), { ask, given } = askedPoint(s) || { ask: null, given: new Set() }, big = m && (m[1] || m[2]);
+    return ask ? `Координати правильні, але тут шукають ${ask}.` : big && given.has(big) ? `Координати правильні, але ${big} — дана точка умови. Запиши лише координати.` : MSG.pointName;
+  }
+  function checkCore(s, v) {
     const kind = s.answerKind || "number", tidy = xs => xs.every(x => x.tidy) ? "ok" : "form", ex = exactKey(s.answer);
     BUDGET = 50000;
     if (kind === "comparison") return /^[<>=]$/.test(String(s.answer).trim()) && String(v).trim() === String(s.answer).trim() ? "ok" : "bad";
