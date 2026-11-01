@@ -107,7 +107,13 @@ const TEX_CASES = [
   ["$sin x$ без лапок — попередження", { body: "Знайди $sin x$, $tg^2 a$ і $arcsin 1$." }, null, "назва функції без лапок: sin, tg, arcsin"],
   ["$log_2 8$ у items — попередження", { extra: sortScr([["$log_2 8$", 0], ["$y$", 1]]) }, null, "назва функції без лапок: log"],
   ["\"sin\", \\sin, \\text{tg}, cos поза формулою — чисто", { body: "Маємо $\"sin\" x$, $\\sin x$, $\\text{tg} a$ і $\\cos x$; слово cos поза формулою." }, null, null],
-  ["{sin(a)} — шаблон lab, не назва — чисто", { lab: plane({ show: "$y = {sin(a)}$" }) }, null, null]];
+  ["{sin(a)} — шаблон lab, не назва — чисто", { lab: plane({ show: "$y = {sin(a)}$" }) }, null, null],
+  // engine-p3-1101 (рев'ю engine-math-sqrt-precedence, P3-4): \sqrt без {…} — порожній корінь, помилка; з {…} чи [n]{…} — чисто
+  ["\\sqrt 3/2 без дужок — помилка", { body: "Маємо $\\sqrt 3/2$." }, "\\sqrt без фігурних дужок", null],
+  ["\\sqrt3 впритул — помилка", { body: "Маємо $x = \\sqrt3$." }, "\\sqrt без фігурних дужок", null],
+  ["\\sqrt[3] 8 без дужок — помилка", { body: "Маємо $\\sqrt[3] 8 = 2$." }, "\\sqrt без фігурних дужок", null],
+  ["\\sqrt без дужок у steps (items) — помилка", { extra: sortScr([["$\\sqrt 2$", 0], ["$y$", 1]]) }, "\\sqrt без фігурних дужок", null],
+  ["\\sqrt{3}/2, \\sqrt[3]{8}, \\sqrt {2}, √3/2 — чисто", { body: "Маємо $\\sqrt{3}/2$, $\\sqrt[3]{8}$, $\\sqrt {2}$, $√3/2$." }, null, null]];
 let MATH_SKILLS = {};
 { const ctx = { SLID: { subject: (a, b) => { MATH_SKILLS = (b || a).skills || {}; } } }; ctx.window = ctx;
   try { new Function("SLID", "window", fs.readFileSync(path.join(ROOT, "content/subjects/math.js"), "utf8"))(ctx.SLID, ctx); } catch {} }
