@@ -374,6 +374,17 @@ expectRun("drag: at і без drag — без попередження", one("fx
     ["reduced «нескоротним дробом» — без попередження", { type: "answer", answer: "2/5", reduced: true, body: "<p>Запиши $4/10$ нескоротним дробом.</p>" }, null],
     ["mixed без формату — попередження", { type: "answer", answer: "2 1/3", mixed: true, body: "<p>Обчисли $7/3$.</p>" }, "mixed — мішане"],
     ["decimals «до десятих» — без попередження", { type: "answer", answer: "37,0", decimals: 1, body: "<p>Округли 36,96 до десятих.</p>" }, null],
+    // P3-3 рев'ю engine-lab-aria-p3d (engine-practice-pool): фікстури fractionOnly / improper і точніші евристики compound / decimals
+    ["fractionOnly без формату — попередження", { type: "answer", answer: "3/4", fractionOnly: true, body: "<p>Обчисли $1/2 + 1/4$.</p>" }, "fractionOnly — лише звичайний"],
+    ["fractionOnly «звичайним дробом» — без попередження", { type: "answer", answer: "3/4", fractionOnly: true, body: "<p>Обчисли $1/2 + 1/4$. Запиши звичайним дробом.</p>" }, null],
+    ["improper без формату — попередження", { type: "answer", answer: "7/3", form: "improper", body: "<p>Обчисли $2 + 1/3$.</p>" }, "form improper"],
+    ["improper «неправильним дробом» — без попередження", { type: "answer", answer: "7/3", form: "improper", body: "<p>Запиши $2 1/3$ неправильним дробом.</p>" }, null],
+    ["compound «у задачах і прикладах» — попередження", { ...Q, body: "<p>Таке трапляється у задачах і прикладах. Довжина 245 см.</p>" }, "form compound"],
+    ["compound «в м і см» — без попередження", { ...Q, body: "<p>Довжина стрічки 245 см. Вирази в м і см.</p>" }, null],
+    ["decimals 1 «десятковий дріб» без кількості знаків — попередження", { type: "answer", answer: "37,0", decimals: 1, body: "<p>Запиши як десятковий дріб: $37$.</p>" }, "decimals — кількість"],
+    ["decimals 0 «до цілих» — без попередження", { type: "answer", answer: "37", decimals: 0, body: "<p>Округли 36,9 до цілих.</p>" }, null],
+    ["decimals 1 «з точністю до 0,1» — без попередження", { type: "answer", answer: "37,0", decimals: 1, body: "<p>Обчисли з точністю до 0,1.</p>" }, null],
+    ["decimals 1 «до сотих» — попередження (не та кількість)", { type: "answer", answer: "37,0", decimals: 1, body: "<p>Округли 36,96 до сотих.</p>" }, "decimals — кількість"],
     ["time — без попередження", { type: "answer", answerKind: "time", answer: "9:55" }, null]]) {
     expectRun(`diag answer: ${name}`, tree(item), ["--diag", "dgfx"], warn ? { warn: `${FMT} — ${warn}` } : { noWarn: FMT }); }
   // той самий запис в уроці — без попередження (там form пояснюють і дають другу спробу)

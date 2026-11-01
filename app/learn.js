@@ -637,10 +637,12 @@ window.SLID_LEARN = (() => {
   const stmtText = s => ["title", "body", "q", "text"].map(k => typeof s?.[k] === "string" ? s[k] : "").join(" </p> ")
     .replace(/наприклад[^]*?(?=<\/p>|$)/giu, " ").replace(/<\/?[a-zA-Z][^<>]*>/g, " ");
   // Слово перед формулою, що називає шукане: «координати точки $B$», «вектора $\vec{AB}$», «вершини $C$», «кінця», «центра», «образ».
-  const ASK_WORD = /(?:^|[^а-яґєії])(?:точк|вершин|вектор|кін[еця]|центр|образ)[а-яґєії]*\s*$/iu;
+  // «середини $M$ відрізка $AB$» (рев'ю engine-lab-aria-p3d, P3-2): M — шукане; «середини відрізка $AB$» — ні (перед AB — «відрізка»)
+  const ASK_WORD = /(?:^|[^а-яґєії])(?:точк|вершин|вектор|кін[еця]|центр|образ|середин)[а-яґєії]*\s*$/iu;
   const ASK_BARE = /(?:^|[^а-яґєії])(?:знайд|визнач)[а-яґєії]*(?:\s+(?:координат|положенн)[а-яґєії]*)?\s*$/iu;
   // заголовок-назва шуканого: маркер на самому початку («Вершина $D$», «Координати точки $D$»), не «Образ точки $A$» чи «Середина відрізка $AB$»
   const ASK_TITLE = /^\s*(?:координат[а-яґєії]*\s+)?(?:точк|вершин|вектор|кін[еця]|центр)[а-яґєії]*\s*$/iu;
+  const OBJ_TOK = /\\(?:vec|overrightarrow)\s*\{\s*([A-Z]{1,2})\s*\}|(?<![A-Za-z\\])([A-Z]{1,2})(?![A-Za-z])/g;
   const ASKED = new WeakMap(), NO_NAMES = { ask: null, given: new Set(), objs: new Set() };
   /** Назви умови: { ask — єдина назва точки чи вектора, про яку питає умова (формула-назва без координат, перед нею — ASK_WORD), або null;
       given — назви точок і векторів із даними координатами ($A(4; -3)$, $\\vec{AB} = (…)$);
@@ -662,14 +664,20 @@ window.SLID_LEARN = (() => {
     for (const [, f] of text.matchAll(/\$([^$]+)\$/g)) for (const g of f.matchAll(/(?:\\(?:vec|overrightarrow)\s*\{\s*([A-Z]{1,2})\s*\}|(?<![A-Za-z])([A-Z]{1,2}))\s*=?\s*\(/g)) given.add(g[1] || g[2]);
     for (const g of given) names.delete(g);
     // назва шуканого лише в заголовку («Вершина $D$», а в умові — «Знайди її координати»): з заголовка, якщо умова назви не дала;
-    // лише заголовок, що починається маркером: у «Образ точки $A$» названо дану точку, а не шукану
-    if (!names.size && typeof s.title === "string") for (const m of s.title.matchAll(/\$([^$]+)\$/g)) {
-      if (!ASK_TITLE.test(s.title.slice(0, m.index))) continue;
-      const n = bare(m[1]); if (n && !given.has(n[1] || n[2])) names.add(n[1] || n[2]);
+    // лише заголовок, що починається маркером: у «Образ точки $A$» названо дану точку, а не шукану.
+    // Назва заголовка, що окремим токеном трапляється в самій умові («Точка $A$ і симетрія» — «Точка $A$ має координати $(2; 3)$…»),
+    // — об'єкт умови, а не шукане: заголовок лише звужує, не розширює (рев'ю engine-lab-aria-p3d, P3-1)
+    if (!names.size && typeof s.title === "string") {
+      const inBody = new Set(), rest = stmtText({ ...s, title: "" });
+      for (const [, f] of rest.matchAll(/\$([^$]+)\$/g)) for (const g of f.matchAll(OBJ_TOK)) inBody.add(g[1] || g[2]);
+      for (const m of s.title.matchAll(/\$([^$]+)\$/g)) {
+        if (!ASK_TITLE.test(s.title.slice(0, m.index))) continue;
+        const n = bare(m[1]), nm = n && (n[1] || n[2]); if (nm && !given.has(nm) && !inBody.has(nm)) names.add(nm);
+      }
     }
     // назви об'єктів умови: окремий токен з 1–2 великих латинських літер у формулі (не частина слова чи TeX-команди: \Delta, ABCD), \vec{AB}
     const objs = new Set();
-    for (const [, f] of text.matchAll(/\$([^$]+)\$/g)) for (const g of f.matchAll(/\\(?:vec|overrightarrow)\s*\{\s*([A-Z]{1,2})\s*\}|(?<![A-Za-z\\])([A-Z]{1,2})(?![A-Za-z])/g)) { const n = g[1] || g[2]; if (!given.has(n)) objs.add(n); }
+    for (const [, f] of text.matchAll(/\$([^$]+)\$/g)) for (const g of f.matchAll(OBJ_TOK)) { const n = g[1] || g[2]; if (!given.has(n)) objs.add(n); }
     const r = { ask: names.size === 1 ? [...names][0] : null, given, objs };
     ASKED.set(s, r); return r;
   }

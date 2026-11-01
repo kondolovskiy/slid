@@ -1579,6 +1579,23 @@ async def srs_retest_p3_checks(browser, url):
         assert st1['diag'] == st0['diag'] and st1['diagRun']['dg6'] == {'0': 1, '1': 0} and st1['plan']['math'] == st0['plan']['math'], st1
         assert not errors, errors
         await context.close()
-    print('SRS late pool (box 1, 3 дні як з пулом) і «Продовжити тест» повторного dg6 на головній (план без кроків / з кроками): green', flush=True)
+    # P3 рев'ю engine-srs-retest-p3 (engine-practice-pool): план з помилок, тест не починали → лише картка плану, без запрошення до тесту
+    # (мутація planOrDiag = pc + diagInvite(c) раніше виживала). Головна й сторінка предмета.
+    context, page, errors = await qa_page(browser, url, {'grade': 6, 'unlockAll': False})
+    await page.evaluate("""() => {const S={grade:6,unlockAll:false,diag:{},plan:{},planByGrade:{},mast:{},errs:[],skw:{}};
+      SLID_LEARN.syncPlan(S,'math',[{l:'g6m1l2',why:'topic',n:2,of:3}],'2026-10-16',{grade:6});
+      localStorage.setItem('slid.v1',JSON.stringify(S));}""")
+    await page.reload()
+    st = await saved_state(page)
+    assert st['plan']['math']['steps'][0]['src'] == 'err' and not st.get('diagRun') and not (st.get('diag') or {}).get('dg6'), st
+    for where in ('home', 'subject'):
+        if where == 'subject':
+            await page.click('button[data-subject="math"]')
+        view = await page.locator('#view').inner_text()
+        assert await page.locator('#view .plancard').count() == 1, (where, view[:400])
+        assert await page.locator('#view [data-diag="math"]').count() == 0 and 'Продовжити тест' not in view, (where, view[:400])
+    assert not errors, errors
+    await context.close()
+    print('SRS late pool (box 1, 3 дні як з пулом) і «Продовжити тест» повторного dg6 на головній (план без кроків / з кроками); план з помилок без тесту — без запрошення: green', flush=True)
 
 asyncio.run(main())

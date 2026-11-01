@@ -59,3 +59,5 @@ write_group: personalization-shared — редактор визначаєтьс�
 ## Також (P3 з рев'ю 2026-11-01, оркестратор — той самий app/learn.js)
 - askedPoint: брати назву із заголовка лише якщо в тілі умови вона не трапляється окремою назвою (reports/review/engine-lab-aria-p3d.md P3-1, відтворення scratchpad/syn-ask.mjs); «середин» у ASK_WORD з негативним тестом; фікстури DIAG_FORMAT fractionOnly / form improper; евристика формату — «десятковий дріб», «до цілих», «до 0,1».
 - test-answer-ui: план з помилок + непочатий тест → запрошення до тесту НЕ показується (reports/review/engine-srs-retest-p3.md P3).
+
+- 2026-11-01, agent-engine-practice-pool: редактор групи personalization-shared: agent-engine-practice-pool (worktree wt-practice); редагування розпочато. Інші задачі групи — лише читання до передачі.
