@@ -16,9 +16,12 @@ class HealthController {
 @Module({ imports: [DatabaseModule, IdentityModule, ProgressModule], controllers: [HealthController] })
 export class AppModule {}
 
-export async function createApp() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule, { logger: ['error', 'warn'] });
+export const createApp = async () =>
+  configureApp(await NestFactory.create<NestExpressApplication>(AppModule, { logger: ['error', 'warn'] }));
+
+export function configureApp(app: NestExpressApplication) {
   app.disable('x-powered-by');
+  app.set('trust proxy', Number(process.env.TRUST_PROXY ?? 1)); // Railway: один проксі перед застосунком → справжній IP для лімітів
   app.useBodyParser('json', { limit: '512kb' });
   const origins = process.env.CORS_ORIGINS?.split(',').map((s) => s.trim()).filter(Boolean);
   if (origins?.length) app.enableCors({ origin: origins });
