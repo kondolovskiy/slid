@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-01T11:44:08.359Z
 id: refine-math-content-from-matrix-v3
 type: content
 subject: math
 status: todo
-claimed_by:
+claimed_by: agent-refine-math-content-from-matrix-v3
 created: 2026-11-01
 depends_on: [curate-math-matrix-v3]
 ---
