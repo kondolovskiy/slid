@@ -20,7 +20,7 @@ SLID.section("math", {
       title: "Коли трикутники рівні?",
       short: "Ознаки рівності",
       icon: "scale",
-      status: "draft",
+      status: "verified",
       why: "Щоб перевірити, чи дві опори, шаблони чи деталі збігаються, не накладаючи їх одна на одну.",
       screens: [
         {
@@ -219,7 +219,7 @@ SLID.section("math", {
       title: "Дві рівні сторони",
       short: "Рівнобедрений",
       icon: "home",
-      status: "draft",
+      status: "verified",
       why: "Трикутник з двома рівними сторонами тримає дахи й мости: рівні схили дають рівні кути.",
       screens: [
         {

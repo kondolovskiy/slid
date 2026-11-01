@@ -4,7 +4,7 @@ claimed_at: 2026-11-01T15:15:30.519Z
 id: refine-math-lessons-g7-g9-support
 type: content
 subject: math
-status: todo
+status: done
 claimed_by: agent-refine-math-lessons-g7-g9-support
 created: 2026-10-31
 ---
@@ -28,3 +28,6 @@ created: 2026-10-31
 - **g9m7l3:** мода й медіана не пояснені (з п. 23 у пулі лише середнє).
 
 ## Нотатки виконавця
+
+### Виконано (2026-11-01, оркестратор зводить)
+Три автори за класами, нотатки «було → стало»: reports/refine/math-lessons-support-g7.md, -g8.md, -g9.md. Незалежна перевірка: reports/verify/refine-math-lessons-support-g7.md (12 уроків verified; правки «кожна вертикальна пряма», «Крути A, тягни T», «Постав»), -g8.md (5 уроків verified; why g8m1l2 не «навхрест»), -g9.md (4 уроки verified; √3/2 → (\sqrt{3})/2 у g9m4l1, pg9m6 steps). Не зроблено: g9m7l3 мода/медіана — лише речення, оцінюваних немає; g8m3l1 list «x² = a» у пулі (№386) — поза задачею. Наслідок: engine-math-sqrt-precedence (рендер √N/M).

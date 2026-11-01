@@ -21,7 +21,7 @@ SLID.section("math", {
       title: "Терези й невідоме",
       short: "Рівняння",
       icon: "scale",
-      status: "draft",
+      status: "verified",
       why: "Рівняння — це терези в рівновазі. Якщо змінювати обидві шальки однаково, корінь лишається.",
       screens: [
         {

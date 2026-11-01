@@ -575,7 +575,7 @@ SLID.section("math", {
       title: "Додай — і змінна зникне",
       short: "Додавання",
       icon: "scale",
-      status: "draft",
+      status: "verified",
       why: "Іноді швидше не виражати змінну, а скласти рівняння так, щоб одна зникла.",
       screens: [
         {

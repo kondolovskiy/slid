@@ -108,7 +108,7 @@
 | g7m4l3 Завжди сто вісімдесят | 7 | 8 | 0.63 | 21 | 43 | 5.3 | 0.009 | 3 | sentenceWords=5.3 поза [6; 13] |
 | g7m4l4 Ферма на мосту (фінал) | 7 | 7 | 0.86 | 20 | 26 | 5.1 | 0.017 | 3 | sentenceWords=5.1 поза [6; 13] |
 | g7m5l1 Один вхід — один вихід | 7 | 10 | 0.5 | 19 | 35 | 5.1 | 0.008 | 3 | sentenceWords=5.1 поза [6; 13] |
-| g7m5l2 Точки стають лінією | 7 | 9 | 0.56 | 21 | 59 | 5.6 | 0.038 | 2 | sentenceWords=5.6 поза [6; 13]; typeVariety нетипово для сім'ї (z=-2.7) |
+| g7m5l2 Точки стають лінією | 7 | 9 | 0.56 | 21 | 60 | 5.6 | 0.038 | 2 | sentenceWords=5.6 поза [6; 13]; typeVariety нетипово для сім'ї (z=-2.7) |
 | g7m5l3 Пряма з нахилом | 7 | 10 | 0.6 | 18 | 51 | 4.8 | 0.013 | 3 | sentenceWords=4.8 поза [6; 13] |
 | g7m5l4 Диспетчерська на графіках (фінал) | 7 | 9 | 0.67 | 16 | 28 | 5.1 | 0.036 | 3 | sentenceWords=5.1 поза [6; 13] |
 | g7m6l1 Коли рейки не зустрінуться | 7 | 10 | 0.5 | 23 | 59 | 5.6 | 0.038 | 2 | sentenceWords=5.6 поза [6; 13]; typeVariety нетипово для сім'ї (z=-2.7) |
@@ -244,7 +244,7 @@
 - **4:boss**: screens 8±0, gradedShare 0.75±0, readWordsPerScreen 17.4±2.24, maxReadWords 25±4.56, sentenceWords 4.48±0.22, longWordShare 0.01±0, typeVariety 3.2±0.4
 - **5-6:lesson**: screens 9.37±0.72, gradedShare 0.66±0.06, readWordsPerScreen 18.96±2.91, maxReadWords 43.49±7.96, sentenceWords 4.82±0.5, longWordShare 0.01±0.01, typeVariety 3.53±0.64
 - **5-6:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 18.55±2.1, maxReadWords 25.82±4.09, sentenceWords 4.65±0.39, longWordShare 0.01±0, typeVariety 3.27±0.45
-- **7-9:lesson**: screens 9.18±0.76, gradedShare 0.56±0.06, readWordsPerScreen 20.69±2.11, maxReadWords 43.21±9.2, sentenceWords 5.14±0.34, longWordShare 0.02±0.01, typeVariety 2.93±0.35
+- **7-9:lesson**: screens 9.18±0.76, gradedShare 0.56±0.06, readWordsPerScreen 20.69±2.11, maxReadWords 43.23±9.22, sentenceWords 5.14±0.34, longWordShare 0.02±0.01, typeVariety 2.93±0.35
 - **7-9:boss**: screens 7.67±0.64, gradedShare 0.79±0.06, readWordsPerScreen 18.19±1.79, maxReadWords 29.43±3.23, sentenceWords 5.07±0.29, longWordShare 0.02±0.01, typeVariety 3.1±0.29
 - **10-11:lesson**: screens 9.54±0.63, gradedShare 0.57±0.06, readWordsPerScreen 22.88±1.9, maxReadWords 48.12±6.56, sentenceWords 5.51±0.39, longWordShare 0.03±0.01, typeVariety 2.9±0.37
 - **10-11:boss**: screens 8.08±0.28, gradedShare 0.75±0.01, readWordsPerScreen 19±1.47, maxReadWords 33.58±7.36, sentenceWords 5.18±0.54, longWordShare 0.04±0.02, typeVariety 2.92±0.28
