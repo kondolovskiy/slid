@@ -39,14 +39,19 @@ export class IdentityService implements IdentityPort {
     return { id: learnerId, school: await this.store.school(learnerId) };
   }
 
-  /** null — токен невалідний, особистий акаунт або домен не дозволено. currentToken — анонімний учень цього пристрою. */
-  async signInWithGoogle(idToken: string, currentToken?: string): Promise<Session | null> {
+  /**
+   * null — токен невалідний, особистий акаунт або домен не дозволено.
+   * link — явна згода в інтерфейсі привʼязати акаунт до анонімного учня цього пристрою (currentToken).
+   * Без неї не привʼязуємо: на спільному шкільному ПК токен міг лишитися від іншої дитини.
+   */
+  async signInWithGoogle(idToken: string, currentToken?: string, link = false): Promise<Session | null> {
     const acc = await this.google.verify(idToken);
-    if (!acc?.hd || !this.options.googleDomains.includes(acc.hd)) return null;
+    const hd = acc?.hd?.toLowerCase();
+    if (!acc || !hd || !this.options.googleDomains.some((d) => d.toLowerCase() === hd)) return null;
     let id = await this.store.findIdByGoogleSub(acc.sub);
-    const current = id ? null : await this.authenticate(currentToken);
-    if (current && (await this.store.linkGoogle(current, acc.sub, acc.hd))) id = current;
-    id ??= await this.store.createOrGetByGoogle(randomUUID(), acc.sub, acc.hd);
+    const current = id || !link ? null : await this.authenticate(currentToken);
+    if (current && (await this.store.linkGoogle(current, acc.sub, hd))) id = current;
+    id ??= await this.store.createOrGetByGoogle(randomUUID(), acc.sub, hd);
     return { id, token: await this.issueToken(id) };
   }
 

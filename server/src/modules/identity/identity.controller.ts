@@ -15,11 +15,11 @@ export class IdentityController {
   @Get('me') @UseGuards(LearnerGuard)
   me(@LearnerId() id: string) { return this.identity.me(id); }
 
-  /** Шкільний Google-акаунт. З Bearer анонімного учня — привʼязує акаунт до нього (прогрес лишається). */
+  /** Шкільний Google-акаунт. `link: true` + Bearer анонімного учня — привʼязати акаунт до нього (прогрес лишається). */
   @Post('auth/google') @HttpCode(200)
-  async google(@Body() body: { idToken?: unknown }, @Headers('authorization') auth?: string) {
+  async google(@Body() body: { idToken?: unknown; link?: unknown }, @Headers('authorization') auth?: string) {
     const idToken = typeof body?.idToken === 'string' ? body.idToken : '';
-    return orUnauthorized(await this.identity.signInWithGoogle(idToken, bearer(auth)));
+    return orUnauthorized(await this.identity.signInWithGoogle(idToken, bearer(auth), body?.link === true));
   }
 
   @Post('pairing') @UseGuards(LearnerGuard)

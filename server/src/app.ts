@@ -21,7 +21,8 @@ export const createApp = async () =>
 
 export function configureApp(app: NestExpressApplication) {
   app.disable('x-powered-by');
-  app.set('trust proxy', Number(process.env.TRUST_PROXY ?? 1)); // Railway: один проксі перед застосунком → справжній IP для лімітів
+  // Кількість проксі перед сервером (Railway — 1), щоб ліміти бачили справжній IP. Типово 0: інакше X-Forwarded-For можна підробити.
+  app.set('trust proxy', Number(process.env.TRUST_PROXY ?? 0));
   app.useBodyParser('json', { limit: '512kb' });
   const origins = process.env.CORS_ORIGINS?.split(',').map((s) => s.trim()).filter(Boolean);
   if (origins?.length) app.enableCors({ origin: origins });

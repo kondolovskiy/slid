@@ -4,7 +4,7 @@ import { DB, Db } from '../../db/database';
 
 export const LEARNER_STORE = Symbol('LearnerStore');
 export interface LearnerStore {
-  create(id: string, google?: { sub: string; hd: string }): Promise<void>;
+  create(id: string): Promise<void>;
   /** id учня з цим Google sub; при гонці створення повертає того, хто встиг першим. */
   createOrGetByGoogle(id: string, sub: string, hd: string): Promise<string>;
   findIdByGoogleSub(sub: string): Promise<string | null>;

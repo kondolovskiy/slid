@@ -13,6 +13,8 @@ export const identityMigrations: Record<string, Migration> = {
   // Кілька пристроїв на учня (токени окремо), шкільний Google-акаунт, коди привʼязки.
   '002-tokens-google-pairing': {
     async up(db: Kysely<unknown>) {
+      // Міграція йде в транзакції; блокування — щоб учень, створений старою версією під час деплою, не загубив токен.
+      await sql`lock table identity.learners in access exclusive mode`.execute(db);
       const s = db.schema.withSchema('identity');
       await s.createTable('tokens')
         .addColumn('token_hash', 'text', (c) => c.primaryKey())

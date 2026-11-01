@@ -115,9 +115,24 @@ describe('API (e2e, Postgres)', () => {
     it('анонімний учень привʼязує шкільний акаунт — прогрес не губиться', async () => {
       const anon = (await api.post('/v1/learners').expect(201)).body;
       await api.put('/v1/progress').set(bearer(anon.token)).send({ rev: 0, data: { xp: 3 } }).expect(200);
-      const g = (await api.post('/v1/auth/google').set(bearer(anon.token)).send({ idToken: `${uniq()}@school.ua` }).expect(200)).body;
+      const sub = uniq();
+      const g = (await api.post('/v1/auth/google').set(bearer(anon.token)).send({ idToken: `${sub}@school.ua`, link: true }).expect(200)).body;
       expect(g.id).toBe(anon.id);
       await api.get('/v1/progress').set(bearer(g.token)).expect(200, { rev: 1, data: { xp: 3 } });
+    });
+
+    it('без link: true анонімний учень цього ПК не привʼязується', async () => {
+      const anon = (await api.post('/v1/learners')).body;
+      const g = (await api.post('/v1/auth/google').set(bearer(anon.token)).send({ idToken: `${uniq()}@school.ua` }).expect(200)).body;
+      expect(g.id).not.toBe(anon.id);
+    });
+
+    it('дві анонімні сесії одночасно привʼязують той самий акаунт — один учень', async () => {
+      const idToken = `${uniq()}@school.ua`;
+      const [a, b] = [(await api.post('/v1/learners')).body, (await api.post('/v1/learners')).body];
+      const ids = await Promise.all([a, b].map((x) =>
+        api.post('/v1/auth/google').set(bearer(x.token)).send({ idToken, link: true }).then((r) => r.body.id)));
+      expect(ids[0]).toBe(ids[1]);
     });
 
     it('одночасний перший вхід тим самим акаунтом — один учень', async () => {

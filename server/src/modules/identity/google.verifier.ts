@@ -16,6 +16,8 @@ export class GoogleAuthVerifier implements GoogleVerifier {
   async verify(idToken: string) {
     if (!this.clientId) throw new ServiceUnavailableException('Вхід через Google не налаштовано');
     if (!idToken) return null;
+    // Сертифікати окремо (бібліотека їх кешує): збій мережі — «спробуй пізніше», а не «невалідний токен».
+    await this.client.getFederatedSignonCertsAsync().catch(() => { throw new ServiceUnavailableException('Google недоступний'); });
     try {
       const p = (await this.client.verifyIdToken({ idToken, audience: this.clientId })).getPayload();
       return p?.sub ? { sub: p.sub, hd: p.hd } : null;

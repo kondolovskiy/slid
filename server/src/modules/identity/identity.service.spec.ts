@@ -72,23 +72,35 @@ describe('IdentityService', () => {
       await expect(identity.signInWithGoogle(idToken)).resolves.toBeNull();
     });
 
-    it('анонімний учень на пристрої привʼязується до акаунта — прогрес лишається той самий', async () => {
+    it('анонімний учень на пристрої привʼязується до акаунта лише явно (link) — прогрес лишається той самий', async () => {
+      const anon = await identity.register();
+      const res = await identity.signInWithGoogle('u1@school.ua', anon.token, true);
+      expect(res!.id).toBe(anon.id);
+    });
+
+    it('без явного link чужий токен на спільному ПК не привʼязується — новий учень', async () => {
       const anon = await identity.register();
       const res = await identity.signInWithGoogle('u1@school.ua', anon.token);
-      expect(res!.id).toBe(anon.id);
+      expect(res!.id).not.toBe(anon.id);
+      await expect(identity.me(anon.id)).resolves.toEqual({ id: anon.id, school: null });
+    });
+
+    it('домени порівнюються без урахування регістру', async () => {
+      const mixed = new IdentityService(store, fakeGoogle, { googleDomains: ['School.UA'] });
+      await expect(mixed.signInWithGoogle('u1@school.ua')).resolves.not.toBeNull();
     });
 
     it('акаунт уже має учня — повертаємо його, анонімного не чіпаємо', async () => {
       const owner = await identity.signInWithGoogle('u1@school.ua');
       const anon = await identity.register();
-      const res = await identity.signInWithGoogle('u1@school.ua', anon.token);
+      const res = await identity.signInWithGoogle('u1@school.ua', anon.token, true);
       expect(res!.id).toBe(owner!.id);
       await expect(identity.me(anon.id)).resolves.toEqual({ id: anon.id, school: null });
     });
 
     it('учня з іншим акаунтом не перепривʼязуємо', async () => {
       const a = await identity.signInWithGoogle('u1@school.ua');
-      const b = await identity.signInWithGoogle('u2@school.ua', a!.token);
+      const b = await identity.signInWithGoogle('u2@school.ua', a!.token, true);
       expect(b!.id).not.toBe(a!.id);
     });
 
