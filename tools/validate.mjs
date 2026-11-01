@@ -4,6 +4,7 @@
 // Запуск: node tools/validate.mjs [--section <id> | --diag <id> | --pool <id>] [--quiet]
 import fs from "node:fs"; import path from "node:path";
 import { loadContent, GRADED, TYPES, plain, words, sentences, lessonMetrics, gradeBand, readJSON, ROOT } from "./lib.mjs";
+import { analyzeGraph } from "./graph-lib.mjs";
 
 const args = process.argv.slice(2);
 const onlySec = args.includes("--section") ? args[args.indexOf("--section") + 1] : null;
@@ -65,7 +66,7 @@ const bareFns = x => [...String(x).matchAll(/\$\$?([^$]+)\$\$?/g)].flatMap(m => 
 function checkTex(S, s) {
   // Усе нижче — ПОМИЛКИ (tools-validate-tex-escapes / engine-render-tex-p3): у змісті 0 випадків, учень побачив би сирий TeX.
   // 1) TeX поза формулою в текстах, що проходять fmt: «,\;» між формулами, «0{,}5» без $ — видно буквально
-  const own = strings(s, ["lab", "img", "svg", "fig", "type", "sk", "id", "pre"]);
+  const own = strings(s, ["lab", "img", "svg", "fig", "type", "sk", "id", "pre", "u"]);
   const labHtml = s.lab ? [].concat(s.lab.show || [], Object.values(s.lab.params || {}).map(p => p?.label)).filter(x => typeof x === "string") : [];
   const html = own.concat(labHtml);
   const odd = x => (x.match(/\$/g) || []).length % 2 === 1;
@@ -348,6 +349,18 @@ for (const c of subjects) for (const p of c.pools || []) {
 }
 if (onlyDiag && !diagIds.has(onlyDiag)) E(`--diag/--pool ${onlyDiag}`, "такої діагностики чи пулу немає");
 for (const s of soon) if (!s.colors?.light?.accent) E(`catalog ${s.id}`, "немає colors.light.accent");
+
+// Skill Graph (docs/design/skill-graph-math.md §3, docs/CONTENT_SCHEMA.md §11; правила — tools/graph-lib.mjs).
+// Помилки графа (V1а, V2, V3, V5, V6а, V7а, V10а) — ПОМИЛКИ; дрейф (V1б, V4, V6б, V7б, V8 у лініях) і V10б — попередження:
+// дрейф виправляє лише куратор у graph.js, тож автора й CI він не блокує (блокує graph-report --strict). V8 поза лініями й V9 — лише graph-report.
+// З --section/--diag/--pool — лише знахідки, що стосуються уроків цього розділу, цього тесту чи пулу (R4-P3-3): чужа помилка куратора
+// не виглядає помилкою автора (AGENTS.md §3 п. 8). Повний прогін і CI бачать усі.
+{ const secLessons = new Set(onlySec ? subjects.flatMap(c => c.sections.filter(x => x.id === onlySec).flatMap(x => (x.lessons || []).map(l => l.id))) : []);
+  const inScope = is => onlySec ? is.lessons.some(l => secLessons.has(l)) : onlyDiag ? is.diags.includes(onlyDiag) || is.pools.includes(onlyDiag) : true;
+  if (!onlySec && !onlyDiag) for (const x of content.graphs || []) if (!subjects.some(c => c.id === x.subject))
+    E(content.graphOrigin?.[x.subject] || "SLID.graph", `граф V1а: невідомий предмет «${x.subject}» — граф не прив'язано`);
+  for (const c of subjects) for (const is of analyzeGraph(c, { origin, poolOrigin: content.poolOrigin, graphFile: content.graphOrigin?.[c.id] }).issues)
+    if (inScope(is)) (is.cls === "error" ? E : W)(is.where, is.msg); }
 
 const out = { date: new Date().toISOString(), errors, warnings };
 fs.mkdirSync(path.join(ROOT, "reports"), { recursive: true });

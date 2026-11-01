@@ -216,7 +216,8 @@ const IMG1 = /^([A-Z])\s*(?:_\s*\{?\s*1\s*\}?|₁|1|['’′ʼ])\s*=?\s*(?=\()/;
 // відповідь на старий зміст зарахувалася б новому (resumeDiag, CONTENT_SCHEMA §9). Зміна кількості, порядку чи тем — потрібен новий id.
 // Евристика TEXT_ONLY (рев'ю engine-diag-answer-kinds, P3-5): ці поля вважаються текстом, тож зміна лише title/body (і решти нижче)
 // НЕ вимагає rev, навіть якщо змінилось саме запитання за того самого ключа. Автор, що міняє суть умови, ставить rev сам.
-const TEXT_ONLY = new Set(["title", "body", "eyebrow", "note", "hint", "fbOk", "fbBad", "fbText", "fbTitle", "cap", "rev", "steps", "src", "srcPage"]);
+// u — прив'язка до графа вмінь (CONTENT_SCHEMA §11): вердикт і прогрес не змінює, тож rev для нього не потрібен (skill-graph G2)
+const TEXT_ONLY = new Set(["title", "body", "eyebrow", "note", "hint", "fbOk", "fbBad", "fbText", "fbTitle", "cap", "rev", "steps", "src", "srcPage", "u"]);
 const core = it => JSON.stringify(Object.keys(it).filter(k => !TEXT_ONLY.has(k)).sort().map(k => [k, it[k]]));
 function contentDiff() {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), "slid-content-old-"));

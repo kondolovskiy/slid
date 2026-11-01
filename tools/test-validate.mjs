@@ -426,5 +426,118 @@ expectRun("drag: at і без drag — без попередження", one("fx
   // повний прогін теж бачить тест (не лише --diag)
   expectRun("diag answer: повний прогін, answer list — помилка", tree({ type: "answer", answerKind: "list", answer: [1, 2] }), [], { err: "у тесті не дозволено" }); }
 
+// ---- engine-skg-g1: граф умінь (docs/design/skill-graph-math.md §3, §7.1; CONTENT_SCHEMA §11) ----
+// Кожне правило — на фікстурі tools/fixtures/graph-fixture.mjs: клас (помилка / дрейф-попередження / V10б), текст і код виходу.
+// Дрейф ніколи не дає rc 1 і не стає помилкою: його виправляє лише куратор (graph-report --strict).
+{ const { graphTree, node, why, N, L, S, scr, lesson } = await import("./fixtures/graph-fixture.mjs");
+  const G = "граф ", DRIFT = "потрібна правка graph.js — допиши в inbox для куратора";
+  const gw = rep => rep ? rep.warnings.filter(w => /граф[ ,]/.test(w)) : [];   // «граф V10б: …» і «граф, дрейф V4: …»
+  // помилка правила rule (і лише помилки графа цього правила), без дрейфу-помилки; rc 1
+  const gErr = (name, mut, rule, sub, args = []) => { const rep = expectRun(`граф: ${name}`, graphTree(mut), args, { err: `${G}${rule}: ` });
+    if (rep) ok(rep.errors.some(e => e.includes(`${G}${rule}: `) && (!sub || e.includes(sub))), `граф: ${name}: текст «${sub}»`, rep.errors.join("\n  ")); return rep; };
+  // дрейф: попередження з назвою правила й текстом для автора, 0 помилок, rc 0
+  const gDrift = (name, mut, rule, sub, args = []) => { const rep = expectRun(`граф: ${name}`, graphTree(mut), args, { warn: `${G}, дрейф ${rule}: `.replace(" ,", ",") });
+    if (rep) { const ws = gw(rep).filter(w => w.includes(`дрейф ${rule}: `));
+      ok(ws.some(w => (!sub || w.includes(sub)) && w.includes(DRIFT)), `граф: ${name}: попередження дрейфу ${rule} «${sub}» з текстом для куратора`, gw(rep).join("\n  ")); } return rep; };
+  const gClean = (name, mut, args = []) => { const rep = expectRun(`граф: ${name}`, graphTree(mut), args, {});
+    if (rep) ok(!gw(rep).length, `граф: ${name}: без знахідок графа`, gw(rep).join("\n  ")); return rep; };
+
+  { const rep = gClean("чиста фікстура — 0 помилок, 0 знахідок графа (повний прогін)");
+    ok(rep && rep.warnings.some(w => w.includes("#fxal1")), "граф: чиста фікстура: розділи справді перевірено", rep && rep.warnings.slice(0, 3).join("\n  ")); }
+  // ненульовий прогін: на чистій фікстурі зламаний u дає помилку — отже, граф завантажено й об'єкти перевіряються
+  gErr("u на неіснуючий вузол — V2", M => { S(M, "fxal1", 0).u = "nope"; }, "V2", "u «nope»: немає такого вузла");
+  gErr("u без графа в предметі — V2", M => { M.graph = null; S(M, "fxal1", 0).u = "na"; }, "V2", "ще немає графа");
+  gErr("u на неоцінюваному екрані (info) — V2", M => { L(M, "fxal1").screens[1].u = "na"; }, "V2", "лише на оцінюваному екрані");
+  gErr("u з 3 id — V2", M => { S(M, "fxal1", 0).u = ["na", "nb", "nd"]; }, "V2", "1–2 різних id");
+  gErr("u з двома однаковими id — V2", M => { S(M, "fxal1", 0).u = ["na", "na"]; }, "V2", "1–2 різних id");
+  gClean("u з 2 id — чисто", M => { S(M, "fxal2", 0).u = ["nb", "na"]; });
+  gErr("u у вправі пулу на неіснуючий вузол — V2", M => { M.pools[0].items[0].u = "nope"; }, "V2", "pool#pfx задача 1");
+  gErr("петля pre — V2", M => { N(M, "na").pre = [{ u: "na", w: 2, why }]; }, "V2", "петля");
+  gErr("дублікат ребра pre + part — V2", M => { N(M, "nb").part = [{ u: "na", why }]; }, "V2", "дублікат");
+  gErr("ребро на неіснуючий вузол — V2", M => { N(M, "nb").pre.push({ u: "ghost", w: 1, why }); }, "V2", "pre ghost: немає такого вузла");
+  // V1а: формат
+  gErr("ребро без why — V1а", M => { delete N(M, "nb").pre[0].why; }, "V1а", "why — непорожній рядок");
+  gErr("ребро з порожнім why — V1а", M => { N(M, "nb").pre[0].why = "  "; }, "V1а", "why — непорожній рядок");
+  gErr("w 3 — V1а", M => { N(M, "nb").pre[0].w = 3; }, "V1а", "w 3");
+  gErr("by «x» — V1а", M => { N(M, "nc").teach = [{ l: "fxal2", by: "x" }]; }, "V1а", "by «x»");
+  gErr("st «done» — V1а", M => { N(M, "na").st = "done"; }, "V1а", "st «done»");
+  gErr("id не за форматом — V1а", M => { N(M, "nz").id = "Bad_Id"; }, "V1а", "формат");
+  gErr("id не унікальний — V1а", M => { M.graph.nodes.push(node("na", "frac", ["fxal3"])); }, "V1а", "не унікальний");
+  gErr("id збігається з sk — V1а", M => { N(M, "nz").id = "frac"; }, "V1а", "збігається з навичкою");
+  gErr("sk не оголошена — V1а", M => { N(M, "nz").sk = "nosk"; }, "V1а", "sk «nosk» не оголошена");
+  gErr("без name — V1а", M => { delete N(M, "nz").name; }, "V1а", "name");
+  gErr("base без g — V1а", M => { M.graph.nodes.push(node("nbase", "frac", null, { base: true })); }, "V1а", "base-вузол потребує g");
+  gErr("граф без v — V1а", M => { delete M.graph.v; }, "V1а", "v — непорожній рядок");
+  gErr("лінія з st «x» — V1а", M => { M.graph.lines.fx.st = "x"; }, "V1а", "st «x»");
+  gErr("граф невідомого предмета — V1а", M => { M.graphSubject = "nosubj"; }, "V1а", "невідомий предмет «nosubj»");
+  // V3
+  gErr("цикл pre ∪ part — V3", M => { N(M, "na").part = [{ u: "nd", why }]; }, "V3", "цикл у pre ∪ part");
+  gErr("same між вузлами, з'єднаними шляхом — V3", M => { N(M, "nd").same = [{ u: "na", why }]; }, "V3", "same na");
+  gClean("same між незалежними — чисто", M => { N(M, "nz").same = [{ u: "nd", why }]; });
+  // V5
+  gErr("чужа sk: u на вузол іншої sk — V5", M => { S(M, "fxal1", 0).u = "nc"; }, "V5", "sk вузла «part» ≠ sk екрана «frac»");
+  gErr("чужа sk у вправі пулу — V5", M => { M.pools[0].items[0].u = "nc"; }, "V5", "≠ sk вправи");
+  gErr("чужа sk у завданні тесту — V5", M => { M.diags[0].items[0].u = "nc"; }, "V5", "≠ sk завдання");
+  gErr("sk вузла поза sk завдань теми — V5 для тем", M => { M.diags[0].topics[0].u = "nc"; }, "V5", "не серед sk завдань теми");
+  gClean("u теми з sk серед завдань — чисто", M => { M.diags[0].topics[0].u = "na"; });
+  // V6
+  gErr("два вузли без by у парі — V6а", M => { M.graph.nodes.push(node("na2", "frac", ["fxal1"])); }, "V6а", "кілька типових вузлів без by: na, na2");
+  gDrift("урок teach без екрана sk вузла — V6б (дрейф)", M => { M.graph.nodes.push(node("np3", "part", ["fxal3"])); S(M, "fxal3", 0).u = undefined; }, "V6б", "урок fxal3 у teach не має жодного оцінюваного екрана з sk «part»");
+  // V7
+  gErr("вузол без teach і не base (сирота) — V7а", M => { M.graph.nodes.push(node("norph", "frac", [])); }, "V7а", "без teach і не base");
+  gDrift("base-вузол без прив'язаних об'єктів (сирота) — V7б (дрейф)", M => { M.graph.nodes.push(node("nbase", "frac", null, { base: true, g: 3 })); }, "V7б", "не прив'язано жодного");
+  gDrift("by: \"u\" без явного u — V7б (дрейф)", M => { M.graph.nodes.push(node("na2", "frac", [{ l: "fxal1", by: "u" }])); }, "V7б", "немає жодного явного u на «na2»");
+  gClean("by: \"u\" з явним u на екрані — чисто", M => { M.graph.nodes.push(node("na2", "frac", [{ l: "fxal1", by: "u" }])); S(M, "fxal1", 2).u = "na2"; });
+  gClean("by: \"u\" з явним u у вправі пулу — чисто", M => { M.graph.nodes.push(node("na2", "frac", [{ l: "fxal1", by: "u" }])); M.pools[0].items[4].u = "na2"; });
+  gClean("вузол by: \"u\" у темі тесту через u завдання — чисто", M => { M.graph.nodes.push(node("na2", "frac", [{ l: "fxal1", by: "u" }])); M.diags[0].items[1].u = "na2"; });
+  gClean("вузол by: \"u\" у темі тесту через u теми з двома id — чисто", M => { M.graph.nodes.push(node("na2", "frac", [{ l: "fxal1", by: "u" }])); M.diags[0].topics[0].u = ["na", "na2"]; });
+  // V8 у лінії
+  gDrift("пара без вузла з 3 об'єктами в лінії — V8 (дрейф)", M => { M.graph.nodes = M.graph.nodes.filter(n => n.id !== "nc"); L(M, "fxal2").screens.push(scr("part")); }, "V8", "пара (fxal2, part) без вузла — 3");
+  gClean("пара без вузла з 2 об'єктами в лінії — дозволено", M => { M.graph.nodes = M.graph.nodes.filter(n => n.id !== "nc"); });
+  gClean("пара без вузла з 3 об'єктами поза лінією — лише graph-report", M => { M.graph.nodes = M.graph.nodes.filter(n => n.id !== "nc"); L(M, "fxal2").screens.push(scr("part")); M.graph.lines.fx.lessons = ["fxal1"]; });
+  gDrift("урок лінії поза teach — V8 (дрейф)", M => { M.graph.lines.fx.lessons.push("fxal3"); }, "V8", "урок fxal3 лінії «fx» не в teach");
+  gDrift("завдання теми лінії без вузла — V8 (дрейф)", M => { M.graph.lines.fx.topics.push("dgfx/c"); M.graph.nodes = M.graph.nodes.filter(n => n.id !== "ncur"); }, "V8", "завдання теми dgfx/c лінії «fx» не прив'язане");
+  gDrift("boss-урок, явно доданий у лінію, неоднозначний — V8 (дрейф)", M => { M.graph.lines.fx.lessons.push("fxal4"); }, "V8", "boss-урок fxal4");
+  gClean("boss-урок поза лінією, неоднозначний — лише graph-report", () => {});
+  // V1б
+  gDrift("неіснуючий урок у teach — V1б (дрейф)", M => { N(M, "nz").teach = ["fxzl1", "nope-l1"]; }, "V1б", "teach: немає уроку nope-l1");
+  gDrift("неіснуюча тема в lines — V1б (дрейф)", M => { M.graph.lines.fx.topics.push("dgfx/nope"); }, "V1б", "topics: немає теми dgfx/nope");
+  gDrift("неіснуючий урок у lines — V1б (дрейф)", M => { M.graph.lines.fx.lessons.push("nope-l1"); }, "V1б", "lessons: немає уроку nope-l1");
+  // V4
+  gDrift("ребро «вперед» (передумова — пізніший урок розділу) — V4 (дрейф)", M => { N(M, "na").pre = [{ u: "nc", w: 1, why }]; }, "V4", "пізніший урок розділу fxa");
+  gDrift("ребро на старший клас — V4 (дрейф)", M => { N(M, "nd").pre.push({ u: "ncur", w: 1, why }); }, "V4", "старший клас");
+  gDrift("ребро на пізніший розділ того самого класу — V4 (дрейф)", M => { N(M, "nz").pre = [{ u: "nd", w: 1, why }]; }, "V4", "розділ з тижня 5");
+  gDrift("перестановка уроків розділу автором — V4 (дрейф)", M => { const ls = M.sections[0].lessons; [ls[0], ls[1]] = [ls[1], ls[0]]; }, "V4", "pre na: передумова пізніша за урок");
+  gDrift("правка weeks розділу автором — V4 (дрейф)", M => { M.sections.find(s => s.id === "fxa").weeks = [9, 12]; }, "V4", "«nb» (fxal2, розділ з тижня 9) — пізніше за «nd» (fxbl1, тиждень 5)");
+  { const rep = gClean("нічия V4 (різні розділи, однаковий weeks[0]) — дозволено", M => { N(M, "nb").pre.push({ u: "nz", w: 1, why }); });
+    ok(rep && !rep.warnings.some(w => w.includes("V4")), "граф: нічия V4 — без попередження", rep && gw(rep).join("\n  ")); }
+  // V10
+  { const rep = expectRun("граф: u на gone-вузол — V10б: текст і rc 0", graphTree(M => { M.graph.nodes.push(node("na-old", "frac", ["fxal3"], { gone: "na" })); S(M, "fxal1", 0).u = "na-old"; }), [], {});
+    ok(rep && rep.warnings.some(w => w.includes("граф V10б: ") && w.includes("онови u: na-old → na")), "граф: V10б — «онови u: старий → новий»", rep && gw(rep).join("\n  ")); }
+  gErr("pre на gone-вузол — V10а", M => { M.graph.nodes.push(node("na-old", "frac", ["fxal3"], { gone: "na" })); N(M, "nb").pre = [{ u: "na-old", w: 2, why }]; }, "V10а", "ребро на gone-вузол — веди на «na»");
+  gErr("ланцюжок gone — V10а", M => { M.graph.nodes.push(node("na-old", "frac", ["fxal3"], { gone: "na" }), node("na-older", "frac", ["fxal3"], { gone: "na-old" })); }, "V10а", "ланцюжки перенаправлень");
+  gErr("gone на неіснуючий вузол — V2", M => { M.graph.nodes.push(node("na-old", "frac", ["fxal3"], { gone: "ghost" })); }, "V2", "gone: немає вузла «ghost»");
+  // baseline-тема: u лише на base-вузол (V5)
+  { const b4 = M => { M.sections.push({ id: "fx4", grade: 4, weeks: [1, 4], title: "Фікстура", why: "Регресійний тест графа вмінь: baseline-тема.", meta: M.sections[0].meta, lessons: [lesson("fx4l1", ["num"])] });
+      M.diags.push({ id: "dgb", grade: 4, title: "Тест-фікстура", why: "Регресійний тест графа вмінь.", status: "draft", meta: M.sections[0].meta,
+        topics: [{ id: "b", title: "Опора", kind: "pre", baseline: true, lessons: [], for: ["fx4"] }, { id: "c", title: "Тема класу", kind: "cur", lessons: ["fx4l1"] }],
+        items: [{ topic: "b", type: "number", sk: "num", title: "Скільки?", answer: 2 }, { topic: "b", type: "number", sk: "num", title: "А тепер?", answer: 3 }, { topic: "c", type: "number", sk: "num", title: "Ще?", answer: 4 }] });
+      M.graph.nodes.push(node("n4", "num", ["fx4l1"]), node("nbase", "num", null, { base: true, g: 3 })); };
+    gClean("baseline-тема з u на base-вузол — чисто", M => { b4(M); M.diags[1].topics[0].u = "nbase"; });
+    gErr("baseline-тема з u на звичайний вузол — V5", M => { b4(M); M.diags[1].topics[0].u = "n4"; }, "V5", "лише до base-вузла"); }
+  // R4-P3-3: validate --section показує знахідки graph.js лише для уроків цього розділу; повний прогін — усі
+  { const bad = M => { N(M, "nd").pre[0].w = 3; S(M, "fxal1", 0).u = "nope"; };
+    const ra = expectRun("граф --section fxb: помилка вузла свого уроку, без чужого u", graphTree(bad), ["--section", "fxb"], { err: "граф V1а: pre nb: w 3" });
+    const rb = expectRun("граф --section fxa: свій u, без помилки чужого вузла", graphTree(bad), ["--section", "fxa"], { err: "граф V2: u «nope»" });
+    expectRun("граф --section fxz: чужі помилки графа не видно", graphTree(bad), ["--section", "fxz"], {});
+    const rf = expectRun("граф повний прогін: обидві помилки", graphTree(bad), [], { err: G });
+    ok(rf && rf.errors.length === 2, "граф повний прогін: рівно дві помилки графа", rf && rf.errors.join("\n  "));
+    expectRun("граф --diag dgfx: помилки уроків розділу не видно", graphTree(bad), ["--diag", "dgfx"], {});
+    expectRun("граф --diag dgfx: свій u у тесті видно", graphTree(M => { M.diags[0].items[0].u = "nope"; }), ["--diag", "dgfx"], { err: "граф V2: u «nope»" });
+    expectRun("граф --pool pfx: свій u у вправі видно", graphTree(M => { M.pools[0].items[0].u = "nope"; }), ["--pool", "pfx"], { err: "граф V2: u «nope»" });
+    const rd = expectRun("граф --section fxa: дрейф свого уроку видно (перестановка)", graphTree(M => { const ls = M.sections[0].lessons; [ls[0], ls[1]] = [ls[1], ls[0]]; }), ["--section", "fxa"], { warn: "дрейф V4" });
+    expectRun("граф --section fxb: дрейф чужого уроку не видно", graphTree(M => { const ls = M.sections[0].lessons; [ls[0], ls[1]] = [ls[1], ls[0]]; }), ["--section", "fxb"], { noWarn: "дрейф V4" }); }
+}
+
 console.log(fails ? `\n${fails} з ${n} перевірок не пройшли` : `test-validate: усі ${n} перевірок пройшли`);
 process.exit(fails ? 1 : 0);
