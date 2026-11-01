@@ -525,9 +525,21 @@ expectRun("drag: at і без drag — без попередження", one("fx
       M.graph.nodes.push(node("n4", "num", ["fx4l1"]), node("nbase", "num", null, { base: true, g: 3 })); };
     gClean("baseline-тема з u на base-вузол — чисто", M => { b4(M); M.diags[1].topics[0].u = "nbase"; });
     gErr("baseline-тема з u на звичайний вузол — V5", M => { b4(M); M.diags[1].topics[0].u = "n4"; }, "V5", "лише до base-вузла"); }
+  // рев'ю G1: P2-1 — lesson завдання тесту звужує типові вузли до свого уроку; P3-1 — фікстури на мутанти рецензента
+  gDrift("двоурокова тема: завдання з lesson уроку без вузла — V8 (lesson не підміняється сусіднім уроком)", M => { const t = M.diags[0].topics[0]; t.lessons = ["fxal1", "fxal3"];
+    M.diags[0].items[0].lesson = "fxal1"; M.diags[0].items[1].lesson = "fxal3"; }, "V8", "dgfx завдання 2");
+  gClean("двоурокова тема: lesson кожного завдання з вузлом — чисто", M => { const t = M.diags[0].topics[0]; t.lessons = ["fxal1", "fxal2"];
+    M.diags[0].items[0].lesson = "fxal1"; M.diags[0].items[1].lesson = "fxal2"; });
+  { const rep = gClean("ребро між вузлами одного уроку — не дрейф V4", M => { M.graph.nodes.push(node("na2", "frac", [{ l: "fxal1", by: "u" }], { pre: [{ u: "na", w: 1, why }] })); S(M, "fxal1", 2).u = "na2"; });
+    ok(rep && !rep.warnings.some(w => w.includes("V4")), "граф: ребро в межах уроку — без V4", rep && gw(rep).join("\n  ")); }
+  gErr("base-вузол з teach — V1а", M => { M.graph.nodes.push(node("nbase", "frac", ["fxal3"], { base: true, g: 3 })); }, "V1а", "base-вузол — без teach");
+  gDrift("вузол прив'язаний лише через u теми (завдання мають власні u) — сирота V7б", M => { M.graph.nodes.push(node("na2", "frac", [{ l: "fxal3", by: "u" }]));
+    M.diags[0].topics[0].u = ["na", "na2"]; M.diags[0].items[0].u = "na"; M.diags[0].items[1].u = "na"; }, "V7б", "до вузла не прив'язано жодного");
   // R4-P3-3: validate --section показує знахідки graph.js лише для уроків цього розділу; повний прогін — усі
   { const bad = M => { N(M, "nd").pre[0].w = 3; S(M, "fxal1", 0).u = "nope"; };
-    const ra = expectRun("граф --section fxb: помилка вузла свого уроку, без чужого u", graphTree(bad), ["--section", "fxb"], { err: "граф V1а: pre nb: w 3" });
+    // помилка graph.js (куратор) у --section — попередження з позначкою, rc 0 (рев'ю G1, P3-4); у повному прогоні — помилка
+    const ra = expectRun("граф --section fxb: помилка вузла свого уроку — позначка куратора, не помилка розділу", graphTree(bad), ["--section", "fxb"], { warn: "помилка графа (куратор), не блокує розділ — граф V1а: pre nb: w 3" });
+    ok(ra && !ra.warnings.some(w => w.includes("u «nope»")), "граф --section fxb: чужого u не видно", ra && gw(ra).join("\n  "));
     const rb = expectRun("граф --section fxa: свій u, без помилки чужого вузла", graphTree(bad), ["--section", "fxa"], { err: "граф V2: u «nope»" });
     expectRun("граф --section fxz: чужі помилки графа не видно", graphTree(bad), ["--section", "fxz"], {});
     const rf = expectRun("граф повний прогін: обидві помилки", graphTree(bad), [], { err: G });

@@ -41,13 +41,13 @@ const tree = mut => ({ ...graphTree(mut), "docs/math-personalization-coverage.js
   ok(r.md && /вузлів 6 \(активних 6, base 0, gone 0\); ребер pre w 2 — 2, pre w 1 — 0, part — 0/.test(r.md), "звіт: цифри графа", r.md && r.md.slice(0, 800));
   // V8 поза лініями: fxal3 — тематичний урок поза teach; boss fxal4 туди не потрапляє
   ok(r.md && /Тематичні уроки поза teach \(1\): fxal3\./.test(r.md), "звіт: V8 поза лініями — fxal3 (boss не рахується)", r.md);
-  ok(r.md && r.md.includes("fxal4#2 (na / nb)"), "звіт: неоднозначний boss-екран fxal4#2 (na / nb)", r.md);
+  ok(r.md && r.md.includes("fxal4#3 (na / nb)"), "звіт: неоднозначний boss-екран fxal4#3 (na / nb) — номер від 1, як у validate", r.md);
   // V9: матриця fxal2 → fxzl1 без пояснення; fxbl1 → fxal2 пояснено; тема dgfx/p ← fxcl1 без шляху w 2; ребро nb → na без старого джерела
   ok(r.md && r.md.includes("**prerequisites матриці:** fxal2 → fxzl1") && !r.md.includes("fxbl1 → fxal2;"), "звіт V9: матриця — лише непояснене ребро", r.md);
   ok(r.md && r.md.includes("dgfx/p ← fxcl1 (fxc): немає шляху w 2"), "звіт V9: тема pre без шляху w 2 від forEvidence", r.md);
   ok(r.md && /Ребра графа без старого джерела \(1\):\*\* nb → na \(pre w 2; fxal2 → fxal1\)/.test(r.md), "звіт V9: ребро графа без старого джерела — nb → na", r.md); }
 { const r = report(tree(M => { L(M, "fxbl1").screens[2].pre = "fxal1"; L(M, "fxbl1").screens[3].pre = "fxzl1"; M.sections.find(s => s.id === "fxb").requires = ["fxzl1"]; }));
-  ok(r.md && r.md.includes("**pre екранів:** fxbl1#3 (nd) pre: fxzl1 (nz)") && !r.md.includes("pre: fxal1"), "звіт V9: pre екрана — лише непояснений (fxzl1)", r.md);
+  ok(r.md && r.md.includes("**pre екранів:** fxbl1#4 (nd) pre: fxzl1 (nz)") && !r.md.includes("pre: fxal1"), "звіт V9: pre екрана — лише непояснений (fxzl1)", r.md);
   ok(r.md && r.md.includes("**requires:** fxb requires fxzl1"), "звіт V9: requires без шляху", r.md);
   ok(r.md && /\| `pre` екранів \| 1 \| 0 \|/.test(r.md) && /\| `requires` розділів \| 1 \| 0 \|/.test(r.md), "звіт V9: таблиця лічильників", r.md); }
 
@@ -77,10 +77,10 @@ for (const [name, args] of [["невідома лінія", ["--line", "nope"]],
   ok(r.rc === 0, "розщеплена пара: rc 0", r.out);
   ok(r.md && r.md.includes("nb (fxal2) → nz (fxzl1), тиждень 1"), "звіт: нічия V4 у списку паралельних розділів", r.md);
   const line = (r.md || "").split("\n").find(x => x.startsWith("- (fxal1, frac)")) || "";
-  ok(line.includes("типовий «na»") && ["fxal1#2→na", "fxal1#3→na", "pfx:c01→na", "pfx:c05→na", "dgfx#0→na"].every(x => line.includes(x)), "за замовчуванням: екрани, вправи й завдання тесту без u", line);
-  ok(!line.includes("fxal1#4") && !line.includes("dgfx#1"), "за замовчуванням: об'єкти з u до списку не входять", line);
+  ok(line.includes("типовий «na»") && ["fxal1#3→na", "fxal1#4→na", "pfx:c01→na", "pfx:c05→na", "dgfx#1→na"].every(x => line.includes(x)), "за замовчуванням: екрани, вправи й завдання тесту без u", line);
+  ok(!line.includes("fxal1#5") && !line.includes("dgfx#2"), "за замовчуванням: об'єкти з u до списку не входять", line);
   ok(/u на «na2»: 2/.test(r.out) && r.out.includes("екран 5 (choice)") && r.out.includes("dgfx завдання 2"), "--uses na2: екран і завдання тесту", r.out);
-  ok(r.md && r.md.includes("Файли: math, content/math/diag-g6.js"), "--uses: перелік файлів (розділ фікстури без origin — як у validate)", r.md && r.md.split("\n").filter(x => x.startsWith("Файли")).join("\n")); }
+  ok(r.md && /^Файли: math, content\/math\/diag-g6\.js$/m.test(r.md), "--uses: перелік файлів (розділ фікстури без origin — як у validate)", r.md && r.md.split("\n").filter(x => x.startsWith("Файли")).join("\n")); }
 
 // ---- --since: за хешем вмісту; нова вправа розщепленої пари без u — у списку; вставка екрана не робить змінними наступні
 { let git = true; try { execFileSync("git", ["--version"], { stdio: "ignore" }); } catch { git = false; }
@@ -103,12 +103,32 @@ for (const [name, args] of [["невідома лінія", ["--line", "nope"]],
     ok(r.out.includes("#fxal1 екран 3 (choice) → na (типовий)") && !r.out.includes("екран 4 (choice)") && !r.out.includes("екран 6 (choice)"), "--since: лише вставлений екран, наступні не «змінені»", r.out);
     ok(!r.out.includes("fxbl1"), "--since: об'єкти не розщеплених пар не перелічено", r.out);
     ok(r.md && /Вузли \(2\): nb \(змінено\), nnew \(новий\)/.test(r.md), "--since: змінені й нові вузли", r.md && r.md.split("\n").filter(x => x.startsWith("Вузли")).join("\n"));
+    const un = report(tree(M => { split(M); delete S(M, "fxal1", 2).u; }), ["--since", "HEAD"]);
+    ok(/додано\/змінено 1/.test(un.out) && un.out.includes("#fxal1 екран 5 (choice) → na (типовий)"), "--since: знятий u — об'єкт змінено (тепер типовий)", un.out);
+    const ch = report(tree(M => { split(M); M.pools[0].items[1].u = "na2"; }), ["--since", "HEAD"]);
+    ok(/додано\/змінено 1/.test(ch.out) && ch.out.includes("«c02» (answer) → na2 (u)"), "--since: доданий u на вправі — об'єкт змінено", ch.out);
     const e = report(tree(split), ["--since", "nope-rev"]);
     ok(e.rc === 2 && e.out.includes("ревізії «nope-rev» немає"), "--since неіснуюча ревізія — rc 2", e.out);
     const m = report(tree(M => { split(M); Object.assign(S(M, "fxal1", 0), { fbOk: "Інакше.", fbText: "Інше пояснення, чому саме так, для фікстури графа.", hint: "Інша підказка." }); S(M, "fxal1", 1).correct = 1; }), ["--since", "HEAD"]);
     ok(/додано\/змінено 1/.test(m.out) && m.out.includes("екран 4 (choice)"), "--since: зміна пояснення — не зміна; зміна ключа — зміна", m.out);
     fs.rmSync(path.join(tmp, ".git"), { recursive: true, force: true });
   } }
+
+// ---- прив'язка напряму (analyzeGraph): lesson завдання тесту (P2-1), перенаправлення gone, boss без вузлів by: "u" (рев'ю G1, P3-1)
+{ const { loadContent } = await import(path.join(tmp, "tools/lib.mjs")), { analyzeGraph } = await import(path.join(tmp, "tools/graph-lib.mjs"));
+  const bind = mut => { write(tree(mut)); const C = loadContent(tmp), m = C.subjects.find(s => s.id === "math"); return analyzeGraph(m, { origin: C.origin }).objects; };
+  const di = (os, i) => os.find(o => o.kind === "ditem" && o.diag === "dgfx" && o.i === i)?.nodes.join("+");
+  let os = bind(M => { M.diags[0].topics[0].lessons = ["fxal1", "fxal2"]; M.diags[0].items[0].lesson = "fxal1"; M.diags[0].items[1].lesson = "fxal2"; });
+  ok(di(os, 0) === "na" && di(os, 1) === "nb", `двоурокова тема з lesson: кожне завдання — вузол свого уроку (${di(os, 0)}, ${di(os, 1)})`);
+  ok(os.find(o => o.kind === "topic" && o.tkey === "dgfx/p")?.nodes.join("+") === "na+nb", "двоурокова тема: вузли теми — об'єднання вузлів завдань");
+  os = bind(M => { M.diags[0].topics[0].lessons = ["fxal1", "fxal2"]; });
+  ok(di(os, 0) === "na+nb", `двоурокова тема без lesson: типові вузли обох уроків (${di(os, 0)})`);
+  os = bind(M => { M.graph.nodes.push(node("na-old", "frac", ["fxal3"], { gone: "na" })); S(M, "fxal1", 0).u = "na-old"; });
+  ok(os.find(o => o.kind === "screen" && o.l === "fxal1" && o.i === 2)?.nodes.join("+") === "na", "u на gone-вузол — перенаправлення на новий");
+  os = bind(M => { M.graph.nodes.push(node("na2", "frac", [{ l: "fxal1", by: "u" }])); S(M, "fxal1", 2).u = "na2"; });
+  ok(os.find(o => o.l === "fxal4")?.cand.join("+") === "na+nb", "boss: вузли by: \"u\" не серед кандидатів", os.find(o => o.l === "fxal4")?.cand);
+  const r = report(tree(M => { delete M.graph.v; }), ["--line", "fx", "--strict"]);
+  ok(r.rc === 1 && r.out.includes("v — непорожній рядок"), `--line --strict: загальна помилка формату графа — rc 1 (${r.rc})`, r.out); }
 
 // ---- реєстр і збирач: graph.js потрапляє в index.html/sw.js; SLID.graph прив'язується у finalize() незалежно від порядку
 { write(tree());

@@ -43,5 +43,24 @@ if (has) {
   ok(b.rc === 0, `--old b799dfa: rc ${b.rc}, очікувано 0`);
   console.log(`  b799dfa: пояснено ${b.form} (вимаганий вигляд) + ${b.root} (корінь) з ${b.total}`);
 }
+// 3) --content-old: поле u (прив'язка до графа вмінь, CONTENT_SCHEMA §11) у TEXT_ONLY — rev для нього не потрібен,
+//    але u не ховає інших змін завдання (рев'ю engine-skg-g1, P3-2). Окремий тимчасовий git-репозиторій з app/, content/, tools/.
+{ const fs = await import("node:fs"), os = await import("node:os"), { execFileSync } = await import("node:child_process");
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "slid-test-diff-u-"));
+  try {
+    for (const d of ["app", "content", "tools"]) fs.cpSync(path.join(ROOT, d), path.join(tmp, d), { recursive: true });
+    const g = (...a) => execFileSync("git", a, { cwd: tmp, stdio: ["ignore", "pipe", "pipe"] });
+    g("init", "-q"); g("config", "user.email", "t@example.org"); g("config", "user.name", "test"); g("add", "-A"); g("commit", "-qm", "base");
+    const f = path.join(tmp, "content/math/diag-g6.js"), orig = fs.readFileSync(f, "utf8");
+    const at = orig.indexOf('topic: "frac",'); ok(at > 0, "фікстура: у dg6 є завдання теми frac");
+    const runC = extra => { fs.writeFileSync(f, orig.slice(0, at) + `u: "frac-read", ${extra}` + orig.slice(at));
+      const r = spawnSync(process.execPath, [path.join(tmp, "tools/diff-answers.mjs"), "--content-old", "HEAD", "--grades", "6-6"], { cwd: tmp, encoding: "utf8", maxBuffer: 64 << 20 });
+      const m = (r.stdout || "").match(/(\d+)\s+ТЕСТИ РІВНЯ без rev/); return { rc: r.status, n: m ? +m[1] : NaN, out: r.stdout + r.stderr }; };
+    const a = runC("");
+    ok(a.n === 0 && a.rc === 0, `--content-old: завдання тесту отримало лише u — 0 «без rev», rc 0 (${a.n}, rc ${a.rc})`);
+    const b = runC("zzCore: 1, ");
+    ok(b.n === 1 && b.rc === 1, `--content-old: u разом зі зміною суті — «без rev» лишається (${b.n}, rc ${b.rc})`);
+  } finally { fs.rmSync(tmp, { recursive: true, force: true }); } }
+
 console.log(`test-diff-answers: ${pass} ok, ${fail} ✗`);
 process.exit(fail ? 1 : 0);

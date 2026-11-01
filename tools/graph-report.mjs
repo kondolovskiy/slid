@@ -6,7 +6,7 @@
 //   --since <коміт>  змінені вузли й додані/змінені об'єкти розщеплених пар та їхніх тем (порівняння за хешем вмісту, а не за урок#i)
 //   --strict         rc 1, якщо є помилки графа або дрейф: усі лінії й увесь граф (прохід куратора) або лише лінія з --line (прийняття лінії)
 //   --uses <вузол>   де стоїть явний u на вузол (перелік файлів для зміни sk вузла, §3)
-// Пише reports/graph-<предмет>.md. Коди виходу: 0 — гаразд; 1 — --strict знайшов помилку чи дрейф; 2 — неправильні аргументи чи ревізія.
+// Пише reports/graph-<предмет>.md (у .gitignore: генерується щоразу, з датою; відтворюється з коміту). Коди виходу: 0 — гаразд; 1 — --strict знайшов помилку чи дрейф; 2 — неправильні аргументи чи ревізія.
 import fs from "node:fs"; import os from "node:os"; import path from "node:path"; import { execFileSync } from "node:child_process";
 import { loadContent, ROOT } from "./lib.mjs";
 import { analyzeGraph, issuesOfLine, nodeHash } from "./graph-lib.mjs";
@@ -22,20 +22,20 @@ let content;
 try { content = loadContent(); } catch (e) { console.error("ПОМИЛКА ЗАВАНТАЖЕННЯ:", e.message); process.exit(2); }
 const c = content.subjects.find(s => s.id === SUBJ);
 if (!c) { console.error(`немає предмета «${SUBJ}»`); process.exit(2); }
-const A = analyzeGraph(c, { origin: content.origin, poolOrigin: content.poolOrigin, graphFile: content.graphOrigin?.[SUBJ] });
+const A = analyzeGraph(c, { origin: content.origin, poolOrigin: content.poolOrigin, diagOrigin: content.diagOrigin, graphFile: content.graphOrigin?.[SUBJ] });
 if (LINE && !A.lines[LINE]) { console.error(`--line ${LINE}: немає такої лінії в lines графа (${Object.keys(A.lines).join(", ") || "ліній немає"})`); process.exit(2); }
 
 // P: кожен аргумент — окремий рядок Markdown
 const out = [], P = (...lines) => out.push(...lines), list = (xs, empty = "—") => xs.length ? xs.join(", ") : empty;
 const T = A.teachList, activeNodes = [...A.active.values()];
 const nodesOf = l => activeNodes.filter(n => T(n).some(t => t.l === l)).map(n => n.id);
-// індекси екранів і завдань тесту — від 0, як у дизайні (§1.2, §5.4) і чернетці пілоту; validate пише «екран N» від 1
-const show = o => o.kind === "screen" ? `${o.l}#${o.i}` : o.kind === "item" ? `${o.pool}:${o.id}` : o.kind === "ditem" ? `${o.diag}#${o.i}` : o.tkey;
+// номери екранів і завдань тесту — від 1, як «екран N» / «завдання N» у validate (рев'ю G1, P3-7); у дизайні й чернетці пілоту індекси від 0
+const show = o => o.kind === "screen" ? `${o.l}#${o.i + 1}` : o.kind === "item" ? `${o.pool}:${o.id}` : o.kind === "ditem" ? `${o.diag}#${o.i + 1}` : o.tkey;
 const HOW = { u: "u", "u-topic": "u теми", typical: "типовий", boss: "boss", ambiguous: "неоднозначно", none: "без вузла", items: "за завданнями" };
 
 // ---------- цифри графа
 P(`# Граф умінь: ${c.subject || SUBJ}`, "");
-P(`_Згенеровано tools/graph-report.mjs ${new Date().toISOString().slice(0, 10)}${SINCE ? `, --since ${SINCE}` : ""}. Дизайн: docs/design/skill-graph-math.md; схема: docs/CONTENT_SCHEMA.md §11. Індекси \`урок#i\` і \`тест#i\` — від 0._`, "");
+P(`_Згенеровано tools/graph-report.mjs ${new Date().toISOString().slice(0, 10)}${SINCE ? `, --since ${SINCE}` : ""}. Дизайн: docs/design/skill-graph-math.md; схема: docs/CONTENT_SCHEMA.md §11. Номери \`урок#N\` і \`тест#N\` — від 1, як «екран N» і «завдання N» у validate (у дизайні — від 0)._`, "");
 if (!A.graph) P(`**Графа ще немає** (\`content/${SUBJ}/graph.js\` — етап G2, куратор). Нижче — лише те, що видно без нього.`, "");
 else {
   const edges = activeNodes.flatMap(n => A.adj.get(n.id) || []), same = activeNodes.reduce((a, n) => a + (Array.isArray(n.same) ? n.same.length : 0), 0);
@@ -130,7 +130,7 @@ if (SINCE) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), "slid-graph-since-")); let B;
   try { execFileSync("tar", ["-x", "-C", dir], { input: execFileSync("git", ["archive", rev, "app", "content"], { cwd: ROOT, maxBuffer: 1 << 30 }) });
     const old = loadContent(dir), oc = old.subjects.find(s => s.id === SUBJ);
-    B = oc ? analyzeGraph(oc, { origin: old.origin, poolOrigin: old.poolOrigin, graphFile: old.graphOrigin?.[SUBJ] }) : null; }
+    B = oc ? analyzeGraph(oc, { origin: old.origin, poolOrigin: old.poolOrigin, diagOrigin: old.diagOrigin, graphFile: old.graphOrigin?.[SUBJ] }) : null; }
   catch (e) { console.error(`--since ${SINCE}: не вдалося завантажити зміст ревізії — ${e.message}`); process.exit(2); }
   finally { fs.rmSync(dir, { recursive: true, force: true }); }
   const oldCnt = new Map(); for (const o of B?.objects || []) oldCnt.set(o.key, (oldCnt.get(o.key) || 0) + 1);
@@ -159,7 +159,8 @@ const rp = `reports/graph-${SUBJ}.md`; fs.writeFileSync(path.join(ROOT, rp), out
 if (!QUIET) {
   if (USES) { console.log(`u на «${USES}»: ${usesFound.length}`); usesFound.forEach(o => console.log("  " + o.where)); }
   if (sinceFound) { console.log(`з ${SINCE}: вузлів змінено ${sinceFound.nodes.length}, об'єктів розщеплених пар додано/змінено ${sinceFound.objs.length}`); sinceFound.objs.forEach(o => console.log(`  ${o.where} → ${o.nodes.join(" + ") || "без вузла"} (${HOW[o.how]})`)); }
-  if (STRICT) [...errs, ...drift].forEach(i => console.log(`${i.cls === "error" ? "ПОМИЛКА" : "ДРЕЙФ  "}  ${i.where}: ${i.msg}`));
 }
+// --strict друкує причини й з --quiet: у npm run check видно, чому rc 1
+if (STRICT) [...errs, ...drift].forEach(i => console.log(`${i.cls === "error" ? "ПОМИЛКА" : "ДРЕЙФ  "}  ${i.where}: ${i.msg}`));
 console.log(`граф ${SUBJ}${LINE ? `, лінія ${LINE}` : ""}: вузлів ${A.nodes.size}, помилок ${errs.length}, дрейфу ${drift.length}, V10б ${warn.length}. Звіт: ${rp}`);
 process.exit(STRICT && (errs.length || drift.length) ? 1 : 0);

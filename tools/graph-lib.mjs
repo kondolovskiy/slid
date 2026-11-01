@@ -35,10 +35,10 @@ const teachList = n => (Array.isArray(n.teach) ? n.teach : []).map(t => typeof t
 
 /**
  * Аналіз графа одного предмета c (з loadContent: c.sections, c.pools, c.diags, c.skills, c.graph).
- * opts: origin (розділ → файл), poolOrigin (пул → файл), graphFile (файл SLID.graph).
+ * opts: origin (розділ → файл), poolOrigin (пул → файл), diagOrigin (тест → файл), graphFile (файл SLID.graph).
  * Повертає { issues, nodes, active, objects, lessons, topics, ties, lines, splitPairs, typical, graph }.
  */
-export function analyzeGraph(c, { origin = {}, poolOrigin = {}, graphFile } = {}) {
+export function analyzeGraph(c, { origin = {}, poolOrigin = {}, diagOrigin = {}, graphFile } = {}) {
   const g = c.graph || null, GF = graphFile || `content/${c.id}/graph.js`;
   const issues = [];
   const add = (cls, rule, where, msg, refs = {}) => issues.push({ cls, rule, where, msg: cls === "drift" ? `граф, дрейф ${rule}: ${msg} — ${DRIFT_TAIL}` : `граф ${rule}: ${msg}`,
@@ -203,18 +203,20 @@ export function analyzeGraph(c, { origin = {}, poolOrigin = {}, graphFile } = {}
     objects.push(o);
   });
   for (const d of c.diags || []) {
-    const D = `content/${c.id}/diag-g${d.grade}.js#${d.id}`;
+    const DF = diagOrigin[d.id] || `content/${c.id}/diag-g${d.grade}.js`, D = `${DF}#${d.id}`;
     for (const t of d.topics || []) {
       const its = topics.get(`${d.id}/${t.id}`)?.items || [], ls = Array.isArray(t.lessons) ? t.lessons : [];
-      const to = { kind: "topic", where: `${D} тема «${t.id}»`, file: D, diag: d.id, topic: t.id, tkey: `${d.id}/${t.id}`, l: ls[0] ?? null, ls, sks: [...new Set(its.map(([it]) => it.sk))],
+      const to = { kind: "topic", where: `${D} тема «${t.id}»`, file: DF, diag: d.id, topic: t.id, tkey: `${d.id}/${t.id}`, l: ls[0] ?? null, ls, sks: [...new Set(its.map(([it]) => it.sk))],
         baseline: !!t.baseline, refs: { diags: [d.id] }, key: `${d.id}/${t.id}|${contentHash({ ...t, title: undefined })}`, explicit: t.u !== undefined };
       const tu = to.explicit ? checkU(to, t) : null, union = new Set();
       for (const [it, i] of its) {
-        const o = { kind: "ditem", where: `${D} завдання ${i + 1} (${it.type})`, file: D, diag: d.id, topic: t.id, tkey: to.tkey, i, l: it.lesson || ls[0] || null, ls, sk: it.sk, boss: false,
+        // lesson завдання (CONTENT_SCHEMA §9: «який саме урок перевіряє») звужує типові вузли до цього уроку — рев'ю G1, P2-1
+        const lsI = str(it.lesson) ? [it.lesson] : ls;
+        const o = { kind: "ditem", where: `${D} завдання ${i + 1} (${it.type})`, file: DF, diag: d.id, topic: t.id, tkey: to.tkey, i, l: it.lesson || ls[0] || null, ls: lsI, sk: it.sk, boss: false,
           refs: { diags: [d.id] }, key: `${d.id}/${t.id}|${contentHash(it)}`, explicit: it.u !== undefined };
         if (o.explicit) { o.nodes = checkU(o, it); o.how = "u"; }
         else if (tu) { o.nodes = tu; o.how = "u-topic"; }
-        else { o.nodes = [...new Set(ls.flatMap(l => typicalOf(l, it.sk).slice(0, 1)))]; o.how = o.nodes.length ? "typical" : "none"; }
+        else { o.nodes = [...new Set(lsI.flatMap(l => typicalOf(l, it.sk).slice(0, 1)))]; o.how = o.nodes.length ? "typical" : "none"; }
         o.nodes.forEach(x => union.add(x)); objects.push(o);
       }
       to.nodes = tu || [...union]; to.how = tu ? "u" : to.nodes.length ? "items" : "none"; objects.push(to);
