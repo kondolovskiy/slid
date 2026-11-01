@@ -32,7 +32,7 @@ for (const [src, what] of [["\\lg(25 \\cdot 4)", "дужки"], ["\\log_2 8", "�
   ok(!/mfn">[^<]+<\/span><span class="mspace thin">/.test(M.mathHTML(src)), `після назви функції без пробілу: ${what} (${M.mathHTML(src)})`);
 ok(M.mathHTML("\\lg\\,x").split("mspace thin").length === 2, "\\lg\\,x: один тонкий пробіл, не два");
 { const h = M.mathHTML("\\sqrt[3]{x^2}"), i = h.indexOf("root-index"), r = h.indexOf("radicand");
-  ok(i > 0 && i < r && /root-index" style="order:-1"/.test(h) && h.startsWith('<span class="sqrt">'), `показник кореня — перед знаком √ (order:-1) і всередині .sqrt (${h})`); }
+  ok(i > 0 && i < r && h.startsWith('<span class="sqrt"><sup class="root-index">'), `показник кореня — всередині .sqrt перед підкореневим (місце задає CSS .root-index, геометрію перевіряє test-answer-ui) (${h})`); }
 ok(!M.mathHTML("\\sqrt{x}").includes("root-index"), "квадратний корінь без показника");
 ok(M.mathHTML("1 \\to 4") === '1<span class="mo">→</span>4', "\\to — бінарний знак з відступами (.mo)");
 ok(M.mathHTML("0 \\to -1").includes('<span class="mo">→</span><span class="mu">−</span>1'), "\\to: мінус після стрілки унарний");

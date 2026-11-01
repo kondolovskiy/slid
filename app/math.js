@@ -48,9 +48,9 @@ function command(tokens, state, name) {
   if (name === "sqrt") {
     let idx = ""; const save = state.i; const g = group(tokens, state, "[", "]"); if (g) idx = render(g); else state.i = save;
     const body = parsedGroup(tokens, state);
-    // показник — перед знаком «√» (³√x², як у підручнику), а не після нього: знак малює .sqrt::before, тож order:-1 ставить показник
-    // першим у flex-рядку; розмітка (показник усередині .sqrt) та сама, тож текстовий запис для атрибутів (app.js plainNode) не змінюється
-    return { html:`<span class="sqrt">${idx ? `<sup class="root-index" style="order:-1">${idx}</sup>` : ""}<span class="radicand">${body}</span></span>`, atom:true };
+    // показник — у «гачку» перед знаком «√» (³√x², як у підручнику): знак малює .sqrt::before, а .root-index (index.html) має order:-1
+    // і опущений відступ, тож показник не злипається з коефіцієнтом (2³√2). Розмітка та сама: plainNode в app.js дає той самий текст
+    return { html:`<span class="sqrt">${idx ? `<sup class="root-index">${idx}</sup>` : ""}<span class="radicand">${body}</span></span>`, atom:true };
   }
   if (name === "frac" || name === "dfrac") {
     const nu = parsedGroup(tokens, state), de = parsedGroup(tokens, state);

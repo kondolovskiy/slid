@@ -1010,6 +1010,34 @@ async def attr_math_checks(browser, url):
     await context.close()
     print('Formulas in attributes (g8m3 lesson buttons/sheet, img alt, badge title, href): plain text, green', flush=True)
 
+ROOT_INDEX_JS = r"""(fs) => fs.map(f => {
+  const host = document.createElement('p'); host.className = 'm'; host.innerHTML = SLID_MATH.mathHTML(f); document.querySelector('#view').prepend(host);
+  const box = el => el.getBoundingClientRect(), r = document.createRange(), textBox = n => { r.selectNodeContents(n); return r.getBoundingClientRect(); };
+  const ix = box(host.querySelector('.root-index')), rd = box(host.querySelector('.radicand')), co = host.firstChild.nodeType === 3 ? textBox(host.firstChild) : null;
+  const ref = document.createElement('p'); ref.className = 'm'; ref.innerHTML = SLID_MATH.mathHTML('2^3'); document.querySelector('#view').prepend(ref);
+  const sp = box(ref.querySelector('sup')), b = textBox(ref.firstChild), fs = parseFloat(getComputedStyle(host).fontSize);
+  host.remove(); ref.remove();
+  return { f, fs, gap: co && ix.left - co.right, before: rd.left - ix.right, ixTop: co && ix.top - co.top, ixMid: co && (ix.bottom - co.top) / co.height, supTop: sp.top - b.top };
+})"""
+
+async def root_index_checks(browser, url):
+    """engine-math-answer-g11-issues P2-1: the root index sits in the hook of «√», not at power height right after a coefficient
+    (2\\sqrt[3]{2} must not read as «2³√2»). Geometry in the real app CSS at 320 px, light and dark theme; real g10m3 formulas."""
+    for theme in ('light', 'dark'):
+        context, page, errors = await qa_page(browser, url, {'grade': 10, 'theme': theme})
+        await page.set_viewport_size({'width': 320, 'height': 700})
+        await page.evaluate('t => document.documentElement.setAttribute("data-theme", t)', theme)
+        rows = await page.evaluate(ROOT_INDEX_JS, ['2\\sqrt[3]{2}', '0,3\\sqrt[3]{1000}', '5\\sqrt[8]{256}', '0,5\\sqrt[3]{-64}', '6 \\cdot (-\\sqrt[10]{6})^{10}', '\\sqrt[3]{x^2}'])
+        for x in rows:
+            assert x['before'] >= 0, x                                    # index before the radicand (inside the hook), not after «√»
+            if x['gap'] is None: continue
+            assert x['gap'] >= 1, x                                       # a gap after the coefficient: «2 ³√2», not «2³√2»
+            assert x['ixTop'] - x['supTop'] >= 0.15 * x['fs'], x          # clearly lower than a power superscript (2³)
+            assert x['ixMid'] > 0.5, x                                    # bottom of the index below the coefficient's midline
+        assert not errors, errors
+        await context.close()
+    print('Root index (g10m3 2∛2, 0,3∛1000, 5·⁸√256; 320 px, light/dark): in the hook of √, apart from the coefficient, green', flush=True)
+
 FALLBACK_CHROMIUM = '/opt/pw-browsers/chromium'
 
 async def launch_browser(p, path=None):
@@ -1134,6 +1162,7 @@ async def main():
                 await player_qa_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
                 await player_focus_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
                 await attr_math_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
+                await root_index_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
             await browser.close()
             print('Обрані браузерні сценарії: green')
     finally:

@@ -1212,7 +1212,7 @@ window.SLID_LEARN = (() => {
       return a && a.map(x => ({ exact: ex, root: [...x.x.keys()].some(k => !k.startsWith("1:")), tidy: x.tidy, approx: xnum(x.x), rat: rat(x.x) }));
     }, () => null);
   }
-  /* Стала первісної (п. 2): ключ має доданок «+ C» (велика латинська C, малої c у ключі немає), запис — малу c (латинську чи
+  /* Стала первісної (п. 2): умова про первісну чи інтеграл, ключ має доданок «+ C» (велика латинська C, малої c у ключі немає), запис — малу c (латинську чи
      кириличну) і жодної великої C, а в умові вправи (title, body, q, text, hint — формули й текст поза тегами) окремої латинської
      «c» немає: тоді c — та сама стала, і запис з C замість c порівнюємо з ключем. Повертає дерево з C замість c або null. */
   const constTerm = a => a.k === "add" && a.a.some(t => t.e.k === "var" && t.e.n === "C");
@@ -1220,12 +1220,14 @@ window.SLID_LEARN = (() => {
     : n.k === "add" ? { ...n, a: n.a.map(t => ({ ...t, e: swapVar(t.e, from, to) })) } : n.k === "mul" ? { ...n, f: n.f.map(t => ({ ...t, e: swapVar(t.e, from, to) })) }
     : n.k === "pow" ? { ...n, b: swapVar(n.b, from, to), e: swapVar(n.e, from, to) } : n.k === "eq" ? { ...n, l: swapVar(n.l, from, to), r: swapVar(n.r, from, to) }
     : n.k === "fn" ? { ...n, a: swapVar(n.a, from, to), base: n.base && swapVar(n.base, from, to) } : n.k === "root" || n.k === "abs" ? { ...n, a: swapVar(n.a, from, to) } : n;
+  // C — стала первісної, лише якщо вправа про первісну чи інтеграл (рев'ю P3-1: у ключі «a + b + C» C — просто змінна)
+  const stmtInt = s => /первісн|інтеграл|\\int|∫/i.test(["title", "body", "q", "text"].map(k => typeof s?.[k] === "string" ? s[k] : "").join(" "));
   const stmtC = s => /(^|[^a-zA-Z])c(?![a-zA-Z])/.test(["title", "body", "q", "text", "hint"].map(k => typeof s?.[k] === "string" ? s[k] : "").join(" ")
     .replace(/<[^>]*>/g, " ").replace(/\\[a-zA-Z]+/g, " ").replace(/[a-zA-Z]{2,}/g, " "));
   function constC(s, a, u) {
     if (a.k === "eq" || !constTerm(a)) return null;
     const ka = varsOf(a), ku = varsOf(u);
-    return ka.includes("C") && !ka.includes("c") && ku.includes("c") && !ku.includes("C") && !stmtC(s) ? swapVar(u, "c", "C") : null;
+    return ka.includes("C") && !ka.includes("c") && ku.includes("c") && !ku.includes("C") && !stmtC(s) && stmtInt(s) ? swapVar(u, "c", "C") : null;
   }
   /* Число коренем (п. 4): запис — стала з коренем (√576, 2√9, ∛27), точне значення якої раціональне й дорівнює ключу.
      Лише "form" («обчисли корінь»), ніколи "ok"; межа точної арифметики — не "form", а звичайне "bad". */
