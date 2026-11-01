@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-01T12:09:26.854Z
 id: tests-diag-rev-p2
 type: engine
 subject: math
 status: todo
-claimed_by:
+claimed_by: agent-tests-diag-rev-p2
 created: 2026-10-31
 depends_on: [refine-math-diag-g6-coverage]
 ---

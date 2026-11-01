@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-01T12:09:26.820Z
 id: engine-answer-kinds-p3
 type: engine
 subject: math
 status: todo
-claimed_by:
+claimed_by: agent-engine-answer-kinds-p3
 created: 2026-10-31
 depends_on: [engine-math-answer-kinds-new]
 ---
