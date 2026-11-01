@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-01T23:28:17.138Z
 id: tools-diff-answers-p3
 type: engine
 subject: tools
 status: todo
-claimed_by:
+claimed_by: engineer-tools-p3
 created: 2026-11-01
 depends_on: [engine-half-p3]
 ---
