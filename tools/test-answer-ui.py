@@ -1706,12 +1706,13 @@ async def evidence_checks(browser, url):
         await page.click('[data-tab="path"]'); await page.click('[data-tab="path"]')
         await page.click('button[data-subject="math"]')
         await page.click('#view [data-diag="math"]'); await page.click('[data-diag-go]')
-        k = 0
+        k, asked = 0, []
         while await page.locator('#skip').is_visible():
+            i_item = await page.evaluate("""() => {const S=JSON.parse(localStorage.getItem('slid.v1')),d=SLID_SUBJECTS.find(c=>c.id==='math').diags.find(d=>d.id==='dg6');
+              const i=SLID_LEARN.nextItem(d,(S.diagRun||{}).dg6||{}); return [i, d.items[i]];}""")
+            asked.append((i_item[0], i_item[1]['type'], i_item[1].get('topic'), 'ok' if k < 3 else 'skip'))
             if k < 3:
-                item = await page.evaluate("""() => {const S=JSON.parse(localStorage.getItem('slid.v1')),d=SLID_SUBJECTS.find(c=>c.id==='math').diags.find(d=>d.id==='dg6');
-                  return d.items[SLID_LEARN.nextItem(d,(S.diagRun||{}).dg6||{})];}""")
-                await answer_context_screen(page, item); await page.click('#action')
+                await answer_context_screen(page, i_item[1]); await page.click('#action')
             else:
                 await page.click('#skip')
             k += 1
@@ -1733,10 +1734,10 @@ async def evidence_checks(browser, url):
             await page.click('[data-tab="profile"]'); await page.click(f'[data-grade="{g}"]')
         await page.click('[data-tab="path"]')
         state = await page.evaluate("JSON.parse(localStorage.getItem('slid.v1'))")
-        return context, page, errors, state, lid
+        return context, page, errors, state, lid, asked
     states = {}
     for mode in ('idb', 'noidb', 'nomodule'):
-        context, page, errors, state, lid = await route(mode)
+        context, page, errors, state, lid, asked = await route(mode)
         assert not errors, (mode, errors)
         states[mode] = state
         if mode == 'noidb':
@@ -1763,6 +1764,11 @@ async def evidence_checks(browser, url):
             dg = [e['d'] for e in ev if e['type'] == 'answer' and e['d']['mode'] == 'diag']
             assert dg and all(a['l'] == 'dg6' and a['hint'] is False for a in dg), dg[:2]
             assert [a['verdict'] for a in dg].count('skip') == len(dg) - 3 and all(a['res'] == -1 for a in dg if a['verdict'] == 'skip'), [a['verdict'] for a in dg]
+            # кожна спроба тесту — про те завдання, яке дитина бачила, з її вердиктом
+            assert [(a['i'], a['type'], a['topic'], a['verdict']) for a in dg] == asked, ([(a['i'], a['verdict']) for a in dg], asked)
+            assert all(a['res'] == 1 for a in dg[:3]), dg[:3]
+            assert not [e for e in ev if isinstance(e['d'], dict) and e['d'].get('trunc')], 'обрізані події'
+            assert (await page.evaluate("SLID_EVIDENCE.stats()"))['truncated'] == 0
             de = next(e['d'] for e in ev if e['type'] == 'diag_end')
             assert de['diag'] == 'dg6' and de['res'] == state['diag']['dg6']['res'] and de['topics'] == state['diag']['dg6']['topics'], de
             le = next(e['d'] for e in ev if e['type'] == 'lesson_end')
@@ -1770,6 +1776,7 @@ async def evidence_checks(browser, url):
             g = [e['d'] for e in ev if e['type'] == 'grade']
             assert g == [{'from': 6, 'to': 7}, {'from': 7, 'to': 6}], g
             srs_by = [e for e in ev if e['type'] == 'srs']
+            assert all(1 <= e['d']['part'] <= e['d']['parts'] for e in srs_by), [e['d'] for e in srs_by]
             assert all(isinstance(e.get('by'), int) for e in srs_by), srs_by
             last_srs = {}
             for e in srs_by:
@@ -1784,6 +1791,30 @@ async def evidence_checks(browser, url):
             st = await page.evaluate("SLID_EVIDENCE.stats()")
             assert st['enabled'] and st['count'] == len(again) and st['unsynced'] == len(again) and st['dropped'] == 0, st
             assert await page.evaluate("JSON.parse(localStorage.getItem('slid.v1'))") == state, 'перезавантаження змінило стан'
+            # подія перед переходом зі сторінки (рев'ю P3-1): транзакція в pagehide не встигає, рятує синхронна копія черги
+            n0 = len(again)
+            await page.evaluate("SLID_EVIDENCE.flush()")
+            await page.evaluate("SLID_EVIDENCE.log('qa_lastgasp', {x: 1})")
+            await page.goto('about:blank')
+            await page.goto(url)
+            after = (await page.evaluate("SLID_EVIDENCE.export()"))['events']
+            gasp = [e for e in after if e['type'] == 'qa_lastgasp']
+            assert len(gasp) == 1 and gasp[0]['d'] == {'x': 1}, [e['type'] for e in after[n0 - 2:]]
+            assert await page.evaluate("localStorage.getItem(SLID_EVIDENCE._core.PENDING)") is None
+            assert len({e['eid'] for e in after}) == len(after) and [e['seq'] for e in after] == list(range(1, len(after) + 1)), 'дублікати/пропуски seq'
+            assert await page.evaluate("JSON.parse(localStorage.getItem('slid.v1'))") == state, 'відновлення черги змінило стан'
+            # справжня IndexedDB: ротація з малим лімітом, seq у новому екземплярі, дубль eid (окрема база, не журнал)
+            rot = await page.evaluate("""async () => { const K=SLID_EVIDENCE._core, name='slid-evidence-qa', lim={...SLID_EVIDENCE.LIMITS,max:10,keep:6,batch:4};
+              await new Promise(ok=>{ const r=indexedDB.deleteDatabase(name); r.onsuccess=r.onerror=r.onblocked=ok; });
+              const J=K.create(K.idbBackend(indexedDB,name),K.env,lim); for(let i=0;i<25;i++) J.log('screen',{i}); await J.flush(); await J.flush();
+              const a=(await J.export()).events.map(e=>e.seq);
+              const J2=K.create(K.idbBackend(indexedDB,name),K.env,lim); J2.log('boot',{}); await J2.flush(); await J2.flush();
+              const b=(await J2.export()).events;
+              const dup=K.idbBackend(indexedDB,name); await dup.init(); const added=await dup.append([{...b[b.length-1], seq:undefined}]);
+              const c=(await J2.export()).events.length;
+              return {a, b:b.map(e=>e.seq), added, c, cb:b.length}; }""")
+            assert 6 <= len(rot['a']) <= 10 and rot['a'] == list(range(26 - len(rot['a']), 26)), rot
+            assert rot['b'][-1] == 26 and rot['added'] == 0 and rot['c'] == rot['cb'], rot
         await context.close()
     assert states['idb'] == states['noidb'] == states['nomodule'], [k for k in states['idb'] if not (states['idb'][k] == states['noidb'].get(k) == states['nomodule'].get(k))]
     assert states['idb']['errs'] and states['idb']['mast'] and states['idb']['srs'] and states['idb']['plan']['math']['steps'], 'маршрут не зачепив record/SRS/план'

@@ -9,11 +9,16 @@
      тихо губляться, застосунок працює як раніше;
    - нічого не йде в мережу; поле synced (0) — для майбутньої синхронізації;
    - приватність: лише анонімні випадкові id пристрою (did) і профілю (pid), без імені;
-   - ротація: понад LIMITS.max подій — найстаріші видаляються до LIMITS.keep; подія обрізається до LIMITS.bytes.
+   - ротація: понад LIMITS.max подій — найстаріші видаляються до LIMITS.keep; подія обрізається до LIMITS.bytes
+     (підсумкові типи BIG — до LIMITS.bigBytes; srs ділиться на частини part/parts, тож не обрізається);
+   - перехід зі сторінки: незаписана черга синхронно скидається в localStorage «slid.evidence.pending» (не slid.v1)
+     і дописується під час наступного завантаження; дублікати відкидає унікальний eid.
    Консоль: SLID_EVIDENCE.stats(), SLID_EVIDENCE.export() (об'єкт), SLID_EVIDENCE.download() (файл JSON). */
 (() => {
-  const SCHEMA = 1, DB_NAME = "slid-evidence", DB_VER = 1, EV = "events", META = "meta";
-  const LIMITS = { max: 15000, keep: 13500, queue: 1000, batch: 40, delay: 1200, str: 300, arr: 60, depth: 6, bytes: 2048, versionWait: 1000 };
+  const SCHEMA = 1, DB_NAME = "slid-evidence", DB_VER = 2, EV = "events", META = "meta", PENDING = "slid.evidence.pending";
+  const LIMITS = { max: 15000, keep: 13500, queue: 1000, batch: 40, delay: 1200, str: 300, arr: 60, depth: 6, bytes: 2048, bigBytes: 8192, part: 1500, stash: 300, versionWait: 1000 };
+  /** Підсумкові події: більший ліміт розміру. */
+  const BIG = new Set(["srs", "plan", "diag_start", "diag_end", "lesson_end", "practice_start", "practice_end"]);
 
   /* ---------- чисті функції (перевіряє tools/test-evidence.mjs) ---------- */
   /** Копія даних, придатна для JSON і structured clone: Set → відсортований масив, Map → об'єкт, функції/undefined відкинуто,
@@ -40,14 +45,25 @@
     for (const k of Object.keys(v)) { const y = sanitize(v[k], lim, depth + 1); if (y !== undefined) out[k] = y; }
     return out;
   }
-  /** Подія без місця в сховищі: seq, did, pid, cv дописує flush. Завелика d замінюється переліком ключів (trunc). */
+  /** Подія без місця в сховищі: seq, did, pid, cv дописує flush. eid = sid.n — унікальний id події (відкидає дублікати
+      після відновлення черги). Завелика d замінюється переліком ключів (trunc). */
   function makeEvent(type, data, env, lim = LIMITS) {
     let d = sanitize(data, lim);
     if (d === undefined) d = null;
-    const e = { v: SCHEMA, type: String(type).slice(0, 40), t: env.now(), tzo: env.tzo(), n: env.n, ms: Math.round(env.mono()), sid: env.sid, net: env.online() ? 1 : 0, synced: 0, d };
+    type = String(type).slice(0, 40);
+    const e = { v: SCHEMA, type, eid: env.sid + "." + env.n, t: env.now(), tzo: env.tzo(), n: env.n, ms: Math.round(env.mono()), sid: env.sid, net: env.online() ? 1 : 0, synced: 0, d };
     if (env.pid) e.pid = env.pid;
-    if (JSON.stringify(e).length > lim.bytes) e.d = { trunc: true, keys: d && typeof d === "object" ? Object.keys(d).slice(0, 30) : [] };
+    if (JSON.stringify(e).length > (BIG.has(type) ? lim.bigBytes : lim.bytes)) e.d = { trunc: true, keys: d && typeof d === "object" ? Object.keys(d).slice(0, 30) : [] };
     return e;
+  }
+  /** Ділить зміни на частини, кожна — не більше lim.part байтів JSON (щонайменше один запис). */
+  function chunk(list, lim = LIMITS) {
+    const out = []; let cur = [], size = 2;
+    for (const x of list) { const k = JSON.stringify(x).length + 1;
+      if (cur.length && size + k > lim.part) { out.push(cur); cur = []; size = 2; }
+      cur.push(x); size += k; }
+    if (cur.length) out.push(cur);
+    return out;
   }
   /** Скільки найстаріших подій видалити: нічого, доки count ≤ max; інакше — до keep. */
   const trimCount = (count, lim = LIMITS) => count > lim.max ? count - lim.keep : 0;
@@ -60,13 +76,15 @@
     for (const [c, by] of Object.entries(S.planByGrade || {})) for (const [g, p] of Object.entries(by || {})) plans[c + "|" + g] = JSON.stringify(p);
     return { grade: S.grade ?? null, srsJ: JSON.stringify(S.srs || {}), plans };
   }
-  function stateDiff(a, b) {
+  function stateDiff(a, b, lim = LIMITS) {
     const out = [];
     if (a.grade !== b.grade) out.push(["grade", { from: a.grade, to: b.grade }]);
     if (a.srsJ !== b.srsJ) {
       const A = JSON.parse(a.srsJ), B = JSON.parse(b.srsJ), ch = [];
       for (const l of new Set([...Object.keys(A), ...Object.keys(B)])) if (JSON.stringify(A[l]) !== JSON.stringify(B[l])) ch.push({ l, from: A[l] ?? null, to: B[l] ?? null });
-      if (ch.length) out.push(["srs", { n: ch.length, ch: ch.slice(0, 40) }]);
+      // повторний тест рівня змінює коробки всіх уроків своїх тем одразу: частини part/parts, кожна в межах ліміту (рев'ю P2-1)
+      const parts = chunk(ch, lim);
+      parts.forEach((c, k) => out.push(["srs", { n: ch.length, part: k + 1, parts: parts.length, ch: c }]));
     }
     for (const k of new Set([...Object.keys(a.plans), ...Object.keys(b.plans)])) if (a.plans[k] !== b.plans[k]) {
       const [c, g] = k.split("|"), p = b.plans[k] ? JSON.parse(b.plans[k]) : null;
@@ -80,12 +98,14 @@
   /* ---------- сховище: IndexedDB ---------- */
   const req = r => new Promise((ok, no) => { r.onsuccess = () => ok(r.result); r.onerror = () => no(r.error); });
   const done = tx => new Promise((ok, no) => { tx.oncomplete = () => ok(); tx.onerror = tx.onabort = () => no(tx.error || new Error("abort")); });
-  function idbBackend(idb) {
+  function idbBackend(idb, name = DB_NAME, KR = typeof IDBKeyRange !== "undefined" ? IDBKeyRange : null) {
     let db = null;
     const open = () => new Promise((ok, no) => {
-      const r = idb.open(DB_NAME, DB_VER);
+      const r = idb.open(name, DB_VER);
       r.onupgradeneeded = () => { const d = r.result;
-        if (!d.objectStoreNames.contains(EV)) d.createObjectStore(EV, { keyPath: "seq" }).createIndex("synced", "synced");
+        const ev = d.objectStoreNames.contains(EV) ? r.transaction.objectStore(EV) : d.createObjectStore(EV, { keyPath: "seq" });
+        if (!ev.indexNames.contains("synced")) ev.createIndex("synced", "synced");
+        if (!ev.indexNames.contains("eid")) ev.createIndex("eid", "eid", { unique: true });   // версія 2
         if (!d.objectStoreNames.contains(META)) d.createObjectStore(META); };
       r.onsuccess = () => { db = r.result; db.onversionchange = () => { try { db.close(); } catch (e) {} db = null; }; ok(); };
       r.onerror = () => no(r.error); r.onblocked = () => no(new Error("blocked"));
@@ -100,16 +120,21 @@
         await done(tx); return { did, pid };
       },
       async setMeta(k, v) { const tx = db.transaction(META, "readwrite"); tx.objectStore(META).put(v, k); await done(tx); },
-      /** Додає пакет: seq — наскрізний лічильник пристрою (meta.seq) у тій самій транзакції. */
+      /** Додає пакет: seq — наскрізний лічильник пристрою (meta.seq) у тій самій транзакції; add, а не put — розбіжність
+          meta.seq з даними дає помилку, а не тихий перезапис. Подія з eid, який уже є (відновлена черга), пропускається.
+          Повертає, скільки додано. */
       async append(list) {
-        const tx = db.transaction([EV, META], "readwrite"), m = tx.objectStore(META), s = tx.objectStore(EV);
-        let seq = (await req(m.get("seq"))) || 0;
-        for (const e of list) { e.seq = ++seq; s.put(e); }
-        m.put(seq, "seq"); await done(tx); return seq;
+        const tx = db.transaction([EV, META], "readwrite"), m = tx.objectStore(META), s = tx.objectStore(EV), ix = s.index("eid");
+        let seq = (await req(m.get("seq"))) || 0, added = 0;
+        for (const e of list) {
+          if (e.eid && (await req(ix.getKey(e.eid))) !== undefined) continue;
+          e.seq = ++seq; s.add(e); added++;
+        }
+        m.put(seq, "seq"); await done(tx); return added;
       },
       async trim(lim) {
         const tx = db.transaction(EV, "readwrite"), s = tx.objectStore(EV), n = trimCount(await req(s.count()), lim);
-        if (n > 0) { const keys = await req(s.getAllKeys(null, n)); if (keys.length) s.delete(IDBKeyRange.upperBound(keys[keys.length - 1])); }
+        if (n > 0) { const keys = await req(s.getAllKeys(null, n)); if (keys.length) s.delete(KR.upperBound(keys[keys.length - 1])); }
         await done(tx); return n;
       },
       async all() { const tx = db.transaction(EV, "readonly"); return req(tx.objectStore(EV).getAll()); },
@@ -121,13 +146,16 @@
   }
 
   /* ---------- журнал ---------- */
-  /** env: { now, tzo, mono, online, version() → Promise<string|null>, setTimeout, clearTimeout }; backend — як idbBackend або null. */
+  /** env: { now, tzo, mono, online, version() → Promise<string|null>, setTimeout, clearTimeout,
+      stash(list) і unstash() → list — синхронне сховище незаписаної черги (необов'язкові) }; backend — як idbBackend або null. */
   const MICRO = {};   // позначка «запис уже заплановано мікрозадачею» (не id таймера)
   function create(backend, env, lim = LIMITS) {
-    let queue = [], timer = null, chain = Promise.resolve(), ready = null, ids = null, cv, enabled = !!backend, fails = 0, dropped = 0, written = 0, n = 0, snap = null, cause = null, scrT = null, pidNew = null;
+    let queue = [], inflight = [], timer = null, chain = Promise.resolve(), ready = null, ids = null, cv, enabled = !!backend, fails = 0, dropped = 0, written = 0, dup = 0, truncated = 0, recovered = 0, n = 0, snap = null, cause = null, scrT = null, pidNew = null;
     const sid = rid();
     const disable = () => { enabled = false; dropped += queue.length; queue = []; };
     if (backend) ready = backend.init().then(r => { ids = r; }, () => disable());
+    // черга, скинута попередньою сторінкою під час переходу (P3-1): дописується першою, дублікати відкидає eid
+    if (enabled && env.unstash) try { const old = env.unstash() || []; for (const e of old) if (e && typeof e === "object" && e.eid && e.v) { delete e.seq; queue.push(e); recovered++; } } catch (e) {}
     const verP = () => cv !== undefined ? Promise.resolve(cv) : Promise.race([Promise.resolve().then(env.version).catch(() => null), new Promise(ok => env.setTimeout(() => ok(null), lim.versionWait))]).then(v => (cv = v || null));
     function schedule() {
       if (timer || !enabled) return;
@@ -140,10 +168,11 @@
       await verP();
       if (pidNew) { const p = pidNew; pidNew = null; try { await backend.setMeta("pid", p); } catch (e) {} ids.pid = p; }
       while (queue.length && enabled) {
-        const list = queue.splice(0, lim.batch);
-        for (const e of list) { e.did = ids.did; if (!e.pid) e.pid = ids.pid; e.cv = cv; }
-        try { await backend.append(list); written += list.length; fails = 0; }
+        const list = inflight = queue.splice(0, lim.batch);
+        for (const e of list) { e.did = e.did || ids.did; if (!e.pid) e.pid = ids.pid; if (e.cv === undefined) { e.cv = cv; e.cvs = cv ? "sw" : null; } }
+        try { const k = await backend.append(list); written += k; dup += list.length - k; fails = 0; }
         catch (e) { dropped += list.length; if (++fails >= 3) disable(); }
+        inflight = [];
       }
       if (enabled && written) try { await backend.trim(lim); } catch (e) {}
     }
@@ -156,6 +185,7 @@
           const d = typeof data === "function" ? data() : data;
           const mono = env.mono();
           const e = makeEvent(type, d, { ...env, mono: () => mono, n: ++n, sid, pid: pidNew || (ids && ids.pid) || null }, lim);
+          if (e.d && e.d.trunc) truncated++;
           if (type === "screen") scrT = mono;
           else if (type === "answer" && scrT !== null) e.dt = Math.round(mono - scrT);   // час від показу екрана до цієї спроби
           if (type !== "srs" && type !== "plan" && type !== "grade") cause = e.n; else e.by = cause;
@@ -168,17 +198,24 @@
         try {
           if (!enabled || !S) return;
           const b = stateSnap(S);
-          if (snap) for (const [type, d] of stateDiff(snap, b)) api.log(type, d);
+          if (snap) for (const [type, d] of stateDiff(snap, b, lim)) api.log(type, d);
           snap = b;
         } catch (e) {}
       },
       /** Новий анонімний профіль (після «Скинути прогрес»); id пристрою лишається. */
       newProfile() { try { if (enabled) { pidNew = rid(); snap = null; } } catch (e) {} },
+      /** Синхронно скинути незаписане (пакет у дорозі + черга) у env.stash: pagehide / сторінка ховається. */
+      stash() {
+        try { if (!enabled || !env.stash) return 0; const list = [...inflight, ...queue].slice(-lim.stash).map(e => { const c = { ...e }; delete c.seq; if (c.cv === undefined && cv !== undefined) { c.cv = cv; c.cvs = cv ? "sw" : null; } return c; });
+          if (list.length) env.stash(list); return list.length; } catch (e) { return 0; }
+      },
+      /** SW змінився (controllerchange): наступний запис спитає версію змісту знову. */
+      resetVersion() { cv = undefined; },
       /** Записати чергу зараз. Промис завжди виконується (без відхилення). */
       flush() { if (timer && timer !== MICRO) { env.clearTimeout(timer); timer = null; } chain = chain.then(write).catch(() => {}); return chain; },
       async stats() {
         await api.flush();
-        const base = { schema: SCHEMA, enabled, queued: queue.length, dropped, written, sid, cv: cv ?? null, did: ids?.did ?? null, pid: ids?.pid ?? null };
+        const base = { schema: SCHEMA, enabled, queued: queue.length, dropped, written, dup, truncated, recovered, sid, cv: cv ?? null, did: ids?.did ?? null, pid: ids?.pid ?? null };
         if (!enabled) return base;
         try { return { ...base, ...(await backend.counts()) }; } catch (e) { return base; }
       },
@@ -187,7 +224,7 @@
         await api.flush();
         let events = [];
         if (enabled) try { events = (await backend.all()).sort((a, b) => a.seq - b.seq); } catch (e) {}
-        return { schema: SCHEMA, app: "slid", exportedAt: new Date(env.now()).toISOString(), did: ids?.did ?? null, cv: cv ?? null, dropped, events };
+        return { schema: SCHEMA, app: "slid", exportedAt: new Date(env.now()).toISOString(), did: ids?.did ?? null, cv: cv ?? null, dropped, truncated, events };
       },
       async clear() { await api.flush(); if (enabled) try { await backend.clear(); } catch (e) {} }
     };
@@ -203,6 +240,11 @@
     now: () => Date.now(), tzo: () => new Date().getTimezoneOffset(), mono: perf,
     online: () => { try { return navigator.onLine !== false; } catch (e) { return true; } },
     setTimeout: (f, ms) => setTimeout(f, ms), clearTimeout: t => clearTimeout(t),
+    /** Окремий ключ localStorage (не slid.v1): кілька вкладок дописують, не затираючи одна одну; ≤ LIMITS.stash подій. */
+    stash: list => { let old = []; try { old = JSON.parse(localStorage.getItem(PENDING) || "[]"); } catch (e) {}
+      const seen = new Set(), all = [...(Array.isArray(old) ? old : []), ...list].filter(e => e && e.eid && !seen.has(e.eid) && seen.add(e.eid));
+      try { localStorage.setItem(PENDING, JSON.stringify(all.slice(-LIMITS.stash))); } catch (e) {} },
+    unstash: () => { try { const v = JSON.parse(localStorage.getItem(PENDING) || "[]"); localStorage.removeItem(PENDING); return Array.isArray(v) ? v : []; } catch (e) { return []; } },
     /** Версія змісту = VERSION активного service worker (sw.js); без нього — null. */
     version: () => new Promise(ok => {
       try {
@@ -225,10 +267,12 @@
       return data.events.length;
     } catch (e) { return 0; }
   };
-  api._core = { sanitize, makeEvent, trimCount, stateSnap, stateDiff, create, idbBackend };
+  api._core = { sanitize, makeEvent, trimCount, chunk, stateSnap, stateDiff, create, idbBackend, env, BIG, PENDING };
   try {
-    addEventListener("pagehide", () => api.flush());
-    document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") api.flush(); });
+    // транзакція IndexedDB, почата в pagehide, може не встигнути: спершу синхронна копія черги, потім спроба запису
+    addEventListener("pagehide", () => { api.stash(); api.flush(); });
+    document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") { api.stash(); api.flush(); } });
+    if (navigator.serviceWorker) navigator.serviceWorker.addEventListener("controllerchange", () => api.resetVersion());
   } catch (e) {}
   g.SLID_EVIDENCE = api;
 })();

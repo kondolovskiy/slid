@@ -856,7 +856,7 @@ function renderScreen(){
   $("#player").scrollTo({top:0, behavior:"instant"});   // і для підсумку: інакше він відкривається з прокруткою попереднього екрана
   if(idx>=L.screens.length){ if(run.diag) renderDiagEnd(); else if(run.practice) renderPracticeEnd(); else renderEnd(); $("#player").scrollTo({top:0, behavior:"instant"}); return focusAction(); }
   const s=L.screens[idx]; checked=false; tries=0; tried=null; pProgress();
-  EV.log("screen", ()=>evItem(s));
+  lastAns=null; EV.log("screen", ()=>evItem(s));
   let h=`<section class="screen" tabindex="-1"><div class="eyebrow">${run.diag? `Тест рівня · завдання ${Object.keys(run.res).length+1}` : s.eyebrow||""}</div>`;
   h+= s.type==="intro"? `<h1>${s.title}</h1>` : `<h2>${s.title}</h2>`;
   h+= fig(s) + (s.body||"") + noteHtml(s);
@@ -1031,7 +1031,7 @@ function gradeNow(s){
     case "numline": return st===s.answer;
     case "number": return numOk(s,st);
     case "fracin": return s.hideDen? LEARN.checkAns({answer:s.answer+"/"+s.den,fractionOnly:true},st)==="ok" : parseInt(st,10)===s.answer;
-    case "answer": return LEARN.checkAns(s,st)==="ok";
+    case "answer": return (lastAns=LEARN.checkAns(s,st))==="ok";   // lastAns — вердикт для журналу подій (без другої перевірки)
     case "lab": return window.SLID_LAB.check(s.lab, LAB.get(), s.goal);
   }
 }
@@ -1054,8 +1054,9 @@ const evMode = () => run?.diag? "diag" : run?.practice? "practice" : "lesson";
 const evItem = s => ({ mode:evMode(), c:C?.id, l: run?.practice? s.lesson : L.id, i:idx, id:s.id ?? null, key:s.key ?? null, pool:s.pool?.id ?? null,
   type:s.type, ak:s.answerKind ?? null, sk:s.sk ?? null, pre:s.pre ?? null, topic:s.topic ?? null, rev:s.rev ?? null, boss:!!L.boss, hyp:!!(s.hyp||s.poll) });
 const evRaw = s => LAB && s.type==="lab"? LAB.get() : st;
-// answer: ok/form/bad з checkAns; правильну відповідь уроку не перевіряємо вдруге (gradeNow — те саме checkAns === "ok"), у тесті — так, щоб бачити form
-const evVerdict = (s, ok) => s.type!=="answer"? (ok? "ok" : "bad") : ok && !run?.diag? "ok" : LEARN.checkAns(s,st);
+// answer: ok/form/bad — той самий результат checkAns, що його щойно дав gradeNow (lastAns); checkAns удруге не викликаємо
+let lastAns=null;
+const evVerdict = (s, ok) => s.type==="answer" && lastAns? lastAns : ok? "ok" : "bad";
 function check(){
   const s=L.screens[idx];
   if(run.diag) return diagAnswer(gradeNow(s)? LEARN.OK : LEARN.BAD);
