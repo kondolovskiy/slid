@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-01T21:20:23.325Z
 id: engine-hyp-e2-p3
 type: engine
 subject: math
 status: todo
-claimed_by:
+claimed_by: engineer-hyp-e2p3
 created: 2026-11-01
 depends_on: [engine-hyp-e2-shadow]
 ---
