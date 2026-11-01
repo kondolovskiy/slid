@@ -1,10 +1,5 @@
 {
-  "date": "2026-11-01T15:24:08.411Z",
+  "date": "2026-11-01T15:29:04.700Z",
   "errors": [],
-  "warnings": [
-    "content/math/g9-g9m7.js#g9m7l1: sentenceWords=5.3 поза профілем [6; 13] для math, 7-9 кл.",
-    "content/math/g9-g9m7.js#g9m7l2: sentenceWords=5.7 поза профілем [6; 13] для math, 7-9 кл.",
-    "content/math/g9-g9m7.js#g9m7l3: sentenceWords=5.5 поза профілем [6; 13] для math, 7-9 кл.",
-    "content/math/g9-g9m7.js#g9m7l4: sentenceWords=5.2 поза профілем [6; 13] для math, 7-9 кл."
-  ]
+  "warnings": []
 }
