@@ -5,7 +5,7 @@ write_group: personalization-shared
 id: engine-practice-pool
 type: engine
 subject: math
-status: review
+status: done
 claimed_by: agent-engine-practice-pool
 created: 2026-10-13
 ---
