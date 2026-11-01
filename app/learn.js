@@ -1514,11 +1514,13 @@ window.SLID_LEARN = (() => {
   const addDay = (day, n) => new Date(Date.parse(day + "T00:00:00Z") + n * 864e5).toISOString().slice(0, 10);
   /** Тему пройдено вперше — перше повторення завтра. */
   function srsInit(S, lesson, day) { if (!S.srs[lesson]) S.srs[lesson] = { box: 0, due: addDay(day, BOX_DAYS[0]) }; }
-  /** Підсумок сесії: results [{ lesson, ok }]. Тема без помилок піднімається на коробку, з помилкою — повертається в першу. Повертає [{ lesson, box, was, days }]. */
+  /** Підсумок сесії: results [{ lesson, ok }]. Тема без помилок піднімається на коробку, з помилкою — повертається в першу. Повертає [{ lesson, box, was, days }].
+      Пройдений урок без запису SRS (пул з'явився після уроку, srsInit не було) стартує з коробки уроку — як тема, пройдена з пулом
+      (engine-srs-retest-p3). Наявні записи не змінюються; тема без запису й без пройденого уроку — як раніше, з −1. */
   function srsUpdate(S, results, day) {
     const by = {}; for (const r of results) by[r.lesson] = (by[r.lesson] ?? true) && !!r.ok;
     return Object.entries(by).map(([lesson, ok]) => {
-      const was = S.srs[lesson] ? S.srs[lesson].box : -1, box = ok ? Math.min(BOX_DAYS.length - 1, was + 1) : 0;
+      const was = S.srs[lesson] ? S.srs[lesson].box : S.lessons?.[lesson]?.done ? 0 : -1, box = ok ? Math.min(BOX_DAYS.length - 1, was + 1) : 0;
       S.srs[lesson] = { box, due: addDay(day, BOX_DAYS[box]) };
       return { lesson, box, was, days: BOX_DAYS[box] };
     });

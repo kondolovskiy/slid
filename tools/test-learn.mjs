@@ -394,6 +394,26 @@ const order = l => ({ L1: 3, L2: 1, L3: 2, L4: 4 }[l] ?? 50);
   eq(u.find(x => x.lesson === "a").days, 3, "srsUpdate: повертає інтервал");
   for (let i = 0; i < 9; i++) L.srsUpdate(S, [{ lesson: "a", ok: true }], D); eq(S.srs.a.box, L.BOX_DAYS.length - 1, "srsUpdate: коробка не вища за останню");
   L.srsUpdate(S, [{ lesson: "a", ok: false }], D); eq(S.srs.a.box, 0, "srsUpdate: помилка скидає з будь-якої коробки");
+  /* engine-srs-retest-p3 (P3-1 приймання): пул з'явився після уроку — запису SRS немає, srsInit не було.
+   Перша вдала сесія стартує з коробки уроку (0) → коробка 1, 3 дні — так само, як тема, пройдена з пулом. Старий код давав box 0 (1 день). */
+{ const D = "2026-11-02";
+  const withPool = { srs: {}, seen: {}, lessons: { t: { done: true } } }; L.srsInit(withPool, "t", "2026-11-01");
+  const late = { srs: {}, seen: {}, lessons: { t: { done: true } } };
+  const uw = L.srsUpdate(withPool, [{ lesson: "t", ok: true }], D), ul = L.srsUpdate(late, [{ lesson: "t", ok: true }], D);
+  eq(withPool.srs.t, { box: 1, due: "2026-11-05" }, "srs late pool: урок з пулом → перша вдала сесія box 1");
+  eq(late.srs.t, withPool.srs.t, "srs late pool: пул після уроку → той самий box 1, 3 дні");
+  eq([ul[0].was, ul[0].days], [uw[0].was, uw[0].days], "srs late pool: was/days як у теми з пулом");
+  const lateBad = { srs: {}, seen: {}, lessons: { t: { done: true } } };
+  L.srsUpdate(lateBad, [{ lesson: "t", ok: true }, { lesson: "t", ok: false }], D);
+  eq(lateBad.srs.t, { box: 0, due: "2026-11-03" }, "srs late pool: помилка в першій сесії → box 0, завтра");
+  // тема без пройденого уроку й без запису (закрита тема поточного класу, unlockAll) — як раніше: з −1 → box 0
+  const notDone = { srs: {}, seen: {}, lessons: { t: { done: false } } };
+  eq(L.srsUpdate(notDone, [{ lesson: "t", ok: true }], D)[0], { lesson: "t", box: 0, was: -1, days: 1 }, "srs late pool: непройдений урок — box 0 як раніше");
+  // старий профіль без lessons і з наявним записом: запис не переінтерпретовується, падіння немає
+  const legacy = { srs: { t: { box: 0, due: "2026-11-03" }, u: { box: 2, due: "2026-11-01" } }, seen: {} };
+  eq(L.srsUpdate(legacy, [{ lesson: "t", ok: true }, { lesson: "u", ok: true }, { lesson: "v", ok: true }], D).map(x => [x.lesson, x.was, x.box]),
+    [["t", 0, 1], ["u", 2, 3], ["v", -1, 0]], "srs late pool: старий профіль без lessons — наявні коробки як були");
+  eq(L.isDue(late, "t", D), false, "srs late pool: після сесії тема не чекає до строку"); }
 
   const items = []; for (const l of ["a", "b", "c"]) for (let k = 1; k <= 6; k++) items.push({ key: l + k, lesson: l, lvl: k <= 3 ? 1 : k <= 5 ? 2 : 3 });
   const T = { srs: { a: { box: 0, due: "2026-10-20" }, b: { box: 0, due: "2026-10-10" }, c: { box: 1, due: "2026-10-12" } }, seen: {} };
