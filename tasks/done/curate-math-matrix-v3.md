@@ -4,7 +4,7 @@ claimed_at: 2026-11-01T11:11:33.057Z
 id: curate-math-matrix-v3
 type: curate
 subject: math
-status: review
+status: done
 claimed_by: agent-curate-math-matrix-v3
 created: 2026-10-31
 ---
