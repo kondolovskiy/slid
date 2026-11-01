@@ -4,7 +4,7 @@ claimed_at: 2026-11-01T15:30:41.478Z
 id: engine-math-sqrt-precedence
 type: engine
 subject: math
-status: review
+status: done
 claimed_by: engineer-sqrt
 created: 2026-11-01
 depends_on: []
