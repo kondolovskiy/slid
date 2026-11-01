@@ -4,7 +4,7 @@ claimed_at: 2026-11-01T17:01:36.259Z
 id: engine-decisions-1101
 type: engine
 subject: math
-status: todo
+status: review
 claimed_by: agent-engine-decisions-1101
 created: 2026-11-01
 depends_on: []
