@@ -61,14 +61,14 @@
 | `answer` | кожна спроба (натискання «Перевірити»/«Відповісти», «Ще не знаю») | `item` + `try` — номер спроби, `verdict` — `ok`/`form`/`bad` (answer: `checkAns`; інші типи: ok/bad), `hyp` (poll/hyp), `skip` (тест), `half` (тест: півбала, engine-diag-half-credit); `raw` — сирий запис (число/рядок, індекс варіанта, масив для multi/sort/order/shade, стан лабораторії); `hint` — чи була показана підказка до цієї спроби; `final` — спроба закриває екран; у тесті ще `res` — збережений вердикт (1/0/−1; 0,5 — півбала). Для гіпотез (E2): `ans` — ключ (answer — `ansText`, number/fracin/numline/slider/shade — рядком; choice — індекс `correct`, multi — масив індексів); ключ довший за 60 символів — `ans` немає, `ansCut: 1` (реплей бере ключ зі змісту за `key`/`l`+`i` і `cv`); `fc` — код причини (`formCode`: `reduce`, `frac`, `mixed`, `rootNum`, `name`, `decimals`, `units`, `other`…) для `form` і `half`; `gv` — значення змінних `gen`-вправи (≤ 8 пар), `genAt` — індекс набору |
 | `lesson_start` / `lesson_end` | початок / підсумок уроку | `c, l, sec, grade, boss, linked, screens` / `acc, stars, first, graded, mistakes, xp, closed` (закриті кроки плану), `retry, recs` (порада detect), `steps` (нові кроки), `weak` |
 | `practice_start` / `practice_end` | сесія тренування | `focus, prN, items: [{key, l, review, lvl}]` / `res: [{lesson, ok}], first, graded, xp, srs` (результат srsUpdate), `recs, steps` |
-| `diag_start` / `diag_end` | тест рівня | `diag, grade, rev, items, resumed` / `res, topics, steps, base, known` |
+| `diag_start` / `diag_end` | тест рівня | `diag, grade, rev, items, resumed` / `res, topics, steps, base, known`; математика з тінню гіпотез — ще `hyp: { skip, rv }`: скільки «Ще не знаю» цього тесту з попереднього `diag_end` (разом із відповідями до перезавантаження чи «Пізніше»; лічильник у `slid.hyp`) — замість `hyp_open` P9 на кожне (docs/design/diag-hypothesis-math.md §9 [E2-p3]); без `app/hyp.js` поля немає |
 | `diag_later` | кнопка «Пізніше» на екрані тесту рівня (рішення людини 2026-11-01) | `c, diag` — id тесту, `answered` — скільки завдань уже має відповідь у розпочатому тесті (`S.diagRun`, разом з «Ще не знаю»), `skipped` — з них «Ще не знаю» |
 | `close` | закриття плеєра | `mode, l, i, of, end` (дійшов до підсумку чи вийшов раніше) |
 | `srs` | після `save()`, якщо змінилися коробки | `n` — усього змін, `part`/`parts` — номер частини й скільки їх (усі частини мають той самий `by`), `ch: [{l, from, to}]`, `from/to` — запис `S.srs[l]` або null |
 | `plan` | після `save()`, якщо змінився план предмета/класу | `c, grade, diag, steps: [{l, src, why, done}], base, known` (скільки) |
 | `grade` | перемикання класу | `from, to` |
 | `reset` | «Скинути прогрес» (наступні події — з новим `pid`) | — |
-| `hyp_open` | помилка першої спроби (математика; на фінальній спробі екрана, у тесті — одразу) | `hid`, `at: { mode, l, i, key, try }`, `h: { l, sk, lvl, rule, sig, prior, pexec, top, p }`, `rv`, `persist` (1 — стан у `slid.hyp`), `amb` (неоднозначна відповідь) — docs/design/diag-hypothesis-math.md §3.2 |
+| `hyp_open` | помилка першої спроби (математика; на фінальній спробі екрана, у тесті — одразу; «Ще не знаю» в тесті — не гіпотеза, лише `diag_end.hyp.skip`) | `hid`, `at: { mode, l, i, key, try }`, `h: { l, sk, lvl, rule, sig, prior, pexec, top, p }`, `rv`, `persist` (1 — стан у `slid.hyp`), `amb` (неоднозначна відповідь) — docs/design/diag-hypothesis-math.md §3.2 |
 | `hyp_probe` | перша відповідь на ту саму пару (урок, sk) — перевірка; одна подія на кожну відкриту гіпотезу пари, спільний `prb` | `hid`, `prb`, `kind` (A, D≤, D>, D°, Dg, F, P), `key`, `genAt`, `gap: { scr, min, days }`, `sol`, `sol0`, `shown` (0 — природна), `res`, `same`, `post`, `pexec`, `rv` |
 | `hyp_close` | закриття гіпотези | `hid`, `why` (confirmed / undecided / expired / superseded / reset), `top`, `p`, `pexec`, `grp` (confirmed: exec / know), `n`, `cap` (витіснено лімітом 50), `rv` |
 | `hyp_fmt` | перша спроба з `form` чи `half` (гіпотези немає) | `key`, `l`, `i`, `fc`, `half`, `rv` |
@@ -92,9 +92,10 @@ await SLID_EVIDENCE.export()    // { schema, app, exportedAt, did, cv, dropped, 
 await SLID_EVIDENCE.download()  // зберігає slid-evidence-<дата>.json; повертає кількість подій
 await SLID_EVIDENCE.clear()     // стерти журнал (стан застосунку не чіпає)
 SLID_EVIDENCE.cv                // версія змісту, якщо вже відома (інакше null) — без очікування; app.js пише її в slid.hyp (gens.cv)
+SLID_EVIDENCE.dt                // dt щойно записаної answer (інакше null); app.js передає його трекеру гіпотез — той самий dt, що в журналі (S11)
 ```
 
-Події `hyp_*` — лише «труби» тіньового режиму: метрики рахує `node tools/hyp-replay.mjs <export.json>` тим самим `app/hyp.js` з повного журналу; `--events` друкує події реплею (для порівняння «застосунок = реплей»).
+Події `hyp_*` — лише «труби» тіньового режиму: метрики рахує `node tools/hyp-replay.mjs <export.json>` тим самим `app/hyp.js` з повного журналу; `--events` друкує події реплею і підсумки `diag_end.hyp` (для порівняння «застосунок = реплей», зокрема `persist`), `--fixture FILE` — та сама фікстура змісту, що її регресія застосувала на сторінці. Події `hyp_*` застосунку реплей не відтворює з них самих — лише бере з `hyp_open` `persist: 0` (застосунок без сховища: після перезавантаження стану гіпотез у нього немає, реплей так само починає з порожнього).
 
 Приклади аналізу: частка `form` серед спроб за `ak`; спроби до `final` і `hint` на екранах уроку; `dt` першої спроби; де `close` з `end: false` (кидають урок); `srs` між сесіями тренування; кроки `plan` від `diag_end` до їх закриття в `lesson_end`.
 

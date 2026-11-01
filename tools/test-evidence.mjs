@@ -64,6 +64,8 @@ function mem(opt = {}) {
   J.observe({ grade: 6, srs: {}, plan: {} });                         // перший знімок — без подій
   J.log("screen", { i: 0 });
   J.log("answer", () => ({ i: 0, raw: "5" }));
+  eq(J.dt, 7, "dt — той самий, що в щойно записаній answer (трекер гіпотез, S11)");
+  J.log("answer", () => { throw new Error("x"); }); eq(J.dt, null, "answer не записано — dt null (не попередній)");
   eq(b.st.ev.size, 0, "до flush нічого не записано (асинхронна черга)");
   en.tick(); await J.flush();
   const ev = [...b.st.ev.values()];

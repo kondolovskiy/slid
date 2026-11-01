@@ -437,7 +437,7 @@ const sum = (R, pid) => R.events.filter(e => e.pid === pid).map(e => e.type === 
     ["open", `${x}.6`, "P8", 2, "S6"], ["probe", `${x}.6`, "A", pair[4].key, 0, 0, "ok", `${x}.7`], ["close", `${x}.6`, "reset", 0]],
     "p1: lvl з practice_start (3), пара — спільний prb, A один раз, D>/D≤ за рівнем, бачена вчора — не перевірка, reset");
   const P2 = S("p2"), y = P2[0][1].split(".")[0];
-  eq(P2, [["open", `${y}.1`, "P3", null, "S2:ord-ltr"], ["probe", `${y}.1`, "A", "pms0:c01", 0, 3, "ok", `${y}.2`],
+  eq(P2, [["open", `${y}.1`, "P3", null, "S2:ord-ltr"], ["diag_end"], ["probe", `${y}.1`, "A", "pms0:c01", 0, 3, "ok", `${y}.2`],
     ["probe", `${y}.1`, "D≤", "pms0:c02", 0, 4, "ok", `${y}.3`], ["close", `${y}.1`, "undecided", 1],
     ["open", `${y}.4`, "P10", 1, "S14,S12"]],
     "p2: тест → урок (sol0 3, не superseded) → вправа того ж дня A → наступного дня чиста D≤ (sol0 4); preWeak з diag_end → S12");
@@ -587,9 +587,56 @@ const sum = (R, pid) => R.events.filter(e => e.pid === pid).map(e => e.type === 
   e("boot", { grade: 6, subj: "math", lessons: 1, diags: [], srs: 0 }, tm("2026-11-11"));
   const R = replay({ events: evs }, E), Sx = R.events.map(x => x.type === "hyp_open" ? ["open", x.d.h.rule, x.d.h.sig.join(",")] : x.type === "hyp_close" ? ["close", x.d.why] : [x.type]);
   E.pool.delete(GEN.key);
-  eq(Sx, [["open", "P3", "S2:frac-add-naive"], ["close", "superseded"], ["open", "P6", "S3"], ["open", "P10", "S14"], ["close", "expired"], ["close", "expired"]],
+  eq(Sx, [["open", "P3", "S2:frac-add-naive"], ["close", "superseded"], ["open", "P6", "S3"], ["diag_end"], ["diag_end"], ["open", "P10", "S14"], ["close", "expired"], ["close", "expired"]],
     "реплей: done з lesson_end (< 65 %) → superseded; gen — екземпляр за genAt (P6); weak — останній тест (без S12); boot → expired");
   eq(R.events.filter(x => x.type === "hyp_close" && x.d.why === "expired").map(x => x.seq), [seq, seq], "expired — на події boot");
+}
+
+/* ---------- 13. E2-p3: «Ще не знаю» тесту рівня — лічильник у diag_end; persist у реплеї ---------- */
+{
+  const dA = (T, i, v, run = 1, day = D1) => T.onAnswer({ s: dg6.items[i], item: { mode: "diag", l: "dg6", i, key: null, type: dg6.items[i].type, sk: dg6.items[i].sk },
+    raw: v === "skip" ? null : "48", verdict: v, try: 1, final: true, t: tm(day, i), day, run, ls: ["ms0l3"], pres: [] });
+  const T = H.tracker({ seed: "t13" });
+  eq([...dA(T, 0, "skip"), ...dA(T, 1, "skip")], [], "«Ще не знаю» в тесті рівня — без hyp_open (P9 не відкривається)");
+  eq(T.open.length, 0, "«Ще не знаю»: відкритих гіпотез немає");
+  eq(of(dA(T, 0, "bad"), "hyp_open").length, 1, "хибна відповідь у тесті — гіпотеза, як і раніше");
+  const st = T.state(); eq(st.dskip, { dg6: 2 }, "лічильник — у стані slid.hyp (dskip)");
+  const T2 = H.tracker({ seed: "t13b" }); T2.load(st); dA(T2, 2, "skip", 2);
+  eq(T2.onDiagEnd({ diag: "dg6" }), { skip: 3, rv: "hyp-1" }, "лічильник пережив перезавантаження; onDiagEnd → { skip, rv }");
+  eq(T2.onDiagEnd({ diag: "dg6" }), { skip: 0, rv: "hyp-1" }, "після diag_end лічильник обнулено");
+  dA(T2, 3, "skip"); T2.onReset({ t: tm(D1, 50), day: D1 }); eq(T2.onDiagEnd({ diag: "dg6" }).skip, 0, "«Скинути прогрес» обнуляє лічильник");
+  eq(H.mergeState({ ...T.state(), dskip: { dg6: 1 } }, { ...T.state(), dskip: { dg5: 4 } }).dskip, { dg6: 1 }, "злиття вкладок: dskip — лише свій");
+  // практика: verdict skip немає, але й у разі появи — гіпотеза (лічильник лише для тесту рівня)
+  const T3 = H.tracker({ seed: "t13c" });
+  eq(of(T3.onAnswer(A(pair[0], { verdict: "skip", raw: null, try: 1, final: true, day: D1 })), "hyp_open").length, 1, "skip поза тестом рівня — гіпотеза P9");
+}
+{
+  const evs = []; let seq = 0;
+  const e = (sid, type, d, t) => evs.push({ v: 1, eid: `w.${seq}`, seq: ++seq, type, t, tzo: 0, n: seq, ms: 0, sid, did: "devw", pid: "pw", cv: "c", cvs: "sw", net: 1, synced: 0, d, ...(type === "answer" ? { dt: 9000 } : {}) });
+  const ans = (sid, s, t, o = {}) => e(sid, "answer", { mode: o.mode || "practice", c: "math", l: o.l || s.lesson, i: o.i ?? 0, key: o.mode ? null : s.key, type: s.type, sk: s.sk, hyp: false, try: o.try || 1, verdict: o.v || "ok", raw: o.raw ?? "1", hint: false, final: o.final ?? true }, t);
+  const ps = (sid, t, ks) => e(sid, "practice_start", { prN: 1, items: ks.map(s => ({ key: s.key, l: s.lesson, review: false, lvl: s.lvl })) }, t);
+  const appOpen = (sid, t, persist) => e(sid, "hyp_open", { hid: "app." + seq, persist }, t);   // події застосунку: реплей бере з них лише persist
+  // тест рівня з «Ще не знаю» → diag_end із лічильником
+  e("a", "boot", { grade: 6, subj: "math", lessons: 0, diags: [], srs: 0 }, tm(D1));
+  e("a", "diag_start", { c: "math", diag: "dg6" }, tm(D1, 1));
+  for (const i of [0, 1]) e("a", "answer", { mode: "diag", c: "math", l: "dg6", i, id: null, key: null, pool: null, type: dg6.items[i].type, ak: null, sk: dg6.items[i].sk, topic: dg6.items[i].topic, hyp: false, try: 1, verdict: "skip", res: -1, raw: null, hint: false, final: true }, tm(D1, 2 + i));
+  e("a", "diag_end", { c: "math", diag: "dg6", topics: {}, hyp: { skip: 2, rv: "hyp-1" } }, tm(D1, 5));
+  // сховище є (persist 1), потім застосунок самоочистив slid.hyp (hyp_open з persist 0) → далі persist 0
+  ps("a", tm(D1, 10), pair.slice(0, 3));
+  ans("a", pair[0], tm(D1, 11), { v: "bad", raw: "4/9" }); appOpen("a", tm(D1, 11), 1);
+  ans("a", pair[1], tm(D1, 12), { v: "bad", raw: "4/9" }); appOpen("a", tm(D1, 12), 0);
+  ans("a", pair[2], tm(D1, 13), { v: "bad", raw: "4/9", final: false });   // друга спроба не прийшла — pend
+  // наступне завантаження: у застосунку стану немає — pend відкрито на виході (pagehide), гіпотез немає; наступного дня перевірки немає
+  e("b", "boot", { grade: 6, subj: "math", lessons: 0, diags: [], srs: 0 }, tm(D2));
+  ps("b", tm(D2, 1), [pair[3]]); ans("b", pair[3], tm(D2, 2), {});
+  const R = replay({ events: evs }, E), P = R.events.map(x => x.type === "hyp_open" ? ["open", x.d.persist, x.seq] : x.type === "diag_end" ? ["diag_end", x.d.hyp] : [x.type, x.d.why || x.d.kind]);
+  const bootB = evs.find(x => x.sid === "b").seq;
+  eq(P, [["diag_end", { skip: 2, rv: "hyp-1" }], ["open", 1, 7], ["hyp_probe", "A"], ["open", 0, 9], ["hyp_probe", "A"], ["open", 0, bootB]],
+    "реплей: «Ще не знаю» — лише diag_end.hyp; persist 0 з події, після якої застосунок написав persist 0; boot після цього — pend відкрито, стан порожній (перевірки немає)");
+  eq(R.profiles[0].diagSkip, 2, "профіль: diagSkip");
+  // без persist 0 у застосунку — стан переживає boot (перевірка наступного дня є)
+  const R2 = replay({ events: evs.filter(x => !(x.type === "hyp_open" && x.d.persist === 0)) }, E);
+  ok(R2.events.some(x => x.type === "hyp_probe") && R2.events.filter(x => x.type === "hyp_open").every(x => x.d.persist === 1), "сховище є — persist 1 і стан між завантаженнями");
 }
 
 console.log(fails ? `test-hyp: ${fails} з ${n} перевірок не пройшли` : `test-hyp: усі ${n} перевірок пройшли`);

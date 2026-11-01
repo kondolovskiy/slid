@@ -2097,6 +2097,32 @@ async def hyp_checks(browser, url):
       for (const p of m.pools) for (const it of p.items) (out[it.title] ||= []).push({...it, key:p.id+':'+it.id}); return out; }"""
     async def dock(page):
         return await page.evaluate("[document.querySelector('#fbTitle').innerHTML, document.querySelector('#fbText').innerHTML]")
+    def app_hyp(ev):
+        """Події тіні в журналі застосунку: hyp_* і підсумок «Ще не знаю» тесту рівня (diag_end.hyp) — у тому самому порядку, що й у реплеї."""
+        return [e if e['type'].startswith('hyp_') else {'type': 'diag_end', 'd': {'hyp': e['d']['hyp']}}
+                for e in ev if e['type'].startswith('hyp_') or (e['type'] == 'diag_end' and 'hyp' in e['d'])]
+    def app_vs_replay(data, fixture_src=None, what=''):
+        """«Застосунок = реплей»: tools/hyp-replay.mjs --events на експорті того самого журналу (з тією самою фікстурою змісту) дає ті самі
+        події з тим самим змістом d, зокрема persist; нормалізовано лише hid/prb (інший seed)."""
+        with tempfile.TemporaryDirectory() as d:
+            f = pathlib.Path(d) / 'log.json'; f.write_text(json.dumps(data))
+            cmd = ['node', str(ROOT / 'tools/hyp-replay.mjs'), str(f), '--events']
+            if fixture_src:
+                fx_file = pathlib.Path(d) / 'fixture.js'; fx_file.write_text(fixture_src); cmd += ['--fixture', str(fx_file)]
+            out = subprocess.run(cmd, capture_output=True, text=True, check=True).stdout
+        def norm(evs):
+            ids, res = {}, []
+            def nid(x):
+                return ids.setdefault(x, f"#{len(ids)}") if x else x
+            for e in evs:
+                dd = json.loads(json.dumps(e['d']))
+                for k in ('hid', 'prb'):
+                    if k in dd: dd[k] = nid(dd[k])
+                res.append((e['type'], dd))
+            return res
+        app_n, rep_n = norm(app_hyp(data['events'])), norm(json.loads(out))
+        assert app_n == rep_n, ('застосунок ≠ реплей', what, next(((i, a, b) for i, (a, b) in enumerate(zip(app_n, rep_n)) if a != b), (len(app_n), len(rep_n))))
+        return app_n
     async def current(page, by_title):
         title = (await page.locator('#stage h2').first.inner_text()).strip()
         found = by_title.get(title)
@@ -2227,30 +2253,133 @@ async def hyp_checks(browser, url):
             ans = [e['d'] for e in ev if e['type'] == 'answer']
             assert all('lvl' in a for a in ans) and any(a.get('lvl') == 1 for a in ans if a['mode'] == 'practice'), 'item.lvl'
             assert all('ans' in a or a.get('ansCut') for a in ans if a['type'] in ('choice', 'multi', 'number', 'answer')), [a for a in ans if 'ans' not in a][:2]
-            # застосунок = реплей на тому самому журналі
-            with tempfile.TemporaryDirectory() as d:
-                f = pathlib.Path(d) / 'log.json'; f.write_text(json.dumps(data))
-                out = subprocess.run(['node', str(ROOT / 'tools/hyp-replay.mjs'), str(f), '--events'], capture_output=True, text=True, check=True).stdout
-            rep = json.loads(out)
-            def norm(evs):
-                ids, res = {}, []
-                def nid(x):
-                    return ids.setdefault(x, f"#{len(ids)}") if x else x
-                for e in evs:
-                    dd = json.loads(json.dumps(e['d']))
-                    dd.pop('persist', None)
-                    for k in ('hid', 'prb'):
-                        if k in dd: dd[k] = nid(dd[k])
-                    res.append((e['type'], dd))
-                return res
-            app_n, rep_n = norm(hev), norm(rep)
-            assert app_n == rep_n, ('застосунок ≠ реплей', next(((i, a, b) for i, (a, b) in enumerate(zip(app_n, rep_n)) if a != b), (len(app_n), len(rep_n))))
+            # «Ще не знаю» тесту рівня — лише лічильник у diag_end.hyp, не hyp_open (§9 [E2-p3])
+            dends = [e['d'] for e in ev if e['type'] == 'diag_end']
+            assert dends and all(x.get('hyp', {}).get('skip', 0) >= 1 and x['hyp']['rv'] == 'hyp-1' for x in dends), [x.get('hyp') for x in dends]
+            skips = [e for e in ev if e['type'] == 'answer' and e['d']['mode'] == 'diag' and e['d']['verdict'] == 'skip']
+            dbad = [e for e in ev if e['type'] == 'answer' and e['d']['mode'] == 'diag' and e['d']['verdict'] == 'bad']
+            assert skips and sum(x['hyp']['skip'] for x in dends) == len(skips), ('лічильник «Ще не знаю»', [x['hyp'] for x in dends], len(skips))
+            assert len([o for o in opens if o['at']['mode'] == 'diag']) == len(dbad), ('гіпотези тесту рівня — лише хибні відповіді', len(dbad))
+            # застосунок = реплей на тому самому журналі (зокрема persist і diag_end.hyp)
+            app_n = app_vs_replay(data, what='основний маршрут')
             assert len(app_n) >= 20, len(app_n)
             n_hyp = len(app_n)
         await context.close()
     assert states['hyp'] == states['nohyp'] == states['noidb'] == states['noev'], [k for k in states['hyp'] if not (states['hyp'][k] == states['nohyp'].get(k) == states['noidb'].get(k) == states['noev'].get(k))]
     assert docks_by['hyp'] == docks_by['nohyp'] == docks_by['noidb'] == docks_by['noev'], 'тексти доку різняться'
     assert (states['hyp']['errs'] or states['hyp']['mast']) and states['hyp']['srs'] and states['hyp']['seen'] and states['hyp']['diag'].get('dg6'), ('маршрут не зачепив record/SRS/тест', {k: bool(states['hyp'].get(k)) for k in ('errs', 'srs', 'seen', 'diag')})
+
+    # входи трекера з app.js (рев'ю E2, P2-2): gen-вправа з повтором наступного дня (Dg, genPick: gv/genAt/genN), пара з уроком-передумовою
+    # (pres → P), гіпотеза з тесту рівня по вже пройденому (< 65 %, done без passed) уроку → superseded. Фікстура пулів — та сама на сторінці
+    # й у реплеї (--fixture); маршрут із порожнього профілю, тож done і стан реплею збігаються із застосунком
+    fixture_in = """() => {const c=SLID_SUBJECTS.find(c=>c.id==='math'),p=c.pools.find(p=>p.id==='pg6m1'),q=c.pools.find(p=>p.id==='pm4s1');
+      const mk=(it,i)=>({lesson:'g6m1l1',lvl:1,sk:'divis',src:p.sources[0].id+' №HI'+i,type:'answer',hint:'Подумай ще.',steps:['Пояснення.'],...it,id:'hi'+i});
+      p.items=[mk({answer:12,title:'QA: 3 · 4'},0),mk({answer:7,title:'QA: 3 + 4'},1),
+        mk({title:'QA: добуток {a} і {b}',adapted:true,gen:{vars:{a:{min:2,max:9},b:{values:[11,12,13]}},answer:'a*b'}},2),
+        mk({answer:20,title:'QA: 4 · 5',sk:'ops'},3),mk({answer:9,title:'QA: 3 · 3'},4)];
+      q.items=[0,1].map(i=>({id:'hm'+i,lesson:'m4a',lvl:1,sk:'div',src:q.sources[0].id+' №HM'+i,type:'answer',answer:10+i,title:'QA: десять і '+i,steps:['Пояснення.']}));
+      c.pools=[p,q];}"""
+    in_answers = {'QA: 3 · 4': '12', 'QA: 3 + 4': '7', 'QA: 4 · 5': '20', 'QA: 3 · 3': '9', 'QA: десять і 0': '10', 'QA: десять і 1': '11'}
+    async def in_lesson(page, lesson, wrong, docks):
+        """Урок з початку; wrong — {індекс екрана: хибна перша спроба} (choice — номер варіанта, інше — запис)."""
+        for i, scr in enumerate(await open_lesson_at(page, lesson, 0)):
+            if i in wrong:
+                if scr['type'] == 'choice':
+                    await page.click(f'#stage .opt[data-k="{wrong[i]}"]')
+                else:
+                    await typed(page, wrong[i])
+                await page.click('#action'); docks.append(await dock(page))
+            await answer_context_screen(page, scr)
+            await page.click('#action')
+            if scr['type'] not in ('intro', 'info', 'explore'):
+                docks.append(await dock(page)); await page.click('#action')
+        assert await page.locator('.bigstars').count() == 1
+        await page.click('#action'); await page.click('[data-tab="path"]'); await page.click('[data-tab="path"]')
+    async def in_practice(page, wrong, docks):
+        """Тренування g6m1l1 (6 вправ фікстури); wrong — множина заголовків з хибною першою спробою. Повертає [(заголовок, числа gen)];
+        у writes — скільки разів записано slid.hyp на кожній фінальній спробі."""
+        await page.click('button[data-subject="math"]'); await page.click('[data-practice-view="math"]'); await page.click('[data-practice="g6m1l1"]')
+        seen = []
+        for _ in range(6):
+            title = (await page.locator('#stage h2').first.inner_text()).strip()
+            g = re.fullmatch(r'QA: добуток (\d+) і (\d+)', title)
+            key = 'gen' if g else title
+            right = str(int(g.group(1)) * int(g.group(2))) if g else in_answers[title]
+            seen.append((key, g and g.groups()))
+            if key in wrong:
+                await typed(page, '1'); await page.click('#action'); docks.append(await dock(page))
+            await page.evaluate("window.__hypW = 0")
+            await typed(page, right); await page.click('#action'); docks.append(await dock(page))
+            writes.append(await page.evaluate("window.__hypW"))   # фінальна спроба: save() і відповідь трекеру — один запис slid.hyp (рев'ю E2, P3-1)
+            await page.click('#action')
+        await page.click('#action')   # «Готово»
+        return seen
+    writes = []
+    async def inputs_route(mode):
+        context = await browser.new_context(viewport={'width': 400, 'height': 860}, service_workers='block')
+        await context.add_init_script(freeze)
+        await context.add_init_script("Storage.prototype.setItem=(f=>function(k,v){ if(k==='slid.hyp') window.__hypW=(window.__hypW||0)+1; return f.call(this,k,v); })(Storage.prototype.setItem);")
+        page = await context.new_page()
+        errors, docks = [], []
+        page.on('pageerror', lambda error: errors.append(str(error)))
+        await page.route('**/fonts.googleapis.com/**', lambda r: r.abort())
+        if mode == 'nohyp':
+            await page.route('**/app/hyp.js', lambda r: r.abort())
+        page.set_default_timeout(7000)
+        await page.goto(url)
+        await page.evaluate("localStorage.clear(); localStorage.setItem('slid.v1', JSON.stringify({grade:6, lessons:{m4a:{done:true}}}))")   # m4a — лише відкриває пул pm4s1 (lesson_end m4a в маршруті немає)
+        await page.reload()
+        await page.evaluate(fixture_in)
+        # день 1: два уроки з помилками (3 з 6 з першої спроби — 50 %: done, але не «пройдено» для superseded)
+        await in_lesson(page, 'g6m1l1', {2: 0, 6: 0, 8: '7'}, docks)
+        await in_lesson(page, 'g6m1l2', {2: 0, 7: 1, 8: '7'}, docks)
+        # тест рівня: «Ще не знаю» до g6-div (№16, урок g6m1l2 — уже done) — там хибна відповідь; далі «Ще не знаю»
+        # план уже є (повторювані помилки уроків) — запрошення на тест лише на сторінці плану
+        await page.click('button[data-subject="math"]'); await page.locator('#view [data-plan="math"]').first.click()
+        await page.click('#view [data-diag="math"]'); await page.click('[data-diag-go]')
+        hit = False
+        while await page.locator('#skip').is_visible():
+            i = await page.evaluate("""() => {const S=JSON.parse(localStorage.getItem('slid.v1')),d=SLID_SUBJECTS.find(c=>c.id==='math').diags.find(d=>d.id==='dg6');
+              return SLID_LEARN.nextItem(d,(S.diagRun||{}).dg6||{});}""")
+            if i == 16:
+                await page.click('#stage .opt[data-k="1"]'); await page.click('#action'); hit = True
+            else:
+                await page.click('#skip')
+        assert hit, 'тест рівня не дійшов до g6-div'
+        await page.click('#pClose'); await page.click('[data-tab="path"]'); await page.click('[data-tab="path"]')
+        # урок g6m1l2 знову, без помилок — гіпотеза тесту рівня superseded лише завдяки done (passed немає: перший прохід < 65 %)
+        await in_lesson(page, 'g6m1l2', {}, docks)
+        # тренування: gen-вправа й вправа sk «ops» — хибні з першої спроби; вправа уроку-передумови m4a — правильна
+        day1 = await in_practice(page, {'gen', 'QA: 4 · 5'}, docks)
+        # день 2: gen — інший набір (Dg), «ops» — бачена (не перевірка), небачена вправа m4a — перевірка P
+        await page.evaluate("localStorage.setItem('qa.now', '2026-10-17T12:00:00Z')")
+        await page.reload()
+        await page.evaluate(fixture_in)
+        day2 = await in_practice(page, set(), docks)
+        g1, g2 = dict(day1).get('gen'), dict(day2).get('gen')
+        assert g1 and g2 and g1 != g2, ('gen: той самий набір обох днів', g1, g2)
+        assert [k for k, _ in day2][-1] == 'QA: десять і 1' and [k for k, _ in day1][-1] == 'QA: десять і 0', (day1, day2)
+        state = await page.evaluate("JSON.parse(localStorage.getItem('slid.v1'))")
+        data = await page.evaluate("SLID_EVIDENCE.export()") if mode == 'hyp' else None
+        await context.close()
+        assert not errors, (mode, errors)
+        return state, docks, data
+    st_in, dk_in = {}, {}
+    for mode in ('hyp', 'nohyp'):
+        writes.clear()
+        st_in[mode], dk_in[mode], data = await inputs_route(mode)
+        assert len(writes) == 12 and set(writes) == ({1} if mode == 'hyp' else {0}), (mode, writes)
+        if mode == 'hyp':
+            ev = data['events']
+            hev = [e['d'] for e in ev if e['type'].startswith('hyp_')]
+            probes = {p['kind'] for p in hev if 'kind' in p}
+            assert {'Dg', 'P'} <= probes, probes
+            sup = [e['d']['hid'] for e in ev if e['type'] == 'hyp_close' and e['d']['why'] == 'superseded']
+            assert [o for o in (e['d'] for e in ev if e['type'] == 'hyp_open') if o['at']['mode'] == 'diag' and o['hid'] in sup], 'гіпотеза тесту рівня (урок done) не superseded'
+            assert any(e['d'].get('gv') for e in ev if e['type'] == 'answer'), 'gv у журналі'
+            n_in = len(app_vs_replay(data, fixture_in, 'входи трекера'))
+    assert st_in['hyp'] == st_in['nohyp'], [k for k in st_in['hyp'] if st_in['hyp'][k] != st_in['nohyp'].get(k)]
+    assert dk_in['hyp'] == dk_in['nohyp'], 'тексти доку різняться (входи трекера)'
 
     # form / badHint (фікстура пулу): тексти доку однакові з hyp.js і без; у журналі fc і hyp_fmt; переповнене сховище; «Скинути прогрес»
     fixture = """() => {const c=SLID_SUBJECTS.find(c=>c.id==='math'),p=c.pools.find(p=>p.id==='pg6m1');c.pools=[p];
@@ -2326,6 +2455,9 @@ async def hyp_checks(browser, url):
             closes = [e for e in ev if e['type'] == 'hyp_close' and e['d']['why'] == 'reset']
             assert closes and all(e['seq'] < r['seq'] and e['pid'] == r['pid'] for e in closes), [(e['seq'], e['pid']) for e in closes]
             assert await page.evaluate("localStorage.getItem('slid.hyp')") is None, 'slid.hyp після скидання'
+            # той самий журнал у реплеї: persist 0 після самоочищення, hyp_fmt, reset — як у застосунку (профіль почато з done g6m1l1, але
+            # lesson_end у маршруті немає, тож done на події не впливає)
+            app_vs_replay(await page.evaluate("SLID_EVIDENCE.export()"), fixture, 'form / переповнене сховище / скидання')
         await context.close()
     assert fx['hyp'] == fx['nohyp'], [(a, b) for a, b in zip(fx['hyp'], fx['nohyp']) if a != b]
     assert any('скоро' in t[1].lower() or 'дроб' in t[1].lower() for t in fx['hyp']), fx['hyp']
@@ -2356,6 +2488,6 @@ async def hyp_checks(browser, url):
     assert hyp and [h['key'] for h in hyp['open']] == [it['key']], hyp and hyp['open']
     assert not errors, errors
     await context.close()
-    print(f'Гіпотези (тінь E2): slid.v1 і тексти доку однакові з hyp.js / без нього / без IndexedDB / без журналу; застосунок = реплей ({n_hyp} подій hyp_*); pend переживає перезавантаження; form/badHint, переповнене сховище, «Скинути прогрес», офлайн: green', flush=True)
+    print(f'Гіпотези (тінь E2): slid.v1 і тексти доку однакові з hyp.js / без нього / без IndexedDB / без журналу; застосунок = реплей ({n_hyp} подій hyp_*; входи трекера gen/pre/done — {n_in}; form і переповнене сховище — теж); pend переживає перезавантаження; form/badHint, переповнене сховище, «Скинути прогрес», офлайн: green', flush=True)
 
 asyncio.run(main())
