@@ -372,7 +372,7 @@ expectRun("drag: at і без drag — без попередження", one("fx
   const tree = item => ({ "content/math/g7-fxq.js": secJS("math", pre7), "content/math/g8-fxc.js": secJS("math", mathSec("fxc")), "content/math/diag-g8.js": diagJS(item) });
   for (const [name, item, err] of [
     ["answer time — чисто", { type: "answer", answerKind: "time", answer: "9:55" }, null],
-    ["answer quantity compound — чисто", { type: "answer", answerKind: "quantity", answer: 245, units: ["см", "м"], form: "compound" }, null],
+    ["answer quantity compound — чисто", { type: "answer", answerKind: "quantity", answer: 245, units: ["см", "м"], form: "compound", body: "<p>Довжина стрічки 245 см. Запиши її в метрах і сантиметрах.</p>" }, null],
     ["answer decimals — чисто", { type: "answer", answer: "37,0", decimals: 1 }, null],
     ["answer без answerKind (число) — чисто", { type: "answer", answer: "2 1/3" }, null],
     ["answer з rev 2 — чисто", { type: "answer", answerKind: "time", answer: "9:55", rev: 2 }, null],
@@ -386,31 +386,37 @@ expectRun("drag: at і без drag — без попередження", one("fx
     ["ключ, що сам не проходить, — помилка", { type: "answer", answer: "abc" }, "сам проходить перевірку"]]) {
     const rep = expectRun(`diag answer: ${name}`, tree(item), ["--diag", "dgfx"], { err, also: err && "сам проходить перевірку" });
     if (rep && err) ok(rep.errors.every(e => e.includes("diag-g8.js#dgfx")), `diag answer: ${name}: помилка вказує на тест`, rep.errors.join("\n  ")); }
-  // P3-3 (рев'ю engine-diag-answer-kinds): формат запису, якого не називає підказка під полем, має назвати умова — інакше попередження
-  const FMT = "тест рівня: «form» тут зараховується як помилка без пояснення";
+  // P3-3 (рев'ю engine-diag-answer-kinds) + engine-diag-half-credit: вигляд, який поле вимагає (compound, reduced, mixed, improper; без нього —
+  // півбала), умова мусить назвати — інакше ПОМИЛКА; decimals і fractionOnly («form» = правильно) — лише попередження
+  const FMT = "тест рівня: умова не називає вигляду, який вимагає поле", FMTW = "тест рівня: вимогу запису умова не називає";
   const Q = { type: "answer", answerKind: "quantity", answer: 245, units: ["м", "см"], form: "compound" };
-  for (const [name, item, warn] of [
-    ["compound без формату в умові — попередження", { ...Q, body: "<p>Довжина стрічки 245 см. Запиши її.</p>" }, "form compound"],
-    ["compound «у метрах і сантиметрах» — без попередження", { ...Q, body: "<p>Довжина стрічки 245 см. Запиши її в метрах і сантиметрах.</p>" }, null],
-    ["reduced без формату — попередження", { type: "answer", answer: "2/5", reduced: true, body: "<p>Скороти дріб $4/10$.</p>" }, "reduced — нескоротний"],
-    ["reduced «нескоротним дробом» — без попередження", { type: "answer", answer: "2/5", reduced: true, body: "<p>Запиши $4/10$ нескоротним дробом.</p>" }, null],
-    ["mixed без формату — попередження", { type: "answer", answer: "2 1/3", mixed: true, body: "<p>Обчисли $7/3$.</p>" }, "mixed — мішане"],
+  for (const [name, item, err, warn] of [
+    ["compound без формату в умові — помилка", { ...Q, body: "<p>Довжина стрічки 245 см. Запиши її.</p>" }, "form compound"],
+    ["compound «у метрах і сантиметрах» — чисто", { ...Q, body: "<p>Довжина стрічки 245 см. Запиши її в метрах і сантиметрах.</p>" }, null],
+    ["reduced без формату — помилка", { type: "answer", answer: "2/5", reduced: true, body: "<p>Обчисли $1/10 + 3/10$.</p>" }, "reduced — нескоротний"],
+    ["reduced «скороти» — чисто", { type: "answer", answer: "2/5", reduced: true, body: "<p>Скороти дріб $4/10$.</p>" }, null],
+    ["reduced «нескоротним дробом» — чисто", { type: "answer", answer: "2/5", reduced: true, body: "<p>Запиши $4/10$ нескоротним дробом.</p>" }, null],
+    ["mixed без формату — помилка", { type: "answer", answer: "2 1/3", mixed: true, body: "<p>Обчисли $7/3$.</p>" }, "mixed — мішане"],
+    ["mixed «виділи цілу частину» — чисто", { type: "answer", answer: "2 1/3", mixed: true, body: "<p>Виділи цілу частину з дробу $7/3$.</p>" }, null],
+    ["mixed «мішаним числом» — чисто", { type: "answer", answer: "2 1/3", mixed: true, body: "<p>Запиши $7/3$ мішаним числом.</p>" }, null],
     ["decimals «до десятих» — без попередження", { type: "answer", answer: "37,0", decimals: 1, body: "<p>Округли 36,96 до десятих.</p>" }, null],
     // P3-3 рев'ю engine-lab-aria-p3d (engine-practice-pool): фікстури fractionOnly / improper і точніші евристики compound / decimals
-    ["fractionOnly без формату — попередження", { type: "answer", answer: "3/4", fractionOnly: true, body: "<p>Обчисли $1/2 + 1/4$.</p>" }, "fractionOnly — лише звичайний"],
+    ["fractionOnly без формату — попередження", { type: "answer", answer: "3/4", fractionOnly: true, body: "<p>Обчисли $1/2 + 1/4$.</p>" }, null, "fractionOnly — лише звичайний"],
     ["fractionOnly «звичайним дробом» — без попередження", { type: "answer", answer: "3/4", fractionOnly: true, body: "<p>Обчисли $1/2 + 1/4$. Запиши звичайним дробом.</p>" }, null],
-    ["improper без формату — попередження", { type: "answer", answer: "7/3", form: "improper", body: "<p>Обчисли $2 + 1/3$.</p>" }, "form improper"],
-    ["improper «неправильним дробом» — без попередження", { type: "answer", answer: "7/3", form: "improper", body: "<p>Запиши $2 1/3$ неправильним дробом.</p>" }, null],
-    ["compound «у задачах і прикладах» — попередження", { ...Q, body: "<p>Таке трапляється у задачах і прикладах. Довжина 245 см.</p>" }, "form compound"],
-    ["compound «в м і см» — без попередження", { ...Q, body: "<p>Довжина стрічки 245 см. Вирази в м і см.</p>" }, null],
-    ["decimals 1 «десятковий дріб» без кількості знаків — попередження", { type: "answer", answer: "37,0", decimals: 1, body: "<p>Запиши як десятковий дріб: $37$.</p>" }, "decimals — кількість"],
+    ["improper без формату — помилка", { type: "answer", answer: "7/3", form: "improper", body: "<p>Обчисли $2 + 1/3$.</p>" }, "form improper"],
+    ["improper «неправильним дробом» — чисто", { type: "answer", answer: "7/3", form: "improper", body: "<p>Запиши $2 1/3$ неправильним дробом.</p>" }, null],
+    ["compound «у задачах і прикладах» — помилка", { ...Q, body: "<p>Таке трапляється у задачах і прикладах. Довжина 245 см.</p>" }, "form compound"],
+    ["compound «в м і см» — чисто", { ...Q, body: "<p>Довжина стрічки 245 см. Вирази в м і см.</p>" }, null],
+    ["decimals 1 «десятковий дріб» без кількості знаків — попередження", { type: "answer", answer: "37,0", decimals: 1, body: "<p>Запиши як десятковий дріб: $37$.</p>" }, null, "decimals — кількість"],
     ["decimals 0 «до цілих» — без попередження", { type: "answer", answer: "37", decimals: 0, body: "<p>Округли 36,9 до цілих.</p>" }, null],
     ["decimals 1 «з точністю до 0,1» — без попередження", { type: "answer", answer: "37,0", decimals: 1, body: "<p>Обчисли з точністю до 0,1.</p>" }, null],
-    ["decimals 1 «до сотих» — попередження (не та кількість)", { type: "answer", answer: "37,0", decimals: 1, body: "<p>Округли 36,96 до сотих.</p>" }, "decimals — кількість"],
+    ["decimals 1 «до сотих» — попередження (не та кількість)", { type: "answer", answer: "37,0", decimals: 1, body: "<p>Округли 36,96 до сотих.</p>" }, null, "decimals — кількість"],
     ["time — без попередження", { type: "answer", answerKind: "time", answer: "9:55" }, null]]) {
-    expectRun(`diag answer: ${name}`, tree(item), ["--diag", "dgfx"], warn ? { warn: `${FMT} — ${warn}` } : { noWarn: FMT }); }
+    const r = expectRun(`diag answer: ${name}`, tree(item), ["--diag", "dgfx"], err ? { err: `${FMT} (без нього — лише півбала) — ${err}` } : warn ? { warn: `${FMTW}`, noWarn: FMT } : { noWarn: FMTW });
+    if (r && warn) ok(r.warnings.some(w => w.includes(warn) && w.includes(FMTW)), `diag answer: ${name}: попередження про ${warn}`, r.warnings.join("\n  "));
+    if (r && !err) ok(!r.errors.length, `diag answer: ${name}: без помилки вигляду`, r.errors.join("\n  ")); }
   // той самий запис в уроці — без попередження (там form пояснюють і дають другу спробу)
-  expectRun("урок: compound без формату — без попередження тесту рівня", one("fxu", { extra: { ...Q, title: "Запиши", body: "<p>Довжина стрічки 245 см. Запиши її.</p>" } }), ["--section", "fxu"], { noWarn: FMT });
+  expectRun("урок: compound без формату — без помилки й попередження тесту рівня", one("fxu", { extra: { ...Q, title: "Запиши", body: "<p>Довжина стрічки 245 см. Запиши її.</p>" } }), ["--section", "fxu"], { noWarn: "тест рівня" });
   // P3-4: signed для answer у тесті — лише числова (як правило пулу); повідомлення одне, від learn.validate
   { const r = expectRun("diag answer: signed для time — одна помилка", tree({ type: "answer", answerKind: "time", answer: "9:55", signed: true }), ["--diag", "dgfx"], { err: "signed має бути boolean для number | числової answer" });
     ok(r && r.errors.length === 1, "diag answer: signed для time — без дубля з правила пулу", r && r.errors.join("\n  ")); }

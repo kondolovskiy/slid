@@ -3,6 +3,8 @@
    Опис: docs/PERSONALIZATION.md. Схема тесту: docs/CONTENT_SCHEMA.md §9. */
 window.SLID_LEARN = (() => {
   const OK = 1, BAD = 0, SKIP = -1;              // результат завдання тесту; SKIP — «ще не знаю»
+  const HALF = 0.5;                              // півбала: значення правильне, а вимоганого умовою вигляду немає (diagVerdict)
+  const passed = x => x === OK || x === HALF;    // тему пробуємо далі: HALF — не провал теми (nextItem, remaining, topicStatus)
   const PASS = 0.65;                             // частка з першої спроби, з якої повторення зараховано (як 2 зірки)
   const WIN = 6;                                 // скільки останніх відповідей теми/навички пам'ятаємо
   const ERR_DAYS = 14, ERR_CAP = 80;             // журнал помилок: давність і розмір
@@ -10,10 +12,11 @@ window.SLID_LEARN = (() => {
   /* ---------- Діагностика ---------- */
   const DIAG_TYPES = ["choice", "multi", "sort", "order", "number", "fracin", "shade", "numline", "lab", "answer"];
   /* answer у тесті (engine-diag-answer-kinds): лише формати, де вердикт — «правильно / ні» без розмови. Плеєр у тесті не показує
-     ні фідбеку, ні підказки form/bad і не дає другої спроби. Вердикт — diagAnswerOk: «ok» і «form» (значення правильне, запис ні —
-     «245 см» при compound, «37» при decimals 1, «14/6» при reduced) — OK: вміння показане, формат запису — не предмет проби
-     (рішення людини 2026-11-01, уточнення D-032 (3); engine-decisions-1101). Виняток — «√576» при ключі 24: значення не обчислено,
-     це не формат запису, — BAD. Тому в тест не ставлять завдань, де перетворення запису саме є вмінням («скороти», «виділи цілу частину»).
+     ні підказки form/bad і не дає другої спроби. Вердикт — diagVerdict (engine-diag-half-credit, рішення людини й методичне
+     правило 2026-11-01): «ok» — OK; «form» без вимоги вигляду (інший запис того самого: «37» при decimals 1, «3/4» при
+     fractionOnly «0,75»…) — OK; «form», коли умова прямо вимагає вигляд (reduced, mixed, form "improper", compound — валідатор
+     вимагає, щоб умова його називала) чи обчислення не завершено («√576», «2√144» при ключі 24) — HALF і короткий екран-пояснення
+     (formHint) без другої спроби — і для дослівної копії виразу з умови («√576» при «Обчисли √576»; пояснення MSG.rootCopy), рішення людини.
      Інші answerKind (вирази, множини, координати…) — після окремого рішення: у них багато form-вердиктів, які в уроці пояснюють. */
   const DIAG_ANSWER_KINDS = ["number", "time", "quantity"];
   /** Активний план предмета/класу. Старий S.plan лишається сумісним активним посиланням;
@@ -50,7 +53,7 @@ window.SLID_LEARN = (() => {
     const failed = new Set();
     for (let i = 0; i < d.items.length; i++) {
       const t = d.items[i].topic;
-      if (i in res) { if (res[i] !== OK) failed.add(t); continue; }
+      if (i in res) { if (!passed(res[i])) failed.add(t); continue; }
       if (!failed.has(t)) return i;
     }
     return -1;
@@ -58,10 +61,11 @@ window.SLID_LEARN = (() => {
   /** Скільки завдань ще можуть показати (для смужки прогресу). */
   function remaining(d, res) {
     const failed = new Set(); let n = 0;
-    d.items.forEach((it, i) => { if (i in res) { if (res[i] !== OK) failed.add(it.topic); } else if (!failed.has(it.topic)) n++; });
+    d.items.forEach((it, i) => { if (i in res) { if (!passed(res[i])) failed.add(it.topic); } else if (!failed.has(it.topic)) n++; });
     return n;
   }
-  /** Підсумок тем: pre → ok | shaky | gap; cur → known | new. */
+  /** Підсумок тем: pre → ok | shaky | gap; cur → known | new. HALF (півбала) — не ok: перше завдання теми HALF → shaky, не gap;
+      тема з HALF щонайбільше shaky; cur з HALF — new (урок не відкривається «знайомим»). Старі res (1/0/-1) — як раніше. */
   function topicStatus(d, res) {
     const out = {};
     for (const t of d.topics) {
@@ -69,7 +73,7 @@ window.SLID_LEARN = (() => {
       const all = d.items.filter(it => it.topic === t.id).length;
       const good = r.filter(x => x === OK).length;
       if (t.kind === "cur") out[t.id] = all && good === all ? "known" : "new";
-      else out[t.id] = !r.length || r[0] !== OK ? "gap" : good === all ? "ok" : "shaky";
+      else out[t.id] = !r.length || !passed(r[0]) ? "gap" : good === all ? "ok" : "shaky";
     }
     return out;
   }
@@ -153,14 +157,16 @@ window.SLID_LEARN = (() => {
      урок кількох тем бере найслабший статус. Запис створюється лише для уроку без запису SRS або з записом, який поставив
      попередній тест і який тренування ще не чіпало (src: "diag"; srsUpdate перезаписує запис без src). gap знімає такий запис
      (урок і так іде в план; після уроку srsInit, як раніше), але не створює нового. Записів, що дали урок чи тренування, тест
-     не змінює. Теми cur (known/new) і baseline (без уроків) коробок не дають. Інтервали D-030 не змінюються. */
-  const DIAG_BOX = { ok: 2, shaky: 0 };
+     не змінює. Тема cur «знайоме» (known) — як ok, box 2 (engine-diag-half-credit, P3-2 рев'ю engine-decisions-1101: урок відкрито
+     тестом — diagOpen — і без запису він одразу «чекав би повторення» й першим ішов у фокус-сесію); cur new — як gap (знімає запис
+     попереднього тесту, нового не створює). Baseline (без уроків) коробок не дає. Інтервали D-030 не змінюються. */
+  const DIAG_BOX = { ok: 2, shaky: 0, known: 2 };
   function srsFromDiag(S, d, topics, ctx = {}) {
     const day = ctx.day, has = ctx.hasLesson || (() => true);
     if (!day || !/^\d{4}-\d{2}-\d{2}$/.test(day)) return [];
-    const rank = { gap: -1, shaky: 0, ok: 2 }, by = new Map();
+    const rank = { gap: -1, shaky: 0, ok: 2, new: -1, known: 2 }, by = new Map();
     for (const t of d.topics || []) {
-      if (t.kind === "cur" || t.baseline || !(topics[t.id] in rank)) continue;
+      if (t.baseline || !(topics[t.id] in rank) || (t.kind === "cur") !== (topics[t.id] === "known" || topics[t.id] === "new")) continue;
       for (const l of t.lessons || []) if (has(l)) by.set(l, Math.min(by.has(l) ? by.get(l) : 9, rank[topics[t.id]]));
     }
     if (![...by.values()].some(b => b >= 0) && !(S.srs && typeof S.srs === "object")) return [];
@@ -672,8 +678,8 @@ window.SLID_LEARN = (() => {
      «B = (3; 5)»), крім назв даних точок умови («A(3; 5)», коли $A(4; -3)$ — дана) — варіант B оркестратора, уточнення D-030 (2).
      Значення правильне, а назву відкинуто — «form» з поясненням (nameMsg), не «ok». */
   const NAME_AT = /^(?:\\(?:vec|overrightarrow)\s*\{\s*([A-Z]{1,2})\s*\}|([A-Z]{1,2})|([a-z]))\s*(=?)\s*(?=\()/;
-  // Назва з індексом чи штрихом — образ точки «A_1(…)», «A₁(…)», «A1(…)», «A'(…)» (engine-learn-prefixes-p3b). Ніколи не зараховується
-  // (нове правило назви — рішення людини), але якщо значення правильне — «form» з поясненням «запиши лише координати», а не мовчазне «bad».
+  // Назва з індексом чи штрихом — образ точки «A_1(…)», «A₁(…)», «A1(…)», «A'(…)» (engine-learn-prefixes-p3b). Не зараховується, крім
+  // образу даної точки (IMG_ONE нижче); якщо значення правильне — «form» з поясненням «запиши лише координати», а не мовчазне «bad».
   const IMG_AT = /^([A-Z]{1,2})\s*(?:_\s*\{?\s*\d{1,2}\s*\}?|[₀-₉]{1,2}|\d{1,2}|['’′ʼ]{1,2})\s*=?\s*(?=\()/;
   // Виняток (рішення людини 2026-11-01, уточнення D-031 (б); engine-decisions-1101): умова питає образ даної точки — «Знайди образ точки
   // $A(-2; 3)$», «координати точки, симетричної точці $A(3; -1)$» (askedPoint.img) — тоді назва образу цієї точки з індексом 1 чи одним
@@ -1238,14 +1244,31 @@ window.SLID_LEARN = (() => {
       if (k.k === "pow" && !isConst(k.b) && !(u && unNeg(u).k === "pow")) return MSG.power; }
     return { factored: MSG.factored, reduced: MSG.reduced, simplified: MSG.simplified }[form] || MSG.retry;
   }
-  /** Вердикт answer у тесті рівня (app.js, run.diag): true — OK. «form» = OK (рішення людини 2026-11-01), крім числа коренем
-      (√576, 2√9 при раціональному ключі): там значення не обчислено — BAD (хибні ok гірші за хибні bad). */
-  function diagAnswerOk(s, v) {
-    const r = checkAns(s, v); if (r !== "form") return r === "ok";
-    const t = stripUnit(s, v); if ((s.answerKind || "number") !== "number" || typeof t !== "string" || numOf(t)) return true;
-    const a = parseAns(typeof s.answer === "number" ? String(s.answer) : s.answer);
-    return !(a && rootNum(t, a));
+  /* Вердикт answer у тесті рівня (app.js, run.diag; engine-diag-half-credit). Тест з'ясовує, що дитина вміє, а не ловить на оформленні:
+     - «ok» → OK; «bad» → BAD.
+     - «form» через вигляд, якого умова не вимагала (інший запис того самого: decimals, fractionOnly, «1 5/3» без mixed), → OK.
+     - «form» через поле, що вимагає вигляд (DIAG_FORM: reduced, mixed, form "improper", compound; validate.mjs вимагає, щоб
+       умова цей вигляд називала), → HALF: значення правильне, вміння перетворення не показане. Перевірка: та сама відповідь із
+       знятими полями невимаганого вигляду (decimals, fractionOnly) лишається «form» — тож «form» дало саме поле вигляду.
+     - Число коренем (√576, 2√144 при раціональному ключі): обчислення не завершено — HALF (рішення людини 2026-11-01), але
+       дослівна копія виразу з умови (rootCopy) — теж HALF (рішення людини 2026-11-01: «половину балу і показати пояснення»), пояснення MSG.rootCopy.
+     Старі збережені вердикти (1/0/-1) читаються як раніше. */
+  const DIAG_FORM = s => !!(s.reduced || s.mixed || s.form === "improper" || ((s.answerKind || "number") === "quantity" && s.form === "compound"));
+  function diagVerdict(s, v) {
+    const r = checkAns(s, v); if (r === "ok") return OK; if (r !== "form") return BAD;
+    const t = stripUnit(s, v);
+    if ((s.answerKind || "number") === "number" && typeof t === "string" && !numOf(t)) {
+      const a = parseAns(typeof s.answer === "number" ? String(s.answer) : s.answer);
+      if (a && limited(() => rootNum(t, a), () => false)) return HALF;
+    }
+    if (!DIAG_FORM(s)) return OK;
+    const { decimals, fractionOnly, ...req } = s;
+    return checkAns(req, v) === "form" ? HALF : OK;
   }
+  /** Пояснення до HALF (app.js, екран після відповіді): наявний текст formHint — що правильно й чого бракує; null — не HALF. */
+  const diagHalfHint = (s, v) => diagVerdict(s, v) === HALF ? formHint(s, v) : null;
+  /** Сумісність (engine-decisions-1101): true — лише OK. */
+  const diagAnswerOk = (s, v) => diagVerdict(s, v) === OK;
   /** Пояснення для «bad», коли звичайне «Зміни відповідь» не допоможе (app.js, після checkAns === "bad"); null — звичайне повідомлення.
       Межа кроків чи розміру — «запис занадто складний»; чужа одиниця при unit — лише якщо без неї число правильне (п. 7);
       знаменник-добуток без дужок (k/6p), якщо з дужками значення збігається з ключем; час не в форматі ГГ:ХХ; величина
@@ -1923,7 +1946,7 @@ window.SLID_LEARN = (() => {
     return "other";
   }
 
-  return { OK, BAD, SKIP, PASS, DIAG_TYPES, DIAG_ANSWER_KINDS, planFor, practiceItems, nextItem, remaining, topicStatus, level, buildPlan, diagRev, resumeDiag, finishDiag, record, detect, syncPlan, lessonDone, todo, isKnown, diagOpen, work, SK_RETAG, SK_RETAG2, SK_MIGRATIONS, migrateSk, validate,
-    parseAns, parseDivrem, checkAns, diagAnswerOk, badHint, hintTexts, keyInput, timeExample, quantityUnits: s => qtyUnits(s)?.units || null, stripUnit, listKey, pairKey, answerSig, formHint, ansText, srcRef, numberKeys, numberHelp, ANSWER_KINDS, BOX_DAYS, srsInit, srsUpdate, srsFromDiag, DIAG_BOX, genAll, genInstance, genIssues, genHash, GEN_MAX, isDue, pickSession, POOL_TYPES, validatePool,
+  return { OK, BAD, SKIP, HALF, PASS, DIAG_TYPES, DIAG_ANSWER_KINDS, planFor, practiceItems, nextItem, remaining, topicStatus, level, buildPlan, diagRev, resumeDiag, finishDiag, record, detect, syncPlan, lessonDone, todo, isKnown, diagOpen, work, SK_RETAG, SK_RETAG2, SK_MIGRATIONS, migrateSk, validate,
+    parseAns, parseDivrem, checkAns, diagAnswerOk, diagVerdict, diagHalfHint, DIAG_FORM, badHint, hintTexts, keyInput, timeExample, quantityUnits: s => qtyUnits(s)?.units || null, stripUnit, listKey, pairKey, answerSig, formHint, ansText, srcRef, numberKeys, numberHelp, ANSWER_KINDS, BOX_DAYS, srsInit, srsUpdate, srsFromDiag, DIAG_BOX, genAll, genInstance, genIssues, genHash, GEN_MAX, isDue, pickSession, POOL_TYPES, validatePool,
     numVal, formCode };
 })();

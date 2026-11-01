@@ -430,7 +430,7 @@ window.SLID_HYP = (() => {
       if (tr === 1) {
         const hits = open.map(h => [h, probeKind(h, a)]).filter(x => x[1]);
         if (hits.length) {
-          const prb = nid(), res = a.verdict === "skip" ? "skip" : a.verdict;
+          const prb = nid(), res = a.verdict === "half" ? "form" : a.verdict;   // half (тест рівня) — значення правильне, як form
           let pcodes = null;
           for (const [h, kind] of hits) {
             if (kind === "A") { if (h.aSent) continue; h.aSent = 1; }
@@ -450,7 +450,9 @@ window.SLID_HYP = (() => {
         }
       }
       // 2) нова гіпотеза або hyp_fmt
-      if (tr === 1 && a.verdict === "form") ev.push({ type: "hyp_fmt", d: { key: it.key ?? null, l: it.l, i: it.i ?? null, fc: LEARN().formCode(a.s, a.raw), rv: RULES_VERSION } });
+      // P1: form, а в тесті рівня й half (півбала, LEARN.diagVerdict: вимаганого вигляду немає чи корінь не обчислено) — гіпотези немає
+      if (tr === 1 && (a.verdict === "form" || a.verdict === "half")) ev.push({ type: "hyp_fmt", d: { key: it.key ?? null, l: it.l, i: it.i ?? null,
+        fc: LEARN().formCode(a.s, a.raw), ...(a.verdict === "half" ? { half: 1 } : {}), rv: RULES_VERSION } });
       if (tr === 1 && (a.verdict === "bad" || a.verdict === "skip")) {
         const ls = a.ls && a.ls.length ? a.ls.slice() : [it.l], key = pk(it.l, it.sk);
         const hist = errs.filter(e => e.pk === key && t - e.t <= TH.patDays * DAY);

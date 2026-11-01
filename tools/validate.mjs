@@ -165,9 +165,10 @@ function answerFieldIssues(s, diag = false) {
     .filter(m => m.startsWith("задача 1 «x»: ")).map(m => m.slice("задача 1 «x»: ".length)).filter(m => !POOL_ONLY.some(re => re.test(m)) && !(diag && DIAG_DUP.some(re => re.test(m)))).map(m => "answer: " + m);
 }
 
-// У тесті рівня «form» (значення правильне, запис ні) тихо стає BAD: ні підказки, ні другої спроби (learn.js, DIAG_ANSWER_KINDS).
-// Тож вимогу запису, якої підказка під полем не називає (compound, reduced, mixed, fractionOnly, improper, decimals), має назвати умова —
-// попередження, якщо в title/body немає слова про цей формат (рев'ю engine-diag-answer-kinds, P3-3; евристика, тому не помилка)
+// Тест рівня (learn.js diagVerdict, engine-diag-half-credit): поле, що вимагає вигляд (reduced, mixed, form improper, compound), без нього
+// дає лише півбала (HALF) — тож умова мусить цей вигляд назвати, інакше дитина вгадує, який запис від неї чекають: ПОМИЛКА.
+// decimals і fractionOnly у тесті «form» зараховують як правильно (інший запис того самого) — для них лише попередження: вимога, якої
+// умова не називає, у тесті нічого не перевіряє. Слова шукаємо в title/body (евристика рев'ю engine-diag-answer-kinds, P3-3)
 // compound: «складеним…» або щонайменше дві одиниці самої вправи — скороченням чи словом («в м і см», «у метрах і сантиметрах»);
 // не будь-які два слова на -ах («у задачах і прикладах» — не формат). decimals: саме n знаків — «до десятих», «до 0,1», «до цілих»
 // (рев'ю engine-lab-aria-p3d, P3-3; engine-practice-pool); «десятковий дріб» без кількості знаків формату не називає.
@@ -178,16 +179,20 @@ const compoundNamed = (s, txt) => /складен/iu.test(txt) || (Array.isArray
 const DEC_NAMED = [/до цілих|до одиниць|цілим числом|без коми/iu, /десятих|до 0,1(?!\d)|(?:одним|один) знак/iu,
   /сотих|до 0,01(?!\d)|(?:двома|два) знак/iu, /тисячних|до 0,001(?!\d)|(?:трьома|три) знак/iu];
 const decimalsNamed = (s, txt) => (DEC_NAMED[s.decimals] || /після коми/iu).test(txt);
+// [умова поля, чи названо в тексті, повідомлення, true — помилка (поле вимагає вигляд: learn.DIAG_FORM)]
 const DIAG_FORMAT = [
-  [s => s.answerKind === "quantity" && s.form === "compound", compoundNamed, "form compound — складений запис («2 м 45 см»): напиши в умові «у метрах і сантиметрах» чи «складеним іменованим числом»"],
-  [s => s.reduced, /нескоротн/iu, "reduced — нескоротний дріб: напиши в умові «нескоротним дробом»"],
-  [s => s.mixed, /мішан|ціл\p{L}* частин/iu, "mixed — мішане число: напиши в умові «мішаним числом»"],
-  [s => s.fractionOnly, /звичайн\p{L}* дроб|дробом/iu, "fractionOnly — лише звичайний дріб: напиши в умові «звичайним дробом»"],
-  [s => (s.answerKind || "number") === "number" && s.form === "improper", /неправильн\p{L}* дроб/iu, "form improper — неправильний дріб: напиши в умові «неправильним дробом»"],
-  [s => s.decimals !== undefined, decimalsNamed, "decimals — кількість знаків після коми: напиши в умові «з одним знаком після коми» чи «до десятих»"]];
+  [s => s.answerKind === "quantity" && s.form === "compound", compoundNamed, "form compound — складений запис («2 м 45 см»): напиши в умові «у метрах і сантиметрах» чи «складеним іменованим числом»", true],
+  [s => s.reduced, /нескоротн|скорот/iu, "reduced — нескоротний дріб: напиши в умові «нескоротним дробом» чи «скороти»", true],
+  [s => s.mixed, /мішан|ціл\p{L}* частин/iu, "mixed — мішане число: напиши в умові «мішаним числом» чи «виділи цілу частину»", true],
+  [s => s.fractionOnly, /звичайн\p{L}* дроб|дробом/iu, "fractionOnly — лише звичайний дріб: напиши в умові «звичайним дробом»", false],
+  [s => (s.answerKind || "number") === "number" && s.form === "improper", /неправильн\p{L}* дроб/iu, "form improper — неправильний дріб: напиши в умові «неправильним дробом»", true],
+  [s => s.decimals !== undefined, decimalsNamed, "decimals — кількість знаків після коми: напиши в умові «з одним знаком після коми» чи «до десятих»", false]];
+const DIAG_FMT_ERR = "тест рівня: умова не називає вигляду, який вимагає поле (без нього — лише півбала)";
+const DIAG_FMT_WARN = "тест рівня: вимогу запису умова не називає — «form» тут зараховується як правильно, вимога нічого не перевіряє";
 function diagFormatIssues(s) {
   const txt = plain([s.title, s.body].filter(x => typeof x === "string").join(" "));
-  return DIAG_FORMAT.filter(([when, re]) => when(s) && !(typeof re === "function" ? re(s, txt) : re.test(txt))).map(([, , msg]) => `тест рівня: «form» тут зараховується як помилка без пояснення — ${msg}`);
+  return DIAG_FORMAT.filter(([when, re]) => when(s) && !(typeof re === "function" ? re(s, txt) : re.test(txt)))
+    .map(([, , msg, err]) => ({ err, msg: `${err ? DIAG_FMT_ERR : DIAG_FMT_WARN} — ${msg}` }));
 }
 
 // перевірка одного екрана; diag — завдання діагностики (без фідбеку: дитина не бачить, правильно чи ні)
@@ -247,7 +252,7 @@ function checkScreen(S, s, c, diag, pool = false) {
     case "answer": if (learn.checkAns(s, learn.keyInput(s)) !== "ok") E(S, "answer: число або рядок («7/12», «2 1/3», «-3,5»), що сам проходить перевірку (величина quantity — у складеному записі)");
       // у діагностиці — лише коли тип answer там дозволено (learn.DIAG_TYPES); інакше вже є помилка «тип не дозволено в тесті»
       if (!pool && (!diag || learn.DIAG_TYPES.includes("answer"))) for (const m of answerFieldIssues(s, diag)) E(S, m);
-      if (diag && !pool) for (const m of diagFormatIssues(s)) W(S, m); break;
+      if (diag && !pool) for (const m of diagFormatIssues(s)) (m.err ? E : W)(S, m.msg); break;
     case "fracin": if (!(Number.isInteger(s.answer) && s.answer >= 0 && s.answer < 1e6)) E(S, "answer — ціле невід'ємне число (поле приймає лише цифри)");
       if (!(s.expr && s.den)) E(S, "fracin потребує expr і den"); break;
   }

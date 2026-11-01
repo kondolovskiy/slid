@@ -311,6 +311,11 @@ const of = (evs, t) => evs.filter(e => e.type === t);
   const T = H.tracker({ seed: "fmt" });
   const f = of(T.onAnswer(A(pair[0], { day: D1, verdict: "form", raw: "34/40", final: false })), "hyp_fmt")[0];
   eq(f && [f.d.key, f.d.fc], ["pg6m2:d01", "reduce"], "form → hyp_fmt з fc, без гіпотези"); eq(T.open.length, 0, "form — гіпотези немає");
+  // тест рівня: half (півбала, engine-diag-half-credit) — як form: hyp_fmt з half: 1 і fc, гіпотези немає
+  const sq = { type: "answer", answer: 24, sk: "num", title: "Квадрат площею 576 см². Знайди сторону" };
+  eq(LN.diagVerdict(sq, "√576"), LN.HALF, "diagVerdict √576 при ключі 24 — HALF");
+  const hf = T.onAnswer({ s: sq, item: { mode: "diag", l: "dgX", i: 3, key: null, type: "answer", sk: "num" }, raw: "√576", verdict: "half", try: 1, final: true, t: tm(D1), day: D1, run: 9 });
+  eq([of(hf, "hyp_fmt")[0]?.d.fc, of(hf, "hyp_fmt")[0]?.d.half, of(hf, "hyp_open").length], ["rootNum", 1, 0], "half → hyp_fmt rootNum, без гіпотези");
   const ev = T.onAnswer(A(pair[0], { day: D1, verdict: "bad", raw: "4/9", final: false }));
   eq(of(ev, "hyp_open").length, 0, "перша спроба не фінальна — відкриття чекає другої");
   const o = of(T.onScreen({ item: { mode: "practice", l: "g6m2l4", i: 1 }, t: tm(D1, 1), day: D1 }), "hyp_open")[0];
