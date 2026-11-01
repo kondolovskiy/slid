@@ -55,19 +55,54 @@ function strings(o, skip, acc = []) {
   else if (o && typeof o === "object") for (const [k, v] of Object.entries(o)) if (!skip.includes(k)) strings(v, skip, acc);
   return acc;
 }
+// Латинська назва функції без лапок у формулі (fix-math-tex-content: 162 місця в g9m4/g10m5) — курсивний добуток s·i·n.
+// Поза "…", \text{…} і {…} (у lab {…} — шаблон-вираз, там sin(x) — функція виразу).
+const FN_NAME = /(?<![A-Za-z\\])(arcsin|arccos|arctg|arcctg|sin|cos|tg|ctg|log|lg|ln)(?![A-Za-z])/g;
+const outsideBraces = f => { let d = 0, o = ""; for (const ch of f) { if (ch === "{") d++; else if (ch === "}") d = Math.max(0, d - 1); else o += d ? " " : ch; } return o; };
+const bareFns = x => [...String(x).matchAll(/\$\$?([^$]+)\$\$?/g)].flatMap(m => [...outsideBraces(m[1].replace(/\\text\{[^}]*\}/g, " ").replace(/"[^"]*"/g, " ")).matchAll(FN_NAME)].map(g => g[1]));
 function checkTex(S, s) {
+  // Усе нижче — ПОМИЛКИ (tools-validate-tex-escapes / engine-render-tex-p3): у змісті 0 випадків, учень побачив би сирий TeX.
   // 1) TeX поза формулою в текстах, що проходять fmt: «,\;» між формулами, «0{,}5» без $ — видно буквально
-  const html = strings(s, ["lab", "img", "svg", "fig", "type", "sk", "id", "pre"]);
-  if (s.lab) html.push(...[].concat(s.lab.show || []), ...Object.values(s.lab.params || {}).map(p => p?.label).filter(x => typeof x === "string"));
-  const odd = x => (x.match(/\$/g) || []).length % 2 === 1;   // рядок з непарним $ — окремі перевірки (текст екрана — помилка вище, lab — п. 2), не дублюємо
+  const own = strings(s, ["lab", "img", "svg", "fig", "type", "sk", "id", "pre"]);
+  const labHtml = s.lab ? [].concat(s.lab.show || [], Object.values(s.lab.params || {}).map(p => p?.label)).filter(x => typeof x === "string") : [];
+  const html = own.concat(labHtml);
+  const odd = x => (x.match(/\$/g) || []).length % 2 === 1;
   const raw = [...new Set(html.filter(x => !odd(x)).flatMap(x => outsideMath(x).match(TEX_RAW) || []))];
-  if (raw.length) W(S, `TeX поза $…$ покажеться буквально: ${raw.join(" ")} — перенеси у формулу або заміни звичайним пробілом/комою`);
+  if (raw.length) E(S, `TeX поза $…$ покажеться буквально: ${raw.join(" ")} — перенеси у формулу або заміни звичайним пробілом/комою`);
+  // 1а) непарний $ у будь-якому тексті екрана (items, pairs, steps, note…); title/body/fbText/hint/opts уже перевіряє checkScreen
+  const seen = new Set([s.title, s.body, s.steps ? null : s.fbText, s.hint, ...(s.opts || [])]);
+  for (const x of new Set(own)) if (odd(x) && !seen.has(x)) E(S, `непарна кількість $ у «${x.slice(0, 60)}» — формула не закрита й покажеться сирою`);
   // 2) lab.show і підписи повзунків рендерить fmt після fill(): непарний $ лишає формулу сирою
-  if (s.lab) for (const x of [].concat(s.lab.show || [], Object.values(s.lab.params || {}).map(p => p?.label))) if (typeof x === "string" && odd(x)) W(S, `lab: непарна кількість $ у «${x}» — формула покажеться сирою${/\$\{/.test(x) ? " (зайвий $ перед шаблоном {…}?)" : ""}`);
-  // 3) підписи SVG лабораторії
-  if (s.lab) for (const [path, x] of lab.svgLabels(s.lab)) for (const is of lab.svgTexIssues(x)) (is.level === "error" ? E : W)(S, `lab.${path} «${x}»: ${is.msg}`);
+  for (const x of labHtml) if (odd(x)) E(S, `lab: непарна кількість $ у «${x}» — формула покажеться сирою${/\$\{/.test(x) ? " (зайвий $ перед шаблоном {…}?)" : ""}`);
+  // 3) підписи SVG лабораторії (svgTexIssues: непарний $ там — «warn», але сирий текст однаково видно — помилка)
+  if (s.lab) for (const [path, x] of lab.svgLabels(s.lab)) for (const is of lab.svgTexIssues(x)) E(S, `lab.${path} «${x}»: ${is.msg}`);
+  // 3а) назва функції без лапок — попередження (звичайні змінні sin не утворюють, але це не помилка рушія)
+  const fns = [...new Set(html.flatMap(bareFns))];
+  if (fns.length) W(S, `у формулі назва функції без лапок: ${fns.join(", ")} — покажеться курсивом як добуток літер; пиши "${fns[0]}" (у лапках) або \\${fns[0]}, якщо команда є в app/math.js`);
   // 4) атрибути без рендеру: alt фото й моделі
   for (const [k, x] of [["cap", s.cap], ["lab.alt", s.lab?.alt]]) if (typeof x === "string" && /\$|\\[A-Za-z,;]/.test(x)) E(S, `${k}: формула або TeX потрапляє в атрибут alt/aria-label і показується сирою — пиши звичайним текстом (√2, x₁)`);
+}
+
+// TeX з одним «\» у звичайному JS-рядку (tools-validate-tex-escapes): "$|\Delta x|$" → «|Delta x|», "\frac" → «\f»+«rac».
+// Після завантаження рядок уже зіпсовано, тож скануємо СИРИЙ текст файлів змісту: у кожному рядковому літералі "…", '…', `…`
+// шукаємо непарну кількість «\» перед латинською літерою. Помилка, якщо: escape не існує в JS (\D, \o, \s… — JS мовчки ковтає «\»),
+// або це валідний escape (\f \n \r \t \v \b), за яким іде назва TeX-команди (\frac, \neq, \vec, \times, \to, \begin, \right…).
+const JS_ESC = /^[bfnrtvux]/;
+const TEX_NAMES = new Set([...MATH_COMMANDS, "theta", "beta", "nu", "tg", "ctg", "arcsin", "arccos", "mathrm", "overline", "approx", "neg", "backslash", "bar", "hat", "dot", "right", "rangle", "rceil", "rfloor", "binom", "varphi", "vee", "tau"]);
+const STR_LIT = /\/\/[^\n]*|\/\*[\s\S]*?\*\/|"(?:[^"\\\n]|\\[\s\S])*"|'(?:[^'\\\n]|\\[\s\S])*'|`(?:[^`\\]|\\[\s\S])*`/g;
+function jsEscapeIssues(src) {
+  const out = [];
+  for (const m of src.matchAll(STR_LIT)) { if (m[0][0] === "/") continue;   // коментар
+    for (const e of m[0].matchAll(/(?<!\\)(?:\\\\)*\\([A-Za-z]+)/g)) { const w = e[1];
+      if (!JS_ESC.test(w) || TEX_NAMES.has(w)) out.push({ line: src.slice(0, m.index + e.index).split("\n").length, cmd: w, swallowed: !JS_ESC.test(w) }); } }
+  return out;
+}
+{ // з --section/--diag/--pool — лише файл(и) цього id: origin розділу, інакше файли, де є `id: "<id>"`
+  const only = onlySec || onlyDiag, src = f => fs.readFileSync(path.join(ROOT, f), "utf8");
+  const idRe = only && new RegExp(`["']?id["']?\\s*:\\s*["']${only.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}["']`);
+  const files = content.files.filter(f => f.startsWith("content/") && (!only || (onlySec && origin[onlySec] ? f === origin[onlySec] : idRe.test(src(f)))));
+  for (const f of files) for (const is of jsEscapeIssues(src(f)))
+    E(`${f}:${is.line}`, `«\\${is.cmd}» з одним бекслешем у JS-рядку — ${is.swallowed ? `JavaScript ковтає «\\», учень побачить «${is.cmd}»` : `JavaScript читає «\\${is.cmd[0]}» як керівний символ, учень побачить «${is.cmd.slice(1)}»`}; пиши «\\\\${is.cmd}»`);
 }
 
 // перевірка одного екрана; diag — завдання діагностики (без фідбеку: дитина не бачить, правильно чи ні)
@@ -77,7 +112,7 @@ function checkScreen(S, s, c, diag) {
   const noteTxt = typeof s.note === "string" ? s.note : s.note?.text;
   const txt = [s.title, s.body, noteTxt, s.fbText, s.fbOk, s.fbBad, s.hint, ...(s.opts || []), ...(s.items || []).flat()].filter(x => typeof x === "string").join(" ");
   if (/\$\{/.test(txt)) E(S, "у тексті лишилось «${» — шаблонний рядок з'їв формулу");
-  for (const t of [s.title, s.body, s.fbText, s.hint, ...(s.opts || [])].filter(Boolean)) if (((String(t).match(/\$/g) || []).length) % 2) E(S, "непарна кількість $ — формула не закрита");
+  for (const t of [s.title, s.body, s.steps ? null : s.fbText, s.hint, ...(s.opts || [])].filter(Boolean)) if (((String(t).match(/\$/g) || []).length) % 2) E(S, "непарна кількість $ — формула не закрита");
   for (const formula of txt.matchAll(/\$\$?([\s\S]+?)\$\$?/g)) for (const m of formula[1].matchAll(/\\([A-Za-z]+)/g)) if (!MATH_COMMANDS.has(m[1])) W(S, `формула містить непідтриману команду \\${m[1]}`);
   for (const [b, re] of bannedRe) if (re.test(txt)) W(S, `заборонена фраза «${b}» (style/banned-phrases.txt)`);
   if (/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/u.test(txt)) W(S, "емодзі в тексті уроку");
@@ -142,8 +177,8 @@ for (const c of subjects) for (const sec of c.sections.filter(s => s.lessons)) {
   for (const l of sec.lessons) {
     const L = `${file}#${l.id}`;
     if (!l.title || !l.why || !l.icon) E(L, "уроку потрібні title, why, icon");
-    // назва уроку йде в aria-label кнопки на мапі, а fmt вставляє туди HTML формули — кнопка ламається (див. engine-math-render-tex-gaps)
-    if (/\$|\\[A-Za-z,;]/.test(l.title || "")) W(L, "формула в назві уроку ламає aria-label кнопки на мапі розділу — пиши назву звичайним текстом (√2) або чекай виправлення рушія");
+    // рушій уже дає aria-label простим текстом (attr), але назву видно й у шторці, і в плані — пиши без TeX (у змісті 0 випадків → помилка)
+    if (/\$|\\[A-Za-z,;]/.test(l.title || "")) E(L, "формула або TeX у назві уроку — пиши назву звичайним текстом (√2, x₁)");
     if (l.icon && !ICONS.includes(l.icon)) E(L, `немає іконки «${l.icon}» (див. const P в app/app.js)`);
     if (!["draft","verified","approved"].includes(l.status)) E(L, "status має бути draft | verified | approved");
     if (l.badge && !allBadges.has(l.badge)) E(L, `badge «${l.badge}» не оголошено`);

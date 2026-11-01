@@ -92,6 +92,20 @@ for (const kind of Object.keys(L.KINDS)) { const sp = { kind, params: { a: { min
   eq(texts.filter(x => /[$\\]/.test(x)), [], "plane: у підписах SVG немає сирого $ чи \\");
   eq(["x₁ = 1", "Δy", "l₁"].every(x => texts.includes(x)), true, "plane: підписи точки, відрізка й графіка відрендерено");
   eq(L.svgLabels(sp).map(x => x[0]), ["fns.0.label", "segs.0.label", "points.P.label"], "svgLabels: шляхи підписів");
+  // P3-1 (рев'ю engine-math-render-tex-gaps): зсув індексу без Unicode в кінці формули скасовує текст після неї
+  const dySum = s => [...s.matchAll(/dy="(-?\d+(?:\.\d+)?)"/g)].reduce((a, m) => a + +m[1], 0);
+  eq(dySum(L.svgTex("$a_n$(2; 3)")), 0, "svgTex: після $a_n$ текст повертається на базову лінію");
+  eq(txt("$a_n$(2; 3)"), "an(2; 3)", "svgTex: текст після формули зі зсувом не губиться");
+  eq(dySum(L.svgTex("$A$ і $B_k$ і $C$")), 0, "svgTex: зсув не переходить на наступні формули");
+  eq(dySum(L.svgTex("$B_k$$C$")) === 0 && /dy="-3"[^>]*>[^<]*<\/tspan>$|dy="-3">C/.test(L.svgTex("$B_k$$C$").replace(/ style="[^"]*"/g, "")), true, "svgTex: зворотний зсув отримує наступна формула впритул");
+  eq(dySum(L.svgTex("$x_{a_b}$ y")), 0, "svgTex: вкладений зсув (x_{a_b}) теж скасовано");
+  eq(dySum(L.svgTex("$a_n$")), 3, "svgTex: формула в кінці підпису — зайвого tspan немає");
+  { const sc = { kind: "plane", view: [-5, 5, -5, 5], points: { P: { x: "2", y: "3", label: "$a_n$", coords: true } } };
+    const tx = [...L.KINDS.plane.render(sc, L.makeEnv(sc, L.startState(sc)), {}).body.matchAll(/<text[^>]*>([\s\S]*?)<\/text>/g)].map(m => m[1]).find(x => x.includes("(2; 3)"));
+    eq(!!tx && dySum(tx) === 0, true, "plane: координати після $a_n$ (points.coords) — на базовій лінії"); }
+  // P3-2: xmlEsc — & у формулі екрановано (мутацію «тотожна функція» інакше не ловить жоден тест)
+  eq(L.svgTex("$a & b$").includes("&amp;") && !/&(?!amp;|lt;|gt;)/.test(L.svgTex("$a & b$")), true, "svgTex: & у формулі екрановано для SVG");
+  eq(L.svgTex("$\\foo&$").includes("&amp;"), true, "svgTex: & після непідтриманої команди екрановано");
 }
 // усі моделі контенту: жоден підпис SVG не показує сирий TeX, якщо validate про нього не попереджає (властивість, не лічильник)
 { const { loadContent } = await import("./lib.mjs"); const { subjects } = loadContent(); const specs = [];

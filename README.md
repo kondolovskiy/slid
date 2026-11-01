@@ -32,8 +32,15 @@ python3 -m http.server 8000    # відкрити http://localhost:8000
 
 ## Перевірити контент
 ```bash
-npm run check                       # build + validate + stats
+npm run check                       # build + тести (test-math, test-lab, test-learn, test-personalization-qa, test-validate) + validate + stats
 python3 tools/playtest.py           # пройти всі уроки в браузері (потрібен Playwright)
+
+# окремо (те саме, що в npm run check і CI):
+node tools/test-math.mjs            # рендер формул (app/math.js)
+node tools/test-lab.mjs             # лабораторія: вирази, шаблони, підписи SVG
+node tools/test-learn.mjs           # персоналізація: перевірка відповідей, план, пули
+node tools/test-personalization-qa.mjs   # інструмент personalization-qa на фікстурах
+node tools/test-validate.mjs        # регресії валідатора: фікстури + повний прогін validate
 ```
 
 ## Статус

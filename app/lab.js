@@ -249,8 +249,9 @@ const SVG_SUB = { 0: "₀", 1: "₁", 2: "₂", 3: "₃", 4: "₄", 5: "₅", 6:
 const SVG_BIN_CMD = new Set(["cdot", "times", "pm", "ge", "geq", "le", "leq", "ne", "neq", "to", "parallel", "perp", "in"]);
 const SVG_TOK = /\\[A-Za-z]+|\\[,;:! ]|\{,\}|[_^](?:\{[^{}]*\}|\\[A-Za-z]+|[^\s{}])|\s+|[\s\S]/gu;
 const xmlEsc = s => String(s).replace(/[&<>]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
-function svgMath(src, size = 12) {
-  const out = []; let operand = false, reset = 0, pend = "";
+// carry — зсув dy, який лишила попередня формула (індекс без Unicode в її кінці); повертає [розмітка, незакритий зсув]
+function svgMathR(src, size = 12, carry = 0) {
+  const out = []; let operand = false, reset = carry, pend = "";
   const sh = Math.round(size * 0.35);
   // pend — пробіл, що чекає наступного знака (у кінці формули й перед бінарною операцією не потрібен)
   const IT = ' style="font-style:italic;font-family:var(--mathf)"';
@@ -274,7 +275,7 @@ function svgMath(src, size = 12) {
       const map = tk[0] === "^" ? SVG_SUP : SVG_SUB, chars = [...body];
       if (tk[0] === "^" && body === "°") emit("°");
       else if (chars.length && chars.every(ch => map[ch])) emit(chars.map(ch => map[ch]).join(""));
-      else { const d = tk[0] === "^" ? -sh : Math.round(sh * 0.7); emit(svgMath(body, size * 0.75), ` font-size="${Math.round(size * 0.75)}" dy="${d}"`); reset = -d; }
+      else { const d = tk[0] === "^" ? -sh : Math.round(sh * 0.7), [h, r] = svgMathR(body, size * 0.75); emit(h, ` font-size="${Math.round(size * 0.75)}" dy="${d}"`); reset = r - d; }
       operand = true; continue;
     }
     if (tk[0] === "\\") {
@@ -287,10 +288,17 @@ function svgMath(src, size = 12) {
     if (SVG_BIN[tk]) { if ((tk === "-" || tk === "−" || tk === "+") && !operand) emit(SVG_BIN[tk]); else binary(SVG_BIN[tk]); continue; }   // унарний знак — без пробілів
     emit(xmlEsc(tk)); operand = /[\p{L}\p{N})'′°%]/u.test(tk);
   }
-  return out.join("");
+  return [out.join(""), reset];
 }
-/** Підпис SVG: формули $…$ → текст і <tspan>; рядок без $ повертається як є. */
-const svgTex = (s, size = 12) => String(s).replace(/\$([^$]+)\$/g, (_, m) => svgMath(m, size));
+/** Підпис SVG: формули $…$ → текст і <tspan>; рядок без $ повертається як є.
+    Якщо формула закінчилась зсунутим індексом ($a_n$), зворотний dy отримує текст після неї (P3-1 рев'ю engine-math-render-tex-gaps). */
+function svgTex(s, size = 12) {
+  const str = String(s); let out = "", last = 0, carry = 0;
+  const plain = x => { if (!x) return; out += carry ? `<tspan dy="${carry}">${x}</tspan>` : x; carry = 0; };
+  for (const m of str.matchAll(/\$([^$]+)\$/g)) { plain(str.slice(last, m.index)); const [h, r] = svgMathR(m[1], size, carry); out += h; carry = r; last = m.index + m[0].length; }
+  plain(str.slice(last));
+  return out;
+}
 const SVG_TEX_OK = new Set([...Object.keys(SVG_SYM), ...Object.keys(SVG_SPACE)]);
 /** Що в підписі SVG не буде відмальовано: непарні $, команди поза підмножиною. Для tools/validate.mjs. */
 function svgTexIssues(s) {
