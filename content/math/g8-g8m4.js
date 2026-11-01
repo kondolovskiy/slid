@@ -27,7 +27,7 @@ SLID.section("math", {
       title: "Одна форма, різний розмір",
       short: "Подібність",
       icon: "scale",
-      status: "verified",
+      status: "draft",
       why: "Щоб міряти висоту дерева або ширину річки за маленьким трикутником-моделлю.",
       screens: [
         {
@@ -120,7 +120,7 @@ SLID.section("math", {
           lab: {
             kind: "plane", axes: false, view: [0, 12, 0, 8],
             params: {
-              dx: { min: 1, max: 5, step: 1, start: 2, hide: true },
+              dy: { min: 2, max: 6, step: 1, start: 3, hide: true },
               ex: { min: 2, max: 9, step: 1, start: 4, hide: true },
               ey: { min: 1, max: 5, step: 1, start: 3, hide: true }
             },
@@ -128,7 +128,7 @@ SLID.section("math", {
               A: { at: [1, 1] },
               B: { at: [1, 7] },
               C: { at: [10, 1] },
-              D: { x: "1", y: "1+dx", drag: true, color: "green" },
+              D: { x: "1", y: "dy", drag: true, color: "green" },
               E: { x: "ex", y: "ey", drag: true, color: "green" }
             },
             polys: [
@@ -157,7 +157,7 @@ SLID.section("math", {
           lab: {
             kind: "plane", axes: false, view: [0, 12, 0, 8],
             params: {
-              dx: { min: 1, max: 5, step: 1, start: 3, hide: true },
+              dy: { min: 2, max: 6, step: 1, start: 4, hide: true },
               ex: { min: 2, max: 9, step: 1, start: 5, hide: true },
               ey: { min: 1, max: 5, step: 1, start: 4, hide: true }
             },
@@ -165,7 +165,7 @@ SLID.section("math", {
               A: { at: [1, 1] },
               B: { at: [1, 7] },
               C: { at: [10, 1] },
-              D: { x: "1", y: "1+dx", drag: true, color: "green" },
+              D: { x: "1", y: "dy", drag: true, color: "green" },
               E: { x: "ex", y: "ey", drag: true, color: "green" }
             },
             polys: [
@@ -183,7 +183,7 @@ SLID.section("math", {
             alt: "Підігнати DE паралельно BC"
           },
           goal: "slope(D,E)==slope(B,C) && dist(D,E)>0 && area(A,D,E)>0",
-          solution: { dx: 3, ex: 4, ey: 2 },
+          solution: { dy: 4, ex: 4, ey: 2 },
           reveal: "Наприклад $D(1; 4)$, $E(4; 2)$: нахил $DE = -2/3$, як у $BC$.",
           hint: "Нахил $BC$ дорівнює $-2/3$. Постав $D$ на висоті 4 і піджени $E$, щоб $\\Delta y / \\Delta x = -2/3$.",
           fbOk: "Паралельно.",

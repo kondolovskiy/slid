@@ -27,7 +27,7 @@ SLID.section("math", {
       title: "Коли сторони біжать поруч",
       short: "Паралелограм",
       icon: "path",
-      status: "verified",
+      status: "draft",
       why: "Щоб перевірити раму, хвіртку чи екран: чи протилежні сторони справді тримають форму.",
       screens: [
         {
@@ -61,12 +61,12 @@ SLID.section("math", {
           body: "<p>Тягни точку $D$. Парні сторони лишаються паралельними.</p><p>Стеж за довжинами й парними кутами.</p>",
           lab: {
             kind: "plane", axes: false, view: [0, 12, 0, 7],
-            params: { t: { min: 0, max: 4, step: 1, start: 2, hide: true } },
+            params: { dx: { min: 2, max: 6, step: 1, start: 4, hide: true } },
             points: {
               A: { at: [2, 1] },
               B: { at: [8, 1] },
-              D: { x: "2+t", y: "4", drag: true, color: "blue" },
-              C: { x: "8+t", y: "4", color: "blue" }
+              D: { x: "dx", y: "4", drag: true, color: "blue" },
+              C: { x: "dx+6", y: "4", color: "blue" }
             },
             polys: [{ pts: ["A", "B", "C", "D"], color: "blue", opacity: 0.18 }],
             angles: [
@@ -225,7 +225,7 @@ SLID.section("math", {
       title: "Прямі кути й рівні сторони",
       short: "Види",
       icon: "home",
-      status: "verified",
+      status: "draft",
       why: "Щоб розрізняти екран, ромбову плитку й квадратне вікно — і знати, які в них діагоналі.",
       screens: [
         {
@@ -243,12 +243,12 @@ SLID.section("math", {
           body: "<p>Почни з похилої фігури. Тягни $D$, доки кути стануть по $90°$.</p><p>Що тоді станеться з $AC$ і $BD$?</p>",
           lab: {
             kind: "plane", axes: false, view: [0, 12, 0, 7],
-            params: { t: { min: 0, max: 4, step: 1, start: 3, hide: true } },
+            params: { dx: { min: 2, max: 6, step: 1, start: 5, hide: true } },
             points: {
               A: { at: [2, 1] },
               B: { at: [8, 1] },
-              D: { x: "2+t", y: "5", drag: true, color: "blue" },
-              C: { x: "8+t", y: "5", color: "blue" }
+              D: { x: "dx", y: "5", drag: true, color: "blue" },
+              C: { x: "dx+6", y: "5", color: "blue" }
             },
             polys: [{ pts: ["A", "B", "C", "D"], color: "blue", opacity: 0.18 }],
             angles: [{ from: "B", at: "A", to: "D" }],
