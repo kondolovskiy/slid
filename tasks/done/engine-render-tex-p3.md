@@ -4,7 +4,7 @@ claimed_at: 2026-11-01T10:43:55.753Z
 id: engine-render-tex-p3
 type: engine
 subject: math
-status: review
+status: done
 claimed_by: agent-engine-render-tex-p3
 created: 2026-10-31
 depends_on: [engine-math-render-tex-gaps]

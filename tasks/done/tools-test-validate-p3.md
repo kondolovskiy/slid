@@ -4,7 +4,7 @@ claimed_at: 2026-11-01T10:43:55.855Z
 id: tools-test-validate-p3
 type: engine
 subject: hist
-status: review
+status: done
 claimed_by: agent-tools-test-validate-p3
 created: 2026-10-31
 ---

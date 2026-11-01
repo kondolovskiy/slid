@@ -49,7 +49,7 @@ node tools/make-tasks.mjs [--subject math] # задачі на написанн�
 node tools/claim.mjs list|claim|move ...   # черга задач для паралельних агентів
 python3 tools/playtest.py [--section ID] [--shots] [--port N]   # пройти уроки в браузері (типово вільний порт)
 ```
-Скорочено: `npm run check` = build + validate + stats. Жодних залежностей для Node не потрібно; плейтесту потрібен Playwright.
+Скорочено: `npm run check` = build + test-math, test-lab, test-learn, test-personalization-qa, test-validate + validate + stats. Жодних залежностей для Node не потрібно; плейтесту потрібен Playwright.
 
 ## 3. Непорушні правила
 
