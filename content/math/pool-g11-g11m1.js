@@ -3,7 +3,7 @@
    Усі задачі — з підручника Мерзляка, Номіровського, Полонського, Якіра «Математика. 11 клас. Рівень стандарту» (2019), пп. 1–7 (sources).
    Умови й числа звірено за відрендереними сторінками PDF (с. 9–12, 14–15, 18, 24–25, 29–31, 34, 38) 2026-10-31.
    У цьому PDF друкований номер сторінки = номер сторінки PDF (колонтитули с. 8, 10, 12…).
-   Нотація: логарифм у формулі — $\\log_a b$; десятковий — $\\lg$ (2026-11-01, fix-math-content-minor-1101: \\text{lg} → \\lg у b03, b07, c02; статус draft до верифікації). Проміжки — answerKind "intervalSet",
+   Нотація: логарифм у формулі — $\\log_a b$; десятковий — $\\lg$ (2026-11-01, fix-math-content-minor-1101: \\text{lg} → \\lg у b03, b07, c02; статус verified (verifier-fix-math-content-minor-1101, 2026-11-01; reports/verify/fix-math-content-minor-1101.md)). Проміжки — answerKind "intervalSet",
    кілька коренів — "list", порівняння — "comparison", логарифм як відповідь — "expression".
    Прогалини форматів матриці (D-028, tasks/review/write-math-pool-g11m1.md): g11m1l2 без intervalSet, g11m1l3 без expression —
    у пп. 4–5 підручника немає вправ із такою відповіддю в межах уроку.
@@ -12,7 +12,7 @@
 SLID.pool("math", {
   id: "pg11m1",
   section: "g11m1",
-  status: "draft",
+  status: "verified",
   meta: { author: "agent-write-math-pool-g11m1", created: "2026-10-31", verified: "2026-10-31", factcheck: "verifier-pg11m1 (reports/verify/pg11m1.md)", teacher: null },
   sources: [
     { id: "m11", title: "Мерзляк А. Г., Номіровський Д. А., Полонський В. Б., Якір М. С. Математика: алгебра і початки аналізу та геометрія, рівень стандарту. 11 клас. — Харків: Гімназія, 2019 (§ 1, пп. 1–7; дзеркало PDF на znayshov.com)", url: "https://znayshov.com/FR/553/2.pdf" }

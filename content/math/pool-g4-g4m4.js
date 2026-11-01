@@ -7,13 +7,13 @@
    Підпункти з кількома відповідями розділено: у задачі питаємо одне число (adapted).
    2026-11-01: a08 і d07 («о котрій», «котра година») — answerKind time; d06 — quantity (м і см). Повторно перевірено.
    2026-11-01: d09, d10 — зворотні перетворення (менші одиниці в більші), quantity + form compound; перевірено незалежно (verifier-write-math-pools-multiset-compound).
-   2026-11-01 (fix-math-content-minor-1101): a08 — adapted: true (у підручнику «9 год 30 хв вечора», у пулі «21:30»); статус draft до верифікації.
+   2026-11-01 (fix-math-content-minor-1101): a08 — adapted: true (у підручнику «9 год 30 хв вечора», у пулі «21:30»); статус verified (verifier-fix-math-content-minor-1101, 2026-11-01; reports/verify/fix-math-content-minor-1101.md).
    Перевірка: node tools/validate.mjs --pool pg4m4 && node tools/personalization-qa.mjs --pool pg4m4
    Схема: docs/CONTENT_SCHEMA.md §10 */
 SLID.pool("math", {
   id: "pg4m4",
   section: "g4m4",
-  status: "draft",
+  status: "verified",
   meta: { author: "claude-opus", created: "2026-10-30", factcheck: "verifier-write-math-pools-multiset-compound (2026-11-01: d09, d10); verifier-refine-math-pools-new-kinds (a08, d06, d07); решта — verifier-pg4m4", revised: "2026-11-01 write-math-pools-multiset-compound", teacher: null },
   sources: [
     { id: "g4a", title: "Гісь О. М., Філяк І. В. Математика : підручник для 4 класу закладів загальної середньої освіти (у 2-х ч.). Ч. 1. — Харків : Ранок, 2026 (наказ МОН № 111 від 27.01.2026). PDF-дзеркало 4book.org", url: "https://file.4book.org/images/shcoolbook_ua/4/4_m_gis_2026-1.pdf" },

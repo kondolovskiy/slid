@@ -4,7 +4,7 @@ claimed_at: 2026-11-01T14:38:27.265Z
 id: fix-math-content-minor-1101
 type: fix
 subject: math
-status: review
+status: done
 claimed_by: agent-fix-math-content-minor-1101
 created: 2026-11-01
 ---

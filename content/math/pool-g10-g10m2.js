@@ -3,13 +3,13 @@
    Матриця docs/math-personalization-coverage.md 2026-10-16.v2: g10m2l1, g10m2l2 — required; g10m2l3 (перерізи, метод слідів) — optional, відкладено, у пул не входить.
    Усі задачі — з підручника Мерзляк, Номіровський, Полонський, Якір. Математика 10 (рівень стандарту, 2018), п. 27 і 29; умови й числа звірено за відрендереними сторінками PDF.
    srcPage — друкований номер сторінки (у цьому PDF збігається з номером сторінки файлу).
-   2026-11-01 (fix-math-content-minor-1101): сигла джерела mer10 → m10 (як в інших пулах 10 кл.); статус draft до верифікації.
+   2026-11-01 (fix-math-content-minor-1101): сигла джерела mer10 → m10 (як в інших пулах 10 кл.); статус verified (verifier-fix-math-content-minor-1101, 2026-11-01; reports/verify/fix-math-content-minor-1101.md).
    Перевірка: node tools/validate.mjs --pool pg10m2
    Схема: docs/CONTENT_SCHEMA.md §10 */
 SLID.pool("math", {
   id: "pg10m2",
   section: "g10m2",
-  status: "draft",
+  status: "verified",
   meta: { author: "agent-write-math-pool-g10m2", created: "2026-10-31", factcheck: "verifier-pool-g10m2", teacher: null },
   sources: [
     { id: "m10", title: "Мерзляк А. Г., Номіровський Д. А., Полонський В. Б., Якір М. С. Математика: алгебра і початки аналізу та геометрія, рівень стандарту: підручник для 10 класу. — Харків: Гімназія, 2018 (п. 27, 29; дзеркало file.4book.org)", url: "https://file.4book.org/images/shcoolbook_ua/10/10_m_m_2018_ua.pdf" }
