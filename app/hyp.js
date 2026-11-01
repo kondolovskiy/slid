@@ -28,7 +28,7 @@ window.SLID_HYP = (() => {
     near: 0.1, far: 0.5,     // S6 (частка ключа), S14
     patDays: 7, preDays: 14, // S8, S12
     expDays: 7,              // без перевірки — expired
-    close: 0.8, maxN: 2,     // confirmed / undecided
+    close: 0.8,              // confirmed: pexec ≥ 0,8 (обчислення) або ≤ 0,2 (поняття/передумова) після чистої перевірки
     pass: 0.65,              // superseded: урок пройдено знову з ≥ 65 %
     seenDays: 3,             // D°: ≥ 3 дні від показу розв'язання цієї вправи
     genDays: 35, genMin: 20, // Dg: набір не показано за 35 днів, у вправи ≥ 20 наборів
@@ -359,15 +359,16 @@ window.SLID_HYP = (() => {
   function tracker(opts = {}) {
     const seed = String(opts.seed || randId()).slice(0, 12), persist = opts.persist ? 1 : 0;
     let cnt = 0, scr = 0;
-    let open = [], errs = [], gens = {}, shown = {}, runRes = { run: null, list: [] }, pend = null;
+    let open = [], errs = [], gens = {}, shown = {}, passed = {}, runRes = { run: null, list: [] }, pend = null;
     const nid = () => `${seed}.${++cnt}`;
     const pk = (l, sk) => `${l}|${sk ?? ""}`;
     const inPair = (h, l, sk) => h.ls.includes(l) && (h.sk ?? null) === (sk ?? null);
     const tOf = a => typeof a.t === "number" ? a.t : dayNum(a.day) * DAY;
-    const closeEv = (h, why, extra = {}) => ({ type: "hyp_close", d: { hid: h.hid, why, ...topOf(h.post), pexec: pexecOf(h.post), n: h.n, rv: RULES_VERSION, ...extra } });
+    const grpOf = post => { const e = pexecOf(post); return e >= TH.close ? "exec" : e <= r3(1 - TH.close) ? "know" : null; };
+    const closeEv = (h, why, extra = {}) => ({ type: "hyp_close", d: { hid: h.hid, why, ...topOf(h.post), pexec: pexecOf(h.post), ...(why === "confirmed" ? { grp: grpOf(h.post) } : {}), n: h.n, rv: RULES_VERSION, ...extra } });
     function expire(t) {
       const ev = [];
-      open = open.filter(h => { if (t - h.tl > TH.expDays * DAY) { ev.push(closeEv(h, "expired")); return false; } return true; });
+      open = open.filter(h => { if (t - h.t0 > TH.expDays * DAY) { ev.push(closeEv(h, "expired")); return false; } return true; });
       errs = errs.filter(e => t - e.t <= TH.preDays * DAY).slice(-TH.cap.errs);
       return ev;
     }
@@ -375,13 +376,16 @@ window.SLID_HYP = (() => {
     function explained(match, day) {
       for (const h of open) if (match(h)) { if (day === h.d0) h.x0++; else h.sol = 1; }
     }
+    /** Урок пройдено (lesson_end ≥ 65 % або a.done від app.js): для superseded — «пройдено знову». */
+    const markPassed = (l, day) => { passed[l] = day || true; const ks = Object.keys(passed); if (ks.length > TH.cap.shown) delete passed[ks[0]]; };
     function doOpen(p, try2, hint2) {
       const a = p.a, as = assess(a.s, a.raw, { ...p.ctx, try2, hint2 });
       const ev = [];
       if (open.length >= TH.cap.open) { const old = open.shift(); ev.push(closeEv(old, "expired", { cap: 1 })); }
       const h = { hid: nid(), l: a.item.l, ls: p.ls, sk: a.item.sk ?? null, key: a.item.key ?? null, lvl: a.lvl ?? null, mode: a.item.mode,
-        rule: as.rule, codes: as.codes, post: as.prior, t0: tOf(a), tl: tOf(a), d0: a.day, scr0: p.scr0, x0: 0, sol: 0, n: 0, aSent: 0,
-        run: a.run ?? null, pres: (a.pres || []).slice(0, TH.cap.pres) };
+        rule: as.rule, codes: as.codes, post: as.prior, t0: tOf(a), d0: a.day, scr0: p.scr0, x0: 0, sol: 0, n: 0, aSent: 0,
+        run: a.run ?? null, pres: (a.pres || []).slice(0, TH.cap.pres),
+        prev: p.ls.filter(l => passed[l] || (a.done || []).includes(l)) };   // уроки пари, пройдені до відкриття (superseded — лише «знову»)
       open.push(h);
       errs.push({ pk: pk(h.l, h.sk), l: h.l, codes: as.codes, t: h.t0 });
       ev.push({ type: "hyp_open", d: { ...(as.amb ? { amb: 1 } : {}), hid: h.hid,
@@ -404,7 +408,8 @@ window.SLID_HYP = (() => {
       const sameDay = a.day === h.d0;
       // A: той самий день після показаного пояснення (власне пояснення вправи з помилкою є завжди, крім тесту рівня)
       if ((pair || isF) && sameDay && (h.mode !== "diag" || h.x0 > 0)) return "A";
-      if (pre) return a.unseen && (a.lvl ?? 1) === 1 ? "P" : null;
+      // P того самого дня після пояснення — не перевірка (як D: «інший день», §9 п. 7)
+      if (pre) return a.unseen && (a.lvl ?? 1) === 1 && !(sameDay && (h.mode !== "diag" || h.x0 > 0)) ? "P" : null;
       if (isF) return a.unseen ? "F" : null;
       if (s.type !== "answer" && s.type !== "number") return null;
       const le = (a.lvl ?? 1) <= (h.lvl ?? 1);
@@ -419,7 +424,7 @@ window.SLID_HYP = (() => {
     /** Головний вхід (§3.3). a: { s — вправа/екран зі змісту, item: { mode, l, i, key, type, sk, hyp }, raw, verdict, try, hint, final,
         dt, t — мс, day — "YYYY-MM-DD", lvl, unseen — S.seen[key] === undefined до цієї спроби, run — id сесії (урок/тренування/тест),
         ls — уроки пари (тест рівня: уроки теми; інакше [item.l]), pres — уроки-передумови, preWeak — тема pre тесту gap/shaky,
-        gv, genN — набір і кількість наборів gen-вправи }. Повертає [{ type, d }]. */
+        gv, genN, genAt — набір, кількість наборів і індекс gen-вправи, done — пройдені уроки (S.lessons) }. Повертає [{ type, d }]. */
     function onAnswer(a) {
       const ev = [], it = a.item || {}, t = tOf(a), tr = a.try ?? 1, mine = [];
       if (it.hyp || a.verdict === "hyp") return ev;
@@ -436,15 +441,15 @@ window.SLID_HYP = (() => {
             if (kind === "A") { if (h.aSent) continue; h.aSent = 1; }
             if (res === "bad" && pcodes === null) pcodes = assess(a.s, a.raw, {}).codes;
             const same = res === "bad" && (pcodes || []).some(c => h.codes.includes(c)) ? 1 : 0;
-            // розподіл оновлює лише чиста перевірка (sol 0); n — усі перевірки, крім A (§2.4: «2 перевірки без порогу → undecided»)
+            // Перша перевірка не виду A закриває гіпотезу (§9 п. 10): розв'язання, показане після неї, — пояснення пари, тож чистих
+            // перевірок далі бути не може. Чиста (sol 0) оновлює розподіл → confirmed за групою (pexec ≥ 0,8 чи ≤ 0,2) або undecided;
+            // нечиста (sol 1) розподілу не змінює → undecided. n — скільки перевірок оновили розподіл (0 або 1).
             const clean = kind !== "A" && h.sol === 0, counted = kind !== "A" && ["ok", "form", "bad"].includes(res);
-            if (clean && counted) h.post = update(h.post, kind, res, same);
-            if (counted) h.n++;
-            const tp = topOf(h.post);
+            if (clean && counted) { h.post = update(h.post, kind, res, same); h.n++; }
             ev.push({ type: "hyp_probe", d: { hid: h.hid, prb, kind, key: it.key ?? null, ...(a.genAt !== undefined ? { genAt: a.genAt } : {}),
               gap: { scr: scr - h.scr0, min: Math.round((t - h.t0) / 6e4), days: dayDiff(h.d0, a.day) }, sol: h.sol, sol0: h.x0, shown: 0, res, same,
               post: dist(h.post), pexec: pexecOf(h.post), rv: RULES_VERSION } });
-            if (counted) { h.tl = t; if (clean && tp.p >= TH.close && tp.top !== "unk") { ev.push(closeEv(h, "confirmed")); h.closed = 1; } else if (h.n >= TH.maxN) { ev.push(closeEv(h, "undecided")); h.closed = 1; } }
+            if (counted) { ev.push(closeEv(h, clean && grpOf(h.post) ? "confirmed" : "undecided")); h.closed = 1; }
           }
           open = open.filter(h => !h.closed);
         }
@@ -483,21 +488,28 @@ window.SLID_HYP = (() => {
       if (it.mode === "lesson") explained(h => h.ls.includes(it.l), x.day);
       return ev;
     }
-    /** Підсумок уроку: пройдено знову (інша сесія) з ≥ 65 % → superseded для гіпотез, чиї уроки пари містять l. */
+    /** Підсумок уроку. superseded — лише якщо урок пари пройдено **знову** (інша сесія, ≥ 65 %), тобто він уже був пройдений до
+        відкриття гіпотези або в сесії з помилкою. Перший прохід уроку теми після тесту рівня — це пояснення (екрани → sol0 / sol: 1), не закриття. */
     function onLessonEnd(x) {
-      const ev = [...flush()];
+      const ev = [...flush()], run = x.run ?? null;
+      for (const h of open) if (h.ls.includes(x.l) && h.run === run && !h.prev.includes(x.l)) h.prev.push(x.l);   // сесія з помилкою — урок пройдено
       if ((x.acc ?? 0) < TH.pass) return ev;
-      open = open.filter(h => { if (h.ls.includes(x.l) && h.run !== (x.run ?? null)) { ev.push(closeEv(h, "superseded")); return false; } return true; });
+      open = open.filter(h => {
+        if (!h.ls.includes(x.l) || h.run === run) return true;
+        if (h.prev.includes(x.l)) { ev.push(closeEv(h, "superseded")); return false; }
+        h.prev.push(x.l); return true;
+      });
+      markPassed(x.l, x.day);
       return ev;
     }
     /** «Скинути прогрес»: усі відкриті → reset (до EV.log("reset"), §3.3); стан очищено. */
-    function onReset() { const ev = [...flush(), ...open.map(h => closeEv(h, "reset"))]; open = []; errs = []; gens = {}; shown = {}; runRes = { run: null, list: [] }; return ev; }
+    function onReset() { const ev = [...flush(), ...open.map(h => closeEv(h, "reset"))]; open = []; errs = []; gens = {}; shown = {}; passed = {}; runRes = { run: null, list: [] }; return ev; }
     /** Старт / час минув: старші за 7 днів без перевірки → expired. */
     function tick(x) { return [...expire(tOf(x))]; }
-    const state = () => JSON.parse(JSON.stringify({ v: 1, rv: RULES_VERSION, open, probed: {}, gens, errs, shown, cnt }));
+    const state = () => JSON.parse(JSON.stringify({ v: 1, rv: RULES_VERSION, open, probed: {}, gens, errs, shown, passed, cnt }));
     function load(st) {
       if (!st || st.v !== 1) return false;
-      open = Array.isArray(st.open) ? st.open : []; gens = st.gens || {}; errs = st.errs || []; shown = st.shown || {}; cnt = st.cnt || cnt; return true;
+      open = Array.isArray(st.open) ? st.open : []; gens = st.gens || {}; errs = st.errs || []; shown = st.shown || {}; passed = st.passed || {}; cnt = st.cnt || cnt; return true;
     }
     return { onAnswer, onScreen, onLessonEnd, onReset, tick, flush, state, load, get open() { return open.map(h => ({ ...h })); }, seed };
   }

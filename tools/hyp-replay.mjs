@@ -42,7 +42,7 @@ export function replay(exp, E) {
     const first = evs[0]; prof.fresh = !!(first && ((first.type === "boot" && first.d?.lessons === 0) || first.type === "reset"));
     const push = (e, list) => { for (const x of list) {
       const r = { ...x, did, pid, t: e.t, seq: e.seq ?? null }; out.push(r);
-      if (x.type === "hyp_open") hyps.set(x.d.hid, { open: r, probes: [], close: null, next: [], raw: e.d?.raw, pair: [x.d.h.l, x.d.h.sk], d0: localDay(e.t, e.tzo), did, pid });
+      if (x.type === "hyp_open") hyps.set(x.d.hid, { open: r, probes: [], close: null, next: [], raw: e.d?.raw, pair: [x.d.h.l, x.d.h.sk], d0: localDay(e.t, e.tzo), did, pid, fresh: prof.fresh });
       else if (x.d.hid && hyps.has(x.d.hid)) { const h = hyps.get(x.d.hid); if (x.type === "hyp_probe") h.probes.push(r); if (x.type === "hyp_close") h.close = r; }
     } };
     for (const e of evs) {
@@ -72,6 +72,8 @@ export function replay(exp, E) {
             raw: d.raw, verdict: d.verdict, try: d.try, hint: !!d.hint, final: !!d.final, dt: e.dt, t: e.t, day,
             lvl: d.key ? (lvl[d.key] ?? s.lvl ?? null) : null, unseen: d.key ? seen[d.key] === undefined : undefined, run, ls, pres,
             preWeak: pres.some(l => weak.has(l)), cv: e.cv ?? null };
+          // gen (Dg): набір значень і індекс — з журналу (d.gv, d.genAt, E2), кількість наборів — зі змісту (genAll)
+          if (d.gv !== undefined && d.gv !== null) { a.gv = d.gv; a.genAt = d.genAt; a.genN = s.gen ? (E.learn.genAll(s)?.envs?.length ?? 0) : 0; }
           // наступні 3 відкладені відповіді першої спроби на пару (для «хибної тривоги» й «пропущеного поняття», §4.1)
           if (d.mode === "practice" && (d.try ?? 1) === 1) for (const h of hyps.values())
             if (h.did === did && h.pid === pid && h.pair[0] === d.l && h.pair[1] === a.item.sk && day > h.d0 && h.next.length < 3) h.next.push(d.verdict === "bad" ? 0 : 1);
@@ -100,29 +102,32 @@ export function metrics(R, E) {
   const pairs = new Map(); for (const h of hs) pairs.set(pairKey(h), (pairs.get(pairKey(h)) || false) || resolved(h));
   M.resolvable = { hyps: share(hs.filter(resolved).length, hs.length), pairs: share([...pairs.values()].filter(Boolean).length, pairs.size), pairCount: pairs.size };
   // точність лише за чистими перевірками (sol: 0, не A); прогноз — pexec перед цією перевіркою
-  const acc = {}, brier = {}, base = { always_calc: [0, 0], always_rule: [0, 0] }, cls = {}, weakSig = {};
+  // P2-2: профіль, чий журнал не починається з порожнього стану (ротація, прогрес до Evidence V2), — «небачене» за журналом
+  // ненадійне (вправа могла бути розв'язана до початку журналу), тож його перевірки — окремим зрізом accuracyNotFresh, не в головній точності
+  const acc = {}, accStale = {}, brier = {}, base = { always_calc: [0, 0], always_rule: [0, 0] }, cls = {}, weakSig = {};
   const cell = (o, k) => (o[k] ||= { n: 0, ok: 0, m: { exec_ok: 0, exec_bad: 0, know_ok: 0, know_bad: 0 } });
   for (const h of hs) {
     let prior = H.CLS.map(c => h.open.d.h.prior[c]);
-    const lvl = h.open.d.h.lvl ?? "—";
+    const lvl = h.open.d.h.lvl ?? 1;   // вправа уроку чи тесту рівня (lvl немає) — рівень 1 (§9 п. 7)
     for (const p of h.probes) {
       const d = p.d, before = prior; prior = H.CLS.map(c => d.post[c]);
       if (d.kind === "A" || d.sol !== 0 || !["ok", "form", "bad"].includes(d.res)) continue;
       const ok = d.res !== "bad", pe = before[0] + before[1];
       const L = H.LIK[d.kind]; const pOk = before.reduce((s, x, i) => s + x * L[i], 0);
-      (brier[d.kind] ||= { n: 0, sum: 0 }); brier[d.kind].n++; brier[d.kind].sum += (pOk - (ok ? 1 : 0)) ** 2;
-      base.always_calc[1]++; base.always_rule[1]++; if (ok) base.always_calc[0]++; else base.always_rule[0]++;
+      if (h.fresh) { (brier[d.kind] ||= { n: 0, sum: 0 }); brier[d.kind].n++; brier[d.kind].sum += (pOk - (ok ? 1 : 0)) ** 2;
+        base.always_calc[1]++; base.always_rule[1]++; if (ok) base.always_calc[0]++; else base.always_rule[0]++; }
       if (Math.abs(pe - .5) < 1e-9) continue;
       const g = Object.keys(CLEAN_GROUPS).find(k => CLEAN_GROUPS[k].includes(d.kind));
       const hit = (pe > .5) === ok, mk = (pe > .5 ? "exec_" : "know_") + (ok ? "ok" : "bad");
-      for (const key of [g, `${g}|lvl${lvl}`, `${g}|sol0=${d.sol0 ? "≥1" : "0"}`]) { const c = cell(acc, key); c.n++; if (hit) c.ok++; c.m[mk]++; }
+      for (const key of [g, `${g}|lvl${lvl}`, `${g}|sol0=${d.sol0 ? "≥1" : "0"}`]) { const c = cell(h.fresh ? acc : accStale, key); c.n++; if (hit) c.ok++; c.m[mk]++; }
+      if (!h.fresh) continue;
       const top = H.topOf(before).top, cc = (cls[top] ||= { n: 0, ok: 0 }); cc.n++; if (ok) cc.ok++;
       const rule = h.open.d.h.rule, sig = h.open.d.h.sig;
       for (const w of [rule === "P8" && "P8 (S6)", rule === "P6" && "P6 (S3)", sig.includes("S11") && "S11"].filter(Boolean)) { const c = (weakSig[w] ||= { n: 0, ok: 0 }); c.n++; if (hit) c.ok++; }
     }
   }
-  for (const c of Object.values(acc)) c.acc = share(c.ok, c.n);
-  M.accuracy = acc;
+  for (const c of [...Object.values(acc), ...Object.values(accStale)]) c.acc = share(c.ok, c.n);
+  M.accuracy = acc; M.accuracyNotFresh = accStale;
   M.brier = Object.fromEntries(Object.entries(brier).map(([k, v]) => [k, { n: v.n, brier: Math.round(1000 * v.sum / v.n) / 1000 }]));
   M.baselines = { always_calc: share(...base.always_calc), always_rule: share(...base.always_rule), only_detect: "не реалізовано в E1 (потрібен реплей record/detect з порожнього стану, E4)" };
   M.byClass = Object.fromEntries(Object.entries(cls).map(([k, v]) => [k, { n: v.n, okShare: share(v.ok, v.n) }]));
@@ -156,6 +161,9 @@ function reportMd(R, M, meta) {
   L.push("", "## Точність exec/know (лише чисті перевірки, sol: 0)", "", "| Вид · зріз | n | точність | exec ✔ | exec ✘ | know ✔ | know ✘ |", "|---|---|---|---|---|---|---|");
   for (const [k, c] of Object.entries(M.accuracy).sort()) L.push(`| ${k} | ${c.n} | ${c.acc} | ${c.m.exec_ok} | ${c.m.exec_bad} | ${c.m.know_ok} | ${c.m.know_bad} |`);
   if (!Object.keys(M.accuracy).length) L.push("| — | 0 | — | | | | |");
+  const stale = R.profiles.filter(p => !p.fresh).length;
+  L.push("", `**Профілі не з початку журналу:** ${stale} (журнал не починається з \`boot\` з \`lessons: 0\` чи \`reset\` — ротація або прогрес до Evidence V2). «Небачену» вправу для них визначено лише за журналом, тож їхні перевірки — окремо, у точність вище не входять.`);
+  if (Object.keys(M.accuracyNotFresh).length) { L.push("", "| Вид · зріз (не з початку) | n | точність |", "|---|---|---|"); for (const [k, c] of Object.entries(M.accuracyNotFresh).sort()) L.push(`| ${k} | ${c.n} | ${c.acc} |`); }
   L.push("", "## Види перевірок", "", ...Object.entries(M.kinds).map(([k, v]) => `- ${k}: ${v}`), "", "## Закриття", "", ...Object.entries(M.closes).map(([k, v]) => `- ${k}: ${v}`));
   L.push("", "## Правила відкриття", "", ...Object.entries(M.rules).map(([k, v]) => `- ${k}: ${v}`));
   L.push("", "## Калібрування (Brier, P(✔) за видом)", "", ...Object.entries(M.brier).map(([k, v]) => `- ${k}: ${v.brier} (n = ${v.n})`));
@@ -267,8 +275,8 @@ function printStats(st) {
     `   title — чистий вираз: ${s0.pureTitle} з ${s0.poolAnswers} answer`,
     `§2.1 помилок першої сесії ${s21.errors}: A ${s21.A}; D≤ ${s21.Dle} (рівень 1 — ${s21.byLvl[1]?.Dle ?? 0}/${s21.byLvl[1]?.errors ?? 0}, рівень 2 — ${s21.byLvl[2]?.Dle ?? 0}/${s21.byLvl[2]?.errors ?? 0}); D> ${s21.Dgt}; D° ${s21.Dseen}; нічого з lvl ≤ ${s21.none}; будь-яка небачена ${s21.anyUnseen}; F ${s21.F}; природно наступної сесії D≤ / будь-яка ${s21.natDle} / ${s21.natAny}`,
     `   передумови: уроків з пулом ${pre.poolLessons}, requires ${pre.viaRequires}, теми тестів ${pre.viaDiagTopicFor}, pre екранів ${pre.viaPreScreens}, разом ${pre.any}, з пулом передумови ${pre.anyWithPrePool}`,
-    `§2.3 чисті наступного дня: рівень 1 — ${s23[1].clean}/${s23[1].errors} (D≤ ${s23[1].cleanDle}, D> ${s23[1].cleanDgt}), рівень 2 — ${s23[2].clean}/${s23[2].errors} (D≤ ${s23[2].cleanDle}, D> ${s23[2].cleanDgt}); sol0 ≥ 1 — ${s23[1].sol0}/${s23[1].errors} і ${s23[2].sol0}/${s23[2].errors}; пари першої сесії ${JSON.stringify(st.pairSizes)}`,
-    `   через app/hyp.js: рівень 1 — чисті ${M.byLvl[1].clean}/${M.byLvl[1].errors} ${JSON.stringify(M.byLvl[1].kinds)}, sol0 ≥ 1 ${M.byLvl[1].sol0ge1}; рівень 2 — чисті ${M.byLvl[2].clean}/${M.byLvl[2].errors} ${JSON.stringify(M.byLvl[2].kinds)}, sol0 ≥ 1 ${M.byLvl[2].sol0ge1}; A (той самий день) ${M.A.any}, з них lvl ≤ ${M.A.le}`
+    `§2.3 (скрипт редакції 4) чисті наступного дня: рівень 1 — ${s23[1].clean}/${s23[1].errors} (D≤ ${s23[1].cleanDle}, D> ${s23[1].cleanDgt}), рівень 2 — ${s23[2].clean}/${s23[2].errors} (D≤ ${s23[2].cleanDle}, D> ${s23[2].cleanDgt}); sol0 ≥ 1 — ${s23[1].sol0}/${s23[1].errors} і ${s23[2].sol0}/${s23[2].errors}; пари першої сесії ${JSON.stringify(st.pairSizes)}`,
+    `   §2.3 через app/hyp.js (цифри документа з E1): рівень 1 — чисті ${M.byLvl[1].clean}/${M.byLvl[1].errors} ${JSON.stringify(M.byLvl[1].kinds)}, sol0 ≥ 1 ${M.byLvl[1].sol0ge1}; рівень 2 — чисті ${M.byLvl[2].clean}/${M.byLvl[2].errors} ${JSON.stringify(M.byLvl[2].kinds)}, sol0 ≥ 1 ${M.byLvl[2].sol0ge1}; A (той самий день) ${M.A.any}, з них lvl ≤ ${M.A.le}`
   ];
   console.log(lines.join("\n"));
 }
