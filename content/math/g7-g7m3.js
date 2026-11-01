@@ -1,5 +1,5 @@
 /* Слід · Математика, 7 клас — «Алгебра: цілі вирази»
-   Статус уроків: verified (verifier-g7m3); l2 — draft (2026-11-01, refine-math-diag-probes-v3: екран «одночлен × многочлен», Алгебра 7 п. 10). 5 уроків (4 теми + boss).
+   Статус уроків: verified (verifier-g7m3); l2 — повторно verified 2026-11-01 (refine-math-diag-probes-v3: екран «одночлен × многочлен», Алгебра 7 п. 10; reports/verify/refine-math-diag-probes-v3.md). 5 уроків (4 теми + boss).
    Інтерактив: ≥ 2 explore/lab у кожному уроці (docs/CONTENT_SCHEMA.md §8).
    Перевірка: node tools/validate.mjs --section g7m3 && node tools/stats.mjs --subject math
    Схема й правила: docs/CONTENT_SCHEMA.md, style/, D-019 */
@@ -197,7 +197,7 @@ SLID.section("math", {
       title: "Вираз як графік",
       short: "Многочлени",
       icon: "chart",
-      status: "draft",
+      status: "verified",
       why: "Одночлен і многочлен — це мова, якою алгебра записує довгі суми коротко. Графік показує, як вираз «живе».",
       screens: [
         {

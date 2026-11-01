@@ -4,7 +4,7 @@ claimed_at: 2026-11-01T12:09:26.991Z
 id: refine-math-diag-probes-v3
 type: content
 subject: math
-status: review
+status: done
 claimed_by: agent-refine-math-diag-probes-v3
 created: 2026-11-01
 depends_on: [refine-math-content-from-matrix-v3]
