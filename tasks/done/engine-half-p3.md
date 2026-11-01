@@ -4,7 +4,7 @@ claimed_at: 2026-11-01T19:34:54.388Z
 id: engine-half-p3
 type: engine
 subject: math
-status: review
+status: done
 claimed_by: engineer-half-p3
 created: 2026-11-01
 depends_on: [engine-diag-half-credit]
