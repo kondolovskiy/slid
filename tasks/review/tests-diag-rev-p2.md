@@ -4,7 +4,7 @@ claimed_at: 2026-11-01T12:09:26.854Z
 id: tests-diag-rev-p2
 type: engine
 subject: math
-status: todo
+status: review
 claimed_by: agent-tests-diag-rev-p2
 created: 2026-10-31
 depends_on: [refine-math-diag-g6-coverage]
@@ -21,3 +21,8 @@ depends_on: [refine-math-diag-g6-coverage]
 Готово: мутації з рев'ю ловляться тестами; незалежне рев'ю (D-026) «прийнято».
 
 ## Нотатки виконавця
+- **P2-1** test-answer-ui (grade_context_checks, suite regression): чистий профіль 6 кл., тест dg6 через плеєр (без підкладеного diagRunRev), відповіді до двох rev-проб включно → `diagRunRev.dg6 == 2`, вердикти rev-проб 1; ✕, reload → diagRun і diagRunRev ті самі, «Продовжити тест», наступне завдання — не з уже відповіданих. Мутація app.js `startDiag` → `res:S.diagRun[d.id]||(S.diagRun[d.id]={})` — сценарій падає (KeyError 'dg6', rc 1).
+- **P3-1** test-learn: запуск ред. 2 при ред. 3 — відкинуто лише rev-3, rev-2 лишився; ред. 1 при ред. 3 — обидва. Мутація `saved >= 1 ? rev` — 2 помилки.
+- **P3-2** app/learn.js: `itemRev` — один розбір rev для diagRev і resumeDiag; тест: при ред. 2 завдання з rev «3» і 2.5 не відкидаються. Мутація назад на `(it.rev || 1) > from` — ловиться.
+- **P3-3** test-learn: ключ 99 за межами items у старому запуску відкидається; у запуску чинної редакції — не чіпається. Мутація без `!it ||` — ловиться.
+- Перевірки й коміт — див. engine-learn-list-prefixes-p3 (спільний комплект).

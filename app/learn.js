@@ -116,7 +116,9 @@ window.SLID_LEARN = (() => {
      зараховується новому); решта відповідей і порядок показу не змінюються. Завершений результат S.diag не перераховується
      новою оцінкою: план, known і теми лишаються такими, як їх отримано, до повторного тесту (rev результату — для довідки).
      Додавати, вилучати чи переставляти завдання цим механізмом не можна — для такої зміни потрібен новий id тесту. */
-  const diagRev = d => Math.max(1, ...(d?.items || []).map(it => Number.isInteger(it?.rev) && it.rev > 1 ? it.rev : 1));
+  // Редакція завдання: ціле rev ≥ 2, інакше 1 — один розбір для diagRev і resumeDiag (рев'ю refine-math-diag-g6-coverage P3-2)
+  const itemRev = it => Number.isInteger(it?.rev) && it.rev > 1 ? it.rev : 1;
+  const diagRev = d => Math.max(1, ...(d?.items || []).map(itemRev));
   /** Готує розпочатий тест до продовження чинною редакцією. Повертає { res, rev, dropped — індекси відкинутих вердиктів }. */
   function resumeDiag(S, d) {
     if (!S.diagRun || typeof S.diagRun !== "object") S.diagRun = {};
@@ -124,7 +126,7 @@ window.SLID_LEARN = (() => {
     const res = S.diagRun[d.id] && typeof S.diagRun[d.id] === "object" ? S.diagRun[d.id] : (S.diagRun[d.id] = {});
     const rev = diagRev(d), keys = Object.keys(res), saved = S.diagRunRev[d.id];
     const from = Number.isInteger(saved) && saved >= 1 ? saved : keys.length ? 1 : rev, dropped = [];
-    if (from < rev) for (const k of keys) { const it = d.items[k]; if (!it || (it.rev || 1) > from) { delete res[k]; dropped.push(Number(k)); } }
+    if (from < rev) for (const k of keys) { const it = d.items[k]; if (!it || itemRev(it) > from) { delete res[k]; dropped.push(Number(k)); } }
     S.diagRunRev[d.id] = Math.max(from, rev);
     return { res, rev, dropped };
   }
@@ -221,8 +223,19 @@ window.SLID_LEARN = (() => {
       ["ms3l1", "math.pct", "math.frac"], ["ms3l2", "math.pct", "math.part"], ["g8m1l4", "math.expr", "math.func"], ["g8m3l2", "math.expr", "math.num"],
       ["g9m3l4", "math.func", "math.eq"], ["g9m5l1", "math.expr", "math.num"], ["g9m5l2", "math.expr", "math.num"], ["g9m5l3", "math.expr", "math.num"],
       ["g9m6l2", "math.geom", "math.meas"]] } };
-  /** Один раз переносить sk записів журналу помилок за SK_RETAG і скидає вікна старих навичок. Повертає кількість змінених записів. */
-  function migrateSk(S, fix = SK_RETAG) {
+  /* Друга міграція (engine-learn-list-prefixes-p3), окремий id: правила для sk, змінених у змісті 2026-11-01. У кожному з цих
+     уроків старий sk мали лише перетеговані вправи (звірено з попередньою версією змісту, tools/test-learn.mjs — знімок вправ):
+     pg8m6 a06 meas → geom (write-math-pools-multiset-compound, c21bb60); pg7m7 b01/b02 eq → func, pg8m1 b04/b07 expr → ops,
+     pg8m3 d09 expr → func, pg9m3 d06 expr → eq (refine-math-content-from-matrix-v3, 90fa02e). */
+  const SK_RETAG2 = { id: "sk-2026-11-01", rules: [
+    ["g8m6l1", "math.meas", "math.geom"], ["g7m7l2", "math.eq", "math.func"], ["g8m1l2", "math.expr", "math.ops"],
+    ["g8m3l4", "math.expr", "math.func"], ["g9m3l4", "math.expr", "math.eq"]] };
+  // Усі міграції за порядком: кожна виконується один раз за власним id (S.skFix).
+  const SK_MIGRATIONS = [SK_RETAG, SK_RETAG2];
+  /** Один раз переносить sk записів журналу помилок за міграцією fix (без fix — усіма SK_MIGRATIONS по черзі) і скидає вікна
+      старих навичок. Повертає кількість змінених записів. */
+  function migrateSk(S, fix) {
+    if (fix === undefined) return SK_MIGRATIONS.reduce((n, f) => n + migrateSk(S, f), 0);
     if (!S || typeof S !== "object") return 0;
     if (!Array.isArray(S.skFix)) S.skFix = [];
     if (S.skFix.includes(fix.id)) return 0;
@@ -305,13 +318,18 @@ window.SLID_LEARN = (() => {
   // бачить «запис занадто складний, спрости» (badHint), а не звичайне «неправильно». На саму відповідь checkAns не впливає.
   let LIMIT = false;
   const tooBig = () => { LIMIT = true; return TOO; };
-  const spend = n => { if ((STEPS -= n) < 0) throw tooBig(); if ((CLOCK += n) >= 65536) { CLOCK = 0; if (Date.now() > DEADLINE) throw tooBig(); } };
+  // USED — кроки останнього виклику limited разом з усіма поновленнями STEPS (STEP_GRANT, половини пари); CLOCK_HIT — спрацював
+  // годинник-запобіжник. work() віддає їх тестам: межу роботи перевіряють лічильником, а не стіночним часом (флейк під навантаженням).
+  let USED = 0, CLOCK_HIT = false, WORK = { steps: 0, clock: false };
+  const spend = n => { USED += n; if ((STEPS -= n) < 0) throw tooBig(); if ((CLOCK += n) >= 65536) { CLOCK = 0; if (Date.now() > DEADLINE) { CLOCK_HIT = true; throw tooBig(); } } };
   const guard = () => spend(1);
   /** Межі на один виклик fn (checkAns, listKey, pairKey, підказки): кроки й годинник-запобіжник; після — без меж. */
   function limited(fn, onTooBig) {
-    DEADLINE = Date.now() + CLOCK_MS; STEPS = STEP_MAX; CLOCK = 0; BUDGET = 50000;
-    try { return fn(); } catch (e) { if (e === TOO) return onTooBig(); throw e; } finally { DEADLINE = Infinity; STEPS = Infinity; }
+    DEADLINE = Date.now() + CLOCK_MS; STEPS = STEP_MAX; CLOCK = 0; BUDGET = 50000; USED = 0; CLOCK_HIT = false;
+    try { return fn(); } catch (e) { if (e === TOO) return onTooBig(); throw e; } finally { DEADLINE = Infinity; STEPS = Infinity; WORK = { steps: USED, clock: CLOCK_HIT }; }
   }
+  /** Робота останнього обмеженого виклику (checkAns, підказки): { steps — витрачено кроків, clock — спрацював годинник }. Для тестів. */
+  const work = () => ({ ...WORK, max: STEP_MAX, grant: STEP_GRANT });
   const Q = (p, q = 1n) => { if (q === 0n) return null; if (q < 0n) { p = -p; q = -q; } if (p > BIG || -p > BIG || q > BIG) throw tooBig(); const g = bgcd(p, q) || 1n; return [p / g, q / g]; };
   const qadd = (a, b) => Q(a[0] * b[1] + b[0] * a[1], a[1] * b[1]), qmul = (a, b) => Q(a[0] * b[0], a[1] * b[1]);
   function parseTree(tokens) {
@@ -598,13 +616,53 @@ window.SLID_LEARN = (() => {
   }
   /* Назва перед координатами, що не змінює відповідь (рішення 2026-10-31, п. 5): точка чи вектор з 1–2 великих латинських літер,
      можна з «=» (A(3; 1), AB = (3; 1), AB(3; 1)), \vec{AB} = (…), \overrightarrow{AB} = (…). Мала літера без «=» — лише в числовому
-     шляху (m(-4; 0), як і раніше); у символьному ключі k(p − m; k − n) — множник, не назва. */
-  const VEC_NAME = "(?:\\\\(?:vec|overrightarrow)\\s*\\{\\s*[A-Z]{1,2}\\s*\\}|[A-Z]{1,2})\\s*=?";
-  const NAME_RE = new RegExp(`^${VEC_NAME}\\s*(?=\\()`), NAME_LOW_RE = new RegExp(`^(?:${VEC_NAME}|[a-z])\\s*(?=\\()`);
-  /** Впорядковані координати (3; −2) / A(3; -2) / AB = (3; −2) / [3, -2]: рівно n компонент, порядок і знак важливі. */
-  function parsePoint(v, n, exact) {
+     шляху (m(-4; 0), як і раніше); у символьному ключі k(p − m; k − n) — множник, не назва.
+     Правило єдиної назви з умови (engine-learn-list-prefixes-p3): якщо умова питає про одну названу точку чи вектор
+     (askedPoint: «точки $B$», «вектора $\overrightarrow{AB}$», «вершини $C$»), назва в записі має бути саме нею — «CD = (−3; 1)»
+     чи «A(1; 6)» при «знайди точку B» не зараховуються. Якщо умова такої назви не має — будь-яка назва, як у D-030 (2) («M = (6; -33)»,
+     «B = (3; 5)»), крім назв даних точок умови («A(3; 5)», коли $A(4; -3)$ — дана) — варіант B оркестратора, уточнення D-030 (2).
+     Значення правильне, а назву відкинуто — «form» з поясненням (nameMsg), не «ok». */
+  const NAME_AT = /^(?:\\(?:vec|overrightarrow)\s*\{\s*([A-Z]{1,2})\s*\}|([A-Z]{1,2})|([a-z]))\s*(=?)\s*(?=\()/;
+  // Текст умови для пошуку назви: без HTML-тегів (лише справжніх — «<» у формулі лишається) і без прикладів формату
+  // («Наприклад, $(1; 5]$ — це всі числа $y$…» до кінця абзацу): приклад не називає шукане.
+  const stmtText = s => ["title", "body", "q", "text"].map(k => typeof s?.[k] === "string" ? s[k] : "").join(" </p> ")
+    .replace(/наприклад[^]*?(?=<\/p>|$)/giu, " ").replace(/<\/?[a-zA-Z][^<>]*>/g, " ");
+  // Слово перед формулою, що називає шукане: «координати точки $B$», «вектора $\vec{AB}$», «вершини $C$», «кінця», «центра», «образ».
+  const ASK_WORD = /(?:^|[^а-яґєії])(?:точк|вершин|вектор|кін[еця]|центр|образ)[а-яґєії]*\s*$/iu;
+  const ASKED = new WeakMap();
+  /** Назви умови: { ask — єдина назва точки чи вектора, про яку питає умова (формула-назва без координат, перед нею — ASK_WORD), або null;
+      given — назви точок і векторів із даними координатами ($A(4; -3)$, $\\vec{AB} = (…)$) }. */
+  function askedPoint(s) {
+    if (!s || typeof s !== "object") return null;
+    if (ASKED.has(s)) return ASKED.get(s);
+    const text = stmtText(s), names = new Set(), given = new Set();
+    // шукане — лише в реченні із запитанням («Знайди координати точки $B$»), не в означенні («кожна точка $X$ переходить…»)
+    const ask = text.split(/(?<=[.?!])\s+(?=[^$]*(?:\$[^$]*\$[^$]*)*$)|<\/p>/).filter(x => /знайд|визнач|які координати|яких координат/i.test(x)).join(" </p> ");
+    for (const m of ask.matchAll(/\$([^$]+)\$/g)) {
+      if (!ASK_WORD.test(ask.slice(Math.max(0, m.index - 40), m.index))) continue;
+      const n = m[1].trim().match(/^(?:\\(?:vec|overrightarrow)\s*\{\s*([A-Z]{1,2})\s*\}|([A-Z]{1,2}))$/);
+      if (n) names.add(n[1] || n[2]);
+    }
+    // точка з даними координатами — дане, не шукане: «симетрична точці A відносно точки $M(2; -3)$» (заголовок «…точки $M$»)
+    for (const [, f] of text.matchAll(/\$([^$]+)\$/g)) for (const g of f.matchAll(/(?:\\(?:vec|overrightarrow)\s*\{\s*([A-Z]{1,2})\s*\}|(?<![A-Za-z])([A-Z]{1,2}))\s*=?\s*\(/g)) given.add(g[1] || g[2]);
+    for (const g of given) names.delete(g);
+    const r = { ask: names.size === 1 ? [...names][0] : null, given };
+    ASKED.set(s, r); return r;
+  }
+  /** Довжина назви на початку запису t (0 — назви немає або її не можна зняти). low — мала літера дозволена (числовий шлях). */
+  // Варіант B (рев'ю engine-learn-list-prefixes-p3, уточнення D-030 (2)): шукана назва є — лише вона; немає — будь-яка назва
+  // з 1–2 великих літер, з «=» чи \vec (D-030 (2)), крім назв даних точок умови (given): «A(3; 5)», коли $A(4; -3)$ — дана початкова точка.
+  function nameLen(s, t, low) {
+    const m = NAME_AT.exec(t); if (!m) return 0;
+    if (m[3]) return low && !m[4] ? m[0].length : 0;
+    const { ask, given } = askedPoint(s) || { ask: null, given: new Set() }, big = m[1] || m[2];
+    if (ask) return big === ask ? m[0].length : 0;
+    return given.has(big) ? 0 : m[0].length;
+  }
+  /** Впорядковані координати (3; −2) / A(3; -2) / AB = (3; −2) / [3, -2]: рівно n компонент, порядок і знак важливі. s — вправа (назва з умови). */
+  function parsePoint(v, n, exact, s) {
     let parts = Array.isArray(v) ? v.map(String) : null;
-    if (!parts) { let t = norm(v).replace(NAME_LOW_RE, ""); const m = t.match(/^\((.*)\)$/s); if (m) t = m[1]; parts = t.split(t.includes(";") ? ";" : ","); }
+    if (!parts) { let t = norm(v); t = t.slice(nameLen(s, t, true)); const m = t.match(/^\((.*)\)$/s); if (m) t = m[1]; parts = t.split(t.includes(";") ? ";" : ","); }
     const xs = parts.length === n ? parts.map(p => elemOf(String(p).replace(/^\s*-\s+/, "-"), exact)) : [];
     return xs.length && xs.every(Boolean) ? xs : null;
   }
@@ -613,11 +671,11 @@ window.SLID_LEARN = (() => {
      числова компонента — як у числовому coordinates2 (число чи точний корінь, без арифметики). */
   // Компоненти верхнього рівня: назва точки A(…) і зовнішні дужки знімаються, лише якщо дужка закривається в кінці запису.
   // sym — запис дитини до символьного ключа: мала літера перед дужками — множник (k(p − m; k − n)), не назва точки.
-  function splitPair(v, sym = false) {
+  function splitPair(v, sym = false, s = null) {
     if (Array.isArray(v)) return v.map(String);
     let t = norm(v);
     const close = i => { let d = 0; for (let j = i; j < t.length; j++) { if (t[j] === "(") d++; else if (t[j] === ")" && !--d) return j; } return -1; };
-    const m = (sym ? NAME_RE : NAME_LOW_RE).exec(t); if (m && close(m[0].length) === t.length - 1) t = t.slice(m[0].length);
+    const nl = nameLen(s, t, !sym); if (nl && close(nl) === t.length - 1) t = t.slice(nl);
     if (t[0] === "(" && close(0) === t.length - 1) t = t.slice(1, -1);
     const sep = t.includes(";") ? ";" : ",", parts = []; let d = 0, from = 0;
     for (let j = 0; j < t.length; j++) { if (t[j] === "(") d++; else if (t[j] === ")") d--; else if (t[j] === sep && !d) { parts.push(t.slice(from, j)); from = j + 1; } }
@@ -634,7 +692,7 @@ window.SLID_LEARN = (() => {
       Кожна компонента-вираз має власну половину кроків (STEP_MAX / 2) і власний бюджет BUDGET: важка перша компонента
       не забирає перевірку в другої. */
   function pairSym(s, v, a) {
-    const kp = splitPair(s.answer), up = splitPair(v, true), ex = exactKey(s.answer);
+    const kp = splitPair(s.answer), up = splitPair(v, true, s), ex = exactKey(s.answer);
     if (up.length !== 2 || (s.form !== undefined && !EXPR_FORMS.includes(s.form))) return null;
     return a.map((ka, i) => {
       if (!varsOf(ka).length) {
@@ -658,18 +716,48 @@ window.SLID_LEARN = (() => {
     const xs = parts.length >= 2 && parts.length <= 3 ? parts.map(p => parseAns(String(p).trim())) : [];
     return xs.length && xs.every(x => x && x.proper && x.n > 0) ? xs : null;
   }
-  /** Проміжок або об'єднання: (-∞; 3], [1; 2) ∪ {5}, ∅, R. Повертає канонічний відсортований список злитих проміжків або null. */
-  function setText(v) {
-    let t = norm(v).replace(/[Øø]/g, "∅").replace(/^[A-Za-z](?:\s*\([A-Za-z]\))?\s*[=∈]\s*/, "");
-    // будь-який вираз перед «∈» не змінює множину (рішення 2026-10-31, п. 5): -n ∈ (…), 2x − 1 ∈ […]
-    const inAt = t.indexOf("∈"), pre = inAt > 0 ? t.slice(0, inAt) : "";
-    if (pre && !/[[\]{};∪]/.test(pre) && parseExpr(pre)) t = t.slice(inAt + 1).trim();
+  /* Префікс перед множиною intervalSet: «x ∈ (…)», «D(f) = (…)», «-n ∈ […)» (рішення 2026-10-31, п. 5) — лише один і лише назва,
+     про яку питає умова (engine-learn-list-prefixes-p3, правило єдиної назви): askedSet(s) — множина дозволених префіксів.
+       • Область значень («область значень», «у яких межах змінюється значення»): функція — y, f(x), E(f) / E(y); не аргумент.
+       • Інакше: єдина «гола» формула умови з малою латинською літерою без знаків відношення й TeX-команд ($-n$, $m$, $a$, $x$);
+         якщо такої немає або їх кілька — єдина змінна умови (taskVar). Область визначення — ще D(f) / D(y).
+     Якщо умова назви не дає (null) — давнє правило: одна літера, можна з «(літера)», перед «=» чи «∈» (x ∈ …, D(f) = …).
+     «n ∈ [-4; 3)» при «яких значень набуває −n», «x ∈ …» при «знайди a», «x ∈ y ∈ (…)» не зараховуються. */
+  const pfx = t => norm(t).replace(/\s+/g, "");
+  const SETS = new WeakMap();
+  function askedSet(s) {
+    if (!s || typeof s !== "object") return null;
+    if (SETS.has(s)) return SETS.get(s);
+    const text = stmtText(s), forms = [...text.matchAll(/\$([^$]+)\$/g)].map(m => m[1].trim()), out = new Set();
+    const fns = new Set(); for (const f of forms) { if (/(?:^|[^a-zA-Z\\])f\s*\(\s*x\s*\)\s*=/.test(f)) fns.add("f"); if (/(?:^|[^a-zA-Z\\_])y\s*=(?!=)/.test(f)) fns.add("y"); }
+    const bare = [...new Set(forms.filter(f => /[a-z]/.test(f) && !/[\\=<>≤≥∈∉≠]/.test(f) && !/^[A-Z]\s*\(\s*[a-z]\s*\)$/.test(f) && !/^[a-z]\s*\(/.test(f) && parseExpr(f)).map(pfx))];
+    for (const f of forms) { const m = f.match(/^([DE])\s*\(\s*([a-z])\s*\)$/); if (m) out.add(`${m[1]}(${m[2]})`); }
+    if (/област\S*\s+значень|меж\S*\s+змінюється\s+значення/i.test(text)) {
+      if (fns.has("f")) out.add("f(x)").add("E(f)");
+      if (taskVar(s) !== "y") out.add("y").add("E(y)").add("E(f)");   // E(f) — і для функції, заданої як y = … (рев'ю P3-3)
+      out.label = "range";
+    } else {
+      if (bare.length === 1) out.add(out.label = bare[0]);
+      else { const x = taskVar(s); if (x) out.add(out.label = x); }
+      if (/област\S*\s+визначення/i.test(text)) for (const f of fns) out.add(`D(${f})`);
+    }
+    const r = out.size ? out : null;
+    SETS.set(s, r); return r;
+  }
+  /** Проміжок або об'єднання: (-∞; 3], [1; 2) ∪ {5}, ∅, R — без префікса (див. askedSet). s — вправа запису дитини (для ключа — null). */
+  function setText(v, s = null) {
+    let t = norm(v).replace(/[Øø]/g, "∅");
+    const at = t.search(/[=∈]/), pre = at > 0 ? t.slice(0, at) : "";
+    if (pre && !/[[\]{};∪∞]/.test(pre)) {
+      const names = askedSet(s);
+      if (names ? names.has(pfx(pre)) : /^[A-Za-z](?:\s*\([A-Za-z]\))?\s*$/.test(pre)) t = t.slice(at + 1).trim();
+    }
     return t;
   }
-  function parseSet(v, exact) {
+  function parseSet(v, exact, s = null) {
     // межа чи елемент — періодичний дріб «0,(3)» = 1/3 (п. 5), як у number; ключ із коренями — так само
     const elemOf = (p, ex) => elemOf0(p, ex) || ratOf(parsePeriodic(p));
-    const t = setText(v);
+    const t = setText(v, s);
     if (/^(∅|\{\s*\})$/.test(t)) return Object.assign([], { raw: 0 });
     const INF = /^([+-]?)(?:∞|inf)$/, ivs = [];
     const split2 = s => s.includes(";") ? s.split(";") : s.split(",");
@@ -882,6 +970,7 @@ window.SLID_LEARN = (() => {
     simplify: "Значення правильне, але запис не спрощено: обчисли, зведи подібні, винеси множник з-під кореня й позбудься кореня в знаменнику.",
     limit: "Запис занадто складний для перевірки. Спрости його й спробуй ще раз.",
     rootNum: "Значення правильне. Обчисли корінь і запиши відповідь числом.",
+    rootCopy: "Це вираз з умови. Обчисли корінь і запиши відповідь числом.",
     constC: "Вираз правильний. Сталу запиши великою латинською літерою C.",
     denom: "Знаменник-добуток візьми в дужки: 1/(3y), бо 1/3y — це y/3.",
     parenPow: "Степінь пиши через знак ^. Число одразу після дужок — це множник, а не показник.",
@@ -891,6 +980,10 @@ window.SLID_LEARN = (() => {
     factored: "Вираз правильний. Розклади його на множники до кінця.",
     reduced: "Вираз правильний. Скороти дріб.",
     simplified: "Вираз правильний, але його можна спростити.",
+    setRange: "Проміжок правильний, але тут шукають значення функції (y, E(f)), а не аргументу.",
+    setName: "Проміжок правильний, але назва перед ним не та. Запиши лише проміжок.",
+    pointName: "Координати правильні, але назва перед ними не та. Запиши лише координати.",
+    listSep: "Без «;» кома розділяє числа. Якщо в числах є десяткова кома, відокремлюй їх знаком «;».",
     retry: "Спробуй ще раз."
   };
   const DEC_WORD = ["цілим числом, без коми", "з одним знаком після коми", "з двома знаками після коми", "з трьома знаками після коми"];
@@ -922,7 +1015,9 @@ window.SLID_LEARN = (() => {
   const QTY_ALIAS = { "доби": "доба", "діб": "доба" };
   const qtyDim = u => QTY.find(([, t]) => u in t);
   const QTY_NAMES = [...QTY.flatMap(([, t]) => Object.keys(t)), ...Object.keys(QTY_ALIAS)].sort((a, b) => b.length - a.length);
-  const QTY_RE = new RegExp(`^(\\d{1,15}(?:,\\d{1,15})?) ?(${QTY_NAMES.join("|")})(?![\\p{L}])[.,]?(?: |$|(?=\\d))`, "u");
+  // число — і з розрядами через пробіл (2 543 см, як у number: групи рівно по 3 цифри, рев'ю verify refine-math-pools-new-kinds);
+  // «25 43 см», «2 5430 см» не розбираються
+  const QTY_RE = new RegExp(`^(\\d{1,3}(?: \\d{3})+(?:,\\d{1,15})?|\\d{1,15}(?:,\\d{1,15})?) ?(${QTY_NAMES.join("|")})(?![\\p{L}])[.,]?(?: |$|(?=\\d))`, "u");
   /** units вправи: { dim, table, units — від більшої до меншої } або null (порожньо, різні величини, повтор, невідома одиниця). */
   function qtyUnits(s) {
     const us = Array.isArray(s?.units) ? s.units : [], d = typeof us[0] === "string" && qtyDim(us[0]);
@@ -935,7 +1030,7 @@ window.SLID_LEARN = (() => {
     const parts = [];
     while (t) {
       const m = QTY_RE.exec(t); if (!m) return null;
-      const u = QTY_ALIAS[m[2]] || m[2], d = qtyDim(u), [w, f = ""] = m[1].split(",");
+      const u = QTY_ALIAS[m[2]] || m[2], d = qtyDim(u), [w, f = ""] = m[1].replace(/ /g, "").split(",");
       parts.push({ v: Q(BigInt(w + f), 10n ** BigInt(f.length)), u, dim: d[0], f: d[1][u], int: !f });
       t = t.slice(m[0].length).trim();
     }
@@ -976,6 +1071,9 @@ window.SLID_LEARN = (() => {
   const qtyList = U => U.units.join(", ");
   const qtyForeignMsg = U => `Перевір одиницю: тут відповідь записують у ${qtyList(U)}.`;
   const qtyMissingMsg = U => `Допиши одиниці: ${qtyList(U)}.`;
+  const qtyTailMsg = U => `Після кожного числа напиши одиницю: ${qtyList(U)}.`;
+  const qtyFracMsg = U => `Звичайний дріб тут не розбирається: запиши величину десятковим дробом або меншими одиницями (${qtyList(U)}).`;
+  const qtyClockMsg = U => `Тут час записують одиницями, а не через двокрапку: ${U.units.join(", потім ")}.`;
   const qtyFormMsg = U => `Значення правильне. Запиши його в ${U.units.join(" і ")}: спершу більші одиниці, потім менші, цілими числами.`;
 
   /* ---------- Число: префікс «x =», періодичний дріб, decimals, improper ---------- */
@@ -998,18 +1096,22 @@ window.SLID_LEARN = (() => {
   /** Пояснення для результату "form": що саме не так із записом. */
   function formHint(s, v) {
     const kind = s.answerKind || "number"; v = stripUnit(s, v);
+    const nm = ["intervalSet", "coordinates2", "coordinates3"].includes(kind) ? limited(() => nameMsg(s, v), () => null) : null; if (nm) return nm;
     if (kind === "number") {
       const u = numOf(v);
-      if (!u && limited(() => { const a = parseAns(typeof s.answer === "number" ? String(s.answer) : s.answer); return !!a && rootNum(v, a); }, () => false)) return MSG.rootNum;
+      if (!u && limited(() => { const a = parseAns(typeof s.answer === "number" ? String(s.answer) : s.answer); return !!a && rootNum(v, a); }, () => false)) return rootCopy(s, v) ? MSG.rootCopy : MSG.rootNum;
       if (s.decimals !== undefined && u && decCount(u) !== s.decimals) return decMsg(s.decimals);
       if (s.form === "improper" && u?.frac && u.whole) return MSG.improper;
+      // mixed і ключ з цілою частиною: десятковий чи періодичний запис (1,(63) при 1 7/11) одразу веде до мішаного числа,
+      // а не через «звичайним дробом» → «мішаним числом» (рев'ю engine-math-answer-kinds-new P3-5)
+      if (!u?.frac && s.mixed) { const a = parseAns(typeof s.answer === "number" ? String(s.answer) : s.answer); if (a && a.frac && Math.abs(a.n) > a.d && a.n % a.d) return MSG.mixed; }
       return !u?.frac ? MSG.frac : s.reduced && !u.lowest ? MSG.reduce : MSG.mixed;
     }
     if (kind === "divrem") return MSG.divrem;
     if (kind === "ratio") return MSG.ratio;
     if (kind === "quantity") { const U = qtyUnits(s); return U ? qtyFormMsg(U) : MSG.retry; }
     if (kind === "coordinates2" && s.form !== undefined && symPair(s)) {   // «form» дала компонента-вираз — підказка expression, інакше — про корені
-      const a = symPair(s), up = splitPair(v, true);
+      const a = symPair(s), up = splitPair(v, true, s);
       let rs = PAIR_LAST && PAIR_LAST.s === s && PAIR_LAST.v === v ? PAIR_LAST.rs : null;
       if (!rs) rs = limited(() => pairSym(s, v, a), () => null);
       const i = rs ? rs.findIndex(x => x.sym && x.r === "form") : -1;
@@ -1024,12 +1126,12 @@ window.SLID_LEARN = (() => {
     return MSG.simplify;
   }
   // Межі проміжків запису (без ∞): для «Скороти дріб» у intervalSet (рев'ю followup P3-2, (-∞; 2√2/2]).
-  const setBounds = v => setText(v).split(/\s*[∪U]\s*/).flatMap(part => part.replace(/^[[({]|[\])}]$/g, "").split(part.includes(";") ? ";" : ",")).filter(x => !/∞|inf/.test(x));
+  const setBounds = (v, s) => setText(v, s).split(/\s*[∪U]\s*/).flatMap(part => part.replace(/^[[({]|[\])}]$/g, "").split(part.includes(";") ? ";" : ",")).filter(x => !/∞|inf/.test(x));
   // Хоч один елемент запису неканонічний лише через нескорочений дріб (2√2/2, (2 ± 2√5)/2), а без вимоги НСД — канонічний.
   function unreducedOnly(s, kind, v) {
     const lv = kind === "list" ? listPre(s, v) : v;   // «x = 2√2/2; …» — та сама підказка, що й без префікса
     const parts = kind === "exactRoot" ? [String(v ?? "")] : kind === "list" ? (Array.isArray(lv) ? lv : String(lv ?? "").split(/[;\n]/.test(String(lv)) ? /[;\n]/ : /,/))
-      : kind === "intervalSet" ? setBounds(v) : splitPair(v, kind === "coordinates2" && !!symPair(s));
+      : kind === "intervalSet" ? setBounds(v, s) : splitPair(v, kind === "coordinates2" && !!symPair(s), s);
     const loose = t => { NOGCD = true; try { return canonExact(t); } finally { NOGCD = false; } };
     return limited(() => parts.flatMap(p => expandPM(String(p))).some(p => { const t = parseExpr(p); return t && t.k !== "eq" && isConst(t) && !canonExact(t) && loose(t); }), () => false);
   }
@@ -1051,10 +1153,20 @@ window.SLID_LEARN = (() => {
     const t = String(v ?? ""), kind = s.answerKind || "number";
     if (s.unit && foreignUnit(s, t)) { const bare = stripUnit(s, t).replace(foreignRe(s), "$1"); return checkAns(s, bare) !== "bad" ? unitMsg(s) : null; }
     if (kind === "time") return parseTime(t) === null ? timeMsg(s) : null;
+    // list без «;»: кома — роздільник, тож «1,5, 2» (у полі «1.5, 2» стає «1,5, 2») — це три числа (a11y-followup, відкрите (б))
+    // лише запис із самих чисел через кому (не «x₁,₂ = …», не «y_{1,2}»)
+    if (kind === "list") return /^[\d\s,.+\-−–]+$/.test(t) && /\d,\d/.test(t) ? MSG.listSep : null;
     if (kind === "quantity") {
       const U = qtyUnits(s), parts = parseQty(t); if (!U) return null;
       if (parts && parts.some(p => p.dim !== U.dim)) return qtyForeignMsg(U);
-      return !parts && numOf(t) ? qtyMissingMsg(U) : null;
+      if (parts) return null;
+      if (numOf(t)) return qtyMissingMsg(U);
+      // рев'ю engine-math-answer-kinds-new P3-4: «2 м 45» (без останньої одиниці), «2 9/20 м», «3:20» при [год, хв] — пояснити формат
+      const w = t.toLowerCase().replace(/\s+/g, " ").trim(), tail = w.match(/^(.*\S) (\d+(?:[.,]\d+)?)$/);
+      if (tail && parseQty(tail[1])) return qtyTailMsg(U);
+      if (/\d\s*\/\s*\d/.test(w)) return qtyFracMsg(U);
+      if (U.dim === "час" && /^\d{1,2} ?: ?\d{1,2}$/.test(w)) return qtyClockMsg(U);
+      return null;
     }
     if (kind === "expression" || (kind === "coordinates2" && symPair(s))) {
       const w = norm(t).replace(/\/\s*(\d+(?:,\d+)?[A-Za-zͰ-Ͽ][A-Za-zͰ-Ͽ\d^]*|[A-Za-zͰ-Ͽ](?:\^\d+)?[A-Za-zͰ-Ͽ][A-Za-zͰ-Ͽ\d^]*)/g, "/($1)");
@@ -1069,14 +1181,18 @@ window.SLID_LEARN = (() => {
   function hintTexts(s) {
     const kind = s?.answerKind || "number", out = [MSG.limit, MSG.simplify, MSG.retry], U = kind === "quantity" && qtyUnits(s);
     if (s?.unit) out.push(unitMsg(s));
-    if (kind === "number") out.push(MSG.rootNum, MSG.frac, MSG.reduce, MSG.mixed, MSG.improper, ...(s.decimals !== undefined ? [decMsg(s.decimals)] : []));
+    if (kind === "number") out.push(MSG.rootNum, MSG.rootCopy, MSG.frac, MSG.reduce, MSG.mixed, MSG.improper, ...(s.decimals !== undefined ? [decMsg(s.decimals)] : []));
     if (kind === "divrem") out.push(MSG.divrem);
     if (kind === "ratio") out.push(MSG.ratio);
     if (kind === "expression") out.push(MSG.constC);
     if (kind === "expression" || kind === "coordinates2") out.push(MSG.denom, MSG.parenPow, MSG.expandParen, MSG.expandLike, MSG.power, MSG.factored, MSG.reduced, MSG.simplified);
     if (["exactRoot", "list", "coordinates2", "coordinates3", "intervalSet"].includes(kind)) out.push(MSG.rootReduce);
+    if (kind === "list") out.push(MSG.listSep);
+    if (kind === "intervalSet") { const lab = askedSet(s)?.label; out.push(MSG.setRange, MSG.setName, ...(lab && lab !== "range" ? [`Проміжок правильний, але тут шукають значення ${lab.replace(/-/g, "−")}.`] : [])); }
+    if (kind === "coordinates2" || kind === "coordinates3") { const { ask, given } = askedPoint(s) || { ask: null, given: new Set() };
+      out.push(MSG.pointName, ...(ask ? [`Координати правильні, але тут шукають ${ask}.`] : []), ...[...given].map(g => `Координати правильні, але ${g} — дана точка умови. Запиши лише координати.`)); }
     if (kind === "time") out.push(timeMsg(s));
-    if (U) out.push(qtyForeignMsg(U), qtyMissingMsg(U), qtyFormMsg(U));
+    if (U) out.push(qtyForeignMsg(U), qtyMissingMsg(U), qtyFormMsg(U), qtyTailMsg(U), qtyFracMsg(U), ...(U.dim === "час" ? [qtyClockMsg(U)] : []));
     return out;
   }
   /** Відбиток записаної відповіді для другої спроби: однакові відбитки — та сама відповідь іншим записом («5», «05», « 5 »),
@@ -1092,8 +1208,11 @@ window.SLID_LEARN = (() => {
     }
     if (kind === "divrem") { const u = parseDivrem(t); if (u) return `d:${u.q}|${u.r}`; }
     if (kind === "time") { const u = parseTime(t); if (u !== null) return `t:${u}`; }
-    return "s:" + t.replace(/[−–—]/g, "-").replace(/\./g, ",").replace(/ ?([;:,()[\]{}+\-·*×/^=<>∪]) ?/g, "$1");
+    // list: елементи — так, як їх ділить parseList (без «;» кома — роздільник): «1.2» (одне число 1,2) ≠ «1,2» (два числа)
+    if (kind === "list") return "l:" + t.split(/[;\n]/.test(t) ? /[;\n]/ : /,/).map(sigText).join("|");
+    return "s:" + sigText(t);
   }
+  const sigText = t => t.trim().replace(/[−–—]/g, "-").replace(/\./g, ",").replace(/ ?([;:,()[\]{}+\-·*×/^=<>∪]) ?/g, "$1");
   /** Ключ для показу «Правильна відповідь». */
   function ansText(s) {
     const a = s.answer, kind = s.answerKind || "number";
@@ -1117,6 +1236,20 @@ window.SLID_LEARN = (() => {
       «−»: прапорець signed, від'ємний ключ або 6+ клас (від'ємні числа — 6 клас: у класі знак з'являється завжди й не видає відповіді).
       «/» і пробіл (дроби, мішані числа): дробовий ключ, прапорці fractionOnly / mixed / reduced / form improper або 5+ клас (звичайні дроби).
       dec: десятковий ключ без дробових кнопок — підказка про кому. */
+  /** Підказка під полем числа для decimals і form "improper" (app.js answerUI; verify refine-math-pools-new-kinds): загальна
+      «Мішане число — через пробіл: 2 1/3» тут веде не туди. null — для вправи без цих полів (лишається загальна підказка).
+      Приклад — перший із кандидатів, який checkAns цієї вправи не зараховує (test-answer-ui «підказка ≠ ключ»). */
+  function numberHelp(s) {
+    if ((s?.answerKind || "number") !== "number") return null;
+    const pick = xs => xs.find(x => checkAns(s, x) === "bad");
+    if (Number.isInteger(s.decimals) && s.decimals >= 0) {
+      const n = s.decimals; if (!n) return "Запиши відповідь цілим числом, без коми.";
+      const ex = pick(["3", "4", "6"].map(w => w + "," + "5".padStart(n, "0"))) || "";
+      return `Десятковий дріб — через кому, ${DEC_WORD[n] || `з ${n} знаками після коми`}${ex ? ": " + ex : ""}.`;
+    }
+    if (s.form === "improper") { const ex = pick(["7/3", "9/4", "11/5"]); return `Неправильний дріб — через риску, без цілої частини${ex ? ": " + ex : ""}.`; }
+    return null;
+  }
   function numberKeys(s, grade, signed) {
     const a = String(s.answer ?? "").replace(/[−–]/g, "-").trim(), g = Number(grade) || 0;
     const minus = !!s.signed || !!signed || /^-/.test(a) || g >= 6;
@@ -1194,7 +1327,7 @@ window.SLID_LEARN = (() => {
       null — не coordinates2, числовий ключ або ключ не розібрано. Потрібно tools/personalization-qa.mjs (пара виразів закриває формат expression)
       і клавішам поля (app.js). Не викликати зсередини checkAns: limited після себе знімає межі. */
   function pairKey(s) {
-    return limited(() => {          // як checkAns0: результат не залежить від попередніх викликів
+    return limited(() => {          // як checkAns0 (checkCore): результат не залежить від попередніх викликів
       const a = symPair(s), r = a && pairSym(s, s.answer, a), t = splitPair(s.answer);
       return r && r.map((x, i) => ({ expr: x.sym, vars: varsOf(a[i]), tidy: x.r === "ok", text: t[i].trim() }));
     }, () => null);
@@ -1231,6 +1364,12 @@ window.SLID_LEARN = (() => {
   }
   /* Число коренем (п. 4): запис — стала з коренем (√576, 2√9, ∛27), точне значення якої раціональне й дорівнює ключу.
      Лише "form" («обчисли корінь»), ніколи "ok"; межа точної арифметики — не "form", а звичайне "bad". */
+  /** Запис дослівно є формулою (чи частиною формули між «=») умови: «√576» при «Обчисли $\\sqrt{576}$» (рев'ю g11 P3-2) — тоді «значення
+      правильне» нічого не каже, підказка інша (MSG.rootCopy). Порівняння — без пробілів, \\sqrt{n} = √n, \\sqrt[3]{n} = ∛n. */
+  const rootTex = f => f.replace(/\\sqrt\s*\[\s*3\s*\]\s*\{([^{}]*)\}/g, "∛$1").replace(/\\sqrt\s*\[\s*4\s*\]\s*\{([^{}]*)\}/g, "∜$1")
+    .replace(/\\sqrt\s*\{([^{}]*)\}/g, "√$1").replace(/\\[,;! ]|\s+/g, "").replace(/[−–]/g, "-");
+  const rootCopy = (s, v) => { const w = rootTex(norm(numPre(String(v ?? "")))).replace(/sqrt/g, "√");
+    return [...stmtText(s).matchAll(/\$([^$]+)\$/g)].some(m => rootTex(m[1]).split("=").includes(w)); };
   function rootNum(v, a) {
     const t = parseExpr(numPre(v)); if (!t || t.k === "eq" || !isConst(t) || !has(t, "root")) return false;
     const lim = LIMIT;
@@ -1240,7 +1379,33 @@ window.SLID_LEARN = (() => {
     if (!ok) LIMIT = lim;   // невдала спроба не змінює підказку до «bad» (раніше такий запис просто не розбирався)
     return ok;
   }
+  /* Назва відкинута, а значення правильне (рев'ю engine-learn-list-prefixes-p3, P2-1): «M(1; -5)», коли M — дана точка, «n ∈ [-4; 3)»
+     при −n. Не «ok» (назва хибна), а «form» з поясненням (nameMsg); якщо й без назви запис неправильний — звичайне «bad», без підказки. */
+  function dropName(s, v) {
+    const kind = s.answerKind || "number", t = norm(v);
+    if (kind === "intervalSet") { const at = t.search(/[=∈]/), pre = at > 0 ? t.slice(0, at) : ""; const rest = t.slice(at + 1).trim(); return pre && !/[[\]{};∪∞]/.test(pre) && !/[=∈]/.test(rest) ? rest : null; }   // «x ∈ y ∈ …» — bad
+    if (kind === "coordinates2" || kind === "coordinates3") { const m = NAME_AT.exec(t), rest = m && t.slice(m[0].length); return m && !m[3] && !NAME_AT.test(rest) ? rest : null; }   // «AB = AB = (…)» — bad
+    return null;
+  }
   function checkAns0(s, v) {
+    const r = checkCore(s, v);
+    if (r !== "bad" || typeof v !== "string") return r;
+    const bare = dropName(s, v);
+    return bare !== null && checkCore(s, bare) !== "bad" ? "form" : r;
+  }
+  /** Текст для «form» через відкинуту назву або null (formHint). Відповіді не розкриває: лише назву з умови. */
+  function nameMsg(s, v) {
+    const kind = s.answerKind || "number"; if (typeof v !== "string" || !["intervalSet", "coordinates2", "coordinates3"].includes(kind)) return null;
+    const bare = dropName(s, v);
+    if (bare === null || checkCore(s, v) !== "bad" || checkCore(s, bare) === "bad") return null;
+    if (kind === "intervalSet") {
+      const names = askedSet(s), lab = names?.label;
+      return lab === "range" ? MSG.setRange : lab ? `Проміжок правильний, але тут шукають значення ${lab.replace(/-/g, "−")}.` : MSG.setName;
+    }
+    const m = NAME_AT.exec(norm(v)), { ask, given } = askedPoint(s) || { ask: null, given: new Set() }, big = m && (m[1] || m[2]);
+    return ask ? `Координати правильні, але тут шукають ${ask}.` : big && given.has(big) ? `Координати правильні, але ${big} — дана точка умови. Запиши лише координати.` : MSG.pointName;
+  }
+  function checkCore(s, v) {
     const kind = s.answerKind || "number", tidy = xs => xs.every(x => x.tidy) ? "ok" : "form", ex = exactKey(s.answer);
     BUDGET = 50000;
     if (kind === "comparison") return /^[<>=]$/.test(String(s.answer).trim()) && String(v).trim() === String(s.answer).trim() ? "ok" : "bad";
@@ -1252,7 +1417,7 @@ window.SLID_LEARN = (() => {
     }
     if (kind === "coordinates2" || kind === "coordinates3") {
       const sp = symPair(s); if (sp) { const rs = pairSym(s, v, sp); PAIR_LAST = rs && { s, v, rs }; return rs ? worst(rs) : "bad"; }
-      const n = kind === "coordinates2" ? 2 : 3, a = parsePoint(s.answer, n, ex), u = parsePoint(v, n, ex);
+      const n = kind === "coordinates2" ? 2 : 3, a = parsePoint(s.answer, n, ex), u = parsePoint(v, n, ex, s);
       return a && u && a.every((x, i) => xeq(x.x, u[i].x)) ? tidy(u) : "bad";
     }
     if (kind === "exactRoot") {
@@ -1266,7 +1431,7 @@ window.SLID_LEARN = (() => {
       return s.reduced && !(u.every(x => !x.frac && x.d === 1) && u.reduce((g, x) => gcd(g, x.n), 0) === 1) ? "form" : "ok";
     }
     if (kind === "intervalSet") {
-      const a = parseSet(s.answer, ex), u = parseSet(v, ex), same = (x, y) => cmpEnd(x, y) === 0 && typeof x === typeof y;
+      const a = parseSet(s.answer, ex), u = parseSet(v, ex, s), same = (x, y) => cmpEnd(x, y) === 0 && typeof x === typeof y;
       if (!a || !u || a.length !== u.length || !a.every((x, i) => same(x.lo, u[i].lo) && same(x.hi, u[i].hi) && x.lc === u[i].lc && x.hc === u[i].hc)) return "bad";
       return tidy(u.flatMap(x => [x.lo, x.hi]).filter(x => typeof x === "object"));
     }
@@ -1486,6 +1651,6 @@ window.SLID_LEARN = (() => {
     return E;
   }
 
-  return { OK, BAD, SKIP, PASS, DIAG_TYPES, planFor, practiceItems, nextItem, remaining, topicStatus, level, buildPlan, diagRev, resumeDiag, finishDiag, record, detect, syncPlan, lessonDone, todo, isKnown, SK_RETAG, migrateSk, validate,
-    parseAns, parseDivrem, checkAns, badHint, hintTexts, keyInput, timeExample, quantityUnits: s => qtyUnits(s)?.units || null, stripUnit, listKey, pairKey, answerSig, formHint, ansText, srcRef, numberKeys, ANSWER_KINDS, BOX_DAYS, srsInit, srsUpdate, isDue, pickSession, POOL_TYPES, validatePool };
+  return { OK, BAD, SKIP, PASS, DIAG_TYPES, planFor, practiceItems, nextItem, remaining, topicStatus, level, buildPlan, diagRev, resumeDiag, finishDiag, record, detect, syncPlan, lessonDone, todo, isKnown, work, SK_RETAG, SK_RETAG2, SK_MIGRATIONS, migrateSk, validate,
+    parseAns, parseDivrem, checkAns, badHint, hintTexts, keyInput, timeExample, quantityUnits: s => qtyUnits(s)?.units || null, stripUnit, listKey, pairKey, answerSig, formHint, ansText, srcRef, numberKeys, numberHelp, ANSWER_KINDS, BOX_DAYS, srsInit, srsUpdate, isDue, pickSession, POOL_TYPES, validatePool };
 })();
