@@ -4,7 +4,7 @@ claimed_at: 2026-11-01T13:38:38.744Z
 id: engine-diag-answer-kinds
 type: engine
 subject: math
-status: review
+status: done
 claimed_by: agent-engine-diag-answer-kinds
 created: 2026-11-01
 depends_on: []

@@ -134,3 +134,7 @@ P1/P2 немає. Виправлень не робив (`app/`, `tools/` і `con
 - Лише Chromium 360 × 780, DPR 1. Реальних телефонів, iOS Safari, Firefox, читачів екрана та оновлення встановленої PWA між версіями sw не перевіряв.
 - Паралельні роботи в worktree wt-diagans / wt-p3c (engine-diag-answer-kinds, engine-learn-prefixes-p3b, tools-lab-validate-p3c) у прогін не входять. Після їх злиття потрібен повторний build оркестратора і `npm run check`. Наскрізні сценарії варто повторити, якщо зміниться `app/learn.js` або `app/app.js`.
 - `approved` не ставив.
+
+## Повторний прогін після злиття wt-diagans і wt-p3c (оркестратор, 2026-11-01)
+
+Після приймання злито engine-diag-answer-kinds + engine-learn-prefixes-p3b (рев'ю reports/review/engine-diag-answer-kinds.md) і tools-lab-validate-p3c (reports/review/tools-lab-validate-p3c.md); змінились app/learn.js, app/lab.js, tools/*. На злитому HEAD: build (sw 51bb4673ee, 331 файл), validate 0 помилок / 255 попереджень, test-learn 1913, test-validate 438, test-lab 147, test-math 36, test-metrics 20, test-personalization-qa 105, personalization-qa --strict 4…11 — rc 0, test-answer-ui --suite regression — green, наскрізні сценарії приймальника r1–r4 (ланцюжок dg6 → ms2l4 → pms2, перемикання класів, міграції, офлайн) — усі green на робочому дереві. Вердикт приймання не змінюється.
