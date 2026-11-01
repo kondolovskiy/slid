@@ -1321,6 +1321,7 @@ async def main():
                 await diag_answer_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
                 await sk_mark_saved_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
                 await srs_retest_p3_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
+                await gen_diag_srs_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
             await browser.close()
             print('Обрані браузерні сценарії: green')
     finally:
@@ -1579,6 +1580,82 @@ async def srs_retest_p3_checks(browser, url):
         assert st1['diag'] == st0['diag'] and st1['diagRun']['dg6'] == {'0': 1, '1': 0} and st1['plan']['math'] == st0['plan']['math'], st1
         assert not errors, errors
         await context.close()
-    print('SRS late pool (box 1, 3 дні як з пулом) і «Продовжити тест» повторного dg6 на головній (план без кроків / з кроками): green', flush=True)
+    # P3 рев'ю engine-srs-retest-p3 (engine-practice-pool): план з помилок, тест не починали → лише картка плану, без запрошення до тесту
+    # (мутація planOrDiag = pc + diagInvite(c) раніше виживала). Головна й сторінка предмета.
+    context, page, errors = await qa_page(browser, url, {'grade': 6, 'unlockAll': False})
+    await page.evaluate("""() => {const S={grade:6,unlockAll:false,diag:{},plan:{},planByGrade:{},mast:{},errs:[],skw:{}};
+      SLID_LEARN.syncPlan(S,'math',[{l:'g6m1l2',why:'topic',n:2,of:3}],'2026-10-16',{grade:6});
+      localStorage.setItem('slid.v1',JSON.stringify(S));}""")
+    await page.reload()
+    st = await saved_state(page)
+    assert st['plan']['math']['steps'][0]['src'] == 'err' and not st.get('diagRun') and not (st.get('diag') or {}).get('dg6'), st
+    for where in ('home', 'subject'):
+        if where == 'subject':
+            await page.click('button[data-subject="math"]')
+        view = await page.locator('#view').inner_text()
+        assert await page.locator('#view .plancard').count() == 1, (where, view[:400])
+        assert await page.locator('#view [data-diag="math"]').count() == 0 and 'Продовжити тест' not in view, (where, view[:400])
+    assert not errors, errors
+    await context.close()
+    print('SRS late pool (box 1, 3 дні як з пулом) і «Продовжити тест» повторного dg6 на головній (план без кроків / з кроками); план з помилок без тесту — без запрошення: green', flush=True)
+
+async def gen_diag_srs_checks(browser, url):
+    """engine-practice-pool. (1) Генератор gen у справжньому плеєрі тренування (fixture, не зміст): умова з підставленими числами,
+    ключ набору зараховується, хибне число — ні, seen/SRS — під тим самим ключем pool:id, кожна сесія — новий prN.
+    (2) Початкові коробки SRS з нового результату dg6 через справжній кінець тесту: pre ok → box 2 (7 днів), shaky → box 0;
+    gap — без запису; наявний запис уроку не змінено."""
+    import re as _re
+    context, page, errors = await qa_page(browser, url, {'grade': 6, 'unlockAll': False, 'lessons': {'g6m1l1': {'done': True}}})
+    fixture = """() => {const c=SLID_SUBJECTS.find(c=>c.id==='math'),p=c.pools.find(p=>p.id==='pg6m1');c.pools=[p];
+      p.items=[{id:'gq',lesson:'g6m1l1',lvl:1,sk:'divis',src:p.sources[0].id+' №QA',adapted:true,type:'answer',title:'Добуток {a} і {b}',
+        body:'<p>Обчисли.</p>',steps:['{a} · {b} = {a*b}.'],gen:{vars:{a:{min:2,max:9},b:{min:11,max:19}},answer:'a*b'}}];}"""
+    for sess in (1, 2):
+        await page.evaluate(fixture)
+        await page.click('button[data-subject="math"]'); await page.click('[data-practice-view="math"]')
+        await page.click('[data-practice="g6m1l1"]')
+        stage = await page.locator('#stage').inner_text()
+        m = _re.search(r'Добуток (\d+) і (\d+)', stage)
+        assert m and '{' not in stage, stage
+        a, b = int(m.group(1)), int(m.group(2))
+        assert 2 <= a <= 9 and 11 <= b <= 19, (a, b)
+        await page.fill('#numIn', str(a * b + 1)); await page.click('#action')
+        assert 'ok' not in (await page.locator('#dock').get_attribute('class') or '').split(), 'хибне ok'
+        if not await page.locator('#numIn').is_editable():
+            await page.click('#action')
+        await page.fill('#numIn', str(a * b)); await page.click('#action')
+        assert 'ok' in (await page.locator('#dock').get_attribute('class') or '').split(), 'ключ набору не зараховано'
+        await page.click('#action')
+        st = await saved_state(page)
+        assert list(st['seen']) == ['pg6m1:gq'] and st['seen']['pg6m1:gq'] == 0 and st['prN'] == sess, st
+        assert list(st['srs']) == ['g6m1l1'] and st['srs']['g6m1l1']['box'] == 0, st['srs']
+        await page.goto(url)
+    assert not errors, errors
+    await context.close()
+    # (2) dg6: усі відповіді, крім останньої, у перерваному запуску; складніше завдання однієї pre-теми — неправильно; останнє — «Ще не знаю»
+    context, page, errors = await qa_page(browser, url, {'grade': 6, 'unlockAll': False})
+    exp = await page.evaluate("""() => {const d=SLID_SUBJECTS.find(c=>c.id==='math').diags.find(d=>d.id==='dg6');
+      const pre=d.topics.filter(t=>t.kind==='pre'&&!t.baseline&&(t.lessons||[]).length), last=d.items.length-1;
+      const sh=pre.find(t=>d.items.findLastIndex(it=>it.topic===t.id)!==last && d.items.filter(it=>it.topic===t.id).length===2);
+      const res={}, seen=new Set(); d.items.forEach((it,i)=>{ res[i]= it.topic===sh.id&&seen.has(it.topic)? 0 : 1; seen.add(it.topic); });
+      const run=Object.fromEntries(Object.entries(res).filter(([i])=>+i!==last)); res[last]=-1;
+      const tp=SLID_LEARN.topicStatus(d,res), box={};
+      for(const t of pre) for(const l of t.lessons) { const b={ok:2,shaky:0,gap:-1}[tp[t.id]]; box[l]=Math.min(box[l]??9,b); }
+      const S=JSON.parse(localStorage.getItem('slid.v1')); S.diagRun={dg6:run}; S.diagRunRev={dg6:SLID_LEARN.diagRev(d)};
+      const keep=Object.keys(box).find(l=>box[l]===2); S.srs={[keep]:{box:4,due:'2026-12-01'}}; localStorage.setItem('slid.v1',JSON.stringify(S));
+      return {box,keep,shaky:sh.id,st:tp[sh.id]};}""")
+    assert exp['st'] == 'shaky', exp
+    await page.reload()
+    await page.click('button[data-subject="math"]')
+    await page.click('#view [data-diag="math"]'); await page.click('[data-diag-go]')
+    await page.click('#skip')
+    st = await saved_state(page)
+    assert st['diag']['dg6']['done'], st['diag']
+    want = {l: ({'box': 4, 'due': '2026-12-01'} if l == exp['keep'] else {'box': b, 'due': {2: '2026-10-23', 0: '2026-10-17'}[b], 'src': 'diag', 'diag': 'dg6', 'rev': st['diag']['dg6']['rev']})
+            for l, b in exp['box'].items() if b >= 0 or l == exp['keep']}
+    assert st['srs'] == want, (st['srs'], want)
+    assert any(v.get('box') == 0 for v in st['srs'].values()) and sum(1 for v in st['srs'].values() if v.get('box') == 2) >= 1, st['srs']
+    assert not errors, errors
+    await context.close()
+    print('gen у плеєрі тренування (набір, хибне число — ні, ключ pool:id, prN) і початкові коробки SRS з нового dg6: green', flush=True)
 
 asyncio.run(main())

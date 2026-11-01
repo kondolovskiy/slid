@@ -163,16 +163,26 @@ function answerFieldIssues(s, diag = false) {
 // У тесті рівня «form» (значення правильне, запис ні) тихо стає BAD: ні підказки, ні другої спроби (learn.js, DIAG_ANSWER_KINDS).
 // Тож вимогу запису, якої підказка під полем не називає (compound, reduced, mixed, fractionOnly, improper, decimals), має назвати умова —
 // попередження, якщо в title/body немає слова про цей формат (рев'ю engine-diag-answer-kinds, P3-3; евристика, тому не помилка)
+// compound: «складеним…» або щонайменше дві одиниці самої вправи — скороченням чи словом («в м і см», «у метрах і сантиметрах»);
+// не будь-які два слова на -ах («у задачах і прикладах» — не формат). decimals: саме n знаків — «до десятих», «до 0,1», «до цілих»
+// (рев'ю engine-lab-aria-p3d, P3-3; engine-practice-pool); «десятковий дріб» без кількості знаків формату не називає.
+const UNIT_WORD = { "мм": "міліметр", "см": "сантиметр", "дм": "дециметр", "м": "метр", "км": "кілометр", "г": "грам", "кг": "кілограм",
+  "ц": "центнер", "т": "тонн", "с": "секунд", "хв": "хвилин", "год": "годин", "доба": "доб", "коп": "копій", "грн": "гривн" };
+const unitNamed = (u, txt) => new RegExp(`(?<![\\p{L}])(?:${u}\\.?(?![\\p{L}])|${UNIT_WORD[u] || u}\\p{L}*)`, "iu").test(txt);
+const compoundNamed = (s, txt) => /складен/iu.test(txt) || (Array.isArray(s.units) ? s.units : []).filter(u => unitNamed(u, txt)).length >= 2;
+const DEC_NAMED = [/до цілих|до одиниць|цілим числом|без коми/iu, /десятих|до 0,1(?!\d)|(?:одним|один) знак/iu,
+  /сотих|до 0,01(?!\d)|(?:двома|два) знак/iu, /тисячних|до 0,001(?!\d)|(?:трьома|три) знак/iu];
+const decimalsNamed = (s, txt) => (DEC_NAMED[s.decimals] || /після коми/iu).test(txt);
 const DIAG_FORMAT = [
-  [s => s.answerKind === "quantity" && s.form === "compound", /складен|\p{L}+[ая]х\s+(?:і|й|та)\s+\p{L}+[ая]х/iu, "form compound — складений запис («2 м 45 см»): напиши в умові «у метрах і сантиметрах» чи «складеним іменованим числом»"],
+  [s => s.answerKind === "quantity" && s.form === "compound", compoundNamed, "form compound — складений запис («2 м 45 см»): напиши в умові «у метрах і сантиметрах» чи «складеним іменованим числом»"],
   [s => s.reduced, /нескоротн/iu, "reduced — нескоротний дріб: напиши в умові «нескоротним дробом»"],
   [s => s.mixed, /мішан|ціл\p{L}* частин/iu, "mixed — мішане число: напиши в умові «мішаним числом»"],
   [s => s.fractionOnly, /звичайн\p{L}* дроб|дробом/iu, "fractionOnly — лише звичайний дріб: напиши в умові «звичайним дробом»"],
   [s => (s.answerKind || "number") === "number" && s.form === "improper", /неправильн\p{L}* дроб/iu, "form improper — неправильний дріб: напиши в умові «неправильним дробом»"],
-  [s => s.decimals !== undefined, /десятков|після коми|до (?:десят|сот|тисячн)/iu, "decimals — кількість знаків після коми: напиши в умові «з одним знаком після коми» чи «до десятих»"]];
+  [s => s.decimals !== undefined, decimalsNamed, "decimals — кількість знаків після коми: напиши в умові «з одним знаком після коми» чи «до десятих»"]];
 function diagFormatIssues(s) {
   const txt = plain([s.title, s.body].filter(x => typeof x === "string").join(" "));
-  return DIAG_FORMAT.filter(([when, re]) => when(s) && !re.test(txt)).map(([, , msg]) => `тест рівня: «form» тут зараховується як помилка без пояснення — ${msg}`);
+  return DIAG_FORMAT.filter(([when, re]) => when(s) && !(typeof re === "function" ? re(s, txt) : re.test(txt))).map(([, , msg]) => `тест рівня: «form» тут зараховується як помилка без пояснення — ${msg}`);
 }
 
 // перевірка одного екрана; diag — завдання діагностики (без фідбеку: дитина не бачить, правильно чи ні)
@@ -320,7 +330,9 @@ for (const c of subjects) for (const p of c.pools || []) {
   const D = `content/${c.id}/pool#${p.id}`; diagIds.add(p.id);
   for (const m of learn.validatePool(p, { sections: sectionLessons, skills: c.skills })) E(D, m);
   if (!p.meta) W(D, "немає meta {author, created, factcheck, teacher}");
-  (p.items || []).forEach((s, i) => { if (TYPES.includes(s.type)) checkScreen(`${D} задача ${i + 1} «${s.id}» (${s.type})`, { ...s, fbText: (s.steps || []).join(" ") }, c, true, true); });
+  // генератор (gen): екран перевіряємо на першому наборі значень — так, як його побачить дитина (правила gen — learn.validatePool)
+  (p.items || []).forEach((s0, i) => { const s = s0.gen !== undefined ? learn.genInstance(s0, "validate", 0) || s0 : s0;
+    if (TYPES.includes(s.type)) checkScreen(`${D} задача ${i + 1} «${s.id}» (${s.type})`, { ...s, fbText: (s.steps || []).join(" ") }, c, true, true); });
   const per = {}; (p.items || []).forEach(s => per[s.lesson] = (per[s.lesson] || 0) + 1);
   for (const [l, n] of Object.entries(per)) if (n < 5) W(D, `урок ${l}: лише ${n} задач — для чергування треба щонайменше 5`);
 }

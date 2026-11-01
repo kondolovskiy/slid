@@ -306,6 +306,19 @@ expectRun("drag: at і без drag — без попередження", one("fx
     items: [{ id: "a01", lesson: "fxpl1", lvl: 1, sk: Object.keys(MATH_SKILLS)[0], src: "src №1", type: "answer", title: "Обчисли", body: "<p>Скільки?</p>", answer: 5, units: ["м", "см"], steps: ["Пояснення."] }] }, null, 1)});\n`;
   const rp = expectRun("answer у пулі: units поза quantity — помилка один раз", { "content/math/g8-fxp.js": secJS("math", mathSec("fxp")), "content/math/pool-g8-fxp.js": bad }, ["--pool", "pfx"], { err: "units — лише для answerKind quantity" });
   ok(rp && rp.errors.length === 1, "answer у пулі: без дубля з checkScreen", rp && rp.errors.join("\n  "));
+  // engine-practice-pool: генератор gen у пулі — правила gen (learn.validatePool) і перевірка екрана на першому наборі
+  { const gp = item => `SLID.pool("math", ${JSON.stringify({ id: "pgx", section: "fxp", status: "draft", meta: { author: "test", created: "2026-11-01", factcheck: null, teacher: null },
+      sources: [{ id: "src", title: "Фікстура", url: "https://example.org/" }],
+      items: [{ id: "g01", lesson: "fxpl1", lvl: 1, sk: Object.keys(MATH_SKILLS)[0], src: "src №1", adapted: true, type: "answer", title: "Обчисли", body: "<p>Знайди $ {a} · {b} $.</p>",
+        steps: ["$ {a} · {b} = {a*b} $."], gen: { vars: { a: { min: 2, max: 9 }, b: { min: 2, max: 5 } }, where: "a != b", answer: "a*b" }, ...item }] }, null, 1)});\n`;
+    const files = item => ({ "content/math/g8-fxp.js": secJS("math", mathSec("fxp")), "content/math/pool-g8-fxp.js": gp(item) });
+    const r0 = expectRun("gen у пулі: коректний генератор — чисто", files({}), ["--pool", "pgx"], {});
+    ok(r0 && r0.errors.length === 0, "gen у пулі: 0 помилок", r0 && r0.errors.join("\n  "));
+    expectRun("gen у пулі: lvl 2 — помилка", files({ lvl: 2 }), ["--pool", "pgx"], { err: "gen — лише для вправ рівня 1" });
+    expectRun("gen у пулі: a/b — нескінченний дріб", files({ gen: { vars: { a: { min: 2, max: 9 }, b: { min: 2, max: 5 } }, answer: "a/b" } }), ["--pool", "pgx"], { err: "не скінченний десятковий дріб" });
+    expectRun("gen у пулі: без adapted — помилка", files({ adapted: undefined }), ["--pool", "pgx"], { err: "adapted: true" });
+    expectRun("gen у пулі: сирий TeX на наборі ловить checkScreen", files({ body: "<p>Знайди $ {a} · {b} {,}5$ і $x$.</p>", steps: ["$ {a} $ і $"] }), ["--pool", "pgx"], { err: "непарн" });
+    expectRun("gen у пулі: повний прогін теж бачить gen", files({ lvl: 3 }), [], { err: "gen — лише для вправ рівня 1" }); }
   // P3-5 (рев'ю engine-player-a11y-p3): «немає title» — один раз (від checkScreen), без «answer: немає title»
   { const r = expectRun("answer в уроці без title — одна помилка «немає title»", ans("fxk", { title: "", answer: 5 }), ["--section", "fxk"], { err: "немає title" });
     ok(r && r.errors.length === 1 && !r.errors[0].includes("answer: "), "answer в уроці без title: без дубля «answer: немає title»", r && r.errors.join("\n  ")); }
@@ -374,6 +387,17 @@ expectRun("drag: at і без drag — без попередження", one("fx
     ["reduced «нескоротним дробом» — без попередження", { type: "answer", answer: "2/5", reduced: true, body: "<p>Запиши $4/10$ нескоротним дробом.</p>" }, null],
     ["mixed без формату — попередження", { type: "answer", answer: "2 1/3", mixed: true, body: "<p>Обчисли $7/3$.</p>" }, "mixed — мішане"],
     ["decimals «до десятих» — без попередження", { type: "answer", answer: "37,0", decimals: 1, body: "<p>Округли 36,96 до десятих.</p>" }, null],
+    // P3-3 рев'ю engine-lab-aria-p3d (engine-practice-pool): фікстури fractionOnly / improper і точніші евристики compound / decimals
+    ["fractionOnly без формату — попередження", { type: "answer", answer: "3/4", fractionOnly: true, body: "<p>Обчисли $1/2 + 1/4$.</p>" }, "fractionOnly — лише звичайний"],
+    ["fractionOnly «звичайним дробом» — без попередження", { type: "answer", answer: "3/4", fractionOnly: true, body: "<p>Обчисли $1/2 + 1/4$. Запиши звичайним дробом.</p>" }, null],
+    ["improper без формату — попередження", { type: "answer", answer: "7/3", form: "improper", body: "<p>Обчисли $2 + 1/3$.</p>" }, "form improper"],
+    ["improper «неправильним дробом» — без попередження", { type: "answer", answer: "7/3", form: "improper", body: "<p>Запиши $2 1/3$ неправильним дробом.</p>" }, null],
+    ["compound «у задачах і прикладах» — попередження", { ...Q, body: "<p>Таке трапляється у задачах і прикладах. Довжина 245 см.</p>" }, "form compound"],
+    ["compound «в м і см» — без попередження", { ...Q, body: "<p>Довжина стрічки 245 см. Вирази в м і см.</p>" }, null],
+    ["decimals 1 «десятковий дріб» без кількості знаків — попередження", { type: "answer", answer: "37,0", decimals: 1, body: "<p>Запиши як десятковий дріб: $37$.</p>" }, "decimals — кількість"],
+    ["decimals 0 «до цілих» — без попередження", { type: "answer", answer: "37", decimals: 0, body: "<p>Округли 36,9 до цілих.</p>" }, null],
+    ["decimals 1 «з точністю до 0,1» — без попередження", { type: "answer", answer: "37,0", decimals: 1, body: "<p>Обчисли з точністю до 0,1.</p>" }, null],
+    ["decimals 1 «до сотих» — попередження (не та кількість)", { type: "answer", answer: "37,0", decimals: 1, body: "<p>Округли 36,96 до сотих.</p>" }, "decimals — кількість"],
     ["time — без попередження", { type: "answer", answerKind: "time", answer: "9:55" }, null]]) {
     expectRun(`diag answer: ${name}`, tree(item), ["--diag", "dgfx"], warn ? { warn: `${FMT} — ${warn}` } : { noWarn: FMT }); }
   // той самий запис в уроці — без попередження (там form пояснюють і дають другу спробу)
