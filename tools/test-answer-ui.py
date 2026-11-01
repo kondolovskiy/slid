@@ -170,6 +170,9 @@ async def grade_context_checks(browser, url):
     await play_prerequisite()
     assert (await state())['grade'] == 6
     assert await page.locator('#stage [data-practice="ms2l4"]').count() == 1
+    # engine-decisions-1101: теми pre «ok» і cur «знайоме» з dg6 тепер відкриті в тренуванні й дали б повторення в цій сесії;
+    # сценарій — про контекст класу (одна вправа ms2l4), тож лишаємо тільки пул pms2 (відкриття тем з тесту — decisions_1101_checks)
+    await page.evaluate("() => {const c=SLID_SUBJECTS.find(c=>c.id==='math');c.pools=c.pools.filter(p=>p.id==='pms2');}")
     await page.click('#stage [data-practice="ms2l4"]')
     await page.fill('#numIn', '1,2'); await page.click('#action')
     assert 'ok' in await page.locator('#dock').get_attribute('class')
@@ -1322,6 +1325,7 @@ async def main():
                 await sk_mark_saved_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
                 await srs_retest_p3_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
                 await gen_diag_srs_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
+                await decisions_1101_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
                 await evidence_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
             await browser.close()
             print('Обрані браузерні сценарії: green')
@@ -1330,8 +1334,8 @@ async def main():
 
 async def diag_answer_checks(browser, url):
     """engine-diag-answer-kinds: answer з answerKind time / quantity / decimals у тесті рівня через справжній плеєр.
-    Вердикт без фідбеку (ні fb, ні is-ok/is-bad, ні підказки form/bad, без другої спроби); OK лише для checkAns === "ok",
-    «form» — BAD; підказка формату під полем не видає ключа; збережений запуск ред. 1 після заміни завдання на answer (rev 2)
+    Вердикт без фідбеку (ні fb, ні is-ok/is-bad, ні підказки form/bad, без другої спроби); OK для checkAns «ok» і «form»
+    (рішення людини 2026-11-01, engine-decisions-1101; раніше «form» — BAD); підказка формату під полем не видає ключа; збережений запуск ред. 1 після заміни завдання на answer (rev 2)
     відкидає старий вердикт цього завдання, решту — ні (resumeDiag у startDiag)."""
     context, page, errors = await qa_page(browser, url, {'grade': 6, 'unlockAll': False,
         'diagRun': {'dg6': {'0': 1, '3': 0}}, 'diagRunRev': {'dg6': 1}})
@@ -1353,7 +1357,7 @@ async def diag_answer_checks(browser, url):
         assert not await page.locator('#fbTitle').inner_text() and not await page.locator('#fbText').inner_text()
         assert await page.locator('#hintHost .hint').count() == 0
         assert await page.locator('#stage .is-ok, #stage .is-bad').count() == 0
-    plan = [('10:05', 1, 'time'), ('245 см', 0, 'form'), ('37', 0, 'form')]
+    plan = [('10:05', 1, 'time'), ('245 см', 1, 'form'), ('37', 1, 'form')]
     for i, (value, verdict, why) in enumerate(plan):
         item = await page.evaluate("i => SLID_SUBJECTS.find(c=>c.id==='math').diags.find(d=>d.id==='dg6').items[i]", i)
         assert await page.locator('#stage h2').inner_text() == item['title'], (i, await page.locator('#stage h2').inner_text())
@@ -1385,10 +1389,10 @@ async def diag_answer_checks(browser, url):
             assert (await saved_state(page))['diagRun']['dg6'] == {'0': 1, '3': 0}
             await page.click('[data-diag="math"]'); await page.click('[data-diag-go]')
     result = (await saved_state(page))['diag']['dg6']
-    assert result['res'] == {'0': 1, '1': 0, '2': 0, '3': 0} and result['rev'] == 3, result
+    assert result['res'] == {'0': 1, '1': 1, '2': 1, '3': 0} and result['rev'] == 3, result
     assert not errors, errors
     await context.close()
-    print('diag answer (time/quantity/decimals): verdicts без фідбеку, form → BAD, rev 3 — green', flush=True)
+    print('diag answer (time/quantity/decimals): verdicts без фідбеку, form → OK, rev 3 — green', flush=True)
 
 async def sk_mark_saved_checks(browser, url):
     """P3-2 (рев'ю engine-learn-list-prefixes-p3), мутаційний сторож: позначку skFix app.js зберігає одразу після migrateSk,
@@ -1658,6 +1662,94 @@ async def gen_diag_srs_checks(browser, url):
     assert not errors, errors
     await context.close()
     print('gen у плеєрі тренування (набір, хибне число — ні, ключ pool:id, prN) і початкові коробки SRS з нового dg6: green', flush=True)
+
+async def decisions_1101_checks(browser, url):
+    """engine-decisions-1101 (рішення людини 2026-11-01) через справжній плеєр і екрани.
+    (1) Тест рівня: «form» (6/8 при reduced) — OK, число коренем (√576 при 24) — BAD, обидва без фідбеку.
+    (2) Тренування pg9m6 c02: «A₁(-3; 0)» для образу точки A — ok; «B₁(-3; 0)» — form, як раніше.
+    (3) dg7 через finishDiag: тема pre «ok» (g6m4l3) відкрита в тренуванні без уроку (головна, предмет, екран тренування, сесія,
+    коробка 2 з тесту); shaky (g6m4l4) і gap (g6m5l1) уроків 6 класу немає; cur «знайоме» відкрито, cur без «знайоме» — закрито;
+    старий профіль з планом лише з помилок (diag: null) — тренування не відкриває, як раніше."""
+    # (1)
+    context, page, errors = await qa_page(browser, url, {'grade': 6, 'unlockAll': False})
+    await page.evaluate("""() => { const d=SLID_SUBJECTS.find(c=>c.id==='math').diags.find(d=>d.id==='dg6');
+      d.items=[{type:'answer',answer:24,title:'Сторона квадрата',body:'<p>Площа квадрата — 576 см². Знайди його сторону в сантиметрах.</p>',topic:'r',sk:'num'},
+        {type:'answer',answer:'3/4',reduced:true,title:'Частина класу',body:'<p>Яку частину класу становлять 18 учнів з 24? Запиши дробом.</p>',topic:'f',sk:'frac'}];
+      d.topics=d.items.map(it=>({id:it.topic,title:it.title,kind:'cur',lessons:['g6m1l1']})); }""")
+    await page.click('[data-diag="math"]'); await page.click('[data-diag-go]')
+    for value, want in (('√576', 'form'), ('6/8', 'form')):
+        item = await page.evaluate("t => SLID_SUBJECTS.find(c=>c.id==='math').diags.find(d=>d.id==='dg6').items.find(it=>it.title===t)", await page.locator('#stage h2').inner_text())
+        assert await page.evaluate("([s, v]) => SLID_LEARN.checkAns(s, v)", [item, value]) == want, (value, item)
+        await page.fill('#numIn', value); await page.dispatch_event('#numIn', 'input'); await page.click('#action')
+        assert not await page.locator('#fbTitle').inner_text() and await page.locator('#hintHost .hint').count() == 0
+    res = (await saved_state(page))['diag']['dg6']['res']
+    assert res == {'0': 0, '1': 1}, res
+    assert not errors, errors
+    await context.close()
+    # (2)
+    context, page, errors = await qa_page(browser, url, {'grade': 9, 'unlockAll': True})
+    async def practice_c02(value):
+        await page.evaluate("""() => {const c=SLID_SUBJECTS.find(c=>c.id==='math'),p=c.pools.find(p=>p.id==='pg9m6');c.pools=[p];p.items=p.items.filter(it=>it.id==='c02');}""")
+        await page.click('button[data-subject="math"]'); await page.click('[data-practice-view="math"]')
+        await page.click(f'#view [data-practice="{await page.evaluate("() => SLID_SUBJECTS.find(c=>c.id===\'math\').pools[0].items[0].lesson")}"]')
+        assert 'образ точки' in await page.locator('#stage').inner_text()
+        await page.fill('#numIn', value); await page.dispatch_event('#numIn', 'input'); await page.click('#action')
+        dock = (await page.locator('#dock').get_attribute('class') or '').split()
+        hint = await page.locator('#dock').inner_text()
+        await page.goto(url)
+        return 'ok' in dock, hint
+    ok, hint = await practice_c02('A₁(-3; 0)')
+    assert ok, hint
+    ok, hint = await practice_c02('B₁(-3; 0)')
+    assert not ok and 'Назву з індексом чи штрихом' in hint, hint
+    assert not errors, errors
+    await context.close()
+    # (3)
+    context, page, errors = await qa_page(browser, url, {'grade': 7, 'unlockAll': False})
+    exp = await page.evaluate("""() => {const c=SLID_SUBJECTS.find(c=>c.id==='math'),d=c.diags.find(d=>d.id==='dg7');
+      const seen=new Set(), res={};
+      d.items.forEach((it,i)=>{ const second=seen.has(it.topic); seen.add(it.topic);
+        res[i]= it.topic==='sign-mul'? (second?0:1) : it.topic==='brackets'? 0 : 1; });
+      const cur=d.topics.filter(t=>t.kind==='cur'), off=cur[cur.length-1];
+      d.items.forEach((it,i)=>{ if(it.topic===off.id) res[i]=0; });
+      const S={grade:7,unlockAll:false,diag:{},plan:{},planByGrade:{},lessons:{},srs:{},mast:{},errs:[],skw:{}};
+      const secs=c.sections, has=id=>{const s=secs.find(s=>(s.lessons||[]).some(l=>l.id===id)); return !!s && s.grade<=7;};
+      const plan=SLID_LEARN.finishDiag(S,'math',d,res,{grade:7,diags:c.diags,day:'2026-10-16',hasLesson:has});
+      localStorage.setItem('slid.v1',JSON.stringify(S));
+      const pooled=new Set(c.pools.flatMap(p=>p.items.map(it=>it.lesson)));
+      return {topics:plan.topics, known:plan.known.filter(l=>pooled.has(l)), off:off.lessons.filter(l=>pooled.has(l)&&!plan.known.includes(l)), srs:S.srs};}""")
+    assert exp['topics']['sign-add'] == 'ok' and exp['topics']['sign-mul'] == 'shaky' and exp['topics']['brackets'] == 'gap', exp['topics']
+    assert exp['srs']['g6m4l3']['box'] == 2 and exp['known'] and exp['off'], exp
+    await page.reload()
+    assert await page.locator('#view [data-practice-view="math"]').count() == 1, 'головна: тренування не видно'
+    await page.click('button[data-subject="math"]')
+    entry = await page.locator('[data-practice-view="math"]').inner_text()
+    assert 'Відкрито' in entry, entry
+    await page.click('[data-practice-view="math"]')
+    for l in ['g6m4l3'] + exp['known']:
+        assert await page.locator(f'#view [data-practice="{l}"]').count() == 1, l
+    for l in ('g6m4l4', 'g6m5l1'):
+        assert await page.locator(f'#view [data-practice="{l}"]').count() == 0, l
+    for l in exp['off']:
+        assert await page.locator(f'#view [data-practice="{l}"]').count() == 0, l
+    assert await page.locator('#view [data-practice="g6m4l3"] .strength i.on').count() == 3
+    await page.click('#view [data-practice="g6m4l3"]')
+    stage = await page.locator('#stage').inner_text()
+    assert 'тренування' in stage.lower() and await page.locator('#numIn').count() == 1, stage[:300]
+    await page.click('#pClose')
+    st = await saved_state(page)
+    assert not st['lessons'].get('g6m4l3') and st['srs']['g6m4l3']['box'] == 2 and st['grade'] == 7, st['srs']
+    assert not errors, errors
+    await context.close()
+    # старий профіль: план лише з помилок, тесту не було — нічого не відкрито
+    context, page, errors = await qa_page(browser, url, {'grade': 7, 'unlockAll': False,
+        'plan': {'math': {'diag': None, 'steps': [{'l': 'g6m4l3', 'src': 'err'}], 'known': []}}})
+    assert await page.locator('#view [data-practice-view="math"]').count() == 0
+    assert await page.evaluate("""() => {const c=SLID_SUBJECTS.find(c=>c.id==='math'),S=JSON.parse(localStorage.getItem('slid.v1'));
+      return SLID_LEARN.practiceItems(S,c,{grade:7,diags:c.diags,day:'2026-10-16'}).some(it=>it.lesson==='g6m4l3');}""") is False
+    assert not errors, errors
+    await context.close()
+    print('decisions-1101: form у тесті → OK (√ — BAD), A₁ для образу A, тренування тем ok з тесту без уроку (старий профіль — як раніше): green', flush=True)
 
 async def evidence_checks(browser, url):
     """engine-evidence-v2 (docs/EVIDENCE.md): журнал подій у IndexedDB. Той самий маршрут (тренування з помилкою й підказкою,

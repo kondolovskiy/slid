@@ -33,9 +33,12 @@ const baseStart = c => { for(const b of baseTopics(c)){ const f=b.next&&findLess
   const i=f.sec.lessons.findIndex((l,j)=>!done(l.id)&&unlocked(f.sec,j)); if(i>=0) return f.sec.lessons[i].id; } return null; };
 const known = id => { const f=findLesson(id); return !!f && f.sec.grade===S.grade && LEARN.isKnown(S,f.c.id,id,planCtx(f.c)); };
 /* тренування: пул задач (SLID.pool) — відкриті лише задачі пройдених тем */
-const poolItems = c => LEARN.practiceItems(S,c);
+const poolItems = c => LEARN.practiceItems(S,c,planCtx(c));
 const poolsFor = c => { const ids=new Set(poolItems(c).map(it=>it.pool.id)); return (c.pools||[]).filter(p=>ids.has(p.id)); };
-const topicOpen = id => done(id) || S.unlockAll;
+/* тема тренування відкрита: урок пройдено, або тест рівня показав, що тему знають (pre «ok» чи cur «знайоме» — LEARN.diagOpen,
+   рішення людини 2026-11-01), або налагоджувальний перемикач */
+const diagOpen = id => { const f=findLesson(id); return !!f && LEARN.diagOpen(S,f.c.id,id,planCtx(f.c)); };
+const topicOpen = id => done(id) || S.unlockAll || diagOpen(id);
 const openItems = c => poolItems(c).filter(it=>topicOpen(it.lesson));
 const pendingDiag = () => subjectsFor().find(c=>{ const d=diagFor(c); return d && !S.diag[d.id]?.done && !S.diagSkip[d.id]; });
 function schoolWeek(){ if(S.weekOverride) return S.weekOverride; const now=new Date(); const y=now.getMonth()>=7? now.getFullYear() : now.getFullYear()-1;
@@ -1054,12 +1057,14 @@ const evMode = () => run?.diag? "diag" : run?.practice? "practice" : "lesson";
 const evItem = s => ({ mode:evMode(), c:C?.id, l: run?.practice? s.lesson : L.id, i:idx, id:s.id ?? null, key:s.key ?? null, pool:s.pool?.id ?? null,
   type:s.type, ak:s.answerKind ?? null, sk:s.sk ?? null, pre:s.pre ?? null, topic:s.topic ?? null, rev:s.rev ?? null, boss:!!L.boss, hyp:!!(s.hyp||s.poll) });
 const evRaw = s => LAB && s.type==="lab"? LAB.get() : st;
-// answer: ok/form/bad — той самий результат checkAns, що його щойно дав gradeNow (lastAns); checkAns удруге не викликаємо
+// answer: ok/form/bad — той самий результат checkAns, що його щойно дав gradeNow (lastAns), без другої перевірки. У тесті рівня
+// вердикт дає diagAnswerOk (form → OK) і сам checkAns не повертає: для журналу — один checkAns (лише number/time/quantity, дешево), щоб бачити form
 let lastAns=null;
-const evVerdict = (s, ok) => s.type==="answer" && lastAns? lastAns : ok? "ok" : "bad";
+const evVerdict = (s, ok) => s.type!=="answer"? (ok? "ok" : "bad") : lastAns || (run?.diag? LEARN.checkAns(s,st) : ok? "ok" : "bad");
 function check(){
   const s=L.screens[idx];
-  if(run.diag) return diagAnswer(gradeNow(s)? LEARN.OK : LEARN.BAD);
+  // answer у тесті: «form» (значення правильне, запис ні) — OK (рішення людини 2026-11-01; LEARN.diagAnswerOk)
+  if(run.diag) return diagAnswer((s.type==="answer"? LEARN.diagAnswerOk(s,st) : gradeNow(s))? LEARN.OK : LEARN.BAD);
   if(s.poll||s.hyp){ EV.log("answer", ()=>({ ...evItem(s), try:1, verdict:"hyp", raw:evRaw(s), hint:false, final:true }));
     if(s.poll) S.polls[s.poll]=st; const g=gain(5); checked=true; lock();
     setDock("info", `${s.fbTitle} <span class="gain">+${g}</span>`, s.fbText, "Далі"); return focusAction(); }

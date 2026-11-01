@@ -74,6 +74,11 @@ function checkTex(S, s) {
   // 1а) непарний $ у будь-якому тексті екрана (items, pairs, steps, note…); title/body/fbText/hint/opts уже перевіряє checkScreen
   const seen = new Set([s.title, s.body, s.steps ? null : s.fbText, s.hint, ...(s.opts || [])]);
   for (const x of new Set(own)) if (odd(x) && !seen.has(x)) E(S, `непарна кількість $ у «${x.slice(0, 60)}» — формула не закрита й покажеться сирою`);
+  // 1б) \sqrt без {…} (engine-p3-1101; рев'ю engine-math-sqrt-precedence, P3-4): рушій малює порожній корінь, а «3/2» — окремим дробом
+  //     («\sqrt 3/2» → порожній корінь і дріб 3/2). Показник [n] не рахується: «\sqrt[3]{8}» — коректно, «\sqrt[3] 8» — ні
+  const bareSqrt = [...new Set(html.flatMap(x => [...x.matchAll(/\$\$?([^$]+)\$\$?/g)].flatMap(m =>
+    m[1].replace(/"[^"]*"/g, " ").replace(/\\sqrt\s*\[[^\]]*\]/g, "\\sqrt").match(/\\sqrt(?![A-Za-z])(?!\s*\{)\s*\S{0,6}/g) || [])))];
+  if (bareSqrt.length) E(S, `формула: \\sqrt без фігурних дужок (${bareSqrt.join("; ")}) — покажеться порожнім коренем; пиши \\sqrt{3}/2 або √3/2`);
   // 2) lab.show і підписи повзунків рендерить fmt після fill(): непарний $ лишає формулу сирою
   for (const x of labHtml) if (odd(x)) E(S, `lab: непарна кількість $ у «${x}» — формула покажеться сирою${/\$\{/.test(x) ? " (зайвий $ перед шаблоном {…}?)" : ""}`);
   // 3) підписи SVG лабораторії (svgTexIssues: непарний $ там — «warn», але сирий текст однаково видно — помилка)

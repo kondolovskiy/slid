@@ -1428,7 +1428,7 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
   // p3b: «A1(…)» (образ з індексом) — form «лише координати», «X = (…)» (X — позначення з умови) — form, не ok
   const PM = K("coordinates2", [1, -5], { title: "Симетрія відносно точки $M$", body: "<p>Знайди координати точки, симетричної точці $A(3; -1)$ відносно точки $M(2; -3)$.</p>" });
   const PX = K("coordinates2", [-4, 2], C("<p>Кожна точка $X$ переходить у точку $X_1$ на промені $OX$.</p><p>Знайди образ точки $A(-2; 1)$.</p>"));
-  for (const [s, v, r] of [[PM, "M = (1; -5)", "form"], [PM, "M(1; -5)", "form"], [PM, "A(1; -5)", "form"], [PM, "A1(1; -5)", "form"], [PM, "B(1; -5)", "ok"], [PM, "B = (1; -5)", "ok"], [PM, "M(1; 5)", "bad"],
+  for (const [s, v, r] of [[PM, "M = (1; -5)", "form"], [PM, "M(1; -5)", "form"], [PM, "A(1; -5)", "form"], [PM, "A1(1; -5)", "ok"], [PM, "B(1; -5)", "ok"], [PM, "B = (1; -5)", "ok"], [PM, "M(1; 5)", "bad"],
     [PX, "X = (-4; 2)", "form"], [PX, "A(-4; 2)", "form"], [PX, "AB = (-4; 2)", "ok"], [PX, "B(-4; 2)", "ok"]])
     eq(L.checkAns(s, v), r, `назва без шуканої: «${v}»`);
   eq(L.formHint(PM, "M = (1; -5)"), "Координати правильні, але M — дана точка умови. Запиши лише координати.", "назва: дана точка — підказка");
@@ -1605,12 +1605,14 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
   T(A3, "M(-1,5; 3)", "ok", "вільна назва M"); T(A3, "M = (-1,5; 3)", "ok", "вільна назва M ="); T(A3, "(-1,5; 3)", "ok", "без назви");
   T(A3, "B(-1,5; 3)", "form", "дана точка B"); T(C6, "B(-3; 1)", "ok", "вільна назва B"); T(SYS, "A = (2; 5)", "ok", "система, вільна назва A"); T(V3, "M(1; -2; 3)", "ok", "coordinates3 вільна M");
   T(C5, "A(-5; 5)", "ok", "шукана A"); T(C5, "A = (-5; 5)", "ok", "шукана A =");
-  // назва образу з індексом чи штрихом: ніколи не ok; правильне значення → form «лише координати», неправильне → bad без підказки
-  for (const v of ["A_1(-3; 1)", "A_{1}(-3; 1)", "A₁(-3; 1)", "А₁(-3; 1)", "A1(-3; 1)", "A'(-3; 1)", "A′ = (-3; 1)", "A’(-3; 1)", "A_1 = (-3; 1)", "B''(-3; 1)", "AB_1(-3; 1)"]) {
+  // назва образу з індексом чи штрихом: ok лише для образу даної точки A, про який питає умова (рішення людини 2026-11-01, engine-decisions-1101);
+  // інші назви з індексом чи штрихом — form «лише координати», неправильне значення → bad без підказки
+  for (const v of ["A_1(-3; 1)", "A_{1}(-3; 1)", "A₁(-3; 1)", "А₁(-3; 1)", "A1(-3; 1)", "A'(-3; 1)", "A′ = (-3; 1)", "A’(-3; 1)", "A_1 = (-3; 1)"]) T(C6, v, "ok", "образ A — A₁/A′");
+  for (const v of ["B''(-3; 1)", "AB_1(-3; 1)", "B_1(-3; 1)", "B₁(-3; 1)", "A_2(-3; 1)", "A₂(-3; 1)", "A''(-3; 1)", "O_1(-3; 1)", "A_{12}(-3; 1)"]) {
     T(C6, v, "form", "образ з індексом/штрихом"); eq(L.formHint(C6, v), "Координати правильні. Назву з індексом чи штрихом тут не пишуть — запиши лише координати.", `p3b «${v}»: пояснення`); }
   for (const v of ["A_1(-3; 2)", "A'(3; -1)", "A₁(1; -3)", "A1(-3; -1)"]) { T(C6, v, "bad", "образ з неправильним значенням"); eq(L.badHint(C6, v), null, `p3b «${v}»: bad без підказки`); }
   for (const v of ["A_1 = A(-3; 1)", "A_1 A_1(-3; 1)", "A_1 = A_1 = (-3; 1)", "A_1(-3; 1) + 1", "A_123(-3; 1)", "a_1(-3; 1)", "_1(-3; 1)", "A_x(-3; 1)"]) T(C6, v, "bad", "подвійна або не-назва");
-  T(D3, "X_1(-4; 2)", "form", "X_1 з означення"); T(D3, "A_1(-4; 2)", "form", "A_1 — природний образ, поки не ok");
+  T(D3, "X_1(-4; 2)", "form", "X_1 з означення"); T(D3, "A_1(-4; 2)", "ok", "A_1 — образ A (рішення 2026-11-01)"); T(D3, "X'(-4; 2)", "form", "X' з означення");
   T(C5, "A_1(-5; 5)", "form", "дана A_1 при шуканій A"); eq(L.formHint(C5, "A_1(-5; 5)"), "Координати правильні, але тут шукають A.", "p3b c05: шукана назва в поясненні");
   // hintTexts: нові пояснення є у списку для звірки «підказка ≠ ключ»
   const H = L.hintTexts(A3);
@@ -1652,6 +1654,12 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
   // рев'ю engine-practice-pool P2-1: назву заголовка відкидаємо лише тоді, коли тіло дає їй дані; тут K даних не має —
   // шукана K із заголовка, як до P3-1 (консервативно: правильна назва з заголовка не дає хибного form)
   T(S2, "K(1; 2)", "ok", "K без даних у тілі — шукана із заголовка"); T(S2, "M(1; 2)", "form", "інша назва при шуканій K");
+  // N2 (рев'ю engine-practice-pool; engine-p3-1101): евристики «безіменна шукана» немає — фіксуємо поточну поведінку. Шукана точка тут
+  // безіменна, але K із заголовка стає ask: без назви й «K(…)» — ok, інша назва — form з поясненням (не bad), неправильне значення — bad.
+  // Якщо правило зміниться (K не шукана), цей тест має змінитися свідомо, разом із diff-answers по 4–11.
+  T(S2, "(1; 2)", "ok", "N2: без назви"); T(S2, "K = (1; 2)", "ok", "N2: K = із заголовка"); T(S2, "P(1; 2)", "form", "N2: вільна назва P — form, бо K шукана");
+  T(S2, "K(2; 1)", "bad", "N2: неправильне значення"); eq(L.formHint(S2, "M(1; 2)"), "Координати правильні, але тут шукають K.", "ask-title N2: пояснення називає K із заголовка");
+  { const S2b = { ...S2, title: "Точка на прямій" }; T(S2b, "K(1; 2)", "form", "N2: без назви в заголовку K — точка умови (objs)"); T(S2b, "M(1; 2)", "ok", "N2: без назви в заголовку — вільна назва"); }
   const P1 = { answerKind: "coordinates2", answer: "(2; 3)", title: "Точка $M$", body: "<p>$M$ — середина відрізка $AB$, $A(1; 2)$, $B(3; 4)$. Знайди координати.</p>" };
   const P2 = { answerKind: "coordinates2", answer: "(2; 3)", title: "Точка $M$", body: "<p>Точка $M$ — середина відрізка $AB$, $A(1; 2)$, $B(3; 4)$. Знайди її координати.</p>" };
   const P3 = { answerKind: "coordinates2", answer: "(1; 1)", title: "Вершина $D$", body: "<p>У паралелограмі $ABCD$ відомі $A(0; 0)$, $B(2; 0)$, $C(3; 1)$; $D$ — четверта вершина. Знайди координати.</p>" };
@@ -1764,6 +1772,20 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
   eq(GL.genIssues({ ...base, title: "$ {a} + {b|c}x $", body: "<p>Значення при $x = 1$.</p>", steps: ["{a} + {b} = {a+b}"], gen: { ...base.gen, answer: "a+b" } }), [], "gen: {b|c}x — коефіцієнт перед літерою");
   T({ title: "$ {a} - {b} $", gen: { vars: { a: { min: 2, max: 9 }, b: { values: [-3, 2] } }, where: undefined, answer: "a-b" } }, "після знака дії", "від'ємне після «-» без дужок");
   eq(GL.genIssues({ ...base, title: "$ {a} - ({b}) $", body: "<p>Обчисли.</p>", steps: ["{a} - ({b}) = {a-b}"], gen: { vars: { a: { min: 2, max: 9 }, b: { values: [-3, 2] } }, answer: "a-b" } }), [], "gen: від'ємне в дужках — чисто");
+  // рев'ю engine-practice-pool, N1: двокрапка й «–» поза формулою після слова — розділовий знак, не знак дії (від'ємне a — чисто)
+  { const NG = { vars: { a: { values: [-3, -2] }, b: { min: 2, max: 9 } }, where: undefined, answer: "a+b" }, ng = p => GL.genIssues({ ...base, steps: ["{a} + {b} = {a+b}"], gen: NG, ...p });
+    eq(ng({ title: "Обчисли: {a} + {b}", body: "<p>Знайди суму.</p>" }), [], "gen N1: «Обчисли: {a}» — двокрапка після слова");
+    eq(ng({ title: "Сума", body: "<p>Обчисли:  {a} + {b}.</p>", hint: "Наприклад: {a} — від'ємне число." }), [], "gen N1: «Наприклад: {a}» у hint, пробіли після «:»");
+    eq(ng({ title: "Сума", body: "<p>Перший доданок – {a}, другий – {b}.</p>" }), [], "gen N1: коротке тире після слова");
+    eq(ng({ title: "Сума", body: "<p>Дано: $a = {a}$, $b = {b}$.</p>" }), [], "gen N1: «Дано:» перед формулою");
+    eq(ng({ title: "Сума", body: "<p>Нехай $x$: {a}, а другий доданок {b|s}.</p>" }), [], "gen N1 (P3-1): «$x$: {a}» — двокрапка після формули");
+    // а знак дії лишається знаком: двокрапка-ділення у формулі, після числа поза формулою, «–» між числами, «+» після «Обчисли:»
+    for (const [title, w] of [["$ 12 : {a} + {b} $", "«:» у формулі"], ["$x : {a} + {b}$", "«:» після літери у формулі"], ["Обчисли 12 : {a} + {b}", "«:» після числа поза формулою"],
+      ["Обчисли 12 – {a} + {b}", "«–» після числа"], ["$ 5 – {a} + {b} $", "«–» у формулі"], ["Обчисли: ({b}) · ({b}) + {a}", "«+» перед від'ємним"], ["Обчисли: {b} −{a}", "«−» після вставки"],
+      ["Обчисли x – {a} + {b}", "P3-1: «–» після латинської змінної поза формулою"], ["Обчисли 12 см : {a} + {b}", "P3-1: «:» з пробілом після одиниці"],
+      ["Обчисли f(x): {a} + {b}", "P3-1: «:» після дужки"], ["Обчисли $x$ – {a} + {b}", "P3-1: «–» після формули"],
+      ["$ м:{a} + {b} $", "«:» після кириличної літери у формулі"], ["$ ч – {a} + {b} $", "«–» після кириличної літери у формулі"]])
+      eq(ng({ title, body: "<p>Обчисли.</p>" }).some(m => m.includes("після знака дії")), true, `gen N1: ${w} — знак дії`); }
   eq(GL.genIssues({ ...base, title: "$ {a} {b|s} $", body: "<p>Обчисли.</p>", steps: ["{a} {b|s} = {a+b}"], gen: { vars: { a: { min: 2, max: 9 }, b: { values: [-3, 2] } }, answer: "a+b" } }), [], "gen: {b|s} — знак доданка, без дужок");
   T({ gen: { vars: { a: { min: 1, max: 100 }, b: { min: 1, max: 60 } }, where: undefined } }, "понад 5000 допустимих наборів", "GEN_MAX");
   eq(GL.GEN_MAX, 5000, "gen: межа наборів 5000");
@@ -1792,5 +1814,67 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
 // P3-2 (рев'ю engine-learn-list-prefixes-p3): мутаційний сторож для app.js (позначка skFix зберігається й без перенесених записів) —
 // tools/test-answer-ui.py, regression: setItem одразу після migrateSk, до наступного виклику SLID_LEARN.
 
+/* engine-decisions-1101 (рішення людини 2026-11-01): (1) form у тесті рівня — OK; (2) A₁/A′ для образу точки A — ok;
+   (3) тренування тем, які тест рівня позначив ok / «знайоме», відкрите без пройденого уроку. */
+{ // (1) diagAnswerOk: ok і form — true; bad — false; число коренем (√576) — false: значення не обчислено
+  const Q = { type: "answer", answerKind: "quantity", answer: 245, units: ["см", "м"], form: "compound" };
+  const DEC = { type: "answer", answer: "37,0", decimals: 1 }, RED = { type: "answer", answer: "3/4", reduced: true }, IMP = { type: "answer", answer: "7/3", form: "improper" };
+  const RT = { type: "answer", answer: 24, body: "<p>Знайди сторону квадрата площею 576 см².</p>" }, TM = { type: "answer", answerKind: "time", answer: "10:05" };
+  for (const [s, v, r, ok] of [[Q, "2 м 45 см", "ok", true], [Q, "245 см", "form", true], [Q, "2,45 м", "form", true], [Q, "245", "bad", false], [Q, "2 м 54 см", "bad", false],
+    [DEC, "37,0", "ok", true], [DEC, "37", "form", true], [DEC, "37,1", "bad", false], [RED, "6/8", "form", true], [RED, "3/5", "bad", false], [IMP, "2 1/3", "form", true],
+    [RT, "24", "ok", true], [RT, "√576", "form", false], [RT, "2√144", "form", false], [RT, "√577", "bad", false], [TM, "10:05", "ok", true], [TM, "10:5", "bad", false]]) {
+    eq(L.checkAns(s, v), r, `decisions-1101 (1) checkAns «${v}»`); eq(L.diagAnswerOk(s, v), ok, `decisions-1101 (1) diagAnswerOk «${v}»`); }
+}
+{ // (2) образ даної точки: A₁/A′ — ok; без питання про образ, з назвою образу в умові, з шуканою назвою — як раніше
+  const K2 = (answer, body, title) => ({ type: "answer", answerKind: "coordinates2", answer, body, ...(title ? { title } : {}) });
+  const C2 = K2("(-3; 0)", "<p>Знайди образ точки $A(-2; 3)$ при паралельному перенесенні на вектор $(-1; -3)$.</p><p>Запиши координати у вигляді $(x; y)$.</p>");
+  const C3 = K2("(-2; -1)", "<p>Знайди координати точки, симетричної точці $A(-2; 1)$ відносно осі абсцис.</p>");
+  const C5 = K2("(-5; 5)", "<p>При паралельному перенесенні на вектор $(2; -1)$ образом точки $A$ є точка $A_1(-3; 4)$. Знайди координати точки $A$.</p>");
+  const NAMED = K2("(-3; 0)", "<p>Точка $A_1$ — образ точки $A(-2; 3)$ при перенесенні на вектор $(-1; -3)$. Знайди образ точки $A(-2; 3)$.</p>");
+  const ASK = K2("(-3; 0)", "<p>Знайди координати точки $B$ — образу точки $A(-2; 3)$ при перенесенні на вектор $(-1; -3)$.</p>");
+  const TWO = K2("(-3; 0)", "<p>Знайди образ точки $A(-2; 3)$ і образ точки $B(0; 0)$ при перенесенні на вектор $(-1; -3)$.</p>");
+  const MID = K2("(1; 2)", "<p>Знайди координати середини відрізка з кінцями $A(0; 0)$ і $B(2; 4)$.</p>");
+  for (const v of ["A₁(-3; 0)", "A_1 = (-3; 0)", "A_{1}(-3; 0)", "A1(-3; 0)", "A′(-3; 0)", "A'(-3; 0)", "A’ = (-3; 0)", "А₁(-3; 0)"]) eq(L.checkAns(C2, v), "ok", `decisions-1101 (2) образ A: «${v}»`);
+  for (const v of ["A₁(-2; -1)", "A'(-2; -1)"]) eq(L.checkAns(C3, v), "ok", `decisions-1101 (2) симетрична точці A: «${v}»`);
+  for (const [s, v, r] of [[C2, "B₁(-3; 0)", "form"], [C2, "A₂(-3; 0)", "form"], [C2, "A''(-3; 0)", "form"], [C2, "A(-3; 0)", "form"], [C2, "A₁(-3; 1)", "bad"], [C2, "A₁ = A(-3; 0)", "bad"], [C2, "A₁ = A₁ = (-3; 0)", "bad"],
+    [C5, "A₁(-5; 5)", "form"], [C5, "A'(-5; 5)", "form"], [NAMED, "A₁(-3; 0)", "form"], [ASK, "A₁(-3; 0)", "form"], [ASK, "B(-3; 0)", "ok"], [TWO, "A₁(-3; 0)", "form"], [MID, "A₁(1; 2)", "form"]])
+    eq(L.checkAns(s, v), r, `decisions-1101 (2) не образ шуканої / хибне значення: «${v}» → ${r}`);
+  eq(L.formHint(C2, "B₁(-3; 0)"), "Координати правильні. Назву з індексом чи штрихом тут не пишуть — запиши лише координати.", "decisions-1101 (2) B₁ — пояснення як раніше");
+}
+{ // (3) diagOpen / practiceItems: відкриває pre «ok» і cur «знайоме»; shaky, gap, baseline, урок двох тем (ok + shaky) — ні
+  const d7 = { id: "dg7", grade: 7, topics: [
+    { id: "p1", kind: "pre", lessons: ["l6a", "l6m"] }, { id: "p2", kind: "pre", lessons: ["l6b", "l6m"] }, { id: "p3", kind: "pre", lessons: ["l6c"] },
+    { id: "p4", kind: "pre", baseline: true, lessons: [], for: ["s7"] }, { id: "k1", kind: "cur", lessons: ["l7a"] }, { id: "k2", kind: "cur", lessons: ["l7b"] }],
+    items: [{ topic: "p1" }, { topic: "p1" }, { topic: "p2" }, { topic: "p2" }, { topic: "p3" }, { topic: "p3" }, { topic: "p4" }, { topic: "p4" }, { topic: "k1" }, { topic: "k2" }] };
+  const subj = { id: "math", diags: [d7], sections: [
+    { id: "s6", grade: 6, lessons: ["l6a", "l6b", "l6c", "l6m", "l6z"].map(id => ({ id })) }, { id: "s7", grade: 7, lessons: [{ id: "l7a" }, { id: "l7b" }] }, { id: "s8", grade: 8, lessons: [{ id: "l8" }] }] };
+  subj.pools = subj.sections.map(sec => ({ id: "p" + sec.id, section: sec.id, items: sec.lessons.map((l, i) => ({ id: "i" + i, lesson: l.id, lvl: 1 })) }));
+  const grade = new Map(subj.sections.flatMap(sec => sec.lessons.map(l => [l.id, sec.grade])));
+  const ctx = g => ({ grade: g, diags: [d7], day: "2026-11-01", hasLesson: id => grade.has(id) && grade.get(id) <= g });
+  const S = { ...fresh(), grade: 7, lessons: {}, srs: {} };
+  // p1 ok, p2 shaky (база ok, складніше ні), p3 gap, baseline p4 ok, k1 знайоме, k2 ні
+  const plan = L.finishDiag(S, "math", d7, { 0: OK, 1: OK, 2: OK, 3: BAD, 4: BAD, 5: BAD, 6: OK, 7: OK, 8: OK, 9: BAD }, ctx(7));
+  eq([plan.topics.p1, plan.topics.p2, plan.topics.p3, plan.known], ["ok", "shaky", "gap", ["l7a"]], "decisions-1101 (3) статуси тем фікстури");
+  const open = ["l6a", "l6b", "l6c", "l6m", "l6z", "l7a", "l7b", "l8"].filter(l => L.diagOpen(S, "math", l, ctx(7)));
+  eq(open, ["l6a", "l7a"], "decisions-1101 (3) diagOpen: лише pre ok (l6a) і cur «знайоме» (l7a); l6m (ok + shaky), shaky, gap, без теми, старший клас — ні");
+  eq(L.practiceItems(S, subj, ctx(7)).map(it => it.lesson), ["l6a", "l7a", "l7b"], "decisions-1101 (3) practiceItems з ctx: молодший клас — лише відкриті тестом, поточний — усі (закриті видно), старший — ні");
+  eq(L.practiceItems(S, subj).map(it => it.lesson), ["l7a", "l7b"], "decisions-1101 (3) practiceItems без ctx — як раніше");
+  // srsFromDiag (D-032) — ті самі уроки, коробки діють: ok → 2
+  eq([S.srs.l6a?.box, S.srs.l6m?.box, S.srs.l6b?.box, S.srs.l6c], [2, 0, 0, undefined], "decisions-1101 (3) srsFromDiag: ok → 2, урок ok + shaky → 0, gap — без запису");
+  // інший клас: план 7 класу не відкриває нічого в 6-му; повернення до 7-го — знову відкрито
+  S.grade = 6; eq(L.diagOpen(S, "math", "l6a", ctx(6)), false, "decisions-1101 (3) інший клас — план іншого класу не діє"); S.grade = 7;
+  eq(L.diagOpen(S, "math", "l6a", ctx(7)), true, "decisions-1101 (3) повернення до класу");
+  // повторний тест: p1 тепер gap — закрито
+  L.finishDiag(S, "math", d7, { 0: BAD, 1: BAD, 2: OK, 3: OK, 4: OK, 5: OK, 6: OK, 7: OK, 8: BAD, 9: OK }, ctx(7));
+  eq(["l6a", "l6b", "l6c", "l6m", "l7a", "l7b"].filter(l => L.diagOpen(S, "math", l, ctx(7))), ["l6b", "l6c", "l7b"], "decisions-1101 (3) повторний тест переписує відкриті теми");
+  // старі профілі: план лише з помилок (diag: null), старий S.plan без grade, без плану — нічого не відкривають і не падають
+  const E = { ...fresh(), grade: 7, plan: { math: { diag: null, steps: [{ l: "l6a", src: "err" }], known: [] } } };
+  eq(L.diagOpen(E, "math", "l6a", ctx(7)), false, "decisions-1101 (3) план з помилок — не відкриває");
+  eq(L.diagOpen({ ...fresh(), grade: 7 }, "math", "l6a", ctx(7)), false, "decisions-1101 (3) без плану — ні");
+  const legacy = { diag: {}, plan: { math: { diag: "dg7", date: "2026-10-01", topics: { p1: "ok", p2: "gap" }, steps: [], known: ["l7b"] } }, mast: {}, errs: [], skw: {}, grade: 7 };
+  eq(["l6a", "l6b", "l7a", "l7b"].filter(l => L.diagOpen(legacy, "math", l, ctx(7))), ["l6a", "l7b"], "decisions-1101 (3) старий S.plan без grade — читається як план класу");
+  const old = { diag: {}, plan: { math: { diag: "dg-old", topics: { p1: "ok" }, steps: [], known: [] } }, mast: {}, errs: [], skw: {}, grade: 7 };
+  eq(L.diagOpen(old, "math", "l6a", ctx(7)), false, "decisions-1101 (3) тест плану зник із змісту — не відкриває");
+}
 console.log(`\n${n} перевірок, ${fails ? fails + " з помилками" : "усе гаразд"}`);
 if (fails) process.exit(1);

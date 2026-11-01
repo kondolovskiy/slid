@@ -33,6 +33,7 @@ jobs:
           node tools/test-evidence.mjs
           node tools/test-personalization-qa.mjs
           node tools/test-validate.mjs
+          node tools/test-make-tasks.mjs
           node tools/validate.mjs --quiet
       - name: Згенеровані файли закомічені
         run: |
