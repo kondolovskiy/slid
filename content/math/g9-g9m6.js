@@ -1,5 +1,5 @@
 /* Слід · Математика, 9 клас — «Геометрія: правильні многокутники і перетворення»
-   Статус уроків: verified; l2 і l5 — draft (refine 01.11: r → R). 5 уроків (4 теми + boss).
+   Статус уроків: verified (l2, l5 — повторно 01.11 після refine: r → R). 5 уроків (4 теми + boss).
    Інтерактив: plane — n-кутник (cosd/sind), коло, симетрія drag; ≥2 explore/lab на урок.
    Перевірка: node tools/validate.mjs --section g9m6 && node tools/stats.mjs --subject math
    Схема й правила: docs/CONTENT_SCHEMA.md §8, style/, D-019.
@@ -228,7 +228,7 @@ SLID.section("math", {
       title: "Коло без нитки",
       short: "Коло і круг",
       icon: "rings",
-      status: "draft",
+      status: "verified",
       why: "Щоб міряти колеса, клумби й арки формулами з π — без обмотування ниткою.",
       screens: [
         {
@@ -847,7 +847,7 @@ SLID.section("math", {
       title: "Орнамент собору",
       short: "Фінал",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "g9m6boss",
       why: "Правильні многокутники, коло, симетрія й подібність — в одному орнаменті. Бали подвоєні.",
