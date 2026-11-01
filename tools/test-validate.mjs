@@ -206,5 +206,82 @@ for (const [name, steps, expErr] of [
   ok(E.every(e => /fxh2l2|g8-fxe\.js|fxol1/.test(e)), "повний прогін: помилки лише з зіпсованих файлів (чисті не зачеплено)", E.join("\n  "));
 }
 
+// ---- tools-validate-p3b, engine-player-a11y-p3, engine-answer-kinds-p3 (пункт validate) ----
+// кожне правило: позитивна фікстура (має спрацювати), негативна (чисто), рівень (помилка/попередження) і код виходу
+function expectRun(name, files, args, { err = null, warn = null, noWarn = null, rc, also = null } = {}) {
+  const { rep, status, out } = runTree(files, args);
+  ok(rep, `${name}: валідатор не записав звіт`, out); if (!rep) return null;
+  const errs = err ? rep.errors.filter(e => e.includes(err)) : [];
+  ok(err ? errs.length >= 1 : rep.errors.length === 0, `${name}: помилки ${err ? `«${err}»` : "не очікувались"}`, rep.errors.join("\n  "));
+  if (err) ok(rep.errors.every(e => errs.includes(e) || (also && e.includes(also))), `${name}: інших помилок не має бути`, rep.errors.filter(e => !errs.includes(e)).join("\n  "));
+  if (warn) ok(rep.warnings.some(w => w.includes(warn)), `${name}: очікувалось попередження «${warn}»`, rep.warnings.join("\n  "));
+  if (noWarn) ok(!rep.warnings.some(w => w.includes(noWarn)), `${name}: зайве попередження «${noWarn}»`, rep.warnings.filter(w => w.includes(noWarn)).join("\n  "));
+  ok(status === (rc ?? (err ? 1 : 0)), `${name}: код виходу ${status}`, out);
+  return rep;
+}
+const one = (id, opt) => ({ [`content/math/g8-${id}.js`]: secJS("math", mathSec(id, opt)) });
+
+// P3-1 (tools-validate-p3b): регулярні літерали й String.raw у файлі змісту — без хибних помилок і без схованих справжніх
+const rawSec = (id, lit, tail = "") => secJS("math", mathSec(id, { body: "@@RAW@@" })).replace(/"@@RAW@@"/g, () => lit) + tail;   // функція: «$`» у літералі — не шаблон заміни
+for (const [name, lit, tail, err] of [
+  ["regex /\"\\d/ поруч — не рядок, хибної помилки немає", `"Тіло."`, `const re = /"\\d+/; re.test("1");\n`, null],
+  ["regex /a\\/*b/ не відкриває коментар — справжня \\Delta після нього знайдена", `"Тіло."`, `const re = /a\\/*b/; const s = "Приріст $|\\Delta x|$";\n`, "«\\Delta»"],
+  ["ділення 4 / \"…\" / 2 — це не regex, рядок між знаками перевіряється", `"Тіло."`, `const q = 4 / "\\Delta".length / 2;\n`, "«\\Delta»"],
+  ["String.raw`$\\Delta$` — чисто", "String.raw`Приріст $\\Delta x$.`", "", null],
+  ["вкладений шаблон у ${…} перевіряється", "`Приріст ${ `$\\Delta x$` }.`", "", "«\\Delta»"]]) {
+  const id = `fxr${name.length}`;
+  expectRun(`lexer: ${name}`, { [`content/math/g8-${id}.js`]: rawSec(id, lit, tail) }, ["--section", id], { err });
+}
+// P3-2: «\n»/«\t» перед словом, що збігається з TeX-назвою, поза формулою — попередження, а не помилка; у $…$ і перед { — помилка
+expectRun("escape: \"x\\ne\" поза формулою — попередження", { "content/math/g8-fxn.js": rawSec("fxn", String.raw`"Рядок x\ne."`) }, ["--section", "fxn"], { warn: "навмисний перенос" });
+expectRun("escape: \"a\\to\" поза формулою — попередження", { "content/math/g8-fxn.js": rawSec("fxn", String.raw`"Стрілка a\to."`) }, ["--section", "fxn"], { warn: "«\\to»" });
+expectRun("escape: \"$a \\to b$\" у формулі — помилка", { "content/math/g8-fxn.js": rawSec("fxn", String.raw`"Стрілка $a \to b$."`) }, ["--section", "fxn"], { err: "«\\to»" });
+expectRun("escape: \"\\frac{1}{2}\" без $ перед { — помилка", { "content/math/g8-fxn.js": rawSec("fxn", String.raw`"Половина \frac{1}{2}."`) }, ["--section", "fxn"], { err: "«\\frac»" });
+// P3-3: --section сканує сирий текст лише файлу свого розділу; зіпсований чужий файл не блокує автора
+{ const files = { ...one("fxa"), "content/math/g8-fxb.js": rawSec("fxb", String.raw`"Приріст $|\Delta x|$."`) };
+  expectRun("скоуп: --section fxa — помилок чужого файлу немає", files, ["--section", "fxa"], {});
+  const rb = expectRun("скоуп: --section fxb — помилка свого файлу", files, ["--section", "fxb"], { err: "«\\Delta»" });
+  ok(rb && rb.errors.every(e => e.startsWith("content/math/g8-fxb.js:")), "скоуп: помилка вказує на файл fxb", rb && rb.errors.join("\n  "));
+  expectRun("скоуп: повний прогін бачить обидва файли", files, [], { err: "g8-fxb.js:" }); }
+// P3-4: вкладені дужки в індексі підпису SVG — помилка; x_{a_b} — чисто
+// (xname — підпис осі без шаблонів {…}; у підписах точок {…} — це вирази lab)
+expectRun("SVG: $x_{a_{bc}}$ у підписі осі — помилка", one("fxs", { lab: plane({ xname: "$x_{a_{bc}}$" }) }), ["--section", "fxs"], { err: "дужки всередині індексу" });
+expectRun("SVG: $x_{a_b}$ і $t_{AB}$ у підписах осей — чисто", one("fxs", { lab: plane({ xname: "$x_{a_b}$", yname: "$t_{AB}$" }) }), ["--section", "fxs"], {});
+// P3-5: credits — лише https://; запис із чотирьох полів; і в розділі, і в самому предметі
+{ const cred = (id, credits) => { const sec = mathSec(id); sec.credits = credits; return { [`content/math/g8-${id}.js`]: secJS("math", sec) }; };
+  expectRun("credits: https — чисто", cred("fxc", [["Фото", "Автор", "CC BY 4.0", "https://commons.wikimedia.org/wiki/File:X.jpg"]]), ["--section", "fxc"], {});
+  expectRun("credits: http:// — помилка", cred("fxc", [["Фото", "Автор", "CC BY 4.0", "http://commons.wikimedia.org/wiki/File:X.jpg"]]), ["--section", "fxc"], { err: "лише https" });
+  expectRun("credits: відносний шлях — помилка", cred("fxc", [["Фото", "Автор", "CC0", "img/a.png"]]), ["--section", "fxc"], { err: "лише https" });
+  expectRun("credits: три поля замість чотирьох — помилка", cred("fxc", [["Фото", "Автор", "https://commons.wikimedia.org/wiki/File:X.jpg"]]), ["--section", "fxc"], { err: "потрібно [назва, автор, ліцензія" });
+  const subj = c => `SLID.subject(${JSON.stringify({ id: "fxsubj", subject: "Фікстура", short: "Ф", icon: "frac", colors: { light: { accent: "#000" }, dark: { accent: "#fff" } }, skills: {}, credits: c })});\n`;
+  expectRun("credits предмета: javascript: — помилка (повний прогін)", { ...one("fxc"), "content/math/zz-subj.js": subj([["Фото", "Автор", "CC0", "javascript:alert(1)"]]) }, [], { err: "предмет fxsubj" });
+  expectRun("credits предмета: https — чисто", { ...one("fxc"), "content/math/zz-subj.js": subj([["Фото", "Автор", "CC0", "https://example.org/a.png"]]) }, [], {}); }
+// engine-player-a11y-p3: точка drag, яку не рухає ні миша, ні клавіатура, — попередження (модель працює, тож не помилка)
+expectRun("drag: координати-вирази — попередження", one("fxd", { lab: plane({ points: { D: { x: "2+a", y: "1", drag: true } } }) }), ["--section", "fxd"], { warn: "точка D: drag" });
+expectRun("drag: рух уздовж однієї осі — без попередження", one("fxd", { lab: plane({ points: { D: { x: "a", y: "2*a", drag: true } } }) }), ["--section", "fxd"], { noWarn: "drag, але" });
+expectRun("drag: at і без drag — без попередження", one("fxd", { lab: plane({ points: { D: { at: [1, 1], drag: true }, F: { x: "2+a", y: "1" } } }) }), ["--section", "fxd"], { noWarn: "drag, але" });
+// engine-answer-kinds-p3: answer в уроці — ті самі правила полів, що й у пулі (decimals, units лише для quantity, time без unit…)
+{ const ans = (id, f) => one(id, { extra: { type: "answer", title: "Обчисли", body: "Скільки?", ...f } });
+  for (const [name, f, err] of [
+    ["decimals 2 і ключ «3,50» — чисто", { answer: "3,50", decimals: 2 }, null],
+    ["decimals 2, а ключ «3,5» — помилка", { answer: "3,5", decimals: 2 }, "decimals 2 — ключ рядком"],
+    ["decimals з mixed — помилка", { answer: "3,50", decimals: 2, mixed: true }, "decimals не поєднується"],
+    ["decimals для ratio — помилка", { answerKind: "ratio", answer: "2 : 3", decimals: 1 }, "decimals — ціле 0–6"],
+    ["units поза quantity — помилка", { answer: 5, units: ["м", "см"] }, "units — лише для answerKind quantity"],
+    ["quantity з units — чисто", { answerKind: "quantity", answer: 245, units: ["м", "см"] }, null],
+    ["quantity з unit — помилка", { answerKind: "quantity", answer: 245, units: ["м", "см"], unit: "см" }, "quantity — без unit"],
+    ["time з unit — помилка", { answerKind: "time", answer: "9:55", unit: "год" }, "time — без unit"],
+    ["невідомий answerKind — помилка", { answerKind: "nope", answer: 5 }, "answerKind має бути"],
+    ["form improper зі змішаним ключем — помилка", { answer: "2 1/3", form: "improper" }, "form improper"]]) {
+    const id = "fxk";
+    const rep = expectRun(`answer в уроці: ${name}`, ans(id, f), ["--section", id], { err: err && `answer: ${err}`, also: "сам проходить перевірку" });
+    if (rep && err) ok(rep.errors.every(e => e.includes("#fxkl1 екран 4 (answer)")), `answer в уроці: ${name}: помилка вказує на екран`, rep.errors.join("\n  ")); }
+  // пул: ті самі поля перевіряє validatePool — checkScreen їх не дублює
+  const bad = `SLID.pool("math", ${JSON.stringify({ id: "pfx", section: "fxp", status: "draft", meta: { author: "test", created: "2026-10-31", factcheck: null, teacher: null },
+    sources: [{ id: "src", title: "Фікстура", url: "https://example.org/" }],
+    items: [{ id: "a01", lesson: "fxpl1", lvl: 1, sk: Object.keys(MATH_SKILLS)[0], src: "src №1", type: "answer", title: "Обчисли", body: "<p>Скільки?</p>", answer: 5, units: ["м", "см"], steps: ["Пояснення."] }] }, null, 1)});\n`;
+  const rp = expectRun("answer у пулі: units поза quantity — помилка один раз", { "content/math/g8-fxp.js": secJS("math", mathSec("fxp")), "content/math/pool-g8-fxp.js": bad }, ["--pool", "pfx"], { err: "units — лише для answerKind quantity" });
+  ok(rp && rp.errors.length === 1, "answer у пулі: без дубля з checkScreen", rp && rp.errors.join("\n  ")); }
+
 console.log(fails ? `\n${fails} з ${n} перевірок не пройшли` : `test-validate: усі ${n} перевірок пройшли`);
 process.exit(fails ? 1 : 0);

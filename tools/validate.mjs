@@ -89,12 +89,46 @@ function checkTex(S, s) {
 // або це валідний escape (\f \n \r \t \v \b), за яким іде назва TeX-команди (\frac, \neq, \vec, \times, \to, \begin, \right…).
 const JS_ESC = /^[bfnrtvux]/;
 const TEX_NAMES = new Set([...MATH_COMMANDS, "theta", "beta", "nu", "tg", "ctg", "arcsin", "arccos", "mathrm", "overline", "approx", "neg", "backslash", "bar", "hat", "dot", "right", "rangle", "rceil", "rfloor", "binom", "varphi", "vee", "tau"]);
-const STR_LIT = /\/\/[^\n]*|\/\*[\s\S]*?\*\/|"(?:[^"\\\n]|\\[\s\S])*"|'(?:[^'\\\n]|\\[\s\S])*'|`(?:[^`\\]|\\[\s\S])*`/g;
+// Лексер замість одного регулярного виразу (рев'ю engine-render-tex-p3, P3-1): регулярні літерали /…/ пропускаємо
+// (у них «\d» — не рядок, а «/» всередині не відкриває коментар), String.raw`…` теж (там «\Delta» лишається «\Delta»),
+// а в шаблоні `…${вираз}…` вираз розбираємо як код — вкладені рядки й шаблони перевіряються самі.
+// Регулярний вираз чи ділення — за попереднім значущим фрагментом коду, як у самому JS: після «(», «,», «=», «:», «return»… — regex.
+const REGEX_AFTER = /^(?:[(,=:[!&|?{};+\-*%<>~^]|return|typeof|case|do|else|in|of|new|delete|void|throw|yield|await)?$/;
+function jsLiterals(src) {
+  const out = [], n = src.length, isId = ch => /[\w$]/.test(ch); let i = 0;
+  const regex = () => { i++; let cls = false;
+    while (i < n && src[i] !== "\n") { const ch = src[i]; if (ch === "\\") { i += 2; continue; } i++;
+      if (cls) { if (ch === "]") cls = false; } else if (ch === "[") cls = true; else if (ch === "/") break; }
+    while (i < n && /[A-Za-z]/.test(src[i])) i++; };
+  const template = raw => { let s = i++;
+    while (i < n && src[i] !== "`") {
+      if (src[i] === "\\") { i += 2; continue; }
+      if (src[i] === "$" && src[i + 1] === "{") { if (!raw) out.push({ index: s, text: src.slice(s, i) }); i += 2; code(true); s = i; continue; }
+      i++; }
+    i++; if (!raw) out.push({ index: s, text: src.slice(s, i) }); };
+  function code(inTpl) { let depth = 0, prev = "";
+    while (i < n) { const ch = src[i], nx = src[i + 1];
+      if (/\s/.test(ch)) { i++; continue; }
+      if (ch === "/" && nx === "/") { const e = src.indexOf("\n", i); i = e < 0 ? n : e; continue; }
+      if (ch === "/" && nx === "*") { const e = src.indexOf("*/", i + 2); i = e < 0 ? n : e + 2; continue; }
+      if (ch === "/" && REGEX_AFTER.test(prev)) { regex(); prev = ")"; continue; }
+      if (ch === '"' || ch === "'") { const s = i++; while (i < n && src[i] !== ch && src[i] !== "\n") i += src[i] === "\\" ? 2 : 1; i++; out.push({ index: s, text: src.slice(s, i) }); prev = ")"; continue; }
+      if (ch === "`") { template(/String\s*\.\s*raw\s*$/.test(src.slice(Math.max(0, i - 40), i))); prev = ")"; continue; }
+      if (inTpl && ch === "{") depth++;
+      if (inTpl && ch === "}") { if (!depth) { i++; return; } depth--; }
+      if (isId(ch)) { const s = i; while (i < n && isId(src[i])) i++; prev = src.slice(s, i); continue; }
+      prev = ch; i++; } }
+  code(false);
+  return out;
+}
+// level: "error" — JS ковтає «\» або це TeX (керівний символ усередині $…$ чи перед «{»: "$\frac{1}{2}$", "\vec{a}");
+// "warn" — валідний escape перед TeX-назвою поза формулою ("x\ne", "a\to"): рідко, але може бути навмисним переносом (P3-2).
 function jsEscapeIssues(src) {
   const out = [];
-  for (const m of src.matchAll(STR_LIT)) { if (m[0][0] === "/") continue;   // коментар
-    for (const e of m[0].matchAll(/(?<!\\)(?:\\\\)*\\([A-Za-z]+)/g)) { const w = e[1];
-      if (!JS_ESC.test(w) || TEX_NAMES.has(w)) out.push({ line: src.slice(0, m.index + e.index).split("\n").length, cmd: w, swallowed: !JS_ESC.test(w) }); } }
+  for (const lit of jsLiterals(src))
+    for (const e of lit.text.matchAll(/(?<!\\)(?:\\\\)*\\([A-Za-z]+)/g)) { const w = e[1], swallowed = !JS_ESC.test(w); if (!swallowed && !TEX_NAMES.has(w)) continue;
+      const end = e.index + e[0].length, inMath = (lit.text.slice(0, e.index).match(/(?<!\\)\$/g) || []).length % 2 === 1;
+      out.push({ line: src.slice(0, lit.index + e.index).split("\n").length, cmd: w, swallowed, level: swallowed || inMath || /^[{_^]/.test(lit.text.slice(end)) ? "error" : "warn" }); }
   return out;
 }
 { // з --section/--diag/--pool — лише файл(и) цього id: origin розділу, інакше файли, де є `id: "<id>"`
@@ -102,11 +136,22 @@ function jsEscapeIssues(src) {
   const idRe = only && new RegExp(`["']?id["']?\\s*:\\s*["']${only.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}["']`);
   const files = content.files.filter(f => f.startsWith("content/") && (!only || (onlySec && origin[onlySec] ? f === origin[onlySec] : idRe.test(src(f)))));
   for (const f of files) for (const is of jsEscapeIssues(src(f)))
-    E(`${f}:${is.line}`, `«\\${is.cmd}» з одним бекслешем у JS-рядку — ${is.swallowed ? `JavaScript ковтає «\\», учень побачить «${is.cmd}»` : `JavaScript читає «\\${is.cmd[0]}» як керівний символ, учень побачить «${is.cmd.slice(1)}»`}; пиши «\\\\${is.cmd}»`);
+    (is.level === "error" ? E : W)(`${f}:${is.line}`, `«\\${is.cmd}» з одним бекслешем у JS-рядку — ${is.swallowed ? `JavaScript ковтає «\\», учень побачить «${is.cmd}»` : `JavaScript читає «\\${is.cmd[0]}» як керівний символ, учень побачить «${is.cmd.slice(1)}»`}; пиши «\\\\${is.cmd}»${is.level === "warn" ? " (якщо це навмисний перенос чи табуляція — розділи рядок: \"…\\n\" + \"…\")" : ""}`);
+}
+
+// answer в уроці чи діагностиці — ті самі правила полів, що в пулі (engine-answer-kinds-p3): answerKind, decimals, form, units лише
+// для quantity, time без unit… Беремо саме learn.validatePool, щоб правила не розійшлися: екран загортаємо в пул з однією задачею.
+// Поля самого пулу (lesson, lvl, src, steps, sk) підставлено коректні; «ключ не читається» вже дає checkScreen — його не дублюємо.
+function answerFieldIssues(s, c) {
+  const it = { ...s, id: "x", lesson: "l", lvl: 1, sk: Object.keys(c.skills)[0], src: "s 1", steps: ["."] };
+  const pool = { id: "x", section: "x", status: "draft", sources: [{ id: "s", title: "s", url: "https://x" }], items: [it] };
+  return learn.validatePool(pool, { sections: new Map([["x", { lessons: ["l"] }]]), skills: c.skills })
+    .filter(m => m.startsWith("задача 1 «x»: ") && !/не читається або сам не проходить/.test(m)).map(m => "answer: " + m.slice("задача 1 «x»: ".length));
 }
 
 // перевірка одного екрана; diag — завдання діагностики (без фідбеку: дитина не бачить, правильно чи ні)
-function checkScreen(S, s, c, diag) {
+// pool — задача пулу: її поля answer уже перевірив learn.validatePool
+function checkScreen(S, s, c, diag, pool = false) {
   if (!TYPES.includes(s.type)) return E(S, `невідомий тип «${s.type}»`);
   if (!s.title) E(S, "немає title");
   const noteTxt = typeof s.note === "string" ? s.note : s.note?.text;
@@ -121,6 +166,8 @@ function checkScreen(S, s, c, diag) {
   if (s.svg && !SVGS.includes(s.svg)) E(S, `немає SVG-ілюстрації «${s.svg}» у svgFig()`);
   if (s.fig && !FIGS.includes(s.fig.kind)) E(S, `невідомий fig.kind «${s.fig.kind}»`);
   if (s.lab) for (const m of lab.validate(s.lab, s)) E(S, "lab: " + m);
+  // точка drag, яку не рухає ні миша, ні клавіатура (рев'ю engine-player-a11y-followup P3-1) — попередження: модель працює
+  if (s.lab) for (const m of lab.dragIssues(s.lab)) W(S, "lab: " + m);
   checkTex(S, s);
   for (const key of ["hideCount", "hideDen"]) if (s[key] !== undefined && typeof s[key] !== "boolean") E(S, `${key}: потрібне true/false`);
   if ((s.type === "explore" || s.type === "lab") && !s.lab) E(S, `${s.type} потребує поле lab (інтерактивну модель)`);
@@ -156,7 +203,8 @@ function checkScreen(S, s, c, diag) {
     case "numline": if (!(Number.isInteger(s.answer) && s.answer >= 0 && s.answer <= s.max * s.den)) E(S, "answer — ціле число поділок від 0 до max·den"); break;
     case "number": if (!(typeof s.answer === "number" && isFinite(s.answer) && Math.abs(s.answer) < 1e9)) E(S, "answer — скінченне число (десяткові й від'ємні дозволені)");
       if (s.tol != null && !(Number.isFinite(s.tol) && s.tol >= 0)) E(S, "tol — скінченне невід'ємне число (допустима похибка)"); break;
-    case "answer": if (learn.checkAns(s, learn.keyInput(s)) !== "ok") E(S, "answer: число або рядок («7/12», «2 1/3», «-3,5»), що сам проходить перевірку (величина quantity — у складеному записі)"); break;
+    case "answer": if (learn.checkAns(s, learn.keyInput(s)) !== "ok") E(S, "answer: число або рядок («7/12», «2 1/3», «-3,5»), що сам проходить перевірку (величина quantity — у складеному записі)");
+      if (!pool) for (const m of answerFieldIssues(s, c)) E(S, m); break;
     case "fracin": if (!(Number.isInteger(s.answer) && s.answer >= 0 && s.answer < 1e6)) E(S, "answer — ціле невід'ємне число (поле приймає лише цифри)");
       if (!(s.expr && s.den)) E(S, "fracin потребує expr і den"); break;
   }
@@ -164,6 +212,17 @@ function checkScreen(S, s, c, diag) {
   const sentLong = sentences(plain([s.body].join(" "))).filter(x => words(x).length > 25);
   if (sentLong.length) W(S, `дуже довге речення (${words(sentLong[0]).length} слів): «${sentLong[0].slice(0, 60)}…»`);
 }
+
+// credits: [назва, автор, ліцензія, https://…] — рушій (urlAttr) не-https посилання мовчки робить href="#" (рев'ю engine-render-tex-p3, P3-5)
+function creditIssues(list) {
+  if (list === undefined) return [];
+  if (!Array.isArray(list)) return ["credits: потрібен масив записів [назва, автор, ліцензія, https://…]"];
+  return list.flatMap((x, k) => !Array.isArray(x) || x.length < 4 || x.slice(0, 3).some(v => typeof v !== "string" || !v.trim()) ? [`credits ${k + 1}: потрібно [назва, автор, ліцензія, https://…]`]
+    : /^https:\/\/[^\s/]+\.[^\s]+$/.test(x[3]) ? [] : [`credits ${k + 1} «${String(x[0]).slice(0, 40)}»: посилання «${x[3]}» — лише https://… (інше застосунок показує як href="#")`]);
+}
+// кредити, оголошені в самому предметі (SLID.subject), а не в розділі
+if (!onlySec && !onlyDiag) for (const c of subjects) { const own = new Set(c.sections.flatMap(s => s.credits || []));
+  creditIssues(c.credits.filter(x => !own.has(x))).forEach(m => E(`предмет ${c.id}`, m)); }
 
 // D-027: у кожному уроці предмета — хоча б одне справжнє зображення (img: фото, репродукція, документ).
 // Схеми svg/fig не зараховуються. Для історії — помилка (усі уроки доповнено; регресійний тест: tools/test-validate.mjs).
@@ -174,6 +233,7 @@ for (const c of subjects) for (const sec of c.sections.filter(s => s.lessons)) {
   const file = origin[sec.id] || c.id;
   (sec.requires || []).forEach(r => { if (!allLessonIds.has(r)) E(`${file}#${sec.id}`, `requires: немає уроку ${r}`); });
   for (const b of sec.badges || []) if (!ICONS.includes(b.icon)) E(`${file}#${sec.id}`, `значок ${b.id}: немає іконки «${b.icon}»`);
+  creditIssues(sec.credits).forEach(m => E(`${file}#${sec.id}`, m));
   for (const l of sec.lessons) {
     const L = `${file}#${l.id}`;
     if (!l.title || !l.why || !l.icon) E(L, "уроку потрібні title, why, icon");
@@ -225,7 +285,7 @@ for (const c of subjects) for (const p of c.pools || []) {
   const D = `content/${c.id}/pool#${p.id}`; diagIds.add(p.id);
   for (const m of learn.validatePool(p, { sections: sectionLessons, skills: c.skills })) E(D, m);
   if (!p.meta) W(D, "немає meta {author, created, factcheck, teacher}");
-  (p.items || []).forEach((s, i) => { if (TYPES.includes(s.type)) checkScreen(`${D} задача ${i + 1} «${s.id}» (${s.type})`, { ...s, fbText: (s.steps || []).join(" ") }, c, true); });
+  (p.items || []).forEach((s, i) => { if (TYPES.includes(s.type)) checkScreen(`${D} задача ${i + 1} «${s.id}» (${s.type})`, { ...s, fbText: (s.steps || []).join(" ") }, c, true, true); });
   const per = {}; (p.items || []).forEach(s => per[s.lesson] = (per[s.lesson] || 0) + 1);
   for (const [l, n] of Object.entries(per)) if (n < 5) W(D, `урок ${l}: лише ${n} задач — для чергування треба щонайменше 5`);
 }

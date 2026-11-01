@@ -1274,9 +1274,94 @@ async def main():
                 await attr_math_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
                 await root_index_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
                 await player_a11y_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
+                await player_a11y_p3_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
             await browser.close()
             print('Обрані браузерні сценарії: green')
     finally:
         server.shutdown()
+
+async def open_screen_only(page, lesson, at):
+    """Open screen `at` of a real lesson right after its intro (screens in between are dropped in this page only),
+    so the check does not depend on how earlier screens are answered. Returns the screen."""
+    await page.evaluate("""([id, at]) => {const l=SLID_SUBJECTS.find(c=>c.id==='math').sections.flatMap(s=>s.lessons||[]).find(l=>l.id===id);
+      l.screens=[l.screens[0], l.screens[at]];}""", [lesson, at])
+    return (await open_lesson_at(page, lesson, 1))[1]
+
+async def player_a11y_p3_checks(browser, url):
+    """engine-player-a11y-p3: a point that no input moves is not a Tab stop (g8m2l1#2, g8m4l1#6), the number line
+    reads values instead of letters (g4m1l3#2), Home/End/PageUp/PageDown on a handle (g4m4l1#4), rotating a solid
+    from the keyboard and leaving Tab after the model locks (g4m5l4#5). Screen numbers are 0-based here."""
+    # Dead point D (x: "1", y: "1+dx", drag: true) next to the working point E: only E is focusable, with its own data-h.
+    context, page, errors = await qa_page(browser, url, {'grade': 8, 'unlockAll': True})
+    await open_screen_only(page, 'g8m4l1', 6)
+    labels = await page.eval_on_selector_all('#stage .lab-h', 'hs=>hs.map(h=>[h.dataset.h,h.getAttribute("aria-label")])')
+    assert len(labels) == 1 and labels[0][1].startswith('Точка E') and labels[0][0] == '1', labels
+    assert await page.get_attribute('#stage .lab-stage svg', 'role') == 'group'
+    await page.focus('#stage .screen')
+    for _ in range(12):
+        await page.keyboard.press('Tab')
+        if await page.evaluate("document.activeElement.classList.contains('lab-h') || document.activeElement.id==='action'"):
+            break
+    assert (await page.evaluate("document.activeElement.getAttribute('aria-label')") or '').startswith('Точка E'), await active_desc(page)
+    before = await page.evaluate("window.__slidLab.get()")
+    await page.keyboard.press('ArrowRight')
+    assert await page.evaluate("window.__slidLab.get()") != before, 'E must still move from the keyboard'
+    assert await page.evaluate("document.activeElement.dataset.h") == '1', await active_desc(page)   # focus survives the re-render
+    assert not errors, errors
+    await context.close()
+    # Only a dead point: no Tab stop at all, and the SVG is a plain image again.
+    context, page, errors = await qa_page(browser, url, {'grade': 8, 'unlockAll': True})
+    await open_screen_only(page, 'g8m2l1', 2)
+    assert await page.locator('#stage .lab-h').count() == 0
+    assert await page.get_attribute('#stage .lab-stage svg', 'role') == 'img'
+    assert not errors, errors
+    await context.close()
+    # Number line with letter labels: «A, 3500», not «A».
+    context, page, errors = await qa_page(browser, url, {'grade': 4, 'unlockAll': True})
+    await open_screen_only(page, 'g4m1l3', 2)
+    vt = await page.eval_on_selector_all('#stage .lab-h', 'hs=>hs.map(h=>h.getAttribute("aria-valuetext"))')
+    assert vt and all(', ' in v and any(ch.isdigit() for ch in v) for v in vt), vt
+    assert not errors, errors
+    await context.close()
+    # Home/End/PageUp/PageDown on the time point (g4m4l1#4): bounds and a big step, the page does not scroll.
+    context, page, errors = await qa_page(browser, url, {'grade': 4, 'unlockAll': True})
+    scr = await open_screen_only(page, 'g4m4l1', 4)
+    t = scr['lab']['params']['t']
+    await page.focus('#stage .lab-h')
+    y0 = await page.evaluate("document.querySelector('#stage').scrollTop + window.scrollY")
+    tv = lambda: page.evaluate("window.__slidLab.get().t")
+    await page.keyboard.press('Home'); assert abs(await tv() - t['min']) < 1e-6, (await tv(), t)
+    await page.keyboard.press('End'); assert abs(await tv() - t['max']) < 1e-6, (await tv(), t)
+    await page.keyboard.press('PageDown'); v = (await page.evaluate("window.__slidLab.get()"))['t']
+    assert t['min'] <= v < t['max'] - t.get('step', 1) * 1.5, (v, t)
+    await page.keyboard.press('PageUp'); assert abs(await tv() - t['max']) < 1e-6, (await tv(), t)
+    assert await page.evaluate("document.querySelector('#stage').scrollTop + window.scrollY") == y0
+    assert await page.evaluate("document.activeElement.classList.contains('lab-h')"), await active_desc(page)
+    assert not errors, errors
+    await context.close()
+    # Rotating solid (graded lab g4m5l4#5): the SVG is a Tab stop with a hint, arrows turn it, after «ok» it leaves Tab.
+    context, page, errors = await qa_page(browser, url, {'grade': 4, 'unlockAll': True})
+    scr = await open_screen_only(page, 'g4m5l4', 5)
+    svg = '#stage .lab-stage svg'
+    assert await page.get_attribute(svg, 'tabindex') == '0'
+    assert 'Стрілки обертають тіло' in (await page.get_attribute(svg, 'aria-label') or '')
+    await page.focus(svg)
+    for key in ['ArrowLeft', 'ArrowUp', 'ArrowRight', 'ArrowDown']:
+        b = await page.inner_html(svg); await page.keyboard.press(key)
+        assert await page.inner_html(svg) != b, f'{key} must rotate the solid'
+        assert await page.evaluate(f"document.activeElement === document.querySelector('{svg}')"), await active_desc(page)
+    b = await page.inner_html(svg); await page.keyboard.press('Home'); await page.keyboard.press('PageUp')
+    assert await page.inner_html(svg) == b   # other keys leave the view alone
+    sol = scr['solution']
+    for pid, val in sol.items():   # the real path: sliders in the panel
+        await page.eval_on_selector(f'#stage input[data-p="{pid}"]', "(e,v)=>{e.value=v;e.dispatchEvent(new Event('input'))}", val)
+    await page.click('#action')
+    assert 'ok' in await page.locator('#dock').get_attribute('class'), await page.evaluate("window.__slidLab.get()")
+    assert await page.get_attribute(svg, 'tabindex') == '-1'
+    b = await page.inner_html(svg); await page.focus(svg); await page.keyboard.press('ArrowLeft')
+    assert await page.inner_html(svg) == b, 'a locked solid must not rotate from the keyboard'
+    assert not errors, errors
+    await context.close()
+    print('Player a11y P3: dead point off Tab (g8m4l1#6, g8m2l1#2), number-line values (g4m1l3#2), Home/End/PageUp/PageDown (g4m4l1#4), solid rotation keys and lock (g4m5l4#5): green', flush=True)
 
 asyncio.run(main())
