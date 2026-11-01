@@ -16,7 +16,7 @@ window.SLID_LEARN = (() => {
      правило 2026-11-01): «ok» — OK; «form» без вимоги вигляду (інший запис того самого: «37» при decimals 1, «3/4» при
      fractionOnly «0,75»…) — OK; «form», коли умова прямо вимагає вигляд (reduced, mixed, form "improper", compound — валідатор
      вимагає, щоб умова його називала) чи обчислення не завершено («√576», «2√144» при ключі 24) — HALF і короткий екран-пояснення
-     (formHint) без другої спроби; дослівна копія виразу з умови («√576» при «Обчисли √576») — BAD: вміння не показано.
+     (formHint) без другої спроби — і для дослівної копії виразу з умови («√576» при «Обчисли √576»; пояснення MSG.rootCopy), рішення людини.
      Інші answerKind (вирази, множини, координати…) — після окремого рішення: у них багато form-вердиктів, які в уроці пояснюють. */
   const DIAG_ANSWER_KINDS = ["number", "time", "quantity"];
   /** Активний план предмета/класу. Старий S.plan лишається сумісним активним посиланням;
@@ -1251,7 +1251,7 @@ window.SLID_LEARN = (() => {
        умова цей вигляд називала), → HALF: значення правильне, вміння перетворення не показане. Перевірка: та сама відповідь із
        знятими полями невимаганого вигляду (decimals, fractionOnly) лишається «form» — тож «form» дало саме поле вигляду.
      - Число коренем (√576, 2√144 при раціональному ключі): обчислення не завершено — HALF (рішення людини 2026-11-01), але
-       дослівна копія виразу з умови (rootCopy) — BAD: жодного кроку не зроблено (хибні ok гірші за хибні bad).
+       дослівна копія виразу з умови (rootCopy) — теж HALF (рішення людини 2026-11-01: «половину балу і показати пояснення»), пояснення MSG.rootCopy.
      Старі збережені вердикти (1/0/-1) читаються як раніше. */
   const DIAG_FORM = s => !!(s.reduced || s.mixed || s.form === "improper" || ((s.answerKind || "number") === "quantity" && s.form === "compound"));
   function diagVerdict(s, v) {
@@ -1259,7 +1259,7 @@ window.SLID_LEARN = (() => {
     const t = stripUnit(s, v);
     if ((s.answerKind || "number") === "number" && typeof t === "string" && !numOf(t)) {
       const a = parseAns(typeof s.answer === "number" ? String(s.answer) : s.answer);
-      if (a && limited(() => rootNum(t, a), () => false)) return rootCopy(s, t) ? BAD : HALF;
+      if (a && limited(() => rootNum(t, a), () => false)) return HALF;
     }
     if (!DIAG_FORM(s)) return OK;
     const { decimals, fractionOnly, ...req } = s;

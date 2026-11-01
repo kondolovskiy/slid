@@ -319,14 +319,13 @@ if (args.includes("--time")) {
 }
 // ---------- half: вердикт тесту рівня (engine-diag-half-credit) ----------
 // Класифікація незалежна від diagVerdict: «вимаганий вигляд» — поле reduced/mixed/improper/compound є, запис зі знятими ВСІМА полями вигляду
-// дає ok (значення правильне), а зі знятими лише decimals/fractionOnly лишається form; «корінь» — запис із √/∛, checkAns form, і запис не
-// трапляється дослівно серед формул умови (інакше — копія умови, BAD як і раніше).
-const halfCounts = { "half вимаганий вигляд (reduced, mixed, improper, compound): OK → HALF": 0, "half корінь не обчислено (√576 при 24): BAD → HALF": 0 }, halfBad = [];
+// дає ok (значення правильне), а зі знятими лише decimals/fractionOnly лишається form; «корінь» — запис із √/∛ і checkAns form, зокрема
+// дослівна копія виразу з умови (рішення людини 2026-11-01: теж півбала з поясненням).
+const halfCounts = { "half вимаганий вигляд (reduced, mixed, improper, compound): OK → HALF": 0, "half корінь не обчислено (√576 при 24, і копія з умови): BAD → HALF": 0 }, halfBad = [];
 let halfTotal = 0;
 if (typeof OLD.diagAnswerOk === "function" && typeof NEW.diagVerdict === "function") {
   const V = { [NEW.OK]: "OK", [NEW.HALF]: "HALF", [NEW.BAD]: "BAD" }, kinds = NEW.DIAG_ANSWER_KINDS || ["number", "time", "quantity"];
   const strip = (s, ks) => Object.fromEntries(Object.entries(s).filter(([k, x]) => !(ks.includes(k) || (k === "form" && ks.includes("form") && x !== undefined))));
-  const formTex = s => [...stmt(s).matchAll(/\$([^$]+)\$/g)].flatMap(m => m[1].replace(/\\sqrt\s*\{([^{}]*)\}/g, "√$1").replace(/\s+/g, "").split("="));
   const probes = s => { const out = new Set(records(s)), K = keyText(s), a = NEW.parseAns(K);
     if ((s.answerKind || "number") === "number" && a) {
       const w = Math.trunc(a.n / a.d), r = Math.abs(a.n % a.d);
@@ -344,9 +343,9 @@ if (typeof OLD.diagAnswerOk === "function" && typeof NEW.diagVerdict === "functi
       const need = !!(s.reduced || s.mixed || s.form === "improper" || (s.answerKind === "quantity" && s.form === "compound"));
       const isForm = o === "OK" && n === "HALF" && r === "form" && need && NEW.checkAns(strip(s, ["reduced", "mixed", "form", "decimals", "fractionOnly"]), v) === "ok"
         && NEW.checkAns(strip(s, ["decimals", "fractionOnly"]), v) === "form";
-      const isRoot = o === "BAD" && n === "HALF" && r === "form" && /[√∛]|sqrt/.test(v) && !formTex(s).includes(v.replace(/\s+/g, ""));
+      const isRoot = o === "BAD" && n === "HALF" && r === "form" && /[√∛]|sqrt/.test(v);
       if (isForm) halfCounts["half вимаганий вигляд (reduced, mixed, improper, compound): OK → HALF"]++;
-      else if (isRoot) halfCounts["half корінь не обчислено (√576 при 24): BAD → HALF"]++;
+      else if (isRoot) halfCounts["half корінь не обчислено (√576 при 24, і копія з умови): BAD → HALF"]++;
       else halfBad.push(`${id} ${JSON.stringify(s.answer)} ← «${v}»: тест ${o} → ${n} (checkAns ${r})`);
       if (args.includes("--list-cat") && /^half/.test(opt("--list-cat")) && (isForm || isRoot)) console.log(`    ${id} «${v}»: ${o} → ${n}`);
     }

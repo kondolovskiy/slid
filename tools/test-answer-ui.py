@@ -1669,8 +1669,8 @@ async def gen_diag_srs_checks(browser, url):
 
 async def decisions_1101_checks(browser, url):
     """engine-decisions-1101 (рішення людини 2026-11-01) через справжній плеєр і екрани.
-    (1) Тест рівня: «form» без вимоги вигляду (0,75 при fractionOnly) — OK, дослівна копія кореня з умови (√576 при «Обчисли √576») — BAD,
-    обидва без фідбеку (вимаганий вигляд і незавершений корінь — півбала, half_credit_checks, engine-diag-half-credit).
+    (1) Тест рівня: «form» без вимоги вигляду (0,75 при fractionOnly) — OK, хибний корінь (√577 при «Обчисли √576») — BAD,
+    обидва без фідбеку (вимаганий вигляд і незавершений корінь, зокрема копія з умови, — півбала, half_credit_checks, engine-diag-half-credit).
     (2) Тренування pg9m6 c02: «A₁(-3; 0)» для образу точки A — ok; «B₁(-3; 0)» — form, як раніше.
     (3) dg7 через finishDiag: тема pre «ok» (g6m4l3) відкрита в тренуванні без уроку (головна, предмет, екран тренування, сесія,
     коробка 2 з тесту); shaky (g6m4l4) і gap (g6m5l1) уроків 6 класу немає; cur «знайоме» відкрито, cur без «знайоме» — закрито;
@@ -1682,7 +1682,7 @@ async def decisions_1101_checks(browser, url):
         {type:'answer',answer:'3/4',fractionOnly:true,title:'Частина класу',body:'<p>Яку частину класу становлять 18 учнів з 24? Запиши звичайним дробом.</p>',topic:'f',sk:'frac'}];
       d.topics=d.items.map(it=>({id:it.topic,title:it.title,kind:'cur',lessons:['g6m1l1']})); }""")
     await page.click('[data-diag="math"]'); await page.click('[data-diag-go]')
-    for value, want in (('√576', 'form'), ('0,75', 'form')):
+    for value, want in (('√577', 'bad'), ('0,75', 'form')):
         item = await page.evaluate("t => SLID_SUBJECTS.find(c=>c.id==='math').diags.find(d=>d.id==='dg6').items.find(it=>it.title===t)", await page.locator('#stage h2').inner_text())
         assert await page.evaluate("([s, v]) => SLID_LEARN.checkAns(s, v)", [item, value]) == want, (value, item)
         await page.fill('#numIn', value); await page.dispatch_event('#numIn', 'input'); await page.click('#action')
@@ -1754,14 +1754,14 @@ async def decisions_1101_checks(browser, url):
       return SLID_LEARN.practiceItems(S,c,{grade:7,diags:c.diags,day:'2026-10-16'}).some(it=>it.lesson==='g6m4l3');}""") is False
     assert not errors, errors
     await context.close()
-    print('decisions-1101: form без вимоги вигляду у тесті → OK (копія √ з умови — BAD), A₁ для образу A, тренування тем ok з тесту без уроку (старий профіль — як раніше): green', flush=True)
+    print('decisions-1101: form без вимоги вигляду у тесті → OK (хибний √ — BAD), A₁ для образу A, тренування тем ok з тесту без уроку (старий профіль — як раніше): green', flush=True)
 
 async def half_credit_checks(browser, url):
     """engine-diag-half-credit (рішення людини й методичне правило 2026-11-01) через справжній плеєр тесту рівня.
     Вимаганий умовою вигляд не показано (6/8 при «нескоротним дробом») чи корінь не обчислено (√576 при 24) — півбала (0,5):
     вердикт збережено одразу, короткий екран-пояснення (dock info, текст formHint), поле заблоковано, без «Ще не знаю» й без
     другої спроби; закритий на поясненні тест продовжується з наступного завдання. HALF — не провал теми: складніше завдання
-    тієї самої теми показують. Інший запис без вимоги вигляду (37 при decimals 1) — OK, копія кореня з умови — BAD, обидва без
+    тієї самої теми показують. Інший запис без вимоги вигляду (37 при decimals 1) — OK, хибна відповідь — BAD, обидва без
     фідбеку. Підсумок: тема з HALF — «хитко» (shaky), cur з HALF — не «знайоме». Старий збережений результат (1/0/-1) читається."""
     fixture = """() => { const c=SLID_SUBJECTS.find(c=>c.id==='math'), d=c.diags.find(d=>d.id==='dg6'), pre=d.topics.find(t=>t.kind==='pre');
       d.items=[{type:'answer',answer:5,title:'База',body:'<p>Скільки буде $2 + 3$?</p>',topic:'g',sk:'num'},
@@ -1804,9 +1804,12 @@ async def half_credit_checks(browser, url):
     # HALF on the base item of «f» is not a failed topic: its harder item is asked
     await answer('Ще дріб', '2/3'); await no_feedback()
     await answer('Температура', '37'); await no_feedback()
-    await answer('Корінь', '√576'); await no_feedback()
+    # дослівна копія кореня з умови — теж півбала з поясненням (рішення людини 2026-11-01); «Далі» завершує тест
+    await answer('Корінь', '√576'); await half_screen('Корінь', '√576', 6)
+    assert 'Це вираз з умови' in await page.locator('#fbText').inner_text()
+    await page.click('#action')
     st = await saved_state(page)
-    assert st['diag']['dg6']['res'] == {'0': 0, '1': 0.5, '3': 0.5, '4': 1, '5': 1, '6': 0}, st['diag']['dg6']
+    assert st['diag']['dg6']['res'] == {'0': 0, '1': 0.5, '3': 0.5, '4': 1, '5': 1, '6': 0.5}, st['diag']['dg6']
     assert st['diag']['dg6']['topics'] == {'g': 'gap', 'f': 'shaky', 'r': 'shaky', 'd': 'known', 'c': 'new'}, st['diag']['dg6']['topics']
     assert await page.locator('#stage .endhero').count() == 1
     # Evidence V2 (docs/EVIDENCE.md): HALF — подія answer з verdict "half" і res 0,5, одна на завдання (без другої спроби)
@@ -1814,7 +1817,7 @@ async def half_credit_checks(browser, url):
     assert ev, 'app/evidence.js не завантажено або журнал порожній'
     if True:
         got = [(e['i'], e['verdict'], e.get('res')) for e in ev]
-        assert got == [(0, 'bad', 0), (1, 'half', 0.5), (3, 'half', 0.5), (4, 'ok', 1), (5, 'form', 1), (6, 'form', 0)], got
+        assert got == [(0, 'bad', 0), (1, 'half', 0.5), (3, 'half', 0.5), (4, 'ok', 1), (5, 'form', 1), (6, 'half', 0.5)], got
         assert next(e for e in ev if e['i'] == 1)['raw'] == '6/8'
     assert not errors, errors
     await context.close()

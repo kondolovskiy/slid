@@ -1901,7 +1901,7 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
     ["mixed, 7/3", MIX, "7/3", "HALF"], ["mixed, 14/6", MIX, "14/6", "HALF"], ["mixed, 2 1/3", MIX, "2 1/3", "OK"], ["mixed, хибне", MIX, "2 1/4", "BAD"],
     ["без вимоги вигляду, 1 5/3", PL, "1 5/3", "OK"], ["без вимоги вигляду, 2 2/3", PL, "2 2/3", "OK"],
     ["√576 при 24", RT, "√576", "HALF"], ["2√144 при 24", RT, "2√144", "HALF"], ["√576 см при unit", RTU, "√576 см", "HALF"], ["24", RT, "24", "OK"], ["√577", RT, "√577", "BAD"],
-    ["копія виразу умови √576", RTC, "√576", "BAD"], ["2√144 при «Обчисли √576»", RTC, "2√144", "HALF"],
+    ["копія виразу умови √576 — теж півбала (рішення людини)", RTC, "√576", "HALF"], ["2√144 при «Обчисли √576»", RTC, "2√144", "HALF"],
     ["time ok", TM, "10:05", "OK"], ["time bad", TM, "10:5", "BAD"], ["порожньо", RED, "", "BAD"]])
     eq(V[L.diagVerdict(s, v)], want, `half: diagVerdict ${name} «${v}»`);
   // пояснення — наявні тексти formHint; не HALF — null
@@ -1910,7 +1910,8 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
   eq(L.diagHalfHint(RT, "√576"), "Значення правильне. Обчисли корінь і запиши відповідь числом.", "half: пояснення кореня");
   eq(L.diagHalfHint(IMP, "2 1/3"), "Значення правильне. Запиши відповідь неправильним дробом — без цілої частини.", "half: пояснення improper");
   eq(L.diagHalfHint(MIX, "7/3"), "Значення правильне. Запиши відповідь мішаним числом: ціла частина, пробіл, дріб.", "half: пояснення mixed");
-  eq([L.diagHalfHint(RED, "3/4"), L.diagHalfHint(DEC, "37"), L.diagHalfHint(RED, "3/5"), L.diagHalfHint(RTC, "√576")], [null, null, null, null], "half: OK і BAD — без пояснення");
+  eq(L.diagHalfHint(RTC, "√576"), "Це вираз з умови. Обчисли корінь і запиши відповідь числом.", "half: пояснення копії кореня з умови");
+  eq([L.diagHalfHint(RED, "3/4"), L.diagHalfHint(DEC, "37"), L.diagHalfHint(RED, "3/5")], [null, null, null], "half: OK і BAD — без пояснення");
   eq([L.DIAG_FORM(RED), L.DIAG_FORM(MIX), L.DIAG_FORM(IMP), L.DIAG_FORM(Q), L.DIAG_FORM(DEC), L.DIAG_FORM(FO), L.DIAG_FORM(QF), L.DIAG_FORM({ answerKind: "expression", form: "reduced" })],
     [true, true, true, true, false, false, false, false], "half: DIAG_FORM — лише reduced, mixed, improper, compound");
   // наступне завдання і смужка: HALF — не провал теми, складніше завдання теми показують
