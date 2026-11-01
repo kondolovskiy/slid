@@ -3,18 +3,18 @@ import fs from "node:fs"; import vm from "node:vm"; import path from "node:path"
 import { ROOT, manifest } from "./build.mjs";
 export { ROOT };
 
-/** Завантажує весь контент так само, як браузер, і повертає { subjects, soon, files }. */
-export function loadContent() {
+/** Завантажує весь контент так само, як браузер, і повертає { subjects, soon, files }. root — інше дерево (типово — репозиторій). */
+export function loadContent(root = ROOT) {
   const ctx = { console }; vm.createContext(ctx); ctx.window = ctx;
-  const files = manifest().filter(f => f !== "app/app.js");
+  const files = manifest(root).filter(f => f !== "app/app.js");
   for (const f of files) {
-    try { vm.runInContext(fs.readFileSync(path.join(ROOT, f), "utf8"), ctx, { filename: f }); }
+    try { vm.runInContext(fs.readFileSync(path.join(root, f), "utf8"), ctx, { filename: f }); }
     catch (e) { throw new Error(`Помилка у ${f}: ${e.message}`); }
   }
   // звідки прийшов кожен розділ — щоб повідомлення вказували на файл
   const origin = {};
   for (const f of files.filter(f => f.startsWith("content/") && !f.startsWith("content/subjects"))) {
-    const src = fs.readFileSync(path.join(ROOT, f), "utf8");
+    const src = fs.readFileSync(path.join(root, f), "utf8");
     for (const m of src.matchAll(/SLID\.section\(\s*"[^"]+",\s*\{\s*id:\s*"([^"]+)"/g)) origin[m[1]] = f;
   }
   ctx.SLID.finalize();

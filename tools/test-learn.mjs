@@ -1405,10 +1405,11 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
   const PB = K("coordinates2", [1, 6], C("<p>Точка $C(2; 1)$ — середина відрізка $AB$, а $A(3; -4)$. Знайди координати точки $B$.</p>"));
   for (const [v, r] of [["B(1; 6)", "ok"], ["B = (1; 6)", "ok"], ["(1; 6)", "ok"], ["A(1; 6)", "form"], ["AB = (1; 6)", "form"], ["C(1; 6)", "form"], ["A(1; 7)", "bad"]]) eq(L.checkAns(PB, v), r, `назва з умови (точка B, відрізок AB — не шукане): «${v}»`);
   // шуканої назви немає: будь-яка назва (D-030 (2)), крім даних точок умови; означення («кожна точка $X$…») — не шукане
+  // p3b: «A1(…)» (образ з індексом) — form «лише координати», «X = (…)» (X — позначення з умови) — form, не ok
   const PM = K("coordinates2", [1, -5], { title: "Симетрія відносно точки $M$", body: "<p>Знайди координати точки, симетричної точці $A(3; -1)$ відносно точки $M(2; -3)$.</p>" });
   const PX = K("coordinates2", [-4, 2], C("<p>Кожна точка $X$ переходить у точку $X_1$ на промені $OX$.</p><p>Знайди образ точки $A(-2; 1)$.</p>"));
-  for (const [s, v, r] of [[PM, "M = (1; -5)", "form"], [PM, "M(1; -5)", "form"], [PM, "A(1; -5)", "form"], [PM, "A1(1; -5)", "bad"], [PM, "B(1; -5)", "ok"], [PM, "B = (1; -5)", "ok"], [PM, "M(1; 5)", "bad"],
-    [PX, "X = (-4; 2)", "ok"], [PX, "A(-4; 2)", "form"], [PX, "AB = (-4; 2)", "ok"], [PX, "B(-4; 2)", "ok"]])
+  for (const [s, v, r] of [[PM, "M = (1; -5)", "form"], [PM, "M(1; -5)", "form"], [PM, "A(1; -5)", "form"], [PM, "A1(1; -5)", "form"], [PM, "B(1; -5)", "ok"], [PM, "B = (1; -5)", "ok"], [PM, "M(1; 5)", "bad"],
+    [PX, "X = (-4; 2)", "form"], [PX, "A(-4; 2)", "form"], [PX, "AB = (-4; 2)", "ok"], [PX, "B(-4; 2)", "ok"]])
     eq(L.checkAns(s, v), r, `назва без шуканої: «${v}»`);
   eq(L.formHint(PM, "M = (1; -5)"), "Координати правильні, але M — дана точка умови. Запиши лише координати.", "назва: дана точка — підказка");
   for (const [v, r] of [["A = (3; -2)", "ok"], ["AB = (3; -2)", "ok"], ["\\vec{AB} = (3; -2)", "ok"], ["A(3; -2)", "ok"], ["ABC(3; -2)", "bad"], ["a = (3; -2)", "bad"]]) eq(L.checkAns(K("coordinates2", "(3; -2)"), v), r, `назва без умови (D-030 (2)): «${v}»`);
@@ -1531,6 +1532,75 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
   const F = { errs: [E("g9m3l4", "math.func"), E("g9m3l4", "math.expr")] };
   eq([L.migrateSk(F), F.errs.map(e => e.sk), F.skFix], [2, ["math.eq", "math.eq"], ["sk-2026-10-31b", "sk-2026-11-01"]], "профіль без міграцій: обидві редакції по черзі (g9m3l4 func → eq, expr → eq)");
 }
+
+/* engine-diag-answer-kinds: answer з answerKind у SLID.diag — дозволені формати, вердикт без фідбеку, редакції збережених тестів */
+{ const lessons = new Map([["a1", { grade: 3 }], ["x1", { grade: 4 }]]), vc = { lessons, sections: new Map(), skills: { "m.meas": 1 } };
+  const mk = item => ({ id: "dga", grade: 4, title: "T", why: "W", status: "draft",
+    topics: [{ id: "a", title: "A", kind: "pre", lessons: ["a1"] }, { id: "x", title: "X", kind: "cur", lessons: ["x1"] }],
+    items: [{ topic: "a", type: "choice", sk: "m.meas", title: "q1" }, { topic: "a", type: "number", sk: "m.meas", title: "q2" }, { topic: "x", sk: "m.meas", title: "q3", ...item }] });
+  eq(L.DIAG_TYPES.includes("answer"), true, "diag answer: тип answer дозволено");
+  eq(L.DIAG_ANSWER_KINDS, ["number", "time", "quantity"], "diag answer: формати — number, time, quantity");
+  const okItems = [{ type: "answer", answerKind: "time", answer: "9:55" }, { type: "answer", answerKind: "quantity", answer: 245, units: ["см", "м"] },
+    { type: "answer", answerKind: "quantity", answer: 245, units: ["см", "м"], form: "compound" }, { type: "answer", answer: "37,0", decimals: 1 },
+    { type: "answer", answer: "7/3", form: "improper" }, { type: "answer", answer: -4, signed: true }, { type: "answer", answer: "2 1/3" }];
+  for (const it of okItems) eq(L.validate(mk(it), vc), [], `diag answer: ${JSON.stringify(it)} — дозволено`);
+  for (const k of L.ANSWER_KINDS.filter(k => !L.DIAG_ANSWER_KINDS.includes(k))) {
+    const E = L.validate(mk({ type: "answer", answerKind: k, answer: "1" }), vc);
+    eq(E.length === 1 && E[0].includes(`answerKind «${k}» у тесті не дозволено`), true, `diag answer: answerKind ${k} у тесті — помилка (${JSON.stringify(E)})`); }
+  eq(L.validate(mk({ type: "answer", answerKind: "time", answer: "9:55", rev: 2 }), vc), [], "diag answer: заміна на місці з rev 2 — дозволено");
+  eq(L.validate(mk({ type: "number", answer: 1, answerKind: "time" }), vc).length, 0, "diag: answerKind на number перевіряє validate.mjs (answerFieldIssues), не learn.validate");
+  // вердикт тесту — як у плеєрі (app.js check → gradeNow): OK лише для checkAns === "ok"; form (значення правильне, запис ні) — BAD
+  const verdict = (s, v) => L.checkAns(s, v) === "ok" ? OK : BAD;
+  const T = { type: "answer", answerKind: "time", answer: "10:05" }, Q = { type: "answer", answerKind: "quantity", answer: 245, units: ["см", "м"], form: "compound" }, DEC = { type: "answer", answer: "37,0", decimals: 1 };
+  eq([verdict(T, "10:05"), verdict(T, "10.05"), verdict(T, "9:55"), verdict(T, "10:5"), verdict(T, ""), verdict(T, "10 05")].map(x => x === OK), [true, L.checkAns(T, "10.05") === "ok", false, L.checkAns(T, "10:5") === "ok", false, L.checkAns(T, "10 05") === "ok"], "diag answer time: OK лише для ok");
+  eq(["2 м 45 см", "245 см", "2 м 46 см", "2,45 м"].map(v => [L.checkAns(Q, v), verdict(Q, v)]), [["ok", OK], ["form", BAD], ["bad", BAD], [L.checkAns(Q, "2,45 м"), L.checkAns(Q, "2,45 м") === "ok" ? OK : BAD]], "diag answer quantity compound: «245 см» — form → BAD");
+  eq(["37,0", "37"].map(v => [L.checkAns(DEC, v), verdict(DEC, v)]), [["ok", OK], ["form", BAD]], "diag answer decimals: «37» при decimals 1 — form → BAD");
+  // збережений тест: number → answer time на тому самому місці з rev 2 — вердикт старого змісту відкидається, решта лишається
+  const V1 = mk({ type: "number", answer: 55 }), V2 = mk({ type: "answer", answerKind: "time", answer: "10:05", rev: 2 });
+  const S = { ...fresh(), diagRun: { dga: { 0: OK, 1: BAD, 2: OK } } };
+  eq([L.resumeDiag(S, V2).dropped, S.diagRun.dga, S.diagRunRev.dga, L.nextItem(V2, S.diagRun.dga)], [[2], { 0: OK, 1: BAD }, 2, 2], "diag answer rev: відповідь на старий number відкинуто, завдання покажуть знову");
+  S.diagRun.dga[2] = verdict(V2.items[2], "10:05");
+  eq([L.resumeDiag(S, V2).dropped, S.diagRun.dga[2]], [[], OK], "diag answer rev: відповідь на нову редакцію зберігається");
+  const S1 = { ...fresh(), diagRun: { dga: { 2: OK } }, diagRunRev: { dga: 1 } };
+  eq([L.resumeDiag(S1, V1).dropped, S1.diagRun.dga], [[], { 2: OK }], "diag answer rev: без заміни (ред. 1) нічого не відкидається");
+  // завершений тест не перераховується
+  const SD = { ...fresh(), diagRun: {} }; L.finishDiag(SD, "math", V1, { 0: OK, 1: OK, 2: OK }, {});
+  const done = clone(SD.diag.dga); L.resumeDiag(SD, V2);
+  eq([SD.diag.dga, done.rev], [done, 1], "diag answer rev: завершений результат лишається як був (rev 1)");
+}
+/* engine-learn-prefixes-p3b: назви об'єктів умови без координат, назви образу з індексом/штрихом */
+{ const A3 = { answerKind: "coordinates2", answer: [-1.5, 3], body: "<p>Знайди координати середини відрізка $BC$, якщо $B(-2; -1)$, $C(-1; 7)$.</p>" };
+  const C6 = { answerKind: "coordinates2", answer: "(-3; 1)", body: "<p>Знайди координати точки, симетричної точці $A(3; -1)$ відносно початку координат $O(0; 0)$.</p><p>Образ лежить на прямій $AO$.</p>" };
+  const D3 = { answerKind: "coordinates2", answer: "(-4; 2)", body: "<p>Кожна точка $X$ переходить у точку $X_1$ на промені $OX$, $OX_1 = 2 · OX$, центр $O(0; 0)$.</p><p>Знайди образ точки $A(-2; 1)$.</p>" };
+  const C5 = { answerKind: "coordinates2", answer: "(-5; 5)", body: "<p>Образом точки $A$ є точка $A_1(-3; 4)$. Знайди координати точки $A$.</p>" };
+  const SYS = { answerKind: "coordinates2", answer: "(2; 5)", body: "<p>Розв'яжи систему й запиши пару $(x;\\,y)$.</p>" };
+  const V3 = { answerKind: "coordinates3", answer: "(1; -2; 3)", body: "<p>Дано точки $A(0; 0; 0)$ і відрізок $KL$. Знайди координати вершини куба.</p>" };
+  const T = (s, v, r, what) => eq(L.checkAns(s, v), r, `p3b ${what}: «${v}» → ${r}`);
+  // хибні ok закрито: назва об'єкта умови → form з поясненням, з неправильним значенням → bad без підказки
+  for (const [s, v, what] of [[A3, "BC = (-1,5; 3)", "відрізок BC"], [A3, "BC(-1,5; 3)", "BC без «=»"], [C6, "AO = (-3; 1)", "пряма AO"], [D3, "X(-4; 2)", "X з означення"], [D3, "OX = (-4; 2)", "промінь OX"],
+    [V3, "KL = (1; -2; 3)", "coordinates3 відрізок KL"], [A3, "\\vec{BC} = (-1,5; 3)", "\\vec{BC}"]]) {
+    T(s, v, "form", what); eq(L.formHint(s, v), `Координати правильні, але ${v.match(/[A-Z]{1,2}/)[0]} — інше позначення з умови, а не шукана точка. Запиши лише координати.`, `p3b ${what}: пояснення`); }
+  for (const [s, v] of [[A3, "BC = (-1; 3)"], [C6, "AO = (3; -1)"], [D3, "X(4; -2)"], [D3, "OX = (-4; 3)"], [V3, "KL = (1; 2; 3)"]]) { T(s, v, "bad", "неправильне значення з назвою умови"); eq(L.badHint(s, v), null, `p3b «${v}»: bad без підказки`); }
+  // вільні назви й дані точки — без змін (D-031 (1))
+  T(A3, "M(-1,5; 3)", "ok", "вільна назва M"); T(A3, "M = (-1,5; 3)", "ok", "вільна назва M ="); T(A3, "(-1,5; 3)", "ok", "без назви");
+  T(A3, "B(-1,5; 3)", "form", "дана точка B"); T(C6, "B(-3; 1)", "ok", "вільна назва B"); T(SYS, "A = (2; 5)", "ok", "система, вільна назва A"); T(V3, "M(1; -2; 3)", "ok", "coordinates3 вільна M");
+  T(C5, "A(-5; 5)", "ok", "шукана A"); T(C5, "A = (-5; 5)", "ok", "шукана A =");
+  // назва образу з індексом чи штрихом: ніколи не ok; правильне значення → form «лише координати», неправильне → bad без підказки
+  for (const v of ["A_1(-3; 1)", "A_{1}(-3; 1)", "A₁(-3; 1)", "А₁(-3; 1)", "A1(-3; 1)", "A'(-3; 1)", "A′ = (-3; 1)", "A’(-3; 1)", "A_1 = (-3; 1)", "B''(-3; 1)", "AB_1(-3; 1)"]) {
+    T(C6, v, "form", "образ з індексом/штрихом"); eq(L.formHint(C6, v), "Координати правильні. Назву з індексом чи штрихом тут не пишуть — запиши лише координати.", `p3b «${v}»: пояснення`); }
+  for (const v of ["A_1(-3; 2)", "A'(3; -1)", "A₁(1; -3)", "A1(-3; -1)"]) { T(C6, v, "bad", "образ з неправильним значенням"); eq(L.badHint(C6, v), null, `p3b «${v}»: bad без підказки`); }
+  for (const v of ["A_1 = A(-3; 1)", "A_1 A_1(-3; 1)", "A_1 = A_1 = (-3; 1)", "A_1(-3; 1) + 1", "A_123(-3; 1)", "a_1(-3; 1)", "_1(-3; 1)", "A_x(-3; 1)"]) T(C6, v, "bad", "подвійна або не-назва");
+  T(D3, "X_1(-4; 2)", "form", "X_1 з означення"); T(D3, "A_1(-4; 2)", "form", "A_1 — природний образ, поки не ok");
+  T(C5, "A_1(-5; 5)", "form", "дана A_1 при шуканій A"); eq(L.formHint(C5, "A_1(-5; 5)"), "Координати правильні, але тут шукають A.", "p3b c05: шукана назва в поясненні");
+  // hintTexts: нові пояснення є у списку для звірки «підказка ≠ ключ»
+  const H = L.hintTexts(A3);
+  eq(["Координати правильні, але BC — інше позначення з умови, а не шукана точка. Запиши лише координати.", "Координати правильні, але B — дана точка умови. Запиши лише координати.", "Координати правильні. Назву з індексом чи штрихом тут не пишуть — запиши лише координати."].every(t => H.includes(t)), true, "p3b hintTexts: objMsg, givenMsg, pointImage");
+  // числовий шлях: мала літера без «=» — як і раніше; символьний coordinates2 з назвою умови
+  const SP = { answerKind: "coordinates2", answer: "(p - m; k - n)", body: "<p>Знайди координати вектора $\\overrightarrow{AB}$, якщо $A(m; n)$, $B(p; k)$.</p>" };
+  T(SP, "AB = (p - m; k - n)", "ok", "символьний, шукана AB"); T(SP, "A(p - m; k - n)", "form", "символьний, дана A"); T(SP, "A_1(p - m; k - n)", "form", "символьний, образ");
+}
+// P3-2 (рев'ю engine-learn-list-prefixes-p3): мутаційний сторож для app.js (позначка skFix зберігається й без перенесених записів) —
+// tools/test-answer-ui.py, regression: setItem одразу після migrateSk, до наступного виклику SLID_LEARN.
 
 console.log(`\n${n} перевірок, ${fails ? fails + " з помилками" : "усе гаразд"}`);
 if (fails) process.exit(1);
