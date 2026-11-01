@@ -119,5 +119,33 @@ for (const kind of Object.keys(L.KINDS)) { const sp = { kind, params: { a: { min
     if (bad.length && !known) { raw++; if (raw <= 5) console.log(`  сирий TeX у SVG: ${bad.join(" | ")}`); } }
   eq(raw, 0, `контент: моделей із сирим TeX у підписах SVG (з ${specs.length}, з формулами в підписах — ${withTex})`);
   eq(specs.length > 0 && withTex > 0, true, "контент: перевірка не порожня"); }
+// engine-player-a11y-followup: підписи осей поверх кривої (QA 9 кл., D-4), шкала діаграми не дрібніша за 11
+{ const sp = { kind: "plane", view: [-3, 5, -3, 5], fns: [{ y: "-x^2 + 2*x + 3", color: "accent" }] }, b = L.KINDS.plane.render(sp, L.makeEnv(sp, {}), {}).body;
+  const curve = b.indexOf('stroke-linecap="round" stroke-linejoin="round"'), tick = b.search(/<text[^>]*font-size="11"[^>]*>−1<\/text>/);
+  eq(curve > 0 && tick > curve, true, "plane: підпис поділки «−1» малюється після (поверх) кривої");
+  eq(/<text[^>]*>3<\/text>/.test(b.slice(curve)), true, "plane: підпис «3» теж поверх кривої");
+  const c = { kind: "chart", bars: [{ label: "1", v: 3 }, { label: "2", v: 19 }] }, cb = L.KINDS.chart.render(c, L.makeEnv(c, {}), {}).body;
+  const sizes = [...cb.matchAll(/font-size="(\d+)" text-anchor="end" fill="var\(--muted\)"/g)].map(m => +m[1]);
+  eq(sizes.length > 0 && Math.min(...sizes) >= 11, true, `chart: шкала ≥ 11 (${sizes.join(",")})`); }
+// клавіатура для ручок SVG (точки, кут прямокутника, цифри): handles несуть параметри, handleKey дає нові значення
+{ const pl = { kind: "plane", points: { A: { at: [1, 2], drag: true } } }, ps = L.paramList(pl), st = L.startState(pl);
+  const h = L.KINDS.plane.render(pl, L.makeEnv(pl, st), {}).handles[0];
+  eq([h.kx, h.ky, h.name, h.value], ["Ax", "Ay", "Точка A", "(1; 2)"], "plane: ручка точки знає параметри й підпис");
+  eq(L.handleKey(h, "ArrowRight", st, ps), { Ax: 2 }, "plane: → — x на крок"); eq(L.handleKey(h, "ArrowUp", st, ps), { Ay: 3 }, "plane: ↑ — y більше");
+  eq(L.handleKey(h, "Enter", st, ps), null, "plane: Enter моделі не змінює");
+  const only = { kind: "plane", params: { u: { min: -5, max: 5, start: 0 }, v: { min: -5, max: 5, start: 1 } }, points: { B: { x: "u", y: "v", drag: "u" } } }, hb = L.KINDS.plane.render(only, L.makeEnv(only, L.startState(only)), {}).handles[0];
+  eq([hb.kx, hb.ky], ["u", null], "plane: drag лише по u — y стрілками не змінюється");
+  const tg = L.handleTargets([h], st, ps, false); eq(/tabindex="0"/.test(tg) && /role="slider"/.test(tg) && /aria-valuetext="\(1; 2\)"/.test(tg) && /pointer-events="none"/.test(tg), true, "plane: ціль фокуса для Tab і читача екрана");
+  eq(/tabindex="-1"/.test(L.handleTargets([h], st, ps, true)), true, "заблокована модель: ручки поза Tab");
+  const rc = { kind: "rect", params: { a: { min: 1, max: 10, start: 3 }, b: { min: 1, max: 6, start: 2 } } }, hr = L.KINDS.rect.render(rc, L.makeEnv(rc, L.startState(rc)), {}).handles[0];
+  eq(L.handleKey(hr, "ArrowDown", L.startState(rc), L.paramList(rc)), { b: 3 }, "rect: ↓ тягне кут униз — b більше");
+  const nl = { kind: "numline", view: [0, 10], params: { t: { min: 0, max: 10, step: 0.5, start: 2, hide: true } }, points: { P: { x: "t", drag: true } } }, hn = L.KINDS.numline.render(nl, L.makeEnv(nl, L.startState(nl)), {}).handles[0];
+  eq([L.handleKey(hn, "ArrowLeft", { t: 2 }, L.paramList(nl)), L.handleKey(hn, "ArrowUp", { t: 2 }, L.paramList(nl))], [{ t: 1.5 }, { t: 2.5 }], "numline: ← і ↑ на крок 0,5");
+  const col = { kind: "column", op: "+", a: "478", b: "256", input: true }, cs = L.startState(col), hc = L.KINDS.column.render(col, L.makeEnv(col, cs), {}).handles;
+  eq([hc[0].digit, hc[0].name, hc[0].value], ["d0", "Цифра відповіді, розряд одиниць", "не вписано"], "column: цифра одиниць — перша в Tab і з назвою розряду");
+  eq([L.handleKey(hc[1], "7", cs, L.paramList(col)), L.handleKey(hc[0], "ArrowDown", { ...cs, d0: 0 }, L.paramList(col)), L.handleKey(hc[0], "Backspace", cs, L.paramList(col))], [{ d1: 7 }, { d0: 9 }, { d0: -1 }], "column: цифра, ↓ по колу, Backspace — «?»");
+  eq(/role="spinbutton"/.test(L.handleTargets(hc, cs, L.paramList(col), false)), true, "column: цифра — spinbutton");
+  const dv = { kind: "column", op: ":", a: "84", b: "6", input: true }, hd = L.KINDS.column.render(dv, L.makeEnv(dv, L.startState(dv)), {}).handles;
+  eq(hd.map(x => x.name), ["Цифра частки, розряд десятків", "Цифра частки, розряд одиниць"], "ділення: цифри частки зліва направо з назвами розрядів"); }
 console.log(`${n - fails}/${n} тестів лабораторії пройдено`);
 process.exit(fails ? 1 : 0);

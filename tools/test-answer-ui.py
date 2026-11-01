@@ -964,6 +964,103 @@ async def player_focus_checks(browser, url):
     await context.close()
     print('Player focus follow-up: no focus on ✕ after a lab mistake (g4m2l1#4, g4m2l2#6), touch keeps the field unfocused: green', flush=True)
 
+async def active_desc(page):
+    return await page.evaluate("(a => a ? (a.id || a.getAttribute('class') || a.tagName) : null)(document.activeElement)")
+
+async def player_a11y_checks(browser, url):
+    """engine-player-a11y-followup: labs changed only by touching the SVG work from the keyboard; on a coarse-pointer
+    device (phone, tablet) the field is neither autofocused nor refocused after Enter from the on-screen keyboard;
+    image credits are labelled by site; fig/shade aria-labels agree with the number of parts."""
+    # Column addition g4m2l1#4: digits only by tapping the SVG. After the mistake focus is on the first digit cell
+    # (units), typing a digit keeps focus on that cell through the re-render, Tab goes to the next one.
+    context, page, errors = await qa_page(browser, url, {'grade': 4, 'unlockAll': True})
+    screens = await open_lesson_at(page, 'g4m2l1', 4)
+    sol = screens[4]['solution']
+    await page.click('#action')
+    assert 'bad' in await page.locator('#dock').get_attribute('class')
+    assert await page.evaluate("document.activeElement.classList.contains('lab-h') && document.activeElement.dataset.h==='0'"), await active_desc(page)
+    assert await page.evaluate("document.activeElement.getAttribute('role')") == 'spinbutton'
+    assert 'розряд одиниць' in await page.evaluate("document.activeElement.getAttribute('aria-label')")
+    n = await page.locator('#stage .lab-h').count()
+    assert n == len(sol), (n, sol)
+    for i in range(n):
+        assert await page.evaluate("document.activeElement.dataset.h") == str(i), await active_desc(page)
+        await page.keyboard.press(str(sol[f'd{i}']))
+        assert await page.evaluate("document.activeElement.dataset.h") == str(i), ('focus lost on re-render', await active_desc(page))
+        assert await page.evaluate("document.activeElement.getAttribute('aria-valuetext')") == str(sol[f'd{i}'])
+        if i < n - 1:
+            await page.keyboard.press('Tab')
+    assert await page.evaluate("window.__slidLab.get()") == {**sol}, await page.evaluate("window.__slidLab.get()")
+    assert await page.locator('#action').is_enabled()
+    await page.focus('#action'); await page.keyboard.press('Enter')
+    assert 'ok' in await page.locator('#dock').get_attribute('class')
+    assert await page.locator('#stage .lab-h[tabindex="0"]').count() == 0   # locked model leaves Tab order
+    assert not errors, errors
+    await context.close()
+    # Time line g4m4l1#4: the point moves only by dragging. Tab reaches it, arrows move it a step (10 min).
+    context, page, errors = await qa_page(browser, url, {'grade': 4, 'unlockAll': True})
+    screens = await open_lesson_at(page, 'g4m4l1', 4)
+    lab = screens[4]['lab']; start, step = lab['params']['t']['start'], lab['params']['t']['step']
+    await page.focus('#stage .screen')
+    for _ in range(12):
+        await page.keyboard.press('Tab')
+        if await page.evaluate("document.activeElement.classList.contains('lab-h')"):
+            break
+    assert await page.evaluate("document.activeElement.getAttribute('role')") == 'slider', await active_desc(page)
+    assert 'Точка P' in await page.evaluate("document.activeElement.getAttribute('aria-label')")
+    presses = round((screens[4]['solution']['t'] - start) / step)
+    for _ in range(presses):
+        await page.keyboard.press('ArrowRight')
+    assert await page.evaluate("document.activeElement.getAttribute('aria-valuetext')") == '16:30'
+    await page.click('#action')
+    assert 'ok' in await page.locator('#dock').get_attribute('class'), await page.evaluate("window.__slidLab.get()")
+    assert not errors, errors
+    await context.close()
+    # Coarse pointer (has_touch → pointer: coarse): no autofocus on a number screen (Android would open the keyboard
+    # before the child reads the task), and Enter from the on-screen keyboard does not put focus back into the field.
+    context, page, errors = await qa_page(browser, url, {'grade': 4, 'unlockAll': True}, touch=True)
+    assert await page.evaluate("matchMedia('(pointer: coarse)').matches")
+    screens = await open_lesson_at(page, 'g4m2l1', 6)
+    assert screens[6]['type'] == 'number'
+    await page.wait_for_timeout(600)   # the old autofocus fired after 350 ms
+    assert await focus_id(page) != 'numIn', await focus_id(page)
+    assert await page.evaluate("document.activeElement.classList.contains('screen')"), await active_desc(page)
+    await page.tap('#numIn'); await page.keyboard.type('1'); await page.keyboard.press('Enter')
+    assert 'bad' in await page.locator('#dock').get_attribute('class')
+    assert await focus_id(page) != 'numIn', ('Enter from the on-screen keyboard refocused the field', await focus_id(page))
+    assert await page.evaluate("document.activeElement.closest('#stage') !== null"), await active_desc(page)
+    if screens[6].get('hint'):
+        box = await page.locator('#hintHost .hint').bounding_box(); dock = await page.locator('#dock').bounding_box()
+        assert box and box['y'] + box['height'] <= dock['y'] + 1, (box, dock)
+    assert not errors, errors
+    await context.close()
+    # Profile → image sources: «Вікісховище» only for Commons links, otherwise the site (UN digital library in g11s5).
+    context, page, errors = await qa_page(browser, url, {'grade': 4, 'unlockAll': True})
+    await page.click('[data-tab="profile"]')
+    links = await page.eval_on_selector_all('.credits a', 'as=>as.map(a=>[a.textContent, a.getAttribute("href")])')
+    assert len(links) > 100, len(links)
+    wrong = [l for l in links if (l[0] == 'Вікісховище') != ('commons.wikimedia.org' in l[1] or 'upload.wikimedia.org' in l[1])]
+    assert not wrong, wrong[:5]
+    assert ['digitallibrary.un.org', 'https://digitallibrary.un.org/record/3965290'] in links, [l for l in links if 'un.org' in l[1]]
+    assert not errors, errors
+    await context.close()
+    # aria-label of fig circle/circles and shade: «на 2 рівні частини», «на 5 рівних частин», «на 21 рівну частину».
+    context, page, errors = await qa_page(browser, url, {'grade': 4, 'unlockAll': True})
+    cases = [({'kind': 'circle', 'n': 2, 'k': 1}, 'Круг на 2 рівні частини, зафарбовано 1'),
+             ({'kind': 'circle', 'n': 5, 'k': 1}, 'Круг на 5 рівних частин, зафарбовано 1'),
+             ({'kind': 'circle', 'n': 21, 'k': 1}, 'Круг на 21 рівну частину, зафарбовано 1'),
+             ({'kind': 'circles', 'n': 3, 'k': 4, 'count': 2}, 'Круг на 3 частини, зафарбовано 3')]
+    for figure, label in cases:
+        await page.evaluate("""f => {const l=SLID_SUBJECTS.find(c=>c.id==='math').sections.flatMap(s=>s.lessons||[]).find(l=>l.id==='g4m2l1');
+          l.screens[0]={...l.screens[0],fig:f,img:undefined,svg:undefined,lab:undefined};}""", figure)
+        await open_lesson_at(page, 'g4m2l1', 0)
+        got = await page.eval_on_selector_all('#stage figure svg', 'ss=>ss.map(s=>s.getAttribute("aria-label"))')
+        assert got and got[0] == label, (figure, got)
+        await page.reload()
+    assert not errors, errors
+    await context.close()
+    print('Player a11y follow-up: lab digits/point from the keyboard (g4m2l1#4, g4m4l1#4), coarse pointer without autofocus/refocus, credits by site, fig plural: green', flush=True)
+
 BAD_ATTRS = """root => [...document.querySelectorAll(root+' *')].flatMap(el=>[...el.attributes]
   .filter(a=>/[<>$]|class=/.test(a.value) && !['Чи a<b?','Ціна 5 $'].includes(a.value)).map(a=>el.tagName+'['+a.name+']='+a.value))"""
 
@@ -1124,6 +1221,11 @@ async def main():
                         await page.fill('#numIn', '0,4')
                         await page.click('#action')
                         assert 'звичайним дробом' in await page.locator('#dock').inner_text()
+                    if answer == '3; 1; 2':
+                        # list: the field turns «.» into «,» on input, so «1.2» and «1,2» are literally the same entry here
+                        # (the LEARN.answerSig collision from the focus review is reachable only through the API, not the field)
+                        await page.fill('#numIn', '1.2')
+                        assert await page.input_value('#numIn') == '1,2', await page.input_value('#numIn')
                     await page.fill('#numIn', answer)
                     if answer == '2':
                         assert await page.locator('#answerUnit').inner_text() == 'яблука'
@@ -1142,6 +1244,7 @@ async def main():
                 await player_qa_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
                 await player_focus_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
                 await attr_math_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
+                await player_a11y_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
             await browser.close()
             print('Обрані браузерні сценарії: green')
     finally:
