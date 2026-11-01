@@ -9,6 +9,7 @@
 // підказки формату (list «;», величини, mixed, √ з умови), розряди в quantity; записи — змінена лише друга/третя компонента,
 // хибні назви («n ∈», «CD = », «E(f) = »), більше мішаних чисел і періодичних меж (рев'ю g11 P3-4, kinds-new P3-3).
 // engine-learn-prefixes-p3b — «p3b …»: назви об'єктів умови без координат (BC, AO, X, OX) і назви образу з індексом/штрихом (A₁, A').
+// engine-decisions-1101 — «dec-1101 …»: назва образу даної точки (A₁, A′ при «образ точки $A(…)$» / «симетричної точці $A(…)$») — ok.
 // engine-diag-answer-kinds — answer у діагностиках (SLID.diag) теж у прогоні; режим --content-old: старий і новий ЗМІСТ на одному
 // (поточному) learn.js — які вердикти змінила правка вправ (ключ, answerKind, умова з назвами), а не рушія.
 // Межі --content-old: рушій зміст старої ревізії бере з неї ж (ревізії без app/lab.js, learn.js, math.js чи registry.js — rc 2);
@@ -92,7 +93,7 @@ function records(s) {
     const wrap = xs => k.startsWith("coord") ? `(${xs.join("; ")})` : xs.join(k === "ratio" ? " : " : "; ");
     out.add(wrap([...parts].reverse())); out.add(wrap(parts.map((x, i) => i ? x : x.startsWith("-") ? x.slice(1) : "-" + x))); out.add(wrap(parts.concat(parts[0])));
     if (k.startsWith("coord")) for (const pre of ["A", "AB", "AB = ", "AB=", "\\vec{AB} = ", "a", "k", "m = ", "B", "B = ", "C", "D", "D = ", "M", "M = ", "CD = ", "BA = ", "A = ",
-      "BC = ", "AO = ", "X", "X = ", "OX = ", "O", "KL = ", "\\vec{BC} = ", "A_1", "A_1 = ", "A₁", "A1", "A'", "A′ = ", "X_1", "B_1", "M'", "A_1 = A", "a_1"]) out.add(pre + wrap(parts));   // p3b: назви умови й образу
+      "BC = ", "AO = ", "X", "X = ", "OX = ", "O", "KL = ", "\\vec{BC} = ", "A_1", "A_1 = ", "A₁", "A1", "A'", "A′ = ", "X_1", "B_1", "M'", "A_1 = A", "a_1", "A₂", "A''", "B₁", "A_{1} = "]) out.add(pre + wrap(parts));   // p3b: назви умови й образу
     // рев'ю kinds-new P3-3: змінено лише другу (третю) компоненту — перша правильна
     for (let i = 1; i < parts.length; i++) { const p = parts[i], a1 = NEW.parseAns(p); for (const alt of [a1 ? String(a1.n / a1.d + 1).replace(".", ",") : p + " + 1", p.startsWith("-") ? p.slice(1) : "-" + p, "0"]) if (alt !== p) out.add(wrap(parts.map((x, j) => j === i ? alt : x))); }
     if (s.unit) { out.add(wrap(parts.map(x => x + s.unit))); out.add(wrap(parts.map(x => x + " " + s.unit))); }
@@ -194,10 +195,16 @@ const CATS = [
   // p3b: «A₁(…)», «A'(…)» — правильне значення з назвою образу: раніше bad без підказки, тепер form «лише координати» (не ok)
   ["p3b назва образу з індексом/штрихом — form з поясненням", (s, v, o, n) => /^coordinates[23]$/.test(s.answerKind) && IMG0.test(lat(v)) && o.r === "bad" && n.r === "form"
     && /^Координати правильні(?:\. Назву з індексом|, але тут шукають [A-Z]{1,2}\.$)/.test(n.h || "") && NEW.checkAns(s, lat(v).replace(IMG0, "")) !== "bad"],
+  // dec-1101 (рішення людини 2026-11-01): умова питає образ даної точки L (за текстом умови, незалежно від askedPoint) і сама не називає
+  // його (L з індексом чи штрихом у формулах немає) — назва L₁ / L_1 / L1 / L′ (індекс 1 чи один штрих) з правильним значенням: form → ok
+  ["dec-1101 назва образу даної точки (A₁, A′) — ok", (s, v, o, n) => { const m = /^coordinates[23]$/.test(s.answerKind) && o.r === "form" && n.r === "ok" && IMG1.exec(lat(v)); if (!m) return false;
+    const t = stmt(s), L = m[1], src = [...t.matchAll(/(?:образ\S*\s+точк\S*|симетричн\S*\s+точц[іи])\s*\$\s*([A-Z])\s*\(/giu)].map(x => x[1]);
+    return src.length === 1 && src[0] === L && !new RegExp(`\\$[^$]*(?<![A-Za-z\\\\])${L}\\s*(?:_|[₀-₉]|['’′ʼ]|\\d)[^$]*\\$`).test(t) && NEW.checkAns(s, lat(v).replace(IMG1, "")) === "ok"; }],
   ["p3 quantity: підказка формату («2 м 45», дріб, «3:20»)", (s, v, o, n) => s.answerKind === "quantity" && o.r === "bad" && n.r === "bad" && !o.h && /^(Після кожного числа|Звичайний дріб тут|Тут час записують)/.test(n.h || "")],
 ];
 const NAME0 = /^(?:\\vec\{[A-Z]{1,2}\}|[A-Z]{1,2})\s*=?\s*(?=\()/;
 const IMG0 = /^[A-Z]{1,2}\s*(?:_\{?\d{1,2}\}?|[₀-₉]{1,2}|\d{1,2}|['’′ʼ]{1,2})\s*=?\s*(?=\()/;
+const IMG1 = /^([A-Z])\s*(?:_\s*\{?\s*1\s*\}?|₁|1|['’′ʼ])\s*=?\s*(?=\()/;
 
 // ---------- --content-old: старий і новий зміст на одному (поточному) learn.js ----------
 // Вправи зіставляються за id (пул:вправа, урок#екран, тест#індекс). Для кожної спільної вправи — записи з обох версій (ключі,
