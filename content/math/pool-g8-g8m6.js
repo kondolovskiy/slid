@@ -1,5 +1,5 @@
 /* Слід · Математика, 8 клас — пул задач для тренування до розділу «Геометрія: многокутники і площі» (g8m6)
-   Статус: draft (2026-11-01, write-math-pools-multiset-compound: a05, a07 вилучено, додано a09 №655 і a10 №661 — list + multiset; a06 sk meas → geom;
+   Статус: verified (verifier-write-math-pools-multiset-compound, 2026-11-01; reports/verify/write-math-pools-multiset-compound.md). Зміни 2026-11-01, write-math-pools-multiset-compound: a05, a07 вилучено, додано a09 №655 і a10 №661 — list + multiset; a06 sk meas → geom;
    решта перевірена раніше: verifier-pool-g8m6, 2026-10-31; reports/verify/pg8m6.md). 16 задач: g8m6l1 — 8 (рівні 3/3/2), g8m6l2 — 8 (boss g8m6boss без задач).
    Матриця docs/math-personalization-coverage.md 2026-10-16.v2: обидва уроки required, формат number (+ choice/list за умовою).
    Усі задачі — з підручника Мерзляк, Якір. Геометрія 8 (2025), п. 19–23; умови й числа звірено за відрендереними сторінками PDF.
@@ -10,8 +10,8 @@
 SLID.pool("math", {
   id: "pg8m6",
   section: "g8m6",
-  status: "draft",
-  meta: { author: "agent-write-math-pool-g8m6", created: "2026-10-31", factcheck: null, revised: "2026-11-01 write-math-pools-multiset-compound", teacher: null },
+  status: "verified",
+  meta: { author: "agent-write-math-pool-g8m6", created: "2026-10-31", factcheck: "verifier-write-math-pools-multiset-compound (2026-11-01: a09, a10, a06 sk); решта — verifier-pool-g8m6", revised: "2026-11-01 write-math-pools-multiset-compound", teacher: null },
   sources: [
     { id: "mer8g", title: "Мерзляк А. Г., Якір М. С. Геометрія: підручник для 8 класу. — Харків: Гімназія, 2025 (п. 19–23; дзеркало file.4book.org)", url: "https://file.4book.org/images/shcoolbook_ua/8/8_geom_m_2025.pdf" }
   ],

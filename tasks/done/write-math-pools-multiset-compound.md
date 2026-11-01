@@ -4,7 +4,7 @@ claimed_at: 2026-11-01T11:44:08.395Z
 id: write-math-pools-multiset-compound
 type: content
 subject: math
-status: review
+status: done
 claimed_by: agent-write-math-pools-multiset-compound
 created: 2026-11-01
 depends_on: [refine-math-pools-new-kinds]

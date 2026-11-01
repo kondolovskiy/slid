@@ -1,19 +1,19 @@
 /* Слід · Математика, 4 клас — пул задач для тренування до розділу «Величини» (g4m4)
-   Статус: draft (2026-11-01, write-math-pools-multiset-compound: у g4m4l4 вилучено d02 і d05, додано d09 l4a №4 і d10 g4a №321(1) — quantity, form compound, «… кг = … т … кг»). Раніше: verified (2026-11-01, змінено a08, d06, d07; повторно перевірено verifier-refine-math-pools-new-kinds, 2026-11-01, reports/verify/refine-math-pools-new-kinds.md); раніше verified (verifier-pg4m4, 2026-10-30; звіт reports/verify/pg4m4.md). 32 задачі: по 8 на кожен урок g4m4l1–g4m4l4 (3 рівня 1, 3 рівня 2, 2 рівня 3). Boss g4m4l5 не дублюємо.
+   Статус: verified (verifier-write-math-pools-multiset-compound, 2026-11-01; reports/verify/write-math-pools-multiset-compound.md). Зміни 2026-11-01, write-math-pools-multiset-compound: у g4m4l4 вилучено d02 і d05, додано d09 l4a №4 і d10 g4a №321(1) — quantity, form compound, «… кг = … т … кг»). Раніше: verified (2026-11-01, змінено a08, d06, d07; повторно перевірено verifier-refine-math-pools-new-kinds, 2026-11-01, reports/verify/refine-math-pools-new-kinds.md); раніше verified (verifier-pg4m4, 2026-10-30; звіт reports/verify/pg4m4.md). 32 задачі: по 8 на кожен урок g4m4l1–g4m4l4 (3 рівня 1, 3 рівня 2, 2 рівня 3). Boss g4m4l5 не дублюємо.
    Обсяг — за матрицею docs/math-personalization-coverage.md, версія 2026-10-16.v2 (усі чотири уроки required, формат number).
    Задачі взято з підручників Гісь, Філяк (g4a, g4b) і Логачевська, Ларіна, Паук (l4a, l4b), видання 2026 р.;
    умови й числа звірено 2026-10-30 за текстом PDF і за відрендереними сторінками.
    srcPage — друкований номер сторінки; в усіх чотирьох PDF він збігається з номером сторінки PDF.
    Підпункти з кількома відповідями розділено: у задачі питаємо одне число (adapted).
    2026-11-01: a08 і d07 («о котрій», «котра година») — answerKind time; d06 — quantity (м і см). Повторно перевірено.
-   2026-11-01: d09, d10 — зворотні перетворення (менші одиниці в більші), quantity + form compound; ще не перевірено незалежно.
+   2026-11-01: d09, d10 — зворотні перетворення (менші одиниці в більші), quantity + form compound; перевірено незалежно (verifier-write-math-pools-multiset-compound).
    Перевірка: node tools/validate.mjs --pool pg4m4 && node tools/personalization-qa.mjs --pool pg4m4
    Схема: docs/CONTENT_SCHEMA.md §10 */
 SLID.pool("math", {
   id: "pg4m4",
   section: "g4m4",
-  status: "draft",
-  meta: { author: "claude-opus", created: "2026-10-30", factcheck: "self (2026-11-01: d09, d10); verifier-refine-math-pools-new-kinds (a08, d06, d07); решта — verifier-pg4m4", revised: "2026-11-01 write-math-pools-multiset-compound", teacher: null },
+  status: "verified",
+  meta: { author: "claude-opus", created: "2026-10-30", factcheck: "verifier-write-math-pools-multiset-compound (2026-11-01: d09, d10); verifier-refine-math-pools-new-kinds (a08, d06, d07); решта — verifier-pg4m4", revised: "2026-11-01 write-math-pools-multiset-compound", teacher: null },
   sources: [
     { id: "g4a", title: "Гісь О. М., Філяк І. В. Математика : підручник для 4 класу закладів загальної середньої освіти (у 2-х ч.). Ч. 1. — Харків : Ранок, 2026 (наказ МОН № 111 від 27.01.2026). PDF-дзеркало 4book.org", url: "https://file.4book.org/images/shcoolbook_ua/4/4_m_gis_2026-1.pdf" },
     { id: "g4b", title: "Гісь О. М., Філяк І. В. Математика : підручник для 4 класу закладів загальної середньої освіти (у 2-х ч.). Ч. 2. — Харків : Ранок, 2026 (наказ МОН № 111 від 27.01.2026). PDF-дзеркало 4book.org", url: "https://file.4book.org/images/shcoolbook_ua/4/4_m_gis_2026-2.pdf" },
