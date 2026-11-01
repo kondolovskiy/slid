@@ -172,6 +172,8 @@ for (const kind of Object.keys(L.KINDS)) { const sp = { kind, params: { a: { min
   eq([nv("A"), nv("?"), nv(undefined), nv(false), nv("{t|0}"), nv("$x$")], ["A, 3000", "3000", "A, 3000", "3000", "3000", "x, 3000"], "numline: літера → «A, 3000», «?» і без підпису → число, числовий підпис — як є");
   eq(nv("?", { view: [15, 17], params: { t: { min: 15, max: 17, step: 0.25, start: 16.5, hide: true } }, fmt: "time" }), "16:30", "numline: «?» на шкалі часу → «16:30»");
   eq(nv("{t|time}", { view: [15, 17], params: { t: { min: 15, max: 17, step: 0.25, start: 16.5, hide: true } } }), "16:30", "numline: підпис-час лишається");
+  // P3-6: цифра в незмінному підписі ($x_1$, «A1») — не значення: додаємо число; підпис, що збігається зі значенням, — як є
+  eq([nv("$x_1$"), nv("A1"), nv("3000"), nv("5"), nv("t = {t|0}"), nv("{,}")], ["x_1, 3000", "A1, 3000", "3000", "5, 3000", "t = 3000", "3000"], "numline: $x_1$ / A1 → з числом, шаблон і рівний значенню підпис — як є");
   eq(nv("P", { view: [0, 7], pi: true, params: { t: { min: 0, max: 2 * Math.PI, step: Math.PI / 2, start: Math.PI, hide: true } } }), "P, π", "numline: шкала π"); }
 // P3-3: Home/End — межі, PageUp/PageDown — великий крок; rect (up: false) і залежні межі; цифри стовпчика їх не беруть
 { const pl = { kind: "plane", view: [-6, 6, -6, 6], points: { A: { at: [1, 2], drag: true } } }, ps = L.paramList(pl), st = L.startState(pl), h = L.KINDS.plane.render(pl, L.makeEnv(pl, st), {}).handles[0];
@@ -187,5 +189,14 @@ for (const kind of Object.keys(L.KINDS)) { const sp = { kind, params: { a: { min
 // SVG: вкладені дужки в індексі (рев'ю engine-render-tex-p3 P3-4) — svgTexIssues позначає, x_{a_b} лишається чистим
 eq([L.svgTexIssues("$x_{a_{bc}}$").map(i => i.level), L.svgTexIssues("$x^{2{,}5}$").map(i => i.level), L.svgTexIssues("$x_{a_b}$").length, L.svgTexIssues("$x_{AB} + y^{2}$").length, L.svgTexIssues("$x_{0{,}5}$").length > 0],
   [["error"], ["error"], 0, 0, true], "svgTexIssues: дужки всередині індексу/степеня — помилка, x_{a_b} і x_{AB} — чисто");
+// P3-2 (рев'ю engine-player-a11y-p3): у підписі-шаблоні {…} — вставка, тож вкладеність перевіряємо після підстановки, як її намалює fill()
+{ const tp = x => L.svgTexIssues(x, true).map(i => i.level);
+  eq([tp("$x^{2{,}5}$"), tp("$a^{{n}}$"), tp("$x_{{k}0}$"), tp("$x_{a_b}$"), tp("$P_{{n}}$, {n|0}")], [[], [], [], [], []], "svgTexIssues tpl: $x^{2{,}5}$, $a^{{n}}$, $x_{{k}0}$ малюються — без помилки");
+  eq([tp("$x_{a_{{n}}}$"), tp("$y^{1{,}5{n}}$ і $x_{a_{{n}}}$")], [["error"], ["error"]], "svgTexIssues tpl: три рівні дужок лишаються вкладеними після підстановки — помилка");
+  const m = L.svgTexIssues("$x_{a_{{n}}}$", true)[0].msg;
+  eq([m.includes("«$x_{a_{{n}}}$»"), m.includes("«$x_{a_{0}}$»"), /x_\{ab\}/.test(m), /вставка значення/.test(m)], [true, true, false, true], "svgTexIssues tpl: повідомлення — сирий підпис, рядок після підстановки, без поради x_{ab}");
+  eq([L.svgTexIssues("$x^{2{,}5}$", false).length, L.svgTexIssues("$\\sqrt{n}$", true).length, L.svgTexIssues("${a}^2", true).map(i => i.level)], [1, 1, ["warn"]], "svgTexIssues: без tpl {,} у індексі — помилка; команди й непарний $ у шаблоні — як раніше");
+  const html = L.fill("$x^{2{,}5}$ $a^{{n}}$ $x_{{k}0}$", { n: 3, k: 2 });
+  eq(html, "$x^{2,5}$ $a^{3}$ $x_{20}$", "fill: підстановка, яку моделює tpl-перевірка"); }
 console.log(`${n - fails}/${n} тестів лабораторії пройдено`);
 process.exit(fails ? 1 : 0);
