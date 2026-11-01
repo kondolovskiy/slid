@@ -1,7 +1,7 @@
 /* Слід — service worker. ЗГЕНЕРОВАНО tools/build.mjs із tools/sw.template.js — не редагуй sw.js вручну.
    Стратегія: усі файли застосунку кешуються при встановленні (офлайн з першого запуску);
    свої файли — спершу з кешу; Google Fonts — з кешу з фоновим оновленням. */
-const VERSION = "db79ae5246";
+const VERSION = "86640f8492";
 const CACHE = "slid-" + VERSION;
 const FONTS = "slid-fonts";
 const ASSETS = [
@@ -154,6 +154,7 @@ const ASSETS = [
   "./content/math/pool-g9-g9m6.js",
   "./content/math/pool-g9-g9m7.js",
   "./content/catalog.js",
+  "./app/evidence.js",
   "./app/lab.js",
   "./app/learn.js",
   "./app/math.js",
@@ -346,6 +347,11 @@ self.addEventListener("activate", e => {
   e.waitUntil(caches.keys()
     .then(keys => Promise.all(keys.filter(k => k.startsWith("slid-") && k !== CACHE && k !== FONTS).map(k => caches.delete(k))))
     .then(() => self.clients.claim()));
+});
+
+// версія змісту для журналу подій (app/evidence.js, docs/EVIDENCE.md): сторінка питає через MessageChannel
+self.addEventListener("message", e => {
+  if (e.data === "slid:version" && e.ports && e.ports[0]) e.ports[0].postMessage(VERSION);
 });
 
 self.addEventListener("fetch", e => {
