@@ -31,9 +31,12 @@ const baseStart = c => { for(const b of baseTopics(c)){ const f=b.next&&findLess
   const i=f.sec.lessons.findIndex((l,j)=>!done(l.id)&&unlocked(f.sec,j)); if(i>=0) return f.sec.lessons[i].id; } return null; };
 const known = id => { const f=findLesson(id); return !!f && f.sec.grade===S.grade && LEARN.isKnown(S,f.c.id,id,planCtx(f.c)); };
 /* тренування: пул задач (SLID.pool) — відкриті лише задачі пройдених тем */
-const poolItems = c => LEARN.practiceItems(S,c);
+const poolItems = c => LEARN.practiceItems(S,c,planCtx(c));
 const poolsFor = c => { const ids=new Set(poolItems(c).map(it=>it.pool.id)); return (c.pools||[]).filter(p=>ids.has(p.id)); };
-const topicOpen = id => done(id) || S.unlockAll;
+/* тема тренування відкрита: урок пройдено, або тест рівня показав, що тему знають (pre «ok» чи cur «знайоме» — LEARN.diagOpen,
+   рішення людини 2026-11-01), або налагоджувальний перемикач */
+const diagOpen = id => { const f=findLesson(id); return !!f && LEARN.diagOpen(S,f.c.id,id,planCtx(f.c)); };
+const topicOpen = id => done(id) || S.unlockAll || diagOpen(id);
 const openItems = c => poolItems(c).filter(it=>topicOpen(it.lesson));
 const pendingDiag = () => subjectsFor().find(c=>{ const d=diagFor(c); return d && !S.diag[d.id]?.done && !S.diagSkip[d.id]; });
 function schoolWeek(){ if(S.weekOverride) return S.weekOverride; const now=new Date(); const y=now.getMonth()>=7? now.getFullYear() : now.getFullYear()-1;
@@ -1040,7 +1043,8 @@ function skillHit(s, ok){ if(!s.sk) return; const k=skey(C,s.sk); const r=S.skil
 
 function check(){
   const s=L.screens[idx];
-  if(run.diag) return diagAnswer(gradeNow(s)? LEARN.OK : LEARN.BAD);
+  // answer у тесті: «form» (значення правильне, запис ні) — OK (рішення людини 2026-11-01; LEARN.diagAnswerOk)
+  if(run.diag) return diagAnswer((s.type==="answer"? LEARN.diagAnswerOk(s,st) : gradeNow(s))? LEARN.OK : LEARN.BAD);
   if(s.poll||s.hyp){ if(s.poll) S.polls[s.poll]=st; const g=gain(5); checked=true; lock();
     setDock("info", `${s.fbTitle} <span class="gain">+${g}</span>`, s.fbText, "Далі"); return focusAction(); }
   if(sameAsTried()) return refocusAnswer();

@@ -10,9 +10,10 @@ window.SLID_LEARN = (() => {
   /* ---------- Діагностика ---------- */
   const DIAG_TYPES = ["choice", "multi", "sort", "order", "number", "fracin", "shade", "numline", "lab", "answer"];
   /* answer у тесті (engine-diag-answer-kinds): лише формати, де вердикт — «правильно / ні» без розмови. Плеєр у тесті не показує
-     ні фідбеку, ні підказки form/bad і не дає другої спроби, тож зараховується лише checkAns === "ok": «form» (значення правильне,
-     запис ні — «2 м 45», «245 см» при compound, «37» при decimals 1) — BAD, як і остаточний вердикт уроку. Тому формат запису
-     має бути зрозумілий з умови й підказки під полем (answerUI): час «Г:ХХ», величина з одиницями, десятковий дріб.
+     ні фідбеку, ні підказки form/bad і не дає другої спроби. Вердикт — diagAnswerOk: «ok» і «form» (значення правильне, запис ні —
+     «245 см» при compound, «37» при decimals 1, «14/6» при reduced) — OK: вміння показане, формат запису — не предмет проби
+     (рішення людини 2026-11-01, уточнення D-032 (3); engine-decisions-1101). Виняток — «√576» при ключі 24: значення не обчислено,
+     це не формат запису, — BAD. Тому в тест не ставлять завдань, де перетворення запису саме є вмінням («скороти», «виділи цілу частину»).
      Інші answerKind (вирази, множини, координати…) — після окремого рішення: у них багато form-вердиктів, які в уроці пояснюють. */
   const DIAG_ANSWER_KINDS = ["number", "time", "quantity"];
   /** Активний план предмета/класу. Старий S.plan лишається сумісним активним посиланням;
@@ -234,6 +235,19 @@ window.SLID_LEARN = (() => {
   }
   const todo = plan => plan ? plan.steps.filter(st => !st.done) : [];
   const isKnown = (S, subjectId, lessonId, ctx) => !!planFor(S, subjectId, ctx)?.known?.includes(lessonId);
+  /** Тренування теми відкрито тестом рівня, хоч урок не пройдено (рішення людини 2026-11-01, engine-decisions-1101): урок у plan.known
+      (тема cur «знайоме») або кожна тема pre активного плану з цим уроком, що має статус, — «ok» (найслабший статус, як у srsFromDiag:
+      урок теми ok і теми shaky — закрито; shaky, gap — закрито). baseline і cur без «знайоме» не відкривають. Лише план поточного
+      класу (planFor) і його тест (plan.diag серед ctx.diags); урок, якого немає в ctx.hasLesson (старший клас, інший предмет), — ні.
+      Старі профілі: план без тесту (лише з помилок) нічого не відкриває; збережені plan.topics читаються як є. */
+  function diagOpen(S, subjectId, lessonId, ctx = {}) {
+    if (ctx.hasLesson && !ctx.hasLesson(lessonId)) return false;
+    const plan = planFor(S, subjectId, ctx); if (!plan) return false;
+    if (Array.isArray(plan.known) && plan.known.includes(lessonId)) return true;
+    const d = plan.diag ? (ctx.diags || []).find(x => x.id === plan.diag) : null, tp = plan.topics || {};
+    const st = (d?.topics || []).filter(t => t.kind !== "cur" && !t.baseline && (t.lessons || []).includes(lessonId) && ["gap", "shaky", "ok"].includes(tp[t.id])).map(t => tp[t.id]);
+    return st.length > 0 && st.every(x => x === "ok");
+  }
 
   /* ---------- Перетегування навичок у збереженому прогресі ----------
      Журнал помилок S.errs пам'ятає sk вправи. 2026-10-31 sk вправ пулів і екранів ms3 узгоджено з тим, що урок справді тренує
@@ -661,6 +675,11 @@ window.SLID_LEARN = (() => {
   // Назва з індексом чи штрихом — образ точки «A_1(…)», «A₁(…)», «A1(…)», «A'(…)» (engine-learn-prefixes-p3b). Ніколи не зараховується
   // (нове правило назви — рішення людини), але якщо значення правильне — «form» з поясненням «запиши лише координати», а не мовчазне «bad».
   const IMG_AT = /^([A-Z]{1,2})\s*(?:_\s*\{?\s*\d{1,2}\s*\}?|[₀-₉]{1,2}|\d{1,2}|['’′ʼ]{1,2})\s*=?\s*(?=\()/;
+  // Виняток (рішення людини 2026-11-01, уточнення D-031 (б); engine-decisions-1101): умова питає образ даної точки — «Знайди образ точки
+  // $A(-2; 3)$», «координати точки, симетричної точці $A(3; -1)$» (askedPoint.img) — тоді назва образу цієї точки з індексом 1 чи одним
+  // штрихом (A₁, A_1, A_{1}, A1, A′, A') перед координатами — ok. Інша літера (B₁), інший індекс чи два штрихи (A₂, A'') — form, як раніше.
+  const IMG_ONE = /^([A-Z])\s*(?:_\s*\{?\s*1\s*\}?|₁|1|['’′ʼ])\s*=?\s*(?=\()/;
+  const IMG_SRC = /(?:^|[^а-яґєії])(?:образ[а-яґєії]*\s+точк[а-яґєії]*|симетричн[а-яґєії]*\s+точц[іи])\s*$/iu;
   // Текст умови для пошуку назви: без HTML-тегів (лише справжніх — «<» у формулі лишається) і без прикладів формату
   // («Наприклад, $(1; 5]$ — це всі числа $y$…» до кінця абзацу): приклад не називає шукане.
   const stmtText = s => ["title", "body", "q", "text"].map(k => typeof s?.[k] === "string" ? s[k] : "").join(" </p> ")
@@ -674,10 +693,12 @@ window.SLID_LEARN = (() => {
   // заголовок-назва шуканого: маркер на самому початку («Вершина $D$», «Координати точки $D$»), не «Образ точки $A$» чи «Середина відрізка $AB$»
   const ASK_TITLE = /^\s*(?:координат[а-яґєії]*\s+)?(?:точк|вершин|вектор|кін[еця]|центр)[а-яґєії]*\s*$/iu;
   const OBJ_TOK = /\\(?:vec|overrightarrow)\s*\{\s*([A-Z]{1,2})\s*\}|(?<![A-Za-z\\])([A-Z]{1,2})(?![A-Za-z])/g;
-  const ASKED = new WeakMap(), NO_NAMES = { ask: null, given: new Set(), objs: new Set() };
+  const ASKED = new WeakMap(), NO_NAMES = { ask: null, given: new Set(), objs: new Set(), img: null };
   /** Назви умови: { ask — єдина назва точки чи вектора, про яку питає умова (формула-назва без координат, перед нею — ASK_WORD), або null;
       given — назви точок і векторів із даними координатами ($A(4; -3)$, $\\vec{AB} = (…)$);
-      objs — решта назв з формул умови, без координат: відрізок $BC$, пряма $AO$, довільна точка $X$ з означення, промінь $OX$ (p3b) }. */
+      objs — решта назв з формул умови, без координат: відрізок $BC$, пряма $AO$, довільна точка $X$ з означення, промінь $OX$ (p3b);
+      img — дана точка, образ якої шукають («образ точки $A(…)$», «симетричної точці $A(…)$»), якщо вона одна, ask немає й умова сама
+      не називає образу ($A_1$, $A'$ ніде в формулах), інакше null (engine-decisions-1101) }. */
   function askedPoint(s) {
     if (!s || typeof s !== "object") return null;
     if (ASKED.has(s)) return ASKED.get(s);
@@ -712,7 +733,11 @@ window.SLID_LEARN = (() => {
     // назви об'єктів умови: окремий токен з 1–2 великих латинських літер у формулі (не частина слова чи TeX-команди: \Delta, ABCD), \vec{AB}
     const objs = new Set();
     for (const [, f] of text.matchAll(/\$([^$]+)\$/g)) for (const g of f.matchAll(OBJ_TOK)) { const n = g[1] || g[2]; if (!given.has(n)) objs.add(n); }
-    const r = { ask: names.size === 1 ? [...names][0] : null, given, objs };
+    const src = new Set();
+    for (const m of ask.matchAll(/\$\s*([A-Z])\s*\(/g)) if (IMG_SRC.test(ask.slice(Math.max(0, m.index - 40), m.index))) src.add(m[1]);
+    const one = src.size === 1 && !names.size ? [...src][0] : null, named = one && [...text.matchAll(/\$([^$]+)\$/g)]
+      .some(([, f]) => new RegExp(`(?<![A-Za-z\\\\])${one}\\s*(?:_|[₀-₉]|['’′ʼ]|\\^\\s*\\{?\\s*\\\\prime|\\\\prime|\\d)`).test(f));
+    const r = { ask: names.size === 1 ? [...names][0] : null, given, objs, img: one && !named ? one : null };
     ASKED.set(s, r); return r;
   }
   /** Довжина назви на початку запису t (0 — назви немає або її не можна зняти). low — мала літера дозволена (числовий шлях). */
@@ -720,7 +745,8 @@ window.SLID_LEARN = (() => {
   // з 1–2 великих літер, з «=» чи \vec (D-030 (2)), крім назв даних точок умови (given): «A(3; 5)», коли $A(4; -3)$ — дана початкова точка,
   // і крім інших назв з формул умови (objs, p3b): «BC = (…)» для середини відрізка $BC$, «AO = (…)», «X(…)», «OX = (…)».
   function nameLen(s, t, low) {
-    const m = NAME_AT.exec(t); if (!m) return 0;
+    const m = NAME_AT.exec(t);
+    if (!m) { const g = IMG_ONE.exec(t); return g && g[1] === (askedPoint(s) || NO_NAMES).img ? g[0].length : 0; }   // образ даної точки: A₁(…), A′(…)
     if (m[3]) return low && !m[4] ? m[0].length : 0;
     const { ask, given, objs } = askedPoint(s) || NO_NAMES, big = m[1] || m[2];
     if (ask) return big === ask ? m[0].length : 0;
@@ -1212,6 +1238,14 @@ window.SLID_LEARN = (() => {
       if (k.k === "pow" && !isConst(k.b) && !(u && unNeg(u).k === "pow")) return MSG.power; }
     return { factored: MSG.factored, reduced: MSG.reduced, simplified: MSG.simplified }[form] || MSG.retry;
   }
+  /** Вердикт answer у тесті рівня (app.js, run.diag): true — OK. «form» = OK (рішення людини 2026-11-01), крім числа коренем
+      (√576, 2√9 при раціональному ключі): там значення не обчислено — BAD (хибні ok гірші за хибні bad). */
+  function diagAnswerOk(s, v) {
+    const r = checkAns(s, v); if (r !== "form") return r === "ok";
+    const t = stripUnit(s, v); if ((s.answerKind || "number") !== "number" || typeof t !== "string" || numOf(t)) return true;
+    const a = parseAns(typeof s.answer === "number" ? String(s.answer) : s.answer);
+    return !(a && rootNum(t, a));
+  }
   /** Пояснення для «bad», коли звичайне «Зміни відповідь» не допоможе (app.js, після checkAns === "bad"); null — звичайне повідомлення.
       Межа кроків чи розміру — «запис занадто складний»; чужа одиниця при unit — лише якщо без неї число правильне (п. 7);
       знаменник-добуток без дужок (k/6p), якщо з дужками значення збігається з ключем; час не в форматі ГГ:ХХ; величина
@@ -1553,14 +1587,14 @@ window.SLID_LEARN = (() => {
 
   /* ---------- Тренування: пул задач і інтервальне повторення (коробки Лейтнера на рівні теми) ---------- */
   const BOX_DAYS = [1, 3, 7, 16, 35];
-  /** У поточному класі видно також закриті теми; у молодших — лише справді пройдені.
-      Пули шукаємо заново: доданий пізніше пул відкриється без повторного уроку. */
-  function practiceItems(S, subject) {
+  /** У поточному класі видно також закриті теми; у молодших — лише справді пройдені або відкриті тестом рівня (diagOpen; ctx — як
+      для planFor, без ctx — лише пройдені). Пули шукаємо заново: доданий пізніше пул відкриється без повторного уроку. */
+  function practiceItems(S, subject, ctx) {
     return (subject.pools || []).flatMap(pool => {
       const sec = subject.sections.find(s => s.id === pool.section);
       if (!sec || sec.grade > S.grade) return [];
       const ids = new Set((sec.lessons || []).map(l => l.id));
-      return pool.items.filter(it => ids.has(it.lesson) && (sec.grade === S.grade || S.lessons?.[it.lesson]?.done))
+      return pool.items.filter(it => ids.has(it.lesson) && (sec.grade === S.grade || S.lessons?.[it.lesson]?.done || (!!ctx && diagOpen(S, subject.id, it.lesson, ctx))))
         .map(it => ({ ...it, key: pool.id + ":" + it.id, pool }));
     });
   }
@@ -1853,6 +1887,6 @@ window.SLID_LEARN = (() => {
     return E;
   }
 
-  return { OK, BAD, SKIP, PASS, DIAG_TYPES, DIAG_ANSWER_KINDS, planFor, practiceItems, nextItem, remaining, topicStatus, level, buildPlan, diagRev, resumeDiag, finishDiag, record, detect, syncPlan, lessonDone, todo, isKnown, work, SK_RETAG, SK_RETAG2, SK_MIGRATIONS, migrateSk, validate,
-    parseAns, parseDivrem, checkAns, badHint, hintTexts, keyInput, timeExample, quantityUnits: s => qtyUnits(s)?.units || null, stripUnit, listKey, pairKey, answerSig, formHint, ansText, srcRef, numberKeys, numberHelp, ANSWER_KINDS, BOX_DAYS, srsInit, srsUpdate, srsFromDiag, DIAG_BOX, genAll, genInstance, genIssues, genHash, GEN_MAX, isDue, pickSession, POOL_TYPES, validatePool };
+  return { OK, BAD, SKIP, PASS, DIAG_TYPES, DIAG_ANSWER_KINDS, planFor, practiceItems, nextItem, remaining, topicStatus, level, buildPlan, diagRev, resumeDiag, finishDiag, record, detect, syncPlan, lessonDone, todo, isKnown, diagOpen, work, SK_RETAG, SK_RETAG2, SK_MIGRATIONS, migrateSk, validate,
+    parseAns, parseDivrem, checkAns, diagAnswerOk, badHint, hintTexts, keyInput, timeExample, quantityUnits: s => qtyUnits(s)?.units || null, stripUnit, listKey, pairKey, answerSig, formHint, ansText, srcRef, numberKeys, numberHelp, ANSWER_KINDS, BOX_DAYS, srsInit, srsUpdate, srsFromDiag, DIAG_BOX, genAll, genInstance, genIssues, genHash, GEN_MAX, isDue, pickSession, POOL_TYPES, validatePool };
 })();
