@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-01T12:32:49.549Z
 id: fix-math-dead-drag-points
 type: fix
 subject: math
 status: todo
-claimed_by:
+claimed_by: writer-dead
 created: 2026-11-01
 depends_on: [engine-player-a11y-p3]
 ---
