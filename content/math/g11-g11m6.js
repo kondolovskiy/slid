@@ -5,6 +5,7 @@
    Кожен урок має «шпаргалку» (info) перед завданнями — опора для D-019: повторення 7–11 кл. на екрані.
    Формули — без TeX-команд (рушій їх не розбирає): √, ∛, ∞, ≤, ≥, ∪, ℝ; логарифм — HTML log<sub>2</sub>.
    2026-11-01 (fix-math-content-minor-1101): у l4 (шпаргалка, hint) і l5 (hint) "sin " γ → "sin"\\,γ; l4, l5 — verified (verifier-fix-math-content-minor-1101, 2026-11-01; reports/verify/fix-math-content-minor-1101.md).
+   2026-11-01 (engine-p3-1101, п. 6): a b "sin" → a b\\,"sin" (рендер «absin γ» → «ab sin γ»); l4, l5 — verified (verifier-p3-1101-g11m6, 2026-11-01; reports/verify/fix-math-g11m6-sin-spacing.md).
    Перевірка: node tools/validate.mjs --section g11m6 && node tools/stats.mjs --subject math
    Схема й правила: docs/CONTENT_SCHEMA.md, style/, D-019. Еталони: g5-ms1.js (ритм), g10m1 / g10m6 (10–11 кл.). */
 SLID.section("math", {
@@ -530,7 +531,7 @@ SLID.section("math", {
       title: "Від трикутника до кулі",
       short: "Геометрія",
       icon: "globe",
-      status: "draft",
+      status: "verified",
       why: "Геометричні задачі НМТ — це правильна формула й акуратна підстановка. Як у кухні: чи вміститься борщ у каструлю.",
       screens: [
         {
@@ -677,7 +678,7 @@ SLID.section("math", {
       title: "Пробний тест",
       short: "Фінал",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "g11m6boss",
       why: "Шість завдань трьох форм, як у справжньому НМТ: кожне — з окремої теми розділу.",
