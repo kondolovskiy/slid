@@ -6,6 +6,13 @@ const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
 const ctx = { console }; ctx.window = ctx; vm.createContext(ctx);
 vm.runInContext(fs.readFileSync(path.join(ROOT, "app/learn.js"), "utf8"), ctx, { filename: "app/learn.js" });
 const L = ctx.SLID_LEARN;
+/* Межа роботи перевірки — лічильником кроків, а не стіночним часом (engine-learn-list-prefixes-p3: флейк «< 1 с» під навантаженням).
+   FZ — learn.js із замороженим Date.now: годинник-запобіжник ніколи не спрацьовує, тож вердикт і зупинку дають лише кроки й межі
+   розміру. bounded: перевірка завершилась, годинник не спрацював, кроків ≤ STEP_MAX + 2·STEP_GRANT (повна межа і два поновлення
+   після переходу на числове порівняння; пара coordinates2 ділить STEP_MAX навпіл) — тобто робота обмежена лічильником. */
+const FZ = (() => { const FDate = class extends Date {}; FDate.now = () => 0; const c = { console, Date: FDate }; c.window = c; vm.createContext(c);
+  vm.runInContext(fs.readFileSync(path.join(ROOT, "app/learn.js"), "utf8"), c, { filename: "app/learn.js" }); return c.SLID_LEARN; })();
+const bounded = (s, v) => { const r = FZ.checkAns(s, v), w = FZ.work(); return { r, w, ok: !w.clock && w.steps <= w.max + 2 * w.grant }; };
 let fails = 0, n = 0;
 const eq = (got, exp, what) => { n++; const ok = typeof exp === "number" && typeof got === "number" ? Math.abs(got - exp) < 1e-9 : JSON.stringify(got) === JSON.stringify(exp); if (!ok) { fails++; console.log(`ПОМИЛКА ${what}: отримано ${JSON.stringify(got)}, очікувалось ${JSON.stringify(exp)}`); } };
 const { OK, BAD, SKIP } = L;
@@ -528,14 +535,14 @@ const order = l => ({ L1: 3, L2: 1, L3: 2, L4: 4 }[l] ?? 50);
   // P2-3: короткий запис не підвішує перевірку
   for (const [s, v] of [[K("exactRoot", "√2"), "(√2+√3+√5+√7+√11+√13+√17+√19+√23+√29+√31+√37+√41+√43)^12"], [K("periodicSet", "πk"), Array(12).fill("±1±1±1±1k").join(";")],
     [K("periodicSet", "πk"), Array(10).fill("±πk/7±1±2±3").join(";")], [K("expression", "x"), "(x+1)^12·(y+2)^12-(x+y)^12"], [K("expression", "x"), "(".repeat(60) + "x" + ")".repeat(60)]]) {
-    const t = Date.now(); L.checkAns(s, v); eq(Date.now() - t < 1000, true, `час перевірки < 1 с: ${v.slice(0, 30)}`);
+    const b = bounded(s, v); eq(b.ok, true, `межа кроків (не годинник): ${v.slice(0, 30)} — ${JSON.stringify(b.w)}`);
   }
   // повторне рев’ю 65cbcd5: P1-3 вкладені степені й великі числа — межа 2048 біт і час; P2-n1, P2-n2, P3
   for (const [s, v] of [[K("expression", "x"), "((((x+1)^12)^12)^12)^12"], [K("expression", "x"), "(((((x+1)^12)^12)^12)^12)^12"], [K("expression", "x"), "((((((((x^12)^12)^12)^12)^12)^12)^12)^12)^12"],
     [K("expression", "x"), "(((((((((9999999999999999^12)^12)^12)^12)^12)^12)^12)^12)^12)"], [K("exactRoot", "√2"), "((((9999999999999999/9999999999999997)^12)^12)^12)^12"],
     [K("expression", "x"), "(x+√2+√3+√5+√7+√11+√13)^12"], [K("expression", "(x+1)^12", { form: "factored" }), "(x+y+z+a+b+c+d+e+f+g+h)^12·(x+y+z+a+b+c+d+e+f+g+h)^12"],
     [K("periodicSet", "πk"), "((((k^12)^12)^12)^12)^12"], [K("list", "√2; √3"), Array(10).fill("(√2+√3+√5)^12").join(";")]]) {
-    const t = Date.now(); eq(L.checkAns(s, v), "bad", `великі числа → bad: ${v.slice(0, 30)}`); eq(Date.now() - t < 1000, true, `час перевірки < 1 с: ${v.slice(0, 30)}`);
+    eq(L.checkAns(s, v), "bad", `великі числа → bad: ${v.slice(0, 30)}`); const b = bounded(s, v); eq([b.r, b.ok], ["bad", true], `межа кроків (не годинник): ${v.slice(0, 30)} — ${JSON.stringify(b.w)}`);
   }
   [[K("expression", "(2x - 1)(x + 1)", { form: "factored" }), "2(x - 0,5)(x + 1)", "ok"], [K("expression", "(2x - 1)(x + 1)", { form: "factored" }), "2(x - 1/2)(x + 1)", "ok"],
    [K("expression", "(x - 1/2)(x + 1)", { form: "factored" }), "(x - 0,5)(x + 1)", "ok"], [K("expression", "2(x + 2)", { form: "factored" }), "4(0,5x + 1)", "form"],
@@ -834,10 +841,10 @@ const order = l => ({ L1: 3, L2: 1, L3: 2, L4: 4 }[l] ?? 50);
   // межі часу й біт: кожна компонента має половину з ~0,8 с; разом — менше 1 с
   for (const v of ["(((((x+1)^12)^12)^12)^12; ((((y+1)^12)^12)^12)^12)", "((x+√2+√3+√5+√7+√11+√13)^12; (x+√2+√3+√5+√7+√11+√13)^12)",
     "((((((((x^12)^12)^12)^12)^12)^12)^12)^12; (((((((9999999999999999^12)^12)^12)^12)^12)^12)^12)"]) {
-    const t = Date.now(); eq(L.checkAns(key, v), "bad", `coordinates2-вираз, великі числа → bad: ${v.slice(0, 30)}`); eq(Date.now() - t < 1000, true, `coordinates2-вираз, час < 1 с: ${v.slice(0, 30)}`);
+    eq(L.checkAns(key, v), "bad", `coordinates2-вираз, великі числа → bad: ${v.slice(0, 30)}`); const b = bounded(key, v); eq([b.r, b.ok], ["bad", true], `coordinates2-вираз, межа кроків: ${v.slice(0, 30)} — ${JSON.stringify(b.w)}`);
   }
-  { const t = Date.now(); L.checkAns(K("((x + 1)^2; y)", { form: "factored" }), "((x+y+z+a+b+c+d+e+f+g+h)^12·(x+y+z+a+b+c+d+e+f+g+h)^12; (x+y+z+a+b+c+d+e+f+g+h)^12·(x+y+z+a+b+c+d+e+f+g+h)^12)");
-    eq(Date.now() - t < 1000, true, "coordinates2-вираз factored, час < 1 с"); }
+  { const b = bounded(K("((x + 1)^2; y)", { form: "factored" }), "((x+y+z+a+b+c+d+e+f+g+h)^12·(x+y+z+a+b+c+d+e+f+g+h)^12; (x+y+z+a+b+c+d+e+f+g+h)^12·(x+y+z+a+b+c+d+e+f+g+h)^12)");
+    eq(b.ok, true, `coordinates2-вираз factored, межа кроків — ${JSON.stringify(b.w)}`); }
   // валідатор пулу: ключ розбирається й канонічний; form — лише для пари з виразом
   const vp = it => L.validatePool({ id: "p", section: "s", status: "draft", sources: [{ id: "b", title: "t", url: "https://x" }], items: [{ id: "a", lesson: "l", lvl: 1, sk: "num", src: "b 1", title: "t", steps: ["s"], ...it }] },
     { sections: new Map([["s", { grade: 9, lessons: ["l"] }]]), skills: { num: {} } });
@@ -950,7 +957,7 @@ const order = l => ({ L1: 3, L2: 1, L3: 2, L4: 4 }[l] ?? 50);
   S.errs.push({ l: "u1", at: "u1", sk: "m.old" });
   eq(L.migrateSk(S, fix), 0, "migrateSk: удруге не виконується");
   eq(S.errs.at(-1).sk, "m.old", "migrateSk: новий запис після міграції не чіпається");
-  const E = {}; eq(L.migrateSk(E), 0, "migrateSk: порожній профіль"); eq(E.skFix, [L.SK_RETAG.id], "migrateSk: порожній профіль позначено");
+  const E = {}; eq(L.migrateSk(E), 0, "migrateSk: порожній профіль"); eq(E.skFix, L.SK_MIGRATIONS.map(f => f.id), "migrateSk: порожній профіль позначено всіма міграціями");
   const U = { errs: [{ l: "u9", at: "u9", sk: "m.old" }], skw: { "m.old": "00", "m.other": "0" } };
   eq([L.migrateSk(U, fix), U.skw], [0, { "m.old": "00", "m.other": "0" }], "migrateSk: вікно скидається лише для навички, з якої щось перенесено");
   // рев'ю P2-1 (skw_stale): міграція → lessonDone перетегованого уроку → немає поради за старою навичкою
@@ -959,7 +966,7 @@ const order = l => ({ L1: 3, L2: 1, L3: 2, L4: 4 }[l] ?? 50);
     for (const l of ["g8m1l2", "g9m3l4", "g9m5l1"]) L.record(T, { l, at: l, sk: "math.expr", ok: false, day: "2026-10-30" }); return T; };
   const skillRecs = T => L.detect(T, { day: "2026-10-31", order: ord }).filter(r => r.why === "skill");
   { const T = mk(); L.lessonDone(T, "math", "g9m5l1", 1, "2026-10-31", { grade: 9 }); eq(skillRecs(T), [], "без міграції: lessonDone скидає вікно, поради немає"); }
-  { const T = mk(); eq(L.migrateSk(T), 1, "міграція: g9m5l1 expr → num"); eq(T.skw["math.expr"], "", "міграція: вікно expr з нуля");
+  { const T = mk(); eq(L.migrateSk(T, L.SK_RETAG), 1, "міграція: g9m5l1 expr → num"); eq(T.skw["math.expr"], "", "міграція: вікно expr з нуля");
     L.lessonDone(T, "math", "g9m5l1", 1, "2026-10-31", { grade: 9 });
     eq(skillRecs(T), [], "міграція → lessonDone: немає поради за старою навичкою expr");
     // нові помилки ведуть до поради за новою навичкою
@@ -990,7 +997,7 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
     { l: "g9m5l1", at: "g9m5l1", sk: "math.expr", d }] };
   eq(L.migrateSk(S), 2, "друга редакція після першої: змінено лише записи за новими правилами");
   eq(S.errs.map(e => e.sk), ["math.pct", "math.data", "math.num", "math.expr"], "друга редакція: спільні правила вдруге не застосовано");
-  eq([S.skw, S.skFix], [{ "math.frac": "", "math.num": "0" }, ["sk-2026-10-31", "sk-2026-10-31b"]], "друга редакція: вікно frac з нуля, num не чіпано; позначено");
+  eq([S.skw, S.skFix], [{ "math.frac": "", "math.num": "0" }, ["sk-2026-10-31", "sk-2026-10-31b", "sk-2026-11-01"]], "друга редакція: вікно frac з нуля, num не чіпано; позначено (і третя міграція)");
   eq(L.migrateSk(S), 0, "друга редакція: удруге не виконується");
   const F = { errs: [{ l: "g4m1l3", at: "g4m1l3", sk: "math.num", d }, { l: "ms3l1", at: "ms3l1", sk: "math.frac", d }] };
   eq([L.migrateSk(F), F.errs.map(e => e.sk)], [2, ["math.cmp", "math.pct"]], "профіль без жодної редакції: усі чинні правила");
@@ -998,7 +1005,7 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
 /* Правила SK_RETAG звірено з реальним контентом: в уроці at старого sk немає ні на екранах, ні в пулі, новий — є */
 { const { loadContent } = await import("./lib.mjs");
   const { subjects } = loadContent();
-  for (const [at, from, to] of L.SK_RETAG.rules) {
+  for (const [at, from, to] of L.SK_MIGRATIONS.flatMap(f => f.rules)) {   // усі міграції: перша (…b) і sk-2026-11-01
     const [subj, f] = from.split("."), t = to.split(".")[1], c = subjects.find(s => s.id === subj);
     const lesson = c.sections.flatMap(s => s.lessons || []).find(l => l.id === at), items = (c.pools || []).flatMap(p => p.items).filter(it => it.lesson === at);
     eq(!!lesson && [...lesson.screens, ...items].some(x => x.sk === f), false, `SK_RETAG ${at}: старого ${f} у змісті немає`);
@@ -1107,11 +1114,18 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
     // п. 5: префікси, що не змінюють відповідь
     [N("5"), "x = 5", "ok"], [N("1"), "b=1", "ok"], [N("3"), "k = 3", "ok"], [N("3"), "х = 3", "ok"], [N("-2,5"), "y = -2,5", "ok"], [N("5"), "x = 6", "bad"], [N("5"), "AB = 5", "bad"], [N("5"), "x5", "bad"], [N("5"), "x = ", "bad"],
     [N("2 1/3", { mixed: true }), "x = 7/3", "form"], [N("2 1/3", { mixed: true }), "x = 2 1/3", "ok"],
-    [K("coordinates2", "(3; -2)"), "AB = (3; -2)", "ok"], [K("coordinates2", "(3; -2)"), "AB(3; -2)", "ok"], [K("coordinates2", "(3; -2)"), "\\vec{AB} = (3; -2)", "ok"], [K("coordinates2", "(3; -2)"), "\\overrightarrow{MN}=(3; -2)", "ok"],
-    [K("coordinates2", "(3; -2)"), "A = (3; -2)", "ok"], [K("coordinates2", "(3; -2)"), "m(3; -2)", "ok"], [K("coordinates2", "(3; -2)"), "ABC(3; -2)", "bad"], [K("coordinates2", "(3; -2)"), "a = (3; -2)", "bad"], [K("coordinates3", "(1; -2; 3)"), "AB = (1; -2; 3)", "ok"],
-    [K("coordinates2", "(p - m; k - n)"), "AB = (p - m; k - n)", "ok"], [K("coordinates2", "(p - m; k - n)"), "\\vec{AB} = (p - m; k - n)", "ok"], [K("coordinates2", "(p - m; k - n)"), "A(p - m; k - n)", "ok"],
-    [K("coordinates2", "(p - m; k - n)"), "k(p - m; k - n)", "bad"], [K("coordinates2", "(p - m; k - n)"), "a(p - m; k - n)", "bad"],
-    [K("intervalSet", "(2; 5)"), "-n ∈ (2; 5)", "ok"], [K("intervalSet", "(2; 5)"), "2x - 1 ∈ (2; 5)", "ok"], [K("intervalSet", "(2; 5)"), "x ∈ (2; 5)", "ok"], [K("intervalSet", "(2; 5)"), "[x] ∈ (2; 5)", "bad"],
+    // назва з умови (engine-learn-list-prefixes-p3): «AB =», \vec, «A =» — лише коли умова питає саме про цю точку чи вектор
+    [K("coordinates2", "(3; -2)", { body: "<p>Знайди координати вектора $\\vec{AB}$.</p>" }), "AB = (3; -2)", "ok"], [K("coordinates2", "(3; -2)", { body: "<p>Знайди координати вектора $\\vec{AB}$.</p>" }), "AB(3; -2)", "ok"],
+    [K("coordinates2", "(3; -2)", { body: "<p>Знайди координати вектора $\\overrightarrow{AB}$.</p>" }), "\\vec{AB} = (3; -2)", "ok"], [K("coordinates2", "(3; -2)", { body: "<p>Знайди координати вектора $\\vec{MN}$.</p>" }), "\\overrightarrow{MN}=(3; -2)", "ok"],
+    [K("coordinates2", "(3; -2)", { body: "<p>Знайди координати точки $A$.</p>" }), "A = (3; -2)", "ok"], [K("coordinates2", "(3; -2)"), "m(3; -2)", "ok"], [K("coordinates2", "(3; -2)"), "A(3; -2)", "ok"],
+    [K("coordinates2", "(3; -2)"), "ABC(3; -2)", "bad"], [K("coordinates2", "(3; -2)"), "a = (3; -2)", "bad"], [K("coordinates3", "(1; -2; 3)", { body: "<p>Знайди координати вектора $\\vec{AB}$.</p>" }), "AB = (1; -2; 3)", "ok"],
+    [K("coordinates2", "(3; -2)"), "AB = (3; -2)", "bad"], [K("coordinates2", "(3; -2)"), "A = (3; -2)", "bad"], [K("coordinates2", "(3; -2)"), "\\vec{AB} = (3; -2)", "bad"],
+    [K("coordinates2", "(p - m; k - n)", { body: "<p>Знайди координати вектора $\\overrightarrow{AB}$, якщо $A(m; n)$, $B(p; k)$.</p>" }), "AB = (p - m; k - n)", "ok"],
+    [K("coordinates2", "(p - m; k - n)", { body: "<p>Знайди координати вектора $\\overrightarrow{AB}$, якщо $A(m; n)$, $B(p; k)$.</p>" }), "\\vec{AB} = (p - m; k - n)", "ok"], [K("coordinates2", "(p - m; k - n)"), "A(p - m; k - n)", "ok"],
+    [K("coordinates2", "(p - m; k - n)"), "k(p - m; k - n)", "bad"], [K("coordinates2", "(p - m; k - n)"), "a(p - m; k - n)", "bad"], [K("coordinates2", "(p - m; k - n)"), "AB = (p - m; k - n)", "bad"],
+    [K("intervalSet", "(2; 5)", { body: "<p>Відомо, що $-5 < n < -2$. Яких значень може набувати $-n$?</p>" }), "-n ∈ (2; 5)", "ok"],
+    [K("intervalSet", "(2; 5)", { body: "<p>Відомо, що $1,5 < x < 3$. Яких значень набуває $2x - 1$?</p>" }), "2x - 1 ∈ (2; 5)", "ok"], [K("intervalSet", "(2; 5)"), "x ∈ (2; 5)", "ok"], [K("intervalSet", "(2; 5)"), "[x] ∈ (2; 5)", "bad"],
+    [K("intervalSet", "(2; 5)"), "-n ∈ (2; 5)", "bad"], [K("intervalSet", "(2; 5)"), "2x - 1 ∈ (2; 5)", "bad"],
     // п. 6: періодичний дріб до раціонального ключа
     [N("-1/3"), "-0,(3)", "ok"], [N("-1/3"), "−0.(3)", "ok"], [N("68/55"), "1,2(36)", "ok"], [N("1/3"), "0,(3)", "ok"], [N("1/3"), "x = 0,(3)", "ok"], [N("1/3"), "0,(33)", "ok"], [N("1/3"), "0,(4)", "bad"],
     [N("1/3", { fractionOnly: true }), "0,(3)", "form"], [N("1/3", { reduced: true }), "0,(3)", "form"], [N("1/3"), "0,(3", "bad"], [K("list", "1/3; 2"), "0,(3); 2", "bad"],
@@ -1368,6 +1382,135 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
     items: items.map((it, i) => ({ id: "a" + i, lesson: "l", lvl: 1, sk: "num", src: "b 1", type: "answer", title: "t", steps: ["s"], ...it })) });
   { const E = freshL().validatePool(P([{ answerKind: "exactRoot", answer: "(√2+√3+√5+√7+√11+√13+√17+√19)^12" }]), C);
     eq([E.length, E.some(e => e.includes("потребує кореня")), E.some(e => e.includes("не читається"))], [1, false, true], "g11 п.8: ключ exactRoot за межею (TOO у exactOf) — лише «не читається»"); }
+}
+
+/* engine-learn-list-prefixes-p3 і engine-answer-kinds-p3: назва з умови, відбиток list, підказки формату, величини з розрядами */
+{ const K = (answerKind, answer, extra = {}) => ({ answerKind, answer, ...extra }), N = (answer, extra = {}) => ({ answer, ...extra });
+  const C = body => ({ body });
+  // answerSig list: елементи — як у parseList
+  const sig = (a, b, s = K("list", [1, 2])) => L.answerSig(s, a) === L.answerSig(s, b);
+  eq([sig("1.2", "1,2"), sig("1,2", "1, 2"), sig("1; 2", "1;2"), sig("1,5; 2", "1.5; 2"), sig("1,5; 2", "1,5, 2"), sig("2; 1", "1; 2")], [false, true, true, true, false, false],
+    "answerSig list: «1.2» (одне число) ≠ «1,2» (два); пробіли й крапка/кома всередині елемента — те саме; інший поділ чи порядок — інший відбиток");
+  eq(L.checkAns(K("list", [1, 2]), "1.2") !== L.checkAns(K("list", [1, 2]), "1,2"), true, "answerSig list: відбитки різні там, де різні вердикти");
+  // coordinates: назва — лише та, про яку питає умова
+  const VAB = K("coordinates2", [-3, 1], C("<p>Знайди координати вектора $\\overrightarrow{AB}$, якщо $A(2; 3)$, $B(-1; 4)$.</p>"));
+  for (const [v, r] of [["AB = (-3; 1)", "ok"], ["АВ = (-3; 1)", "ok"], ["\\vec{AB} = (-3; 1)", "ok"], ["AB(-3; 1)", "ok"], ["(-3; 1)", "ok"], ["CD = (-3; 1)", "bad"], ["BA = (-3; 1)", "bad"],
+    ["A(-3; 1)", "bad"], ["B = (-3; 1)", "bad"], ["\\vec{CD} = (-3; 1)", "bad"], ["AB = CD = (-3; 1)", "bad"], ["AB = (-3; 1); CD = (-3; 1)", "bad"], ["AB = AB = (-3; 1)", "bad"], ["AB = (-3; 2)", "bad"], ["AB = (1; -3)", "bad"]])
+    eq(L.checkAns(VAB, v), r, `назва з умови (вектор AB): «${v}»`);
+  const PB = K("coordinates2", [1, 6], C("<p>Точка $C(2; 1)$ — середина відрізка $AB$, а $A(3; -4)$. Знайди координати точки $B$.</p>"));
+  for (const [v, r] of [["B(1; 6)", "ok"], ["B = (1; 6)", "ok"], ["(1; 6)", "ok"], ["A(1; 6)", "bad"], ["AB = (1; 6)", "bad"], ["C(1; 6)", "bad"]]) eq(L.checkAns(PB, v), r, `назва з умови (точка B, відрізок AB — не шукане): «${v}»`);
+  // дана точка (з координатами) і означення («кожна точка $X$…») — не шукане; тоді давнє правило: лише одна літера без «=»
+  const PM = K("coordinates2", [1, -5], { title: "Симетрія відносно точки $M$", body: "<p>Знайди координати точки, симетричної точці $A(3; -1)$ відносно точки $M(2; -3)$.</p>" });
+  const PX = K("coordinates2", [-4, 2], C("<p>Кожна точка $X$ переходить у точку $X_1$ на промені $OX$.</p><p>Знайди образ точки $A(-2; 1)$.</p>"));
+  for (const [s, v, r] of [[PM, "M = (1; -5)", "bad"], [PM, "A1(1; -5)", "bad"], [PM, "B(1; -5)", "ok"], [PX, "X = (-4; 2)", "bad"], [PX, "A(-4; 2)", "ok"], [PX, "AB = (-4; 2)", "bad"]])
+    eq(L.checkAns(s, v), r, `назва: дана точка / означення не шукане: «${v}»`);
+  // символьний ключ: та сама назва
+  const SYM = K("coordinates2", ["p - m", "k - n"], C("<p>Знайди координати вектора $\\overrightarrow{AB}$, якщо $A(m; n)$, $B(p; k)$.</p>"));
+  for (const [v, r] of [["AB = (p - m; k - n)", "ok"], ["\\vec{AB}=(p - m; k - n)", "ok"], ["CD = (p - m; k - n)", "bad"], ["A(p - m; k - n)", "bad"], ["k(p - m; k - n)", "bad"]]) eq(L.checkAns(SYM, v), r, `назва, символьний ключ: «${v}»`);
+  // intervalSet: префікс — назва з умови, лише один
+  const NEG = K("intervalSet", "[-4; 3)", { title: "$-3 < n \\le 4$. Що з $-n$?", body: "<p>Відомо, що $-3 < n \\le 4$, тобто $n > -3$ і $n \\le 4$. Яких значень може набувати $-n$?</p><p>Запиши відповідь проміжком. Наприклад, $(1;\\,5]$ — це всі числа $y$, для яких $1 < y \\le 5$.</p>" });
+  for (const [v, r] of [["-n ∈ [-4; 3)", "ok"], ["−n ∈ [-4; 3)", "ok"], ["- n∈[-4; 3)", "ok"], ["[-4; 3)", "ok"], ["n ∈ [-4; 3)", "bad"], ["x ∈ [-4; 3)", "bad"], ["y ∈ [-4; 3)", "bad"], ["2n ∈ [-4; 3)", "bad"],
+    ["x ∈ -n ∈ [-4; 3)", "bad"], ["-n ∈ x ∈ [-4; 3)", "bad"], ["-n = [-4; 3)", "ok"], ["-n ∈ [-4; 3]", "bad"]]) eq(L.checkAns(NEG, v), r, `intervalSet, назва з умови (−n): «${v}»`);
+  const RANGE = K("intervalSet", "(-∞; 7]", C("<p>Знайди область значень функції $f(x) = 7 - x^2$ — усі значення, яких набуває $y$.</p>"));
+  const DOM = K("intervalSet", "(-1; +∞)", C("<p>Знайди область визначення функції $f(x) = \\log_3 (x + 1)$.</p>"));
+  const PAR = K("intervalSet", "(9; +∞)", C("<p>При яких значеннях $a$ функція $y = x^2 + 6x + a$ не має нулів? Запиши множину таких $a$ проміжком.</p>"));
+  for (const [s, v, r] of [[RANGE, "y ∈ (-∞; 7]", "ok"], [RANGE, "E(f) = (-∞; 7]", "ok"], [RANGE, "f(x) ∈ (-∞; 7]", "ok"], [RANGE, "D(f) = (-∞; 7]", "bad"], [RANGE, "x ∈ (-∞; 7]", "bad"],
+    [DOM, "x ∈ (-1; +∞)", "ok"], [DOM, "D(f) = (-1; +∞)", "ok"], [DOM, "E(f) = (-1; +∞)", "bad"], [DOM, "y ∈ (-1; +∞)", "bad"],
+    [PAR, "a ∈ (9; +∞)", "ok"], [PAR, "x ∈ (9; +∞)", "bad"], [PAR, "y ∈ (9; +∞)", "bad"]]) eq(L.checkAns(s, v), r, `intervalSet, назва з умови: «${v}» (${s.body.slice(3, 40)})`);
+  // дві «голі» формули й жодної єдиної змінної — назви немає, давнє правило (одна літера)
+  const TWO = K("intervalSet", "(1; 2)", C("<p>Знайди спільні значення $a$ і $b$.</p>"));
+  eq([L.checkAns(TWO, "b ∈ (1; 2)"), L.checkAns(TWO, "a ∈ (1; 2)"), L.checkAns(TWO, "2b ∈ (1; 2)")], ["ok", "ok", "bad"], "intervalSet: дві голі формули — без назви, давнє правило");
+  // без назви в умові — давнє правило (одна літера, D(f)); «x ∈ y ∈» ніколи
+  for (const [v, r] of [["x ∈ (2; 5)", "ok"], ["D(f) = (2; 5)", "ok"], ["x ∈ y ∈ (2; 5)", "bad"], ["-n ∈ (2; 5)", "bad"], ["xy ∈ (2; 5)", "bad"]]) eq(L.checkAns(K("intervalSet", "(2; 5)"), v), r, `intervalSet без умови: «${v}»`);
+  // реальний зміст: назви, які тепер знімаються
+  { const { loadContent } = await import("./lib.mjs"); const pools = loadContent().subjects.find(c => c.id === "math").pools, it = id => { const [p, i] = id.split(":"); return pools.find(x => x.id === p).items.find(x => x.id === i); };
+    const acc = (id, pres, wrap = k => k) => pres.filter(p => L.checkAns(it(id), `${p}${wrap(it(id).answer)}`) === "ok");
+    eq(acc("pg9m1:a07", ["x ∈ ", "n ∈ ", "-n ∈ ", "y ∈ "]), ["-n ∈ "], "зміст pg9m1:a07: лише «-n ∈»");
+    eq(acc("pg9m3:a07", ["x ∈ ", "a ∈ ", "y ∈ "]), ["a ∈ "], "зміст pg9m3:a07: лише «a ∈»");
+    eq(acc("pg10m1:a03", ["x ∈ ", "y ∈ ", "D(f) = ", "E(f) = "]), ["y ∈ ", "E(f) = "], "зміст pg10m1:a03 (область значень): y, E(f)");
+    eq(acc("pg11m1:a02", ["x ∈ ", "y ∈ "]), ["y ∈ "], "зміст pg11m1:a02 (межі значення функції): y, не x");
+    const pt = a => "(" + a.join("; ") + ")";
+    eq(acc("pg9m2:c01", ["AB = ", "CD = ", "A", "\\vec{AB} = "], pt), ["AB = ", "\\vec{AB} = "], "зміст pg9m2:c01: вектор AB");
+    eq(acc("pg9m2:c05", ["D", "D = ", "CD = ", "AB = ", "A"], pt), ["D", "D = "], "зміст pg9m2:c05: точка D (не вектори з заголовка)");
+    eq(acc("pg9m6:c07", ["M = ", "M", "A", "B", "AM = "], k => k), ["M", "A", "B"], "зміст pg9m6:c07: шуканої назви немає (M дана) — лише давнє правило: одна літера без «=»"); }
+  // величини: розряди через пробіл (як у number), лише групи по 3 цифри
+  const Q1 = K("quantity", 2543, { units: ["см"] }), Q2 = K("quantity", 245, { units: ["м", "см"] }), QK = K("quantity", 1200, { units: ["кг", "г"], form: "compound" });
+  for (const [s, v, r] of [[Q1, "2 543 см", "ok"], [Q1, "2543 см", "ok"], [Q1, "25,43 м", "ok"], [Q1, "25 43 см", "bad"], [Q1, "2 5430 см", "bad"], [Q1, "2 543,5 см", "bad"], [Q1, "2 54 см", "bad"], [Q1, "2 543", "bad"],
+    [Q2, "2 450 мм", "ok"], [Q2, "2 45 см", "bad"], [Q2, "2 м 45 см", "ok"], [QK, "1 200 г", "form"], [QK, "1 кг 200 г", "ok"], [K("quantity", 1200, { units: ["г"] }), "1 200 г", "ok"], [K("quantity", 1200000, { units: ["г"] }), "1 200 000 г", "ok"]])
+    eq(L.checkAns(s, v), r, `quantity з розрядами: ${JSON.stringify(s.answer)} ${s.units} ← «${v}»`);
+  // величини: підказка формату без пояснення раніше (рев'ю kinds-new P3-4); лише при bad
+  const QT = K("quantity", 200, { units: ["год", "хв"] });
+  eq([L.badHint(Q2, "2 м 45"), L.badHint(Q2, "2 9/20 м"), L.badHint(QT, "3:20"), L.badHint(QT, "3 : 20"), L.badHint(Q2, "3:20"), L.badHint(Q2, "245"), L.badHint(Q2, "2 м 46 см"), L.badHint(Q2, "2 м 45 см")],
+    ["Після кожного числа напиши одиницю: м, см.", "Звичайний дріб тут не розбирається: запиши величину десятковим дробом або меншими одиницями (м, см).",
+     "Тут час записують одиницями, а не через двокрапку: год, потім хв.", "Тут час записують одиницями, а не через двокрапку: год, потім хв.", null, "Допиши одиниці: м, см.", null, null], "badHint quantity: «2 м 45», «2 9/20 м», «3:20»");
+  eq([L.checkAns(Q2, "2 м 45"), L.checkAns(Q2, "2 9/20 м"), L.checkAns(QT, "3:20")], ["bad", "bad", "bad"], "quantity: ці записи — як і раніше bad (лише пояснення)");
+  eq(["Після кожного", "Звичайний дріб тут", "Тут час записують"].every(t => L.hintTexts(QT).some(h => h.startsWith(t))), true, "hintTexts quantity: нові тексти (для «підказка ≠ ключ»)");
+  // mixed + десятковий / періодичний: одразу «мішаним числом» (P3-5)
+  const MIX = "Значення правильне. Запиши відповідь мішаним числом: ціла частина, пробіл, дріб.", FR = "Значення правильне. Запиши відповідь звичайним дробом.";
+  for (const [s, v, h] of [[N("1 7/11", { mixed: true }), "1,(63)", MIX], [N("18/11", { mixed: true }), "1,(63)", MIX], [N("1 1/2", { mixed: true }), "1,5", MIX], [N("1 1/2", { mixed: true }), "3/2", MIX],
+    [N("3/7", { mixed: true }), "0,(428571)", FR], [N("1/2", { mixed: true }), "0,5", FR], [N("1 1/2", { reduced: true }), "1,5", FR], [N("-1 1/2", { mixed: true }), "-1,5", MIX]])
+    eq([L.checkAns(s, v), L.formHint(s, v)], ["form", h], `formHint mixed: ${s.answer} ← «${v}»`);
+  // √n² дослівно з умови (рев'ю g11 P3-2): та сама «form», інша підказка
+  const R1 = N(24, C("<p>Обчисли $\\sqrt{576}$.</p>")), R3 = N(3, C("<p>Обчисли $\\sqrt[3]{27} = ?$</p>"));
+  eq([L.checkAns(R1, "√576"), L.formHint(R1, "√576"), L.formHint(R1, "√ 576"), L.formHint(R1, "sqrt576"), L.formHint(R1, "2√144"), L.formHint(N(24), "√576"), L.formHint(R3, "∛27")],
+    ["form", "Це вираз з умови. Обчисли корінь і запиши відповідь числом.", "Це вираз з умови. Обчисли корінь і запиши відповідь числом.", "Це вираз з умови. Обчисли корінь і запиши відповідь числом.",
+     "Значення правильне. Обчисли корінь і запиши відповідь числом.", "Значення правильне. Обчисли корінь і запиши відповідь числом.", "Це вираз з умови. Обчисли корінь і запиши відповідь числом."], "formHint √n²: запис з умови — інша підказка");
+  // list: «1,5, 2» — пояснення про «;» (a11y-followup (б)); вердикт не змінюється
+  const LS = K("list", [1.5, 2]);
+  eq([L.checkAns(LS, "1,5, 2"), L.badHint(LS, "1,5, 2"), L.checkAns(LS, "1,5; 2"), L.badHint(K("list", [1, 2, 4]), "1, 2, 3"), L.checkAns(K("list", [1, 5, 2]), "1,5, 2"), L.badHint(LS, "1,5; 3")],
+    ["bad", "Без «;» кома розділяє числа. Якщо в числах є десяткова кома, відокремлюй їх знаком «;».", "ok", null, "ok", null], "list: підказка про «;» лише без «;» і з комою між цифрами");
+  // підказка під полем: decimals і improper — своя, приклад не ключ
+  eq([L.numberHelp(N("37,0", { decimals: 1 })), L.numberHelp(N("3,5", { decimals: 1 })), L.numberHelp(N("3,05", { decimals: 2 })), L.numberHelp(N("37", { decimals: 0 })),
+    L.numberHelp(N("7/3", { form: "improper" })), L.numberHelp(N("9/4", { form: "improper" })), L.numberHelp(N("7/3")), L.numberHelp(K("list", [1]))],
+    ["Десятковий дріб — через кому, з одним знаком після коми: 3,5.", "Десятковий дріб — через кому, з одним знаком після коми: 4,5.", "Десятковий дріб — через кому, з двома знаками після коми: 4,05.",
+     "Запиши відповідь цілим числом, без коми.", "Неправильний дріб — через риску, без цілої частини: 7/3.".replace("7/3", "9/4"), "Неправильний дріб — через риску, без цілої частини: 7/3.", null, null], "numberHelp: decimals / improper, приклад ≠ ключ");
+  // лічильник кроків справді рахує (інакше межа «кроків ≤ …» вище порожня)
+  const hb = bounded(K("expression", "x"), "(x+√2+√3+√5+√7+√11+√13)^12");
+  eq([hb.r, hb.ok, hb.w.steps > 1e5], ["bad", true, true], `work(): важкий запис витрачає > 10⁵ кроків — ${hb.w.steps}`);
+  eq(FZ.work().clock, false, "work(): заморожений годинник не спрацьовує");
+  { const SL = (() => { let t = 0; const D = class extends Date {}; D.now = () => (t += 4000); const c = { console, Date: D }; c.window = c; vm.createContext(c); vm.runInContext(fs.readFileSync(path.join(ROOT, "app/learn.js"), "utf8"), c); return c.SLID_LEARN; })();
+    eq([SL.checkAns(K("expression", "x"), "(x+√2+√3+√5+√7+√11+√13)^12"), SL.work().clock], ["bad", true], "work(): годинник, що «летить», — clock: true (тест справді розрізняє)"); }
+}
+/* tests-diag-rev-p2: збережена редакція 2 при чинній 3; ключі вердиктів за межами items */
+{ const R3 = clone(D); R3.items[5].rev = 2; R3.items[7].rev = 3;
+  const S = { ...fresh(), diagRun: { dg: { 0: OK, 5: OK, 7: BAD } }, diagRunRev: { dg: 2 } };
+  const r = L.resumeDiag(S, R3);
+  eq([r.rev, r.dropped, S.diagRun.dg, S.diagRunRev.dg], [3, [7], { 0: OK, 5: OK }, 3], "resumeDiag: запуск ред. 2 при ред. 3 — відкинуто лише rev-3 (7), rev-2 (5) лишився");
+  const S1 = { ...fresh(), diagRun: { dg: { 0: OK, 5: OK, 7: BAD } }, diagRunRev: { dg: 1 } };
+  eq(L.resumeDiag(S1, R3).dropped, [5, 7], "resumeDiag: запуск ред. 1 при ред. 3 — відкинуто rev-2 і rev-3");
+  const S2 = { ...fresh(), diagRun: { dg: { 0: OK, 99: OK } } };
+  eq([L.resumeDiag(S2, R3).dropped, S2.diagRun.dg], [[99], { 0: OK }], "resumeDiag: ключ за межами items (старий запуск) відкидається");
+  const S3 = { ...fresh(), diagRun: { dg: { 0: OK, 99: OK } }, diagRunRev: { dg: 3 } };
+  eq([L.resumeDiag(S3, R3).dropped, Object.keys(S3.diagRun.dg)], [[], ["0", "99"]], "resumeDiag: запуск чинної редакції не чіпається (і ключ за межами — як є)");
+  // один розбір rev: рядок «3» і 2.5 — не редакції ні для diagRev, ні для resumeDiag
+  const RB = clone(D); RB.items[5].rev = "3"; RB.items[7].rev = 2.5;
+  const SB = { ...fresh(), diagRun: { dg: { 5: OK, 7: OK } } };
+  eq([L.diagRev(RB), L.resumeDiag(SB, RB).dropped, SB.diagRunRev.dg], [1, [], 1], "itemRev: нецілий rev — редакція 1 і в diagRev, і в resumeDiag");
+  const RC = clone(D); RC.items[5].rev = 2; RC.items[7].rev = "3"; RC.items[3].rev = 2.5;
+  const SC = { ...fresh(), diagRun: { dg: { 3: OK, 5: OK, 7: OK } }, diagRunRev: { dg: 1 } };
+  eq([L.diagRev(RC), L.resumeDiag(SC, RC).dropped, SC.diagRunRev.dg], [2, [5], 2], "itemRev: при ред. 2 рядок «3» і 2.5 не відкидають своїх вердиктів (той самий розбір, що в diagRev)");
+}
+/* SK_RETAG2 (sk-2026-11-01): знімок правил, перенесення лише записів потрібних уроків, звірка з контентом */
+{ eq([L.SK_RETAG2.id, L.SK_MIGRATIONS.map(f => f.id)], ["sk-2026-11-01", ["sk-2026-10-31b", "sk-2026-11-01"]], "SK_RETAG2: новий id, порядок міграцій");
+  eq(L.SK_RETAG2.rules.map(r => r.join(" ")).sort(), ["g7m7l2 math.eq math.func", "g8m1l2 math.expr math.ops", "g8m3l4 math.expr math.func", "g8m6l1 math.meas math.geom", "g9m3l4 math.expr math.eq"], "SK_RETAG2: знімок правил");
+  // вправи, які мали старий sk у цих уроках (попередня версія змісту: c21bb60^, 90fa02e^) — і тепер мають новий
+  const HIST = { "g8m6l1 math.meas": ["pg8m6:a06"], "g7m7l2 math.eq": ["pg7m7:b01", "pg7m7:b02"], "g8m1l2 math.expr": ["pg8m1:b04", "pg8m1:b07"], "g8m3l4 math.expr": ["pg8m3:d09"], "g9m3l4 math.expr": ["pg9m3:d06"] };
+  const { loadContent } = await import("./lib.mjs"), math = loadContent().subjects.find(c => c.id === "math");
+  for (const [at, from, to] of L.SK_RETAG2.rules) for (const id of HIST[`${at} ${from}`] || []) {
+    const [p, i] = id.split(":"), it = math.pools.find(x => x.id === p).items.find(x => x.id === i);
+    eq([it.lesson, "math." + it.sk], [at, to], `SK_RETAG2 ${id}: урок ${at}, тепер ${to}`); }
+  eq(L.SK_RETAG2.rules.every(([at, from]) => HIST[`${at} ${from}`]), true, "SK_RETAG2: кожне правило має знімок вправ");
+  const d = "2026-11-01", E = (at, sk, l = at) => ({ l, at, sk, d });
+  const S = { skFix: ["sk-2026-10-31b"], skw: { "math.expr": "000", "math.eq": "0", "math.meas": "00" }, errs: [
+    E("g8m1l2", "math.expr"), E("g8m1l2", "math.eq"), E("g8m1l3", "math.expr"), E("g9m3l4", "math.expr"), E("g9m3l4", "math.func"), E("g8m6l1", "math.meas"), E("g8m6l2", "math.meas"),
+    E("g7m7l2", "math.eq"), E("g7m7l1", "math.eq"), { l: "g8m3l4", sk: "math.expr", d }, E("g8m3l4", "math.expr", "g7m1l1"), E("g8m1l4", "math.expr")] };
+  eq(L.migrateSk(S), 6, "SK_RETAG2: перенесено 6 записів");
+  eq(S.errs.map(e => e.sk), ["math.ops", "math.eq", "math.expr", "math.eq", "math.func", "math.geom", "math.meas", "math.func", "math.eq", "math.func", "math.func", "math.expr"],
+    "SK_RETAG2: лише записи уроків правил (at, або l без at); інший урок з тим самим sk і інший sk того ж уроку — не чіпаються; g8m1l4 — правило першої міграції вже виконано");
+  eq([S.skw, S.skFix], [{ "math.expr": "", "math.eq": "", "math.meas": "" }, ["sk-2026-10-31b", "sk-2026-11-01"]], "SK_RETAG2: вікна старих навичок з нуля; позначено");
+  eq(L.migrateSk(S), 0, "SK_RETAG2: удруге не виконується");
+  const F = { errs: [E("g9m3l4", "math.func"), E("g9m3l4", "math.expr")] };
+  eq([L.migrateSk(F), F.errs.map(e => e.sk), F.skFix], [2, ["math.eq", "math.eq"], ["sk-2026-10-31b", "sk-2026-11-01"]], "профіль без міграцій: обидві редакції по черзі (g9m3l4 func → eq, expr → eq)");
 }
 
 console.log(`\n${n} перевірок, ${fails ? fails + " з помилками" : "усе гаразд"}`);

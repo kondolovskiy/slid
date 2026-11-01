@@ -100,6 +100,33 @@ async def grade_context_checks(browser, url):
     assert legacy['keys'] == [i for i in range(26) if i not in legacy['revised']] and legacy['next'] == legacy['revised'][0], legacy
     assert 'Продовжити тест' in await page.locator('#view').inner_text()
     await page.evaluate("localStorage.clear()")
+    # tests-diag-rev-p2 P2-1: a run STARTED in revision 2 through the player (no diagRunRev planted by the test) remembers its
+    # revision: answers to revised probes survive a reload. Regression guard for startDiag writing diagRunRev (learn.js resumeDiag);
+    # without it the reload would treat the run as revision 1 and drop these verdicts.
+    await page.goto(url)
+    await page.evaluate("localStorage.setItem('slid.v1',JSON.stringify({grade:6,unlockAll:false}))")
+    await page.reload()
+    await page.click('[data-diag="math"]'); await page.click('[data-diag-go]')
+    rev_items = await page.evaluate("SLID_SUBJECTS.find(c=>c.id==='math').diags.find(d=>d.id==='dg6').items.flatMap((it,i)=>it.rev?[i]:[])")
+    assert rev_items, rev_items
+    answered = []
+    while not set(rev_items[:2]) <= set(answered):
+        screen, i = await page.evaluate("""() => {const S=JSON.parse(localStorage.getItem('slid.v1')),d=SLID_SUBJECTS.find(c=>c.id==='math').diags.find(d=>d.id==='dg6');
+          const i=SLID_LEARN.nextItem(d,(S.diagRun||{}).dg6||{});return [d.items[i],i];}""")
+        assert i >= 0 and i not in answered, (i, answered)
+        await answer_context_screen(page, screen); await page.click('#action'); answered.append(i)
+    before_reload = await state()
+    assert before_reload['diagRunRev']['dg6'] == 2, before_reload.get('diagRunRev')
+    assert all(before_reload['diagRun']['dg6'][str(i)] == 1 for i in rev_items[:2]), before_reload['diagRun']['dg6']
+    await page.click('#pClose'); await page.reload()
+    after_reload = await state()
+    assert after_reload['diagRunRev']['dg6'] == 2 and after_reload['diagRun']['dg6'] == before_reload['diagRun']['dg6'], (before_reload['diagRun'], after_reload['diagRun'])
+    assert 'Продовжити тест' in await page.locator('#view').inner_text()
+    await page.click('[data-diag="math"]'); await page.click('[data-diag-go]')
+    nxt = await page.evaluate("""() => {const S=JSON.parse(localStorage.getItem('slid.v1')),d=SLID_SUBJECTS.find(c=>c.id==='math').diags.find(d=>d.id==='dg6');return SLID_LEARN.nextItem(d,S.diagRun.dg6);}""")
+    assert nxt not in answered and (await state())['diagRun']['dg6'] == before_reload['diagRun']['dg6'], nxt
+    await page.click('#pClose')
+    await page.evaluate("localStorage.clear()")
     # A real dg6 partial run of the current revision, paused just before its second dec-ops item.
     await page.goto(url)
     # A new profile can choose a grade and defer the diagnostic.
@@ -371,7 +398,8 @@ FORMAT_FIXTURES = [
     ({'answer': '3,1', 'decimals': 1, 'tol': 0.05}, '3,14', 'одним знаком після коми', '3,1'),
     ({'answer': '9/4', 'form': 'improper'}, '2 1/4', 'неправильним дробом', '18/8'),
     ({'answerKind': 'list', 'answer': '2; 2; 3', 'multiset': True}, '2; 3', 'Зміни відповідь', '3; 2; 2'),
-    ({'answerKind': 'coordinates2', 'answer': '(4; -1)'}, '(-1; 4)', 'Зміни відповідь', 'AB = (4; −1)'),
+    # «AB =» — лише коли умова питає саме про вектор AB (engine-learn-list-prefixes-p3, назва з умови)
+    ({'answerKind': 'coordinates2', 'answer': '(4; -1)', 'body': '<p>Знайди координати вектора $\\vec{AB}$.</p>'}, '(-1; 4)', 'Зміни відповідь', 'AB = (4; −1)'),
     ({'answer': '-1/3'}, 'x = -0,(4)', 'Зміни відповідь', 'x = −0,(3)'),
     ({'answer': '60', 'unit': 'грн'}, '61 мм', 'Зміни відповідь', '60 грн.'),
 ]
@@ -432,6 +460,9 @@ async def answer_format_checks(browser, url):
                 assert not re.search(r'\d', help_text) and all(u in help_text for u in fields['units']), help_text
             if 'decimals' in fields or fields.get('form') == 'improper':
                 assert sym == 0 and await page.locator('#stage .anskeys').count() == 1
+                # own hint under the field (learn.js numberHelp), not the generic «Мішане число — через пробіл: 2 1/3»
+                help_text = await page.locator('#stage .anskeys + .fix').inner_text()
+                assert 'Мішане число' not in help_text and ('знаком після коми' in help_text if 'decimals' in fields else 'без цілої частини' in help_text), help_text
             if fields['answer'] == '(p - m; k - n)':
                 # Variable keys insert at the caret: (|; k − n) + p − m → (p-m; k − n).
                 await page.fill('#numIn', '(; k − n)'); await page.eval_on_selector('#numIn', 'e=>e.setSelectionRange(1,1)')
@@ -457,14 +488,16 @@ async def answer_format_checks(browser, url):
     # (пули, екрани уроків) і fixture-вправи цього файла (time, quantity… яких у змісті ще немає).
     await page.reload()
     hits = await page.evaluate(r"""(fx) => {
-      // Приклад — сусідні «математичні» токени між роздільниками: кириличне слово (крім слова між цифрами: «3 ост. 2»),
-      // тире, кінцева пунктуація на глибині дужок 0. «2 : 3», «(3; −2)», «[2; 5), (−∞; 3]» лишаються цілими.
+      // Приклад — сусідні «математичні» токени між роздільниками: кириличне слово (крім слова між цифрами: «3 ост. 2», «2 м 45 см»;
+      // сполучник «чи», «або», «і», «й», «та», «а» між цифрами — роздільник, рев'ю kinds-new P3-2), тире, кінцева пунктуація
+      // на глибині дужок 0. «2 : 3», «(3; −2)», «[2; 5), (−∞; 3]» лишаються цілими.
       const examples = text => {
         const toks = String(text).split(/\s+/).filter(Boolean), out = []; let cur = [], depth = 0;
         const cyr = t => /^[«(]*[\u0400-\u04ff'’ʼ-]+[.,:;!?»)]*$/.test(t), flush = () => { if (cur.length) out.push(cur.join(' ')); cur = []; };
+        const conj = t => /^(?:чи|або|і|й|та|а)[,.]?$/i.test(t);
         toks.forEach((t, i) => {
           const prevDigit = i > 0 && /\d[.,]?$/.test(toks[i - 1]), nextDigit = i + 1 < toks.length && /^[(\-−]?\d/.test(toks[i + 1]);
-          if ((cyr(t) && !(prevDigit && nextDigit)) || t === '—' || t === '–') return flush();
+          if ((cyr(t) && (!(prevDigit && nextDigit) || conj(t))) || t === '—' || t === '–') return flush();
           for (const c of t) { if ('([{'.includes(c)) depth++; else if (')]}'.includes(c)) depth = Math.max(0, depth - 1); }
           cur.push(t.replace(/^«/, ''));
           if (/[^,.:;!?]+[,.:;!?»]$/.test(t) && depth === 0 && !(cyr(t) && nextDigit)) flush();
@@ -472,6 +505,10 @@ async def answer_format_checks(browser, url):
         flush();
         return out.map(w => w.replace(/[,.:;!?»]+$/, '').replace(/^[\^·*/]+\s*/, '').trim()).filter(w => /[\dπ√]|^[A-Za-z(]/.test(w));
       };
+      // сам витяг: сполучник між прикладами розділяє їх, слово-одиниця між цифрами — ні (як і раніше, кінцева одиниця відпадає; інакше збіг «6 : 10» з ключем мовчки проходить)
+      const self = [['наприклад 2 : 3 чи 6 : 10', ['2 : 3', '6 : 10']], ['наприклад 2 : 3 або 6 : 10.', ['2 : 3', '6 : 10']], ['запиши 3 ост. 2 і 5 ост. 1', ['3 ост. 2', '5 ост. 1']],
+        ['наприклад 2 м 45 см', ['2 м 45']], ['наприклад 1,5 та 2', ['1,5', '2']]].filter(([t, e]) => JSON.stringify(examples(t)) !== JSON.stringify(e)).map(([t]) => 'витяг прикладів: ' + t + ' → ' + JSON.stringify(examples(t)));
+      if (self.length) return self;
       const math = SLID_SUBJECTS.find(c => c.id === 'math'), items = [];
       for (const c of SLID_SUBJECTS) {
         for (const p of c.pools || []) { const sec = c.sections.find(s => s.id === p.section); p.items.forEach(it => it.type === 'answer' && items.push([it, sec?.grade ?? 0, false, p.id + ':' + it.id])); }

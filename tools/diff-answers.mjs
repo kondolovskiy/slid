@@ -5,6 +5,9 @@
 // дозволеній категорії (рішення 2026-10-31, engine-math-answer-kinds-new: п. 5–7 і P3 з рев'ю), інакше — «непояснена», rc 1.
 // Класифікація незалежна від реалізації: стару версію перевіряють на «очищеному» записі й порівнюють з новою.
 // engine-math-answer-g11-issues додала записи й категорії «g11 п.1–п.8» (кирилиця, стала c, мішане число, √n², 0,(3) у межі, x₁,₂).
+// engine-learn-list-prefixes-p3 / engine-answer-kinds-p3 — категорії «p3 …»: назва з умови перед множиною й координатами,
+// підказки формату (list «;», величини, mixed, √ з умови), розряди в quantity; записи — змінена лише друга/третя компонента,
+// хибні назви («n ∈», «CD = », «E(f) = »), більше мішаних чисел і періодичних меж (рев'ю g11 P3-4, kinds-new P3-3).
 // Запуск: node tools/diff-answers.mjs [--old <git-rev>] [--grades 4-9] [--time] [--show N] [--list-cat "<категорія>"] (записи однієї категорії)
 import fs from "node:fs"; import vm from "node:vm"; import path from "node:path"; import { execFileSync } from "node:child_process";
 import { loadContent, ROOT } from "./lib.mjs";
@@ -65,15 +68,25 @@ function records(s) {
     const sep = k === "ratio" ? ":" : ";", parts = K.replace(/^\(|\)$/g, "").split(sep).map(x => x.trim());
     const wrap = xs => k.startsWith("coord") ? `(${xs.join("; ")})` : xs.join(k === "ratio" ? " : " : "; ");
     out.add(wrap([...parts].reverse())); out.add(wrap(parts.map((x, i) => i ? x : x.startsWith("-") ? x.slice(1) : "-" + x))); out.add(wrap(parts.concat(parts[0])));
-    if (k.startsWith("coord")) for (const pre of ["A", "AB", "AB = ", "AB=", "\\vec{AB} = ", "a", "k", "m = "]) out.add(pre + wrap(parts));
+    if (k.startsWith("coord")) for (const pre of ["A", "AB", "AB = ", "AB=", "\\vec{AB} = ", "a", "k", "m = ", "B", "B = ", "C", "D", "D = ", "M", "M = ", "CD = ", "BA = ", "A = "]) out.add(pre + wrap(parts));
+    // рев'ю kinds-new P3-3: змінено лише другу (третю) компоненту — перша правильна
+    for (let i = 1; i < parts.length; i++) { const p = parts[i], a1 = NEW.parseAns(p); for (const alt of [a1 ? String(a1.n / a1.d + 1).replace(".", ",") : p + " + 1", p.startsWith("-") ? p.slice(1) : "-" + p, "0"]) if (alt !== p) out.add(wrap(parts.map((x, j) => j === i ? alt : x))); }
     if (s.unit) { out.add(wrap(parts.map(x => x + s.unit))); out.add(wrap(parts.map(x => x + " " + s.unit))); }
   }
-  if (k === "intervalSet") for (const pre of ["x ∈ ", "-n ∈ ", "2x - 1 ∈ ", "x∈", "D(f) = ", "[x] ∈ "]) out.add(pre + K);
+  if (k === "intervalSet") for (const pre of ["x ∈ ", "-n ∈ ", "2x - 1 ∈ ", "x∈", "D(f) = ", "[x] ∈ ", "n ∈ ", "y ∈ ", "a ∈ ", "m ∈ ", "E(f) = ", "E(y) = ", "f(x) ∈ ", "x ∈ y ∈ ", "x = "]) out.add(pre + K);
   if (k === "exactRoot" || k === "list") {
     out.add(`(1/2)(2(${K}))`); out.add(`2(${K})/2`);
     // P3-1: a ± b√c → (1/2)(2a ± 2b√c)
     const m = K.match(/^(-?\d+) ([+±-]) (\d*)√(\d+)$/); if (m) out.add(`(1/2)(${2 * m[1]} ${m[2]} ${2 * (m[3] || 1)}√${m[4]})`);
   }
+  // p3: list через кому замість «;» (у полі «1.5, 2» → «1,5, 2»); десятковий/періодичний запис при mixed; величини з розрядами й без одиниці
+  if (k === "list") { const ps = K.split(/[;\n]/.test(K) ? /[;\n]/ : /,/).map(x => x.trim()); out.add(ps.join(", ")); out.add(ps.join(",")); }
+  if (k === "number" && a && a.d > 1) { out.add(String(a.n / a.d).replace(".", ",")); out.add(String(Math.round(a.n / a.d * 1000) / 1000).replace(".", ",")); }
+  if (k === "quantity") { const q = NEW.keyInput(s); out.add(q.replace(/(\d)(\d{3})(?=\D|$)/, "$1 $2")); out.add(q.replace(/ \S+$/, "")); out.add(String(s.answer)); out.add(String(s.answer).replace(/(\d)(\d{3})$/, "$1 $2") + " " + s.units[s.units.length - 1]);
+    out.add(q.replace(/\d+/, d => String(+d + 1))); if (s.units.includes("год")) out.add(q.replace(/ год /, ":").replace(/ хв$/, "")); }
+  // g11 P3-4: більше записів п.3 (дріб-коефіцієнт мішаним числом) і п.5 (ціла межа як k−1,(9))
+  if (k === "expression") for (const m of K.matchAll(/(^|[+-] )(\d+)\/(\d+)([a-z])/g)) { const p = +m[2], q = +m[3]; if (p > q && p % q) out.add(K.replace(m[0], `${m[1]}${Math.floor(p / q)} ${p % q}/${q}${m[4]}`)); }
+  if (k === "intervalSet") { const n9 = K.replace(/(^|[[(;] ?)(-?)(\d+)(?=[;\])])/g, (m0, pre, sg, d) => +d > 0 ? `${pre}${sg}${+d - 1},(9)` : m0); if (n9 !== K) out.add(n9); }
   // engine-math-answer-g11-issues
   // п.1: кириличні двійники латинських літер у символьних записах (ключ і хибні записи); п.2: стала «c» / «С» / «K»
   if (SYM.includes(k)) for (const r of [...out]) if (/[a-zA-Z]/.test(r.replace(/sqrt|pi|inf/g, ""))) out.add(cyr(r));
@@ -141,7 +154,21 @@ const CATS = [
     const lt = { "х": "x", "у": "y", "а": "a", "і": "i" }[m[1]] || m[1], ok = [..."abcdefghijklmnopqrstuvwxyz"].filter(l => NEW.checkAns(s, `${l}₁,₂ = ${m[2]}`) !== "bad");
     if (ok.length !== 1 || ok[0] !== lt) return false; P2.add(`${s.__id} ${lt}₁,₂`); return true; }],
   ["P3-2 «Скороти дріб» для меж intervalSet", (s, v, o, n) => s.answerKind === "intervalSet" && o.r === "form" && n.r === "form" && /Скороти дріб/.test(n.h)],
+  // engine-learn-list-prefixes-p3 / engine-answer-kinds-p3. Префікс-назва: зараховано раніше, тепер bad, а запис без префікса новий
+  // рушій оцінює так само, як старий — тобто змінилось лише прийняття назви; які назви тепер приймаються — друкується нижче (звір з умовою).
+  ["p3 лише один префікс множини («x ∈ y ∈ …»)", (s, v, o, n) => s.answerKind === "intervalSet" && /∈[^∈]*∈/.test(v) && n.r === "bad"],
+  ["p3 префікс множини — лише назва з умови", (s, v, o, n) => s.answerKind === "intervalSet" && /[∈=]/.test(v) && o.r !== "bad" && n.r === "bad"
+    && same(verdict(NEW, s, v.slice(v.search(/[∈=]/) + 1).trim()), o)],
+  ["p3 назва перед координатами — лише назва з умови", (s, v, o, n) => /^coordinates[23]$/.test(s.answerKind) && NAME0.test(lat(v)) && o.r !== "bad" && n.r === "bad"
+    && same(verdict(NEW, s, lat(v).replace(NAME0, "")), o)],   // lat: кирилична «АВ» — та сама назва (g11 п.1)
+  ["p3 list: «;» замість коми — підказка", (s, v, o, n) => s.answerKind === "list" && o.r === "bad" && n.r === "bad" && !o.h && /^Без «;» кома розділяє/.test(n.h || "") && /^[\d\s,.+-]+$/.test(v)],
+  ["p3 mixed: одразу «мішаним числом»", (s, v, o, n) => !!s.mixed && o.r === "form" && n.r === "form" && /звичайним дробом/.test(o.h) && /мішаним числом/.test(n.h)],
+  ["p3 √ дослівно з умови — інша підказка", (s, v, o, n) => o.r === "form" && n.r === "form" && /Обчисли корінь/.test(o.h) && /^Це вираз з умови/.test(n.h)
+    && stmt(s).replace(/\\sqrt\s*\{([^{}]*)\}/g, "√$1").replace(/\s+/g, "").includes(v.replace(/\s+/g, ""))],
+  ["p3 quantity: розряди через пробіл", (s, v, o, n) => s.answerKind === "quantity" && /\d \d{3}(?!\d)/.test(v) && same(verdict(OLD, s, v.replace(/(\d) (?=\d{3}(?!\d))/g, "$1")), n)],
+  ["p3 quantity: підказка формату («2 м 45», дріб, «3:20»)", (s, v, o, n) => s.answerKind === "quantity" && o.r === "bad" && n.r === "bad" && !o.h && /^(Після кожного числа|Звичайний дріб тут|Тут час записують)/.test(n.h || "")],
 ];
+const NAME0 = /^(?:\\vec\{[A-Z]{1,2}\}|[A-Z]{1,2})\s*=?\s*(?=\()/;
 
 // ---------- прогін ----------
 const P2 = new Set();
@@ -165,6 +192,17 @@ console.log(`  ${String(unexplained.length).padStart(5)}  НЕПОЯСНЕНІ`)
 unexplained.slice(0, SHOW).forEach(x => console.log("    " + x));
 if (P2.size) console.log(`  g10 п.2 і g11 п.8 — вправи й літера, з якою префікс тепер знімається (звір з умовою): ${[...P2].join(", ")}`);
 keyBad.forEach(x => console.log("  КЛЮЧ: " + x));
+// p3: вправи, де умова дає назву (askedSet / askedPoint), і які назви з набору проб новий рушій тепер приймає — звір з умовою
+{ const SETP = ["x", "y", "a", "m", "n", "-n", "t", "f(x)", "D(f)", "E(f)", "D(y)", "E(y)", "2x - 1"], PTP = ["A", "B", "C", "D", "M", "AB", "BC", "CD", "\\vec{AB}"];
+  const set0 = new Set(["x", "y", "a", "m", "n", "t", "f(x)", "D(f)", "E(f)", "D(y)", "E(y)"]), named = [];
+  for (const { id, s } of items) {
+    const K = keyText(s);
+    if (s.answerKind === "intervalSet") { const acc = SETP.filter(p => NEW.checkAns(s, `${p} ∈ ${K}`) === "ok" || NEW.checkAns(s, `${p} = ${K}`) === "ok");
+      if (acc.length !== set0.size || !acc.every(p => set0.has(p))) named.push(`${id} ${acc.join(",") || "—"}`); }
+    if (/^coordinates[23]$/.test(s.answerKind)) { const acc = PTP.filter(p => NEW.checkAns(s, `${p} = ${K}`) === "ok");
+      if (acc.length) named.push(`${id} ${acc.join(",")}`); }
+  }
+  console.log(`  p3 назви з умови (intervalSet: префікси, coordinates: «Назва = (…)») — звір з умовою: ${named.join("; ")}`); }
 
 // ---------- --time: найгірший час перевірки на важких записах (межа — кроки, а не годинник) ----------
 if (args.includes("--time")) {

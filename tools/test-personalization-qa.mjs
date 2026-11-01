@@ -17,6 +17,20 @@ const all = audit(subject, matrix, learn);
 check(() => assert.equal(all.errors.length, 0, JSON.stringify(all.errors.slice(0, 5))));
 check(() => assert.equal(all.missing.filter(e => /^Діагностика/.test(e)).length,
   matrix.diagnostics.filter(d => !subject.diags.some(x => x.id === d.id)).length));
+// «Якорі» живого змісту без лічильників (рев'ю engine-math-answer-kinds-new P3-7, engine-answer-kinds-p3): додавання пулу чи вправи
+// їх не ламає, а втрату перевірки — ловить. Пули 11 кл. є й перевіряються без помилок; розділи 11 кл. без пулу не дають прогалин.
+const pools11 = subject.pools.filter(p => /^pg11m/.test(p.id));
+check(() => assert(pools11.length > 0, 'немає жодного пулу pg11m'));
+for (const p of pools11) check(() => assert.deepEqual(audit(subject, matrix, learn, { pool: p.id }).errors, [], p.id));
+check(() => assert(!all.missing.some(e => /^pg11m[26]:/.test(e))));
+// dg6 перевіряє сам зміст, а не лише узгодженість із собою: живий dg6 без прогалин, а зіпсовані зв'язки (sk, lesson) і порядок
+// завдань у копії живого dg6 — прогалини itemSkills / itemIndices.
+const cloneMath = () => JSON.parse(JSON.stringify(subject));
+check(() => assert.deepEqual(audit(subject, matrix, learn, { diag: 'dg6' }).missing, []));
+{ const lost = cloneMath(); lost.diags.find(d => d.id === 'dg6').items.forEach(it => { it.sk = 'num'; delete it.lesson; });
+  check(() => assert(audit(lost, matrix, learn, { diag: 'dg6' }).missing.some(e => e.startsWith('dg6/') && e.includes('itemSkills')))); }
+{ const sw = cloneMath(), dd = sw.diags.find(d => d.id === 'dg6'); [dd.items[0], dd.items[1]] = [dd.items[1], dd.items[0]];
+  check(() => assert(audit(sw, matrix, learn, { diag: 'dg6' }).missing.some(e => e.startsWith('dg6/') && e.includes('itemIndices')))); }
 
 // ---------- синтетична фікстура: 4 розділи з уроками (+ один лише з планом), 10 тематичних уроків, 3 пули, 2 тести ----------
 // урок фікстури тренує свою навичку екраном (sk матриці має тренуватися екранами уроку — engine-math-skill-sync)
