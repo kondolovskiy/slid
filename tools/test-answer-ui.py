@@ -1328,6 +1328,7 @@ async def main():
                 await decisions_1101_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
                 await evidence_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
                 await half_credit_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
+                await hyp_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
             await browser.close()
             print('Обрані браузерні сценарії: green')
     finally:
@@ -2078,5 +2079,283 @@ async def evidence_checks(browser, url):
     assert not errors, errors
     await context.close()
     print(f'Журнал подій (IndexedDB): схема, спроби, srs/plan/grade, без імені, перезавантаження, офлайн (cv {ver}); стан однаковий з журналом, без IndexedDB і без модуля; «Пізніше» і переповнене сховище: green', flush=True)
+
+async def hyp_checks(browser, url):
+    """engine-hyp-e2-shadow (docs/design/diag-hypothesis-math.md §2.3, §3.3): тіньові гіпотези app/hyp.js. Той самий маршрут на
+    справжньому змісті (урок g6m1l1 з двома помилками → тренування з помилками → нове тренування, перша спроба хибна й вкладку
+    перезавантажено → тест рівня dg6 з хибними відповідями й «Ще не знаю» → наступного дня тренування) у чотирьох режимах: з hyp.js,
+    без нього, без IndexedDB і без app/evidence.js. slid.v1 і тексти доку однакові в усіх; slid.hyp — окремий ключ (без hyp.js його
+    немає). З IndexedDB події hyp_* застосунку збігаються з tools/hyp-replay.mjs на експорті того самого журналу (окрім hid/prb і
+    persist), відкладене відкриття переживає перезавантаження, hyp_* не змінюють by. Окремо: form/badHint — тексти доку однакові з
+    hyp.js і без, у журналі fc і hyp_fmt; переповнене сховище — slid.v1 записано, slid.hyp очищено, далі persist: 0; «Скинути
+    прогрес» — hyp_close reset зі старим pid до reset, ключ видалено; офлайн — hyp.js із кешу service worker."""
+    import tempfile
+    freeze = """{const D=Date, at=(()=>{ try { return localStorage.getItem('qa.now') || '2026-10-16T12:00:00Z'; } catch (e) { return '2026-10-16T12:00:00Z'; } })(), T=new D(at).getTime();
+      window.Date=class extends D {constructor(...a){super(...(a.length?a:[T]));} static now(){return T;}};}"""
+    no_idb = "Object.defineProperty(window,'indexedDB',{configurable:true,get(){throw new DOMException('blocked','SecurityError');}});"
+    items_js = """() => { const m=SLID_SUBJECTS.find(c=>c.id==='math'), out={};
+      for (const p of m.pools) for (const it of p.items) (out[it.title] ||= []).push({...it, key:p.id+':'+it.id}); return out; }"""
+    async def dock(page):
+        return await page.evaluate("[document.querySelector('#fbTitle').innerHTML, document.querySelector('#fbText').innerHTML]")
+    async def current(page, by_title):
+        title = (await page.locator('#stage h2').first.inner_text()).strip()
+        found = by_title.get(title)
+        assert found and len(found) == 1, (title, found and len(found))
+        return found[0]
+    async def typed(page, value):
+        await page.fill('#numIn', value); await page.dispatch_event('#numIn', 'input')
+    async def practice(page, by_title, wrong, docks, n=None):
+        """wrong(k, item) → список хибних записів перед правильним (≤ 2: друга хибна — фінальна)."""
+        k = 0
+        while await page.locator('#stage h2').count() and (n is None or k < n):
+            it = await current(page, by_title)
+            ws = wrong(k, it)
+            for j, w in enumerate(ws):
+                await typed(page, w); await page.click('#action'); docks.append(await dock(page))
+            if len(ws) < 2:
+                await answer_context_screen(page, it); await page.click('#action'); docks.append(await dock(page))
+            await page.click('#action'); k += 1
+        return k
+    async def route(mode):
+        context = await browser.new_context(viewport={'width': 400, 'height': 860}, service_workers='block')
+        await context.add_init_script(freeze)
+        if mode == 'noidb':
+            await context.add_init_script(no_idb)
+        page = await context.new_page()
+        errors, docks = [], []
+        page.on('pageerror', lambda error: errors.append(str(error)))
+        await page.route('**/fonts.googleapis.com/**', lambda r: r.abort())
+        if mode == 'nohyp':
+            await page.route('**/app/hyp.js', lambda r: r.abort())
+        if mode == 'noev':
+            await page.route('**/app/evidence.js', lambda r: r.abort())
+        page.set_default_timeout(7000)
+        await page.goto(url)
+        await page.evaluate("localStorage.clear(); localStorage.setItem('slid.v1', JSON.stringify({grade:6}))")
+        await page.reload()
+        assert await page.evaluate("!!window.SLID_HYP") == (mode != 'nohyp'), mode
+        by_title = await page.evaluate(items_js)
+        # 1) урок g6m1l1: choice (екран 2) і number (екран 8) — з другої спроби
+        screens = await open_lesson_at(page, 'g6m1l1', 0)
+        for i, scr in enumerate(screens):
+            if i == 2:
+                await page.click('#stage .opt[data-k="0"]'); await page.click('#action'); docks.append(await dock(page))
+            if i == 8:
+                await typed(page, '7'); await page.click('#action'); docks.append(await dock(page))
+            await answer_context_screen(page, scr)
+            await page.click('#action')
+            if scr['type'] not in ('intro', 'info', 'explore'):
+                docks.append(await dock(page)); await page.click('#action')
+        assert await page.locator('.bigstars').count() == 1
+        # 2) тренування з кінця уроку: 1-ша — хибна, потім правильна (S10+); 2-га — дві хибні (S10−, фінальна); решта правильні
+        await page.click('#stage [data-practice="g6m1l1"]')
+        def w1(k, it):
+            num = it.get('answerKind') != 'list'
+            return (['999'] if num else ['1; 2; 3']) if k == 0 else (['998', '997'] if num else ['1; 2', '1; 9']) if k == 1 else []
+        assert await practice(page, by_title, w1, docks) >= 4
+        # 3) нове тренування: перша спроба хибна, вкладку перезавантажено (відкриття гіпотези чекає другої спроби — pend у slid.hyp)
+        await page.click('#again')
+        it = await current(page, by_title)
+        await typed(page, '9999' if it.get('answerKind') != 'list' else '7; 8'); await page.click('#action'); docks.append(await dock(page))
+        await page.reload()
+        if mode != 'nohyp':
+            pend = await page.evaluate("JSON.parse(localStorage.getItem('slid.hyp')||'null')?.pend?.a?.item?.key")
+            assert pend == it['key'], ('pend після перезавантаження', pend, it['key'])
+        # 4) тест рівня dg6: №0 «48» (мутант ord-ltr), №3 «7»; ще дві правильні, далі «Ще не знаю»; підсумок — закрити ✕
+        await page.click('button[data-subject="math"]'); await page.click('#view [data-diag="math"]'); await page.click('[data-diag-go]')
+        k = 0
+        while await page.locator('#skip').is_visible():
+            i_item = await page.evaluate("""() => {const S=JSON.parse(localStorage.getItem('slid.v1')),d=SLID_SUBJECTS.find(c=>c.id==='math').diags.find(d=>d.id==='dg6');
+              const i=SLID_LEARN.nextItem(d,(S.diagRun||{}).dg6||{}); return [i, d.items[i]];}""")
+            bad = {0: '48', 3: '7'}.get(i_item[0])
+            if bad and k < 6:
+                await typed(page, bad); await page.click('#action')
+            elif k < 4:
+                await answer_context_screen(page, i_item[1]); await page.click('#action')
+            else:
+                await page.click('#skip')
+            k += 1
+        await page.click('#pClose')
+        # 5) наступного дня: тренування, усе правильно — природні перевірки гіпотез учорашнього дня
+        await page.evaluate("localStorage.setItem('qa.now', '2026-10-17T12:00:00Z')")
+        await page.reload()
+        by_title = await page.evaluate(items_js)
+        await page.click('button[data-subject="math"]'); await page.click('[data-practice-view="math"]'); await page.click('[data-practice="g6m1l1"]')
+        # остання вправа — хибна з першої спроби (нова гіпотеза пари), далі урок пари знову ≥ 65 % в іншій сесії → superseded
+        await practice(page, by_title, lambda k, it: (['999'] if it.get('answerKind') != 'list' else ['1; 2; 3']) if k == 5 else [], docks)
+        await page.click('#action')   # «Готово»
+        await page.click('[data-tab="path"]'); await page.click('[data-tab="path"]')
+        for scr in await open_lesson_at(page, 'g6m1l1', 0):
+            await answer_context_screen(page, scr)
+            await page.click('#action')
+            if scr['type'] not in ('intro', 'info', 'explore'):
+                docks.append(await dock(page)); await page.click('#action')
+        assert await page.locator('.bigstars').count() == 1
+        await page.click('#action')
+        state = await page.evaluate("JSON.parse(localStorage.getItem('slid.v1'))")
+        hyp = await page.evaluate("JSON.parse(localStorage.getItem('slid.hyp')||'null')")
+        return context, page, errors, state, hyp, docks
+    states, docks_by = {}, {}
+    for mode in ('hyp', 'nohyp', 'noidb', 'noev'):
+        context, page, errors, state, hyp, docks = await route(mode)
+        assert not errors, (mode, errors)
+        states[mode], docks_by[mode] = state, docks
+        if mode == 'nohyp':
+            assert hyp is None, 'без hyp.js slid.hyp не пишеться'
+        else:
+            assert hyp and hyp['v'] == 1 and hyp['rv'] == 'hyp-1' and hyp['closed'] and isinstance(hyp['scr'], int), (mode, hyp and list(hyp))
+            assert len(json.dumps(hyp)) < 25000, len(json.dumps(hyp))
+        if mode == 'hyp':
+            data = await page.evaluate("SLID_EVIDENCE.export()")
+            ev = data['events']
+            hev = [e for e in ev if e['type'].startswith('hyp_')]
+            kinds = {e['type'] for e in hev}
+            assert kinds >= {'hyp_open', 'hyp_probe', 'hyp_close'}, kinds
+            assert all('by' not in e for e in hev), 'hyp_* з by'
+            opens = [e['d'] for e in hev if e['type'] == 'hyp_open']
+            assert {o['at']['mode'] for o in opens} == {'lesson', 'practice', 'diag'} and all(o['persist'] == 1 for o in opens), [o['at'] for o in opens]
+            assert [e['d']['why'] for e in hev if e['type'] == 'hyp_close' and e['d']['why'] == 'superseded'], 'superseded (урок пари знову)'
+            # відкладене відкриття (pend) пережило перезавантаження: hyp_open цієї спроби — після boot нового завантаження
+            boots = [e['seq'] for e in ev if e['type'] == 'boot']
+            ps = [e for e in hev if e['type'] == 'hyp_open' and e['d']['at']['mode'] == 'practice' and boots[1] < e['seq'] < boots[2]]
+            assert ps, 'гіпотезу, що чекала другої спроби, втрачено при перезавантаженні'
+            # hyp_* пасивні для cause: by кожної події srs/plan/grade — n явної події (не hyp_*); srs після practice_end — by = practice_end
+            by_n = {(e['sid'], e['n']): e['type'] for e in ev}
+            derived = [e for e in ev if e['type'] in ('srs', 'plan', 'grade')]
+            assert derived and all(not by_n[(e['sid'], e['by'])].startswith('hyp_') for e in derived), [(e['type'], by_n.get((e['sid'], e['by']))) for e in derived]
+            assert any(by_n[(e['sid'], e['by'])] == 'practice_end' for e in derived if e['type'] == 'srs'), 'srs після practice_end'
+            ans = [e['d'] for e in ev if e['type'] == 'answer']
+            assert all('lvl' in a for a in ans) and any(a.get('lvl') == 1 for a in ans if a['mode'] == 'practice'), 'item.lvl'
+            assert all('ans' in a or a.get('ansCut') for a in ans if a['type'] in ('choice', 'multi', 'number', 'answer')), [a for a in ans if 'ans' not in a][:2]
+            # застосунок = реплей на тому самому журналі
+            with tempfile.TemporaryDirectory() as d:
+                f = pathlib.Path(d) / 'log.json'; f.write_text(json.dumps(data))
+                out = subprocess.run(['node', str(ROOT / 'tools/hyp-replay.mjs'), str(f), '--events'], capture_output=True, text=True, check=True).stdout
+            rep = json.loads(out)
+            def norm(evs):
+                ids, res = {}, []
+                def nid(x):
+                    return ids.setdefault(x, f"#{len(ids)}") if x else x
+                for e in evs:
+                    dd = json.loads(json.dumps(e['d']))
+                    dd.pop('persist', None)
+                    for k in ('hid', 'prb'):
+                        if k in dd: dd[k] = nid(dd[k])
+                    res.append((e['type'], dd))
+                return res
+            app_n, rep_n = norm(hev), norm(rep)
+            assert app_n == rep_n, ('застосунок ≠ реплей', next(((i, a, b) for i, (a, b) in enumerate(zip(app_n, rep_n)) if a != b), (len(app_n), len(rep_n))))
+            assert len(app_n) >= 20, len(app_n)
+            n_hyp = len(app_n)
+        await context.close()
+    assert states['hyp'] == states['nohyp'] == states['noidb'] == states['noev'], [k for k in states['hyp'] if not (states['hyp'][k] == states['nohyp'].get(k) == states['noidb'].get(k) == states['noev'].get(k))]
+    assert docks_by['hyp'] == docks_by['nohyp'] == docks_by['noidb'] == docks_by['noev'], 'тексти доку різняться'
+    assert (states['hyp']['errs'] or states['hyp']['mast']) and states['hyp']['srs'] and states['hyp']['seen'] and states['hyp']['diag'].get('dg6'), ('маршрут не зачепив record/SRS/тест', {k: bool(states['hyp'].get(k)) for k in ('errs', 'srs', 'seen', 'diag')})
+
+    # form / badHint (фікстура пулу): тексти доку однакові з hyp.js і без; у журналі fc і hyp_fmt; переповнене сховище; «Скинути прогрес»
+    fixture = """() => {const c=SLID_SUBJECTS.find(c=>c.id==='math'),p=c.pools.find(p=>p.id==='pg6m1');c.pools=[p];
+      p.items=[{answer:'2/5',fractionOnly:true,reduced:true,title:'QA: скороти 4/10'},{answer:5,unit:'см',title:'QA: довжина'},{answer:8,title:'$20 - 4 * 3$'},
+        {answer:'17/20',title:'$1/4 + 3/5$'},{answer:12,title:'QA: 3 · 4'},{answer:7,title:'QA: 3 + 4'}]
+        .map((it,i)=>({...it,id:'hq'+i,lesson:'g6m1l1',lvl:1,sk:'divis',src:p.sources[0].id+' №HQ'+i,type:'answer',hint:'Подумай ще.',steps:['Пояснення.']}));}"""
+    wrong = {'QA: скороти 4/10': ['4/10', '0,4'], 'QA: довжина': ['5 кг'], '$20 - 4 * 3$': ['48'], '$1/4 + 3/5$': ['4/9', '1/2']}
+    async def fixture_route(mode):
+        context = await browser.new_context(viewport={'width': 400, 'height': 860}, service_workers='block')
+        await context.add_init_script(freeze)
+        page = await context.new_page()
+        errors, docks = [], []
+        page.on('pageerror', lambda error: errors.append(str(error)))
+        await page.route('**/fonts.googleapis.com/**', lambda r: r.abort())
+        if mode == 'nohyp':
+            await page.route('**/app/hyp.js', lambda r: r.abort())
+        page.set_default_timeout(7000)
+        await page.goto(url)
+        await page.evaluate("localStorage.clear(); localStorage.setItem('slid.v1', JSON.stringify({grade:6, lessons:{g6m1l1:{done:true}}}))")
+        await page.reload()
+        await page.evaluate(fixture)
+        await page.click('button[data-subject="math"]'); await page.click('[data-practice-view="math"]'); await page.click('[data-practice="g6m1l1"]')
+        for _ in range(6):
+            src = re.search(r'№HQ(\d)', await page.locator('#stage').inner_text()).group(1)
+            it = await page.evaluate("i=>SLID_SUBJECTS.find(c=>c.id==='math').pools[0].items[i]", int(src))
+            ws = wrong.get(it['title'], [])
+            for w in ws:
+                await typed(page, w); await page.click('#action'); docks.append(await dock(page))
+            if len(ws) < 2:
+                await answer_context_screen(page, it); await page.click('#action'); docks.append(await dock(page))
+            await page.click('#action')
+        return context, page, errors, docks   # підсумок тренування лишається відкритим (#again)
+    fx = {}
+    for mode in ('hyp', 'nohyp'):
+        context, page, errors, docks = await fixture_route(mode)
+        assert not errors, (mode, errors)
+        fx[mode] = docks
+        if mode == 'hyp':
+            ev = (await page.evaluate("SLID_EVIDENCE.export()"))['events']
+            forms = [e['d'] for e in ev if e['type'] == 'answer' and e['d']['verdict'] == 'form']
+            fmts = [e['d'] for e in ev if e['type'] == 'hyp_fmt']
+            # fc у кожній form-спробі; hyp_fmt — лише для першої спроби (P1), з тим самим кодом
+            assert forms and all(a.get('fc') for a in forms) and [(a['key'], a['fc']) for a in forms if a['try'] == 1] == [(f['key'], f['fc']) for f in fmts], (forms, fmts)
+            # переповнене сховище: наступна відповідь — slid.v1 записано (seen), slid.hyp поступився й очищений, далі persist: 0
+            assert await page.evaluate("!!localStorage.getItem('slid.hyp')"), 'slid.hyp до переповнення'
+            await page.click('#again')
+            await typed(page, '123456'); await page.click('#action')   # перша спроба: pend записано в slid.hyp
+            assert await page.evaluate("!!JSON.parse(localStorage.getItem('slid.hyp')||'null')?.pend"), 'pend у slid.hyp'
+            await page.evaluate("""() => { let lo=0, hi=12e6;
+              while (hi - lo > 1) { const mid=Math.floor((lo + hi) / 2); try { localStorage.setItem('qa.fill', 'x'.repeat(mid)); lo = mid; } catch (e) { hi = mid; } }
+              localStorage.setItem('qa.fill', 'x'.repeat(lo)); }""")
+            src = re.search(r'№HQ(\d)', await page.locator('#stage').inner_text()).group(1)
+            it = await page.evaluate("i=>SLID_SUBJECTS.find(c=>c.id==='math').pools[0].items[i]", int(src))
+            key = 'pg6m1:hq' + src
+            errs0 = len(await page.evaluate("JSON.parse(localStorage.getItem('slid.v1')).errs"))
+            await typed(page, '654321'); await page.click('#action')   # фінальна: slid.v1 росте — місце звільняє лише видалення slid.hyp
+            st = await page.evaluate("JSON.parse(localStorage.getItem('slid.v1'))")
+            assert len(st['errs']) == errs0 + 1 and st['seen'].get(key) == 0, ('переповнене сховище: slid.v1 не записано', errs0, len(st['errs']))
+            assert await page.evaluate("localStorage.getItem('qa.fill')"), 'заповнювач на місці'
+            assert await page.evaluate("localStorage.getItem('slid.hyp')") is None, 'slid.hyp не очищено'
+            await page.click('#action')
+            await page.evaluate("SLID_EVIDENCE.flush()")
+            ev = (await page.evaluate("SLID_EVIDENCE.export()"))['events']
+            last_open = [e['d'] for e in ev if e['type'] == 'hyp_open'][-1]
+            assert last_open['at']['key'] == key and last_open['persist'] == 0, last_open
+            await page.evaluate("localStorage.removeItem('qa.fill')")
+            # «Скинути прогрес»: reset для відкритих — до події reset, зі старим pid; ключ slid.hyp видалено
+            await page.click('#pClose'); await page.click('#pClose')
+            await page.click('[data-tab="profile"]'); await page.click('#reset'); await page.click('#reset')
+            await page.evaluate("SLID_EVIDENCE.flush()")
+            ev = (await page.evaluate("SLID_EVIDENCE.export()"))['events']
+            r = next(e for e in ev if e['type'] == 'reset')
+            closes = [e for e in ev if e['type'] == 'hyp_close' and e['d']['why'] == 'reset']
+            assert closes and all(e['seq'] < r['seq'] and e['pid'] == r['pid'] for e in closes), [(e['seq'], e['pid']) for e in closes]
+            assert await page.evaluate("localStorage.getItem('slid.hyp')") is None, 'slid.hyp після скидання'
+        await context.close()
+    assert fx['hyp'] == fx['nohyp'], [(a, b) for a, b in zip(fx['hyp'], fx['nohyp']) if a != b]
+    assert any('скоро' in t[1].lower() or 'дроб' in t[1].lower() for t in fx['hyp']), fx['hyp']
+
+    # офлайн: app/hyp.js у кеші service worker, тінь працює без мережі
+    sw = (ROOT / 'sw.js').read_text()
+    assert '"./app/hyp.js"' in sw
+    context = await browser.new_context(viewport={'width': 400, 'height': 860}, service_workers='allow')
+    page = await context.new_page()
+    errors = []
+    page.on('pageerror', lambda error: errors.append(str(error)))
+    await page.route('**/fonts.googleapis.com/**', lambda r: r.abort())
+    page.set_default_timeout(15000)
+    await page.goto(url)
+    await page.evaluate("navigator.serviceWorker.ready")
+    await page.reload()
+    await page.wait_for_function("!!navigator.serviceWorker.controller")
+    await page.evaluate("localStorage.setItem('slid.v1', JSON.stringify({grade:6, lessons:{g6m1l1:{done:true}}}))")
+    await context.set_offline(True)
+    await page.reload()
+    assert await page.evaluate("navigator.onLine") is False and await page.evaluate("!!window.SLID_HYP")
+    by_title = await page.evaluate(items_js)
+    await page.click('button[data-subject="math"]'); await page.click('[data-practice-view="math"]'); await page.click('[data-practice="g6m1l1"]')
+    it = await current(page, by_title)
+    await typed(page, '9999' if it.get('answerKind') != 'list' else '7; 8'); await page.click('#action')
+    await answer_context_screen(page, it); await page.click('#action')
+    hyp = await page.evaluate("JSON.parse(localStorage.getItem('slid.hyp')||'null')")
+    assert hyp and [h['key'] for h in hyp['open']] == [it['key']], hyp and hyp['open']
+    assert not errors, errors
+    await context.close()
+    print(f'Гіпотези (тінь E2): slid.v1 і тексти доку однакові з hyp.js / без нього / без IndexedDB / без журналу; застосунок = реплей ({n_hyp} подій hyp_*); pend переживає перезавантаження; form/badHint, переповнене сховище, «Скинути прогрес», офлайн: green', flush=True)
 
 asyncio.run(main())

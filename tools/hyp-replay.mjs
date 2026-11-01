@@ -3,6 +3,7 @@
 // Вхід — журнал у форматі SLID_EVIDENCE.export() + зміст (дерево репозиторію); той самий app/hyp.js, детерміновано.
 // Вихід — reports/hyp/<дата>.md і .json з метриками §4.1.
 //   node tools/hyp-replay.mjs <export.json> [--root DIR] [--out DIR] [--date YYYY-MM-DD]
+//   node tools/hyp-replay.mjs <export.json> --events   — лише події hyp_* реплею (JSON у stdout; «застосунок = реплей», test-answer-ui)
 //   node tools/hyp-replay.mjs --content-stats [--root DIR] [--json]   — цифри §0, §2.1, §2.3 на справжньому змісті
 //     (логіка scratchpad-скриптів рецензента й автора дизайну: hyp-rev-count, -natural, -probe, hyp-fix-delayed, hyp-r3-sol-v2,
 //     hyp-r4-check) і та сама модель через app/hyp.js (види перевірок, sol/sol0).
@@ -10,7 +11,7 @@ import fs from "node:fs"; import vm from "node:vm"; import path from "node:path"
 import { loadContent, GRADED } from "./lib.mjs";
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
 
-/** Зміст, SLID_LEARN і SLID_HYP (app/hyp.js ще не в manifest — вантажиться окремо в контекст із тим самим SLID_LEARN).
+/** Зміст, SLID_LEARN і SLID_HYP (app/hyp.js вантажиться окремо в контекст із тим самим SLID_LEARN — щоб HYP_FILE міг підмінити модуль).
     hypFile — інший файл модуля (самоперевірка тестів на мутантах); типово root/app/hyp.js. */
 export function hypEnv(root = ROOT, hypFile = null) {
   const c = loadContent(root);
@@ -38,7 +39,10 @@ export function replay(exp, E) {
   for (const [k, evs] of groups) {
     const [did, pid] = k.split("|"), T = H.tracker({ seed: seedOf(E, k) });
     const prof = { did, pid, events: evs.length, fresh: false, answers: 0, cvGuess: 0 };
-    let run = 0; const seen = {}, lvl = {}, weak = new Set();
+    // weak — уроки тем gap/shaky за останнім diag_end кожного тесту (як S.diag[id].topics у app.js); done — уроки з lesson_end
+    // (S.lessons[l].done ставиться за будь-якої точності) — app.js передає їх трекеру як a.done (superseded, §9 п. 10).
+    // Профіль не з початку журналу: уроки, пройдені до журналу, невідомі (у boot лише кількість) — покриває зріз accuracyNotFresh, §9 п. 16
+    let run = 0; const seen = {}, lvl = {}, weakBy = {}, done = new Set();
     const first = evs[0]; prof.fresh = !!(first && ((first.type === "boot" && first.d?.lessons === 0) || first.type === "reset"));
     const push = (e, list) => { for (const x of list) {
       const r = { ...x, did, pid, t: e.t, seq: e.seq ?? null }; out.push(r);
@@ -49,20 +53,24 @@ export function replay(exp, E) {
       const d = e.d || {}, day = localDay(e.t, e.tzo);
       if (e.cv === null || e.cv === undefined) { notes.cvGuess++; prof.cvGuess++; }
       switch (e.type) {
+        case "boot": push(e, T.tick({ t: e.t, day })); break;   // app.js: старт — гіпотези, старші за 7 днів, → expired
         case "reset": push(e, T.onReset({ t: e.t, day })); break;
         case "lesson_start": case "practice_start": case "diag_start": run++;
           if (e.type === "practice_start") for (const it of d.items || []) if (it.key) lvl[it.key] = it.lvl ?? null;
           break;
         case "diag_end": {
           const dg = E.diags.get(d.diag);
-          for (const [tid, st] of Object.entries(d.topics || {})) if (st === "gap" || st === "shaky") (dg?.topics.find(t => t.id === tid)?.lessons || []).forEach(l => weak.add(l));
+          const w = weakBy[d.diag] = new Set();
+          for (const [tid, st] of Object.entries(d.topics || {})) if (st === "gap" || st === "shaky") (dg?.topics.find(t => t.id === tid)?.lessons || []).forEach(l => w.add(l));
           break; }
         case "screen": if (d.c && d.c !== "math") break; push(e, T.onScreen({ item: d, t: e.t, day })); break;
-        case "lesson_end": push(e, T.onLessonEnd({ l: d.l, acc: d.acc, run, t: e.t, day })); break;
+        case "lesson_end": if (d.l) done.add(d.l); push(e, T.onLessonEnd({ l: d.l, acc: d.acc, run, t: e.t, day })); break;
         case "close": push(e, T.flush()); break;
         case "answer": {
           if (d.c && d.c !== "math") { notes.otherSubject++; break; }
-          const s = d.mode === "practice" ? E.pool.get(d.key) : d.mode === "diag" ? E.diags.get(d.l)?.items[d.i] : E.lessons.get(d.l)?.l.screens[d.i];
+          const base = d.mode === "practice" ? E.pool.get(d.key) : d.mode === "diag" ? E.diags.get(d.l)?.items[d.i] : E.lessons.get(d.l)?.l.screens[d.i];
+          // gen: той самий набір, що бачила дитина (genAt з журналу), — числа умови й ключ екземпляра
+          const s = base && base.gen && Number.isInteger(d.genAt) ? E.learn.genInstance(base, "", d.genAt) || base : base;
           if (!s) { notes.unresolved++; break; }
           prof.answers++;
           const dg = d.mode === "diag" ? E.diags.get(d.l) : null;
@@ -71,9 +79,9 @@ export function replay(exp, E) {
           const a = { s, item: { mode: d.mode, l: d.l, i: d.i, key: d.key ?? null, type: d.type, sk: d.sk ?? s.sk ?? null, hyp: !!d.hyp },
             raw: d.raw, verdict: d.verdict, try: d.try, hint: !!d.hint, final: !!d.final, dt: e.dt, t: e.t, day,
             lvl: d.key ? (lvl[d.key] ?? s.lvl ?? null) : null, unseen: d.key ? seen[d.key] === undefined : undefined, run, ls, pres,
-            preWeak: pres.some(l => weak.has(l)), cv: e.cv ?? null };
+            preWeak: pres.some(l => Object.values(weakBy).some(w => w.has(l))), done: ls.filter(l => done.has(l)), cv: e.cv ?? null };
           // gen (Dg): набір значень і індекс — з журналу (d.gv, d.genAt, E2), кількість наборів — зі змісту (genAll)
-          if (d.gv !== undefined && d.gv !== null) { a.gv = d.gv; a.genAt = d.genAt; a.genN = s.gen ? (E.learn.genAll(s)?.envs?.length ?? 0) : 0; }
+          if (d.gv !== undefined && d.gv !== null) { a.gv = d.gv; a.genAt = d.genAt; a.genN = base.gen ? (E.learn.genAll(base)?.envs?.length ?? 0) : 0; }
           // наступні 3 відкладені відповіді першої спроби на пару (для «хибної тривоги» й «пропущеного поняття», §4.1)
           if (d.mode === "practice" && (d.try ?? 1) === 1) for (const h of hyps.values())
             if (h.did === did && h.pid === pid && h.pair[0] === d.l && h.pair[1] === a.item.sk && day > h.d0 && h.next.length < 3) h.next.push(d.verdict === "bad" ? 0 : 1);
@@ -143,6 +151,8 @@ export function metrics(R, E) {
   M.falseAlarm = { n: fa.length, share: share(fa.filter(h => h.next.every(x => x)).length, fa.length) };
   M.missedConcept = { n: mc.length, share: share(mc.filter(h => h.next.filter(x => !x).length >= 2).length, mc.length) };
   M.closes = {}; for (const h of hs) { const w = h.close ? h.close.d.why : "open"; M.closes[w] = (M.closes[w] || 0) + 1; }
+  // P3-R2-1 (рев'ю E1): superseded окремо для гіпотез з тесту рівня — урок теми, пройдений до тесту, закриває їх на першому повторному проході
+  M.supersededByMode = {}; for (const h of hs) if (h.close?.d.why === "superseded") { const m = h.open.d.at.mode; M.supersededByMode[m] = (M.supersededByMode[m] || 0) + 1; }
   M.kinds = {}; for (const h of hs) for (const p of h.probes) { const k = `${p.d.kind}${p.d.sol ? " (sol 1)" : ""}`; M.kinds[k] = (M.kinds[k] || 0) + 1; }
   M.ambList = hs.filter(h => h.open.d.amb).map(h => ({ hid: h.open.d.hid, at: h.open.d.at, raw: h.raw, sig: h.open.d.h.sig.filter(s => s.startsWith("S1:")), probe: h.probes.find(p => p.d.kind !== "A")?.d.res ?? null }));
   M.cost = "E5 (вставлені перевірки) — у тіні немає";
@@ -165,6 +175,7 @@ function reportMd(R, M, meta) {
   L.push("", `**Профілі не з початку журналу:** ${stale} (журнал не починається з \`boot\` з \`lessons: 0\` чи \`reset\` — ротація або прогрес до Evidence V2). «Небачену» вправу для них визначено лише за журналом, тож їхні перевірки — окремо, у точність вище не входять.`);
   if (Object.keys(M.accuracyNotFresh).length) { L.push("", "| Вид · зріз (не з початку) | n | точність |", "|---|---|---|"); for (const [k, c] of Object.entries(M.accuracyNotFresh).sort()) L.push(`| ${k} | ${c.n} | ${c.acc} |`); }
   L.push("", "## Види перевірок", "", ...Object.entries(M.kinds).map(([k, v]) => `- ${k}: ${v}`), "", "## Закриття", "", ...Object.entries(M.closes).map(([k, v]) => `- ${k}: ${v}`));
+  if (M.closes.superseded) L.push(`- superseded за місцем помилки: ${Object.entries(M.supersededByMode).map(([k, v]) => `${k} ${v}`).join(", ")} (з тесту рівня — ${M.supersededByMode.diag || 0} з ${M.closes.superseded}; помітна частка — переглянути правило, P3-R2-1)`);
   L.push("", "## Правила відкриття", "", ...Object.entries(M.rules).map(([k, v]) => `- ${k}: ${v}`));
   L.push("", "## Калібрування (Brier, P(✔) за видом)", "", ...Object.entries(M.brier).map(([k, v]) => `- ${k}: ${v.brier} (n = ${v.n})`));
   L.push("", "## Слабкі сигнали", "", ...(Object.entries(M.weakSignals).map(([k, v]) => `- ${k}: точність ${v.acc} (n = ${v.n})`)));
@@ -291,7 +302,9 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   } else {
     const input = argv.find((a, i) => !a.startsWith("--") && !["--root", "--out", "--date"].includes(argv[i - 1]));
     if (!input) { console.error("Використання: node tools/hyp-replay.mjs <export.json> [--out DIR] [--date YYYY-MM-DD] | --content-stats [--json]"); process.exit(2); }
-    const exp = JSON.parse(fs.readFileSync(input, "utf8")), R = replay(exp, E), M = metrics(R, E);
+    const exp = JSON.parse(fs.readFileSync(input, "utf8")), R = replay(exp, E);
+    if (argv.includes("--events")) { console.log(JSON.stringify(R.events)); process.exit(0); }
+    const M = metrics(R, E);
     const date = opt("--date") || new Date().toISOString().slice(0, 10), dir = path.resolve(opt("--out") || path.join(root, "reports/hyp"));
     fs.mkdirSync(dir, { recursive: true });
     const meta = { date, rv: E.hyp.RULES_VERSION, input: path.basename(input) };

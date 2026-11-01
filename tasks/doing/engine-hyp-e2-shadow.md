@@ -38,3 +38,25 @@ depends_on: [engine-hyp-e1-module, engine-evidence-p3]
 - Гіпотези з тесту рівня по темі з уже пройденим уроком закриваються `superseded` на першому повторному проході — рахувати `superseded` окремо для гіпотез з тесту рівня (у звіті реплею й у E4); переглянути правило, якщо частка помітна.
 - Тести: межовий випадок порогу групи (0,8 vs 0,7); профілі не з початку журналу не потрапляють у Brier — перевірка на такому журналі.
 - Реплей не передає трекеру `done` (пройдені уроки) — для профілів не з початку журналу; згадати в §9 п. 16 або передавати з першої події стану.
+
+## Нотатки інженера (engineer-hyp-e2, 2026-11-01)
+Що зроблено (worktree wt-hyp2):
+- **app/hyp.js** (rv hyp-1 без змін правил): `state()` тепер має `closed` (≤ 200 hid закритих), `scr` і `pend` (без `s`); `load(st, resolve)` відновлює їх (вправу для `pend` знаходить app.js); `drop(hids)`, `setPersist(0|1)`, `pending`; чиста `mergeState(mine, stored)` — злиття вкладок. Виправлено коментар S8 (P3-4 E1).
+- **app/evidence.js:** `hyp_*` пасивні для `cause` і без `by`; `SLID_EVIDENCE.cv` (версія без очікування).
+- **app/app.js:** блок `HYPS` (лише математика; заглушка без hyp.js): дані спроби — у момент `EV.log("answer")` (`evAnswer`), `onAnswer` — після `setDock` (у тесті рівня — після `save()`, до наступного завдання), try/catch, бюджет 400 мс (перевищення чи виняток вимикають тінь до перезавантаження); `onScreen`, `onLessonEnd` (усі предмети), `flush` на `close`, `tick` після `boot`, `onReset` до `EV.log("reset")`. Передаються `done` (S.lessons), `gv`/`genAt`/`genN`, `preWeak` (S.diag), `pres` (preIndex), власний `dt`, `run`. Журнал `answer`: `ans`/`ansCut`, `fc`, `gv`/`genAt`, `item.lvl`. `save()` за браку квоти видаляє ще й `slid.hyp`; `slid.hyp` пишеться лише після вдалого `slid.v1` (і після відповіді, закриття плеєра, у pagehide/hidden), невдалий запис або `save()`, що звільняв місце, — ключ геть до перезавантаження, `persist: 0`. Запис на старті — лише якщо щось змінилося (інакше ламався сторож skFix).
+- **tools/build.mjs:** `app/hyp.js` після learn.js, лише якщо файл є. index.html/sw.js/manifest перезібрано (не закомічено, як просили).
+- **tools/hyp-replay.mjs:** `boot` → `tick`; `done` з `lesson_end`; `weak` за останнім `diag_end` кожного тесту; gen — екземпляр за `genAt`; `supersededByMode` у звіті (P3-R2-1); `--events`.
+- **Тести:** test-hyp 538 → 564 (межа 0,765 між 0,7 і 0,8 — R03; Brier n лише fresh — R05; state/load/pend/scr/closed/merge/drop/persist; реплей: done, gen, weak, boot; підключення в manifest і стара ревізія без файлу); test-evidence 145 (розділ 11: by після practice_end, cv, розмір hyp_* на всьому змісті ≤ 0,6 КБ, answer з новими полями 0,95 КБ); test-answer-ui `hyp_checks` (у кінці файлу, один рядок у main).
+- **Документи:** docs/EVIDENCE.md (slid.hyp, нові поля, типи hyp_*, cause, cv, sync), дизайн §9 п. 16–17 оновлено, п. 18–24 [E2].
+
+Перевірки (сам): `node tools/build.mjs`; `npm run check` — зелено; test-hyp 564/564, test-evidence 145/145; `test-answer-ui.py --suite regression` — green (з hyp_checks: застосунок = реплей, 39 подій hyp_*); `diff-answers --old aab2e44 --grades 4-11` — 0 змін, 0 непояснених; `--content-old aab2e44` і `--content-old 8a1bbcd` (ревізія без app/hyp.js) — 0 змін; `personalization-qa --strict --grade 4…11` — rc 0. Мутанти: scratchpad/hyp2-mut-node — 12 (evidence cause, pend/scr/closed у стані, merge, реплей boot/done/weak/gen, поріг 0,7, build без перевірки файлу), усі вбито; scratchpad/hyp2-mut-ui — 7 браузерних: вбито save() без видалення slid.hyp, запис slid.hyp після «стиснутого» save(), unseen після S.seen, без запису після відповіді, без onLessonEnd; вижили запис у pagehide (дублюється записом після відповіді — pend і так на диску) і пасивність cause у браузері (у маршруті між явною подією й srs немає hyp_*; ловить test-evidence, M1).
+
+Відхилення й рішення:
+- **pend при закритті вкладки:** не `flush()` у pagehide, а збереження `pend` у slid.hyp (відкриває перша подія після перезавантаження — так само, як реплей); flush лише без сховища (+ `EV.stash`). Причина: flush дав би hyp_open без S10 там, де реплей бачить другу спробу (bfcache), і порушив би «застосунок = реплей». §9 п. 17.
+- Реплей змінено (weak — останній тест, а не накопичення; done; tick на boot; gen-екземпляр), щоб модель збігалася з app.js; на синтетичному журналі E1 результати ті самі.
+- `pend` іншої вкладки не зливається (може загубитися, якщо та вкладка закрилася без запису) — §9 п. 20.
+
+Відкриті питання:
+- Обсяг: 39 hyp_* на 50 answer на маршруті регресії (P9 на кожне «Ще не знаю» тесту рівня) — більше за оцінку §3.2; чи писати P9 зі skip лічильником у diag_end (до E4).
+- Реплей ще не враховує `persist: 0` (гіпотези без сховища між сесіями — §3.3 «реплей такі відкритими не вважає»); у тіні це не впливає на події застосунку, але метрики E4 мають це врахувати.
+- Розміщення виклику після `setDock` регресія не відрізняє від «до» (гілка помилки рахує checkAns/formHint заново) — тримається порядком коду й коментарем.

@@ -320,5 +320,41 @@ const evs = (k, pad = 80, p = "s") => Array.from({ length: k }, (_, i) => ({ v: 
   truthy(maxParts >= 2, `повторний великий тест дає кілька частин srs (${maxParts})`);
   console.log(`  розмір на змісті: найбільша srs ${maxSrs} Б (частин до ${maxParts}), інші підсумкові ${maxOther} Б; ліміт ${E.LIMITS.bigBytes}`); }
 
+// ---------- 11. гіпотези (E2, docs/design/diag-hypothesis-math.md §3.2–§3.3): hyp_* пасивні для cause, cv, розмір подій ----------
+{ const b = mem(), en = env(), J = C.create(b, en, E.LIMITS);
+  eq(J.cv, null, "cv до першого запису — null (не чекає SW)");
+  J.observe({ grade: 6, srs: {}, plan: {} });
+  J.log("practice_end", { res: [] });
+  for (const t of ["hyp_open", "hyp_probe", "hyp_close", "hyp_fmt"]) J.log(t, { hid: "x.1" });
+  J.observe({ grade: 6, srs: { a: { box: 1, due: "2026-11-03" } }, plan: { math: { grade: 6, steps: [{ l: "a", src: "err" }] } }, planByGrade: { math: { 6: { grade: 6, steps: [{ l: "a", src: "err" }] } } } });
+  J.log("hyp_close", { hid: "x.2" }); J.observe({ grade: 7, srs: { a: { box: 1, due: "2026-11-03" } }, plan: { math: { grade: 6, steps: [{ l: "a", src: "err" }] } }, planByGrade: { math: { 6: { grade: 6, steps: [{ l: "a", src: "err" }] } } } });
+  await J.flush();
+  const ev = [...b.st.ev.values()], n1 = ev.find(e => e.type === "practice_end").n;
+  eq(ev.filter(e => ["srs", "plan", "grade"].includes(e.type)).map(e => [e.type, e.by]), [["srs", n1], ["plan", n1], ["grade", n1]], "зміни SRS/плану/класу після practice_end і hyp_* — by = practice_end");
+  truthy(ev.filter(e => e.type.startsWith("hyp_")).every(e => !("by" in e)), "hyp_* не отримують by");
+  eq(J.cv, "abc123", "cv після запису — VERSION із SW"); }
+{ // розмір hyp_* і answer з новими полями на справжньому змісті: кожна вправа пулів математики з помилкою, перевірка наступного дня
+  const { hypEnv } = await import("./hyp-replay.mjs");
+  const HE = hypEnv(ROOT), HH = HE.hyp, items = [...HE.pool.values()];
+  let max = { hyp_open: 0, hyp_probe: 0, hyp_close: 0, hyp_fmt: 0, answer: 0 }, cnt = 0, tr = 0;
+  const day = (d, m = 0) => Date.parse(d + "T09:00:00Z") + m * 6e4;
+  const one = (s, o) => ({ s, item: { mode: "practice", l: s.lesson, i: 0, key: s.key, type: s.type, sk: s.sk }, raw: o.raw, verdict: o.v, try: 1, hint: false, final: true, dt: 9000,
+    t: day(o.d), day: o.d, lvl: s.lvl, unseen: true, run: o.run, ls: [s.lesson], pres: (HE.pres[s.lesson] || []), preWeak: true });
+  const T = HH.tracker({ seed: "sizeqa12", persist: 1 }), b = mem(), J = C.create(b, env(), E.LIMITS);
+  for (const s of items) {
+    const raw = s.type === "choice" ? (s.correct + 1) % s.opts.length : s.type === "multi" ? [0] : "-" + LN_text(s);
+    const evs = [...T.onAnswer(one(s, { raw, v: "bad", d: "2026-11-02", run: 1 })), ...T.onAnswer(one(s, { raw: "0", v: "bad", d: "2026-11-03", run: 2 })),
+      ...(s.type === "answer" ? T.onAnswer(one(s, { raw: LN_text(s), v: "form", d: "2026-11-04", run: 3 })) : [])];
+    for (const x of evs) { const e = C.makeEvent(x.type, x.d, { ...env(), n: 1, sid: "S".repeat(36), pid: "P".repeat(36) }); cnt++; if (e.d && e.d.trunc) tr++; max[x.type] = Math.max(max[x.type], JSON.stringify({ ...e, did: "D".repeat(36), seq: 1e6, cv: "abcdef1234", cvs: "sw" }).length); }
+  }
+  function LN_text(s) { try { return HE.learn.ansText(s); } catch (e) { return "1"; } }
+  // answer з новими полями (ans ≤ 60, fc, gv ≤ 8 пар, genAt, item.lvl) і найдовшим записом поля (120 символів)
+  const a = C.makeEvent("answer", { mode: "practice", c: "math", l: "g10m6l3", i: 0, id: "x99", key: "pg10m6:x99", pool: "pg10m6", type: "answer", ak: "intervalSet", sk: "func", pre: "g9m5l1", topic: null, rev: null, boss: false, hyp: false, lvl: 3,
+    try: 2, verdict: "form", raw: "x".repeat(120), hint: true, final: true, ans: "y".repeat(60), fc: "expandParen", gv: Object.fromEntries("abcdfghk".split("").map(k => [k, -123.456789])), genAt: 4321 }, { ...env(), n: 1, sid: "S".repeat(36), pid: "P".repeat(36) });
+  max.answer = JSON.stringify({ ...a, did: "D".repeat(36), seq: 1e6, cv: "abcdef1234", cvs: "sw", dt: 123456 }).length;
+  truthy(cnt > 2000 && tr === 0 && !a.d.trunc, `hyp_* на змісті (${cnt} подій) і answer з новими полями — без trunc`);
+  truthy(Object.values(max).every(x => x <= E.LIMITS.bytes), `розмір ≤ 2 КБ: ${JSON.stringify(max)}`);
+  console.log(`  розмір hyp_* на змісті: ${JSON.stringify(max)} Б (ліміт ${E.LIMITS.bytes})`); }
+
 console.log(fails ? `\n${fails} з ${n} перевірок не пройшли` : `test-evidence: усі ${n} перевірок пройдено`);
 process.exit(fails ? 1 : 0);
