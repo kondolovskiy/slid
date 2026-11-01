@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-01T13:38:38.707Z
 id: qa-math-personalization-release
 type: qa
 subject: math
 status: todo
-claimed_by:
+claimed_by: agent-qa-math-personalization-release
 created: 2026-10-15
 depends_on: [qa-math-personalization-g4, qa-math-personalization-g5, qa-math-personalization-g6, qa-math-personalization-g7, qa-math-personalization-g8, qa-math-personalization-g9, qa-math-personalization-g10, qa-math-personalization-g11]
 ---

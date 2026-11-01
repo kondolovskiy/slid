@@ -1,8 +1,10 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-01T13:38:38.818Z
 id: tools-lab-validate-p3c
 type: engine
 status: todo
-claimed_by:
+claimed_by: agent-tools-lab-validate-p3c
 created: 2026-11-01
 depends_on: [engine-player-a11y-p3]
 ---

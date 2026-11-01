@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-01T13:38:38.783Z
 id: engine-learn-prefixes-p3b
 type: engine
 subject: math
 status: todo
-claimed_by:
+claimed_by: agent-engine-learn-prefixes-p3b
 created: 2026-11-01
 depends_on: [engine-learn-list-prefixes-p3]
 ---

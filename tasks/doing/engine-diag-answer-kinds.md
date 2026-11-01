@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-01T13:38:38.744Z
 id: engine-diag-answer-kinds
 type: engine
 subject: math
 status: todo
-claimed_by:
+claimed_by: agent-engine-diag-answer-kinds
 created: 2026-11-01
 depends_on: []
 ---
