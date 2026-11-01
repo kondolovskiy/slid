@@ -15,6 +15,8 @@ const GRADES_WITH_CONTENT = [...new Set(SUBJ.flatMap(c=>c.sections.map(x=>x.grad
 function findLesson(id){ for(const c of SUBJ) for(let k=0;k<c.sections.length;k++){ const L=c.sections[k].lessons||[]; const i=L.findIndex(l=>l.id===id); if(i>=0) return {c,k,i,l:L[i],sec:c.sections[k]}; } return null; }
 /* персоналізація (app/learn.js): тест рівня, план, повторювані помилки */
 const LEARN = window.SLID_LEARN;
+/* журнал подій (app/evidence.js, docs/EVIDENCE.md): лише читає стан, на потік не впливає; без модуля — заглушка */
+const EV = window.SLID_EVIDENCE || { log(){}, observe(){}, newProfile(){} };
 const LORD = new Map(); SUBJ.forEach(c=>c.sections.forEach(x=>(x.lessons||[]).forEach(l=>LORD.set(l.id,LORD.size))));
 const diagFor = (c, g) => (c.diags||[]).find(d=>d.grade===(g??S.grade));
 const planCtx = c => ({ grade:S.grade, diags:c.diags||[], day:dkey(), week:schoolWeek(), sections:secsFor(c).map(x=>({id:x.id,weeks:x.weeks,lessons:(x.lessons||[]).filter(l=>!l.boss).map(l=>l.id)})), hasLesson:id=>{ const f=findLesson(id); return !!f && f.c.id===c.id && f.sec.grade<=S.grade; } });
@@ -137,7 +139,8 @@ const KEY = "slid.v1";
 const fresh = () => ({ name:"", grade:null, weekOverride:null, theme:"system", subject:SUBJ[0].id, unlockAll:false, xp:0, lessons:{}, days:{}, streak:{count:0,last:null}, badges:{}, skills:{}, polls:{}, bestCombo:0, diag:{}, diagRun:{}, diagRunRev:{}, diagSkip:{}, plan:{}, planByGrade:{}, mast:{}, errs:[], skw:{}, srs:{}, seen:{} });
 let S = fresh();
 try { const raw = localStorage.getItem(KEY); if (raw) S = Object.assign(fresh(), JSON.parse(raw)); } catch(e) {}
-const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e) {} };
+EV.observe(S); EV.log("boot", ()=>({ grade:S.grade, subj:S.subject, lessons:Object.keys(S.lessons||{}).length, diags:Object.keys(S.diag||{}), srs:Object.keys(S.srs||{}).length }));
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e) {} EV.observe(S); };
 try { const fx=JSON.stringify(S.skFix); if (LEARN.migrateSk(S) || JSON.stringify(S.skFix)!==fx) save(); } catch(e) {}   // позначка міграції зберігається й без перенесених записів (рев'ю P3-2); sk, узгоджені з уроками 2026-10-31, — у журналі помилок (learn.js, SK_RETAG)
 // розпочатий до нової редакції тесту: вердикти замінених завдань відкидаються, решта й порядок лишаються (learn.js, resumeDiag)
 try { let ch=false; for (const c of SUBJ) for (const d of c.diags||[]) if (Object.keys(S.diagRun?.[d.id]||{}).length && LEARN.resumeDiag(S,d).dropped.length) ch=true; if (ch) save(); } catch(e) {}
@@ -585,7 +588,7 @@ function bindView(){
   const ib=$("#installBtn"); if(ib) ib.onclick=async()=>{ if(await window.SLID_PWA.install()) toast(ic("check")+"Встановлено"); render(); };
   const dm=$("#demo"); if(dm) dm.onclick=()=>{ fillDemo(); save(); toast(ic("check")+"Демо-прогрес заповнено"); tab="progress"; render(); };
   const rs=$("#reset"); if(rs) rs.onclick=()=>{ if(!confirmReset){ confirmReset=true; render(); setTimeout(()=>{ confirmReset=false; if(tab==="profile") render(); },4000); return; }
-    const keep={name:S.name,theme:S.theme,subject:S.subject,grade:S.grade}; S=Object.assign(fresh(),keep); confirmReset=false; save(); toast(ic("check")+"Прогрес скинуто"); render(); };
+    const keep={name:S.name,theme:S.theme,subject:S.subject,grade:S.grade}; EV.log("reset"); EV.newProfile(); S=Object.assign(fresh(),keep); confirmReset=false; save(); toast(ic("check")+"Прогрес скинуто"); render(); };
 }
 function toast(html){ const t=$("#toast"); t.innerHTML=`<div>${html}</div>`; clearTimeout(toast.t); toast.t=setTimeout(()=>t.innerHTML="",1900); }
 
@@ -710,6 +713,7 @@ function startLesson(cid,k,i,linked){
   afterEnd=null;
   C=course(cid); SEC=C.sections[k]; li=i; L=SEC.lessons[i]; idx=0;
   run={ linked:!!linked, weak:new Set(), xp:0, first:0, graded:0, combo:0, best:0, mistakes:0, startLvl:levelOf(S.xp).n };
+  EV.log("lesson_start", ()=>({ c:C.id, l:L.id, sec:SEC.id, grade:SEC.grade, boss:!!L.boss, linked:!!linked, screens:L.screens.length }));
   applyTheme(C.id);
   openPlayer();
   renderScreen();
@@ -722,15 +726,18 @@ function startDiag(cid){
   SEC={ grade:d.grade, signed:d.signed!==false, lessons:[] }; li=0; L={ id:d.id, title:d.title, screens:d.items };
   run={ diag:d, res:LEARN.resumeDiag(S,d).res, linked:true, weak:new Set(), xp:0, first:0, graded:0, combo:0, best:0, mistakes:0, startLvl:levelOf(S.xp).n };
   idx=LEARN.nextItem(d,run.res); if(idx<0) idx=d.items.length;
+  EV.log("diag_start", ()=>({ c:C.id, diag:d.id, grade:d.grade, rev:LEARN.diagRev(d), items:d.items.length, resumed:Object.keys(run.res).length }));
   applyTheme(C.id);
   openPlayer();
   renderScreen();
 }
-function diagAnswer(v){ run.res[idx]=v; save(); idx=LEARN.nextItem(run.diag,run.res); if(idx<0) idx=L.screens.length; renderScreen(); }
+function diagAnswer(v){ EV.log("answer", ()=>({ ...evItem(L.screens[idx]), try:1, verdict: v===LEARN.SKIP? "skip" : evVerdict(L.screens[idx], v===LEARN.OK), res:v, raw: v===LEARN.SKIP? null : evRaw(L.screens[idx]), hint:false, final:true }));
+  run.res[idx]=v; save(); idx=LEARN.nextItem(run.diag,run.res); if(idx<0) idx=L.screens.length; renderScreen(); }
 $("#skip").onclick=()=>{ if(run?.diag && idx<L.screens.length) diagAnswer(LEARN.SKIP); };
 function renderDiagEnd(){
   const d=run.diag, plan=LEARN.finishDiag(S, C.id, d, run.res, learnCtx(C));
   delete S.diagRun[d.id]; delete S.diagSkip[d.id];
+  EV.log("diag_end", ()=>({ c:C.id, diag:d.id, grade:d.grade, rev:S.diag[d.id]?.rev ?? null, res:run.res, topics:plan.topics, steps:(plan.steps||[]).map(st=>st.l), base:(plan.base||[]).map(b=>b.topic), known:plan.known||[] }));
   const g=gain(20); touchStreak(); save(); renderTop(); pProgress();
   const lv=LEARN.level(d,plan.topics), td=stepsTodo(C), kn=plan.known.length, cid=C.id, start=td.length? null : baseStart(C);
   nav={v:"plan",id:cid}; tab="path";
@@ -772,6 +779,7 @@ function startPractice(cid, focus){
     return { ...it, grade:f.sec.grade, eyebrow:(it.review?"Повторення · ":"Тренування · ")+esc(f.l.title), body:(it.body||"")+`<p class="srcnote">Джерело: ${esc(src? src.short||src.title : sid)}${where? ", "+esc(where) : ""}${it.adapted? " · адаптовано" : ""}</p>`,
       fbOk:it.fbOk||"Правильно.", fbBad:it.fbBad||"Не зовсім.", fbText:`<span class="steps"><b>Розв'язання</b>${it.steps.map((t,i)=>`<span>${i+1}. ${t}</span>`).join("")}</span>` }; }) };
   run={ practice:{ focus, res:[] }, linked:true, weak:new Set(), xp:0, first:0, graded:0, combo:0, best:0, mistakes:0, startLvl:levelOf(S.xp).n };
+  EV.log("practice_start", ()=>({ c:C.id, focus:focus||null, prN, items:picked.map(it=>({ key:it.key, l:it.lesson, review:!!it.review, lvl:it.lvl ?? null })) }));
   applyTheme(C.id);
   openPlayer();
   renderScreen();
@@ -782,6 +790,7 @@ function renderPracticeEnd(){
   touchStreak();
   const recs=LEARN.detect(S, learnCtx(C)).filter(r=>findLesson(r.l).c.id===cid);
   const newSteps= recs.length? LEARN.syncPlan(S, cid, recs, dkey(), learnCtx(C)) : [];
+  EV.log("practice_end", ()=>({ c:cid, focus:pr.focus||null, res:pr.res, first:run.first, graded:run.graded, xp:run.xp, srs:upd, recs:recs.map(r=>({ l:r.l, why:r.why, sk:r.sk||null })), steps:newSteps.map(st=>st.l) }));
   save(); renderTop();
   $("#stage").innerHTML=fmt(`<section class="screen endhero">
     <div class="bigicon">${ic("bolt")}</div>
@@ -805,7 +814,8 @@ function renderPracticeEnd(){
 /* плеєр модальний: фон (застосунок і вкладки) inert, поки урок відкрито — Tab не виходить за межі плеєра (QA 4–5 кл.) */
 const PLAYER_BG = ["#app","#tabs","#sheetHost"];
 function openPlayer(){ $("#player").hidden=false; document.body.style.overflow="hidden"; $("#pClose").innerHTML=ic("x"); PLAYER_BG.forEach(q=>{ const e=$(q); if(e) e.inert=true; }); }
-function closePlayer(){ $("#player").hidden=true; document.body.style.overflow=""; PLAYER_BG.forEach(q=>{ const e=$(q); if(e) e.inert=false; }); render(); }
+function closePlayer(){ EV.log("close", ()=>({ mode:evMode(), l:L.id, i:idx, of:L.screens.length, end:idx>=L.screens.length }));
+  $("#player").hidden=true; document.body.style.overflow=""; PLAYER_BG.forEach(q=>{ const e=$(q); if(e) e.inert=false; }); render(); }
 /** Фокус на головну дію (Далі / Перевірити / Готово), щоб Enter вів далі. Якщо вона неактивна — на обраний варіант
     (спершу позначений помилкою), далі на перший елемент екрана, а якщо їх немає (lab із самими SVG) — на сам екран.
     Ніколи не на ✕: два Enter на ній за 2,5 с закривають урок без збереження. */
@@ -849,6 +859,7 @@ function renderScreen(){
   $("#player").scrollTo({top:0, behavior:"instant"});   // і для підсумку: інакше він відкривається з прокруткою попереднього екрана
   if(idx>=L.screens.length){ if(run.diag) renderDiagEnd(); else if(run.practice) renderPracticeEnd(); else renderEnd(); $("#player").scrollTo({top:0, behavior:"instant"}); return focusAction(); }
   const s=L.screens[idx]; checked=false; tries=0; tried=null; pProgress();
+  lastAns=null; EV.log("screen", ()=>evItem(s));
   let h=`<section class="screen" tabindex="-1"><div class="eyebrow">${run.diag? `Тест рівня · завдання ${Object.keys(run.res).length+1}` : s.eyebrow||""}</div>`;
   h+= s.type==="intro"? `<h1>${s.title}</h1>` : `<h2>${s.title}</h2>`;
   h+= fig(s) + (s.body||"") + noteHtml(s);
@@ -1023,7 +1034,7 @@ function gradeNow(s){
     case "numline": return st===s.answer;
     case "number": return numOk(s,st);
     case "fracin": return s.hideDen? LEARN.checkAns({answer:s.answer+"/"+s.den,fractionOnly:true},st)==="ok" : parseInt(st,10)===s.answer;
-    case "answer": return LEARN.checkAns(s,st)==="ok";
+    case "answer": return (lastAns=LEARN.checkAns(s,st))==="ok";   // lastAns — вердикт для журналу подій (без другої перевірки)
     case "lab": return window.SLID_LAB.check(s.lab, LAB.get(), s.goal);
   }
 }
@@ -1041,20 +1052,33 @@ function showMarks(s, reveal){
 function gain(n){ const m=L.boss?2:1; const v=n*m; run.xp+=v; addXp(v); return v; }
 function skillHit(s, ok){ if(!s.sk) return; const k=skey(C,s.sk); const r=S.skills[k]||(S.skills[k]={ok:0,total:0}); r.total++; if(ok) r.ok++; }
 
+/* журнал подій: опис екрана/вправи, сирий запис і вердикт (лише читання; EV обчислює в try/catch) */
+const evMode = () => run?.diag? "diag" : run?.practice? "practice" : "lesson";
+const evItem = s => ({ mode:evMode(), c:C?.id, l: run?.practice? s.lesson : L.id, i:idx, id:s.id ?? null, key:s.key ?? null, pool:s.pool?.id ?? null,
+  type:s.type, ak:s.answerKind ?? null, sk:s.sk ?? null, pre:s.pre ?? null, topic:s.topic ?? null, rev:s.rev ?? null, boss:!!L.boss, hyp:!!(s.hyp||s.poll) });
+const evRaw = s => LAB && s.type==="lab"? LAB.get() : st;
+// answer: ok/form/bad — той самий результат checkAns, що його щойно дав gradeNow (lastAns), без другої перевірки. У тесті рівня
+// вердикт дає diagVerdict (OK / HALF / BAD) і сам checkAns не повертає: для журналу — один checkAns (лише number/time/quantity, дешево),
+// щоб бачити form; HALF пише diagHalf з verdict "half"
+let lastAns=null;
+const evVerdict = (s, ok) => s.type!=="answer"? (ok? "ok" : "bad") : lastAns || (run?.diag? LEARN.checkAns(s,st) : ok? "ok" : "bad");
 /* тест рівня, answer: півбала (LEARN.HALF; engine-diag-half-credit) — значення правильне, а вимоганого умовою вигляду немає чи корінь
    не обчислено (LEARN.diagVerdict). Вердикт зберігається одразу (закритий плеєр не дасть відповісти вдруге); далі короткий екран-пояснення
    з наявним текстом formHint, без другої спроби й без «Ще не знаю»; «Далі» — наступне завдання тесту (diagNext). */
-function diagHalf(s){ run.res[idx]=LEARN.HALF; save(); checked=true; lock(); pProgress();
+function diagHalf(s){ EV.log("answer", ()=>({ ...evItem(s), try:1, verdict:"half", res:LEARN.HALF, raw:evRaw(s), hint:false, final:true }));
+  run.res[idx]=LEARN.HALF; save(); checked=true; lock(); pProgress();
   setDock("info","Зараховано півбала.",LEARN.formHint(s,st),"Далі"); $("#skip").hidden=true; focusAction(); }
 function diagNext(){ idx=LEARN.nextItem(run.diag,run.res); if(idx<0) idx=L.screens.length; renderScreen(); }
 function check(){
   const s=L.screens[idx];
   // answer у тесті: OK / HALF / BAD за LEARN.diagVerdict (інший запис того самого — OK; вимаганий умовою вигляд не показано — HALF)
   if(run.diag){ const v= s.type==="answer"? LEARN.diagVerdict(s,st) : gradeNow(s)? LEARN.OK : LEARN.BAD; return v===LEARN.HALF? diagHalf(s) : diagAnswer(v); }
-  if(s.poll||s.hyp){ if(s.poll) S.polls[s.poll]=st; const g=gain(5); checked=true; lock();
+  if(s.poll||s.hyp){ EV.log("answer", ()=>({ ...evItem(s), try:1, verdict:"hyp", raw:evRaw(s), hint:false, final:true }));
+    if(s.poll) S.polls[s.poll]=st; const g=gain(5); checked=true; lock();
     setDock("info", `${s.fbTitle} <span class="gain">+${g}</span>`, s.fbText, "Далі"); return focusAction(); }
   if(sameAsTried()) return refocusAnswer();
   const ok=gradeNow(s);
+  EV.log("answer", ()=>({ ...evItem(s), try:tries+1, verdict:evVerdict(s,ok), raw:evRaw(s), hint:tries>0 && !!s.hint, final: ok || tries>0 || s.type==="slider" }));
   if(!ok && s.pre) run.weak.add(s.pre);
   const preNote = (!ok && s.pre) ? (()=>{ const f=findLesson(s.pre); return f? `<span class="prenote">${ic("bulb")}Ця задача спирається на тему «${f.l.title}» (${f.sec.grade} клас). Наприкінці уроку запропоную її повторити.</span>` : ""; })() : "";
   if(!(ok || tries>0 || s.type==="slider")){
@@ -1131,6 +1155,7 @@ function renderEnd(){
   const newSteps= recs.length? LEARN.syncPlan(S, C.id, recs, dkey(), learnCtx(C)) : [];
   const leftSteps=stepsTodo(C).length;
   const nPool=poolItems(C).filter(it=>it.lesson===L.id).length; if(nPool) LEARN.srsInit(S, L.id, dkey());
+  EV.log("lesson_end", ()=>({ c:C.id, l:L.id, grade:SEC.grade, boss:!!L.boss, acc, stars, first:run.first, graded:run.graded, mistakes:run.mistakes, xp:run.xp, linked:run.linked, closed:planRes.closed.map(st=>st.l), retry:!!planRes.retry, recs:recs.map(r=>({ l:r.l, why:r.why, sk:r.sk||null })), steps:newSteps.map(st=>st.l), weak:[...run.weak] }));
   const nb=[];
   award("first",nb);
   if(run.mistakes===0) award("perfect",nb);

@@ -17,6 +17,8 @@ export function manifest(root = ROOT) {   // root — інше дерево (dif
     list.filter(f => f !== "plan.js").forEach(f => files.push(`content/${d}/${f}`));
   }
   if (fs.existsSync(path.join(root, "content/catalog.js"))) files.push("content/catalog.js");
+  // журнал подій (docs/EVIDENCE.md) — до app.js; у старих ревізіях (diff-answers --content-old) його ще немає
+  if (fs.existsSync(path.join(root, "app/evidence.js"))) files.push("app/evidence.js");
   files.push("app/lab.js", "app/learn.js", "app/math.js", "app/app.js");
   return files;
 }
