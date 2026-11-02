@@ -1,6 +1,6 @@
 ---
-claimed_from: todo
-claimed_at: 2026-11-02T14:05:42.050Z
+claimed_from: review
+claimed_at: 2026-11-02T14:24:45.603Z
 id: write-ukr-u5s9
 type: write-section
 subject: ukr
@@ -8,7 +8,7 @@ grade: 5
 section: u5s9
 weeks: [30, 32]
 status: review
-claimed_by: writer-u5s9
+claimed_by: verifier-u5s9
 created: 2026-11-02
 ---
 # Написати розділ «Другорядні та однорідні члени речення» (Українська мова, 5 клас)
