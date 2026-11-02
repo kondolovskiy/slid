@@ -358,7 +358,7 @@ SLID.pool("math", {
 
 ## 11. Граф умінь (`SLID.graph`) — `content/<предмет>/graph.js`
 
-Формальні залежності вмінь (дизайн: docs/design/skill-graph-math.md, ред. 4). **Змінює лише куратор**, як `plan.js` і `subjects/`; автори й верифікатори пропонують вузли й ребра рядком `IDEA GRAPH: …` в `memory/short/inbox.md`. Один файл на предмет; `tools/build.mjs` бере його в `index.html` і `sw.js` (офлайн) без змін збирача. Етап G1: рушій граф **не читає** — `SLID.graph` лише реєструє дані (`subject.graph`), їх перевіряють `tools/validate.mjs` і `tools/graph-report.mjs`. Стан учня (`S.skills`, `S.skw`, `S.mast`, `S.srs`, `S.errs`, `S.diag`, `S.seen`) не змінюється.
+Формальні залежності вмінь (дизайн: docs/design/skill-graph-math.md, ред. 4). **Змінює лише куратор**, як `plan.js` і `subjects/`; автори й верифікатори пропонують вузли й ребра рядком `IDEA GRAPH: …` в `memory/short/inbox.md`. Один файл на предмет; `tools/build.mjs` бере його в `index.html` і `sw.js` (офлайн) без змін збирача. Етап G1: рушій граф **не читає** — `SLID.graph` лише реєструє дані (`subject.graph`), їх перевіряють `tools/validate.mjs` і `tools/graph-report.mjs`. Етап G3: застосунок граф лише **читає** — пише вузли об'єкта в `item.u` події `answer` журналу (docs/EVIDENCE.md) за тим самим правилом прив'язки, що й інструменти (`SLID_LEARN.graphBind`, app/learn.js); `SLID_LEARN.nodeState` — похідний стан вузла, ніде не зберігається; для дитини нічого не змінюється. Стан учня (`S.skills`, `S.skw`, `S.mast`, `S.srs`, `S.errs`, `S.diag`, `S.seen`) не змінюється.
 
 ```js
 SLID.graph("math", {

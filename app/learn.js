@@ -1947,7 +1947,141 @@ window.SLID_LEARN = (() => {
     return "other";
   }
 
-  return { OK, BAD, SKIP, HALF, PASS, DIAG_TYPES, DIAG_ANSWER_KINDS, planFor, practiceItems, nextItem, remaining, topicStatus, level, buildPlan, diagRev, resumeDiag, finishDiag, record, detect, syncPlan, lessonDone, todo, isKnown, diagOpen, work, SK_RETAG, SK_RETAG2, SK_MIGRATIONS, migrateSk, validate,
+  /* ---------- Skill Graph: прив'язка об'єктів до вмінь і стан вузла (docs/design/skill-graph-math.md §2.4, §4.1, §4.2; етап G3) ----------
+     ОДНЕ правило прив'язки для застосунку (item.u у події answer, docs/EVIDENCE.md) і для tools/graph-lib.mjs (validate, graph-report):
+     graph-lib бере вузли об'єктів саме з graphBind, а сам лише перевіряє (V1–V10). Тест еквівалентності — tools/test-learn.mjs
+     (справжній зміст і фікстури). Усе тут — лише читання змісту й стану: нічого не зберігає й не змінює S; дитині нічого не показано (G3).
+     Правило (§2.4): 1) явний u (рядок або ≤ 2 id; неіснуючі id пропускаються, gone → ціль перенаправлення); 2) інакше типовий вузол пари
+     (урок, sk) — вузол з teach без by (перший, якщо їх кілька — помилка V6а); 3) вузли teach { l, by: "u" } — лише через явний u;
+     4) boss-урок — типові вузли тієї самої sk у його розділі (не boss-уроки): один — він, кілька — «неоднозначно» (без вузла);
+     5) завдання тесту: u завдання → u теми → типові вузли уроку lesson завдання, інакше уроків теми; вузли теми — u теми або об'єднання
+     вузлів завдань. Поле live — вузли для nodeState і graphPre: без gone-вузла, чия ціль має іншу sk, ніж об'єкт (§4.1, рев'ю G1 P3-8),
+     доки u не оновлено (stale — такі id). */
+  const G_GRADED = ["choice", "multi", "sort", "slider", "order", "align", "shade", "numline", "number", "fracin", "lab", "answer"];   // = tools/lib.mjs GRADED (тест)
+  const G_ID = /^[a-z][a-z0-9-]*$/;
+  const gStr = x => typeof x === "string" && x.trim() !== "";
+  const gGraded = s => !!s && G_GRADED.includes(s.type) && !s.poll && !s.hyp;
+  const teachList = n => (Array.isArray(n?.teach) ? n.teach : []).map(t => typeof t === "string" ? { l: t } : t && typeof t === "object" && typeof t.l === "string" ? { l: t.l, by: t.by } : null).filter(Boolean);
+  /** Прив'язка всього змісту предмета до графа (subject.graph; без графа — порожні вузли, усе «none»). Повертає
+      { subject, g, nodes, active, isGone, redirect, lessons, typical, screens: "урок#i", items: "пул:вправа", ditems: "тест#i", topics: "тест/тема" → запис,
+        lines — id ліній verified/approved }. Запис: { nodes, how, cand?, live, stale }. Кешу немає (graph-lib, тести); застосунок кешує сам. */
+  function graphBind(subject) {
+    const g = subject && subject.graph && typeof subject.graph === "object" && !Array.isArray(subject.graph) ? subject.graph : null;
+    const nodes = new Map();
+    for (const n of g && Array.isArray(g.nodes) ? g.nodes : []) if (n && typeof n === "object" && !Array.isArray(n) && gStr(n.id) && G_ID.test(n.id) && !nodes.has(n.id)) nodes.set(n.id, n);
+    const isGone = id => nodes.has(id) && nodes.get(id).gone !== undefined;
+    const active = new Map([...nodes].filter(([id]) => !isGone(id)));
+    const redirect = id => { const n = nodes.get(id); return n && gStr(n.gone) && nodes.has(n.gone) && !isGone(n.gone) ? n.gone : id; };
+    const lessons = new Map();
+    for (const sec of subject?.sections || []) for (const l of sec.lessons || []) lessons.set(l.id, { sec: sec.id, boss: !!l.boss });
+    const typical = new Map();
+    for (const n of active.values()) for (const t of teachList(n)) if (lessons.has(t.l) && !t.by) { const k = `${t.l}|${n.sk}`; (typical.get(k) || typical.set(k, []).get(k)).push(n.id); }
+    const typ = (l, sk) => (typical.get(`${l}|${sk}`) || []).slice(0, 1);
+    const ids0 = u => (u === undefined ? [] : Array.isArray(u) ? u : [u]).filter(gStr).filter(id => nodes.has(id));
+    const explicit = u => [...new Set(ids0(u).map(redirect))];
+    // явний u (екрана, вправи, завдання; для завдання без свого u — u теми): live — без перенаправлення gone-вузла на вузол іншої sk
+    const stale0 = (id, sk) => isGone(id) && redirect(id) !== id && nodes.get(redirect(id)).sk !== sk;
+    const byU = (u, sk, how) => ({ nodes: explicit(u), how, live: [...new Set(ids0(u).filter(id => !stale0(id, sk)).map(redirect))], stale: [...new Set(ids0(u).filter(id => stale0(id, sk)))] });
+    const entry = (ns, how, extra) => ({ nodes: ns, how, ...extra, live: ns, stale: [] });
+    const screens = new Map(), items = new Map(), ditems = new Map(), topics = new Map();
+    for (const sec of subject?.sections || []) for (const l of sec.lessons || []) {
+      const info = lessons.get(l.id);
+      (l.screens || []).forEach((s, i) => {
+        if (!gGraded(s)) return;
+        let e;
+        if (s.u !== undefined) e = byU(s.u, s.sk, "u");
+        else if (info.boss) {
+          const cand = [...active.values()].filter(n => n.sk === s.sk && teachList(n).some(t => !t.by && lessons.get(t.l)?.sec === info.sec && !lessons.get(t.l)?.boss)).map(n => n.id);
+          e = entry(cand.length === 1 ? cand : [], cand.length === 1 ? "boss" : cand.length ? "ambiguous" : "none", { cand });
+        } else { const ns = typ(l.id, s.sk); e = entry(ns, ns.length ? "typical" : "none"); }
+        screens.set(`${l.id}#${i}`, e);
+      });
+    }
+    for (const p of subject?.pools || []) for (const it of p.items || []) {
+      let e; if (it.u !== undefined) e = byU(it.u, it.sk, "u"); else { const ns = typ(it.lesson, it.sk); e = entry(ns, ns.length ? "typical" : "none"); }
+      items.set(`${p.id}:${it.id}`, e);
+    }
+    for (const d of subject?.diags || []) for (const t of d.topics || []) {
+      const tu = t.u !== undefined ? explicit(t.u) : null, ls = Array.isArray(t.lessons) ? t.lessons : [], union = new Set();
+      (d.items || []).forEach((it, i) => {
+        if (it.topic !== t.id) return;
+        let e;
+        if (it.u !== undefined) e = byU(it.u, it.sk, "u");
+        else if (tu) e = byU(t.u, it.sk, "u-topic");
+        else { const ns = [...new Set((gStr(it.lesson) ? [it.lesson] : ls).flatMap(l => typ(l, it.sk)))]; e = entry(ns, ns.length ? "typical" : "none"); }
+        e.nodes.forEach(x => union.add(x)); ditems.set(`${d.id}#${i}`, e);
+      });
+      const ns = tu || [...union]; topics.set(`${d.id}/${t.id}`, { nodes: ns, how: tu ? "u" : ns.length ? "items" : "none", live: ns, stale: [] });
+    }
+    const lines = Object.entries(g && g.lines && typeof g.lines === "object" && !Array.isArray(g.lines) ? g.lines : {})
+      .filter(([, ln]) => ln && (ln.st === "verified" || ln.st === "approved")).map(([id, ln]) => ({ id, lessons: new Set(Array.isArray(ln.lessons) ? ln.lessons : []), topics: new Set(Array.isArray(ln.topics) ? ln.topics : []) }));
+    return { subject: subject?.id ?? null, diags: subject?.diags || [], g, nodes, active, isGone, redirect, lessons, typical, screens, items, ditems, topics, lines, teachList };
+  }
+  const BIND = new WeakMap();
+  /** graphBind з кешем за предметом (новий граф чи інший об'єкт предмета — новий розбір). */
+  const bindOf = x => { if (x && x.screens instanceof Map) return x; const c = BIND.get(x); if (c && c.g === (x?.graph || null)) return c.B;
+    const B = graphBind(x); if (x && typeof x === "object") BIND.set(x, { g: x.graph || null, B }); return B; };
+  /** Вузли об'єкта для журналу (item.u): mode lesson — екран l#i, practice — key, diag — тест l, завдання i. Немає графа чи вузла — null. */
+  function nodesOf(gx, it) {
+    const B = bindOf(gx); if (!B.g || !it) return null;
+    const e = it.mode === "practice" ? B.items.get(String(it.key)) : it.mode === "diag" ? B.ditems.get(`${it.l}#${it.i}`) : B.screens.get(`${it.l}#${it.i}`);
+    return e && e.nodes.length ? e.nodes.slice() : null;
+  }
+  /** У якій перевіреній лінії (st verified/approved) об'єкт: урок (lesson, practice) чи тема тесту ("тест/тема"). */
+  const inLine = (gx, { l, topic }) => bindOf(gx).lines.filter(x => topic ? x.topics.has(topic) : x.lessons.has(l)).map(x => x.id);
+  /** Кандидати P і S12 за графом (§4.2, тінь G3): вузли пари (live вузли об'єкта + вузли з teach ∋ урок пари й тією самою sk) → прямі
+      ребра pre з w 2 і part (part — «складова», вага 2, як у graph-lib) на активні вузли → їхні уроки teach (без уроків самої пари).
+      a: { ls — уроки пари, sk, nodes — live вузли об'єкта }. Повертає { pair, pre, lessons }. */
+  function graphPre(gx, a) {
+    const B = bindOf(gx), ls = a.ls || [], pair = new Set(a.nodes || []);
+    for (const n of B.active.values()) if (n.sk === a.sk && teachList(n).some(t => ls.includes(t.l) && B.lessons.has(t.l))) pair.add(n.id);
+    const pre = new Set();
+    for (const id of pair) { const n = B.nodes.get(id); if (!n) continue;
+      for (const x of Array.isArray(n.pre) ? n.pre : []) if (x && x.w === 2 && B.active.has(x.u)) pre.add(x.u);
+      for (const x of Array.isArray(n.part) ? n.part : []) if (x && B.active.has(x.u)) pre.add(x.u); }
+    for (const id of pair) pre.delete(id);
+    const lessons = [...new Set([...pre].flatMap(id => teachList(B.nodes.get(id)).map(t => t.l)).filter(l => B.lessons.has(l) && !ls.includes(l)))];
+    return { pair: [...pair], pre: [...pre], lessons };
+  }
+  /** Стан вузла з наявного прогресу (§4.1) — чиста функція, нічого не зберігає. gx — предмет (з graph) або результат graphBind.
+      Джерела: S.diag[id].res (завдання тесту, вузли завдання; відповідь на стару редакцію завдання з rev новішим за rev результату
+      не рахується — як resumeDiag); S.seen["пул:вправа"] (остання перша спроба 0/1); уроки teach — S.lessons, S.mast, S.srs (спільне для
+      вузлів уроку); S.errs за парою (at, sk) (спільне для вузлів пари); S.skw — лише фон. Об'єкти з u на gone-вузол іншої sk не рахуються.
+      weak — хибне (BAD чи «Ще не знаю») хоч одне завдання вузла в pre-темі тесту; HALF (півбала) не послаблює (preWeak §4.2).
+      st: "unknown" — даних немає (не «прогалина»); "weak" — weak, або в тренуванні ≥ 2 помилки й ≥ половини, або тема уроку просіла
+      (weakRec S.mast); інакше "ok". Невідомий вузол — null. Стан лише для тіні й звітів (G3): рушій ним нічого не вирішує. */
+  function nodeState(S, gx, id) {
+    const B = bindOf(gx), n = B.nodes.get(id); if (!n) return null;
+    S = S || {};
+    const sk = `${B.subject}.${n.sk}`, out = { node: id, sk: n.sk, diag: { ok: 0, half: 0, bad: 0, skip: 0, items: [] }, practice: { ok: 0, bad: 0, items: [] },
+      lessons: [], errs: 0, skw: S.skw?.[sk] ?? null, weak: false, st: "unknown" };
+    for (const d of B.diags) {
+      const r = S.diag?.[d.id]; if (!r || !r.res || typeof r.res !== "object") continue;
+      const rev0 = Number.isInteger(r.rev) && r.rev >= 1 ? r.rev : 1;
+      for (const [k, v] of Object.entries(r.res)) {
+        const it = d.items?.[k]; if (!it || itemRev(it) > rev0) continue;
+        const e = B.ditems.get(`${d.id}#${k}`); if (!e || !e.live.includes(id)) continue;
+        const kind = v === OK ? "ok" : v === HALF ? "half" : v === BAD ? "bad" : v === SKIP ? "skip" : null; if (!kind) continue;
+        const pre = (d.topics || []).find(t => t.id === it.topic)?.kind === "pre";
+        out.diag[kind]++; out.diag.items.push({ diag: d.id, i: Number(k), v, pre });
+        if (pre && (v === BAD || v === SKIP)) out.weak = true;
+      }
+    }
+    for (const [key, e] of B.items) if (e.live.includes(id) && S.seen && S.seen[key] !== undefined) { const ok = !!S.seen[key]; out.practice[ok ? "ok" : "bad"]++; out.practice.items.push({ key, ok: ok ? 1 : 0 }); }
+    const ls = teachList(n).filter(t => B.lessons.has(t.l));
+    for (const t of ls) { const L0 = S.lessons?.[t.l], m = S.mast?.[t.l], r = S.srs?.[t.l];
+      out.lessons.push({ l: t.l, by: t.by ?? null, done: !!L0?.done, mast: m && typeof m.r === "string" ? m.r : null, srs: r ? { box: r.box, due: r.due } : null }); }
+    const at = new Set(ls.map(t => t.l));
+    for (const e of Array.isArray(S.errs) ? S.errs : []) if (e && e.sk === sk && at.has(e.at || e.l)) out.errs++;
+    const seenAny = out.diag.items.length || out.practice.items.length || out.errs || out.lessons.some(x => x.done || x.mast || x.srs);
+    if (seenAny) {
+      const p = out.practice, sag = ls.some(t => S.mast?.[t.l] && weakRec(S.mast[t.l]));
+      out.st = out.weak || (p.bad >= 2 && p.bad * 2 >= p.ok + p.bad) || sag ? "weak" : "ok";
+    }
+    return out;
+  }
+
+  return { OK, BAD, SKIP, HALF, PASS, DIAG_TYPES, G_GRADED, graphBind, nodesOf, inLine, graphPre, nodeState, DIAG_ANSWER_KINDS, planFor, practiceItems, nextItem, remaining, topicStatus, level, buildPlan, diagRev, resumeDiag, finishDiag, record, detect, syncPlan, lessonDone, todo, isKnown, diagOpen, work, SK_RETAG, SK_RETAG2, SK_MIGRATIONS, migrateSk, validate,
     parseAns, parseDivrem, checkAns, diagAnswerOk, diagVerdict, diagHalfHint, DIAG_FORM, badHint, hintTexts, keyInput, timeExample, quantityUnits: s => qtyUnits(s)?.units || null, stripUnit, listKey, pairKey, answerSig, formHint, ansText, srcRef, numberKeys, numberHelp, ANSWER_KINDS, BOX_DAYS, srsInit, srsUpdate, srsFromDiag, DIAG_BOX, genAll, genInstance, genIssues, genHash, GEN_MAX, isDue, pickSession, POOL_TYPES, validatePool,
     numVal, formCode };
 })();

@@ -1947,5 +1947,144 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
   eq(L.practiceItems(K, subj).map(it => it.lesson), ["l7a", "l7b"], "P3-3: practiceItems без ctx — лише поточний клас, навіть коли план щось відкриває");
   eq(L.practiceItems(K, subj, ctx()).map(it => it.lesson), ["l6a", "l6z", "l7a", "l7b"], "P3-3: practiceItems з ctx — відкрите планом (p1 ok, known)");
 }
+/* ---------- Skill Graph G3 (docs/design/skill-graph-math.md §2.4, §4.1, §4.2): graphBind, nodeState, graphPre ----------
+   1) Еквівалентність правила прив'язки: graphBind (одне правило для застосунку й tools/graph-lib.mjs) = еталон — дослівне правило G1 з
+      graph-lib до виносу (refBind нижче), на справжньому змісті й на синтетичних випадках (gone, boss, u теми, lesson завдання, by: "u").
+   2) nodeState на фіксованих профілях: без даних — «невідомо»; вузли розщепленої пари різняться лише за S.seen / S.diag.res; HALF не
+      послаблює; завдання з rev новішим за результат — не рахується; u на gone-вузол іншої sk — не рахується; S не змінюється. */
+{ const { loadContent, GRADED } = await import("./lib.mjs");
+  eq(L.G_GRADED, GRADED, "G3: оцінювані типи learn.js = tools/lib.mjs GRADED");
+  // еталон: прив'язка з tools/graph-lib.mjs етапу G1 (analyzeGraph, до G3), лише без перевірок
+  const refBind = c => {
+    const g = c.graph || null, str = x => typeof x === "string" && x.trim() !== "", nodes = new Map(), out = {};
+    const teachList = n => (Array.isArray(n.teach) ? n.teach : []).map(t => typeof t === "string" ? { l: t } : t && typeof t === "object" && typeof t.l === "string" ? { l: t.l, by: t.by } : null).filter(Boolean);
+    const isG = s => !!s && GRADED.includes(s.type) && !s.poll && !s.hyp;
+    (g && Array.isArray(g.nodes) ? g.nodes : []).forEach(n => { if (!n || typeof n !== "object" || Array.isArray(n)) return; if (!str(n.id) || !/^[a-z][a-z0-9-]*$/.test(n.id)) return; if (!nodes.has(n.id)) nodes.set(n.id, n); });
+    const lessons = new Map(); for (const sec of c.sections) (sec.lessons || []).forEach((l, idx) => lessons.set(l.id, { l, sec: sec.id, boss: !!l.boss }));
+    const isGone = id => nodes.has(id) && nodes.get(id).gone !== undefined, active = new Map([...nodes].filter(([id]) => !isGone(id)));
+    const typical = new Map();
+    for (const n of active.values()) for (const t of teachList(n)) { if (!lessons.has(t.l)) continue; const key = `${t.l}|${n.sk}`; if (!t.by) (typical.get(key) || typical.set(key, []).get(key)).push(n.id); }
+    const redirect = id => { const n = nodes.get(id); return n && str(n.gone) && nodes.has(n.gone) && !isGone(n.gone) ? n.gone : id; };
+    const parseU = u => { if (u === undefined) return []; const ids = Array.isArray(u) ? u : [u];
+      if (!ids.length || ids.length > 2 || ids.some(x => !str(x)) || new Set(ids).size !== ids.length) return ids.filter(str); return ids; };
+    const checkU = s => [...new Set(parseU(s.u).filter(id => nodes.has(id)).map(redirect))];
+    const typicalOf = (l, sk) => typical.get(`${l}|${sk}`) || [];
+    for (const sec of c.sections) for (const l of sec.lessons || []) { const info = lessons.get(l.id);
+      (l.screens || []).forEach((s, i) => { if (!isG(s)) return; let o;
+        if (s.u !== undefined) o = { nodes: checkU(s), how: "u" };
+        else if (info.boss) { const cand = [...active.values()].filter(n => n.sk === s.sk && teachList(n).some(t => !t.by && lessons.get(t.l)?.sec === info.sec && !lessons.get(t.l)?.boss)).map(n => n.id);
+          o = { nodes: cand.length === 1 ? cand : [], how: cand.length === 1 ? "boss" : cand.length ? "ambiguous" : "none", cand }; }
+        else { const ns = typicalOf(l.id, s.sk).slice(0, 1); o = { nodes: ns, how: ns.length ? "typical" : "none" }; }
+        out[`s|${l.id}#${i}`] = o; }); }
+    for (const p of c.pools || []) (p.items || []).forEach(it => { const ns = it.u !== undefined ? checkU(it) : typicalOf(it.lesson, it.sk).slice(0, 1);
+      out[`p|${p.id}:${it.id}`] = { nodes: ns, how: it.u !== undefined ? "u" : ns.length ? "typical" : "none" }; });
+    for (const d of c.diags || []) for (const t of d.topics || []) {
+      const its = (d.items || []).map((it, i) => [it, i]).filter(([it]) => it.topic === t.id), ls = Array.isArray(t.lessons) ? t.lessons : [];
+      const tu = t.u !== undefined ? checkU(t) : null, union = new Set();
+      for (const [it, i] of its) { const lsI = str(it.lesson) ? [it.lesson] : ls; let o;
+        if (it.u !== undefined) o = { nodes: checkU(it), how: "u" }; else if (tu) o = { nodes: tu, how: "u-topic" };
+        else { const ns = [...new Set(lsI.flatMap(l => typicalOf(l, it.sk).slice(0, 1)))]; o = { nodes: ns, how: ns.length ? "typical" : "none" }; }
+        o.nodes.forEach(x => union.add(x)); out[`d|${d.id}#${i}`] = o; }
+      const ns = tu || [...union]; out[`t|${d.id}/${t.id}`] = { nodes: ns, how: tu ? "u" : ns.length ? "items" : "none" }; }
+    return out; };
+  const flat = B => { const o = {}; for (const [pfx, m] of [["s", B.screens], ["p", B.items], ["d", B.ditems], ["t", B.topics]]) for (const [k, e] of m) o[`${pfx}|${k}`] = e.cand ? { nodes: e.nodes, how: e.how, cand: e.cand } : { nodes: e.nodes, how: e.how }; return o; };
+  const same = (c, what) => { const a = flat(L.graphBind(c)), b = refBind(c), ka = Object.keys(a).sort(), kb = Object.keys(b).sort();
+    eq(ka, kb, `${what}: ті самі об'єкти`); const diff = ka.filter(k => JSON.stringify(a[k]) !== JSON.stringify(b[k]));
+    eq(diff.slice(0, 5).map(k => [k, a[k], b[k]]), [], `${what}: вузли, how, cand — як у правилі G1`); return a; };
+  const C0 = loadContent(), math = C0.subjects.find(s => s.id === "math");
+  const real = same(math, "справжній зміст math");
+  const cnt = Object.values(real).reduce((o, e) => (o[e.how] = (o[e.how] || 0) + 1, o), {});
+  eq([cnt.u > 20, cnt.typical > 200, cnt["u-topic"] > 0, cnt.items > 0, cnt.none > 1000], [true, true, true, true, true], `справжній зміст: є всі гілки правила (${JSON.stringify(cnt)})`);
+  eq([real["s|m3#8"].nodes, real["s|m3#1"].nodes, real["p|pg6m2:e08"].nodes, real["t|dg6/g6-lcm"].nodes], [["num-by-frac"], ["frac-of-num"], ["frac-div", "frac-add-unlike"], ["divis-lcm", "divis-gcd"]], "справжній зміст: m3 #8, #1, pg6m2 e08, тема dg6/g6-lcm");
+  // синтетичні випадки поверх справжнього змісту (новий loadContent на кожен — об'єкти змісту не спільні)
+  const mut = (f, what) => { const C = loadContent(), m = C.subjects.find(s => s.id === "math"); f(m); return same(m, what); };
+  const lesson = (m, id) => m.sections.flatMap(s => s.lessons || []).find(l => l.id === id);
+  let r = mut(m => { m.graph = { ...m.graph, nodes: [...m.graph.nodes, { id: "frac-of-old", sk: "part", name: "x", teach: ["m3"], gone: "frac-of-num", st: "draft" },
+      { id: "cmp-old", sk: "cmp", name: "x", teach: ["m3"], gone: "frac-of-num", st: "draft" }] }; lesson(m, "m3").screens[1].u = "frac-of-old"; lesson(m, "m3").screens[2].u = ["frac-of-old", "nope"]; }, "gone і неіснуючий u");
+  eq([r["s|m3#1"].nodes, r["s|m3#2"].nodes], [["frac-of-num"], ["frac-of-num"]], "gone → ціль; неіснуючий id пропущено");
+  mut(m => { const d = m.diags.find(x => x.id === "dg6"); const t = d.topics.find(x => x.id === "frac-of"); t.u = "num-by-frac"; d.items.find(x => x.topic === "frac-of").lesson = "m3"; }, "u теми, lesson завдання");
+  r = mut(m => { const d = m.diags.find(x => x.id === "dg6"); d.topics.find(x => x.id === "frac").lessons = ["m1", "m5"]; d.items[1].lesson = "m5"; }, "двоурокова тема: lesson завдання звужує типові вузли");
+  eq([r["d|dg6#1"].nodes, r["d|dg6#13"].nodes, r["t|dg6/frac"].nodes], [["frac-mixed"], ["frac-read", "frac-mixed"], ["frac-mixed", "frac-read"]], "двоурокова тема: №1 з lesson m5 — frac-mixed, №13 без lesson — обидва уроки");
+  mut(m => { m.graph = { ...m.graph, nodes: m.graph.nodes.map(n => n.id === "frac-mixed" ? { ...n, teach: ["m5", "m6"] } : n) }; }, "boss: teach на boss-уроці");
+  mut(m => { m.graph = { ...m.graph, nodes: [...m.graph.nodes, { id: "frac-read2", sk: "frac", name: "x", teach: ["m1"], st: "draft" }, { id: "Bad id", sk: "frac", teach: ["m1"] }, null, { id: "frac-read", sk: "num", teach: ["m2"] }] }; }, "два типові вузли пари, хибні вузли, дубль id");
+  mut(m => { m.graph = null; }, "без графа");
+  mut(m => { lesson(m, "m3").screens[8].u = []; m.pools.find(p => p.id === "pms1").items[0].u = ["frac-of-num", "frac-of-num"]; }, "u: [] і дубль у u");
+
+  // ---- синтетичний предмет для nodeState
+  const G = { v: "t", lines: { ln: { lessons: ["la"], topics: ["d1/tc"], st: "verified" }, dr: { lessons: ["lp"], topics: [], st: "draft" } }, nodes: [
+    { id: "na", sk: "frac", name: "A", teach: ["la"], pre: [{ u: "np", w: 2, why: "x" }, { u: "nq", w: 1, why: "x" }], part: [{ u: "nr", why: "x" }], st: "verified" },
+    { id: "nb", sk: "frac", name: "B", teach: [{ l: "la", by: "u" }], pre: [{ u: "np", w: 2, why: "x" }], st: "verified" },
+    { id: "np", sk: "num", name: "P", teach: ["lp"], st: "verified" }, { id: "nq", sk: "num", name: "Q", teach: ["lq"], st: "verified" },
+    { id: "nr", sk: "num", name: "R", teach: ["lr"], st: "verified" },
+    { id: "nold", sk: "frac", name: "old", teach: ["lp"], gone: "np", st: "draft" },   // gone на вузол іншої sk (num)
+    { id: "nold2", sk: "frac", name: "old2", teach: ["lp"], gone: "na", st: "draft" }] };   // gone на вузол тієї самої sk
+  const scr = (sk, extra = {}) => ({ type: "choice", title: "?", opts: ["a", "b"], correct: 0, sk, ...extra });
+  const SUBJ = { id: "math", graph: G, sections: [{ id: "s1", grade: 5, lessons: [
+      { id: "la", screens: [{ type: "intro" }, scr("frac"), scr("frac", { u: "nb" }), scr("frac", { u: "nold" }), scr("frac", { u: "nold2" })] },
+      { id: "lp", screens: [scr("num")] }, { id: "lq", screens: [scr("num")] }, { id: "lr", screens: [scr("num")] }, { id: "lx", boss: true, screens: [scr("frac")] }] }],
+    pools: [{ id: "p1", section: "s1", items: [{ id: "i1", lesson: "la", sk: "frac" }, { id: "i2", lesson: "la", sk: "frac", u: "nb" }, { id: "i3", lesson: "lp", sk: "num" }, { id: "i4", lesson: "la", sk: "frac", u: "nold" }] }],
+    diags: [{ id: "d1", grade: 6, topics: [{ id: "tp", kind: "pre", lessons: ["lp"] }, { id: "tc", kind: "cur", lessons: ["la"] }],
+      items: [{ topic: "tp", sk: "num" }, { topic: "tp", sk: "num", rev: 2 }, { topic: "tc", sk: "frac" }, { topic: "tc", sk: "frac", u: "nb" }, { topic: "tc", sk: "frac", u: "nold" }] }] };
+  const B = L.graphBind(SUBJ);
+  eq([B.screens.get("la#1").nodes, B.screens.get("la#2").nodes, B.screens.get("la#3").nodes, B.screens.get("la#3").live, B.screens.get("la#3").stale, B.screens.get("la#4").live, B.screens.get("lx#0").nodes],
+    [["na"], ["nb"], ["np"], [], ["nold"], ["na"], ["na"]], "graphBind: типовий, by: u, gone іншої sk (nodes — як graph-lib, live — без нього), gone тієї самої sk, boss");
+  eq(B.screens.has("la#0"), false, "graphBind: intro — не об'єкт");
+  eq([L.nodesOf(SUBJ, { mode: "lesson", l: "la", i: 2 }), L.nodesOf(SUBJ, { mode: "practice", key: "p1:i1" }), L.nodesOf(SUBJ, { mode: "diag", l: "d1", i: 0 }), L.nodesOf(SUBJ, { mode: "lesson", l: "la", i: 0 }), L.nodesOf({ ...SUBJ, graph: null }, { mode: "lesson", l: "la", i: 1 })],
+    [["nb"], ["na"], ["np"], null, null], "nodesOf: урок, тренування, тест; не оцінюваний екран і предмет без графа — null");
+  eq([L.inLine(SUBJ, { l: "la" }), L.inLine(SUBJ, { l: "lp" }), L.inLine(SUBJ, { topic: "d1/tc" }), L.inLine(SUBJ, { topic: "d1/tp" })], [["ln"], [], ["ln"], []], "inLine: лише лінії verified/approved");
+  const gp = L.graphPre(SUBJ, { ls: ["la"], sk: "frac", nodes: ["na"] });
+  eq([gp.pair.sort(), gp.pre.sort(), gp.lessons.sort()], [["na", "nb"], ["np", "nr"], ["lp", "lr"]], "graphPre: вузли пари (з by: u) → pre w 2 і part, без w 1; уроки teach");
+  const st = (S, id) => { const x = L.nodeState(S, SUBJ, id); return x; };
+  const E0 = st({}, "na");
+  eq([E0.st, E0.weak, E0.diag.items.length, E0.practice.items.length, E0.errs], ["unknown", false, 0, 0, 0], "nodeState: без даних — «невідомо», не прогалина");
+  eq([L.nodeState({}, SUBJ, "nope"), st({ seen: {}, diag: {}, lessons: {}, mast: {}, srs: {}, errs: [], skw: {} }, "nb").st], [null, "unknown"], "nodeState: невідомий вузол — null; порожній профіль — unknown");
+  eq([st({ skw: { "math.frac": "000" } }, "na").st, st({ skw: { "math.frac": "000" } }, "na").skw, st({ errs: [{ l: "lq", at: "lq", sk: "math.frac" }] }, "na").st], ["unknown", "000", "unknown"], "nodeState: лише фон skw чи помилки іншого уроку — «невідомо»");
+  // спільне для вузлів пари: урок, SRS, mast, errs — na і nb однакові (крім id і by)
+  const P1 = { lessons: { la: { done: true } }, mast: { la: { r: "1101", d: "2026-11-01" } }, srs: { la: { box: 1, due: "2026-11-04" } },
+    errs: [{ l: "la", at: "la", sk: "math.frac", d: "2026-11-01" }, { l: "lp", at: "la", sk: "math.frac", d: "2026-11-01" }, { l: "la", at: "la", sk: "math.num", d: "2026-11-01" }], skw: { "math.frac": "1101" } };
+  const strip = x => JSON.parse(JSON.stringify({ ...x, node: null, lessons: x.lessons.map(l => ({ ...l, by: null })) }));
+  const a1 = st(P1, "na"), b1 = st(P1, "nb");
+  eq(strip(a1), strip(b1), "розщеплена пара: лише урок/SRS/errs — стани na і nb однакові");
+  eq([a1.st, a1.errs, a1.skw, a1.lessons[0]], ["ok", 2, "1101", { l: "la", by: null, done: true, mast: "1101", srs: { box: 1, due: "2026-11-04" } }], "урок, errs за (at, sk), skw — фон");
+  // S.seen і S.diag.res розрізняють
+  const P2 = { ...P1, seen: { "p1:i2": 0, "p1:i1": 1 }, diag: { d1: { done: true, res: { 2: L.OK, 3: L.BAD }, rev: 1 } } };
+  const a2 = st(P2, "na"), b2 = st(P2, "nb");
+  eq([a2.practice, b2.practice, a2.diag.ok, a2.diag.bad, b2.diag.bad], [{ ok: 1, bad: 0, items: [{ key: "p1:i1", ok: 1 }] }, { ok: 0, bad: 1, items: [{ key: "p1:i2", ok: 0 }] }, 1, 0, 1], "розщеплена пара: різниця — лише за S.seen і S.diag.res");
+  eq([strip({ ...a2, practice: null, diag: null }), b2.weak], [strip({ ...b2, practice: null, diag: null }), false], "розщеплена пара: решта стану однакова; BAD у cur-темі не робить weak");
+  // HALF у pre-темі не послаблює; BAD і SKIP — послаблюють
+  const pw = res => st({ diag: { d1: { done: true, res, rev: 2 } } }, "np");
+  eq([pw({ 0: L.HALF }).weak, pw({ 0: L.HALF }).diag.half, pw({ 0: L.BAD }).weak, pw({ 0: L.SKIP }).weak, pw({ 0: L.OK, 1: L.OK }).weak, pw({ 0: L.HALF }).st], [false, 1, true, true, false, "ok"], "HALF не послаблює вузол-передумову; BAD / «Ще не знаю» — так");
+  // rev: результат редакції 1 не прив'язується до заміненого завдання (rev 2); редакція 2 — так; старий профіль без rev — як редакція 1
+  eq([st({ diag: { d1: { res: { 1: L.BAD }, rev: 1 } } }, "np").weak, st({ diag: { d1: { res: { 1: L.BAD } } } }, "np").weak, st({ diag: { d1: { res: { 1: L.BAD }, rev: 2 } } }, "np").weak],
+    [false, false, true], "rev: стара відповідь не рахується за новим завданням (як resumeDiag)");
+  // gone іншої sk: ні вправа, ні завдання тесту з u: nold не рахуються вузлу np, доки u не оновлено; без stale — рахувались би
+  const P3 = { seen: { "p1:i4": 0 }, diag: { d1: { res: { 4: L.BAD }, rev: 2 } } };
+  eq([st(P3, "np").practice.items.length, st(P3, "np").diag.items.length, st(P3, "np").st], [0, 0, "unknown"], "u на gone-вузол іншої sk — не рахується в nodeState");
+  eq(L.graphPre(SUBJ, { ls: ["la"], sk: "frac", nodes: B.items.get("p1:i4").live }).pre.sort(), ["np", "nr"], "gone іншої sk не стає вузлом пари в graphPre");
+  // тренування: ≥ 2 помилки й ≥ половини — weak; тема уроку просіла (weakRec) — weak
+  eq([st({ seen: { "p1:i1": 0 } }, "na").st, st({ seen: { "p1:i1": 0 }, mast: { la: { r: "0011" } } }, "na").st, st({ lessons: { la: { done: true } } }, "na").st], ["ok", "weak", "ok"], "st: одна помилка — ok; просіла тема уроку — weak; пройдений урок — ok");
+  // S не змінюється
+  const P4 = JSON.parse(JSON.stringify({ ...P2, ...P3, seen: { ...P2.seen, ...P3.seen } })), P4c = JSON.parse(JSON.stringify(P4));
+  for (const id of ["na", "nb", "np", "nq", "nr", "nold"]) L.nodeState(P4, SUBJ, id);
+  eq(P4, P4c, "nodeState не змінює S");
+  // кеш за предметом: новий граф — новий розбір
+  const SUBJ2 = { ...SUBJ, graph: G }; eq(L.nodesOf(SUBJ2, { mode: "lesson", l: "la", i: 1 }), ["na"], "кеш: розбір предмета");
+  SUBJ2.graph = { ...G, nodes: G.nodes.map(n => n.id === "na" ? { ...n, teach: [{ l: "la", by: "u" }] } : n) };
+  eq(L.nodesOf(SUBJ2, { mode: "lesson", l: "la", i: 1 }), null, "кеш: інший граф — інший результат");
+
+  // ---- справжній граф: фіксований профіль, розщеплена пара g6m2l5 (frac-mul типовий, frac-div by: u)
+  const PR = { lessons: { g6m2l5: { done: true } }, mast: { g6m2l5: { r: "110", d: "2026-11-01" } }, srs: { g6m2l5: { box: 1, due: "2026-11-03" } },
+    errs: [{ l: "g6m2l5", at: "g6m2l5", sk: "math.ops", d: "2026-11-01" }], seen: { "pg6m2:e01": 1, "pg6m2:e02": 1, "pg6m2:e03": 0, "pg6m2:e05": 0 },
+    diag: { dg6: { done: true, res: { 0: L.OK }, rev: 1 } } };
+  const fm = L.nodeState(PR, math, "frac-mul"), fd = L.nodeState(PR, math, "frac-div");
+  eq([fm.practice.ok, fm.practice.bad, fd.practice.ok, fd.practice.bad, fm.st, fd.st, fm.errs, fd.errs], [2, 0, 0, 2, "ok", "weak", 1, 1], "справжній граф: frac-mul / frac-div — різні за S.seen, спільні errs");
+  eq(strip({ ...fm, practice: null, st: null }), strip({ ...fd, practice: null, st: null }), "справжній граф: решта стану frac-mul і frac-div однакова (st — від тренування)");
+  eq(L.nodeState({}, math, "frac-div").st, "unknown", "справжній граф: порожній профіль — невідомо");
+  // dg6 #20 (індекс 19, тема g6-lcm з u на обидва вузли) — «Ще не знаю» слабить обидва; HALF — жодного
+  const lcmI = math.diags.find(d => d.id === "dg6").items.findIndex(it => it.topic === "g6-lcm");
+  const dg6 = v => ["divis-lcm", "divis-gcd"].map(id => L.nodeState({ diag: { dg6: { res: { [lcmI]: v }, rev: 9 } } }, math, id));
+  eq([dg6(L.SKIP).map(x => x.diag.skip), dg6(L.HALF).map(x => x.diag.half)], [[1, 1], [1, 1]], "dg6/g6-lcm: завдання теми з двома u — обом вузлам");
+  eq(math.diags.find(d => d.id === "dg6").topics.find(t => t.id === "g6-lcm").kind, "cur", "dg6/g6-lcm — cur (weak лише від pre-тем)");
+}
 console.log(`\n${n} перевірок, ${fails ? fails + " з помилками" : "усе гаразд"}`);
 if (fails) process.exit(1);

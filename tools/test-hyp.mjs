@@ -654,5 +654,44 @@ const sum = (R, pid) => R.events.filter(e => e.pid === pid).map(e => e.type === 
   eq(shape(replay({ events: late }, E)).filter(x => x[0] === "open").map(x => x[1]), [1, 0, 0], "hyp_lost після hyp_open застосунку — persist 0 з наступної події");
 }
 
+/* ---------- 12. Skill Graph G3: старі й нові pres / preWeak у реплеї (docs/design/skill-graph-math.md §4.2) ----------
+   Тінь: події й метрики реплею (hyp-1) — за старими pres, однакові з графом і без нього; поруч — тіньовий трекер з pres / preWeak за
+   графом лише в лініях verified. dg6/frac-of shaky лише через №21 (num-by-frac) не робить слабким frac-mul (пара g6m2l5); HALF у
+   pre-темі не послаблює вузол-передумову frac-read; BAD — послаблює; урок поза лінією (g6m3l1) — як зараз. */
+{
+  const evs = []; let seq = 0;
+  const e = (pid, type, d, t, extra = {}) => evs.push({ v: 1, eid: `g.${seq}`, seq: ++seq, type, t, tzo: 0, n: seq, ms: 0, sid: "g", did: "dev3", pid, cv: "abc", cvs: null, net: 1, synced: 0, d, ...extra });
+  const dans = (pid, i, v, res, t) => { const it = E.diags.get("dg6").items[i];
+    e(pid, "answer", { mode: "diag", c: "math", l: "dg6", i, id: null, key: null, pool: null, type: it.type, ak: null, sk: it.sk, topic: it.topic, hyp: false, try: 1, verdict: v, res, raw: v === "skip" ? null : "x", hint: false, final: true }, t, { dt: 8000 }); };
+  const pans = (pid, k, t, v = "bad") => { const s = pool(k);
+    e(pid, "answer", { mode: "practice", c: "math", l: s.lesson, i: 0, id: s.id, key: s.key, pool: s.pool.id, type: s.type, ak: s.answerKind ?? null, sk: s.sk, pre: null, topic: null, rev: null, boss: false, hyp: false, try: 1, verdict: v, raw: "0", hint: false, final: true }, t, { dt: 9000 }); };
+  const prof = (pid, diagAns, topics) => {
+    e(pid, "boot", { grade: 6, subj: "math", lessons: 0, diags: [], srs: 0 }, tm(D1));
+    e(pid, "diag_start", { c: "math", diag: "dg6", rev: 1 }, tm(D1, 1));
+    const res = {}; diagAns.forEach(([i, v, r], k) => { dans(pid, i, v, r, tm(D1, 2 + k)); res[i] = r; });
+    e(pid, "diag_end", { c: "math", diag: "dg6", rev: 1, res, topics }, tm(D1, 20));
+    e(pid, "practice_start", { focus: null, prN: 1, items: [{ key: "pg6m2:e01", l: "g6m2l5", review: false, lvl: 1 }, { key: "pg6m3:a01", l: "g6m3l1", review: false, lvl: 1 }] }, tm(D2));
+    pans(pid, "pg6m2:e01", tm(D2, 1)); pans(pid, "pg6m3:a01", tm(D2, 2)); };
+  prof("q1", [[10, "ok", 1], [21, "skip", -1]], { "frac-of": "shaky" });     // gap лише через num-by-frac
+  prof("q2", [[1, "half", 0.5], [13, "ok", 1]], { frac: "shaky" });          // HALF у темі frac (frac-read)
+  prof("q3", [[1, "bad", 0], [13, "ok", 1]], { frac: "shaky" });            // BAD у темі frac
+  const X = { schema: 1, app: "slid", did: "dev3", events: evs }, R = replay(X, E), G = R.graph;
+  const R0 = replay(JSON.parse(JSON.stringify(X)), { ...E, graph: null });
+  eq(JSON.stringify(R.events), JSON.stringify(R0.events), "G3: події реплею (hyp-1, старі pres) з графом і без нього однакові");
+  eq(R0.graph.presDiff + R0.graph.preWeakDiff + R0.graph.inLine, 0, "G3: без графа — нові pres = старі");
+  eq([G.answers, G.inLine, G.lines], [12, 9, ["frac"]], "G3: відповідей 12, у лінії frac — 9 (тест рівня dg6 у темах лінії, e01; a01 — поза)");
+  const e01 = G.examples.filter(x => x.at.key === "pg6m2:e01");
+  eq(e01.map(x => [x.line, x.u, x.pre.slice().sort(), x.presNew.slice().sort(), x.pres.includes("m3"), x.preWeak, x.preWeakNew]),
+    [["frac", ["frac-mul"], ["frac-read", "frac-reduce"], ["g6m2l2", "m1"], true, true, false],
+     ["frac", ["frac-mul"], ["frac-read", "frac-reduce"], ["g6m2l2", "m1"], true, true, false],
+     ["frac", ["frac-mul"], ["frac-read", "frac-reduce"], ["g6m2l2", "m1"], true, true, true]],
+    "G3: e01 (frac-mul): нові pres — уроки pre w 2 (m1, g6m2l2), не m3; preWeak: shaky через num-by-frac — ні; HALF — ні; BAD frac-read — так");
+  eq(G.examples.some(x => x.at.key === "pg6m3:a01"), false, "G3: g6m3l1 поза лінією — pres / preWeak як зараз");
+  eq([G.old.open, G.new.open, G.old.s12, G.new.s12], [G.old.open, G.old.open, G.old.s12, G.old.s12 - 2], "G3: тіньовий трекер — ті самі відкриття, S12 на 2 менше (q1, q2 e01)");
+  eq(G.openDiff.map(x => [x.old.sig.includes("S12"), x.new && x.new.sig.includes("S12")]), [[true, false], [true, false]], "G3: openDiff — дві гіпотези e01 без S12");
+  const R2 = replay(JSON.parse(JSON.stringify(X)), E);
+  eq(JSON.stringify(R2.graph), JSON.stringify(G), "G3: порівняння детерміноване");
+}
+
 console.log(fails ? `test-hyp: ${fails} з ${n} перевірок не пройшли` : `test-hyp: усі ${n} перевірок пройшли`);
 process.exit(fails ? 1 : 0);

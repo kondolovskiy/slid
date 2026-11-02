@@ -1185,9 +1185,13 @@ function evKey(s, verdict, raw){ const o={}; try{
   if(typeof a==="string" && a.length>60) o.ansCut=1; else if(a!==undefined) o.ans=a;
   if((verdict==="form"||verdict==="half") && s.type==="answer" && typeof raw==="string") o.fc=LEARN.formCode(s, raw);
   if(s.gv && Number.isInteger(s.genAt)){ o.gv=s.gv; o.genAt=s.genAt; } }catch(e){} return o; }
+/** item.u — вузли графа вмінь об'єкта за правилом прив'язки (LEARN.nodesOf = graphBind, те саме правило, що в tools/graph-lib.mjs;
+    docs/design/skill-graph-math.md §2.4, етап G3): масив id або null (вузла немає); предмет без графа — поля немає. Лише журнал:
+    граф нічого не змінює для дитини, трекер гіпотез u не отримує (HYPS.capture будує item сам). Помилка — без u, подія не губиться. */
+function evU(rec){ if(!rec || !C?.graph) return rec; let u=null; try{ u=LEARN.nodesOf(C, rec); }catch(e){ u=null; } return { ...rec, u }; }
 /** Подія answer у журнал і ті самі дані для трекера гіпотез (HYPS.capture) — на той самий момент, до змін S.seen і екрана.
     Без журналу (немає модуля чи IndexedDB) дані обчислюються лише для гіпотез, і лише коли трекер увімкнено. */
-function evAnswer(s, f){ let r=null; EV.log("answer", ()=>(r=f())); if(!HYPS.on || C?.id!=="math") return null; try{ return HYPS.capture(s, r || f()); }catch(e){ return null; } }
+function evAnswer(s, f){ let r=null; EV.log("answer", ()=>(r=evU(f()))); if(!HYPS.on || C?.id!=="math") return null; try{ return HYPS.capture(s, r || f()); }catch(e){ return null; } }
 /* тест рівня, answer: півбала (LEARN.HALF; engine-diag-half-credit) — значення правильне, а вимоганого умовою вигляду немає чи корінь
    не обчислено (LEARN.diagVerdict). Вердикт зберігається одразу (закритий плеєр не дасть відповісти вдруге); далі короткий екран-пояснення
    з наявним текстом formHint, без другої спроби й без «Ще не знаю»; «Далі» — наступне завдання тесту (diagNext). */

@@ -1329,6 +1329,7 @@ async def main():
                 await evidence_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
                 await half_credit_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
                 await hyp_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
+                await graph_g3_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
             await browser.close()
             print('Обрані браузерні сценарії: green')
     finally:
@@ -2079,6 +2080,107 @@ async def evidence_checks(browser, url):
     assert not errors, errors
     await context.close()
     print(f'Журнал подій (IndexedDB): схема, спроби, srs/plan/grade, без імені, перезавантаження, офлайн (cv {ver}); стан однаковий з журналом, без IndexedDB і без модуля; «Пізніше» і переповнене сховище: green', flush=True)
+
+async def graph_g3_checks(browser, url):
+    """engine-skg-g3 (docs/design/skill-graph-math.md §2.4, §2.5, §7.1 G3; docs/EVIDENCE.md): граф лише читається. Той самий маршрут
+    (урок g6m2l5 розщепленої пари frac-mul / frac-div з двома помилками, тренування цієї теми з помилкою, тест рівня dg6 з «Ще не знаю»)
+    з content/math/graph.js і без нього: slid.v1, тексти доку й події трекера гіпотез (hyp-1) однакові; з графом кожна подія answer має
+    item.u — ті самі вузли, що їх дає tools/graph-lib.mjs (validate, graph-report) для цього об'єкта; без графа поля u немає; screen — без u."""
+    freeze = """{const D=Date;window.Date=class extends D {constructor(...a){super(...(a.length?a:['2026-10-16T12:00:00Z']));}
+      static now(){return new D('2026-10-16T12:00:00Z').getTime();}};}"""
+    # очікувані вузли — з graph-lib (той самий зміст із диска; правило — SLID_LEARN.graphBind)
+    js = """import('%s').then(async ({ loadContent }) => { const { analyzeGraph } = await import('%s');
+      const C = loadContent(), m = C.subjects.find(s => s.id === 'math'), out = {};
+      for (const o of analyzeGraph(m, { origin: C.origin }).objects) {
+        const k = o.kind === 'screen' ? 'lesson|' + o.l + '#' + o.i : o.kind === 'item' ? 'practice|' + o.pool + ':' + o.id : o.kind === 'ditem' ? 'diag|' + o.diag + '#' + o.i : null;
+        if (k) out[k] = o.nodes.length ? o.nodes : null; }
+      console.log(JSON.stringify(out)); })""" % ((ROOT / 'tools/lib.mjs').as_uri(), (ROOT / 'tools/graph-lib.mjs').as_uri())
+    expected = json.loads(subprocess.run(['node', '--input-type=module', '-e', js], capture_output=True, text=True, check=True, cwd=ROOT).stdout)
+    TRACKER = ('hyp_open', 'hyp_probe', 'hyp_close', 'hyp_fmt')
+    async def dock(page):
+        return await page.evaluate("[document.querySelector('#fbTitle').innerHTML, document.querySelector('#fbText').innerHTML]")
+    async def cur(page):   # вправа тренування на екрані — за key останньої події screen журналу
+        return await page.evaluate("""async () => { const e = (await SLID_EVIDENCE.export()).events.filter(e => e.type === 'screen').pop().d;
+          const [p, id] = e.key.split(':'); const { pool, ...it } = SLID_SUBJECTS.find(c => c.id === 'math').pools.find(x => x.id === p).items.find(x => x.id === id); return it; }""")
+    async def cur_diag(page):
+        return await page.evaluate("""() => { const S = JSON.parse(localStorage.getItem('slid.v1')), d = SLID_SUBJECTS.find(c => c.id === 'math').diags.find(d => d.id === 'dg6');
+          return d.items[SLID_LEARN.nextItem(d, (S.diagRun || {}).dg6 || {})]; }""")
+    out = {}
+    for mode in ('graph', 'nograph'):
+        context = await browser.new_context(viewport={'width': 400, 'height': 860}, service_workers='block')
+        await context.add_init_script(freeze)
+        page = await context.new_page()
+        errors, docks = [], []
+        page.on('pageerror', lambda error: errors.append(str(error)))
+        await page.route('**/fonts.googleapis.com/**', lambda r: r.abort())
+        if mode == 'nograph':
+            await page.route('**/content/math/graph.js', lambda r: r.abort())
+        page.set_default_timeout(7000)
+        await page.goto(url)
+        await page.evaluate("localStorage.clear(); localStorage.setItem('slid.v1', JSON.stringify({grade:6, unlockAll:true}))")
+        await page.reload()
+        assert await page.evaluate("!!SLID_SUBJECTS.find(c=>c.id==='math').graph") == (mode == 'graph'), mode
+        # 1) урок g6m2l5: choice №2 і number №9 (u: frac-div) — з другої спроби
+        screens = await open_lesson_at(page, 'g6m2l5', 0)
+        for i, scr in enumerate(screens):
+            if i == 2:
+                await page.click(f'#stage .opt[data-k="{(scr["correct"] + 1) % len(scr["opts"])}"]'); await page.click('#action'); docks.append(await dock(page))
+            if i == 9:
+                await page.fill('#numIn', '9999'); await page.dispatch_event('#numIn', 'input'); await page.click('#action'); docks.append(await dock(page))
+            await answer_context_screen(page, scr)
+            await page.click('#action')
+            if scr['type'] not in ('intro', 'info', 'explore'):
+                docks.append(await dock(page)); await page.click('#action')
+        assert await page.locator('.bigstars').count() == 1
+        # 2) тренування теми: перша вправа — хибна, потім правильна; решта правильні
+        await page.click('#stage [data-practice="g6m2l5"]')
+        k = 0
+        while await page.locator('#stage h2').count():
+            it = await cur(page)
+            if k == 0:
+                await page.fill('#numIn', '9999'); await page.dispatch_event('#numIn', 'input'); await page.click('#action'); docks.append(await dock(page))
+            await answer_context_screen(page, it); await page.click('#action'); docks.append(await dock(page))
+            await page.click('#action'); k += 1
+        assert k >= 4, k
+        await page.click('#action')   # «Готово»
+        # 3) тест рівня dg6: шість правильних, далі «Ще не знаю»
+        await page.click('[data-tab="path"]'); await page.click('[data-tab="path"]')
+        await page.click('button[data-subject="math"]'); await page.click('#view [data-diag="math"]'); await page.click('[data-diag-go]')
+        k = 0
+        while await page.locator('#skip').is_visible():
+            if k < 6:
+                await answer_context_screen(page, await cur_diag(page)); await page.click('#action')
+            else:
+                await page.click('#skip')
+            k += 1
+        await page.evaluate("SLID_EVIDENCE.flush()")
+        ev = (await page.evaluate("SLID_EVIDENCE.export()"))['events']
+        assert not errors, (mode, errors)
+        ids, hyp = {}, []
+        for e in ev:
+            if e['type'] in TRACKER:
+                dd = json.loads(json.dumps(e['d']))
+                for key in ('hid', 'prb'):
+                    if key in dd: dd[key] = ids.setdefault(dd[key], f"#{len(ids)}")
+                hyp.append((e['type'], dd))
+        out[mode] = { 'state': await page.evaluate("JSON.parse(localStorage.getItem('slid.v1'))"), 'docks': docks, 'hyp': hyp,
+                      'answers': [e['d'] for e in ev if e['type'] == 'answer'], 'screens': [e['d'] for e in ev if e['type'] == 'screen'] }
+        await context.close()
+    g, n = out['graph'], out['nograph']
+    assert g['state'] == n['state'], [k for k in set(g['state']) | set(n['state']) if k not in g['state'] or k not in n['state'] or g['state'][k] != n['state'][k]]
+    assert g['docks'] == n['docks'], next((a, b) for a, b in zip(g['docks'], n['docks']) if a != b)
+    assert g['hyp'] == n['hyp'] and g['hyp'], 'події трекера гіпотез з графом і без нього різняться'
+    assert all('u' not in a for a in n['answers']), 'без графа — поля u немає'
+    assert all('u' not in sc for sc in g['screens'] + n['screens']), 'screen — без u'
+    graded = [a for a in g['answers'] if a['verdict'] != 'hyp']
+    assert graded and all('u' in a for a in graded), 'з графом — u в кожній оцінюваній відповіді'
+    key = lambda a: f"practice|{a['key']}" if a['mode'] == 'practice' else f"{a['mode']}|{a['l']}#{a['i']}"
+    bad = [(key(a), a['u'], expected.get(key(a))) for a in graded if a['u'] != expected.get(key(a))]
+    assert not bad, ('item.u ≠ graph-lib', bad[:5])
+    seen = {x for a in graded for x in (a['u'] or [])}
+    assert {'frac-mul', 'frac-div'} <= seen and any(a['mode'] == 'diag' and a['u'] for a in graded), sorted(seen)
+    assert [a['u'] for a in graded if a['mode'] == 'lesson' and a['i'] == 9] == [['frac-div'], ['frac-div']], 'g6m2l5 №9 (u: frac-div), дві спроби'
+    print(f'Граф умінь (G3): item.u = graph-lib у {len(graded)} відповідях (вузли {", ".join(sorted(seen))}); slid.v1, тексти доку й події гіпотез — однакові з графом і без нього: green', flush=True)
 
 async def hyp_checks(browser, url):
     """engine-hyp-e2-shadow (docs/design/diag-hypothesis-math.md §2.3, §3.3): тіньові гіпотези app/hyp.js. Той самий маршрут на
