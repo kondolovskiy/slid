@@ -2,7 +2,7 @@
 id: engine-lang-types
 type: engine
 subject: ukr
-status: review
+status: done
 claimed_by: orchestrator
 created: 2026-11-02
 ---
@@ -30,3 +30,6 @@ created: 2026-11-02
 Звіт: reports/review/engine-lang-types.md
 
 ## Нотатки агента
+
+### orchestrator (2026-11-02)
+Рев'ю раунд 1 — потрібні виправлення (P2-1 NFD/наголос, P2-2 латинські двійники); виправлено в 95a3577. Раунд 2 — **прийнято**. Залишки P3 → tasks/todo/engine-lang-p3.md; обмеження дописано в CONTENT_SCHEMA §4.1.
