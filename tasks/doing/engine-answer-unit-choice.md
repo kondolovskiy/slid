@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-02T09:28:30.000Z
 id: engine-answer-unit-choice
 type: engine
 subject: math
 status: todo
-claimed_by:
+claimed_by: analyst-units
 created: 2026-11-01
 write_group: personalization-shared
 depends_on: [engine-practice-pool]
