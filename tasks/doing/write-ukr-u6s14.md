@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-02T18:48:17.062Z
 id: write-ukr-u6s14
 type: write-section
 subject: ukr
@@ -6,7 +8,7 @@ grade: 6
 section: u6s14
 weeks: [4, 35]
 status: todo
-claimed_by:
+claimed_by: writer-u6s14
 created: 2026-11-02
 ---
 # Написати розділ «Пишемо самі: ділові папери, роздум, описи» (Українська мова, 6 клас)
