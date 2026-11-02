@@ -4,7 +4,7 @@ claimed_at: 2026-11-02T09:28:29.958Z
 id: engine-hyp-e4-shadow-routes
 type: engine
 subject: math
-status: todo
+status: review
 claimed_by: engineer-e4r
 created: 2026-11-02
 depends_on: [tools-diff-answers-p3]
@@ -46,3 +46,5 @@ depends_on: [tools-diff-answers-p3]
 | A-due (власний) | app.js не ставить `due` (`n: null`) | hyp_checks (`hyp_lost.d`) |
 | A-hidden (власний) | без сховища pend відкривається й на схованій вкладці | hyp_checks без localStorage |
 | A-bf (власний) | pagehide з bfcache теж відкриває pend | hyp_checks без localStorage |
+
+**На злитому дереві** (основа claude/intelligent-brahmagupta-zyjilv 4a7b5c2 злита в d0d65c9; конфлікт лише в inbox — обидві сторони; test-hyp — 895 з основи): `node tools/build.mjs`, `npm run check` rc 0 (test-hyp 599, test-evidence 155, test-graph-report 67, test-diff-answers 30 ok); `diff-answers --old 4a7b5c2 --grades 4-11` — 0 / 0 непояснених, rc 0; `python3 tools/test-answer-ui.py --browser /opt/pw-browsers/chromium --suite regression` — rc 0, «Обрані браузерні сценарії: green» (тінь: 24 події hyp_*, входи трекера 28, без localStorage — 5). Мутанти проганялися до злиття (основа змінила лише зміст pg4m5 і число в test-hyp). index.html / sw.js / content/manifest.json / reports не комічено — після build змінюється лише VERSION у sw.js (для коміту злиття).
