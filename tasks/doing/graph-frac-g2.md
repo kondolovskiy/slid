@@ -32,3 +32,20 @@ depends_on: [engine-skg-g1]
 5. Онови §7.3 дизайну → «Ухвалені рішення» (куратор або оркестратор).
 
 ## Нотатки виконавця
+
+### Автор розмітки `u` (2026-11-02, author-u-g2)
+Лише поле `u` (30 шт.) — точно за §5.4 дизайну; тексти, відповіді, порядок не змінено. Номери — індекс від 0 (validate показує від 1: m3 #8 → «екран 9»).
+
+| Файл | Об'єкт → `u` | К-ть |
+|---|---|---|
+| content/math/g5-ms1.js | m3 #8 → num-by-frac; m3 #9 → [frac-of-num, num-by-frac]; m5 #6 → frac-cmp-simple | 3 |
+| content/math/pool-g5-ms1.js | pms1 c04, c05, c06 → num-by-frac | 3 |
+| content/math/g6-g6m1.js | g6m1l4 #5, #7, #9 → divis-gcd | 3 |
+| content/math/pool-g6-g6m1.js | pg6m1 d01, d03, d04, d07 → divis-gcd | 4 |
+| content/math/g6-g6m2.js | g6m2l3 #1 → frac-cmp-simple; g6m2l3 #7 → frac-equiv; g6m2l4 #1 → frac-add-same; g6m2l5 #6, #8, #9 → frac-div | 6 |
+| content/math/pool-g6-g6m2.js | pg6m2 e03, e05, e06, e07 → frac-div; e08 → [frac-div, frac-add-unlike] | 5 |
+| content/math/diag-g4.js | теми parts → parts-equal, mul → mul-table, quot → div-table, units → units-lt | 4 |
+| content/math/diag-g6.js | завдання #21 → num-by-frac; тема g6-lcm → [divis-lcm, divis-gcd] | 2 |
+| **Разом** | | **30** |
+
+Перевірки: звірено через `loadContent` — 30 `u`, кожен на оцінюваному об'єкті з тією ж `sk`, що й вузол (заголовки збігаються з §5.4: m5 #6 numline $5/4$, g6m2l5 #6 «склянки по $1/4$ л», dg6 #21 «Скільки сторінок у книжці?»). `validate --section ms1/g6m1/g6m2`, `--pool pms1/pg6m1/pg6m2`, `--diag dg4/dg6`: до появи graph.js — лише очікувані V2 «немає такого вузла (у предмета math ще немає графа)» (33 рядки, по одному на id у `u`), інших помилок 0; на копії з чернеткою графа (g1-pilot-make, без zz-u.js) і з graph.js куратора в робочому дереві — 0 помилок (попередження лише старі sentenceWords: ms1 m4, m6; g6m2l4). `graph-report --line frac --strict` на копії з чернеткою — rc 0, помилок 0, дрейфу 0. `diff-answers --content-old HEAD --grades 4-6`: 0 змінених вердиктів, 0 нових/вилучених, 0 тестів без rev, 0 непояснених («змінених 12» — 12 вправ пулів з новим полем `u`, вердикти ті самі). build не запускав.
