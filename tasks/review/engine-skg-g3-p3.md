@@ -4,7 +4,7 @@ claimed_at: 2026-11-02T08:17:42.452Z
 id: engine-skg-g3-p3
 type: engine
 subject: math
-status: todo
+status: review
 claimed_by: engineer-g3p3
 created: 2026-11-02
 depends_on: [engine-skg-g3]
