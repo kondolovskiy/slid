@@ -1,5 +1,5 @@
 /* Слід · Математика, 4 клас — пул задач для тренування до розділу «Частини цілого і геометрія» (g4m5)
-   Статус: draft (2026-11-02, revise-math-pool-g4m5-b08: b08 — answerKind quantity, кг і г; на повторну перевірку). Раніше: verified (verifier-pg4m5, 2026-10-30, reports/verify/pg4m5.md). 31 задача: g4m5l1 — 7 (3 рівня 1, 3 рівня 2, 1 рівня 3); g4m5l2–g4m5l4 — по 8 (3 / 3 / 2).
+   Статус: verified (2026-11-02, revise-math-pool-g4m5-b08: b08 — answerKind quantity, кг і г; перевірено незалежно, reports/verify/revise-math-pool-g4m5-b08.md). Раніше: verified (verifier-pg4m5, 2026-10-30, reports/verify/pg4m5.md). 31 задача: g4m5l1 — 7 (3 рівня 1, 3 рівня 2, 1 рівня 3); g4m5l2–g4m5l4 — по 8 (3 / 3 / 2).
    Усі задачі — з підручників 4 кл. 2026 (sources). Умови й числа звірено за відрендереними сторінками PDF 2026-10-30.
    srcPage — друкований номер сторінки; в усіх чотирьох PDF він збігається з номером сторінки файла.
    Текстові задачі переказано своїми словами, числа й запитання збережено. adapted — узято один підпункт
@@ -10,7 +10,7 @@
 SLID.pool("math", {
   id: "pg4m5",
   section: "g4m5",
-  status: "draft",
+  status: "verified",
   meta: { author: "claude-opus", created: "2026-10-30", factcheck: "verifier-pg4m5", teacher: null },
   sources: [
     { id: "g4a", title: "Гісь О. М., Філяк І. В. Математика: підручник для 4 класу ЗЗСО (у 2-х ч.). Ч. 1. — Харків: Ранок, 2026 (дзеркало PDF на 4book.org)", url: "https://file.4book.org/images/shcoolbook_ua/4/4_m_gis_2026-1.pdf" },

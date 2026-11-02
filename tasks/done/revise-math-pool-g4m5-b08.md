@@ -5,7 +5,7 @@ id: revise-math-pool-g4m5-b08
 type: revise-pool
 subject: math
 grade: 4
-status: review
+status: done
 claimed_by: writer-pg4m5-b08
 created: 2026-11-02
 ---
