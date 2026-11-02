@@ -1091,6 +1091,8 @@ window.SLID_LEARN = (() => {
   const givenMsg = g => `Координати правильні, але ${g} — дана точка умови. Запиши лише координати.`;
   const objMsg = g => `Координати правильні, але ${g} — інше позначення з умови, а не шукана точка. Запиши лише координати.`;
   const unitMsg = s => `Перевір одиницю: тут відповідь записують у «${s.unit}». Одиницю можна й не писати.`;
+  // та сама величина в іншій одиниці (unitEq «conv»): «можна й не писати» тут відволікає — «2000» без «г» знову неправильне (рев'ю engine-unit-hint P3-2)
+  const unitConvMsg = s => `Перевір одиницю: тут відповідь записують у «${s.unit}». Переведи відповідь у «${s.unit}».`;
 
   /* ---------- Час (answerKind "time", рішення 2026-10-31, п. 1): ключ «9:55», 24-годинний ---------- */
   const TIME_KEY = /^([01]?\d|2[0-3]):[0-5]\d$/;
@@ -1280,7 +1282,7 @@ window.SLID_LEARN = (() => {
     if ((r === undefined ? checkAns(s, v) : r) !== "bad") return null;
     if (LIMIT) return MSG.limit;
     const t = String(v ?? ""), kind = s.answerKind || "number";
-    if (s.unit && foreignUnit(s, t)) return unitEq(s, t) ? unitMsg(s) : null;
+    if (s.unit && foreignUnit(s, t)) { const e = unitEq(s, t); return e === "bare" ? unitMsg(s) : e === "conv" ? unitConvMsg(s) : null; }
     if (kind === "time") return parseTime(t) === null ? timeMsg(s) : null;
     // list без «;»: кома — роздільник, тож «1,5, 2» (у полі «1.5, 2» стає «1,5, 2») — це три числа (a11y-followup, відкрите (б))
     // лише запис із самих чисел через кому (не «x₁,₂ = …», не «y_{1,2}»)
@@ -1309,7 +1311,7 @@ window.SLID_LEARN = (() => {
   /** Усі тексти «form»/«bad», які дитина може побачити у вправі s (formHint, badHint): для звірки «підказка ≠ ключ». */
   function hintTexts(s) {
     const kind = s?.answerKind || "number", out = [MSG.limit, MSG.simplify, MSG.retry], U = kind === "quantity" && qtyUnits(s);
-    if (s?.unit) out.push(unitMsg(s));
+    if (s?.unit) out.push(unitMsg(s), unitConvMsg(s));
     if (kind === "number") out.push(MSG.rootNum, MSG.rootCopy, MSG.frac, MSG.reduce, MSG.mixed, MSG.improper, ...(s.decimals !== undefined ? [decMsg(s.decimals)] : []));
     if (kind === "divrem") out.push(MSG.divrem);
     if (kind === "ratio") out.push(MSG.ratio);

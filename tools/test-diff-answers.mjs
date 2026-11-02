@@ -143,9 +143,9 @@ await tmpRepo("slid-test-diff-u-", async tmp => {
     ok(r.status === 2 && /--grades/.test(r.stderr), `--grades «${g}»: rc ${r.status}, очікувано 2 з повідомленням`); }
   await tmpRepo("slid-test-diff-uh-", async (tmp, g) => {
     const lf = path.join(tmp, "app/learn.js"), cur = fs.readFileSync(lf, "utf8");
-    const HINT = "    if (s.unit && foreignUnit(s, t)) return unitEq(s, t) ? unitMsg(s) : null;", CONV = '    return checkAns(s, w) !== "bad" ? "conv" : null;';
+    const HINT = '    if (s.unit && foreignUnit(s, t)) { const e = unitEq(s, t); return e === "bare" ? unitMsg(s) : e === "conv" ? unitConvMsg(s) : null; }', CONV = '    return checkAns(s, w) !== "bad" ? "conv" : null;';
     ok(cur.split(HINT).length === 2 && cur.split(CONV).length === 2, "фікстура uh: рядки badHint / unitEq у learn.js — рівно по одному");
-    fs.writeFileSync(lf, cur.replace(HINT, HINT.replace("unitEq(s, t) ?", 'unitEq(s, t) === "bare" ?'))); g("commit", "-qam", "old: без uh"); fs.writeFileSync(lf, cur);
+    fs.writeFileSync(lf, cur.replace(HINT, HINT.replace('e === "conv" ? unitConvMsg(s) : null', "null"))); g("commit", "-qam", "old: без uh"); fs.writeFileSync(lf, cur);
     const cnt = r => { const o = r.stdout || "", m = o.match(/(\d+)\s+uh «Перевір одиницю»/), u = o.match(/(\d+)\s+НЕПОЯСНЕНІ\s*$/m); return [m ? +m[1] : NaN, u ? +u[1] : NaN, r.status]; };
     const a = cnt(da(tmp, "--old", "HEAD", "--grades", "4"));
     ok(a[0] > 0 && a[1] === 0 && a[2] === 0, `uh: старий без підказки → категорія uh > 0, 0 непояснених, rc 0; а ${a.join(" / ")}`);
