@@ -7,7 +7,7 @@ subject: ukr
 grade: 5
 section: u5s11
 weeks: [10, 35]
-status: review
+status: done
 claimed_by: verifier-u5s11
 created: 2026-11-02
 ---
