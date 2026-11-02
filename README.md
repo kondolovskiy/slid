@@ -21,7 +21,7 @@ python3 -m http.server 8000    # відкрити http://localhost:8000
 | `docs/` | архітектура, схема контенту, педагогіка, процес, зображення, публікація |
 
 ## Працювати з ШІ-агентами
-Відкрийте теку в Claude Code (або Codex / Cursor) — агент прочитає `AGENTS.md` (Claude — ще `CLAUDE.md`).
+Відкрийте теку в Claude Code (або Codex / Cursor) — агент прочитає `AGENTS.md` (Claude — ще `CLAUDE.md`). Процедури ролей і тем — скіли в `.claude/skills/` (таблиця в AGENTS.md §6).
 Типова сесія:
 ```
 /parallel 5 hist 6        # 5 авторів паралельно пишуть історію 6 класу
@@ -32,16 +32,11 @@ python3 -m http.server 8000    # відкрити http://localhost:8000
 
 ## Перевірити контент
 ```bash
-npm run check                       # build + тести (test-math, test-lab, test-learn, test-personalization-qa, test-validate) + validate + stats
-python3 tools/playtest.py           # пройти всі уроки в браузері (потрібен Playwright)
-
-# окремо (те саме, що в npm run check і CI):
-node tools/test-math.mjs            # рендер формул (app/math.js)
-node tools/test-lab.mjs             # лабораторія: вирази, шаблони, підписи SVG
-node tools/test-learn.mjs           # персоналізація: перевірка відповідей, план, пули
-node tools/test-personalization-qa.mjs   # інструмент personalization-qa на фікстурах
-node tools/test-validate.mjs        # регресії валідатора: фікстури + повний прогін validate
+npm run check                                   # build + node-тести + validate + graph-report + stats (склад — package.json)
+python3 tools/playtest.py                       # пройти всі уроки в браузері (потрібен Playwright)
+python3 tools/test-answer-ui.py --suite regression   # браузерна регресія рушія
 ```
+Повний перелік команд — AGENTS.md §3.
 
 ## Статус
 Прототип. Увесь контент — `draft`: написаний і самоперевірений ШІ, **не перевірений учителем**. Не давати дітям без перевірки (docs/WORKFLOW.md §5).

@@ -51,7 +51,7 @@ ${sec.plan.map((t, i) => `${i + 1}. ${t}`).join("\n")}
 ${sec.plan.length + 1}. Фінальний урок розділу (boss: true, бали ×2, свій значок у sec.badges)
 
 ## Прочитати перед роботою
-- AGENTS.md → розділ «Роль: автор контенту»
+- AGENTS.md і скіл автора \`.claude/skills/content-author/SKILL.md\`
 - style/common.md, style/${c.id}.md, style/profiles.json
 - memory/long/glossary/${c.id}.md і memory/long/facts/${c.id}.md — використовуй ці формулювання й дати
 - memory/long/pitfalls.md
