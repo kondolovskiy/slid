@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-02T18:37:13.093Z
 id: write-ukr-u6s12
 type: write-section
 subject: ukr
@@ -6,7 +8,7 @@ grade: 6
 section: u6s12
 weeks: [30, 32]
 status: todo
-claimed_by:
+claimed_by: writer-u6s12
 created: 2026-11-02
 ---
 # Написати розділ «Числівник» (Українська мова, 6 клас)
