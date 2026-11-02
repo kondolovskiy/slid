@@ -1,11 +1,13 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-02T17:54:21.683Z
 id: fix-ukr-u5s6-iz
 type: fix-section
 subject: ukr
 grade: 5
 section: u5s6
 status: todo
-claimed_by:
+claimed_by: writer-fix-u5s6
 created: 2026-11-02
 ---
 # u5s6: повернути оцінювання «із» після голосного (D-042)
