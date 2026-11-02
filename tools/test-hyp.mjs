@@ -499,7 +499,7 @@ const sum = (R, pid) => R.events.filter(e => e.pid === pid).map(e => e.type === 
 {
   const st = contentStats(E), s0 = st.s0, s21 = st.s21, s23 = st.s23;
   eq([s0.gradedScreens, s0.byType.choice, s0.choiceHypPoll, s0.fbBad, s0.hint, s0.pre, s0.preLessons], [1306, 564, 52, 1287, 914, 30, 16], "§0 екрани уроків");
-  eq([s0.pools, s0.poolItems, s0.lvl, s0.poolHint, s0.poolPre, s0.gen, s0.itemTypes, s0.answerNumber], [48, 1348, { 1: 518, 2: 505, 3: 325 }, 848, 0, 0, { answer: 1243, choice: 66, multi: 39 }, 896], "§0 пули");
+  eq([s0.pools, s0.poolItems, s0.lvl, s0.poolHint, s0.poolPre, s0.gen, s0.itemTypes, s0.answerNumber], [48, 1348, { 1: 518, 2: 505, 3: 325 }, 848, 0, 0, { answer: 1243, choice: 66, multi: 39 }, 895], "§0 пули");
   eq([s0.pairs, s0.pairs2a1, s0.diags, s0.diagItems, s0.pureTitle], [174, 158, 8, 209, 277], "§0 пари, тести, чисті вирази");
   eq([s21.errors, s21.A, s21.Dle, s21.byLvl[1].Dle, s21.byLvl[1].errors, s21.byLvl[2].Dle, s21.byLvl[2].errors], [676, 346, 151, 0, 518, 151, 158], "§2.1 A 346; D≤ 151/676, рівень 1 — 0/518");
   eq([s21.Dgt, s21.Dseen, s21.none, s21.anyUnseen, s21.F, s21.natDle, s21.natAny], [520, 499, 26, 671, 124, 151, 671], "§2.1 D>, D°, F, природні");
