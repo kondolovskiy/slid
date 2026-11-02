@@ -4,7 +4,7 @@ claimed_at: 2026-11-02T18:39:02.248Z
 id: fix-ukr-pick-groups
 type: fix-section
 subject: ukr
-status: review
+status: done
 claimed_by: writer-fix-pick
 created: 2026-11-02
 ---

@@ -3,7 +3,7 @@
    уроки розвитку мовлення, теми 1–3 (с. 247–251). Правила 5 кл. — як у content/ukr/g5-u5s3…u5s10 (requires).
    Норма — «Український правопис» (ред. 2019); D-041, D-042 («із» після голосного перед одиничним [з], [с], [ц], [ж], [ч], [ш]).
    У gaps «—» = «нічого» (дитина бачить ∅), справжнє тире — «–».
-   7 уроків (6 + фінал). Статус: verified (verifier-u6s1, reports/verify/u6s1.md). u6s1l3, u6s1l6 — draft (fix-ukr-pick-groups, 2026-11-02: хибна група в pick).
+   7 уроків (6 + фінал). Статус: verified (verifier-u6s1, reports/verify/u6s1.md). u6s1l3, u6s1l6 — хибна група в pick (fix-ukr-pick-groups, 2026-11-02), повторно verified (reports/verify/fix-ukr-pick-groups.md).
    Перевірка: node tools/validate.mjs --section u6s1 && node tools/stats.mjs --subject ukr
    Схема й правила: docs/CONTENT_SCHEMA.md §4.1, style/ukr.md */
 SLID.section("ukr", {
@@ -306,7 +306,7 @@ SLID.section("ukr", {
       title: "Кома на щастя",
       short: "Коми в реченні",
       icon: "eye",
-      status: "draft",
+      status: "verified",
       why: "Коми допомагають читачеві почути паузи. Згадаємо, де вони потрібні при звертаннях, вставних словах і переліках.",
       screens: [
         {
@@ -737,7 +737,7 @@ SLID.section("ukr", {
       title: "Один листок — два описи",
       short: "Спілкування",
       icon: "leaf",
-      status: "draft",
+      status: "verified",
       why: "Ми говоримо по-різному залежно від того, з ким, про що й навіщо. А в мережі треба ще й дбати про безпеку.",
       screens: [
         {

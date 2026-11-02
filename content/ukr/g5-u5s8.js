@@ -3,7 +3,7 @@
    Норма керування дієслів звірена з СУМ-11 (goroh.pp.ua/Тлумачення/…): у вправах «так / не так» — лише пари,
    де неправильна форма в словнику не подана (дякувати, вибачати — кому; оволодівати — чим; потребувати — чого).
    Другорядні та однорідні члени речення — у розділі u5s9, тут лише згадано.
-   5 уроків (u5s8l5 — фінал). Статус: verified (reports/verify/u5s8.md). u5s8l3 — draft (fix-ukr-pick-groups, 2026-11-02: хибна група в pick).
+   5 уроків (u5s8l5 — фінал). Статус: verified (reports/verify/u5s8.md). u5s8l3 — хибна група в pick (fix-ukr-pick-groups, 2026-11-02), повторно verified (reports/verify/fix-ukr-pick-groups.md).
    Перевірка: node tools/validate.mjs --section u5s8 && node tools/stats.mjs --subject ukr
    Схема й правила: docs/CONTENT_SCHEMA.md §4.1, style/ukr.md */
 SLID.section("ukr", {
@@ -288,7 +288,7 @@ SLID.section("ukr", {
       title: "Хто тут головний?",
       short: "Граматична основа",
       icon: "target",
-      status: "draft",
+      status: "verified",
       why: "Підмет і присудок — кістяк речення. Хто їх бачить, той розуміє, про кого речення і що відбувається.",
       screens: [
         {

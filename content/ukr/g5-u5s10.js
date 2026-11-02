@@ -3,7 +3,7 @@
    діалог — також розвиток мовлення, тема 2, с. 217–218. Розділові знаки — за З5 (УП 2019 пунктуації не містить).
    У пропусках gaps «—» = «нічого не ставити» (дитина бачить «∅»); тире в уроках 4–6 подаємо лише
    разом з іншим знаком («», —», «! —» — показується як є); тире без іншого знака — лише «–» (u5s10l5, фінал).
-   6 уроків (u5s10l6 — фінал). Статус: verified (reports/verify/u5s10.md). u5s10l1, u5s10l4 — draft (fix-ukr-pick-groups, 2026-11-02: хибна група в pick).
+   6 уроків (u5s10l6 — фінал). Статус: verified (reports/verify/u5s10.md). u5s10l1, u5s10l4 — хибна група в pick (fix-ukr-pick-groups, 2026-11-02), повторно verified (reports/verify/fix-ukr-pick-groups.md).
    Перевірка: node tools/validate.mjs --section u5s10 && node tools/stats.mjs --subject ukr
    Схема й правила: docs/CONTENT_SCHEMA.md §4.1, style/ukr.md */
 SLID.section("ukr", {
@@ -23,7 +23,7 @@ SLID.section("ukr", {
       title: "Андрію, лови м'яч!",
       short: "Звертання",
       icon: "voice",
-      status: "draft",
+      status: "verified",
       why: "Коли кличеш людину правильно й ставиш коми на місці, тебе розуміють з першого разу.",
       screens: [
         {
@@ -454,7 +454,7 @@ SLID.section("ukr", {
       title: "Чужі слова в лапках",
       short: "Пряма мова",
       icon: "scroll",
-      status: "draft",
+      status: "verified",
       why: "У творі, листі чи розповіді часто треба передати точні слова іншої людини. Навчимося робити це правильно.",
       screens: [
         {

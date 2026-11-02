@@ -3,7 +3,7 @@
    Позначки слів («заст.», «іст.», «діал.», «розм.», «зневажл.») звірено з СУМ-11 (slovnyk.ua) і СУМ-20 (goroh.pp.ua «Тлумачення»).
    D-041: як помилку оцінюємо лише форму, ненормативну і за З6, і за словником; решта — порада «краще…» в info.
    Лексичне значення, пароніми, лексична помилка — 5 кл., u5s2 (requires).
-   6 уроків (5 + фінал). Статус: verified (verifier-u6s3, reports/verify/u6s3.md). u6s3l4 — draft (fix-ukr-pick-groups, 2026-11-02: хибна група в pick).
+   6 уроків (5 + фінал). Статус: verified (verifier-u6s3, reports/verify/u6s3.md). u6s3l4 — хибна група в pick (fix-ukr-pick-groups, 2026-11-02), повторно verified (reports/verify/fix-ukr-pick-groups.md).
    Перевірка: node tools/validate.mjs --section u6s3 && node tools/stats.mjs --subject ukr
    Схема й правила: docs/CONTENT_SCHEMA.md §4.1, style/ukr.md */
 SLID.section("ukr", {
@@ -482,7 +482,7 @@ SLID.section("ukr", {
       title: "Дітлахи в заяві",
       short: "Забарвлені слова",
       icon: "voice",
-      status: "draft",
+      status: "verified",
       why: "Одне слово годиться для розмови з другом, інше — для заяви чи підручника. Навчимося обирати доречне.",
       screens: [
         {

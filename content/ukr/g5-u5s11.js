@@ -3,7 +3,7 @@
    тема 3 «Читання мовчки» (с. 219–220), теми 6–12 (с. 225–234). Типи мовлення як поняття — у u5s1l5 (requires).
    Тексти-зразки — авторські; два короткі уривки — з підручника (За Г. Тютюнником, с. 227; За Л. Ворониною, с. 226).
    Письма без перевірки твору вчимо через упізнавання частин (order, sort), вибір слів (gaps, pick), «зайве речення».
-   7 уроків (u5s11l7 — фінал). Статус: verified (reports/verify/u5s11.md). u5s11l4, u5s11l6 — draft (fix-ukr-pick-groups, 2026-11-02: хибна група в pick).
+   7 уроків (u5s11l7 — фінал). Статус: verified (reports/verify/u5s11.md). u5s11l4, u5s11l6 — хибна група в pick (fix-ukr-pick-groups, 2026-11-02), повторно verified (reports/verify/fix-ukr-pick-groups.md).
    Перевірка: node tools/validate.mjs --section u5s11 && node tools/stats.mjs --subject ukr
    Схема й правила: docs/CONTENT_SCHEMA.md §4.1, style/ukr.md */
 SLID.section("ukr", {
@@ -462,7 +462,7 @@ SLID.section("ukr", {
       title: "Бо так! — не доказ",
       short: "Роздум",
       icon: "scale",
-      status: "draft",
+      status: "verified",
       why: "Уміння доводити свою думку допомагає в суперечці, на уроці й у житті: тебе чують і з тобою погоджуються.",
       screens: [
         {
@@ -746,7 +746,7 @@ SLID.section("ukr", {
       title: "Прочитай і перекажи",
       short: "Переказ",
       icon: "book",
-      status: "draft",
+      status: "verified",
       why: "Уміння читати мовчки й переказувати допомагає на кожному уроці: від історії до природознавства.",
       screens: [
         {
