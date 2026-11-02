@@ -4,7 +4,7 @@ claimed_at: 2026-11-02T09:28:29.958Z
 id: engine-hyp-e4-shadow-routes
 type: engine
 subject: math
-status: review
+status: done
 claimed_by: engineer-e4r
 created: 2026-11-02
 depends_on: [tools-diff-answers-p3]
