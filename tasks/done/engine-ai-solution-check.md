@@ -5,7 +5,7 @@ write_group: personalization-shared
 id: engine-ai-solution-check
 type: engine
 subject: math
-status: todo
+status: done
 claimed_by: designer-ai
 created: 2026-10-13
 ---
