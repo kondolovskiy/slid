@@ -4,7 +4,7 @@ claimed_at: 2026-11-02T06:48:39.007Z
 id: graph-frac-g2
 type: graph
 subject: math
-status: todo
+status: done
 claimed_by: orchestrator-g2
 created: 2026-11-02
 depends_on: [engine-skg-g1]
@@ -85,3 +85,9 @@ depends_on: [engine-skg-g1]
 
 Ребра графа без старого джерела (15 у звіті) — нові, усі з `why` на екран: зв'язки всередині розділу (g4m5l2 → g4m5l1, divis-* → divis-mult, divis-lcm/gcd → divis-prime), m2–m5 → m1 (frac-read), g4m5l2 → g4m3l3 (div-chunks w 1), g6m2l2 → g6m1l1/l2. Для верифікатора — переглянути як звичайні ребра.
 Списки graph-report для верифікатора: типові вузли розщеплених пар — лише свої вміння (m3 → frac-of-num, g6m1l4 → divis-lcm, g6m2l5 → frac-mul; dg6 #10 0-від → frac-of-num); пари без вузла — g6m1l2 #9, g6m2l1 #8, #9 (0-від; питання 9 — а); нічиїх V4 немає; неоднозначних boss-об'єктів 12 (boss не в `lines`).
+
+## Оркестратор: підсумок G2 (2026-11-02)
+- Куратор: 9de1c9c; автор `u`: ea81240; верифікатор: f0adf8f, reports/verify/graph-frac.md — лінія і 25 вузлів `verified`, 47 ребер (додано `frac-add-unlike` ← `frac-reduce` w 2 — додав і верифікував сам верифікатор; потребує погляду куратора/учителя).
+- Перевірки оркестратора після build: npm run check rc 0; validate 0 помилок; `graph-report --line frac --strict` rc 0; diff-answers --content-old c0e6b47 (4–11) — 0 змінених вердиктів, 0 непояснених; playtest ms1, g6m1, g6m2, g4m3, g4m5 — зелені; регресія в браузері green.
+- **Відкрито людині перед G4:** вибірковий перегляд лінії (ланцюжок frac-div → … → parts-equal, назви вузлів); погодити ребро frac-add-unlike ← frac-reduce w 2; divis-mult ← div-rem w 2 — так?; прибрати g6m2 з `for` теми dg6/frac-of (через `rev`) і `forEvidence` g6m2l4 у матриці.
+- Куратору: оновити §5.4 дизайну (47 ребер).
