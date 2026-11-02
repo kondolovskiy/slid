@@ -5,6 +5,9 @@
 //   node tools/hyp-replay.mjs <export.json> [--root DIR] [--out DIR] [--date YYYY-MM-DD]
 //   node tools/hyp-replay.mjs <export.json> --events   — лише події hyp_* реплею і підсумки diag_end.hyp (JSON у stdout; «застосунок = реплей», test-answer-ui)
 //   --fixture FILE — JS-вираз функції без аргументів, що змінює SLID_SUBJECTS (та сама фікстура, що її регресія застосовує на сторінці)
+//   node tools/hyp-replay.mjs <export.json> --graph-diff   — лише порівняння старих і нових pres / preWeak (JSON у stdout; Skill Graph G3)
+//   Skill Graph G3 (docs/design/skill-graph-math.md §4.2): поруч зі звичайним реплеєм — тіньовий трекер з pres / preWeak за графом
+//   (лінії verified; поза ними — як зараз); у звіті — різниця. Події й метрики реплею (--events, --content-stats) — за старими pres.
 //   node tools/hyp-replay.mjs --content-stats [--root DIR] [--json]   — цифри §0, §2.1, §2.3 на справжньому змісті
 //     (логіка scratchpad-скриптів рецензента й автора дизайну: hyp-rev-count, -natural, -probe, hyp-fix-delayed, hyp-r3-sol-v2,
 //     hyp-r4-check) і та сама модель через app/hyp.js (види перевірок, sol/sol0).
@@ -25,7 +28,7 @@ export function hypEnv(root = ROOT, hypFile = null, fixture = null) {
   for (const p of math.pools || []) for (const it of p.items) pool.set(p.id + ":" + it.id, { ...it, key: p.id + ":" + it.id, pool: p });
   for (const sec of math.sections) for (const l of sec.lessons || []) lessons.set(l.id, { l, sec });
   const diags = new Map((math.diags || []).map(d => [d.id, d]));
-  return { root, learn: c.learn, hyp: ctx.SLID_HYP, math, pool, lessons, diags, pres: ctx.SLID_HYP.preIndex(math) };
+  return { root, learn: c.learn, hyp: ctx.SLID_HYP, math, pool, lessons, diags, pres: ctx.SLID_HYP.preIndex(math), graph: c.learn.graphBind ? c.learn.graphBind(math) : null };
 }
 
 const localDay = (t, tzo) => new Date(t - (tzo || 0) * 6e4).toISOString().slice(0, 10);
@@ -39,20 +42,24 @@ export function replay(exp, E) {
   const groups = new Map();
   for (const e of all) { const k = (e.did ?? exp.did ?? "?") + "|" + (e.pid ?? "?"); if (!groups.has(k)) groups.set(k, []); groups.get(k).push(e); }
   const out = [], hyps = new Map(), profiles = [], notes = { unresolved: 0, cvGuess: 0, otherSubject: 0, bootDiff: 0, hypOff: 0 };
+  const GD = { graphV: E.graph?.g?.v ?? null, lines: (E.graph?.lines || []).map(x => x.id), answers: 0, inLine: 0, presDiff: 0, preWeakDiff: 0, examples: [], events: [] };
   for (const [k, evs] of groups) {
-    const [did, pid] = k.split("|"), T = H.tracker({ seed: seedOf(E, k), persist: 1 });
+    const [did, pid] = k.split("|"), T0 = H.tracker({ seed: seedOf(E, k), persist: 1 });
+    // G3: тіньовий трекер з pres / preWeak за графом — ті самі виклики, лише інші pres / preWeak у onAnswer; його події — у GD.events
+    const T2 = H.tracker({ seed: seedOf(E, k), persist: 1 }), Sd = { diag: {} }, dRev = {};
+    const T = new Proxy(T0, { get: (t, m) => typeof t[m] !== "function" ? t[m] : m === "onAnswer" ? t[m].bind(t)
+      : (...a) => { const r = t[m](...a), r2 = T2[m](...a); if (Array.isArray(r2)) for (const x of r2) GD.events.push({ ...x, did, pid }); return r; } });
     // persist і стан між завантаженнями (§3.3, §9 п. 34) — з подій застосунку про сховище, не з його hyp_open:
     //  - boot.hyp.store === 0 (localStorage недоступний) — persist: 0 у цьому завантаженні (sid) від boot;
-    //  - hyp_lost (slid.hyp самоочищено) — persist: 0 від події, яку застосунок саме обробляв: остання не-hyp_* подія перед hyp_lost
-    //    (save() стоїть між EV.log цієї події й викликом трекера), або наступна, якщо застосунок уже встиг написати hyp_open після неї;
+    //  - hyp_lost (slid.hyp самоочищено) — persist: 0 від події d.n того самого завантаження (sid): її застосунок записав, а трекер ще не
+    //    обробив (відповідь між capture і answer()); d.n null чи немає — від самої hyp_lost. Номер дає застосунок, тож місце не виводиться
+    //    з порядку подій і не залежить від того, де в app.js стоїть save() (§9 п. 36; раніше — «остання не-hyp подія +0,5»);
     //  - boot.hyp.open === null (застосунок не завантажив стану: немає ключа — без сховища, після hyp_lost / hyp_off чи скидання) —
     //    відкрити свій pend (як pagehide застосунку без сховища) і почати з порожнього стану без подій. open: n — звірити з реплеєм (notes.bootDiff).
     // Журнали без boot.hyp (до tools-diff-answers-p3, лише робочі гілки) — втрату стану реплей не бачить.
-    const sidOf = e => e.sid ?? "?", lost0 = new Map(); let lastX = null, openAfterX = false;
-    for (const e of evs) { if (!String(e.type).startsWith("hyp_")) { lastX = e; openAfterX = false; continue; }
-      if (e.type === "hyp_open") openAfterX = true;
-      if (e.type === "hyp_lost" && !lost0.has(sidOf(e))) lost0.set(sidOf(e), lastX && sidOf(lastX) === sidOf(e) ? (lastX.seq ?? 0) + (openAfterX ? 0.5 : 0) : -Infinity); }
-    const lostAt = e => lost0.has(sidOf(e)) && (e.seq ?? 0) >= lost0.get(sidOf(e));
+    const sidOf = e => e.sid ?? "?", lost0 = new Map();
+    for (const e of evs) if (e.type === "hyp_lost" && !lost0.has(sidOf(e))) lost0.set(sidOf(e), Number.isInteger(e.d?.n) ? e.d.n : e.n ?? -Infinity);
+    const lostAt = e => lost0.has(sidOf(e)) && (e.n ?? Infinity) >= lost0.get(sidOf(e));
     let prevSid = null, noStore = false;
     const prof = { did, pid, events: evs.length, fresh: false, answers: 0, cvGuess: 0 };
     // weak — уроки тем gap/shaky за останнім diag_end кожного тесту (як S.diag[id].topics у app.js); done — уроки з lesson_end
@@ -82,12 +89,14 @@ export function replay(exp, E) {
         case "boot": push(e, T.tick({ t: e.t, day })); break;   // app.js: старт — гіпотези, старші за 7 днів, → expired
         case "reset": push(e, T.onReset({ t: e.t, day })); break;
         case "lesson_start": case "practice_start": case "diag_start": run++;
+          if (e.type === "diag_start" && Number.isInteger(d.rev)) dRev[d.diag] = d.rev;
           if (e.type === "practice_start") for (const it of d.items || []) if (it.key) lvl[it.key] = it.lvl ?? null;
           break;
         case "diag_end": {
           const dg = E.diags.get(d.diag);
           const w = weakBy[d.diag] = new Set();
           for (const [tid, st] of Object.entries(d.topics || {})) if (st === "gap" || st === "shaky") (dg?.topics.find(t => t.id === tid)?.lessons || []).forEach(l => w.add(l));
+          Sd.diag[d.diag] = { done: true, res: d.res || {}, rev: Number.isInteger(d.rev) ? d.rev : dRev[d.diag] ?? null };   // як S.diag — для nodeState (G3)
           // «Ще не знаю» цього тесту — лічильником (застосунок пише його в diag_end.hyp, §9 [E2-p3]); для «застосунок = реплей» — запис diag_end
           if (!d.c || d.c === "math") { const x = { type: "diag_end", d: { hyp: T.onDiagEnd({ diag: d.diag }) } }; out.push({ ...x, did, pid, t: e.t, seq: e.seq ?? null }); prof.diagSkip = (prof.diagSkip || 0) + x.d.hyp.skip; }
           break; }
@@ -114,6 +123,14 @@ export function replay(exp, E) {
           if (d.mode === "practice" && (d.try ?? 1) === 1) for (const h of hyps.values())
             if (h.did === did && h.pid === pid && h.pair[0] === d.l && h.pair[1] === a.item.sk && day > h.d0 && h.next.length < 3) h.next.push(d.verdict === "bad" ? 0 : 1);
           push(e, T.onAnswer(a));
+          // G3: нові pres / preWeak за графом (лише в лініях verified), той самий вхід — тіньовому трекеру
+          const nw = graphPres(E, d, s, ls, a, Sd);
+          GD.answers++; if (nw.line) GD.inLine++;
+          const dp = JSON.stringify([...pres].sort()) !== JSON.stringify([...nw.pres].sort()), dw = a.preWeak !== nw.preWeak;
+          if (dp) GD.presDiff++; if (dw) GD.preWeakDiff++;
+          if ((dp || dw) && GD.examples.length < 20) GD.examples.push({ at: { mode: d.mode, l: d.l, i: d.i ?? null, key: d.key ?? null }, sk: a.item.sk, line: nw.line, u: nw.nodes, pre: nw.pre,
+            pres, presNew: nw.pres, preWeak: a.preWeak, preWeakNew: nw.preWeak });
+          for (const x of T2.onAnswer({ ...a, pres: nw.pres, preWeak: nw.preWeak })) GD.events.push({ ...x, did, pid });
           if (d.mode === "practice" && d.final && d.key) seen[d.key] = 1;
           break; }
       }
@@ -121,7 +138,37 @@ export function replay(exp, E) {
     push(evs[evs.length - 1] || { t: 0 }, T.flush());
     profiles.push(prof);
   }
-  return { profiles, events: out, hyps, notes };
+  GD.old = hypSummary(out); GD.new = hypSummary(GD.events);
+  const key = x => JSON.stringify(x.d.h ? { ...x.d.h } : x.d), oo = out.filter(x => x.type === "hyp_open"), nn = new Map(GD.events.filter(x => x.type === "hyp_open").map(x => [x.d.hid, x]));
+  GD.openDiff = oo.filter(x => !nn.has(x.d.hid) || key(nn.get(x.d.hid)) !== key(x)).map(x => ({ hid: x.d.hid, at: x.d.at, old: { rule: x.d.h.rule, sig: x.d.h.sig, top: x.d.h.top, pexec: x.d.h.pexec },
+    new: nn.has(x.d.hid) ? { rule: nn.get(x.d.hid).d.h.rule, sig: nn.get(x.d.hid).d.h.sig, top: nn.get(x.d.hid).d.h.top, pexec: nn.get(x.d.hid).d.h.pexec } : null })).slice(0, 50);
+  const { events: _e, ...graph } = GD;
+  return { profiles, events: out, hyps, notes, graph };
+}
+
+/* ---------- Skill Graph G3: старі й нові pres / preWeak (docs/design/skill-graph-math.md §4.2) ----------
+   Нові — лише для об'єктів у лініях verified (inLine; поза графом — як зараз): вузли пари (live вузли об'єкта за правилом §2.4 +
+   вузли з teach ∋ урок пари й тією самою sk) → прямі pre w 2 і part → уроки teach (pres, кандидати P і S12); preWeak — хоч один із цих
+   вузлів-передумов слабкий за nodeState (BAD або «Ще не знаю» його завдання в pre-темі останнього результату тесту; HALF — ні;
+   завдання з rev, новішим за результат, — ні). Правила hyp-1 у застосунку не змінюються (тінь, §4.2). */
+function graphPres(E, d, s, ls, a, Sd) {
+  const B = E.graph, L = E.learn;
+  if (!B || !B.g || !L.graphPre) return { line: null, pres: a.pres, preWeak: a.preWeak, nodes: null, pre: null };
+  const e = d.mode === "practice" ? B.items.get(String(d.key)) : d.mode === "diag" ? B.ditems.get(`${d.l}#${d.i}`) : B.screens.get(`${d.l}#${d.i}`);
+  const line = d.mode === "diag" ? L.inLine(B, { topic: `${d.l}/${s.topic}` })[0] : ls.map(l => L.inLine(B, { l })[0]).find(Boolean);
+  if (!line) return { line: null, pres: a.pres, preWeak: a.preWeak, nodes: e ? e.live : null, pre: null };
+  const gp = L.graphPre(B, { ls, sk: a.item.sk, nodes: e ? e.live : [] });
+  return { line, pres: gp.lessons, preWeak: gp.pre.some(id => L.nodeState(Sd, B, id)?.weak), nodes: e ? e.live : [], pre: gp.pre };
+}
+/** Зведення подій трекера для порівняння «старі / нові pres»: відкриття, S12, правила, top, перевірки P (усі й чисті), закриття. */
+function hypSummary(evs) {
+  const o = { open: 0, s12: 0, rules: {}, top: {}, probeP: 0, probePclean: 0, probes: 0, close: {} };
+  for (const x of evs) {
+    if (x.type === "hyp_open") { o.open++; if (x.d.h.sig.includes("S12")) o.s12++; o.rules[x.d.h.rule] = (o.rules[x.d.h.rule] || 0) + 1; o.top[x.d.h.top] = (o.top[x.d.h.top] || 0) + 1; }
+    if (x.type === "hyp_probe") { o.probes++; if (x.d.kind === "P") { o.probeP++; if (x.d.sol === 0) o.probePclean++; } }
+    if (x.type === "hyp_close") o.close[x.d.why] = (o.close[x.d.why] || 0) + 1;
+  }
+  return o;
 }
 
 /* ---------- Метрики §4.1 ---------- */
@@ -215,6 +262,17 @@ function reportMd(R, M, meta) {
   if (!M.ambList.length) L.push("Немає.");
   else { L.push("| hid | вправа | запис | класи з mis | перевірка |", "|---|---|---|---|---|"); for (const a of M.ambList) L.push(`| ${a.hid} | ${a.at.key || a.at.l + "#" + a.at.i} | ${JSON.stringify(a.raw)} | ${a.sig.join(", ")} | ${a.probe ?? "—"} |`); }
   L.push("", `Ціна: ${M.cost}.`, "");
+  const G = R.graph;
+  if (G) {
+    L.push("## Граф умінь (G3, тінь): старі й нові pres / preWeak", "", `_docs/design/skill-graph-math.md §4.2. Граф ${G.graphV ?? "—"}, лінії verified: ${G.lines.join(", ") || "—"}. Нові — лише в лініях; поза ними — як зараз. Метрики вище — за старими pres (hyp-1)._`, "",
+      `Відповідей: ${G.answers}, у лініях: ${G.inLine}; інші pres: ${G.presDiff}; інший preWeak: ${G.preWeakDiff}; відкриттів з іншим сигналом / правилом: ${G.openDiff.length}.`, "",
+      "| Зведення | старі pres | нові pres |", "|---|---|---|");
+    for (const [k, name] of [["open", "hyp_open"], ["s12", "S12 при відкритті"], ["probes", "hyp_probe"], ["probeP", "перевірки P"], ["probePclean", "чисті P"]]) L.push(`| ${name} | ${G.old[k]} | ${G.new[k]} |`);
+    L.push(`| правила | ${JSON.stringify(G.old.rules)} | ${JSON.stringify(G.new.rules)} |`, `| top | ${JSON.stringify(G.old.top)} | ${JSON.stringify(G.new.top)} |`, `| закриття | ${JSON.stringify(G.old.close)} | ${JSON.stringify(G.new.close)} |`);
+    if (G.examples.length) { L.push("", "| спроба | sk | лінія | вузли | pres → нові | preWeak → новий |", "|---|---|---|---|---|---|");
+      for (const x of G.examples) L.push(`| ${x.at.key || x.at.l + "#" + x.at.i} (${x.at.mode}) | ${x.sk} | ${x.line ?? "—"} | ${(x.u || []).join(", ")} → ${(x.pre || []).join(", ")} | ${x.pres.join(", ") || "—"} → ${x.presNew.join(", ") || "—"} | ${x.preWeak} → ${x.preWeakNew} |`); }
+    L.push("");
+  }
   return L.join("\n");
 }
 
@@ -334,11 +392,12 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
     if (!input) { console.error("Використання: node tools/hyp-replay.mjs <export.json> [--out DIR] [--date YYYY-MM-DD] | --content-stats [--json]"); process.exit(2); }
     const exp = JSON.parse(fs.readFileSync(input, "utf8")), R = replay(exp, E);
     if (argv.includes("--events")) { console.log(JSON.stringify(R.events)); process.exit(0); }
+    if (argv.includes("--graph-diff")) { console.log(JSON.stringify(R.graph, null, 1)); process.exit(0); }
     const M = metrics(R, E);
     const date = opt("--date") || new Date().toISOString().slice(0, 10), dir = path.resolve(opt("--out") || path.join(root, "reports/hyp"));
     fs.mkdirSync(dir, { recursive: true });
     const meta = { date, rv: E.hyp.RULES_VERSION, input: path.basename(input) };
-    fs.writeFileSync(path.join(dir, `${date}.json`), JSON.stringify({ meta, profiles: R.profiles, notes: R.notes, metrics: M, events: R.events }, null, 1));
+    fs.writeFileSync(path.join(dir, `${date}.json`), JSON.stringify({ meta, profiles: R.profiles, notes: R.notes, metrics: M, events: R.events, graph: R.graph }, null, 1));
     fs.writeFileSync(path.join(dir, `${date}.md`), reportMd(R, M, meta));
     const nd = R.events.filter(e => e.type === "diag_end").length;
     console.log(`hyp-replay: ${R.events.length - nd} подій hyp_* і ${nd} підсумків diag_end, гіпотез ${M.hypotheses} → ${path.relative(process.cwd(), path.join(dir, date + ".md"))}`);

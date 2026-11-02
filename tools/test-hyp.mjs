@@ -499,7 +499,7 @@ const sum = (R, pid) => R.events.filter(e => e.pid === pid).map(e => e.type === 
 {
   const st = contentStats(E), s0 = st.s0, s21 = st.s21, s23 = st.s23;
   eq([s0.gradedScreens, s0.byType.choice, s0.choiceHypPoll, s0.fbBad, s0.hint, s0.pre, s0.preLessons], [1306, 564, 52, 1287, 914, 30, 16], "§0 екрани уроків");
-  eq([s0.pools, s0.poolItems, s0.lvl, s0.poolHint, s0.poolPre, s0.gen, s0.itemTypes, s0.answerNumber], [48, 1348, { 1: 518, 2: 505, 3: 325 }, 848, 0, 0, { answer: 1243, choice: 66, multi: 39 }, 896], "§0 пули");
+  eq([s0.pools, s0.poolItems, s0.lvl, s0.poolHint, s0.poolPre, s0.gen, s0.itemTypes, s0.answerNumber], [48, 1348, { 1: 518, 2: 505, 3: 325 }, 848, 0, 0, { answer: 1243, choice: 66, multi: 39 }, 895], "§0 пули");
   eq([s0.pairs, s0.pairs2a1, s0.diags, s0.diagItems, s0.pureTitle], [174, 158, 8, 209, 277], "§0 пари, тести, чисті вирази");
   eq([s21.errors, s21.A, s21.Dle, s21.byLvl[1].Dle, s21.byLvl[1].errors, s21.byLvl[2].Dle, s21.byLvl[2].errors], [676, 346, 151, 0, 518, 151, 158], "§2.1 A 346; D≤ 151/676, рівень 1 — 0/518");
   eq([s21.Dgt, s21.Dseen, s21.none, s21.anyUnseen, s21.F, s21.natDle, s21.natAny], [520, 499, 26, 671, 124, 151, 671], "§2.1 D>, D°, F, природні");
@@ -622,10 +622,11 @@ const sum = (R, pid) => R.events.filter(e => e.pid === pid).map(e => e.type === 
   e("a", "diag_start", { c: "math", diag: "dg6" }, tm(D1, 1));
   for (const i of [0, 1]) e("a", "answer", { mode: "diag", c: "math", l: "dg6", i, id: null, key: null, pool: null, type: dg6.items[i].type, ak: null, sk: dg6.items[i].sk, topic: dg6.items[i].topic, hyp: false, try: 1, verdict: "skip", res: -1, raw: null, hint: false, final: true }, tm(D1, 2 + i));
   e("a", "diag_end", { c: "math", diag: "dg6", topics: {}, hyp: { skip: 2, rv: "hyp-1" } }, tm(D1, 5));
-  // сховище є (persist 1), потім застосунок самоочистив slid.hyp: hyp_lost між answer і hyp_open тієї самої спроби (save() перед трекером) → далі persist 0
+  // сховище є (persist 1), потім застосунок самоочистив slid.hyp: hyp_lost між answer і hyp_open тієї самої спроби (save() перед трекером),
+  // n — ця answer (трекер її ще не обробив) → persist 0 з неї (§9 п. 36: номер дає застосунок, реплей не вгадує місце)
   ps("a", tm(D1, 10), pair.slice(0, 3));
   ans("a", pair[0], tm(D1, 11), { v: "bad", raw: "4/9" }); appOpen("a", tm(D1, 11), 1);
-  ans("a", pair[1], tm(D1, 12), { v: "bad", raw: "4/9" }); e("a", "hyp_lost", { why: "quota" }, tm(D1, 12)); appOpen("a", tm(D1, 12), 0);
+  ans("a", pair[1], tm(D1, 12), { v: "bad", raw: "4/9" }); e("a", "hyp_lost", { why: "quota", n: seq }, tm(D1, 12)); appOpen("a", tm(D1, 12), 0);
   ans("a", pair[2], tm(D1, 13), { v: "bad", raw: "4/9", final: false });   // друга спроба не прийшла — pend
   // наступне завантаження: стану в застосунку немає (boot.hyp.open: null) — pend відкрито на виході (pagehide), гіпотез немає; перевірки немає
   const evB = seq + 1; boot("b", tm(D2), { store: 1, open: null });
@@ -649,9 +650,124 @@ const sum = (R, pid) => R.events.filter(e => e.pid === pid).map(e => e.type === 
   const ns = noLost.map(x => x.type === "boot" ? { ...x, d: { ...x.d, hyp: { store: 0, open: null } } } : x), R3 = replay({ events: [...ns, { ...ns.at(-1), seq: 999, type: "hyp_off", d: { why: "budget" } }] }, E);
   eq(R3.events.filter(x => x.type === "hyp_open").map(x => x.d.persist), [0, 0, 0], "boot.hyp.store 0 — persist 0 з boot");
   eq(R3.notes.hypOff, 1, "hyp_off — notes.hypOff");
-  // hyp_lost уже після hyp_open тієї події (сховище зникло пізніше в тому самому кроці) — persist 0 лише з наступної події
-  const late = evs.flatMap(x => x.type === "hyp_lost" ? [] : x.type === "hyp_open" && x.d.persist === 1 ? [x, { ...x, seq: x.seq + 0.25, type: "hyp_lost", d: { why: "write" } }] : [x]);
-  eq(shape(replay({ events: late }, E)).filter(x => x[0] === "open").map(x => x[1]), [1, 0, 0], "hyp_lost після hyp_open застосунку — persist 0 з наступної події");
+  // hyp_lost уже після hyp_open тієї події (сховище зникло пізніше в тому самому кроці: write() після трекера), n: null — persist 0 з самої
+  // hyp_lost, тобто з наступної події
+  const late = evs.flatMap(x => x.type === "hyp_lost" ? [] : x.type === "hyp_open" && x.d.persist === 1 ? [x, { ...x, seq: x.seq + 0.25, type: "hyp_lost", d: { why: "write", n: null } }] : [x]);
+  eq(shape(replay({ events: late }, E)).filter(x => x[0] === "open").map(x => x[1]), [1, 0, 0], "hyp_lost (n: null) після hyp_open застосунку — persist 0 з наступної події");
+  // між answer і hyp_lost — інші не-hyp події (srs / plan з observe() у save(), до hyp_lost): місце дає n, а не «остання подія перед hyp_lost»
+  // (стара евристика брала б srs і рахувала answer з persist 1; рев'ю tools-diff-answers-p3, P3-3)
+  const mid = evs.flatMap(x => x.type === "hyp_lost" ? [{ ...x, seq: x.seq - 0.5, n: x.n - 0.5, type: "srs", d: { n: 1, part: 1, parts: 1, ch: [] } }, x] : [x]);
+  eq(shape(replay({ events: mid }, E)).filter(x => x[0] === "open").map(x => x[1]), [1, 0, 0], "srs між answer і hyp_lost — persist 0 з answer (n), як у застосунку");
+  // n: null на тому самому місці (save() поза відповіддю) — persist 0 лише після hyp_lost: answer перед нею — з persist 1
+  const nul = evs.map(x => x.type === "hyp_lost" ? { ...x, d: { why: "quota", n: null } } : x);
+  eq(shape(replay({ events: nul }, E)).filter(x => x[0] === "open").map(x => x[1]), [1, 1, 0], "hyp_lost з n: null — persist 0 від самої події, не від попередньої");
+  // n іншого завантаження (sid) не зачіпає: hyp_lost у «a» з n відповіді — у «b» persist 1 знову (boot.hyp.store 1)
+  { const bo = replay({ events: evs.map(x => x.sid === "b" && x.type === "answer" ? { ...x, d: { ...x.d, verdict: "bad", raw: "4/9" } } : x) }, E).events.filter(x => x.type === "hyp_open" && x.seq >= evB);
+    ok(bo.length === 2 && bo[0].d.persist === 0 && bo[1].d.persist === 1, "hyp_lost діє лише в межах свого sid: pend «a» на boot «b» — persist 0, нова гіпотеза «b» — 1", bo.map(x => [x.seq, x.d.persist])); }
+}
+
+/* ---------- 12. Skill Graph G3: старі й нові pres / preWeak у реплеї (docs/design/skill-graph-math.md §4.2) ----------
+   Тінь: події й метрики реплею (hyp-1) — за старими pres, однакові з графом і без нього; поруч — тіньовий трекер з pres / preWeak за
+   графом лише в лініях verified. dg6/frac-of shaky лише через №21 (num-by-frac) не робить слабким frac-mul (пара g6m2l5); HALF у
+   pre-темі не послаблює вузол-передумову frac-read; BAD — послаблює; урок поза лінією (g6m3l1) — як зараз. */
+{
+  const evs = []; let seq = 0;
+  const e = (pid, type, d, t, extra = {}) => evs.push({ v: 1, eid: `g.${seq}`, seq: ++seq, type, t, tzo: 0, n: seq, ms: 0, sid: "g", did: "dev3", pid, cv: "abc", cvs: null, net: 1, synced: 0, d, ...extra });
+  const dans = (pid, i, v, res, t) => { const it = E.diags.get("dg6").items[i];
+    e(pid, "answer", { mode: "diag", c: "math", l: "dg6", i, id: null, key: null, pool: null, type: it.type, ak: null, sk: it.sk, topic: it.topic, hyp: false, try: 1, verdict: v, res, raw: v === "skip" ? null : "x", hint: false, final: true }, t, { dt: 8000 }); };
+  const pans = (pid, k, t, v = "bad") => { const s = pool(k);
+    e(pid, "answer", { mode: "practice", c: "math", l: s.lesson, i: 0, id: s.id, key: s.key, pool: s.pool.id, type: s.type, ak: s.answerKind ?? null, sk: s.sk, pre: null, topic: null, rev: null, boss: false, hyp: false, try: 1, verdict: v, raw: "0", hint: false, final: true }, t, { dt: 9000 }); };
+  const prof = (pid, diagAns, topics) => {
+    e(pid, "boot", { grade: 6, subj: "math", lessons: 0, diags: [], srs: 0 }, tm(D1));
+    e(pid, "diag_start", { c: "math", diag: "dg6", rev: 1 }, tm(D1, 1));
+    const res = {}; diagAns.forEach(([i, v, r], k) => { dans(pid, i, v, r, tm(D1, 2 + k)); res[i] = r; });
+    e(pid, "diag_end", { c: "math", diag: "dg6", rev: 1, res, topics }, tm(D1, 20));
+    e(pid, "practice_start", { focus: null, prN: 1, items: [{ key: "pg6m2:e01", l: "g6m2l5", review: false, lvl: 1 }, { key: "pg6m3:a01", l: "g6m3l1", review: false, lvl: 1 }] }, tm(D2));
+    pans(pid, "pg6m2:e01", tm(D2, 1)); pans(pid, "pg6m3:a01", tm(D2, 2)); };
+  prof("q1", [[10, "ok", 1], [21, "skip", -1]], { "frac-of": "shaky" });     // gap лише через num-by-frac
+  prof("q2", [[1, "half", 0.5], [13, "ok", 1]], { frac: "shaky" });          // HALF у темі frac (frac-read)
+  prof("q3", [[1, "bad", 0], [13, "ok", 1]], { frac: "shaky" });            // BAD у темі frac
+  const X = { schema: 1, app: "slid", did: "dev3", events: evs }, R = replay(X, E), G = R.graph;
+  const R0 = replay(JSON.parse(JSON.stringify(X)), { ...E, graph: null });
+  eq(JSON.stringify(R.events), JSON.stringify(R0.events), "G3: події реплею (hyp-1, старі pres) з графом і без нього однакові");
+  eq(R0.graph.presDiff + R0.graph.preWeakDiff + R0.graph.inLine, 0, "G3: без графа — нові pres = старі");
+  eq([G.answers, G.inLine, G.lines], [12, 9, ["frac"]], "G3: відповідей 12, у лінії frac — 9 (тест рівня dg6 у темах лінії, e01; a01 — поза)");
+  const e01 = G.examples.filter(x => x.at.key === "pg6m2:e01");
+  eq(e01.map(x => [x.line, x.u, x.pre.slice().sort(), x.presNew.slice().sort(), x.pres.includes("m3"), x.preWeak, x.preWeakNew]),
+    [["frac", ["frac-mul"], ["frac-read", "frac-reduce"], ["g6m2l2", "m1"], true, true, false],
+     ["frac", ["frac-mul"], ["frac-read", "frac-reduce"], ["g6m2l2", "m1"], true, true, false],
+     ["frac", ["frac-mul"], ["frac-read", "frac-reduce"], ["g6m2l2", "m1"], true, true, true]],
+    "G3: e01 (frac-mul): нові pres — уроки pre w 2 (m1, g6m2l2), не m3; preWeak: shaky через num-by-frac — ні; HALF — ні; BAD frac-read — так");
+  eq(G.examples.some(x => x.at.key === "pg6m3:a01"), false, "G3: g6m3l1 поза лінією — pres / preWeak як зараз");
+  eq([G.old.open, G.new.open, G.old.s12, G.new.s12], [G.old.open, G.old.open, G.old.s12, G.old.s12 - 2], "G3: тіньовий трекер — ті самі відкриття, S12 на 2 менше (q1, q2 e01)");
+  eq(G.openDiff.map(x => [x.old.sig.includes("S12"), x.new && x.new.sig.includes("S12")]), [[true, false], [true, false]], "G3: openDiff — дві гіпотези e01 без S12");
+  const R2 = replay(JSON.parse(JSON.stringify(X)), E);
+  eq(JSON.stringify(R2.graph), JSON.stringify(G), "G3: порівняння детерміноване");
+  // ---- G3-p3 (рев'ю engine-skg-g3 P3-3): тести на мутанти, що вижили
+  // а) тіньовий трекер T2 дзеркалить УСІ виклики T0 (tick, onReset, onDiagEnd, flush, load, setPersist…), не лише onAnswer;
+  //    без ліній — той самий вхід подія в подію; з графом — різниця лише в pres / preWeak onAnswer
+  const spyEnv = E0 => { const inst = [], hyp = { ...E0.hyp, tracker: o => { const t = E0.hyp.tracker(o), calls = []; inst.push(calls);
+      return new Proxy(t, { get: (x, m) => typeof x[m] !== "function" ? x[m] : (...a) => { calls.push([m, JSON.stringify(a)]); return x[m](...a); } }); } };
+    return { E: { ...E0, hyp }, inst }; };
+  const mirror = (X0, E0) => { const { E: Es, inst } = spyEnv(E0); replay(JSON.parse(JSON.stringify(X0)), Es);
+    const norm = c => c.map(([m, a]) => m === "onAnswer" ? [m, JSON.stringify((({ pres, preWeak, ...r }) => r)(JSON.parse(a)[0]))] : [m, a]);
+    const pairs = []; for (let i = 0; i < inst.length; i += 2) pairs.push([inst[i], inst[i + 1] || []]);
+    return { same: pairs.every(([a, b]) => JSON.stringify(norm(a)) === JSON.stringify(norm(b))), exact: pairs.every(([a, b]) => JSON.stringify(a) === JSON.stringify(b)),
+      methods: [...new Set(inst.flat().map(x => x[0]))].sort(), trackers: inst.length }; };
+  const noLines = { ...E, graph: { ...E.graph, lines: [] } };
+  const M1 = mirror(synth(), noLines), M2 = mirror(X, E), M3 = mirror(X, noLines);
+  eq([M1.exact, M3.exact, M2.same, M2.exact, M1.trackers, M2.trackers], [true, true, true, false, 14, 6], "G3-p3: T2 = T0 виклик у виклик (без ліній — дослівно; з лінією frac — крім pres / preWeak)");
+  eq(["tick", "onReset", "flush", "onScreen", "onLessonEnd", "onAnswer", "setPersist"].filter(m => !M1.methods.includes(m)).concat(["onDiagEnd", "tick", "flush"].filter(m => !M2.methods.includes(m))), [],
+    `G3-p3: дзеркалення покриває tick, onReset, onDiagEnd, flush (synth: ${M1.methods}; G3: ${M2.methods})`);
+  // б) лінія завдання тесту — за темою «тест/тема», не за уроками теми: тема dg6/frac-of поза лінією (уроки m3 — у ній) → її 2 відповіді поза лінією
+  const nFracOf = X.events.filter(x => x.type === "answer" && x.d.mode === "diag" && x.d.topic === "frac-of").length;
+  const Rb = replay(JSON.parse(JSON.stringify(X)), { ...E, graph: { ...E.graph, lines: E.graph.lines.map(x => ({ ...x, topics: new Set([...x.topics].filter(t => t !== "dg6/frac-of")) })) } });
+  eq([nFracOf, G.inLine - Rb.graph.inLine], [2, 2], "G3-p3: тема тесту поза лінією — її завдання поза лінією, хоч уроки теми в лінії");
+  // в) реплей передає в graphPre live-вузли (без gone-вузла іншої sk), не nodes: e01 з u на gone → frac-mixed (frac ≠ ops)
+  const Ec = hypEnv(ROOT, process.env.HYP_FILE || null), mc = Ec.math;
+  mc.graph = { ...mc.graph, nodes: [...mc.graph.nodes, { id: "x-mul-old", sk: "ops", name: "x", teach: [], gone: "frac-mixed", st: "draft" }] };
+  mc.pools.find(p => p.id === "pg6m2").items.find(it => it.id === "e01").u = "x-mul-old"; Ec.graph = Ec.learn.graphBind(mc);
+  const ec = Ec.graph.items.get("pg6m2:e01"), Rc = replay(JSON.parse(JSON.stringify(X)), Ec).graph.examples.filter(x => x.at.key === "pg6m2:e01");
+  eq([ec.nodes, ec.live, Rc.length, Rc.map(x => [x.u, x.presNew.slice().sort()])[0]], [["frac-mixed"], [], 3, [[], ["g6m2l2", "m1"]]],
+    "G3-p3: u на gone іншої sk — вузол-ціль (frac-mixed → div-rem, m4a) не стає вузлом пари в реплеї");
+  // г) rev результату — з diag_end.rev, інакше з diag_start.rev (журнал без diag_end.rev): BAD на завданні редакції 2 рахується лише з rev 2
+  const Ee = hypEnv(ROOT, process.env.HYP_FILE || null); Ee.math.diags.find(d => d.id === "dg6").items[1].rev = 2; Ee.graph = Ee.learn.graphBind(Ee.math);
+  const q3 = rv => ({ ...X, events: JSON.parse(JSON.stringify(X.events.filter(x => x.pid === "q3"))).map(x => x.type === "diag_start" ? { ...x, d: { ...x.d, rev: rv } }
+    : x.type === "diag_end" ? { ...x, d: (({ rev, ...r }) => r)(x.d) } : x) });
+  const pwE = rv => replay(q3(rv), Ee).graph.examples.filter(x => x.at.key === "pg6m2:e01").map(x => x.preWeakNew);
+  eq([pwE(2), pwE(1)], [[true], [false]], "G3-p3: rev з diag_start (diag_end без rev): редакція 2 — BAD frac-read рахується, редакція 1 — ні");
+}
+
+/* ---------- engine-unit-hint: «Перевір одиницю» для тієї самої величини в іншій одиниці — не новий вхід трекера (rv hyp-1) ----------
+   Плеєр тепер показує unitMsg на «2000 г» при «кг» і ключі 2 (learn.js unitEq «conv»), а трекер бачить такий запис так само,
+   як до підказки: S13 (badHint тоді був null) → P9. Порівняння — з learn.js, де badHint і unitEq поводяться як до зміни. */
+{
+  const T = { "мм": ["l", 1], "см": ["l", 10], "дм": ["l", 100], "м": ["l", 1e3], "км": ["l", 1e6], "мм²": ["a", 1], "см²": ["a", 100], "дм²": ["a", 1e4], "м²": ["a", 1e6], "га": ["a", 1e10],
+    "см³": ["v", 1e3], "мл": ["v", 1e3], "дм³": ["v", 1e6], "л": ["v", 1e6], "м³": ["v", 1e9], "г": ["m", 1], "кг": ["m", 1e3], "ц": ["m", 1e5], "т": ["m", 1e6],
+    "с": ["t", 1], "хв": ["t", 60], "год": ["t", 3600], "діб": ["t", 86400], "коп": ["g", 1], "грн": ["g", 100], "м/с": ["s", 3.6], "км/год": ["s", 1], "м/хв": ["s", .06] };
+  const fmt = x => String(+x.toFixed(6)).replace(".", ",");
+  const probes = [];
+  for (const [k, s] of E.pool) {
+    if ((s.answerKind || "number") !== "number" || !T[s.unit]) continue;
+    const a = LN.parseAns(String(s.answer).replace(".", ",")); if (!a) continue;
+    const [d, f] = T[s.unit], base = a.n / a.d * f;
+    for (const [u, [d2, f2]] of Object.entries(T)) { const v = base / f2; if (d2 === d && f2 !== f && +v.toFixed(3) > 0 && Math.abs(+v.toFixed(3) - v) < 1e-9 && v <= 1e7) probes.push([k, s, `${fmt(v)} ${u}`]); }
+  }
+  const sig = (s, raw) => { const a = H.assess(s, raw, {}); return JSON.stringify([a.rule, a.sig, a.prior, a.top, a.p, a.pexec]); };
+  const now = probes.map(([, s, raw]) => sig(s, raw)), hints = probes.map(([, s, raw]) => LN.badHint(s, raw));
+  const { badHint, unitEq } = LN;
+  LN.badHint = (s, v, r) => unitEq(s, v) === "conv" ? null : badHint(s, v, r); LN.unitEq = () => null;   // learn.js і hyp.js до engine-unit-hint
+  const before = probes.map(([, s, raw]) => sig(s, raw));
+  LN.badHint = badHint; LN.unitEq = unitEq;
+  ok(probes.length > 500, `unit-hint: проб рівної величини в іншій одиниці ${probes.length} > 500`);
+  eq(probes.filter((p, i) => !/^Перевір одиницю/.test(hints[i] || "")).map(p => p[0] + " «" + p[2] + "»").slice(0, 5), [], "unit-hint: кожна проба — «Перевір одиницю»");
+  eq(probes.filter((p, i) => now[i] !== before[i]).map(p => p[0] + " «" + p[2] + "»").slice(0, 5), [], "unit-hint: assess (правило, сигнали, апріорі) як до підказки — rv не змінюється");
+  eq(H.RULES_VERSION, "hyp-1", "unit-hint: rv hyp-1");
+  // задача на переведення: переписане дане умови (25 м = … см) — як і раніше S13 → P9, top unk
+  chk("pg4m4:d01 переписане дане", pool("pg4m4:d01"), "25 м", "P9", ["S13"]);
+  chk("pg4m4:b01 переписане дане", pool("pg4m4:b01"), "208 т", "P9", ["S13"]);
+  // число без чужої одиниці правильне («2500 мм» при 2500 см) — підказка була й раніше: не S13, як і до зміни
+  eq(H.assess(pool("pg4m4:d01"), "2500 мм", {}).sig.includes("S13"), false, "unit-hint: «2500 мм» (bare) — не S13, як і раніше");
 }
 
 console.log(fails ? `test-hyp: ${fails} з ${n} перевірок не пройшли` : `test-hyp: усі ${n} перевірок пройшли`);

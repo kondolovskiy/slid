@@ -59,6 +59,32 @@ function mem(opt = {}) {
     async clear() { st.ev.clear(); } };
 }
 
+// ---------- 5а. dt і t не залежать від ціни data() (рев'ю engine-skg-g3 P3-1: перша item.u розбирає граф) ----------
+// Той самий маршрут «екран → відповідь» з важкою data() (як із graph.js) і з легкою (без графа): однакові answer.dt, J.dt, t і ms.
+{ const run = heavy => { let m = 0, t = 5000; const en = env({ mono: () => m, now: () => t }), J = C.create(mem(), en, E.LIMITS);
+    J.log("screen", { i: 0 }); m += 1234; t += 1234;
+    J.log("answer", () => { if (heavy) { m += 47; t += 47; } return { i: 0, raw: "5", ...(heavy ? { u: ["n"] } : {}) }; });
+    const dt = J.dt; en.tick(); return J.flush().then(() => dt); };
+  const [a, b] = [await run(false), await run(true)];
+  eq([a, b], [1234, 1234], "dt — час до обчислення даних події: з важкою data() (розбір графа) той самий, що без неї");
+  let m = 0, t = 0; const b2 = mem(), en = env({ mono: () => m, now: () => t }), J = C.create(b2, en, E.LIMITS);
+  J.log("screen", {}); m = 100; t = 100; J.log("answer", () => { m += 50; t += 50; return {}; }); en.tick(); await J.flush();
+  const ev = [...b2.st.ev.values()];
+  eq(ev.map(e => [e.ms, e.t, e.dt ?? null]), [[0, 0, null], [100, 100, 100]], "ms і t події — момент виклику log, не після data()");
+  // те саме для screen (рев'ю engine-skg-g3-p3, P3-а; мутант ev-scr-after): показ екрана — момент виклику log("screen"), тож важка data()
+  // екрана не з'їдає час дитини — відповідь через ту саму 1234 мс після виклику дає той самий dt
+  const scr = heavy => { let m = 0; const en2 = env({ mono: () => m, now: () => m }), J2 = C.create(mem(), en2, E.LIMITS);
+    J2.log("screen", () => { if (heavy) m += 47; return { i: 0 }; }); m = 1234; J2.log("answer", { i: 0, raw: "5" }); return J2.dt; };
+  eq([scr(false), scr(true)], [1234, 1234], "dt — від виклику log(\"screen\"): важка data() екрана (≈ 47 мс) dt наступної answer не змінює"); }
+
+// ---------- 5б. n — номер останньої записаної події сторінки (app.js: hyp_lost.n, docs/design/diag-hypothesis-math.md §9 п. 36) ----------
+{ const J = C.create(mem(), env(), E.LIMITS);
+  eq(J.n, null, "n до першої події — null");
+  J.log("boot", {}); J.log("screen", { i: 0 }); eq(J.n, 2, "n — номер останньої записаної події (той самий, що e.n)");
+  J.log("answer", () => { throw new Error("x"); }); eq(J.n, 2, "подію не записано (data() кинула) — n не змінився");
+  J.observe({ grade: 6, srs: {}, plan: {} }); J.observe({ grade: 7, srs: {}, plan: {} }); eq(J.n, 3, "події observe (grade) теж рахуються");
+  const off = C.create(null, env(), E.LIMITS); off.log("boot", {}); eq(off.n, null, "журнал вимкнено — n null"); }
+
 // ---------- 5. черга, пакети, seq, did/pid/cv, dt, by ----------
 { const b = mem(), en = env(), J = C.create(b, en, { ...E.LIMITS, batch: 3, delay: 100 });
   J.observe({ grade: 6, srs: {}, plan: {} });                         // перший знімок — без подій

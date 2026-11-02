@@ -270,13 +270,15 @@ window.SLID_HYP = (() => {
     return o;
   }
   const emptyRaw = raw => raw === null || raw === undefined || (typeof raw === "string" && !raw.trim()) || (Array.isArray(raw) && !raw.length);
-  /** S13: «Ще не знаю», порожньо або не розібрано (лише number / exactRoot / expression: не число й не вираз) і badHint = null. */
+  /** S13: «Ще не знаю», порожньо або не розібрано (лише number / exactRoot / expression: не число й не вираз) і badHint = null.
+      «Перевір одиницю» для тієї самої величини в іншій одиниці (unitEq «conv», engine-unit-hint) — нова підказка дитині, а не
+      новий вхід трекера: такий запис, як і до неї, — S13 (badHint тоді був null), тож події на той самий вхід ті самі, rv hyp-1. */
   function unparsed(s, raw) {
     if (emptyRaw(raw)) return true;
     const kind = kindOf(s); if (!["number", "exactRoot", "expression"].includes(kind)) return false;
     const LN = LEARN(), t = String(LN.stripUnit(s, String(raw)));
     if (LN.numVal(t) || parseT(t.replace(/^\s*[A-Za-z]\s*=\s*/, ""))) return false;
-    return LN.badHint(s, t) === null;
+    return LN.badHint(s, t) === null || (typeof LN.unitEq === "function" && LN.unitEq(s, t) === "conv");
   }
 
   /* ---------- Апріорний розподіл: сигнали → правило → модифікатори (§1.2, §1.3) ---------- */

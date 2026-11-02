@@ -22,7 +22,7 @@ let content;
 try { content = loadContent(); } catch (e) { console.error("ПОМИЛКА ЗАВАНТАЖЕННЯ:", e.message); process.exit(2); }
 const c = content.subjects.find(s => s.id === SUBJ);
 if (!c) { console.error(`немає предмета «${SUBJ}»`); process.exit(2); }
-const A = analyzeGraph(c, { origin: content.origin, poolOrigin: content.poolOrigin, diagOrigin: content.diagOrigin, graphFile: content.graphOrigin?.[SUBJ] });
+const A = analyzeGraph(c, { learn: content.learn, origin: content.origin, poolOrigin: content.poolOrigin, diagOrigin: content.diagOrigin, graphFile: content.graphOrigin?.[SUBJ] });
 if (LINE && !A.lines[LINE]) { console.error(`--line ${LINE}: немає такої лінії в lines графа (${Object.keys(A.lines).join(", ") || "ліній немає"})`); process.exit(2); }
 
 // P: кожен аргумент — окремий рядок Markdown
@@ -129,8 +129,9 @@ if (SINCE) {
   catch { console.error(`--since: ревізії «${SINCE}» немає в git (або це не коміт)`); process.exit(2); }
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), "slid-graph-since-")); let B;
   try { execFileSync("tar", ["-x", "-C", dir], { input: execFileSync("git", ["archive", rev, "app", "content"], { cwd: ROOT, maxBuffer: 1 << 30 }) });
+    // правило прив'язки — чинне (content.learn), як і до G3-p3: old.learn ревізії до G3 graphBind не має; порівнюємо зміст, не правило
     const old = loadContent(dir), oc = old.subjects.find(s => s.id === SUBJ);
-    B = oc ? analyzeGraph(oc, { origin: old.origin, poolOrigin: old.poolOrigin, diagOrigin: old.diagOrigin, graphFile: old.graphOrigin?.[SUBJ] }) : null; }
+    B = oc ? analyzeGraph(oc, { learn: content.learn, origin: old.origin, poolOrigin: old.poolOrigin, diagOrigin: old.diagOrigin, graphFile: old.graphOrigin?.[SUBJ] }) : null; }
   catch (e) { console.error(`--since ${SINCE}: не вдалося завантажити зміст ревізії — ${e.message}`); process.exit(2); }
   finally { fs.rmSync(dir, { recursive: true, force: true }); }
   const oldCnt = new Map(); for (const o of B?.objects || []) oldCnt.set(o.key, (oldCnt.get(o.key) || 0) + 1);

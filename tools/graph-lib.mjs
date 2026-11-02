@@ -1,6 +1,7 @@
 // Слід · Skill Graph: прив'язка об'єктів до вмінь (docs/design/skill-graph-math.md §2.4) і правила V1–V10 (§3).
 // Спільне для tools/validate.mjs (помилки графа, дрейф, V10б) і tools/graph-report.mjs (звіт, --strict, --since, --uses).
-// Схема даних — docs/CONTENT_SCHEMA.md §11. Рушій граф поки не читає (етап G1): тут лише перевірка й звіт.
+// Схема даних — docs/CONTENT_SCHEMA.md §11. Правило прив'язки (§2.4) — одне для застосунку й інструментів: SLID_LEARN.graphBind
+// з app/learn.js (етап G3; застосунок пише вузли в item.u події answer). Тут — лише перевірка (V1–V10) і звіт поверх нього.
 //
 // Клас кожного правила — за тим, хто спричиняє порушення і де його виправити (таблиця §3):
 //   error — помилка validate (червоний CI): V1а, V2, V3, V5, V6а, V7а, V10а;
@@ -9,6 +10,10 @@
 // Кожна знахідка має refs (lessons / diags / pools / nodes, line) — validate --section показує лише ті, що стосуються розділу (R4-P3-3).
 import crypto from "node:crypto";
 import { GRADED } from "./lib.mjs";
+
+// Прив'язку дає SLID_LEARN.graphBind тієї самої копії app/learn.js, що й решта змісту: викликач передає learn з loadContent()
+// (validate, graph-report, тести) — один realm, Map результату — того самого realm, що й у викликача (рев'ю engine-skg-g3 P3-4).
+// Власної копії learn.js у vm тут немає.
 
 export const DRIFT_TAIL = "потрібна правка graph.js — допиши в inbox для куратора (IDEA GRAPH)";
 export const ID_RE = /^[a-z][a-z0-9-]*$/;
@@ -38,7 +43,8 @@ const teachList = n => (Array.isArray(n.teach) ? n.teach : []).map(t => typeof t
  * opts: origin (розділ → файл), poolOrigin (пул → файл), diagOrigin (тест → файл), graphFile (файл SLID.graph).
  * Повертає { issues, nodes, active, objects, lessons, topics, ties, lines, splitPairs, typical, graph }.
  */
-export function analyzeGraph(c, { origin = {}, poolOrigin = {}, diagOrigin = {}, graphFile } = {}) {
+export function analyzeGraph(c, { learn, origin = {}, poolOrigin = {}, diagOrigin = {}, graphFile } = {}) {
+  if (!learn || typeof learn.graphBind !== "function") throw new Error("analyzeGraph: потрібен learn — SLID_LEARN з loadContent() (.learn)");
   const g = c.graph || null, GF = graphFile || `content/${c.id}/graph.js`;
   const issues = [];
   const add = (cls, rule, where, msg, refs = {}) => issues.push({ cls, rule, where, msg: cls === "drift" ? `граф, дрейф ${rule}: ${msg} — ${DRIFT_TAIL}` : `граф ${rule}: ${msg}`,
@@ -50,8 +56,10 @@ export function analyzeGraph(c, { origin = {}, poolOrigin = {}, diagOrigin = {},
     lessons.set(l.id, { l, sec: sec.id, grade: sec.grade, wk: sec.weeks?.[0] ?? 0, idx, boss: !!l.boss, file: origin[sec.id] || c.id }));   // як у validate
   for (const d of c.diags || []) for (const t of d.topics || []) topics.set(`${d.id}/${t.id}`, { d, t, items: (d.items || []).map((it, i) => [it, i]).filter(([it]) => it.topic === t.id) });
 
+  // прив'язка об'єктів і прийняті вузли — з SLID_LEARN.graphBind (одне правило з застосунком); нижче лише перевірки
+  const B = learn.graphBind(c);
   // ---- V1а: формат графа й вузлів
-  const nodes = new Map(), raw = g && Array.isArray(g.nodes) ? g.nodes : [];
+  const nodes = B.nodes, seenIds = new Set(), raw = g && Array.isArray(g.nodes) ? g.nodes : [];
   if (g) {
     if (!str(g.v)) add("error", "V1а", GF, "v — непорожній рядок версії графа (дата + номер, напр. «2026-11-15.1»)");
     if (!Array.isArray(g.nodes)) add("error", "V1а", GF, "nodes — масив вузлів");
@@ -62,8 +70,8 @@ export function analyzeGraph(c, { origin = {}, poolOrigin = {}, diagOrigin = {},
     const W = `${GF}#${str(n.id) ? n.id : `вузол ${k + 1}`}`, refs = { lessons: teachList(n).map(t => t.l), nodes: str(n.id) ? [n.id] : [] };
     const e = msg => add("error", "V1а", W, msg, refs);
     if (!str(n.id) || !ID_RE.test(n.id)) e(`id ${JSON.stringify(n.id)} — формат [a-z][a-z0-9-]*`);
-    else if (nodes.has(n.id)) e(`id «${n.id}» не унікальний`);
-    else { if (c.skills?.[n.id]) e(`id «${n.id}» збігається з навичкою sk — простори імен окремі`); nodes.set(n.id, n); }
+    else if (seenIds.has(n.id)) e(`id «${n.id}» не унікальний`);
+    else { if (c.skills?.[n.id]) e(`id «${n.id}» збігається з навичкою sk — простори імен окремі`); seenIds.add(n.id); }
     if (!c.skills?.[n.sk]) e(`sk «${n.sk}» не оголошена в content/subjects/${c.id}.js`);
     if (!str(n.name)) e("name — одне речення мовою вчителя («учень уміє …»)");
     if (!ST.includes(n.st)) e(`st «${n.st}» — draft | verified | approved`);
@@ -104,8 +112,7 @@ export function analyzeGraph(c, { origin = {}, poolOrigin = {}, diagOrigin = {},
   }
 
   // ---- V2, V10а: ребра й gone
-  const isGone = id => nodes.has(id) && nodes.get(id).gone !== undefined;
-  const active = new Map([...nodes].filter(([id]) => !isGone(id)));
+  const { isGone, active } = B;
   const nref = n => ({ lessons: teachList(n).map(t => t.l), nodes: [n.id] });
   const adj = new Map();   // pre ∪ part: id → [{ to, w, kind }]
   for (const n of nodes.values()) {
@@ -147,7 +154,7 @@ export function analyzeGraph(c, { origin = {}, poolOrigin = {}, diagOrigin = {},
         { lessons: [...teachList(n), ...teachList(nodes.get(x.u))].map(t => t.l), nodes: [n.id, x.u] }); } }
 
   // ---- V7а, V1б (teach), V6а, V6б
-  const typical = new Map();   // «урок|sk» → [id типових вузлів]
+  const typical = B.typical;   // «урок|sk» → [id типових вузлів]
   const splitPairs = new Set();
   for (const n of active.values()) {
     const W = `${GF}#${n.id}`, T = teachList(n);
@@ -155,7 +162,7 @@ export function analyzeGraph(c, { origin = {}, poolOrigin = {}, diagOrigin = {},
     for (const t of T) {
       if (!lessons.has(t.l)) { add("drift", "V1б", W, `teach: немає уроку ${t.l} у предметі ${c.id}`, { lessons: [t.l], nodes: [n.id] }); continue; }
       const key = `${t.l}|${n.sk}`;
-      if (!t.by) (typical.get(key) || typical.set(key, []).get(key)).push(n.id); else splitPairs.add(key);
+      if (t.by) splitPairs.add(key);
       if (!lessons.get(t.l).l.screens?.some(s => isGraded(s) && s.sk === n.sk)) add("drift", "V6б", W, `урок ${t.l} у teach не має жодного оцінюваного екрана з sk «${n.sk}»`, { lessons: [t.l], nodes: [n.id] });
     }
   }
@@ -164,13 +171,11 @@ export function analyzeGraph(c, { origin = {}, poolOrigin = {}, diagOrigin = {},
   // пара лише з вузлами by: "u" (без типового) дозволена: об'єкти без u лишаються без вузла (§2.4 п. 7)
 
   // ---- прив'язка об'єктів (§2.4)
-  const redirect = id => { const n = nodes.get(id); return n && str(n.gone) && nodes.has(n.gone) && !isGone(n.gone) ? n.gone : id; };
   const objects = [];
-  // u об'єкта: формат (V2), наявність (V2), V10б, V5 (sk = sk вузла); повертає розв'язані id
+  // u об'єкта: формат (V2), наявність (V2), V10б, V5 (sk = sk вузла) — лише перевірка; вузли об'єкта дає graphBind (bound)
   const checkU = (o, s) => {
     const { ids, bad } = parseU(s.u); const refs = o.refs; o.uIds = ids;
     if (bad) add("error", "V2", o.where, bad, refs);
-    const out = [];
     for (const id of ids) {
       if (!nodes.has(id)) { add("error", "V2", o.where, `u «${id}»: немає такого вузла${g ? "" : ` (у предмета ${c.id} ще немає графа)`}`, refs); continue; }
       const n = nodes.get(id);
@@ -178,29 +183,24 @@ export function analyzeGraph(c, { origin = {}, poolOrigin = {}, diagOrigin = {},
       if (o.kind === "topic") { if (!o.sks.includes(n.sk)) add("error", "V5", o.where, `u «${id}»: sk вузла «${n.sk}» не серед sk завдань теми (${o.sks.join(", ") || "—"})`, refs);
         if (o.baseline && n.base !== true) add("error", "V5", o.where, `u «${id}»: baseline-тема прив'язується лише до base-вузла`, refs); }
       else if (n.sk !== o.sk) add("error", "V5", o.where, `u «${id}»: sk вузла «${n.sk}» ≠ sk ${o.kind === "screen" ? "екрана" : o.kind === "item" ? "вправи" : "завдання"} «${o.sk}»`, refs);
-      out.push(redirect(id));
     }
-    return [...new Set(out)];
   };
-  const typicalOf = (l, sk) => typical.get(`${l}|${sk}`) || [];
+  const bindObj = (o, e) => { o.nodes = e ? e.nodes.slice() : []; o.how = e ? e.how : "none"; if (e && e.cand) o.cand = e.cand.slice(); return o; };
   for (const sec of c.sections) for (const l of sec.lessons || []) {
     const info = lessons.get(l.id);
     (l.screens || []).forEach((s, i) => {
       const where = `${info.file}#${l.id} екран ${i + 1} (${s.type})`;
       if (!isGraded(s)) { if (s.u !== undefined) add("error", "V2", where, "u — лише на оцінюваному екрані (не intro/info/explore, не poll/hyp)", { lessons: [l.id] }); return; }
       const o = { kind: "screen", where, file: info.file, l: l.id, ls: [l.id], sk: s.sk, boss: info.boss, i, pre: s.pre, refs: { lessons: [l.id] }, key: `${l.id}|${contentHash(s)}`, explicit: s.u !== undefined };
-      if (o.explicit) { o.nodes = checkU(o, s); o.how = "u"; }
-      else if (info.boss) { const cand = [...active.values()].filter(n => n.sk === s.sk && teachList(n).some(t => !t.by && lessons.get(t.l)?.sec === info.sec && !lessons.get(t.l)?.boss)).map(n => n.id);
-        o.nodes = cand.length === 1 ? cand : []; o.how = cand.length === 1 ? "boss" : cand.length ? "ambiguous" : "none"; o.cand = cand; }
-      else { o.nodes = typicalOf(l.id, s.sk).slice(0, 1); o.how = o.nodes.length ? "typical" : "none"; }
-      objects.push(o);
+      if (o.explicit) checkU(o, s);
+      objects.push(bindObj(o, B.screens.get(`${l.id}#${i}`)));
     });
   }
   for (const p of c.pools || []) (p.items || []).forEach((it, i) => {
     const where = `content/${c.id}/pool#${p.id} задача ${i + 1} «${it.id}» (${it.type})`;
     const o = { kind: "item", where, file: poolOrigin[p.id] || `content/${c.id}/pool#${p.id}`, pool: p.id, id: it.id, l: it.lesson, ls: [it.lesson], sk: it.sk, boss: false, refs: { pools: [p.id] }, key: `${p.id}:${it.id}|${contentHash(it)}`, explicit: it.u !== undefined };
-    if (o.explicit) { o.nodes = checkU(o, it); o.how = "u"; } else { o.nodes = typicalOf(it.lesson, it.sk).slice(0, 1); o.how = o.nodes.length ? "typical" : "none"; }
-    objects.push(o);
+    if (o.explicit) checkU(o, it);
+    objects.push(bindObj(o, B.items.get(`${p.id}:${it.id}`)));
   });
   for (const d of c.diags || []) {
     const DF = diagOrigin[d.id] || `content/${c.id}/diag-g${d.grade}.js`, D = `${DF}#${d.id}`;
@@ -208,18 +208,16 @@ export function analyzeGraph(c, { origin = {}, poolOrigin = {}, diagOrigin = {},
       const its = topics.get(`${d.id}/${t.id}`)?.items || [], ls = Array.isArray(t.lessons) ? t.lessons : [];
       const to = { kind: "topic", where: `${D} тема «${t.id}»`, file: DF, diag: d.id, topic: t.id, tkey: `${d.id}/${t.id}`, l: ls[0] ?? null, ls, sks: [...new Set(its.map(([it]) => it.sk))],
         baseline: !!t.baseline, refs: { diags: [d.id] }, key: `${d.id}/${t.id}|${contentHash({ ...t, title: undefined })}`, explicit: t.u !== undefined };
-      const tu = to.explicit ? checkU(to, t) : null, union = new Set();
+      if (to.explicit) checkU(to, t);
       for (const [it, i] of its) {
         // lesson завдання (CONTENT_SCHEMA §9: «який саме урок перевіряє») звужує типові вузли до цього уроку — рев'ю G1, P2-1
         const lsI = str(it.lesson) ? [it.lesson] : ls;
         const o = { kind: "ditem", where: `${D} завдання ${i + 1} (${it.type})`, file: DF, diag: d.id, topic: t.id, tkey: to.tkey, i, l: it.lesson || ls[0] || null, ls: lsI, sk: it.sk, boss: false,
           refs: { diags: [d.id] }, key: `${d.id}/${t.id}|${contentHash(it)}`, explicit: it.u !== undefined };
-        if (o.explicit) { o.nodes = checkU(o, it); o.how = "u"; }
-        else if (tu) { o.nodes = tu; o.how = "u-topic"; }
-        else { o.nodes = [...new Set(lsI.flatMap(l => typicalOf(l, it.sk).slice(0, 1)))]; o.how = o.nodes.length ? "typical" : "none"; }
-        o.nodes.forEach(x => union.add(x)); objects.push(o);
+        if (o.explicit) checkU(o, it);
+        objects.push(bindObj(o, B.ditems.get(`${d.id}#${i}`)));
       }
-      to.nodes = tu || [...union]; to.how = tu ? "u" : to.nodes.length ? "items" : "none"; objects.push(to);
+      objects.push(bindObj(to, B.topics.get(to.tkey)));
     }
   }
 

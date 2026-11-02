@@ -16,3 +16,4 @@
 - **2026-10-14-2** — engine-tex-render (офлайн app/math.js), hist 11 (g11s1–g11s5, 27 уроків) written + verified, tools-stats-sentences (нова метрика речень → калібрування D-011), engine-diag-pool-answers (comparison/list/factors); facts/hist №186–220, glossary hist 11 кл.
 - **2026-10-16-1** — curate-math-diag-g6-links: навички divis і prop, узгоджено dg6, g6m1/g6m3 і пули (id не змінено); verify_curate_g6 — критичних немає; Кравчук на lib.imzo — 502, URL дзеркал не змінено.
 - **2026-10-16-2** — curate-math-personalization-map: docs/math-personalization-coverage.md/.json v1 (50 розділів, 182 уроки, 169 required, 48 required-пулів, 8 специфікацій діагностик); передано в review, не прийнято незалежно.
+- **2026-10-16-3** — незалежне прийняття матриці персоналізації math v2 (review_math_map, reports/verify/math-personalization-coverage.md): 182 уроки, 169 required, 7 optional, 6 pending (питання Віктору), 48 required-пулів.

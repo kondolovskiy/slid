@@ -30,7 +30,7 @@ SLID.diag("math", {
     { id: "geom", title: "Периметр і площа", kind: "pre", lessons: ["ms0bl4", "ms4l1"], for: ["g6m3", "g6m5"] },
     // теми 6 класу
     { id: "g6-div", title: "Ознаки подільності", kind: "cur", lessons: ["g6m1l2"] },
-    { id: "g6-lcm", title: "НСД і НСК", kind: "cur", lessons: ["g6m1l4"] },
+    { id: "g6-lcm", title: "НСД і НСК", kind: "cur", lessons: ["g6m1l4"], u: ["divis-lcm", "divis-gcd"] },
     { id: "g6-fadd", title: "Дроби з різними знаменниками", kind: "cur", lessons: ["g6m2l4"] },
     { id: "g6-prop", title: "Пропорція", kind: "cur", lessons: ["g6m3l2"] },
     { id: "g6-neg", title: "Від'ємні числа", kind: "cur", lessons: ["g6m4l3"] },
@@ -234,6 +234,7 @@ SLID.diag("math", {
       topic: "frac-of",
       type: "choice",
       sk: "part",
+      u: "num-by-frac",
       title: "Скільки сторінок у книжці?",
       body: "<p>Ти прочитав $3/5$ книжки — це 30 сторінок.</p>",
       opts: ["50", "18", "90", "10"],

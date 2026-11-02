@@ -33,7 +33,7 @@ window.SLID = (() => {
       if (subjects.some(x => x.pools.some(y => y.id === p.id))) throw new Error(`Пул «${p.id}» уже зареєстровано`);
       s.pools.push(p);
     },
-    /* граф умінь предмета: content/<предмет>/graph.js (docs/CONTENT_SCHEMA.md §11; лише куратор). Рушій його поки не читає (етап G1):
+    /* граф умінь предмета: content/<предмет>/graph.js (docs/CONTENT_SCHEMA.md §11; лише куратор). Рушій лише читає його (етап G3: item.u у журналі, SLID_LEARN.graphBind / nodeState — нічого для дитини не змінює):
        дані лише реєструються й прив'язуються до предмета у finalize(), тож порядок завантаження файлів не важливий.
        Невідомий предмет не ламає застосунок — це помилка tools/validate.mjs. */
     graph(subjectId, g) {
