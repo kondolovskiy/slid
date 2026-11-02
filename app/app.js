@@ -139,7 +139,14 @@ const KEY = "slid.v1";
 const fresh = () => ({ name:"", grade:null, weekOverride:null, theme:"system", subject:SUBJ[0].id, unlockAll:false, xp:0, lessons:{}, days:{}, streak:{count:0,last:null}, badges:{}, skills:{}, polls:{}, bestCombo:0, diag:{}, diagRun:{}, diagRunRev:{}, diagSkip:{}, plan:{}, planByGrade:{}, mast:{}, errs:[], skw:{}, srs:{}, seen:{} });
 let S = fresh();
 try { const raw = localStorage.getItem(KEY); if (raw) S = Object.assign(fresh(), JSON.parse(raw)); } catch(e) {}
-EV.observe(S); EV.log("boot", ()=>({ grade:S.grade, subj:S.subject, lessons:Object.keys(S.lessons||{}).length, diags:Object.keys(S.diag||{}), srs:Object.keys(S.srs||{}).length }));
+// стан тіні гіпотез (slid.hyp) читається до boot: boot.hyp — що тінь завантажить (store: 0 — localStorage недоступний; open — скільки відкритих
+// гіпотез у збереженому стані, null — стану немає), HYPS нижче бере той самий запис. Реплей бачить втрату стану між завантаженнями
+// прямо, а не з hyp_open (docs/design/diag-hypothesis-math.md §9 п. 34). Без app/hyp.js чи математики поля немає
+const HYP0 = (() => { if (!window.SLID_HYP || !SUBJ.some(c=>c.id==="math")) return null; let raw = null, st = null;
+  try { raw = localStorage.getItem("slid.hyp"); } catch(e) { return { store:0, st:null }; }
+  try { st = JSON.parse(raw || "null"); } catch(e) {} return { store:1, st: st && st.v === 1 ? st : null }; })();
+EV.observe(S); EV.log("boot", ()=>({ grade:S.grade, subj:S.subject, lessons:Object.keys(S.lessons||{}).length, diags:Object.keys(S.diag||{}), srs:Object.keys(S.srs||{}).length,
+  ...(HYP0 ? { hyp:{ store:HYP0.store, open: HYP0.st ? (Array.isArray(HYP0.st.open) ? HYP0.st.open.length : 0) : null } } : {}) }));
 // квоти бракує — спершу звільнити місце копією черги журналу й станом гіпотез (docs/EVIDENCE.md, slid.hyp): прогрес slid.v1 важливіший
 // за незаписані події й тіньові гіпотези. Потім — стан гіпотез (лише після slid.v1 і лише якщо slid.v1 записано; HYPS нижче)
 let hypAfterSave = () => {};
@@ -164,23 +171,28 @@ const skey = (c,k) => c.id+"."+k;
    після setDock (повідомлення дитині вже показане), у try/catch і з бюджетом часу; події hyp_* — через EV.log. Стан — окремий ключ
    localStorage «slid.hyp», пишеться лише після slid.v1 (save) і поступається йому: save() за браку квоти видаляє slid.hyp, а невдалий
    запис slid.hyp видаляє ключ (гіпотези далі — лише в пам'яті, persist: 0). Дитина нічого нового не бачить; slid.v1, record/detect,
-   SRS і план від трекера не залежать. Без app/hyp.js — заглушка; без IndexedDB чи app/evidence.js трекер працює (події губляться). */
+   SRS і план від трекера не залежать. Без app/hyp.js — заглушка; без IndexedDB чи app/evidence.js трекер працює (події губляться).
+   Події застосунку (не трекера, без rv): hyp_lost — slid.hyp самоочищено, далі persist: 0; hyp_off — тінь вимкнено (виняток чи бюджет),
+   slid.hyp видалено, щоб наступне завантаження не почало зі застарілого стану (§9 п. 34). */
 const HYPS = (() => {
   const H = window.SLID_HYP, M = SUBJ.find(c=>c.id==="math");
   const off = { on:false, newRun(){}, capture(){ return null; }, answer(){}, screen(){}, lessonEnd(){}, diagEnd(){ return null; }, close(){}, reset(){}, persist(){} };
-  if (!H || !M) return off;
+  if (!H || !M || !HYP0) return off;
   try {   // зламаний чи несумісний app/hyp.js (виняток у tracker() тощо) — заглушка, застосунок працює далі (рев'ю E2, P3-3)
   const HKEY = "slid.hyp", BUDGET_MS = 400;
   const perf = () => { try { return performance.now(); } catch(e) { return 0; } };
-  let store = true; try { localStorage.getItem(HKEY); } catch(e) { store = false; }
+  let store = !!HYP0.store;
   const T = H.tracker({ persist: store });
   let on = true, dirty = false, held = false, runN = 0, scrT = perf(), pres = null;   // held — спробу захоплено, slid.hyp запише answer() (один запис на відповідь)
   const runId = () => `${T.seed}.r${runN}`;   // id сесії плеєра (урок / тренування / тест), унікальний між завантаженнями
+  /** Тінь вимкнено до перезавантаження: подія hyp_off і ключ геть — інакше наступне завантаження почало б зі стану до вимкнення
+      (застарілий pend), а реплей бачив усі події після (рев'ю engine-hyp-e2-p3, P3-3). */
+  const shutdown = why => { if (!on) return; on = false; EV.log("hyp_off", { why }); try { localStorage.removeItem(HKEY); } catch(e) {} };
   /** Виклик трекера: помилка чи перевищений бюджет вимикають тінь до перезавантаження (дитина нічого не помічає). */
-  const call = (f, quiet) => { if (!on) return []; const t0 = perf(); let ev = [];
-    try { ev = f() || []; if (!quiet || ev.length) dirty = true; } catch(e) { on = false; ev = []; }
-    if (perf() - t0 > BUDGET_MS) on = false;
+  const call = (f, quiet) => { if (!on) return []; const t0 = perf(); let ev = [], err = false;
+    try { ev = f() || []; if (!quiet || ev.length) dirty = true; } catch(e) { err = true; ev = []; }
     for (const e of ev) EV.log(e.type, e.d);
+    if (err) shutdown("error"); else if (perf() - t0 > BUDGET_MS) shutdown("budget");
     return ev; };
   const presOf = () => pres || (pres = (()=>{ try { return H.preIndex(M); } catch(e) { return {}; } })());
   const poolItem = key => { const [p, id] = String(key).split(":"); const it = (M.pools||[]).find(x=>x.id===p)?.items.find(x=>x.id===id); return it ? { ...it, key, pool:(M.pools||[]).find(x=>x.id===p) } : null; };
@@ -192,7 +204,8 @@ const HYPS = (() => {
   const weakLessons = () => { const w = new Set(); for (const d of M.diags||[]) { const r = S.diag?.[d.id]; if (!r || !r.topics) continue;
     for (const t of d.topics||[]) if (r.topics[t.id] === "gap" || r.topics[t.id] === "shaky") (t.lessons||[]).forEach(l=>w.add(l)); } return w; };
   // невдалий запис slid.hyp або квоти забракло для slid.v1: ключ геть і до перезавантаження не пишеться (гіпотези — лише в пам'яті, persist: 0)
-  const forget = () => { store = false; T.setPersist(0); try { localStorage.removeItem(HKEY); } catch(e) {} };
+  // hyp_lost — для реплею: persist 0 з цього місця (раніше реплей брав його з hyp_open самого застосунку, рев'ю E2-p3 P3-2)
+  const forget = why => { if (store && on) EV.log("hyp_lost", { why }); store = false; T.setPersist(0); try { localStorage.removeItem(HKEY); } catch(e) {} };
   /** Запис slid.hyp — у бюджеті часу тіні (рев'ю E2, P3-1): довший за BUDGET_MS вимикає тінь, як і виклик трекера. */
   const write = () => {
     if (!on || !store || !dirty) return;
@@ -202,16 +215,16 @@ const HYPS = (() => {
       const st = H.mergeState(T.state(), old);
       T.drop(st.closed);   // закриті в іншій вкладці
       localStorage.setItem(HKEY, JSON.stringify(st)); dirty = false;
-    } catch(e) { forget(); }   // самоочищення: slid.v1 важливіший
-    if (perf() - t0 > BUDGET_MS) on = false;
+    } catch(e) { forget("write"); }   // самоочищення: slid.v1 важливіший
+    if (perf() - t0 > BUDGET_MS) shutdown("budget");
   };
   // старт: стан з минулих сесій; гіпотези, старші за 7 днів без перевірки, — expired (після boot, як у реплеї)
-  if (store) { try { const st = JSON.parse(localStorage.getItem(HKEY) || "null"); if (st) T.load(st, resolve); } catch(e) {} }
+  if (store && HYP0.st) { try { T.load(HYP0.st, resolve); } catch(e) {} }   // той самий запис, що в boot.hyp
   call(() => T.tick({ t: Date.now(), day: dkey() }), true);   // без змін — без запису на старті
   write();
   // після save(): slid.v1 записано — slid.hyp слідом; квоти забракло (squeezed) — ключ геть до перезавантаження. Якщо спробу вже захоплено
   // (capture → save() → answer()), пише answer(): один запис slid.hyp на відповідь, а не два
-  hypAfterSave = squeezed => { if (squeezed) forget(); else if (!held) write(); };
+  hypAfterSave = squeezed => { if (squeezed) forget("quota"); else if (!held) write(); };
   // перехід зі сторінки: відкладене відкриття (pend) і лічильники — у slid.hyp. Без сховища — відкрити pend лише коли сторінка справді
   // вивантажується (pagehide без bfcache), щоб подія встигла в копію черги журналу; сховану вкладку (visibilitychange) дитина ще може
   // повернути й дати другу спробу — реплей її бачить (рев'ю E2, P3-2)
@@ -242,7 +255,7 @@ const HYPS = (() => {
     screen(s) { held = false; scrT = perf(); if (C?.id === "math") call(() => T.onScreen({ item: evItem(s), t: Date.now(), day: dkey() })); },
     lessonEnd(l, acc) { call(() => T.onLessonEnd({ l, acc, run: runId(), t: Date.now(), day: dkey() })); },   // запис — у save() кінця уроку
     /** Підсумок для diag_end (до EV.log("diag_end")): { skip — «Ще не знаю» цього тесту, rv }; тінь вимкнено — null. Запис — у save() після. */
-    diagEnd(id) { if (!on || C?.id !== "math") return null; try { const r = T.onDiagEnd({ diag: id }); dirty = true; return r; } catch(e) { on = false; return null; } },
+    diagEnd(id) { if (!on || C?.id !== "math") return null; try { const r = T.onDiagEnd({ diag: id }); dirty = true; return r; } catch(e) { shutdown("error"); return null; } },
     close() { held = false; call(() => T.flush()); write(); },
     /** «Скинути прогрес»: reset для всіх відкритих — до EV.log("reset") (старий pid), потім ключ геть. */
     reset() { call(() => T.onReset({ t: Date.now(), day: dkey() })); dirty = false; try { localStorage.removeItem(HKEY); } catch(e) {} },
