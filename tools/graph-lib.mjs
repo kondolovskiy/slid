@@ -8,13 +8,12 @@
 //   drift — дрейф: попередження validate, помилка лише в graph-report --strict: V1б, V4, V6б, V7б, V8 (у лініях);
 //   warn  — V10б (u на gone-вузол): попередження, не блокує нікого.
 // Кожна знахідка має refs (lessons / diags / pools / nodes, line) — validate --section показує лише ті, що стосуються розділу (R4-P3-3).
-import crypto from "node:crypto"; import fs from "node:fs"; import vm from "node:vm"; import { fileURLToPath } from "node:url";
+import crypto from "node:crypto";
 import { GRADED } from "./lib.mjs";
 
-// app/learn.js поруч із цим файлом (tools/ → app/): та сама функція прив'язки, що в застосунку
-const LEARN = (() => { const f = fileURLToPath(new URL("../app/learn.js", import.meta.url)), ctx = { console }; ctx.window = ctx; vm.createContext(ctx);
-  vm.runInContext(fs.readFileSync(f, "utf8"), ctx, { filename: "app/learn.js" }); return ctx.SLID_LEARN; })();
-export const graphBind = LEARN.graphBind;
+// Прив'язку дає SLID_LEARN.graphBind тієї самої копії app/learn.js, що й решта змісту: викликач передає learn з loadContent()
+// (validate, graph-report, тести) — один realm, Map результату — того самого realm, що й у викликача (рев'ю engine-skg-g3 P3-4).
+// Власної копії learn.js у vm тут немає.
 
 export const DRIFT_TAIL = "потрібна правка graph.js — допиши в inbox для куратора (IDEA GRAPH)";
 export const ID_RE = /^[a-z][a-z0-9-]*$/;
@@ -44,7 +43,8 @@ const teachList = n => (Array.isArray(n.teach) ? n.teach : []).map(t => typeof t
  * opts: origin (розділ → файл), poolOrigin (пул → файл), diagOrigin (тест → файл), graphFile (файл SLID.graph).
  * Повертає { issues, nodes, active, objects, lessons, topics, ties, lines, splitPairs, typical, graph }.
  */
-export function analyzeGraph(c, { origin = {}, poolOrigin = {}, diagOrigin = {}, graphFile } = {}) {
+export function analyzeGraph(c, { learn, origin = {}, poolOrigin = {}, diagOrigin = {}, graphFile } = {}) {
+  if (!learn || typeof learn.graphBind !== "function") throw new Error("analyzeGraph: потрібен learn — SLID_LEARN з loadContent() (.learn)");
   const g = c.graph || null, GF = graphFile || `content/${c.id}/graph.js`;
   const issues = [];
   const add = (cls, rule, where, msg, refs = {}) => issues.push({ cls, rule, where, msg: cls === "drift" ? `граф, дрейф ${rule}: ${msg} — ${DRIFT_TAIL}` : `граф ${rule}: ${msg}`,
@@ -57,7 +57,7 @@ export function analyzeGraph(c, { origin = {}, poolOrigin = {}, diagOrigin = {},
   for (const d of c.diags || []) for (const t of d.topics || []) topics.set(`${d.id}/${t.id}`, { d, t, items: (d.items || []).map((it, i) => [it, i]).filter(([it]) => it.topic === t.id) });
 
   // прив'язка об'єктів і прийняті вузли — з SLID_LEARN.graphBind (одне правило з застосунком); нижче лише перевірки
-  const B = graphBind(c);
+  const B = learn.graphBind(c);
   // ---- V1а: формат графа й вузлів
   const nodes = B.nodes, seenIds = new Set(), raw = g && Array.isArray(g.nodes) ? g.nodes : [];
   if (g) {

@@ -363,7 +363,7 @@ for (const s of soon) if (!s.colors?.light?.accent) E(`catalog ${s.id}`, "нем
   // вона йде попередженням з позначкою, тож «0 помилок» розділу (AGENTS.md §3 п. 8) досяжне. Повний прогін і CI — ПОМИЛКА.
   const scoped = !!(onlySec || onlyDiag);
   for (const c of subjects) { const GF = content.graphOrigin?.[c.id] || `content/${c.id}/graph.js`;
-    for (const is of analyzeGraph(c, { origin, poolOrigin: content.poolOrigin, diagOrigin: content.diagOrigin, graphFile: GF }).issues) {
+    for (const is of analyzeGraph(c, { learn, origin, poolOrigin: content.poolOrigin, diagOrigin: content.diagOrigin, graphFile: GF }).issues) {
       if (!inScope(is)) continue;
       if (is.cls === "error" && scoped && is.where.startsWith(GF)) W(is.where, `помилка графа (куратор), не блокує розділ — ${is.msg}`);
       else (is.cls === "error" ? E : W)(is.where, is.msg); } } }

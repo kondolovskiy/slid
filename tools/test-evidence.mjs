@@ -59,6 +59,19 @@ function mem(opt = {}) {
     async clear() { st.ev.clear(); } };
 }
 
+// ---------- 5а. dt і t не залежать від ціни data() (рев'ю engine-skg-g3 P3-1: перша item.u розбирає граф) ----------
+// Той самий маршрут «екран → відповідь» з важкою data() (як із graph.js) і з легкою (без графа): однакові answer.dt, J.dt, t і ms.
+{ const run = heavy => { let m = 0, t = 5000; const en = env({ mono: () => m, now: () => t }), J = C.create(mem(), en, E.LIMITS);
+    J.log("screen", { i: 0 }); m += 1234; t += 1234;
+    J.log("answer", () => { if (heavy) { m += 47; t += 47; } return { i: 0, raw: "5", ...(heavy ? { u: ["n"] } : {}) }; });
+    const dt = J.dt; en.tick(); return J.flush().then(() => dt); };
+  const [a, b] = [await run(false), await run(true)];
+  eq([a, b], [1234, 1234], "dt — час до обчислення даних події: з важкою data() (розбір графа) той самий, що без неї");
+  let m = 0, t = 0; const b2 = mem(), en = env({ mono: () => m, now: () => t }), J = C.create(b2, en, E.LIMITS);
+  J.log("screen", {}); m = 100; t = 100; J.log("answer", () => { m += 50; t += 50; return {}; }); en.tick(); await J.flush();
+  const ev = [...b2.st.ev.values()];
+  eq(ev.map(e => [e.ms, e.t, e.dt ?? null]), [[0, 0, null], [100, 100, 100]], "ms і t події — момент виклику log, не після data()"); }
+
 // ---------- 5. черга, пакети, seq, did/pid/cv, dt, by ----------
 { const b = mem(), en = env(), J = C.create(b, en, { ...E.LIMITS, batch: 3, delay: 100 });
   J.observe({ grade: 6, srs: {}, plan: {} });                         // перший знімок — без подій

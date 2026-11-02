@@ -116,7 +116,13 @@ for (const [name, args] of [["невідома лінія", ["--line", "nope"]],
 
 // ---- прив'язка напряму (analyzeGraph): lesson завдання тесту (P2-1), перенаправлення gone, boss без вузлів by: "u" (рев'ю G1, P3-1)
 { const { loadContent } = await import(path.join(tmp, "tools/lib.mjs")), { analyzeGraph } = await import(path.join(tmp, "tools/graph-lib.mjs"));
-  const bind = mut => { write(tree(mut)); const C = loadContent(tmp), m = C.subjects.find(s => s.id === "math"); return analyzeGraph(m, { origin: C.origin }).objects; };
+  const bind = mut => { write(tree(mut)); const C = loadContent(tmp), m = C.subjects.find(s => s.id === "math"); return analyzeGraph(m, { learn: C.learn, origin: C.origin }).objects; };
+  { // P3-4: прив'язка — з learn викликача (loadContent().learn), не з власної копії learn.js; без learn — явна помилка
+    const C = loadContent(tmp), m = C.subjects.find(s => s.id === "math"); let calls = 0;
+    const A = analyzeGraph(m, { learn: { ...C.learn, graphBind: x => (calls++, C.learn.graphBind(x)) }, origin: C.origin });
+    ok(calls === 1 && A.nodes.constructor === C.learn.graphBind(m).nodes.constructor, `analyzeGraph бере graphBind з переданого learn (викликів ${calls}; Map — того самого realm)`);
+    let err = ""; try { analyzeGraph(m, { origin: C.origin }); } catch (e) { err = e.message; }
+    ok(/потрібен learn/.test(err), "analyzeGraph без learn — помилка, а не друга копія learn.js", err); }
   const di = (os, i) => os.find(o => o.kind === "ditem" && o.diag === "dgfx" && o.i === i)?.nodes.join("+");
   let os = bind(M => { M.diags[0].topics[0].lessons = ["fxal1", "fxal2"]; M.diags[0].items[0].lesson = "fxal1"; M.diags[0].items[1].lesson = "fxal2"; });
   ok(di(os, 0) === "na" && di(os, 1) === "nb", `двоурокова тема з lesson: кожне завдання — вузол свого уроку (${di(os, 0)}, ${di(os, 1)})`);

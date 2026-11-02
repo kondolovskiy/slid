@@ -2091,7 +2091,7 @@ async def graph_g3_checks(browser, url):
     # очікувані вузли — з graph-lib (той самий зміст із диска; правило — SLID_LEARN.graphBind)
     js = """import('%s').then(async ({ loadContent }) => { const { analyzeGraph } = await import('%s');
       const C = loadContent(), m = C.subjects.find(s => s.id === 'math'), out = {};
-      for (const o of analyzeGraph(m, { origin: C.origin }).objects) {
+      for (const o of analyzeGraph(m, { learn: C.learn, origin: C.origin }).objects) {
         const k = o.kind === 'screen' ? 'lesson|' + o.l + '#' + o.i : o.kind === 'item' ? 'practice|' + o.pool + ':' + o.id : o.kind === 'ditem' ? 'diag|' + o.diag + '#' + o.i : null;
         if (k) out[k] = o.nodes.length ? o.nodes : null; }
       console.log(JSON.stringify(out)); })""" % ((ROOT / 'tools/lib.mjs').as_uri(), (ROOT / 'tools/graph-lib.mjs').as_uri())

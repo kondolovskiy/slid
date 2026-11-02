@@ -203,9 +203,11 @@
         try {
           if (type === "answer") lastDt = null;
           if (!enabled) return;
+          // час — ДО обчислення даних: data() може бути важкою (перша item.u розбирає граф умінь, ≈ 10–50 мс), а dt і t не мають
+          // залежати від того, чи є в предмета graph.js (тінь G3; рев'ю engine-skg-g3 P3-1)
+          const mono = env.mono(), now = env.now();
           const d = typeof data === "function" ? data() : data;
-          const mono = env.mono();
-          const e = makeEvent(type, d, { ...env, mono: () => mono, n: ++n, sid, pid: pidNew || (ids && ids.pid) || null }, lim);
+          const e = makeEvent(type, d, { ...env, mono: () => mono, now: () => now, n: ++n, sid, pid: pidNew || (ids && ids.pid) || null }, lim);
           if (e.d && e.d.trunc) truncated++;
           if (type === "screen") scrT = mono;
           else if (type === "answer" && scrT !== null) lastDt = e.dt = Math.round(mono - scrT);   // час від показу екрана до цієї спроби

@@ -691,6 +691,39 @@ const sum = (R, pid) => R.events.filter(e => e.pid === pid).map(e => e.type === 
   eq(G.openDiff.map(x => [x.old.sig.includes("S12"), x.new && x.new.sig.includes("S12")]), [[true, false], [true, false]], "G3: openDiff — дві гіпотези e01 без S12");
   const R2 = replay(JSON.parse(JSON.stringify(X)), E);
   eq(JSON.stringify(R2.graph), JSON.stringify(G), "G3: порівняння детерміноване");
+  // ---- G3-p3 (рев'ю engine-skg-g3 P3-3): тести на мутанти, що вижили
+  // а) тіньовий трекер T2 дзеркалить УСІ виклики T0 (tick, onReset, onDiagEnd, flush, load, setPersist…), не лише onAnswer;
+  //    без ліній — той самий вхід подія в подію; з графом — різниця лише в pres / preWeak onAnswer
+  const spyEnv = E0 => { const inst = [], hyp = { ...E0.hyp, tracker: o => { const t = E0.hyp.tracker(o), calls = []; inst.push(calls);
+      return new Proxy(t, { get: (x, m) => typeof x[m] !== "function" ? x[m] : (...a) => { calls.push([m, JSON.stringify(a)]); return x[m](...a); } }); } };
+    return { E: { ...E0, hyp }, inst }; };
+  const mirror = (X0, E0) => { const { E: Es, inst } = spyEnv(E0); replay(JSON.parse(JSON.stringify(X0)), Es);
+    const norm = c => c.map(([m, a]) => m === "onAnswer" ? [m, JSON.stringify((({ pres, preWeak, ...r }) => r)(JSON.parse(a)[0]))] : [m, a]);
+    const pairs = []; for (let i = 0; i < inst.length; i += 2) pairs.push([inst[i], inst[i + 1] || []]);
+    return { same: pairs.every(([a, b]) => JSON.stringify(norm(a)) === JSON.stringify(norm(b))), exact: pairs.every(([a, b]) => JSON.stringify(a) === JSON.stringify(b)),
+      methods: [...new Set(inst.flat().map(x => x[0]))].sort(), trackers: inst.length }; };
+  const noLines = { ...E, graph: { ...E.graph, lines: [] } };
+  const M1 = mirror(synth(), noLines), M2 = mirror(X, E), M3 = mirror(X, noLines);
+  eq([M1.exact, M3.exact, M2.same, M2.exact, M1.trackers, M2.trackers], [true, true, true, false, 14, 6], "G3-p3: T2 = T0 виклик у виклик (без ліній — дослівно; з лінією frac — крім pres / preWeak)");
+  eq(["tick", "onReset", "flush", "onScreen", "onLessonEnd", "onAnswer", "setPersist"].filter(m => !M1.methods.includes(m)).concat(["onDiagEnd", "tick", "flush"].filter(m => !M2.methods.includes(m))), [],
+    `G3-p3: дзеркалення покриває tick, onReset, onDiagEnd, flush (synth: ${M1.methods}; G3: ${M2.methods})`);
+  // б) лінія завдання тесту — за темою «тест/тема», не за уроками теми: тема dg6/frac-of поза лінією (уроки m3 — у ній) → її 2 відповіді поза лінією
+  const nFracOf = X.events.filter(x => x.type === "answer" && x.d.mode === "diag" && x.d.topic === "frac-of").length;
+  const Rb = replay(JSON.parse(JSON.stringify(X)), { ...E, graph: { ...E.graph, lines: E.graph.lines.map(x => ({ ...x, topics: new Set([...x.topics].filter(t => t !== "dg6/frac-of")) })) } });
+  eq([nFracOf, G.inLine - Rb.graph.inLine], [2, 2], "G3-p3: тема тесту поза лінією — її завдання поза лінією, хоч уроки теми в лінії");
+  // в) реплей передає в graphPre live-вузли (без gone-вузла іншої sk), не nodes: e01 з u на gone → frac-mixed (frac ≠ ops)
+  const Ec = hypEnv(ROOT, process.env.HYP_FILE || null), mc = Ec.math;
+  mc.graph = { ...mc.graph, nodes: [...mc.graph.nodes, { id: "x-mul-old", sk: "ops", name: "x", teach: [], gone: "frac-mixed", st: "draft" }] };
+  mc.pools.find(p => p.id === "pg6m2").items.find(it => it.id === "e01").u = "x-mul-old"; Ec.graph = Ec.learn.graphBind(mc);
+  const ec = Ec.graph.items.get("pg6m2:e01"), Rc = replay(JSON.parse(JSON.stringify(X)), Ec).graph.examples.filter(x => x.at.key === "pg6m2:e01");
+  eq([ec.nodes, ec.live, Rc.length, Rc.map(x => [x.u, x.presNew.slice().sort()])[0]], [["frac-mixed"], [], 3, [[], ["g6m2l2", "m1"]]],
+    "G3-p3: u на gone іншої sk — вузол-ціль (frac-mixed → div-rem, m4a) не стає вузлом пари в реплеї");
+  // г) rev результату — з diag_end.rev, інакше з diag_start.rev (журнал без diag_end.rev): BAD на завданні редакції 2 рахується лише з rev 2
+  const Ee = hypEnv(ROOT, process.env.HYP_FILE || null); Ee.math.diags.find(d => d.id === "dg6").items[1].rev = 2; Ee.graph = Ee.learn.graphBind(Ee.math);
+  const q3 = rv => ({ ...X, events: JSON.parse(JSON.stringify(X.events.filter(x => x.pid === "q3"))).map(x => x.type === "diag_start" ? { ...x, d: { ...x.d, rev: rv } }
+    : x.type === "diag_end" ? { ...x, d: (({ rev, ...r }) => r)(x.d) } : x) });
+  const pwE = rv => replay(q3(rv), Ee).graph.examples.filter(x => x.at.key === "pg6m2:e01").map(x => x.preWeakNew);
+  eq([pwE(2), pwE(1)], [[true], [false]], "G3-p3: rev з diag_start (diag_end без rev): редакція 2 — BAD frac-read рахується, редакція 1 — ні");
 }
 
 console.log(fails ? `test-hyp: ${fails} з ${n} перевірок не пройшли` : `test-hyp: усі ${n} перевірок пройшли`);

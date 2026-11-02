@@ -1948,8 +1948,13 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
   eq(L.practiceItems(K, subj, ctx()).map(it => it.lesson), ["l6a", "l6z", "l7a", "l7b"], "P3-3: practiceItems з ctx — відкрите планом (p1 ok, known)");
 }
 /* ---------- Skill Graph G3 (docs/design/skill-graph-math.md §2.4, §4.1, §4.2): graphBind, nodeState, graphPre ----------
-   1) Еквівалентність правила прив'язки: graphBind (одне правило для застосунку й tools/graph-lib.mjs) = еталон — дослівне правило G1 з
-      graph-lib до виносу (refBind нижче), на справжньому змісті й на синтетичних випадках (gone, boss, u теми, lesson завдання, by: "u").
+   1) Еквівалентність правила прив'язки: graphBind (одне правило для застосунку й tools/graph-lib.mjs) = еталон — правило G1 з graph-lib
+      до виносу (refBind нижче; за змістом те саме — parseU, redirect, typical з першим вузлом, boss-кандидати, lesson завдання, u теми, — але
+      НЕ дослівна копія: як і graphBind, refBind складає записи в Map за ключами «урок#i», «пул:вправа», «тест#i», «тест/тема»), на справжньому
+      змісті й на синтетичних випадках (gone, boss, u теми, lesson завдання, by: "u"). Межа (рев'ю engine-skg-g3 P3-2): еквівалентність —
+      лише на ВАЛІДНОМУ змісті. При дублікатах id (два уроки, дві теми тесту, дві вправи пулу чи два пули з одним id, вправа без id) G1
+      прив'язував кожен об'єкт окремо, а graphBind бере для обох прив'язку останнього; такий зміст і так червоний (validate «id уроку … уже є»,
+      validatePool / validate тесту «id порожній або повторюється», registry «Пул … уже зареєстровано») — перевірка нижче.
    2) nodeState на фіксованих профілях: без даних — «невідомо»; вузли розщепленої пари різняться лише за S.seen / S.diag.res; HALF не
       послаблює; завдання з rev новішим за результат — не рахується; u на gone-вузол іншої sk — не рахується; S не змінюється. */
 { const { loadContent, GRADED } = await import("./lib.mjs");
@@ -2007,6 +2012,17 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
   eq([r["d|dg6#1"].nodes, r["d|dg6#13"].nodes, r["t|dg6/frac"].nodes], [["frac-mixed"], ["frac-read", "frac-mixed"], ["frac-mixed", "frac-read"]], "двоурокова тема: №1 з lesson m5 — frac-mixed, №13 без lesson — обидва уроки");
   mut(m => { m.graph = { ...m.graph, nodes: m.graph.nodes.map(n => n.id === "frac-mixed" ? { ...n, teach: ["m5", "m6"] } : n) }; }, "boss: teach на boss-уроці");
   mut(m => { m.graph = { ...m.graph, nodes: [...m.graph.nodes, { id: "frac-read2", sk: "frac", name: "x", teach: ["m1"], st: "draft" }, { id: "Bad id", sk: "frac", teach: ["m1"] }, null, { id: "frac-read", sk: "num", teach: ["m2"] }] }; }, "два типові вузли пари, хибні вузли, дубль id");
+  { // межа еквівалентності (P3-2): зміст із дублікатами id, на якому graphBind ≠ G1, — завжди червоний; graphBind бере останній запис ключа
+    const C = loadContent(), m = C.subjects.find(s => s.id === "math"), p = m.pools.find(x => x.items.length > 1), d = m.diags.find(x => x.topics.length > 1);
+    const secL = new Map(m.sections.map(s => [s.id, { lessons: (s.lessons || []).map(l => l.id) }]));
+    const pd = { ...p, items: [p.items[0], { ...p.items[1], id: p.items[0].id }, ...p.items.slice(2)] }, pn = { ...p, items: [{ ...p.items[0], id: undefined }, ...p.items.slice(1)] };
+    const dd = { ...d, topics: [d.topics[0], { ...d.topics[1], id: d.topics[0].id }, ...d.topics.slice(2)] };
+    const red = (list, re) => list.some(x => re.test(x));
+    eq([red(L.validatePool(pd, { sections: secL, skills: m.skills }), /повторюється/), red(L.validatePool(pn, { sections: secL, skills: m.skills }), /порожній або повторюється/),
+      red(L.validate(dd, { sections: new Map(m.sections.map(s => [s.id, { grade: s.grade }])), skills: m.skills, lessons: new Map(m.sections.flatMap(s => (s.lessons || []).map(l => [l.id, { grade: s.grade }]))) }), /тема .*повторюється/)],
+      [true, true, true], "дублікати id (вправа пулу, вправа без id, тема тесту) — помилка validate (межа еквівалентності graphBind = G1)");
+    const B = L.graphBind({ ...m, pools: [pd] }), k = `${p.id}:${p.items[0].id}`;
+    eq([B.items.size, B.items.has(k)], [p.items.length - 1, true], "дубль id вправи — один ключ «пул:вправа» (бере останню; документовано, зміст червоний)"); }
   mut(m => { m.graph = null; }, "без графа");
   mut(m => { lesson(m, "m3").screens[8].u = []; m.pools.find(p => p.id === "pms1").items[0].u = ["frac-of-num", "frac-of-num"]; }, "u: [] і дубль у u");
 
@@ -2034,6 +2050,9 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
   eq([L.inLine(SUBJ, { l: "la" }), L.inLine(SUBJ, { l: "lp" }), L.inLine(SUBJ, { topic: "d1/tc" }), L.inLine(SUBJ, { topic: "d1/tp" })], [["ln"], [], ["ln"], []], "inLine: лише лінії verified/approved");
   const gp = L.graphPre(SUBJ, { ls: ["la"], sk: "frac", nodes: ["na"] });
   eq([gp.pair.sort(), gp.pre.sort(), gp.lessons.sort()], [["na", "nb"], ["np", "nr"], ["lp", "lr"]], "graphPre: вузли пари (з by: u) → pre w 2 і part, без w 1; уроки teach");
+  // G3-p3 (рев'ю P3-3, мутант pres-incl-pair-lessons): урок вузла-передумови, що є уроком самої пари, не стає новим pres
+  const gpl = L.graphPre(SUBJ, { ls: ["la", "lp"], sk: "frac", nodes: ["na"] });
+  eq([gpl.pre.sort(), gpl.lessons.sort()], [["np", "nr"], ["lr"]], "graphPre: передумова np з teach ∋ lp (урок пари) — вузол лишається, урок lp у pres ні");
   const st = (S, id) => { const x = L.nodeState(S, SUBJ, id); return x; };
   const E0 = st({}, "na");
   eq([E0.st, E0.weak, E0.diag.items.length, E0.practice.items.length, E0.errs], ["unknown", false, 0, 0, 0], "nodeState: без даних — «невідомо», не прогалина");
@@ -2061,6 +2080,13 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
   const P3 = { seen: { "p1:i4": 0 }, diag: { d1: { res: { 4: L.BAD }, rev: 2 } } };
   eq([st(P3, "np").practice.items.length, st(P3, "np").diag.items.length, st(P3, "np").st], [0, 0, "unknown"], "u на gone-вузол іншої sk — не рахується в nodeState");
   eq(L.graphPre(SUBJ, { ls: ["la"], sk: "frac", nodes: B.items.get("p1:i4").live }).pre.sort(), ["np", "nr"], "gone іншої sk не стає вузлом пари в graphPre");
+  // G3-p3 (рев'ю P3-3, мутант ditem-topic-u-live): u ТЕМИ на gone-вузол іншої sk — завдання теми без свого u не рахуються вузлу-цілі
+  { const S2 = { ...SUBJ, diags: [{ id: "d2", grade: 6, topics: [{ id: "tg", kind: "pre", lessons: ["lp"], u: "nold" }, { id: "tk", kind: "pre", lessons: ["lp"], u: "nold2" }],
+      items: [{ topic: "tg", sk: "frac" }, { topic: "tg", sk: "frac", u: "na" }, { topic: "tk", sk: "frac" }] }] }, B2 = L.graphBind(S2);
+    const e0 = B2.ditems.get("d2#0"), e2 = B2.ditems.get("d2#2");
+    eq([e0.how, e0.nodes, e0.live, e0.stale, e2.live, e2.stale], ["u-topic", ["np"], [], ["nold"], ["na"], []], "graphBind: u теми — nodes з перенаправленням, live без gone іншої sk (тієї самої sk — ціль)");
+    const R = { diag: { d2: { res: { 0: L.BAD, 1: L.BAD, 2: L.BAD }, rev: 1 } } };
+    eq([L.nodeState(R, S2, "np").diag.items.length, L.nodeState(R, S2, "np").weak, L.nodeState(R, S2, "na").diag.items.map(x => x.i)], [0, false, [1, 2]], "nodeState: завдання з u теми на gone іншої sk не слабить ціль; gone тієї самої sk — рахується"); }
   // тренування: ≥ 2 помилки й ≥ половини — weak; тема уроку просіла (weakRec) — weak
   eq([st({ seen: { "p1:i1": 0 } }, "na").st, st({ seen: { "p1:i1": 0 }, mast: { la: { r: "0011" } } }, "na").st, st({ lessons: { la: { done: true } } }, "na").st], ["ok", "weak", "ok"], "st: одна помилка — ok; просіла тема уроку — weak; пройдений урок — ok");
   // S не змінюється
