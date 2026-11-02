@@ -9,8 +9,11 @@
 (function () {
   const VOWELS = "аеєиіїоуюяАЕЄИІЇОУЮЯ";
   const isVowel = ch => VOWELS.includes(ch);
-  const NONE = "—";
-  const isSet = v => !!v && typeof v.has === "function" && typeof v.size === "number";   // Set з будь-якого realm (vm у тестах)   // варіант «нічого не писати»
+  const NONE = "—";   // варіант «нічого не писати» у розмітці; на екрані — «∅» з легендою (тире й «нічого» не мають виглядати однаково)
+  const DASH = "\u2013";   // варіант-тире в пропуску: у розмітці коротке «–», на екрані — справжнє тире «—»
+  /** Як показати варіант пропуску: { text, label } (label — для екранного диктора) */
+  const optView = o => o === NONE ? { text: "\u2205", label: "нічого не писати" } : o === DASH ? { text: "\u2014", label: "тире" } : { text: o, label: null };
+  const isSet = v => !!v && typeof v.has === "function" && typeof v.size === "number";   // Set з будь-якого realm (vm у тестах)
 
   /** gaps: [{t:"text", v:"с"}, {t:"gap", opts:["е","и"], correct:0}, …] або { error } */
   function parseGaps(text) {
@@ -171,11 +174,11 @@
   const TYPES = ["gaps", "pick", "stress", "word", "split"];
   /** Текст вправи, який дитина читає (для метрик stats/validate): пропуски — правильним варіантом, без дужок і «+» */
   function readText(s) {
-    if (s.type === "gaps" && typeof s.text === "string") return s.text.replace(/\{([^}]*)\}/g, (m, x) => (x.split("|").find(o => o.trim().startsWith("*")) || "").replace(/^\s*\*/, "").replace(NONE, "").trim());
+    if (s.type === "gaps" && typeof s.text === "string") return s.text.replace(/\{([^}]*)\}/g, (m, x) => (x.split("|").find(o => o.trim().startsWith("*")) || "").replace(/^\s*\*/, "").replace(NONE, "").replace(DASH, "\u2014").trim());
     if (s.type === "pick" && typeof s.text === "string") return s.text.replace(/[[\]]/g, "");
     if (s.type === "stress" && Array.isArray(s.words)) return s.words.join(", ").replace(/\+/g, "");
     if (s.type === "split") return [].concat(s.word)[0]?.replace?.(/\|/g, "") || "";
     return "";
   }
-  window.SLID_LANG = { TYPES, readText, NONE, isVowel, parseGaps, parsePick, parseStress, parseSplit, normWord, wordAnswers, check, solution, issues, sameCuts };
+  window.SLID_LANG = { TYPES, readText, NONE, DASH, optView, isVowel, parseGaps, parsePick, parseStress, parseSplit, normWord, wordAnswers, check, solution, issues, sameCuts };
 })();

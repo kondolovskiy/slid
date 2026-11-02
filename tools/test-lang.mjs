@@ -101,6 +101,13 @@ const no = (v, msg) => eq(!!v, false, msg);
   eq(L.readText({ type: "gaps", text: "с{*е|и}ло, ден{ь|*—}ки" }), "село, денки", "readText: gaps");
   eq(L.readText({ type: "pick", text: "[Сонце] світить." }), "Сонце світить.", "readText: pick");
 }
+/* «нічого» і тире не виглядають однаково (u5s9) */
+{ eq(L.optView("—"), { text: "\u2205", label: "нічого не писати" }, "optView: «—» у розмітці → ∅");
+  eq(L.optView("\u2013"), { text: "\u2014", label: "тире" }, "optView: «–» у розмітці → тире «—»");
+  eq(L.optView("ь"), { text: "ь", label: null }, "optView: звичайний варіант");
+  eq(L.readText({ type: "gaps", text: "Ніхто не спав {*–|:} ні дорослі, ні діти. Ден{ь|*—}ки." }), "Ніхто не спав — ні дорослі, ні діти. Денки.", "readText: тире і «нічого»");
+  eq(L.parseGaps("а {*–|—|,} б").gaps[0].opts.length, 3, "gaps: тире і «нічого» — різні варіанти");
+}
 /* розв'язок дає правильну відповідь */
 for (const s of [{ type: "gaps", text: "с{*е|и}ло" }, { type: "pick", text: "[а] б" }, { type: "stress", words: ["м+ама"] }, { type: "word", answer: "так" }, { type: "split", word: "ма|ма" }])
   ok(L.check(s, L.solution(s)), `solution → check: ${s.type}`);

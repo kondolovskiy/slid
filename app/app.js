@@ -1104,7 +1104,7 @@ const numShow = v => String(v).replace(".",",").replace("-","−");
 /* мовні вправи (app/lang.js, docs/CONTENT_SCHEMA.md §4.1): розмітка, стан st, позначки */
 function langHtml(s){
   if(s.type==="gaps"){ const g=LANG.parseGaps(s.text); st=g.gaps.map(()=>null);
-    const gapHtml=p=>`<span class="gap" role="group" aria-label="Пропуск ${p.n+1}">${p.opts.map((o,k)=>`<button type="button" class="gopt" data-g="${p.n}" data-o="${k}" aria-pressed="false"${o===LANG.NONE?' aria-label="нічого не писати"':""}>${esc(o)}</button>`).join("")}</span>`;
+    const gapHtml=p=>`<span class="gap" role="group" aria-label="Пропуск ${p.n+1}">${p.opts.map((o,k)=>`<button type="button" class="gopt" data-g="${p.n}" data-o="${k}" aria-pressed="false"${LANG.optView(o).label?` aria-label="${LANG.optView(o).label}"`:""}>${esc(LANG.optView(o).text)}</button>`).join("")}</span>`;
     // слово з пропуском — у span.gw (white-space: nowrap), щоб рядок не переносився всередині слова поруч із пропуском
     let out="", open=false; const O=()=>{ if(!open){ out+='<span class="gw">'; open=true; } }, X=()=>{ if(open){ out+="</span>"; open=false; } };
     g.parts.forEach((p,k)=>{ const pg=g.parts[k-1]?.t==="gap", ng=g.parts[k+1]?.t==="gap";
@@ -1113,7 +1113,7 @@ function langHtml(s){
       if(pg){ const h=v.match(/^[^\s<>]*/)[0]; out+=h; v=v.slice(h.length); if(v||!ng) X(); if(!v) return; }
       if(ng){ const t=v.match(/[^\s<>]*$/)[0]; out+=v.slice(0,v.length-t.length); X(); O(); out+=t; } else out+=v; });
     X();
-    return `<div class="ltext">${out}</div>`; }
+    return `<div class="ltext">${out}</div>${g.gaps.some(p=>p.opts.includes(LANG.NONE))?`<div class="fix">∅ — нічого не писати.</div>`:""}`; }
   if(s.type==="pick"){ const p=LANG.parsePick(s.text); st=new Set();
     return `<div class="ltext">${p.parts.map(x=>x.t==="text"? esc(x.v) : `<button type="button" class="pw" data-w="${x.n}" aria-pressed="false">${esc(x.v)}</button>`).join("")}</div><div class="fix">Торкнись потрібних слів. Ще раз — щоб зняти вибір.</div>`; }
   if(s.type==="stress"){ const ws=s.words.map(LANG.parseStress); st=ws.map(()=>null);
