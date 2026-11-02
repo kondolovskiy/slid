@@ -4,7 +4,7 @@ claimed_at: 2026-11-02T11:30:29.625Z
 id: engine-unit-hint-p3
 type: engine
 subject: math
-status: todo
+status: review
 claimed_by: engineer-uh-p3
 created: 2026-11-02
 depends_on: [engine-unit-hint]
