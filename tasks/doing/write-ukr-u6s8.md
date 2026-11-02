@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-02T18:22:58.970Z
 id: write-ukr-u6s8
 type: write-section
 subject: ukr
@@ -6,7 +8,7 @@ grade: 6
 section: u6s8
 weeks: [21, 24]
 status: todo
-claimed_by:
+claimed_by: writer-u6s8
 created: 2026-11-02
 ---
 # Написати розділ «Відмінювання іменників» (Українська мова, 6 клас)
