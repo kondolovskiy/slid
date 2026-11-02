@@ -45,3 +45,8 @@ _engineer-tools-p3, 2026-11-01, гілка wt-tp3 (основа d83c2a9)._
 - Тінь вимкнено бюджетом → застарілий `slid.hyp` (pend) лишається — видаляти ключ або подія `hyp_off`.
 - Мутант N1 (`answer()` не скидає `held`) — тест, що лічильник записано наприкінці тесту рівня.
 - tools/hyp-replay.mjs:332 — «N подій hyp_*» тепер включає diag_end.
+
+### Виправлення за рев'ю (reports/review/tools-diff-answers-p3.md, 1fca259)
+- **P2-1:** частина 2 тепер на фікстурі `tools/fixtures/learn-b799dfa.js` (дослівно `git show b799dfa:app/learn.js`, 184 758 Б), закоміченій у тимчасовому репозиторії як «старий» (як 1б); перевірка `has b799dfa` прибрана, плюс перевірка основного блоку (mainBad 0). Від історії проєкту тест не залежить → повернуто в CI (`pages.yml`, крок після test-make-tasks; коментар оновлено), шапка тесту, docs/PERSONALIZATION_QA.md, docs/PUBLISHING.md оновлено.
+- Клон `git clone --depth 1 --branch wt-tp3` (scratchpad/tp3-mut-shallow/c1, shallow, b799dfa недосяжний): test-diff-answers 26 ok, 0 ✗. Мутанти на цьому клоні (scratchpad/tp3-mut-shallow/run.sh, summary.txt): D1 (9 ✗), D2 (7 ✗), D3 (6 ✗), D4 (3 ✗), D5 (11 ✗), D6 (2 ✗) — усі вбито.
+- **P3-2, P3-3** — не робив, занотовано в tasks/todo/engine-hyp-e4-shadow-routes.md. **P3-1** (sw.js) — у коміті злиття.
