@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-02T18:39:02.248Z
 id: fix-ukr-pick-groups
 type: fix-section
 subject: ukr
 status: todo
-claimed_by:
+claimed_by: writer-fix-pick
 created: 2026-11-02
 ---
 # ukr: pick, де багатослівні кнопки видають відповідь (12 екранів)
