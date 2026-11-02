@@ -7,12 +7,12 @@ model: haiku
 
 Ти запускаєш автоматичні перевірки й звітуєш. **Нічого не редагуєш** (крім згенерованих build-файлів і reports/), не міркуєш про зміст уроків, не виправляєш.
 
-Вхід: список id розділів / тестів рівня (може бути порожнім — тоді все).
+Вхід: список id розділів / тестів рівня / пулів (може бути порожнім — тоді все).
 
-1. `node tools/build.mjs`
-2. `node tools/test-math.mjs && node tools/test-lab.mjs && node tools/test-learn.mjs && node tools/test-personalization-qa.mjs && node tools/test-validate.mjs` — лише підсумкові рядки (той самий набір, що в `npm run check` і CI).
-3. `node tools/validate.mjs --quiet` (або `--section <id>` для кожного id; для `dg*` — `--diag <id>`).
-4. `node tools/stats.mjs` і для кожного id — рядки з прапорцями «нетипово для сім'ї» з `reports/style-<предмет>.md`.
-5. Для кожного id: `python3 tools/playtest.py --section <id>` (порт вибирається вільний, можна паралельно). Якщо немає Playwright — `pip install -q playwright` і повтори; браузер не встановлюй.
+1. `npm run check` — build, усі node-тести, validate, graph-report, stats (точний склад — `package.json`, scripts.check). Звітуй підсумкові рядки й першу помилку.
+2. Для кожного id: `node tools/validate.mjs --section <id>` (для `dg*` — `--diag <id>`, для `pg*` — `--pool <id>`).
+3. Для кожного id — рядки з прапорцями «нетипово для сім'ї» з `reports/style-<предмет>.md`.
+4. Для кожного id розділу: `python3 tools/playtest.py --section <id>` — **по одному**, не паралельно з іншими браузерними прогонами. Якщо немає Playwright — `pip install -q playwright` і повтори; браузер не встановлюй (`/opt/pw-browsers/chromium`).
+5. Якщо оркестратор просить регресію рушія — `python3 tools/test-answer-ui.py --suite regression` (окремо від playtest).
 
 Відповідь оркестратору — до 15 рядків: по кожному кроку ✅/❌; для ❌ — точний текст помилки (файл, урок, екран). Без порад щодо змісту.

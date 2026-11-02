@@ -354,13 +354,13 @@ for (const s of soon) if (!s.colors?.light?.accent) E(`catalog ${s.id}`, "нем
 // Помилки графа (V1а, V2, V3, V5, V6а, V7а, V10а) — ПОМИЛКИ; дрейф (V1б, V4, V6б, V7б, V8 у лініях) і V10б — попередження:
 // дрейф виправляє лише куратор у graph.js, тож автора й CI він не блокує (блокує graph-report --strict). V8 поза лініями й V9 — лише graph-report.
 // З --section/--diag/--pool — лише знахідки, що стосуються уроків цього розділу, цього тесту чи пулу (R4-P3-3): чужа помилка куратора
-// не виглядає помилкою автора (AGENTS.md §3 п. 8). Повний прогін і CI бачать усі.
+// не виглядає помилкою автора (AGENTS.md §7). Повний прогін і CI бачать усі.
 { const secLessons = new Set(onlySec ? subjects.flatMap(c => c.sections.filter(x => x.id === onlySec).flatMap(x => (x.lessons || []).map(l => l.id))) : []);
   const inScope = is => onlySec ? is.lessons.some(l => secLessons.has(l)) : onlyDiag ? is.diags.includes(onlyDiag) || is.pools.includes(onlyDiag) : true;
   if (!onlySec && !onlyDiag) for (const x of content.graphs || []) if (!subjects.some(c => c.id === x.subject))
     E(content.graphOrigin?.[x.subject] || "SLID.graph", `граф V1а: невідомий предмет «${x.subject}» — граф не прив'язано`);
   // У --section/--diag/--pool помилка самого graph.js (куратор) стосується уроків розділу, але автор її не виправить (рев'ю G1, P3-4):
-  // вона йде попередженням з позначкою, тож «0 помилок» розділу (AGENTS.md §3 п. 8) досяжне. Повний прогін і CI — ПОМИЛКА.
+  // вона йде попередженням з позначкою, тож «0 помилок» розділу (AGENTS.md §7) досяжне. Повний прогін і CI — ПОМИЛКА.
   const scoped = !!(onlySec || onlyDiag);
   for (const c of subjects) { const GF = content.graphOrigin?.[c.id] || `content/${c.id}/graph.js`;
     for (const is of analyzeGraph(c, { learn, origin, poolOrigin: content.poolOrigin, diagOrigin: content.diagOrigin, graphFile: GF }).issues) {
