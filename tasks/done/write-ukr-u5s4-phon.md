@@ -6,7 +6,7 @@ type: write-lesson
 subject: ukr
 grade: 5
 section: u5s4
-status: review
+status: done
 claimed_by: writer-u5s4-phon
 created: 2026-11-02
 ---
