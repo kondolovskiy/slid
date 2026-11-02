@@ -1,14 +1,14 @@
 ---
-claimed_from: todo
-claimed_at: 2026-11-02T13:49:17.928Z
+claimed_from: review
+claimed_at: 2026-11-02T14:13:45.735Z
 id: write-ukr-u5s5
 type: write-section
 subject: ukr
 grade: 5
 section: u5s5
 weeks: [17, 20]
-status: review
-claimed_by: writer-u5s5
+status: done
+claimed_by: verifier-u5s5
 created: 2026-11-02
 ---
 # Написати розділ «Наголос і вимова» (Українська мова, 5 клас)
