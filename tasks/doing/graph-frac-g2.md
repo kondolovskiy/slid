@@ -49,3 +49,39 @@ depends_on: [engine-skg-g1]
 | **Разом** | | **30** |
 
 Перевірки: звірено через `loadContent` — 30 `u`, кожен на оцінюваному об'єкті з тією ж `sk`, що й вузол (заголовки збігаються з §5.4: m5 #6 numline $5/4$, g6m2l5 #6 «склянки по $1/4$ л», dg6 #21 «Скільки сторінок у книжці?»). `validate --section ms1/g6m1/g6m2`, `--pool pms1/pg6m1/pg6m2`, `--diag dg4/dg6`: до появи graph.js — лише очікувані V2 «немає такого вузла (у предмета math ще немає графа)» (33 рядки, по одному на id у `u`), інших помилок 0; на копії з чернеткою графа (g1-pilot-make, без zz-u.js) і з graph.js куратора в робочому дереві — 0 помилок (попередження лише старі sentenceWords: ms1 m4, m6; g6m2l4). `graph-report --line frac --strict` на копії з чернеткою — rc 0, помилок 0, дрейфу 0. `diff-answers --content-old HEAD --grades 4-6`: 0 змінених вердиктів, 0 нових/вилучених, 0 тестів без rev, 0 непояснених («змінених 12» — 12 вправ пулів з новим полем `u`, вердикти ті самі). build не запускав.
+
+### Куратор графа (2026-11-02, curator-graph-g2)
+`content/math/graph.js` (`v: "2026-11-02.1"`): 25 вузлів (4 base) за таблицею §5.4 — id, `sk`, `teach` (зокрема `by: "u"` у num-by-frac, divis-gcd, frac-div) і ребра звірено з таблицею та `skg-pilot-graph.mjs` один в один; `name` мовою вчителя, у кожного ребра `why` з номером екрана (індекс від 0, як у §5.4) або форматом пулу; `lines.frac` — 18 уроків і 16 тем §5.4; усі вузли й лінія `st: "draft"`.
+**Відступ від §5.4 — одне нове ребро:** `div-chunks` → `div-rem` pre **w 1** (g4m3l3 #7 «Пачки олівців», `pre: m4a`: 87 : 6 = 14, ост. 3 — лише задачі з остачею). Без нього V9 лишав без пояснення `pre` g4m3l3 #7 і `requires` g4m3 → m4a. Разом 46 ребер (28 w 2, 14 w 1, 4 part); V4 — m4a (4 кл., тиждень 14) раніше за g4m3 (тиждень 19). Нотатку додано в §5.4 дизайну. Верифікатору — погодити або відхилити.
+
+**Перевірки** (дерево з `u` автора): `build` → `validate` — 0 помилок, графових попереджень 0; `graph-report --line frac --strict` rc 0 (помилок 0, дрейфу 0, V10б 0); `graph-report --strict` (увесь граф) rc 0. `validate --section g4m3` — 0/0.
+**Дрейф до появи `u`** (копія HEAD 64f2511 + graph.js, scratchpad `g2-nou`): 0 помилок, 19 попереджень дрейфу, `--line frac --strict` rc 1 — усі очікувані й зникли з `u` автора: V7б «немає прив'язаних об'єктів» — parts-equal, mul-table, div-table, units-lt, num-by-frac, divis-gcd, frac-div (7); V7б «`by: "u"` без явного `u`» — num-by-frac (m3), divis-gcd (g6m1l4), frac-div (g6m2l5) (3); V8 «завдання baseline-теми без вузла» — dg4 завдання 3, 11 (mul), 7, 17 (quot), 4, 15 (units), 6, 21 (parts) (8); V8 «пара (null, num) без вузла, 4 об'єкти» — dg4#3, #11, #7, #17 (1).
+
+**V9: кожне старе ребро лінії** (обидва кінці у графі; скрипт scratchpad `g2-v9.mjs` — найкоротший шлях `pre ∪ part`, для тем — лише w 2/part):
+| Старе ребро | Як пояснює граф |
+|---|---|
+| pre m5 #4, #5 → m4a; requires ms1 → m4a | frac-mixed → div-rem (w 2) |
+| pre g4m3l3 #7 → m4a; requires g4m3 → m4a | div-chunks → div-rem (w 1, нове ребро G2) |
+| pre g6m2l2 #6 → g6m1l4; requires g6m2 → g6m1l4; матр. g6m2l2 → g6m1l4 | frac-reduce → divis-gcd (w 1: до кінця можна скоротити й кроками) |
+| pre g6m2l3 #6 → g6m1l4; матр. g6m2l3 → g6m1l4 | frac-common-den → part divis-lcm |
+| pre g6m2l3 #1 → m2; pre g6m2l4 #1 → m4 | той самий вузол через явний `u` (frac-cmp-simple, frac-add-same; §2.4 п. 6) |
+| pre g6m2l4 #8 → m5; requires g6m2 → m5; матр. g6m2l4 → m5 | frac-add-unlike → frac-mixed (w 1: мішані числа лише в частині задач) |
+| requires g6m2 → m2; матр. g6m2l3 → m2 | frac-common-den → frac-cmp-simple (w 2) |
+| requires g6m2 → m4; матр. g6m2l4 → m4 | frac-add-unlike → part frac-add-same |
+| матр. g6m2l4 → g6m2l3; g6m2l3 → g6m2l1 | part frac-common-den; part frac-equiv |
+| матр. g6m2l1 → m1; g6m2l2 → g6m2l1; g6m2l5 → g6m2l2 | frac-equiv → frac-read; frac-reduce → frac-equiv; frac-mul → frac-reduce (усі w 2) |
+| матр. g6m1l1, l2, l3, l4 → m4a | divis-mult → div-rem (w 2), решта через divis-mult |
+| матр. m1, m2, m3, m4, m5 → g4m5l1 | через frac-read → frac-unit (w 2) |
+| матр. m3 → g4m5l2 | frac-of-num → part-unit-of-num (w 2) — залишено (§5.4) |
+| матр. m1 → g4m5l2 | frac-read → part-unit-of-num (w 1, m1 #7 «Шоколадка») — залишено |
+| матр. m2, m4, m5 → g4m5l2; g6m2l5 → g4m5l2 | **як пряме ребро відхилено** (§5.4: порівняння, додавання, мішані числа, множення не спираються на «третину від 15»); у звіті «пояснені» лише транзитивно через frac-read → part-unit-of-num **w 1** — тобто «допомагає», на план не впливає |
+| forEvidence dg4/mul, dg4/quot ← m4a | div-rem → mul-table, div-table (w 2) |
+| forEvidence dg4/parts ← g4m5l2; dg5/parts ← m1 | part-unit-of-num → frac-unit → parts-equal; frac-read → frac-unit (w 2) |
+| forEvidence dg6/rem ← g6m1l1 | divis-mult → div-rem (w 2) |
+| forEvidence dg6/frac, dg6/frac-cmp, dg6/frac-add ← g6m2l4 | frac-add-unlike → part frac-add-same → frac-read; → part frac-common-den → frac-cmp-simple; → part frac-add-same |
+| **forEvidence dg6/frac-of ← g6m2l4** | **без шляху w 2 — не додаю.** Додавання з різними знаменниками не використовує дріб від числа; ребро frac-add-unlike → frac-of-num було б вигадане. Це відкрите питання R3-P3-1 (§5.4): або frac-mul ← frac-of-num стає w 2 (intro g6m2l5 «частина від частини»), або `for`/`forEvidence` теми задуже широкі (правка dg6 з `rev` / матриці). До рішення `buildPlan` — як зараз (§4.3). Верифікатору. |
+| **forEvidence dg6/mixed ← g6m2l4** | **без шляху w 2 — свідомо w 1:** frac-add-unlike → frac-mixed лише для g6m2l4 #8 (`pre: m5`) і частини вправ; w 2 означало б «без мішаних чисел додавання дробів не вийде», що хибно. Верифікатору: або лишити w 1 (тема в списку V9, план як зараз), або обрати інший `forEvidence` (g6m2l5/e-вправи з цілою частиною — теж w 1). |
+| поза графом (кінець без вузла): forEvidence dg4/mul, quot ← g4m3l1; dg4/units ← g4m4l4, g4m5l3; dg5/parts ← ms3l2; dg6/frac-of ← g6m3l2; матр. g4m3l3 → g4m1l1 | уроки поза лінією (V8 поза лініями) — до наступних ліній |
+
+Ребра графа без старого джерела (15 у звіті) — нові, усі з `why` на екран: зв'язки всередині розділу (g4m5l2 → g4m5l1, divis-* → divis-mult, divis-lcm/gcd → divis-prime), m2–m5 → m1 (frac-read), g4m5l2 → g4m3l3 (div-chunks w 1), g6m2l2 → g6m1l1/l2. Для верифікатора — переглянути як звичайні ребра.
+Списки graph-report для верифікатора: типові вузли розщеплених пар — лише свої вміння (m3 → frac-of-num, g6m1l4 → divis-lcm, g6m2l5 → frac-mul; dg6 #10 0-від → frac-of-num); пари без вузла — g6m1l2 #9, g6m2l1 #8, #9 (0-від; питання 9 — а); нічиїх V4 немає; неоднозначних boss-об'єктів 12 (boss не в `lines`).
