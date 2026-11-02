@@ -1,10 +1,12 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-02T09:36:36.112Z
 id: revise-math-pool-g4m5-b08
 type: revise-pool
 subject: math
 grade: 4
 status: todo
-claimed_by:
+claimed_by: writer-pg4m5-b08
 created: 2026-11-02
 ---
 # pg4m5/b08: одиниця відповіді в умові
