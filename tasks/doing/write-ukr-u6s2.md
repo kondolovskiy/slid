@@ -1,6 +1,6 @@
 ---
-claimed_from: todo
-claimed_at: 2026-11-02T18:02:24.049Z
+claimed_from: review
+claimed_at: 2026-11-02T18:20:20.201Z
 id: write-ukr-u6s2
 type: write-section
 subject: ukr
@@ -8,7 +8,7 @@ grade: 6
 section: u6s2
 weeks: [4, 7]
 status: review
-claimed_by: writer-u6s2
+claimed_by: verifier-u6s2
 created: 2026-11-02
 ---
 # Написати розділ «Слова з інших мов» (Українська мова, 6 клас)
