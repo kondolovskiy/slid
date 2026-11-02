@@ -1,6 +1,6 @@
 ---
 name: engine-change
-description: Use when changing anything in app/ (engine, learn.js, evidence.js, hyp.js, math.js, lab.js, pwa.js), tools/ (validate, stats, build, QA tools), tests or .github/workflows — including new screen types, answer kinds or validator rules.
+description: Use when changing anything in app/ (engine, learn.js, evidence.js, hyp.js, math.js, lab.js, pwa.js), tools/ (validate, stats, build, QA tools), their tests or .github/workflows/pages.yml — including new screen types, answer kinds or validator rules. Not for server/ or server.yml (backend-change).
 ---
 
 # Зміна рушія, інструментів, тестів чи CI

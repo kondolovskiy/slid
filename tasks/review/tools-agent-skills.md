@@ -27,3 +27,5 @@ depends_on: []
 - `npm run check` — rc 0 (test-make-tasks 22/22, validate 0 помилок, graph-report 0 помилок); sw.js і index.html не змінились (зміни не зачіпають app/, content/, img/).
 
 ## Нотатки агента
+- Рев'ю 3915528 — «прийнято» (reports/review/tools-agent-skills.md), P1 немає. Виправлення P2/P3 — наступним комітом: правило про назви моделей звужено (винятки `model:` і трейлери); «AGENTS.md §1» → §2 у живих docs/tasks/handoff; браузерні тести — однаково в AGENTS, WORKFLOW, playtest.py; посилання в skill-graph-math.md; правило `validate --section` для свого розділу — в AGENTS §7; «усі node-тести» → «node-тести» (test-metrics не в check); INDEX ≤ 300 символів; frontmatter qa-runner і content-writer; engine-change ↔ backend-change без перекриття; рядки §6 для `.claude/`, design/research/qa; «Обидва кроки — з тестами», `--shots`, `DATABASE_URL` для migrate, мінімум 5 для поняттєвого уроку.
+- Лишилось (P3, поза diff): шаблон make-tasks велить автору запускати build і пише «Фото (якщо є)» для історії (D-027) — окремою дрібною задачею.

@@ -46,7 +46,7 @@
 ```bash
 node tools/build.mjs        # після БУДЬ-ЯКОЇ зміни в content/, app/, img/
 node tools/validate.mjs [--section ID | --diag ID | --pool ID] [--quiet]   # 0 помилок обов'язково
-npm run check               # build + усі node-тести + validate + graph-report + stats (склад — package.json)
+npm run check               # build + node-тести + validate + graph-report + stats (склад — package.json)
 python3 tools/playtest.py [--section ID] [--port N]          # пройти уроки в браузері
 python3 tools/test-answer-ui.py --suite regression           # браузерна регресія рушія (не входить у check і CI)
 node tools/stats.mjs [--subject S]                           # метрики стилю → reports/style-S.md
@@ -56,7 +56,7 @@ node tools/graph-report.mjs [--line ID --strict]             # граф умін
 python3 -m http.server 8000                                  # запустити локально
 cd server && npm run check && DATABASE_URL=postgres://… npm run test:e2e   # бекенд
 ```
-Браузерні тести (playtest, test-answer-ui) запускай по одному: паралельно вони флейкають. Playwright: `/opt/pw-browsers/chromium`.
+Браузерні тести (playtest, test-answer-ui) беруть вільний порт, але під паралельним навантаженням флейкають (TimeoutError) — для приймання запускай по одному. `playtest.py --shots` — знімки екранів. Playwright: `/opt/pw-browsers/chromium`.
 `validate --section` з неіснуючим id мовчки зелений — перевір id.
 
 ## 4. Непорушні правила
@@ -80,7 +80,7 @@ cd server && npm run check && DATABASE_URL=postgres://… npm run test:e2e   # �
 - Тимчасові файли — у власній підтеці scratchpad на задачу й роль (`<scratchpad>/<task-id>/`).
 - Злиття гілок або worktree: у `memory/short/inbox.md` зберігай обидві сторони; build — окремим комітом після злиття.
 - Після злиття PR нову роботу починай від свіжого `main`.
-- Ідентифікатори й назви моделей ШІ не кладемо в репозиторій (коміти, код, docs, звіти).
+- Нові назви й id моделей ШІ не кладемо в код, docs і звіти (у дизайнах — рівні й змінні середовища). Винятки: поле `model:` у frontmatter `.claude/agents/` і трейлери атрибуції комітів.
 
 ## 6. Ролі, теми й покажчик
 
@@ -99,6 +99,8 @@ cd server && npm run check && DATABASE_URL=postgres://… npm run test:e2e   # �
 | вирівняти стиль і складність предмета після пакета розділів (`style-*`) | `style-sync` |
 | запустити кількох агентів паралельно й злити результати (оркестратор) | `parallel-run` |
 | кінець сесії: inbox → довга пам'ять, журнал, handoff | `memory-curate` |
+| правки AGENTS.md, CLAUDE.md, `.claude/` | без скіла; незалежне рев'ю — `engineering-review` |
+| дизайн (`design-*`), дослідження (`research-*`), QA-приймання (`qa-*`) | за задачею; зміни коду — `engine-change` / `backend-change` |
 
 **Документація (читай, коли тема зачеплена):**
 - Схема контенту: екрани, формули, `fig`, `lab`, diag (§9), pool (§10), graph (§11) — `docs/CONTENT_SCHEMA.md`
@@ -110,7 +112,8 @@ cd server && npm run check && DATABASE_URL=postgres://… npm run test:e2e   # �
 
 ## 7. Готово означає
 - `node tools/build.mjs` запущено, `index.html`, `sw.js`, `content/manifest.json` закомічені (інакше CI не опублікує, а PWA не оновиться).
-- `node tools/validate.mjs` — 0 помилок; для змінених розділів `python3 tools/playtest.py --section <id>` зелений.
+- Свій розділ, пул чи тест: `node tools/validate.mjs --section|--pool|--diag <id>` — 0 помилок, перш ніж віддати.
+- Оркестратор після пакета: `node tools/validate.mjs` — 0 помилок; для змінених розділів `python3 tools/playtest.py --section <id>` зелений.
 - Задача в правильній теці, нотатки заповнені, рядок в inbox.
 - Інженерна задача: є `reports/review/<task-id>.md` з вердиктом «прийнято» для фінального diff; блокувальні знахідки закриті й перевірені повторно.
 - Додаткові критерії ролі чи теми — у відповідному скілі.

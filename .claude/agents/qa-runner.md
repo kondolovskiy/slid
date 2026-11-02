@@ -1,6 +1,6 @@
 ---
 name: qa-runner
-description: Дешевий механічний прогін перевірок «Сліду» — build, test-math, test-lab, test-learn, test-personalization-qa, test-validate, validate, stats, playtest — і короткий звіт про помилки. Нічого не пише в контент. Запускати оркестратору після пакета авторів або верифікаторів.
+description: Дешевий механічний прогін перевірок «Сліду» — npm run check (build, node-тести, validate, graph-report, stats), validate за id, playtest — і короткий звіт про помилки. Нічого не пише в контент. Запускати оркестратору після пакета авторів або верифікаторів.
 tools: Bash, Read, Grep, Glob
 model: haiku
 ---

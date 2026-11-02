@@ -1,6 +1,6 @@
 ---
 name: content-writer
-description: Пише один розділ уроків для застосунку «Слід» за задачею з tasks/doing/. Використовуй для кожної задачі write-section; для паралельного запуску — по одному агенту на задачу.
+description: Пише один розділ уроків, пул вправ, тест рівня або зображення для «Сліду» за задачею з tasks/doing/ (write-*, revise-*, refine-*, images-*). Для паралельного запуску — по одному агенту на задачу.
 tools: Read, Write, Edit, Bash, Glob, Grep, WebSearch, WebFetch
 ---
 

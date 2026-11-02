@@ -32,7 +32,7 @@ python3 -m http.server 8000    # відкрити http://localhost:8000
 
 ## Перевірити контент
 ```bash
-npm run check                                   # build + усі node-тести + validate + graph-report + stats (склад — package.json)
+npm run check                                   # build + node-тести + validate + graph-report + stats (склад — package.json)
 python3 tools/playtest.py                       # пройти всі уроки в браузері (потрібен Playwright)
 python3 tools/test-answer-ui.py --suite regression   # браузерна регресія рушія
 ```
