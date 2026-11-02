@@ -4,7 +4,7 @@ claimed_at: 2026-11-02T07:10:44.693Z
 id: engine-skg-g3
 type: engine
 subject: math
-status: review
+status: done
 claimed_by: engineer-skg-g3
 created: 2026-11-02
 depends_on: [graph-frac-g2]
