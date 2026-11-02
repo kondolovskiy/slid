@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-02T14:13:45.300Z
 id: write-ukr-u5s10
 type: write-section
 subject: ukr
@@ -6,7 +8,7 @@ grade: 5
 section: u5s10
 weeks: [33, 35]
 status: todo
-claimed_by:
+claimed_by: writer-u5s10
 created: 2026-11-02
 ---
 # Написати розділ «Звертання, складне речення, пряма мова» (Українська мова, 5 клас)
