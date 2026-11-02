@@ -327,6 +327,7 @@ SLID.section("math", {
         {
           type: "choice",
           sk: "cmp",
+          u: "frac-cmp-simple",
           pre: "m2",
           eyebrow: "Подумай",
           title: "Який дріб більший?",
@@ -415,6 +416,7 @@ SLID.section("math", {
         {
           type: "choice",
           sk: "frac",
+          u: "frac-equiv",
           eyebrow: "Знайди помилку",
           title: "Що не так?",
           body: "<p>Остап зводив $1/2$ до знаменника 10 і записав: $$1/2 = 1/10$$</p>",
@@ -478,6 +480,7 @@ SLID.section("math", {
         {
           type: "choice",
           sk: "ops",
+          u: "frac-add-same",
           pre: "m4",
           eyebrow: "Подумай",
           title: "$1/2 + 1/3 = ?$",
@@ -720,6 +723,7 @@ SLID.section("math", {
         {
           type: "lab",
           sk: "ops",
+          u: "frac-div",
           eyebrow: "Нова задача",
           title: "Скільки склянок по $1/4$ л у 3 л соку?",
           body: "<p>Кожен стрибок — одна склянка, $1/4$ л. Додавай стрибки, доки не дійдеш рівно до 3.</p>",
@@ -755,6 +759,7 @@ SLID.section("math", {
         {
           type: "choice",
           sk: "ops",
+          u: "frac-div",
           eyebrow: "Знайди помилку",
           title: "Що не так?",
           body: "<p>Максим записав: $$3/4 : 3/8 = 9/32$$</p>",
@@ -767,6 +772,7 @@ SLID.section("math", {
         {
           type: "number",
           sk: "ops",
+          u: "frac-div",
           eyebrow: "Фінал",
           title: "Скільки шматків стрічки?",
           body: "<p>Стрічку завдовжки 6 м ріжуть на шматки по $3/4$ м. Скільки шматків вийде?</p>",

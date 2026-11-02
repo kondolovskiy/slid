@@ -353,6 +353,7 @@ SLID.section("math", {
         {
           type: "number",
           sk: "part",
+          u: "num-by-frac",
           eyebrow: "Задача",
           title: "Скільки сторінок у книжці?",
           body: "<p>Прочитано $3/8$ книжки — це 24 сторінки. Скільки сторінок у всій книжці?</p>",
@@ -366,6 +367,7 @@ SLID.section("math", {
         {
           type: "sort",
           sk: "part",
+          u: ["frac-of-num", "num-by-frac"],
           eyebrow: "Фінал",
           title: "Яка це задача?",
           body: "<p>Визнач тип кожної задачі. Розв'язувати не треба.</p>",
@@ -575,6 +577,7 @@ SLID.section("math", {
         {
           type: "numline",
           sk: "cmp",
+          u: "frac-cmp-simple",
           eyebrow: "Координатний промінь",
           title: "Познач $5/4$ на промені",
           body: "<p>Точка може стояти й далі за одиницю.</p>",

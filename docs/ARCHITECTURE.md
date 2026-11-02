@@ -17,6 +17,7 @@ index.html              оболонка + CSS (токени кольорів, �
   content/<предмет>/diag-g*.js   тест рівня класу (SLID.diag), docs/CONTENT_SCHEMA.md §9
   app/lab.js            лабораторія: інтерактивні моделі (графіки, геометрія, терези…), docs/CONTENT_SCHEMA.md §8
   app/learn.js          персоналізація: тест рівня, план, повторювані помилки (чиста логіка), docs/PERSONALIZATION.md
+  app/evidence.js       журнал подій у IndexedDB для дослідження (лише читає стан), docs/EVIDENCE.md
   app/app.js            рушій (викликає SLID.finalize())
 ```
 Порядок прописує `tools/build.mjs` (між маркерами `CONTENT:START/END`). Список дублюється в `content/manifest.json` для інструментів.

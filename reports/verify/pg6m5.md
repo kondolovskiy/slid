@@ -33,3 +33,6 @@ l1 — розкриття дужок; l2 — подібні доданки, ко
 
 ## Зміни у файлі
 `status: "draft"` → `"verified"`; `meta.factcheck: "self"` → `"ai-verifier"`.
+
+## Доповнення 2026-10-31 (verify-math-personalization-g6)
+Класова регресія: вибірку незмінених вправ і всі змінені розв'язано повторно, умови частини з них звірено з PDF Мерзляка 2023; зв'язки з матрицею ✅, validate 0/0. Правок немає. Звіт: reports/verify/math-personalization-g6.md.

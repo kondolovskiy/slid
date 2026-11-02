@@ -24,9 +24,12 @@
 | `app/app.js` | рушій: навігація, типи екранів, гейміфікація, збереження | розробник |
 | `content/subjects/<предмет>.js` | метадані предмета: кольори, навички, значки | **лише куратор** |
 | `content/<предмет>/plan.js` | план років: розділи без уроків (назва, навіщо, тижні, теми) | **лише куратор** |
+| `content/<предмет>/graph.js` | граф умінь `SLID.graph` (CONTENT_SCHEMA §11, docs/design/skill-graph-math.md); поки немає | **лише куратор** (автор — лише `u` у своєму розділі) |
 | `content/<предмет>/g<клас>-<id>.js` | **один файл = один розділ з уроками** | автор цього розділу |
 | `content/<предмет>/diag-g<клас>.js` | тест рівня класу (`SLID.diag`, CONTENT_SCHEMA §9) | автор цього тесту |
 | `app/learn.js` | персоналізація: тест рівня, план, повторювані помилки (docs/PERSONALIZATION.md) | розробник |
+| `app/evidence.js` | журнал подій Evidence V2 у IndexedDB `slid-evidence` (docs/EVIDENCE.md) | розробник |
+| `app/hyp.js` | гіпотези «обчислення чи поняття», тіньовий режим (docs/design/diag-hypothesis-math.md) | розробник |
 | `content/catalog.js` | предмети «скоро» | куратор |
 | `img/` | зображення (див. docs/IMAGES.md) | автор розділу — лише свою теку `img/<предмет>/<id>/` |
 | `style/` | стиль-гайди, профілі складності, заборонені фрази | **лише через рішення в decisions.md** |
@@ -45,16 +48,18 @@
 node tools/build.mjs                       # список скриптів у index.html + sw.js (після БУДЬ-ЯКОЇ зміни в content/, app/, img/)
 node tools/validate.mjs [--section ID | --diag ID]   # помилки (блокують) + попередження стилю
 node tools/test-learn.mjs                  # тести логіки персоналізації (app/learn.js)
+node tools/test-validate.mjs               # регресійні тести валідатора на фікстурах (D-027 тощо)
 node tools/stats.mjs [--subject hist]      # метрики складності, звіт reports/style-<предмет>.md
 node tools/make-tasks.mjs [--subject math] # задачі на написання з плану
 node tools/claim.mjs list|claim|move ...   # черга задач для паралельних агентів
 python3 tools/playtest.py [--section ID] [--shots] [--port N]   # пройти уроки в браузері (типово вільний порт)
+node tools/graph-report.mjs [--line <id> --strict] [--since <коміт>] [--uses <вузол>]   # звіт графа умінь reports/graph-<предмет>.md
 ```
 ```bash
 cd server && npm run check                        # бекенд: типи + unit + межі модулів (без БД)
 DATABASE_URL=postgres://… npm run test:e2e        # бекенд: e2e на справжньому Postgres (обовʼязково)
 ```
-Скорочено: `npm run check` = build + validate + stats. Жодних залежностей для Node не потрібно; плейтесту потрібен Playwright.
+Скорочено: `npm run check` = build + test-math, test-lab, test-learn, test-evidence, test-hyp, test-personalization-qa, test-validate, test-graph-report, test-make-tasks, test-diff-answers + validate + graph-report --quiet + stats (точний перелік — package.json). Кореневим інструментам Node залежностей не потрібно (у `server/` — свої, `npm ci`); плейтесту потрібен Playwright.
 
 ## 3. Непорушні правила
 
@@ -66,7 +71,7 @@ DATABASE_URL=postgres://… npm run test:e2e        # бекенд: e2e на с�
 6. **Статус уроку** (`status`): `draft` → `verified` (ШІ-верифікатор) → `approved` (лише людина-вчитель). Агент ніколи не ставить `approved`.
 7. **`index.html` не редагуй руками** в блоці скриптів. Під час паралельної роботи `tools/build.mjs` запускає лише оркестратор, коли всі агенти закінчили.
 8. Перед тим як віддати роботу: `node tools/validate.mjs --section <id>` — 0 помилок.
-9. Зображення — лише з відкритою ліцензією (docs/IMAGES.md), з підписом `cap` і записом у `credits`.
+9. Зображення — лише з відкритою ліцензією (docs/IMAGES.md), з підписом `cap` і записом у `credits`. **Історія: у кожному уроці — щонайменше одне справжнє зображення `img` (D-027).**
 10. **Інженерні задачі також проходять незалежне рев’ю.** Зміни рушія, інструментів, тестів, збірки й CI перевіряє інший агент зі свіжим контекстом, який не писав реалізацію. Самоперевірка автора та зелені тести не замінюють рев’ю. До прийняття незалежним рецензентом задача лишається в `review`.
 
 ## 4. Ролі
@@ -76,7 +81,7 @@ DATABASE_URL=postgres://… npm run test:e2e        # бекенд: e2e на с�
 1. Прочитай handoff, `node tools/claim.mjs list`.
 2. Обери N задач одного типу (краще — один предмет і клас, щоб агенти вирівнювалися по одних еталонах).
 3. Для кожної: `node tools/claim.mjs claim <task> <agent-name>` → запусти агента з промптом «Виконай задачу tasks/doing/<task>.md за AGENTS.md, роль: автор контенту». Агенти працюють паралельно — кожен у своєму файлі.
-4. Коли всі завершили: `node tools/build.mjs && node tools/validate.mjs && node tools/stats.mjs && python3 tools/playtest.py`. (у Claude Code — субагент `qa-runner` на дешевій моделі).
+4. Коли всі завершили: `node tools/build.mjs && node tools/validate.mjs && node tools/stats.mjs && python3 tools/playtest.py`. (у Claude Code — субагент `qa-runner` на дешевій моделі). Якщо validate чи graph-report показали «граф, дрейф» («потрібна правка graph.js») — передай куратору графа (graph.js змінює лише куратор).
 5. Для кожного розділу в `tasks/review/` запусти **іншого** агента-верифікатора (свіжий контекст; не того, хто писав).
 5а. Для кожної інженерної задачі запусти **іншого** агента-рецензента зі свіжим контекстом (роль `engineering-reviewer`). Передай задачу, точний коміт або diff і результати перевірок. Після виправлень передай рецензенту оновлений diff на повторне прийняття; лише тоді перенось задачу в `done`.
 6. Запусти синхронізацію стилю (роль нижче), якщо з'явилося ≥ 3 нових розділів одного предмета.
@@ -90,7 +95,7 @@ DATABASE_URL=postgres://… npm run test:e2e        # бекенд: e2e на с�
 3а. Пиши за схемою docs/CONTENT_SCHEMA.md. Скопіюй структуру з еталона, а не вигадуй нову.
 4. `node tools/validate.mjs --section <id>` → 0 помилок; `node tools/stats.mjs --subject <предмет>` → твої уроки без прапорців «нетипово для сім'ї» (або поясни в нотатках, чому так треба).
 5. У нотатках задачі: перелік фактів з джерелами (URL), сумнівні місця, пропозиції до глосарію/стилю.
-6. Допиши один рядок у `memory/short/inbox.md` (формат там) і `node tools/claim.mjs move <task> review`.
+6. Допиши один рядок у `memory/short/inbox.md` (формат там) і `node tools/claim.mjs move <task> review`. Попередження «граф, дрейф» у validate свого розділу не виправляй у graph.js — допиши рядок `IDEA GRAPH: …` в inbox.
 
 ### Верифікатор (content-verifier)
 Незалежна перевірка. **Не той агент, що писав.** Вхід: задача в `tasks/review/`.
@@ -120,7 +125,7 @@ DATABASE_URL=postgres://… npm run test:e2e        # бекенд: e2e на с�
 ### Куратор пам'яті (memory-curator)
 Наприкінці сесії або після паралельного запуску.
 1. Прочитай `memory/short/inbox.md` і нотатки закритих задач.
-2. Перевірені факти → `memory/long/facts/<предмет>.md`; нові терміни → glossary; повторювані технічні проблеми → pitfalls.md; ухвалені людиною рішення → decisions.md.
+2. Перевірені факти → `memory/long/facts/<предмет>.md`; нові терміни → glossary; повторювані технічні проблеми → pitfalls.md; ухвалені людиною рішення → decisions.md; рядки `IDEA GRAPH` (дрейф графа) → правка `content/<предмет>/graph.js` або задача, перевірка `node tools/graph-report.mjs --strict`.
 3. Суперечності (два агенти, різні дати) — не вирішуй сам: винеси в handoff як «відкрите питання».
 4. Очисти inbox (перенесене видали), запиши журнал `memory/short/sessions/<дата>-<n>.md`, перепиши `memory/short/handoff.md`.
 
@@ -143,7 +148,7 @@ DATABASE_URL=postgres://… npm run test:e2e        # бекенд: e2e на с�
 
 ## 7. Бекенд (`server/`)
 
-Рішення Віктора (2026-11-01); подробиці, API й відкриті питання — docs/BACKEND.md. Перед будь-якою зміною в `server/` прочитай його.
+Рішення Віктора — **D-037** (2026-11-01, decisions.md); подробиці, API й відкриті питання — docs/BACKEND.md. Перед будь-якою зміною в `server/` прочитай його.
 
 **Стек:** TypeScript, NestJS 11, PostgreSQL 16, Kysely 0.28 (не 0.29 — лише ESM), Jest + Supertest. Хостинг — Railway (`server/railway.json`). Нові залежності — лише якщо без них коду суттєво більше; точні версії, не свіжіші за ~2 тижні.
 

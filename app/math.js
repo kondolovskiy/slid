@@ -1,13 +1,16 @@
 /* Слід — мініпарсер шкільних формул. Без залежностей, працює офлайн. */
 (() => {
 const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-const COMMANDS = new Set(["sqrt","frac","dfrac","vec","overrightarrow","mathbb","text","begin","end","cdot","times","infty","ge","geq","le","leq","neq","ne","pm","to","rightarrow","leftrightarrow","parallel","perp","angle","triangle","Delta","alpha","pi","circ","in","cup","varnothing","sim","ldots","dots","quad","qquad","left","right","log","ln","sin","cos","tan","lim","int"]);
+const COMMANDS = new Set(["sqrt","frac","dfrac","vec","overrightarrow","mathbb","text","begin","end","cdot","times","infty","ge","geq","le","leq","neq","ne","pm","to","rightarrow","leftrightarrow","parallel","perp","angle","triangle","Delta","alpha","pi","circ","in","cup","varnothing","sim","ldots","dots","quad","qquad","left","right","log","lg","ln","sin","cos","tan","lim","int"]);
 const SYMBOL = { cdot:"·", times:"×", infty:"∞", ge:"≥", geq:"≥", le:"≤", leq:"≤", neq:"≠", ne:"≠", pm:"±", to:"→", rightarrow:"→", leftrightarrow:"↔", parallel:"∥", perp:"⊥", angle:"∠", triangle:"△", Delta:"Δ", alpha:"α", pi:"π", circ:"°", in:"∈", cup:"∪", varnothing:"∅", sim:"∼", ldots:"…", dots:"…" };
-const FN = new Set(["log","ln","sin","cos","tan","lim","int"]);
+const ARROW = new Set(["to","rightarrow","leftrightarrow"]);
+const FN = new Set(["log","lg","ln","sin","cos","tan","lim","int"]);
+const OPERATOR = /^(?:[*\-+=:<>≈≠≤≥,;.]|\\\\)$/;
 const SUBDIGIT = /[₀₁₂₃₄₅₆₇₈₉]/;
 const TOK = /\\[A-Za-z]+|\\[,;:! ]|\\\\|"[^"]*"|\((?:[^()]|\([^()]*\))*\)|\d{1,3}(?:[  ]\d{3})+(?:,\d+)?(?!\d)|\d+(?:,\d+)?|[a-zA-Z]|[₀₁₂₃₄₅₆₇₈₉]|[{}_[\]&]|\?|~|\/|\*|:|\^|<|>|=|≈|≠|≤|≥|\+|-|\s+|[^\s]/g;
 
-function tokenize(src) { return String(src).match(TOK) || []; }
+// {,} — TeX-запис десяткової коми (0{,}6): у нас кома й так не додає пробілу, тож це просто «,»
+function tokenize(src) { return String(src).replace(/\{,\}/g, ",").match(TOK) || []; }
 function isAtomToken(t) { return !!t && (/^\(.*\)$/.test(t) || /^\d/.test(t) || /^[a-zA-Z?]$/.test(t) || SUBDIGIT.test(t)); }
 function atomHTML(t, inFrac) {
   if (/^\(.*\)$/.test(t)) return inFrac ? mathHTML(t.slice(1, -1)) : `(${mathHTML(t.slice(1, -1))})`;
@@ -16,6 +19,16 @@ function atomHTML(t, inFrac) {
   if (SUBDIGIT.test(t)) return `<sub class="mp">${t}</sub>`;
   return /^\d/.test(t) ? t.replace(/ /g, "\u202f") : esc(t);
 }
+const ROOT = /^[√∛∜]$/;
+// знак кореня в tokens[j] і атом упритул за ним: { html: «√» + атом (дужки групи лишаються), end: індекс після атома }.
+// Корінь із кореня (√√2) — теж атом: √√2/2 = (√√2)/2, зовнішній знак не стоїть над дробом (рев'ю engine-math-sqrt-precedence, P3-3)
+function rootAt(tokens, j) {
+  if (!ROOT.test(tokens[j] || "")) return null;
+  const inner = rootAt(tokens, j + 1); if (inner) return { html: esc(tokens[j]) + inner.html, end: inner.end };
+  return isAtomToken(tokens[j + 1]) ? { html: esc(tokens[j]) + atomHTML(tokens[j + 1], false), end: j + 2 } : null;
+}
+// індекс першого токена після пробілів і «~» (нерозривний пробіл TeX) — для коефіцієнта «2 √3/3», «2~√3/3»
+function skipGap(tokens, j) { while (/^\s+$/.test(tokens[j] || "") || tokens[j] === "~") j++; return j; }
 function group(tokens, state, open = "{", close = "}") {
   while (/^\s+$/.test(tokens[state.i] || "")) state.i++;
   if (tokens[state.i] !== open) return null;
@@ -37,12 +50,16 @@ function nextUnit(tokens, state) {
 }
 function command(tokens, state, name) {
   if (/^[,;:! ]$/.test(name)) return { html:'<span class="mspace thin"></span>', atom:false };
+  // стрілки — бінарні знаки з відступами, як «=»: «0 → −1», а не «0→−1» (на 400 px стрілка зливалася з числами, g7m5)
+  if (ARROW.has(name)) return { html:`<span class="mo">${SYMBOL[name]}</span>`, atom:false };
   if (SYMBOL[name]) return { html: SYMBOL[name], atom: !["cdot","times","ge","geq","le","leq","neq","ne","pm","to","rightarrow","leftrightarrow","parallel","perp","in","cup","sim"].includes(name) };
   if (name === "quad" || name === "qquad") return { html:`<span class="mspace ${name}"></span>`, atom:false };
   if (name === "left" || name === "right") return { html:"", atom:false };
   if (name === "sqrt") {
     let idx = ""; const save = state.i; const g = group(tokens, state, "[", "]"); if (g) idx = render(g); else state.i = save;
     const body = parsedGroup(tokens, state);
+    // показник — у «гачку» перед знаком «√» (³√x², як у підручнику): знак малює .sqrt::before, а .root-index (index.html) має order:-1
+    // і опущений відступ, тож показник не злипається з коефіцієнтом (2³√2). Розмітка та сама: plainNode в app.js дає той самий текст
     return { html:`<span class="sqrt">${idx ? `<sup class="root-index">${idx}</sup>` : ""}<span class="radicand">${body}</span></span>`, atom:true };
   }
   if (name === "frac" || name === "dfrac") {
@@ -52,7 +69,12 @@ function command(tokens, state, name) {
   if (name === "vec" || name === "overrightarrow") return { html:`<span class="mover">${nextUnit(tokens, state)}</span>`, atom:true };
   if (name === "mathbb") return { html:`<span class="mbb">${esc(rawGroup(tokens, state))}</span>`, atom:true };
   if (name === "text") return { html:`<span class="mt">${esc(rawGroup(tokens, state).trim())}</span>`, atom:true };
-  if (FN.has(name)) return { html:`<span class="mfn">${name === "int" ? "∫" : name}</span>`, atom:true };
+  // назва функції прямим шрифтом; перед аргументом без дужок — тонкий пробіл, як у TeX і в уроках («lg 100», «ln x»), а не «lg100»
+  if (FN.has(name)) {
+    let j = state.i; while (/^\s+$/.test(tokens[j] || "")) j++;
+    const next = tokens[j], gap = next != null && !/^[_^({\\]$|^\\[,;:! ]$|^\\(?:left|right)$|^\(/.test(next) && !OPERATOR.test(next);
+    return { html:`<span class="mfn">${name === "int" ? "∫" : name}</span>${gap ? '<span class="mspace thin"></span>' : ""}`, atom:true };
+  }
   return { html:`<span class="munknown">\\${esc(name)}</span>`, atom:false };
 }
 function render(tokens) {
@@ -78,6 +100,22 @@ function render(tokens) {
       operand = true; continue;
     }
     if (t[0] === '"') { push(`<span class="mt">${esc(t.slice(1,-1))}</span>`, true); continue; }
+    // «√» без дужок бере найближчий атом (число, змінну, групу в дужках), як у шкільному записі: √3/2 = (√3)/2, а не √(3/2);
+    // корінь із дробу пишуть з дужками — √(3/2). Число впритул перед знаком — коефіцієнт у тому ж чисельнику: 2√3/3 = (2√3)/3
+    // (інакше «2» перед дробом стовпчиком читалося б як мішане число). Без «/» за коренем розмітка та сама, що й раніше.
+    // Коефіцієнт через пробіл чи «~» («2 √3/3», «2~√3/3») — так само, лише коли за коренем стоїть «/»: learn.js читає такий запис
+    // як 2√3/3 (рев'ю engine-math-sqrt-precedence, P3-2); «2 √25», «2 3/4» — як були.
+    let r = null, lead = false;
+    if (ROOT.test(t)) r = rootAt(tokens, state.i - 1);
+    else if (/^\d/.test(t)) { const k = skipGap(tokens, state.i), q = rootAt(tokens, k);
+      if (q && tokens[q.end] === "/") { r = q; lead = true; } }
+    if (r) {
+      const nu = (lead ? atomHTML(t, false) : "") + r.html; state.i = r.end;
+      if (tokens[state.i] === "/" && isAtomToken(tokens[state.i + 1])) {
+        push(`<span class="fr"><span class="nu">${nu}</span><span class="sr">/</span><span class="de">${atomHTML(tokens[state.i + 1],true)}</span></span>`, true); state.i += 2;
+      } else push(nu, true);
+      continue;
+    }
     if (isAtomToken(t) && tokens[state.i] === "/" && isAtomToken(tokens[state.i + 1])) {
       push(`<span class="fr"><span class="nu">${atomHTML(t,true)}</span><span class="sr">/</span><span class="de">${atomHTML(tokens[state.i + 1],true)}</span></span>`, true); state.i += 2; continue;
     }

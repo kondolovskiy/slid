@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-10-31T22:40:00.207Z
 id: write-math-pool-g11m6
 type: write-pool
 subject: math

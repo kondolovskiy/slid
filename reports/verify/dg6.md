@@ -80,3 +80,6 @@
 ## Вердикт
 
 dg6: **verified** (0 відкритих ❌/⚠️). `approved` — за вчителем.
+
+## Доповнення 2026-10-31 (verify-math-personalization-g6)
+Ред. 2: усі 30 завдань розв'язано повторно, ключі ✅. Теми, індекси, item.lesson, sk збігаються з матрицею 2026-10-16.v2. known дають лише 6 cur-уроків, усі verified. Тексти `probes` матриці для інд. 16, 20, 24, 27, 28 застаріли → curate-math-matrix-v3. Правок немає. Звіт: reports/verify/math-personalization-g6.md.

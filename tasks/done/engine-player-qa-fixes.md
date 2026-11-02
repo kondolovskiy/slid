@@ -1,0 +1,46 @@
+---
+claimed_from: todo
+claimed_at: 2026-10-31T09:06:25.670Z
+write_group: personalization-shared
+id: engine-player-qa-fixes
+type: engine
+subject: math
+status: done
+claimed_by: w-engine-player-qa-fixes
+created: 2026-10-31
+depends_on: [qa-math-personalization-g4, qa-math-personalization-g5]
+---
+# Виправити дефекти плеєра з приймання 4–5 класів
+
+Джерела: reports/qa/math-personalization-g4.md (D-1…D-8), reports/qa/math-personalization-g5.md (D-1…D-5). Спільні дефекти об'єднано.
+
+## P2 (обов'язково)
+- **Прокрутка підсумку:** підсумок тесту / уроку / тренування відкривається з прокруткою попереднього екрана (app/app.js renderScreen: вихід на renderDiagEnd/renderEnd/renderPracticeEnd до `$("#player").scrollTo({top:0})`). Очікувано: підсумок завжди з верху.
+- **Друга спроба без зміни відповіді:** після «Спробувати ще раз» повторний Enter / кнопка з тим самим значенням одразу витрачає другу спробу й показує ключ (check(), з 0.1.0). Очікувано: повторна перевірка лише після зміни відповіді (кнопка неактивна, доки значення те саме, або Enter ігнорується).
+
+## P3
+- Після перевірки фокус іде на BODY — Enter не веде на «Далі»; плеєр не модальний (Tab проходить фон). Перевести фокус на дію, обмежити Tab плеєром.
+- «Джерело:» подвоює сторінку («с. 56, №1, с. 56»), коли `src` уже містить «с. N», а є `srcPage` (38 вправ 4 кл., 5 — 5 кл.): не дописувати srcPage, якщо сторінка вже є в ref (або узгодити з куратором формат src).
+- У числових полях 4 кл. кнопки «−», «/» і підказка про дроби/мішані числа — показувати за класом/прапорцями вправи.
+- divrem: «4, ост. 5», «4 остача 5» — прийняти або дати підказку формату.
+- Головна: план радить g4m2l1, а «Продовжити» веде на g4m1l1 (known). Узгодити точку старту з планом/known.
+- Інструменти: `validate --pool` підписує пул як «діагностика»; test-answer-ui.py без запасного шляху до Chromium (як у playtest.py).
+
+Регресії — у чинні test-learn / test-answer-ui; браузерні сценарії для прокрутки, другої спроби, фокусу. Незалежне рев'ю (D-026).
+
+## Нотатки виконавця
+- 2026-10-31, w-engine-player-qa-fixes. Звіт: reports/qa/engine-player-qa-fixes.md. Зміст не змінено.
+- P2: підсумок завжди з верху (`renderScreen` скидає прокрутку до/після end-рендеру). Друга спроба — лише після зміни відповіді (`answerSig`/`sameAsTried`: кнопка неактивна, Enter і клік ігноруються).
+- P3:
+  - фокус на `#action` після перевірки, на новому екрані й на підсумку; Enter у полі з `preventDefault`;
+  - фон плеєра `inert`;
+  - `srcRef` не дописує srcPage, якщо «с. N» уже є в src (CONTENT_SCHEMA §10);
+  - `numberKeys`: «−» з 6 кл. / signed / від'ємний ключ, «/» з 5 кл. / дробовий ключ / fractionOnly·mixed·reduced; `signed` валідується в пулі;
+  - divrem приймає «4, ост. 5», «4 остача 5»;
+  - «Продовжити» = baseStart, далі пропускає known;
+  - `validate --pool` → «пул»;
+  - test-answer-ui.py має запасний шлях до Chromium.
+- Регресії: test-learn §13 (+38), test-answer-ui `player_qa_checks`.
+- Потрібне незалежне рев'ю (D-026). Для куратора: g5 D-5 (єдиний title `mer5`), за бажання — прибрати сторінку з `src` 38+5 вправ (рушій уже не подвоює).
+
+- 2026-10-31 (оркестратор): незалежне рев'ю 9e03a3a — **прийнято** (reports/review/engine-player-qa-fixes.md), P1/P2 немає; 6 × P3 → engine-player-focus-followup. Злито; build після злиття, test-learn 812, validate 0, strict 4/5/7 зелені.

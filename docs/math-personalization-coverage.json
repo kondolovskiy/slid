@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-16.v2",
+  "version": "2026-11-01.v3",
   "status": "accepted",
   "registryCommit": "9057fd5",
   "sources": {
@@ -180,7 +180,7 @@
       "reason": "Базове вміння відповідного класу за вказаними пунктами; охоплювати лише вміння, уже пояснені цим уроком.",
       "evidence": "g4a:103–109; l4a:pdf-с.39,47–48",
       "prerequisites": [],
-      "sk": "num",
+      "sk": "cmp",
       "pool": "pg4m1",
       "formats": [
         "number"
@@ -310,11 +310,14 @@
       "title": "Перевірка",
       "curricularScope": "required",
       "reason": "Базове вміння відповідного класу за вказаними пунктами; охоплювати лише вміння, уже пояснені цим уроком.",
-      "evidence": "g4a:169–175; l4a:pdf-с.49–63",
+      "evidence": "g4a:153,169–175; l4a:pdf-с.49–63",
       "prerequisites": [
         "g4m1l1"
       ],
-      "sk": "num",
+      "sk": [
+        "num",
+        "eq"
+      ],
       "pool": "pg4m2",
       "formats": [
         "number"
@@ -387,7 +390,8 @@
       "sk": "div",
       "pool": "pm4s1",
       "formats": [
-        "number"
+        "number",
+        "list"
       ],
       "exercises": {
         "min": 6,
@@ -453,7 +457,7 @@
       "title": "Множення на двоцифрове",
       "curricularScope": "required",
       "reason": "Базове вміння відповідного класу за вказаними пунктами; охоплювати лише вміння, уже пояснені цим уроком.",
-      "evidence": "g4b:14–17,61–66; l4b:pdf-с.74–81",
+      "evidence": "g4a:189,193–195,202; l4b:pdf-с.74–81",
       "prerequisites": [
         "g4m1l1"
       ],
@@ -492,7 +496,7 @@
       "prerequisites": [
         "g4m1l1"
       ],
-      "sk": "num",
+      "sk": "div",
       "pool": "pg4m3",
       "formats": [
         "number"
@@ -591,7 +595,7 @@
       "title": "Маса",
       "curricularScope": "required",
       "reason": "Базове вміння відповідного класу за вказаними пунктами; охоплювати лише вміння, уже пояснені цим уроком.",
-      "evidence": "g4a:119–129; l4a:pdf-с.80–82",
+      "evidence": "g4a:119–129,143; l4a:pdf-с.80–82",
       "prerequisites": [],
       "sk": "meas",
       "pool": "pg4m4",
@@ -653,7 +657,7 @@
       "title": "Перетворення",
       "curricularScope": "required",
       "reason": "Базове вміння відповідного класу за вказаними пунктами; охоплювати лише вміння, уже пояснені цим уроком.",
-      "evidence": "g4a:122–129,143–149; l4a:pdf-с.77–85",
+      "evidence": "g4a:119–129,143–149; l4a:pdf-с.77–85",
       "prerequisites": [],
       "sk": "meas",
       "pool": "pg4m4",
@@ -935,7 +939,7 @@
       "title": "Рівняння",
       "curricularScope": "required",
       "reason": "Базове вміння відповідного класу за вказаними пунктами; охоплювати лише вміння, уже пояснені цим уроком.",
-      "evidence": "m5:84–89",
+      "evidence": "m5:84–89,150",
       "prerequisites": [
         "g4m1l2",
         "g4m2l4"
@@ -979,7 +983,7 @@
         "g4m1l2",
         "g4m2l4"
       ],
-      "sk": "num",
+      "sk": "expr",
       "pool": "pms0",
       "formats": [
         "number"
@@ -1058,7 +1062,9 @@
       "sk": "geom",
       "pool": "pms0b",
       "formats": [
-        "number"
+        "number",
+        "list",
+        "multi"
       ],
       "exercises": {
         "min": 6,
@@ -1119,7 +1125,7 @@
       "prerequisites": [
         "g4m5l3"
       ],
-      "sk": "geom",
+      "sk": "meas",
       "pool": "pms0b",
       "formats": [
         "number"
@@ -1149,7 +1155,7 @@
       "title": "Частини цілого",
       "curricularScope": "required",
       "reason": "Базове вміння відповідного класу за вказаними пунктами; охоплювати лише вміння, уже пояснені цим уроком.",
-      "evidence": "m5:203–215",
+      "evidence": "m5:203–215,227,233,245",
       "prerequisites": [
         "g4m5l1",
         "g4m5l2"
@@ -1185,7 +1191,7 @@
       "title": "Порівняння",
       "curricularScope": "required",
       "reason": "Базове вміння відповідного класу за вказаними пунктами; охоплювати лише вміння, уже пояснені цим уроком.",
-      "evidence": "m5:216–224",
+      "evidence": "m5:216–224,245",
       "prerequisites": [
         "g4m5l1",
         "g4m5l2"
@@ -1219,7 +1225,7 @@
       "title": "Частина від числа",
       "curricularScope": "required",
       "reason": "Базове вміння відповідного класу за вказаними пунктами; охоплювати лише вміння, уже пояснені цим уроком.",
-      "evidence": "m5:206–207",
+      "evidence": "m5:206–213",
       "prerequisites": [
         "g4m5l1",
         "g4m5l2"
@@ -1253,7 +1259,7 @@
       "title": "Додавання і віднімання",
       "curricularScope": "required",
       "reason": "Базове вміння відповідного класу за вказаними пунктами; охоплювати лише вміння, уже пояснені цим уроком.",
-      "evidence": "m5:225–229",
+      "evidence": "m5:225–229,242–243",
       "prerequisites": [
         "g4m5l1",
         "g4m5l2"
@@ -1703,7 +1709,10 @@
         "g4m5l3",
         "g4m5l4"
       ],
-      "sk": "meas",
+      "sk": [
+        "geom",
+        "meas"
+      ],
       "pool": "pms4",
       "formats": [
         "number",
@@ -1915,7 +1924,7 @@
       "prerequisites": [
         "m1"
       ],
-      "sk": "ops",
+      "sk": "frac",
       "pool": "pg6m2",
       "formats": [
         "number"
@@ -1953,7 +1962,7 @@
         "g6m2l1",
         "g6m1l4"
       ],
-      "sk": "ops",
+      "sk": "frac",
       "pool": "pg6m2",
       "formats": [
         "number"
@@ -1992,7 +2001,7 @@
         "g6m1l4",
         "g6m2l1"
       ],
-      "sk": "ops",
+      "sk": "cmp",
       "pool": "pg6m2",
       "formats": [
         "number"
@@ -3185,7 +3194,9 @@
       "sk": "func",
       "pool": "pg7m5",
       "formats": [
-        "number"
+        "number",
+        "coordinates2",
+        "expression"
       ],
       "exercises": {
         "min": 6,
@@ -3356,7 +3367,7 @@
         "g7m1l2",
         "g7m5l3"
       ],
-      "sk": "eq",
+      "sk": "func",
       "pool": "pg7m7",
       "formats": [
         "number",
@@ -3621,7 +3632,7 @@
         "g7m3l4",
         "g7m5l1"
       ],
-      "sk": "expr",
+      "sk": "ops",
       "pool": "pg8m1",
       "formats": [
         "number",
@@ -3701,7 +3712,7 @@
         "g7m3l4",
         "g7m5l1"
       ],
-      "sk": "expr",
+      "sk": "func",
       "pool": "pg8m1",
       "formats": [
         "number",
@@ -3743,7 +3754,8 @@
       "sk": "geom",
       "pool": "pg8m2",
       "formats": [
-        "number"
+        "number",
+        "list"
       ],
       "exercises": {
         "min": 6,
@@ -3781,7 +3793,8 @@
       "sk": "geom",
       "pool": "pg8m2",
       "formats": [
-        "number"
+        "number",
+        "list"
       ],
       "exercises": {
         "min": 6,
@@ -3817,7 +3830,8 @@
       "sk": "geom",
       "pool": "pg8m2",
       "formats": [
-        "number"
+        "number",
+        "list"
       ],
       "exercises": {
         "min": 6,
@@ -3845,7 +3859,7 @@
       "title": "Фалес",
       "curricularScope": "required",
       "reason": "Базове вміння відповідного класу за вказаними пунктами; охоплювати лише вміння, уже пояснені цим уроком.",
-      "evidence": "g8:89–101",
+      "evidence": "g8:46–49, 89–101",
       "prerequisites": [
         "g7m4l1",
         "g7m6l2"
@@ -3853,7 +3867,8 @@
       "sk": "geom",
       "pool": "pg8m2",
       "formats": [
-        "number"
+        "number",
+        "list"
       ],
       "exercises": {
         "min": 6,
@@ -3925,7 +3940,7 @@
         "ms0l5",
         "g7m5l1"
       ],
-      "sk": "expr",
+      "sk": "num",
       "pool": "pg8m3",
       "formats": [
         "number",
@@ -3999,7 +4014,7 @@
         "ms0l5",
         "g7m5l1"
       ],
-      "sk": "expr",
+      "sk": "func",
       "pool": "pg8m3",
       "formats": [
         "number",
@@ -4039,7 +4054,9 @@
       "sk": "geom",
       "pool": "pg8m4",
       "formats": [
-        "number"
+        "number",
+        "list",
+        "choice"
       ],
       "exercises": {
         "min": 6,
@@ -4071,12 +4088,15 @@
       "evidence": "g8:138–146",
       "prerequisites": [
         "g7m4l1",
-        "g6m3l2"
+        "g6m3l2",
+        "g8m3l3"
       ],
       "sk": "geom",
       "pool": "pg8m4",
       "formats": [
-        "number"
+        "number",
+        "list",
+        "exactRoot"
       ],
       "exercises": {
         "min": 6,
@@ -4106,12 +4126,15 @@
       "evidence": "g8:133–137",
       "prerequisites": [
         "g7m4l1",
-        "g6m3l2"
+        "g6m3l2",
+        "g8m3l3"
       ],
       "sk": "geom",
       "pool": "pg8m4",
       "formats": [
-        "number"
+        "number",
+        "list",
+        "exactRoot"
       ],
       "exercises": {
         "min": 6,
@@ -4257,7 +4280,7 @@
       "title": "Задачі",
       "curricularScope": "required",
       "reason": "Базове вміння відповідного класу за вказаними пунктами; охоплювати лише вміння, уже пояснені цим уроком.",
-      "evidence": "a8:215–235",
+      "evidence": "a8:183, 192–194, 205",
       "prerequisites": [
         "g7m1l2",
         "g8m3l1"
@@ -4266,8 +4289,7 @@
       "pool": "pg8m5",
       "formats": [
         "number",
-        "list",
-        "exactRoot"
+        "list"
       ],
       "exercises": {
         "min": 6,
@@ -4302,7 +4324,7 @@
         "g7m4l3",
         "ms4l1"
       ],
-      "sk": "meas",
+      "sk": "geom",
       "pool": "pg8m6",
       "formats": [
         "number"
@@ -4379,6 +4401,7 @@
       "pool": "pg9m1",
       "formats": [
         "number",
+        "comparison",
         "intervalSet"
       ],
       "exercises": {
@@ -4490,7 +4513,6 @@
       "formats": [
         "number",
         "coordinates2",
-        "expression",
         "exactRoot"
       ],
       "exercises": {
@@ -4642,7 +4664,7 @@
       "title": "Властивості",
       "curricularScope": "required",
       "reason": "Базове вміння відповідного класу за вказаними пунктами; охоплювати лише вміння, уже пояснені цим уроком.",
-      "evidence": "a9:63–82",
+      "evidence": "a9:63–82,104",
       "prerequisites": [
         "g7m5l3",
         "g8m5l2"
@@ -4760,12 +4782,11 @@
         "g7m5l3",
         "g8m5l2"
       ],
-      "sk": "func",
+      "sk": "eq",
       "pool": "pg9m3",
       "formats": [
         "number",
-        "intervalSet",
-        "expression"
+        "intervalSet"
       ],
       "exercises": {
         "min": 6,
@@ -4877,7 +4898,8 @@
       "pool": "pg9m4",
       "formats": [
         "number",
-        "exactRoot"
+        "exactRoot",
+        "list"
       ],
       "exercises": {
         "min": 6,
@@ -4910,7 +4932,7 @@
         "g7m3l1",
         "g7m1l2"
       ],
-      "sk": "expr",
+      "sk": "num",
       "pool": "pg9m5",
       "formats": [
         "number"
@@ -4947,7 +4969,7 @@
         "g7m3l1",
         "g7m1l2"
       ],
-      "sk": "expr",
+      "sk": "num",
       "pool": "pg9m5",
       "formats": [
         "number"
@@ -4982,7 +5004,7 @@
         "g7m3l1",
         "g7m1l2"
       ],
-      "sk": "expr",
+      "sk": "num",
       "pool": "pg9m5",
       "formats": [
         "number"
@@ -5021,7 +5043,6 @@
       "pool": "pg9m6",
       "formats": [
         "number",
-        "coordinates2",
         "exactRoot"
       ],
       "exercises": {
@@ -5056,11 +5077,10 @@
         "g8m6l1",
         "g8m4l1"
       ],
-      "sk": "geom",
+      "sk": "meas",
       "pool": "pg9m6",
       "formats": [
         "number",
-        "coordinates2",
         "exactRoot"
       ],
       "exercises": {
@@ -5097,8 +5117,7 @@
       "pool": "pg9m6",
       "formats": [
         "number",
-        "coordinates2",
-        "exactRoot"
+        "coordinates2"
       ],
       "exercises": {
         "min": 6,
@@ -5307,7 +5326,7 @@
       "title": "Парність",
       "curricularScope": "required",
       "reason": "Базове вміння відповідного класу за вказаними пунктами; охоплювати лише вміння, уже пояснені цим уроком.",
-      "evidence": "m10:6–12",
+      "evidence": "m10:6–12; a9:82",
       "prerequisites": [
         "g7m5l1",
         "g9m3l1",
@@ -5540,7 +5559,6 @@
       "formats": [
         "number",
         "exactRoot",
-        "list",
         "expression"
       ],
       "exercises": {
@@ -5576,13 +5594,12 @@
         "g8m1l3",
         "g8m5l2"
       ],
-      "sk": "expr",
+      "sk": "eq",
       "pool": "pg10m3",
       "formats": [
         "number",
         "exactRoot",
-        "list",
-        "expression"
+        "list"
       ],
       "exercises": {
         "min": 6,
@@ -5620,7 +5637,6 @@
       "pool": "pg10m4",
       "formats": [
         "number",
-        "exactRoot",
         "choice",
         "multi"
       ],
@@ -5814,8 +5830,7 @@
       "formats": [
         "number",
         "exactRoot",
-        "expression",
-        "periodicSet"
+        "expression"
       ],
       "exercises": {
         "min": 6,
@@ -5852,7 +5867,6 @@
       "formats": [
         "number",
         "exactRoot",
-        "expression",
         "periodicSet"
       ],
       "exercises": {
@@ -5889,8 +5903,7 @@
       "pool": "pg10m6",
       "formats": [
         "number",
-        "expression",
-        "intervalSet"
+        "expression"
       ],
       "exercises": {
         "min": 6,
@@ -5929,8 +5942,7 @@
       "pool": "pg10m6",
       "formats": [
         "number",
-        "expression",
-        "intervalSet"
+        "expression"
       ],
       "exercises": {
         "min": 6,
@@ -5967,7 +5979,6 @@
       "pool": "pg10m6",
       "formats": [
         "number",
-        "expression",
         "intervalSet"
       ],
       "exercises": {
@@ -6004,9 +6015,7 @@
       "sk": "calc",
       "pool": "pg10m6",
       "formats": [
-        "number",
-        "expression",
-        "intervalSet"
+        "number"
       ],
       "exercises": {
         "min": 6,
@@ -6082,8 +6091,7 @@
       "pool": "pg11m1",
       "formats": [
         "number",
-        "expression",
-        "intervalSet"
+        "expression"
       ],
       "exercises": {
         "min": 6,
@@ -6120,7 +6128,6 @@
       "pool": "pg11m1",
       "formats": [
         "number",
-        "expression",
         "intervalSet"
       ],
       "exercises": {
@@ -6284,7 +6291,6 @@
       "sk": "calc",
       "pool": "pg11m3",
       "formats": [
-        "number",
         "expression"
       ],
       "exercises": {
@@ -6322,8 +6328,7 @@
       "sk": "calc",
       "pool": "pg11m3",
       "formats": [
-        "number",
-        "expression"
+        "number"
       ],
       "exercises": {
         "min": 6,
@@ -6358,8 +6363,7 @@
       "sk": "calc",
       "pool": "pg11m3",
       "formats": [
-        "number",
-        "expression"
+        "number"
       ],
       "exercises": {
         "min": 6,
@@ -6392,7 +6396,7 @@
         "g10m4l2",
         "g9m6l2"
       ],
-      "sk": "meas",
+      "sk": "geom",
       "pool": "pg11m4",
       "formats": [
         "number",
@@ -6433,12 +6437,11 @@
         "g10m4l2",
         "g9m6l2"
       ],
-      "sk": "meas",
+      "sk": "geom",
       "pool": "pg11m4",
       "formats": [
         "number",
-        "exactRoot",
-        "expression"
+        "exactRoot"
       ],
       "exercises": {
         "min": 6,
@@ -6687,7 +6690,7 @@
         "g11m1l2",
         "g11m4l3"
       ],
-      "sk": "expr",
+      "sk": "eq",
       "pool": "pg11m6",
       "formats": [
         "number"
@@ -6717,7 +6720,7 @@
         "g11m1l2",
         "g11m4l3"
       ],
-      "sk": "expr",
+      "sk": "func",
       "pool": "pg11m6",
       "formats": [
         "number"
@@ -6747,7 +6750,7 @@
         "g11m1l2",
         "g11m4l3"
       ],
-      "sk": "expr",
+      "sk": "meas",
       "pool": "pg11m6",
       "formats": [
         "number",
@@ -7268,8 +7271,8 @@
             }
           ],
           "itemSkills": [
-            "num",
-            "num"
+            "cmp",
+            "cmp"
           ]
         },
         {
@@ -7378,8 +7381,8 @@
             }
           ],
           "itemSkills": [
-            "num",
-            "num"
+            "div",
+            "div"
           ]
         },
         {
@@ -8190,7 +8193,7 @@
             "g6m1l2"
           ],
           "probes": [
-            "Які числа діляться націло на 3?"
+            "multi, 5 тверджень (rev 2): ознаки на 5 і 10 за останньою цифрою, на 2; на 9 і 3 за сумою цифр; добір цифри в 4*5 для ділення на 9"
           ],
           "itemIndices": [
             16
@@ -8199,7 +8202,7 @@
           "itemSkills": [
             "divis"
           ],
-          "knownReview": "Наступна задача refine-math-diag-g6-coverage: перевірити достатність проби для всього lessons; цей файл не змінює dg6."
+          "knownReview": "dg6 ред. 2 (refine-math-diag-g6-coverage; verified — reports/verify/refine-math-diag-g6-coverage.md, рев’ю reports/review/refine-math-diag-g6-coverage.md): Ядро g6m1l2 (ознаки на 2, 5, 10, 3, 9; добір цифри) перевірено на одному екрані; known — лише за цілком правильну відповідь. Перерваний тест ред. 1 повторює цю пробу (learn.js resumeDiag); завершені результати ред. 1 не перераховуються."
         },
         {
           "id": "g6-lcm",
@@ -8212,7 +8215,7 @@
             "g6m1l4"
           ],
           "probes": [
-            "Знайди НСК (6; 8)"
+            "multi, 5 тверджень (rev 2): НСД (12; 18), НСК (4; 10) з помилкою «добуток», взаємно прості 9 і 20, НСК (6; 8), НСД (8; 12)"
           ],
           "itemIndices": [
             20
@@ -8221,7 +8224,7 @@
           "itemSkills": [
             "divis"
           ],
-          "knownReview": "Наступна задача refine-math-diag-g6-coverage: перевірити достатність проби для всього lessons; цей файл не змінює dg6."
+          "knownReview": "dg6 ред. 2 (refine-math-diag-g6-coverage; verified — reports/verify/refine-math-diag-g6-coverage.md, рев’ю reports/review/refine-math-diag-g6-coverage.md): Ядро g6m1l4 (НСД, НСК, взаємно прості) перевірено на одному екрані; known — лише за цілком правильну відповідь. Перерваний тест ред. 1 повторює цю пробу (learn.js resumeDiag); завершені результати ред. 1 не перераховуються."
         },
         {
           "id": "g6-fadd",
@@ -8234,7 +8237,7 @@
             "g6m2l4"
           ],
           "probes": [
-            "Додай дроби"
+            "sort, 4 рядки (rev 2): додати й відняти дроби з різними знаменниками; порожній кошик — помилка «окремо чисельники й знаменники»"
           ],
           "itemIndices": [
             24
@@ -8243,7 +8246,7 @@
           "itemSkills": [
             "ops"
           ],
-          "knownReview": "Наступна задача refine-math-diag-g6-coverage: перевірити достатність проби для всього lessons; цей файл не змінює dg6."
+          "knownReview": "dg6 ред. 2 (refine-math-diag-g6-coverage; verified — reports/verify/refine-math-diag-g6-coverage.md, рев’ю reports/review/refine-math-diag-g6-coverage.md): Ядро g6m2l4 (додавання, віднімання, типова помилка) перевірено на одному екрані; known — лише за цілком правильну відповідь. Перерваний тест ред. 1 повторює цю пробу (learn.js resumeDiag); завершені результати ред. 1 не перераховуються."
         },
         {
           "id": "g6-prop",
@@ -8256,7 +8259,7 @@
             "g6m3l2"
           ],
           "probes": [
-            "Знайди $x$"
+            "multi, 5 тверджень (rev 2): крайні члени, перевірка за основною властивістю (дві пропорції), невідомий член, масштаб"
           ],
           "itemIndices": [
             27
@@ -8265,7 +8268,7 @@
           "itemSkills": [
             "prop"
           ],
-          "knownReview": "Наступна задача refine-math-diag-g6-coverage: перевірити достатність проби для всього lessons; цей файл не змінює dg6."
+          "knownReview": "dg6 ред. 2 (refine-math-diag-g6-coverage; verified — reports/verify/refine-math-diag-g6-coverage.md, рев’ю reports/review/refine-math-diag-g6-coverage.md): Ядро g6m3l2 (члени пропорції, основна властивість, невідомий член, масштаб) перевірено на одному екрані; known — лише за цілком правильну відповідь. Перерваний тест ред. 1 повторює цю пробу (learn.js resumeDiag); завершені результати ред. 1 не перераховуються."
         },
         {
           "id": "g6-neg",
@@ -8278,7 +8281,7 @@
             "g6m4l3"
           ],
           "probes": [
-            "Постав точку на значення $-8 + 5$"
+            "sort, 5 виразів у −13 / −3 / 3 (rev 2): суми різних і однакових знаків, віднімання як додавання протилежного"
           ],
           "itemIndices": [
             28
@@ -8287,7 +8290,7 @@
           "itemSkills": [
             "num"
           ],
-          "knownReview": "Наступна задача refine-math-diag-g6-coverage: перевірити достатність проби для всього lessons; цей файл не змінює dg6."
+          "knownReview": "dg6 ред. 2 (refine-math-diag-g6-coverage; verified — reports/verify/refine-math-diag-g6-coverage.md, рев’ю reports/review/refine-math-diag-g6-coverage.md): Ядро g6m4l3 перевірено на одному екрані; «стрибок на прямій» — спосіб пояснення в уроці, окремо не перевіряється; known — лише за цілком правильну відповідь. Перерваний тест ред. 1 повторює цю пробу (learn.js resumeDiag); завершені результати ред. 1 не перераховуються."
         },
         {
           "id": "g6-eq",
@@ -8309,7 +8312,7 @@
           "itemSkills": [
             "eq"
           ],
-          "knownReview": "Наступна задача refine-math-diag-g6-coverage: перевірити достатність проби для всього lessons; цей файл не змінює dg6."
+          "knownReview": "dg6 ред. 2 (refine-math-diag-g6-coverage; verified — reports/verify/refine-math-diag-g6-coverage.md, рев’ю reports/review/refine-math-diag-g6-coverage.md): проба без змін підтверджена достатньою — вільне введення кореня неможливе без перенесення й зведення доданків; добір кореня = перевірка підстановкою."
         }
       ],
       "items": 30,
@@ -8589,7 +8592,7 @@
           ],
           "probes": [
             "Розпізнати вид кута",
-            "Виміряти кут за шкалою"
+            "Обрати шкалу транспортира й прочитати кут (за описом)"
           ],
           "baseline": false,
           "rationale": "Проби відповідають умінням зазначених уроків; for веде до розділів, де ці операції/моделі потрібні. Конкретні вміння й джерела — у рядках реєстру.",
@@ -8812,7 +8815,7 @@
         },
         {
           "id": "cur-g7m6",
-          "title": "Ознаки",
+          "title": "Паралельні прямі",
           "kind": "cur",
           "lessons": [
             "g7m6l1"
@@ -9006,7 +9009,7 @@
         },
         {
           "id": "factor",
-          "title": "Розкладання",
+          "title": "Розкладання на множники",
           "kind": "pre",
           "lessons": [
             "g7m3l4"
@@ -9177,7 +9180,7 @@
         },
         {
           "id": "tri-angles",
-          "title": "Сума кутів",
+          "title": "Сума кутів трикутника",
           "kind": "pre",
           "lessons": [
             "g7m4l3"
@@ -9249,7 +9252,7 @@
         },
         {
           "id": "cur-g8m1",
-          "title": "Рац. дроби",
+          "title": "Раціональні дроби",
           "kind": "cur",
           "lessons": [
             "g8m1l1"
@@ -9302,7 +9305,7 @@
         },
         {
           "id": "cur-g8m3",
-          "title": "Корінь",
+          "title": "Квадратний корінь",
           "kind": "cur",
           "lessons": [
             "g8m3l1"
@@ -9328,7 +9331,7 @@
         },
         {
           "id": "cur-g8m4",
-          "title": "Подібність",
+          "title": "Подібні трикутники",
           "kind": "cur",
           "lessons": [
             "g8m4l1"
@@ -9355,7 +9358,7 @@
         },
         {
           "id": "cur-g8m5",
-          "title": "Неповні",
+          "title": "Неповні квадратні рівняння",
           "kind": "cur",
           "lessons": [
             "g8m5l1"
@@ -9394,7 +9397,7 @@
           ],
           "baseline": false,
           "itemSkills": [
-            "meas"
+            "geom"
           ],
           "knownPolicy": "known лише для вказаного одного уроку і лише коли всі компоненти ядра перевірені на цьому екрані та відповідь цілком правильна. Не додавати неіснуючого прапорця вимкнення known; якщо достатню пробу не вдається скласти, перед авторством повернути вибір цільового уроку/проби куратору для нової версії матриці.",
           "coverageObjectives": [
@@ -9557,7 +9560,7 @@
         },
         {
           "id": "func",
-          "title": "Лінійний графік",
+          "title": "Лінійна функція",
           "kind": "pre",
           "lessons": [
             "g7m5l3"
@@ -9624,7 +9627,7 @@
         },
         {
           "id": "pyth",
-          "title": "Піфагор",
+          "title": "Теорема Піфагора",
           "kind": "pre",
           "lessons": [
             "g8m4l2"
@@ -9660,7 +9663,7 @@
         },
         {
           "id": "similar",
-          "title": "Подібність",
+          "title": "Подібні трикутники",
           "kind": "pre",
           "lessons": [
             "g8m4l1"
@@ -9696,7 +9699,7 @@
         },
         {
           "id": "polygon",
-          "title": "Многокутники",
+          "title": "Сума кутів многокутника",
           "kind": "pre",
           "lessons": [
             "g8m6l1"
@@ -9721,8 +9724,8 @@
             }
           ],
           "itemSkills": [
-            "meas",
-            "meas"
+            "geom",
+            "geom"
           ]
         },
         {
@@ -9758,7 +9761,7 @@
         },
         {
           "id": "cur-g9m1",
-          "title": "Властивості",
+          "title": "Властивості нерівностей",
           "kind": "cur",
           "lessons": [
             "g9m1l1"
@@ -9784,7 +9787,7 @@
         },
         {
           "id": "cur-g9m2",
-          "title": "Координати",
+          "title": "Відстань і середина",
           "kind": "cur",
           "lessons": [
             "g9m2l1"
@@ -9810,7 +9813,7 @@
         },
         {
           "id": "cur-g9m3",
-          "title": "Властивості",
+          "title": "Графік квадратичної функції",
           "kind": "cur",
           "lessons": [
             "g9m3l1"
@@ -9836,7 +9839,7 @@
         },
         {
           "id": "cur-g9m4",
-          "title": "sin, cos, tg",
+          "title": "Синус і косинус до 180°",
           "kind": "cur",
           "lessons": [
             "g9m4l1"
@@ -9863,7 +9866,7 @@
         },
         {
           "id": "cur-g9m5",
-          "title": "Послідовності",
+          "title": "Числові послідовності",
           "kind": "cur",
           "lessons": [
             "g9m5l1"
@@ -9872,16 +9875,16 @@
             "g9m5l1"
           ],
           "probes": [
-            "На одному multi/sort-екрані: Розрізняти рекурентне правило і формулу $n$-го члена; Читати члени ряду на діаграмі й на прямій; Знаходити $a_n$ за формулою."
+            "На одному multi/sort-екрані: Розрізняти рекурентне правило і формулу $n$-го члена; Читати члени ряду на діаграмі (або на прямій); Знаходити $a_n$ за формулою."
           ],
           "baseline": false,
           "itemSkills": [
-            "expr"
+            "num"
           ],
           "knownPolicy": "known лише для вказаного одного уроку і лише коли всі компоненти ядра перевірені на цьому екрані та відповідь цілком правильна. Не додавати неіснуючого прапорця вимкнення known; якщо достатню пробу не вдається скласти, перед авторством повернути вибір цільового уроку/проби куратору для нової версії матриці.",
           "coverageObjectives": [
             "Розрізняти рекурентне правило і формулу $n$-го члена",
-            "Читати члени ряду на діаграмі й на прямій",
+            "Читати члени ряду на діаграмі (або на прямій)",
             "Знаходити $a_n$ за формулою"
           ],
           "probeDesign": "Одне multi/sort-завдання з окремими твердженнями/відповідностями на перелічені компоненти ядра; усі компоненти мають бути перевірені. Це проєкт екрана, не ключ готового завдання.",
@@ -9889,7 +9892,7 @@
         },
         {
           "id": "cur-g9m6",
-          "title": "Правильні",
+          "title": "Правильні многокутники",
           "kind": "cur",
           "lessons": [
             "g9m6l1"
@@ -9915,7 +9918,7 @@
         },
         {
           "id": "cur-g9m7",
-          "title": "Комбінаторика",
+          "title": "Правило добутку і суми",
           "kind": "cur",
           "lessons": [
             "g9m7l1"
@@ -10549,8 +10552,8 @@
             }
           ],
           "itemSkills": [
-            "func",
-            "func"
+            "eq",
+            "eq"
           ]
         },
         {
@@ -10704,8 +10707,8 @@
             }
           ],
           "itemSkills": [
-            "geom",
-            "geom"
+            "meas",
+            "meas"
           ]
         },
         {
@@ -10838,7 +10841,7 @@
           ],
           "baseline": false,
           "itemSkills": [
-            "meas"
+            "geom"
           ],
           "knownPolicy": "known лише для вказаного одного уроку і лише коли всі компоненти ядра перевірені на цьому екрані та відповідь цілком правильна. Не додавати неіснуючого прапорця вимкнення known; якщо достатню пробу не вдається скласти, перед авторством повернути вибір цільового уроку/проби куратору для нової версії матриці.",
           "coverageObjectives": [
@@ -10889,6 +10892,15 @@
     "reviewer": "review_math_map",
     "report": "reports/verify/math-personalization-coverage.md",
     "scope": "required-частина 2026-10-16.v2; optional/pending відкладені, не прийняті як обов’язкові",
-    "date": "2026-10-16"
-  }
+    "date": "2026-10-16",
+    "v3": {
+      "reviewer": "review_math_matrix_v3",
+      "report": "reports/verify/math-matrix-v3.md",
+      "scope": "зміни 2026-10-16.v2 → 2026-11-01.v3 (sk, формати, evidence, проби й назви)",
+      "date": "2026-11-01",
+      "verdict": "прийнято; бажані уточнення 1–4 закрито refine-math-content-from-matrix-v3"
+    }
+  },
+  "previous": "2026-10-16.v2",
+  "changes": "docs/math-personalization-coverage.md, «Зміни v3» (було → стало); curate-math-matrix-v3; доповнення v3 — refine-math-content-from-matrix-v3 (2026-11-01)"
 }

@@ -1,5 +1,7 @@
 /* Слід · Математика, 4 клас — діагностика «Що ти вже вмієш?»
-   Статус: verified (reports/verify/write-math-diag-g4.md). 8 baseline-опор 1–3 кл. (по 2 завдання) + 6 тем 4 класу (по 1 завданню) = 22 завдання.
+   Статус: verified. Злиття двох verified-версій (reports/merge/compare-dg4.md): основа — PR #5 (reports/verify/write-math-diag-g4.md);
+   з PR #6 (reports/verify/dg4.md) дослівно перенесено signed: false, cur-g4m2 (№ 20) і cur-g4m5 (№ 22).
+   8 baseline-опор 1–3 кл. (по 2 завдання) + 6 тем 4 класу (по 1 завданню) = 22 завдання.
    Обсяг і прив'язки — docs/math-personalization-coverage.md, розділ «dg4 · 4 клас» (матриця 2026-10-16.v2).
    Опори 1–3 кл. — baseline: уроків молодших класів у застосунку немає, тому lessons порожні, а for обов'язковий.
    Порядок: спершу базові завдання всіх опор (1–8), далі складніші впереміш із темами 4 класу (cur — 12, 14, 16, 18, 20, 22).
@@ -11,17 +13,18 @@ SLID.diag("math", {
   title: "Що ти вже вмієш?",
   why: "Згадаємо, що ти вчив у 1–3 класах, і знайдемо, з чого почати 4 клас.",
   status: "verified",
+  signed: false,
   meta: { author: "claude-opus", created: "2026-10-21", factcheck: "self", teacher: null },
   topics: [
     // опори 1–3 класів (baseline: уроків молодших класів у застосунку немає)
     { id: "place", title: "Розряди до тисячі", kind: "pre", baseline: true, lessons: [], for: ["g4m1", "g4m2"] },
     { id: "add", title: "Додавання до тисячі", kind: "pre", baseline: true, lessons: [], for: ["g4m2"] },
     { id: "sub", title: "Віднімання до тисячі", kind: "pre", baseline: true, lessons: [], for: ["g4m2"] },
-    { id: "mul", title: "Табличне множення", kind: "pre", baseline: true, lessons: [], for: ["g4m3", "m4s1"] },
-    { id: "quot", title: "Табличне ділення", kind: "pre", baseline: true, lessons: [], for: ["g4m3", "m4s1"] },
+    { id: "mul", title: "Табличне множення", kind: "pre", baseline: true, lessons: [], for: ["g4m3", "m4s1"], u: "mul-table" },
+    { id: "quot", title: "Табличне ділення", kind: "pre", baseline: true, lessons: [], for: ["g4m3", "m4s1"], u: "div-table" },
     { id: "ord", title: "Порядок дій", kind: "pre", baseline: true, lessons: [], for: ["g4m2", "g4m3"] },
-    { id: "units", title: "Довжина й час", kind: "pre", baseline: true, lessons: [], for: ["g4m4", "g4m5"] },
-    { id: "parts", title: "Рівні частини", kind: "pre", baseline: true, lessons: [], for: ["g4m5"] },
+    { id: "units", title: "Довжина й час", kind: "pre", baseline: true, lessons: [], for: ["g4m4", "g4m5"], u: "units-lt" },
+    { id: "parts", title: "Рівні частини", kind: "pre", baseline: true, lessons: [], for: ["g4m5"], u: "parts-equal" },
     // теми 4 класу: по одному required-уроку, усі компоненти ядра — на одному екрані
     { id: "cur-g4m1", title: "Класи і розряди", kind: "cur", lessons: ["g4m1l1"] },
     { id: "cur-g4m2", title: "Письмове додавання", kind: "cur", lessons: ["g4m2l1"] },
@@ -223,16 +226,16 @@ SLID.diag("math", {
       topic: "cur-g4m2",
       type: "multi",
       sk: "num",
-      title: "Письмове додавання: що правда?",
-      body: "<p>Обери всі правильні твердження.</p>",
+      title: "Петро додав стовпчиком",
+      body: "<p>Петро обчислив $2657 + 1486$ і отримав 3033. Обери всі правильні твердження.</p>",
       opts: [
-        "У стовпчику пишемо одиниці під одиницями, десятки під десятками",
-        "Додавати в стовпчик починаємо зліва, зі старшого розряду",
-        "$3587 + 2465 = 6052$",
-        "Марта отримала $5639 + 1253 = 6882$. Вона загубила 1, яку треба було тримати в розумі",
-        "$1476 + 2385 = 3761$"
+        "Числа пишемо розряд під розрядом",
+        "Додавати починаємо з тисяч, зліва направо",
+        "У розряді одиниць пишемо 13",
+        "Петро загубив те, що було в розумі",
+        "Правильна сума — 4143"
       ],
-      correct: [0, 2, 3]
+      correct: [0, 3, 4]
     },
     {
       topic: "parts",
@@ -244,18 +247,19 @@ SLID.diag("math", {
     },
     {
       topic: "cur-g4m5",
-      type: "multi",
+      type: "sort",
       sk: "frac",
-      title: "Половина, третина, чверть: що правда?",
-      body: "<p>Обери всі правильні твердження.</p>",
-      opts: [
-        "Третину записують так: $1/3$",
-        "Чверть — це одна з чотирьох рівних частин",
-        "Половину записують так: $2/1$",
-        "Яблуко розрізали на 3 нерівні частини. Кожна з них — третина",
-        "Половина — це одна з двох рівних частин"
-      ],
-      correct: [0, 1, 4]
+      title: "Яка це частина?",
+      body: "<p>Поклади кожну картку в кошик з її назвою.</p>",
+      bins: ["Половина", "Третина", "Чверть", "Жодна з них"],
+      items: [
+        ["$1/4$", 2],
+        ["Одна з 2 нерівних частин", 3],
+        ["$1/2$", 0],
+        ["Одна з 3 рівних частин", 1],
+        ["$1/3$", 1],
+        ["Одна з 4 рівних частин", 2]
+      ]
     }
   ]
 });

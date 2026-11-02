@@ -1,5 +1,7 @@
 /* Слід · Математика, 6 клас — пул задач для тренування до розділу «Рівняння» (g6m5)
-   Статус: verified (verifier-pool-g6m5, 2026-10-13). 32 задачі: по 8 на кожен урок g6m5l1–g6m5l4 (boss без задач).
+   Статус: verified (verifier-refine-math-diag-g6-coverage, 2026-10-31; reports/verify/refine-math-diag-g6-coverage.md) після refine-math-diag-g6-coverage (2026-10-31): a03 → a09 (mer6 №1056(1)), b01 → b09 (mer6 №1063(3)), весь вираз — формат матриці expression / expression; повторна незалежна
+   верифікація нових вправ (verify-math-personalization-g6). Решта вправ і їхні id не змінені; вилучених id не використовувати знову.
+   Попередня редакція — verified (verifier-pool-g6m5, 2026-10-13). 32 задачі: по 8 на кожен урок g6m5l1–g6m5l4 (boss без задач).
    Усі задачі — з підручників (див. sources); умови й числа звірено за сторінками PDF.
    Перевірка: node tools/validate.mjs --pool pg6m5
    Схема: docs/CONTENT_SCHEMA.md §10 */
@@ -7,7 +9,7 @@ SLID.pool("math", {
   id: "pg6m5",
   section: "g6m5",
   status: "verified",
-  meta: { author: "claude-opus", created: "2026-10-13", factcheck: "ai-verifier", teacher: null },
+  meta: { author: "claude-opus", created: "2026-10-13", factcheck: "verifier-refine-math-diag-g6-coverage", revised: "2026-10-31 refine-math-diag-g6-coverage", teacher: null },
   sources: [
     { id: "mer6", title: "Мерзляк А. Г., Полонський В. Б., Якір М. С. Математика. 6 клас. Ч. 2. — Харків: Гімназія, 2023 (п. 37, 39, 40)", url: "https://znayshov.com/FR/23001/matematika_6kl_Merzlyak_2023_2.pdf" },
     { id: "kra6", title: "Кравчук В. Р., Янченко Г. М. Математика. 6 клас. — Тернопіль: Підручники і посібники, 2023 (п. 36, 39, 41, 42)", url: "https://znayshov.com/FR/23005/matematika_6kl_Kravchuk_2023.pdf" }
@@ -22,10 +24,10 @@ SLID.pool("math", {
       type: "answer", title: "$11 - (-43 - 19)$", body: "<p>Розкрий дужки і знайди значення виразу.</p>",
       answer: 73,
       steps: ["Перед дужками мінус: кожен знак у дужках змінюємо. $11 + 43 + 19$.", "$11 + 19 = 30$.", "$30 + 43 = 73$."] },
-    { id: "a03", lesson: "g6m5l1", lvl: 1, sk: "expr", src: "kra6 №1209(1)",
-      type: "answer", title: "$5 * (100 - 1)$", body: "<p>Обчисли, розкривши дужки.</p>",
-      answer: 495,
-      steps: ["Множимо 5 на кожне число в дужках: $5 * 100 - 5 * 1$.", "$500 - 5 = 495$."] },
+    { id: "a09", lesson: "g6m5l1", lvl: 1, sk: "expr", src: "mer6 №1056(1)", srcPage: 114,
+      type: "answer", answerKind: "expression", form: "expanded", title: "$-3(4 + 5m - 6n)$", body: "<p>Розкрий дужки.</p>",
+      answer: "-12 - 15m + 18n",
+      steps: ["Множимо $-3$ на кожен доданок у дужках.", "$-3 * 4 = -12$, $-3 * 5m = -15m$, $-3 * (-6n) = 18n$.", "$-3(4 + 5m - 6n) = -12 - 15m + 18n$."] },
     { id: "a04", lesson: "g6m5l1", lvl: 1, sk: "expr", src: "mer6 №1057(1)",
       type: "answer", title: "$12,14 - (3,5 + 6,14)$", body: "<p>Розкрий дужки і знайди значення виразу.</p>",
       answer: 2.5,
@@ -52,10 +54,10 @@ SLID.pool("math", {
       steps: ["Розкриваємо дужки: $-4(n - k) = -4n + 4k$.", "Це те саме, що $4(k - n)$: перевір, розкривши дужки.", "$4 * (-7) = -28$."] },
 
     /* ---------- g6m5l2 · Подібні доданки ---------- */
-    { id: "b01", lesson: "g6m5l2", lvl: 1, sk: "expr", src: "kra6 №1218(1)",
-      type: "answer", title: "$9m - 13m + 2m$", body: "<p>Зведи подібні доданки. У відповідь запиши коефіцієнт.</p>",
-      answer: -2,
-      steps: ["Додаємо коефіцієнти: $9 - 13 + 2$.", "$9 - 13 = -4$, $-4 + 2 = -2$.", "Вираз дорівнює $-2m$. Коефіцієнт: $-2$."] },
+    { id: "b09", lesson: "g6m5l2", lvl: 1, sk: "expr", src: "mer6 №1063(3)", srcPage: 116,
+      type: "answer", answerKind: "expression", form: "expanded", title: "$11a - 16b - 18a + 9b$", body: "<p>Зведи подібні доданки.</p>",
+      answer: "-7a - 7b",
+      steps: ["Подібні доданки мають однакову буквену частину. Зводимо окремо доданки з $a$ і доданки з $b$.", "$11a - 18a = -7a$.", "$-16b + 9b = -7b$.", "Разом: $-7a - 7b$."] },
     { id: "b02", lesson: "g6m5l2", lvl: 1, sk: "expr", src: "mer6 №1063(1)",
       type: "answer", title: "$7x - 18x + 25x - 6x$", body: "<p>Зведи подібні доданки. У відповідь запиши коефіцієнт.</p>",
       answer: 8,

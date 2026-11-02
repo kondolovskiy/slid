@@ -4,20 +4,25 @@
 import fs from "node:fs"; import path from "node:path"; import crypto from "node:crypto"; import { fileURLToPath } from "node:url";
 export const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
-export function manifest() {
-  const rel = p => path.relative(ROOT, p).split(path.sep).join("/");
+export function manifest(root = ROOT) {   // root — інше дерево (diff-answers --content-old: зміст старої ревізії)
+  const rel = p => path.relative(root, p).split(path.sep).join("/");
   const js = d => fs.existsSync(d) ? fs.readdirSync(d).filter(f => f.endsWith(".js")).sort() : [];
-  const files = [rel(path.join(ROOT, "app/registry.js"))];
-  js(path.join(ROOT, "content/subjects")).forEach(f => files.push(`content/subjects/${f}`));
-  const subjDirs = fs.readdirSync(path.join(ROOT, "content"), { withFileTypes: true })
+  const files = [rel(path.join(root, "app/registry.js"))];
+  js(path.join(root, "content/subjects")).forEach(f => files.push(`content/subjects/${f}`));
+  const subjDirs = fs.readdirSync(path.join(root, "content"), { withFileTypes: true })
     .filter(d => d.isDirectory() && d.name !== "subjects").map(d => d.name).sort();
   for (const d of subjDirs) {
-    const list = js(path.join(ROOT, "content", d));
+    const list = js(path.join(root, "content", d));
     if (list.includes("plan.js")) files.push(`content/${d}/plan.js`);      // план першим: розділи з уроками його перекривають
     list.filter(f => f !== "plan.js").forEach(f => files.push(`content/${d}/${f}`));
   }
-  if (fs.existsSync(path.join(ROOT, "content/catalog.js"))) files.push("content/catalog.js");
-  files.push("app/lab.js", "app/learn.js", "app/math.js", "app/app.js");
+  if (fs.existsSync(path.join(root, "content/catalog.js"))) files.push("content/catalog.js");
+  // журнал подій (docs/EVIDENCE.md) — до app.js; у старих ревізіях (diff-answers --content-old) його ще немає
+  if (fs.existsSync(path.join(root, "app/evidence.js"))) files.push("app/evidence.js");
+  files.push("app/lab.js", "app/learn.js", "app/math.js");
+  // гіпотези «обчислення чи поняття» (app/hyp.js, тіньовий режим E2) — після learn.js, до app.js; у старих ревізіях файлу ще немає
+  if (fs.existsSync(path.join(root, "app/hyp.js"))) files.push("app/hyp.js");
+  files.push("app/app.js");
   return files;
 }
 

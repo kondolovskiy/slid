@@ -1,0 +1,60 @@
+---
+claimed_from: todo
+claimed_at: 2026-10-31T08:44:18.130Z
+id: qa-math-personalization-g5
+type: qa
+subject: math
+grade: 5
+status: done
+claimed_by: w-qa-math-personalization-g5
+created: 2026-10-15
+depends_on: [verify-math-personalization-g5, tools-math-personalization-qa, engine-math-grade-plan-context]
+---
+# Прийняти інтеграцію діагностики й тренування 5-го класу
+
+## Межі
+
+Незалежний зміст уже перевірено в verify-math-personalization-g5. Тут приймається робота класу в застосунку, а не повторно розв’язуються всі вправи. Залежить лише від потрібних цьому класу реалізацій; не чекати авторства чи приймання решти класів.
+
+## Що перевірити
+
+- Оркестратор виконав build. Пройти dg5: усе правильно, базова помилка/пропуск із пропуском складнішого, shaky, змішаний результат, «Пізніше», переривання/відновлення, повторний тест. Немає фідбеку, XP або витоку відповіді; результат і переходи плану відповідають даним.
+- Для 4-го — baseline без неіснуючих уроків і неправдивої «Міцної бази». Для старших — тільки реалізовані потрібні формати; optional/pending не додаються до обов’язкового тесту чи мінімуму покриття.
+- Тренування required-уроків: закриття до проходження, відкриття після, самостійна відповідь, hint/друга спроба, steps/джерело, добір сесії, SRS, повторювані помилки → план. Перевірити клавіатуру й мобільну ширину.
+- Зміна класу та перезавантаження зберігають контекст і прогрес. Перевірити доступне міжкласове повторення; якщо потрібний пул попереднього класу ще не готовий — явно записати цю межу. Остаточний dg6 → ms2l4 → реальний pms2 обов’язковий у qa-math-personalization-release.
+- Дані цього класу працюють офлайн; немає JS-помилок, битих переходів, зарахованих нульових прогонів. Автоматичний час проходження не є оцінкою часу учня.
+
+## Готово, коли
+
+- [ ] reports/qa/math-personalization-g5.md містить версію матриці, перевірені required-об’єкти, команди, сценарії, виправлення та межі перевірки.
+- [ ] validate, test-learn, застосовні цільові браузерні сценарії й покриття класу зелені; build виконано, згенеровані файли включено в результат.
+- [ ] Критичні дефекти цього класу закрито; optional/pending і ще недоступні міжкласові пули не приховані та не оголошені виконаними. Фінальне наскрізне приймання — окрема задача.
+
+
+## Перед роботою
+
+Прочитати AGENTS.md, актуальні handoff та INDEX, релевантні довгу пам’ять і style/math.md; docs/PERSONALIZATION.md, docs/CONTENT_SCHEMA.md §9–10; tasks/README-math-personalization.md. Аналіз цього пакета спирається на origin/main, коміт 8d438ca; у старому коміті 57f9fc6 потрібної реалізації немає. Виконувати на версії з чинними SLID.diag / SLID.pool. Не повертати застарілі обмеження зі старих задач: engine-diag-pool-answers уже done.
+
+## Нотатки виконавця
+
+<!-- Змінені файли; джерела; рішення й обмеження; результати команд; що передано незалежному верифікатору. -->
+
+2026-10-31, w-qa-math-personalization-g5. Звіт: reports/qa/math-personalization-g5.md. **Прийнято, P1 немає.**
+- Змінені файли: лише reports/qa/math-personalization-g5.md, ця задача, рядок у memory/short/inbox.md (validate перезаписав reports/validate.json). app/, tools/, content/ не редагував; build не запускав (актуальний, sw 378b207bb9), git-операцій не робив.
+- Матриця 2026-10-16.v2: 24 required / 6 пулів / 192 вправи + dg5 (26). Pending ms0bl3, ms3l3 не перевірено.
+- Команди: validate --diag dg5 і --pool ×6 → 0/0; validate → 0 помилок; test-learn 780 ok; test-personalization-qa 27 green; personalization-qa --grade 5 --strict exit 0; test-answer-ui --grade 5 --strict (--browser Chromium 1243) exit 0, 192 вправи; playtest dg5 + ms0…ms4 (32 уроки) зелений.
+- Власний Playwright (scratchpad/qa-g5, 360 px): «Пізніше», змішаний dg5 з оракулом topics/steps/known, Enter/Tab, переривання/відновлення, повторний тест, 5→6→5 з reload, міграція плану старого формату, g4m1l1 → pg4m1 при 5 кл., ms0l1 → pms0, hint/друга спроба, comparison/list/mixed/fractionOnly, повторювані помилки → план, офлайн після першого завантаження (dg5, урок, тренування).
+- Дефекти: P2 D-1 «Спробувати ще раз» без зміни відповіді витрачає 2-гу спробу; P3 D-2 фокус на BODY після перевірки; D-3 test-answer-ui без фолбеку на Chromium 1243; D-4 validate --pool друкує «діагностика»; D-5 різні title джерела mer5 у pms0 vs pms1/pms3.
+
+## Обсяг за матрицею 2026-10-16.v2
+
+Матриця **2026-10-16.v2**, required-частина незалежно прийнята (reports/verify/math-personalization-coverage.md). Знаменник: **24 required-уроків / 6 пулів**, мінімум 144 вправ, ціль 144–192.
+
+Очікувані required-пули: `pms0`, `pms0b`, `pms1`, `pms2`, `pms3`, `pms4`.
+
+Очікувані файли: `content/math/pool-g5-ms0.js`, `content/math/pool-g5-ms0b.js`, `content/math/pool-g5-ms1.js`, `content/math/pool-g5-ms2.js`, `content/math/pool-g5-ms3.js`, `content/math/pool-g5-ms4.js`; `content/math/diag-g5.js`.
+
+Required-перелік: ms0l1, ms0l2, ms0l3, ms0l4, ms0l5, ms0bl1, ms0bl2, ms0bl4, m1, m2, m3, m4, m5, ms2l1, ms2l2, ms2l3, ms2l4, ms2l5, ms2l7, ms3l1, ms3l2, ms4l1, ms4l2, ms4l3.
+Optional/pending окремим списком: ms0bl3 (pending), ms3l3 (pending).
+
+Команди: `node tools/validate.mjs --diag dg5`; для кожного переліченого пулу `node tools/validate.mjs --pool <id>`. Відсутній required-пул — помилка; відкладений — окремий неперевірений стан. Повний браузерний QA — через tools-math-personalization-qa, без дублювання раннера.
