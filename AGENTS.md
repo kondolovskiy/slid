@@ -27,6 +27,7 @@
 | `content/<предмет>/graph.js` | граф умінь `SLID.graph` (CONTENT_SCHEMA §11, docs/design/skill-graph-math.md); поки немає | **лише куратор** (автор — лише `u` у своєму розділі) |
 | `content/<предмет>/g<клас>-<id>.js` | **один файл = один розділ з уроками** | автор цього розділу |
 | `content/<предмет>/diag-g<клас>.js` | тест рівня класу (`SLID.diag`, CONTENT_SCHEMA §9) | автор цього тесту |
+| `app/lang.js` | мовні вправи: розбір розмітки й перевірка gaps / pick / stress / word / split (CONTENT_SCHEMA §4.1) | розробник |
 | `app/learn.js` | персоналізація: тест рівня, план, повторювані помилки (docs/PERSONALIZATION.md) | розробник |
 | `app/evidence.js` | журнал подій Evidence V2 у IndexedDB `slid-evidence` (docs/EVIDENCE.md) | розробник |
 | `app/hyp.js` | гіпотези «обчислення чи поняття», тіньовий режим (docs/design/diag-hypothesis-math.md) | розробник |
@@ -48,6 +49,7 @@
 node tools/build.mjs                       # список скриптів у index.html + sw.js (після БУДЬ-ЯКОЇ зміни в content/, app/, img/)
 node tools/validate.mjs [--section ID | --diag ID]   # помилки (блокують) + попередження стилю
 node tools/test-learn.mjs                  # тести логіки персоналізації (app/learn.js)
+node tools/test-lang.mjs                   # тести мовних вправ gaps/pick/stress/word/split (app/lang.js)
 node tools/test-validate.mjs               # регресійні тести валідатора на фікстурах (D-027 тощо)
 node tools/stats.mjs [--subject hist]      # метрики складності, звіт reports/style-<предмет>.md
 node tools/make-tasks.mjs [--subject math] # задачі на написання з плану
@@ -59,7 +61,7 @@ node tools/graph-report.mjs [--line <id> --strict] [--since <коміт>] [--use
 cd server && npm run check                        # бекенд: типи + unit + межі модулів (без БД)
 DATABASE_URL=postgres://… npm run test:e2e        # бекенд: e2e на справжньому Postgres (обовʼязково)
 ```
-Скорочено: `npm run check` = build + test-math, test-lab, test-learn, test-evidence, test-hyp, test-personalization-qa, test-validate, test-graph-report, test-make-tasks, test-diff-answers + validate + graph-report --quiet + stats (точний перелік — package.json). Кореневим інструментам Node залежностей не потрібно (у `server/` — свої, `npm ci`); плейтесту потрібен Playwright.
+Скорочено: `npm run check` = build + test-math, test-lab, test-lang, test-learn, test-evidence, test-hyp, test-personalization-qa, test-validate, test-graph-report, test-make-tasks, test-diff-answers + validate + graph-report --quiet + stats (точний перелік — package.json). Кореневим інструментам Node залежностей не потрібно (у `server/` — свої, `npm ci`); плейтесту потрібен Playwright.
 
 ## 3. Непорушні правила
 

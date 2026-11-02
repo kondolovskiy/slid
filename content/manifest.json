@@ -2,6 +2,7 @@
   "app/registry.js",
   "content/subjects/hist.js",
   "content/subjects/math.js",
+  "content/subjects/ukr.js",
   "content/hist/plan.js",
   "content/hist/g10-g10s1.js",
   "content/hist/g10-g10s2.js",
@@ -150,6 +151,7 @@
   "app/lab.js",
   "app/learn.js",
   "app/math.js",
+  "app/lang.js",
   "app/hyp.js",
   "app/app.js"
 ]

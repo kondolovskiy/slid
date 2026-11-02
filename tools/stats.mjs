@@ -34,7 +34,7 @@ for (const c of subjects) {
     for (const [k, [lo, hi]] of Object.entries(p)) if (r[k] !== undefined && (r[k] < lo || r[k] > hi)) r.flags.push(`${k}=${r[k]} поза [${lo}; ${hi}]`);
     for (const k of KEYS) if (Math.abs(r.z?.[k] ?? 0) >= 2) r.flags.push(`${k} нетипово для сім'ї (z=${r.z[k]})`);
   }
-  report[c.id].rows = rows;
+  (report[c.id] ||= { bands: {} }).rows = rows;   // предмет ще без уроків (лише план) — порожній звіт, а не падіння
 }
 
 if (args.includes("--json")) {
