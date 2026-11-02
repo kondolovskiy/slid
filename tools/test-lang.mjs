@@ -83,6 +83,24 @@ const no = (v, msg) => eq(!!v, false, msg);
   ok(L.parseSplit("мо||локо").error, "split: дві межі поспіль");
   ok(L.parseSplit(["мо|локо", "ри|ба"]).error, "split: різні слова");
 }
+/* рев'ю engine-lang-types: NFD/наголос, латинські двійники, * усередині, нерозривний дефіс, readText */
+{ ok(L.parseStress("черго\u0301+вий".normalize("NFC")).error, "stress: знак наголосу в слові — помилка (P2-1)");
+  eq(L.parseStress("+йо\u0301д".replace("о\u0301", "о")).error ? "err" : "ok", "err", "stress: + перед й (приголосний) — помилка");
+  eq(L.parseStress("кра\u0304".normalize("NFC") + "+ї").error ? "err" : "ok", "err", "stress: комбінований знак — помилка");
+  eq(L.parseStress("га\u0306+ю".normalize("NFD")).error ? "err" : "ok", "err", "stress: NFD з комбінованим знаком — помилка");
+  eq(L.parseStress("кра+їна".normalize("NFD")).correct, 3, "stress: NFD «ї» нормалізується (NFC)");
+  ok(L.parseSplit("мо\u0301|ло|ко").error, "split: знак наголосу — помилка (P2-1)");
+  eq(L.parseSplit("ма|йо|нез".normalize("NFD")).word, "майонез", "split: NFD «й» нормалізується");
+  ok(L.check({ type: "word", answer: "пів'яблука" }, "пiв'яблука"), "word: латинська i в кириличному слові (P2-2)");
+  ok(L.check({ type: "word", answer: "око" }, "oкo"), "word: латинські o");
+  ok(L.check({ type: "word", answer: "м'ята" }, "м\u2032ята"), "word: ′ як апостроф (P3-5)");
+  ok(L.check({ type: "word", answer: "жовто-блакитний" }, "жовто\u2212блакитний"), "word: мінус як дефіс (P3-5)");
+  ok(L.issues({ type: "word", answer: "пiв" }).length, "word: змішане письмо у відповіді — помилка валідатора");
+  ok(L.parseGaps("с{е*|*и}ло").error, "gaps: * усередині варіанта — помилка (P3-2)");
+  eq(L.parsePick("[сіро\u2011зелений] ліс").words.map(w => w.v), ["сіро\u2011зелений", "ліс"], "pick: нерозривний дефіс — одне слово (P3-6)");
+  eq(L.readText({ type: "gaps", text: "с{*е|и}ло, ден{ь|*—}ки" }), "село, денки", "readText: gaps");
+  eq(L.readText({ type: "pick", text: "[Сонце] світить." }), "Сонце світить.", "readText: pick");
+}
 /* розв'язок дає правильну відповідь */
 for (const s of [{ type: "gaps", text: "с{*е|и}ло" }, { type: "pick", text: "[а] б" }, { type: "stress", words: ["м+ама"] }, { type: "word", answer: "так" }, { type: "split", word: "ма|ма" }])
   ok(L.check(s, L.solution(s)), `solution → check: ${s.type}`);

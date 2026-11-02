@@ -43,10 +43,17 @@ export function sentences(t) {
 }
 
 /** Текст, який дитина читає на екрані (без варіантів відповідей і фідбеку). */
-export function screenReadText(s) { return plain([s.title, s.body].filter(Boolean).join(" ")); }
+// текст мовної вправи (pick/gaps/stress/split) дитина читає так само, як body: SLID_LANG.readText (app/lang.js) — DRY з рушієм
+let LANG_READ = null;
+function langText(s) {
+  if (!["gaps", "pick", "stress", "split"].includes(s?.type)) return "";
+  if (!LANG_READ) { const ctx = {}; ctx.window = ctx; vm.createContext(ctx); vm.runInContext(fs.readFileSync(path.join(ROOT, "app/lang.js"), "utf8"), ctx); LANG_READ = ctx.SLID_LANG.readText; }
+  return LANG_READ(s);
+}
+export function screenReadText(s) { return plain([s.title, s.body, langText(s)].filter(Boolean).join(" ")); }
 /** Увесь текст екрана, включно з варіантами й поясненнями. */
 export function screenAllText(s) {
-  const parts = [s.title, s.body, s.fbText, s.fbOk, s.fbBad, s.hint, ...(s.opts || []), ...(typeof s.text === "string" ? [s.text.replace(/\{([^}]*)\}/g, (m, x) => (x.split("|").find(o => o.trim().startsWith("*")) || "").replace(/[*—\s]/g, "")).replace(/[[\]]/g, "")] : []), ...(s.items || []).map(i => Array.isArray(i) ? i[0] : i)];
+  const parts = [s.title, s.body, s.fbText, s.fbOk, s.fbBad, s.hint, ...(s.opts || []), langText(s), ...(s.items || []).map(i => Array.isArray(i) ? i[0] : i)];
   return parts.filter(Boolean).map(plain).filter(Boolean).map(t => /[.!?…]$/.test(t) ? t : t + ".").join(" ");
 }
 

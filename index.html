@@ -479,6 +479,8 @@ button.nowrow{cursor:pointer;width:100%} button.nowrow:hover{background:var(--ch
 .cut[aria-pressed="true"]::after{background:var(--accent);width:4px;left:7px;top:0;bottom:0}
 .cut.is-ok::after{background:var(--ok);width:4px;left:7px;top:0;bottom:0} .cut.is-bad::after{background:var(--bad);width:4px;left:7px;top:0;bottom:0}
 .lword input{font:600 22px var(--body);width:9em}
+.gw{white-space:nowrap}
+.gopt:disabled,.pw:disabled,.sv:disabled,.cut:disabled{cursor:default}
 .anskeys{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:10px} .anskeys.sym button{min-width:44px;padding:9px 10px}
 .anskeys button{all:unset;box-sizing:border-box;cursor:pointer;min-width:52px;text-align:center;padding:9px 14px;border-radius:12px;background:var(--surface);border:1.5px solid var(--line);font:600 16px var(--body)}
 .anskeys button:focus-visible{outline:3px solid var(--accent)} .anskeys button:active{background:var(--chip)} .anskeys button[disabled]{opacity:.4}

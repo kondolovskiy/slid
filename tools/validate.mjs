@@ -258,7 +258,8 @@ function checkScreen(S, s, c, diag, pool = false) {
       for (const m of lang.issues(s)) E(S, m);
       if (["gaps", "pick"].includes(s.type) && typeof s.text !== "string") E(S, `${s.type}: потрібне поле text`);
       // pick: слова з тексту стають кнопками, тож HTML-теги в text дали б кнопки «b», «br» (рушій екранує text)
-      if (s.type === "pick" && /<[^>]+>|&[a-z]+;/i.test(s.text || "")) E(S, "pick: у text не може бути HTML — пиши простим текстом (пояснення — у body)");
+      if (s.poll || s.hyp) E(S, `${s.type}: poll/hyp лише для choice — відповідь мовної вправи не збережеться для outro`);
+      if (s.type === "pick" && /<[^>]+>|&#?\w+;/i.test(s.text || "")) E(S, "pick: у text не може бути HTML — пиши простим текстом (пояснення — у body)");
       if (s.type === "split" && /[<>&]/.test([].concat(s.word).join(""))) E(S, "split: у word не може бути HTML");
       break;
     case "fracin": if (!(Number.isInteger(s.answer) && s.answer >= 0 && s.answer < 1e6)) E(S, "answer — ціле невід'ємне число (поле приймає лише цифри)");

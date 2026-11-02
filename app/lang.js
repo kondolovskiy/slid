@@ -28,6 +28,7 @@
       const stars = raw.filter(s => s.startsWith("*")).length;
       if (stars !== 1) return { error: `пропуск {${inner}}: має бути рівно один правильний варіант із «*»` };
       const opts = raw.map(s => s.replace(/^\*/, "").trim());
+      if (opts.some(o => o.includes("*"))) return { error: `пропуск {${inner}}: «*» лише на початку правильного варіанта` };
       if (opts.length < 2 || opts.length > 5) return { error: `пропуск {${inner}}: потрібно 2–5 варіантів` };
       if (opts.some(o => !o)) return { error: `пропуск {${inner}}: порожній варіант (для «нічого» пиши ${NONE})` };
       if (new Set(opts).size !== opts.length) return { error: `пропуск {${inner}}: варіанти повторюються` };
@@ -42,7 +43,7 @@
   }
 
   /** pick: [{t:"text", v}, {t:"word", v, ok, n}] або { error }. Слово — літери, апостроф, дефіс; група в [ ] — одна кнопка. */
-  const WORD = /[\p{L}\p{M}'’ʼ]+(?:-[\p{L}\p{M}'’ʼ]+)*/gu;
+  const WORD = /[\p{L}\p{M}'’ʼ]+(?:[-\u2011][\p{L}\p{M}'’ʼ]+)*/gu;
   function parsePick(text) {
     const src = String(text ?? ""), out = [];
     let n = 0;
@@ -77,7 +78,8 @@
 
   /** stress: { letters: [{ch, v (голосний), i}], correct: індекс літери } або { error }. «+» стоїть перед наголошеним голосним. */
   function parseStress(word) {
-    const src = String(word ?? "");
+    const src = String(word ?? "").normalize("NFC");
+    if (/\p{M}/u.test(src)) return { error: `«${src}»: знак наголосу чи інший комбінований знак у слові — наголос тут позначає лише «+»` };
     const plus = (src.match(/\+/g) || []).length;
     if (plus !== 1) return { error: `«${src}»: має бути рівно один «+» перед наголошеним голосним` };
     const p = src.indexOf("+"), ch = src[p + 1];
@@ -90,7 +92,8 @@
 
   /** split: розбір варіанта «мо|ло|ко» → { word: "молоко", cuts: [2,4] } (позиції меж після літери k) або { error } */
   function parseSplitOne(v) {
-    const src = String(v ?? "");
+    const src = String(v ?? "").normalize("NFC");
+    if (/\p{M}/u.test(src)) return { error: `«${src}»: знак наголосу чи інший комбінований знак у слові для поділу — прибери його` };
     if (!src.includes("|")) return { error: `«${src}»: немає жодної межі «|»` };
     if (/^\||\|$|\|\|/.test(src)) return { error: `«${src}»: межа «|» на краю слова або дві поспіль` };
     const cuts = []; let k = 0;
@@ -107,12 +110,16 @@
   }
   const sameCuts = (a, b) => a.length === b.length && [...a].sort((x, y) => x - y).every((v, k) => v === [...b].sort((x, y) => x - y)[k]);
 
-  /** word: нормалізація введеного слова — регістр, апострофи (’ ʼ ` ' ″), дефіси (‐ – —), пробіли, наголоси */
+  /** word: нормалізація введеного слова — регістр, апострофи (’ ʼ ` ´ ‘ ′ ʹ ″ ” → '), дефіси й мінус (‐ ‑ – — − → -), пробіли, знак наголосу, латинські двійники в кириличному слові */
   function normWord(v, keepCase) {
-    let t = String(v ?? "").normalize("NFD").replace(/\u0301/g, "").normalize("NFC").replace(/[\u2019\u02BC`\u00B4\u2018]/g, "'").replace(/[\u2010\u2011\u2013\u2014]/g, "-")
+    let t = String(v ?? "").normalize("NFD").replace(/\u0301/g, "").normalize("NFC").replace(/[\u2019\u02BC`\u00B4\u2018\u2032\u02B9\u2033\u201D]/g, "'").replace(/[\u2010\u2011\u2013\u2014\u2212]/g, "-")
       .replace(/\s*-\s*/g, "-").replace(/\s+/g, " ").trim();
+    // латинські літери-двійники в кириличному слові (i замість і, o замість о…) — те саме, що й кириличні: на екрані їх не розрізнити
+    if (/[\u0400-\u04FF]/.test(t)) t = t.replace(/[aceiopxyACEIOPXYKMHTBï]/g, c => LOOK[c]);
     return keepCase ? t : t.toLocaleLowerCase("uk");
   }
+  const LOOK = { a: "а", c: "с", e: "е", i: "і", o: "о", p: "р", x: "х", y: "у", A: "А", C: "С", E: "Е", I: "І", O: "О", P: "Р", X: "Х", Y: "У", K: "К", M: "М", H: "Н", T: "Т", B: "В", "ï": "ї" };
+  const mixedScript = v => /[\u0400-\u04FF]/.test(v) && /[A-Za-z]/.test(v);
   const wordAnswers = s => (Array.isArray(s.answer) ? s.answer : [s.answer]).filter(x => typeof x === "string");
 
   /** Перевірка відповіді st (стан плеєра) для екрана s. true/false. */
@@ -143,7 +150,8 @@
     const E = [];
     switch (s.type) {
       case "gaps": { const g = parseGaps(s.text); if (g.error) E.push("gaps: " + g.error); break; }
-      case "pick": { const p = parsePick(s.text); if (p.error) E.push("pick: " + p.error); else if (p.words.length > 40) E.push("pick: забагато слів (≤ 40)"); break; }
+      case "pick": { const p = parsePick(s.text); if (p.error) E.push("pick: " + p.error); else if (p.words.length > 40) E.push("pick: забагато слів (≤ 40)");
+        else if (p.words.some(w => mixedScript(w.v))) E.push("pick: у слові змішано кирилицю й латиницю"); break; }
       case "stress": {
         if (!Array.isArray(s.words) || !s.words.length || s.words.length > 6) { E.push("stress: words — масив з 1–6 слів"); break; }
         s.words.forEach(w => { const p = parseStress(w); if (p.error) E.push("stress: " + p.error); }); break; }
@@ -152,6 +160,7 @@
         if (!a.length || a.length !== (Array.isArray(s.answer) ? s.answer.length : 1)) E.push("word: answer — рядок або масив рядків");
         else if (a.some(x => !normWord(x))) E.push("word: порожня відповідь");
         else if (a.some(x => normWord(x).length > 60)) E.push("word: відповідь довша за 60 символів");
+        else if (a.some(mixedScript)) E.push("word: у відповіді змішано кирилицю й латиницю (латинська i, o, a… замість кириличної?)");
         if (s.keys !== undefined && !(Array.isArray(s.keys) && s.keys.every(k => typeof k === "string" && k.length >= 1 && k.length <= 3))) E.push("word: keys — масив коротких рядків (1–3 символи)");
         break; }
       case "split": { const p = parseSplit(s.word); if (p.error) E.push("split: " + p.error); break; }
@@ -160,5 +169,13 @@
   }
 
   const TYPES = ["gaps", "pick", "stress", "word", "split"];
-  window.SLID_LANG = { TYPES, NONE, isVowel, parseGaps, parsePick, parseStress, parseSplit, normWord, wordAnswers, check, solution, issues, sameCuts };
+  /** Текст вправи, який дитина читає (для метрик stats/validate): пропуски — правильним варіантом, без дужок і «+» */
+  function readText(s) {
+    if (s.type === "gaps" && typeof s.text === "string") return s.text.replace(/\{([^}]*)\}/g, (m, x) => (x.split("|").find(o => o.trim().startsWith("*")) || "").replace(/^\s*\*/, "").replace(NONE, "").trim());
+    if (s.type === "pick" && typeof s.text === "string") return s.text.replace(/[[\]]/g, "");
+    if (s.type === "stress" && Array.isArray(s.words)) return s.words.join(", ").replace(/\+/g, "");
+    if (s.type === "split") return [].concat(s.word)[0]?.replace?.(/\|/g, "") || "";
+    return "";
+  }
+  window.SLID_LANG = { TYPES, readText, NONE, isVowel, parseGaps, parsePick, parseStress, parseSplit, normWord, wordAnswers, check, solution, issues, sameCuts };
 })();
