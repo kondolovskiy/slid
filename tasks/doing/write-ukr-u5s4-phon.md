@@ -1,11 +1,13 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-02T14:25:25.471Z
 id: write-ukr-u5s4-phon
 type: write-lesson
 subject: ukr
 grade: 5
 section: u5s4
 status: todo
-claimed_by:
+claimed_by: writer-u5s4-phon
 created: 2026-11-02
 ---
 # Дописати урок «Фонетичний розбір слова» в розділ u5s4 (Українська мова, 5 клас)
