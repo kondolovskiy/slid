@@ -17,7 +17,9 @@
 // (поточному) learn.js — які вердикти змінила правка вправ (ключ, answerKind, умова з назвами), а не рушія.
 // Межі --content-old: рушій зміст старої ревізії бере з неї ж (ревізії без app/lab.js, learn.js, math.js чи registry.js — rc 2);
 // зміна лише текстових полів (title, body, hint… — TEXT_ONLY) вважається редакторською і rev у тесті рівня не вимагає.
-// Запуск: node tools/diff-answers.mjs [--old <git-rev>] [--grades 4-9] [--time] [--show N] [--list-cat "<категорія>"] (записи однієї категорії)
+// engine-unit-hint — «uh …»: «Перевір одиницю» замість звичайного повідомлення, коли запис — та сама величина в іншій одиниці (вердикт bad той самий);
+// записи — ключ у кожній іншій одиниці тієї самої величини і в 10 разів більше (власна таблиця UQ). «--grades 4» — один клас.
+// Запуск: node tools/diff-answers.mjs [--old <git-rev>] [--grades 4-9 | 4] [--time] [--show N] [--list-cat "<категорія>"] (записи однієї категорії)
 //         node tools/diff-answers.mjs --content-old <git-rev> [--grades 4-11] [--show N]   (зміст <rev> проти поточного, обидва — поточним learn.js)
 import fs from "node:fs"; import os from "node:os"; import vm from "node:vm"; import path from "node:path"; import { execFileSync } from "node:child_process";
 import { loadContent, ROOT } from "./lib.mjs";
@@ -33,7 +35,14 @@ function commitOf(flag, rev) {
   try { return execFileSync("git", ["rev-parse", "--verify", "--quiet", "--end-of-options", `${rev}^{commit}`], { cwd: ROOT, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim(); }
   catch { console.error(`${flag}: ревізії «${rev}» немає в git (або це не коміт)`); process.exit(2); }
 }
-const OLD_REV = CONTENT_OLD ? null : commitOf("--old", opt("--old", "1b3819d")), CONTENT_REV = CONTENT_OLD ? commitOf("--content-old", CONTENT_OLD) : null, [G0, G1] = opt("--grades", "4-9").split("-").map(Number), SHOW = +opt("--show", 5);
+// «--grades 4» — один клас (4–4), «4-11» — проміжок; інше (порожньо, «4-», «11-4», «x») — rc 2, а не мовчазний прогін 0 вправ
+// (engine-unit-hint: раніше «--grades 4» давало «Класи 4–undefined» і 0 вправ)
+function gradesOf(v) {
+  const m = /^(\d{1,2})(?:-(\d{1,2}))?$/.exec(String(v ?? "")), a = m && +m[1], b = m && (m[2] === undefined ? a : +m[2]);
+  if (!m || a > b) { console.error(`--grades: «${v ?? ""}» — потрібен клас (4) або проміжок класів (4-11)`); process.exit(2); }
+  return [a, b];
+}
+const OLD_REV = CONTENT_OLD ? null : commitOf("--old", opt("--old", "1b3819d")), CONTENT_REV = CONTENT_OLD ? commitOf("--content-old", CONTENT_OLD) : null, [G0, G1] = gradesOf(opt("--grades", "4-9")), SHOW = +opt("--show", 5);
 const load = src => { const c = { console }; c.window = c; vm.createContext(c); vm.runInContext(src, c); return c.SLID_LEARN; };
 const NEW = load(fs.readFileSync(path.join(ROOT, "app/learn.js"), "utf8"));
 const OLD = CONTENT_OLD ? NEW : load(execFileSync("git", ["show", `${OLD_REV}:app/learn.js`], { cwd: ROOT, encoding: "utf8" }));
@@ -132,9 +141,34 @@ function records(s) {
     if (u === "раз") for (const w of ["разів", "рази", "раза"]) out.add(`${K} ${w}`);
     for (const f of FOREIGN.filter(f => f !== u)) { out.add(`${K} ${f}`); if (a) out.add(`${String(a.n / a.d + 1).replace(".", ",")} ${f}`); }
     if (a) { out.add(`${String(a.n / a.d + 1).replace(".", ",")} ${u}.`); out.add(`${String(a.n / a.d + 1).replace(".", ",")} ${u}`); }
+    // engine-unit-hint: та сама величина в кожній іншій одиниці тієї самої величини (і в 10 разів більша — без підказки)
+    if (k === "number" && a) for (const v of sameQty(a, u)) out.add(v);
   } else for (const f of ["см", "грн", "°", "%"]) out.add(`${K} ${f}`);
   return [...out];
 }
+
+// engine-unit-hint: власна таблиця одиниць (незалежно від learn.js UCONV) — множник до найменшої одиниці; швидкість — у м/год
+const UQ = { "мм": ["l", 1n], "см": ["l", 10n], "дм": ["l", 100n], "м": ["l", 1000n], "км": ["l", 10n ** 6n],
+  "мм²": ["a", 1n], "см²": ["a", 100n], "дм²": ["a", 10n ** 4n], "м²": ["a", 10n ** 6n], "га": ["a", 10n ** 10n], "км²": ["a", 10n ** 12n],
+  "мм³": ["v", 1n], "см³": ["v", 1000n], "мл": ["v", 1000n], "дм³": ["v", 10n ** 6n], "л": ["v", 10n ** 6n], "м³": ["v", 10n ** 9n],
+  "мг": ["m", 1n], "г": ["m", 1000n], "кг": ["m", 10n ** 6n], "ц": ["m", 10n ** 8n], "т": ["m", 10n ** 9n],
+  "с": ["t", 1n], "хв": ["t", 60n], "год": ["t", 3600n], "діб": ["t", 86400n], "коп": ["g", 1n], "грн": ["g", 100n],
+  "км/год": ["s", 1000n], "м/хв": ["s", 60n], "м/с": ["s", 3600n], "км/хв": ["s", 60000n] };
+const bg = (a, b) => { while (b) [a, b] = [b, a % b]; return a; };
+// p/q (BigInt, q > 0) → «2,5», якщо скінченний дріб з ≤ 6 знаками, інакше null
+const decOf = (p, q) => { const g = bg(p, q); p /= g; q /= g; for (let k = 0; k <= 6; k++) { const t = 10n ** BigInt(k); if (t % q === 0n) { const n = String(p * (t / q)).padStart(k + 1, "0"); return k ? n.slice(0, -k) + "," + n.slice(-k) : n; } } return null; };
+function sameQty(a, u) {
+  const own = UQ[u]; if (!own || a.n <= 0) return [];
+  const out = [];
+  for (const [w, [d, f]] of Object.entries(UQ)) if (d === own[0] && f !== own[1]) {
+    const p = BigInt(a.n) * own[1], q = BigInt(a.d) * f, x = decOf(p, q), y = decOf(p * 10n, q);
+    if (x && x.length <= 12) out.push(`${x} ${w}`); if (y && y.length <= 12) out.push(`${y} ${w}`);
+  }
+  return out;
+}
+// запис «число одиниця» — та сама величина, що ключ у s.unit (власна таблиця)
+const sameQtyRec = (s, v) => { const m = /^(\d+(?:,\d+)?) (\S+)$/.exec(v), own = UQ[s.unit], their = m && UQ[m[2]], a = NEW.parseAns(keyText(s)), b = m && NEW.parseAns(m[1]);
+  return !!(own && their && a && b && own[0] === their[0] && their[1] !== own[1] && BigInt(b.n) * their[1] * BigInt(a.d) === BigInt(a.n) * own[1] * BigInt(b.d)); };
 
 // ---------- категорії розбіжностей ----------
 const verdict = (L, s, v) => { const r = L.checkAns(s, v); return { r, h: r === "form" ? L.formHint(s, v) : L.badHint(s, v, r) }; };
@@ -158,6 +192,8 @@ const CATS = [
   ["п.7 одиниця перед «)» і «:» (coordinates, ratio)", (s, v, o, n) => !!s.unit && /^(coordinates[23]|ratio)$/.test(s.answerKind) && same(verdict(OLD, s, v.split(s.unit).join("")), n)],
   ["п.7 «Перевір одиницю» лише коли число без одиниці правильне", (s, v, o, n) => o.r === "bad" && n.r === "bad" && UNIT_HINT.test(o.h || "") && n.h === null
     && OLD.checkAns(s, v.replace(new RegExp(`\\s*(?:${FOREIGN.join("|")})(?=\\s*(?:[;)]|$))`, "g"), "")) === "bad"],
+  ["uh «Перевір одиницю»: та сама величина в іншій одиниці (вердикт bad той самий, лише текст)", (s, v, o, n) => (s.answerKind || "number") === "number" && o.r === "bad" && n.r === "bad"
+    && o.h === null && n.h === `Перевір одиницю: тут відповідь записують у «${s.unit}». Одиницю можна й не писати.` && sameQtyRec(s, v)],
   ["P3-1 (p/q)(сума) і 2(сума)/2 — нескорочений дріб", (s, v, o, n) => /^(\(1\/2\)\(|2\()/.test(v) && o.r === "ok" && n.r === "form"],
   // engine-math-answer-g10-issues: старий рушій на записі без нововведення дає те саме, що новий на записі з ним
   // п.2 пояснено, лише якщо з усіх літер a–z новий рушій зараховує цей запис рівно з однією (і її подано в списку для людини)

@@ -12,6 +12,7 @@
 //    (з незалежною класифікацією), інакше npm run check і CI червоні (так задумано; docs/PERSONALIZATION_QA.md, «diff-answers»).
 // 3) --content-old: поле u не вимагає rev і не ховає інших змін.
 // 4) мінімальна фікстура змісту: точні кількості категорій half і нове правило HALF поза категоріями — НЕПОЯСНЕНЕ (мутант M2).
+// 5) engine-unit-hint: «--grades 4» (один клас) і хибні --grades — rc 2; категорія «uh …» і мутант «підказка для не рівної величини».
 // Запуск: node tools/test-diff-answers.mjs (≈ 30 с). Від git-історії проєкту не залежить (1б, 2, 3, 4 — тимчасові репозиторії, 1 — лише
 // HEAD), тож працює в неглибокому клоні й після squash-злиття; тому він і в CI (.github/workflows/pages.yml), і в npm run check.
 import { spawnSync } from "node:child_process";
@@ -129,6 +130,31 @@ await tmpRepo("slid-test-diff-u-", async tmp => {
     const b = runC("zzCore: 1, ");
     ok(b.n === 1 && b.rc === 1, `--content-old: u разом зі зміною суті — «без rev» лишається (${b.n}, rc ${b.rc})`);
 });
+
+// 5) engine-unit-hint: (а) «--grades 4» — один клас 4–4, а не мовчазний прогін 0 вправ («Класи 4–undefined»); хибне значення — rc 2.
+//    (б) категорія «uh …»: «старий» learn.js без підказки для тієї самої величини в іншій одиниці (лише «bare», п. 7) → усі різниці
+//    пояснені, вердикти ті самі; мутант «підказка для будь-якої одиниці тієї самої величини» (і для не рівної) → НЕПОЯСНЕНІ, rc 1.
+{
+  const da = (root, ...a) => spawnSync(process.execPath, [path.join(root, "tools/diff-answers.mjs"), ...a], { cwd: root, encoding: "utf8", maxBuffer: 256 << 20 });
+  const head = r => (r.stdout || "").match(/Вправ (\d+) \(класи (\d+)–(\S+?)\)/);
+  const one = da(ROOT, "--old", "HEAD", "--grades", "4"), four = da(ROOT, "--old", "HEAD", "--grades", "4-4"), h1 = head(one), h4 = head(four);
+  ok(h1 && h1[2] === "4" && h1[3] === "4" && +h1[1] > 0 && h4 && h1[1] === h4[1], `--grades 4: очікувано «класи 4–4», вправ > 0 і стільки ж, як --grades 4-4; а «${h1 && h1[0]}» / «${h4 && h4[0]}»`);
+  for (const g of ["", "4-", "11-4", "x", "4-x", "4-5-6"]) { const r = da(ROOT, "--old", "HEAD", "--grades", g);
+    ok(r.status === 2 && /--grades/.test(r.stderr), `--grades «${g}»: rc ${r.status}, очікувано 2 з повідомленням`); }
+  await tmpRepo("slid-test-diff-uh-", async (tmp, g) => {
+    const lf = path.join(tmp, "app/learn.js"), cur = fs.readFileSync(lf, "utf8");
+    const HINT = "    if (s.unit && foreignUnit(s, t)) return unitEq(s, t) ? unitMsg(s) : null;", CONV = '    return checkAns(s, w) !== "bad" ? "conv" : null;';
+    ok(cur.split(HINT).length === 2 && cur.split(CONV).length === 2, "фікстура uh: рядки badHint / unitEq у learn.js — рівно по одному");
+    fs.writeFileSync(lf, cur.replace(HINT, HINT.replace("unitEq(s, t) ?", 'unitEq(s, t) === "bare" ?'))); g("commit", "-qam", "old: без uh"); fs.writeFileSync(lf, cur);
+    const cnt = r => { const o = r.stdout || "", m = o.match(/(\d+)\s+uh «Перевір одиницю»/), u = o.match(/(\d+)\s+НЕПОЯСНЕНІ\s*$/m); return [m ? +m[1] : NaN, u ? +u[1] : NaN, r.status]; };
+    const a = cnt(da(tmp, "--old", "HEAD", "--grades", "4"));
+    ok(a[0] > 0 && a[1] === 0 && a[2] === 0, `uh: старий без підказки → категорія uh > 0, 0 непояснених, rc 0; а ${a.join(" / ")}`);
+    fs.writeFileSync(lf, cur.replace(CONV, '    return "conv";'));
+    const b = cnt(da(tmp, "--old", "HEAD", "--grades", "4", "--show", "3"));
+    ok(b[1] > 0 && b[2] === 1, `uh: мутант (підказка й для не рівної величини) → НЕПОЯСНЕНІ > 0, rc 1; а ${b.join(" / ")}`);
+    console.log(`  uh: пояснено ${a[0]} (4 клас); мутант «завжди conv» — ${b[1]} непояснених`);
+  });
+}
 
 console.log(`test-diff-answers: ${pass} ok, ${fail} ✗`);
 process.exit(fail ? 1 : 0);

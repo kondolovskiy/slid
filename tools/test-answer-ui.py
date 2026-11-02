@@ -2551,6 +2551,11 @@ async def hyp_checks(browser, url):
             it = await page.evaluate("i=>SLID_SUBJECTS.find(c=>c.id==='math').pools[0].items[i]", int(src))
             key = 'pg6m1:hq' + src
             errs0 = len(await page.evaluate("JSON.parse(localStorage.getItem('slid.v1')).errs"))
+            # той самий save(), що й відповідь, ще й змінює SRS → EV.observe пише srs між answer і hyp_lost: EV.n уже не номер відповіді
+            # (P3-2 рев'ю engine-hyp-e4-shadow-routes, мутант E7 «n: EV.n» у forget). S у замиканні app.js, тож зміну вносить обгортка
+            # SLID_EVIDENCE.observe (save() викликає її після запису slid.v1 і до hypAfterSave); поле qa коробку й строк не змінює.
+            await page.evaluate("""() => { const E = window.SLID_EVIDENCE, o = E.observe; window.__qaSrs = true;
+              E.observe = S => { if (window.__qaSrs && S && S.srs) { window.__qaSrs = false; S.srs.g6m1l1 = { ...(S.srs.g6m1l1 || { box: 0, due: '2099-01-01' }), qa: 1 }; } return o.call(E, S); }; }""")
             await typed(page, '654321'); await page.click('#action')   # фінальна: slid.v1 росте — місце звільняє лише видалення slid.hyp
             st = await page.evaluate("JSON.parse(localStorage.getItem('slid.v1'))")
             assert len(st['errs']) == errs0 + 1 and st['seen'].get(key) == 0, ('переповнене сховище: slid.v1 не записано', errs0, len(st['errs']))
@@ -2567,6 +2572,9 @@ async def hyp_checks(browser, url):
             ans_e = [e for e in ev if e['type'] == 'answer' and e['d'].get('key') == key][-1]
             assert len(lost) == 1 and lost[0]['d'] == {'why': 'quota', 'n': ans_e['n']} and lost[0]['sid'] == ans_e['sid'] and ans_e['seq'] < lost[0]['seq'] < last_open['seq'], \
                 ([(e['seq'], e['d']) for e in lost], ans_e['n'], [(e['seq'], e['type']) for e in ev if ans_e['seq'] <= e['seq'] <= last_open['seq']])
+            between = [e for e in ev if ans_e['seq'] < e['seq'] < lost[0]['seq'] and e['sid'] == ans_e['sid']]
+            assert [e['type'] for e in between] == ['srs'] and between[0]['n'] != ans_e['n'], \
+                ('між answer і hyp_lost має бути srs того самого save() (сторож hyp_lost.n ≠ поточний EV.n)', [(e['seq'], e['type'], e.get('n')) for e in between])
             assert not [e for e in ev if e['type'] == 'hyp_off'], 'hyp_off при переповненому сховищі'
             last_open = last_open['d']
             await page.evaluate("localStorage.removeItem('qa.fill')")

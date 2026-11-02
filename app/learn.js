@@ -1270,7 +1270,9 @@ window.SLID_LEARN = (() => {
   /** Сумісність (engine-decisions-1101): true — лише OK. */
   const diagAnswerOk = (s, v) => diagVerdict(s, v) === OK;
   /** Пояснення для «bad», коли звичайне «Зміни відповідь» не допоможе (app.js, після checkAns === "bad"); null — звичайне повідомлення.
-      Межа кроків чи розміру — «запис занадто складний»; чужа одиниця при unit — лише якщо без неї число правильне (п. 7);
+      Межа кроків чи розміру — «запис занадто складний»; чужа одиниця при unit — лише якщо без неї число правильне (п. 7)
+      або (number) запис — та сама величина в іншій одиниці: «2000 г» при «кг» і ключі 2 (unitEq, engine-unit-hint; текст не каже,
+      що значення правильне, тож і в задачі на переведення, де дитина переписала дане умови, він лише просить перевести);
       знаменник-добуток без дужок (k/6p), якщо з дужками значення збігається з ключем; час не в форматі ГГ:ХХ; величина
       без одиниць чи в одиницях іншої величини. Приклади в текстах не збігаються з ключем вправи (hintTexts, test-answer-ui).
       r — результат checkAns(s, v), щойно обчислений тим самим викликом (app.js): тоді перевірка не повторюється, LIMIT — від неї. */
@@ -1278,7 +1280,7 @@ window.SLID_LEARN = (() => {
     if ((r === undefined ? checkAns(s, v) : r) !== "bad") return null;
     if (LIMIT) return MSG.limit;
     const t = String(v ?? ""), kind = s.answerKind || "number";
-    if (s.unit && foreignUnit(s, t)) { const bare = stripUnit(s, t).replace(foreignRe(s), "$1"); return checkAns(s, bare) !== "bad" ? unitMsg(s) : null; }
+    if (s.unit && foreignUnit(s, t)) return unitEq(s, t) ? unitMsg(s) : null;
     if (kind === "time") return parseTime(t) === null ? timeMsg(s) : null;
     // list без «;»: кома — роздільник, тож «1,5, 2» (у полі «1.5, 2» стає «1,5, 2») — це три числа (a11y-followup, відкрите (б))
     // лише запис із самих чисел через кому (не «x₁,₂ = …», не «y_{1,2}»)
@@ -1444,11 +1446,42 @@ window.SLID_LEARN = (() => {
     const re = ownUnit(s); return re ? v.replace(re, "$1") : v;
   }
   // Поширені одиниці шкільних задач: чужа з них після числа — підказка «перевір одиницю».
-  const UNITS = ["мм", "см", "дм", "м", "км", "мм²", "см²", "дм²", "м²", "км²", "га", "мм³", "см³", "дм³", "м³", "мг", "г", "кг", "ц", "т", "с", "хв", "год",
+  const UNITS = ["мм", "см", "дм", "м", "км", "мм²", "см²", "дм²", "м²", "км²", "га", "мм³", "см³", "дм³", "м³", "мг", "г", "кг", "ц", "т", "с", "хв", "год", "доба", "доби", "діб",
     "грн", "коп", "%", "°", "°C", "л", "мл", "км/год", "м/с", "м/хв", "км/хв"];
   const FOREIGN_RE = [unitRe(unitAlts(UNITS), false), unitRe(unitAlts(UNITS), true)];
   const foreignRe = s => FOREIGN_RE[+PAIRISH.includes(s.answerKind)];
   function foreignUnit(s, v) { const re = foreignRe(s); re.lastIndex = 0; const t = stripUnit(s, v); return typeof t === "string" && re.test(t); }
+  /* Та сама величина в іншій одиниці (engine-unit-hint, рев'ю engine-answer-unit-choice P2): «2000 г» при unit «кг» і ключі 2.
+     Множник до найменшої одиниці виміру; площа й об'єм — квадрат і куб довжини (мл = см³, л = дм³), швидкість — у м/год.
+     Лише для одиниць UNITS (foreignUnit) і лише answerKind number: вердикт лишається bad, змінюється тільки текст підказки. */
+  const UCONV = (() => {
+    const T = {}, add = (d, t) => { for (const [u, f] of Object.entries(t)) T[u] = [d, BigInt(f)]; };
+    const L = { "мм": 1n, "см": 10n, "дм": 100n, "м": 1000n, "км": 1000000n };
+    add("довжина", L);
+    add("площа", { ...Object.fromEntries(Object.entries(L).map(([u, f]) => [u + "²", f * f])), "га": 10n ** 10n });
+    add("об'єм", { ...Object.fromEntries(Object.entries(L).map(([u, f]) => [u + "³", f * f * f])), "мл": 1000n, "л": 1000000n });
+    add("маса", { "мг": 1n, "г": 1000n, "кг": 1000000n, "ц": 100000000n, "т": 1000000000n });
+    add("час", { "с": 1n, "хв": 60n, "год": 3600n, "доба": 86400n, "доби": 86400n, "діб": 86400n });
+    add("гроші", { "коп": 1n, "грн": 100n });
+    add("швидкість", { "м/год": 1n, "км/год": 1000n, "м/хв": 60n, "м/с": 3600n, "км/хв": 60000n });
+    return T;
+  })();
+  const unitKey = u => String(u).replace(/\s+/g, "").replace(/\^?2$/, "²").replace(/\^?3$/, "³");
+  const bgcd0 = (a, b) => { while (b) [a, b] = [b, a % b]; return a < 0n ? -a : a; };
+  /** «bare» — число без чужої одиниці правильне (як раніше, п. 7); «conv» — запис «число одиниця» є тією самою величиною,
+      що й ключ у s.unit; null — інакше. hyp.js (S13) бачить «conv» так само, як до цієї підказки (badHint = null), rv не змінюється. */
+  function unitEq(s, v) {
+    const t = String(v ?? "");
+    if (!s || !s.unit || !foreignUnit(s, t)) return null;
+    if (checkAns(s, stripUnit(s, t).replace(foreignRe(s), "$1")) !== "bad") return "bare";
+    if ((s.answerKind || "number") !== "number") return null;
+    const own = UCONV[unitKey(s.unit)], m = String(stripUnit(s, t)).replace(/\s+/g, " ").trim().match(/^(.*?\d)\s*([^\d\s.,].*?)\s*[.,]?$/u);
+    const their = m && UCONV[unitKey(m[2])], a = m && numOf(m[1]);
+    if (!own || !their || their[0] !== own[0] || !a) return null;   // той самий множник (мл / см³) — уже «bare»
+    let p = BigInt(a.n) * their[1], q = BigInt(a.d) * own[1]; const g = bgcd0(p, q) || 1n; p /= g; q /= g;
+    const w = (p < 0n ? "-" : "") + decStr([p < 0n ? -p : p, q]);
+    return checkAns(s, w) !== "bad" ? "conv" : null;
+  }
   /** Ключ coordinates2 з компонентами-виразами так, як його розбирає checkAns (splitPair, symPair, pairSym):
       для кожної компоненти { expr — перевіряється як expression, vars — змінні, tidy — ключ сам проходить перевірку (з form), text — запис }.
       null — не coordinates2, числовий ключ або ключ не розібрано. Потрібно tools/personalization-qa.mjs (пара виразів закриває формат expression)
@@ -2082,6 +2115,6 @@ window.SLID_LEARN = (() => {
   }
 
   return { OK, BAD, SKIP, HALF, PASS, DIAG_TYPES, G_GRADED, graphBind, nodesOf, inLine, graphPre, nodeState, DIAG_ANSWER_KINDS, planFor, practiceItems, nextItem, remaining, topicStatus, level, buildPlan, diagRev, resumeDiag, finishDiag, record, detect, syncPlan, lessonDone, todo, isKnown, diagOpen, work, SK_RETAG, SK_RETAG2, SK_MIGRATIONS, migrateSk, validate,
-    parseAns, parseDivrem, checkAns, diagAnswerOk, diagVerdict, diagHalfHint, DIAG_FORM, badHint, hintTexts, keyInput, timeExample, quantityUnits: s => qtyUnits(s)?.units || null, stripUnit, listKey, pairKey, answerSig, formHint, ansText, srcRef, numberKeys, numberHelp, ANSWER_KINDS, BOX_DAYS, srsInit, srsUpdate, srsFromDiag, DIAG_BOX, genAll, genInstance, genIssues, genHash, GEN_MAX, isDue, pickSession, POOL_TYPES, validatePool,
+    parseAns, parseDivrem, checkAns, diagAnswerOk, diagVerdict, diagHalfHint, DIAG_FORM, badHint, unitEq, hintTexts, keyInput, timeExample, quantityUnits: s => qtyUnits(s)?.units || null, stripUnit, listKey, pairKey, answerSig, formHint, ansText, srcRef, numberKeys, numberHelp, ANSWER_KINDS, BOX_DAYS, srsInit, srsUpdate, srsFromDiag, DIAG_BOX, genAll, genInstance, genIssues, genHash, GEN_MAX, isDue, pickSession, POOL_TYPES, validatePool,
     numVal, formCode };
 })();

@@ -738,5 +738,37 @@ const sum = (R, pid) => R.events.filter(e => e.pid === pid).map(e => e.type === 
   eq([pwE(2), pwE(1)], [[true], [false]], "G3-p3: rev з diag_start (diag_end без rev): редакція 2 — BAD frac-read рахується, редакція 1 — ні");
 }
 
+/* ---------- engine-unit-hint: «Перевір одиницю» для тієї самої величини в іншій одиниці — не новий вхід трекера (rv hyp-1) ----------
+   Плеєр тепер показує unitMsg на «2000 г» при «кг» і ключі 2 (learn.js unitEq «conv»), а трекер бачить такий запис так само,
+   як до підказки: S13 (badHint тоді був null) → P9. Порівняння — з learn.js, де badHint і unitEq поводяться як до зміни. */
+{
+  const T = { "мм": ["l", 1], "см": ["l", 10], "дм": ["l", 100], "м": ["l", 1e3], "км": ["l", 1e6], "мм²": ["a", 1], "см²": ["a", 100], "дм²": ["a", 1e4], "м²": ["a", 1e6], "га": ["a", 1e10],
+    "см³": ["v", 1e3], "мл": ["v", 1e3], "дм³": ["v", 1e6], "л": ["v", 1e6], "м³": ["v", 1e9], "г": ["m", 1], "кг": ["m", 1e3], "ц": ["m", 1e5], "т": ["m", 1e6],
+    "с": ["t", 1], "хв": ["t", 60], "год": ["t", 3600], "діб": ["t", 86400], "коп": ["g", 1], "грн": ["g", 100], "м/с": ["s", 3.6], "км/год": ["s", 1], "м/хв": ["s", .06] };
+  const fmt = x => String(+x.toFixed(6)).replace(".", ",");
+  const probes = [];
+  for (const [k, s] of E.pool) {
+    if ((s.answerKind || "number") !== "number" || !T[s.unit]) continue;
+    const a = LN.parseAns(String(s.answer).replace(".", ",")); if (!a) continue;
+    const [d, f] = T[s.unit], base = a.n / a.d * f;
+    for (const [u, [d2, f2]] of Object.entries(T)) { const v = base / f2; if (d2 === d && f2 !== f && +v.toFixed(3) > 0 && Math.abs(+v.toFixed(3) - v) < 1e-9 && v <= 1e7) probes.push([k, s, `${fmt(v)} ${u}`]); }
+  }
+  const sig = (s, raw) => { const a = H.assess(s, raw, {}); return JSON.stringify([a.rule, a.sig, a.prior, a.top, a.p, a.pexec]); };
+  const now = probes.map(([, s, raw]) => sig(s, raw)), hints = probes.map(([, s, raw]) => LN.badHint(s, raw));
+  const { badHint, unitEq } = LN;
+  LN.badHint = (s, v, r) => unitEq(s, v) === "conv" ? null : badHint(s, v, r); LN.unitEq = () => null;   // learn.js і hyp.js до engine-unit-hint
+  const before = probes.map(([, s, raw]) => sig(s, raw));
+  LN.badHint = badHint; LN.unitEq = unitEq;
+  ok(probes.length > 500, `unit-hint: проб рівної величини в іншій одиниці ${probes.length} > 500`);
+  eq(probes.filter((p, i) => !/^Перевір одиницю/.test(hints[i] || "")).map(p => p[0] + " «" + p[2] + "»").slice(0, 5), [], "unit-hint: кожна проба — «Перевір одиницю»");
+  eq(probes.filter((p, i) => now[i] !== before[i]).map(p => p[0] + " «" + p[2] + "»").slice(0, 5), [], "unit-hint: assess (правило, сигнали, апріорі) як до підказки — rv не змінюється");
+  eq(H.RULES_VERSION, "hyp-1", "unit-hint: rv hyp-1");
+  // задача на переведення: переписане дане умови (25 м = … см) — як і раніше S13 → P9, top unk
+  chk("pg4m4:d01 переписане дане", pool("pg4m4:d01"), "25 м", "P9", ["S13"]);
+  chk("pg4m4:b01 переписане дане", pool("pg4m4:b01"), "208 т", "P9", ["S13"]);
+  // число без чужої одиниці правильне («2500 мм» при 2500 см) — підказка була й раніше: не S13, як і до зміни
+  eq(H.assess(pool("pg4m4:d01"), "2500 мм", {}).sig.includes("S13"), false, "unit-hint: «2500 мм» (bare) — не S13, як і раніше");
+}
+
 console.log(fails ? `test-hyp: ${fails} з ${n} перевірок не пройшли` : `test-hyp: усі ${n} перевірок пройшли`);
 process.exit(fails ? 1 : 0);

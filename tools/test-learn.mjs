@@ -1180,6 +1180,42 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
   eq(L.badHint(N("7", { unit: "см" }), "7 мм"), "Перевір одиницю: тут відповідь записують у «см». Одиницю можна й не писати.", "badHint: чужа одиниця, число правильне");
   eq(L.badHint(K("list", "70; 110", { unit: "°" }), "70 см; 120 см"), null, "badHint list: чужа одиниця й хибне число");
   eq(L.badHint(K("coordinates2", "(30; 60)", { unit: "°" }), "(30 см; 60 см)")?.includes("«°»"), true, "badHint coordinates2: чужа одиниця перед «)»");
+  // engine-unit-hint: та сама величина в іншій одиниці — «Перевір одиницю» (не «Зміни відповідь»); вердикт лишається bad
+  { const UM = u => `Перевір одиницю: тут відповідь записують у «${u}». Одиницю можна й не писати.`;
+    for (const [a, u, v, h] of [[2, "кг", "2000 г", UM("кг")], [2, "кг", "2 000 г", UM("кг")], [2, "кг", "2000 г.", UM("кг")], [2, "кг", "2000г", UM("кг")],
+      [2500, "см", "25 м", UM("см")], [3, "см²", "300 мм2", UM("см²")], [3, "см²", "300 мм^2", UM("см²")], ["1,5", "год", "90 хв", UM("год")], ["13/20", "год", "39 хв", UM("год")],
+      [10, "м/с", "36 км/год", UM("м/с")], [2, "л", "2000 мл", UM("л")], [2, "л", "2 дм³", UM("л")], [120, "год", "5 діб", UM("год")], [120, "год", "5 доби", UM("год")], ["2,08", "грн", "208 коп.", UM("грн")],
+      [5, "км", "5000 м", UM("км")], [400, "дм²", "4 м²", UM("дм²")],
+      [2, "кг", "2001 г", null], [2, "кг", "200 г", null], [7, "см", "-70 мм", null], [2, "кг", "2000 см", null], [2, "кг", "2000 мм", null], [5, "°", "5000 мм", null], [8, "%", "80 мм", null], [2, "кг", "2 кг 0 г", null]]) {
+      const s = N(a, { unit: u }); eq([L.checkAns(s, v), L.badHint(s, v)], ["bad", h], `badHint unit-hint: ${a} ${u} ← «${v}»`); }
+    eq([L.unitEq(N(7, { unit: "см" }), "7 мм"), L.unitEq(N(7, { unit: "см" }), "70 мм"), L.unitEq(N(7, { unit: "см" }), "71 мм"), L.unitEq(N(7, { unit: "см" }), "70")], ["bare", "conv", null, null], "unitEq: bare / conv / null");
+    // лише number: list, exactRoot з unit — як і раніше
+    eq([L.badHint(K("list", "70; 110", { unit: "см" }), "700 мм; 1100 мм"), L.badHint(K("exactRoot", "4√2", { unit: "см" }), "40√2 мм"), L.badHint(K("exactRoot", "4", { unit: "см" }), "40 мм")], [null, null, null], "unit-hint: не для list / exactRoot");
+    eq(L.hintTexts(N(2, { unit: "кг" })).includes(UM("кг")), true, "unit-hint: текст серед hintTexts");
+    // справжні вправи пулів (як проби рецензента engine-answer-unit-choice): рівна величина в кожній іншій одиниці тієї самої величини
+    const T = { "мм": ["l", 1], "см": ["l", 10], "дм": ["l", 100], "м": ["l", 1e3], "км": ["l", 1e6], "мм²": ["a", 1], "см²": ["a", 100], "дм²": ["a", 1e4], "м²": ["a", 1e6], "га": ["a", 1e10], "км²": ["a", 1e12],
+      "мм³": ["v", 1], "см³": ["v", 1e3], "мл": ["v", 1e3], "дм³": ["v", 1e6], "л": ["v", 1e6], "м³": ["v", 1e9], "мг": ["m", 1], "г": ["m", 1e3], "кг": ["m", 1e6], "ц": ["m", 1e8], "т": ["m", 1e9],
+      "с": ["t", 1], "хв": ["t", 60], "год": ["t", 3600], "діб": ["t", 86400], "коп": ["g", 1], "грн": ["g", 100], "м/с": ["s", 3.6], "км/год": ["s", 1], "м/хв": ["s", .06] };
+    const fmt = x => String(+x.toFixed(6)).replace(".", ",");
+    const items = (await import("./lib.mjs")).loadContent().subjects.flatMap(c => (c.pools || []).flatMap(p => p.items.map(it => [p.id + ":" + it.id, it])));
+    let probes = 0; const bad = [], noHint = [], leak = [];
+    for (const [id, s] of items) {
+      if (s.type !== "answer" || (s.answerKind || "number") !== "number" || !T[s.unit]) continue;
+      const a = L.parseAns(String(s.answer).replace(".", ",")); if (!a) continue;
+      const [d, f] = T[s.unit], base = a.n / a.d * f, key = L.keyInput(s);
+      for (const [u, [d2, f2]] of Object.entries(T)) {
+        const v = base / f2; if (d2 !== d || f2 === f || !(+v.toFixed(3) > 0) || Math.abs(+v.toFixed(3) - v) > 1e-9 || v > 1e7) continue;
+        const p = `${fmt(v)} ${u}`, r = L.checkAns(s, p), h = L.badHint(s, p, r); probes++;
+        if (r !== "bad") bad.push(`${id} «${p}» ${r}`); else if (h !== UM(s.unit)) noHint.push(`${id} «${p}»`); else if (h.includes(String(key))) leak.push(`${id} «${p}»`);
+      }
+    }
+    eq(probes > 600, true, `unit-hint: проб на справжніх вправах ${probes} > 600`);
+    eq([bad.slice(0, 5), noHint.slice(0, 5), leak.slice(0, 5)], [[], [], []], "unit-hint: справжні вправи — вердикт bad, підказка «Перевір одиницю», без ключа");
+    // задачі на переведення: переписане дане умови («25 м = … см») — та сама підказка: не каже, що значення правильне, не видає ключ
+    const conv = { "pg4m4:d01": "25 м", "pg4m4:b01": "208 т", "pg4m4:b02": "370 ц", "pg4m4:b03": "160 кг", "pg4m4:c03": "4 м²", "pg4m4:a02": "5 діб", "pms1:a05": "39 хв", "pms2:a07": "208 коп.", "pms4:a03": "1 дм²", "pg6m2:b06": "36 хв" };
+    for (const [id, v] of Object.entries(conv)) { const s = items.find(x => x[0] === id)?.[1]; if (!s) { eq(id, "є у змісті", "unit-hint: вправа на переведення"); continue; }
+      const h = L.badHint(s, v); eq([L.checkAns(s, v), h, /правильн/.test(h || ""), (h || "").includes(String(L.keyInput(s)))], ["bad", UM(s.unit), false, false], `unit-hint переведення ${id} ← «${v}»`); }
+  }
   // відбитки другої спроби
   eq(L.answerSig(T, "9:55") === L.answerSig(T, "09:55"), true, "answerSig time: 9:55 = 09:55");
   eq(L.answerSig(N("37,0", { decimals: 1 }), "37") === L.answerSig(N("37,0", { decimals: 1 }), "37,0"), false, "answerSig decimals: 37 ≠ 37,0");
