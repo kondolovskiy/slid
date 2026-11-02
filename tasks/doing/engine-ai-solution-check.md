@@ -1,10 +1,12 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-02T00:48:54.299Z
 write_group: personalization-shared
 id: engine-ai-solution-check
 type: engine
 subject: math
 status: todo
-claimed_by:
+claimed_by: designer-ai
 created: 2026-10-13
 ---
 # ШІ-перевірка ходу розв'язання в тренуванні
