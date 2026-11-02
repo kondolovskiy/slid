@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-02T18:33:14.476Z
 id: write-ukr-u6s10
 type: write-section
 subject: ukr
@@ -6,7 +8,7 @@ grade: 6
 section: u6s10
 weeks: [26, 27]
 status: todo
-claimed_by:
+claimed_by: writer-u6s10
 created: 2026-11-02
 ---
 # Написати розділ «Прикметник» (Українська мова, 6 клас)
