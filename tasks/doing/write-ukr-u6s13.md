@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-02T18:47:00.523Z
 id: write-ukr-u6s13
 type: write-section
 subject: ukr
@@ -6,7 +8,7 @@ grade: 6
 section: u6s13
 weeks: [33, 35]
 status: todo
-claimed_by:
+claimed_by: writer-u6s13
 created: 2026-11-02
 ---
 # Написати розділ «Займенник» (Українська мова, 6 клас)
