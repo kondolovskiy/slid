@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-02T18:02:24.141Z
 id: write-ukr-u6s4
 type: write-section
 subject: ukr
@@ -6,7 +8,7 @@ grade: 6
 section: u6s4
 weeks: [11, 12]
 status: todo
-claimed_by:
+claimed_by: writer-u6s4
 created: 2026-11-02
 ---
 # Написати розділ «Фразеологізми» (Українська мова, 6 клас)
