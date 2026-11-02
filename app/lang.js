@@ -2,7 +2,7 @@
    Чисті функції без DOM — їх використовують і плеєр (app/app.js), і валідатор (tools/validate.mjs), і тести (tools/test-lang.mjs).
    Типи екранів (docs/CONTENT_SCHEMA.md §4.1):
      gaps   — text: "с{*е|и}ло"           пропуски з варіантами; * — правильний; «—» — нічого не писати (дитина бачить «∅»); «–» (U+2013) — тире (бачить «—»)
-     pick   — text: "[Сонце] світить."     дитина торкається слів; правильні — у [дужках] (група в дужках — одна кнопка)
+     pick   — text: "[Сонце] світить."     дитина торкається слів; правильні — у [дужках] (група в дужках — одна кнопка); [!група] — хибна група-кнопка
      stress — words: ["черг+овий"]         торкнутися наголошеного голосного; + перед ним
      word   — answer: "пів'яблука" | [...]  дитина вписує слово; регістр, апостроф і дефіс нормалізуються
      split  — word: "мо|ло|ко" | [...]     поділ слова рисками між літерами (склади, перенос, будова слова) */
@@ -68,8 +68,10 @@
       if (b < 0) return { error: "незакрита дужка «[»" };
       const inner = src.slice(a + 1, b);
       if (inner.includes("[")) return { error: "вкладена дужка «[»" };
-      if (!inner.match(WORD)) return { error: `[${inner}]: у дужках немає слова` };
-      out.push({ t: "word", v: inner.trim(), ok: true, n: n++ });
+      // [!група] — хибна група: одна кнопка, але не правильна (щоб багатослівні кнопки не видавали відповідь)
+      const wrong = inner.trimStart().startsWith("!"), v = (wrong ? inner.trimStart().slice(1) : inner).trim();
+      if (!v.match(WORD)) return { error: `[${inner}]: у дужках немає слова` };
+      out.push({ t: "word", v, ok: !wrong, n: n++, group: true });
       i = b + 1;
     }
     if ((src.match(/\]/g) || []).length !== (src.match(/\[/g) || []).length) return { error: "зайва дужка «]»" };
@@ -171,14 +173,22 @@
     return E;
   }
 
+  /** Попередження розмітки (не ламають екран, але підказують відповідь): масив рядків */
+  function warnings(s) {
+    const W = [];
+    if (s.type === "pick") { const p = parsePick(s.text);
+      if (!p.error) { const multi = p.words.filter(w => /\s/.test(w.v));
+        if (multi.length && multi.every(w => w.ok)) W.push(`pick: кожна кнопка з кількох слів (${multi.map(w => "«" + w.v + "»").join(", ")}) — правильна, тож форма кнопки видає відповідь; додай хибну групу [!…] з кількох слів`); } }
+    return W;
+  }
   const TYPES = ["gaps", "pick", "stress", "word", "split"];
   /** Текст вправи, який дитина читає (для метрик stats/validate): пропуски — правильним варіантом, без дужок і «+» */
   function readText(s) {
     if (s.type === "gaps" && typeof s.text === "string") return s.text.replace(/\{([^}]*)\}/g, (m, x) => (x.split("|").find(o => o.trim().startsWith("*")) || "").replace(/^\s*\*/, "").replace(NONE, "").replace(DASH, "\u2014").trim());
-    if (s.type === "pick" && typeof s.text === "string") return s.text.replace(/[[\]]/g, "");
+    if (s.type === "pick" && typeof s.text === "string") return s.text.replace(/\[\s*!/g, "[").replace(/[[\]]/g, "");
     if (s.type === "stress" && Array.isArray(s.words)) return s.words.join(", ").replace(/\+/g, "");
     if (s.type === "split") return [].concat(s.word)[0]?.replace?.(/\|/g, "") || "";
     return "";
   }
-  window.SLID_LANG = { TYPES, readText, NONE, DASH, optView, isVowel, parseGaps, parsePick, parseStress, parseSplit, normWord, wordAnswers, check, solution, issues, sameCuts };
+  window.SLID_LANG = { TYPES, warnings, readText, NONE, DASH, optView, isVowel, parseGaps, parsePick, parseStress, parseSplit, normWord, wordAnswers, check, solution, issues, sameCuts };
 })();

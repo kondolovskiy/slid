@@ -256,6 +256,7 @@ function checkScreen(S, s, c, diag, pool = false) {
       if (diag && !pool) for (const m of diagFormatIssues(s)) (m.err ? E : W)(S, m.msg); break;
     case "gaps": case "pick": case "stress": case "word": case "split":
       for (const m of lang.issues(s)) E(S, m);
+      for (const m of lang.warnings ? lang.warnings(s) : []) W(S, m);
       if (["gaps", "pick"].includes(s.type) && typeof s.text !== "string") E(S, `${s.type}: потрібне поле text`);
       // pick: слова з тексту стають кнопками, тож HTML-теги в text дали б кнопки «b», «br» (рушій екранує text)
       if (s.poll || s.hyp) E(S, `${s.type}: poll/hyp лише для choice — відповідь мовної вправи не збережеться для outro`);

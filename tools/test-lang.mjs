@@ -108,6 +108,19 @@ const no = (v, msg) => eq(!!v, false, msg);
   eq(L.readText({ type: "gaps", text: "Ніхто не спав {*–|:} ні дорослі, ні діти. Ден{ь|*—}ки." }), "Ніхто не спав — ні дорослі, ні діти. Денки.", "readText: тире і «нічого»");
   eq(L.parseGaps("а {*–|—|,} б").gaps[0].opts.length, 3, "gaps: тире і «нічого» — різні варіанти");
 }
+/* pick: хибні групи [!…] (верифікатор u6s4: багатослівні кнопки видавали відповідь) */
+{ const p = L.parsePick("Він [байдики б'є], а [!книжку читає] ввечері.");
+  eq(p.words.map(w => [w.v, w.ok]), [["Він", false], ["байдики б'є", true], ["а", false], ["книжку читає", false], ["ввечері", false]], "pick: [!група] — одна хибна кнопка");
+  eq(p.correct, [1], "pick: правильна лише [група]");
+  ok(L.check({ type: "pick", text: "Він [байдики б'є], а [!книжку читає]." }, new Set([1])), "pick: правильно без хибної групи");
+  no(L.check({ type: "pick", text: "Він [байдики б'є], а [!книжку читає]." }, new Set([1, 3])), "pick: хибна група — помилка");
+  ok(L.parsePick("Він [!] спить [тут]").error, "pick: порожня хибна група — помилка");
+  ok(L.parsePick("[!байдики б'є] і все").error, "pick: лише хибні групи — помилка (немає правильного)");
+  ok(L.warnings({ type: "pick", text: "Він [байдики б'є], а книжку читає." }).length, "warnings: усі багатослівні кнопки правильні — попередження");
+  eq(L.warnings({ type: "pick", text: "Він [байдики б'є], а [!книжку читає]." }), [], "warnings: є хибна група — чисто");
+  eq(L.warnings({ type: "pick", text: "[Сонце] світить." }), [], "warnings: без груп — чисто");
+  eq(L.readText({ type: "pick", text: "Він [байдики б'є], а [!книжку читає]." }), "Він байдики б'є, а книжку читає.", "readText: [!…]");
+}
 /* розв'язок дає правильну відповідь */
 for (const s of [{ type: "gaps", text: "с{*е|и}ло" }, { type: "pick", text: "[а] б" }, { type: "stress", words: ["м+ама"] }, { type: "word", answer: "так" }, { type: "split", word: "ма|ма" }])
   ok(L.check(s, L.solution(s)), `solution → check: ${s.type}`);
