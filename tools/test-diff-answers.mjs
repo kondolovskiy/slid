@@ -6,15 +6,13 @@
 //    дереві — поточний. Режим вердикт↔вердикт: кожна різниця — НЕПОЯСНЕНА (категорій half тут немає), rc 1 лише через блок тесту рівня.
 //    Сторожить мутанти D3 (різниці сховано), D4 (категорії half у режимі вердикт↔вердикт), D6 (rc без halfBad), яких 1) на чистому дереві
 //    не бачить (старий і новий learn.js однакові).
-// 2) --old b799dfa (до half-credit, немає diagVerdict): як і раніше diagAnswerOk → diagVerdict, усі HALF пояснені категоріями.
-//    Тут вимагається rc 0 від УСЬОГО diff-answers --old b799dfa (основний блок checkAns теж): будь-яка майбутня навмисна зміна вердиктів
-//    checkAns / diagVerdict потребує нової категорії в diff-answers (з незалежною класифікацією), інакше npm run check червоний
-//    (так задумано; docs/PERSONALIZATION_QA.md, «diff-answers»).
+// 2) старий learn.js до half-credit (фікстура tools/fixtures/learn-b799dfa.js — app/learn.js з b799dfa, у тимчасовому репозиторії як «старий»;
+//    немає diagVerdict): diagAnswerOk → diagVerdict, усі HALF пояснені категоріями. Тут вимагається rc 0 від УСЬОГО diff-answers (основний
+//    блок checkAns теж): будь-яка майбутня навмисна зміна вердиктів checkAns / diagVerdict потребує нової категорії в diff-answers
+//    (з незалежною класифікацією), інакше npm run check і CI червоні (так задумано; docs/PERSONALIZATION_QA.md, «diff-answers»).
 // 3) --content-old: поле u не вимагає rev і не ховає інших змін.
-// Запуск: node tools/test-diff-answers.mjs (≈ 25 с; потрібна історія git із b799dfa — у неглибокому клоні ✗ і rc 1, хибного зеленого немає).
-// CI (.github/workflows/pages.yml) цей тест НЕ запускає — лише npm run check (рішення tools-diff-answers-p3): b799dfa є лише в робочих
-// гілках, і після squash-злиття в main його в історії CI не буде навіть з fetch-depth: 0; тест перевіряє інструмент розробника, а не
-// опублікований застосунок (його вердикти сторожать test-learn і validate, які в CI є).
+// Запуск: node tools/test-diff-answers.mjs (≈ 30 с). Від git-історії проєкту не залежить (1б, 2, 3 — тимчасові репозиторії, 1 — лише
+// HEAD), тож працює в неглибокому клоні й після squash-злиття; тому він і в CI (.github/workflows/pages.yml), і в npm run check.
 import { spawnSync } from "node:child_process";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -74,17 +72,20 @@ await tmpRepo("slid-test-diff-v-", async (tmp, g) => {
   }
 });
 
-// 2) --old b799dfa — до half-credit
-const has = spawnSync("git", ["cat-file", "-e", "b799dfa^{commit}"], { cwd: ROOT }).status === 0;
-ok(has, "у історії git немає b799dfa (неглибокий клон?)");
-if (has) {
-  const b = run("b799dfa");
-  ok(/diagAnswerOk → diagVerdict/.test(b.head), `--old b799dfa: очікувано diagAnswerOk → diagVerdict, а «${b.head}»`);
-  ok(b.form > 0 && b.root > 0, `--old b799dfa: обидві категорії half мають бути непорожні (вимаганий вигляд ${b.form}, корінь ${b.root})`);
-  ok(b.bad === 0, `--old b799dfa: ${b.bad} непояснених у блоці тесту рівня`);
-  ok(b.rc === 0, `--old b799dfa: rc ${b.rc}, очікувано 0`);
-  console.log(`  b799dfa: пояснено ${b.form} (вимаганий вигляд) + ${b.root} (корінь) з ${b.total}`);
-}
+// 2) старий learn.js до half-credit (немає diagVerdict, лише diagAnswerOk) — фікстура tools/fixtures/learn-b799dfa.js (app/learn.js з
+//    b799dfa дослівно), закомічена в тимчасовому репозиторії як «старий»: від історії проєкту тест не залежить (рев'ю tools-diff-answers-p3, P2-1)
+await tmpRepo("slid-test-diff-h-", async (tmp, g) => {
+  const lf = path.join(tmp, "app/learn.js"), cur = fs.readFileSync(lf, "utf8"), old = fs.readFileSync(path.join(ROOT, "tools/fixtures/learn-b799dfa.js"), "utf8");
+  ok(!/diagVerdict/.test(old) && /diagAnswerOk/.test(old), "фікстура learn-b799dfa.js: є diagAnswerOk, немає diagVerdict");
+  fs.writeFileSync(lf, old); g("commit", "-qam", "old b799dfa"); fs.writeFileSync(lf, cur);
+  const b = run("HEAD", tmp);
+  ok(/diagAnswerOk → diagVerdict/.test(b.head), `до half-credit: очікувано diagAnswerOk → diagVerdict, а «${b.head}»`);
+  ok(b.form > 0 && b.root > 0, `до half-credit: обидві категорії half мають бути непорожні (вимаганий вигляд ${b.form}, корінь ${b.root})`);
+  ok(b.bad === 0, `до half-credit: ${b.bad} непояснених у блоці тесту рівня`);
+  ok(b.mainBad === 0, `до half-credit: основний блок — ${b.mainBad} непояснених`);
+  ok(b.rc === 0, `до half-credit: rc ${b.rc}, очікувано 0`);
+  console.log(`  до half-credit (b799dfa): пояснено ${b.form} (вимаганий вигляд) + ${b.root} (корінь) з ${b.total}`);
+});
 // 3) --content-old: поле u (прив'язка до графа вмінь, CONTENT_SCHEMA §11) у TEXT_ONLY — rev для нього не потрібен,
 //    але u не ховає інших змін завдання (рев'ю engine-skg-g1, P3-2). Окремий тимчасовий git-репозиторій з app/, content/, tools/.
 await tmpRepo("slid-test-diff-u-", async tmp => {
