@@ -2561,10 +2561,12 @@ async def hyp_checks(browser, url):
             ev = (await page.evaluate("SLID_EVIDENCE.export()"))['events']
             last_open = [e for e in ev if e['type'] == 'hyp_open'][-1]
             assert last_open['d']['at']['key'] == key and last_open['d']['persist'] == 0, last_open
-            # hyp_lost — один, з причиною quota, між answer цієї спроби і її hyp_open (з нього реплей бере persist 0)
+            # hyp_lost — один, з причиною quota, між answer цієї спроби і її hyp_open; n — ця answer (трекер її ще не обробив): з неї реплей
+            # бере persist 0 (§9 п. 36): місце дає n, а не порядок подій
             lost = [e for e in ev if e['type'] == 'hyp_lost']
-            ans_seq = [e['seq'] for e in ev if e['type'] == 'answer' and e['d'].get('key') == key][-1]
-            assert len(lost) == 1 and lost[0]['d'] == {'why': 'quota'} and ans_seq < lost[0]['seq'] < last_open['seq'], [(e['seq'], e['d']) for e in lost]
+            ans_e = [e for e in ev if e['type'] == 'answer' and e['d'].get('key') == key][-1]
+            assert len(lost) == 1 and lost[0]['d'] == {'why': 'quota', 'n': ans_e['n']} and lost[0]['sid'] == ans_e['sid'] and ans_e['seq'] < lost[0]['seq'] < last_open['seq'], \
+                ([(e['seq'], e['d']) for e in lost], ans_e['n'], [(e['seq'], e['type']) for e in ev if ans_e['seq'] <= e['seq'] <= last_open['seq']])
             assert not [e for e in ev if e['type'] == 'hyp_off'], 'hyp_off при переповненому сховищі'
             last_open = last_open['d']
             await page.evaluate("localStorage.removeItem('qa.fill')")
@@ -2588,12 +2590,19 @@ async def hyp_checks(browser, url):
     # після hyp_off подій трекера немає; slid.v1 і тексти доку — як без hyp.js (рев'ю engine-hyp-e2-p3, P3-3)
     boom = """(() => { let v; Object.defineProperty(window, 'SLID_HYP', { configurable: true, get() { return v; }, set(x) { const tr = x.tracker;
       v = { ...x, tracker(o) { const T = tr(o), oa = T.onAnswer; T.onAnswer = a => { if (a.verdict === 'bad' && a.item.type !== 'choice') throw new Error('qa'); return oa(a); }; return T; } }; } }); })()"""
+    # бюджет 400 мс (engine-hyp-e4-shadow-routes, п. 2; мутант рецензента H2): повільний onScreen трекера на екрані 8 (budget) чи повільний запис
+    # slid.hyp, коли в стані вже є відкрита гіпотеза (wbudget, бюджет у write()), — те саме, що й виняток: рівно один hyp_off, тепер why: budget
+    slow = """(() => { let v, fired = false; Object.defineProperty(window, 'SLID_HYP', { configurable: true, get() { return v; }, set(x) { const tr = x.tracker;
+      v = { ...x, tracker(o) { const T = tr(o), os = T.onScreen; T.onScreen = a => { if (!fired && a.item && a.item.l === 'g6m1l1' && a.item.i === 8) { fired = true;
+        const t0 = performance.now(); while (performance.now() - t0 < 450) {} } return os(a); }; return T; } }; } }); })()"""
+    wslow = """Storage.prototype.setItem=(f=>function(k,v){ if(k==='slid.hyp' && !window.__hypSlow && /"open":\\[\\{/.test(v)){ window.__hypSlow=true;
+      const t0=performance.now(); while(performance.now()-t0<450){} } return f.call(this,k,v); })(Storage.prototype.setItem);"""
     off_by = {}
-    for mode in ('off', 'nohyp'):
+    for mode in ('off', 'budget', 'wbudget', 'nohyp'):
         context = await browser.new_context(viewport={'width': 400, 'height': 860}, service_workers='block')
         await context.add_init_script(freeze)
-        if mode == 'off':
-            await context.add_init_script(boom)
+        if mode != 'nohyp':
+            await context.add_init_script({'off': boom, 'budget': slow, 'wbudget': wslow}[mode])
         page = await context.new_page()
         errors, docks = [], []
         page.on('pageerror', lambda error: errors.append(str(error)))
@@ -2608,8 +2617,9 @@ async def hyp_checks(browser, url):
         for i, scr in enumerate(await open_lesson_at(page, 'g6m1l1', 0)):
             if i == 2:
                 await page.click('#stage .opt[data-k="0"]'); await page.click('#action'); docks.append(await dock(page))
-            if i == 8:
+            if i == {'budget': 7}.get(mode, 8):   # budget: екран 8 уже вимкнув тінь
                 had = await page.evaluate("!!localStorage.getItem('slid.hyp')")
+            if i == 8:
                 await typed(page, '7'); await page.click('#action'); docks.append(await dock(page))
             await answer_context_screen(page, scr)
             await page.click('#action')
@@ -2617,19 +2627,88 @@ async def hyp_checks(browser, url):
                 docks.append(await dock(page)); await page.click('#action')
         assert not errors, (mode, errors)
         off_by[mode] = (docks, await page.evaluate("JSON.parse(localStorage.getItem('slid.v1'))"))
-        if mode == 'off':
-            assert had, 'slid.hyp до вимкнення тіні (хибна choice-спроба записала стан)'
-            assert await page.evaluate("localStorage.getItem('slid.hyp')") is None, 'slid.hyp після hyp_off'
+        if mode != 'nohyp':
+            if mode == 'wbudget':
+                assert await page.evaluate("window.__hypSlow === true"), 'повільного запису slid.hyp не було'
+            else:
+                assert had, ('slid.hyp до вимкнення тіні (хибна choice-спроба записала стан)', mode)
+            assert await page.evaluate("localStorage.getItem('slid.hyp')") is None, ('slid.hyp після hyp_off', mode)
             await page.reload()
             await page.evaluate("SLID_EVIDENCE.flush()")
             ev = (await page.evaluate("SLID_EVIDENCE.export()"))['events']
             offs = [e for e in ev if e['type'] == 'hyp_off']
-            assert len(offs) == 1 and offs[0]['d'] == {'why': 'error'}, [e['d'] for e in offs]
+            assert len(offs) == 1 and offs[0]['d'] == {'why': 'error' if mode == 'off' else 'budget'}, (mode, [e['d'] for e in offs])
+            assert not [e for e in ev if e['type'] == 'hyp_lost'], (mode, 'hyp_lost при вимкненні тіні')
             assert [e for e in ev if e['type'] in TRACKER and e['seq'] < offs[0]['seq']], 'до вимкнення трекер писав події'
             assert not [e for e in ev if e['type'] in TRACKER and e['seq'] > offs[0]['seq']], 'події трекера після hyp_off'
             assert [e['d'].get('hyp') for e in ev if e['type'] == 'boot'][-1] == {'store': 1, 'open': None}, 'наступне завантаження — без стану'
         await context.close()
-    assert off_by['off'] == off_by['nohyp'], 'тінь вимкнено: slid.v1 чи тексти доку різняться з варіантом без hyp.js'
+    for mode in ('off', 'budget', 'wbudget'):
+        assert off_by[mode] == off_by['nohyp'], (mode, 'тінь вимкнено: slid.v1 чи тексти доку різняться з варіантом без hyp.js')
+
+    # без localStorage (engine-hyp-e4-shadow-routes, п. 1; §9 п. 27; мутант рецензента H1): getItem / setItem кидають з самого старту.
+    # boot.hyp = { store: 0, open: null }, усі hyp_open з persist 0, hyp_lost / hyp_off немає; pend відкриває лише pagehide з persisted: false
+    # (схована вкладка й bfcache — ні, друга спроба після них дає звичайне відкриття); стан застосунку (S у пам'яті) і тексти доку — як без
+    # hyp.js; «застосунок = реплей» (persist 0 реплей бере з boot.hyp.store)
+    no_ls = """for (const m of ['getItem', 'setItem']) Storage.prototype[m] = function() { throw new DOMException('blocked', 'SecurityError'); };
+      (() => { let v; Object.defineProperty(window, 'SLID_EVIDENCE', { configurable: true, get() { return v; }, set(x) { const o = x.observe;
+        x.observe = S => { window.__S = JSON.stringify(S); return o.call(x, S); }; v = x; } }); })();"""   # S після кожного save() — те, що пішло б у slid.v1
+    hidden = """() => { Object.defineProperty(document, 'visibilityState', { configurable: true, get: () => 'hidden' });
+      document.dispatchEvent(new Event('visibilitychange')); delete document.visibilityState; }"""
+    leave = "p => window.dispatchEvent(new PageTransitionEvent('pagehide', { persisted: p }))"
+    opens = "async () => { await SLID_EVIDENCE.flush(); return (await SLID_EVIDENCE.export()).events.filter(e => e.type === 'hyp_open').length; }"
+    nols = {}
+    for mode in ('hyp', 'nohyp'):
+        context = await browser.new_context(viewport={'width': 400, 'height': 860}, service_workers='block')
+        await context.add_init_script(freeze)
+        await context.add_init_script(no_ls)
+        page = await context.new_page()
+        errors, docks = [], []
+        page.on('pageerror', lambda error: errors.append(str(error)))
+        await page.route('**/fonts.googleapis.com/**', lambda r: r.abort())
+        if mode == 'nohyp':
+            await page.route('**/app/hyp.js', lambda r: r.abort())
+        page.set_default_timeout(7000)
+        await page.goto(url)
+        assert await page.evaluate("(() => { try { localStorage.getItem('slid.v1'); return false; } catch (e) { return true; } })()"), 'localStorage не кидає'
+        await page.click('[data-grade="6"]'); await page.click('[data-tab="path"]'); await page.click('[data-tab="path"]')
+        by_title = await page.evaluate(items_js)
+        for i, scr in enumerate(await open_lesson_at(page, 'g6m1l1', 0)):
+            if i == 2:
+                await page.click('#stage .opt[data-k="0"]'); await page.click('#action'); docks.append(await dock(page))
+            await answer_context_screen(page, scr)
+            await page.click('#action')
+            if scr['type'] not in ('intro', 'info', 'explore'):
+                docks.append(await dock(page)); await page.click('#action')
+        await page.click('#stage [data-practice="g6m1l1"]')
+        wrong1 = lambda it: '9999' if it.get('answerKind') != 'list' else '7; 8'
+        it = await current(page, by_title)
+        await typed(page, wrong1(it)); await page.click('#action'); docks.append(await dock(page))
+        n0 = await page.evaluate(opens) if mode == 'hyp' else 0
+        await page.evaluate(hidden); await page.evaluate(leave, True)   # схована вкладка, потім bfcache — pend лишається
+        if mode == 'hyp':
+            assert await page.evaluate(opens) == n0, 'схована вкладка чи pagehide з persisted: true відкрили pend без сховища'
+        await answer_context_screen(page, it); await page.click('#action'); docks.append(await dock(page)); await page.click('#action')
+        it2 = await current(page, by_title)
+        await typed(page, wrong1(it2)); await page.click('#action'); docks.append(await dock(page))
+        if mode == 'hyp':
+            n1 = await page.evaluate(opens)
+            assert n1 == n0 + 1, ('друга спроба після повернення — звичайне відкриття', n0, n1)
+        await page.evaluate(leave, False)   # справжній вихід: pend відкрито (flush) і скинуто в копію черги
+        assert not errors, (mode, errors)
+        nols[mode] = (docks, await page.evaluate("window.__S"))
+        assert nols[mode][1] and '"g6m1l1"' in nols[mode][1], (mode, 'стан після save() не перехоплено')
+        if mode == 'hyp':
+            data = await page.evaluate("SLID_EVIDENCE.flush().then(() => SLID_EVIDENCE.export())")
+            ev = data['events']
+            os_ = [e for e in ev if e['type'] == 'hyp_open']
+            assert len(os_) == n1 + 1 and os_[-1]['d']['at']['key'] == it2['key'], ('pend відкрито на pagehide (persisted: false)', len(os_), n1, os_[-1]['d']['at'])
+            assert os_ and all(e['d']['persist'] == 0 for e in os_), [e['d']['persist'] for e in os_]
+            assert [e['d'].get('hyp') for e in ev if e['type'] == 'boot'] == [{'store': 0, 'open': None}], [e['d'].get('hyp') for e in ev if e['type'] == 'boot']
+            assert not [e for e in ev if e['type'] in ('hyp_lost', 'hyp_off')], 'hyp_lost / hyp_off без localStorage'
+            n_nols = len(app_vs_replay(data, what='без localStorage'))
+        await context.close()
+    assert nols['hyp'] == nols['nohyp'], ('без localStorage: стан чи тексти доку різняться з варіантом без hyp.js', [(a, b) for a, b in zip(nols['hyp'][0], nols['nohyp'][0]) if a != b][:3])
 
     # офлайн: app/hyp.js у кеші service worker, тінь працює без мережі
     sw = (ROOT / 'sw.js').read_text()
@@ -2657,6 +2736,6 @@ async def hyp_checks(browser, url):
     assert hyp and [h['key'] for h in hyp['open']] == [it['key']], hyp and hyp['open']
     assert not errors, errors
     await context.close()
-    print(f'Гіпотези (тінь E2): slid.v1 і тексти доку однакові з hyp.js / без нього / без IndexedDB / без журналу; застосунок = реплей ({n_hyp} подій hyp_*; входи трекера gen/pre/done — {n_in}; form і переповнене сховище — теж); pend переживає перезавантаження; boot.hyp, dskip після diag_end; form/badHint, переповнене сховище (hyp_lost), вимкнена тінь (hyp_off), «Скинути прогрес», офлайн: green', flush=True)
+    print(f'Гіпотези (тінь E2): slid.v1 і тексти доку однакові з hyp.js / без нього / без IndexedDB / без журналу; застосунок = реплей ({n_hyp} подій hyp_*; входи трекера gen/pre/done — {n_in}; form і переповнене сховище — теж); pend переживає перезавантаження; boot.hyp, dskip після diag_end; form/badHint, переповнене сховище (hyp_lost), вимкнена тінь (hyp_off: виняток, бюджет трекера й запису), без localStorage ({n_nols} подій, pend лише на pagehide), «Скинути прогрес», офлайн: green', flush=True)
 
 asyncio.run(main())

@@ -183,7 +183,7 @@ const HYPS = (() => {
   const perf = () => { try { return performance.now(); } catch(e) { return 0; } };
   let store = !!HYP0.store;
   const T = H.tracker({ persist: store });
-  let on = true, dirty = false, held = false, runN = 0, scrT = perf(), pres = null;   // held — спробу захоплено, slid.hyp запише answer() (один запис на відповідь)
+  let on = true, dirty = false, held = false, due = null, runN = 0, scrT = perf(), pres = null;   // held — спробу захоплено, slid.hyp запише answer() (один запис на відповідь); due — n її події answer (hyp_lost)
   const runId = () => `${T.seed}.r${runN}`;   // id сесії плеєра (урок / тренування / тест), унікальний між завантаженнями
   /** Тінь вимкнено до перезавантаження: подія hyp_off і ключ геть — інакше наступне завантаження почало б зі стану до вимкнення
       (застарілий pend), а реплей бачив усі події після (рев'ю engine-hyp-e2-p3, P3-3). */
@@ -204,8 +204,10 @@ const HYPS = (() => {
   const weakLessons = () => { const w = new Set(); for (const d of M.diags||[]) { const r = S.diag?.[d.id]; if (!r || !r.topics) continue;
     for (const t of d.topics||[]) if (r.topics[t.id] === "gap" || r.topics[t.id] === "shaky") (t.lessons||[]).forEach(l=>w.add(l)); } return w; };
   // невдалий запис slid.hyp або квоти забракло для slid.v1: ключ геть і до перезавантаження не пишеться (гіпотези — лише в пам'яті, persist: 0)
-  // hyp_lost — для реплею: persist 0 з цього місця (раніше реплей брав його з hyp_open самого застосунку, рев'ю E2-p3 P3-2)
-  const forget = why => { if (store && on) EV.log("hyp_lost", { why }); store = false; T.setPersist(0); try { localStorage.removeItem(HKEY); } catch(e) {} };
+  // hyp_lost — для реплею: persist 0 з події n (рев'ю E2-p3 P3-2; tools-diff-answers-p3 P3-3). n — подія журналу, яку трекер ще не обробив
+  // (відповідь між capture і answer(): save() стоїть між ними), null — такої немає, persist 0 з самої hyp_lost. Реплей бере n як є,
+  // без евристики за порядком подій (docs/design/diag-hypothesis-math.md §9 п. 36)
+  const forget = why => { if (store && on) EV.log("hyp_lost", { why, n: due }); store = false; T.setPersist(0); try { localStorage.removeItem(HKEY); } catch(e) {} };
   /** Запис slid.hyp — у бюджеті часу тіні (рев'ю E2, P3-1): довший за BUDGET_MS вимикає тінь, як і виклик трекера. */
   const write = () => {
     if (!on || !store || !dirty) return;
@@ -247,16 +249,16 @@ const HYPS = (() => {
           hint: !!it.hint, final: !!it.final, dt: Number.isFinite(evDt) ? evDt : Math.round(perf() - scrT), t: Date.now(), day: dkey(), lvl: it.key ? (s.lvl ?? null) : null,
           unseen: it.key ? S.seen[it.key] === undefined : undefined, run: runId(), ls, pres: pr, preWeak: pr.some(l=>w.has(l)), done: ls.filter(l=>done(l)), cv: EV.cv ?? null };
         if (s.gv) { a.gv = s.gv; a.genAt = s.genAt; a.genN = s.genN ?? 0; }
-        held = true;
+        held = true; due = Number.isInteger(EV.n) ? EV.n : null;   // n щойно записаної answer: трекер її ще не бачив
         return a;
       } catch(e) { return null; }
     },
-    answer(a) { held = false; if (a) call(() => T.onAnswer(a)); write(); },
-    screen(s) { held = false; scrT = perf(); if (C?.id === "math") call(() => T.onScreen({ item: evItem(s), t: Date.now(), day: dkey() })); },
+    answer(a) { held = false; if (a) call(() => T.onAnswer(a)); due = null; write(); },
+    screen(s) { held = false; due = null; scrT = perf(); if (C?.id === "math") call(() => T.onScreen({ item: evItem(s), t: Date.now(), day: dkey() })); },
     lessonEnd(l, acc) { call(() => T.onLessonEnd({ l, acc, run: runId(), t: Date.now(), day: dkey() })); },   // запис — у save() кінця уроку
     /** Підсумок для diag_end (до EV.log("diag_end")): { skip — «Ще не знаю» цього тесту, rv }; тінь вимкнено — null. Запис — у save() після. */
     diagEnd(id) { if (!on || C?.id !== "math") return null; try { const r = T.onDiagEnd({ diag: id }); dirty = true; return r; } catch(e) { shutdown("error"); return null; } },
-    close() { held = false; call(() => T.flush()); write(); },
+    close() { held = false; due = null; call(() => T.flush()); write(); },
     /** «Скинути прогрес»: reset для всіх відкритих — до EV.log("reset") (старий pid), потім ключ геть. */
     reset() { call(() => T.onReset({ t: Date.now(), day: dkey() })); dirty = false; try { localStorage.removeItem(HKEY); } catch(e) {} },
     persist: write

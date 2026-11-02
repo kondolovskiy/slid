@@ -51,16 +51,15 @@ export function replay(exp, E) {
       : (...a) => { const r = t[m](...a), r2 = T2[m](...a); if (Array.isArray(r2)) for (const x of r2) GD.events.push({ ...x, did, pid }); return r; } });
     // persist і стан між завантаженнями (§3.3, §9 п. 34) — з подій застосунку про сховище, не з його hyp_open:
     //  - boot.hyp.store === 0 (localStorage недоступний) — persist: 0 у цьому завантаженні (sid) від boot;
-    //  - hyp_lost (slid.hyp самоочищено) — persist: 0 від події, яку застосунок саме обробляв: остання не-hyp_* подія перед hyp_lost
-    //    (save() стоїть між EV.log цієї події й викликом трекера), або наступна, якщо застосунок уже встиг написати hyp_open після неї;
+    //  - hyp_lost (slid.hyp самоочищено) — persist: 0 від події d.n того самого завантаження (sid): її застосунок записав, а трекер ще не
+    //    обробив (відповідь між capture і answer()); d.n null чи немає — від самої hyp_lost. Номер дає застосунок, тож місце не виводиться
+    //    з порядку подій і не залежить від того, де в app.js стоїть save() (§9 п. 36; раніше — «остання не-hyp подія +0,5»);
     //  - boot.hyp.open === null (застосунок не завантажив стану: немає ключа — без сховища, після hyp_lost / hyp_off чи скидання) —
     //    відкрити свій pend (як pagehide застосунку без сховища) і почати з порожнього стану без подій. open: n — звірити з реплеєм (notes.bootDiff).
     // Журнали без boot.hyp (до tools-diff-answers-p3, лише робочі гілки) — втрату стану реплей не бачить.
-    const sidOf = e => e.sid ?? "?", lost0 = new Map(); let lastX = null, openAfterX = false;
-    for (const e of evs) { if (!String(e.type).startsWith("hyp_")) { lastX = e; openAfterX = false; continue; }
-      if (e.type === "hyp_open") openAfterX = true;
-      if (e.type === "hyp_lost" && !lost0.has(sidOf(e))) lost0.set(sidOf(e), lastX && sidOf(lastX) === sidOf(e) ? (lastX.seq ?? 0) + (openAfterX ? 0.5 : 0) : -Infinity); }
-    const lostAt = e => lost0.has(sidOf(e)) && (e.seq ?? 0) >= lost0.get(sidOf(e));
+    const sidOf = e => e.sid ?? "?", lost0 = new Map();
+    for (const e of evs) if (e.type === "hyp_lost" && !lost0.has(sidOf(e))) lost0.set(sidOf(e), Number.isInteger(e.d?.n) ? e.d.n : e.n ?? -Infinity);
+    const lostAt = e => lost0.has(sidOf(e)) && (e.n ?? Infinity) >= lost0.get(sidOf(e));
     let prevSid = null, noStore = false;
     const prof = { did, pid, events: evs.length, fresh: false, answers: 0, cvGuess: 0 };
     // weak — уроки тем gap/shaky за останнім diag_end кожного тесту (як S.diag[id].topics у app.js); done — уроки з lesson_end

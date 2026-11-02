@@ -111,6 +111,13 @@ for (const [name, args] of [["невідома лінія", ["--line", "nope"]],
     ok(e.rc === 2 && e.out.includes("ревізії «nope-rev» немає"), "--since неіснуюча ревізія — rc 2", e.out);
     const m = report(tree(M => { split(M); Object.assign(S(M, "fxal1", 0), { fbOk: "Інакше.", fbText: "Інше пояснення, чому саме так, для фікстури графа.", hint: "Інша підказка." }); S(M, "fxal1", 1).correct = 1; }), ["--since", "HEAD"]);
     ok(/додано\/змінено 1/.test(m.out) && m.out.includes("екран 4 (choice)"), "--since: зміна пояснення — не зміна; зміна ключа — зміна", m.out);
+    // ревізія до G3 (learn.js без graphBind): --since прив'язує її зміст чинним правилом (content.learn), а не old.learn ревізії
+    // (рев'ю engine-skg-g3-p3, P3-б; мутант since-old-learn — rc 2 «не вдалося завантажити зміст ревізії»)
+    write(tree(split));
+    const lf = path.join(tmp, "app/learn.js"), cur = fs.readFileSync(lf, "utf8");
+    fs.writeFileSync(lf, cur + "\ndelete window.SLID_LEARN.graphBind;   // test-graph-report: learn.js ревізії до G3\n"); g("add", "-A"); g("commit", "-qm", "old learn"); fs.writeFileSync(lf, cur);
+    const ol = report(null, ["--since", "HEAD"]);
+    ok(ol.rc === 0 && /з HEAD: вузлів змінено 0, об'єктів розщеплених пар додано\/змінено 0/.test(ol.out), `--since на ревізії без graphBind — rc 0 (${ol.rc}), прив'язка чинним правилом`, ol.out);
     fs.rmSync(path.join(tmp, ".git"), { recursive: true, force: true });
   } }
 

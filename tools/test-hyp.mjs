@@ -622,10 +622,11 @@ const sum = (R, pid) => R.events.filter(e => e.pid === pid).map(e => e.type === 
   e("a", "diag_start", { c: "math", diag: "dg6" }, tm(D1, 1));
   for (const i of [0, 1]) e("a", "answer", { mode: "diag", c: "math", l: "dg6", i, id: null, key: null, pool: null, type: dg6.items[i].type, ak: null, sk: dg6.items[i].sk, topic: dg6.items[i].topic, hyp: false, try: 1, verdict: "skip", res: -1, raw: null, hint: false, final: true }, tm(D1, 2 + i));
   e("a", "diag_end", { c: "math", diag: "dg6", topics: {}, hyp: { skip: 2, rv: "hyp-1" } }, tm(D1, 5));
-  // сховище є (persist 1), потім застосунок самоочистив slid.hyp: hyp_lost між answer і hyp_open тієї самої спроби (save() перед трекером) → далі persist 0
+  // сховище є (persist 1), потім застосунок самоочистив slid.hyp: hyp_lost між answer і hyp_open тієї самої спроби (save() перед трекером),
+  // n — ця answer (трекер її ще не обробив) → persist 0 з неї (§9 п. 36: номер дає застосунок, реплей не вгадує місце)
   ps("a", tm(D1, 10), pair.slice(0, 3));
   ans("a", pair[0], tm(D1, 11), { v: "bad", raw: "4/9" }); appOpen("a", tm(D1, 11), 1);
-  ans("a", pair[1], tm(D1, 12), { v: "bad", raw: "4/9" }); e("a", "hyp_lost", { why: "quota" }, tm(D1, 12)); appOpen("a", tm(D1, 12), 0);
+  ans("a", pair[1], tm(D1, 12), { v: "bad", raw: "4/9" }); e("a", "hyp_lost", { why: "quota", n: seq }, tm(D1, 12)); appOpen("a", tm(D1, 12), 0);
   ans("a", pair[2], tm(D1, 13), { v: "bad", raw: "4/9", final: false });   // друга спроба не прийшла — pend
   // наступне завантаження: стану в застосунку немає (boot.hyp.open: null) — pend відкрито на виході (pagehide), гіпотез немає; перевірки немає
   const evB = seq + 1; boot("b", tm(D2), { store: 1, open: null });
@@ -649,9 +650,20 @@ const sum = (R, pid) => R.events.filter(e => e.pid === pid).map(e => e.type === 
   const ns = noLost.map(x => x.type === "boot" ? { ...x, d: { ...x.d, hyp: { store: 0, open: null } } } : x), R3 = replay({ events: [...ns, { ...ns.at(-1), seq: 999, type: "hyp_off", d: { why: "budget" } }] }, E);
   eq(R3.events.filter(x => x.type === "hyp_open").map(x => x.d.persist), [0, 0, 0], "boot.hyp.store 0 — persist 0 з boot");
   eq(R3.notes.hypOff, 1, "hyp_off — notes.hypOff");
-  // hyp_lost уже після hyp_open тієї події (сховище зникло пізніше в тому самому кроці) — persist 0 лише з наступної події
-  const late = evs.flatMap(x => x.type === "hyp_lost" ? [] : x.type === "hyp_open" && x.d.persist === 1 ? [x, { ...x, seq: x.seq + 0.25, type: "hyp_lost", d: { why: "write" } }] : [x]);
-  eq(shape(replay({ events: late }, E)).filter(x => x[0] === "open").map(x => x[1]), [1, 0, 0], "hyp_lost після hyp_open застосунку — persist 0 з наступної події");
+  // hyp_lost уже після hyp_open тієї події (сховище зникло пізніше в тому самому кроці: write() після трекера), n: null — persist 0 з самої
+  // hyp_lost, тобто з наступної події
+  const late = evs.flatMap(x => x.type === "hyp_lost" ? [] : x.type === "hyp_open" && x.d.persist === 1 ? [x, { ...x, seq: x.seq + 0.25, type: "hyp_lost", d: { why: "write", n: null } }] : [x]);
+  eq(shape(replay({ events: late }, E)).filter(x => x[0] === "open").map(x => x[1]), [1, 0, 0], "hyp_lost (n: null) після hyp_open застосунку — persist 0 з наступної події");
+  // між answer і hyp_lost — інші не-hyp події (srs / plan з observe() у save(), до hyp_lost): місце дає n, а не «остання подія перед hyp_lost»
+  // (стара евристика брала б srs і рахувала answer з persist 1; рев'ю tools-diff-answers-p3, P3-3)
+  const mid = evs.flatMap(x => x.type === "hyp_lost" ? [{ ...x, seq: x.seq - 0.5, n: x.n - 0.5, type: "srs", d: { n: 1, part: 1, parts: 1, ch: [] } }, x] : [x]);
+  eq(shape(replay({ events: mid }, E)).filter(x => x[0] === "open").map(x => x[1]), [1, 0, 0], "srs між answer і hyp_lost — persist 0 з answer (n), як у застосунку");
+  // n: null на тому самому місці (save() поза відповіддю) — persist 0 лише після hyp_lost: answer перед нею — з persist 1
+  const nul = evs.map(x => x.type === "hyp_lost" ? { ...x, d: { why: "quota", n: null } } : x);
+  eq(shape(replay({ events: nul }, E)).filter(x => x[0] === "open").map(x => x[1]), [1, 1, 0], "hyp_lost з n: null — persist 0 від самої події, не від попередньої");
+  // n іншого завантаження (sid) не зачіпає: hyp_lost у «a» з n відповіді — у «b» persist 1 знову (boot.hyp.store 1)
+  { const bo = replay({ events: evs.map(x => x.sid === "b" && x.type === "answer" ? { ...x, d: { ...x.d, verdict: "bad", raw: "4/9" } } : x) }, E).events.filter(x => x.type === "hyp_open" && x.seq >= evB);
+    ok(bo.length === 2 && bo[0].d.persist === 0 && bo[1].d.persist === 1, "hyp_lost діє лише в межах свого sid: pend «a» на boot «b» — persist 0, нова гіпотеза «b» — 1", bo.map(x => [x.seq, x.d.persist])); }
 }
 
 /* ---------- 12. Skill Graph G3: старі й нові pres / preWeak у реплеї (docs/design/skill-graph-math.md §4.2) ----------

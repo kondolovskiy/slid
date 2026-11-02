@@ -199,6 +199,8 @@
       get cv() { return cv ?? null; },
       /** dt останньої записаної події answer (мс від показу екрана) або null — той самий dt бере трекер гіпотез (app/hyp.js, поріг S11). */
       get dt() { return enabled ? lastDt : null; },
+      /** n останньої записаної події цієї сторінки (sid) або null — app.js кладе його в hyp_lost (подія, з якої persist 0, docs/EVIDENCE.md). */
+      get n() { return enabled && n ? n : null; },
       log(type, data) {
         try {
           if (type === "answer") lastDt = null;

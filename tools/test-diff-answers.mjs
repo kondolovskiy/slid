@@ -11,7 +11,8 @@
 //    блок checkAns теж): будь-яка майбутня навмисна зміна вердиктів checkAns / diagVerdict потребує нової категорії в diff-answers
 //    (з незалежною класифікацією), інакше npm run check і CI червоні (так задумано; docs/PERSONALIZATION_QA.md, «diff-answers»).
 // 3) --content-old: поле u не вимагає rev і не ховає інших змін.
-// Запуск: node tools/test-diff-answers.mjs (≈ 30 с). Від git-історії проєкту не залежить (1б, 2, 3 — тимчасові репозиторії, 1 — лише
+// 4) мінімальна фікстура змісту: точні кількості категорій half і нове правило HALF поза категоріями — НЕПОЯСНЕНЕ (мутант M2).
+// Запуск: node tools/test-diff-answers.mjs (≈ 30 с). Від git-історії проєкту не залежить (1б, 2, 3, 4 — тимчасові репозиторії, 1 — лише
 // HEAD), тож працює в неглибокому клоні й після squash-злиття; тому він і в CI (.github/workflows/pages.yml), і в npm run check.
 import { spawnSync } from "node:child_process";
 import path from "node:path";
@@ -85,6 +86,35 @@ await tmpRepo("slid-test-diff-h-", async (tmp, g) => {
   ok(b.mainBad === 0, `до half-credit: основний блок — ${b.mainBad} непояснених`);
   ok(b.rc === 0, `до half-credit: rc ${b.rc}, очікувано 0`);
   console.log(`  до half-credit (b799dfa): пояснено ${b.form} (вимаганий вигляд) + ${b.root} (корінь) з ${b.total}`);
+});
+// 4) мінімальна фікстура змісту з відомими кількостями (рев'ю tools-diff-answers-p3, раунд 2, P3-4; мутант M2 — «вимаганий вигляд» без need):
+//    п'ять вправ уроку qa6l1, старий learn.js — фікстура b799dfa. Точні кількості категорій half (7 / 5 з 167) не залежать від змісту
+//    проєкту. Потім «новий» learn.js розширює HALF новою ознакою вигляду form: "qa" (ні в diff-answers, ні в need її немає): ці різниці мають
+//    лишитися НЕПОЯСНЕНИМИ, а «вимаганий вигляд» — тим самим 7, інакше категорія мовчки поглинає нове правило.
+//    Кількості змінюються лише зі зміною records() / probes() у diff-answers чи diagVerdict у learn.js — тоді їх оновлюють тут свідомо.
+const FIXTURE = `SLID.section("math", { id: "qa6", grade: 6, title: "QA", lessons: [{ id: "qa6l1", title: "QA", screens: [
+  { type: "answer", title: "Скороти 4/10", answer: "2/5", reduced: true },
+  { type: "answer", title: "Мішане 7/2", answer: "3 1/2", mixed: true },
+  { type: "answer", title: "Корінь", answer: 24 },
+  { type: "answer", title: "Половина", answer: "0,5", form: "qa" },
+  { type: "answer", title: "Просте", answer: 7 } ] }] });\n`;
+await tmpRepo("slid-test-diff-f-", async (tmp, g) => {
+  for (const d of fs.readdirSync(path.join(tmp, "content"))) if (d !== "subjects") fs.rmSync(path.join(tmp, "content", d), { recursive: true, force: true });
+  for (const f of fs.readdirSync(path.join(tmp, "content/subjects"))) if (f !== "math.js") fs.rmSync(path.join(tmp, "content/subjects", f));
+  fs.mkdirSync(path.join(tmp, "content/math")); fs.writeFileSync(path.join(tmp, "content/math/g6-qa.js"), FIXTURE);
+  const lf = path.join(tmp, "app/learn.js"), cur = fs.readFileSync(lf, "utf8");
+  fs.writeFileSync(lf, fs.readFileSync(path.join(ROOT, "tools/fixtures/learn-b799dfa.js"), "utf8")); g("add", "-A"); g("commit", "-qm", "fixture + old b799dfa"); fs.writeFileSync(lf, cur);
+  const a = run("HEAD", tmp);
+  ok(a.total === 167 && a.form === 7 && a.root === 5 && a.bad === 0 && a.mainBad === 0 && a.rc === 0,
+    `фікстура змісту: очікувано записів 167, half 7 (вигляд) / 5 (корінь), 0 непояснених, rc 0, а ${a.total}, ${a.form} / ${a.root}, ${a.bad} + ${a.mainBad}, rc ${a.rc}`);
+  const W = [['    if (s.form === "improper" && (!u.frac || u.whole)) return "form";', '    if (s.form === "qa" && u.frac) return "form";\n'],
+    ["const DIAG_FORM = s => !!(", 'const DIAG_FORM = s => !!(s.form === "qa" || ']];
+  let wide = cur; for (const [at, add] of W) { ok(cur.split(at).length === 2, `фікстура «form: qa»: у learn.js рядок «${at}» має бути рівно один`); wide = wide.replace(at, at.startsWith("const") ? add : add + at); }
+  fs.writeFileSync(lf, wide);
+  const b = run("HEAD", tmp);
+  ok(b.form === 7 && b.root === 5 && b.bad === 3 && /qa6l1#3 "0,5" ← «5\/10»: тест OK → HALF/.test(b.block) && b.rc === 1,
+    `нове правило HALF (form: qa) — 3 НЕПОЯСНЕНІ, «вимаганий вигляд» лишається 7, rc 1; а ${b.form} / ${b.root}, ${b.bad}, rc ${b.rc}`);
+  console.log(`  фікстура змісту: ${a.form} + ${a.root} з ${a.total}; розширене правило (form: qa) — ${b.bad} непояснених`);
 });
 // 3) --content-old: поле u (прив'язка до графа вмінь, CONTENT_SCHEMA §11) у TEXT_ONLY — rev для нього не потрібен,
 //    але u не ховає інших змін завдання (рев'ю engine-skg-g1, P3-2). Окремий тимчасовий git-репозиторій з app/, content/, tools/.
