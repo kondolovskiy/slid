@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-02T19:21:41.135Z
 id: style-ukr-euphony
 type: style
 subject: ukr
 status: todo
-claimed_by:
+claimed_by: style-euphony
 created: 2026-11-02
 ---
 # ukr: милозвучність (у/в, і/й, з/із/зі) в авторському тексті 5–6 кл.
