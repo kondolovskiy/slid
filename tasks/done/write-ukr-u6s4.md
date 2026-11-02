@@ -7,7 +7,7 @@ subject: ukr
 grade: 6
 section: u6s4
 weeks: [11, 12]
-status: review
+status: done
 claimed_by: writer-u6s4
 created: 2026-11-02
 ---
