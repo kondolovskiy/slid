@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-02T06:48:39.007Z
 id: graph-frac-g2
 type: graph
 subject: math
 status: todo
-claimed_by:
+claimed_by: orchestrator-g2
 created: 2026-11-02
 depends_on: [engine-skg-g1]
 ---
