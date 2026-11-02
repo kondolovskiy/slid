@@ -112,3 +112,34 @@ git restore reports/style-hist.md reports/style-math.md reports/validate.json �
 Також: `grep -rn "AGENTS.md §"` по живих файлах (без tasks/done, reports, sessions, decisions), порівняння старих і нових файлів через `git show 3915528~1:…`.
 
 **Не перевірено:** чи справді Claude Code вибирає потрібний скіл за description (поведінковий прогін активації не робився); `test-answer-ui.py` і `playtest.py` не запускались (зміна не зачіпає app/ і content/); бекенд `npm run check` / `test:e2e` не запускались (server/ не змінено).
+
+## Повторне рев'ю
+
+- **Коміт:** `9d78398` (`git show HEAD`, база — `3915528`), 17 файлів. Перевірено весь diff, крім цього звіту.
+- **Вердикт: прийнято.** Усі P2 закрито. P3 закрито, крім двох дрібних залишків нижче (обидва не блокують).
+
+| Знахідка | Що зроблено | Вердикт |
+|---|---|---|
+| P2-1 назви моделей | `AGENTS.md:83` звужено до «нові назви й id… у код, docs і звіти». Винятки — `model:` у frontmatter і трейлери атрибуції. Тепер правило відповідає pitfalls 246 і не суперечить `CLAUDE.md` / `qa-runner` | ✅ |
+| P2-2 «AGENTS.md §1» | §1 → §2 у `tasks/todo/engine-ai-a1.md:12`, `memory/short/handoff.md:22`, `docs/design/ai-solution-check.md:222,590`, `skill-graph-math.md:127`. Пошук `grep "AGENTS.md §1\b\|§3 п"` по docs, tools, tasks/todo і doing, handoff, .claude — 0 збігів | ✅ |
+| P2-3 браузерні тести | Одне формулювання («вільний порт, але під навантаженням флейкає — для приймання по одному») у `AGENTS.md:59`, `docs/WORKFLOW.md:28`, `tools/playtest.py:6,15` (лише коментарі) | ✅ |
+| P3-1 skill-graph-math | рядки 160, 186 і посилання на скіли — гаразд; **рядок 183**: «AGENTS.md §4 п. 6, **8**, §5» — див. залишок 1 | ⚠️ |
+| P3-2 validate.mjs | коментарі → «AGENTS.md §7, «свій розділ»». У §7 тепер є окремий рядок «Свій розділ, пул чи тест: validate --section/--pool/--diag — 0 помилок» | ✅ |
+| P3-3 «усі node-тести» | формулювання → «node-тести (склад — package.json)» в AGENTS.md і README. `test-metrics.mjs` поза check — так було й до змін, окремої задачі не створено (не блокує) | ✅ |
+| P3-4 INDEX | усі рядки ≤ 300 символів (перевірено python) | ✅ |
+| P3-5 descriptions | `qa-runner` і `content-writer` оновлено | ✅ (дрібниця: у content-writer немає префікса `fix-*`) |
+| P3-6 активація | engine-change: «pages.yml… Not for server/ or server.yml (backend-change)». У AGENTS §6 додано рядки для `.claude/`, AGENTS.md, CLAUDE.md і для `design-*` / `research-*` / `qa-*` | ✅ |
+| P3-7 формулювання | backend-change: «Обидва кроки — з тестами», `DATABASE_URL` для migrate. math-pool-diag: «мінімум 5 для поняттєвого уроку» (є в `tasks/README-math-personalization.md:32`). `--shots` повернуто в AGENTS §3 | ✅ |
+| P3-8 шаблон make-tasks | записано залишком у нотатках задачі | відкрито (поза diff) |
+
+**Залишки (P3, не блокують):**
+1. `docs/design/skill-graph-math.md:183`: «AGENTS.md §4 п. 6, **8**, §5». Старий §3 п. 8 (validate --section — 0 помилок) тепер у §7 («свій розділ»), а новий §4 п. 8 — про `index.html` і build. Правильно: «§4 п. 6, §7, §5».
+2. Шаблон make-tasks (P3-8) — окремою дрібною задачею, як записано в нотатках.
+
+**Перевірки повторного рев'ю:**
+```
+npm run check                                  → rc 0 (формули 75/75, лабораторія 150/150, learn 2338, evidence 155, …; validate 0 помилок / 254 попереджень; граф 0 помилок, 0 дрейфу; stats)
+python3 -m py_compile tools/playtest.py        → ok;  node --check tools/validate.mjs → ok
+git restore reports/style-hist.md reports/style-math.md reports/validate.json → дерево чисте (tools/__pycache__ від py_compile видалено)
+```
+Не перевірено: поведінкову активацію скілів; `playtest.py` / `test-answer-ui.py` не запускав (у playtest.py змінено лише коментарі).
