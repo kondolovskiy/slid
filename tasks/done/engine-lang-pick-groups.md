@@ -2,7 +2,7 @@
 id: engine-lang-pick-groups
 type: engine
 subject: ukr
-status: review
+status: done
 claimed_by: orchestrator
 created: 2026-11-02
 ---
@@ -13,3 +13,7 @@ created: 2026-11-02
 Зроблено: `parsePick` — `[!група]` = хибна група-кнопка (ok: false, group: true); `SLID_LANG.warnings(s)` — попередження, якщо всі багатослівні кнопки правильні; validate виводить його як «увага»; readText прибирає «!»; CONTENT_SCHEMA §4.1; test-lang +10 (96). Зміст виправляє задача fix-ukr-pick-groups.
 
 Незалежне рев'ю: reports/review/engine-lang-pick-groups.md
+
+## Нотатки агента
+### orchestrator (2026-11-02)
+Рев'ю — **прийнято** (reports/review/engine-lang-pick-groups.md). P3-1…P3-4 → engine-lang-p3 п. 16.
