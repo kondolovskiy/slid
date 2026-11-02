@@ -2,7 +2,7 @@
    Джерело змісту: О. Заболотний, В. Заболотний «Українська мова. 5 клас» (Генеза, 2022), §27–30, с. 113–126.
    Норма — «Український правопис» (ред. 2019): § 9–15 (чергування), § 23 (у — в), § 24 (і — й), § 25 (з, із, зі, зо).
    Нотація (glossary/ukr.md): звук — [а]; м'якість — ′ (U+2032); [дж] — один звук.
-   5 уроків (u5s6l5 — фінал). Статус: l1–l3 verified (reports/verify/u5s6.md); l4, l5 — draft після правки D-042 (із після голосного).
+   5 уроків (u5s6l5 — фінал). Статус: verified (reports/verify/u5s6.md; l4, l5 — повторна перевірка D-042).
    Перевірка: node tools/validate.mjs --section u5s6 && node tools/stats.mjs --subject ukr
    Схема й правила: docs/CONTENT_SCHEMA.md §4.1, style/ukr.md */
 SLID.section("ukr", {
@@ -453,7 +453,7 @@ SLID.section("ukr", {
       title: "Із сиром чи зі сметаною?",
       short: "з, із, зі, зо",
       icon: "cake",
-      status: "draft",
+      status: "verified",
       why: "Прийменник з має кілька варіантів. Правильний варіант робить фразу легкою для вимови.",
       screens: [
         {
@@ -592,7 +592,7 @@ SLID.section("ukr", {
       title: "Подорож Україною",
       short: "Фінал розділу",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "u5s6boss",
       why: "Усі чергування в одній справжній справі. Бали подвоєні.",

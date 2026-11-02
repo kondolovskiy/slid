@@ -6,7 +6,7 @@ type: fix-section
 subject: ukr
 grade: 5
 section: u5s6
-status: review
+status: done
 claimed_by: writer-fix-u5s6
 created: 2026-11-02
 ---
