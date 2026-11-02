@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-02T10:38:23.479Z
 id: engine-unit-hint
 type: engine
 subject: math
 status: todo
-claimed_by:
+claimed_by: engineer-unit-hint
 created: 2026-11-02
 depends_on: [engine-answer-unit-choice]
 ---
