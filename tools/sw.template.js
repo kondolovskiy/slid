@@ -16,6 +16,11 @@ self.addEventListener("activate", e => {
     .then(() => self.clients.claim()));
 });
 
+// версія змісту для журналу подій (app/evidence.js, docs/EVIDENCE.md): сторінка питає через MessageChannel
+self.addEventListener("message", e => {
+  if (e.data === "slid:version" && e.ports && e.ports[0]) e.ports[0].postMessage(VERSION);
+});
+
 self.addEventListener("fetch", e => {
   const req = e.request;
   if (req.method !== "GET") return;

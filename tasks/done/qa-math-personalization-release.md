@@ -1,0 +1,48 @@
+---
+claimed_from: todo
+claimed_at: 2026-11-01T13:38:38.707Z
+id: qa-math-personalization-release
+type: qa
+subject: math
+status: done
+claimed_by: agent-qa-math-personalization-release
+created: 2026-10-15
+depends_on: [qa-math-personalization-g4, qa-math-personalization-g5, qa-math-personalization-g6, qa-math-personalization-g7, qa-math-personalization-g8, qa-math-personalization-g9, qa-math-personalization-g10, qa-math-personalization-g11]
+---
+# Прийняти весь пакет діагностик і пулів математики 4–11
+
+## Що зробити
+
+- Після класових приймань виконати спільне збирання, validate, test-learn, тести потрібних форматів, повний погоджений браузерний прогін і суворий звіт покриття.
+- Звірити 8 діагностик та всі required-пули/уроки із зафіксованою версією матриці. Каталог початково має 50 розділів/182 уроки; це не примус включати optional/pending в базовий курс. Подати чисельник/знаменник required-покриття й окремий перелік відкладеного.
+- Обов’язково пройти реальну послідовність: dg6 → прогалина dec-ops → повторення ms2l4 з плану → тренування реального pms2 при S.grade=6 і unlockAll=false → збереження seen/SRS → повторення у строк. Перевірити також доданий після проходження уроку пул та недоступність непройдених/майбутніх тем.
+- Перемикати 4 → 5 → 6 → 7 → 11 → 6, перевірити збережені/перервані тести, плани, старий профіль після міграції, повернення з уроків-передумов і роботу офлайн.
+- Порівняти з класовими звітами; повторити потрібні перевірки після інтеграційних виправлень. Не дублювати незалежне розв’язання вже незмінених вправ.
+
+## Готово, коли
+
+- [x] reports/qa/math-personalization-release.md містить версію коду й матриці, required-покриття, межі, команди та успішний реальний міжкласовий сценарій.
+- [x] Усі required-класи технічно прийнято, згенеровані index.html/sw.js/content/manifest.json включено в результат, критичних дефектів немає.
+- [x] pending-питання явно залишені відкритими та не подані як готовий матеріал. Тривалість для учнів залишається оцінкою до окремого пілоту; це не блокує технічний звіт. approved не ставити.
+
+
+## Перед роботою
+
+Прочитати AGENTS.md, актуальні handoff та INDEX, релевантні довгу пам’ять і style/math.md; docs/PERSONALIZATION.md, docs/CONTENT_SCHEMA.md §9–10; tasks/README-math-personalization.md. Аналіз цього пакета спирається на origin/main, коміт 8d438ca; у старому коміті 57f9fc6 потрібної реалізації немає. Виконувати на версії з чинними SLID.diag / SLID.pool. Не повертати застарілі обмеження зі старих задач: engine-diag-pool-answers уже done.
+
+## Нотатки виконавця
+
+<!-- Змінені файли; джерела; рішення й обмеження; результати команд; що передано незалежному верифікатору. -->
+
+2026-11-01, agent-qa-math-personalization-release. **Вердикт: прийнято** (reports/qa/math-personalization-release.md).
+- Змінені файли: reports/qa/math-personalization-release.md, ця задача, рядок у memory/short/inbox.md. `app/`, `tools/` і `content/` не редагував, build у /home/user/slid не запускав.
+- Код: worktree --detach a89ed38 (HEAD → 53a3bc6 лише з tasks/todo/engine-lab-aria-p3d.md). build там: sw 08108e182a, 331 файл, 150 скриптів. diff index.html/sw.js/manifest порожній, worktree видалено.
+- Матриця 2026-11-01.v3: required 169/169 уроків, 48/48 пулів, 8/8 діагностик, 1348 вправ (уся матриця `--strict` rc 0; по класах 4…11 rc 0, дефектних лічильників 0). Відкладено: optional 7 (g10m1l3, g10m2l3, g11m2l3, g11m6l1–l4), pending 6 (g4m1l4, ms0bl3, ms3l3, g11m2l1, g11m2l2, g11m5l3), deferredSections g11m2/g11m6.
+- Команди (rc 0): validate (0 помилок / 255 попереджень), test-learn 1804, test-validate 315, test-personalization-qa 105, test-lab 141, test-math 36, test-metrics 20; test-answer-ui content --strict для 4…11 і regression (послідовно); повний playtest — 410 уроків, 8 тестів рівня.
+- Власний Playwright r1–r4 green: dg6 → dec-ops shaky → ms2l4 з плану → реальний pms2 (grade 6, unlockAll false) → seen/SRS → повтор 05.11/06.11; пізній пул; майбутні теми закриті; 4 → 5 → 6 → 7 → 11 → 6 з перерваними тестами й поверненням з передумови g4m5l3; міграція SK_RETAG2 (A/B/C) і dg6 ред. 1; офлайн через SW.
+- Дефекти: P3-1 (srs для пізнього пулу стартує з box 0 після першої сесії), P3-2 (продовження повторного тесту не видно на головній). P1/P2 немає.
+- Межі: зміст повторно не розв'язував; лише Chromium; тривалість для учнів — оцінка до пілоту; approved не ставив.
+
+## Обсяг за матрицею 2026-10-16.v2
+
+Матриця **2026-10-16.v2**: docs/math-personalization-coverage.json. Інвентар 50 розділів / 182 уроки; required 48 пулів / 169 уроків; optional 7 і pending 6 уроків окремо. Із 48 required-пулів 5 існують (184 вправи), 43 плануються (146 required-уроків, 876–1168 нових вправ). Відкладені g11m2/g11m6 відсутні в required-списку файлів; не успішний нульовий прогін. Для кожного класу використати перелік із його verify/qa та JSON, не жорстко початкові 50 пулів. Усього 8 діагностик, межі/кількості pre/cur — у JSON. Required-частина матриці незалежно прийнята; це не засвідчує готовність самого контенту. Подальші зміни версії потребують повторної звірки знаменників.

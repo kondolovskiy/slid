@@ -5,6 +5,7 @@
 збирає контент, запускає валідатор, перевіряє, що згенеровані файли закомічені, і викладає лише файли застосунку
 (`index.html`, `manifest.webmanifest`, `sw.js`, `app/`, `content/`, `img/`, `icons/`). Документація, пам'ять і задачі на сайт не потрапляють.
 Одноразово в репозиторії: **Settings → Pages → Source: GitHub Actions**.
+CI запускає не весь `npm run check`, а тести, перелічені в `pages.yml` (зокрема `tools/test-diff-answers.mjs`: старі версії `learn.js` він бере з фікстур, тож вистачає неглибокого checkout). Решта check (`graph-report`, `stats`) — локально.
 
 ## PWA (встановлення і офлайн)
 - `manifest.webmanifest` + іконки в `icons/` — застосунок можна встановити на телефон чи комп'ютер.

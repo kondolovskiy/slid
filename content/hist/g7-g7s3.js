@@ -1,5 +1,5 @@
 /* Слід · Історія, 7 клас — «Русь у часи роздробленості»
-   Статус уроків: l1–l5 verified (ревізія D-019 reviser-g7s3, повторна верифікація verifier-g7s3-d019, 2026-10-13). 5 уроків.
+   Статус уроків: l1–l5 verified (ревізія D-019 reviser-g7s3, повторна верифікація verifier-g7s3-d019, 2026-10-13; l1 — зображення D-027 перевірено 2026-10-31, reports/verify/images-hist-g7s3.md). 5 уроків.
    Перевірка: node tools/validate.mjs && node tools/stats.mjs
    Схема й правила: docs/CONTENT_SCHEMA.md, style/
    Цитати літопису й «Повчання» — за перекладом Леоніда Махновця («Літопис руський», 1989; litopys.org.ua/litop/). */
@@ -29,6 +29,12 @@ SLID.section("hist", {
       "Ethan Doyle White",
       "CC BY-SA 3.0",
       "https://commons.wikimedia.org/wiki/File:Cuman_statues_from_Ukraine_in_Neues_Museum,_Berlin.jpg"
+    ],
+    [
+      "Розмова князів у палатах Святополка; накладання кайданів на Василька (Радзивіллівський літопис)",
+      "Радзивіллівський літопис, кінець XV ст.; скан — runivers.ru, завантажив Arpieyn I",
+      "CC BY-SA 4.0 (мініатюра XV ст. — суспільне надбання)",
+      "https://commons.wikimedia.org/wiki/File:Conversation_between_Davyd_Igorevich_Volynsky_and_Vasilko_Rostislavich_Terebovskiy_in_the_chambers_of_Svyatopolk_Izyaslavich_of_Kiev;_imposing_fetters_on_Vasilko.jpg"
     ]
   ],
   lessons: [
@@ -109,6 +115,8 @@ SLID.section("hist", {
           sk: "crit",
           eyebrow: "Що було далі",
           title: "Чи втримався мир?",
+          img: "img/hist/g7s3/vasylko-fetters.jpg",
+          cap: "Ліворуч — розмова князів у палатах Святополка в Києві, праворуч на ноги Василькові накладають кайдани. Мініатюра Радзивіллівського літопису, кінець XV ст.",
           body: "<p>Щойно князі роз'їхалися, Давид Ігоревич намовив київського князя Святополка схопити Василька Теребовльського. Потім Василька осліпили.</p>",
           opts: [
             "Князі порушили присягу, і почалася нова війна",

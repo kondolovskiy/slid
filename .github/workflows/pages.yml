@@ -24,13 +24,20 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      # tools/test-diff-answers.mjs від git-історії не залежить (старі learn.js — фікстури в тимчасових репозиторіях), тож fetch-depth: 1 достатньо
       - name: Зібрати й перевірити контент
         run: |
           node tools/build.mjs
           node tools/test-math.mjs
           node tools/test-lab.mjs
           node tools/test-learn.mjs
+          node tools/test-evidence.mjs
+          node tools/test-hyp.mjs
           node tools/test-personalization-qa.mjs
+          node tools/test-validate.mjs
+          node tools/test-graph-report.mjs
+          node tools/test-make-tasks.mjs
+          node tools/test-diff-answers.mjs
           node tools/validate.mjs --quiet
       - name: Згенеровані файли закомічені
         run: |

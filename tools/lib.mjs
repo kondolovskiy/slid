@@ -3,22 +3,25 @@ import fs from "node:fs"; import vm from "node:vm"; import path from "node:path"
 import { ROOT, manifest } from "./build.mjs";
 export { ROOT };
 
-/** Завантажує весь контент так само, як браузер, і повертає { subjects, soon, files }. */
-export function loadContent() {
+/** Завантажує весь контент так само, як браузер, і повертає { subjects, soon, files }. root — інше дерево (типово — репозиторій). */
+export function loadContent(root = ROOT) {
   const ctx = { console }; vm.createContext(ctx); ctx.window = ctx;
-  const files = manifest().filter(f => f !== "app/app.js");
+  const files = manifest(root).filter(f => f !== "app/app.js");
   for (const f of files) {
-    try { vm.runInContext(fs.readFileSync(path.join(ROOT, f), "utf8"), ctx, { filename: f }); }
+    try { vm.runInContext(fs.readFileSync(path.join(root, f), "utf8"), ctx, { filename: f }); }
     catch (e) { throw new Error(`Помилка у ${f}: ${e.message}`); }
   }
   // звідки прийшов кожен розділ — щоб повідомлення вказували на файл
-  const origin = {};
+  const origin = {}, graphOrigin = {}, poolOrigin = {}, diagOrigin = {};   // graphOrigin: предмет → файл SLID.graph (CONTENT_SCHEMA §11); poolOrigin / diagOrigin: пул / тест → файл
   for (const f of files.filter(f => f.startsWith("content/") && !f.startsWith("content/subjects"))) {
-    const src = fs.readFileSync(path.join(ROOT, f), "utf8");
+    const src = fs.readFileSync(path.join(root, f), "utf8");
     for (const m of src.matchAll(/SLID\.section\(\s*"[^"]+",\s*\{\s*id:\s*"([^"]+)"/g)) origin[m[1]] = f;
+    for (const m of src.matchAll(/SLID\.graph\(\s*["']([^"']+)["']/g)) graphOrigin[m[1]] = f;
+    for (const m of src.matchAll(/SLID\.diag\(\s*["'][^"']+["'],\s*\{\s*["']?id["']?:\s*["']([^"']+)["']/g)) diagOrigin[m[1]] = f;
+    for (const m of src.matchAll(/SLID\.pool\(\s*["'][^"']+["'],\s*\{\s*["']?id["']?:\s*["']([^"']+)["']/g)) poolOrigin[m[1]] = f;
   }
   ctx.SLID.finalize();
-  return { subjects: ctx.SLID_SUBJECTS, soon: ctx.SLID_SOON, files, origin, lab: ctx.SLID_LAB, learn: ctx.SLID_LEARN };
+  return { subjects: ctx.SLID_SUBJECTS, soon: ctx.SLID_SOON, files, origin, graphOrigin, poolOrigin, diagOrigin, graphs: ctx.SLID.graphs || [], lab: ctx.SLID_LAB, learn: ctx.SLID_LEARN, math: ctx.SLID_MATH };
 }
 
 export const GRADED = ["choice","multi","sort","slider","order","align","shade","numline","number","fracin","lab","answer"];
