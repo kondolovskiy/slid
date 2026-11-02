@@ -391,8 +391,8 @@ FORMAT_FIXTURES = [
     # engine-math-answer-formats-followup: own unit typed in the field, foreign unit, unreduced root fraction, k/6p, root key in grade 6.
     ({'answerKind': 'list', 'answer': '70; 110', 'unit': '°'}, '70°; 120°', 'Зміни відповідь', '110°; 70°'),
     ({'answer': '7', 'unit': 'см'}, '7 мм', 'Перевір одиницю', '7 см'),
-    # engine-unit-hint(-p3): та сама величина в іншій одиниці — «Перевір одиницю… Переведи відповідь у «кг»» (вердикт bad)
-    ({'answer': '2', 'unit': 'кг'}, '2000 г', 'Переведи відповідь у «кг»', '2 кг'),
+    # engine-unit-hint(-p3): та сама величина в іншій одиниці — «Перевір одиницю: переведи відповідь у «кг».» (вердикт bad)
+    ({'answer': '2', 'unit': 'кг'}, '2000 г', 'Перевір одиницю: переведи відповідь у «кг»', '2 кг'),
     ({'answerKind': 'exactRoot', 'answer': '-3 + √14'}, '(-6 + 2√14)/2', 'Скороти дріб', '√14 − 3'),
     ({'answerKind': 'expression', 'answer': 'k/(6p)', 'form': 'reduced'}, 'k/6p', 'в дужки', 'k/(6p)'),
     ({'answerKind': 'coordinates2', 'answer': '(√2; 1)'}, '(1; √2)', 'Зміни відповідь', '(√2; 1)'),
