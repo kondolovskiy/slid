@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-02T13:49:17.833Z
 id: write-ukr-u5s2
 type: write-section
 subject: ukr
@@ -6,7 +8,7 @@ grade: 5
 section: u5s2
 weeks: [4, 8]
 status: todo
-claimed_by:
+claimed_by: writer-u5s2
 created: 2026-11-02
 ---
 # Написати розділ «Слово і його значення» (Українська мова, 5 клас)
