@@ -1,14 +1,14 @@
 ---
-claimed_from: todo
-claimed_at: 2026-11-02T18:31:16.345Z
+claimed_from: review
+claimed_at: 2026-11-02T18:48:49.291Z
 id: write-ukr-u6s9
 type: write-section
 subject: ukr
 grade: 6
 section: u6s9
 weeks: [25, 25]
-status: review
-claimed_by: writer-u6s9
+status: done
+claimed_by: verifier-u6s9
 created: 2026-11-02
 ---
 # Написати розділ «Правопис іменників» (Українська мова, 6 клас)
