@@ -38,18 +38,22 @@ export function replay(exp, E) {
   const H = E.hyp, all = (exp.events || []).filter(e => e && e.type && e.d !== undefined).slice().sort((a, b) => (a.seq ?? 0) - (b.seq ?? 0));
   const groups = new Map();
   for (const e of all) { const k = (e.did ?? exp.did ?? "?") + "|" + (e.pid ?? "?"); if (!groups.has(k)) groups.set(k, []); groups.get(k).push(e); }
-  const out = [], hyps = new Map(), profiles = [], notes = { unresolved: 0, cvGuess: 0, otherSubject: 0 };
+  const out = [], hyps = new Map(), profiles = [], notes = { unresolved: 0, cvGuess: 0, otherSubject: 0, bootDiff: 0, hypOff: 0 };
   for (const [k, evs] of groups) {
     const [did, pid] = k.split("|"), T = H.tracker({ seed: seedOf(E, k), persist: 1 });
-    // persist (§3.3): застосунок без сховища (немає localStorage, або slid.hyp самоочищено) пише hyp_open з persist: 0, і після
-    // перезавантаження таких гіпотез (і решти стану) у нього немає. Реплей бере це з журналу: з події, після якої застосунок уперше в цьому
-    // завантаженні (sid) написав hyp_open з persist: 0, — persist: 0; на boot наступного завантаження — відкласти pend (як pagehide
-    // застосунку) і почати з порожнього стану без подій. Застосунок не пише persist інакше як у hyp_open — без hyp_open втрату не видно
-    const sidOf = e => e.sid ?? "?", lost0 = new Map(); let lastX = null;
-    for (const e of evs) { if (!String(e.type).startsWith("hyp_")) { lastX = e; continue; }
-      if (e.type === "hyp_open" && e.d?.persist === 0 && !lost0.has(sidOf(e))) lost0.set(sidOf(e), lastX && sidOf(lastX) === sidOf(e) ? lastX.seq ?? 0 : -Infinity); }
+    // persist і стан між завантаженнями (§3.3, §9 п. 34) — з подій застосунку про сховище, не з його hyp_open:
+    //  - boot.hyp.store === 0 (localStorage недоступний) — persist: 0 у цьому завантаженні (sid) від boot;
+    //  - hyp_lost (slid.hyp самоочищено) — persist: 0 від події, яку застосунок саме обробляв: остання не-hyp_* подія перед hyp_lost
+    //    (save() стоїть між EV.log цієї події й викликом трекера), або наступна, якщо застосунок уже встиг написати hyp_open після неї;
+    //  - boot.hyp.open === null (застосунок не завантажив стану: немає ключа — без сховища, після hyp_lost / hyp_off чи скидання) —
+    //    відкрити свій pend (як pagehide застосунку без сховища) і почати з порожнього стану без подій. open: n — звірити з реплеєм (notes.bootDiff).
+    // Журнали без boot.hyp (до tools-diff-answers-p3, лише робочі гілки) — втрату стану реплей не бачить.
+    const sidOf = e => e.sid ?? "?", lost0 = new Map(); let lastX = null, openAfterX = false;
+    for (const e of evs) { if (!String(e.type).startsWith("hyp_")) { lastX = e; openAfterX = false; continue; }
+      if (e.type === "hyp_open") openAfterX = true;
+      if (e.type === "hyp_lost" && !lost0.has(sidOf(e))) lost0.set(sidOf(e), lastX && sidOf(lastX) === sidOf(e) ? (lastX.seq ?? 0) + (openAfterX ? 0.5 : 0) : -Infinity); }
     const lostAt = e => lost0.has(sidOf(e)) && (e.seq ?? 0) >= lost0.get(sidOf(e));
-    let prevSid = null, prevLost = false;
+    let prevSid = null, noStore = false;
     const prof = { did, pid, events: evs.length, fresh: false, answers: 0, cvGuess: 0 };
     // weak — уроки тем gap/shaky за останнім diag_end кожного тесту (як S.diag[id].topics у app.js); done — уроки з lesson_end
     // (S.lessons[l].done ставиться за будь-якої точності) — app.js передає їх трекеру як a.done (superseded, §9 п. 10).
@@ -64,11 +68,16 @@ export function replay(exp, E) {
     for (const e of evs) {
       const d = e.d || {}, day = localDay(e.t, e.tzo);
       if (e.cv === null || e.cv === undefined) { notes.cvGuess++; prof.cvGuess++; }
-      if (String(e.type).startsWith("hyp_")) continue;   // події застосунку — лише для persist (вище) і порівняння, реплей рахує свої
-      if (e.type === "boot" && prevSid !== null && sidOf(e) !== prevSid && prevLost) { push(e, T.flush()); T.load({ v: 1, scr: 0 }); }
-      if (sidOf(e) !== prevSid) prevLost = false;
-      prevSid = sidOf(e); if (lostAt(e)) prevLost = true;
-      T.setPersist(prevLost ? 0 : 1);
+      if (e.type === "hyp_off") { notes.hypOff++; prof.hypOff = (prof.hypOff || 0) + 1; }
+      if (String(e.type).startsWith("hyp_")) continue;   // події застосунку — лише hyp_lost / hyp_off (вище) і порівняння, реплей рахує свої
+      if (sidOf(e) !== prevSid) noStore = false;
+      prevSid = sidOf(e);
+      if (e.type === "boot" && d.hyp) {
+        if (d.hyp.store === 0) noStore = true;
+        if (d.hyp.open === null) { push(e, T.flush()); T.load({ v: 1, scr: 0 }); }
+        else if (Number.isInteger(d.hyp.open) && d.hyp.open !== T.open.length) { notes.bootDiff++; prof.bootDiff = (prof.bootDiff || 0) + 1; }
+      }
+      T.setPersist(noStore || lostAt(e) ? 0 : 1);
       switch (e.type) {
         case "boot": push(e, T.tick({ t: e.t, day })); break;   // app.js: старт — гіпотези, старші за 7 днів, → expired
         case "reset": push(e, T.onReset({ t: e.t, day })); break;
@@ -182,6 +191,8 @@ function reportMd(R, M, meta) {
   const L = [`# Реплей гіпотез (${meta.date})`, "", `_tools/hyp-replay.mjs, правила ${meta.rv}, журнал ${meta.input}. Метрики — docs/design/diag-hypothesis-math.md §4.1._`, ""];
   L.push(`Профілів (did+pid): ${R.profiles.length}; з порожнього стану: ${R.profiles.filter(p => p.fresh).length}. Відповідей математики: ${R.profiles.reduce((a, p) => a + p.answers, 0)}; не знайдено в змісті: ${R.notes.unresolved}; «Ще не знаю» в тестах рівня (лічильник diag_end, не гіпотези): ${R.profiles.reduce((a, p) => a + (p.diagSkip || 0), 0)}.`);
   if (R.notes.cvGuess) L.push("", `**cvGuess:** ${R.notes.cvGuess} подій без \`cv\` — зміст узято з поточного дерева.`);
+  if (R.notes.bootDiff) L.push("", `**bootDiff:** ${R.notes.bootDiff} завантажень, де застосунок завантажив інше число відкритих гіпотез (\`boot.hyp.open\`), ніж мав реплей, — кілька вкладок, профіль не з початку журналу чи втрата стану (§9 п. 32, 34).`);
+  if (R.notes.hypOff) L.push("", `**hypOff:** ${R.notes.hypOff} вимкнень тіні (\`hyp_off\`: виняток чи бюджет 400 мс) — після них до перезавантаження застосунок подій не пише, а реплей пише: ці профілі не порівнювати «застосунок = реплей».`);
   L.push("", "| Метрика | Значення |", "|---|---|");
   L.push(`| Гіпотез | ${M.hypotheses} |`, `| Покриття (top ≠ unk) | ${M.coverage.known ?? "—"} |`, `| Невизначені (0,2 ≤ pexec ≤ 0,8) | ${M.coverage.unsure ?? "—"} |`,
     `| Розв'язність (гіпотези / пари) | ${M.resolvable.hyps ?? "—"} / ${M.resolvable.pairs ?? "—"} (пар ${M.resolvable.pairCount}) |`,
@@ -329,6 +340,7 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
     const meta = { date, rv: E.hyp.RULES_VERSION, input: path.basename(input) };
     fs.writeFileSync(path.join(dir, `${date}.json`), JSON.stringify({ meta, profiles: R.profiles, notes: R.notes, metrics: M, events: R.events }, null, 1));
     fs.writeFileSync(path.join(dir, `${date}.md`), reportMd(R, M, meta));
-    console.log(`hyp-replay: ${R.events.length} подій hyp_*, гіпотез ${M.hypotheses} → ${path.relative(process.cwd(), path.join(dir, date + ".md"))}`);
+    const nd = R.events.filter(e => e.type === "diag_end").length;
+    console.log(`hyp-replay: ${R.events.length - nd} подій hyp_* і ${nd} підсумків diag_end, гіпотез ${M.hypotheses} → ${path.relative(process.cwd(), path.join(dir, date + ".md"))}`);
   }
 }

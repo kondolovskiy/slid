@@ -615,28 +615,43 @@ const sum = (R, pid) => R.events.filter(e => e.pid === pid).map(e => e.type === 
   const e = (sid, type, d, t) => evs.push({ v: 1, eid: `w.${seq}`, seq: ++seq, type, t, tzo: 0, n: seq, ms: 0, sid, did: "devw", pid: "pw", cv: "c", cvs: "sw", net: 1, synced: 0, d, ...(type === "answer" ? { dt: 9000 } : {}) });
   const ans = (sid, s, t, o = {}) => e(sid, "answer", { mode: o.mode || "practice", c: "math", l: o.l || s.lesson, i: o.i ?? 0, key: o.mode ? null : s.key, type: s.type, sk: s.sk, hyp: false, try: o.try || 1, verdict: o.v || "ok", raw: o.raw ?? "1", hint: false, final: o.final ?? true }, t);
   const ps = (sid, t, ks) => e(sid, "practice_start", { prN: 1, items: ks.map(s => ({ key: s.key, l: s.lesson, review: false, lvl: s.lvl })) }, t);
-  const appOpen = (sid, t, persist) => e(sid, "hyp_open", { hid: "app." + seq, persist }, t);   // події застосунку: реплей бере з них лише persist
+  const appOpen = (sid, t, persist) => e(sid, "hyp_open", { hid: "app." + seq, persist }, t);   // події трекера застосунку: реплей їх не читає
+  const boot = (sid, t, hyp) => e(sid, "boot", { grade: 6, subj: "math", lessons: 0, diags: [], srs: 0, ...(hyp ? { hyp } : {}) }, t);
   // тест рівня з «Ще не знаю» → diag_end із лічильником
-  e("a", "boot", { grade: 6, subj: "math", lessons: 0, diags: [], srs: 0 }, tm(D1));
+  boot("a", tm(D1), { store: 1, open: null });
   e("a", "diag_start", { c: "math", diag: "dg6" }, tm(D1, 1));
   for (const i of [0, 1]) e("a", "answer", { mode: "diag", c: "math", l: "dg6", i, id: null, key: null, pool: null, type: dg6.items[i].type, ak: null, sk: dg6.items[i].sk, topic: dg6.items[i].topic, hyp: false, try: 1, verdict: "skip", res: -1, raw: null, hint: false, final: true }, tm(D1, 2 + i));
   e("a", "diag_end", { c: "math", diag: "dg6", topics: {}, hyp: { skip: 2, rv: "hyp-1" } }, tm(D1, 5));
-  // сховище є (persist 1), потім застосунок самоочистив slid.hyp (hyp_open з persist 0) → далі persist 0
+  // сховище є (persist 1), потім застосунок самоочистив slid.hyp: hyp_lost між answer і hyp_open тієї самої спроби (save() перед трекером) → далі persist 0
   ps("a", tm(D1, 10), pair.slice(0, 3));
   ans("a", pair[0], tm(D1, 11), { v: "bad", raw: "4/9" }); appOpen("a", tm(D1, 11), 1);
-  ans("a", pair[1], tm(D1, 12), { v: "bad", raw: "4/9" }); appOpen("a", tm(D1, 12), 0);
+  ans("a", pair[1], tm(D1, 12), { v: "bad", raw: "4/9" }); e("a", "hyp_lost", { why: "quota" }, tm(D1, 12)); appOpen("a", tm(D1, 12), 0);
   ans("a", pair[2], tm(D1, 13), { v: "bad", raw: "4/9", final: false });   // друга спроба не прийшла — pend
-  // наступне завантаження: у застосунку стану немає — pend відкрито на виході (pagehide), гіпотез немає; наступного дня перевірки немає
-  e("b", "boot", { grade: 6, subj: "math", lessons: 0, diags: [], srs: 0 }, tm(D2));
+  // наступне завантаження: стану в застосунку немає (boot.hyp.open: null) — pend відкрито на виході (pagehide), гіпотез немає; перевірки немає
+  const evB = seq + 1; boot("b", tm(D2), { store: 1, open: null });
   ps("b", tm(D2, 1), [pair[3]]); ans("b", pair[3], tm(D2, 2), {});
-  const R = replay({ events: evs }, E), P = R.events.map(x => x.type === "hyp_open" ? ["open", x.d.persist, x.seq] : x.type === "diag_end" ? ["diag_end", x.d.hyp] : [x.type, x.d.why || x.d.kind]);
-  const bootB = evs.find(x => x.sid === "b").seq;
-  eq(P, [["diag_end", { skip: 2, rv: "hyp-1" }], ["open", 1, 7], ["hyp_probe", "A"], ["open", 0, 9], ["hyp_probe", "A"], ["open", 0, bootB]],
-    "реплей: «Ще не знаю» — лише diag_end.hyp; persist 0 з події, після якої застосунок написав persist 0; boot після цього — pend відкрито, стан порожній (перевірки немає)");
+  const shape = R => R.events.map(x => x.type === "hyp_open" ? ["open", x.d.persist, x.seq] : x.type === "diag_end" ? ["diag_end", x.d.hyp] : [x.type, x.d.why || x.d.kind]);
+  const R = replay({ events: evs }, E), P = shape(R);
+  eq(P, [["diag_end", { skip: 2, rv: "hyp-1" }], ["open", 1, 7], ["hyp_probe", "A"], ["open", 0, 9], ["hyp_probe", "A"], ["open", 0, evB]],
+    "реплей: «Ще не знаю» — лише diag_end.hyp; persist 0 з події, яку застосунок обробляв при hyp_lost; boot.hyp.open null — pend відкрито, стан порожній (перевірки немає)");
   eq(R.profiles[0].diagSkip, 2, "профіль: diagSkip");
-  // без persist 0 у застосунку — стан переживає boot (перевірка наступного дня є)
-  const R2 = replay({ events: evs.filter(x => !(x.type === "hyp_open" && x.d.persist === 0)) }, E);
-  ok(R2.events.some(x => x.type === "hyp_probe") && R2.events.filter(x => x.type === "hyp_open").every(x => x.d.persist === 1), "сховище є — persist 1 і стан між завантаженнями");
+  // реплей не читає persist з hyp_open застосунку (рев'ю E2-p3, P3-2): без hyp_lost — persist 1, хоч застосунок і написав 0
+  const noLost = evs.filter(x => x.type !== "hyp_lost");
+  eq(shape(replay({ events: noLost }, E)).filter(x => x[0] === "open").map(x => x[1]), [1, 1, 1], "без hyp_lost — persist 1 (hyp_open застосунку реплей не копіює)");
+  // стан є (boot.hyp.open — число відкритих, без pend): стан переживає boot, перевірка наступного дня є; boot.hyp.open ≠ відкритих у реплеї — notes.bootDiff
+  const keep = noLost.map(x => x.sid === "b" && x.type === "boot" ? { ...x, d: { ...x.d, hyp: { store: 1, open: 2 } } } : x), R2 = replay({ events: keep }, E);
+  ok(R2.events.some(x => x.type === "hyp_probe" && x.sid !== "a" && x.seq > evB) && R2.events.filter(x => x.type === "hyp_open").every(x => x.d.persist === 1), "сховище є — persist 1 і стан між завантаженнями");
+  eq(R2.notes.bootDiff, 0, "boot.hyp.open = відкритих у реплеї (2; pend не рахується) — bootDiff 0");
+  eq(replay({ events: keep.map(x => x.type === "boot" && x.sid === "b" ? { ...x, d: { ...x.d, hyp: { store: 1, open: 1 } } } : x) }, E).notes.bootDiff, 1, "boot.hyp.open ≠ реплею — bootDiff 1");
+  // без boot.hyp (старі журнали) — стан переживає boot, як і раніше
+  ok(replay({ events: noLost.map(x => x.type === "boot" ? { ...x, d: { ...x.d, hyp: undefined } } : x) }, E).events.some(x => x.type === "hyp_probe" && x.seq > evB), "без boot.hyp — стан переживає boot");
+  // localStorage недоступний (boot.hyp.store 0): persist 0 від boot, без жодного hyp_lost; hyp_off лише рахується
+  const ns = noLost.map(x => x.type === "boot" ? { ...x, d: { ...x.d, hyp: { store: 0, open: null } } } : x), R3 = replay({ events: [...ns, { ...ns.at(-1), seq: 999, type: "hyp_off", d: { why: "budget" } }] }, E);
+  eq(R3.events.filter(x => x.type === "hyp_open").map(x => x.d.persist), [0, 0, 0], "boot.hyp.store 0 — persist 0 з boot");
+  eq(R3.notes.hypOff, 1, "hyp_off — notes.hypOff");
+  // hyp_lost уже після hyp_open тієї події (сховище зникло пізніше в тому самому кроці) — persist 0 лише з наступної події
+  const late = evs.flatMap(x => x.type === "hyp_lost" ? [] : x.type === "hyp_open" && x.d.persist === 1 ? [x, { ...x, seq: x.seq + 0.25, type: "hyp_lost", d: { why: "write" } }] : [x]);
+  eq(shape(replay({ events: late }, E)).filter(x => x[0] === "open").map(x => x[1]), [1, 0, 0], "hyp_lost після hyp_open застосунку — persist 0 з наступної події");
 }
 
 console.log(fails ? `test-hyp: ${fails} з ${n} перевірок не пройшли` : `test-hyp: усі ${n} перевірок пройшли`);
