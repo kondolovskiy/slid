@@ -285,7 +285,7 @@ if (!onlySec && !onlyDiag) for (const c of subjects) { const own = new Set(c.sec
 
 // D-027: у кожному уроці предмета — хоча б одне справжнє зображення (img: фото, репродукція, документ).
 // Схеми svg/fig не зараховуються. Для історії — помилка (усі уроки доповнено; регресійний тест: tools/test-validate.mjs).
-const IMG_REQUIRED = { hist: "error" };
+const IMG_REQUIRED = { hist: "error", world: "error" }; // D-027, D-044
 for (const c of subjects) for (const sec of c.sections) {
   if (onlyDiag) continue;
   if (onlySec && sec.id !== onlySec) continue;

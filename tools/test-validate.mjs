@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Слід · регресійні тести валідатора (tools/validate.mjs) на синтетичних фікстурах.
-// Зараз: D-027 — урок історії без справжнього зображення img — ПОМИЛКА (не попередження), і для boss теж; svg/fig не рахуються; інші предмети не зачеплено.
+// Зараз: D-027 — урок історії (hist і world, D-044) без справжнього зображення img — ПОМИЛКА (не попередження), і для boss теж; svg/fig не рахуються; інші предмети не зачеплено.
 // TeX, що показався б сирим: {,}, \; поза формулою, непарний $ (items, steps пулу), підписи SVG лабораторії, alt, назва уроку — ПОМИЛКИ;
 // назва функції без лапок ($sin x$) — попередження (engine-math-render-tex-gaps, engine-render-tex-p3).
 // TeX з одним «\» у JS-рядку ("\Delta", "\frac") — помилка за сирим текстом файлу (tools-validate-tex-escapes).
@@ -18,7 +18,7 @@ const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "slid-test-validate-"));
 process.on("exit", () => fs.rmSync(tmp, { recursive: true, force: true }));
 for (const d of ["tools", "app", "style"]) fs.cpSync(path.join(ROOT, d), path.join(tmp, d), { recursive: true });
 fs.mkdirSync(path.join(tmp, "content/subjects"), { recursive: true });
-for (const s of ["hist", "math"]) fs.copyFileSync(path.join(ROOT, `content/subjects/${s}.js`), path.join(tmp, `content/subjects/${s}.js`));
+for (const s of ["hist", "math", "world"]) fs.copyFileSync(path.join(ROOT, `content/subjects/${s}.js`), path.join(tmp, `content/subjects/${s}.js`));
 // файл-«фото» має існувати: валідатор перевіряє шлях img
 fs.mkdirSync(path.join(tmp, "img/fx"), { recursive: true });
 fs.copyFileSync(path.join(ROOT, "icons/icon-192.png"), path.join(tmp, "img/fx/photo.png"));
@@ -43,12 +43,15 @@ const CASES = [
   ["hist лише з fig", "hist", { fig: { kind: "bar", parts: 4, filled: 1 } }, true],
   ["math без img (правило лише для історії)", "math", {}, false],
   ["hist boss без img", "hist", {}, true, true],
-  ["hist boss з img", "hist", IMG, false, true]];
+  ["hist boss з img", "hist", IMG, false, true],
+  ["world без img (D-044: правило й для всесвітньої історії)", "world", {}, true],
+  ["world з img", "world", IMG, false],
+  ["world boss без img", "world", {}, true, true]];
 
 CASES.forEach(([name, subj, illus, expectErr, boss], i) => {
   const id = `fx${i}`, dir = path.join(tmp, "content", subj);
   // по одному фікстурному розділу за прогін: прибрати розділи попередніх випадків
-  for (const s of ["hist", "math"]) fs.rmSync(path.join(tmp, "content", s), { recursive: true, force: true });
+  for (const s of ["hist", "math", "world"]) fs.rmSync(path.join(tmp, "content", s), { recursive: true, force: true });
   fs.mkdirSync(dir, { recursive: true });
   const sec = { id, grade: 5, weeks: [1, 2], title: "Фікстура", why: "Регресійний тест валідатора: правило D-027 про зображення.",
     meta: { author: "test", created: "2026-10-31", factcheck: null, teacher: null }, lessons: [lesson(`${id}l1`, illus, boss)] };
@@ -71,6 +74,8 @@ CASES.forEach(([name, subj, illus, expectErr, boss], i) => {
     ok(r.status === 0, `${name}: validate має завершитись з кодом 0, отримано ${r.status}`, r.stdout);
   }
 });
+// фікстури world (D-044) не мають просочитися в подальші прогони, де world не очікують
+fs.rmSync(path.join(tmp, "content", "world"), { recursive: true, force: true });
 
 // TeX, який учень побачив би сирим (engine-math-render-tex-gaps): {,} рендериться, SVG-підписи — підмножина, решта — помилка/попередження.
 const texLesson = (id, { title = "Фікстура", body = "Скільки буде $2 + 2$?", lab, cap, extra } = {}) => ({
