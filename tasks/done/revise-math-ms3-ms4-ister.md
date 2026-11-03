@@ -6,7 +6,7 @@ type: revise-section
 subject: math
 grade: 6
 section: ms3, ms4
-status: review
+status: done
 claimed_by: writer-revise-math-ms3-ms4-ister
 created: 2026-11-03
 depends_on: [math-ister-migration]

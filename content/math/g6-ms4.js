@@ -1,6 +1,6 @@
 /* Слід · Математика, 6 клас — «Об'єм» (до 2026-11-03 — 5 кл., «Площі й об'єми»)
    Міграція за Істером (D-043, docs/design/math-ister.md, 2026-11-03): розділ перенесено в кінець 6 кл. (Істер 6, § 48–49); урок ms4l1 (площа) — у ms0b, 5 кл.; пул pms4 — section ms4, also ms0b.
-   Статус уроків: ms4l2, ms4l3, ms4l4 — draft після revise-math-ms3-ms4-ister (2026-11-03): нумерація «Урок 1/2», фінал спирається на площу з 5 кл. (ms4l1). 3 уроки.
+   Статус уроків: ms4l2, ms4l3, ms4l4 — revise-math-ms3-ms4-ister (2026-11-03): нумерація «Урок 1/2», фінал спирається на площу з 5 кл. (ms4l1); verified (verifier-revise-math-ms3-ms4-ister, 2026-11-03). 3 уроки.
    Інтерактив (D-014): rect — площа й периметр, solid box — паралелепіпед, куб, об'єм кубиками.
    Перевірка: node tools/validate.mjs --section ms4 && node tools/stats.mjs --subject math
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
@@ -21,7 +21,7 @@ SLID.section("math", {
       title: "Коробка з дванадцятьма ребрами",
       short: "Паралелепіпед і куб",
       icon: "eye",
-      status: "draft",
+      status: "verified",
       why: "Коробки, цеглини, шафи й акваріуми мають одну форму. Знаючи її, легше рахувати матеріали.",
       screens: [
         {
@@ -152,7 +152,7 @@ SLID.section("math", {
       title: "Скільки води в акваріумі?",
       short: "Об'єм",
       icon: "river",
-      status: "draft",
+      status: "verified",
       why: "Об'єм підкаже, скільки води налити в акваріум, скільки піску в пісочницю і чи влізуть речі в коробку.",
       screens: [
         {
@@ -279,7 +279,7 @@ SLID.section("math", {
       title: "Ремонт у класі",
       short: "Фінал розділу",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "ms4boss",
       why: "Площа з 5 класу, паралелепіпеди й об'єми в одній справжній справі. Бали подвоєні.",
