@@ -18,7 +18,7 @@
 | w7s3l1 Молитва, меч і плуг | 7 | 9 | 0.56 | 31 | 58 | 6.4 | 0.019 | 3 | — |
 | w7s3l2 Присяга на вірність | 7 | 9 | 0.56 | 30 | 56 | 6.5 | 0.022 | 3 | — |
 | w7s3l3 Міське повітря | 7 | 10 | 0.6 | 25 | 53 | 6.3 | 0.029 | 3 | — |
-| w7s3l4 Світло в камені | 7 | 9 | 0.56 | 23 | 55 | 6.1 | 0.054 | 4 | — |
+| w7s3l4 Світло в камені | 7 | 9 | 0.56 | 23 | 55 | 6 | 0.054 | 4 | — |
 | w7s3l5 Похід під знаком хреста | 7 | 10 | 0.5 | 32 | 54 | 6.4 | 0.038 | 3 | — |
 | w7s3l6 Від села до Святої землі (фінал) | 7 | 7 | 0.86 | 21 | 32 | 6.1 | 0.028 | 3 | — |
 
@@ -26,5 +26,5 @@
 
 Для z-оцінок sd не менше 10 % середнього; нижче наведено фактичне sd.
 
-- **7-9:lesson**: screens 9.43±0.49, gradedShare 0.55±0.05, readWordsPerScreen 27.93±2.84, maxReadWords 55±1.96, sentenceWords 6.41±0.25, longWordShare 0.04±0.01, typeVariety 3.36±0.48
+- **7-9:lesson**: screens 9.43±0.49, gradedShare 0.55±0.05, readWordsPerScreen 27.93±2.84, maxReadWords 55±1.96, sentenceWords 6.4±0.26, longWordShare 0.04±0.01, typeVariety 3.36±0.48
 - **7-9:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 19.33±1.7, maxReadWords 31.33±3.3, sentenceWords 6.2±0.14, longWordShare 0.04±0.01, typeVariety 3.33±0.47
