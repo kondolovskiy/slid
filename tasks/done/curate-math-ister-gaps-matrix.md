@@ -2,7 +2,7 @@
 id: curate-math-ister-gaps-matrix
 type: curate
 subject: math
-status: review
+status: done
 claimed_by: curator-matrix-ister-gaps
 created: 2026-11-03
 depends_on: [write-math-g5-coord-ray-motion, write-math-g6-perp-parallel-graphs, write-math-g6-probability, write-math-g6m3-circle-diagrams, write-math-g7-algebra-gaps, write-math-g7-geometry-gaps, write-math-g8-algebra-gaps, write-math-g8-trig-acute, write-math-g9-gaps, write-math-g9m8-lines-planes, write-math-g9m8-prisms-pyramids, write-math-g9m8-solids-revolution]
