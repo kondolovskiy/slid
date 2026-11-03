@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-03T09:36:07.784Z
 id: write-hist-g6s6
 type: write-section
 subject: hist
@@ -6,7 +8,7 @@ grade: 6
 section: g6s6
 weeks: [10, 14]
 status: todo
-claimed_by:
+claimed_by: writer-write-hist-g6s6
 created: 2026-11-03
 ---
 # Написати розділ «Цивілізації Стародавнього Сходу» (Історія України, 6 клас)
