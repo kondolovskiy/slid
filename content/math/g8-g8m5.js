@@ -1,5 +1,5 @@
 /* Слід · Математика, 8 клас — «Алгебра: квадратні рівняння»
-   Статус уроків: verified. 8 уроків (7 тем + boss); 2026-11-03 додано g8m5l6 (квадратний тричлен), g8m5l7 (рівняння, що зводяться до квадратних), g8m5l8 (задачі на дробові рівняння) — перед boss, draft (write-math-g8-algebra-gaps, Істер А8 § 24–26); requires + g8m1l6 (ОВР для l7, l8); boss не змінено.
+   Статус уроків: verified. 8 уроків (7 тем + boss); 2026-11-03 додано g8m5l6 (квадратний тричлен), g8m5l7 (рівняння, що зводяться до квадратних), g8m5l8 (задачі на дробові рівняння) — перед boss, verified (reports/verify/write-math-g8-algebra-gaps.md; write-math-g8-algebra-gaps, Істер А8 § 24–26); requires + g8m1l6 (ОВР для l7, l8); boss не змінено.
    Інтерактив: plane y:"a*x^2+b*x+c" з повзунками a,b,c; корені на Ox; explore «крути D»;
    lab «два / один / жодного кореня». Урок 2: ≥3 explore/lab. signed:true. D-019.
    Перевірка: node tools/validate.mjs --section g8m5 && node tools/stats.mjs --subject math
@@ -665,7 +665,7 @@ SLID.section("math", {
       title: "Тричлен на множники",
       short: "Тричлен",
       icon: "frac",
-      status: "draft",
+      status: "verified",
       why: "Якщо відомі корені квадратного тричлена, його можна записати добутком. Так скорочують дроби й спрощують вирази.",
       screens: [
         {
@@ -832,7 +832,7 @@ SLID.section("math", {
       title: "Заміна змінної",
       short: "Біквадратні",
       icon: "bolt",
-      status: "draft",
+      status: "verified",
       why: "Рівняння четвертого степеня чи з дробами часто зводяться до квадратного. Треба лише помітити заміну або спільний множник.",
       screens: [
         {
@@ -986,7 +986,7 @@ SLID.section("math", {
       title: "Хто прибуде раніше?",
       short: "Дробові задачі",
       icon: "map",
-      status: "draft",
+      status: "verified",
       why: "У задачах на рух і спільну роботу час і продуктивність — дроби. Тому рівняння виходить дробовим, а після спрощення — квадратним.",
       screens: [
         {

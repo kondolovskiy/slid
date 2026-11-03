@@ -6,7 +6,7 @@ type: write-section
 subject: math
 grade: 8
 section: g8m1
-status: review
+status: done
 claimed_by: writer-write-math-g8-algebra-gaps
 created: 2026-11-03
 depends_on: [math-ister-migration]

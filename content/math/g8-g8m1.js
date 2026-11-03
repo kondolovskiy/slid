@@ -1,5 +1,5 @@
 /* Слід · Математика, 8 клас — «Алгебра: раціональні вирази»
-   Статус уроків: verified (g8m1l2 — повторно після refine-math-lessons-g7-g9-support, reports/verify/refine-math-lessons-support-g8.md). 7 уроків (6 тем + boss); 2026-11-03 додано g8m1l6 (раціональні рівняння, після l2) і g8m1l7 (стандартний вигляд числа, після l3) — draft (write-math-g8-algebra-gaps, Істер А8 § 8, § 11); eyebrow «Урок N» перенумеровано за порядком; boss не змінено.
+   Статус уроків: verified (g8m1l2 — повторно після refine-math-lessons-g7-g9-support, reports/verify/refine-math-lessons-support-g8.md). 7 уроків (6 тем + boss); 2026-11-03 додано g8m1l6 (раціональні рівняння, після l2) і g8m1l7 (стандартний вигляд числа, після l3) — verified (reports/verify/write-math-g8-algebra-gaps.md; write-math-g8-algebra-gaps, Істер А8 § 8, § 11); eyebrow «Урок N» перенумеровано за порядком; boss не змінено.
    Інтерактив: plane y:"k/x" з повзунком k (урок 4 ≥3 explore/lab); інші ≥2 explore/lab.
    Перевірка: node tools/validate.mjs --section g8m1 && node tools/stats.mjs --subject math
    Схема й правила: docs/CONTENT_SCHEMA.md, style/, D-019 */
@@ -335,7 +335,7 @@ SLID.section("math", {
       title: "Коли x у знаменнику",
       short: "Рац. рівняння",
       icon: "scale",
-      status: "draft",
+      status: "verified",
       why: "Рівняння зі змінною в знаменнику розв'язують майже як звичайні. Є лише одна пастка: знаменник не може стати нулем.",
       screens: [
         {
@@ -665,7 +665,7 @@ SLID.section("math", {
       title: "Від Місяця до мікрометра",
       short: "Станд. вигляд",
       icon: "globe",
-      status: "draft",
+      status: "verified",
       why: "Дуже великі й дуже малі числа зручно писати як $a · 10^n$. Так одразу видно, наскільки число велике чи мале.",
       screens: [
         {
