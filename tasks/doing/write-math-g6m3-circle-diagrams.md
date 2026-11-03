@@ -1,11 +1,13 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-03T19:55:59.804Z
 id: write-math-g6m3-circle-diagrams
 type: write-section
 subject: math
 grade: 6
 section: g6m3
 status: todo
-claimed_by:
+claimed_by: writer-write-math-g6m3-circle-diagrams
 created: 2026-11-03
 depends_on: [math-ister-migration]
 ---
