@@ -1,11 +1,13 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-03T10:10:11.085Z
 id: verify-math-ister-diag
 type: verify
 subject: math
 grade: 5-6
 section: dg5, dg6
 status: todo
-claimed_by:
+claimed_by: verifier-ister-diag
 created: 2026-11-03
 depends_on: [math-ister-migration]
 ---
