@@ -3,7 +3,7 @@
    (рішення людини 03.11, D-043 уточнення п. 3). Опора: Істер, Математика 6, ч. 2 (Генеза, 2023), «Ймовірність випадкової події», с. 188–195;
    Істер, Математика 5 (2022), додаткова тема «Найпростіші комбінаторні задачі» (матеріал за QR-кодом, с. 290): дерево варіантів, перебір.
    Рівень 6 кл.: перебір, таблиця, дерево варіантів, ймовірність як частка сприятливих випадків. Без формул комбінаторики (їх дає g9m7, 9 кл.).
-   Статус уроків: g6m6l1–g6m6l5 — draft (writer-write-math-g6-probability, 2026-11-03). 5 уроків.
+   Статус уроків: g6m6l1–g6m6l5 — verified (verifier-g6m6, 2026-11-03; автор writer-write-math-g6-probability). 5 уроків.
    Інтерактив: rect — таблиця пар; plane — дерево варіантів (гілки з'являються повзунками); fraction — мішечок кульок і вертушка.
    Перевірка: node tools/validate.mjs --section g6m6 && node tools/stats.mjs --subject math
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
@@ -14,7 +14,7 @@ SLID.section("math", {
   title: "Комбінаторні задачі та ймовірність",
   why: "Щоб перелічувати всі варіанти без пропусків і чесно оцінювати шанси в грі чи лотереї.",
   requires: ["g6m2l2", "g6m2l3", "ms3l1"],
-  meta: { author: "claude-opus", created: "2026-11-03", factcheck: "self", teacher: null },
+  meta: { author: "claude-opus", created: "2026-11-03", verified: "2026-11-03", factcheck: "verifier-g6m6 (reports/verify/write-math-g6-probability.md)", teacher: null },
   badges: [
     { id: "g6m6boss", name: "Майстер настільних ігор", icon: "star", desc: "Пройти фінальну задачу про варіанти та ймовірність" }
   ],
@@ -24,7 +24,7 @@ SLID.section("math", {
       title: "Сніданок у таборі",
       short: "Перебір варіантів",
       icon: "path",
-      status: "draft",
+      status: "verified",
       why: "Меню, форма команди, пари для чергування — усюди треба знайти всі варіанти. Перебір за порядком не загубить жодного.",
       screens: [
         {
@@ -171,7 +171,7 @@ SLID.section("math", {
       title: "Гілки, що рахують",
       short: "Дерево варіантів",
       icon: "leaf",
-      status: "draft",
+      status: "verified",
       why: "Коли вибір робимо в кілька кроків, легко заплутатися. Дерево варіантів показує кожен варіант окремою гілкою.",
       screens: [
         {
@@ -375,7 +375,7 @@ SLID.section("math", {
       title: "Буде, не буде чи як пощастить",
       short: "Види подій",
       icon: "eye",
-      status: "draft",
+      status: "verified",
       why: "Одні події точно стануться, інші — ніколи, а треті залежать від випадку. Уміння їх розрізняти — перший крок до підрахунку шансів.",
       screens: [
         {
@@ -522,7 +522,7 @@ SLID.section("math", {
       title: "Шанс у числах",
       short: "Ймовірність",
       icon: "target",
-      status: "draft",
+      status: "verified",
       why: "«Більше шансів» можна не лише відчути, а й порахувати. Тоді чесно видно, яка гра вигідніша.",
       screens: [
         {
@@ -674,7 +674,7 @@ SLID.section("math", {
       title: "Своя настільна гра",
       short: "Фінал розділу",
       icon: "star",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "g6m6boss",
       why: "Перебір, дерево варіантів, види подій і ймовірність — усе в одній грі. Бали подвоєні.",

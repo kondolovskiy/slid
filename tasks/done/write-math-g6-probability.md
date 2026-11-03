@@ -6,7 +6,7 @@ type: write-section
 subject: math
 grade: 6
 section: new
-status: review
+status: done
 claimed_by: writer-write-math-g6-probability
 created: 2026-11-03
 depends_on: [math-ister-migration]

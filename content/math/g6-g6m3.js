@@ -1,7 +1,7 @@
 /* Слід · Математика, 6 клас — «Відношення і пропорції»
    Статус уроків: g6m3l1–l6 — verified (verifier-g6m3, 2026-10-11; l1–l4 після ревізії D-019/D-020 — verifier-g6m3-d019, 2026-10-13). g6m3l5, g6m3l6 — правка нотації 2026-11-03 (довжина кола $C$, D-043), verified (verifier-fix-math-notation-ister, 2026-11-03). 6 уроків.
    Статус уроків: g6m3l3 — verified (2026-11-03, verifier-fix-math-figs-g4-g6, reports/verify/fix-math-figs-g4-g6.md; fix-math-figs-g4-g6: статичні графіки на двох екранах теорії); g6m3l1–l6 — verified (verifier-g6m3, 2026-10-11; l1–l4 після ревізії D-019/D-020 — verifier-g6m3-d019, 2026-10-13). 6 уроків.
-   g6m3l7 «Круг на стенді» (кругові діаграми, Істер 6, § 24–25; write-math-g6m3-circle-diagrams, 2026-11-03) — draft; стоїть після g6m3l5, перед фіналом g6m3l6. Разом 7 уроків.
+   g6m3l7 «Круг на стенді» (кругові діаграми, Істер 6, § 24–25; write-math-g6m3-circle-diagrams, 2026-11-03) — verified (verifier-write-math-g6m3-circle-diagrams, 2026-11-03, reports/verify/write-math-g6m3-circle-diagrams.md); стоїть після g6m3l5, перед фіналом g6m3l6. Разом 7 уроків.
    Перевірка: node tools/validate.mjs --section g6m3 && node tools/stats.mjs --subject math
    Схема й правила: docs/CONTENT_SCHEMA.md (§8 — лабораторія), style/ */
 SLID.section("math", {
@@ -882,7 +882,7 @@ SLID.section("math", {
       title: "Круг на стенді",
       short: "Кругові діаграми",
       icon: "chart",
-      status: "draft",
+      status: "verified",
       why: "Опитування, витрати родини, склад лісу часто показують кругом. На круговій діаграмі одразу видно, яка частина цілого найбільша.",
       screens: [
         {

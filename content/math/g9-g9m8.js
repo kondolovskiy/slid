@@ -874,10 +874,10 @@ SLID.section("math", {
               { pts: [[0, 6], [11, 6], [14, 9], [3, 9]], color: "muted", opacity: 0.12 }
             ],
             points: {
-              A1: { at: [4.5, 1.5], color: "ink", label: "A_1" },
-              A2: { at: [4.5, 7.5], color: "ink", label: "A_2" },
-              B1: { at: [9, 1.5], color: "ink", label: "B_1" },
-              B2: { x: "bx", y: "7.5", color: "red", label: "B_2", drag: true }
+              A1: { at: [4.5, 1.5], color: "ink", label: "A₁" },
+              A2: { at: [4.5, 7.5], color: "ink", label: "A₂" },
+              B1: { at: [9, 1.5], color: "ink", label: "B₁" },
+              B2: { x: "bx", y: "7.5", color: "red", label: "B₂", drag: true }
             },
             segs: [
               { a: "A1", b: "A2", color: "accent", label: "a" },
@@ -910,10 +910,10 @@ SLID.section("math", {
               { pts: [[0, 6], [11, 6], [14, 9], [3, 9]], color: "muted", opacity: 0.12 }
             ],
             points: {
-              A1: { at: [4.5, 1.5], color: "ink", label: "A_1" },
-              A2: { at: [4.5, 7.5], color: "ink", label: "A_2" },
-              B1: { at: [9, 1.5], color: "ink", label: "B_1" },
-              B2: { at: [9, 7.5], color: "ink", label: "B_2" }
+              A1: { at: [4.5, 1.5], color: "ink", label: "A₁" },
+              A2: { at: [4.5, 7.5], color: "ink", label: "A₂" },
+              B1: { at: [9, 1.5], color: "ink", label: "B₁" },
+              B2: { at: [9, 7.5], color: "ink", label: "B₂" }
             },
             segs: [
               { a: "A1", b: "A2", color: "accent", label: "8" },
@@ -1096,9 +1096,9 @@ SLID.section("math", {
               A: { at: [1, 1.4], color: "ink" },
               B: { at: [4.2, 0], color: "ink" },
               C: { at: [8.6, 1.6], color: "ink" },
-              A1: { at: [1, 7.4], color: "ink", label: "A_1" },
-              B1: { at: [4.2, 6], color: "ink", label: "B_1" },
-              C1: { at: [8.6, 7.6], color: "ink", label: "C_1" }
+              A1: { at: [1, 7.4], color: "ink", label: "A₁" },
+              B1: { at: [4.2, 6], color: "ink", label: "B₁" },
+              C1: { at: [8.6, 7.6], color: "ink", label: "C₁" }
             },
             segs: [
               { a: "A", b: "B", color: "ink", label: "5" },
@@ -1151,9 +1151,9 @@ SLID.section("math", {
               A: { at: [1, 1.4], color: "ink" },
               B: { at: [4.2, 0], color: "ink" },
               C: { at: [8.6, 1.6], color: "ink" },
-              A1: { at: [1, 7.4], color: "ink", label: "A_1" },
-              B1: { at: [4.2, 6], color: "ink", label: "B_1" },
-              C1: { at: [8.6, 7.6], color: "ink", label: "C_1" }
+              A1: { at: [1, 7.4], color: "ink", label: "A₁" },
+              B1: { at: [4.2, 6], color: "ink", label: "B₁" },
+              C1: { at: [8.6, 7.6], color: "ink", label: "C₁" }
             },
             segs: [
               { a: "A", b: "B", color: "ink", label: "5" },
@@ -1305,9 +1305,9 @@ SLID.section("math", {
               A: { at: [1, 1.4], color: "ink" },
               B: { at: [4.2, 0], color: "ink" },
               C: { at: [8.6, 1.6], color: "ink" },
-              A1: { at: [1, 7.4], color: "ink", label: "A_1" },
-              B1: { at: [4.2, 6], color: "ink", label: "B_1" },
-              C1: { at: [8.6, 7.6], color: "ink", label: "C_1" }
+              A1: { at: [1, 7.4], color: "ink", label: "A₁" },
+              B1: { at: [4.2, 6], color: "ink", label: "B₁" },
+              C1: { at: [8.6, 7.6], color: "ink", label: "C₁" }
             },
             segs: [
               { a: "A", b: "B", color: "ink", label: "6" },
@@ -1575,7 +1575,7 @@ SLID.section("math", {
               { a: "Q", b: "B", color: "ink" },
               { a: "Q", b: "C", color: "ink" },
               { a: "Q", b: "D", color: "muted", dash: true },
-              { a: "Q", b: "O", color: "muted", dash: true, label: "4" },
+              { a: "O", b: "Q", color: "muted", dash: true, label: "4" },
               { a: "O", b: "K", color: "muted", dash: true },
               { a: "Q", b: "K", color: "accent" }
             ],
@@ -2002,7 +2002,7 @@ SLID.section("math", {
               { a: [-3, 0], b: [-3, 10], color: "ink" },
               { a: [3, 0], b: [3, 10], color: "ink" },
               { a: [4.2, 3.5], b: [4.2, 6], color: "accent", label: "6" },
-              { a: [-3, 8.2], b: [3, 8.2], color: "accent", label: "10" }
+              { a: [-3, 10], b: [3, 10], color: "accent", label: "10" }
             ],
             alt: "Мензурка-циліндр діаметром 10 см; рівень води піднявся на 6 см: від пунктирної лінії до суцільної"
           },
@@ -2424,7 +2424,7 @@ SLID.section("math", {
           correct: 2,
           fbOk: "Уважне око!",
           fbBad: "Що підставлено замість $r$?",
-          fbText: "У формулі $S = 4πr^2$ — радіус, а 6 дм — діаметр. $r = 6 : 2 = 3$ дм, $S = 4π * 9 = 36π$ дм². А $24π$ — радіус не піднесено до квадрата."
+          fbText: "У формулі $S = 4πr^2$ — радіус, а 6 дм — діаметр. $r = 6 : 2 = 3$ дм, $S = 4π * 9 = 36π$ дм². А в $24π$ діаметр ще й не піднесено до квадрата."
         },
         {
           type: "number",
@@ -2516,9 +2516,9 @@ SLID.section("math", {
               A: { at: [1, 1.4], color: "ink" },
               B: { at: [4.2, 0], color: "ink" },
               C: { at: [8.6, 1.6], color: "ink" },
-              A1: { at: [1, 3.4], color: "ink", label: "A_1" },
-              B1: { at: [4.2, 2], color: "ink", label: "B_1" },
-              C1: { at: [8.6, 3.6], color: "ink", label: "C_1" }
+              A1: { at: [1, 3.4], color: "ink", label: "A₁" },
+              B1: { at: [4.2, 2], color: "ink", label: "B₁" },
+              C1: { at: [8.6, 3.6], color: "ink", label: "C₁" }
             },
             segs: [
               { a: "A", b: "B", color: "ink", label: "3" },

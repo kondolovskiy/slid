@@ -1415,8 +1415,8 @@ SLID.section("math", {
           lab: {
             kind: "plane", axes: false, view: [-1, 11, 0, 9.5],
             params: {
-              b: { min: 1, max: 9, start: 4, label: "$AC = b$" },
-              a: { min: 1, max: 9, start: 3, label: "$BC = a$" }
+              b: { min: 1, max: 8, start: 4, label: "$AC = b$" },
+              a: { min: 1, max: 8, start: 3, label: "$BC = a$" }
             },
             points: { A: { at: [1, 1] }, B: { at: [9, 1] } },
             circles: [

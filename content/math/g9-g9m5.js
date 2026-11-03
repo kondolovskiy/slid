@@ -606,7 +606,7 @@ SLID.section("math", {
             kind: "chart",
             params: {
               a: { min: 1, max: 4, step: 1, start: 1, label: "$b_1$" },
-              q: { min: 0, max: 0.75, step: 0.25, start: 0.25, label: "$q$" }
+              q: { min: 0.25, max: 0.75, step: 0.25, start: 0.25, label: "$q$" }
             },
             bars: [
               { label: "$S_1$", v: "a" },
