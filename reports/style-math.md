@@ -233,8 +233,8 @@
 | g9m8l7 Дах альтанки | 9 | 9 | 0.56 | 27 | 51 | 5.8 | 0.015 | 3 | sentenceWords=5.8 поза [6; 13]; readWordsPerScreen нетипово для сім'ї (z=2) |
 | g9m8l8 Пісок у піраміді | 9 | 9 | 0.67 | 23 | 41 | 5 | 0.019 | 3 | sentenceWords=5 поза [6; 13] |
 | g9m8l9 Етикетка з банки | 9 | 10 | 0.5 | 27 | 50 | 5.2 | 0.011 | 3 | sentenceWords=5.2 поза [6; 13]; readWordsPerScreen нетипово для сім'ї (z=2) |
-| g9m8l10 Тканина на намет | 9 | 10 | 0.5 | 26 | 42 | 5 | 0.021 | 3 | sentenceWords=5 поза [6; 13] |
-| g9m8l11 Шкіра для м'яча | 9 | 9 | 0.67 | 22 | 45 | 4.5 | 0.008 | 4 | sentenceWords=4.5 поза [6; 13]; typeVariety нетипово для сім'ї (z=2.2) |
+| g9m8l10 Тканина на намет | 9 | 10 | 0.5 | 26 | 48 | 5 | 0.021 | 3 | sentenceWords=5 поза [6; 13] |
+| g9m8l11 Шкіра для м'яча | 9 | 9 | 0.67 | 23 | 53 | 4.5 | 0.008 | 4 | sentenceWords=4.5 поза [6; 13]; typeVariety нетипово для сім'ї (z=2.2) |
 | g9m8l12 Парк із геометрії (фінал) | 9 | 7 | 0.86 | 24 | 33 | 5.1 | 0.042 | 3 | sentenceWords=5.1 поза [6; 13]; readWordsPerScreen нетипово для сім'ї (z=2.4); longWordShare нетипово для сім'ї (z=2.3) |
 | g10m1l1 Де формула живе | 10 | 10 | 0.5 | 22 | 45 | 5.6 | 0.022 | 3 | sentenceWords=5.6 поза [7; 15] |
 | g10m1l2 Дзеркало й нахил | 10 | 11 | 0.55 | 24 | 56 | 5.4 | 0.029 | 2 | sentenceWords=5.4 поза [7; 15]; typeVariety нетипово для сім'ї (z=-2.4) |
@@ -298,7 +298,7 @@
 - **4:boss**: screens 8±0, gradedShare 0.75±0, readWordsPerScreen 17.4±2.24, maxReadWords 25±4.56, sentenceWords 4.48±0.22, longWordShare 0.01±0, typeVariety 3.2±0.4
 - **5-6:lesson**: screens 9.39±0.68, gradedShare 0.66±0.06, readWordsPerScreen 19.67±3.11, maxReadWords 44.02±7.95, sentenceWords 4.92±0.51, longWordShare 0.01±0.01, typeVariety 3.52±0.64
 - **5-6:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 18.67±2.13, maxReadWords 25.83±3.91, sentenceWords 4.75±0.51, longWordShare 0.01±0, typeVariety 3.42±0.64
-- **7-9:lesson**: screens 9.23±0.72, gradedShare 0.58±0.06, readWordsPerScreen 21.77±2.67, maxReadWords 45.74±9.44, sentenceWords 5.2±0.41, longWordShare 0.02±0.01, typeVariety 3.05±0.43
+- **7-9:lesson**: screens 9.23±0.72, gradedShare 0.58±0.06, readWordsPerScreen 21.78±2.67, maxReadWords 45.86±9.46, sentenceWords 5.2±0.41, longWordShare 0.02±0.01, typeVariety 3.05±0.43
 - **7-9:boss**: screens 7.64±0.64, gradedShare 0.8±0.06, readWordsPerScreen 18.64±2.27, maxReadWords 29.95±3.52, sentenceWords 5.1±0.31, longWordShare 0.03±0.01, typeVariety 3.09±0.29
 - **10-11:lesson**: screens 9.54±0.63, gradedShare 0.57±0.06, readWordsPerScreen 22.85±1.91, maxReadWords 48.12±6.56, sentenceWords 5.52±0.39, longWordShare 0.03±0.01, typeVariety 2.9±0.37
 - **10-11:boss**: screens 8.08±0.28, gradedShare 0.75±0.01, readWordsPerScreen 19.08±1.44, maxReadWords 34.25±6.81, sentenceWords 5.19±0.53, longWordShare 0.04±0.02, typeVariety 2.92±0.28
