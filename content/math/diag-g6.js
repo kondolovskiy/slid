@@ -15,7 +15,7 @@ SLID.diag("math", {
   grade: 6,
   title: "Що ти вже вмієш?",
   why: "Знайдемо теми, які варто згадати, щоб нові уроки давалися легше.",
-  status: "draft",   // D-043: теми pre/cur змінено — повторна перевірка verify-math-ister-diag
+  status: "draft",   // verify-math-ister-diag (2026-11-03): теми pre, rem.for, g6-div — так; cur pct (№7) і pct-of (№27) — по одному обчисленню, не все ядро ms3l1/ms3l2 (CONTENT_SCHEMA §9) → потрібна ред. 3 (reports/verify/verify-math-ister-diag.md)
   meta: { author: "claude-opus", created: "2026-10-13", factcheck: "verifier-refine-math-diag-g6-coverage", revised: "2026-10-31 refine-math-diag-g6-coverage", teacher: null },
   topics: [
     // передумови з 4–5 класів

@@ -1,9 +1,10 @@
 /* Слід · Математика, 5 клас — діагностика «Що ти вже вмієш?»
-   Статус: verified (незалежна перевірка 2026-10-30, reports/verify/dg5.md). 10 тем-передумов (4 кл., по 2 завдання) + 6 тем 5 класу (по 1 завданню) = 26 завдань.
+   Статус: verified (незалежна перевірка 2026-10-30, reports/verify/dg5.md; повторна 2026-11-03, reports/verify/verify-math-ister-diag.md). 10 тем-передумов (4 кл., по 2 завдання) + 6 тем 5 класу (по 1 завданню) = 26 завдань.
    Обсяг і зв'язки — docs/math-personalization-coverage.md, dg5 (матриця 2026-10-16.v2).
    Порядок: спершу базові завдання всіх тем-передумов, далі складніші впереміш із темами 5 класу (друга половина).
    Міграція за Істером (D-043, docs/design/math-ister.md §5.1, 2026-11-03): тема cur-ms3 — тепер «Ознаки подільності» (g6m1l2), завдання №26 замінено на місці (rev: 2);
-   for тем parts/perim/units/box — без ms3/ms4 (ці розділи тепер 6 кл.). Повторна незалежна перевірка — verify-math-ister-diag.
+   for тем parts/perim/units — без ms3/ms4 (ці розділи тепер 6 кл.), box — без for. Повторна незалежна перевірка — verify-math-ister-diag (2026-11-03):
+   №26 (rev 2, ще не опублікована) переписано складеним multi на все ядро g6m1l2 (2, 5, 10; 3 і 9; добір цифри) — CONTENT_SCHEMA §9 «Тема cur і known».
    Перевірка: node tools/validate.mjs --diag dg5 && node tools/personalization-qa.mjs --diag dg5
    Схема й правила: docs/CONTENT_SCHEMA.md §9, style/math.md */
 SLID.diag("math", {
@@ -11,7 +12,7 @@ SLID.diag("math", {
   grade: 5,
   title: "Що ти вже вмієш?",
   why: "Знайдемо теми, які варто згадати, щоб нові уроки давалися легше.",
-  status: "draft",   // D-043: тема cur-ms3 і №26 змінено — повторна перевірка verify-math-ister-diag
+  status: "verified",   // verify-math-ister-diag, 2026-11-03: reports/verify/verify-math-ister-diag.md
   meta: { author: "claude-opus", created: "2026-10-30", factcheck: "self", teacher: null },
   topics: [
     // передумови з 4 класу
@@ -24,7 +25,7 @@ SLID.diag("math", {
     { id: "parts", title: "Рівні частини", kind: "pre", lessons: ["g4m5l1", "g4m5l2"], for: ["ms1"] },
     { id: "perim", title: "Периметр і площа", kind: "pre", lessons: ["g4m5l3"], for: ["ms0b"] },
     { id: "units", title: "Одиниці величин", kind: "pre", lessons: ["g4m4l3", "g4m4l4"], for: ["ms0b"] },
-    { id: "box", title: "Просторові фігури", kind: "pre", lessons: ["g4m5l4"], for: ["ms0b"] },
+    { id: "box", title: "Просторові фігури", kind: "pre", lessons: ["g4m5l4"] },   // без for: у 5 кл. (Істер) розділу з просторовими фігурами немає, ms4 — 6 кл.
     // теми 5 класу: known — лише для одного названого уроку
     { id: "cur-ms0", title: "Великі числа", kind: "cur", lessons: ["ms0l1"] },
     { id: "cur-ms0b", title: "Відрізок, промінь, пряма", kind: "cur", lessons: ["ms0bl1"] },
@@ -294,19 +295,18 @@ SLID.diag("math", {
     {
       topic: "cur-ms3",
       rev: 2,
-      type: "sort",
+      type: "multi",
       sk: "divis",
-      title: "На 9, на 3 чи ні?",
-      body: "<p>Поклади кожне число в кошик. Підказка: склади цифри числа.</p>",
-      bins: ["Ділиться на 9", "Ділиться на 3, але не на 9", "Не ділиться на 3"],
-      items: [
-        ["738", 0],
-        ["534", 1],
-        ["2021", 2],
-        ["1251", 0],
-        ["813", 1],
-        ["4445", 2]
-      ]
+      title: "Ділиться чи ні?",
+      body: "<p>Обери всі правильні твердження. Ділити в стовпчик не треба.</p>",
+      opts: [
+        "705 ділиться націло на 10",
+        "540 ділиться націло на 2, на 5 і на 10",
+        "543 ділиться націло на 9",
+        "387 ділиться націло на 9",
+        "Щоб число 7*4 ділилося націло на 3, замість * можна поставити 1"
+      ],
+      correct: [1, 3, 4]
     }
   ]
 });
