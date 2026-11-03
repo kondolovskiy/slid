@@ -4,7 +4,7 @@ claimed_at: 2026-11-03T22:56:12.563Z
 id: tests-answer-ui-dg6-rev3
 type: engine
 subject: math
-status: todo
+status: review
 claimed_by: impl-tests-answer-ui-dg6-rev3
 created: 2026-11-03
 depends_on: [refine-math-dg6-pct-rev3]
