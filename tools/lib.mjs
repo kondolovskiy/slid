@@ -27,19 +27,39 @@ export function loadContent(root = ROOT) {
 export const GRADED = ["choice","multi","sort","slider","order","align","shade","numline","number","fracin","lab","answer","gaps","pick","stress","word","split"];
 export const TYPES = ["intro","info","explore", ...GRADED];
 
-/** Прибирає HTML і формули, повертає чистий текст. */
-export function plain(s = "") {
-  return String(s).replace(/\$\$[\s\S]*?\$\$|\$[^$]*\$/g, " Ф ").replace(/<[^>]+>/g, " ").replace(/&[a-z]+;/g, " ").replace(/\s+/g, " ").trim();
+const BLK = String.fromCharCode(0xE001);    // (U+E000 — крапка скорочення в sentences) межа блоку (<li>, <p>, <br>…) — межа речення для метрик (plain з blocks: true)
+// тег усередині слова (велос<b>и</b>пед, д<b>и</b>плом) — не межа слова (engine-lang-p3 п. 17)
+const INWORD_TAG = /(?<=[\p{L}\p{M}'’ʼ])(?:<\/?(?:b|i|u|em|strong|mark|span)\b[^>]*>)+(?=[\p{L}\p{M}'’ʼ])/giu;
+const BLOCK_TAG = /<\/?(?:p|li|ul|ol|div|h[1-6]|tr|td|th|table|blockquote)\b[^>]*>|<br\s*\/?>/gi;
+const BLK_EDGE = new RegExp(`^[\\s${BLK}]+|[\\s${BLK}]+$`, "gu");
+/** Прибирає HTML і формули, повертає чистий текст. blocks: true — межі блоків лишаються позначкою для sentences (метрики). */
+export function plain(s = "", { blocks = false, formula = "Ф" } = {}) {
+  let t = String(s).replace(/\$\$[\s\S]*?\$\$|\$[^$]*\$/g, ` ${formula} `).replace(INWORD_TAG, "");
+  if (blocks) t = t.replace(BLOCK_TAG, ` ${BLK} `);
+  t = t.replace(/<[^>]+>/g, " ").replace(/&[a-z]+;/g, " ").replace(/\s+/g, " ").trim();
+  return blocks ? t.replace(BLK_EDGE, "") : t;
+}
+// перелік окремих літер чи звуків («А Б В … Я», «а, о, у, е») — 3 і більше поспіль; формула тим часом — FML (не літера), потім знову «Ф»
+const FML = String.fromCharCode(0xE002);
+const LETTER = "\\p{L}\\p{M}?(?![\\p{L}\\p{M}\\p{N}'’ʼ])";
+const LETTER_RUN = new RegExp(`(?<![\\p{L}\\p{M}\\p{N}'’ʼ-])${LETTER}(?:[\\s,;:…—–-]+${LETTER}){2,}`, "gu");
+/** Текст для метрик речень і довгих слів (stats, validate): межі блоків — межі речень (пункт <li> без крапки — окреме речення);
+    без транскрипцій [йа́ма] і переліків окремих літер чи звуків (engine-lang-p3 пп. 11, 13) */
+export function metricText(s = "") {
+  return plain(s, { blocks: true, formula: FML }).replace(/\[[^\]]{1,40}\]/g, " ").replace(LETTER_RUN, " ").split(FML).join("Ф").replace(/ {2,}/g, " ").replace(BLK_EDGE, "");
 }
 const VOW = /[аеєиіїоуюяaeiouy]/gi;
-export const words = t => (t.match(/[\p{L}\p{N}'’ʼ-]+/gu) || []);
+// \p{M}: знак наголосу U+0301 не розриває слово («листопа́д» — одне слово; engine-lang-p3 п. 12)
+export const words = t => (t.match(/[\p{L}\p{M}\p{N}'’ʼ-]+/gu) || []);
 export const syllables = w => (w.match(VOW) || []).length;
+// кінець речення: . або …; ? і ! — лише коли далі не мала літера (перелік питань «хто? що? де?»; п. 14); межа блоку (п. 11)
+const SENT_SPLIT = new RegExp(`(?<=[.…])\\s+|(?<=[?!])\\s+(?!\\p{Ll})|\\s*${BLK}\\s*`, "u");
 export function sentences(t) {
   // Protect abbreviation periods only when the following text continues the sentence.
   const text = String(t).replace(/(?<![\p{L}])н\.(?=\s*е\.)/gu, "н\uE000")
     .replace(/(?<![\p{L}])(?:е\.|рр?\.|ст\.|тис\.|млн\.|[Дд]ив\.)\s*(?=[\p{Ll}\d])/gu,
     m => m.replace(/\./g, "\uE000"));
-  return text.split(/(?<=[.!?…])\s+/).map(x => x.replace(/\uE000/g, ".").trim()).filter(x => words(x).length > 0);
+  return text.split(SENT_SPLIT).map(x => x.replace(/\uE000/g, ".").trim()).filter(x => words(x).length > 0);
 }
 
 /** Текст, який дитина читає на екрані (без варіантів відповідей і фідбеку). */
@@ -54,7 +74,7 @@ export function screenReadText(s) { return plain([s.title, s.body, langText(s)].
 /** Увесь текст екрана, включно з варіантами й поясненнями. */
 export function screenAllText(s) {
   const parts = [s.title, s.body, s.fbText, s.fbOk, s.fbBad, s.hint, ...(s.opts || []), langText(s), ...(s.items || []).map(i => Array.isArray(i) ? i[0] : i)];
-  return parts.filter(Boolean).map(plain).filter(Boolean).map(t => /[.!?…]$/.test(t) ? t : t + ".").join(" ");
+  return parts.filter(Boolean).map(t => metricText(t)).filter(Boolean).map(t => /[.!?…]$/.test(t) ? t : t + ".").join(" ");
 }
 
 /** Метрики уроку для синхронізації стилю й складності. */
