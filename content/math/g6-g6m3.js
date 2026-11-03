@@ -1,5 +1,5 @@
 /* Слід · Математика, 6 клас — «Відношення і пропорції»
-   Статус уроків: g6m3l1–l6 — verified (verifier-g6m3, 2026-10-11; l1–l4 після ревізії D-019/D-020 — verifier-g6m3-d019, 2026-10-13). 6 уроків.
+   Статус уроків: g6m3l3 — verified (2026-11-03, verifier-fix-math-figs-g4-g6, reports/verify/fix-math-figs-g4-g6.md; fix-math-figs-g4-g6: статичні графіки на двох екранах теорії); g6m3l1–l6 — verified (verifier-g6m3, 2026-10-11; l1–l4 після ревізії D-019/D-020 — verifier-g6m3-d019, 2026-10-13). 6 уроків.
    Перевірка: node tools/validate.mjs --section g6m3 && node tools/stats.mjs --subject math
    Схема й правила: docs/CONTENT_SCHEMA.md (§8 — лабораторія), style/ */
 SLID.section("math", {
@@ -392,6 +392,15 @@ SLID.section("math", {
         <p>Їхнє відношення стале. Це число $k$:</p>
         <p>$$s = k * t$$</p>
         <p>Графік — пряма з початку координат. Більше $k$ — крутіша пряма.</p>`,
+          lab: {
+            kind: "plane",
+            view: [0, 5, 0, 22],
+            ystep: 5,
+            xname: "t",
+            yname: "s",
+            fns: [{ y: "2x", from: 0, label: "k = 2" }, { y: "4x", from: 0, label: "k = 4" }],
+            alt: "Два графіки прямої пропорційності з початку координат: s = 2t і крутіша s = 4t"
+          },
           cta: "Спробувати"
         },
         {
@@ -454,6 +463,16 @@ SLID.section("math", {
         <p>Тут сталий добуток:</p>
         <p>$$v * t = 12$$</p>
         <p>Графік — крива, що спадає. А багато величин не пропорційні взагалі. Наприклад, вік і зріст.</p>`,
+          lab: {
+            kind: "plane",
+            view: [0, 13, 0, 13],
+            xstep: 2,
+            ystep: 2,
+            xname: "v",
+            yname: "t",
+            fns: [{ y: "12/x", from: 0.9 }],
+            alt: "Графік оберненої пропорційності v · t = 12: крива, що спадає"
+          },
           cta: "Спробувати"
         },
         {
