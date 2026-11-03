@@ -95,8 +95,8 @@ async def grade_context_checks(browser, url):
     }""")
     await page.reload()
     legacy = await page.evaluate("""() => {const S=JSON.parse(localStorage.getItem('slid.v1')),d=SLID_SUBJECTS.find(c=>c.id==='math').diags.find(d=>d.id==='dg6');
-      return {keys:Object.keys(S.diagRun.dg6).map(Number),rev:S.diagRunRev.dg6,revised:d.items.flatMap((it,i)=>it.rev?[i]:[]),next:SLID_LEARN.nextItem(d,S.diagRun.dg6)};}""")
-    assert legacy['rev'] == 2 and set(legacy['revised']) & set(legacy['keys']) == set(), legacy
+      return {keys:Object.keys(S.diagRun.dg6).map(Number),rev:S.diagRunRev.dg6,maxRev:Math.max(1,...d.items.map(it=>it.rev||1)),revised:d.items.flatMap((it,i)=>it.rev?[i]:[]),next:SLID_LEARN.nextItem(d,S.diagRun.dg6)};}""")
+    assert legacy['rev'] == legacy['maxRev'] >= 2 and set(legacy['revised']) & set(legacy['keys']) == set(), legacy
     assert legacy['keys'] == [i for i in range(26) if i not in legacy['revised']] and legacy['next'] == legacy['revised'][0], legacy
     assert 'Продовжити тест' in await page.locator('#view').inner_text()
     await page.evaluate("localStorage.clear()")
