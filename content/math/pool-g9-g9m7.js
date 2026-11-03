@@ -4,14 +4,14 @@
    Усі задачі — з підручника Мерзляк, Якір. Алгебра 9 (2026), п. 20–23 (с. 195–237); умови й числа звірено за відрендереними сторінками PDF.
    srcPage — друкований номер сторінки (у цьому PDF збігається з номером сторінки файлу).
    Дані діаграм рис. 23.4, 23.5, 23.6 переказано словами (adapted: true); з fix-math-figs-g9 у c01, c02, c06 ще й статична lab chart з тими самими числами.
-   Статус draft — після fix-math-figs-g9 (діаграми c01, c02, c06); перевірити лише ці три задачі.
+   Статус verified — повторно після fix-math-figs-g9 (діаграми c01, c02, c06 звірено з рис. 23.4–23.6 підручника; verifier-fix-math-figs-g9, 2026-11-03, reports/verify/fix-math-figs-g9.md).
    Мода й медіана в уроці g9m7l3 не пояснені — у пулі їх немає; із вправ 23.x взято лише середнє й читання діаграм.
    Перевірка: node tools/validate.mjs --pool pg9m7; node tools/personalization-qa.mjs --pool pg9m7
    Схема: docs/CONTENT_SCHEMA.md §10 */
 SLID.pool("math", {
   id: "pg9m7",
   section: "g9m7",
-  status: "draft",
+  status: "verified",
   meta: { author: "agent-write-math-pool-g9m7", created: "2026-10-31", factcheck: "verifier-pool-g9m7", teacher: null },
   sources: [
     { id: "mer9a", title: "Мерзляк А. Г., Якір М. С. Алгебра: підручник для 9 класу. — Харків: Гімназія, 2026 (п. 20–23; дзеркало file.4book.org)", url: "https://file.4book.org/images/shcoolbook_ua/9/9_a_m_2026.pdf" }

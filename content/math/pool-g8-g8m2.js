@@ -1,5 +1,5 @@
 /* Слід · Математика, 8 клас — пул задач для тренування до розділу «Геометрія: чотирикутники» (g8m2)
-   Статус: draft (fix-math-figs-g8-geo, 2026-11-03: статичні рисунки lab до 17 задач). Попередньо — verified (автор agent-write-math-pool-g8m2, 2026-10-31; верифікатор verifier-pool-g8m2, 2026-10-31, reports/verify/pg8m2.md). 32 задачі: по 8 на required-уроки
+   Статус: verified (повторно після fix-math-figs-g8-geo, 2026-11-03: статичні рисунки lab до 17 задач; verifier-fix-math-figs-g8-geo, reports/verify/fix-math-figs-g8-geo.md; b07 — підпис «BD = 10» над рисунком). Попередньо — verified (автор agent-write-math-pool-g8m2, 2026-10-31; верифікатор verifier-pool-g8m2, 2026-10-31, reports/verify/pg8m2.md). 32 задачі: по 8 на required-уроки
    g8m2l1–g8m2l4 (boss g8m2l5 без задач). Матриця покриття 2026-10-16.v2.
    Усі задачі — з підручника Мерзляк, Якір «Геометрія. 8 клас» (2025), п. 2, 4–8, 11;
    умови, числа й рисунки звірено за відрендереними сторінками PDF 2026-10-31.
@@ -10,7 +10,7 @@
 SLID.pool("math", {
   id: "pg8m2",
   section: "g8m2",
-  status: "draft",
+  status: "verified",
   meta: { author: "claude-opus", created: "2026-10-31", factcheck: "verifier-pool-g8m2", teacher: null },
   sources: [
     { id: "mer8g", title: "Мерзляк А. Г., Якір М. С. Геометрія : підруч. для 8 кл. закладів заг. серед. освіти. — Харків: Гімназія, 2025 (п. 2, 4–8, 11)", url: "https://file.4book.org/images/shcoolbook_ua/8/8_geom_m_2025.pdf" }
@@ -150,12 +150,12 @@ SLID.pool("math", {
     { id: "b07", lesson: "g8m2l2", lvl: 3, sk: "geom", src: "mer8g №115", srcPage: 35,
       type: "answer", title: "Периметр трикутника $AOB$",
       body: "<p>Діагоналі прямокутника $ABCD$ перетинаються в точці $O$. Відомо: $\\angle ADB = 30°$, $BD$ = 10 см. Знайди периметр трикутника $AOB$.</p>",
-      lab: { kind: "plane", axes: false, grid: 0, view: [0, 7.2, 0, 5],
+      lab: { kind: "plane", axes: false, grid: 0, view: [0, 7.2, 0, 5.4],
         points: { A: { at: [1, 1] }, B: { at: [1, 4] }, C: { at: [6.2, 4] }, D: { at: [6.2, 1] }, O: { at: [3.6, 2.5], color: "gold" } },
         polys: [{ pts: ["A", "B", "C", "D"], opacity: 0.12 }],
         segs: [{ a: "A", b: "C", color: "gold", dash: true }, { a: "B", b: "D", color: "gold", dash: true }],
         angles: [{ from: "A", at: "D", to: "B", label: "30°", r: 34 }],
-        texts: [{ at: [2.1, 3.7], t: "10", color: "gold", bold: true }],
+        texts: [{ at: [3.6, 4.85], t: "BD = 10", color: "gold", bold: true }],
         alt: "Прямокутник ABCD, діагоналі перетинаються в точці O; кут ADB 30 градусів, BD 10 см" },
       answer: 15, unit: "см",
       hint: "Знайди кут $ABD$ із прямокутного трикутника $ABD$. Потім подивись на трикутник $AOB$: які в нього сторони $OA$ і $OB$?",

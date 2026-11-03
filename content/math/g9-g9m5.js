@@ -1,5 +1,5 @@
 /* Слід · Математика, 9 клас — «Алгебра: прогресії»
-   Статус уроків: verified; l1, l3 — draft після fix-math-figs-g9 (діаграма на екрані 3). 4 уроки (3 теми + boss).
+   Статус уроків: verified; l1, l3 — повторно після fix-math-figs-g9 (діаграма на екрані 3; verifier-fix-math-figs-g9, 2026-11-03, reports/verify/fix-math-figs-g9.md). 4 уроки (3 теми + boss).
    Інтерактив: numline jumps / chart bars для членів; повзунки a,d або a,q; ≥2 explore/lab на урок.
    Перевірка: node tools/validate.mjs --section g9m5 && node tools/stats.mjs --subject math
    Схема й правила: docs/CONTENT_SCHEMA.md §8, style/, D-019.
@@ -23,7 +23,7 @@ SLID.section("math", {
       title: "Ряд за правилом",
       short: "Послідовності",
       icon: "path",
-      status: "draft",
+      status: "verified",
       why: "Щоб бачити правило в ряді чисел і знаходити будь-який член без довгого переліку.",
       screens: [
         {
@@ -362,7 +362,7 @@ SLID.section("math", {
       title: "Рівні множники",
       short: "Геометрична",
       icon: "spiral",
-      status: "draft",
+      status: "verified",
       why: "Щоб розуміти складні відсотки, подвоєння популяції й ріст боргу за кредитом.",
       screens: [
         {

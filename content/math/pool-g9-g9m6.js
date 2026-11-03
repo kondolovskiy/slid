@@ -1,5 +1,5 @@
 /* Слід · Математика, 9 клас — пул задач для тренування до розділу «Геометрія: правильні многокутники і перетворення» (g9m6)
-   Статус: verified (verifier-pool-g9m6, 2026-10-31; звіт reports/verify/pg9m6.md); draft після fix-math-figs-g9 (рисунок у d08 — перевірити лише його). Автор: agent-write-math-pool-g9m6. 32 задачі: g9m6l1 — 8, g9m6l2 — 8, g9m6l3 — 8, g9m6l4 — 8 (boss g9m6l5 без задач).
+   Статус: verified (verifier-pool-g9m6, 2026-10-31; звіт reports/verify/pg9m6.md); повторно verified після fix-math-figs-g9 (рисунок у d08; verifier-fix-math-figs-g9, 2026-11-03, reports/verify/fix-math-figs-g9.md). Автор: agent-write-math-pool-g9m6. 32 задачі: g9m6l1 — 8, g9m6l2 — 8, g9m6l3 — 8, g9m6l4 — 8 (boss g9m6l5 без задач).
    Матриця docs/math-personalization-coverage.md 2026-10-16.v2: усі чотири уроки required, формати number, coordinates2, exactRoot.
    Прогалини форматів (у відповідних пунктах підручника таких вправ немає): l1 і l2 — coordinates2; l3 — exactRoot. Див. нотатки задачі.
    Усі задачі — з підручника Мерзляк, Якір. Геометрія 9 (2026), п. 6, 7, 17–20 і оповідання «Гомотетія»; умови й числа звірено за відрендереними сторінками PDF.
@@ -9,7 +9,7 @@
 SLID.pool("math", {
   id: "pg9m6",
   section: "g9m6",
-  status: "draft",
+  status: "verified",
   meta: { author: "agent-write-math-pool-g9m6", created: "2026-10-31", factcheck: "verifier-pool-g9m6", teacher: null },
   sources: [
     { id: "mer9g", title: "Мерзляк А. Г., Якір М. С. Геометрія: підручник для 9 класу. — Харків: Гімназія, 2026 (п. 6, 7, 17–20; дзеркало file.4book.org)", url: "https://file.4book.org/images/shcoolbook_ua/9/9_geom_m_2026.pdf" }

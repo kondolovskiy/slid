@@ -1,5 +1,5 @@
 /* Слід · Математика, 9 клас — «Геометрія: розв'язування трикутників»
-   Статус уроків: verified (l1 — повторно 01.11 після refine: таблиця 30°/45°/60°, тотожність); l3 — draft після fix-math-figs-g9 (рисунок на екрані 4 «Теорема синусів»). 4 уроки (3 теми + boss).
+   Статус уроків: verified (l1 — повторно 01.11 після refine: таблиця 30°/45°/60°, тотожність); l3 — повторно після fix-math-figs-g9 (рисунок на екрані 4 «Теорема синусів»; verifier-fix-math-figs-g9, 2026-11-03, reports/verify/fix-math-figs-g9.md). 4 уроки (3 теми + boss).
    Інтерактив: plane — трикутник drag (live angle/dist); одиничне півколо;
    графік sin з xpi; ≥2 explore/lab на урок. signed:true (від'ємний cos). D-019.
    Перевірка: node tools/validate.mjs --section g9m4 && node tools/stats.mjs --subject math
@@ -440,7 +440,7 @@ SLID.section("math", {
       title: "Сторона й протилежний кут",
       short: "Синуси",
       icon: "scale",
-      status: "draft",
+      status: "verified",
       why: "Щоб знаходити сторону чи кут, коли відома пара «сторона — протилежний кут».",
       screens: [
         {

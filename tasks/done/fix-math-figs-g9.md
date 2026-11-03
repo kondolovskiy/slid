@@ -5,7 +5,7 @@ claimed_by: verifier-fix-math-figs-g9
 id: fix-math-figs-g9
 type: fix
 subject: math
-status: review
+status: done
 created: 2026-11-03
 depends_on: [tools-math-fig-audit]
 files: content/math/g9-g9m3.js, content/math/g9-g9m4.js, content/math/g9-g9m5.js, content/math/g9-g9m7.js, content/math/pool-g9-g9m2.js, content/math/pool-g9-g9m3.js, content/math/pool-g9-g9m4.js, content/math/pool-g9-g9m6.js, content/math/pool-g9-g9m7.js, content/math/diag-g9.js
@@ -103,3 +103,6 @@ files: content/math/g9-g9m3.js, content/math/g9-g9m4.js, content/math/g9-g9m5.js
 
 Перевірки: validate --section g9m4 / g9m5 / g9m7 — 0 помилок (4 попередження sentenceWords, були й до змін); --pool pg9m6, pg9m7 — 0 помилок, 0 попереджень; --pool pg9m2/pg9m3/pg9m4, --diag dg9 (не змінювались) — 0/0. Попереджень «умова посилається на рисунок» у моїх файлах немає. fig-audit: у моїх файлах лишилося 23 збіги — саме пункти «не потрібен» вище. playtest --section g9m4, g9m5, g9m7 — 4/4 уроки кожен. test-answer-ui --suite content --pool pg9m6, pg9m7 — green. Знімки рисунків: /tmp/claude-0/-home-user-slid/8e22ba22-329b-522a-9e3e-653560f232ef/scratchpad/fix-math-figs-g9/*.png.
 Верифікатору: перевірити лише нові `lab` і змінені тіла екранів (g9m4l3/4, g9m5l1/3, g9m5l3/3, g9m7l3/3, g9m7l4/8, pg9m6:d08, pg9m7:c01/c02/c06). Build не запускав.
+
+## Верифікація
+verifier-fix-math-figs-g9, 2026-11-03 — reports/verify/fix-math-figs-g9.md. 9 рисунків перераховано й переглянуто в браузері; діаграми c01/c02/c06 звірено з рис. 23.4–23.6 підручника; 23 рішення «не потрібен» обґрунтовані; ключі не змінено; правок немає. Статус: g9m4l3, g9m5l1, g9m5l3, g9m7l3, g9m7l4, pg9m6, pg9m7 → verified.

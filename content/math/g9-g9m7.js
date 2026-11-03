@@ -1,5 +1,5 @@
 /* Слід · Математика, 9 клас — «Алгебра: ймовірність і статистика»
-   Статус уроків: verified (l3 — повторно 01.11 після refine: мода й медіана); l3, l4 — draft після fix-math-figs-g9 (діаграми на екранах l3/3 і l4/8). 4 уроки (3 теми + boss).
+   Статус уроків: verified (l3 — повторно 01.11 після refine: мода й медіана); l3, l4 — повторно після fix-math-figs-g9 (діаграми на екранах l3/3 і l4/8; verifier-fix-math-figs-g9, 2026-11-03, reports/verify/fix-math-figs-g9.md). 4 уроки (3 теми + boss).
    Інтерактив: chart (bars/pie, mean), fraction; ≥2 explore/lab на урок.
    Перевірка: node tools/validate.mjs --section g9m7 && node tools/stats.mjs --subject math
    Схема й правила: docs/CONTENT_SCHEMA.md §8, style/, D-019.
@@ -394,7 +394,7 @@ SLID.section("math", {
       title: "Середнє й діаграми",
       short: "Статистика",
       icon: "chart",
-      status: "draft",
+      status: "verified",
       why: "Опитування й оцінки зручно стискати в одне число й малювати стовпчиками чи секторами.",
       screens: [
         {
@@ -611,7 +611,7 @@ SLID.section("math", {
       title: "Фестиваль шансів",
       short: "Фінал",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "g9m7boss",
       why: "Меню, лотерея й опитування гостей — усі три теми розділу в одному квесті. Бали подвоєні.",

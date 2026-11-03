@@ -1,5 +1,5 @@
 /* Слід · Математика, 8 клас — «Геометрія: подібність і теорема Піфагора»
-   Статус уроків: draft — g8m4l2, g8m4l4 (рисунки до умов, fix-math-figs-g8-geo, 2026-11-03); verified — g8m4l1, g8m4l3 (l3 повторно 2026-11-01, verifier-fix-math-terms-g8m4-g9m1: «проекція» → «проєкція»). 4 уроки (3 теми + boss).
+   Статус уроків: verified; g8m4l2, g8m4l4 — повторно після fix-math-figs-g8-geo (рисунки до умов; verifier-fix-math-figs-g8-geo, 2026-11-03, reports/verify/fix-math-figs-g8-geo.md); g8m4l1, g8m4l3 (l3 повторно 2026-11-01, verifier-fix-math-terms-g8m4-g9m1: «проекція» → «проєкція»). 4 уроки (3 теми + boss).
    Інтерактив (D-014): plane axes:false — подібні трикутники drag; a²+b²=c² у goal.
    Перевірка: node tools/validate.mjs --section g8m4 && node tools/stats.mjs --subject math
    Схема й правила: docs/CONTENT_SCHEMA.md §8, style/, D-019.
@@ -270,7 +270,7 @@ SLID.section("math", {
       title: "Квадрати на сторонах",
       short: "Піфагор",
       icon: "path",
-      status: "draft",
+      status: "verified",
       why: "Щоб знайти діагональ екрана, довжину драбини чи відстань між двома точками на плані.",
       screens: [
         {
@@ -675,7 +675,7 @@ SLID.section("math", {
       title: "Міряємо недосяжне",
       short: "Фінал розділу",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "g8m4boss",
       why: "Подібність, Піфагор і проєкції — на одній виїзній зйомці. Бали подвоєні.",

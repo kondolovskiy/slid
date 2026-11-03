@@ -5,7 +5,7 @@ claimed_by: verifier-fix-math-figs-g8-geo
 id: fix-math-figs-g8-geo
 type: fix
 subject: math
-status: review
+status: done
 created: 2026-11-03
 depends_on: [tools-math-fig-audit]
 files: content/math/g8-g8m2.js, content/math/pool-g8-g8m2.js, content/math/g8-g8m4.js, content/math/pool-g8-g8m4.js, content/math/g8-g8m6.js
@@ -119,3 +119,6 @@ files: content/math/g8-g8m2.js, content/math/pool-g8-g8m2.js, content/math/g8-g8
 
 Перевірка: `validate --section g8m2|g8m4|g8m6` — 0 помилок (лише давні попередження sentenceWords для всіх уроків розділів); `validate --pool pg8m2|pg8m4` — 0 помилок, 0 попереджень; попереджень «умова посилається на рисунок» немає. `fig-audit`: у моїх файлах лишилися pg8m2:b01, pg8m4:a01, pg8m4:a03 — свідомо без рисунка (див. вище). `playtest --section g8m2|g8m4|g8m6` — зелено; `test-answer-ui --suite content --pool pg8m2|pg8m4` — зелено. Знімки рисунків — `<scratchpad>/fix-math-figs-g8-geo/*.png`. build не запускав.
 Потрібна повторна верифікація: g8m2l1–l4, g8m4l2, g8m4l4, g8m6l2, pg8m2, pg8m4 (точність рисунків: пропорції й підписи).
+
+## Верифікація
+verifier-fix-math-figs-g8-geo, 2026-11-03 — reports/verify/fix-math-figs-g8-geo.md. Усі 31 рисунок перераховано й переглянуто в браузері; 3 рішення «не потрібен» обґрунтовані; ключі не змінено. Правка: pg8m2 b07 — «10» на половині BO → «BD = 10» над рисунком. Статус: g8m2l1–l4, g8m4l2, g8m4l4, g8m6l2, pg8m2, pg8m4 → verified.

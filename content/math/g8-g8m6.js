@@ -1,5 +1,5 @@
 /* Слід · Математика, 8 клас — «Геометрія: многокутники і площі»
-   Статус уроків: draft — g8m6l2 (модель на екрані висновку, fix-math-figs-g8-geo, 2026-11-03); verified — g8m6l1, g8m6l3. 3 уроки (2 теми + boss).
+   Статус уроків: verified; g8m6l2 — повторно після fix-math-figs-g8-geo (модель на екрані висновку; verifier-fix-math-figs-g8-geo, 2026-11-03, reports/verify/fix-math-figs-g8-geo.md). 3 уроки (2 теми + boss).
    Інтерактив (D-014): plane (основа/висота, live area; n і сума кутів), rect (a,b → S).
    Перевірка: node tools/validate.mjs --section g8m6 && node tools/stats.mjs --subject math
    Схема й правила: docs/CONTENT_SCHEMA.md §8, style/, D-019.
@@ -225,7 +225,7 @@ SLID.section("math", {
       title: "Основа на висоту",
       short: "Площі",
       icon: "leaf",
-      status: "draft",
+      status: "verified",
       why: "Щоб порахувати площу клумби, газону чи ставка за основою й висотою — без зайвих вимірів по косій.",
       screens: [
         {
