@@ -1,6 +1,6 @@
 {
  "subject": "math",
- "screens": 3767,
+ "screens": 4036,
  "rows": [
   {
    "group": "prev",
@@ -145,6 +145,62 @@
   {
    "group": "geo",
    "file": "content/math/g7-g7m4.js",
+   "where": "g7m4l5 екран 3",
+   "kind": "урок",
+   "type": "choice",
+   "level": "geo",
+   "ill": false,
+   "prevIll": true,
+   "ref": null,
+   "points": "CBKA",
+   "graph": null,
+   "text": "Що показала модель? Порівняй Ф і кути Ф та Ф трикутника."
+  },
+  {
+   "group": "geo",
+   "file": "content/math/g7-g7m4.js",
+   "where": "g7m4l6 екран 4",
+   "kind": "урок",
+   "type": "choice",
+   "level": "geo",
+   "ill": false,
+   "prevIll": true,
+   "ref": null,
+   "points": "CAB",
+   "graph": null,
+   "text": "Найбільший кут — Ф . Яка сторона найдовша? Згадай, що було в моделі, коли Ф опускалась низько над Ф ."
+  },
+  {
+   "group": "geo",
+   "file": "content/math/g7-g7m4.js",
+   "where": "g7m4l6 екран 5",
+   "kind": "урок",
+   "type": "info",
+   "level": "geo",
+   "ill": false,
+   "prevIll": false,
+   "ref": null,
+   "points": "ABC",
+   "graph": null,
+   "text": "Співвідношення сторін і кутів У трикутнику: 1) проти більшої сторони лежить більший кут ; 2) проти більшого кута лежить більша сторона . Проти рівних сторін лежать рівні кути — як у рівнобедреному. Пр"
+  },
+  {
+   "group": "geo",
+   "file": "content/math/g7-g7m4.js",
+   "where": "g7m4l8 екран 7",
+   "kind": "урок",
+   "type": "choice",
+   "level": "geo",
+   "ill": false,
+   "prevIll": true,
+   "ref": null,
+   "points": "ADBE",
+   "graph": null,
+   "text": "Іра порівнює лише кути Іра каже: «У двох прямокутних трикутників Ф і Ф . Отже, вони рівні». Що не так?"
+  },
+  {
+   "group": "geo",
+   "file": "content/math/g7-g7m4.js",
    "where": "g7m4l4 екран 3",
    "kind": "урок",
    "type": "choice",
@@ -283,6 +339,20 @@
    "text": "Дві дотичні з точки Ф : Ф і Ф На моделі кути при дотику — прямі. Що з довжинами?"
   },
   {
+   "group": "geo",
+   "file": "content/math/g7-g7m8.js",
+   "where": "g7m8l5 екран 3",
+   "kind": "урок",
+   "type": "choice",
+   "level": "geo",
+   "ill": false,
+   "prevIll": true,
+   "ref": null,
+   "points": "OABC",
+   "graph": null,
+   "text": "Де Ф , коли Ф ? Згадай, де опинилася точка, коли коло пройшло через усі вершини."
+  },
+  {
    "group": "graph",
    "file": "content/math/g8-g8m1.js",
    "where": "g8m1l4 екран 4",
@@ -309,6 +379,20 @@
    "points": "",
    "graph": "графік",
    "text": "У яких чвертях лежить графік Ф ? Згадай правило з уроку про знак числа Ф і те, де лежать гілки кривої."
+  },
+  {
+   "group": "graph",
+   "file": "content/math/g8-g8m3.js",
+   "where": "g8m3l6 екран 4",
+   "kind": "урок",
+   "type": "info",
+   "level": "graph",
+   "ill": false,
+   "prevIll": true,
+   "ref": null,
+   "points": "",
+   "graph": "Графік",
+   "text": "Функція Ф і парабола Графік функції Ф називають параболою . Точка Ф — її вершина . Вершина ділить параболу на дві частини — гілки . Властивості. 1. Область визначення — усі числа. 2. Область значень —"
   },
   {
    "group": "graph",
@@ -368,6 +452,20 @@
   },
   {
    "group": "graph",
+   "file": "content/math/g9-g9m3.js",
+   "where": "g9m3l6 екран 4",
+   "kind": "урок",
+   "type": "info",
+   "level": "graph",
+   "ill": false,
+   "prevIll": false,
+   "ref": null,
+   "points": "",
+   "graph": "графік",
+   "text": "Система рівнянь другого степеня У такій системі хоча б одне рівняння — другого степеня: Ф , Ф , Ф . Розв'язок — пара Ф , яка задовольняє обидва рівняння. Графічно розв'язки — спільні точки графіків. П"
+  },
+  {
+   "group": "graph",
    "file": "content/math/g9-g9m7.js",
    "where": "g9m7l3 екран 4",
    "kind": "урок",
@@ -393,6 +491,20 @@
    "points": "",
    "graph": "діаграм",
    "text": "Що краще покаже частку голосів? Треба побачити, яку частину класу обрала кіно. Який тип діаграми зручніший?"
+  },
+  {
+   "group": "geo",
+   "file": "content/math/g9-g9m8.js",
+   "where": "g9m8l1 екран 6",
+   "kind": "урок",
+   "type": "info",
+   "level": "geo",
+   "ill": false,
+   "prevIll": false,
+   "ref": null,
+   "points": "ABC",
+   "graph": null,
+   "text": "Коли площина єдина Єдину площину можна провести: 1) Через три точки, що не лежать на одній прямій . 2) Через пряму і точку, що не лежить на цій прямій. 3) Через дві прямі, що перетинаються. 4) Через д"
   },
   {
    "group": "graph",
