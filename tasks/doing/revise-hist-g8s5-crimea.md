@@ -1,11 +1,13 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-03T10:24:15.531Z
 id: revise-hist-g8s5-crimea
 type: revise-section
 subject: hist
 grade: 8
 section: g8s5
 status: todo
-claimed_by:
+claimed_by: writer-revise-hist-g8s5-crimea
 created: 2026-11-03
 depends_on: []
 ---
