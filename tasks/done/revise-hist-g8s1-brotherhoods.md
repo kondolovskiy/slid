@@ -6,7 +6,7 @@ type: revise-section
 subject: hist
 grade: 8
 section: g8s1
-status: review
+status: done
 claimed_by: writer-revise-hist-g8s1-brotherhoods
 created: 2026-11-03
 depends_on: []
