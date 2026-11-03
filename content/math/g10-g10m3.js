@@ -191,7 +191,7 @@ SLID.section("math", {
       title: "Дробовий показник",
       short: "Рац. степінь",
       icon: "bolt",
-      status: "verified",
+      status: "draft",
       why: "Запис $a^(m/n)$ замінює корінь і степінь одним символом — зручно спрощувати формули.",
       screens: [
         {
@@ -278,6 +278,18 @@ SLID.section("math", {
           eyebrow: "Висновок",
           title: "При від'ємному $m$ графік наближається до…",
           body: "<p>Постав $m = -1$, $n = 2$. Дивись, що відбувається, коли $x$ іде до нуля справа.</p>",
+          lab: {
+            kind: "plane",
+            view: [-1, 5, -1, 5],
+            params: {
+              m: { min: -2, max: 3, step: 1, start: 1, label: "$m$" },
+              n: { min: 2, max: 4, step: 1, start: 2, label: "$n$" }
+            },
+            let: { r: "m/n" },
+            fns: [{ id: "f", y: "x^(m/n)", color: "accent", from: "0.01", to: "5" }],
+            show: ["$y = x^{({m|0})/({n|0})}$", "r ≈ {m/n}"],
+            alt: "Степенева функція з раціональним показником"
+          },
           opts: [
             "осі $Ox$",
             "осі $Oy$ (значення ростуть)",
@@ -383,7 +395,7 @@ SLID.section("math", {
       title: "Рівняння під коренем",
       short: "Іррац. рівн.",
       icon: "scale",
-      status: "verified",
+      status: "draft",
       why: "Ізоляція шуму в навушниках, дальність сенсора — часто виходять рівняння з коренем. Важливо не спіймати сторонній корінь.",
       screens: [
         {
@@ -428,6 +440,27 @@ SLID.section("math", {
           eyebrow: "Здогадка",
           title: "Скільки спільних точок у графіків?",
           body: "<p>Покрути пробу $x$. Де синя й червона ординати збігаються?</p>",
+          lab: {
+            kind: "plane",
+            view: [-3, 5, -2, 4],
+            params: {
+              t: { min: -2, max: 4, step: 0.5, start: 0, label: "проба $x$" }
+            },
+            fns: [
+              { id: "f", y: "sqrt(x + 2)", color: "blue", from: "-2", to: "5" },
+              { id: "g", y: "x", color: "red" }
+            ],
+            points: {
+              P: { x: "t", y: "sqrt(t + 2)", color: "blue", label: "ліва" },
+              Q: { x: "t", y: "t", color: "red", label: "права" }
+            },
+            show: [
+              "x = {t}",
+              "√(x+2) ≈ {sqrt(t+2)}",
+              "права: {t}"
+            ],
+            alt: "Графіки √(x+2) і y=x"
+          },
           hyp: true,
           opts: ["жодної", "одна", "дві", "безліч"],
           fbTitle: "Перевіримо.",

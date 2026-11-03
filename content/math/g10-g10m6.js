@@ -533,7 +533,7 @@ SLID.section("math", {
       title: "Найкраще значення",
       short: "Оптимізація",
       icon: "target",
-      status: "verified",
+      status: "draft",
       why: "Щоб обирати розміри з найбільшою площею чи найменшими витратами.",
       screens: [
         {
@@ -572,7 +572,23 @@ SLID.section("math", {
           sk: "calc",
           eyebrow: "Здогадка",
           title: "Де на графіку $S(w)$ шукати найбільшу площу?",
-          body: "<p>Покрути $w$ у дослідженні й подивись, де лежить вершина цієї параболи.</p>",
+          body: "<p>Покрути $w$ і подивись, де лежить вершина цієї параболи.</p>",
+          lab: {
+            kind: "plane",
+            view: [0, 12, -5, 60],
+            grid: [1, 5],
+            params: {
+              w: { min: 1, max: 9, step: 0.5, start: 2, label: "$w$" }
+            },
+            fns: [
+              { id: "S", y: "x*(20-2*x)", color: "accent", from: 0, to: 10 }
+            ],
+            points: {
+              P: { x: "w", y: "w*(20-2*w)", color: "red", coords: true, drag: true }
+            },
+            show: ["$S = w(20 - 2w)$", "$S ≈ {w*(20-2*w)}$"],
+            alt: "Площа загону як функція ширини w"
+          },
           hyp: true,
           opts: [
             "лише на кінцях відрізка",

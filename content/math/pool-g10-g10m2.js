@@ -4,12 +4,13 @@
    Усі задачі — з підручника Мерзляк, Номіровський, Полонський, Якір. Математика 10 (рівень стандарту, 2018), п. 27 і 29; умови й числа звірено за відрендереними сторінками PDF.
    srcPage — друкований номер сторінки (у цьому PDF збігається з номером сторінки файлу).
    2026-11-01 (fix-math-content-minor-1101): сигла джерела mer10 → m10 (як в інших пулах 10 кл.); статус verified (verifier-fix-math-content-minor-1101, 2026-11-01; reports/verify/fix-math-content-minor-1101.md).
+   2026-11-03 (fix-math-figs-g10): до задач b01, b02, b03, b04, b06, b07, b08 додано статичні креслення (lab plane, axes: false, косокутна проєкція; позначення й дані — з умови, шукане не підписано); ключі не змінено. Статус draft до повторної перевірки.
    Перевірка: node tools/validate.mjs --pool pg10m2
    Схема: docs/CONTENT_SCHEMA.md §10 */
 SLID.pool("math", {
   id: "pg10m2",
   section: "g10m2",
-  status: "verified",
+  status: "draft",
   meta: { author: "agent-write-math-pool-g10m2", created: "2026-10-31", factcheck: "verifier-pool-g10m2", teacher: null },
   sources: [
     { id: "m10", title: "Мерзляк А. Г., Номіровський Д. А., Полонський В. Б., Якір М. С. Математика: алгебра і початки аналізу та геометрія, рівень стандарту: підручник для 10 класу. — Харків: Гімназія, 2018 (п. 27, 29; дзеркало file.4book.org)", url: "https://file.4book.org/images/shcoolbook_ua/10/10_m_m_2018_ua.pdf" }
@@ -86,24 +87,28 @@ SLID.pool("math", {
     { id: "b01", lesson: "g10m2l2", lvl: 1, sk: "geom", src: "m10 №29.4(1)", srcPage: 158, adapted: true,
       type: "choice", title: "Прямі $BC$ і $A_1C$",
       body: "<p>Дано прямокутний паралелепіпед $ABCDA_1B_1C_1D_1$: нижня основа $ABCD$, верхня $A_1B_1C_1D_1$, бічні ребра $AA_1$, $BB_1$, $CC_1$, $DD_1$.</p><p>Яке взаємне розміщення прямих $BC$ і $A_1C$?</p>",
+      lab: {kind: "plane", axes: false, grid: 0, view: [-0.8, 5.86, -0.8, 4.86], points: {A: {at: [0, 0], color: "ink", label: "$A$"}, B: {at: [4, 0], color: "ink", label: "$B$"}, C: {at: [5.06, 1.06], color: "ink", label: "$C$"}, D: {at: [1.06, 1.06], color: "ink", label: "$D$"}, A1: {at: [0, 3], color: "ink", label: "$A_1$"}, B1: {at: [4, 3], color: "ink", label: "$B_1$"}, C1: {at: [5.06, 4.06], color: "ink", label: "$C_1$"}, D1: {at: [1.06, 4.06], color: "ink", label: "$D_1$"}}, segs: [{a: "A", b: "B"}, {a: "B", b: "C"}, {a: "C", b: "D", dash: true}, {a: "D", b: "A", dash: true}, {a: "A1", b: "B1"}, {a: "B1", b: "C1"}, {a: "C1", b: "D1"}, {a: "D1", b: "A1"}, {a: "A", b: "A1"}, {a: "B", b: "B1"}, {a: "C", b: "C1"}, {a: "D", b: "D1", dash: true}], alt: "Прямокутний паралелепіпед ABCDA1B1C1D1: нижня основа ABCD, верхня A1B1C1D1, невидимі ребра пунктиром"},
       opts: ["Перетинаються", "Паралельні", "Мимобіжні"],
       correct: 0,
       steps: ["Обидві прямі проходять через точку $C$.", "Дві різні прямі зі спільною точкою перетинаються."] },
     { id: "b02", lesson: "g10m2l2", lvl: 1, sk: "geom", src: "m10 №29.4(3)", srcPage: 158, adapted: true,
       type: "choice", title: "Прямі $BD$ і $CC_1$",
       body: "<p>Дано прямокутний паралелепіпед $ABCDA_1B_1C_1D_1$: нижня основа $ABCD$, верхня $A_1B_1C_1D_1$, бічні ребра $AA_1$, $BB_1$, $CC_1$, $DD_1$.</p><p>Яке взаємне розміщення прямих $BD$ і $CC_1$?</p>",
+      lab: {kind: "plane", axes: false, grid: 0, view: [-0.8, 5.86, -0.8, 4.86], points: {A: {at: [0, 0], color: "ink", label: "$A$"}, B: {at: [4, 0], color: "ink", label: "$B$"}, C: {at: [5.06, 1.06], color: "ink", label: "$C$"}, D: {at: [1.06, 1.06], color: "ink", label: "$D$"}, A1: {at: [0, 3], color: "ink", label: "$A_1$"}, B1: {at: [4, 3], color: "ink", label: "$B_1$"}, C1: {at: [5.06, 4.06], color: "ink", label: "$C_1$"}, D1: {at: [1.06, 4.06], color: "ink", label: "$D_1$"}}, segs: [{a: "A", b: "B"}, {a: "B", b: "C"}, {a: "C", b: "D", dash: true}, {a: "D", b: "A", dash: true}, {a: "A1", b: "B1"}, {a: "B1", b: "C1"}, {a: "C1", b: "D1"}, {a: "D1", b: "A1"}, {a: "A", b: "A1"}, {a: "B", b: "B1"}, {a: "C", b: "C1"}, {a: "D", b: "D1", dash: true}], alt: "Прямокутний паралелепіпед ABCDA1B1C1D1: нижня основа ABCD, верхня A1B1C1D1, невидимі ребра пунктиром"},
       opts: ["Перетинаються", "Паралельні", "Мимобіжні"],
       correct: 2,
       steps: ["$BD$ лежить у площині основи $ABCD$. Пряма $CC_1$ не лежить у ній і має з нею одну спільну точку — $C$.", "Точка $C$ не лежить на $BD$, тож спільних точок у прямих немає.", "Якби вони були паралельні, то лежали б в одній площині з точками $B$, $D$, $C$, тобто в площині основи. Але $CC_1$ у ній не лежить. Отже, прямі мимобіжні."] },
     { id: "b03", lesson: "g10m2l2", lvl: 1, sk: "geom", src: "m10 №29.1(1)", srcPage: 158,
       type: "multi", title: "Ребра куба, паралельні $CD$",
       body: "<p>Дано куб $ABCDA_1B_1C_1D_1$: нижня грань $ABCD$, верхня $A_1B_1C_1D_1$, бічні ребра $AA_1$, $BB_1$, $CC_1$, $DD_1$.</p><p>Які ребра куба паралельні ребру $CD$? Обери всі.</p>",
+      lab: {kind: "plane", axes: false, grid: 0, view: [-0.8, 4.86, -0.8, 4.86], points: {A: {at: [0, 0], color: "ink", label: "$A$"}, B: {at: [3, 0], color: "ink", label: "$B$"}, C: {at: [4.06, 1.06], color: "ink", label: "$C$"}, D: {at: [1.06, 1.06], color: "ink", label: "$D$"}, A1: {at: [0, 3], color: "ink", label: "$A_1$"}, B1: {at: [3, 3], color: "ink", label: "$B_1$"}, C1: {at: [4.06, 4.06], color: "ink", label: "$C_1$"}, D1: {at: [1.06, 4.06], color: "ink", label: "$D_1$"}}, segs: [{a: "A", b: "B"}, {a: "B", b: "C"}, {a: "C", b: "D", dash: true}, {a: "D", b: "A", dash: true}, {a: "A1", b: "B1"}, {a: "B1", b: "C1"}, {a: "C1", b: "D1"}, {a: "D1", b: "A1"}, {a: "A", b: "A1"}, {a: "B", b: "B1"}, {a: "C", b: "C1"}, {a: "D", b: "D1", dash: true}], alt: "Куб ABCDA1B1C1D1: нижня грань ABCD, верхня A1B1C1D1, невидимі ребра пунктиром"},
       opts: ["$AB$", "$CC_1$", "$A_1B_1$", "$BC$", "$C_1D_1$", "$A_1D_1$"],
       correct: [0, 2, 4],
       steps: ["$AB \\parallel CD$ — протилежні сторони квадрата $ABCD$.", "$C_1D_1 \\parallel CD$ — протилежні сторони квадрата $CDD_1C_1$; $A_1B_1$ і $CD$ лежать в одній площині $A_1B_1CD$ і не мають спільних точок, тож теж паралельні.", "$CC_1$ і $BC$ мають з $CD$ спільну точку $C$, а $A_1D_1$ з $CD$ не лежить в одній площині."] },
     { id: "b04", lesson: "g10m2l2", lvl: 2, sk: "geom", src: "m10 №29.1(2)", srcPage: 158,
       type: "multi", title: "Ребра куба, мимобіжні з $CD$",
       body: "<p>Дано куб $ABCDA_1B_1C_1D_1$: нижня грань $ABCD$, верхня $A_1B_1C_1D_1$, бічні ребра $AA_1$, $BB_1$, $CC_1$, $DD_1$.</p><p>Які ребра куба мимобіжні з ребром $CD$? Обери всі.</p>",
+      lab: {kind: "plane", axes: false, grid: 0, view: [-0.8, 4.86, -0.8, 4.86], points: {A: {at: [0, 0], color: "ink", label: "$A$"}, B: {at: [3, 0], color: "ink", label: "$B$"}, C: {at: [4.06, 1.06], color: "ink", label: "$C$"}, D: {at: [1.06, 1.06], color: "ink", label: "$D$"}, A1: {at: [0, 3], color: "ink", label: "$A_1$"}, B1: {at: [3, 3], color: "ink", label: "$B_1$"}, C1: {at: [4.06, 4.06], color: "ink", label: "$C_1$"}, D1: {at: [1.06, 4.06], color: "ink", label: "$D_1$"}}, segs: [{a: "A", b: "B"}, {a: "B", b: "C"}, {a: "C", b: "D", dash: true}, {a: "D", b: "A", dash: true}, {a: "A1", b: "B1"}, {a: "B1", b: "C1"}, {a: "C1", b: "D1"}, {a: "D1", b: "A1"}, {a: "A", b: "A1"}, {a: "B", b: "B1"}, {a: "C", b: "C1"}, {a: "D", b: "D1", dash: true}], alt: "Куб ABCDA1B1C1D1: нижня грань ABCD, верхня A1B1C1D1, невидимі ребра пунктиром"},
       opts: ["$AA_1$", "$AB$", "$B_1C_1$", "$DD_1$", "$A_1D_1$", "$BB_1$", "$BC$", "$A_1B_1$"],
       correct: [0, 2, 4, 5],
       hint: "Відкинь ребра, що мають з $CD$ спільну вершину, і ребра, паралельні $CD$.",
@@ -122,12 +127,14 @@ SLID.pool("math", {
     { id: "b06", lesson: "g10m2l2", lvl: 2, sk: "geom", src: "m10 №29.10(1)", srcPage: 159,
       type: "answer", title: "Паралельні прямі через $B$ і $C$",
       body: "<p>Кінець $A$ відрізка $AB$ лежить у площині $\\alpha$, точка $C$ — середина $AB$. Через точки $B$ і $C$ провели паралельні прямі, які перетинають площину $\\alpha$ у точках $B_1$ і $C_1$. Знайди $BB_1$, якщо $CC_1 = 5$ см.</p>",
+      lab: {kind: "plane", axes: false, grid: 0, view: [-3.03, 11.59, -1.53, 7.35], points: {A: {at: [0, 0], color: "ink", label: "$A$"}, B: {at: [4.35, 6.35], color: "ink", label: "$B$"}, C: {at: [2.18, 3.18], color: "ink", label: "$C$"}, B1: {at: [7.99, 0.99], color: "ink", label: "$B_1$"}, C1: {at: [3.99, 0.49], color: "ink", label: "$C_1$"}}, polys: [{pts: [[-2.03, -0.53], [8.47, -0.53], [10.59, 1.59], [0.09, 1.59]], color: "muted", opacity: 0.1}], segs: [{a: "A", b: "B"}, {a: "B", b: "B1", color: "accent"}, {a: "C", b: "C1", color: "accent", label: "5"}, {a: "A", b: "B1", dash: true}], texts: [{at: [7.85, -0.35], t: "$\\alpha$"}], alt: "Площина альфа; кінець A відрізка AB лежить у ній, C — середина AB; паралельні прямі через B і C перетинають площину в точках B1 і C1, CC1 = 5"},
       answer: 10, unit: "см",
       hint: "Паралельні прямі $BB_1$ і $CC_1$ лежать в одній площині разом із прямою $AB$. Розглянь у ній трикутник $ABB_1$.",
       steps: ["Паралельні прямі $BB_1$ і $CC_1$ лежать в одній площині. Точки $B$ і $C$ у ній, тож за А3 у ній і вся пряма $AB$ з точкою $A$.", "Точки $A$, $C_1$, $B_1$ лежать і в цій площині, і в $\\alpha$, тобто на одній прямій.", "У трикутнику $ABB_1$ відрізок $CC_1 \\parallel BB_1$ проходить через середину $AB$, тож це середня лінія.", "$BB_1 = 2 · 5 = 10$ см."] },
     { id: "b07", lesson: "g10m2l2", lvl: 3, sk: "geom", src: "m10 №29.4(4)", srcPage: 158, adapted: true,
       type: "choice", title: "Діагоналі $AB_1$ і $DC_1$",
       body: "<p>Дано прямокутний паралелепіпед $ABCDA_1B_1C_1D_1$: нижня основа $ABCD$, верхня $A_1B_1C_1D_1$, бічні ребра $AA_1$, $BB_1$, $CC_1$, $DD_1$.</p><p>$AB_1$ — діагональ грані $ABB_1A_1$, $DC_1$ — діагональ протилежної грані $DCC_1D_1$. Яке взаємне розміщення прямих $AB_1$ і $DC_1$?</p>",
+      lab: {kind: "plane", axes: false, grid: 0, view: [-0.8, 5.86, -0.8, 4.86], points: {A: {at: [0, 0], color: "ink", label: "$A$"}, B: {at: [4, 0], color: "ink", label: "$B$"}, C: {at: [5.06, 1.06], color: "ink", label: "$C$"}, D: {at: [1.06, 1.06], color: "ink", label: "$D$"}, A1: {at: [0, 3], color: "ink", label: "$A_1$"}, B1: {at: [4, 3], color: "ink", label: "$B_1$"}, C1: {at: [5.06, 4.06], color: "ink", label: "$C_1$"}, D1: {at: [1.06, 4.06], color: "ink", label: "$D_1$"}}, segs: [{a: "A", b: "B"}, {a: "B", b: "C"}, {a: "C", b: "D", dash: true}, {a: "D", b: "A", dash: true}, {a: "A1", b: "B1"}, {a: "B1", b: "C1"}, {a: "C1", b: "D1"}, {a: "D1", b: "A1"}, {a: "A", b: "A1"}, {a: "B", b: "B1"}, {a: "C", b: "C1"}, {a: "D", b: "D1", dash: true}], alt: "Прямокутний паралелепіпед ABCDA1B1C1D1: нижня основа ABCD, верхня A1B1C1D1, невидимі ребра пунктиром"},
       opts: ["Перетинаються", "Паралельні", "Мимобіжні"],
       correct: 1,
       hint: "Розглянь чотирикутник $AB_1C_1D$. Які в нього сторони $AD$ і $B_1C_1$?",
@@ -135,6 +142,7 @@ SLID.pool("math", {
     { id: "b08", lesson: "g10m2l2", lvl: 3, sk: "geom", src: "m10 №29.13", srcPage: 159,
       type: "answer", title: "Три паралельні прямі до площини",
       body: "<p>Точка $C$ — середина відрізка $AB$, який не перетинає площину $β$. Через точки $A$, $B$ і $C$ провели паралельні прямі, які перетинають площину $β$ у точках $A_1$, $B_1$ і $C_1$. Знайди $AA_1$, якщо $BB_1 = 18$ см, $CC_1 = 15$ см.</p>",
+      lab: {kind: "plane", axes: false, grid: 0, view: [-1.3, 4.01, -0.8, 5.83], points: {A: {at: [0.63, 3.18], color: "ink", label: "$A$"}, B: {at: [3.21, 5.03], color: "ink", label: "$B$"}, C: {at: [1.92, 4.1], color: "ink", label: "$C$"}, A1: {at: [0.18, 0.18], color: "ink", label: "$A_1$"}, B1: {at: [2.53, 0.53], color: "ink", label: "$B_1$"}, C1: {at: [1.35, 0.35], color: "ink", label: "$C_1$"}}, polys: [{pts: [[-0.5, 0], [2.5, 0], [3.21, 0.71], [0.21, 0.71]], color: "muted", opacity: 0.1}], segs: [{a: "A", b: "B"}, {a: "A", b: "A1", color: "accent"}, {a: "B", b: "B1", color: "accent", label: "18"}, {a: "C", b: "C1", color: "accent", label: "15"}, {a: "A1", b: "B1", dash: true}], texts: [{at: [2.4, 0.07], t: "β"}], alt: "Площина бета; відрізок AB над нею, C — середина AB; паралельні прямі через A, B, C перетинають площину в A1, B1, C1; BB1 = 18, CC1 = 15"},
       answer: 12, unit: "см",
       hint: "Усі три прямі лежать в одній площині. Чотирикутник $AA_1B_1B$ — трапеція. Чим у ній є $CC_1$?",
       steps: ["Паралельні прямі $AA_1$ і $BB_1$ лежать в одній площині; $C$ лежить на $AB$, тож і $CC_1$ у ній. Точки $A_1$, $C_1$, $B_1$ — на прямій перетину цієї площини з $β$.", "$AA_1B_1B$ — трапеція з основами $AA_1$ і $BB_1$. Відрізок $CC_1$ паралельний основам і проходить через середину $AB$ — це середня лінія.", "$CC_1 = (AA_1 + BB_1) : 2$, тобто $15 = (AA_1 + 18) : 2$.", "$AA_1 = 30 - 18 = 12$ см."] }
