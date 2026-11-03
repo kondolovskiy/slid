@@ -1,11 +1,13 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-03T20:06:14.099Z
 id: write-math-g7-geometry-gaps
 type: write-section
 subject: math
 grade: 7
 section: g7m4
 status: todo
-claimed_by:
+claimed_by: writer-write-math-g7-geometry-gaps
 created: 2026-11-03
 depends_on: [math-ister-migration]
 ---

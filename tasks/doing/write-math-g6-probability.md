@@ -1,11 +1,13 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-03T20:06:14.263Z
 id: write-math-g6-probability
 type: write-section
 subject: math
 grade: 6
 section: new
 status: todo
-claimed_by:
+claimed_by: writer-write-math-g6-probability
 created: 2026-11-03
 depends_on: [math-ister-migration]
 ---

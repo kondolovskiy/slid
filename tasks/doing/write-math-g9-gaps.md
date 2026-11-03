@@ -1,11 +1,13 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-03T20:06:14.206Z
 id: write-math-g9-gaps
 type: write-section
 subject: math
 grade: 9
 section: g9m6
 status: todo
-claimed_by:
+claimed_by: writer-write-math-g9-gaps
 created: 2026-11-03
 depends_on: [math-ister-migration]
 ---

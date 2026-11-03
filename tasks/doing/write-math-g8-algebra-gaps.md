@@ -1,11 +1,13 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-03T20:06:14.153Z
 id: write-math-g8-algebra-gaps
 type: write-section
 subject: math
 grade: 8
 section: g8m1
 status: todo
-claimed_by:
+claimed_by: writer-write-math-g8-algebra-gaps
 created: 2026-11-03
 depends_on: [math-ister-migration]
 ---
