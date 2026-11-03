@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-03T09:53:02.706Z",
+  "date": "2026-11-03T10:11:12.805Z",
   "errors": [],
   "warnings": [
     "content/hist/g5-s1.js#l5 екран 4 (sort): дуже довге речення (28 слів): «Відомо з уроку й досліджень: легенду про Кия записано в «Пов…»",
@@ -158,7 +158,7 @@
     "content/math/g8-g8m3.js#g8m3l1: sentenceWords=4.7 поза профілем [6; 13] для math, 7-9 кл.",
     "content/math/g8-g8m3.js#g8m3l2: sentenceWords=5.2 поза профілем [6; 13] для math, 7-9 кл.",
     "content/math/g8-g8m3.js#g8m3l3: sentenceWords=5.1 поза профілем [6; 13] для math, 7-9 кл.",
-    "content/math/g8-g8m3.js#g8m3l4: sentenceWords=4.9 поза профілем [6; 13] для math, 7-9 кл.",
+    "content/math/g8-g8m3.js#g8m3l4: sentenceWords=5 поза профілем [6; 13] для math, 7-9 кл.",
     "content/math/g8-g8m3.js#g8m3l5: sentenceWords=4.8 поза профілем [6; 13] для math, 7-9 кл.",
     "content/math/g8-g8m4.js#g8m4l1: sentenceWords=5.4 поза профілем [6; 13] для math, 7-9 кл.",
     "content/math/g8-g8m4.js#g8m4l2: sentenceWords=5 поза профілем [6; 13] для math, 7-9 кл.",
@@ -218,7 +218,7 @@
     "content/math/g10-g10m4.js#g10m4l1: sentenceWords=5.1 поза профілем [7; 15] для math, 10-11 кл.",
     "content/math/g10-g10m4.js#g10m4l2: sentenceWords=5 поза профілем [7; 15] для math, 10-11 кл.",
     "content/math/g10-g10m4.js#g10m4l3: sentenceWords=5.6 поза профілем [7; 15] для math, 10-11 кл.",
-    "content/math/g10-g10m4.js#g10m4l4: sentenceWords=4.5 поза профілем [7; 15] для math, 10-11 кл.",
+    "content/math/g10-g10m4.js#g10m4l4: sentenceWords=4.6 поза профілем [7; 15] для math, 10-11 кл.",
     "content/math/g10-g10m5.js#g10m5l1: sentenceWords=5 поза профілем [7; 15] для math, 10-11 кл.",
     "content/math/g10-g10m5.js#g10m5l2: sentenceWords=4.8 поза профілем [7; 15] для math, 10-11 кл.",
     "content/math/g10-g10m5.js#g10m5l3: sentenceWords=4.8 поза профілем [7; 15] для math, 10-11 кл.",
