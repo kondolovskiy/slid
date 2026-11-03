@@ -2,6 +2,8 @@
    Статус: verified (незалежна перевірка 2026-10-31, reports/verify/pg7m4.md). 24 задачі: по 8 на required-уроки g7m4l1, g7m4l2, g7m4l3 (boss без задач).
    Усі задачі — з підручника Мерзляк, Якір «Геометрія. 7 клас» (2024); умови, числа й рисунки звірено
    за відрендереними сторінками PDF 2026-10-31. srcPage — друкований номер сторінки (у цьому PDF збігається з номером сторінки файлу).
+   Рисунки підручника переказано словами (у пулі немає геометричних fig).
+   Правка 2026-11-03 (fix-math-notation-ister, D-043): ознаки рівності словами — «перша/друга/третя ознака» замість «І/ІІ/ІІІ»; ключі, порядок варіантів і id без змін.
    Рисунки підручника переказано словами; 2026-11-03 (fix-math-figs-g7-geo-a) до 14 задач додано статичні рисунки lab plane
    (a02, a04, a05, a07, a08, b03, b04, b05, b07, b08, c04, c05, c07, c08) — перевірено 2026-11-03 (reports/verify/fix-math-figs-g7-geo-a.md), verified.
    Перевірка: node tools/validate.mjs --pool pg7m4
@@ -19,15 +21,15 @@ SLID.pool("math", {
     { id: "a01", lesson: "g7m4l1", lvl: 1, sk: "geom", src: "mer7g №179(б)", srcPage: 78, adapted: true,
       type: "choice", title: "Два трикутники зі стороною 3 см",
       body: "<p>У кожного з двох трикутників є сторона 3 см. У першому кути при кінцях цієї сторони — 90° і 40°. У другому кути при кінцях сторони 3 см — теж 90° і 40°.</p><p>Чи рівні ці трикутники? Якщо так, то за якою ознакою?</p>",
-      opts: ["Рівні за І ознакою: дві сторони й кут між ними", "Рівні за ІІ ознакою: сторона і два прилеглих кути", "Рівні за ІІІ ознакою: три сторони", "Даних замало, рівність не доведено"],
+      opts: ["Рівні за першою ознакою: дві сторони й кут між ними", "Рівні за другою ознакою: сторона і два прилеглих кути", "Рівні за третьою ознакою: три сторони", "Даних замало, рівність не доведено"],
       correct: 1,
-      steps: ["Відомо по одній рівній стороні: 3 см і 3 см.", "Обидва відомі кути лежать біля кінців цієї сторони, тобто прилягають до неї.", "Сторона і два прилеглих кути — це ІІ ознака. Трикутники рівні."] },
+      steps: ["Відомо по одній рівній стороні: 3 см і 3 см.", "Обидва відомі кути лежать біля кінців цієї сторони, тобто прилягають до неї.", "Сторона і два прилеглих кути — це друга ознака. Трикутники рівні."] },
     { id: "a02", lesson: "g7m4l1", lvl: 1, sk: "geom", src: "mer7g №275", srcPage: 104, adapted: true,
       type: "answer", title: "Знайди кут $BAC$",
       body: "<p>Трикутники $ABC$ і $ABD$ мають спільну сторону $AB$. Відомо: $AC = AD$, $BC = BD$, $\\angle BAD = 25°$. Знайди кут $BAC$.</p><p>Пам'ятай: у рівних трикутниках відповідні кути рівні.</p>",
       lab: { kind: "plane", axes: false, grid: false, view: [0, 10, -0.4, 6.4], points: { A: { at: [1, 3], label: false }, B: { at: [9, 3], label: false }, C: { at: [6.438, 5.536], label: false }, D: { at: [6.438, 0.464], label: false } }, segs: [["A", "B"], ["A", "C"], ["B", "C"], ["A", "D"], ["B", "D"]], angles: [{ from: "B", at: "A", to: "D", label: "25°", r: 40, color: "purple" }], alt: "Трикутники ABC і ABD зі спільною стороною AB; C і D по різні боки від AB", texts: [{ at: [0.5, 2.875], t: "A", color: "accent", bold: true }, { at: [9.5, 2.875], t: "B", color: "accent", bold: true }, { at: [6.574, 5.892], t: "C", color: "accent", bold: true }, { at: [6.574, -0.142], t: "D", color: "accent", bold: true }] },
       answer: 25, unit: "°",
-      steps: ["$AC = AD$, $BC = BD$, а сторона $AB$ — спільна.", "Три сторони рівні — трикутники $ABC$ і $ABD$ рівні за ІІІ ознакою.", "У рівних трикутниках відповідні кути рівні: $\\angle BAC = \\angle BAD = 25°$."] },
+      steps: ["$AC = AD$, $BC = BD$, а сторона $AB$ — спільна.", "Три сторони рівні — трикутники $ABC$ і $ABD$ рівні за третьою ознакою.", "У рівних трикутниках відповідні кути рівні: $\\angle BAC = \\angle BAD = 25°$."] },
     { id: "a03", lesson: "g7m4l1", lvl: 1, sk: "geom", src: "mer7g №157", srcPage: 71,
       type: "answer", title: "Знайди сторону $ME$",
       body: "<p>Трикутники $APK$ і $MCE$ рівні, кути $A$ і $C$ — відповідні. Сторона $PK$ = 10 см. Знайди сторону $ME$.</p><p>Пам'ятай: у рівних трикутниках навпроти відповідних кутів лежать рівні сторони.</p>",
@@ -39,14 +41,14 @@ SLID.pool("math", {
       lab: { kind: "plane", axes: false, grid: false, view: [-5.5, 6.5, -6.5, 6.5], points: { A: { at: [-3.561, 4.244], label: false }, B: { at: [4.379, 5.219], label: false }, C: { at: [4.379, -5.219], label: false }, D: { at: [-3.561, -4.244], label: false }, O: { at: [0, 0], label: false } }, segs: [["A", "C"], ["B", "D"], { a: "A", b: "B", label: "8" }, ["C", "D"]], angles: [{ from: "O", at: "B", to: "A", label: "43°", r: 30, color: "purple" }], alt: "Відрізки AC і BD перетинаються в точці O; трикутники AOB і DOC", texts: [{ at: [-3.966, 4.536], t: "A", color: "accent", bold: true }, { at: [4.747, 5.543], t: "B", color: "accent", bold: true }, { at: [4.747, -5.843], t: "C", color: "accent", bold: true }, { at: [-3.966, -4.836], t: "D", color: "accent", bold: true }, { at: [0.6, -0.15], t: "O", color: "accent", bold: true }] },
       answer: 43, unit: "°",
       hint: "Порівняй трикутники $AOB$ і $DOC$. Які кути при точці $O$ у них рівні й чому?",
-      steps: ["Кути $AOB$ і $DOC$ вертикальні, тому рівні.", "$AO = DO$, $BO = CO$ і кут між ними рівний — трикутники $AOB$ і $DOC$ рівні за І ознакою.", "Вершина $B$ відповідає вершині $C$, тож $\\angle OCD = \\angle OBA = 43°$."] },
+      steps: ["Кути $AOB$ і $DOC$ вертикальні, тому рівні.", "$AO = DO$, $BO = CO$ і кут між ними рівний — трикутники $AOB$ і $DOC$ рівні за першою ознакою.", "Вершина $B$ відповідає вершині $C$, тож $\\angle OCD = \\angle OBA = 43°$."] },
     { id: "a05", lesson: "g7m4l1", lvl: 2, sk: "geom", src: "mer7g №190", srcPage: 80, adapted: true,
       type: "answer", title: "Знайди сторону $AB$",
       body: "<p>Відрізки $AD$ і $BC$ перетинаються в точці $M$. Відомо: $BM = DM$, $\\angle ABM = \\angle CDM$, $CD$ = 7 см, $CM$ = 4 см. Знайди сторону $AB$ трикутника $ABM$.</p>",
       lab: { kind: "plane", axes: false, grid: false, view: [-5.5, 5.5, -5, 5], points: { A: { at: [-3.064, 2.571], label: false }, B: { at: [3.901, 3.273], label: false }, C: { at: [-3.064, -2.571], label: false }, D: { at: [3.901, -3.273], label: false }, M: { at: [0, 0], label: false } }, segs: [["A", "D"], ["B", "M"], { a: "M", b: "C", label: "4" }, ["A", "B"], { a: "D", b: "C", label: "7" }], angles: [{ from: "A", at: "B", to: "M", label: false, color: "blue", r: 28 }, { from: "C", at: "D", to: "M", label: false, color: "blue", r: 28 }], alt: "Відрізки AD і BC перетинаються в точці M; трикутники ABM і CDM", texts: [{ at: [-3.503, 2.765], t: "A", color: "accent", bold: true }, { at: [4.306, 3.507], t: "B", color: "accent", bold: true }, { at: [-3.503, -3.04], t: "C", color: "accent", bold: true }, { at: [4.306, -3.782], t: "D", color: "accent", bold: true }, { at: [0.55, -0.137], t: "M", color: "accent", bold: true }] },
       answer: 7, unit: "см",
       hint: "Знайди ще одну пару рівних кутів при точці $M$. Тоді в трикутниках $ABM$ і $CDM$ буде сторона і два прилеглих кути.",
-      steps: ["Кути $AMB$ і $CMD$ вертикальні, тому рівні.", "$BM = DM$, а кути при кінцях цих сторін рівні — трикутники $ABM$ і $CDM$ рівні за ІІ ознакою.", "Сторона $AB$ відповідає стороні $CD$, тож $AB = 7$ см."] },
+      steps: ["Кути $AMB$ і $CMD$ вертикальні, тому рівні.", "$BM = DM$, а кути при кінцях цих сторін рівні — трикутники $ABM$ і $CDM$ рівні за другою ознакою.", "Сторона $AB$ відповідає стороні $CD$, тож $AB = 7$ см."] },
     { id: "a06", lesson: "g7m4l1", lvl: 2, sk: "geom", src: "mer7g №160", srcPage: 71,
       type: "multi", title: "Трикутники і периметри",
       body: "<p>Які твердження правильні?</p>",
@@ -60,14 +62,14 @@ SLID.pool("math", {
       lab: { kind: "plane", axes: false, grid: false, view: [0, 13, 0, 7.5], points: { A: { at: [1, 1], label: false }, B: { at: [9, 1], label: false }, C: { at: [12, 6.196], label: false }, D: { at: [4, 6.196], label: false } }, segs: [{ a: "A", b: "B", label: "8" }, { a: "C", b: "B", label: "6" }, ["C", "D"], ["D", "A"], ["A", "C"]], angles: [{ from: "C", at: "A", to: "D", label: false, color: "blue", r: 30 }, { from: "A", at: "C", to: "B", label: false, color: "blue", r: 30 }, { from: "B", at: "A", to: "C", label: false, color: "gold", r: 44 }, { from: "D", at: "C", to: "A", label: false, color: "gold", r: 44 }], alt: "Чотирикутник ABCD з відрізком AC; рівні кути позначено однаковим кольором", texts: [{ at: [0.412, 0.56], t: "A", color: "accent", bold: true }, { at: [9.451, 0.369], t: "B", color: "accent", bold: true }, { at: [12.588, 6.311], t: "C", color: "accent", bold: true }, { at: [3.549, 6.502], t: "D", color: "accent", bold: true }] },
       answer: 6, unit: "см",
       hint: "Трикутники $ADC$ і $CBA$ мають спільну сторону $AC$. Простеж, яка вершина якій відповідає: кут при $A$ в одному трикутнику дорівнює куту при $C$ в іншому.",
-      steps: ["Сторона $AC$ спільна. Кути при її кінцях: $\\angle DAC = \\angle BCA$ і $\\angle ACD = \\angle CAB$.", "Трикутники $ADC$ і $CBA$ рівні за ІІ ознакою. Вершині $A$ відповідає $C$, вершині $C$ — $A$, вершині $D$ — $B$.", "Тому стороні $AD$ відповідає сторона $CB$: $AD = BC = 6$ см."] },
+      steps: ["Сторона $AC$ спільна. Кути при її кінцях: $\\angle DAC = \\angle BCA$ і $\\angle ACD = \\angle CAB$.", "Трикутники $ADC$ і $CBA$ рівні за другою ознакою. Вершині $A$ відповідає $C$, вершині $C$ — $A$, вершині $D$ — $B$.", "Тому стороні $AD$ відповідає сторона $CB$: $AD = BC = 6$ см."] },
     { id: "a08", lesson: "g7m4l1", lvl: 3, sk: "geom", src: "mer7g №194", srcPage: 81,
       type: "answer", title: "Знайди кут $ACD$",
       body: "<p>Відрізки $AD$ і $BC$ перетинаються в точці $O$ і діляться нею навпіл. Відомо: $\\angle ABC = 64°$, $\\angle ACO = 56°$. Знайди кут $ACD$.</p>",
       lab: { kind: "plane", axes: false, grid: false, view: [-8.5, 8.5, -1.6, 9.6], points: { A: { at: [-6.883, 3.357], label: false }, B: { at: [0, 0], label: false }, C: { at: [0, 8], label: false }, D: { at: [6.883, 4.643], label: false }, O: { at: [0, 4], label: false } }, segs: [["A", "D"], ["B", "C"], ["A", "B"], ["A", "C"], ["C", "D"]], angles: [{ from: "A", at: "B", to: "C", label: "64°", r: 30, color: "purple" }, { from: "A", at: "C", to: "O", label: "56°", r: 30, color: "purple" }], alt: "Відрізки AD і BC перетинаються в точці O; проведено AB, AC і CD", texts: [{ at: [-7.729, 3.065], t: "A", color: "accent", bold: true }, { at: [0, -1.062], t: "B", color: "accent", bold: true }, { at: [0, 8.638], t: "C", color: "accent", bold: true }, { at: [7.729, 4.51], t: "D", color: "accent", bold: true }, { at: [0.601, 4.389], t: "O", color: "accent", bold: true }] },
       answer: 120, unit: "°",
       hint: "Спершу доведи, що трикутники $ABO$ і $DCO$ рівні. Потім поміть, що промінь $CO$ ділить кут $ACD$ на дві частини.",
-      steps: ["$AO = OD$, $BO = OC$, кути $AOB$ і $DOC$ вертикальні — трикутники $ABO$ і $DCO$ рівні за І ознакою.", "Вершині $B$ відповідає $C$, тож $\\angle OCD = \\angle OBA = \\angle ABC = 64°$.", "Точка $O$ лежить на відрізку $AD$, тому промінь $CO$ ділить кут $ACD$ на два кути.", "$\\angle ACD = 56° + 64° = 120°$."] },
+      steps: ["$AO = OD$, $BO = OC$, кути $AOB$ і $DOC$ вертикальні — трикутники $ABO$ і $DCO$ рівні за першою ознакою.", "Вершині $B$ відповідає $C$, тож $\\angle OCD = \\angle OBA = \\angle ABC = 64°$.", "Точка $O$ лежить на відрізку $AD$, тому промінь $CO$ ділить кут $ACD$ на два кути.", "$\\angle ACD = 56° + 64° = 120°$."] },
 
     /* ───────────── Урок 2. Рівнобедрений трикутник ───────────── */
     { id: "b01", lesson: "g7m4l2", lvl: 1, sk: "geom", src: "mer7g №219(1)", srcPage: 89,
@@ -120,7 +122,7 @@ SLID.pool("math", {
       lab: { kind: "plane", axes: false, grid: false, view: [0, 10, 0, 7], points: { A: { at: [0.636, 1], label: false }, B: { at: [5, 6], label: false }, C: { at: [9.364, 1], label: false }, K: { at: [5, 1], label: false } }, segs: [["A", "B"], ["B", "C"], ["A", "C"], { a: "B", b: "K", label: "5" }], angles: [{ from: "A", at: "B", to: "K", label: false, color: "blue", r: 30 }, { from: "K", at: "B", to: "C", label: false, color: "blue", r: 30 }, { from: "B", at: "K", to: "C", label: false, r: 18, color: "green" }], alt: "Трикутник ABC; BK ділить кут B навпіл і перпендикулярний до AC", texts: [{ at: [0.155, 0.737], t: "A", color: "accent", bold: true }, { at: [5, 6.375], t: "B", color: "accent", bold: true }, { at: [9.845, 0.737], t: "C", color: "accent", bold: true }, { at: [5, 0.375], t: "K", color: "accent", bold: true }] },
       answer: 22, unit: "см",
       hint: "Порівняй трикутники $ABK$ і $CBK$: сторона $BK$ спільна, а кути при її кінцях рівні. Що це дає для сторін $AB$, $BC$ і відрізків $AK$, $KC$?",
-      steps: ["У трикутниках $ABK$ і $CBK$ сторона $BK$ спільна, $\\angle ABK = \\angle CBK$ (бісектриса), $\\angle AKB = \\angle CKB = 90°$ (висота). Вони рівні за ІІ ознакою.", "Тому $AB = BC$ і $AK = KC$.", "$AB + AK = 16 - 5 = 11$ см.", "Периметр $ABC$: $AB + BC + AK + KC = 2 · 11 = 22$ см."] },
+      steps: ["У трикутниках $ABK$ і $CBK$ сторона $BK$ спільна, $\\angle ABK = \\angle CBK$ (бісектриса), $\\angle AKB = \\angle CKB = 90°$ (висота). Вони рівні за другою ознакою.", "Тому $AB = BC$ і $AK = KC$.", "$AB + AK = 16 - 5 = 11$ см.", "Периметр $ABC$: $AB + BC + AK + KC = 2 · 11 = 22$ см."] },
 
     /* ───────────── Урок 3. Сума кутів трикутника ───────────── */
     { id: "c01", lesson: "g7m4l3", lvl: 1, sk: "geom", src: "mer7g №398", srcPage: 151,

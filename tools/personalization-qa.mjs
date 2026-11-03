@@ -49,7 +49,8 @@ export function audit(subject, matrix, learn, filter = {}) {
   if (new Set(matrix.lessons.map(r => r.section)).size !== sections.size) errors.push('Кількість розділів не збігається з матрицею');
   const ctx = { lessons, sections: new Map([...sections].map(([id, s]) => [id, { ...s, lessons: s.lessons.map(l => l.id) }])), skills: subject.skills };
   const diags = subject.diags.filter(d => (!filter.grade || d.grade === filter.grade) && (!filter.diag || d.id === filter.diag) && !filter.pool);
-  const selectedPools = subject.pools.filter(p => (!filter.grade || sections.get(p.section)?.grade === filter.grade) && (!filter.pool || p.id === filter.pool) && !filter.diag);
+  const homes = p => [p.section, ...(p.also || [])];   // also — розділи, куди перенесено частину уроків пулу (docs/design/math-ister.md §4)
+  const selectedPools = subject.pools.filter(p => (!filter.grade || homes(p).some(id => sections.get(id)?.grade === filter.grade)) && (!filter.pool || p.id === filter.pool) && !filter.diag);
   for (const d of diags) {
     errors.push(...learn.validate(d, ctx).map(e => `${d.id}: ${e}`));
     if (subject.diags.filter(x => x.grade === d.grade).length !== 1) errors.push(`${d.grade}: потрібно один тест на клас`);
@@ -93,7 +94,7 @@ export function audit(subject, matrix, learn, filter = {}) {
   for (const r of rows.filter(r => r.curricularScope === 'required' && !filter.diag)) {
     const p = pools.get(r.pool), items = p?.items.filter(it => it.lesson === r.lesson) || [];
     if (!p) { missing.push(`${r.pool}: відсутній пул для ${r.lesson}`); continue; }
-    if (p.section !== r.section) errors.push(`${r.pool}: section не збігається з ${r.section}`);
+    if (!homes(p).includes(r.section)) errors.push(`${r.pool}: section/also не містить ${r.section}`);
     if (items.length < r.exercises.min || items.length > r.exercises.max) missing.push(`${r.pool}/${r.lesson}: ${items.length} вправ, потрібно ${r.exercises.min}–${r.exercises.max}`);
     for (const lvl of [1, 2, 3]) if (!items.some(it => it.lvl === lvl)) missing.push(`${r.pool}/${r.lesson}: немає рівня ${lvl}`);
     for (const format of r.formats) {

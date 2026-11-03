@@ -3,15 +3,16 @@
    Етап G2: лінія «дроби» 4–6 кл. (25 вузлів, 45 ребер чернетки §5.4 + 1 ребро G2: div-chunks → div-rem w 1 + 1 ребро верифікатора: frac-add-unlike → frac-reduce w 2).
    st: verified — незалежний верифікатор лінії (reports/verify/graph-frac.md); approved — лише людина.
    У why «#N» — індекс екрана в уроці від 0 (як у дизайні §5.4 і в полі u); graph-report і validate нумерують від 1.
+   2026-11-03 (math-ister-migration, D-043): g6m1 — 5 кл.; у topics лінії dg6/g6-lcm → dg6/g6-div (теми dg6 злито, design/math-ister.md §5.2). Вузли й ребра без змін.
    Перевірка: node tools/validate.mjs && node tools/graph-report.mjs --line frac --strict */
 SLID.graph("math", {
-  v: "2026-11-02.2",
+  v: "2026-11-03.1",
   lines: {
     frac: {
       lessons: ["g4m3l3", "m4a", "g4m5l1", "g4m5l2", "m1", "m2", "m3", "m4", "m5",
         "g6m1l1", "g6m1l2", "g6m1l3", "g6m1l4", "g6m2l1", "g6m2l2", "g6m2l3", "g6m2l4", "g6m2l5"],
       topics: ["dg4/parts", "dg4/mul", "dg4/quot", "dg4/units", "dg4/cur-m4s1", "dg4/cur-g4m5", "dg5/parts", "dg5/cur-ms1",
-        "dg6/rem", "dg6/frac", "dg6/frac-cmp", "dg6/frac-of", "dg6/frac-add", "dg6/mixed", "dg6/g6-lcm", "dg6/g6-fadd"],
+        "dg6/rem", "dg6/frac", "dg6/frac-cmp", "dg6/frac-of", "dg6/frac-add", "dg6/mixed", "dg6/g6-div", "dg6/g6-fadd"],
       st: "verified"
     }
   },
@@ -79,7 +80,7 @@ SLID.graph("math", {
             { u: "frac-read", w: 2, why: "m5 #1 «Правильні й неправильні дроби»: порівняння чисельника зі знаменником; #2 sort" }],
       st: "verified" },
 
-    // ---- 6 кл.: подільність (g6m1) — опори скорочення й спільного знаменника
+    // ---- 5 кл. (до 2026-11-03 — 6 кл., D-043: Істер 5 § 26–32): подільність (g6m1) — опори скорочення й спільного знаменника
     { id: "divis-mult", sk: "divis", name: "Знаходити дільники й кратні числа",
       teach: ["g6m1l1"],
       pre: [{ u: "div-rem", w: 2, why: "g6m1l1 #3 «Дільник і кратне»: 24 : 8 = 3, остачі немає — ділиться націло; #2 «і зайвих немає» — остача 0" }],

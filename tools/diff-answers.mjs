@@ -55,7 +55,8 @@ function collect(subjects) {
   const items = [];
   for (const c of subjects) {
     const grade = new Map(c.sections.map(s => [s.id, s.grade]));
-    for (const p of c.pools || []) { const g = grade.get(p.section); if (g >= G0 && g <= G1) for (const it of p.items) if (it.type === "answer") items.push({ id: `${p.id}:${it.id}`, s: it }); }
+    const lessonGrade = new Map(c.sections.flatMap(s => (s.lessons || []).map(l => [l.id, s.grade])));
+    for (const p of c.pools || []) for (const it of p.items) { const g = lessonGrade.get(it.lesson) ?? grade.get(p.section); if (g >= G0 && g <= G1 && it.type === "answer") items.push({ id: `${p.id}:${it.id}`, s: it }); }
     for (const d of c.diags || []) if (d.grade >= G0 && d.grade <= G1) d.items.forEach((it, i) => {
       if (it.type === "fracin" && it.hideDen) items.push({ id: `${d.id}#${i}`, s: { answer: it.answer + "/" + it.den, fractionOnly: true } });
       if (it.type === "answer") items.push({ id: `${d.id}#${i}`, s: it }); });
