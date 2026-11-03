@@ -1129,13 +1129,23 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
   // пули 6 кл.: id з редакції 2026-10-13 (літера уроку + 01–08) лишились у своїх уроках, крім замінених; нові — нові id
   const REMOVED = { pg6m1: ["a01", "b03", "c03"], pg6m3: ["a05", "b05"], pg6m4: ["e05"], pg6m5: ["a03", "b01"] };
   const ADDED = { pg6m1: ["a09", "b09", "c09"], pg6m3: ["a09", "b09"], pg6m4: ["e09"], pg6m5: ["a09", "b09"] };
-  for (const p of math.pools.filter(p => /^pg6m[1-5]$/.test(p.id))) {
-    const sec = math.sections.find(s => s.id === p.section), lessons = sec.lessons.filter(l => !l.boss).map(l => l.id);
-    const old = lessons.flatMap((l, k) => Array.from({ length: 8 }, (_, j) => [String.fromCharCode(97 + k) + "0" + (j + 1), l])).filter(([id]) => !(REMOVED[p.id] || []).includes(id));
+  // Тематичні уроки розділу станом на редакцію 2026-10-13: літера вправи = індекс уроку в ЦЬОМУ списку, а не в поточному розділі.
+  // 2026-11-03 (D-043, пакет за Істером): нові уроки (g6m3l7, g6m4l7–l9) вставлено в розділ перед старими — поточний індекс зсувався б.
+  const HIST = { pg6m1: ["g6m1l1", "g6m1l2", "g6m1l3", "g6m1l4"], pg6m2: ["g6m2l1", "g6m2l2", "g6m2l3", "g6m2l4", "g6m2l5"],
+    pg6m3: ["g6m3l1", "g6m3l2", "g6m3l3", "g6m3l4", "g6m3l5"], pg6m4: ["g6m4l1", "g6m4l2", "g6m4l3", "g6m4l4", "g6m4l5"],
+    pg6m5: ["g6m5l1", "g6m5l2", "g6m5l3", "g6m5l4"] };
+  const pools6 = math.pools.filter(p => /^pg6m[1-5]$/.test(p.id));
+  eq(pools6.map(p => p.id).sort(), Object.keys(HIST), "пули pg6m1–5 є (якір: перевірка нижче не порожня)");
+  for (const p of pools6) {
+    const sec = math.sections.find(s => s.id === p.section), lessons = sec.lessons.filter(l => !l.boss).map(l => l.id), hist = HIST[p.id];
+    eq(hist.every(l => lessons.includes(l)), true, `${p.id}: історичні уроки ${hist.join(", ")} є в розділі`);
+    const old = hist.flatMap((l, k) => Array.from({ length: 8 }, (_, j) => [String.fromCharCode(97 + k) + "0" + (j + 1), l])).filter(([id]) => !(REMOVED[p.id] || []).includes(id));
     eq(old.every(([id, l]) => p.items.some(it => it.id === id && it.lesson === l)), true, `${p.id}: сталі id і уроки збережено`);
     eq(p.items.filter(it => !old.some(([id]) => id === it.id)).map(it => it.id), ADDED[p.id] || [], `${p.id}: нові вправи — лише нові id`);
     eq(p.items.some(it => (REMOVED[p.id] || []).includes(it.id)), false, `${p.id}: вилучені id не використано знову`);
-    for (const l of lessons) { const n = p.items.filter(it => it.lesson === l).length; eq(n >= 6 && n <= 8, true, `${p.id}/${l}: 6–8 вправ (${n})`); }
+    // історичні (required) уроки — строго 6–8; новий урок без пулу (D-043, pending у матриці) — 0, з пулом — так само 6–8
+    for (const l of lessons) { const n = p.items.filter(it => it.lesson === l).length;
+      eq((n >= 6 && n <= 8) || (n === 0 && !hist.includes(l)), true, `${p.id}/${l}: 6–8 вправ (${n})`); }
   }
   // старий прогрес тренування: seen вилучених вправ не ламає добору, SRS теми не змінюється, нова вправа — першою (ще не бачили)
   const lessons1 = math.sections.find(s => s.id === "g6m1").lessons.filter(l => !l.boss).map(l => l.id);
