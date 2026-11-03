@@ -1,5 +1,5 @@
 /* Слід · Математика, 6 клас — діагностика «Що ти вже вмієш?»
-   Статус: verified (verifier-refine-math-diag-g6-coverage, 2026-10-31; reports/verify/refine-math-diag-g6-coverage.md) після редакції 2 (refine-math-diag-g6-coverage, 2026-10-31): cur-проби g6-div, g6-lcm, g6-fadd, g6-prop, g6-neg
+   Статус: verified (verifier-refine-math-dg6-pct-rev3, 2026-11-03; reports/verify/refine-math-dg6-pct-rev3.md) після редакції 3; ред. 2 — verified (verifier-refine-math-diag-g6-coverage, 2026-10-31). Редакція 2 (refine-math-diag-g6-coverage, 2026-10-31): cur-проби g6-div, g6-lcm, g6-fadd, g6-prop, g6-neg
    замінено на місці (ті самі індекси 16, 20, 24, 27, 28 і теми) складеними multi/sort, що перевіряють усе ядро уроку; у них rev: 2.
    Збережені відповіді — вердикти за індексом: розпочатий раніше тест покаже ці п'ять завдань знову (SLID_LEARN.resumeDiag),
    завершений результат не перераховується. Не додавати, не вилучати й не переставляти завдання — лише заміна на місці з rev.
@@ -17,8 +17,8 @@ SLID.diag("math", {
   grade: 6,
   title: "Що ти вже вмієш?",
   why: "Знайдемо теми, які варто згадати, щоб нові уроки давалися легше.",
-  status: "draft",   // verify-math-ister-diag (2026-11-03): теми pre, rem.for, g6-div — так; cur pct (№7) і pct-of (№27) замінено ред. 3 (refine-math-dg6-pct-rev3) — чекає незалежної перевірки
-  meta: { author: "claude-opus", created: "2026-10-13", factcheck: "verifier-refine-math-diag-g6-coverage", revised: "2026-11-03 refine-math-dg6-pct-rev3", teacher: null },
+  status: "verified",   // verifier-refine-math-dg6-pct-rev3 (2026-11-03): усі 30 завдань розв'язано наново, ред. 3 (№7 pct, №27 pct-of) — опора в ms3l1/ms3l2, ядро уроків покрито; reports/verify/refine-math-dg6-pct-rev3.md
+  meta: { author: "claude-opus", created: "2026-10-13", factcheck: "verifier-refine-math-dg6-pct-rev3", revised: "2026-11-03 refine-math-dg6-pct-rev3", teacher: null },
   topics: [
     // передумови з 4–5 класів
     { id: "ord", title: "Порядок дій", kind: "pre", lessons: ["ms0l3"], for: ["g6m3", "g6m5"] },
