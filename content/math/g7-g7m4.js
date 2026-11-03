@@ -1,5 +1,5 @@
 /* Слід · Математика, 7 клас — «Геометрія: трикутники»
-   Статус уроків: verified (g7m4l1, g7m4l4 — draft після правки нотації 2026-11-03: ознаки словами, D-043). 4 уроки (3 теми + boss).
+   Статус уроків: verified (g7m4l1, g7m4l4 — правка нотації 2026-11-03: ознаки словами, D-043; verified — verifier-fix-math-notation-ister). 4 уроки (3 теми + boss).
    Інтерактив (D-014): plane axes:false — polys, drag-вершини, angles, dist/angle у goal.
    Перевірка: node tools/validate.mjs --section g7m4 && node tools/stats.mjs --subject math
    Схема й правила: docs/CONTENT_SCHEMA.md §8, style/, D-019. */
@@ -20,7 +20,7 @@ SLID.section("math", {
       title: "Коли трикутники рівні?",
       short: "Ознаки рівності",
       icon: "scale",
-      status: "draft",
+      status: "verified",
       why: "Щоб перевірити, чи дві опори, шаблони чи деталі збігаються, не накладаючи їх одна на одну.",
       screens: [
         {
@@ -535,7 +535,7 @@ SLID.section("math", {
       title: "Ферма на мосту",
       short: "Фінал розділу",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "g7m4boss",
       why: "Ознаки рівності, рівнобедрений трикутник і сума кутів — у одній конструкції. Бали подвоєні.",

@@ -1,5 +1,5 @@
 /* Слід · Математика, 9 клас — «Геометрія: координати і вектори»
-   Статус уроків: verified (g9m2l3, g9m2l4, g9m2l5 — draft після правки нотації 2026-11-03: вектор з координатами без «=», D-043). 5 уроків (4 теми + boss).
+   Статус уроків: verified (g9m2l3, g9m2l4, g9m2l5 — правка нотації 2026-11-03: вектор з координатами без «=», D-043; verified — verifier-fix-math-notation-ister). 5 уроків (4 теми + boss).
    Інтерактив: plane — точки drag, вектори segs/arrows, коло; ≥2 explore/lab на урок.
    Перевірка: node tools/validate.mjs --section g9m2 && node tools/stats.mjs --subject math
    Схема й правила: docs/CONTENT_SCHEMA.md §8, style/, D-019.
@@ -414,7 +414,7 @@ SLID.section("math", {
       title: "Стрілка з координатами",
       short: "Вектори",
       icon: "line",
-      status: "draft",
+      status: "verified",
       why: "Щоб описувати зсув і напрям однією парою чисел — як у геймпаді чи навігаторі.",
       screens: [
         {
@@ -469,7 +469,7 @@ SLID.section("math", {
           eyebrow: "Теорія",
           title: "Що таке вектор",
           body: `<p><b>Вектор</b> — напрямлений відрізок. Позначають $\\overrightarrow{AB}$ або $\\vec{a}$.</p>
-        <p>Координати: $\\overrightarrow{AB}(x_B - x_A; y_B - y_A)$. Довжина: $|\\vec{a}| = \\sqrt{x^2 + y^2}$.</p>
+        <p>Координати записують у дужках після назви вектора: $\\overrightarrow{AB}(x_B - x_A; y_B - y_A)$. Довжина: $|\\vec{a}| = \\sqrt{x^2 + y^2}$.</p>
         <p><b>Рівні вектори</b> мають однакові координати (однакові довжину й напрям). Їх можна відкладати від різних точок.</p>
         <p>Нульовий вектор $\\vec{0}(0; 0)$ — початок і кінець збігаються.</p>`,
           cta: "Спробувати"
@@ -606,7 +606,7 @@ SLID.section("math", {
       title: "Додати, розтягнути, помножити",
       short: "Дії",
       icon: "path",
-      status: "draft",
+      status: "verified",
       why: "Щоб складати переміщення, масштабувати їх і перевіряти перпендикулярність через скалярний добуток.",
       screens: [
         {
@@ -809,7 +809,7 @@ SLID.section("math", {
       title: "Квест на карті",
       short: "Фінал",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "g9m2boss",
       why: "Координати, коло, пряма й вектори — в одному квесті навігатора. Бали подвоєні.",

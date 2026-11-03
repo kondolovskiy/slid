@@ -1,5 +1,5 @@
 /* Слід · Математика, 9 клас — «Алгебра: прогресії»
-   Статус уроків: verified (g9m5l3, g9m5l4 — draft після правки нотації 2026-11-03: геометрична прогресія $(b_n)$, D-043). 4 уроки (3 теми + boss).
+   Статус уроків: verified (g9m5l3, g9m5l4 — правка нотації 2026-11-03: геометрична прогресія $(b_n)$, D-043; verified — verifier-fix-math-notation-ister). 4 уроки (3 теми + boss).
    Інтерактив: numline jumps / chart bars для членів; повзунки a,d або a,q; ≥2 explore/lab на урок.
    Перевірка: node tools/validate.mjs --section g9m5 && node tools/stats.mjs --subject math
    Схема й правила: docs/CONTENT_SCHEMA.md §8, style/, D-019.
@@ -351,7 +351,7 @@ SLID.section("math", {
       title: "Рівні множники",
       short: "Геометрична",
       icon: "spiral",
-      status: "draft",
+      status: "verified",
       why: "Щоб розуміти складні відсотки, подвоєння популяції й ріст боргу за кредитом.",
       screens: [
         {
@@ -511,7 +511,7 @@ SLID.section("math", {
       title: "Планер заощаджень",
       short: "Фінал",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "g9m5boss",
       why: "Зберемо послідовності, арифметичну й геометричну прогресії — як у банку й у бюджеті сімʼї.",

@@ -6,7 +6,7 @@ type: fix-section
 subject: math
 grade: 6-9
 section: g6m3, g7m4, g9m2, g9m5
-status: review
+status: done
 claimed_by: writer-fix-math-notation-ister
 created: 2026-11-03
 depends_on: [math-ister-migration]

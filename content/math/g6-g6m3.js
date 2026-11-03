@@ -1,5 +1,5 @@
 /* Слід · Математика, 6 клас — «Відношення і пропорції»
-   Статус уроків: g6m3l1–l6 — verified (verifier-g6m3, 2026-10-11; l1–l4 після ревізії D-019/D-020 — verifier-g6m3-d019, 2026-10-13). g6m3l5, g6m3l6 — draft після правки нотації 2026-11-03 (довжина кола $C$, D-043). 6 уроків.
+   Статус уроків: g6m3l1–l6 — verified (verifier-g6m3, 2026-10-11; l1–l4 після ревізії D-019/D-020 — verifier-g6m3-d019, 2026-10-13). g6m3l5, g6m3l6 — правка нотації 2026-11-03 (довжина кола $C$, D-043), verified (verifier-fix-math-notation-ister, 2026-11-03). 6 уроків.
    Перевірка: node tools/validate.mjs --section g6m3 && node tools/stats.mjs --subject math
    Схема й правила: docs/CONTENT_SCHEMA.md (§8 — лабораторія), style/ */
 SLID.section("math", {
@@ -696,7 +696,7 @@ SLID.section("math", {
       title: "Стрічка для обруча",
       short: "Коло і круг",
       icon: "rings",
-      status: "draft",
+      status: "verified",
       why: "Колеса, тарілки, клумби, піца — круглого навколо багато. Число π допомагає виміряти те, до чого не прикладеш лінійку.",
       screens: [
         {
@@ -861,7 +861,7 @@ SLID.section("math", {
       title: "День вареників",
       short: "Фінал розділу",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "g6m3boss",
       why: "Відношення, пропорції, відсотки й коло — в одному дні шкільного кафе. Бали подвоєні.",
