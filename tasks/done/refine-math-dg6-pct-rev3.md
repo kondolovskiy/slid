@@ -6,7 +6,7 @@ type: refine-diag
 subject: math
 grade: 6
 section: dg6
-status: review
+status: done
 claimed_by: impl-refine-math-dg6-pct-rev3
 created: 2026-11-03
 depends_on: [math-ister-migration]
