@@ -97,6 +97,8 @@ const mvM = JSON.parse(JSON.stringify(FM)); Object.assign(mvM.lessons.find(r => 
 const mvA = audit(moved, mvM, learn);
 check(() => assert.deepEqual([mvA.errors, mvA.missing], [[], []], JSON.stringify([mvA.errors, mvA.missing])));
 check(() => assert.deepEqual(audit(moved, mvM, learn, { grade: 6 }).counts.pools, 2));          // pfx5a потрапляє і в 6 кл. через also
+// P3-2 (рев'ю math-ister-migration): з --grade вправи пулу з also — лише уроків цього класу (pfx5a: 8 для fx5a1–2 у 5 кл., 3 для fx5a3 у 6 кл.)
+check(() => assert.deepEqual([5, 6, undefined].map(grade => audit(moved, mvM, learn, grade ? { grade } : {}).counts.exercises), [8, 3 + 4, 6 + 11 + 4]));
 const noAlso = clone(); noAlso.sections[3].lessons.push(noAlso.sections[1].lessons.splice(2, 1)[0]); noAlso.pools[1].items.push(...levels('fx5a3'));
 check(() => assert(audit(noAlso, mvM, learn).errors.some(e => e.includes('section/also не містить fx6b')), 'без also — помилка'));
 // посилання, джерела, рівні, порожній набір, інвентар

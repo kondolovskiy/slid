@@ -156,5 +156,25 @@ await tmpRepo("slid-test-diff-u-", async tmp => {
   });
 }
 
+// 6) клас вправи пулу — за розділом її уроку, а не за section пулу (also, docs/design/math-ister.md §4; рев'ю math-ister-migration, P3-3):
+//    мінімальний зміст — урок 5 кл. і урок 6 кл. по одному екрану answer, пул section «qa5» з also «qa6»: вправа «a» уроку 5 кл., «b», «c» — 6 кл.
+//    --grades 5 — 1 екран + 1 вправа, --grades 6 — 1 екран + 2 вправи (мутант «клас за p.section» дав би 4 і 1).
+await tmpRepo("slid-test-diff-also-", async tmp => {
+  for (const d of fs.readdirSync(path.join(tmp, "content"))) if (d !== "subjects") fs.rmSync(path.join(tmp, "content", d), { recursive: true, force: true });
+  for (const f of fs.readdirSync(path.join(tmp, "content/subjects"))) if (f !== "math.js") fs.rmSync(path.join(tmp, "content/subjects", f));
+  fs.mkdirSync(path.join(tmp, "content/math"));
+  const sec = (g, n) => `SLID.section("math", { id: "qa${g}", grade: ${g}, title: "QA", lessons: [{ id: "qa${g}l1", title: "QA", screens: [{ type: "answer", title: "QA", answer: ${n} }] }] });\n`;
+  const it = (id, g, n) => `{ id: "${id}", lesson: "qa${g}l1", lvl: 1, sk: "num", type: "answer", title: "QA", steps: ["QA"], answer: ${n} }`;
+  fs.writeFileSync(path.join(tmp, "content/math/g5-qa.js"), sec(5, 1)); fs.writeFileSync(path.join(tmp, "content/math/g6-qa.js"), sec(6, 2));
+  fs.writeFileSync(path.join(tmp, "content/math/pool-g5-qa.js"), `SLID.pool("math", { id: "pqa", section: "qa5", also: ["qa6"], status: "draft", items: [${it("a", 5, 3)}, ${it("b", 6, 4)}, ${it("c", 6, 5)}] });\n`);
+  const n = g => { const r = spawnSync(process.execPath, [path.join(tmp, "tools/diff-answers.mjs"), "--old", "HEAD", "--grades", g], { cwd: tmp, encoding: "utf8", maxBuffer: 64 << 20 });
+    const m = (r.stdout || "").match(/Вправ (\d+) \(класи/); return m ? +m[1] : `rc ${r.status}: ${(r.stderr || "").slice(0, 300)}`; };
+  // --old HEAD: learn.js той самий, тож рахуємо лише вправи («Вправ N (класи …)»); коміт фікстури — для порядку
+  execFileSync("git", ["add", "-A"], { cwd: tmp }); execFileSync("git", ["commit", "-qm", "fixture also"], { cwd: tmp });
+  const got = [n("5"), n("6")];
+  ok(got[0] === 2 && got[1] === 3, `also: вправи пулу за класом уроку — очікувано 2 (5 кл.) і 3 (6 кл.), а ${got.join(" / ")}`);
+  console.log(`  also: 5 кл. — ${got[0]}, 6 кл. — ${got[1]} вправ`);
+});
+
 console.log(`test-diff-answers: ${pass} ok, ${fail} ✗`);
 process.exit(fail ? 1 : 0);

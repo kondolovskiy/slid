@@ -50,6 +50,7 @@ node tools/validate.mjs [--section ID | --diag ID | --pool ID] [--quiet]   # 0 �
 npm run check               # build + node-тести + validate + graph-report + stats (склад — package.json)
 python3 tools/playtest.py [--section ID] [--port N]          # пройти уроки в браузері
 python3 tools/test-answer-ui.py --suite regression           # браузерна регресія рушія (не входить у check і CI)
+node tools/test-ui-ister.mjs                                 # браузер (Node Playwright): «Тренування» з also, замок уроку; не в check і CI
 node tools/stats.mjs [--subject S]                           # метрики стилю → reports/style-S.md
 node tools/claim.mjs list|claim|move ...                     # черга задач
 node tools/make-tasks.mjs [--subject S]                      # задачі на написання з плану
