@@ -951,12 +951,13 @@ async def player_qa_checks(browser, url):
     context, page, errors = await qa_page(browser, url, {'grade': 6, 'subject': 'math', 'unlockAll': False, 'diag': {'dg6': {'done': True, 'res': {}, 'topics': {}, 'date': DAY}},
         'plan': {'math': plan6}, 'planByGrade': {'math': {'6': plan6}}})
     # Grade 6 practice keeps «−» and «/» for every number answer (the sign/fraction is not given away).
-    await page.evaluate("""() => {const c=SLID_SUBJECTS.find(c=>c.id==='math'),p=c.pools.find(p=>p.id==='pg6m1');c.pools=[p];
-      p.items=[{id:'k6',lesson:'g6m1l1',lvl:1,sk:p.items[0].sk,src:p.sources[0].id+' №1',type:'answer',title:'2 + 3',answer:5,steps:['5.']}];}""")
-    await page.evaluate("()=>{const S=JSON.parse(localStorage.getItem('slid.v1'));S.lessons={g6m1l1:{done:true}};localStorage.setItem('slid.v1',JSON.stringify(S));}")
+    # Урок 6 кл. — ms3l1 (з 2026-11-03, D-043; g6m1 тепер 5 кл.): клас вправи — клас розділу її уроку.
+    await page.evaluate("""() => {const c=SLID_SUBJECTS.find(c=>c.id==='math'),p=c.pools.find(p=>p.id==='pms3');c.pools=[p];
+      p.items=[{id:'k6',lesson:'ms3l1',lvl:1,sk:p.items[0].sk,src:p.sources[0].id+' №1',type:'answer',title:'2 + 3',answer:5,steps:['5.']}];}""")
+    await page.evaluate("()=>{const S=JSON.parse(localStorage.getItem('slid.v1'));S.lessons={ms3l1:{done:true}};localStorage.setItem('slid.v1',JSON.stringify(S));}")
     await page.reload()
-    await page.evaluate("""() => {const c=SLID_SUBJECTS.find(c=>c.id==='math'),p=c.pools.find(p=>p.id==='pg6m1');c.pools=[p];
-      p.items=[{id:'k6',lesson:'g6m1l1',lvl:1,sk:p.items[0].sk,src:p.sources[0].id+' №1',type:'answer',title:'2 + 3',answer:5,steps:['5.']}];}""")
+    await page.evaluate("""() => {const c=SLID_SUBJECTS.find(c=>c.id==='math'),p=c.pools.find(p=>p.id==='pms3');c.pools=[p];
+      p.items=[{id:'k6',lesson:'ms3l1',lvl:1,sk:p.items[0].sk,src:p.sources[0].id+' №1',type:'answer',title:'2 + 3',answer:5,steps:['5.']}];}""")
     await page.click('button[data-subject="math"]'); await page.click('[data-practice-view="math"]'); await page.click('[data-practice-mix]')
     ins = await page.locator('#stage .anskeys button').evaluate_all('bs => bs.map(b => b.dataset.ins)')
     assert ins == ['-', '/', ' '], ins
