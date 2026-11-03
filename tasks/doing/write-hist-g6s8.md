@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-03T10:33:23.109Z
 id: write-hist-g6s8
 type: write-section
 subject: hist
@@ -6,7 +8,7 @@ grade: 6
 section: g6s8
 weeks: [26, 30]
 status: todo
-claimed_by:
+claimed_by: writer-write-hist-g6s8
 created: 2026-11-03
 ---
 # Написати розділ «Стародавній Рим» (Історія України, 6 клас)
