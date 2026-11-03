@@ -1,6 +1,6 @@
 /* Слід · Математика, 7 клас — «Геометрія: паралельні прямі»
    Статус уроків: verified (g7m6l1: рисунок на екрані 10, fix-math-figs-g7-geo-b — перевірено 2026-11-03, reports/verify/fix-math-figs-g7-geo-b.md). 4 уроки (3 теми + boss).
-   Новий урок g7m6l5 (draft, write-math-g7-geometry-gaps, 2026-11-03; Істер Г7 § 7): перпендикуляр і відстань від точки до прямої. Стоїть першим (як у Істера — перед паралельними); eyebrow решти уроків перенумеровано (Урок 2–4). 5 уроків (4 теми + boss).
+   Новий урок g7m6l5 (verified 2026-11-03, reports/verify/write-math-g7-geometry-gaps.md; write-math-g7-geometry-gaps; Істер Г7 § 7): перпендикуляр і відстань від точки до прямої. Стоїть першим (як у Істера — перед паралельними); eyebrow решти уроків перенумеровано (Урок 2–4). 5 уроків (4 теми + boss).
    Інтерактив (D-014): plane axes:false — дві прямі + січна, drag, live angle(...).
    Перевірка: node tools/validate.mjs --section g7m6 && node tools/stats.mjs --subject math
    Схема й правила: docs/CONTENT_SCHEMA.md §8, style/, D-019. */
@@ -27,7 +27,7 @@ SLID.section("math", {
       title: "Найкоротша стежка до річки",
       short: "Перпендикуляр",
       icon: "river",
-      status: "draft",
+      status: "verified",
       why: "Відстань до дороги, берега чи стіни міряють по перпендикуляру — це найкоротший шлях.",
       screens: [
         {

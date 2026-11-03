@@ -153,7 +153,7 @@ SLID.section("math", {
       title: "Коробка, яку розгорнули",
       short: "Розгортка",
       icon: "map",
-      status: "draft",
+      status: "verified",
       why: "Щоб знати, скільки картону, фарби чи паперу піде на коробку, шафу або кімнату.",
       screens: [
         {

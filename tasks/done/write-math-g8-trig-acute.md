@@ -6,7 +6,7 @@ type: write-section
 subject: math
 grade: 8
 section: g8m4
-status: review
+status: done
 claimed_by: writer-write-math-g8-trig-acute
 created: 2026-11-03
 depends_on: [math-ister-migration]

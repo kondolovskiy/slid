@@ -1,6 +1,6 @@
 /* Слід · Математика, 7 клас — «Геометрія: коло»
    Статус уроків: verified (g7m8l2, g7m8l3: рисунки на екранах теорії, fix-math-figs-g7-geo-b — перевірено 2026-11-03, reports/verify/fix-math-figs-g7-geo-b.md). 4 уроки (3 теми + boss).
-   Нові уроки g7m8l5, g7m8l6 (draft, write-math-g7-geometry-gaps, 2026-11-03; Істер Г7 §§ 23–25): вписане й описане коло, центральні й вписані кути. Стоять перед boss g7m8l4. 6 уроків (5 тем + boss).
+   Нові уроки g7m8l5, g7m8l6 (verified 2026-11-03, reports/verify/write-math-g7-geometry-gaps.md; write-math-g7-geometry-gaps; Істер Г7 §§ 23–25): вписане й описане коло, центральні й вписані кути. Стоять перед boss g7m8l4. 6 уроків (5 тем + boss).
    Інтерактив (D-014): plane axes:false — circles, точки drag, радіус-параметр,
    дотична (angle 90°), lab goal dist/angle.
    Перевірка: node tools/validate.mjs --section g7m8 && node tools/stats.mjs --subject math
@@ -685,7 +685,7 @@ SLID.section("math", {
       title: "Коло навколо й усередині",
       short: "Описане й вписане",
       icon: "target",
-      status: "draft",
+      status: "verified",
       why: "Де поставити вежу однаково далеко від трьох сіл чи фонтан однаково далеко від трьох доріжок — це описане й вписане коло.",
       screens: [
         {
@@ -894,7 +894,7 @@ SLID.section("math", {
       title: "Кут, що дивиться на дугу",
       short: "Вписані кути",
       icon: "eye",
-      status: "draft",
+      status: "verified",
       why: "Звідки ворота видно під тим самим кутом? Відповідь дає теорема про вписаний кут.",
       screens: [
         {

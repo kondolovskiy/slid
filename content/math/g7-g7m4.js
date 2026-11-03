@@ -1,7 +1,7 @@
 /* Слід · Математика, 7 клас — «Геометрія: трикутники»
    Статус уроків: verified (g7m4l1, g7m4l4 — правка нотації 2026-11-03: ознаки словами, D-043; verified — verifier-fix-math-notation-ister). 4 уроки (3 теми + boss).
    Статус уроків: verified (g7m4l2: рисунок до «Медіана до основи», fix-math-figs-g7-geo-a — перевірено 2026-11-03, reports/verify/fix-math-figs-g7-geo-a.md). 4 уроки (3 теми + boss).
-   Нові уроки g7m4l5–g7m4l9 (draft, write-math-g7-geometry-gaps, 2026-11-03; Істер Г7 §§ 18–20): зовнішній кут, сторони й кути, прямокутний трикутник, ознаки рівності прямокутних, нерівність трикутника. Стоять перед boss g7m4l4. 9 уроків (8 тем + boss).
+   Нові уроки g7m4l5–g7m4l9 (verified 2026-11-03, reports/verify/write-math-g7-geometry-gaps.md; write-math-g7-geometry-gaps; Істер Г7 §§ 18–20): зовнішній кут, сторони й кути, прямокутний трикутник, ознаки рівності прямокутних, нерівність трикутника. Стоять перед boss g7m4l4. 9 уроків (8 тем + boss).
    Інтерактив (D-014): plane axes:false — polys, drag-вершини, angles, dist/angle у goal.
    Перевірка: node tools/validate.mjs --section g7m4 && node tools/stats.mjs --subject math
    Схема й правила: docs/CONTENT_SCHEMA.md §8, style/, D-019. */
@@ -538,7 +538,7 @@ SLID.section("math", {
       title: "Кут за межами трикутника",
       short: "Зовнішній кут",
       icon: "path",
-      status: "draft",
+      status: "verified",
       why: "Кут повороту на розі вулиці — це зовнішній кут. Він швидко дає суму двох інших кутів.",
       screens: [
         {
@@ -754,7 +754,7 @@ SLID.section("math", {
       title: "Проти більшої сторони",
       short: "Сторони й кути",
       icon: "eye",
-      status: "draft",
+      status: "verified",
       why: "Щоб за сторонами передбачити, де кут найбільший, і навпаки — без кутоміра.",
       screens: [
         {
@@ -956,7 +956,7 @@ SLID.section("math", {
       title: "Катети й гіпотенуза",
       short: "Прямокутний",
       icon: "bolt",
-      status: "draft",
+      status: "verified",
       why: "Драбина біля стіни, пандус, дах — прямокутні трикутники. Їхні властивості дають довжини й кути без вимірювань.",
       screens: [
         {
@@ -1184,7 +1184,7 @@ SLID.section("math", {
       title: "Два виміри замість трьох",
       short: "Рівні прямокутні",
       icon: "shield",
-      status: "draft",
+      status: "verified",
       why: "Прямий кут уже є в обох трикутників. Тому, щоб довести їхню рівність, досить двох вимірів.",
       screens: [
         {
@@ -1382,7 +1382,7 @@ SLID.section("math", {
       title: "Чи зійдуться три палички?",
       short: "Нерівність трикутника",
       icon: "line",
-      status: "draft",
+      status: "verified",
       why: "Щоб одразу бачити, чи існує трикутник з такими сторонами, — до креслення й розпилу.",
       screens: [
         {
