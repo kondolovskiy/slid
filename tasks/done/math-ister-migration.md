@@ -3,7 +3,7 @@ claimed_from: todo
 claimed_at: 2026-11-03T09:09:37.087Z
 id: math-ister-migration
 type: engine
-status: todo
+status: done
 claimed_by: orchestrator-ister
 created: 2026-11-03
 depends_on: []
@@ -38,3 +38,4 @@ depends_on: []
 - **Контент:** revise-math-ms0b-ister, revise-math-ms3-ms4-ister — done (verified); verify-math-ister-diag — dg5 verified, dg6 draft → refine-math-dg6-pct-rev3.
 - **Прогалини:** 8 задач write-math-* у todo (+ write-math-g6m3-circle-diagrams — пріоритет через g9m7).
 - `npm run check` — зелений; build закомічено окремими комітами.
+- Playtest (по одному): ms0b 7, g6m1 5, ms3 3, ms4 3, g6m3 6, g7m4 4, g7m6 4, g9m2 5, g9m5 4 уроків — пройдено.
