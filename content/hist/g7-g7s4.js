@@ -2,6 +2,7 @@
    6 уроків. Ревізія D-019 (2026-10-13); повторна верифікація verifier-g7s4-d019 — усі уроки verified.
    2026-10-31 (photo-g7s4, D-027): зображення в l1, l2, l3, l6; повторна верифікація verifier-images-g7s4g7s5 — verified (reports/verify/images-hist-g7s4.md).
    2026-11-03 (revise-hist-g7s4-kingdom, D-043/D-044): назва розділу «Королівство Руське»; пояснення назви в l2, завдання «дві назви» в l5, узгоджено l6 — l2, l5, l6 знову draft.
+   2026-11-03 verifier-g7s4-kingdom: l2, l5, l6 — verified (reports/verify/g7s4-kingdom.md).
    Перевірка: node tools/validate.mjs && node tools/stats.mjs
    Схема й правила: docs/CONTENT_SCHEMA.md, style/
    Цитати літопису — за перекладом Леоніда Махновця («Літопис руський», 1989; litopys.org.ua/litop/). */
@@ -185,7 +186,7 @@ SLID.section("hist", {
       title: "Корона з Дорогичина",
       short: "Король Данило",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       why: "Ти побачиш, як князь-вигнанець повернув батькову державу і навіщо йому знадобилася корона.",
       screens: [
         {
@@ -582,7 +583,7 @@ SLID.section("hist", {
       title: "Печатка короля Русі",
       short: "Юрій I і занепад",
       icon: "scroll",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, як держава пережила свій розквіт і чому зникла. А ще навчишся читати печатку як джерело.",
       screens: [
         {
@@ -722,7 +723,7 @@ SLID.section("hist", {
       title: "Помічник літописця",
       short: "Фінал розділу",
       icon: "star",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "rusking",
       why: "Перевірка всього розділу. Бали подвоєні.",
@@ -824,7 +825,7 @@ SLID.section("hist", {
           shuffle: [3, 1, 4, 0, 2],
           fbOk: "Літопис упорядковано!",
           fbBad: "Згадай дати: 1199, 1240, 1253, 1303, 1340.",
-          fbText: "1199 — об'єднання, 1240 — Київ, 1253 — корона, 1303 — митрополія, 1340 — кінець династії. Півтора століття історії."
+          fbText: "1199 — об'єднання, 1240 — Київ, 1253 — корона, 1303 — митрополія, 1340 — загибель Юрія II. Півтора століття історії."
         }
       ],
       outro: {
