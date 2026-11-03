@@ -63,7 +63,7 @@
 | ms2l6 Шкільний ярмарок (фінал) | 5 | 7 | 0.86 | 15 | 29 | 4.8 | 0.004 | 3 | — |
 | ms3l1 Що таке відсоток? | 6 | 9 | 0.67 | 17 | 36 | 4.5 | 0.009 | 4 | — |
 | ms3l2 Скільки це гривень? | 6 | 9 | 0.67 | 18 | 48 | 5.4 | 0 | 3 | — |
-| ms3l4 Шкільна газета (фінал) | 6 | 7 | 0.86 | 18 | 23 | 4.9 | 0.01 | 3 | — |
+| ms3l4 Шкільна газета (фінал) | 6 | 7 | 0.86 | 18 | 23 | 4.9 | 0.009 | 3 | — |
 | g6m2l1 Той самий шматок | 6 | 10 | 0.7 | 17 | 37 | 5.1 | 0.013 | 5 | typeVariety нетипово для сім'ї (z=2.3) |
 | g6m2l2 Простіше — краще | 6 | 10 | 0.7 | 16 | 38 | 4.9 | 0.013 | 5 | typeVariety нетипово для сім'ї (z=2.3) |
 | g6m2l3 Спільна мова дробів | 6 | 10 | 0.7 | 17 | 41 | 4.6 | 0.005 | 4 | — |
@@ -157,7 +157,7 @@
 | g9m1l4 Диспетчер обмежень (фінал) | 9 | 8 | 0.75 | 17 | 29 | 4.6 | 0.025 | 3 | sentenceWords=4.6 поза [6; 13] |
 | g9m2l1 Відстань на карті | 9 | 9 | 0.67 | 20 | 25 | 5 | 0.035 | 3 | sentenceWords=5 поза [6; 13]; maxReadWords нетипово для сім'ї (z=-2) |
 | g9m2l2 Коло й пряма числами | 9 | 10 | 0.6 | 24 | 40 | 5.6 | 0.021 | 3 | sentenceWords=5.6 поза [6; 13] |
-| g9m2l3 Стрілка з координатами | 9 | 9 | 0.56 | 23 | 36 | 5 | 0.033 | 3 | sentenceWords=5 поза [6; 13] |
+| g9m2l3 Стрілка з координатами | 9 | 9 | 0.56 | 23 | 42 | 5.1 | 0.033 | 3 | sentenceWords=5.1 поза [6; 13] |
 | g9m2l4 Додати, розтягнути, помножити | 9 | 9 | 0.56 | 21 | 35 | 4.8 | 0.027 | 3 | sentenceWords=4.8 поза [6; 13] |
 | g9m2l5 Квест на карті (фінал) | 9 | 8 | 0.75 | 21 | 27 | 5.1 | 0.037 | 3 | sentenceWords=5.1 поза [6; 13] |
 | g9m3l1 Що розкаже графік | 9 | 8 | 0.5 | 19 | 42 | 4.6 | 0.026 | 3 | sentenceWords=4.6 поза [6; 13] |
@@ -244,7 +244,7 @@
 - **4:boss**: screens 8±0, gradedShare 0.75±0, readWordsPerScreen 17.4±2.24, maxReadWords 25±4.56, sentenceWords 4.48±0.22, longWordShare 0.01±0, typeVariety 3.2±0.4
 - **5-6:lesson**: screens 9.35±0.72, gradedShare 0.66±0.06, readWordsPerScreen 19.04±2.96, maxReadWords 43.88±7.9, sentenceWords 4.82±0.5, longWordShare 0.01±0.01, typeVariety 3.51±0.64
 - **5-6:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 18.45±2.1, maxReadWords 25.82±4.09, sentenceWords 4.65±0.39, longWordShare 0.01±0.01, typeVariety 3.27±0.45
-- **7-9:lesson**: screens 9.18±0.76, gradedShare 0.56±0.06, readWordsPerScreen 20.69±2.11, maxReadWords 43.27±9.21, sentenceWords 5.14±0.34, longWordShare 0.02±0.01, typeVariety 2.93±0.35
+- **7-9:lesson**: screens 9.18±0.76, gradedShare 0.56±0.06, readWordsPerScreen 20.69±2.11, maxReadWords 43.35±9.17, sentenceWords 5.14±0.34, longWordShare 0.02±0.01, typeVariety 2.93±0.35
 - **7-9:boss**: screens 7.67±0.64, gradedShare 0.79±0.06, readWordsPerScreen 18.19±1.79, maxReadWords 29.43±3.23, sentenceWords 5.07±0.29, longWordShare 0.02±0.01, typeVariety 3.1±0.29
 - **10-11:lesson**: screens 9.54±0.63, gradedShare 0.57±0.06, readWordsPerScreen 22.88±1.9, maxReadWords 48.12±6.56, sentenceWords 5.51±0.39, longWordShare 0.03±0.01, typeVariety 2.9±0.37
 - **10-11:boss**: screens 8.08±0.28, gradedShare 0.75±0.01, readWordsPerScreen 19±1.47, maxReadWords 33.58±7.36, sentenceWords 5.18±0.54, longWordShare 0.04±0.02, typeVariety 2.92±0.28
