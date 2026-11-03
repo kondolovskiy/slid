@@ -1143,7 +1143,8 @@ function bindLang(s){
   if(s.type==="split") on(".cut",b=>{ const c=+b.dataset.c; st.has(c)?st.delete(c):st.add(c); b.setAttribute("aria-pressed",st.has(c)); setDock("","","","Перевірити", st.size>0); });
 }
 function langMarks(s, reveal){
-  const stage=$("#stage"), mark=(el,ok)=>{ el.classList.remove("is-ok","is-bad"); if(ok!==null) el.classList.add(ok?"is-ok":"is-bad"); };
+  // позначка — не лише колір: екранний диктор чує «…: правильно / неправильно» (рев'ю engine-lang-types P3-8; знімає markAria(el,null) і clearMarks)
+  const stage=$("#stage"), mark=(el,ok)=>{ el.classList.remove("is-ok","is-bad"); markAria(el, ok); if(ok!==null) el.classList.add(ok?"is-ok":"is-bad"); };
   if(s.type==="gaps"){ const g=LANG.parseGaps(s.text).gaps;
     stage.querySelectorAll(".gap").forEach((el,k)=>{ el.querySelectorAll(".gopt").forEach(b=>{ const o=+b.dataset.o; mark(b, o===st[k]? o===g[k].correct : reveal&&o===g[k].correct? true : null); }); }); }
   if(s.type==="pick"){ const ok=new Set(LANG.parsePick(s.text).correct);
@@ -1152,7 +1153,7 @@ function langMarks(s, reveal){
     stage.querySelectorAll(".sv").forEach(b=>{ const w=+b.dataset.w, i=+b.dataset.i; mark(b, st[w]===i? i===ws[w].correct : reveal&&i===ws[w].correct? true : null); }); }
   if(s.type==="split"){ const p=LANG.parseSplit(s.word), best=p.variants.map(v=>new Set(v)).sort((a,b)=>[...b].filter(x=>st.has(x)).length-[...a].filter(x=>st.has(x)).length)[0];
     stage.querySelectorAll(".cut").forEach(b=>{ const c=+b.dataset.c; mark(b, st.has(c)? best.has(c) : reveal&&best.has(c)? true : null); if(reveal&&best.has(c)) b.setAttribute("aria-pressed","true"); });
-    if(reveal && !LANG.check(s,st)) $("#hintHost").innerHTML=`<div class="hint">${ic("check")}<span>Правильно: <b>${p.variants.map(v=>esc([...p.word].map((ch,k)=>(v.includes(k)?"-":"")+ch).join(""))).join("</b> або <b>")}</b></span></div>`; }
+    if(reveal && !LANG.check(s,st)) $("#hintHost").innerHTML=`<div class="hint">${ic("check")}<span>Правильно: <b>${p.variants.map(v=>esc(LANG.splitShow(p.word,v))).join("</b> або <b>")}</b></span></div>`; }
   if(s.type==="word"){ const ni=$("#numIn"), ok=LANG.check(s,st); mark(ni, ok);
     if(reveal && !ok) $("#hintHost").innerHTML=`<div class="hint">${ic("check")}<span>Правильна відповідь: <b>${esc(LANG.wordAnswers(s)[0])}</b></span></div>`; }
 }
@@ -1185,7 +1186,7 @@ function bindScreen(s){
   if(LANG.TYPES.includes(s.type)) bindLang(s);
   const nl=$("#nlrng"); if(nl){ numlineUpdate(s); nl.oninput=()=>{ if(checked) return; st=+nl.value; numlineUpdate(s); if(tries) setDock("","","","Перевірити"); }; }
   const sgn=$("#numSign"); if(sgn) sgn.onclick=()=>{ if(checked) return; const ni=$("#numIn"); ni.value= ni.value.startsWith("-")? ni.value.slice(1) : "-"+ni.value; ni.oninput(); ni.focus(); };
-  const ni=$("#numIn"); if(ni){ ni.oninput=()=>{ ni.value= s.type==="word" ? ni.value.slice(0,80) : s.answerKind==="divrem" ? ni.value.replace(/\s+/g," ").slice(0,40) : s.type==="answer"||s.hideDen ? ni.value.replace(/\./g,",").replace(/\u2212/g,"-").slice(0,120) : s.type==="number"&&numDecimal(s) ? ni.value.replace(/\./g,",").replace(/[^0-9,-]/g,"").replace(/(?!^)-/g,"").replace(/(,.*),/g,"$1").slice(0,10) : ni.value.replace(/[^0-9]/g,"").slice(0,6); st=ni.value; if(s.unitForms&&$("#answerUnit")) $("#answerUnit").textContent=answerUnit(s,st); ni.classList.remove("is-ok","is-bad"); setDock("","","","Перевірити", st.trim().length>0); };
+  const ni=$("#numIn"); if(ni){ ni.oninput=()=>{ ni.value= s.type==="word" ? ni.value.slice(0,80) : s.answerKind==="divrem" ? ni.value.replace(/\s+/g," ").slice(0,40) : s.type==="answer"||s.hideDen ? ni.value.replace(/\./g,",").replace(/\u2212/g,"-").slice(0,120) : s.type==="number"&&numDecimal(s) ? ni.value.replace(/\./g,",").replace(/[^0-9,-]/g,"").replace(/(?!^)-/g,"").replace(/(,.*),/g,"$1").slice(0,10) : ni.value.replace(/[^0-9]/g,"").slice(0,6); st=ni.value; if(s.unitForms&&$("#answerUnit")) $("#answerUnit").textContent=answerUnit(s,st); ni.classList.remove("is-ok","is-bad"); if(ni.dataset.al!==undefined) markAria(ni,null); setDock("","","","Перевірити", st.trim().length>0); };
     stage.querySelectorAll(".anskeys button").forEach(b=>b.onclick=()=>{ if(checked) return; const v=b.dataset.ins;
       if(b.parentNode.classList.contains("sym")){ const a=ni.selectionStart??ni.value.length, z=ni.selectionEnd??a; ni.value=ni.value.slice(0,a)+v+ni.value.slice(z); ni.oninput(); ni.focus(); ni.setSelectionRange(a+v.length,a+v.length); return; }
       if(v.trim()==="ост." && (!/\d/.test(ni.value) || /ост/i.test(ni.value))) return ni.focus(); ni.value= v==="-"? (ni.value.startsWith("-")? ni.value.slice(1) : "-"+ni.value) : ni.value+v; ni.oninput(); ni.focus(); });
@@ -1194,7 +1195,14 @@ function bindScreen(s){
     // екранну клавіатуру ще до того, як дитина прочитала умову (Android); поле вона торкне сама. Фокус — на екран, щоб Tab вів з його початку.
     if(coarse()) $("#stage .screen")?.focus({preventScroll:true}); else setTimeout(()=>ni.focus({preventScroll:true}),350); }
 }
-function clearMarks(){ $("#stage").querySelectorAll(".is-ok,.is-bad").forEach(e=>e.classList.remove("is-ok","is-bad")); }
+function clearMarks(){ $("#stage").querySelectorAll(".is-ok,.is-bad").forEach(e=>e.classList.remove("is-ok","is-bad")); $("#stage").querySelectorAll("[data-al]").forEach(e=>markAria(e,null)); }
+/** Назва елемента для диктора з позначкою перевірки: «е: неправильно»; ok === null — повернути власну назву (data-al — назва до позначки) */
+function markAria(el, ok){
+  if(el.dataset.al===undefined) el.dataset.al=el.getAttribute("aria-label")||"";
+  const own=el.dataset.al;
+  if(ok===null){ own? el.setAttribute("aria-label",own) : el.removeAttribute("aria-label"); return; }
+  el.setAttribute("aria-label", `${own||el.textContent.trim()}: ${ok?"правильно":"неправильно"}`);
+}
 function lock(){ $("#stage").querySelectorAll(".opt,.seg button,input,.sgn,.anskeys button,.gopt,.pw,.sv,.cut").forEach(b=>b.disabled=true); if(LAB) LAB.lock(); }
 
 function gradeNow(s){

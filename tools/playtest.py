@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Слід · плейтест: проходить уроки в справжньому браузері (Playwright + Chromium), відповідаючи правильно,
 і перевіряє, що кожне завдання зараховано, а на сторінці немає JS-помилок.
+Мовні вправи (gaps, pick, stress, split, word): спершу завідомо хибна спроба (гілка помилки, позначка для диктора), а також текст кнопок
+gaps/pick і легенда «∅» — tools/playtest-lang.js (engine-lang-p3 пп. 4, 9).
 Запуск:  python3 tools/playtest.py            — усі уроки
          python3 tools/playtest.py --section g6s1 [--shots]   — один розділ або тест рівня (--section dg6) (+ скриншоти в reports/shots/)
          --port N — фіксований порт (типово вільний; паралельно можна, але під навантаженням можливі TimeoutError — для приймання по одному)
@@ -56,18 +58,32 @@ async def answer(pg, s):
             for c in sol: await pg.click(f'#stage .cut[data-c="{c}"]')
         else: await pg.fill("#numIn", sol); await pg.dispatch_event("#numIn", "input")
 
+LANG_TYPES = ("gaps", "pick", "stress", "split", "word")
+async def wrong_first(pg, s, where, errs):
+    """Мовна вправа уроку: що бачить дитина (domIssues), одна хибна спроба (afterWrong), повернути стан перед правильною відповіддю."""
+    for x in await pg.evaluate("s => window.__plLang.domIssues(s)", s): errs.append(f"{where}: {x}")
+    plan = await pg.evaluate("s => window.__plLang.wrongPlan(s)", s)
+    if not plan: return
+    for c in plan["clicks"]: await pg.click(c)
+    if plan["fill"] is not None: await pg.fill("#numIn", plan["fill"]); await pg.dispatch_event("#numIn", "input")
+    await pg.click("#action")
+    bad = await pg.evaluate("() => window.__plLang.afterWrong()")
+    if bad: errs.append(f"{where}: хибна спроба — {bad}")
+    for c in plan["undo"]: await pg.click(c)
+
 async def main():
     async with async_playwright() as p:
         kw = {"executable_path": "/opt/pw-browsers/chromium"} if os.path.exists("/opt/pw-browsers/chromium") and not os.environ.get("PW_DEFAULT") else {}
         try: b = await p.chromium.launch(**kw)
         except Exception: b = await p.chromium.launch()
         pg = await b.new_page(viewport={"width": 400, "height": 860})
+        with open(os.path.join(ROOT, "tools/playtest-lang.js"), encoding="utf-8") as f: await pg.add_init_script(f.read())
         errs = []
         pg.on("pageerror", lambda e: errs.append(f"JS: {e}"))
         await pg.route("**/fonts.googleapis.com/**", lambda r: r.abort())
         await pg.goto(f"http://127.0.0.1:{PORT}/index.html")
         subjects = await pg.evaluate("SLID_SUBJECTS")
-        played = 0
+        played = langs = 0
         for c in subjects:
             for k, sec in enumerate(c["sections"]):
                 if not sec.get("lessons") or (ONLY and sec["id"] != ONLY): continue
@@ -81,6 +97,8 @@ async def main():
                         if SHOTS:
                             os.makedirs(os.path.join(ROOT, "reports/shots"), exist_ok=True)
                             await pg.wait_for_timeout(350); await pg.screenshot(path=os.path.join(ROOT, f"reports/shots/{l['id']}-{si+1}.png"))
+                        if t in LANG_TYPES and not s.get("poll") and not s.get("hyp"):
+                            await wrong_first(pg, s, f"{c['id']} {l['id']} екран {si+1} ({t})", errs); langs += 1
                         await answer(pg, s); await pg.click("#action")
                         cls = await pg.get_attribute("#dock", "class")
                         if t not in ("intro", "info", "explore") and "ok" not in cls and "info" not in cls:
@@ -120,7 +138,7 @@ async def main():
                     if mode == "skip" and await pg.is_hidden("#player"): errs.append(f"{c['id']} {d['id']}: перший крок плану чи перший урок класу не відкрився")
                 diags += 1
         await b.close()
-        print(f"Пройдено уроків: {played}, тестів рівня: {diags}")
+        print(f"Пройдено уроків: {played}, тестів рівня: {diags}, мовних вправ із хибною спробою: {langs}")
         for e in errs: print("ПОМИЛКА ", e)
         sys.exit(1 if errs else 0)
 

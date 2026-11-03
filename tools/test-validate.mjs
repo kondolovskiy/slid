@@ -145,7 +145,7 @@ TEX_CASES.forEach(([name, opt, expErr, expWarn], i) => {
 
 // спільне для решти: очистити фікстурне дерево, записати файли {шлях: текст}, запустити validate з аргументами
 function runTree(files, args) {
-  for (const s of ["hist", "math"]) fs.rmSync(path.join(tmp, "content", s), { recursive: true, force: true });
+  for (const s of ["hist", "math", "ukr"]) fs.rmSync(path.join(tmp, "content", s), { recursive: true, force: true });
   for (const [f, src] of Object.entries(files)) { fs.mkdirSync(path.dirname(path.join(tmp, f)), { recursive: true }); fs.writeFileSync(path.join(tmp, f), src); }
   const r = spawnSync(process.execPath, [path.join(tmp, "tools/validate.mjs"), ...args, "--quiet"], { cwd: tmp, encoding: "utf8" });
   let rep = null; try { rep = JSON.parse(fs.readFileSync(path.join(tmp, "reports/validate.json"), "utf8")); fs.rmSync(path.join(tmp, "reports/validate.json")); } catch {}
@@ -595,6 +595,41 @@ const { figCues: figCuesT } = await import(path.join(ROOT, "tools/lib.mjs"));
     ok(rep.screens === 4, "fig-audit: переглянуто 4 екрани (не 0)", String(rep.screens)); }
   const bad = spawnSync(process.execPath, [path.join(tmp, "tools/fig-audit.mjs"), "--subjekt", "math"], { cwd: tmp, encoding: "utf8" });
   ok(bad.status === 2, "fig-audit: невідомий аргумент — код 2", String(bad.status)); }
+
+// ---- engine-lang-p3: мовні вправи й стиль (усе — попередження, не помилки) ----
+{ const lang = extra => one("fxl", { extra });
+  // п. 16: попередження pick validate виводить як «увага» (warnings), а не помилку
+  expectRun("pick: усі групи правильні — попередження", lang({ type: "pick", title: "Знайди", text: "Він [байдики б'є], а книжку читає." }), ["--section", "fxl"], { warn: "форма кнопки видає відповідь" });
+  expectRun("pick: 3 правильні групи на 1 хибну — попередження", lang({ type: "pick", title: "Знайди", text: "[Мамо рідна], [мабуть так], [на жаль] і [!з того дня] минуло." }), ["--section", "fxl"], { warn: "хоча б одну на дві правильні" });
+  expectRun("pick: [!!…] — попередження", lang({ type: "pick", title: "Знайди", text: "Він [!!книжку] [читає]." }), ["--section", "fxl"], { warn: "подвійний «!»" });
+  // п. 10: «—» поруч із варіантами з тире
+  expectRun("gaps: «—» поруч зі «», —» — попередження", lang({ type: "gaps", title: "Обери", text: "«Іди{*», —|—|»,} сказав він." }), ["--section", "fxl"], { warn: "сусідні варіанти містять тире" });
+  expectRun("gaps: «–» і «—» — чисто", lang({ type: "gaps", title: "Обери", text: "Ніхто {*–|—|:} ні." }), ["--section", "fxl"], { noWarn: "сусідні варіанти містять тире" });
+  // п. 6: заборонена фраза в закресленому, у хибному варіанті gaps і в цілі pick — не рахується; в авторському тексті — рахується
+  const BAN = "заборонена фраза «вірно»";
+  expectRun("banned: <s>вірно</s> у body — чисто", one("fxl", { body: "Пиши <b>правильно</b>, не <s>вірно</s>." }), ["--section", "fxl"], { noWarn: BAN });
+  expectRun("banned: хибний варіант gaps — чисто", lang({ type: "gaps", title: "Обери", text: "Записано {вірно|*правильно}." }), ["--section", "fxl"], { noWarn: BAN });
+  expectRun("banned: ціль pick «Знайди помилку» — чисто", lang({ type: "pick", title: "Знайди помилку", text: "Марко [вірно] записав." }), ["--section", "fxl"], { noWarn: BAN });
+  expectRun("banned: правильний варіант gaps — попередження", lang({ type: "gaps", title: "Обери", text: "Записано {*вірно|правильно}." }), ["--section", "fxl"], { warn: BAN });
+  expectRun("banned: у тексті автора — попередження", one("fxl", { body: "Тут усе вірно." }), ["--section", "fxl"], { warn: BAN });
+  // п. 18: пояснення з номером варіанта
+  expectRun("fbText: «у другому варіанті» — попередження", lang({ type: "choice", title: "Обери", opts: ["а", "б"], correct: 0, fbText: "У другому й третьому варіантах є повтор, тому обираємо перший." }), ["--section", "fxl"], { warn: "номер варіанта" });
+  expectRun("fbText: без номера — чисто", lang({ type: "choice", title: "Обери", opts: ["а", "б"], correct: 0, fbText: "Варіант «а» без повтору, тож він правильний." }), ["--section", "fxl"], { noWarn: "номер варіанта" });
+  // п. 11: рядок алфавіту й список <li> без крапок — не «дуже довге речення»
+  const abc = "А Б В Г Ґ Д Е Є Ж З И І Ї Й К Л М Н О П Р С Т У Ф Х Ц Ч Ш Щ Ь Ю Я";
+  expectRun("довге речення: рядок алфавіту — чисто", one("fxl", { body: `<p>Алфавіт:</p><p>${abc}</p><p>Букв тридцять три.</p>` }), ["--section", "fxl"], { noWarn: "дуже довге речення" });
+  expectRun("довге речення: справжні 26 слів — попередження", one("fxl", { body: Array.from({ length: 26 }, (_, i) => i ? "слово" : "Слово").join(" ") + "." }), ["--section", "fxl"], { warn: "дуже довге речення" });
+  // п. 15: милозвучність — лише для ukr, попередження
+  fs.copyFileSync(path.join(ROOT, "content/subjects/ukr.js"), path.join(tmp, "content/subjects/ukr.js"));
+  const ukrSec = body => ({ "content/ukr/g5-fxu.js": secJS("ukr", { id: "fxu", grade: 5, weeks: [1, 2], title: "Фікстура", why: "Регресійний тест валідатора: милозвучність.",
+    meta: { author: "test", created: "2026-11-03", factcheck: null, teacher: null }, lessons: [{ id: "fxul1", title: "Фікстура", why: "Перевірити милозвучність.", icon: "pot", status: "draft",
+      outro: { text: "Готово.", learned: ["Перше", "Друге"] }, screens: [{ type: "intro", title: "Початок", body: "Як писати?" }, { type: "info", title: "Теорія", body },
+        { type: "choice", sk: "orth", title: "Питання", body: "Як правильно?", opts: ["у школі", "в школі"], correct: 0, fbOk: "Так.", fbText: "Між приголосними пишемо «у», бо так легше вимовити.", hint: "Вимов уголос." }] }] }) });
+  { const rep = expectRun("ukr: «брат в школі» — попередження милозвучності", ukrSec("Брат в школі, а мрія й надія — поруч."), ["--section", "fxu"], { warn: "милозвучність" });
+    if (rep) ok(rep.warnings.some(w => w.includes("#fxul1 екран 2") && w.includes("«Брат в школі» → «у»") && w.includes("«мрія й надія» → «і»")), "ukr: обидві знахідки в одному попередженні екрана 2", rep.warnings.join("\n  ")); }
+  expectRun("ukr: «брат у школі» — чисто", ukrSec("Брат у школі, а мрія і надія — поруч."), ["--section", "fxu"], { noWarn: "милозвучність" });
+  expectRun("math: «брат в школі» — милозвучність не перевіряється", one("fxl", { body: "Брат в школі." }), ["--section", "fxl"], { noWarn: "милозвучність" });
+  fs.rmSync(path.join(tmp, "content/subjects/ukr.js")); }
 
 console.log(fails ? `\n${fails} з ${n} перевірок не пройшли` : `test-validate: усі ${n} перевірок пройшли`);
 process.exit(fails ? 1 : 0);

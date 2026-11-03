@@ -3,8 +3,9 @@
 // ПОПЕРЕДЖЕННЯ — порушення стилю (style/*.md, style/profiles.json) — їх треба виправити або обґрунтувати в нотатках задачі.
 // Запуск: node tools/validate.mjs [--section <id> | --diag <id> | --pool <id>] [--quiet]
 import fs from "node:fs"; import path from "node:path";
-import { loadContent, GRADED, TYPES, plain, words, sentences, lessonMetrics, gradeBand, readJSON, ROOT, figCues, IMG_REQUIRED } from "./lib.mjs";
+import { loadContent, GRADED, TYPES, plain, metricText, words, sentences, lessonMetrics, gradeBand, readJSON, ROOT, figCues, IMG_REQUIRED } from "./lib.mjs";
 import { analyzeGraph } from "./graph-lib.mjs";
+import { euphony } from "./euphony.mjs";
 
 const args = process.argv.slice(2);
 const onlySec = args.includes("--section") ? args[args.indexOf("--section") + 1] : null;
@@ -20,6 +21,22 @@ const bannedRe = banned.map(b => [b, new RegExp(`(?<![\\p{L}'’ʼ])${b.replace(
 const errors = [], warnings = [];
 const E = (where, msg) => errors.push(`${where}: ${msg}`);
 const W = (where, msg) => warnings.push(`${where}: ${msg}`);
+// заборонені фрази — лише в тексті автора: закреслене <s>…</s> (<del>) — навмисна помилка-приклад; у gaps — лише правильний варіант
+// (те, що дитина прочитає), у pick — без слів у [дужках] (цілі вправи «Знайди помилку»); u5s2 вчить, що «вірно», «на протязі» — помилки (engine-lang-p3 п. 6)
+const STRUCK = /<(s|del)(?:\s[^>]*)?>[\s\S]*?<\/\1>/gi;
+function bannedText(s, noteTxt) {
+  const ex = s.type === "gaps" ? lang.readText(s) : s.type === "pick" && typeof s.text === "string" ? s.text.replace(/\[[^\]]*\]/g, " ") : s.text;
+  return [s.title, s.body, noteTxt, s.fbText, s.fbOk, s.fbBad, s.hint, ex, ...(s.opts || []), ...(s.items || []).flat()].filter(x => typeof x === "string").join(" ").replace(STRUCK, " ");
+}
+// пояснення посилається на номер варіанта («у другому варіанті») — автор легко помиляється в порядку (verifier-u6s10; engine-lang-p3 п. 18)
+const OPT_REF = /(?<![\p{L}])(?:перш|друг|трет|четверт|п['’ʼ]ят|останн)\p{L}*\s+(?:(?:й|і|та|або|чи)\s+\p{L}+\s+)?варіант/iu;
+// милозвучність у/в, і/й, з/із/зі в авторському тексті (tools/euphony.mjs, УП § 23–25; engine-lang-p3 п. 15) — попередження, одне на екран
+const EUPHONY = { ukr: true };
+function euphonyCheck(where, c, texts) {
+  if (!EUPHONY[c.id]) return;
+  const hits = texts.filter(x => typeof x === "string").flatMap(euphony);
+  if (hits.length) W(where, `милозвучність (УП § 23–25): ${hits.map(h => `«${h.found}» → «${h.want}» (${h.rule.split(":")[0]})`).join("; ")}`);
+}
 // команди формул беремо з рушія (app/math.js, SLID_MATH.commands), щоб списки не розходились (\\lg був у рушії, але не тут)
 const MATH_COMMANDS = new Set(content.math?.commands || []);
 if (!MATH_COMMANDS.size) { console.error("ПОМИЛКА ЗАВАНТАЖЕННЯ: app/math.js не віддав SLID_MATH.commands"); process.exit(1); }
@@ -215,7 +232,11 @@ function checkScreen(S, s, c, diag, pool = false) {
   if (/\$\{/.test(txt)) E(S, "у тексті лишилось «${» — шаблонний рядок з'їв формулу");
   for (const t of [s.title, s.body, s.steps ? null : s.fbText, s.hint, ...(s.opts || [])].filter(Boolean)) if (((String(t).match(/\$/g) || []).length) % 2) E(S, "непарна кількість $ — формула не закрита");
   for (const formula of txt.matchAll(/\$\$?([\s\S]+?)\$\$?/g)) for (const m of formula[1].matchAll(/\\([A-Za-z]+)/g)) if (!MATH_COMMANDS.has(m[1])) W(S, `формула містить непідтриману команду \\${m[1]}`);
-  for (const [b, re] of bannedRe) if (re.test(txt)) W(S, `заборонена фраза «${b}» (style/banned-phrases.txt)`);
+  const own = bannedText(s, noteTxt);
+  for (const [b, re] of bannedRe) if (re.test(own)) W(S, `заборонена фраза «${b}» (style/banned-phrases.txt)`);
+  for (const t of [s.fbText, s.fbOk, s.fbBad, s.hint]) { const m = typeof t === "string" && plain(t).match(OPT_REF);
+    if (m) { W(S, `пояснення посилається на номер варіанта («${m[0]}») — назви сам варіант: порядок легко сплутати`); break; } }
+  euphonyCheck(S, c, [s.title, s.body, s.fbOk, s.fbText, s.fbBad, s.hint, noteTxt]);
   if (/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/u.test(txt)) W(S, "емодзі в тексті уроку");
   if (s.img && !fs.existsSync(path.join(ROOT, s.img))) E(S, `немає файлу ${s.img}`);
   if (s.img && !s.cap) E(S, "у фото має бути підпис cap (що, де, коли)");
@@ -277,7 +298,8 @@ function checkScreen(S, s, c, diag, pool = false) {
       if (!(s.expr && s.den)) E(S, "fracin потребує expr і den"); break;
   }
   // довжина речень
-  const sentLong = sentences(plain([s.body].join(" "))).filter(x => words(x).length > 25);
+  // metricText: пункт <li> — окреме речення; рядок алфавіту, транскрипції — не речення (engine-lang-p3 п. 11)
+  const sentLong = sentences(metricText(s.body || "")).filter(x => words(x).length > 25);
   if (sentLong.length) W(S, `дуже довге речення (${words(sentLong[0]).length} слів): «${sentLong[0].slice(0, 60)}…»`);
 }
 
@@ -319,6 +341,7 @@ for (const c of subjects) for (const sec of c.sections) {
     if (l.badge && !allBadges.has(l.badge)) E(L, `badge «${l.badge}» не оголошено`);
     if (!l.outro?.text || !Array.isArray(l.outro.learned) || l.outro.learned.length < 2 || l.outro.learned.length > 4) E(L, "outro: потрібні text і 2–4 пункти learned");
     if (l.screens?.[0]?.type !== "intro") E(L, "перший екран має бути intro (проблема, з якої починається урок)");
+    euphonyCheck(L, c, [l.title, l.why, l.outro?.text, ...(Array.isArray(l.outro?.learned) ? l.outro.learned : [])]);
     l.screens.forEach((s, i) => { checkScreen(`${L} екран ${i + 1} (${s.type})`, s, c, false); figRef(`${L} екран ${i + 1} (${s.type})`, s, l.screens[i - 1]); });
     // профіль складності
     const m = lessonMetrics(l), p = profiles[c.id]?.[gradeBand(sec.grade)] || profiles._default[gradeBand(sec.grade)];

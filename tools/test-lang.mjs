@@ -121,6 +121,44 @@ const no = (v, msg) => eq(!!v, false, msg);
   eq(L.warnings({ type: "pick", text: "[Сонце] світить." }), [], "warnings: без груп — чисто");
   eq(L.readText({ type: "pick", text: "Він [байдики б'є], а [!книжку читає]." }), "Він байдики б'є, а книжку читає.", "readText: [!…]");
 }
+/* engine-lang-p3 */
+{ // п. 1 (R2-P3-1): двійники зводяться, коли очікувана відповідь кирилична, а не лише коли кирилиця є у введеному; мала k
+  ok(L.check({ type: "word", answer: "і" }, "i"), "word: латинська i як сполучник «і»");
+  ok(L.check({ type: "word", answer: "око" }, "oko"), "word: слово цілком латиницею (o, k)");
+  ok(L.check({ type: "word", answer: "кіт" }, "kіт"), "word: мала латинська k");
+  ok(L.check({ type: "word", answer: "Київ", keepCase: true }, "Kиїв"), "word: велика K з keepCase");
+  no(L.check({ type: "word", answer: "кіт" }, "kit"), "word: латинська t не двійник — неправильно");
+  no(L.check({ type: "word", answer: "ok" }, "ок"), "word: латинська відповідь — кирилиця у введеному не зводиться до латиниці");
+  ok(L.check({ type: "word", answer: "ok" }, "OK"), "word: латинська відповідь — регістр як і раніше");
+  no(L.check({ type: "word", answer: "і" }, "  "), "word: порожнє введення — неправильно");
+  // п. 8 (engine-lang-dash P3-1): readText замінює лише варіант, що цілком дорівнює токену
+  eq(L.readText({ type: "gaps", text: "Тривало {*1–2|1—2} дні." }), "Тривало 1–2 дні.", "readText: «1–2» лишається як є");
+  eq(L.readText({ type: "gaps", text: "{*Моя річ — гармоніка|Моя річ, гармоніка}." }), "Моя річ — гармоніка.", "readText: фраза з тире не втрачає тире");
+  eq(L.readText({ type: "gaps", text: "«Іди{*», —|»,} сказав він." }), "«Іди», — сказав він.", "readText: складений варіант «», —»");
+  eq(L.readText({ type: "gaps", text: "Ніхто {* – |:} ні. Ден{ь| * — }ки." }), "Ніхто — ні. Денки.", "readText: токени з пробілами навколо");
+  // п. 16 (pick-groups P3-3, P3-4): пробіли біля «!», [ !…], warnings при помилці розбору й нерядковому text
+  eq(L.readText({ type: "pick", text: "Він [! книжку читає] і [ !спить]." }), "Він книжку читає і спить.", "readText: пробіл після «!» не лишається");
+  eq(L.parsePick("Він [ ! книжку читає] і [спить].").words.map(w => [w.v, w.ok]), [["Він", false], ["книжку читає", false], ["і", false], ["спить", true]], "pick: [ ! …] — хибна група");
+  eq(L.warnings({ type: "pick", text: "[Сонце" }), [], "warnings: помилка розбору — без попереджень (помилку дає issues)");
+  eq(L.warnings({ type: "pick" }), [], "warnings: pick без text — без падіння");
+  eq(L.warnings({ type: "gaps", text: 5 }), [], "warnings: gaps з нерядковим text — без падіння");
+  ok(L.warnings({ type: "pick", text: "Він [!!книжку] [читає]." }).some(w => w.includes("«!книжку»")), "warnings: [!!…] — кнопка з «!»");
+  // п. 16 (pick-groups P3-1): хибних груп — хоча б одна на дві правильні
+  const three = "[Мамо рідна], [мабуть так], [на жаль] і [!з того дня] минуло.";
+  ok(L.warnings({ type: "pick", text: three }).some(w => w.includes("правильних кнопок із кількох слів 3, хибних — 1")), "warnings: 3 правильні групи на 1 хибну");
+  eq(L.warnings({ type: "pick", text: "[Мамо рідна], [мабуть так] і [!з того дня] минуло." }), [], "warnings: 2 правильні на 1 хибну — чисто");
+  // п. 10: «—» (нічого) поруч із варіантами, що містять тире
+  ok(L.warnings({ type: "gaps", text: "«Іди{*», —|—|»,} сказав він." }).some(w => w.includes("пропуск 1") && w.includes("тире")), "warnings: «—» поруч зі «», —»");
+  eq(L.warnings({ type: "gaps", text: "Ніхто {*–|—|:} ні." }), [], "warnings: токен тире «–» і «—» — чисто (автор знає токен)");
+  eq(L.warnings({ type: "gaps", text: "Ден{ь|*—}ки, сон{ц|*—}е." }), [], "warnings: звичайне «нічого» — чисто");
+  // п. 3 (R2-P3-3): HTML-тег між літерою і пропуском
+  ok(L.warnings({ type: "gaps", text: "<b>б{*е|и}р</b>{*е|и}за" }).some(w => w.includes("HTML-тег")), "warnings: тег розриває слово з пропуском");
+  ok(L.warnings({ type: "gaps", text: "с<b>{*е|и}</b>ло" }).some(w => w.includes("HTML-тег")), "warnings: тег навколо пропуску всередині слова");
+  eq(L.warnings({ type: "gaps", text: "<b>б{*е|и}реза</b> і <i>с{*е|и}ло</i>" }), [], "warnings: тег навколо цілого слова — чисто");
+  // п. 5 (P3-8): показ поділу — «|» для слова з дефісом
+  eq(L.splitShow("молоко", [2, 4]), "мо-ло-ко", "splitShow: межі «-»");
+  eq(L.splitShow("жовто-синій", [3, 9]), "жов|то-син|ій", "splitShow: слово з дефісом — межі «|»");
+}
 /* розв'язок дає правильну відповідь */
 for (const s of [{ type: "gaps", text: "с{*е|и}ло" }, { type: "pick", text: "[а] б" }, { type: "stress", words: ["м+ама"] }, { type: "word", answer: "так" }, { type: "split", word: "ма|ма" }])
   ok(L.check(s, L.solution(s)), `solution → check: ${s.type}`);
