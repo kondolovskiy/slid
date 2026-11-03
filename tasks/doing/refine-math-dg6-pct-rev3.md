@@ -1,11 +1,13 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-03T20:25:11.294Z
 id: refine-math-dg6-pct-rev3
 type: refine-diag
 subject: math
 grade: 6
 section: dg6
 status: todo
-claimed_by:
+claimed_by: impl-refine-math-dg6-pct-rev3
 created: 2026-11-03
 depends_on: [math-ister-migration]
 ---

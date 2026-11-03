@@ -1,4 +1,7 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-03T20:25:11.219Z
+claimed_by: impl-tools-make-tasks-template
 id: tools-make-tasks-template
 type: engine
 subject: all

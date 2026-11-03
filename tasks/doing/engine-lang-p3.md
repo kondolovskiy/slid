@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-03T20:25:11.135Z
 id: engine-lang-p3
 type: engine
 subject: ukr
 status: todo
-claimed_by:
+claimed_by: impl-engine-lang-p3
 created: 2026-11-02
 ---
 # Рушій мовних вправ: дрібні зауваження рев'ю (P3)
