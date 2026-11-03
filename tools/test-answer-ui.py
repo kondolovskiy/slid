@@ -969,8 +969,11 @@ async def open_lesson_at(page, lesson, at):
     """Open a real lesson from its section page and answer the screens before index `at` correctly."""
     k, i, screens = await page.evaluate("""id => {const c=SLID_SUBJECTS.find(c=>c.id==='math');const k=c.sections.findIndex(s=>(s.lessons||[]).some(l=>l.id===id));
       const L=c.sections[k].lessons;const i=L.findIndex(l=>l.id===id);return [k,i,L[i].screens];}""", lesson)
-    await page.click('button[data-subject="math"]'); await page.click(f'[data-topic="{k}"]')
-    await page.click(f'[data-open="{i}"]'); await page.click('#go')
+    await page.click('button[data-subject="math"]')
+    if await page.locator(f'[data-topic="{k}"]').count():
+        await page.click(f'[data-topic="{k}"]'); await page.click(f'[data-open="{i}"]'); await page.click('#go')
+    else:   # урок іншого класу (після D-043 g6m1 — 5 кл., ms3 — 6 кл.): відкриваємо так само, як кнопки data-lesson застосунку
+        await page.evaluate("id => startById(id)", lesson)
     for screen in screens[:at]:
         await answer_context_screen(page, screen)
         if screen['type'] not in ('intro', 'info', 'explore'):
@@ -2264,7 +2267,7 @@ async def hyp_checks(browser, url):
             await page.route('**/app/evidence.js', lambda r: r.abort())
         page.set_default_timeout(7000)
         await page.goto(url)
-        await page.evaluate("localStorage.clear(); localStorage.setItem('slid.v1', JSON.stringify({grade:5}))")
+        await page.evaluate("localStorage.clear(); localStorage.setItem('slid.v1', JSON.stringify({grade:6}))")
         await page.reload()
         assert await page.evaluate("!!window.SLID_HYP") == (mode != 'nohyp'), mode
         by_title = await page.evaluate(items_js)
@@ -2623,7 +2626,7 @@ async def hyp_checks(browser, url):
             await page.route('**/app/hyp.js', lambda r: r.abort())
         page.set_default_timeout(7000)
         await page.goto(url)
-        await page.evaluate("localStorage.clear(); localStorage.setItem('slid.v1', JSON.stringify({grade:5}))")
+        await page.evaluate("localStorage.clear(); localStorage.setItem('slid.v1', JSON.stringify({grade:6}))")
         await page.reload()
         had = None
         for i, scr in enumerate(await open_lesson_at(page, 'g6m1l1', 0)):
@@ -2683,7 +2686,7 @@ async def hyp_checks(browser, url):
         page.set_default_timeout(7000)
         await page.goto(url)
         assert await page.evaluate("(() => { try { localStorage.getItem('slid.v1'); return false; } catch (e) { return true; } })()"), 'localStorage не кидає'
-        await page.click('[data-grade="5"]'); await page.click('[data-tab="path"]'); await page.click('[data-tab="path"]')
+        await page.click('[data-grade="6"]'); await page.click('[data-tab="path"]'); await page.click('[data-tab="path"]')
         by_title = await page.evaluate(items_js)
         for i, scr in enumerate(await open_lesson_at(page, 'g6m1l1', 0)):
             if i == 2:

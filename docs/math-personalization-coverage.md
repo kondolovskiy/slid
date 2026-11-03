@@ -35,7 +35,7 @@
 | g9m6l2 | geom | meas | довжина кола, площа круга — екрани `meas` |
 | g10m3l3 | expr | eq | ірраціональні рівняння — екрани `eq` (пулу ще немає) |
 | g11m4l1, g11m4l2 | meas | geom | елементи призми, піраміди, тіл обертання — екрани `geom` (пулу ще немає) |
-| dg5 `cmp` / `quot` | num, num / num, num | cmp, cmp / div, div | за уроками g4m1l3, g4m3l3 (`cur-ms3` і dg6 `pct` лишаються pct — за екранами ms3l1/l2) |
+| dg5 `cmp` / `quot` | num, num / num, num | cmp, cmp / div, div | за уроками g4m1l3, g4m3l3 (`cur-ms3` і dg6 `pct` лишаються pct — за екранами ms3l1/l2; з v4 `cur-ms3` — divis, ознаки подільності g6m1l2) |
 | dg8 `cur-g8m6` | meas | geom | g8m6l1 |
 | dg9 `polygon` / `cur-g9m5` | meas, meas / expr | geom, geom / num | g8m6l1, g9m5l1 |
 | dg11 `ineq` / `circle` / `cur-g11m4` | func, func / geom, geom / meas | eq, eq / meas, meas / geom | g9m3l4, g9m6l2, g11m4l1 (тесту ще немає) |
@@ -69,7 +69,7 @@
 | g11m6l3 | expr | func | екрани `func` (4) і `calc` (2) — основна func; масив не ставимо, доки немає пулу з обома |
 | g11m6l4 | expr | meas | екрани `meas` (4) і `geom` (2) — основна meas (так само) |
 
-Інші пункти «sk» задачі закриті в ³ (dg5 cmp/quot, ms0bl4, ms0l5, g4m1l3, g4m3l3, g7m7l2, g8m6l1 і cur-g8m6, g8m1l2/l4, g8m3l2/l4, g9m3l4); cur-ms3 лишається pct — екрани ms3l1/l2 переведено на pct. Попередження про sk окремих вправ (pg7m7 b01/b02 `eq` у g7m7l2 `func`, pg8m1 b04/b07, pg8m3 d09, pg8m6 a06, pg9m3 d06) — питання змісту пулів, матриця їх не змінює.
+Інші пункти «sk» задачі закриті в ³ (dg5 cmp/quot, ms0bl4, ms0l5, g4m1l3, g4m3l3, g7m7l2, g8m6l1 і cur-g8m6, g8m1l2/l4, g8m3l2/l4, g9m3l4); cur-ms3 лишається pct — екрани ms3l1/l2 переведено на pct (з v4 — divis, див. «Зміни v4»). Попередження про sk окремих вправ (pg7m7 b01/b02 `eq` у g7m7l2 `func`, pg8m1 b04/b07, pg8m3 d09, pg8m6 a06, pg9m3 d06) — питання змісту пулів, матриця їх не змінює.
 
 **Формати.** Перевірено наявність вправи кожного нового формату в пулі (verified).
 

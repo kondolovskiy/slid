@@ -26,7 +26,8 @@ check(() => assert(!all.missing.some(e => /^pg11m[26]:/.test(e))));
 // dg6 перевіряє сам зміст, а не лише узгодженість із собою: живий dg6 без прогалин, а зіпсовані зв'язки (sk, lesson) і порядок
 // завдань у копії живого dg6 — прогалини itemSkills / itemIndices.
 const cloneMath = () => JSON.parse(JSON.stringify(subject));
-check(() => assert.deepEqual(audit(subject, matrix, learn, { diag: 'dg6' }).missing, []));
+// статус (draft до повторної перевірки, D-043 verify-math-ister-diag) — стан процесу, не зв'язок змісту; якір — лише зв'язки
+check(() => assert.deepEqual(audit(subject, matrix, learn, { diag: 'dg6' }).missing.filter(e => e !== 'dg6: ще не verified'), []));
 { const lost = cloneMath(); lost.diags.find(d => d.id === 'dg6').items.forEach(it => { it.sk = 'num'; delete it.lesson; });
   check(() => assert(audit(lost, matrix, learn, { diag: 'dg6' }).missing.some(e => e.startsWith('dg6/') && e.includes('itemSkills')))); }
 { const sw = cloneMath(), dd = sw.diags.find(d => d.id === 'dg6'); [dd.items[0], dd.items[1]] = [dd.items[1], dd.items[0]];

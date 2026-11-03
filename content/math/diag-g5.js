@@ -11,7 +11,7 @@ SLID.diag("math", {
   grade: 5,
   title: "Що ти вже вмієш?",
   why: "Знайдемо теми, які варто згадати, щоб нові уроки давалися легше.",
-  status: "verified",
+  status: "draft",   // D-043: тема cur-ms3 і №26 змінено — повторна перевірка verify-math-ister-diag
   meta: { author: "claude-opus", created: "2026-10-30", factcheck: "self", teacher: null },
   topics: [
     // передумови з 4 класу

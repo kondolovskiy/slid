@@ -53,7 +53,7 @@ _2026-11-03 · задача `math-ister-migration` · рішення D-043. Ос
 - `validatePool`: урок вправи має належати `section` або одному з `also`; кожен id в `also` — наявний розділ того самого предмета, не дорівнює `section`, без повторів.
 - `practiceItems`: клас і «поточність» вправи — за розділом **її уроку** (`section` або `also`), а не розділу пулу. Для пулів без `also` поведінка та сама.
 - `personalization-qa --grade N`: пул потрапляє у вибірку класу, якщо хоч один його розділ (`section`/`also`) з цього класу.
-- Схема — docs/CONTENT_SCHEMA.md §10; тести — `tools/test-learn.mjs` (видимість вправ у 5 і 6 кл.) і `tools/test-validate.mjs` (помилки `also`).
+- Схема — docs/CONTENT_SCHEMA.md §10; тести — `tools/test-learn.mjs` (видимість вправ у 5 і 6 кл. і помилки `validatePool` для `also`), `tools/test-personalization-qa.mjs` (матриця з `also`).
 
 `pms3` (ms3l1, ms3l2 — обидва в ms3) і `pg6m1` переходять разом із розділом — `also` не потрібен; змінюється лише ім'я файлу.
 
@@ -75,6 +75,11 @@ _2026-11-03 · задача `math-ister-migration` · рішення D-043. Ос
 
 ### 5.4 Матриця персоналізації → 2026-11-03.v4
 docs/math-personalization-coverage.json: рядки уроків ms3l1–l3, ms4l1–l3, g6m1l1–l4 — нові `grade`/`section`; диагностики dg5/dg6 — теми як у 5.1–5.2; `previous: 2026-11-01.v3`, розділ «Зміни v4» у .md. Інших змін (sk, формати, пули) немає.
+
+## 5.5 Після рев'ю (reports/review/math-ister-migration.md)
+- P2-1: `unlocked` у app/app.js — пройдений урок не замикається, коли перед ним вставлено перенесений урок (ms0b: ms3l3, ms4l1).
+- P2-3: dg5 і dg6 — `draft` до повторної перевірки (tasks/todo/verify-math-ister-diag.md).
+- P2-2 (старі завершені тести показуються за новими темами) — у handoff як відоме обмеження; P2-4 — revise-math-ms0b-ister до публікації.
 
 ## 6. Нотація (glossary/math.md «Вирішено 2026-11-03»)
 Звірено самостійно з текстами Істера 5 (2022), 6 (2023), Геометрія 7 і 9 (2024, 2026), Алгебра 9 (2026) — PDF з file.4book.org (reports/math-ister-map.md §1).
