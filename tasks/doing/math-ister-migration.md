@@ -19,3 +19,14 @@ depends_on: []
 Незалежне рев'ю інженерних змін (D-026); верифікація контенту (content-verify).
 
 ## Нотатки виконавця
+
+### 2026-11-03 · orchestrator-ister — етапи 1–3 (дослідження, дизайн, реалізація)
+- **Дослідження:** reports/math-ister-map.md (дослідник — субагент; вибірково звірено оркестратором: зміст Істер 5 § 1–49 — подільність § 26–32; Істер 6 с. 174 — `C = πd`, `C = 2πr` (скан); Істер 5 § 23 — `P = 2a + 2b`, `P = 2(a + b)`, тож теза звіту §5 «периметр 5 кл. — (a + b) · 2» неповна: так лише в прикладі формули § 11).
+- **Дизайн:** docs/design/math-ister.md.
+- **Реалізація** (коміти aad5018, build 01c539f):
+  - уроки між розділами (id без змін): ms3l3, ms4l1 → ms0b; розділи g6m1 → 5 кл., ms3 «Відсотки» → 6 кл. (тижні 1–4), ms4 «Об'єм» → 6 кл. (33–35); тижні 5–6 кл.; g7m6 перед g7m4; файли `git mv` за класом;
+  - рушій: поле пулу `also` — app/learn.js (practiceItems, validatePool), app/app.js (екран «Тренування»: розділи пулу з also, без дублів), tools/personalization-qa.mjs, tools/diff-answers.mjs; CONTENT_SCHEMA §10;
+  - тести: test-learn (also: видимість 4/5/6 кл., ключі, 8 помилок validatePool), test-personalization-qa (also у матриці, без also — помилка); оновлено тести, прив'язані до живого dg6 (теми №21, №27, known), test-hyp §2.1 (135/145/9/157/157, docs/design/diag-hypothesis-math.md), CLI-тест `--pool pg6m1 --grade 6`;
+  - dg5 (№26 rev 2 — ознаки подільності; for), dg6 (злиття g6-div/g6-lcm у pre, pct → cur pct/pct-of), graph.js 2026-11-03.1, матриця 2026-11-03.v4 (draft).
+  - `npm run check` — зелений (validate 0 помилок / 265 попереджень, як до змін; personalization-qa 0; graph-report 0).
+- **Далі:** незалежне рев'ю (engineering-reviewer) → reports/review/math-ister-migration.md; нотація (glossary) і контент — задачі fix-*/revise-*; прогалини — write-*.
