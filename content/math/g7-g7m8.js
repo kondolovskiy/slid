@@ -1,5 +1,5 @@
 /* Слід · Математика, 7 клас — «Геометрія: коло»
-   Статус уроків: verified, крім g7m8l2 і g7m8l3 — draft (fix-math-figs-g7-geo-b: рисунки на екранах теорії). 4 уроки (3 теми + boss).
+   Статус уроків: verified (g7m8l2, g7m8l3: рисунки на екранах теорії, fix-math-figs-g7-geo-b — перевірено 2026-11-03, reports/verify/fix-math-figs-g7-geo-b.md). 4 уроки (3 теми + boss).
    Інтерактив (D-014): plane axes:false — circles, точки drag, радіус-параметр,
    дотична (angle 90°), lab goal dist/angle.
    Перевірка: node tools/validate.mjs --section g7m8 && node tools/stats.mjs --subject math
@@ -215,7 +215,7 @@ SLID.section("math", {
       title: "Дотик однієї точки",
       short: "Дотична",
       icon: "target",
-      status: "draft",
+      status: "verified",
       why: "Ремені, колеса, тіні від круглих предметів — скрізь дотична. Її властивість економить вимірювання.",
       screens: [
         {
@@ -450,7 +450,7 @@ SLID.section("math", {
       title: "Циркуль замість лінійки",
       short: "Побудови",
       icon: "path",
-      status: "draft",
+      status: "verified",
       why: "Трикутник з рівними сторонами, середину відрізка й пряму під кутом 90° будують циркулем і лінійкою.",
       screens: [
         {

@@ -1,5 +1,5 @@
 /* Слід · Математика, 7 клас — «Геометрія: паралельні прямі»
-   Статус уроків: verified, крім g7m6l1 — draft (fix-math-figs-g7-geo-b: рисунок на екрані 10). 4 уроки (3 теми + boss).
+   Статус уроків: verified (g7m6l1: рисунок на екрані 10, fix-math-figs-g7-geo-b — перевірено 2026-11-03, reports/verify/fix-math-figs-g7-geo-b.md). 4 уроки (3 теми + boss).
    Інтерактив (D-014): plane axes:false — дві прямі + січна, drag, live angle(...).
    Перевірка: node tools/validate.mjs --section g7m6 && node tools/stats.mjs --subject math
    Схема й правила: docs/CONTENT_SCHEMA.md §8, style/, D-019. */
@@ -26,7 +26,7 @@ SLID.section("math", {
       title: "Коли рейки не зустрінуться",
       short: "Ознаки",
       icon: "line",
-      status: "draft",
+      status: "verified",
       why: "Щоб перевірити на кресленні, чи дві лінії справді не перетнуться.",
       screens: [
         {

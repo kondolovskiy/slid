@@ -3,13 +3,13 @@
    Усі задачі — з підручника Мерзляк, Якір «Геометрія. 7 клас» (2024); умови, числа й рисунки звірено
    за відрендереними сторінками PDF 2026-10-31. srcPage — друкований номер сторінки (у цьому PDF збігається з номером сторінки файлу).
    Рисунки підручника переказано словами; 2026-11-03 (fix-math-figs-g7-geo-a) до 14 задач додано статичні рисунки lab plane
-   (a02, a04, a05, a07, a08, b03, b04, b05, b07, b08, c04, c05, c07, c08) — статус знову draft до перевірки.
+   (a02, a04, a05, a07, a08, b03, b04, b05, b07, b08, c04, c05, c07, c08) — перевірено 2026-11-03 (reports/verify/fix-math-figs-g7-geo-a.md), verified.
    Перевірка: node tools/validate.mjs --pool pg7m4
    Схема: docs/CONTENT_SCHEMA.md §10 */
 SLID.pool("math", {
   id: "pg7m4",
   section: "g7m4",
-  status: "draft",
+  status: "verified",
   meta: { author: "claude-opus", created: "2026-10-31", factcheck: "verifier-pool-g7m4", teacher: null },
   sources: [
     { id: "mer7g", title: "Мерзляк А. Г., Якір М. С. Геометрія : підруч. для 7 кл. закладів заг. серед. освіти. — Харків: Гімназія, 2024 (п. 7–11, 16)", url: "https://file.4book.org/images/shcoolbook_ua/7/7_geom_m_2024.pdf" }

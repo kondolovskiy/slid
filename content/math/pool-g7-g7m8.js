@@ -1,5 +1,5 @@
 /* Слід · Математика, 7 клас — пул задач для тренування до розділу «Геометрія: коло» (g7m8)
-   Статус: draft (рисунки lab до a07, a08, b01, b02, b05–b08 — fix-math-figs-g7-geo-b, 2026-11-03; раніше verified: verifier-pg7m8, 2026-10-31, reports/verify/pg7m8.md). 24 задачі: по 8 на required-уроки g7m8l1, g7m8l2, g7m8l3 (3 рівня 1, 3 рівня 2, 2 рівня 3).
+   Статус: verified (рисунки lab до a07, a08, b01, b02, b05–b08 — fix-math-figs-g7-geo-b, перевірено 2026-11-03, reports/verify/fix-math-figs-g7-geo-b.md; раніше verifier-pg7m8, 2026-10-31, reports/verify/pg7m8.md). 24 задачі: по 8 на required-уроки g7m8l1, g7m8l2, g7m8l3 (3 рівня 1, 3 рівня 2, 2 рівня 3).
    Boss g7m8l4 не дублюється (за задачею write-math-pool-g7m8, матриця 2026-10-16.v2).
    Усі задачі — з підручника Мерзляка, Якіра «Геометрія. 7 клас» (2024; див. sources); умови й числа звірено
    2026-10-31 за текстом PDF і за відрендереними сторінками (рисунки 314, 317, 328, 329, 342).
@@ -10,7 +10,7 @@
 SLID.pool("math", {
   id: "pg7m8",
   section: "g7m8",
-  status: "draft",
+  status: "verified",
   meta: { author: "w-write-math-pool-g7m8", created: "2026-10-31", factcheck: "verifier-pg7m8", teacher: null },
   sources: [
     { id: "mer7g", title: "Мерзляк А. Г., Якір М. С. Геометрія : підручник для 7 класу закладів загальної середньої освіти. — Харків : Гімназія, 2024 (наказ МОН № 124 від 05.02.2024); PDF — дзеркало 4book.org", url: "https://file.4book.org/images/shcoolbook_ua/7/7_geom_m_2024.pdf" }
@@ -72,7 +72,8 @@ SLID.pool("math", {
       lab: { kind: "plane", axes: false, grid: 0, view: [-4, 4.4, -3.6, 4],
         circles: [{ c: "O", r: "3" }],
         points: { O: { at: [0, 0] }, A: { at: [-3, 0] }, B: { at: [3, 0] }, C: { at: [1.5, 2.598] } },
-        segs: [{ a: "A", b: "B", label: "12 см" }, ["B", "C"]],
+        segs: [["A", "B"], ["B", "C"]],
+        texts: [{ at: [0, -0.75], t: "AB = 12 см", color: "ink", bold: true }],
         angles: [{ from: "A", at: "B", to: "C", color: "gold", label: "60°" }],
         alt: "Коло з центром O, діаметр AB 12 см і хорда BC; кут ABC 60 градусів" },
       hint: "Проведи радіус $OC$. Розглянь трикутник $OBC$: які в нього сторони рівні й чому дорівнюють його кути?",

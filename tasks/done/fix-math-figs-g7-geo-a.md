@@ -5,7 +5,7 @@ claimed_by: verifier-fix-math-figs-g7-geo-a
 id: fix-math-figs-g7-geo-a
 type: fix
 subject: math
-status: review
+status: done
 created: 2026-11-03
 depends_on: [tools-math-fig-audit]
 files: content/math/g7-g7m2.js, content/math/pool-g7-g7m2.js, content/math/g7-g7m4.js, content/math/pool-g7-g7m4.js
@@ -97,3 +97,6 @@ files: content/math/g7-g7m2.js, content/math/pool-g7-g7m2.js, content/math/g7-g7
 **Статуси:** pool-g7-g7m2.js (pg7m2) і pool-g7-g7m4.js (pg7m4): verified → draft (увесь файл). g7-g7m4.js: лише g7m4l2 verified → draft (+ рядок у шапці). g7-g7m2.js не змінено.
 
 **Перевірки:** `validate --pool pg7m4`, `--pool pg7m2`: 0 помилок, 0 попереджень. `--section g7m4`: 0 помилок, 4 попередження sentenceWords (були й до змін). Попереджень «умова посилається на рисунок» у моїх файлах немає (їх і не було: усі 26 кандидатів — рівень geo). `playtest.py --section g7m4`: пройдено 4 уроки. `test-answer-ui.py --suite content --pool pg7m4 / pg7m2`: green. `personalization-qa --grade 7`: «pg7m2/pg7m4 ще не verified» — очікувано через draft. `fig-audit.mjs` (оновив reports/fig-audit-math.md): у моїх файлах лишилися 10 пунктів зі списку «не потрібен» вище, а 16 доданих зникли.
+
+## Верифікація
+verifier-fix-math-figs-g7-geo-a, 2026-11-03: прийнято, правок змісту немає; g7m4l2, pg7m2, pg7m4 → verified. Звіт: reports/verify/fix-math-figs-g7-geo-a.md.

@@ -5,7 +5,7 @@ claimed_by: verifier-fix-math-figs-g7-geo-b
 id: fix-math-figs-g7-geo-b
 type: fix
 subject: math
-status: review
+status: done
 created: 2026-11-03
 depends_on: [tools-math-fig-audit]
 files: content/math/g7-g7m6.js, content/math/pool-g7-g7m6.js, content/math/g7-g7m8.js, content/math/pool-g7-g7m8.js, content/math/diag-g7.js
@@ -86,3 +86,6 @@ files: content/math/g7-g7m6.js, content/math/pool-g7-g7m6.js, content/math/g7-g7
 **Не вдалося точно:** немає.
 
 **Перевірка:** validate --section g7m6 / g7m8 — 0 помилок (4 попередження sentenceWords у кожному — були й до правки, рисунки їх не стосуються); --pool pg7m6, --pool pg7m8, --diag dg7 — 0 помилок, 0 попереджень; попереджень «умова посилається на рисунок» у моїх файлах немає. figCues по моїх файлах: лишилися тільки 7 пунктів «не потрібен» вище. playtest --section g7m6, g7m8 — 4/4 уроки; test-answer-ui --suite content --pool pg7m6 / pg7m8 — green. Знімки рисунків — scratchpad `fix-math-figs-g7-geo-b/v*-*.png`. build не запускав.
+
+## Верифікація
+verifier-fix-math-figs-g7-geo-b, 2026-11-03: прийнято; 1 правка (pg7m8 a08: підпис «12 см» під O → «AB = 12 см»); g7m6l1, g7m8l2, g7m8l3, pg7m6, pg7m8 → verified. Звіт: reports/verify/fix-math-figs-g7-geo-b.md.

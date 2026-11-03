@@ -1,6 +1,6 @@
 /* Слід · Математика, 7 клас — пул задач для тренування до розділу «Геометрія: найпростіші фігури» (g7m2)
    Статус: verified (verifier-pool-g7m2, 2026-10-31; reports/verify/pg7m2.md). 24 задачі: по 8 на required-уроки g7m2l1, g7m2l2, g7m2l3 (3 рівня 1, 3 рівня 2, 2 рівня 3).
-   2026-11-03 (fix-math-figs-g7-geo-a): до c05 додано рисунок (точки на прямій) — статус знову draft до перевірки.
+   2026-11-03 (fix-math-figs-g7-geo-a): до c05 додано рисунок (точки на прямій) — перевірено 2026-11-03 (reports/verify/fix-math-figs-g7-geo-a.md), verified.
    Boss (g7m2l4) окремого пулу не має — за матрицею 2026-10-16.v2.
    Усі задачі — з підручника Мерзляк, Якір «Геометрія. 7 клас» (2024), див. sources; умови й числа звірено
    за відрендереними сторінками PDF 2026-10-31. srcPage — друкований номер сторінки (у цьому PDF він збігається з номером сторінки файлу).
@@ -9,7 +9,7 @@
 SLID.pool("math", {
   id: "pg7m2",
   section: "g7m2",
-  status: "draft",
+  status: "verified",
   meta: { author: "claude-opus", created: "2026-10-31", factcheck: "verifier-pool-g7m2 2026-10-31 (reports/verify/pg7m2.md)", teacher: null },
   sources: [
     { id: "g7", title: "Мерзляк А. Г., Якір М. С. Геометрія. 7 клас. — Харків: Гімназія, 2024", url: "https://file.4book.org/images/shcoolbook_ua/7/7_geom_m_2024.pdf" }

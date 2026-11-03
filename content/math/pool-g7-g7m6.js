@@ -1,15 +1,15 @@
 /* Слід · Математика, 7 клас — пул задач для тренування до розділу «Геометрія: паралельні прямі» (g7m6)
-   Статус: draft (рисунки до b07, c08 — fix-math-figs-g7-geo-b; раніше verified: verifier-pool-g7m6, 2026-10-31; reports/verify/pg7m6.md). 22 задачі: g7m6l1 — 7, g7m6l2 — 7, g7m6l3 — 8 (boss g7m6boss без задач).
+   Статус: verified (рисунки до b07, c08 — fix-math-figs-g7-geo-b, перевірено 2026-11-03, reports/verify/fix-math-figs-g7-geo-b.md; раніше verifier-pool-g7m6, 2026-10-31; reports/verify/pg7m6.md). 22 задачі: g7m6l1 — 7, g7m6l2 — 7, g7m6l3 — 8 (boss g7m6boss без задач).
    Матриця docs/math-personalization-coverage.md 2026-10-16.v2: усі три уроки required, формат number (+ choice/list за умовою).
    Усі задачі — з підручника Мерзляк, Якір. Геометрія 7 (2024), п. 14–15; умови й числа звірено за відрендереними сторінками PDF.
    srcPage — друкований номер сторінки (у цьому PDF збігається з номером сторінки файлу).
-   Розташування кутів з рисунків підручника переказано словами (adapted: true); b07 і c08 мають статичний рисунок lab (fix-math-figs-g7-geo-b, 2026-11-03 → status draft).
+   Розташування кутів з рисунків підручника переказано словами (adapted: true); b07 і c08 мають статичний рисунок lab (fix-math-figs-g7-geo-b, 2026-11-03).
    Перевірка: node tools/validate.mjs --pool pg7m6; node tools/personalization-qa.mjs --pool pg7m6
    Схема: docs/CONTENT_SCHEMA.md §10 */
 SLID.pool("math", {
   id: "pg7m6",
   section: "g7m6",
-  status: "draft",
+  status: "verified",
   meta: { author: "w-write-math-pool-g7m6", created: "2026-10-31", factcheck: "verifier-pool-g7m6", teacher: null },
   sources: [
     { id: "mer7g", title: "Мерзляк А. Г., Якір М. С. Геометрія: підручник для 7 класу. — Харків: Гімназія, 2024 (п. 14–15; дзеркало file.4book.org)", url: "https://file.4book.org/images/shcoolbook_ua/7/7_geom_m_2024.pdf" }

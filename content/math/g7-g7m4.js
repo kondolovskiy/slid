@@ -1,5 +1,5 @@
 /* Слід · Математика, 7 клас — «Геометрія: трикутники»
-   Статус уроків: verified; g7m4l2 — draft (2026-11-03, fix-math-figs-g7-geo-a: рисунок до екрана «Медіана до основи»). 4 уроки (3 теми + boss).
+   Статус уроків: verified (g7m4l2: рисунок до «Медіана до основи», fix-math-figs-g7-geo-a — перевірено 2026-11-03, reports/verify/fix-math-figs-g7-geo-a.md). 4 уроки (3 теми + boss).
    Інтерактив (D-014): plane axes:false — polys, drag-вершини, angles, dist/angle у goal.
    Перевірка: node tools/validate.mjs --section g7m4 && node tools/stats.mjs --subject math
    Схема й правила: docs/CONTENT_SCHEMA.md §8, style/, D-019. */
@@ -219,7 +219,7 @@ SLID.section("math", {
       title: "Дві рівні сторони",
       short: "Рівнобедрений",
       icon: "home",
-      status: "draft",
+      status: "verified",
       why: "Трикутник з двома рівними сторонами тримає дахи й мости: рівні схили дають рівні кути.",
       screens: [
         {
