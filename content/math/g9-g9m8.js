@@ -1,5 +1,5 @@
 /* Слід · Математика, 9 клас — «Геометрія: початки стереометрії» (Істер, Геометрія 9, 2026, розділ 6)
-   Статус уроків: draft. Задача write-math-g9m8-lines-planes: уроки l1–l4 (§ 25–28, с. 214–224).
+   Статус уроків: verified (verifier-g9m8, 2026-11-03, reports/verify/g9m8.md). Задача write-math-g9m8-lines-planes: уроки l1–l4 (§ 25–28, с. 214–224).
    Задача write-math-g9m8-prisms-pyramids: уроки l5–l8 (§ 29–30, с. 224–232; призма — l5 поверхня, l6 об'єм; піраміда — l7 поверхня, l8 об'єм).
    Задача write-math-g9m8-solids-revolution: уроки l9–l11 (§ 31–33, с. 233–242; циліндр, конус, куля — кожен з площею поверхні й об'ємом) і фінал l12 (boss, значок g9m8boss): по завданню на l3, l6, l7, l9, l10, l11.
    Тіла обертання — статичні й параметричні креслення plane (еліпс основи — fns з sqrt(max(0, 1 - (x/r)^2))); перехід призма → циліндр і піраміда → конус — solid з повзунком n. Радіус $r$, висота $h$, твірна $l$ — як в Істера 9.
@@ -34,7 +34,7 @@ SLID.section("math", {
       title: "Три ніжки не хитаються",
       short: "Площина",
       icon: "home",
-      status: "draft",
+      status: "verified",
       why: "Щоб зрозуміти, чому штатив і табурет на трьох ніжках стоять рівно на будь-якій підлозі.",
       screens: [
         {
@@ -209,7 +209,7 @@ SLID.section("math", {
       title: "Прямі, що не зустрінуться",
       short: "Прямі в просторі",
       icon: "line",
-      status: "draft",
+      status: "verified",
       why: "Щоб розрізняти паралельні, мимобіжні й перпендикулярні прямі в кімнаті, на мосту й у коробці.",
       screens: [
         {
@@ -473,7 +473,7 @@ SLID.section("math", {
       title: "Перпендикуляр і похила",
       short: "Пряма і площина",
       icon: "target",
-      status: "draft",
+      status: "verified",
       why: "Щоб знаходити висоту щогли, відстань від лампи до підлоги й довжину троса-розтяжки.",
       screens: [
         {
@@ -755,7 +755,7 @@ SLID.section("math", {
       title: "Підлога і стеля",
       short: "Дві площини",
       icon: "city",
-      status: "draft",
+      status: "verified",
       why: "Щоб розуміти, чому будівельники стежать за паралельністю підлоги й стелі та прямими кутами між стінами.",
       screens: [
         {
@@ -979,7 +979,7 @@ SLID.section("math", {
       title: "Коробка-трикутник",
       short: "Призма",
       icon: "book",
-      status: "draft",
+      status: "verified",
       why: "Щоб рахувати, скільки картону, фарби чи жерсті піде на коробку, ящик або будівлю.",
       screens: [
         {
@@ -1193,7 +1193,7 @@ SLID.section("math", {
       title: "Літр у пакеті",
       short: "Об'єм призми",
       icon: "pot",
-      status: "draft",
+      status: "verified",
       why: "Щоб знати, скільки вміщує пакет, акваріум чи кімната, і скільки шпалер купити на ремонт.",
       screens: [
         {
@@ -1384,7 +1384,7 @@ SLID.section("math", {
       title: "Дах альтанки",
       short: "Піраміда",
       icon: "flag",
-      status: "draft",
+      status: "verified",
       why: "Щоб рахувати, скільки покрівлі піде на дах-піраміду, і розуміти, як улаштовані піраміди.",
       screens: [
         {
@@ -1606,7 +1606,7 @@ SLID.section("math", {
       title: "Пісок у піраміді",
       short: "Об'єм піраміди",
       icon: "scale",
-      status: "draft",
+      status: "verified",
       why: "Щоб знаходити об'єм пірамід: даху, купи щебеню чи пакетика чаю.",
       screens: [
         {
@@ -1779,7 +1779,7 @@ SLID.section("math", {
       title: "Етикетка з банки",
       short: "Циліндр",
       icon: "rings",
-      status: "draft",
+      status: "verified",
       why: "Щоб рахувати бляху на банку, фарбу на трубу й об'єм бочки чи мензурки.",
       screens: [
         {
@@ -2031,7 +2031,7 @@ SLID.section("math", {
       title: "Тканина на намет",
       short: "Конус",
       icon: "flag",
-      status: "draft",
+      status: "verified",
       why: "Щоб рахувати тканину на намет, жерсть на лійку й об'єм купи піску чи щебеню.",
       screens: [
         {
@@ -2283,7 +2283,7 @@ SLID.section("math", {
       title: "Шкіра для м'яча",
       short: "Куля",
       icon: "globe",
-      status: "draft",
+      status: "verified",
       why: "Щоб знаходити площу поверхні й об'єм м'яча, кульки чи глобуса.",
       screens: [
         {
@@ -2456,7 +2456,7 @@ SLID.section("math", {
       title: "Парк із геометрії",
       short: "Фінал",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "g9m8boss",
       why: "Похила, призма, піраміда, циліндр, конус і куля — в одному проєкті парку. Бали подвоєні.",

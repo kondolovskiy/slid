@@ -14,7 +14,7 @@ SLID.section("math", {
   weeks: [1, 12],
   title: "Геометрія: чотирикутники",
   why: "Щоб знати властивості фігур, з яких складається наш світ: від кімнат до екранів.",
-  requires: ["g7m6l1"],
+  requires: ["g7m6l1", "g7m8l2", "g7m8l6"],
   meta: { author: "writer-g8m2", created: "2026-10-11", factcheck: "verifier-g8m2", teacher: null },
   badges: [
     {

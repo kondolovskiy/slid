@@ -6,7 +6,7 @@ type: write-section
 subject: math
 grade: 9
 section: g9m8
-status: review
+status: done
 claimed_by: writer-write-math-g9m8-prisms-pyramids
 created: 2026-11-03
 depends_on: [math-ister-migration, write-math-g9m8-lines-planes]
