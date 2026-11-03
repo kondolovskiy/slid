@@ -10,7 +10,7 @@ SLID.section("math", {
   weeks: [30, 35],
   title: "Алгебра: ймовірність і статистика",
   why: "Щоб розуміти опитування, прогнози погоди й шанси в іграх, а не вірити інтуїції.",
-  requires: ["ms2l5", "ms3l3"],
+  requires: ["ms2l5", "g6m3l7"],
   meta: { author: "writer-g9m7", created: "2026-10-12", factcheck: "self", teacher: null },
   badges: [
     { id: "g9m7boss", name: "Майстер шансів", icon: "chart", desc: "Пройти фінальну задачу з ймовірності й статистики" }
