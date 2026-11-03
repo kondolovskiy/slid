@@ -1,7 +1,7 @@
 ---
-claimed_from: todo
-claimed_at: 2026-11-03T09:15:19.166Z
-claimed_by: writer-fix-math-figs-g9
+claimed_from: review
+claimed_at: 2026-11-03T09:39:13.927Z
+claimed_by: verifier-fix-math-figs-g9
 id: fix-math-figs-g9
 type: fix
 subject: math
