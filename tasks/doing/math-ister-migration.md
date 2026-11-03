@@ -30,3 +30,11 @@ depends_on: []
   - dg5 (№26 rev 2 — ознаки подільності; for), dg6 (злиття g6-div/g6-lcm у pre, pct → cur pct/pct-of), graph.js 2026-11-03.1, матриця 2026-11-03.v4 (draft).
   - `npm run check` — зелений (validate 0 помилок / 265 попереджень, як до змін; personalization-qa 0; graph-report 0).
 - **Далі:** незалежне рев'ю (engineering-reviewer) → reports/review/math-ister-migration.md; нотація (glossary) і контент — задачі fix-*/revise-*; прогалини — write-*.
+
+### 2026-11-03 · orchestrator-ister — етапи 4–5 і приймання
+- **Рев'ю (D-026):** reports/review/math-ister-migration.md — «прийнято» для фінального diff (повторне рев'ю 2). Виправлено P1-1 (фікстури регресії; QA-хук `window.__slidStart`), P2-1 (`unlocked`), P2-3 (dg5/dg6 draft → верифікація); P2-2 — питання людині (handoff); P3 — tasks/todo/tools-ister-p3.md. Додатково: g6m1 `requires: ["m4a"]`.
+- **Браузерна регресія:** `python3 tools/test-answer-ui.py --suite regression` — green (exit 0).
+- **Нотація:** glossary «Вирішено 2026-11-03»; fix-math-notation-ister — done (verified, reports/verify/fix-math-notation-ister.md).
+- **Контент:** revise-math-ms0b-ister, revise-math-ms3-ms4-ister — done (verified); verify-math-ister-diag — dg5 verified, dg6 draft → refine-math-dg6-pct-rev3.
+- **Прогалини:** 8 задач write-math-* у todo (+ write-math-g6m3-circle-diagrams — пріоритет через g9m7).
+- `npm run check` — зелений; build закомічено окремими комітами.
