@@ -3,7 +3,7 @@ claimed_from: todo
 claimed_at: 2026-11-03T09:16:22.721Z
 id: tools-world-img
 type: tools
-status: review
+status: done
 claimed_by: orchestrator
 created: 2026-11-03
 depends_on: []
@@ -17,3 +17,4 @@ depends_on: []
 
 ## Нотатки виконавця
 - 2026-11-03 orchestrator: `IMG_REQUIRED.world = "error"`; test-validate — 3 нові випадки world (без img → помилка, з img → ні, boss без img → помилка), копіюється content/subjects/world.js, фікстури world прибираються після циклу (інакше повний прогін бачив залишок). make-tasks: exemplar.world. `node tools/test-validate.mjs` — 1022/1022, `node tools/test-make-tasks.mjs` — 22/22.
+- 2026-11-03 рев'ю: прийнято (reports/review/tools-world-img.md); P3 — grade фікстури world, коментар validate:287 і AGENTS.md §4 п. 9 «історія» → handoff.
