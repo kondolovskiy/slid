@@ -1,11 +1,13 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-03T10:12:52.087Z
 id: revise-hist-g7s5-khanate
 type: revise-section
 subject: hist
 grade: 7
 section: g7s5
 status: todo
-claimed_by:
+claimed_by: writer-revise-hist-g7s5-khanate
 created: 2026-11-03
 depends_on: []
 ---
