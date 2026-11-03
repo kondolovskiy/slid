@@ -6,7 +6,7 @@
 SLID.section("math", {
   id: "g7m4",
   grade: 7,
-  weeks: [9, 20],
+  weeks: [17, 26],
   title: "Геометрія: трикутники",
   why: "Щоб доводити рівність фігур і розуміти, чому трикутник — найміцніша конструкція.",
   meta: { author: "claude-opus", created: "2026-10-11", factcheck: "verifier-g7m4", teacher: null },

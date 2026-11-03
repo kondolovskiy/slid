@@ -5,6 +5,9 @@
    завершений результат не перераховується. Не додавати, не вилучати й не переставляти завдання — лише заміна на місці з rev.
    Редакція 1 — verified (ШІ). 12 тем-передумов (4–5 кл., по 2 завдання) + 6 тем 6 класу (по 1 завданню) = 30 завдань.
    Порядок: спершу базові завдання всіх тем-передумов, далі складніші впереміш із темами 6 класу.
+   Міграція за Істером (D-043, docs/design/math-ister.md §5.2, 2026-11-03): подільність (g6m1) — 5 кл., відсотки (ms3) — 6 кл. Тож g6-div і g6-lcm злито в
+   pre-тему g6-div (№17 і №21, lesson у завданні; u колишньої g6-lcm — на №21), pre-тему pct розділено на cur-теми pct (№7) і pct-of (№27); rem.for — g6m2.
+   Завдання, їхні індекси й зміст не змінено, тому rev не потрібен. Тепер 12 тем-передумов (по 2 завдання) + 6 тем 6 класу (по 1) = 30 завдань.
    Перевірка: node tools/validate.mjs --diag dg6
    Схема й правила: docs/CONTENT_SCHEMA.md §9, style/math.md */
 SLID.diag("math", {
@@ -18,7 +21,7 @@ SLID.diag("math", {
     // передумови з 4–5 класів
     { id: "ord", title: "Порядок дій", kind: "pre", lessons: ["ms0l3"], for: ["g6m3", "g6m5"] },
     { id: "eq", title: "Прості рівняння", kind: "pre", lessons: ["ms0l4"], for: ["g6m3", "g6m5"] },
-    { id: "rem", title: "Ділення з остачею", kind: "pre", lessons: ["m4a"], for: ["g6m1"] },
+    { id: "rem", title: "Ділення з остачею", kind: "pre", lessons: ["m4a"], for: ["g6m2"] },
     { id: "frac", title: "Що таке дріб", kind: "pre", lessons: ["m1"], for: ["g6m2"] },
     { id: "frac-cmp", title: "Порівняння дробів", kind: "pre", lessons: ["m2"], for: ["g6m2"] },
     { id: "frac-of", title: "Дріб від числа", kind: "pre", lessons: ["m3"], for: ["g6m2", "g6m3"] },
@@ -26,11 +29,13 @@ SLID.diag("math", {
     { id: "mixed", title: "Мішані числа", kind: "pre", lessons: ["m5"], for: ["g6m2"] },
     { id: "dec", title: "Десяткові дроби: запис і порівняння", kind: "pre", lessons: ["ms2l1", "ms2l2"], for: ["g6m4"] },
     { id: "dec-ops", title: "Дії з десятковими дробами", kind: "pre", lessons: ["ms2l3", "ms2l4"], for: ["g6m3"] },
-    { id: "pct", title: "Відсотки", kind: "pre", lessons: ["ms3l1", "ms3l2"], for: ["g6m3"] },
     { id: "geom", title: "Периметр і площа", kind: "pre", lessons: ["ms0bl4", "ms4l1"], for: ["g6m3", "g6m5"] },
-    // теми 6 класу
-    { id: "g6-div", title: "Ознаки подільності", kind: "cur", lessons: ["g6m1l2"] },
-    { id: "g6-lcm", title: "НСД і НСК", kind: "cur", lessons: ["g6m1l4"], u: ["divis-lcm", "divis-gcd"] },
+    // з 2026-11-03 (D-043): подільність g6m1 — 5 кл., тож g6-div і g6-lcm — передумови; відсотки ms3 — 6 кл. (тема pct вище — cur)
+    // pre-тема має рівно 2 завдання: колишні теми g6-div (№17) і g6-lcm (№21) злито в g6-div; завдання ті самі, на тих самих місцях
+    { id: "g6-div", title: "Подільність: ознаки, НСД і НСК", kind: "pre", lessons: ["g6m1l2", "g6m1l4"], for: ["g6m2"] },
+    // теми 6 класу (колишня pre-тема pct розділена на дві cur-теми — по одному завданню, №7 і №27)
+    { id: "pct", title: "Що таке відсоток", kind: "cur", lessons: ["ms3l1"] },
+    { id: "pct-of", title: "Відсотки від числа", kind: "cur", lessons: ["ms3l2"] },
     { id: "g6-fadd", title: "Дроби з різними знаменниками", kind: "cur", lessons: ["g6m2l4"] },
     { id: "g6-prop", title: "Пропорція", kind: "cur", lessons: ["g6m3l2"] },
     { id: "g6-neg", title: "Від'ємні числа", kind: "cur", lessons: ["g6m4l3"] },
@@ -184,6 +189,7 @@ SLID.diag("math", {
     },
     {
       topic: "g6-div",
+      lesson: "g6m1l2",
       rev: 2,
       type: "multi",
       sk: "divis",
@@ -221,7 +227,9 @@ SLID.diag("math", {
       answer: 7
     },
     {
-      topic: "g6-lcm",
+      topic: "g6-div",
+      lesson: "g6m1l4",
+      u: ["divis-lcm", "divis-gcd"],
       rev: 2,
       type: "multi",
       sk: "divis",
@@ -300,7 +308,7 @@ SLID.diag("math", {
       ]
     },
     {
-      topic: "pct",
+      topic: "pct-of",
       lesson: "ms3l2",
       type: "number",
       sk: "pct",

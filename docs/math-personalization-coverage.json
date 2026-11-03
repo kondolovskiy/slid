@@ -1,6 +1,6 @@
 {
-  "version": "2026-11-01.v3",
-  "status": "accepted",
+  "version": "2026-11-03.v4",
+  "status": "draft",
   "registryCommit": "9057fd5",
   "sources": {
     "g4a": {
@@ -1563,7 +1563,7 @@
       }
     },
     {
-      "grade": 5,
+      "grade": 6,
       "section": "ms3",
       "lesson": "ms3l1",
       "title": "Сота частина",
@@ -1589,16 +1589,14 @@
       },
       "poolState": "planned",
       "diagnostic": {
-        "preForSection": [
-          "parts"
-        ],
+        "preForSection": [],
         "cur": [
-          "cur-ms3"
+          "pct"
         ]
       }
     },
     {
-      "grade": 5,
+      "grade": 6,
       "section": "ms3",
       "lesson": "ms3l2",
       "title": "Відсотки від числа",
@@ -1624,15 +1622,15 @@
       },
       "poolState": "planned",
       "diagnostic": {
-        "preForSection": [
-          "parts"
-        ],
-        "cur": []
+        "preForSection": [],
+        "cur": [
+          "pct-of"
+        ]
       }
     },
     {
       "grade": 5,
-      "section": "ms3",
+      "section": "ms0b",
       "lesson": "ms3l3",
       "title": "Діаграми",
       "curricularScope": "pending",
@@ -1642,7 +1640,7 @@
         "g4m5l2"
       ],
       "sk": "data",
-      "pool": "pms3",
+      "pool": "pms0b",
       "formats": [
         "number"
       ],
@@ -1654,14 +1652,16 @@
       "poolState": "deferred",
       "diagnostic": {
         "preForSection": [
-          "parts"
+          "perim",
+          "units",
+          "box"
         ],
         "cur": []
       }
     },
     {
       "grade": 5,
-      "section": "ms4",
+      "section": "ms0b",
       "lesson": "ms4l1",
       "title": "Площа",
       "curricularScope": "required",
@@ -1698,7 +1698,7 @@
       }
     },
     {
-      "grade": 5,
+      "grade": 6,
       "section": "ms4",
       "lesson": "ms4l2",
       "title": "Паралелепіпед і куб",
@@ -1730,16 +1730,12 @@
       },
       "poolState": "planned",
       "diagnostic": {
-        "preForSection": [
-          "perim",
-          "units",
-          "box"
-        ],
+        "preForSection": [],
         "cur": []
       }
     },
     {
-      "grade": 5,
+      "grade": 6,
       "section": "ms4",
       "lesson": "ms4l3",
       "title": "Об'єм",
@@ -1766,16 +1762,12 @@
       },
       "poolState": "planned",
       "diagnostic": {
-        "preForSection": [
-          "perim",
-          "units",
-          "box"
-        ],
+        "preForSection": [],
         "cur": []
       }
     },
     {
-      "grade": 6,
+      "grade": 5,
       "section": "g6m1",
       "lesson": "g6m1l1",
       "title": "Дільники і кратні",
@@ -1803,13 +1795,14 @@
       "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
-          "rem"
+          "mul",
+          "quot"
         ],
         "cur": []
       }
     },
     {
-      "grade": 6,
+      "grade": 5,
       "section": "g6m1",
       "lesson": "g6m1l2",
       "title": "Ознаки подільності",
@@ -1837,15 +1830,16 @@
       "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
-          "rem"
+          "mul",
+          "quot"
         ],
         "cur": [
-          "g6-div"
+          "cur-ms3"
         ]
       }
     },
     {
-      "grade": 6,
+      "grade": 5,
       "section": "g6m1",
       "lesson": "g6m1l3",
       "title": "Прості й складені",
@@ -1873,13 +1867,14 @@
       "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
-          "rem"
+          "mul",
+          "quot"
         ],
         "cur": []
       }
     },
     {
-      "grade": 6,
+      "grade": 5,
       "section": "g6m1",
       "lesson": "g6m1l4",
       "title": "НСД і НСК",
@@ -1906,11 +1901,10 @@
       "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
-          "rem"
+          "mul",
+          "quot"
         ],
-        "cur": [
-          "g6-lcm"
-        ]
+        "cur": []
       }
     },
     {
@@ -7322,7 +7316,8 @@
           ],
           "for": [
             "ms0",
-            "ms2"
+            "ms2",
+            "g6m1"
           ],
           "itemLessons": [
             "g4m3l1",
@@ -7342,6 +7337,10 @@
             {
               "section": "ms2",
               "lesson": "ms2l4"
+            },
+            {
+              "section": "g6m1",
+              "lesson": "g6m1l1"
             }
           ],
           "itemSkills": [
@@ -7358,7 +7357,8 @@
           ],
           "for": [
             "ms0",
-            "ms2"
+            "ms2",
+            "g6m1"
           ],
           "itemLessons": [
             "g4m3l3",
@@ -7378,6 +7378,10 @@
             {
               "section": "ms2",
               "lesson": "ms2l4"
+            },
+            {
+              "section": "g6m1",
+              "lesson": "g6m1l1"
             }
           ],
           "itemSkills": [
@@ -7430,8 +7434,7 @@
             "g4m5l2"
           ],
           "for": [
-            "ms1",
-            "ms3"
+            "ms1"
           ],
           "itemLessons": [
             "g4m5l1",
@@ -7447,10 +7450,6 @@
             {
               "section": "ms1",
               "lesson": "m1"
-            },
-            {
-              "section": "ms3",
-              "lesson": "ms3l2"
             }
           ],
           "itemSkills": [
@@ -7466,8 +7465,7 @@
             "g4m5l3"
           ],
           "for": [
-            "ms0b",
-            "ms4"
+            "ms0b"
           ],
           "itemLessons": [
             "g4m5l3",
@@ -7485,7 +7483,7 @@
               "lesson": "ms0bl4"
             },
             {
-              "section": "ms4",
+              "section": "ms0b",
               "lesson": "ms4l1"
             }
           ],
@@ -7503,8 +7501,7 @@
             "g4m4l4"
           ],
           "for": [
-            "ms0b",
-            "ms4"
+            "ms0b"
           ],
           "itemLessons": [
             "g4m4l3",
@@ -7522,7 +7519,7 @@
               "lesson": "ms0bl4"
             },
             {
-              "section": "ms4",
+              "section": "ms0b",
               "lesson": "ms4l1"
             }
           ],
@@ -7539,7 +7536,7 @@
             "g4m5l4"
           ],
           "for": [
-            "ms4"
+            "ms0b"
           ],
           "itemLessons": [
             "g4m5l4",
@@ -7553,8 +7550,8 @@
           "rationale": "Проби відповідають умінням зазначених уроків; for веде до розділів, де ці операції/моделі потрібні. Конкретні вміння й джерела — у рядках реєстру.",
           "forEvidence": [
             {
-              "section": "ms4",
-              "lesson": "ms4l2"
+              "section": "ms0b",
+              "lesson": "ms4l1"
             }
           ],
           "itemSkills": [
@@ -7668,29 +7665,29 @@
         },
         {
           "id": "cur-ms3",
-          "title": "Сота частина",
+          "title": "Ознаки подільності",
           "kind": "cur",
           "lessons": [
-            "ms3l1"
+            "g6m1l2"
           ],
           "itemLessons": [
-            "ms3l1"
+            "g6m1l2"
           ],
           "probes": [
-            "На одному multi/sort-екрані: Пояснювати, що таке відсоток; Показувати відсотки на сотці й на крузі; Пам'ятати, що 50 % — половина, 25 % — чверть, 10 % — десята частина."
+            "sort, 6 чисел у 3 кошики (rev 2): ділиться на 9 / на 3, але не на 9 / не ділиться на 3 — ознаки за сумою цифр (g6m1l2)"
           ],
           "baseline": false,
           "itemSkills": [
-            "pct"
+            "divis"
           ],
           "knownPolicy": "known лише для вказаного одного уроку і лише коли всі компоненти ядра перевірені на цьому екрані та відповідь цілком правильна. Не додавати неіснуючого прапорця вимкнення known; якщо достатню пробу не вдається скласти, перед авторством повернути вибір цільового уроку/проби куратору для нової версії матриці.",
           "coverageObjectives": [
-            "Пояснювати, що таке відсоток",
-            "Показувати відсотки на сотці й на крузі",
-            "Пам'ятати, що 50 % — половина, 25 % — чверть, 10 % — десята частина"
+            "Перевіряти подільність на 3 і на 9 за сумою цифр",
+            "Розрізняти «ділиться на 3» і «ділиться на 9»"
           ],
           "probeDesign": "Одне multi/sort-завдання з окремими твердженнями/відповідностями на перелічені компоненти ядра; усі компоненти мають бути перевірені. Це проєкт екрана, не ключ готового завдання.",
-          "coverageReview": "Незалежний верифікатор майбутнього dgN зіставляє кожну coverageObjective з умовою/ключем; перелік learned сам по собі не є доказом математичної достатності готової проби."
+          "coverageReview": "Незалежний верифікатор майбутнього dgN зіставляє кожну coverageObjective з умовою/ключем; перелік learned сам по собі не є доказом математичної достатності готової проби.",
+          "note": "2026-11-03 (D-043, docs/design/math-ister.md §5.1): id теми збережено (ключ результатів), зміст — ознаки подільності замість відсотків (відсотки — 6 кл.)."
         },
         {
           "id": "cur-ms4",
@@ -7816,7 +7813,7 @@
             "m4a"
           ],
           "for": [
-            "g6m1"
+            "g6m2"
           ],
           "itemLessons": [
             "m4a",
@@ -7833,8 +7830,8 @@
           "state": "existing",
           "forEvidence": [
             {
-              "section": "g6m1",
-              "lesson": "g6m1l1"
+              "section": "g6m2",
+              "lesson": "g6m2l5"
             }
           ],
           "rationale": "Підтверджено незалежною curate-math-diag-g6-links; див. її таблицю конкретних екранів. Збережено чинний порядок та item.lesson.",
@@ -8104,43 +8101,6 @@
           "knownReview": ""
         },
         {
-          "id": "pct",
-          "title": "Відсотки",
-          "kind": "pre",
-          "lessons": [
-            "ms3l1",
-            "ms3l2"
-          ],
-          "for": [
-            "g6m3"
-          ],
-          "itemLessons": [
-            "ms3l1",
-            "ms3l2"
-          ],
-          "probes": [
-            "Зафарбуй 30 % смужки",
-            "Скільки учнів ходить на плавання?"
-          ],
-          "itemIndices": [
-            6,
-            26
-          ],
-          "state": "existing",
-          "forEvidence": [
-            {
-              "section": "g6m3",
-              "lesson": "g6m3l2"
-            }
-          ],
-          "rationale": "Підтверджено незалежною curate-math-diag-g6-links; див. її таблицю конкретних екранів. Збережено чинний порядок та item.lesson.",
-          "itemSkills": [
-            "pct",
-            "pct"
-          ],
-          "knownReview": ""
-        },
-        {
           "id": "geom",
           "title": "Периметр і площа",
           "kind": "pre",
@@ -8184,47 +8144,92 @@
         },
         {
           "id": "g6-div",
-          "title": "Ознаки подільності",
-          "kind": "cur",
+          "title": "Подільність: ознаки, НСД і НСК",
+          "kind": "pre",
           "lessons": [
-            "g6m1l2"
-          ],
-          "itemLessons": [
-            "g6m1l2"
-          ],
-          "probes": [
-            "multi, 5 тверджень (rev 2): ознаки на 5 і 10 за останньою цифрою, на 2; на 9 і 3 за сумою цифр; добір цифри в 4*5 для ділення на 9"
-          ],
-          "itemIndices": [
-            16
-          ],
-          "state": "existing",
-          "itemSkills": [
-            "divis"
-          ],
-          "knownReview": "dg6 ред. 2 (refine-math-diag-g6-coverage; verified — reports/verify/refine-math-diag-g6-coverage.md, рев’ю reports/review/refine-math-diag-g6-coverage.md): Ядро g6m1l2 (ознаки на 2, 5, 10, 3, 9; добір цифри) перевірено на одному екрані; known — лише за цілком правильну відповідь. Перерваний тест ред. 1 повторює цю пробу (learn.js resumeDiag); завершені результати ред. 1 не перераховуються."
-        },
-        {
-          "id": "g6-lcm",
-          "title": "НСД і НСК",
-          "kind": "cur",
-          "lessons": [
+            "g6m1l2",
             "g6m1l4"
           ],
           "itemLessons": [
+            "g6m1l2",
             "g6m1l4"
           ],
           "probes": [
+            "multi, 5 тверджень (rev 2): ознаки на 5 і 10 за останньою цифрою, на 2; на 9 і 3 за сумою цифр; добір цифри в 4*5 для ділення на 9",
             "multi, 5 тверджень (rev 2): НСД (12; 18), НСК (4; 10) з помилкою «добуток», взаємно прості 9 і 20, НСК (6; 8), НСД (8; 12)"
           ],
           "itemIndices": [
+            16,
             20
           ],
           "state": "existing",
           "itemSkills": [
+            "divis",
             "divis"
           ],
-          "knownReview": "dg6 ред. 2 (refine-math-diag-g6-coverage; verified — reports/verify/refine-math-diag-g6-coverage.md, рев’ю reports/review/refine-math-diag-g6-coverage.md): Ядро g6m1l4 (НСД, НСК, взаємно прості) перевірено на одному екрані; known — лише за цілком правильну відповідь. Перерваний тест ред. 1 повторює цю пробу (learn.js resumeDiag); завершені результати ред. 1 не перераховуються."
+          "knownReview": "dg6 ред. 2 (refine-math-diag-g6-coverage; verified — reports/verify/refine-math-diag-g6-coverage.md, рев’ю reports/review/refine-math-diag-g6-coverage.md): Ядро g6m1l2 (ознаки на 2, 5, 10, 3, 9; добір цифри) перевірено на одному екрані; known — лише за цілком правильну відповідь. Перерваний тест ред. 1 повторює цю пробу (learn.js resumeDiag); завершені результати ред. 1 не перераховуються.",
+          "for": [
+            "g6m2"
+          ],
+          "forEvidence": [
+            {
+              "section": "g6m2",
+              "lesson": "g6m2l2"
+            },
+            {
+              "section": "g6m2",
+              "lesson": "g6m2l3"
+            }
+          ],
+          "note": "2026-11-03 (D-043): g6m1 — 5 кл.; колишні cur-теми g6-div (№17) і g6-lcm (№21) злито в pre-тему, завдання ті самі."
+        },
+        {
+          "id": "pct",
+          "title": "Що таке відсоток",
+          "kind": "cur",
+          "lessons": [
+            "ms3l1"
+          ],
+          "itemLessons": [
+            "ms3l1"
+          ],
+          "probes": [
+            "Зафарбуй 30 % смужки"
+          ],
+          "itemIndices": [
+            6
+          ],
+          "state": "existing",
+          "rationale": "Підтверджено незалежною curate-math-diag-g6-links; див. її таблицю конкретних екранів. Збережено чинний порядок та item.lesson.",
+          "itemSkills": [
+            "pct"
+          ],
+          "knownReview": "",
+          "note": "2026-11-03 (D-043): ms3 — 6 кл.; колишня pre-тема pct розділена на cur pct (№7) і pct-of (№27)."
+        },
+        {
+          "id": "pct-of",
+          "title": "Відсотки від числа",
+          "kind": "cur",
+          "lessons": [
+            "ms3l2"
+          ],
+          "itemLessons": [
+            "ms3l2"
+          ],
+          "probes": [
+            "Скільки учнів ходить на плавання?"
+          ],
+          "itemIndices": [
+            26
+          ],
+          "state": "existing",
+          "rationale": "Підтверджено незалежною curate-math-diag-g6-links; див. її таблицю конкретних екранів. Збережено чинний порядок та item.lesson.",
+          "itemSkills": [
+            "pct"
+          ],
+          "knownReview": "",
+          "note": "2026-11-03 (D-043): ms3 — 6 кл.; колишня pre-тема pct розділена на cur pct (№7) і pct-of (№27)."
         },
         {
           "id": "g6-fadd",
@@ -10901,6 +10906,6 @@
       "verdict": "прийнято; бажані уточнення 1–4 закрито refine-math-content-from-matrix-v3"
     }
   },
-  "previous": "2026-10-16.v2",
-  "changes": "docs/math-personalization-coverage.md, «Зміни v3» (було → стало); curate-math-matrix-v3; доповнення v3 — refine-math-content-from-matrix-v3 (2026-11-01)"
+  "previous": "2026-11-01.v3",
+  "changes": "docs/math-personalization-coverage.md, «Зміни v4» (міграція за Істером, D-043, docs/design/math-ister.md §5); попередні — «Зміни v3»"
 }

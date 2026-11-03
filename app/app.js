@@ -421,7 +421,7 @@ function viewPractice(){
       <span class="grow"><span class="eyebrow">Мікс · до 6 задач з різних тем</span><b>Тренування на сьогодні</b><span class="muted" style="font-size:13px">${due? `${due} ${plural(due,["тема чекає","теми чекають","тем чекають"])} на повторення` : "Усе повторено вчасно. Можна потренуватися наперед"}</span></span>
       <span class="play">${icF("play")}</span></button>`
     : `<div class="empty">Тут з'являться задачі, щойно ти пройдеш перший урок: тренуватися можна лише з пройдених тем.</div>`}
-  ${poolsFor(c).map(p=>{ const sec=c.sections.find(x=>x.id===p.section), LS=sec.lessons.filter(l=>cnt[l.id]);
+  ${[...new Set(poolsFor(c).flatMap(p=>[p.section,...(p.also||[])]))].map(id=>{ const sec=c.sections.find(x=>x.id===id), LS=(sec?.lessons||[]).filter(l=>cnt[l.id]); if(!LS.length) return "";   /* also — уроки пулу, перенесені в інший розділ */
     return `<div class="eyebrow">${esc(sec.title)}</div><div class="seclist">${LS.map(l=> topicOpen(l.id)
       ? `<button type="button" class="secitem" data-practice="${l.id}"><span class="secnum">${ic(l.icon)}</span><span class="grow"><b>${esc(l.title)}</b><span class="muted small">${cnt[l.id]} ${plural(cnt[l.id],["задача","задачі","задач"])}${S.srs[l.id]&&LEARN.isDue(S,l.id,dkey())?" · час повторити":""}</span>${strength(l.id)}</span><span class="play sm">${icF("play")}</span></button>`
       : `<div class="secitem locked"><span class="secnum">${ic("lock")}</span><span class="grow"><b>${esc(l.title)}</b><span class="muted small">Відкриється, коли пройдеш урок</span></span></div>`).join("")}</div>`; }).join("")}

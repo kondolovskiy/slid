@@ -7,7 +7,7 @@ SLID.section("math", {
   id: "g6m5",
   grade: 6,
   signed: true,
-  weeks: [32, 35],
+  weeks: [29, 32],
   title: "Рівняння",
   why: "Щоб розв'язувати задачі, записавши невідоме буквою.",
   requires: ["ms0l4"],

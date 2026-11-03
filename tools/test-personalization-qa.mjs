@@ -89,6 +89,15 @@ check(() => assert.deepEqual(audit(FX, FM, learn, { grade: 5 }).counts, { sectio
 // пул для pending-уроку чи нова вправа не змінюють required-лічильники (саме це раніше ламало CI)
 const morePools = clone(); morePools.pools[1].items.push(ex('fx5a3', 1, 7));
 check(() => assert.deepEqual([audit(morePools, FM, learn).errors, audit(morePools, FM, learn).counts.required], [[], 4]));
+// also (docs/design/math-ister.md §4): урок fx5a3 переїхав у fx6b, вправи лишилися в pfx5a — пул охоплює обидва розділи
+const moved = clone(); const mvL = moved.sections[1].lessons.splice(2, 1)[0]; moved.sections[3].lessons.push(mvL); moved.pools[1].also = ['fx6b'];
+moved.pools[1].items.push(...levels('fx5a3'));
+const mvM = JSON.parse(JSON.stringify(FM)); Object.assign(mvM.lessons.find(r => r.lesson === 'fx5a3'), { section: 'fx6b', grade: 6, curricularScope: 'required', pool: 'pfx5a', formats: ['number'], exercises: { min: 3, max: 8 } });
+const mvA = audit(moved, mvM, learn);
+check(() => assert.deepEqual([mvA.errors, mvA.missing], [[], []], JSON.stringify([mvA.errors, mvA.missing])));
+check(() => assert.deepEqual(audit(moved, mvM, learn, { grade: 6 }).counts.pools, 2));          // pfx5a потрапляє і в 6 кл. через also
+const noAlso = clone(); noAlso.sections[3].lessons.push(noAlso.sections[1].lessons.splice(2, 1)[0]); noAlso.pools[1].items.push(...levels('fx5a3'));
+check(() => assert(audit(noAlso, mvM, learn).errors.some(e => e.includes('section/also не містить fx6b')), 'без also — помилка'));
 // посилання, джерела, рівні, порожній набір, інвентар
 const broken = clone(); broken.pools[0].items[0].lesson = 'missing';
 check(() => assert(audit(broken, FM, learn).errors.some(e => e.includes('missing'))));
@@ -214,7 +223,7 @@ check(() => assert(skDiag('meas').missing.includes('dgfx6/c1: itemSkills не з
 check(() => assert(!skDiag('coord').warnings.some(w => w.startsWith('dgfx6/c1'))));
 
 // ---------- CLI на живому змісті: аргументи й коди виходу ----------
-for (const args of [['--pool','typo'], ['--diag','typo'], ['--grade','12'], ['--pool','pg6m1','--grade','5'], ['--pool','pg6m1','--grade','7'], ['--wat'], ['--diag'], ['--diag','dg6','--pool','pg6m1']]) {
+for (const args of [['--pool','typo'], ['--diag','typo'], ['--grade','12'], ['--pool','pg6m1','--grade','6'], ['--pool','pg6m1','--grade','7'], ['--wat'], ['--diag'], ['--diag','dg6','--pool','pg6m1']]) {
   check(() => assert.equal(spawnSync(process.execPath, ['tools/personalization-qa.mjs', ...args], { cwd: ROOT }).status, 1));
 }
 check(() => assert.equal(spawnSync(process.execPath, ['tools/personalization-qa.mjs','--diag','dg6'], { cwd: ROOT }).status, audit(subject, matrix, learn, { diag: 'dg6' }).errors.length ? 1 : 0));

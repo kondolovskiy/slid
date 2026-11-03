@@ -6,7 +6,7 @@
 SLID.section("math", {
   id: "ms0",
   grade: 5,
-  weeks: [1, 9],
+  weeks: [1, 8],
   title: "Натуральні числа",
   why: "Щоб упевнено рахувати великі числа, округлювати й розуміти порядок дій — на цьому стоїть уся математика далі.",
   meta: { author: "claude-opus", created: "2026-10-05", factcheck: "verifier-ms0-d019", teacher: null },
