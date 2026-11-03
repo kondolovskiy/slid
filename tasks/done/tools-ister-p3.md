@@ -3,7 +3,7 @@ claimed_from: todo
 claimed_at: 2026-11-03T20:25:11.060Z
 id: tools-ister-p3
 type: engine
-status: review
+status: done
 claimed_by: impl-tools-ister-p3
 created: 2026-11-03
 depends_on: [math-ister-migration]
