@@ -4,7 +4,7 @@ _Оновлено: 2026-11-02, куратор пам'яті, сесія 3 (жу�
 
 ## Стан
 - **Українська мова (D-040, D-041 + уточнення, D-042) — 5 і 6 кл. verified:** 5 кл. — 11 розділів content/ukr/g5-u5s1…u5s11.js, 69 уроків (план reports/verify/plan-ukr-g5.md); **6 кл. — 14 розділів g6-u6s1…u6s14.js, 94 уроки** (план reports/verify/plan-ukr-g6.md, звіти reports/verify/u6s1…u6s14.md; базовий підручник З6 — скан, OCR). Рушій app/lang.js: engine-lang-types, -dash, -pick-groups прийнято рев'ю. Навичка `gram` у subjects/ukr.js. Милозвучність авторського тексту вичищено (style-ukr-euphony, done). Еталон ukr — u5s1. Жодного `approved`: людина перевірятиме 5 і 6 кл. разом пізніше (D-042).
-- **PR https://github.com/kondolovskiy/slid/pull/11** (гілка `claude/keen-einstein-55xvkz`, HEAD e00ad94; build sw.js `4bc7fd7bd3`). Зміни куратора цієї сесії не закомічено.
+- **PR https://github.com/kondolovskiy/slid/pull/11** (гілка `claude/keen-einstein-55xvkz`); 03.11 злито з main (PR №10 tools-agent-skills: AGENTS.md — постійний контекст, процедури ролей — 11 скілів у `.claude/skills/`; INDEX.md — покажчик). Рядок `app/lang.js` додано в карту AGENTS.md §2.
 - **Математика, персоналізація 4–11 кл. — release прийнято**, матриця 2026-11-01.v3. **Пріоритети (D-033):** Evidence V2 (готово) → Skill Graph → Diagnostic Engine → Teacher Dashboard.
 - **Skill Graph (D-038):** G1–G3; лінія «дроби» 4–6 (25 вузлів, 47 ребер). **Гіпотези (D-035)** E1/E2 + тінь E4. **ШІ-перевірка (D-036)** — далі A1. **Бекенд (D-037)** server/.
 - Довга пам'ять: facts/hist №1–313, facts/math №1–219, **facts/ukr №1–153** (6 кл. — №84–153), decisions до **D-042**.

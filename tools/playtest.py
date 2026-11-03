@@ -3,7 +3,7 @@
 і перевіряє, що кожне завдання зараховано, а на сторінці немає JS-помилок.
 Запуск:  python3 tools/playtest.py            — усі уроки
          python3 tools/playtest.py --section g6s1 [--shots]   — один розділ або тест рівня (--section dg6) (+ скриншоти в reports/shots/)
-         --port N — фіксований порт (типово вільний, тож плейтести можна запускати паралельно)
+         --port N — фіксований порт (типово вільний; паралельно можна, але під навантаженням можливі TimeoutError — для приймання по одному)
 Потрібно: pip install playwright && playwright install chromium  (або вже встановлений Chromium)."""
 import asyncio, functools, http.server, os, sys, threading
 from playwright.async_api import async_playwright
@@ -12,7 +12,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ARGS = sys.argv[1:]
 ONLY = ARGS[ARGS.index("--section") + 1] if "--section" in ARGS else None
 SHOTS = "--shots" in ARGS
-PORT = int(ARGS[ARGS.index("--port") + 1]) if "--port" in ARGS else 0   # 0 — вільний порт, можна запускати паралельно
+PORT = int(ARGS[ARGS.index("--port") + 1]) if "--port" in ARGS else 0   # 0 — вільний порт (паралельні прогони не конфліктують за портом)
 
 class Q(http.server.SimpleHTTPRequestHandler):
     def log_message(self, *a): pass

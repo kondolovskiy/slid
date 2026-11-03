@@ -2,32 +2,24 @@
 
 # Специфіка Claude Code
 
+## Скіли (`.claude/skills/`)
+Процедури ролей і тем; коли який завантажувати — таблиця в AGENTS.md §6. Субагенти й команди лише посилаються на скіли, тож процедура описана в одному місці.
+
 ## Субагенти (`.claude/agents/`)
-- `content-writer` — пише один розділ за задачею.
+- `content-writer` — пише один розділ (пул, тест рівня, зображення) за задачею.
 - `content-verifier` — незалежно перевіряє факти, відповіді й педагогіку.
+- `engineering-reviewer` — незалежне рев'ю інженерних змін (D-026).
 - `style-sync` — вирівнює стиль і складність уроків предмета.
 - `memory-curator` — переносить inbox у довгу пам'ять, оновлює handoff.
-- `qa-runner` — механічний прогін build/validate/stats/test-*/playtest, звіт ✅/❌ (haiku).
+- `qa-runner` — механічний прогін check/validate/stats/playtest, звіт ✅/❌ (haiku).
 
-**Моделі:** автори й `content-verifier` — модель сесії (факти — не економимо); механічні тести дешевші — `qa-runner` = haiku (frontmatter). У headless-режимі тести: `claude -p --model haiku "..."`.
+**Моделі:** автори, `content-verifier` і `engineering-reviewer` — модель сесії (факти й код — не економимо); `qa-runner` — haiku (frontmatter). Не перевизначай `model` у виклику Agent без потреби.
 
 ## Команди (`.claude/commands/`)
-- `/parallel <N> <предмет> [клас]` — оркестрація: взяти N задач і запустити N авторів паралельно, потім зібрати й перевірити.
-- `/write-section <файл задачі>` — виконати одну задачу автора.
-- `/verify-section <id розділу>` — запустити верифікатора.
+- `/parallel <N> <предмет|verify> [клас]` — оркестрація (скіл `parallel-run`).
+- `/write-section <файл задачі>` — одна задача автора.
+- `/verify-section <id розділу>` — верифікатор.
 - `/sync-style <предмет>` — синхронізація стилю.
 - `/handoff` — кінець сесії: куратор пам'яті.
 
-## Паралельні агенти
-Запускай авторів **одним повідомленням з кількома викликами Agent** (subagent_type: content-writer), кожен зі своєю задачею. Вони пишуть різні файли, тож ізоляція worktree не потрібна. `tools/build.mjs` запускай лише після того, як усі закінчили (через `qa-runner`).
-Плейтест бере вільний порт (`--port N` — за потреби фіксований), тож верифікатори можуть ганяти його паралельно.
-Верифікатора запускай окремо й пізніше, щоб він не бачив міркувань автора.
-
-Для довгих пакетних запусків без інтерактиву можна використати headless-режим, наприклад:
-```bash
-for t in $(node tools/claim.mjs list todo --subject hist --grade 6 --ids | head -3); do
-  node tools/claim.mjs claim "$t" "writer-$t" && \
-  claude -p "/write-section tasks/doing/$t" --permission-mode acceptEdits &
-done; wait
-node tools/build.mjs && node tools/validate.mjs && node tools/stats.mjs
-```
+Авторів запускай одним повідомленням з кількома викликами Agent; верифікаторів і рецензентів — окремо й пізніше, зі свіжим контекстом.
