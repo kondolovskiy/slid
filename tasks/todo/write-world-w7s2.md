@@ -28,7 +28,7 @@ depends_on: [write-world-w7s1]
 - style/common.md, style/world.md, style/profiles.json
 - memory/long/glossary/world.md і memory/long/facts/world.md — використовуй ці формулювання й дати
 - memory/long/pitfalls.md
-- Еталон стилю: `content/world/g7-w7s1.js` (після верифікації) і style/world.md «Еталони».
+- Еталон стилю: `content/world/g7-w7s1.js` (verified) і style/world.md «Еталони».
 
 ## Програма й вимоги (оркестратор, D-043/D-044)
 - Програма: Гісем О. В. та ін., модельна «Всесвітня історія. 7–9 класи» (наказ МОН № 1449 від 27.11.2023) — https://znayshov.com/FR/46261/Vsesvitnya.istoriya.7-9%20kl.Hisem.ta.in.30.11.2023.pdf (PDF; текст — `pdftotext`, середня колонка «Зміст навчального предмета»).
