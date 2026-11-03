@@ -1,11 +1,13 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-03T10:05:18.654Z
 id: revise-math-ms3-ms4-ister
 type: revise-section
 subject: math
 grade: 6
 section: ms3, ms4
 status: todo
-claimed_by:
+claimed_by: writer-revise-math-ms3-ms4-ister
 created: 2026-11-03
 depends_on: [math-ister-migration]
 ---

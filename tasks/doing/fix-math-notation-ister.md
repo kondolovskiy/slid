@@ -1,11 +1,13 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-03T10:05:18.712Z
 id: fix-math-notation-ister
 type: fix-section
 subject: math
 grade: 6-9
 section: g6m3, g7m4, g9m2, g9m5
 status: todo
-claimed_by:
+claimed_by: writer-fix-math-notation-ister
 created: 2026-11-03
 depends_on: [math-ister-migration]
 ---
