@@ -107,7 +107,9 @@ export function audit(subject, matrix, learn, filter = {}) {
   return { version: matrix.version, errors, missing, unsupported, warnings,
     counts: { sections: sections.size, lessons: actual.length, required: rows.filter(r => r.curricularScope === 'required').length,
       requiredPools: new Set(rows.filter(r => r.curricularScope === 'required').map(r => r.pool)).size,
-      diagnostics: diags.length, pools: selectedPools.length, exercises: selectedPools.reduce((n, p) => n + p.items.length, 0) },
+      diagnostics: diags.length, pools: selectedPools.length,
+      // з --grade — лише вправи уроків цього класу: пул з also охоплює кілька класів (рев'ю math-ister-migration, P3-2)
+      exercises: selectedPools.reduce((n, p) => n + p.items.filter(it => !filter.grade || lessons.get(it.lesson)?.grade === filter.grade).length, 0) },
     optional: rows.filter(r => r.curricularScope === 'optional').map(r => r.lesson),
     pending: rows.filter(r => r.curricularScope === 'pending').map(r => r.lesson),
     exceptions: rows.filter(r => r.curricularScope === 'required' && r.exercises?.min < 6).map(r => ({ lesson: r.lesson, exercises: r.exercises, reason: r.reason })),

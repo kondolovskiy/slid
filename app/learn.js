@@ -1661,6 +1661,16 @@ window.SLID_LEARN = (() => {
         .map(it => ({ ...it, key: pool.id + ":" + it.id, pool }));
     });
   }
+  /** Замок уроку в розділі: перший відкритий, далі — коли відкрито (open: пройдено чи знайоме з тесту рівня) сам урок або попередній.
+      Сам урок: пройдений не замикається, коли перед ним вставлено новий (D-043; рев'ю math-ister-migration P2-1, P3-8). */
+  const lessonOpen = (sec, i, open) => i === 0 || open(sec.lessons[i].id) || open(sec.lessons[i - 1].id);
+  /** Екран «Тренування»: вправи (з practiceItems), згруповані за розділами в порядку програми — subject.sections уже впорядковано за
+      класом і тижнями (registry finalize), а не за порядком пулів (рев'ю math-ister-migration, P3-1). Повертає [{ sec, lessons, cnt }]:
+      лише розділи й уроки, що мають вправи, кожен розділ один раз; cnt — кількість вправ на урок з усіх пулів. */
+  function practiceGroups(subject, items) {
+    const cnt = {}; for (const it of items) cnt[it.lesson] = (cnt[it.lesson] || 0) + 1;
+    return subject.sections.map(sec => ({ sec, lessons: (sec.lessons || []).filter(l => cnt[l.id]), cnt })).filter(g => g.lessons.length);
+  }
   const addDay = (day, n) => new Date(Date.parse(day + "T00:00:00Z") + n * 864e5).toISOString().slice(0, 10);
   /** Тему пройдено вперше — перше повторення завтра. */
   // Запис тесту рівня (src: "diag") після пройденого уроку стає записом уроку: коробка й строк ті самі, але повторний тест його вже не змінює
@@ -1832,7 +1842,8 @@ window.SLID_LEARN = (() => {
     if (p.also !== undefined) {
       if (!Array.isArray(p.also) || !p.also.length) E.push("also має бути непорожнім масивом id розділів");
       else for (const id of p.also) {
-        if (typeof id !== "string" || !ctx.sections.has(id)) E.push(`also: немає розділу «${id}»`);
+        if (typeof id !== "string") E.push(`also: id розділу має бути рядком, а не ${JSON.stringify(id)}`);
+        else if (!ctx.sections.has(id)) E.push(`also: немає розділу «${id}»`);
         else if (homes.includes(id)) E.push(`also: розділ «${id}» повторюється або збігається з section`);
         else homes.push(id);
       }
@@ -2132,7 +2143,7 @@ window.SLID_LEARN = (() => {
     return out;
   }
 
-  return { OK, BAD, SKIP, HALF, PASS, DIAG_TYPES, G_GRADED, graphBind, nodesOf, inLine, graphPre, nodeState, DIAG_ANSWER_KINDS, planFor, practiceItems, nextItem, remaining, topicStatus, level, buildPlan, diagRev, resumeDiag, finishDiag, record, detect, syncPlan, lessonDone, todo, isKnown, diagOpen, work, SK_RETAG, SK_RETAG2, SK_MIGRATIONS, migrateSk, validate,
+  return { OK, BAD, SKIP, HALF, PASS, DIAG_TYPES, G_GRADED, graphBind, nodesOf, inLine, graphPre, nodeState, DIAG_ANSWER_KINDS, planFor, practiceItems, practiceGroups, lessonOpen, nextItem, remaining, topicStatus, level, buildPlan, diagRev, resumeDiag, finishDiag, record, detect, syncPlan, lessonDone, todo, isKnown, diagOpen, work, SK_RETAG, SK_RETAG2, SK_MIGRATIONS, migrateSk, validate,
     parseAns, parseDivrem, checkAns, diagAnswerOk, diagVerdict, diagHalfHint, DIAG_FORM, badHint, unitEq, hintTexts, keyInput, timeExample, quantityUnits: s => qtyUnits(s)?.units || null, stripUnit, listKey, pairKey, answerSig, formHint, ansText, srcRef, numberKeys, numberHelp, ANSWER_KINDS, BOX_DAYS, srsInit, srsUpdate, srsFromDiag, DIAG_BOX, genAll, genInstance, genIssues, genHash, GEN_MAX, isDue, pickSession, POOL_TYPES, validatePool,
     numVal, formCode };
 })();

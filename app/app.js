@@ -35,7 +35,6 @@ const baseStart = c => { for(const b of baseTopics(c)){ const f=b.next&&findLess
 const known = id => { const f=findLesson(id); return !!f && f.sec.grade===S.grade && LEARN.isKnown(S,f.c.id,id,planCtx(f.c)); };
 /* тренування: пул задач (SLID.pool) — відкриті лише задачі пройдених тем */
 const poolItems = c => LEARN.practiceItems(S,c,planCtx(c));
-const poolsFor = c => { const ids=new Set(poolItems(c).map(it=>it.pool.id)); return (c.pools||[]).filter(p=>ids.has(p.id)); };
 /* тема тренування відкрита: урок пройдено, або тест рівня показав, що тему знають (pre «ok» чи cur «знайоме» — LEARN.diagOpen,
    рішення людини 2026-11-01), або налагоджувальний перемикач */
 const diagOpen = id => { const f=findLesson(id); return !!f && LEARN.diagOpen(S,f.c.id,id,planCtx(f.c)); };
@@ -163,7 +162,7 @@ function touchStreak(){ const t=dkey(), y=dkey(addDays(new Date(),-1)); if (S.st
 function levelOf(xp){ let i=0; while(i+1<LEVELS.length && xp>=LEVELS[i+1][0]) i++; const cur=LEVELS[i][0], nxt=LEVELS[i+1]?.[0]; return { n:i+1, title:LEVELS[i][1], cur, nxt, pct: nxt? (xp-cur)/(nxt-cur) : 1 }; }
 function addXp(n){ S.xp+=n; const k=dkey(); S.days[k]=(S.days[k]||0)+n; }
 const done = id => !!S.lessons[id]?.done;
-const unlocked = (sec,i) => S.unlockAll || i===0 || done(sec.lessons[i].id) || done(sec.lessons[i-1].id) || known(sec.lessons[i].id) || known(sec.lessons[i-1].id);   // done(i): пройдений урок не замикається, коли перед ним вставлено новий (D-043)
+const unlocked = (sec,i) => S.unlockAll || LEARN.lessonOpen(sec, i, id=>done(id)||known(id));   // пройдений урок не замикається, коли перед ним вставлено новий (D-043; learn.js lessonOpen)
 function award(id, list){ if(!S.badges[id]){ S.badges[id]=dkey(); list.push(id); } }
 const skey = (c,k) => c.id+"."+k;
 
@@ -421,7 +420,7 @@ function viewPractice(){
       <span class="grow"><span class="eyebrow">Мікс · до 6 задач з різних тем</span><b>Тренування на сьогодні</b><span class="muted" style="font-size:13px">${due? `${due} ${plural(due,["тема чекає","теми чекають","тем чекають"])} на повторення` : "Усе повторено вчасно. Можна потренуватися наперед"}</span></span>
       <span class="play">${icF("play")}</span></button>`
     : `<div class="empty">Тут з'являться задачі, щойно ти пройдеш перший урок: тренуватися можна лише з пройдених тем.</div>`}
-  ${[...new Set(poolsFor(c).flatMap(p=>[p.section,...(p.also||[])]))].map(id=>{ const sec=c.sections.find(x=>x.id===id), LS=(sec?.lessons||[]).filter(l=>cnt[l.id]); if(!LS.length) return "";   /* also — уроки пулу, перенесені в інший розділ */
+  ${LEARN.practiceGroups(c, items).map(({sec, lessons:LS})=>{   /* розділи за програмою (клас, тижні), а не за порядком пулів; also — уроки пулу в іншому розділі */
     return `<div class="eyebrow">${esc(sec.title)}</div><div class="seclist">${LS.map(l=> topicOpen(l.id)
       ? `<button type="button" class="secitem" data-practice="${l.id}"><span class="secnum">${ic(l.icon)}</span><span class="grow"><b>${esc(l.title)}</b><span class="muted small">${cnt[l.id]} ${plural(cnt[l.id],["задача","задачі","задач"])}${S.srs[l.id]&&LEARN.isDue(S,l.id,dkey())?" · час повторити":""}</span>${strength(l.id)}</span><span class="play sm">${icF("play")}</span></button>`
       : `<div class="secitem locked"><span class="secnum">${ic("lock")}</span><span class="grow"><b>${esc(l.title)}</b><span class="muted small">Відкриється, коли пройдеш урок</span></span></div>`).join("")}</div>`; }).join("")}

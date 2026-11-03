@@ -683,8 +683,42 @@ const order = l => ({ L1: 3, L2: 1, L3: 2, L4: 4 }[l] ?? 50);
   eq(vp({ also: ["v6"] }).some(e => e.includes("also")), true, "validatePool also: розділ пулу в also — помилка");
   eq(vp({ also: ["a5", "a5"] }).some(e => e.includes("also")), true, "validatePool also: повтор — помилка");
   eq(vp({ also: "a5" }).some(e => e.includes("also")), true, "validatePool also: не масив — помилка");
+  // P3-3 (рев'ю math-ister-migration): рядок «a5» без перевірки Array.isArray розпадається на «a», «5» і дає іншу помилку — тож точні повідомлення
+  eq(vp({ also: "a5" }, "vol"), ["also має бути непорожнім масивом id розділів"], "validatePool also: рядок замість масиву — саме помилка формату");
+  eq(vp({ also: [5] }, "vol"), ["also: id розділу має бути рядком, а не 5"], "validatePool also: id не рядок — окреме повідомлення");
+  eq(vp({ also: ["zz"] }, "vol"), ["also: немає розділу «zz»"], "validatePool also: невідомий розділ — точне повідомлення");
   eq(vp({ also: [] }).some(e => e.includes("also")), true, "validatePool also: порожній масив — помилка");
   eq(vp({ also: ["a5"] }, "vol"), [], "validatePool also: урок основного розділу — коректно");
+}
+/* Екран «Тренування»: групи за розділами в порядку програми (subject.sections — клас, тижні; registry finalize), а не в порядку пулів
+   (P3-1 з рев'ю math-ister-migration). Порожні розділи пропущено, розділ — один раз, хоч на нього посилаються кілька пулів. */
+{
+  const c = { sections: [
+    { id: "a5", grade: 5, title: "A", lessons: [{ id: "a1" }, { id: "a2" }] },
+    { id: "b5", grade: 5, title: "B", lessons: [{ id: "b1" }] },
+    { id: "e5", grade: 5, title: "E", lessons: [{ id: "e1" }] },
+    { id: "v6", grade: 6, title: "V", lessons: [{ id: "v1" }, { id: "v2" }] }], pools: [] };
+  // файли пулів «не за програмою»: спершу розділ b5, далі v6 з also на a5, далі ще один пул на a5
+  c.pools.push({ id: "pb", section: "b5", items: [{ id: "i", lesson: "b1", lvl: 1 }] });
+  c.pools.push({ id: "pv", section: "v6", also: ["a5"], items: [{ id: "i", lesson: "v2", lvl: 1 }, { id: "j", lesson: "a2", lvl: 1 }, { id: "k", lesson: "v1", lvl: 1 }] });
+  c.pools.push({ id: "pa", section: "a5", items: [{ id: "i", lesson: "a2", lvl: 1 }, { id: "j", lesson: "a1", lvl: 1 }] });
+  const S6 = { grade: 6, lessons: { a1: { done: true }, a2: { done: true }, b1: { done: true } }, seen: {}, srs: {} };
+  const g = L.practiceGroups(c, L.practiceItems(S6, c));
+  eq(g.map(x => x.sec.id), ["a5", "b5", "v6"], "practiceGroups: розділи за програмою, без дублів і без порожнього e5");
+  eq(g.map(x => x.lessons.map(l => l.id)), [["a1", "a2"], ["b1"], ["v1", "v2"]], "practiceGroups: уроки — у порядку розділу");
+  eq(g.map(x => x.lessons.map(l => x.cnt[l.id])), [[1, 2], [1], [1, 1]], "practiceGroups: кількість задач уроку з усіх пулів");
+  eq(L.practiceGroups(c, []), [], "practiceGroups: без вправ — порожньо");
+  eq(L.practiceGroups(c, L.practiceItems({ grade: 5, lessons: {}, seen: {}, srs: {} }, c)).map(x => x.sec.id), ["a5", "b5"], "practiceGroups: 5 кл. — без розділу 6 кл.");
+}
+/* Замок уроку (app.js unlocked → LEARN.lessonOpen): пройдений урок не замикається, коли перед ним вставили новий (D-043, рев'ю
+   math-ister-migration P2-1 / P3-8). open(id) — урок пройдено або знайомий з тесту рівня. */
+{
+  const sec = { lessons: [{ id: "l0" }, { id: "new1" }, { id: "old2" }, { id: "l3" }, { id: "l4" }] };
+  const passed = new Set(["old2"]), open = id => passed.has(id), st = () => sec.lessons.map((_, i) => L.lessonOpen(sec, i, open));
+  eq(st(), [true, false, true, true, false], "lessonOpen: перший відкритий; вставлений new1 закритий; пройдений old2 відкритий; за ним l3 відкритий; l4 — ні");
+  passed.add("l0");
+  eq(st(), [true, true, true, true, false], "lessonOpen: після пройденого l0 вставлений new1 відкривається");
+  eq(L.lessonOpen({ lessons: [{ id: "a" }] }, 0, () => false), true, "lessonOpen: єдиний урок відкритий");
 }
 
 /* 12. Ділення з остачею: answerKind divrem */
