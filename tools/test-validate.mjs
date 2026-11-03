@@ -551,5 +551,45 @@ expectRun("drag: at і без drag — без попередження", one("fx
     expectRun("граф --section fxb: дрейф чужого уроку не видно", graphTree(M => { const ls = M.sections[0].lessons; [ls[0], ls[1]] = [ls[1], ls[0]]; }), ["--section", "fxb"], { noWarn: "дрейф V4" }); }
 }
 
+// engine-option-letters: літери варіантів беруться з app/app.js OPT_LETTERS; варіантів більше, ніж літер, — помилка (раніше «undefined» після 6-го)
+{ const L = fs.readFileSync(path.join(ROOT, "app/app.js"), "utf8").match(/const OPT_LETTERS="([^"]+)"/)?.[1] || "";
+  ok(L.length >= 20 && new Set(L).size === L.length && !/[ҐЄЇЙЬ]/.test(L) && L.startsWith("АБВГДЕ"), "OPT_LETTERS: унікальні літери без Ґ, Є, Ї, Й, Ь, від АБВГДЕ", L);
+  const multi = n => one("fxo", { extra: { type: "multi", title: "Обери", body: "Які числа парні?", opts: Array.from({ length: n }, (_, i) => String(i + 1)), correct: [1] } });
+  expectRun("multi з 11 варіантами — чисто", multi(11), ["--section", "fxo"], {});
+  expectRun(`multi з ${L.length + 1} варіантами — помилка`, multi(L.length + 1), ["--section", "fxo"], { err: "більше, ніж літер" }); }
+
+// tools-math-fig-audit: умова посилається на рисунок без ілюстрації — попередження (не помилка); з lab на екрані чи на попередньому
+// екрані уроку — чисто; «на графіку функції $…$», «дотична до графіка» — поняття, не посилання
+const { figCues: figCuesT } = await import(path.join(ROOT, "tools/lib.mjs"));
+{ const REF = "умова посилається на рисунок";
+  expectRun("«На рисунку» без ілюстрації — попередження", one("fxf", { body: "На рисунку трикутник $ABC$. Скільки в ньому кутів?" }), ["--section", "fxf"], { warn: REF });
+  expectRun("«За графіком» на екрані answer уроку — попередження", one("fxf", { extra: { type: "answer", title: "Висота", body: "За графіком знайди висоту в метрах.", answer: 4 } }), ["--section", "fxf"], { warn: REF });
+  // рев'ю tools-math-fig-audit P2-1: правило діє й у пулі (validate — гілка SLID.pool) і в тесті рівня (гілка SLID.diag)
+  const poolRef = (extra = {}) => ({ "content/math/g8-fxp.js": secJS("math", mathSec("fxp")), "content/math/pool-g8-fxp.js": poolJS("fxp", ["Крок: $2 + 2 = 4$."]).replace('"title": "$2 + 2$"', `"title": "На рисунку $2 + 2$ яблука"${extra.lab ? `, "lab": ${JSON.stringify(extra.lab)}` : ""}`) });
+  { const rep = expectRun("пул: «На рисунку» без ілюстрації — попередження", poolRef(), ["--pool", "pfx"], { warn: REF });
+    if (rep) ok(rep.warnings.some(w => w.includes(REF) && w.includes("pool#pfx") && w.includes("a01")), "пул: попередження вказує на pfx a01", rep.warnings.join("\n  ")); }
+  expectRun("пул: «На рисунку» з lab — чисто", poolRef({ lab: plane({}) }), ["--pool", "pfx"], { noWarn: REF });
+  const diagRef = title => ({ "content/math/g8-fxc.js": secJS("math", mathSec("fxc")), "content/math/diag-g8.js": `SLID.diag("math", ${JSON.stringify({ id: "dgfx", grade: 8, title: "Тест-фікстура", why: "Регресійний тест валідатора: рисунок у тесті.", status: "draft",
+    meta: { author: "test", created: "2026-11-03", factcheck: null, teacher: null }, topics: [{ id: "c", title: "Тема класу", kind: "cur", lessons: ["fxcl1"] }],
+    items: [{ topic: "c", type: "number", sk: Object.keys(MATH_SKILLS)[0], title, answer: 2 }] }, null, 1)});\n` });
+  { const rep = expectRun("тест рівня: «за малюнком» без ілюстрації — попередження", diagRef("Скільки кутів за малюнком?"), ["--diag", "dgfx"], { warn: REF });
+    if (rep) ok(rep.warnings.some(w => w.includes(REF) && w.includes("dgfx") && w.includes("завдання 1")), "тест рівня: попередження вказує на dgfx завдання 1", rep.warnings.join("\n  ")); }
+  expectRun("тест рівня: без посилання — чисто", diagRef("Скільки кутів у трикутнику?"), ["--diag", "dgfx"], { noWarn: REF });
+  // поріг geo «≥ 3 точки» (рев'ю P3): дві точки — не geo
+  { const cue = n => figCuesT({ type: "answer", title: `У трикутнику ${n} знайди кут.` })?.level ?? null;
+    ok(cue("$ABC$") === "geo" && cue("$AB$") === null, "figCues: geo від 3 позначень точок", `${cue("$ABC$")} ${cue("$AB$")}`); }
+  expectRun("«На рисунку» з lab на екрані й перед ним — чисто", one("fxf", { body: "На рисунку трикутник $ABC$.", lab: plane({}) }), ["--section", "fxf"], { noWarn: REF });
+  expectRun("«на графіку функції $y = x$», «до графіка» — не посилання", one("fxf", { body: "Точка $M$ лежить на графіку функції $y = x$. Дотична до графіка $y = x^2$, площа під графіком." }), ["--section", "fxf"], { noWarn: REF });
+  // tools/fig-audit.mjs на тому самому фікстурному дереві: геометрія з позначеннями — група geo, ref — окремо, ілюстроване — не в звіті
+  runTree(one("fxf", { body: "У паралелепіпеді $ABCDA_1B_1C_1D_1$ знайди ребро $BB_1$.", extra: { type: "answer", title: "Висота", body: "За графіком знайди висоту.", answer: 4 } }), ["--section", "fxf"]);
+  const r = spawnSync(process.execPath, [path.join(tmp, "tools/fig-audit.mjs"), "--json"], { cwd: tmp, encoding: "utf8" });
+  let rep = null; try { rep = JSON.parse(r.stdout); } catch {}
+  ok(rep && r.status === 0, "fig-audit: JSON і код 0", (r.stdout || "") + (r.stderr || ""));
+  if (rep) { const g = rep.rows.map(x => `${x.where}:${x.group}`).sort();
+    ok(JSON.stringify(g) === JSON.stringify(["fxfl1 екран 2:geo", "fxfl1 екран 3:geo", "fxfl1 екран 4:ref"]), "fig-audit: групи geo/ref за фікстурою", JSON.stringify(g));
+    ok(rep.screens === 4, "fig-audit: переглянуто 4 екрани (не 0)", String(rep.screens)); }
+  const bad = spawnSync(process.execPath, [path.join(tmp, "tools/fig-audit.mjs"), "--subjekt", "math"], { cwd: tmp, encoding: "utf8" });
+  ok(bad.status === 2, "fig-audit: невідомий аргумент — код 2", String(bad.status)); }
+
 console.log(fails ? `\n${fails} з ${n} перевірок не пройшли` : `test-validate: усі ${n} перевірок пройшли`);
 process.exit(fails ? 1 : 0);

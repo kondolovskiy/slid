@@ -176,6 +176,37 @@ SLID.section("math", {
           eyebrow: "Дві площини",
           title: "Підлога й стеля куба",
           body: "<p>На підлозі $AB$ і $AD$ перетинаються. На стелі $A_1B_1 \\parallel AB$, $A_1D_1 \\parallel AD$. Що з цього випливає?</p>",
+          lab: {
+            kind: "plane",
+            axes: false,
+            grid: 0,
+            view: [-0.8, 4.86, -0.8, 4.86],
+            points: {
+              A: {at: [0, 0], color: "ink", label: "$A$"},
+              B: {at: [3, 0], color: "ink", label: "$B$"},
+              C: {at: [4.06, 1.06], color: "ink", label: "$C$"},
+              D: {at: [1.06, 1.06], color: "ink", label: "$D$"},
+              A1: {at: [0, 3], color: "ink", label: "$A_1$"},
+              B1: {at: [3, 3], color: "ink", label: "$B_1$"},
+              C1: {at: [4.06, 4.06], color: "ink", label: "$C_1$"},
+              D1: {at: [1.06, 4.06], color: "ink", label: "$D_1$"}
+            },
+            segs: [
+              {a: "A", b: "B"},
+              {a: "B", b: "C"},
+              {a: "C", b: "D", dash: true},
+              {a: "D", b: "A", dash: true},
+              {a: "A1", b: "B1"},
+              {a: "B1", b: "C1"},
+              {a: "C1", b: "D1"},
+              {a: "D1", b: "A1"},
+              {a: "A", b: "A1"},
+              {a: "B", b: "B1"},
+              {a: "C", b: "C1"},
+              {a: "D", b: "D1", dash: true}
+            ],
+            alt: "Куб ABCDA1B1C1D1: нижня грань ABCD, верхня A1B1C1D1, невидимі ребра пунктиром"
+          },
           opts: [
             "Площини перетинаються по прямій",
             "Площини мимобіжні",
@@ -284,6 +315,37 @@ SLID.section("math", {
           eyebrow: "Практика",
           title: "Чому $AA_1 \\perp$ підлозі?",
           body: "<p>У кубі: $AA_1 \\perp AB$ і $AA_1 \\perp AD$; $AB$ і $AD$ перетинаються в $A$. Висновок?</p>",
+          lab: {
+            kind: "plane",
+            axes: false,
+            grid: 0,
+            view: [-0.8, 4.86, -0.8, 4.86],
+            points: {
+              A: {at: [0, 0], color: "ink", label: "$A$"},
+              B: {at: [3, 0], color: "ink", label: "$B$"},
+              C: {at: [4.06, 1.06], color: "ink", label: "$C$"},
+              D: {at: [1.06, 1.06], color: "ink", label: "$D$"},
+              A1: {at: [0, 3], color: "ink", label: "$A_1$"},
+              B1: {at: [3, 3], color: "ink", label: "$B_1$"},
+              C1: {at: [4.06, 4.06], color: "ink", label: "$C_1$"},
+              D1: {at: [1.06, 4.06], color: "ink", label: "$D_1$"}
+            },
+            segs: [
+              {a: "A", b: "B"},
+              {a: "B", b: "C"},
+              {a: "C", b: "D", dash: true},
+              {a: "D", b: "A", dash: true},
+              {a: "A1", b: "B1"},
+              {a: "B1", b: "C1"},
+              {a: "C1", b: "D1"},
+              {a: "D1", b: "A1"},
+              {a: "A", b: "A1"},
+              {a: "B", b: "B1"},
+              {a: "C", b: "C1"},
+              {a: "D", b: "D1", dash: true}
+            ],
+            alt: "Куб ABCDA1B1C1D1: нижня грань ABCD, верхня A1B1C1D1, невидимі ребра пунктиром"
+          },
           opts: [
             "$AA_1$ паралельне підлозі",
             "$AA_1 \\perp$ лише до $AB$",
@@ -606,6 +668,37 @@ SLID.section("math", {
           eyebrow: "Завдання 1",
           title: "Верхня балка й настил",
           body: "<p>Ребро $A_1B_1$ ∥ ребру $AB$ настилу (площина $ABCD$), і $A_1B_1$ не лежить у настилі. Висновок?</p>",
+          lab: {
+            kind: "plane",
+            axes: false,
+            grid: 0,
+            view: [-0.8, 6.51, -0.8, 4.51],
+            points: {
+              A: {at: [0, 0], color: "ink", label: "$A$"},
+              B: {at: [5, 0], color: "ink", label: "$B$"},
+              C: {at: [5.71, 0.71], color: "ink", label: "$C$"},
+              D: {at: [0.71, 0.71], color: "ink", label: "$D$"},
+              A1: {at: [0, 3], color: "ink", label: "$A_1$"},
+              B1: {at: [5, 3], color: "ink", label: "$B_1$"},
+              C1: {at: [5.71, 3.71], color: "ink", label: "$C_1$"},
+              D1: {at: [0.71, 3.71], color: "ink", label: "$D_1$"}
+            },
+            segs: [
+              {a: "A", b: "B"},
+              {a: "B", b: "C"},
+              {a: "C", b: "D", dash: true},
+              {a: "D", b: "A", dash: true},
+              {a: "A1", b: "B1"},
+              {a: "B1", b: "C1"},
+              {a: "C1", b: "D1"},
+              {a: "D1", b: "A1"},
+              {a: "A", b: "A1"},
+              {a: "B", b: "B1"},
+              {a: "C", b: "C1"},
+              {a: "D", b: "D1", dash: true}
+            ],
+            alt: "Макет прольоту ABCDA1B1C1D1: настил ABCD, верхні балки A1B1C1D1, невидимі ребра пунктиром"
+          },
           opts: [
             "$A_1B_1$ перетинає настил",
             "$A_1B_1$ ∥ площині настилу",
@@ -623,6 +716,37 @@ SLID.section("math", {
           eyebrow: "Завдання 2",
           title: "Опора ⊥ настилу?",
           body: "<p>Опора $AA_1$ ⊥ $AB$ і ⊥ $AD$ настилу; $AB$ і $AD$ перетинаються. Чи $AA_1 \\perp$ площині настилу?</p>",
+          lab: {
+            kind: "plane",
+            axes: false,
+            grid: 0,
+            view: [-0.8, 6.51, -0.8, 4.51],
+            points: {
+              A: {at: [0, 0], color: "ink", label: "$A$"},
+              B: {at: [5, 0], color: "ink", label: "$B$"},
+              C: {at: [5.71, 0.71], color: "ink", label: "$C$"},
+              D: {at: [0.71, 0.71], color: "ink", label: "$D$"},
+              A1: {at: [0, 3], color: "ink", label: "$A_1$"},
+              B1: {at: [5, 3], color: "ink", label: "$B_1$"},
+              C1: {at: [5.71, 3.71], color: "ink", label: "$C_1$"},
+              D1: {at: [0.71, 3.71], color: "ink", label: "$D_1$"}
+            },
+            segs: [
+              {a: "A", b: "B"},
+              {a: "B", b: "C"},
+              {a: "C", b: "D", dash: true},
+              {a: "D", b: "A", dash: true},
+              {a: "A1", b: "B1"},
+              {a: "B1", b: "C1"},
+              {a: "C1", b: "D1"},
+              {a: "D1", b: "A1"},
+              {a: "A", b: "A1"},
+              {a: "B", b: "B1"},
+              {a: "C", b: "C1"},
+              {a: "D", b: "D1", dash: true}
+            ],
+            alt: "Макет прольоту ABCDA1B1C1D1: настил ABCD, верхні балки A1B1C1D1, невидимі ребра пунктиром"
+          },
           opts: ["Так", "Ні, треба ще третю пряму", "Ні, бо опора похила", "Лише якщо куб"],
           correct: 0,
           hint: "Ознака: ⊥ двом прямим, що перетинаються.",
@@ -635,8 +759,8 @@ SLID.section("math", {
           sk: "geom",
           eyebrow: "Завдання 3",
           title: "Трос і бордюр",
-          body: "<p>Похила $AB$ має тінь $OB$ на настилі. Бордюр $c$ лежить на настилі, іде через $B$ і $c \\perp OB$. Що з тросом $AB$?</p>",
-          opts: ["$c \\parallel AB$", "$c \\perp AB$", "$c$ перетинає $AO$", "Нічого"],
+          body: "<p>Трос — похила $MK$, $M$ — кріплення над настилом, $MO$ ⊥ настилу, тож $OK$ — тінь троса на настилі. Бордюр $c$ лежить на настилі, іде через $K$ і $c \\perp OK$. Що з тросом $MK$?</p>",
+          opts: ["$c \\parallel MK$", "$c \\perp MK$", "$c$ перетинає $MO$", "Нічого"],
           correct: 1,
           fbOk: "Три перпендикуляри.",
           fbBad: "Правило трьох перпендикулярів з уроку 2.",

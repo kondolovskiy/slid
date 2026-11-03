@@ -74,6 +74,16 @@ SLID.section("math", {
           eyebrow: "Висновок",
           title: "Через яку точку проходять усі графіки?",
           body: "<p>Покрути основу $a$ ще раз. Яка точка лишається на графіку за будь-якого $a$?</p>",
+          lab: {
+            kind: "plane",
+            view: [-3, 3, -1, 9],
+            params: {
+              a: { min: 0.2, max: 3, step: 0.1, start: 0.5, label: "основа $a$" }
+            },
+            fns: [{ id: "f", y: "a^x", color: "accent" }],
+            show: ["$y = {a}^x$"],
+            alt: "Графік y = a^x з повзунком основи, без позначених точок"
+          },
           opts: ["$(1; 0)$", "$(0; 0)$", "$(0; 1)$", "$(1; 1)$"],
           correct: 2,
           hint: "Підстав $x = 0$. Чому дорівнює будь-яке число в нульовому степені?",
@@ -231,6 +241,19 @@ SLID.section("math", {
           eyebrow: "Висновок",
           title: "Скільки коренів має $2^x = 5$?",
           body: "<p>Постав $b = 5$ і подивись, скільки разів пунктир перетинає графік.</p>",
+          lab: {
+            kind: "plane",
+            view: [-3, 4, -1, 9],
+            params: {
+              b: { min: 0.25, max: 8, step: 0.25, start: 2, label: "$b$" }
+            },
+            fns: [
+              { id: "f", y: "2^x", color: "accent" },
+              { id: "g", y: "b", color: "blue", dash: true }
+            ],
+            show: ["$y = {b}$"],
+            alt: "Графік y = 2^x і пунктирна пряма y = b з повзунком"
+          },
           opts: ["один", "жодного", "два", "безліч"],
           correct: 0,
           hint: "Графік $y = 2^x$ весь час зростає.",
@@ -376,6 +399,18 @@ SLID.section("math", {
           eyebrow: "Здогадка",
           title: "Куди перейде точка $(0; 1)$ графіка $y = 2^x$?",
           body: "<p>Відбий її відносно прямої $y = x$.</p>",
+          lab: {
+            kind: "plane",
+            view: [-3, 4, -3, 4],
+            fns: [
+              { y: "2^x", color: "accent", label: "$y = 2^x$", labelAt: "1.6" },
+              { y: "x", color: "gold", dash: true, label: "$y = x$", labelAt: "3.6" }
+            ],
+            points: {
+              A: { x: "0", y: "1", color: "red", label: "$(0; 1)$" }
+            },
+            alt: "Графік y = 2^x, пряма y = x пунктиром і точка (0; 1) на графіку"
+          },
           hyp: true,
           opts: ["$(0; -1)$", "$(1; 0)$", "$(-1; 0)$", "$(1; 1)$"],
           fbTitle: "Перевіримо.",
@@ -411,6 +446,20 @@ SLID.section("math", {
           eyebrow: "Висновок",
           title: "Де лежить увесь графік $y = $ log<sub>$a$</sub> $x$?",
           body: "<p>Покрути основу. Чи заходить суцільна лінія ліворуч від осі $Oy$?</p>",
+          lab: {
+            kind: "plane",
+            view: [-3, 6, -3, 6],
+            params: {
+              a: { min: 0.25, max: 4, step: 0.25, start: 3, label: "основа $a$" }
+            },
+            fns: [
+              { id: "f", y: "a^x", color: "muted", dash: true },
+              { id: "g", y: "log(a, x)", color: "accent", from: "0.01", to: "6" },
+              { y: "x", color: "gold", dash: true }
+            ],
+            show: ["основа $a = {a}$"],
+            alt: "Графіки y = a^x пунктиром і y = log_a x суцільною лінією з повзунком основи"
+          },
           opts: [
             "лише там, де $x > 0$",
             "лише там, де $y > 0$",

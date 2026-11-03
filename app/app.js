@@ -820,7 +820,10 @@ const answerSig = () => { const s=L.screens[idx], v= LAB && s?.type==="lab"? LAB
   return v instanceof Set? JSON.stringify([...v].sort((a,b)=>a-b)) : typeof v==="string"? v.replace(/\s+/g," ").trim() : JSON.stringify(v); };
 /* правильну відповідь не блокуємо ніколи, навіть якщо відбиток збігся (напр. «5,» без цифри після коми, а потім «5») */
 const sameAsTried = () => tried!==null && !checked && answerSig()===tried && !gradeNow(L.screens[idx]);
-const letters="АБВГДЕ";
+/* Літери варіантів choice/multi: український алфавіт без Ґ, Є, Ї, Й, Ь (як у тестах ЗНО/НМТ — літери, які не сплутати); 28 літер.
+   Варіант понад алфавіт отримує номер, а не «undefined»; validate (OPT_LETTERS) не пропускає більше варіантів, ніж літер. */
+const OPT_LETTERS="АБВГДЕЖЗИІКЛМНОПРСТУФХЦЧШЩЮЯ";
+const optLetter=k=> k<OPT_LETTERS.length? OPT_LETTERS[k] : String(k+1);
 let SEC=null;
 function startById(id){ const f=findLesson(id); if(f) startLesson(f.c.id,f.k,f.i,true); }
 window.__slidStart=startById;   /* QA (test-answer-ui): відкрити урок за id, як кнопки data-lesson, — зокрема урок іншого класу після перенесення розділу (D-043) */
@@ -985,7 +988,7 @@ function renderScreen(){
   if(s.type==="choice"||s.type==="multi"){
     st= s.type==="multi"? new Set() : null;
     if(s.type==="multi") h+=`<div class="fix">Можна обрати кілька</div>`;
-    h+=`<div class="opts">${s.opts.map((o,k)=>`<button class="opt" type="button" data-k="${k}" aria-pressed="false"><span class="k">${letters[k]}</span><span>${o}</span></button>`).join("")}</div>`;
+    h+=`<div class="opts">${s.opts.map((o,k)=>`<button class="opt" type="button" data-k="${k}" aria-pressed="false"><span class="k">${optLetter(k)}</span><span>${o}</span></button>`).join("")}</div>`;
   }
   if(s.type==="sort"){
     st=s.items.map(()=>null);
@@ -1055,18 +1058,24 @@ function answerUI(s, grade, signed){
   // числова відповідь: «−» і дроби — лише коли їх уже вивчають або цього потребує сама вправа (LEARN.numberKeys)
   const nk= kind==="number"? LEARN.numberKeys(s, grade, signed) : null;
   const keys=sym? sym[0].slice() : kind==="comparison"? ["<",">","="] : kind==="list"? ["-","/",";"," "] : kind==="factors"? ["*","^"] : kind==="divrem"? [" ост. "] : [...(nk.minus?["-"]:[]), ...(nk.frac?["/"," "]:[])];
-  if(kind==="list" && /[√±]/.test(String(s.answer))) keys.push("√","±");
+  if(kind==="list" && /[√∛∜±]/.test(String(s.answer))) keys.push("√","±");
   if(kind==="expression") for(const c of new Set(String(s.answer).match(/[\u0370-\u03ff]/g)||[])) if(c!=="π") keys.push(c);   // α, β… з ключа
   const units= kind==="quantity"? LEARN.quantityUnits(s)||[] : null;
   if(units) keys.push(...units);
   const pk= kind==="coordinates2"? LEARN.pairKey(s) : null, pv= pk&&pk.some(c=>c.expr)? [...new Set(pk.flatMap(c=>c.vars))].sort() : null;   // компоненти-вирази; приклад у підказці не має збігатися з ключем жодної вправи (test-answer-ui)
   if(pv) keys.push("^","·",...pv);
   // «√» — з 8 класу (квадратні корені) або коли корінь є в самому ключі; клас — розділу вправи, як у numberKeys (QA 7 кл. D-3)
-  if(keys.includes("√") && (Number(grade)||0)<8 && !/[√∛∜]|sqrt/.test(Array.isArray(s.answer)? s.answer.join(";") : String(s.answer))) keys.splice(keys.indexOf("√"),1);
+  const ansStr=Array.isArray(s.answer)? s.answer.join(";") : String(s.answer);
+  if(keys.includes("√") && (Number(grade)||0)<8 && !/[√∛∜]|sqrt/.test(ansStr)) keys.splice(keys.indexOf("√"),1);
+  /* «∛», «∜» (engine-cbrt-key) — одразу після «√»: з 10 класу (корінь n-го степеня) у точних полях exactRoot і expression,
+     а в будь-якому полі — коли такий корінь є в самому ключі (інакше ∛5 не ввести з телефона). З клавіатури — «cbrt(5)» (learn.js norm). */
+  const hi=(Number(grade)||0)>=10 && (kind==="exactRoot"||kind==="expression");
+  const extra=["∛","∜"].filter(c=>!keys.includes(c) && (ansStr.includes(c) || (hi && keys.includes("√"))));
+  if(extra.length) keys.splice(keys.includes("√")? keys.indexOf("√")+1 : keys.length, 0, ...extra);
   const help=pv? "Координати — у дужках через крапку з комою: (2a; b − 1). Спершу x, потім y. Множення — · або без знака (2a), степінь — ^."
     : kind==="time"? `Час — години й хвилини через двокрапку: ${LEARN.timeExample(s)}.`
     : units? `Запиши число й одиницю (${units.join(", ")}). Кілька одиниць — через пробіл, спершу більші.`
-    : sym? sym[1] : kind==="comparison"? "Запиши знак: <, > або =." : kind==="list"? "Запиши всі числа через крапку з комою. Порядок не має значення." : kind==="factors"? "Множники — через · або *. Степінь — через ^, наприклад 2^3 · 5." : kind==="divrem"? "Запиши неповну частку, потім кнопкою «ост.» — остачу: 3 ост. 2." : LEARN.numberHelp(s) || (nk.frac? "Дріб — через риску: 7/12. Мішане число — через пробіл: 2 1/3." : nk.dec? "Десятковий дріб — через кому: 2,5." : "");   // decimals, form "improper" — своя підказка (learn.js numberHelp)
+    : sym? sym[1]+(keys.includes("∛")? " Кубічний корінь — ∛ (з клавіатури — cbrt): 2∛3." : "") : kind==="comparison"? "Запиши знак: <, > або =." : kind==="list"? "Запиши всі числа через крапку з комою. Порядок не має значення." : kind==="factors"? "Множники — через · або *. Степінь — через ^, наприклад 2^3 · 5." : kind==="divrem"? "Запиши неповну частку, потім кнопкою «ост.» — остачу: 3 ост. 2." : LEARN.numberHelp(s) || (nk.frac? "Дріб — через риску: 7/12. Мішане число — через пробіл: 2 1/3." : nk.dec? "Десятковий дріб — через кому: 2,5." : "");   // decimals, form "improper" — своя підказка (learn.js numberHelp)
   return { keys, help, sym:!!sym };
 }
 // Лише для читання (глибоко заморожена копія, рев'ю followup P3-4): test-answer-ui звіряє приклади підказок із ключами вправ.

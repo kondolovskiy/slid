@@ -332,7 +332,8 @@ window.SLID_LEARN = (() => {
   const CYR_TWIN = { "а": "a", "е": "e", "і": "i", "к": "k", "о": "o", "р": "p", "с": "c", "у": "y", "х": "x",
     "А": "A", "В": "B", "Е": "E", "І": "I", "К": "K", "М": "M", "Н": "H", "О": "O", "Р": "P", "С": "C", "Т": "T", "Х": "X" };
   const latin = t => t.replace(/[аеікорсухАВЕІКМНОРСТХ]/g, c => CYR_TWIN[c]);
-  const norm = v => latin(String(v ?? "")).replace(/(\d)\.(?=\d)/g, "$1,").replace(/[−–—]/g, "-").replace(/[*×∙⋅]/g, "·").replace(/÷/g, ":").replace(/[  ]/g, " ")
+  // «cbrt» — кубічний корінь з фізичної клавіатури (engine-cbrt-key): cbrt(5) = ∛(5), 2cbrt2 = 2∛2; кнопка поля вставляє «∛»
+  const norm = v => latin(String(v ?? "")).replace(/cbrt/gi, "∛").replace(/(\d)\.(?=\d)/g, "$1,").replace(/[−–—]/g, "-").replace(/[*×∙⋅]/g, "·").replace(/÷/g, ":").replace(/[  ]/g, " ")
     .replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹]+/g, m => "^(" + [...m].map(c => SUP.indexOf(c)).join("") + ")").trim();
   function lex(t) {
     const out = []; let i = 0, m;
@@ -638,7 +639,7 @@ window.SLID_LEARN = (() => {
      літера, якій умова дає числове значення ($\sqrt{a^2}$ при $a = 4,6$ — це дане, не невідоме).
      Кілька кандидатів (параметр і змінна $3x^2 - bx + 12 = 0$, система x і y, $y = kx + b$), жодного, різні літери в записі,
      літера не та — запис лишається як є, тобто «неправильно», як і раніше (рев'ю P1-1). */
-  const LIST_PRE = /^\s*([a-zA-Zа-яґєії])\s*(?:_?\{?[1-4]\}?|[₁₂₃₄])?\s*=\s*(?=[-−–+]?\s*(?:[\d√∛∜π(]|sqrt|pi))/u;
+  const LIST_PRE = /^\s*([a-zA-Zа-яґєії])\s*(?:_?\{?[1-4]\}?|[₁₂₃₄])?\s*=\s*(?=[-−–+]?\s*(?:[\d√∛∜π(]|sqrt|cbrt|pi))/u;
   const CYR_LAT = { "а": "a", "е": "e", "і": "i", "к": "k", "о": "o", "р": "p", "с": "c", "у": "y", "х": "x" };
   const TEX_ARG = /\\(?:vec|overrightarrow|overline|bar|hat|text|mathrm|operatorname|mathbb)\s*(?:\{[^{}]*\}|[a-zA-Z])/g;
   const TEX_WORD = /\\[a-zA-Z]+|\b(?:arcsin|arccos|arctg|arcctg|arctan|sin|cos|tg|ctg|tan|cot|log|lg|ln|sqrt|max|min|mod)\b/g;

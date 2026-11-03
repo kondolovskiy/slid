@@ -1,5 +1,6 @@
 /* Слід · Математика, 5 клас — «Фігури і величини»
-   Статус уроків: l1 — повторно verified 2026-11-01 (refine-math-diag-probes-v3: AB = AC + CB на екрані теорії; reports/verify/refine-math-diag-probes-v3.md); l2–l5 verified (повторна верифікація після ревізії D-019, 2026-10-13, reports/verify/ms0b.md); ms3l3, ms4l1 — verified 2026-11-03 (verifier-revise-math-ms0b-ister, reports/verify/revise-math-ms0b-ister.md). 7 уроків.
+   Статус уроків: l1 — повторно verified 2026-11-01 (refine-math-diag-probes-v3: AB = AC + CB на екрані теорії; reports/verify/refine-math-diag-probes-v3.md); l2–l5 verified (повторна верифікація після ревізії D-019, 2026-10-13, reports/verify/ms0b.md); ms3l3, ms4l1 — verified 2026-11-03 (verifier-revise-math-ms0b-ister, reports/verify/revise-math-ms0b-ister.md). 7 уроків (ms3l3, ms4l1 перенесено, D-043).
+   Статус уроків: l1 — verified (2026-11-03, verifier-fix-math-figs-g4-g6, reports/verify/fix-math-figs-g4-g6.md; fix-math-figs-g4-g6: статичний рисунок на екрані теорії «Відрізок, промінь, пряма»; промінь CD перейменовано на MN, щоб C не означала двох різних точок). Раніше l1 — повторно verified 2026-11-01 (refine-math-diag-probes-v3: AB = AC + CB на екрані теорії; reports/verify/refine-math-diag-probes-v3.md); l2–l5 verified (повторна верифікація після ревізії D-019, 2026-10-13, reports/verify/ms0b.md). 5 уроків.
    Інтерактив (D-014): plane без осей — перетягувані точки (відрізок, промінь, пряма, кути, трикутники); rect — периметр.
    Перевірка: node tools/validate.mjs --section ms0b && node tools/stats.mjs --subject math
    Міграція за Істером (D-043, docs/design/math-ister.md, 2026-11-03): сюди перенесено ms3l3 (діаграми, Істер 5 § 19) з ms3 і ms4l1 (площа, § 25) з ms4; id уроків не змінено.
@@ -48,15 +49,15 @@ SLID.section("math", {
           type: "explore",
           eyebrow: "Дослідження",
           title: "Три лінії",
-          body: "<p>Тягни точки. Чорна лінія — <b>відрізок</b> $AB$. Синя — <b>промінь</b> $CD$. Зелена — <b>пряма</b> $EF$. Яка з них має два кінці?</p>",
+          body: "<p>Тягни точки. Чорна лінія — <b>відрізок</b> $AB$. Синя — <b>промінь</b> $MN$. Зелена — <b>пряма</b> $EF$. Яка з них має два кінці?</p>",
           lab: {
             kind: "plane", axes: false, view: [0, 10, 0, 7],
             points: {
               A: { at: [1, 6], drag: true }, B: { at: [4, 6], drag: true },
-              C: { at: [1, 4], drag: true, color: "blue" }, D: { at: [4, 4], drag: true, color: "blue" },
+              M: { at: [1, 4], drag: true, color: "blue" }, N: { at: [4, 4], drag: true, color: "blue" },
               E: { at: [2, 1], drag: true, color: "green" }, F: { at: [5, 2], drag: true, color: "green" }
             },
-            segs: [["A", "B"], { a: "C", b: ["Cx+30*(Dx-Cx)", "Cy+30*(Dy-Cy)"], color: "blue" }],
+            segs: [["A", "B"], { a: "M", b: ["Mx+30*(Nx-Mx)", "My+30*(Ny-My)"], color: "blue" }],
             lines: [{ through: ["E", "F"], color: "green" }],
             alt: "Відрізок, промінь і пряма з точками, які можна перетягувати"
           },
@@ -67,9 +68,20 @@ SLID.section("math", {
           eyebrow: "Теорія",
           title: "Відрізок, промінь, пряма",
           body: `<p><b>Відрізок</b> $AB$ має два кінці. Його можна виміряти лінійкою.</p>
-        <p><b>Промінь</b> $CD$ має початок $C$, але не має кінця. У назві променя початок пишемо першим.</p>
+        <p><b>Промінь</b> $MN$ має початок $M$, але не має кінця. У назві променя початок пишемо першим.</p>
         <p><b>Пряма</b> не має ні початку, ні кінця. Через дві точки проходить лише одна пряма.</p>
         <p>Точка $C$ на відрізку $AB$ ділить його на дві частини. Разом вони дають весь відрізок: $AB = AC + CB$. Тому $CB = AB - AC$.</p>`,
+          lab: {
+            kind: "plane", axes: false, grid: 0, view: [0, 10, 0, 6],
+            points: {
+              A: { at: [1, 5] }, C: { at: [4, 5], color: "red" }, B: { at: [8, 5] },
+              M: { at: [1, 3], color: "blue" }, N: { at: [4, 3], color: "blue" },
+              E: { at: [2, 0.8], color: "green" }, F: { at: [6, 1.4], color: "green" }
+            },
+            segs: [["A", "B"], { a: "M", b: [10, 3], color: "blue" }],
+            lines: [{ through: ["E", "F"], color: "green" }],
+            alt: "Відрізок AB з точкою C на ньому, промінь MN, що йде від M праворуч без кінця, і пряма EF"
+          },
           cta: "Спробувати"
         },
         {

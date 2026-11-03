@@ -1196,6 +1196,59 @@ async def root_index_checks(browser, url):
         await context.close()
     print('Root index (g10m3 2∛2, 0,3∛1000, 5·⁸√256; 320 px, light/dark): in the hook of √, apart from the coefficient, green', flush=True)
 
+async def letters_cbrt_checks(browser, url):
+    """engine-option-letters: a multi with 11 options (as ukr u5s3l1) gets letters А…К, never «undefined» (the old row had 6 letters).
+    engine-cbrt-key: real pg10m3 items with a cube root in the key (a06 «2∛2», b01 «∛5») show ∛ and ∜ right after √, ∛ inserts
+    at the caret, «cbrt(5)» from a physical keyboard is accepted; a grade-8 exactRoot key without ∛ gets no ∛ key."""
+    context, page, errors = await qa_page(browser, url, {'grade': 6, 'unlockAll': True})
+    letters = await page.evaluate("""() => {const l=SLID_SUBJECTS.find(c=>c.id==='math').sections.flatMap(s=>s.lessons||[]).find(l=>l.id==='g6m1l1');
+      l.screens=[l.screens[0], {type:'multi',sk:l.screens.find(x=>x.sk)?.sk,title:'Обери парні',body:'<p>Які числа парні?</p>',
+        opts:['1','2','3','4','5','6','7','8','9','10','11'],correct:[1,3,5,7,9],fbOk:'Так.',fbText:'Парні числа діляться на 2 без остачі.'}];
+      return 'АБВГДЕЖЗИІК';}""")
+    await open_lesson_at(page, 'g6m1l1', 1)
+    ks = await page.locator('#stage .opt .k').all_inner_texts()
+    assert ks == list(letters), ks
+    assert 'undefined' not in await page.locator('#stage').inner_text()
+    for k in (1, 3, 5, 7, 9):
+        await page.click(f'#stage .opt[data-k="{k}"]')
+    await page.click('#action')
+    assert 'ok' in await page.locator('#dock').get_attribute('class')
+    await context.close()
+
+    context, page, errors = await qa_page(browser, url, {'grade': 10, 'unlockAll': True, 'lessons': {}, 'srs': {}, 'seen': {}})
+    ids = await page.evaluate("""() => {const c=SLID_SUBJECTS.find(c=>c.id==='math'),p=c.pools.find(p=>p.id==='pg10m3');
+      p.items=p.items.filter(it=>it.id==='a06'||it.id==='b01');
+      if(p.items.length!==2) throw new Error('pg10m3 a06/b01 changed: '+p.items.map(it=>it.id));
+      c.pools=[p]; return p.items.map(it=>it.id);}""")
+    await page.click('[data-tab="path"]')
+    await page.click('button[data-subject="math"]'); await page.click('[data-practice-view="math"]'); await page.click('[data-practice-mix]')
+    seen = set()
+    for it in await practice_queue(page):
+        ins = await page.locator('#stage .anskeys button').evaluate_all('bs => bs.map(b => b.dataset.ins)')
+        help_text = await page.locator('#stage .anskeys + .fix').inner_text()
+        assert ins[ins.index('√'):ins.index('√') + 3] == ['√', '∛', '∜'], ins
+        assert 'cbrt' in help_text and '∛' in help_text, help_text
+        assert await page.get_attribute('.anskeys button[data-ins="∛"]', 'aria-label') == 'Вставити ∛'
+        if it['id'] == 'a06':
+            await page.fill('#numIn', '22'); await page.eval_on_selector('#numIn', 'e=>e.setSelectionRange(1,1)')
+            await page.click('.anskeys button[data-ins="∛"]')
+            assert await page.input_value('#numIn') == '2∛2', await page.input_value('#numIn')
+        else:
+            await page.fill('#numIn', 'cbrt(5)'); await page.dispatch_event('#numIn', 'input')
+        await page.click('#action')
+        assert 'ok' in await page.locator('#dock').get_attribute('class'), (it['id'], await page.locator('#dock').inner_text())
+        await page.click('#action'); seen.add(it['id'])
+    assert seen == set(ids), (seen, ids)
+    # The rule itself (SLID_ANS_UI.field is pure): grade 8 — no ∛ unless the key has it; grade 10 exactRoot/expression — ∛ ∜ after √;
+    # list/coordinates in grade 10 — only when the key has the root.
+    keys = await page.evaluate("""() => [[{answerKind:'exactRoot',answer:'2√3'},8],[{answerKind:'exactRoot',answer:'∛5'},8],[{answerKind:'exactRoot',answer:'2√3'},10],
+      [{answerKind:'expression',answer:'x^2'},10],[{answerKind:'expression',answer:'x^2'},9],[{answerKind:'list',answer:'√2; 1'},10],[{answerKind:'list',answer:'∛2; 1'},10],
+      [{answerKind:'coordinates2',answer:'(1; 2)'},11]].map(([s,g])=>SLID_ANS_UI.field(s,g).keys.filter(k=>/[√∛∜]/.test(k)).join(''))""")
+    assert keys == ['√', '√∛', '√∛∜', '√∛∜', '√', '√', '√∛', '√'], keys
+    assert not errors, errors
+    await context.close()
+    print('Option letters (multi of 11: А…К, no undefined) and cube-root keys (pg10m3 a06/b01: ∛ ∜ after √, caret, cbrt; grade 8 without ∛): green', flush=True)
+
 FALLBACK_CHROMIUM = '/opt/pw-browsers/chromium'
 
 async def launch_browser(p, path=None):
@@ -1326,6 +1379,7 @@ async def main():
                 await player_focus_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
                 await attr_math_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
                 await root_index_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
+                await letters_cbrt_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
                 await player_a11y_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
                 await player_a11y_p3_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
                 await diag_answer_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
