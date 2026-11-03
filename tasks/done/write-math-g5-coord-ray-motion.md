@@ -6,7 +6,7 @@ type: write-section
 subject: math
 grade: 5
 section: ms0
-status: review
+status: done
 claimed_by: writer-write-math-g5-coord-ray-motion
 created: 2026-11-03
 depends_on: [math-ister-migration]

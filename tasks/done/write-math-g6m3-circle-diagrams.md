@@ -6,7 +6,7 @@ type: write-section
 subject: math
 grade: 6
 section: g6m3
-status: review
+status: done
 claimed_by: writer-write-math-g6m3-circle-diagrams
 created: 2026-11-03
 depends_on: [math-ister-migration]
