@@ -1141,7 +1141,11 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
     eq(hist.every(l => lessons.includes(l)), true, `${p.id}: історичні уроки ${hist.join(", ")} є в розділі`);
     const old = hist.flatMap((l, k) => Array.from({ length: 8 }, (_, j) => [String.fromCharCode(97 + k) + "0" + (j + 1), l])).filter(([id]) => !(REMOVED[p.id] || []).includes(id));
     eq(old.every(([id, l]) => p.items.some(it => it.id === id && it.lesson === l)), true, `${p.id}: сталі id і уроки збережено`);
-    eq(p.items.filter(it => !old.some(([id]) => id === it.id)).map(it => it.id), ADDED[p.id] || [], `${p.id}: нові вправи — лише нові id`);
+    // нові вправи історичних уроків — рівно ADDED; вправи нових уроків (D-043; пул — write-math-pool-<розділ>-ister) — вільні,
+    // але не беруть жодного id сітки 2026-10-13 (зокрема вилученого) і жодного з ADDED
+    eq(p.items.filter(it => hist.includes(it.lesson) && !old.some(([id]) => id === it.id)).map(it => it.id), ADDED[p.id] || [], `${p.id}: нові вправи — лише нові id`);
+    const grid = new Set(hist.flatMap((_, k) => Array.from({ length: 8 }, (_, j) => String.fromCharCode(97 + k) + "0" + (j + 1))).concat(ADDED[p.id] || []));
+    eq(p.items.filter(it => !hist.includes(it.lesson) && grid.has(it.id)).map(it => it.id), [], `${p.id}: вправи нових уроків — не на старих id`);
     eq(p.items.some(it => (REMOVED[p.id] || []).includes(it.id)), false, `${p.id}: вилучені id не використано знову`);
     // історичні (required) уроки — строго 6–8; новий урок без пулу (D-043, pending у матриці) — 0, з пулом — так само 6–8
     for (const l of lessons) { const n = p.items.filter(it => it.lesson === l).length;
