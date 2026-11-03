@@ -1,5 +1,5 @@
 /* Слід · Математика, 7 клас — «Алгебра: цілі вирази»
-   Статус уроків: verified (verifier-g7m3); l3 — повторно verified 2026-11-03 (fix-math-figs-g7-g8-alg: заголовок екрана 6 і fbBad екрана 3 без посилання на малюнок; reports/verify/fix-math-figs-g7-g8-alg.md); l2 — повторно verified 2026-11-01 (refine-math-diag-probes-v3: екран «одночлен × многочлен», Алгебра 7 п. 10; reports/verify/refine-math-diag-probes-v3.md). 7 уроків (6 тем + boss); 2026-11-03 додано g7m3l6 (тотожності, перший у розділі) і g7m3l7 (сума й різниця кубів, перед boss) — draft (write-math-g7-algebra-gaps, Істер А7 § 5, § 20); eyebrow «Урок N» перенумеровано за порядком.
+   Статус уроків: verified (verifier-g7m3); l3 — повторно verified 2026-11-03 (fix-math-figs-g7-g8-alg: заголовок екрана 6 і fbBad екрана 3 без посилання на малюнок; reports/verify/fix-math-figs-g7-g8-alg.md); l2 — повторно verified 2026-11-01 (refine-math-diag-probes-v3: екран «одночлен × многочлен», Алгебра 7 п. 10; reports/verify/refine-math-diag-probes-v3.md). 7 уроків (6 тем + boss); 2026-11-03 додано g7m3l6 (тотожності, перший у розділі) і g7m3l7 (сума й різниця кубів, перед boss) — verified 2026-11-03 (write-math-g7-algebra-gaps, Істер А7 § 5, § 20; reports/verify/write-math-g7-algebra-gaps.md); eyebrow «Урок N» перенумеровано за порядком.
    Інтерактив: ≥ 2 explore/lab у кожному уроці (docs/CONTENT_SCHEMA.md §8).
    Перевірка: node tools/validate.mjs --section g7m3 && node tools/stats.mjs --subject math
    Схема й правила: docs/CONTENT_SCHEMA.md, style/, D-019 */
@@ -22,7 +22,7 @@ SLID.section("math", {
       title: "Рівні для будь-якого x",
       short: "Тотожності",
       icon: "scale",
-      status: "draft",
+      status: "verified",
       why: "Тотожне перетворення спрощує вираз і не змінює його значень. Так перевіряють, чи нічого не загубилося під час розкриття дужок.",
       screens: [
         {
@@ -872,7 +872,7 @@ SLID.section("math", {
       title: "Сума кубів — не куб суми",
       short: "Сума й різниця кубів",
       icon: "spiral",
-      status: "draft",
+      status: "verified",
       why: "Сума й різниця кубів розкладаються на два множники. Ці формули допомагають рахувати усно й розкладати многочлени.",
       screens: [
         {
