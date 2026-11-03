@@ -3,7 +3,7 @@ claimed_from: todo
 claimed_at: 2026-11-03T09:12:59.375Z
 id: hist-world-7-9
 type: content
-status: todo
+status: done
 claimed_by: orchestrator
 created: 2026-11-03
 depends_on: []
@@ -14,3 +14,4 @@ depends_on: []
 
 ## Нотатки виконавця
 - 2026-11-03 orchestrator: D-044 п. 4 — предмет `world`: subjects/world.js, content/world/plan.js (15 розділів w7s1–w9s5), style/world.md, glossary/world.md, facts/world.md; validate D-027 для world (tools-world-img, рев'ю прийнято). Еталон **w7s1** (verified) записано в style/world.md. 7 кл. повністю: **w7s1–w7s5** verified (reports/verify/w7s*.md). Лишилось: write-world-w8s1…w9s5 (10 задач у todo, depends_on w7s1 — виконано).
+- Задачу закрито: предмет запущено, 7 кл. verified; 8–9 кл. — окремі задачі write-world-w8s*/w9s* у todo.

@@ -3,7 +3,7 @@ claimed_from: todo
 claimed_at: 2026-11-03T09:12:59.315Z
 id: hist-artynov-gaps
 type: content
-status: todo
+status: done
 claimed_by: orchestrator
 created: 2026-11-03
 depends_on: []
