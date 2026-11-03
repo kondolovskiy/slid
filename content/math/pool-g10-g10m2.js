@@ -5,12 +5,13 @@
    srcPage — друкований номер сторінки (у цьому PDF збігається з номером сторінки файлу).
    2026-11-01 (fix-math-content-minor-1101): сигла джерела mer10 → m10 (як в інших пулах 10 кл.); статус verified (verifier-fix-math-content-minor-1101, 2026-11-01; reports/verify/fix-math-content-minor-1101.md).
    2026-11-03 (fix-math-figs-g10): до задач b01, b02, b03, b04, b06, b07, b08 додано статичні креслення (lab plane, axes: false, косокутна проєкція; позначення й дані — з умови, шукане не підписано); ключі не змінено. Статус draft до повторної перевірки.
+   2026-11-03: креслення перевірено (verifier-fix-math-figs-g10, reports/verify/fix-math-figs-g10.md), статус verified.
    Перевірка: node tools/validate.mjs --pool pg10m2
    Схема: docs/CONTENT_SCHEMA.md §10 */
 SLID.pool("math", {
   id: "pg10m2",
   section: "g10m2",
-  status: "draft",
+  status: "verified",
   meta: { author: "agent-write-math-pool-g10m2", created: "2026-10-31", factcheck: "verifier-pool-g10m2", teacher: null },
   sources: [
     { id: "m10", title: "Мерзляк А. Г., Номіровський Д. А., Полонський В. Б., Якір М. С. Математика: алгебра і початки аналізу та геометрія, рівень стандарту: підручник для 10 класу. — Харків: Гімназія, 2018 (п. 27, 29; дзеркало file.4book.org)", url: "https://file.4book.org/images/shcoolbook_ua/10/10_m_m_2018_ua.pdf" }

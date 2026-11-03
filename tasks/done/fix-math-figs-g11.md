@@ -5,7 +5,7 @@ claimed_by: verifier-fix-math-figs-g11
 id: fix-math-figs-g11
 type: fix
 subject: math
-status: review
+status: done
 created: 2026-11-03
 depends_on: [tools-math-fig-audit]
 files: content/math/g11-g11m1.js, content/math/g11-g11m2.js, content/math/g11-g11m3.js, content/math/g11-g11m4.js, content/math/g11-g11m5.js, content/math/g11-g11m6.js, content/math/pool-g11-g11m3.js
@@ -96,3 +96,6 @@ files: content/math/g11-g11m1.js, content/math/g11-g11m2.js, content/math/g11-g1
 **Не вдалося точно:** немає.
 
 **Перевірка:** `validate --section g11m1…g11m6` — 0 помилок (попередження лише sentenceWords профілю, були й до змін, g11m6 без змін має такі самі); `validate --pool pg11m3` — 0/0; попереджень «умова посилається на рисунок» у файлах немає. `fig-audit`: у моїх файлах лишились лише 15 пунктів зі списку «не потрібен» (евристика «graph»/«geo», не «ref»). `playtest --section` g11m1, g11m2, g11m3, g11m4, g11m5 — зелений. Рисунки переглянуто в Chromium (власний скрипт, mount моделі) — підписи курсивом, квадрат перерізу квадратний, осі й площини на місцях.
+
+## Нотатки верифікатора
+verifier-fix-math-figs-g11, 2026-11-03: прийнято без правок змісту, звіт reports/verify/fix-math-figs-g11.md. 8 змінених уроків → verified.

@@ -5,7 +5,7 @@ claimed_by: orchestrator
 id: tools-math-fig-audit
 type: tools
 subject: math
-status: review
+status: done
 created: 2026-11-03
 depends_on: []
 ---

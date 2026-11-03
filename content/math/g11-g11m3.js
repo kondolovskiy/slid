@@ -194,7 +194,7 @@ SLID.section("math", {
       title: "Площа під кривою",
       short: "Визначений інтеграл",
       icon: "chart",
-      status: "draft",
+      status: "verified",
       why: "Щоб за графіком швидкості знаходити шлях, а за кривою — площу.",
       screens: [
         {
@@ -537,7 +537,7 @@ SLID.section("math", {
       title: "Проєкт скейт-парку",
       short: "Фінал",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "g11m3boss",
       why: "Зберемо первісну, інтеграл і площі в одному проєкті скейт-парку.",

@@ -5,7 +5,7 @@ claimed_by: orchestrator
 id: engine-cbrt-key
 type: engine
 subject: math
-status: review
+status: done
 created: 2026-11-03
 depends_on: []
 ---

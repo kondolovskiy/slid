@@ -674,7 +674,7 @@ SLID.section("math", {
       title: "Фабрика упаковки",
       short: "Фінал",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "g11m4boss",
       why: "Зберемо многогранники, тіла обертання, об'єми й площі в одній задачі технолога. Бали ×2.",

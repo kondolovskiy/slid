@@ -691,6 +691,20 @@
   {
    "group": "geo",
    "file": "content/math/pool-g10-g10m4.js",
+   "where": "pg10m4:a07",
+   "kind": "пул",
+   "type": "answer",
+   "level": "geo",
+   "ill": false,
+   "prevIll": false,
+   "ref": null,
+   "points": "ABC",
+   "graph": null,
+   "text": "Периметр трикутника Ф Трикутник Ф лежить у площині Ф . Через його вершини проведено паралельні прямі, які перетинають площину Ф , паралельну площині Ф , у точках Ф , Ф і Ф . Знайди периметр трикутника"
+  },
+  {
+   "group": "geo",
+   "file": "content/math/pool-g10-g10m4.js",
    "where": "pg10m4:a08",
    "kind": "пул",
    "type": "answer",

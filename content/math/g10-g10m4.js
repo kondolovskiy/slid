@@ -28,7 +28,7 @@ SLID.section("math", {
       title: "Стеля паралельна підлозі",
       short: "Паралельність",
       icon: "home",
-      status: "draft",
+      status: "verified",
       why: "Щоб перевіряти паралельність балок і площин стін за ознаками, а не на око.",
       screens: [
         {
@@ -254,7 +254,7 @@ SLID.section("math", {
       title: "Стовп стоїть прямо",
       short: "Перпендикулярність",
       icon: "bolt",
-      status: "draft",
+      status: "verified",
       why: "Щоб перевірити, що стовп стоїть прямо до підлоги, і застосувати три перпендикуляри.",
       screens: [
         {
@@ -626,7 +626,7 @@ SLID.section("math", {
       title: "Креслення мосту",
       short: "Фінал",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "g10m4boss",
       why: "Зберемо ознаки паралельності, перпендикуляри й відстані в одній задачі інженера. Бали ×2.",

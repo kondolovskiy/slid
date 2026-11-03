@@ -29,7 +29,7 @@ SLID.section("math", {
       title: "Адреса дрона в залі",
       short: "Координати",
       icon: "target",
-      status: "draft",
+      status: "verified",
       why: "Щоб задавати будь-яке місце в просторі трьома числами — як у 3D-моделях і кресленнях.",
       screens: [
         {

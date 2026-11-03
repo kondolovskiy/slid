@@ -366,7 +366,7 @@ SLID.section("math", {
       title: "Чесний середній чек",
       short: "Статистика",
       icon: "chart",
-      status: "draft",
+      status: "verified",
       why: "Зарплати, ціни, оцінки — одне число про багато даних може як допомогти, так і ввести в оману.",
       screens: [
         {

@@ -5,7 +5,7 @@ claimed_by: verifier-fix-math-figs-g10
 id: fix-math-figs-g10
 type: fix
 subject: math
-status: review
+status: done
 created: 2026-11-03
 depends_on: [tools-math-fig-audit]
 files: content/math/g10-g10m1.js, content/math/g10-g10m2.js, content/math/g10-g10m3.js, content/math/g10-g10m4.js, content/math/g10-g10m6.js, content/math/pool-g10-g10m1.js, content/math/pool-g10-g10m2.js, content/math/pool-g10-g10m3.js, content/math/pool-g10-g10m4.js, content/math/pool-g10-g10m6.js
@@ -123,3 +123,6 @@ files: content/math/g10-g10m1.js, content/math/g10-g10m2.js, content/math/g10-g1
 **Статуси:** draft — уроки g10m2l2, g10m3l2, g10m3l3, g10m4l1, g10m4l2, g10m4l4, g10m6l4; пули pg10m2, pg10m4 (увесь файл; рядок у шапці).
 
 **Перевірка:** `validate --section g10m2|g10m3|g10m4|g10m6` — 0 помилок (4/4/4/5 попереджень — лише давні sentenceWords, жодного «умова посилається на рисунок»); `validate --pool pg10m2|pg10m4` — 0 помилок, 0 попереджень. `fig-audit` — у моїх файлах лишилось 17 збігів, це рівно пункти «не потрібен» вище. `playtest --section g10m2|g10m3|g10m4|g10m6` — усі уроки пройдено. Рисунки переглянуто в Chromium (SLID_LAB.mount, знімки в scratchpad).
+
+## Нотатки верифікатора
+verifier-fix-math-figs-g10, 2026-11-03: прийнято, звіт reports/verify/fix-math-figs-g10.md. Правки: pg10m4 a07 — креслення прибрано (підказувало відповідь); b06 — підпис «2» перенесено; c07 — `$H$`. Статуси змінених уроків і пулів pg10m2, pg10m4 → verified. Рекомендація: g10m4l4 «Завдання 3» перейменувати точки AB/OB (конфлікт з вершинами макета).
