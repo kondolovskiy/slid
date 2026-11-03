@@ -6,7 +6,7 @@ type: fix-section
 subject: math
 grade: 9
 section: g9m2
-status: review
+status: done
 claimed_by: writer-fix-math-vectors-ister
 created: 2026-11-03
 depends_on: [fix-math-notation-ister]

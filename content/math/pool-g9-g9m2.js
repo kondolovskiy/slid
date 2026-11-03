@@ -5,7 +5,7 @@
    Усі задачі — з підручника Мерзляк, Якір. Геометрія 9 (2026), п. 8–10, 13–16; умови й числа звірено
    за відрендереними сторінками PDF. srcPage — друкований номер сторінки (у цьому PDF збігається з номером сторінки файлу).
    Правка 2026-11-03 (fix-math-notation-ister, D-043): вектор із координатами в умовах і підказці — без «=» ($\\vec{a}(x; y)$); обчислення в steps лишилися з «=»; ключі, формати й id без змін.
-   Правка 2026-11-03 (fix-math-vectors-ister, D-043 уточнення п. 4): і в обчисленнях (steps, hint, d05) вектор без «=», як Істер 9г с. 68, 73 ($\\overrightarrow{AB}(4 - 3; 5 - 3)$, тобто $\\overrightarrow{AB}(1; 2)$); ключі, формати, порядок і id без змін. Потребує повторної верифікації.
+   Правка 2026-11-03 (fix-math-vectors-ister, D-043 уточнення п. 4): і в обчисленнях (steps, hint, d05) вектор без «=», як Істер 9г с. 68, 73 ($\\overrightarrow{AB}(4 - 3; 5 - 3)$, тобто $\\overrightarrow{AB}(1; 2)$); ключі, формати, порядок і id без змін. Верифіковано: verifier-fix-math-vectors-ister (reports/verify/fix-math-vectors-ister.md; уточнено hint c04).
    Перевірка: node tools/validate.mjs --pool pg9m2; node tools/personalization-qa.mjs --pool pg9m2
    Схема: docs/CONTENT_SCHEMA.md §10 */
 SLID.pool("math", {
@@ -131,7 +131,7 @@ SLID.pool("math", {
       type: "answer", answerKind: "coordinates2", title: "Вектор іде до $A$",
       body: "<p>Дано точку $A(1; 3)$ і вектор $\\vec{a}(-2; 1)$. Знайди координати точки $B$, для якої $\\overrightarrow{BA} = \\vec{a}$. Запиши відповідь як $(x; y)$.</p>",
       answer: [3, 2],
-      hint: "У векторі $\\overrightarrow{BA}$ початок — $B$, а кінець — $A$. Отже, $\\overrightarrow{BA}(x_A - x_B; y_A - y_B)$, тобто $\\overrightarrow{BA}(-2; 1)$.",
+      hint: "У векторі $\\overrightarrow{BA}$ початок — $B$, а кінець — $A$. Отже, $\\overrightarrow{BA}(x_A - x_B; y_A - y_B)$, а оскільки $\\overrightarrow{BA} = \\vec{a}$, то $\\overrightarrow{BA}(-2; 1)$.",
       steps: ["$\\overrightarrow{BA}(1 - x_B; 3 - y_B)$ і $\\overrightarrow{BA}(-2; 1)$, бо $\\overrightarrow{BA} = \\vec{a}$.", "$1 - x_B = -2$, тож $x_B = 3$.", "$3 - y_B = 1$, тож $y_B = 2$.", "$B(3; 2)$."] },
     { id: "c05", lesson: "g9m2l3", lvl: 2, sk: "coord", src: "mer9g №13.11", srcPage: 151,
       type: "answer", answerKind: "coordinates2", title: "Рівні вектори $\\overrightarrow{AB}$ і $\\overrightarrow{CD}$",
