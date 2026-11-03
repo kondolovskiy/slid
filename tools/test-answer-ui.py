@@ -414,7 +414,7 @@ FORMAT_FIXTURES = [
 ]
 
 async def answer_format_checks(browser, url):
-    context, page, errors = await qa_page(browser, url, {'grade': 6, 'unlockAll': True, 'lessons': {}, 'srs': {}, 'seen': {}})
+    context, page, errors = await qa_page(browser, url, {'grade': 5, 'unlockAll': True, 'lessons': {}, 'srs': {}, 'seen': {}})
     checked, helps = 0, []
     for offset in range(0, len(FORMAT_FIXTURES) + 1, 6):
         batch = FORMAT_FIXTURES[offset:offset + 6]
@@ -586,7 +586,8 @@ async def content_checks(browser, url, report):
     print(f"Реальні об’єкти: {len(report['diags'])} діагностик, {len(report['pools'])} пулів, {count} вправ", flush=True)
 
 async def session_checks(browser, url):
-    context, page, errors = await qa_page(browser, url, {'grade': 6, 'unlockAll': False,
+    # g6m1 — 5 кл. з 2026-11-03 (D-043): поточний клас фікстури — 5, щоб помилки тренування йшли в план класу
+    context, page, errors = await qa_page(browser, url, {'grade': 5, 'unlockAll': False,
         'lessons': {'g6m1l1': {'done': True}, 'g6m1l2': {'done': True}, 'g6m1l3': {'done': True}},
         'seen': {'pg6m1:f0': 1, 'pg6m1:f1': 0},
         'srs': {'g6m1l2': {'box': 2, 'due': DAY}, 'g6m1l3': {'box': 2, 'due': DAY}}})
@@ -625,7 +626,7 @@ async def session_checks(browser, url):
     await context.close()
     print('Session fixture: 4+2, priority, hint/retry, errors -> plan, small/exhausted, fixed SRS green', flush=True)
     print('Reversed-order pool fixture (different answers, equal due dates):', flush=True)
-    await pool_checks(browser, url, {'id': 'pg6m1', '_grade': 6, 'items': [
+    await pool_checks(browser, url, {'id': 'pg6m1', '_grade': 5, 'items': [
         {'id': 'qa-later', 'lesson': 'g6m1l2', 'lvl': 1, 'sk': 'divis', 'src': 'qa №2',
          'type': 'answer', 'title': 'QA fixture: 4 + 3', 'answer': 7, 'steps': ['4 + 3 = 7.']},
         {'id': 'qa-earlier', 'lesson': 'g6m1l1', 'lvl': 1, 'sk': 'divis', 'src': 'qa №1',
@@ -634,7 +635,7 @@ async def session_checks(browser, url):
 
 async def divrem_checks(browser, url):
     """Quotient + remainder answer: partial answer hint, key button, zero remainder, reveal."""
-    context, page, errors = await qa_page(browser, url, {'grade': 6, 'unlockAll': True})
+    context, page, errors = await qa_page(browser, url, {'grade': 5, 'unlockAll': True})
     await page.evaluate("""() => {const c=SLID_SUBJECTS.find(c=>c.id==='math');c.pools=c.pools.filter(p=>p.id==='pg6m1');
       c.pools[0].items=[{answer:[3,2],title:'17 : 5',hint:'5 · 3 = 15.'},{answer:[5,0],title:'35 : 7'},{answer:[7,1],title:'50 : 7',unit:'шт.'}]
         .map((it,i)=>({...it,id:'dr'+i,lesson:'g6m1l1',lvl:1,sk:'num',src:c.pools[0].sources[0].id+' №1',type:'answer',answerKind:'divrem',steps:['Перевірка множенням.']}));}""")
@@ -1277,7 +1278,7 @@ async def main():
                 await page.click('[data-tab="path"]')
                 await page.click('[data-tab="path"]')
                 await page.evaluate("""() => {
-                  const c=SLID_SUBJECTS.find(c=>c.id==='math'); c.pools=c.pools.filter(p=>p.id==='pg6m1');
+                  const c=SLID_SUBJECTS.find(c=>c.id==='math'); c.pools=c.pools.filter(p=>p.id==='pms3');
                   c.pools[0].items=[
                     {answerKind:'comparison',answer:'>',title:'Порівняй'},
                     {answerKind:'list',answer:[1,2,3],title:'Перелік'},
@@ -1285,7 +1286,7 @@ async def main():
                     {answer:3.14,tol:0.01,title:'Округли'},
                     {answer:'2/5',fractionOnly:true,reduced:true,title:'Скороти'},
                     {answer:2,unit:'яблук',unitForms:['яблуко','яблука','яблук'],srcPage:42,adapted:true,title:'Одиниці',fig:{kind:'circle',n:4,k:1}}]
-                    .map((it,i)=>({...it,id:'ui'+i,lesson:'g6m1l1',lvl:1,sk:'num',src:c.pools[0].sources[0].id+' №1',type:'answer',steps:['Пояснення відповіді.']}));
+                    .map((it,i)=>({...it,id:'ui'+i,lesson:'ms3l1',lvl:1,sk:'num',src:c.pools[0].sources[0].id+' №1',type:'answer',steps:['Пояснення відповіді.']}));   // ms3 — 6 кл. з 2026-11-03 (D-043)
                 }""")
                 assert not errors, errors
                 assert await page.locator('button[data-subject="math"]').count(), await page.locator('body').inner_text()
