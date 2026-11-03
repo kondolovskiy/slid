@@ -7,7 +7,7 @@ subject: world
 grade: 7
 section: w7s1
 weeks: [1, 7]
-status: review
+status: done
 claimed_by: writer-write-world-w7s1
 created: 2026-11-03
 ---
