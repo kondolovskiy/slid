@@ -33,7 +33,7 @@ SLID.section("hist", {
       screens: [
         {
           type: "intro",
-          eyebrow: "Стародавній Рим · Урок 1",
+          eyebrow: "Розділ 7 · Урок 1",
           title: "Чому вовчиця годує дітей?",
           img: "img/hist/g6s8/she-wolf.jpg",
           cap: "«Капітолійська вовчиця». Бронза. Капітолійські музеї, Рим.",
@@ -180,7 +180,7 @@ SLID.section("hist", {
       screens: [
         {
           type: "intro",
-          eyebrow: "Стародавній Рим · Урок 2",
+          eyebrow: "Розділ 7 · Урок 2",
           title: "Навіщо на монеті слон?",
           img: "img/hist/g6s8/carthage-shekel.jpg",
           fit: true,
@@ -328,7 +328,7 @@ SLID.section("hist", {
       screens: [
         {
           type: "intro",
-          eyebrow: "Стародавній Рим · Урок 3",
+          eyebrow: "Розділ 7 · Урок 3",
           title: "Чий це портрет?",
           img: "img/hist/g6s8/augustus.jpg",
           tall: true,
@@ -465,7 +465,7 @@ SLID.section("hist", {
       screens: [
         {
           type: "intro",
-          eyebrow: "Стародавній Рим · Урок 4",
+          eyebrow: "Розділ 7 · Урок 4",
           title: "Навіщо місту така арена?",
           img: "img/hist/g6s8/colosseum-1856.jpg",
           cap: "Колізей у Римі. Фото Джейн Марти Сент-Джон, 1856 р. Метрополітен-музей.",
@@ -611,7 +611,7 @@ SLID.section("hist", {
       screens: [
         {
           type: "intro",
-          eyebrow: "Стародавній Рим · Урок 5",
+          eyebrow: "Розділ 7 · Урок 5",
           title: "Що вирізьблено на труні?",
           img: "img/hist/g6s8/sarcophagus.jpg",
           cap: "Мармуровий саркофаг, Римська імперія, початок IV ст. Метрополітен-музей.",
@@ -747,7 +747,7 @@ SLID.section("hist", {
       screens: [
         {
           type: "intro",
-          eyebrow: "Стародавній Рим · Урок 6",
+          eyebrow: "Розділ 7 · Урок 6",
           title: "Чому імперії занепадають?",
           img: "img/hist/g6s8/honorius-solidus.jpg",
           fit: true,
