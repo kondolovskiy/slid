@@ -1,13 +1,5 @@
 {
-  "date": "2026-11-03T10:32:54.017Z",
+  "date": "2026-11-03T10:33:59.152Z",
   "errors": [],
-  "warnings": [
-    "content/hist/g8-g8s5.js#g8s5l1: sentenceWords=5.8 поза профілем [6; 13] для hist, 7-9 кл.",
-    "content/hist/g8-g8s5.js#g8s5l2: sentenceWords=5.6 поза профілем [6; 13] для hist, 7-9 кл.",
-    "content/hist/g8-g8s5.js#g8s5l4: sentenceWords=5.8 поза профілем [6; 13] для hist, 7-9 кл.",
-    "content/hist/g8-g8s5.js#g8s5l5: sentenceWords=5.9 поза профілем [6; 13] для hist, 7-9 кл.",
-    "content/hist/g8-g8s5.js#g8s5l6: sentenceWords=5.6 поза профілем [6; 13] для hist, 7-9 кл.",
-    "content/hist/g8-g8s5.js#g8s5l8: sentenceWords=5.8 поза профілем [6; 13] для hist, 7-9 кл.",
-    "content/hist/g8-g8s5.js#g8s5l7: sentenceWords=5.8 поза профілем [6; 13] для hist, 7-9 кл."
-  ]
+  "warnings": []
 }
