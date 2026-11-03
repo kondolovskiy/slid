@@ -5,7 +5,7 @@ claimed_by: impl-tools-make-tasks-template
 id: tools-make-tasks-template
 type: engine
 subject: all
-status: review
+status: done
 created: 2026-11-02
 depends_on: []
 ---
