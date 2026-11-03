@@ -27,12 +27,28 @@ export function loadContent(root = ROOT) {
 export const GRADED = ["choice","multi","sort","slider","order","align","shade","numline","number","fracin","lab","answer","gaps","pick","stress","word","split"];
 export const TYPES = ["intro","info","explore", ...GRADED];
 
-/** Прибирає HTML і формули, повертає чистий текст. */
+/** Прибирає HTML і формули, повертає чистий текст.
+    engine-lang-p3: тег між літерами без пробілу (велос<b>и</b>пед) — частина слова, а не межа (п. 17); кожен пункт списку <li> — окреме речення,
+    навіть без крапки чи з «;» у кінці (п. 11); «?» усередині <i>/<em> (переліки питань «хто? що? де?») — не кінець речення (п. 14): після нього
+    невидимий U+2060, і sentences() там не ділить; останній «?» перед </i> — кінець речення, лише якщо далі велика літера чи кінець тексту. */
+const INWORD_TAGS = /(?<=[\p{L}\p{M}'’ʼ])(?:<\/?(?:b|i|u|em|strong|mark|span)\b[^>]*>)+(?=[\p{L}\p{M}])/gu;
+const italicQ = t => t.replace(/(<(i|em)\b[^>]*>)([\s\S]*?)(?=<\/\2>)/gi, (m, a, tag, body) => a + body.replace(/\?(?=[\s\S]*\S)/g, "?\u2060"))
+  .replace(/\?(\s*<\/(?:i|em|I|EM)>\s*)(?=[\p{Ll},;:—–)»\d])/gu, "?\u2060$1");
 export function plain(s = "") {
-  return String(s).replace(/\$\$[\s\S]*?\$\$|\$[^$]*\$/g, " Ф ").replace(/<[^>]+>/g, " ").replace(/&[a-z]+;/g, " ").replace(/\s+/g, " ").trim();
+  return italicQ(String(s)).replace(/\$\$[\s\S]*?\$\$|\$[^$]*\$/g, " Ф ").replace(INWORD_TAGS, "")
+    .replace(/<\/?li\b[^>]*>/gi, "\uE004").replace(/<[^>]+>/g, " ").replace(/&[a-z]+;/g, " ")
+    .replace(/(?:\s*[,;:]?\s*\uE004)+\s*/g, (m, k, src) => k === 0 || /[.!?…]$/.test(src.slice(0, k).trimEnd()) ? " " : ". ")   // межа пункту — кінець речення, якщо його ще немає
+    .replace(/\s+/g, " ").trim();
+}
+/** Текст для метрик стилю (stats, профіль validate, довгі речення): plain() без транскрипцій [йа́ма] і переліків звуків [а], [о]
+    (п. 13) та без рядків з одиночних літер — алфавіт «А Б В … Я», переліки «а, о, у, е» (п. 11; «Ф» — формула, її не чіпаємо). */
+const LETTER_RUN = /(?:(?<![\p{L}\p{M}\p{N}'’ʼ-])(?!Ф(?![\p{L}]))\p{L}\p{M}?(?![\p{L}\p{M}\p{N}'’ʼ-])[\s,;/·–—-]*){4,}/gu;
+export function mplain(s = "") {
+  return plain(s).replace(/\[[^\[\]]{1,40}\]/g, " ").replace(LETTER_RUN, " ").replace(/\s+([,.;:!?…])/g, "$1").replace(/(?:[,;:]\s*)+(?=[,;.!?…]|$)/g, "").replace(/\s+/g, " ").trim();
 }
 const VOW = /[аеєиіїоуюяaeiouy]/gi;
-export const words = t => (t.match(/[\p{L}\p{N}'’ʼ-]+/gu) || []);
+// \p{M}: комбінований наголос U+0301 — частина слова («листопа́д» — одне слово, п. 12)
+export const words = t => (t.match(/[\p{L}\p{M}\p{N}'’ʼ-]+/gu) || []);
 export const syllables = w => (w.match(VOW) || []).length;
 export function sentences(t) {
   // Protect abbreviation periods only when the following text continues the sentence.
@@ -50,11 +66,11 @@ function langText(s) {
   if (!LANG_READ) { const ctx = {}; ctx.window = ctx; vm.createContext(ctx); vm.runInContext(fs.readFileSync(path.join(ROOT, "app/lang.js"), "utf8"), ctx); LANG_READ = ctx.SLID_LANG.readText; }
   return LANG_READ(s);
 }
-export function screenReadText(s) { return plain([s.title, s.body, langText(s)].filter(Boolean).join(" ")); }
+export function screenReadText(s) { return mplain([s.title, s.body, langText(s)].filter(Boolean).join(" ")); }
 /** Увесь текст екрана, включно з варіантами й поясненнями. */
 export function screenAllText(s) {
   const parts = [s.title, s.body, s.fbText, s.fbOk, s.fbBad, s.hint, ...(s.opts || []), langText(s), ...(s.items || []).map(i => Array.isArray(i) ? i[0] : i)];
-  return parts.filter(Boolean).map(plain).filter(Boolean).map(t => /[.!?…]$/.test(t) ? t : t + ".").join(" ");
+  return parts.filter(Boolean).map(mplain).filter(Boolean).map(t => /[.!?…]$/.test(t) ? t : t + ".").join(" ");
 }
 
 /** Метрики уроку для синхронізації стилю й складності. */

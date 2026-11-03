@@ -56,6 +56,66 @@ async def answer(pg, s):
             for c in sol: await pg.click(f'#stage .cut[data-c="{c}"]')
         else: await pg.fill("#numIn", sol); await pg.dispatch_event("#numIn", "input")
 
+LANG_TYPES = ("gaps", "pick", "stress", "split", "word")
+OPT_SHOW = {"\u2014": ("\u2205", "нічого не писати"), "\u2013": ("\u2014", "тире")}   # розмітка → що бачить дитина (CONTENT_SCHEMA §4.1), записано тут, а не взято з рушія
+
+async def lang_seen(pg, s):
+    """Що бачить дитина на мовній вправі (engine-lang-p3, п. 9): текст кнопок, легенда «∅», aria-label. Розбір — SLID_LANG (його тестує
+    test-lang), а очікуваний вигляд — незалежно (OPT_SHOW). Повертає список розбіжностей."""
+    t, bad = s["type"], []
+    if t == "gaps":
+        opts = await pg.evaluate("s => SLID_LANG.parseGaps(s.text).gaps.map(g => g.opts)", s)
+        for g, os_ in enumerate(opts):
+            for k, o in enumerate(os_):
+                el = f'#stage .gopt[data-g="{g}"][data-o="{k}"]'
+                txt, lab = (await pg.text_content(el)).strip(), await pg.get_attribute(el, "aria-label")
+                want, wlab = OPT_SHOW.get(o, (o, None))
+                if txt != want or lab != wlab: bad.append(f"пропуск {g+1}, варіант «{o}»: на кнопці «{txt}» (aria-label {lab!r}), очікувалось «{want}» ({wlab!r})")
+        legend = await pg.locator("#stage .fix", has_text="нічого не писати").count()
+        if legend != (1 if any("\u2014" in os_ for os_ in opts) else 0): bad.append(f"легенда «∅ — нічого не писати»: {legend}")
+    elif t == "pick":
+        words = await pg.evaluate("s => SLID_LANG.parsePick(s.text).words.map(w => w.v)", s)
+        seen = [x.strip() for x in await pg.locator("#stage .pw").all_text_contents()]
+        if seen != words: bad.append(f"кнопки слів {seen} ≠ {words}")
+    elif t == "stress":
+        for k, w in enumerate(s["words"]):
+            seen = "".join(await pg.locator(f'#stage .sword >> nth={k}').all_text_contents())
+            if seen != w.replace("+", ""): bad.append(f"слово {k+1}: на екрані «{seen}», очікувалось «{w.replace('+', '')}»")
+    elif t == "split":
+        w = (s["word"] if isinstance(s["word"], str) else s["word"][0]).replace("|", "")
+        seen = "".join(await pg.locator("#stage .split .sl:not(.zero)").all_text_contents())
+        if seen != w: bad.append(f"літери «{seen}» ≠ «{w}»")
+        if bool(s.get("zero")) != (await pg.locator("#stage .split .sl.zero").count() == 1): bad.append("клітинка нульового закінчення")
+    return bad
+
+async def lang_wrong(pg, s):
+    """Одна завідомо хибна спроба (engine-lang-p3, п. 4): гілка помилки в браузері. Повертає (чи зроблено, як відкотити перед правильною)."""
+    t = s["type"]
+    sol = await pg.evaluate("s => { const v = SLID_LANG.solution(s); return v instanceof Set ? [...v] : v; }", s)
+    if t == "gaps":
+        n0 = len(await pg.evaluate("s => SLID_LANG.parseGaps(s.text).gaps[0].opts", s))
+        await pg.click(f'#stage .gopt[data-g="0"][data-o="{(sol[0] + 1) % n0}"]')
+        for k, o in enumerate(sol[1:], 1): await pg.click(f'#stage .gopt[data-g="{k}"][data-o="{o}"]')
+        return '#stage .gopt[data-g="0"].is-bad', None
+    if t == "stress":
+        vs = await pg.evaluate("s => SLID_LANG.parseStress(s.words[0]).letters.filter(l => l.v).map(l => l.i)", s)
+        await pg.click(f'#stage .sv[data-w="0"][data-i="{next(i for i in vs if i != sol[0])}"]')
+        for k, i in enumerate(sol[1:], 1): await pg.click(f'#stage .sv[data-w="{k}"][data-i="{i}"]')
+        return '#stage .sv[data-w="0"].is-bad', None
+    if t == "pick":
+        n = await pg.evaluate("s => SLID_LANG.parsePick(s.text).words.find(w => !w.ok).n", s)
+        await pg.click(f'#stage .pw[data-w="{n}"]')
+        return f'#stage .pw[data-w="{n}"].is-bad', f'#stage .pw[data-w="{n}"]'
+    if t == "split":
+        c = await pg.evaluate("s => { const p = SLID_LANG.parseSplit(s.word, s.zero), all = p.variants.flat(); for (let c = 1; c <= [...p.word].length; c++) if (!all.includes(c) && (c < [...p.word].length || s.zero)) return c; return null; }", s)
+        if c is None: return None, None
+        await pg.click(f'#stage .cut[data-c="{c}"]')
+        return f'#stage .cut[data-c="{c}"].is-bad', f'#stage .cut[data-c="{c}"]'
+    if t == "word":
+        await pg.fill("#numIn", "ъъъ"); await pg.dispatch_event("#numIn", "input")
+        return "#numIn.is-bad", None
+    return None, None
+
 async def main():
     async with async_playwright() as p:
         kw = {"executable_path": "/opt/pw-browsers/chromium"} if os.path.exists("/opt/pw-browsers/chromium") and not os.environ.get("PW_DEFAULT") else {}
@@ -67,7 +127,7 @@ async def main():
         await pg.route("**/fonts.googleapis.com/**", lambda r: r.abort())
         await pg.goto(f"http://127.0.0.1:{PORT}/index.html")
         subjects = await pg.evaluate("SLID_SUBJECTS")
-        played = 0
+        played = 0; lang_n = lang_bad = 0   # мовних вправ і хибних спроб на них: 0 спроб при наявних вправах — гілку помилки не перевірено
         for c in subjects:
             for k, sec in enumerate(c["sections"]):
                 if not sec.get("lessons") or (ONLY and sec["id"] != ONLY): continue
@@ -81,6 +141,20 @@ async def main():
                         if SHOTS:
                             os.makedirs(os.path.join(ROOT, "reports/shots"), exist_ok=True)
                             await pg.wait_for_timeout(350); await pg.screenshot(path=os.path.join(ROOT, f"reports/shots/{l['id']}-{si+1}.png"))
+                        if t in LANG_TYPES:
+                            lang_n += 1
+                            for m in await lang_seen(pg, s): errs.append(f"{c['id']} {l['id']} екран {si+1} ({t}): {m}")
+                        if t in LANG_TYPES and not s.get("hyp") and not s.get("poll"):
+                            mark, undo = await lang_wrong(pg, s)
+                            if mark:
+                                lang_bad += 1; await pg.click("#action")
+                                cls = await pg.get_attribute("#dock", "class")
+                                lab = await pg.get_attribute(mark, "aria-label") if await pg.locator(mark).count() else None
+                                if "bad" not in cls:   # екран уже закрито («Далі») — далі не відповідаємо, а йдемо на наступний
+                                    errs.append(f"{c['id']} {l['id']} екран {si+1} ({t}): хибну спробу зараховано (dock: {cls})")
+                                    await pg.click("#action"); continue
+                                if not lab or not lab.endswith("неправильно"): errs.append(f"{c['id']} {l['id']} екран {si+1} ({t}): хибний вибір без позначки «неправильно» для диктора ({mark}: {lab!r})")
+                                if undo: await pg.click(undo)
                         await answer(pg, s); await pg.click("#action")
                         cls = await pg.get_attribute("#dock", "class")
                         if t not in ("intro", "info", "explore") and "ok" not in cls and "info" not in cls:
@@ -120,7 +194,7 @@ async def main():
                     if mode == "skip" and await pg.is_hidden("#player"): errs.append(f"{c['id']} {d['id']}: перший крок плану чи перший урок класу не відкрився")
                 diags += 1
         await b.close()
-        print(f"Пройдено уроків: {played}, тестів рівня: {diags}")
+        print(f"Пройдено уроків: {played}, тестів рівня: {diags}" + (f", мовних вправ: {lang_n} (хибних спроб: {lang_bad})" if lang_n else ""))
         for e in errs: print("ПОМИЛКА ", e)
         sys.exit(1 if errs else 0)
 

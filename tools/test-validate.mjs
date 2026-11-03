@@ -18,7 +18,7 @@ const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "slid-test-validate-"));
 process.on("exit", () => fs.rmSync(tmp, { recursive: true, force: true }));
 for (const d of ["tools", "app", "style"]) fs.cpSync(path.join(ROOT, d), path.join(tmp, d), { recursive: true });
 fs.mkdirSync(path.join(tmp, "content/subjects"), { recursive: true });
-for (const s of ["hist", "math", "world"]) fs.copyFileSync(path.join(ROOT, `content/subjects/${s}.js`), path.join(tmp, `content/subjects/${s}.js`));
+for (const s of ["hist", "math", "world", "ukr"]) fs.copyFileSync(path.join(ROOT, `content/subjects/${s}.js`), path.join(tmp, `content/subjects/${s}.js`));
 // файл-«фото» має існувати: валідатор перевіряє шлях img
 fs.mkdirSync(path.join(tmp, "img/fx"), { recursive: true });
 fs.copyFileSync(path.join(ROOT, "icons/icon-192.png"), path.join(tmp, "img/fx/photo.png"));
@@ -145,7 +145,7 @@ TEX_CASES.forEach(([name, opt, expErr, expWarn], i) => {
 
 // спільне для решти: очистити фікстурне дерево, записати файли {шлях: текст}, запустити validate з аргументами
 function runTree(files, args) {
-  for (const s of ["hist", "math"]) fs.rmSync(path.join(tmp, "content", s), { recursive: true, force: true });
+  for (const s of ["hist", "math", "ukr"]) fs.rmSync(path.join(tmp, "content", s), { recursive: true, force: true });
   for (const [f, src] of Object.entries(files)) { fs.mkdirSync(path.dirname(path.join(tmp, f)), { recursive: true }); fs.writeFileSync(path.join(tmp, f), src); }
   const r = spawnSync(process.execPath, [path.join(tmp, "tools/validate.mjs"), ...args, "--quiet"], { cwd: tmp, encoding: "utf8" });
   let rep = null; try { rep = JSON.parse(fs.readFileSync(path.join(tmp, "reports/validate.json"), "utf8")); fs.rmSync(path.join(tmp, "reports/validate.json")); } catch {}
@@ -595,6 +595,46 @@ const { figCues: figCuesT } = await import(path.join(ROOT, "tools/lib.mjs"));
     ok(rep.screens === 4, "fig-audit: переглянуто 4 екрани (не 0)", String(rep.screens)); }
   const bad = spawnSync(process.execPath, [path.join(tmp, "tools/fig-audit.mjs"), "--subjekt", "math"], { cwd: tmp, encoding: "utf8" });
   ok(bad.status === 2, "fig-audit: невідомий аргумент — код 2", String(bad.status)); }
+
+// ---- engine-lang-p3: мовні вправи й правила ukr ----
+{ const UKR_SK = "orth";
+  const ukrSec = (id, extra) => ({ id, grade: 5, weeks: [1, 2], title: "Фікстура", why: "Регресійний тест валідатора: мовні вправи.",
+    meta: { author: "test", created: "2026-11-03", factcheck: null, teacher: null },
+    lessons: [{ id: `${id}l1`, title: "Фікстура", why: "Перевірити правила мовних вправ.", icon: "pot", status: "draft", outro: { text: "Готово.", learned: ["Перше", "Друге"] },
+      screens: [{ type: "intro", title: "Початок", body: "Як пишемо слово?" },
+        { type: "gaps", sk: UKR_SK, title: "Е чи И?", text: "Ми йшли с{*е|и}лом.", hint: "Зміни слово.", fbOk: "Так.", fbText: "Село — с<b>е</b>ла: перевіряємо наголосом." },
+        ...[].concat(extra).map(x => ({ sk: UKR_SK, fbOk: "Так.", fbText: "Пояснення, чому саме так, для фікстури.", ...x }))] }] });
+  const u = (extra, id = "fxu") => ({ [`content/ukr/g5-${id}.js`]: secJS("ukr", ukrSec(id, extra)) });
+  const A = ["--section", "fxu"], BAN = "заборонена фраза";
+  // п. 6: заборонена фраза в <s>…</s>, у неправильному варіанті gaps, у цілі й хибній групі pick — не рахується; у звичайному тексті — так
+  expectRun("ukr: «вірно» в <s>…</s> — чисто", u({ type: "info", title: "Як сказати", body: "Не <s>вірно</s>, а правильно." }), A, { noWarn: BAN });
+  expectRun("ukr: «вірно» у хибному варіанті gaps — чисто", u({ type: "gaps", title: "Обери", text: "Відповідь {*правильна|вірна}, а {*правильно|вірно} — так." }), A, { noWarn: BAN });
+  expectRun("ukr: pick «Знайди помилку» — «вірно» в цілі [ ] і [! ] — чисто", u({ type: "pick", title: "Знайди помилку", text: "Він [вірно] сказав, а [!на протязі] дня мовчав." }), A, { noWarn: BAN });
+  expectRun("ukr: «вірно» в тексті уроку — попередження", u({ type: "info", title: "Як сказати", body: "Це вірно." }), A, { warn: BAN });
+  expectRun("ukr: «вірно» у правильному варіанті gaps — попередження", u({ type: "gaps", title: "Обери", text: "Відповідь {*вірно|правильно} тут." }), A, { warn: BAN });
+  // п. 2: hyp на мовних типах дозволено, poll — ні
+  expectRun("ukr: gaps з hyp — чисто (здогадка без оцінки)", u({ type: "gaps", hyp: true, fbTitle: "Перевірмо", title: "Як гадаєш?", text: "Ден{ь|*—}ки йдуть." }), A, { noWarn: "poll" });
+  expectRun("ukr: pick з poll — помилка", u({ type: "pick", poll: "p1", fbTitle: "Цікаво", title: "Як гадаєш?", text: "[Сонце] світить." }), A, { err: "poll лише для choice" });
+  // п. 18: пояснення посилається на номер варіанта
+  const OPTN = "номер варіанта";
+  expectRun("ukr: «у другому варіанті» у fbText — попередження", u({ type: "choice", title: "Обери", opts: ["Перше", "Друге"], correct: 0, fbText: "У другому варіанті слово стоїть не на місці, тому правильно перше." }), A, { warn: OPTN });
+  expectRun("ukr: «варіант Б» у fbBad — попередження", u({ type: "choice", title: "Обери", opts: ["Перше", "Друге"], correct: 0, fbBad: "Варіант Б не підходить.", fbText: "Правильно перше, бо слово стоїть на місці." }), A, { warn: OPTN });
+  expectRun("ukr: «варіант» без номера — чисто", u({ type: "choice", title: "Обери", opts: ["Перше", "Друге"], correct: 0, fbText: "Обидва варіанти схожі, але друге слово стоїть не на місці." }), A, { noWarn: OPTN });
+  // п. 16: pick «увага» — одна хибна група на три правильні; п. 10: « —» замість «–»; п. 3: тег посеред слова з пропуском
+  expectRun("ukr: pick 3 правильні групи й 1 хибна — попередження", u({ type: "pick", title: "Знайди", text: "[Добрий день], [будь ласка], [щиро дякую] і [!до побачення] тут." }), A, { warn: "форма кнопки видає відповідь" });
+  expectRun("ukr: pick [!!x] — помилка", u({ type: "pick", title: "Знайди", text: "[Сонце] і [!!місяць]." }), A, { err: "«!» двічі" });
+  expectRun("ukr: gaps « —» з пробілом — попередження", u({ type: "gaps", title: "Знак", text: "Ніч {*–| —|,} тиша." }), A, { warn: "нічого не писати" });
+  expectRun("ukr: gaps — тег посеред слова з пропуском — попередження", u({ type: "gaps", title: "Е чи И?", text: "<b>б{*е|и}р</b>{*е|и}за" }), A, { warn: "розірване HTML-тегом" });
+  // п. 7: split з нульовим закінченням
+  expectRun("ukr: split zero «стіл|» — чисто", u({ type: "split", title: "Основа й закінчення", word: "стіл|", zero: true }), A, {});
+  expectRun("ukr: split «стіл|» без zero — помилка", u({ type: "split", title: "Основа й закінчення", word: "стіл|" }), A, { err: "zero: true" });
+  // п. 15: милозвучність — попередження лише для ukr і лише правила з малим шумом; «і» між зіставленими поняттями — ні
+  const EU = "милозвучність";
+  expectRun("ukr: «брат в сестри» — попередження милозвучності", u({ type: "info", title: "Гості", body: "Брат в сестри гостює." }), A, { warn: EU });
+  expectRun("ukr: «вода і повітря», «Марія і Олег» — без попередження", u({ type: "info", title: "Природа", body: "Вода і повітря потрібні всім. Марія і Олег гуляють." }), A, { noWarn: EU });
+  expectRun("ukr: милозвучність в outro — попередження", { "content/ukr/g5-fxu.js": secJS("ukr", (x => (x.lessons[0].outro.learned[0] = "Млинці з сметаною", x))(ukrSec("fxu", []))) }, A, { warn: EU });
+  expectRun("math: «брат в сестри» — правило лише для ukr", one("fxm", { body: "Брат в сестри має $2 + 2$ яблука." }), ["--section", "fxm"], { noWarn: EU });
+}
 
 console.log(fails ? `\n${fails} з ${n} перевірок не пройшли` : `test-validate: усі ${n} перевірок пройшли`);
 process.exit(fails ? 1 : 0);
