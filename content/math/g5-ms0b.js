@@ -1,5 +1,5 @@
 /* Слід · Математика, 5 клас — «Фігури і величини»
-   Статус уроків: l1 — повторно verified 2026-11-01 (refine-math-diag-probes-v3: AB = AC + CB на екрані теорії; reports/verify/refine-math-diag-probes-v3.md); l2–l5 verified (повторна верифікація після ревізії D-019, 2026-10-13, reports/verify/ms0b.md); ms3l3, ms4l1 — draft (див. нижче). 7 уроків.
+   Статус уроків: l1 — повторно verified 2026-11-01 (refine-math-diag-probes-v3: AB = AC + CB на екрані теорії; reports/verify/refine-math-diag-probes-v3.md); l2–l5 verified (повторна верифікація після ревізії D-019, 2026-10-13, reports/verify/ms0b.md); ms3l3, ms4l1 — verified 2026-11-03 (verifier-revise-math-ms0b-ister, reports/verify/revise-math-ms0b-ister.md). 7 уроків.
    Інтерактив (D-014): plane без осей — перетягувані точки (відрізок, промінь, пряма, кути, трикутники); rect — периметр.
    Перевірка: node tools/validate.mjs --section ms0b && node tools/stats.mjs --subject math
    Міграція за Істером (D-043, docs/design/math-ister.md, 2026-11-03): сюди перенесено ms3l3 (діаграми, Істер 5 § 19) з ms3 і ms4l1 (площа, § 25) з ms4; id уроків не змінено.
@@ -160,7 +160,7 @@ SLID.section("math", {
       title: "Що показує діаграма?",
       short: "Діаграми",
       icon: "chart",
-      status: "draft",
+      status: "verified",
       why: "Результати опитувань, змагань і покупок часто показують малюнком. Діаграма допомагає за секунду побачити головне.",
       screens: [
         {
@@ -773,7 +773,7 @@ SLID.section("math", {
       title: "Скільки плит на терасу?",
       short: "Площа",
       icon: "home",
-      status: "draft",
+      status: "verified",
       why: "Площа підкаже, скільки купити плитки, ламінату чи фарби. І не переплатити за зайве.",
       screens: [
         {
