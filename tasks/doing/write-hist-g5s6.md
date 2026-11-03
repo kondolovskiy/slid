@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-03T09:30:36.237Z
 id: write-hist-g5s6
 type: write-section
 subject: hist
@@ -6,7 +8,7 @@ grade: 5
 section: g5s6
 weeks: [30, 35]
 status: todo
-claimed_by:
+claimed_by: writer-write-hist-g5s6
 created: 2026-11-03
 ---
 # Написати розділ «Шлях до незалежності» (Історія України, 5 клас)
