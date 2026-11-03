@@ -17,7 +17,7 @@ SLID.section("math", {
   weeks: [31, 35],
   title: "Геометрія: початки стереометрії",
   why: "Щоб бачити прямі й площини в кімнаті, коробці й будівлі та рахувати відстані в просторі.",
-  requires: ["ms4l2", "g8m4l2"],
+  requires: ["ms4l2", "g8m4l2", "g9m6l2"],
   meta: { author: "writer-write-math-g9m8-lines-planes", created: "2026-11-03", factcheck: "self", teacher: null },
   badges: [
     {
