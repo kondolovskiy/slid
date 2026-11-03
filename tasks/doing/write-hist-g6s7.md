@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-03T09:41:24.824Z
 id: write-hist-g6s7
 type: write-section
 subject: hist
@@ -6,7 +8,7 @@ grade: 6
 section: g6s7
 weeks: [15, 19]
 status: todo
-claimed_by:
+claimed_by: writer-write-hist-g6s7
 created: 2026-11-03
 ---
 # Написати розділ «Стародавня Греція» (Історія України, 6 клас)
