@@ -1,7 +1,8 @@
 /* Слід · Математика, 8 клас — «Геометрія: чотирикутники»
    Статус уроків: verified (g8m2l1–g8m2l4 — повторно після fix-math-figs-g8-geo, рисунки до умов: verifier-fix-math-figs-g8-geo, 2026-11-03, reports/verify/fix-math-figs-g8-geo.md).
-   2026-11-03 write-math-g8-trig-acute (D-043, Істер Геометрія 8 § 7): нові g8m2l6 (вписаний чотирикутник), g8m2l7 (описаний) — draft;
-   boss g8m2l5 — draft (завдання про вписаний і описаний замість дубльованих «Кут біля хвіртки», «Ромб чи квадрат?»). 7 уроків (6 тем + boss).
+   2026-11-03 write-math-g8-trig-acute (D-043, Істер Геометрія 8 § 7): нові g8m2l6 (вписаний чотирикутник), g8m2l7 (описаний);
+   boss g8m2l5 (завдання про вписаний і описаний замість дубльованих «Кут біля хвіртки», «Ромб чи квадрат?»). 7 уроків (6 тем + boss).
+   l5–l7 — verified (verifier-write-math-g8-trig-acute, 2026-11-03, reports/verify/write-math-g8-trig-acute.md).
    Порядок у масиві: l1–l4, l6, l7, boss l5 (id не змінювано).
    Інтерактив (D-014): plane axes:false — polys, drag-вершини, angles, dist/slope у goal.
    Перевірка: node tools/validate.mjs --section g8m2 && node tools/stats.mjs --subject math
@@ -992,7 +993,7 @@ SLID.section("math", {
       title: "Чотири вершини на колі",
       short: "Вписаний",
       icon: "rings",
-      status: "draft",
+      status: "verified",
       why: "Щоб знати, коли чотири точки можна обвести одним колом — і як це видно з кутів.",
       screens: [
         {
@@ -1027,8 +1028,8 @@ SLID.section("math", {
           lab: {
             kind: "plane", axes: false, view: [-6.5, 6.5, -6, 6],
             params: {
-              b: { min: 180, max: 345, step: 15, start: 240, label: "$B$", unit: "°" },
-              d: { min: 30, max: 135, step: 15, start: 105, label: "$D$", unit: "°" }
+              b: { min: 180, max: 345, step: 15, start: 240, label: "$B$", unit: "°", out: false },
+              d: { min: 30, max: 135, step: 15, start: 105, label: "$D$", unit: "°", out: false }
             },
             circles: [{ c: "O", r: "5", color: "muted" }],
             points: {
@@ -1062,8 +1063,8 @@ SLID.section("math", {
           lab: {
             kind: "plane", axes: false, view: [-6.5, 6.5, -6, 6],
             params: {
-              b: { min: 180, max: 345, step: 15, start: 300, label: "$B$", unit: "°" },
-              d: { min: 30, max: 135, step: 15, start: 60, label: "$D$", unit: "°" }
+              b: { min: 180, max: 345, step: 15, start: 300, label: "$B$", unit: "°", out: false },
+              d: { min: 30, max: 135, step: 15, start: 60, label: "$D$", unit: "°", out: false }
             },
             circles: [{ c: "O", r: "5", color: "muted" }],
             points: {
@@ -1116,7 +1117,7 @@ SLID.section("math", {
             ],
             alt: "Чотирикутник ABCD, вписаний у коло; протилежні кути A і C виділено"
           },
-          note: { label: "Чому сума саме 180°?", text: "<p>Кут з вершиною на колі (вписаний кут) дорівнює половині дуги, на яку він спирається. Кути $A$ і $C$ спираються на дві дуги, що разом складають усе коло — $360°$. Половина від $360°$ — це $180°$.</p>" },
+          note: { label: "Чому сума саме 180°?", text: "<p>З 7 класу: вписаний кут дорівнює половині дуги, на яку він спирається. Кути $A$ і $C$ спираються на дві дуги, що разом складають усе коло — $360°$. Половина від $360°$ — це $180°$.</p>" },
           cta: "Спробувати"
         },
         {
@@ -1265,7 +1266,7 @@ SLID.section("math", {
       title: "Коло всередині рамки",
       short: "Описаний",
       icon: "target",
-      status: "draft",
+      status: "verified",
       why: "Щоб за сторонами чотирикутника знати, чи вміститься в нього коло, що торкається всіх сторін.",
       screens: [
         {
@@ -1300,8 +1301,8 @@ SLID.section("math", {
           lab: {
             kind: "plane", axes: false, view: [0, 12, 0, 10],
             params: {
-              p: { min: -30, max: 30, step: 5, start: -20, label: "$p$", unit: "°" },
-              q: { min: 150, max: 210, step: 5, start: 195, label: "$q$", unit: "°" }
+              p: { min: -30, max: 30, step: 5, start: -20, label: "$p$", unit: "°", out: false },
+              q: { min: 150, max: 210, step: 5, start: 195, label: "$q$", unit: "°", out: false }
             },
             circles: [{ c: "O", r: "2", color: "blue" }],
             points: {
@@ -1329,8 +1330,8 @@ SLID.section("math", {
           lab: {
             kind: "plane", axes: false, view: [0, 12, 0, 10],
             params: {
-              p: { min: -30, max: 30, step: 5, start: 15, label: "$p$", unit: "°" },
-              q: { min: 150, max: 210, step: 5, start: 160, label: "$q$", unit: "°" }
+              p: { min: -30, max: 30, step: 5, start: 15, label: "$p$", unit: "°", out: false },
+              q: { min: 150, max: 210, step: 5, start: 160, label: "$q$", unit: "°", out: false }
             },
             circles: [{ c: "O", r: "2", color: "blue" }],
             points: {
@@ -1414,7 +1415,7 @@ SLID.section("math", {
           hint: "Постав $BC = 3$, а потім рухай $D$ і стеж за рядками під рисунком.",
           fbOk: "Коло вміститься.",
           fbBad: "Суми ще різні.",
-          fbText: "Ознака описаного чотирикутника: суми протилежних сторін рівні. Підходить, наприклад, трапеція $4$, $3$, $5$, $6$ або квадрат $4 × 4$. У цю трапецію вписується коло радіуса $2$."
+          fbText: "Ознака описаного чотирикутника: суми протилежних сторін рівні. Підходить, наприклад, трапеція $4$, $3$, $5$, $6$ або квадрат зі стороною $4$. У цю трапецію вписується коло радіуса $2$."
         },
         {
           type: "choice",
@@ -1469,7 +1470,7 @@ SLID.section("math", {
           sk: "geom",
           eyebrow: "Знайди помилку",
           title: "Де схибила Іра?",
-          body: "<p>Іра: «У прямокутник $3 × 5$ можна вписати коло: протилежні сторони в нього рівні». Що не так?</p>",
+          body: "<p>Іра: «У прямокутник зі сторонами $3$ і $5$ можна вписати коло: протилежні сторони в нього рівні». Що не так?</p>",
           opts: [
             "Потрібна рівність сум протилежних сторін: $3 + 3 ≠ 5 + 5$",
             "У прямокутнику протилежні сторони різні",
@@ -1511,7 +1512,7 @@ SLID.section("math", {
       title: "План ділянки",
       short: "Фінал розділу",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "g8m2boss",
       why: "Паралелограм, особливі види, трапеція, Фалес, вписані й описані чотирикутники — на одному плані. Бали подвоєні.",

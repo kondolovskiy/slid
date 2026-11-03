@@ -159,7 +159,7 @@
 | g8m2l3 Дві основи — один пояс | 8 | 8 | 0.63 | 23 | 56 | 5 | 0.015 | 3 | sentenceWords=5 поза [6; 13] |
 | g8m2l4 Рівні відрізки на променях | 8 | 9 | 0.56 | 23 | 44 | 5.6 | 0.006 | 3 | sentenceWords=5.6 поза [6; 13] |
 | g8m2l6 Чотири вершини на колі | 8 | 10 | 0.6 | 23 | 52 | 5.5 | 0.039 | 3 | sentenceWords=5.5 поза [6; 13] |
-| g8m2l7 Коло всередині рамки | 8 | 10 | 0.6 | 24 | 57 | 5.4 | 0.045 | 3 | sentenceWords=5.4 поза [6; 13] |
+| g8m2l7 Коло всередині рамки | 8 | 10 | 0.6 | 25 | 57 | 5.5 | 0.045 | 3 | sentenceWords=5.5 поза [6; 13] |
 | g8m2l5 План ділянки (фінал) | 8 | 7 | 0.86 | 22 | 35 | 5.6 | 0.016 | 3 | sentenceWords=5.6 поза [6; 13] |
 | g8m3l6 Парабола з квадрата | 8 | 9 | 0.67 | 22 | 57 | 4.9 | 0.021 | 3 | sentenceWords=4.9 поза [6; 13] |
 | g8m3l1 Сторона за площею | 8 | 10 | 0.5 | 19 | 50 | 4.7 | 0.011 | 3 | sentenceWords=4.7 поза [6; 13] |
@@ -172,9 +172,9 @@
 | g8m4l3 Висота й проєкції | 8 | 9 | 0.56 | 20 | 38 | 5.2 | 0.018 | 3 | sentenceWords=5.2 поза [6; 13] |
 | g8m4l5 Бісектриса ділить сторону | 8 | 9 | 0.56 | 23 | 49 | 5.2 | 0.015 | 3 | sentenceWords=5.2 поза [6; 13] |
 | g8m4l6 Відношення, яке знає кут | 8 | 8 | 0.63 | 25 | 55 | 5.4 | 0.035 | 3 | sentenceWords=5.4 поза [6; 13] |
-| g8m4l7 Кути 30°, 45° і 60° | 8 | 9 | 0.67 | 22 | 44 | 5 | 0.04 | 3 | sentenceWords=5 поза [6; 13] |
+| g8m4l7 Кути 30°, 45° і 60° | 8 | 9 | 0.67 | 22 | 44 | 5.1 | 0.039 | 3 | sentenceWords=5.1 поза [6; 13] |
 | g8m4l8 Розв'язати трикутник | 8 | 9 | 0.56 | 21 | 38 | 4.8 | 0.02 | 3 | sentenceWords=4.8 поза [6; 13] |
-| g8m4l4 Міряємо недосяжне (фінал) | 8 | 7 | 0.86 | 21 | 39 | 5.1 | 0.027 | 3 | sentenceWords=5.1 поза [6; 13]; maxReadWords нетипово для сім'ї (z=2.6) |
+| g8m4l4 Міряємо недосяжне (фінал) | 8 | 7 | 0.86 | 21 | 39 | 5.1 | 0.026 | 3 | sentenceWords=5.1 поза [6; 13]; maxReadWords нетипово для сім'ї (z=2.6) |
 | g8m5l1 Коли немає члена | 8 | 10 | 0.5 | 23 | 41 | 5.3 | 0.013 | 3 | sentenceWords=5.3 поза [6; 13] |
 | g8m5l2 Скільки коренів? | 8 | 9 | 0.67 | 17 | 35 | 4.9 | 0.019 | 3 | sentenceWords=4.9 поза [6; 13] |
 | g8m5l3 Сума й добуток | 8 | 8 | 0.5 | 19 | 35 | 4.7 | 0.037 | 3 | sentenceWords=4.7 поза [6; 13] |
@@ -230,9 +230,9 @@
 | g9m8l4 Підлога і стеля | 9 | 10 | 0.6 | 30 | 58 | 6.3 | 0.049 | 5 | readWordsPerScreen нетипово для сім'ї (z=3.1); sentenceWords нетипово для сім'ї (z=2.1); typeVariety нетипово для сім'ї (z=4.5) |
 | g9m8l5 Коробка-трикутник | 9 | 10 | 0.5 | 28 | 53 | 5.3 | 0.053 | 3 | sentenceWords=5.3 поза [6; 13]; readWordsPerScreen нетипово для сім'ї (z=2.3); longWordShare нетипово для сім'ї (z=2.2) |
 | g9m8l6 Літр у пакеті | 9 | 9 | 0.67 | 26 | 48 | 5.7 | 0.033 | 4 | sentenceWords=5.7 поза [6; 13]; typeVariety нетипово для сім'ї (z=2.2) |
-| g9m8l7 Дах альтанки | 9 | 9 | 0.56 | 27 | 51 | 5.8 | 0.015 | 3 | sentenceWords=5.8 поза [6; 13]; readWordsPerScreen нетипово для сім'ї (z=2) |
+| g9m8l7 Дах альтанки | 9 | 9 | 0.56 | 27 | 51 | 5.8 | 0.015 | 3 | sentenceWords=5.8 поза [6; 13] |
 | g9m8l8 Пісок у піраміді | 9 | 9 | 0.67 | 23 | 41 | 5 | 0.019 | 3 | sentenceWords=5 поза [6; 13] |
-| g9m8l9 Етикетка з банки | 9 | 10 | 0.5 | 27 | 50 | 5.2 | 0.011 | 3 | sentenceWords=5.2 поза [6; 13]; readWordsPerScreen нетипово для сім'ї (z=2) |
+| g9m8l9 Етикетка з банки | 9 | 10 | 0.5 | 27 | 50 | 5.2 | 0.011 | 3 | sentenceWords=5.2 поза [6; 13] |
 | g9m8l10 Тканина на намет | 9 | 10 | 0.5 | 26 | 48 | 5 | 0.021 | 3 | sentenceWords=5 поза [6; 13] |
 | g9m8l11 Шкіра для м'яча | 9 | 9 | 0.67 | 23 | 53 | 4.6 | 0.008 | 4 | sentenceWords=4.6 поза [6; 13]; typeVariety нетипово для сім'ї (z=2.2) |
 | g9m8l12 Парк із геометрії (фінал) | 9 | 7 | 0.86 | 24 | 33 | 5.1 | 0.042 | 3 | sentenceWords=5.1 поза [6; 13]; readWordsPerScreen нетипово для сім'ї (z=2.4); longWordShare нетипово для сім'ї (z=2.3) |
@@ -298,7 +298,7 @@
 - **4:boss**: screens 8±0, gradedShare 0.75±0, readWordsPerScreen 17.4±2.24, maxReadWords 25±4.56, sentenceWords 4.48±0.22, longWordShare 0.01±0, typeVariety 3.2±0.4
 - **5-6:lesson**: screens 9.39±0.68, gradedShare 0.66±0.06, readWordsPerScreen 19.7±3.16, maxReadWords 44.07±7.91, sentenceWords 4.92±0.51, longWordShare 0.01±0.01, typeVariety 3.52±0.64
 - **5-6:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 18.75±2.24, maxReadWords 25.83±3.91, sentenceWords 4.74±0.49, longWordShare 0.01±0, typeVariety 3.42±0.64
-- **7-9:lesson**: screens 9.23±0.72, gradedShare 0.58±0.06, readWordsPerScreen 21.79±2.66, maxReadWords 45.96±9.59, sentenceWords 5.2±0.41, longWordShare 0.02±0.01, typeVariety 3.05±0.43
+- **7-9:lesson**: screens 9.23±0.72, gradedShare 0.58±0.06, readWordsPerScreen 21.8±2.67, maxReadWords 45.96±9.59, sentenceWords 5.21±0.41, longWordShare 0.02±0.01, typeVariety 3.05±0.43
 - **7-9:boss**: screens 7.64±0.64, gradedShare 0.8±0.06, readWordsPerScreen 18.64±2.27, maxReadWords 29.95±3.52, sentenceWords 5.1±0.31, longWordShare 0.03±0.01, typeVariety 3.09±0.29
 - **10-11:lesson**: screens 9.54±0.63, gradedShare 0.57±0.06, readWordsPerScreen 22.85±1.91, maxReadWords 48.12±6.56, sentenceWords 5.52±0.39, longWordShare 0.03±0.01, typeVariety 2.9±0.37
 - **10-11:boss**: screens 8.08±0.28, gradedShare 0.75±0.01, readWordsPerScreen 19.08±1.44, maxReadWords 34.25±6.81, sentenceWords 5.19±0.53, longWordShare 0.04±0.02, typeVariety 2.92±0.28
