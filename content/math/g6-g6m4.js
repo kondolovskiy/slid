@@ -1,7 +1,9 @@
 /* Слід · Математика, 6 клас — «Раціональні числа»
    Статус уроків: l5 — verified (2026-11-03, verifier-fix-math-figs-g4-g6, reports/verify/fix-math-figs-g4-g6.md; fix-math-figs-g4-g6: координатна площина з початком O на екрані теорії «Координатна площина»);
    l3, l4, l6 — verified (verifier-g6m4, 2026-10-11; звіт reports/verify/g6m4.md);
-   l1, l2 — ревізія D-019 (reviser-g6m4, 2026-10-13: лише eyebrow «Здогадка» → «Подумай»), у полях status — verified. 6 уроків.
+   l1, l2 — ревізія D-019 (reviser-g6m4, 2026-10-13: лише eyebrow «Здогадка» → «Подумай»), у полях status — verified.
+   write-math-g6-perp-parallel-graphs (2026-11-03, прогалини Істера 6, § 44, 45, 47): нові l7 (перпендикулярні прямі), l8 (паралельні прямі) — перед l5, як § 44–46;
+   l9 (графіки залежностей) — після l5; усі три draft. eyebrow l5 «Урок 5» → «Урок 7». 9 уроків; фінал l6 нових тем не перевіряє (питання в задачі).
    Перевірка: node tools/validate.mjs && node tools/stats.mjs
    Схема й правила: docs/CONTENT_SCHEMA.md (§8 — лабораторія), style/ */
 SLID.section("math", {
@@ -725,7 +727,7 @@ SLID.section("math", {
             axes: false,
             grid: 0,
             view: [-6, 6, -4, 4],
-            points: { A: { at: [-5, 0] }, B: { at: [5, 0] }, C: { at: [0, 3.5] }, D: { at: [0, -3.5] }, O: { at: [0, 0] } },
+            points: { A: { at: [-5, 0] }, B: { at: [5, 0] }, C: { at: [0, 3] }, D: { at: [0, -3] }, O: { at: [0, 0] } },
             lines: [{ through: ["A", "B"] }, { through: ["C", "D"], color: "blue" }],
             angles: [{ from: "B", at: "O", to: "C", label: false }],
             alt: "Прямі AB і CD перетинаються в точці O; кут BOC позначено як прямий"
@@ -750,7 +752,7 @@ SLID.section("math", {
             axes: false,
             grid: 0,
             view: [-6, 6, -4, 4],
-            points: { A: { at: [-5, 0] }, B: { at: [5, 0] }, C: { at: [0, 3.5] }, D: { at: [0, -3.5] }, O: { at: [0, 0] } },
+            points: { A: { at: [-5, 0] }, B: { at: [5, 0] }, C: { at: [0, 3] }, D: { at: [0, -3] }, O: { at: [0, 0] } },
             lines: [{ through: ["A", "B"] }, { through: ["C", "D"], color: "blue" }],
             angles: [{ from: "B", at: "O", to: "C", label: false }],
             alt: "Перпендикулярні прямі AB і CD, прямий кут біля точки O позначено квадратиком"
@@ -832,7 +834,7 @@ SLID.section("math", {
             view: [-6, 6, -4, 6],
             params: { n: { min: -5, max: 5, step: 1, start: 4, hide: true } },
             points: { M: { at: [-2, 4] }, N: { x: "n", y: "n/2", drag: true } },
-            lines: [{ through: [[-6, -3], [6, 3]] }],
+            lines: [{ through: [[-6, -3], [6, 3]], color: "ink" }],
             segs: [{ a: "M", b: "N", color: "red" }],
             angles: [{ from: "M", at: "N", to: [6, 3], label: false, r: 16 }],
             texts: [{ at: [5.5, 2.2], t: "a" }],
@@ -857,7 +859,7 @@ SLID.section("math", {
             axes: false,
             grid: 0,
             view: [-6, 6, -4, 4],
-            points: { A: { at: [-5, 0] }, B: { at: [5, 0] }, C: { at: [2, 3.46] }, D: { at: [-2, -3.46] }, O: { at: [0, 0] } },
+            points: { A: { at: [-5, 0] }, B: { at: [5, 0] }, C: { x: "sqrt(3)", y: "3" }, D: { x: "-sqrt(3)", y: "-3" }, O: { at: [0, 0] } },
             lines: [{ through: ["A", "B"] }, { through: ["C", "D"], color: "blue" }],
             angles: [{ from: "B", at: "O", to: "C" }],
             alt: "Прямі AB і CD перетинаються в точці O під кутом 60°"
@@ -917,7 +919,7 @@ SLID.section("math", {
           type: "explore",
           eyebrow: "Дослідження",
           title: "Нахили пряму b",
-          body: "<p>Пряма $b$ проходить через точку $M$. Тягни точку $K$. Червона точка — місце, де $b$ перетинає $a$. Коли вона зникає?</p>",
+          body: "<p>Синя пряма $b$ проходить через точку $M$. Тягни точку $K$. Червона точка — місце, де $b$ перетинає $a$. Коли вона зникає?</p>",
           lab: {
             kind: "plane",
             axes: false,
@@ -927,8 +929,8 @@ SLID.section("math", {
               K: { at: [3, 1], drag: true, min: [1, -1], max: [5, 5] },
               X: { x: "-3*Kx/(Ky-3)", y: "0", color: "red", label: false }
             },
-            lines: [{ through: [[-6, 0], [6, 0]] }, { through: ["M", "K"], color: "blue" }],
-            texts: [{ at: [-5.5, 0.5], t: "a" }, { at: [-5.5, 3.5], t: "b", color: "blue" }],
+            lines: [{ through: [[-6, 0], [6, 0]], color: "ink" }, { through: ["M", "K"], color: "blue" }],
+            texts: [{ at: [-5.5, 0.5], t: "a" }],
             alt: "Пряма a і пряма b через точку M; точку K можна тягнути, червона точка — перетин прямих"
           },
           cta: "Далі"
@@ -1020,7 +1022,7 @@ SLID.section("math", {
             axes: false,
             view: [-6, 6, -4, 6],
             points: { N: { at: [-2, 2] }, K: { at: [4, 1], drag: true } },
-            lines: [{ through: [[-6, -3], [6, 3]] }, { through: ["N", "K"], color: "blue" }],
+            lines: [{ through: [[-6, -3], [6, 3]], color: "ink" }, { through: ["N", "K"], color: "blue" }],
             texts: [{ at: [5.5, 2.2], t: "a" }],
             alt: "Похила пряма a, точка N поза нею і пряма через N і точку K, яку можна тягнути"
           },
@@ -1087,7 +1089,7 @@ SLID.section("math", {
             axes: false,
             view: [-6, 6, -4, 6],
             points: { M: { at: [-2, 3] }, P: { at: [3, 1], drag: true, color: "blue" }, Q: { at: [1, 1], drag: true, color: "green" } },
-            lines: [{ through: [[-6, -3], [6, 3]] }, { through: ["M", "P"], color: "blue" }, { through: ["M", "Q"], color: "green" }],
+            lines: [{ through: [[-6, -3], [6, 3]], color: "ink" }, { through: ["M", "P"], color: "blue" }, { through: ["M", "Q"], color: "green" }],
             angles: [{ from: "Q", at: "M", to: [0, 4], label: false, r: 16 }],
             texts: [{ at: [5.5, 2.2], t: "a" }],
             alt: "Похила пряма a, точка M і дві прямі через M до точок P і Q, які можна тягнути"
@@ -1307,7 +1309,7 @@ SLID.section("math", {
           type: "intro",
           eyebrow: "Урок 8",
           title: "Коли вночі було найхолодніше?",
-          body: `<p class="lead">Метеорологиня цілу добу записувала температуру повітря. Кожні дві години — нове число.</p><p>Тринадцять чисел у рядок читати важко. Як побачити всю добу одним поглядом?</p>`,
+          body: `<p class="lead">На метеостанції цілу добу записували температуру повітря. Кожні дві години — нове число.</p><p>Тринадцять чисел у рядок читати важко. Як побачити всю добу одним поглядом?</p>`,
           cta: "Почати"
         },
         {

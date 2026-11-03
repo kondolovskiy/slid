@@ -1,6 +1,7 @@
 /* Слід · Математика, 6 клас — «Об'єм» (до 2026-11-03 — 5 кл., «Площі й об'єми»)
    Міграція за Істером (D-043, docs/design/math-ister.md, 2026-11-03): розділ перенесено в кінець 6 кл. (Істер 6, § 48–49); урок ms4l1 (площа) — у ms0b, 5 кл.; пул pms4 — section ms4, also ms0b.
-   Статус уроків: ms4l2, ms4l3, ms4l4 — revise-math-ms3-ms4-ister (2026-11-03): нумерація «Урок 1/2», фінал спирається на площу з 5 кл. (ms4l1); verified (verifier-revise-math-ms3-ms4-ister, 2026-11-03). 3 уроки.
+   Статус уроків: ms4l2, ms4l3, ms4l4 — revise-math-ms3-ms4-ister (2026-11-03): нумерація «Урок 1/2», фінал спирається на площу з 5 кл. (ms4l1); verified (verifier-revise-math-ms3-ms4-ister, 2026-11-03).
+   write-math-g6-perp-parallel-graphs (2026-11-03): новий ms4l5 «Розгортка» (Істер 6, § 48: розгортка, площа поверхні) — між ms4l2 і ms4l3, draft; eyebrow ms4l3 «Урок 2» → «Урок 3». 4 уроки.
    Інтерактив (D-014): rect — площа й периметр, solid box — паралелепіпед, куб, об'єм кубиками.
    Перевірка: node tools/validate.mjs --section ms4 && node tools/stats.mjs --subject math
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
