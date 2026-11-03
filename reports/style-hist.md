@@ -73,13 +73,13 @@
 | h643 Хліб в обмін на вино | 6 | 7 | 0.57 | 22 | 53 | 5.6 | 0.033 | 4 | — |
 | h644 Місто під степом | 6 | 8 | 0.75 | 17 | 40 | 5.6 | 0.029 | 4 | gradedShare нетипово для сім'ї (z=2.1); maxReadWords нетипово для сім'ї (z=-2.1) |
 | h645 Рейс купця з Мілета (фінал) | 6 | 6 | 0.83 | 16 | 24 | 4.5 | 0.053 | 3 | sentenceWords=4.5 поза [5; 11] |
-| g6s8-l1 Вовчиця з двома загадками | 6 | 10 | 0.5 | 26 | 52 | 6.4 | 0.036 | 3 | — |
-| g6s8-l2 Слони в Альпах | 6 | 10 | 0.5 | 24 | 56 | 6.6 | 0.03 | 3 | — |
+| g6s8-l1 Вовчиця з двома загадками | 6 | 10 | 0.5 | 26 | 53 | 6.4 | 0.036 | 3 | — |
+| g6s8-l2 Слони в Альпах | 6 | 10 | 0.5 | 24 | 56 | 6.6 | 0.032 | 3 | — |
 | g6s8-l3 Республіка без республіки | 6 | 9 | 0.67 | 22 | 50 | 6.4 | 0.027 | 4 | — |
 | g6s8-l4 Хліба й видовищ | 6 | 9 | 0.56 | 23 | 46 | 5.8 | 0.053 | 2 | — |
 | g6s8-l5 Нова віра в старій імперії | 6 | 9 | 0.56 | 25 | 46 | 6.2 | 0.066 | 3 | — |
-| g6s8-l6 Одна імперія — дві монети | 6 | 10 | 0.5 | 27 | 50 | 6 | 0.044 | 4 | — |
-| g6s8-l7 Римська зала музею (фінал) | 6 | 7 | 0.86 | 14 | 21 | 5.7 | 0.032 | 3 | — |
+| g6s8-l6 Одна імперія — дві монети | 6 | 10 | 0.5 | 27 | 50 | 6 | 0.043 | 4 | — |
+| g6s8-l7 Римська зала музею (фінал) | 6 | 7 | 0.86 | 13 | 21 | 5.7 | 0.029 | 3 | — |
 | g6s5-l1 Коли рушила Європа | 6 | 8 | 0.5 | 26 | 58 | 6.4 | 0.037 | 4 | — |
 | g6s5-l2 Горщик без підпису | 6 | 8 | 0.63 | 18 | 56 | 6.1 | 0.056 | 4 | — |
 | g6s5-l3 Сусіди очима Візантії | 6 | 8 | 0.63 | 21 | 53 | 5.9 | 0.038 | 2 | — |
@@ -225,8 +225,8 @@
 
 Для z-оцінок sd не менше 10 % середнього; нижче наведено фактичне sd.
 
-- **5-6:lesson**: screens 7.69±1.21, gradedShare 0.58±0.08, readWordsPerScreen 22.88±3.8, maxReadWords 53.36±6.39, sentenceWords 6±0.42, longWordShare 0.04±0.02, typeVariety 3.15±0.74
-- **5-6:boss**: screens 6.64±0.48, gradedShare 0.85±0.01, readWordsPerScreen 12.64±3.06, maxReadWords 22.86±5.99, sentenceWords 5.08±0.42, longWordShare 0.04±0.01, typeVariety 3.29±0.45
+- **5-6:lesson**: screens 7.69±1.21, gradedShare 0.58±0.08, readWordsPerScreen 22.88±3.8, maxReadWords 53.37±6.39, sentenceWords 6±0.42, longWordShare 0.04±0.02, typeVariety 3.15±0.74
+- **5-6:boss**: screens 6.64±0.48, gradedShare 0.85±0.01, readWordsPerScreen 12.57±3.04, maxReadWords 22.86±5.99, sentenceWords 5.08±0.42, longWordShare 0.04±0.01, typeVariety 3.29±0.45
 - **7-9:lesson**: screens 8.03±0.82, gradedShare 0.58±0.06, readWordsPerScreen 24.62±2.96, maxReadWords 61.03±7.75, sentenceWords 5.93±0.42, longWordShare 0.04±0.01, typeVariety 3.28±0.45
 - **7-9:boss**: screens 7.2±0.4, gradedShare 0.86±0.01, readWordsPerScreen 21.47±2.83, maxReadWords 42.93±4.88, sentenceWords 5.49±0.41, longWordShare 0.03±0.01, typeVariety 3.13±0.34
 - **10-11:lesson**: screens 8.93±1.24, gradedShare 0.55±0.05, readWordsPerScreen 27.07±4.71, maxReadWords 61.12±8.34, sentenceWords 6.42±0.49, longWordShare 0.07±0.03, typeVariety 3.45±0.5
