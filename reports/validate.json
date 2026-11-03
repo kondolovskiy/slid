@@ -1,13 +1,7 @@
 {
-  "date": "2026-11-03T20:03:04.646Z",
+  "date": "2026-11-03T20:06:43.173Z",
   "errors": [],
   "warnings": [
-    "content/math/g7-g7m3.js#g7m3l6: sentenceWords=5.2 поза профілем [6; 13] для math, 7-9 кл.",
-    "content/math/g7-g7m3.js#g7m3l1: sentenceWords=4.6 поза профілем [6; 13] для math, 7-9 кл.",
-    "content/math/g7-g7m3.js#g7m3l2: sentenceWords=5 поза профілем [6; 13] для math, 7-9 кл.",
-    "content/math/g7-g7m3.js#g7m3l3: sentenceWords=4.4 поза профілем [6; 13] для math, 7-9 кл.",
-    "content/math/g7-g7m3.js#g7m3l4: sentenceWords=4.1 поза профілем [6; 13] для math, 7-9 кл.",
-    "content/math/g7-g7m3.js#g7m3l7: sentenceWords=4.3 поза профілем [6; 13] для math, 7-9 кл.",
-    "content/math/g7-g7m3.js#g7m3l5: sentenceWords=4.4 поза профілем [6; 13] для math, 7-9 кл."
+    "content/math/g6-g6m4.js#g6m4l4: sentenceWords=3.9 поза профілем [4; 10] для math, 5-6 кл."
   ]
 }
