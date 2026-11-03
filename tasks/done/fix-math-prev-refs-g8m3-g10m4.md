@@ -1,11 +1,11 @@
 ---
-claimed_from: todo
-claimed_at: 2026-11-03T10:07:19.893Z
-claimed_by: writer-prev-refs
+claimed_from: review
+claimed_at: 2026-11-03T10:11:28.564Z
+claimed_by: verifier-fix-math-prev-refs-g8m3-g10m4
 id: fix-math-prev-refs-g8m3-g10m4
 type: fix
 subject: math
-status: review
+status: done
 created: 2026-11-03
 depends_on: []
 files: content/math/g8-g8m3.js, content/math/g10-g10m4.js

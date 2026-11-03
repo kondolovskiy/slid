@@ -1,11 +1,11 @@
 ---
-claimed_from: todo
-claimed_at: 2026-11-03T10:07:19.976Z
-claimed_by: writer-hist-scheme
+claimed_from: review
+claimed_at: 2026-11-03T10:11:28.610Z
+claimed_by: verifier-images-hist-g11s1boss-scheme
 id: images-hist-g11s1boss-scheme
 type: images
 subject: hist
-status: review
+status: done
 created: 2026-11-03
 depends_on: []
 files: content/hist/g11-g11s1.js, img/hist/g11s1/

@@ -626,7 +626,7 @@ SLID.section("math", {
       title: "Креслення мосту",
       short: "Фінал",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "g10m4boss",
       why: "Зберемо ознаки паралельності, перпендикуляри й відстані в одній задачі інженера. Бали ×2.",

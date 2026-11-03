@@ -550,7 +550,7 @@ SLID.section("math", {
       title: "Графік y = √x",
       short: "$y = \\sqrt{x}$",
       icon: "chart",
-      status: "draft",
+      status: "verified",
       why: "Корінь — це ще й функція: одному $x \\ge 0$ відповідає одне $y \\ge 0$, і графік — знайома «гілка».",
       screens: [
         {
