@@ -11,7 +11,7 @@ SLID.section("world", {
   weeks: [15, 21],
   title: "Зріле Середньовіччя: люди, міста, віра",
   why: "Щоб уявляти, як жили селяни, лицарі, ченці й міщани і чому виникли університети та готичні собори.",
-  meta: { author: "claude-opus", created: "2026-11-03", factcheck: null, teacher: null },
+  meta: { author: "claude-opus", created: "2026-11-03", factcheck: "verifier-w7s3", teacher: null },
   badges: [{ id: "highmed", name: "Мандрівник Зрілого Середньовіччя", icon: "shield", desc: "Пройти розділ «Зріле Середньовіччя: люди, міста, віра»" }],
   credits: [
     [
@@ -63,7 +63,7 @@ SLID.section("world", {
       title: "Молитва, меч і плуг",
       short: "Три стани",
       icon: "users",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, як люди Середньовіччя ділили суспільство і хто кого годував і захищав. І чому один монастир змінив усю Західну церкву.",
       screens: [
         {
@@ -200,7 +200,7 @@ SLID.section("world", {
       title: "Присяга на вірність",
       short: "Лицарі й феоди",
       icon: "shield",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, як земля пов'язувала королів і лицарів ланцюгом присяг. І навчишся читати середньовічний лист як джерело.",
       screens: [
         {
@@ -342,7 +342,7 @@ SLID.section("world", {
       title: "Міське повітря",
       short: "Місто й цехи",
       icon: "city",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, як міщани здобули право самі керувати містом і навіщо ремісники гуртувалися в цехи. Ці правила дійшли й до міст України.",
       screens: [
         {
@@ -500,7 +500,7 @@ SLID.section("world", {
       title: "Світло в камені",
       short: "Собори й університети",
       icon: "book",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, чим готичний собор відрізняється від романського і як виникли перші університети. Деякі з них працюють і досі.",
       screens: [
         {
@@ -646,7 +646,7 @@ SLID.section("world", {
       title: "Похід під знаком хреста",
       short: "Хрестові походи",
       icon: "flag",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, чому тисячі європейців вирушили воювати за Єрусалим і як їх бачили мусульмани. А ще — хто з Русі побував у державі хрестоносців.",
       screens: [
         {
@@ -803,7 +803,7 @@ SLID.section("world", {
       title: "Від села до Святої землі",
       short: "Фінал розділу",
       icon: "star",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "highmed",
       why: "Перевірка всього розділу. Бали подвоєні.",

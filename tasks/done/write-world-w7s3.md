@@ -7,7 +7,7 @@ subject: world
 grade: 7
 section: w7s3
 weeks: [15, 21]
-status: review
+status: done
 claimed_by: writer-write-world-w7s3
 created: 2026-11-03
 depends_on: [write-world-w7s1]
