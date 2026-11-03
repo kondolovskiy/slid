@@ -1,5 +1,5 @@
 /* Слід · Математика, 8 клас — «Геометрія: чотирикутники»
-   Статус уроків: verified (g8m2l1, g8m2l3 — повторно після refine-math-lessons-g7-g9-support, reports/verify/refine-math-lessons-support-g8.md). 5 уроків (4 теми + boss).
+   Статус уроків: draft (g8m2l1–g8m2l4 — рисунки до умов, fix-math-figs-g8-geo, 2026-11-03); g8m2l5 — verified. 5 уроків (4 теми + boss).
    Інтерактив (D-014): plane axes:false — polys, drag-вершини, angles, dist/slope у goal.
    Перевірка: node tools/validate.mjs --section g8m2 && node tools/stats.mjs --subject math
    Схема й правила: docs/CONTENT_SCHEMA.md §8, style/, D-019.
@@ -27,7 +27,7 @@ SLID.section("math", {
       title: "Коли сторони біжать поруч",
       short: "Паралелограм",
       icon: "path",
-      status: "verified",
+      status: "draft",
       why: "Щоб перевірити раму, хвіртку чи екран: чи протилежні сторони справді тримають форму.",
       screens: [
         {
@@ -88,6 +88,27 @@ SLID.section("math", {
           eyebrow: "Висновок",
           title: "Що лишається рівним під час нахилу?",
           body: "<p>У моделі $AB$ завжди дорівнює $DC$, а $AD$ — $BC$. Кути $A$ і $C$ теж збігаються.</p>",
+          lab: {
+            kind: "plane", axes: false, view: [0, 12, 0, 7],
+            params: { dx: { min: 2, max: 6, step: 1, start: 4, hide: true } },
+            points: {
+              A: { at: [2, 1] },
+              B: { at: [8, 1] },
+              D: { x: "dx", y: "4", drag: true, color: "blue" },
+              C: { x: "dx+6", y: "4", color: "blue" }
+            },
+            polys: [{ pts: ["A", "B", "C", "D"], color: "blue", opacity: 0.18 }],
+            angles: [
+              { from: "B", at: "A", to: "D" },
+              { from: "D", at: "C", to: "B", color: "gold" }
+            ],
+            show: [
+              "$AB={dist(A,B)|0}$, $DC={dist(D,C)|0}$",
+              "$AD={dist(A,D)|1}$, $BC={dist(B,C)|1}$",
+              "$\\angle A={angle(B,A,D)|deg}$, $\\angle C={angle(D,C,B)|deg}$"
+            ],
+            alt: "Паралелограм із рухомою вершиною D"
+          },
           opts: [
             "Лише периметр",
             "Протилежні сторони й протилежні кути",
@@ -105,6 +126,21 @@ SLID.section("math", {
           body: `<p><b>Паралелограм</b> — фігура з чотирма сторонами, де парні сторони попарно паралельні.</p>
         <p><b>Властивості:</b> парні сторони рівні; парні кути рівні; сума сусідніх кутів $180°$; <b>діагоналі</b> $AC$ і $BD$ (вони сполучають протилежні вершини) точкою перетину діляться навпіл.</p>
         <p><b>Ознаки:</b> парні сторони попарно рівні; або діагоналі діляться навпіл — тоді це саме він.</p>`,
+          lab: {
+            kind: "plane", axes: false, grid: 0, view: [0, 12, 0, 6],
+            points: {
+              A: { at: [2, 1] },
+              B: { at: [8, 1] },
+              C: { at: [10, 5] },
+              D: { at: [4, 5] }
+            },
+            polys: [{ pts: ["A", "B", "C", "D"], color: "blue", opacity: 0.15 }],
+            segs: [
+              { a: "A", b: "C", color: "gold", dash: true },
+              { a: "B", b: "D", color: "gold", dash: true }
+            ],
+            alt: "Паралелограм ABCD з діагоналями AC і BD"
+          },
           cta: "Спробувати"
         },
         {
@@ -225,7 +261,7 @@ SLID.section("math", {
       title: "Прямі кути й рівні сторони",
       short: "Види",
       icon: "home",
-      status: "verified",
+      status: "draft",
       why: "Щоб розрізняти екран, ромбову плитку й квадратне вікно — і знати, які в них діагоналі.",
       screens: [
         {
@@ -270,6 +306,27 @@ SLID.section("math", {
           eyebrow: "Висновок",
           title: "Коли кути стали прямими, $AC$ і $BD$…",
           body: "<p>Коли $D$ стоїть точно над $A$, кут $A$ — $90°$. Порівняй довжини $AC$ і $BD$ у рядку під рисунком.</p>",
+          lab: {
+            kind: "plane", axes: false, view: [0, 12, 0, 7],
+            params: { dx: { min: 2, max: 6, step: 1, start: 5, hide: true } },
+            points: {
+              A: { at: [2, 1] },
+              B: { at: [8, 1] },
+              D: { x: "dx", y: "5", drag: true, color: "blue" },
+              C: { x: "dx+6", y: "5", color: "blue" }
+            },
+            polys: [{ pts: ["A", "B", "C", "D"], color: "blue", opacity: 0.18 }],
+            angles: [{ from: "B", at: "A", to: "D" }],
+            segs: [
+              { a: "A", b: "C", color: "gold", dash: true },
+              { a: "B", b: "D", color: "gold", dash: true }
+            ],
+            show: [
+              "$\\angle A={angle(B,A,D)|deg}$",
+              "$AC={dist(A,C)|1}$, $BD={dist(B,D)|1}$"
+            ],
+            alt: "Паралелограм, який можна випрямити в прямокутник"
+          },
           opts: [
             "Стають рівними",
             "Стають під $90°$ одне до одного",
@@ -287,6 +344,33 @@ SLID.section("math", {
           body: `<p><b>Прямокутник</b> — вид із уроку 1 із прямим кутом. Діагоналі $AC$ і $BD$ рівні.</p>
         <p><b>Ромб</b> — той самий вид з рівними сторонами. Діагоналі перпендикулярні й ділять кути навпіл.</p>
         <p><b>Квадрат</b> — прямокутник з рівними сторонами. Або ромб із прямим кутом. Він збирає риси обох.</p>`,
+          lab: {
+            kind: "plane", axes: false, grid: 0, view: [0, 15, 0, 7.5],
+            polys: [
+              { pts: [[0.5, 1.5], [0.5, 5], [4.5, 5], [4.5, 1.5]], color: "blue", opacity: 0.15 },
+              { pts: [[7.5, 1], [5.8, 3.3], [7.5, 5.6], [9.2, 3.3]], color: "green", opacity: 0.15 },
+              { pts: [[10.5, 1.3], [10.5, 5.3], [14.5, 5.3], [14.5, 1.3]], color: "accent", opacity: 0.15 }
+            ],
+            segs: [
+              { a: [0.5, 1.5], b: [4.5, 5], color: "gold", dash: true },
+              { a: [0.5, 5], b: [4.5, 1.5], color: "gold", dash: true },
+              { a: [7.5, 1], b: [7.5, 5.6], color: "gold", dash: true },
+              { a: [5.8, 3.3], b: [9.2, 3.3], color: "gold", dash: true },
+              { a: [10.5, 1.3], b: [14.5, 5.3], color: "gold", dash: true },
+              { a: [10.5, 5.3], b: [14.5, 1.3], color: "gold", dash: true }
+            ],
+            angles: [
+              { from: [4.5, 1.5], at: [0.5, 1.5], to: [0.5, 5], label: false },
+              { from: [7.5, 1], at: [7.5, 3.3], to: [9.2, 3.3], color: "red", r: 14, label: false },
+              { from: [14.5, 1.3], at: [10.5, 1.3], to: [10.5, 5.3], label: false }
+            ],
+            texts: [
+              { at: [2.5, 0.5], t: "прямокутник" },
+              { at: [7.5, 0.3], t: "ромб" },
+              { at: [12.5, 0.5], t: "квадрат" }
+            ],
+            alt: "Прямокутник, ромб і квадрат з діагоналями; у ромба діагоналі перпендикулярні"
+          },
           cta: "Спробувати"
         },
         {
@@ -429,7 +513,7 @@ SLID.section("math", {
       title: "Дві основи — один пояс",
       short: "Трапеція",
       icon: "line",
-      status: "verified",
+      status: "draft",
       why: "Щоб рахувати середню лінію ділянки, містка чи клумби з двома паралельними краями.",
       screens: [
         {
@@ -473,6 +557,26 @@ SLID.section("math", {
           eyebrow: "Висновок",
           title: "Чому дорівнює середня лінія?",
           body: "<p>Під рисунком порівнюй $MN$ і півсуму основ. Вони збігаються для різних $C$.</p>",
+          lab: {
+            kind: "plane", axes: false, view: [0, 12, 0, 7],
+            params: { cx: { min: 5, max: 10, step: 1, start: 7, hide: true } },
+            points: {
+              A: { at: [1, 1] },
+              B: { at: [9, 1] },
+              D: { at: [3, 5] },
+              C: { x: "cx", y: "5", drag: true, color: "blue" },
+              M: { x: "(X(A)+X(D))/2", y: "(Y(A)+Y(D))/2", color: "green" },
+              N: { x: "(X(B)+X(C))/2", y: "(Y(B)+Y(C))/2", color: "green" }
+            },
+            polys: [{ pts: ["A", "B", "C", "D"], color: "blue", opacity: 0.15 }],
+            segs: [{ a: "M", b: "N", color: "green" }],
+            show: [
+              "основи: $AB={dist(A,B)|0}$, $DC={dist(D,C)|0}$",
+              "середня лінія: $MN={dist(M,N)|1}$",
+              "півсума: {((dist(A,B)+dist(D,C))/2)|1}"
+            ],
+            alt: "Трапеція з рухомою верхньою основою і середньою лінією"
+          },
           opts: [
             "Добуткові основ",
             "Півсумі основ",
@@ -605,7 +709,7 @@ SLID.section("math", {
       title: "Рівні відрізки на променях",
       short: "Фалес",
       icon: "target",
-      status: "verified",
+      status: "draft",
       why: "Щоб ділити відрізок на рівні частини й бачити середню лінію трикутника без зайвих вимірювань.",
       screens: [
         {
@@ -663,6 +767,40 @@ SLID.section("math", {
           eyebrow: "Висновок",
           title: "Якщо на одному промені відрізки рівні…",
           body: "<p>У моделі $OA = AB$. Що видно про $OP$ і $PQ$ на другому промені?</p>",
+          lab: {
+            kind: "plane", axes: false, view: [0, 12, 0, 8],
+            params: { s: { min: 2, max: 3, step: 1, start: 2, hide: true } },
+            points: {
+              O: { at: [1, 1] },
+              R: { at: [11, 1] },
+              U: { at: [11, 6] },
+              A: { x: "1+s", y: "1", color: "ink" },
+              B: { x: "1+2*s", y: "1", color: "ink" },
+              P: { x: "1+s", y: "1+0.5*s", color: "blue" },
+              Q: { x: "1+2*s", y: "1+s", color: "blue" },
+              A2: { x: "1+s", y: "0.2", color: "green" },
+              A3: { x: "1+s", y: "7", color: "green" },
+              B2: { x: "1+2*s", y: "0.2", color: "green" },
+              B3: { x: "1+2*s", y: "7", color: "green" }
+            },
+            lines: [
+              { through: ["O", "R"] },
+              { through: ["O", "U"], color: "blue" },
+              { through: ["A2", "A3"], color: "green" },
+              { through: ["B2", "B3"], color: "green" }
+            ],
+            segs: [
+              { a: "O", b: "A", color: "ink" },
+              { a: "A", b: "B", color: "ink" },
+              { a: "O", b: "P", color: "blue" },
+              { a: "P", b: "Q", color: "blue" }
+            ],
+            show: [
+              "низ: $OA={dist(O,A)|0}$, $AB={dist(A,B)|0}$",
+              "верх: $OP={dist(O,P)|1}$, $PQ={dist(P,Q)|1}$"
+            ],
+            alt: "Кут із двома паралельними січними й рівними відрізками"
+          },
           opts: [
             "Вони теж рівні",
             "Верхні завжди довші вдвічі",
@@ -809,7 +947,23 @@ SLID.section("math", {
           sk: "geom",
           eyebrow: "Фінал",
           title: "Довжина середньої лінії",
-          body: "<p>У трикутнику сторона $BC = 12$ см. $M$ і $N$ — середини двох інших сторін. Яка довжина $MN$?</p>",
+          body: "<p>У трикутнику $ABC$ сторона $BC = 12$ см. $M$ і $N$ — середини двох інших сторін. Яка довжина $MN$?</p>",
+          lab: {
+            kind: "plane", axes: false, grid: 0, view: [0, 12, 0, 8],
+            points: {
+              A: { at: [4, 7] },
+              B: { at: [1, 1] },
+              C: { at: [11, 1] },
+              M: { at: [2.5, 4], color: "green" },
+              N: { at: [7.5, 4], color: "green" }
+            },
+            polys: [{ pts: ["A", "B", "C"], opacity: 0.12 }],
+            segs: [
+              { a: "B", b: "C", label: "12" },
+              { a: "M", b: "N", color: "green" }
+            ],
+            alt: "Трикутник ABC, M і N — середини сторін AB і AC, сторона BC дорівнює 12 см"
+          },
           answer: 6,
           unit: "см",
           hint: "Середня лінія — половина третьої сторони.",

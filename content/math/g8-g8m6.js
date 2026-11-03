@@ -1,5 +1,5 @@
 /* Слід · Математика, 8 клас — «Геометрія: многокутники і площі»
-   Статус уроків: verified. 3 уроки (2 теми + boss).
+   Статус уроків: draft — g8m6l2 (модель на екрані висновку, fix-math-figs-g8-geo, 2026-11-03); verified — g8m6l1, g8m6l3. 3 уроки (2 теми + boss).
    Інтерактив (D-014): plane (основа/висота, live area; n і сума кутів), rect (a,b → S).
    Перевірка: node tools/validate.mjs --section g8m6 && node tools/stats.mjs --subject math
    Схема й правила: docs/CONTENT_SCHEMA.md §8, style/, D-019.
@@ -225,7 +225,7 @@ SLID.section("math", {
       title: "Основа на висоту",
       short: "Площі",
       icon: "leaf",
-      status: "verified",
+      status: "draft",
       why: "Щоб порахувати площу клумби, газону чи ставка за основою й висотою — без зайвих вимірів по косій.",
       screens: [
         {
@@ -288,6 +288,25 @@ SLID.section("math", {
           eyebrow: "Висновок",
           title: "Що лишається сталим при зсуві?",
           body: "<p>Висота стала: $h = 3$. Повзунок зсуву «хитав» фігуру. Число $S$ під рисунком не змінювалось.</p>",
+          lab: {
+            kind: "plane", axes: false, view: [0, 14, 0, 7],
+            params: { t: { min: 0, max: 4, step: 1, start: 2, label: "зсув" } },
+            points: {
+              A: { at: [2, 1] },
+              B: { at: [8, 1] },
+              D: { x: "2+t", y: "4", color: "blue" },
+              C: { x: "8+t", y: "4", color: "blue" },
+              H: { x: "2+t", y: "1", color: "gold" }
+            },
+            polys: [{ pts: ["A", "B", "C", "D"], color: "blue", opacity: 0.2 }],
+            segs: [{ a: "D", b: "H", color: "gold", dash: true, label: "$h$" }],
+            show: [
+              "основа $AB = 6$",
+              "висота $h = 3$",
+              "$S = {area(A,B,C,D)|0}$"
+            ],
+            alt: "Паралелограм зі зсувом при сталій висоті 3"
+          },
           opts: [
             "Лише периметр",
             "Площа: $S = 6 · h$",
