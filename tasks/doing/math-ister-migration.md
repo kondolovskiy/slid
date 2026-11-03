@@ -1,8 +1,10 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-03T09:09:37.087Z
 id: math-ister-migration
 type: engine
 status: todo
-claimed_by:
+claimed_by: orchestrator-ister
 created: 2026-11-03
 depends_on: []
 ---
