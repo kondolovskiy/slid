@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-03T08:20:06.242Z",
+  "date": "2026-11-03T09:36:30.446Z",
   "errors": [],
   "warnings": [
     "content/hist/g5-s1.js#l5 екран 4 (sort): дуже довге речення (28 слів): «Відомо з уроку й досліджень: легенду про Кия записано в «Пов…»",
@@ -124,6 +124,10 @@
     "content/math/g7-g7m3.js#g7m3l3: sentenceWords=4.4 поза профілем [6; 13] для math, 7-9 кл.",
     "content/math/g7-g7m3.js#g7m3l4: sentenceWords=4.1 поза профілем [6; 13] для math, 7-9 кл.",
     "content/math/g7-g7m3.js#g7m3l5: sentenceWords=4.4 поза профілем [6; 13] для math, 7-9 кл.",
+    "content/math/g7-g7m6.js#g7m6l1: sentenceWords=5.6 поза профілем [6; 13] для math, 7-9 кл.",
+    "content/math/g7-g7m6.js#g7m6l2: sentenceWords=5.1 поза профілем [6; 13] для math, 7-9 кл.",
+    "content/math/g7-g7m6.js#g7m6l3: sentenceWords=5.5 поза профілем [6; 13] для math, 7-9 кл.",
+    "content/math/g7-g7m6.js#g7m6l4: sentenceWords=5.4 поза профілем [6; 13] для math, 7-9 кл.",
     "content/math/g7-g7m4.js#g7m4l1: sentenceWords=5.2 поза профілем [6; 13] для math, 7-9 кл.",
     "content/math/g7-g7m4.js#g7m4l2: sentenceWords=5.8 поза профілем [6; 13] для math, 7-9 кл.",
     "content/math/g7-g7m4.js#g7m4l3: sentenceWords=5.3 поза профілем [6; 13] для math, 7-9 кл.",
@@ -132,10 +136,6 @@
     "content/math/g7-g7m5.js#g7m5l2: sentenceWords=5.6 поза профілем [6; 13] для math, 7-9 кл.",
     "content/math/g7-g7m5.js#g7m5l3: sentenceWords=4.8 поза профілем [6; 13] для math, 7-9 кл.",
     "content/math/g7-g7m5.js#g7m5l4: sentenceWords=5.1 поза профілем [6; 13] для math, 7-9 кл.",
-    "content/math/g7-g7m6.js#g7m6l1: sentenceWords=5.6 поза профілем [6; 13] для math, 7-9 кл.",
-    "content/math/g7-g7m6.js#g7m6l2: sentenceWords=5.1 поза профілем [6; 13] для math, 7-9 кл.",
-    "content/math/g7-g7m6.js#g7m6l3: sentenceWords=5.5 поза профілем [6; 13] для math, 7-9 кл.",
-    "content/math/g7-g7m6.js#g7m6l4: sentenceWords=5.4 поза профілем [6; 13] для math, 7-9 кл.",
     "content/math/g7-g7m7.js#g7m7l1: sentenceWords=5.4 поза профілем [6; 13] для math, 7-9 кл.",
     "content/math/g7-g7m7.js#g7m7l2: sentenceWords=5.4 поза профілем [6; 13] для math, 7-9 кл.",
     "content/math/g7-g7m7.js#g7m7l3: sentenceWords=5 поза профілем [6; 13] для math, 7-9 кл.",
