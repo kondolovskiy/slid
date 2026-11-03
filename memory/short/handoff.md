@@ -1,6 +1,6 @@
 # Handoff — стан проєкту
 
-_Оновлено: 2026-11-02, куратор пам'яті, сесія 3 (журнал sessions/2026-11-02-3.md)._
+_Оновлено: 2026-11-03, куратор пам'яті, сесія 1 — історія «Артинов» і world (журнал sessions/2026-11-03-1.md; гілка `claude/hist-artynov-world`). Стан ukr/math — з сесії 02.11-3 (sessions/2026-11-02-3.md), паралельні сесії можуть його доповнити._
 
 ## Стан
 - **Математика 5–9 за Істером (D-043, гілка `claude/math-ister-migration`, PR https://github.com/kondolovskiy/slid/pull/14, 03.11):** дослідження reports/math-ister-map.md, дизайн docs/design/math-ister.md. g6m1 (подільність) → 5 кл.; ms3 «Відсотки» і ms4 «Об'єм» → 6 кл.; ms3l3 (діаграми) і ms4l1 (площа) → ms0b; g7m6 перед g7m4; id не змінено. Рушій: поле пулу `also`, хук `window.__slidStart` (QA). dg5/dg6 переписано (draft до verify-math-ister-diag), граф 2026-11-03.1, матриця 2026-11-03.v4 (draft). Рев'ю reports/review/math-ister-migration.md. Нотація — glossary «Вирішено 2026-11-03».
@@ -8,13 +8,16 @@ _Оновлено: 2026-11-02, куратор пам'яті, сесія 3 (жу�
 - **PR https://github.com/kondolovskiy/slid/pull/11** (гілка `claude/keen-einstein-55xvkz`); 03.11 злито з main (PR №10 tools-agent-skills: AGENTS.md — постійний контекст, процедури ролей — 11 скілів у `.claude/skills/`; INDEX.md — покажчик). Рядок `app/lang.js` додано в карту AGENTS.md §2.
 - **Математика, персоналізація 4–11 кл. — release прийнято**, матриця 2026-11-01.v3. **Пріоритети (D-033):** Evidence V2 (готово) → Skill Graph → Diagnostic Engine → Teacher Dashboard.
 - **Skill Graph (D-038):** G1–G3; лінія «дроби» 4–6 (25 вузлів, 47 ребер). **Гіпотези (D-035)** E1/E2 + тінь E4. **ШІ-перевірка (D-036)** — далі A1. **Бекенд (D-037)** server/.
-- Довга пам'ять: facts/hist №1–313, facts/math №1–219, **facts/ukr №1–153** (6 кл. — №84–153), decisions до **D-042**.
+- **Програма ліцею «Артинов» (D-043, D-044):** математика → Істер (PR #14 злито в main); історія дописана: **g5s5, g5s6, g6s6, g6s7, g6s8** (нові) і revise **g7s4** (Королівство Руське), **g7s5** (+l6), **g8s1** (+l6 братства), **g8s5** (+l8, 1783) — усе verified; порядок 6 кл. — за `weeks`, eyebrow перенумеровано.
+- **Новий предмет `world` «Всесвітня історія» 7–9 (D-044):** **w7s1 (еталон) – w7s5 verified** (28 уроків); 8–9 кл. — 10 задач у todo. validate D-027 для world — tools-world-img прийнято. QA reports/qa/hist-artynov-world.md: check ✅, playtest 14/14.
+- Довга пам'ять: facts/hist №1–345, **facts/world №1–25**, facts/math №1–219, facts/ukr №1–153, decisions до **D-044**.
 
 ## У роботі (`node tools/claim.mjs list doing`)
 - **research-math-diag-duration** — пілот, чекає учнів.
 
-## Що далі (черга; todo: 10)
-0. **Математика за Істером — продовження:** злити PR https://github.com/kondolovskiy/slid/pull/14 (гілка `claude/math-ister-migration`); **write-math-g6m3-circle-diagrams — пріоритет** (g9m7 спирається на кругові діаграми через `requires: ["ms3l3"]`, а їх більше ніде не вчать); refine-math-dg6-pct-rev3 (dg6 → verified); tools-ister-p3; прогалини write-math-g5…g9-* (8 задач); фінал ms0bl5 не перевіряє діаграм і площі; пул для ms3l3 (5 кл.); термін «масштаб» у ms3l3 — узгодити з Істером 6.
+## Що далі (черга: `node tools/claim.mjs list todo`)
+0. **Математика за Істером — продовження:** PR #14 злито в main; **write-math-g6m3-circle-diagrams — пріоритет** (g9m7 спирається на кругові діаграми через `requires: ["ms3l3"]`, а їх більше ніде не вчать); refine-math-dg6-pct-rev3 (dg6 → verified); tools-ister-p3; прогалини write-math-g5…g9-* (8 задач); фінал ms0bl5 не перевіряє діаграм і площі; пул для ms3l3 (5 кл.); термін «масштаб» у ms3l3 — узгодити з Істером 6.
+0а. **Історія / world (03.11):** після відповідей людини нижче — **write-world-w8s1…w9s5** (спершу підтвердити план world 8–9, content/world/plan.js; по 2 фото-агенти max); **style-hist-h56**, **style-hist-g5-finals**; **tools-world-img-p3** (grade фікстури, коментар validate:287, AGENTS.md §4 п. 9 «історія» → «історія й всесвітня історія»; рев'ю D-026); у style/world.md — шаблон фіналу (як w7s1l5, reports/style-sync-world-g7.md).
 1. **style-ukr-g5-unify** і **style-ukr-g6-unify** — фінали, cta, назва значка, нагадування у фіналах; пункти eyebrow, sk gram/orth, цифри відмін, термін — після відповідей нижче (ukr 6: 9–11, ukr 5: 5).
 2. **engine-lang-p3** — 18 дрібних пунктів рушія/validate/stats (милозвучність п. 15 з § 24 п. 4 і § 25 п. 2; `plain()` п. 17); незалежне рев'ю D-026.
 3. **Українська 7 кл.** — лише за рішенням людини (план за Заболотним 7 кл.; у шаблон задач: блок «Так і не так», «Зверни увагу», `requires` для фіналів, pick з `[!…]`, власна підтека scratchpad, OCR PAGE + 1).
@@ -22,6 +25,18 @@ _Оновлено: 2026-11-02, куратор пам'яті, сесія 3 (жу�
 5. Давні: E3g → E5; `mis` у ≈ 25 задачах; write-math-pool-g11m2/m6; dg4/dg10 №18; g10m5 arcsin; `playtest.py --help`; style-sync hist 7, math 7–9/10–11.
 
 ## Відкриті питання (людині)
+**Історія і world (03.11; reports/style-sync-hist-artynov.md, reports/verify/g*.md, w7s*.md):**
+1. **Фінали з 7 завданнями** (g7s5l5, g8s1l5, g8s5l7 — після нових уроків D-044): дозволити в style/common.md («одне завдання на урок розділу, до 7»)?
+2. **1783: «захопила» (5–7 кл.) / «анексія» з поясненням (8+ кл.), не «приєднала»** — затвердити як норму (glossary/hist.md)?
+3. **Межа Гетьманщини:** 1648–1764 чи до 1782?
+4. **g6s6 l4:** «з цієї віри виросло християнство, а на іслам вона вплинула» — формулювання прийнятне (facts №327)?
+5. **h64 (g5s6) — 5 нових термінів**: розділити урок?
+6. **Гірей / Герай / Ґерай** — одна форма (зараз «Гірей (також Герай)»); Королівство Руське в outro g7s4l6 — лишити?
+7. **Васалітет Криму — 1478 (підручник) чи 1475** (ЕІУ: підданство 1475, en.wiki «from 1475»); зараз 1478, 1475 — у note.
+8. **Профіль hist 7–9 `sentenceWords` [5; 13]** (47 з 83 уроків нижче 6)?
+9. **Підтвердити план world 8–9** (content/world/plan.js) перед пакетом; еталон w7s1 — у style/world.md (згода?).
+10. Дублікати фото між теками img/hist (g5s5, g5s6, g8s5 — копії; давнє питання); хто вчитель-рецензент для `approved` (і для hist/world).
+
 **Математика за Істером (D-043):** пп. 1–5 закрито рішенням людини 03.11 (decisions D-043 «Уточнення 2026-11-03»).
 6. **dg5 №26** переписав верифікатор (складена проба ознак подільності; ключ перевірено оркестратором) — учителю глянути перед `approved`.
 
@@ -48,8 +63,8 @@ _Оновлено: 2026-11-02, куратор пам'яті, сесія 3 (жу�
 **Персоналізація, матриця v3 і давні math, історія** — без змін (sessions/2026-11-02-2.md, 2026-11-01-3.md, 2026-10-31-2.md): dg4 №18, hyp_*, стала «c», пороги D-030 після пілоту, a11y на Android/iOS; g9m3l4, a8 п. 22–23, автори a7, медіана парного ряду; марка 1991, Майдан 2004, Геткант/Ґеткант, Львів 1356 тощо.
 
 ## Обмеження середовища
-- Commons — `thumb.wikimedia.org`, ≤ 2 агенти з фото. Playwright — `/opt/pw-browsers/chromium`; браузерні тести по одному. Паралельні агенти: ніколи `git stash/checkout/reset`; scratchpad — **власна підтека**. Після злиття — build окремим комітом.
+- Commons — `thumb.wikimedia.org`, ≤ 2 агенти з фото (03.11: 429 і з одним — MediaSearch + WebFetch сторінки файлу). ЕІУ history.org.ua часто 503. Агенти не ставлять пакети (pip Playwright — заборонено). Коміти агентів «всього дерева» захоплюють чужі правки — безпечно (pitfalls 03.11). Playwright — `/opt/pw-browsers/chromium`; браузерні тести по одному. Паралельні агенти: ніколи `git stash/checkout/reset`; scratchpad — **власна підтека**. Після злиття — build окремим комітом.
 - ukr: mon.gov.ua, zakon.rada, pravopys.net недоступні; **2019.pravopys.net віддає лише JS** → правопис https://slovnyk.ua/pravopys.php?prav_par=N; Горох — для наявності форми (позначки ВЕСУМ — pitfalls «02.11, сесія 3»); З5 — друк. = PDF − 3, З6 — OCR, друк. = PAGE + 1.
 
 ## Як продовжити
-«Прочитай AGENTS.md і handoff; отримай відповіді людини щодо ukr 6 кл. (1–12) → style-ukr-g5-unify, style-ukr-g6-unify, engine-lang-p3 (з рев'ю) → 7 кл. за рішенням; паралельно — лінія „дроби“ → G4; server/content/ → engine-ai-a1».
+«Прочитай AGENTS.md і handoff; отримай відповіді людини щодо історії/world (1–10) → world 8–9 пакетом, style-hist-*, tools-world-img-p3; ukr 6 кл. (1–12) → style-ukr-g5-unify, style-ukr-g6-unify, engine-lang-p3 (з рев'ю) → 7 кл. за рішенням; паралельно — лінія „дроби“ → G4; server/content/ → engine-ai-a1».
