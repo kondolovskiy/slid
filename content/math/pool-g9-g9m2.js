@@ -5,6 +5,7 @@
    Усі задачі — з підручника Мерзляк, Якір. Геометрія 9 (2026), п. 8–10, 13–16; умови й числа звірено
    за відрендереними сторінками PDF. srcPage — друкований номер сторінки (у цьому PDF збігається з номером сторінки файлу).
    Правка 2026-11-03 (fix-math-notation-ister, D-043): вектор із координатами в умовах і підказці — без «=» ($\\vec{a}(x; y)$); обчислення в steps лишилися з «=»; ключі, формати й id без змін.
+   Правка 2026-11-03 (fix-math-vectors-ister, D-043 уточнення п. 4): і в обчисленнях (steps, hint, d05) вектор без «=», як Істер 9г с. 68, 73 ($\\overrightarrow{AB}(4 - 3; 5 - 3)$, тобто $\\overrightarrow{AB}(1; 2)$); ключі, формати, порядок і id без змін. Потребує повторної верифікації.
    Перевірка: node tools/validate.mjs --pool pg9m2; node tools/personalization-qa.mjs --pool pg9m2
    Схема: docs/CONTENT_SCHEMA.md §10 */
 SLID.pool("math", {
@@ -115,7 +116,7 @@ SLID.pool("math", {
       type: "answer", answerKind: "coordinates2", title: "Вектор $\\overrightarrow{AB}$",
       body: "<p>Знайди координати вектора $\\overrightarrow{AB}$, якщо $A(2; 3)$, $B(-1; 4)$. Запиши відповідь як $(x; y)$.</p>",
       answer: [-3, 1],
-      steps: ["Координати вектора — кінець мінус початок.", "$-1 - 2 = -3$, $4 - 3 = 1$.", "$\\overrightarrow{AB} = (-3; 1)$."] },
+      steps: ["Координати вектора — кінець мінус початок.", "$-1 - 2 = -3$, $4 - 3 = 1$.", "Отже, $\\overrightarrow{AB}(-3; 1)$."] },
     { id: "c02", lesson: "g9m2l3", lvl: 1, sk: "coord", src: "mer9g №13.8(1)", srcPage: 150,
       type: "answer", title: "Довжина $\\vec{m}(8; -6)$",
       body: "<p>Знайди довжину (модуль) вектора $\\vec{m}(8; -6)$.</p>",
@@ -130,20 +131,20 @@ SLID.pool("math", {
       type: "answer", answerKind: "coordinates2", title: "Вектор іде до $A$",
       body: "<p>Дано точку $A(1; 3)$ і вектор $\\vec{a}(-2; 1)$. Знайди координати точки $B$, для якої $\\overrightarrow{BA} = \\vec{a}$. Запиши відповідь як $(x; y)$.</p>",
       answer: [3, 2],
-      hint: "У векторі $\\overrightarrow{BA}$ початок — $B$, а кінець — $A$. Отже, $A - B = (-2; 1)$.",
-      steps: ["$\\overrightarrow{BA} = (1 - x_B; 3 - y_B) = (-2; 1)$.", "$1 - x_B = -2$, тож $x_B = 3$.", "$3 - y_B = 1$, тож $y_B = 2$.", "$B(3; 2)$."] },
+      hint: "У векторі $\\overrightarrow{BA}$ початок — $B$, а кінець — $A$. Отже, $\\overrightarrow{BA}(x_A - x_B; y_A - y_B)$, тобто $\\overrightarrow{BA}(-2; 1)$.",
+      steps: ["$\\overrightarrow{BA}(1 - x_B; 3 - y_B)$ і $\\overrightarrow{BA}(-2; 1)$, бо $\\overrightarrow{BA} = \\vec{a}$.", "$1 - x_B = -2$, тож $x_B = 3$.", "$3 - y_B = 1$, тож $y_B = 2$.", "$B(3; 2)$."] },
     { id: "c05", lesson: "g9m2l3", lvl: 2, sk: "coord", src: "mer9g №13.11", srcPage: 151,
       type: "answer", answerKind: "coordinates2", title: "Рівні вектори $\\overrightarrow{AB}$ і $\\overrightarrow{CD}$",
       body: "<p>Дано точки $A(3; -7)$, $B(4; -5)$ і $C(5; 8)$. Знайди координати точки $D$, для якої $\\overrightarrow{AB} = \\overrightarrow{CD}$. Запиши відповідь як $(x; y)$.</p>",
       answer: [6, 10],
       hint: "Рівні вектори мають однакові координати. Знайди $\\overrightarrow{AB}$ і зроби той самий зсув від $C$.",
-      steps: ["$\\overrightarrow{AB} = (4 - 3; -5 - (-7)) = (1; 2)$.", "$\\overrightarrow{CD} = (1; 2)$, тож $D = (5 + 1; 8 + 2)$.", "$D(6; 10)$."] },
+      steps: ["$\\overrightarrow{AB}(4 - 3; -5 - (-7))$, тобто $\\overrightarrow{AB}(1; 2)$.", "Тоді й $\\overrightarrow{CD}(1; 2)$, тож $D = (5 + 1; 8 + 2)$.", "$D(6; 10)$."] },
     { id: "c09", lesson: "g9m2l3", lvl: 2, sk: "coord", src: "mer9g №13.5(4)", srcPage: 150,
       type: "answer", answerKind: "coordinates2", title: "Вектор між точками з буквами",
       body: "<p>Знайди координати вектора $\\overrightarrow{AB}$, якщо $A(m; n)$, $B(p; k)$. Запиши відповідь як $(x; y)$, де замість $x$ і $y$ — вирази з буквами $m$, $n$, $p$, $k$.</p>",
       answer: ["p - m", "k - n"],
       hint: "Так само, як із числами: від координат кінця $B$ відніми координати початку $A$.",
-      steps: ["Координати вектора — кінець мінус початок: $(x_B - x_A; y_B - y_A)$.", "$x_B - x_A = p - m$, $y_B - y_A = k - n$.", "$\\overrightarrow{AB} = (p - m; k - n)$."] },
+      steps: ["Координати вектора — кінець мінус початок: $(x_B - x_A; y_B - y_A)$.", "$x_B - x_A = p - m$, $y_B - y_A = k - n$.", "Отже, $\\overrightarrow{AB}(p - m; k - n)$."] },
     { id: "c07", lesson: "g9m2l3", lvl: 3, sk: "coord", src: "mer9g №13.17", srcPage: 151,
       type: "answer", answerKind: "list", title: "Модуль дорівнює $13$",
       body: "<p>При яких значеннях $y$ модуль вектора $\\vec{b}(12; y)$ дорівнює $13$? Знайди всі такі значення й запиши через крапку з комою.</p>",
@@ -155,19 +156,19 @@ SLID.pool("math", {
       body: "<p>Трикутник $ABC$ має вершини $A(3; -5)$, $B(2; -3)$ і $C(-1; 7)$. Відрізок $BM$ — медіана: він з’єднує вершину $B$ із серединою $M$ сторони $AC$. Знайди модуль вектора $\\overrightarrow{BM}$.</p>",
       answer: "√17",
       hint: "Спершу знайди середину $M$ відрізка $AC$, потім координати $\\overrightarrow{BM}$.",
-      steps: ["$M = ((3 + (-1)) : 2; (-5 + 7) : 2) = (1; 1)$.", "$\\overrightarrow{BM} = (1 - 2; 1 - (-3)) = (-1; 4)$.", "$|\\overrightarrow{BM}| = \\sqrt{1 + 16} = \\sqrt{17}$."] },
+      steps: ["$M = ((3 + (-1)) : 2; (-5 + 7) : 2) = (1; 1)$.", "$\\overrightarrow{BM}(1 - 2; 1 - (-3))$, тобто $\\overrightarrow{BM}(-1; 4)$.", "$|\\overrightarrow{BM}| = \\sqrt{1 + 16} = \\sqrt{17}$."] },
 
     /* ───────────── Урок 4. Дії з векторами ───────────── */
     { id: "d01", lesson: "g9m2l4", lvl: 1, sk: "coord", src: "mer9g №14.26(2)", srcPage: 162, adapted: true,
       type: "answer", answerKind: "coordinates2", title: "Сума векторів",
       body: "<p>Знайди координати суми векторів $\\vec{a}(-6; 0)$ і $\\vec{b}(5; 7)$. Запиши відповідь як $(x; y)$.</p>",
       answer: [-1, 7],
-      steps: ["$\\vec{a} + \\vec{b} = (a_1 + b_1; a_2 + b_2)$.", "$-6 + 5 = -1$, $0 + 7 = 7$.", "$\\vec{a} + \\vec{b} = (-1; 7)$."] },
+      steps: ["Якщо $\\vec{c} = \\vec{a} + \\vec{b}$, то $\\vec{c}(a_1 + b_1; a_2 + b_2)$.", "$-6 + 5 = -1$, $0 + 7 = 7$.", "Отже, $\\vec{c}(-1; 7)$."] },
     { id: "d02", lesson: "g9m2l4", lvl: 1, sk: "coord", src: "mer9g №14.29(1)", srcPage: 162, adapted: true,
       type: "answer", answerKind: "coordinates2", title: "Різниця векторів",
       body: "<p>Дано вектори $\\vec{a}(4; -5)$ і $\\vec{b}(-1; 7)$. Знайди координати вектора $\\vec{a} - \\vec{b}$. Запиши відповідь як $(x; y)$.</p>",
       answer: [5, -12],
-      steps: ["$\\vec{a} - \\vec{b} = (a_1 - b_1; a_2 - b_2)$.", "$4 - (-1) = 5$, $-5 - 7 = -12$.", "$\\vec{a} - \\vec{b} = (5; -12)$."] },
+      steps: ["Якщо $\\vec{d} = \\vec{a} - \\vec{b}$, то $\\vec{d}(a_1 - b_1; a_2 - b_2)$.", "$4 - (-1) = 5$, $-5 - 7 = -12$.", "Отже, $\\vec{d}(5; -12)$."] },
     { id: "d03", lesson: "g9m2l4", lvl: 1, sk: "coord", src: "mer9g №16.9(2)", srcPage: 184,
       type: "answer", title: "Скалярний добуток",
       body: "<p>Знайди скалярний добуток векторів $\\vec{a}(-5; 1)$ і $\\vec{b}(2; 7)$.</p>",
@@ -178,13 +179,13 @@ SLID.pool("math", {
       body: "<p>Дано вектори $\\vec{m}(-2; 4)$ і $\\vec{n}(3; -1)$. Знайди координати вектора $3\\vec{m} + 2\\vec{n}$. Запиши відповідь як $(x; y)$.</p>",
       answer: [0, 10],
       hint: "Спершу помнож кожен вектор на число, потім додай відповідні координати.",
-      steps: ["$3\\vec{m} = (-6; 12)$, $2\\vec{n} = (6; -2)$.", "$-6 + 6 = 0$, $12 + (-2) = 10$.", "$3\\vec{m} + 2\\vec{n} = (0; 10)$."] },
+      steps: ["$3\\vec{m}(-6; 12)$, $2\\vec{n}(6; -2)$.", "$-6 + 6 = 0$, $12 + (-2) = 10$.", "Отже, вектор $3\\vec{m} + 2\\vec{n}$ має координати $(0; 10)$."] },
     { id: "d09", lesson: "g9m2l4", lvl: 2, sk: "coord", src: "mer9g №15.10(4)", srcPage: 171,
       type: "answer", answerKind: "expression", title: "Вирази $\\vec{p}$",
-      body: "<p>Вектори $\\vec{p}$ і $\\vec{q}$ пов’язані рівністю $2\\vec{p} = 3\\vec{q}$. Вирази вектор $\\vec{p}$ через $\\vec{q}$. Скористайся тим, що рівні вектори мають рівні координати, а $k\\vec{a} = (ka_1; ka_2)$. Запиши відповідь без стрілок, наприклад $5q$.</p>",
+      body: "<p>Вектори $\\vec{p}$ і $\\vec{q}$ пов’язані рівністю $2\\vec{p} = 3\\vec{q}$. Вирази вектор $\\vec{p}$ через $\\vec{q}$. Скористайся тим, що рівні вектори мають рівні координати, а вектор $k\\vec{a}$ має координати $(ka_1; ka_2)$. Запиши відповідь без стрілок, наприклад $5q$.</p>",
       answer: "1.5q",
       hint: "Нехай $\\vec{p}(p_1; p_2)$, $\\vec{q}(q_1; q_2)$. Тоді $2p_1 = 3q_1$ і $2p_2 = 3q_2$. Вирази звідси $p_1$ і $p_2$.",
-      steps: ["За координатами: $2p_1 = 3q_1$ і $2p_2 = 3q_2$.", "Ділимо на $2$: $p_1 = 1,5q_1$, $p_2 = 1,5q_2$, тобто $\\vec{p} = (1,5q_1; 1,5q_2)$.", "Отже, $\\vec{p} = 1,5\\vec{q}$."] },
+      steps: ["За координатами: $2p_1 = 3q_1$ і $2p_2 = 3q_2$.", "Ділимо на $2$: $p_1 = 1,5q_1$, $p_2 = 1,5q_2$, тобто $\\vec{p}(1,5q_1; 1,5q_2)$.", "Отже, $\\vec{p} = 1,5\\vec{q}$."] },
     { id: "d06", lesson: "g9m2l4", lvl: 2, sk: "coord", src: "mer9g №16.20", srcPage: 185,
       type: "answer", title: "Перпендикулярні вектори",
       body: "<p>При якому значенні $x$ вектори $\\vec{a}(3; x)$ і $\\vec{b}(1; 9)$ перпендикулярні?</p>",
@@ -202,6 +203,6 @@ SLID.pool("math", {
       body: "<p>Дано точки $A(1; -3)$, $B(4; 5)$, $C(-2; -1)$ і $D(3; 0)$. Знайди модуль вектора $\\overrightarrow{AB} - \\overrightarrow{CD}$.</p>",
       answer: "√53",
       hint: "Знайди координати $\\overrightarrow{AB}$ і $\\overrightarrow{CD}$ (кінець мінус початок), відніми, а тоді рахуй довжину.",
-      steps: ["$\\overrightarrow{AB} = (4 - 1; 5 - (-3)) = (3; 8)$, $\\overrightarrow{CD} = (3 - (-2); 0 - (-1)) = (5; 1)$.", "$\\overrightarrow{AB} - \\overrightarrow{CD} = (3 - 5; 8 - 1) = (-2; 7)$.", "$\\sqrt{(-2)^2 + 7^2} = \\sqrt{4 + 49} = \\sqrt{53}$."] }
+      steps: ["$\\overrightarrow{AB}(4 - 1; 5 - (-3))$, тобто $\\overrightarrow{AB}(3; 8)$; $\\overrightarrow{CD}(3 - (-2); 0 - (-1))$, тобто $\\overrightarrow{CD}(5; 1)$.", "Вектор $\\overrightarrow{AB} - \\overrightarrow{CD}$ має координати $(3 - 5; 8 - 1)$, тобто $(-2; 7)$.", "$\\sqrt{(-2)^2 + 7^2} = \\sqrt{4 + 49} = \\sqrt{53}$."] }
   ]
 });

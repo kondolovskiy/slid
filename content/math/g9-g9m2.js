@@ -1,5 +1,5 @@
 /* Слід · Математика, 9 клас — «Геометрія: координати і вектори»
-   Статус уроків: verified (g9m2l3, g9m2l4, g9m2l5 — правка нотації 2026-11-03: вектор з координатами без «=», D-043; verified — verifier-fix-math-notation-ister). 5 уроків (4 теми + boss).
+   Статус уроків: g9m2l1, g9m2l2 — verified; g9m2l3, g9m2l4, g9m2l5 — draft (2026-11-03, fix-math-vectors-ister: вектор без «=» і в обчисленнях та підписах lab, D-043 уточнення п. 4; до цього verified — verifier-fix-math-notation-ister). 5 уроків (4 теми + boss).
    Інтерактив: plane — точки drag, вектори segs/arrows, коло; ≥2 explore/lab на урок.
    Перевірка: node tools/validate.mjs --section g9m2 && node tools/stats.mjs --subject math
    Схема й правила: docs/CONTENT_SCHEMA.md §8, style/, D-019.
@@ -414,7 +414,7 @@ SLID.section("math", {
       title: "Стрілка з координатами",
       short: "Вектори",
       icon: "line",
-      status: "verified",
+      status: "draft",
       why: "Щоб описувати зсув і напрям однією парою чисел — як у геймпаді чи навігаторі.",
       screens: [
         {
@@ -441,7 +441,7 @@ SLID.section("math", {
               { a: "A", b: "B", arrow: true, color: "accent", label: "AB→" }
             ],
             show: [
-              "AB→ = ({X(B)-X(A)|0}; {Y(B)-Y(A)|0})",
+              "AB→({X(B)-X(A)|0}; {Y(B)-Y(A)|0})",
               "|AB→| = {dist(A,B)|1}"
             ],
             alt: "Вектор AB зі змінним кінцем B"
@@ -490,7 +490,7 @@ SLID.section("math", {
             segs: [
               { a: "A", b: "B", arrow: true, color: "accent" }
             ],
-            show: "AB→ = ({X(B)-X(A)|0}; {Y(B)-Y(A)|0})",
+            show: "AB→({X(B)-X(A)|0}; {Y(B)-Y(A)|0})",
             alt: "Вектор AB з координатами (3; 2)"
           },
           goal: "X(B)-X(A)==3 && Y(B)-Y(A)==2",
@@ -532,8 +532,8 @@ SLID.section("math", {
               { a: "C", b: "D", arrow: true, color: "gold", label: "b→" }
             ],
             show: [
-              "a→ = ({X(B)-X(A)|0}; {Y(B)-Y(A)|0})",
-              "b→ = ({X(D)-X(C)|0}; {Y(D)-Y(C)|0})"
+              "a→({X(B)-X(A)|0}; {Y(B)-Y(A)|0})",
+              "b→({X(D)-X(C)|0}; {Y(D)-Y(C)|0})"
             ],
             alt: "Два вектори для порівняння рівності"
           },
@@ -559,8 +559,8 @@ SLID.section("math", {
               { a: "C", b: "D", arrow: true, color: "gold", label: "b→" }
             ],
             show: [
-              "a→ = (3; 2)",
-              "b→ = ({X(D)-X(C)|0}; {Y(D)-Y(C)|0})"
+              "a→(3; 2)",
+              "b→({X(D)-X(C)|0}; {Y(D)-Y(C)|0})"
             ],
             alt: "Зрівняти золотий вектор із синім"
           },
@@ -587,7 +587,7 @@ SLID.section("math", {
           hint: "Порахуй координати кожного: кінець мінус початок.",
           fbOk: "Рівні.",
           fbBad: "Порівняй пари $(x; y)$.",
-          fbText: "Маємо $\\overrightarrow{AB}(2; -1)$. З $C(3; 4)$ у $D(5; 3)$: $(5-3; 3-4) = (2; -1)$ — ті самі координати."
+          fbText: "Маємо $\\overrightarrow{AB}(2; -1)$. З $C(3; 4)$ у $D(5; 3)$: $\\overrightarrow{CD}(5 - 3; 3 - 4)$, тобто $\\overrightarrow{CD}(2; -1)$ — ті самі координати."
         }
       ],
       outro: {
@@ -606,7 +606,7 @@ SLID.section("math", {
       title: "Додати, розтягнути, помножити",
       short: "Дії",
       icon: "path",
-      status: "verified",
+      status: "draft",
       why: "Щоб складати переміщення, масштабувати їх і перевіряти перпендикулярність через скалярний добуток.",
       screens: [
         {
@@ -636,9 +636,9 @@ SLID.section("math", {
               { a: "O", b: "B", arrow: true, color: "gold", label: "a→+b→" }
             ],
             show: [
-              "a→ = (3; 1)",
-              "b→ = ({X(B)-X(A)|0}; {Y(B)-Y(A)|0})",
-              "сума = ({X(B)-X(O)|0}; {Y(B)-Y(O)|0})"
+              "a→(3; 1)",
+              "b→({X(B)-X(A)|0}; {Y(B)-Y(A)|0})",
+              "a→+b→({X(B)-X(O)|0}; {Y(B)-Y(O)|0})"
             ],
             alt: "Додавання векторів за правилом трикутника"
           },
@@ -665,8 +665,8 @@ SLID.section("math", {
           eyebrow: "Теорія",
           title: "Дії з векторами",
           body: `<p>Нехай $\\vec{a}(a_1; a_2)$, $\\vec{b}(b_1; b_2)$.</p>
-        <p><b>Сума:</b> $\\vec{a} + \\vec{b} = (a_1 + b_1; a_2 + b_2)$. <b>Різниця:</b> $\\vec{a} - \\vec{b} = (a_1 - b_1; a_2 - b_2)$.</p>
-        <p><b>Множення на число:</b> $k\\vec{a} = (ka_1; ka_2)$. Якщо $k > 0$ — той самий напрям; якщо $k < 0$ — протилежний.</p>
+        <p><b>Сума:</b> якщо $\\vec{c} = \\vec{a} + \\vec{b}$, то $\\vec{c}(a_1 + b_1; a_2 + b_2)$. <b>Різниця:</b> якщо $\\vec{d} = \\vec{a} - \\vec{b}$, то $\\vec{d}(a_1 - b_1; a_2 - b_2)$.</p>
+        <p><b>Множення на число:</b> $k\\vec{a}(ka_1; ka_2)$. Якщо $k > 0$ — той самий напрям; якщо $k < 0$ — протилежний.</p>
         <p><b>Скалярний добуток:</b> $\\vec{a} · \\vec{b} = a_1 b_1 + a_2 b_2$. Якщо $\\vec{a} · \\vec{b} = 0$ (і вектори ненульові) — вони <b>перпендикулярні</b> (під прямим кутом).</p>`,
           cta: "Спробувати"
         },
@@ -690,18 +690,18 @@ SLID.section("math", {
               { a: "O", b: "B", arrow: true, color: "gold", label: "сума" }
             ],
             show: [
-              "b→ = ({X(B)-X(A)|0}; {Y(B)-Y(A)|0})",
-              "сума = ({X(B)-X(O)|0}; {Y(B)-Y(O)|0})"
+              "b→({X(B)-X(A)|0}; {Y(B)-Y(A)|0})",
+              "a→+b→({X(B)-X(O)|0}; {Y(B)-Y(O)|0})"
             ],
             alt: "Підігнати суму векторів до (4; 3)"
           },
           goal: "X(B)-X(O)==4 && Y(B)-Y(O)==3",
           solution: { Bx: 5, By: 4 },
-          reveal: "$B(5; 4)$: сума $(4; 3)$, тож $\\vec{b} = (1; 2)$.",
+          reveal: "$B(5; 4)$: сума $(4; 3)$, тож $\\vec{b}(1; 2)$.",
           hint: "Сума має вести в точку $(1+4; 1+3) = (5; 4)$.",
           fbOk: "Сума на місці.",
           fbBad: "Куди має вказувати золота стрілка?",
-          fbText: "Потрібна сума $(4; 3)$ від $O(1; 1)$ → кінець у $(5; 4)$. Тоді $\\vec{b} = (4; 3) - (3; 1) = (1; 2)$."
+          fbText: "Потрібна сума $(4; 3)$ від $O(1; 1)$ → кінець у $(5; 4)$. Тоді $\\vec{b}(4 - 3; 3 - 1)$, тобто $\\vec{b}(1; 2)$."
         },
         {
           type: "explore",
@@ -724,7 +724,7 @@ SLID.section("math", {
               { a: "O", b: "K", arrow: true, color: "gold", label: "k·a→" }
             ],
             show: [
-              "k·a→ = ({2*k}; {k})",
+              "k·a→({2*k}; {k})",
               "|k·a→| = {dist(O,K)|1}"
             ],
             alt: "Множення вектора на число k"
@@ -767,7 +767,7 @@ SLID.section("math", {
             ],
             angles: [{ from: "A", at: "O", to: "B", color: "gold" }],
             show: [
-              "b→ = ({X(B)|0}; {Y(B)|0})",
+              "b→({X(B)|0}; {Y(B)|0})",
               "a→·b→ = {4*X(B)|0}"
             ],
             alt: "Зробити вектори під прямим кутом"
@@ -809,7 +809,7 @@ SLID.section("math", {
       title: "Квест на карті",
       short: "Фінал",
       icon: "trophy",
-      status: "verified",
+      status: "draft",
       boss: true,
       badge: "g9m2boss",
       why: "Координати, коло, пряма й вектори — в одному квесті навігатора. Бали подвоєні.",
@@ -911,7 +911,7 @@ SLID.section("math", {
             segs: [
               { a: "A", b: "B", arrow: true, color: "accent" }
             ],
-            show: "AB→ = ({X(B)-X(A)|0}; {Y(B)-Y(A)|0})",
+            show: "AB→({X(B)-X(A)|0}; {Y(B)-Y(A)|0})",
             alt: "Відкласти вектор (2; -3) від A"
           },
           goal: "X(B)-X(A)==2 && Y(B)-Y(A)==-3",
