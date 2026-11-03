@@ -5,7 +5,7 @@
 SLID.section("hist", {
   id: "s3",
   grade: 5,
-  weeks: [16, 25],
+  weeks: [12, 17],
   title: "Людина і громада",
   why: "Щоб зрозуміти, як люди в минулому жили разом, домовлялися і сперечалися — і що з цього дійшло до нас.",
   meta: { author: "claude-opus", created: "2026-09-27", factcheck: "verifier-s3", teacher: null },

@@ -1,8 +1,10 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-03T09:12:59.375Z
 id: hist-world-7-9
 type: content
 status: todo
-claimed_by:
+claimed_by: orchestrator
 created: 2026-11-03
 depends_on: []
 ---

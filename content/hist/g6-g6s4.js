@@ -5,7 +5,7 @@
 SLID.section("hist", {
   id: "g6s4",
   grade: 6,
-  weeks: [21, 27],
+  weeks: [23, 25],
   title: "Античні міста Причорномор'я",
   why: "Щоб знати, що грецькі міста на нашому узбережжі пов'язували ці землі зі Середземномор'ям.",
   meta: { author: "claude-opus", created: "2026-10-05", factcheck: "verifier-g6s4-d019", teacher: null },
