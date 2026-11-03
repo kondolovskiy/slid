@@ -1,15 +1,15 @@
 /* Слід · Математика, 7 клас — пул задач для тренування до розділу «Геометрія: паралельні прямі» (g7m6)
-   Статус: verified (verifier-pool-g7m6, 2026-10-31; reports/verify/pg7m6.md). 22 задачі: g7m6l1 — 7, g7m6l2 — 7, g7m6l3 — 8 (boss g7m6boss без задач).
+   Статус: draft (рисунки до b07, c08 — fix-math-figs-g7-geo-b; раніше verified: verifier-pool-g7m6, 2026-10-31; reports/verify/pg7m6.md). 22 задачі: g7m6l1 — 7, g7m6l2 — 7, g7m6l3 — 8 (boss g7m6boss без задач).
    Матриця docs/math-personalization-coverage.md 2026-10-16.v2: усі три уроки required, формат number (+ choice/list за умовою).
    Усі задачі — з підручника Мерзляк, Якір. Геометрія 7 (2024), п. 14–15; умови й числа звірено за відрендереними сторінками PDF.
    srcPage — друкований номер сторінки (у цьому PDF збігається з номером сторінки файлу).
-   Рисунків у пулі немає: розташування кутів з рисунків підручника переказано словами (adapted: true).
+   Розташування кутів з рисунків підручника переказано словами (adapted: true); b07 і c08 мають статичний рисунок lab (fix-math-figs-g7-geo-b, 2026-11-03 → status draft).
    Перевірка: node tools/validate.mjs --pool pg7m6; node tools/personalization-qa.mjs --pool pg7m6
    Схема: docs/CONTENT_SCHEMA.md §10 */
 SLID.pool("math", {
   id: "pg7m6",
   section: "g7m6",
-  status: "verified",
+  status: "draft",
   meta: { author: "w-write-math-pool-g7m6", created: "2026-10-31", factcheck: "verifier-pool-g7m6", teacher: null },
   sources: [
     { id: "mer7g", title: "Мерзляк А. Г., Якір М. С. Геометрія: підручник для 7 класу. — Харків: Гімназія, 2024 (п. 14–15; дзеркало file.4book.org)", url: "https://file.4book.org/images/shcoolbook_ua/7/7_geom_m_2024.pdf" }
@@ -94,6 +94,12 @@ SLID.pool("math", {
       type: "answer", answerKind: "list", title: "Пряма через вершину $B$",
       body: "<p>Через вершину $B$ трикутника $ABC$ провели пряму $MK$, паралельну прямій $AC$. Точка $M$ лежить з того самого боку від $B$, що й $A$, а точка $K$ — з боку $C$. $\\angle MBA = 42°$, $\\angle CBK = 56°$.</p><p>Знайди кути трикутника $ABC$. Запиши три числа через крапку з комою.</p>",
       answer: [42, 82, 56], unit: "°",
+      lab: { kind: "plane", axes: false, grid: 0, view: [-0.5, 10, -1, 5.825],
+        points: { A: { at: [0, 0] }, C: { at: [8, 0] }, B: { at: [4.977, 4.481] }, M: { at: [1, 4.481] }, K: { at: [9, 4.481] } },
+        polys: [{ pts: ["A", "B", "C"], color: "accent", opacity: 0.08 }],
+        segs: [["M", "K"]],
+        angles: [{ from: "M", at: "B", to: "A", color: "gold", label: "42°" }, { from: "C", at: "B", to: "K", color: "blue", label: "56°" }],
+        alt: "Трикутник ABC і пряма MK через вершину B, паралельна AC; кут MBA 42 градуси, кут CBK 56 градусів" },
       hint: "Пряма $AB$ — січна для $MK$ і $AC$. А кути при точці $B$ разом складають розгорнутий кут $MBK$.",
       steps: ["$\\angle MBA$ і $\\angle BAC$ — внутрішні по різні боки при $MK\\parallel AC$ і січній $AB$. Тому $\\angle A = 42°$.", "Так само з січною $BC$: $\\angle C = \\angle CBK = 56°$.", "Кути $MBA$, $ABC$, $CBK$ разом дають розгорнутий кут $180°$: $\\angle B = 180° - 42° - 56° = 82°$.", "Відповідь: $42°$; $82°$; $56°$."] },
 
@@ -141,6 +147,13 @@ SLID.pool("math", {
       type: "answer", title: "Кут $ACK$",
       body: "<p>Точки $A$, $E$, $F$, $K$ лежать на одній прямій саме в такому порядку. Точки $A$, $B$, $C$, $D$ лежать на іншій прямій, теж у такому порядку. $BE \\perp AK$, $CF \\perp AK$, промінь $CK$ — бісектриса кута $FCD$ (ділить його навпіл), $\\angle ABE = 62°$. Знайди кут $ACK$.</p>",
       answer: 121, unit: "°",
+      lab: { kind: "plane", axes: false, grid: 0, view: [-0.5, 14.5, -1, 6.5],
+        points: { A: { at: [0, 0] }, E: { at: [3.532, 0] }, F: { at: [7.064, 0] }, K: { at: [13.314, 0] },
+          B: { at: [3.532, 1.878] }, C: { at: [7.064, 3.756] }, D: { at: [8.829, 4.695] } },
+        segs: [["A", "K"], ["A", "D"], ["B", "E"], ["C", "F"], ["C", "K"]],
+        angles: [{ from: "A", at: "B", to: "E", color: "gold", label: "62°" },
+          { from: "B", at: "E", to: "A", color: "ink", label: false, r: 18 }, { from: "C", at: "F", to: "A", color: "ink", label: false, r: 18 }],
+        alt: "Точки A, E, F, K на одній прямій, A, B, C, D на іншій; BE і CF перпендикулярні до AK; CK ділить кут FCD навпіл; кут ABE 62 градуси" },
       hint: "Подивись на $AK$ як на січну для прямих $BE$ і $CF$: які там відповідні кути? Що з цього випливає? Тоді $AD$ — теж їхня січна.",
       steps: ["$BE$ і $CF$ перпендикулярні до $AK$: відповідні кути при них по $90°$, тож $BE\\parallel CF$.", "Для них січна — пряма $AD$: $\\angle ACF$ відповідний до $\\angle ABE$, тобто $62°$.", "$\\angle FCD$ суміжний з $\\angle ACF$: $180° - 62° = 118°$. Бісектриса: $\\angle FCK = 59°$.", "$\\angle ACK = \\angle ACF + \\angle FCK = 62° + 59° = 121°$."] }
   ]
