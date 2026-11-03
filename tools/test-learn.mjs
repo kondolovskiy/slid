@@ -325,6 +325,14 @@ const order = l => ({ L1: 3, L2: 1, L3: 2, L4: 4 }[l] ?? 50);
     .forEach(([s, v, exp]) => eq(c(s, v), exp, `checkAns: ${JSON.stringify(s)} ← «${v}»`));
   eq(L.parseAns("2 1/3").n, 7, "parseAns: мішане → чисельник"); eq(L.parseAns("1,25").d, 100, "parseAns: десятковий → знаменник"); eq(L.parseAns("1/2/3"), null, "parseAns: сміття"); }
 
+// engine-cbrt-key: «cbrt» з фізичної клавіатури = «∛» (кнопка поля); канонічність і хибні значення — як для ∛ (pg10m3 a06, b01)
+{ const R = (answer, kind = "exactRoot") => ({ type: "answer", answerKind: kind, answer });
+  [[R("2∛2"), "2∛2", "ok"], [R("2∛2"), "2cbrt(2)", "ok"], [R("2∛2"), "2cbrt2", "ok"], [R("2∛2"), "2·CBRT(2)", "ok"], [R("2∛2"), "cbrt(16)", "form"], [R("2∛2"), "∛16", "form"],
+   [R("2∛2"), "2cbrt(3)", "bad"], [R("2∛2"), "2√2", "bad"], [R("∛5"), "cbrt(5)", "ok"], [R("∛5"), "cbrt5", "ok"], [R("∛5"), "cbrt(25)", "bad"],
+   [R("∜x", "expression"), "∜x", "ok"], [R("x^(1/3)", "expression"), "cbrt(x)", "ok"], [{ ...R("∛2; 1", "list"), title: "Розв'яжи $(x^3 - 2)(x - 1) = 0$" }, "x = cbrt(2); x = 1", "ok"], [R(3, "number"), "cbrt(27)", "form"],
+   [R("2a + c", "expression"), "2a + c", "ok"]]
+    .forEach(([s, v, exp]) => eq(L.checkAns(s, v), exp, `cbrt: ${JSON.stringify(s)} ← «${v}»`)); }
+
 // Нові формати перевіряються значенням, але не приймають довільні вирази.
 { const cases = [
     [{ answerKind: "comparison", answer: "<" }, " < ", "ok"],

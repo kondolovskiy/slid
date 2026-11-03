@@ -1,5 +1,5 @@
 /* Слід · Математика, 5 клас — пул задач для тренування до розділу «Фігури і величини» (ms0b)
-   Статус: verified — 2026-11-01 a02, a03, d05 переведено на quantity (см і мм, як «Обчисліть довжину/периметр» у підручнику); повторно перевірено (verifier-refine-math-pools-new-kinds, 2026-11-01, reports/verify/refine-math-pools-new-kinds.md).
+   Статус: verified (2026-11-03, verifier-fix-math-figs-g4-g6, reports/verify/fix-math-figs-g4-g6.md; fix-math-figs-g4-g6: b04, b07 — статичні рисунки кутів lab plane, b04 — підпис O під вершиною). Раніше: verified — 2026-11-01 a02, a03, d05 переведено на quantity (см і мм, як «Обчисліть довжину/периметр» у підручнику); повторно перевірено (verifier-refine-math-pools-new-kinds, 2026-11-01, reports/verify/refine-math-pools-new-kinds.md).
    Раніше: verified (reports/verify/pms0b.md). 24 задачі: по 8 на required-уроки ms0bl1, ms0bl2, ms0bl4 (3 рівня 1, 3 рівня 2, 2 рівня 3).
    ms0bl3 («Три кути на трьох») — pending за матрицею 2026-10-16.v2: задач навмисно немає (рішення Віктора про суму кутів у 5 кл.).
    Усі задачі — з підручника Мерзляка 5 кл. (див. sources); умови й числа звірено за відрендереними сторінками PDF 2026-10-30.
@@ -83,6 +83,12 @@ SLID.pool("math", {
     { id: "b04", lesson: "ms0bl2", lvl: 2, sk: "geom", src: "mer5 №329", srcPage: 101,
       type: "answer", title: "Знайди кут $AOP$",
       body: "<p>Точки $C$, $O$, $K$ лежать на одній прямій: кут $COK$ — розгорнутий. Промінь $OA$ утворює з $OK$ прямий кут. Промінь $OP$ лежить між променями $OC$ і $OA$, кут $COP$ дорівнює 54°. Знайди кут $AOP$.</p>",
+      lab: { kind: "plane", axes: false, grid: 0, view: [0, 10, 0, 6],
+        points: { C: { at: [0.5, 1] }, O: { at: [5, 1], label: false }, K: { at: [9.5, 1] }, A: { at: [5, 5.5] }, P: { at: [2.35, 4.64] } },
+        segs: [["O", "C"], ["O", "K"], ["O", "A"], ["O", "P"]],
+        texts: [{ at: [5, 0.35], t: "O", color: "accent", bold: true }],
+        angles: [{ from: "A", at: "O", to: "K", label: false }, { from: "C", at: "O", to: "P", label: "54°", r: 30 }],
+        alt: "Пряма CK з точкою O. Промінь OA перпендикулярний до OK. Промінь OP між OC і OA, кут COP 54 градуси" },
       answer: 36, unit: "°",
       hint: "Кут $AOK$ — 90°. Скільки тоді лишається на кут $COA$ з розгорнутого кута?",
       steps: ["Кут $COA = 180 - 90 = 90$°.", "Промінь $OP$ ділить кут $COA$ на кути $COP$ і $POA$.", "$AOP = 90 - 54 = 36$°."] },
@@ -101,6 +107,10 @@ SLID.pool("math", {
     { id: "b07", lesson: "ms0bl2", lvl: 3, sk: "geom", src: "mer5 №334", srcPage: 101,
       type: "answer", title: "Знайди кут $TCF$",
       body: "<p>Кут $ACP$ — розгорнутий. З вершини $C$ по один бік від прямої $AP$ проведено промені $CT$ і $CF$. Промінь $CT$ ближчий до $CA$, промінь $CF$ — до $CP$. Відомо: кут $ACF$ дорівнює 158°, кут $TCP$ — 134°. Знайди кут $TCF$.</p>",
+      lab: { kind: "plane", axes: false, grid: 0, view: [0, 10, 0, 6],
+        points: { A: { at: [0.5, 1] }, C: { at: [5, 1] }, P: { at: [9.5, 1] }, T: { at: [1.87, 4.24] }, F: { at: [9.17, 2.69] } },
+        segs: [["C", "A"], ["C", "P"], ["C", "T"], ["C", "F"]],
+        alt: "Пряма AP з точкою C. По один бік від неї з точки C виходять промені CT, ближчий до CA, і CF, ближчий до CP" },
       answer: 112, unit: "°",
       hint: "Розгорнутий кут 180° складається з трьох кутів: $ACT$, $TCF$ і $FCP$. Знайди спершу крайні.",
       steps: ["$∠ACT = 180 - 134 = 46$°.", "$∠FCP = 180 - 158 = 22$°.", "$∠TCF = 180 - 46 - 22 = 112$°."] },

@@ -1,5 +1,5 @@
 /* Слід · Математика, 8 клас — «Геометрія: подібність і теорема Піфагора»
-   Статус уроків: verified (l3, l4 — повторно 2026-11-01, verifier-fix-math-terms-g8m4-g9m1: «проекція» → «проєкція»). 4 уроки (3 теми + boss).
+   Статус уроків: verified; g8m4l2, g8m4l4 — повторно після fix-math-figs-g8-geo (рисунки до умов; verifier-fix-math-figs-g8-geo, 2026-11-03, reports/verify/fix-math-figs-g8-geo.md); g8m4l1, g8m4l3 (l3 повторно 2026-11-01, verifier-fix-math-terms-g8m4-g9m1: «проекція» → «проєкція»). 4 уроки (3 теми + boss).
    Інтерактив (D-014): plane axes:false — подібні трикутники drag; a²+b²=c² у goal.
    Перевірка: node tools/validate.mjs --section g8m4 && node tools/stats.mjs --subject math
    Схема й правила: docs/CONTENT_SCHEMA.md §8, style/, D-019.
@@ -330,6 +330,26 @@ SLID.section("math", {
           eyebrow: "Висновок",
           title: "Що завжди збігається в моделі?",
           body: "<p>Кут при $A$ прямий. Порівняй два нижні рядки під рисунком.</p>",
+          lab: {
+            kind: "plane", axes: false, view: [0, 12, 0, 8],
+            params: {
+              bx: { min: 3, max: 10, step: 1, start: 6, hide: true },
+              cy: { min: 2, max: 7, step: 1, start: 5, hide: true }
+            },
+            points: {
+              A: { at: [2, 1] },
+              B: { x: "bx", y: "1", drag: true },
+              C: { x: "2", y: "cy", drag: true }
+            },
+            polys: [{ pts: ["A", "B", "C"], color: "accent", opacity: 0.18 }],
+            angles: [{ from: "B", at: "A", to: "C" }],
+            show: [
+              "$a=AB={dist(A,B)|0}$, $b=AC={dist(A,C)|0}$, $c=BC={dist(B,C)|1}$",
+              "$a^2+b^2={dist(A,B)^2+dist(A,C)^2|1}$",
+              "$c^2={dist(B,C)^2|1}$"
+            ],
+            alt: "Прямокутний трикутник із рухомими катетами"
+          },
           opts: [
             "$a + b$ і $c$",
             "$a^2 + b^2$ і $c^2$",
@@ -761,6 +781,24 @@ SLID.section("math", {
           eyebrow: "Завдання 5",
           title: "Проєкції на кресленні",
           body: "<p>Проєкції катетів дорівнюють $9$ м і $16$ м. Яка формула дає висоту до найдовшої сторони?</p>",
+          lab: {
+            kind: "plane", axes: false, grid: 0, view: [0, 10, 0, 6],
+            points: {
+              a: { at: [0.5, 0.8] }, b: { at: [9.5, 0.8] },
+              c: { at: [3.74, 5.12] }, h: { at: [3.74, 0.8], color: "blue" }
+            },
+            polys: [{ pts: ["a", "b", "c"], color: "accent", opacity: 0.15 }],
+            segs: [
+              { a: "c", b: "h", color: "blue", dash: true, label: "h" },
+              { a: "a", b: "h", label: "9" },
+              { a: "h", b: "b", label: "16" }
+            ],
+            angles: [
+              { from: "a", at: "c", to: "b", label: false, r: 16 },
+              { from: "b", at: "h", to: "c", label: false, r: 14, color: "blue" }
+            ],
+            alt: "Креслення: трикутник з прямим кутом, висота h до найдовшої сторони ділить її на проєкції 9 м і 16 м"
+          },
           opts: [
             "$h = 9 + 16$",
             "$h^2 = 9 · 16$",
@@ -778,6 +816,24 @@ SLID.section("math", {
           eyebrow: "Завдання 6",
           title: "Висота на кресленні",
           body: "<p>Проєкції катетів — $9$ м і $16$ м. Знайди висоту до найдовшої сторони в метрах.</p>",
+          lab: {
+            kind: "plane", axes: false, grid: 0, view: [0, 10, 0, 6],
+            points: {
+              a: { at: [0.5, 0.8] }, b: { at: [9.5, 0.8] },
+              c: { at: [3.74, 5.12] }, h: { at: [3.74, 0.8], color: "blue" }
+            },
+            polys: [{ pts: ["a", "b", "c"], color: "accent", opacity: 0.15 }],
+            segs: [
+              { a: "c", b: "h", color: "blue", dash: true, label: "h" },
+              { a: "a", b: "h", label: "9" },
+              { a: "h", b: "b", label: "16" }
+            ],
+            angles: [
+              { from: "a", at: "c", to: "b", label: false, r: 16 },
+              { from: "b", at: "h", to: "c", label: false, r: 14, color: "blue" }
+            ],
+            alt: "Креслення: трикутник з прямим кутом, висота h до найдовшої сторони ділить її на проєкції 9 м і 16 м"
+          },
           answer: 12,
           unit: "м",
           hint: "$\\sqrt{9 · 16}$.",
