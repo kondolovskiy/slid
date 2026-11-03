@@ -24,6 +24,9 @@ export function loadContent(root = ROOT) {
   return { subjects: ctx.SLID_SUBJECTS, soon: ctx.SLID_SOON, files, origin, graphOrigin, poolOrigin, diagOrigin, graphs: ctx.SLID.graphs || [], lab: ctx.SLID_LAB, learn: ctx.SLID_LEARN, math: ctx.SLID_MATH, lang: ctx.SLID_LANG };
 }
 
+/** D-027 (D-044): предмети, де в кожному уроці має бути ≥ 1 справжнє зображення img; рівень — для tools/validate.mjs.
+    Одне джерело для validate і шаблону задачі автора в tools/make-tasks.mjs. */
+export const IMG_REQUIRED = { hist: "error", world: "error" };
 export const GRADED = ["choice","multi","sort","slider","order","align","shade","numline","number","fracin","lab","answer","gaps","pick","stress","word","split"];
 export const TYPES = ["intro","info","explore", ...GRADED];
 
