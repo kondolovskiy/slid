@@ -458,6 +458,29 @@ button.nowrow{cursor:pointer;width:100%} button.nowrow:hover{background:var(--ch
 .planok svg{flex:none;width:20px;height:20px;color:var(--ok);margin-top:2px} .planok.soft{background:var(--gold-soft)} .planok.soft svg{color:var(--gold)}
 .knowntag{font:700 11px var(--body);color:var(--ok);background:var(--ok-soft);border-radius:99px;padding:2px 8px}
 .numbox.wide input{width:7em}
+/* мовні вправи (app/lang.js): пропуски, вибір слів, наголос, поділ слова */
+.ltext{background:var(--surface);border-radius:16px;padding:16px 18px;box-shadow:var(--shadow);margin-top:12px;font:500 19px/2.1 var(--body)}
+.gap{display:inline-flex;gap:3px;vertical-align:middle;margin:0 2px;padding:2px;border-radius:10px;background:var(--chip);border:1.5px dashed var(--line)}
+.gopt,.pw,.sv{all:unset;box-sizing:border-box;cursor:pointer;border-radius:8px;border:1.5px solid transparent;font:inherit;line-height:1.3}
+.gopt{min-width:30px;padding:2px 7px;text-align:center;font-weight:700;background:var(--surface);border-color:var(--line)}
+.pw{padding:0 3px;margin:0 -1px;border-bottom:2px dotted var(--line);border-radius:6px}
+.gopt:focus-visible,.pw:focus-visible,.sv:focus-visible,.cut:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.gopt[aria-pressed="true"],.pw[aria-pressed="true"],.sv[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.gopt.is-ok,.pw.is-ok,.sv.is-ok{background:var(--ok-soft);border-color:var(--ok);color:var(--ink)}
+.gopt.is-bad,.pw.is-bad,.sv.is-bad{background:var(--bad-soft);border-color:var(--bad);color:var(--ink);text-decoration:line-through}
+.stress{display:grid;gap:12px;margin-top:12px}
+.sword{display:flex;justify-content:center;flex-wrap:wrap;background:var(--surface);border-radius:16px;padding:14px;box-shadow:var(--shadow);font:600 28px/1.4 var(--body)}
+.sword span{padding:2px 1px}
+.sv{min-width:28px;padding:2px 3px;text-align:center;border-color:var(--line);background:var(--chip);margin:0 1px}
+.split{display:flex;justify-content:center;align-items:stretch;flex-wrap:wrap;background:var(--surface);border-radius:16px;padding:16px 10px;box-shadow:var(--shadow);margin-top:12px;font:600 30px/1.3 var(--body)}
+.split .sl{padding:4px 0}
+.cut{all:unset;box-sizing:border-box;cursor:pointer;width:18px;position:relative;border-radius:6px}
+.cut::after{content:"";position:absolute;left:8px;top:6px;bottom:6px;width:2px;background:var(--line);border-radius:2px}
+.cut[aria-pressed="true"]::after{background:var(--accent);width:4px;left:7px;top:0;bottom:0}
+.cut.is-ok::after{background:var(--ok);width:4px;left:7px;top:0;bottom:0} .cut.is-bad::after{background:var(--bad);width:4px;left:7px;top:0;bottom:0}
+.lword input{font:600 22px var(--body);width:9em}
+.gw{white-space:nowrap}
+.gopt:disabled,.pw:disabled,.sv:disabled,.cut:disabled{cursor:default}
 .anskeys{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:10px} .anskeys.sym button{min-width:44px;padding:9px 10px}
 .anskeys button{all:unset;box-sizing:border-box;cursor:pointer;min-width:52px;text-align:center;padding:9px 14px;border-radius:12px;background:var(--surface);border:1.5px solid var(--line);font:600 16px var(--body)}
 .anskeys button:focus-visible{outline:3px solid var(--accent)} .anskeys button:active{background:var(--chip)} .anskeys button[disabled]{opacity:.4}
@@ -511,6 +534,7 @@ button.nowrow{cursor:pointer;width:100%} button.nowrow:hover{background:var(--ch
 <script src="app/registry.js"></script>
 <script src="content/subjects/hist.js"></script>
 <script src="content/subjects/math.js"></script>
+<script src="content/subjects/ukr.js"></script>
 <script src="content/hist/plan.js"></script>
 <script src="content/hist/g10-g10s1.js"></script>
 <script src="content/hist/g10-g10s2.js"></script>
@@ -654,11 +678,38 @@ button.nowrow{cursor:pointer;width:100%} button.nowrow:hover{background:var(--ch
 <script src="content/math/pool-g9-g9m5.js"></script>
 <script src="content/math/pool-g9-g9m6.js"></script>
 <script src="content/math/pool-g9-g9m7.js"></script>
+<script src="content/ukr/plan.js"></script>
+<script src="content/ukr/g5-u5s1.js"></script>
+<script src="content/ukr/g5-u5s10.js"></script>
+<script src="content/ukr/g5-u5s11.js"></script>
+<script src="content/ukr/g5-u5s2.js"></script>
+<script src="content/ukr/g5-u5s3.js"></script>
+<script src="content/ukr/g5-u5s4.js"></script>
+<script src="content/ukr/g5-u5s5.js"></script>
+<script src="content/ukr/g5-u5s6.js"></script>
+<script src="content/ukr/g5-u5s7.js"></script>
+<script src="content/ukr/g5-u5s8.js"></script>
+<script src="content/ukr/g5-u5s9.js"></script>
+<script src="content/ukr/g6-u6s1.js"></script>
+<script src="content/ukr/g6-u6s10.js"></script>
+<script src="content/ukr/g6-u6s11.js"></script>
+<script src="content/ukr/g6-u6s12.js"></script>
+<script src="content/ukr/g6-u6s13.js"></script>
+<script src="content/ukr/g6-u6s14.js"></script>
+<script src="content/ukr/g6-u6s2.js"></script>
+<script src="content/ukr/g6-u6s3.js"></script>
+<script src="content/ukr/g6-u6s4.js"></script>
+<script src="content/ukr/g6-u6s5.js"></script>
+<script src="content/ukr/g6-u6s6.js"></script>
+<script src="content/ukr/g6-u6s7.js"></script>
+<script src="content/ukr/g6-u6s8.js"></script>
+<script src="content/ukr/g6-u6s9.js"></script>
 <script src="content/catalog.js"></script>
 <script src="app/evidence.js"></script>
 <script src="app/lab.js"></script>
 <script src="app/learn.js"></script>
 <script src="app/math.js"></script>
+<script src="app/lang.js"></script>
 <script src="app/hyp.js"></script>
 <script src="app/app.js"></script>
 <!-- CONTENT:END -->

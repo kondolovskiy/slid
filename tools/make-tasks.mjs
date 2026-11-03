@@ -20,7 +20,7 @@ const existing = new Set(STATES.flatMap(d => fs.existsSync(path.join(TASKS, d)) 
 const existingIds = new Set(STATES.flatMap(d => fs.existsSync(path.join(TASKS, d)) ? fs.readdirSync(path.join(TASKS, d)).filter(f => f.endsWith(".md"))
   .map(f => (fs.readFileSync(path.join(TASKS, d, f), "utf8").match(/^id:\s*(\S+)/m) || [])[1]).filter(Boolean) : []));
 if (args.includes("--write-pool")) { writePool(); process.exit(0); }
-const exemplar = { hist: "content/hist/g5-s2.js", math: "content/math/g5-ms1.js" };
+const exemplar = { hist: "content/hist/g5-s2.js", math: "content/math/g5-ms1.js", ukr: "content/ukr/g5-u5s1.js і g5-u5s4.js (verified; style/ukr.md → «Еталони»)" };
 let made = 0;
 for (const c of subjects) {
   if (onlySubj && c.id !== onlySubj) continue;

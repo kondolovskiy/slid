@@ -15,6 +15,7 @@ const GRADES_WITH_CONTENT = [...new Set(SUBJ.flatMap(c=>c.sections.map(x=>x.grad
 function findLesson(id){ for(const c of SUBJ) for(let k=0;k<c.sections.length;k++){ const L=c.sections[k].lessons||[]; const i=L.findIndex(l=>l.id===id); if(i>=0) return {c,k,i,l:L[i],sec:c.sections[k]}; } return null; }
 /* персоналізація (app/learn.js): тест рівня, план, повторювані помилки */
 const LEARN = window.SLID_LEARN;
+const LANG = window.SLID_LANG;   // мовні вправи gaps / pick / stress / word / split (app/lang.js)
 /* журнал подій (app/evidence.js, docs/EVIDENCE.md): лише читає стан, на потік не впливає; без модуля — заглушка */
 const EV = window.SLID_EVIDENCE || { log(){}, observe(){}, newProfile(){} };
 const LORD = new Map(); SUBJ.forEach(c=>c.sections.forEach(x=>(x.lessons||[]).forEach(l=>LORD.set(l.id,LORD.size))));
@@ -531,7 +532,7 @@ function viewTopic(){
       </div>`; }).join("")}
   </div>`;
 }
-const GRADED=["choice","multi","sort","slider","order","align","shade","numline","number","fracin","lab","answer"];
+const GRADED=["choice","multi","sort","slider","order","align","shade","numline","number","fracin","lab","answer","gaps","pick","stress","word","split"];
 function openSheet(i){
   const c=course(nav.id), sec=c.sections[nav.sec], LS=sec.lessons, l=LS[i], u=unlocked(sec,i), rec=S.lessons[l.id];
   const graded=l.screens.filter(s=>GRADED.includes(s.type) && !s.hyp && !s.poll).length;
@@ -814,6 +815,7 @@ const answerSig = () => { const s=L.screens[idx], v= LAB && s?.type==="lab"? LAB
     if(s.type==="number"){ const n=numParse(t); return t && Number.isFinite(n)? "n:"+n : "s:"+t; }
     if(s.type==="fracin" && !s.hideDen){ const n=parseInt(t,10); return Number.isFinite(n)? "i:"+n : "s:"+t; }
     if(s.type==="answer") return LEARN.answerSig(s, t);
+    if(s.type==="word") return "w:"+LANG.normWord(t, s.keepCase);
     if(s.type==="fracin") return LEARN.answerSig({answerKind:"number"}, t); }
   return v instanceof Set? JSON.stringify([...v].sort((a,b)=>a-b)) : typeof v==="string"? v.replace(/\s+/g," ").trim() : JSON.stringify(v); };
 /* правильну відповідь не блокуємо ніколи, навіть якщо відбиток збігся (напр. «5,» без цифри після коми, а потім «5») */
@@ -1003,6 +1005,7 @@ function renderScreen(){
     h+=`<div class="numbox">${sg?`<button type="button" class="sgn" id="numSign" aria-label="Змінити знак" aria-pressed="false">±</button>`:""}<input id="numIn" inputmode="${dec?"decimal":"numeric"}" ${dec?"":'pattern="[0-9]*"'} autocomplete="off" placeholder="?" aria-label="Відповідь"><span class="unit">${s.unit||""}</span></div>`; }
   if(s.type==="answer"){ st=""; h+=answerInput(s); }
   if(s.type==="fracin"){ st=""; h+=s.hideDen? `<div class="mblock">${mathHTML(s.expr)} =</div>`+answerInput(s) : `<div class="numbox big"><span class="m">${mathHTML(s.expr)}<span class="mo">=</span><span class="fr"><span class="nu"><input id="numIn" inputmode="numeric" pattern="[0-9]*" autocomplete="off" placeholder="?" aria-label="Чисельник відповіді"></span><span class="sr">/</span><span class="de">${s.den}</span></span></span></div>`; }
+  if(LANG.TYPES.includes(s.type)) h+=langHtml(s);
   h+=`<div id="hintHost"></div></section>`;
   $("#stage").innerHTML=fmt(h);
   if(s.type==="intro"||s.type==="info"||s.type==="explore") setDock("","","",s.cta||"Далі");
@@ -1098,6 +1101,52 @@ const numDecimal = s => true;   // кома дозволена завжди: і�
 const numParse = v => +String(v).replace(/\u2212/g,"-").replace(",",".");
 const numOk = (s,v) => String(v).trim()!=="" && Math.abs(numParse(v)-s.answer) <= (s.tol ?? 1e-9);
 const numShow = v => String(v).replace(".",",").replace("-","−");
+/* мовні вправи (app/lang.js, docs/CONTENT_SCHEMA.md §4.1): розмітка, стан st, позначки */
+function langHtml(s){
+  if(s.type==="gaps"){ const g=LANG.parseGaps(s.text); st=g.gaps.map(()=>null);
+    const gapHtml=p=>`<span class="gap" role="group" aria-label="Пропуск ${p.n+1}">${p.opts.map((o,k)=>`<button type="button" class="gopt" data-g="${p.n}" data-o="${k}" aria-pressed="false"${LANG.optView(o).label?` aria-label="${LANG.optView(o).label}"`:""}>${esc(LANG.optView(o).text)}</button>`).join("")}</span>`;
+    // слово з пропуском — у span.gw (white-space: nowrap), щоб рядок не переносився всередині слова поруч із пропуском
+    let out="", open=false; const O=()=>{ if(!open){ out+='<span class="gw">'; open=true; } }, X=()=>{ if(open){ out+="</span>"; open=false; } };
+    g.parts.forEach((p,k)=>{ const pg=g.parts[k-1]?.t==="gap", ng=g.parts[k+1]?.t==="gap";
+      if(p.t==="gap"){ O(); out+=gapHtml(p); return; }
+      let v=p.v;
+      if(pg){ const h=v.match(/^[^\s<>]*/)[0]; out+=h; v=v.slice(h.length); if(v||!ng) X(); if(!v) return; }
+      if(ng){ const t=v.match(/[^\s<>]*$/)[0]; out+=v.slice(0,v.length-t.length); X(); O(); out+=t; } else out+=v; });
+    X();
+    return `<div class="ltext">${out}</div>${g.gaps.some(p=>p.opts.includes(LANG.NONE))?`<div class="fix">∅ — нічого не писати.</div>`:""}`; }
+  if(s.type==="pick"){ const p=LANG.parsePick(s.text); st=new Set();
+    return `<div class="ltext">${p.parts.map(x=>x.t==="text"? esc(x.v) : `<button type="button" class="pw" data-w="${x.n}" aria-pressed="false">${esc(x.v)}</button>`).join("")}</div><div class="fix">Торкнись потрібних слів. Ще раз — щоб зняти вибір.</div>`; }
+  if(s.type==="stress"){ const ws=s.words.map(LANG.parseStress); st=ws.map(()=>null);
+    return `<div class="stress">${ws.map((w,k)=>`<div class="sword" role="group" aria-label="Наголос у слові «${attr(w.word)}»">${w.letters.map(l=>l.v? `<button type="button" class="sv" data-w="${k}" data-i="${l.i}" aria-pressed="false">${esc(l.ch)}</button>` : `<span>${esc(l.ch)}</span>`).join("")}</div>`).join("")}</div><div class="fix">Торкнись голосного, на який падає наголос.</div>`; }
+  if(s.type==="split"){ const p=LANG.parseSplit(s.word), ls=[...p.word]; st=new Set();
+    return `<div class="split" role="group" aria-label="Поділ слова «${attr(p.word)}»">${ls.map((c,k)=>`<span class="sl">${esc(c)}</span>`+(k<ls.length-1? `<button type="button" class="cut" data-c="${k+1}" aria-pressed="false" aria-label="Межа після «${attr(ls.slice(0,k+1).join(""))}»"></button>` : "")).join("")}</div><div class="fix">Торкнись проміжку між літерами, щоб поставити межу.</div>`; }
+  if(s.type==="word"){ st=""; const keys=s.keys||[];
+    return `<div class="numbox wide lword">${s.before?`<span class="unit">${esc(s.before)}</span>`:""}<input id="numIn" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="?" aria-label="Відповідь"><span class="unit">${esc(s.after||"")}</span></div>${keys.length?`<div class="anskeys sym">${keys.map(v=>`<button type="button" data-ins="${esc(v)}" aria-label="Вставити ${esc(v)}">${esc(v)}</button>`).join("")}</div>`:""}`; }
+  return "";
+}
+function bindLang(s){
+  const stage=$("#stage"), on=(sel,f)=>stage.querySelectorAll(sel).forEach(b=>b.onclick=()=>{ if(checked) return; f(b); clearMarks(); });
+  if(s.type==="gaps") on(".gopt",b=>{ const g=+b.dataset.g, o=+b.dataset.o; st[g]=o;
+    b.parentElement.querySelectorAll(".gopt").forEach(x=>x.setAttribute("aria-pressed",x===b)); setDock("","","","Перевірити", st.every(x=>x!==null)); });
+  if(s.type==="pick") on(".pw",b=>{ const n=+b.dataset.w; st.has(n)?st.delete(n):st.add(n); b.setAttribute("aria-pressed",st.has(n)); setDock("","","","Перевірити", st.size>0); });
+  if(s.type==="stress") on(".sv",b=>{ const w=+b.dataset.w, i=+b.dataset.i; st[w]=i;
+    stage.querySelectorAll(`.sv[data-w="${w}"]`).forEach(x=>x.setAttribute("aria-pressed",x===b)); setDock("","","","Перевірити", st.every(x=>x!==null)); });
+  if(s.type==="split") on(".cut",b=>{ const c=+b.dataset.c; st.has(c)?st.delete(c):st.add(c); b.setAttribute("aria-pressed",st.has(c)); setDock("","","","Перевірити", st.size>0); });
+}
+function langMarks(s, reveal){
+  const stage=$("#stage"), mark=(el,ok)=>{ el.classList.remove("is-ok","is-bad"); if(ok!==null) el.classList.add(ok?"is-ok":"is-bad"); };
+  if(s.type==="gaps"){ const g=LANG.parseGaps(s.text).gaps;
+    stage.querySelectorAll(".gap").forEach((el,k)=>{ el.querySelectorAll(".gopt").forEach(b=>{ const o=+b.dataset.o; mark(b, o===st[k]? o===g[k].correct : reveal&&o===g[k].correct? true : null); }); }); }
+  if(s.type==="pick"){ const ok=new Set(LANG.parsePick(s.text).correct);
+    stage.querySelectorAll(".pw").forEach(b=>{ const n=+b.dataset.w; mark(b, st.has(n)? ok.has(n) : reveal&&ok.has(n)? true : null); }); }
+  if(s.type==="stress"){ const ws=s.words.map(LANG.parseStress);
+    stage.querySelectorAll(".sv").forEach(b=>{ const w=+b.dataset.w, i=+b.dataset.i; mark(b, st[w]===i? i===ws[w].correct : reveal&&i===ws[w].correct? true : null); }); }
+  if(s.type==="split"){ const p=LANG.parseSplit(s.word), best=p.variants.map(v=>new Set(v)).sort((a,b)=>[...b].filter(x=>st.has(x)).length-[...a].filter(x=>st.has(x)).length)[0];
+    stage.querySelectorAll(".cut").forEach(b=>{ const c=+b.dataset.c; mark(b, st.has(c)? best.has(c) : reveal&&best.has(c)? true : null); if(reveal&&best.has(c)) b.setAttribute("aria-pressed","true"); });
+    if(reveal && !LANG.check(s,st)) $("#hintHost").innerHTML=`<div class="hint">${ic("check")}<span>Правильно: <b>${p.variants.map(v=>esc([...p.word].map((ch,k)=>(v.includes(k)?"-":"")+ch).join(""))).join("</b> або <b>")}</b></span></div>`; }
+  if(s.type==="word"){ const ni=$("#numIn"), ok=LANG.check(s,st); mark(ni, ok);
+    if(reveal && !ok) $("#hintHost").innerHTML=`<div class="hint">${ic("check")}<span>Правильна відповідь: <b>${esc(LANG.wordAnswers(s)[0])}</b></span></div>`; }
+}
 /* лабораторія: інтерактивна модель на екрані (app/lab.js) */
 let LAB=null;
 function bindScreen(s){
@@ -1124,9 +1173,10 @@ function bindScreen(s){
   const rng=$("#rng"); if(rng) rng.oninput=()=>{ if(checked) return; st=+rng.value; $("#out").textContent=st.toLocaleString("uk-UA"); };
   const al=$("#alrng"); if(al){ alignUpdate(s); al.oninput=()=>{ if(checked) return; st=+al.value; alignUpdate(s); if(tries) setDock("","","","Перевірити"); }; }
   if(s.type==="shade") shadeUpdate(s);
+  if(LANG.TYPES.includes(s.type)) bindLang(s);
   const nl=$("#nlrng"); if(nl){ numlineUpdate(s); nl.oninput=()=>{ if(checked) return; st=+nl.value; numlineUpdate(s); if(tries) setDock("","","","Перевірити"); }; }
   const sgn=$("#numSign"); if(sgn) sgn.onclick=()=>{ if(checked) return; const ni=$("#numIn"); ni.value= ni.value.startsWith("-")? ni.value.slice(1) : "-"+ni.value; ni.oninput(); ni.focus(); };
-  const ni=$("#numIn"); if(ni){ ni.oninput=()=>{ ni.value= s.answerKind==="divrem" ? ni.value.replace(/\s+/g," ").slice(0,40) : s.type==="answer"||s.hideDen ? ni.value.replace(/\./g,",").replace(/\u2212/g,"-").slice(0,120) : s.type==="number"&&numDecimal(s) ? ni.value.replace(/\./g,",").replace(/[^0-9,-]/g,"").replace(/(?!^)-/g,"").replace(/(,.*),/g,"$1").slice(0,10) : ni.value.replace(/[^0-9]/g,"").slice(0,6); st=ni.value; if(s.unitForms&&$("#answerUnit")) $("#answerUnit").textContent=answerUnit(s,st); ni.classList.remove("is-ok","is-bad"); setDock("","","","Перевірити", st.trim().length>0); };
+  const ni=$("#numIn"); if(ni){ ni.oninput=()=>{ ni.value= s.type==="word" ? ni.value.slice(0,80) : s.answerKind==="divrem" ? ni.value.replace(/\s+/g," ").slice(0,40) : s.type==="answer"||s.hideDen ? ni.value.replace(/\./g,",").replace(/\u2212/g,"-").slice(0,120) : s.type==="number"&&numDecimal(s) ? ni.value.replace(/\./g,",").replace(/[^0-9,-]/g,"").replace(/(?!^)-/g,"").replace(/(,.*),/g,"$1").slice(0,10) : ni.value.replace(/[^0-9]/g,"").slice(0,6); st=ni.value; if(s.unitForms&&$("#answerUnit")) $("#answerUnit").textContent=answerUnit(s,st); ni.classList.remove("is-ok","is-bad"); setDock("","","","Перевірити", st.trim().length>0); };
     stage.querySelectorAll(".anskeys button").forEach(b=>b.onclick=()=>{ if(checked) return; const v=b.dataset.ins;
       if(b.parentNode.classList.contains("sym")){ const a=ni.selectionStart??ni.value.length, z=ni.selectionEnd??a; ni.value=ni.value.slice(0,a)+v+ni.value.slice(z); ni.oninput(); ni.focus(); ni.setSelectionRange(a+v.length,a+v.length); return; }
       if(v.trim()==="ост." && (!/\d/.test(ni.value) || /ост/i.test(ni.value))) return ni.focus(); ni.value= v==="-"? (ni.value.startsWith("-")? ni.value.slice(1) : "-"+ni.value) : ni.value+v; ni.oninput(); ni.focus(); });
@@ -1136,7 +1186,7 @@ function bindScreen(s){
     if(coarse()) $("#stage .screen")?.focus({preventScroll:true}); else setTimeout(()=>ni.focus({preventScroll:true}),350); }
 }
 function clearMarks(){ $("#stage").querySelectorAll(".is-ok,.is-bad").forEach(e=>e.classList.remove("is-ok","is-bad")); }
-function lock(){ $("#stage").querySelectorAll(".opt,.seg button,input,.sgn,.anskeys button").forEach(b=>b.disabled=true); if(LAB) LAB.lock(); }
+function lock(){ $("#stage").querySelectorAll(".opt,.seg button,input,.sgn,.anskeys button,.gopt,.pw,.sv,.cut").forEach(b=>b.disabled=true); if(LAB) LAB.lock(); }
 
 function gradeNow(s){
   switch(s.type){
@@ -1152,6 +1202,7 @@ function gradeNow(s){
     case "fracin": return s.hideDen? LEARN.checkAns({answer:s.answer+"/"+s.den,fractionOnly:true},st)==="ok" : parseInt(st,10)===s.answer;
     case "answer": return (lastAns=LEARN.checkAns(s,st))==="ok";   // lastAns — вердикт для журналу подій (без другої перевірки)
     case "lab": return window.SLID_LAB.check(s.lab, LAB.get(), s.goal);
+    case "gaps": case "pick": case "stress": case "word": case "split": return LANG.check(s, st);
   }
 }
 function showMarks(s, reveal){
@@ -1162,6 +1213,7 @@ function showMarks(s, reveal){
   if(s.type==="order") stage.querySelectorAll("#ord .opt").forEach(el=>{ const k=+el.dataset.k, p=st.indexOf(k); el.classList.remove("is-ok","is-bad"); el.classList.add(p===k?"is-ok":"is-bad"); if(reveal&&p!==k) el.querySelector(".k").textContent=`${p+1}→${k+1}`; });
   if(s.type==="number"||s.type==="fracin"||s.type==="answer"){ const ni=$("#numIn"), ok=gradeNow(s); ni.classList.remove("is-ok","is-bad"); ni.classList.add(ok?"is-ok":"is-bad"); if(reveal && !ok){ const sym=s.type==="answer"&&ANS_UI[s.answerKind]; const value=s.hideDen? `${s.answer}/${s.den}` : sym? LEARN.ansText(s) : Array.isArray(s.answer)? s.answer.join("; ") : String(s.answer); const a=LEARN.parseAns(value); const unit=s.unitForms&&a? plural(a.n/a.d,s.unitForms) : s.unit||""; $("#hintHost").innerHTML=`<div class="hint">${ic("check")}<span>Правильна відповідь: <b>${s.answerKind==="divrem"? `${s.answer[0]} (ост. ${s.answer[1]})`+(s.unit?" "+esc(s.unit):"") : s.answerKind==="quantity"? esc(value) : sym? fmt("$"+esc(value).replace(/\./g,",")+"$")+(unit?" "+esc(unit):"") : s.type==="answer"||s.hideDen? fmt("$"+esc(value).replace(".",",").replace(" ","~")+"$")+(unit?" "+esc(unit):"") : numShow(s.answer)}</b></span></div>`; } }
   if(s.type==="lab"){ const ok=gradeNow(s); if(reveal && !ok){ LAB.set(s.solution); LAB.mark("is-ok"); $("#hintHost").innerHTML=fmt(`<div class="hint">${ic("check")}<span>${s.reveal||"Ось як має бути — подивись на модель."}</span></div>`); } else LAB.mark(ok?"is-ok":"is-bad"); }
+  if(LANG.TYPES.includes(s.type)) langMarks(s, reveal);
   if(s.type==="shade"){ const box=$("#shade"); box.classList.remove("is-ok","is-bad"); box.classList.add(st.size===s.target?"is-ok":"is-bad"); }
   if(s.type==="numline"){ if(reveal){ st=s.answer; $("#nlrng").value=st; } numlineUpdate(s); }
 }
@@ -1182,7 +1234,7 @@ const evVerdict = (s, ok) => s.type!=="answer"? (ok? "ok" : "bad") : lastAns || 
    набір gen (gv, genAt) — для гіпотез і реплею (docs/design/diag-hypothesis-math.md §3.1). fc: formCode викликає checkAns, тож у плеєрі
    ця функція стоїть до власного checkAns гілки помилки (formHint/badHint рахуються заново) — тексти доку не змінюються */
 function evKey(s, verdict, raw){ const o={}; try{
-  const a = s.type==="choice"? s.correct : s.type==="multi"? [...s.correct] : s.type==="answer"? LEARN.ansText(s)
+  const a = s.type==="choice"? s.correct : s.type==="multi"? [...s.correct] : s.type==="answer"? LEARN.ansText(s) : s.type==="word"? LANG.wordAnswers(s)[0]
     : s.type==="fracin"? (s.hideDen? `${s.answer}/${s.den}` : String(s.answer)) : ["number","numline","slider"].includes(s.type)? String(s.answer) : s.type==="shade"? String(s.target) : undefined;
   if(typeof a==="string" && a.length>60) o.ansCut=1; else if(a!==undefined) o.ans=a;
   if((verdict==="form"||verdict==="half") && s.type==="answer" && typeof raw==="string") o.fc=LEARN.formCode(s, raw);
@@ -1223,6 +1275,10 @@ function check(){
              : s.type==="numline"? "Точка стоїть не там. Порахуй поділки від нуля."
              : s.type==="lab"? "Ще не те. Зміни модель і перевір ще раз."
              : s.type==="answer"? (r=>r==="form"? LEARN.formHint(s,st) : LEARN.badHint(s,st,r) || "Зміни відповідь і перевір ще раз.")(LEARN.checkAns(s,st))   // badHint: межа перевірки, чужа одиниця, знаменник без дужок
+             : s.type==="gaps"? "Червоні літери обрано неправильно. Зміни їх і перевір ще раз."
+             : s.type==="pick"? "Червоні слова обрано зайво — або якогось слова бракує. Зміни вибір і перевір ще раз."
+             : s.type==="stress"? "Наголос не там. Вимов слово вголос, повільно, і спробуй ще раз."
+             : s.type==="split"? "Межі стоять не так. Зміни їх і перевір ще раз."
              : s.type==="choice"? "Обери інший варіант і перевір ще раз."
              : s.type==="multi"? "Зміни вибір і перевір ще раз."
              : "Зміни відповідь і перевір ще раз.";

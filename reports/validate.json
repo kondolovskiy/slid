@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-02T12:03:56.599Z",
+  "date": "2026-11-03T08:20:06.242Z",
   "errors": [],
   "warnings": [
     "content/hist/g5-s1.js#l5 екран 4 (sort): дуже довге речення (28 слів): «Відомо з уроку й досліджень: легенду про Кия записано в «Пов…»",
@@ -255,6 +255,17 @@
     "content/math/g11-g11m6.js#g11m6l2: sentenceWords=5.7 поза профілем [7; 15] для math, 10-11 кл.",
     "content/math/g11-g11m6.js#g11m6l3: sentenceWords=5.2 поза профілем [7; 15] для math, 10-11 кл.",
     "content/math/g11-g11m6.js#g11m6l4: sentenceWords=5.6 поза профілем [7; 15] для math, 10-11 кл.",
-    "content/math/g11-g11m6.js#g11m6l5: sentenceWords=5 поза профілем [7; 15] для math, 10-11 кл."
+    "content/math/g11-g11m6.js#g11m6l5: sentenceWords=5 поза профілем [7; 15] для math, 10-11 кл.",
+    "content/ukr/g5-u5s2.js#u5s2l1 екран 10 (info): заборонена фраза «вірно» (style/banned-phrases.txt)",
+    "content/ukr/g5-u5s2.js#u5s2l1 екран 11 (gaps): заборонена фраза «вірно» (style/banned-phrases.txt)",
+    "content/ukr/g5-u5s2.js#u5s2l1 екран 12 (pick): заборонена фраза «вірно» (style/banned-phrases.txt)",
+    "content/ukr/g5-u5s2.js#u5s2l7 екран 3 (info): заборонена фраза «являється» (style/banned-phrases.txt)",
+    "content/ukr/g5-u5s2.js#u5s2l7 екран 5 (info): заборонена фраза «на протязі» (style/banned-phrases.txt)",
+    "content/ukr/g5-u5s2.js#u5s2l7 екран 6 (gaps): заборонена фраза «на протязі» (style/banned-phrases.txt)",
+    "content/ukr/g5-u5s2.js#u5s2l8 екран 8 (pick): заборонена фраза «на протязі» (style/banned-phrases.txt)",
+    "content/ukr/g5-u5s2.js#u5s2l8 екран 8 (pick): заборонена фраза «вірно» (style/banned-phrases.txt)",
+    "content/ukr/g5-u5s11.js#u5s11l2 екран 5 (info): дуже довге речення (26 слів): ««А трохи згодом з-під землі виткнувся гострий писок, за ним …»",
+    "content/ukr/g5-u5s4.js#u5s4l4 екран 3 (info): дуже довге речення (37 слів): «А Б В Г Ґ Д Е Є Ж З И І Ї Й К Л М Н О П Р С Т У Ф Х Ц Ч Ш Щ …»",
+    "content/ukr/g5-u5s4.js#u5s4l6 екран 5 (order): дуже довге речення (33 слів): «А Б В Г Ґ Д Е Є Ж З И І Ї Й К Л М Н О П Р С Т У Ф Х Ц Ч Ш Щ …»"
   ]
 }

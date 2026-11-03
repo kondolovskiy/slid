@@ -1992,7 +1992,7 @@ window.SLID_LEARN = (() => {
      5) завдання тесту: u завдання → u теми → типові вузли уроку lesson завдання, інакше уроків теми; вузли теми — u теми або об'єднання
      вузлів завдань. Поле live — вузли для nodeState і graphPre: без gone-вузла, чия ціль має іншу sk, ніж об'єкт (§4.1, рев'ю G1 P3-8),
      доки u не оновлено (stale — такі id). */
-  const G_GRADED = ["choice", "multi", "sort", "slider", "order", "align", "shade", "numline", "number", "fracin", "lab", "answer"];   // = tools/lib.mjs GRADED (тест)
+  const G_GRADED = ["choice", "multi", "sort", "slider", "order", "align", "shade", "numline", "number", "fracin", "lab", "answer", "gaps", "pick", "stress", "word", "split"];   // = tools/lib.mjs GRADED (тест)
   const G_ID = /^[a-z][a-z0-9-]*$/;
   const gStr = x => typeof x === "string" && x.trim() !== "";
   const gGraded = s => !!s && G_GRADED.includes(s.type) && !s.poll && !s.hyp;

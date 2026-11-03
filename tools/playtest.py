@@ -44,6 +44,17 @@ async def answer(pg, s):
         v = s["answer"]; txt = (str(int(v)) if float(v).is_integer() else repr(v)).replace(".", ",")
         await pg.fill("#numIn", txt); await pg.dispatch_event("#numIn", "input")
     elif t == "lab": await pg.evaluate("sol => window.__slidLab.set(sol)", s["solution"])
+    elif t in ("gaps", "pick", "stress", "split", "word"):   # мовні вправи: правильний стан дає сам рушій (SLID_LANG.solution)
+        sol = await pg.evaluate("s => { const v = SLID_LANG.solution(s); return v instanceof Set ? [...v] : v; }", s)
+        if t == "gaps":
+            for k, o in enumerate(sol): await pg.click(f'#stage .gopt[data-g="{k}"][data-o="{o}"]')
+        elif t == "pick":
+            for n in sol: await pg.click(f'#stage .pw[data-w="{n}"]')
+        elif t == "stress":
+            for k, i in enumerate(sol): await pg.click(f'#stage .sv[data-w="{k}"][data-i="{i}"]')
+        elif t == "split":
+            for c in sol: await pg.click(f'#stage .cut[data-c="{c}"]')
+        else: await pg.fill("#numIn", sol); await pg.dispatch_event("#numIn", "input")
 
 async def main():
     async with async_playwright() as p:

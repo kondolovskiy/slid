@@ -1,7 +1,7 @@
 /* Слід — service worker. ЗГЕНЕРОВАНО tools/build.mjs із tools/sw.template.js — не редагуй sw.js вручну.
    Стратегія: усі файли застосунку кешуються при встановленні (офлайн з першого запуску);
    свої файли — спершу з кешу; Google Fonts — з кешу з фоновим оновленням. */
-const VERSION = "e1ce08419e";
+const VERSION = "4bc7fd7bd3";
 const CACHE = "slid-" + VERSION;
 const FONTS = "slid-fonts";
 const ASSETS = [
@@ -11,6 +11,7 @@ const ASSETS = [
   "./app/registry.js",
   "./content/subjects/hist.js",
   "./content/subjects/math.js",
+  "./content/subjects/ukr.js",
   "./content/hist/plan.js",
   "./content/hist/g10-g10s1.js",
   "./content/hist/g10-g10s2.js",
@@ -154,11 +155,38 @@ const ASSETS = [
   "./content/math/pool-g9-g9m5.js",
   "./content/math/pool-g9-g9m6.js",
   "./content/math/pool-g9-g9m7.js",
+  "./content/ukr/plan.js",
+  "./content/ukr/g5-u5s1.js",
+  "./content/ukr/g5-u5s10.js",
+  "./content/ukr/g5-u5s11.js",
+  "./content/ukr/g5-u5s2.js",
+  "./content/ukr/g5-u5s3.js",
+  "./content/ukr/g5-u5s4.js",
+  "./content/ukr/g5-u5s5.js",
+  "./content/ukr/g5-u5s6.js",
+  "./content/ukr/g5-u5s7.js",
+  "./content/ukr/g5-u5s8.js",
+  "./content/ukr/g5-u5s9.js",
+  "./content/ukr/g6-u6s1.js",
+  "./content/ukr/g6-u6s10.js",
+  "./content/ukr/g6-u6s11.js",
+  "./content/ukr/g6-u6s12.js",
+  "./content/ukr/g6-u6s13.js",
+  "./content/ukr/g6-u6s14.js",
+  "./content/ukr/g6-u6s2.js",
+  "./content/ukr/g6-u6s3.js",
+  "./content/ukr/g6-u6s4.js",
+  "./content/ukr/g6-u6s5.js",
+  "./content/ukr/g6-u6s6.js",
+  "./content/ukr/g6-u6s7.js",
+  "./content/ukr/g6-u6s8.js",
+  "./content/ukr/g6-u6s9.js",
   "./content/catalog.js",
   "./app/evidence.js",
   "./app/lab.js",
   "./app/learn.js",
   "./app/math.js",
+  "./app/lang.js",
   "./app/hyp.js",
   "./app/app.js",
   "./img/h5-anna.jpg",
@@ -335,6 +363,7 @@ const ASSETS = [
   "./img/trypillia-house-model.jpg",
   "./img/trypillia-maidanetske.jpg",
   "./img/trypillia-pot.jpg",
+  "./img/ukr/u6s14/kozacha-levada.jpg",
   "./icons/apple-touch-icon.png",
   "./icons/icon-192.png",
   "./icons/icon-512.png",

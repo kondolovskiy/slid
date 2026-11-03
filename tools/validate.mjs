@@ -12,7 +12,7 @@ const onlyDiag = args.includes("--diag") ? args[args.indexOf("--diag") + 1] : ar
 const quiet = args.includes("--quiet");
 let content;
 try { content = loadContent(); } catch (e) { console.error("ПОМИЛКА ЗАВАНТАЖЕННЯ:", e.message); process.exit(1); }
-const { subjects, soon, origin, lab, learn } = content;
+const { subjects, soon, origin, lab, learn, lang } = content;
 const profiles = readJSON("style/profiles.json");
 const banned = fs.readFileSync(path.join(ROOT, "style/banned-phrases.txt"), "utf8").split("\n").map(s => s.trim()).filter(s => s && !s.startsWith("#"));
 // заборонені фрази шукаємо як цілі слова: «вірно» не має ловити «ймовірно»
@@ -202,7 +202,7 @@ function checkScreen(S, s, c, diag, pool = false) {
   if (!TYPES.includes(s.type)) return E(S, `невідомий тип «${s.type}»`);
   if (!s.title && !(diag && !pool)) E(S, "немає title");   // у тесті рівня «немає title» уже дає learn.validate — не дублюємо (рев'ю diag-answer-kinds, P3-4)
   const noteTxt = typeof s.note === "string" ? s.note : s.note?.text;
-  const txt = [s.title, s.body, noteTxt, s.fbText, s.fbOk, s.fbBad, s.hint, ...(s.opts || []), ...(s.items || []).flat()].filter(x => typeof x === "string").join(" ");
+  const txt = [s.title, s.body, noteTxt, s.fbText, s.fbOk, s.fbBad, s.hint, s.text, ...(s.opts || []), ...(s.items || []).flat()].filter(x => typeof x === "string").join(" ");
   if (/\$\{/.test(txt)) E(S, "у тексті лишилось «${» — шаблонний рядок з'їв формулу");
   for (const t of [s.title, s.body, s.steps ? null : s.fbText, s.hint, ...(s.opts || [])].filter(Boolean)) if (((String(t).match(/\$/g) || []).length) % 2) E(S, "непарна кількість $ — формула не закрита");
   for (const formula of txt.matchAll(/\$\$?([\s\S]+?)\$\$?/g)) for (const m of formula[1].matchAll(/\\([A-Za-z]+)/g)) if (!MATH_COMMANDS.has(m[1])) W(S, `формула містить непідтриману команду \\${m[1]}`);
@@ -254,6 +254,15 @@ function checkScreen(S, s, c, diag, pool = false) {
       // у діагностиці — лише коли тип answer там дозволено (learn.DIAG_TYPES); інакше вже є помилка «тип не дозволено в тесті»
       if (!pool && (!diag || learn.DIAG_TYPES.includes("answer"))) for (const m of answerFieldIssues(s, diag)) E(S, m);
       if (diag && !pool) for (const m of diagFormatIssues(s)) (m.err ? E : W)(S, m.msg); break;
+    case "gaps": case "pick": case "stress": case "word": case "split":
+      for (const m of lang.issues(s)) E(S, m);
+      for (const m of lang.warnings ? lang.warnings(s) : []) W(S, m);
+      if (["gaps", "pick"].includes(s.type) && typeof s.text !== "string") E(S, `${s.type}: потрібне поле text`);
+      // pick: слова з тексту стають кнопками, тож HTML-теги в text дали б кнопки «b», «br» (рушій екранує text)
+      if (s.poll || s.hyp) E(S, `${s.type}: poll/hyp лише для choice — відповідь мовної вправи не збережеться для outro`);
+      if (s.type === "pick" && /<[^>]+>|&#?\w+;/i.test(s.text || "")) E(S, "pick: у text не може бути HTML — пиши простим текстом (пояснення — у body)");
+      if (s.type === "split" && /[<>&]/.test([].concat(s.word).join(""))) E(S, "split: у word не може бути HTML");
+      break;
     case "fracin": if (!(Number.isInteger(s.answer) && s.answer >= 0 && s.answer < 1e6)) E(S, "answer — ціле невід'ємне число (поле приймає лише цифри)");
       if (!(s.expr && s.den)) E(S, "fracin потребує expr і den"); break;
   }

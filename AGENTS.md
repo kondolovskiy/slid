@@ -26,6 +26,7 @@
 | `app/app.js` | рушій: навігація, екрани, гейміфікація, збереження `slid.v1` | розробник |
 | `app/learn.js` · `evidence.js` · `hyp.js` | персоналізація · журнал подій · гіпотези (тінь) | розробник |
 | `app/math.js` · `lab.js` · `registry.js` | формули · лабораторія · реєстр `SLID.*` | розробник |
+| `app/lang.js` | мовні вправи gaps / pick / stress / word / split (CONTENT_SCHEMA §4.1; тести `node tools/test-lang.mjs`) | розробник |
 | `content/subjects/<предмет>.js`, `content/<предмет>/plan.js`, `content/catalog.js` | метадані, план, «скоро» | лише куратор |
 | `content/<предмет>/g<клас>-<id>.js` | **один файл = один розділ з уроками** | автор розділу |
 | `content/<предмет>/diag-g<клас>.js` | тест рівня (`SLID.diag`) | автор тесту |

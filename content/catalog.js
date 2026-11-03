@@ -3,15 +3,6 @@
    Перевірка: node tools/validate.mjs && node tools/stats.mjs
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.soon({
-  id: "ukr",
-  short: "Українська мова",
-  subject: "Українська мова",
-  grade: "5 клас",
-  icon: "book",
-  why: "Щоб писати так, як думаєш, і розуміти, чому саме так пишеться.",
-  colors: { light: { accent: "#2F7A55" }, dark: { accent: "#6CC79A" } }
-});
-SLID.soon({
   id: "nat",
   short: "Пізнаємо природу",
   subject: "Пізнаємо природу",

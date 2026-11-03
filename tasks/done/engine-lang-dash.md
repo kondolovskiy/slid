@@ -1,0 +1,19 @@
+---
+id: engine-lang-dash
+type: engine
+subject: ukr
+status: done
+claimed_by: orchestrator
+created: 2026-11-02
+---
+# gaps: «нічого не писати» і тире не мають виглядати однаково
+
+Автор u5s9: варіант «—» (нічого не писати) у пропуску виглядав точнісінько як тире, тож пропуски з тире (узагальнювальне слово, пряма мова, діалог — u5s9, u5s10) були неможливі.
+
+Зроблено: `SLID_LANG.optView` — «—» у розмітці показується як «∅» (aria-label «нічого не писати») з легендою під текстом; новий токен `–` (U+2013) — варіант-тире, показується як «—» (aria-label «тире»); readText; app.js gapHtml; CONTENT_SCHEMA §4.1; test-lang +5 (86). Розмітку наявного змісту не змінено (семантика «—» та сама).
+
+Незалежне рев'ю: reports/review/engine-lang-dash.md
+
+## Нотатки агента
+### orchestrator (2026-11-02)
+Рев'ю — **прийнято** (reports/review/engine-lang-dash.md). P3-3 (документація) — зроблено (шапка app/lang.js — коментар, style/ukr.md). P3-1, P3-2 → engine-lang-p3.
