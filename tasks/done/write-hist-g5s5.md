@@ -7,7 +7,7 @@ subject: hist
 grade: 5
 section: g5s5
 weeks: [24, 29]
-status: review
+status: done
 claimed_by: writer-write-hist-g5s5
 created: 2026-11-03
 ---

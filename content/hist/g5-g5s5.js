@@ -1,5 +1,6 @@
 /* Слід · Історія, 5 клас — «Сторінки нашого минулого»
-   Статус: h51–h57 draft (write-hist-g5s5, 2026-11-03; програма Васильків та ін., розд. 4; D-043, D-044). 7 уроків.
+   Написано: write-hist-g5s5 (2026-11-03; програма Васильків та ін., розд. 4; D-043, D-044). 7 уроків.
+   2026-11-03 verifier-g5s5: h51–h57 verified, 11 дрібних правок (reports/verify/g5s5.md).
    Перевірка: node tools/validate.mjs --section g5s5 && node tools/stats.mjs --subject hist
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("hist", {
@@ -8,7 +9,7 @@ SLID.section("hist", {
   weeks: [24, 29],
   title: "Сторінки нашого минулого",
   why: "Щоб побачити всю історію наших земель як одну стрічку: від Русі й Королівства Руського до козаків, імперій і людей, що зберегли українське слово.",
-  meta: { author: "claude-opus", created: "2026-11-03", factcheck: "self", teacher: null },
+  meta: { author: "claude-opus", created: "2026-11-03", factcheck: "verifier-g5s5", teacher: null },
   badges: [{ id: "pageskeeper", name: "Хранитель сторінок", icon: "scroll", desc: "Пройти розділ «Сторінки нашого минулого»" }],
   credits: [
     [
@@ -96,7 +97,7 @@ SLID.section("hist", {
       title: "Одна земля — багато народів",
       short: "Народи й держави",
       icon: "path",
-      status: "draft",
+      status: "verified",
       why: "Історія України — це довга стрічка. На ній є різні народи й держави. Хто знає стрічку, той не губиться в датах.",
       screens: [
         {
@@ -214,7 +215,7 @@ SLID.section("hist", {
       title: "Князі, що лишили сліди",
       short: "Русь-Україна",
       icon: "city",
-      status: "draft",
+      status: "verified",
       why: "Тризуб, Софія Київська, перші закони — усе це спадок князів Русі. Ти навчишся бачити за речами людей, які їх створили.",
       screens: [
         {
@@ -331,7 +332,7 @@ SLID.section("hist", {
       title: "Король на печатці",
       short: "Королівство Руське",
       icon: "shield",
-      status: "draft",
+      status: "verified",
       why: "На наших землях були не лише князі, а й королі. Ти дізнаєшся, як Галичина й Волинь стали королівством.",
       screens: [
         {
@@ -445,7 +446,7 @@ SLID.section("hist", {
       title: "Булава і Січ",
       short: "Козацька доба",
       icon: "flag",
-      status: "draft",
+      status: "verified",
       why: "Козаки створили власну державу — Гетьманщину. Її символи й пам'ять живуть і досі.",
       screens: [
         {
@@ -573,7 +574,7 @@ SLID.section("hist", {
       title: "Між імперіями",
       short: "Імперії й Крим",
       icon: "map",
-      status: "draft",
+      status: "verified",
       why: "Колись українські землі поділили імперії. Знати це — значить розуміти, чому так важливо мати власну державу.",
       screens: [
         {
@@ -701,7 +702,7 @@ SLID.section("hist", {
       title: "Люди, що зберегли слово",
       short: "Світочі",
       icon: "book",
-      status: "draft",
+      status: "verified",
       why: "Коли не було своєї держави, мову й пам'ять берегли письменники й мислителі. Їхні книжки читають і досі.",
       screens: [
         {
@@ -829,7 +830,7 @@ SLID.section("hist", {
       title: "Хранитель сторінок",
       short: "Фінал розділу",
       icon: "star",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "pageskeeper",
       why: "Перевірка всього розділу. Бали подвоєні.",
