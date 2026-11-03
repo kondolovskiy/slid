@@ -108,15 +108,15 @@
 | g8s1l1 Дві держави — одна печатка | 8 | 8 | 0.63 | 23 | 58 | 6.2 | 0.022 | 4 | — |
 | g8s1l2 Хто править у сеймі | 8 | 8 | 0.63 | 21 | 53 | 6.1 | 0.025 | 3 | — |
 | g8s1l3 Два собори в одному місті | 8 | 8 | 0.63 | 21 | 61 | 6 | 0.036 | 3 | — |
-| g8s1l4 Школа князя й братства | 8 | 9 | 0.56 | 18 | 45 | 5.5 | 0.043 | 3 | sentenceWords=5.5 поза [6; 13]; readWordsPerScreen нетипово для сім'ї (z=-2.2); maxReadWords нетипово для сім'ї (z=-2) |
-| g8s1l6 Церкву збудували міщани | 8 | 10 | 0.5 | 30 | 67 | 6.5 | 0.044 | 3 | screens нетипово для сім'ї (z=2.4) |
-| g8s1l5 Писар сейму (фінал) | 8 | 8 | 0.88 | 20 | 40 | 5.1 | 0.022 | 3 | sentenceWords=5.1 поза [6; 13] |
+| g8s1l4 Школа князя й братства | 8 | 9 | 0.56 | 18 | 45 | 5.5 | 0.043 | 3 | sentenceWords=5.5 поза [6; 13]; readWordsPerScreen нетипово для сім'ї (z=-2.2); maxReadWords нетипово для сім'ї (z=-2.1) |
+| g8s1l6 Церкву збудували міщани | 8 | 10 | 0.5 | 30 | 67 | 6.5 | 0.043 | 3 | screens нетипово для сім'ї (z=2.4) |
+| g8s1l5 Писар сейму (фінал) | 8 | 8 | 0.88 | 20 | 42 | 5.1 | 0.022 | 3 | sentenceWords=5.1 поза [6; 13] |
 | g8s2l1 Вільні люди степу | 8 | 8 | 0.5 | 25 | 50 | 6.6 | 0.027 | 3 | — |
 | g8s2l2 За порогами Дніпра | 8 | 8 | 0.5 | 20 | 51 | 5.5 | 0.034 | 3 | sentenceWords=5.5 поза [6; 13] |
 | g8s2l3 Сагайдачний під Хотином | 8 | 8 | 0.5 | 24 | 55 | 6.1 | 0.043 | 3 | — |
 | g8s2l4 Повстання перед бурею | 8 | 8 | 0.5 | 21 | 46 | 5.3 | 0.039 | 3 | sentenceWords=5.3 поза [6; 13] |
 | g8s2l5 Писар військової канцелярії (фінал) | 8 | 7 | 0.86 | 21 | 38 | 5 | 0.039 | 3 | sentenceWords=5 поза [6; 13] |
-| g8s3l1 Від Суботова до булави | 8 | 7 | 0.57 | 24 | 63 | 6 | 0.018 | 3 | longWordShare нетипово для сім'ї (z=-2) |
+| g8s3l1 Від Суботова до булави | 8 | 7 | 0.57 | 24 | 63 | 6 | 0.018 | 3 | — |
 | g8s3l2 Дві перемоги за травень | 8 | 7 | 0.57 | 24 | 56 | 6.2 | 0.034 | 3 | — |
 | g8s3l3 Від Зборова до Білої Церкви | 8 | 7 | 0.57 | 22 | 66 | 5.6 | 0.023 | 3 | sentenceWords=5.6 поза [6; 13] |
 | g8s3l4 Що насправді підписали | 8 | 7 | 0.57 | 25 | 67 | 5.7 | 0.034 | 3 | sentenceWords=5.7 поза [6; 13] |
@@ -133,7 +133,7 @@
 | g8s5l4 Останній гетьман | 8 | 7 | 0.57 | 23 | 67 | 5.8 | 0.043 | 3 | sentenceWords=5.8 поза [6; 13] |
 | g8s5l5 Кінець булави і Січі | 8 | 7 | 0.57 | 21 | 59 | 5.9 | 0.05 | 3 | sentenceWords=5.9 поза [6; 13] |
 | g8s5l6 Повстання в Холодному Яру | 8 | 7 | 0.57 | 22 | 58 | 5.6 | 0.05 | 3 | sentenceWords=5.6 поза [6; 13] |
-| g8s5l8 Кінець Кримського ханства | 8 | 9 | 0.56 | 28 | 49 | 5.8 | 0.025 | 3 | sentenceWords=5.8 поза [6; 13] |
+| g8s5l8 Кінець Кримського ханства | 8 | 9 | 0.56 | 28 | 52 | 5.8 | 0.024 | 3 | sentenceWords=5.8 поза [6; 13] |
 | g8s5l7 Архів Генеральної канцелярії (фінал) | 8 | 8 | 0.88 | 22 | 42 | 5.8 | 0.042 | 3 | sentenceWords=5.8 поза [6; 13] |
 | g9s1l1 Держава, що зникла з карти | 9 | 9 | 0.56 | 23 | 54 | 5.4 | 0.036 | 4 | sentenceWords=5.4 поза [6; 13] |
 | g9s1l2 Адреса: губернія, повіт | 9 | 9 | 0.56 | 21 | 46 | 4.9 | 0.038 | 4 | sentenceWords=4.9 поза [6; 13] |
@@ -220,7 +220,7 @@
 
 - **5-6:lesson**: screens 7.51±1.11, gradedShare 0.58±0.08, readWordsPerScreen 22.72±3.91, maxReadWords 53.69±6.52, sentenceWords 5.97±0.42, longWordShare 0.04±0.02, typeVariety 3.15±0.74
 - **5-6:boss**: screens 6.62±0.49, gradedShare 0.85±0.01, readWordsPerScreen 12.54±3.15, maxReadWords 23±6.19, sentenceWords 5.03±0.4, longWordShare 0.05±0.01, typeVariety 3.31±0.46
-- **7-9:lesson**: screens 8.03±0.82, gradedShare 0.58±0.06, readWordsPerScreen 24.62±2.96, maxReadWords 60.99±7.81, sentenceWords 5.93±0.42, longWordShare 0.04±0.01, typeVariety 3.28±0.45
-- **7-9:boss**: screens 7.2±0.4, gradedShare 0.86±0.01, readWordsPerScreen 21.47±2.83, maxReadWords 42.8±4.93, sentenceWords 5.49±0.41, longWordShare 0.03±0.01, typeVariety 3.13±0.34
+- **7-9:lesson**: screens 8.03±0.82, gradedShare 0.58±0.06, readWordsPerScreen 24.62±2.96, maxReadWords 61.03±7.75, sentenceWords 5.93±0.42, longWordShare 0.04±0.01, typeVariety 3.28±0.45
+- **7-9:boss**: screens 7.2±0.4, gradedShare 0.86±0.01, readWordsPerScreen 21.47±2.83, maxReadWords 42.93±4.88, sentenceWords 5.49±0.41, longWordShare 0.03±0.01, typeVariety 3.13±0.34
 - **10-11:lesson**: screens 8.93±1.24, gradedShare 0.55±0.05, readWordsPerScreen 27.07±4.71, maxReadWords 61.12±8.34, sentenceWords 6.42±0.49, longWordShare 0.07±0.03, typeVariety 3.45±0.5
 - **10-11:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 23.9±2.84, maxReadWords 47.7±7.13, sentenceWords 6.13±0.63, longWordShare 0.07±0.02, typeVariety 3.6±0.49
