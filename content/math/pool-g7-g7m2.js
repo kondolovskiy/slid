@@ -1,5 +1,6 @@
 /* Слід · Математика, 7 клас — пул задач для тренування до розділу «Геометрія: найпростіші фігури» (g7m2)
    Статус: verified (verifier-pool-g7m2, 2026-10-31; reports/verify/pg7m2.md). 24 задачі: по 8 на required-уроки g7m2l1, g7m2l2, g7m2l3 (3 рівня 1, 3 рівня 2, 2 рівня 3).
+   2026-11-03 (fix-math-figs-g7-geo-a): до c05 додано рисунок (точки на прямій) — статус знову draft до перевірки.
    Boss (g7m2l4) окремого пулу не має — за матрицею 2026-10-16.v2.
    Усі задачі — з підручника Мерзляк, Якір «Геометрія. 7 клас» (2024), див. sources; умови й числа звірено
    за відрендереними сторінками PDF 2026-10-31. srcPage — друкований номер сторінки (у цьому PDF він збігається з номером сторінки файлу).
@@ -8,7 +9,7 @@
 SLID.pool("math", {
   id: "pg7m2",
   section: "g7m2",
-  status: "verified",
+  status: "draft",
   meta: { author: "claude-opus", created: "2026-10-31", factcheck: "verifier-pool-g7m2 2026-10-31 (reports/verify/pg7m2.md)", teacher: null },
   sources: [
     { id: "g7", title: "Мерзляк А. Г., Якір М. С. Геометрія. 7 клас. — Харків: Гімназія, 2024", url: "https://file.4book.org/images/shcoolbook_ua/7/7_geom_m_2024.pdf" }
@@ -159,6 +160,7 @@ SLID.pool("math", {
     { id: "c05", lesson: "g7m2l3", lvl: 2, sk: "geom", src: "g7 №38", srcPage: 24, adapted: true,
       type: "choice", title: "Відрізки $AC$ і $BD$",
       body: "<p>Точки лежать на прямій у такому порядку: $A$, $C$, $B$, $D$. Відрізки $AB$ і $CD$ рівні. Треба довести, що $AC = BD$. Який ланцюжок правильний?</p>",
+      lab: { kind: "plane", axes: false, grid: false, view: [0, 10, 0, 5], points: { A: { at: [1, 2] }, C: { at: [3.5, 2] }, B: { at: [6.5, 2] }, D: { at: [9, 2] } }, segs: [{ a: [0.2, 2], b: [9.8, 2] }, { a: [6.5, 3.2], b: [1, 3.2], color: "blue", label: "AB" }, { a: [3.5, 0.8], b: [9, 0.8], color: "green", label: "CD" }], alt: "Пряма з точками A, C, B, D у такому порядку; відрізки AB і CD однакової довжини" },
       opts: [
         "$C$ — середина $AB$, тож $AC = CB$, а $B$ — середина $CD$, тож $BD = CB$",
         "$AC = AB + CB$ і $BD = CD + CB$; оскільки $AB = CD$, то $AC = BD$",

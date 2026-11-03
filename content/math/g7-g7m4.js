@@ -1,5 +1,5 @@
 /* Слід · Математика, 7 клас — «Геометрія: трикутники»
-   Статус уроків: verified. 4 уроки (3 теми + boss).
+   Статус уроків: verified; g7m4l2 — draft (2026-11-03, fix-math-figs-g7-geo-a: рисунок до екрана «Медіана до основи»). 4 уроки (3 теми + boss).
    Інтерактив (D-014): plane axes:false — polys, drag-вершини, angles, dist/angle у goal.
    Перевірка: node tools/validate.mjs --section g7m4 && node tools/stats.mjs --subject math
    Схема й правила: docs/CONTENT_SCHEMA.md §8, style/, D-019. */
@@ -219,7 +219,7 @@ SLID.section("math", {
       title: "Дві рівні сторони",
       short: "Рівнобедрений",
       icon: "home",
-      status: "verified",
+      status: "draft",
       why: "Трикутник з двома рівними сторонами тримає дахи й мости: рівні схили дають рівні кути.",
       screens: [
         {
@@ -337,6 +337,7 @@ SLID.section("math", {
           eyebrow: "Знайди помилку",
           title: "Медіана до основи",
           body: "<p>У трикутнику $ABC$ з $AB = AC$ і основою $BC$ провели медіану $AM$. Іра каже: «$AM$ ділить кут при $A$ навпіл, але з $BC$ не під прямим кутом». Що не так?</p>",
+          lab: { kind: "plane", axes: false, grid: false, view: [0, 10, 0, 8], points: { A: { at: [5, 6], label: false }, B: { at: [1, 1], label: false }, C: { at: [9, 1], label: false }, M: { at: [5, 1], label: false } }, segs: [["A", "B"], ["A", "C"], ["B", "C"], ["A", "M"]], alt: "Трикутник ABC з рівними сторонами AB і AC та медіаною AM", texts: [{ at: [5, 6.375], t: "A", color: "accent", bold: true }, { at: [0.523, 0.726], t: "B", color: "accent", bold: true }, { at: [9.477, 0.726], t: "C", color: "accent", bold: true }, { at: [5, 0.375], t: "M", color: "accent", bold: true }] },
           opts: [
             "Медіана до основи є також висотою й бісектрисою",
             "Медіана ніколи не є висотою",
