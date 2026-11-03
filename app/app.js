@@ -823,6 +823,7 @@ const sameAsTried = () => tried!==null && !checked && answerSig()===tried && !gr
 const letters="АБВГДЕ";
 let SEC=null;
 function startById(id){ const f=findLesson(id); if(f) startLesson(f.c.id,f.k,f.i,true); }
+window.__slidStart=startById;   /* QA (test-answer-ui): відкрити урок за id, як кнопки data-lesson, — зокрема урок іншого класу після перенесення розділу (D-043) */
 function startLesson(cid,k,i,linked){
   afterEnd=null;
   C=course(cid); SEC=C.sections[k]; li=i; L=SEC.lessons[i]; idx=0;

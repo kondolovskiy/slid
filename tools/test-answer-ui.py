@@ -973,7 +973,7 @@ async def open_lesson_at(page, lesson, at):
     if await page.locator(f'[data-topic="{k}"]').count():
         await page.click(f'[data-topic="{k}"]'); await page.click(f'[data-open="{i}"]'); await page.click('#go')
     else:   # урок іншого класу (після D-043 g6m1 — 5 кл., ms3 — 6 кл.): відкриваємо так само, як кнопки data-lesson застосунку
-        await page.evaluate("id => startById(id)", lesson)
+        await page.evaluate("id => window.__slidStart(id)", lesson)
     for screen in screens[:at]:
         await answer_context_screen(page, screen)
         if screen['type'] not in ('intro', 'info', 'explore'):
