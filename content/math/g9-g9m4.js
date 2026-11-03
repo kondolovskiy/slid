@@ -13,7 +13,7 @@ SLID.section("math", {
   weeks: [11, 22],
   title: "Геометрія: розв'язування трикутників",
   why: "Щоб знаходити невідомі сторони й кути в будь-якому трикутнику.",
-  requires: ["g8m4l2"],
+  requires: ["g8m4l2", "g8m4l7"],
   meta: { author: "writer-g9m4", created: "2026-10-12", factcheck: "verifier-g9m4", teacher: null },
   badges: [
     {
