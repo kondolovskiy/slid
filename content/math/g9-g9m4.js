@@ -1,5 +1,5 @@
 /* Слід · Математика, 9 клас — «Геометрія: розв'язування трикутників»
-   Статус уроків: verified (l1 — повторно 01.11 після refine: таблиця 30°/45°/60°, тотожність). 4 уроки (3 теми + boss).
+   Статус уроків: verified (l1 — повторно 01.11 після refine: таблиця 30°/45°/60°, тотожність); l3 — draft після fix-math-figs-g9 (рисунок на екрані 4 «Теорема синусів»). 4 уроки (3 теми + boss).
    Інтерактив: plane — трикутник drag (live angle/dist); одиничне півколо;
    графік sin з xpi; ≥2 explore/lab на урок. signed:true (від'ємний cos). D-019.
    Перевірка: node tools/validate.mjs --section g9m4 && node tools/stats.mjs --subject math
@@ -440,7 +440,7 @@ SLID.section("math", {
       title: "Сторона й протилежний кут",
       short: "Синуси",
       icon: "scale",
-      status: "verified",
+      status: "draft",
       why: "Щоб знаходити сторону чи кут, коли відома пара «сторона — протилежний кут».",
       screens: [
         {
@@ -503,7 +503,33 @@ SLID.section("math", {
           title: "Теорема синусів",
           body: `<p>Сторони трикутника пропорційні синусам протилежних кутів:</p>
         <p>$$a/("sin"\\,A) = b/("sin"\\,B) = c/("sin"\\,C) = 2R$$</p>
-        <p>Тут $R$ — радіус описаного кола. Зручно, коли відомі сторона й протилежний кут.</p>`,
+        <p>Тут $R$ — радіус описаного кола. Сторона $a$ лежить навпроти кута $A$, $b$ — навпроти $B$, $c$ — навпроти $C$: на рисунку пара «сторона — кут» одного кольору. Зручно, коли відомі сторона й протилежний кут.</p>`,
+          lab: {
+            kind: "plane",
+            axes: false,
+            grid: false,
+            view: [0, 12, 0, 10],
+            points: {
+              O: { at: [6, 5], label: "$O$", color: "muted" },
+              A: { x: "6+4*cosd(210)", y: "5+4*sind(210)", color: "gold" },
+              B: { x: "6+4*cosd(330)", y: "5+4*sind(330)", color: "blue" },
+              C: { x: "6+4*cosd(100)", y: "5+4*sind(100)", color: "green" }
+            },
+            circles: [{ c: "O", r: "4", color: "muted" }],
+            polys: [{ pts: ["A", "B", "C"], opacity: 0.1 }],
+            segs: [
+              { a: "A", b: "B", color: "green", label: "c" },
+              { a: "B", b: "C", color: "gold", label: "a" },
+              { a: "C", b: "A", color: "blue", label: "b" },
+              { a: "O", b: "C", color: "muted", dash: true, label: "R" }
+            ],
+            angles: [
+              { from: "B", at: "A", to: "C", color: "gold", label: false },
+              { from: "C", at: "B", to: "A", color: "blue", label: false },
+              { from: "A", at: "C", to: "B", color: "green", label: false }
+            ],
+            alt: "Трикутник ABC, вписаний у коло з центром O і радіусом R; сторона a навпроти кута A, b навпроти B, c навпроти C"
+          },
           cta: "Спробувати"
         },
         {

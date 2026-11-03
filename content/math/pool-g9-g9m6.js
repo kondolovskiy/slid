@@ -1,5 +1,5 @@
 /* Слід · Математика, 9 клас — пул задач для тренування до розділу «Геометрія: правильні многокутники і перетворення» (g9m6)
-   Статус: verified (verifier-pool-g9m6, 2026-10-31; звіт reports/verify/pg9m6.md). Автор: agent-write-math-pool-g9m6. 32 задачі: g9m6l1 — 8, g9m6l2 — 8, g9m6l3 — 8, g9m6l4 — 8 (boss g9m6l5 без задач).
+   Статус: verified (verifier-pool-g9m6, 2026-10-31; звіт reports/verify/pg9m6.md); draft після fix-math-figs-g9 (рисунок у d08 — перевірити лише його). Автор: agent-write-math-pool-g9m6. 32 задачі: g9m6l1 — 8, g9m6l2 — 8, g9m6l3 — 8, g9m6l4 — 8 (boss g9m6l5 без задач).
    Матриця docs/math-personalization-coverage.md 2026-10-16.v2: усі чотири уроки required, формати number, coordinates2, exactRoot.
    Прогалини форматів (у відповідних пунктах підручника таких вправ немає): l1 і l2 — coordinates2; l3 — exactRoot. Див. нотатки задачі.
    Усі задачі — з підручника Мерзляк, Якір. Геометрія 9 (2026), п. 6, 7, 17–20 і оповідання «Гомотетія»; умови й числа звірено за відрендереними сторінками PDF.
@@ -9,7 +9,7 @@
 SLID.pool("math", {
   id: "pg9m6",
   section: "g9m6",
-  status: "verified",
+  status: "draft",
   meta: { author: "agent-write-math-pool-g9m6", created: "2026-10-31", factcheck: "verifier-pool-g9m6", teacher: null },
   sources: [
     { id: "mer9g", title: "Мерзляк А. Г., Якір М. С. Геометрія: підручник для 9 класу. — Харків: Гімназія, 2026 (п. 6, 7, 17–20; дзеркало file.4book.org)", url: "https://file.4book.org/images/shcoolbook_ua/9/9_geom_m_2026.pdf" }
@@ -200,6 +200,12 @@ SLID.pool("math", {
     { id: "d08", lesson: "g9m6l4", lvl: 3, sk: "geom", src: "mer9g №20.21", srcPage: 235,
       type: "answer", answerKind: "exactRoot", title: "Пряма ділить площу навпіл",
       body: "<p>Пряма, паралельна стороні $AC$ трикутника $ABC$, перетинає сторону $AB$ у точці $D$, а сторону $BC$ — у точці $E$. Вона розбиває трикутник на дві частини однакової площі. Знайди відрізок $DE$, якщо $AC = 2$ см.</p><p>Трикутник $DBE$ подібний трикутнику $ABC$, бо $DE \\parallel AC$. Запиши відповідь точно, з коренем.</p>",
+      lab: { kind: "plane", axes: false, grid: false, view: [0, 12, 0, 8],
+        points: { A: { at: [1, 1] }, B: { at: [4, 7] }, C: { at: [11, 1] },
+          D: { x: "4-3/sqrt(2)", y: "7-6/sqrt(2)", color: "accent" }, E: { x: "4+7/sqrt(2)", y: "7-6/sqrt(2)", color: "accent" } },
+        polys: [{ pts: ["A", "B", "C"], color: "ink", opacity: 0.08 }, { pts: ["D", "B", "E"], color: "accent", opacity: 0.22 }],
+        segs: [{ a: "A", b: "C", label: "2" }, { a: "D", b: "E", color: "accent" }],
+        alt: "Трикутник ABC; відрізок DE паралельний основі AC, D на стороні AB, E на стороні BC; AC = 2 см" },
       answer: "√2", unit: "см",
       hint: "Площа трикутника $DBE$ — половина площі $ABC$. Отже, $k^2 = 1/2$.",
       steps: ["Частини рівні за площею, тож $S_{DBE} = S_{ABC} / 2$.", "$\\triangle DBE ∼ \\triangle ABC$ з коефіцієнтом $k = DE : AC$, і $k^2 = 1/2$.", "$DE^2 = AC^2 / 2 = 4 / 2 = 2$.", "$DE = \\sqrt{2}$ см."] }
