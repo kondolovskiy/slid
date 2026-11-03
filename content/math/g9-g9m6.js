@@ -1,6 +1,6 @@
 /* Слід · Математика, 9 клас — «Геометрія: правильні многокутники і перетворення»
    Статус уроків: verified (l2, l5 — повторно 01.11 після refine: r → R). 5 уроків (4 теми + boss).
-   Нові уроки 2026-11-03 (write-math-g9-gaps, D-043, Істер Геом. 9 § 16–17, § 24): g9m6l6 (дуга і сектор) — після l2; g9m6l7 (площі подібних фігур) — після l4; eyebrow l3/l4 → «Урок 4/5». draft. Тепер 7 уроків (6 тем + boss); boss нових тем не перевіряє.
+   Нові уроки 2026-11-03 (write-math-g9-gaps, D-043, Істер Геом. 9 § 16–17, § 24): g9m6l6 (дуга і сектор) — після l2; g9m6l7 (площі подібних фігур) — після l4; eyebrow l3/l4 → «Урок 4/5». verified (verifier-write-math-g9-gaps, 2026-11-03). Тепер 7 уроків (6 тем + boss); boss нових тем не перевіряє.
    Інтерактив: plane — n-кутник (cosd/sind), коло, симетрія drag; ≥2 explore/lab на урок.
    Перевірка: node tools/validate.mjs --section g9m6 && node tools/stats.mjs --subject math
    Схема й правила: docs/CONTENT_SCHEMA.md §8, style/, D-019.
@@ -407,7 +407,7 @@ SLID.section("math", {
       title: "Шматок кола",
       short: "Дуга і сектор",
       icon: "pizza",
-      status: "draft",
+      status: "verified",
       why: "Щоб рахувати скоринку шматка піци, шлях кінчика стрілки годинника чи площу клумби-сектора.",
       screens: [
         {
@@ -1030,7 +1030,7 @@ SLID.section("math", {
       title: "Велика піца чи три малі?",
       short: "Площі подібних",
       icon: "scale",
-      status: "draft",
+      status: "verified",
       why: "Щоб порівнювати площі за масштабом: піци, плани квартир, карти.",
       screens: [
         {

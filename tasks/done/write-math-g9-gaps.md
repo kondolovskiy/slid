@@ -6,7 +6,7 @@ type: write-section
 subject: math
 grade: 9
 section: g9m6
-status: review
+status: done
 claimed_by: writer-write-math-g9-gaps
 created: 2026-11-03
 depends_on: [math-ister-migration]

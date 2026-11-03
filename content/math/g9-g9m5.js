@@ -1,7 +1,7 @@
 /* Слід · Математика, 9 клас — «Алгебра: прогресії»
    Статус уроків: verified (g9m5l3, g9m5l4 — правка нотації 2026-11-03: геометрична прогресія $(b_n)$, D-043; verified — verifier-fix-math-notation-ister). 4 уроки (3 теми + boss).
    Статус уроків: verified; l1, l3 — повторно після fix-math-figs-g9 (діаграма на екрані 3; verifier-fix-math-figs-g9, 2026-11-03, reports/verify/fix-math-figs-g9.md). 4 уроки (3 теми + boss).
-   Новий урок 2026-11-03 (write-math-g9-gaps, D-043, Істер Алг. 9 § 21): g9m5l5 (нескінченна геометрична прогресія) — draft, перед boss. Тепер 5 уроків (4 теми + boss); boss нової теми не перевіряє.
+   Новий урок 2026-11-03 (write-math-g9-gaps, D-043, Істер Алг. 9 § 21): g9m5l5 (нескінченна геометрична прогресія) — verified (verifier-write-math-g9-gaps, 2026-11-03, reports/verify/write-math-g9-gaps.md), перед boss. Тепер 5 уроків (4 теми + boss); boss нової теми не перевіряє.
    Інтерактив: numline jumps / chart bars для членів; повзунки a,d або a,q; ≥2 explore/lab на урок.
    Перевірка: node tools/validate.mjs --section g9m5 && node tools/stats.mjs --subject math
    Схема й правила: docs/CONTENT_SCHEMA.md §8, style/, D-019.
@@ -535,7 +535,7 @@ SLID.section("math", {
       title: "Половина, ще половина…",
       short: "Нескінченна сума",
       icon: "spiral",
-      status: "draft",
+      status: "verified",
       why: "Щоб додавати нескінченно багато доданків і перетворювати періодичні дроби на звичайні.",
       screens: [
         {

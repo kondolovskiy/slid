@@ -1,6 +1,6 @@
 /* Слід · Математика, 9 клас — «Алгебра: квадратична функція»
    Статус уроків: verified. 5 уроків (4 теми + boss).
-   Нові уроки 2026-11-03 (write-math-g9-gaps, D-043, Істер Алг. 9 § 13–14): g9m3l6 (системи 2-го степеня), g9m3l7 (задачі системами) — draft, перед boss. Тепер 7 уроків (6 тем + boss); boss нових тем не перевіряє.
+   Нові уроки 2026-11-03 (write-math-g9-gaps, D-043, Істер Алг. 9 § 13–14): g9m3l6 (системи 2-го степеня), g9m3l7 (задачі системами) — verified (verifier-write-math-g9-gaps, 2026-11-03, reports/verify/write-math-g9-gaps.md), перед boss. Тепер 7 уроків (6 тем + boss); boss нових тем не перевіряє.
    Інтерактив: plane y:"a*(x-h)^2+k" і "a*x^2+b*x+c" з повзунками;
    fills для квадратних нерівностей. Уроки 2–3: ≥3 explore/lab. signed:true. D-019.
    Перевірка: node tools/validate.mjs --section g9m3 && node tools/stats.mjs --subject math
@@ -780,7 +780,7 @@ SLID.section("math", {
       title: "Парабола зустрічає пряму",
       short: "Системи 2-го степеня",
       icon: "path",
-      status: "draft",
+      status: "verified",
       why: "Щоб знаходити, де перетинаються траєкторії, і розв'язувати задачі з двома невідомими, коли одне рівняння не лінійне.",
       screens: [
         {
@@ -963,7 +963,7 @@ SLID.section("math", {
       title: "Два невідомі в задачі",
       short: "Задачі системами",
       icon: "bulb",
-      status: "draft",
+      status: "verified",
       why: "Щоб розв'язувати задачі про ділянки, рух і числа, де невідомих дві, а умова дає добуток.",
       screens: [
         {

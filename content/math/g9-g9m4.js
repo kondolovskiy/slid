@@ -1,6 +1,6 @@
 /* Слід · Математика, 9 клас — «Геометрія: розв'язування трикутників»
    Статус уроків: verified (l1 — повторно 01.11 після refine: таблиця 30°/45°/60°, тотожність); l3 — повторно після fix-math-figs-g9 (рисунок на екрані 4 «Теорема синусів»; verifier-fix-math-figs-g9, 2026-11-03, reports/verify/fix-math-figs-g9.md). 4 уроки (3 теми + boss).
-   Нові уроки 2026-11-03 (write-math-g9-gaps, D-043, Істер Геом. 9 § 14): g9m4l5 (S = ½ab sin γ), g9m4l6 (Герон, S = abc/4R, S = pr) — draft, перед boss. Тепер 6 уроків (5 тем + boss); boss нових тем не перевіряє.
+   Нові уроки 2026-11-03 (write-math-g9-gaps, D-043, Істер Геом. 9 § 14): g9m4l5 (S = ½ab sin γ), g9m4l6 (Герон, S = abc/4R, S = pr) — verified (verifier-write-math-g9-gaps, 2026-11-03, reports/verify/write-math-g9-gaps.md), перед boss. Тепер 6 уроків (5 тем + boss); boss нових тем не перевіряє.
    Інтерактив: plane — трикутник drag (live angle/dist); одиничне півколо;
    графік sin з xpi; ≥2 explore/lab на урок. signed:true (від'ємний cos). D-019.
    Перевірка: node tools/validate.mjs --section g9m4 && node tools/stats.mjs --subject math
@@ -669,7 +669,7 @@ SLID.section("math", {
       title: "Площа без висоти",
       short: "Площа через sin",
       icon: "target",
-      status: "draft",
+      status: "verified",
       why: "Щоб знайти площу ділянки, коли висоту не виміряти, а дві сторони й кут між ними відомі.",
       screens: [
         {
@@ -873,7 +873,7 @@ SLID.section("math", {
       title: "Три сторони — і вже площа",
       short: "Формула Герона",
       icon: "star",
-      status: "draft",
+      status: "verified",
       why: "Щоб знайти площу трикутника, коли відомі лише сторони: ділянки, дахи, викрійки.",
       screens: [
         {
