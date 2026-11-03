@@ -1,5 +1,5 @@
 /* Слід · Математика, 5 клас — «Відсотки й діаграми»
-   Статус уроків: l3 — draft (2026-11-03, fix-math-figs-g4-g6: кругова діаграма на екрані теорії «Два види діаграм»); l1 — verified (verifier-ms3, 2026-10-06), l3 раніше теж; l2, l4 — ревізія D-019/D-020 (reviser-ms3, 2026-10-13), у полях status — verified. 4 уроки.
+   Статус уроків: l3 — verified (2026-11-03, verifier-fix-math-figs-g4-g6, reports/verify/fix-math-figs-g4-g6.md; fix-math-figs-g4-g6: кругова діаграма на екрані теорії «Два види діаграм»); l1 — verified (verifier-ms3, 2026-10-06), l3 раніше теж; l2, l4 — ревізія D-019/D-020 (reviser-ms3, 2026-10-13), у полях status — verified. 4 уроки.
    Перевірка: node tools/validate.mjs && node tools/stats.mjs
    Схема й правила: docs/CONTENT_SCHEMA.md (§8 — лабораторія), style/ */
 SLID.section("math", {
@@ -287,7 +287,7 @@ SLID.section("math", {
       title: "Що показує діаграма?",
       short: "Діаграми",
       icon: "chart",
-      status: "draft",
+      status: "verified",
       why: "Результати опитувань, погоду й бюджет часто показують малюнком. Діаграма допомагає за секунду побачити головне.",
       screens: [
         {

@@ -1,5 +1,5 @@
 /* Слід · Математика, 5 клас — «Фігури і величини»
-   Статус уроків: l1 — draft (2026-11-03, fix-math-figs-g4-g6: статичний рисунок на екрані теорії «Відрізок, промінь, пряма»; промінь CD перейменовано на MN, щоб C не означала двох різних точок). Раніше l1 — повторно verified 2026-11-01 (refine-math-diag-probes-v3: AB = AC + CB на екрані теорії; reports/verify/refine-math-diag-probes-v3.md); l2–l5 verified (повторна верифікація після ревізії D-019, 2026-10-13, reports/verify/ms0b.md). 5 уроків.
+   Статус уроків: l1 — verified (2026-11-03, verifier-fix-math-figs-g4-g6, reports/verify/fix-math-figs-g4-g6.md; fix-math-figs-g4-g6: статичний рисунок на екрані теорії «Відрізок, промінь, пряма»; промінь CD перейменовано на MN, щоб C не означала двох різних точок). Раніше l1 — повторно verified 2026-11-01 (refine-math-diag-probes-v3: AB = AC + CB на екрані теорії; reports/verify/refine-math-diag-probes-v3.md); l2–l5 verified (повторна верифікація після ревізії D-019, 2026-10-13, reports/verify/ms0b.md). 5 уроків.
    Інтерактив (D-014): plane без осей — перетягувані точки (відрізок, промінь, пряма, кути, трикутники); rect — периметр.
    Перевірка: node tools/validate.mjs --section ms0b && node tools/stats.mjs --subject math
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
@@ -20,7 +20,7 @@ SLID.section("math", {
       title: "Лінія без кінця",
       short: "Відрізок, промінь, пряма",
       icon: "line",
-      status: "draft",
+      status: "verified",
       why: "Креслення, карти й плани складаються з ліній. Треба знати, яка лінія має кінці, а яка — ні.",
       screens: [
         {

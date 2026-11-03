@@ -1,5 +1,5 @@
 /* Слід · Математика, 6 клас — «Відношення і пропорції»
-   Статус уроків: g6m3l3 — draft (2026-11-03, fix-math-figs-g4-g6: статичні графіки на двох екранах теорії); g6m3l1–l6 — verified (verifier-g6m3, 2026-10-11; l1–l4 після ревізії D-019/D-020 — verifier-g6m3-d019, 2026-10-13). 6 уроків.
+   Статус уроків: g6m3l3 — verified (2026-11-03, verifier-fix-math-figs-g4-g6, reports/verify/fix-math-figs-g4-g6.md; fix-math-figs-g4-g6: статичні графіки на двох екранах теорії); g6m3l1–l6 — verified (verifier-g6m3, 2026-10-11; l1–l4 після ревізії D-019/D-020 — verifier-g6m3-d019, 2026-10-13). 6 уроків.
    Перевірка: node tools/validate.mjs --section g6m3 && node tools/stats.mjs --subject math
    Схема й правила: docs/CONTENT_SCHEMA.md (§8 — лабораторія), style/ */
 SLID.section("math", {
@@ -339,7 +339,7 @@ SLID.section("math", {
       title: "Більше — то більше?",
       short: "Пропорційність",
       icon: "line",
-      status: "draft",
+      status: "verified",
       why: "Шлях і час, ціна й кількість, швидкість і тривалість дороги. Одні величини ростуть разом, інші — навпаки.",
       screens: [
         {

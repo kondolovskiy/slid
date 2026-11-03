@@ -1,5 +1,5 @@
 /* Слід · Математика, 5 клас — пул задач для тренування до розділу «Фігури і величини» (ms0b)
-   Статус: draft (2026-11-03, fix-math-figs-g4-g6: b04, b07 — статичні рисунки кутів lab plane; чекає верифікації). Раніше: verified — 2026-11-01 a02, a03, d05 переведено на quantity (см і мм, як «Обчисліть довжину/периметр» у підручнику); повторно перевірено (verifier-refine-math-pools-new-kinds, 2026-11-01, reports/verify/refine-math-pools-new-kinds.md).
+   Статус: verified (2026-11-03, verifier-fix-math-figs-g4-g6, reports/verify/fix-math-figs-g4-g6.md; fix-math-figs-g4-g6: b04, b07 — статичні рисунки кутів lab plane, b04 — підпис O під вершиною). Раніше: verified — 2026-11-01 a02, a03, d05 переведено на quantity (см і мм, як «Обчисліть довжину/периметр» у підручнику); повторно перевірено (verifier-refine-math-pools-new-kinds, 2026-11-01, reports/verify/refine-math-pools-new-kinds.md).
    Раніше: verified (reports/verify/pms0b.md). 24 задачі: по 8 на required-уроки ms0bl1, ms0bl2, ms0bl4 (3 рівня 1, 3 рівня 2, 2 рівня 3).
    ms0bl3 («Три кути на трьох») — pending за матрицею 2026-10-16.v2: задач навмисно немає (рішення Віктора про суму кутів у 5 кл.).
    Усі задачі — з підручника Мерзляка 5 кл. (див. sources); умови й числа звірено за відрендереними сторінками PDF 2026-10-30.
@@ -9,7 +9,7 @@
 SLID.pool("math", {
   id: "pms0b",
   section: "ms0b",
-  status: "draft",
+  status: "verified",
   meta: { author: "claude-opus", created: "2026-10-30", factcheck: "verifier-refine-math-pools-new-kinds (2026-11-01: a02, a03, d05); решта — verifier-pool-ms0b", teacher: null },
   sources: [
     { id: "mer5", title: "Мерзляк А. Г., Полонський В. Б., Якір М. С. Математика. 5 клас. — Харків: Гімназія, 2022", url: "https://file.4book.org/images/shcoolbook_ua/5/5_m_m_2022.pdf" }
@@ -84,8 +84,9 @@ SLID.pool("math", {
       type: "answer", title: "Знайди кут $AOP$",
       body: "<p>Точки $C$, $O$, $K$ лежать на одній прямій: кут $COK$ — розгорнутий. Промінь $OA$ утворює з $OK$ прямий кут. Промінь $OP$ лежить між променями $OC$ і $OA$, кут $COP$ дорівнює 54°. Знайди кут $AOP$.</p>",
       lab: { kind: "plane", axes: false, grid: 0, view: [0, 10, 0, 6],
-        points: { C: { at: [0.5, 1] }, O: { at: [5, 1] }, K: { at: [9.5, 1] }, A: { at: [5, 5.5] }, P: { at: [2.35, 4.64] } },
+        points: { C: { at: [0.5, 1] }, O: { at: [5, 1], label: false }, K: { at: [9.5, 1] }, A: { at: [5, 5.5] }, P: { at: [2.35, 4.64] } },
         segs: [["O", "C"], ["O", "K"], ["O", "A"], ["O", "P"]],
+        texts: [{ at: [5, 0.35], t: "O", color: "accent", bold: true }],
         angles: [{ from: "A", at: "O", to: "K", label: false }, { from: "C", at: "O", to: "P", label: "54°", r: 30 }],
         alt: "Пряма CK з точкою O. Промінь OA перпендикулярний до OK. Промінь OP між OC і OA, кут COP 54 градуси" },
       answer: 36, unit: "°",

@@ -1,5 +1,5 @@
 /* Слід · Математика, 7 клас — «Алгебра: цілі вирази»
-   Статус уроків: verified (verifier-g7m3); l2 — повторно verified 2026-11-01 (refine-math-diag-probes-v3: екран «одночлен × многочлен», Алгебра 7 п. 10; reports/verify/refine-math-diag-probes-v3.md). 5 уроків (4 теми + boss).
+   Статус уроків: verified (verifier-g7m3); l3 — повторно verified 2026-11-03 (fix-math-figs-g7-g8-alg: заголовок екрана 6 і fbBad екрана 3 без посилання на малюнок; reports/verify/fix-math-figs-g7-g8-alg.md); l2 — повторно verified 2026-11-01 (refine-math-diag-probes-v3: екран «одночлен × многочлен», Алгебра 7 п. 10; reports/verify/refine-math-diag-probes-v3.md). 5 уроків (4 теми + boss).
    Інтерактив: ≥ 2 explore/lab у кожному уроці (docs/CONTENT_SCHEMA.md §8).
    Перевірка: node tools/validate.mjs --section g7m3 && node tools/stats.mjs --subject math
    Схема й правила: docs/CONTENT_SCHEMA.md, style/, D-019 */
@@ -363,7 +363,7 @@ SLID.section("math", {
       title: "Квадрат суми на клітинках",
       short: "Скорочене множення",
       icon: "target",
-      status: "draft",
+      status: "verified",
       why: "Три формули замінюють довге розкриття дужок. Ними рахують усно й розкладають вирази назад.",
       screens: [
         {
@@ -413,7 +413,7 @@ SLID.section("math", {
           ],
           correct: 2,
           fbOk: "Саме так.",
-          fbBad: "Подивись на дві середні клітинки на малюнку.",
+          fbBad: "Згадай дві середні частини квадрата з дослідження.",
           fbText: "$(a + b)^2 = a^2 + 2ab + b^2$. У Дениса лише $a^2 + b^2$. Два прямокутники $5 * 3$ дають $30$, і $34 + 30 = 64$."
         },
         {

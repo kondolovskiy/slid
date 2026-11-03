@@ -1,5 +1,5 @@
 /* Слід · Математика, 6 клас — «Раціональні числа»
-   Статус уроків: l5 — draft (2026-11-03, fix-math-figs-g4-g6: координатна площина з початком O на екрані теорії «Координатна площина»);
+   Статус уроків: l5 — verified (2026-11-03, verifier-fix-math-figs-g4-g6, reports/verify/fix-math-figs-g4-g6.md; fix-math-figs-g4-g6: координатна площина з початком O на екрані теорії «Координатна площина»);
    l3, l4, l6 — verified (verifier-g6m4, 2026-10-11; звіт reports/verify/g6m4.md);
    l1, l2 — ревізія D-019 (reviser-g6m4, 2026-10-13: лише eyebrow «Здогадка» → «Подумай»), у полях status — verified. 6 уроків.
    Перевірка: node tools/validate.mjs && node tools/stats.mjs
@@ -681,7 +681,7 @@ SLID.section("math", {
       title: "Адреса точки",
       short: "Координатна площина",
       icon: "map",
-      status: "draft",
+      status: "verified",
       why: "Карти, графіки й ігри знаходять будь-яке місце за двома числами. Навчимося читати й ставити такі точки.",
       screens: [
         {

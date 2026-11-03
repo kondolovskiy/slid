@@ -1,5 +1,5 @@
 /* Слід · Математика, 4 клас — пул задач для тренування до розділу «Додавання і віднімання» (g4m2)
-   Статус: draft (2026-11-03, fix-math-figs-g4-g6: a08 — прибрано «За малюнком у підручнику», дані вже в умові; чекає верифікації).
+   Статус: verified (2026-11-03, verifier-fix-math-figs-g4-g6, reports/verify/fix-math-figs-g4-g6.md; fix-math-figs-g4-g6: a08 — прибрано «За малюнком у підручнику», дані вже в умові).
    Злиття двох незалежно написаних і незалежно верифікованих версій (2026-10-30, звіт reports/merge/compare-pg4m2.md):
    main / PR #5 — verifier-pg4m2, 2026-10-21, reports/verify/write-math-pool-g4m2.md;
    PR #6 — verifier-pool-g4m2, 2026-10-30, reports/verify/pg4m2.md.
@@ -12,7 +12,7 @@
 SLID.pool("math", {
   id: "pg4m2",
   section: "g4m2",
-  status: "draft",
+  status: "verified",
   meta: { author: "claude-opus", created: "2026-10-21", merged: "2026-10-30", factcheck: "verifier-pg4m2; verifier-pool-g4m2", teacher: null },
   sources: [
     { id: "g4a", title: "Гісь О. М., Філяк І. В. Математика : підручник для 4 класу (у 2-х ч.). Ч. 1. — Харків : Ранок, 2026 (с. 22, 26, 152–153, 166, 170)", url: "https://file.4book.org/images/shcoolbook_ua/4/4_m_gis_2026-1.pdf" },
