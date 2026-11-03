@@ -3,19 +3,21 @@
 _Оновлено: 2026-11-03, куратор пам'яті, сесія 1 — історія «Артинов» і world (журнал sessions/2026-11-03-1.md; гілка `claude/hist-artynov-world`). Стан ukr/math — з сесії 02.11-3 (sessions/2026-11-02-3.md), паралельні сесії можуть його доповнити._
 
 ## Стан
+- **Математика 5–9 за Істером (D-043, гілка `claude/math-ister-migration`, PR https://github.com/kondolovskiy/slid/pull/14, 03.11):** дослідження reports/math-ister-map.md, дизайн docs/design/math-ister.md. g6m1 (подільність) → 5 кл.; ms3 «Відсотки» і ms4 «Об'єм» → 6 кл.; ms3l3 (діаграми) і ms4l1 (площа) → ms0b; g7m6 перед g7m4; id не змінено. Рушій: поле пулу `also`, хук `window.__slidStart` (QA). dg5/dg6 переписано (draft до verify-math-ister-diag), граф 2026-11-03.1, матриця 2026-11-03.v4 (draft). Рев'ю reports/review/math-ister-migration.md. Нотація — glossary «Вирішено 2026-11-03».
 - **Українська мова (D-040, D-041 + уточнення, D-042) — 5 і 6 кл. verified:** 5 кл. — 11 розділів content/ukr/g5-u5s1…u5s11.js, 69 уроків (план reports/verify/plan-ukr-g5.md); **6 кл. — 14 розділів g6-u6s1…u6s14.js, 94 уроки** (план reports/verify/plan-ukr-g6.md, звіти reports/verify/u6s1…u6s14.md; базовий підручник З6 — скан, OCR). Рушій app/lang.js: engine-lang-types, -dash, -pick-groups прийнято рев'ю. Навичка `gram` у subjects/ukr.js. Милозвучність авторського тексту вичищено (style-ukr-euphony, done). Еталон ukr — u5s1. Жодного `approved`: людина перевірятиме 5 і 6 кл. разом пізніше (D-042).
 - **PR https://github.com/kondolovskiy/slid/pull/11** (гілка `claude/keen-einstein-55xvkz`); 03.11 злито з main (PR №10 tools-agent-skills: AGENTS.md — постійний контекст, процедури ролей — 11 скілів у `.claude/skills/`; INDEX.md — покажчик). Рядок `app/lang.js` додано в карту AGENTS.md §2.
 - **Математика, персоналізація 4–11 кл. — release прийнято**, матриця 2026-11-01.v3. **Пріоритети (D-033):** Evidence V2 (готово) → Skill Graph → Diagnostic Engine → Teacher Dashboard.
 - **Skill Graph (D-038):** G1–G3; лінія «дроби» 4–6 (25 вузлів, 47 ребер). **Гіпотези (D-035)** E1/E2 + тінь E4. **ШІ-перевірка (D-036)** — далі A1. **Бекенд (D-037)** server/.
-- **Програма ліцею «Артинов» (D-043, D-044):** математика → Істер (задача math-ister-migration, todo); історія дописана: **g5s5, g5s6, g6s6, g6s7, g6s8** (нові) і revise **g7s4** (Королівство Руське), **g7s5** (+l6), **g8s1** (+l6 братства), **g8s5** (+l8, 1783) — усе verified; порядок 6 кл. — за `weeks`, eyebrow перенумеровано.
+- **Програма ліцею «Артинов» (D-043, D-044):** математика → Істер (PR #14 злито в main); історія дописана: **g5s5, g5s6, g6s6, g6s7, g6s8** (нові) і revise **g7s4** (Королівство Руське), **g7s5** (+l6), **g8s1** (+l6 братства), **g8s5** (+l8, 1783) — усе verified; порядок 6 кл. — за `weeks`, eyebrow перенумеровано.
 - **Новий предмет `world` «Всесвітня історія» 7–9 (D-044):** **w7s1 (еталон) – w7s5 verified** (28 уроків); 8–9 кл. — 10 задач у todo. validate D-027 для world — tools-world-img прийнято. QA reports/qa/hist-artynov-world.md: check ✅, playtest 14/14.
 - Довга пам'ять: facts/hist №1–345, **facts/world №1–25**, facts/math №1–219, facts/ukr №1–153, decisions до **D-044**.
 
 ## У роботі (`node tools/claim.mjs list doing`)
 - **research-math-diag-duration** — пілот, чекає учнів.
 
-## Що далі (черга; todo: 26)
-0. **Історія / world (03.11):** після відповідей людини нижче — **write-world-w8s1…w9s5** (спершу підтвердити план world 8–9, content/world/plan.js; по 2 фото-агенти max); **style-hist-h56**, **style-hist-g5-finals**; **tools-world-img-p3** (grade фікстури, коментар validate:287, AGENTS.md §4 п. 9 «історія» → «історія й всесвітня історія»; рев'ю D-026); у style/world.md — шаблон фіналу (як w7s1l5, reports/style-sync-world-g7.md); **math-ister-migration** (D-043).
+## Що далі (черга: `node tools/claim.mjs list todo`)
+0. **Математика за Істером — продовження:** PR #14 злито в main; **write-math-g6m3-circle-diagrams — пріоритет** (g9m7 спирається на кругові діаграми через `requires: ["ms3l3"]`, а їх більше ніде не вчать); refine-math-dg6-pct-rev3 (dg6 → verified); tools-ister-p3; прогалини write-math-g5…g9-* (8 задач); фінал ms0bl5 не перевіряє діаграм і площі; пул для ms3l3 (5 кл.); термін «масштаб» у ms3l3 — узгодити з Істером 6.
+0а. **Історія / world (03.11):** після відповідей людини нижче — **write-world-w8s1…w9s5** (спершу підтвердити план world 8–9, content/world/plan.js; по 2 фото-агенти max); **style-hist-h56**, **style-hist-g5-finals**; **tools-world-img-p3** (grade фікстури, коментар validate:287, AGENTS.md §4 п. 9 «історія» → «історія й всесвітня історія»; рев'ю D-026); у style/world.md — шаблон фіналу (як w7s1l5, reports/style-sync-world-g7.md).
 1. **style-ukr-g5-unify** і **style-ukr-g6-unify** — фінали, cta, назва значка, нагадування у фіналах; пункти eyebrow, sk gram/orth, цифри відмін, термін — після відповідей нижче (ukr 6: 9–11, ukr 5: 5).
 2. **engine-lang-p3** — 18 дрібних пунктів рушія/validate/stats (милозвучність п. 15 з § 24 п. 4 і § 25 п. 2; `plain()` п. 17); незалежне рев'ю D-026.
 3. **Українська 7 кл.** — лише за рішенням людини (план за Заболотним 7 кл.; у шаблон задач: блок «Так і не так», «Зверни увагу», `requires` для фіналів, pick з `[!…]`, власна підтека scratchpad, OCR PAGE + 1).
@@ -34,6 +36,9 @@ _Оновлено: 2026-11-03, куратор пам'яті, сесія 1 — і
 8. **Профіль hist 7–9 `sentenceWords` [5; 13]** (47 з 83 уроків нижче 6)?
 9. **Підтвердити план world 8–9** (content/world/plan.js) перед пакетом; еталон w7s1 — у style/world.md (згода?).
 10. Дублікати фото між теками img/hist (g5s5, g5s6, g8s5 — копії; давнє питання); хто вчитель-рецензент для `approved` (і для hist/world).
+
+**Математика за Істером (D-043):** пп. 1–5 закрито рішенням людини 03.11 (decisions D-043 «Уточнення 2026-11-03»).
+6. **dg5 №26** переписав верифікатор (складена проба ознак подільності; ключ перевірено оркестратором) — учителю глянути перед `approved`.
 
 **Українська 6 кл.** (facts/ukr «спірне», reports/verify/u6s*.md, style-sync-ukr-g6.md):
 1. **Збірні з іменниками ж. р.** («троє подруг», «двоє біатлоністок»): З6 с. 200 — помилка, СУМ-11 «двоє дочок» без позначки → зараз порада (№141). Йти строго за З6?

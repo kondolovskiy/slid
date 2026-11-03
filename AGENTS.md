@@ -54,6 +54,7 @@ node tools/stats.mjs [--subject S]                           # метрики с
 node tools/claim.mjs list|claim|move ...                     # черга задач
 node tools/make-tasks.mjs [--subject S]                      # задачі на написання з плану
 node tools/graph-report.mjs [--line ID --strict]             # граф умінь → reports/graph-<предмет>.md
+node tools/fig-audit.mjs [--subject S]                       # де умова потребує рисунка, а його немає → reports/fig-audit-S.md
 python3 -m http.server 8000                                  # запустити локально
 cd server && npm run check && DATABASE_URL=postgres://… npm run test:e2e   # бекенд
 ```

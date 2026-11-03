@@ -332,7 +332,8 @@ window.SLID_LEARN = (() => {
   const CYR_TWIN = { "а": "a", "е": "e", "і": "i", "к": "k", "о": "o", "р": "p", "с": "c", "у": "y", "х": "x",
     "А": "A", "В": "B", "Е": "E", "І": "I", "К": "K", "М": "M", "Н": "H", "О": "O", "Р": "P", "С": "C", "Т": "T", "Х": "X" };
   const latin = t => t.replace(/[аеікорсухАВЕІКМНОРСТХ]/g, c => CYR_TWIN[c]);
-  const norm = v => latin(String(v ?? "")).replace(/(\d)\.(?=\d)/g, "$1,").replace(/[−–—]/g, "-").replace(/[*×∙⋅]/g, "·").replace(/÷/g, ":").replace(/[  ]/g, " ")
+  // «cbrt» — кубічний корінь з фізичної клавіатури (engine-cbrt-key): cbrt(5) = ∛(5), 2cbrt2 = 2∛2; кнопка поля вставляє «∛»
+  const norm = v => latin(String(v ?? "")).replace(/cbrt/gi, "∛").replace(/(\d)\.(?=\d)/g, "$1,").replace(/[−–—]/g, "-").replace(/[*×∙⋅]/g, "·").replace(/÷/g, ":").replace(/[  ]/g, " ")
     .replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹]+/g, m => "^(" + [...m].map(c => SUP.indexOf(c)).join("") + ")").trim();
   function lex(t) {
     const out = []; let i = 0, m;
@@ -638,7 +639,7 @@ window.SLID_LEARN = (() => {
      літера, якій умова дає числове значення ($\sqrt{a^2}$ при $a = 4,6$ — це дане, не невідоме).
      Кілька кандидатів (параметр і змінна $3x^2 - bx + 12 = 0$, система x і y, $y = kx + b$), жодного, різні літери в записі,
      літера не та — запис лишається як є, тобто «неправильно», як і раніше (рев'ю P1-1). */
-  const LIST_PRE = /^\s*([a-zA-Zа-яґєії])\s*(?:_?\{?[1-4]\}?|[₁₂₃₄])?\s*=\s*(?=[-−–+]?\s*(?:[\d√∛∜π(]|sqrt|pi))/u;
+  const LIST_PRE = /^\s*([a-zA-Zа-яґєії])\s*(?:_?\{?[1-4]\}?|[₁₂₃₄])?\s*=\s*(?=[-−–+]?\s*(?:[\d√∛∜π(]|sqrt|cbrt|pi))/u;
   const CYR_LAT = { "а": "a", "е": "e", "і": "i", "к": "k", "о": "o", "р": "p", "с": "c", "у": "y", "х": "x" };
   const TEX_ARG = /\\(?:vec|overrightarrow|overline|bar|hat|text|mathrm|operatorname|mathbb)\s*(?:\{[^{}]*\}|[a-zA-Z])/g;
   const TEX_WORD = /\\[a-zA-Z]+|\b(?:arcsin|arccos|arctg|arcctg|arctan|sin|cos|tg|ctg|tan|cot|log|lg|ln|sqrt|max|min|mod)\b/g;
@@ -1649,10 +1650,14 @@ window.SLID_LEARN = (() => {
       для planFor, без ctx — лише пройдені). Пули шукаємо заново: доданий пізніше пул відкриється без повторного уроку. */
   function practiceItems(S, subject, ctx) {
     return (subject.pools || []).flatMap(pool => {
-      const sec = subject.sections.find(s => s.id === pool.section);
-      if (!sec || sec.grade > S.grade) return [];
-      const ids = new Set((sec.lessons || []).map(l => l.id));
-      return pool.items.filter(it => ids.has(it.lesson) && (sec.grade === S.grade || S.lessons?.[it.lesson]?.done || (!!ctx && diagOpen(S, subject.id, it.lesson, ctx))))
+      // клас вправи — за розділом її уроку: section пулу або also (уроки, перенесені в інший розділ/клас; docs/design/math-ister.md §4)
+      const secOf = new Map();
+      for (const id of [pool.section, ...(Array.isArray(pool.also) ? pool.also : [])]) {
+        const sec = subject.sections.find(s => s.id === id);
+        if (sec) for (const l of sec.lessons || []) if (!secOf.has(l.id)) secOf.set(l.id, sec);
+      }
+      return pool.items.filter(it => { const sec = secOf.get(it.lesson);
+        return !!sec && sec.grade <= S.grade && (sec.grade === S.grade || S.lessons?.[it.lesson]?.done || (!!ctx && diagOpen(S, subject.id, it.lesson, ctx))); })
         .map(it => ({ ...it, key: pool.id + ":" + it.id, pool }));
     });
   }
@@ -1822,6 +1827,17 @@ window.SLID_LEARN = (() => {
   function validatePool(p, ctx) {
     const E = [], sec = ctx.sections.get(p.section), ids = new Set(), src = new Set((p.sources || []).map(x => x.id));
     if (!p.id) E.push("немає id"); if (!sec) return E.concat(`немає розділу «${p.section}»`);
+    // also — розділи, куди перенесено частину уроків пулу (id пулу й вправ — ключі прогресу, тож пул не ділимо)
+    const homes = [p.section];
+    if (p.also !== undefined) {
+      if (!Array.isArray(p.also) || !p.also.length) E.push("also має бути непорожнім масивом id розділів");
+      else for (const id of p.also) {
+        if (typeof id !== "string" || !ctx.sections.has(id)) E.push(`also: немає розділу «${id}»`);
+        else if (homes.includes(id)) E.push(`also: розділ «${id}» повторюється або збігається з section`);
+        else homes.push(id);
+      }
+    }
+    const poolLessons = new Set(homes.flatMap(id => ctx.sections.get(id)?.lessons || []));
     if (!["draft", "verified", "approved"].includes(p.status)) E.push("status має бути draft | verified | approved");
     if (!Array.isArray(p.sources) || !p.sources.length) E.push("немає sources — звідки взято задачі");
     for (const x of p.sources || []) if (!x.id || !x.title || !/^https?:\/\//.test(x.url || "")) E.push(`джерело «${x.id}»: потрібні id, title, url`);
@@ -1832,7 +1848,7 @@ window.SLID_LEARN = (() => {
       let it = it0;
       if (it0.gen !== undefined) { for (const m of genIssues(it0)) E.push(`${w}: ${m}`); it = genInstance(it0, "validate", 0) || { ...it0, gen: undefined }; }
       if (!it.id || ids.has(it.id)) E.push(`${w}: id порожній або повторюється`); ids.add(it.id);
-      if (!(sec.lessons || []).includes(it.lesson)) E.push(`${w}: урок «${it.lesson}» не з розділу ${p.section}`);
+      if (!poolLessons.has(it.lesson)) E.push(`${w}: урок «${it.lesson}» не з розділу ${homes.join(" / ")}`);
       if (![1, 2, 3].includes(it.lvl)) E.push(`${w}: lvl має бути 1, 2 або 3`);
       if (!POOL_TYPES.includes(it.type)) E.push(`${w}: тип «${it.type}» не дозволено в пулі`);
       if (!it.title) E.push(`${w}: немає title`);

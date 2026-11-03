@@ -325,6 +325,14 @@ const order = l => ({ L1: 3, L2: 1, L3: 2, L4: 4 }[l] ?? 50);
     .forEach(([s, v, exp]) => eq(c(s, v), exp, `checkAns: ${JSON.stringify(s)} ← «${v}»`));
   eq(L.parseAns("2 1/3").n, 7, "parseAns: мішане → чисельник"); eq(L.parseAns("1,25").d, 100, "parseAns: десятковий → знаменник"); eq(L.parseAns("1/2/3"), null, "parseAns: сміття"); }
 
+// engine-cbrt-key: «cbrt» з фізичної клавіатури = «∛» (кнопка поля); канонічність і хибні значення — як для ∛ (pg10m3 a06, b01)
+{ const R = (answer, kind = "exactRoot") => ({ type: "answer", answerKind: kind, answer });
+  [[R("2∛2"), "2∛2", "ok"], [R("2∛2"), "2cbrt(2)", "ok"], [R("2∛2"), "2cbrt2", "ok"], [R("2∛2"), "2·CBRT(2)", "ok"], [R("2∛2"), "cbrt(16)", "form"], [R("2∛2"), "∛16", "form"],
+   [R("2∛2"), "2cbrt(3)", "bad"], [R("2∛2"), "2√2", "bad"], [R("∛5"), "cbrt(5)", "ok"], [R("∛5"), "cbrt5", "ok"], [R("∛5"), "cbrt(25)", "bad"],
+   [R("∜x", "expression"), "∜x", "ok"], [R("x^(1/3)", "expression"), "cbrt(x)", "ok"], [{ ...R("∛2; 1", "list"), title: "Розв'яжи $(x^3 - 2)(x - 1) = 0$" }, "x = cbrt(2); x = 1", "ok"], [R(3, "number"), "cbrt(27)", "form"],
+   [R("2a + c", "expression"), "2a + c", "ok"]]
+    .forEach(([s, v, exp]) => eq(L.checkAns(s, v), exp, `cbrt: ${JSON.stringify(s)} ← «${v}»`)); }
+
 // Нові формати перевіряються значенням, але не приймають довільні вирази.
 { const cases = [
     [{ answerKind: "comparison", answer: "<" }, " < ", "ok"],
@@ -650,6 +658,33 @@ const order = l => ({ L1: 3, L2: 1, L3: 2, L4: 4 }[l] ?? 50);
   L.srsUpdate(S, [{ lesson: "pre5", ok: true }], "2026-10-17");
   eq(S.srs.pre5, { box: 1, due: "2026-10-20" }, "practice context: prerequisite SRS advances");
   eq(S.grade, 6, "practice context: grade never changed");
+}
+/* Пул на кілька розділів (also, docs/design/math-ister.md §4): клас вправи — за розділом її уроку. */
+{
+  const c = { sections: [
+    { id: "a5", grade: 5, lessons: [{ id: "area" }] },
+    { id: "v6", grade: 6, lessons: [{ id: "box" }, { id: "vol" }] }], pools: [] };
+  c.pools.push({ id: "pv", section: "v6", also: ["a5"], items: ["area", "box", "vol"].map((lesson, i) => ({ id: "i" + i, lesson, lvl: 1 })) });
+  const S5 = { grade: 5, lessons: {}, seen: {}, srs: {} }, S6 = { grade: 6, lessons: {}, seen: {}, srs: {} };
+  eq(L.practiceItems(S5, c).map(it => it.lesson), ["area"], "practice also: 5 кл. бачить лише вправи уроку свого класу, не 6-го");
+  eq(L.practiceItems(S6, c).map(it => it.lesson), ["box", "vol"], "practice also: 6 кл. — поточні уроки; молодший непройдений закритий");
+  S6.lessons.area = { done: true };
+  eq(L.practiceItems(S6, c).map(it => it.key), ["pv:i0", "pv:i1", "pv:i2"], "practice also: пройдений урок молодшого розділу відкритий, ключ — id пулу");
+  const S4 = { grade: 4, lessons: { area: { done: true } }, seen: {}, srs: {} };
+  eq(L.practiceItems(S4, c), [], "practice also: старші розділи закриті");
+  const noAlso = { ...c, pools: [{ id: "pv", section: "v6", items: [{ id: "i0", lesson: "area", lvl: 1 }, { id: "i1", lesson: "box", lvl: 1 }] }] };
+  eq(L.practiceItems(S6, noAlso).map(it => it.lesson), ["box"], "practice: без also урок чужого розділу не потрапляє в тренування");
+  const ctx = { sections: new Map([["a5", { grade: 5, lessons: ["area"] }], ["v6", { grade: 6, lessons: ["box", "vol"] }]]), skills: { num: {} } };
+  const vp = (extra, lesson = "area") => L.validatePool({ id: "p", section: "v6", status: "draft", sources: [{ id: "b", title: "t", url: "https://x" }],
+    items: [{ id: "a", lesson, lvl: 1, sk: "num", src: "b 1", type: "answer", title: "t", steps: ["s"], answer: 1 }], ...extra }, ctx);
+  eq(vp({ also: ["a5"] }), [], "validatePool also: урок з розділу also — коректно");
+  eq(vp({}).some(e => e.includes("не з розділу")), true, "validatePool: без also урок іншого розділу — помилка");
+  eq(vp({ also: ["zz"] }).some(e => e.includes("also")), true, "validatePool also: невідомий розділ — помилка");
+  eq(vp({ also: ["v6"] }).some(e => e.includes("also")), true, "validatePool also: розділ пулу в also — помилка");
+  eq(vp({ also: ["a5", "a5"] }).some(e => e.includes("also")), true, "validatePool also: повтор — помилка");
+  eq(vp({ also: "a5" }).some(e => e.includes("also")), true, "validatePool also: не масив — помилка");
+  eq(vp({ also: [] }).some(e => e.includes("also")), true, "validatePool also: порожній масив — помилка");
+  eq(vp({ also: ["a5"] }, "vol"), [], "validatePool also: урок основного розділу — коректно");
 }
 
 /* 12. Ділення з остачею: answerKind divrem */
@@ -1072,10 +1107,11 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
 }
 { const { loadContent } = await import("./lib.mjs");
   const { subjects } = loadContent(), math = subjects.find(s => s.id === "math"), d = math.diags.find(x => x.id === "dg6");
-  // реальний dg6: 30 завдань; rev 2 — рівно п'ять cur-проб на тих самих індексах і темах; порядок тем не змінено
-  const TOPICS = "ord frac frac-cmp rem frac-add eq pct dec mixed geom frac-of dec-ops ord frac rem frac-cmp g6-div eq dec frac-add g6-lcm frac-of geom mixed g6-fadd dec-ops pct g6-prop g6-neg g6-eq".split(" ");
-  eq(d.items.map(it => it.topic), TOPICS, "dg6: теми за індексами — як у редакції 1 (збережені вердикти не зсуваються)");
-  eq(d.items.flatMap((it, i) => it.rev ? [[i, it.topic, it.rev]] : []), [[16, "g6-div", 2], [20, "g6-lcm", 2], [24, "g6-fadd", 2], [27, "g6-prop", 2], [28, "g6-neg", 2]], "dg6: rev 2 лише в замінених cur-пробах");
+  // реальний dg6: 30 завдань; rev 2 — рівно п'ять cur-проб на тих самих індексах; порядок завдань не змінено.
+  // 2026-11-03 (D-043, docs/design/math-ister.md §5.2): №21 g6-lcm → pre-тема g6-div, №27 pct → cur-тема pct-of — завдання ті самі
+  const TOPICS = "ord frac frac-cmp rem frac-add eq pct dec mixed geom frac-of dec-ops ord frac rem frac-cmp g6-div eq dec frac-add g6-div frac-of geom mixed g6-fadd dec-ops pct-of g6-prop g6-neg g6-eq".split(" ");
+  eq(d.items.map(it => it.topic), TOPICS, "dg6: теми за індексами (збережені вердикти не зсуваються)");
+  eq(d.items.flatMap((it, i) => it.rev ? [[i, it.topic, it.rev]] : []), [[16, "g6-div", 2], [20, "g6-div", 2], [24, "g6-fadd", 2], [27, "g6-prop", 2], [28, "g6-neg", 2]], "dg6: rev 2 лише в замінених пробах");
   eq(L.diagRev(d), 2, "dg6: редакція 2");
   // перерваний тест редакції 1 (усе правильно до другого dec-ops включно): п'ять проб відкинуто, решта на місці
   const S = { grade: 6, diag: {}, plan: {}, diagRun: { dg6: Object.fromEntries(Array.from({ length: 26 }, (_, i) => [i, OK])) } };
@@ -1083,8 +1119,8 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
   eq([r.dropped, Object.keys(S.diagRun.dg6).length, L.nextItem(d, S.diagRun.dg6)], [[16, 20, 24], 23, 16], "dg6: legacy-запуск — заново g6-div, g6-lcm, g6-fadd; 23 відповіді лишились");
   // складені проби: known лише коли вся проба правильна
   const all = Object.fromEntries(d.items.map((_, i) => [i, OK]));
-  eq(L.buildPlan(d, all, {}).known, ["g6m1l2", "g6m1l4", "g6m2l4", "g6m3l2", "g6m4l3", "g6m5l3"], "dg6: усе правильно → known шести уроків");
-  eq(L.buildPlan(d, { ...all, 24: BAD, 28: SKIP }, {}).known, ["g6m1l2", "g6m1l4", "g6m3l2", "g6m5l3"], "dg6: помилка в складеній пробі → урок не known");
+  eq(L.buildPlan(d, all, {}).known, ["ms3l1", "ms3l2", "g6m2l4", "g6m3l2", "g6m4l3", "g6m5l3"], "dg6: усе правильно → known шести уроків (з 2026-11-03 — відсотки, не подільність)");
+  eq(L.buildPlan(d, { ...all, 24: BAD, 28: SKIP }, {}).known, ["ms3l1", "ms3l2", "g6m3l2", "g6m5l3"], "dg6: помилка в складеній пробі → урок не known");
   // пули 6 кл.: id з редакції 2026-10-13 (літера уроку + 01–08) лишились у своїх уроках, крім замінених; нові — нові id
   const REMOVED = { pg6m1: ["a01", "b03", "c03"], pg6m3: ["a05", "b05"], pg6m4: ["e05"], pg6m5: ["a03", "b01"] };
   const ADDED = { pg6m1: ["a09", "b09", "c09"], pg6m3: ["a09", "b09"], pg6m4: ["e09"], pg6m5: ["a09", "b09"] };
@@ -2038,7 +2074,7 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
   const real = same(math, "справжній зміст math");
   const cnt = Object.values(real).reduce((o, e) => (o[e.how] = (o[e.how] || 0) + 1, o), {});
   eq([cnt.u > 20, cnt.typical > 200, cnt["u-topic"] > 0, cnt.items > 0, cnt.none > 1000], [true, true, true, true, true], `справжній зміст: є всі гілки правила (${JSON.stringify(cnt)})`);
-  eq([real["s|m3#8"].nodes, real["s|m3#1"].nodes, real["p|pg6m2:e08"].nodes, real["t|dg6/g6-lcm"].nodes], [["num-by-frac"], ["frac-of-num"], ["frac-div", "frac-add-unlike"], ["divis-lcm", "divis-gcd"]], "справжній зміст: m3 #8, #1, pg6m2 e08, тема dg6/g6-lcm");
+  eq([real["s|m3#8"].nodes, real["s|m3#1"].nodes, real["p|pg6m2:e08"].nodes, real["d|dg6#20"].nodes], [["num-by-frac"], ["frac-of-num"], ["frac-div", "frac-add-unlike"], ["divis-lcm", "divis-gcd"]], "справжній зміст: m3 #8, #1, pg6m2 e08, завдання dg6 №21 (колишня тема g6-lcm, D-043)");
   // синтетичні випадки поверх справжнього змісту (новий loadContent на кожен — об'єкти змісту не спільні)
   const mut = (f, what) => { const C = loadContent(), m = C.subjects.find(s => s.id === "math"); f(m); return same(m, what); };
   const lesson = (m, id) => m.sections.flatMap(s => s.lessons || []).find(l => l.id === id);
@@ -2144,11 +2180,11 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
   eq([fm.practice.ok, fm.practice.bad, fd.practice.ok, fd.practice.bad, fm.st, fd.st, fm.errs, fd.errs], [2, 0, 0, 2, "ok", "weak", 1, 1], "справжній граф: frac-mul / frac-div — різні за S.seen, спільні errs");
   eq(strip({ ...fm, practice: null, st: null }), strip({ ...fd, practice: null, st: null }), "справжній граф: решта стану frac-mul і frac-div однакова (st — від тренування)");
   eq(L.nodeState({}, math, "frac-div").st, "unknown", "справжній граф: порожній профіль — невідомо");
-  // dg6 #20 (індекс 19, тема g6-lcm з u на обидва вузли) — «Ще не знаю» слабить обидва; HALF — жодного
-  const lcmI = math.diags.find(d => d.id === "dg6").items.findIndex(it => it.topic === "g6-lcm");
+  // dg6 №21 (індекс 20; до 2026-11-03 — тема g6-lcm, тепер pre g6-div з u завдання на обидва вузли) — «Ще не знаю» слабить обидва
+  const lcmI = math.diags.find(d => d.id === "dg6").items.findIndex(it => it.lesson === "g6m1l4");
   const dg6 = v => ["divis-lcm", "divis-gcd"].map(id => L.nodeState({ diag: { dg6: { res: { [lcmI]: v }, rev: 9 } } }, math, id));
-  eq([dg6(L.SKIP).map(x => x.diag.skip), dg6(L.HALF).map(x => x.diag.half)], [[1, 1], [1, 1]], "dg6/g6-lcm: завдання теми з двома u — обом вузлам");
-  eq(math.diags.find(d => d.id === "dg6").topics.find(t => t.id === "g6-lcm").kind, "cur", "dg6/g6-lcm — cur (weak лише від pre-тем)");
+  eq([dg6(L.SKIP).map(x => x.diag.skip), dg6(L.HALF).map(x => x.diag.half)], [[1, 1], [1, 1]], "dg6 №21: завдання з двома u — обом вузлам");
+  eq([lcmI, math.diags.find(d => d.id === "dg6").topics.find(t => t.id === "g6-div").kind], [20, "pre"], "dg6 №21 — у pre-темі g6-div (D-043: подільність — 5 кл.)");
 }
 console.log(`\n${n} перевірок, ${fails ? fails + " з помилками" : "усе гаразд"}`);
 if (fails) process.exit(1);

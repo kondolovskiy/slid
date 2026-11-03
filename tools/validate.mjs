@@ -3,7 +3,7 @@
 // ПОПЕРЕДЖЕННЯ — порушення стилю (style/*.md, style/profiles.json) — їх треба виправити або обґрунтувати в нотатках задачі.
 // Запуск: node tools/validate.mjs [--section <id> | --diag <id> | --pool <id>] [--quiet]
 import fs from "node:fs"; import path from "node:path";
-import { loadContent, GRADED, TYPES, plain, words, sentences, lessonMetrics, gradeBand, readJSON, ROOT } from "./lib.mjs";
+import { loadContent, GRADED, TYPES, plain, words, sentences, lessonMetrics, gradeBand, readJSON, ROOT, figCues } from "./lib.mjs";
 import { analyzeGraph } from "./graph-lib.mjs";
 
 const args = process.argv.slice(2);
@@ -27,6 +27,9 @@ if (!MATH_COMMANDS.size) { console.error("ПОМИЛКА ЗАВАНТАЖЕНН�
 const allLessonIds = new Map(), allSectionIds = new Set();
 const ICONS = fs.readFileSync(path.join(ROOT, "app/app.js"), "utf8").match(/const P = \{([\s\S]*?)\n\};/)[1].match(/^\s{2}(\w+):/gm).map(s => s.trim().slice(0, -1));
 const FIGS = ["circle","circles","bar","unequal","bars","grid","dots","rem"];
+// літери варіантів choice/multi — з рушія (app/app.js OPT_LETTERS), щоб ліміт не розходився з тим, що бачить дитина
+const OPT_LETTERS = fs.readFileSync(path.join(ROOT, "app/app.js"), "utf8").match(/const OPT_LETTERS="([^"]+)"/)?.[1];
+if (!OPT_LETTERS) { console.error("ПОМИЛКА ЗАВАНТАЖЕННЯ: app/app.js не має const OPT_LETTERS"); process.exit(1); }
 const SVGS = [...fs.readFileSync(path.join(ROOT, "app/app.js"), "utf8").matchAll(/if\(name==="(\w+)"\)/g)].map(m => m[1]);
 
 for (const c of subjects) {
@@ -198,6 +201,12 @@ function diagFormatIssues(s) {
 
 // перевірка одного екрана; diag — завдання діагностики (без фідбеку: дитина не бачить, правильно чи ні)
 // pool — задача пулу: її поля answer уже перевірив learn.validatePool
+// tools-math-fig-audit: умова прямо посилається на рисунок («на рисунку», «за графіком», «на кресленні»), а ілюстрації немає
+// ні на екрані, ні (в уроці) на попередньому екрані — попередження; повний перелік із геометрією без рисунка — tools/fig-audit.mjs
+function figRef(S, s, prev = null) {
+  const cue = figCues(s, prev);
+  if (cue?.level === "ref" && !cue.ill && !cue.prevIll) W(S, `умова посилається на рисунок («${cue.ref}»), а ілюстрації (fig, img, svg, lab) немає — додай рисунок точно за умовою або перепиши умову`);
+}
 function checkScreen(S, s, c, diag, pool = false) {
   if (!TYPES.includes(s.type)) return E(S, `невідомий тип «${s.type}»`);
   if (!s.title && !(diag && !pool)) E(S, "немає title");   // у тесті рівня «немає title» уже дає learn.validate — не дублюємо (рев'ю diag-answer-kinds, P3-4)
@@ -233,6 +242,7 @@ function checkScreen(S, s, c, diag, pool = false) {
     if (!s.fbOk) W(S, "немає fbOk");
   }
   if ((s.poll || s.hyp) && !s.fbTitle) E(S, "poll/hyp потребує fbTitle");
+  if ((s.type === "choice" || s.type === "multi") && (s.opts || []).length > OPT_LETTERS.length) E(S, `${s.opts.length} варіантів — більше, ніж літер (${OPT_LETTERS.length}): частина варіантів залишиться без літери`);
   switch (s.type) {
     case "choice": if (!s.poll && !s.hyp && !(Number.isInteger(s.correct) && s.correct >= 0 && s.correct < (s.opts || []).length)) E(S, "correct поза межами opts");
       if ((s.opts || []).length < 2 || s.opts.length > 5) E(S, "варіантів має бути 2–5"); break;
@@ -309,7 +319,7 @@ for (const c of subjects) for (const sec of c.sections) {
     if (l.badge && !allBadges.has(l.badge)) E(L, `badge «${l.badge}» не оголошено`);
     if (!l.outro?.text || !Array.isArray(l.outro.learned) || l.outro.learned.length < 2 || l.outro.learned.length > 4) E(L, "outro: потрібні text і 2–4 пункти learned");
     if (l.screens?.[0]?.type !== "intro") E(L, "перший екран має бути intro (проблема, з якої починається урок)");
-    l.screens.forEach((s, i) => checkScreen(`${L} екран ${i + 1} (${s.type})`, s, c, false));
+    l.screens.forEach((s, i) => { checkScreen(`${L} екран ${i + 1} (${s.type})`, s, c, false); figRef(`${L} екран ${i + 1} (${s.type})`, s, l.screens[i - 1]); });
     // профіль складності
     const m = lessonMetrics(l), p = profiles[c.id]?.[gradeBand(sec.grade)] || profiles._default[gradeBand(sec.grade)];
     for (const [k, [lo, hi]] of Object.entries(p)) if (m[k] < lo || m[k] > hi) W(L, `${k}=${m[k]} поза профілем [${lo}; ${hi}] для ${c.id}, ${gradeBand(sec.grade)} кл.`);
@@ -318,7 +328,7 @@ for (const c of subjects) for (const sec of c.sections) {
     // правильна відповідь не має стояти завжди на тому самому місці — інакше її вгадують
     const ch = l.screens.filter(s => s.type === "choice" && !s.poll && !s.hyp && Number.isInteger(s.correct));
     if (ch.length >= 3) { const cnt = {}; ch.forEach(s => cnt[s.correct] = (cnt[s.correct] || 0) + 1); const [k, n] = Object.entries(cnt).sort((a, b) => b[1] - a[1])[0];
-      if (n / ch.length > 0.6) W(L, `у ${n} з ${ch.length} завдань choice правильний варіант — ${"АБВГД"[k]}: переставляй варіанти`); }
+      if (n / ch.length > 0.6) W(L, `у ${n} з ${ch.length} завдань choice правильний варіант — ${OPT_LETTERS[k]}: переставляй варіанти`); }
   }
 }
 // діагностика класів (SLID.diag, docs/CONTENT_SCHEMA.md §9)
@@ -336,10 +346,10 @@ for (const c of subjects) for (const d of c.diags || []) {
   if (c.diags.filter(x => x.grade === d.grade).length > 1) E(D, `для ${d.grade} класу вже є діагностика з цього предмета`);
   for (const m of learn.validate(d, { ...subjectMaps(c), skills: c.skills })) E(D, m);
   if (!d.meta) W(D, "немає meta {author, created, factcheck, teacher}");
-  (d.items || []).forEach((s, i) => { if (TYPES.includes(s.type)) checkScreen(`${D} завдання ${i + 1} (${s.type})`, s, c, true); });
+  (d.items || []).forEach((s, i) => { if (TYPES.includes(s.type)) { checkScreen(`${D} завдання ${i + 1} (${s.type})`, s, c, true); figRef(`${D} завдання ${i + 1} (${s.type})`, s); } });
   const ch = (d.items || []).filter(s => s.type === "choice" && Number.isInteger(s.correct));
   if (ch.length >= 4) { const cnt = {}; ch.forEach(s => cnt[s.correct] = (cnt[s.correct] || 0) + 1); const [k, n] = Object.entries(cnt).sort((a, b) => b[1] - a[1])[0];
-    if (n / ch.length > 0.5) W(D, `у ${n} з ${ch.length} завдань choice правильний варіант — ${"АБВГД"[k]}: переставляй варіанти`); }
+    if (n / ch.length > 0.5) W(D, `у ${n} з ${ch.length} завдань choice правильний варіант — ${OPT_LETTERS[k]}: переставляй варіанти`); }
   if ((d.items || []).length > 32) W(D, `${d.items.length} завдань — тест задовгий (орієнтир — до 30)`);
 }
 // пули задач для тренування (SLID.pool, docs/CONTENT_SCHEMA.md §10)
@@ -352,7 +362,7 @@ for (const c of subjects) for (const p of c.pools || []) {
   if (!p.meta) W(D, "немає meta {author, created, factcheck, teacher}");
   // генератор (gen): екран перевіряємо на першому наборі значень — так, як його побачить дитина (правила gen — learn.validatePool)
   (p.items || []).forEach((s0, i) => { const s = s0.gen !== undefined ? learn.genInstance(s0, "validate", 0) || s0 : s0;
-    if (TYPES.includes(s.type)) checkScreen(`${D} задача ${i + 1} «${s.id}» (${s.type})`, { ...s, fbText: (s.steps || []).join(" ") }, c, true, true); });
+    if (TYPES.includes(s.type)) { checkScreen(`${D} задача ${i + 1} «${s.id}» (${s.type})`, { ...s, fbText: (s.steps || []).join(" ") }, c, true, true); figRef(`${D} задача ${i + 1} «${s.id}» (${s.type})`, s); } });
   const per = {}; (p.items || []).forEach(s => per[s.lesson] = (per[s.lesson] || 0) + 1);
   for (const [l, n] of Object.entries(per)) if (n < 5) W(D, `урок ${l}: лише ${n} задач — для чергування треба щонайменше 5`);
 }

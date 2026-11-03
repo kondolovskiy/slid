@@ -1,12 +1,12 @@
 /* Слід · Математика, 7 клас — «Геометрія: паралельні прямі»
-   Статус уроків: verified. 4 уроки (3 теми + boss).
+   Статус уроків: verified (g7m6l1: рисунок на екрані 10, fix-math-figs-g7-geo-b — перевірено 2026-11-03, reports/verify/fix-math-figs-g7-geo-b.md). 4 уроки (3 теми + boss).
    Інтерактив (D-014): plane axes:false — дві прямі + січна, drag, live angle(...).
    Перевірка: node tools/validate.mjs --section g7m6 && node tools/stats.mjs --subject math
    Схема й правила: docs/CONTENT_SCHEMA.md §8, style/, D-019. */
 SLID.section("math", {
   id: "g7m6",
   grade: 7,
-  weeks: [21, 30],
+  weeks: [9, 16],
   title: "Геометрія: паралельні прямі",
   why: "Щоб розуміти, на чому тримаються креслення, карти й архітектура.",
   requires: ["g7m2l2"],
@@ -259,6 +259,22 @@ SLID.section("math", {
           eyebrow: "Фінал",
           title: "Яка ознака спрацювала?",
           body: "<p>На кресленні внутрішні кути по різні боки січної — по $65°$. Що можна сказати про прямі?</p>",
+          lab: {
+            kind: "plane",
+            axes: false,
+            grid: 0,
+            view: [0, 10, 0, 7],
+            lines: [
+              { through: [[1, 5], [9, 5]] },
+              { through: [[1, 2], [9, 2]], color: "blue" },
+              { through: [[3, 5], [4.399, 2]], color: "green" }
+            ],
+            angles: [
+              { from: [9, 5], at: [3, 5], to: [4.399, 2], color: "gold", label: "65°" },
+              { from: [1, 2], at: [4.399, 2], to: [3, 5], color: "gold", label: "65°" }
+            ],
+            alt: "Дві прямі й січна; внутрішні кути по різні боки від січної позначено по 65 градусів"
+          },
           opts: [
             "Вони зустрінуться під прямим кутом",
             "Вони завжди перетинаються",

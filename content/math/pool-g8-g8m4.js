@@ -1,10 +1,10 @@
 /* Слід · Математика, 8 клас — пул задач для тренування до розділу «Геометрія: подібність і теорема Піфагора» (g8m4)
-   Статус: verified (verifier-refine-math-content-from-matrix-v3, 2026-11-01, reports/verify/refine-math-content-from-matrix-v3.md) після refine-math-content-from-matrix-v3 (2026-11-01): g8m4l2 — b01 (№530(1), трійка 3-4-5 дублює екрани уроку) → b09 №530(2) exactRoot «3√13»; b04 (№536, «половина основи + гіпотенуза» дублює b05) → b10 №541 list «10; 24»; g8m4l3 + c08 №513 list із коренями «5√5; 10√5» (exactRoot за умовою). id b01, b04 не використовувати знову. 24 задачі: по 8 на урок.
+   Статус: verified (повторно після fix-math-figs-g8-geo, 2026-11-03: статичні рисунки lab до a05, b06, c01; verifier-fix-math-figs-g8-geo, reports/verify/fix-math-figs-g8-geo.md). Попередньо — verified (verifier-refine-math-content-from-matrix-v3, 2026-11-01, reports/verify/refine-math-content-from-matrix-v3.md) після refine-math-content-from-matrix-v3 (2026-11-01): g8m4l2 — b01 (№530(1), трійка 3-4-5 дублює екрани уроку) → b09 №530(2) exactRoot «3√13»; b04 (№536, «половина основи + гіпотенуза» дублює b05) → b10 №541 list «10; 24»; g8m4l3 + c08 №513 list із коренями «5√5; 10√5» (exactRoot за умовою). id b01, b04 не використовувати знову. 24 задачі: по 8 на урок.
    Попередня редакція — verified (повторно 2026-11-01, verifier-fix-math-terms-g8m4-g9m1, reports/verify/fix-math-terms-g8m4-g9m1.md; правка fix-math-terms-g8m4-g9m1: c06 (g8m4l3): «Проекції» → «Проєкції» в hint і steps — повторна верифікація змінених місць; раніше verified: verifier-pool-g8m4, 2026-10-31, reports/verify/pg8m4.md). 23 задачі (до 2026-11-01): g8m4l1 — 8, g8m4l2 — 8, g8m4l3 — 7 (boss g8m4l4 без задач).
    Матриця docs/math-personalization-coverage.md 2026-10-16.v2: усі три уроки required, формат number (+ choice/list за умовою).
    Усі задачі — з підручника Мерзляк, Якір «Геометрія. 8 клас» (2025), п. 12–13, 15–16; умови, числа й рисунки звірено
    за відрендереними сторінками PDF 2026-10-31. srcPage — друкований номер сторінки (у цьому PDF збігається з номером сторінки файлу).
-   Рисунки підручника переказано словами (у пулі немає геометричних fig). Термін «проєкція» — за правописом 2019 і підручником; урок g8m4l3 і глосарій узгоджено 2026-11-01 (fix-math-terms-g8m4-g9m1).
+   Рисунки підручника переказано словами; з 2026-11-03 до a05, b06, c01 додано статичні рисунки (lab plane без сітки, у пропорціях умови). Термін «проєкція» — за правописом 2019 і підручником; урок g8m4l3 і глосарій узгоджено 2026-11-01 (fix-math-terms-g8m4-g9m1).
    Перевірка: node tools/validate.mjs --pool pg8m4
    Схема: docs/CONTENT_SCHEMA.md §10 */
 SLID.pool("math", {
@@ -41,6 +41,11 @@ SLID.pool("math", {
     { id: "a05", lesson: "g8m4l1", lvl: 2, sk: "geom", src: "mer8g №431(1)", srcPage: 106, adapted: true,
       type: "answer", title: "Знайди відрізок $BD$",
       body: "<p>Пряма, паралельна стороні $AC$ трикутника $ABC$, перетинає сторону $AB$ у точці $D$, а сторону $BC$ — у точці $E$. Відомо: $AB$ = 16 см, $AC$ = 20 см, $DE$ = 15 см. Знайди відрізок $BD$.</p>",
+      lab: { kind: "plane", axes: false, grid: 0, view: [0, 10, 0, 6.5],
+        points: { A: { at: [1, 1] }, B: { at: [5.6, 5.45] }, C: { at: [9, 1] }, D: { at: [2.15, 2.11], color: "blue" }, E: { at: [8.15, 2.11], color: "blue" } },
+        polys: [{ pts: ["A", "B", "C"], opacity: 0.12 }],
+        segs: [{ a: "E", b: "D", color: "blue", label: "15" }, { a: "A", b: "C", label: "20" }, { a: "B", b: "A", label: "16" }],
+        alt: "Трикутник ABC; відрізок DE паралельний AC, D на AB, E на BC; AB 16 см, AC 20 см, DE 15 см" },
       answer: 12, unit: "см",
       hint: "Відрізок, паралельний стороні, відтинає трикутник $DBE$, подібний до $ABC$. Яка сторона $ABC$ відповідає $DE$, а яка — $BD$?",
       steps: ["$DE \\parallel AC$, кут $B$ спільний — $\\triangle DBE ∼ \\triangle ABC$.", "$DE$ відповідає $AC$, $BD$ відповідає $BA$: $k = DE : AC = 15 : 20 = 0{,}75$.", "$BD = 0{,}75 · AB = 0{,}75 · 16 = 12$ см."] },
@@ -96,6 +101,12 @@ SLID.pool("math", {
     { id: "b06", lesson: "g8m4l2", lvl: 2, sk: "geom", src: "mer8g №543", srcPage: 140,
       type: "answer", title: "Знайди сторону $AB$",
       body: "<p>У трикутнику $ABC$ відомо: $BC$ = 20 см. Висота $BD$ ($BD \\perp AC$) ділить сторону $AC$ на відрізки $AD$ = 5 см і $CD$ = 16 см. Знайди сторону $AB$.</p>",
+      lab: { kind: "plane", axes: false, grid: 0, view: [0, 10.4, 0, 6.8],
+        points: { A: { at: [1, 1] }, B: { at: [3, 5.8] }, C: { at: [9.4, 1] }, D: { at: [3, 1], color: "blue" } },
+        polys: [{ pts: ["A", "B", "C"], opacity: 0.12 }],
+        segs: [{ a: "B", b: "D", color: "blue", dash: true }, { a: "A", b: "D", label: "5" }, { a: "D", b: "C", label: "16" }, { a: "C", b: "B", label: "20" }],
+        angles: [{ from: "C", at: "D", to: "B", label: false, r: 16, color: "blue" }],
+        alt: "Трикутник ABC з висотою BD до сторони AC; AD 5 см, CD 16 см, BC 20 см" },
       answer: 13, unit: "см",
       hint: "Спершу з трикутника $BDC$ знайди висоту $BD$. Потім — трикутник $ABD$.",
       steps: ["У трикутнику $BDC$ кут $D$ прямий: $BD^2 = 20^2 - 16^2 = 400 - 256 = 144$, $BD = 12$ см.", "У трикутнику $ABD$ кут $D$ прямий: $AB^2 = 5^2 + 12^2 = 25 + 144 = 169$.", "$AB = 13$ см."] },
@@ -116,6 +127,12 @@ SLID.pool("math", {
     { id: "c01", lesson: "g8m4l3", lvl: 1, sk: "geom", src: "mer8g №461", srcPage: 112, adapted: true,
       type: "answer", title: "Скільки пар подібних?",
       body: "<p>У трикутнику з прямим кутом із вершини цього кута провели висоту до гіпотенузи. На рисунку стало три трикутники: великий і два малі.</p><p>Скільки пар подібних трикутників на цьому рисунку?</p>",
+      lab: { kind: "plane", axes: false, grid: 0, view: [0, 10, 0, 5.5],
+        points: { a: { at: [1, 1] }, b: { at: [9, 1] }, c: { at: [3.88, 4.84] }, h: { at: [3.88, 1] } },
+        polys: [{ pts: ["a", "h", "c"], color: "blue", opacity: 0.18 }, { pts: ["h", "b", "c"], color: "green", opacity: 0.18 }],
+        segs: [{ a: "a", b: "b" }, { a: "c", b: "h", dash: true }],
+        angles: [{ from: "a", at: "c", to: "b", label: false, r: 16 }, { from: "b", at: "h", to: "c", label: false, r: 14 }],
+        alt: "Трикутник з прямим кутом і висотою з вершини прямого кута до гіпотенузи; висота ділить його на два менші трикутники" },
       answer: 3, unit: "пари", unitForms: ["пара", "пари", "пар"],
       hint: "Кожен малий подібний до великого. А чи подібні малі між собою?",
       steps: ["Кожен малий трикутник має прямий кут і спільний гострий кут із великим — він подібний до великого.", "Два малі подібні до одного трикутника, тож подібні й між собою.", "Пари: великий і перший малий, великий і другий малий, два малі — 3 пари."] },

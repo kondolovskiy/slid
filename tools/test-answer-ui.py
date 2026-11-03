@@ -414,7 +414,7 @@ FORMAT_FIXTURES = [
 ]
 
 async def answer_format_checks(browser, url):
-    context, page, errors = await qa_page(browser, url, {'grade': 6, 'unlockAll': True, 'lessons': {}, 'srs': {}, 'seen': {}})
+    context, page, errors = await qa_page(browser, url, {'grade': 5, 'unlockAll': True, 'lessons': {}, 'srs': {}, 'seen': {}})
     checked, helps = 0, []
     for offset in range(0, len(FORMAT_FIXTURES) + 1, 6):
         batch = FORMAT_FIXTURES[offset:offset + 6]
@@ -586,7 +586,8 @@ async def content_checks(browser, url, report):
     print(f"Реальні об’єкти: {len(report['diags'])} діагностик, {len(report['pools'])} пулів, {count} вправ", flush=True)
 
 async def session_checks(browser, url):
-    context, page, errors = await qa_page(browser, url, {'grade': 6, 'unlockAll': False,
+    # g6m1 — 5 кл. з 2026-11-03 (D-043): поточний клас фікстури — 5, щоб помилки тренування йшли в план класу
+    context, page, errors = await qa_page(browser, url, {'grade': 5, 'unlockAll': False,
         'lessons': {'g6m1l1': {'done': True}, 'g6m1l2': {'done': True}, 'g6m1l3': {'done': True}},
         'seen': {'pg6m1:f0': 1, 'pg6m1:f1': 0},
         'srs': {'g6m1l2': {'box': 2, 'due': DAY}, 'g6m1l3': {'box': 2, 'due': DAY}}})
@@ -625,7 +626,7 @@ async def session_checks(browser, url):
     await context.close()
     print('Session fixture: 4+2, priority, hint/retry, errors -> plan, small/exhausted, fixed SRS green', flush=True)
     print('Reversed-order pool fixture (different answers, equal due dates):', flush=True)
-    await pool_checks(browser, url, {'id': 'pg6m1', '_grade': 6, 'items': [
+    await pool_checks(browser, url, {'id': 'pg6m1', '_grade': 5, 'items': [
         {'id': 'qa-later', 'lesson': 'g6m1l2', 'lvl': 1, 'sk': 'divis', 'src': 'qa №2',
          'type': 'answer', 'title': 'QA fixture: 4 + 3', 'answer': 7, 'steps': ['4 + 3 = 7.']},
         {'id': 'qa-earlier', 'lesson': 'g6m1l1', 'lvl': 1, 'sk': 'divis', 'src': 'qa №1',
@@ -634,7 +635,7 @@ async def session_checks(browser, url):
 
 async def divrem_checks(browser, url):
     """Quotient + remainder answer: partial answer hint, key button, zero remainder, reveal."""
-    context, page, errors = await qa_page(browser, url, {'grade': 6, 'unlockAll': True})
+    context, page, errors = await qa_page(browser, url, {'grade': 5, 'unlockAll': True})
     await page.evaluate("""() => {const c=SLID_SUBJECTS.find(c=>c.id==='math');c.pools=c.pools.filter(p=>p.id==='pg6m1');
       c.pools[0].items=[{answer:[3,2],title:'17 : 5',hint:'5 · 3 = 15.'},{answer:[5,0],title:'35 : 7'},{answer:[7,1],title:'50 : 7',unit:'шт.'}]
         .map((it,i)=>({...it,id:'dr'+i,lesson:'g6m1l1',lvl:1,sk:'num',src:c.pools[0].sources[0].id+' №1',type:'answer',answerKind:'divrem',steps:['Перевірка множенням.']}));}""")
@@ -950,12 +951,13 @@ async def player_qa_checks(browser, url):
     context, page, errors = await qa_page(browser, url, {'grade': 6, 'subject': 'math', 'unlockAll': False, 'diag': {'dg6': {'done': True, 'res': {}, 'topics': {}, 'date': DAY}},
         'plan': {'math': plan6}, 'planByGrade': {'math': {'6': plan6}}})
     # Grade 6 practice keeps «−» and «/» for every number answer (the sign/fraction is not given away).
-    await page.evaluate("""() => {const c=SLID_SUBJECTS.find(c=>c.id==='math'),p=c.pools.find(p=>p.id==='pg6m1');c.pools=[p];
-      p.items=[{id:'k6',lesson:'g6m1l1',lvl:1,sk:p.items[0].sk,src:p.sources[0].id+' №1',type:'answer',title:'2 + 3',answer:5,steps:['5.']}];}""")
-    await page.evaluate("()=>{const S=JSON.parse(localStorage.getItem('slid.v1'));S.lessons={g6m1l1:{done:true}};localStorage.setItem('slid.v1',JSON.stringify(S));}")
+    # Урок 6 кл. — ms3l1 (з 2026-11-03, D-043; g6m1 тепер 5 кл.): клас вправи — клас розділу її уроку.
+    await page.evaluate("""() => {const c=SLID_SUBJECTS.find(c=>c.id==='math'),p=c.pools.find(p=>p.id==='pms3');c.pools=[p];
+      p.items=[{id:'k6',lesson:'ms3l1',lvl:1,sk:p.items[0].sk,src:p.sources[0].id+' №1',type:'answer',title:'2 + 3',answer:5,steps:['5.']}];}""")
+    await page.evaluate("()=>{const S=JSON.parse(localStorage.getItem('slid.v1'));S.lessons={ms3l1:{done:true}};localStorage.setItem('slid.v1',JSON.stringify(S));}")
     await page.reload()
-    await page.evaluate("""() => {const c=SLID_SUBJECTS.find(c=>c.id==='math'),p=c.pools.find(p=>p.id==='pg6m1');c.pools=[p];
-      p.items=[{id:'k6',lesson:'g6m1l1',lvl:1,sk:p.items[0].sk,src:p.sources[0].id+' №1',type:'answer',title:'2 + 3',answer:5,steps:['5.']}];}""")
+    await page.evaluate("""() => {const c=SLID_SUBJECTS.find(c=>c.id==='math'),p=c.pools.find(p=>p.id==='pms3');c.pools=[p];
+      p.items=[{id:'k6',lesson:'ms3l1',lvl:1,sk:p.items[0].sk,src:p.sources[0].id+' №1',type:'answer',title:'2 + 3',answer:5,steps:['5.']}];}""")
     await page.click('button[data-subject="math"]'); await page.click('[data-practice-view="math"]'); await page.click('[data-practice-mix]')
     ins = await page.locator('#stage .anskeys button').evaluate_all('bs => bs.map(b => b.dataset.ins)')
     assert ins == ['-', '/', ' '], ins
@@ -967,8 +969,11 @@ async def open_lesson_at(page, lesson, at):
     """Open a real lesson from its section page and answer the screens before index `at` correctly."""
     k, i, screens = await page.evaluate("""id => {const c=SLID_SUBJECTS.find(c=>c.id==='math');const k=c.sections.findIndex(s=>(s.lessons||[]).some(l=>l.id===id));
       const L=c.sections[k].lessons;const i=L.findIndex(l=>l.id===id);return [k,i,L[i].screens];}""", lesson)
-    await page.click('button[data-subject="math"]'); await page.click(f'[data-topic="{k}"]')
-    await page.click(f'[data-open="{i}"]'); await page.click('#go')
+    await page.click('button[data-subject="math"]')
+    if await page.locator(f'[data-topic="{k}"]').count():
+        await page.click(f'[data-topic="{k}"]'); await page.click(f'[data-open="{i}"]'); await page.click('#go')
+    else:   # урок іншого класу (після D-043 g6m1 — 5 кл., ms3 — 6 кл.): відкриваємо так само, як кнопки data-lesson застосунку
+        await page.evaluate("id => window.__slidStart(id)", lesson)
     for screen in screens[:at]:
         await answer_context_screen(page, screen)
         if screen['type'] not in ('intro', 'info', 'explore'):
@@ -1191,6 +1196,59 @@ async def root_index_checks(browser, url):
         await context.close()
     print('Root index (g10m3 2∛2, 0,3∛1000, 5·⁸√256; 320 px, light/dark): in the hook of √, apart from the coefficient, green', flush=True)
 
+async def letters_cbrt_checks(browser, url):
+    """engine-option-letters: a multi with 11 options (as ukr u5s3l1) gets letters А…К, never «undefined» (the old row had 6 letters).
+    engine-cbrt-key: real pg10m3 items with a cube root in the key (a06 «2∛2», b01 «∛5») show ∛ and ∜ right after √, ∛ inserts
+    at the caret, «cbrt(5)» from a physical keyboard is accepted; a grade-8 exactRoot key without ∛ gets no ∛ key."""
+    context, page, errors = await qa_page(browser, url, {'grade': 6, 'unlockAll': True})
+    letters = await page.evaluate("""() => {const l=SLID_SUBJECTS.find(c=>c.id==='math').sections.flatMap(s=>s.lessons||[]).find(l=>l.id==='g6m1l1');
+      l.screens=[l.screens[0], {type:'multi',sk:l.screens.find(x=>x.sk)?.sk,title:'Обери парні',body:'<p>Які числа парні?</p>',
+        opts:['1','2','3','4','5','6','7','8','9','10','11'],correct:[1,3,5,7,9],fbOk:'Так.',fbText:'Парні числа діляться на 2 без остачі.'}];
+      return 'АБВГДЕЖЗИІК';}""")
+    await open_lesson_at(page, 'g6m1l1', 1)
+    ks = await page.locator('#stage .opt .k').all_inner_texts()
+    assert ks == list(letters), ks
+    assert 'undefined' not in await page.locator('#stage').inner_text()
+    for k in (1, 3, 5, 7, 9):
+        await page.click(f'#stage .opt[data-k="{k}"]')
+    await page.click('#action')
+    assert 'ok' in await page.locator('#dock').get_attribute('class')
+    await context.close()
+
+    context, page, errors = await qa_page(browser, url, {'grade': 10, 'unlockAll': True, 'lessons': {}, 'srs': {}, 'seen': {}})
+    ids = await page.evaluate("""() => {const c=SLID_SUBJECTS.find(c=>c.id==='math'),p=c.pools.find(p=>p.id==='pg10m3');
+      p.items=p.items.filter(it=>it.id==='a06'||it.id==='b01');
+      if(p.items.length!==2) throw new Error('pg10m3 a06/b01 changed: '+p.items.map(it=>it.id));
+      c.pools=[p]; return p.items.map(it=>it.id);}""")
+    await page.click('[data-tab="path"]')
+    await page.click('button[data-subject="math"]'); await page.click('[data-practice-view="math"]'); await page.click('[data-practice-mix]')
+    seen = set()
+    for it in await practice_queue(page):
+        ins = await page.locator('#stage .anskeys button').evaluate_all('bs => bs.map(b => b.dataset.ins)')
+        help_text = await page.locator('#stage .anskeys + .fix').inner_text()
+        assert ins[ins.index('√'):ins.index('√') + 3] == ['√', '∛', '∜'], ins
+        assert 'cbrt' in help_text and '∛' in help_text, help_text
+        assert await page.get_attribute('.anskeys button[data-ins="∛"]', 'aria-label') == 'Вставити ∛'
+        if it['id'] == 'a06':
+            await page.fill('#numIn', '22'); await page.eval_on_selector('#numIn', 'e=>e.setSelectionRange(1,1)')
+            await page.click('.anskeys button[data-ins="∛"]')
+            assert await page.input_value('#numIn') == '2∛2', await page.input_value('#numIn')
+        else:
+            await page.fill('#numIn', 'cbrt(5)'); await page.dispatch_event('#numIn', 'input')
+        await page.click('#action')
+        assert 'ok' in await page.locator('#dock').get_attribute('class'), (it['id'], await page.locator('#dock').inner_text())
+        await page.click('#action'); seen.add(it['id'])
+    assert seen == set(ids), (seen, ids)
+    # The rule itself (SLID_ANS_UI.field is pure): grade 8 — no ∛ unless the key has it; grade 10 exactRoot/expression — ∛ ∜ after √;
+    # list/coordinates in grade 10 — only when the key has the root.
+    keys = await page.evaluate("""() => [[{answerKind:'exactRoot',answer:'2√3'},8],[{answerKind:'exactRoot',answer:'∛5'},8],[{answerKind:'exactRoot',answer:'2√3'},10],
+      [{answerKind:'expression',answer:'x^2'},10],[{answerKind:'expression',answer:'x^2'},9],[{answerKind:'list',answer:'√2; 1'},10],[{answerKind:'list',answer:'∛2; 1'},10],
+      [{answerKind:'coordinates2',answer:'(1; 2)'},11]].map(([s,g])=>SLID_ANS_UI.field(s,g).keys.filter(k=>/[√∛∜]/.test(k)).join(''))""")
+    assert keys == ['√', '√∛', '√∛∜', '√∛∜', '√', '√', '√∛', '√'], keys
+    assert not errors, errors
+    await context.close()
+    print('Option letters (multi of 11: А…К, no undefined) and cube-root keys (pg10m3 a06/b01: ∛ ∜ after √, caret, cbrt; grade 8 without ∛): green', flush=True)
+
 FALLBACK_CHROMIUM = '/opt/pw-browsers/chromium'
 
 async def launch_browser(p, path=None):
@@ -1277,7 +1335,7 @@ async def main():
                 await page.click('[data-tab="path"]')
                 await page.click('[data-tab="path"]')
                 await page.evaluate("""() => {
-                  const c=SLID_SUBJECTS.find(c=>c.id==='math'); c.pools=c.pools.filter(p=>p.id==='pg6m1');
+                  const c=SLID_SUBJECTS.find(c=>c.id==='math'); c.pools=c.pools.filter(p=>p.id==='pms3');
                   c.pools[0].items=[
                     {answerKind:'comparison',answer:'>',title:'Порівняй'},
                     {answerKind:'list',answer:[1,2,3],title:'Перелік'},
@@ -1285,7 +1343,7 @@ async def main():
                     {answer:3.14,tol:0.01,title:'Округли'},
                     {answer:'2/5',fractionOnly:true,reduced:true,title:'Скороти'},
                     {answer:2,unit:'яблук',unitForms:['яблуко','яблука','яблук'],srcPage:42,adapted:true,title:'Одиниці',fig:{kind:'circle',n:4,k:1}}]
-                    .map((it,i)=>({...it,id:'ui'+i,lesson:'g6m1l1',lvl:1,sk:'num',src:c.pools[0].sources[0].id+' №1',type:'answer',steps:['Пояснення відповіді.']}));
+                    .map((it,i)=>({...it,id:'ui'+i,lesson:'ms3l1',lvl:1,sk:'num',src:c.pools[0].sources[0].id+' №1',type:'answer',steps:['Пояснення відповіді.']}));   // ms3 — 6 кл. з 2026-11-03 (D-043)
                 }""")
                 assert not errors, errors
                 assert await page.locator('button[data-subject="math"]').count(), await page.locator('body').inner_text()
@@ -1321,6 +1379,7 @@ async def main():
                 await player_focus_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
                 await attr_math_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
                 await root_index_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
+                await letters_cbrt_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
                 await player_a11y_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
                 await player_a11y_p3_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
                 await diag_answer_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")

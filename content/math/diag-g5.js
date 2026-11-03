@@ -1,7 +1,10 @@
 /* Слід · Математика, 5 клас — діагностика «Що ти вже вмієш?»
-   Статус: verified (незалежна перевірка 2026-10-30, reports/verify/dg5.md). 10 тем-передумов (4 кл., по 2 завдання) + 6 тем 5 класу (по 1 завданню) = 26 завдань.
+   Статус: verified (незалежна перевірка 2026-10-30, reports/verify/dg5.md; повторна 2026-11-03, reports/verify/verify-math-ister-diag.md). 10 тем-передумов (4 кл., по 2 завдання) + 6 тем 5 класу (по 1 завданню) = 26 завдань.
    Обсяг і зв'язки — docs/math-personalization-coverage.md, dg5 (матриця 2026-10-16.v2).
    Порядок: спершу базові завдання всіх тем-передумов, далі складніші впереміш із темами 5 класу (друга половина).
+   Міграція за Істером (D-043, docs/design/math-ister.md §5.1, 2026-11-03): тема cur-ms3 — тепер «Ознаки подільності» (g6m1l2), завдання №26 замінено на місці (rev: 2);
+   for тем parts/perim/units — без ms3/ms4 (ці розділи тепер 6 кл.), box — без for. Повторна незалежна перевірка — verify-math-ister-diag (2026-11-03):
+   №26 (rev 2, ще не опублікована) переписано складеним multi на все ядро g6m1l2 (2, 5, 10; 3 і 9; добір цифри) — CONTENT_SCHEMA §9 «Тема cur і known».
    Перевірка: node tools/validate.mjs --diag dg5 && node tools/personalization-qa.mjs --diag dg5
    Схема й правила: docs/CONTENT_SCHEMA.md §9, style/math.md */
 SLID.diag("math", {
@@ -9,26 +12,27 @@ SLID.diag("math", {
   grade: 5,
   title: "Що ти вже вмієш?",
   why: "Знайдемо теми, які варто згадати, щоб нові уроки давалися легше.",
-  status: "verified",
+  status: "verified",   // verify-math-ister-diag, 2026-11-03: reports/verify/verify-math-ister-diag.md
   meta: { author: "claude-opus", created: "2026-10-30", factcheck: "self", teacher: null },
   topics: [
     // передумови з 4 класу
     { id: "place", title: "Запис і розряди", kind: "pre", lessons: ["g4m1l1", "g4m1l2"], for: ["ms0", "ms2"] },
     { id: "cmp", title: "Порівняння натуральних", kind: "pre", lessons: ["g4m1l3"], for: ["ms0", "ms2"] },
     { id: "addsub", title: "Додавання і віднімання", kind: "pre", lessons: ["g4m2l1", "g4m2l2"], for: ["ms0", "ms2"] },
-    { id: "mul", title: "Множення", kind: "pre", lessons: ["g4m3l1", "g4m3l2"], for: ["ms0", "ms2"] },
-    { id: "quot", title: "Ділення", kind: "pre", lessons: ["g4m3l3"], for: ["ms0", "ms2"] },
+    { id: "mul", title: "Множення", kind: "pre", lessons: ["g4m3l1", "g4m3l2"], for: ["ms0", "ms2", "g6m1"] },
+    { id: "quot", title: "Ділення", kind: "pre", lessons: ["g4m3l3"], for: ["ms0", "ms2", "g6m1"] },
     { id: "ord", title: "Кілька дій", kind: "pre", lessons: ["g4m2l4"], for: ["ms0", "ms2"] },
-    { id: "parts", title: "Рівні частини", kind: "pre", lessons: ["g4m5l1", "g4m5l2"], for: ["ms1", "ms3"] },
-    { id: "perim", title: "Периметр і площа", kind: "pre", lessons: ["g4m5l3"], for: ["ms0b", "ms4"] },
-    { id: "units", title: "Одиниці величин", kind: "pre", lessons: ["g4m4l3", "g4m4l4"], for: ["ms0b", "ms4"] },
-    { id: "box", title: "Просторові фігури", kind: "pre", lessons: ["g4m5l4"], for: ["ms4"] },
+    { id: "parts", title: "Рівні частини", kind: "pre", lessons: ["g4m5l1", "g4m5l2"], for: ["ms1"] },
+    { id: "perim", title: "Периметр і площа", kind: "pre", lessons: ["g4m5l3"], for: ["ms0b"] },
+    { id: "units", title: "Одиниці величин", kind: "pre", lessons: ["g4m4l3", "g4m4l4"], for: ["ms0b"] },
+    { id: "box", title: "Просторові фігури", kind: "pre", lessons: ["g4m5l4"] },   // без for: у 5 кл. (Істер) розділу з просторовими фігурами немає, ms4 — 6 кл.
     // теми 5 класу: known — лише для одного названого уроку
     { id: "cur-ms0", title: "Великі числа", kind: "cur", lessons: ["ms0l1"] },
     { id: "cur-ms0b", title: "Відрізок, промінь, пряма", kind: "cur", lessons: ["ms0bl1"] },
     { id: "cur-ms1", title: "Частини цілого", kind: "cur", lessons: ["m1"] },
     { id: "cur-ms2", title: "Запис і читання", kind: "cur", lessons: ["ms2l1"] },
-    { id: "cur-ms3", title: "Сота частина", kind: "cur", lessons: ["ms3l1"] },
+    // cur-ms3: з 2026-11-03 — ознаки подільності (D-043: відсотки ms3 — 6 кл., подільність g6m1 — 5 кл.); id теми — ключ результатів, не змінюємо
+    { id: "cur-ms3", title: "Ознаки подільності", kind: "cur", lessons: ["g6m1l2"] },
     { id: "cur-ms4", title: "Площа", kind: "cur", lessons: ["ms4l1"] }
   ],
   items: [
@@ -290,19 +294,19 @@ SLID.diag("math", {
     },
     {
       topic: "cur-ms3",
-      type: "sort",
-      sk: "pct",
-      title: "Скільки це відсотків?",
-      body: "<p>Поклади кожен запис у кошик з його значенням.</p>",
-      bins: ["1 %", "10 %", "25 %", "50 %"],
-      items: [
-        ["Одна сота частина цілого", 0],
-        ["10 зафарбованих клітинок сотки зі 100", 1],
-        ["Чверть піци", 2],
-        ["2 зафарбовані шматки круга з 4 рівних", 3],
-        ["Десята частина цілого", 1],
-        ["Половина", 3]
-      ]
+      rev: 2,
+      type: "multi",
+      sk: "divis",
+      title: "Ділиться чи ні?",
+      body: "<p>Обери всі правильні твердження. Ділити в стовпчик не треба.</p>",
+      opts: [
+        "705 ділиться націло на 10",
+        "540 ділиться націло на 2, на 5 і на 10",
+        "543 ділиться націло на 9",
+        "387 ділиться націло на 9",
+        "Щоб число 7*4 ділилося націло на 3, замість * можна поставити 1"
+      ],
+      correct: [1, 3, 4]
     }
   ]
 });
