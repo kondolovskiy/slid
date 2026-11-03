@@ -1107,20 +1107,25 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
 }
 { const { loadContent } = await import("./lib.mjs");
   const { subjects } = loadContent(), math = subjects.find(s => s.id === "math"), d = math.diags.find(x => x.id === "dg6");
-  // реальний dg6: 30 завдань; rev 2 — рівно п'ять cur-проб на тих самих індексах; порядок завдань не змінено.
+  // реальний dg6: 30 завдань; rev 2 — п'ять cur-проб, rev 3 — ще дві (pct №7, pct-of №27, refine-math-dg6-pct-rev3); індекси й порядок не змінено.
   // 2026-11-03 (D-043, docs/design/math-ister.md §5.2): №21 g6-lcm → pre-тема g6-div, №27 pct → cur-тема pct-of — завдання ті самі
   const TOPICS = "ord frac frac-cmp rem frac-add eq pct dec mixed geom frac-of dec-ops ord frac rem frac-cmp g6-div eq dec frac-add g6-div frac-of geom mixed g6-fadd dec-ops pct-of g6-prop g6-neg g6-eq".split(" ");
   eq(d.items.map(it => it.topic), TOPICS, "dg6: теми за індексами (збережені вердикти не зсуваються)");
-  eq(d.items.flatMap((it, i) => it.rev ? [[i, it.topic, it.rev]] : []), [[16, "g6-div", 2], [20, "g6-div", 2], [24, "g6-fadd", 2], [27, "g6-prop", 2], [28, "g6-neg", 2]], "dg6: rev 2 лише в замінених пробах");
-  eq(L.diagRev(d), 2, "dg6: редакція 2");
+  eq(d.items.flatMap((it, i) => it.rev ? [[i, it.topic, it.rev]] : []), [[6, "pct", 3], [16, "g6-div", 2], [20, "g6-div", 2], [24, "g6-fadd", 2], [26, "pct-of", 3], [27, "g6-prop", 2], [28, "g6-neg", 2]], "dg6: rev 2 і rev 3 лише в замінених пробах");
+  eq(L.diagRev(d), 3, "dg6: редакція 3");
   // перерваний тест редакції 1 (усе правильно до другого dec-ops включно): п'ять проб відкинуто, решта на місці
   const S = { grade: 6, diag: {}, plan: {}, diagRun: { dg6: Object.fromEntries(Array.from({ length: 26 }, (_, i) => [i, OK])) } };
   const r = L.resumeDiag(S, d);
-  eq([r.dropped, Object.keys(S.diagRun.dg6).length, L.nextItem(d, S.diagRun.dg6)], [[16, 20, 24], 23, 16], "dg6: legacy-запуск — заново g6-div, g6-lcm, g6-fadd; 23 відповіді лишились");
+  eq([r.dropped, Object.keys(S.diagRun.dg6).length, L.nextItem(d, S.diagRun.dg6), S.diagRunRev.dg6], [[6, 16, 20, 24], 22, 6, 3], "dg6: legacy-запуск — заново pct, g6-div ×2, g6-fadd; 22 відповіді лишились");
+  // перерваний тест редакції 2 (відповіді 0–28): відкинуто лише проби rev 3 — pct і pct-of
+  const S2 = { grade: 6, diag: {}, plan: {}, diagRunRev: { dg6: 2 }, diagRun: { dg6: Object.fromEntries(Array.from({ length: 29 }, (_, i) => [i, OK])) } };
+  const r2 = L.resumeDiag(S2, d);
+  eq([r2.dropped, Object.keys(S2.diagRun.dg6).length, L.nextItem(d, S2.diagRun.dg6), S2.diagRunRev.dg6], [[6, 26], 27, 6, 3], "dg6: запуск ред. 2 — заново лише pct і pct-of");
   // складені проби: known лише коли вся проба правильна
   const all = Object.fromEntries(d.items.map((_, i) => [i, OK]));
   eq(L.buildPlan(d, all, {}).known, ["ms3l1", "ms3l2", "g6m2l4", "g6m3l2", "g6m4l3", "g6m5l3"], "dg6: усе правильно → known шести уроків (з 2026-11-03 — відсотки, не подільність)");
   eq(L.buildPlan(d, { ...all, 24: BAD, 28: SKIP }, {}).known, ["ms3l1", "ms3l2", "g6m3l2", "g6m5l3"], "dg6: помилка в складеній пробі → урок не known");
+  eq(L.buildPlan(d, { ...all, 6: BAD, 26: SKIP }, {}).known, ["g6m2l4", "g6m3l2", "g6m4l3", "g6m5l3"], "dg6: помилка в пробі pct / pct-of (ред. 3) → ms3l1, ms3l2 не known");
   // пули 6 кл.: id з редакції 2026-10-13 (літера уроку + 01–08) лишились у своїх уроках, крім замінених; нові — нові id
   const REMOVED = { pg6m1: ["a01", "b03", "c03"], pg6m3: ["a05", "b05"], pg6m4: ["e05"], pg6m5: ["a03", "b01"] };
   const ADDED = { pg6m1: ["a09", "b09", "c09"], pg6m3: ["a09", "b09"], pg6m4: ["e09"], pg6m5: ["a09", "b09"] };

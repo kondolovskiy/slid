@@ -8,6 +8,8 @@
    Міграція за Істером (D-043, docs/design/math-ister.md §5.2, 2026-11-03): подільність (g6m1) — 5 кл., відсотки (ms3) — 6 кл. Тож g6-div і g6-lcm злито в
    pre-тему g6-div (№17 і №21, lesson у завданні; u колишньої g6-lcm — на №21), pre-тему pct розділено на cur-теми pct (№7) і pct-of (№27); rem.for — g6m2.
    Завдання, їхні індекси й зміст не змінено, тому rev не потрібен. Тепер 12 тем-передумов (по 2 завдання) + 6 тем 6 класу (по 1) = 30 завдань.
+   Редакція 3 (refine-math-dg6-pct-rev3, 2026-11-03; reports/verify/verify-math-ister-diag.md §5): cur-проби pct (індекс 6, ms3l1) і pct-of (індекс 26, ms3l2)
+   по одному обчисленню замінено на місці складеними multi на все ядро уроку (rev: 3). Розпочатий тест ред. 1 чи 2 покаже їх знову; теми й індекси ті самі.
    Перевірка: node tools/validate.mjs --diag dg6
    Схема й правила: docs/CONTENT_SCHEMA.md §9, style/math.md */
 SLID.diag("math", {
@@ -15,8 +17,8 @@ SLID.diag("math", {
   grade: 6,
   title: "Що ти вже вмієш?",
   why: "Знайдемо теми, які варто згадати, щоб нові уроки давалися легше.",
-  status: "draft",   // verify-math-ister-diag (2026-11-03): теми pre, rem.for, g6-div — так; cur pct (№7) і pct-of (№27) — по одному обчисленню, не все ядро ms3l1/ms3l2 (CONTENT_SCHEMA §9) → потрібна ред. 3 (reports/verify/verify-math-ister-diag.md)
-  meta: { author: "claude-opus", created: "2026-10-13", factcheck: "verifier-refine-math-diag-g6-coverage", revised: "2026-10-31 refine-math-diag-g6-coverage", teacher: null },
+  status: "draft",   // verify-math-ister-diag (2026-11-03): теми pre, rem.for, g6-div — так; cur pct (№7) і pct-of (№27) замінено ред. 3 (refine-math-dg6-pct-rev3) — чекає незалежної перевірки
+  meta: { author: "claude-opus", created: "2026-10-13", factcheck: "verifier-refine-math-diag-g6-coverage", revised: "2026-11-03 refine-math-dg6-pct-rev3", teacher: null },
   topics: [
     // передумови з 4–5 класів
     { id: "ord", title: "Порядок дій", kind: "pre", lessons: ["ms0l3"], for: ["g6m3", "g6m5"] },
@@ -96,13 +98,13 @@ SLID.diag("math", {
     {
       topic: "pct",
       lesson: "ms3l1",
-      type: "shade",
+      rev: 3,
+      type: "multi",
       sk: "pct",
-      title: "Зафарбуй 30 % смужки",
-      body: "<p>Смужку поділено на 10 рівних частин. Торкайся частин, щоб зафарбувати їх.</p>",
-      shape: "bar",
-      n: 10,
-      target: 3
+      title: "Що правильно про відсотки?",
+      body: "<p>Обери всі правильні твердження.</p>",
+      opts: ["1 % — це $1/100$ цілого", "$1/5$ — це 5 %", "Десята частина — це 1 %", "Круг розрізали на 8 рівних шматків і зафарбували 2. Зафарбовано 25 % круга", "На сотці зафарбовано 42 клітинки зі 100 — це 42 %"],
+      correct: [0, 3, 4]
     },
     {
       topic: "dec",
@@ -310,12 +312,13 @@ SLID.diag("math", {
     {
       topic: "pct-of",
       lesson: "ms3l2",
-      type: "number",
+      rev: 3,
+      type: "multi",
       sk: "pct",
-      title: "Скільки учнів ходить на плавання?",
-      body: "<p>У школі 400 учнів. 15 % з них ходять на плавання.</p>",
-      answer: 60,
-      unit: "учнів"
+      title: "Що правильно про відсотки від числа?",
+      body: "<p>Обери всі правильні твердження.</p>",
+      opts: ["10 % від 470 — це 47", "Щоб знайти 20 % від 450, досить 450 поділити на 20", "15 % від 400 — це 60", "Ціна 500 грн, знижка 20 %. Заплатиш 400 грн", "Ціна 600 грн, знижка 25 %. Заплатиш 575 грн"],
+      correct: [0, 2, 3]
     },
     {
       topic: "g6-prop",
