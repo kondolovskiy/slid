@@ -1,4 +1,6 @@
 /* Слід · Математика, 8 клас — пул задач для тренування до розділу «Геометрія: чотирикутники» (g8m2)
+   2026-11-04, write-math-pool-g8m2-ister (D-043): +12 задач з Істера 8 (ist8g, § 7, § 10, вправи для повторення розділу 1; srcPage = друкований номер = сторінка PDF) —
+   e01–e06 для g8m2l6 (вписаний чотирикутник), f01–f06 для g8m2l7 (описаний). Пул знову draft до повторної верифікації; задачі a–d не змінено.
    Статус: verified (повторно після fix-math-figs-g8-geo, 2026-11-03: статичні рисунки lab до 17 задач; verifier-fix-math-figs-g8-geo, reports/verify/fix-math-figs-g8-geo.md; b07 — підпис «BD = 10» над рисунком). Попередньо — verified (автор agent-write-math-pool-g8m2, 2026-10-31; верифікатор verifier-pool-g8m2, 2026-10-31, reports/verify/pg8m2.md). 32 задачі: по 8 на required-уроки
    g8m2l1–g8m2l4 (boss g8m2l5 без задач). Матриця покриття 2026-10-16.v2.
    Усі задачі — з підручника Мерзляк, Якір «Геометрія. 8 клас» (2025), п. 2, 4–8, 11;
@@ -10,10 +12,11 @@
 SLID.pool("math", {
   id: "pg8m2",
   section: "g8m2",
-  status: "verified",
+  status: "draft",
   meta: { author: "claude-opus", created: "2026-10-31", factcheck: "verifier-pool-g8m2", teacher: null },
   sources: [
-    { id: "mer8g", title: "Мерзляк А. Г., Якір М. С. Геометрія : підруч. для 8 кл. закладів заг. серед. освіти. — Харків: Гімназія, 2025 (п. 2, 4–8, 11)", url: "https://file.4book.org/images/shcoolbook_ua/8/8_geom_m_2025.pdf" }
+    { id: "mer8g", title: "Мерзляк А. Г., Якір М. С. Геометрія : підруч. для 8 кл. закладів заг. серед. освіти. — Харків: Гімназія, 2025 (п. 2, 4–8, 11)", url: "https://file.4book.org/images/shcoolbook_ua/8/8_geom_m_2025.pdf" },
+    { id: "ist8g", title: "Істер О. С. Геометрія : підруч. для 8 кл. закл. заг. серед. освіти. — Київ : Генеза, 2025 (§ 7, § 10, ДСР № 2, вправи для повторення розділу 1)", url: "https://file.4book.org/images/shcoolbook_ua/8/8_geom_i_2025.pdf" }
   ],
   items: [
     /* ───────────── Урок 1. Паралелограм ───────────── */
