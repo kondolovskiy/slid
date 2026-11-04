@@ -47,13 +47,13 @@
 | w8s3l1 Імперія, над якою не заходить сонце | 8 | 10 | 0.5 | 30 | 61 | 6.8 | 0.048 | 4 | — |
 | w8s3l2 Буря в соборі | 8 | 10 | 0.5 | 27 | 59 | 6 | 0.035 | 4 | — |
 | w8s3l3 Королева і глобус | 8 | 9 | 0.56 | 25 | 61 | 6.9 | 0.056 | 4 | — |
-| w8s3l4 Султан і полонянка | 8 | 8 | 0.5 | 30 | 61 | 6.6 | 0.057 | 2 | typeVariety нетипово для сім'ї (z=-2.6) |
-| w8s3l5 Король, якого обирають | 8 | 9 | 0.56 | 36 | 63 | 6.7 | 0.043 | 3 | — |
-| w8s3l6 Європа-королева (фінал) | 8 | 7 | 0.86 | 20 | 42 | 5.9 | 0.03 | 3 | sentenceWords=5.9 поза [6; 13] |
+| w8s3l4 Султан і полонянка | 8 | 8 | 0.5 | 30 | 61 | 6.5 | 0.053 | 3 | — |
+| w8s3l5 Король, якого обирають | 8 | 9 | 0.56 | 36 | 65 | 6.7 | 0.043 | 3 | — |
+| w8s3l6 Європа-королева (фінал) | 8 | 7 | 0.86 | 20 | 42 | 6 | 0.029 | 3 | — |
 
 ## Середні по сім'ях (предмет + класи + звичайний урок / фінал)
 
 Для z-оцінок sd не менше 10 % середнього; нижче наведено фактичне sd.
 
-- **7-9:lesson**: screens 9.26±0.68, gradedShare 0.55±0.05, readWordsPerScreen 29.97±3.32, maxReadWords 60.21±5.37, sentenceWords 6.56±0.34, longWordShare 0.04±0.01, typeVariety 3.42±0.54
-- **7-9:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 19.88±1.54, maxReadWords 36.5±4.77, sentenceWords 6.23±0.23, longWordShare 0.04±0.01, typeVariety 3.13±0.33
+- **7-9:lesson**: screens 9.26±0.68, gradedShare 0.55±0.05, readWordsPerScreen 29.97±3.32, maxReadWords 60.26±5.41, sentenceWords 6.56±0.34, longWordShare 0.04±0.01, typeVariety 3.45±0.5
+- **7-9:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 19.88±1.54, maxReadWords 36.5±4.77, sentenceWords 6.24±0.21, longWordShare 0.04±0.01, typeVariety 3.13±0.33

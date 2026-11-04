@@ -1,13 +1,13 @@
 {
-  "date": "2026-11-04T07:18:22.517Z",
+  "date": "2026-11-04T07:18:31.876Z",
   "errors": [],
   "warnings": [
-    "content/math/g7-g7m3.js#g7m3l6: sentenceWords=5.2 поза профілем [6; 13] для math, 7-9 кл.",
-    "content/math/g7-g7m3.js#g7m3l1: sentenceWords=4.4 поза профілем [6; 13] для math, 7-9 кл.",
-    "content/math/g7-g7m3.js#g7m3l2: sentenceWords=5 поза профілем [6; 13] для math, 7-9 кл.",
-    "content/math/g7-g7m3.js#g7m3l3: sentenceWords=4.2 поза профілем [6; 13] для math, 7-9 кл.",
-    "content/math/g7-g7m3.js#g7m3l4: sentenceWords=4.1 поза профілем [6; 13] для math, 7-9 кл.",
-    "content/math/g7-g7m3.js#g7m3l7: sentenceWords=4.3 поза профілем [6; 13] для math, 7-9 кл.",
-    "content/math/g7-g7m3.js#g7m3l5: sentenceWords=4.8 поза профілем [6; 13] для math, 7-9 кл."
+    "content/math/g9-g9m6.js#g9m6l1: sentenceWords=4.6 поза профілем [6; 13] для math, 7-9 кл.",
+    "content/math/g9-g9m6.js#g9m6l2: sentenceWords=4.7 поза профілем [6; 13] для math, 7-9 кл.",
+    "content/math/g9-g9m6.js#g9m6l6: sentenceWords=4.7 поза профілем [6; 13] для math, 7-9 кл.",
+    "content/math/g9-g9m6.js#g9m6l3: sentenceWords=5.4 поза профілем [6; 13] для math, 7-9 кл.",
+    "content/math/g9-g9m6.js#g9m6l4: sentenceWords=5.2 поза профілем [6; 13] для math, 7-9 кл.",
+    "content/math/g9-g9m6.js#g9m6l7: sentenceWords=5.1 поза профілем [6; 13] для math, 7-9 кл.",
+    "content/math/g9-g9m6.js#g9m6l5: sentenceWords=5.5 поза профілем [6; 13] для math, 7-9 кл."
   ]
 }
