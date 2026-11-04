@@ -1,6 +1,6 @@
 {
  "subject": "math",
- "screens": 4426,
+ "screens": 4528,
  "rows": [
   {
    "group": "prev",
@@ -1611,6 +1611,20 @@
    "points": "M",
    "graph": "Графік",
    "text": "Перетин з віссю ординат у Ф Графік функції Ф перетинає вісь ординат у точці Ф . Знайди Ф ."
+  },
+  {
+   "group": "graph",
+   "file": "content/math/pool-g9-g9m3.js",
+   "where": "pg9m3:e08",
+   "kind": "пул",
+   "type": "answer",
+   "level": "graph",
+   "ill": false,
+   "prevIll": false,
+   "ref": null,
+   "points": "",
+   "graph": "графік",
+   "text": "Скільки розв'язків: Ф і Ф ? Накресли схематично графіки рівнянь системи й установи, скільки в неї розв'язків. Ф"
   },
   {
    "group": "geo",
