@@ -1,5 +1,5 @@
 {
-  "version": "2026-11-04.v8",
+  "version": "2026-11-04.v9",
   "status": "draft",
   "registryCommit": "9057fd5",
   "sources": {
@@ -157,13 +157,13 @@
       "title": "Істер О., Істер Д. Алгебра 9 кл. (Генеза, 2026)",
       "url": "https://file.4book.org/images/shcoolbook_ua/9/9_a_i_2026.pdf",
       "opened": "2026-11-03",
-      "method": "D-043: сторінки й параграфи — з нотаток авторів уроків (tasks/review/write-math-*), URL — reports/math-ister-map.md §1; куратор матриці PDF повторно не відкривав — межі звіряє автор пулу й верифікатор"
+      "method": "D-043: сторінки й параграфи — з нотаток авторів уроків (tasks/review/write-math-*), URL — reports/math-ister-map.md §1; куратор матриці PDF повторно не відкривав — межі звіряє автор пулу й верифікатор; v9: межі вправ пулів 9 кл. — з нотаток авторів і звітів верифікаторів пулів (рендер сторінок, reports/verify/write-math-pool-g9m*.md; PDF = друк.); куратор PDF не відкривав"
     },
     "ist9g": {
       "title": "Істер О., Істер Д. Геометрія 9 кл. (Генеза, 2026)",
       "url": "https://file.4book.org/images/shcoolbook_ua/9/9_geom_i_2026.pdf",
       "opened": "2026-11-03",
-      "method": "D-043: сторінки й параграфи — з нотаток авторів уроків (tasks/review/write-math-*), URL — reports/math-ister-map.md §1; куратор матриці PDF повторно не відкривав — межі звіряє автор пулу й верифікатор"
+      "method": "D-043: сторінки й параграфи — з нотаток авторів уроків (tasks/review/write-math-*), URL — reports/math-ister-map.md §1; куратор матриці PDF повторно не відкривав — межі звіряє автор пулу й верифікатор; v9: межі вправ пулів 9 кл. — з нотаток авторів і звітів верифікаторів пулів (рендер сторінок, reports/verify/write-math-pool-g9m*.md; PDF = друк.); куратор PDF не відкривав"
     },
     "ist5k": {
       "title": "Істер О. С. Математика 5 кл. (Генеза, 2022), додаткова тема «Найпростіші комбінаторні задачі» — матеріал за QR-кодом зі с. 290",
@@ -6123,9 +6123,9 @@
       "section": "g9m3",
       "lesson": "g9m3l6",
       "title": "Системи 2-го степеня",
-      "curricularScope": "pending",
-      "reason": "Новий урок D-043 (за Істером), draft; пул — задача write-math-pool-g9m3-ister (tasks/todo). Перехід у required — після verified уроку й пулу, наступною версією матриці. Формати попередні — уточнює автор пулу.",
-      "evidence": "ist9a:123–127 (§ 13)",
+      "curricularScope": "required",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v9 (curate-math-matrix-v9). Пул pg9m3 e01–e08 verified (reports/verify/write-math-pool-g9m3-ister.md): 8 вправ, рівні 3/3/2; формати D-028 — number (кількість розв'язків, значення виразу від пар) і coordinates2 (e02–e04 — розв'язок з умовою на знак x: обхід до формату «множина пар», прийнятий верифікатором; e07 — єдиний розв'язок). Охоплювати лише вміння, уже пояснені цим уроком.",
+      "evidence": "ist9a:123–130 (§ 13; вправи пулу — с. 129–130)",
       "prerequisites": [
         "g9m3l3",
         "g7m7l3",
@@ -6135,16 +6135,24 @@
       "sk": "eq",
       "pool": "pg9m3",
       "formats": [
-        "number"
+        "number",
+        "coordinates2"
       ],
       "exercises": {
-        "min": 0,
-        "max": 0,
-        "levels": []
+        "min": 6,
+        "max": 8,
+        "levels": [
+          3,
+          2,
+          1
+        ]
       },
-      "poolState": "deferred",
+      "poolState": "existing-verified",
       "diagnostic": {
-        "preForSection": [],
+        "preForSection": [
+          "quad",
+          "func"
+        ],
         "cur": []
       }
     },
@@ -6153,9 +6161,9 @@
       "section": "g9m3",
       "lesson": "g9m3l7",
       "title": "Задачі системами рівнянь",
-      "curricularScope": "pending",
-      "reason": "Новий урок D-043 (за Істером), draft; пул — задача write-math-pool-g9m3-ister (tasks/todo). Перехід у required — після verified уроку й пулу, наступною версією матриці. Формати попередні — уточнює автор пулу.",
-      "evidence": "ist9a:133–134 (§ 14)",
+      "curricularScope": "required",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v9 (curate-math-matrix-v9). Пул pg9m3 f01–f08 verified (reports/verify/write-math-pool-g9m3-ister.md): 8 вправ, рівні 3/3/2; формати D-028 — number (з unit/unitForms) і list (два шукані числа чи сторони). Охоплювати лише вміння, уже пояснені цим уроком.",
+      "evidence": "ist9a:133–137 (§ 14; вправи пулу — с. 135–137)",
       "prerequisites": [
         "g9m3l6",
         "g8m4l2"
@@ -6163,16 +6171,24 @@
       "sk": "eq",
       "pool": "pg9m3",
       "formats": [
-        "number"
+        "number",
+        "list"
       ],
       "exercises": {
-        "min": 0,
-        "max": 0,
-        "levels": []
+        "min": 6,
+        "max": 8,
+        "levels": [
+          3,
+          2,
+          1
+        ]
       },
-      "poolState": "deferred",
+      "poolState": "existing-verified",
       "diagnostic": {
-        "preForSection": [],
+        "preForSection": [
+          "quad",
+          "func"
+        ],
         "cur": []
       }
     },
@@ -6295,9 +6311,9 @@
       "section": "g9m4",
       "lesson": "g9m4l5",
       "title": "Площа через синус",
-      "curricularScope": "pending",
-      "reason": "Новий урок D-043 (за Істером), draft; пул — задача write-math-pool-g9m4-ister (tasks/todo). Перехід у required — після verified уроку й пулу, наступною версією матриці. Формати попередні — уточнює автор пулу.",
-      "evidence": "ist9g:119–125 (§ 14, п. 1)",
+      "curricularScope": "required",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v9 (curate-math-matrix-v9). Пул pg9m4 d01–d08 verified (reports/verify/write-math-pool-g9m4-ister.md): 8 вправ, рівні 3/3/2; формати D-028 — number і exactRoot (d04 14√3, d08 50√2). Охоплювати лише вміння, уже пояснені цим уроком.",
+      "evidence": "ist9g:119–128 (§ 14, п. 1; вправи пулу — с. 126–128)",
       "prerequisites": [
         "g9m4l1",
         "g8m6l1"
@@ -6305,16 +6321,25 @@
       "sk": "trig",
       "pool": "pg9m4",
       "formats": [
-        "number"
+        "number",
+        "exactRoot"
       ],
       "exercises": {
-        "min": 0,
-        "max": 0,
-        "levels": []
+        "min": 6,
+        "max": 8,
+        "levels": [
+          3,
+          2,
+          1
+        ]
       },
-      "poolState": "deferred",
+      "poolState": "existing-verified",
       "diagnostic": {
-        "preForSection": [],
+        "preForSection": [
+          "roots",
+          "pyth",
+          "similar"
+        ],
         "cur": []
       }
     },
@@ -6323,9 +6348,9 @@
       "section": "g9m4",
       "lesson": "g9m4l6",
       "title": "Формула Герона, R і r",
-      "curricularScope": "pending",
-      "reason": "Новий урок D-043 (за Істером), draft; пул — задача write-math-pool-g9m4-ister (tasks/todo). Перехід у required — після verified уроку й пулу, наступною версією матриці. Формати попередні — уточнює автор пулу.",
-      "evidence": "ist9g:119–125 (§ 14, п. 3–5)",
+      "curricularScope": "required",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v9 (curate-math-matrix-v9). Пул pg9m4 e01–e07 verified (reports/verify/write-math-pool-g9m4-ister.md): 7 вправ, рівні 3/2/2; формати D-028 — number (дріб 4/3 з reduced, десяткові). Охоплювати лише вміння, уже пояснені цим уроком.",
+      "evidence": "ist9g:119–127 (§ 14, п. 3–5; вправи пулу — с. 127)",
       "prerequisites": [
         "g9m4l5"
       ],
@@ -6335,13 +6360,21 @@
         "number"
       ],
       "exercises": {
-        "min": 0,
-        "max": 0,
-        "levels": []
+        "min": 6,
+        "max": 8,
+        "levels": [
+          3,
+          2,
+          1
+        ]
       },
-      "poolState": "deferred",
+      "poolState": "existing-verified",
       "diagnostic": {
-        "preForSection": [],
+        "preForSection": [
+          "roots",
+          "pyth",
+          "similar"
+        ],
         "cur": []
       }
     },
@@ -6457,9 +6490,9 @@
       "section": "g9m5",
       "lesson": "g9m5l5",
       "title": "Нескінченна геометрична прогресія",
-      "curricularScope": "pending",
-      "reason": "Новий урок D-043 (за Істером), draft; пул — задача write-math-pool-g9m5-ister (tasks/todo). Перехід у required — після verified уроку й пулу, наступною версією матриці. Формати попередні — уточнює автор пулу.",
-      "evidence": "ist9a:188–190 (§ 21)",
+      "curricularScope": "required",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v9 (curate-math-matrix-v9). Пул pg9m5 d01–d08 verified (reports/verify/write-math-pool-g9m5-ister.md): 8 вправ, рівні 3/3/2; формати D-028 — number (цілі, десяткове 6,25, звичайний дріб з reduced — d06, d07). Охоплювати лише вміння, уже пояснені цим уроком.",
+      "evidence": "ist9a:188–192 (§ 21; вправи пулу — с. 191–192)",
       "prerequisites": [
         "g9m5l3"
       ],
@@ -6469,13 +6502,20 @@
         "number"
       ],
       "exercises": {
-        "min": 0,
-        "max": 0,
-        "levels": []
+        "min": 6,
+        "max": 8,
+        "levels": [
+          3,
+          2,
+          1
+        ]
       },
-      "poolState": "deferred",
+      "poolState": "existing-verified",
       "diagnostic": {
-        "preForSection": [],
+        "preForSection": [
+          "linear",
+          "power"
+        ],
         "cur": []
       }
     },
@@ -6558,9 +6598,9 @@
       "section": "g9m6",
       "lesson": "g9m6l6",
       "title": "Довжина дуги, площа сектора",
-      "curricularScope": "pending",
-      "reason": "Новий урок D-043 (за Істером), draft; пул — задача write-math-pool-g9m6-ister (tasks/todo). Перехід у required — після verified уроку й пулу, наступною версією матриці. Формати попередні — уточнює автор пулу.",
-      "evidence": "ist9g:151, 156 (§ 16, п. 4; § 17, п. 2)",
+      "curricularScope": "required",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v9 (curate-math-matrix-v9). Пул pg9m6 e01–e08 verified (reports/verify/write-math-pool-g9m6-ister.md): 8 вправ, рівні 3/3/2; формати D-028 — number (e07 — наближення з tol), exactRoot (π: e01–e03) і list (e08). Охоплювати лише вміння, уже пояснені цим уроком.",
+      "evidence": "ist9g:151–153, 156–159 (§ 16, п. 4; § 17, п. 2; вправи пулу — с. 152–153, 158–159)",
       "prerequisites": [
         "g9m6l2",
         "g9m6l1"
@@ -6568,16 +6608,25 @@
       "sk": "meas",
       "pool": "pg9m6",
       "formats": [
-        "number"
+        "number",
+        "exactRoot",
+        "list"
       ],
       "exercises": {
-        "min": 0,
-        "max": 0,
-        "levels": []
+        "min": 6,
+        "max": 8,
+        "levels": [
+          3,
+          2,
+          1
+        ]
       },
-      "poolState": "deferred",
+      "poolState": "existing-verified",
       "diagnostic": {
-        "preForSection": [],
+        "preForSection": [
+          "similar",
+          "polygon"
+        ],
         "cur": []
       }
     },
@@ -6659,9 +6708,9 @@
       "section": "g9m6",
       "lesson": "g9m6l7",
       "title": "Площі подібних фігур",
-      "curricularScope": "pending",
-      "reason": "Новий урок D-043 (за Істером), draft; пул — задача write-math-pool-g9m6-ister (tasks/todo). Перехід у required — після verified уроку й пулу, наступною версією матриці. Формати попередні — уточнює автор пулу.",
-      "evidence": "ist9g:198–200 (§ 24)",
+      "curricularScope": "required",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v9 (curate-math-matrix-v9). Пул pg9m6 f01–f08 verified (reports/verify/write-math-pool-g9m6-ister.md): 8 вправ, рівні 3/3/2; формати D-028 — number, ratio (f02, f03, f05, f06) і list (f07). Охоплювати лише вміння, уже пояснені цим уроком.",
+      "evidence": "ist9g:198–201 (§ 24; вправи пулу — с. 200–201)",
       "prerequisites": [
         "g9m6l4",
         "g9m6l2"
@@ -6669,16 +6718,25 @@
       "sk": "geom",
       "pool": "pg9m6",
       "formats": [
-        "number"
+        "number",
+        "ratio",
+        "list"
       ],
       "exercises": {
-        "min": 0,
-        "max": 0,
-        "levels": []
+        "min": 6,
+        "max": 8,
+        "levels": [
+          3,
+          2,
+          1
+        ]
       },
-      "poolState": "deferred",
+      "poolState": "existing-verified",
       "diagnostic": {
-        "preForSection": [],
+        "preForSection": [
+          "similar",
+          "polygon"
+        ],
         "cur": []
       }
     },
@@ -6791,9 +6849,9 @@
       "section": "g9m8",
       "lesson": "g9m8l1",
       "title": "Площина",
-      "curricularScope": "pending",
-      "reason": "Новий урок D-043 (за Істером), draft; пул — задача write-math-pool-g9m8 (tasks/todo). Перехід у required — після verified уроку й пулу, наступною версією матриці. Формати попередні — уточнює автор пулу.",
-      "evidence": "ist9g:214–215 (§ 25)",
+      "curricularScope": "required",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v9 (curate-math-matrix-v9). Пул pg9m8 a01–a07 verified (reports/verify/write-math-pool-g9m8.md): 7 вправ, рівні 3/3/1; формати D-028 — number (є й choice ×5 — поняттєвий урок; матриця choice не вимагає). Охоплювати лише вміння, уже пояснені цим уроком.",
+      "evidence": "ist9g:214–217, 243 (§ 25; вправи пулу — с. 215–217 (§ 26 і запитання до § 25), 243 (повторення розділу 6))",
       "prerequisites": [
         "ms4l2"
       ],
@@ -6803,11 +6861,15 @@
         "number"
       ],
       "exercises": {
-        "min": 0,
-        "max": 0,
-        "levels": []
+        "min": 6,
+        "max": 8,
+        "levels": [
+          3,
+          2,
+          1
+        ]
       },
-      "poolState": "deferred",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [],
         "cur": []
@@ -6818,9 +6880,9 @@
       "section": "g9m8",
       "lesson": "g9m8l2",
       "title": "Прямі в просторі",
-      "curricularScope": "pending",
-      "reason": "Новий урок D-043 (за Істером), draft; пул — задача write-math-pool-g9m8 (tasks/todo). Перехід у required — після verified уроку й пулу, наступною версією матриці. Формати попередні — уточнює автор пулу.",
-      "evidence": "ist9g:215–217 (§ 26)",
+      "curricularScope": "required",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v9 (curate-math-matrix-v9). Пул pg9m8 b01–b08 verified (reports/verify/write-math-pool-g9m8.md): 8 вправ, рівні 3/3/2; формати D-028 — number (є й choice, multi — матриця їх не вимагає). Охоплювати лише вміння, уже пояснені цим уроком.",
+      "evidence": "ist9g:215–217, 243 (§ 26; вправи пулу — с. 216–217, 243)",
       "prerequisites": [
         "g9m8l1",
         "g8m4l2",
@@ -6832,11 +6894,15 @@
         "number"
       ],
       "exercises": {
-        "min": 0,
-        "max": 0,
-        "levels": []
+        "min": 6,
+        "max": 8,
+        "levels": [
+          3,
+          2,
+          1
+        ]
       },
-      "poolState": "deferred",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [],
         "cur": []
@@ -6847,9 +6913,9 @@
       "section": "g9m8",
       "lesson": "g9m8l3",
       "title": "Пряма і площина",
-      "curricularScope": "pending",
-      "reason": "Новий урок D-043 (за Істером), draft; пул — задача write-math-pool-g9m8 (tasks/todo). Перехід у required — після verified уроку й пулу, наступною версією матриці. Формати попередні — уточнює автор пулу.",
-      "evidence": "ist9g:218–220 (§ 27)",
+      "curricularScope": "required",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v9 (curate-math-matrix-v9). Пул pg9m8 c01–c08 verified (reports/verify/write-math-pool-g9m8.md): 8 вправ, рівні 3/3/2; формати D-028 — number і list (c08 — два розв'язки без порядку); є й choice, multi. Охоплювати лише вміння, уже пояснені цим уроком.",
+      "evidence": "ist9g:218–220, 243–244 (§ 27; вправи пулу — с. 219–220, 243–244)",
       "prerequisites": [
         "g9m8l2",
         "g8m4l2"
@@ -6857,14 +6923,19 @@
       "sk": "geom",
       "pool": "pg9m8",
       "formats": [
-        "number"
+        "number",
+        "list"
       ],
       "exercises": {
-        "min": 0,
-        "max": 0,
-        "levels": []
+        "min": 6,
+        "max": 8,
+        "levels": [
+          3,
+          2,
+          1
+        ]
       },
-      "poolState": "deferred",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [],
         "cur": []
@@ -6875,9 +6946,9 @@
       "section": "g9m8",
       "lesson": "g9m8l4",
       "title": "Дві площини",
-      "curricularScope": "pending",
-      "reason": "Новий урок D-043 (за Істером), draft; пул — задача write-math-pool-g9m8 (tasks/todo). Перехід у required — після verified уроку й пулу, наступною версією матриці. Формати попередні — уточнює автор пулу.",
-      "evidence": "ist9g:221–223 (§ 28)",
+      "curricularScope": "required",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v9 (curate-math-matrix-v9). Пул pg9m8 d01–d08 verified (reports/verify/write-math-pool-g9m8.md): 8 вправ, рівні 3/4/1; формати D-028 — number (є й choice, multi). Охоплювати лише вміння, уже пояснені цим уроком.",
+      "evidence": "ist9g:221–223, 244 (§ 28; вправи пулу — с. 222–223, 244)",
       "prerequisites": [
         "g9m8l3"
       ],
@@ -6887,11 +6958,15 @@
         "number"
       ],
       "exercises": {
-        "min": 0,
-        "max": 0,
-        "levels": []
+        "min": 6,
+        "max": 8,
+        "levels": [
+          3,
+          2,
+          1
+        ]
       },
-      "poolState": "deferred",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [],
         "cur": []
@@ -6902,9 +6977,9 @@
       "section": "g9m8",
       "lesson": "g9m8l5",
       "title": "Призма",
-      "curricularScope": "pending",
-      "reason": "Новий урок D-043 (за Істером), draft; пул — задача write-math-pool-g9m8 (tasks/todo). Перехід у required — після verified уроку й пулу, наступною версією матриці. Формати попередні — уточнює автор пулу.",
-      "evidence": "ist9g:224–226 (§ 29, п. 1–3)",
+      "curricularScope": "required",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v9 (curate-math-matrix-v9). Пул pg9m8 e01–e08 verified (reports/verify/write-math-pool-g9m8.md): 8 вправ, рівні 3/4/1; формати D-028 — number (є й choice). Охоплювати лише вміння, уже пояснені цим уроком.",
+      "evidence": "ist9g:224–228, 245 (§ 29, п. 1–3; вправи пулу — с. 227–228, 245)",
       "prerequisites": [
         "ms4l2",
         "g8m4l2"
@@ -6915,11 +6990,15 @@
         "number"
       ],
       "exercises": {
-        "min": 0,
-        "max": 0,
-        "levels": []
+        "min": 6,
+        "max": 8,
+        "levels": [
+          3,
+          2,
+          1
+        ]
       },
-      "poolState": "deferred",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [],
         "cur": []
@@ -6930,9 +7009,9 @@
       "section": "g9m8",
       "lesson": "g9m8l6",
       "title": "Об'єм призми",
-      "curricularScope": "pending",
-      "reason": "Новий урок D-043 (за Істером), draft; пул — задача write-math-pool-g9m8 (tasks/todo). Перехід у required — після verified уроку й пулу, наступною версією матриці. Формати попередні — уточнює автор пулу.",
-      "evidence": "ist9g:226–227 (§ 29, п. 4–5)",
+      "curricularScope": "required",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v9 (curate-math-matrix-v9). Пул pg9m8 f01–f08 verified (reports/verify/write-math-pool-g9m8.md): 8 вправ, рівні 3/3/2; формати D-028 — number. Охоплювати лише вміння, уже пояснені цим уроком.",
+      "evidence": "ist9g:226–228, 245 (§ 29, п. 4–5; вправи пулу — с. 227–228, 245)",
       "prerequisites": [
         "ms4l2",
         "g9m8l5"
@@ -6943,11 +7022,15 @@
         "number"
       ],
       "exercises": {
-        "min": 0,
-        "max": 0,
-        "levels": []
+        "min": 6,
+        "max": 8,
+        "levels": [
+          3,
+          2,
+          1
+        ]
       },
-      "poolState": "deferred",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [],
         "cur": []
@@ -6958,9 +7041,9 @@
       "section": "g9m8",
       "lesson": "g9m8l7",
       "title": "Піраміда",
-      "curricularScope": "pending",
-      "reason": "Новий урок D-043 (за Істером), draft; пул — задача write-math-pool-g9m8 (tasks/todo). Перехід у required — після verified уроку й пулу, наступною версією матриці. Формати попередні — уточнює автор пулу.",
-      "evidence": "ist9g:229–230 (§ 30, п. 1–3)",
+      "curricularScope": "required",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v9 (curate-math-matrix-v9). Пул pg9m8 g01–g08 verified (reports/verify/write-math-pool-g9m8.md): 8 вправ, рівні 3/3/2; формати D-028 — number, exactRoot (g03 30 + 4√3) і expression (3a^2/2, √3b^2); є й choice. Охоплювати лише вміння, уже пояснені цим уроком.",
+      "evidence": "ist9g:229–232, 245 (§ 30, п. 1–3; вправи пулу — с. 231–232, 245)",
       "prerequisites": [
         "g9m8l5",
         "g8m4l2"
@@ -6968,14 +7051,20 @@
       "sk": "geom",
       "pool": "pg9m8",
       "formats": [
-        "number"
+        "number",
+        "exactRoot",
+        "expression"
       ],
       "exercises": {
-        "min": 0,
-        "max": 0,
-        "levels": []
+        "min": 6,
+        "max": 8,
+        "levels": [
+          3,
+          2,
+          1
+        ]
       },
-      "poolState": "deferred",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [],
         "cur": []
@@ -6986,9 +7075,9 @@
       "section": "g9m8",
       "lesson": "g9m8l8",
       "title": "Об'єм піраміди",
-      "curricularScope": "pending",
-      "reason": "Новий урок D-043 (за Істером), draft; пул — задача write-math-pool-g9m8 (tasks/todo). Перехід у required — після verified уроку й пулу, наступною версією матриці. Формати попередні — уточнює автор пулу.",
-      "evidence": "ist9g:230–231 (§ 30, п. 4)",
+      "curricularScope": "required",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v9 (curate-math-matrix-v9). Пул pg9m8 h01–h07 verified (reports/verify/write-math-pool-g9m8.md): 7 вправ, рівні 1/3/3; формати D-028 — number і exactRoot (16√3, 9√3, 24√3). Лише одна вправа рівня 1 (h01): прості вправи § 30 на об'єм (30.3, 30.4, 30.6) уже стоять в уроці, інших підручник не дає — верифікатор прийняв; мінімум рівнів у матриці — 1/2/1 (фактично 1/3/3), як 2/2/1 у g6m4l7. Охоплювати лише вміння, уже пояснені цим уроком.",
+      "evidence": "ist9g:230–232, 245 (§ 30, п. 4; вправи пулу — с. 232, 245)",
       "prerequisites": [
         "g9m8l6",
         "g9m8l7"
@@ -6996,14 +7085,19 @@
       "sk": "geom",
       "pool": "pg9m8",
       "formats": [
-        "number"
+        "number",
+        "exactRoot"
       ],
       "exercises": {
-        "min": 0,
-        "max": 0,
-        "levels": []
+        "min": 6,
+        "max": 8,
+        "levels": [
+          1,
+          2,
+          1
+        ]
       },
-      "poolState": "deferred",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [],
         "cur": []
@@ -7014,9 +7108,9 @@
       "section": "g9m8",
       "lesson": "g9m8l9",
       "title": "Циліндр",
-      "curricularScope": "pending",
-      "reason": "Новий урок D-043 (за Істером), draft; пул — задача write-math-pool-g9m8 (tasks/todo). Перехід у required — після verified уроку й пулу, наступною версією матриці. Формати попередні — уточнює автор пулу.",
-      "evidence": "ist9g:233–235 (§ 31)",
+      "curricularScope": "required",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v9 (curate-math-matrix-v9). Пул pg9m8 i01–i08 verified (reports/verify/write-math-pool-g9m8.md): 8 вправ, рівні 3/3/2; формати D-028 — exactRoot (π, 7 вправ) і number (i08, unit «раз»). Охоплювати лише вміння, уже пояснені цим уроком.",
+      "evidence": "ist9g:233–236, 245 (§ 31; вправи пулу — с. 235–236, 245)",
       "prerequisites": [
         "g9m8l6",
         "g9m6l2"
@@ -7024,14 +7118,19 @@
       "sk": "geom",
       "pool": "pg9m8",
       "formats": [
-        "number"
+        "number",
+        "exactRoot"
       ],
       "exercises": {
-        "min": 0,
-        "max": 0,
-        "levels": []
+        "min": 6,
+        "max": 8,
+        "levels": [
+          3,
+          2,
+          1
+        ]
       },
-      "poolState": "deferred",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [],
         "cur": []
@@ -7042,9 +7141,9 @@
       "section": "g9m8",
       "lesson": "g9m8l10",
       "title": "Конус",
-      "curricularScope": "pending",
-      "reason": "Новий урок D-043 (за Істером), draft; пул — задача write-math-pool-g9m8 (tasks/todo). Перехід у required — після verified уроку й пулу, наступною версією матриці. Формати попередні — уточнює автор пулу.",
-      "evidence": "ist9g:236–238 (§ 32)",
+      "curricularScope": "required",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v9 (curate-math-matrix-v9). Пул pg9m8 j01–j08 verified (reports/verify/write-math-pool-g9m8.md): 8 вправ, рівні 3/3/2; формати D-028 — exactRoot (π — 7 вправ; корінь — 5√3). Охоплювати лише вміння, уже пояснені цим уроком.",
+      "evidence": "ist9g:236–239 (§ 32; вправи пулу — с. 239)",
       "prerequisites": [
         "g9m8l8",
         "g9m8l9",
@@ -7053,14 +7152,18 @@
       "sk": "geom",
       "pool": "pg9m8",
       "formats": [
-        "number"
+        "exactRoot"
       ],
       "exercises": {
-        "min": 0,
-        "max": 0,
-        "levels": []
+        "min": 6,
+        "max": 8,
+        "levels": [
+          3,
+          2,
+          1
+        ]
       },
-      "poolState": "deferred",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [],
         "cur": []
@@ -7071,23 +7174,29 @@
       "section": "g9m8",
       "lesson": "g9m8l11",
       "title": "Куля",
-      "curricularScope": "pending",
-      "reason": "Новий урок D-043 (за Істером), draft; пул — задача write-math-pool-g9m8 (tasks/todo). Перехід у required — після verified уроку й пулу, наступною версією матриці. Формати попередні — уточнює автор пулу.",
-      "evidence": "ist9g:240–241 (§ 33)",
+      "curricularScope": "required",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v9 (curate-math-matrix-v9). Пул pg9m8 k01–k08 verified (reports/verify/write-math-pool-g9m8.md): 8 вправ, рівні 3/3/2; формати D-028 — exactRoot (π, 6 вправ), ratio (k07 27 : 64) і number. Охоплювати лише вміння, уже пояснені цим уроком.",
+      "evidence": "ist9g:240–242, 246 (§ 33; вправи пулу — с. 241–242, 246)",
       "prerequisites": [
         "g9m6l2"
       ],
       "sk": "geom",
       "pool": "pg9m8",
       "formats": [
-        "number"
+        "number",
+        "exactRoot",
+        "ratio"
       ],
       "exercises": {
-        "min": 0,
-        "max": 0,
-        "levels": []
+        "min": 6,
+        "max": 8,
+        "levels": [
+          3,
+          2,
+          1
+        ]
       },
-      "poolState": "deferred",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [],
         "cur": []
@@ -12745,6 +12854,6 @@
       "verdict": "прийнято; бажані уточнення 1–4 закрито refine-math-content-from-matrix-v3"
     }
   },
-  "previous": "2026-11-04.v7",
-  "changes": "docs/math-personalization-coverage.md, «Зміни v8» (for pre-тем dg5/dg6/dg8 для опор нових required-уроків D-043 і синхронізація preForSection; refine-math-diag-for-ister); попередні — «Зміни v7», «Зміни v6», «Зміни v5», «Зміни v4», «Зміни v3»"
+  "previous": "2026-11-04.v8",
+  "changes": "docs/math-personalization-coverage.md, «Зміни v9» (уроки D-043 9 кл. з verified-пулами → required: g9m3l6–l7, g9m4l5–l6, g9m5l5, g9m6l6–l7, g9m8l1–l11; preForSection за for dg9; curate-math-matrix-v9); попередні — «Зміни v8», «Зміни v7», «Зміни v6», «Зміни v5», «Зміни v4», «Зміни v3»"
 }
