@@ -1,5 +1,5 @@
 /* Слід · Математика, 8 клас — «Алгебра: раціональні вирази»
-   Статус уроків: verified (g8m1l2 — повторно після refine-math-lessons-g7-g9-support, reports/verify/refine-math-lessons-support-g8.md). 7 уроків (6 тем + boss); 2026-11-03 додано g8m1l6 (раціональні рівняння, після l2) і g8m1l7 (стандартний вигляд числа, після l3) — verified (reports/verify/write-math-g8-algebra-gaps.md; write-math-g8-algebra-gaps, Істер А8 § 8, § 11); eyebrow «Урок N» перенумеровано за порядком; boss g8m1l5 переписано 2026-11-04 (revise-math-finals-g8, D-043/D-045: одне завдання на урок, 6 завдань; + l6, l7) — draft до content-verify.
+   Статус уроків: verified (g8m1l2 — повторно після refine-math-lessons-g7-g9-support, reports/verify/refine-math-lessons-support-g8.md). 7 уроків (6 тем + boss); 2026-11-03 додано g8m1l6 (раціональні рівняння, після l2) і g8m1l7 (стандартний вигляд числа, після l3) — verified (reports/verify/write-math-g8-algebra-gaps.md; write-math-g8-algebra-gaps, Істер А8 § 8, § 11); eyebrow «Урок N» перенумеровано за порядком; boss g8m1l5 переписано 2026-11-04 (revise-math-finals-g8, D-043/D-045: одне завдання на урок, 6 завдань; + l6, l7) — verified (verifier-revise-math-finals-g8-g9, 2026-11-04, reports/verify/revise-math-finals-g8-g9.md).
    Інтерактив: plane y:"k/x" з повзунком k (урок 4 ≥3 explore/lab); інші ≥2 explore/lab.
    Перевірка: node tools/validate.mjs --section g8m1 && node tools/stats.mjs --subject math
    Схема й правила: docs/CONTENT_SCHEMA.md, style/, D-019 */
@@ -988,7 +988,7 @@ SLID.section("math", {
       title: "Майстерня раціональних виразів",
       short: "Фінал розділу",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "g8m1boss",
       why: "Дроби, дії з ними, дробові рівняння, від'ємні степені, стандартний вигляд і гіпербола збираються в одній зміні майстерні. Бали за відповіді подвоєні.",

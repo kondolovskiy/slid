@@ -1,5 +1,5 @@
 /* Слід · Математика, 8 клас — «Алгебра: квадратні рівняння»
-   Статус уроків: verified. 8 уроків (7 тем + boss); 2026-11-03 додано g8m5l6 (квадратний тричлен), g8m5l7 (рівняння, що зводяться до квадратних), g8m5l8 (задачі на дробові рівняння) — перед boss, verified (reports/verify/write-math-g8-algebra-gaps.md; write-math-g8-algebra-gaps, Істер А8 § 24–26); requires + g8m1l6 (ОВР для l7, l8); boss g8m5l5 переписано 2026-11-04 (revise-math-finals-g8, D-043/D-045: одне завдання на урок, 7 завдань; + l6, l7, l8) — draft до content-verify.
+   Статус уроків: verified. 8 уроків (7 тем + boss); 2026-11-03 додано g8m5l6 (квадратний тричлен), g8m5l7 (рівняння, що зводяться до квадратних), g8m5l8 (задачі на дробові рівняння) — перед boss, verified (reports/verify/write-math-g8-algebra-gaps.md; write-math-g8-algebra-gaps, Істер А8 § 24–26); requires + g8m1l6 (ОВР для l7, l8); boss g8m5l5 переписано 2026-11-04 (revise-math-finals-g8, D-043/D-045: одне завдання на урок, 7 завдань; + l6, l7, l8) — verified (verifier-revise-math-finals-g8-g9, 2026-11-04, reports/verify/revise-math-finals-g8-g9.md).
    Інтерактив: plane y:"a*x^2+b*x+c" з повзунками a,b,c; корені на Ox; explore «крути D»;
    lab «два / один / жодного кореня». Урок 2: ≥3 explore/lab. signed:true. D-019.
    Перевірка: node tools/validate.mjs --section g8m5 && node tools/stats.mjs --subject math
@@ -1155,7 +1155,7 @@ SLID.section("math", {
       title: "Квадратна зміна",
       short: "Фінал",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "g8m5boss",
       why: "Зберемо неповні рівняння, дискримінант, Вієту, тричлен, заміну змінної й задачі — як на одній шкільній зміні.",

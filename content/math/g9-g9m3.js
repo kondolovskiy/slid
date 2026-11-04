@@ -1,7 +1,7 @@
 /* Слід · Математика, 9 клас — «Алгебра: квадратична функція»
    Статус уроків: verified. 5 уроків (4 теми + boss).
    Нові уроки 2026-11-03 (write-math-g9-gaps, D-043, Істер Алг. 9 § 13–14): g9m3l6 (системи 2-го степеня), g9m3l7 (задачі системами) — verified (verifier-write-math-g9-gaps, 2026-11-03, reports/verify/write-math-g9-gaps.md), перед boss. Тепер 7 уроків (6 тем + boss).
-   Boss g9m3l5 — draft після revise-math-finals-g9 (2026-11-04, D-045): 6 завдань, одне на урок (l1, l2, l3, l4, l6, l7); дублі l3 і l4 замінено на l6 і l7.
+   Boss g9m3l5 — verified (2026-11-04, reports/verify/revise-math-finals-g8-g9.md) після revise-math-finals-g9 (2026-11-04, D-045): 6 завдань, одне на урок (l1, l2, l3, l4, l6, l7); дублі l3 і l4 замінено на l6 і l7.
    Інтерактив: plane y:"a*(x-h)^2+k" і "a*x^2+b*x+c" з повзунками;
    fills для квадратних нерівностей. Уроки 2–3: ≥3 explore/lab. signed:true. D-019.
    Перевірка: node tools/validate.mjs --section g9m3 && node tools/stats.mjs --subject math
@@ -1104,7 +1104,7 @@ SLID.section("math", {
       title: "Фонтан у парку",
       short: "Фінал",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "g9m3boss",
       why: "Зберемо властивості параболи, перетворення, вершину, квадратні нерівності й системи в одній задачі парку.",

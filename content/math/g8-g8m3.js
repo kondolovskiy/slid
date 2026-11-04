@@ -1,5 +1,5 @@
 /* Слід · Математика, 8 клас — «Алгебра: квадратні корені»
-   Статус уроків: verified (g8m3l1, g8m3l3 — повторно після refine-math-lessons-g7-g9-support, reports/verify/refine-math-lessons-support-g8.md); раніше (g8m3l1, g8m3l3 дописано 2026-10-31, refine-math-g8m3-roots; повторна верифікація reports/verify/refine-g8m3.md). 6 уроків (5 тем + boss); 2026-11-03 додано g8m3l6 (функція y = x², перший у розділі) — verified (reports/verify/write-math-g8-algebra-gaps.md; write-math-g8-algebra-gaps, Істер А8 § 13); eyebrow «Урок N» перенумеровано за порядком; boss g8m3l5 переписано 2026-11-04 (revise-math-finals-g8, D-043/D-045: одне завдання на урок, 5 завдань; + l6) — draft до content-verify.
+   Статус уроків: verified (g8m3l1, g8m3l3 — повторно після refine-math-lessons-g7-g9-support, reports/verify/refine-math-lessons-support-g8.md); раніше (g8m3l1, g8m3l3 дописано 2026-10-31, refine-math-g8m3-roots; повторна верифікація reports/verify/refine-g8m3.md). 6 уроків (5 тем + boss); 2026-11-03 додано g8m3l6 (функція y = x², перший у розділі) — verified (reports/verify/write-math-g8-algebra-gaps.md; write-math-g8-algebra-gaps, Істер А8 § 13); eyebrow «Урок N» перенумеровано за порядком; boss g8m3l5 переписано 2026-11-04 (revise-math-finals-g8, D-043/D-045: одне завдання на урок, 5 завдань; + l6) — verified (verifier-revise-math-finals-g8-g9, 2026-11-04, reports/verify/revise-math-finals-g8-g9.md).
    Інтерактив: plane y=sqrt(x) / a*sqrt(x); numline для √n; explore/lab (docs/CONTENT_SCHEMA.md §8).
    Перевірка: node tools/validate.mjs --section g8m3 && node tools/stats.mjs --subject math
    Схема й правила: docs/CONTENT_SCHEMA.md, style/, D-019 */
@@ -935,7 +935,7 @@ SLID.section("math", {
       title: "Плитка для шкільного двору",
       short: "Фінал",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "g8m3boss",
       why: "Зберемо все: параболу, корінь, дійсні числа, властивості й графік $y = \\sqrt{x}$ — як на реальному майданчику.",
