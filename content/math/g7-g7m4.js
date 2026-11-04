@@ -1611,6 +1611,17 @@ SLID.section("math", {
           eyebrow: "Завдання 2",
           title: "Кути опори з рівними схилами",
           body: "<p>Опора з $AB = AC$: кут при $A$ — 50°. Скільки градусів у куті при основі?</p>",
+          lab: {
+            kind: "plane", axes: false, grid: 0, view: [0, 10, 0, 10.2],
+            points: { A: { at: [5, 5.289] }, B: { at: [3, 1] }, C: { at: [7, 1] } },
+            segs: [["A", "B"], ["A", "C"], ["B", "C"]],
+            angles: [
+              { from: "B", at: "A", to: "C", label: "50°" },
+              { from: "C", at: "B", to: "A", label: false },
+              { from: "A", at: "C", to: "B", label: false }
+            ],
+            alt: "Рівнобедрений трикутник ABC з бічними сторонами AB і AC; кут A дорівнює 50 градусів"
+          },
           answer: 65,
           unit: "°",
           hint: "Кути при основі рівні, а всі три кути разом — 180°.",

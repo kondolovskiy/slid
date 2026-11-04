@@ -1,5 +1,5 @@
 {
-  "version": "2026-11-04.v6",
+  "version": "2026-11-04.v7",
   "status": "draft",
   "registryCommit": "9057fd5",
   "sources": {
@@ -55,7 +55,7 @@
       "title": "Мерзляк, Якір. Геометрія 7, 2024",
       "url": "https://file.4book.org/images/shcoolbook_ua/7/7_geom_m_2024.pdf",
       "opened": "2026-10-16",
-      "method": "PDF завантажено; титул, зміст/покажчик і відповідні тематичні сторінки прочитано через pdftotext"
+      "method": "PDF завантажено; титул, зміст/покажчик і відповідні тематичні сторінки прочитано через pdftotext; v7: п. 17, с. 161–162 — вправи пулу pg7m4 e03–e08 (у пулі сигла mer7g; друк. = PDF), звірив верифікатор пулу"
     },
     "a8": {
       "title": "Мерзляк, Якір. Алгебра 8, 2025",
@@ -133,25 +133,25 @@
       "title": "Істер О. Алгебра 7 кл. (Генеза, 2024)",
       "url": "https://file.4book.org/images/shcoolbook_ua/7/7_a_i_2024.pdf",
       "opened": "2026-11-03",
-      "method": "D-043: сторінки й параграфи — з нотаток авторів уроків (tasks/review/write-math-*), URL — reports/math-ister-map.md §1; куратор матриці PDF повторно не відкривав — межі звіряє автор пулу й верифікатор"
+      "method": "D-043: сторінки й параграфи — з нотаток авторів уроків (tasks/review/write-math-*), URL — reports/math-ister-map.md §1; куратор матриці PDF повторно не відкривав — межі звіряє автор пулу й верифікатор; v7: межі вправ пулів — з нотаток авторів і звітів верифікаторів пулів (рендер сторінок, reports/verify/write-math-pool-*-ister.md; PDF = друк.); куратор PDF не відкривав"
     },
     "ist7g": {
       "title": "Істер О. Геометрія 7 кл. (Генеза, 2024)",
       "url": "https://file.4book.org/images/shcoolbook_ua/7/7_geom_i_2024.pdf",
       "opened": "2026-11-03",
-      "method": "D-043: сторінки й параграфи — з нотаток авторів уроків (tasks/review/write-math-*), URL — reports/math-ister-map.md §1; куратор матриці PDF повторно не відкривав — межі звіряє автор пулу й верифікатор"
+      "method": "D-043: сторінки й параграфи — з нотаток авторів уроків (tasks/review/write-math-*), URL — reports/math-ister-map.md §1; куратор матриці PDF повторно не відкривав — межі звіряє автор пулу й верифікатор; v7: межі вправ пулів — з нотаток авторів і звітів верифікаторів пулів (рендер сторінок, reports/verify/write-math-pool-*-ister.md; PDF = друк. + 1); куратор PDF не відкривав"
     },
     "ist8a": {
       "title": "Істер О. Алгебра 8 кл. (Генеза, 2025)",
       "url": "https://file.4book.org/images/shcoolbook_ua/8/8_a_i_2025.pdf",
       "opened": "2026-11-03",
-      "method": "D-043: сторінки й параграфи — з нотаток авторів уроків (tasks/review/write-math-*), URL — reports/math-ister-map.md §1; куратор матриці PDF повторно не відкривав — межі звіряє автор пулу й верифікатор"
+      "method": "D-043: сторінки й параграфи — з нотаток авторів уроків (tasks/review/write-math-*), URL — reports/math-ister-map.md §1; куратор матриці PDF повторно не відкривав — межі звіряє автор пулу й верифікатор; v7: межі вправ пулів — з нотаток авторів і звітів верифікаторів пулів (рендер сторінок, reports/verify/write-math-pool-*-ister.md; PDF = друк.); куратор PDF не відкривав"
     },
     "ist8g": {
       "title": "Істер О. Геометрія 8 кл. (Генеза, 2025)",
       "url": "https://file.4book.org/images/shcoolbook_ua/8/8_geom_i_2025.pdf",
       "opened": "2026-11-03",
-      "method": "D-043: сторінки й параграфи — з нотаток авторів уроків (tasks/review/write-math-*), URL — reports/math-ister-map.md §1; куратор матриці PDF повторно не відкривав — межі звіряє автор пулу й верифікатор"
+      "method": "D-043: сторінки й параграфи — з нотаток авторів уроків (tasks/review/write-math-*), URL — reports/math-ister-map.md §1; куратор матриці PDF повторно не відкривав — межі звіряє автор пулу й верифікатор; v7: межі вправ пулів — з нотаток авторів і звітів верифікаторів пулів (рендер сторінок, reports/verify/write-math-pool-*-ister.md; PDF = друк.); куратор PDF не відкривав"
     },
     "ist9a": {
       "title": "Істер О., Істер Д. Алгебра 9 кл. (Генеза, 2026)",
@@ -3326,25 +3326,36 @@
       "section": "g7m3",
       "lesson": "g7m3l6",
       "title": "Тотожності",
-      "curricularScope": "pending",
-      "reason": "Новий урок D-043 (за Істером), draft; пул — задача write-math-pool-g7m3-ister (tasks/todo). Перехід у required — після verified уроку й пулу, наступною версією матриці. Формати попередні — уточнює автор пулу.",
-      "evidence": "ist7a:48–51 (§ 5)",
+      "curricularScope": "required",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v7 (curate-math-matrix-v7). Пул pg7m3 e01–e08 verified (reports/verify/write-math-pool-g7m3-ister.md): 8 вправ, рівні 3/3/2; формати D-028 — expression (перетворити на многочлен, 4), number (3), multi (тотожно рівні пари, 1); попередній лише number замалий. Охоплювати лише вміння, уже пояснені цим уроком.",
+      "evidence": "ist7a:48–53 (§ 5; вправи пулу — с. 51–53)",
       "prerequisites": [
         "g7m3l2"
       ],
       "sk": "expr",
       "pool": "pg7m3",
       "formats": [
-        "number"
+        "number",
+        "expression",
+        "multi"
       ],
       "exercises": {
-        "min": 0,
-        "max": 0,
-        "levels": []
+        "min": 6,
+        "max": 8,
+        "levels": [
+          3,
+          2,
+          1
+        ]
       },
-      "poolState": "deferred",
+      "poolState": "existing-verified",
       "diagnostic": {
-        "preForSection": [],
+        "preForSection": [
+          "sign-add",
+          "sign-mul",
+          "brackets",
+          "terms"
+        ],
         "cur": []
       }
     },
@@ -3507,9 +3518,9 @@
       "section": "g7m3",
       "lesson": "g7m3l7",
       "title": "Сума й різниця кубів",
-      "curricularScope": "pending",
-      "reason": "Новий урок D-043 (за Істером), draft; пул — задача write-math-pool-g7m3-ister (tasks/todo). Перехід у required — після verified уроку й пулу, наступною версією матриці. Формати попередні — уточнює автор пулу.",
-      "evidence": "ist7a:146–148 (§ 20)",
+      "curricularScope": "required",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v7 (curate-math-matrix-v7). Пул pg7m3 f01–f08 verified (reports/verify/write-math-pool-g7m3-ister.md): 8 вправ, рівні 3/3/2; формати D-028 — expression (розклад на множники, многочлен; 6) і number (2). Охоплювати лише вміння, уже пояснені цим уроком.",
+      "evidence": "ist7a:146–149 (§ 20; вправи пулу — с. 148–149)",
       "prerequisites": [
         "g7m3l3",
         "g7m3l4"
@@ -3517,16 +3528,26 @@
       "sk": "expr",
       "pool": "pg7m3",
       "formats": [
-        "number"
+        "number",
+        "expression"
       ],
       "exercises": {
-        "min": 0,
-        "max": 0,
-        "levels": []
+        "min": 6,
+        "max": 8,
+        "levels": [
+          3,
+          2,
+          1
+        ]
       },
-      "poolState": "deferred",
+      "poolState": "existing-verified",
       "diagnostic": {
-        "preForSection": [],
+        "preForSection": [
+          "sign-add",
+          "sign-mul",
+          "brackets",
+          "terms"
+        ],
         "cur": []
       }
     },
@@ -3641,9 +3662,9 @@
       "section": "g7m4",
       "lesson": "g7m4l5",
       "title": "Зовнішній кут",
-      "curricularScope": "pending",
-      "reason": "Новий урок D-043 (за Істером), draft; пул — задача write-math-pool-g7m4-ister (tasks/todo). Перехід у required — після verified уроку й пулу, наступною версією матриці. Формати попередні — уточнює автор пулу.",
-      "evidence": "ist7g:122–124 (§ 18)",
+      "curricularScope": "required",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v7 (curate-math-matrix-v7). Пул pg7m4 d01–d08 verified (reports/verify/write-math-pool-g7m4-ister.md): 8 вправ, рівні 3/3/2; формати D-028 — number (градуси) і list (кути трикутника, multiset). Охоплювати лише вміння, уже пояснені цим уроком.",
+      "evidence": "ist7g:122–126, 146 (§ 18; вправи пулу — с. 125–126, 146)",
       "prerequisites": [
         "g7m4l3",
         "g7m2l2"
@@ -3651,16 +3672,23 @@
       "sk": "geom",
       "pool": "pg7m4",
       "formats": [
-        "number"
+        "number",
+        "list"
       ],
       "exercises": {
-        "min": 0,
-        "max": 0,
-        "levels": []
+        "min": 6,
+        "max": 8,
+        "levels": [
+          3,
+          2,
+          1
+        ]
       },
-      "poolState": "deferred",
+      "poolState": "existing-verified",
       "diagnostic": {
-        "preForSection": [],
+        "preForSection": [
+          "angles"
+        ],
         "cur": []
       }
     },
@@ -3669,9 +3697,9 @@
       "section": "g7m4",
       "lesson": "g7m4l6",
       "title": "Сторони й кути трикутника",
-      "curricularScope": "pending",
-      "reason": "Новий урок D-043 (за Істером), draft; пул — задача write-math-pool-g7m4-ister (tasks/todo). Перехід у required — після verified уроку й пулу, наступною версією матриці. Формати попередні — уточнює автор пулу.",
-      "evidence": "ist7g:122–124 (§ 18)",
+      "curricularScope": "required",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v7 (curate-math-matrix-v7). Пул pg7m4 e01–e08 verified (reports/verify/write-math-pool-g7m4-ister.md): 8 вправ, рівні 3/3/2; формати D-028 — comparison і choice: числової відповіді в темі немає (підручник питає «порівняйте»), попередній number прибрано. e03–e08 — з Мерзляка: сигла mer7g у пулі = g7 (те саме видання, друковані сторінки). Охоплювати лише вміння, уже пояснені цим уроком.",
+      "evidence": "ist7g:122–125, 139 (§ 18; вправи пулу — с. 125; ДСР № 4 — с. 139); g7:161–162 (п. 17; вправи пулу — с. 161–162)",
       "prerequisites": [
         "g7m4l5",
         "g7m4l2"
@@ -3679,16 +3707,23 @@
       "sk": "geom",
       "pool": "pg7m4",
       "formats": [
-        "number"
+        "comparison",
+        "choice"
       ],
       "exercises": {
-        "min": 0,
-        "max": 0,
-        "levels": []
+        "min": 6,
+        "max": 8,
+        "levels": [
+          3,
+          2,
+          1
+        ]
       },
-      "poolState": "deferred",
+      "poolState": "existing-verified",
       "diagnostic": {
-        "preForSection": [],
+        "preForSection": [
+          "angles"
+        ],
         "cur": []
       }
     },
@@ -3697,9 +3732,9 @@
       "section": "g7m4",
       "lesson": "g7m4l7",
       "title": "Прямокутний трикутник",
-      "curricularScope": "pending",
-      "reason": "Новий урок D-043 (за Істером), draft; пул — задача write-math-pool-g7m4-ister (tasks/todo). Перехід у required — після verified уроку й пулу, наступною версією матриці. Формати попередні — уточнює автор пулу.",
-      "evidence": "ist7g:127–131 (§ 19)",
+      "curricularScope": "required",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v7 (curate-math-matrix-v7). Пул pg7m4 f01–f08 verified (reports/verify/write-math-pool-g7m4-ister.md): 8 вправ, рівні 3/3/2; формати D-028 — number (є й list, comparison по одній — матриця їх не вимагає, як у нотатках автора). Охоплювати лише вміння, уже пояснені цим уроком.",
+      "evidence": "ist7g:127–135, 139, 146–147 (§ 19; вправи пулу — с. 132–135; ДСР № 4 — с. 139; повторення — с. 146–147)",
       "prerequisites": [
         "g7m4l3",
         "g7m4l6"
@@ -3710,13 +3745,19 @@
         "number"
       ],
       "exercises": {
-        "min": 0,
-        "max": 0,
-        "levels": []
+        "min": 6,
+        "max": 8,
+        "levels": [
+          3,
+          2,
+          1
+        ]
       },
-      "poolState": "deferred",
+      "poolState": "existing-verified",
       "diagnostic": {
-        "preForSection": [],
+        "preForSection": [
+          "angles"
+        ],
         "cur": []
       }
     },
@@ -3725,9 +3766,9 @@
       "section": "g7m4",
       "lesson": "g7m4l8",
       "title": "Ознаки рівності прямокутних",
-      "curricularScope": "pending",
-      "reason": "Новий урок D-043 (за Істером), draft; пул — задача write-math-pool-g7m4-ister (tasks/todo). Перехід у required — після verified уроку й пулу, наступною версією матриці. Формати попередні — уточнює автор пулу.",
-      "evidence": "ist7g:127–131 (§ 19)",
+      "curricularScope": "required",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v7 (curate-math-matrix-v7). Пул pg7m4 g01–g08 verified (reports/verify/write-math-pool-g7m4-ister.md): 8 вправ, рівні 3/3/2; формати D-028 — choice (ознака) і multi: ознаки — не число, числові задачі § 19 на рівність — доведення; попередній number прибрано. Охоплювати лише вміння, уже пояснені цим уроком.",
+      "evidence": "ist7g:127–134, 138, 146–147 (§ 19; вправи пулу — с. 132–134, 138, 146–147)",
       "prerequisites": [
         "g7m4l1",
         "g7m4l7"
@@ -3735,16 +3776,23 @@
       "sk": "geom",
       "pool": "pg7m4",
       "formats": [
-        "number"
+        "choice",
+        "multi"
       ],
       "exercises": {
-        "min": 0,
-        "max": 0,
-        "levels": []
+        "min": 6,
+        "max": 8,
+        "levels": [
+          3,
+          2,
+          1
+        ]
       },
-      "poolState": "deferred",
+      "poolState": "existing-verified",
       "diagnostic": {
-        "preForSection": [],
+        "preForSection": [
+          "angles"
+        ],
         "cur": []
       }
     },
@@ -3753,25 +3801,32 @@
       "section": "g7m4",
       "lesson": "g7m4l9",
       "title": "Нерівність трикутника",
-      "curricularScope": "pending",
-      "reason": "Новий урок D-043 (за Істером), draft; пул — задача write-math-pool-g7m4-ister (tasks/todo). Перехід у required — після verified уроку й пулу, наступною версією матриці. Формати попередні — уточнює автор пулу.",
-      "evidence": "ist7g:135–136 (§ 20)",
+      "curricularScope": "required",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v7 (curate-math-matrix-v7). Пул pg7m4 h01–h08 verified (reports/verify/write-math-pool-g7m4-ister.md): 8 вправ, рівні 3/3/2; формати D-028 — number і multi (які трійки — сторони трикутника); є й list, choice по одній — матриця їх не вимагає. Охоплювати лише вміння, уже пояснені цим уроком.",
+      "evidence": "ist7g:135–138, 148 (§ 20; вправи пулу — с. 137–138, 148)",
       "prerequisites": [
         "g7m4l6"
       ],
       "sk": "geom",
       "pool": "pg7m4",
       "formats": [
-        "number"
+        "number",
+        "multi"
       ],
       "exercises": {
-        "min": 0,
-        "max": 0,
-        "levels": []
+        "min": 6,
+        "max": 8,
+        "levels": [
+          3,
+          2,
+          1
+        ]
       },
-      "poolState": "deferred",
+      "poolState": "existing-verified",
       "diagnostic": {
-        "preForSection": [],
+        "preForSection": [
+          "angles"
+        ],
         "cur": []
       }
     },
@@ -3883,25 +3938,32 @@
       "section": "g7m6",
       "lesson": "g7m6l5",
       "title": "Перпендикуляр і відстань",
-      "curricularScope": "pending",
-      "reason": "Новий урок D-043 (за Істером), draft; пул — задача write-math-pool-g7m6-ister (tasks/todo). Перехід у required — після verified уроку й пулу, наступною версією матриці. Формати попередні — уточнює автор пулу.",
-      "evidence": "ist7g:43–45 (§ 7)",
+      "curricularScope": "required",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v7 (curate-math-matrix-v7). Пул pg7m6 e01–e08 verified (reports/verify/write-math-pool-g7m6-ister.md): 8 вправ, рівні 3/3/2; формати D-028 — number (градуси) і choice («чи перпендикулярні», означення №149). Числових вправ на відстань від точки до прямої в § 7 немає (лише побудова). Охоплювати лише вміння, уже пояснені цим уроком.",
+      "evidence": "ist7g:43–49, 69 (§ 7; вправи пулу — с. 47–48; ДСР № 2 — с. 69)",
       "prerequisites": [
         "g7m2l2"
       ],
       "sk": "geom",
       "pool": "pg7m6",
       "formats": [
-        "number"
+        "number",
+        "choice"
       ],
       "exercises": {
-        "min": 0,
-        "max": 0,
-        "levels": []
+        "min": 6,
+        "max": 8,
+        "levels": [
+          3,
+          2,
+          1
+        ]
       },
-      "poolState": "deferred",
+      "poolState": "existing-verified",
       "diagnostic": {
-        "preForSection": [],
+        "preForSection": [
+          "angles"
+        ],
         "cur": []
       }
     },
@@ -4272,9 +4334,9 @@
       "section": "g7m8",
       "lesson": "g7m8l5",
       "title": "Описане й вписане коло",
-      "curricularScope": "pending",
-      "reason": "Новий урок D-043 (за Істером), draft; пул — задача write-math-pool-g7m8-ister (tasks/todo). Перехід у required — після verified уроку й пулу, наступною версією матриці. Формати попередні — уточнює автор пулу.",
-      "evidence": "ist7g:163–169 (§ 23–24)",
+      "curricularScope": "required",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v7 (curate-math-matrix-v7). Пул pg7m8 d01–d08 verified (reports/verify/write-math-pool-g7m8-ister.md): 8 вправ, рівні 3/3/2; формати D-028 — number і list (сторони трикутника, №669, №812); choice (d01, ДСР) є, матриця не вимагає. Охоплювати лише вміння, уже пояснені цим уроком.",
+      "evidence": "ist7g:163–171, 193, 196 (§ 23–24; вправи пулу — с. 166–167, 170; ДСР № 5 — с. 193; повторення — с. 196)",
       "prerequisites": [
         "g7m8l3",
         "g7m4l8",
@@ -4283,16 +4345,24 @@
       "sk": "geom",
       "pool": "pg7m8",
       "formats": [
-        "number"
+        "number",
+        "list"
       ],
       "exercises": {
-        "min": 0,
-        "max": 0,
-        "levels": []
+        "min": 6,
+        "max": 8,
+        "levels": [
+          3,
+          2,
+          1
+        ]
       },
-      "poolState": "deferred",
+      "poolState": "existing-verified",
       "diagnostic": {
-        "preForSection": [],
+        "preForSection": [
+          "lines",
+          "circle"
+        ],
         "cur": []
       }
     },
@@ -4301,9 +4371,9 @@
       "section": "g7m8",
       "lesson": "g7m8l6",
       "title": "Центральні й вписані кути",
-      "curricularScope": "pending",
-      "reason": "Новий урок D-043 (за Істером), draft; пул — задача write-math-pool-g7m8-ister (tasks/todo). Перехід у required — після verified уроку й пулу, наступною версією матриці. Формати попередні — уточнює автор пулу.",
-      "evidence": "ist7g:172–175 (§ 25)",
+      "curricularScope": "required",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v7 (curate-math-matrix-v7). Пул pg7m8 e01–e08 verified (reports/verify/write-math-pool-g7m8-ister.md): 8 вправ, рівні 3/3/2; формати D-028 — number і list (№704 два кути, №689 кути трикутника). Охоплювати лише вміння, уже пояснені цим уроком.",
+      "evidence": "ist7g:171–177 (§ 25 — с. 172–177; вправи пулу — с. 176–177 і №689 на с. 171)",
       "prerequisites": [
         "g7m4l5",
         "g7m8l1"
@@ -4311,16 +4381,24 @@
       "sk": "geom",
       "pool": "pg7m8",
       "formats": [
-        "number"
+        "number",
+        "list"
       ],
       "exercises": {
-        "min": 0,
-        "max": 0,
-        "levels": []
+        "min": 6,
+        "max": 8,
+        "levels": [
+          3,
+          2,
+          1
+        ]
       },
-      "poolState": "deferred",
+      "poolState": "existing-verified",
       "diagnostic": {
-        "preForSection": [],
+        "preForSection": [
+          "lines",
+          "circle"
+        ],
         "cur": []
       }
     },
@@ -4411,9 +4489,9 @@
       "section": "g8m1",
       "lesson": "g8m1l6",
       "title": "Раціональні рівняння",
-      "curricularScope": "pending",
-      "reason": "Новий урок D-043 (за Істером), draft; пул — задача write-math-pool-g8m1-ister (tasks/todo). Перехід у required — після verified уроку й пулу, наступною версією матриці. Формати попередні — уточнює автор пулу.",
-      "evidence": "ist8a:60–64 (§ 8)",
+      "curricularScope": "required",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v7 (curate-math-matrix-v7). Пул pg8m1 e01–e08 verified (reports/verify/write-math-pool-g8m1-ister.md): 8 вправ, рівні 3/3/2; формати D-028 — number (кілька коренів, №8.24–8.25, потребують квадратних рівнянь — не взято). Охоплювати лише вміння, уже пояснені цим уроком.",
+      "evidence": "ist8a:60–67 (§ 8; вправи пулу — с. 65–67)",
       "prerequisites": [
         "g8m1l1",
         "g8m1l2",
@@ -4425,13 +4503,23 @@
         "number"
       ],
       "exercises": {
-        "min": 0,
-        "max": 0,
-        "levels": []
+        "min": 6,
+        "max": 8,
+        "levels": [
+          3,
+          2,
+          1
+        ]
       },
-      "poolState": "deferred",
+      "poolState": "existing-verified",
       "diagnostic": {
-        "preForSection": [],
+        "preForSection": [
+          "power",
+          "poly",
+          "square",
+          "factor",
+          "function"
+        ],
         "cur": []
       }
     },
@@ -4480,25 +4568,36 @@
       "section": "g8m1",
       "lesson": "g8m1l7",
       "title": "Стандартний вигляд числа",
-      "curricularScope": "pending",
-      "reason": "Новий урок D-043 (за Істером), draft; пул — задача write-math-pool-g8m1-ister (tasks/todo). Перехід у required — після verified уроку й пулу, наступною версією матриці. Формати попередні — уточнює автор пулу.",
-      "evidence": "ist8a:83–84 (§ 11)",
+      "curricularScope": "required",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v7 (curate-math-matrix-v7). Пул pg8m1 f01–f08 verified (reports/verify/write-math-pool-g8m1-ister.md): 8 вправ, рівні 3/3/2; формати D-028 — number і comparison. Формату «стандартний вигляд числа» в рушії немає (ENGINE, inbox 04.11) — f01, f04–f06 адаптовано (дитина вводить порядок або множник). Охоплювати лише вміння, уже пояснені цим уроком.",
+      "evidence": "ist8a:83–86 (§ 11; вправи пулу — с. 85–86)",
       "prerequisites": [
         "g8m1l3"
       ],
       "sk": "num",
       "pool": "pg8m1",
       "formats": [
-        "number"
+        "number",
+        "comparison"
       ],
       "exercises": {
-        "min": 0,
-        "max": 0,
-        "levels": []
+        "min": 6,
+        "max": 8,
+        "levels": [
+          3,
+          2,
+          1
+        ]
       },
-      "poolState": "deferred",
+      "poolState": "existing-verified",
       "diagnostic": {
-        "preForSection": [],
+        "preForSection": [
+          "power",
+          "poly",
+          "square",
+          "factor",
+          "function"
+        ],
         "cur": []
       }
     },
@@ -4697,9 +4796,9 @@
       "section": "g8m2",
       "lesson": "g8m2l6",
       "title": "Вписаний чотирикутник",
-      "curricularScope": "pending",
-      "reason": "Новий урок D-043 (за Істером), draft; пул — задача write-math-pool-g8m2-ister (tasks/todo). Перехід у required — після verified уроку й пулу, наступною версією матриці. Формати попередні — уточнює автор пулу.",
-      "evidence": "ist8g:48–51 (§ 7, п. 1–2)",
+      "curricularScope": "required",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v7 (curate-math-matrix-v7). Пул pg8m2 e01–e06 verified (reports/verify/write-math-pool-g8m2-ister.md): 6 вправ, рівні 3/2/1; формати D-028 — number, choice («чи можна описати коло»), list (кути), expression (відповідь з параметром, 5R). Охоплювати лише вміння, уже пояснені цим уроком.",
+      "evidence": "ist8g:48–52, 64, 70–71 (§ 7, п. 1–2; вправи пулу — с. 52, 64, 70–71)",
       "prerequisites": [
         "g8m2l1",
         "g7m8l5"
@@ -4707,16 +4806,27 @@
       "sk": "geom",
       "pool": "pg8m2",
       "formats": [
-        "number"
+        "number",
+        "choice",
+        "list",
+        "expression"
       ],
       "exercises": {
-        "min": 0,
-        "max": 0,
-        "levels": []
+        "min": 6,
+        "max": 8,
+        "levels": [
+          3,
+          2,
+          1
+        ]
       },
-      "poolState": "deferred",
+      "poolState": "existing-verified",
       "diagnostic": {
-        "preForSection": [],
+        "preForSection": [
+          "parallel",
+          "tri-equal",
+          "tri-angles"
+        ],
         "cur": []
       }
     },
@@ -4725,9 +4835,9 @@
       "section": "g8m2",
       "lesson": "g8m2l7",
       "title": "Описаний чотирикутник",
-      "curricularScope": "pending",
-      "reason": "Новий урок D-043 (за Істером), draft; пул — задача write-math-pool-g8m2-ister (tasks/todo). Перехід у required — після verified уроку й пулу, наступною версією матриці. Формати попередні — уточнює автор пулу.",
-      "evidence": "ist8g:48–51 (§ 7, п. 3–4)",
+      "curricularScope": "required",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v7 (curate-math-matrix-v7). Пул pg8m2 f01–f06 verified (reports/verify/write-math-pool-g8m2-ister.md): 6 вправ, рівні 3/2/1; формати D-028 — number, choice («чи можна вписати коло»), expression (відповідь з параметром, 4a). Охоплювати лише вміння, уже пояснені цим уроком.",
+      "evidence": "ist8g:48–52, 64, 70–71 (§ 7, п. 3–4; вправи пулу — с. 52, 64, 70–71)",
       "prerequisites": [
         "g8m2l1",
         "g7m8l5"
@@ -4735,16 +4845,26 @@
       "sk": "geom",
       "pool": "pg8m2",
       "formats": [
-        "number"
+        "number",
+        "choice",
+        "expression"
       ],
       "exercises": {
-        "min": 0,
-        "max": 0,
-        "levels": []
+        "min": 6,
+        "max": 8,
+        "levels": [
+          3,
+          2,
+          1
+        ]
       },
-      "poolState": "deferred",
+      "poolState": "existing-verified",
       "diagnostic": {
-        "preForSection": [],
+        "preForSection": [
+          "parallel",
+          "tri-equal",
+          "tri-angles"
+        ],
         "cur": []
       }
     },
@@ -4753,25 +4873,36 @@
       "section": "g8m3",
       "lesson": "g8m3l6",
       "title": "Функція y = x²",
-      "curricularScope": "pending",
-      "reason": "Новий урок D-043 (за Істером), draft; пул — задача write-math-pool-g8m3-ister (tasks/todo). Перехід у required — після verified уроку й пулу, наступною версією матриці. Формати попередні — уточнює автор пулу.",
-      "evidence": "ist8a:113–115 (§ 13)",
+      "curricularScope": "required",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v7 (curate-math-matrix-v7). Пул pg8m3 e01–e08 verified (reports/verify/write-math-pool-g8m3-ister.md): 8 вправ, рівні 3/3/2; формати D-028 — number, multi, list, comparison, choice (так у нотатках автора: «чи належить точка», область значень, корені x² = a, порівняння). Охоплювати лише вміння, уже пояснені цим уроком.",
+      "evidence": "ist8a:113–117 (§ 13; вправи пулу — с. 116–117)",
       "prerequisites": [
         "g7m5l1"
       ],
       "sk": "func",
       "pool": "pg8m3",
       "formats": [
-        "number"
+        "number",
+        "multi",
+        "list",
+        "comparison",
+        "choice"
       ],
       "exercises": {
-        "min": 0,
-        "max": 0,
-        "levels": []
+        "min": 6,
+        "max": 8,
+        "levels": [
+          3,
+          2,
+          1
+        ]
       },
-      "poolState": "deferred",
+      "poolState": "existing-verified",
       "diagnostic": {
-        "preForSection": [],
+        "preForSection": [
+          "power",
+          "function"
+        ],
         "cur": []
       }
     },
@@ -5045,9 +5176,9 @@
       "section": "g8m4",
       "lesson": "g8m4l5",
       "title": "Властивість бісектриси",
-      "curricularScope": "pending",
-      "reason": "Новий урок D-043 (за Істером), draft; пул — задача write-math-pool-g8m4-ister (tasks/todo). Перехід у required — після verified уроку й пулу, наступною версією матриці. Формати попередні — уточнює автор пулу.",
-      "evidence": "ist8g:98–99 (§ 15)",
+      "curricularScope": "required",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v7 (curate-math-matrix-v7). Пул pg8m4 d01–d08 verified (reports/verify/write-math-pool-g8m4-ister.md): 8 вправ, рівні 3/3/2; формати D-028 — number (d03 — ключ-дріб). Охоплювати лише вміння, уже пояснені цим уроком.",
+      "evidence": "ist8g:98–100, 147 (§ 15; вправи пулу — с. 99–100, 147)",
       "prerequisites": [
         "g8m4l1"
       ],
@@ -5057,13 +5188,20 @@
         "number"
       ],
       "exercises": {
-        "min": 0,
-        "max": 0,
-        "levels": []
+        "min": 6,
+        "max": 8,
+        "levels": [
+          3,
+          2,
+          1
+        ]
       },
-      "poolState": "deferred",
+      "poolState": "existing-verified",
       "diagnostic": {
-        "preForSection": [],
+        "preForSection": [
+          "tri-equal",
+          "tri-angles"
+        ],
         "cur": []
       }
     },
@@ -5072,9 +5210,9 @@
       "section": "g8m4",
       "lesson": "g8m4l6",
       "title": "Синус, косинус, тангенс",
-      "curricularScope": "pending",
-      "reason": "Новий урок D-043 (за Істером), draft; пул — задача write-math-pool-g8m4-ister (tasks/todo). Перехід у required — після verified уроку й пулу, наступною версією матриці. Формати попередні — уточнює автор пулу.",
-      "evidence": "ist8g:133–137 (§ 19, п. 1–2)",
+      "curricularScope": "required",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v7 (curate-math-matrix-v7). Пул pg8m4 e01–e08 verified (reports/verify/write-math-pool-g8m4-ister.md): 8 вправ, рівні 3/3/2; формати D-028 — number (дроби). Охоплювати лише вміння, уже пояснені цим уроком.",
+      "evidence": "ist8g:133–140, 146–147 (§ 19, п. 1–2; вправи пулу — с. 138, 140, 146–147)",
       "prerequisites": [
         "g8m4l1",
         "g8m4l2"
@@ -5085,13 +5223,20 @@
         "number"
       ],
       "exercises": {
-        "min": 0,
-        "max": 0,
-        "levels": []
+        "min": 6,
+        "max": 8,
+        "levels": [
+          3,
+          2,
+          1
+        ]
       },
-      "poolState": "deferred",
+      "poolState": "existing-verified",
       "diagnostic": {
-        "preForSection": [],
+        "preForSection": [
+          "tri-equal",
+          "tri-angles"
+        ],
         "cur": []
       }
     },
@@ -5100,9 +5245,9 @@
       "section": "g8m4",
       "lesson": "g8m4l7",
       "title": "Табличні кути 30°, 45°, 60°",
-      "curricularScope": "pending",
-      "reason": "Новий урок D-043 (за Істером), draft; пул — задача write-math-pool-g8m4-ister (tasks/todo). Перехід у required — після verified уроку й пулу, наступною версією матриці. Формати попередні — уточнює автор пулу.",
-      "evidence": "ist8g:133–137 (§ 19, п. 3)",
+      "curricularScope": "required",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v7 (curate-math-matrix-v7). Пул pg8m4 f01–f08 verified (reports/verify/write-math-pool-g8m4-ister.md): 8 вправ, рівні 3/4/1; формати D-028 — number і exactRoot. Охоплювати лише вміння, уже пояснені цим уроком.",
+      "evidence": "ist8g:133–141, 149 (§ 19, п. 3; вправи пулу — с. 138–141; перевірка знань до §§ 17–20 — с. 149)",
       "prerequisites": [
         "g8m4l6",
         "g8m4l2"
@@ -5110,16 +5255,24 @@
       "sk": "trig",
       "pool": "pg8m4",
       "formats": [
-        "number"
+        "number",
+        "exactRoot"
       ],
       "exercises": {
-        "min": 0,
-        "max": 0,
-        "levels": []
+        "min": 6,
+        "max": 8,
+        "levels": [
+          3,
+          2,
+          1
+        ]
       },
-      "poolState": "deferred",
+      "poolState": "existing-verified",
       "diagnostic": {
-        "preForSection": [],
+        "preForSection": [
+          "tri-equal",
+          "tri-angles"
+        ],
         "cur": []
       }
     },
@@ -5128,25 +5281,33 @@
       "section": "g8m4",
       "lesson": "g8m4l8",
       "title": "Розв'язування прямокутних трикутників",
-      "curricularScope": "pending",
-      "reason": "Новий урок D-043 (за Істером), draft; пул — задача write-math-pool-g8m4-ister (tasks/todo). Перехід у required — після verified уроку й пулу, наступною версією матриці. Формати попередні — уточнює автор пулу.",
-      "evidence": "ist8g:141–143 (§ 20)",
+      "curricularScope": "required",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v7 (curate-math-matrix-v7). Пул pg8m4 g01–g08 verified (reports/verify/write-math-pool-g8m4-ister.md): 8 вправ, рівні 3/3/2; формати D-028 — number (градуси, наближення з tol) і exactRoot. Вправ «з калькулятором» (градуси й мінути) не взято: урок калькулятора не вчить. Охоплювати лише вміння, уже пояснені цим уроком.",
+      "evidence": "ist8g:141–146 (§ 20; вправи пулу — с. 144–146)",
       "prerequisites": [
         "g8m4l7"
       ],
       "sk": "trig",
       "pool": "pg8m4",
       "formats": [
-        "number"
+        "number",
+        "exactRoot"
       ],
       "exercises": {
-        "min": 0,
-        "max": 0,
-        "levels": []
+        "min": 6,
+        "max": 8,
+        "levels": [
+          3,
+          2,
+          1
+        ]
       },
-      "poolState": "deferred",
+      "poolState": "existing-verified",
       "diagnostic": {
-        "preForSection": [],
+        "preForSection": [
+          "tri-equal",
+          "tri-angles"
+        ],
         "cur": []
       }
     },
@@ -5312,9 +5473,9 @@
       "section": "g8m5",
       "lesson": "g8m5l6",
       "title": "Квадратний тричлен",
-      "curricularScope": "pending",
-      "reason": "Новий урок D-043 (за Істером), draft; пул — задача write-math-pool-g8m5-ister (tasks/todo). Перехід у required — після verified уроку й пулу, наступною версією матриці. Формати попередні — уточнює автор пулу.",
-      "evidence": "ist8a:193–195 (§ 24)",
+      "curricularScope": "required",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v7 (curate-math-matrix-v7). Пул pg8m5 e01–e08 verified (reports/verify/write-math-pool-g8m5-ister.md): 8 вправ, рівні 3/3/2; формати D-028 — list (корені), expression (factored, reduced), multi («чи можна розкласти», №24.8); попередній choice прибрано — вправи підручника його не дають. Охоплювати лише вміння, уже пояснені цим уроком.",
+      "evidence": "ist8a:193–197 (§ 24; вправи пулу — с. 196–197)",
       "prerequisites": [
         "g8m5l2",
         "g8m5l3",
@@ -5323,16 +5484,27 @@
       "sk": "expr",
       "pool": "pg8m5",
       "formats": [
-        "choice"
+        "list",
+        "expression",
+        "multi"
       ],
       "exercises": {
-        "min": 0,
-        "max": 0,
-        "levels": []
+        "min": 6,
+        "max": 8,
+        "levels": [
+          3,
+          2,
+          1
+        ]
       },
-      "poolState": "deferred",
+      "poolState": "existing-verified",
       "diagnostic": {
-        "preForSection": [],
+        "preForSection": [
+          "poly",
+          "square",
+          "factor",
+          "linear"
+        ],
         "cur": []
       }
     },
@@ -5341,9 +5513,9 @@
       "section": "g8m5",
       "lesson": "g8m5l7",
       "title": "Біквадратні рівняння",
-      "curricularScope": "pending",
-      "reason": "Новий урок D-043 (за Істером), draft; пул — задача write-math-pool-g8m5-ister (tasks/todo). Перехід у required — після verified уроку й пулу, наступною версією матриці. Формати попередні — уточнює автор пулу.",
-      "evidence": "ist8a:199–202 (§ 25)",
+      "curricularScope": "required",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v7 (curate-math-matrix-v7). Пул pg8m5 f01–f08 verified (reports/verify/write-math-pool-g8m5-ister.md): 8 вправ, рівні 3/3/2; формати D-028 — list (корені, зокрема «±»; 6) і number (2). Охоплювати лише вміння, уже пояснені цим уроком.",
+      "evidence": "ist8a:199–204 (§ 25; вправи пулу — с. 202–204)",
       "prerequisites": [
         "g8m5l1",
         "g8m5l2",
@@ -5353,16 +5525,26 @@
       "sk": "eq",
       "pool": "pg8m5",
       "formats": [
-        "number"
+        "number",
+        "list"
       ],
       "exercises": {
-        "min": 0,
-        "max": 0,
-        "levels": []
+        "min": 6,
+        "max": 8,
+        "levels": [
+          3,
+          2,
+          1
+        ]
       },
-      "poolState": "deferred",
+      "poolState": "existing-verified",
       "diagnostic": {
-        "preForSection": [],
+        "preForSection": [
+          "poly",
+          "square",
+          "factor",
+          "linear"
+        ],
         "cur": []
       }
     },
@@ -5371,9 +5553,9 @@
       "section": "g8m5",
       "lesson": "g8m5l8",
       "title": "Задачі на дробові рівняння",
-      "curricularScope": "pending",
-      "reason": "Новий урок D-043 (за Істером), draft; пул — задача write-math-pool-g8m5-ister (tasks/todo). Перехід у required — після verified уроку й пулу, наступною версією матриці. Формати попередні — уточнює автор пулу.",
-      "evidence": "ist8a:206–207 (§ 26)",
+      "curricularScope": "required",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v7 (curate-math-matrix-v7). Пул pg8m5 g01–g08 verified (reports/verify/write-math-pool-g8m5-ister.md): 8 вправ, рівні 3/3/2; формати D-028 — number (7) і list (1). Охоплювати лише вміння, уже пояснені цим уроком.",
+      "evidence": "ist8a:206–209 (§ 26; вправи пулу — с. 207–209)",
       "prerequisites": [
         "g8m1l6",
         "g8m5l2",
@@ -5382,16 +5564,26 @@
       "sk": "eq",
       "pool": "pg8m5",
       "formats": [
-        "number"
+        "number",
+        "list"
       ],
       "exercises": {
-        "min": 0,
-        "max": 0,
-        "levels": []
+        "min": 6,
+        "max": 8,
+        "levels": [
+          3,
+          2,
+          1
+        ]
       },
-      "poolState": "deferred",
+      "poolState": "existing-verified",
       "diagnostic": {
-        "preForSection": [],
+        "preForSection": [
+          "poly",
+          "square",
+          "factor",
+          "linear"
+        ],
         "cur": []
       }
     },
@@ -12492,6 +12684,6 @@
       "verdict": "прийнято; бажані уточнення 1–4 закрито refine-math-content-from-matrix-v3"
     }
   },
-  "previous": "2026-11-03.v5",
-  "changes": "docs/math-personalization-coverage.md, «Зміни v6» (8 уроків D-043 → required, g6m6l1–l4 → optional; curate-math-matrix-v6); попередні — «Зміни v5», «Зміни v4», «Зміни v3»"
+  "previous": "2026-11-04.v6",
+  "changes": "docs/math-personalization-coverage.md, «Зміни v7» (22 уроки D-043 7–8 кл. → required; curate-math-matrix-v7); попередні — «Зміни v6», «Зміни v5», «Зміни v4», «Зміни v3»"
 }

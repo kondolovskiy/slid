@@ -199,20 +199,6 @@
    "text": "Іра порівнює лише кути Іра каже: «У двох прямокутних трикутників Ф і Ф . Отже, вони рівні». Що не так?"
   },
   {
-   "group": "geo",
-   "file": "content/math/g7-g7m4.js",
-   "where": "g7m4l4 екран 3",
-   "kind": "урок",
-   "type": "number",
-   "level": "geo",
-   "ill": false,
-   "prevIll": true,
-   "ref": null,
-   "points": "ABC",
-   "graph": null,
-   "text": "Кути опори з рівними схилами Опора з Ф : кут при Ф — 50°. Скільки градусів у куті при основі?"
-  },
-  {
    "group": "graph",
    "file": "content/math/g7-g7m5.js",
    "where": "g7m5l1 екран 4",
