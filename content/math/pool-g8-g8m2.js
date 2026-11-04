@@ -315,6 +315,11 @@ SLID.pool("math", {
     { id: "e01", lesson: "g8m2l6", lvl: 1, sk: "geom", src: "ist8g №7.2(1)", srcPage: 52,
       type: "choice", title: "$\\angle A = 30°$, $\\angle C = 150°$",
       body: "<p>У чотирикутнику $ABCD$ кут $A$ дорівнює $30°$, а кут $C$ — $150°$. Чи можна навколо цього чотирикутника описати коло?</p>",
+      lab: { kind: "plane", axes: false, grid: 0, view: [-6, 6, -5, 2],
+        points: { A: { at: [-5, 0] }, B: { at: [3.214, -3.83] }, C: { at: [4.532, -2.113] }, D: { at: [4.924, 0.868] } },
+        polys: [{ pts: ["A", "B", "C", "D"], color: "accent", opacity: 0.16 }],
+        angles: [{ from: "D", at: "A", to: "B", color: "gold" }, { from: "B", at: "C", to: "D", color: "gold" }],
+        alt: "Чотирикутник ABCD; кут A дорівнює 30 градусів, кут C — 150 градусів" },
       opts: [
         "Так: $\\angle A + \\angle C = 180°$",
         "Ні: кути $A$ і $C$ не рівні",
