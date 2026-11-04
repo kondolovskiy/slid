@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-04T07:34:56.029Z
 id: write-world-w8s5
 type: write-section
 subject: world
@@ -6,7 +8,7 @@ grade: 8
 section: w8s5
 weeks: [29, 35]
 status: todo
-claimed_by:
+claimed_by: writer-write-world-w8s5
 created: 2026-11-03
 depends_on: [write-world-w7s1]
 ---
