@@ -1,5 +1,5 @@
 /* Слід · Математика, 7 клас — пул задач для тренування до розділу «Геометрія: паралельні прямі» (g7m6)
-   Статус: draft (2026-11-04, write-math-pool-g7m6-ister): додано e01–e08 для g7m6l5 «Найкоротша стежка до річки» (перпендикуляр і відстань) з Істера Г7 § 7 і ДСР № 2 (ist7g, с. 47, 48, 69; PDF = друк + 1), умови й числа звірено з рендером сторінок; рисунки (lab plane) відтворюють мал. 7.14–7.17 і рисунок ДСР № 2 №7 під числа кожної задачі. a, b, c — без змін. До повторної верифікації.
+   Статус: verified (2026-11-04, verifier-write-math-pool-g7m6-ister, reports/verify/write-math-pool-g7m6-ister.md). Додано (write-math-pool-g7m6-ister) e01–e08 для g7m6l5 «Найкоротша стежка до річки» (перпендикуляр і відстань) з Істера Г7 § 7 і ДСР № 2 (ist7g, с. 47, 48, 69; PDF = друк + 1), умови й числа звірено з рендером сторінок; рисунки (lab plane) відтворюють мал. 7.14–7.17 і рисунок ДСР № 2 №7 під числа кожної задачі. a, b, c — без змін.
    Раніше: verified (рисунки до b07, c08 — fix-math-figs-g7-geo-b, перевірено 2026-11-03, reports/verify/fix-math-figs-g7-geo-b.md; раніше verifier-pool-g7m6, 2026-10-31; reports/verify/pg7m6.md). 30 задач: g7m6l5 — 8, g7m6l1 — 7, g7m6l2 — 7, g7m6l3 — 8 (boss g7m6boss без задач).
    Матриця docs/math-personalization-coverage.md 2026-10-16.v2: уроки l1–l3 required, формат number (+ choice/list за умовою); g7m6l5 — pending (формати number + choice).
    Задачі a, b, c — з підручника Мерзляк, Якір. Геометрія 7 (2024), п. 14–15; умови й числа звірено за відрендереними сторінками PDF.
@@ -10,8 +10,8 @@
 SLID.pool("math", {
   id: "pg7m6",
   section: "g7m6",
-  status: "draft",
-  meta: { author: "w-write-math-pool-g7m6; e01–e08 — writer-write-math-pool-g7m6-ister (2026-11-04)", created: "2026-10-31", factcheck: "verifier-pool-g7m6 (a–c); e01–e08 — очікує", teacher: null },
+  status: "verified",
+  meta: { author: "w-write-math-pool-g7m6; e01–e08 — writer-write-math-pool-g7m6-ister (2026-11-04)", created: "2026-10-31", factcheck: "verifier-pool-g7m6 (a–c); e01–e08 — verifier-write-math-pool-g7m6-ister (2026-11-04, reports/verify/write-math-pool-g7m6-ister.md)", teacher: null },
   sources: [
     { id: "mer7g", title: "Мерзляк А. Г., Якір М. С. Геометрія: підручник для 7 класу. — Харків: Гімназія, 2024 (п. 14–15; дзеркало file.4book.org)", url: "https://file.4book.org/images/shcoolbook_ua/7/7_geom_m_2024.pdf" },
     { id: "ist7g", title: "Істер О. С. Геометрія: підручник для 7 класу. — Київ: Генеза, 2024 (§ 7, ДСР № 2; дзеркало file.4book.org)", url: "https://file.4book.org/images/shcoolbook_ua/7/7_geom_i_2024.pdf" }

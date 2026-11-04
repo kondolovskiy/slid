@@ -1,5 +1,5 @@
 /* Слід · Математика, 7 клас — пул задач для тренування до розділу «Геометрія: коло» (g7m8)
-   Статус: draft — 2026-11-04 додано d01–d08 (g7m8l5) і e01–e08 (g7m8l6) за Істером (write-math-pool-g7m8-ister), чекає повторної верифікації.
+   Статус: verified — 2026-11-04 додано d01–d08 (g7m8l5) і e01–e08 (g7m8l6) за Істером (write-math-pool-g7m8-ister); перевірено verifier-write-math-pool-g7m8-ister (reports/verify/write-math-pool-g7m8-ister.md; підпис B у d07 винесено з-під точки M).
    Раніше: verified (рисунки lab до a07, a08, b01, b02, b05–b08 — fix-math-figs-g7-geo-b, перевірено 2026-11-03, reports/verify/fix-math-figs-g7-geo-b.md; раніше verifier-pg7m8, 2026-10-31, reports/verify/pg7m8.md).
    40 задач: по 8 на уроки g7m8l1, g7m8l2, g7m8l3, g7m8l5, g7m8l6 (3 рівня 1, 3 рівня 2, 2 рівня 3). Серії a, b, c — без змін.
    Boss g7m8l4 не дублюється (за задачею write-math-pool-g7m8, матриця 2026-10-16.v2).
@@ -14,8 +14,8 @@
 SLID.pool("math", {
   id: "pg7m8",
   section: "g7m8",
-  status: "draft",
-  meta: { author: "w-write-math-pool-g7m8", created: "2026-10-31", factcheck: "verifier-pg7m8 (a–c); d, e — ще ні", revised: "2026-11-04 write-math-pool-g7m8-ister (d01–d08, e01–e08)", teacher: null },
+  status: "verified",
+  meta: { author: "w-write-math-pool-g7m8", created: "2026-10-31", factcheck: "verifier-pg7m8 (a–c); d, e — verifier-write-math-pool-g7m8-ister (2026-11-04, reports/verify/write-math-pool-g7m8-ister.md)", revised: "2026-11-04 write-math-pool-g7m8-ister (d01–d08, e01–e08)", teacher: null },
   sources: [
     { id: "mer7g", title: "Мерзляк А. Г., Якір М. С. Геометрія : підручник для 7 класу закладів загальної середньої освіти. — Харків : Гімназія, 2024 (наказ МОН № 124 від 05.02.2024); PDF — дзеркало 4book.org", url: "https://file.4book.org/images/shcoolbook_ua/7/7_geom_m_2024.pdf" },
     { id: "ist7g", title: "Істер О. С. Геометрія : підручник для 7 класу закладів загальної середньої освіти. — Київ : Генеза, 2024 (наказ МОН № 124 від 05.02.2024); PDF — дзеркало 4book.org", url: "https://file.4book.org/images/shcoolbook_ua/7/7_geom_i_2024.pdf" }
@@ -285,10 +285,10 @@ SLID.pool("math", {
       answer: 7, unit: "см",
       lab: { kind: "plane", axes: false, grid: 0, view: [-0.8, 10.4, -1.1, 4.9],
         circles: [{ c: [5.6, 1.313], r: "1.313", color: "blue" }],
-        points: { A: { at: [0, 0] }, B: { at: [6.4, 0] }, C: { at: [8.6, 4.266] },
+        points: { A: { at: [0, 0] }, B: { at: [6.4, 0], label: false }, C: { at: [8.6, 4.266] },
           P: { at: [5.6, 0], color: "blue" }, M: { at: [6.767, 0.711], color: "blue" }, F: { at: [5.017, 2.489], color: "blue" } },
         polys: [{ pts: ["A", "B", "C"], color: "accent", opacity: 0.06 }],
-        texts: [{ at: [2.6, -0.6], t: "AB = 8 см", color: "ink", bold: true }, { at: [8.9, 1.5], t: "BC = 6 см", color: "ink", bold: true }, { at: [2.6, 2.4], t: "AC = 12 см", color: "ink", bold: true }],
+        texts: [{ at: [6.75, -0.55], t: "B", color: "accent", bold: true }, { at: [2.6, -0.6], t: "AB = 8 см", color: "ink", bold: true }, { at: [8.9, 1.5], t: "BC = 6 см", color: "ink", bold: true }, { at: [2.6, 2.4], t: "AC = 12 см", color: "ink", bold: true }],
         alt: "Трикутник ABC із вписаним колом; P, M, F — точки дотику на AB, BC, AC; AB 8 см, BC 6 см, AC 12 см" },
       hint: "Познач $AP = x$. Вирази через $x$ відрізки $AF$, $PB$, $BM$, $MC$ і $CF$, згадавши рівність відрізків дотичних.",
       steps: ["Нехай $AP = x$. Тоді $AF = x$, $PB = BM = 8 - x$.", "$MC = 6 - (8 - x) = x - 2$, а $CF = MC = x - 2$.", "$AC = AF + FC$: $x + x - 2 = 12$, звідси $x = 7$.", "Отже, $AP = 7$ см (перевірка: $PB = 1$, $MC = 5$, $1 + 5 = 6$)."] },

@@ -1,5 +1,5 @@
 /* Слід · Математика, 7 клас — пул задач для тренування до розділу «Алгебра: цілі вирази» (g7m3)
-   Статус: draft (2026-11-04, доповнено для нових уроків за Істером; до повторної верифікації). Задачі a–d —
+   Статус: verified (2026-11-04: серії e, f перевірив verifier-write-math-pool-g7m3-ister, reports/verify/write-math-pool-g7m3-ister.md). Задачі a–d —
    verified (verifier-pool-g7m3, 2026-10-31; автор w-write-math-pool-g7m3): 32 задачі, по 8 на уроки
    g7m3l1–g7m3l4 (boss g7m3l5 без задач), матриця 2026-10-16.v2.
    Нові серії (write-math-pool-g7m3-ister, 2026-11-04): e01–e08 — g7m3l6 «Тотожності» (Істер, § 5, с. 51–53),
@@ -15,7 +15,7 @@
 SLID.pool("math", {
   id: "pg7m3",
   section: "g7m3",
-  status: "draft",
+  status: "verified",
   meta: { author: "claude-opus", created: "2026-10-31", factcheck: "verifier-pool-g7m3", teacher: null },
   sources: [
     { id: "a7", title: "Мерзляк А. Г., Якір М. С. Алгебра: підручник для 7 класу закладів загальної середньої освіти. — Харків: Гімназія, 2024 (§ 1, п. 5–9, 12–17, 19)", url: "https://file.4book.org/images/shcoolbook_ua/7/7_a_m_2024.pdf" },
