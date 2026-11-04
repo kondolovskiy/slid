@@ -5,7 +5,7 @@ id: write-math-pool-g11m2
 type: write-pool
 subject: math
 grade: 11
-status: review
+status: done
 claimed_by: writer-write-math-pool-g11m2
 created: 2026-10-15
 depends_on: [curate-math-personalization-map, engine-math-pool-answer-formats]
@@ -76,6 +76,8 @@ depends_on: [curate-math-personalization-map, engine-math-pool-answer-formats]
 - `node tools/validate.mjs --pool pg11m2` — 0 помилок, 0 попереджень (файл validate бере з теки content без manifest; вигаданий `--pool pgXXX` дає помилку, тож пул справді знайдено). `personalization-qa`: «pg11m2: ще не verified». `test-answer-ui.py --suite content --pool pg11m2` не запускався: у Python немає модуля playwright. Його треба прогнати під час qa-math-personalization-g11 після build.
 - Для verify (content-verify): звірити 16 умов і сторінок, ключі, зсув ключа с. 249; вирішити, чи варто приймати `c = (…)` у b04 (питання до рушія, не до вправи).
 
+
+**2026-11-04, verifier-pg11m2.** Незалежна верифікація: прийнято, status → verified (reports/verify/pg11m2.md). 16/16 умов і сторінок звірено на рендері m10 (sha256 збігся з №191), усі ключі розв'язано самостійно й перевірено checkAns; зсув ключа с. 249 підтверджено. Правки: a07, b06 — подвійне «Знайди» в умові. validate --pool pg11m2 — 0/0. Scope l1/l2 (pending) — за куратором і людиною. test-answer-ui — на qa після build.
 
 ## Обсяг за матрицею 2026-10-16.v2
 
