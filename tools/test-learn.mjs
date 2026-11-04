@@ -1147,7 +1147,7 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
   eq(d.items.map(it => it.topic), TOPICS, "dg6: теми за індексами (збережені вердикти не зсуваються)");
   eq(d.items.flatMap((it, i) => it.rev ? [[i, it.topic, it.rev]] : []), [[6, "pct", 3], [16, "g6-div", 2], [20, "g6-div", 2], [24, "g6-fadd", 2], [26, "pct-of", 3], [27, "g6-prop", 2], [28, "g6-neg", 2]], "dg6: rev 2 і rev 3 лише в замінених пробах");
   eq(L.diagRev(d), 3, "dg6: редакція 3");
-  // перерваний тест редакції 1 (усе правильно до другого dec-ops включно): п'ять проб відкинуто, решта на місці
+  // перерваний тест редакції 1 (усе правильно до другого dec-ops включно): чотири проби відкинуто (6, 16, 20, 24), решта на місці
   const S = { grade: 6, diag: {}, plan: {}, diagRun: { dg6: Object.fromEntries(Array.from({ length: 26 }, (_, i) => [i, OK])) } };
   const r = L.resumeDiag(S, d);
   eq([r.dropped, Object.keys(S.diagRun.dg6).length, L.nextItem(d, S.diagRun.dg6), S.diagRunRev.dg6], [[6, 16, 20, 24], 22, 6, 3], "dg6: legacy-запуск — заново pct, g6-div ×2, g6-fadd; 22 відповіді лишились");

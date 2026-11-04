@@ -1,5 +1,5 @@
 {
-  "version": "2026-11-03.v5",
+  "version": "2026-11-04.v6",
   "status": "draft",
   "registryCommit": "9057fd5",
   "sources": {
@@ -115,19 +115,19 @@
       "title": "Істер О. С. Математика 5 кл. (Генеза, 2022)",
       "url": "https://file.4book.org/images/shcoolbook_ua/5/5_m_i_2022.pdf",
       "opened": "2026-11-03",
-      "method": "D-043: сторінки й параграфи — з нотаток авторів уроків (tasks/review/write-math-*), URL — reports/math-ister-map.md §1; куратор матриці PDF повторно не відкривав — межі звіряє автор пулу й верифікатор"
+      "method": "D-043: сторінки й параграфи — з нотаток авторів; v6: межі § 13 (с. 76–84, №519–542), § 14 (с. 84–89, №542–580), § 18 (с. 104–109, №671–703) куратор звірив за текстовим шаром PDF (PDF = друк. + 4), URL — reports/math-ister-map.md §1"
     },
     "ist6a": {
       "title": "Істер О. С. Математика 6 кл., ч. 1 (Генеза, 2023)",
       "url": "https://file.4book.org/images/shcoolbook_ua/6/6_m_i_2023-1.pdf",
       "opened": "2026-11-03",
-      "method": "D-043: сторінки й параграфи — з нотаток авторів уроків (tasks/review/write-math-*), URL — reports/math-ister-map.md §1; куратор матриці PDF повторно не відкривав — межі звіряє автор пулу й верифікатор"
+      "method": "D-043: сторінки й параграфи — з нотаток авторів уроків (tasks/review/write-math-*), URL — reports/math-ister-map.md §1; куратор матриці PDF повторно не відкривав — межі звіряє автор пулу й верифікатор; v6: межі вправ пулів — з нотаток авторів і звітів верифікаторів (рендер сторінок, PDF = друк.), reports/verify/write-math-pool-*-ister.md"
     },
     "ist6b": {
       "title": "Істер О. С. Математика 6 кл., ч. 2 (Генеза, 2023)",
       "url": "https://file.4book.org/images/shcoolbook_ua/6/6_m_i_2023-2.pdf",
       "opened": "2026-11-03",
-      "method": "D-043: сторінки й параграфи — з нотаток авторів уроків (tasks/review/write-math-*), URL — reports/math-ister-map.md §1; куратор матриці PDF повторно не відкривав — межі звіряє автор пулу й верифікатор"
+      "method": "D-043: сторінки й параграфи — з нотаток авторів уроків (tasks/review/write-math-*), URL — reports/math-ister-map.md §1; куратор матриці PDF повторно не відкривав — межі звіряє автор пулу й верифікатор; v6: межі вправ пулів — з нотаток авторів і звітів верифікаторів (рендер сторінок, PDF = друк.), reports/verify/write-math-pool-*-ister.md"
     },
     "ist7a": {
       "title": "Істер О. Алгебра 7 кл. (Генеза, 2024)",
@@ -164,6 +164,12 @@
       "url": "https://file.4book.org/images/shcoolbook_ua/9/9_geom_i_2026.pdf",
       "opened": "2026-11-03",
       "method": "D-043: сторінки й параграфи — з нотаток авторів уроків (tasks/review/write-math-*), URL — reports/math-ister-map.md §1; куратор матриці PDF повторно не відкривав — межі звіряє автор пулу й верифікатор"
+    },
+    "ist5k": {
+      "title": "Істер О. С. Математика 5 кл. (Генеза, 2022), додаткова тема «Найпростіші комбінаторні задачі» — матеріал за QR-кодом зі с. 290",
+      "url": "https://drive.google.com/file/d/1UFGuRRODD5nF1NtXbN0ubzlcn0s5cI4D/view",
+      "opened": "2026-11-04",
+      "method": "Сторінки — друкована нумерація матеріалу (3–11; PDF = друк − 2), вправи №1–57 на с. 6–11 — звірено автором і верифікатором пулу pg6m6 (reports/verify/write-math-pool-g6m6.md); куратор матриці PDF не відкривав"
     }
   },
   "lessons": [
@@ -1075,9 +1081,9 @@
       "section": "ms0",
       "lesson": "ms0l7",
       "title": "Задачі на рух",
-      "curricularScope": "pending",
-      "reason": "Новий урок D-043 (за Істером), draft; пул — задача write-math-pool-ms0-ister (tasks/todo). Перехід у required — після verified уроку й пулу, наступною версією матриці. Формати попередні — уточнює автор пулу.",
-      "evidence": "ist5:76–79 (§ 13)",
+      "curricularScope": "required",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v6 (curate-math-matrix-v6). Пул pms0 f01–f08 verified (reports/verify/write-math-pool-ms0-ister.md); формати D-028 — number з unit (км/год, км, год, хв). Охоплювати лише вміння, уже пояснені цим уроком.",
+      "evidence": "ist5:76–84 (§ 13; вправи пулу — с. 81–83)",
       "prerequisites": [
         "ms0l3"
       ],
@@ -1087,13 +1093,24 @@
         "number"
       ],
       "exercises": {
-        "min": 0,
-        "max": 0,
-        "levels": []
+        "min": 6,
+        "max": 8,
+        "levels": [
+          3,
+          2,
+          1
+        ]
       },
-      "poolState": "deferred",
+      "poolState": "existing-verified",
       "diagnostic": {
-        "preForSection": [],
+        "preForSection": [
+          "place",
+          "cmp",
+          "addsub",
+          "mul",
+          "quot",
+          "ord"
+        ],
         "cur": []
       }
     },
@@ -1102,9 +1119,9 @@
       "section": "ms0",
       "lesson": "ms0l8",
       "title": "Ціна, вартість, продуктивність",
-      "curricularScope": "pending",
-      "reason": "Новий урок D-043 (за Істером), draft; пул — задача write-math-pool-ms0-ister (tasks/todo). Перехід у required — після verified уроку й пулу, наступною версією матриці. Формати попередні — уточнює автор пулу.",
-      "evidence": "ist5:84–86 (§ 14)",
+      "curricularScope": "required",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v6 (curate-math-matrix-v6). Пул pms0 g01–g08 verified (reports/verify/write-math-pool-ms0-ister.md); формати D-028 — number з unit (грн, год, лічильні unitForms). Охоплювати лише вміння, уже пояснені цим уроком.",
+      "evidence": "ist5:84–89 (§ 14; вправи пулу — с. 86–89)",
       "prerequisites": [
         "ms0l3"
       ],
@@ -1114,13 +1131,24 @@
         "number"
       ],
       "exercises": {
-        "min": 0,
-        "max": 0,
-        "levels": []
+        "min": 6,
+        "max": 8,
+        "levels": [
+          3,
+          2,
+          1
+        ]
       },
-      "poolState": "deferred",
+      "poolState": "existing-verified",
       "diagnostic": {
-        "preForSection": [],
+        "preForSection": [
+          "place",
+          "cmp",
+          "addsub",
+          "mul",
+          "quot",
+          "ord"
+        ],
         "cur": []
       }
     },
@@ -1167,25 +1195,36 @@
       "section": "ms0b",
       "lesson": "ms0bl6",
       "title": "Координатний промінь. Шкала",
-      "curricularScope": "pending",
-      "reason": "Новий урок D-043 (за Істером), draft; пул — задача write-math-pool-ms0b-ister (tasks/todo). Перехід у required — після verified уроку й пулу, наступною версією матриці. sk: екрани cmp 3 і meas 3 — основна cmp (розташування й порівняння чисел на промені); масив — лише коли пул матиме обидві. Формати попередні — уточнює автор пулу.",
-      "evidence": "ist5:104–107 (§ 18)",
+      "curricularScope": "required",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v6 (curate-math-matrix-v6). Пул pms0b e01–e08 verified (reports/verify/write-math-pool-ms0b-ister.md); формати D-028 — number (7) і list (e06, №698). sk: екрани cmp і meas, у пулі обидві (cmp 5, meas 3) — тепер масив. Охоплювати лише вміння, уже пояснені цим уроком.",
+      "evidence": "ist5:104–109 (§ 18; вправи пулу — с. 107–109)",
       "prerequisites": [
         "ms0bl1"
       ],
-      "sk": "cmp",
+      "sk": [
+        "cmp",
+        "meas"
+      ],
       "pool": "pms0b",
       "formats": [
-        "number"
+        "number",
+        "list"
       ],
       "exercises": {
-        "min": 0,
-        "max": 0,
-        "levels": []
+        "min": 6,
+        "max": 8,
+        "levels": [
+          3,
+          2,
+          1
+        ]
       },
-      "poolState": "deferred",
+      "poolState": "existing-verified",
       "diagnostic": {
-        "preForSection": [],
+        "preForSection": [
+          "perim",
+          "units"
+        ],
         "cur": []
       }
     },
@@ -1880,9 +1919,9 @@
       "section": "ms4",
       "lesson": "ms4l5",
       "title": "Розгортка, площа поверхні",
-      "curricularScope": "pending",
-      "reason": "Новий урок D-043 (за Істером), draft; пул — задача write-math-pool-ms4-ister (tasks/todo). Перехід у required — після verified уроку й пулу, наступною версією матриці. sk: екрани meas 7 і geom 2 — основна meas. Формати попередні — уточнює автор пулу.",
-      "evidence": "ist6b:143–145 (§ 48)",
+      "curricularScope": "required",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v6 (curate-math-matrix-v6). Пул pms4 d01–d08 verified (reports/verify/write-math-pool-ms4-ister.md); формати D-028 — number з unit (см², см). sk: екрани meas 7 і geom 2, пул лише meas — рядок лишається meas. Охоплювати лише вміння, уже пояснені цим уроком.",
+      "evidence": "ist6b:143–148 (§ 48; вправи пулу — с. 145–148)",
       "prerequisites": [
         "ms4l2",
         "ms4l1"
@@ -1893,11 +1932,15 @@
         "number"
       ],
       "exercises": {
-        "min": 0,
-        "max": 0,
-        "levels": []
+        "min": 6,
+        "max": 8,
+        "levels": [
+          3,
+          2,
+          1
+        ]
       },
-      "poolState": "deferred",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [],
         "cur": []
@@ -1940,9 +1983,9 @@
       "section": "g6m6",
       "lesson": "g6m6l1",
       "title": "Перебір варіантів",
-      "curricularScope": "pending",
-      "reason": "Новий урок D-043 (за Істером), draft; пул — задача write-math-pool-g6m6 (tasks/todo). Перехід у required — після verified уроку й пулу, наступною версією матриці. Додаткова тема модельної програми Істера 5–6 (6 кл., «Додаткові теми») — кандидат в optional, не required; рішення — Віктор. Формати попередні — уточнює автор пулу.",
-      "evidence": "mnp56:33 (додаткові теми 6 кл.); ist5:290",
+      "curricularScope": "optional",
+      "reason": "Додаткова тема модельної програми Істера 5–6 (6 кл., «Додаткові теми») — optional за рішенням людини 04.11 (memory/short/inbox.md, DECISION п. 2; у decisions.md — D-045, куратор пам'яті). Пул pg6m6 verified (reports/verify/write-math-pool-g6m6.md), 8 вправ, рівні 3/3/2; формати D-028 — number (ціле).",
+      "evidence": "mnp56:33 (додаткові теми 6 кл.); ist5:290 (QR); ist5k:6–11 (вправи пулу — с. 7–11)",
       "prerequisites": [],
       "sk": "data",
       "pool": "pg6m6",
@@ -1950,11 +1993,15 @@
         "number"
       ],
       "exercises": {
-        "min": 0,
-        "max": 0,
-        "levels": []
+        "min": 6,
+        "max": 8,
+        "levels": [
+          3,
+          2,
+          1
+        ]
       },
-      "poolState": "deferred",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [],
         "cur": []
@@ -1965,9 +2012,9 @@
       "section": "g6m6",
       "lesson": "g6m6l2",
       "title": "Дерево варіантів",
-      "curricularScope": "pending",
-      "reason": "Новий урок D-043 (за Істером), draft; пул — задача write-math-pool-g6m6 (tasks/todo). Перехід у required — після verified уроку й пулу, наступною версією матриці. Додаткова тема модельної програми Істера 5–6 (6 кл., «Додаткові теми») — кандидат в optional, не required; рішення — Віктор. Формати попередні — уточнює автор пулу.",
-      "evidence": "mnp56:33; ist5:290",
+      "curricularScope": "optional",
+      "reason": "Додаткова тема модельної програми Істера 5–6 (6 кл., «Додаткові теми») — optional за рішенням людини 04.11 (memory/short/inbox.md, DECISION п. 2; у decisions.md — D-045, куратор пам'яті). Пул pg6m6 verified (reports/verify/write-math-pool-g6m6.md), 8 вправ, рівні 3/3/2; формати D-028 — number (ціле).",
+      "evidence": "mnp56:33; ist5:290 (QR); ist5k:6–11 (вправи пулу — с. 7–10)",
       "prerequisites": [
         "g6m6l1"
       ],
@@ -1977,11 +2024,15 @@
         "number"
       ],
       "exercises": {
-        "min": 0,
-        "max": 0,
-        "levels": []
+        "min": 6,
+        "max": 8,
+        "levels": [
+          3,
+          2,
+          1
+        ]
       },
-      "poolState": "deferred",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [],
         "cur": []
@@ -1992,21 +2043,25 @@
       "section": "g6m6",
       "lesson": "g6m6l3",
       "title": "Випадкові, вірогідні й неможливі події",
-      "curricularScope": "pending",
-      "reason": "Новий урок D-043 (за Істером), draft; пул — задача write-math-pool-g6m6 (tasks/todo). Перехід у required — після verified уроку й пулу, наступною версією матриці. Додаткова тема модельної програми Істера 5–6 (6 кл., «Додаткові теми») — кандидат в optional, не required; рішення — Віктор. Формати попередні — уточнює автор пулу.",
-      "evidence": "mnp56:33; ist6b:188–195",
+      "curricularScope": "optional",
+      "reason": "Додаткова тема модельної програми Істера 5–6 (6 кл., «Додаткові теми») — optional за рішенням людини 04.11 (memory/short/inbox.md, DECISION п. 2; у decisions.md — D-045, куратор пам'яті). Пул pg6m6 verified (reports/verify/write-math-pool-g6m6.md), 8 вправ, рівні 3/3/2; формати D-028 — choice (вид події): числових вправ на тему в Істера немає, попередній number прибрано.",
+      "evidence": "mnp56:33; ist6b:188–195 (вправи пулу — с. 190–194)",
       "prerequisites": [],
       "sk": "data",
       "pool": "pg6m6",
       "formats": [
-        "number"
+        "choice"
       ],
       "exercises": {
-        "min": 0,
-        "max": 0,
-        "levels": []
+        "min": 6,
+        "max": 8,
+        "levels": [
+          3,
+          2,
+          1
+        ]
       },
-      "poolState": "deferred",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [],
         "cur": []
@@ -2017,9 +2072,9 @@
       "section": "g6m6",
       "lesson": "g6m6l4",
       "title": "Ймовірність випадкової події",
-      "curricularScope": "pending",
-      "reason": "Новий урок D-043 (за Істером), draft; пул — задача write-math-pool-g6m6 (tasks/todo). Перехід у required — після verified уроку й пулу, наступною версією матриці. Додаткова тема модельної програми Істера 5–6 (6 кл., «Додаткові теми») — кандидат в optional, не required; рішення — Віктор. Формати попередні — уточнює автор пулу.",
-      "evidence": "mnp56:33; ist6b:188–195",
+      "curricularScope": "optional",
+      "reason": "Додаткова тема модельної програми Істера 5–6 (6 кл., «Додаткові теми») — optional за рішенням людини 04.11 (memory/short/inbox.md, DECISION п. 2; у decisions.md — D-045, куратор пам'яті). Пул pg6m6 verified (reports/verify/write-math-pool-g6m6.md), 8 вправ, рівні 3/3/2; формати D-028 — number (ключ — звичайний дріб, десятковий теж зараховується).",
+      "evidence": "mnp56:33; ist6b:188–195 (вправи пулу — с. 193–195)",
       "prerequisites": [
         "g6m6l3",
         "g6m2l2"
@@ -2030,11 +2085,15 @@
         "number"
       ],
       "exercises": {
-        "min": 0,
-        "max": 0,
-        "levels": []
+        "min": 6,
+        "max": 8,
+        "levels": [
+          3,
+          2,
+          1
+        ]
       },
-      "poolState": "deferred",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [],
         "cur": []
@@ -2578,9 +2637,9 @@
       "section": "g6m3",
       "lesson": "g6m3l7",
       "title": "Кругові діаграми",
-      "curricularScope": "pending",
-      "reason": "Новий урок D-043 (за Істером), draft; пул — задача write-math-pool-g6m3-ister (tasks/todo). Перехід у required — після verified уроку й пулу, наступною версією матриці. Формати попередні — уточнює автор пулу.",
-      "evidence": "ist6a:179, 183–185 (§ 24–25)",
+      "curricularScope": "required",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v6 (curate-math-matrix-v6). Пул pg6m3 f01–f08 verified (reports/verify/write-math-pool-g6m3-ister.md); формати D-028 — number (кут сектора, unit °). Охоплювати лише вміння, уже пояснені цим уроком.",
+      "evidence": "ist6a:179–180, 183–185 (§ 24–25; вправи пулу — с. 180, 184, 185)",
       "prerequisites": [
         "g6m3l5",
         "g6m3l4",
@@ -2592,13 +2651,24 @@
         "number"
       ],
       "exercises": {
-        "min": 0,
-        "max": 0,
-        "levels": []
+        "min": 6,
+        "max": 8,
+        "levels": [
+          3,
+          2,
+          1
+        ]
       },
-      "poolState": "deferred",
+      "poolState": "existing-verified",
       "diagnostic": {
-        "preForSection": [],
+        "preForSection": [
+          "ord",
+          "eq",
+          "frac-of",
+          "dec-ops",
+          "pct",
+          "geom"
+        ],
         "cur": []
       }
     },
@@ -2745,25 +2815,32 @@
       "section": "g6m4",
       "lesson": "g6m4l7",
       "title": "Перпендикулярні прямі",
-      "curricularScope": "pending",
-      "reason": "Новий урок D-043 (за Істером), draft; пул — задача write-math-pool-g6m4-ister (tasks/todo). Перехід у required — після verified уроку й пулу, наступною версією матриці. Формати попередні — уточнює автор пулу.",
-      "evidence": "ist6b:118–119 (§ 44)",
+      "curricularScope": "required",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v6 (curate-math-matrix-v6). Пул pg6m4 f01–f07 verified (reports/verify/write-math-pool-g6m4-ister.md): 7 вправ, рівні 2/3/2 (мінімум за рівнями 2/2/1 — ist6b №1506 «на око» відкинуто як неоднозначну); формати D-028 — multi (пари прямих) і number (градуси, m6b №1197–1198); є й choice (f01), матриця його не вимагає. Сигла mer6 у пулі = m6b (те саме видання, друковані сторінки). Охоплювати лише вміння, уже пояснені цим уроком.",
+      "evidence": "ist6b:118–121 (§ 44; вправи пулу — с. 120); m6b:140–145 (п. 41; вправи пулу — с. 143, 145)",
       "prerequisites": [
         "ms0bl2"
       ],
       "sk": "geom",
       "pool": "pg6m4",
       "formats": [
+        "multi",
         "number"
       ],
       "exercises": {
-        "min": 0,
-        "max": 0,
-        "levels": []
+        "min": 6,
+        "max": 8,
+        "levels": [
+          2,
+          2,
+          1
+        ]
       },
-      "poolState": "deferred",
+      "poolState": "existing-verified",
       "diagnostic": {
-        "preForSection": [],
+        "preForSection": [
+          "dec"
+        ],
         "cur": []
       }
     },
@@ -2772,25 +2849,32 @@
       "section": "g6m4",
       "lesson": "g6m4l8",
       "title": "Паралельні прямі",
-      "curricularScope": "pending",
-      "reason": "Новий урок D-043 (за Істером), draft; пул — задача write-math-pool-g6m4-ister (tasks/todo). Перехід у required — після verified уроку й пулу, наступною версією матриці. Формати попередні — уточнює автор пулу.",
-      "evidence": "ist6b:121–123 (§ 45)",
+      "curricularScope": "required",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v6 (curate-math-matrix-v6). Пул pg6m4 g01–g07 verified (reports/verify/write-math-pool-g6m4-ister.md): 7 вправ, рівні 3/3/1; формати D-028 — multi і list (m6b №1217); number не досяжний чесно (§ 45 Істера — побудови й «випиши пари»), попередній number прибрано. Є й choice (g03, g06). Сигла mer6 у пулі = m6b. Охоплювати лише вміння, уже пояснені цим уроком.",
+      "evidence": "ist6b:121–124 (§ 45; вправи пулу — с. 123–124); m6b:147–151 (п. 42; вправи пулу — с. 150–151)",
       "prerequisites": [
         "g6m4l7"
       ],
       "sk": "geom",
       "pool": "pg6m4",
       "formats": [
-        "number"
+        "multi",
+        "list"
       ],
       "exercises": {
-        "min": 0,
-        "max": 0,
-        "levels": []
+        "min": 6,
+        "max": 8,
+        "levels": [
+          3,
+          2,
+          1
+        ]
       },
-      "poolState": "deferred",
+      "poolState": "existing-verified",
       "diagnostic": {
-        "preForSection": [],
+        "preForSection": [
+          "dec"
+        ],
         "cur": []
       }
     },
@@ -2834,25 +2918,32 @@
       "section": "g6m4",
       "lesson": "g6m4l9",
       "title": "Графіки залежностей",
-      "curricularScope": "pending",
-      "reason": "Новий урок D-043 (за Істером), draft; пул — задача write-math-pool-g6m4-ister (tasks/todo). Перехід у required — після verified уроку й пулу, наступною версією матриці. Формати попередні — уточнює автор пулу.",
-      "evidence": "ist6b:135–138 (§ 47)",
+      "curricularScope": "required",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v6 (curate-math-matrix-v6). Пул pg6m4 h01–h07 verified (reports/verify/write-math-pool-g6m4-ister.md): 7 вправ, рівні 3/3/1; формати D-028 — number (°C, км, год) і list («о котрій годині» — кілька моментів). Охоплювати лише вміння, уже пояснені цим уроком.",
+      "evidence": "ist6b:135–142 (§ 47; вправи пулу — с. 138–141)",
       "prerequisites": [
         "g6m4l5"
       ],
       "sk": "func",
       "pool": "pg6m4",
       "formats": [
-        "number"
+        "number",
+        "list"
       ],
       "exercises": {
-        "min": 0,
-        "max": 0,
-        "levels": []
+        "min": 6,
+        "max": 8,
+        "levels": [
+          3,
+          2,
+          1
+        ]
       },
-      "poolState": "deferred",
+      "poolState": "existing-verified",
       "diagnostic": {
-        "preForSection": [],
+        "preForSection": [
+          "dec"
+        ],
         "cur": []
       }
     },
@@ -12401,6 +12492,6 @@
       "verdict": "прийнято; бажані уточнення 1–4 закрито refine-math-content-from-matrix-v3"
     }
   },
-  "previous": "2026-11-03.v4",
-  "changes": "docs/math-personalization-coverage.md, «Зміни v5» (нові уроки D-043 — pending, curate-math-ister-gaps-matrix); попередні — «Зміни v4», «Зміни v3»"
+  "previous": "2026-11-03.v5",
+  "changes": "docs/math-personalization-coverage.md, «Зміни v6» (8 уроків D-043 → required, g6m6l1–l4 → optional; curate-math-matrix-v6); попередні — «Зміни v5», «Зміни v4», «Зміни v3»"
 }
