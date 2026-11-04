@@ -1,5 +1,5 @@
 /* Слід · Математика, 5 клас — пул задач для тренування до розділу «Натуральні числа» (ms0)
-   Статус: draft (2026-11-04, write-math-pool-ms0-ister: +16 задач f01–f08, g01–g08 для ms0l7, ms0l8 за Істером 5 § 13–14) до повторної верифікації.
+   Статус: verified (2026-11-04, verifier-write-math-pool-ms0-ister, reports/verify/write-math-pool-ms0-ister.md: f01–g08). Раніше: draft (write-math-pool-ms0-ister: +16 задач f01–f08, g01–g08 для ms0l7, ms0l8 за Істером 5 § 13–14).
    Задачі a01–e08 verified (verifier-pool-ms0, 2026-10-30; звіт reports/verify/pms0.md). 56 задач: по 8 на кожен урок ms0l1–ms0l5, ms0l7, ms0l8. Boss ms0l6 не тренується.
    f, g — з підручника Істера (ist5, PDF-сторінка = друкована + 4; числа звірено з відрендереними сторінками 81–89).
    Обсяг — за матрицею docs/math-personalization-coverage.md, версія 2026-10-16.v2 (усі 5 уроків required).
@@ -11,8 +11,8 @@
 SLID.pool("math", {
   id: "pms0",
   section: "ms0",
-  status: "draft",
-  meta: { author: "claude-opus", created: "2026-10-30", factcheck: "verifier-pool-ms0", teacher: null },
+  status: "verified",
+  meta: { author: "claude-opus", created: "2026-10-30", factcheck: "verifier-pool-ms0; f, g — verifier-write-math-pool-ms0-ister (2026-11-04)", teacher: null },
   sources: [
     { id: "mer5", title: "Мерзляк А. Г., Полонський В. Б., Якір М. С. Математика : підручник для 5 класу закладів загальної середньої освіти. — Харків : Гімназія, 2022 (наказ МОН № 140 від 08.02.2022)", url: "https://file.4book.org/images/shcoolbook_ua/5/5_m_m_2022.pdf" },
     { id: "ist5", title: "Істер О. С. Математика : підручник для 5 класу закладів загальної середньої освіти. — Київ : Генеза, 2022 (наказ МОН № 140 від 08.02.2022)", url: "https://file.4book.org/images/shcoolbook_ua/5/5_m_i_2022.pdf" }

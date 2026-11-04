@@ -1,6 +1,6 @@
 /* Слід · Математика, 6 клас (до 2026-11-03 — 5 кл., D-043) — пул задач до розділу «Об'єм» (ms4) і до уроку ms4l1 «площа», перенесеного в ms0b (5 кл.) — also
    (docs/design/math-ister.md §4): вправи ms4l1 у тренуванні — 5 кл., ms4l2–l3 — 6 кл.
-   Статус: draft (2026-11-04 доповнено серією d для ms4l5; вправи a–c verified 2026-10-30, reports/verify/pms4.md).
+   Статус: verified (2026-11-04: серія d для ms4l5 — verifier-write-math-pool-ms4-ister, reports/verify/write-math-pool-ms4-ister.md; вправи a–c verified 2026-10-30, reports/verify/pms4.md).
    32 задачі: по 8 на кожен урок ms4l1, ms4l2, ms4l5, ms4l3 (a–c: 3 рівня 1, 3 рівня 2, 2 рівня 3; d: 3 / 3 / 2).
    Серії a–c — з підручника Мерзляка 5 кл.; srcPage — друкований номер сторінки (у PDF — на 1 більше); звірено 2026-10-30.
    Серія d (ms4l5 «Розгортка, площа поверхні») — Істер 6, ч. 2, § 48 (ist6b); у цьому PDF номер сторінки = друкованому; звірено за рендером 2026-11-04.
@@ -10,8 +10,8 @@ SLID.pool("math", {
   id: "pms4",
   section: "ms4",
   also: ["ms0b"],
-  status: "draft",
-  meta: { author: "claude-opus", created: "2026-10-30", factcheck: "verifier-pms4", teacher: null },
+  status: "verified",
+  meta: { author: "claude-opus", created: "2026-10-30", factcheck: "verifier-pms4; d — verifier-write-math-pool-ms4-ister (2026-11-04)", teacher: null },
   sources: [
     { id: "mer5", title: "Мерзляк А. Г., Полонський В. Б., Якір М. С. Математика. 5 клас. — Харків: Гімназія, 2022 (дзеркало PDF на 4book.org)", url: "https://file.4book.org/images/shcoolbook_ua/5/5_m_m_2022.pdf" },
     { id: "ist6b", title: "Істер О. С. Математика: підручник для 6 класу. У 2 ч. Ч. 2. — Київ: Генеза, 2023 (дзеркало PDF на 4book.org)", url: "https://file.4book.org/images/shcoolbook_ua/6/6_m_i_2023-2.pdf" }
