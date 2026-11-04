@@ -4,7 +4,7 @@ claimed_at: 2026-11-04T12:29:56.603Z
 id: refine-math-diag-for-ister
 type: refine-diag
 subject: math
-status: review
+status: done
 claimed_by: impl-refine-math-diag-for-ister
 created: 2026-11-04
 depends_on: [curate-math-matrix-v6, curate-math-matrix-v7]
