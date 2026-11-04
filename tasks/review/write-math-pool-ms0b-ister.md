@@ -5,7 +5,7 @@ id: write-math-pool-ms0b-ister
 type: write-pool
 subject: math
 grade: 5
-status: todo
+status: review
 claimed_by: writer-write-math-pool-ms0b-ister
 created: 2026-11-03
 depends_on: [write-math-g5-coord-ray-motion, curate-math-ister-gaps-matrix]
@@ -44,3 +44,27 @@ AGENTS.md, handoff, INDEX; docs/math-personalization-coverage.md «Зміни v5
 ## Нотатки виконавця
 
 <!-- Змінені файли; джерела; таблиця урок → вправи/рівні/формати; результати команд; що передано верифікатору. -->
+**Змінено:** content/math/pool-g5-ms0b.js (додано e01–e08, джерело ist5 у sources, status verified → draft, шапка), ця задача, рядки в memory/short/inbox.md. a, b, d — без змін (id, lesson, ключі).
+
+**Джерело:** ist5 — Істер О. С. Математика: підруч. для 5 кл. — Київ: Генеза, 2022 (https://file.4book.org/images/shcoolbook_ua/5/5_m_i_2022.pdf; копія PDF — scratchpad write-math-g5-coord-ray-motion/dl/ister5.pdf). **PDF = друк + 4** (колонтитули звірено). § 18 — друк. с. 104–109 (вправи 674–703). Рисунки №677, 683, 695 звірено з рендером 220–300 dpi (координати точок — за пікселями: B = 30; B/C/D/A = 200/350/500/550; термометр — 19 °C, ціна поділки 1 °C).
+
+Літера e (не c): c лишаю для можливих вправ ms0bl3 (pending).
+
+| id | lvl | sk | src | с. | формат | відповідь |
+|---|---|---|---|---|---|---|
+| e01 | 1 | cmp | ist5 №677(1), adapted (одна точка з чотирьох; рисунок — lab numline) | 107 | number | 30 |
+| e02 | 1 | cmp | ist5 №687, adapted (відповідь — координата) | 108 | number | 108 |
+| e03 | 1 | meas | ist5 №692 | 108 | number | 100 |
+| e04 | 2 | meas | ist5 №683, adapted (лише точка C; lab numline) | 107 | number | 350 |
+| e05 | 2 | meas | ist5 №695(1), adapted (термометр набік, як у уроці; lab numline) | 108 | number, °C | 16 |
+| e06 | 2 | cmp | ist5 №698, adapted (координати замість побудови) | 109 | list | 2; 8 |
+| e07 | 3 | cmp | ist5 №696 | 109 | number, см | 12 |
+| e08 | 3 | cmp | ist5 №697 | 109 | number, мм | 5 (70 мм : 14) |
+
+Урок ms0bl6: 8 вправ, рівні 3/3/2, sk cmp 5 / meas 3 (обидві — sk екранів уроку; personalization-qa попереджень не дав). Кожну розв'язано двічі (обчислення й звірка з рисунком).
+**Формати (D-028):** справжні вправи § 18 дають number (координата, ціна поділки, показник приладу, довжина з одиницею) і list (№686, 689, 693, 698 — кілька чисел); побудови (№675, 676, 679, 680, 682, 702) у пул не беруться. Пропоную в матриці: number (+ list необов'язково).
+**D-019:** усе спирається на екрани уроку (координата, «правіше — більше», ціна поділки = різниця підписів : кількість поділок); e07/e08 — довжина між точками через кількість одиничних відрізків (виводиться з екрана «Дослідження»: від O до K — k рівних відрізків).
+**Не взяв:** №697 з відповіддю в см (0,5 см — дробу ще немає) → прошу мм; №701 (стрілки +3/−2) — тема дій, не координат.
+
+**Перевірки:** `node tools/validate.mjs --pool pms0b` — 0 помилок, 0 попереджень; `node tools/personalization-qa.mjs --pool pms0b` — exit 0, єдине «Бракує: pms0b ще не verified» (очікувано, draft); `python3 tools/test-answer-ui.py --suite content --pool pms0b` — green (32 вправи); `node tools/fig-audit.mjs` — e01–e08 без зауважень. Build не запускав (оркестратор).
+**Верифікатору (content-verify, pms0b):** звірити рисунки e01/e04/e05 зі с. 107–108 і вигляд numline у тренуванні (tick 1 на 0–40 у e05); рівень e02 (дуже легка) і чи alt e05 не підказує зайвого.
