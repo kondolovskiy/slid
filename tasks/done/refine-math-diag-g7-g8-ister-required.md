@@ -2,8 +2,8 @@
 id: refine-math-diag-g7-g8-ister-required
 type: refine
 subject: math
-status: todo
-claimed_by:
+status: done
+claimed_by: impl-refine-math-diag-for-ister
 created: 2026-11-04
 depends_on: [curate-math-matrix-v7]
 ---
@@ -27,3 +27,4 @@ depends_on: [curate-math-matrix-v7]
 - Якщо так — автор тесту (скіл `math-pool-diag`) змінює content/math/diag-g7.js / diag-g8.js, куратор матриці синхронізує таблиці dg7/dg8 і `preForSection` рядків; personalization-qa `--diag dg7|dg8 --strict` — 0; test-learn/test-hyp — оновити очікування, якщо змінюються теми.
 
 ## Нотатки виконавця
+- 2026-11-04 · закрито задачею **refine-math-diag-for-ister** (tasks/review/refine-math-diag-for-ister.md; матриця v8, «Зміни v8»). Рішення 04.11: п. 1 — cur-проб не додаємо; п. 2 — лише розширено `for` наявних pre-тем (без нових завдань і `rev`). Що лишилося непокритим (лише новими завданнями / новим id тесту) — у нотатках тієї задачі.

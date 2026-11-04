@@ -2,8 +2,8 @@
 id: refine-math-diag-g5-g6-ister-required
 type: refine
 subject: math
-status: todo
-claimed_by:
+status: done
+claimed_by: impl-refine-math-diag-for-ister
 created: 2026-11-04
 depends_on: [curate-math-matrix-v6]
 ---
@@ -26,3 +26,6 @@ depends_on: [curate-math-matrix-v6]
 ## Що зробити
 - Людина / куратор: вирішити п. 1 (так/ні) і п. 2 (розширити `for` чи лишити).
 - Якщо так — автор тесту (скіл `math-pool-diag`) змінює content/math/diag-g5.js / diag-g6.js, куратор матриці синхронізує таблиці dg5/dg6 і `preForSection` рядків; personalization-qa `--diag dg5|dg6 --strict` — 0; test-learn/test-hyp — оновити очікування, якщо змінюються теми.
+
+## Нотатки виконавця
+- 2026-11-04 · закрито задачею **refine-math-diag-for-ister** (tasks/review/refine-math-diag-for-ister.md; матриця v8, «Зміни v8»). Рішення 04.11: п. 1 — cur-проб не додаємо; п. 2 — лише розширено `for` наявних pre-тем (без нових завдань і `rev`). Що лишилося непокритим (лише новими завданнями / новим id тесту) — у нотатках тієї задачі.
