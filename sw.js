@@ -1,7 +1,7 @@
 /* Слід — service worker. ЗГЕНЕРОВАНО tools/build.mjs із tools/sw.template.js — не редагуй sw.js вручну.
    Стратегія: усі файли застосунку кешуються при встановленні (офлайн з першого запуску);
    свої файли — спершу з кешу; Google Fonts — з кешу з фоновим оновленням. */
-const VERSION = "d699b12bcf";
+const VERSION = "244daa9c53";
 const CACHE = "slid-" + VERSION;
 const FONTS = "slid-fonts";
 const ASSETS = [
@@ -164,6 +164,7 @@ const ASSETS = [
   "./content/math/pool-g9-g9m5.js",
   "./content/math/pool-g9-g9m6.js",
   "./content/math/pool-g9-g9m7.js",
+  "./content/math/pool-g9-g9m8.js",
   "./content/ukr/plan.js",
   "./content/ukr/g5-u5s1.js",
   "./content/ukr/g5-u5s10.js",
@@ -200,6 +201,7 @@ const ASSETS = [
   "./content/world/g8-w8s2.js",
   "./content/world/g8-w8s3.js",
   "./content/world/g8-w8s4.js",
+  "./content/world/g8-w8s5.js",
   "./content/catalog.js",
   "./app/evidence.js",
   "./app/lab.js",
@@ -503,6 +505,13 @@ const ASSETS = [
   "./img/world/w8s4/louis-xiv-rigaud.jpg",
   "./img/world/w8s4/munster-1648-ter-borch.jpg",
   "./img/world/w8s4/versailles-1668-patel.jpg",
+  "./img/world/w8s5/arkwright-mills-wright.jpg",
+  "./img/world/w8s5/catherine-levytsky-1783.jpg",
+  "./img/world/w8s5/declaration-trumbull.jpg",
+  "./img/world/w8s5/encyclopedie-1751.jpg",
+  "./img/world/w8s5/joseph-ii-maron-1775.jpg",
+  "./img/world/w8s5/partition-cake-1773.jpg",
+  "./img/world/w8s5/us-constitution-p1.jpg",
   "./icons/apple-touch-icon.png",
   "./icons/icon-192.png",
   "./icons/icon-512.png",
