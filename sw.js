@@ -1,7 +1,7 @@
 /* Слід — service worker. ЗГЕНЕРОВАНО tools/build.mjs із tools/sw.template.js — не редагуй sw.js вручну.
    Стратегія: усі файли застосунку кешуються при встановленні (офлайн з першого запуску);
    свої файли — спершу з кешу; Google Fonts — з кешу з фоновим оновленням. */
-const VERSION = "63584cc460";
+const VERSION = "9def0ca6df";
 const CACHE = "slid-" + VERSION;
 const FONTS = "slid-fonts";
 const ASSETS = [
@@ -204,6 +204,7 @@ const ASSETS = [
   "./content/world/g8-w8s5.js",
   "./content/world/g9-w9s1.js",
   "./content/world/g9-w9s2.js",
+  "./content/world/g9-w9s3.js",
   "./content/catalog.js",
   "./app/evidence.js",
   "./app/lab.js",
@@ -532,6 +533,18 @@ const ASSETS = [
   "./img/world/w9s2/power-loom-1835.jpg",
   "./img/world/w9s2/rusalka-title.jpg",
   "./img/world/w9s2/turner-rain-steam-speed.jpg",
+  "./img/world/w9s3/austria-hungary-peoples-1911.jpg",
+  "./img/world/w9s3/coronation-buda-1867.jpg",
+  "./img/world/w9s3/fenton-valley-ditch.jpg",
+  "./img/world/w9s3/fenton-valley-road.jpg",
+  "./img/world/w9s3/fenton-van.jpg",
+  "./img/world/w9s3/geneva-convention-1864.jpg",
+  "./img/world/w9s3/italy-unification-map.jpg",
+  "./img/world/w9s3/kaiserproklamation-1885.jpg",
+  "./img/world/w9s3/nightingale-diagram-1858.jpg",
+  "./img/world/w9s3/punch-boot-1860.jpg",
+  "./img/world/w9s3/solferino-yvon.jpg",
+  "./img/world/w9s3/souvenir-solferino-1862.jpg",
   "./icons/apple-touch-icon.png",
   "./icons/icon-192.png",
   "./icons/icon-512.png",
