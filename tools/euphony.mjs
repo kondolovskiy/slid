@@ -6,7 +6,7 @@
 // Не позначає: слово в тегах/лапках/дужках («у», <b>в</b> — мова про саму літеру), поруч з однолітерними словами (переліки «а, о, у»),
 // закреслене <s>…</s>, «і» після слів на й/я/ю/є/ї (§ 24: там «і»/«та»), «і» між голосними й після голосного (зіставлені поняття, § 24 п. 3.1 —
 // механічно не відрізнити, лише у звіті).
-// Запуск: node tools/euphony.mjs [--subject ukr] [--section ID] [--json]  → reports/euphony-<предмет>.md
+// Запуск: node tools/euphony.mjs [--subject ukr] [--section ID] [--json]  → reports/euphony-<предмет>.md (з --section — лише stdout)
 import fs from "node:fs"; import path from "node:path"; import { fileURLToPath } from "node:url";
 
 const VOW = "аеєиіїоуюя";
@@ -19,6 +19,8 @@ const V_CLUSTER = /^(?:[вф]|[бгґдзклмнпрстфхцчшщж]ь?в)/;
 // § 25: «зі» перед з, с, ш, щ + приголосний; «зі мною»
 const ZI_CLUSTER = w => /^[зсшщ]/.test(w) && isC(w[1]) || /^мн/.test(w);
 const SIB = /^[зсцжчш]/;   // § 25 п. 2: «із» на початку речення перед з, с, ц, ж, ч, ш
+// «зі (зо) дві години», «зі п'ять кілометрів» — «зі» в значенні «приблизно» перед кількісним числівником (tools-lang-p4, P3-2)
+const NUMERAL = /^(?:два|дві|двоє|три|троє|чотири|четверо|п['’ʼ]ять|п['’ʼ]ятеро|шість|шестеро|сім|семеро|вісім|дев['’ʼ]ять|десять|\p{L}+надцять|двадцять|тридцять|сорок|п['’ʼ]ятдесят|шістдесят|сімдесят|вісімдесят|дев['’ʼ]яносто|сто|двісті|триста|сотню|тисячу|десяток|кілька|декілька)$/u;
 
 /** Правила: id → [опис, поради]. VALIDATE_RULES — ті, що йдуть у validate як попередження (решта — лише звіт tools/euphony.mjs). */
 export const RULES = {
@@ -111,7 +113,7 @@ export function euphonyIssues(raw) {
         else if (!start && !pause && isC(pe) && isCs(ns)) add("з-між-приголосними");
         break;
       case "зі":
-        if (!ZI_CLUSTER(ns2)) add("зі-не-перед-збігом");
+        if (!ZI_CLUSTER(ns2) && !NUMERAL.test(nw)) add("зі-не-перед-збігом");
         break;
       case "із":
         if (!start && !pause && isV(pe) && isVs(ns)) add("із-між-голосними");
@@ -137,6 +139,7 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   const { subjects, origin } = loadContent();
   const c = subjects.find(x => x.id === subj);
   if (!c) { console.error(`немає предмета ${subj}`); process.exit(2); }
+  if (only && !c.sections.some(x => x.id === only)) { console.error(`немає розділу ${only} у предметі ${subj}`); process.exit(2); }
   const rows = []; let screens = 0;
   for (const sec of c.sections.filter(x => x.lessons && (!only || x.id === only))) for (const l of sec.lessons) {
     l.screens.forEach((s, i) => { screens++; for (const x of euphonyScreen(s)) rows.push({ where: `${l.id} екран ${i + 1}`, file: origin[sec.id], ...x }); });
@@ -144,11 +147,13 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   }
   const byRule = {}; rows.forEach(r => (byRule[r.rule] ||= []).push(r));
   if (args.includes("--json")) { process.stdout.write(JSON.stringify({ subject: subj, screens, rows }, null, 1) + "\n"); process.exit(0); }
-  const L = [`# Милозвучність у/в, і/й, з/із/зі: ${subj}`, "", `Згенеровано: ${new Date().toISOString().slice(0, 10)} · tools/euphony.mjs · екранів: ${screens}, відхилень: ${rows.length}`, "",
+  const L = [`# Милозвучність у/в, і/й, з/із/зі: ${subj}${only ? ` · розділ ${only}` : ""}`, "", `Згенеровано: ${new Date().toISOString().slice(0, 10)} · tools/euphony.mjs · екранів: ${screens}, відхилень: ${rows.length}`, "",
     "Механічна підказка за УП § 23–25: перевір кожне вручну. Правила з позначкою «validate» дають попередження валідатора; решта — лише тут.", ""];
   for (const [id, desc] of Object.entries(RULES)) { const rs = byRule[id] || []; if (!rs.length) continue;
     L.push(`## ${desc}${VALIDATE_RULES.has(id) ? " · validate" : ""} — ${rs.length}`, "");
     rs.forEach(r => L.push(`- ${r.where} (${r.file}): «${r.ctx}»`)); L.push(""); }
+  // --section: лише stdout — спільний звіт предмета не перезаписуємо одним розділом (tools-lang-p4, п. 7)
+  if (only) { process.stdout.write(L.join("\n") + "\n"); process.exit(0); }
   fs.mkdirSync(path.join(ROOT, "reports"), { recursive: true });
   fs.writeFileSync(path.join(ROOT, `reports/euphony-${subj}.md`), L.join("\n"));
   console.log(`${subj}: екранів ${screens}, відхилень ${rows.length} → reports/euphony-${subj}.md`);

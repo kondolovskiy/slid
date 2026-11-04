@@ -57,6 +57,7 @@ async def answer(pg, s):
         else: await pg.fill("#numIn", sol); await pg.dispatch_event("#numIn", "input")
 
 LANG_TYPES = ("gaps", "pick", "stress", "split", "word")
+GAP_ORDER = "() => [...document.querySelectorAll('#stage .gap')].map(g => [...g.querySelectorAll('.gopt')].map(b => +b.dataset.o))"   # показаний порядок варіантів кожного пропуску
 OPT_SHOW = {"\u2014": ("\u2205", "нічого не писати"), "\u2013": ("\u2014", "тире")}   # розмітка → що бачить дитина (CONTENT_SCHEMA §4.1), записано тут, а не взято з рушія
 
 async def lang_seen(pg, s):
@@ -105,7 +106,8 @@ async def lang_wrong(pg, s):
         for k, i in enumerate(sol[1:], 1): await pg.click(f'#stage .sv[data-w="{k}"][data-i="{i}"]')
         return '#stage .sv[data-w="0"].is-bad', None
     if t == "pick":
-        n = await pg.evaluate("s => SLID_LANG.parsePick(s.text).words.find(w => !w.ok).n", s)
+        n = await pg.evaluate("s => ((SLID_LANG.parsePick(s.text).words || []).find(w => !w.ok) || {}).n ?? null", s)   # tools-lang-p4, P3-4: без хибного слова — без спроби
+        if n is None: return None, None
         await pg.click(f'#stage .pw[data-w="{n}"]')
         return f'#stage .pw[data-w="{n}"].is-bad', f'#stage .pw[data-w="{n}"]'
     if t == "split":
@@ -147,6 +149,7 @@ async def main():
                             lang_n += 1
                             for m in await lang_seen(pg, s): errs.append(f"{c['id']} {l['id']} екран {si+1} ({t}): {m}")
                         if t in LANG_TYPES and not s.get("hyp") and not s.get("poll"):
+                            order0 = await pg.evaluate(GAP_ORDER) if t == "gaps" else None
                             mark, undo = await lang_wrong(pg, s)
                             if mark:
                                 lang_bad += 1; await pg.click("#action")
@@ -155,6 +158,8 @@ async def main():
                                 if "bad" not in cls:   # екран уже закрито («Далі») — далі не відповідаємо, а йдемо на наступний
                                     errs.append(f"{c['id']} {l['id']} екран {si+1} ({t}): хибну спробу зараховано (dock: {cls})")
                                     await pg.click("#action"); continue
+                                # tests-lang-gaps-order (рев'ю engine-lang-gaps-shuffle, P3-1): порядок кнопок пропусків не стрибає між спробами
+                                if order0 is not None and (o1 := await pg.evaluate(GAP_ORDER)) != order0: errs.append(f"{c['id']} {l['id']} екран {si+1} (gaps): порядок кнопок змінився після хибної спроби {order0} → {o1}")
                                 if not lab or not lab.endswith("неправильно"): errs.append(f"{c['id']} {l['id']} екран {si+1} ({t}): хибний вибір без позначки «неправильно» для диктора ({mark}: {lab!r})")
                                 if undo: await pg.click(undo)
                         await answer(pg, s); await pg.click("#action")
