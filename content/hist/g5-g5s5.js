@@ -1,7 +1,7 @@
 /* Слід · Історія, 5 клас — «Сторінки нашого минулого»
    Написано: write-hist-g5s5 (2026-11-03; програма Васильків та ін., розд. 4; D-043, D-044). 7 уроків.
    2026-11-03 verifier-g5s5: h51–h57 verified, 11 дрібних правок (reports/verify/g5s5.md).
-   2026-11-04 style-hist-h56: h56 — нове завдання src («Кобзар» 1840), draft.
+   2026-11-04 style-hist-h56: h56 — нове завдання src («Кобзар» 1840); verify 2026-11-04 — verified (reports/verify/style-hist-g5.md).
    Перевірка: node tools/validate.mjs --section g5s5 && node tools/stats.mjs --subject hist
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("hist", {
@@ -703,7 +703,7 @@ SLID.section("hist", {
       title: "Люди, що зберегли слово",
       short: "Світочі",
       icon: "book",
-      status: "draft",
+      status: "verified",
       why: "Коли не було своєї держави, мову й пам'ять берегли письменники й мислителі. Їхні книжки читають і досі.",
       screens: [
         {

@@ -1,5 +1,5 @@
 /* Слід · Історія, 5 клас — «Україна у світі»
-   Статус: h44, h45 verified; h41–h43 — draft (style-hist-g5-finals: нові фінали src/crit, h43 — порядок екранів, 2026-11-04). 5 уроків.
+   Статус: h41–h45 verified (h41–h43 — нові фінали src/crit, h43 — порядок екранів, style-hist-g5-finals; verify 2026-11-04, reports/verify/style-hist-g5.md). 5 уроків.
    Перевірка: node tools/validate.mjs --section s4 && node tools/stats.mjs --subject hist
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("hist", {
@@ -54,7 +54,7 @@ SLID.section("hist", {
       title: "Знак, якому тисяча років",
       short: "Державні символи",
       icon: "flag",
-      status: "draft",
+      status: "verified",
       why: "Символи об'єднують мільйони людей, які ніколи не бачили одне одного. Важливо знати, звідки вони.",
       screens: [
         {
@@ -152,7 +152,7 @@ SLID.section("hist", {
       title: "Скарби зі списку ЮНЕСКО",
       short: "Спадщина",
       icon: "globe",
-      status: "draft",
+      status: "verified",
       why: "Деякі пам'ятки й традиції України світ визнав надбанням усього людства. Їх треба знати й берегти.",
       screens: [
         {
@@ -253,7 +253,7 @@ SLID.section("hist", {
       title: "Українці, яких знає світ",
       short: "Постаті",
       icon: "users",
-      status: "draft",
+      status: "verified",
       why: "Історія — це люди. Їхні вчинки показують, як з України тягнуться нитки в усі куточки світу.",
       screens: [
         {

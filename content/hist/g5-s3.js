@@ -1,5 +1,5 @@
 /* Слід · Історія, 5 клас — «Людина і громада»
-   Статус: verified, крім h31, h33, h34 — draft (style-hist-g5-finals: нові завдання src/crit, 2026-11-04).
+   Статус: verified (h31, h33, h34 — нові завдання src/crit, style-hist-g5-finals; verify 2026-11-04, reports/verify/style-hist-g5.md).
    Перевірка: node tools/validate.mjs --section s3
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("hist", {
@@ -48,7 +48,7 @@ SLID.section("hist", {
       title: "Від роду до громади",
       short: "Громада",
       icon: "users",
-      status: "draft",
+      status: "verified",
       why: "Людина не виживе сама. Як люди об'єднувалися — головне питання історії суспільства.",
       screens: [
         {
@@ -293,7 +293,7 @@ SLID.section("hist", {
       title: "Місто з власними законами",
       short: "Магдебурзьке право",
       icon: "city",
-      status: "draft",
+      status: "verified",
       why: "Місцеве самоврядування — коли громада сама вирішує свої справи. Його коріння в Україні — понад 600 років.",
       screens: [
         {
@@ -391,7 +391,7 @@ SLID.section("hist", {
       title: "Як ухвалювати рішення разом",
       short: "Голосування",
       icon: "vote",
-      status: "draft",
+      status: "verified",
       why: "Голосування здається простим, поки не порахуєш голоси. Уміння домовлятися — основа демократії.",
       screens: [
         {
