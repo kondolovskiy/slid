@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-04T21:37:26.981Z",
+  "date": "2026-11-04T21:46:41.417Z",
   "errors": [],
   "warnings": [
     "content/hist/g5-s1.js#l5 екран 4 (sort): дуже довге речення (28 слів): «Відомо з уроку й досліджень: легенду про Кия записано в «Пов…»",
@@ -300,14 +300,13 @@
     "content/ukr/g7-u7s1.js#u7s1l1: sentenceWords=5.5 поза профілем [6; 13] для ukr, 7-9 кл.",
     "content/ukr/g7-u7s1.js#u7s1l2: sentenceWords=4.8 поза профілем [6; 13] для ukr, 7-9 кл.",
     "content/ukr/g7-u7s1.js#u7s1l3: sentenceWords=5.6 поза профілем [6; 13] для ukr, 7-9 кл.",
-    "content/ukr/g7-u7s1.js#u7s1l4 екран 7 (word): заборонена фраза «приймати участь» (style/banned-phrases.txt)",
     "content/ukr/g7-u7s1.js#u7s1l4: sentenceWords=5.1 поза профілем [6; 13] для ukr, 7-9 кл.",
     "content/ukr/g7-u7s1.js#u7s1l5: sentenceWords=4.9 поза профілем [6; 13] для ukr, 7-9 кл.",
     "content/ukr/g7-u7s1.js#u7s1l6: sentenceWords=5.8 поза профілем [6; 13] для ukr, 7-9 кл.",
     "content/ukr/g7-u7s1.js#u7s1l8: sentenceWords=5.8 поза профілем [6; 13] для ukr, 7-9 кл.",
     "content/ukr/g7-u7s1.js#u7s1l9: sentenceWords=4.6 поза профілем [6; 13] для ukr, 7-9 кл.",
     "content/ukr/g7-u7s13.js#u7s13l1: sentenceWords=5.5 поза профілем [6; 13] для ukr, 7-9 кл.",
-    "content/ukr/g7-u7s13.js#u7s13l2: sentenceWords=5.1 поза профілем [6; 13] для ukr, 7-9 кл.",
+    "content/ukr/g7-u7s13.js#u7s13l2: sentenceWords=5 поза профілем [6; 13] для ukr, 7-9 кл.",
     "content/ukr/g7-u7s13.js#u7s13l5: sentenceWords=5.4 поза профілем [6; 13] для ukr, 7-9 кл.",
     "content/ukr/g7-u7s13.js#u7s13l7: sentenceWords=4.6 поза профілем [6; 13] для ukr, 7-9 кл.",
     "content/ukr/g7-u7s13.js#u7s13l8: sentenceWords=5.7 поза профілем [6; 13] для ukr, 7-9 кл.",

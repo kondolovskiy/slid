@@ -252,7 +252,7 @@
 
 Для z-оцінок sd не менше 10 % середнього; нижче наведено фактичне sd.
 
-- **5-6:lesson**: screens 11.46±0.72, gradedShare 0.55±0.05, readWordsPerScreen 26.31±3.13, maxReadWords 49.51±6.29, sentenceWords 5.33±0.45, longWordShare 0.03±0.02, typeVariety 4.04±0.75
+- **5-6:lesson**: screens 11.46±0.72, gradedShare 0.55±0.05, readWordsPerScreen 26.31±3.13, maxReadWords 49.51±6.29, sentenceWords 5.33±0.46, longWordShare 0.03±0.02, typeVariety 4.04±0.75
 - **5-6:boss**: screens 7.44±0.7, gradedShare 0.86±0.03, readWordsPerScreen 19.04±3.09, maxReadWords 34.16±3.68, sentenceWords 4.92±0.42, longWordShare 0.04±0.01, typeVariety 3.92±0.69
 - **7-9:lesson**: screens 10.37±0.71, gradedShare 0.54±0.04, readWordsPerScreen 27.03±3.73, maxReadWords 50.49±6.49, sentenceWords 5.55±0.58, longWordShare 0.05±0.02, typeVariety 4.12±0.86
 - **7-9:boss**: screens 7.08±0.27, gradedShare 0.86±0.01, readWordsPerScreen 22.15±2.96, maxReadWords 40.15±5.61, sentenceWords 5.09±0.56, longWordShare 0.05±0.02, typeVariety 3.46±0.75
