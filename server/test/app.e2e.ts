@@ -5,7 +5,10 @@ import request from 'supertest';
 import { AppModule, configureApp } from '../src/app';
 import { createDb, requireEnv } from '../src/db/database';
 import { migrate } from '../src/db/migrate';
+import { randomUUID } from 'crypto';
 import { GOOGLE_VERIFIER, GoogleVerifier } from '../src/modules/identity';
+// Адаптер напряму, поза публічним API модуля: тест сховища на справжньому Postgres (test/ — не код модулів).
+import { PgLearnerStore } from '../src/modules/identity/learner.store';
 
 /** Фейк Google: id_token "sub@hd"; справжню перевірку підпису покриває google.verifier.spec.ts. */
 const fakeGoogle: GoogleVerifier = {
@@ -94,6 +97,14 @@ describe('API (e2e, Postgres)', () => {
     await put({ rev: 0, data: { s: '\\u0000' } }).expect(200);
   });
 
+  it('глибока вкладеність data (100 000, ~200 КБ) — 400, а не 500', async () => {
+    const { body: me } = await api.post('/v1/learners');
+    const n = 100_000;
+    const raw = `{"rev":0,"data":{"a":${'['.repeat(n)}${']'.repeat(n)}}}`;
+    await api.put('/v1/progress').set('Authorization', `Bearer ${me.token}`).set('Content-Type', 'application/json').send(raw).expect(400);
+    await api.get('/v1/progress').set('Authorization', `Bearer ${me.token}`).expect(200, { rev: 0, data: null });
+  });
+
   describe('вхід і пристрої', () => {
     const bearer = (t: string) => ({ Authorization: `Bearer ${t}` });
 
@@ -157,6 +168,28 @@ describe('API (e2e, Postgres)', () => {
       for (let i = 0; i < 12; i++) codes.push((await api.post('/v1/pairing/claim').send({ code: 'ZZZZZZ' })).status);
       expect(codes).toContain(429);
     });
+  });
+});
+
+describe('PgLearnerStore.savePairing (адаптер напряму)', () => {
+  it('живий код з тим самим хешем — false, а не 500 (UNIQUE)', async () => {
+    const db = createDb(requireEnv('DATABASE_URL'));
+    try {
+      const store = new PgLearnerStore(db);
+      const [a, b] = [randomUUID(), randomUUID()];
+      await store.create(a);
+      await store.create(b);
+      const h = `e2e-${randomUUID()}`;
+      const soon = new Date(Date.now() + 60_000);
+      await expect(store.savePairing(h, a, soon)).resolves.toBe(true);
+      await expect(store.savePairing(h, b, soon)).resolves.toBe(false);
+      await expect(store.claimPairing(h)).resolves.toBe(a);
+      await store.savePairing(h, a, new Date(Date.now() - 1000)); // прострочений — прибирається наступним записом
+      await expect(store.savePairing(h, b, soon)).resolves.toBe(true);
+      await expect(store.claimPairing(h)).resolves.toBe(b);
+    } finally {
+      await db.destroy();
+    }
   });
 });
 

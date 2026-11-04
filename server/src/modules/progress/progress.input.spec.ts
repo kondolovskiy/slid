@@ -1,5 +1,12 @@
 import { BadRequestException } from '@nestjs/common';
-import { parseProgressInput, MAX_PROGRESS_BYTES, MAX_REV } from './progress.input';
+import { parseProgressInput, MAX_DEPTH, MAX_PROGRESS_BYTES, MAX_REV } from './progress.input';
+
+/** n вкладених контейнерів: data = {a: {a: …}} або {a: [[…]]}. */
+const nest = (n: number, arr = false) => {
+  let v: unknown = arr ? [] : {};
+  for (let i = 2; i < n; i++) v = arr ? [v] : { a: v };
+  return { a: v };
+};
 
 describe('parseProgressInput', () => {
   it('приймає {rev, data}', () => {
@@ -37,5 +44,20 @@ describe('parseProgressInput', () => {
   it('відкидає завеликий прогрес', () => {
     const data = { blob: 'x'.repeat(MAX_PROGRESS_BYTES) };
     expect(() => parseProgressInput({ rev: 0, data })).toThrow(BadRequestException);
+  });
+
+  it('приймає вкладеність до MAX_DEPTH', () => {
+    expect(MAX_DEPTH).toBeGreaterThanOrEqual(32);
+    expect(() => parseProgressInput({ rev: 0, data: nest(MAX_DEPTH) })).not.toThrow();
+    expect(() => parseProgressInput({ rev: 0, data: nest(MAX_DEPTH, true) })).not.toThrow();
+  });
+
+  it.each([
+    ['обʼєкти, MAX_DEPTH + 1', () => nest(MAX_DEPTH + 1)],
+    ['масиви, MAX_DEPTH + 1', () => nest(MAX_DEPTH + 1, true)],
+    ['масиви, 100 000 (стек)', () => nest(100_000, true)],
+    ['обʼєкти, 100 000 (стек)', () => nest(100_000)],
+  ])('відкидає глибоку вкладеність як 400, а не переповнення стека: %s', (_, data) => {
+    expect(() => parseProgressInput({ rev: 0, data: data() })).toThrow(BadRequestException);
   });
 });
