@@ -5,7 +5,7 @@ id: fix-ukr-euphony-g6
 type: fix-section
 subject: ukr
 grade: 6
-status: review
+status: done
 claimed_by: writer-fix-ukr-euphony-g6
 created: 2026-11-04
 depends_on: []
