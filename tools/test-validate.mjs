@@ -18,7 +18,7 @@ const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "slid-test-validate-"));
 process.on("exit", () => fs.rmSync(tmp, { recursive: true, force: true }));
 for (const d of ["tools", "app", "style"]) fs.cpSync(path.join(ROOT, d), path.join(tmp, d), { recursive: true });
 fs.mkdirSync(path.join(tmp, "content/subjects"), { recursive: true });
-for (const s of ["hist", "math", "world"]) fs.copyFileSync(path.join(ROOT, `content/subjects/${s}.js`), path.join(tmp, `content/subjects/${s}.js`));
+for (const s of ["hist", "math", "world", "ukr"]) fs.copyFileSync(path.join(ROOT, `content/subjects/${s}.js`), path.join(tmp, `content/subjects/${s}.js`));
 // файл-«фото» має існувати: валідатор перевіряє шлях img
 fs.mkdirSync(path.join(tmp, "img/fx"), { recursive: true });
 fs.copyFileSync(path.join(ROOT, "icons/icon-192.png"), path.join(tmp, "img/fx/photo.png"));
@@ -602,40 +602,45 @@ const { figCues: figCuesT } = await import(path.join(ROOT, "tools/lib.mjs"));
   const bad = spawnSync(process.execPath, [path.join(tmp, "tools/fig-audit.mjs"), "--subjekt", "math"], { cwd: tmp, encoding: "utf8" });
   ok(bad.status === 2, "fig-audit: невідомий аргумент — код 2", String(bad.status)); }
 
-// ---- engine-lang-p3: мовні вправи й стиль (усе — попередження, не помилки) ----
-{ const lang = extra => one("fxl", { extra });
-  // п. 16: попередження pick validate виводить як «увага» (warnings), а не помилку
-  expectRun("pick: усі групи правильні — попередження", lang({ type: "pick", title: "Знайди", text: "Він [байдики б'є], а книжку читає." }), ["--section", "fxl"], { warn: "форма кнопки видає відповідь" });
-  expectRun("pick: 3 правильні групи на 1 хибну — попередження", lang({ type: "pick", title: "Знайди", text: "[Мамо рідна], [мабуть так], [на жаль] і [!з того дня] минуло." }), ["--section", "fxl"], { warn: "хоча б одну на дві правильні" });
-  expectRun("pick: [!!…] — попередження", lang({ type: "pick", title: "Знайди", text: "Він [!!книжку] [читає]." }), ["--section", "fxl"], { warn: "подвійний «!»" });
-  // п. 10: «—» поруч із варіантами з тире
-  expectRun("gaps: «—» поруч зі «», —» — попередження", lang({ type: "gaps", title: "Обери", text: "«Іди{*», —|—|»,} сказав він." }), ["--section", "fxl"], { warn: "сусідні варіанти містять тире" });
-  expectRun("gaps: «–» і «—» — чисто", lang({ type: "gaps", title: "Обери", text: "Ніхто {*–|—|:} ні." }), ["--section", "fxl"], { noWarn: "сусідні варіанти містять тире" });
-  // п. 6: заборонена фраза в закресленому, у хибному варіанті gaps і в цілі pick — не рахується; в авторському тексті — рахується
-  const BAN = "заборонена фраза «вірно»";
-  expectRun("banned: <s>вірно</s> у body — чисто", one("fxl", { body: "Пиши <b>правильно</b>, не <s>вірно</s>." }), ["--section", "fxl"], { noWarn: BAN });
-  expectRun("banned: хибний варіант gaps — чисто", lang({ type: "gaps", title: "Обери", text: "Записано {вірно|*правильно}." }), ["--section", "fxl"], { noWarn: BAN });
-  expectRun("banned: ціль pick «Знайди помилку» — чисто", lang({ type: "pick", title: "Знайди помилку", text: "Марко [вірно] записав." }), ["--section", "fxl"], { noWarn: BAN });
-  expectRun("banned: правильний варіант gaps — попередження", lang({ type: "gaps", title: "Обери", text: "Записано {*вірно|правильно}." }), ["--section", "fxl"], { warn: BAN });
-  expectRun("banned: у тексті автора — попередження", one("fxl", { body: "Тут усе вірно." }), ["--section", "fxl"], { warn: BAN });
-  // п. 18: пояснення з номером варіанта
-  expectRun("fbText: «у другому варіанті» — попередження", lang({ type: "choice", title: "Обери", opts: ["а", "б"], correct: 0, fbText: "У другому й третьому варіантах є повтор, тому обираємо перший." }), ["--section", "fxl"], { warn: "номер варіанта" });
-  expectRun("fbText: без номера — чисто", lang({ type: "choice", title: "Обери", opts: ["а", "б"], correct: 0, fbText: "Варіант «а» без повтору, тож він правильний." }), ["--section", "fxl"], { noWarn: "номер варіанта" });
-  // п. 11: рядок алфавіту й список <li> без крапок — не «дуже довге речення»
-  const abc = "А Б В Г Ґ Д Е Є Ж З И І Ї Й К Л М Н О П Р С Т У Ф Х Ц Ч Ш Щ Ь Ю Я";
-  expectRun("довге речення: рядок алфавіту — чисто", one("fxl", { body: `<p>Алфавіт:</p><p>${abc}</p><p>Букв тридцять три.</p>` }), ["--section", "fxl"], { noWarn: "дуже довге речення" });
-  expectRun("довге речення: справжні 26 слів — попередження", one("fxl", { body: Array.from({ length: 26 }, (_, i) => i ? "слово" : "Слово").join(" ") + "." }), ["--section", "fxl"], { warn: "дуже довге речення" });
-  // п. 15: милозвучність — лише для ukr, попередження
-  fs.copyFileSync(path.join(ROOT, "content/subjects/ukr.js"), path.join(tmp, "content/subjects/ukr.js"));
-  const ukrSec = body => ({ "content/ukr/g5-fxu.js": secJS("ukr", { id: "fxu", grade: 5, weeks: [1, 2], title: "Фікстура", why: "Регресійний тест валідатора: милозвучність.",
-    meta: { author: "test", created: "2026-11-03", factcheck: null, teacher: null }, lessons: [{ id: "fxul1", title: "Фікстура", why: "Перевірити милозвучність.", icon: "pot", status: "draft",
-      outro: { text: "Готово.", learned: ["Перше", "Друге"] }, screens: [{ type: "intro", title: "Початок", body: "Як писати?" }, { type: "info", title: "Теорія", body },
-        { type: "choice", sk: "orth", title: "Питання", body: "Як правильно?", opts: ["у школі", "в школі"], correct: 0, fbOk: "Так.", fbText: "Між приголосними пишемо «у», бо так легше вимовити.", hint: "Вимов уголос." }] }] }) });
-  { const rep = expectRun("ukr: «брат в школі» — попередження милозвучності", ukrSec("Брат в школі, а мрія й надія — поруч."), ["--section", "fxu"], { warn: "милозвучність" });
-    if (rep) ok(rep.warnings.some(w => w.includes("#fxul1 екран 2") && w.includes("«Брат в школі» → «у»") && w.includes("«мрія й надія» → «і»")), "ukr: обидві знахідки в одному попередженні екрана 2", rep.warnings.join("\n  ")); }
-  expectRun("ukr: «брат у школі» — чисто", ukrSec("Брат у школі, а мрія і надія — поруч."), ["--section", "fxu"], { noWarn: "милозвучність" });
-  expectRun("math: «брат в школі» — милозвучність не перевіряється", one("fxl", { body: "Брат в школі." }), ["--section", "fxl"], { noWarn: "милозвучність" });
-  fs.rmSync(path.join(tmp, "content/subjects/ukr.js")); }
+// ---- engine-lang-p3: мовні вправи й правила ukr ----
+{ const UKR_SK = "orth";
+  const ukrSec = (id, extra) => ({ id, grade: 5, weeks: [1, 2], title: "Фікстура", why: "Регресійний тест валідатора: мовні вправи.",
+    meta: { author: "test", created: "2026-11-03", factcheck: null, teacher: null },
+    lessons: [{ id: `${id}l1`, title: "Фікстура", why: "Перевірити правила мовних вправ.", icon: "pot", status: "draft", outro: { text: "Готово.", learned: ["Перше", "Друге"] },
+      screens: [{ type: "intro", title: "Початок", body: "Як пишемо слово?" },
+        { type: "gaps", sk: UKR_SK, title: "Е чи И?", text: "Ми йшли с{*е|и}лом.", hint: "Зміни слово.", fbOk: "Так.", fbText: "Село — с<b>е</b>ла: перевіряємо наголосом." },
+        ...[].concat(extra).map(x => ({ sk: UKR_SK, fbOk: "Так.", fbText: "Пояснення, чому саме так, для фікстури.", ...x }))] }] });
+  const u = (extra, id = "fxu") => ({ [`content/ukr/g5-${id}.js`]: secJS("ukr", ukrSec(id, extra)) });
+  const A = ["--section", "fxu"], BAN = "заборонена фраза";
+  // п. 6: заборонена фраза в <s>…</s>, у неправильному варіанті gaps, у цілі й хибній групі pick — не рахується; у звичайному тексті — так
+  expectRun("ukr: «вірно» в <s>…</s> — чисто", u({ type: "info", title: "Як сказати", body: "Не <s>вірно</s>, а правильно." }), A, { noWarn: BAN });
+  expectRun("ukr: «вірно» у хибному варіанті gaps — чисто", u({ type: "gaps", title: "Обери", text: "Відповідь {*правильна|вірна}, а {*правильно|вірно} — так." }), A, { noWarn: BAN });
+  expectRun("ukr: pick «Знайди помилку» — «вірно» в цілі [ ] і [! ] — чисто", u({ type: "pick", title: "Знайди помилку", text: "Він [вірно] сказав, а [!на протязі] дня мовчав." }), A, { noWarn: BAN });
+  expectRun("ukr: «вірно» в тексті уроку — попередження", u({ type: "info", title: "Як сказати", body: "Це вірно." }), A, { warn: BAN });
+  expectRun("ukr: «вірно» у правильному варіанті gaps — попередження", u({ type: "gaps", title: "Обери", text: "Відповідь {*вірно|правильно} тут." }), A, { warn: BAN });
+  // п. 2: hyp на мовних типах дозволено, poll — ні
+  expectRun("ukr: gaps з hyp — чисто (здогадка без оцінки)", u({ type: "gaps", hyp: true, fbTitle: "Перевірмо", title: "Як гадаєш?", text: "Ден{ь|*—}ки йдуть." }), A, { noWarn: "poll" });
+  expectRun("ukr: pick з poll — помилка", u({ type: "pick", poll: "p1", fbTitle: "Цікаво", title: "Як гадаєш?", text: "[Сонце] світить." }), A, { err: "poll лише для choice" });
+  // п. 18: пояснення посилається на номер варіанта
+  const OPTN = "номер варіанта";
+  expectRun("ukr: «у другому варіанті» у fbText — попередження", u({ type: "choice", title: "Обери", opts: ["Перше", "Друге"], correct: 0, fbText: "У другому варіанті слово стоїть не на місці, тому правильно перше." }), A, { warn: OPTN });
+  expectRun("ukr: «варіант Б» у fbBad — попередження", u({ type: "choice", title: "Обери", opts: ["Перше", "Друге"], correct: 0, fbBad: "Варіант Б не підходить.", fbText: "Правильно перше, бо слово стоїть на місці." }), A, { warn: OPTN });
+  expectRun("ukr: «варіант» без номера — чисто", u({ type: "choice", title: "Обери", opts: ["Перше", "Друге"], correct: 0, fbText: "Обидва варіанти схожі, але друге слово стоїть не на місці." }), A, { noWarn: OPTN });
+  // п. 16: pick «увага» — одна хибна група на три правильні; п. 10: « —» замість «–»; п. 3: тег посеред слова з пропуском
+  expectRun("ukr: pick 3 правильні групи й 1 хибна — попередження", u({ type: "pick", title: "Знайди", text: "[Добрий день], [будь ласка], [щиро дякую] і [!до побачення] тут." }), A, { warn: "форма кнопки видає відповідь" });
+  expectRun("ukr: pick [!!x] — помилка", u({ type: "pick", title: "Знайди", text: "[Сонце] і [!!місяць]." }), A, { err: "«!» двічі" });
+  expectRun("ukr: gaps « —» з пробілом — попередження", u({ type: "gaps", title: "Знак", text: "Ніч {*–| —|,} тиша." }), A, { warn: "нічого не писати" });
+  expectRun("ukr: gaps — тег посеред слова з пропуском — попередження", u({ type: "gaps", title: "Е чи И?", text: "<b>б{*е|и}р</b>{*е|и}за" }), A, { warn: "розірване HTML-тегом" });
+  // п. 7: split з нульовим закінченням
+  expectRun("ukr: split zero «стіл|» — чисто", u({ type: "split", title: "Основа й закінчення", word: "стіл|", zero: true }), A, {});
+  expectRun("ukr: split «стіл|» без zero — помилка", u({ type: "split", title: "Основа й закінчення", word: "стіл|" }), A, { err: "zero: true" });
+  // п. 15: милозвучність — попередження лише для ukr і лише правила з малим шумом; «і» між зіставленими поняттями — ні
+  const EU = "милозвучність";
+  expectRun("ukr: «брат в сестри» — попередження милозвучності", u({ type: "info", title: "Гості", body: "Брат в сестри гостює." }), A, { warn: EU });
+  expectRun("ukr: «вода і повітря», «Марія і Олег» — без попередження", u({ type: "info", title: "Природа", body: "Вода і повітря потрібні всім. Марія і Олег гуляють." }), A, { noWarn: EU });
+  expectRun("ukr: милозвучність в outro — попередження", { "content/ukr/g5-fxu.js": secJS("ukr", (x => (x.lessons[0].outro.learned[0] = "Млинці з сметаною", x))(ukrSec("fxu", []))) }, A, { warn: EU });
+  expectRun("math: «брат в сестри» — правило лише для ukr", one("fxm", { body: "Брат в сестри має $2 + 2$ яблука." }), ["--section", "fxm"], { noWarn: EU });
+}
 
 console.log(fails ? `\n${fails} з ${n} перевірок не пройшли` : `test-validate: усі ${n} перевірок пройшли`);
 process.exit(fails ? 1 : 0);

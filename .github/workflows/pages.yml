@@ -31,8 +31,8 @@ jobs:
           node tools/test-math.mjs
           node tools/test-lab.mjs
           node tools/test-lang.mjs
-          node tools/test-metrics.mjs
           node tools/test-euphony.mjs
+          node tools/test-metrics.mjs
           node tools/test-learn.mjs
           node tools/test-evidence.mjs
           node tools/test-hyp.mjs

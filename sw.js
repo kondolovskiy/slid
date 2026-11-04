@@ -1,7 +1,7 @@
 /* Слід — service worker. ЗГЕНЕРОВАНО tools/build.mjs із tools/sw.template.js — не редагуй sw.js вручну.
    Стратегія: усі файли застосунку кешуються при встановленні (офлайн з першого запуску);
    свої файли — спершу з кешу; Google Fonts — з кешу з фоновим оновленням. */
-const VERSION = "0e90e452c4";
+const VERSION = "52fd8d15ba";
 const CACHE = "slid-" + VERSION;
 const FONTS = "slid-fonts";
 const ASSETS = [
@@ -191,6 +191,19 @@ const ASSETS = [
   "./content/ukr/g6-u6s7.js",
   "./content/ukr/g6-u6s8.js",
   "./content/ukr/g6-u6s9.js",
+  "./content/ukr/g7-u7s1.js",
+  "./content/ukr/g7-u7s10.js",
+  "./content/ukr/g7-u7s11.js",
+  "./content/ukr/g7-u7s12.js",
+  "./content/ukr/g7-u7s13.js",
+  "./content/ukr/g7-u7s2.js",
+  "./content/ukr/g7-u7s3.js",
+  "./content/ukr/g7-u7s4.js",
+  "./content/ukr/g7-u7s5.js",
+  "./content/ukr/g7-u7s6.js",
+  "./content/ukr/g7-u7s7.js",
+  "./content/ukr/g7-u7s8.js",
+  "./content/ukr/g7-u7s9.js",
   "./content/world/plan.js",
   "./content/world/g7-w7s1.js",
   "./content/world/g7-w7s2.js",
@@ -447,6 +460,7 @@ const ASSETS = [
   "./img/trypillia-maidanetske.jpg",
   "./img/trypillia-pot.jpg",
   "./img/ukr/u6s14/kozacha-levada.jpg",
+  "./img/ukr/u7s13/shevchenko-1840.jpg",
   "./img/world/w7s1/aachen-chapel.jpg",
   "./img/world/w7s1/charlemagne-denier.jpg",
   "./img/world/w7s1/clovis-baptism-1500.jpg",

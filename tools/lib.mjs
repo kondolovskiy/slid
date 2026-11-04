@@ -24,45 +24,40 @@ export function loadContent(root = ROOT) {
   return { subjects: ctx.SLID_SUBJECTS, soon: ctx.SLID_SOON, files, origin, graphOrigin, poolOrigin, diagOrigin, graphs: ctx.SLID.graphs || [], lab: ctx.SLID_LAB, learn: ctx.SLID_LEARN, math: ctx.SLID_MATH, lang: ctx.SLID_LANG };
 }
 
-/** D-027 (D-044): предмети, де в кожному уроці має бути ≥ 1 справжнє зображення img; рівень — для tools/validate.mjs.
-    Одне джерело для validate і шаблону задачі автора в tools/make-tasks.mjs. */
-export const IMG_REQUIRED = { hist: "error", world: "error" };
 export const GRADED = ["choice","multi","sort","slider","order","align","shade","numline","number","fracin","lab","answer","gaps","pick","stress","word","split"];
 export const TYPES = ["intro","info","explore", ...GRADED];
+// предмети, де кожен урок має справжнє img (D-027, D-044): validate (помилка) і шаблон задачі автора в make-tasks.mjs
+export const IMG_REQUIRED = { hist: "error", world: "error" };
 
-const BLK = String.fromCharCode(0xE001);    // (U+E000 — крапка скорочення в sentences) межа блоку (<li>, <p>, <br>…) — межа речення для метрик (plain з blocks: true)
-// тег усередині слова (велос<b>и</b>пед, д<b>и</b>плом) — не межа слова (engine-lang-p3 п. 17)
-const INWORD_TAG = /(?<=[\p{L}\p{M}'’ʼ])(?:<\/?(?:b|i|u|em|strong|mark|span)\b[^>]*>)+(?=[\p{L}\p{M}'’ʼ])/giu;
-const BLOCK_TAG = /<\/?(?:p|li|ul|ol|div|h[1-6]|tr|td|th|table|blockquote)\b[^>]*>|<br\s*\/?>/gi;
-const BLK_EDGE = new RegExp(`^[\\s${BLK}]+|[\\s${BLK}]+$`, "gu");
-/** Прибирає HTML і формули, повертає чистий текст. blocks: true — межі блоків лишаються позначкою для sentences (метрики). */
-export function plain(s = "", { blocks = false, formula = "Ф" } = {}) {
-  let t = String(s).replace(/\$\$[\s\S]*?\$\$|\$[^$]*\$/g, ` ${formula} `).replace(INWORD_TAG, "");
-  if (blocks) t = t.replace(BLOCK_TAG, ` ${BLK} `);
-  t = t.replace(/<[^>]+>/g, " ").replace(/&[a-z]+;/g, " ").replace(/\s+/g, " ").trim();
-  return blocks ? t.replace(BLK_EDGE, "") : t;
+/** Прибирає HTML і формули, повертає чистий текст.
+    engine-lang-p3: тег між літерами без пробілу (велос<b>и</b>пед) — частина слова, а не межа (п. 17); кожен пункт списку <li> — окреме речення,
+    навіть без крапки чи з «;» у кінці (п. 11); «?» усередині <i>/<em> (переліки питань «хто? що? де?») — не кінець речення (п. 14): після нього
+    невидимий U+2060, і sentences() там не ділить; останній «?» перед </i> — кінець речення, лише якщо далі велика літера чи кінець тексту. */
+const INWORD_TAGS = /(?<=[\p{L}\p{M}'’ʼ])(?:<\/?(?:b|i|u|em|strong|mark|span)\b[^>]*>)+(?=[\p{L}\p{M}])/gu;
+const italicQ = t => t.replace(/(<(i|em)\b[^>]*>)([\s\S]*?)(?=<\/\2>)/gi, (m, a, tag, body) => a + body.replace(/\?(?=[\s\S]*\S)/g, "?\u2060"))
+  .replace(/\?(\s*<\/(?:i|em|I|EM)>\s*)(?=[\p{Ll},;:—–)»\d])/gu, "?\u2060$1");
+export function plain(s = "") {
+  return italicQ(String(s)).replace(/\$\$[\s\S]*?\$\$|\$[^$]*\$/g, " Ф ").replace(INWORD_TAGS, "")
+    .replace(/<\/?li\b[^>]*>/gi, "\uE004").replace(/<[^>]+>/g, " ").replace(/&[a-z]+;/g, " ")
+    .replace(/(?:\s*[,;:]?\s*\uE004)+\s*/g, (m, k, src) => k === 0 || /[.!?…]$/.test(src.slice(0, k).trimEnd()) ? " " : ". ")   // межа пункту — кінець речення, якщо його ще немає
+    .replace(/\s+/g, " ").trim();
 }
-// перелік окремих літер чи звуків («А Б В … Я», «а, о, у, е») — 3 і більше поспіль; формула тим часом — FML (не літера), потім знову «Ф»
-const FML = String.fromCharCode(0xE002);
-const LETTER = "\\p{L}\\p{M}?(?![\\p{L}\\p{M}\\p{N}'’ʼ])";
-const LETTER_RUN = new RegExp(`(?<![\\p{L}\\p{M}\\p{N}'’ʼ-])${LETTER}(?:[\\s,;:…—–-]+${LETTER}){2,}`, "gu");
-/** Текст для метрик речень і довгих слів (stats, validate): межі блоків — межі речень (пункт <li> без крапки — окреме речення);
-    без транскрипцій [йа́ма] і переліків окремих літер чи звуків (engine-lang-p3 пп. 11, 13) */
-export function metricText(s = "") {
-  return plain(s, { blocks: true, formula: FML }).replace(/\[[^\]]{1,40}\]/g, " ").replace(LETTER_RUN, " ").split(FML).join("Ф").replace(/ {2,}/g, " ").replace(BLK_EDGE, "");
+/** Текст для метрик стилю (stats, профіль validate, довгі речення): plain() без транскрипцій [йа́ма] і переліків звуків [а], [о]
+    (п. 13) та без рядків з одиночних літер — алфавіт «А Б В … Я», переліки «а, о, у, е» (п. 11; «Ф» — формула, її не чіпаємо). */
+const LETTER_RUN = /(?:(?<![\p{L}\p{M}\p{N}'’ʼ-])(?!Ф(?![\p{L}]))\p{L}\p{M}?(?![\p{L}\p{M}\p{N}'’ʼ-])[\s,;/·–—-]*){4,}/gu;
+export function mplain(s = "") {
+  return plain(s).replace(/\[[^\[\]]{1,40}\]/g, " ").replace(LETTER_RUN, " ").replace(/\s+([,.;:!?…])/g, "$1").replace(/(?:[,;:]\s*)+(?=[,;.!?…]|$)/g, "").replace(/\s+/g, " ").trim();
 }
 const VOW = /[аеєиіїоуюяaeiouy]/gi;
-// \p{M}: знак наголосу U+0301 не розриває слово («листопа́д» — одне слово; engine-lang-p3 п. 12)
+// \p{M}: комбінований наголос U+0301 — частина слова («листопа́д» — одне слово, п. 12)
 export const words = t => (t.match(/[\p{L}\p{M}\p{N}'’ʼ-]+/gu) || []);
 export const syllables = w => (w.match(VOW) || []).length;
-// кінець речення: . або …; ? і ! — лише коли далі не мала літера (перелік питань «хто? що? де?»; п. 14); межа блоку (п. 11)
-const SENT_SPLIT = new RegExp(`(?<=[.…])\\s+|(?<=[?!])\\s+(?!\\p{Ll})|\\s*${BLK}\\s*`, "u");
 export function sentences(t) {
   // Protect abbreviation periods only when the following text continues the sentence.
   const text = String(t).replace(/(?<![\p{L}])н\.(?=\s*е\.)/gu, "н\uE000")
     .replace(/(?<![\p{L}])(?:е\.|рр?\.|ст\.|тис\.|млн\.|[Дд]ив\.)\s*(?=[\p{Ll}\d])/gu,
     m => m.replace(/\./g, "\uE000"));
-  return text.split(SENT_SPLIT).map(x => x.replace(/\uE000/g, ".").trim()).filter(x => words(x).length > 0);
+  return text.split(/(?<=[.!?…])\s+/).map(x => x.replace(/\uE000/g, ".").trim()).filter(x => words(x).length > 0);
 }
 
 /** Текст, який дитина читає на екрані (без варіантів відповідей і фідбеку). */
@@ -73,11 +68,11 @@ function langText(s) {
   if (!LANG_READ) { const ctx = {}; ctx.window = ctx; vm.createContext(ctx); vm.runInContext(fs.readFileSync(path.join(ROOT, "app/lang.js"), "utf8"), ctx); LANG_READ = ctx.SLID_LANG.readText; }
   return LANG_READ(s);
 }
-export function screenReadText(s) { return plain([s.title, s.body, langText(s)].filter(Boolean).join(" ")); }
+export function screenReadText(s) { return mplain([s.title, s.body, langText(s)].filter(Boolean).join(" ")); }
 /** Увесь текст екрана, включно з варіантами й поясненнями. */
 export function screenAllText(s) {
   const parts = [s.title, s.body, s.fbText, s.fbOk, s.fbBad, s.hint, ...(s.opts || []), langText(s), ...(s.items || []).map(i => Array.isArray(i) ? i[0] : i)];
-  return parts.filter(Boolean).map(t => metricText(t)).filter(Boolean).map(t => /[.!?…]$/.test(t) ? t : t + ".").join(" ");
+  return parts.filter(Boolean).map(mplain).filter(Boolean).map(t => /[.!?…]$/.test(t) ? t : t + ".").join(" ");
 }
 
 /** Метрики уроку для синхронізації стилю й складності. */
