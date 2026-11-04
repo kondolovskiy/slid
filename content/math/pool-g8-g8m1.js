@@ -1,8 +1,9 @@
 /* Слід · Математика, 8 клас — пул задач для тренування до розділу «Алгебра: раціональні вирази» (g8m1)
-   Статус: draft (writer-write-math-pool-g8m1-ister, 2026-11-04): додано 16 задач для нових уроків за Істером (D-043) —
+   Статус: verified (verifier-write-math-pool-g8m1-ister, 2026-11-04, reports/verify/write-math-pool-g8m1-ister.md; нові e01–f08 розв'язано й звірено з рендером ist8a с. 65–67, 85–86).
+   Редакція (writer-write-math-pool-g8m1-ister, 2026-11-04): додано 16 задач для нових уроків за Істером (D-043) —
    e01–e08 (g8m1l6, раціональні рівняння, sk eq; ist8a § 8, № 8.4–8.22, с. 65–67) і f01–f08 (g8m1l7, стандартний
    вигляд числа, sk num; ist8a § 11, № 11.5–11.25, с. 85–86). Умови й числа звірено з рендером сторінок PDF
-   (текстовий шар губить формули); ist8a: PDF = друк. Наявні задачі a01–d08 не змінено. Потрібна незалежна верифікація.
+   (текстовий шар губить формули); ist8a: PDF = друк. Наявні задачі a01–d08 не змінено.
    Рушій не має формату «стандартний вигляд числа»: у f01, f04–f06 дитина вводить порядок n або множник a (adapted).
    Попередній статус: verified (verifier-refine-math-content-from-matrix-v3, 2026-11-01, reports/verify/refine-math-content-from-matrix-v3.md) після refine-math-content-from-matrix-v3 (2026-11-01): b04, b07: sk expr → ops (навичка екранів g8m1l2); зміст вправ не змінено — потрібна повторна незалежна верифікація тегів.
    Попередня редакція — verified (автор agent-write-math-pool-g8m1, 2026-10-31; верифікатор verifier-pg8m1, 2026-10-31). 32 задачі: по 8 на кожен required-урок
@@ -17,8 +18,8 @@
 SLID.pool("math", {
   id: "pg8m1",
   section: "g8m1",
-  status: "draft",
-  meta: { author: "claude-opus", created: "2026-10-31", factcheck: "self", revised: "2026-11-04 write-math-pool-g8m1-ister", teacher: null },
+  status: "verified",
+  meta: { author: "claude-opus", created: "2026-10-31", factcheck: "verifier-write-math-pool-g8m1-ister 2026-11-04 (reports/verify/write-math-pool-g8m1-ister.md)", revised: "2026-11-04 write-math-pool-g8m1-ister", teacher: null },
   sources: [
     { id: "a8", title: "Мерзляк А. Г., Якір М. С. Алгебра: підручник для 8 класу закладів загальної середньої освіти. — Харків: Гімназія, 2025 (§ 1, п. 1–3, 5, 8–10)", url: "https://file.4book.org/images/shcoolbook_ua/8/8_a_m_2025.pdf" },
     { id: "ist8a", title: "Істер О. С. Алгебра: підручник для 8 класу закладів загальної середньої освіти. — Київ: Генеза, 2025 (наказ МОН від 21.02.2025 № 347; § 8, § 11)", url: "https://file.4book.org/images/shcoolbook_ua/8/8_a_i_2025.pdf" }

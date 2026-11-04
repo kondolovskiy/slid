@@ -5,7 +5,7 @@ id: write-math-pool-g8m4-ister
 type: write-pool
 subject: math
 grade: 8
-status: review
+status: done
 claimed_by: writer-write-math-pool-g8m4-ister
 created: 2026-11-03
 depends_on: [write-math-g8-trig-acute, curate-math-ister-gaps-matrix]
@@ -68,3 +68,7 @@ AGENTS.md, handoff, INDEX; docs/math-personalization-coverage.md «Зміни v5
 **Перевірки:** `node tools/validate.mjs --pool pg8m4` — 0 помилок, 0 попереджень; `node tools/personalization-qa.mjs --pool pg8m4` — exit 0, 0 помилок (лише «pg8m4: ще не verified» — очікувано; pending g8m4l5–l8); `python3 tools/test-answer-ui.py --suite content --pool pg8m4` — green (56 вправ); `node tools/fig-audit.mjs --subject math` — див. вище. Build не запускав.
 
 **Верифікатору (content-verify, пул pg8m4):** звірити d01–g08 з рендером ist8g; особливо адаптації g06–g08 (дані значення tg і точність), f06/f07 (переказ «похилої»), d03 (порядок у відношенні LA : AN), e06 (кут α при B на мал. 20.8).
+
+## Верифікація
+
+verifier-write-math-pool-g8m4-ister, 2026-11-04: **verified**. 32 вправи розв'язано незалежно, звірено з рендером ist8g; ключі правильні; правка — рисунок g06 (A [2, 4.6] → [2, 4.06], кут B 27°). Звіт: reports/verify/write-math-pool-g8m4-ister.md.

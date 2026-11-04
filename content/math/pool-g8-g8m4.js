@@ -1,5 +1,6 @@
 /* Слід · Математика, 8 клас — пул задач для тренування до розділу «Геометрія: подібність і теорема Піфагора» (g8m4)
-   Статус: draft (write-math-pool-g8m4-ister, 2026-11-04): додано 32 задачі до нових уроків за Істером — g8m4l5 (d01–d08, § 15), g8m4l6 (e01–e08, § 19 п. 1–2), g8m4l7 (f01–f08, § 19 п. 3), g8m4l8 (g01–g08, § 20); джерело ist8g (Істер, Геометрія 8, Генеза, 2025; PDF = друк., умови й числа звірено з рендером сторінок 99–100, 138–141, 144–149). Значення тригонометричних функцій нетабличних кутів дано в умові (уроки не вчать калькулятора). Наявні a/b/c не змінено; до повторної верифікації — draft.
+   Статус: verified (verifier-write-math-pool-g8m4-ister, 2026-11-04, reports/verify/write-math-pool-g8m4-ister.md: d01–g08 розв'язано незалежно й звірено з рендером ist8g с. 99–100, 138–141, 144–147, 149; правка — рисунок g06, точку A опущено до кута ≈ 27°).
+   Попередньо: draft (write-math-pool-g8m4-ister, 2026-11-04): додано 32 задачі до нових уроків за Істером — g8m4l5 (d01–d08, § 15), g8m4l6 (e01–e08, § 19 п. 1–2), g8m4l7 (f01–f08, § 19 п. 3), g8m4l8 (g01–g08, § 20); джерело ist8g (Істер, Геометрія 8, Генеза, 2025; PDF = друк., умови й числа звірено з рендером сторінок 99–100, 138–141, 144–149). Значення тригонометричних функцій нетабличних кутів дано в умові (уроки не вчать калькулятора). Наявні a/b/c не змінено; до повторної верифікації — draft.
    Попередній статус: verified (повторно після fix-math-figs-g8-geo, 2026-11-03: статичні рисунки lab до a05, b06, c01; verifier-fix-math-figs-g8-geo, reports/verify/fix-math-figs-g8-geo.md). Попередньо — verified (verifier-refine-math-content-from-matrix-v3, 2026-11-01, reports/verify/refine-math-content-from-matrix-v3.md) після refine-math-content-from-matrix-v3 (2026-11-01): g8m4l2 — b01 (№530(1), трійка 3-4-5 дублює екрани уроку) → b09 №530(2) exactRoot «3√13»; b04 (№536, «половина основи + гіпотенуза» дублює b05) → b10 №541 list «10; 24»; g8m4l3 + c08 №513 list із коренями «5√5; 10√5» (exactRoot за умовою). id b01, b04 не використовувати знову. 24 задачі: по 8 на урок.
    Попередня редакція — verified (повторно 2026-11-01, verifier-fix-math-terms-g8m4-g9m1, reports/verify/fix-math-terms-g8m4-g9m1.md; правка fix-math-terms-g8m4-g9m1: c06 (g8m4l3): «Проекції» → «Проєкції» в hint і steps — повторна верифікація змінених місць; раніше verified: verifier-pool-g8m4, 2026-10-31, reports/verify/pg8m4.md). 23 задачі (до 2026-11-01): g8m4l1 — 8, g8m4l2 — 8, g8m4l3 — 7 (boss g8m4l4 без задач).
    Матриця docs/math-personalization-coverage.md 2026-10-16.v2: усі три уроки required, формат number (+ choice/list за умовою).
@@ -11,8 +12,8 @@
 SLID.pool("math", {
   id: "pg8m4",
   section: "g8m4",
-  status: "draft",
-  meta: { author: "agent-write-math-pool-g8m4", created: "2026-10-31", factcheck: "verifier-refine-math-content-from-matrix-v3", revised: "2026-11-01 refine-math-content-from-matrix-v3", teacher: null },
+  status: "verified",
+  meta: { author: "agent-write-math-pool-g8m4", created: "2026-10-31", factcheck: "verifier-write-math-pool-g8m4-ister", revised: "2026-11-04 write-math-pool-g8m4-ister", teacher: null },
   sources: [
     { id: "mer8g", title: "Мерзляк А. Г., Якір М. С. Геометрія : підруч. для 8 кл. закладів заг. серед. освіти. — Харків: Гімназія, 2025 (п. 12–13, 15–16)", url: "https://file.4book.org/images/shcoolbook_ua/8/8_geom_m_2025.pdf" },
     { id: "ist8g", title: "Істер О. С. Геометрія : підруч. для 8 кл. закладів заг. серед. освіти. — Київ: Генеза, 2025 (§ 15, 19, 20)", url: "https://file.4book.org/images/shcoolbook_ua/8/8_geom_i_2025.pdf" }
@@ -473,7 +474,7 @@ SLID.pool("math", {
       type: "answer", title: "Висота дерева",
       body: `<p>Знайди висоту дерева $AC$: від його основи $C$ до точки $B$ — 40 м, верхівку $A$ з точки $B$ видно під кутом $27°$ до землі. Візьми $"tg"\\,27° ≈ 0{,}51$.</p>`,
       lab: { kind: "plane", axes: false, grid: 0, view: [0, 9, 0, 5.4],
-        points: { A: { at: [2, 4.6] }, B: { at: [8, 1] }, C: { at: [2, 1] } },
+        points: { A: { at: [2, 4.06] }, B: { at: [8, 1] }, C: { at: [2, 1] } },
         polys: [{ pts: ["A", "B", "C"], opacity: 0.12 }],
         segs: [{ a: "C", b: "A", color: "green" }, { a: "B", b: "C", label: "40" }],
         angles: [{ from: "A", at: "C", to: "B", label: false }, { from: "C", at: "B", to: "A", label: false, r: 26 }],
