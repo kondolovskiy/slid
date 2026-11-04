@@ -4,7 +4,7 @@ claimed_at: 2026-11-03T20:43:57.279Z
 id: engine-lang-p3
 type: engine
 subject: ukr
-status: review
+status: done
 claimed_by: orch-ukr-engine-lang-p3
 created: 2026-11-02
 ---
