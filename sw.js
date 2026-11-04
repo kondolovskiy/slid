@@ -1,7 +1,7 @@
 /* Слід — service worker. ЗГЕНЕРОВАНО tools/build.mjs із tools/sw.template.js — не редагуй sw.js вручну.
    Стратегія: усі файли застосунку кешуються при встановленні (офлайн з першого запуску);
    свої файли — спершу з кешу; Google Fonts — з кешу з фоновим оновленням. */
-const VERSION = "daf3e83b1e";
+const VERSION = "63584cc460";
 const CACHE = "slid-" + VERSION;
 const FONTS = "slid-fonts";
 const ASSETS = [
@@ -203,6 +203,7 @@ const ASSETS = [
   "./content/world/g8-w8s4.js",
   "./content/world/g8-w8s5.js",
   "./content/world/g9-w9s1.js",
+  "./content/world/g9-w9s2.js",
   "./content/catalog.js",
   "./app/evidence.js",
   "./app/lab.js",
@@ -522,6 +523,15 @@ const ASSETS = [
   "./img/world/w9s1/tennis-court-oath-david.jpg",
   "./img/world/w9s1/three-estates-1789.jpg",
   "./img/world/w9s1/vienna-congress-isabey.jpg",
+  "./img/world/w9s2/berlin-barricade-1848.jpg",
+  "./img/world/w9s2/chartist-meeting-1848.jpg",
+  "./img/world/w9s2/communist-manifesto-1848.jpg",
+  "./img/world/w9s2/friedrich-wanderer.jpg",
+  "./img/world/w9s2/lamartine-red-flag-1848.jpg",
+  "./img/world/w9s2/liverpool-manchester-1831.jpg",
+  "./img/world/w9s2/power-loom-1835.jpg",
+  "./img/world/w9s2/rusalka-title.jpg",
+  "./img/world/w9s2/turner-rain-steam-speed.jpg",
   "./icons/apple-touch-icon.png",
   "./icons/icon-192.png",
   "./icons/icon-512.png",
