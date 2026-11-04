@@ -1,6 +1,6 @@
 {
  "subject": "math",
- "screens": 4385,
+ "screens": 4387,
  "rows": [
   {
    "group": "prev",
@@ -202,20 +202,6 @@
    "group": "geo",
    "file": "content/math/g7-g7m4.js",
    "where": "g7m4l4 екран 3",
-   "kind": "урок",
-   "type": "choice",
-   "level": "geo",
-   "ill": false,
-   "prevIll": true,
-   "ref": null,
-   "points": "ABDECF",
-   "graph": null,
-   "text": "Якої ознаки бракує? Інженер знає: Ф , Ф , але кути ще не міряв. Якої ознаки вистачить, якщо виміряти ще Ф і Ф ?"
-  },
-  {
-   "group": "geo",
-   "file": "content/math/g7-g7m4.js",
-   "where": "g7m4l4 екран 5",
    "kind": "урок",
    "type": "number",
    "level": "geo",
