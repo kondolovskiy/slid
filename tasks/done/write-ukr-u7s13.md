@@ -7,7 +7,7 @@ subject: ukr
 grade: 7
 section: u7s13
 weeks: [3, 35]
-status: review
+status: done
 claimed_by: writer-write-ukr-u7s13
 created: 2026-11-03
 ---
