@@ -11,7 +11,7 @@ SLID.section("world", {
   weeks: [1, 7],
   title: "Великі географічні відкриття",
   why: "Щоб розуміти, як європейці вийшли в океан, що вони знайшли і що це означало для мешканців Америки, Африки й Азії.",
-  meta: { author: "claude-opus", created: "2026-11-04", factcheck: null, teacher: null },
+  meta: { author: "claude-opus", created: "2026-11-04", factcheck: "verifier-write-world-w8s1", teacher: null },
   badges: [{ id: "discoveries", name: "Мореплавець епохи відкриттів", icon: "globe", desc: "Пройти розділ «Великі географічні відкриття»" }],
   credits: [
     [
@@ -63,7 +63,7 @@ SLID.section("world", {
       title: "Перець за тридев'ять земель",
       short: "Шлях до Індії",
       icon: "scroll",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, чому європейці XV ст. так прагнули дістатися Індії. І навчишся перевіряти популярні пояснення подій датами.",
       screens: [
         {
@@ -193,7 +193,7 @@ SLID.section("world", {
       title: "Дві дороги до Індії",
       short: "Колумб і да Гама",
       icon: "flag",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, як Колумб шукав Індію, а знайшов Новий Світ. І чому Америку назвали не на його честь.",
       screens: [
         {
@@ -342,7 +342,7 @@ SLID.section("world", {
       title: "Загублений день «Вікторії»",
       short: "Магеллан",
       icon: "map",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, як перше плавання навколо світу довело, що Земля — куля. І чому в одній події різні народи бачать різних героїв.",
       screens: [
         {
@@ -482,7 +482,7 @@ SLID.section("world", {
       title: "Місто посеред озера",
       short: "Америка і конкіста",
       icon: "city",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, які держави існували в Америці до європейців і чому вони впали. І навчишся питати, хто й для кого створив джерело.",
       screens: [
         {
@@ -612,7 +612,7 @@ SLID.section("world", {
       title: "Срібна гора",
       short: "Наслідки відкриттів",
       icon: "globe",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, як відкриття пов'язали материки — від картоплі в борщі до цін на зерно. І чого цей зв'язок коштував мільйонам людей.",
       screens: [
         {
@@ -737,7 +737,7 @@ SLID.section("world", {
       title: "Атлас нового світу",
       short: "Фінал розділу",
       icon: "star",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "discoveries",
       why: "Перевірка всього розділу. Бали подвоєні.",
