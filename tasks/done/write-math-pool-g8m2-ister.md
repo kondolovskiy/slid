@@ -5,7 +5,7 @@ id: write-math-pool-g8m2-ister
 type: write-pool
 subject: math
 grade: 8
-status: review
+status: done
 claimed_by: writer-write-math-pool-g8m2-ister
 created: 2026-11-03
 depends_on: [write-math-g8-trig-acute, curate-math-ister-gaps-matrix]
