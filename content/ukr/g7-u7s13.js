@@ -44,6 +44,7 @@ SLID.section("ukr", {
         {
           type: "choice",
           sk: "text",
+          eyebrow: "Подумай",
           title: "Чим кращий другий варіант?",
           body: `<p>Факти в обох текстах ті самі. Чому для сайту редакторка обрала другий?</p>`,
           opts: [
@@ -184,6 +185,7 @@ SLID.section("ukr", {
         {
           type: "choice",
           sk: "text",
+          eyebrow: "Подумай",
           title: "Що зламало розмову?",
           body: `<p>Перечитай розмову. Чому Оля не захотіла розповідати далі?</p>`,
           opts: [
@@ -331,6 +333,7 @@ SLID.section("ukr", {
         {
           type: "choice",
           sk: "text",
+          eyebrow: "Подумай",
           title: "Хто пише есе?",
           body: `<p>Чий текст — початок есе?</p>`,
           opts: [
@@ -624,6 +627,7 @@ SLID.section("ukr", {
         {
           type: "choice",
           sk: "text",
+          eyebrow: "Подумай",
           title: "Яке повідомлення допоможе?",
           body: `<p>Що Андрієві варто було написати бабусі?</p>`,
           opts: [
@@ -777,6 +781,7 @@ SLID.section("ukr", {
         {
           type: "choice",
           sk: "text",
+          eyebrow: "Подумай",
           title: "Чого бракує?",
           body: `<p>Чому Сашко нічого не зрозумів з Іриного пояснення?</p>`,
           opts: [
@@ -927,6 +932,7 @@ SLID.section("ukr", {
         {
           type: "choice",
           sk: "text",
+          eyebrow: "Подумай",
           title: "Що недоречне?",
           body: `<p>Що в повідомленні Максима недоречне в листуванні з учителькою?</p>`,
           opts: [
