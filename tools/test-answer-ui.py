@@ -1426,11 +1426,49 @@ async def main():
                 await evidence_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
                 await half_credit_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
                 await hyp_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
+                await gaps_order_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
                 await graph_g3_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
             await browser.close()
             print('Обрані браузерні сценарії: green')
     finally:
         server.shutdown()
+
+async def gaps_order_checks(browser, url):
+    """tests-lang-gaps-order (рев'ю engine-lang-gaps-shuffle, P2-1, P3-1): рушій справді перемішує варіанти пропуску (LANG.gapOrder у
+    langHtml), «∅» лишається останнім, а порядок не стрибає після хибної спроби. Детерміновано, без прив'язки до змісту: Math.random = 0
+    і фікстурний екран gaps замість екранів першого уроку math. З rnd = 0 Фішер — Єйтс дає [1,0] для 2 варіантів і [1,2,0] для 3;
+    без gapOrder кнопки стояли б у порядку тексту ([0,1], [0,1,2]). Перед хибною спробою rnd = 0.999 (тотожна перестановка) — тож
+    перемальований після спроби екран теж змінив би порядок."""
+    context = await browser.new_context(viewport={"width": 400, "height": 860})
+    page = await context.new_page()
+    errors = []
+    page.on("pageerror", lambda error: errors.append(str(error)))
+    await context.add_init_script("Math.random = () => 0; localStorage.setItem('slid.v1', JSON.stringify({grade:6,unlockAll:true}))")
+    await page.goto(url)
+    lesson = await page.evaluate("""() => { const c = SLID_SUBJECTS.find(c => c.id === 'math'), L = c.sections.find(s => (s.lessons || []).length).lessons[0];
+      L.screens = [{ type: 'gaps', sk: L.screens.find(s => s.sk)?.sk, title: 'Фікстура gaps', text: 'с{*е|и}ло, {*а|б|—} і {*о|а|у}',
+        fbOk: 'Так.', fbText: 'Пояснення фікстури.' }]; return L.id; }""")
+    await page.evaluate("id => window.__slidStart(id)", lesson)
+    async def order():
+        return await page.evaluate("() => [...document.querySelectorAll('#stage .gap')].map(g => [...g.querySelectorAll('.gopt')].map(b => +b.dataset.o))")
+    first = await order()
+    assert first == [[1, 0], [1, 0, 2], [1, 2, 0]], ('порядок кнопок пропусків з Math.random = 0 — gapOrder не викликано?', first)
+    # хибна спроба: пропуск 1 — «и», решта правильні; після «Перевірити» порядок той самий (екран не перемальовано).
+    # Тепер rnd = 0.999 (з ним gapOrder нічого не переставляє): якби рушій перемалював екран, порядок став би [0,1], [0,1,2]
+    await page.evaluate("() => { Math.random = () => 0.999; }")
+    await page.click('#stage .gopt[data-g="0"][data-o="1"]')
+    await page.click('#stage .gopt[data-g="1"][data-o="0"]')
+    await page.click('#stage .gopt[data-g="2"][data-o="0"]')
+    await page.click('#action')
+    assert 'bad' in (await page.get_attribute('#dock', 'class')), await page.get_attribute('#dock', 'class')
+    assert await order() == first, ('порядок кнопок змінився після хибної спроби', await order(), first)
+    await page.click('#stage .gopt[data-g="0"][data-o="0"]')
+    await page.click('#action')
+    assert 'ok' in (await page.get_attribute('#dock', 'class')), await page.get_attribute('#dock', 'class')
+    assert await order() == first, ('порядок кнопок змінився після правильної відповіді', await order(), first)
+    assert not errors, errors
+    await context.close()
+    print('gaps: варіанти перемішано (Math.random = 0 → [1,0], [1,0,∅], [1,2,0]), порядок стабільний після хибної спроби: green', flush=True)
 
 async def diag_answer_checks(browser, url):
     """engine-diag-answer-kinds: answer з answerKind time / quantity / decimals у тесті рівня через справжній плеєр.

@@ -53,9 +53,10 @@ CASES.forEach(([name, subj, illus, expectErr, boss], i) => {
   // по одному фікстурному розділу за прогін: прибрати розділи попередніх випадків
   for (const s of ["hist", "math", "world"]) fs.rmSync(path.join(tmp, "content", s), { recursive: true, force: true });
   fs.mkdirSync(dir, { recursive: true });
-  const sec = { id, grade: 5, weeks: [1, 2], title: "Фікстура", why: "Регресійний тест валідатора: правило D-027 про зображення.",
+  const grade = subj === "world" ? 7 : 5;   // всесвітня історія — 7–9 кл. (рев'ю tools-world-img, P3-1)
+  const sec = { id, grade, weeks: [1, 2], title: "Фікстура", why: "Регресійний тест валідатора: правило D-027 про зображення.",
     meta: { author: "test", created: "2026-10-31", factcheck: null, teacher: null }, lessons: [lesson(`${id}l1`, illus, boss)] };
-  fs.writeFileSync(path.join(dir, `g5-${id}.js`), `SLID.section(${JSON.stringify(subj)}, ${JSON.stringify(sec, null, 1)});\n`);
+  fs.writeFileSync(path.join(dir, `g${grade}-${id}.js`), `SLID.section(${JSON.stringify(subj)}, ${JSON.stringify(sec, null, 1)});\n`);
   const r = spawnSync(process.execPath, [path.join(tmp, "tools/validate.mjs"), "--section", id, "--quiet"], { cwd: tmp, encoding: "utf8" });
   let rep = null;
   try { rep = JSON.parse(fs.readFileSync(path.join(tmp, "reports/validate.json"), "utf8")); } catch {}
@@ -640,6 +641,22 @@ const { figCues: figCuesT } = await import(path.join(ROOT, "tools/lib.mjs"));
   expectRun("ukr: «вода і повітря», «Марія і Олег» — без попередження", u({ type: "info", title: "Природа", body: "Вода і повітря потрібні всім. Марія і Олег гуляють." }), A, { noWarn: EU });
   expectRun("ukr: милозвучність в outro — попередження", { "content/ukr/g5-fxu.js": secJS("ukr", (x => (x.lessons[0].outro.learned[0] = "Млинці з сметаною", x))(ukrSec("fxu", []))) }, A, { warn: EU });
   expectRun("math: «брат в сестри» — правило лише для ukr", one("fxm", { body: "Брат в сестри має $2 + 2$ яблука." }), ["--section", "fxm"], { noWarn: EU });
+  // tools-lang-p4, P3-6 (рев'ю engine-lang-p3, мутант А): validate не перевіряє милозвучність варіантів opts — хибний варіант навмисний
+  expectRun("ukr: choice з хибним варіантом «Брат й сестра» — без попередження милозвучності", u({ type: "choice", title: "Що правильно?", opts: ["Брат і сестра", "Брат й сестра"], correct: 0 }), A, { noWarn: EU });
+  // tools-lang-p4, P3-2: «зі дві години» — «зі» в значенні «приблизно»
+  expectRun("ukr: «зі дві години» — без попередження милозвучності", u({ type: "info", title: "Час", body: "Ми чекали зі дві години." }), A, { noWarn: EU });
+  // tools-lang-p4, P3-3: заборонена фраза в «лапках» (цитата, калька, яку урок виправляє) і в хибному варіанті choice/multi та в усіх варіантах hyp — не рахується
+  expectRun("ukr: «Приймати участь» у лапках у fbText — чисто", u({ type: "info", title: "Калька", body: "Кажемо «брати участь».", fbText: "«Приймати участь» — калька." }), A, { noWarn: BAN });
+  expectRun("ukr: «вірно» у хибному варіанті choice — чисто", u({ type: "choice", title: "Обери", opts: ["Правильно", "Вірно"], correct: 0 }), A, { noWarn: BAN });
+  expectRun("ukr: «вірно» у хибному варіанті multi — чисто", u({ type: "multi", title: "Обери", opts: ["Правильно", "Слушно", "Вірно"], correct: [0, 1] }), A, { noWarn: BAN });
+  expectRun("ukr: «вірно» у варіанті hyp — чисто", u({ type: "choice", hyp: true, fbTitle: "Перевірмо", title: "Як гадаєш?", opts: ["Правильно", "Вірно"], correct: 1 }), A, { noWarn: BAN });
+  expectRun("ukr: «вірно» у правильному варіанті choice — попередження", u({ type: "choice", title: "Обери", opts: ["Вірно", "Неправильно"], correct: 0 }), A, { warn: BAN });
+  expectRun("ukr: «вірно» поза лапками поруч із цитатою — попередження", u({ type: "info", title: "Калька", body: "Слово «участь» вжито вірно." }), A, { warn: BAN });
+  // tools-lang-p4, п. 8: варіанти пропуску відрізняються лише регістром, а fbText пише слово так, як хибний варіант, — «*» не там
+  const CASE = "відрізняються лише регістром";
+  expectRun("ukr: gaps {*вітаю|Вітаю}, у fbText «Вітаю» — попередження", u({ type: "gaps", title: "Велика чи мала?", text: "Бабусю! {*вітаю|Вітаю} зі святом.", fbText: "Після звертання з «!» пишемо з великої: <b>Вітаю</b>." }), A, { warn: CASE });
+  expectRun("ukr: gaps {*Вітаю|вітаю}, у fbText «Вітаю» — чисто", u({ type: "gaps", title: "Велика чи мала?", text: "Бабусю! {*Вітаю|вітаю} зі святом.", fbText: "Після звертання з «!» пишемо з великої: <b>Вітаю</b>." }), A, { noWarn: CASE });
+  expectRun("ukr: gaps {*питає|Питає}, «Питає» на початку речення fbText — чисто", u({ type: "gaps", title: "Велика чи мала?", text: "«Де ти?» — {*питає|Питає} мама.", fbText: "Слова автора після репліки — з малої букви. Питає мама, а не хтось інший." }), A, { noWarn: CASE });
 }
 
 console.log(fails ? `\n${fails} з ${n} перевірок не пройшли` : `test-validate: усі ${n} перевірок пройшли`);

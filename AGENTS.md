@@ -56,6 +56,7 @@ node tools/claim.mjs list|claim|move ...                     # черга зад
 node tools/make-tasks.mjs [--subject S]                      # задачі на написання з плану
 node tools/graph-report.mjs [--line ID --strict]             # граф умінь → reports/graph-<предмет>.md
 node tools/fig-audit.mjs [--subject S]                       # де умова потребує рисунка, а його немає → reports/fig-audit-S.md
+node tools/euphony.mjs [--subject S] [--section ID]          # милозвучність у/в, і/й, з/із/зі → reports/euphony-S.md (з --section — лише stdout)
 python3 -m http.server 8000                                  # запустити локально
 cd server && npm run check && DATABASE_URL=postgres://… npm run test:e2e   # бекенд
 ```
@@ -71,7 +72,7 @@ cd server && npm run check && DATABASE_URL=postgres://… npm run test:e2e   # �
 6. **Не редагуй чужі файли.** Автор змінює лише свій файл, свою теку `img/` і свою задачу; решта — пропозицією в `memory/short/inbox.md`.
 7. **Статус:** `draft` → `verified` (ШІ-верифікатор) → `approved` (**лише людина-вчитель**). Агент ніколи не ставить `approved`.
 8. **`index.html` (блок скриптів), `sw.js`, `content/manifest.json` не редагуй руками.** Під час паралельної роботи build запускає лише оркестратор, коли всі закінчили.
-9. Зображення — лише з відкритою ліцензією, з `cap` і `credits`. **Історія: у кожному уроці ≥ 1 справжнє `img` (D-027, помилка validate).**
+9. Зображення — лише з відкритою ліцензією, з `cap` і `credits`. **Історія й всесвітня історія: у кожному уроці ≥ 1 справжнє `img` (D-027, D-044 п. 4; помилка validate).**
 10. **Незалежне рев'ю (D-026):** будь-яку зміну рушія, інструментів, тестів, збірки, CI, `server/`, `.claude/` перевіряє інший агент зі свіжим контекстом. Самоперевірка й зелені тести рев'ю не замінюють. До вердикту «прийнято» задача лишається в `review`.
 11. **id уроків, навичок, вправ і пулів — ключі прогресу дітей.** Не перейменовуй; лише нові id.
 12. Нове поле з персональними даними дітей — лише за рішенням людини в decisions.md.

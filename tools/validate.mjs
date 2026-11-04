@@ -209,13 +209,33 @@ function figRef(S, s, prev = null) {
   if (cue?.level === "ref" && !cue.ill && !cue.prevIll) W(S, `умова посилається на рисунок («${cue.ref}»), а ілюстрації (fig, img, svg, lab) немає — додай рисунок точно за умовою або перепиши умову`);
 }
 // заборонені фрази, яких дитина не бачить як зразок (engine-lang-p3, п. 6): у <s>…</s> (закреслене — помилка, яку урок виправляє),
-// у неправильних варіантах gaps і в цілях та хибних групах pick («Знайди помилку»: [вірно], [!на протязі]) — не рахуються
-const stripS = t => typeof t === "string" ? t.replace(/<s>[\s\S]*?<\/s>/gi, " ") : t;
-function bannedText(s, txt) {
-  if (!/<s>/i.test(txt) && !["gaps", "pick"].includes(s.type)) return txt;
+// у неправильних варіантах gaps і в цілях та хибних групах pick («Знайди помилку»: [вірно], [!на протязі]) — не рахуються.
+// tools-lang-p4 (P3-3): так само в «лапках» (цитата чи калька, про яку йдеться: «Приймати участь» — калька), у хибних варіантах
+// choice/multi і в усіх варіантах здогадки hyp (навмисні помилки, як і в милозвучності, рев'ю engine-lang-p3 P2-1)
+const stripS = t => typeof t === "string" ? t.replace(/<s>[\s\S]*?<\/s>/gi, " ").replace(/«[^«»]*»/g, " ") : t;
+function bannedText(s) {
   const noteTxt = typeof s.note === "string" ? s.note : s.note?.text;
   const exText = s.type === "gaps" ? lang.readText(s) : s.type === "pick" && typeof s.text === "string" ? s.text.replace(/\[[^\]]*\]/g, " ") : s.text;
-  return [s.title, s.body, noteTxt, s.fbText, s.fbOk, s.fbBad, s.hint, exText, ...(s.opts || []), ...(s.items || []).flat()].filter(x => typeof x === "string").map(stripS).join(" ");
+  const ok = new Set([].concat(s.correct ?? []));
+  const opts = !Array.isArray(s.opts) ? [] : s.hyp ? [] : ["choice", "multi"].includes(s.type) ? s.opts.filter((o, k) => ok.has(k)) : s.opts;
+  return [s.title, s.body, noteTxt, s.fbText, s.fbOk, s.fbBad, s.hint, exText, ...opts, ...(s.items || []).flat()].filter(x => typeof x === "string").map(stripS).join(" ");
+}
+// tools-lang-p4, п. 8 (ідея verifier-u7s2): варіанти пропуску відрізняються лише регістром («{*вітаю|Вітаю}»), а пояснення пише слово так,
+// як хибний варіант, і жодного разу — як правильний: «*», мабуть, не на тому варіанті. Слово на початку речення пояснення не рахується
+// (там велика літера природна); однолітерні варіанти («А|а») — теж ні: службове слово «а» в поясненні нічого не каже
+function gapCaseIssues(s) {
+  const p = s.type === "gaps" && typeof s.fbText === "string" ? lang.parseGaps(s.text) : null;
+  if (!p || p.error) return [];
+  const fb = plain(s.fbText), out = [];
+  for (const g of p.gaps) {
+    if (g.opts.length < 2 || [...g.opts[0]].length < 2 || new Set(g.opts.map(o => o.toLocaleLowerCase("uk"))).size !== 1) continue;
+    const esc = g.opts[0].replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const seen = [...fb.matchAll(new RegExp(`(?<![\\p{L}\\p{M}'’ʼ-])${esc}(?![\\p{L}\\p{M}'’ʼ-])`, "giu"))]
+      .filter(m => !/(?:^|[.!?…]["»”]?)\s*["«„“—–-]?\s*$/.test(fb.slice(0, m.index))).map(m => m[0]);
+    const right = g.opts[g.correct];
+    if (seen.length && !seen.includes(right) && seen.some(w => g.opts.includes(w))) out.push(`пропуск ${g.n + 1}: варіанти відрізняються лише регістром, правильним позначено «${right}», а пояснення пише «${seen.find(w => g.opts.includes(w))}» — перевір, чи «*» на тому варіанті`);
+  }
+  return out;
 }
 // пояснення посилається на місце варіанта («у другому варіанті», «варіант № 2», «варіант Б») — рушій може перемішувати варіанти (engine-lang-p3, п. 18)
 const OPT_NUM_RE = /(?<![\p{L}])(?:(?:[Пп]ерш|[Дд]руг|[Тт]рет|[Чч]етверт|[Пп]['’ʼ]?ят|[Шш]ост|[Оо]станн)\p{L}*\s+(?:\p{L}+\s+)?варіант\p{L}*|[Вв]аріант\p{L}*\s+(?:№\s*\d+|[А-ГҐДЕ](?![\p{L}])))/u;   // «Варіант 120» у математиці — значення варіанта, не номер
@@ -231,7 +251,7 @@ function checkScreen(S, s, c, diag, pool = false) {
   if (/\$\{/.test(txt)) E(S, "у тексті лишилось «${» — шаблонний рядок з'їв формулу");
   for (const t of [s.title, s.body, s.steps ? null : s.fbText, s.hint, ...(s.opts || [])].filter(Boolean)) if (((String(t).match(/\$/g) || []).length) % 2) E(S, "непарна кількість $ — формула не закрита");
   for (const formula of txt.matchAll(/\$\$?([\s\S]+?)\$\$?/g)) for (const m of formula[1].matchAll(/\\([A-Za-z]+)/g)) if (!MATH_COMMANDS.has(m[1])) W(S, `формула містить непідтриману команду \\${m[1]}`);
-  for (const [b, re] of bannedRe) if (re.test(bannedText(s, txt))) W(S, `заборонена фраза «${b}» (style/banned-phrases.txt)`);
+  for (const [b, re] of bannedRe) if (re.test(bannedText(s))) W(S, `заборонена фраза «${b}» (style/banned-phrases.txt)`);
   for (const [k, v] of [["fbText", s.fbText], ["fbBad", s.fbBad], ["fbOk", s.fbOk], ["hint", s.hint]]) { const m = typeof v === "string" && plain(v).match(OPT_NUM_RE);
     if (m && OPT_TYPES.includes(s.type)) W(S, `${k} посилається на номер варіанта («${m[0].trim()}») — рушій може перемішати варіанти; назви сам варіант`); }
   if (/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/u.test(txt)) W(S, "емодзі в тексті уроку");
@@ -286,6 +306,7 @@ function checkScreen(S, s, c, diag, pool = false) {
     case "gaps": case "pick": case "stress": case "word": case "split":
       for (const m of lang.issues(s)) E(S, m);
       for (const m of lang.warnings ? lang.warnings(s) : []) W(S, m);
+      for (const m of gapCaseIssues(s)) W(S, m);
       if (["gaps", "pick"].includes(s.type) && typeof s.text !== "string") E(S, `${s.type}: потрібне поле text`);
       // pick: слова з тексту стають кнопками, тож HTML-теги в text дали б кнопки «b», «br» (рушій екранує text)
       // hyp — здогадка без оцінки (engine-lang-p3, п. 2): плеєр не позначає й не зараховує, лише показує fbTitle і fbText; poll — ні:
@@ -315,7 +336,7 @@ if (!onlySec && !onlyDiag) for (const c of subjects) { const own = new Set(c.sec
   creditIssues(c.credits.filter(x => !own.has(x))).forEach(m => E(`предмет ${c.id}`, m)); }
 
 // D-027: у кожному уроці предмета — хоча б одне справжнє зображення (img: фото, репродукція, документ).
-// Схеми svg/fig не зараховуються. Для історії — помилка (усі уроки доповнено; регресійний тест: tools/test-validate.mjs).
+// Схеми svg/fig не зараховуються. Для історії й всесвітньої історії (hist, world; D-044 п. 4) — помилка (регресійний тест: tools/test-validate.mjs).
 // IMG_REQUIRED (D-027, D-044) — з tools/lib.mjs: той самий перелік бере шаблон задачі автора в make-tasks.mjs
 for (const c of subjects) for (const sec of c.sections) {
   if (onlyDiag) continue;
