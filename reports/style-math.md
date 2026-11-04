@@ -79,7 +79,7 @@
 | g6m3l4 Хто впорався краще? | 6 | 10 | 0.6 | 23 | 42 | 5.4 | 0.009 | 3 | — |
 | g6m3l5 Стрічка для обруча | 6 | 10 | 0.6 | 21 | 45 | 5 | 0.005 | 3 | — |
 | g6m3l7 Круг на стенді | 6 | 10 | 0.7 | 23 | 52 | 4.7 | 0.009 | 3 | — |
-| g6m3l6 День вареників (фінал) | 6 | 7 | 0.86 | 22 | 27 | 4.8 | 0.013 | 2 | — |
+| g6m3l6 День вареників (фінал) | 6 | 7 | 0.86 | 21 | 27 | 4.8 | 0.012 | 3 | — |
 | g6m4l1 Нижче нуля | 6 | 10 | 0.6 | 22 | 47 | 4.5 | 0.022 | 4 | — |
 | g6m4l2 Відстань до нуля | 6 | 10 | 0.7 | 15 | 39 | 4.2 | 0.005 | 5 | typeVariety нетипово для сім'ї (z=2.3) |
 | g6m4l3 Стрибки в обидва боки | 6 | 10 | 0.6 | 18 | 32 | 4.2 | 0.012 | 3 | — |
@@ -102,7 +102,7 @@
 | g6m6l2 Гілки, що рахують | 6 | 9 | 0.56 | 20 | 31 | 5.7 | 0.012 | 3 | — |
 | g6m6l3 Буде, не буде чи як пощастить | 6 | 9 | 0.67 | 17 | 32 | 5.4 | 0.016 | 4 | — |
 | g6m6l4 Шанс у числах | 6 | 10 | 0.6 | 22 | 43 | 5.2 | 0.023 | 4 | — |
-| g6m6l5 Своя настільна гра (фінал) | 6 | 7 | 0.86 | 22 | 26 | 5.8 | 0.014 | 5 | sentenceWords нетипово для сім'ї (z=2); typeVariety нетипово для сім'ї (z=2.1) |
+| g6m6l5 Своя настільна гра (фінал) | 6 | 7 | 0.86 | 22 | 26 | 5.8 | 0.014 | 5 | sentenceWords нетипово для сім'ї (z=2); typeVariety нетипово для сім'ї (z=2.2) |
 | g7m1l1 Терези й невідоме | 7 | 9 | 0.56 | 23 | 59 | 5 | 0.025 | 3 | sentenceWords=5 поза [6; 13] |
 | g7m1l2 Лінія одного кореня | 7 | 10 | 0.5 | 24 | 41 | 5.1 | 0.021 | 4 | sentenceWords=5.1 поза [6; 13]; typeVariety нетипово для сім'ї (z=2.2) |
 | g7m1l3 Задача стає рівнянням | 7 | 8 | 0.63 | 22 | 33 | 5.2 | 0.016 | 3 | sentenceWords=5.2 поза [6; 13] |
@@ -297,7 +297,7 @@
 - **4:lesson**: screens 8.71±0.55, gradedShare 0.66±0.02, readWordsPerScreen 17.38±2.54, maxReadWords 36.19±5.93, sentenceWords 4.44±0.3, longWordShare 0.01±0, typeVariety 3.24±0.53
 - **4:boss**: screens 8±0, gradedShare 0.75±0, readWordsPerScreen 17.4±2.24, maxReadWords 25±4.56, sentenceWords 4.46±0.24, longWordShare 0.01±0, typeVariety 3.2±0.4
 - **5-6:lesson**: screens 9.39±0.68, gradedShare 0.66±0.06, readWordsPerScreen 19.7±3.16, maxReadWords 44.07±7.91, sentenceWords 4.85±0.51, longWordShare 0.01±0.01, typeVariety 3.52±0.64
-- **5-6:boss**: screens 7.25±0.43, gradedShare 0.86±0.01, readWordsPerScreen 19.25±2.28, maxReadWords 27.42±4.01, sentenceWords 4.83±0.46, longWordShare 0.01±0.01, typeVariety 3.25±0.83
+- **5-6:boss**: screens 7.25±0.43, gradedShare 0.86±0.01, readWordsPerScreen 19.17±2.19, maxReadWords 27.42±4.01, sentenceWords 4.83±0.46, longWordShare 0.01±0.01, typeVariety 3.33±0.75
 - **7-9:lesson**: screens 9.23±0.72, gradedShare 0.58±0.06, readWordsPerScreen 21.8±2.67, maxReadWords 45.96±9.59, sentenceWords 5.14±0.41, longWordShare 0.02±0.01, typeVariety 3.05±0.43
 - **7-9:boss**: screens 7.68±0.63, gradedShare 0.8±0.06, readWordsPerScreen 19.77±2.57, maxReadWords 30.95±3.36, sentenceWords 5.26±0.36, longWordShare 0.03±0.01, typeVariety 3.05±0.21
 - **10-11:lesson**: screens 9.54±0.63, gradedShare 0.57±0.06, readWordsPerScreen 22.85±1.91, maxReadWords 48.12±6.56, sentenceWords 5.47±0.41, longWordShare 0.03±0.01, typeVariety 2.9±0.37

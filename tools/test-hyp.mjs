@@ -505,7 +505,7 @@ const sum = (R, pid) => R.events.filter(e => e.pid === pid).map(e => e.type === 
   // §2.1 [676,346,151,0,518,151,158], [520,499,26,671,124,151,671], передумови [139,145,9,157,157]; §2.3 [515,518,0,515,156,158,151,5],
   // [503,0,165]; hyp.js [518,0,503,0,346], [518,518,{D> 475,F 43},157,158,{D≤ 144,F 13}]. Рушій (pickSession, hyp.js) не змінювався —
   // числа зміщені лише новим змістом; дві нові «аномалії» пояснено й закріплено перевірками нижче (docs/design/diag-hypothesis-math.md §2.3).
-  eq([s0.gradedScreens, s0.byType.choice, s0.choiceHypPoll, s0.fbBad, s0.hint, s0.pre, s0.preLessons], [1624, 690, 74, 1604, 1152, 87, 39], "§0 екрани уроків");
+  eq([s0.gradedScreens, s0.byType.choice, s0.choiceHypPoll, s0.fbBad, s0.hint, s0.pre, s0.preLessons], [1624, 691, 74, 1604, 1152, 87, 39], "§0 екрани уроків");  // 691: верифікатор g6m3 замінив один lab на choice (2fcb431)
   eq([s0.pools, s0.poolItems, s0.lvl, s0.poolHint, s0.poolPre, s0.gen, s0.itemTypes, s0.answerNumber], [49, 1613, { 1: 619, 2: 606, 3: 388 }, 1015, 0, 0, { answer: 1463, choice: 97, multi: 53 }, 1060], "§0 пули");
   eq([s0.pairs, s0.pairs2a1, s0.diags, s0.diagItems, s0.pureTitle], [209, 187, 8, 209, 318], "§0 пари, тести, чисті вирази");
   eq([s21.errors, s21.A, s21.Dle, s21.byLvl[1].Dle, s21.byLvl[1].errors, s21.byLvl[2].Dle, s21.byLvl[2].errors], [812, 413, 182, 0, 619, 182, 193], "§2.1 A 413; D≤ 182/812, рівень 1 — 0/619");
