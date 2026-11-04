@@ -1,6 +1,6 @@
 # Аудит рисунків: math
 
-_Згенеровано `node tools/fig-audit.mjs --subject math`. Евристики — `figCues` у tools/lib.mjs. Переглянуто екранів і задач: 4410._
+_Згенеровано `node tools/fig-audit.mjs --subject math`. Евристики — `figCues` у tools/lib.mjs. Переглянуто екранів і задач: 4426._
 
 | Група | Кількість |
 |---|---|
