@@ -8,6 +8,7 @@ export const IDENTITY_OPTIONS = Symbol('IdentityOptions');
 export interface IdentityOptions { /** Домени Google Workspace шкіл, яким дозволено вхід. Порожньо — вхід через Google вимкнено. */ googleDomains: string[] }
 
 export const PAIRING_TTL_MS = 10 * 60 * 1000;
+const PAIRING_ATTEMPTS = 5;
 const CODE_ALPHABET = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789'; // без 0/O, 1/I/L
 const hash = (s: string) => createHash('sha256').update(s).digest('hex');
 
@@ -56,10 +57,13 @@ export class IdentityService implements IdentityPort {
   }
 
   async createPairingCode(learnerId: string) {
-    const code = Array.from({ length: 6 }, () => CODE_ALPHABET[randomInt(CODE_ALPHABET.length)]).join('');
-    const expiresAt = new Date(Date.now() + PAIRING_TTL_MS);
-    await this.store.savePairing(hash(code), learnerId, expiresAt);
-    return { code, expiresAt: expiresAt.toISOString() };
+    // Збіг із живим кодом малоймовірний (≈ 8,9·10⁸ кодів), але можливий — тоді інший код, а не 500.
+    for (let attempt = 0; attempt < PAIRING_ATTEMPTS; attempt++) {
+      const code = Array.from({ length: 6 }, () => CODE_ALPHABET[randomInt(CODE_ALPHABET.length)]).join('');
+      const expiresAt = new Date(Date.now() + PAIRING_TTL_MS);
+      if (await this.store.savePairing(hash(code), learnerId, expiresAt)) return { code, expiresAt: expiresAt.toISOString() };
+    }
+    throw new Error('не вдалося згенерувати вільний код привʼязки');
   }
 
   async claimPairingCode(code: string | undefined): Promise<Session | null> {
