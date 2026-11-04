@@ -10,7 +10,7 @@ SLID.section("math", {
   id: "g6m4",
   grade: 6,
   weeks: [22, 28],
-  title: "Раціональні числа",
+  title: "Раціональні числа. Прямі й графіки",
   why: "Щоб працювати з від'ємними числами: температура, борги, висота нижче рівня моря.",
   requires: ["ms2l2"],
   meta: { author: "claude-opus", created: "2026-10-11", factcheck: "verifier-g6m4", teacher: null },
