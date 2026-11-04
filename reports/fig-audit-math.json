@@ -1,6 +1,6 @@
 {
  "subject": "math",
- "screens": 4528,
+ "screens": 4576,
  "rows": [
   {
    "group": "prev",
@@ -886,6 +886,34 @@
   },
   {
    "group": "graph",
+   "file": "content/math/pool-g11-g11m2.js",
+   "where": "pg11m2:a02",
+   "kind": "пул",
+   "type": "answer",
+   "level": "graph",
+   "ill": false,
+   "prevIll": false,
+   "ref": null,
+   "points": "M",
+   "graph": "координатної площин",
+   "text": "Відстань до площини Ф Яка відстань від точки Ф до координатної площини Ф ?"
+  },
+  {
+   "group": "geo",
+   "file": "content/math/pool-g11-g11m2.js",
+   "where": "pg11m2:a06",
+   "kind": "пул",
+   "type": "answer",
+   "level": "geo",
+   "ill": false,
+   "prevIll": false,
+   "ref": null,
+   "points": "ABC",
+   "graph": null,
+   "text": "Периметр рівностороннього трикутника Точки Ф і Ф — вершини рівностороннього трикутника Ф . Знайди периметр цього трикутника."
+  },
+  {
+   "group": "graph",
    "file": "content/math/pool-g11-g11m3.js",
    "where": "pg11m3:a04",
    "kind": "пул",
@@ -925,6 +953,34 @@
    "points": "",
    "graph": "графік",
    "text": "Площа під Ф від Ф Знайди площу криволінійної трапеції, обмеженої графіком функції Ф і прямими Ф , Ф ."
+  },
+  {
+   "group": "graph",
+   "file": "content/math/pool-g11-g11m6.js",
+   "where": "pg11m6:c02",
+   "kind": "пул",
+   "type": "answer",
+   "level": "graph",
+   "ill": false,
+   "prevIll": false,
+   "ref": null,
+   "points": "M",
+   "graph": "Графік",
+   "text": "Ф через точку Ф Графік функції Ф проходить через точку Ф . Знайди значення Ф ."
+  },
+  {
+   "group": "graph",
+   "file": "content/math/pool-g11-g11m6.js",
+   "where": "pg11m6:c08",
+   "kind": "пул",
+   "type": "answer",
+   "level": "graph",
+   "ill": false,
+   "prevIll": false,
+   "ref": null,
+   "points": "",
+   "graph": "графік",
+   "text": "Дотична з кутовим коефіцієнтом Ф До графіка функції Ф проведено дотичну, кутовий коефіцієнт якої дорівнює Ф . Знайди координати точки дотику. Запиши відповідь як пару, наприклад Ф ."
   },
   {
    "group": "geo",
