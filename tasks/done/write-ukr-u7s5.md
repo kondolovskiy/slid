@@ -1,14 +1,14 @@
 ---
-claimed_from: todo
-claimed_at: 2026-11-04T06:38:42.731Z
+claimed_from: review
+claimed_at: 2026-11-04T07:03:45.962Z
 id: write-ukr-u7s5
 type: write-section
 subject: ukr
 grade: 7
 section: u7s5
 weeks: [16, 17]
-status: review
-claimed_by: writer-write-ukr-u7s5
+status: done
+claimed_by: verifier-write-ukr-u7s5
 created: 2026-11-03
 ---
 # Написати розділ «Дієприкметник» (Українська мова, 7 клас)
