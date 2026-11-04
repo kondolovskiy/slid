@@ -137,6 +137,10 @@ function records(s) {
   if (k === "intervalSet") { const per = K.replace(/(-?\d+)\/(\d+)/g, (m0, p, q) => periodic(p, q) || m0); if (per !== K) { out.add(per); out.add(per.replace(/\((\d+)\)/, (m0, d) => `(${(+d + 1) % 10})`)); } }
   if (k === "list" && /[±∓]/.test(K)) { const lets = new Set(["x", "y", "х", "f", "k", "b"]); for (const m of stmt(s).matchAll(/\$([^$]+)\$/g)) for (const c of m[1].replace(/\\[a-zA-Z]+/g, " ").match(/[a-z]/g) || []) lets.add(c);
     for (const L of lets) { out.add(`${L}₁,₂ = ${K}`); out.add(`${L}_{1,2} = ${K}`); } }
+  // engine-answer-formats-ister п. 1: «±k» у list з числовим ключем (ключ без ±/√/π); п. 4: «p : q» при ключі-дробі
+  if (k === "list" && !/[±∓√∛∜π]|sqrt|pi/.test(K)) { const ps = K.split(/[;\n]/.test(K) ? /[;\n]/ : /,/).map(x => x.trim()), ab = ps[0].replace(/^-/, ""), rest = ps.filter(x => x.replace(/^-/, "") !== ab);
+    for (const r of [`±${ab}`, `± ${ab}`, `∓${ab}`, [`±${ab}`, ...rest].join("; "), [...rest, `±${ab}`].join("; "), `x₁,₂ = ±${ab}`, `±${ab}; ${ab}`, `±${ab} + 0`]) out.add(r); }
+  if (k === "number" && a && a.frac) { const p = Math.abs(a.n), q = a.d; for (const r of [`${p} : ${q}`, `${p}:${q}`, `${q} : ${p}`, `${2 * p} : ${2 * q}`, `${p} : ${q} : 1`]) out.add(r); }
   if (s.unit) {
     const u = s.unit, alt = u.replace(/°/g, "º");
     for (const r of [`${K} ${u}`, `${K}${u}`, `${K} ${u}.`, `${K} ${u},`, `${K}${alt}`, `${K} ${alt}.`]) out.add(r);
@@ -243,6 +247,15 @@ const CATS = [
   ["dec-1101 назва образу даної точки (A₁, A′) — ok", (s, v, o, n) => { const m = /^coordinates[23]$/.test(s.answerKind) && o.r === "form" && n.r === "ok" && IMG1.exec(lat(v)); if (!m) return false;
     const t = stmt(s), L = m[1], src = [...t.matchAll(/(?:образ\S*\s+точк\S*|симетричн\S*\s+точц[іи])\s*\$\s*([A-Z])\s*\(/giu)].map(x => x[1]);
     return src.length === 1 && src[0] === L && !new RegExp(`\\$[^$]*(?<![A-Za-z\\\\])${L}\\s*(?:_|[₀-₉]|['’′ʼ]|\\d)[^$]*\\$`).test(t) && NEW.checkAns(s, lat(v).replace(IMG1, "")) === "ok"; }],
+  // engine-answer-formats-ister п. 1: «±k» розгорнуто незалежно (елемент «±k» → «k; -k», префікс x₁,₂ знято) — старий вердикт розгорнутого запису = новий
+  ["ister п.1 «±k» у list з числовим ключем", (s, v, o, n) => { if (s.answerKind !== "list" || !/[±∓]/.test(v) || /[±∓√∛∜π]|sqrt|pi/.test(keyText(s)) || o.r !== "bad") return false;
+    const w = v.replace(/^\s*[a-zа-яії](?:₁,₂|_\{1,2\}) = /u, ""), ps = w.split(/[;\n]/.test(w) ? /[;\n]/ : /,/);
+    const ex = ps.flatMap(p => { const m = /^\s*[±∓]\s*(\d+(?:,\d+)?(?:\/\d+)?)\s*$/.exec(p); return m ? [m[1], "-" + m[1]] : [p]; });
+    return ex.every(p => !/[±∓]/.test(p)) && same(verdict(OLD, s, ex.join("; ")), n); }],
+  // п. 4: «p : q» при ключі-дробі p/q (те саме значення, незалежна перевірка) — bad → form «це відношення»
+  ["ister п.4 «p : q» при ключі-дробі — form «це відношення»", (s, v, o, n) => { const a = NEW.parseAns(keyText(s)), m = /^(\d+) ?: ?(\d+)$/.exec(v);
+    return (s.answerKind || "number") === "number" && !!a && a.frac && !!m && o.r === "bad" && n.r === "form" && /^Значення правильне, але це відношення/.test(n.h || "")
+      && BigInt(m[1]) * BigInt(a.d) === BigInt(a.n) * BigInt(m[2]); }],
   ["p3 quantity: підказка формату («2 м 45», дріб, «3:20»)", (s, v, o, n) => s.answerKind === "quantity" && o.r === "bad" && n.r === "bad" && !o.h && /^(Після кожного числа|Звичайний дріб тут|Тут час записують)/.test(n.h || "")],
 ];
 const NAME0 = /^(?:\\vec\{[A-Z]{1,2}\}|[A-Z]{1,2})\s*=?\s*(?=\()/;

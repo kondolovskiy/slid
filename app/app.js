@@ -1047,6 +1047,9 @@ const ANS_UI={
   intervalSet:[["(","[",";","]",")","∞","∪","∅","-"],"Проміжок — через крапку з комою: [2; 5), (−∞; 3]. Кілька — через ∪, порожня множина — ∅."],
   expression:[["^","(",")","·","/","√"],"Степінь — ^ (x^2), множення — · або без знака (3ab), дріб — / з дужками: (a + 1)/(a − 1)."],
   periodicSet:[["π","k","±","/","(",")","^",";"],"Серія розв'язків через k: π/6 + 2πk. Кілька серій — через ; або ±."],
+  // engine-answer-formats-ister: стандартний вигляд числа і множина пар (розв'язки системи); приклади не збігаються з ключем вправи (test-answer-ui)
+  sci:[["·","10^","(",")","-"],"Стандартний вигляд: a · 10^n, де 1 ≤ a < 10. Від'ємний показник — у дужках: 10^(-3)."],
+  pairSet:[["(",";",")",",","-","/","√"],"Кожну пару — у дужках через крапку з комою, пари — через кому: (1; −4), (0; 5). Спершу x, потім y."],
   // час і величини: приклад і одиниці — з самої вправи (answerUI), тож підказка не збігається з ключем
   time:[[":"],""],
   quantity:[[],""]};
@@ -1058,6 +1061,7 @@ function answerUI(s, grade, signed){
   const nk= kind==="number"? LEARN.numberKeys(s, grade, signed) : null;
   const keys=sym? sym[0].slice() : kind==="comparison"? ["<",">","="] : kind==="list"? ["-","/",";"," "] : kind==="factors"? ["*","^"] : kind==="divrem"? [" ост. "] : [...(nk.minus?["-"]:[]), ...(nk.frac?["/"," "]:[])];
   if(kind==="list" && /[√∛∜±]/.test(String(s.answer))) keys.push("√","±");
+  else if(kind==="list" && (Number(grade)||0)>=8) keys.push("±");   // «±3» приймає будь-який list (engine-answer-formats-ister п. 1); з 8 класу — квадратні рівняння
   if(kind==="expression") for(const c of new Set(String(s.answer).match(/[\u0370-\u03ff]/g)||[])) if(c!=="π") keys.push(c);   // α, β… з ключа
   const units= kind==="quantity"? LEARN.quantityUnits(s)||[] : null;
   if(units) keys.push(...units);

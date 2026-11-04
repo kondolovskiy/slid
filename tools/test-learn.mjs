@@ -534,7 +534,7 @@ const order = l => ({ L1: 3, L2: 1, L3: 2, L4: 4 }[l] ?? 50);
   eq(L.formHint({ answer: "2/5", fractionOnly: true }, "0,4"), "Значення правильне. Запиши відповідь звичайним дробом.", "formHint: чинний текст числа");
   eq([L.ansText(K("coordinates2", [3, -2])), L.ansText(K("ratio", [2, 3])), L.ansText(K("periodicSet", "πk")), L.ansText(K("list", ["2 + √3", "2 - √3"]))],
     ["(3; -2)", "2 : 3", "πk, k ∈ ℤ", "2 + √3; 2 - √3"], "ansText: показ ключа");
-  eq(L.ANSWER_KINDS, ["number", "comparison", "list", "factors", "divrem", "ratio", "coordinates2", "coordinates3", "exactRoot", "intervalSet", "expression", "periodicSet", "time", "quantity"], "ANSWER_KINDS: чинні 4 + divrem + 7 символьних + time, quantity");
+  eq(L.ANSWER_KINDS, ["number", "comparison", "list", "factors", "divrem", "ratio", "coordinates2", "coordinates3", "exactRoot", "intervalSet", "expression", "periodicSet", "time", "quantity", "sci", "pairSet"], "ANSWER_KINDS: чинні 4 + divrem + 7 символьних + time, quantity + sci, pairSet");
 }
 
 // ---------- після незалежного рев’ю 9c7696b: наближення, числовий множник, арифметика в елементах, канонічні корені, час ----------
@@ -1517,7 +1517,7 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
   run([
     [Lq("±3", "$x^2 = 9$"), "x₁,₂ = ±3", "ok"], [Lq("±3", "$x^2 = 9$"), "x_{1,2} = ±3", "ok"], [Lq("±3", "$x^2 = 9$"), "x1,2 = ±3", "ok"], [Lq("±3", "$x^2 = 9$"), "х₁,₂ = ±3", "ok"],
     [Lq("(1 ± √5)/2", "$x^2 - x - 1 = 0$"), "x₁,₂ = (1 ± √5)/2", "ok"], [Lq("(1 ± √5)/2", "$x^2 - x - 1 = 0$"), "x₁,₂ = (1 ∓ √5)/2", "ok"],
-    [Lq("±3", "$x^2 = 9$"), "y₁,₂ = ±3", "bad"], [Lq("3; -3", "$x^2 = 9$"), "x₁,₂ = ±3", "bad"], [Lq("±3", "$x^2 = 9$"), "x₁,₂ = 3", "bad"], [Lq("±3", "$x^2 = 9$"), "x₁,₂ = ±3; x = 1", "bad"],
+    [Lq("±3", "$x^2 = 9$"), "y₁,₂ = ±3", "bad"], [Lq("3; -3", "$x^2 = 9$"), "x₁,₂ = ±3", "ok"] /* engine-answer-formats-ister п. 1: «±» — у будь-якому list (раніше bad) */, [Lq("±3", "$x^2 = 9$"), "x₁,₂ = 3", "bad"], [Lq("±3", "$x^2 = 9$"), "x₁,₂ = ±3; x = 1", "bad"],
     [Lq("±3", "$x^2 = 9$"), "x₁,₂ = ±2", "bad"], [Lq("±3", "$x^2 + y = 9$"), "x₁,₂ = ±3", "bad"], [Lq("±3", "Знайди $b$: $x^2 = b$"), "x₁,₂ = ±3", "bad"], [Lq("±3", "$x^2 = 9$"), "x₁,₂ = x₃ = ±3", "bad"]],
     "g11 п.8 x₁,₂");
   { const pools = (await import("./lib.mjs")).loadContent().subjects.flatMap(c => c.pools || []);
@@ -2238,6 +2238,81 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
   const dg6 = v => ["divis-lcm", "divis-gcd"].map(id => L.nodeState({ diag: { dg6: { res: { [lcmI]: v }, rev: 9 } } }, math, id));
   eq([dg6(L.SKIP).map(x => x.diag.skip), dg6(L.HALF).map(x => x.diag.half)], [[1, 1], [1, 1]], "dg6 №21: завдання з двома u — обом вузлам");
   eq([lcmI, math.diags.find(d => d.id === "dg6").topics.find(t => t.id === "g6-div").kind], [20, "pre"], "dg6 №21 — у pre-темі g6-div (D-043: подільність — 5 кл.)");
+}
+
+// ---------- engine-answer-formats-ister: «±» у list з числовим ключем, стандартний вигляд (sci), множина пар (pairSet), «1 : 4» при ключі-дробі ----------
+{ const K = (answerKind, answer, extra = {}) => ({ answerKind, answer, ...extra }), N = (answer, extra = {}) => ({ answer, ...extra });
+  const sq = { title: "$x^2 = 9$" };
+  const cases = [
+    // п. 1: «±» у будь-якому list — числовий ключ-масив чи рядок без «±»
+    [K("list", [-3, 3]), "±3", "ok"], [K("list", [-3, 3]), "± 3", "ok"], [K("list", [-3, 3]), "∓3", "ok"], [K("list", "-3; 3"), "±3", "ok"],
+    [K("list", [3, -3]), "±3", "ok"], [K("list", [-3, 0, 3]), "±3; 0", "ok"], [K("list", [-3, 0, 3]), "0, ±3", "ok"], [K("list", [-1.5, 1.5]), "±1,5", "bad"],
+    [K("list", [-1.5, 1.5]), "±1,5;", "bad"], [K("list", [-0.5, 0.5]), "±1/2", "ok"], [K("list", [-3, 3, 3], { multiset: true }), "±3; 3", "ok"],
+    [K("list", [-3, 3]), "±4", "bad"], [K("list", [-3, 3]), "±3; 3", "bad"], [K("list", [-3, 3]), "±3 + 0", "bad"], [K("list", [-3, 3]), "±(3)", "bad"],
+    [K("list", [-3, 3]), "±±3", "bad"], [K("list", [3]), "±3", "bad"], [K("list", [-3, 3]), "3", "bad"], [K("list", [-3, 3]), "-3; 3", "ok"],
+    [K("list", [-3, 3], sq), "x₁,₂ = ±3", "ok"], [K("list", [-3, 3], sq), "x = ±3", "bad"], [K("list", [-3, 3]), "x₁,₂ = ±3", "bad"],
+    // чинне без «±» не змінилося: «+3» у числовому list, арифметика в елементі
+    [K("list", [-3, 3]), "+3; -3", "bad"], [K("list", [1, 2]), "1 + 1; 1", "bad"], [K("list", "±√2"), "±√2", "ok"], [K("list", "±√2"), "√2; -√2", "ok"],
+    // п. 2: стандартний вигляд числа a · 10^n, 1 ≤ |a| < 10
+    [K("sci", "2,72 · 10^5"), "2,72 · 10^5", "ok"], [K("sci", "2,72 · 10^5"), "2,72·10^5", "ok"], [K("sci", "2,72 · 10^5"), "2,72*10^5", "ok"],
+    [K("sci", "2,72 · 10^5"), "2,72 × 10^5", "ok"], [K("sci", "2,72 · 10^5"), "2,72 · 10^(5)", "ok"], [K("sci", "2,72 · 10^5"), "2.72·10^5", "ok"],
+    [K("sci", "2,72 · 10^5"), "2,72·10⁵", "ok"], [K("sci", "2,72 · 10^5"), "2,72 · 10^{5}", "ok"], [K("sci", "2,72 · 10^5"), "2,72 ⋅ 10^5", "ok"],
+    [K("sci", "2,72 · 10^5"), "272000", "form"], [K("sci", "2,72 · 10^5"), "272 000", "form"], [K("sci", "2,72 · 10^5"), "27,2 · 10^4", "form"],
+    [K("sci", "2,72 · 10^5"), "0,272 · 10^6", "form"], [K("sci", "2,72 · 10^5"), "272 · 10^3", "form"],
+    [K("sci", "2,72 · 10^5"), "2,72 · 10^4", "bad"], [K("sci", "2,72 · 10^5"), "2,7 · 10^5", "bad"], [K("sci", "2,72 · 10^5"), "2,72", "bad"],
+    [K("sci", "2,72 · 10^5"), "10^5", "bad"], [K("sci", "2,72 · 10^5"), "2,72 · 10^5 + 1", "bad"], [K("sci", "2,72 · 10^5"), "2,72 · 10^5,5", "bad"],
+    [K("sci", "2,72 · 10^5"), "2,72 · 5^5", "bad"], [K("sci", "2,72 · 10^5"), "2,72e5", "bad"], [K("sci", "2,72 · 10^5"), "", "bad"],
+    [K("sci", "4,5 · 10^(-3)"), "4,5 · 10^(-3)", "ok"], [K("sci", "4,5 · 10^(-3)"), "4,5·10^-3", "ok"], [K("sci", "4,5 · 10^(-3)"), "4,5 · 10^(−3)", "ok"],
+    [K("sci", "4,5 · 10^(-3)"), "4,5·10⁻³", "ok"], [K("sci", "4,5 · 10^(-3)"), "0,0045", "form"], [K("sci", "4,5 · 10^(-3)"), "45 · 10^(-4)", "form"],
+    [K("sci", "4,5 · 10^(-3)"), "4,5 · 10^3", "bad"], [K("sci", "10^5"), "10^5", "ok"], [K("sci", "10^5"), "1 · 10^5", "ok"], [K("sci", "10^5"), "100000", "form"],
+    [K("sci", "1 · 10^5"), "10^5", "ok"], [K("sci", "-3,1 · 10^2"), "-3,1 · 10^2", "ok"], [K("sci", "-3,1 · 10^2"), "-310", "form"], [K("sci", "-3,1 · 10^2"), "3,1 · 10^2", "bad"],
+    [K("sci", "7 · 10^0"), "7", "ok"], [K("sci", "1 · 10^5"), "10 · 10^4", "form"], [K("sci", "1 · 10^5"), "9,99 · 10^4", "bad"], [K("sci", "2,72 · 10^5"), "-2,72 · 10^5", "bad"],
+    [K("sci", "27,2 · 10^4"), "2,72 · 10^5", "bad"], [K("sci", 272000), "272000", "bad"],   // ключ не в стандартному вигляді — нічого не зараховується [K("sci", "2,72 · 10^5", { unit: "км" }), "2,72 · 10^5 км", "ok"],
+    // п. 3: множина пар (розв'язки системи): порядок пар довільний, порядок у парі важливий
+    [K("pairSet", [[3, 2], [-2, -3]]), "(3; 2), (-2; -3)", "ok"], [K("pairSet", [[3, 2], [-2, -3]]), "(-2; -3), (3; 2)", "ok"],
+    [K("pairSet", [[3, 2], [-2, -3]]), "(3; 2); (-2; -3)", "ok"], [K("pairSet", [[3, 2], [-2, -3]]), "(3;2),(-2;-3)", "ok"],
+    [K("pairSet", [[3, 2], [-2, -3]]), "(3; 2) (−2; −3)", "ok"], [K("pairSet", [[3, 2], [-2, -3]]), "{(3; 2), (-2; -3)}", "ok"],
+    [K("pairSet", [[3, 2], [-2, -3]]), "(3, 2), (-2, -3)", "ok"], [K("pairSet", "(3; 2), (-2; -3)"), "(-2; -3), (3; 2)", "ok"],
+    [K("pairSet", [[3, 2], [-2, -3]]), "(2; 3), (-3; -2)", "bad"], [K("pairSet", [[3, 2], [-2, -3]]), "(3; 2)", "bad"],
+    [K("pairSet", [[3, 2], [-2, -3]]), "(3; 2), (3; 2), (-2; -3)", "bad"], [K("pairSet", [[3, 2], [-2, -3]]), "(3; 2), (-2; -3), (0; 0)", "bad"],
+    [K("pairSet", [[3, 2], [-2, -3]]), "3; 2; -2; -3", "bad"], [K("pairSet", [[3, 2], [-2, -3]]), "(3; 2), x, (-2; -3)", "bad"],
+    [K("pairSet", [[3, 2], [-2, -3]]), "(3; 2; 1), (-2; -3)", "bad"], [K("pairSet", [[3, 2], [-2, -3]]), "(3; 2)), ((-2; -3)", "bad"],
+    [K("pairSet", [[3, 2], [-2, -3]]), "(1 + 2; 2), (-2; -3)", "bad"], [K("pairSet", [[1.5, 2]]), "(1,5; 2)", "ok"], [K("pairSet", [[1.5, 2]]), "(1,5, 2)", "bad"],
+    [K("pairSet", [["√2", 1], ["-√2", 1]]), "(-√2; 1), (√2; 1)", "ok"], [K("pairSet", [["√2", 1], ["-√2", 1]]), "(2/√2; 1), (-√2; 1)", "form"],
+    [K("pairSet", [["√2", 1], ["-√2", 1]]), "(1,41; 1), (-1,41; 1)", "bad"],
+    // п. 4: «1 : 4» при ключі-дробі — form (значення правильне, запис — відношення); при десятковому ключі й іншому значенні — як раніше
+    [N("1/4"), "1 : 4", "form"], [N("1/4"), "1:4", "form"], [N("1/4"), "2 : 8", "form"], [N("1/4"), "4 : 1", "bad"], [N("1/4"), "1 : 4 : 1", "bad"],
+    [N("1/4", { reduced: true }), "1 : 4", "form"], [N("3/2"), "3 : 2", "form"], [N("-1/4"), "1 : 4", "bad"], [N(0.25), "1 : 4", "bad"], [N(3), "3 : 1", "bad"],
+    [N("1/4"), "1/4", "ok"], [N("1/4"), "0,25", "ok"]
+  ];
+  cases.forEach(([s, v, expected]) => eq(L.checkAns(s, v), expected, `formats-ister checkAns ${s.answerKind || "number"}: ${JSON.stringify(s.answer)} ← «${v}»`));
+  // ключі самі проходять перевірку (validatePool), показ ключа, підказки
+  for (const s of [K("sci", "2,72 · 10^5"), K("sci", "4,5 · 10^(-3)"), K("pairSet", [[3, 2], [-2, -3]]), K("pairSet", "(3; 2), (-2; -3)"), K("list", [-3, 3])])
+    eq(L.checkAns(s, L.keyInput(s)), "ok", `formats-ister: ключ ${JSON.stringify(s.answer)} проходить сам`);
+  eq([L.ansText(K("pairSet", [[3, 2], [-2, -3]])), L.ansText(K("pairSet", "(3; 2), (-2; -3)")), L.ansText(K("sci", "2,72 · 10^5"))],
+    ["(3; 2), (-2; -3)", "(3; 2), (-2; -3)", "2,72 · 10^5"], "formats-ister: ansText");
+  eq(L.formHint(K("sci", "2,72 · 10^5"), "272000"), "Значення правильне. Запиши число в стандартному вигляді: a · 10^n, де 1 ≤ a < 10.", "formats-ister: formHint sci");
+  eq(L.formHint(N("1/4"), "1 : 4"), "Значення правильне, але це відношення. Відповідь тут — одне число: запиши його дробом через риску /.", "formats-ister: formHint «1 : 4»");
+  eq(L.formCode(N("1/4"), "1 : 4"), "ratioNum", "formats-ister: formCode «1 : 4»");
+  eq([L.diagVerdict(N("1/4"), "1 : 4"), L.diagVerdict(N("1/4", { reduced: true, body: "нескоротним дробом" }), "1 : 4"), L.diagVerdict(N("1/4"), "1/4")], [L.BAD, L.BAD, L.OK], "formats-ister: у тесті рівня «1 : 4» — BAD, як і раніше");
+  eq(L.formCode(K("sci", "2,72 · 10^5"), "272000"), "sci", "formats-ister: formCode sci");
+  eq(L.formHint(K("pairSet", [["√2", 1], ["-√2", 1]]), "(2√2/2; 1), (-√2; 1)").includes("Скороти дріб"), true, "formats-ister: formHint pairSet — нескорочений корінь");
+  eq(L.badHint(K("list", [-1.5, 1.5]), "±1,5"), L.badHint(K("list", [1.5, 2]), "1,5, 2"), "formats-ister: «±1,5» без «;» — підказка про роздільник");
+  eq(L.hintTexts(N("1/4")).some(t => t.includes("це відношення")), true, "formats-ister: hintTexts number — «1 : 4»");
+  eq(L.hintTexts(K("sci", "2,72 · 10^5")).some(t => t.includes("стандартному вигляді")), true, "formats-ister: hintTexts sci");
+  eq(L.ANSWER_KINDS.slice(-2), ["sci", "pairSet"], "formats-ister: ANSWER_KINDS + sci, pairSet");
+  // validatePool: ключі sci / pairSet, що самі не в стандартному вигляді чи з повтором пари, відхиляються
+  const vp = it => L.validatePool({ id: "p", section: "s", status: "draft", sources: [{ id: "b", title: "t", url: "https://x" }],
+    items: [{ id: "a", lesson: "l", lvl: 1, sk: "x", src: "b 1", type: "answer", title: "t", steps: ["s"], ...it }] }, { sections: new Map([["s", { lessons: ["l"] }]]), skills: { x: {} } });
+  const SB = { body: "<p>Запиши число в стандартному вигляді.</p>" };
+  eq(vp(K("sci", "2,72 · 10^5", SB)), [], "validatePool: sci коректний");
+  eq(vp(K("sci", "2,72 · 10^5")).some(e => e.includes("має назвати «стандартний вигляд»")), true, "validatePool: sci — умова не називає вигляду");
+  eq(vp(K("sci", "27,2 · 10^4", SB)).some(e => e.includes("стандартному вигляді")), true, "validatePool: sci не в стандартному вигляді");
+  eq(vp(K("sci", 272000, SB)).some(e => e.includes("стандартному вигляді")), true, "validatePool: sci числом");
+  eq(vp(K("pairSet", [[3, 2], [-2, -3]])), [], "validatePool: pairSet коректний");
+  eq(vp(K("pairSet", [[3, 2], [3, 2]])).some(e => e.includes("pairSet")), true, "validatePool: pairSet з повтором пари");
+  eq(vp(K("pairSet", [[3, 2, 1]])).some(e => e.includes("pairSet")), true, "validatePool: pairSet — пара з трьох чисел");
+  eq(vp(K("pairSet", [])).some(e => e.includes("pairSet")), true, "validatePool: pairSet порожній");
 }
 console.log(`\n${n} перевірок, ${fails ? fails + " з помилками" : "усе гаразд"}`);
 if (fails) process.exit(1);
