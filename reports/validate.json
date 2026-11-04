@@ -1,16 +1,5 @@
 {
-  "date": "2026-11-04T13:55:57.675Z",
+  "date": "2026-11-04T14:01:40.492Z",
   "errors": [],
-  "warnings": [
-    "content/world/g9-w9s4.js#w9s4l1: gradedShare=0.45 поза профілем [0.5; 0.9] для world, 7-9 кл.",
-    "content/world/g9-w9s4.js#w9s4l1: maxReadWords=83 поза профілем [0; 75] для world, 7-9 кл.",
-    "content/world/g9-w9s4.js#w9s4l1: у 2 з 3 завдань choice правильний варіант — Б: переставляй варіанти",
-    "content/world/g9-w9s4.js#w9s4l2: gradedShare=0.4 поза профілем [0.5; 0.9] для world, 7-9 кл.",
-    "content/world/g9-w9s4.js#w9s4l3: maxReadWords=77 поза профілем [0; 75] для world, 7-9 кл.",
-    "content/world/g9-w9s4.js#w9s4l4: gradedShare=0.44 поза профілем [0.5; 0.9] для world, 7-9 кл.",
-    "content/world/g9-w9s4.js#w9s4l5: gradedShare=0.44 поза профілем [0.5; 0.9] для world, 7-9 кл.",
-    "content/world/g9-w9s4.js#w9s4l5: maxReadWords=79 поза профілем [0; 75] для world, 7-9 кл.",
-    "content/world/g9-w9s4.js#w9s4l6: sentenceWords=5.9 поза профілем [6; 13] для world, 7-9 кл.",
-    "content/world/g9-w9s4.js#w9s4l6: у 2 з 3 завдань choice правильний варіант — Б: переставляй варіанти"
-  ]
+  "warnings": []
 }

@@ -1,7 +1,7 @@
 /* Слід — service worker. ЗГЕНЕРОВАНО tools/build.mjs із tools/sw.template.js — не редагуй sw.js вручну.
    Стратегія: усі файли застосунку кешуються при встановленні (офлайн з першого запуску);
    свої файли — спершу з кешу; Google Fonts — з кешу з фоновим оновленням. */
-const VERSION = "1fbdb184e5";
+const VERSION = "0e90e452c4";
 const CACHE = "slid-" + VERSION;
 const FONTS = "slid-fonts";
 const ASSETS = [
@@ -205,6 +205,7 @@ const ASSETS = [
   "./content/world/g9-w9s1.js",
   "./content/world/g9-w9s2.js",
   "./content/world/g9-w9s3.js",
+  "./content/world/g9-w9s4.js",
   "./content/catalog.js",
   "./app/evidence.js",
   "./app/lab.js",
@@ -545,6 +546,14 @@ const ASSETS = [
   "./img/world/w9s3/punch-boot-1860.jpg",
   "./img/world/w9s3/solferino-yvon.jpg",
   "./img/world/w9s3/souvenir-solferino-1862.jpg",
+  "./img/world/w9s4/china-cake-1898.jpg",
+  "./img/world/w9s4/constitution-1889-chikanobu.jpg",
+  "./img/world/w9s4/emancipation-proclamation-p2.jpg",
+  "./img/world/w9s4/independence-or-death-1888.jpg",
+  "./img/world/w9s4/nemesis-1841.jpg",
+  "./img/world/w9s4/rhodes-colossus-1892.jpg",
+  "./img/world/w9s4/slave-population-map-1861.jpg",
+  "./img/world/w9s4/yokohama-railway-hiroshige3.jpg",
   "./icons/apple-touch-icon.png",
   "./icons/icon-192.png",
   "./icons/icon-512.png",
