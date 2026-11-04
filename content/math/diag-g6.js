@@ -10,6 +10,8 @@
    Завдання, їхні індекси й зміст не змінено, тому rev не потрібен. Тепер 12 тем-передумов (по 2 завдання) + 6 тем 6 класу (по 1) = 30 завдань.
    Редакція 3 (refine-math-dg6-pct-rev3, 2026-11-03; reports/verify/verify-math-ister-diag.md §5): cur-проби pct (індекс 6, ms3l1) і pct-of (індекс 26, ms3l2)
    по одному обчисленню замінено на місці складеними multi на все ядро уроку (rev: 3). Розпочатий тест ред. 1 чи 2 покаже їх знову; теми й індекси ті самі.
+   Опори нових required-уроків D-043 (refine-math-diag-for-ister, 2026-11-04; матриця v8): for теми geom + ms4 (ms4l5 — розгортка, площа поверхні; опора ms4l1)
+   і + g6m4 (g6m4l7, g6m4l8 — перпендикулярні й паралельні прямі; прямий кут прямокутника). Лише for: завдання, індекси, ключі й rev не змінено.
    Перевірка: node tools/validate.mjs --diag dg6
    Схема й правила: docs/CONTENT_SCHEMA.md §9, style/math.md */
 SLID.diag("math", {
@@ -31,7 +33,7 @@ SLID.diag("math", {
     { id: "mixed", title: "Мішані числа", kind: "pre", lessons: ["m5"], for: ["g6m2"] },
     { id: "dec", title: "Десяткові дроби: запис і порівняння", kind: "pre", lessons: ["ms2l1", "ms2l2"], for: ["g6m4"] },
     { id: "dec-ops", title: "Дії з десятковими дробами", kind: "pre", lessons: ["ms2l3", "ms2l4"], for: ["g6m3"] },
-    { id: "geom", title: "Периметр і площа", kind: "pre", lessons: ["ms0bl4", "ms4l1"], for: ["g6m3", "g6m5"] },
+    { id: "geom", title: "Периметр і площа", kind: "pre", lessons: ["ms0bl4", "ms4l1"], for: ["ms4", "g6m3", "g6m4", "g6m5"] },
     // з 2026-11-03 (D-043): подільність g6m1 — 5 кл., тож g6-div і g6-lcm — передумови; відсотки ms3 — 6 кл. (тема pct вище — cur)
     // pre-тема має рівно 2 завдання: колишні теми g6-div (№17) і g6-lcm (№21) злито в g6-div; завдання ті самі, на тих самих місцях
     { id: "g6-div", title: "Подільність: ознаки, НСД і НСК", kind: "pre", lessons: ["g6m1l2", "g6m1l4"], for: ["g6m2"] },

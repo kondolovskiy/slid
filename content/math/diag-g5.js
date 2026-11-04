@@ -5,6 +5,8 @@
    Міграція за Істером (D-043, docs/design/math-ister.md §5.1, 2026-11-03): тема cur-ms3 — тепер «Ознаки подільності» (g6m1l2), завдання №26 замінено на місці (rev: 2);
    for тем parts/perim/units — без ms3/ms4 (ці розділи тепер 6 кл.), box — без for. Повторна незалежна перевірка — verify-math-ister-diag (2026-11-03):
    №26 (rev 2, ще не опублікована) переписано складеним multi на все ядро g6m1l2 (2, 5, 10; 3 і 9; добір цифри) — CONTENT_SCHEMA §9 «Тема cur і known».
+   Опори нових required-уроків D-043 (refine-math-diag-for-ister, 2026-11-04; матриця v8): for тем place і cmp + ms0b (ms0bl6 — координатний промінь, шкала).
+   Лише for: завдання, індекси, ключі й rev не змінено; cur-проб для нових уроків не додано (рішення 04.11).
    Перевірка: node tools/validate.mjs --diag dg5 && node tools/personalization-qa.mjs --diag dg5
    Схема й правила: docs/CONTENT_SCHEMA.md §9, style/math.md */
 SLID.diag("math", {
@@ -16,8 +18,8 @@ SLID.diag("math", {
   meta: { author: "claude-opus", created: "2026-10-30", factcheck: "self", teacher: null },
   topics: [
     // передумови з 4 класу
-    { id: "place", title: "Запис і розряди", kind: "pre", lessons: ["g4m1l1", "g4m1l2"], for: ["ms0", "ms2"] },
-    { id: "cmp", title: "Порівняння натуральних", kind: "pre", lessons: ["g4m1l3"], for: ["ms0", "ms2"] },
+    { id: "place", title: "Запис і розряди", kind: "pre", lessons: ["g4m1l1", "g4m1l2"], for: ["ms0", "ms0b", "ms2"] },
+    { id: "cmp", title: "Порівняння натуральних", kind: "pre", lessons: ["g4m1l3"], for: ["ms0", "ms0b", "ms2"] },
     { id: "addsub", title: "Додавання і віднімання", kind: "pre", lessons: ["g4m2l1", "g4m2l2"], for: ["ms0", "ms2"] },
     { id: "mul", title: "Множення", kind: "pre", lessons: ["g4m3l1", "g4m3l2"], for: ["ms0", "ms2", "g6m1"] },
     { id: "quot", title: "Ділення", kind: "pre", lessons: ["g4m3l3"], for: ["ms0", "ms2", "g6m1"] },

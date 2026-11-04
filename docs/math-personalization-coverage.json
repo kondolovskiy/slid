@@ -1,5 +1,5 @@
 {
-  "version": "2026-11-04.v7",
+  "version": "2026-11-04.v8",
   "status": "draft",
   "registryCommit": "9057fd5",
   "sources": {
@@ -1182,6 +1182,8 @@
       "poolState": "planned",
       "diagnostic": {
         "preForSection": [
+          "place",
+          "cmp",
           "perim",
           "units"
         ],
@@ -1222,6 +1224,8 @@
       "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
+          "place",
+          "cmp",
           "perim",
           "units"
         ],
@@ -1258,6 +1262,8 @@
       "poolState": "planned",
       "diagnostic": {
         "preForSection": [
+          "place",
+          "cmp",
           "perim",
           "units"
         ],
@@ -1288,6 +1294,8 @@
       "poolState": "deferred",
       "diagnostic": {
         "preForSection": [
+          "place",
+          "cmp",
           "perim",
           "units"
         ],
@@ -1322,6 +1330,8 @@
       "poolState": "planned",
       "diagnostic": {
         "preForSection": [
+          "place",
+          "cmp",
           "perim",
           "units"
         ],
@@ -1832,9 +1842,10 @@
       "poolState": "deferred",
       "diagnostic": {
         "preForSection": [
+          "place",
+          "cmp",
           "perim",
-          "units",
-          "box"
+          "units"
         ],
         "cur": []
       }
@@ -1868,9 +1879,10 @@
       "poolState": "planned",
       "diagnostic": {
         "preForSection": [
+          "place",
+          "cmp",
           "perim",
-          "units",
-          "box"
+          "units"
         ],
         "cur": [
           "cur-ms4"
@@ -1910,7 +1922,9 @@
       },
       "poolState": "planned",
       "diagnostic": {
-        "preForSection": [],
+        "preForSection": [
+          "geom"
+        ],
         "cur": []
       }
     },
@@ -1942,7 +1956,9 @@
       },
       "poolState": "existing-verified",
       "diagnostic": {
-        "preForSection": [],
+        "preForSection": [
+          "geom"
+        ],
         "cur": []
       }
     },
@@ -1974,7 +1990,9 @@
       },
       "poolState": "planned",
       "diagnostic": {
-        "preForSection": [],
+        "preForSection": [
+          "geom"
+        ],
         "cur": []
       }
     },
@@ -2268,11 +2286,13 @@
       "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
+          "rem",
           "frac",
           "frac-cmp",
           "frac-of",
           "frac-add",
-          "mixed"
+          "mixed",
+          "g6-div"
         ],
         "cur": []
       }
@@ -2306,11 +2326,13 @@
       "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
+          "rem",
           "frac",
           "frac-cmp",
           "frac-of",
           "frac-add",
-          "mixed"
+          "mixed",
+          "g6-div"
         ],
         "cur": []
       }
@@ -2345,11 +2367,13 @@
       "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
+          "rem",
           "frac",
           "frac-cmp",
           "frac-of",
           "frac-add",
-          "mixed"
+          "mixed",
+          "g6-div"
         ],
         "cur": []
       }
@@ -2384,11 +2408,13 @@
       "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
+          "rem",
           "frac",
           "frac-cmp",
           "frac-of",
           "frac-add",
-          "mixed"
+          "mixed",
+          "g6-div"
         ],
         "cur": [
           "g6-fadd"
@@ -2424,11 +2450,13 @@
       "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
+          "rem",
           "frac",
           "frac-cmp",
           "frac-of",
           "frac-add",
-          "mixed"
+          "mixed",
+          "g6-div"
         ],
         "cur": []
       }
@@ -2467,7 +2495,6 @@
           "eq",
           "frac-of",
           "dec-ops",
-          "pct",
           "geom"
         ],
         "cur": []
@@ -2507,7 +2534,6 @@
           "eq",
           "frac-of",
           "dec-ops",
-          "pct",
           "geom"
         ],
         "cur": [
@@ -2548,7 +2574,6 @@
           "eq",
           "frac-of",
           "dec-ops",
-          "pct",
           "geom"
         ],
         "cur": []
@@ -2587,7 +2612,6 @@
           "eq",
           "frac-of",
           "dec-ops",
-          "pct",
           "geom"
         ],
         "cur": []
@@ -2626,7 +2650,6 @@
           "eq",
           "frac-of",
           "dec-ops",
-          "pct",
           "geom"
         ],
         "cur": []
@@ -2666,7 +2689,6 @@
           "eq",
           "frac-of",
           "dec-ops",
-          "pct",
           "geom"
         ],
         "cur": []
@@ -2701,7 +2723,8 @@
       "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
-          "dec"
+          "dec",
+          "geom"
         ],
         "cur": []
       }
@@ -2735,7 +2758,8 @@
       "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
-          "dec"
+          "dec",
+          "geom"
         ],
         "cur": []
       }
@@ -2769,7 +2793,8 @@
       "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
-          "dec"
+          "dec",
+          "geom"
         ],
         "cur": [
           "g6-neg"
@@ -2805,7 +2830,8 @@
       "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
-          "dec"
+          "dec",
+          "geom"
         ],
         "cur": []
       }
@@ -2839,7 +2865,8 @@
       "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
-          "dec"
+          "dec",
+          "geom"
         ],
         "cur": []
       }
@@ -2873,7 +2900,8 @@
       "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
-          "dec"
+          "dec",
+          "geom"
         ],
         "cur": []
       }
@@ -2908,7 +2936,8 @@
       "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
-          "dec"
+          "dec",
+          "geom"
         ],
         "cur": []
       }
@@ -2942,7 +2971,8 @@
       "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
-          "dec"
+          "dec",
+          "geom"
         ],
         "cur": []
       }
@@ -4437,6 +4467,7 @@
           "poly",
           "square",
           "factor",
+          "linear",
           "function"
         ],
         "cur": [
@@ -4479,6 +4510,7 @@
           "poly",
           "square",
           "factor",
+          "linear",
           "function"
         ],
         "cur": []
@@ -4518,6 +4550,7 @@
           "poly",
           "square",
           "factor",
+          "linear",
           "function"
         ],
         "cur": []
@@ -4558,6 +4591,7 @@
           "poly",
           "square",
           "factor",
+          "linear",
           "function"
         ],
         "cur": []
@@ -4596,6 +4630,7 @@
           "poly",
           "square",
           "factor",
+          "linear",
           "function"
         ],
         "cur": []
@@ -4636,6 +4671,7 @@
           "poly",
           "square",
           "factor",
+          "linear",
           "function"
         ],
         "cur": []
@@ -8991,6 +9027,7 @@
           ],
           "for": [
             "ms0",
+            "ms0b",
             "ms2"
           ],
           "itemLessons": [
@@ -9007,6 +9044,10 @@
             {
               "section": "ms0",
               "lesson": "ms0l1"
+            },
+            {
+              "section": "ms0b",
+              "lesson": "ms0bl6"
             },
             {
               "section": "ms2",
@@ -9027,6 +9068,7 @@
           ],
           "for": [
             "ms0",
+            "ms0b",
             "ms2"
           ],
           "itemLessons": [
@@ -9043,6 +9085,10 @@
             {
               "section": "ms0",
               "lesson": "ms0l2"
+            },
+            {
+              "section": "ms0b",
+              "lesson": "ms0bl6"
             },
             {
               "section": "ms2",
@@ -9887,7 +9933,9 @@
             "ms4l1"
           ],
           "for": [
+            "ms4",
             "g6m3",
+            "g6m4",
             "g6m5"
           ],
           "itemLessons": [
@@ -9905,8 +9953,16 @@
           "state": "existing",
           "forEvidence": [
             {
+              "section": "ms4",
+              "lesson": "ms4l5"
+            },
+            {
               "section": "g6m3",
               "lesson": "g6m3l2"
+            },
+            {
+              "section": "g6m4",
+              "lesson": "g6m4l7"
             },
             {
               "section": "g6m5",
@@ -10834,6 +10890,7 @@
             "g7m1l2"
           ],
           "for": [
+            "g8m1",
             "g8m5"
           ],
           "itemLessons": [
@@ -10847,6 +10904,10 @@
           "baseline": false,
           "rationale": "Проби відповідають умінням зазначених уроків; for веде до розділів, де ці операції/моделі потрібні. Конкретні вміння й джерела — у рядках реєстру.",
           "forEvidence": [
+            {
+              "section": "g8m1",
+              "lesson": "g8m1l6"
+            },
             {
               "section": "g8m5",
               "lesson": "g8m5l1"
@@ -12684,6 +12745,6 @@
       "verdict": "прийнято; бажані уточнення 1–4 закрито refine-math-content-from-matrix-v3"
     }
   },
-  "previous": "2026-11-04.v6",
-  "changes": "docs/math-personalization-coverage.md, «Зміни v7» (22 уроки D-043 7–8 кл. → required; curate-math-matrix-v7); попередні — «Зміни v6», «Зміни v5», «Зміни v4», «Зміни v3»"
+  "previous": "2026-11-04.v7",
+  "changes": "docs/math-personalization-coverage.md, «Зміни v8» (for pre-тем dg5/dg6/dg8 для опор нових required-уроків D-043 і синхронізація preForSection; refine-math-diag-for-ister); попередні — «Зміни v7», «Зміни v6», «Зміни v5», «Зміни v4», «Зміни v3»"
 }
