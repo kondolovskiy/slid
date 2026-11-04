@@ -1,7 +1,7 @@
 ---
 id: tests-hyp-snapshot-ister
 type: tests
-status: review
+status: done
 claimed_by: developer-tests-hyp-snapshot-ister
 created: 2026-11-04
 depends_on: []

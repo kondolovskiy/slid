@@ -2,7 +2,7 @@
 id: curate-math-matrix-v7
 type: curate
 subject: math
-status: review
+status: done
 claimed_by: curator-matrix-v7
 created: 2026-11-04
 depends_on: [curate-math-matrix-v6, write-math-pool-g7m3-ister, write-math-pool-g7m4-ister, write-math-pool-g7m6-ister, write-math-pool-g7m8-ister, write-math-pool-g8m1-ister, write-math-pool-g8m2-ister, write-math-pool-g8m3-ister, write-math-pool-g8m4-ister, write-math-pool-g8m5-ister]
