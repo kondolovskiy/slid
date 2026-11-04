@@ -4,7 +4,7 @@ claimed_at: 2026-11-04T20:48:45.582Z
 claimed_by: writer-style-hist
 id: style-hist-g5-finals
 type: style-fix
-status: review
+status: done
 created: 2026-11-03
 ---
 # hist 5 кл. (s2–s4): «Фінал» в останньому завданні і src/crit у кожному уроці
@@ -41,3 +41,6 @@ created: 2026-11-03
 Сумнівні місця: h43 — hyp тепер передостанній (раніше останній), а не на початку уроку; h41 і h45 показують одне фото златників (той самий розділ); l3, h23 — stats «gradedShare нетипово для сім'ї (z=2)» через +1 завдання, у межах профілю.
 validate: s1 0/1, s2 0/2, s3 0/1, s4 0/5 (помилок 0; усі попередження були й до правки — maxReadWords h41/h42, gradedShare h43, sentenceWords h25/h35/h45, l5 довге речення).
 Потрібні build + playtest s1, s2, s3, s4, g5s5 (оркестратор).
+
+## Верифікація (verifier-style-hist, 2026-11-04)
+Прийнято. Уроки → verified; 2 дрібні правки (h22 fbText, l3 body). Звіт: reports/verify/style-hist-g5.md.
