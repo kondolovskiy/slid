@@ -1,18 +1,23 @@
 /* Слід · Математика, 9 клас — пул задач для тренування до розділу «Алгебра: квадратична функція» (g9m3)
-   Статус: verified (verifier-refine-math-content-from-matrix-v3, 2026-11-01, reports/verify/refine-math-content-from-matrix-v3.md) після refine-math-content-from-matrix-v3 (2026-11-01): d06: sk expr → eq (навичка екранів g9m3l4); зміст вправ не змінено — потрібна повторна незалежна верифікація тегів.
-   Попередня редакція — verified (автор agent-write-math-pool-g9m3, 2026-10-31; верифікатор verifier-pg9m3, 2026-10-31, reports/verify/pg9m3.md). 32 задачі: по 8 на кожен урок g9m3l1–g9m3l4; boss g9m3l5 без задач.
-   Усі задачі — з підручника Мерзляка, Якіра «Алгебра. 9 клас» (2026), п. 7–12 (sources).
-   Умови й числа звірено за відрендереними сторінками PDF 2026-10-31. У цьому PDF друкований номер сторінки = номер сторінки PDF.
-   Проміжки — answerKind "intervalSet"; формули — "expression"; вершини — "coordinates2"; нулі — "list".
+   Статус: draft — доповнено 2026-11-04 (write-math-pool-g9m3-ister, D-043): +16 задач для нових уроків за Істером —
+   e01–e08 (g9m3l6, системи 2-го степеня, ist9a § 13, с. 129–130) і f01–f08 (g9m3l7, задачі системами, ist9a § 14, с. 135–137).
+   Наявні задачі a01–d08, їхні id, lesson і ключі не змінено. Потрібна повторна незалежна верифікація (content-verify, пул pg9m3).
+   Попередня редакція — verified (verifier-refine-math-content-from-matrix-v3, 2026-11-01, reports/verify/refine-math-content-from-matrix-v3.md) після refine-math-content-from-matrix-v3 (2026-11-01): d06: sk expr → eq (навичка екранів g9m3l4).
+   Ще раніше — verified (автор agent-write-math-pool-g9m3, 2026-10-31; верифікатор verifier-pg9m3, 2026-10-31, reports/verify/pg9m3.md). 32 задачі: по 8 на кожен урок g9m3l1–g9m3l4; boss g9m3l5 без задач.
+   Задачі a01–d08 — з підручника Мерзляка, Якіра «Алгебра. 9 клас» (2026), п. 7–12; e01–f08 — з підручника Істера «Алгебра. 9 клас» (2026), § 13–14 (sources).
+   Умови й числа звірено за відрендереними сторінками PDF (a9 — 2026-10-31; ist9a — 2026-11-04). В обох PDF друкований номер сторінки = номер сторінки PDF.
+   Проміжки — answerKind "intervalSet"; формули — "expression"; вершини й розв'язки систем — "coordinates2"; нулі й пари шуканих чисел — "list".
+   Системи з двома розв'язками: формату «множина пар» у рушії немає, тож питаємо розв'язок з умовою на знак x (coordinates2) або вираз від обох пар, як у ist9a №13.13(3), 13.14(3).
    Перевірка: node tools/validate.mjs --pool pg9m3 && node tools/personalization-qa.mjs --pool pg9m3
    Схема: docs/CONTENT_SCHEMA.md §10 */
 SLID.pool("math", {
   id: "pg9m3",
   section: "g9m3",
-  status: "verified",
-  meta: { author: "claude-opus", created: "2026-10-31", factcheck: "verifier-refine-math-content-from-matrix-v3", revised: "2026-11-01 refine-math-content-from-matrix-v3", teacher: null },
+  status: "draft",
+  meta: { author: "claude-opus", created: "2026-10-31", factcheck: "verifier-refine-math-content-from-matrix-v3", revised: "2026-11-04 write-math-pool-g9m3-ister (+e01–f08)", teacher: null },
   sources: [
-    { id: "a9", title: "Мерзляк А. Г., Якір М. С. Алгебра. 9 клас. — Харків: Гімназія, 2026 (п. 7–12; дзеркало PDF на 4book.org)", url: "https://file.4book.org/images/shcoolbook_ua/9/9_a_m_2026.pdf" }
+    { id: "a9", title: "Мерзляк А. Г., Якір М. С. Алгебра. 9 клас. — Харків: Гімназія, 2026 (п. 7–12; дзеркало PDF на 4book.org)", url: "https://file.4book.org/images/shcoolbook_ua/9/9_a_m_2026.pdf" },
+    { id: "ist9a", title: "Істер О. С., Істер Д. О. Алгебра: підручник для 9 класу. — Київ: Генеза, 2026 (§ 13–14; дзеркало PDF на 4book.org)", url: "https://file.4book.org/images/shcoolbook_ua/9/9_a_i_2026.pdf" }
   ],
   items: [
     /* ───────────── Урок 1. Що розкаже графік (нулі, зростання, область значень) ───────────── */
@@ -288,7 +293,7 @@ SLID.pool("math", {
     { id: "f07", lesson: "g9m3l7", lvl: 3, sk: "eq", src: "ist9a №14.14", srcPage: 136, adapted: true,
       type: "answer", title: "Два принтери по 120 сторінок",
       body: "<p>Кожен із двох принтерів має надрукувати файл на 120 сторінок. Перший принтер за хвилину друкує на 2 сторінки менше, ніж другий, і тому працював на 3 хв довше.</p><p>Скільки сторінок за хвилину друкує <b>перший</b> принтер?</p>",
-      answer: 8, unit: "стор.",
+      answer: 8, unit: "сторінок", unitForms: ["сторінка", "сторінки", "сторінок"],
       hint: "Нехай перший друкує $x$ сторінок за хвилину, а другий — $y$. Час роботи — $120/x$ і $120/y$ хвилин.",
       steps: ["$y - x = 2$ і $120/x - 120/y = 3$.", "$y = x + 2$: $120(x + 2) - 120x = 3x(x + 2)$, тобто $240 = 3x^2 + 6x$.", "$x^2 + 2x - 80 = 0$: $x = 8$ або $x = -10$ (не підходить).", "Перший — 8 сторінок за хвилину (15 хв), другий — 10 (12 хв)."] },
     { id: "f08", lesson: "g9m3l7", lvl: 3, sk: "eq", src: "ist9a №14.21", srcPage: 137,
