@@ -1,54 +1,47 @@
 # Handoff — стан проєкту
 
-_Оновлено: 2026-11-04, куратор пам'яті — українська 7 кл. (журнал sessions/2026-11-04-1.md; worktree `/home/user/slid-ukr`, гілка `ukr-wt` → `origin/claude/sweet-maxwell-h5v674`). Стан hist/world/math — із сесії 03.11-1 (sessions/2026-11-03-1.md), паралельні сесії можуть його доповнити._
+_Оновлено: 2026-11-04, куратор пам'яті — сесія 2 (журнал sessions/2026-11-04-2.md; гілка `claude/brave-feynman-iql21g` від main після PR #17). Попередні: sessions/2026-11-04-1.md (ukr 7 кл.), 2026-11-03-1.md (hist/world/math)._
 
 ## Стан
-- **Українська мова (D-040–D-042, D-045) — 5, 6 і 7 кл. verified:** 5 кл. — 11 розділів, 69 уроків; 6 кл. — 14 розділів, 94 уроки; **7 кл. — 13 розділів content/ukr/g7-u7s1…u7s13.js, 80 уроків** (план content/ukr/plan.js, reports/verify/plan-ukr-g7.md; звіти reports/verify/u7s*.md; базовий підручник З7 — Заболотні 2024, друк. с. = с. PDF). Стиль 5–7 кл. вирівняно (style-ukr-g5/g6-unify, style-sync-ukr-g7). Еталон — u5s1. Жодного `approved`.
-- **Рушій мов (app/lang.js):** engine-lang-p3 і engine-lang-gaps-shuffle — рев'ю прийнято (варіанти gaps перемішуються, «∅» останній; `hyp` на мовних типах; tools/euphony.mjs; нові попередження validate). Build — a27ddd7.
-- **Математика 5–9 за Істером (D-043):** PR #14 злито; g6m1 → 5 кл., ms3/ms4 → 6 кл.; нотація — glossary/math «Вирішено 2026-11-03».
-- **Історія «Артинов» і world (D-043, D-044):** g5s5–g6s8 нові, g7s4, g7s5, g8s1, g8s5 revise; world w7s1–w7s5 — усе verified (PR #15 злито).
-- **Математика, персоналізація 4–11 кл.** — release прийнято, матриця v3/v4 (draft). Skill Graph G1–G3 (D-038), гіпотези E1/E2/E4, ШІ-перевірка — дизайн (D-036), бекенд server/ (D-037).
-- Довга пам'ять: facts/ukr №1–211, facts/hist №1–345, facts/world №1–25, facts/math №1–219; decisions до **D-045**.
+- **Українська мова (D-040–D-042, D-045):** 5 кл. (69 уроків), 6 кл. (94), 7 кл. (80, content/ukr/g7-u7s1…u7s13.js) — verified; попередження validate u5s2l7, u6s1l6, u6s14l2/l5/l7 закрито (fix-ukr-validate-warnings). Жодного `approved`.
+- **Рушій мов:** tools-lang-p4 (P3-1…P3-6, euphony `--section` — лише stdout), tests-lang-gaps-order, tools-world-img-p3 — рев'ю прийнято; tasks/review порожня.
+- **Математика:** Істер 5–9 (D-043, PR #14, #17); пули **pg11m2** (g11m2l1–l2) і **pg11m6** (optional) — verified, у build. Матриця v9.
+- **Історія:** style-hist-h56, style-hist-g5-finals — 10 уроків 5 кл. verified (src/crit, «Фінал»). **World:** w7s1–w7s5, w8s1–w8s5, w9s1–w9s5 — verified (w9s5 «Світ на порозі XX ст.» — ця сесія).
+- **Бекенд:** server-hardening прийнято (unit 110/110, e2e 18/18); далі — server-hardening-2.
+- Довга пам'ять: facts/ukr №1–211, facts/hist №1–349 (**файл 400 рядків — наступне доповнення: розбити за класами**), facts/world №1–40 (без w8s1–w9s3), facts/math №1–222; decisions до **D-045**.
 
 ## У роботі (`node tools/claim.mjs list doing`)
 - **research-math-diag-duration** — пілот, чекає учнів.
-- tasks/review: engine-lang-types, -dash, -pick-groups, -p3, -gaps-shuffle — рев'ю всіх «прийнято» → оркестратору перенести в done (`claim.mjs move`).
 
-## Що далі (`node tools/claim.mjs list todo`)
-1. **ukr після відповідей людини:** style-ukr-g7-followup (sk u7s12l5/u7s1l1, «споріднені», 7 завдань u7s1l9, «Здогадка» в 5 кл.); профіль ukr 7–9 у style/profiles.json (пропозиція — reports/style-sync-ukr-g7.md §4, через decisions.md).
-2. **fix-ukr-validate-warnings** — pick-кнопки з кількох слів u6s1l6, u6s14l2/l5/l7; fbText із номером варіанта u5s2l7 (знайшли нові перевірки validate).
-3. **tools-lang-p4** (P3-1…P3-6 рев'ю engine-lang-p3, euphony `--section`, ідея validate «*» за регістром) і **tests-lang-gaps-order** — рев'ю D-026.
-4. ukr, дрібне: plan.js u7s7 (окремий урок l3) і u7s8 (6 тем) — на розсуд куратора плану; style/ukr.md — орієнтир для pick-груп; AGENTS.md §3 — рядок euphony (у tools-lang-p4); u5s1 «за хлібом» — після рішення (нижче).
-5. **Math (Істер):** write-math-g6m3-circle-diagrams — пріоритет; refine-math-dg6-pct-rev3; tools-ister-p3; write-math-g5…g9-*; **51 рядок inbox 03.11 (math ister, fix-math-figs, prev-refs; hist images-g11s1boss) ще не перенесено** — куратору math.
-6. **Hist/world:** write-world-w8s1…w9s5 (після підтвердження плану), style-hist-h56, style-hist-g5-finals, tools-world-img-p3.
-7. G4 Skill Graph — після перегляду лінії «дроби»; engine-ai-a1 — після server/content/; давні — sessions/2026-11-02-2.md, 2026-11-01-3.md.
+## Що далі
+1. **Першочергово — Python-браузерні тести там, де є модуль playwright** (у контейнері 04.11 його не було): `python3 tools/test-answer-ui.py --suite regression` (новий `gaps_order_checks`), `--suite content --pool pg11m2` / `pg11m6`; `playtest.py --section` для w9s5, s1, s2, s3, s4, g5s5, u5s2, u6s1, u6s14. По одному. Не ставити пакети самим.
+2. **Куратор math/world — старий inbox:** 51 рядок 03.11 (math ister, fix-math-figs, prev-refs; hist images-g11s1boss) і ≈ 270 рядків PR #17 (пули й розділи Істера, фінали, діагностика for, матриця v6–v9, engine-answer-formats-ister; world w8s1–w9s4 — факти → facts/world від №41). Перед цим — розбити facts/hist.md.
+3. **fix-math-pool-g11m6-order** (todo) — c05 перед c04, d05 перед d04, знімки test-hyp §10, рев'ю D-026.
+4. **server-hardening-2** (todo) — P2-1 апостроф у тесті меж, P3-2 (503), структуровані логи, лічильники й сповіщення для ai-solution-check; рішення людини — нижче.
+5. **ukr після відповідей людини:** style-ukr-g7-followup (todo); профіль ukr 7–9 у style/profiles.json (reports/style-sync-ukr-g7.md §4, через decisions.md).
+6. Інше в todo: refine-math-diag-g9-ister-required, engine-diag-retest-from-pool, tools-ci-answer-ui, engine-sync-login, engine-ai-a1 (після server/content/), design-teacher-dashboard.
+7. **Пропозиції (задач не створено):** ENGINE P3 — coordinates3 приймати назву вектора з умови (`c = (−13; −2; 17)` → зараз `bad`; pg11m2 b04, pg9m2 d04); validate-попередження — кожна `sk` уроку має вправу поза першими 4 пулу (IDEA eng-test-hyp-g11); lang P3-6 — gapCase мовчить на «<b>В</b>ітаю» й подібні (75 fbText ukr), P3-5 — лапки ≤ 4 слів знімаються й для авторських реплік (reports/review/tools-lang-p4.md); h33 — пом'якшити outro («продовжує досвід» подано як факт) і додати note про дату Львова; w9s5 — у credits фото Панкгерст прибрати «(PD-UKGov)», лишити «суспільне надбання» (reports/verify/w9s5.md §5.2).
 
 ## Відкриті питання (людині)
-**Українська 7 кл. (04.11; reports/verify/u7s*.md, reports/style-sync-ukr-g7.md, facts/ukr «спірне»):**
-1. **«Здогадка» на оцінюваних екранах:** 03.11 погоджено «екран-здогадка → „Здогадка“», але оркестратор підписав так і оцінювані u5s9l1–l4 (і давні u5s2l1–l6) — суперечить pitfalls. Пропозиція: «Здогадка» лише `hyp`/`poll`, оцінювані стартові — «Подумай» (як у 6–7 кл.); u5s2, u5s9 повернути. Згода?
-2. **Профіль ukr 7–9** (зараз `_default` позначає 64 з 80 уроків): screens [6, 12], sentenceWords [4, 12] тощо — reports/style-sync-ukr-g7.md §4.
-3. **Фінали з 7 завданнями** (u7s1l9, u6s14l7; також hist g7s5l5, g8s1l5, g8s5l7) — дозволити правилом?
-4. **D-041 і синтаксис / стиль** (словник не регулює): орудний виконавця «Вправу виконано учнями» (u7s6, №181); «дія не стосується підмета» (u7s7); «запрошуєм» в офіційному оголошенні (u7s3l4 е8, №166); розділові знаки при вигуках лише за З7 (u7s12, №208); «о сім тридцять» (u7s1, №159). Оцінювати за З7 + програмою чи робити порадою / poll?
-5. **D-041, слова:** «давайте + майб. ч.» — зараз порада (u7s4, №173); «оточуючий» — оцінюється, хоча таблиця словоформ slovnyk.ua без позначки (u7s5, №176); «лише минулого часу» (u7s5l3); «завдання по географії» оцінюється, «пливти по течії» — у СУМ немає (u7s10, №196); з / зі перед льв — не оцінюємо (№199); «хоч… але» як парний (u7s11, №203); «сиділи замислившись» без коми (u7s7, №182).
-6. **CONFLICT:** u5s1 (verified, «Так і не так») «Іти по хліб, не ~~за хлібом~~» — за D-041 «за + оруд.» без позначки → лише порада. Виправити u5s1?
-7. «На Чорному морі, на Говерлі» — лише З7, з note u7s2l2 прибрано; повернути як пораду? З7 с. 151 (ступені прислівників) неточний — урок за джерелами (№187), згода?
-8. Назви значків: «Майстер ознак» двічі (u6s10boss, u6s11boss); близькі «Хранитель ознак», «Коректор» / «Пильний коректор» — перейменувати назву (не id)?
-9. **«Спільнокореневі» чи «споріднені»** — пропозиція: основний «спільнокореневі» (u7s8, u7s9, u5s4l4 — замінити). Мішані `sk` (u6s8l4 е10, u6s8l12 е5) — за домінантним умінням?
-10. Датування автопортрета Шевченка: facts/hist №140 «зима 1840/1841» vs академічне «січень–лютий 1840» (u7s13 — «близько 1840 р.»).
-11. Хто вчитель-рецензент для `approved` (5–7 кл.); чи йти далі — 8 кл.
+**Нові (04.11, сесія 2):**
+1. **g11m2l1–l2 — 10 чи 11 кл.?** Пул verified, уроки в матриці pending; переводити в required?
+2. **pg11m6 — optional чи deferred?** Пул написано й verified як optional (матриця v9 — deferred); лишити в build?
+3. **Вектор у 10–11 кл.:** g11m2l2 пише з «=» (`$a→ = (2; -1; 4)$`), glossary (Істер 5–9) — без «=». Поширити на 10–11 кл. і виправити g11m2l2?
+4. **Магдебурзьке право Львова:** 1356 (привілей Казимира III; так у h33) чи «before 1352» (EoU)? facts/hist №347.
+5. **Бекенд (docs/BACKEND.md «Відкриті питання»):** хопи `X-Forwarded-For` на Railway (після деплою); ліміти для класу за NAT; глобальний ліміт невдалих claim чи довший код; спільне сховище лімітів (Redis/Postgres — витрати); `nonce` для id_token разом із входом у фронтенді.
+6. Термін «друга промислова революція» замінено на «науково-технічна революція» за програмою (glossary/world) — згода?
 
-**Українська 5–6 кл. (давні, sessions/2026-11-02-3.md):** збірні з іменниками ж. р. («троє подруг», №141); «менший сестри» (№130); «прийомна» (№96); штрихкод / штрих-код (№110); Григорович / Григорійович (№119); «негайний», «ненаситний» (№137); «дев'ятка» без с (№136); «із цього», «із собою»; -ти — суфікс чи закінчення (№24); ч. 3 ст. 30 ЗДМ; «голосові зв'язки»; фонетичний розбір у boss u5s4; «групи» чи «розряди» прикметників.
-
-**Історія і world (sessions/2026-11-03-1.md, п. 1–10):** 1783 «захопила» / «анексія»; межа Гетьманщини; g6s6 l4 (іслам); h64 — 5 термінів; Гірей / Герай; васалітет Криму 1478 / 1475; профіль hist 7–9; план world 8–9 і еталон w7s1; дублікати фото.
-
-**Математика / граф / дані:** dg5 №26 (переписав верифікатор); лінія «дроби» і §7.3 п. 10 перед G4; server/content/, персональні дані (GDPR), протокол `concern`; давні — sessions/2026-11-02-2.md.
+**Українська 7 кл. (sessions/2026-11-04-1.md, reports/verify/u7s*.md):** «Здогадка» на оцінюваних (u5s2, u5s9 → «Подумай»?); профіль ukr 7–9; фінали з 7 завданнями (u7s1l9, u6s14l7, hist g7s5l5, g8s1l5, g8s5l7); D-041 і синтаксис (№159, 166, 181, 208); D-041, слова (№173, 176, 182, 196, 199, 203); CONFLICT u5s1 «за хлібом»; «На Чорному морі», З7 с. 151 (№187); назви значків-дублікати; «спільнокореневі» / «споріднені»; автопортрет Шевченка (facts/hist №140); хто вчитель-рецензент і чи йти в 8 кл.
+**Українська 5–6 кл.:** sessions/2026-11-02-3.md (№24, 96, 110, 119, 130, 136, 137, 141 тощо).
+**Історія і world:** sessions/2026-11-03-1.md п. 1–10 (1783, Гетьманщина, Гірей/Герай, профіль hist 7–9, план world 8–9, дублікати фото); Малевич — 1878 чи 1879 (у w9s5 без року).
+**Математика / граф / дані:** dg5 №26; лінія «дроби» і §7.3 п. 10 перед G4; server/content/, персональні дані (GDPR), протокол `concern`; sessions/2026-11-02-2.md.
 
 ## Обмеження середовища
-- **Ліміт API двічі зупиняв агентів (03–04.11)** — відновлення через SendMessage тому самому агентові працює.
-- Агенти не ставлять пакети: верифікатор знову поставив `pip install playwright` (заборонено; pitfalls). Playwright — `/opt/pw-browsers/chromium`; браузерні тести по одному.
-- `npm run check` робить build у дереві — під паралельною роботою лише оркестратор; `tools/euphony.mjs --section` перезаписує спільний reports/euphony-ukr.md (повний — `--subject ukr`).
-- Паралельні агенти: ніколи `git stash/checkout/reset`; scratchpad — власна підтека; коміти «всього дерева» — безпечні.
-- ukr: mon.gov.ua, zakon.rada, pravopys.net недоступні; правопис — https://slovnyk.ua/pravopys.php?prav_par=N; З5 — друк. = PDF − 3, З6 — OCR, друк. = PAGE + 1, **З7 — друк. = PDF** (текстовий шар cp1251, наголоси губляться). Commons — ≤ 2 фото-агенти, 429.
+- **Python-модуля playwright може не бути** (04.11) — браузерні Python-тести не запускаються; Node-двійник /opt/node-tools; `pip install` заборонено. Playwright-браузер — `/opt/pw-browsers/chromium`; браузерні тести по одному.
+- Агенти порушували правила git і прав (pitfalls «04.11, сесія 2»): у промптах виконавцям явно — ніколи `git stash/reset/checkout --` (і в worktree), не чіпати чужі файли й звіти, не змінювати права на /tmp/claude-0.
+- Ліміт API зупиняв агентів — відновлення через SendMessage тому самому агентові.
+- `npm run check`, `validate --section`, `stats --subject`, `euphony --subject` перезаписують спільні reports/ — під паралельною роботою build і звіти комітить лише оркестратор.
+- ukr: mon.gov.ua, zakon.rada, pravopys.net недоступні; З5 друк. = PDF − 3, З6 — PAGE + 1, З7 — = PDF. Commons — ≤ 2 фото-агенти (429).
 
 ## Як продовжити
-«Прочитай AGENTS.md і handoff; отримай відповіді людини (ukr 7 кл. 1–11) → style-ukr-g7-followup, профіль ukr 7–9, fix-ukr-validate-warnings, tools-lang-p4 + tests-lang-gaps-order (рев'ю D-026); куратор math — 51 рядок inbox 03.11; паралельно — math за Істером, world 8–9».
+«Прочитай AGENTS.md і handoff; у середовищі з Python playwright — прогнати п. 1; куратор math/world — старий inbox (п. 2, спершу розбити facts/hist.md); fix-math-pool-g11m6-order, server-hardening-2; відповіді людини → style-ukr-g7-followup, матриця g11».
