@@ -5,7 +5,7 @@ id: write-math-pool-g11m6
 type: write-pool
 subject: math
 grade: 11
-status: review
+status: done
 claimed_by: writer-write-math-pool-g11m6
 created: 2026-10-15
 depends_on: [curate-math-personalization-map, engine-math-pool-answer-formats]
@@ -99,3 +99,7 @@ depends_on: [curate-math-personalization-map, engine-math-pool-answer-formats]
 **Команди:** `node tools/validate.mjs --pool pg11m6` — 0 помилок, 0 попереджень (pool знайдено без manifest: `--pool pzzz` дає помилку). `node tools/personalization-qa.mjs --pool pg11m6` — «Optional (4)», єдине «БРАКУЄ: pg11m6 ще не verified». `test-answer-ui.py --suite content --pool pg11m6` не запускав: пул ще не в index.html (build — оркестратор); запустити після build.
 
 **Незалежному верифікатору:** звірити 32 умови за сторінками; особливо №24.160(4) (√5), 24.102(1)–(4) (межі коренів), 24.155(2), 25.135; перевірити, чи доречні hint-опори з передумов у c05, c06, c08, d03, d07.
+
+### Верифікація 2026-11-04 (verifier-pg11m6)
+
+Вердикт: **прийнято**, status "verified" — reports/verify/pg11m6.md. 32/32 умови звірено на рендері m11, ключі розв'язано незалежно (11 збігаються з відповідями підручника). Правки: d03 (властивість медіани до гіпотенузи — в умову), d07 (означення апофеми — в умову); c05, c06, c08 — опора в g10m6l1 (requires), hint досить. `validate --pool pg11m6` — 0/0. Потрібно після build: `test-answer-ui.py --suite content --pool pg11m6`. Обсяг optional/deferred — на рішення людини чи куратора.
