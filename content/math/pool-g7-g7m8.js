@@ -1,19 +1,24 @@
 /* Слід · Математика, 7 клас — пул задач для тренування до розділу «Геометрія: коло» (g7m8)
-   Статус: verified (рисунки lab до a07, a08, b01, b02, b05–b08 — fix-math-figs-g7-geo-b, перевірено 2026-11-03, reports/verify/fix-math-figs-g7-geo-b.md; раніше verifier-pg7m8, 2026-10-31, reports/verify/pg7m8.md). 24 задачі: по 8 на required-уроки g7m8l1, g7m8l2, g7m8l3 (3 рівня 1, 3 рівня 2, 2 рівня 3).
+   Статус: draft — 2026-11-04 додано d01–d08 (g7m8l5) і e01–e08 (g7m8l6) за Істером (write-math-pool-g7m8-ister), чекає повторної верифікації.
+   Раніше: verified (рисунки lab до a07, a08, b01, b02, b05–b08 — fix-math-figs-g7-geo-b, перевірено 2026-11-03, reports/verify/fix-math-figs-g7-geo-b.md; раніше verifier-pg7m8, 2026-10-31, reports/verify/pg7m8.md).
+   40 задач: по 8 на уроки g7m8l1, g7m8l2, g7m8l3, g7m8l5, g7m8l6 (3 рівня 1, 3 рівня 2, 2 рівня 3). Серії a, b, c — без змін.
    Boss g7m8l4 не дублюється (за задачею write-math-pool-g7m8, матриця 2026-10-16.v2).
-   Усі задачі — з підручника Мерзляка, Якіра «Геометрія. 7 клас» (2024; див. sources); умови й числа звірено
+   a–c — з підручника Мерзляка, Якіра «Геометрія. 7 клас» (2024; див. sources); умови й числа звірено
    2026-10-31 за текстом PDF і за відрендереними сторінками (рисунки 314, 317, 328, 329, 342).
    srcPage — друкований номер сторінки; у цьому PDF він збігається з номером сторінки файлу.
+   d, e — з підручника Істера «Геометрія. 7 клас» (2024; ist7g): §§ 23–25, ДСР № 5. srcPage — друкований номер
+   (у PDF 4book друкований = сторінка файлу − 1); умови звірено 2026-11-04 з текстом і рендером с. 166–167, 171, 176–177, 193, 196.
    Розташування точок, потрібне для розв'язання, описано словами (adapted); статичні рисунки lab його лише ілюструють.
    Перевірка: node tools/validate.mjs --pool pg7m8 && node tools/personalization-qa.mjs --pool pg7m8
    Схема: docs/CONTENT_SCHEMA.md §10 */
 SLID.pool("math", {
   id: "pg7m8",
   section: "g7m8",
-  status: "verified",
-  meta: { author: "w-write-math-pool-g7m8", created: "2026-10-31", factcheck: "verifier-pg7m8", teacher: null },
+  status: "draft",
+  meta: { author: "w-write-math-pool-g7m8", created: "2026-10-31", factcheck: "verifier-pg7m8 (a–c); d, e — ще ні", revised: "2026-11-04 write-math-pool-g7m8-ister (d01–d08, e01–e08)", teacher: null },
   sources: [
-    { id: "mer7g", title: "Мерзляк А. Г., Якір М. С. Геометрія : підручник для 7 класу закладів загальної середньої освіти. — Харків : Гімназія, 2024 (наказ МОН № 124 від 05.02.2024); PDF — дзеркало 4book.org", url: "https://file.4book.org/images/shcoolbook_ua/7/7_geom_m_2024.pdf" }
+    { id: "mer7g", title: "Мерзляк А. Г., Якір М. С. Геометрія : підручник для 7 класу закладів загальної середньої освіти. — Харків : Гімназія, 2024 (наказ МОН № 124 від 05.02.2024); PDF — дзеркало 4book.org", url: "https://file.4book.org/images/shcoolbook_ua/7/7_geom_m_2024.pdf" },
+    { id: "ist7g", title: "Істер О. С. Геометрія : підручник для 7 класу закладів загальної середньої освіти. — Київ : Генеза, 2024 (наказ МОН № 124 від 05.02.2024); PDF — дзеркало 4book.org", url: "https://file.4book.org/images/shcoolbook_ua/7/7_geom_i_2024.pdf" }
   ],
   items: [
     /* ───────────── Урок 1. Коло і круг ───────────── */

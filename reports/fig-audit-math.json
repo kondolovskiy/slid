@@ -1,6 +1,6 @@
 {
  "subject": "math",
- "screens": 4211,
+ "screens": 4235,
  "rows": [
   {
    "group": "prev",
@@ -1191,20 +1191,6 @@
    "points": "ABCD",
    "graph": null,
    "text": "Де перетинаються відрізки? Побудуй у зошиті відрізки Ф і Ф , якщо Ф , Ф , Ф , Ф . Знайди абсцису точки їх перетину."
-  },
-  {
-   "group": "geo",
-   "file": "content/math/pool-g6-g6m4.js",
-   "where": "pg6m4:g06",
-   "kind": "пул",
-   "type": "choice",
-   "level": "geo",
-   "ill": false,
-   "prevIll": false,
-   "ref": null,
-   "points": "ABCD",
-   "graph": null,
-   "text": "Чотирикутник без паралельних сторін Чи можна накреслити чотирикутник Ф , у якого жодні дві сторони не паралельні?"
   },
   {
    "group": "geo",
