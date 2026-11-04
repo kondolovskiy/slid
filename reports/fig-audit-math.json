@@ -1,6 +1,6 @@
 {
  "subject": "math",
- "screens": 4387,
+ "screens": 4410,
  "rows": [
   {
    "group": "prev",
@@ -1751,6 +1751,20 @@
    "points": "CAB",
    "graph": null,
    "text": "Гострий кут Ф У трикутнику Ф : Ф см, Ф см, Ф . Знайди кут Ф , якщо він гострий. Відомо: Ф , Ф ."
+  },
+  {
+   "group": "geo",
+   "file": "content/math/pool-g9-g9m4.js",
+   "where": "pg9m4:d05",
+   "kind": "пул",
+   "type": "answer",
+   "level": "geo",
+   "ill": false,
+   "prevIll": false,
+   "ref": null,
+   "points": "ABC",
+   "graph": null,
+   "text": "Сторона за площею У трикутнику Ф : Ф см, Ф , а площа дорівнює Ф см². Знайди сторону Ф . Відомо: Ф ."
   },
   {
    "group": "geo",
