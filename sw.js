@@ -1,7 +1,7 @@
 /* Слід — service worker. ЗГЕНЕРОВАНО tools/build.mjs із tools/sw.template.js — не редагуй sw.js вручну.
    Стратегія: усі файли застосунку кешуються при встановленні (офлайн з першого запуску);
    свої файли — спершу з кешу; Google Fonts — з кешу з фоновим оновленням. */
-const VERSION = "52fd8d15ba";
+const VERSION = "9102027828";
 const CACHE = "slid-" + VERSION;
 const FONTS = "slid-fonts";
 const ASSETS = [
@@ -122,9 +122,11 @@ const ASSETS = [
   "./content/math/pool-g10-g10m5.js",
   "./content/math/pool-g10-g10m6.js",
   "./content/math/pool-g11-g11m1.js",
+  "./content/math/pool-g11-g11m2.js",
   "./content/math/pool-g11-g11m3.js",
   "./content/math/pool-g11-g11m4.js",
   "./content/math/pool-g11-g11m5.js",
+  "./content/math/pool-g11-g11m6.js",
   "./content/math/pool-g4-g4m1.js",
   "./content/math/pool-g4-g4m2.js",
   "./content/math/pool-g4-g4m3.js",
@@ -219,6 +221,7 @@ const ASSETS = [
   "./content/world/g9-w9s2.js",
   "./content/world/g9-w9s3.js",
   "./content/world/g9-w9s4.js",
+  "./content/world/g9-w9s5.js",
   "./content/catalog.js",
   "./app/evidence.js",
   "./app/lab.js",
@@ -568,6 +571,14 @@ const ASSETS = [
   "./img/world/w9s4/rhodes-colossus-1892.jpg",
   "./img/world/w9s4/slave-population-map-1861.jpg",
   "./img/world/w9s4/yokohama-railway-hiroshige3.jpg",
+  "./img/world/w9s5/athens-1896-report-cover.jpg",
+  "./img/world/w9s5/benz-motorwagen-1888.jpg",
+  "./img/world/w9s5/ford-magneto-line-1913.jpg",
+  "./img/world/w9s5/hark-dogs-map-1914.jpg",
+  "./img/world/w9s5/malevich-black-square-1915.jpg",
+  "./img/world/w9s5/monet-impression-sunrise.jpg",
+  "./img/world/w9s5/pankhurst-arrest-1914.jpg",
+  "./img/world/w9s5/pershyi-vinok-1887.jpg",
   "./icons/apple-touch-icon.png",
   "./icons/icon-192.png",
   "./icons/icon-512.png",
