@@ -471,6 +471,7 @@ SLID.section("ukr", {
         },
         {
           type: "choice",
+          eyebrow: "Здогадка",
           sk: "gram",
           hyp: true,
           title: "Як прочитати?",
@@ -606,6 +607,7 @@ SLID.section("ukr", {
         },
         {
           type: "choice",
+          eyebrow: "Здогадка",
           sk: "gram",
           hyp: true,
           title: "Твоя версія",
@@ -731,6 +733,7 @@ SLID.section("ukr", {
         },
         {
           type: "choice",
+          eyebrow: "Здогадка",
           sk: "gram",
           hyp: true,
           title: "Твоя версія",
@@ -860,6 +863,7 @@ SLID.section("ukr", {
         },
         {
           type: "choice",
+          eyebrow: "Здогадка",
           sk: "gram",
           hyp: true,
           title: "Твоя версія",
@@ -995,7 +999,7 @@ SLID.section("ukr", {
         {
           type: "intro",
           eyebrow: "Фінал розділу · бали ×2",
-          title: "Спецвипуск «Цифри року»",
+          title: "У спецвипуску «Цифри року» числа ще не записано словами!",
           body: `<p class="lead">Сьогодні ти допомагаєш редакції шкільної газети.</p><p>Готують спецвипуск «Цифри року». У замітках багато чисел, і всі треба записати словами без помилок. Знадобиться все, що було в розділі.</p>`,
           cta: "До роботи"
         },

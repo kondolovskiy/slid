@@ -815,7 +815,7 @@ const answerSig = () => { const s=L.screens[idx], v= LAB && s?.type==="lab"? LAB
     if(s.type==="number"){ const n=numParse(t); return t && Number.isFinite(n)? "n:"+n : "s:"+t; }
     if(s.type==="fracin" && !s.hideDen){ const n=parseInt(t,10); return Number.isFinite(n)? "i:"+n : "s:"+t; }
     if(s.type==="answer") return LEARN.answerSig(s, t);
-    if(s.type==="word") return "w:"+LANG.normWord(t, s.keepCase);
+    if(s.type==="word") return "w:"+LANG.wordInput(s, t);
     if(s.type==="fracin") return LEARN.answerSig({answerKind:"number"}, t); }
   return v instanceof Set? JSON.stringify([...v].sort((a,b)=>a-b)) : typeof v==="string"? v.replace(/\s+/g," ").trim() : JSON.stringify(v); };
 /* правильну відповідь не блокуємо ніколи, навіть якщо відбиток збігся (напр. «5,» без цифри після коми, а потім «5») */
@@ -1114,7 +1114,8 @@ const numShow = v => String(v).replace(".",",").replace("-","−");
 /* мовні вправи (app/lang.js, docs/CONTENT_SCHEMA.md §4.1): розмітка, стан st, позначки */
 function langHtml(s){
   if(s.type==="gaps"){ const g=LANG.parseGaps(s.text); st=g.gaps.map(()=>null);
-    const gapHtml=p=>`<span class="gap" role="group" aria-label="Пропуск ${p.n+1}">${p.opts.map((o,k)=>`<button type="button" class="gopt" data-g="${p.n}" data-o="${k}" aria-pressed="false"${LANG.optView(o).label?` aria-label="${LANG.optView(o).label}"`:""}>${esc(LANG.optView(o).text)}</button>`).join("")}</span>`;
+    // варіанти — у перемішаному порядку (LANG.gapOrder; «∅» в кінці), data-o — індекс з тексту; порядок береться раз на показ екрана
+    const gapHtml=p=>`<span class="gap" role="group" aria-label="Пропуск ${p.n+1}">${LANG.gapOrder(p.opts).map(k=>[p.opts[k],k]).map(([o,k])=>`<button type="button" class="gopt" data-g="${p.n}" data-o="${k}" aria-pressed="false"${LANG.optView(o).label?` aria-label="${LANG.optView(o).label}"`:""}>${esc(LANG.optView(o).text)}</button>`).join("")}</span>`;
     // слово з пропуском — у span.gw (white-space: nowrap), щоб рядок не переносився всередині слова поруч із пропуском
     let out="", open=false; const O=()=>{ if(!open){ out+='<span class="gw">'; open=true; } }, X=()=>{ if(open){ out+="</span>"; open=false; } };
     g.parts.forEach((p,k)=>{ const pg=g.parts[k-1]?.t==="gap", ng=g.parts[k+1]?.t==="gap";
@@ -1128,8 +1129,10 @@ function langHtml(s){
     return `<div class="ltext">${p.parts.map(x=>x.t==="text"? esc(x.v) : `<button type="button" class="pw" data-w="${x.n}" aria-pressed="false">${esc(x.v)}</button>`).join("")}</div><div class="fix">Торкнись потрібних слів. Ще раз — щоб зняти вибір.</div>`; }
   if(s.type==="stress"){ const ws=s.words.map(LANG.parseStress); st=ws.map(()=>null);
     return `<div class="stress">${ws.map((w,k)=>`<div class="sword" role="group" aria-label="Наголос у слові «${attr(w.word)}»">${w.letters.map(l=>l.v? `<button type="button" class="sv" data-w="${k}" data-i="${l.i}" aria-pressed="false">${esc(l.ch)}</button>` : `<span>${esc(l.ch)}</span>`).join("")}</div>`).join("")}</div><div class="fix">Торкнись голосного, на який падає наголос.</div>`; }
-  if(s.type==="split"){ const p=LANG.parseSplit(s.word), ls=[...p.word]; st=new Set();
-    return `<div class="split" role="group" aria-label="Поділ слова «${attr(p.word)}»">${ls.map((c,k)=>`<span class="sl">${esc(c)}</span>`+(k<ls.length-1? `<button type="button" class="cut" data-c="${k+1}" aria-pressed="false" aria-label="Межа після «${attr(ls.slice(0,k+1).join(""))}»"></button>` : "")).join("")}</div><div class="fix">Торкнись проміжку між літерами, щоб поставити межу.</div>`; }
+  // zero: true — після слова клітинка нульового закінчення «□» і межа перед нею (CONTENT_SCHEMA §4.1)
+  if(s.type==="split"){ const p=LANG.parseSplit(s.word, s.zero), ls=[...p.word]; st=new Set();
+    const cut=k=>`<button type="button" class="cut" data-c="${k+1}" aria-pressed="false" aria-label="Межа після «${attr(ls.slice(0,k+1).join(""))}»${k===ls.length-1?" (перед нульовим закінченням)":""}"></button>`;
+    return `<div class="split" role="group" aria-label="Поділ слова «${attr(p.word)}»${s.zero?" з нульовим закінченням":""}">${ls.map((c,k)=>`<span class="sl">${esc(c)}</span>`+(k<ls.length-1||s.zero? cut(k) : "")).join("")}${s.zero?`<span class="sl zero" role="img" aria-label="нульове закінчення" style="color:var(--muted);font-weight:400;padding-left:2px">\u25A1</span>`:""}</div><div class="fix">Торкнись проміжку між літерами, щоб поставити межу.</div>`; }
   if(s.type==="word"){ st=""; const keys=s.keys||[];
     return `<div class="numbox wide lword">${s.before?`<span class="unit">${esc(s.before)}</span>`:""}<input id="numIn" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="?" aria-label="Відповідь"><span class="unit">${esc(s.after||"")}</span></div>${keys.length?`<div class="anskeys sym">${keys.map(v=>`<button type="button" data-ins="${esc(v)}" aria-label="Вставити ${esc(v)}">${esc(v)}</button>`).join("")}</div>`:""}`; }
   return "";
@@ -1144,16 +1147,21 @@ function bindLang(s){
   if(s.type==="split") on(".cut",b=>{ const c=+b.dataset.c; st.has(c)?st.delete(c):st.add(c); b.setAttribute("aria-pressed",st.has(c)); setDock("","","","Перевірити", st.size>0); });
 }
 function langMarks(s, reveal){
-  const stage=$("#stage"), mark=(el,ok)=>{ el.classList.remove("is-ok","is-bad"); if(ok!==null) el.classList.add(ok?"is-ok":"is-bad"); };
+  // позначка не лише кольором: екранний диктор чує «… — правильно / неправильно» (aria-label; початкова назва — у data-al, її повертає clearMarks)
+  const stage=$("#stage"), mark=(el,ok)=>{ el.classList.remove("is-ok","is-bad");
+    if(el.dataset.al===undefined) el.dataset.al=el.getAttribute("aria-label") ?? "";
+    const base=el.dataset.al || (el.value!==undefined && el.tagName==="INPUT"? "Відповідь" : el.textContent.trim());
+    if(ok===null){ if(el.dataset.al) el.setAttribute("aria-label",el.dataset.al); else el.removeAttribute("aria-label"); return; }
+    el.classList.add(ok?"is-ok":"is-bad"); el.setAttribute("aria-label", `${base} — ${ok?"правильно":"неправильно"}`); };
   if(s.type==="gaps"){ const g=LANG.parseGaps(s.text).gaps;
     stage.querySelectorAll(".gap").forEach((el,k)=>{ el.querySelectorAll(".gopt").forEach(b=>{ const o=+b.dataset.o; mark(b, o===st[k]? o===g[k].correct : reveal&&o===g[k].correct? true : null); }); }); }
   if(s.type==="pick"){ const ok=new Set(LANG.parsePick(s.text).correct);
     stage.querySelectorAll(".pw").forEach(b=>{ const n=+b.dataset.w; mark(b, st.has(n)? ok.has(n) : reveal&&ok.has(n)? true : null); }); }
   if(s.type==="stress"){ const ws=s.words.map(LANG.parseStress);
     stage.querySelectorAll(".sv").forEach(b=>{ const w=+b.dataset.w, i=+b.dataset.i; mark(b, st[w]===i? i===ws[w].correct : reveal&&i===ws[w].correct? true : null); }); }
-  if(s.type==="split"){ const p=LANG.parseSplit(s.word), best=p.variants.map(v=>new Set(v)).sort((a,b)=>[...b].filter(x=>st.has(x)).length-[...a].filter(x=>st.has(x)).length)[0];
+  if(s.type==="split"){ const p=LANG.parseSplit(s.word, s.zero), best=p.variants.map(v=>new Set(v)).sort((a,b)=>[...b].filter(x=>st.has(x)).length-[...a].filter(x=>st.has(x)).length)[0];
     stage.querySelectorAll(".cut").forEach(b=>{ const c=+b.dataset.c; mark(b, st.has(c)? best.has(c) : reveal&&best.has(c)? true : null); if(reveal&&best.has(c)) b.setAttribute("aria-pressed","true"); });
-    if(reveal && !LANG.check(s,st)) $("#hintHost").innerHTML=`<div class="hint">${ic("check")}<span>Правильно: <b>${p.variants.map(v=>esc([...p.word].map((ch,k)=>(v.includes(k)?"-":"")+ch).join(""))).join("</b> або <b>")}</b></span></div>`; }
+    if(reveal && !LANG.check(s,st)) $("#hintHost").innerHTML=`<div class="hint">${ic("check")}<span>Правильно: <b>${p.variants.map(v=>esc(LANG.splitShow(p.word, v, s.zero))).join("</b> або <b>")}</b></span></div>`; }
   if(s.type==="word"){ const ni=$("#numIn"), ok=LANG.check(s,st); mark(ni, ok);
     if(reveal && !ok) $("#hintHost").innerHTML=`<div class="hint">${ic("check")}<span>Правильна відповідь: <b>${esc(LANG.wordAnswers(s)[0])}</b></span></div>`; }
 }
@@ -1195,7 +1203,8 @@ function bindScreen(s){
     // екранну клавіатуру ще до того, як дитина прочитала умову (Android); поле вона торкне сама. Фокус — на екран, щоб Tab вів з його початку.
     if(coarse()) $("#stage .screen")?.focus({preventScroll:true}); else setTimeout(()=>ni.focus({preventScroll:true}),350); }
 }
-function clearMarks(){ $("#stage").querySelectorAll(".is-ok,.is-bad").forEach(e=>e.classList.remove("is-ok","is-bad")); }
+function clearMarks(){ $("#stage").querySelectorAll(".is-ok,.is-bad").forEach(e=>{ e.classList.remove("is-ok","is-bad");
+  if(e.dataset.al!==undefined){ if(e.dataset.al) e.setAttribute("aria-label",e.dataset.al); else e.removeAttribute("aria-label"); } }); }
 function lock(){ $("#stage").querySelectorAll(".opt,.seg button,input,.sgn,.anskeys button,.gopt,.pw,.sv,.cut").forEach(b=>b.disabled=true); if(LAB) LAB.lock(); }
 
 function gradeNow(s){

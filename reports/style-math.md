@@ -1,6 +1,6 @@
 # Стиль і складність: math
 
-Згенеровано: 2026-11-03 · tools/stats.mjs
+Згенеровано: 2026-11-04 · tools/stats.mjs
 
 | урок | клас | екр. | частка завдань | слів/екран | макс. слів | слів/речення | довгі слова | типів | прапорці |
 |---|---|---|---|---|---|---|---|---|---|
@@ -114,7 +114,7 @@
 | g7m5l1 Один вхід — один вихід | 7 | 10 | 0.5 | 19 | 35 | 5.1 | 0.008 | 3 | sentenceWords=5.1 поза [6; 13] |
 | g7m5l2 Точки стають лінією | 7 | 9 | 0.56 | 21 | 60 | 5.6 | 0.038 | 2 | sentenceWords=5.6 поза [6; 13]; typeVariety нетипово для сім'ї (z=-2.7) |
 | g7m5l3 Пряма з нахилом | 7 | 10 | 0.6 | 18 | 51 | 4.8 | 0.013 | 3 | sentenceWords=4.8 поза [6; 13] |
-| g7m5l4 Диспетчерська на графіках (фінал) | 7 | 9 | 0.67 | 16 | 28 | 5.1 | 0.036 | 3 | sentenceWords=5.1 поза [6; 13] |
+| g7m5l4 Диспетчерська на графіках (фінал) | 7 | 9 | 0.67 | 16 | 28 | 5 | 0.037 | 3 | sentenceWords=5 поза [6; 13] |
 | g7m7l1 Дві змінні — одна пряма | 7 | 9 | 0.56 | 21 | 44 | 5.4 | 0.027 | 3 | sentenceWords=5.4 поза [6; 13] |
 | g7m7l2 Точка, де прямі зустрілись | 7 | 10 | 0.5 | 22 | 41 | 5.4 | 0.024 | 3 | sentenceWords=5.4 поза [6; 13] |
 | g7m7l3 Підстав і розв'яжи | 7 | 8 | 0.63 | 21 | 51 | 5 | 0.017 | 3 | sentenceWords=5 поза [6; 13] |
@@ -245,6 +245,6 @@
 - **5-6:lesson**: screens 9.35±0.72, gradedShare 0.66±0.06, readWordsPerScreen 19.04±2.96, maxReadWords 43.88±7.9, sentenceWords 4.82±0.5, longWordShare 0.01±0.01, typeVariety 3.51±0.64
 - **5-6:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 18.45±2.1, maxReadWords 25.82±4.09, sentenceWords 4.65±0.39, longWordShare 0.01±0.01, typeVariety 3.27±0.45
 - **7-9:lesson**: screens 9.18±0.76, gradedShare 0.56±0.06, readWordsPerScreen 20.77±2.13, maxReadWords 43.63±9.37, sentenceWords 5.15±0.35, longWordShare 0.02±0.01, typeVariety 2.93±0.35
-- **7-9:boss**: screens 7.67±0.64, gradedShare 0.79±0.06, readWordsPerScreen 18.24±1.82, maxReadWords 29.43±3.23, sentenceWords 5.08±0.29, longWordShare 0.02±0.01, typeVariety 3.1±0.29
+- **7-9:boss**: screens 7.67±0.64, gradedShare 0.79±0.06, readWordsPerScreen 18.24±1.82, maxReadWords 29.43±3.23, sentenceWords 5.07±0.29, longWordShare 0.02±0.01, typeVariety 3.1±0.29
 - **10-11:lesson**: screens 9.54±0.63, gradedShare 0.57±0.06, readWordsPerScreen 22.85±1.91, maxReadWords 48.12±6.56, sentenceWords 5.52±0.39, longWordShare 0.03±0.01, typeVariety 2.9±0.37
 - **10-11:boss**: screens 8.08±0.28, gradedShare 0.75±0.01, readWordsPerScreen 19.08±1.44, maxReadWords 34.25±6.81, sentenceWords 5.19±0.53, longWordShare 0.04±0.02, typeVariety 2.92±0.28

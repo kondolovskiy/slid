@@ -28,6 +28,23 @@ const no = (v, msg) => eq(!!v, false, msg);
   ok(L.parseGaps("село").error, "gaps: без пропусків — помилка");
   ok(L.parseGaps("с{*е|и ло").error, "gaps: незакрита дужка");
   ok(L.parseGaps("a}b{*x|y}").error, "gaps: зайва }");
+  /* порядок показу варіантів (gapOrder): перестановка індексів з тексту; «∅» (—) завжди в кінці */
+  const lcg = seed => () => (seed = (seed * 1103515245 + 12345) % 2147483648) / 2147483648;   // детермінований rnd для тесту
+  const isPerm = (p, m) => Array.isArray(p) && p.length === m && [...p].sort((a, b) => a - b).every((v, k) => v === k);
+  const r = lcg(7), pos = [0, 0, 0], seen = new Set(); let perm = true;
+  for (let i = 0; i < 300; i++) { const p = L.gapOrder(["е", "и", "і"], r); perm &&= isPerm(p, 3); if (!perm) break; pos[p.indexOf(0)]++; seen.add(p.join("")); }
+  ok(perm, "gapOrder: перестановка індексів");
+  ok(pos.every(c => c > 60), `gapOrder: перший у тексті варіант буває на кожній позиції ${JSON.stringify(pos)}`);
+  eq(seen.size, 6, "gapOrder: трапляються всі 6 перестановок трьох варіантів");
+  eq(L.gapOrder(["е", "и"], () => 0.99), [0, 1], "gapOrder: rnd≈1 — без обміну");
+  eq(L.gapOrder(["е", "и"], () => 0), [1, 0], "gapOrder: rnd=0 — обмін");
+  eq(L.gapOrder(["ь", "—"], () => 0), [0, 1], "gapOrder: ∅ лишається останнім (2 варіанти)");
+  eq(L.gapOrder(["—", "ь"], () => 0.5), [1, 0], "gapOrder: ∅ першим у тексті — на екрані останній");
+  const r2 = lcg(3), firstPos = new Set(); let noneLast = true;
+  for (let i = 0; i < 100; i++) { const p = L.gapOrder([",", "–", "—", ":"], r2); noneLast &&= isPerm(p, 4) && p[3] === 2; firstPos.add(p.indexOf(0)); }
+  ok(noneLast, "gapOrder: ∅ завжди останній, результат — перестановка (4 варіанти)");
+  eq([...firstPos].sort(), [0, 1, 2], "gapOrder: тире «–» та інші перемішуються");
+  ok(isPerm(L.gapOrder(["а", "б", "в", "г", "ґ"]), 5), "gapOrder: без rnd (Math.random) — перестановка");
   eq(L.issues({ type: "gaps", text: "с{*е|и}ло" }), [], "gaps: issues чисто");
 }
 /* pick */
@@ -120,6 +137,52 @@ const no = (v, msg) => eq(!!v, false, msg);
   eq(L.warnings({ type: "pick", text: "Він [байдики б'є], а [!книжку читає]." }), [], "warnings: є хибна група — чисто");
   eq(L.warnings({ type: "pick", text: "[Сонце] світить." }), [], "warnings: без груп — чисто");
   eq(L.readText({ type: "pick", text: "Він [байдики б'є], а [!книжку читає]." }), "Він байдики б'є, а книжку читає.", "readText: [!…]");
+}
+/* engine-lang-p3 */
+{ // п. 1 (R2-P3-1): латинські двійники, коли кирилична очікувана відповідь, а не введене
+  ok(L.check({ type: "word", answer: "і" }, "i"), "word: «i» латиницею як сполучник «і» (кирилична відповідь)");
+  ok(L.check({ type: "word", answer: "око" }, "oko"), "word: слово повністю латиницею — двійники зводяться");
+  ok(L.check({ type: "word", answer: "кокос" }, "kokoc"), "word: мала k → к (слово латиницею)");
+  ok(L.check({ type: "word", answer: "Київ", keepCase: true }, "Kиїв"), "word: велика K → К з keepCase");
+  no(L.check({ type: "word", answer: "кіт" }, "kiq"), "word: латинська літера без двійника — неправильно");
+  ok(L.check({ type: "word", answer: "Wi-Fi" }, "wi-fi"), "word: латинська відповідь не зводиться до кирилиці");
+  no(L.check({ type: "word", answer: "Wi-Fi" }, "Wі-Fі"), "word: латинська відповідь — кирилична «і» не зараховується");
+  eq(L.wordInput({ type: "word", answer: "і" }, "I"), "і", "wordInput: ключ спроби в нормалізації відповіді");
+  eq(L.wordInput({ type: "word", answer: "Wi-Fi" }, "Wi-Fi"), "wi-fi", "wordInput: латинська відповідь — без зведення");
+  // п. 5 (P3-8): показ поділу; у слові з дефісом межі — «|»
+  eq(L.splitShow("молоко", [2, 4]), "мо-ло-ко", "splitShow: склади через дефіс");
+  eq(L.splitShow("жовто-блакитний", [3, 9]), "жов|то-бла|китний", "splitShow: слово з дефісом — межі «|»");
+  // п. 7: нульове закінчення
+  eq(L.parseSplit("стіл|", true), { word: "стіл", variants: [[4]] }, "split zero: межа перед нульовим закінченням");
+  ok(L.parseSplit("стіл|").error, "split без zero: межа в кінці — помилка");
+  ok(L.parseSplit("|стіл", true).error, "split zero: межа на початку — все одно помилка");
+  ok(L.check({ type: "split", word: "стіл|", zero: true }, new Set([4])), "split zero: правильно");
+  no(L.check({ type: "split", word: "стіл|", zero: true }, new Set([3])), "split zero: не там");
+  eq(L.splitShow("стіл", [4], true), "стіл-\u25A1", "splitShow zero: клітинка в кінці");
+  eq(L.splitShow("стіл", [], true), "стіл\u25A1", "splitShow zero без межі");
+  ok(L.issues({ type: "split", word: "стіл|", zero: "так" }).length, "split: zero не boolean — помилка");
+  eq(L.issues({ type: "split", word: "стіл|", zero: true }), [], "split zero: issues чисто");
+  ok(L.check({ type: "split", word: "стіл|", zero: true }, L.solution({ type: "split", word: "стіл|", zero: true })), "split zero: solution → check");
+  // п. 8 (engine-lang-dash P3-1): «—»/«–» замінюються лише цілим варіантом
+  eq(L.readText({ type: "gaps", text: "Уроки {*1–2|1, 2} і {*», —|»—} далі" }), "Уроки 1–2 і », — далі", "readText: тире всередині варіанта лишається");
+  eq(L.readText({ type: "gaps", text: "Він {* — |,} тут, ден{ь|* — }ки" }), "Він  тут, денки", "readText: варіант « — » з пробілами — «нічого» (як у плеєрі)");
+  // п. 10: « —» замість «–»
+  ok(L.warnings({ type: "gaps", text: "Ніч {*–| —|,} тиша" }).some(w => w.includes("нічого не писати")), "warnings gaps: « —» з пробілом — попередження");
+  ok(L.warnings({ type: "gaps", text: "Ніч {*, —|—|,} тиша" }).some(w => w.includes("містять тире")), "warnings gaps: «—» поруч із «, —» — попередження");
+  eq(L.warnings({ type: "gaps", text: "Ніч {*–|—|:} тиша, ден{ь|*—}ки" }), [], "warnings gaps: тире «–» і «нічого» «—» — чисто");
+  // п. 3 (R2-P3-3): тег розриває слово з пропуском
+  ok(L.warnings({ type: "gaps", text: "<b>б{*е|и}р</b>{*е|и}за" }).some(w => w.includes("розірване HTML-тегом")), "warnings gaps: тег посеред слова з пропуском");
+  ok(L.warnings({ type: "gaps", text: "с{*е|и}<b>ло</b>" }).some(w => w.includes("розірване")), "warnings gaps: тег одразу після пропуску");
+  eq(L.warnings({ type: "gaps", text: "<b>б{*е|и}р{*е|и}за</b>, (<i>с{*е|и}ло</i>) і <b>Ми</b> с{*е|и}ло" }), [], "warnings gaps: тег довкола всього слова — чисто");
+  // п. 16 (pick-groups P3)
+  ok(L.parsePick("Він [!!книжку читає] і [спить]").error, "pick: [!!…] — помилка (раніше кнопка «!книжку»)");
+  eq(L.parsePick("Він [ ! книжку читає] і [ спить ]").words.map(w => [w.v, w.ok, !!w.group]), [["Він", false, false], ["книжку читає", false, true], ["і", false, false], ["спить", true, true]], "pick: пробіли біля «!» і в дужках");
+  eq(L.parsePick("Він [!спить] і [читає]").words.map(w => [w.v, w.ok]), [["Він", false], ["спить", false], ["і", false], ["читає", true]], "pick: однослівна [!слово] — хибна кнопка");
+  eq(L.readText({ type: "pick", text: "Він [ ! книжку читає] і [спить]." }), "Він книжку читає і спить.", "readText: [ ! …] з пробілами");
+  ok(L.warnings({ type: "pick", text: "[байдики б'є], [ловить ґав], [б'є лихом], [!книжку читає] і все" }).length, "warnings pick: одна хибна група на три правильні — попередження");
+  eq(L.warnings({ type: "pick", text: "[байдики б'є], [ловить ґав], [б'є лихом], [!книжку читає], [!пише лист] і все" }), [], "warnings pick: дві хибні на три — чисто");
+  eq(L.warnings({ type: "pick", text: "[байдики б'є] і [!!x]" }), [], "warnings: розмітка з помилкою — без попереджень (помилку дає issues)");
+  ok(L.issues({ type: "pick", text: "[байдики б'є] і [!!x]" }).length, "issues: [!!x] — помилка");
 }
 /* розв'язок дає правильну відповідь */
 for (const s of [{ type: "gaps", text: "с{*е|и}ло" }, { type: "pick", text: "[а] б" }, { type: "stress", words: ["м+ама"] }, { type: "word", answer: "так" }, { type: "split", word: "ма|ма" }])
