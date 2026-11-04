@@ -1,5 +1,5 @@
 ---
-status: review
+status: done
 claimed_from: todo
 claimed_at: 2026-11-04T20:48:45.807Z
 claimed_by: eng-server-hardening
