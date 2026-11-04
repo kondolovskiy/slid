@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-04T20:48:45.635Z
 id: tools-lang-p4
 type: tools
 subject: ukr
 status: todo
-claimed_by:
+claimed_by: eng-tools-lang
 created: 2026-11-04
 ---
 # Мовні інструменти: P3 з рев'ю engine-lang-p3 і пропозиції сесії 03–04.11

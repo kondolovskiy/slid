@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-04T20:48:45.357Z
 id: fix-ukr-validate-warnings
 type: fix
 subject: ukr
 status: todo
-claimed_by:
+claimed_by: writer-fix-ukr-validate-warnings
 created: 2026-11-04
 ---
 # ukr: попередження нових перевірок validate (engine-lang-p3) у verified уроках 5–6 кл.

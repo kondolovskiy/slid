@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-04T20:48:45.676Z
 id: tests-lang-gaps-order
 type: tests
 subject: ukr
 status: todo
-claimed_by:
+claimed_by: eng-tools-lang
 created: 2026-11-04
 ---
 # Тест: рушій справді перемішує варіанти gaps

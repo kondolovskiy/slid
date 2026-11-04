@@ -1,4 +1,7 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-04T20:48:45.582Z
+claimed_by: writer-style-hist
 id: style-hist-g5-finals
 type: style-fix
 status: todo

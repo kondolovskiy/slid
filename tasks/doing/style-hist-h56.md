@@ -1,4 +1,7 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-04T20:48:45.539Z
+claimed_by: writer-style-hist
 id: style-hist-h56
 type: style-fix
 status: todo
