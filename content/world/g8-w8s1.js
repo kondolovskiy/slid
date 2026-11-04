@@ -46,7 +46,7 @@ SLID.section("world", {
     ],
     [
       "Гора Серро-Ріко і місто Потосі. Гравюра з «Хроніки Перу» Педро Сьєси де Леона, Севілья, 1553 р.",
-      "Педро Сьєса де Леон (Pedro Cieza de León), видання 1553 р.; скан — A. Skromnitsky",
+      "Невідомий гравер; книга Педро Сьєси де Леона (Pedro Cieza de León), Севілья, 1553 р.; суспільне надбання; скан — A. Skromnitsky",
       "суспільне надбання",
       "https://commons.wikimedia.org/wiki/File:Capitulo-CIX.jpg"
     ],
