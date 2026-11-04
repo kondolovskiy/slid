@@ -4,7 +4,7 @@ claimed_at: 2026-11-04T12:29:56.542Z
 id: engine-answer-formats-ister
 type: engine
 subject: math
-status: review
+status: done
 claimed_by: impl-engine-answer-formats-ister
 created: 2026-11-04
 depends_on: []
