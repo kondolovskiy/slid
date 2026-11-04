@@ -1,7 +1,7 @@
 /* Слід — service worker. ЗГЕНЕРОВАНО tools/build.mjs із tools/sw.template.js — не редагуй sw.js вручну.
    Стратегія: усі файли застосунку кешуються при встановленні (офлайн з першого запуску);
    свої файли — спершу з кешу; Google Fonts — з кешу з фоновим оновленням. */
-const VERSION = "205fda6329";
+const VERSION = "0070c0526d";
 const CACHE = "slid-" + VERSION;
 const FONTS = "slid-fonts";
 const ASSETS = [
@@ -140,6 +140,7 @@ const ASSETS = [
   "./content/math/pool-g6-g6m3.js",
   "./content/math/pool-g6-g6m4.js",
   "./content/math/pool-g6-g6m5.js",
+  "./content/math/pool-g6-g6m6.js",
   "./content/math/pool-g6-ms3.js",
   "./content/math/pool-g6-ms4.js",
   "./content/math/pool-g7-g7m1.js",
@@ -195,6 +196,8 @@ const ASSETS = [
   "./content/world/g7-w7s3.js",
   "./content/world/g7-w7s4.js",
   "./content/world/g7-w7s5.js",
+  "./content/world/g8-w8s1.js",
+  "./content/world/g8-w8s2.js",
   "./content/catalog.js",
   "./app/evidence.js",
   "./app/lab.js",
@@ -468,6 +471,22 @@ const ASSETS = [
   "./img/world/w7s5/joan-fauquembergue.jpg",
   "./img/world/w7s5/mehmed-bellini.jpg",
   "./img/world/w7s5/plague-tournai.jpg",
+  "./img/world/w8s1/behaim-globe.jpg",
+  "./img/world/w8s1/codex-mendoza.jpg",
+  "./img/world/w8s1/ortelius-pacific-1589.jpg",
+  "./img/world/w8s1/ortelius-world-1570.jpg",
+  "./img/world/w8s1/pepper-harvest.jpg",
+  "./img/world/w8s1/potosi-1553.jpg",
+  "./img/world/w8s1/waldseemuller-america.jpg",
+  "./img/world/w8s2/council-of-trent.jpg",
+  "./img/world/w8s2/creation-of-adam.jpg",
+  "./img/world/w8s2/henri-iv-pourbus.jpg",
+  "./img/world/w8s2/leonardo-flying-machine.jpg",
+  "./img/world/w8s2/luther-cranach-1528.jpg",
+  "./img/world/w8s2/school-of-athens.jpg",
+  "./img/world/w8s2/st-peters-basilica.jpg",
+  "./img/world/w8s2/vitruvian-man.jpg",
+  "./img/world/w8s2/warsaw-confederation-1573.jpg",
   "./icons/apple-touch-icon.png",
   "./icons/icon-192.png",
   "./icons/icon-512.png",
