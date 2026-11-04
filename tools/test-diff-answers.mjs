@@ -106,8 +106,8 @@ await tmpRepo("slid-test-diff-f-", async (tmp, g) => {
   const lf = path.join(tmp, "app/learn.js"), cur = fs.readFileSync(lf, "utf8");
   fs.writeFileSync(lf, fs.readFileSync(path.join(ROOT, "tools/fixtures/learn-b799dfa.js"), "utf8")); g("add", "-A"); g("commit", "-qm", "fixture + old b799dfa"); fs.writeFileSync(lf, cur);
   const a = run("HEAD", tmp);
-  ok(a.total === 167 && a.form === 7 && a.root === 5 && a.bad === 0 && a.mainBad === 0 && a.rc === 0,
-    `фікстура змісту: очікувано записів 167, half 7 (вигляд) / 5 (корінь), 0 непояснених, rc 0, а ${a.total}, ${a.form} / ${a.root}, ${a.bad} + ${a.mainBad}, rc ${a.rc}`);
+  ok(a.total === 177 && a.form === 7 && a.root === 5 && a.bad === 0 && a.mainBad === 0 && a.rc === 0,
+    `фікстура змісту: очікувано записів 177, half 7 (вигляд) / 5 (корінь), 0 непояснених, rc 0, а ${a.total}, ${a.form} / ${a.root}, ${a.bad} + ${a.mainBad}, rc ${a.rc}`);
   const W = [['    if (s.form === "improper" && (!u.frac || u.whole)) return "form";', '    if (s.form === "qa" && u.frac) return "form";\n'],
     ["const DIAG_FORM = s => !!(", 'const DIAG_FORM = s => !!(s.form === "qa" || ']];
   let wide = cur; for (const [at, add] of W) { ok(cur.split(at).length === 2, `фікстура «form: qa»: у learn.js рядок «${at}» має бути рівно один`); wide = wide.replace(at, at.startsWith("const") ? add : add + at); }

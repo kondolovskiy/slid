@@ -411,6 +411,13 @@ FORMAT_FIXTURES = [
     ({'answerKind': 'coordinates2', 'answer': '(4; -1)', 'body': '<p>Знайди координати вектора $\\vec{AB}$.</p>'}, '(-1; 4)', 'Зміни відповідь', 'AB = (4; −1)'),
     ({'answer': '-1/3'}, 'x = -0,(4)', 'Зміни відповідь', 'x = −0,(3)'),
     ({'answer': '60', 'unit': 'грн'}, '61 мм', 'Зміни відповідь', '60 грн.'),
+    # engine-answer-formats-ister: стандартний вигляд (form — інший запис того самого числа), множина пар, «±» у list з числовим ключем,
+    # «1 : 4» при ключі-дробі (form «це відношення»)
+    ({'answerKind': 'sci', 'answer': '2,72 · 10^5', 'body': '<p>Запиши в стандартному вигляді.</p>'}, '272000', 'стандартному вигляді', '2.72*10^5'),
+    ({'answerKind': 'sci', 'answer': '4,5 · 10^(-3)', 'body': '<p>Запиши в стандартному вигляді.</p>'}, '4,5 · 10^3', 'Зміни відповідь', '4,5·10^-3'),
+    ({'answerKind': 'pairSet', 'answer': [[3, 2], [-2, -3]]}, '(2; 3), (−3; −2)', 'Зміни відповідь', '(−2; −3), (3; 2)'),
+    ({'answerKind': 'list', 'answer': [-3, 3]}, '±4', 'Зміни відповідь', '±3'),
+    ({'answer': '1/4'}, '1 : 4', 'це відношення', '1/4'),
 ]
 
 async def answer_format_checks(browser, url):
@@ -450,6 +457,13 @@ async def answer_format_checks(browser, url):
                     assert '(2a; b − 1)' in helps[-1] and '(p − m; k − n)' not in helps[-1], helps[-1]
                 else:
                     assert ins == ['(', ';', ')', '-', '/', *(['√'] if '√' in str(fields['answer']) else [])], ins
+            if fields.get('answerKind') == 'sci':
+                assert ins == ['·', '10^', '(', ')', '-'], ins
+            if fields.get('answerKind') == 'pairSet':
+                assert ins == ['(', ';', ')', ',', '-', '/'], ins   # «√» до 8 класу — лише коли корінь у ключі
+            if fields.get('answerKind') == 'list':
+                # клас 6: «±» — лише коли «±»/корінь у ключі; з 8 класу — у кожному list (перевірка SLID_ANS_UI.field нижче)
+                assert ('±' in ins) == bool(re.search('[±√]', str(fields['answer']))), (fields, ins)
             if fields.get('answerKind') == 'list' and fields.get('unit'):
                 assert await page.locator('#answerUnit').inner_text() == fields['unit']
             if fields.get('answerKind') == 'time':
@@ -547,6 +561,10 @@ async def answer_format_checks(browser, url):
       for (const f of [() => { SLID_ANS_UI.ratio[1] = 'x'; }, () => { SLID_ANS_UI.ratio[0].push('x'); }, () => { SLID_ANS_UI.time = []; }]) { try { f(); } catch (e) { threw++; } }
       return [threw, Object.isFrozen(SLID_ANS_UI), SLID_ANS_UI.ratio[1].includes('2 : 3')]; }""")
     assert frozen == [3, True, True], frozen
+    # engine-answer-formats-ister п. 1: кнопка «±» у list з числовим ключем — з 8 класу (квадратні рівняння), раніше — ні
+    pm = await page.evaluate("""() => [5, 7, 8, 11].map(g => SLID_ANS_UI.field({ answerKind: 'list', answer: [-3, 3] }, g, false).keys.includes('±'))
+      .concat(SLID_ANS_UI.field({ answerKind: 'list', answer: '±√2' }, 8, false).keys.filter(k => k === '±').length)""")
+    assert pm == [False, False, True, True, 1], pm
     # Two wrong attempts reveal the ordered key in its canonical spelling.
     await page.reload()
     await page.evaluate("""() => {const c=SLID_SUBJECTS.find(c=>c.id==='math');c.pools=c.pools.filter(p=>p.id==='pg6m1');const p=c.pools[0];
