@@ -1,6 +1,6 @@
 {
  "subject": "math",
- "screens": 4251,
+ "screens": 4339,
  "rows": [
   {
    "group": "prev",
@@ -1499,6 +1499,20 @@
    "points": "BDAC",
    "graph": null,
    "text": "Друга діагональ квадрата Діагональ Ф квадрата Ф дорівнює 5 см. Яка довжина діагоналі Ф ?"
+  },
+  {
+   "group": "graph",
+   "file": "content/math/pool-g8-g8m3.js",
+   "where": "pg8m3:e03",
+   "kind": "пул",
+   "type": "multi",
+   "level": "graph",
+   "ill": false,
+   "prevIll": false,
+   "ref": null,
+   "points": "",
+   "graph": "графік",
+   "text": "Чи проходить парабола через точку? Через які точки проходить графік функції Ф ? Обери всі."
   },
   {
    "group": "graph",
