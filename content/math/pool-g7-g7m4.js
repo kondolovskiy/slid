@@ -1,11 +1,15 @@
 /* Слід · Математика, 7 клас — пул задач для тренування до розділу «Геометрія: трикутники» (g7m4)
-   Статус: verified (незалежна перевірка 2026-10-31, reports/verify/pg7m4.md). 24 задачі: по 8 на required-уроки g7m4l1, g7m4l2, g7m4l3 (boss без задач).
+   Статус: draft (було verified 2026-10-31, reports/verify/pg7m4.md, — для задач a, b, c). 64 задачі (24 + 40): по 8 на required-уроки g7m4l1, g7m4l2, g7m4l3 (boss без задач).
    Усі задачі — з підручника Мерзляк, Якір «Геометрія. 7 клас» (2024); умови, числа й рисунки звірено
    за відрендереними сторінками PDF 2026-10-31. srcPage — друкований номер сторінки (у цьому PDF збігається з номером сторінки файлу).
    Рисунки підручника переказано словами (у пулі немає геометричних fig).
    Правка 2026-11-03 (fix-math-notation-ister, D-043): ознаки рівності словами — «перша/друга/третя ознака» замість «І/ІІ/ІІІ»; ключі, порядок варіантів і id без змін.
    Рисунки підручника переказано словами; 2026-11-03 (fix-math-figs-g7-geo-a) до 14 задач додано статичні рисунки lab plane
    (a02, a04, a05, a07, a08, b03, b04, b05, b07, b08, c04, c05, c07, c08) — перевірено 2026-11-03 (reports/verify/fix-math-figs-g7-geo-a.md), verified.
+   Доповнення 2026-11-04 (write-math-pool-g7m4-ister, D-043): 40 задач для уроків за Істером g7m4l5–l9 — серії d (l5), e (l6), f (l7), g (l8), h (l9), по 8 на урок.
+   Джерело — Істер «Геометрія. 7 клас» (ist7g, Генеза, 2024; § 18–20, ДСР № 4, вправи для повторення розділу 3); для l6 у § 18 лише дві вправи,
+   тож e03–e08 — з Мерзляка (mer7g п. 17, с. 161–162). srcPage — друкований номер сторінки (у PDF Істера друк. = PDF − 1). Умови й числа звірено з рендером сторінок.
+   Статус пулу — draft до повторної верифікації (наявні a/b/c не змінено).
    Перевірка: node tools/validate.mjs --pool pg7m4
    Схема: docs/CONTENT_SCHEMA.md §10 */
 SLID.pool("math", {
@@ -15,7 +19,7 @@ SLID.pool("math", {
   meta: { author: "claude-opus", created: "2026-10-31", factcheck: "verifier-pool-g7m4", teacher: null },
   sources: [
     { id: "mer7g", title: "Мерзляк А. Г., Якір М. С. Геометрія : підруч. для 7 кл. закладів заг. серед. освіти. — Харків: Гімназія, 2024 (п. 7–11, 16, 17)", url: "https://file.4book.org/images/shcoolbook_ua/7/7_geom_m_2024.pdf" },
-    { id: "ist7g", title: "Істер О. С. Геометрія : підруч. для 7 кл. закладів заг. серед. освіти. — Київ: Генеза, 2024 (§ 18–20, ДСР № 4, вправи для повторення розділу 3)", url: "https://file.4book.org/images/shcoolbook_ua/7/7_geom_i_2024.pdf" }
+    { id: "ist7g", title: "Істер О. С. Геометрія : підруч. для 7-го кл. закл. заг. серед. освіти. — Київ : Генеза, 2024 (§ 18–20, ДСР № 4, вправи для повторення розділу 3)", url: "https://file.4book.org/images/shcoolbook_ua/7/7_geom_i_2024.pdf" }
   ],
   items: [
     /* ───────────── Урок 1. Ознаки рівності трикутників ───────────── */
@@ -186,6 +190,7 @@ SLID.pool("math", {
     { id: "d02", lesson: "g7m4l5", lvl: 1, sk: "geom", src: "ist7g №472", srcPage: 125,
       type: "answer", title: "$\\angle A = 43°$, $\\angle B = 102°$",
       body: "<p>У трикутнику $ABC$ кут $A$ дорівнює 43°, а кут $B$ — 102°. Знайди зовнішній кут при вершині $C$.</p>",
+      lab: { kind: "plane", axes: false, grid: 0, view: [0, 8, 0, 7.5], points: { A: { at: [1, 1] }, B: { at: [5, 1] }, C: { at: [5.989, 5.652] }, K: { at: [7.012, 6.607], label: false } }, segs: [["A", "B"], ["B", "C"], ["C", "A"], { a: "C", b: "K", dash: true }], angles: [{ from: "B", at: "A", to: "C", label: "43°" }, { from: "C", at: "B", to: "A", label: "102°" }, { from: "B", at: "C", to: "K", color: "accent", label: false }], alt: "Трикутник ABC: кут A дорівнює 43 градусам, кут B — 102 градусам; сторону AC продовжено за точку C; виділено зовнішній кут при C" },
       answer: 145, unit: "°",
       steps: ["Зовнішній кут при вершині $C$ дорівнює сумі внутрішніх кутів $A$ і $B$.", "$43 + 102 = 145$°.", "Перевірка: $\\angle C = 180 - 145 = 35$°, а суміжний з ним кут — $180 - 35 = 145$°."] },
     { id: "d03", lesson: "g7m4l5", lvl: 1, sk: "geom", src: "ist7g №475", srcPage: 125,
@@ -235,17 +240,20 @@ SLID.pool("math", {
     { id: "e02", lesson: "g7m4l6", lvl: 1, sk: "geom", src: "ist7g ДСР №4, зав. 2", srcPage: 139,
       type: "answer", answerKind: "comparison", title: "$\\angle B$ … $\\angle C$",
       body: "<p>У трикутнику $ABC$ сторона $AB$ більша за сторону $AC$. Порівняй кути $B$ і $C$. Встав знак «&lt;», «&gt;» або «=».</p>",
+      lab: { kind: "plane", axes: false, grid: 0, view: [0, 11, 0, 6], points: { C: { at: [1, 1] }, B: { at: [10, 1] }, A: { at: [2, 5] } }, segs: [["A", "B"], ["B", "C"], ["C", "A"]], angles: [{ from: "A", at: "B", to: "C", label: false }, { from: "B", at: "C", to: "A", label: false }], alt: "Трикутник ABC, у якому сторона AB довша за AC; позначено кути B і C" },
       answer: "<",
       steps: ["Проти сторони $AB$ лежить кут $C$, проти сторони $AC$ — кут $B$.", "Проти більшої сторони лежить більший кут: $\\angle C > \\angle B$.", "Отже, $\\angle B < \\angle C$."] },
     { id: "e03", lesson: "g7m4l6", lvl: 1, sk: "geom", src: "mer7g №461(1)", srcPage: 161,
       type: "choice", title: "Кути відомі — порівняй сторони",
       body: "<p>У трикутнику $ABC$: $\\angle C > \\angle A > \\angle B$. Як співвідносяться його сторони?</p>",
+      lab: { kind: "plane", axes: false, grid: 0, view: [0, 10, 0, 6.5], points: { A: { at: [1, 1] }, B: { at: [9, 1] }, C: { at: [3.611, 5.522] } }, segs: [["A", "B"], ["B", "C"], ["C", "A"]], angles: [{ from: "B", at: "A", to: "C", label: false }, { from: "C", at: "B", to: "A", label: false }, { from: "A", at: "C", to: "B", label: false }], alt: "Трикутник ABC, у якому кут C найбільший, а кут B найменший" },
       opts: ["$AB > BC > AC$", "$AC > BC > AB$", "$BC > AB > AC$", "$AB > AC > BC$"],
       correct: 0,
       steps: ["Проти кута $C$ лежить $AB$, проти кута $A$ — $BC$, проти кута $B$ — $AC$.", "Проти більшого кута лежить більша сторона.", "Кути спадають у порядку $C$, $A$, $B$ — сторони теж: $AB > BC > AC$."] },
     { id: "e04", lesson: "g7m4l6", lvl: 2, sk: "geom", src: "mer7g №460", srcPage: 161,
       type: "choice", title: "$\\angle A = 34°$, $\\angle B = 28°$",
       body: "<p>У трикутнику $ABC$ кут $A$ дорівнює 34°, а кут $B$ — 28°. Порівняй сторони $AB$, $BC$ і $AC$.</p>",
+      lab: { kind: "plane", axes: false, grid: 0, view: [0, 11, 0, 4.8], points: { A: { at: [1, 1] }, B: { at: [10, 1] }, C: { at: [4.967, 3.676] } }, segs: [["A", "B"], ["B", "C"], ["C", "A"]], angles: [{ from: "B", at: "A", to: "C", label: "34°" }, { from: "C", at: "B", to: "A", label: "28°" }, { from: "A", at: "C", to: "B", label: false }], alt: "Трикутник ABC: кут A дорівнює 34 градусам, кут B — 28 градусам" },
       opts: ["$AC < BC < AB$", "$BC < AC < AB$", "$AB < BC < AC$", "$AB < AC < BC$"],
       correct: 0,
       hint: "Спершу знайди кут $C$. Потім для кожного кута назви сторону навпроти.",
@@ -253,6 +261,7 @@ SLID.pool("math", {
     { id: "e05", lesson: "g7m4l6", lvl: 2, sk: "geom", src: "mer7g №459(2)", srcPage: 161,
       type: "choice", title: "$AB = BC$, $BC > AC$",
       body: "<p>У трикутнику $ABC$ сторони $AB$ і $BC$ рівні, а $BC$ більша за $AC$. Порівняй кути трикутника.</p>",
+      lab: { kind: "plane", axes: false, grid: 0, view: [0, 6, 0, 8], points: { A: { at: [1, 1] }, C: { at: [5, 1] }, B: { at: [3, 7] } }, segs: [["A", "B"], ["B", "C"], ["C", "A"]], angles: [{ from: "C", at: "A", to: "B", label: false }, { from: "A", at: "B", to: "C", label: false }, { from: "B", at: "C", to: "A", label: false }], alt: "Трикутник ABC з рівними сторонами AB і BC та коротшою стороною AC" },
       opts: ["$\\angle A = \\angle C > \\angle B$", "$\\angle A = \\angle B > \\angle C$", "$\\angle B > \\angle A = \\angle C$", "$\\angle C > \\angle A > \\angle B$"],
       correct: 0,
       hint: "Назви кут, що лежить проти кожної сторони.",
@@ -260,6 +269,7 @@ SLID.pool("math", {
     { id: "e06", lesson: "g7m4l6", lvl: 2, sk: "geom", src: "mer7g №461(2)", srcPage: 161,
       type: "choice", title: "$\\angle B > \\angle C$, $\\angle A = \\angle B$",
       body: "<p>У трикутнику $ABC$ кут $B$ більший за кут $C$, а кути $A$ і $B$ рівні. Порівняй сторони трикутника.</p>",
+      lab: { kind: "plane", axes: false, grid: 0, view: [0, 6, 0, 7.5], points: { A: { at: [1, 1] }, B: { at: [5, 1] }, C: { at: [3, 6.495] } }, segs: [["A", "B"], ["B", "C"], ["C", "A"]], angles: [{ from: "B", at: "A", to: "C", label: false }, { from: "C", at: "B", to: "A", label: false }, { from: "A", at: "C", to: "B", label: false }], alt: "Трикутник ABC з рівними кутами A і B та меншим кутом C" },
       opts: ["$BC = AC > AB$", "$AB = AC > BC$", "$AB > BC = AC$", "$AB = BC > AC$"],
       correct: 0,
       hint: "Проти рівних кутів лежать рівні сторони, проти більшого кута — більша сторона.",

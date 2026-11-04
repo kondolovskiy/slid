@@ -5,7 +5,7 @@ id: write-math-pool-g6m6
 type: write-pool
 subject: math
 grade: 6
-status: review
+status: done
 claimed_by: writer-write-math-pool-g6m6
 created: 2026-11-03
 depends_on: [write-math-g6-probability, curate-math-ister-gaps-matrix]

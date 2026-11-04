@@ -41,13 +41,13 @@
 | w8s2l1 Філософи в бібліотеці папи | 8 | 9 | 0.56 | 34 | 66 | 7.2 | 0.032 | 4 | — |
 | w8s2l2 Крила, мармур і фарби | 8 | 9 | 0.56 | 29 | 58 | 6.8 | 0.048 | 3 | — |
 | w8s2l3 Тези з Віттенберга | 8 | 10 | 0.5 | 33 | 68 | 7 | 0.057 | 4 | — |
-| w8s2l4 Відповідь Рима | 8 | 9 | 0.56 | 24 | 54 | 6.4 | 0.066 | 3 | longWordShare нетипово для сім'ї (z=2.1) |
+| w8s2l4 Відповідь Рима | 8 | 9 | 0.56 | 25 | 56 | 6.5 | 0.052 | 3 | — |
 | w8s2l5 Мир після різанини | 8 | 9 | 0.56 | 32 | 67 | 7.2 | 0.047 | 3 | — |
-| w8s2l6 Виставка двох епох (фінал) | 8 | 7 | 0.86 | 15 | 36 | 5.7 | 0.045 | 3 | sentenceWords=5.7 поза [6; 13] |
+| w8s2l6 Виставка двох епох (фінал) | 8 | 7 | 0.86 | 18 | 36 | 6.2 | 0.045 | 3 | — |
 
 ## Середні по сім'ях (предмет + класи + звичайний урок / фінал)
 
 Для z-оцінок sd не менше 10 % середнього; нижче наведено фактичне sd.
 
-- **7-9:lesson**: screens 9.27±0.66, gradedShare 0.55±0.05, readWordsPerScreen 30±3.21, maxReadWords 59.91±5.6, sentenceWords 6.55±0.35, longWordShare 0.04±0.01, typeVariety 3.42±0.49
-- **7-9:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 19.43±2.32, maxReadWords 35.71±4.59, sentenceWords 6.2±0.29, longWordShare 0.04±0.01, typeVariety 3.14±0.35
+- **7-9:lesson**: screens 9.27±0.66, gradedShare 0.55±0.05, readWordsPerScreen 30.03±3.16, maxReadWords 59.97±5.55, sentenceWords 6.55±0.35, longWordShare 0.04±0.01, typeVariety 3.42±0.49
+- **7-9:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 19.86±1.64, maxReadWords 35.71±4.59, sentenceWords 6.27±0.21, longWordShare 0.04±0.01, typeVariety 3.14±0.35
