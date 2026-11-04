@@ -5,7 +5,7 @@ id: write-math-pool-g7m8-ister
 type: write-pool
 subject: math
 grade: 7
-status: review
+status: done
 claimed_by: writer-write-math-pool-g7m8-ister
 created: 2026-11-03
 depends_on: [write-math-g7-geometry-gaps, curate-math-ister-gaps-matrix]
@@ -69,3 +69,6 @@ AGENTS.md, handoff, INDEX; docs/math-personalization-coverage.md «Зміни v5
 
 **Верифікатору (content-verify, pg7m8):** звірити d/e з рендером сторінок (друк = PDF − 1); d01 — choice з ДСР (чи прийнятний у пулі, де «числова — завжди answer»: тут відповідь не число); e04, d08 — `list` + `multiset`; рисунки d03/d04 — підписи точок дотику K, L, M не перекривають кутів.
 
+
+### 2026-11-04 · verifier-write-math-pool-g7m8-ister
+Незалежна перевірка (content-verify): verified. Звіт — reports/verify/write-math-pool-g7m8-ister.md.

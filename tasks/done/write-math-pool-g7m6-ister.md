@@ -5,7 +5,7 @@ id: write-math-pool-g7m6-ister
 type: write-pool
 subject: math
 grade: 7
-status: review
+status: done
 claimed_by: writer-write-math-pool-g7m6-ister
 created: 2026-11-03
 depends_on: [write-math-g7-geometry-gaps, curate-math-ister-gaps-matrix]
@@ -73,3 +73,6 @@ AGENTS.md, handoff, INDEX; docs/math-personalization-coverage.md «Зміни v5
 **Перевірки:** `node tools/validate.mjs --pool pg7m6` — 0 помилок, 0 попереджень; `node tools/personalization-qa.mjs --pool pg7m6` — exit 0, «БРАКУЄ: pg7m6: ще не verified» (очікувано для draft), g7m6l5 — pending; `python3 tools/test-answer-ui.py --suite content --pool pg7m6` — green (30 вправ); `node tools/fig-audit.mjs --subject math` — серія e не в кандидатах. Build не запускав (оркестратор).
 
 **Верифікатору:** глянути рисунки e07/e08 (4 дуги біля O — чи читаються підписи); формулювання варіантів e06.
+
+### 2026-11-04 · verifier-write-math-pool-g7m6-ister
+Незалежна перевірка (content-verify): verified. Звіт — reports/verify/write-math-pool-g7m6-ister.md.
