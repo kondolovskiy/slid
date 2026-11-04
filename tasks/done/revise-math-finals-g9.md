@@ -5,7 +5,7 @@ id: revise-math-finals-g9
 type: revise-section
 subject: math
 grade: 9
-status: review
+status: done
 claimed_by: writer-revise-math-finals-g9
 created: 2026-11-04
 depends_on: []
