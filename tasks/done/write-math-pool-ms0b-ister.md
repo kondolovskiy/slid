@@ -5,7 +5,7 @@ id: write-math-pool-ms0b-ister
 type: write-pool
 subject: math
 grade: 5
-status: review
+status: done
 claimed_by: writer-write-math-pool-ms0b-ister
 created: 2026-11-03
 depends_on: [write-math-g5-coord-ray-motion, curate-math-ister-gaps-matrix]

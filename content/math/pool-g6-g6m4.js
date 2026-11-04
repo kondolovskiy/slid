@@ -1,6 +1,6 @@
 /* Слід · Математика, 6 клас — пул задач для тренування до розділу «Раціональні числа» (g6m4)
-   Статус: draft — write-math-pool-g6m4-ister (2026-11-04): +21 вправа для нових уроків за Істером (D-043): g6m4l7 — f01–f07, g6m4l8 — g01–g07,
-   g6m4l9 — h01–h07 (ist6b § 44, 45, 47; mer6 п. 41, 42). Наявні 40 вправ, їхні id, lesson і ключі не змінені. Чекає повторної верифікації (content-verify).
+   Статус: verified (verifier-write-math-pool-g6m4-ister, 2026-11-04; reports/verify/write-math-pool-g6m4-ister.md). write-math-pool-g6m4-ister (2026-11-04): +21 вправа для нових уроків за Істером (D-043): g6m4l7 — f01–f07, g6m4l8 — g01–g07,
+   g6m4l9 — h01–h07 (ist6b § 44, 45, 47; mer6 п. 41, 42). Наявні 40 вправ, їхні id, lesson і ключі не змінені.
    Попередній статус: verified (verifier-refine-math-diag-g6-coverage, 2026-10-31; reports/verify/refine-math-diag-g6-coverage.md) після refine-math-diag-g6-coverage (2026-10-31): e05 → e09 (mer6 №1231(2), уся пара координат) — формат матриці coordinates2; повторна незалежна
    верифікація нових вправ (verify-math-personalization-g6). Решта вправ і їхні id не змінені; вилучених id не використовувати знову.
    Попередня редакція — verified (верифікатор, 2026-10-13). 40 задач: по 8 на кожен урок g6m4l1–g6m4l5 (boss без задач).
@@ -10,8 +10,8 @@
 SLID.pool("math", {
   id: "pg6m4",
   section: "g6m4",
-  status: "draft",
-  meta: { author: "claude-opus", created: "2026-10-13", factcheck: "verifier-refine-math-diag-g6-coverage", revised: "2026-11-04 write-math-pool-g6m4-ister", teacher: null },
+  status: "verified",
+  meta: { author: "claude-opus", created: "2026-10-13", factcheck: "verifier-write-math-pool-g6m4-ister", revised: "2026-11-04 write-math-pool-g6m4-ister", teacher: null },
   sources: [
     { id: "ist6", title: "Істер О. С. Математика. 6 клас. Ч. 2. — Київ: Генеза, 2023 (§ 26–32, 34, 36, 40, 46)", url: "https://www.geneza.ua/sites/default/files/%D0%86%D1%81%D1%82%D0%B5%D1%80_%D0%9C%D0%B0%D1%82_%D0%9F(%D1%87.2)_6.pdf" },
     { id: "ist6b", title: "Істер О. С. Математика. 6 клас. Ч. 2. — Київ: Генеза, 2023 (§ 44, 45, 47; те саме видання, що ist6; сигла задач write-math-*-ister)", url: "https://file.4book.org/images/shcoolbook_ua/6/6_m_i_2023-2.pdf" },

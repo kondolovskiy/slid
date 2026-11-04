@@ -1,5 +1,5 @@
 /* Слід · Математика, 6 клас — пул задач для тренування до розділу «Комбінаторні задачі та ймовірність» (g6m6)
-   Статус: draft (writer-write-math-pool-g6m6, 2026-11-04). 32 задачі: по 8 на уроки g6m6l1–g6m6l4 (3 рівня 1, 3 рівня 2, 2 рівня 3); boss g6m6l5 без задач.
+   Статус: verified (verifier-write-math-pool-g6m6, 2026-11-04; reports/verify/write-math-pool-g6m6.md); написано writer-write-math-pool-g6m6, 2026-11-04. 32 задачі: по 8 на уроки g6m6l1–g6m6l4 (3 рівня 1, 3 рівня 2, 2 рівня 3); boss g6m6l5 без задач.
    Джерела: Істер, Математика 5 (2022), додаткова тема «Найпростіші комбінаторні задачі» (матеріал за QR-кодом зі с. 290; srcPage — друкована
    сторінка цього матеріалу, PDF = друк. − 2) — уроки l1, l2; Істер, Математика 6, ч. 2 (2023), «Ймовірність випадкової події», с. 190–195
    (PDF = друк.) — уроки l3, l4. Умови й числа звірено з рендером сторінок.
@@ -9,8 +9,8 @@
 SLID.pool("math", {
   id: "pg6m6",
   section: "g6m6",
-  status: "draft",
-  meta: { author: "claude-opus", created: "2026-11-04", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "claude-opus", created: "2026-11-04", factcheck: "verifier-write-math-pool-g6m6", teacher: null },
   sources: [
     { id: "ist5k", title: "Істер О. С. Математика: підручник для 5 класу. — Київ: Генеза, 2022. Додаткова тема «Найпростіші комбінаторні задачі» (матеріал за QR-кодом зі с. 290)", url: "https://drive.google.com/file/d/1UFGuRRODD5nF1NtXbN0ubzlcn0s5cI4D/view" },
     { id: "ist6b", title: "Істер О. С. Математика: підручник для 6 класу. У 2 ч. Ч. 2. — Київ: Генеза, 2023", url: "https://file.4book.org/images/shcoolbook_ua/6/6_m_i_2023-2.pdf" }

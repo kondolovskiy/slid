@@ -1,10 +1,7 @@
 {
-  "date": "2026-11-04T06:56:00.494Z",
+  "date": "2026-11-04T06:56:38.891Z",
   "errors": [],
   "warnings": [
-    "content/world/g8-w8s2.js#w8s2l2: у 2 з 3 завдань choice правильний варіант — А: переставляй варіанти",
-    "content/world/g8-w8s2.js#w8s2l3: gradedShare=0.44 поза профілем [0.5; 0.9] для world, 7-9 кл.",
-    "content/world/g8-w8s2.js#w8s2l5: у 3 з 3 завдань choice правильний варіант — А: переставляй варіанти",
     "content/world/g8-w8s2.js#w8s2l6: sentenceWords=5.7 поза профілем [6; 13] для world, 7-9 кл."
   ]
 }
