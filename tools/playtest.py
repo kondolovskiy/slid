@@ -71,6 +71,8 @@ async def lang_seen(pg, s):
                 txt, lab = (await pg.text_content(el)).strip(), await pg.get_attribute(el, "aria-label")
                 want, wlab = OPT_SHOW.get(o, (o, None))
                 if txt != want or lab != wlab: bad.append(f"пропуск {g+1}, варіант «{o}»: на кнопці «{txt}» (aria-label {lab!r}), очікувалось «{want}» ({wlab!r})")
+            shown = await pg.evaluate("g => [...document.querySelectorAll('#stage .gap')[g].querySelectorAll('.gopt')].map(b => +b.dataset.o)", g)   # рушій перемішує варіанти (gapOrder)
+            if sorted(shown) != list(range(len(os_))) or ("\u2014" in os_ and os_[shown[-1]] != "\u2014"): bad.append(f"пропуск {g+1}: порядок кнопок {shown} — не перестановка варіантів або «∅» не останній")
         legend = await pg.locator("#stage .fix", has_text="нічого не писати").count()
         if legend != (1 if any("\u2014" in os_ for os_ in opts) else 0): bad.append(f"легенда «∅ — нічого не писати»: {legend}")
     elif t == "pick":

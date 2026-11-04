@@ -28,6 +28,23 @@ const no = (v, msg) => eq(!!v, false, msg);
   ok(L.parseGaps("село").error, "gaps: без пропусків — помилка");
   ok(L.parseGaps("с{*е|и ло").error, "gaps: незакрита дужка");
   ok(L.parseGaps("a}b{*x|y}").error, "gaps: зайва }");
+  /* порядок показу варіантів (gapOrder): перестановка індексів з тексту; «∅» (—) завжди в кінці */
+  const lcg = seed => () => (seed = (seed * 1103515245 + 12345) % 2147483648) / 2147483648;   // детермінований rnd для тесту
+  const isPerm = (p, m) => Array.isArray(p) && p.length === m && [...p].sort((a, b) => a - b).every((v, k) => v === k);
+  const r = lcg(7), pos = [0, 0, 0], seen = new Set(); let perm = true;
+  for (let i = 0; i < 300; i++) { const p = L.gapOrder(["е", "и", "і"], r); perm &&= isPerm(p, 3); if (!perm) break; pos[p.indexOf(0)]++; seen.add(p.join("")); }
+  ok(perm, "gapOrder: перестановка індексів");
+  ok(pos.every(c => c > 60), `gapOrder: перший у тексті варіант буває на кожній позиції ${JSON.stringify(pos)}`);
+  eq(seen.size, 6, "gapOrder: трапляються всі 6 перестановок трьох варіантів");
+  eq(L.gapOrder(["е", "и"], () => 0.99), [0, 1], "gapOrder: rnd≈1 — без обміну");
+  eq(L.gapOrder(["е", "и"], () => 0), [1, 0], "gapOrder: rnd=0 — обмін");
+  eq(L.gapOrder(["ь", "—"], () => 0), [0, 1], "gapOrder: ∅ лишається останнім (2 варіанти)");
+  eq(L.gapOrder(["—", "ь"], () => 0.5), [1, 0], "gapOrder: ∅ першим у тексті — на екрані останній");
+  const r2 = lcg(3), firstPos = new Set(); let noneLast = true;
+  for (let i = 0; i < 100; i++) { const p = L.gapOrder([",", "–", "—", ":"], r2); noneLast &&= isPerm(p, 4) && p[3] === 2; firstPos.add(p.indexOf(0)); }
+  ok(noneLast, "gapOrder: ∅ завжди останній, результат — перестановка (4 варіанти)");
+  eq([...firstPos].sort(), [0, 1, 2], "gapOrder: тире «–» та інші перемішуються");
+  ok(isPerm(L.gapOrder(["а", "б", "в", "г", "ґ"]), 5), "gapOrder: без rnd (Math.random) — перестановка");
   eq(L.issues({ type: "gaps", text: "с{*е|и}ло" }), [], "gaps: issues чисто");
 }
 /* pick */

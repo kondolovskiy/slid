@@ -14,6 +14,13 @@
   const DASH = "\u2013";   // варіант-тире в пропуску: у розмітці коротке «–», на екрані — справжнє тире «—»
   /** Як показати варіант пропуску: { text, label } (label — для екранного диктора) */
   const optView = o => o === NONE ? { text: "\u2205", label: "нічого не писати" } : o === DASH ? { text: "\u2014", label: "тире" } : { text: o, label: null };
+  /** Порядок показу варіантів пропуску: перестановка індексів opts (Фішер — Єйтс), бо автори майже завжди пишуть правильний першим.
+      «∅» (NONE) — завжди останній: його й так видно за знаком, а місце в кінці не залежить від того, чи він правильний. */
+  function gapOrder(opts, rnd = Math.random) {
+    const idx = opts.map((o, k) => k).filter(k => opts[k] !== NONE);
+    for (let i = idx.length - 1; i > 0; i--) { const j = Math.min(i, Math.floor(rnd() * (i + 1))); [idx[i], idx[j]] = [idx[j], idx[i]]; }
+    return idx.concat(opts.map((o, k) => k).filter(k => opts[k] === NONE));
+  }
   const isSet = v => !!v && typeof v.has === "function" && typeof v.size === "number";   // Set з будь-якого realm (vm у тестах)
 
   /** gaps: [{t:"text", v:"с"}, {t:"gap", opts:["е","и"], correct:0}, …] або { error } */
@@ -219,5 +226,5 @@
     if (s.type === "split") return [].concat(s.word)[0]?.replace?.(/\|/g, "") || "";
     return "";
   }
-  window.SLID_LANG = { TYPES, warnings, readText, NONE, DASH, optView, isVowel, parseGaps, parsePick, parseStress, parseSplit, splitShow, normWord, wordInput, wordAnswers, check, solution, issues, sameCuts };
+  window.SLID_LANG = { TYPES, warnings, readText, NONE, DASH, optView, gapOrder, isVowel, parseGaps, parsePick, parseStress, parseSplit, splitShow, normWord, wordInput, wordAnswers, check, solution, issues, sameCuts };
 })();

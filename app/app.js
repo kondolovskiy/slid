@@ -1114,7 +1114,8 @@ const numShow = v => String(v).replace(".",",").replace("-","−");
 /* мовні вправи (app/lang.js, docs/CONTENT_SCHEMA.md §4.1): розмітка, стан st, позначки */
 function langHtml(s){
   if(s.type==="gaps"){ const g=LANG.parseGaps(s.text); st=g.gaps.map(()=>null);
-    const gapHtml=p=>`<span class="gap" role="group" aria-label="Пропуск ${p.n+1}">${p.opts.map((o,k)=>`<button type="button" class="gopt" data-g="${p.n}" data-o="${k}" aria-pressed="false"${LANG.optView(o).label?` aria-label="${LANG.optView(o).label}"`:""}>${esc(LANG.optView(o).text)}</button>`).join("")}</span>`;
+    // варіанти — у перемішаному порядку (LANG.gapOrder; «∅» в кінці), data-o — індекс з тексту; порядок береться раз на показ екрана
+    const gapHtml=p=>`<span class="gap" role="group" aria-label="Пропуск ${p.n+1}">${LANG.gapOrder(p.opts).map(k=>[p.opts[k],k]).map(([o,k])=>`<button type="button" class="gopt" data-g="${p.n}" data-o="${k}" aria-pressed="false"${LANG.optView(o).label?` aria-label="${LANG.optView(o).label}"`:""}>${esc(LANG.optView(o).text)}</button>`).join("")}</span>`;
     // слово з пропуском — у span.gw (white-space: nowrap), щоб рядок не переносився всередині слова поруч із пропуском
     let out="", open=false; const O=()=>{ if(!open){ out+='<span class="gw">'; open=true; } }, X=()=>{ if(open){ out+="</span>"; open=false; } };
     g.parts.forEach((p,k)=>{ const pg=g.parts[k-1]?.t==="gap", ng=g.parts[k+1]?.t==="gap";
