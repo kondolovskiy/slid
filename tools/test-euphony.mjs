@@ -52,6 +52,9 @@ clean("Садили (<i>де?</i>) в парку.", "«?)» — не кінец�
 // екран: збирає title, body, fbText…, але не text вправ (там можуть бути навмисні помилки)
 { n++; const r = euphonyScreen({ type: "gaps", title: "Брат й сестра", text: "Брат й сестра {*е|и}", fbText: "Ліс з дубів." }).map(x => x.rule).sort();
   if (JSON.stringify(r) !== JSON.stringify(["з-між-приголосними", "й-між-приголосними"])) { fail++; console.log("✗ euphonyScreen: title і fbText, без text", r); } }
+{ n++; const s = { type: "choice", title: "Що правильно?", opts: ["Брат й сестра", "Брат і сестра"], correct: 1 };
+  const all = euphonyScreen(s).length, noOpts = euphonyScreen(s, { opts: false }).length;
+  if (!(all === 1 && noOpts === 0)) { fail++; console.log("✗ euphonyScreen opts:false — хибні варіанти не перевіряються у validate", all, noOpts); } }
 // правила validate — підмножина описаних; правила зі звіту (зіставлені поняття, «у»/«з» між приголосними…) у validate не йдуть
 { n++; const bad = [...VALIDATE_RULES].filter(r => !RULES[r]);
   if (bad.length || VALIDATE_RULES.has("і-голосний-приголосний") || VALIDATE_RULES.has("і-між-голосними")) { fail++; console.log("✗ VALIDATE_RULES", bad); } }

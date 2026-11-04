@@ -235,7 +235,7 @@ function checkScreen(S, s, c, diag, pool = false) {
   for (const [k, v] of [["fbText", s.fbText], ["fbBad", s.fbBad], ["fbOk", s.fbOk], ["hint", s.hint]]) { const m = typeof v === "string" && plain(v).match(OPT_NUM_RE);
     if (m && OPT_TYPES.includes(s.type)) W(S, `${k} посилається на номер варіанта («${m[0].trim()}») — рушій може перемішати варіанти; назви сам варіант`); }
   if (/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/u.test(txt)) W(S, "емодзі в тексті уроку");
-  if (EUPHONY[c.id]) euphonyWarn(S, euphonyScreen(s));
+  if (EUPHONY[c.id]) euphonyWarn(S, euphonyScreen(s, { opts: false }));
   if (s.img && !fs.existsSync(path.join(ROOT, s.img))) E(S, `немає файлу ${s.img}`);
   if (s.img && !s.cap) E(S, "у фото має бути підпис cap (що, де, коли)");
   if (s.svg && !SVGS.includes(s.svg)) E(S, `немає SVG-ілюстрації «${s.svg}» у svgFig()`);

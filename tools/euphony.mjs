@@ -121,10 +121,11 @@ export function euphonyIssues(raw) {
   return out;
 }
 
-/** Авторський текст екрана (без речень вправ gaps/pick: там можуть бути навмисні помилки) */
-export function euphonyScreen(s) {
+/** Авторський текст екрана (без речень вправ gaps/pick: там можуть бути навмисні помилки).
+ *  opts: false — без варіантів відповіді (validate: хибні варіанти й «Знайди помилку» навмисні; рев'ю engine-lang-p3 P2-1) */
+export function euphonyScreen(s, { opts = true } = {}) {
   const note = typeof s.note === "string" ? s.note : s.note?.text;
-  return [s.title, s.body, note, s.fbTitle, s.fbText, s.fbOk, s.fbBad, s.hint, s.cap, ...(s.opts || []), ...(s.items || []).map(i => Array.isArray(i) ? i[0] : i)]
+  return [s.title, s.body, note, s.fbTitle, s.fbText, s.fbOk, s.fbBad, s.hint, s.cap, ...(opts ? s.opts || [] : []), ...(s.items || []).map(i => Array.isArray(i) ? i[0] : i)]
     .filter(x => typeof x === "string").flatMap(euphonyIssues);
 }
 
