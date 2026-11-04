@@ -1040,7 +1040,7 @@ SLID.section("math", {
       title: "Майстерня виразів",
       short: "Фінал розділу",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "g7m3boss",
       why: "Тотожності, степінь, многочлен, скорочене множення, розкладання й куби — у одному замовленні майстерні. Бали подвоєні.",

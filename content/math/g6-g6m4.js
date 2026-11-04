@@ -1530,7 +1530,7 @@ SLID.section("math", {
       title: "Експедиція «Скат»",
       short: "Фінал розділу",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "g6m4boss",
       why: "Усе вивчене про від'ємні числа, прямі, координати й графіки — в одній морській експедиції. Бали подвоєні.",

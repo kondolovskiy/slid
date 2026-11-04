@@ -1093,7 +1093,7 @@ SLID.section("math", {
       title: "Креслення клумби",
       short: "Фінал розділу",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "g7m8boss",
       why: "Коло, дотична, побудови, описане коло й вписаний кут — в одному кресленні паркової клумби. Бали подвоєні.",

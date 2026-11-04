@@ -1125,7 +1125,7 @@ SLID.section("math", {
       title: "Майданчик на папері",
       short: "Фінал розділу",
       icon: "map",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "ms0bboss",
       why: "Усе про лінії, шкали, діаграми, кути, трикутники, периметр і площу — в одному плані майданчика. Бали подвоєні.",

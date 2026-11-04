@@ -890,7 +890,7 @@ SLID.section("math", {
       title: "План кварталу",
       short: "Фінал розділу",
       icon: "map",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "g7m6boss",
       why: "Зберемо перпендикуляр, ознаки, властивості й розрахунок кутів в одній задачі планувальника.",

@@ -479,7 +479,7 @@ SLID.section("math", {
       title: "Ремонт у класі",
       short: "Фінал розділу",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "ms4boss",
       why: "Площа з 5 класу, паралелепіпеди, площа поверхні й об'єми в одній справжній справі. Бали подвоєні.",

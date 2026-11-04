@@ -3,6 +3,7 @@
    Статус уроків: g6m3l3 — verified (2026-11-03, verifier-fix-math-figs-g4-g6, reports/verify/fix-math-figs-g4-g6.md; fix-math-figs-g4-g6: статичні графіки на двох екранах теорії); g6m3l1–l6 — verified (verifier-g6m3, 2026-10-11; l1–l4 після ревізії D-019/D-020 — verifier-g6m3-d019, 2026-10-13). 6 уроків.
    g6m3l7 «Круг на стенді» (кругові діаграми, Істер 6, § 24–25; write-math-g6m3-circle-diagrams, 2026-11-03) — verified (verifier-write-math-g6m3-circle-diagrams, 2026-11-03, reports/verify/write-math-g6m3-circle-diagrams.md); стоїть після g6m3l5, перед фіналом g6m3l6. Разом 7 уроків.
    revise-math-finals-g5g6 (2026-11-04, D-045 п. 1): фінал g6m3l6 — завдання 4 «Більше кухарів» (друге на g6m3l3) прибрано, додано завдання 6 на кругову діаграму (g6m3l7); 6 завдань, g6m3l6 → draft.
+   verifier-revise-math-finals-g5-g7 (2026-11-04): завдання 3 «Сметана» (графік, друге на пряму пропорційність після з. 2) → «Більше кухарів» (обернена, g6m3l3); g6m3l6 → verified (reports/verify/revise-math-finals-g5-g7.md).
    Перевірка: node tools/validate.mjs --section g6m3 && node tools/stats.mjs --subject math
    Схема й правила: docs/CONTENT_SCHEMA.md (§8 — лабораторія), style/ */
 SLID.section("math", {
@@ -1073,7 +1074,7 @@ SLID.section("math", {
       title: "День вареників",
       short: "Фінал розділу",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "g6m3boss",
       why: "Відношення, пропорції, відсотки, коло й кругові діаграми — в одному дні шкільного кафе. Бали подвоєні.",

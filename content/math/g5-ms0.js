@@ -1047,7 +1047,7 @@ SLID.section("math", {
       title: "Скарбник походу",
       short: "Фінал розділу",
       icon: "flag",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "nboss",
       why: "Усе про натуральні числа в одній пригоді. Бали подвоєні.",

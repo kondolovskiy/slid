@@ -5,7 +5,7 @@ id: revise-math-finals-g5g6
 type: revise-section
 subject: math
 grade: 5
-status: review
+status: done
 claimed_by: writer-revise-math-finals-g5g6
 created: 2026-11-04
 depends_on: []
