@@ -4,7 +4,7 @@ claimed_at: 2026-11-04T07:25:26.560Z
 id: engine-lang-gaps-shuffle
 type: engine
 subject: ukr
-status: review
+status: done
 claimed_by: orch-ukr-engine-lang-gaps-shuffle
 created: 2026-11-04
 ---
