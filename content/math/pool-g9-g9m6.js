@@ -1,17 +1,17 @@
 /* Слід · Математика, 9 клас — пул задач для тренування до розділу «Геометрія: правильні многокутники і перетворення» (g9m6)
-   Статус: draft (доповнення 2026-11-04, див. нижче); раніше verified (verifier-pool-g9m6, 2026-10-31; звіт reports/verify/pg9m6.md); повторно verified після fix-math-figs-g9 (рисунок у d08; verifier-fix-math-figs-g9, 2026-11-03, reports/verify/fix-math-figs-g9.md). Автор: agent-write-math-pool-g9m6. 32 задачі: g9m6l1 — 8, g9m6l2 — 8, g9m6l3 — 8, g9m6l4 — 8 (boss g9m6l5 без задач).
+   Статус: verified (verifier-write-math-pool-g9m6-ister, 2026-11-04: e01–f08 перевірено, reports/verify/write-math-pool-g9m6-ister.md); доповнення 2026-11-04 — див. нижче; раніше verified (verifier-pool-g9m6, 2026-10-31; звіт reports/verify/pg9m6.md); повторно verified після fix-math-figs-g9 (рисунок у d08; verifier-fix-math-figs-g9, 2026-11-03, reports/verify/fix-math-figs-g9.md). Автор: agent-write-math-pool-g9m6. 32 задачі: g9m6l1 — 8, g9m6l2 — 8, g9m6l3 — 8, g9m6l4 — 8 (boss g9m6l5 без задач).
    Матриця docs/math-personalization-coverage.md 2026-10-16.v2: усі чотири уроки required, формати number, coordinates2, exactRoot.
    Прогалини форматів (у відповідних пунктах підручника таких вправ немає): l1 і l2 — coordinates2; l3 — exactRoot. Див. нотатки задачі.
    Усі задачі — з підручника Мерзляк, Якір. Геометрія 9 (2026), п. 6, 7, 17–20 і оповідання «Гомотетія»; умови й числа звірено за відрендереними сторінками PDF.
    srcPage — друкований номер сторінки (у цьому PDF збігається з номером сторінки файлу).
-   Доповнення 2026-11-04 (write-math-pool-g9m6-ister, D-043): +16 задач до нових уроків за Істером — g9m6l6 (e01–e08, § 16 п. 4, § 17 п. 2) і g9m6l7 (f01–f08, § 24); джерело ist9g (PDF = друк., умови й числа звірено з рендером с. 152–153, 158–159, 200–201). Наявні a–d не змінено; статус — draft до повторної верифікації. Разом 48 задач.
+   Доповнення 2026-11-04 (write-math-pool-g9m6-ister, D-043): +16 задач до нових уроків за Істером — g9m6l6 (e01–e08, § 16 п. 4, § 17 п. 2) і g9m6l7 (f01–f08, § 24); джерело ist9g (PDF = друк., умови й числа звірено з рендером с. 152–153, 158–159, 200–201). Наявні a–d не змінено; статус verified після повторної верифікації. Разом 48 задач.
    Перевірка: node tools/validate.mjs --pool pg9m6; node tools/personalization-qa.mjs --pool pg9m6
    Схема: docs/CONTENT_SCHEMA.md §10 */
 SLID.pool("math", {
   id: "pg9m6",
   section: "g9m6",
-  status: "draft",
-  meta: { author: "agent-write-math-pool-g9m6", created: "2026-10-31", factcheck: "verifier-pool-g9m6", teacher: null },
+  status: "verified",
+  meta: { author: "agent-write-math-pool-g9m6", created: "2026-10-31", factcheck: "verifier-write-math-pool-g9m6-ister", teacher: null },
   sources: [
     { id: "mer9g", title: "Мерзляк А. Г., Якір М. С. Геометрія: підручник для 9 класу. — Харків: Гімназія, 2026 (п. 6, 7, 17–20; дзеркало file.4book.org)", url: "https://file.4book.org/images/shcoolbook_ua/9/9_geom_m_2026.pdf" },
     { id: "ist9g", title: "Істер О. С., Істер Д. О. Геометрія : підруч. для 9 кл. закл. заг. серед. освіти. — Київ: Генеза, 2026 (§ 16, п. 4; § 17, п. 2; § 24)", url: "https://file.4book.org/images/shcoolbook_ua/9/9_geom_i_2026.pdf" }

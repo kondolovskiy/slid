@@ -1,5 +1,5 @@
 /* Слід · Математика, 9 клас — пул задач для тренування до розділу «Алгебра: прогресії» (g9m5)
-   Статус: draft (write-math-pool-g9m5-ister, 2026-11-04: +8 задач d01–d08 для g9m5l5 за Істером А9 § 21, с. 191–192; 3 рівня 1, 3 рівня 2, 2 рівня 3; умови й числа звірено з відрендереними сторінками PDF, PDF-сторінка = друкована). Раніше: verified (verifier-pg9m5, 2026-10-31; reports/verify/pg9m5.md). 24 задачі: по 8 на кожен урок g9m5l1–g9m5l3 (3 рівня 1, 3 рівня 2, 2 рівня 3); boss g9m5l4 без задач.
+   Статус: verified (verifier-write-math-pool-g9m5-ister, 2026-11-04: d01–d08 перевірено, reports/verify/write-math-pool-g9m5-ister.md). Доповнення (write-math-pool-g9m5-ister, 2026-11-04: +8 задач d01–d08 для g9m5l5 за Істером А9 § 21, с. 191–192; 3 рівня 1, 3 рівня 2, 2 рівня 3; умови й числа звірено з відрендереними сторінками PDF, PDF-сторінка = друкована). Раніше: verified (verifier-pg9m5, 2026-10-31; reports/verify/pg9m5.md). 24 задачі: по 8 на кожен урок g9m5l1–g9m5l3 (3 рівня 1, 3 рівня 2, 2 рівня 3); boss g9m5l4 без задач.
    Усі задачі — з підручника Мерзляка, Якіра «Алгебра. 9 клас» (2026), п. 15–19 (sources).
    Умови й числа звірено за відрендереними сторінками PDF 2026-10-31. У цьому PDF друкований номер сторінки = номер сторінки PDF.
    Правка 2026-11-03 (fix-math-notation-ister, D-043): b06 (арифметична прогресія) — $(a_n)$ замість $(b_n)$, бо $(b_n)$ за Істером — геометрична; відповідь і id без змін; позначено adapted: true, бо в джерелі (Мерзляк №16.21, с. 157) — $(b_n)$ (verifier-fix-math-notation-ister).
@@ -8,8 +8,8 @@
 SLID.pool("math", {
   id: "pg9m5",
   section: "g9m5",
-  status: "draft",
-  meta: { author: "claude-opus", created: "2026-10-31", factcheck: null, teacher: null },
+  status: "verified",
+  meta: { author: "claude-opus", created: "2026-10-31", factcheck: "verifier-write-math-pool-g9m5-ister", teacher: null },
   sources: [
     { id: "a9", title: "Мерзляк А. Г., Якір М. С. Алгебра. 9 клас. — Харків: Гімназія, 2026 (п. 15–19; дзеркало PDF на 4book.org)", url: "https://file.4book.org/images/shcoolbook_ua/9/9_a_m_2026.pdf" },
     { id: "ist9a", title: "Істер О. С., Істер Д. О. Алгебра: підручник для 9 класу. — Київ: Генеза, 2026 (§ 21; дзеркало PDF на 4book.org)", url: "https://file.4book.org/images/shcoolbook_ua/9/9_a_i_2026.pdf" }

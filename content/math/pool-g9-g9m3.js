@@ -1,7 +1,7 @@
 /* Слід · Математика, 9 клас — пул задач для тренування до розділу «Алгебра: квадратична функція» (g9m3)
-   Статус: draft — доповнено 2026-11-04 (write-math-pool-g9m3-ister, D-043): +16 задач для нових уроків за Істером —
+   Статус: verified (verifier-write-math-pool-g9m3-ister, 2026-11-04, reports/verify/write-math-pool-g9m3-ister.md) — доповнено 2026-11-04 (write-math-pool-g9m3-ister, D-043): +16 задач для нових уроків за Істером —
    e01–e08 (g9m3l6, системи 2-го степеня, ist9a § 13, с. 129–130) і f01–f08 (g9m3l7, задачі системами, ist9a § 14, с. 135–137).
-   Наявні задачі a01–d08, їхні id, lesson і ключі не змінено. Потрібна повторна незалежна верифікація (content-verify, пул pg9m3).
+   Наявні задачі a01–d08, їхні id, lesson і ключі не змінено.
    Попередня редакція — verified (verifier-refine-math-content-from-matrix-v3, 2026-11-01, reports/verify/refine-math-content-from-matrix-v3.md) після refine-math-content-from-matrix-v3 (2026-11-01): d06: sk expr → eq (навичка екранів g9m3l4).
    Ще раніше — verified (автор agent-write-math-pool-g9m3, 2026-10-31; верифікатор verifier-pg9m3, 2026-10-31, reports/verify/pg9m3.md). 32 задачі: по 8 на кожен урок g9m3l1–g9m3l4; boss g9m3l5 без задач.
    Задачі a01–d08 — з підручника Мерзляка, Якіра «Алгебра. 9 клас» (2026), п. 7–12; e01–f08 — з підручника Істера «Алгебра. 9 клас» (2026), § 13–14 (sources).
@@ -13,8 +13,8 @@
 SLID.pool("math", {
   id: "pg9m3",
   section: "g9m3",
-  status: "draft",
-  meta: { author: "claude-opus", created: "2026-10-31", factcheck: "verifier-refine-math-content-from-matrix-v3", revised: "2026-11-04 write-math-pool-g9m3-ister (+e01–f08)", teacher: null },
+  status: "verified",
+  meta: { author: "claude-opus", created: "2026-10-31", factcheck: "verifier-write-math-pool-g9m3-ister", revised: "2026-11-04 write-math-pool-g9m3-ister (+e01–f08)", teacher: null },
   sources: [
     { id: "a9", title: "Мерзляк А. Г., Якір М. С. Алгебра. 9 клас. — Харків: Гімназія, 2026 (п. 7–12; дзеркало PDF на 4book.org)", url: "https://file.4book.org/images/shcoolbook_ua/9/9_a_m_2026.pdf" },
     { id: "ist9a", title: "Істер О. С., Істер Д. О. Алгебра: підручник для 9 класу. — Київ: Генеза, 2026 (§ 13–14; дзеркало PDF на 4book.org)", url: "https://file.4book.org/images/shcoolbook_ua/9/9_a_i_2026.pdf" }

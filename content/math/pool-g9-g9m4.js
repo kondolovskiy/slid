@@ -1,5 +1,5 @@
 /* Слід · Математика, 9 клас — пул задач для тренування до розділу «Геометрія: розв'язування трикутників» (g9m4)
-   Статус: draft (доповнено 2026-11-04, write-math-pool-g9m4-ister; a/b/c — verified verifier-pool-g9m4, 2026-10-31, reports/verify/pg9m4.md).
+   Статус: verified (d/e — verifier-write-math-pool-g9m4-ister, 2026-11-04, reports/verify/write-math-pool-g9m4-ister.md; доповнено 2026-11-04, write-math-pool-g9m4-ister; a/b/c — verified verifier-pool-g9m4, 2026-10-31, reports/verify/pg9m4.md).
    39 задач: g9m4l1 — 8, g9m4l2 — 8, g9m4l3 — 8, g9m4l5 — 8 (d01–d08), g9m4l6 — 7 (e01–e07); boss g9m4l4 без задач.
    d/e — з підручника Істер О., Істер Д. «Геометрія. 9 клас» (Генеза, 2026), § 14, с. 126–128 (PDF-с. = друк. с.); умови й числа звірено
    за рендером сторінок 2026-11-04. Табличні синуси дано в умовах (D-019). №14.29 (r для 5, 5, 6) не взято — він уже є в уроці g9m4l6.
@@ -13,8 +13,8 @@
 SLID.pool("math", {
   id: "pg9m4",
   section: "g9m4",
-  status: "draft",
-  meta: { author: "agent-write-math-pool-g9m4", created: "2026-10-31", factcheck: "verifier-pool-g9m4", teacher: null },
+  status: "verified",
+  meta: { author: "agent-write-math-pool-g9m4", created: "2026-10-31", factcheck: "verifier-pool-g9m4; verifier-write-math-pool-g9m4-ister (d/e)", teacher: null },
   sources: [
     { id: "mer9g", title: "Мерзляк А. Г., Якір М. С. Геометрія : підруч. для 9 кл. закладів заг. серед. освіти. — Харків: Гімназія, 2026 (п. 1–3)", url: "https://file.4book.org/images/shcoolbook_ua/9/9_geom_m_2026.pdf" },
     { id: "ist9g", title: "Істер О., Істер Д. Геометрія : підруч. для 9-го кл. закл. заг. серед. освіти. — Київ : Генеза, 2026 (§ 14)", url: "https://file.4book.org/images/shcoolbook_ua/9/9_geom_i_2026.pdf" }
