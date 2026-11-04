@@ -211,18 +211,22 @@ function figRef(S, s, prev = null) {
 // заборонені фрази, яких дитина не бачить як зразок (engine-lang-p3, п. 6): у <s>…</s> (закреслене — помилка, яку урок виправляє),
 // у неправильних варіантах gaps і в цілях та хибних групах pick («Знайди помилку»: [вірно], [!на протязі]) — не рахуються.
 // tools-lang-p4 (P3-3): так само в «лапках» (цитата чи калька, про яку йдеться: «Приймати участь» — калька), у хибних варіантах
-// choice/multi і в усіх варіантах здогадки hyp (навмисні помилки, як і в милозвучності, рев'ю engine-lang-p3 P2-1)
-const stripS = t => typeof t === "string" ? t.replace(/<s>[\s\S]*?<\/s>/gi, " ").replace(/«[^«»]*»/g, " ") : t;
+// choice/multi і в усіх варіантах здогадки hyp (навмисні помилки, як і в милозвучності, рев'ю engine-lang-p3 P2-1).
+// Раунд 2 (рев'ю tools-lang-p4): знімаються лише короткі «лапки» (≤ 4 слова — згадка слова чи кальки; жоден рядок banned-phrases не довший),
+// довгі — пряма мова й назви, які пише автор, — перевіряються (P2-1); варіанти poll (без correct) — авторський текст, перевіряються (P1-1)
+const QUOTE_MAX = 4;
+const stripS = t => typeof t === "string" ? t.replace(/<s>[\s\S]*?<\/s>/gi, " ").replace(/«([^«»]*)»/g, (m, q) => words(plain(q)).length <= QUOTE_MAX ? " " : m) : t;
 function bannedText(s) {
   const noteTxt = typeof s.note === "string" ? s.note : s.note?.text;
   const exText = s.type === "gaps" ? lang.readText(s) : s.type === "pick" && typeof s.text === "string" ? s.text.replace(/\[[^\]]*\]/g, " ") : s.text;
   const ok = new Set([].concat(s.correct ?? []));
-  const opts = !Array.isArray(s.opts) ? [] : s.hyp ? [] : ["choice", "multi"].includes(s.type) ? s.opts.filter((o, k) => ok.has(k)) : s.opts;
+  const opts = !Array.isArray(s.opts) ? [] : s.hyp ? [] : ["choice", "multi"].includes(s.type) && s.correct != null ? s.opts.filter((o, k) => ok.has(k)) : s.opts;
   return [s.title, s.body, noteTxt, s.fbText, s.fbOk, s.fbBad, s.hint, exText, ...opts, ...(s.items || []).flat()].filter(x => typeof x === "string").map(stripS).join(" ");
 }
 // tools-lang-p4, п. 8 (ідея verifier-u7s2): варіанти пропуску відрізняються лише регістром («{*вітаю|Вітаю}»), а пояснення пише слово так,
 // як хибний варіант, і жодного разу — як правильний: «*», мабуть, не на тому варіанті. Слово на початку речення пояснення не рахується
-// (там велика літера природна); однолітерні варіанти («А|а») — теж ні: службове слово «а» в поясненні нічого не каже
+// (там велика літера природна), так само після «:» (початок прикладу) і після «слово/форму/пишемо…» (словникова форма: «слово вітаю пишемо
+// з великої» — раунд 2, P3-1; виділене <b>Вітаю</b> рахується будь-де); однолітерні варіанти («А|а») — теж ні: службове слово «а» в поясненні нічого не каже
 function gapCaseIssues(s) {
   const p = s.type === "gaps" && typeof s.fbText === "string" ? lang.parseGaps(s.text) : null;
   if (!p || p.error) return [];
@@ -230,8 +234,10 @@ function gapCaseIssues(s) {
   for (const g of p.gaps) {
     if (g.opts.length < 2 || [...g.opts[0]].length < 2 || new Set(g.opts.map(o => o.toLocaleLowerCase("uk"))).size !== 1) continue;
     const esc = g.opts[0].replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    const seen = [...fb.matchAll(new RegExp(`(?<![\\p{L}\\p{M}'’ʼ-])${esc}(?![\\p{L}\\p{M}'’ʼ-])`, "giu"))]
-      .filter(m => !/(?:^|[.!?…]["»”]?)\s*["«„“—–-]?\s*$/.test(fb.slice(0, m.index))).map(m => m[0]);
+    // виділене <b>слово</b> — пряма відповідь пояснення: рахується будь-де; решта збігів — з фільтрами нижче
+    const bold = [...s.fbText.matchAll(new RegExp(`<(b|strong)>\\s*(${esc})\\s*</\\1>`, "giu"))].map(m => m[2]);
+    const seen = bold.concat([...fb.matchAll(new RegExp(`(?<![\\p{L}\\p{M}'’ʼ-])${esc}(?![\\p{L}\\p{M}'’ʼ-])`, "giu"))]
+      .filter(m => !/(?:^|[.!?…:]["»”]?)\s*["«„“—–-]?\s*$/.test(fb.slice(0, m.index)) && !/(?<![\p{L}])(?:слов[оаі]|форм[уаи]|пиш\p{L}*|напиш\p{L}*)\s*$/iu.test(fb.slice(0, m.index))).map(m => m[0]));
     const right = g.opts[g.correct];
     if (seen.length && !seen.includes(right) && seen.some(w => g.opts.includes(w))) out.push(`пропуск ${g.n + 1}: варіанти відрізняються лише регістром, правильним позначено «${right}», а пояснення пише «${seen.find(w => g.opts.includes(w))}» — перевір, чи «*» на тому варіанті`);
   }
