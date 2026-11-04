@@ -1619,9 +1619,8 @@ SLID.section("math", {
             axes: false,
             grid: 0,
             view: [-6, 6, -4, 4],
-            points: { D1: { x: "3", y: "-2", label: false }, D2: { x: "5", y: "-2+2*sqrt(3)", label: false } },
-            lines: [{ through: [[-6, -2], [6, -2]] }, { through: [[-3, -4], [-3, 4]], color: "blue" }, { through: [[1, -4], [1, 4]], color: "blue" }, { through: ["D1", "D2"], color: "green" }],
-            angles: [{ from: [-1, -2], at: [-3, -2], to: [-3, 0], label: false, r: 14 }, { from: [2, -2], at: [1, -2], to: [1, 0], label: false, r: 14 }, { from: [6, -2], at: "D1", to: "D2", label: "60°", r: 30 }],
+            lines: [{ through: [[-6, -2], [6, -2]] }, { through: [[-3, -4], [-3, 4]], color: "blue" }, { through: [[1, -4], [1, 4]], color: "blue" }, { through: [[3, -2], [5, 1.4641]], color: "green" }],
+            angles: [{ from: [-1, -2], at: [-3, -2], to: [-3, 0], label: false, r: 14 }, { from: [2, -2], at: [1, -2], to: [1, 0], label: false, r: 14 }, { from: [6, -2], at: [3, -2], to: [5, 1.4641], label: "60°", r: 30 }],
             texts: [{ at: [-3.4, 3.5], t: "a" }, { at: [0.6, 3.5], t: "b" }, { at: [-5.5, -1.5], t: "c" }, { at: [5.4, 1.4], t: "d" }],
             alt: "Горизонтальна пряма c; прямі a і b перпендикулярні до c; пряма d перетинає c під кутом 60°"
           },

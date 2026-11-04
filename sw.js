@@ -1,7 +1,7 @@
 /* Слід — service worker. ЗГЕНЕРОВАНО tools/build.mjs із tools/sw.template.js — не редагуй sw.js вручну.
    Стратегія: усі файли застосунку кешуються при встановленні (офлайн з першого запуску);
    свої файли — спершу з кешу; Google Fonts — з кешу з фоновим оновленням. */
-const VERSION = "0070c0526d";
+const VERSION = "74abb76510";
 const CACHE = "slid-" + VERSION;
 const FONTS = "slid-fonts";
 const ASSETS = [
@@ -198,6 +198,7 @@ const ASSETS = [
   "./content/world/g7-w7s5.js",
   "./content/world/g8-w8s1.js",
   "./content/world/g8-w8s2.js",
+  "./content/world/g8-w8s3.js",
   "./content/catalog.js",
   "./app/evidence.js",
   "./app/lab.js",
@@ -487,6 +488,20 @@ const ASSETS = [
   "./img/world/w8s2/st-peters-basilica.jpg",
   "./img/world/w8s2/vitruvian-man.jpg",
   "./img/world/w8s2/warsaw-confederation-1573.jpg",
+  "./img/world/w8s3/armada-portrait.jpg",
+  "./img/world/w8s3/beeldenstorm-1566.jpg",
+  "./img/world/w8s3/charles-v-muhlberg.jpg",
+  "./img/world/w8s3/europa-regina.jpg",
+  "./img/world/w8s3/orsha-1514.jpg",
+  "./img/world/w8s3/rossa-woodcut.jpg",
+  "./img/world/w8s3/suleiman-lorck.jpg",
+  "./img/world/w8s4/amsterdam-exchange-berckheyde.jpg",
+  "./img/world/w8s4/bill-of-rights-1689.jpg",
+  "./img/world/w8s4/cromwell-walker.jpg",
+  "./img/world/w8s4/dejima.jpg",
+  "./img/world/w8s4/louis-xiv-rigaud.jpg",
+  "./img/world/w8s4/munster-1648-ter-borch.jpg",
+  "./img/world/w8s4/versailles-1668-patel.jpg",
   "./icons/apple-touch-icon.png",
   "./icons/icon-192.png",
   "./icons/icon-512.png",
