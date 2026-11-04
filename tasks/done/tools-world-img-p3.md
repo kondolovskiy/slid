@@ -4,7 +4,7 @@ claimed_at: 2026-11-04T20:48:45.746Z
 id: tools-world-img-p3
 type: tools
 subject: world
-status: review
+status: done
 claimed_by: eng-tools-lang
 created: 2026-11-03
 depends_on: [tools-world-img]

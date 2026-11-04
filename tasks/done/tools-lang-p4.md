@@ -4,7 +4,7 @@ claimed_at: 2026-11-04T20:48:45.635Z
 id: tools-lang-p4
 type: tools
 subject: ukr
-status: review
+status: done
 claimed_by: eng-tools-lang
 created: 2026-11-04
 ---

@@ -4,7 +4,7 @@ claimed_at: 2026-11-04T20:48:45.676Z
 id: tests-lang-gaps-order
 type: tests
 subject: ukr
-status: review
+status: done
 claimed_by: eng-tools-lang
 created: 2026-11-04
 ---
