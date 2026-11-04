@@ -1,10 +1,12 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-04T12:16:04.370Z
 id: write-math-pool-g9m3-ister
 type: write-pool
 subject: math
 grade: 9
 status: todo
-claimed_by:
+claimed_by: writer-write-math-pool-g9m3-ister
 created: 2026-11-03
 depends_on: [write-math-g9-gaps, curate-math-ister-gaps-matrix]
 ---
