@@ -1,7 +1,5 @@
 {
-  "date": "2026-11-04T06:38:35.925Z",
+  "date": "2026-11-04T06:42:36.948Z",
   "errors": [],
-  "warnings": [
-    "content/math/g6-g6m4.js#g6m4l4: sentenceWords=3.9 поза профілем [4; 10] для math, 5-6 кл."
-  ]
+  "warnings": []
 }
