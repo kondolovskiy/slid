@@ -5,7 +5,7 @@ id: write-math-pool-g9m8
 type: write-pool
 subject: math
 grade: 9
-status: review
+status: done
 claimed_by: writer-write-math-pool-g9m8
 created: 2026-11-03
 depends_on: [write-math-g9m8-lines-planes, write-math-g9m8-prisms-pyramids, write-math-g9m8-solids-revolution, curate-math-ister-gaps-matrix]
@@ -94,3 +94,7 @@ writer-write-math-pool-g9m8, 2026-11-04.
 - `node tools/fig-audit.mjs --subject math` — для pool-g9-g9m8.js рядків немає (g06, g08 отримали рисунки).
 - `python3 tools/test-answer-ui.py --suite content --pool pg9m8` — у копії дерева з build (scratchpad): «pg9m8: locked/open, 86 вправ, steps/source, SRS/reload/offline green»; «Обрані браузерні сценарії: green».
 - Кожну відповідь розв'язано двічі (вручну й числовою перевіркою в node).
+
+## Верифікація
+
+verifier-write-math-pool-g9m8, 2026-11-04: **verified**, звіт reports/verify/write-math-pool-g9m8.md. 86/86 ключів збіглися з незалежним розв'язком; № і сторінки ist9g звірено. Правки: k07 (порядок і формат a : b), h02 (дані Хеопса: «близько 146,6 м / 230 м», відповідь 2 585 000 м³, tol 500). c05, d05 — прийнято з підказкою (D-019). l8 — один рівень 1, прийнято з приміткою (зміна рівня зачепила б знімок test-hyp §10). validate --pool pg9m8 — 0/0; test-answer-ui --suite content --pool pg9m8 у копії дерева — green.
