@@ -1,14 +1,14 @@
 ---
-claimed_from: todo
-claimed_at: 2026-11-04T06:38:42.977Z
+claimed_from: review
+claimed_at: 2026-11-04T06:56:43.891Z
 id: write-ukr-u7s8
 type: write-section
 subject: ukr
 grade: 7
 section: u7s8
 weeks: [23, 24]
-status: review
-claimed_by: writer-write-ukr-u7s8
+status: done
+claimed_by: verifier-write-ukr-u7s8
 created: 2026-11-03
 ---
 # Написати розділ «Прислівник» (Українська мова, 7 клас)
@@ -87,3 +87,5 @@ created: 2026-11-03
 **Опора завдань (D-019):** l1 е2 — міркування («коти біжать швидко»); l2 е2 — з екрана (порядок питань на полях = порядок слів); l3 е2 — міркування (босоніж = босі ноги); l3 е9 stress — з е8; l5 е2 — u6s10l3 у requires + префікс най-; boss — лише зміст l1–l6.
 
 **Пропозиції:** профіль ukr 7–9 (sentenceWords) — як у u7s1–u7s5; у glossary — терміни «розряди прислівників за значенням» (7: означальні, способу дії, міри і ступеня, місця, часу, причини, мети), «перехід з інших частин мови».
+
+**verifier-u7s8, 2026-11-04.** Перевірено: 7/7 уроків verified, 5 правок (2 критичні: l4 е8 «там» у pick; l5 е4 answer + «тихше», «тихіш»; також «гірш» у l5 е9, «легко → легше» у l5 е7). Звіт reports/verify/u7s8.md. Playtest — після build оркестратора.
