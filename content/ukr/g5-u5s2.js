@@ -866,7 +866,7 @@ SLID.section("ukr", {
       title: "Два часа чи дві години?",
       short: "Точне слово",
       icon: "check",
-      status: "draft",
+      status: "verified",
       why: "Точне слово робить оголошення, лист чи розповідь зрозумілими й грамотними.",
       screens: [
         {
