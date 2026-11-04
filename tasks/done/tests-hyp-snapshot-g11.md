@@ -2,7 +2,7 @@
 id: tests-hyp-snapshot-g11
 type: tests
 subject: math
-status: review
+status: done
 claimed_by: eng-test-hyp-g11
 created: 2026-11-04
 depends_on: []
