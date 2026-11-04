@@ -69,5 +69,45 @@ const MF = path.join(tmp, "matrix.json"); fs.writeFileSync(MF, JSON.stringify(ma
 { const r = run("--subject", "hist", "--dry-run");
   ok(r.status === 2 && /лише для math/.test(r.out), "--subject hist: матриці немає — код 2", r.out); }
 
+// 3. Звичайний режим (tools-make-tasks-template): задачі write-<предмет>-<розділ> з плану фікстури tools/fixtures/make-tasks/content
+//    (--content — інше дерево змісту; рушійні app/*.js, які вантажить loadContent, копіюються з репозиторію).
+//    Шаблон: без кроку build для автора (його запускає оркестратор, AGENTS.md §4 п. 8); hist і world — D-027 і скіл hist-images.
+const runN = (...a) => { const r = spawnSync(process.execPath, [path.join(ROOT, "tools/make-tasks.mjs"), ...a], { cwd: ROOT, encoding: "utf8" }); return { out: r.stdout + r.stderr, status: r.status }; };
+const FX = path.join(tmp, "content-root");
+fs.cpSync(path.join(ROOT, "tools/fixtures/make-tasks/content"), path.join(FX, "content"), { recursive: true });
+for (const f of ["registry.js", "lab.js", "learn.js", "math.js"]) fs.cpSync(path.join(ROOT, "app", f), path.join(FX, "app", f));
+const newTasks = name => { const d = path.join(tmp, name); for (const s of ["todo", "doing", "review", "done"]) fs.mkdirSync(path.join(d, s), { recursive: true }); return d; };
+{ const T2 = newTasks("tasks-normal");
+  fs.writeFileSync(path.join(T2, "review", "write-math-fm6.md"), "---\nid: write-math-fm6\n---\n");
+  const r = runN("--content", FX, "--tasks", T2);
+  ok(r.status === 0 && /Створено задач: 3\b/.test(r.out), "звичайний режим: створено 3 задачі (fh5, fw7, fm5)", r.out);
+  ok(JSON.stringify(fs.readdirSync(path.join(T2, "todo")).sort()) === JSON.stringify(["write-hist-fh5.md", "write-math-fm5.md", "write-world-fw7.md"]),
+    "звичайний режим: розділ з уроками (fmx) і розділ із задачею в review (fm6) — пропущено", fs.readdirSync(path.join(T2, "todo")).join(", "));
+  const read = n => { const f = path.join(T2, "todo", n); return fs.existsSync(f) ? fs.readFileSync(f, "utf8") : ""; };
+  const H = read("write-hist-fh5.md"), W = read("write-world-fw7.md"), M = read("write-math-fm5.md");
+  ok(H.startsWith("---\nid: write-hist-fh5\ntype: write-section\nsubject: hist\ngrade: 5\nsection: fh5\nweeks: [1, 4]\nstatus: todo\n"), "шаблон: frontmatter", H.slice(0, 200));
+  ok(H.includes("# Написати розділ «Фікстура історії» (Історія, 5 клас)") && H.includes("1. Перша тема історії\n2. Друга тема історії\n3. Фінальний урок розділу"), "шаблон: назва й теми з плану", H);
+  for (const [nm, b, id] of [["hist", H, "fh5"], ["world", W, "fw7"], ["math", M, "fm5"]]) {
+    ok(b && !/build\.mjs\s*&&/.test(b) && !/^- \[ \][^\n]*build\.mjs/m.test(b), `${nm}: у чек-листі автора немає кроку build`, b);
+    ok(b.includes(`\`node tools/validate.mjs --section ${id}\` — 0 помилок`), `${nm}: validate розділу без build`, b);
+    ok(/build[^\n]*оркестратор|оркестратор[^\n]*build/.test(b) && b.includes("AGENTS.md §4 п. 8"), `${nm}: пояснено, що build запускає оркестратор`, b);
+    ok(!b.includes("Фото (якщо є)"), `${nm}: немає «Фото (якщо є)»`, b); }
+  for (const [nm, b, id] of [["hist", H, "fh5"], ["world", W, "fw7"]]) {
+    ok(b.includes("кожному уроці ≥ 1 справжнє `img`") && b.includes("D-027") && b.includes(".claude/skills/hist-images/SKILL.md") && b.includes(`\`img/${nm}/${id}/\``),
+      `${nm}: D-027 — img у кожному уроці, скіл hist-images, тека img`, b);
+    ok(/^- \[ \][^\n]*D-027/m.test(b), `${nm}: D-027 — і в чек-листі «Готово, коли»`, b); }
+  ok(M && !M.includes("D-027") && !M.includes("hist-images") && M.includes("`img/math/fm5/`"), "math: без D-027 і hist-images, зображення за потреби", M);
+  ok(M.includes("- Розділи цього ж класу з уроками: fmx — вирівнюйся по них"), "math: сусід 5 кл. з уроками", M);
+  const r2 = runN("--content", FX, "--tasks", T2);
+  ok(r2.status === 0 && /Створено задач: 0\b/.test(r2.out), "звичайний режим: повторний запуск — 0 нових (ідемпотентно)", r2.out); }
+{ const T3 = newTasks("tasks-filter");
+  const r = runN("--content", FX, "--tasks", T3, "--subject", "math", "--grade", "6");
+  ok(r.status === 0 && /Створено задач: 1\b/.test(r.out) && fs.existsSync(path.join(T3, "todo", "write-math-fm6.md")), "--subject math --grade 6: лише fm6", r.out); }
+{ // справжній зміст — лише інваріанти (склад плану змінюється): код 0, справжня черга tasks/ не змінилася
+  const before = listTasks(path.join(ROOT, "tasks")), T4 = path.join(tmp, "tasks-real");
+  const r = runN("--tasks", T4);
+  ok(r.status === 0 && /Створено задач: \d+/.test(r.out), "справжній план у тимчасову теку (todo створено): код 0", r.out);
+  ok(JSON.stringify(listTasks(path.join(ROOT, "tasks"))) === JSON.stringify(before), "справжній план: tasks/ репозиторію не змінено"); }
+
 console.log(fails ? `\n${fails} з ${n} перевірок не пройшли` : `test-make-tasks: усі ${n} перевірок пройшли`);
 process.exit(fails ? 1 : 0);

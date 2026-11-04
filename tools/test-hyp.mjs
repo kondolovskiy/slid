@@ -498,18 +498,41 @@ const sum = (R, pid) => R.events.filter(e => e.pid === pid).map(e => e.type === 
 /* ---------- 10. --content-stats відтворює цифри документа (§0, §2.1, §2.3) ---------- */
 {
   const st = contentStats(E), s0 = st.s0, s21 = st.s21, s23 = st.s23;
-  eq([s0.gradedScreens, s0.byType.choice, s0.choiceHypPoll, s0.fbBad, s0.hint, s0.pre, s0.preLessons], [1306, 565, 52, 1288, 915, 30, 16], "§0 екрани уроків");
-  eq([s0.pools, s0.poolItems, s0.lvl, s0.poolHint, s0.poolPre, s0.gen, s0.itemTypes, s0.answerNumber], [48, 1348, { 1: 518, 2: 505, 3: 325 }, 848, 0, 0, { answer: 1243, choice: 66, multi: 39 }, 895], "§0 пули");
-  eq([s0.pairs, s0.pairs2a1, s0.diags, s0.diagItems, s0.pureTitle], [174, 158, 8, 209, 277], "§0 пари, тести, чисті вирази");
-  eq([s21.errors, s21.A, s21.Dle, s21.byLvl[1].Dle, s21.byLvl[1].errors, s21.byLvl[2].Dle, s21.byLvl[2].errors], [676, 346, 151, 0, 518, 151, 158], "§2.1 A 346; D≤ 151/676, рівень 1 — 0/518");
-  eq([s21.Dgt, s21.Dseen, s21.none, s21.anyUnseen, s21.F, s21.natDle, s21.natAny], [520, 499, 26, 671, 124, 151, 671], "§2.1 D>, D°, F, природні");
-  eq([st.pre.viaRequires, st.pre.viaDiagTopicFor, st.pre.viaPreScreens, st.pre.any, st.pre.anyWithPrePool], [139, 145, 9, 157, 157], "§2.1 передумови 157/169");
-  eq([s23[1].clean, s23[1].errors, s23[1].cleanDle, s23[1].cleanDgt, s23[2].clean, s23[2].errors, s23[2].cleanDle, s23[2].cleanDgt], [515, 518, 0, 515, 156, 158, 151, 5], "§2.3 чисті наступного дня 515/518 і 156/158");
-  eq([s23[1].sol0, s23[2].sol0, st.pairSizes[4]], [503, 0, 165], "§2.3 sol0 ≥ 1 — 503/518 і 0/158; 165 уроків — одна пара");
-  // та сама модель через app/hyp.js: усі помилки рівня 1 мають чисту природну перевірку (D> або F), D≤ — жодної; sol0 — як у скрипті; A — 346 з lvl ≤
+  // 2026-11-03: 1306/565/52/1288/915/30/16 → 1620/695/74/1599/1142/54/30 — пакет draft-уроків математики за Істером (D-043: 52 тематичні
+  // уроки + boss g6m6, g9m8); пули й тести рівня тоді не змінились (curate-math-ister-gaps-matrix).
+  // 2026-11-04, пакет D-043 (tests-hyp-snapshot-ister): переписані фінали, 19 нових/доповнених пулів math (+265 вправ, 49 пулів), матриця v7.
+  // Попередні знімки: §0 екрани [1620,695,74,1599,1142,54,30]; пули [48,1348,{518,505,325},848,0,0,{1243,66,39},895]; пари [174,158,8,209,277];
+  // §2.1 [676,346,151,0,518,151,158], [520,499,26,671,124,151,671], передумови [139,145,9,157,157]; §2.3 [515,518,0,515,156,158,151,5],
+  // [503,0,165]; hyp.js [518,0,503,0,346], [518,518,{D> 475,F 43},157,158,{D≤ 144,F 13}]. Рушій (pickSession, hyp.js) не змінювався —
+  // числа зміщені лише новим змістом; дві нові «аномалії» пояснено й закріплено перевірками нижче (docs/design/diag-hypothesis-math.md §2.3).
+  // 2026-11-04, refine-math-diag-for-ister: рушій (pickSession, hyp.js, buildPlan) не змінювався. Зсуви — зміст інших задач: pg9m4–pg9m6 доповнено
+  // (+55 вправ, 54af813, 1504bde), новий пул pg9m8 (draft, +86, 50-й пул); і одна цифра — від цієї задачі: теми тестів 174 → 184, з них +3 —
+  // ms4l2, ms4l3, ms4l5 (dg6 geom.for + ms4, матриця v8; без цієї зміни — 181). Нове на рівні 2: sol0 3 (pg6m4:f03 + pg9m8:h02, h03) і D> 3 —
+  // урок g9m8l8 має одну вправу рівня 1 (як g6m4l7, перевірка (б) нижче тримається). Попередні знімки: пули [49,1613,{619,606,388},1015,0,0,
+  // {1463,97,53},1060]; пари [209,187,8,209,318]; §2.1 [812,413,182,0,619,182,193], [617,588,42,799,160,182,799], передумови [163,174,10,191,191];
+  // §2.3 [607,619,0,607,188,193,181,7], [603,1,198]; hyp.js [613,0,603,1,413], [613,619,{D> 549,F 64},190,193,{D≤ 170,F 20}].
+  eq([s0.gradedScreens, s0.byType.choice, s0.choiceHypPoll, s0.fbBad, s0.hint, s0.pre, s0.preLessons], [1624, 691, 74, 1604, 1152, 87, 39], "§0 екрани уроків");  // 691: верифікатор g6m3 замінив один lab на choice (2fcb431)
+  eq([s0.pools, s0.poolItems, s0.lvl, s0.poolHint, s0.poolPre, s0.gen, s0.itemTypes, s0.answerNumber], [50, 1754, { 1: 671, 2: 661, 3: 422 }, 1104, 0, 0, { answer: 1583, choice: 112, multi: 59 }, 1130], "§0 пули");
+  eq([s0.pairs, s0.pairs2a1, s0.diags, s0.diagItems, s0.pureTitle], [227, 200, 8, 209, 318], "§0 пари, тести, чисті вирази");
+  eq([s21.errors, s21.A, s21.Dle, s21.byLvl[1].Dle, s21.byLvl[1].errors, s21.byLvl[2].Dle, s21.byLvl[2].errors], [884, 449, 198, 0, 671, 198, 213], "§2.1 A 449; D≤ 198/884, рівень 1 — 0/671");
+  eq([s21.Dgt, s21.Dseen, s21.none, s21.anyUnseen, s21.F, s21.natDle, s21.natAny], [673, 635, 51, 871, 176, 198, 871], "§2.1 D>, D°, F, природні");
+  eq([st.pre.viaRequires, st.pre.viaDiagTopicFor, st.pre.viaPreScreens, st.pre.any, st.pre.anyWithPrePool], [181, 184, 22, 209, 209], "§2.1 передумови 209/221");
+  eq([s23[1].clean, s23[1].errors, s23[1].cleanDle, s23[1].cleanDgt, s23[2].clean, s23[2].errors, s23[2].cleanDle, s23[2].cleanDgt], [659, 671, 0, 659, 208, 213, 197, 11], "§2.3 чисті наступного дня 659/671 і 208/213");
+  eq([s23[1].sol0, s23[2].sol0, st.pairSizes[4]], [655, 3, 216], "§2.3 sol0 ≥ 1 — 655/671 і 3/213; 216 уроків — одна пара");
+  // та сама модель через app/hyp.js: D≤ для помилок рівня 1 — жодної (інваріант: усі вправи рівня 1 пари вже в першій сесії); sol0 — як у скрипті; A — 449 з lvl ≤
   const M = st.module;
-  eq([M.byLvl[1].clean, M.byLvl[1].kinds["D≤"] || 0, M.byLvl[1].sol0ge1, M.byLvl[2].sol0ge1, M.A.le], [518, 0, 503, 0, 346], "модель через hyp.js");
-  eq([M.byLvl[1].clean, M.byLvl[1].errors, M.byLvl[1].kinds, M.byLvl[2].clean, M.byLvl[2].errors, M.byLvl[2].kinds], [518, 518, { "D>": 475, F: 43 }, 157, 158, { "D≤": 144, F: 13 }], "через hyp.js: 518/518 (D> 475, F 43), 157/158 (D≤ 144, F 13)");
+  eq([M.byLvl[1].clean, M.byLvl[1].kinds["D≤"] || 0, M.byLvl[1].sol0ge1, M.byLvl[2].sol0ge1, M.A.le], [665, 0, 655, 3, 449], "модель через hyp.js");
+  eq([M.byLvl[1].clean, M.byLvl[1].errors, M.byLvl[1].kinds, M.byLvl[2].clean, M.byLvl[2].errors, M.byLvl[2].kinds], [665, 671, { "D>": 595, F: 70 }, 210, 213, { "D≤": 185, F: 22, "D>": 3 }], "через hyp.js: 665/671 (D> 595, F 70), 210/213 (D≤ 185, F 22, D> 3)");
+  // Звідки «нечисті» й sol0 рівня 2 (2026-11-04). Не прив'язуємо до id уроків — лише до будови пулу уроку:
+  // (а) помилка рівня 1 без чистої перевірки — лише в уроках з 6 вправами (мінімум CONTENT_SCHEMA §10): після першої сесії (4 вправи) небачених
+  //     лишається 2, і pickSession доповнює сесію наступного дня баченою вправою рівня 1 тієї ж пари; сортування за рівнем ставить її перед
+  //     першою небаченою → sol 1 (g8m2l6, g8m2l7 — по 3 помилки). В уроках з 7–8 вправами такого бути не може.
+  // (б) sol0 ≥ 1 на рівні 2 — лише в уроках, де рівня 1 менше 3: перша сесія бере дві вправи рівня 2 тієї самої sk (g6m4l7: рівня 1 лише f01, f02).
+  const nIn = {}, n1In = {}; for (const p of E.math.pools) for (const it of p.items) { nIn[it.lesson] = (nIn[it.lesson] || 0) + 1; if ((it.lvl || 1) === 1) n1In[it.lesson] = (n1In[it.lesson] || 0) + 1; }
+  const lessonOf = key => { const [pid, id] = key.split(":"); return E.math.pools.find(p => p.id === pid).items.find(i => i.id === id).lesson; };
+  eq(M.byLvl[1].notClean.map(lessonOf).filter(l => nIn[l] > 6), [], "нечиста перевірка рівня 1 — лише в уроках з 6 вправами");
+  eq(M.byLvl[2].sol0Keys.map(lessonOf).filter(l => (n1In[l] || 0) >= 3), [], "sol0 ≥ 1 на рівні 2 — лише в уроках з < 3 вправами рівня 1");
+  eq([M.byLvl[1].notClean.length, M.byLvl[2].sol0Keys.length], [M.byLvl[1].errors - M.byLvl[1].clean, M.byLvl[2].sol0ge1], "notClean / sol0Keys узгоджені з лічильниками");
 }
 
 /* ---------- 11. Підключення (E2): index.html, sw.js, manifest; модуль без DOM і сховища ---------- */

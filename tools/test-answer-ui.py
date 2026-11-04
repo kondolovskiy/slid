@@ -86,23 +86,41 @@ async def grade_context_checks(browser, url):
             if screen['type'] not in ('intro', 'info', 'explore'):
                 assert 'ok' in await page.locator('#dock').get_attribute('class') or screen.get('hyp')
                 await page.click('#action')
-    # A dg6 run saved before revision 2 (no diagRunRev): verdicts of revised cur probes are dropped on load,
-    # the other answers and their order stay, and the revised probes are asked again (learn.js resumeDiag).
+    # A dg6 run saved in an older revision: on load the verdicts of probes revised AFTER the run's revision are dropped, the other
+    # answers (incl. probes revised up to the run's revision) and their order stay, the dropped probes are asked again, and the run
+    # moves to the current revision (learn.js resumeDiag). Not tied to a revision number: the current one is the largest item rev,
+    # read from the items here (not via SLID_LEARN.diagRev). Saved revision None = a run saved before diagRunRev existed (revision 1);
+    # 2..current-1 — e.g. a revision-2 run under revision 3 must keep its rev-2 verdicts (guards `itemRev(it) > from`).
+    planted = 28
     await page.goto(url)
-    await page.evaluate("""() => {
-      const d=SLID_SUBJECTS.find(c=>c.id==='math').diags.find(d=>d.id==='dg6');
-      localStorage.setItem('slid.v1',JSON.stringify({grade:6,unlockAll:false,diagRun:{dg6:Object.fromEntries(d.items.map((_,i)=>[i,1]).slice(0,26))}}));
-    }""")
-    await page.reload()
-    legacy = await page.evaluate("""() => {const S=JSON.parse(localStorage.getItem('slid.v1')),d=SLID_SUBJECTS.find(c=>c.id==='math').diags.find(d=>d.id==='dg6');
-      return {keys:Object.keys(S.diagRun.dg6).map(Number),rev:S.diagRunRev.dg6,revised:d.items.flatMap((it,i)=>it.rev?[i]:[]),next:SLID_LEARN.nextItem(d,S.diagRun.dg6)};}""")
-    assert legacy['rev'] == 2 and set(legacy['revised']) & set(legacy['keys']) == set(), legacy
-    assert legacy['keys'] == [i for i in range(26) if i not in legacy['revised']] and legacy['next'] == legacy['revised'][0], legacy
-    assert 'Продовжити тест' in await page.locator('#view').inner_text()
-    await page.evaluate("localStorage.clear()")
-    # tests-diag-rev-p2 P2-1: a run STARTED in revision 2 through the player (no diagRunRev planted by the test) remembers its
+    item_revs =await page.evaluate("""() => SLID_SUBJECTS.find(c=>c.id==='math').diags.find(d=>d.id==='dg6').items
+      .map(it=>Number.isInteger(it.rev)&&it.rev>1?it.rev:1)""")
+    max_rev = max(item_revs)
+    assert max_rev >= 2 and planted < len(item_revs), item_revs
+    for saved_rev in [None] + list(range(2, max_rev)):
+        await page.goto(url)
+        await page.evaluate("""([n, saved]) => {
+          const d=SLID_SUBJECTS.find(c=>c.id==='math').diags.find(d=>d.id==='dg6');
+          const S={grade:6,unlockAll:false,diagRun:{dg6:Object.fromEntries(d.items.map((_,i)=>[i,1]).slice(0,n))}};
+          if (saved) S.diagRunRev={dg6:saved};
+          localStorage.setItem('slid.v1',JSON.stringify(S));
+        }""", [planted, saved_rev])
+        await page.reload()
+        legacy = await page.evaluate("""() => {const S=JSON.parse(localStorage.getItem('slid.v1')),d=SLID_SUBJECTS.find(c=>c.id==='math').diags.find(d=>d.id==='dg6');
+          return {keys:Object.keys(S.diagRun.dg6).map(Number),rev:S.diagRunRev.dg6,next:SLID_LEARN.nextItem(d,S.diagRun.dg6)};}""")
+        from_rev = saved_rev or 1
+        dropped = [i for i in range(planted) if item_revs[i] > from_rev]
+        kept_revised = [i for i in range(planted) if 2 <= item_revs[i] <= from_rev]
+        # the scenario must be able to fail both ways: something to drop, and (for saved >= 2) revised verdicts that must stay
+        assert dropped and (saved_rev is None or kept_revised), (saved_rev, item_revs)
+        assert legacy['rev'] == max_rev, (saved_rev, legacy)
+        assert legacy['keys'] == [i for i in range(planted) if i not in dropped] and legacy['next'] == dropped[0], (saved_rev, dropped, legacy)
+        assert 'Продовжити тест' in await page.locator('#view').inner_text()
+        await page.evaluate("localStorage.clear()")
+    # tests-diag-rev-p2 P2-1: a run STARTED in the current revision (max_rev) through the player (no diagRunRev planted by the test) remembers its
     # revision: answers to revised probes survive a reload. Regression guard for startDiag writing diagRunRev (learn.js resumeDiag);
     # without it the reload would treat the run as revision 1 and drop these verdicts.
+    # rev_items[:2] holds probes of different revisions (2 and 3 at the time of writing): both must survive.
     await page.goto(url)
     await page.evaluate("localStorage.setItem('slid.v1',JSON.stringify({grade:6,unlockAll:false}))")
     await page.reload()
@@ -120,11 +138,11 @@ async def grade_context_checks(browser, url):
         assert i >= 0 and i not in answered, (i, answered)
         await answer_context_screen(page, screen); await page.click('#action'); answered.append(i)
     before_reload = await state()
-    assert before_reload['diagRunRev']['dg6'] == 2, before_reload.get('diagRunRev')
+    assert before_reload['diagRunRev']['dg6'] == max_rev, (max_rev, before_reload.get('diagRunRev'))
     assert all(before_reload['diagRun']['dg6'][str(i)] == 1 for i in rev_items[:2]), before_reload['diagRun']['dg6']
     await page.click('#pClose'); await page.reload()
     after_reload = await state()
-    assert after_reload['diagRunRev']['dg6'] == 2 and after_reload['diagRun']['dg6'] == before_reload['diagRun']['dg6'], (before_reload['diagRun'], after_reload['diagRun'])
+    assert after_reload['diagRunRev']['dg6'] == max_rev and after_reload['diagRun']['dg6'] == before_reload['diagRun']['dg6'], (before_reload['diagRun'], after_reload['diagRun'])
     assert 'Продовжити тест' in await page.locator('#view').inner_text()
     await page.click('[data-diag="math"]'); await page.click('[data-diag-go]')
     nxt = await page.evaluate("""() => {const S=JSON.parse(localStorage.getItem('slid.v1')),d=SLID_SUBJECTS.find(c=>c.id==='math').diags.find(d=>d.id==='dg6');return SLID_LEARN.nextItem(d,S.diagRun.dg6);}""")
@@ -411,6 +429,13 @@ FORMAT_FIXTURES = [
     ({'answerKind': 'coordinates2', 'answer': '(4; -1)', 'body': '<p>Знайди координати вектора $\\vec{AB}$.</p>'}, '(-1; 4)', 'Зміни відповідь', 'AB = (4; −1)'),
     ({'answer': '-1/3'}, 'x = -0,(4)', 'Зміни відповідь', 'x = −0,(3)'),
     ({'answer': '60', 'unit': 'грн'}, '61 мм', 'Зміни відповідь', '60 грн.'),
+    # engine-answer-formats-ister: стандартний вигляд (form — інший запис того самого числа), множина пар, «±» у list з числовим ключем,
+    # «1 : 4» при ключі-дробі (form «це відношення»)
+    ({'answerKind': 'sci', 'answer': '2,72 · 10^5', 'body': '<p>Запиши в стандартному вигляді.</p>'}, '272000', 'стандартному вигляді', '2.72*10^5'),
+    ({'answerKind': 'sci', 'answer': '4,5 · 10^(-3)', 'body': '<p>Запиши в стандартному вигляді.</p>'}, '4,5 · 10^3', 'Зміни відповідь', '4,5·10^-3'),
+    ({'answerKind': 'pairSet', 'answer': [[3, 2], [-2, -3]]}, '(2; 3), (−3; −2)', 'Зміни відповідь', '(−2; −3), (3; 2)'),
+    ({'answerKind': 'list', 'answer': [-3, 3]}, '±4', 'Зміни відповідь', '±3'),
+    ({'answer': '1/4'}, '1 : 4', 'це відношення', '1/4'),
 ]
 
 async def answer_format_checks(browser, url):
@@ -450,6 +475,13 @@ async def answer_format_checks(browser, url):
                     assert '(2a; b − 1)' in helps[-1] and '(p − m; k − n)' not in helps[-1], helps[-1]
                 else:
                     assert ins == ['(', ';', ')', '-', '/', *(['√'] if '√' in str(fields['answer']) else [])], ins
+            if fields.get('answerKind') == 'sci':
+                assert ins == ['·', '10^', '(', ')', '-'], ins
+            if fields.get('answerKind') == 'pairSet':
+                assert ins == ['(', ';', ')', ',', '-', '/'], ins   # «√» до 8 класу — лише коли корінь у ключі
+            if fields.get('answerKind') == 'list':
+                # клас 6: «±» — лише коли «±»/корінь у ключі; з 8 класу — у кожному list (перевірка SLID_ANS_UI.field нижче)
+                assert ('±' in ins) == bool(re.search('[±√]', str(fields['answer']))), (fields, ins)
             if fields.get('answerKind') == 'list' and fields.get('unit'):
                 assert await page.locator('#answerUnit').inner_text() == fields['unit']
             if fields.get('answerKind') == 'time':
@@ -547,6 +579,10 @@ async def answer_format_checks(browser, url):
       for (const f of [() => { SLID_ANS_UI.ratio[1] = 'x'; }, () => { SLID_ANS_UI.ratio[0].push('x'); }, () => { SLID_ANS_UI.time = []; }]) { try { f(); } catch (e) { threw++; } }
       return [threw, Object.isFrozen(SLID_ANS_UI), SLID_ANS_UI.ratio[1].includes('2 : 3')]; }""")
     assert frozen == [3, True, True], frozen
+    # engine-answer-formats-ister п. 1: кнопка «±» у list з числовим ключем — з 8 класу (квадратні рівняння), раніше — ні
+    pm = await page.evaluate("""() => [5, 7, 8, 11].map(g => SLID_ANS_UI.field({ answerKind: 'list', answer: [-3, 3] }, g, false).keys.includes('±'))
+      .concat(SLID_ANS_UI.field({ answerKind: 'list', answer: '±√2' }, 8, false).keys.filter(k => k === '±').length)""")
+    assert pm == [False, False, True, True, 1], pm
     # Two wrong attempts reveal the ordered key in its canonical spelling.
     await page.reload()
     await page.evaluate("""() => {const c=SLID_SUBJECTS.find(c=>c.id==='math');c.pools=c.pools.filter(p=>p.id==='pg6m1');const p=c.pools[0];
@@ -1400,22 +1436,27 @@ async def diag_answer_checks(browser, url):
     """engine-diag-answer-kinds: answer з answerKind time / quantity / decimals у тесті рівня через справжній плеєр.
     Вердикт без фідбеку (ні fb, ні is-ok/is-bad, ні підказки form/bad, без другої спроби); OK для checkAns «ok» і «form» без
     вимоги вигляду (decimals «37»; рішення людини 2026-11-01, engine-decisions-1101); вимаганий вигляд (compound «245 см») —
-    півбала з поясненням, це — half_credit_checks (engine-diag-half-credit); підказка формату під полем не видає ключа; збережений запуск ред. 1 після заміни завдання на answer (rev 2)
+    півбала з поясненням, це — half_credit_checks (engine-diag-half-credit); підказка формату під полем не видає ключа; збережений запуск ред. 1 після заміни завдання на answer (rev = ред. реального dg6 + 1)
     відкидає старий вердикт цього завдання, решту — ні (resumeDiag у startDiag)."""
     context, page, errors = await qa_page(browser, url, {'grade': 6, 'unlockAll': False,
         'diagRun': {'dg6': {'0': 1, '3': 0}}, 'diagRunRev': {'dg6': 1}})
-    await page.evaluate("""() => {
+    # The fixture's item 0 must be newer than the real dg6 (whatever its revision is), read from the items, not SLID_LEARN.diagRev.
+    real_rev = await page.evaluate("""() => Math.max(1,...SLID_SUBJECTS.find(c=>c.id==='math').diags.find(d=>d.id==='dg6').items
+      .map(it=>Number.isInteger(it.rev)&&it.rev>1?it.rev:1))""")
+    fix_rev = real_rev + 1
+    assert real_rev >= 2, real_rev
+    await page.evaluate("""rev => {
       const c=SLID_SUBJECTS.find(c=>c.id==='math'), d=c.diags.find(d=>d.id==='dg6');
       d.items=[
-        {type:'answer',answerKind:'time',answer:'10:05',title:'Коли закінчився урок?',body:'<p>Урок почався о 9:20 і тривав 45 хв.</p>',topic:'t',sk:'meas',rev:3},
+        {type:'answer',answerKind:'time',answer:'10:05',title:'Коли закінчився урок?',body:'<p>Урок почався о 9:20 і тривав 45 хв.</p>',topic:'t',sk:'meas',rev},
         {type:'answer',answerKind:'quantity',answer:245,units:['см','м'],form:'compound',title:'Запиши в метрах і сантиметрах',body:'<p>245 см — це скільки м і см?</p>',topic:'q',sk:'meas'},
         {type:'answer',answer:'37,0',decimals:1,title:'Температура',body:'<p>Запиши з одним знаком після коми.</p>',topic:'d',sk:'num'},
         {type:'answer',answerKind:'quantity',answer:150,units:['хв','год'],title:'Скільки хвилин?',body:'<p>2 год 30 хв — це скільки хвилин?</p>',topic:'m',sk:'meas'}];
       d.topics=d.items.map(it=>({id:it.topic,title:it.title,kind:'cur',lessons:['g6m1l1']}));
-    }""")
+    }""", fix_rev)
     await page.click('[data-diag="math"]'); await page.click('[data-diag-go]')
-    # The real dg6 is revision 2 (boot already moved this run to 2: its indices 0 and 3 were not revised). The fixture's item 0
-    # has rev 3 > 2: startDiag (resumeDiag, in memory; written with the next answer) drops its old verdict and asks it again,
+    # Boot already moved this run to the real dg6 revision real_rev (its indices 0 and 3 were not revised). The fixture's item 0
+    # has rev fix_rev > real_rev: startDiag (resumeDiag, in memory; written with the next answer) drops its old verdict and asks it again,
     # item 3 (no rev) keeps its BAD — checked in storage after the first answer below.
     assert (await saved_state(page))['diagRun']['dg6'] == {'0': 1, '3': 0}
     async def no_feedback():
@@ -1440,24 +1481,24 @@ async def diag_answer_checks(browser, url):
         if i == len(plan) - 1:   # the last open item finishes the test: the run moves to S.diag (checked below)
             assert 'dg6' not in st['diagRun'] and st['diag']['dg6']['res'][str(i)] == verdict, st['diag']
             continue
-        assert st['diagRun']['dg6'][str(i)] == verdict and st['diagRunRev']['dg6'] == 3, (i, value, st['diagRun']['dg6'])
+        assert st['diagRun']['dg6'][str(i)] == verdict and st['diagRunRev']['dg6'] == fix_rev, (i, value, st['diagRun']['dg6'])
         if i == 0:   # item 0 was asked first (its rev-1 verdict was dropped), item 3 kept its BAD
             assert st['diagRun']['dg6'] == {'0': 1, '3': 0}, st['diagRun']
         if i == 0:   # resume after a reload: the answer survives, the run continues at the next item
             await page.click('#pClose'); await page.reload()
-            await page.evaluate("""() => { const d=SLID_SUBJECTS.find(c=>c.id==='math').diags.find(d=>d.id==='dg6');
-              d.items=[{type:'answer',answerKind:'time',answer:'10:05',title:'Коли закінчився урок?',topic:'t',sk:'meas',rev:3},
+            await page.evaluate("""rev => { const d=SLID_SUBJECTS.find(c=>c.id==='math').diags.find(d=>d.id==='dg6');
+              d.items=[{type:'answer',answerKind:'time',answer:'10:05',title:'Коли закінчився урок?',topic:'t',sk:'meas',rev},
                 {type:'answer',answerKind:'quantity',answer:245,units:['см','м'],form:'compound',title:'Запиши в метрах і сантиметрах',topic:'q',sk:'meas'},
                 {type:'answer',answer:'37,0',decimals:1,title:'Температура',topic:'d',sk:'num'},
                 {type:'answer',answerKind:'quantity',answer:150,units:['хв','год'],title:'Скільки хвилин?',topic:'m',sk:'meas'}];
-              d.topics=d.items.map(it=>({id:it.topic,title:it.title,kind:'cur',lessons:['g6m1l1']})); }""")
+              d.topics=d.items.map(it=>({id:it.topic,title:it.title,kind:'cur',lessons:['g6m1l1']})); }""", fix_rev)
             assert (await saved_state(page))['diagRun']['dg6'] == {'0': 1, '3': 0}
             await page.click('[data-diag="math"]'); await page.click('[data-diag-go]')
     result = (await saved_state(page))['diag']['dg6']
-    assert result['res'] == {'0': 1, '1': 1, '2': 1, '3': 0} and result['rev'] == 3, result
+    assert result['res'] == {'0': 1, '1': 1, '2': 1, '3': 0} and result['rev'] == fix_rev, (fix_rev, result)
     assert not errors, errors
     await context.close()
-    print('diag answer (time/quantity/decimals): verdicts без фідбеку, form → OK, rev 3 — green', flush=True)
+    print(f'diag answer (time/quantity/decimals): verdicts без фідбеку, form → OK, rev {fix_rev} — green', flush=True)
 
 async def sk_mark_saved_checks(browser, url):
     """P3-2 (рев'ю engine-learn-list-prefixes-p3), мутаційний сторож: позначку skFix app.js зберігає одразу після migrateSk,

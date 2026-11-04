@@ -1,18 +1,20 @@
 #!/usr/bin/env node
 // Слід · створює задачі на написання розділів з плану (content/<предмет>/plan.js).
 // Для кожного розділу без уроків, для якого ще немає задачі в tasks/*, з'являється tasks/todo/write-<предмет>-<id>.md.
-// Запуск: node tools/make-tasks.mjs [--subject math] [--grade 6]
+// Запуск: node tools/make-tasks.mjs [--subject math] [--grade 6] [--tasks DIR] [--content DIR]
+//   --tasks — інша тека задач; --content — інше дерево змісту (корінь з content/ і app/; фікстура в tools/test-make-tasks.mjs).
+//   Шаблон автора не велить запускати build (його запускає оркестратор, AGENTS.md §4 п. 8); для предметів з IMG_REQUIRED (lib.mjs) — D-027.
 // Режим пулів (engine-practice-pool): node tools/make-tasks.mjs --write-pool [--grade 8] [--dry-run] [--matrix FILE] [--tasks DIR]
 //   задачі write-math-pool-<розділ> за матрицею покриття (docs/math-personalization-coverage.json) і чинним шаблоном пакета:
 //   лише розділи з required-уроками; пропускає розділ, якщо задача з таким id уже є в todo/doing/review/done або пул уже є в змісті.
 //   --dry-run нічого не пише, лише показує; --matrix / --tasks — інші файл матриці й тека задач (fixtures у tools/test-make-tasks.mjs).
 import fs from "node:fs"; import path from "node:path";
-import { loadContent, ROOT } from "./lib.mjs";
+import { loadContent, ROOT, IMG_REQUIRED } from "./lib.mjs";
 
 const args = process.argv.slice(2);
 const opt = k => args.includes(k) ? args[args.indexOf(k) + 1] : null;
 const onlySubj = opt("--subject"), onlyGrade = opt("--grade") ? +opt("--grade") : null;
-const { subjects } = loadContent();
+const { subjects } = loadContent(opt("--content") ? path.resolve(opt("--content")) : ROOT);
 const TASKS = opt("--tasks") ? path.resolve(opt("--tasks")) : path.join(ROOT, "tasks"), DRY = args.includes("--dry-run");
 const STATES = ["todo", "doing", "review", "done"];
 const existing = new Set(STATES.flatMap(d => fs.existsSync(path.join(TASKS, d)) ? fs.readdirSync(path.join(TASKS, d)) : []));
@@ -22,6 +24,7 @@ const existingIds = new Set(STATES.flatMap(d => fs.existsSync(path.join(TASKS, d
 if (args.includes("--write-pool")) { writePool(); process.exit(0); }
 const exemplar = { hist: "content/hist/g5-s2.js", math: "content/math/g5-ms1.js", ukr: "content/ukr/g5-u5s1.js і g5-u5s4.js (verified; style/ukr.md → «Еталони»)", world: "content/world/g7-w7s1.js (еталон після верифікації; style/world.md → «Еталони»)" };
 let made = 0;
+if (!args.includes("--write-pool")) fs.mkdirSync(path.join(TASKS, "todo"), { recursive: true });
 for (const c of subjects) {
   if (onlySubj && c.id !== onlySubj) continue;
   c.sections.forEach((sec, k) => {
@@ -30,6 +33,7 @@ for (const c of subjects) {
     const name = `write-${c.id}-${sec.id}.md`;
     if (existing.has(name)) return;
     const prev = c.sections.filter(s => s.grade === sec.grade && s.lessons).map(s => s.id);
+    const img = !!IMG_REQUIRED[c.id];   // D-027: у кожному уроці ≥ 1 справжнє img (помилка validate)
     const body = `---
 id: write-${c.id}-${sec.id}
 type: write-section
@@ -51,7 +55,7 @@ ${sec.plan.map((t, i) => `${i + 1}. ${t}`).join("\n")}
 ${sec.plan.length + 1}. Фінальний урок розділу (boss: true, бали ×2, свій значок у sec.badges)
 
 ## Прочитати перед роботою
-- AGENTS.md і скіл автора \`.claude/skills/content-author/SKILL.md\`
+- AGENTS.md і скіл автора \`.claude/skills/content-author/SKILL.md\`${img ? "\n- Скіл зображень \`.claude/skills/hist-images/SKILL.md\` і docs/IMAGES.md (D-027)" : ""}
 - style/common.md, style/${c.id}.md, style/profiles.json
 - memory/long/glossary/${c.id}.md і memory/long/facts/${c.id}.md — використовуй ці формулювання й дати
 - memory/long/pitfalls.md
@@ -59,15 +63,18 @@ ${sec.plan.length + 1}. Фінальний урок розділу (boss: true, 
 
 ## Результат
 - Файл \`content/${c.id}/g${sec.grade}-${sec.id}.js\` з \`SLID.section("${c.id}", { id: "${sec.id}", ... })\` — той самий id, що в плані
-- Фото (якщо є) у \`img/${c.id}/${sec.id}/\`, з \`credits\` у розділі
+${img ? `- У кожному уроці ≥ 1 справжнє \`img\` з відкритою ліцензією, з \`cap\` і \`credits\` (D-027; svg/fig не зараховуються; без img — помилка validate): файли в \`img/${c.id}/${sec.id}/\`, процедура — скіл hist-images`
+       : `- Зображення (якщо потрібні) — у \`img/${c.id}/${sec.id}/\`, з \`cap\` і \`credits\` у розділі`}
 - Нові факти — рядками в «Нотатках агента» нижче (куратор перенесе в memory/long/facts/${c.id}.md)
 
 ## Готово, коли
-- [ ] \`node tools/build.mjs && node tools/validate.mjs --section ${sec.id}\` — 0 помилок
+- [ ] \`node tools/validate.mjs --section ${sec.id}\` — 0 помилок${img ? "\n- [ ] Кожен урок має ≥ 1 справжнє `img` з `cap` і `credits` (D-027) — validate не показує «урок без зображення img»" : ""}
 - [ ] Попередження або виправлено, або пояснено нижче
 - [ ] \`node tools/stats.mjs --subject ${c.id}\` — уроки розділу без прапорців «нетипово для сім'ї»
 - [ ] Кожен урок: status: "draft", проблема на першому екрані, теорія після проблеми, ≥ 1 hint, outro з 2–4 пунктами
 - [ ] Задачу переміщено в tasks/review/, у нотатках — перелік фактів з джерелами
+
+Build не запускай: під час паралельного запуску його запускає оркестратор, коли всі закінчили (AGENTS.md §4 п. 8); validate бачить новий файл і без нього. Лише якщо працюєш сам, не в паралельному запуску, — \`node tools/build.mjs\` наприкінці.
 
 ## Нотатки агента
 <!-- Виконавець: що зроблено, спірні місця, факти з джерелами, пропозиції до style/ чи glossary/ -->

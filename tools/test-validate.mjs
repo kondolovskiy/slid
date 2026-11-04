@@ -310,6 +310,12 @@ expectRun("drag: at і без drag — без попередження", one("fx
     ["quantity з unit — помилка", { answerKind: "quantity", answer: 245, units: ["м", "см"], unit: "см" }, "quantity — без unit"],
     ["time з unit — помилка", { answerKind: "time", answer: "9:55", unit: "год" }, "time — без unit"],
     ["невідомий answerKind — помилка", { answerKind: "nope", answer: 5 }, "answerKind має бути"],
+    // engine-answer-formats-ister: нові форми sci і pairSet в уроці
+    ["sci у стандартному вигляді — чисто", { answerKind: "sci", answer: "2,72 · 10^5", body: "Запиши в стандартному вигляді." }, null],
+    ["sci: умова не називає вигляду — помилка", { answerKind: "sci", answer: "2,72 · 10^5" }, "sci — умова має назвати"],
+    ["sci: ключ не в стандартному вигляді — помилка", { answerKind: "sci", answer: "27,2 · 10^4", body: "Запиши в стандартному вигляді." }, "sci — ключ рядком"],
+    ["pairSet — чисто", { answerKind: "pairSet", answer: [[3, 2], [-2, -3]] }, null],
+    ["pairSet з повтором пари — помилка", { answerKind: "pairSet", answer: [[3, 2], [3, 2]] }, "pairSet — ключ"],
     ["form improper зі змішаним ключем — помилка", { answer: "2 1/3", form: "improper" }, "form improper"]]) {
     const id = "fxk";
     const rep = expectRun(`answer в уроці: ${name}`, ans(id, f), ["--section", id], { err: err && `answer: ${err}`, also: "сам проходить перевірку" });

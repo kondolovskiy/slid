@@ -355,11 +355,12 @@ function moduleModel(E, items, L1) {
       s2.forEach(o => ev.push(...ans(T, o, "2026-11-02", 2, "ok", 1, true, S.seen[o.key] === undefined)));
       const hid = ev.find(e => e.type === "hyp_open")?.d.hid, pr = ev.filter(e => e.type === "hyp_probe" && e.d.hid === hid);
       const a = pr.find(p => p.d.kind === "A"); if (a) { A.any++; if (lv(byKey.get(a.d.key)) <= lv(it)) A.le++; }
-      const f = pr.find(p => p.d.kind !== "A"), c = (r[lv(it)] ||= { errors: 0, clean: 0, kinds: {}, sol0ge1: 0, none: 0 });
+      // notClean / sol0Keys — ключі вправ з помилкою (test-hyp перевіряє, з яких уроків вони беруться)
+      const f = pr.find(p => p.d.kind !== "A"), c = (r[lv(it)] ||= { errors: 0, clean: 0, kinds: {}, sol0ge1: 0, none: 0, notClean: [], sol0Keys: [] });
       c.errors++;
-      if (!f) { c.none++; return; }
-      if (f.d.sol === 0) { c.clean++; c.kinds[f.d.kind] = (c.kinds[f.d.kind] || 0) + 1; }
-      if (f.d.sol0 >= 1) c.sol0ge1++;
+      if (!f) { c.none++; c.notClean.push(it.key); return; }
+      if (f.d.sol === 0) { c.clean++; c.kinds[f.d.kind] = (c.kinds[f.d.kind] || 0) + 1; } else c.notClean.push(it.key);
+      if (f.d.sol0 >= 1) { c.sol0ge1++; c.sol0Keys.push(it.key); }
     });
   }
   return { byLvl: r, A };

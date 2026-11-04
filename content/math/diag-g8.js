@@ -4,6 +4,8 @@
    Порядок: спершу базові завдання всіх тем-передумов (1–10), далі складніші; теми 8 класу — лише в другій половині (14–26).
    Кожна тема 8 класу — один multi, що перевіряє всі компоненти ядра одного уроку (coverageObjectives матриці).
    Правка 2026-11-03 (fix-math-notation-ister, D-043): ознаки рівності словами («першою/другою/третьою ознакою»); лише текст, без rev, порядок варіантів і ключі без змін.
+   Опори нових required-уроків D-043 (refine-math-diag-for-ister, 2026-11-04; матриця v8): for теми linear + g8m1 (g8m1l6 — раціональні рівняння; опора g7m1l2).
+   Лише for: завдання, індекси, ключі й rev не змінено; pre-теми про коло (опора g8m2l6/l7) і cur-проби trig не додано — це нові завдання (новий id тесту).
    Перевірка: node tools/validate.mjs --diag dg8 && node tools/personalization-qa.mjs --diag dg8
    Схема й правила: docs/CONTENT_SCHEMA.md §9, style/math.md */
 SLID.diag("math", {
@@ -19,7 +21,7 @@ SLID.diag("math", {
     { id: "poly", title: "Многочлени", kind: "pre", lessons: ["g7m3l2"], for: ["g8m1", "g8m5"] },
     { id: "square", title: "Формули множення", kind: "pre", lessons: ["g7m3l3"], for: ["g8m1", "g8m5"] },
     { id: "factor", title: "Розкладання на множники", kind: "pre", lessons: ["g7m3l4"], for: ["g8m1", "g8m5"] },
-    { id: "linear", title: "Лінійне рівняння", kind: "pre", lessons: ["g7m1l2"], for: ["g8m5"] },
+    { id: "linear", title: "Лінійне рівняння", kind: "pre", lessons: ["g7m1l2"], for: ["g8m1", "g8m5"] },
     { id: "function", title: "Функція і графік", kind: "pre", lessons: ["g7m5l1", "g7m5l2"], for: ["g8m1", "g8m3"] },
     { id: "parallel", title: "Кути на паралельних", kind: "pre", lessons: ["g7m6l2"], for: ["g8m2"] },
     { id: "tri-equal", title: "Рівність трикутників", kind: "pre", lessons: ["g7m4l1"], for: ["g8m2", "g8m4"] },

@@ -7,3 +7,4 @@ scratchpad/
 .venv-playtest/
 .devchain/
 reports/graph-*.md
+.claude/worktrees/

@@ -3,7 +3,7 @@
 // ПОПЕРЕДЖЕННЯ — порушення стилю (style/*.md, style/profiles.json) — їх треба виправити або обґрунтувати в нотатках задачі.
 // Запуск: node tools/validate.mjs [--section <id> | --diag <id> | --pool <id>] [--quiet]
 import fs from "node:fs"; import path from "node:path";
-import { loadContent, GRADED, TYPES, plain, mplain, words, sentences, lessonMetrics, gradeBand, readJSON, ROOT, figCues } from "./lib.mjs";
+import { loadContent, GRADED, TYPES, plain, mplain, words, sentences, lessonMetrics, gradeBand, readJSON, ROOT, figCues, IMG_REQUIRED } from "./lib.mjs";
 import { analyzeGraph } from "./graph-lib.mjs";
 import { euphonyScreen, euphonyIssues, VALIDATE_RULES as EUPHONY_RULES, RULES as EUPHONY_DESC } from "./euphony.mjs";
 
@@ -316,7 +316,7 @@ if (!onlySec && !onlyDiag) for (const c of subjects) { const own = new Set(c.sec
 
 // D-027: у кожному уроці предмета — хоча б одне справжнє зображення (img: фото, репродукція, документ).
 // Схеми svg/fig не зараховуються. Для історії — помилка (усі уроки доповнено; регресійний тест: tools/test-validate.mjs).
-const IMG_REQUIRED = { hist: "error", world: "error" }; // D-027, D-044
+// IMG_REQUIRED (D-027, D-044) — з tools/lib.mjs: той самий перелік бере шаблон задачі автора в make-tasks.mjs
 for (const c of subjects) for (const sec of c.sections) {
   if (onlyDiag) continue;
   if (onlySec && sec.id !== onlySec) continue;

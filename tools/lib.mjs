@@ -26,6 +26,8 @@ export function loadContent(root = ROOT) {
 
 export const GRADED = ["choice","multi","sort","slider","order","align","shade","numline","number","fracin","lab","answer","gaps","pick","stress","word","split"];
 export const TYPES = ["intro","info","explore", ...GRADED];
+// предмети, де кожен урок має справжнє img (D-027, D-044): validate (помилка) і шаблон задачі автора в make-tasks.mjs
+export const IMG_REQUIRED = { hist: "error", world: "error" };
 
 /** Прибирає HTML і формули, повертає чистий текст.
     engine-lang-p3: тег між літерами без пробілу (велос<b>и</b>пед) — частина слова, а не межа (п. 17); кожен пункт списку <li> — окреме речення,
