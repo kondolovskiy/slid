@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ThrottlerModule } from '@nestjs/throttler';
+import { RATE_LIMIT_STORAGE, RateLimitStorage } from '../../ops';
 import { GOOGLE_VERIFIER, GoogleAuthVerifier } from './google.verifier';
 import { IdentityController } from './identity.controller';
 import { IDENTITY } from './identity.port';
@@ -11,7 +12,11 @@ const list = (v: string | undefined) => (v ?? '').split(',').map((s) => s.trim()
 
 @Module({
   // Ліміт на IP: щедрий, бо клас школи виходить в інтернет з однієї адреси; код привʼязки — суворіше (контролер).
-  imports: [ThrottlerModule.forRoot([{ ttl: 60_000, limit: 120 }])],
+  // Сховище лічильників — порт RATE_LIMIT_STORAGE (src/ops): спільне сховище замість памʼяті процесу — заміна адаптера там.
+  imports: [ThrottlerModule.forRootAsync({
+    inject: [RATE_LIMIT_STORAGE],
+    useFactory: (storage: RateLimitStorage) => ({ throttlers: [{ ttl: 60_000, limit: 120 }], storage }),
+  })],
   controllers: [IdentityController],
   providers: [
     IdentityService,

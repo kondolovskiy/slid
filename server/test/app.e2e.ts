@@ -9,17 +9,27 @@ import { randomUUID } from 'crypto';
 import { GOOGLE_VERIFIER, GoogleVerifier } from '../src/modules/identity';
 // Адаптер напряму, поза публічним API модуля: тест сховища на справжньому Postgres (test/ — не код модулів).
 import { PgLearnerStore } from '../src/modules/identity/learner.store';
+import { APP_LOG, learnerHash, Metrics, RATE_LIMIT_STORAGE } from '../src/ops';
+import { MemoryRateLimitStorage } from '../src/ops/rate-limit';
 
 /** Фейк Google: id_token "sub@hd"; справжню перевірку підпису покриває google.verifier.spec.ts. */
 const fakeGoogle: GoogleVerifier = {
   async verify(t) { const m = /^(\w+)@([\w.]*)$/.exec(t); return m ? { sub: m[1], hd: m[2] || undefined } : null; },
 };
+const bearer = (t: string) => ({ Authorization: `Bearer ${t}` });
 const uniq = () => `s${Date.now()}${Math.floor(Math.random() * 1e6)}`;
 
 // Потрібен справжній Postgres: DATABASE_URL обовʼязковий (без нього тест падає, а не пропускається).
 describe('API (e2e, Postgres)', () => {
   let app: INestApplication;
   let api: ReturnType<typeof request>;
+  const logged: { level: string; entry: Record<string, unknown> }[] = [];
+  const captureLog = {
+    log: (entry: Record<string, unknown>) => logged.push({ level: 'log', entry }),
+    warn: (entry: Record<string, unknown>) => logged.push({ level: 'warn', entry }),
+    error: (entry: Record<string, unknown>) => logged.push({ level: 'error', entry }),
+  };
+  const ADMIN = 'e2e-admin-token-0123456789abcdef0123';
 
   beforeAll(async () => {
     const db = createDb(requireEnv('DATABASE_URL'));
@@ -27,8 +37,10 @@ describe('API (e2e, Postgres)', () => {
     await migrate(db); // повторний прогін міграцій — без змін і без помилок
     await db.destroy();
     process.env.GOOGLE_DOMAINS = 'school.ua';
+    process.env.ADMIN_TOKEN = ADMIN;
     const moduleRef = await Test.createTestingModule({ imports: [AppModule] })
-      .overrideProvider(GOOGLE_VERIFIER).useValue(fakeGoogle).compile();
+      .overrideProvider(GOOGLE_VERIFIER).useValue(fakeGoogle)
+      .overrideProvider(APP_LOG).useValue(captureLog).compile();
     app = configureApp(moduleRef.createNestApplication<NestExpressApplication>({ logger: ['error', 'warn'] }));
     await app.init();
     api = request(app.getHttpServer());
@@ -105,8 +117,43 @@ describe('API (e2e, Postgres)', () => {
     await api.get('/v1/progress').set('Authorization', `Bearer ${me.token}`).expect(200, { rev: 0, data: null });
   });
 
+  describe('логи й лічильники', () => {
+    const http = () => logged.filter((l) => l.entry.event === 'http').map((l) => l.entry);
+
+    it('рядок на запит: маршрут-шаблон, статус, хеш учня; без токена й id учня', async () => {
+      logged.length = 0;
+      const me = (await api.post('/v1/learners').expect(201)).body;
+      await api.put('/v1/progress').set(bearer(me.token)).send({ rev: 0, data: { xp: 1 } }).expect(200);
+      await api.get(`/nope/${me.id}?token=${me.token}`).expect(404);
+      expect(http()).toEqual([
+        { event: 'http', method: 'POST', route: '/v1/learners', status: 201, ms: expect.any(Number) },
+        { event: 'http', method: 'PUT', route: '/v1/progress', status: 200, ms: expect.any(Number), lh: learnerHash(me.id) },
+        { event: 'http', method: 'GET', route: null, status: 404, ms: expect.any(Number) },
+      ]);
+      const all = JSON.stringify(logged);
+      expect(all).not.toContain(me.token);
+      expect(all).not.toContain(me.id);
+    });
+
+    it('лічильники: доступ адміністратора лише з ADMIN_TOKEN', async () => {
+      await api.get('/v1/admin/metrics').expect(401);
+      await api.get('/v1/admin/metrics').set(bearer(`${ADMIN}x`)).expect(401);
+      const { body } = await api.get('/v1/admin/metrics').set(bearer(ADMIN)).expect(200);
+      expect(body.now.counts['POST /v1/learners 201']).toBeGreaterThanOrEqual(1);
+      expect(body.now.counts['GET * 404']).toBeGreaterThanOrEqual(1);
+      expect(body.rules.map((r: { signal: string }) => r.signal)).toContain('server_errors');
+    });
+
+    it('закриття вікна: сигнал адміністратору — warn з event: alert', async () => {
+      const metrics = app.get(Metrics);
+      for (let i = 0; i < 5; i++) metrics.http('GET', '/v1/me', 500);
+      logged.length = 0;
+      metrics.rollover();
+      expect(logged).toContainEqual({ level: 'warn', entry: expect.objectContaining({ event: 'alert', signal: 'server_errors', count: 5 }) });
+    });
+  });
+
   describe('вхід і пристрої', () => {
-    const bearer = (t: string) => ({ Authorization: `Bearer ${t}` });
 
     it('шкільний Google: той самий учень і прогрес на двох пристроях', async () => {
       const sub = uniq();
@@ -167,6 +214,8 @@ describe('API (e2e, Postgres)', () => {
       const codes: number[] = [];
       for (let i = 0; i < 12; i++) codes.push((await api.post('/v1/pairing/claim').send({ code: 'ZZZZZZ' })).status);
       expect(codes).toContain(429);
+      // Ліміти рахує сховище з порту RATE_LIMIT_STORAGE (src/ops), а не приватне сховище ThrottlerModule.
+      expect((app.get(RATE_LIMIT_STORAGE) as InstanceType<typeof MemoryRateLimitStorage>).storage.size).toBeGreaterThan(0);
     });
   });
 });

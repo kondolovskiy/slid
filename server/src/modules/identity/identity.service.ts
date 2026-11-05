@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, ServiceUnavailableException } from '@nestjs/common';
 import { createHash, randomBytes, randomInt, randomUUID } from 'crypto';
 import { GOOGLE_VERIFIER, GoogleVerifier } from './google.verifier';
 import { IdentityPort } from './identity.port';
@@ -63,7 +63,7 @@ export class IdentityService implements IdentityPort {
       const expiresAt = new Date(Date.now() + PAIRING_TTL_MS);
       if (await this.store.savePairing(hash(code), learnerId, expiresAt)) return { code, expiresAt: expiresAt.toISOString() };
     }
-    throw new Error('не вдалося згенерувати вільний код привʼязки');
+    throw new ServiceUnavailableException('Не вдалося згенерувати вільний код привʼязки, спробуй ще раз'); // 503, а не 500 (рев’ю P3-2)
   }
 
   async claimPairingCode(code: string | undefined): Promise<Session | null> {

@@ -18,12 +18,42 @@ export const withSchemaArgs = (code: string) => [...code.matchAll(/withSchema\(\
 const literal = (arg: string) => /^(['"`])([a-z_]\w*)\1$/.exec(arg)?.[2];
 
 /**
+ * Код без коментарів `//…` і `/*…*\/` (рядки й шаблони лишаються як є). Інакше непарний апостроф у коментарі
+ * (`// don't`, `// п'ять`) зсуває пари лапок, і рядки після нього перевірка не бачить (рев'ю server-hardening P2-1).
+ * Обмеження: регулярний вираз-літерал з лапкою чи `//` і вкладені шаблони в `${…}` не розбираються — у коді модулів їх немає.
+ */
+export const stripComments = (code: string) => {
+  let out = '';
+  for (let i = 0; i < code.length;) {
+    const c = code[i];
+    if (c === "'" || c === '"' || c === '`') {
+      let j = i + 1;
+      while (j < code.length && code[j] !== c) j += code[j] === '\\' ? 2 : 1;
+      out += code.slice(i, j + 1);
+      i = j + 1;
+    } else if (code.startsWith('//', i)) {
+      const end = code.indexOf('\n', i);
+      i = end < 0 ? code.length : end;
+    } else if (code.startsWith('/*', i)) {
+      const end = code.indexOf('*/', i + 2);
+      out += ' ';
+      i = end < 0 ? code.length : end + 2;
+    } else {
+      out += c;
+      i++;
+    }
+  }
+  return out;
+};
+
+/**
  * Схеми, названі в рядках коду у формі «схема.обʼєкт» (selectFrom('identity.learners'), references('x.y.id'),
- * сирий sql`… from identity.learners …` тощо). Шукаємо лише імена схем модулів, щоб не плутати з 'таблиця.колонка'.
+ * сирий sql`… from identity.learners …`, `"identity"."learners"` тощо). Шукаємо лише імена схем модулів, щоб не плутати з 'таблиця.колонка'.
  */
 export const schemaRefs = (code: string, schemas: string[]) => {
-  const strings = [...code.matchAll(/(['"`])((?:\\.|(?!\1)[\s\S])*?)\1/g)].map((m) => m[2]);
-  const re = new RegExp(`(?<![\\w.])(${schemas.join('|')})\\.[a-z_]\\w*`, 'g');
+  const strings = [...stripComments(code).matchAll(/(['"`])((?:\\.|(?!\1)[\s\S])*?)\1/g)].map((m) => m[2]);
+  // Квотовані ідентифікатори теж: sql`… from "identity"."learners"` (P3-1).
+  const re = new RegExp(`(?<![\\w.])"?(${schemas.join('|')})"?\\."?[a-z_]\\w*`, 'g');
   return strings.flatMap((s) => [...s.matchAll(re)].map((m) => m[1]));
 };
 
@@ -51,6 +81,18 @@ describe('межі модулів', () => {
 
   const modules = readdirSync(MODULES);
 
+  it('коментарі з непарним апострофом не ховають звернення до схем (P2-1)', () => {
+    const code = `// don't touch\n/* п'ять */ db.selectFrom('identity.learners'); const u = 'http://x/y'; // it's\n'progress.docs'`;
+    expect(stripComments(code)).toBe(`\n  db.selectFrom('identity.learners'); const u = 'http://x/y'; \n'progress.docs'`);
+    expect(schemaRefs(code, modules)).toEqual(['identity', 'progress']);
+    expect(schemaRefs("const s = `a // b ${x} /* c */`; f('identity.learners')", modules)).toEqual(['identity']);
+  });
+
+  it('квотовані ідентифікатори в сирому SQL (P3-1)', () => {
+    const code = 'sql`select * from "identity"."learners" join identity."tokens" on true`; sql`from "progress".docs`; \'"x"."identity"\'';
+    expect(schemaRefs(code, modules)).toEqual(['identity', 'identity', 'progress']);
+  });
+
   it('розпізнає звернення до схем і форми withSchema', () => {
     const code = `db.selectFrom('identity.learners'); t.insertInto("progress.docs"); x.innerJoin(\`identity.tokens as t\`, 't.id', 'docs.id');
       c.references('identity.learners.id'); sql\`select * from identity.learners\`; db.withSchema(SCHEMA); db.withSchema('identity');
@@ -62,7 +104,7 @@ describe('межі модулів', () => {
   it.each(sources.filter((f) => moduleOf(f)[0] !== '..').map((f) => [relative(SRC, f), f]))(
     '%s пише SQL лише у схему свого модуля', (_, file) => {
       const [own] = moduleOf(file);
-      const code = readFileSync(file, 'utf8');
+      const code = stripComments(readFileSync(file, 'utf8'));
       for (const arg of withSchemaArgs(code)) expect(`withSchema(${arg}) → ${literal(arg)}`).toBe(`withSchema(${arg}) → ${own}`);
       for (const schema of schemaRefs(code, modules)) expect(`${schema}.…`).toBe(`${own}.…`);
     });
