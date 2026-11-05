@@ -1,10 +1,12 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-05T06:48:17.104Z
 id: fix-math-pool-g11m6-order
 type: fix
 subject: math
 grade: 11
 status: todo
-claimed_by:
+claimed_by: eng-math-g11
 created: 2026-11-04
 depends_on: [write-math-pool-g11m6, tests-hyp-snapshot-g11]
 ---

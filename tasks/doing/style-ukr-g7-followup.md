@@ -1,4 +1,7 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-05T06:48:16.990Z
+claimed_by: writer-ukr-mon
 id: style-ukr-g7-followup
 type: style-fix
 status: todo
