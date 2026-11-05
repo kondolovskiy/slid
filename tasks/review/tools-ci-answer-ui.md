@@ -74,3 +74,15 @@ PR #18 (787 змінених файлів): піднабір 48 id, 238 урок
 4. Нульовий прогін: тимчасово `--section "$IDS,nope"` у кроці → код 2 «невідомі id».
 5. Run workflow на гілці PR з `playtest: full` — заміряти повний час; `deploy` пропущено (ref не main).
 6. Повторний запуск — «Кеш браузера» hit, крок Chromium лише install-deps.
+
+## Раунд 2 (eng-ci, 2026-11-05) — після рев'ю reports/review/tools-ci-answer-ui.md
+- **P2-1 закрито:** найменші права в pages.yml — верхній рівень `contents: read`; `build` `{contents: read, pages: read}`; `browser` `{contents: read}`;
+  `deploy` `{pages: write, id-token: write}`. Звірено з action.yml/README: deploy-pages v4 — «at minimum pages: write, id-token: write»;
+  configure-pages v5 з `enablement: false` (типово) лише читає сайт (`findOrCreatePagesSite` → GET pages) — `pages: read`;
+  upload-pages-artifact v3 — артефакт через runtime-токен, прав GITHUB_TOKEN не потребує. Ризик: якщо configure-pages таки захоче більше —
+  червоний `build` на першому пуші в main (деплой не відбудеться, але й нічого не зламає); перевірити першим ділом після злиття.
+- **P3:** база PR-диффу — `HEAD^1` merge-коміту (checkout `fetch-depth: 2`), запасна — `pull_request.base.sha`; база, що вже є локально,
+  не тягнеться fetch'ем. `cut -c1-900` (байти, рвав кирилицю) → обрізання за символами через `python -c`.
+- Перевірки: PyYAML — права за job як вище; скрипт кроку «Піднабір» з YAML прогнано bash'ем: PR (HEAD^1 = de49edd, 1 файл), push з базою c58de8c
+  (791 файл, попередження «Понад бюджет» цілим UTF-8), неіснуюча база (попередження, rc 0) — усі rc 0. `npm run check` — EXIT 0 (test-playtest-pick 22/22,
+  validate 0 помилок / 253 попередження).

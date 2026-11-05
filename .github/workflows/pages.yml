@@ -16,10 +16,9 @@ on:
         options: [subset, full]
         default: subset
 
+# найменші права (рев'ю tools-ci-answer-ui, P2-1): верхній рівень — лише читання, ширші — у job, якому потрібні
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
   group: pages-${{ github.ref }}
@@ -28,6 +27,9 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: read      # configure-pages (enablement: false) лише читає налаштування сайту; upload-pages-artifact прав токена не потребує
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -78,6 +80,8 @@ jobs:
     timeout-minutes: ${{ inputs.playtest == 'full' && 120 || 45 }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2   # на PR HEAD — merge-коміт, HEAD^1 — база, з якою GitHub його зібрав
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -118,11 +122,16 @@ jobs:
           PR_BASE: ${{ github.event.pull_request.base.sha }}
           PUSH_BEFORE: ${{ github.event.before }}
         run: |
-          case "$EVENT" in pull_request) BASE="$PR_BASE" ;; push) BASE="$PUSH_BEFORE" ;; *) BASE="" ;; esac
+          # PR: перший батько merge-коміту (точна база злиття; base.sha може бути новішим за merge-ref) — запасний варіант base.sha
+          case "$EVENT" in
+            pull_request) BASE=$(git rev-parse -q --verify 'HEAD^1' || echo "$PR_BASE") ;;
+            push) BASE="$PUSH_BEFORE" ;;
+            *) BASE="" ;;
+          esac
           : > "$RUNNER_TEMP/changed.txt"
           if [ -n "$BASE" ] && [ "$BASE" != "0000000000000000000000000000000000000000" ]; then
             # нові файли першими: у межах бюджету уроків (playtest-pick --max-lessons) новий розділ важливіший за правлений
-            if git fetch --no-tags --depth=1 origin "$BASE" \
+            if { git cat-file -e "$BASE^{commit}" 2>/dev/null || git fetch --no-tags --depth=1 origin "$BASE"; } \
               && { git diff --name-only --diff-filter=A "$BASE" HEAD && git diff --name-only --diff-filter=a "$BASE" HEAD; } > "$RUNNER_TEMP/changed.txt"; then
               echo "Змінено файлів відносно ${BASE:0:7}: $(wc -l < "$RUNNER_TEMP/changed.txt")"
             else
@@ -134,7 +143,9 @@ jobs:
           IDS=$(node tools/playtest-pick.mjs --max-lessons 200 "${CHANGED[@]}" 2> "$RUNNER_TEMP/pick.log") || { cat "$RUNNER_TEMP/pick.log"; exit 1; }
           cat "$RUNNER_TEMP/pick.log"
           if grep -q '^Понад бюджет' "$RUNNER_TEMP/pick.log"; then
-            echo "::warning::$(grep '^Понад бюджет' "$RUNNER_TEMP/pick.log" | cut -c1-900) — повний прогін: Actions → Pages → Run workflow (гілка PR, playtest: full)"
+            # обрізання за символами, не байтами (кирилиця — 2 байти в UTF-8)
+            MSG=$(grep '^Понад бюджет' "$RUNNER_TEMP/pick.log" | python -c 'import sys; print(sys.stdin.read().strip()[:900])')
+            echo "::warning::$MSG — повний прогін: Actions → Pages → Run workflow (гілка PR, playtest: full)"
           fi
           echo "ids=$IDS" >> "$GITHUB_OUTPUT"
       - name: Плейтест піднабору
@@ -152,6 +163,9 @@ jobs:
     needs: [build, browser]
     if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    permissions:
+      pages: write      # actions/deploy-pages: мінімум pages: write + id-token: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
