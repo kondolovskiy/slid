@@ -29,3 +29,9 @@ depends_on: [write-math-pool-g11m6, tests-hyp-snapshot-g11]
 - **test-personalization-qa.mjs:25** — якір `pg11m[26]` без прогалин тепер ігнорує «ще не verified» (статус процесу, як у прецеденті dg6 у тому ж файлі); інакше draft-пул ламає check.
 - `npm run check` — EXIT 0.
 - **Потрібно:** коротка повторна верифікація pg11m6 (лише порядок і педагогіка першої сесії l3/l4) → verified; рев'ю D-026 для tools/test-hyp.mjs, tools/test-personalization-qa.mjs.
+
+## Нотатки верифікатора
+- 2026-11-05, verifier-math-g11-d047 (скіли content-verify, math-pool-diag). Звіт — reports/verify/math-g11-d047.md §1.
+- Diff пулу — лише перестановка блоків c04↔c05, d04↔d05 (id, lvl, sk, ключі ті самі). За `pickSession` перша сесія l3: c01–c03 func L1 + c05 calc L2; l4: d01–d02 geom L1, d03 geom L2, d05 meas L2 — складність не спадає, друга навичка є, c04/d04 перевіряють func/geom наступного дня. Переставлені задачі перерозв'язано — ключі правильні.
+- Шапка: «poolState deferred» → «у build (матриця v10, D-047)». pg11m6 → **verified**. validate --pool pg11m6 0/0.
+- У done не переношу: лишається рев'ю D-026 для tools/test-hyp.mjs, tools/test-personalization-qa.mjs.
