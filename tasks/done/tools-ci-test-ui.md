@@ -4,7 +4,7 @@ claimed_at: 2026-11-05T14:52:52.167Z
 id: tools-ci-test-ui
 type: tools
 subject: all
-status: review
+status: done
 claimed_by: eng-ciui
 created: 2026-11-05
 depends_on: [engine-sw-version-skew]
