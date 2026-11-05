@@ -4,7 +4,7 @@ claimed_at: 2026-11-05T11:50:36.954Z
 id: skills-pitfalls-refs
 type: tools
 subject: all
-status: review
+status: done
 claimed_by: eng-playtest
 created: 2026-11-05
 depends_on: []
