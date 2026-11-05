@@ -4,7 +4,7 @@ claimed_at: 2026-11-05T14:52:52.142Z
 id: design-g4-graph-boundary
 type: design
 subject: math
-status: review
+status: done
 claimed_by: designer-g4
 created: 2026-11-05
 depends_on: [tests-hyp-g3-verified-lines]
