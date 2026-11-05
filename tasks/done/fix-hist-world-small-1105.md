@@ -4,7 +4,7 @@ claimed_at: 2026-11-05T07:32:04.067Z
 id: fix-hist-world-small-1105
 type: fix
 subject: hist
-status: review
+status: done
 claimed_by: writer-hist-small
 created: 2026-11-05
 depends_on: []
