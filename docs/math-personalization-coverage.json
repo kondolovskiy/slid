@@ -12945,5 +12945,5 @@
     }
   },
   "previous": "2026-11-05.v11",
-  "changes": "docs/math-personalization-coverage.md, «Зміни v12» (fix-math-pools-ister-formats: нові вправи пулів pg6m4, pg8m1, pg8m2, pg9m3, pg9m8 — формати sci, pairSet, intervalSet, межі кількості й мінімуми рівнів семи рядків); попередні — «Зміни v11», «Зміни v10», «Зміни v9», «Зміни v8», «Зміни v7», «Зміни v6», «Зміни v5», «Зміни v4», «Зміни v3»"
+  "changes": "docs/math-personalization-coverage.md, «Зміни v12» (fix-math-pools-ister-formats: нові вправи пулів pg6m4, pg8m1, pg8m2, pg9m3, pg9m8 — формати sci, pairSet, intervalSet, formats / exercises п'яти рядків, reason ще двох); попередні — «Зміни v11», «Зміни v10», «Зміни v9», «Зміни v8», «Зміни v7», «Зміни v6», «Зміни v5», «Зміни v4», «Зміни v3»"
 }

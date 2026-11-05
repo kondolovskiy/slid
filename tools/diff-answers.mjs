@@ -72,8 +72,11 @@ const items = collect(subjects);
 // ---------- записи: ключ, рівні й хибні варіанти ----------
 const stmt = s => ["title", "body", "q", "text"].map(k => typeof s[k] === "string" ? s[k] : "").join(" ");
 const keyText = s => { const k = s.answerKind || "number", a = s.answer;
+  // pairSet масивом пар — як ansText у learn.js: «(3; 2), (-2; -3)» (рев'ю fix-math-pools-ister-formats, P2-1)
+  if (Array.isArray(a) && k === "pairSet") return a.map(p => "(" + (Array.isArray(p) ? p.join("; ") : p) + ")").join(", ");
   if (Array.isArray(a)) return k === "ratio" ? a.join(" : ") : k === "coordinates2" || k === "coordinates3" ? "(" + a.join("; ") + ")" : k === "divrem" ? `${a[0]} ост. ${a[1]}` : a.join("; ");
   return typeof a === "number" ? String(a).replace(".", ",") : String(a); };
+const keyVariant = (s, v) => { const f = x => String(x).trim().replace(/−/g, "-").replace(/\./g, ","); return f(v) === f(keyText(s)); };
 const SYM = ["expression", "coordinates2", "coordinates3", "intervalSet", "periodicSet", "exactRoot", "list"];
 // латинські літери, що мають кириличного двійника (g11 п.1), — на кириличні; і зворотна заміна для класифікації
 const TWIN = { a: "а", e: "е", i: "і", k: "к", o: "о", p: "р", c: "с", y: "у", x: "х", A: "А", B: "В", E: "Е", I: "І", K: "К", M: "М", H: "Н", O: "О", P: "Р", C: "С", T: "Т", X: "Х" };
@@ -267,11 +270,12 @@ const CATS = [
     const w = v.replace(/^\s*[a-zа-яії](?:₁,₂|_\{1,2\}) = /u, ""), ps = w.split(/[;\n]/.test(w) ? /[;\n]/ : /,/);
     const ex = ps.flatMap(p => { const m = /^\s*[±∓]\s*(\d+(?:,\d+)?(?:\/\d+)?)\s*$/.exec(p); return m ? [m[1], "-" + m[1]] : [p]; });
     return ex.every(p => !/[±∓]/.test(p)) && same(verdict(OLD, s, ex.join("; ")), n); }],
-  // п. 2–3: вправа з answerKind sci / pairSet, якого старий рушій не знає (його checkAns не зараховує навіть сам ключ) — старий вердикт
-  // bad, новий будь-який. Якщо старий рушій формат знає (ключ у нього ok), категорія не діє — розбіжність лишиться непоясненою
-  // (fix-math-pools-ister-formats: перші вправи sci у pg8m1 і pairSet у pg9m3; без цього фікстура b799dfa давала 29 непояснених)
-  ["ister п.2–3 новий answerKind sci / pairSet — старий рушій його не знає", (s, v, o, n) => /^(sci|pairSet)$/.test(s.answerKind || "") && o.r === "bad"
-    && OLD.checkAns(s, keyText(s)) !== "ok"],
+  // п. 2–3: вправа з answerKind sci / pairSet, якого старий рушій не знає, — старий bad, новий ok лише на варіантах запису ключа
+  // (пробіли, «−», «.» — як у records). «Не знає» — формату немає в OLD.ANSWER_KINDS (є з fd88af0; у ще старішого — ключ не
+  // зараховується). Рушій, що формат знає, але зламаний (ключ bad), категорією не пояснюється (fix-math-pools-ister-formats,
+  // рев'ю P2-1, P3-2; тест — test-diff-answers «ister п.2–3»). Без категорії фікстура b799dfa давала 29 непояснених.
+  ["ister п.2–3 новий answerKind sci / pairSet — старий рушій його не знає", (s, v, o, n) => /^(sci|pairSet)$/.test(s.answerKind || "") && o.r === "bad" && n.r === "ok"
+    && keyVariant(s, v) && (Array.isArray(OLD.ANSWER_KINDS) ? !OLD.ANSWER_KINDS.includes(s.answerKind) : OLD.checkAns(s, keyText(s)) !== "ok")],
   // п. 4: «p : q» при ключі-дробі p/q (те саме значення, незалежна перевірка) — bad → form «це відношення»
   ["ister п.4 «p : q» при ключі-дробі — form «це відношення»", (s, v, o, n) => { const a = NEW.parseAns(keyText(s)), m = /^(\d+) ?: ?(\d+)$/.exec(v);
     return (s.answerKind || "number") === "number" && !!a && a.frac && !!m && o.r === "bad" && n.r === "form" && /^Значення правильне, але це відношення/.test(n.h || "")

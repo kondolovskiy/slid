@@ -51,7 +51,7 @@ depends_on: [engine-math-ister-p3]
 - **П. 9 (style-math-ister-followup):** одиниці в підписах довжин — **без одиниці** (так 260 підписів math проти 5 з «см»; одиниця — в умові): pg7m8 b08 «8 см / 2 см / 4 см» → «8 / 2 / 4»; pg7m4 уже без одиниць. pg7m4 b04: підпис 48° стояв на бісектрисі, тобто на відрізку KO — дугу лишено без числа, «48°» винесено в `texts` праворуч від K (колір дуги). Решту косметики п. 9 (pg7m8 b01/b02/b05, pg8m2 b05) не чіпав — не в моєму дорученні.
 - **Матриця v12** (docs/math-personalization-coverage.json/.md «Зміни v12», примітка ¹⁵; docs/PERSONALIZATION_QA.md — рядок про знижені мінімуми): формати g8m1l6 + intervalSet, g8m1l7 + sci, g9m3l6 + pairSet; `max` 9 / 14 / 11 (обхідні вправи не видаляємо); рівні g6m4l7 2/2/1 → 3/2/1, g9m8l8 1/2/1 → 2/2/1.
 - **Інженерна частина (рев'ю D-026 потрібне):** (а) tools/test-hyp.mjs §10 — знімки зсунуто лише цим змістом, коментар 2026-11-05 з поясненням кожного числа, тексти пояснень (а)/(б) оновлено; рушій не змінювався. (б) tools/diff-answers.mjs — категорія «ister п.2–3 новий answerKind sci / pairSet — старий рушій його не знає» (діє лише коли старий checkAns не зараховує навіть ключ): перші вправи sci/pairSet давали 29 непояснених у test-diff-answers (фікстура b799dfa). Без неї `npm run check` червоний.
-- Перевірки: `node tools/validate.mjs --pool` pg6m4, pg7m4, pg7m8, pg8m1, pg8m2, pg9m3, pg9m8 — 0 помилок, 0 попереджень; `node tools/validate.mjs` — 0 помилок, 253 попередження (як до змін); `node tools/personalization-qa.mjs` — без прогалин; `npm run check` — EXIT 0; fig-audit — нових прапорців немає. `test-answer-ui.py --suite content` не запускав — Python playwright у контейнері немає (CI job browser).
+- Перевірки: `node tools/validate.mjs --pool` pg6m4, pg7m4, pg7m8, pg8m1, pg8m2, pg9m3, pg9m8 — 0 помилок, 0 попереджень; `node tools/validate.mjs` — 0 помилок, 253 попередження (як до змін); `node tools/personalization-qa.mjs` — на коміті 3f1c725 (пули draft) 7 прогалин «ще не verified», інших немає (виправлено в раунді 2; було «без прогалин»); `npm run check` — EXIT 0; fig-audit — нових прапорців немає. `test-answer-ui.py --suite content` не запускав — Python playwright у контейнері немає (CI job browser).
 - Далі: content-verify нових вправ (14) і двох рисунків; engineering-review двох змін у tools/.
 
 ## Нотатки верифікатора (контент)
@@ -62,3 +62,13 @@ verifier-fix-math-pools-ister-formats, 2026-11-05. Скіли content-verify і 
 - Усі 7 пулів переведено в verified; `validate --pool` дає 0 помилок і 0 попереджень.
 - Людині: ∅ у 8 кл. (pg8m1 e09) — питання до вчителя, вправу не блокує. ENGINE: потрібен впорядкований `list` (e07 приймає «132; 41»).
 - Задачу не переміщав: вона чекає на engineering-review інженерної частини (D-026).
+
+## Раунд 2 (writer-pools-ister, 2026-11-05) — за рев'ю reports/review/fix-math-pools-ister-formats.md («прийнято») і content-verify (reports/verify/pools-ister-formats.md)
+- Правки верифікатора (pg8m1 f12 — лише підказка, статуси verified, звіт, задача, inbox) закомічено як є окремим комітом.
+- **P2-1:** `keyText` у tools/diff-answers.mjs форматує ключ pairSet масивом пар як `ansText` у learn.js («(4; 3), (-3; -4)»), а не «4,3; -3,-4».
+- **P3-2:** категорія «ister п.2–3» звужена: лише старий bad → новий ok і лише на варіантах запису ключа (пробіли, «−», «.»). «Старий рушій не знає формату» тепер — формату немає в `OLD.ANSWER_KINDS` (експортується з fd88af0, є й у фікстурі b799dfa); запасний шлях — старий checkAns не зараховує ключ.
+- **P3-1:** test-diff-answers, блок 6: (а) старий рушій = поточний, але sci зламано (ключ bad) — категорія 0, різниці непояснені, rc 1; (б) b799dfa + ключ pg9m3 e10 масивом у копії змісту — у категорії стільки ж, скільки з рядковим ключем (29). Мутанти перевірено: без захисту ANSWER_KINDS (а) падає (20 у категорії); без правки keyText (б) падає (26 ≠ 29). 41 → 47 перевірок.
+- **P3-3/P3-4:** coverage.md («Зміни v12»: «семи рядків» → `formats`/`exercises` п'яти рядків і `reason` ще двох; рядок «Перевірка» — як є: 7 прогалин «ще не verified» на коміті автора, після верифікації — без прогалин) і .json `changes`; docs/PERSONALIZATION_QA.md:3 — поточна версія v12, 219 required / 50 required-пулів, 11 optional / 4 pending.
+- Знімки test-hyp: правка f12 (лише hint) їх не зсуває — test-hyp 620/620 без змін очікуваних значень (hint — лише лічильник poolHint, у f12 він був і до правки).
+- Перевірки: `npm run check` — EXIT 0; `node tools/personalization-qa.mjs --strict` — rc 0, без прогалин.
+
