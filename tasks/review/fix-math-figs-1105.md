@@ -1,0 +1,34 @@
+---
+claimed_from: todo
+claimed_at: 2026-11-05T11:50:36.835Z
+id: fix-math-figs-1105
+type: fix
+subject: math
+status: review
+claimed_by: writer-math-content
+created: 2026-11-05
+depends_on: []
+---
+# math: дрібні правки креслень пулів і вступи без рисунка
+
+Скіли `math-pool-diag` (пули) і `content-author` (уроки).
+1. pg7m8 b01, b02, b05 — підписи C / A стоять під дугами (обхід: `points.label: false` + `texts`, pitfalls-math «Креслення в lab plane»).
+2. pg8m2 b05 — дуга 140° задрібна.
+3. fig-audit: вступи з «На кресленні…» / геометрією без рисунка — g7m8l3, g8m4l4, g8m6l3, g10m6l3 (додати fig або переписати).
+Підписи довжин — без одиниці (glossary/math, сесія 5).
+
+Джерело: inbox 05.11 writer-style-math, writer-pools-ister STYLE, eng-tools-p3 IDEA; reports/fig-audit-math.md.
+
+## Нотатки виконавця
+
+**writer-math-content, 2026-11-05 (worktree wt-mathc).** Умови, числа, ключі й id не змінено.
+1. **pg7m8 b01, b02, b05** — підпис точки дотику (C / A) стояв угорі праворуч під дугою кута; тепер `labelDir: "s"` (поле вже є в рушії, engine-math-ister-p3 п. 8 — замість обходу `label: false` + `texts`). Пул → `draft`.
+2. **pg8m2 b05** — дуга кута C 140° `r` 14 → 30; підпис «140°» на дузі падав на діагональ AC → `label: false` + `texts` «140°» усередині кута над діагоналлю. Пул → `draft`.
+3. Вступи без рисунка (reports/fig-audit-math.md, тепер 0 рядків для цих уроків):
+   - **g7m8l3** (екран 1): статичний `lab` plane — відрізок AB (`axes: false`, `grid: 0`, `h: 110`), C не позначено (шукане). → `draft`.
+   - **g10m6l3** (екран 1, «На графіку видно хвилі»): статичний графік $y = x^3 - 6x^2 + 9x + 1$ на [0; 4,3] (росте — max у x = 1 — спадає — min у x = 3 — росте); осі з кроком 1, `h: 240`. Значення на кривій у завданнях уроку не використовуються. → `draft`.
+   - **g8m4l4** (фінал, вступ): «висоту на кресленні» → «висоту прямокутного трикутника» (рисунка там немає; Завдання 5 — проєкції катетів). → `draft`.
+   - **g8m6l3** (фінал, вступ): «На кресленні двору є…» → «У дворі є…». → `draft`.
+- Рисунки перевірено в браузері (Node Playwright, `SLID_LAB.mount` зі справжніх app/math.js + app/lab.js у зібраному index.html): знімки до/після — scratchpad mathc/shots/{before,after}. `python3 tools/playtest.py` у контейнері недоступний (немає Python-модуля playwright) — плейтест g7m8, g8m4, g8m6, g10m6 — у CI (job browser).
+- validate --section g7m8 / g10m6, --pool pg7m8 / pg8m2 — 0 помилок, 0 попереджень. `npm run check` EXIT 0; знімки test-hyp цими правками не зсунулись.
+- Лишилось: у g8m4l4 Завдання 5 заголовок «Висота на кресленні» (fig-audit не позначає: умова без посилання) — можна перейменувати за наступної ревізії (рядок STYLE в inbox).
