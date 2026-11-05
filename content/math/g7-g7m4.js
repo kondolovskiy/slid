@@ -1,6 +1,7 @@
 /* Слід · Математика, 7 клас — «Геометрія: трикутники»
    Статус уроків: verified (g7m4l1, g7m4l4 — правка нотації 2026-11-03: ознаки словами, D-043; verified — verifier-fix-math-notation-ister). 4 уроки (3 теми + boss).
    style-math-ister-followup, 2026-11-05: g7m4l6 outro закриває інтро (найбільший кут — проти 60 м) → draft; у boss g7m4l4 додано pre (l2 для завдання l2 + l3).
+   verifier-style-math-ister-followup, 2026-11-05: g7m4l6 → verified (reports/verify/style-math-ister-followup.md).
    Статус уроків: verified (g7m4l2: рисунок до «Медіана до основи», fix-math-figs-g7-geo-a — перевірено 2026-11-03, reports/verify/fix-math-figs-g7-geo-a.md). 4 уроки (3 теми + boss).
    Нові уроки g7m4l5–g7m4l9 (verified 2026-11-03, reports/verify/write-math-g7-geometry-gaps.md; write-math-g7-geometry-gaps; Істер Г7 §§ 18–20): зовнішній кут, сторони й кути, прямокутний трикутник, ознаки рівності прямокутних, нерівність трикутника. Стоять перед boss g7m4l4. 9 уроків (8 тем + boss).
    Boss g7m4l4 → draft 2026-11-04 (revise-math-finals-g7, D-043/D-045): 7 завдань — l1 (перша ознака), l2+l3 (кути при основі через суму 180°), l5, l6, l7, l8, l9; дублі (третя ознака, AB = AC, кут 45°, третій кут) прибрано; потрібна content-verify.
@@ -756,7 +757,7 @@ SLID.section("math", {
       title: "Проти більшої сторони",
       short: "Сторони й кути",
       icon: "eye",
-      status: "draft",
+      status: "verified",
       why: "Щоб за сторонами передбачити, де кут найбільший, і навпаки — без кутоміра.",
       screens: [
         {

@@ -4,7 +4,7 @@ claimed_at: 2026-11-05T09:17:13.188Z
 id: style-math-ister-followup
 type: style-fix
 subject: math
-status: review
+status: done
 claimed_by: writer-style-math
 created: 2026-11-05
 depends_on: []
@@ -54,3 +54,6 @@ depends_on: []
 **п. 10 — пропозиція профілю (style/profiles.json НЕ змінено):** stats 05.11 — math 7–9: 133 уроки, sentenceWords середнє 5,22, мін 4,1, медіана 5,2, p95 5,9, макс 6,4; поза [6; 13] — 128/133. Пропоную блок math "7-9" = _default 7–9, але `sentenceWords` [4; 10] (як math 5–6) → поза профілем 0. Math 10–11 (зараз _default [7; 15]): 53 уроки, середнє 5,44, мін 4,3, макс 6,2 — поза всі 53; пропоную math "10-11" з `sentenceWords` [4; 11]. Інші метрики math 7–11 у межах.
 
 **Validate:** `--section` для g7m1–g7m8, g8m1–g8m6, g9m4, g9m6, g6m3, ms0b — 0 помилок (попередження — лише sentenceWords профілю). Build/playtest не запускав (оркестратор).
+
+## Нотатки верифікатора (verifier-style-math-ister-followup, 2026-11-05)
+Прийнято. 9 уроків → verified; 1 правка: у теорію g9m6l4 додано обернений крок «площа вчетверо → сторони вдвічі» (опора пулу pg9m6 d02, d04, d08 після вилучення лабораторної). `pre` у фіналах 7–8 кл. перевірено — помилок немає. Рекомендація до style/common.md (пункт «кожне — на окрему тему» → «як правило»). Звіт: reports/verify/style-math-ister-followup.md.
