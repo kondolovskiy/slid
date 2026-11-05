@@ -1,5 +1,5 @@
 {
-  "version": "2026-11-05.v10",
+  "version": "2026-11-05.v11",
   "status": "draft",
   "registryCommit": "9057fd5",
   "sources": {
@@ -6006,8 +6006,10 @@
       "poolState": "planned",
       "diagnostic": {
         "preForSection": [
+          "linear",
           "quad",
-          "func"
+          "func",
+          "pyth"
         ],
         "cur": [
           "cur-g9m3"
@@ -6045,8 +6047,10 @@
       "poolState": "planned",
       "diagnostic": {
         "preForSection": [
+          "linear",
           "quad",
-          "func"
+          "func",
+          "pyth"
         ],
         "cur": []
       }
@@ -6082,8 +6086,10 @@
       "poolState": "planned",
       "diagnostic": {
         "preForSection": [
+          "linear",
           "quad",
-          "func"
+          "func",
+          "pyth"
         ],
         "cur": []
       }
@@ -6118,8 +6124,10 @@
       "poolState": "planned",
       "diagnostic": {
         "preForSection": [
+          "linear",
           "quad",
-          "func"
+          "func",
+          "pyth"
         ],
         "cur": []
       }
@@ -6156,8 +6164,10 @@
       "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
+          "linear",
           "quad",
-          "func"
+          "func",
+          "pyth"
         ],
         "cur": []
       }
@@ -6192,8 +6202,10 @@
       "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
+          "linear",
           "quad",
-          "func"
+          "func",
+          "pyth"
         ],
         "cur": []
       }
@@ -6877,7 +6889,9 @@
       },
       "poolState": "existing-verified",
       "diagnostic": {
-        "preForSection": [],
+        "preForSection": [
+          "pyth"
+        ],
         "cur": []
       }
     },
@@ -6910,7 +6924,9 @@
       },
       "poolState": "existing-verified",
       "diagnostic": {
-        "preForSection": [],
+        "preForSection": [
+          "pyth"
+        ],
         "cur": []
       }
     },
@@ -6943,7 +6959,9 @@
       },
       "poolState": "existing-verified",
       "diagnostic": {
-        "preForSection": [],
+        "preForSection": [
+          "pyth"
+        ],
         "cur": []
       }
     },
@@ -6974,7 +6992,9 @@
       },
       "poolState": "existing-verified",
       "diagnostic": {
-        "preForSection": [],
+        "preForSection": [
+          "pyth"
+        ],
         "cur": []
       }
     },
@@ -7006,7 +7026,9 @@
       },
       "poolState": "existing-verified",
       "diagnostic": {
-        "preForSection": [],
+        "preForSection": [
+          "pyth"
+        ],
         "cur": []
       }
     },
@@ -7038,7 +7060,9 @@
       },
       "poolState": "existing-verified",
       "diagnostic": {
-        "preForSection": [],
+        "preForSection": [
+          "pyth"
+        ],
         "cur": []
       }
     },
@@ -7072,7 +7096,9 @@
       },
       "poolState": "existing-verified",
       "diagnostic": {
-        "preForSection": [],
+        "preForSection": [
+          "pyth"
+        ],
         "cur": []
       }
     },
@@ -7105,7 +7131,9 @@
       },
       "poolState": "existing-verified",
       "diagnostic": {
-        "preForSection": [],
+        "preForSection": [
+          "pyth"
+        ],
         "cur": []
       }
     },
@@ -7138,7 +7166,9 @@
       },
       "poolState": "existing-verified",
       "diagnostic": {
-        "preForSection": [],
+        "preForSection": [
+          "pyth"
+        ],
         "cur": []
       }
     },
@@ -7171,7 +7201,9 @@
       },
       "poolState": "existing-verified",
       "diagnostic": {
-        "preForSection": [],
+        "preForSection": [
+          "pyth"
+        ],
         "cur": []
       }
     },
@@ -7204,7 +7236,9 @@
       },
       "poolState": "existing-verified",
       "diagnostic": {
-        "preForSection": [],
+        "preForSection": [
+          "pyth"
+        ],
         "cur": []
       }
     },
@@ -11415,6 +11449,7 @@
           ],
           "for": [
             "g9m1",
+            "g9m3",
             "g9m5"
           ],
           "itemLessons": [
@@ -11431,6 +11466,10 @@
             {
               "section": "g9m1",
               "lesson": "g9m1l2"
+            },
+            {
+              "section": "g9m3",
+              "lesson": "g9m3l6"
             },
             {
               "section": "g9m5",
@@ -11623,7 +11662,9 @@
           ],
           "for": [
             "g9m2",
-            "g9m4"
+            "g9m3",
+            "g9m4",
+            "g9m8"
           ],
           "itemLessons": [
             "g8m4l2",
@@ -11641,8 +11682,16 @@
               "lesson": "g9m2l1"
             },
             {
+              "section": "g9m3",
+              "lesson": "g9m3l7"
+            },
+            {
               "section": "g9m4",
               "lesson": "g9m4l2"
+            },
+            {
+              "section": "g9m8",
+              "lesson": "g9m8l2"
             }
           ],
           "itemSkills": [
@@ -12892,6 +12941,6 @@
       "verdict": "прийнято; бажані уточнення 1–4 закрито refine-math-content-from-matrix-v3"
     }
   },
-  "previous": "2026-11-04.v9",
-  "changes": "docs/math-personalization-coverage.md, «Зміни v10» (D-047: розділ g11m2 → 10 кл., g11m2l1–l2 → required (10 кл.), l3 — optional; g11m6 — optional, не deferred; deferredSections порожній; dg10 tri.for + g11m2; curate-math-g11m2-to-g10); попередні — «Зміни v9», «Зміни v8», «Зміни v7», «Зміни v6», «Зміни v5», «Зміни v4», «Зміни v3»"
+  "previous": "2026-11-05.v10",
+  "changes": "docs/math-personalization-coverage.md, «Зміни v11» (refine-math-diag-g9-ister-required, рішення оркестратора 05.11 за D-046/D-047: dg9 — for pre-тем linear + g9m3, pyth + g9m3, g9m8, без нових завдань і rev; polygon → g9m4 не додано — непідтверджена опора; preForSection рядків g9m3, g9m8 за правилом v8); попередні — «Зміни v10», «Зміни v9», «Зміни v8», «Зміни v7», «Зміни v6», «Зміни v5», «Зміни v4», «Зміни v3»"
 }

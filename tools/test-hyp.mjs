@@ -527,12 +527,16 @@ const sum = (R, pid) => R.events.filter(e => e.pid === pid).map(e => e.type === 
   // 2026-11-05, curate-math-g11m2-to-g10 (D-047): розділ g11m2 → 10 кл. (id, пул і вправи без змін); у dg10 до for pre-теми tri додано
   // g11m2 (лише for, завдання й rev не змінено). Тому «теми тестів» 184 → 186: g11m2l1, g11m2l2 (уроки з пулом; g11m2l3 вправ не має);
   // обидва вже мали requires, тож разом так само 215. Решта знімків не зсунулась. Попередній знімок передумов [187,184,27,215,215].
+  // 2026-11-05, refine-math-diag-g9-ister-required (рішення оркестратора за D-046/D-047, матриця v11): у dg9 розширено лише for
+  // pre-тем (linear + g9m3, pyth + g9m3 і g9m8; завдання й rev не змінено). «Теми тестів» 186 → 197: +11 — уроки
+  // g9m8l1–l11 з пулом pg9m8 (boss g9m8l12 вправ не має); g9m3 уже мав теми з for (quad,
+  // func), тож його не додано. Усі 11 уже мали requires — разом так само 215. Решта знімків не зсунулась. Попередній знімок [187,186,27,215,215].
   eq([s0.gradedScreens, s0.byType.choice, s0.choiceHypPoll, s0.fbBad, s0.hint, s0.pre, s0.preLessons], [1624, 691, 74, 1604, 1152, 87, 39], "§0 екрани уроків");  // 691: верифікатор g6m3 замінив один lab на choice (2fcb431)
   eq([s0.pools, s0.poolItems, s0.lvl, s0.poolHint, s0.poolPre, s0.gen, s0.itemTypes, s0.answerNumber], [52, 1802, { 1: 689, 2: 679, 3: 434 }, 1135, 0, 0, { answer: 1629, choice: 113, multi: 60 }, 1161], "§0 пули");
   eq([s0.pairs, s0.pairs2a1, s0.diags, s0.diagItems, s0.pureTitle], [236, 206, 8, 209, 331], "§0 пари, тести, чисті вирази");
   eq([s21.errors, s21.A, s21.Dle, s21.byLvl[1].Dle, s21.byLvl[1].errors, s21.byLvl[2].Dle, s21.byLvl[2].errors], [908, 461, 204, 0, 689, 204, 219], "§2.1 A 461; D≤ 204/908, рівень 1 — 0/689");
   eq([s21.Dgt, s21.Dseen, s21.none, s21.anyUnseen, s21.F, s21.natDle, s21.natAny], [691, 653, 51, 895, 176, 204, 895], "§2.1 D>, D°, F, природні");
-  eq([st.pre.viaRequires, st.pre.viaDiagTopicFor, st.pre.viaPreScreens, st.pre.any, st.pre.anyWithPrePool], [187, 186, 27, 215, 215], "§2.1 передумови 215/227");
+  eq([st.pre.viaRequires, st.pre.viaDiagTopicFor, st.pre.viaPreScreens, st.pre.any, st.pre.anyWithPrePool], [187, 197, 27, 215, 215], "§2.1 передумови 215/227");
   eq([s23[1].clean, s23[1].errors, s23[1].cleanDle, s23[1].cleanDgt, s23[2].clean, s23[2].errors, s23[2].cleanDle, s23[2].cleanDgt], [677, 689, 0, 677, 214, 219, 203, 11], "§2.3 чисті наступного дня 677/689 і 214/219");
   eq([s23[1].sol0, s23[2].sol0, st.pairSizes[4]], [671, 3, 220], "§2.3 sol0 ≥ 1 — 671/689 і 3/219; 220 уроків — одна пара");
   // та сама модель через app/hyp.js: D≤ для помилок рівня 1 — жодної (інваріант: усі вправи рівня 1 пари вже в першій сесії); sol0 — як у скрипті; A — з lvl ≤ (M.A.le, знімок нижче)

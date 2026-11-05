@@ -5,7 +5,7 @@ claimed_by: eng-math-dg9
 id: refine-math-diag-g9-ister-required
 type: refine
 subject: math
-status: todo
+status: done
 created: 2026-11-04
 depends_on: [curate-math-matrix-v9]
 ---
@@ -31,6 +31,15 @@ depends_on: [curate-math-matrix-v9]
 - Незалежне рев'ю D-026 (зміна тесту рівня й матриці).
 
 ## Нотатки виконавця
+2026-11-05, eng-math-dg9 (скіл math-pool-diag; worktree wt-math-dg9). Виконано за «Рішенням оркестратора» нижче.
+- **content/math/diag-g9.js — лише `for`** (items, індекси, ключі, `rev` не змінено; шапка-коментар з поясненням): `linear` g9m1, g9m5 → g9m1, **g9m3**, g9m5; `pyth` g9m2, g9m4 → g9m2, **g9m3**, g9m4, **g9m8**; `polygon` g9m6 → **g9m4**, g9m6. Теми про многогранники/об'єм у dg9 немає — нічого більше. `status: "draft"` (коментар: до повторної перевірки зв'язків; завдання й ключі — verified, verifier-dg9).
+- **Безпечність для збережених тестів (CONTENT_SCHEMA §9, app/learn.js):** вердикти — за індексом завдання, редакція = max `rev` (не змінилася); `for` читає лише `buildPlan` (терміновість `Math.min(urg)` для порядку кроків і `base.next` для baseline — у dg9 baseline немає); завершений S.diag не перераховується. Тож розпочаті й завершені тести та плани чинні.
+- **Опори звірено з уроками:** g9m3l6 — теорія «з лінійного рівняння виражаємо змінну й підставляємо» (пряма опора g7m7l3 у dg9 не перевіряється); g9m3l7 — «Екран телевізора», $x^2 + y^2 = 2500$; g9m8l2 — $BD^2 = AB^2 + AD^2$, $A_1D = \sqrt{15^2+8^2}$ (далі l3, l5, l7, l10). **g9m4l5 ← polygon — зв'язок слабкий:** у уроці лише «паралелограм діагональ ділить на два трикутники» (ідея g8m6l1); основна опора — площа трикутника $S = 1/2 ah$ (g8m6l2 «Площі»), яку dg9 не перевіряє; у реєстрі матриці передумовою g9m4l5 стоїть g8m6l1 — ймовірно, мало бути g8m6l2 (MATRIX в inbox). Додано за рішенням оркестратора; вплив малий (g9m4 уже мав roots, pyth, similar).
+- **Матриця → 2026-11-05.v11** (json + md): `for`/`forEvidence` трьох тем dg9 (g9m3 → g9m3l6 / g9m3l7, g9m8 → g9m8l2, g9m4 → g9m4l5), `preForSection` за правилом v8 — змінилися лише 22 рядки (g9m3 ×6 → linear, quad, func, pyth; g9m4 ×5 → + polygon; g9m8 ×11 `[]` → pyth); «Зміни v11» ¹⁴, таблиця dg9 «Межі діагностики» (¹⁴ у стовпці for) і примітка про уроки без cur. docs/design/diag-hypothesis-math.md — абзац знімка.
+- **Знімки:** test-hyp §10 «теми тестів» 186 → **197** (+11 — g9m8l1–l11 з пулом; g9m3, g9m4 уже мали теми з for), разом 215 без змін; коментар у tools/test-hyp.mjs. test-personalization-qa, test-learn, test-make-tasks — без змін, зелені.
+- **Перевірка:** `validate --diag dg9` — 0/0; `npm run check` — EXIT 0; `personalization-qa` — 0 помилок, 1 прогалина «dg9: ще не verified» (`--strict` rc 1 до повторної верифікації dg9 — як dg10 у v10).
+- **Правка за рішенням оркестратора (05.11, після першої здачі):** слабкий зв'язок `polygon` → g9m4 **прибрано** (опора g9m4l5 — площа трикутника g8m6l2, якої dg9 не перевіряє). diag-g9.js: `polygon.for` знову `["g9m6"]`; матриця v11: forEvidence polygon без g9m4, `preForSection` 5 рядків g9m4 (l1–l3, l5, l6) назад до roots, pyth, similar — тепер змінено 17 рядків; «Зміни v11», таблиця dg9, docs/design/diag-hypothesis-math.md, коментар test-hyp — відповідно. Знімок test-hyp не змінився: «теми тестів» так само 197 (g9m4 і без polygon має roots, pyth, similar), [187,197,27,215,215]. Рядок MATRIX g8m6l1 → g8m6l2 лишається в inbox.
+- **Далі:** верифікатор dg9 (content-verify: лише нові зв'язки for) і незалежне рев'ю D-026 (матриця + test-hyp).
 
 ## Рішення оркестратора (2026-11-05, D-046/D-047)
 1. **Нових cur-проб не додаємо** (як v7/v8; CONTENT_SCHEMA §9 — без нових завдань в опублікованому тесті).
