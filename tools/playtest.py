@@ -5,10 +5,13 @@
          python3 tools/playtest.py --section g6s1 [--shots]   — один розділ або тест рівня (--section dg6) (+ скриншоти в reports/shots/)
          python3 tools/playtest.py --section g6s1,dg6,u7s6    — кілька id через кому, по черзі в одному браузері (CI: tools/playtest-pick.mjs)
          Невідомий id (немає розділу з уроками чи тесту рівня) — помилка, код 2: зелений прогін нуля уроків не видає себе за перевірку.
+         Незарахована правильна відповідь — «ПОМИЛКА  не зараховано: урок, екран, відповідь, клас #dock, #action» (tools/verdict.py), урок
+         не догравається, прогін іде далі; TimeoutError на #action після цього — уже не вердикт, а справді флейк чи зламаний плеєр.
          --port N — фіксований порт (типово вільний; паралельно можна, але під навантаженням можливі TimeoutError — для приймання по одному)
 Потрібно: pip install playwright && playwright install chromium  (або вже встановлений Chromium)."""
 import asyncio, functools, http.server, os, sys, threading
 from playwright.async_api import async_playwright
+from verdict import NO_VERDICT, NotCredited, expect_credited   # tools/verdict.py: явне «не зараховано» замість TimeoutError
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ARGS = sys.argv[1:]
@@ -23,29 +26,37 @@ PORT = srv.server_address[1]
 threading.Thread(target=srv.serve_forever, daemon=True).start()
 
 async def answer(pg, s):
+    """Дає правильну відповідь; повертає, що саме дано (для повідомлення «не зараховано»)."""
     t = s["type"]
-    if t == "choice": await pg.click(f'#stage .opt[data-k="{s.get("correct", 0)}"]')
+    if t == "choice": await pg.click(f'#stage .opt[data-k="{s.get("correct", 0)}"]'); return s.get("correct", 0)
     elif t == "multi":
         for k in s["correct"]: await pg.click(f'#stage .opt[data-k="{k}"]')
+        return s["correct"]
     elif t == "sort":
         for r, it in enumerate(s["items"]): await pg.click(f'#stage [data-r="{r}"][data-b="{it[1]}"]')
+        return [it[1] for it in s["items"]]
     elif t == "order":
         for k in range(len(s["items"])): await pg.click(f'#ord .opt[data-k="{k}"]')
-    elif t == "slider": await pg.eval_on_selector("#rng", f"e=>{{e.value={s['answer']};e.dispatchEvent(new Event('input'))}}")
+        return list(range(len(s["items"])))
+    elif t == "slider": await pg.eval_on_selector("#rng", f"e=>{{e.value={s['answer']};e.dispatchEvent(new Event('input'))}}"); return s["answer"]
     elif t == "align":
         off = s["sample"]["endYear"] - s["sample"]["len"] + 1 - s["ref"]["from"]
-        await pg.eval_on_selector("#alrng", f"e=>{{e.value={off};e.dispatchEvent(new Event('input'))}}")
+        await pg.eval_on_selector("#alrng", f"e=>{{e.value={off};e.dispatchEvent(new Event('input'))}}"); return off
     elif t == "shade":
         for k in range(s["target"]): await pg.click(f'#shade [data-p="{k}"]')
-    elif t == "numline": await pg.eval_on_selector("#nlrng", f"e=>{{e.value={s['answer']};e.dispatchEvent(new Event('input'))}}")
+        return s["target"]
+    elif t == "numline": await pg.eval_on_selector("#nlrng", f"e=>{{e.value={s['answer']};e.dispatchEvent(new Event('input'))}}"); return s["answer"]
     elif t == "answer":
         v = f'{s["answer"][0]} ост. {s["answer"][1]}' if s.get("answerKind") == "divrem" else (" : " if s.get("answerKind") == "ratio" else "; ").join(map(str, s["answer"])) if isinstance(s["answer"], list) else str(s["answer"])
-        await pg.fill("#numIn", v.replace(".", ",") if s.get("answerKind") != "divrem" else v); await pg.dispatch_event("#numIn", "input")
-    elif t == "fracin": await pg.fill("#numIn", f"{s['answer']}/{s['den']}" if s.get("hideDen") else str(s["answer"]))
+        v = v.replace(".", ",") if s.get("answerKind") != "divrem" else v
+        await pg.fill("#numIn", v); await pg.dispatch_event("#numIn", "input"); return v
+    elif t == "fracin":
+        v = f"{s['answer']}/{s['den']}" if s.get("hideDen") else str(s["answer"])
+        await pg.fill("#numIn", v); return v
     elif t == "number":
         v = s["answer"]; txt = (str(int(v)) if float(v).is_integer() else repr(v)).replace(".", ",")
-        await pg.fill("#numIn", txt); await pg.dispatch_event("#numIn", "input")
-    elif t == "lab": await pg.evaluate("sol => window.__slidLab.set(sol)", s["solution"])
+        await pg.fill("#numIn", txt); await pg.dispatch_event("#numIn", "input"); return txt
+    elif t == "lab": await pg.evaluate("sol => window.__slidLab.set(sol)", s["solution"]); return s["solution"]
     elif t in ("gaps", "pick", "stress", "split", "word"):   # мовні вправи: правильний стан дає сам рушій (SLID_LANG.solution)
         sol = await pg.evaluate("s => { const v = SLID_LANG.solution(s); return v instanceof Set ? [...v] : v; }", s)
         if t == "gaps":
@@ -57,6 +68,8 @@ async def answer(pg, s):
         elif t == "split":
             for c in sol: await pg.click(f'#stage .cut[data-c="{c}"]')
         else: await pg.fill("#numIn", sol); await pg.dispatch_event("#numIn", "input")
+        return sol
+    return None   # intro, info, explore: відповіді немає
 
 LANG_TYPES = ("gaps", "pick", "stress", "split", "word")
 GAP_ORDER = "() => [...document.querySelectorAll('#stage .gap')].map(g => [...g.querySelectorAll('.gopt')].map(b => +b.dataset.o))"   # показаний порядок варіантів кожного пропуску
@@ -136,7 +149,7 @@ async def main():
         found = {sec["id"] for c in subjects for sec in c["sections"] if sec.get("lessons")} | {d["id"] for c in subjects for d in c.get("diags", [])}
         if ONLY is not None and (not ONLY or ONLY - found):
             print(f"ПОМИЛКА  невідомі id для --section (немає розділу з уроками чи тесту рівня): {sorted(ONLY - found) or '(порожньо)'}"); await b.close(); sys.exit(2)
-        played = 0; lang_n = lang_bad = 0   # мовних вправ і хибних спроб на них: 0 спроб при наявних вправах — гілку помилки не перевірено
+        played = failed = 0; lang_n = lang_bad = 0   # мовних вправ і хибних спроб на них: 0 спроб при наявних вправах — гілку помилки не перевірено
         for c in subjects:
             for k, sec in enumerate(c["sections"]):
                 if not sec.get("lessons") or (ONLY is not None and sec["id"] not in ONLY): continue
@@ -169,11 +182,17 @@ async def main():
                                 if order0 is not None and (o1 := await pg.evaluate(GAP_ORDER)) != order0: errs.append(f"{c['id']} {l['id']} екран {si+1} (gaps): порядок кнопок змінився після хибної спроби {order0} → {o1}")
                                 if not lab or not lab.endswith("неправильно"): errs.append(f"{c['id']} {l['id']} екран {si+1} ({t}): хибний вибір без позначки «неправильно» для диктора ({mark}: {lab!r})")
                                 if undo: await pg.click(undo)
-                        await answer(pg, s); await pg.click("#action")
-                        cls = await pg.get_attribute("#dock", "class")
-                        if t not in ("intro", "info", "explore") and "ok" not in cls and "info" not in cls:
-                            errs.append(f"{c['id']} {l['id']} екран {si+1} ({t}): правильну відповідь не зараховано")
-                        if t not in ("intro", "info", "explore"): await pg.click("#action")
+                        given = await answer(pg, s); await pg.click("#action")
+                        if t not in NO_VERDICT:
+                            # tools-playtest-verdict-msg: незарахована правильна відповідь лишає #action неактивною («Спробувати ще раз») —
+                            # наступний click висів би 30 с і падав TimeoutError, схожим на флейк. Тут — явне повідомлення й перехід до наступного уроку.
+                            try: await expect_credited(pg, f"{c['id']} урок {l['id']}, екран {si+1} з {len(l['screens'])} ({t})", given)
+                            except NotCredited as e:   # друк одразу (рев'ю P2-1): необроблений виняток далі не загубить уже знайдене
+                                print("ПОМИЛКА ", e, flush=True); broken = True; break
+                            await pg.click("#action")
+                    else: broken = False
+                    if broken:   # урок не дограти: скинути плеєр перезавантаженням (стан slid.v1 лишається) і грати наступний
+                        failed += 1; await pg.goto(f"http://127.0.0.1:{PORT}/index.html"); continue
                     await pg.wait_for_timeout(80); await pg.click("#action")
                     await pg.click('[data-tab="path"]'); await pg.click('[data-tab="path"]')
                     played += 1
@@ -208,10 +227,10 @@ async def main():
                     if mode == "skip" and await pg.is_hidden("#player"): errs.append(f"{c['id']} {d['id']}: перший крок плану чи перший урок класу не відкрився")
                 diags += 1
         await b.close()
-        if not played and not diags:
+        if not played and not failed and not diags:
             print("ПОМИЛКА  нічого не пройдено (0 уроків, 0 тестів рівня)"); sys.exit(2)
-        print(f"Пройдено уроків: {played}, тестів рівня: {diags}" + (f", мовних вправ: {lang_n} (хибних спроб: {lang_bad})" if lang_n else ""))
+        print(f"Пройдено уроків: {played}" + (f" (ще {failed} не дограно: не зараховано правильну відповідь)" if failed else "") + f", тестів рівня: {diags}" + (f", мовних вправ: {lang_n} (хибних спроб: {lang_bad})" if lang_n else ""))
         for e in errs: print("ПОМИЛКА ", e)
-        sys.exit(1 if errs else 0)
+        sys.exit(1 if errs or failed else 0)   # failed — уроки з «не зараховано» (надруковано вище, не в errs)
 
 asyncio.run(main())

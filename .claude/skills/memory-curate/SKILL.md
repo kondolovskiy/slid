@@ -11,7 +11,7 @@ description: Use at the end of a session or after a parallel batch to move memor
 2. Розклади записи inbox:
    - FACT з URL і позначкою верифікатора → `memory/long/facts/<предмет>.md` (статус verified). FACT лише від автора → статус self.
    - TERM → `glossary/<предмет>.md`.
-   - Повторювана технічна проблема (≥ 2 рази або > 10 хв) → `pitfalls.md`, у тематичний розділ.
+   - Повторювана технічна проблема (≥ 2 рази або > 10 хв) → тематичний файл `pitfalls-content|math|hist|engine.md` (покажчик — `pitfalls.md`; тема не підходить — сам `pitfalls.md`), розділ «Додано <дата>».
    - Рішення, ухвалене людиною в цій сесії → `decisions.md` (новий D-NNN: що, чому, хто, коли).
    - `IDEA GRAPH` (дрейф графа) → правка `content/<предмет>/graph.js` за скілом `skill-graph` або задача в `tasks/todo/`.
    - STYLE, ENGINE, IDEA → handoff «Що далі» або окрема задача в `tasks/todo/`.

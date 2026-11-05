@@ -10,7 +10,7 @@ description: Use when changing anything in app/ (engine, learn.js, evidence.js, 
 ## 1. Прочитай
 - Задачу й дизайн, на який вона посилається (`docs/design/*.md`).
 - docs/ARCHITECTURE.md; за темою — docs/CONTENT_SCHEMA.md, docs/PERSONALIZATION.md, docs/EVIDENCE.md.
-- decisions.md (рішення, які зачіпаєш) і pitfalls.md: «Тестування», «Інструменти й перевірки», «Рушій і журнал», «Паралельна робота й злиття».
+- decisions.md (рішення, які зачіпаєш); `memory/long/pitfalls-engine.md`: «Тестування», «Інструменти й перевірки», «Рушій і журнал»; `memory/long/pitfalls.md`: «Паралельна робота й злиття».
 
 ## 2. Інваріанти
 - **Офлайн:** застосунок працює без мережі, без бекенду, з `file://` (service worker там вимикається).
