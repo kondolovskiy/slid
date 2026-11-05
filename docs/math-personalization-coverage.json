@@ -1,5 +1,5 @@
 {
-  "version": "2026-11-05.v12",
+  "version": "2026-11-05.v13",
   "status": "draft",
   "registryCommit": "9057fd5",
   "sources": {
@@ -108,7 +108,7 @@
     "mnp56": {
       "title": "Істер О. С. Модельна програма «Математика. 5–6 класи» (наказ МОН № 795 від 12.07.2021)",
       "url": "https://www.geneza.ua/sites/default/files/KTP/4klas/Модельна%20програма%20Математика.%205-6%20кл.pdf",
-      "opened": "2026-11-03",
+      "recorded": "2026-11-03",
       "method": "D-043: сторінки й параграфи — з нотаток авторів уроків (tasks/review/write-math-*), URL — reports/math-ister-map.md §1; куратор матриці PDF повторно не відкривав — межі звіряє автор пулу й верифікатор"
     },
     "ist5": {
@@ -120,61 +120,61 @@
     "ist6a": {
       "title": "Істер О. С. Математика 6 кл., ч. 1 (Генеза, 2023)",
       "url": "https://file.4book.org/images/shcoolbook_ua/6/6_m_i_2023-1.pdf",
-      "opened": "2026-11-03",
+      "recorded": "2026-11-03",
       "method": "D-043: сторінки й параграфи — з нотаток авторів уроків (tasks/review/write-math-*), URL — reports/math-ister-map.md §1; куратор матриці PDF повторно не відкривав — межі звіряє автор пулу й верифікатор; v6: межі вправ пулів — з нотаток авторів і звітів верифікаторів (рендер сторінок, PDF = друк.), reports/verify/write-math-pool-*-ister.md"
     },
     "ist6b": {
       "title": "Істер О. С. Математика 6 кл., ч. 2 (Генеза, 2023)",
       "url": "https://file.4book.org/images/shcoolbook_ua/6/6_m_i_2023-2.pdf",
-      "opened": "2026-11-03",
+      "recorded": "2026-11-03",
       "method": "D-043: сторінки й параграфи — з нотаток авторів уроків (tasks/review/write-math-*), URL — reports/math-ister-map.md §1; куратор матриці PDF повторно не відкривав — межі звіряє автор пулу й верифікатор; v6: межі вправ пулів — з нотаток авторів і звітів верифікаторів (рендер сторінок, PDF = друк.), reports/verify/write-math-pool-*-ister.md"
     },
     "ist7a": {
       "title": "Істер О. Алгебра 7 кл. (Генеза, 2024)",
       "url": "https://file.4book.org/images/shcoolbook_ua/7/7_a_i_2024.pdf",
-      "opened": "2026-11-03",
+      "recorded": "2026-11-03",
       "method": "D-043: сторінки й параграфи — з нотаток авторів уроків (tasks/review/write-math-*), URL — reports/math-ister-map.md §1; куратор матриці PDF повторно не відкривав — межі звіряє автор пулу й верифікатор; v7: межі вправ пулів — з нотаток авторів і звітів верифікаторів пулів (рендер сторінок, reports/verify/write-math-pool-*-ister.md; PDF = друк.); куратор PDF не відкривав"
     },
     "ist7g": {
       "title": "Істер О. Геометрія 7 кл. (Генеза, 2024)",
       "url": "https://file.4book.org/images/shcoolbook_ua/7/7_geom_i_2024.pdf",
-      "opened": "2026-11-03",
+      "recorded": "2026-11-03",
       "method": "D-043: сторінки й параграфи — з нотаток авторів уроків (tasks/review/write-math-*), URL — reports/math-ister-map.md §1; куратор матриці PDF повторно не відкривав — межі звіряє автор пулу й верифікатор; v7: межі вправ пулів — з нотаток авторів і звітів верифікаторів пулів (рендер сторінок, reports/verify/write-math-pool-*-ister.md; PDF = друк. + 1); куратор PDF не відкривав"
     },
     "ist8a": {
       "title": "Істер О. Алгебра 8 кл. (Генеза, 2025)",
       "url": "https://file.4book.org/images/shcoolbook_ua/8/8_a_i_2025.pdf",
-      "opened": "2026-11-03",
+      "recorded": "2026-11-03",
       "method": "D-043: сторінки й параграфи — з нотаток авторів уроків (tasks/review/write-math-*), URL — reports/math-ister-map.md §1; куратор матриці PDF повторно не відкривав — межі звіряє автор пулу й верифікатор; v7: межі вправ пулів — з нотаток авторів і звітів верифікаторів пулів (рендер сторінок, reports/verify/write-math-pool-*-ister.md; PDF = друк.); куратор PDF не відкривав"
     },
     "ist8g": {
       "title": "Істер О. Геометрія 8 кл. (Генеза, 2025)",
       "url": "https://file.4book.org/images/shcoolbook_ua/8/8_geom_i_2025.pdf",
-      "opened": "2026-11-03",
+      "recorded": "2026-11-03",
       "method": "D-043: сторінки й параграфи — з нотаток авторів уроків (tasks/review/write-math-*), URL — reports/math-ister-map.md §1; куратор матриці PDF повторно не відкривав — межі звіряє автор пулу й верифікатор; v7: межі вправ пулів — з нотаток авторів і звітів верифікаторів пулів (рендер сторінок, reports/verify/write-math-pool-*-ister.md; PDF = друк.); куратор PDF не відкривав"
     },
     "ist9a": {
       "title": "Істер О., Істер Д. Алгебра 9 кл. (Генеза, 2026)",
       "url": "https://file.4book.org/images/shcoolbook_ua/9/9_a_i_2026.pdf",
-      "opened": "2026-11-03",
+      "recorded": "2026-11-03",
       "method": "D-043: сторінки й параграфи — з нотаток авторів уроків (tasks/review/write-math-*), URL — reports/math-ister-map.md §1; куратор матриці PDF повторно не відкривав — межі звіряє автор пулу й верифікатор; v9: межі вправ пулів 9 кл. — з нотаток авторів і звітів верифікаторів пулів (рендер сторінок, reports/verify/write-math-pool-g9m*.md; PDF = друк.); куратор PDF не відкривав"
     },
     "ist9g": {
       "title": "Істер О., Істер Д. Геометрія 9 кл. (Генеза, 2026)",
       "url": "https://file.4book.org/images/shcoolbook_ua/9/9_geom_i_2026.pdf",
-      "opened": "2026-11-03",
+      "recorded": "2026-11-03",
       "method": "D-043: сторінки й параграфи — з нотаток авторів уроків (tasks/review/write-math-*), URL — reports/math-ister-map.md §1; куратор матриці PDF повторно не відкривав — межі звіряє автор пулу й верифікатор; v9: межі вправ пулів 9 кл. — з нотаток авторів і звітів верифікаторів пулів (рендер сторінок, reports/verify/write-math-pool-g9m*.md; PDF = друк.); куратор PDF не відкривав"
     },
     "ist5k": {
       "title": "Істер О. С. Математика 5 кл. (Генеза, 2022), додаткова тема «Найпростіші комбінаторні задачі» — матеріал за QR-кодом зі с. 290",
       "url": "https://drive.google.com/file/d/1UFGuRRODD5nF1NtXbN0ubzlcn0s5cI4D/view",
-      "opened": "2026-11-04",
+      "recorded": "2026-11-04",
       "method": "Сторінки — друкована нумерація матеріалу (3–11; PDF = друк − 2), вправи №1–57 на с. 6–11 — звірено автором і верифікатором пулу pg6m6 (reports/verify/write-math-pool-g6m6.md); куратор матриці PDF не відкривав"
     },
     "std1407": {
       "title": "Навчальна програма МОН «Математика (алгебра і початки аналізу та геометрія). Рівень стандарту. 10–11 класи», наказ № 1407 від 23.10.2017",
       "url": "https://osvita.ua/doc/files/news/588/58878/matematika_-riven-standartu.docx",
-      "opened": "2026-11-05",
+      "recorded": "2026-11-05",
       "method": "DOCX відкрив дослідник (reports/research/mon-math-2026-11.md §2.1, цитати «Геометрія. 10 клас … Тема 3. КООРДИНАТИ І ВЕКТОРИ 10 годин» і зміст 11 кл.); куратор матриці DOCX не відкривав, бере цитати звіту; посилання за темами"
     }
   },
@@ -202,7 +202,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "place"
@@ -235,7 +235,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "place"
@@ -266,7 +266,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "place"
@@ -326,7 +326,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "place",
@@ -364,7 +364,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "place",
@@ -403,7 +403,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "place",
@@ -439,7 +439,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "place",
@@ -474,7 +474,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "mul",
@@ -510,7 +510,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "mul",
@@ -547,7 +547,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "mul",
@@ -582,7 +582,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "mul",
@@ -617,7 +617,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "mul",
@@ -650,7 +650,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "units"
@@ -683,7 +683,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "units"
@@ -714,7 +714,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "units"
@@ -745,7 +745,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "units"
@@ -776,7 +776,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "units",
@@ -810,7 +810,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "units",
@@ -842,7 +842,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "units",
@@ -876,7 +876,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "units",
@@ -911,7 +911,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "place",
@@ -952,7 +952,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "place",
@@ -991,7 +991,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "place",
@@ -1030,7 +1030,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "place",
@@ -1069,7 +1069,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "place",
@@ -1185,7 +1185,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "place",
@@ -1265,7 +1265,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "place",
@@ -1333,7 +1333,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "place",
@@ -1370,7 +1370,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "parts"
@@ -1406,7 +1406,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "parts"
@@ -1440,7 +1440,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "parts"
@@ -1474,7 +1474,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "parts"
@@ -1508,7 +1508,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "parts"
@@ -1543,7 +1543,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "place",
@@ -1585,7 +1585,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "place",
@@ -1625,7 +1625,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "place",
@@ -1665,7 +1665,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "place",
@@ -1705,7 +1705,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "place",
@@ -1745,7 +1745,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "place",
@@ -1783,7 +1783,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [],
         "cur": [
@@ -1816,7 +1816,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [],
         "cur": [
@@ -1882,7 +1882,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "place",
@@ -1926,7 +1926,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "geom"
@@ -1994,7 +1994,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "geom"
@@ -3156,7 +3156,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "sign-add",
@@ -3196,7 +3196,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "sign-add",
@@ -3234,7 +3234,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "sign-add",
@@ -3275,7 +3275,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "angles",
@@ -3312,7 +3312,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "angles",
@@ -3348,7 +3348,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "angles",
@@ -3422,7 +3422,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "sign-add",
@@ -3462,7 +3462,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "sign-add",
@@ -3500,7 +3500,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "sign-add",
@@ -3538,7 +3538,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "sign-add",
@@ -3615,7 +3615,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "angles"
@@ -3651,7 +3651,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "angles"
@@ -3685,7 +3685,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "angles"
@@ -3769,7 +3769,7 @@
       "lesson": "g7m4l7",
       "title": "Прямокутний трикутник",
       "curricularScope": "required",
-      "reason": "Новий урок D-043 (за Істером), verified; required з v7 (curate-math-matrix-v7). Пул pg7m4 f01–f08 verified (reports/verify/write-math-pool-g7m4-ister.md): 8 вправ, рівні 3/3/2; формати D-028 — number (є й list, comparison по одній — матриця їх не вимагає, як у нотатках автора). Охоплювати лише вміння, уже пояснені цим уроком.",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v7 (curate-math-matrix-v7). Пул pg7m4 f01–f08 verified (reports/verify/write-math-pool-g7m4-ister.md): 8 вправ, рівні 3/3/2; формати D-028 — number; list (f05) і comparison (f03) — по одній вправі, вимагаються з v13. Охоплювати лише вміння, уже пояснені цим уроком.",
       "evidence": "ist7g:127–135, 139, 146–147 (§ 19; вправи пулу — с. 132–135; ДСР № 4 — с. 139; повторення — с. 146–147)",
       "prerequisites": [
         "g7m4l3",
@@ -3778,7 +3778,9 @@
       "sk": "geom",
       "pool": "pg7m4",
       "formats": [
-        "number"
+        "number",
+        "list",
+        "comparison"
       ],
       "exercises": {
         "min": 6,
@@ -3838,16 +3840,18 @@
       "lesson": "g7m4l9",
       "title": "Нерівність трикутника",
       "curricularScope": "required",
-      "reason": "Новий урок D-043 (за Істером), verified; required з v7 (curate-math-matrix-v7). Пул pg7m4 h01–h08 verified (reports/verify/write-math-pool-g7m4-ister.md): 8 вправ, рівні 3/3/2; формати D-028 — number і multi (які трійки — сторони трикутника); є й list, choice по одній — матриця їх не вимагає. Охоплювати лише вміння, уже пояснені цим уроком.",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v7 (curate-math-matrix-v7). Пул pg7m4 h01–h08 verified (reports/verify/write-math-pool-g7m4-ister.md): 8 вправ, рівні 3/3/2; формати D-028 — number і multi (які трійки — сторони трикутника); list (h07) і choice (h08) — по одній вправі, вимагаються з v13. Охоплювати лише вміння, уже пояснені цим уроком.",
       "evidence": "ist7g:135–138, 148 (§ 20; вправи пулу — с. 137–138, 148)",
       "prerequisites": [
-        "g7m4l6"
+        "g7m4l2"
       ],
       "sk": "geom",
       "pool": "pg7m4",
       "formats": [
         "number",
-        "multi"
+        "multi",
+        "list",
+        "choice"
       ],
       "exercises": {
         "min": 6,
@@ -3891,7 +3895,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "plane"
@@ -3926,7 +3930,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "plane"
@@ -3961,7 +3965,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "plane"
@@ -4028,7 +4032,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "angles"
@@ -4063,7 +4067,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "angles"
@@ -4096,7 +4100,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "angles"
@@ -4131,7 +4135,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "eq",
@@ -4170,7 +4174,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "eq",
@@ -4207,7 +4211,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "eq",
@@ -4244,7 +4248,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "eq",
@@ -4282,7 +4286,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "lines",
@@ -4319,7 +4323,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "lines",
@@ -4356,7 +4360,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "lines",
@@ -4371,7 +4375,7 @@
       "lesson": "g7m8l5",
       "title": "Описане й вписане коло",
       "curricularScope": "required",
-      "reason": "Новий урок D-043 (за Істером), verified; required з v7 (curate-math-matrix-v7). Пул pg7m8 d01–d08 verified (reports/verify/write-math-pool-g7m8-ister.md): 8 вправ, рівні 3/3/2; формати D-028 — number і list (сторони трикутника, №669, №812); choice (d01, ДСР) є, матриця не вимагає. Охоплювати лише вміння, уже пояснені цим уроком.",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v7 (curate-math-matrix-v7). Пул pg7m8 d01–d08 verified (reports/verify/write-math-pool-g7m8-ister.md): 8 вправ, рівні 3/3/2; формати D-028 — number і list (сторони трикутника, №669, №812); choice (d01, ДСР) — одна вправа, вимагається з v13. Охоплювати лише вміння, уже пояснені цим уроком.",
       "evidence": "ist7g:163–171, 193, 196 (§ 23–24; вправи пулу — с. 166–167, 170; ДСР № 5 — с. 193; повторення — с. 196)",
       "prerequisites": [
         "g7m8l3",
@@ -4382,7 +4386,8 @@
       "pool": "pg7m8",
       "formats": [
         "number",
-        "list"
+        "list",
+        "choice"
       ],
       "exercises": {
         "min": 6,
@@ -4466,7 +4471,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "power",
@@ -4509,7 +4514,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "power",
@@ -4591,7 +4596,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "power",
@@ -4672,7 +4677,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "power",
@@ -4712,7 +4717,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "parallel",
@@ -4751,7 +4756,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "parallel",
@@ -4788,7 +4793,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "parallel",
@@ -4825,7 +4830,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "parallel",
@@ -4978,7 +4983,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "power",
@@ -5017,7 +5022,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "power",
@@ -5054,7 +5059,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "power",
@@ -5091,7 +5096,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "power",
@@ -5128,7 +5133,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "tri-equal",
@@ -5168,7 +5173,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "tri-equal",
@@ -5206,7 +5211,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "tri-equal",
@@ -5383,7 +5388,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "poly",
@@ -5424,7 +5429,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "poly",
@@ -5463,7 +5468,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "poly",
@@ -5501,7 +5506,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "poly",
@@ -5658,7 +5663,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "tri-angles",
@@ -5696,7 +5701,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "tri-angles",
@@ -5733,7 +5738,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "linear",
@@ -5771,7 +5776,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "linear",
@@ -5807,7 +5812,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "linear",
@@ -5844,7 +5849,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "signed",
@@ -5886,7 +5891,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "signed",
@@ -5926,7 +5931,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "signed",
@@ -5966,7 +5971,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "signed",
@@ -6005,7 +6010,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "linear",
@@ -6046,7 +6051,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "linear",
@@ -6085,7 +6090,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "linear",
@@ -6123,7 +6128,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "linear",
@@ -6240,7 +6245,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "roots",
@@ -6279,7 +6284,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "roots",
@@ -6317,7 +6322,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "roots",
@@ -6337,7 +6342,7 @@
       "evidence": "ist9g:119–128 (§ 14, п. 1; вправи пулу — с. 126–128)",
       "prerequisites": [
         "g9m4l1",
-        "g8m6l1"
+        "g8m6l2"
       ],
       "sk": "trig",
       "pool": "pg9m4",
@@ -6425,7 +6430,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "linear",
@@ -6462,7 +6467,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "linear",
@@ -6497,7 +6502,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "linear",
@@ -6567,7 +6572,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "similar",
@@ -6605,7 +6610,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "similar",
@@ -6678,7 +6683,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "similar",
@@ -6715,7 +6720,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "similar",
@@ -6769,10 +6774,7 @@
       "curricularScope": "required",
       "reason": "Базове вміння відповідного класу за вказаними пунктами; охоплювати лише вміння, уже пояснені цим уроком.",
       "evidence": "a9:192–197",
-      "prerequisites": [
-        "ms2l5",
-        "m1"
-      ],
+      "prerequisites": [],
       "sk": "data",
       "pool": "pg9m7",
       "formats": [
@@ -6787,7 +6789,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "stats"
@@ -6806,7 +6808,6 @@
       "reason": "Базове вміння відповідного класу за вказаними пунктами; охоплювати лише вміння, уже пояснені цим уроком.",
       "evidence": "a9:198–222",
       "prerequisites": [
-        "ms2l5",
         "m1"
       ],
       "sk": "data",
@@ -6823,7 +6824,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "stats"
@@ -6857,7 +6858,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "stats"
@@ -7274,7 +7275,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "ineq",
@@ -7315,7 +7316,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "ineq",
@@ -7386,7 +7387,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "tri",
@@ -7425,7 +7426,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "tri",
@@ -7495,7 +7496,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "ineq",
@@ -7537,7 +7538,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "ineq",
@@ -7577,7 +7578,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "ineq",
@@ -7616,7 +7617,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "tri",
@@ -7655,7 +7656,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "tri",
@@ -7692,7 +7693,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "tri",
@@ -7731,7 +7732,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "quad",
@@ -7771,7 +7772,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "quad",
@@ -7808,7 +7809,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "quad",
@@ -7845,7 +7846,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "quad",
@@ -7881,7 +7882,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "func",
@@ -7920,7 +7921,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "func",
@@ -7957,7 +7958,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "func",
@@ -7993,7 +7994,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "func",
@@ -8135,7 +8136,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "power",
@@ -8173,7 +8174,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "power",
@@ -8210,7 +8211,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "power",
@@ -8248,7 +8249,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "power",
@@ -8283,7 +8284,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "deriv",
@@ -8320,7 +8321,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "deriv",
@@ -8355,7 +8356,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "deriv",
@@ -8393,7 +8394,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "space",
@@ -8433,7 +8434,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "space",
@@ -8472,7 +8473,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "space",
@@ -8511,7 +8512,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "space",
@@ -8548,7 +8549,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "count",
@@ -8586,7 +8587,7 @@
           1
         ]
       },
-      "poolState": "planned",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [
           "count",
@@ -12942,8 +12943,15 @@
       "scope": "зміни 2026-10-16.v2 → 2026-11-01.v3 (sk, формати, evidence, проби й назви)",
       "date": "2026-11-01",
       "verdict": "прийнято; бажані уточнення 1–4 закрито refine-math-content-from-matrix-v3"
+    },
+    "v13": {
+      "reviewer": "verifier-matrix-v13",
+      "report": "reports/verify/matrix-v13.md",
+      "scope": "зміни 2026-11-05.v12 → 2026-11-05.v13 (prerequisites g9m4l5, g9m7l1, g9m7l2, g7m4l9; formats g7m4l7, g7m4l9, g7m8l5; poolState; sources.recorded)",
+      "date": "2026-11-05",
+      "verdict": "прийнято; 3 застарілі reason (g7m4l7, g7m4l9, g7m8l5) виправив верифікатор; рекомендації — у звіті"
     }
   },
-  "previous": "2026-11-05.v11",
-  "changes": "docs/math-personalization-coverage.md, «Зміни v12» (fix-math-pools-ister-formats: нові вправи пулів pg6m4, pg8m1, pg8m2, pg9m3, pg9m8 — формати sci, pairSet, intervalSet, formats / exercises п'яти рядків, reason ще двох); попередні — «Зміни v11», «Зміни v10», «Зміни v9», «Зміни v8», «Зміни v7», «Зміни v6», «Зміни v5», «Зміни v4», «Зміни v3»"
+  "previous": "2026-11-05.v12",
+  "changes": "docs/math-personalization-coverage.md, «Зміни v13» (curate-math-matrix-v13: prerequisites g9m4l5, g9m7l1, g9m7l2, g7m4l9; formats g7m4l7, g7m4l9, g7m8l5 — формати «в дужках»; poolState planned → existing-verified у 146 рядках; sources: opened → recorded там, де куратор джерела не відкривав); «Зміни v12» (fix-math-pools-ister-formats: нові вправи пулів pg6m4, pg8m1, pg8m2, pg9m3, pg9m8 — формати sci, pairSet, intervalSet, formats / exercises п'яти рядків, reason ще двох); попередні — «Зміни v11», «Зміни v10», «Зміни v9», «Зміни v8», «Зміни v7», «Зміни v6», «Зміни v5», «Зміни v4», «Зміни v3»"
 }
