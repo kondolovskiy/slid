@@ -4,7 +4,7 @@ claimed_at: 2026-11-05T12:47:20.037Z
 id: engine-sw-version-skew
 type: engine
 subject: all
-status: review
+status: done
 claimed_by: eng-sw
 created: 2026-11-05
 depends_on: []
