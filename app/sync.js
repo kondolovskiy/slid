@@ -98,7 +98,8 @@
     errs: errs3,
     skFix: (b, l, r) => [...new Set([...(Array.isArray(r) ? r : []), ...(Array.isArray(l) ? l : [])])],
     /** Службове: номер останнього запису кожного пристрою (клієнт, P1-2) — за ключем максимум. */
-    _sync: (b, l, r) => { const o = {}; for (const k of keys(l, r)) o[k] = Math.max(num(obj(l)[k]), num(obj(r)[k])); return o; },
+    _sync: (b, l, r) => { const o = {}, n = x => parseInt(String(x ?? "0"), 10) || 0;
+      for (const k of keys(l, r)) { const x = obj(l)[k], y = obj(r)[k]; o[k] = x === undefined ? y : y === undefined ? x : n(y) > n(x) ? y : x; } return o; },
   };
   const FIELDS = [...DEVICE, ...Object.keys(RULES)];
 
@@ -166,9 +167,10 @@
         const local = env.getState();
         if (st.dirty && !st.replace) {
           if (st.base && st.rev && !(st.sent && st.sent.length) && !st.lost && same(local, st.base)) { st.dirty = false; persist(); continue; }
-          const data = strip(local); data._sync = { ...obj(data._sync), [dev]: ++seq };
+          // номер запису: лічильник (порядок) + випадковий хвіст (не повториться, навіть якщо slid.sync не записався, рев'ю P3-6)
+          const w = (++seq) + ":" + rid(), data = strip(local); data._sync = { ...obj(data._sync), [dev]: w };
           // до запиту: відповідь може загубитись, а запис — ні. Непідтверджених спроб кілька (обрив, повтор): прийняти сервер міг лише одну
-          st.sent = [...(Array.isArray(st.sent) ? st.sent : []), { w: seq, data }].slice(-5); persist();
+          st.sent = [...(Array.isArray(st.sent) ? st.sent : []), { w, data }].slice(-5); persist();
           const r = await call("PUT", "/v1/progress", { rev: st.rev || 0, data }, st.token);
           if (!st) return { s: "off" };
           if (r.status === 200) {
@@ -193,7 +195,7 @@
     function apply(srv) {
       const data = isObj(srv && srv.data) ? srv.data : null, local = env.getState();
       let base = st.base;
-      const landed = Array.isArray(st.sent) && st.sent.find(x => x.w === num(obj(data && data._sync)[dev]));
+      const landed = Array.isArray(st.sent) && st.sent.find(x => x.w === obj(data && data._sync)[dev]);
       if (landed) base = landed.data;   // наш запис уже на сервері (P1-2): base — відправлене, а не старий
       if (st.lost) base = data;   // base загубився (P2-1): лише значення пристрою поверх сервера, без суми лічильників
       const how = st.replace ? "replace" : "merge", next = how === "replace" ? (data || {}) : merge3(base, local, data || {});
@@ -202,7 +204,7 @@
       return true;
     }
     /** Вихід на пристрої (кнопка, 401, «Скинути прогрес»): base акаунта лишається для повторного входу (P1-1). */
-    function drop() { if (timer) env.clearTimeout(timer); timer = null; if (st) keep = { prev: { id: st.id, rev: st.rev, base: st.base, sent: st.sent || null, lost: !!st.lost } }; st = null; persist(); }
+    function drop(forget) { if (timer) env.clearTimeout(timer); timer = null; keep = st && !forget ? { prev: { id: st.id, base: st.base, sent: st.sent || null, lost: !!st.lost } } : {}; st = null; persist(); }
     function fail(code) {
       if (code === 401) { drop(); return { s: "error", code, text: errText(401, "auth") }; }   // токен відкликано — вихід на пристрої
       schedule(code === "offline" ? 60000 : 30000);
@@ -212,7 +214,8 @@
       const r = await call("POST", path, body);
       if (r.status !== 200 && r.status !== 201) return { ok: false, text: errText(r.status, ctx) };
       st = { token: r.data.token, id: r.data.id, school: null, rev: 0, base: null, dirty: !!mine, replace: !mine, sent: null };
-      const p = keep.prev; if (mine && p && p.id === st.id) Object.assign(st, { rev: p.rev || 0, base: p.base || null, sent: p.sent || null, lost: !!p.lost });   // той самий акаунт — той самий base
+      // той самий акаунт — той самий base; rev — 0, щоб перший запис пройшов через 409 і злиття, а не перезаписав документ (рев'ю P1-4)
+      const p = keep.prev; if (mine && p && p.id === st.id) Object.assign(st, { base: p.base || null, sent: p.sent || null, lost: !!p.lost });
       keep = {}; persist();
       const me = await call("GET", "/v1/me", null, st.token); if (me.status === 200 && st) { st.school = me.data.school || null; persist(); }
       const res = await api.sync();
@@ -227,7 +230,8 @@
       async pairing() { if (!st) return { ok: false, text: MSG.auth401 }; const r = await call("POST", "/v1/pairing", {}, st.token);
         if (r.status === 401) { fail(401); set({ s: "off" }); }
         return r.status === 200 || r.status === 201 ? { ok: true, code: r.data.code, expiresAt: r.data.expiresAt } : { ok: false, text: errText(r.status) }; },
-      signOut() { drop(); set({ s: "off" }); },
+      /** forget — «Скинути прогрес»: base акаунта не пам'ятати (стан пристрою тепер новий; повторний вхід «так» — сума, P1-4). */
+      signOut(forget) { drop(!!forget); set({ s: "off" }); },
       /** Після кожного save: стан змінився — у чергу, відправка з паузою. */
       changed() { if (!st) return; if (!st.dirty) { st.dirty = true; persist(); set({ s: "pending" }); } schedule(3000); },
       sync() {

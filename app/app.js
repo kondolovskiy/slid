@@ -803,7 +803,7 @@ function bindView(){
   const sp=$("#syncPair"); if(sp) sp.onclick=syncPair;
   const so=$("#syncOut"); if(so) so.onclick=()=>{ SYNC.signOut(); syncMsg=""; toast("Синхронізацію вимкнено. Прогрес лишився на пристрої"); render(); };
   const rs=$("#reset"); if(rs) rs.onclick=()=>{ if(!confirmReset){ confirmReset=true; render(); setTimeout(()=>{ confirmReset=false; if(tab==="profile") render(); },4000); return; }
-    const keep={name:S.name,theme:S.theme,subject:S.subject,grade:S.grade}; SYNC.signOut(); HYPS.reset(); EV.log("reset"); EV.newProfile(); S=Object.assign(fresh(),keep); confirmReset=false; save(); toast(ic("check")+"Прогрес скинуто"); render(); };
+    const keep={name:S.name,theme:S.theme,subject:S.subject,grade:S.grade}; SYNC.signOut(true); HYPS.reset(); EV.log("reset"); EV.newProfile(); S=Object.assign(fresh(),keep); confirmReset=false; save(); toast(ic("check")+"Прогрес скинуто"); render(); };
 }
 function toast(html){ const t=$("#toast"); t.innerHTML=`<div>${html}</div>`; clearTimeout(toast.t); toast.t=setTimeout(()=>t.innerHTML="",1900); }
 

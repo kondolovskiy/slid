@@ -183,5 +183,23 @@ function device(srv, state, store = { v: null }) {
   const A4 = { state: J(A3.state) }; A4.client = Y.create({ api: "x", request: srv.request, load: () => J(big.v), persist: st => { big.v = st ? J(st) : null; }, getState: () => J(A4.state), setState: d => { A4.state = J(d); return true; }, now: () => 1, setTimeout() {}, clearTimeout() {} });
   await A4.client.sync(); await A4.client.sync();
   eq([A4.state.xp, srv.L.get("g:q").data.xp], [90, 90], "P2-1: після перезавантаження з lost — без подвоєння (90, не 130)"); void D; }
+{ // P1-4: «Скинути прогрес» (signOut(true)) → новий прогрес → вхід «так» у той самий акаунт — прогрес акаунта не стирається, сума
+  const srv = server(), A = device(srv, { xp: 100, days: { d1: 100 } }); await A.client.loginGoogle("p4", true);
+  A.client.signOut(true); A.state = { xp: 10, days: { d2: 10 } }; await A.client.loginGoogle("p4", true);
+  const srt = o => Object.fromEntries(Object.entries(o).sort());
+  eq([A.state.xp, srt(A.state.days), srt(nos(srv.L.get("g:p4").data).days)], [110, { d1: 100, d2: 10 }, { d1: 100, d2: 10 }], "P1-4: скидання → вхід «так» — сума, d1 не зник");
+  { // звичайний вихід (prev з base), сервер на тому самому rev, стан пристрою замінено цілком (демо) — перший PUT однаково через 409, d1 лишається
+    const s2 = server(), D = device(s2, { xp: 100, days: { d1: 100 } }); await D.client.loginGoogle("p4b", true); eq(s2.L.get("g:p4b").rev, 1, "P1-4б: сервер на rev 1");
+    D.client.signOut(); D.state = { xp: 10, days: { d2: 10 } }; await D.client.loginGoogle("p4b", true);
+    eq([s2.L.get("g:p4b").data.days.d1, s2.L.get("g:p4b").data.xp >= 100], [100, true], "P1-4б: вихід → стан замінено → вхід «так» — документ акаунта не перезаписано"); }
+  // і без forget (звичайний вихід), але сервер змінився з іншого пристрою: rev із prev не береться — перший PUT через 409
+  const B = device(srv, { xp: 0 }); A.client.signOut(); const code = await (async () => { await A.client.loginGoogle("p4", true); return (await A.client.pairing()).code; })(); A.client.signOut();
+  await B.client.claim(code, false); B.save({ xp: B.state.xp + 5 }); await B.client.sync();
+  await A.client.loginGoogle("p4", true);
+  eq([A.state.xp, srv.L.get("g:p4").data.xp], [115, 115], "P1-4: вихід, інший пристрій записав, вхід «так» — злиття, не перезапис"); }
+{ // P3-6: номер запису неповторний (лічильник + випадковий хвіст); правило _sync — за лічильником
+  eq(J(Y.merge3({}, { _sync: { a: "3:x", b: "1:q" } }, { _sync: { a: "2:y", b: "4:z", c: "1:w" } }))._sync, { a: "3:x", b: "4:z", c: "1:w" }, "_sync: за ключем — більший лічильник");
+  const srv = server(), A = device(srv, { xp: 1 }); await A.client.loginGoogle("w", true); const w = srv.L.get("g:w").data._sync;
+  eq(Object.values(w).every(x => /^\d+:[0-9a-z]+$/.test(x)), true, "P3-6: номер запису — «лічильник:випадковий»"); }
 console.log(`\n${n} перевірок, ${fails ? fails + " з помилками" : "усе гаразд"}`);
 if (fails) process.exit(1);
