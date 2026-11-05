@@ -1,8 +1,15 @@
 /* Слід · Математика, 9 клас — діагностика «Що ти вже вмієш?»
-   Статус: verified (reports/verify/dg9.md). 10 тем-передумов (5–8 кл., по 2 завдання) + 7 тем 9 класу (по 1 завданню) = 27 завдань.
+   Статус: draft з 2026-11-05 (лише for тем linear, pyth, polygon, див. нижче); до того verified (reports/verify/dg9.md). 10 тем-передумов (5–8 кл., по 2 завдання) + 7 тем 9 класу (по 1 завданню) = 27 завдань.
    Обсяг і зв'язки — docs/math-personalization-coverage.md, dg9 (матриця 2026-10-16.v2).
    Порядок: спершу базові завдання всіх тем-передумов (1–10), далі складніші; теми 9 класу — лише в другій половині (14–27).
    Кожна тема 9 класу — один multi/sort, що перевіряє всі компоненти ядра одного уроку (coverageObjectives матриці).
+   2026-11-05 (refine-math-diag-g9-ister-required; рішення оркестратора за D-046/D-047; матриця v11): опори нових required-уроків D-043
+   9 кл. — лише розширенням for наявних pre-тем: linear + g9m3 (g9m3l6: з лінійного рівняння системи виражаємо змінну й підставляємо),
+   pyth + g9m3 (g9m3l7: «Екран телевізора», x² + y² = 50²) і + g9m8 (g9m8l2 і далі l3, l5, l7, l10: відрізки в просторі — гіпотенузи),
+   polygon + g9m4 (g9m4l5: паралелограм діагоналлю ділиться на два трикутники — ідея g8m6l1; основну опору S = ½ah, g8m6l2, тест
+   не перевіряє). Теми про многогранники чи об'єм (ms4l2) у тесті немає. Завдання, індекси, ключі й rev не змінено: for впливає лише на
+   порядок кроків повторення в плані (SLID_LEARN.buildPlan), збережені вердикти й плани чинні (CONTENT_SCHEMA §9). Cur-проб для нових
+   уроків немає (нове завдання = новий id тесту; рішення 04.11, refine-math-diag-for-ister): known бере лише cur-уроки — хибного «вже знаєш» немає.
    Перевірка: node tools/validate.mjs --diag dg9 && node tools/personalization-qa.mjs --diag dg9
    Схема й правила: docs/CONTENT_SCHEMA.md §9, style/math.md */
 SLID.diag("math", {
@@ -10,19 +17,19 @@ SLID.diag("math", {
   grade: 9,
   title: "Що ти вже вмієш?",
   why: "Знайдемо теми, які варто згадати, щоб нові уроки давалися легше.",
-  status: "verified",
+  status: "draft",   // 2026-11-05 refine-math-diag-g9-ister-required: for тем linear, pyth, polygon розширено — до повторної перевірки зв'язків; завдання й ключі — verified (verifier-dg9)
   meta: { author: "claude-opus", created: "2026-10-31", factcheck: "verifier-dg9", teacher: null },
   topics: [
     // передумови з 5–8 класів
-    { id: "linear", title: "Лінійні рівняння", kind: "pre", lessons: ["g7m1l2"], for: ["g9m1", "g9m5"] },
+    { id: "linear", title: "Лінійні рівняння", kind: "pre", lessons: ["g7m1l2"], for: ["g9m1", "g9m3", "g9m5"] },
     { id: "signed", title: "Дії зі знаками", kind: "pre", lessons: ["g6m4l3", "g6m4l4"], for: ["g9m1", "g9m2"] },
     { id: "quad", title: "Квадратні рівняння", kind: "pre", lessons: ["g8m5l2"], for: ["g9m3"] },
     { id: "roots", title: "Квадратні корені", kind: "pre", lessons: ["g8m3l1", "g8m3l3"], for: ["g9m2", "g9m4"] },
     { id: "func", title: "Лінійна функція", kind: "pre", lessons: ["g7m5l3"], for: ["g9m2", "g9m3"] },
     { id: "power", title: "Степінь", kind: "pre", lessons: ["g7m3l1"], for: ["g9m5"] },
-    { id: "pyth", title: "Теорема Піфагора", kind: "pre", lessons: ["g8m4l2"], for: ["g9m2", "g9m4"] },
+    { id: "pyth", title: "Теорема Піфагора", kind: "pre", lessons: ["g8m4l2"], for: ["g9m2", "g9m3", "g9m4", "g9m8"] },
     { id: "similar", title: "Подібні трикутники", kind: "pre", lessons: ["g8m4l1"], for: ["g9m4", "g9m6"] },
-    { id: "polygon", title: "Сума кутів многокутника", kind: "pre", lessons: ["g8m6l1"], for: ["g9m6"] },
+    { id: "polygon", title: "Сума кутів многокутника", kind: "pre", lessons: ["g8m6l1"], for: ["g9m4", "g9m6"] },
     { id: "stats", title: "Середнє арифметичне", kind: "pre", lessons: ["ms2l5"], for: ["g9m7"] },
     // теми 9 класу: known — лише для одного названого уроку
     { id: "cur-g9m1", title: "Властивості нерівностей", kind: "cur", lessons: ["g9m1l1"] },
