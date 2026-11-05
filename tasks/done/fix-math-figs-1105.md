@@ -4,7 +4,7 @@ claimed_at: 2026-11-05T11:50:36.835Z
 id: fix-math-figs-1105
 type: fix
 subject: math
-status: review
+status: done
 claimed_by: writer-math-content
 created: 2026-11-05
 depends_on: []
@@ -32,3 +32,7 @@ depends_on: []
 - Рисунки перевірено в браузері (Node Playwright, `SLID_LAB.mount` зі справжніх app/math.js + app/lab.js у зібраному index.html): знімки до/після — scratchpad mathc/shots/{before,after}. `python3 tools/playtest.py` у контейнері недоступний (немає Python-модуля playwright) — плейтест g7m8, g8m4, g8m6, g10m6 — у CI (job browser).
 - validate --section g7m8 / g10m6, --pool pg7m8 / pg8m2 — 0 помилок, 0 попереджень. `npm run check` EXIT 0; знімки test-hyp цими правками не зсунулись.
 - Лишилось: у g8m4l4 Завдання 5 заголовок «Висота на кресленні» (fig-audit не позначає: умова без посилання) — можна перейменувати за наступної ревізії (рядок STYLE в inbox).
+
+## Нотатки верифікатора
+
+**verifier-math-pre-figs-1105, 2026-11-05** (reports/verify/math-pre-figs-1105.md). Рисунки переглянуто в браузері (Node Playwright, `SLID_LAB.mount`): pg7m8 b01/b02/b05 — підписи під точкою, кути за координатами 28°/55°/35°, шукане не підписане; pg8m2 b05 — ∠C = 140°, дуга й підпис не налазять на AC; g7m8l3 — лише AB; g10m6l3 — графік правильний (max x = 1, min x = 3; росте/спадає/росте), завдань не підказує. Змінені завдання розв'язано: 62°, 145°, 70°, (20; 70; 90) — ключі збіглися. Вступи g8m4l4, g8m6l3 природні. g8m4l4 З5 «Висота на кресленні» **має рисунок** (lab plane) — заголовок коректний, не змінено. Статуси → verified (уроки g7m8l3, g10m6l3, g8m4l4, g8m6l3; пули pg7m8, pg8m2). validate 0/0. Рекомендація (косметика): g10m6l3 view від −0,3 — крива перетинає підписи осі y.

@@ -1,5 +1,5 @@
 /* Слід · Математика, 10 клас — «Геометрія: вступ до стереометрії»
-   style-math-finals-pre, 2026-11-05: у завдання фіналу додано pre (id уроку теми; style/common.md, D-048 п. 1); зміст не змінено.
+   style-math-finals-pre, 2026-11-05: у завдання фіналу додано pre (id уроку теми; style/common.md, D-048 п. 1); зміст не змінено; verifier-math-pre-figs-1105: Завдання 4 (макет-куб) pre g10m2l3 → g10m2l1 (той самий lab і означення куба — l1 #6, як у g10m4).
    Статус уроків: verified. 4 уроки (3 теми + boss).
    Інтерактив: solid (коробка, призма, піраміда); plane — схема слідів на грані.
    Перевірка: node tools/validate.mjs --section g10m2 && node tools/stats.mjs --subject math
@@ -686,7 +686,7 @@ SLID.section("math", {
           type: "lab",
           sk: "geom",
           eyebrow: "Завдання 4",
-          pre: "g10m2l3",
+          pre: "g10m2l1",
           title: "Вирівняй макет під куб вітража",
           body: "<p>Для симетричного вітража потрібен кубічний макет. Зрівняй усі три виміри.</p>",
           lab: {

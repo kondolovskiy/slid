@@ -1,5 +1,5 @@
 /* Слід · Математика, 7 клас — пул задач для тренування до розділу «Геометрія: коло» (g7m8)
-   Статус: draft — fix-math-figs-1105 (2026-11-05): у рисунках b01, b02, b05 підпис точки дотику (C / A) винесено під точку (labelDir: "s"), бо стояв під дугою кута; умови, числа й ключі не змінено. Потребує повторної верифікації рисунків.
+   Статус: verified (verifier-math-pre-figs-1105, 2026-11-05, reports/verify/math-pre-figs-1105.md: рисунки b01, b02, b05 переглянуто в браузері). Зміни fix-math-figs-1105 (2026-11-05): у рисунках b01, b02, b05 підпис точки дотику (C / A) винесено під точку (labelDir: "s"), бо стояв під дугою кута; умови, числа й ключі не змінено.
    Попередній статус: verified (verifier-fix-math-pools-ister-formats, 2026-11-05, reports/verify/pools-ister-formats.md). Зміни fix-math-pools-ister-formats: підписи довжин рисунка b08 — без «см» (8, 2, 4), як в інших пулах (одиниця — в умові); зміст і ключ не змінено.
    Попередній стан — нижче.
    Статус: verified — 2026-11-04 додано d01–d08 (g7m8l5) і e01–e08 (g7m8l6) за Істером (write-math-pool-g7m8-ister); перевірено verifier-write-math-pool-g7m8-ister (reports/verify/write-math-pool-g7m8-ister.md; підпис B у d07 винесено з-під точки M).
@@ -17,8 +17,8 @@
 SLID.pool("math", {
   id: "pg7m8",
   section: "g7m8",
-  status: "draft",
-  meta: { author: "w-write-math-pool-g7m8", created: "2026-10-31", factcheck: "verifier-pg7m8 (a–c); d, e — verifier-write-math-pool-g7m8-ister (2026-11-04, reports/verify/write-math-pool-g7m8-ister.md); fix-math-pools-ister-formats — verifier-fix-math-pools-ister-formats 2026-11-05", revised: "2026-11-05 fix-math-pools-ister-formats", teacher: null },
+  status: "verified",
+  meta: { author: "w-write-math-pool-g7m8", created: "2026-10-31", factcheck: "verifier-pg7m8 (a–c); d, e — verifier-write-math-pool-g7m8-ister (2026-11-04, reports/verify/write-math-pool-g7m8-ister.md); fix-math-pools-ister-formats — verifier-fix-math-pools-ister-formats 2026-11-05; fix-math-figs-1105 — verifier-math-pre-figs-1105 2026-11-05", revised: "2026-11-05 fix-math-pools-ister-formats", teacher: null },
   sources: [
     { id: "mer7g", title: "Мерзляк А. Г., Якір М. С. Геометрія : підручник для 7 класу закладів загальної середньої освіти. — Харків : Гімназія, 2024 (наказ МОН № 124 від 05.02.2024); PDF — дзеркало 4book.org", url: "https://file.4book.org/images/shcoolbook_ua/7/7_geom_m_2024.pdf" },
     { id: "ist7g", title: "Істер О. С. Геометрія : підручник для 7 класу закладів загальної середньої освіти. — Київ : Генеза, 2024 (наказ МОН № 124 від 05.02.2024); PDF — дзеркало 4book.org", url: "https://file.4book.org/images/shcoolbook_ua/7/7_geom_i_2024.pdf" }
