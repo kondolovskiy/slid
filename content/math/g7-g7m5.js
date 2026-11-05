@@ -1,5 +1,6 @@
 /* Слід · Математика, 7 клас — «Алгебра: функції»
    Статус уроків: verified. 4 уроки (3 + boss).
+   style-math-ister-followup, 2026-11-05: у завдання фіналу додано pre (id уроку теми; style/common.md, D-048 п. 1); зміст не змінено.
    Інтерактив: plane explore/lab з k, b; таблиця → точки (docs/CONTENT_SCHEMA.md §8).
    Перевірка: node tools/validate.mjs --section g7m5 && node tools/stats.mjs --subject math
    Схема й правила: docs/CONTENT_SCHEMA.md, style/, D-019 */
@@ -617,6 +618,7 @@ SLID.section("math", {
           type: "choice",
           sk: "func",
           eyebrow: "Завдання 1",
+          pre: "g7m5l1",
           title: "Яка таблиця задає функцію?",
           body: `<p><b>А:</b> $2\\to 5$, $2\\to 8$, $4\\to 9$</p>
         <p><b>Б:</b> $1\\to 3$, $2\\to 3$, $4\\to 7$</p>
@@ -632,6 +634,7 @@ SLID.section("math", {
           type: "lab",
           sk: "func",
           eyebrow: "Завдання 2",
+          pre: "g7m5l2",
           title: "Точка на графіку $y = x + 2$",
           body: "<p>Постав $P$ на пряму маршруту $y = x + 2$.</p>",
           lab: {
@@ -657,6 +660,7 @@ SLID.section("math", {
           type: "lab",
           sk: "func",
           eyebrow: "Завдання 3",
+          pre: "g7m5l3",
           title: "Проведи пряму через $M(2;\\,3)$",
           body: "<p>Добери $k$ і $b$ для формули $y = kx + b$.</p>",
           lab: {
@@ -701,6 +705,7 @@ SLID.section("math", {
           type: "choice",
           sk: "func",
           eyebrow: "Завдання 4",
+          pre: "g7m5l3",
           title: "У $y = 2x - 3$ що задає число $-3$?",
           opts: [
             "Кутовий коефіцієнт",
@@ -717,6 +722,7 @@ SLID.section("math", {
           type: "lab",
           sk: "func",
           eyebrow: "Завдання 5",
+          pre: "g7m5l3",
           title: "Зроби $k = 2$, щоб пройти через $B(1;\\,5)$",
           body: "<p>Нахил уже зафіксовано як 2, тож формула має вигляд $y = 2x + b$. Добери лише вільний член $b$.</p>",
           lab: {
@@ -742,6 +748,7 @@ SLID.section("math", {
           type: "number",
           sk: "func",
           eyebrow: "Завдання 6",
+          pre: "g7m5l1",
           title: "Останній рейс: $f(x) = -3x + 1$. Знайди $f(2)$",
           body: "<p>Підстав аргумент у формулу й уважно порахуй знак.</p>",
           answer: -5,

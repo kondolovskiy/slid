@@ -6,7 +6,8 @@
 // Не позначає: слово в тегах/лапках/дужках («у», <b>в</b> — мова про саму літеру), поруч з однолітерними словами (переліки «а, о, у»),
 // закреслене <s>…</s>, «і» після слів на й/я/ю/є/ї (§ 24: там «і»/«та»), «і» між голосними й після голосного (зіставлені поняття, § 24 п. 3.1 —
 // механічно не відрізнити, лише у звіті).
-// Запуск: node tools/euphony.mjs [--subject ukr] [--section ID] [--json]  → reports/euphony-<предмет>.md
+// Запуск: node tools/euphony.mjs [--subject ukr] [--section ID] [--exercises] [--json]  → reports/euphony-<предмет>.md (з --section — лише stdout)
+//   --exercises — окремий режим: варіанти, items і речення gaps/pick поза пропусками → reports/euphony-<предмет>-exercises.md
 import fs from "node:fs"; import path from "node:path"; import { fileURLToPath } from "node:url";
 
 const VOW = "аеєиіїоуюя";
@@ -19,6 +20,8 @@ const V_CLUSTER = /^(?:[вф]|[бгґдзклмнпрстфхцчшщж]ь?в)/;
 // § 25: «зі» перед з, с, ш, щ + приголосний; «зі мною»
 const ZI_CLUSTER = w => /^[зсшщ]/.test(w) && isC(w[1]) || /^мн/.test(w);
 const SIB = /^[зсцжчш]/;   // § 25 п. 2: «із» на початку речення перед з, с, ц, ж, ч, ш
+// «зі (зо) дві години», «зі п'ять кілометрів» — «зі» в значенні «приблизно» перед кількісним числівником (tools-lang-p4, P3-2)
+const NUMERAL = /^(?:два|дві|двоє|три|троє|чотири|четверо|п['’ʼ]ять|п['’ʼ]ятеро|шість|шестеро|сім|семеро|вісім|дев['’ʼ]ять|десять|\p{L}+надцять|двадцять|тридцять|сорок|п['’ʼ]ятдесят|шістдесят|сімдесят|вісімдесят|дев['’ʼ]яносто|сто|двісті|триста|сотню|тисячу|десяток|кілька|декілька)$/u;
 
 /** Правила: id → [опис, поради]. VALIDATE_RULES — ті, що йдуть у validate як попередження (решта — лише звіт tools/euphony.mjs). */
 export const RULES = {
@@ -58,6 +61,8 @@ const CONJ = new Set(["чи", "та", "або", "і", "й", "а", ...PREP]);
 // назва перед цільовим словом — мова про саме слово («прийменник з», «сполучник й», «літера в»)
 const NAME = new Set(["прийменник", "прийменника", "прийменники", "сполучник", "сполучника", "сполучники", "літера", "літеру", "літери", "буква", "букву", "звук", "звуки", "префікс", "частка", "слово"]);
 const WORD = /[\p{L}\p{M}'’ʼ-]+/gu;
+// пауза (§ 23 п. 1.2, § 24 п. 1.2): кома, крапка з комою, двокрапка, тире (і « - » з пробілами), відкривна дужка, три крапки.
+// Закривна дужка — ні: «Садили (<i>де?</i>) в парку» — питання-позначка в мовній вправі, а не пауза
 const PAUSE = /[,;:—–(…]|\s-\s/;
 const END = new RegExp(`[.!?…]["»”]?\\s*$|${BREAK}`);
 const GUARD = new RegExp(`[«»"“”„\\[\\]/${EMPH}]`);
@@ -65,7 +70,7 @@ const TARGET = new Set(["в", "у", "і", "й", "з", "із", "зі"]);
 
 /** Відхилення в одному тексті: [{ rule, word, ctx }] */
 export function euphonyIssues(raw) {
-  const src = prep(raw), toks = [...src.matchAll(WORD)].map(m => ({ w: m[0], i: m.index, e: m.index + m[0].length }));
+  const src = prep(raw), toks = [...src.matchAll(WORD)].filter(m => /[\p{L}]/u.test(m[0])).map(m => ({ w: m[0], i: m.index, e: m.index + m[0].length }));   // « - » без літер — тире, не слово
   const out = [];
   toks.forEach((t, k) => {
     const lw = t.w.toLocaleLowerCase("uk").normalize("NFC").replace(/\u0301/g, "");
@@ -111,7 +116,7 @@ export function euphonyIssues(raw) {
         else if (!start && !pause && isC(pe) && isCs(ns)) add("з-між-приголосними");
         break;
       case "зі":
-        if (!ZI_CLUSTER(ns2)) add("зі-не-перед-збігом");
+        if (!ZI_CLUSTER(ns2) && !NUMERAL.test(nw)) add("зі-не-перед-збігом");
         break;
       case "із":
         if (!start && !pause && isV(pe) && isVs(ns)) add("із-між-голосними");
@@ -129,28 +134,42 @@ export function euphonyScreen(s, { opts = true } = {}) {
     .filter(x => typeof x === "string").flatMap(euphonyIssues);
 }
 
+/** Текст вправ (tools-math-ister-p3 п. 12; verifier-fix-ukr-euphony: масові «й» після я/ю/є/ї у варіантах і реченнях вправ знаходив
+ *  лише ручний grep): усі варіанти opts (і хибні), items, речення gaps поза {…} і pick поза […]. Сам пропуск і слово-ціль — вправа
+ *  (там навмисні помилки), тож вони стають межею (EMPH): сусідні з ними «і/й, у/в» теж не позначаються. Лише звіт (--exercises), не validate. */
+export function euphonyExercise(s) {
+  const ex = s.type === "gaps" && typeof s.text === "string" ? s.text.replace(/\{[^{}]*\}/g, EMPH)
+    : s.type === "pick" && typeof s.text === "string" ? s.text.replace(/\[[^\]]*\]/g, EMPH) : null;
+  return [...(s.opts || []), ...(s.items || []).map(i => Array.isArray(i) ? i[0] : i), ex].filter(x => typeof x === "string").flatMap(euphonyIssues);
+}
+
 // ---- CLI ----
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const { loadContent, ROOT } = await import("./lib.mjs");
   const args = process.argv.slice(2), opt = k => args.includes(k) ? args[args.indexOf(k) + 1] : null;
-  const subj = opt("--subject") || "ukr", only = opt("--section");
+  const subj = opt("--subject") || "ukr", only = opt("--section"), exMode = args.includes("--exercises");
   const { subjects, origin } = loadContent();
   const c = subjects.find(x => x.id === subj);
   if (!c) { console.error(`немає предмета ${subj}`); process.exit(2); }
+  if (only && !c.sections.some(x => x.id === only)) { console.error(`немає розділу ${only} у предметі ${subj}`); process.exit(2); }
   const rows = []; let screens = 0;
   for (const sec of c.sections.filter(x => x.lessons && (!only || x.id === only))) for (const l of sec.lessons) {
-    l.screens.forEach((s, i) => { screens++; for (const x of euphonyScreen(s)) rows.push({ where: `${l.id} екран ${i + 1}`, file: origin[sec.id], ...x }); });
-    for (const x of [l.title, l.why, l.outro?.text, ...(l.outro?.learned || [])].filter(t => typeof t === "string").flatMap(euphonyIssues)) rows.push({ where: `${l.id} outro/назва`, file: origin[sec.id], ...x });
+    l.screens.forEach((s, i) => { screens++; for (const x of exMode ? euphonyExercise(s) : euphonyScreen(s)) rows.push({ where: `${l.id} екран ${i + 1}`, file: origin[sec.id], ...x }); });
+    if (!exMode) for (const x of [l.title, l.why, l.outro?.text, ...(l.outro?.learned || [])].filter(t => typeof t === "string").flatMap(euphonyIssues)) rows.push({ where: `${l.id} outro/назва`, file: origin[sec.id], ...x });
   }
   const byRule = {}; rows.forEach(r => (byRule[r.rule] ||= []).push(r));
-  if (args.includes("--json")) { process.stdout.write(JSON.stringify({ subject: subj, screens, rows }, null, 1) + "\n"); process.exit(0); }
-  const L = [`# Милозвучність у/в, і/й, з/із/зі: ${subj}`, "", `Згенеровано: ${new Date().toISOString().slice(0, 10)} · tools/euphony.mjs · екранів: ${screens}, відхилень: ${rows.length}`, "",
-    "Механічна підказка за УП § 23–25: перевір кожне вручну. Правила з позначкою «validate» дають попередження валідатора; решта — лише тут.", ""];
+  if (args.includes("--json")) { process.stdout.write(JSON.stringify({ subject: subj, mode: exMode ? "exercises" : "text", screens, rows }, null, 1) + "\n"); process.exit(0); }
+  const L = [`# Милозвучність у/в, і/й, з/із/зі: ${subj}${exMode ? " · текст вправ" : ""}${only ? ` · розділ ${only}` : ""}`, "", `Згенеровано: ${new Date().toISOString().slice(0, 10)} · tools/euphony.mjs${exMode ? " --exercises" : ""} · екранів: ${screens}, відхилень: ${rows.length}`, "",
+    exMode ? "Варіанти відповідей (і хибні), items і речення вправ gaps/pick поза пропусками. Хибний варіант може бути навмисним — перевір кожне вручну; validate цього не перевіряє."
+      : "Механічна підказка за УП § 23–25: перевір кожне вручну. Правила з позначкою «validate» дають попередження валідатора; решта — лише тут.", ""];
   for (const [id, desc] of Object.entries(RULES)) { const rs = byRule[id] || []; if (!rs.length) continue;
-    L.push(`## ${desc}${VALIDATE_RULES.has(id) ? " · validate" : ""} — ${rs.length}`, "");
+    L.push(`## ${desc}${VALIDATE_RULES.has(id) && !exMode ? " · validate" : ""} — ${rs.length}`, "");
     rs.forEach(r => L.push(`- ${r.where} (${r.file}): «${r.ctx}»`)); L.push(""); }
+  // --section: лише stdout — спільний звіт предмета не перезаписуємо одним розділом (tools-lang-p4, п. 7)
+  if (only) { process.stdout.write(L.join("\n") + "\n"); process.exit(0); }
   fs.mkdirSync(path.join(ROOT, "reports"), { recursive: true });
-  fs.writeFileSync(path.join(ROOT, `reports/euphony-${subj}.md`), L.join("\n"));
-  console.log(`${subj}: екранів ${screens}, відхилень ${rows.length} → reports/euphony-${subj}.md`);
+  const out = `reports/euphony-${subj}${exMode ? "-exercises" : ""}.md`;
+  fs.writeFileSync(path.join(ROOT, out), L.join("\n"));
+  console.log(`${subj}: екранів ${screens}, відхилень ${rows.length} → ${out}`);
   for (const [id, rs] of Object.entries(byRule)) console.log(`  ${id}${VALIDATE_RULES.has(id) ? " (validate)" : ""}: ${rs.length}`);
 }

@@ -13,7 +13,8 @@ export interface LearnerStore {
   school(learnerId: string): Promise<string | null>;
   addToken(learnerId: string, tokenHash: string): Promise<void>;
   findIdByTokenHash(tokenHash: string): Promise<string | null>;
-  savePairing(codeHash: string, learnerId: string, expiresAt: Date): Promise<void>;
+  /** false — живий код із таким хешем уже є (збіг випадкових кодів); тоді генеруємо інший. */
+  savePairing(codeHash: string, learnerId: string, expiresAt: Date): Promise<boolean>;
   /** Атомарно забирає непрострочений код; повертає id учня або null. */
   claimPairing(codeHash: string): Promise<string | null>;
 }
@@ -60,7 +61,9 @@ export class PgLearnerStore implements LearnerStore {
   }
   async savePairing(codeHash: string, learnerId: string, expiresAt: Date) {
     await this.t.deleteFrom('pairing_codes').where('expires_at', '<', sql<Date>`now()`).execute(); // прибирання
-    await this.t.insertInto('pairing_codes').values({ code_hash: codeHash, learner_id: learnerId, expires_at: expiresAt }).execute();
+    const row = await this.t.insertInto('pairing_codes').values({ code_hash: codeHash, learner_id: learnerId, expires_at: expiresAt })
+      .onConflict((oc) => oc.column('code_hash').doNothing()).returning('code_hash').executeTakeFirst();
+    return row !== undefined;
   }
   async claimPairing(codeHash: string) {
     const row = await this.t.deleteFrom('pairing_codes').where('code_hash', '=', codeHash)
@@ -97,7 +100,11 @@ export class MemoryLearnerStore implements LearnerStore {
   async school(learnerId: string) { return this.learners.get(learnerId)?.hd ?? null; }
   async addToken(learnerId: string, tokenHash: string) { this.tokens.set(tokenHash, learnerId); }
   async findIdByTokenHash(tokenHash: string) { return this.tokens.get(tokenHash) ?? null; }
-  async savePairing(codeHash: string, learnerId: string, expiresAt: Date) { this.codes.set(codeHash, { learnerId, expiresAt }); }
+  async savePairing(codeHash: string, learnerId: string, expiresAt: Date) {
+    if ((this.codes.get(codeHash)?.expiresAt.getTime() ?? 0) > Date.now()) return false;
+    this.codes.set(codeHash, { learnerId, expiresAt });
+    return true;
+  }
   async claimPairing(codeHash: string) {
     const c = this.codes.get(codeHash);
     this.codes.delete(codeHash);

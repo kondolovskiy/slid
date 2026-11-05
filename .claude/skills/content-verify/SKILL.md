@@ -9,7 +9,7 @@ description: Use when independently verifying a lesson section, diag test, pract
 Задача — у `tasks/review/`. Якщо оркестратор ще не взяв її: `node tools/claim.mjs claim <task-id> verifier-<task-id>` (задача лишається в review).
 
 ## 1. Прочитай
-Файл розділу (пулу, тесту), style/, glossary і facts предмета, pitfalls.md («Джерела для верифікації», розділ свого предмета).
+Файл розділу (пулу, тесту), style/, glossary і facts предмета, пастки свого предмета: math — `memory/long/pitfalls-math.md`, hist і world — `pitfalls-hist.md` (в обох — «Джерела для верифікації»), ukr — `pitfalls-content.md` (покажчик — `pitfalls.md`).
 Пул чи тест рівня — ще CONTENT_SCHEMA §9–10 і скіл `math-pool-diag`. Лінія графа — скіл `skill-graph`.
 
 ## 2. Факти

@@ -1,5 +1,7 @@
 /* Слід · Математика, 8 клас — «Геометрія: многокутники і площі»
+   fix-math-figs-1105, 2026-11-05: g8m6l3 (фінал) — у вступі «На кресленні двору є…» → «У дворі є…» (посилання на креслення без рисунка); урок → draft; verified — verifier-math-pre-figs-1105, 2026-11-05 (reports/verify/math-pre-figs-1105.md).
    Статус уроків: verified; g8m6l2 — повторно після fix-math-figs-g8-geo (модель на екрані висновку; verifier-fix-math-figs-g8-geo, 2026-11-03, reports/verify/fix-math-figs-g8-geo.md). 3 уроки (2 теми + boss).
+   style-math-ister-followup, 2026-11-05: у завдання фіналу додано pre (id уроку теми; style/common.md, D-048 п. 1); зміст не змінено.
    Інтерактив (D-014): plane (основа/висота, live area; n і сума кутів), rect (a,b → S).
    Перевірка: node tools/validate.mjs --section g8m6 && node tools/stats.mjs --subject math
    Схема й правила: docs/CONTENT_SCHEMA.md §8, style/, D-019.
@@ -482,7 +484,7 @@ SLID.section("math", {
           type: "intro",
           eyebrow: "Фінал розділу",
           title: "Ти допомагаєш із планом двору",
-          body: `<p class="lead">На кресленні двору є ділянка з багатьма кутами, клумба-паралелограм, трикутний газон і ставок-трапеція.</p>
+          body: `<p class="lead">У дворі є ділянка з багатьма кутами, клумба-паралелограм, трикутний газон і ставок-трапеція.</p>
         <p>Перевір числа крок за кроком — бали за цей урок ідуть подвійні.</p>`,
           cta: "До роботи"
         },
@@ -490,6 +492,7 @@ SLID.section("math", {
           type: "number",
           sk: "geom",
           eyebrow: "Завдання 1",
+          pre: "g8m6l1",
           title: "Кути ділянки",
           body: "<p>Ділянка — опуклий шестикутник. Знайди суму його кутів.</p>",
           answer: 720,
@@ -503,6 +506,7 @@ SLID.section("math", {
           type: "lab",
           sk: "meas",
           eyebrow: "Завдання 2",
+          pre: "g8m6l2",
           title: "Клумба площею 18",
           body: "<p>Клумба — паралелограм з основою 6. Підбери висоту так, щоб площа клумби стала 18.</p>",
           lab: {
@@ -535,6 +539,7 @@ SLID.section("math", {
           type: "number",
           sk: "meas",
           eyebrow: "Завдання 3",
+          pre: "g8m6l2",
           title: "Трикутний газон",
           body: "<p>Основа газону 8 м, висота 5 м. Знайди площу.</p>",
           answer: 20,
@@ -548,6 +553,7 @@ SLID.section("math", {
           type: "lab",
           sk: "meas",
           eyebrow: "Завдання 4",
+          pre: "g8m6l2",
           title: "Ставок площею 28",
           body: "<p>Основи ставка 9 м і 5 м. Підбери висоту так, щоб площа ставка стала 28 м².</p>",
           lab: {
@@ -580,6 +586,7 @@ SLID.section("math", {
           type: "choice",
           sk: "geom",
           eyebrow: "Завдання 5",
+          pre: "g8m6l1",
           title: "Скільки сторін у альтанки?",
           body: "<p>Сума кутів альтанки — $1080°$. Скільки в неї сторін?</p>",
           opts: ["6", "7", "8", "9"],
@@ -593,6 +600,7 @@ SLID.section("math", {
           type: "choice",
           sk: "meas",
           eyebrow: "Завдання 6",
+          pre: "g8m6l2",
           title: "Плутанина з формулами",
           body: "<p>Паралелограм має основу 5 м і висоту 4 м. Хто з трьох правильно знайшов площу?</p>",
           opts: [

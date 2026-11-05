@@ -10,7 +10,7 @@ description: Use when writing or rewriting a lesson section file content/<subjec
 
 ## 1. Прочитай
 Задачу; docs/CONTENT_SCHEMA.md; docs/PEDAGOGY.md; style/common.md; style/<предмет>.md; style/profiles.json;
-`memory/long/glossary/<предмет>.md`; `memory/long/facts/<предмет>.md`; `memory/long/pitfalls.md` (розділи «Контент і код» і про свій предмет).
+`memory/long/glossary/<предмет>.md`; `memory/long/facts/<предмет>.md`; `memory/long/pitfalls-content.md` («Контент і код»; ukr — і розділи про українську мову) і пастки свого предмета: math — `pitfalls-math.md`, hist і world — `pitfalls-hist.md` (покажчик — `pitfalls.md`).
 Відкрий **еталонний розділ** із задачі та вже написані розділи того ж класу — повтори їхню будову, ритм і довжину. Структуру копіюй з еталона, а не вигадуй.
 
 ## 2. План і будова

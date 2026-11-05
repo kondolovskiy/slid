@@ -1,3 +1,4 @@
+import { ServiceUnavailableException } from '@nestjs/common';
 import { GoogleAccount, GoogleVerifier } from './google.verifier';
 import { IdentityService, PAIRING_TTL_MS } from './identity.service';
 import { MemoryLearnerStore } from './learner.store';
@@ -147,5 +148,39 @@ describe('IdentityService', () => {
     it('невідомий і порожній код — null', async () => {
       for (const c of ['ABCDEF', '', undefined]) await expect(identity.claimPairingCode(c)).resolves.toBeNull();
     });
+
+    it('збіг нового коду з живим — генерує інший, а не 500', async () => {
+      const me = await identity.register();
+      const save = jest.spyOn(store, 'savePairing').mockResolvedValueOnce(false);
+      const { code } = await identity.createPairingCode(me.id);
+      expect(save).toHaveBeenCalledTimes(2);
+      await expect(identity.claimPairingCode(code)).resolves.toMatchObject({ id: me.id });
+    });
+
+    it('сховище щоразу каже «зайнято» — 503 після кількох спроб, без нескінченного циклу', async () => {
+      const save = jest.spyOn(store, 'savePairing').mockResolvedValue(false);
+      await expect(identity.createPairingCode((await identity.register()).id)).rejects.toBeInstanceOf(ServiceUnavailableException);
+      expect(save.mock.calls.length).toBeGreaterThan(1);
+      expect(save.mock.calls.length).toBeLessThanOrEqual(10);
+    });
+  });
+});
+
+describe('MemoryLearnerStore.savePairing', () => {
+  afterEach(() => jest.useRealTimers());
+  const soon = () => new Date(Date.now() + 60_000);
+
+  it('живий код з тим самим хешем — false, учня не підміняє', async () => {
+    const s = new MemoryLearnerStore();
+    await expect(s.savePairing('h', 'a', soon())).resolves.toBe(true);
+    await expect(s.savePairing('h', 'b', soon())).resolves.toBe(false);
+    await expect(s.claimPairing('h')).resolves.toBe('a');
+  });
+
+  it('прострочений код з тим самим хешем можна перезаписати', async () => {
+    const s = new MemoryLearnerStore();
+    await s.savePairing('h', 'a', new Date(Date.now() - 1));
+    await expect(s.savePairing('h', 'b', soon())).resolves.toBe(true);
+    await expect(s.claimPairing('h')).resolves.toBe('b');
   });
 });

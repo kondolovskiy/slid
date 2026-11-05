@@ -18,11 +18,13 @@ check(() => assert.equal(all.errors.length, 0, JSON.stringify(all.errors.slice(0
 check(() => assert.equal(all.missing.filter(e => /^Діагностика/.test(e)).length,
   matrix.diagnostics.filter(d => !subject.diags.some(x => x.id === d.id)).length));
 // «Якорі» живого змісту без лічильників (рев'ю engine-math-answer-kinds-new P3-7, engine-answer-kinds-p3): додавання пулу чи вправи
-// їх не ламає, а втрату перевірки — ловить. Пули 11 кл. є й перевіряються без помилок; розділи 11 кл. без пулу не дають прогалин.
+// їх не ламає, а втрату перевірки — ловить. Пули 11 кл. є й перевіряються без помилок; pg11m2 (g11m2l1–l2 — required 10 кл. з матриці
+// v10, D-047) і pg11m6 не дають жодної прогалини: ні свого рівня («pg11m2: ще не verified»), ні рядків («pg11m2/g11m2l1: немає рівня 3»)
+// — рев'ю curate-math-g11m2-to-g10 P2-1, P3-1 (2026-11-05: обидва пули verified, виняток для статусу прибрано).
 const pools11 = subject.pools.filter(p => /^pg11m/.test(p.id));
 check(() => assert(pools11.length > 0, 'немає жодного пулу pg11m'));
 for (const p of pools11) check(() => assert.deepEqual(audit(subject, matrix, learn, { pool: p.id }).errors, [], p.id));
-check(() => assert(!all.missing.some(e => /^pg11m[26]:/.test(e))));
+check(() => assert(!all.missing.some(e => /^pg11m[26][:/]/.test(e)), JSON.stringify(all.missing.filter(e => /^pg11m/.test(e)))));
 // dg6 перевіряє сам зміст, а не лише узгодженість із собою: живий dg6 без прогалин, а зіпсовані зв'язки (sk, lesson) і порядок
 // завдань у копії живого dg6 — прогалини itemSkills / itemIndices.
 const cloneMath = () => JSON.parse(JSON.stringify(subject));
@@ -123,6 +125,24 @@ check(() => assert(audit(empty, FM, learn).errors.some(e => e.includes('Нуль
 const changed = JSON.parse(JSON.stringify(FM)); changed.lessons.pop();
 check(() => assert(audit(FX, changed, learn).errors.some(e => e.includes('поза матрицею'))));
 check(() => assert(audit(FX, FM, learn, { pool: 'nope' }).errors.some(e => e.includes('Фільтр не вибрав'))));
+// tools-math-ister-p3 п. 15 (рев'ю curate-math-matrix-v8-v9 P3-1, P3-2): preForSection, forEvidence, мінімум рівнів exercises.levels
+const fm = f => { const m = JSON.parse(JSON.stringify(FM)); f(m); return audit(FX, m, learn).missing; };
+const row6 = m => m.lessons.find(r => r.lesson === 'fx6a1'), p1 = m => m.diagnostics[0].topics[0];
+check(() => assert.deepEqual(fm(m => { row6(m).diagnostic = { preForSection: ['p1', 'p2'], cur: [] }; }), []));
+check(() => assert(fm(m => { row6(m).diagnostic = { preForSection: ['p2', 'p1'] }; }).some(e => e.startsWith('fx6a1: preForSection ["p2","p1"]') && e.includes('["p1","p2"]'))));
+check(() => assert(fm(m => { row6(m).diagnostic = { preForSection: ['p1'] }; }).some(e => e.startsWith('fx6a1: preForSection'))));
+// раунд 2 (рев'ю tools-math-ister-p3 P2-2): cur-тема з for, що містить розділ, у preForSection не входить
+check(() => assert.deepEqual(fm(m => { m.diagnostics[0].topics[2].for = ['fx6a']; row6(m).diagnostic = { preForSection: ['p1', 'p2'] }; }).filter(e => e.includes('preForSection')), []));
+check(() => assert(fm(m => { m.diagnostics[0].topics[2].for = ['fx6a']; row6(m).diagnostic = { preForSection: ['p1', 'p2', 'c1'] }; }).some(e => e.startsWith('fx6a1: preForSection'))));
+check(() => assert(fm(m => { m.lessons.find(r => r.lesson === 'fx5a1').diagnostic = { preForSection: ['p1'] }; }).some(e => e.startsWith('fx5a1: preForSection'))));   // у 5 кл. тесту немає — очікується []
+check(() => assert.deepEqual(fm(m => { p1(m).forEvidence = [{ section: 'fx6a', lesson: 'fx6a2' }]; }), []));
+check(() => assert(fm(m => { p1(m).forEvidence = [{ section: 'fx6a', lesson: 'fx5a1' }]; }).includes('dgfx6/p1: forEvidence fx5a1 не з розділу fx6a')));
+check(() => assert(fm(m => { p1(m).forEvidence = [{ section: 'fx6b', lesson: 'fx6b1' }]; }).includes('dgfx6/p1: forEvidence fx6b поза for')));
+check(() => assert(fm(m => { p1(m).forEvidence = []; }).includes('dgfx6/p1: розділ fx6a з for без forEvidence')));
+const lv = levels => fm(m => { m.lessons.find(r => r.lesson === 'fx4a1').exercises.levels = levels; });
+check(() => assert.deepEqual(lv([2, 2, 2]), []));
+check(() => assert(lv([3, 1, 1]).includes('pfx4a/fx4a1: рівня 1 — 2 вправ, потрібно ≥ 3 (exercises.levels)')));
+check(() => assert(lv([1, 1, 3]).some(e => e.includes('рівня 3 — 2 вправ'))));
 // діагностики: прив'язки проб до уроків, навичок і порядку
 const lostLinks = clone(); lostLinks.diags.find(d => d.id === 'dgfx6').items.forEach(it => { it.sk = 'num'; delete it.lesson; });
 const linksReport = audit(lostLinks, FM, learn, { diag: 'dgfx6' });

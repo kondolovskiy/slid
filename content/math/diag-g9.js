@@ -1,8 +1,16 @@
 /* Слід · Математика, 9 клас — діагностика «Що ти вже вмієш?»
-   Статус: verified (reports/verify/dg9.md). 10 тем-передумов (5–8 кл., по 2 завдання) + 7 тем 9 класу (по 1 завданню) = 27 завдань.
+   Статус: verified (verifier-dg9, reports/verify/dg9.md); for тем linear і pyth (див. нижче) — reviewer-dg9, 2026-11-05 (reports/review/refine-math-diag-g9-ister-required.md). 10 тем-передумов (5–8 кл., по 2 завдання) + 7 тем 9 класу (по 1 завданню) = 27 завдань.
    Обсяг і зв'язки — docs/math-personalization-coverage.md, dg9 (матриця 2026-10-16.v2).
    Порядок: спершу базові завдання всіх тем-передумов (1–10), далі складніші; теми 9 класу — лише в другій половині (14–27).
    Кожна тема 9 класу — один multi/sort, що перевіряє всі компоненти ядра одного уроку (coverageObjectives матриці).
+   2026-11-05 (refine-math-diag-g9-ister-required; рішення оркестратора за D-046/D-047; матриця v11): опори нових required-уроків D-043
+   9 кл. — лише розширенням for наявних pre-тем: linear + g9m3 (g9m3l6: з лінійного рівняння системи виражаємо змінну й підставляємо),
+   pyth + g9m3 (g9m3l7: «Екран телевізора», x² + y² = 2500) і + g9m8 (g9m8l2 і далі l3, l5, l7, l10: відрізки в просторі — гіпотенузи).
+   polygon до g9m4 не додано (рішення оркестратора 05.11): опора g9m4l5 — площа трикутника S = ½ah (g8m6l2), якої тест не перевіряє.
+   Теми про многогранники чи об'єм (ms4l2) у тесті немає. Завдання, індекси, ключі й rev не змінено: for впливає на
+   порядок кроків повторення в плані (SLID_LEARN.buildPlan) і на тіньові передумови гіпотез (app/hyp.js, preIndex: уроки pre-теми стають
+   передумовами кожного уроку розділів for; дитині тінь нічого не показує); збережені вердикти й плани чинні (CONTENT_SCHEMA §9). Cur-проб для нових
+   уроків немає (нове завдання = новий id тесту; рішення 04.11, refine-math-diag-for-ister): known бере лише cur-уроки — хибного «вже знаєш» немає.
    Перевірка: node tools/validate.mjs --diag dg9 && node tools/personalization-qa.mjs --diag dg9
    Схема й правила: docs/CONTENT_SCHEMA.md §9, style/math.md */
 SLID.diag("math", {
@@ -10,17 +18,17 @@ SLID.diag("math", {
   grade: 9,
   title: "Що ти вже вмієш?",
   why: "Знайдемо теми, які варто згадати, щоб нові уроки давалися легше.",
-  status: "verified",
+  status: "verified",   // 2026-11-05 linear.for + g9m3, pyth.for + g9m3, g9m8 (refine-math-diag-g9-ister-required) — reviewer-dg9; завдання й ключі — verifier-dg9
   meta: { author: "claude-opus", created: "2026-10-31", factcheck: "verifier-dg9", teacher: null },
   topics: [
     // передумови з 5–8 класів
-    { id: "linear", title: "Лінійні рівняння", kind: "pre", lessons: ["g7m1l2"], for: ["g9m1", "g9m5"] },
+    { id: "linear", title: "Лінійні рівняння", kind: "pre", lessons: ["g7m1l2"], for: ["g9m1", "g9m3", "g9m5"] },
     { id: "signed", title: "Дії зі знаками", kind: "pre", lessons: ["g6m4l3", "g6m4l4"], for: ["g9m1", "g9m2"] },
     { id: "quad", title: "Квадратні рівняння", kind: "pre", lessons: ["g8m5l2"], for: ["g9m3"] },
     { id: "roots", title: "Квадратні корені", kind: "pre", lessons: ["g8m3l1", "g8m3l3"], for: ["g9m2", "g9m4"] },
     { id: "func", title: "Лінійна функція", kind: "pre", lessons: ["g7m5l3"], for: ["g9m2", "g9m3"] },
     { id: "power", title: "Степінь", kind: "pre", lessons: ["g7m3l1"], for: ["g9m5"] },
-    { id: "pyth", title: "Теорема Піфагора", kind: "pre", lessons: ["g8m4l2"], for: ["g9m2", "g9m4"] },
+    { id: "pyth", title: "Теорема Піфагора", kind: "pre", lessons: ["g8m4l2"], for: ["g9m2", "g9m3", "g9m4", "g9m8"] },
     { id: "similar", title: "Подібні трикутники", kind: "pre", lessons: ["g8m4l1"], for: ["g9m4", "g9m6"] },
     { id: "polygon", title: "Сума кутів многокутника", kind: "pre", lessons: ["g8m6l1"], for: ["g9m6"] },
     { id: "stats", title: "Середнє арифметичне", kind: "pre", lessons: ["ms2l5"], for: ["g9m7"] },

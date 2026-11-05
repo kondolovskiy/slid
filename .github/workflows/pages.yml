@@ -1,24 +1,35 @@
 # Слід · публікація на GitHub Pages при кожному пуші в main.
 # Одноразово: Settings → Pages → Build and deployment → Source: «GitHub Actions».
+# Job browser (браузерна регресія рушія + сценарії test-ui + плейтест піднабору розділів) блокує deploy; на pull_request — ті самі перевірки без публікації.
 name: Pages
 
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
+    inputs:
+      playtest:
+        description: "Плейтест: subset — змінені розділи + покриття типів екранів + тести рівня (≈ 5 хв); full — усі уроки (≈ 50 хв)"
+        type: choice
+        options: [subset, full]
+        default: subset
 
+# найменші права (рев'ю tools-ci-answer-ui, P2-1): верхній рівень — лише читання, ширші — у job, якому потрібні
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
-  group: pages
+  group: pages-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: read      # configure-pages (enablement: false) лише читає налаштування сайту; upload-pages-artifact прав токена не потребує
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -41,24 +52,133 @@ jobs:
           node tools/test-graph-report.mjs
           node tools/test-make-tasks.mjs
           node tools/test-diff-answers.mjs
+          node tools/test-playtest-pick.mjs
+          python3 tools/test-verdict.py   # вердикт «не зараховано» плейтесту й test-answer-ui (без браузера, фальшива сторінка)
           node tools/validate.mjs --quiet
       - name: Згенеровані файли закомічені
         run: |
           git diff --exit-code -- index.html sw.js content/manifest.json \
             || (echo "::error::Запусти локально node tools/build.mjs і закоміть index.html, sw.js, content/manifest.json" && exit 1)
       - name: Зібрати сайт (лише файли застосунку)
+        if: github.event_name != 'pull_request'
         run: |
           mkdir _site
           cp -r index.html manifest.webmanifest sw.js app content img icons _site/
           touch _site/.nojekyll
       - uses: actions/configure-pages@v5
+        if: github.event_name != 'pull_request'
       - uses: actions/upload-pages-artifact@v3
+        if: github.event_name != 'pull_request'
         with:
           path: _site
 
-  deploy:
-    needs: build
+  # Браузерні тести (tools-ci-answer-ui). Окремий runner, усе послідовно в одному процесі на крок: паралельні браузерні прогони
+  # флейкають TimeoutError (pitfalls). Перезапуск червоного job — лише після того, як прочитано лог: повторне падіння = баг, не флейк.
+  browser:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read   # код PR тут виконується — без pages/id-token
+    timeout-minutes: ${{ inputs.playtest == 'full' && 120 || 45 }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2   # на PR HEAD — merge-коміт, HEAD^1 — база, з якою GitHub його зібрав
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: tools/requirements-browser.txt
+      - name: Playwright (Python)
+        id: pw
+        run: |
+          python -m pip install -r tools/requirements-browser.txt
+          echo "version=$(python -c 'import importlib.metadata as m; print(m.version("playwright"))')" >> "$GITHUB_OUTPUT"
+      - name: Кеш браузера Playwright
+        id: pw-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: ms-playwright-${{ runner.os }}-${{ steps.pw.outputs.version }}
+      - name: Chromium і системні бібліотеки
+        id: chromium
+        run: |
+          if [ "${{ steps.pw-cache.outputs.cache-hit }}" = "true" ]; then
+            python -m playwright install-deps chromium
+          else
+            python -m playwright install --with-deps chromium
+          fi
+      # головна регресія app/ (evidence, hyp, half_credit, graph_g3, gaps_order …); Chromium — свій (/opt/pw-browsers у CI немає)
+      - name: Регресія рушія (test-answer-ui --suite regression)
+        timeout-minutes: 25
+        run: python tools/test-answer-ui.py --suite regression
+      # сценарії рушія на Node (test-ui: Тренування з also, замок уроку, запобіжник невідомого екрана, оновлення PWA без змішування версій).
+      # Node-пакет playwright — тієї ж версії, що Python (steps.pw), у тимчасову теку runner, не в package.json проєкту; браузер — той самий
+      # ~/.cache/ms-playwright (та сама версія = та сама ревізія Chromium; /opt/pw-browsers у CI немає, тож test-ui бере Chromium Playwright).
+      # Іде й після червоної регресії (одна повна картина), але не після зламаного встановлення браузера.
+      - name: Сценарії рушія (test-ui, Node Playwright)
+        if: ${{ !cancelled() && steps.chromium.outcome == 'success' }}
+        timeout-minutes: 10
+        env:
+          PW_VERSION: ${{ steps.pw.outputs.version }}
+        run: |
+          npm install --prefix "$RUNNER_TEMP/pw-node" --no-save --no-audit --no-fund --ignore-scripts "playwright@$PW_VERSION"
+          PLAYWRIGHT_MODULE="$RUNNER_TEMP/pw-node/node_modules/playwright" node tools/test-ui.mjs
+      # плейтест іде й після червоної регресії (один прогін — повна картина), але не після зламаного встановлення браузера
+      - name: Піднабір плейтесту (змінені розділи + покриття + тести рівня)
+        id: pick
+        if: ${{ !cancelled() && steps.chromium.outcome == 'success' && inputs.playtest != 'full' }}
+        env:
+          EVENT: ${{ github.event_name }}
+          PR_BASE: ${{ github.event.pull_request.base.sha }}
+          PUSH_BEFORE: ${{ github.event.before }}
+        run: |
+          # PR: перший батько merge-коміту (точна база злиття; base.sha може бути новішим за merge-ref) — запасний варіант base.sha
+          case "$EVENT" in
+            pull_request) BASE=$(git rev-parse -q --verify 'HEAD^1' || echo "$PR_BASE") ;;
+            push) BASE="$PUSH_BEFORE" ;;
+            *) BASE="" ;;
+          esac
+          : > "$RUNNER_TEMP/changed.txt"
+          if [ -n "$BASE" ] && [ "$BASE" != "0000000000000000000000000000000000000000" ]; then
+            # нові файли першими: у межах бюджету уроків (playtest-pick --max-lessons) новий розділ важливіший за правлений
+            if { git cat-file -e "$BASE^{commit}" 2>/dev/null || git fetch --no-tags --depth=1 origin "$BASE"; } \
+              && { git diff --name-only --diff-filter=A "$BASE" HEAD && git diff --name-only --diff-filter=a "$BASE" HEAD; } > "$RUNNER_TEMP/changed.txt"; then
+              echo "Змінено файлів відносно ${BASE:0:7}: $(wc -l < "$RUNNER_TEMP/changed.txt")"
+            else
+              echo "::warning::Не вдалося порівняти з $BASE — лише покриття й тести рівня, без змінених розділів"
+              : > "$RUNNER_TEMP/changed.txt"
+            fi
+          fi
+          mapfile -t CHANGED < "$RUNNER_TEMP/changed.txt"
+          IDS=$(node tools/playtest-pick.mjs --max-lessons 200 "${CHANGED[@]}" 2> "$RUNNER_TEMP/pick.log") || { cat "$RUNNER_TEMP/pick.log"; exit 1; }
+          cat "$RUNNER_TEMP/pick.log"
+          if grep -q '^Понад бюджет' "$RUNNER_TEMP/pick.log"; then
+            # обрізання за символами, не байтами (кирилиця — 2 байти в UTF-8)
+            MSG=$(grep '^Понад бюджет' "$RUNNER_TEMP/pick.log" | python -c 'import sys; print(sys.stdin.read().strip()[:900])')
+            echo "::warning::$MSG — повний прогін: Actions → Pages → Run workflow (гілка PR, playtest: full)"
+          fi
+          echo "ids=$IDS" >> "$GITHUB_OUTPUT"
+      - name: Плейтест піднабору
+        if: ${{ !cancelled() && steps.pick.outcome == 'success' }}
+        timeout-minutes: 30
+        env:
+          IDS: ${{ steps.pick.outputs.ids }}
+        run: python tools/playtest.py --section "$IDS"
+      - name: Плейтест усіх уроків
+        if: ${{ !cancelled() && steps.chromium.outcome == 'success' && inputs.playtest == 'full' }}
+        timeout-minutes: 90
+        run: python tools/playtest.py
+
+  deploy:
+    needs: [build, browser]
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write      # actions/deploy-pages: мінімум pages: write + id-token: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

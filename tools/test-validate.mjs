@@ -53,9 +53,10 @@ CASES.forEach(([name, subj, illus, expectErr, boss], i) => {
   // по одному фікстурному розділу за прогін: прибрати розділи попередніх випадків
   for (const s of ["hist", "math", "world"]) fs.rmSync(path.join(tmp, "content", s), { recursive: true, force: true });
   fs.mkdirSync(dir, { recursive: true });
-  const sec = { id, grade: 5, weeks: [1, 2], title: "Фікстура", why: "Регресійний тест валідатора: правило D-027 про зображення.",
+  const grade = subj === "world" ? 7 : 5;   // всесвітня історія — 7–9 кл. (рев'ю tools-world-img, P3-1)
+  const sec = { id, grade, weeks: [1, 2], title: "Фікстура", why: "Регресійний тест валідатора: правило D-027 про зображення.",
     meta: { author: "test", created: "2026-10-31", factcheck: null, teacher: null }, lessons: [lesson(`${id}l1`, illus, boss)] };
-  fs.writeFileSync(path.join(dir, `g5-${id}.js`), `SLID.section(${JSON.stringify(subj)}, ${JSON.stringify(sec, null, 1)});\n`);
+  fs.writeFileSync(path.join(dir, `g${grade}-${id}.js`), `SLID.section(${JSON.stringify(subj)}, ${JSON.stringify(sec, null, 1)});\n`);
   const r = spawnSync(process.execPath, [path.join(tmp, "tools/validate.mjs"), "--section", id, "--quiet"], { cwd: tmp, encoding: "utf8" });
   let rep = null;
   try { rep = JSON.parse(fs.readFileSync(path.join(tmp, "reports/validate.json"), "utf8")); } catch {}
@@ -571,7 +572,7 @@ expectRun("drag: at і без drag — без попередження", one("fx
 
 // tools-math-fig-audit: умова посилається на рисунок без ілюстрації — попередження (не помилка); з lab на екрані чи на попередньому
 // екрані уроку — чисто; «на графіку функції $…$», «дотична до графіка» — поняття, не посилання
-const { figCues: figCuesT } = await import(path.join(ROOT, "tools/lib.mjs"));
+const { figCues: figCuesT, figPoints: figPointsT } = await import(path.join(ROOT, "tools/lib.mjs"));
 { const REF = "умова посилається на рисунок";
   expectRun("«На рисунку» без ілюстрації — попередження", one("fxf", { body: "На рисунку трикутник $ABC$. Скільки в ньому кутів?" }), ["--section", "fxf"], { warn: REF });
   expectRun("«За графіком» на екрані answer уроку — попередження", one("fxf", { extra: { type: "answer", title: "Висота", body: "За графіком знайди висоту в метрах.", answer: 4 } }), ["--section", "fxf"], { warn: REF });
@@ -592,15 +593,82 @@ const { figCues: figCuesT } = await import(path.join(ROOT, "tools/lib.mjs"));
   expectRun("«На рисунку» з lab на екрані й перед ним — чисто", one("fxf", { body: "На рисунку трикутник $ABC$.", lab: plane({}) }), ["--section", "fxf"], { noWarn: REF });
   expectRun("«на графіку функції $y = x$», «до графіка» — не посилання", one("fxf", { body: "Точка $M$ лежить на графіку функції $y = x$. Дотична до графіка $y = x^2$, площа під графіком." }), ["--section", "fxf"], { noWarn: REF });
   // tools/fig-audit.mjs на тому самому фікстурному дереві: геометрія з позначеннями — група geo, ref — окремо, ілюстроване — не в звіті
-  runTree(one("fxf", { body: "У паралелепіпеді $ABCDA_1B_1C_1D_1$ знайди ребро $BB_1$.", extra: { type: "answer", title: "Висота", body: "За графіком знайди висоту.", answer: 4 } }), ["--section", "fxf"]);
+  // tools-math-ister-p3 (рев'ю tools-math-fig-audit P3-2…P3-5): межі евристик figCues
+  { const lv = (body, type = "answer") => figCuesT({ type, title: "Задача", body })?.level ?? null;
+    // раунд 2 (рев'ю tools-math-ister-p3 P1-1): «графік руху / зміни / роботи» — читання графіка (ref); розклад — лише явний контекст
+    for (const b of ["За графіком зміни температури протягом доби визнач найвищу температуру.", "За графіком руху велосипедиста знайди його швидкість на першій ділянці.",
+      "За графіком роботи насоса визнач, скільки води він перекачав за 3 год.", "За графіком руху поїзда знайди час у дорозі.", "За графіком знайди час у дорозі."])
+      ok(lv(b) === "ref", `figCues: «${b}» — посилання на графік (ref)`, String(lv(b)));
+    ok(lv("За графіком руху автобусів визнач, о котрій перший рейс.") === "graph" && lv("За графіком чергувань хто сьогодні миє дошку?") === "graph" && lv("За графіком уроків скільки уроків у середу?") === "graph",
+      "figCues: розклад (руху автобусів, чергувань, уроків) — згадка, не ref");
+    ok(lv("Що зображено на передньому плані картини?") === null && lv("Що зображено на рисунку?") === "ref", "figCues: «зображено на передньому плані» — не посилання, «зображено на рисунку» — так");
+    ok(lv("Знайди кут, див. рис. 3.") === "ref" && lv("Як на рис. 2, знайди відрізок.") === "ref", "figCues: «рис. N» — пряме посилання");
+    ok(lv("На плані міста дві вулиці.") === "graph" && lv("На схемі видно кордони.") === "graph", "figCues: «на плані», «на схемі» — згадка (graph), не ref");
+    // раунд 2 (P2-2, P3-1): FIG_MAKE — лише для згадки; пряме посилання після побудови — ref; «Що показує графік?» — читання (graph)
+    ok(lv("Побудуй діаграму голосів. На діаграмі стовпчик «Львів» — 10 клітинок. Яка його висота?") === "ref", "figCues: «Побудуй діаграму… На діаграмі…» — ref");
+    ok(lv("Що показує графік? Знайди найбільше значення.") === "graph" && lv("Що покаже діаграма голосів?") === "graph", "figCues: «показує графік», «покаже діаграма» — згадка, не побудова");
+    ok(lv("Побудуй графік функції $y = 2x$.") === null && lv("У класі 14 хлопців. Ці дані показують круговою діаграмою. Який кут сектора?") === null && lv("Іра малює діаграму голосів.") === null,
+      "figCues: графік чи діаграму треба побудувати — не згадка");
+    ok(lv("За діаграмою визнач найбільше значення.") === "ref" && lv("Графік функції $y = x^2$ — парабола.") === "graph", "figCues: читати з діаграми — ref; графік як поняття — graph");
+    // P3-3: величини в добутку, степені й після π — не точки
+    const pts = t => [...figPointsT(t)].sort().join("");
+    ok(pts("$V = S * H$, $S = πR^2$, $V = πR^2H$") === "" && pts("$S_{бічн} = P \\cdot H$, $2\\pi RH$") === "", "figPoints: S·H, R², 2πRH — величини", pts("$V = S * H$, $V = πR^2H$") + "|" + pts("$P \\cdot H$, $2\\pi RH$"));
+    ok(pts("$AB \\cdot CD = AC^2$, $BB_1$") === "ABCD" && pts("$\\triangle ABC$") === "ABC", "figPoints: AB·CD, AC² — точки", pts("$AB \\cdot CD = AC^2$, $BB_1$"));
+    // раунд 2 (P2-1): літера після кута — точка; літера з позначення з кількох літер ($ABC$) — точка на всьому екрані
+    ok(pts("$\\angle A = 2 \\cdot \\angle B$") === "AB" && pts("$∠A = 2 * ∠B$") === "AB" && pts("$\\triangle ABC$, $S = 2 \\cdot B$") === "ABC" && pts("$\\angle K \\cdot 2 = 100°$") === "K", "figPoints: ∠B у добутку, ∠K перед множенням і B з $ABC$ — точки", pts("$\\angle A = 2 \\cdot \\angle B$") + "|" + pts("$\\triangle ABC$, $S = 2 \\cdot B$"));
+    ok(lv("У трикутнику $ABC$ кут $\\angle A = 2 \\cdot \\angle B$, $C$ — вершина. Знайди кут $B$.") === "geo", "figCues: «∠A = 2·∠B» у трикутнику ABC — geo");
+    ok(lv("У призмі об'єм $V = S * H$, де $S$ — площа основи, а у циліндра $V = πR^2H$.") === null, "figCues: формули об'ємів у призмі — не geo (g11m4l3)");
+    // intro: cue з intro: true; validate мовчить, fig-audit — група intro
+    const ci = figCuesT({ type: "intro", title: "Двір", body: "На кресленні двору є трикутний газон." });
+    ok(ci?.level === "ref" && ci.intro === true && figCuesT({ type: "answer", body: "На кресленні двору." })?.intro === false, "figCues: intro повертає cue з intro: true", JSON.stringify(ci)); }
+  const introTree = files => Object.fromEntries(Object.entries(files).map(([f, src]) => [f, src.replace('"Як записати число?"', '"На кресленні двору трикутник $ABC$ і газон $|x|$."')]));
+  expectRun("intro «На кресленні двору» без ілюстрації — validate не попереджає", introTree(one("fxf", {})), ["--section", "fxf"], { noWarn: REF });
+  runTree(introTree(one("fxf", { body: "У паралелепіпеді $ABCDA_1B_1C_1D_1$ знайди ребро $BB_1$.", extra: { type: "answer", title: "Висота", body: "За графіком знайди висоту.", answer: 4 } })), ["--section", "fxf"]);
   const r = spawnSync(process.execPath, [path.join(tmp, "tools/fig-audit.mjs"), "--json"], { cwd: tmp, encoding: "utf8" });
   let rep = null; try { rep = JSON.parse(r.stdout); } catch {}
   ok(rep && r.status === 0, "fig-audit: JSON і код 0", (r.stdout || "") + (r.stderr || ""));
   if (rep) { const g = rep.rows.map(x => `${x.where}:${x.group}`).sort();
-    ok(JSON.stringify(g) === JSON.stringify(["fxfl1 екран 2:geo", "fxfl1 екран 3:geo", "fxfl1 екран 4:ref"]), "fig-audit: групи geo/ref за фікстурою", JSON.stringify(g));
-    ok(rep.screens === 4, "fig-audit: переглянуто 4 екрани (не 0)", String(rep.screens)); }
+    ok(JSON.stringify(g) === JSON.stringify(["fxfl1 екран 1:intro", "fxfl1 екран 2:geo", "fxfl1 екран 3:geo", "fxfl1 екран 4:ref"]), "fig-audit: групи intro/geo/ref за фікстурою", JSON.stringify(g));
+    ok(rep.screens === 4, "fig-audit: переглянуто 4 екрани (не 0)", String(rep.screens));
+    const t = rep.rows.find(x => x.where === "fxfl1 екран 1")?.text || "";
+    ok(t.includes("$ABC$") && !t.includes(" Ф "), "fig-audit: умова з сирим TeX, а не «Ф» (P3-4)", t); }
+  const md = fs.existsSync(path.join(tmp, "reports/fig-audit-math.md")) ? fs.readFileSync(path.join(tmp, "reports/fig-audit-math.md"), "utf8") : "";
+  ok(md.includes("$ABC$") && md.includes("\\|x\\|") && md.includes("Сюжетний вступ"), "fig-audit: у .md сирий TeX (| екрановано) і група вступу", md.slice(0, 300));
+  ok(!fs.existsSync(path.join(tmp, "reports/fig-audit-math.json")), "fig-audit: файл .json не пишеться (P3-5: шум у diff на кожен check)");
+  // раунд 2 (P3-3): «На схемі» у мовному предметі (ukr) — схема речення, у звіті не показується; у math — згадка graph
+  { const sch = (subj, dir, grade) => { const l = lesson(`fxk${subj}l1`, {}); l.screens[1].body = "На схемі однорідний член позначаємо кружком.";
+      return { [`content/${dir}/g${grade}-fxk${subj}.js`]: secJS(dir, { id: `fxk${subj}`, grade, weeks: [1, 2], title: "Фікстура", why: "Регресійний тест fig-audit: схема.",
+        meta: { author: "test", created: "2026-11-05", factcheck: null, teacher: null }, lessons: [l] }) }; };
+    for (const [dir, grade, want] of [["ukr", 5, []], ["math", 5, ["fxkmathl1 екран 2:graph"]]]) {
+      runTree(sch(dir, dir, grade), ["--section", `fxk${dir}`]);
+      const r2 = spawnSync(process.execPath, [path.join(tmp, "tools/fig-audit.mjs"), "--subject", dir, "--json"], { cwd: tmp, encoding: "utf8" });
+      let j = null; try { j = JSON.parse(r2.stdout); } catch {}
+      ok(j && JSON.stringify(j.rows.map(x => `${x.where}:${x.group}`)) === JSON.stringify(want), `fig-audit ${dir}: «На схемі» → ${JSON.stringify(want)}`, (r2.stdout || "") + (r2.stderr || "")); } }
   const bad = spawnSync(process.execPath, [path.join(tmp, "tools/fig-audit.mjs"), "--subjekt", "math"], { cwd: tmp, encoding: "utf8" });
   ok(bad.status === 2, "fig-audit: невідомий аргумент — код 2", String(bad.status)); }
+
+// tools-math-ister-p3 п. 12: індекс поза $…$ у підписах lab; link-завдання («Пригадай…») без питання
+{ const SUB = "поза $…$ покажеться сирим";
+  const st = extra => ({ kind: "plane", axes: false, grid: 0, view: [-5, 5, -5, 5], ...extra });
+  expectRun("lab: підпис точки «A_1» поза $…$ — попередження", one("fxs", { lab: st({ points: { A: { x: "1", y: "1", label: "A_1" } } }) }), ["--section", "fxs"], { warn: SUB });
+  expectRun("lab: «x_{2}» у texts поза $…$ — попередження", one("fxs", { lab: st({ texts: [{ x: 0, y: 0, t: "x_{2} = 3" }] }) }), ["--section", "fxs"], { warn: SUB });
+  // раунд 2 (P2-2): підпис повзунка params.*.label і рядок show — теж
+  expectRun("lab: «A_1» у params.label поза $…$ — попередження", one("fxs", { lab: st({ params: { a: { min: 0, max: 4, start: 1, label: "Довжина A_1" } }, points: { A: { x: "a", y: "1" } } }) }), ["--section", "fxs"], { warn: "lab.params.a.label" });
+  expectRun("lab: «x_1» у show поза $…$ — попередження", one("fxs", { lab: st({ params: { a: { min: 0, max: 4, start: 1 } }, points: { A: { x: "a", y: "1" } }, show: ["x_1 = {a}"] }) }), ["--section", "fxs"], { warn: "lab.show.0" });
+  expectRun("lab: «$A_1$», «A₁», шаблон {a_1} — чисто", one("fxs", { lab: st({ params: { a_1: { min: 0, max: 4, start: 1 } }, points: { A: { x: "a_1", y: "1", label: "$A_1$" }, B: { x: "2", y: "1", label: "B₁" } },
+    texts: [{ x: 0, y: 0, t: "Довжина {a_1}" }] }) }), ["--section", "fxs"], { noWarn: SUB });
+  const LINK = "link-завдання";
+  const hw = body => { const l = lesson("fxwl1", IMG); Object.assign(l.screens[2], { title: "Зять Ярослава Мудрого", body });
+    return { "content/world/g7-fxw.js": secJS("world", { id: "fxw", grade: 7, weeks: [1, 2], title: "Фікстура", why: "Регресійний тест валідатора: link-завдання.",
+      meta: { author: "test", created: "2026-11-05", factcheck: null, teacher: null }, lessons: [l] }) }; };
+  expectRun("world: «Пригадай: …» без питання — попередження", hw("<p>Пригадай: Єлизавета стала королевою Норвегії.</p>"), ["--section", "fxw"], { warn: LINK });
+  expectRun("world: «Пригадай: …» з питанням — чисто", hw("<p>Пригадай: Єлизавета стала королевою Норвегії.</p><p>Що з цього випливає?</p>"), ["--section", "fxw"], { noWarn: LINK });
+  expectRun("world: «Пригадай: …» з «Обери всі…» — чисто", hw("<p>Пригадай: Єлизавета стала королевою.</p><p>Обери всі правильні твердження.</p>"), ["--section", "fxw"], { noWarn: LINK });
+  { const l = lesson("fxwl1", IMG); l.screens[2] = { type: "number", sk: l.screens[2].sk, title: "Рік", body: "<p>Пригадай: Гаральд загинув в Англії. Запиши рік.</p>", answer: 1066, fbOk: "Так.", fbText: "Гаральд загинув 1066 р. у битві під Стамфорд-Бриджем, за три тижні до Гастінгса.", hint: "Згадай урок." };
+    expectRun("world: number з «Пригадай…» без «?» — правило лише для choice/multi", { "content/world/g7-fxw.js": secJS("world", { id: "fxw", grade: 7, weeks: [1, 2], title: "Фікстура", why: "Регресійний тест валідатора: link-завдання.",
+      meta: { author: "test", created: "2026-11-05", factcheck: null, teacher: null }, lessons: [l] }) }, ["--section", "fxw"], { noWarn: LINK }); }
+  expectRun("world: без «Пригадай» і без «?» — правило не про це", hw("<p>Єлизавета стала королевою Норвегії.</p>"), ["--section", "fxw"], { noWarn: LINK });
+  fs.rmSync(path.join(tmp, "content", "world"), { recursive: true, force: true }); }
 
 // ---- engine-lang-p3: мовні вправи й правила ukr ----
 { const UKR_SK = "orth";
@@ -639,7 +707,33 @@ const { figCues: figCuesT } = await import(path.join(ROOT, "tools/lib.mjs"));
   expectRun("ukr: «брат в сестри» — попередження милозвучності", u({ type: "info", title: "Гості", body: "Брат в сестри гостює." }), A, { warn: EU });
   expectRun("ukr: «вода і повітря», «Марія і Олег» — без попередження", u({ type: "info", title: "Природа", body: "Вода і повітря потрібні всім. Марія і Олег гуляють." }), A, { noWarn: EU });
   expectRun("ukr: милозвучність в outro — попередження", { "content/ukr/g5-fxu.js": secJS("ukr", (x => (x.lessons[0].outro.learned[0] = "Млинці з сметаною", x))(ukrSec("fxu", []))) }, A, { warn: EU });
+  // tools-math-ister-p3 п. 17 (рев'ю engine-lang-p3): назва й why уроку теж перевіряються (validate: euphonyWarn для l.title, l.why)
+  for (const [k, v] of [["title", "Брат й сестра"], ["why", "Навчитися писати млинці з сметаною."]])
+    expectRun(`ukr: милозвучність у ${k} уроку — попередження`, { "content/ukr/g5-fxu.js": secJS("ukr", (x => (x.lessons[0][k] = v, x))(ukrSec("fxu", []))) }, A, { warn: EU });
   expectRun("math: «брат в сестри» — правило лише для ukr", one("fxm", { body: "Брат в сестри має $2 + 2$ яблука." }), ["--section", "fxm"], { noWarn: EU });
+  // tools-lang-p4, P3-6 (рев'ю engine-lang-p3, мутант А): validate не перевіряє милозвучність варіантів opts — хибний варіант навмисний
+  expectRun("ukr: choice з хибним варіантом «Брат й сестра» — без попередження милозвучності", u({ type: "choice", title: "Що правильно?", opts: ["Брат і сестра", "Брат й сестра"], correct: 0 }), A, { noWarn: EU });
+  // tools-lang-p4, P3-2: «зі дві години» — «зі» в значенні «приблизно»
+  expectRun("ukr: «зі дві години» — без попередження милозвучності", u({ type: "info", title: "Час", body: "Ми чекали зі дві години." }), A, { noWarn: EU });
+  // tools-lang-p4, P3-3: заборонена фраза в «лапках» (цитата, калька, яку урок виправляє) і в хибному варіанті choice/multi та в усіх варіантах hyp — не рахується
+  expectRun("ukr: «Приймати участь» у лапках у fbText — чисто", u({ type: "info", title: "Калька", body: "Кажемо «брати участь».", fbText: "«Приймати участь» — калька." }), A, { noWarn: BAN });
+  expectRun("ukr: «вірно» у хибному варіанті choice — чисто", u({ type: "choice", title: "Обери", opts: ["Правильно", "Вірно"], correct: 0 }), A, { noWarn: BAN });
+  expectRun("ukr: «вірно» у хибному варіанті multi — чисто", u({ type: "multi", title: "Обери", opts: ["Правильно", "Слушно", "Вірно"], correct: [0, 1] }), A, { noWarn: BAN });
+  expectRun("ukr: «вірно» у варіанті hyp — чисто", u({ type: "choice", hyp: true, fbTitle: "Перевірмо", title: "Як гадаєш?", opts: ["Правильно", "Вірно"], correct: 1 }), A, { noWarn: BAN });
+  expectRun("ukr: «вірно» у правильному варіанті choice — попередження", u({ type: "choice", title: "Обери", opts: ["Вірно", "Неправильно"], correct: 0 }), A, { warn: BAN });
+  // раунд 2 (рев'ю tools-lang-p4, P1-1): варіанти poll (без correct) — авторський текст, перевіряються; P2-1: знімаються лише короткі «лапки» (≤ 4 слова)
+  expectRun("ukr: «вірно» у варіанті poll — попередження", u({ type: "choice", poll: "p1", fbTitle: "Дякую", fbText: "Цікава думка.", title: "Як тобі?", opts: ["Вірно пояснено", "Незрозуміло"] }), A, { warn: BAN });
+  expectRun("ukr: довга пряма мова в лапках із забороненою фразою — попередження", u({ type: "info", title: "Розмова", body: "Учитель сказав: «На сьогоднішній день ти відповів вірно, і це добре»." }), A, { warn: BAN });
+  expectRun("ukr: «вірно» поза лапками поруч із цитатою — попередження", u({ type: "info", title: "Калька", body: "Слово «участь» вжито вірно." }), A, { warn: BAN });
+  // tools-lang-p4, п. 8: варіанти пропуску відрізняються лише регістром, а fbText пише слово так, як хибний варіант, — «*» не там
+  const CASE = "відрізняються лише регістром";
+  expectRun("ukr: gaps {*вітаю|Вітаю}, у fbText «Вітаю» — попередження", u({ type: "gaps", title: "Велика чи мала?", text: "Бабусю! {*вітаю|Вітаю} зі святом.", fbText: "Після звертання з «!» пишемо з великої: <b>Вітаю</b>." }), A, { warn: CASE });
+  expectRun("ukr: gaps {*Вітаю|вітаю}, у fbText «Вітаю» — чисто", u({ type: "gaps", title: "Велика чи мала?", text: "Бабусю! {*Вітаю|вітаю} зі святом.", fbText: "Після звертання з «!» пишемо з великої: <b>Вітаю</b>." }), A, { noWarn: CASE });
+  // раунд 2 (P3-4): однолітерні варіанти не перевіряються; P3-1: «слово вітаю» (словникова форма) і початок прикладу після «:» — не сигнал
+  expectRun("ukr: gaps {*а|А}, у fbText «А» посеред речення — чисто (однолітерні)", u({ type: "gaps", title: "Велика чи мала?", text: "Мама {*а|А} тато.", fbText: "Тут велика А не потрібна: це сполучник." }), A, { noWarn: CASE });
+  expectRun("ukr: gaps {*Вітаю|вітаю}, fbText «слово вітаю пишемо з великої» — чисто", u({ type: "gaps", title: "Велика чи мала?", text: "Бабусю! {*Вітаю|вітаю} зі святом.", fbText: "Після звертання з «!» слово вітаю пишемо з великої." }), A, { noWarn: CASE });
+  expectRun("ukr: gaps {*весну|Весну}, fbText «Приклад: Весну чекаємо» — чисто", u({ type: "gaps", title: "Велика чи мала?", text: "Ми чекаємо {*весну|Весну}.", fbText: "Назви пір року пишемо з малої. Інакше було б так: Весну чекаємо." }), A, { noWarn: CASE });
+  expectRun("ukr: gaps {*питає|Питає}, «Питає» на початку речення fbText — чисто", u({ type: "gaps", title: "Велика чи мала?", text: "«Де ти?» — {*питає|Питає} мама.", fbText: "Слова автора після репліки — з малої букви. Питає мама, а не хтось інший." }), A, { noWarn: CASE });
 }
 
 console.log(fails ? `\n${fails} з ${n} перевірок не пройшли` : `test-validate: усі ${n} перевірок пройшли`);

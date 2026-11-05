@@ -1,5 +1,6 @@
 /* Слід · Математика, 7 клас — «Алгебра: системи рівнянь»
    Статус уроків: verified. 5 уроків (4 + boss).
+   style-math-ister-followup, 2026-11-05: у завдання фіналу додано pre (id уроку теми; style/common.md, D-048 п. 1); зміст не змінено.
    Інтерактив: plane з двома прямими (перетин = розв'язок); explore/lab (docs/CONTENT_SCHEMA.md §8).
    Перевірка: node tools/validate.mjs --section g7m7 && node tools/stats.mjs --subject math
    Схема й правила: docs/CONTENT_SCHEMA.md, style/, D-019 */
@@ -776,6 +777,7 @@ SLID.section("math", {
           type: "choice",
           sk: "eq",
           eyebrow: "Завдання 1",
+          pre: "g7m7l1",
           title: "Яка пара — розв'язок $x + 2y = 8$?",
           body: "<p>Перевір кожну пару підстановкою в рівняння $x + 2y = 8$.</p>",
           opts: ["$(2;\\,3)$", "$(2;\\,2)$", "$(4;\\,1)$"],
@@ -789,6 +791,7 @@ SLID.section("math", {
           type: "lab",
           sk: "func",
           eyebrow: "Завдання 2",
+          pre: "g7m7l2",
           title: "Перетин у $(1;\\,4)$",
           body: "<p>Добери параметри обох прямих так, щоб вони перетнулися в $(1;\\,4)$.</p>",
           lab: {
@@ -822,6 +825,7 @@ SLID.section("math", {
           type: "number",
           sk: "eq",
           eyebrow: "Завдання 3",
+          pre: "g7m7l3",
           title: "Підстановка: знайди $x$",
           body: `<p>Розв'яжи систему способом підстановки:</p>
         <p>$$\\begin{cases} y = 2x \\\\ x + y = 9 \\end{cases}$$</p>
@@ -836,6 +840,7 @@ SLID.section("math", {
           type: "number",
           sk: "eq",
           eyebrow: "Завдання 4",
+          pre: "g7m7l4",
           title: "Додавання: знайди $x$",
           body: `<p>Розв'яжи систему способом додавання:</p>
         <p>$$\\begin{cases} x + y = 6 \\\\ x - y = 2 \\end{cases}$$</p>
@@ -850,6 +855,7 @@ SLID.section("math", {
           type: "choice",
           sk: "func",
           eyebrow: "Завдання 5",
+          pre: "g7m7l2",
           title: "Прямі $y = -x + 3$ і $y = -x + 1$. Скільки розв'язків?",
           body: "<p>Порівняй кутові коефіцієнти й вільні члени обох прямих, як у графічному уроці.</p>",
           opts: ["Жодного", "Один", "Безліч"],
@@ -863,6 +869,7 @@ SLID.section("math", {
           type: "lab",
           sk: "eq",
           eyebrow: "Завдання 6",
+          pre: "g7m7l2",
           title: "Останнє замовлення: точка-розв'язок",
           body: "<p>Остання система зміни: $\\begin{cases} x + y = 5 \\\\ x - y = 1 \\end{cases}$. Постав червону точку на розв'язок.</p>",
           lab: {

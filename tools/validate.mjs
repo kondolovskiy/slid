@@ -90,6 +90,11 @@ function checkTex(S, s) {
   //    підписи-шаблони (svgLabels(…, true)) перевіряємо так, як їх намалює fill(): {вираз} — значення, {,} — кома
   if (s.lab) { const tpl = new Set(lab.svgLabels(s.lab, true).map(([p]) => p));
     for (const [path, x] of lab.svgLabels(s.lab)) for (const is of lab.svgTexIssues(x, tpl.has(path))) E(S, `lab.${path} «${x}»: ${is.msg}`); }
+  // 3б) індекс поза $…$ у підписі lab («A_1», «x_{2}»): ні SVG-підпис, ні fmt не обробляють «_» поза формулою — видно сирим
+  //     (pitfalls «label точки поза $…$ не обробляє _», g9m8 — 20 підписів; tools-math-ister-p3 п. 12). Шаблони {…} не рахуються.
+  if (s.lab) { const SUB = /(?<![\p{L}\p{N}\\])[A-Za-z]_\{?\d/u, bare = x => outsideMath(x).replace(/(?<![_^])\{[^{}]*\}/g, " ");
+    for (const [path, x] of lab.svgLabels(s.lab).concat(Object.entries(s.lab.params || {}).map(([id, p]) => [`params.${id}.label`, p?.label]), [].concat(s.lab.show || []).map((x, i) => [`show.${i}`, x])))
+      if (typeof x === "string" && SUB.test(bare(x))) W(S, `lab.${path} «${x}»: індекс «${bare(x).match(SUB)[0]}» поза $…$ покажеться сирим — пиши $A_1$ або A₁`); }
   // 3а) назва функції без лапок — попередження (звичайні змінні sin не утворюють, але це не помилка рушія)
   const fns = [...new Set(html.flatMap(bareFns))];
   if (fns.length) W(S, `у формулі назва функції без лапок: ${fns.join(", ")} — покажеться курсивом як добуток літер; пиши "${fns[0]}" (у лапках) або \\${fns[0]}, якщо команда є в app/math.js`);
@@ -203,19 +208,46 @@ function diagFormatIssues(s) {
 // перевірка одного екрана; diag — завдання діагностики (без фідбеку: дитина не бачить, правильно чи ні)
 // pool — задача пулу: її поля answer уже перевірив learn.validatePool
 // tools-math-fig-audit: умова прямо посилається на рисунок («на рисунку», «за графіком», «на кресленні»), а ілюстрації немає
-// ні на екрані, ні (в уроці) на попередньому екрані — попередження; повний перелік із геометрією без рисунка — tools/fig-audit.mjs
+// ні на екрані, ні (в уроці) на попередньому екрані — попередження; повний перелік із геометрією без рисунка — tools/fig-audit.mjs.
+// Сюжетний вступ (intro) не попереджає: його показує fig-audit окремою групою
 function figRef(S, s, prev = null) {
   const cue = figCues(s, prev);
-  if (cue?.level === "ref" && !cue.ill && !cue.prevIll) W(S, `умова посилається на рисунок («${cue.ref}»), а ілюстрації (fig, img, svg, lab) немає — додай рисунок точно за умовою або перепиши умову`);
+  if (cue?.level === "ref" && !cue.intro && !cue.ill && !cue.prevIll) W(S, `умова посилається на рисунок («${cue.ref}»), а ілюстрації (fig, img, svg, lab) немає — додай рисунок точно за умовою або перепиши умову`);
 }
 // заборонені фрази, яких дитина не бачить як зразок (engine-lang-p3, п. 6): у <s>…</s> (закреслене — помилка, яку урок виправляє),
-// у неправильних варіантах gaps і в цілях та хибних групах pick («Знайди помилку»: [вірно], [!на протязі]) — не рахуються
-const stripS = t => typeof t === "string" ? t.replace(/<s>[\s\S]*?<\/s>/gi, " ") : t;
-function bannedText(s, txt) {
-  if (!/<s>/i.test(txt) && !["gaps", "pick"].includes(s.type)) return txt;
+// у неправильних варіантах gaps і в цілях та хибних групах pick («Знайди помилку»: [вірно], [!на протязі]) — не рахуються.
+// tools-lang-p4 (P3-3): так само в «лапках» (цитата чи калька, про яку йдеться: «Приймати участь» — калька), у хибних варіантах
+// choice/multi і в усіх варіантах здогадки hyp (навмисні помилки, як і в милозвучності, рев'ю engine-lang-p3 P2-1).
+// Раунд 2 (рев'ю tools-lang-p4): знімаються лише короткі «лапки» (≤ 4 слова — згадка слова чи кальки; жоден рядок banned-phrases не довший),
+// довгі — пряма мова й назви, які пише автор, — перевіряються (P2-1); варіанти poll (без correct) — авторський текст, перевіряються (P1-1)
+const QUOTE_MAX = 4;
+const stripS = t => typeof t === "string" ? t.replace(/<s>[\s\S]*?<\/s>/gi, " ").replace(/«([^«»]*)»/g, (m, q) => words(plain(q)).length <= QUOTE_MAX ? " " : m) : t;
+function bannedText(s) {
   const noteTxt = typeof s.note === "string" ? s.note : s.note?.text;
   const exText = s.type === "gaps" ? lang.readText(s) : s.type === "pick" && typeof s.text === "string" ? s.text.replace(/\[[^\]]*\]/g, " ") : s.text;
-  return [s.title, s.body, noteTxt, s.fbText, s.fbOk, s.fbBad, s.hint, exText, ...(s.opts || []), ...(s.items || []).flat()].filter(x => typeof x === "string").map(stripS).join(" ");
+  const ok = new Set([].concat(s.correct ?? []));
+  const opts = !Array.isArray(s.opts) ? [] : s.hyp ? [] : ["choice", "multi"].includes(s.type) && s.correct != null ? s.opts.filter((o, k) => ok.has(k)) : s.opts;
+  return [s.title, s.body, noteTxt, s.fbText, s.fbOk, s.fbBad, s.hint, exText, ...opts, ...(s.items || []).flat()].filter(x => typeof x === "string").map(stripS).join(" ");
+}
+// tools-lang-p4, п. 8 (ідея verifier-u7s2): варіанти пропуску відрізняються лише регістром («{*вітаю|Вітаю}»), а пояснення пише слово так,
+// як хибний варіант, і жодного разу — як правильний: «*», мабуть, не на тому варіанті. Слово на початку речення пояснення не рахується
+// (там велика літера природна), так само після «:» (початок прикладу) і після «слово/форму/пишемо…» (словникова форма: «слово вітаю пишемо
+// з великої» — раунд 2, P3-1; виділене <b>Вітаю</b> рахується будь-де); однолітерні варіанти («А|а») — теж ні: службове слово «а» в поясненні нічого не каже
+function gapCaseIssues(s) {
+  const p = s.type === "gaps" && typeof s.fbText === "string" ? lang.parseGaps(s.text) : null;
+  if (!p || p.error) return [];
+  const fb = plain(s.fbText), out = [];
+  for (const g of p.gaps) {
+    if (g.opts.length < 2 || [...g.opts[0]].length < 2 || new Set(g.opts.map(o => o.toLocaleLowerCase("uk"))).size !== 1) continue;
+    const esc = g.opts[0].replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    // виділене <b>слово</b> — пряма відповідь пояснення: рахується будь-де; решта збігів — з фільтрами нижче
+    const bold = [...s.fbText.matchAll(new RegExp(`<(b|strong)>\\s*(${esc})\\s*</\\1>`, "giu"))].map(m => m[2]);
+    const seen = bold.concat([...fb.matchAll(new RegExp(`(?<![\\p{L}\\p{M}'’ʼ-])${esc}(?![\\p{L}\\p{M}'’ʼ-])`, "giu"))]
+      .filter(m => !/(?:^|[.!?…:]["»”]?)\s*["«„“—–-]?\s*$/.test(fb.slice(0, m.index)) && !/(?<![\p{L}])(?:слов[оаі]|форм[уаи]|пиш\p{L}*|напиш\p{L}*)\s*$/iu.test(fb.slice(0, m.index))).map(m => m[0]));
+    const right = g.opts[g.correct];
+    if (seen.length && !seen.includes(right) && seen.some(w => g.opts.includes(w))) out.push(`пропуск ${g.n + 1}: варіанти відрізняються лише регістром, правильним позначено «${right}», а пояснення пише «${seen.find(w => g.opts.includes(w))}» — перевір, чи «*» на тому варіанті`);
+  }
+  return out;
 }
 // пояснення посилається на місце варіанта («у другому варіанті», «варіант № 2», «варіант Б») — рушій може перемішувати варіанти (engine-lang-p3, п. 18)
 const OPT_NUM_RE = /(?<![\p{L}])(?:(?:[Пп]ерш|[Дд]руг|[Тт]рет|[Чч]етверт|[Пп]['’ʼ]?ят|[Шш]ост|[Оо]станн)\p{L}*\s+(?:\p{L}+\s+)?варіант\p{L}*|[Вв]аріант\p{L}*\s+(?:№\s*\d+|[А-ГҐДЕ](?![\p{L}])))/u;   // «Варіант 120» у математиці — значення варіанта, не номер
@@ -223,7 +255,18 @@ const OPT_TYPES = ["choice", "multi", "gaps", "pick", "sort", "order"];
 // милозвучність у/в, і/й, з/із/зі (УП § 23–25; engine-lang-p3, п. 15): лише правила з малим шумом, лише мовні предмети; решта — tools/euphony.mjs
 const EUPHONY = { ukr: true };
 const euphonyWarn = (S, list) => { for (const x of list) if (EUPHONY_RULES.has(x.rule)) W(S, `милозвучність: «${x.ctx}» — ${EUPHONY_DESC[x.rule]} (якщо так навмисно — обґрунтуй у нотатках; повний звіт: node tools/euphony.mjs)`); };
+// link-завдання (зв'язок з іншим курсом чи уроком: «Пригадай: …») без питання — заголовок-твердження й факти в тілі, а що робити,
+// не сказано (pitfalls «link-завдання без питання», w9s1 l5, w9s2 l5; tools-math-ister-p3 п. 12). Питання — «?» у title чи body,
+// або спонукання «Обери / Познач / Визнач …»
+const LINK_RE = /(?<![\p{L}])Пригадай(?![\p{L}])/u;
+const ASK_RE = /\?|(?<![\p{L}])(?:обери|оберіть|вибери|виберіть|познач|позначте|визнач|вкажи|знайди|встанови|віднови|зістав|розклади|допиши|заверши|постав)(?![\p{L}])/iu;
+function linkNoQuestion(S, s) {
+  if (!["choice", "multi"].includes(s.type)) return;
+  const t = plain([s.title, s.body].filter(x => typeof x === "string").join(" \n "));
+  if (LINK_RE.test(t) && !ASK_RE.test(t)) W(S, "link-завдання («Пригадай…») без питання: ні title, ні body не питають і не кажуть, що обрати — додай у body окремий абзац із питанням");
+}
 function checkScreen(S, s, c, diag, pool = false) {
+  linkNoQuestion(S, s);
   if (!TYPES.includes(s.type)) return E(S, `невідомий тип «${s.type}»`);
   if (!s.title && !(diag && !pool)) E(S, "немає title");   // у тесті рівня «немає title» уже дає learn.validate — не дублюємо (рев'ю diag-answer-kinds, P3-4)
   const noteTxt = typeof s.note === "string" ? s.note : s.note?.text;
@@ -231,7 +274,7 @@ function checkScreen(S, s, c, diag, pool = false) {
   if (/\$\{/.test(txt)) E(S, "у тексті лишилось «${» — шаблонний рядок з'їв формулу");
   for (const t of [s.title, s.body, s.steps ? null : s.fbText, s.hint, ...(s.opts || [])].filter(Boolean)) if (((String(t).match(/\$/g) || []).length) % 2) E(S, "непарна кількість $ — формула не закрита");
   for (const formula of txt.matchAll(/\$\$?([\s\S]+?)\$\$?/g)) for (const m of formula[1].matchAll(/\\([A-Za-z]+)/g)) if (!MATH_COMMANDS.has(m[1])) W(S, `формула містить непідтриману команду \\${m[1]}`);
-  for (const [b, re] of bannedRe) if (re.test(bannedText(s, txt))) W(S, `заборонена фраза «${b}» (style/banned-phrases.txt)`);
+  for (const [b, re] of bannedRe) if (re.test(bannedText(s))) W(S, `заборонена фраза «${b}» (style/banned-phrases.txt)`);
   for (const [k, v] of [["fbText", s.fbText], ["fbBad", s.fbBad], ["fbOk", s.fbOk], ["hint", s.hint]]) { const m = typeof v === "string" && plain(v).match(OPT_NUM_RE);
     if (m && OPT_TYPES.includes(s.type)) W(S, `${k} посилається на номер варіанта («${m[0].trim()}») — рушій може перемішати варіанти; назви сам варіант`); }
   if (/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/u.test(txt)) W(S, "емодзі в тексті уроку");
@@ -286,6 +329,7 @@ function checkScreen(S, s, c, diag, pool = false) {
     case "gaps": case "pick": case "stress": case "word": case "split":
       for (const m of lang.issues(s)) E(S, m);
       for (const m of lang.warnings ? lang.warnings(s) : []) W(S, m);
+      for (const m of gapCaseIssues(s)) W(S, m);
       if (["gaps", "pick"].includes(s.type) && typeof s.text !== "string") E(S, `${s.type}: потрібне поле text`);
       // pick: слова з тексту стають кнопками, тож HTML-теги в text дали б кнопки «b», «br» (рушій екранує text)
       // hyp — здогадка без оцінки (engine-lang-p3, п. 2): плеєр не позначає й не зараховує, лише показує fbTitle і fbText; poll — ні:
@@ -315,7 +359,7 @@ if (!onlySec && !onlyDiag) for (const c of subjects) { const own = new Set(c.sec
   creditIssues(c.credits.filter(x => !own.has(x))).forEach(m => E(`предмет ${c.id}`, m)); }
 
 // D-027: у кожному уроці предмета — хоча б одне справжнє зображення (img: фото, репродукція, документ).
-// Схеми svg/fig не зараховуються. Для історії — помилка (усі уроки доповнено; регресійний тест: tools/test-validate.mjs).
+// Схеми svg/fig не зараховуються. Для історії й всесвітньої історії (hist, world; D-044 п. 4) — помилка (регресійний тест: tools/test-validate.mjs).
 // IMG_REQUIRED (D-027, D-044) — з tools/lib.mjs: той самий перелік бере шаблон задачі автора в make-tasks.mjs
 for (const c of subjects) for (const sec of c.sections) {
   if (onlyDiag) continue;

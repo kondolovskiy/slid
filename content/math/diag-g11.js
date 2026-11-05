@@ -3,7 +3,7 @@
    Обсяг і зв'язки — docs/math-personalization-coverage.md, dg11 (матриця 2026-10-16.v2).
    Порядок: спершу базові завдання всіх тем-передумов (1–10), далі складніші; теми 11 класу — лише в другій половині (14, 17, 20, 23).
    Кожна тема 11 класу — один multi, що перевіряє всі компоненти ядра одного уроку (coverageObjectives матриці).
-   Cur для g11m2 і g11m6 немає: у цих розділах немає required-уроків (g11m2l1, g11m2l2 — pending; g11m2l3, g11m6l1–l4 — optional).
+   Cur для g11m6 немає: розділ optional (g11m6l1–l4; матриця v10). g11m2 з 2026-11-05 — 10 кл. (D-047; тест dg10), у 11 кл. його не перевіряємо.
    Перевірка: node tools/validate.mjs --diag dg11 && node tools/personalization-qa.mjs --diag dg11
    Схема й правила: docs/CONTENT_SCHEMA.md §9, style/math.md */
 SLID.diag("math", {

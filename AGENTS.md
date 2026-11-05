@@ -15,14 +15,14 @@
 - Фронтенд: ванільний JS без залежностей і збирача; `index.html` + `app/*.js`; PWA (`sw.js`).
 - Інструменти: Node 22 (`tools/*.mjs`, без npm-залежностей); Python + Playwright (`playtest.py`, `test-answer-ui.py`).
 - Бекенд `server/`: TypeScript, NestJS 11, Kysely 0.28, PostgreSQL 16, Jest; Railway. Офлайн-перший: фронтенд працює без нього.
-- CI: `.github/workflows/pages.yml` (тести + згенеровані файли закомічені → GitHub Pages), `server.yml` (бекенд на Postgres).
+- CI: `.github/workflows/pages.yml` (тести + згенеровані файли закомічені + job `browser`: регресія рушія, test-ui і плейтест піднабору → GitHub Pages; на PR — без публікації), `server.yml` (бекенд на Postgres).
 
 ## 2. Карта
 | Шлях | Що | Хто змінює |
 |---|---|---|
 | `index.html` | оболонка, CSS; блок скриптів `CONTENT:START/END` | блок — лише `tools/build.mjs`; решта — розробник |
 | `sw.js`, `content/manifest.json` | згенеровані build (офлайн-кеш, список скриптів) | ніхто вручну; коміть після build |
-| `manifest.webmanifest`, `icons/`, `app/pwa.js` | PWA | розробник |
+| `manifest.webmanifest`, `icons/`, `app/pwa.js`, `app/update.js` | PWA (оновлення без змішування версій — docs/PUBLISHING.md) | розробник |
 | `app/app.js` | рушій: навігація, екрани, гейміфікація, збереження `slid.v1` | розробник |
 | `app/learn.js` · `evidence.js` · `hyp.js` | персоналізація · журнал подій · гіпотези (тінь) | розробник |
 | `app/math.js` · `lab.js` · `registry.js` | формули · лабораторія · реєстр `SLID.*` | розробник |
@@ -48,18 +48,20 @@
 node tools/build.mjs        # після БУДЬ-ЯКОЇ зміни в content/, app/, img/
 node tools/validate.mjs [--section ID | --diag ID | --pool ID] [--quiet]   # 0 помилок обов'язково
 npm run check               # build + node-тести + validate + graph-report + stats (склад — package.json)
-python3 tools/playtest.py [--section ID] [--port N]          # пройти уроки в браузері
-python3 tools/test-answer-ui.py --suite regression           # браузерна регресія рушія (не входить у check і CI)
-node tools/test-ui-ister.mjs                                 # браузер (Node Playwright): «Тренування» з also, замок уроку; не в check і CI
+python3 tools/playtest.py [--section ID[,ID…]] [--port N]    # пройти уроки в браузері; невідомий id — код 2
+python3 tools/test-answer-ui.py --suite regression           # браузерна регресія рушія (не в check; у CI — job browser, блокує deploy)
+node tools/playtest-pick.mjs [--max-lessons N] [файли…]      # піднабір плейтесту CI: змінені розділи + покриття типів екранів + тести рівня
+node tools/test-ui.mjs [--browser P]                         # браузер (Node Playwright): «Тренування» з also, замок уроку, запобіжник екрана, оновлення PWA; не в check, у CI — job browser
 node tools/stats.mjs [--subject S]                           # метрики стилю → reports/style-S.md
 node tools/claim.mjs list|claim|move ...                     # черга задач
 node tools/make-tasks.mjs [--subject S]                      # задачі на написання з плану
 node tools/graph-report.mjs [--line ID --strict]             # граф умінь → reports/graph-<предмет>.md
 node tools/fig-audit.mjs [--subject S]                       # де умова потребує рисунка, а його немає → reports/fig-audit-S.md
+node tools/euphony.mjs [--subject S] [--section ID]          # милозвучність у/в, і/й, з/із/зі → reports/euphony-S.md (з --section — лише stdout)
 python3 -m http.server 8000                                  # запустити локально
 cd server && npm run check && DATABASE_URL=postgres://… npm run test:e2e   # бекенд
 ```
-Браузерні тести (playtest, test-answer-ui) беруть вільний порт, але під паралельним навантаженням флейкають (TimeoutError) — для приймання запускай по одному. `playtest.py --shots` — знімки екранів. Playwright: `/opt/pw-browsers/chromium`.
+Браузерні тести (playtest, test-answer-ui) беруть вільний порт, але під паралельним навантаженням флейкають (TimeoutError) — для приймання запускай по одному. `playtest.py --shots` — знімки екранів. Playwright: `/opt/pw-browsers/chromium`. Python-модуля playwright у контейнері може не бути (ставити заборонено) — тоді браузерні прогони йдуть лише в CI (job `browser` у pages.yml; повний плейтест — Run workflow з `playtest: full`).
 `validate --section` з неіснуючим id мовчки зелений — перевір id.
 
 ## 4. Непорушні правила
@@ -71,7 +73,7 @@ cd server && npm run check && DATABASE_URL=postgres://… npm run test:e2e   # �
 6. **Не редагуй чужі файли.** Автор змінює лише свій файл, свою теку `img/` і свою задачу; решта — пропозицією в `memory/short/inbox.md`.
 7. **Статус:** `draft` → `verified` (ШІ-верифікатор) → `approved` (**лише людина-вчитель**). Агент ніколи не ставить `approved`.
 8. **`index.html` (блок скриптів), `sw.js`, `content/manifest.json` не редагуй руками.** Під час паралельної роботи build запускає лише оркестратор, коли всі закінчили.
-9. Зображення — лише з відкритою ліцензією, з `cap` і `credits`. **Історія: у кожному уроці ≥ 1 справжнє `img` (D-027, помилка validate).**
+9. Зображення — лише з відкритою ліцензією, з `cap` і `credits`. **Історія й всесвітня історія: у кожному уроці ≥ 1 справжнє `img` (D-027, D-044 п. 4; помилка validate).**
 10. **Незалежне рев'ю (D-026):** будь-яку зміну рушія, інструментів, тестів, збірки, CI, `server/`, `.claude/` перевіряє інший агент зі свіжим контекстом. Самоперевірка й зелені тести рев'ю не замінюють. До вердикту «прийнято» задача лишається в `review`.
 11. **id уроків, навичок, вправ і пулів — ключі прогресу дітей.** Не перейменовуй; лише нові id.
 12. Нове поле з персональними даними дітей — лише за рішенням людини в decisions.md.

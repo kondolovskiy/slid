@@ -75,6 +75,22 @@ export function audit(subject, matrix, learn, filter = {}) {
   }
   for (const d of matrix.diagnostics.filter(d => (!filter.grade || d.grade === filter.grade) && (!filter.diag || d.id === filter.diag) && !filter.pool)) {
     if (!diags.some(x => x.id === d.id)) missing.push(`Діагностика ${d.id} (content/math/diag-g${d.grade}.js)`);
+    // forEvidence (рев'ю curate-math-matrix-v8-v9 P3-1; tools-math-ister-p3 п. 15): кожен запис — урок свого розділу, розділ — з for;
+    // кожен розділ for має запис. Лише для тем, де forEvidence є (старі матриці його не мають)
+    for (const t of d.topics || []) if (Array.isArray(t.forEvidence)) {
+      for (const e of t.forEvidence) {
+        if (lessons.get(e.lesson)?.section !== e.section) missing.push(`${d.id}/${t.id}: forEvidence ${e.lesson} не з розділу ${e.section}`);
+        if (!(t.for || []).includes(e.section)) missing.push(`${d.id}/${t.id}: forEvidence ${e.section} поза for`);
+      }
+      for (const sec of t.for || []) if (!t.forEvidence.some(e => e.section === sec)) missing.push(`${d.id}/${t.id}: розділ ${sec} з for без forEvidence`);
+    }
+  }
+  // preForSection рядка = pre-теми (не cur) тесту класу з матриці, чий for містить розділ рядка, у порядку тесту (там само P3-1).
+  // Лише рядки з diagnostic.preForSection; filter.pool — без діагностик
+  for (const r of rows.filter(r => Array.isArray(r.diagnostic?.preForSection) && !filter.pool)) {
+    const d = matrix.diagnostics.find(x => x.grade === r.grade);
+    const want = (d?.topics || []).filter(t => t.kind !== 'cur' && (t.for || []).includes(r.section)).map(t => t.id);
+    if (JSON.stringify(want) !== JSON.stringify(r.diagnostic.preForSection)) missing.push(`${r.lesson}: preForSection ${JSON.stringify(r.diagnostic.preForSection)} ≠ pre-теми ${d?.id ?? `тесту ${r.grade} кл.`} з for ${r.section}: ${JSON.stringify(want)}`);
   }
   for (const p of selectedPools) {
     errors.push(...learn.validatePool(p, ctx).map(e => `${p.id}: ${e}`));
@@ -97,6 +113,9 @@ export function audit(subject, matrix, learn, filter = {}) {
     if (!homes(p).includes(r.section)) errors.push(`${r.pool}: section/also не містить ${r.section}`);
     if (items.length < r.exercises.min || items.length > r.exercises.max) missing.push(`${r.pool}/${r.lesson}: ${items.length} вправ, потрібно ${r.exercises.min}–${r.exercises.max}`);
     for (const lvl of [1, 2, 3]) if (!items.some(it => it.lvl === lvl)) missing.push(`${r.pool}/${r.lesson}: немає рівня ${lvl}`);
+      // мінімум вправ за рівнями exercises.levels = [рівень 1, рівень 2, рівень 3] (рев'ю curate-math-matrix-v8-v9 P3-2)
+      else if (Array.isArray(r.exercises.levels) && items.filter(it => it.lvl === lvl).length < (r.exercises.levels[lvl - 1] ?? 0))
+        missing.push(`${r.pool}/${r.lesson}: рівня ${lvl} — ${items.filter(it => it.lvl === lvl).length} вправ, потрібно ≥ ${r.exercises.levels[lvl - 1]} (exercises.levels)`);
     for (const format of r.formats) {
       const present = items.some(it => (it.answerKind || (it.type === 'answer' ? 'number' : it.type)) === format || (format === 'exactRoot' && rootList(it, learn)) || (format === 'expression' && exprPair(it, learn)));
       if (!present) missing.push(`${r.pool}/${r.lesson}: немає формату ${format}`);

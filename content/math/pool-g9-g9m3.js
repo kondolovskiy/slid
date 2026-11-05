@@ -1,4 +1,6 @@
 /* Слід · Математика, 9 клас — пул задач для тренування до розділу «Алгебра: квадратична функція» (g9m3)
+   Статус: verified (verifier-fix-math-pools-ister-formats, 2026-11-05, reports/verify/pools-ister-formats.md). Зміни fix-math-pools-ister-formats: +e09–e11 (g9m3l6, ist9a №13.8(1), 13.9(2), 13.18(1), с. 129–130) — усі розв'язки системи, answerKind "pairSet" (цілі компоненти); обхідні e02–e04 лишаються.
+   Попередній стан — нижче.
    Статус: verified (verifier-write-math-pool-g9m3-ister, 2026-11-04, reports/verify/write-math-pool-g9m3-ister.md) — доповнено 2026-11-04 (write-math-pool-g9m3-ister, D-043): +16 задач для нових уроків за Істером —
    e01–e08 (g9m3l6, системи 2-го степеня, ist9a § 13, с. 129–130) і f01–f08 (g9m3l7, задачі системами, ist9a § 14, с. 135–137).
    Наявні задачі a01–d08, їхні id, lesson і ключі не змінено.
@@ -14,7 +16,7 @@ SLID.pool("math", {
   id: "pg9m3",
   section: "g9m3",
   status: "verified",
-  meta: { author: "claude-opus", created: "2026-10-31", factcheck: "verifier-write-math-pool-g9m3-ister", revised: "2026-11-04 write-math-pool-g9m3-ister (+e01–f08)", teacher: null },
+  meta: { author: "claude-opus", created: "2026-10-31", factcheck: "verifier-write-math-pool-g9m3-ister; fix-math-pools-ister-formats — verifier-fix-math-pools-ister-formats 2026-11-05", revised: "2026-11-05 fix-math-pools-ister-formats", teacher: null },
   sources: [
     { id: "a9", title: "Мерзляк А. Г., Якір М. С. Алгебра. 9 клас. — Харків: Гімназія, 2026 (п. 7–12; дзеркало PDF на 4book.org)", url: "https://file.4book.org/images/shcoolbook_ua/9/9_a_m_2026.pdf" },
     { id: "ist9a", title: "Істер О. С., Істер Д. О. Алгебра: підручник для 9 класу. — Київ: Генеза, 2026 (§ 13–14; дзеркало PDF на 4book.org)", url: "https://file.4book.org/images/shcoolbook_ua/9/9_a_i_2026.pdf" }
@@ -255,6 +257,24 @@ SLID.pool("math", {
       answer: 4,
       hint: "Перше рівняння — коло з центром у початку координат і радіусом 3. Друге — гіпербола $y = 1/x$. Скільки разів кожна її вітка перетне коло?",
       steps: ["$x^2 + y^2 = 9$ — коло з центром $(0;\\,0)$ і радіусом 3.", "$xy = 1$ — гіпербола $y = 1/x$ з вітками в I і III чвертях; її точка $(1;\\,1)$ лежить усередині кола.", "Кожна вітка заходить усередину кола й виходить з нього: по 2 спільні точки.", "Разом 4 розв'язки."] },
+    /* Усі розв'язки системи — множина пар (answerKind "pairSet", fix-math-pools-ister-formats); e02–e04 лишаються як були */
+    { id: "e09", lesson: "g9m3l6", lvl: 1, sk: "eq", src: "ist9a №13.8(1)", srcPage: 129,
+      type: "answer", answerKind: "pairSet", title: "$y = -2x$ і $x^2 + y - 3 = 0$",
+      body: "<p>Розв'яжи способом підстановки систему рівнянь</p><p>$$\\begin{cases} y = -2x \\\\ x^2 + y - 3 = 0 \\end{cases}$$</p><p>Запиши всі розв'язки як пари $(x;\\,y)$ через кому.</p>",
+      answer: "(3; -6), (-1; 2)",
+      steps: ["Підставляємо $y = -2x$ у друге рівняння: $x^2 - 2x - 3 = 0$.", "$x = 3$ або $x = -1$.", "$y = -2 \\cdot 3 = -6$ або $y = -2 \\cdot (-1) = 2$.", "Розв'язки: $(3;\\,-6)$, $(-1;\\,2)$."] },
+    { id: "e10", lesson: "g9m3l6", lvl: 2, sk: "eq", src: "ist9a №13.9(2)", srcPage: 129,
+      type: "answer", answerKind: "pairSet", title: "$x - y = 1$ і $x^2 + y^2 = 25$",
+      body: "<p>Розв'яжи систему рівнянь</p><p>$$\\begin{cases} x - y = 1 \\\\ x^2 + y^2 = 25 \\end{cases}$$</p><p>Запиши всі розв'язки як пари $(x;\\,y)$ через кому.</p>",
+      answer: "(4; 3), (-3; -4)",
+      hint: "З першого рівняння $x = y + 1$. Підстав у друге й розв'яжи квадратне рівняння відносно $y$.",
+      steps: ["$x = y + 1$, тож $(y + 1)^2 + y^2 = 25$, тобто $2y^2 + 2y - 24 = 0$.", "$y^2 + y - 12 = 0$: $y = 3$ або $y = -4$.", "Тоді $x = 4$ або $x = -3$.", "Розв'язки: $(4;\\,3)$, $(-3;\\,-4)$."] },
+    { id: "e11", lesson: "g9m3l6", lvl: 3, sk: "eq", src: "ist9a №13.18(1)", srcPage: 130,
+      type: "answer", answerKind: "pairSet", title: "$4y^2 + xy = 22$ і $x + 5y = 13$",
+      body: "<p>Розв'яжи систему рівнянь</p><p>$$\\begin{cases} 4y^2 + xy = 22 \\\\ x + 5y = 13 \\end{cases}$$</p><p>Запиши всі розв'язки як пари $(x;\\,y)$ через кому.</p>",
+      answer: "(3; 2), (-42; 11)",
+      hint: "З другого рівняння $x = 13 - 5y$. Підстав у перше: доданки з $y^2$ частково знищаться.",
+      steps: ["$x = 13 - 5y$, тож $4y^2 + (13 - 5y)y = 22$, тобто $-y^2 + 13y - 22 = 0$.", "$y^2 - 13y + 22 = 0$: $y = 2$ або $y = 11$.", "$x = 13 - 10 = 3$ або $x = 13 - 55 = -42$.", "Розв'язки: $(3;\\,2)$, $(-42;\\,11)$."] },
 
     /* ───────────── Урок 6 (g9m3l7). Два невідомі в задачі — задачі системами (Істер Алг. 9, § 14) ───────────── */
     { id: "f01", lesson: "g9m3l7", lvl: 1, sk: "eq", src: "ist9a №14.2", srcPage: 135,

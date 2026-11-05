@@ -1,5 +1,8 @@
 /* Слід · Математика, 6 клас — «Відношення і пропорції»
+   style-math-finals-pre, 2026-11-05: у завдання фіналу додано pre (id уроку теми; style/common.md, D-048 п. 1); зміст не змінено.
    Статус уроків: g6m3l1–l6 — verified (verifier-g6m3, 2026-10-11; l1–l4 після ревізії D-019/D-020 — verifier-g6m3-d019, 2026-10-13). g6m3l5, g6m3l6 — правка нотації 2026-11-03 (довжина кола $C$, D-043), verified (verifier-fix-math-notation-ister, 2026-11-03). 6 уроків.
+   style-math-ister-followup, 2026-11-05: g6m3l7 е9 заголовок «Сектор для салату» (не видає 1/3) → draft.
+   verifier-style-math-ister-followup, 2026-11-05: g6m3l7 → verified (reports/verify/style-math-ister-followup.md).
    Статус уроків: g6m3l3 — verified (2026-11-03, verifier-fix-math-figs-g4-g6, reports/verify/fix-math-figs-g4-g6.md; fix-math-figs-g4-g6: статичні графіки на двох екранах теорії); g6m3l1–l6 — verified (verifier-g6m3, 2026-10-11; l1–l4 після ревізії D-019/D-020 — verifier-g6m3-d019, 2026-10-13). 6 уроків.
    g6m3l7 «Круг на стенді» (кругові діаграми, Істер 6, § 24–25; write-math-g6m3-circle-diagrams, 2026-11-03) — verified (verifier-write-math-g6m3-circle-diagrams, 2026-11-03, reports/verify/write-math-g6m3-circle-diagrams.md); стоїть після g6m3l5, перед фіналом g6m3l6. Разом 7 уроків.
    revise-math-finals-g5g6 (2026-11-04, D-045 п. 1): фінал g6m3l6 — завдання 4 «Більше кухарів» (друге на g6m3l3) прибрано, додано завдання 6 на кругову діаграму (g6m3l7); 6 завдань, g6m3l6 → draft.
@@ -1024,7 +1027,7 @@ SLID.section("math", {
           type: "lab",
           sk: "data",
           eyebrow: "Зроби так, щоб…",
-          title: "Третина круга для салату",
+          title: "Сектор для салату",
           body: "<p>У їдальні борщ замовили 15 учнів, вареники — 9. Скільки учнів має замовити салат, щоб кут його сектора був 120°?</p>",
           lab: {
             kind: "chart",
@@ -1090,6 +1093,7 @@ SLID.section("math", {
           type: "lab",
           sk: "prop",
           eyebrow: "Завдання 1",
+          pre: "g6m3l1",
           title: "Узвар на всю школу",
           body: "<p>За рецептом на 2 склянки сушених яблук ідуть 5 склянок води. Візьми щонайменше 4 склянки яблук і збережи смак.</p>",
           lab: {
@@ -1117,6 +1121,7 @@ SLID.section("math", {
           type: "number",
           sk: "prop",
           eyebrow: "Завдання 2",
+          pre: "g6m3l2",
           title: "Борошно на вареники",
           body: "<p>На 6 порцій вареників треба 450 г борошна. Скільки борошна треба на 10 порцій?</p>",
           answer: 750,
@@ -1130,6 +1135,7 @@ SLID.section("math", {
           type: "choice",
           sk: "prop",
           eyebrow: "Завдання 3",
+          pre: "g6m3l3",
           title: "Більше кухарів",
           body: "<p>Троє кухарів ліплять усі вареники за 40 хвилин. За скільки впораються шестеро, якщо працюють так само?</p>",
           opts: ["За 80 хвилин", "За 37 хвилин", "За 20 хвилин"],
@@ -1143,6 +1149,7 @@ SLID.section("math", {
           type: "number",
           sk: "pct",
           eyebrow: "Завдання 4",
+          pre: "g6m3l4",
           title: "Хіт дня",
           body: "<p>Сьогодні до кафе прийшли 50 учнів. Вареники замовили 32 з них. Скільки це відсотків?</p>",
           answer: 64,
@@ -1156,6 +1163,7 @@ SLID.section("math", {
           type: "number",
           sk: "meas",
           eyebrow: "Завдання 5",
+          pre: "g6m3l5",
           title: "Скатертина на круглий стіл",
           body: "<p>Радіус круглого стола — 1 м. Скатертину пошили точно за розміром стола. Її край хочуть обшити тасьмою. Скільки метрів тасьми треба? Вважай, що $π ≈ 3,14$.</p>",
           lab: {
