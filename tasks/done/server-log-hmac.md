@@ -4,7 +4,7 @@ claimed_at: 2026-11-05T09:24:11.582Z
 id: server-log-hmac
 type: engine
 subject: server
-status: review
+status: done
 claimed_by: eng-server-hmac
 created: 2026-11-05
 depends_on: [server-hardening-2]
