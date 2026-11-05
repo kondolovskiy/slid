@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-05T11:50:36.835Z
 id: fix-math-figs-1105
 type: fix
 subject: math
 status: todo
-claimed_by:
+claimed_by: writer-math-content
 created: 2026-11-05
 depends_on: []
 ---

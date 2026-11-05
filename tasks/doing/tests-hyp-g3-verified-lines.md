@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-05T11:50:36.892Z
 id: tests-hyp-g3-verified-lines
 type: tests
 subject: math
 status: todo
-claimed_by:
+claimed_by: eng-g3
 created: 2026-11-05
 depends_on: [verify-graph-prob-tri]
 ---

@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-05T11:50:36.724Z
 id: engine-list-quadratic
 type: engine
 subject: math
 status: todo
-claimed_by:
+claimed_by: eng-list
 created: 2026-11-05
 depends_on: []
 ---

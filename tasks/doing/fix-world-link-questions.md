@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-05T11:50:36.861Z
 id: fix-world-link-questions
 type: fix
 subject: world
 status: todo
-claimed_by:
+claimed_by: writer-world-links
 created: 2026-11-05
 depends_on: []
 ---

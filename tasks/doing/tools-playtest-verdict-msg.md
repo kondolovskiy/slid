@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-05T11:50:36.922Z
 id: tools-playtest-verdict-msg
 type: tools
 subject: engine
 status: todo
-claimed_by:
+claimed_by: eng-playtest
 created: 2026-11-05
 depends_on: []
 ---

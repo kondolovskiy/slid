@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-05T11:50:36.667Z
 id: curate-math-matrix-v13
 type: curate
 subject: math
 status: todo
-claimed_by:
+claimed_by: cur-matrix-v13
 created: 2026-11-05
 depends_on: []
 ---
