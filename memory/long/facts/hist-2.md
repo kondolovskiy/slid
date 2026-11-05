@@ -169,3 +169,11 @@
 | # | Факт (формулювання в уроках) | Уроки | Джерела | Статус |
 |---|---|---|---|---|
 | 350 | 1781 р. — указ 16 (27) вересня 1781 р.: на Лівобережжі утворено Київське, Чернігівське й Новгород-Сіверське намісництва, полковий устрій Гетьманщини ліквідовано; офіційне відкриття намісництв — січень 1782 р. (тому EoU «Hetman state» дає 1782 — дата впровадження). У тексті уроку — 1781 (указ); рамка Гетьманщини в курсі — 1648–1764 (D-047) | g8s5 l5 | https://esu.com.ua/pdf/file/55409.pdf ; https://www.encyclopediaofukraine.com/pages%5CK%5CY%5CKyivvicegerency.htm ; https://uk.wikipedia.org/wiki/Чернігівське_намісництво ; https://en.wikipedia.org/wiki/Liquidation_of_the_autonomy_of_the_Cossack_Hetmanate | verified (verifier-fix-hist-gerai-hetmanate) |
+
+## Додано 2026-11-05, сесія 2 (старий inbox 03–04.11: images-hist-g11s1boss-scheme; world w9s2)
+
+| # | Факт (формулювання в уроках) | Уроки | Джерела | Статус |
+|---|---|---|---|---|
+| 351 | Генеральна округа Krim-Taurien формально входила до Райхскомісаріату «Україна», але цивільній адміністрації з вересня 1942 р. передано лише Teilbezirk Taurien (північна Таврія, центр Мелітополь); Кримський півострів до кінця окупації — під військовою адміністрацією. Карта поділу окупованої України 1943 р. — Commons «Reichskommissariat-Ukraine.jpg» (CC BY-SA 3.0) | g11s1boss е3 (`cap`) | https://en.wikipedia.org/wiki/Reichskommissariat_Ukraine ; https://en.wikipedia.org/wiki/German_occupation_of_Crimea_during_World_War_II ; https://portal.ehri-project.eu/units/il-002798-10326959 | verified (verifier-images-hist-g11s1boss-scheme, 03.11) |
+| 352 | Трансністрія 1941–1944 — під румунською цивільною владою, між Дністром і Бугом, центр — Тирасполь, згодом Одеса | g11s1boss е3 | EoU «Transnistria» | self (writer-hist-scheme) |
+| 353 | Цитату Гердера «Україна стане новою Грецією» (Journal meiner Reise, 1769) першоджерелом не підтверджено — **не вживати** ні в world, ні в hist без звірки з текстом «Журналу» | — | writer-write-world-w9s2 (04.11) | self (негативний; facts/world №74) |
