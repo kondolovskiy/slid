@@ -13,6 +13,7 @@ import pathlib
 import re
 import threading
 from playwright.async_api import async_playwright
+from verdict import NO_VERDICT, expect_credited   # tools/verdict.py: явне «не зараховано» (tools-playtest-verdict-msg)
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 class Quiet(http.server.SimpleHTTPRequestHandler):
@@ -80,11 +81,14 @@ async def grade_context_checks(browser, url):
         await page.click(f'[data-grade="{grade}"]')
     async def play_prerequisite():
         screens = await page.evaluate("SLID_SUBJECTS.find(c=>c.id==='math').sections.flatMap(s=>s.lessons||[]).find(l=>l.id==='ms2l4').screens")
-        for screen in screens:
+        for n, screen in enumerate(screens, 1):
             await answer_context_screen(page, screen)
             await page.click('#action')
-            if screen['type'] not in ('intro', 'info', 'explore'):
-                assert 'ok' in await page.locator('#dock').get_attribute('class') or screen.get('hyp')
+            if screen['type'] not in NO_VERDICT:
+                # hyp: any class (the guess is not graded); otherwise 'ok' — NotCredited names lesson, screen, answer, #dock class
+                if not screen.get('hyp'):
+                    given = {k: screen[k] for k in ('correct', 'answer', 'den', 'target', 'solution') if k in screen}
+                    await expect_credited(page, f"play_prerequisite: урок ms2l4, екран {n} з {len(screens)} ({screen['type']})", given, accept=('ok',))
                 await page.click('#action')
     # A dg6 run saved in an older revision: on load the verdicts of probes revised AFTER the run's revision are dropped, the other
     # answers (incl. probes revised up to the run's revision) and their order stay, the dropped probes are asked again, and the run

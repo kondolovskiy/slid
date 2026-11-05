@@ -9,3 +9,4 @@ scratchpad/
 reports/graph-*.md
 .claude/worktrees/
 reports/fig-audit-*.json
+__pycache__/

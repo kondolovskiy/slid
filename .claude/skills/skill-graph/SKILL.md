@@ -5,7 +5,7 @@ description: Use when editing content/<subject>/graph.js, processing «IDEA GRAP
 
 # Граф умінь (`SLID.graph`)
 
-Схема — CONTENT_SCHEMA §11; дизайн — docs/design/skill-graph-math.md; рішення — D-038 (decisions.md). Зараз є `content/math/graph.js` (лінія «дроби» 4–6 `verified`; дитині граф ще нічого не змінює до G4).
+Схема — CONTENT_SCHEMA §11; дизайн — docs/design/skill-graph-math.md; рішення — D-038 (decisions.md). Зараз є `content/math/graph.js` (які лінії `verified` — див. `st` у `lines` того файлу; дитині граф ще нічого не змінює до G4).
 
 ## Хто що змінює
 - `graph.js` — **лише куратор графа** (і верифікатор лінії в межах звіту). Під час паралельного запуску авторів — не чіпати.
