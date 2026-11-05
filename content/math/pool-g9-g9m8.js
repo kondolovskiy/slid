@@ -1,4 +1,6 @@
 /* Слід · Математика, 9 клас — пул задач для тренування до розділу «Геометрія: початки стереометрії» (g9m8)
+   Статус: verified (verifier-fix-math-pools-ister-formats, 2026-11-05, reports/verify/pools-ister-formats.md). Зміни fix-math-pools-ister-formats: +h08 (g9m8l8, рівень 1: площа основи з V і h; ist9g § 30, приклад 2, крок 1, с. 231, adapted — у підручнику «24 см²» замість см³).
+   Попередній стан — нижче.
    Статус: verified (verifier-write-math-pool-g9m8, 2026-11-04, reports/verify/write-math-pool-g9m8.md: 86 вправ розв'язано незалежно, умови звірено з ist9g с. 215–246; правки: k07 — порядок і формат відношення; h02 — дані піраміди Хеопса за сучасними вимірами, «спочатку мала висоту близько 146,6 м, сторона основи близько 230 м» замість підручникових 233 м).
    Попередньо: draft (write-math-pool-g9m8, 2026-11-04). Новий пул до уроків g9m8l1–l11 за Істером (D-043); boss g9m8l12 без задач.
    Джерело — ist9g (Істер, Геометрія 9, Генеза, 2026, розділ 6, § 25–33 і «Вправи для повторення розділу 6», с. 214–247).
@@ -15,7 +17,7 @@ SLID.pool("math", {
   id: "pg9m8",
   section: "g9m8",
   status: "verified",
-  meta: { author: "writer-write-math-pool-g9m8", created: "2026-11-04", factcheck: "verifier-write-math-pool-g9m8", teacher: null },
+  meta: { author: "writer-write-math-pool-g9m8", created: "2026-11-04", factcheck: "verifier-write-math-pool-g9m8; fix-math-pools-ister-formats — verifier-fix-math-pools-ister-formats 2026-11-05", revised: "2026-11-05 fix-math-pools-ister-formats", teacher: null },
   sources: [
     { id: "ist9g", title: "Істер О. С., Істер Д. О. Геометрія : підруч. для 9 кл. закл. заг. серед. освіти. — Київ: Генеза, 2026 (розділ 6, § 25–33; вправи для повторення розділу 6)", url: "https://file.4book.org/images/shcoolbook_ua/9/9_geom_i_2026.pdf" }
   ],
@@ -524,6 +526,12 @@ SLID.pool("math", {
       answer: "24√3", unit: "см³",
       hint: "У правильного шестикутника радіус описаного кола дорівнює стороні. А сам шестикутник складається з 6 рівносторонніх трикутників.",
       steps: ["Радіус описаного кола основи $R = a = 4$ см, висота $h = \\sqrt{5^2 - 4^2} = 3$ см.", "$S_{осн} = 6 · \\frac{4^2\\sqrt{3}}{4} = 24\\sqrt{3}$ см².", "$V = \\frac{1}{3} · 24\\sqrt{3} · 3 = 24\\sqrt{3}$ см³."] },
+    { id: "h08", lesson: "g9m8l8", lvl: 1, sk: "geom", src: "ist9g § 30, приклад 2 (крок 1)", srcPage: 231, adapted: true,
+      type: "answer", title: "Площа основи за об'ємом",
+      body: "<p>Об'єм правильної чотирикутної піраміди — 24 см³, висота — 4 см. Знайди площу основи піраміди.</p>",
+      answer: 18, unit: "см²",
+      hint: "У формулі $V = \\frac{1}{3} S_{осн} · h$ відомі $V$ і $h$.",
+      steps: ["$V = \\frac{1}{3} S_{осн} · h$, тож $24 = \\frac{1}{3} · S_{осн} · 4$.", "$S_{осн} = \\frac{3V}{h} = \\frac{3 · 24}{4} = 18$ см²."] },
 
     /* ───────────── Урок 9. Циліндр (§ 31) ───────────── */
     { id: "i01", lesson: "g9m8l9", lvl: 1, sk: "geom", src: "ist9g №31.1(2)", srcPage: 235,

@@ -176,5 +176,31 @@ await tmpRepo("slid-test-diff-also-", async tmp => {
   console.log(`  also: 5 кл. — ${got[0]}, 6 кл. — ${got[1]} вправ`);
 });
 
+// 6) категорія «ister п.2–3» (рев'ю fix-math-pools-ister-formats, P2-1, P3-1, P3-2): (а) старий рушій формати sci/pairSet ЗНАЄ
+//    (ANSWER_KINDS), але зламаний — ключ не зараховує: різниці bad → ok на варіантах ключа мають лишитися НЕПОЯСНЕНИМИ (без захисту
+//    «старий не знає формату» категорія їх поглинула б); (б) фікстура b799dfa (форматів не знає) і ключ pairSet МАСИВОМ пар (pg9m3 e10 у
+//    копії змісту): варіанти ключа e10 пояснені так само, як рядкового (keyText — «(4; 3), (-3; -4)», не «4,3; -3,-4»).
+const CAT23 = out => { const m = out.match(/^\s*(\d+)\s+ister п\.2–3/m); return m ? +m[1] : NaN; };
+await tmpRepo("slid-test-diff-sci-", async (tmp, g) => {
+  const lf = path.join(tmp, "app/learn.js"), cur = fs.readFileSync(lf, "utf8");
+  const from = 'if (kind === "sci") { const a = parseSci(s.answer)';
+  ok(cur.split(from).length === 2, `ister п.2–3: у learn.js рядок «${from}» має бути рівно один`);
+  fs.writeFileSync(lf, cur.replace(from, 'if (kind === "sci") return "bad"; if (kind === "sci") { const a = parseSci(s.answer)')); g("commit", "-qam", "old: sci зламано");
+  fs.writeFileSync(lf, cur);
+  const r = run("HEAD", tmp), cat = CAT23(r.out);
+  ok(cat === 0, `ister п.2–3 (а): старий рушій знає sci, але зламаний — категорія має бути 0, а ${cat}`);
+  ok(r.mainBad > 0 && r.rc === 1, `ister п.2–3 (а): різниці sci мають бути непояснені (основний блок ${r.mainBad}, rc ${r.rc})`);
+});
+await tmpRepo("slid-test-diff-pairs-", async (tmp, g) => {
+  const lf = path.join(tmp, "app/learn.js"), cur = fs.readFileSync(lf, "utf8"), old = fs.readFileSync(path.join(ROOT, "tools/fixtures/learn-b799dfa.js"), "utf8");
+  const pf = path.join(tmp, "content/math/pool-g9-g9m3.js"), pc = fs.readFileSync(pf, "utf8"), key = 'answer: "(4; 3), (-3; -4)",';
+  ok(pc.split(key).length === 2, "ister п.2–3 (б): у pg9m3 ключ e10 «(4; 3), (-3; -4)» має бути рівно один");
+  fs.writeFileSync(lf, old); g("commit", "-qam", "old b799dfa"); fs.writeFileSync(lf, cur);
+  const base = CAT23(run("HEAD", tmp).out);
+  fs.writeFileSync(pf, pc.replace(key, "answer: [[4, 3], [-3, -4]],"));
+  const r = run("HEAD", tmp), cat = CAT23(r.out);
+  ok(base > 0 && cat === base, `ister п.2–3 (б): ключ pairSet масивом — у категорії ${cat}, а з рядковим ключем ${base}`);
+  ok(r.mainBad === 0, `ister п.2–3 (б): основний блок — ${r.mainBad} непояснених`);
+});
 console.log(`test-diff-answers: ${pass} ok, ${fail} ✗`);
 process.exit(fail ? 1 : 0);

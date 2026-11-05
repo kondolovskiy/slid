@@ -1,5 +1,5 @@
 {
-  "version": "2026-11-05.v11",
+  "version": "2026-11-05.v12",
   "status": "draft",
   "registryCommit": "9057fd5",
   "sources": {
@@ -2848,7 +2848,7 @@
       "lesson": "g6m4l7",
       "title": "Перпендикулярні прямі",
       "curricularScope": "required",
-      "reason": "Новий урок D-043 (за Істером), verified; required з v6 (curate-math-matrix-v6). Пул pg6m4 f01–f07 verified (reports/verify/write-math-pool-g6m4-ister.md): 7 вправ, рівні 2/3/2 (мінімум за рівнями 2/2/1 — ist6b №1506 «на око» відкинуто як неоднозначну); формати D-028 — multi (пари прямих) і number (градуси, m6b №1197–1198); є й choice (f01), матриця його не вимагає. Сигла mer6 у пулі = m6b (те саме видання, друковані сторінки). Охоплювати лише вміння, уже пояснені цим уроком.",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v6 (curate-math-matrix-v6). Пул pg6m4 f01–f07 verified (reports/verify/write-math-pool-g6m4-ister.md): 7 вправ, рівні 2/3/2 (мінімум за рівнями 2/2/1 — ist6b №1506 «на око» відкинуто як неоднозначну); формати D-028 — multi (пари прямих) і number (градуси, m6b №1197–1198); є й choice (f01), матриця його не вимагає. Сигла mer6 у пулі = m6b (те саме видання, друковані сторінки). Охоплювати лише вміння, уже пояснені цим уроком. v12 (fix-math-pools-ister-formats, 2026-11-05): +f08 (ist6b №1505 adapted, кут AOC при перпендикулярних прямих, рівень 1, number; draft) — перша вправа answer рівня 1; 8 вправ, рівні 3/3/2, мінімум рівнів 2/2/1 → 3/2/1.",
       "evidence": "ist6b:118–121 (§ 44; вправи пулу — с. 120); m6b:140–145 (п. 41; вправи пулу — с. 143, 145)",
       "prerequisites": [
         "ms0bl2"
@@ -2863,7 +2863,7 @@
         "min": 6,
         "max": 8,
         "levels": [
-          2,
+          3,
           2,
           1
         ]
@@ -4528,7 +4528,7 @@
       "lesson": "g8m1l6",
       "title": "Раціональні рівняння",
       "curricularScope": "required",
-      "reason": "Новий урок D-043 (за Істером), verified; required з v7 (curate-math-matrix-v7). Пул pg8m1 e01–e08 verified (reports/verify/write-math-pool-g8m1-ister.md): 8 вправ, рівні 3/3/2; формати D-028 — number (кілька коренів, №8.24–8.25, потребують квадратних рівнянь — не взято). Охоплювати лише вміння, уже пояснені цим уроком.",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v7 (curate-math-matrix-v7). Пул pg8m1 e01–e08 verified (reports/verify/write-math-pool-g8m1-ister.md): 8 вправ, рівні 3/3/2; формати D-028 — number (кілька коренів, №8.24–8.25, потребують квадратних рівнянь — не взято). Охоплювати лише вміння, уже пояснені цим уроком. v12 (fix-math-pools-ister-formats, 2026-11-05): +e09 (ist8a №8.7(4), рівень 2, draft) — справжня умова «Розв'яжи рівняння» з відповіддю «коренів немає» записом $∅$ (intervalSet), на додачу до адаптованої e04 «скільки коренів»; 9 вправ, рівні 3/4/2; intervalSet — формат з однією вправою (e09).",
       "evidence": "ist8a:60–67 (§ 8; вправи пулу — с. 65–67)",
       "prerequisites": [
         "g8m1l1",
@@ -4538,11 +4538,12 @@
       "sk": "eq",
       "pool": "pg8m1",
       "formats": [
-        "number"
+        "number",
+        "intervalSet"
       ],
       "exercises": {
         "min": 6,
-        "max": 8,
+        "max": 9,
         "levels": [
           3,
           2,
@@ -4609,7 +4610,7 @@
       "lesson": "g8m1l7",
       "title": "Стандартний вигляд числа",
       "curricularScope": "required",
-      "reason": "Новий урок D-043 (за Істером), verified; required з v7 (curate-math-matrix-v7). Пул pg8m1 f01–f08 verified (reports/verify/write-math-pool-g8m1-ister.md): 8 вправ, рівні 3/3/2; формати D-028 — number і comparison. Формату «стандартний вигляд числа» в рушії немає (ENGINE, inbox 04.11) — f01, f04–f06 адаптовано (дитина вводить порядок або множник). Охоплювати лише вміння, уже пояснені цим уроком.",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v7 (curate-math-matrix-v7). Пул pg8m1 f01–f08 verified (reports/verify/write-math-pool-g8m1-ister.md): 8 вправ, рівні 3/3/2; формати D-028 — number і comparison. Формату «стандартний вигляд числа» в рушії немає (ENGINE, inbox 04.11) — f01, f04–f06 адаптовано (дитина вводить порядок або множник). Охоплювати лише вміння, уже пояснені цим уроком. v12 (fix-math-pools-ister-formats, 2026-11-05): +f09–f14 (ist8a №11.5(2), 11.6(10), 11.8(2), 11.15(2), 11.19(2), 11.23(1), с. 85–86; draft) — повна відповідь у стандартному вигляді (answerKind sci, engine-answer-formats-ister); адаптовані f01, f04–f06 лишаються (id — ключі прогресу); 14 вправ, рівні 4/7/3.",
       "evidence": "ist8a:83–86 (§ 11; вправи пулу — с. 85–86)",
       "prerequisites": [
         "g8m1l3"
@@ -4618,11 +4619,12 @@
       "pool": "pg8m1",
       "formats": [
         "number",
-        "comparison"
+        "comparison",
+        "sci"
       ],
       "exercises": {
         "min": 6,
-        "max": 8,
+        "max": 14,
         "levels": [
           3,
           2,
@@ -4839,7 +4841,7 @@
       "lesson": "g8m2l6",
       "title": "Вписаний чотирикутник",
       "curricularScope": "required",
-      "reason": "Новий урок D-043 (за Істером), verified; required з v7 (curate-math-matrix-v7). Пул pg8m2 e01–e06 verified (reports/verify/write-math-pool-g8m2-ister.md): 6 вправ, рівні 3/2/1; формати D-028 — number, choice («чи можна описати коло»), list (кути), expression (відповідь з параметром, 5R). Охоплювати лише вміння, уже пояснені цим уроком.",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v7 (curate-math-matrix-v7). Пул pg8m2 e01–e06 verified (reports/verify/write-math-pool-g8m2-ister.md): 6 вправ, рівні 3/2/1; формати D-028 — number, choice («чи можна описати коло»), list (кути), expression (відповідь з параметром, 5R). Охоплювати лише вміння, уже пояснені цим уроком. v12 (fix-math-pools-ister-formats, 2026-11-05): +e07 (ist8g №7.7, кути C і D вписаного, list, рівень 2; draft) — 7-ма вправа: в уроці з 6 вправами сесія наступного дня ставила бачену вправу рівня 1 перед небаченою (pickSession, test-hyp §10 (а)); 7 вправ, рівні 3/3/1.",
       "evidence": "ist8g:48–52, 64, 70–71 (§ 7, п. 1–2; вправи пулу — с. 52, 64, 70–71)",
       "prerequisites": [
         "g8m2l1",
@@ -4878,7 +4880,7 @@
       "lesson": "g8m2l7",
       "title": "Описаний чотирикутник",
       "curricularScope": "required",
-      "reason": "Новий урок D-043 (за Істером), verified; required з v7 (curate-math-matrix-v7). Пул pg8m2 f01–f06 verified (reports/verify/write-math-pool-g8m2-ister.md): 6 вправ, рівні 3/2/1; формати D-028 — number, choice («чи можна вписати коло»), expression (відповідь з параметром, 4a). Охоплювати лише вміння, уже пояснені цим уроком.",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v7 (curate-math-matrix-v7). Пул pg8m2 f01–f06 verified (reports/verify/write-math-pool-g8m2-ister.md): 6 вправ, рівні 3/2/1; формати D-028 — number, choice («чи можна вписати коло»), expression (відповідь з параметром, 4a). Охоплювати лише вміння, уже пояснені цим уроком. v12 (fix-math-pools-ister-formats, 2026-11-05): +f07 (ist8g повт. розд. 1 №55(2), choice «чи можна вписати коло», рівень 1; draft) — 7-ма вправа з тієї ж причини, що e07 у g8m2l6; 7 вправ, рівні 4/2/1.",
       "evidence": "ist8g:48–52, 64, 70–71 (§ 7, п. 3–4; вправи пулу — с. 52, 64, 70–71)",
       "prerequisites": [
         "g8m2l1",
@@ -6138,7 +6140,7 @@
       "lesson": "g9m3l6",
       "title": "Системи 2-го степеня",
       "curricularScope": "required",
-      "reason": "Новий урок D-043 (за Істером), verified; required з v9 (curate-math-matrix-v9). Пул pg9m3 e01–e08 verified (reports/verify/write-math-pool-g9m3-ister.md): 8 вправ, рівні 3/3/2; формати D-028 — number (кількість розв'язків, значення виразу від пар) і coordinates2 (e02–e04 — розв'язок з умовою на знак x: обхід до формату «множина пар», прийнятий верифікатором; e07 — єдиний розв'язок). Охоплювати лише вміння, уже пояснені цим уроком.",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v9 (curate-math-matrix-v9). Пул pg9m3 e01–e08 verified (reports/verify/write-math-pool-g9m3-ister.md): 8 вправ, рівні 3/3/2; формати D-028 — number (кількість розв'язків, значення виразу від пар) і coordinates2 (e02–e04 — розв'язок з умовою на знак x: обхід до формату «множина пар», прийнятий верифікатором; e07 — єдиний розв'язок). Охоплювати лише вміння, уже пояснені цим уроком. v12 (fix-math-pools-ister-formats, 2026-11-05): +e09–e11 (ist9a №13.8(1), 13.9(2), 13.18(1), с. 129–130; draft) — усі розв'язки системи множиною пар (answerKind pairSet, без коренів у відповіді — P2-1 рев'ю engine-answer-formats-ister); обхідні e02–e04 лишаються; 11 вправ, рівні 4/4/3.",
       "evidence": "ist9a:123–130 (§ 13; вправи пулу — с. 129–130)",
       "prerequisites": [
         "g9m3l3",
@@ -6150,11 +6152,12 @@
       "pool": "pg9m3",
       "formats": [
         "number",
-        "coordinates2"
+        "coordinates2",
+        "pairSet"
       ],
       "exercises": {
         "min": 6,
-        "max": 8,
+        "max": 11,
         "levels": [
           3,
           2,
@@ -7108,7 +7111,7 @@
       "lesson": "g9m8l8",
       "title": "Об'єм піраміди",
       "curricularScope": "required",
-      "reason": "Новий урок D-043 (за Істером), verified; required з v9 (curate-math-matrix-v9). Пул pg9m8 h01–h07 verified (reports/verify/write-math-pool-g9m8.md): 7 вправ, рівні 1/3/3; формати D-028 — number і exactRoot (16√3, 9√3, 24√3). Лише одна вправа рівня 1 (h01): прості вправи § 30 на об'єм (30.3, 30.4, 30.6) уже стоять в уроці, інших підручник не дає — верифікатор прийняв; мінімум рівнів у матриці — 1/2/1 (фактично 1/3/3), як 2/2/1 у g6m4l7. Охоплювати лише вміння, уже пояснені цим уроком.",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v9 (curate-math-matrix-v9). Пул pg9m8 h01–h07 verified (reports/verify/write-math-pool-g9m8.md): 7 вправ, рівні 1/3/3; формати D-028 — number і exactRoot (16√3, 9√3, 24√3). Лише одна вправа рівня 1 (h01): прості вправи § 30 на об'єм (30.3, 30.4, 30.6) уже стоять в уроці, інших підручник не дає — верифікатор прийняв; мінімум рівнів у матриці — 1/2/1 (фактично 1/3/3), як 2/2/1 у g6m4l7. Охоплювати лише вміння, уже пояснені цим уроком. v12 (fix-math-pools-ister-formats, 2026-11-05): +h08 (ist9g § 30, приклад 2, крок 1 — площа основи з V і h, рівень 1; draft); 8 вправ, рівні 2/3/3, мінімум рівнів 1/2/1 → 2/2/1. Третьої простої вправи на об'єм у § 30 немає (30.3, 30.4, 30.6 — на екранах уроку).",
       "evidence": "ist9g:230–232, 245 (§ 30, п. 4; вправи пулу — с. 232, 245)",
       "prerequisites": [
         "g9m8l6",
@@ -7124,7 +7127,7 @@
         "min": 6,
         "max": 8,
         "levels": [
-          1,
+          2,
           2,
           1
         ]
@@ -12941,6 +12944,6 @@
       "verdict": "прийнято; бажані уточнення 1–4 закрито refine-math-content-from-matrix-v3"
     }
   },
-  "previous": "2026-11-05.v10",
-  "changes": "docs/math-personalization-coverage.md, «Зміни v11» (refine-math-diag-g9-ister-required, рішення оркестратора 05.11 за D-046/D-047: dg9 — for pre-тем linear + g9m3, pyth + g9m3, g9m8, без нових завдань і rev; polygon → g9m4 не додано — непідтверджена опора; preForSection рядків g9m3, g9m8 за правилом v8); попередні — «Зміни v10», «Зміни v9», «Зміни v8», «Зміни v7», «Зміни v6», «Зміни v5», «Зміни v4», «Зміни v3»"
+  "previous": "2026-11-05.v11",
+  "changes": "docs/math-personalization-coverage.md, «Зміни v12» (fix-math-pools-ister-formats: нові вправи пулів pg6m4, pg8m1, pg8m2, pg9m3, pg9m8 — формати sci, pairSet, intervalSet, formats / exercises п'яти рядків, reason ще двох); попередні — «Зміни v11», «Зміни v10», «Зміни v9», «Зміни v8», «Зміни v7», «Зміни v6», «Зміни v5», «Зміни v4», «Зміни v3»"
 }
