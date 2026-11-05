@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-05T09:17:13.188Z
 id: style-math-ister-followup
 type: style-fix
 subject: math
 status: todo
-claimed_by:
+claimed_by: writer-style-math
 created: 2026-11-05
 depends_on: []
 ---

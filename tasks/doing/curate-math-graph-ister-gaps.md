@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-05T09:17:13.074Z
 id: curate-math-graph-ister-gaps
 type: graph
 subject: math
 status: todo
-claimed_by:
+claimed_by: curator-graph-math
 created: 2026-11-05
 depends_on: []
 ---

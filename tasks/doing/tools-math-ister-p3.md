@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-05T09:17:13.162Z
 id: tools-math-ister-p3
 type: tools
 subject: math
 status: todo
-claimed_by:
+claimed_by: eng-tools-p3
 created: 2026-11-05
 depends_on: []
 ---
