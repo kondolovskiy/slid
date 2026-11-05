@@ -633,7 +633,7 @@ SLID.section("ukr", {
         },
         {
           type: "gaps",
-          sk: "gram",
+          sk: "orth",
           eyebrow: "Обери",
           title: "Останній урок",
           body: `<p>Обери правильну форму.</p>`,
