@@ -851,7 +851,7 @@ SLID.section("hist", {
       title: "Хранитель сторінок",
       short: "Фінал розділу",
       icon: "star",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "pageskeeper",
       why: "Перевірка всього розділу. Бали подвоєні.",

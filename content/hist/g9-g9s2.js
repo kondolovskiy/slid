@@ -447,7 +447,7 @@ SLID.section("hist", {
       title: "Кріпак, що став Кобзарем",
       short: "Шевченко",
       icon: "user",
-      status: "draft",
+      status: "verified",
       why: "Ти простежиш шлях Тараса Шевченка від кріпацтва до «Кобзаря» і заслання.",
       screens: [
         {

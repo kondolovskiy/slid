@@ -4,7 +4,7 @@ claimed_at: 2026-11-05T06:48:17.074Z
 id: revise-hist-h64-h33-portrait
 type: revise
 subject: hist
-status: review
+status: done
 claimed_by: writer-hist-h64
 created: 2026-11-05
 depends_on: []
@@ -28,3 +28,7 @@ depends_on: []
 Факти нові не додавались. facts/hist №140, №27, №347 — рядками в inbox.
 Сумнівне: фінал h33 fbText «Назви змінилися, а ідея та сама» — теж порівняння давнього й сучасного, але як підсумок сортування; не змінював (верифікатор не позначав).
 Прогін: `validate --section s3` 0 помилок / 1 попередження (h35 sentenceWords, давнє); `g5s6`, `g5s5`, `g9s2` — 0/0. stats hist: h64 без прапорців (maxReadWords 59, longWordShare 0.065); build/playtest не запускав (за дорученням).
+
+## Верифікація
+
+**verifier-revise-hist-h64-h33-portrait, 2026-11-05** — прийнято, звіт reports/verify/revise-hist-h64-h33-portrait.md. Правки: h33 е6 fbText (тлумачення більше не подано як факт), note — прибрано «збережений», мертве посилання chtyvo → ZAXID.NET. h33, h64, h57, g9s2l4 → verified.
