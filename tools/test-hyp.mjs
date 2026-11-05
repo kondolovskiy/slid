@@ -762,7 +762,18 @@ const sum = (R, pid) => R.events.filter(e => e.pid === pid).map(e => e.type === 
   const R0 = replay(JSON.parse(JSON.stringify(X)), { ...E, graph: null });
   eq(JSON.stringify(R.events), JSON.stringify(R0.events), "G3: події реплею (hyp-1, старі pres) з графом і без нього однакові");
   eq(R0.graph.presDiff + R0.graph.preWeakDiff + R0.graph.inLine, 0, "G3: без графа — нові pres = старі");
-  eq([G.answers, G.inLine, G.lines], [12, 9, ["frac"]], "G3: відповідей 12, у лінії frac — 9 (тест рівня dg6 у темах лінії, e01; a01 — поза)");
+  // склад ліній verified — живий зміст (tests-hyp-g3-verified-lines): тест не перелічує їх, лише вимагає frac і що всі взяті — verified/approved;
+  // фікстури — об'єкти лінії frac (g6m2l5, g6m3l1, теми dg6), тож inLine від інших ліній не залежить
+  const stOf = id => (E.math.graph.lines[id] || {}).st, liveVer = Object.keys(E.math.graph.lines).filter(id => ["verified", "approved"].includes(stOf(id)));
+  eq([G.answers, G.inLine, G.lines.includes("frac"), G.lines.filter(id => !["verified", "approved"].includes(stOf(id))), G.lines], [12, 9, true, [], liveVer],
+    "G3: відповідей 12, у лінії frac — 9 (тест рівня dg6 у темах лінії, e01; a01 — поза); frac серед ліній verified; лише verified/approved");
+  // draft-лінію G3 не бере, verified і approved — бере: синтетичні лінії поверх живих (живі, крім frac, → draft; zz — урок a01 g6m3l1, поза frac)
+  { const withLines = zz => { const L0 = E.math.graph.lines, L = Object.fromEntries(Object.entries(L0).map(([k, v]) => [k, k === "frac" ? v : { ...v, st: "draft" }]));
+      if (zz) L.zz = { lessons: ["g6m3l1"], topics: [], st: zz };
+      const Rz = replay(JSON.parse(JSON.stringify(X)), { ...E, graph: E.learn.graphBind({ ...E.math, graph: { ...E.math.graph, lines: L } }) }).graph;
+      return [Rz.lines, Rz.inLine, Rz.examples.some(x => x.at.key === "pg6m3:a01")]; };
+    eq(["draft", "x", "verified", "approved"].map(withLines), [[["frac"], 9, false], [["frac"], 9, false], [["frac", "zz"], 12, true], [["frac", "zz"], 12, true]],
+      "G3: лінія draft (і невідомий st) — поза G3 (inLine 9); verified / approved — у G3 (a01 трьох профілів у лінії zz: inLine 12, a01 серед прикладів)"); }
   const e01 = G.examples.filter(x => x.at.key === "pg6m2:e01");
   eq(e01.map(x => [x.line, x.u, x.pre.slice().sort(), x.presNew.slice().sort(), x.pres.includes("m3"), x.preWeak, x.preWeakNew]),
     [["frac", ["frac-mul"], ["frac-read", "frac-reduce"], ["g6m2l2", "m1"], true, true, false],
