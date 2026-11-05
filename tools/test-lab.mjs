@@ -239,7 +239,7 @@ eq([L.svgTexIssues("$x_{a_{bc}}$").map(i => i.level), L.svgTexIssues("$x^{2{,}5}
   eq(L.validate(pl({ labelDir: "up" })).length, 1, "validate: labelDir — лише сторони світу");
   eq(L.validate(pl({ labelDir: "se" })), [], "validate: labelDir se");
   const tk = n => { const sp = pl({}, [{ a: [-4, 0], b: [4, 0], ticks: n }]); return (R(sp).body.match(/stroke-width="1.8" stroke-linecap="round"/g) || []).length; };
-  eq([tk(undefined), tk(1), tk(2), tk(3)], [0, 1, 2, 3], "plane segs ticks: 0–3 рисочки");
+  eq([tk(undefined), tk(1), tk(2), tk(3), tk(4), tk(0)], [0, 1, 2, 3, 0, 0], "plane segs ticks: 0–3 рисочки, поза межами — жодної");
   { const b = R(pl({}, [{ a: [-4, 0], b: [4, 0], ticks: 1 }])).body, m = b.match(/<line x1="([\d.]+)" y1="([\d.]+)" x2="([\d.]+)" y2="([\d.]+)" stroke="var\(--ink\)" stroke-width="1.8"/);
     eq(m && [+m[1], +m[3], Math.abs(m[2] - m[4])], [160, 160, 12], "plane ticks: рисочка посередині, поперек відрізка"); }
   eq(L.validate(pl({}, [{ a: [-4, 0], b: [4, 0], ticks: 4 }])).length, 1, "validate: ticks 4 — помилка");

@@ -2402,18 +2402,18 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
     [P3, "(3; 2) ∪ (-2; -3)", "ok"], [P3, ")(3; 2), (-2; -3)", "bad"],
     [K("pairSet", [[3, 2]]), "3; 2", "bad"],   // P3-2: одна пара без дужок — не множина пар (задокументовано)
     [P, "(2√(2)/2; 1), (-√2; 1)", "form"],
-    // п. 2: π у ключі exactRoot, а в записі немає — form «допиши π»; π у записі без ключа-π — як і раніше
-    [PI, "12", "form"], [PI, "24/2", "form"], [PI, "12π", "ok"], [PI, "13", "bad"], [PI, "-12", "bad"], [PI, "π", "bad"], [PI, "12π^2", "bad"],
-    [K("exactRoot", "16π/3"), "16/3", "form"], [K("exactRoot", "16π/3"), "16", "bad"], [K("exactRoot", "2√3π"), "2√3", "form"], [K("exactRoot", "2√3π"), "2√3π", "ok"],
+    // п. 2: π у ключі exactRoot, а в записі немає — значення неправильне: bad (рев'ю P2-1), лише підказка «допиши π» (нижче)
+    [PI, "12", "bad"], [PI, "24/2", "bad"], [PI, "12π", "ok"], [PI, "13", "bad"], [PI, "-12", "bad"], [PI, "π", "bad"], [PI, "12π^2", "bad"],
+    [K("exactRoot", "16π/3"), "16/3", "bad"], [K("exactRoot", "16π/3"), "16", "bad"], [K("exactRoot", "2√3π"), "2√3", "bad"], [K("exactRoot", "2√3π"), "2√3π", "ok"],
     [K("exactRoot", "12π^2"), "12π", "bad"], [K("exactRoot", "12π^2"), "12", "bad"], [K("exactRoot", "1 + π"), "1", "bad"], [K("exactRoot", "1 + π"), "2", "bad"], [K("exactRoot", "2√3"), "2", "bad"], [K("exactRoot", "12π"), "12π/π", "bad"],
     // п. 2: розряди через пробіл у точному записі, як «1 950» у number
-    [K("exactRoot", "6400π"), "6 400π", "ok"], [K("exactRoot", "6400π"), "6 400π", "ok"], [K("exactRoot", "6400π"), "6 400 π", "ok"], [K("exactRoot", "6400π"), "6 400", "form"],
+    [K("exactRoot", "6400π"), "6 400π", "ok"], [K("exactRoot", "6400π"), "6 400π", "ok"], [K("exactRoot", "6400π"), "6 400 π", "ok"], [K("exactRoot", "6400π"), "6 400", "bad"], [K("exactRoot", "6400π"), "6,4 000π", "bad"], [K("exactRoot", "6,4π"), "6,4 000π", "bad"],
     [K("exactRoot", "6400π"), "6 4000π", "bad"], [K("exactRoot", "64000π"), "6 4000π", "bad"], [K("exactRoot", "6400π"), "64 00π", "bad"], [K("exactRoot", "6400π"), "6 40π", "bad"], [K("exactRoot", "1000000π"), "1 000 000π", "ok"],
     [K("exactRoot", "2000√3"), "2 000√3", "ok"], [K("exactRoot", "(1 + √5)/2"), "(1 + √5)/2", "ok"], [K("exactRoot", "6400π"), "6 400,5π", "bad"],
     [K("list", ["6400π", "π"]), "6 400π; π", "ok"], [K("coordinates2", ["6400π", 1]), "(6 400π; 1)", "ok"],
     // мішане число лишається мішаним: «2 100/3» не стає 2100/3
     [K("exactRoot", "700π/1"), "2 100/3 π", "bad"], [K("exactRoot", "2100π/3"), "2 100/3 π", "bad"], [K("exactRoot", "2100π/3"), "2 100 /3 π", "bad"],
-    [K("exactRoot", "6301π/3"), "2 100 1/3", "form"], [K("exactRoot", "6301π/3"), "2 100 1/3 π", "bad"], [K("exactRoot", "1000000π/3"), "1 000 000/3 π", "bad"],
+    [K("exactRoot", "6301π/3"), "2 100 1/3", "bad"], [K("exactRoot", "6301π/3"), "2 100 1/3 π", "bad"], [K("exactRoot", "1000000π/3"), "1 000 000/3 π", "bad"],
     // п. 2: ratio, записане дробом p/q — form «через двокрапку»
     [RA, "27/64", "form"], [RA, "54/128", "form"], [RA, "27 : 64", "ok"], [RA, "64/27", "bad"], [RA, "1 27/64", "bad"], [RA, "0,421875", "bad"], [RA, "-27/64", "bad"], [K("ratio", [91, 64]), "1 27/64", "bad"], [K("ratio", [91, 64]), "91/64", "form"],
     [K("ratio", [2, 3, 4]), "2/3", "bad"], [K("ratio", [1, 2]), "1/2", "form"], [K("ratio", [1, 2]), "2", "bad"],
@@ -2425,13 +2425,17 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
     [K("exactRoot", "2∜2"), "∜32", "form"], [K("expression", "∜x"), "root4(x)", "ok"]];
   cases.forEach(([s, v, exp]) => eq(L.checkAns(s, v), exp, `ister-p3: ${JSON.stringify(s)} ← «${v}»`));
   // підказки й коди форм
-  eq(L.formHint(PI, "12"), "Число правильне, але відповідь — з π. Допиши π: тут потрібна точна відповідь.", "ister-p3: formHint «12» при 12π");
-  eq(L.formCode(PI, "12"), "pi", "ister-p3: formCode pi");
+  // «допиши π» — пояснення до bad (badHint), не form: значення неправильне, formCode null, hyp бачить звичайну помилку
+  const PIM = "Бракує множника π. Точну відповідь тут записують з π — допиши його.";
+  for (const [s, v] of [[PI, "12"], [PI, "24/2"], [K("exactRoot", "16π/3"), "16/3"], [K("exactRoot", "2√3π"), "2√3"], [K("exactRoot", "6400π"), "6 400"],
+    [K("exactRoot", "6301π/3"), "2 100 1/3"], [K("exactRoot", "12π", { unit: "см" }), "12 см"]]) eq([L.checkAns(s, v), L.badHint(s, v), L.formCode(s, v)], ["bad", PIM, null], `ister-p3: «${v}» при ${s.answer} — bad, підказка «допиши π»`);
+  for (const [s, v] of [[PI, "13"], [PI, "-12"], [K("exactRoot", "12π^2"), "12π"], [K("exactRoot", "12π^2"), "12"], [K("exactRoot", "1 + π"), "1"], [K("exactRoot", "2√3"), "2"],
+    [K("exactRoot", "6400π"), "6,4 000"], [K("list", ["12π"]), "12"], [K("exactRoot", "12π"), "12π"]]) eq(L.badHint(s, v), null, `ister-p3: «${v}» при ${s.answer} — без «допиши π»`);
   eq(L.formHint(RA, "27/64"), "Значення правильне, але відповідь тут — відношення. Запиши його через двокрапку, а не дробом.", "ister-p3: formHint ratio дробом");
   eq(L.formCode(RA, "27/64"), "ratioFrac", "ister-p3: formCode ratioFrac");
   eq(L.formHint(K("ratio", [27, 64], { reduced: true }), "54 : 128").startsWith("Відношення правильне."), true, "ister-p3: ratio reduced — стара підказка");
   eq(L.formHint(K("exactRoot", "16π/3"), "32π/6").includes("π"), false, "ister-p3: «32π/6» — не «допиши π»");
-  eq([L.hintTexts(PI).includes(L.formHint(PI, "12")), L.hintTexts(RA).includes(L.formHint(RA, "27/64")), L.hintTexts(K("list", [1, 2])).some(t => /Допиши π|через двокрапку/.test(t))], [true, true, false], "ister-p3: hintTexts");
+  eq([L.hintTexts(PI).includes(L.badHint(PI, "12")), L.hintTexts(RA).includes(L.formHint(RA, "27/64")), L.hintTexts(K("list", [1, 2])).some(t => /Допиши π|через двокрапку/.test(t))], [true, true, false], "ister-p3: hintTexts");
   eq([L.diagVerdict(RZ, "у 2 рази"), L.diagVerdict(RZ, "у 3 рази")], [L.OK, L.BAD], "ister-p3: «у 2 рази» у тесті рівня");
   // ReDoS (pitfalls): довгі ряди пробілів і груп розрядів — лінійно
   for (const v of ["1" + " ".repeat(20000) + "000π", "6 400" + " ".repeat(20000) + "/π", Array(5000).fill("100").join(" ") + "/3", "(" + " ".repeat(20000) + "√2; 1)" + ", (".repeat(3000), "у" + " ".repeat(20000) + "2 рази"]) {

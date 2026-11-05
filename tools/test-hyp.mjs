@@ -822,5 +822,17 @@ const sum = (R, pid) => R.events.filter(e => e.pid === pid).map(e => e.type === 
   eq(H.assess(pool("pg4m4:d01"), "2500 мм", {}).sig.includes("S13"), false, "unit-hint: «2500 мм» (bare) — не S13, як і раніше");
 }
 
+/* ---------- engine-math-ister-p3 (рев'ю P2-1): «12» при ключі 12π — помилка значення, не form ----------
+   Вердикт трекерові дає app.js через checkAns; «допиши π» — лише підказка badHint. Тож запис без π: bad (а не form), formCode null,
+   на першій спробі немає hyp_fmt, у перевірці гіпотези — ✘ (update як bad), а не ✔ як form. Фікстура, не живий зміст. */
+{ const s = { type: "answer", answerKind: "exactRoot", answer: "12π", title: "Площа круга радіуса $2\\sqrt{3}$", lesson: "fx-pi", key: "fx-pi:a01", sk: "fx-pi", lvl: 1 };
+  const v = LN.checkAns(s, "12");
+  eq([v, LN.formCode(s, "12"), /допиши/.test(LN.badHint(s, "12") || "")], ["bad", null, true], "pi: «12» при 12π — bad, без formCode, з підказкою");
+  const T = H.tracker({ seed: "pi" }), ev = T.onAnswer(A(s, { day: D1, verdict: v, raw: "12", try: 1, final: true }));
+  eq(of(ev, "hyp_fmt").length, 0, "pi: перша спроба — не hyp_fmt (не «значення правильне»)");
+  const pr = [0.2, 0.2, 0.2, 0.2, 0.2], kind = Object.keys(H.LIK)[0];
+  eq(H.update(pr, kind, v, 0), H.update(pr, kind, "bad", 0), "pi: у перевірці гіпотези — як bad (✘)");
+  ok(JSON.stringify(H.update(pr, kind, v, 0)) !== JSON.stringify(H.update(pr, kind, "form", 0)), "pi: не як form (✔)"); }
+
 console.log(fails ? `test-hyp: ${fails} з ${n} перевірок не пройшли` : `test-hyp: усі ${n} перевірок пройшли`);
 process.exit(fails ? 1 : 0);

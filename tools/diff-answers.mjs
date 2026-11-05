@@ -13,7 +13,7 @@
 // engine-diag-half-credit — «half …»: вердикт тесту рівня (старий diagAnswerOk → новий diagVerdict: OK / HALF / BAD) на всіх вправах
 // answer з DIAG_ANSWER_KINDS, ніби вони стояли в тесті (чинні SLID.diag answer ще не мають); пробні записи — нескорочений дріб,
 // мішане/неправильне число, десятковий запис, √(K²), 2√(K²/4), інші одиниці величини. Старий learn.js без diagAnswerOk — блок пропущено.
-// engine-math-ister-p3 — «ister-p3 …»: pairSet з √(n) і «,,», exactRoot без π (form «допиши π»), розряди через пробіл у точних записах,
+// engine-math-ister-p3 — «ister-p3 …»: pairSet з √(n) і «,,», exactRoot без π (bad з підказкою «допиши π»), розряди через пробіл у точних записах,
 // ratio дробом p/q (form), «у N рази» при unit «раз».
 // engine-diag-answer-kinds — answer у діагностиках (SLID.diag) теж у прогоні; режим --content-old: старий і новий ЗМІСТ на одному
 // (поточному) learn.js — які вердикти змінила правка вправ (ключ, answerKind, умова з назвами), а не рушія.
@@ -290,8 +290,9 @@ const CATS = [
   // engine-math-ister-p3: старий рушій на «очищеному» записі (√(n) → √n, без розрядів, без «у») дає те саме, що новий; π і ratio — незалежна звірка значення
   ["ister-p3 п.1 дужки в компоненті пари √(n)", (s, v, o, n) => s.answerKind === "pairSet" && /√\(\d+\)/.test(v) && same(verdict(OLD, s, v.replace(/√\((\d+)\)/g, "√$1")), n)],
   ["ister-p3 п.1 «,,» між парами — bad", (s, v, o, n) => s.answerKind === "pairSet" && /\),\s*,/.test(v) && n.r === "bad"],
-  ["ister-p3 п.2 exactRoot без π — form «допиши π»", (s, v, o, n) => s.answerKind === "exactRoot" && /π/.test(keyText(s)) && !/π/.test(v) && o.r === "bad" && n.r === "form" && /^Число правильне, але відповідь — з π/.test(n.h || "")
-    && OLD.checkAns(s, `(${v})π`) !== "bad"],
+  // рев'ю P2-1: вердикт той самий (bad — значення неправильне), змінюється лише пояснення «допиши π»; звірка — старий рушій зараховує (v)π
+  ["ister-p3 п.2 exactRoot без π — bad з підказкою «допиши π» (лише текст)", (s, v, o, n) => s.answerKind === "exactRoot" && /π/.test(keyText(s)) && !/π/.test(v) && o.r === "bad" && n.r === "bad" && !o.h
+    && /^Бракує множника π/.test(n.h || "") && OLD.checkAns(s, `(${v})π`) !== "bad"],
   ["ister-p3 п.2 розряди через пробіл у точному записі", (s, v, o, n) => ["exactRoot", "list", "coordinates2"].includes(s.answerKind) && /\d \d{3}(?!\d)/.test(v) && same(verdict(OLD, s, v.replace(/(\d) (?=\d{3}(?!\d))/g, "$1")), n)],
   ["ister-p3 п.2 ratio дробом p/q — form «через двокрапку»", (s, v, o, n) => { const m = /^(\d+)\/(\d+)$/.exec(v), a = s.answerKind === "ratio" && keyText(s).split(":").map(x => NEW.parseAns(x.trim()));
     return !!m && !!a && a.length === 2 && a.every(Boolean) && o.r === "bad" && n.r === "form" && /через двокрапку/.test(n.h || "")

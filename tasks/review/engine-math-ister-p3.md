@@ -69,3 +69,12 @@ depends_on: []
 - Мутанти (копія дерева в scratchpad): learn.js + lab.js — 51/52 вбито test-learn / test-lab; вижив «mount: view без spec» (DOM, node-тести mount не бачать) — вбито Node Playwright і додано перевірку в test-answer-ui.py (letters_cbrt_checks, CI). app.js — 3/3 вбито Node Playwright (`SLID_ANS_UI.field(...).help`).
 - Браузер (Node Playwright, chromium): знімки нових креслень і всіх 99 реальних lab з `mean` чи `solid` — без помилок сторінки; box тепер згори, легенда середнього не перекриває стовпчики.
 - Не запускалось: `python3 tools/test-answer-ui.py --suite regression` (Python playwright у контейнері немає) — у CI job browser.
+
+## Раунд 2 (після рев'ю 896c036, eng-math-p3, 2026-11-05)
+- **P2-1:** «12» при ключі `12π` тепер `bad`, а не `form`: значення неправильне, і `form` («значення правильне») hyp.js рахує як ✔. Нове лише пояснення «Бракує множника π. Точну відповідь тут записують з π — допиши його.»: це `badHint` → `MSG.pi`, з тією самою умовою `piLess`; одиницю `unit` перед перевіркою знято. `formCode` повертає null, `hyp_fmt` немає. У трекері це звичайна помилка значення: гіпотеза відкривається, у перевірці — ✘. Описано в CONTENT_SCHEMA §10 і в docs/design/diag-hypothesis-math.md (після абзацу про `form`).
+- Тести: у test-learn нові записи `bad` + `badHint` = MSG.pi + `formCode` null на 7 записах; ще 9 записів без підказки. test-hyp — фікстура exactRoot `12π`: `checkAns` дає bad, `hyp_fmt` немає, `update` — як bad, а не як form. Знімки test-hyp не зсунулися (624 перевірки зелені, змісту не змінено).
+- **P3-1:** `6,4 000π` → bad (при `6400π` і при `6,4π`); мутант лукбіхайнда без коми вбито. **P3-2:** `ticks: 4` / `0` не малюються — тест; мутант `nt <= 4` вбито.
+- diff-answers: категорію перейменовано на «exactRoot без π — bad з підказкою «допиши π» (лише текст)»: o = bad без підказки, n = bad з MSG.pi, старий рушій зараховує `(v)π`.
+- Мутанти раунду 2: 6/6 вбито (кома в лукбіхайнді, π знову form — і test-hyp, і test-learn, без підказки π, підказка без зняття одиниці, ticks ≤ 4).
+- `npm run check` — EXIT 0 (test-learn 2763, test-hyp 624, test-lab 194). `node tools/diff-answers.mjs --old bb36227 --grades 4-11` — rc 0, 0 непояснених: 38 «π — лише текст», 3 «розряди», 16 «ratio дробом», 9 «у N рази»; тест рівня — 9 «у N рази» BAD → OK.
+- Не робилось (P3-3, P3-4, P3-5): «у/в» перед кожним елементом list; рядок у docs/teacher-questions.md про «у N рази» в тесті рівня (спільний файл — пропозиція в inbox); квадратичний шлях `list` (було й до зміни) — окремою задачею.

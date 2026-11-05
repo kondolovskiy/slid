@@ -622,8 +622,10 @@ window.SLID_LEARN = (() => {
     try { const x = t && t.k !== "eq" && isConst(t) && xval(t); return x ? { x, tidy: canonExact(t) } : null; }
     catch (e) { if (e === TOO) return null; throw e; }
   }
-  /* exactRoot з π у ключі, а в записі π немає, і запис · π = ключ (engine-math-ister-p3 п. 2): «12» при 12π, «16/3» при 16π/3 —
-     "form" «допиши π», не мовчазне "bad". Лише exactRoot: запис без π, ключ — з π (кожен доданок ключа має π, xmul точний). */
+  /* exactRoot з π у ключі, а в записі π немає, і запис · π = ключ (engine-math-ister-p3 п. 2): «12» при 12π, «16/3» при 16π/3.
+     Значення неправильне (відрізняється в π разів), тож вердикт — "bad", як і раніше: контракт "form" — «значення правильне»
+     (hyp.js рахує form як ✔, рев'ю engine-math-ister-p3 P2-1). Змінюється лише пояснення: badHint → MSG.pi «допиши π».
+     Лише exactRoot: запис без π, ключ — з π (xmul точний). */
   const PI1 = () => X([1n, 1n], 1, 1n, 1), hasPi = m => [...m.keys()].some(k => !k.endsWith(":0"));
   function piLess(a, u) {
     if (!hasPi(a.x) || hasPi(u.x) || !u.x.size) return false;
@@ -1183,7 +1185,7 @@ window.SLID_LEARN = (() => {
     sci: "Значення правильне. Запиши число в стандартному вигляді: a · 10^n, де 1 ≤ a < 10.",
     ratioNum: "Значення правильне, але це відношення. Відповідь тут — одне число: запиши його дробом через риску /.",
     ratioFrac: "Значення правильне, але відповідь тут — відношення. Запиши його через двокрапку, а не дробом.",
-    pi: "Число правильне, але відповідь — з π. Допиши π: тут потрібна точна відповідь.",
+    pi: "Бракує множника π. Точну відповідь тут записують з π — допиши його.",
     retry: "Спробуй ще раз."
   };
   const DEC_WORD = ["цілим числом, без коми", "з одним знаком після коми", "з двома знаками після коми", "з трьома знаками після коми"];
@@ -1316,7 +1318,6 @@ window.SLID_LEARN = (() => {
     if (kind === "divrem") return MSG.divrem;
     if (kind === "ratio") { const a = parseRatio(s.answer); return a && !parseRatio(v) && ratioFrac(a, v) ? MSG.ratioFrac : MSG.ratio; }
     if (kind === "sci") return MSG.sci;
-    if (kind === "exactRoot" && limited(() => { const a = exactOf(s.answer), u = exactOf(v); return !!a && !!u && piLess(a, u); }, () => false)) return MSG.pi;
     if (kind === "quantity") { const U = qtyUnits(s); return U ? qtyFormMsg(U) : MSG.retry; }
     if (kind === "coordinates2" && s.form !== undefined && symPair(s)) {   // «form» дала компонента-вираз — підказка expression, інакше — про корені
       const a = symPair(s), up = splitPair(v, true, s);
@@ -1392,6 +1393,7 @@ window.SLID_LEARN = (() => {
     const t = String(v ?? ""), kind = s.answerKind || "number";
     if (s.unit && foreignUnit(s, t)) { const e = unitEq(s, t); return e === "bare" ? unitMsg(s) : e === "conv" ? unitConvMsg(s) : null; }
     if (kind === "time") return parseTime(t) === null ? timeMsg(s) : null;
+    if (kind === "exactRoot") return limited(() => { const a = exactOf(s.answer), u = exactOf(stripUnit(s, t)); return !!a && !!u && piLess(a, u); }, () => false) ? MSG.pi : null;
     // list без «;»: кома — роздільник, тож «1,5, 2» (у полі «1.5, 2» стає «1,5, 2») — це три числа (a11y-followup, відкрите (б))
     // лише запис із самих чисел через кому (не «x₁,₂ = …», не «y_{1,2}»)
     if (kind === "list") return /^[\d\s,.+\-−–±∓]+$/.test(t) && /\d,\d/.test(t) ? MSG.listSep : null;   // «±1,5» — теж (п. 1)
@@ -1702,7 +1704,7 @@ window.SLID_LEARN = (() => {
     if (kind === "exactRoot") {
       const a = exactOf(s.answer); let u = exactOf(v);
       if (!u && a && xrat(a.x)) { const p = parsePeriodic(v); u = p && ratOf(p); }   // -0,(3) до раціонального ключа (п. 6)
-      return a && u && xeq(a.x, u.x) ? tidy([u]) : a && u && piLess(a, u) ? "form" : "bad";
+      return a && u && xeq(a.x, u.x) ? tidy([u]) : "bad";   // «12» при 12π — bad з підказкою «допиши π» (badHint, PI_HINT)
     }
     if (kind === "ratio") {
       const a = parseRatio(s.answer), u = parseRatio(v), B = BigInt;
