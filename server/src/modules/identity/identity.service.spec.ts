@@ -1,3 +1,4 @@
+import { ServiceUnavailableException } from '@nestjs/common';
 import { GoogleAccount, GoogleVerifier } from './google.verifier';
 import { IdentityService, PAIRING_TTL_MS } from './identity.service';
 import { MemoryLearnerStore } from './learner.store';
@@ -156,9 +157,9 @@ describe('IdentityService', () => {
       await expect(identity.claimPairingCode(code)).resolves.toMatchObject({ id: me.id });
     });
 
-    it('сховище щоразу каже «зайнято» — помилка після кількох спроб, без нескінченного циклу', async () => {
+    it('сховище щоразу каже «зайнято» — 503 після кількох спроб, без нескінченного циклу', async () => {
       const save = jest.spyOn(store, 'savePairing').mockResolvedValue(false);
-      await expect(identity.createPairingCode((await identity.register()).id)).rejects.toThrow();
+      await expect(identity.createPairingCode((await identity.register()).id)).rejects.toBeInstanceOf(ServiceUnavailableException);
       expect(save.mock.calls.length).toBeGreaterThan(1);
       expect(save.mock.calls.length).toBeLessThanOrEqual(10);
     });
