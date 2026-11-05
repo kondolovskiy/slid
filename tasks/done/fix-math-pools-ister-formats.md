@@ -4,7 +4,7 @@ claimed_at: 2026-11-05T09:17:13.102Z
 id: fix-math-pools-ister-formats
 type: write-pool
 subject: math
-status: review
+status: done
 claimed_by: writer-pools-ister
 created: 2026-11-05
 depends_on: [engine-math-ister-p3]
