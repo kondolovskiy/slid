@@ -535,7 +535,7 @@ const sum = (R, pid) => R.events.filter(e => e.pid === pid).map(e => e.type === 
   eq([st.pre.viaRequires, st.pre.viaDiagTopicFor, st.pre.viaPreScreens, st.pre.any, st.pre.anyWithPrePool], [187, 186, 27, 215, 215], "§2.1 передумови 215/227");
   eq([s23[1].clean, s23[1].errors, s23[1].cleanDle, s23[1].cleanDgt, s23[2].clean, s23[2].errors, s23[2].cleanDle, s23[2].cleanDgt], [677, 689, 0, 677, 214, 219, 203, 11], "§2.3 чисті наступного дня 677/689 і 214/219");
   eq([s23[1].sol0, s23[2].sol0, st.pairSizes[4]], [671, 3, 220], "§2.3 sol0 ≥ 1 — 671/689 і 3/219; 220 уроків — одна пара");
-  // та сама модель через app/hyp.js: D≤ для помилок рівня 1 — жодної (інваріант: усі вправи рівня 1 пари вже в першій сесії); sol0 — як у скрипті; A — 449 з lvl ≤
+  // та сама модель через app/hyp.js: D≤ для помилок рівня 1 — жодної (інваріант: усі вправи рівня 1 пари вже в першій сесії); sol0 — як у скрипті; A — з lvl ≤ (M.A.le, знімок нижче)
   const M = st.module;
   eq([M.byLvl[1].clean, M.byLvl[1].kinds["D≤"] || 0, M.byLvl[1].sol0ge1, M.byLvl[2].sol0ge1, M.A.le], [683, 0, 671, 3, 461], "модель через hyp.js");
   eq([M.byLvl[1].clean, M.byLvl[1].errors, M.byLvl[1].kinds, M.byLvl[2].clean, M.byLvl[2].errors, M.byLvl[2].kinds], [683, 689, { "D>": 613, F: 70 }, 216, 219, { "D≤": 191, F: 22, "D>": 3 }], "через hyp.js: 683/689 (D> 613, F 70), 216/219 (D≤ 191, F 22, D> 3)");

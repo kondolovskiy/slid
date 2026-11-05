@@ -35,3 +35,4 @@ depends_on: [write-math-pool-g11m6, tests-hyp-snapshot-g11]
 - Diff пулу — лише перестановка блоків c04↔c05, d04↔d05 (id, lvl, sk, ключі ті самі). За `pickSession` перша сесія l3: c01–c03 func L1 + c05 calc L2; l4: d01–d02 geom L1, d03 geom L2, d05 meas L2 — складність не спадає, друга навичка є, c04/d04 перевіряють func/geom наступного дня. Переставлені задачі перерозв'язано — ключі правильні.
 - Шапка: «poolState deferred» → «у build (матриця v10, D-047)». pg11m6 → **verified**. validate --pool pg11m6 0/0.
 - У done не переношу: лишається рев'ю D-026 для tools/test-hyp.mjs, tools/test-personalization-qa.mjs.
+- **Раунд 2 (2026-11-05, eng-math-g11):** pg11m6 повторно verified (reports/verify/math-g11-d047.md, коміт 14b6517). Тимчасовий виняток «ще не verified» у test-personalization-qa прибрано, тепер якір `/^pg11m[26][:/]/` (рев'ю P2-1/P3-1; мутант pg11m6 → draft — rc 1).

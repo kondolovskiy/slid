@@ -18,12 +18,13 @@ check(() => assert.equal(all.errors.length, 0, JSON.stringify(all.errors.slice(0
 check(() => assert.equal(all.missing.filter(e => /^Діагностика/.test(e)).length,
   matrix.diagnostics.filter(d => !subject.diags.some(x => x.id === d.id)).length));
 // «Якорі» живого змісту без лічильників (рев'ю engine-math-answer-kinds-new P3-7, engine-answer-kinds-p3): додавання пулу чи вправи
-// їх не ламає, а втрату перевірки — ловить. Пули 11 кл. є й перевіряються без помилок; розділи 11 кл. без пулу не дають прогалин.
+// їх не ламає, а втрату перевірки — ловить. Пули 11 кл. є й перевіряються без помилок; pg11m2 (g11m2l1–l2 — required 10 кл. з матриці
+// v10, D-047) і pg11m6 не дають жодної прогалини: ні свого рівня («pg11m2: ще не verified»), ні рядків («pg11m2/g11m2l1: немає рівня 3»)
+// — рев'ю curate-math-g11m2-to-g10 P2-1, P3-1 (2026-11-05: обидва пули verified, виняток для статусу прибрано).
 const pools11 = subject.pools.filter(p => /^pg11m/.test(p.id));
 check(() => assert(pools11.length > 0, 'немає жодного пулу pg11m'));
 for (const p of pools11) check(() => assert.deepEqual(audit(subject, matrix, learn, { pool: p.id }).errors, [], p.id));
-// статус пулу (pg11m6 → draft до повторної верифікації порядку, fix-math-pool-g11m6-order 2026-11-05) — стан процесу, як у dg6 нижче
-check(() => assert(!all.missing.some(e => /^pg11m[26]:/.test(e) && !/: ще не verified$/.test(e)), JSON.stringify(all.missing.filter(e => /^pg11m/.test(e)))));
+check(() => assert(!all.missing.some(e => /^pg11m[26][:/]/.test(e)), JSON.stringify(all.missing.filter(e => /^pg11m/.test(e)))));
 // dg6 перевіряє сам зміст, а не лише узгодженість із собою: живий dg6 без прогалин, а зіпсовані зв'язки (sk, lesson) і порядок
 // завдань у копії живого dg6 — прогалини itemSkills / itemIndices.
 const cloneMath = () => JSON.parse(JSON.stringify(subject));

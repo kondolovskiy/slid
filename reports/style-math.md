@@ -258,7 +258,7 @@
 | g10m5l4 Коли хвиля дає число | 10 | 9 | 0.56 | 20 | 43 | 4.8 | 0.009 | 2 | sentenceWords=4.8 поза [7; 15]; typeVariety нетипово для сім'ї (z=-2.4) |
 | g10m5l5 Зміна звукорежисера (фінал) | 10 | 8 | 0.75 | 17 | 34 | 4.4 | 0.06 | 3 | sentenceWords=4.4 поза [7; 15] |
 | g11m2l1 Адреса дрона в залі | 10 | 10 | 0.5 | 25 | 56 | 5.4 | 0.037 | 3 | sentenceWords=5.4 поза [7; 15] |
-| g11m2l2 Стрілка в просторі | 10 | 10 | 0.7 | 21 | 50 | 5.9 | 0.054 | 3 | sentenceWords=5.9 поза [7; 15]; gradedShare нетипово для сім'ї (z=2.3); longWordShare нетипово для сім'ї (z=2.1) |
+| g11m2l2 Стрілка в просторі | 10 | 10 | 0.7 | 21 | 51 | 5.9 | 0.054 | 3 | sentenceWords=5.9 поза [7; 15]; gradedShare нетипово для сім'ї (z=2.3); longWordShare нетипово для сім'ї (z=2.1) |
 | g11m2l3 Рівняння стіни | 10 | 10 | 0.7 | 22 | 47 | 5.6 | 0.054 | 3 | sentenceWords=5.6 поза [7; 15]; gradedShare нетипово для сім'ї (z=2.3); longWordShare нетипово для сім'ї (z=2.1) |
 | g11m2l4 Сцена 3D-гри (фінал) | 10 | 8 | 0.75 | 18 | 26 | 5.7 | 0.042 | 3 | sentenceWords=5.7 поза [7; 15] |
 | g10m6l1 Швидкість зміни | 10 | 8 | 0.5 | 23 | 42 | 5.8 | 0.035 | 3 | sentenceWords=5.8 поза [7; 15] |
@@ -300,5 +300,5 @@
 - **5-6:boss**: screens 7.25±0.43, gradedShare 0.86±0.01, readWordsPerScreen 19.17±2.19, maxReadWords 27.42±4.01, sentenceWords 4.83±0.46, longWordShare 0.01±0.01, typeVariety 3.33±0.75
 - **7-9:lesson**: screens 9.23±0.72, gradedShare 0.58±0.06, readWordsPerScreen 21.8±2.67, maxReadWords 45.96±9.59, sentenceWords 5.21±0.41, longWordShare 0.02±0.01, typeVariety 3.05±0.43
 - **7-9:boss**: screens 7.68±0.63, gradedShare 0.8±0.06, readWordsPerScreen 19.77±2.57, maxReadWords 30.95±3.36, sentenceWords 5.29±0.35, longWordShare 0.03±0.01, typeVariety 3.05±0.21
-- **10-11:lesson**: screens 9.54±0.63, gradedShare 0.57±0.06, readWordsPerScreen 22.85±1.91, maxReadWords 48.12±6.56, sentenceWords 5.52±0.39, longWordShare 0.03±0.01, typeVariety 2.9±0.37
+- **10-11:lesson**: screens 9.54±0.63, gradedShare 0.57±0.06, readWordsPerScreen 22.85±1.91, maxReadWords 48.15±6.57, sentenceWords 5.52±0.39, longWordShare 0.03±0.01, typeVariety 2.9±0.37
 - **10-11:boss**: screens 8.08±0.28, gradedShare 0.75±0.01, readWordsPerScreen 19.08±1.44, maxReadWords 34.25±6.81, sentenceWords 5.19±0.53, longWordShare 0.04±0.02, typeVariety 2.92±0.28

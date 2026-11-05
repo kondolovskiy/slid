@@ -34,3 +34,9 @@ depends_on: [fix-math-pool-g11m6-order]
 - Правка: l2 info «Довжина вектора $a→(x; y; z)$ дорівнює …» (раніше x, y, z не прив'язані до $a→$). g11m2l2, l3, l4 → **verified**.
 - dg10: tri.for + g11m2 — обґрунтовано (g11m2l1 «Відстань і середина» спирається на Піфагора; Мерзляк 10 т. 38.1; узгоджено з §9 — лише метадані, rev не потрібен). dg10 → **verified**.
 - У done не переношу: лишаються рев'ю матриці v10 і D-026 (tools/test-hyp.mjs).
+- **Раунд 2 (2026-11-05, eng-math-g11; рев'ю reports/review/curate-math-g11m2-to-g10.md):**
+  - P2-1: у tools/test-personalization-qa.mjs якір тепер `/^pg11m[26][:/]/`, тож ловить і прогалини рядків (`pg11m2/g11m2l1: …`). Коментар оновлено. Мутанти на копії дерева (scratchpad): a07, a08 lvl 3→2 — rc 1; той самий мутант зі старим якорем — rc 0.
+  - P3-1: pg11m6 і dg10 уже verified (14b6517), тож виняток «ще не verified» прибрано. Мутанти «pg11m2 → draft» і «pg11m6 → draft» — rc 1; без мутації — rc 0.
+  - P3-2: у матриці v10 рядки g11m6 мають `existing-verified`, і пул справді verified. `reason` у .json і «Зміни v10» у .md переписано. `personalization-qa --strict` — rc 0.
+  - P3-3: у tools/test-hyp.mjs прибрано застарілий коментар «A — 449» (тепер посилання на знімок M.A.le).
+  - P3-4 (skill-graph-math.md:181) лишається в inbox.
