@@ -6242,8 +6242,7 @@
         "preForSection": [
           "roots",
           "pyth",
-          "similar",
-          "polygon"
+          "similar"
         ],
         "cur": [
           "cur-g9m4"
@@ -6282,8 +6281,7 @@
         "preForSection": [
           "roots",
           "pyth",
-          "similar",
-          "polygon"
+          "similar"
         ],
         "cur": []
       }
@@ -6321,8 +6319,7 @@
         "preForSection": [
           "roots",
           "pyth",
-          "similar",
-          "polygon"
+          "similar"
         ],
         "cur": []
       }
@@ -6359,8 +6356,7 @@
         "preForSection": [
           "roots",
           "pyth",
-          "similar",
-          "polygon"
+          "similar"
         ],
         "cur": []
       }
@@ -6395,8 +6391,7 @@
         "preForSection": [
           "roots",
           "pyth",
-          "similar",
-          "polygon"
+          "similar"
         ],
         "cur": []
       }
@@ -11748,7 +11743,6 @@
             "g8m6l1"
           ],
           "for": [
-            "g9m4",
             "g9m6"
           ],
           "itemLessons": [
@@ -11762,10 +11756,6 @@
           "baseline": false,
           "rationale": "g8m6l1 #5/#7/#10 містить (n−2)·180° і обернену задачу про n. Правильні многокутники до цієї проби не залучаємо.",
           "forEvidence": [
-            {
-              "section": "g9m4",
-              "lesson": "g9m4l5"
-            },
             {
               "section": "g9m6",
               "lesson": "g9m6l1"
@@ -12952,5 +12942,5 @@
     }
   },
   "previous": "2026-11-05.v10",
-  "changes": "docs/math-personalization-coverage.md, «Зміни v11» (refine-math-diag-g9-ister-required, рішення оркестратора 05.11 за D-046/D-047: dg9 — for pre-тем linear + g9m3, pyth + g9m3, g9m8, polygon + g9m4, без нових завдань і rev; preForSection рядків g9m3, g9m4, g9m8 за правилом v8); попередні — «Зміни v10», «Зміни v9», «Зміни v8», «Зміни v7», «Зміни v6», «Зміни v5», «Зміни v4», «Зміни v3»"
+  "changes": "docs/math-personalization-coverage.md, «Зміни v11» (refine-math-diag-g9-ister-required, рішення оркестратора 05.11 за D-046/D-047: dg9 — for pre-тем linear + g9m3, pyth + g9m3, g9m8, без нових завдань і rev; polygon → g9m4 не додано — непідтверджена опора; preForSection рядків g9m3, g9m8 за правилом v8); попередні — «Зміни v10», «Зміни v9», «Зміни v8», «Зміни v7», «Зміни v6», «Зміни v5», «Зміни v4», «Зміни v3»"
 }
