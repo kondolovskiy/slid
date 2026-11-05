@@ -1,5 +1,5 @@
 /* Слід · Математика, 8 клас — пул задач для тренування до розділу «Геометрія: чотирикутники» (g8m2)
-   Статус: draft (fix-math-pools-ordered-scale, 2026-11-05): e07 — ordered: true (ключ [41, 132] у порядку умови «∠C і ∠D»); умова й ключ не змінено. До повторної верифікації — draft.
+   Статус: verified (verifier-fix-math-pools-ordered-scale, 2026-11-05, reports/verify/pools-ordered-scale.md: e07 розв'язано незалежно, порядок ключа = порядок умови, checkAns звірено). Зміна fix-math-pools-ordered-scale: e07 — ordered: true (ключ [41, 132] у порядку умови «∠C і ∠D»); умова й ключ не змінено.
    Попередній статус: verified (verifier-math-pre-figs-1105, 2026-11-05, reports/verify/math-pre-figs-1105.md: рисунок b05 переглянуто в браузері). Зміни fix-math-figs-1105 (2026-11-05): у рисунку b05 дуга кута C 140° збільшена (r 14 → 30), підпис «140°» винесено в texts над діагоналлю (на дузі він налазив на діагональ AC); умова й ключ не змінено.
    Попередній статус: verified (verifier-fix-math-pools-ister-formats, 2026-11-05, reports/verify/pools-ister-formats.md). Зміни fix-math-pools-ister-formats: +e07 (g8m2l6, ist8g №7.7, с. 52, list) і f07 (g8m2l7, ist8g повт. розд. 1 №55(2), с. 70, choice) — сьома вправа уроку (обхід pickSession, test-hyp §10 (а)).
    Попередній стан — нижче.
@@ -16,8 +16,8 @@
 SLID.pool("math", {
   id: "pg8m2",
   section: "g8m2",
-  status: "draft",
-  meta: { author: "claude-opus", created: "2026-10-31", factcheck: "verifier-pool-g8m2; fix-math-pools-ister-formats — verifier-fix-math-pools-ister-formats 2026-11-05; fix-math-figs-1105 — verifier-math-pre-figs-1105 2026-11-05", revised: "2026-11-05 fix-math-pools-ordered-scale", teacher: null },
+  status: "verified",
+  meta: { author: "claude-opus", created: "2026-10-31", factcheck: "verifier-pool-g8m2; fix-math-pools-ister-formats — verifier-fix-math-pools-ister-formats 2026-11-05; fix-math-figs-1105 — verifier-math-pre-figs-1105 2026-11-05; fix-math-pools-ordered-scale — verifier-fix-math-pools-ordered-scale 2026-11-05", revised: "2026-11-05 fix-math-pools-ordered-scale", teacher: null },
   sources: [
     { id: "mer8g", title: "Мерзляк А. Г., Якір М. С. Геометрія : підруч. для 8 кл. закладів заг. серед. освіти. — Харків: Гімназія, 2025 (п. 2, 4–8, 11)", url: "https://file.4book.org/images/shcoolbook_ua/8/8_geom_m_2025.pdf" },
     { id: "ist8g", title: "Істер О. С. Геометрія : підруч. для 8 кл. закл. заг. серед. освіти. — Київ : Генеза, 2025 (§ 7, § 10, вправи для повторення розділу 1)", url: "https://file.4book.org/images/shcoolbook_ua/8/8_geom_i_2025.pdf" }

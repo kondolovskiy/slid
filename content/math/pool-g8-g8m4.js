@@ -1,5 +1,5 @@
 /* Слід · Математика, 8 клас — пул задач для тренування до розділу «Геометрія: подібність і теорема Піфагора» (g8m4)
-   Статус: draft (fix-math-pools-ordered-scale, 2026-11-05): a02, a03 — ordered: true. a02: ключ «10.5; 15» уже в порядку умови ($B_1C_1$, $A_1C_1$). a03: умова не називала порядку («Запиши три числа») — тепер «Запиши $DE$, $EF$ і $DF$ через «;»», ключ «25; 20; 35» саме в цьому порядку (не змінено). До повторної верифікації — draft.
+   Статус: verified (verifier-fix-math-pools-ordered-scale, 2026-11-05, reports/verify/pools-ordered-scale.md: a02, a03 розв'язано незалежно, порядок ключа = порядок умови, нова умова a03 звірена з mer8g №429, checkAns звірено). Зміна fix-math-pools-ordered-scale: a02, a03 — ordered: true. a02: ключ «10.5; 15» уже в порядку умови ($B_1C_1$, $A_1C_1$). a03: умова не називала порядку («Запиши три числа») — тепер «Запиши $DE$, $EF$ і $DF$ через «;»», ключ «25; 20; 35» саме в цьому порядку (не змінено).
    Попередній статус: verified (verifier-write-math-pool-g8m4-ister, 2026-11-04, reports/verify/write-math-pool-g8m4-ister.md: d01–g08 розв'язано незалежно й звірено з рендером ist8g с. 99–100, 138–141, 144–147, 149; правка — рисунок g06, точку A опущено до кута ≈ 27°).
    Попередньо: draft (write-math-pool-g8m4-ister, 2026-11-04): додано 32 задачі до нових уроків за Істером — g8m4l5 (d01–d08, § 15), g8m4l6 (e01–e08, § 19 п. 1–2), g8m4l7 (f01–f08, § 19 п. 3), g8m4l8 (g01–g08, § 20); джерело ist8g (Істер, Геометрія 8, Генеза, 2025; PDF = друк., умови й числа звірено з рендером сторінок 99–100, 138–141, 144–149). Значення тригонометричних функцій нетабличних кутів дано в умові (уроки не вчать калькулятора). Наявні a/b/c не змінено; до повторної верифікації — draft.
    Попередній статус: verified (повторно після fix-math-figs-g8-geo, 2026-11-03: статичні рисунки lab до a05, b06, c01; verifier-fix-math-figs-g8-geo, reports/verify/fix-math-figs-g8-geo.md). Попередньо — verified (verifier-refine-math-content-from-matrix-v3, 2026-11-01, reports/verify/refine-math-content-from-matrix-v3.md) після refine-math-content-from-matrix-v3 (2026-11-01): g8m4l2 — b01 (№530(1), трійка 3-4-5 дублює екрани уроку) → b09 №530(2) exactRoot «3√13»; b04 (№536, «половина основи + гіпотенуза» дублює b05) → b10 №541 list «10; 24»; g8m4l3 + c08 №513 list із коренями «5√5; 10√5» (exactRoot за умовою). id b01, b04 не використовувати знову. 24 задачі: по 8 на урок.
@@ -13,8 +13,8 @@
 SLID.pool("math", {
   id: "pg8m4",
   section: "g8m4",
-  status: "draft",
-  meta: { author: "agent-write-math-pool-g8m4", created: "2026-10-31", factcheck: "verifier-write-math-pool-g8m4-ister", revised: "2026-11-05 fix-math-pools-ordered-scale", teacher: null },
+  status: "verified",
+  meta: { author: "agent-write-math-pool-g8m4", created: "2026-10-31", factcheck: "verifier-write-math-pool-g8m4-ister; fix-math-pools-ordered-scale — verifier-fix-math-pools-ordered-scale 2026-11-05", revised: "2026-11-05 fix-math-pools-ordered-scale", teacher: null },
   sources: [
     { id: "mer8g", title: "Мерзляк А. Г., Якір М. С. Геометрія : підруч. для 8 кл. закладів заг. серед. освіти. — Харків: Гімназія, 2025 (п. 12–13, 15–16)", url: "https://file.4book.org/images/shcoolbook_ua/8/8_geom_m_2025.pdf" },
     { id: "ist8g", title: "Істер О. С. Геометрія : підруч. для 8 кл. закладів заг. серед. освіти. — Київ: Генеза, 2025 (§ 15, 19, 20)", url: "https://file.4book.org/images/shcoolbook_ua/8/8_geom_i_2025.pdf" }

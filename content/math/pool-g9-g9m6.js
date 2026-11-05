@@ -1,5 +1,5 @@
 /* Слід · Математика, 9 клас — пул задач для тренування до розділу «Геометрія: правильні многокутники і перетворення» (g9m6)
-   Статус: draft (fix-math-pools-ordered-scale, 2026-11-05): f08 — scale: true (запис «1 : 10000» при ключі 10000 — ok); умова й ключ не змінено. До повторної верифікації — draft.
+   Статус: verified (verifier-fix-math-pools-ordered-scale, 2026-11-05, reports/verify/pools-ordered-scale.md: f08 розв'язано незалежно, звірено з ist9g №24.15, checkAns звірено). Зміна fix-math-pools-ordered-scale: f08 — scale: true (запис «1 : 10000» при ключі 10000 — ok); умова й ключ не змінено.
    Попередній статус: verified (verifier-write-math-pool-g9m6-ister, 2026-11-04: e01–f08 перевірено, reports/verify/write-math-pool-g9m6-ister.md); доповнення 2026-11-04 — див. нижче; раніше verified (verifier-pool-g9m6, 2026-10-31; звіт reports/verify/pg9m6.md); повторно verified після fix-math-figs-g9 (рисунок у d08; verifier-fix-math-figs-g9, 2026-11-03, reports/verify/fix-math-figs-g9.md). Автор: agent-write-math-pool-g9m6. 32 задачі: g9m6l1 — 8, g9m6l2 — 8, g9m6l3 — 8, g9m6l4 — 8 (boss g9m6l5 без задач).
    Матриця docs/math-personalization-coverage.md 2026-10-16.v2: усі чотири уроки required, формати number, coordinates2, exactRoot.
    Прогалини форматів (у відповідних пунктах підручника таких вправ немає): l1 і l2 — coordinates2; l3 — exactRoot. Див. нотатки задачі.
@@ -11,8 +11,8 @@
 SLID.pool("math", {
   id: "pg9m6",
   section: "g9m6",
-  status: "draft",
-  meta: { author: "agent-write-math-pool-g9m6", created: "2026-10-31", factcheck: "verifier-write-math-pool-g9m6-ister", revised: "2026-11-05 fix-math-pools-ordered-scale", teacher: null },
+  status: "verified",
+  meta: { author: "agent-write-math-pool-g9m6", created: "2026-10-31", factcheck: "verifier-write-math-pool-g9m6-ister; fix-math-pools-ordered-scale — verifier-fix-math-pools-ordered-scale 2026-11-05", revised: "2026-11-05 fix-math-pools-ordered-scale", teacher: null },
   sources: [
     { id: "mer9g", title: "Мерзляк А. Г., Якір М. С. Геометрія: підручник для 9 класу. — Харків: Гімназія, 2026 (п. 6, 7, 17–20; дзеркало file.4book.org)", url: "https://file.4book.org/images/shcoolbook_ua/9/9_geom_m_2026.pdf" },
     { id: "ist9g", title: "Істер О. С., Істер Д. О. Геометрія : підруч. для 9 кл. закл. заг. серед. освіти. — Київ: Генеза, 2026 (§ 16, п. 4; § 17, п. 2; § 24)", url: "https://file.4book.org/images/shcoolbook_ua/9/9_geom_i_2026.pdf" }

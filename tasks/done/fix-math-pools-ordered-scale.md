@@ -4,7 +4,7 @@ claimed_at: 2026-11-05T14:52:52.113Z
 id: fix-math-pools-ordered-scale
 type: write-pool
 subject: math
-status: review
+status: done
 claimed_by: writer-pools-os
 created: 2026-11-05
 depends_on: [engine-list-ordered]
@@ -43,3 +43,11 @@ writer-pools-os, 2026-11-05 (worktree wt-poolsos).
 - `--content-old HEAD --grades 4-11` — змінено 4 вправи, змінені вердикти в 3: pg8m2:e07 «132; 41», pg8m4:a02 «15; 10.5», pg8m4:a03 «35; 20; 25» — ok → bad «Перевір порядок…». f08 — без змін у прогоні (записів «1 : n» у наборі проб немає; перевірено напряму, див. вище).
 - `test-diff-answers` (фікстура learn-b799dfa, вимагає rc 0 усього diff-answers) упав: ті самі 3 записи — непояснені. **Інженерна зміна:** у `tools/diff-answers.mjs` нова категорія «ordered переставлений запис у list з ordered — bad «Перевір порядок»» (незалежна класифікація: list з `ordered: true`, старий ok, новий bad з точною підказкою, і є перестановка елементів запису, яку новий рушій зараховує) + рядок у шапці. Після неї test-diff-answers 47 ok / 0 ✗; на фікстурі b799dfa — 3 у категорії, 0 непояснених. Мутант (текст підказки в learn.js копії змінено) → 0 у категорії, 3 непояснені, rc 1. Прогін — на копії дерева в scratchpad (tmp git-репозиторій з фікстурою як HEAD).
 - → потрібне **рев'ю D-026** для `tools/diff-answers.mjs` (engineering-review) окрім `content-verify` пулів.
+
+## Нотатки верифікатора
+verifier-fix-math-pools-ordered-scale, 2026-11-05 (worktree wt-poolsos). Звіт: reports/verify/pools-ordered-scale.md.
+- e07, a02, a03, f08 розв'язано незалежно; ключі правильні; порядок у ключах = порядок, названий в умовах. Умови звірено з PDF (ist8g с. 52, mer8g с. 105, ist9g с. 201).
+- Нова умова a03 («Запиши $DE$, $EF$ і $DF$ через «;».») — природна й однозначна.
+- checkAns (node vm): правильні записи — ok, переставлені — bad з «Перевір порядок…»; f08 «1 : 10000», «1:10 000», «1 ∶ 10000» — ok, «2 : 20000», «1 : 1000», «10000 : 1» — bad.
+- validate --pool ×3 — 0/0. Пули → verified. Правок контенту немає.
+- Задачу не переміщено в done: потрібен ще вердикт інженерного рев'ю tools/diff-answers.mjs (D-026).
