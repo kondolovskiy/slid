@@ -4,7 +4,7 @@ claimed_at: 2026-11-05T11:50:36.697Z
 id: engine-list-ordered
 type: engine
 subject: math
-status: review
+status: done
 claimed_by: eng-list
 created: 2026-11-05
 depends_on: []
