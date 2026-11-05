@@ -131,6 +131,9 @@ const row6 = m => m.lessons.find(r => r.lesson === 'fx6a1'), p1 = m => m.diagnos
 check(() => assert.deepEqual(fm(m => { row6(m).diagnostic = { preForSection: ['p1', 'p2'], cur: [] }; }), []));
 check(() => assert(fm(m => { row6(m).diagnostic = { preForSection: ['p2', 'p1'] }; }).some(e => e.startsWith('fx6a1: preForSection ["p2","p1"]') && e.includes('["p1","p2"]'))));
 check(() => assert(fm(m => { row6(m).diagnostic = { preForSection: ['p1'] }; }).some(e => e.startsWith('fx6a1: preForSection'))));
+// раунд 2 (рев'ю tools-math-ister-p3 P2-2): cur-тема з for, що містить розділ, у preForSection не входить
+check(() => assert.deepEqual(fm(m => { m.diagnostics[0].topics[2].for = ['fx6a']; row6(m).diagnostic = { preForSection: ['p1', 'p2'] }; }).filter(e => e.includes('preForSection')), []));
+check(() => assert(fm(m => { m.diagnostics[0].topics[2].for = ['fx6a']; row6(m).diagnostic = { preForSection: ['p1', 'p2', 'c1'] }; }).some(e => e.startsWith('fx6a1: preForSection'))));
 check(() => assert(fm(m => { m.lessons.find(r => r.lesson === 'fx5a1').diagnostic = { preForSection: ['p1'] }; }).some(e => e.startsWith('fx5a1: preForSection'))));   // у 5 кл. тесту немає — очікується []
 check(() => assert.deepEqual(fm(m => { p1(m).forEvidence = [{ section: 'fx6a', lesson: 'fx6a2' }]; }), []));
 check(() => assert(fm(m => { p1(m).forEvidence = [{ section: 'fx6a', lesson: 'fx5a1' }]; }).includes('dgfx6/p1: forEvidence fx5a1 не з розділу fx6a')));

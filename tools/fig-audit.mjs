@@ -22,8 +22,11 @@ const c = subjects.find(x => x.id === sid);
 if (!c) { console.error(`предмет «${sid}» не знайдено`); process.exit(2); }
 
 const rows = [];
+// мовні предмети: «на схемі» — схема речення, а не рисунок; така згадка — шум у звіті (рев'ю tools-math-ister-p3 P3-3)
+const LANG_SUBJECTS = new Set(["ukr"]);
 const add = (file, where, kind, s, prev) => {
   const cue = figCues(s, prev); if (!cue || cue.ill) return;
+  if (cue.level === "graph" && LANG_SUBJECTS.has(sid) && /схем/i.test(cue.graph || "")) return;
   const group = cue.intro ? (cue.level === "graph" ? null : "intro") : cue.level === "ref" && cue.prevIll ? "prev" : cue.level;
   if (!group) return;
   rows.push({ group, file, where, kind, type: s.type, ...cue });

@@ -595,10 +595,18 @@ const { figCues: figCuesT, figPoints: figPointsT } = await import(path.join(ROOT
   // tools/fig-audit.mjs на тому самому фікстурному дереві: геометрія з позначеннями — група geo, ref — окремо, ілюстроване — не в звіті
   // tools-math-ister-p3 (рев'ю tools-math-fig-audit P3-2…P3-5): межі евристик figCues
   { const lv = (body, type = "answer") => figCuesT({ type, title: "Задача", body })?.level ?? null;
-    ok(lv("За графіком руху поїзда знайди час у дорозі.") === "graph" && lv("За графіком роботи магазину скільки годин він відчинений?") === "graph" && lv("За графіком знайди час у дорозі.") === "ref", "figCues: «за графіком руху / роботи» — розклад (згадка), не посилання на рисунок");
+    // раунд 2 (рев'ю tools-math-ister-p3 P1-1): «графік руху / зміни / роботи» — читання графіка (ref); розклад — лише явний контекст
+    for (const b of ["За графіком зміни температури протягом доби визнач найвищу температуру.", "За графіком руху велосипедиста знайди його швидкість на першій ділянці.",
+      "За графіком роботи насоса визнач, скільки води він перекачав за 3 год.", "За графіком руху поїзда знайди час у дорозі.", "За графіком знайди час у дорозі."])
+      ok(lv(b) === "ref", `figCues: «${b}» — посилання на графік (ref)`, String(lv(b)));
+    ok(lv("За графіком руху автобусів визнач, о котрій перший рейс.") === "graph" && lv("За графіком чергувань хто сьогодні миє дошку?") === "graph" && lv("За графіком уроків скільки уроків у середу?") === "graph",
+      "figCues: розклад (руху автобусів, чергувань, уроків) — згадка, не ref");
     ok(lv("Що зображено на передньому плані картини?") === null && lv("Що зображено на рисунку?") === "ref", "figCues: «зображено на передньому плані» — не посилання, «зображено на рисунку» — так");
     ok(lv("Знайди кут, див. рис. 3.") === "ref" && lv("Як на рис. 2, знайди відрізок.") === "ref", "figCues: «рис. N» — пряме посилання");
     ok(lv("На плані міста дві вулиці.") === "graph" && lv("На схемі видно кордони.") === "graph", "figCues: «на плані», «на схемі» — згадка (graph), не ref");
+    // раунд 2 (P2-2, P3-1): FIG_MAKE — лише для згадки; пряме посилання після побудови — ref; «Що показує графік?» — читання (graph)
+    ok(lv("Побудуй діаграму голосів. На діаграмі стовпчик «Львів» — 10 клітинок. Яка його висота?") === "ref", "figCues: «Побудуй діаграму… На діаграмі…» — ref");
+    ok(lv("Що показує графік? Знайди найбільше значення.") === "graph" && lv("Що покаже діаграма голосів?") === "graph", "figCues: «показує графік», «покаже діаграма» — згадка, не побудова");
     ok(lv("Побудуй графік функції $y = 2x$.") === null && lv("У класі 14 хлопців. Ці дані показують круговою діаграмою. Який кут сектора?") === null && lv("Іра малює діаграму голосів.") === null,
       "figCues: графік чи діаграму треба побудувати — не згадка");
     ok(lv("За діаграмою визнач найбільше значення.") === "ref" && lv("Графік функції $y = x^2$ — парабола.") === "graph", "figCues: читати з діаграми — ref; графік як поняття — graph");
@@ -606,6 +614,9 @@ const { figCues: figCuesT, figPoints: figPointsT } = await import(path.join(ROOT
     const pts = t => [...figPointsT(t)].sort().join("");
     ok(pts("$V = S * H$, $S = πR^2$, $V = πR^2H$") === "" && pts("$S_{бічн} = P \\cdot H$, $2\\pi RH$") === "", "figPoints: S·H, R², 2πRH — величини", pts("$V = S * H$, $V = πR^2H$") + "|" + pts("$P \\cdot H$, $2\\pi RH$"));
     ok(pts("$AB \\cdot CD = AC^2$, $BB_1$") === "ABCD" && pts("$\\triangle ABC$") === "ABC", "figPoints: AB·CD, AC² — точки", pts("$AB \\cdot CD = AC^2$, $BB_1$"));
+    // раунд 2 (P2-1): літера після кута — точка; літера з позначення з кількох літер ($ABC$) — точка на всьому екрані
+    ok(pts("$\\angle A = 2 \\cdot \\angle B$") === "AB" && pts("$∠A = 2 * ∠B$") === "AB" && pts("$\\triangle ABC$, $S = 2 \\cdot B$") === "ABC" && pts("$\\angle K \\cdot 2 = 100°$") === "K", "figPoints: ∠B у добутку, ∠K перед множенням і B з $ABC$ — точки", pts("$\\angle A = 2 \\cdot \\angle B$") + "|" + pts("$\\triangle ABC$, $S = 2 \\cdot B$"));
+    ok(lv("У трикутнику $ABC$ кут $\\angle A = 2 \\cdot \\angle B$, $C$ — вершина. Знайди кут $B$.") === "geo", "figCues: «∠A = 2·∠B» у трикутнику ABC — geo");
     ok(lv("У призмі об'єм $V = S * H$, де $S$ — площа основи, а у циліндра $V = πR^2H$.") === null, "figCues: формули об'ємів у призмі — не geo (g11m4l3)");
     // intro: cue з intro: true; validate мовчить, fig-audit — група intro
     const ci = figCuesT({ type: "intro", title: "Двір", body: "На кресленні двору є трикутний газон." });
@@ -624,6 +635,15 @@ const { figCues: figCuesT, figPoints: figPointsT } = await import(path.join(ROOT
   const md = fs.existsSync(path.join(tmp, "reports/fig-audit-math.md")) ? fs.readFileSync(path.join(tmp, "reports/fig-audit-math.md"), "utf8") : "";
   ok(md.includes("$ABC$") && md.includes("\\|x\\|") && md.includes("Сюжетний вступ"), "fig-audit: у .md сирий TeX (| екрановано) і група вступу", md.slice(0, 300));
   ok(!fs.existsSync(path.join(tmp, "reports/fig-audit-math.json")), "fig-audit: файл .json не пишеться (P3-5: шум у diff на кожен check)");
+  // раунд 2 (P3-3): «На схемі» у мовному предметі (ukr) — схема речення, у звіті не показується; у math — згадка graph
+  { const sch = (subj, dir, grade) => { const l = lesson(`fxk${subj}l1`, {}); l.screens[1].body = "На схемі однорідний член позначаємо кружком.";
+      return { [`content/${dir}/g${grade}-fxk${subj}.js`]: secJS(dir, { id: `fxk${subj}`, grade, weeks: [1, 2], title: "Фікстура", why: "Регресійний тест fig-audit: схема.",
+        meta: { author: "test", created: "2026-11-05", factcheck: null, teacher: null }, lessons: [l] }) }; };
+    for (const [dir, grade, want] of [["ukr", 5, []], ["math", 5, ["fxkmathl1 екран 2:graph"]]]) {
+      runTree(sch(dir, dir, grade), ["--section", `fxk${dir}`]);
+      const r2 = spawnSync(process.execPath, [path.join(tmp, "tools/fig-audit.mjs"), "--subject", dir, "--json"], { cwd: tmp, encoding: "utf8" });
+      let j = null; try { j = JSON.parse(r2.stdout); } catch {}
+      ok(j && JSON.stringify(j.rows.map(x => `${x.where}:${x.group}`)) === JSON.stringify(want), `fig-audit ${dir}: «На схемі» → ${JSON.stringify(want)}`, (r2.stdout || "") + (r2.stderr || "")); } }
   const bad = spawnSync(process.execPath, [path.join(tmp, "tools/fig-audit.mjs"), "--subjekt", "math"], { cwd: tmp, encoding: "utf8" });
   ok(bad.status === 2, "fig-audit: невідомий аргумент — код 2", String(bad.status)); }
 
@@ -632,6 +652,9 @@ const { figCues: figCuesT, figPoints: figPointsT } = await import(path.join(ROOT
   const st = extra => ({ kind: "plane", axes: false, grid: 0, view: [-5, 5, -5, 5], ...extra });
   expectRun("lab: підпис точки «A_1» поза $…$ — попередження", one("fxs", { lab: st({ points: { A: { x: "1", y: "1", label: "A_1" } } }) }), ["--section", "fxs"], { warn: SUB });
   expectRun("lab: «x_{2}» у texts поза $…$ — попередження", one("fxs", { lab: st({ texts: [{ x: 0, y: 0, t: "x_{2} = 3" }] }) }), ["--section", "fxs"], { warn: SUB });
+  // раунд 2 (P2-2): підпис повзунка params.*.label і рядок show — теж
+  expectRun("lab: «A_1» у params.label поза $…$ — попередження", one("fxs", { lab: st({ params: { a: { min: 0, max: 4, start: 1, label: "Довжина A_1" } }, points: { A: { x: "a", y: "1" } } }) }), ["--section", "fxs"], { warn: "lab.params.a.label" });
+  expectRun("lab: «x_1» у show поза $…$ — попередження", one("fxs", { lab: st({ params: { a: { min: 0, max: 4, start: 1 } }, points: { A: { x: "a", y: "1" } }, show: ["x_1 = {a}"] }) }), ["--section", "fxs"], { warn: "lab.show.0" });
   expectRun("lab: «$A_1$», «A₁», шаблон {a_1} — чисто", one("fxs", { lab: st({ params: { a_1: { min: 0, max: 4, start: 1 } }, points: { A: { x: "a_1", y: "1", label: "$A_1$" }, B: { x: "2", y: "1", label: "B₁" } },
     texts: [{ x: 0, y: 0, t: "Довжина {a_1}" }] }) }), ["--section", "fxs"], { noWarn: SUB });
   const LINK = "link-завдання";
@@ -641,6 +664,9 @@ const { figCues: figCuesT, figPoints: figPointsT } = await import(path.join(ROOT
   expectRun("world: «Пригадай: …» без питання — попередження", hw("<p>Пригадай: Єлизавета стала королевою Норвегії.</p>"), ["--section", "fxw"], { warn: LINK });
   expectRun("world: «Пригадай: …» з питанням — чисто", hw("<p>Пригадай: Єлизавета стала королевою Норвегії.</p><p>Що з цього випливає?</p>"), ["--section", "fxw"], { noWarn: LINK });
   expectRun("world: «Пригадай: …» з «Обери всі…» — чисто", hw("<p>Пригадай: Єлизавета стала королевою.</p><p>Обери всі правильні твердження.</p>"), ["--section", "fxw"], { noWarn: LINK });
+  { const l = lesson("fxwl1", IMG); l.screens[2] = { type: "number", sk: l.screens[2].sk, title: "Рік", body: "<p>Пригадай: Гаральд загинув в Англії. Запиши рік.</p>", answer: 1066, fbOk: "Так.", fbText: "Гаральд загинув 1066 р. у битві під Стамфорд-Бриджем, за три тижні до Гастінгса.", hint: "Згадай урок." };
+    expectRun("world: number з «Пригадай…» без «?» — правило лише для choice/multi", { "content/world/g7-fxw.js": secJS("world", { id: "fxw", grade: 7, weeks: [1, 2], title: "Фікстура", why: "Регресійний тест валідатора: link-завдання.",
+      meta: { author: "test", created: "2026-11-05", factcheck: null, teacher: null }, lessons: [l] }) }, ["--section", "fxw"], { noWarn: LINK }); }
   expectRun("world: без «Пригадай» і без «?» — правило не про це", hw("<p>Єлизавета стала королевою Норвегії.</p>"), ["--section", "fxw"], { noWarn: LINK });
   fs.rmSync(path.join(tmp, "content", "world"), { recursive: true, force: true }); }
 
