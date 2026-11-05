@@ -4,7 +4,7 @@ claimed_at: 2026-11-05T06:48:17.033Z
 id: fix-hist-gerai-hetmanate
 type: fix
 subject: hist
-status: review
+status: done
 claimed_by: writer-hist-gerai
 created: 2026-11-05
 depends_on: []
@@ -34,3 +34,8 @@ writer-hist-gerai, 2026-11-05 (D-046, D-047).
 **Перевірка:** validate --section g7s5 / g8s2 / g8s5 — 0 помилок, 0 попереджень. stats: g8s5l5 — «longWordShare нетипово для сім'ї (z=2)» (через «намісництва», «державності»; поріг на межі); g7s5l6 — «screens нетипово» (було й до змін, кількість екранів не мінялась).
 
 **Inbox:** FACT №100/№316/№344 (Герай), FACT 1781 (до №112), TERM glossary/hist «Герай» → вирішено D-047.
+
+## Верифікація
+verifier-fix-hist-gerai-hetmanate, 2026-11-05 — **прийнято**, 6 уроків → verified (reports/verify/fix-hist-gerai-hetmanate.md).
+Правки (6): g8s5l5 — екран «Крок за кроком / 1764, 1775, 1781», «1781 р. імперським указом» (указ вересня 1781; відкриття намісництв 1782), «Віддалі» → «Розташуй»; g8s5l8 — «приєднає/приєднала» → «захопить / ліквідувала ханство» (D-047), «із допомогою».
+Людині: формула «1781 — указ» (EoU Hetman state — 1782).

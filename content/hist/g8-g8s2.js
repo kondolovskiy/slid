@@ -1,6 +1,7 @@
 /* Слід · Історія України, 8 клас — «Козацтво»
    Статус уроків: verified (l4, l5 — повторно після фото D-027, 31.10). 5 уроків (4 теми + boss).
    2026-11-05 (fix-hist-gerai-hetmanate, D-047): l1 — «Менглі Герай (також Гірей)»; l1 → draft.
+   2026-11-05 (verifier-fix-hist-gerai-hetmanate): l1 verified (reports/verify/fix-hist-gerai-hetmanate.md).
    Перевірка: node tools/validate.mjs --section g8s2 && node tools/stats.mjs --subject hist
    Схема й правила: docs/CONTENT_SCHEMA.md, style/, D-019 */
 SLID.section("hist", {
@@ -49,7 +50,7 @@ SLID.section("hist", {
       title: "Вільні люди степу",
       short: "Звідки козаки",
       icon: "users",
-      status: "draft",
+      status: "verified",
       why: "Козацтво не з'явилося «раптом». Ти дізнаєшся, хто йшов у степ і чому слово «козак» стало важливим.",
       screens: [
         {

@@ -4,6 +4,7 @@
    2026-11-03 (revise-hist-g7s5-khanate, D-043/D-044): «Кримське ханство (ханат)» у l4; новий урок g7s5l6 «Крим під владою султана» (Феодоро, генуезькі колонії, васалітет 1478 р., ясир, Дике поле); «Королівство Руське» в l1; завдання 6 у фіналі — l1, l4, l5, l6 draft.
    2026-11-03 (verifier-g7s5-khanate): облога Мангупа «кілька місяців» (ЕІУ — бл. 6 міс., en.wiki — 3–4), здогадка hyp у l6, «Дике поле» за глосарієм — l1, l4, l5, l6 verified (reports/verify/g7s5-khanate.md).
    2026-11-05 (fix-hist-gerai-hetmanate, D-046/D-047): основна форма «Герай» (програма Гісема), перша згадка в уроці — «(також Гірей)»; l4, l6, l5 → draft.
+   2026-11-05 (verifier-fix-hist-gerai-hetmanate): «Герай» перевірено (програма Гісема, Крим.Реалії) — l4, l6, l5 verified (reports/verify/fix-hist-gerai-hetmanate.md).
    Перевірка: node tools/validate.mjs && node tools/stats.mjs
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("hist", {
@@ -460,7 +461,7 @@ SLID.section("hist", {
       title: "Нова держава на півострові",
       short: "Кримське ханство",
       icon: "city",
-      status: "draft",
+      status: "verified",
       why: "Кримське ханство понад три століття було сусідом українських земель. Без нього не зрозуміти ні козацтва, ні Криму сьогодні.",
       screens: [
         {
@@ -578,7 +579,7 @@ SLID.section("hist", {
       title: "Крим під владою султана",
       short: "Крим і Османи",
       icon: "shield",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, хто ділив Крим у XV ст. і як ханство стало залежним від Османської імперії. Без цього не зрозуміти ні Дикого поля, ні козацтва.",
       screens: [
         {
@@ -723,7 +724,7 @@ SLID.section("hist", {
       title: "Канцелярія великого князя",
       short: "Фінал розділу",
       icon: "star",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "gdlscribe",
       why: "Перевірка всього розділу. Бали подвоєні.",
