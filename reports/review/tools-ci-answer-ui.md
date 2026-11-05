@@ -53,3 +53,25 @@
 - `python tools/test-answer-ui.py --suite regression` і справжній `playtest.py` — у контейнері немає Python-модуля `playwright` (ставити заборонено).
 - `git fetch --depth=1 origin <sha>` на GitHub (локальний file:// не віддає довільний sha — «not our ref»; на GitHub це працює, але не відтворено).
 - Звуження прав (P2 №1) на живому деплої.
+
+## Повторна перевірка d134bab
+
+Перевірено: `git diff f50740a d134bab` (`.github/workflows/pages.yml`, нотатки задачі).
+
+### Вердикт: **прийнято**. Умова для `done` з першого раунду лишається чинною
+Знахідку P2-1 закрито. P3 №4 і №5 закрито. Нових знахідок рівня P1 чи P2 немає. Задача досі не може перейти в `done`, поки справжній прогін на PR не покаже мутант у CI (план автора, п. 1–4). Після першого пуша в main переконатися, що `build` (configure-pages з `pages: read`) і `deploy` зелені.
+
+### Що закрито й як перевірено
+| Знахідка | Перевірка | Результат |
+|---|---|---|
+| P2-1 права | PyYAML: верхній рівень `{contents: read}`; `build` `{contents: read, pages: read}`; `browser` `{contents: read}`; `deploy` `{pages: write, id-token: write}`, `needs: [build, browser]`, `if` без змін. Звірено з README `actions/deploy-pages` (main): приклад job деплою має рівно ці два права. У `src/internal/api-client.js` метадані артефакту беруться через runtime-сервіс артефактів (twirp `ListArtifacts`), а деплой через `POST /repos/{owner}/{repo}/pages/deployments` (`pages: write`). Отже `contents` для `deploy` не потрібен | закрито. Залишковий ризик: `pages: read` для configure-pages підтверджено лише документацією та кодом, а не прогоном. Автор це зазначив у нотатках |
+| P3 №4 база PR | Крок «Піднабір» витягнуто з YAML і прогнано через `bash -e` (`python` замінено на `python3`). PR з хибним `PR_BASE=deadbeef…` у worktree (HEAD^1 = f50740a) дає «Змінено файлів відносно f50740a: 2», тобто беруться саме `HEAD^1` і локальна база без fetch. У клоні глибини 1 (немає HEAD^1) `rev-parse -q --verify` мовчки повертає 1 і спрацьовує запасний варіант `PR_BASE`: недосяжна база дає `::warning::`, rc 0. Push з `000…0` дає лише покриття, rc 0. Push з базою HEAD~14 дає 86 файлів, змінені розділи першими. Ін'єкцій немає: база й дані йдуть через `env` і змінні в лапках | закрито |
+| P3 №5 обрізання | Рядок «Понад бюджет …» на ≈ 2000 символів дає 900 символів (942 байти), валідний UTF-8 (`iconv`). Під `LC_ALL=C` Python також різав за символами (UTF-8 mode) | закрито |
+| регресія | `npm run check` rc 0: `test-playtest-pick` 22/22, validate 0 помилок / 253 попередження, граф math 0 помилок | зелено |
+
+Відкриті P3 з першого раунду (`cancel-in-progress`, кеш після червоного job, вцілілі мутанти, порядок `errs` у `playtest.py`) лишаються необов'язковими.
+
+### Не перевірено (як і в першому раунді)
+- Справжній прогін GitHub Actions: права, `fetch-depth: 2`, `python -m playwright`.
+- Python-прогони `test-answer-ui.py` і `playtest.py`: модуля `playwright` у контейнері немає.
+- `npm run check` знову переписав `reports/validate.json` у worktree. Не комічу.
