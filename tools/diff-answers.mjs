@@ -25,6 +25,7 @@
 // engine-coordinates-vector-name — «vec …»: назва вектора малою літерою перед координатами («c = (…)», «c→(…)», «\vec{c} = (…)», «m(…)» —
 // даний вектор) в умові з вектором малою літерою і «→» після великої назви («AB→ = (…)»). Класифікація — за текстом умови (vecNames нижче).
 // engine-answer-formats-ister — «ister п.1–п.4 …»; «п.2–3» пояснює вправи sci / pairSet лише проти рушія, що цих форматів не знає (fix-math-pools-ister-formats).
+// fix-math-pools-ordered-scale — «ordered …»: переставлений запис у list з ordered: true (pg8m2 e07, pg8m4 a02, a03) — ok → bad з підказкою про порядок.
 // Запуск: node tools/diff-answers.mjs [--old <git-rev>] [--grades 4-9 | 4] [--time] [--show N] [--list-cat "<категорія>"] (записи однієї категорії)
 //         node tools/diff-answers.mjs --content-old <git-rev> [--grades 4-11] [--show N]   (зміст <rev> проти поточного, обидва — поточним learn.js)
 import fs from "node:fs"; import os from "node:os"; import vm from "node:vm"; import path from "node:path"; import { execFileSync } from "node:child_process";
@@ -284,6 +285,14 @@ const CATS = [
   // рев'ю P2-1, P3-2; тест — test-diff-answers «ister п.2–3»). Без категорії фікстура b799dfa давала 29 непояснених.
   ["ister п.2–3 новий answerKind sci / pairSet — старий рушій його не знає", (s, v, o, n) => /^(sci|pairSet)$/.test(s.answerKind || "") && o.r === "bad" && n.r === "ok"
     && keyVariant(s, v) && (Array.isArray(OLD.ANSWER_KINDS) ? !OLD.ANSWER_KINDS.includes(s.answerKind) : OLD.checkAns(s, keyText(s)) !== "ok")],
+  // fix-math-pools-ordered-scale (engine-list-ordered): у list з ordered: true переставлений запис тих самих значень — ok → bad з підказкою
+  // про порядок. Незалежно від реалізації ordered: запис (2–5 елементів через «;») має перестановку, яку новий рушій зараховує, а старий
+  // рушій (порядку не перевіряв) зараховував і сам запис. Інший запис чи інша підказка — непояснені.
+  ["ordered переставлений запис у list з ordered — bad «Перевір порядок»", (s, v, o, n) => { if (s.answerKind !== "list" || s.ordered !== true || o.r !== "ok" || n.r !== "bad"
+      || !/^Перевір порядок: запиши величини в тій послідовності, у якій їх названо в умові\.$/.test(n.h || "")) return false;
+    const ps = v.split(";").map(x => x.trim()); if (ps.length < 2 || ps.length > 5) return false;
+    const perms = a => a.length < 2 ? [a] : a.flatMap((x, i) => perms(a.slice(0, i).concat(a.slice(i + 1))).map(r => [x, ...r]));
+    return perms(ps).some(q => q.join("; ") !== ps.join("; ") && NEW.checkAns(s, q.join("; ")) === "ok"); }],
   // п. 4: «p : q» при ключі-дробі p/q (те саме значення, незалежна перевірка) — bad → form «це відношення»
   ["ister п.4 «p : q» при ключі-дробі — form «це відношення»", (s, v, o, n) => { const a = NEW.parseAns(keyText(s)), m = /^(\d+) ?: ?(\d+)$/.exec(v);
     return (s.answerKind || "number") === "number" && !!a && a.frac && !!m && o.r === "bad" && n.r === "form" && /^Значення правильне, але це відношення/.test(n.h || "")
