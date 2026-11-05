@@ -1,5 +1,5 @@
 {
-  "version": "2026-11-04.v9",
+  "version": "2026-11-05.v10",
   "status": "draft",
   "registryCommit": "9057fd5",
   "sources": {
@@ -170,6 +170,12 @@
       "url": "https://drive.google.com/file/d/1UFGuRRODD5nF1NtXbN0ubzlcn0s5cI4D/view",
       "opened": "2026-11-04",
       "method": "Сторінки — друкована нумерація матеріалу (3–11; PDF = друк − 2), вправи №1–57 на с. 6–11 — звірено автором і верифікатором пулу pg6m6 (reports/verify/write-math-pool-g6m6.md); куратор матриці PDF не відкривав"
+    },
+    "std1407": {
+      "title": "Навчальна програма МОН «Математика (алгебра і початки аналізу та геометрія). Рівень стандарту. 10–11 класи», наказ № 1407 від 23.10.2017",
+      "url": "https://osvita.ua/doc/files/news/588/58878/matematika_-riven-standartu.docx",
+      "opened": "2026-11-05",
+      "method": "DOCX відкрив дослідник (reports/research/mon-math-2026-11.md §2.1, цитати «Геометрія. 10 клас … Тема 3. КООРДИНАТИ І ВЕКТОРИ 10 годин» і зміст 11 кл.); куратор матриці DOCX не відкривав, бере цитати звіту; посилання за темами"
     }
   },
   "lessons": [
@@ -7961,6 +7967,110 @@
       }
     },
     {
+      "grade": 10,
+      "section": "g11m2",
+      "lesson": "g11m2l1",
+      "title": "Координати",
+      "curricularScope": "required",
+      "reason": "Перенос розділу g11m2 у 10 кл. (D-047, 2026-11-05): програма № 1407 рівня стандарту, «Геометрія. 10 клас», тема 3 «Координати і вектори» (std1407; reports/research/mon-math-2026-11.md §2.1); Мерзляк 10 (ст.) § 6. id не змінено (як g6m1, D-043). Required (10 кл.) з v10. Пул pg11m2 a01–a08 verified (reports/verify/pg11m2.md): 8 вправ, рівні 4/2/2; формати D-028 — number, coordinates3, exactRoot, list (є й multi a01; expression прибрано — у п. 38 m10 вправ з буквеною відповіддю немає, нотатки автора пулу). Охоплювати лише вміння, уже пояснені цим уроком.",
+      "evidence": "m10:210–214 (п. 38; вправи пулу — с. 213–214); std1407:Геометрія 10, тема 3",
+      "prerequisites": [
+        "g9m2l1",
+        "g9m2l3"
+      ],
+      "sk": "coord",
+      "pool": "pg11m2",
+      "formats": [
+        "number",
+        "coordinates3",
+        "exactRoot",
+        "list"
+      ],
+      "exercises": {
+        "min": 6,
+        "max": 8,
+        "levels": [
+          3,
+          2,
+          1
+        ]
+      },
+      "poolState": "existing-verified",
+      "diagnostic": {
+        "preForSection": [
+          "tri"
+        ],
+        "cur": []
+      }
+    },
+    {
+      "grade": 10,
+      "section": "g11m2",
+      "lesson": "g11m2l2",
+      "title": "Вектори",
+      "curricularScope": "required",
+      "reason": "Перенос розділу g11m2 у 10 кл. (D-047, 2026-11-05): програма № 1407 рівня стандарту, «Геометрія. 10 клас», тема 3 «Координати і вектори» (std1407; reports/research/mon-math-2026-11.md §2.1); Мерзляк 10 (ст.) § 6. id не змінено (як g6m1, D-043). Required (10 кл.) з v10. Пул pg11m2 b01–b08 verified (reports/verify/pg11m2.md): 8 вправ, рівні 3/3/2; формати D-028 — number, coordinates3, exactRoot, list (expression прибрано — у п. 39–42 m10 вправ з буквеною відповіддю немає). Охоплювати лише вміння, уже пояснені цим уроком.",
+      "evidence": "m10:215–231 (п. 39–42; вправи пулу — с. 218, 225–226, 230–231); std1407:Геометрія 10, тема 3",
+      "prerequisites": [
+        "g9m2l1",
+        "g9m2l3"
+      ],
+      "sk": "coord",
+      "pool": "pg11m2",
+      "formats": [
+        "number",
+        "coordinates3",
+        "exactRoot",
+        "list"
+      ],
+      "exercises": {
+        "min": 6,
+        "max": 8,
+        "levels": [
+          3,
+          2,
+          1
+        ]
+      },
+      "poolState": "existing-verified",
+      "diagnostic": {
+        "preForSection": [
+          "tri"
+        ],
+        "cur": []
+      }
+    },
+    {
+      "grade": 10,
+      "section": "g11m2",
+      "lesson": "g11m2l3",
+      "title": "Площина",
+      "curricularScope": "optional",
+      "reason": "Рівняння площини підтверджене лише профільною програмою (Геометрія 10, тема координат); у програмі № 1407 рівня стандарту його немає (facts №141). Optional; з v10 — 10 кл. разом з розділом g11m2 (D-047). Вправ у pg11m2 немає (у m10 теми немає).",
+      "evidence": "prof:Геометрія 10, координати і вектори, рівняння площини",
+      "prerequisites": [
+        "g9m2l1",
+        "g9m2l3"
+      ],
+      "sk": "coord",
+      "pool": "pg11m2",
+      "formats": [
+        "expression"
+      ],
+      "exercises": {
+        "min": 0,
+        "max": 0,
+        "levels": []
+      },
+      "poolState": "deferred",
+      "diagnostic": {
+        "preForSection": [
+          "tri"
+        ],
+        "cur": []
+      }
+    },
+    {
       "grade": 11,
       "section": "g11m1",
       "lesson": "g11m1l1",
@@ -8108,96 +8218,6 @@
           "func",
           "ineq"
         ],
-        "cur": []
-      }
-    },
-    {
-      "grade": 11,
-      "section": "g11m2",
-      "lesson": "g11m2l1",
-      "title": "Координати",
-      "curricularScope": "pending",
-      "reason": "Тема базового курсу, але Мерзляк 10 стандарт п.38 розміщує її у 10 кл.; поточний реєстр — 11. Адресат: Віктор. Не переносимо id й не включаємо в обов’язкову діагностику 11 до рішення.",
-      "evidence": "m10:210–214",
-      "prerequisites": [
-        "g9m2l1",
-        "g9m2l3"
-      ],
-      "sk": "coord",
-      "pool": "pg11m2",
-      "formats": [
-        "number",
-        "coordinates3",
-        "expression",
-        "exactRoot"
-      ],
-      "exercises": {
-        "min": 0,
-        "max": 0,
-        "levels": []
-      },
-      "poolState": "deferred",
-      "diagnostic": {
-        "preForSection": [],
-        "cur": []
-      }
-    },
-    {
-      "grade": 11,
-      "section": "g11m2",
-      "lesson": "g11m2l2",
-      "title": "Вектори",
-      "curricularScope": "pending",
-      "reason": "Вектори в просторі у Мерзляка 10 стандарт пп.39–42; у реєстрі 11. Адресат: Віктор, та сама невирішена розбіжність року.",
-      "evidence": "m10:215–231",
-      "prerequisites": [
-        "g9m2l1",
-        "g9m2l3"
-      ],
-      "sk": "coord",
-      "pool": "pg11m2",
-      "formats": [
-        "number",
-        "coordinates3",
-        "expression",
-        "exactRoot"
-      ],
-      "exercises": {
-        "min": 0,
-        "max": 0,
-        "levels": []
-      },
-      "poolState": "deferred",
-      "diagnostic": {
-        "preForSection": [],
-        "cur": []
-      }
-    },
-    {
-      "grade": 11,
-      "section": "g11m2",
-      "lesson": "g11m2l3",
-      "title": "Площина",
-      "curricularScope": "optional",
-      "reason": "Рівняння площини підтверджене лише профільною програмою (Геометрія 10, тема координат). Не required 11.",
-      "evidence": "prof:Геометрія 10, координати і вектори, рівняння площини",
-      "prerequisites": [
-        "g9m2l1",
-        "g9m2l3"
-      ],
-      "sk": "coord",
-      "pool": "pg11m2",
-      "formats": [
-        "expression"
-      ],
-      "exercises": {
-        "min": 0,
-        "max": 0,
-        "levels": []
-      },
-      "poolState": "deferred",
-      "diagnostic": {
-        "preForSection": [],
         "cur": []
       }
     },
@@ -8576,7 +8596,7 @@
       "lesson": "g11m6l1",
       "title": "Числа і вирази",
       "curricularScope": "optional",
-      "reason": "Окремий курс підготовки до НМТ, додаткове повторення вже наявних тем; не нова обов’язкова тема 11 класу. Підтвердження повторення — Мерзляк 11 §7. До підтримки optional у UI інтеграцію відкладено.",
+      "reason": "Окремий курс підготовки до НМТ, додаткове повторення вже наявних тем; не нова обов’язкова тема 11 класу. Підтвердження повторення — Мерзляк 11 §7; програма № 1407 — повторення в резервні години (алгебра 11 — 18 год, геометрія 11 — 14 год), теми НМТ немає (D-047, reports/research/mon-math-2026-11.md §2.2). Optional, не deferred з v10: розділ і пул pg11m6 уже в build (8 вправ, рівні 3/3/2; verified 04.11, reports/verify/pg11m6.md; 05.11 → draft лише через перестановку порядку c05/c04, d05/d04 — fix-math-pool-g11m6-order, повторна верифікація).",
       "evidence": "m11:158–178",
       "prerequisites": [
         "g10m3l2",
@@ -8590,11 +8610,15 @@
         "number"
       ],
       "exercises": {
-        "min": 0,
-        "max": 0,
-        "levels": []
+        "min": 6,
+        "max": 8,
+        "levels": [
+          3,
+          2,
+          1
+        ]
       },
-      "poolState": "deferred",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [],
         "cur": []
@@ -8606,7 +8630,7 @@
       "lesson": "g11m6l2",
       "title": "Рівняння",
       "curricularScope": "optional",
-      "reason": "Окремий курс підготовки до НМТ, додаткове повторення вже наявних тем; не нова обов’язкова тема 11 класу. Підтвердження повторення — Мерзляк 11 §7. До підтримки optional у UI інтеграцію відкладено.",
+      "reason": "Окремий курс підготовки до НМТ, додаткове повторення вже наявних тем; не нова обов’язкова тема 11 класу. Підтвердження повторення — Мерзляк 11 §7; програма № 1407 — повторення в резервні години (алгебра 11 — 18 год, геометрія 11 — 14 год), теми НМТ немає (D-047, reports/research/mon-math-2026-11.md §2.2). Optional, не deferred з v10: розділ і пул pg11m6 уже в build (8 вправ, рівні 3/3/2; verified 04.11, reports/verify/pg11m6.md; 05.11 → draft лише через перестановку порядку c05/c04, d05/d04 — fix-math-pool-g11m6-order, повторна верифікація).",
       "evidence": "m11:158–178",
       "prerequisites": [
         "g10m3l2",
@@ -8620,11 +8644,15 @@
         "number"
       ],
       "exercises": {
-        "min": 0,
-        "max": 0,
-        "levels": []
+        "min": 6,
+        "max": 8,
+        "levels": [
+          3,
+          2,
+          1
+        ]
       },
-      "poolState": "deferred",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [],
         "cur": []
@@ -8636,7 +8664,7 @@
       "lesson": "g11m6l3",
       "title": "Функції",
       "curricularScope": "optional",
-      "reason": "Окремий курс підготовки до НМТ, додаткове повторення вже наявних тем; не нова обов’язкова тема 11 класу. Підтвердження повторення — Мерзляк 11 §7. До підтримки optional у UI інтеграцію відкладено.",
+      "reason": "Окремий курс підготовки до НМТ, додаткове повторення вже наявних тем; не нова обов’язкова тема 11 класу. Підтвердження повторення — Мерзляк 11 §7; програма № 1407 — повторення в резервні години (алгебра 11 — 18 год, геометрія 11 — 14 год), теми НМТ немає (D-047, reports/research/mon-math-2026-11.md §2.2). Optional, не deferred з v10: розділ і пул pg11m6 уже в build (8 вправ, рівні 3/3/2; verified 04.11, reports/verify/pg11m6.md; 05.11 → draft лише через перестановку порядку c05/c04, d05/d04 — fix-math-pool-g11m6-order, повторна верифікація).",
       "evidence": "m11:158–178",
       "prerequisites": [
         "g10m3l2",
@@ -8650,11 +8678,15 @@
         "number"
       ],
       "exercises": {
-        "min": 0,
-        "max": 0,
-        "levels": []
+        "min": 6,
+        "max": 8,
+        "levels": [
+          3,
+          2,
+          1
+        ]
       },
-      "poolState": "deferred",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [],
         "cur": []
@@ -8666,7 +8698,7 @@
       "lesson": "g11m6l4",
       "title": "Геометрія",
       "curricularScope": "optional",
-      "reason": "Окремий курс підготовки до НМТ, додаткове повторення вже наявних тем; не нова обов’язкова тема 11 класу. Підтвердження повторення — Мерзляк 11 §7. До підтримки optional у UI інтеграцію відкладено.",
+      "reason": "Окремий курс підготовки до НМТ, додаткове повторення вже наявних тем; не нова обов’язкова тема 11 класу. Підтвердження повторення — Мерзляк 11 §7; програма № 1407 — повторення в резервні години (алгебра 11 — 18 год, геометрія 11 — 14 год), теми НМТ немає (D-047, reports/research/mon-math-2026-11.md §2.2). Optional, не deferred з v10: розділ і пул pg11m6 уже в build (8 вправ, рівні 2/4/2; verified 04.11, reports/verify/pg11m6.md; 05.11 → draft лише через перестановку порядку c05/c04, d05/d04 — fix-math-pool-g11m6-order, повторна верифікація).",
       "evidence": "m11:179–191",
       "prerequisites": [
         "g10m3l2",
@@ -8681,11 +8713,15 @@
         "exactRoot"
       ],
       "exercises": {
-        "min": 0,
-        "max": 0,
-        "levels": []
+        "min": 6,
+        "max": 8,
+        "levels": [
+          2,
+          2,
+          1
+        ]
       },
-      "poolState": "deferred",
+      "poolState": "existing-verified",
       "diagnostic": {
         "preForSection": [],
         "cur": []
@@ -12119,7 +12155,8 @@
           ],
           "for": [
             "g10m2",
-            "g10m4"
+            "g10m4",
+            "g11m2"
           ],
           "itemLessons": [
             "g8m4l2",
@@ -12139,6 +12176,10 @@
             {
               "section": "g10m4",
               "lesson": "g10m4l3"
+            },
+            {
+              "section": "g11m2",
+              "lesson": "g11m2l1"
             }
           ],
           "itemSkills": [
@@ -12837,10 +12878,7 @@
       "state": "planned"
     }
   ],
-  "deferredSections": [
-    "g11m2",
-    "g11m6"
-  ],
+  "deferredSections": [],
   "review": {
     "reviewer": "review_math_map",
     "report": "reports/verify/math-personalization-coverage.md",
@@ -12854,6 +12892,6 @@
       "verdict": "прийнято; бажані уточнення 1–4 закрито refine-math-content-from-matrix-v3"
     }
   },
-  "previous": "2026-11-04.v8",
-  "changes": "docs/math-personalization-coverage.md, «Зміни v9» (уроки D-043 9 кл. з verified-пулами → required: g9m3l6–l7, g9m4l5–l6, g9m5l5, g9m6l6–l7, g9m8l1–l11; preForSection за for dg9; curate-math-matrix-v9); попередні — «Зміни v8», «Зміни v7», «Зміни v6», «Зміни v5», «Зміни v4», «Зміни v3»"
+  "previous": "2026-11-04.v9",
+  "changes": "docs/math-personalization-coverage.md, «Зміни v10» (D-047: розділ g11m2 → 10 кл., g11m2l1–l2 → required (10 кл.), l3 — optional; g11m6 — optional, не deferred; deferredSections порожній; dg10 tri.for + g11m2; curate-math-g11m2-to-g10); попередні — «Зміни v9», «Зміни v8», «Зміни v7», «Зміни v6», «Зміни v5», «Зміни v4», «Зміни v3»"
 }

@@ -1,9 +1,14 @@
 /* Слід · Математика, 10 клас — діагностика «Що ти вже вмієш?»
-   Статус: verified (verifier-dg10, 2026-10-31; reports/verify/dg10.md). 10 тем-передумов (5–9 кл., по 2 завдання) + 6 тем 10 класу (по 1 завданню) = 26 завдань.
+   Статус: draft з 2026-11-05 (лише for теми tri, див. нижче); до того verified (verifier-dg10, 2026-10-31; reports/verify/dg10.md). 10 тем-передумов (5–9 кл., по 2 завдання) + 6 тем 10 класу (по 1 завданню) = 26 завдань.
    Обсяг і зв'язки — docs/math-personalization-coverage.md, dg10 (матриця 2026-10-16.v2).
    Порядок: спершу базові завдання всіх тем-передумов (1–10), далі складніші; теми 10 класу — лише в другій половині (14–24).
    Кожна тема 10 класу — один multi, що перевіряє всі компоненти ядра одного уроку (coverageObjectives матриці).
    Optional-уроки g10m1l3, g10m2l3 до тесту не входять.
+   Розділ g11m2 «Координати і вектори в просторі» — 10 кл. з 2026-11-05 (D-047; curate-math-g11m2-to-g10, матриця v10): опору g11m2l1
+   (відстань між точками — теорема Піфагора) перевіряє наявна pre-тема tri — до її for додано g11m2. Лише for: завдання, індекси, ключі
+   й rev не змінено. Cur-проби для g11m2l1 немає: додати завдання в опублікований тест не можна без нового id (CONTENT_SCHEMA §9), а
+   заміна на місці забрала б cur іншого розділу; так само без нових cur-проб — рішення 04.11 (refine-math-diag-for-ister).
+   Статус → draft до повторної перевірки зв'язку tri → g11m2 (верифікатор; уся решта — verified, verifier-dg10, 2026-10-31).
    Перевірка: node tools/validate.mjs --diag dg10 && node tools/personalization-qa.mjs --diag dg10
    Схема й правила: docs/CONTENT_SCHEMA.md §9, style/math.md */
 SLID.diag("math", {
@@ -11,7 +16,7 @@ SLID.diag("math", {
   grade: 10,
   title: "Що ти вже вмієш?",
   why: "Знайдемо теми, які варто згадати, щоб нові уроки давалися легше.",
-  status: "verified",
+  status: "draft",   // 2026-11-05 curate-math-g11m2-to-g10: tri.for + g11m2 — до повторної перевірки зв'язку; завдання й ключі — verified (verifier-dg10)
   meta: { author: "claude-opus", created: "2026-10-31", factcheck: "verifier-dg10", teacher: null },
   topics: [
     // передумови з 5–9 класів
@@ -21,7 +26,7 @@ SLID.diag("math", {
     { id: "quad", title: "Квадратні рівняння", kind: "pre", lessons: ["g8m5l2"], for: ["g10m3", "g10m5"] },
     { id: "root", title: "Квадратні корені", kind: "pre", lessons: ["g8m3l3"], for: ["g10m3"] },
     { id: "power", title: "Цілий показник", kind: "pre", lessons: ["g8m1l3"], for: ["g10m3"] },
-    { id: "tri", title: "Піфагор і трикутник", kind: "pre", lessons: ["g8m4l2"], for: ["g10m2", "g10m4"] },
+    { id: "tri", title: "Піфагор і трикутник", kind: "pre", lessons: ["g8m4l2"], for: ["g10m2", "g10m4", "g11m2"] },
     { id: "trig", title: "Тригонометричні відношення", kind: "pre", lessons: ["g9m4l1"], for: ["g10m4", "g10m5"] },
     { id: "parallel", title: "Паралельні прямі", kind: "pre", lessons: ["g7m6l1", "g7m6l2"], for: ["g10m2", "g10m4"] },
     { id: "area", title: "Площа прямокутника", kind: "pre", lessons: ["ms4l1"], for: ["g10m6"] },
