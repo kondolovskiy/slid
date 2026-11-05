@@ -4,7 +4,7 @@ claimed_at: 2026-11-05T06:48:16.990Z
 claimed_by: writer-ukr-mon
 id: style-ukr-g7-followup
 type: style-fix
-status: review
+status: done
 created: 2026-11-04
 ---
 # ukr 7 кл.: доробки стилю після рішень людини й куратора
@@ -28,3 +28,6 @@ created: 2026-11-04
 3. u7s1l9 з 7 завданнями — дозволено D-047, не чіпав.
 4. eyebrow «Здогадка» → «Подумай»: u5s2l1–l6 е2 (6 екранів), u5s9l1–l4 е2 (4 екрани). u5s9l5 е2 має `hyp: true` — лишив «Здогадка». Статус без змін.
 validate --section u5s2, u5s9, u7s1, u7s8, u7s9, u7s12 — 0 помилок. Повний validate не запускав (паралельна робота; це оркестратор).
+
+## Верифікація
+- 2026-11-05 verifier-ukr-mon: побіжно прийнято (eyebrow, sk, терміни — відповіді не змінено). Звіт reports/verify/fix-ukr-mon-1105.md.

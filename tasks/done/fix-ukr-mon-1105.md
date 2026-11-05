@@ -4,7 +4,7 @@ claimed_at: 2026-11-05T06:48:16.955Z
 id: fix-ukr-mon-1105
 type: fix
 subject: ukr
-status: review
+status: done
 claimed_by: writer-ukr-mon
 created: 2026-11-05
 depends_on: []
@@ -34,3 +34,6 @@ depends_on: []
 8. u6s11boss: назва «Майстер правопису ознак» (id без змін).
 Пп. 3, 5, 6, 7 — уточнення тексту без зміни відповідей, статус лишив (у звіті: верифікація не потрібна); якщо оркестратор вважає інакше — перевести в draft.
 validate --section: u5s1, u5s4, u6s3, u6s11, u7s1, u7s8, u7s9, u7s11 — 0 помилок (u5s4 і u7s9 — по 1 давньому попередженню: «в квадратні» в u5s4l1, довге речення u7s9l5; не мої правки).
+
+## Верифікація
+- 2026-11-05 verifier-ukr-mon: прийнято. u5s1l1, u6s3l3, u5s4l6 → verified. Правка: у u5s4l6 злито завдання 4 (алфавіт) і 5 («ялинка») в одне gaps — 6 завдань на 6 тем (style/common.md). Звіт reports/verify/fix-ukr-mon-1105.md.

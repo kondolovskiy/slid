@@ -21,7 +21,7 @@ SLID.section("ukr", {
       title: "День без слів",
       short: "Навіщо мова",
       icon: "voice",
-      status: "draft",
+      status: "verified",
       why: "Мова допомагає думати, вчитися і домовлятися. А ще українська — державна мова нашої країни.",
       screens: [
         {
