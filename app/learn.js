@@ -333,7 +333,8 @@ window.SLID_LEARN = (() => {
     "А": "A", "В": "B", "Е": "E", "І": "I", "К": "K", "М": "M", "Н": "H", "О": "O", "Р": "P", "С": "C", "Т": "T", "Х": "X" };
   const latin = t => t.replace(/[аеікорсухАВЕІКМНОРСТХ]/g, c => CYR_TWIN[c]);
   // «cbrt» — кубічний корінь з фізичної клавіатури (engine-cbrt-key): cbrt(5) = ∛(5), 2cbrt2 = 2∛2; кнопка поля вставляє «∛»
-  const norm = v => latin(String(v ?? "")).replace(/cbrt/gi, "∛").replace(/(\d)\.(?=\d)/g, "$1,").replace(/[−–—]/g, "-").replace(/[*×∙⋅]/g, "·").replace(/÷/g, ":").replace(/[  ]/g, " ")
+  // «root4» — корінь 4-го степеня з фізичної клавіатури (engine-math-ister-p3 п. 5): root4(16) = ∜(16); «root3» = «cbrt»
+  const norm = v => latin(String(v ?? "")).replace(/cbrt|root3/gi, "∛").replace(/root4/gi, "∜").replace(/(\d)\.(?=\d)/g, "$1,").replace(/[−–—]/g, "-").replace(/[*×∙⋅]/g, "·").replace(/÷/g, ":").replace(/[  ]/g, " ")
     .replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹]+/g, m => "^(" + [...m].map(c => SUP.indexOf(c)).join("") + ")").trim();
   function lex(t) {
     const out = []; let i = 0, m;
@@ -608,12 +609,27 @@ window.SLID_LEARN = (() => {
   }
   const ratOf = a => a && a.proper ? { x: X(Q(BigInt(a.n), BigInt(a.d))), tidy: true } : null;
   /** Точне число з рядка: { x — Map, tidy — канонічний запис } або null. Спершу звичайний запис числа (розряди, мішані дроби), далі корені й π. */
+  /* Розряди через пробіл у точному записі (engine-math-ister-p3 п. 2): «6 400π» = 6400π, «2 000√3», як «1 950» у number.
+     Група — 1–3 цифри й далі групи рівно по 3 цифри через пробіл (звичайний, нерозривний, вузький); не після цифри з пробілом
+     (інакше «1 000 000/3» перебирав би кожну групу — лінійно, рев'ю NAME_AT), не перед «/» чи ще однією цифрою: «2 100/3» —
+     мішане число, «6 4000» — два числа, як і раніше; «2 100 1/3» = 2100 1/3. */
+  const DIGIT_GROUPS = /(?<![\d,.]|\d[ \u00A0\u202F])\d{1,3}(?:[ \u00A0\u202F]\d{3})+(?![\d/]|\s*\/)/g;
+  const ungroup = v => typeof v === "string" ? v.replace(DIGIT_GROUPS, m => m.replace(/[ \u00A0\u202F]/g, "")) : v;
   function exactOf(v) {
     const a = parseAns(v);
     if (a) return ratOf(a);
-    const t = parseExpr(v);
+    const t = parseExpr(ungroup(v));
     try { const x = t && t.k !== "eq" && isConst(t) && xval(t); return x ? { x, tidy: canonExact(t) } : null; }
     catch (e) { if (e === TOO) return null; throw e; }
+  }
+  /* exactRoot з π у ключі, а в записі π немає, і запис · π = ключ (engine-math-ister-p3 п. 2): «12» при 12π, «16/3» при 16π/3.
+     Значення неправильне (відрізняється в π разів), тож вердикт — "bad", як і раніше: контракт "form" — «значення правильне»
+     (hyp.js рахує form як ✔, рев'ю engine-math-ister-p3 P2-1). Змінюється лише пояснення: badHint → MSG.pi «допиши π».
+     Лише exactRoot: запис без π, ключ — з π (xmul точний). */
+  const PI1 = () => X([1n, 1n], 1, 1n, 1), hasPi = m => [...m.keys()].some(k => !k.endsWith(":0"));
+  function piLess(a, u) {
+    if (!hasPi(a.x) || hasPi(u.x) || !u.x.size) return false;
+    const m = xmul(u.x, PI1()); return !!m && xeq(m, a.x);
   }
   /** Елемент списку, координата, межа: якщо ключ не містить коренів/π — лише число, як у чинному list; інакше точне значення. */
   const exactKey = v => /[√∛∜π±∓]|sqrt|pi/.test(Array.isArray(v) ? v.join(";") : String(v ?? ""));
@@ -845,6 +861,13 @@ window.SLID_LEARN = (() => {
     const r = parseRatio(v), B = BigInt;
     return !!r && r.length === 2 && B(r[0].n) * B(r[1].d) * B(a.d) === B(a.n) * B(r[0].d) * B(r[1].n);
   }
+  /* «27/64» при ключі ratio 27 : 64 (engine-math-ister-p3 п. 2): відношення двох членів записано одним дробом p/q (не мішаним
+     числом), і p/q дорівнює частці членів ключа — "form" з поясненням «запиши через двокрапку», не мовчазне "bad". */
+  function ratioFrac(a, v) {
+    if (a.length !== 2 || typeof v !== "string" || /[:∶]/.test(v)) return false;
+    const u = parseAns(norm(v)), B = BigInt;
+    return !!u && u.frac && !u.whole && B(u.n) * B(a[0].d) * B(a[1].n) === B(a[0].n) * B(a[1].d) * B(u.d);
+  }
   /* ---------- Стандартний вигляд числа (answerKind "sci", engine-answer-formats-ister п. 2): a · 10^n, 1 ≤ |a| < 10, n — ціле ----------
      Запис: множник — десятковий дріб (кома чи крапка), знак множення · * × ⋅ (обов'язковий: «2,72 10^5» не читається), показник — «^5», «^(5)», «^{5}»,
      «^-3», «^(−3)», верхні індекси «10⁵», «10⁻³»; «10^5» = 1 · 10^5. Інший запис того самого числа (272000, 27,2 · 10^4, 0,0045, дріб) —
@@ -868,15 +891,24 @@ window.SLID_LEARN = (() => {
      Ключ — масив пар [[3, 2], [-2, -3]] або рядок «(3; 2), (-2; -3)». Кожна пара — у круглих дужках, компоненти як у числовому
      coordinates2 (через «;», без «;» — через кому; число або точний корінь, якщо корінь є в ключі); між парами — лише «,», «;», «∪»,
      пробіл чи перенос; уся множина — можна у фігурних дужках. Порядок пар довільний, порядок у парі важливий, повтор пари — null. */
+  /* Пари верхнього рівня: «(3; 2), (√(2); 1)» → ["(3; 2)", "(√(2); 1)"] або null. Дужки всередині пари — за глибиною (P2-1 рев'ю
+     engine-answer-formats-ister: «(√(2); 1)», «(1/(2); 1)»); між парами — пробіли й не більше одного роздільника «,» «;» «∪»
+     («(3; 2),, (…)» — null, P3-1); перед першою парою й після останньої — лише пробіли; уся множина — можна у фігурних дужках. */
+  function pairChunks(v) {
+    let t = norm(v); const br = t.match(/^\{(.*)\}$/s); if (br) t = br[1].trim();
+    const out = []; let d = 0, from = 0, sep = 0;
+    for (let j = 0; j < t.length; j++) {
+      const c = t[j];
+      if (c === "(") { if (!d) { if (sep > 1) return null; from = j; } d++; }
+      else if (c === ")") { if (!d) return null; if (!--d) { out.push(t.slice(from, j + 1)); sep = 0; } }
+      else if (!d) { if (",;∪".includes(c)) { if (!out.length) return null; sep++; } else if (!/\s/.test(c)) return null; }
+    }
+    return d || sep || !out.length ? null : out;
+  }
   function parsePairs(v, exact) {
     let pairs;
     if (Array.isArray(v)) pairs = v.map(p => Array.isArray(p) ? p : null);
-    else {
-      let t = norm(v); const br = t.match(/^\{(.*)\}$/s); if (br) t = br[1].trim();
-      pairs = []; let at = 0;
-      for (const m of t.matchAll(/\(([^()]*)\)/g)) { if (!/^[\s,;∪]*$/.test(t.slice(at, m.index)) || (!pairs.length && t.slice(at, m.index).trim())) return null; pairs.push(m[0]); at = m.index + m[0].length; }
-      if (t.slice(at).trim()) return null;
-    }
+    else if (!(pairs = pairChunks(v))) return null;
     const xs = pairs.map(p => p && parsePoint(p, 2, exact));
     if (!xs.length || xs.some(x => !x) || xs.some((x, i) => xs.slice(0, i).some(y => xeq(x[0].x, y[0].x) && xeq(x[1].x, y[1].x)))) return null;
     return xs;
@@ -1152,6 +1184,8 @@ window.SLID_LEARN = (() => {
     listSep: "Без «;» кома розділяє числа. Якщо в числах є десяткова кома, відокремлюй їх знаком «;».",
     sci: "Значення правильне. Запиши число в стандартному вигляді: a · 10^n, де 1 ≤ a < 10.",
     ratioNum: "Значення правильне, але це відношення. Відповідь тут — одне число: запиши його дробом через риску /.",
+    ratioFrac: "Значення правильне, але відповідь тут — відношення. Запиши його через двокрапку, а не дробом.",
+    pi: "Бракує множника π. Точну відповідь тут записують з π — допиши його.",
     retry: "Спробуй ще раз."
   };
   const DEC_WORD = ["цілим числом, без коми", "з одним знаком після коми", "з двома знаками після коми", "з трьома знаками після коми"];
@@ -1282,7 +1316,7 @@ window.SLID_LEARN = (() => {
       return !u?.frac ? MSG.frac : s.reduced && !u.lowest ? MSG.reduce : MSG.mixed;
     }
     if (kind === "divrem") return MSG.divrem;
-    if (kind === "ratio") return MSG.ratio;
+    if (kind === "ratio") { const a = parseRatio(s.answer); return a && !parseRatio(v) && ratioFrac(a, v) ? MSG.ratioFrac : MSG.ratio; }
     if (kind === "sci") return MSG.sci;
     if (kind === "quantity") { const U = qtyUnits(s); return U ? qtyFormMsg(U) : MSG.retry; }
     if (kind === "coordinates2" && s.form !== undefined && symPair(s)) {   // «form» дала компонента-вираз — підказка expression, інакше — про корені
@@ -1306,7 +1340,7 @@ window.SLID_LEARN = (() => {
   function unreducedOnly(s, kind, v) {
     const lv = kind === "list" ? listPre(s, v) : v;   // «x = 2√2/2; …» — та сама підказка, що й без префікса
     const parts = kind === "exactRoot" ? [String(v ?? "")] : kind === "list" ? (Array.isArray(lv) ? lv : String(lv ?? "").split(/[;\n]/.test(String(lv)) ? /[;\n]/ : /,/))
-      : kind === "intervalSet" ? setBounds(v, s) : kind === "pairSet" ? [...String(norm(v)).matchAll(/\(([^()]*)\)/g)].flatMap(m => m[1].split(m[1].includes(";") ? ";" : ","))
+      : kind === "intervalSet" ? setBounds(v, s) : kind === "pairSet" ? (pairChunks(v) || []).flatMap(c => splitPair(c))
       : splitPair(v, kind === "coordinates2" && !!symPair(s), s);
     const loose = t => { NOGCD = true; try { return canonExact(t); } finally { NOGCD = false; } };
     return limited(() => parts.flatMap(p => expandPM(String(p))).some(p => { const t = parseExpr(p); return t && t.k !== "eq" && isConst(t) && !canonExact(t) && loose(t); }), () => false);
@@ -1359,6 +1393,7 @@ window.SLID_LEARN = (() => {
     const t = String(v ?? ""), kind = s.answerKind || "number";
     if (s.unit && foreignUnit(s, t)) { const e = unitEq(s, t); return e === "bare" ? unitMsg(s) : e === "conv" ? unitConvMsg(s) : null; }
     if (kind === "time") return parseTime(t) === null ? timeMsg(s) : null;
+    if (kind === "exactRoot") return limited(() => { const a = exactOf(s.answer), u = exactOf(stripUnit(s, t)); return !!a && !!u && piLess(a, u); }, () => false) ? MSG.pi : null;
     // list без «;»: кома — роздільник, тож «1,5, 2» (у полі «1.5, 2» стає «1,5, 2») — це три числа (a11y-followup, відкрите (б))
     // лише запис із самих чисел через кому (не «x₁,₂ = …», не «y_{1,2}»)
     if (kind === "list") return /^[\d\s,.+\-−–±∓]+$/.test(t) && /\d,\d/.test(t) ? MSG.listSep : null;   // «±1,5» — теж (п. 1)
@@ -1389,7 +1424,8 @@ window.SLID_LEARN = (() => {
     if (s?.unit) out.push(unitMsg(s), unitConvMsg(s));
     if (kind === "number") out.push(MSG.rootNum, MSG.rootCopy, MSG.frac, MSG.reduce, MSG.mixed, MSG.improper, ...(s.decimals !== undefined ? [decMsg(s.decimals)] : []));
     if (kind === "divrem") out.push(MSG.divrem);
-    if (kind === "ratio") out.push(MSG.ratio);
+    if (kind === "ratio") out.push(MSG.ratio, MSG.ratioFrac);
+    if (kind === "exactRoot") out.push(MSG.pi);
     if (kind === "number") out.push(MSG.ratioNum);
     if (kind === "sci") out.push(MSG.sci);
     if (kind === "expression") out.push(MSG.constC);
@@ -1522,9 +1558,12 @@ window.SLID_LEARN = (() => {
   const UNIT_RE = new Map();
   const ownUnit = s => { const forms = [s.unit, ...(Array.isArray(s.unitForms) ? s.unitForms : [])], pair = PAIRISH.includes(s.answerKind), key = forms.join("\u0001") + pair;
     if (!UNIT_RE.has(key)) { if (UNIT_RE.size > 500) UNIT_RE.clear(); const alts = unitAlts(forms); UNIT_RE.set(key, alts.length ? unitRe(alts, pair) : null); } return UNIT_RE.get(key); };
+  // «у 2 рази», «в 3 рази» при unit «раз» (engine-math-ister-p3 п. 2): прийменник перед числом знімається разом з одиницею
+  const UNIT_PRE = { "раз": /^\s*[увУВ]\s+(?=[-−]?\d)/ };
   function stripUnit(s, v) {
     if (!s || typeof s.unit !== "string" || !s.unit.trim() || typeof v !== "string" || s.answerKind === "comparison") return v;
-    const re = ownUnit(s); return re ? v.replace(re, "$1") : v;
+    const pre = UNIT_PRE[s.unit.trim()], re = ownUnit(s), w = re ? v.replace(re, "$1") : v;
+    return pre && w !== v ? w.replace(pre, "") : w;
   }
   // Поширені одиниці шкільних задач: чужа з них після числа — підказка «перевір одиницю».
   const UNITS = ["мм", "см", "дм", "м", "км", "мм²", "см²", "дм²", "м²", "км²", "га", "мм³", "см³", "дм³", "м³", "мг", "г", "кг", "ц", "т", "с", "хв", "год", "доба", "доби", "діб",
@@ -1665,10 +1704,11 @@ window.SLID_LEARN = (() => {
     if (kind === "exactRoot") {
       const a = exactOf(s.answer); let u = exactOf(v);
       if (!u && a && xrat(a.x)) { const p = parsePeriodic(v); u = p && ratOf(p); }   // -0,(3) до раціонального ключа (п. 6)
-      return a && u && xeq(a.x, u.x) ? tidy([u]) : "bad";
+      return a && u && xeq(a.x, u.x) ? tidy([u]) : "bad";   // «12» при 12π — bad з підказкою «допиши π» (badHint, PI_HINT)
     }
     if (kind === "ratio") {
       const a = parseRatio(s.answer), u = parseRatio(v), B = BigInt;
+      if (a && !u && ratioFrac(a, v)) return "form";   // «27/64» при ключі 27 : 64 (engine-math-ister-p3 п. 2)
       if (!a || !u || a.length !== u.length || !a.every((x, i) => B(x.n) * B(a[0].d) * B(u[i].d) * B(u[0].n) === B(u[i].n) * B(u[0].d) * B(x.d) * B(a[0].n))) return "bad";
       return s.reduced && !(u.every(x => !x.frac && x.d === 1) && u.reduce((g, x) => gcd(g, x.n), 0) === 1) ? "form" : "ok";
     }

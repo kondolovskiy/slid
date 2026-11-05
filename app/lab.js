@@ -418,6 +418,11 @@ KINDS.plane = {
       const c = col(s.color, s.color ? 0 : 6), x1s = X(p.x), y1s = Y(p.y), x2s = X(q.x), y2s = Y(q.y);
       g += `<line x1="${x1s.toFixed(1)}" y1="${y1s.toFixed(1)}" x2="${x2s.toFixed(1)}" y2="${y2s.toFixed(1)}" stroke="${s.color ? c : "var(--ink)"}" stroke-width="${s.width || 2.4}" stroke-linecap="round" ${s.dash ? 'stroke-dasharray="6 5"' : ""}/>`;
       if (s.arrow) { const a = Math.atan2(y2s - y1s, x2s - x1s), L = 11; g += `<path d="M${x2s.toFixed(1)} ${y2s.toFixed(1)} L${(x2s - L * Math.cos(a - .4)).toFixed(1)} ${(y2s - L * Math.sin(a - .4)).toFixed(1)} L${(x2s - L * Math.cos(a + .4)).toFixed(1)} ${(y2s - L * Math.sin(a + .4)).toFixed(1)} Z" fill="${s.color ? c : "var(--ink)"}"/>`; }
+      // рисочки рівних відрізків (engine-math-ister-p3 п. 8): ticks — 1–3 короткі поперечні риски посередині відрізка
+      const nt = Math.round(+s.ticks || 0);
+      if (nt >= 1 && nt <= 3) { const n = Math.hypot(x2s - x1s, y2s - y1s) || 1, ux = (x2s - x1s) / n, uy = (y2s - y1s) / n, mx = (x1s + x2s) / 2, my = (y1s + y2s) / 2;
+        for (let k = 0; k < nt; k++) { const o = (k - (nt - 1) / 2) * 4, cx = mx + ux * o, cy = my + uy * o;
+          g += `<line x1="${(cx - uy * 6).toFixed(1)}" y1="${(cy + ux * 6).toFixed(1)}" x2="${(cx + uy * 6).toFixed(1)}" y2="${(cy - ux * 6).toFixed(1)}" stroke="${s.color ? c : "var(--ink)"}" stroke-width="1.8" stroke-linecap="round"/>`; } }
       if (s.label) { const mx = (x1s + x2s) / 2, my = (y1s + y2s) / 2, n = Math.hypot(x2s - x1s, y2s - y1s) || 1;
         g += t(mx + (y2s - y1s) / n * -14, my + (x2s - x1s) / n * 14 + 4, fill(s.label, env, names), { anchor: "middle", fill: s.color ? c : "var(--ink)", bold: true }); } });
     // кути
@@ -438,7 +443,7 @@ KINDS.plane = {
       if (drag) g += `<circle cx="${sx.toFixed(1)}" cy="${sy.toFixed(1)}" r="13" fill="${c}" opacity=".18"/>`;
       g += `<circle cx="${sx.toFixed(1)}" cy="${sy.toFixed(1)}" r="${p.size || (drag ? 7 : 5)}" fill="${p.hollow ? "var(--surface)" : c}" stroke="${p.hollow ? c : "var(--surface)"}" stroke-width="${p.hollow ? 2.5 : 2}"/>`;
       const label = p.label === false ? "" : (p.label != null ? fill(p.label, env, names) : (/^[A-Z]\w?$/.test(id) ? id : "")) + (p.coords ? `(${num(q.x)}; ${num(q.y)})` : "");
-      if (label) g += t(sx + 9, sy - 9, label, { bold: true, fill: c });
+      if (label) { const [dx, dy, anchor] = LABEL_DIR[p.labelDir] || LABEL_DIR.ne; g += t(sx + dx, sy + dy, label, { bold: true, fill: c, anchor }); }
       if (drag) {
         const [xe, ye] = pointExprs(id, p), only = typeof p.drag === "string" ? p.drag.split(/\s*,\s*/) : null;
         const mx = /^[A-Za-z_]\w*$/.test(xe) && (!only || only.includes(xe)) ? xe : null, my = /^[A-Za-z_]\w*$/.test(ye) && (!only || only.includes(ye)) ? ye : null;
@@ -450,6 +455,8 @@ KINDS.plane = {
     return { w: W, h: H, body: g, handles, alt: spec.alt || "Координатна площина" };
   }
 };
+/* Зсув підпису точки plane (engine-math-ister-p3 п. 8): labelDir — бік світу від точки; за замовчуванням "ne" (як раніше: праворуч угорі). */
+const LABEL_DIR = { n: [0, -11, "middle"], ne: [9, -9, null], e: [11, 5, null], se: [9, 19, null], s: [0, 21, "middle"], sw: [-9, 19, "end"], w: [-11, 5, "end"], nw: [-9, -9, "end"] };
 function autoStep(span) { for (const s of [0.1, 0.2, 0.25, 0.5, 1, 2, 5, 10, 20, 25, 50, 100, 200, 500, 1000]) if (span / s <= 12) return s; return Math.pow(10, Math.ceil(Math.log10(span / 10))); }
 function clampY(y, y0, y1) { if (!isFinite(y)) return NaN; const m = (y1 - y0) * 2; return Math.max(y0 - m, Math.min(y1 + m, y)); }
 
@@ -459,12 +466,13 @@ KINDS.numline = {
     const names = fnNames(spec), [a, b] = spec.view || [-10, 10], W = 320, pad = 16, top = (spec.jumps || []).length ? 52 : 24, H = top + 46;
     const X = x => pad + (x - a) / (b - a) * (W - 2 * pad), y = top, E = ex => safe(() => compile(String(ex), names)(env));
     const tick = spec.tick ?? autoStep(b - a) , lstep = spec.labels ?? tick;
-    let g = "";
+    // ray: true — координатний промінь (engine-math-ister-p3 п. 10): лінія починається в точці view[0], без «хвостика» ліворуч
+    let g = ""; const x0 = spec.ray ? X(a) : pad - 10;
     (spec.intervals || []).forEach((iv, i) => { const c = col(iv.color, i), f = iv.from == null ? -Infinity : E(iv.from), to = iv.to == null ? Infinity : E(iv.to);
-      const xa = isFinite(f) ? X(Math.max(a, f)) : pad - 8, xb = isFinite(to) ? X(Math.min(b, to)) : W - 4;
+      const xa = isFinite(f) ? X(Math.max(a, f)) : spec.ray ? x0 : pad - 8, xb = isFinite(to) ? X(Math.min(b, to)) : W - 4;
       g += `<rect x="${xa}" y="${y - 7}" width="${Math.max(0, xb - xa)}" height="14" rx="7" fill="${c}" opacity=".3"/>`;
       [[f, iv.open?.[0]], [to, iv.open?.[1]]].forEach(([v, open]) => { if (isFinite(v) && v >= a && v <= b) g += `<circle cx="${X(v)}" cy="${y}" r="6" fill="${open ? "var(--surface)" : c}" stroke="${c}" stroke-width="2.5"/>`; }); });
-    g += `<line x1="${pad - 10}" x2="${W - 4}" y1="${y}" y2="${y}" stroke="var(--ink)" stroke-width="2"/><path d="M${W - 4} ${y} l-8 -5 v10 z" fill="var(--ink)"/>`;
+    g += `<line x1="${x0}" x2="${W - 4}" y1="${y}" y2="${y}" stroke="var(--ink)" stroke-width="2"/><path d="M${W - 4} ${y} l-8 -5 v10 z" fill="var(--ink)"/>`;
     const n = Math.round((b - a) / tick);
     for (let k = 0; k <= n; k++) { const v = clean(a + k * tick), major = Math.abs(v / lstep - Math.round(v / lstep)) < 1e-6;
       g += `<line x1="${X(v)}" x2="${X(v)}" y1="${y - (major ? 8 : 5)}" y2="${y + (major ? 8 : 5)}" stroke="var(--ink)" stroke-width="${major ? 1.8 : 1}"/>`;
@@ -572,12 +580,33 @@ KINDS.chart = {
         a += da; });
       bars.forEach((b, i) => { const yy = 30 + i * 24; g += `<rect x="205" y="${yy - 11}" width="14" height="14" rx="3" fill="${b.c}"/>` + t(225, yy, spec.legend === false || spec.legend === "label" ? b.label : spec.legend === "value" ? `${b.label} · ${num(b.v)}` : `${b.label} · ${num(b.v / tot * 100, 0)}\u00A0%`, { size: 12 }); });
       return { w: W, h: Math.max(H, 30 + bars.length * 24), body: g, handles: [], alt: spec.alt || "Кругова діаграма" }; }
-    H = 200; const max = spec.max ?? Math.max(1, ...bars.map(b => b.v)), pl = 30, pb = 26, pt = 18, bw = (W - pl - 6) / Math.max(1, bars.length), Y = v => pt + (H - pt - pb) * (1 - v / max);
+    /* Середнє (mean) — пунктирна лінія; підпис «середнє …» — у легенді над полем діаграми, а не біля лінії, де він налазив на
+       підписи стовпчиків (engine-math-ister-p3 п. 9, g11m5l3). horizontal: true — смуги вправо від підписів; line: true — точки,
+       з'єднані ламаною (лінійна діаграма), підписи — як у стовпчастої. */
+    const max = spec.max ?? Math.max(1, ...bars.map(b => b.v)), m = bars.reduce((a, b) => a + b.v, 0) / Math.max(1, bars.length), leg = spec.mean ? 18 : 0;
+    if (spec.mean) g += `<line x1="${W - 120}" x2="${W - 98}" y1="9" y2="9" stroke="var(--bad)" stroke-width="2" stroke-dasharray="6 4"/>` + t(W - 94, 13, `середнє ${num(m, 1)}`, { fill: "var(--bad)", bold: true, size: 11 });
+    if (spec.horizontal) {
+      const lw = Math.min(110, 8 + Math.max(0, ...bars.map(b => String(b.label ?? "").length)) * 6.5), pl = lw + 6, pr = 34, pt = 6 + leg, rh = 28, pb = 18;
+      H = pt + rh * Math.max(1, bars.length) + pb; const X = v => pl + (W - pl - pr) * v / max, st = autoStep(max / 0.6);
+      for (let v = 0; v <= max + 1e-9; v += st) g += `<line x1="${X(v)}" x2="${X(v)}" y1="${pt}" y2="${H - pb}" stroke="var(--line)"/>` + t(X(v), H - 4, num(v), { anchor: "middle", size: 11, fill: "var(--muted)" });
+      let tx = "";   // підписи — після лінії середнього: їхня обвідка кольором фону перекриває пунктир
+      bars.forEach((b, i) => { const y = pt + i * rh + rh * .18, h = rh * .64, x = X(Math.min(max, b.v));
+        g += `<rect x="${pl}" y="${y.toFixed(1)}" width="${Math.max(0, x - pl).toFixed(1)}" height="${h.toFixed(1)}" rx="3" fill="${b.c}"/>`; tx += t(x + 4, y + h / 2 + 4, num(b.v), { size: 11, bold: true }) + t(pl - 6, y + h / 2 + 4, b.label, { anchor: "end", size: 11, fill: "var(--muted)" }); });
+      if (spec.mean) g += `<line x1="${X(m)}" x2="${X(m)}" y1="${pt}" y2="${H - pb}" stroke="var(--bad)" stroke-width="2" stroke-dasharray="6 4"/>`;
+      g += tx;
+      return { w: W, h: H, body: g, handles: [], alt: spec.alt || "Стовпчаста діаграма (горизонтальна)" };
+    }
+    H = 200 + leg; const pl = 30, pb = 26, pt = 18 + leg, bw = (W - pl - 6) / Math.max(1, bars.length), Y = v => pt + (H - pt - pb) * (1 - v / max);
     const st = autoStep(max / 0.6) ; for (let v = 0; v <= max + 1e-9; v += st) g += `<line x1="${pl}" x2="${W - 4}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line)"/>` + t(pl - 5, Y(v) + 4, num(v), { anchor: "end", size: 11, fill: "var(--muted)" });   // 11, не 10: на 320 px шкала була 8,3 px (QA 9 кл.)
-    bars.forEach((b, i) => { const x = pl + i * bw + bw * .18, w = bw * .64, y = Y(Math.min(max, b.v));
-      g += `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${Math.max(0, H - pb - y).toFixed(1)}" rx="3" fill="${b.c}"/>` + t(x + w / 2, y - 5, num(b.v), { anchor: "middle", size: 11, bold: true }) + t(x + w / 2, H - 8, b.label, { anchor: "middle", size: 11, fill: "var(--muted)" }); });
-    if (spec.mean) { const m = bars.reduce((a, b) => a + b.v, 0) / Math.max(1, bars.length); g += `<line x1="${pl}" x2="${W - 4}" y1="${Y(m)}" y2="${Y(m)}" stroke="var(--bad)" stroke-width="2" stroke-dasharray="6 4"/>` + t(W - 6, Y(m) - 6, `середнє ${num(m, 1)}`, { anchor: "end", fill: "var(--bad)", bold: true, size: 11 }); }
-    return { w: W, h: H, body: g, handles: [], alt: spec.alt || "Стовпчаста діаграма" };
+    let tx = "";   // підписи значень — після лінії середнього (обвідка кольором фону перекриває пунктир, g11m5l3 е4–е5)
+    if (spec.line) { const pts = bars.map((b, i) => [pl + (i + .5) * bw, Y(Math.min(max, b.v))]), c = col(spec.color, 0);
+      if (pts.length > 1) g += `<polyline points="${pts.map(p => p[0].toFixed(1) + "," + p[1].toFixed(1)).join(" ")}" fill="none" stroke="${c}" stroke-width="2.4" stroke-linejoin="round"/>`;
+      bars.forEach((b, i) => { const [x, y] = pts[i]; g += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="4" fill="${c}" stroke="var(--surface)" stroke-width="1.5"/>`; tx += t(x, y - 8, num(b.v), { anchor: "middle", size: 11, bold: true }) + t(x, H - 8, b.label, { anchor: "middle", size: 11, fill: "var(--muted)" }); }); }
+    else bars.forEach((b, i) => { const x = pl + i * bw + bw * .18, w = bw * .64, y = Y(Math.min(max, b.v));
+      g += `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${Math.max(0, H - pb - y).toFixed(1)}" rx="3" fill="${b.c}"/>`; tx += t(x + w / 2, y - 5, num(b.v), { anchor: "middle", size: 11, bold: true }) + t(x + w / 2, H - 8, b.label, { anchor: "middle", size: 11, fill: "var(--muted)" }); });
+    if (spec.mean) g += `<line x1="${pl}" x2="${W - 4}" y1="${Y(m)}" y2="${Y(m)}" stroke="var(--bad)" stroke-width="2" stroke-dasharray="6 4"/>`;
+    g += tx;
+    return { w: W, h: H, body: g, handles: [], alt: spec.alt || (spec.line ? "Лінійна діаграма" : "Стовпчаста діаграма") };
   }
 };
 
@@ -682,8 +711,14 @@ KINDS.balance = {
 };
 
 /* ---- solid: просторове тіло, яке можна обертати пальцем (паралелепіпед, призма, піраміда) ---- */
+/* Ракурс (engine-math-ister-p3 п. 6): за замовчуванням — трохи справа й згори (yaw ≈ −34°, pitch ≈ 24°); поле view: { yaw, pitch }
+   у градусах задає інший стартовий ракурс (pitch > 0 — погляд згори, |pitch| ≤ 80). Грані solidMesh — проти годинникової стрілки,
+   якщо дивитися ззовні тіла: видимі ті, чия проєкція лишилась проти годинникової (раніше грані паралелепіпеда були навпаки,
+   і він «стартував знизу»). */
+const SOLID_VIEW = { yaw: -0.6, pitch: 0.42 };
 KINDS.solid = {
-  view: () => ({ yaw: -0.6, pitch: 0.42 }),
+  view: spec => { const v = spec && spec.view && typeof spec.view === "object" && !Array.isArray(spec.view) ? spec.view : {}, rad = d => d * Math.PI / 180;
+    return { yaw: Number.isFinite(v.yaw) ? rad(v.yaw) : SOLID_VIEW.yaw, pitch: Number.isFinite(v.pitch) ? rad(Math.max(-80, Math.min(80, v.pitch))) : SOLID_VIEW.pitch }; },
   render(spec, env, view) {
     const names = fnNames(spec), E = ex => safe(() => compile(String(ex), names)(env)), W = 320, H = spec.height || 240;
     const { V, F } = solidMesh(spec, E);
@@ -722,7 +757,8 @@ function solidMesh(spec, E) {
   if (sh === "box") { const a = E(spec.a ?? "a"), b = E(spec.b ?? "b"), c = E(spec.c ?? "c"); if (![a, b, c].every(v => v > 0)) return { V: [], F: [] };
     // вершини: x — довжина a, y — висота b, z — глибина c
     const V = [[0, 0, 0], [a, 0, 0], [a, b, 0], [0, b, 0], [0, 0, c], [a, 0, c], [a, b, c], [0, b, c]];
-    const F = [[0, 4, 5, 1], [3, 2, 6, 7], [0, 1, 2, 3], [4, 7, 6, 5], [0, 3, 7, 4], [1, 5, 6, 2]];
+    // порядок граней (faceGrid): низ y=0, верх y=b, z=0, z=c, x=0, x=a; обхід — ззовні проти годинникової (нормаль назовні)
+    const F = [[0, 1, 5, 4], [3, 7, 6, 2], [0, 3, 2, 1], [4, 5, 6, 7], [0, 4, 7, 3], [1, 2, 6, 5]];
     return { V, F }; }
   const n = Math.max(3, Math.round(E(spec.n ?? 4))), r = E(spec.r ?? 1), h = E(spec.h ?? 2); if (!(r > 0 && h > 0)) return { V: [], F: [] };
   const base = [...Array(n)].map((_, i) => { const a = i * 2 * Math.PI / n + Math.PI / n; return [r * Math.cos(a), 0, r * Math.sin(a)]; });
@@ -736,7 +772,7 @@ function solidMesh(spec, E) {
 /* ================= Монтування в DOM (лише в браузері) ================= */
 function mount(host, spec, opt = {}) {
   const K = KINDS[spec.kind], fmt = opt.fmt || (s => s), params = paramList(spec), names = fnNames(spec);
-  let state = startState(spec), locked = false, view = K.view ? K.view() : {}, last = null;
+  let state = startState(spec), locked = false, view = K.view ? K.view(spec) : {}, last = null;
   const visible = params.filter(p => !p.hide);
   host.classList.add("lab");
   host.innerHTML = `<div class="lab-stage"><svg role="img" aria-label="${(spec.alt || "Інтерактивна модель").replace(/"/g, "&quot;")}"></svg></div>
@@ -893,9 +929,19 @@ function validate(spec, screen = {}) {
   const tplExprs = s => [...String(s).matchAll(/\{([^{}|]+)(?:\|([a-z0-9]+))?\}/g)].filter(m => m[1] !== ",").flatMap(m => m[2] === "poly" ? m[1].split(";") : [m[1]]).map(x => x.trim());
   const tpls = [].concat(spec.show || [], svgLabels(spec, true).map(x => x[1])).filter(x => typeof x === "string");
   for (const s of tpls) for (const ex of tplExprs(s)) try { compile(ex, names); } catch (e) { errs.push(`шаблон «${s}»: ${e.message}`); }
+  // поля креслень engine-math-ister-p3 (CONTENT_SCHEMA §8.2): solid view, plane labelDir і ticks, chart horizontal/line, numline ray
+  if (spec.kind === "solid" && spec.view !== undefined) { const v = spec.view, ok = v && typeof v === "object" && !Array.isArray(v) && Object.keys(v).every(k => k === "yaw" || k === "pitch");
+    if (!ok || (v.yaw !== undefined && !Number.isFinite(v.yaw)) || (v.pitch !== undefined && !(Number.isFinite(v.pitch) && Math.abs(v.pitch) <= 80))) errs.push("solid.view: { yaw, pitch } — числа в градусах, |pitch| ≤ 80"); }
+  if (spec.kind === "plane") {
+    for (const [id, p] of Object.entries(spec.points || {})) if (p && p.labelDir !== undefined && !Object.hasOwn(LABEL_DIR, p.labelDir)) errs.push(`points.${id}.labelDir: одне з ${Object.keys(LABEL_DIR).join(", ")}`);
+    (spec.segs || []).forEach((x, i) => { if (x && !Array.isArray(x) && x.ticks !== undefined && ![1, 2, 3].includes(x.ticks)) errs.push(`segs.${i}.ticks: 1, 2 або 3 рисочки`); });
+  }
+  if (spec.kind === "chart") { for (const k of ["horizontal", "line", "pie", "mean"]) if (spec[k] !== undefined && typeof spec[k] !== "boolean") errs.push(`chart.${k}: true або false`);
+    if ([spec.horizontal, spec.line, spec.pie].filter(x => x === true).length > 1) errs.push("chart: horizontal, line і pie — взаємовиключні"); }
+  if (spec.kind === "numline" && spec.ray !== undefined && typeof spec.ray !== "boolean") errs.push("numline.ray: true або false");
   if (errs.length) return errs;
   const st0 = startState(spec), env0 = makeEnv(spec, st0);
-  try { KINDS[spec.kind].render(spec, env0, KINDS[spec.kind].view ? KINDS[spec.kind].view() : {}); } catch (e) { errs.push(`малювання: ${e.message}`); }
+  try { KINDS[spec.kind].render(spec, env0, KINDS[spec.kind].view ? KINDS[spec.kind].view(spec) : {}); } catch (e) { errs.push(`малювання: ${e.message}`); }
   for (const [p, ex] of exprs) { if (["top", "bottom"].includes(ex)) continue;
     try { const e = Object.create(env0); e.x = 0.37; compile(ex, names)(e); } catch (er) { errs.push(`${p}: ${er.message}`); } }
   for (const [id] of Object.entries(spec.points || {})) try { const p = env0[id]; if (!isFinite(p.x) || !isFinite(p.y)) errs.push(`точка ${id} не має скінченних координат на старті`); } catch (e) { errs.push(`точка ${id}: ${e.message}`); }

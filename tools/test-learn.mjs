@@ -485,7 +485,7 @@ const order = l => ({ L1: 3, L2: 1, L3: 2, L4: 4 }[l] ?? 50);
   const cases = [
     // відношення: рівні відношення, порядок, натуральні члени без спільного дільника лише з reduced
     [K("ratio", "2 : 3"), "4 : 6", "ok"], [K("ratio", "2 : 3"), "0,4 : 0,6", "ok"], [K("ratio", "2 : 3"), "2/3 : 1", "ok"], [K("ratio", "2 : 3"), "3 : 2", "bad"],
-    [K("ratio", "2 : 3"), "2/3", "bad"], [K("ratio", "2 : 3"), "-2 : -3", "bad"], [K("ratio", "2 : 3"), "2 : 3 : 1", "bad"], [K("ratio", "2 : 3", { reduced: true }), "4 : 6", "form"],
+    [K("ratio", "2 : 3"), "2/3", "form"], [K("ratio", "2 : 3"), "-2 : -3", "bad"], [K("ratio", "2 : 3"), "2 : 3 : 1", "bad"], [K("ratio", "2 : 3", { reduced: true }), "4 : 6", "form"],
     [K("ratio", "2 : 3", { reduced: true }), "2 : 3", "ok"], [K("ratio", "2 : 3", { reduced: true }), "1 : 1,5", "form"], [K("ratio", [1, 3], { reduced: true }), "1∶3", "ok"], [K("ratio", "2 : 3 : 5"), "4 : 6 : 10", "ok"], [K("ratio", "2 : 3 : 5"), "4 : 6 : 11", "bad"],
     // впорядкована пара/трійка: порядок і знак, кома лише без «;», десяткова кома з «;»
     [K("coordinates2", "(3; -2)"), "(3; −2)", "ok"], [K("coordinates2", "(3; -2)"), "A(3;-2)", "ok"], [K("coordinates2", "(3; -2)"), "3; -2", "ok"], [K("coordinates2", "(3; -2)"), "(3, -2)", "ok"],
@@ -2386,6 +2386,61 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
   // підказки назв є в hintTexts (test-answer-ui: «підказка ≠ ключ»)
   const H = L.hintTexts(B4);
   eq(["Координати правильні, але тут шукають вектор c.", "Координати правильні, але a — даний вектор умови. Запиши лише координати.", "Координати правильні, але b — даний вектор умови. Запиши лише координати."].every(t => H.includes(t)), true, "vec-name hintTexts b04");
+}
+// ---------- engine-math-ister-p3: pairSet з дужками в парі (п. 1), «допиши π», розряди з π, ratio дробом, «у 2 рази» (п. 2), root4 (п. 5) ----------
+{ const K = (answerKind, answer, extra = {}) => ({ answerKind, answer, ...extra });
+  const P = K("pairSet", [["√2", 1], ["-√2", 1]]), P3 = K("pairSet", [[3, 2], [-2, -3]]), PI = K("exactRoot", "12π"), RA = K("ratio", [27, 64]);
+  const RZ = { answer: 2, unit: "раз", unitForms: ["раз", "рази", "разів"] };
+  const cases = [
+    // п. 1 (P2-1): дужки всередині пари — за глибиною; P3-1: між парами не більше одного роздільника
+    [P, "(√(2); 1), (-√(2); 1)", "ok"], [P, "(-√(2); 1); (√2; 1)", "ok"], [P, "{(√(2); 1), (-√(2); 1)}", "ok"], [P, "(√(2); 1)(-√(2); 1)", "ok"],
+    // числовий ключ: компонента — лише число, як у числовому coordinates2 («(1/(2); 1)» там теж bad); з коренем у ключі — точний розбір
+    [K("pairSet", [[0.5, 1]]), "(1/(2); 1)", "bad"], [K("coordinates2", [0.5, 1]), "(1/(2); 1)", "bad"], [K("pairSet", [["√2/2", 1]]), "(1/√(2); 1)", "form"],
+    [K("pairSet", [["-√3", 2]]), "(-(√3); 2)", "ok"], [K("pairSet", [["√2", 1]]), "(√(2); (1))", "ok"], [P, "(√(2; 1), (-√2; 1)", "bad"],
+    [P, "(√(2); 1), (-√(3); 1)", "bad"], [P, "(√(2); 1),, (-√(2); 1)", "bad"], [P3, "(3; 2),, (-2; -3)", "bad"], [P3, "(3; 2) ; , (-2; -3)", "bad"],
+    [P3, "(3; 2), (-2; -3),", "bad"], [P3, ", (3; 2), (-2; -3)", "bad"], [P3, "((3; 2), (-2; -3))", "bad"], [P3, "(3; 2)), ((-2; -3)", "bad"],
+    [P3, "(3; 2) ∪ (-2; -3)", "ok"], [P3, ")(3; 2), (-2; -3)", "bad"],
+    [K("pairSet", [[3, 2]]), "3; 2", "bad"],   // P3-2: одна пара без дужок — не множина пар (задокументовано)
+    [P, "(2√(2)/2; 1), (-√2; 1)", "form"],
+    // п. 2: π у ключі exactRoot, а в записі немає — значення неправильне: bad (рев'ю P2-1), лише підказка «допиши π» (нижче)
+    [PI, "12", "bad"], [PI, "24/2", "bad"], [PI, "12π", "ok"], [PI, "13", "bad"], [PI, "-12", "bad"], [PI, "π", "bad"], [PI, "12π^2", "bad"],
+    [K("exactRoot", "16π/3"), "16/3", "bad"], [K("exactRoot", "16π/3"), "16", "bad"], [K("exactRoot", "2√3π"), "2√3", "bad"], [K("exactRoot", "2√3π"), "2√3π", "ok"],
+    [K("exactRoot", "12π^2"), "12π", "bad"], [K("exactRoot", "12π^2"), "12", "bad"], [K("exactRoot", "1 + π"), "1", "bad"], [K("exactRoot", "1 + π"), "2", "bad"], [K("exactRoot", "2√3"), "2", "bad"], [K("exactRoot", "12π"), "12π/π", "bad"],
+    // п. 2: розряди через пробіл у точному записі, як «1 950» у number
+    [K("exactRoot", "6400π"), "6 400π", "ok"], [K("exactRoot", "6400π"), "6 400π", "ok"], [K("exactRoot", "6400π"), "6 400 π", "ok"], [K("exactRoot", "6400π"), "6 400", "bad"], [K("exactRoot", "6400π"), "6,4 000π", "bad"], [K("exactRoot", "6,4π"), "6,4 000π", "bad"],
+    [K("exactRoot", "6400π"), "6 4000π", "bad"], [K("exactRoot", "64000π"), "6 4000π", "bad"], [K("exactRoot", "6400π"), "64 00π", "bad"], [K("exactRoot", "6400π"), "6 40π", "bad"], [K("exactRoot", "1000000π"), "1 000 000π", "ok"],
+    [K("exactRoot", "2000√3"), "2 000√3", "ok"], [K("exactRoot", "(1 + √5)/2"), "(1 + √5)/2", "ok"], [K("exactRoot", "6400π"), "6 400,5π", "bad"],
+    [K("list", ["6400π", "π"]), "6 400π; π", "ok"], [K("coordinates2", ["6400π", 1]), "(6 400π; 1)", "ok"],
+    // мішане число лишається мішаним: «2 100/3» не стає 2100/3
+    [K("exactRoot", "700π/1"), "2 100/3 π", "bad"], [K("exactRoot", "2100π/3"), "2 100/3 π", "bad"], [K("exactRoot", "2100π/3"), "2 100 /3 π", "bad"],
+    [K("exactRoot", "6301π/3"), "2 100 1/3", "bad"], [K("exactRoot", "6301π/3"), "2 100 1/3 π", "bad"], [K("exactRoot", "1000000π/3"), "1 000 000/3 π", "bad"],
+    // п. 2: ratio, записане дробом p/q — form «через двокрапку»
+    [RA, "27/64", "form"], [RA, "54/128", "form"], [RA, "27 : 64", "ok"], [RA, "64/27", "bad"], [RA, "1 27/64", "bad"], [RA, "0,421875", "bad"], [RA, "-27/64", "bad"], [K("ratio", [91, 64]), "1 27/64", "bad"], [K("ratio", [91, 64]), "91/64", "form"],
+    [K("ratio", [2, 3, 4]), "2/3", "bad"], [K("ratio", [1, 2]), "1/2", "form"], [K("ratio", [1, 2]), "2", "bad"],
+    // п. 2: «у 2 рази» при unit «раз»; без одиниці чи інша одиниця — як і раніше
+    [RZ, "у 2 рази", "ok"], [RZ, "в 2 рази", "ok"], [RZ, "У 2 рази", "ok"], [RZ, "у 2 раз", "ok"], [RZ, "у 3 рази", "bad"], [RZ, "у 2", "bad"], [RZ, "уу 2 рази", "bad"],
+    [RZ, "у2 рази", "bad"], [{ answer: 2, unit: "см" }, "у 2 см", "bad"], [RZ, "2 рази", "ok"],
+    // п. 5: «root4» з фізичної клавіатури = «∜», «root3» = «cbrt» = «∛»
+    [K("exactRoot", "2∜2"), "2root4(2)", "ok"], [K("exactRoot", "2∜2"), "2 root4 2", "ok"], [K("exactRoot", "∛5"), "root3(5)", "ok"], [K("exactRoot", "2∜2"), "2root4(3)", "bad"],
+    [K("exactRoot", "2∜2"), "∜32", "form"], [K("expression", "∜x"), "root4(x)", "ok"]];
+  cases.forEach(([s, v, exp]) => eq(L.checkAns(s, v), exp, `ister-p3: ${JSON.stringify(s)} ← «${v}»`));
+  // підказки й коди форм
+  // «допиши π» — пояснення до bad (badHint), не form: значення неправильне, formCode null, hyp бачить звичайну помилку
+  const PIM = "Бракує множника π. Точну відповідь тут записують з π — допиши його.";
+  for (const [s, v] of [[PI, "12"], [PI, "24/2"], [K("exactRoot", "16π/3"), "16/3"], [K("exactRoot", "2√3π"), "2√3"], [K("exactRoot", "6400π"), "6 400"],
+    [K("exactRoot", "6301π/3"), "2 100 1/3"], [K("exactRoot", "12π", { unit: "см" }), "12 см"]]) eq([L.checkAns(s, v), L.badHint(s, v), L.formCode(s, v)], ["bad", PIM, null], `ister-p3: «${v}» при ${s.answer} — bad, підказка «допиши π»`);
+  for (const [s, v] of [[PI, "13"], [PI, "-12"], [K("exactRoot", "12π^2"), "12π"], [K("exactRoot", "12π^2"), "12"], [K("exactRoot", "1 + π"), "1"], [K("exactRoot", "2√3"), "2"],
+    [K("exactRoot", "6400π"), "6,4 000"], [K("list", ["12π"]), "12"], [K("exactRoot", "12π"), "12π"]]) eq(L.badHint(s, v), null, `ister-p3: «${v}» при ${s.answer} — без «допиши π»`);
+  eq(L.formHint(RA, "27/64"), "Значення правильне, але відповідь тут — відношення. Запиши його через двокрапку, а не дробом.", "ister-p3: formHint ratio дробом");
+  eq(L.formCode(RA, "27/64"), "ratioFrac", "ister-p3: formCode ratioFrac");
+  eq(L.formHint(K("ratio", [27, 64], { reduced: true }), "54 : 128").startsWith("Відношення правильне."), true, "ister-p3: ratio reduced — стара підказка");
+  eq(L.formHint(K("exactRoot", "16π/3"), "32π/6").includes("π"), false, "ister-p3: «32π/6» — не «допиши π»");
+  eq([L.hintTexts(PI).includes(L.badHint(PI, "12")), L.hintTexts(RA).includes(L.formHint(RA, "27/64")), L.hintTexts(K("list", [1, 2])).some(t => /Допиши π|через двокрапку/.test(t))], [true, true, false], "ister-p3: hintTexts");
+  eq([L.diagVerdict(RZ, "у 2 рази"), L.diagVerdict(RZ, "у 3 рази")], [L.OK, L.BAD], "ister-p3: «у 2 рази» у тесті рівня");
+  // ReDoS (pitfalls): довгі ряди пробілів і груп розрядів — лінійно
+  for (const v of ["1" + " ".repeat(20000) + "000π", "6 400" + " ".repeat(20000) + "/π", Array(5000).fill("100").join(" ") + "/3", "(" + " ".repeat(20000) + "√2; 1)" + ", (".repeat(3000), "у" + " ".repeat(20000) + "2 рази"]) {
+    const t0 = performance.now(); for (const s of [PI, P, RZ, RA]) L.checkAns(s, v); const ms = performance.now() - t0;
+    eq(ms < 300, true, `ister-p3: довгий запис (${v.length} симв.) — ${Math.round(ms)} мс (< 300)`); }
 }
 console.log(`\n${n} перевірок, ${fails ? fails + " з помилками" : "усе гаразд"}`);
 if (fails) process.exit(1);
