@@ -135,7 +135,7 @@
 | g7m5l1 Один вхід — один вихід | 7 | 10 | 0.5 | 19 | 35 | 5.1 | 0.008 | 3 | — |
 | g7m5l2 Точки стають лінією | 7 | 9 | 0.56 | 21 | 60 | 5.6 | 0.038 | 2 | typeVariety нетипово для сім'ї (z=-2.4) |
 | g7m5l3 Пряма з нахилом | 7 | 10 | 0.6 | 18 | 51 | 4.8 | 0.013 | 3 | — |
-| g7m5l4 Диспетчерська на графіках (фінал) | 7 | 9 | 0.67 | 16 | 28 | 5 | 0.037 | 3 | — |
+| g7m5l4 Диспетчерська на графіках (фінал) | 7 | 9 | 0.67 | 16 | 28 | 5.1 | 0.036 | 3 | — |
 | g7m7l1 Дві змінні — одна пряма | 7 | 9 | 0.56 | 21 | 44 | 5.4 | 0.027 | 3 | — |
 | g7m7l2 Точка, де прямі зустрілись | 7 | 10 | 0.5 | 22 | 41 | 5.4 | 0.024 | 3 | — |
 | g7m7l3 Підстав і розв'яжи | 7 | 8 | 0.63 | 21 | 51 | 5 | 0.017 | 3 | — |
@@ -227,7 +227,7 @@
 | g9m8l1 Три ніжки не хитаються | 9 | 10 | 0.5 | 26 | 59 | 6.4 | 0.028 | 3 | sentenceWords нетипово для сім'ї (z=2.3) |
 | g9m8l2 Прямі, що не зустрінуться | 9 | 9 | 0.56 | 22 | 57 | 5.5 | 0.051 | 4 | longWordShare нетипово для сім'ї (z=2.1); typeVariety нетипово для сім'ї (z=2.2) |
 | g9m8l3 Перпендикуляр і похила | 9 | 10 | 0.6 | 25 | 54 | 5.6 | 0.053 | 3 | longWordShare нетипово для сім'ї (z=2.2) |
-| g9m8l4 Підлога і стеля | 9 | 10 | 0.6 | 30 | 58 | 6.3 | 0.05 | 5 | readWordsPerScreen нетипово для сім'ї (z=3.1); sentenceWords нетипово для сім'ї (z=2.1); longWordShare нетипово для сім'ї (z=2); typeVariety нетипово для сім'ї (z=4.5) |
+| g9m8l4 Підлога і стеля | 9 | 10 | 0.6 | 30 | 58 | 6.3 | 0.049 | 5 | readWordsPerScreen нетипово для сім'ї (z=3.1); sentenceWords нетипово для сім'ї (z=2.1); typeVariety нетипово для сім'ї (z=4.5) |
 | g9m8l5 Коробка-трикутник | 9 | 10 | 0.5 | 28 | 53 | 5.3 | 0.053 | 3 | readWordsPerScreen нетипово для сім'ї (z=2.3); longWordShare нетипово для сім'ї (z=2.2) |
 | g9m8l6 Літр у пакеті | 9 | 9 | 0.67 | 26 | 48 | 5.7 | 0.033 | 4 | typeVariety нетипово для сім'ї (z=2.2) |
 | g9m8l7 Дах альтанки | 9 | 9 | 0.56 | 27 | 51 | 5.8 | 0.015 | 3 | — |
@@ -299,6 +299,6 @@
 - **5-6:lesson**: screens 9.39±0.68, gradedShare 0.66±0.06, readWordsPerScreen 19.7±3.16, maxReadWords 44.07±7.91, sentenceWords 4.91±0.51, longWordShare 0.01±0.01, typeVariety 3.52±0.64
 - **5-6:boss**: screens 7.25±0.43, gradedShare 0.86±0.01, readWordsPerScreen 19.17±2.19, maxReadWords 27.42±4.01, sentenceWords 4.83±0.46, longWordShare 0.01±0.01, typeVariety 3.33±0.75
 - **7-9:lesson**: screens 9.23±0.73, gradedShare 0.58±0.06, readWordsPerScreen 21.82±2.68, maxReadWords 46.18±9.58, sentenceWords 5.21±0.41, longWordShare 0.02±0.01, typeVariety 3.05±0.43
-- **7-9:boss**: screens 7.68±0.63, gradedShare 0.8±0.06, readWordsPerScreen 19.77±2.57, maxReadWords 30.95±3.36, sentenceWords 5.29±0.36, longWordShare 0.03±0.01, typeVariety 3.05±0.21
+- **7-9:boss**: screens 7.68±0.63, gradedShare 0.8±0.06, readWordsPerScreen 19.77±2.57, maxReadWords 30.95±3.36, sentenceWords 5.3±0.36, longWordShare 0.03±0.01, typeVariety 3.05±0.21
 - **10-11:lesson**: screens 9.54±0.63, gradedShare 0.57±0.06, readWordsPerScreen 22.85±1.91, maxReadWords 48.15±6.57, sentenceWords 5.52±0.39, longWordShare 0.03±0.01, typeVariety 2.9±0.37
 - **10-11:boss**: screens 8.08±0.28, gradedShare 0.75±0.01, readWordsPerScreen 19.08±1.44, maxReadWords 34.25±6.81, sentenceWords 5.19±0.53, longWordShare 0.04±0.02, typeVariety 2.92±0.28
