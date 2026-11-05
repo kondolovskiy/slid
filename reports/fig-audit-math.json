@@ -1,10 +1,6 @@
 {
  "subject": "math",
-<<<<<<< HEAD
- "screens": 4575,
-=======
- "screens": 4590,
->>>>>>> wt-pools
+ "screens": 4589,
  "rows": [
   {
    "group": "prev",
