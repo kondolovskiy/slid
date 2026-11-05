@@ -112,3 +112,9 @@ _Розбито з `pitfalls.md` 2026-11-05 (куратор пам'яті): за
 - _(2026-10-31)_ Недоступні з середовища 31.10: chtyvo.org.ua (закрився; **05.11 — проєкт «Чтиво» завершено**, shron1.chtyvo.org.ua віддає 301 на сторінку закриття — старі посилання в facts мертві, див. «Додано 2026-11-05»), dlibra.kul.pl, bcul.lib.uni.lodz.pl, dchp.arts.ubc.ca (503), archives.gov.ua, LAC recherche (403), web.archive.org, bigenc.ru (401), krugosvet; для енциклопедичних довідок — Universalis.
 - _(2026-11-02)_ **mon.gov.ua (Cloudflare), zakon.rada.gov.ua (403/503) і pravopys.net (503) з проксі недоступні.** Правопис — https://2019.pravopys.net/sections/N/ через `curl` або https://slovnyk.ua/pravopys.php?prav_par=N (обидва = ред. 2019 = стандарт 2026); закони — osvita.ua/legislation, protocol.ua, ccu.gov.ua (writer-u5s1, u5s4, verifier-u5s4).
 - _(2026-11-05)_ **chtyvo.org.ua закрито:** PDF не віддаються (301 → «Завершення проєкту Чтиво»). Не цитувати chtyvo як джерело; для статей шукати видавця, ЕСУ, ZAXID.NET, academia тощо. Наявне посилання в facts/hist №98 позначено мертвим; у h33 note замінено на ZAXID.NET.
+
+## Додано 2026-11-05, сесія 5 (пакет 05.11-4: math Істер P3 у worktree)
+
+### Процес
+- **`npm run check` — після КОЖНОГО змістового коміту, не лише після злиття.** style-math-ister-followup (e8c30a1, `pre` у 14 фіналах) зсунув знімок test-hyp §0, а в PR #18 потрапив застарілий sw.js — CI `build` червоний без жодного мутанта (qa-ci-browser-mutant); довелося окремою задачею оновлювати знімок (tests-hyp-snapshot-style-math). Оркестратор: check + build і коміт згенерованих файлів одразу після змістового коміту.
+- **Матрицю персоналізації змінюють кілька задач одночасно** (curate-math-graph, fix-math-pools у різних worktree) — куратор графа не вніс MATRIX-рядки, бо файл був зайнятий; вони загубилися б без inbox. Правки до docs/math-personalization-coverage.* — лише одна задача за раз, решта — в inbox → наступна версія (tasks/todo/curate-math-matrix-v13.md).
