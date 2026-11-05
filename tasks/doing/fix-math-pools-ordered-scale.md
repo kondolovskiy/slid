@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-05T14:52:52.113Z
 id: fix-math-pools-ordered-scale
 type: write-pool
 subject: math
 status: todo
-claimed_by:
+claimed_by: writer-pools-os
 created: 2026-11-05
 depends_on: [engine-list-ordered]
 ---

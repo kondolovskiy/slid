@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-05T14:52:52.079Z
 id: engine-list-p3
 type: engine
 subject: math
 status: todo
-claimed_by:
+claimed_by: eng-listp3
 created: 2026-11-05
 depends_on: []
 ---
