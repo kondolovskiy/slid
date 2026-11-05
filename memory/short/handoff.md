@@ -32,13 +32,14 @@ _Оновлено: 2026-11-05, куратор пам'яті (сесія 4: D-049
 ## Відкриті питання
 **Змістові — `docs/teacher-questions.md` (D-049):** 66 питань TQ-001…TQ-066: відкриті 44 (math 9, ukr 11, hist/world 24), «вирішено тимчасово за рекомендацією D-047/D-048 — підтвердити» 20 (math 5, ukr 7, hist/world 5, спільні 3), організаційне 2 (вчитель-рецензент для `approved`, 8 кл. ukr). Людина перешле вчителям; роботу не блокують. Нові — дописувати туди.
 
-**Технічні — людині:**
-1. **Бекенд (docs/BACKEND.md «Відкриті питання»):** `TRUST_PROXY` / хопи `X-Forwarded-For` на Railway; ліміти для класу за NAT; глобальний ліміт невдалих claim чи довший код; спільне сховище лімітів (Redis / Postgres — витрати); `nonce` для id_token; `server/content/`; `ADMIN_TOKEN` на Railway — хто адміністратор і куди слати сповіщення (зараз alert лише в лог).
-2. **`lh` → HMAC із серверним секретом** — вирішити до engine-ai-a1 / ai-solution-check (P3-1 reports/review/server-hardening-2.md).
-3. **Персональні дані (правило 12):** GDPR, протокол `concern`; Skill Graph §7.3 п. 10 (`part` у P / S12) — перед G4.
-4. **pickSession:** бачене доповнення рівня 1 ставити після небачених? (engine-math-ister-p3 п. 7; поки обхід у fix-math-pools-ister-formats п. 5).
-5. **GitHub Settings → Branches:** позначити `build` і `browser` обов'язковими (required checks).
-6. **Зображення й ліцензії:** дублікати фото між теками img/hist — лишити чи дедуплікувати; Open Kurbas (CC BY-NC-ND) vs PD-Ukraine на Commons — важливо, лише якщо Слід стане комерційним; шаблон PD-UKGov → PD-UK-unknown + PD-US-expired на Commons для фото Панкгерст (необов'язково).
+**Технічні — людині (стан після D-050, 05.11):**
+1. **Бекенд — відкладено до готового середовища (D-050 п. 4):** `TRUST_PROXY` / хопи `X-Forwarded-For`, ліміти для класу за NAT, ліміт невдалих claim чи довший код, Redis/Postgres для лімітів, `nonce`, `server/content/`, `ADMIN_TOKEN` і канал сповіщень.
+2. ~~`lh` → HMAC~~ — так (D-050 п. 5), задача server-log-hmac (у роботі).
+3. **ПД / GDPR / `concern`** — задача design-privacy-gdpr, пізніше (D-050 п. 6); Skill Graph §7.3 п. 10 — перед G4.
+4. ~~pickSession~~ — обхід у змісті: ≥ 7 вправ в уроці (D-050 п. 1).
+5. **GitHub Settings → Branches:** `build` і `browser` — обов'язкові (D-050 п. 2: так; інструментів для захисту гілок в агента немає — людина вмикає вручну).
+6. **Зображення й ліцензії:** дублікати фото між теками img/hist; Open Kurbas (CC BY-NC-ND) vs PD-Ukraine (важливо лише для комерційного використання); шаблон Панкгерст на Commons (необов'язково).
+7. qa-ci-browser-mutant — окрема хмарна сесія, гілка claude/qa-ci-browser-mutant (не зливати), D-050 п. 3.
 
 ## Обмеження середовища
 - **Python-модуля playwright локально немає** — браузерні тести ганяє CI (job `browser`; full — Run workflow); Node-двійник /opt/node-tools; браузер `/opt/pw-browsers/chromium`; браузерні тести по одному.
