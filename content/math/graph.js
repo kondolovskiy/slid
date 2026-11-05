@@ -6,12 +6,14 @@
    2026-11-03 (math-ister-migration, D-043): g6m1 — 5 кл.; у topics лінії dg6/g6-lcm → dg6/g6-div (теми dg6 злито, design/math-ister.md §5.2). Вузли й ребра без змін.
    2026-11-05 (curate-math-graph-ister-gaps): нові лінії draft — «prob» (комбінаторика й ймовірність 6, 9 кл.: 6 вузлів) і «tri» (трикутники 5, 7 кл.: 9 вузлів);
    решта пропозицій IDEA GRAPH D-043 відкладена — обґрунтування в tasks/review/curate-math-graph-ister-gaps.md. Лінія «дроби» без змін (нові ребра лише від нових вузлів).
-   2026-11-05 (verify-graph-prob-tri, верифікатор): вузли ліній «prob» і «tri» — verified (reports/verify/graph-prob-tri.md); st самих ліній лишається draft,
-   доки tools/test-hyp.mjs (G3) жорстко чекає лише лінію frac серед verified — правка тесту окремою задачею з рев'ю D-026; +3 ребра pre w 1 за кроками пулу pg7m4
+   2026-11-05 (verify-graph-prob-tri, верифікатор): вузли ліній «prob» і «tri» — verified (reports/verify/graph-prob-tri.md); st самих ліній тоді лишився draft
+   (tools/test-hyp.mjs чекав лише frac); +3 ребра pre w 1 за кроками пулу pg7m4
    (side-angle ← ext-angle — e08; tri-congr ← angle-adj-vert — a04, a05, a08; tri-isosc ← angle-adj-vert — b05, b06), виправлено why right-tri ← side-angle.
+   2026-11-05 (tests-hyp-g3-verified-lines): lines.prob.st і lines.tri.st → verified (звіт верифікатора той самий); tools/test-hyp.mjs (G3) більше не чекає
+   лише frac серед ліній verified. Вузли й ребра без змін. Тінь G3 (tools/hyp-replay.mjs) бере ці лінії; дитині граф нічого не змінює до G4.
    Перевірка: node tools/validate.mjs && node tools/graph-report.mjs --line frac --strict (так само --line prob, --line tri) */
 SLID.graph("math", {
-  v: "2026-11-05.2",
+  v: "2026-11-05.3",
   lines: {
     frac: {
       lessons: ["g4m3l3", "m4a", "g4m5l1", "g4m5l2", "m1", "m2", "m3", "m4", "m5",
@@ -24,13 +26,13 @@ SLID.graph("math", {
     prob: {
       lessons: ["g6m6l1", "g6m6l2", "g6m6l3", "g6m6l4", "g9m7l1", "g9m7l2"],
       topics: ["dg9/cur-g9m7", "dg11/count", "dg11/prob"],
-      st: "draft"   // вузли verified; st лінії → verified разом із правкою tools/test-hyp.mjs (G3: список ліній verified) і рев'ю D-026
+      st: "verified"
     },
     // ms0bl3 — опора 5 кл. (сума кутів трикутника вперше), g7m2l2 — суміжні й вертикальні кути; g7m6, g7m8 — наступна лінія геометрії 7
     tri: {
       lessons: ["ms0bl3", "g7m2l2", "g7m4l1", "g7m4l2", "g7m4l3", "g7m4l5", "g7m4l6", "g7m4l7", "g7m4l8", "g7m4l9"],
       topics: ["dg7/cur-g7m4", "dg8/tri-equal", "dg8/tri-angles"],
-      st: "draft"   // вузли verified; st лінії → verified разом із правкою tools/test-hyp.mjs (G3: список ліній verified) і рев'ю D-026
+      st: "verified"
     }
   },
   nodes: [
