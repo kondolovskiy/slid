@@ -46,6 +46,7 @@ jobs:
           node tools/test-metrics.mjs
           node tools/test-learn.mjs
           node tools/test-evidence.mjs
+          node tools/test-sync.mjs
           node tools/test-hyp.mjs
           node tools/test-personalization-qa.mjs
           node tools/test-validate.mjs
@@ -61,7 +62,13 @@ jobs:
             || (echo "::error::Запусти локально node tools/build.mjs і закоміть index.html, sw.js, content/manifest.json" && exit 1)
       - name: Зібрати сайт (лише файли застосунку)
         if: github.event_name != 'pull_request'
+        # адреса бекенду й Google client id — змінні репозиторію (Settings → Variables), лише для публікації: build записує їх
+        # в app/config.js і перераховує версію sw.js. Порожні — синхронізацію вимкнено (engine-sync-login, docs/PUBLISHING.md)
+        env:
+          SLID_API: ${{ vars.SLID_API }}
+          SLID_GOOGLE_CLIENT_ID: ${{ vars.SLID_GOOGLE_CLIENT_ID }}
         run: |
+          if [ -n "$SLID_API" ]; then node tools/build.mjs; fi
           mkdir _site
           cp -r index.html manifest.webmanifest sw.js app content img icons _site/
           touch _site/.nojekyll

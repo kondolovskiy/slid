@@ -18,6 +18,8 @@ index.html              оболонка + CSS (токени кольорів, �
   app/lab.js            лабораторія: інтерактивні моделі (графіки, геометрія, терези…), docs/CONTENT_SCHEMA.md §8
   app/learn.js          персоналізація: тест рівня, план, повторювані помилки (чиста логіка), docs/PERSONALIZATION.md
   app/evidence.js       журнал подій у IndexedDB для дослідження (лише читає стан), docs/EVIDENCE.md
+  app/config.js         адреса бекенду й Google client id (генерує build із SLID_API / SLID_GOOGLE_CLIENT_ID; порожньо — без синхронізації)
+  app/sync.js           синхронізація прогресу: тристороннє злиття slid.v1, вхід, код прив'язки, офлайн-черга (docs/BACKEND.md)
   app/app.js            рушій (викликає SLID.finalize())
 ```
 Порядок прописує `tools/build.mjs` (між маркерами `CONTENT:START/END`). Список дублюється в `content/manifest.json` для інструментів.
@@ -39,6 +41,10 @@ index.html              оболонка + CSS (токени кольорів, �
   plan: {math: {diag, date, topics, steps: [{l, why, src, done}], known: [lessonId]}},                // персональний план
   mast: {lessonId: {r: "0110", d}}, skw: {"math.cmp": "1011"}, errs: [{l, at, sk, d}] }               // останні відповіді тем і навичок, журнал помилок
 ```
+Також: `diagRunRev`, `planByGrade`, `srs`, `seen`, `skFix`, `prN` (docs/PERSONALIZATION.md). Повний перелік звіряє `tools/test-sync.mjs`: нове поле стану потребує правила злиття в `app/sync.js`, інакше тест червоний.
+
+**Синхронізація** (app/sync.js, docs/BACKEND.md): `localStorage["slid.sync"]` = `{ token, id, school, rev, base, dirty }` — токен пристрою, останній бачений серверний стан (`base`, для тристороннього злиття) і прапорець незаписаних змін (офлайн-черга). На сервер іде `slid.v1` без `name`; `slid.evidence.pending` і `slid.hyp` не синхронізуються. Злитий стан застосовується лише поза уроком. «Скинути прогрес» вимикає синхронізацію на пристрої (сервер не чіпає).
+
 id уроків і навичок — ключі в прогресі. **Не перейменовуйте їх** після публікації.
 
 ## Гейміфікація

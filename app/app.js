@@ -150,10 +150,36 @@ EV.observe(S); EV.log("boot", ()=>({ grade:S.grade, subj:S.subject, lessons:Obje
 // квоти бракує — спершу звільнити місце копією черги журналу й станом гіпотез (docs/EVIDENCE.md, slid.hyp): прогрес slid.v1 важливіший
 // за незаписані події й тіньові гіпотези. Потім — стан гіпотез (лише після slid.v1 і лише якщо slid.v1 записано; HYPS нижче)
 let hypAfterSave = () => {};
-const save = () => { let squeezed=false; try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e) { squeezed=true; try { localStorage.removeItem("slid.evidence.pending"); localStorage.removeItem("slid.hyp"); localStorage.setItem(KEY, JSON.stringify(S)); } catch(e) {} } EV.observe(S); hypAfterSave(squeezed); };
+const save = () => { let squeezed=false; try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e) { squeezed=true; try { localStorage.removeItem("slid.evidence.pending"); localStorage.removeItem("slid.hyp"); localStorage.setItem(KEY, JSON.stringify(S)); } catch(e) {} } EV.observe(S); hypAfterSave(squeezed);
+  try { if (!syncApplying) SYNC.changed(); } catch(e) {} };   // синхронізація (нижче): зміна стану — у чергу; до ініціалізації SYNC — ReferenceError, тихо
+let syncApplying=false;
 try { const fx=JSON.stringify(S.skFix); if (LEARN.migrateSk(S) || JSON.stringify(S.skFix)!==fx) save(); } catch(e) {}   // позначка міграції зберігається й без перенесених записів (рев'ю P3-2); sk, узгоджені з уроками 2026-10-31, — у журналі помилок (learn.js, SK_RETAG)
 // розпочатий до нової редакції тесту: вердикти замінених завдань відкидаються, решта й порядок лишаються (learn.js, resumeDiag)
 try { let ch=false; for (const c of SUBJ) for (const d of c.diags||[]) if (Object.keys(S.diagRun?.[d.id]||{}).length && LEARN.resumeDiag(S,d).dropped.length) ch=true; if (ch) save(); } catch(e) {}
+
+/* ---------- Синхронізація прогресу між пристроями (app/sync.js, engine-sync-login; docs/BACKEND.md) ----------
+   Без адреси API (app/config.js) чи без входу — нічого не відбувається. Злитий стан застосовується лише поза уроком (плеєр закрито);
+   поля пристрою (name, theme, subject, unlockAll, weekOverride) лишаються свої. Синхронізується лише slid.v1, без name. */
+const SYNC = (() => {
+  const stub = { enabled:false, signedIn:()=>false, school:()=>null, status:()=>({s:"off"}), changed(){}, sync:()=>Promise.resolve({s:"off"}), signOut(){}, core:null };
+  try {
+    const W = window.SLID_SYNC; if (!W) return stub;
+    const c = W.init({
+      getState: () => JSON.parse(JSON.stringify(S)),
+      setState: (data, how) => {
+        if (!$("#player").hidden) return false;   // посеред уроку, тренування чи тесту рівня — пізніше
+        const keep = { name:S.name, theme:S.theme, subject:S.subject, unlockAll:S.unlockAll, weekOverride:S.weekOverride };
+        const next = Object.assign(fresh(), data, keep); if (next.grade==null) next.grade = S.grade;
+        if (!SUBJ.some(c=>c.id===next.subject)) next.subject = SUBJ[0].id;
+        S = next; try { SUBJ.forEach(activePlan); } catch(e) {}
+        syncApplying = true; try { save(); } finally { syncApplying = false; }
+        try { render(); } catch(e) {}
+        return true; },
+      onChange: () => { try { if (tab==="profile" && $("#player").hidden && !$("#sheetHost").innerHTML) render(); } catch(e) {} },
+    });
+    return c ? Object.assign(c, { core: W.core }) : stub;
+  } catch(e) { return stub; }
+})();
 
 const dkey = (d=new Date()) => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
 const addDays = (d,n) => { const x=new Date(d); x.setDate(x.getDate()+n); return x; };
@@ -641,6 +667,7 @@ function viewProfile(){
       <button class="btn ghost" id="demo" type="button">Заповнити демо-прогресом</button>
       <button class="btn ${confirmReset?"danger":"ghost"}" id="reset" type="button">${confirmReset?"Натисни ще раз, щоб стерти все":"Скинути прогрес"}</button>
     </div>
+    ${syncCard()}
     ${installCard()}
     <div class="card" style="display:grid;gap:8px">
       <h3>Про прототип</h3>
@@ -649,6 +676,74 @@ function viewProfile(){
         <ul class="credits">${SUBJ.flatMap(c=>c.credits||[]).map(c=>`<li>${c[0]} — ${c[1]}, ${c[2]} (<a href="${urlAttr(c[3])}" target="_blank" rel="noopener">${esc(srcSite(c[3]))}</a>)</li>`).join("")}</ul></details>
     </div>
   </div>`;
+}
+/* ---------- «Мої пристрої»: вхід шкільним акаунтом, код прив'язки, стан синхронізації ---------- */
+let syncMsg="";
+function syncCard(){
+  if(!SYNC.enabled) return "";
+  const st=SYNC.status(), on=SYNC.signedIn(), sc=SYNC.school();
+  const line = !on ? "Увійди, щоб твій прогрес був і на інших пристроях. Ім'я на сервер не передається."
+    : ({busy:"Синхронізація…", pending:"Є нові результати — надішлю, щойно буде мережа.", offline:"Немає мережі. Результати збережено на пристрої, надішлю пізніше.",
+        later:"Онови прогрес, коли закриєш урок.", error:st.text||"Не вдалося синхронізувати. Спробую пізніше."})[st.s] || "Прогрес синхронізовано.";
+  return `<div class="card sync-card" id="syncCard">
+    <h3>Мої пристрої</h3>
+    <p class="muted" id="syncState" role="status">${on&&sc?`Шкільний акаунт (${esc(sc)}). `:""}${esc(line)}</p>
+    ${syncMsg?`<p class="sync-err" role="alert">${esc(syncMsg)}</p>`:""}
+    ${on ? `<button class="btn" id="syncNow" type="button">Синхронізувати зараз</button>
+      <button class="btn ghost" id="syncPair" type="button">Код для іншого пристрою</button>
+      <button class="btn ghost" id="syncOut" type="button">Вийти на цьому пристрої</button>`
+    : `${window.SLID_SYNC.googleClientId?`<button class="btn" id="syncGoogle" type="button">Увійти шкільним акаунтом</button>`:""}
+      <button class="btn ghost" id="syncCode" type="button">Ввести код з іншого пристрою</button>`}
+  </div>`;
+}
+/** Аркуш у #sheetHost; повертає close. */
+function syncSheet(label, html, bind){
+  $("#sheetHost").innerHTML=`<div class="scrim" id="scrim"><div class="sheet" role="dialog" aria-modal="true" aria-label="${attr(label)}"><div class="grab"></div>${html}
+    <button class="btn ghost" id="closeSheet" type="button">Скасувати</button></div></div>`;
+  const close=()=>{ $("#sheetHost").innerHTML=""; };
+  $("#scrim").onclick=e=>{ if(e.target.id==="scrim") close(); }; $("#closeSheet").onclick=close;
+  bind(close); const f=$("#sheetHost [autofocus]")||$("#sheetHost .btn"); if(f) f.focus();
+  return close;
+}
+/** «Це твій прогрес на цьому пристрої?» (рев'ю server-auth Б-1: спільні шкільні ПК). Без прогресу на пристрої — не питаємо: прогрес акаунта. */
+function askMine(then){
+  if(!SYNC.core.hasProgress(S)) return then(false);
+  const n=Object.values(S.lessons||{}).filter(x=>x&&x.done).length;
+  syncSheet("Чий це прогрес", `<h2>Це твій прогрес на цьому пристрої?</h2>
+    <p class="muted">Тут уже є ${n} пройдених уроків і ${S.xp||0} балів. Якщо це твоє — додамо до акаунта. Якщо ні (наприклад, це спільний комп'ютер у школі) — на пристрої буде прогрес з твого акаунта, а чужий сюди не потрапить.</p>
+    <button class="btn" id="mineYes" type="button">Так, мій</button><button class="btn ghost" id="mineNo" type="button">Ні, не мій</button>`,
+    close=>{ $("#mineYes").onclick=()=>{ close(); then(true); }; $("#mineNo").onclick=()=>{ close(); then(false); }; });
+}
+async function syncLogin(fn){
+  syncMsg=""; toast("Вхід…");
+  let r; try { r=await fn(); } catch(e) { r={ ok:false, text:"Не вдалося увійти. Спробуй пізніше." }; }
+  if(!r.ok) syncMsg=r.text; else { syncMsg = r.res && r.res.s!=="ok" && r.res.text || ""; toast(ic("check")+"Готово: прогрес на цьому пристрої синхронізується"); }
+  if($("#player").hidden) render();
+}
+function syncGoogle(){
+  syncSheet("Вхід шкільним акаунтом", `<h2>Увійти шкільним акаунтом</h2><p class="muted" id="gsiNote">Завантажую вхід Google…</p><div id="gsiBtn" class="gsi-btn"></div>`, close=>{
+    window.SLID_SYNC.googleButton($("#gsiBtn"), token=>{ close(); if(!token){ syncMsg="Не вдалося увійти. Спробуй ще раз."; render(); return; } askMine(mine=>syncLogin(()=>SYNC.loginGoogle(token, mine))); })
+      .then(ok=>{ const n=$("#gsiNote"); if(n) n.textContent= ok ? "Обери акаунт своєї школи." : "Не вдалося завантажити вхід Google. Перевір інтернет і спробуй знову."; });
+  });
+}
+function syncCodeEnter(){
+  syncSheet("Ввести код", `<h2>Ввести код з іншого пристрою</h2>
+    <p class="muted">На пристрої, де ти вже увійшов: Профіль → Мої пристрої → «Код для іншого пристрою».</p>
+    <div class="field"><label for="pairIn"><b>Код</b></label><input id="pairIn" maxlength="9" autocomplete="one-time-code" autocapitalize="characters" spellcheck="false" autofocus></div>
+    <button class="btn" id="pairGo" type="button">Підтвердити</button>`, close=>{
+      const go=()=>{ const code=$("#pairIn").value.trim(); if(!code) return; close(); askMine(mine=>syncLogin(()=>SYNC.claim(code, mine))); };
+      $("#pairGo").onclick=go; $("#pairIn").addEventListener("keydown",e=>{ if(e.key==="Enter") go(); });
+    });
+}
+async function syncPair(){
+  const r=await SYNC.pairing();
+  if(!r.ok){ syncMsg=r.text; render(); return; }
+  const end=Date.parse(r.expiresAt)||Date.now()+600000;
+  let t=null; const close=syncSheet("Код для іншого пристрою", `<h2>Код для іншого пристрою</h2><div class="pair-code" id="pairCode">${esc(r.code)}</div>
+    <p class="muted">Введи його на іншому пристрої: Профіль → Мої пристрої → «Ввести код». <span id="pairLeft" aria-live="off"></span></p>`, ()=>{});
+  const tick=()=>{ const el=$("#pairLeft"); if(!el){ clearInterval(t); return; } const s=Math.max(0,Math.round((end-Date.now())/1000));
+    el.textContent= s ? `Код діє ще ${Math.floor(s/60)}:${String(s%60).padStart(2,"0")}.` : "Код більше не діє — візьми новий."; if(!s) clearInterval(t); };
+  tick(); t=setInterval(tick,1000); void close;
 }
 function installCard(){
   const P=window.SLID_PWA; if(!P || P.standalone) return "";
@@ -699,8 +794,13 @@ function bindView(){
   const sw=$("#swUnlock"); if(sw) sw.onclick=()=>{ S.unlockAll=!S.unlockAll; save(); render(); };
   const ib=$("#installBtn"); if(ib) ib.onclick=async()=>{ if(await window.SLID_PWA.install()) toast(ic("check")+"Встановлено"); render(); };
   const dm=$("#demo"); if(dm) dm.onclick=()=>{ fillDemo(); save(); toast(ic("check")+"Демо-прогрес заповнено"); tab="progress"; render(); };
+  const sg=$("#syncGoogle"); if(sg) sg.onclick=syncGoogle;
+  const sc=$("#syncCode"); if(sc) sc.onclick=syncCodeEnter;
+  const sn=$("#syncNow"); if(sn) sn.onclick=async()=>{ syncMsg=""; const r=await SYNC.sync(); if(r.text) syncMsg=r.text; else if(r.s==="ok") toast(ic("check")+"Синхронізовано"); if($("#player").hidden) render(); };
+  const sp=$("#syncPair"); if(sp) sp.onclick=syncPair;
+  const so=$("#syncOut"); if(so) so.onclick=()=>{ SYNC.signOut(); syncMsg=""; toast("Синхронізацію вимкнено. Прогрес лишився на пристрої"); render(); };
   const rs=$("#reset"); if(rs) rs.onclick=()=>{ if(!confirmReset){ confirmReset=true; render(); setTimeout(()=>{ confirmReset=false; if(tab==="profile") render(); },4000); return; }
-    const keep={name:S.name,theme:S.theme,subject:S.subject,grade:S.grade}; HYPS.reset(); EV.log("reset"); EV.newProfile(); S=Object.assign(fresh(),keep); confirmReset=false; save(); toast(ic("check")+"Прогрес скинуто"); render(); };
+    const keep={name:S.name,theme:S.theme,subject:S.subject,grade:S.grade}; SYNC.signOut(); HYPS.reset(); EV.log("reset"); EV.newProfile(); S=Object.assign(fresh(),keep); confirmReset=false; save(); toast(ic("check")+"Прогрес скинуто"); render(); };
 }
 function toast(html){ const t=$("#toast"); t.innerHTML=`<div>${html}</div>`; clearTimeout(toast.t); toast.t=setTimeout(()=>t.innerHTML="",1900); }
 

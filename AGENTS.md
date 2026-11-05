@@ -26,6 +26,7 @@
 | `app/app.js` | рушій: навігація, екрани, гейміфікація, збереження `slid.v1` | розробник |
 | `app/learn.js` · `evidence.js` · `hyp.js` | персоналізація · журнал подій · гіпотези (тінь) | розробник |
 | `app/math.js` · `lab.js` · `registry.js` | формули · лабораторія · реєстр `SLID.*` | розробник |
+| `app/sync.js`, `app/config.js` | синхронізація прогресу з бекендом: злиття стану, вхід, код прив'язки (тести `node tools/test-sync.mjs`); config.js генерує build із `SLID_API` | розробник |
 | `app/lang.js` | мовні вправи gaps / pick / stress / word / split (CONTENT_SCHEMA §4.1; тести `node tools/test-lang.mjs`) | розробник |
 | `content/subjects/<предмет>.js`, `content/<предмет>/plan.js`, `content/catalog.js` | метадані, план, «скоро» | лише куратор |
 | `content/<предмет>/g<клас>-<id>.js` | **один файл = один розділ з уроками** | автор розділу |
@@ -51,7 +52,7 @@ npm run check               # build + node-тести + validate + graph-report 
 python3 tools/playtest.py [--section ID[,ID…]] [--port N]    # пройти уроки в браузері; невідомий id — код 2
 python3 tools/test-answer-ui.py --suite regression           # браузерна регресія рушія (не в check; у CI — job browser, блокує deploy)
 node tools/playtest-pick.mjs [--max-lessons N] [файли…]      # піднабір плейтесту CI: змінені розділи + покриття типів екранів + тести рівня
-node tools/test-ui.mjs [--browser P]                         # браузер (Node Playwright): «Тренування» з also, замок уроку, запобіжник екрана, оновлення PWA; не в check, у CI — job browser
+node tools/test-ui.mjs [--browser P]                         # браузер (Node Playwright): «Тренування» з also, замок уроку, запобіжник екрана, оновлення PWA, синхронізація двох пристроїв; не в check, у CI — job browser
 node tools/stats.mjs [--subject S]                           # метрики стилю → reports/style-S.md
 node tools/claim.mjs list|claim|move ...                     # черга задач
 node tools/make-tasks.mjs [--subject S]                      # задачі на написання з плану

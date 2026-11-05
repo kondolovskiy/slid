@@ -37,6 +37,9 @@ Job `browser` (окремий runner, усе послідовно — парал
 - `app/update.js`: перезавантаження після оновлення (нижче).
 - Service worker працює лише через http(s): з `file://` і в артефакті Claude він тихо вимикається.
 
+### Бекенд для синхронізації (engine-sync-login)
+Змінні репозиторію (Settings → Secrets and variables → Actions → Variables): `SLID_API` — адреса бекенду `https://…` (Railway), `SLID_GOOGLE_CLIENT_ID` — OAuth client id для Google Identity Services (його «Authorized JavaScript origins» — адреса сайту). Крок «Зібрати сайт» передає їх у `node tools/build.mjs` → `app/config.js` і нова версія `sw.js`. Без `SLID_API` збирається закомічений порожній config — синхронізації немає. На сервері: `CORS_ORIGINS` = адреса сайту, `GOOGLE_DOMAINS` = домен школи (docs/BACKEND.md). Локально: `SLID_API=http://localhost:3000 node tools/build.mjs` (не коміть такий config.js — CI перевіряє, що згенеровані файли збігаються).
+
 ### Оновлення PWA (атомарна версія; engine-sw-version-skew)
 Застосунок мусить працювати однією версією: новий зміст (index.html зі списком скриптів, `content/*.js`) зі старим рушієм (`app/*.js`) дає екрани, яких рушій не вміє показати (баг 05.11: порожній екран `split`, «Перевірити» неактивна).
 1. **Сторінка й файли — з кешу однієї версії.** SW віддає `index.html` (навігацію `/`, `/index.html`) і всі свої файли лише з `slid-<VERSION>` — кешу, який він сам наповнив; мережа — тільки для того, чого там немає. Тож після деплою перше відкриття — ще ціла стара версія.

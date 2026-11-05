@@ -4,7 +4,7 @@
    чого в кеші цієї версії немає. Нова версія: встановлення (кожен файл перевіряється на сервері, cache: "no-cache") → skipWaiting →
    activate (старі кеші видаляються) → clients.claim → сторінка отримує controllerchange й перезавантажується,
    коли це безпечно (app/update.js: не посеред уроку чи тесту рівня). Google Fonts — з кешу з фоновим оновленням. */
-const VERSION = "29dbfeed30";
+const VERSION = "45c1e0aec2";
 const CACHE = "slid-" + VERSION;
 const FONTS = "slid-fonts";
 const ASSETS = [
@@ -233,6 +233,8 @@ const ASSETS = [
   "./app/math.js",
   "./app/lang.js",
   "./app/hyp.js",
+  "./app/config.js",
+  "./app/sync.js",
   "./app/app.js",
   "./img/h5-anna.jpg",
   "./img/h5-kma.jpg",

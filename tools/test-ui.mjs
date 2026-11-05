@@ -15,6 +15,8 @@
 //  8) Телефон (devices["Pixel 7"], engine-list-p3 п. 4): поле масштабу (number + scale) — inputmode="decimal" і кнопка «:» (на цифровій
 //     клавіатурі двокрапки немає); «1 : 10000» набирається дотиками й зараховується; ratio — кнопка «:» вставляє в місце курсора;
 //     без scale кнопки «:» немає.
+//  9) Синхронізація прогресу (engine-sync-login): фейковий API і фейк Google Identity Services; вхід «мій прогрес», код прив'язки на другому
+//     пристрої, злиття балів, офлайн-черга, «не мій прогрес» на спільному пристрої, помилки 401, вихід, «Скинути прогрес»; без адреси API — картки немає.
 //  5–7) Service worker (engine-sw-version-skew): деплой нової версії не змішує index.html і app.js; файл зі старого кешу не віддається
 //     (P3-6); оновлення не перезавантажує сторінку посеред уроку, а версія подій журналу лишається версією сторінки (P3-4); застосунок зі старим SW після одного змішаного відкриття сам переходить на консистентну нову версію.
 // Запуск: node tools/test-ui.mjs [--browser /opt/pw-browsers/chromium]
@@ -238,6 +240,95 @@ async function phoneScenarios(browser) {
   await ctx.close();
 }
 
+
+/* 9) Синхронізація прогресу (engine-sync-login): фейковий API (семантика server/: CAS за rev, 409, name відкидається, коди прив'язки
+   одноразові, CORS), app/config.js з адресою фейку, скрипт Google Identity Services — фейк із кнопкою, що повертає id_token.
+   Два пристрої — два контексти браузера (окремі localStorage). Без справжнього Google і бекенду. */
+async function syncScenarios(browser) {
+  const L = new Map(), codes = new Map(), bodies = []; let seq = 0;
+  const api = http.createServer((req, res) => {
+    const send = (st, d) => { res.writeHead(st, { "content-type": "application/json", "access-control-allow-origin": "*" }); res.end(d === undefined ? "" : JSON.stringify(d)); };
+    if (req.method === "OPTIONS") { res.writeHead(204, { "access-control-allow-origin": "*", "access-control-allow-headers": "authorization, content-type", "access-control-allow-methods": "GET, PUT, POST" }); res.end(); return; }
+    let raw = ""; req.on("data", c => raw += c); req.on("end", () => {
+      const body = raw ? JSON.parse(raw) : null, p = new URL(req.url, "http://x").pathname, tok = (req.headers.authorization || "").replace(/^Bearer /, "");
+      if (body) bodies.push(raw);
+      const who = tok && [...L.values()].find(x => x.tokens.includes(tok)), issue = x => { const t = "t" + (++seq); x.tokens.push(t); send(200, { id: x.id, token: t }); };
+      if (req.method === "POST" && p === "/v1/auth/google") { if (!/^tok-/.test(body.idToken)) return send(401, {}); let x = L.get(body.idToken); if (!x) L.set(body.idToken, x = { id: "L" + (++seq), tokens: [], rev: 0, data: null }); return issue(x); }
+      if (req.method === "POST" && p === "/v1/pairing/claim") { const k = String(body.code).toUpperCase().replace(/[\s-]/g, ""), x = codes.get(k); if (!x) return send(401, {}); codes.delete(k); return issue(x); }
+      if (!who) return send(401, {});
+      if (req.method === "POST" && p === "/v1/pairing") { const code = "K" + String(++seq).padStart(5, "7"); codes.set(code, who); return send(201, { code, expiresAt: new Date(Date.now() + 600000).toISOString() }); }
+      if (req.method === "GET" && p === "/v1/me") return send(200, { id: who.id, school: "school.example" });
+      if (req.method === "GET" && p === "/v1/progress") return send(200, { rev: who.rev, data: who.data });
+      if (req.method === "PUT" && p === "/v1/progress") { if (body.rev !== who.rev) return send(409, { rev: who.rev, data: who.data }); delete body.data.name; who.rev++; who.data = body.data; return send(200, { rev: who.rev, data: who.data }); }
+      send(404, {});
+    });
+  });
+  await new Promise(r => api.listen(0, "127.0.0.1", r));
+  const API = `http://127.0.0.1:${api.address().port}`;
+  const GSI = `window.google={accounts:{id:{initialize(o){window.__gsi=o;},renderButton(el){const b=document.createElement("button");b.id="fakeGsi";b.type="button";b.textContent="Google";b.onclick=()=>window.__gsi.callback({credential:window.__gsiTok||"tok-anna"});el.appendChild(b);}}}};`;
+  const device = async (state) => {
+    const ctx = await browser.newContext({ viewport: { width: 400, height: 860 }, serviceWorkers: "block" });
+    const page = await ctx.newPage(), errors = []; page.on("pageerror", e => errors.push(String(e))); page.setDefaultTimeout(8000);
+    await page.route("**/fonts.googleapis.com/**", r => r.abort());
+    await page.route("**/app/config.js", r => r.fulfill({ contentType: "text/javascript", body: `window.SLID_CONFIG=${JSON.stringify({ api: API, googleClientId: "qa.apps.googleusercontent.com" })};` }));
+    await page.route("https://accounts.google.com/gsi/client", r => r.fulfill({ contentType: "text/javascript", body: GSI }));
+    await page.goto(URL0); await page.evaluate(s => { localStorage.clear(); localStorage.setItem("slid.v1", JSON.stringify(s)); }, state); await page.reload();
+    await page.click('.tab[data-tab="profile"]');
+    return { ctx, page, errors, st: () => page.evaluate(() => JSON.parse(localStorage.getItem("slid.v1"))), sy: () => page.evaluate(() => JSON.parse(localStorage.getItem("slid.sync") || "null")) };
+  };
+  const base = { grade: 5, subject: "math", unlockAll: true };
+  const A = await device({ ...base, name: "Анна", xp: 100, days: { "2026-11-04": 100 }, lessons: { fa1: { done: true, stars: 2, best: 40 } } });
+  ok(await A.page.locator("#syncCard").count() === 1, "sync: з адресою API у профілі є «Мої пристрої»");
+  await A.page.click("#syncGoogle"); await A.page.click("#fakeGsi");
+  ok(/Це твій прогрес/.test(await A.page.locator(".sheet h2").innerText()), "sync: є прогрес на пристрої — питання «Це твій прогрес?»");
+  await A.page.click("#mineYes");
+  ok(await until(async () => L.get("tok-anna")?.data?.xp === 100), `sync: «Так, мій» — прогрес пристрою на сервері (xp ${L.get("tok-anna")?.data?.xp})`);
+  ok(!bodies.some(b => /Анна|"name"/.test(b)), "sync: ім'я на сервер не передано");
+  ok(await until(async () => /school\.example/.test(await A.page.locator("#syncState").innerText())), "sync: картка — шкільний акаунт і стан");
+  // код прив'язки → другий пристрій зі своїм прогресом
+  await A.page.click("#syncPair"); const code = await A.page.locator("#pairCode").innerText();
+  ok(/^K\d{5}$/.test(code) && /Код діє ще 9:5\d|Код діє ще 10:00/.test(await A.page.locator("#pairLeft").innerText()), `sync: код для іншого пристрою з таймером (${code})`);
+  await A.page.click("#closeSheet");
+  const B = await device({ ...base, name: "Аня", xp: 30, days: { "2026-11-05": 30 }, lessons: { fb1: { done: true, stars: 3, best: 30 } } });
+  await B.page.click("#syncCode"); await B.page.fill("#pairIn", code.toLowerCase().slice(0, 3) + " " + code.toLowerCase().slice(3)); await B.page.click("#pairGo"); await B.page.click("#mineYes");
+  ok(await until(async () => (await B.st()).xp === 130), `sync: код + «мій» — бали разом (130), а ${(await B.st()).xp}`);
+  const sb = await B.st(); ok(sb.name === "Аня" && sb.lessons.fa1?.done && sb.lessons.fb1?.done, "sync: уроки з обох пристроїв, ім'я пристрою лишилось");
+  await A.page.click("#syncNow"); ok(await until(async () => (await A.st()).xp === 130), "sync: перший пристрій отримав злитий прогрес");
+  ok((await A.st()).name === "Анна", "sync: на першому пристрої ім'я своє");
+  // офлайн: зміни в черзі, з мережею — відправлено
+  await B.ctx.setOffline(true);
+  await B.page.evaluate(() => { const s = JSON.parse(localStorage.getItem("slid.v1")); return s; });
+  await B.page.click("#demo");   // save() → у чергу
+  await B.page.click('.tab[data-tab="profile"]'); await B.page.click("#syncNow");
+  ok(await until(async () => /Немає мережі/.test(await B.page.locator("#syncState").innerText())), `sync: офлайн — «Немає мережі…», а «${await B.page.locator("#syncState").innerText()}»`);
+  const q = await B.sy(); ok(q && q.dirty === true, "sync: офлайн — зміни в черзі (slid.sync dirty)");
+  const demoXp = (await B.st()).xp;
+  await B.ctx.setOffline(false);
+  ok(await until(async () => L.get("tok-anna").data.xp === demoXp && (await B.sy()).dirty === false), `sync: мережа повернулась — черга відправлена сама (сервер ${L.get("tok-anna").data.xp}, пристрій ${demoXp})`);
+  // «Ні, не мій»: спільний пристрій — чужий прогрес не потрапляє на сервер, пристрій отримує прогрес акаунта
+  await A.page.click("#syncPair"); const code2 = await A.page.locator("#pairCode").innerText(); await A.page.click("#closeSheet");
+  const C = await device({ ...base, grade: 7, name: "Петро", xp: 999, lessons: { zz9: { done: true, stars: 1, best: 1 } } });
+  await C.page.click("#syncCode"); await C.page.fill("#pairIn", code2); await C.page.click("#pairGo"); await C.page.click("#mineNo");
+  ok(await until(async () => (await C.st()).xp === demoXp), `sync: «Ні, не мій» — на пристрої прогрес акаунта (${(await C.st()).xp})`);
+  const sc = await C.st(); ok(!sc.lessons.zz9 && !L.get("tok-anna").data.lessons.zz9 && L.get("tok-anna").data.xp === demoXp && sc.grade === 5 && sc.name === "Петро", "sync: «не мій» — чужого уроку немає ні на пристрої, ні на сервері; клас з акаунта");
+  // помилки входу
+  await C.page.click("#syncOut"); ok(await C.page.locator("#syncCode").count() === 1 && (await C.sy()) === null, "sync: «Вийти на цьому пристрої» — slid.sync очищено");
+  ok((await C.st()).xp === demoXp, "sync: після виходу прогрес лишився на пристрої");
+  await C.page.click("#syncCode"); await C.page.fill("#pairIn", "ZZZZZZ"); await C.page.click("#pairGo"); await C.page.click("#mineYes");
+  ok(await until(async () => /Код невірний/.test(await C.page.locator(".sync-err").innerText().catch(() => ""))), "sync: невірний код — «Код невірний або вже не діє»");
+  await C.page.evaluate(() => { window.__gsiTok = "personal"; }); await C.page.click("#syncGoogle"); await C.page.click("#fakeGsi"); await C.page.click("#mineNo");
+  ok(await until(async () => /не шкільний/.test(await C.page.locator(".sync-err").innerText().catch(() => ""))), "sync: особистий акаунт (401) — «Цей акаунт не шкільний»");
+  // «Скинути прогрес» на пристрої з входом — синхронізацію вимкнено, сервер не чіпаємо
+  await A.page.click("#reset"); await A.page.click("#reset");
+  ok((await A.sy()) === null && L.get("tok-anna").data.xp === demoXp, "sync: «Скинути прогрес» — вихід на пристрої, прогрес на сервері лишився");
+  for (const d of [A, B, C]) { ok(!d.errors.length, "sync: помилки сторінки: " + d.errors.join(" | ")); await d.ctx.close(); }
+  // без адреси API — картки немає, мережевих запитів до API немає
+  const ctx = await browser.newContext({ serviceWorkers: "block" }), p0 = await ctx.newPage(); await p0.route("**/fonts.googleapis.com/**", r => r.abort());
+  await p0.goto(URL0); await p0.evaluate(s => localStorage.setItem("slid.v1", JSON.stringify(s)), base); await p0.reload(); await p0.click('.tab[data-tab="profile"]');
+  ok(await p0.locator("#syncCard").count() === 0, "sync: без адреси API (типовий config.js) картки немає");
+  await ctx.close(); api.close();
+}
+
 const browser = await pw.chromium.launch(BROWSER ? { executablePath: BROWSER } : {});
 console.log(`test-ui: Chromium ${browser.version()} (${BROWSER || "власний Playwright, " + (process.env.PLAYWRIGHT_BROWSERS_PATH || "~/.cache/ms-playwright")})`);
 try {
@@ -318,6 +409,9 @@ try {
 
   // 8) Телефон: «:» у полях масштабу й відношення (engine-list-p3 п. 4)
   await phoneScenarios(browser);
+
+  // 9) Синхронізація прогресу між пристроями (engine-sync-login)
+  await syncScenarios(browser);
 
   // 5–7) Оновлення service worker без змішування версій (engine-sw-version-skew; docs/PUBLISHING.md «Оновлення PWA»)
   await swScenarios(browser);
