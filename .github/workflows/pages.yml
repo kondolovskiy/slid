@@ -1,11 +1,20 @@
 # Слід · публікація на GitHub Pages при кожному пуші в main.
 # Одноразово: Settings → Pages → Build and deployment → Source: «GitHub Actions».
+# Job browser (браузерна регресія рушія + плейтест піднабору розділів) блокує deploy; на pull_request — ті самі перевірки без публікації.
 name: Pages
 
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
+    inputs:
+      playtest:
+        description: "Плейтест: subset — змінені розділи + покриття типів екранів + тести рівня (≈ 5 хв); full — усі уроки (≈ 50 хв)"
+        type: choice
+        options: [subset, full]
+        default: subset
 
 permissions:
   contents: read
@@ -13,7 +22,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages
+  group: pages-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -41,23 +50,107 @@ jobs:
           node tools/test-graph-report.mjs
           node tools/test-make-tasks.mjs
           node tools/test-diff-answers.mjs
+          node tools/test-playtest-pick.mjs
           node tools/validate.mjs --quiet
       - name: Згенеровані файли закомічені
         run: |
           git diff --exit-code -- index.html sw.js content/manifest.json \
             || (echo "::error::Запусти локально node tools/build.mjs і закоміть index.html, sw.js, content/manifest.json" && exit 1)
       - name: Зібрати сайт (лише файли застосунку)
+        if: github.event_name != 'pull_request'
         run: |
           mkdir _site
           cp -r index.html manifest.webmanifest sw.js app content img icons _site/
           touch _site/.nojekyll
       - uses: actions/configure-pages@v5
+        if: github.event_name != 'pull_request'
       - uses: actions/upload-pages-artifact@v3
+        if: github.event_name != 'pull_request'
         with:
           path: _site
 
+  # Браузерні тести (tools-ci-answer-ui). Окремий runner, усе послідовно в одному процесі на крок: паралельні браузерні прогони
+  # флейкають TimeoutError (pitfalls). Перезапуск червоного job — лише після того, як прочитано лог: повторне падіння = баг, не флейк.
+  browser:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read   # код PR тут виконується — без pages/id-token
+    timeout-minutes: ${{ inputs.playtest == 'full' && 120 || 45 }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: tools/requirements-browser.txt
+      - name: Playwright (Python)
+        id: pw
+        run: |
+          python -m pip install -r tools/requirements-browser.txt
+          echo "version=$(python -c 'import importlib.metadata as m; print(m.version("playwright"))')" >> "$GITHUB_OUTPUT"
+      - name: Кеш браузера Playwright
+        id: pw-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: ms-playwright-${{ runner.os }}-${{ steps.pw.outputs.version }}
+      - name: Chromium і системні бібліотеки
+        id: chromium
+        run: |
+          if [ "${{ steps.pw-cache.outputs.cache-hit }}" = "true" ]; then
+            python -m playwright install-deps chromium
+          else
+            python -m playwright install --with-deps chromium
+          fi
+      # головна регресія app/ (evidence, hyp, half_credit, graph_g3, gaps_order …); Chromium — свій (/opt/pw-browsers у CI немає)
+      - name: Регресія рушія (test-answer-ui --suite regression)
+        timeout-minutes: 25
+        run: python tools/test-answer-ui.py --suite regression
+      # плейтест іде й після червоної регресії (один прогін — повна картина), але не після зламаного встановлення браузера
+      - name: Піднабір плейтесту (змінені розділи + покриття + тести рівня)
+        id: pick
+        if: ${{ !cancelled() && steps.chromium.outcome == 'success' && inputs.playtest != 'full' }}
+        env:
+          EVENT: ${{ github.event_name }}
+          PR_BASE: ${{ github.event.pull_request.base.sha }}
+          PUSH_BEFORE: ${{ github.event.before }}
+        run: |
+          case "$EVENT" in pull_request) BASE="$PR_BASE" ;; push) BASE="$PUSH_BEFORE" ;; *) BASE="" ;; esac
+          : > "$RUNNER_TEMP/changed.txt"
+          if [ -n "$BASE" ] && [ "$BASE" != "0000000000000000000000000000000000000000" ]; then
+            # нові файли першими: у межах бюджету уроків (playtest-pick --max-lessons) новий розділ важливіший за правлений
+            if git fetch --no-tags --depth=1 origin "$BASE" \
+              && { git diff --name-only --diff-filter=A "$BASE" HEAD && git diff --name-only --diff-filter=a "$BASE" HEAD; } > "$RUNNER_TEMP/changed.txt"; then
+              echo "Змінено файлів відносно ${BASE:0:7}: $(wc -l < "$RUNNER_TEMP/changed.txt")"
+            else
+              echo "::warning::Не вдалося порівняти з $BASE — лише покриття й тести рівня, без змінених розділів"
+              : > "$RUNNER_TEMP/changed.txt"
+            fi
+          fi
+          mapfile -t CHANGED < "$RUNNER_TEMP/changed.txt"
+          IDS=$(node tools/playtest-pick.mjs --max-lessons 200 "${CHANGED[@]}" 2> "$RUNNER_TEMP/pick.log") || { cat "$RUNNER_TEMP/pick.log"; exit 1; }
+          cat "$RUNNER_TEMP/pick.log"
+          if grep -q '^Понад бюджет' "$RUNNER_TEMP/pick.log"; then
+            echo "::warning::$(grep '^Понад бюджет' "$RUNNER_TEMP/pick.log" | cut -c1-900) — повний прогін: Actions → Pages → Run workflow (гілка PR, playtest: full)"
+          fi
+          echo "ids=$IDS" >> "$GITHUB_OUTPUT"
+      - name: Плейтест піднабору
+        if: ${{ !cancelled() && steps.pick.outcome == 'success' }}
+        timeout-minutes: 30
+        env:
+          IDS: ${{ steps.pick.outputs.ids }}
+        run: python tools/playtest.py --section "$IDS"
+      - name: Плейтест усіх уроків
+        if: ${{ !cancelled() && steps.chromium.outcome == 'success' && inputs.playtest == 'full' }}
+        timeout-minutes: 90
+        run: python tools/playtest.py
+
   deploy:
-    needs: build
+    needs: [build, browser]
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
