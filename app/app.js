@@ -1071,6 +1071,9 @@ function answerUI(s, grade, signed){
   const keys=sym? sym[0].slice() : kind==="comparison"? ["<",">","="] : kind==="list"? ["-","/",";"," "] : kind==="factors"? ["*","^"] : kind==="divrem"? [" ост. "] : [...(nk.minus?["-"]:[]), ...(nk.frac?["/"," "]:[])];
   if(kind==="list" && /[√∛∜±]/.test(String(s.answer))) keys.push("√","±");
   else if(kind==="list" && (Number(grade)||0)>=8) keys.push("±");   // «±3» приймає будь-який list (engine-answer-formats-ister п. 1); з 8 класу — квадратні рівняння
+  /* масштаб «1 : n» (scale, engine-list-p3 п. 4): поле лишається inputmode="decimal" (цифрова клавіатура), а «:» — кнопкою, як у time:
+     на цифровій клавіатурі телефона двокрапки немає. ratio має «:» в ANS_UI (inputmode="text"). */
+  if(kind==="number" && s.scale===true) keys.push(":");
   if(kind==="expression") for(const c of new Set(String(s.answer).match(/[\u0370-\u03ff]/g)||[])) if(c!=="π") keys.push(c);   // α, β… з ключа
   const units= kind==="quantity"? LEARN.quantityUnits(s)||[] : null;
   if(units) keys.push(...units);

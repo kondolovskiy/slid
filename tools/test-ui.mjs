@@ -11,6 +11,9 @@
 //     «знайоме») відкритий сам і відкриває наступний; known плану іншого класу — ні.
 //  4) Запобіжник версій у рушії: екран невідомого типу (урок і тест рівня) — повідомлення «Онови застосунок» і «Пропустити»
 //     без зарахування (у тесті — «Ще не знаю»).
+//  8) Телефон (devices["Pixel 7"], engine-list-p3 п. 4): поле масштабу (number + scale) — inputmode="decimal" і кнопка «:» (на цифровій
+//     клавіатурі двокрапки немає); «1 : 10000» набирається дотиками й зараховується; ratio — кнопка «:» вставляє в місце курсора;
+//     без scale кнопки «:» немає.
 //  5–7) Service worker (engine-sw-version-skew): деплой нової версії не змішує index.html і app.js; оновлення не перезавантажує
 //     сторінку посеред уроку; застосунок зі старим SW після одного змішаного відкриття сам переходить на консистентну нову версію.
 // Запуск: node tools/test-ui.mjs [--browser /opt/pw-browsers/chromium]
@@ -164,6 +167,55 @@ async function swScenarios(browser) {
   await ctx.close();
 }
 
+async function phoneScenarios(browser) {
+  const ctx = await browser.newContext({ ...pw.devices["Pixel 7"], serviceWorkers: "block" });
+  const page = await ctx.newPage(), errors = [];
+  page.on("pageerror", e => errors.push(String(e)));
+  await page.route("**/fonts.googleapis.com/**", r => r.abort());
+  page.setDefaultTimeout(7000);
+  await page.goto(URL0);
+  await page.evaluate(s => localStorage.setItem("slid.v1", JSON.stringify(s)), { ...seed, grade: 6 });
+  await page.reload();
+  ok(await page.evaluate(() => matchMedia("(pointer: coarse)").matches), "телефон: емуляція Pixel 7 — основний вказівник палець (pointer: coarse)");
+  const A = (o, title) => ({ type: "answer", title, body: "QA", steps: ["QA"], ...o });
+  const SEC = { id: "fS", grade: 6, weeks: [15, 16], title: "QA S", why: "QA", lessons: [{ id: "fs1", title: "Урок fs1", icon: "book", screens: [
+    { type: "intro", title: "Початок", body: "QA" }, A({ answer: 10000, scale: true }, "Масштаб"), A({ answer: 10000, scale: true }, "Масштаб 2"),
+    A({ answerKind: "ratio", answer: "2 : 3" }, "Відношення"), A({ answer: 10000 }, "Без scale"), { type: "info", title: "Кінець", body: "QA" }] }] };
+  await page.evaluate(install, FIX);
+  await page.evaluate(sec => { SLID_SUBJECTS.find(c => c.id === "math").sections.push(sec); window.__slidStart("fs1"); }, SEC);
+  await page.tap("#action");   // інтро → масштаб
+  const field = () => page.evaluate(() => { const i = document.querySelector("#numIn"); return { mode: i.getAttribute("inputmode"), keys: [...document.querySelectorAll(".anskeys button")].map(b => b.dataset.ins),
+    help: document.querySelector("#stage .numbox ~ .fix")?.textContent || "", focused: document.activeElement === i }; });
+  const f1 = await field();
+  ok(f1.mode === "decimal", `телефон, scale: inputmode="decimal" (цифрова клавіатура), а ${f1.mode}`);
+  ok(f1.keys.includes(":"), `телефон, scale: є кнопка «:», а ${JSON.stringify(f1.keys)}`);
+  ok(/кнопка «:»/.test(f1.help), `телефон, scale: підказка про кнопку «:», а «${f1.help}»`);
+  ok(!f1.focused, "телефон: поле без автофокусу (клавіатура не відкривається сама)");
+  const verdict = async () => { await page.tap("#action"); return page.locator("#numIn").evaluate(i => i.classList.contains("is-ok") ? "ok" : i.classList.contains("is-bad") ? "bad" : "—"); };
+  await page.tap("#numIn"); await page.keyboard.type("1"); await page.tap('.anskeys button[data-ins=":"]'); await page.keyboard.type("10000");
+  const v1 = await page.inputValue("#numIn");
+  ok(v1 === "1:10000", `телефон, scale: дотики «1», «:», «10000» дають «1:10000», а «${v1}»`);
+  ok(await verdict() === "ok", "телефон, scale: «1:10000» при ключі 10000 зараховано");
+  await page.tap("#action");   // → «Масштаб 2»: неправильний масштаб «1 : 1000» — bad
+  await page.tap("#numIn"); await page.keyboard.type("1 "); await page.tap('.anskeys button[data-ins=":"]'); await page.keyboard.type(" 1000");
+  ok(await verdict() === "bad", "телефон, scale: «1 : 1000» при ключі 10000 — не зараховано");
+  await page.tap("#numIn"); await page.fill("#numIn", "1 : 10000"); await page.dispatchEvent("#numIn", "input");
+  ok(await verdict() === "ok", "телефон, scale: друга спроба «1 : 10000» — зараховано");
+  await page.tap("#action");   // → відношення
+  const f2 = await field();
+  ok(f2.keys.includes(":") && f2.mode === "text", `телефон, ratio: кнопка «:» (inputmode text), а ${JSON.stringify(f2)}`);
+  await page.tap("#numIn"); await page.keyboard.type("23"); await page.locator("#numIn").evaluate(i => i.setSelectionRange(1, 1));
+  await page.tap('.anskeys button[data-ins=":"]');
+  const v2 = await page.inputValue("#numIn");
+  ok(v2 === "2:3", `телефон, ratio: «:» вставлено в місце курсора — «2:3», а «${v2}»`);
+  ok(await verdict() === "ok", "телефон, ratio: «2:3» зараховано");
+  await page.tap("#action");   // → без scale
+  const f3 = await field();
+  ok(f3.mode === "decimal" && !f3.keys.includes(":") && !/кнопка «:»/.test(f3.help), `телефон, без scale: ні кнопки «:», ні підказки, а ${JSON.stringify(f3)}`);
+  ok(!errors.length, "телефон, помилки сторінки: " + errors.join(" | "));
+  await ctx.close();
+}
+
 const browser = await pw.chromium.launch(BROWSER ? { executablePath: BROWSER } : {});
 try {
   const ctx = await browser.newContext({ viewport: { width: 400, height: 860 }, serviceWorkers: "block" });
@@ -240,6 +292,9 @@ try {
   ok(same(dres, { 0: await page.evaluate(() => SLID_LEARN.SKIP) }), `запобіжник у тесті рівня: завдання — «Ще не знаю» (SKIP), а ${JSON.stringify(dres)}`);
   ok(!errors.length, "помилки сторінки: " + errors.join(" | "));
   await ctx.close();
+
+  // 8) Телефон: «:» у полях масштабу й відношення (engine-list-p3 п. 4)
+  await phoneScenarios(browser);
 
   // 5–7) Оновлення service worker без змішування версій (engine-sw-version-skew; docs/PUBLISHING.md «Оновлення PWA»)
   await swScenarios(browser);

@@ -695,8 +695,9 @@ window.SLID_LEARN = (() => {
     return cand.length === 1 ? cand[0] : null;
   }
   // «x₁,₂ = ±3», «x_{1,2} = (1 ± √5)/2» (п. 8): один запис з «±» на обидва корені — та сама літера умови, що й для «x₁ = …»
-  // хвіст — без «;», переносу й «=», з «±»/«∓» (перевірка «±» окремо: «[^…]*[±∓][^…]*$» перебирав кожен «±» — квадратично)
-  const LIST_PM = new RegExp(String.raw`^\s*(?<l>[a-zA-Zа-яґєії])${WS("s1")}(?:₁\s*,\s*₂|_?\{?\s*1\s*,\s*2${WS("s2")}\}?)${WS("s3")}=(?<tail>[^;\n=]*)$`, "u");
+  // хвіст — без «;», переносу й «=», з «±»/«∓» (перевірка «±» окремо: «[^…]*[±∓][^…]*$» перебирав кожен «±» — квадратично);
+  // пробіли й перенос одразу після «=» поглинає WS("s4"), як «\s*» до engine-list-quadratic (engine-list-p3 п. 1)
+  const LIST_PM = new RegExp(String.raw`^\s*(?<l>[a-zA-Zа-яґєії])${WS("s1")}(?:₁\s*,\s*₂|_?\{?\s*1\s*,\s*2${WS("s2")}\}?)${WS("s3")}=${WS("s4")}(?<tail>[^;\n=]*)$`, "u");
   function listPre(s, v) {
     if (typeof v !== "string") return v;
     const pm = LIST_PM.exec(v), l = pm?.groups.l;
@@ -1520,6 +1521,8 @@ window.SLID_LEARN = (() => {
       return `Десятковий дріб — через кому, ${DEC_WORD[n] || `з ${n} знаками після коми`}${ex ? ": " + ex : ""}.`;
     }
     if (s.form === "improper") { const ex = pick(["7/3", "9/4", "11/5"]); return `Неправильний дріб — через риску, без цілої частини${ex ? ": " + ex : ""}.`; }
+    // scale (engine-list-p3 п. 4): кнопка «:» під полем — на цифровій клавіатурі телефона двокрапки немає; без прикладу-числа (≠ ключ)
+    if (s.scale === true) return "Масштаб можна записати й повністю — через двокрапку (кнопка «:»).";
     return null;
   }
   function numberKeys(s, grade, signed) {
@@ -2051,6 +2054,8 @@ window.SLID_LEARN = (() => {
       if (it.multiset !== undefined && (typeof it.multiset !== "boolean" || it.type !== "answer" || kind !== "list")) E.push(`${w}: multiset має бути boolean для answerKind list`);
       if (it.ordered !== undefined && (typeof it.ordered !== "boolean" || it.type !== "answer" || kind !== "list")) E.push(`${w}: ordered має бути boolean для answerKind list`);
       else if (it.ordered === true && it.multiset !== undefined) E.push(`${w}: ordered уже порівнює елементи по місцях і дозволяє повтори — multiset не потрібен`);
+      // «±» у ключі розгортається у два елементи без заданого порядку (рев'ю engine-list P3-3, engine-list-p3 п. 3)
+      else if (it.ordered === true && /[±∓]/.test(Array.isArray(it.answer) ? it.answer.join(";") : String(it.answer ?? ""))) E.push(`${w}: ordered не поєднується з «±»/«∓» у ключі — порядок розгорнутих елементів не визначено; запиши елементи окремо`);
       if (it.scale !== undefined && (typeof it.scale !== "boolean" || it.type !== "answer" || kind !== "number")) E.push(`${w}: scale має бути boolean для числової answer`);
       else if (it.scale === true && !(ka && !ka.frac && ka.d === 1 && ka.n > 1)) E.push(`${w}: scale — ключ: натуральне число n > 1 із масштабу 1 : n`);
       if ((kind === "time" || kind === "quantity") && it.type === "answer" && (it.unit !== undefined || it.unitForms !== undefined)) E.push(`${w}: ${kind} — без unit/unitForms${kind === "quantity" ? " (одиниці — у units)" : ""}`);
