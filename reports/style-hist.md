@@ -138,9 +138,9 @@
 | g8s5l2 День під Полтавою | 8 | 7 | 0.57 | 23 | 70 | 5.6 | 0.045 | 3 | — |
 | g8s5l3 Угода в Бендерах | 8 | 7 | 0.57 | 25 | 69 | 6.3 | 0.047 | 3 | — |
 | g8s5l4 Останній гетьман | 8 | 7 | 0.57 | 23 | 67 | 5.8 | 0.043 | 3 | — |
-| g8s5l5 Кінець булави і Січі | 8 | 7 | 0.57 | 22 | 67 | 6 | 0.056 | 3 | longWordShare нетипово для сім'ї (z=2) |
+| g8s5l5 Кінець булави і Січі | 8 | 7 | 0.57 | 22 | 68 | 6 | 0.056 | 3 | longWordShare нетипово для сім'ї (z=2) |
 | g8s5l6 Повстання в Холодному Яру | 8 | 7 | 0.57 | 22 | 58 | 5.6 | 0.05 | 3 | — |
-| g8s5l8 Кінець Кримського ханства | 8 | 9 | 0.56 | 28 | 52 | 5.8 | 0.024 | 3 | — |
+| g8s5l8 Кінець Кримського ханства | 8 | 9 | 0.56 | 28 | 52 | 5.8 | 0.026 | 3 | — |
 | g8s5l7 Архів Генеральної канцелярії (фінал) | 8 | 8 | 0.88 | 22 | 42 | 5.8 | 0.042 | 3 | — |
 | g9s1l1 Держава, що зникла з карти | 9 | 9 | 0.56 | 23 | 54 | 5.4 | 0.039 | 4 | — |
 | g9s1l2 Адреса: губернія, повіт | 9 | 9 | 0.56 | 21 | 46 | 4.9 | 0.038 | 4 | sentenceWords=4.9 поза [5; 13]; maxReadWords нетипово для сім'ї (z=-2) |
@@ -227,7 +227,7 @@
 
 - **5-6:lesson**: screens 7.82±1.13, gradedShare 0.58±0.08, readWordsPerScreen 22.91±3.82, maxReadWords 53.48±6.42, sentenceWords 6.04±0.39, longWordShare 0.04±0.01, typeVariety 3.18±0.73
 - **5-6:boss**: screens 6.64±0.48, gradedShare 0.85±0.01, readWordsPerScreen 12.57±3.04, maxReadWords 22.86±5.99, sentenceWords 5.08±0.42, longWordShare 0.04±0.01, typeVariety 3.29±0.45
-- **7-9:lesson**: screens 8.03±0.82, gradedShare 0.58±0.06, readWordsPerScreen 24.63±2.95, maxReadWords 61.18±7.76, sentenceWords 5.93±0.42, longWordShare 0.04±0.01, typeVariety 3.28±0.45
+- **7-9:lesson**: screens 8.03±0.82, gradedShare 0.58±0.06, readWordsPerScreen 24.63±2.95, maxReadWords 61.19±7.77, sentenceWords 5.93±0.42, longWordShare 0.04±0.01, typeVariety 3.28±0.45
 - **7-9:boss**: screens 7.2±0.4, gradedShare 0.86±0.01, readWordsPerScreen 21.47±2.83, maxReadWords 42.93±4.88, sentenceWords 5.49±0.41, longWordShare 0.03±0.01, typeVariety 3.13±0.34
 - **10-11:lesson**: screens 8.93±1.24, gradedShare 0.55±0.05, readWordsPerScreen 27.07±4.71, maxReadWords 61.12±8.34, sentenceWords 6.43±0.49, longWordShare 0.07±0.03, typeVariety 3.45±0.5
 - **10-11:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 23.9±2.84, maxReadWords 47.7±7.13, sentenceWords 6.13±0.63, longWordShare 0.07±0.02, typeVariety 3.6±0.49
