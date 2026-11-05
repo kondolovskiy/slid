@@ -1212,7 +1212,7 @@ function lock(){ $("#stage").querySelectorAll(".opt,.seg button,input,.sgn,.ansk
 
 function gradeNow(s){
   switch(s.type){
-    case "choice": return st===s.correct && false;   // MUTANT qa-ci-browser-mutant
+    case "choice": return st===s.correct;
     case "multi": { const c=new Set(s.correct); return c.size===st.size && [...c].every(x=>st.has(x)); }
     case "sort": return s.items.every((it,k)=>st[k]===it[1]);
     case "order": return st.every((k,p)=>k===p);
