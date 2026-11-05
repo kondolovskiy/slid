@@ -4,7 +4,7 @@ claimed_at: 2026-11-05T09:17:13.074Z
 id: curate-math-graph-ister-gaps
 type: graph
 subject: math
-status: review
+status: done
 claimed_by: curator-graph-math
 created: 2026-11-05
 depends_on: []
@@ -67,3 +67,6 @@ depends_on: []
 - docs/design/skill-graph-math.md (§3, V4, рядок про нічиї): «g6m6 optional» → optional лише уроки g6m6l1–l4 у матриці (D-048 п. 2), не розділ; для V4 g6m6 — звичайний розділ.
 - content/math/diag-g9.js, коментар (рядки 10–12): `for` впливає не лише на buildPlan, а й на тіньові передумови гіпотез (app/hyp.js `preIndex`: уроки pre-теми стають передумовами кожного уроку розділів `for`). Лише коментар — id, завдання, ключі, `rev` без змін.
 - «Зміни v11» у docs/math-personalization-coverage.md — не чіпав (матрицю змінює інший worktree): рядок MATRIX в inbox.
+
+## Верифікація лінії (verifier-graph-prob-tri, 2026-11-05)
+reports/verify/graph-prob-tri.md: лінії `prob` і `tri` прийнято, вузли `verified`, +3 ребра w 1 і 1 `why` (див. звіт §4). Уточнення до нотаток куратора: «жоден екран g6m6 не зводить до спільного знаменника» — неточно, boss g6m6l5 #5 (3/10 = 6/20 > 5/20); `requires` g6m6 → g6m2l3 лишається. `lines.*.st` → verified — разом з tasks/todo/tests-hyp-g3-verified-lines.md.
