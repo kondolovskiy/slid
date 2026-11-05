@@ -1,8 +1,10 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-05T07:32:03.957Z
 id: docs-skill-graph-math-g11m2
 type: docs
 status: todo
-claimed_by:
+claimed_by: eng-math-dg9
 created: 2026-11-05
 depends_on: [curate-math-g11m2-to-g10]
 ---
