@@ -1,6 +1,6 @@
 # Слід · публікація на GitHub Pages при кожному пуші в main.
 # Одноразово: Settings → Pages → Build and deployment → Source: «GitHub Actions».
-# Job browser (браузерна регресія рушія + плейтест піднабору розділів) блокує deploy; на pull_request — ті самі перевірки без публікації.
+# Job browser (браузерна регресія рушія + сценарії test-ui + плейтест піднабору розділів) блокує deploy; на pull_request — ті самі перевірки без публікації.
 name: Pages
 
 on:
@@ -114,6 +114,18 @@ jobs:
       - name: Регресія рушія (test-answer-ui --suite regression)
         timeout-minutes: 25
         run: python tools/test-answer-ui.py --suite regression
+      # сценарії рушія на Node (test-ui: Тренування з also, замок уроку, запобіжник невідомого екрана, оновлення PWA без змішування версій).
+      # Node-пакет playwright — тієї ж версії, що Python (steps.pw), у тимчасову теку runner, не в package.json проєкту; браузер — той самий
+      # ~/.cache/ms-playwright (та сама версія = та сама ревізія Chromium; /opt/pw-browsers у CI немає, тож test-ui бере Chromium Playwright).
+      # Іде й після червоної регресії (одна повна картина), але не після зламаного встановлення браузера.
+      - name: Сценарії рушія (test-ui, Node Playwright)
+        if: ${{ !cancelled() && steps.chromium.outcome == 'success' }}
+        timeout-minutes: 10
+        env:
+          PW_VERSION: ${{ steps.pw.outputs.version }}
+        run: |
+          npm install --prefix "$RUNNER_TEMP/pw-node" --no-save --no-audit --no-fund --ignore-scripts "playwright@$PW_VERSION"
+          PLAYWRIGHT_MODULE="$RUNNER_TEMP/pw-node/node_modules/playwright" node tools/test-ui.mjs
       # плейтест іде й після червоної регресії (один прогін — повна картина), але не після зламаного встановлення браузера
       - name: Піднабір плейтесту (змінені розділи + покриття + тести рівня)
         id: pick

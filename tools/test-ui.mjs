@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 // Слід · браузерні сценарії рушія на Node + Playwright (не Python: модуль playwright для Python є не скрізь). Почався як test-ui-ister.mjs
 // (рев'ю math-ister-migration P3-1, P3-3, P3-8; задача tools-ister-p3); перейменовано за темою (tools-math-ister-p3, рев'ю tools-ister-p3 P3-4) —
-// сюди додавай нові швидкі UI-сценарії рушія. Не входить у npm run check і CI — як tools/test-answer-ui.py; запускати окремо й по одному.
+// сюди додавай нові швидкі UI-сценарії рушія. Не входить у npm run check; у CI — крок job browser (pages.yml, tools-ci-test-ui), блокує deploy.
+// Локально запускати окремо й по одному (паралельні браузерні прогони флейкають).
 // Зміст — синтетична фікстура: після завантаження сторінки розділи, пули й тести математики підміняються (як pool_checks у
 // test-answer-ui.py), тож від живого content/ сценарій не залежить.
 //  1) «Тренування» з also: заголовки розділів — за програмою (клас, тижні), а не за порядком пулів; розділ один раз, хоч на нього
@@ -15,15 +16,17 @@
 //     сторінку посеред уроку; застосунок зі старим SW після одного змішаного відкриття сам переходить на консистентну нову версію.
 // Запуск: node tools/test-ui.mjs [--browser /opt/pw-browsers/chromium]
 // Playwright: require("playwright") (NODE_PATH) або PLAYWRIGHT_MODULE / /opt/node-tools/node_modules/playwright.
+// Браузер, як у test-answer-ui.py: --browser / SLID_BROWSER → /opt/pw-browsers/chromium, якщо є (PW_DEFAULT=1 вимикає) → Chromium самого
+// Playwright (PLAYWRIGHT_BROWSERS_PATH, типово ~/.cache/ms-playwright — так у CI, job browser у pages.yml).
 import http from "node:http"; import crypto from "node:crypto"; import fs from "node:fs"; import path from "node:path"; import { createRequire } from "node:module";
 import { ROOT } from "./lib.mjs";
 
 const args = process.argv.slice(2), opt = (k, d) => args.includes(k) ? args[args.indexOf(k) + 1] : d;
 const require = createRequire(import.meta.url);
 let pw;
-for (const m of ["playwright", process.env.PLAYWRIGHT_MODULE, "/opt/node-tools/node_modules/playwright"].filter(Boolean)) { try { pw = require(m); break; } catch {} }
+for (const m of [process.env.PLAYWRIGHT_MODULE, "playwright", "/opt/node-tools/node_modules/playwright"].filter(Boolean)) { try { pw = require(m); break; } catch {} }
 if (!pw) { console.error("Немає Node-модуля playwright: задай NODE_PATH або PLAYWRIGHT_MODULE"); process.exit(2); }
-const BROWSER = opt("--browser", fs.existsSync("/opt/pw-browsers/chromium") ? "/opt/pw-browsers/chromium" : undefined);
+const BROWSER = opt("--browser", process.env.SLID_BROWSER || (fs.existsSync("/opt/pw-browsers/chromium") && !process.env.PW_DEFAULT ? "/opt/pw-browsers/chromium" : undefined));
 
 const TYPES = { ".html": "text/html", ".js": "text/javascript", ".mjs": "text/javascript", ".json": "application/json", ".css": "text/css", ".svg": "image/svg+xml", ".png": "image/png", ".jpg": "image/jpeg", ".webmanifest": "application/manifest+json" };
 const server = http.createServer((req, res) => {
@@ -165,6 +168,7 @@ async function swScenarios(browser) {
 }
 
 const browser = await pw.chromium.launch(BROWSER ? { executablePath: BROWSER } : {});
+console.log(`test-ui: Chromium ${browser.version()} (${BROWSER || "власний Playwright, " + (process.env.PLAYWRIGHT_BROWSERS_PATH || "~/.cache/ms-playwright")})`);
 try {
   const ctx = await browser.newContext({ viewport: { width: 400, height: 860 }, serviceWorkers: "block" });
   const page = await ctx.newPage(), errors = [];
@@ -246,4 +250,4 @@ try {
 } finally { await browser.close(); server.close(); swServer.close(); }
 
 console.log(`test-ui: ${pass} ok, ${fail} ✗`);
-process.exit(fail ? 1 : 0);
+process.exit(fail || !pass ? 1 : 0);   // 0 перевірок — не успіх
