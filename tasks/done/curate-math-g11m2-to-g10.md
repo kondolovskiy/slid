@@ -4,7 +4,7 @@ claimed_at: 2026-11-05T06:48:17.134Z
 id: curate-math-g11m2-to-g10
 type: curate
 subject: math
-status: review
+status: done
 claimed_by: eng-math-g11
 created: 2026-11-05
 depends_on: [fix-math-pool-g11m6-order]

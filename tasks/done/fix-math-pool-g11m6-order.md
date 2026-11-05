@@ -5,7 +5,7 @@ id: fix-math-pool-g11m6-order
 type: fix
 subject: math
 grade: 11
-status: review
+status: done
 claimed_by: eng-math-g11
 created: 2026-11-04
 depends_on: [write-math-pool-g11m6, tests-hyp-snapshot-g11]
