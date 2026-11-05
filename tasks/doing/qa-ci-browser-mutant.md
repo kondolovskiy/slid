@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-05T09:24:11.637Z
 id: qa-ci-browser-mutant
 type: qa
 subject: all
 status: todo
-claimed_by:
+claimed_by: session-qa-ci
 created: 2026-11-05
 depends_on: [tools-ci-answer-ui]
 ---
