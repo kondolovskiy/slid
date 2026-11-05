@@ -4,7 +4,7 @@ claimed_at: 2026-11-05T09:42:07.237Z
 id: tests-hyp-snapshot-style-math
 type: tests
 subject: math
-status: review
+status: done
 claimed_by: eng-hyp-style
 created: 2026-11-05
 depends_on: [style-math-ister-followup]
