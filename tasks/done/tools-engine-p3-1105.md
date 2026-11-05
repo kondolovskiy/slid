@@ -4,7 +4,7 @@ claimed_at: 2026-11-05T19:15:11.675Z
 id: tools-engine-p3-1105
 type: engine
 subject: math
-status: review
+status: done
 claimed_by: eng-p3-1105
 created: 2026-11-05
 depends_on: []
@@ -52,4 +52,7 @@ depends_on: []
 **Мутанти** (у дереві, відновлено з копій): caches.match → test-ui 1 ✗; controllerchange завжди скидає → test-ui 1 ✗; без виклику warmVersion → test-ui 1 ✗; без vgen → test-evidence 1 ✗; без спільного vp → 3 ✗; ordered «лише [0]» → test-learn 1 ✗; keyVariant → true — виживає (еквівалентний, п. 9).
 
 **Прогони:** `npm run check` rc 0 (test-validate 1353, test-learn 2883, test-evidence 160, test-diff-answers 52 ok, validate 0 помилок / 72 попередження); `node tools/test-ui.mjs` — 63 ok, 0 ✗ (локальний /opt/pw-browsers/chromium). `python3 tools/test-answer-ui.py --suite regression` локально не запускався (Python-модуля playwright немає) — його прожене CI job `browser`; зміна app/evidence.js — лише браузерна обв'язка й ядро версії.
+
+### Рев'ю (reports/review/tools-engine-p3-1105.md): прийнято
+P3-1 (EVIDENCE.md: таймаут версії → null до кінця сесії) і P3-4 (PUBLISHING.md п. 7: `?v=` закриває половину випадків) — виправлено в документації наступним комітом. Лишаються відомими (не блокують): P3-2 — мутант «без слухача controllerchange» виживає (перший візит / Shift+F5 тестом не закріплено, так було й раніше); P3-3 — перевірка елементів у isPermutation не закріплена мутантом; P3-5 — гонка claim до виконання evidence.js; P3-6 — перехід зі старого SW: cv старого до перезавантаження.
 

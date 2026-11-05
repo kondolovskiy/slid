@@ -1,4 +1,7 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-05T19:34:27.458Z
+claimed_by: eng-sync
 id: engine-sync-login
 type: engine
 subject: app
