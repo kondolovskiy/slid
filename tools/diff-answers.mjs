@@ -112,7 +112,7 @@ function records(s) {
       "BC = ", "AO = ", "X", "X = ", "OX = ", "O", "KL = ", "\\vec{BC} = ", "A_1", "A_1 = ", "A₁", "A1", "A'", "A′ = ", "X_1", "B_1", "M'", "A_1 = A", "a_1", "A₂", "A''", "B₁", "A_{1} = "]) out.add(pre + wrap(parts));   // p3b: назви умови й образу
     // vec: назви вектора малою літерою, стрілка, подвійна назва; літери векторів з умови — з «=», «→» і без
     if (k.startsWith("coord")) { const ls = new Set(["c", "x", ...vecNames(s).all]);
-      for (const L of ls) for (const pre of [`${L} = `, `${L}→ = `, `${L}→`, `\\vec{${L}} = `, `${L}\u20D7`]) out.add(pre + wrap(parts));
+      for (const L of ls) for (const pre of [`${L} = `, `${L}→ = `, `${L}→`, `\\vec{${L}} = `, `\\vec ${L} = `, `${L}\u20D7`]) out.add(pre + wrap(parts));
       for (const pre of ["AB→ = ", "AB→", "M→ = ", "c = c = ", "→c", "c = AB = "]) out.add(pre + wrap(parts)); }
     // рев'ю kinds-new P3-3: змінено лише другу (третю) компоненту — перша правильна
     for (let i = 1; i < parts.length; i++) { const p = parts[i], a1 = NEW.parseAns(p); for (const alt of [a1 ? String(a1.n / a1.d + 1).replace(".", ",") : p + " + 1", p.startsWith("-") ? p.slice(1) : "-" + p, "0"]) if (alt !== p) out.add(wrap(parts.map((x, j) => j === i ? alt : x))); }
@@ -189,11 +189,11 @@ const UNIT_HINT = /^Перевір одиницю/;
 // Вектори малою літерою в умові (незалежно від askedPoint): all — усі \vec{x} / \vec x; given — з координатами $\vec{a}(…)$;
 // asked — «вектора $\vec{c}$» (формула — лише назва); up — умова називає шукану точку чи вектор великою («точки $B$»).
 function vecNames(s) { const t = stmt(s), V = String.raw`\\(?:vec|overrightarrow)\s*(?:\{\s*([a-z])\s*\}|\s+([a-z])(?![A-Za-z]))`;
-  const all = new Set([...t.matchAll(new RegExp(V, "g"))].map(m => m[1] || m[2])), given = new Set([...t.matchAll(new RegExp(V + String.raw`\s*=?\s*\(`, "g"))].map(m => m[1] || m[2]));
+  const all = new Set([...t.matchAll(new RegExp(V, "g"))].map(m => m[1] || m[2])), given = new Set([...t.matchAll(new RegExp(V + String.raw`\s*(?:=\s*)?\(`, "g"))].map(m => m[1] || m[2]));
   const asked = new Set([...t.matchAll(new RegExp(String.raw`вектор[а-яії]*\s+\$\s*` + V + String.raw`\s*\$`, "gu"))].map(m => m[1] || m[2]).filter(x => !given.has(x)));
-  const up = /(?:точк|вершин|вектор|кін[еця]|центр)[а-яґєії]*\s+\$\s*(?:\\(?:vec|overrightarrow)\s*\{\s*)?[A-Z]{1,2}\s*\}?\s*\$/u.test(t);   // шукана велика назва
+  const up = /(?:точк|вершин|вектор|кін[еця]|центр)[а-яґєії]*\s+\$\s*(?:\\(?:vec|overrightarrow)\s*\{\s*)?[A-Z]{1,2}(?:\s*\})?\s*\$/u.test(t);   // шукана велика назва
   return { all, given, asked, up }; }
-const VEC0 = /^(?:\\(?:vec|overrightarrow)\{([a-z])\}|([a-z]))\s*([→⃗])?\s*(=?)\s*(?=\()/, ARROW0 = /^([A-Z]{1,2})\s*[→⃗]\s*(?==?\s*\()/;
+const VEC0 = /^(?:\\(?:vec|overrightarrow)(?:\{([a-z])\}|\s+([a-z])(?![A-Za-z]))|([a-z]))\s*(?:([→⃗])\s*)?(?:(=)\s*)?(?=\()/, ARROW0 = /^([A-Z]{1,2})\s*[→⃗]\s*(?=(?:=\s*)?\()/;   // без «\s*» поспіль (рев'ю P1-1)
 const symCoord = s => s.answerKind === "coordinates2" && /[a-z]/.test(keyText(s).replace(/sqrt|pi/g, ""));
 const exactVal = (s, v) => { const a = NEW.parseAns(keyText(s)), m = String(v).replace(/^\s*[A-Za-zА-Яа-яіїєґ]\s*=\s*/u, "").replace(/−/g, "-").match(/^(-?)(\d+),(\d*)\((\d+)\)$/);
   if (!a || !m) return false; const A = BigInt(m[2] + m[3]), F = BigInt(m[2] + m[3] + m[4]), n = (F - A) * (m[1] ? -1n : 1n), d = 10n ** BigInt(m[3].length) * (10n ** BigInt(m[4].length) - 1n);
@@ -274,9 +274,9 @@ const CATS = [
   // ok, якщо це шуканий вектор (або шуканого немає, а назва — не даний вектор і не шукана велика); інакше form з поясненням.
   ["vec «→» після великої назви (AB→ = …)", (s, v, o, n) => /^coordinates[23]$/.test(s.answerKind) && ARROW0.test(lat(v)) && same(verdict(OLD, s, lat(v).replace(/[→⃗]/, "")), n)],
   ["vec назва вектора малою (c = …, c→, \\vec{c}) — ok", (s, v, o, n) => { const m = /^coordinates[23]$/.test(s.answerKind) && n.r === "ok" && o.r !== "ok" && VEC0.exec(lat(v)); if (!m) return false;
-    const L = m[1] || m[2], vn = vecNames(s); return vn.all.size > 0 && !vn.given.has(L) && (vn.asked.size ? vn.asked.has(L) : !vn.up) && OLD.checkAns(s, lat(v).slice(m[0].length)) === "ok"; }],
+    const L = m[1] || m[2] || m[3], vn = vecNames(s); return vn.all.size > 0 && !vn.given.has(L) && (vn.asked.size ? vn.asked.has(L) : !vn.up) && OLD.checkAns(s, lat(v).slice(m[0].length)) === "ok"; }],
   ["vec мала назва не та / даний вектор — form з поясненням", (s, v, o, n) => { const m = /^coordinates[23]$/.test(s.answerKind) && n.r === "form" && o.r !== "form" && VEC0.exec(lat(v)); if (!m) return false;
-    const L = m[1] || m[2], vn = vecNames(s);
+    const L = m[1] || m[2] || m[3], vn = vecNames(s);
     return vn.all.size > 0 && OLD.checkAns(s, lat(v).slice(m[0].length)) === "ok" && (vn.given.has(L) ? n.h === `Координати правильні, але ${L} — даний вектор умови. Запиши лише координати.`
       : /^Координати правильні, але тут шукають (?:вектор [a-z]|[A-Z]{1,2})\.$/.test(n.h || "") && !vn.asked.has(L)); }],
   ["p3 quantity: підказка формату («2 м 45», дріб, «3:20»)", (s, v, o, n) => s.answerKind === "quantity" && o.r === "bad" && n.r === "bad" && !o.h && /^(Після кожного числа|Звичайний дріб тут|Тут час записують)/.test(n.h || "")],

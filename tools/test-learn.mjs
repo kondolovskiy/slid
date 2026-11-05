@@ -2361,7 +2361,7 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
   T(SYMV, "v = (p - m; k - n)", "bad", "символьний без вектора малою: v = — як раніше");
   const SYMW = { answerKind: "coordinates2", answer: "(p - m; k - n)", body: "<p>Дано вектори $\\vec{a}(m; n)$ і $\\vec{b}(p; k)$. Знайди координати вектора $\\vec{b} - \\vec{a}$.</p>" };
   T(SYMW, "v = (p - m; k - n)", "ok", "символьний: v ="); T(SYMW, "v→(p - m; k - n)", "ok", "символьний: v→"); T(SYMW, "v = (m - p; k - n)", "bad", "символьний: v = неправильне");
-  T(SYMW, "v(p - m; k - n)", "bad", "символьний: v( — множник"); T(SYMW, "a = (p - m; k - n)", "form", "символьний: даний a");
+  T(SYMW, "v(p - m; k - n)", "bad", "символьний: v( — множник"); T(SYMW, "\\vec v = (p - m; k - n)", "ok", "символьний: \\vec v без дужок"); T(SYMW, "a = (p - m; k - n)", "form", "символьний: даний a");
   // шуканий вектор лише в заголовку («Вектор $\\vec{p}$»); вектор з даними координатами — даний, навіть після «вектора» в запитанні
   const TT = { answerKind: "coordinates2", answer: "(2; 4)", title: "Вектор $\\vec{p}$", body: "<p>Дано $\\vec{a}(1; 2)$ і $\\vec{p} = 2\\vec{a}$. Знайди його координати.</p>" };
   T(TT, "p = (2; 4)", "ok", "заголовок: p"); T(TT, "q = (2; 4)", "form", "заголовок: q"); eq(L.formHint(TT, "q = (2; 4)"), "Координати правильні, але тут шукають вектор p.", "vec-name заголовок: пояснення");
@@ -2372,6 +2372,17 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
   T(VC, "c = (3; -2)", "ok", "VC: c ="); T(VC, "d = (3; -2)", "form", "VC: d =");
   const GA = { answerKind: "coordinates2", answer: "(3; -2)", body: "<p>Знайди координати вектора $\\vec{a}$, якщо $\\vec{a}(3; -2)$.</p>" };
   T(GA, "a = (3; -2)", "form", "дана назва не стає шуканою"); T(GA, "c = (3; -2)", "ok", "дана a: інша назва");
+  // раунд 2 (рев'ю P3-1): тіло питає вектор c — заголовок «Вектор $\\vec{d}$» шуканого не додає (title лише коли тіло назви не дало)
+  const TD = { answerKind: "coordinates2", answer: "(2; 4)", title: "Вектор $\\vec{d}$", body: "<p>Дано $\\vec{a}(1; 2)$. Знайди координати вектора $\\vec{c}$, якщо $\\vec{c} = 2\\vec{a}$.</p>" };
+  T(TD, "c = (2; 4)", "ok", "TD: c"); T(TD, "d = (2; 4)", "form", "TD: d із заголовка"); eq(L.formHint(TD, "d = (2; 4)"), "Координати правильні, але тут шукають вектор c.", "vec-name TD: пояснення");
+  // раунд 2 (P3-3): «\\vec c» без дужок у записі дитини — як «\\vec{c}»
+  for (const v of ["\\vec c = (-13; -2; 17)", "\\vec c(-13; -2; 17)", "\\overrightarrow c = (-13; -2; 17)"]) T(B4, v, "ok", "\\vec без дужок у записі");
+  T(B4, "\\vec a = (-13; -2; 17)", "form", "\\vec a без дужок — даний"); eq(L.formHint(B4, "\\vec a = (-13; -2; 17)"), "Координати правильні, але a — даний вектор умови. Запиши лише координати.", "vec-name «\\vec a =»: пояснення");
+  T(B4, "\\vec c = (-13; -2; 18)", "bad", "\\vec c без дужок, неправильне");
+  // раунд 2 (рев'ю P1-1): назва + тисячі пробілів без «(» — лінійний час регулярок назви (NAME_AT, IMG_AT, IMG_ONE) і checkAns
+  for (const pre of ["c", "AB", "A_", "A_{1", "A1", "A'", "c→", "c =", "\\vec{c}"]) {
+    const v = pre + " ".repeat(20000) + "x", t0 = performance.now(), r = L.checkAns(B4, v), r2 = L.checkAns(VC, v), h = L.badHint(B4, v, r), ms = performance.now() - t0;
+    eq([r, r2, ms < 200], ["bad", "bad", true], `vec-name пробіли «${pre}␣×20000x»: bad за ${Math.round(ms)} мс (< 200)`); }
   // підказки назв є в hintTexts (test-answer-ui: «підказка ≠ ключ»)
   const H = L.hintTexts(B4);
   eq(["Координати правильні, але тут шукають вектор c.", "Координати правильні, але a — даний вектор умови. Запиши лише координати.", "Координати правильні, але b — даний вектор умови. Запиши лише координати."].every(t => H.includes(t)), true, "vec-name hintTexts b04");

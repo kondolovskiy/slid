@@ -45,3 +45,12 @@ depends_on: []
 ### Відомі межі
 - Стрілка лише після назви (`c→`), не перед (`→c` — bad). Велика назва при шуканому векторі малою (`C(…)` для $\vec{c}$) — як раніше ok (велику не звіряємо з малою).
 - Заголовок і тіло в askedPoint — один текст (теги знято), тож «Вектор $\vec{p}$» у заголовку разом із «Знайди координати точки $B$» дає і ask=B, і vask=p (поведінка великих назв така сама й раніше).
+
+### Раунд 2 (рев'ю reports/review/engine-coordinates-vector-name.md, a22b629)
+- **P1-1:** `NAME_AT` — хвіст `\s*(?:([→⃗])\s*)?(?:(=)\s*)?(?=\()` замість `\s*([→⃗])?\s*(=?)\s*` (три `\s*` поспіль — кубічний бектрекінг). Ті самі ланцюжки прибрано в `IMG_AT`, `IMG_ONE` (були квадратичні ще до задачі: `\s*=?\s*`, `\s*\{?\s*`, `\s*\}?\s*`) і в регулярці даних точок askedPoint; у diff-answers — `VEC0`, `ARROW0`, `vecNames` (given, up). Набір прийнятих записів не змінився (diff-answers проти a8845b4 — лише нові записи `\vec c = `).
+  - Заміри `checkAns` на «назва + N пробілів + x» (pg11m2 b04): 8c651dd — 10–16 мс при N = 2000, ≈ 1 с при N = 20000; a8845b4 — ≈ 6 с при N = 2000 («c», «AB»); тепер — 0–1 мс при N = 20000, 2–3 мс при N = 200000.
+  - Тест у test-learn: `c`, `AB`, `A_`, `A_{1`, `A1`, `A'`, `c→`, `c =`, `\vec{c}` + 20000 пробілів + `x` — `bad`, checkAns + badHint на двох вправах < 200 мс.
+- **P3-1:** фікстура TD (тіло питає $\vec{c}$, заголовок «Вектор $\vec{d}$») — мутант `!names.size` замість `!names.size && !vnames.size` вбито.
+- **P3-3:** `\vec c` без дужок у записі дитини — як `\vec{c}` (`vecBraces` у parsePoint, splitPair, dropName, nameMsg); тести для числового й символьного ключа; CONTENT_SCHEMA.
+- Перевірки: `node tools/test-learn.mjs` — 2647, усе гаразд; `node tools/diff-answers.mjs --old 8c651dd --grades 4-11` — 70694 записи, 0 непояснених (vec «→» 336, vec ok 110, vec form 132); `npm run check` — EXIT 0 (test-diff-answers 38 ok).
+- Мутанти test-learn: 30/30 вбито (22 раунду 1 + R2-1 заголовок `!vnames`, R2-2 кубічний хвіст NAME_AT — зависання > 90 с, R2-3/R2-4 квадратичні IMG_AT/IMG_ONE, R2-5…R2-8 vecBraces у parsePoint, dropName, nameMsg, splitPair). Мутанти проти diff-answers (--old 8c651dd): 6/6 rc 1.
