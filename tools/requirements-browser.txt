@@ -1,0 +1,3 @@
+# Слід · Python-залежності браузерних тестів (tools/test-answer-ui.py, tools/playtest.py). Лише для CI й локального .venv-playtest/;
+# версія збігається з Node-двійником у хмарному контейнері (той самий Chromium). Агенти в спільному контейнері пакети не ставлять (pitfalls).
+playwright==1.63.0

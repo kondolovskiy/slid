@@ -3,6 +3,8 @@
 і перевіряє, що кожне завдання зараховано, а на сторінці немає JS-помилок.
 Запуск:  python3 tools/playtest.py            — усі уроки
          python3 tools/playtest.py --section g6s1 [--shots]   — один розділ або тест рівня (--section dg6) (+ скриншоти в reports/shots/)
+         python3 tools/playtest.py --section g6s1,dg6,u7s6    — кілька id через кому, по черзі в одному браузері (CI: tools/playtest-pick.mjs)
+         Невідомий id (немає розділу з уроками чи тесту рівня) — помилка, код 2: зелений прогін нуля уроків не видає себе за перевірку.
          --port N — фіксований порт (типово вільний; паралельно можна, але під навантаженням можливі TimeoutError — для приймання по одному)
 Потрібно: pip install playwright && playwright install chromium  (або вже встановлений Chromium)."""
 import asyncio, functools, http.server, os, sys, threading
@@ -10,7 +12,7 @@ from playwright.async_api import async_playwright
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ARGS = sys.argv[1:]
-ONLY = ARGS[ARGS.index("--section") + 1] if "--section" in ARGS else None
+ONLY = {x for x in ARGS[ARGS.index("--section") + 1].split(",") if x} if "--section" in ARGS else None   # множина id розділів / тестів рівня
 SHOTS = "--shots" in ARGS
 PORT = int(ARGS[ARGS.index("--port") + 1]) if "--port" in ARGS else 0   # 0 — вільний порт (паралельні прогони не конфліктують за портом)
 
@@ -131,10 +133,13 @@ async def main():
         await pg.route("**/fonts.googleapis.com/**", lambda r: r.abort())
         await pg.goto(f"http://127.0.0.1:{PORT}/index.html")
         subjects = await pg.evaluate("SLID_SUBJECTS")
+        found = {sec["id"] for c in subjects for sec in c["sections"] if sec.get("lessons")} | {d["id"] for c in subjects for d in c.get("diags", [])}
+        if ONLY is not None and (not ONLY or ONLY - found):
+            print(f"ПОМИЛКА  невідомі id для --section (немає розділу з уроками чи тесту рівня): {sorted(ONLY - found) or '(порожньо)'}"); await b.close(); sys.exit(2)
         played = 0; lang_n = lang_bad = 0   # мовних вправ і хибних спроб на них: 0 спроб при наявних вправах — гілку помилки не перевірено
         for c in subjects:
             for k, sec in enumerate(c["sections"]):
-                if not sec.get("lessons") or (ONLY and sec["id"] != ONLY): continue
+                if not sec.get("lessons") or (ONLY is not None and sec["id"] not in ONLY): continue
                 await pg.evaluate(f"localStorage.setItem('slid.v1', JSON.stringify({{grade:{sec['grade']},unlockAll:true}}))")
                 await pg.goto(f"http://127.0.0.1:{PORT}/index.html")
                 for i, l in enumerate(sec["lessons"]):
@@ -175,7 +180,7 @@ async def main():
         diags = 0
         for c in subjects:
             for d in c.get("diags", []):
-                if ONLY and d["id"] != ONLY: continue
+                if ONLY is not None and d["id"] not in ONLY: continue
                 for mode in ("ok", "skip"):
                     await pg.evaluate(f"localStorage.setItem('slid.v1', JSON.stringify({{grade:{d['grade']}}}))")
                     await pg.goto(f"http://127.0.0.1:{PORT}/index.html")
@@ -201,6 +206,8 @@ async def main():
                     if mode == "skip" and await pg.is_hidden("#player"): errs.append(f"{c['id']} {d['id']}: перший крок плану чи перший урок класу не відкрився")
                 diags += 1
         await b.close()
+        if not played and not diags:
+            print("ПОМИЛКА  нічого не пройдено (0 уроків, 0 тестів рівня)"); sys.exit(2)
         print(f"Пройдено уроків: {played}, тестів рівня: {diags}" + (f", мовних вправ: {lang_n} (хибних спроб: {lang_bad})" if lang_n else ""))
         for e in errs: print("ПОМИЛКА ", e)
         sys.exit(1 if errs else 0)
