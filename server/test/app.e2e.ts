@@ -5,11 +5,11 @@ import request from 'supertest';
 import { AppModule, configureApp } from '../src/app';
 import { createDb, requireEnv } from '../src/db/database';
 import { migrate } from '../src/db/migrate';
-import { randomUUID } from 'crypto';
+import { createHash, createHmac, randomUUID } from 'crypto';
 import { GOOGLE_VERIFIER, GoogleVerifier } from '../src/modules/identity';
 // Адаптер напряму, поза публічним API модуля: тест сховища на справжньому Postgres (test/ — не код модулів).
 import { PgLearnerStore } from '../src/modules/identity/learner.store';
-import { APP_LOG, learnerHash, Metrics, RATE_LIMIT_STORAGE } from '../src/ops';
+import { APP_LOG, Metrics, RATE_LIMIT_STORAGE } from '../src/ops';
 import { MemoryRateLimitStorage } from '../src/ops/rate-limit';
 
 /** Фейк Google: id_token "sub@hd"; справжню перевірку підпису покриває google.verifier.spec.ts. */
@@ -17,6 +17,8 @@ const fakeGoogle: GoogleVerifier = {
   async verify(t) { const m = /^(\w+)@([\w.]*)$/.exec(t); return m ? { sub: m[1], hd: m[2] || undefined } : null; },
 };
 const bearer = (t: string) => ({ Authorization: `Bearer ${t}` });
+/** Очікуване `lh` рахуємо незалежно від коду застосунку: HMAC-SHA-256(id, ключ), перші 16 hex. */
+const hmac16 = (key: string, id: string) => createHmac('sha256', key).update(id).digest('hex').slice(0, 16);
 const uniq = () => `s${Date.now()}${Math.floor(Math.random() * 1e6)}`;
 
 // Потрібен справжній Postgres: DATABASE_URL обовʼязковий (без нього тест падає, а не пропускається).
@@ -30,6 +32,10 @@ describe('API (e2e, Postgres)', () => {
     error: (entry: Record<string, unknown>) => logged.push({ level: 'error', entry }),
   };
   const ADMIN = 'e2e-admin-token-0123456789abcdef0123';
+  const LOG_KEY = 'e2e-log-hash-key-0123456789abcdef0123';
+  const compileApp = () => Test.createTestingModule({ imports: [AppModule] })
+    .overrideProvider(GOOGLE_VERIFIER).useValue(fakeGoogle)
+    .overrideProvider(APP_LOG).useValue(captureLog).compile();
 
   beforeAll(async () => {
     const db = createDb(requireEnv('DATABASE_URL'));
@@ -38,9 +44,8 @@ describe('API (e2e, Postgres)', () => {
     await db.destroy();
     process.env.GOOGLE_DOMAINS = 'school.ua';
     process.env.ADMIN_TOKEN = ADMIN;
-    const moduleRef = await Test.createTestingModule({ imports: [AppModule] })
-      .overrideProvider(GOOGLE_VERIFIER).useValue(fakeGoogle)
-      .overrideProvider(APP_LOG).useValue(captureLog).compile();
+    process.env.LOG_HASH_KEY = LOG_KEY;
+    const moduleRef = await compileApp();
     app = configureApp(moduleRef.createNestApplication<NestExpressApplication>({ logger: ['error', 'warn'] }));
     await app.init();
     api = request(app.getHttpServer());
@@ -127,12 +132,54 @@ describe('API (e2e, Postgres)', () => {
       await api.get(`/nope/${me.id}?token=${me.token}`).expect(404);
       expect(http()).toEqual([
         { event: 'http', method: 'POST', route: '/v1/learners', status: 201, ms: expect.any(Number) },
-        { event: 'http', method: 'PUT', route: '/v1/progress', status: 200, ms: expect.any(Number), lh: learnerHash(me.id) },
+        { event: 'http', method: 'PUT', route: '/v1/progress', status: 200, ms: expect.any(Number), lh: hmac16(LOG_KEY, me.id) },
         { event: 'http', method: 'GET', route: null, status: 404, ms: expect.any(Number) },
       ]);
       const all = JSON.stringify(logged);
       expect(all).not.toContain(me.token);
       expect(all).not.toContain(me.id);
+      expect(all).not.toContain(createHash('sha256').update(me.id).digest('hex').slice(0, 16)); // не голий SHA-256 (D-050 п. 5)
+    });
+
+    it('lh: той самий ключ — той самий lh для учня; інший ключ (інший процес) — інший lh', async () => {
+      const me = (await api.post('/v1/learners').expect(201)).body;
+      const other = (await api.post('/v1/learners').expect(201)).body;
+      logged.length = 0;
+      await api.get('/v1/progress').set(bearer(me.token)).expect(200);
+      await api.get('/v1/progress').set(bearer(me.token)).expect(200);
+      await api.get('/v1/progress').set(bearer(other.token)).expect(200);
+      const [a, b, c] = http().map((e) => e.lh);
+      expect(a).toBe(hmac16(LOG_KEY, me.id));
+      expect(b).toBe(a);
+      expect(c).toBe(hmac16(LOG_KEY, other.id));
+      expect(c).not.toBe(a);
+
+      const KEY2 = 'e2e-another-log-hash-key-0123456789abcdef';
+      process.env.LOG_HASH_KEY = KEY2;
+      const app2 = configureApp((await compileApp()).createNestApplication<NestExpressApplication>({ logger: ['error', 'warn'] }));
+      try {
+        await app2.init();
+        logged.length = 0;
+        await request(app2.getHttpServer()).get('/v1/progress').set(bearer(me.token)).expect(200);
+        const [d] = http().map((e) => e.lh);
+        expect(d).toBe(hmac16(KEY2, me.id));
+        expect(d).not.toBe(a);
+      } finally {
+        process.env.LOG_HASH_KEY = LOG_KEY;
+        await app2.close();
+      }
+    });
+
+    it('production без LOG_HASH_KEY — застосунок не стартує', async () => {
+      const saved = { key: process.env.LOG_HASH_KEY, env: process.env.NODE_ENV };
+      delete process.env.LOG_HASH_KEY;
+      process.env.NODE_ENV = 'production';
+      try {
+        await expect(compileApp()).rejects.toThrow(/LOG_HASH_KEY/);
+      } finally {
+        process.env.LOG_HASH_KEY = saved.key;
+        if (saved.env === undefined) delete process.env.NODE_ENV; else process.env.NODE_ENV = saved.env;
+      }
     });
 
     it('лічильники: доступ адміністратора лише з ADMIN_TOKEN', async () => {
