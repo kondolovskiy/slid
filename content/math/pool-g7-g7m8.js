@@ -1,5 +1,6 @@
 /* Слід · Математика, 7 клас — пул задач для тренування до розділу «Геометрія: коло» (g7m8)
-   Статус: verified (verifier-fix-math-pools-ister-formats, 2026-11-05, reports/verify/pools-ister-formats.md). Зміни fix-math-pools-ister-formats: підписи довжин рисунка b08 — без «см» (8, 2, 4), як в інших пулах (одиниця — в умові); зміст і ключ не змінено.
+   Статус: verified (verifier-math-pre-figs-1105, 2026-11-05, reports/verify/math-pre-figs-1105.md: рисунки b01, b02, b05 переглянуто в браузері). Зміни fix-math-figs-1105 (2026-11-05): у рисунках b01, b02, b05 підпис точки дотику (C / A) винесено під точку (labelDir: "s"), бо стояв під дугою кута; умови, числа й ключі не змінено.
+   Попередній статус: verified (verifier-fix-math-pools-ister-formats, 2026-11-05, reports/verify/pools-ister-formats.md). Зміни fix-math-pools-ister-formats: підписи довжин рисунка b08 — без «см» (8, 2, 4), як в інших пулах (одиниця — в умові); зміст і ключ не змінено.
    Попередній стан — нижче.
    Статус: verified — 2026-11-04 додано d01–d08 (g7m8l5) і e01–e08 (g7m8l6) за Істером (write-math-pool-g7m8-ister); перевірено verifier-write-math-pool-g7m8-ister (reports/verify/write-math-pool-g7m8-ister.md; підпис B у d07 винесено з-під точки M).
    Раніше: verified (рисунки lab до a07, a08, b01, b02, b05–b08 — fix-math-figs-g7-geo-b, перевірено 2026-11-03, reports/verify/fix-math-figs-g7-geo-b.md; раніше verifier-pg7m8, 2026-10-31, reports/verify/pg7m8.md).
@@ -17,7 +18,7 @@ SLID.pool("math", {
   id: "pg7m8",
   section: "g7m8",
   status: "verified",
-  meta: { author: "w-write-math-pool-g7m8", created: "2026-10-31", factcheck: "verifier-pg7m8 (a–c); d, e — verifier-write-math-pool-g7m8-ister (2026-11-04, reports/verify/write-math-pool-g7m8-ister.md); fix-math-pools-ister-formats — verifier-fix-math-pools-ister-formats 2026-11-05", revised: "2026-11-05 fix-math-pools-ister-formats", teacher: null },
+  meta: { author: "w-write-math-pool-g7m8", created: "2026-10-31", factcheck: "verifier-pg7m8 (a–c); d, e — verifier-write-math-pool-g7m8-ister (2026-11-04, reports/verify/write-math-pool-g7m8-ister.md); fix-math-pools-ister-formats — verifier-fix-math-pools-ister-formats 2026-11-05; fix-math-figs-1105 — verifier-math-pre-figs-1105 2026-11-05", revised: "2026-11-05 fix-math-pools-ister-formats", teacher: null },
   sources: [
     { id: "mer7g", title: "Мерзляк А. Г., Якір М. С. Геометрія : підручник для 7 класу закладів загальної середньої освіти. — Харків : Гімназія, 2024 (наказ МОН № 124 від 05.02.2024); PDF — дзеркало 4book.org", url: "https://file.4book.org/images/shcoolbook_ua/7/7_geom_m_2024.pdf" },
     { id: "ist7g", title: "Істер О. С. Геометрія : підручник для 7 класу закладів загальної середньої освіти. — Київ : Генеза, 2024 (наказ МОН № 124 від 05.02.2024); PDF — дзеркало 4book.org", url: "https://file.4book.org/images/shcoolbook_ua/7/7_geom_i_2024.pdf" }
@@ -93,7 +94,7 @@ SLID.pool("math", {
       answer: 62, unit: "°",
       lab: { kind: "plane", axes: false, grid: 0, view: [-5.5, 6, -4.2, 3.4],
         circles: [{ c: "O", r: "3" }],
-        points: { O: { at: [0, 0] }, A: { at: [-5, -3] }, B: { at: [5, -3] }, C: { at: [0, -3] }, D: { at: [2.487, -1.678] } },
+        points: { O: { at: [0, 0] }, A: { at: [-5, -3] }, B: { at: [5, -3] }, C: { at: [0, -3], labelDir: "s" }, D: { at: [2.487, -1.678] } },
         segs: [["A", "B"], ["O", "C"], ["C", "D"]],
         angles: [{ from: "B", at: "C", to: "D", color: "gold", label: "28°" }],
         alt: "Коло з центром O, дотична AB у точці C, радіус OC і хорда CD; кут BCD 28 градусів" },
@@ -104,7 +105,7 @@ SLID.pool("math", {
       answer: 145, unit: "°",
       lab: { kind: "plane", axes: false, grid: 0, view: [-5.5, 6, -4.2, 3.4],
         circles: [{ c: "O", r: "3" }],
-        points: { O: { at: [0, 0] }, A: { at: [-5, -3] }, B: { at: [5, -3] }, C: { at: [0, -3] }, D: { at: [2.819, -1.026] } },
+        points: { O: { at: [0, 0] }, A: { at: [-5, -3] }, B: { at: [5, -3] }, C: { at: [0, -3], labelDir: "s" }, D: { at: [2.819, -1.026] } },
         segs: [["A", "B"], ["O", "C"], ["C", "D"]],
         angles: [{ from: "O", at: "C", to: "D", color: "gold", label: "55°" }],
         alt: "Коло з центром O, дотична AB у точці C, радіус OC і хорда CD; кут OCD 55 градусів" },
@@ -129,7 +130,7 @@ SLID.pool("math", {
       answer: 70, unit: "°",
       lab: { kind: "plane", axes: false, grid: 0, view: [-5.5, 6, -4.2, 3.4],
         circles: [{ c: "O", r: "3" }],
-        points: { O: { at: [0, 0] }, C: { at: [-5, -3] }, D: { at: [5, -3] }, A: { at: [0, -3] }, B: { at: [2.819, -1.026] } },
+        points: { O: { at: [0, 0] }, C: { at: [-5, -3] }, D: { at: [5, -3] }, A: { at: [0, -3], labelDir: "s" }, B: { at: [2.819, -1.026] } },
         segs: [["C", "D"], ["O", "A"], ["O", "B"], ["A", "B"]],
         angles: [{ from: "B", at: "A", to: "D", color: "gold", label: "35°" }],
         alt: "Коло з центром O, дотична CD у точці A, хорда AB і радіуси OA, OB; кут BAD 35 градусів" },
