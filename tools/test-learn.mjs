@@ -709,6 +709,10 @@ const order = l => ({ L1: 3, L2: 1, L3: 2, L4: 4 }[l] ?? 50);
   eq(g.map(x => x.lessons.map(l => x.cnt[l.id])), [[1, 2], [1], [1, 1]], "practiceGroups: кількість задач уроку з усіх пулів");
   eq(L.practiceGroups(c, []), [], "practiceGroups: без вправ — порожньо");
   eq(L.practiceGroups(c, L.practiceItems({ grade: 5, lessons: {}, seen: {}, srs: {} }, c)).map(x => x.sec.id), ["a5", "b5"], "practiceGroups: 5 кл. — без розділу 6 кл.");
+  // рев'ю tools-ister-p3 P3-2 (engine-list-quadratic п. 3): екран рахує cnt один раз (lessonCounts) і передає його в practiceGroups
+  const its = L.practiceItems(S6, c), cnt = L.lessonCounts(its);
+  eq(JSON.stringify(cnt), JSON.stringify({ b1: 1, v2: 1, a2: 2, v1: 1, a1: 1 }), "lessonCounts: вправи на урок з усіх пулів");
+  eq(L.practiceGroups(c, its, cnt).every(x => x.cnt === cnt), true, "practiceGroups: переданий cnt — той самий об'єкт, без другого підрахунку");
 }
 /* Порядок програми, на який спирається practiceGroups, дає app/registry.js finalize: розділи за класом, далі за першим тижнем, незалежно
    від порядку завантаження файлів (рев'ю tools-ister-p3 P3-3; tools-math-ister-p3 п. 14). Розділ без weeks — у кінці свого класу. */
@@ -2457,6 +2461,52 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
   for (const v of ["1" + " ".repeat(20000) + "000π", "6 400" + " ".repeat(20000) + "/π", Array(5000).fill("100").join(" ") + "/3", "(" + " ".repeat(20000) + "√2; 1)" + ", (".repeat(3000), "у" + " ".repeat(20000) + "2 рази"]) {
     const t0 = performance.now(); for (const s of [PI, P, RZ, RA]) L.checkAns(s, v); const ms = performance.now() - t0;
     eq(ms < 300, true, `ister-p3: довгий запис (${v.length} симв.) — ${Math.round(ms)} мс (< 300)`); }
+}
+/* engine-list-quadratic, engine-list-ordered: лінійний list на довгих записах, «у/в» перед кожним елементом, ordered, scale */
+{ const K = (answerKind, answer, extra = {}) => ({ answerKind, answer, ...extra }), N = (answer, extra = {}) => ({ answer, ...extra });
+  const RZL = K("list", [2, 3], { unit: "раз", unitForms: ["раз", "рази", "разів"] });
+  // п. 2: «у/в» перед кожним елементом list при unit «раз» (як «у 2 рази; 3», TQ-067)
+  [[RZL, "у 2 рази; у 3 рази", "ok"], [RZL, "в 2 рази, в 3 рази", "ok"], [RZL, "у 2 рази;у 3 рази", "ok"], [RZL, "у 3 рази; в 2 рази", "ok"], [RZL, "у 2 рази; 3", "ok"],
+   [RZL, "2; у 3 рази", "ok"], [RZL, "у 2; у 3", "bad"], [RZL, "2; у 3", "bad"], [RZL, "у 2 рази; уу 3 рази", "bad"], [RZL, "у 2 рази; у3 рази", "bad"], [RZL, "у 2 рази; у 4 рази", "bad"],
+   [K("list", [2, 3], { unit: "см" }), "у 2 см; у 3 см", "bad"], [K("list", ["1,5", 3], { unit: "раз" }), "у 1,5 рази; у 3 рази", "ok"],
+   // більше 4 «±» в елементі — не розбирається, а не зникає з переліку (раніше «1; ±±±±±7» = «1»)
+   [K("list", [1]), "1; ±±±±±7", "bad"], [K("list", ["1"]), "1; ±±±±±√7", "bad"], [K("list", [-1, 1]), "±1", "ok"], [K("list", [1, 2, 3]), "1; 2", "bad"],
+   // «x₁,₂ = …» без «±» — bad (CONTENT_SCHEMA §10), і з довгим хвостом
+   [K("list", [3], { body: "$x^2 = 9$" }), "x₁,₂ = 3", "bad"], [K("list", [-3, 3], { body: "$x^2 = 9$" }), "x₁,₂ = ±3", "ok"]]
+    .forEach(([s, v, exp]) => eq(L.checkAns(s, v), exp, `list-quadratic: ${JSON.stringify(s)} ← «${v}»`));
+  eq(L.listKey(K("list", "1; ±±±±±7")), null, "list-quadratic: ключ з елементом понад 4 «±» не розбирається");
+  eq(L.answerSig(RZL, "у 2 рази; у 3 рази"), L.answerSig(RZL, "2; 3"), "list-quadratic: answerSig «у 2 рази; у 3 рази» = «2; 3»");
+  // ordered (engine-list-ordered п. 1): «Запиши ∠C і ∠D» — по місцях; переставлено — bad з підказкою «перевір порядок»
+  const ORD = K("list", [41, 132], { ordered: true, unit: "°" }), ORDM = "Перевір порядок: запиши величини в тій послідовності, у якій їх названо в умові.";
+  [[ORD, "41; 132", "ok"], [ORD, "41°; 132°", "ok"], [ORD, "132; 41", "bad"], [ORD, "132°; 41°", "bad"], [ORD, "41; 41", "bad"], [ORD, "41", "bad"], [ORD, "41; 132; 7", "bad"],
+   [K("list", [41, 132]), "132; 41", "ok"], [K("list", [50, 50], { ordered: true }), "50; 50", "ok"], [K("list", [50, 50], { ordered: true }), "50", "bad"],
+   [K("list", ["√2", "1/2"], { ordered: true }), "√2; 0,5", "ok"], [K("list", ["√2", "1/2"], { ordered: true }), "0,5; √2", "bad"], [K("list", ["1/2", 3], { ordered: true }), "2/4; 3", "ok"],
+   [K("list", [1, 2], { ordered: true, body: "$x^2 - 3x + 2 = 0$" }), "x₁ = 1; x₂ = 2", "ok"], [K("list", [1, 2], { ordered: true, body: "$x^2 - 3x + 2 = 0$" }), "x₁ = 2; x₂ = 1", "bad"]]
+    .forEach(([s, v, exp]) => eq(L.checkAns(s, v), exp, `list-ordered: ${JSON.stringify(s)} ← «${v}»`));
+  eq([L.badHint(ORD, "132; 41"), L.badHint(ORD, "132°; 41°"), L.badHint(ORD, "132; 40"), L.badHint(ORD, "41; 41"), L.badHint(K("list", [41, 132]), "132; 42"), L.formCode(ORD, "132; 41")],
+    [ORDM, ORDM, null, null, null, null], "list-ordered: підказка «перевір порядок» лише для переставлених правильних значень");
+  eq(L.formHint(K("list", ["√2/2", 3], { ordered: true }), "2√2/4; 3"), L.formHint(K("list", ["√2/2", 3]), "2√2/4; 3"), "list-ordered: form — та сама підказка, що й без ordered");
+  eq(L.checkAns(K("list", ["√2/2", 3], { ordered: true }), "2√2/4; 3"), "form", "list-ordered: нескорочений запис на своєму місці — form, як і без ordered");
+  eq([L.hintTexts(ORD).includes(ORDM), L.hintTexts(K("list", [1, 2])).includes(ORDM)], [true, false], "list-ordered: hintTexts");
+  eq(L.listKey(K("list", [50, 50], { ordered: true }))?.length, 2, "list-ordered: listKey з повтором");
+  // scale (п. 2, pg9m6 f08): «1 : n» при ключі n і scale: true — ok; без scale — як і раніше
+  const SC = N(10000, { scale: true });
+  [[SC, "10000", "ok"], [SC, "10 000", "ok"], [SC, "1 : 10000", "ok"], [SC, "1:10 000", "ok"], [SC, "1 ∶ 10000", "ok"], [SC, "1 : 1000", "bad"], [SC, "2 : 20000", "bad"], [SC, "10000 : 1", "bad"],
+   [SC, "1 : 10000 : 1", "bad"], [SC, "1,0 : 10000", "bad"], [SC, "1/10000", "bad"], [SC, "1 : 10000,5", "bad"], [SC, "1 : 10000/1", "bad"], [N(10000), "1 : 10000", "bad"], [N("1/4"), "1 : 4", "form"], [N(4, { scale: true }), "1 : 4", "ok"]]
+    .forEach(([s, v, exp]) => eq(L.checkAns(s, v), exp, `scale: ${JSON.stringify(s)} ← «${v}»`));
+  const vp = it => L.validatePool({ id: "p", section: "s", status: "draft", sources: [{ id: "b", title: "t", url: "https://x" }], items: [{ id: "a", lesson: "l", lvl: 1, sk: "num", src: "b 1", type: "answer", title: "t", steps: ["s"], ...it }] },
+    { sections: new Map([["s", { grade: 4, lessons: ["l"] }]]), skills: { num: {} } });
+  for (const it of [ORD, K("list", [50, 50], { ordered: true }), K("list", [1, 2], { ordered: false }), SC]) eq(vp(it), [], `validatePool: коректне ${JSON.stringify(it)}`);
+  [[K("list", [1, 2], { ordered: "так" }), /ordered має бути boolean/], [N(2, { ordered: true }), /ordered має бути boolean/], [K("list", [1, 2], { ordered: true, multiset: true }), /multiset не потрібен/],
+   [K("list", [1, 2], { scale: true }), /scale має бути boolean/], [N(10000, { scale: 1 }), /scale має бути boolean/], [N("1/4", { scale: true }), /scale — ключ/], [N(1, { scale: true }), /scale — ключ/], [N("10000,5", { scale: true }), /scale — ключ/]]
+    .forEach(([it, re]) => eq(vp(it).some(e => re.test(e)), true, `validatePool відхиляє ${JSON.stringify(it)}`));
+  // п. 1: лінійно на 50 000 символів (раніше «x» + 20 000 пробілів ≈ 0,5 с, 50 000 ≈ 6 с; тисячі різних елементів ≈ 1,3 с)
+  const M = 50000, seq = f => { const o = []; for (let i = 1, len = 0; len < M; i++) { o.push(f(i)); len += o[o.length - 1].length + 2; } return o.join("; "); }, sp = " ".repeat(M);
+  const LONG = ["x" + sp, "x" + sp + "= 1", "у" + sp + "2 рази", "x₁" + sp + "= 1", "x_{1,2}" + sp + "= ±1", "x =" + sp + "1", "x₁,₂ = " + "±".repeat(M), "x₁,₂ = " + "±".repeat(M) + "=", "x₁,₂ = " + "±1".repeat(M / 2) + ";", "x =" + sp + "a", "x₁" + sp + "=" + sp,
+    seq(String), seq(i => "x = " + i), seq(i => "±" + i), seq(i => i + "√" + (i + 1)), seq(i => i + "/" + (i + 1)), seq(i => "у " + i + " рази"), "1" + ",".repeat(M), "1" + sp + "; 2"];
+  const KEYS = [K("list", [1, 2]), K("list", ["√2", 1]), K("list", [-1, 1], { body: "$x^2 = 1$" }), RZL, ORD, K("list", [2, 2, 3], { multiset: true })];
+  for (const v of LONG) { let worst = 0; for (const s of KEYS) { const t0 = performance.now(); const r = L.checkAns(s, v); L.badHint(s, v, r); L.answerSig(s, v); worst = Math.max(worst, performance.now() - t0); }
+    eq(worst < 200, true, `list-quadratic: «${JSON.stringify(v.slice(0, 14))}…» (${v.length} симв.) — ${Math.round(worst)} мс (< 200)`); }
 }
 console.log(`\n${n} перевірок, ${fails ? fails + " з помилками" : "усе гаразд"}`);
 if (fails) process.exit(1);

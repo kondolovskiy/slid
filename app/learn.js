@@ -644,11 +644,24 @@ window.SLID_LEARN = (() => {
   // «±3» при числовому ключі (engine-answer-formats-ister п. 1): «±»/«∓» розгортається в будь-якому list; у числовому ключі елемент після
   // розгортання — лише «знак + число» («+3» → 3, «-3»), тож «±3 + 0», «±(3)», «±±3» лишаються неправильними, як і «+3» без «±».
   const pmElem = p => { const m = /^\s*([+-])\s*(\d[\d\s]*(?:[,.]\d+)?(?:\s*\/\s*\d+)?)\s*$/.exec(p); return m ? (m[1] === "-" ? "-" : "") + m[2] : null; };
+  const listParts = v => Array.isArray(v) ? v : String(v ?? "").split(/[;\n]/.test(String(v)) ? /[;\n]/ : /,/);
+  // більше 4 «±» в елементі — не розбирається (null), а не зникає з переліку: «1; ±±±±±7» ≠ «1» (engine-list-quadratic)
+  const pmParts = (p, exact) => { const e = expandPM(String(p)); return !e.length ? [null] : exact ? e : e.map(pmElem); };
   function parseList(v, exact, multi = false) {
-    const parts = Array.isArray(v) ? v : String(v ?? "").split(/[;\n]/.test(String(v)) ? /[;\n]/ : /,/);
-    const values = parts.flatMap(p => !/[±∓]/.test(String(p)) ? [p] : exact ? expandPM(String(p)) : expandPM(String(p)).map(pmElem)).map(p => p !== null && elemOf(p, exact));
+    const values = listParts(v).flatMap(p => !/[±∓]/.test(String(p)) ? [p] : pmParts(p, exact)).map(p => p !== null && elemOf(p, exact));
     if (!values.length || values.some(x => !x) || (!multi && values.some((x, i) => values.slice(0, i).some(y => xeq(x.x, y.x))))) return null;
     return values;
+  }
+  /** Скільки елементів дав би parseList(v), якби розібрав запис (без розбору чисел; «±» — 2^k варіантів, понад 4 — не розбирається).
+      Запис з іншою кількістю елементів, ніж ключ, — «bad» одразу: перевірка повторів у parseList квадратична за кількістю
+      елементів, а 50 000 символів дають тисячі елементів (engine-list-quadratic). */
+  const listCount = v => listParts(v).reduce((n, p) => { const k = (String(p).match(/[±∓]/g) || []).length; return n + (k > 4 ? 1 : 2 ** k); }, 0);
+  /** ordered: запис — ті самі значення, що й ключ, але в іншому порядку (для підказки «перевір порядок»; вердикт лишається bad). */
+  function listOrder(s, v) {
+    const ex = exactKey(s.answer), a = parseList(s.answer, ex, true), lv = listPre(s, v);
+    if (!a || listCount(lv) !== a.length) return false;
+    const u = parseList(lv, ex, true); if (!u || u.length !== a.length || a.every((x, i) => xeq(x.x, u[i].x))) return false;
+    const left = [...u]; return a.every(x => { const i = left.findIndex(y => xeq(x.x, y.x)); return i >= 0 && !!left.splice(i, 1); });
   }
   /* Префікс «x =» в list (як у number, CONTENT_SCHEMA §10): «x = 1; x = −2», «x₁ = 1; x₂ = −2», «x1 = 1, x2 = 3», «x = 1».
      Ключ list змінної не містить, тож префікс знімається, лише коли формули умови ($…$ у title, body, q, text) мають рівно
@@ -658,7 +671,11 @@ window.SLID_LEARN = (() => {
      літера, якій умова дає числове значення ($\sqrt{a^2}$ при $a = 4,6$ — це дане, не невідоме).
      Кілька кандидатів (параметр і змінна $3x^2 - bx + 12 = 0$, система x і y, $y = kx + b$), жодного, різні літери в записі,
      літера не та — запис лишається як є, тобто «неправильно», як і раніше (рев'ю P1-1). */
-  const LIST_PRE = /^\s*([a-zA-Zа-яґєії])\s*(?:_?\{?[1-4]\}?|[₁₂₃₄])?\s*=\s*(?=[-−–+]?\s*(?:[\d√∛∜π(]|sqrt|cbrt|pi))/u;
+  /* Лінійно на довгих рядах пробілів (engine-list-quadratic; pitfalls «ReDoS»): кожен ряд пробілів між частинами префікса
+     поглинається атомарно — WS(n) = (?=(?<n>\s*))\k<n> (поглинає всі пробіли й назад не віддає), тож два «\s*» поспіль
+     (через необов'язковий індекс) не перебирають розбиття ряду. Те саме, що й «\s*» раніше: далі завжди йде не пробіл. */
+  const WS = n => String.raw`(?=(?<${n}>\s*))\k<${n}>`;
+  const LIST_PRE = new RegExp(String.raw`^\s*(?<l>[a-zA-Zа-яґєії])${WS("s1")}(?:(?:_?\{?[1-4]\}?|[₁₂₃₄])${WS("s2")})?=${WS("s3")}(?=[-−–+]?\s*(?:[\d√∛∜π(]|sqrt|cbrt|pi))`, "u");
   const CYR_LAT = { "а": "a", "е": "e", "і": "i", "к": "k", "о": "o", "р": "p", "с": "c", "у": "y", "х": "x" };
   const TEX_ARG = /\\(?:vec|overrightarrow|overline|bar|hat|text|mathrm|operatorname|mathbb)\s*(?:\{[^{}]*\}|[a-zA-Z])/g;
   const TEX_WORD = /\\[a-zA-Z]+|\b(?:arcsin|arccos|arctg|arcctg|arctan|sin|cos|tg|ctg|tan|cot|log|lg|ln|sqrt|max|min|mod)\b/g;
@@ -678,13 +695,14 @@ window.SLID_LEARN = (() => {
     return cand.length === 1 ? cand[0] : null;
   }
   // «x₁,₂ = ±3», «x_{1,2} = (1 ± √5)/2» (п. 8): один запис з «±» на обидва корені — та сама літера умови, що й для «x₁ = …»
-  const LIST_PM = /^\s*([a-zA-Zа-яґєії])\s*(?:₁\s*,\s*₂|_?\{?\s*1\s*,\s*2\s*\}?)\s*=\s*([^;\n=]*[±∓][^;\n=]*)$/u;
+  // хвіст — без «;», переносу й «=», з «±»/«∓» (перевірка «±» окремо: «[^…]*[±∓][^…]*$» перебирав кожен «±» — квадратично)
+  const LIST_PM = new RegExp(String.raw`^\s*(?<l>[a-zA-Zа-яґєії])${WS("s1")}(?:₁\s*,\s*₂|_?\{?\s*1\s*,\s*2${WS("s2")}\}?)${WS("s3")}=(?<tail>[^;\n=]*)$`, "u");
   function listPre(s, v) {
     if (typeof v !== "string") return v;
-    const pm = LIST_PM.exec(v);
-    if (pm) return taskVar(s) === (CYR_LAT[pm[1]] || pm[1]) ? [pm[2].trim()] : v;
+    const pm = LIST_PM.exec(v), l = pm?.groups.l;
+    if (pm && /[±∓]/.test(pm.groups.tail)) return taskVar(s) === (CYR_LAT[l] || l) ? [pm.groups.tail.trim()] : v;
     const parts = v.split(/[;\n]/.test(v) ? /[;\n]/ : /,/), lets = new Set();
-    const bare = parts.map(p => { const m = LIST_PRE.exec(p); if (!m) return p; lets.add(CYR_LAT[m[1]] || m[1]); return p.slice(m[0].length); });
+    const bare = parts.map(p => { const m = LIST_PRE.exec(p); if (!m) return p; lets.add(CYR_LAT[m.groups.l] || m.groups.l); return p.slice(m[0].length); });
     if (!lets.size) return v;
     const [x] = lets;
     return lets.size === 1 && taskVar(s) === x ? bare : v;
@@ -860,6 +878,13 @@ window.SLID_LEARN = (() => {
     if (!a || !a.frac || typeof v !== "string" || !/[:∶]/.test(v)) return false;
     const r = parseRatio(v), B = BigInt;
     return !!r && r.length === 2 && B(r[0].n) * B(r[1].d) * B(a.d) === B(a.n) * B(r[0].d) * B(r[1].n);
+  }
+  /* Масштаб (engine-list-ordered п. 2, pg9m6 f08): ключ number — n із масштабу 1 : n, поле scale: true. Запис «1 : n» (пробіли між розрядами
+     можна) — та сама відповідь, «ok». Лише перший член рівно 1: «2 : 20 000» — bad, як і раніше; без scale «1 : n» — bad (там це може бути інше число). */
+  function scaleNum(v, a) {
+    if (typeof v !== "string" || !/[:∶]/.test(v) || a.frac || a.d !== 1) return false;
+    const r = parseRatio(v);
+    return !!r && r.length === 2 && !r[0].frac && r[0].n === 1 && r[0].d === 1 && !r[1].frac && r[1].d === 1 && r[1].n === a.n;
   }
   /* «27/64» при ключі ratio 27 : 64 (engine-math-ister-p3 п. 2): відношення двох членів записано одним дробом p/q (не мішаним
      числом), і p/q дорівнює частці членів ключа — "form" з поясненням «запиши через двокрапку», не мовчазне "bad". */
@@ -1186,6 +1211,7 @@ window.SLID_LEARN = (() => {
     ratioNum: "Значення правильне, але це відношення. Відповідь тут — одне число: запиши його дробом через риску /.",
     ratioFrac: "Значення правильне, але відповідь тут — відношення. Запиши його через двокрапку, а не дробом.",
     pi: "Бракує множника π. Точну відповідь тут записують з π — допиши його.",
+    listOrder: "Перевір порядок: запиши величини в тій послідовності, у якій їх названо в умові.",
     retry: "Спробуй ще раз."
   };
   const DEC_WORD = ["цілим числом, без коми", "з одним знаком після коми", "з двома знаками після коми", "з трьома знаками після коми"];
@@ -1396,6 +1422,7 @@ window.SLID_LEARN = (() => {
     if (kind === "exactRoot") return limited(() => { const a = exactOf(s.answer), u = exactOf(stripUnit(s, t)); return !!a && !!u && piLess(a, u); }, () => false) ? MSG.pi : null;
     // list без «;»: кома — роздільник, тож «1,5, 2» (у полі «1.5, 2» стає «1,5, 2») — це три числа (a11y-followup, відкрите (б))
     // лише запис із самих чисел через кому (не «x₁,₂ = …», не «y_{1,2}»)
+    if (kind === "list" && s.ordered === true && limited(() => listOrder(s, stripUnit(s, t)), () => false)) return MSG.listOrder;
     if (kind === "list") return /^[\d\s,.+\-−–±∓]+$/.test(t) && /\d,\d/.test(t) ? MSG.listSep : null;   // «±1,5» — теж (п. 1)
     if (kind === "quantity") {
       const U = qtyUnits(s), parts = parseQty(t); if (!U) return null;
@@ -1431,7 +1458,7 @@ window.SLID_LEARN = (() => {
     if (kind === "expression") out.push(MSG.constC);
     if (kind === "expression" || kind === "coordinates2") out.push(MSG.denom, MSG.parenPow, MSG.expandParen, MSG.expandLike, MSG.power, MSG.factored, MSG.reduced, MSG.simplified);
     if (["exactRoot", "list", "coordinates2", "coordinates3", "intervalSet", "pairSet"].includes(kind)) out.push(MSG.rootReduce);
-    if (kind === "list") out.push(MSG.listSep);
+    if (kind === "list") out.push(MSG.listSep, ...(s.ordered === true ? [MSG.listOrder] : []));
     if (kind === "intervalSet") { const lab = askedSet(s)?.label; out.push(MSG.setRange, MSG.setName, ...(lab && lab !== "range" ? [`Проміжок правильний, але тут шукають значення ${lab.replace(/-/g, "−")}.`] : [])); }
     if (kind === "coordinates2" || kind === "coordinates3") { const { ask, vask, given, objs } = askedPoint(s) || NO_NAMES;
       out.push(MSG.pointName, MSG.pointImage, ...(ask ? [`Координати правильні, але тут шукають ${ask}.`] : []), ...(vask ? [vaskMsg(vask)] : []), ...[...given].map(givenMsg), ...[...objs].map(objMsg)); }
@@ -1530,7 +1557,7 @@ window.SLID_LEARN = (() => {
     return null;
   }
   /** Перевірка відповіді: "ok" | "form" (правильне значення, потрібен інший запис) | "bad".
-      answerKind: number (типово), comparison (< > =), list (без порядку; повтори — лише з multiset), factors (прості множники),
+      answerKind: number (типово; scale — «1 : n» при ключі n), comparison (< > =), list (без порядку; повтори — лише з multiset; ordered — по місцях), factors (прості множники),
       divrem (частка й остача; лише частка при ненульовій остачі — "form", при нульовій — "ok"),
       ratio, coordinates2, coordinates3, exactRoot, intervalSet, expression, periodicSet, time, quantity, sci (стандартний вигляд),
       pairSet (множина пар) (docs/CONTENT_SCHEMA.md §10).
@@ -1558,12 +1585,13 @@ window.SLID_LEARN = (() => {
   const UNIT_RE = new Map();
   const ownUnit = s => { const forms = [s.unit, ...(Array.isArray(s.unitForms) ? s.unitForms : [])], pair = PAIRISH.includes(s.answerKind), key = forms.join("\u0001") + pair;
     if (!UNIT_RE.has(key)) { if (UNIT_RE.size > 500) UNIT_RE.clear(); const alts = unitAlts(forms); UNIT_RE.set(key, alts.length ? unitRe(alts, pair) : null); } return UNIT_RE.get(key); };
-  // «у 2 рази», «в 3 рази» при unit «раз» (engine-math-ister-p3 п. 2): прийменник перед числом знімається разом з одиницею
-  const UNIT_PRE = { "раз": /^\s*[увУВ]\s+(?=[-−]?\d)/ };
+  // «у 2 рази», «в 3 рази» при unit «раз» (engine-math-ister-p3 п. 2): прийменник перед числом знімається разом з одиницею;
+  // у list — перед кожним елементом (engine-list-quadratic п. 2): «у 2 рази; у 3 рази» = «2; 3», як і «у 2 рази; 3»
+  const UNIT_PRE = { "раз": /^\s*[увУВ]\s+(?=[-−]?\d)/ }, UNIT_PRE_LIST = { "раз": /(^|[;\n,])\s*[увУВ]\s+(?=[-−]?\d)/g };
   function stripUnit(s, v) {
     if (!s || typeof s.unit !== "string" || !s.unit.trim() || typeof v !== "string" || s.answerKind === "comparison") return v;
-    const pre = UNIT_PRE[s.unit.trim()], re = ownUnit(s), w = re ? v.replace(re, "$1") : v;
-    return pre && w !== v ? w.replace(pre, "") : w;
+    const u = s.unit.trim(), list = s.answerKind === "list", pre = list ? UNIT_PRE_LIST[u] : UNIT_PRE[u], re = ownUnit(s), w = re ? v.replace(re, "$1") : v;
+    return pre && w !== v ? w.replace(pre, list ? "$1" : "") : w;
   }
   // Поширені одиниці шкільних задач: чужа з них після числа — підказка «перевір одиницю».
   const UNITS = ["мм", "см", "дм", "м", "км", "мм²", "см²", "дм²", "м²", "км²", "га", "мм³", "см³", "дм³", "м³", "мг", "г", "кг", "ц", "т", "с", "хв", "год", "доба", "доби", "діб",
@@ -1620,7 +1648,7 @@ window.SLID_LEARN = (() => {
   function listKey(s) {
     if ((s?.answerKind || "number") !== "list") return null;
     return limited(() => {
-      const ex = exactKey(s.answer), a = parseList(s.answer, ex, s.multiset === true);
+      const ex = exactKey(s.answer), a = parseList(s.answer, ex, s.multiset === true || s.ordered === true);
       const rat = m => { const q = xrat(m); return q ? (q[1] === 1n ? String(q[0]) : `${q[0]}/${q[1]}`) : null; };
       return a && a.map(x => ({ exact: ex, root: [...x.x.keys()].some(k => !k.startsWith("1:")), tidy: x.tidy, approx: xnum(x.x), rat: rat(x.x) }));
     }, () => null);
@@ -1691,8 +1719,12 @@ window.SLID_LEARN = (() => {
     BUDGET = 50000;
     if (kind === "comparison") return /^[<>=]$/.test(String(s.answer).trim()) && String(v).trim() === String(s.answer).trim() ? "ok" : "bad";
     if (kind === "list") {
-      const ms = s.multiset === true, a = parseList(s.answer, ex, ms), u = parseList(listPre(s, v), ex, ms);
-      if (!a || !u || a.length !== u.length) return "bad";
+      // ordered (engine-list-ordered): елементи — по місцях, як у ключі («∠C і ∠D» → «41; 132»); повтори дозволено, як у multiset
+      const ord = s.ordered === true, ms = s.multiset === true || ord, a = parseList(s.answer, ex, ms), lv = listPre(s, v);
+      if (!a || listCount(lv) !== a.length) return "bad";
+      const u = parseList(lv, ex, ms);
+      if (!u || a.length !== u.length) return "bad";
+      if (ord) return a.every((x, i) => xeq(x.x, u[i].x)) ? tidy(u) : "bad";   // переставлені — bad з підказкою про порядок (badHint)
       if (ms) { const left = [...u]; for (const x of a) { const i = left.findIndex(y => xeq(x.x, y.x)); if (i < 0) return "bad"; left.splice(i, 1); } return tidy(u); }   // мультимножина (п. 8)
       return a.every(x => u.some(y => xeq(x.x, y.x))) ? tidy(u) : "bad";
     }
@@ -1750,6 +1782,7 @@ window.SLID_LEARN = (() => {
     const a = parseAns(typeof s.answer === "number" ? String(s.answer) : s.answer), u = numOf(v);
     if (a && !u && rootNum(v, a)) return "form";   // √576 при ключі 24 (п. 4): значення правильне, корінь не обчислено
     if (a && !u && ratioNum(v, a)) return "form";  // «1 : 4» при ключі 1/4 (engine-answer-formats-ister п. 4)
+    if (a && !u && s.scale === true && scaleNum(v, a)) return "ok";   // «1 : 10 000» при ключі 10000 і scale (engine-list-ordered п. 2)
     if (!a || !u) return "bad";
     if (s.tol > 0) {
       // Порівнюємо десяткову межу точно: 3,15 при 3,14 ± 0,01 проходить,
@@ -1792,9 +1825,10 @@ window.SLID_LEARN = (() => {
   const lessonOpen = (sec, i, open) => i === 0 || open(sec.lessons[i].id) || open(sec.lessons[i - 1].id);
   /** Екран «Тренування»: вправи (з practiceItems), згруповані за розділами в порядку програми — subject.sections уже впорядковано за
       класом і тижнями (registry finalize), а не за порядком пулів (рев'ю math-ister-migration, P3-1). Повертає [{ sec, lessons, cnt }]:
-      лише розділи й уроки, що мають вправи, кожен розділ один раз; cnt — кількість вправ на урок з усіх пулів. */
-  function practiceGroups(subject, items) {
-    const cnt = {}; for (const it of items) cnt[it.lesson] = (cnt[it.lesson] || 0) + 1;
+      лише розділи й уроки, що мають вправи, кожен розділ один раз; cnt — кількість вправ на урок з усіх пулів (lessonCounts;
+      екран «Тренування» передає свій, уже порахований, — один підрахунок на екран, рев'ю tools-ister-p3 P3-2). */
+  function lessonCounts(items) { const cnt = {}; for (const it of items) cnt[it.lesson] = (cnt[it.lesson] || 0) + 1; return cnt; }
+  function practiceGroups(subject, items, cnt = lessonCounts(items)) {
     return subject.sections.map(sec => ({ sec, lessons: (sec.lessons || []).filter(l => cnt[l.id]), cnt })).filter(g => g.lessons.length);
   }
   const addDay = (day, n) => new Date(Date.parse(day + "T00:00:00Z") + n * 864e5).toISOString().slice(0, 10);
@@ -2015,6 +2049,10 @@ window.SLID_LEARN = (() => {
         if (it.fractionOnly || it.mixed || it.reduced || it.form !== undefined) E.push(`${w}: decimals не поєднується з fractionOnly / mixed / reduced / form`);
       }
       if (it.multiset !== undefined && (typeof it.multiset !== "boolean" || it.type !== "answer" || kind !== "list")) E.push(`${w}: multiset має бути boolean для answerKind list`);
+      if (it.ordered !== undefined && (typeof it.ordered !== "boolean" || it.type !== "answer" || kind !== "list")) E.push(`${w}: ordered має бути boolean для answerKind list`);
+      else if (it.ordered === true && it.multiset !== undefined) E.push(`${w}: ordered уже порівнює елементи по місцях і дозволяє повтори — multiset не потрібен`);
+      if (it.scale !== undefined && (typeof it.scale !== "boolean" || it.type !== "answer" || kind !== "number")) E.push(`${w}: scale має бути boolean для числової answer`);
+      else if (it.scale === true && !(ka && !ka.frac && ka.d === 1 && ka.n > 1)) E.push(`${w}: scale — ключ: натуральне число n > 1 із масштабу 1 : n`);
       if ((kind === "time" || kind === "quantity") && it.type === "answer" && (it.unit !== undefined || it.unitForms !== undefined)) E.push(`${w}: ${kind} — без unit/unitForms${kind === "quantity" ? " (одиниці — у units)" : ""}`);
       if (kind === "time" && it.type === "answer" && !TIME_KEY.test(String(it.answer ?? "").trim())) E.push(`${w}: time — ключ «Г:ХХ» або «ГГ:ХХ» у 24-годинному форматі («9:55»)`);
       if (it.units !== undefined && (it.type !== "answer" || kind !== "quantity")) E.push(`${w}: units — лише для answerKind quantity`);
@@ -2273,7 +2311,7 @@ window.SLID_LEARN = (() => {
     return out;
   }
 
-  return { OK, BAD, SKIP, HALF, PASS, DIAG_TYPES, G_GRADED, graphBind, nodesOf, inLine, graphPre, nodeState, DIAG_ANSWER_KINDS, planFor, practiceItems, practiceGroups, lessonOpen, nextItem, remaining, topicStatus, level, buildPlan, diagRev, resumeDiag, finishDiag, record, detect, syncPlan, lessonDone, todo, isKnown, diagOpen, work, SK_RETAG, SK_RETAG2, SK_MIGRATIONS, migrateSk, validate,
+  return { OK, BAD, SKIP, HALF, PASS, DIAG_TYPES, G_GRADED, graphBind, nodesOf, inLine, graphPre, nodeState, DIAG_ANSWER_KINDS, planFor, practiceItems, practiceGroups, lessonCounts, lessonOpen, nextItem, remaining, topicStatus, level, buildPlan, diagRev, resumeDiag, finishDiag, record, detect, syncPlan, lessonDone, todo, isKnown, diagOpen, work, SK_RETAG, SK_RETAG2, SK_MIGRATIONS, migrateSk, validate,
     parseAns, parseDivrem, checkAns, diagAnswerOk, diagVerdict, diagHalfHint, DIAG_FORM, badHint, unitEq, hintTexts, keyInput, timeExample, quantityUnits: s => qtyUnits(s)?.units || null, stripUnit, listKey, pairKey, answerSig, formHint, ansText, srcRef, numberKeys, numberHelp, ANSWER_KINDS, BOX_DAYS, srsInit, srsUpdate, srsFromDiag, DIAG_BOX, genAll, genInstance, genIssues, genHash, GEN_MAX, isDue, pickSession, POOL_TYPES, validatePool,
     numVal, formCode };
 })();

@@ -438,6 +438,11 @@ FORMAT_FIXTURES = [
     ({'answerKind': 'pairSet', 'answer': [[3, 2], [-2, -3]]}, '(2; 3), (−3; −2)', 'Зміни відповідь', '(−2; −3), (3; 2)'),
     ({'answerKind': 'list', 'answer': [-3, 3]}, '±4', 'Зміни відповідь', '±3'),
     ({'answer': '1/4'}, '1 : 4', 'це відношення', '1/4'),
+    # engine-list-ordered: list з порядком (переставлено — «Перевір порядок»), масштаб «1 : n» при ключі n і scale;
+    # engine-list-quadratic п. 2: «у/в» перед кожним елементом list при unit «раз»
+    ({'answerKind': 'list', 'answer': [41, 132], 'ordered': True, 'unit': '°'}, '132°; 41°', 'Перевір порядок', '41°; 132°'),
+    ({'answer': 10000, 'scale': True}, '1 : 1000', 'Зміни відповідь', '1 : 10 000'),
+    ({'answerKind': 'list', 'answer': [2, 3], 'unit': 'раз'}, 'у 2 рази; у 4 рази', 'Зміни відповідь', 'у 3 рази; у 2 рази'),
 ]
 
 async def answer_format_checks(browser, url):
