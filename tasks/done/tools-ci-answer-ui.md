@@ -5,7 +5,7 @@ claimed_by: eng-ci
 id: tools-ci-answer-ui
 type: engine
 subject: all
-status: review
+status: done
 created: 2026-11-02
 depends_on: []
 ---
@@ -86,3 +86,6 @@ PR #18 (787 змінених файлів): піднабір 48 id, 238 урок
 - Перевірки: PyYAML — права за job як вище; скрипт кроку «Піднабір» з YAML прогнано bash'ем: PR (HEAD^1 = de49edd, 1 файл), push з базою c58de8c
   (791 файл, попередження «Понад бюджет» цілим UTF-8), неіснуюча база (попередження, rc 0) — усі rc 0. `npm run check` — EXIT 0 (test-playtest-pick 22/22,
   validate 0 помилок / 253 попередження).
+
+## Оркестратор, 2026-11-05: перший справжній прогін
+PR kondolovskiy/slid#18, run 41990614722 (Pages, pull_request, d5e9516): `build` ✅, `browser` ✅ — регресія test-answer-ui (з gaps_order_checks) 4,5 хв, плейтест піднабору ≈ 14 хв; `deploy` на PR пропущено. Критерій «CI падає на мутанті» винесено в задачу qa-ci-browser-mutant (потрібна окрема тестова гілка/PR — у цій сесії пуш лише в гілку PR #18). Після першого пуша в main — перевірити configure-pages з `pages: read`.
