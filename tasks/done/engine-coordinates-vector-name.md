@@ -4,7 +4,7 @@ claimed_at: 2026-11-05T07:32:04.041Z
 id: engine-coordinates-vector-name
 type: engine
 subject: math
-status: review
+status: done
 claimed_by: eng-coord
 created: 2026-11-05
 depends_on: []
