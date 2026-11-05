@@ -67,6 +67,8 @@
 
 Перевірка: `node tools/personalization-qa.mjs --strict` — rc 0; 52 розділи, 234 уроки, 219 required / 50 required-пулів, 11 optional, 4 pending, 1816 вправ — без змін. graph-report V9: `prerequisites` матриці без пояснення графом — 0 (g9m7l1 → m1 і g7m4l9 → g7m4l6 зникли; нові g7m4l9 → g7m4l2 і g9m7l2 → m1 пояснені ребрами `tri-ineq ← tri-isosc`, `prob-classic ← frac-read`).
 
+Незалежна перевірка v13 (verifier-matrix-v13, 2026-11-05): прийнято — reports/verify/matrix-v13.md, JSON `review.v13`. Верифікатор виправив застарілі `reason` g7m4l7, g7m4l9, g7m8l5 («матриця не вимагає» → формати вимагаються з v13).
+
 ## Зміни v12 (2026-11-05, нові вправи пулів Істера: повні формати й рівні) ¹⁵
 Задача fix-math-pools-ister-formats (п. 1–5). Нові id вправ, старі не перейменовано й не видалено (правило 11); змінені пули після правки були draft; content-verify прийняв (reports/verify/pools-ister-formats.md) — verified. `poolState` рядків — без змін. Рядки, `prerequisites`, `sk`, `evidence`, діагностика — без змін.
 

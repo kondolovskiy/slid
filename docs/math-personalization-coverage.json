@@ -3769,7 +3769,7 @@
       "lesson": "g7m4l7",
       "title": "Прямокутний трикутник",
       "curricularScope": "required",
-      "reason": "Новий урок D-043 (за Істером), verified; required з v7 (curate-math-matrix-v7). Пул pg7m4 f01–f08 verified (reports/verify/write-math-pool-g7m4-ister.md): 8 вправ, рівні 3/3/2; формати D-028 — number (є й list, comparison по одній — матриця їх не вимагає, як у нотатках автора). Охоплювати лише вміння, уже пояснені цим уроком.",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v7 (curate-math-matrix-v7). Пул pg7m4 f01–f08 verified (reports/verify/write-math-pool-g7m4-ister.md): 8 вправ, рівні 3/3/2; формати D-028 — number; list (f05) і comparison (f03) — по одній вправі, вимагаються з v13. Охоплювати лише вміння, уже пояснені цим уроком.",
       "evidence": "ist7g:127–135, 139, 146–147 (§ 19; вправи пулу — с. 132–135; ДСР № 4 — с. 139; повторення — с. 146–147)",
       "prerequisites": [
         "g7m4l3",
@@ -3840,7 +3840,7 @@
       "lesson": "g7m4l9",
       "title": "Нерівність трикутника",
       "curricularScope": "required",
-      "reason": "Новий урок D-043 (за Істером), verified; required з v7 (curate-math-matrix-v7). Пул pg7m4 h01–h08 verified (reports/verify/write-math-pool-g7m4-ister.md): 8 вправ, рівні 3/3/2; формати D-028 — number і multi (які трійки — сторони трикутника); є й list, choice по одній — матриця їх не вимагає. Охоплювати лише вміння, уже пояснені цим уроком.",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v7 (curate-math-matrix-v7). Пул pg7m4 h01–h08 verified (reports/verify/write-math-pool-g7m4-ister.md): 8 вправ, рівні 3/3/2; формати D-028 — number і multi (які трійки — сторони трикутника); list (h07) і choice (h08) — по одній вправі, вимагаються з v13. Охоплювати лише вміння, уже пояснені цим уроком.",
       "evidence": "ist7g:135–138, 148 (§ 20; вправи пулу — с. 137–138, 148)",
       "prerequisites": [
         "g7m4l2"
@@ -4375,7 +4375,7 @@
       "lesson": "g7m8l5",
       "title": "Описане й вписане коло",
       "curricularScope": "required",
-      "reason": "Новий урок D-043 (за Істером), verified; required з v7 (curate-math-matrix-v7). Пул pg7m8 d01–d08 verified (reports/verify/write-math-pool-g7m8-ister.md): 8 вправ, рівні 3/3/2; формати D-028 — number і list (сторони трикутника, №669, №812); choice (d01, ДСР) є, матриця не вимагає. Охоплювати лише вміння, уже пояснені цим уроком.",
+      "reason": "Новий урок D-043 (за Істером), verified; required з v7 (curate-math-matrix-v7). Пул pg7m8 d01–d08 verified (reports/verify/write-math-pool-g7m8-ister.md): 8 вправ, рівні 3/3/2; формати D-028 — number і list (сторони трикутника, №669, №812); choice (d01, ДСР) — одна вправа, вимагається з v13. Охоплювати лише вміння, уже пояснені цим уроком.",
       "evidence": "ist7g:163–171, 193, 196 (§ 23–24; вправи пулу — с. 166–167, 170; ДСР № 5 — с. 193; повторення — с. 196)",
       "prerequisites": [
         "g7m8l3",
@@ -12943,6 +12943,13 @@
       "scope": "зміни 2026-10-16.v2 → 2026-11-01.v3 (sk, формати, evidence, проби й назви)",
       "date": "2026-11-01",
       "verdict": "прийнято; бажані уточнення 1–4 закрито refine-math-content-from-matrix-v3"
+    },
+    "v13": {
+      "reviewer": "verifier-matrix-v13",
+      "report": "reports/verify/matrix-v13.md",
+      "scope": "зміни 2026-11-05.v12 → 2026-11-05.v13 (prerequisites g9m4l5, g9m7l1, g9m7l2, g7m4l9; formats g7m4l7, g7m4l9, g7m8l5; poolState; sources.recorded)",
+      "date": "2026-11-05",
+      "verdict": "прийнято; 3 застарілі reason (g7m4l7, g7m4l9, g7m8l5) виправив верифікатор; рекомендації — у звіті"
     }
   },
   "previous": "2026-11-05.v12",
