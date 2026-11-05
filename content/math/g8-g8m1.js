@@ -1,5 +1,6 @@
 /* Слід · Математика, 8 клас — «Алгебра: раціональні вирази»
    Статус уроків: verified (g8m1l2 — повторно після refine-math-lessons-g7-g9-support, reports/verify/refine-math-lessons-support-g8.md). 7 уроків (6 тем + boss); 2026-11-03 додано g8m1l6 (раціональні рівняння, після l2) і g8m1l7 (стандартний вигляд числа, після l3) — verified (reports/verify/write-math-g8-algebra-gaps.md; write-math-g8-algebra-gaps, Істер А8 § 8, § 11); eyebrow «Урок N» перенумеровано за порядком; boss g8m1l5 переписано 2026-11-04 (revise-math-finals-g8, D-043/D-045: одне завдання на урок, 6 завдань; + l6, l7) — verified (verifier-revise-math-finals-g8-g9, 2026-11-04, reports/verify/revise-math-finals-g8-g9.md).
+   style-math-ister-followup, 2026-11-05: g8m1l6 е2 fbTitle «Розберімося.» → draft; у boss g8m1l5 додано pre.
    Інтерактив: plane y:"k/x" з повзунком k (урок 4 ≥3 explore/lab); інші ≥2 explore/lab.
    Перевірка: node tools/validate.mjs --section g8m1 && node tools/stats.mjs --subject math
    Схема й правила: docs/CONTENT_SCHEMA.md, style/, D-019 */
@@ -335,7 +336,7 @@ SLID.section("math", {
       title: "Коли x у знаменнику",
       short: "Рац. рівняння",
       icon: "scale",
-      status: "verified",
+      status: "draft",
       why: "Рівняння зі змінною в знаменнику розв'язують майже як звичайні. Є лише одна пастка: знаменник не може стати нулем.",
       screens: [
         {
@@ -354,7 +355,7 @@ SLID.section("math", {
           body: "<p>Згадай: дріб зі знаменником нуль не визначений.</p>",
           hyp: true,
           opts: ["Один корінь: $x = 2$", "Жодного кореня", "Безліч коренів"],
-          fbTitle: "Перевіримо на наступному екрані.",
+          fbTitle: "Розберімося.",
           fbText: "Єдине знайдене значення $x = 2$ робить знаменник нулем. Отже, підставити його в рівняння не можна, і коренів немає. Далі — чому так буває і як цього не проґавити."
         },
         {
@@ -1022,6 +1023,7 @@ SLID.section("math", {
           type: "lab",
           sk: "expr",
           eyebrow: "Задача 1",
+          pre: "g8m1l1",
           title: "Де ламається дріб $(x + 1)/(x - 5)$?",
           body: "<p>Підбери значення $x$, при якому знаменник стає нулем і вираз ламається.</p>",
           lab: {
@@ -1051,6 +1053,7 @@ SLID.section("math", {
           type: "choice",
           sk: "ops",
           eyebrow: "Задача 2",
+          pre: "g8m1l2",
           title: "Спрости $(8/x) : (4/x)$ при $x \\neq 0$",
           opts: ["$32/x^2$", "$2/x$", "$1/2$", "$2$"],
           correct: 3,
@@ -1063,6 +1066,7 @@ SLID.section("math", {
           type: "choice",
           sk: "eq",
           eyebrow: "Задача 3",
+          pre: "g8m1l6",
           title: "Чи є корінь у $(x + 6)/(x - 2) = 2x/(x - 2)$?",
           body: "<p>Клієнт боїться, що тут, як у рівнянні Тараса, кореня немає. Почни з ОВР, а знайдене число перевір.</p>",
           opts: ["Жодного кореня", "$x = 2$", "$x = 6$", "$x = 2$ і $x = 6$"],
@@ -1076,6 +1080,7 @@ SLID.section("math", {
           type: "number",
           sk: "expr",
           eyebrow: "Задача 4",
+          pre: "g8m1l3",
           title: "Обчисли $2^{-4} * 2^{6}$",
           body: "<p>Додай показники за правилом добутку степенів або порахуй кожен степінь окремо.</p>",
           answer: 4,
@@ -1088,6 +1093,7 @@ SLID.section("math", {
           type: "number",
           sk: "num",
           eyebrow: "Задача 5",
+          pre: "g8m1l7",
           title: "Шар фарби: $0,00005$ м = $5 * 10^{n}$ м",
           body: "<p>Майстер записує товщину шару фарби на деталі у стандартному вигляді. Знайди порядок $n$.</p>",
           answer: -5,
@@ -1100,6 +1106,7 @@ SLID.section("math", {
           type: "lab",
           sk: "func",
           eyebrow: "Задача 6",
+          pre: "g8m1l4",
           title: "Крива через $A(4;\\,-2)$",
           body: "<p>Добери число $k$ у формулі $y = k/x$ так, щоб крива пройшла саме через точку $A$.</p>",
           lab: {

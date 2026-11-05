@@ -1,5 +1,6 @@
 /* Слід · Математика, 6 клас — «Відношення і пропорції»
    Статус уроків: g6m3l1–l6 — verified (verifier-g6m3, 2026-10-11; l1–l4 після ревізії D-019/D-020 — verifier-g6m3-d019, 2026-10-13). g6m3l5, g6m3l6 — правка нотації 2026-11-03 (довжина кола $C$, D-043), verified (verifier-fix-math-notation-ister, 2026-11-03). 6 уроків.
+   style-math-ister-followup, 2026-11-05: g6m3l7 е9 заголовок «Сектор для салату» (не видає 1/3) → draft.
    Статус уроків: g6m3l3 — verified (2026-11-03, verifier-fix-math-figs-g4-g6, reports/verify/fix-math-figs-g4-g6.md; fix-math-figs-g4-g6: статичні графіки на двох екранах теорії); g6m3l1–l6 — verified (verifier-g6m3, 2026-10-11; l1–l4 після ревізії D-019/D-020 — verifier-g6m3-d019, 2026-10-13). 6 уроків.
    g6m3l7 «Круг на стенді» (кругові діаграми, Істер 6, § 24–25; write-math-g6m3-circle-diagrams, 2026-11-03) — verified (verifier-write-math-g6m3-circle-diagrams, 2026-11-03, reports/verify/write-math-g6m3-circle-diagrams.md); стоїть після g6m3l5, перед фіналом g6m3l6. Разом 7 уроків.
    revise-math-finals-g5g6 (2026-11-04, D-045 п. 1): фінал g6m3l6 — завдання 4 «Більше кухарів» (друге на g6m3l3) прибрано, додано завдання 6 на кругову діаграму (g6m3l7); 6 завдань, g6m3l6 → draft.
@@ -884,7 +885,7 @@ SLID.section("math", {
       title: "Круг на стенді",
       short: "Кругові діаграми",
       icon: "chart",
-      status: "verified",
+      status: "draft",
       why: "Опитування, витрати родини, склад лісу часто показують кругом. На круговій діаграмі одразу видно, яка частина цілого найбільша.",
       screens: [
         {
@@ -1024,7 +1025,7 @@ SLID.section("math", {
           type: "lab",
           sk: "data",
           eyebrow: "Зроби так, щоб…",
-          title: "Третина круга для салату",
+          title: "Сектор для салату",
           body: "<p>У їдальні борщ замовили 15 учнів, вареники — 9. Скільки учнів має замовити салат, щоб кут його сектора був 120°?</p>",
           lab: {
             kind: "chart",

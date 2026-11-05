@@ -1,5 +1,6 @@
 /* Слід · Математика, 7 клас — «Алгебра: лінійні рівняння»
    Статус уроків: verified. 4 уроки (3 + boss).
+   style-math-ister-followup, 2026-11-05: у завдання фіналу додано pre (id уроку теми; style/common.md, D-048 п. 1); зміст не змінено.
    Інтерактив: balance, numline, explore/lab (docs/CONTENT_SCHEMA.md §8).
    Перевірка: node tools/validate.mjs --section g7m1 && node tools/stats.mjs --subject math
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
@@ -499,6 +500,7 @@ SLID.section("math", {
           type: "lab",
           sk: "eq",
           eyebrow: "Завдання 1",
+          pre: "g7m1l1",
           title: "Зважити пакунок",
           body: "<p>Пакунок разом із гирею 4 кг важить стільки само, як гиря 15 кг. Добери вагу пакунка на терезах.</p>",
           lab: {
@@ -521,6 +523,7 @@ SLID.section("math", {
           type: "lab",
           sk: "eq",
           eyebrow: "Завдання 2",
+          pre: "g7m1l2",
           title: "Корінь на числовій прямій",
           body: "<p>Дано лінійне рівняння $3x = -9$. Знайди корінь і постав точку саме на ньому.</p>",
           lab: {
@@ -545,6 +548,7 @@ SLID.section("math", {
           type: "choice",
           sk: "eq",
           eyebrow: "Завдання 3",
+          pre: "g7m1l2",
           title: "Скільки коренів у $0 * x = 0$?",
           opts: ["Один: $x = 0$", "Безліч", "Жодного"],
           correct: 1,
@@ -556,6 +560,7 @@ SLID.section("math", {
           type: "number",
           sk: "eq",
           eyebrow: "Завдання 4",
+          pre: "g7m1l2",
           title: "$5x + 8 = -7$",
           body: "<p>Знайди єдиний корінь цього лінійного рівняння.</p>",
           answer: -3,
@@ -568,6 +573,7 @@ SLID.section("math", {
           type: "choice",
           sk: "eq",
           eyebrow: "Завдання 5",
+          pre: "g7m1l3",
           title: "Склади рівняння до чека",
           body: "<p>Зошит коштує $x$ грн, а ручка — на 7 грн дорожча. Три зошити й одна ручка разом коштують 61 грн. Яке рівняння правильне?</p>",
           opts: ["$3x + 7 = 61$", "$x + 7x = 61$", "$3x + (x + 7) = 61$"],
@@ -580,6 +586,7 @@ SLID.section("math", {
           type: "number",
           sk: "eq",
           eyebrow: "Завдання 6",
+          pre: "g7m1l3",
           title: "Скільки коштує зошит?",
           body: "<p>З рівняння $3x + (x + 7) = 61$ знайди ціну одного зошита в гривнях.</p>",
           answer: 13.5,

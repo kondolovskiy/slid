@@ -1,5 +1,6 @@
 /* Слід · Математика, 7 клас — «Геометрія: найпростіші фігури»
    Статус уроків: verified. 4 уроки (3 теми + boss).
+   style-math-ister-followup, 2026-11-05: у завдання фіналу додано pre (id уроку теми; style/common.md, D-048 п. 1); зміст не змінено.
    Інтерактив (D-014): plane без осей — точки drag, lines, segs, angles з live angle(A,B,C).
    Перевірка: node tools/validate.mjs --section g7m2 && node tools/stats.mjs --subject math
    Схема й правила: docs/CONTENT_SCHEMA.md, style/, D-019. */
@@ -627,6 +628,7 @@ SLID.section("math", {
           type: "lab",
           sk: "geom",
           eyebrow: "Завдання 1",
+          pre: "g7m2l1",
           title: "Три ліхтарі на одній алеї",
           body: "<p>Ліхтарі $A$, $B$, $C$ мають стояти на одній прямій. Перетягни $C$.</p>",
           lab: {
@@ -655,6 +657,7 @@ SLID.section("math", {
           type: "choice",
           sk: "geom",
           eyebrow: "Завдання 2",
+          pre: "g7m2l1",
           title: "Скільки прямих через дві альтанки?",
           body: "<p>На плані дві альтанки — дві різні точки. Скільки різних прямих алей через них можна провести?</p>",
           opts: ["Одну", "Безліч", "Жодної, доки немає третьої точки"],
@@ -667,6 +670,7 @@ SLID.section("math", {
           type: "lab",
           sk: "geom",
           eyebrow: "Завдання 3",
+          pre: "g7m2l2",
           title: "Кути біля фонтану",
           body: "<p>Доріжки утворили суміжні кути. Зроби ∠AOC = 135°.</p>",
           lab: {
@@ -700,6 +704,7 @@ SLID.section("math", {
           type: "number",
           sk: "geom",
           eyebrow: "Завдання 4",
+          pre: "g7m2l2",
           title: "Не міряй — обчисли",
           body: "<p>Дві алеї перетнулися. Один кут — 125°. Скільки градусів у вертикальному до нього куті?</p>",
           answer: 125,
@@ -713,6 +718,7 @@ SLID.section("math", {
           type: "order",
           sk: "geom",
           eyebrow: "Завдання 5",
+          pre: "g7m2l3",
           title: "Короткий доказ для бригади",
           body: "<p>Поясни робітникам, чому вертикальні кути рівні — без транспортира. Вибудуй кроки.</p>",
           items: [
@@ -730,6 +736,7 @@ SLID.section("math", {
           type: "lab",
           sk: "geom",
           eyebrow: "Завдання 6",
+          pre: "g7m2l2",
           title: "Прямий кут біля лавки",
           body: "<p>Зроби ∠AOC прямим — 90°. Тоді суміжний теж буде прямим.</p>",
           lab: {
@@ -763,6 +770,7 @@ SLID.section("math", {
           type: "choice",
           sk: "geom",
           eyebrow: "Фінал",
+          pre: "g7m2l3",
           title: "Що сказати архітектору?",
           body: "<p>Він пропонує «перевірити вертикальні кути транспортиром на кожному перехресті». Яка відповідь краща?</p>",
           opts: [

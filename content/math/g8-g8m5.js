@@ -1,5 +1,6 @@
 /* Слід · Математика, 8 клас — «Алгебра: квадратні рівняння»
    Статус уроків: verified. 8 уроків (7 тем + boss); 2026-11-03 додано g8m5l6 (квадратний тричлен), g8m5l7 (рівняння, що зводяться до квадратних), g8m5l8 (задачі на дробові рівняння) — перед boss, verified (reports/verify/write-math-g8-algebra-gaps.md; write-math-g8-algebra-gaps, Істер А8 § 24–26); requires + g8m1l6 (ОВР для l7, l8); boss g8m5l5 переписано 2026-11-04 (revise-math-finals-g8, D-043/D-045: одне завдання на урок, 7 завдань; + l6, l7, l8) — verified (verifier-revise-math-finals-g8-g9, 2026-11-04, reports/verify/revise-math-finals-g8-g9.md).
+   style-math-ister-followup, 2026-11-05: у завдання фіналу додано pre (id уроку теми; style/common.md, D-048 п. 1); зміст не змінено.
    Інтерактив: plane y:"a*x^2+b*x+c" з повзунками a,b,c; корені на Ox; explore «крути D»;
    lab «два / один / жодного кореня». Урок 2: ≥3 explore/lab. signed:true. D-019.
    Перевірка: node tools/validate.mjs --section g8m5 && node tools/stats.mjs --subject math
@@ -1196,6 +1197,7 @@ SLID.section("math", {
           type: "number",
           sk: "eq",
           eyebrow: "Завдання 1",
+          pre: "g8m5l1",
           title: "Більший корінь $x^2 - 16 = 0$",
           body: "<p>Це неповне рівняння з першого уроку. Знайди більший із двох коренів.</p>",
           answer: 4,
@@ -1208,6 +1210,7 @@ SLID.section("math", {
           type: "lab",
           sk: "eq",
           eyebrow: "Завдання 2",
+          pre: "g8m5l2",
           title: "Зроби рівно один корінь",
           body: "<p>Добери коефіцієнти $a$, $b$ і $c$ так, щоб вираз $D$ став рівним нулю.</p>",
           lab: {
@@ -1235,6 +1238,7 @@ SLID.section("math", {
           type: "number",
           sk: "eq",
           eyebrow: "Завдання 3",
+          pre: "g8m5l3",
           title: "Сума коренів $x^2 - 9x + 14 = 0$",
           body: "<p>Рівняння вже зведене. Скористайся теоремою Вієти без повної формули коренів.</p>",
           answer: 9,
@@ -1247,6 +1251,7 @@ SLID.section("math", {
           type: "choice",
           sk: "eq",
           eyebrow: "Завдання 4",
+          pre: "g8m5l4",
           title: "Зона: ширина $x$, довжина $x + 2$, площа $48$. Ширина?",
           body: "<p>З умови $x(x + 2) = 48$ маємо $x^2 + 2x - 48 = 0$. Який додатний корінь підходить?</p>",
           opts: ["$6$", "$8$", "$4$", "$-8$"],
@@ -1260,6 +1265,7 @@ SLID.section("math", {
           type: "choice",
           sk: "expr",
           eyebrow: "Завдання 5",
+          pre: "g8m5l6",
           title: "Розклади $x^2 - 7x + 12$ на множники",
           body: "<p>Цим тричленом бригада записала площу зони. Згадай теорему про розклад квадратного тричлена.</p>",
           opts: ["$(x + 3)(x + 4)$", "$(x - 2)(x - 6)$", "$(x - 3)(x - 4)$", "$(x - 1)(x - 12)$"],
@@ -1273,6 +1279,7 @@ SLID.section("math", {
           type: "number",
           sk: "eq",
           eyebrow: "Завдання 6",
+          pre: "g8m5l7",
           title: "Найбільший корінь $x^4 - 10x^2 + 9 = 0$",
           body: "<p>Зроби заміну $x^2 = t$, розв'яжи квадратне рівняння й повернися до $x$.</p>",
           answer: 3,
@@ -1285,6 +1292,7 @@ SLID.section("math", {
           type: "number",
           sk: "eq",
           eyebrow: "Завдання 7",
+          pre: "g8m5l8",
           title: "Скільки годин фарбуватиме Андрій сам?",
           body: "<p>Андрій і Оксана разом фарбують паркан за 6 год. Оксані самій потрібно на 5 год більше, ніж Андрієві. Нехай Андрієві потрібно $x$ год: тоді $6/x + 6/(x + 5) = 1$.</p>",
           answer: 10,

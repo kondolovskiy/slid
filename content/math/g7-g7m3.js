@@ -1,5 +1,6 @@
 /* Слід · Математика, 7 клас — «Алгебра: цілі вирази»
    Статус уроків: verified (verifier-g7m3); l3 — повторно verified 2026-11-03 (fix-math-figs-g7-g8-alg: заголовок екрана 6 і fbBad екрана 3 без посилання на малюнок; reports/verify/fix-math-figs-g7-g8-alg.md); l2 — повторно verified 2026-11-01 (refine-math-diag-probes-v3: екран «одночлен × многочлен», Алгебра 7 п. 10; reports/verify/refine-math-diag-probes-v3.md). 7 уроків (6 тем + boss); 2026-11-03 додано g7m3l6 (тотожності, перший у розділі) і g7m3l7 (сума й різниця кубів, перед boss) — verified 2026-11-03 (write-math-g7-algebra-gaps, Істер А7 § 5, § 20; reports/verify/write-math-g7-algebra-gaps.md); eyebrow «Урок N» перенумеровано за порядком.
+   style-math-ister-followup, 2026-11-05: у завдання фіналу додано pre (id уроку теми; style/common.md, D-048 п. 1); зміст не змінено.
    Boss g7m3l5 → draft 2026-11-04 (revise-math-finals-g7, D-043/D-045: одне завдання на урок): замість дублів (степінь многочлена, різниця квадратів) — тотожність (l6) і сума кубів (l7); потрібна content-verify.
    Інтерактив: ≥ 2 explore/lab у кожному уроці (docs/CONTENT_SCHEMA.md §8).
    Перевірка: node tools/validate.mjs --section g7m3 && node tools/stats.mjs --subject math
@@ -1056,6 +1057,7 @@ SLID.section("math", {
           type: "choice",
           sk: "expr",
           eyebrow: "Замовлення 1",
+          pre: "g7m3l6",
           title: "Яка рівність — тотожність?",
           body: "<p>Клієнт приніс чотири рівності. Лише одна правильна для будь-якого $a$. Перетвори ліві частини й порівняй із правими.</p>",
           opts: [
@@ -1074,6 +1076,7 @@ SLID.section("math", {
           type: "lab",
           sk: "expr",
           eyebrow: "Замовлення 2",
+          pre: "g7m3l1",
           title: "Степінь на вітрині: $3^m * 3^n = 243$",
           body: "<p>Підбери натуральні показники $m$ і $n$ так, щоб на вітрині з'явилося саме число 243.</p>",
           lab: {
@@ -1101,6 +1104,7 @@ SLID.section("math", {
           type: "lab",
           sk: "func",
           eyebrow: "Замовлення 3",
+          pre: "g7m3l2",
           title: "Графік $y = ax^2 + c$ через $(0;\\,2)$ і $(1;\\,5)$",
           body: "<p>У цьому замовленні коефіцієнт $b$ уже дорівнює нулю, тож добери лише $a$ і $c$.</p>",
           lab: {
@@ -1130,6 +1134,7 @@ SLID.section("math", {
           type: "lab",
           sk: "expr",
           eyebrow: "Замовлення 4",
+          pre: "g7m3l3",
           title: "Квадрат різниці площею 16",
           body: "<p>Добери числа $a$ і $b$ (причому $a > b$) так, щоб площа квадрата різниці $(a - b)^2$ стала рівно 16.</p>",
           lab: {
@@ -1160,6 +1165,7 @@ SLID.section("math", {
           type: "choice",
           sk: "expr",
           eyebrow: "Замовлення 5",
+          pre: "g7m3l4",
           title: "Розклади $x^2 - 10x + 25$",
           opts: ["$(x - 5)^2$", "$(x + 5)^2$", "$(x - 5)(x + 5)$", "$(x - 10)(x + 25)$"],
           correct: 0,
@@ -1172,6 +1178,7 @@ SLID.section("math", {
           type: "number",
           sk: "expr",
           eyebrow: "Замовлення 6",
+          pre: "g7m3l7",
           title: "Останній код: значення $(5 + 1)(25 - 5 + 1)$",
           body: "<p>Цей добуток можна перемножити, а можна впізнати формулу з кубами й порахувати швидше.</p>",
           answer: 126,

@@ -1,5 +1,6 @@
 /* Слід · Математика, 5 клас — «Фігури і величини»
    Статус уроків: l1 — повторно verified 2026-11-01 (refine-math-diag-probes-v3: AB = AC + CB на екрані теорії; reports/verify/refine-math-diag-probes-v3.md); l2–l5 verified (повторна верифікація після ревізії D-019, 2026-10-13, reports/verify/ms0b.md); ms3l3, ms4l1 — verified 2026-11-03 (verifier-revise-math-ms0b-ister, reports/verify/revise-math-ms0b-ister.md). 7 уроків (ms3l3, ms4l1 перенесено, D-043).
+   style-math-ister-followup, 2026-11-05: ms0bl6 — рухома точка дослідження K → P (K(1) лишилась у теорії) → draft.
    Статус уроків: l1 — verified (2026-11-03, verifier-fix-math-figs-g4-g6, reports/verify/fix-math-figs-g4-g6.md; fix-math-figs-g4-g6: статичний рисунок на екрані теорії «Відрізок, промінь, пряма»; промінь CD перейменовано на MN, щоб C не означала двох різних точок). Раніше l1 — повторно verified 2026-11-01 (refine-math-diag-probes-v3: AB = AC + CB на екрані теорії; reports/verify/refine-math-diag-probes-v3.md); l2–l5 verified (повторна верифікація після ревізії D-019, 2026-10-13, reports/verify/ms0b.md). 5 уроків.
    Інтерактив (D-014): plane без осей — перетягувані точки (відрізок, промінь, пряма, кути, трикутники); rect — периметр.
    Перевірка: node tools/validate.mjs --section ms0b && node tools/stats.mjs --subject math
@@ -174,7 +175,7 @@ SLID.section("math", {
       title: "Промінь з поділками",
       short: "Координатний промінь",
       icon: "line",
-      status: "verified",
+      status: "draft",
       why: "Лінійка, термометр і спідометр показують числа поділками. Хто вміє їх читати, той не помилиться ні в сантиметрах, ні в градусах.",
       screens: [
         {
@@ -187,8 +188,8 @@ SLID.section("math", {
         {
           type: "explore",
           eyebrow: "Дослідження",
-          title: "Тягни точку K",
-          body: "<p>Від $O$ відкладено рівні відрізки. Тягни точку $K$. Куди її рухати, щоб число росло?</p>",
+          title: "Тягни точку P",
+          body: "<p>Від $O$ відкладено рівні відрізки. Тягни точку $P$. Куди її рухати, щоб число росло?</p>",
           lab: {
             kind: "numline",
             view: [0, 10],
@@ -197,10 +198,10 @@ SLID.section("math", {
             params: { k: { min: 0, max: 10, step: 1, start: 2, hide: true } },
             points: {
               O: { x: "0", y: "0", color: "muted", label: "O" },
-              K: { x: "k", y: "0", drag: true, label: "K" }
+              P: { x: "k", y: "0", drag: true, label: "P" }
             },
-            show: "$K({k|0})$: від $O$ до $K$ — {k|0} рівних відрізків",
-            alt: "Промінь з початком O і поділками від 0 до 10; точку K можна тягнути"
+            show: "$P({k|0})$: від $O$ до $P$ — {k|0} рівних відрізків",
+            alt: "Промінь з початком O і поділками від 0 до 10; точку P можна тягнути"
           },
           cta: "Далі"
         },
@@ -212,7 +213,7 @@ SLID.section("math", {
           opts: ["Точка $A$", "Точка $B$", "Вони поруч, не скажеш"],
           correct: 0,
           fbOk: "Так.",
-          fbBad: "Куди рухалася $K$, коли число росло?",
+          fbBad: "Куди рухалася $P$, коли число росло?",
           fbText: "Що більше число, то далі воно від $O$ праворуч. До 8 треба відкласти вісім рівних відрізків, а до 5 — лише п'ять. Тому $A$ правіше."
         },
         {

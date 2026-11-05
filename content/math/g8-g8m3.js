@@ -1,5 +1,6 @@
 /* Слід · Математика, 8 клас — «Алгебра: квадратні корені»
    Статус уроків: verified (g8m3l1, g8m3l3 — повторно після refine-math-lessons-g7-g9-support, reports/verify/refine-math-lessons-support-g8.md); раніше (g8m3l1, g8m3l3 дописано 2026-10-31, refine-math-g8m3-roots; повторна верифікація reports/verify/refine-g8m3.md). 6 уроків (5 тем + boss); 2026-11-03 додано g8m3l6 (функція y = x², перший у розділі) — verified (reports/verify/write-math-g8-algebra-gaps.md; write-math-g8-algebra-gaps, Істер А8 § 13); eyebrow «Урок N» перенумеровано за порядком; boss g8m3l5 переписано 2026-11-04 (revise-math-finals-g8, D-043/D-045: одне завдання на урок, 5 завдань; + l6) — verified (verifier-revise-math-finals-g8-g9, 2026-11-04, reports/verify/revise-math-finals-g8-g9.md).
+   style-math-ister-followup, 2026-11-05: boss g8m3l5 — розминка про параболу y = x² (було √x перед з. 1 про параболу); g8m3l6 фінал — рівняння x² = x + 6 (було x² = 3 − 2x, як у е8). l5, l6 → draft; у boss додано pre.
    Інтерактив: plane y=sqrt(x) / a*sqrt(x); numline для √n; explore/lab (docs/CONTENT_SCHEMA.md §8).
    Перевірка: node tools/validate.mjs --section g8m3 && node tools/stats.mjs --subject math
    Схема й правила: docs/CONTENT_SCHEMA.md, style/, D-019 */
@@ -22,7 +23,7 @@ SLID.section("math", {
       title: "Парабола з квадрата",
       short: "y = x²",
       icon: "chart",
-      status: "verified",
+      status: "draft",
       why: "Графік $y = x^2$ — парабола. Вона допомагає бачити корені рівнянь, а згодом стане основою для квадратних рівнянь.",
       screens: [
         {
@@ -176,24 +177,24 @@ SLID.section("math", {
           type: "choice",
           sk: "func",
           eyebrow: "Фінал",
-          title: "Які корені має рівняння $x^2 = 3 - 2x$?",
+          title: "Які корені має рівняння $x^2 = x + 6$?",
           body: "<p>Скористайся графіками й перевір підстановкою.</p>",
           lab: {
             kind: "plane",
-            view: [-5, 4, -2, 10],
+            view: [-4, 4, -2, 10],
             params: {},
             fns: [
               { id: "f", y: "x^2", color: "accent" },
-              { id: "g", y: "3 - 2*x", color: "blue" }
+              { id: "g", y: "x + 6", color: "blue" }
             ],
-            alt: "Парабола y = x² і пряма y = 3 − 2x на одній площині"
+            alt: "Парабола y = x² і пряма y = x + 6 на одній площині"
           },
-          opts: ["$9$ і $1$", "Лише $1$", "$3$ і $-1$", "$-3$ і $1$"],
+          opts: ["$4$ і $9$", "Лише $3$", "$2$ і $-3$", "$-2$ і $3$"],
           correct: 3,
           hint: "Корені — це абсциси точок перетину, тобто їхні $x$.",
           fbOk: "Обидва корені.",
           fbBad: "Потрібні $x$ точок перетину, а не $y$.",
-          fbText: "Перевірка: $(-3)^2 = 9$ і $3 - 2 * (-3) = 9$; $1^2 = 1$ і $3 - 2 * 1 = 1$. Корені $-3$ і $1$. Числа 9 і 1 — ординати точок, а не корені."
+          fbText: "Перевірка: $(-2)^2 = 4$ і $-2 + 6 = 4$; $3^2 = 9$ і $3 + 6 = 9$. Корені $-2$ і $3$. Числа 4 і 9 — ординати точок, а не корені."
         }
       ],
       outro: {
@@ -935,7 +936,7 @@ SLID.section("math", {
       title: "Плитка для шкільного двору",
       short: "Фінал",
       icon: "trophy",
-      status: "verified",
+      status: "draft",
       boss: true,
       badge: "g8m3boss",
       why: "Зберемо все: параболу, корінь, дійсні числа, властивості й графік $y = \\sqrt{x}$ — як на реальному майданчику.",
@@ -951,20 +952,20 @@ SLID.section("math", {
         {
           type: "explore",
           eyebrow: "Розминка",
-          title: "Згадай графік кореня",
-          body: "<p>Покрути точку на графіку $y = \\sqrt{x}$ і згадай, як ростуть координати, перш ніж перейти до оцінюваних завдань.</p>",
+          title: "Згадай параболу",
+          body: "<p>Покрути точку на параболі $y = x^2$ і згадай, як пов'язані її координати, перш ніж перейти до оцінюваних завдань.</p>",
           lab: {
             kind: "plane",
-            view: [-1, 10, -1, 4],
+            view: [-4, 4, -1, 10],
             params: {
-              x0: { min: 0, max: 9, step: 1, start: 4, label: "$x$" }
+              x0: { min: -3, max: 3, step: 1, start: 2, label: "$x$" }
             },
-            fns: [{ id: "f", y: "sqrt(x)", color: "accent", from: 0 }],
+            fns: [{ id: "f", y: "x^2", color: "accent" }],
             points: {
-              P: { x: "x0", y: "sqrt(x0)", color: "red", coords: true }
+              P: { x: "x0", y: "x0^2", color: "red", coords: true }
             },
-            show: "$y = √{x0|0} = {sqrt(x0)}$",
-            alt: "Розминка: графік y=√x"
+            show: "$x = {x0|0}$, $y = x^2 = {x0^2|0}$",
+            alt: "Розминка: парабола y = x²"
           },
           cta: "До завдань"
         },
@@ -972,6 +973,7 @@ SLID.section("math", {
           type: "choice",
           sk: "func",
           eyebrow: "Завдання 1",
+          pre: "g8m3l6",
           title: "Які корені має рівняння $x^2 = x + 2$?",
           body: "<p>На плані двору доріжка йде по параболі $y = x^2$, а паркан — по прямій $y = x + 2$. Знайди корені за графіками й перевір підстановкою.</p>",
           lab: {
@@ -995,6 +997,7 @@ SLID.section("math", {
           type: "number",
           sk: "expr",
           eyebrow: "Завдання 2",
+          pre: "g8m3l1",
           title: "Квадратна зона має площу 64 м². Яка сторона?",
           body: "<p>Сторона зони — це арифметичний квадратний корінь із площі; запиши відповідь у метрах.</p>",
           answer: 8,
@@ -1008,6 +1011,7 @@ SLID.section("math", {
           type: "choice",
           sk: "num",
           eyebrow: "Завдання 3",
+          pre: "g8m3l2",
           title: "Яке число не є дробом $m/n$?",
           body: "<p>Згадай урок про дійсні числа й обери те, що не записується як $m/n$.</p>",
           opts: ["$\\sqrt{36}$", "$2/3$", "$\\sqrt{5}$", "$-8$"],
@@ -1021,6 +1025,7 @@ SLID.section("math", {
           type: "number",
           sk: "expr",
           eyebrow: "Завдання 4",
+          pre: "g8m3l3",
           title: "$\\sqrt{50} = k\\sqrt{2}$. Чому дорівнює $k$?",
           body: "<p>Бригада записала діагональ плитки як $\\sqrt{50}$ дм. Винеси множник з-під знака кореня.</p>",
           answer: 5,
@@ -1033,6 +1038,7 @@ SLID.section("math", {
           type: "lab",
           sk: "func",
           eyebrow: "Завдання 5",
+          pre: "g8m3l4",
           title: "Точка на графіку $y = \\sqrt{x}$",
           body: "<p>Постав $P$ на криву $y = \\sqrt{x}$.</p>",
           lab: {

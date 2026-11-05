@@ -207,7 +207,7 @@
 | g9m4l3 Сторона й протилежний кут | 9 | 9 | 0.56 | 22 | 40 | 5.6 | 0.019 | 3 | sentenceWords=5.6 поза [6; 13] |
 | g9m4l5 Площа без висоти | 9 | 9 | 0.67 | 25 | 41 | 5.3 | 0.032 | 3 | sentenceWords=5.3 поза [6; 13] |
 | g9m4l6 Три сторони — і вже площа | 9 | 10 | 0.5 | 22 | 33 | 5.5 | 0.019 | 3 | sentenceWords=5.5 поза [6; 13] |
-| g9m4l4 Помічник геодезиста (фінал) | 9 | 7 | 0.86 | 23 | 32 | 6 | 0.02 | 3 | — |
+| g9m4l4 Помічник геодезиста (фінал) | 9 | 7 | 0.86 | 23 | 32 | 6.1 | 0.02 | 3 | — |
 | g9m5l1 Ряд за правилом | 9 | 8 | 0.5 | 19 | 30 | 5.2 | 0.004 | 3 | sentenceWords=5.2 поза [6; 13] |
 | g9m5l2 Рівні кроки | 9 | 8 | 0.5 | 18 | 34 | 5.4 | 0.023 | 3 | sentenceWords=5.4 поза [6; 13] |
 | g9m5l3 Рівні множники | 9 | 8 | 0.5 | 20 | 33 | 5.1 | 0.018 | 3 | sentenceWords=5.1 поза [6; 13] |
@@ -217,8 +217,8 @@
 | g9m6l2 Коло без нитки | 9 | 9 | 0.67 | 21 | 41 | 4.9 | 0.009 | 3 | sentenceWords=4.9 поза [6; 13] |
 | g9m6l6 Шматок кола | 9 | 9 | 0.67 | 22 | 41 | 5 | 0.019 | 3 | sentenceWords=5 поза [6; 13] |
 | g9m6l3 Фігура їде й відбивається | 9 | 10 | 0.5 | 23 | 50 | 5.6 | 0.026 | 3 | sentenceWords=5.6 поза [6; 13] |
-| g9m6l4 Та сама форма, інший розмір | 9 | 9 | 0.67 | 21 | 36 | 5.2 | 0.008 | 3 | sentenceWords=5.2 поза [6; 13] |
-| g9m6l7 Велика піца чи три малі? | 9 | 9 | 0.67 | 24 | 40 | 5.2 | 0.023 | 3 | sentenceWords=5.2 поза [6; 13] |
+| g9m6l4 Та сама форма, інший розмір | 9 | 8 | 0.63 | 21 | 36 | 5.1 | 0.009 | 3 | sentenceWords=5.1 поза [6; 13] |
+| g9m6l7 Велика піца чи три малі? | 9 | 9 | 0.67 | 25 | 56 | 5.3 | 0.023 | 3 | sentenceWords=5.3 поза [6; 13] |
 | g9m6l5 Орнамент собору (фінал) | 9 | 8 | 0.75 | 23 | 33 | 5.4 | 0.018 | 3 | sentenceWords=5.4 поза [6; 13] |
 | g9m7l1 Скільки варіантів? | 9 | 10 | 0.6 | 23 | 44 | 5.3 | 0.007 | 3 | sentenceWords=5.3 поза [6; 13] |
 | g9m7l2 Який шанс? | 9 | 10 | 0.5 | 21 | 31 | 5.7 | 0.029 | 3 | sentenceWords=5.7 поза [6; 13] |
@@ -298,7 +298,7 @@
 - **4:boss**: screens 8±0, gradedShare 0.75±0, readWordsPerScreen 17.4±2.24, maxReadWords 25±4.56, sentenceWords 4.48±0.22, longWordShare 0.01±0, typeVariety 3.2±0.4
 - **5-6:lesson**: screens 9.39±0.68, gradedShare 0.66±0.06, readWordsPerScreen 19.7±3.16, maxReadWords 44.07±7.91, sentenceWords 4.91±0.51, longWordShare 0.01±0.01, typeVariety 3.52±0.64
 - **5-6:boss**: screens 7.25±0.43, gradedShare 0.86±0.01, readWordsPerScreen 19.17±2.19, maxReadWords 27.42±4.01, sentenceWords 4.83±0.46, longWordShare 0.01±0.01, typeVariety 3.33±0.75
-- **7-9:lesson**: screens 9.23±0.72, gradedShare 0.58±0.06, readWordsPerScreen 21.8±2.67, maxReadWords 45.96±9.59, sentenceWords 5.21±0.41, longWordShare 0.02±0.01, typeVariety 3.05±0.43
-- **7-9:boss**: screens 7.68±0.63, gradedShare 0.8±0.06, readWordsPerScreen 19.77±2.57, maxReadWords 30.95±3.36, sentenceWords 5.29±0.35, longWordShare 0.03±0.01, typeVariety 3.05±0.21
+- **7-9:lesson**: screens 9.23±0.73, gradedShare 0.58±0.06, readWordsPerScreen 21.81±2.68, maxReadWords 46.11±9.62, sentenceWords 5.21±0.41, longWordShare 0.02±0.01, typeVariety 3.05±0.43
+- **7-9:boss**: screens 7.68±0.63, gradedShare 0.8±0.06, readWordsPerScreen 19.77±2.57, maxReadWords 30.95±3.36, sentenceWords 5.29±0.36, longWordShare 0.03±0.01, typeVariety 3.05±0.21
 - **10-11:lesson**: screens 9.54±0.63, gradedShare 0.57±0.06, readWordsPerScreen 22.85±1.91, maxReadWords 48.15±6.57, sentenceWords 5.52±0.39, longWordShare 0.03±0.01, typeVariety 2.9±0.37
 - **10-11:boss**: screens 8.08±0.28, gradedShare 0.75±0.01, readWordsPerScreen 19.08±1.44, maxReadWords 34.25±6.81, sentenceWords 5.19±0.53, longWordShare 0.04±0.02, typeVariety 2.92±0.28
