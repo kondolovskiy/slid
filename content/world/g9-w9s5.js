@@ -37,8 +37,8 @@ SLID.section("world", {
     ],
     [
       "Арешт Еммелін Панкгерст біля Букінгемського палацу, Лондон, 21 травня 1914 р. Імперський військовий музей, Q 81486",
-      "невідомий фотограф",
-      "суспільне надбання (PD-UKGov)",
+      "агентство Central Press Photos (фотограф невідомий)",
+      "суспільне надбання (анонімне британське фото 1914 р.; у США — опубліковане до 1931 р.)",
       "https://commons.wikimedia.org/wiki/File:Mrs_Emmeline_Pankhurst,_Leader_of_the_Women%27s_Suffragette_movement,_is_arrested_outside_Buckingham_Palace_while_trying_to_present_a_petition_to_King_George_V_in_May_1914._Q81486.jpg"
     ],
     [
