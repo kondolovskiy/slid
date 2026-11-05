@@ -22,7 +22,7 @@
 |---|---|---|
 | `index.html` | оболонка, CSS; блок скриптів `CONTENT:START/END` | блок — лише `tools/build.mjs`; решта — розробник |
 | `sw.js`, `content/manifest.json` | згенеровані build (офлайн-кеш, список скриптів) | ніхто вручну; коміть після build |
-| `manifest.webmanifest`, `icons/`, `app/pwa.js` | PWA | розробник |
+| `manifest.webmanifest`, `icons/`, `app/pwa.js`, `app/update.js` | PWA (оновлення без змішування версій — docs/PUBLISHING.md) | розробник |
 | `app/app.js` | рушій: навігація, екрани, гейміфікація, збереження `slid.v1` | розробник |
 | `app/learn.js` · `evidence.js` · `hyp.js` | персоналізація · журнал подій · гіпотези (тінь) | розробник |
 | `app/math.js` · `lab.js` · `registry.js` | формули · лабораторія · реєстр `SLID.*` | розробник |

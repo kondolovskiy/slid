@@ -31,15 +31,7 @@
     addEventListener("load", () => {
       navigator.serviceWorker.register("sw.js").then(reg => {
         state.swReady = true; notify();
-        reg.addEventListener("updatefound", () => {
-          const w = reg.installing;
-          w && w.addEventListener("statechange", () => {
-            if (w.state === "installed" && navigator.serviceWorker.controller) {
-              const t = document.getElementById("toast");
-              if (t) { t.innerHTML = "<div>Оновлено уроки. Перезавантаж, щоб побачити нове.</div>"; setTimeout(() => t.innerHTML = "", 4000); }
-            }
-          });
-        });
+        // нова версія: перезавантаження сторінки після зміни контролера — app/update.js (не посеред уроку)
       }).catch(() => {});
     });
   }

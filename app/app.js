@@ -976,7 +976,10 @@ function noteHtml(s){
   const links = (n.links||[]).map(([t,u])=>`<li><a href="${urlAttr(u)}" target="_blank" rel="noopener">${t}</a></li>`).join("");
   return `<details class="note"><summary>${ic("info")}<span>${n.label||"Чому дві дати?"}</span></summary><div class="note-b">${n.text}${links?`<ul>${links}</ul>`:""}</div></details>`;
 }
+const PLAIN=["intro","info","explore"];   // екрани без відповіді; оцінювані — GRADED
+let unsup=false;   // поточний екран рушій показати не вміє (renderScreen, запобіжник версій)
 function renderScreen(){
+  unsup=false;
   $("#player").scrollTo({top:0, behavior:"instant"});   // і для підсумку: інакше він відкривається з прокруткою попереднього екрана
   if(idx>=L.screens.length){ if(run.diag) renderDiagEnd(); else if(run.practice) renderPracticeEnd(); else renderEnd(); $("#player").scrollTo({top:0, behavior:"instant"}); return focusAction(); }
   const s=L.screens[idx]; checked=false; tries=0; tried=null; pProgress();
@@ -984,6 +987,7 @@ function renderScreen(){
   let h=`<section class="screen" tabindex="-1"><div class="eyebrow">${run.diag? `Тест рівня · завдання ${Object.keys(run.res).length+1}` : s.eyebrow||""}</div>`;
   h+= s.type==="intro"? `<h1>${s.title}</h1>` : `<h2>${s.title}</h2>`;
   h+= fig(s) + (s.body||"") + noteHtml(s);
+  const h0=h.length;
   if(s.type==="choice"||s.type==="multi"){
     st= s.type==="multi"? new Set() : null;
     if(s.type==="multi") h+=`<div class="fix">Можна обрати кілька</div>`;
@@ -1009,9 +1013,14 @@ function renderScreen(){
   if(s.type==="answer"){ st=""; h+=answerInput(s); }
   if(s.type==="fracin"){ st=""; h+=s.hideDen? `<div class="mblock">${mathHTML(s.expr)} =</div>`+answerInput(s) : `<div class="numbox big"><span class="m">${mathHTML(s.expr)}<span class="mo">=</span><span class="fr"><span class="nu"><input id="numIn" inputmode="numeric" pattern="[0-9]*" autocomplete="off" placeholder="?" aria-label="Чисельник відповіді"></span><span class="sr">/</span><span class="de">${s.den}</span></span></span></div>`; }
   if(LANG.TYPES.includes(s.type)) h+=langHtml(s);
+  /* запобіжник (engine-sw-version-skew): тип екрана, який цей рушій не вміє показати (зміст новіший за рушій — змішані версії
+     застосунку), — не тупик із неактивною «Перевірити», а повідомлення й «Пропустити» без зарахування (unsupported) */
+  unsup= !PLAIN.includes(s.type) && (s.type==="lab"? !(s.lab && window.SLID_LAB) : h.length===h0);
+  if(unsup) h+=`<div class="hint" id="unsupported">${ic("info")}<span><b>Це завдання з новішої версії застосунку.</b> Онови застосунок: закрий і відкрий знову. Зараз це завдання можна пропустити${run.diag? "" : " — на результат це не вплине"}.</span></div>`;
   h+=`<div id="hintHost"></div></section>`;
   $("#stage").innerHTML=fmt(h);
-  if(s.type==="intro"||s.type==="info"||s.type==="explore") setDock("","","",s.cta||"Далі");
+  if(unsup){ setDock("","","","Пропустити"); return focusAction(); }
+  if(PLAIN.includes(s.type)) setDock("","","",s.cta||"Далі");
   else if(["slider","align","numline","lab"].includes(s.type)) setDock("","","","Перевірити");
   else setDock("","","","Перевірити",false);
   bindScreen(s);
@@ -1352,7 +1361,8 @@ $("#action").onclick=()=>{
   if(idx>=L.screens.length){ const f=afterEnd; afterEnd=null; closePlayer(); if(f) f(); return; }
   const s=L.screens[idx];
   if(checked&&run.diag) return diagNext();   // після екрана-пояснення HALF
-  if(s.type==="intro"||s.type==="info"||s.type==="explore"||checked){ idx++; renderScreen(); return; }
+  if(unsup){ if(run.diag) diagAnswer(LEARN.SKIP); else { idx++; renderScreen(); } return; }   // запобіжник версій: без зарахування
+  if(PLAIN.includes(s.type)||checked){ idx++; renderScreen(); return; }
   check();
 };
 

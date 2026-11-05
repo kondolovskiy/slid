@@ -9,6 +9,10 @@
 //  2) Замок уроку: пройдений урок не замикається, коли перед ним вставлено новий (app.js unlocked → learn.js lessonOpen).
 //  3) Замок уроку, інші гілки unlocked (рев'ю tools-ister-p3 P3-1): unlockAll відкриває все; урок із plan.known (тест рівня: тема
 //     «знайоме») відкритий сам і відкриває наступний; known плану іншого класу — ні.
+//  4) Запобіжник версій у рушії: екран невідомого типу (урок і тест рівня) — повідомлення «Онови застосунок» і «Пропустити»
+//     без зарахування (у тесті — «Ще не знаю»).
+//  5–7) Service worker (engine-sw-version-skew): деплой нової версії не змішує index.html і app.js; оновлення не перезавантажує
+//     сторінку посеред уроку; застосунок зі старим SW після одного змішаного відкриття сам переходить на консистентну нову версію.
 // Запуск: node tools/test-ui.mjs [--browser /opt/pw-browsers/chromium]
 // Playwright: require("playwright") (NODE_PATH) або PLAYWRIGHT_MODULE / /opt/node-tools/node_modules/playwright.
 import http from "node:http"; import fs from "node:fs"; import path from "node:path"; import { createRequire } from "node:module";
@@ -50,6 +54,96 @@ const install = fx => {
     items: ls.map((l, i) => ({ id: "i" + i, lesson: l, lvl: 1, sk: "num", type: "answer", title: "QA", steps: ["QA"], answer: 1 })) }));
   c.diags = []; delete c.graph;
 };
+
+/* Версійний сервер для сценаріїв service worker: те саме дерево, але «деплой» SWV.ver позначає index.html (__page) і app/app.js
+   (__eng) — у консистентній сторінці вони рівні. sw.js — з tools/sw.template.js (або з фікстури sw-legacy.template.js — SW до
+   виправлення, як у вже встановлених застосунках) з версією деплою; img/ з офлайн-списку прибрано (швидкість), шрифти Google — теж. */
+const SWV = { ver: "A", legacy: new Set(), gate: null };
+const rd = f => fs.readFileSync(path.join(ROOT, f), "utf8");
+const SW_ASSETS = JSON.parse(rd("sw.js").match(/const ASSETS = (\[[\s\S]*?\]);/)[1]).filter(a => !a.startsWith("./img/"));
+const variant = (ver, rel) => {
+  const legacy = SWV.legacy.has(ver);
+  if (rel === "/sw.js") return rd(legacy ? "tools/fixtures/sw-legacy.template.js" : "tools/sw.template.js").replace("__VERSION__", "qa-" + ver)
+    .replace("__ASSETS__", JSON.stringify(SW_ASSETS.filter(a => !(legacy && a === "./app/update.js"))));
+  if (rel === "/" || rel === "/index.html") { let h = rd("index.html").replace(/<link[^>]*fonts\.googleapis[^>]*>\n/g, "");
+    if (legacy) h = h.replace('<script src="app/update.js"></script>\n', "");   // до виправлення update.js не було
+    return h.replace("</body>", `<script>window.__page="${ver}"</script></body>`); }
+  if (rel === "/app/app.js") return rd("app/app.js") + `\nwindow.__eng="${ver}";`;
+  return null;
+};
+const swServer = http.createServer(async (req, res) => {
+  const rel = decodeURIComponent(new URL(req.url, "http://x").pathname), ver = SWV.ver;
+  if (rel === "/sw.js" && SWV.gate) await SWV.gate.wait;
+  const v = variant(ver, rel);
+  // app/*.js — з HTTP-кешем на 10 хв, як на GitHub Pages: встановлення нової версії має брати файли повз нього (cache: "reload")
+  const cc = rel.startsWith("/app/") ? "max-age=600" : "no-cache";
+  if (v !== null) { res.writeHead(200, { "content-type": TYPES[path.extname(rel === "/" ? "/i.html" : rel)], "cache-control": cc }); res.end(v); return; }
+  const f = path.join(ROOT, rel);
+  if (!f.startsWith(ROOT) || !fs.existsSync(f) || fs.statSync(f).isDirectory()) { res.writeHead(404); res.end(); return; }
+  res.writeHead(200, { "content-type": TYPES[path.extname(f)] || "application/octet-stream", "cache-control": cc }); fs.createReadStream(f).pipe(res);
+});
+await new Promise(r => swServer.listen(0, "127.0.0.1", r));
+const SWU = `http://127.0.0.1:${swServer.address().port}/`;
+const gate = () => { let open; const wait = new Promise(r => open = r); return { wait, open }; };
+const until = async (f, ms = 30000) => { const t = Date.now(); while (Date.now() - t < ms) { if (await f().catch(() => false)) return true; await new Promise(r => setTimeout(r, 200)); } return false; };
+
+async function swScenarios(browser) {
+  const fresh = async () => {
+    const ctx = await browser.newContext({ viewport: { width: 400, height: 860 } });
+    const page = await ctx.newPage(), loads = [];
+    page.setDefaultTimeout(15000);
+    // кожне завантаження сторінки: [index.html, app.js] — у консистентній версії однакові
+    page.on("load", async () => { try { loads.push(await page.evaluate(() => [window.__page, window.__eng])); } catch {} });
+    return { ctx, page, loads };
+  };
+  const controlled = async (page, ver) => { await page.evaluate(() => navigator.serviceWorker.ready);
+    return until(async () => await page.evaluate(v => navigator.serviceWorker.controller && fetch("sw.js").then(r => r.text()).then(t => t.includes(`"qa-${v}"`)), ver)); };
+  const last = loads => loads[loads.length - 1] || [];
+
+  // 5) новий SW: деплой B поверх A → перше відкриття — цілком A (з кешу), далі само перезавантаження — цілком B
+  SWV.legacy.clear(); SWV.ver = "A";
+  let { ctx, page, loads } = await fresh();
+  await page.goto(SWU);
+  await page.evaluate(s => localStorage.setItem("slid.v1", JSON.stringify(s)), { ...seed, unlockAll: true });
+  ok(await controlled(page, "A"), "SW: версія A встановлена й керує сторінкою");
+  await page.waitForTimeout(1500);
+  ok(loads.length === 1, `SW: перше встановлення не перезавантажує сторінку (завантажень ${loads.length})`);
+  ok(await page.evaluate(() => window.SLID_UPDATE && !SLID_UPDATE.pending), "SW: після першого встановлення оновлення не чекає");
+  SWV.ver = "B"; loads.length = 0;
+  await page.reload(); await until(async () => loads.length > 0, 5000);
+  ok(same(loads[0], ["A", "A"]), `SW: після деплою перше відкриття — консистентна стара версія з кешу [A, A], а ${JSON.stringify(loads[0])}`);
+  ok(await until(async () => same(last(loads), ["B", "B"])), `SW: без дій дитини сторінка перезавантажилась у нову версію [B, B], завантаження ${JSON.stringify(loads)}`);
+  ok(loads.every(([p, e]) => p === e), `SW: жодного змішаного завантаження, а ${JSON.stringify(loads)}`);
+
+  // 6) оновлення посеред уроку: не перезавантажувати, доки плеєр відкритий; після закриття — нова версія C
+  const g = SWV.gate = gate(); SWV.ver = "C"; loads.length = 0;
+  await page.reload(); await until(async () => loads.length > 0, 5000);
+  ok(same(loads[0], ["B", "B"]), `SW: деплой C, sw.js ще не отримано — консистентна B, а ${JSON.stringify(loads[0])}`);
+  await page.evaluate(() => { window.__mark = 1; window.__slidStart(SLID_SUBJECTS.find(c => c.id === "math").sections.find(x => x.lessons?.length).lessons[0].id); });
+  g.open(); SWV.gate = null;
+  ok(await until(() => page.evaluate(() => SLID_UPDATE.pending)), "SW: нова версія C активна під час уроку — оновлення чекає (pending)");
+  await page.waitForTimeout(2500);
+  ok(await page.evaluate(() => window.__mark === 1 && !document.getElementById("player").hidden), "SW: посеред уроку сторінку не перезавантажено, плеєр відкритий");
+  ok(/Є оновлення/.test(await page.locator("#toast").innerText()), "SW: тост «Є оновлення» під час уроку");
+  await page.click("#pClose"); await page.click("#pClose");
+  ok(await until(async () => same(last(loads), ["C", "C"])), `SW: після закриття уроку — нова версія [C, C], завантаження ${JSON.stringify(loads)}`);
+  ok(loads.every(([p, e]) => p === e), `SW: урок — жодного змішаного завантаження, а ${JSON.stringify(loads)}`);
+  await ctx.close();
+
+  // 7) застосунок зі СТАРИМ SW (до виправлення): деплой нової версії — одне змішане відкриття (старий SW так працює), далі
+  //    app/update.js (його немає в старому кеші — прийшов з мережі новим) сам перезавантажує в консистентну нову версію
+  SWV.legacy = new Set(["L"]); SWV.ver = "L";
+  ({ ctx, page, loads } = await fresh());
+  await page.goto(SWU);
+  await page.evaluate(s => localStorage.setItem("slid.v1", JSON.stringify(s)), { ...seed, unlockAll: true });
+  ok(await controlled(page, "L"), "старий SW: версія L встановлена й керує сторінкою");
+  SWV.ver = "M"; loads.length = 0;
+  await page.reload(); await until(async () => loads.length > 0, 5000);
+  ok(same(loads[0], ["M", "L"]), `старий SW: перше відкриття після деплою змішане [M, L] (відтворення бага), а ${JSON.stringify(loads[0])}`);
+  ok(await until(async () => same(last(loads), ["M", "M"])), `старий SW: далі само — консистентна нова [M, M], завантаження ${JSON.stringify(loads)}`);
+  ok(loads.length <= 2, `старий SW: змішане лише одне відкриття, завантаження ${JSON.stringify(loads)}`);
+  await ctx.close();
+}
 
 const browser = await pw.chromium.launch(BROWSER ? { executablePath: BROWSER } : {});
 try {
@@ -97,9 +191,36 @@ try {
   ok(same(kn, [false, true, false, false, false]), `known: fi3 зі «знайомих» відкриває fi4, fiNew закритий, а ${JSON.stringify(kn)}`);
   const kn6 = await locks({ ...seed, planByGrade: { math: { 6: { grade: 6, known: ["fi3"], steps: [] } } } });
   ok(same(kn6, [false, true, false, false, true]), `known плану 6 кл. для учня 5 кл. не відкриває fi4, а ${JSON.stringify(kn6)}`);
+
+  // 4) Запобіжник невідомого типу екрана (engine-sw-version-skew): зміст новіший за рушій — повідомлення й «Пропустити», не тупик
+  const UNK = { id: "fU", grade: 5, weeks: [13, 14], title: "QA U", why: "QA", lessons: [{ id: "fu1", title: "Урок fu1", icon: "book", screens: [
+    { type: "intro", title: "Початок", body: "QA" }, { type: "zzz-new", title: "Нове завдання", body: "QA" }, { type: "info", title: "Кінець", body: "QA" }] }] };
+  const DQ = { id: "dq5", grade: 5, title: "QA тест", topics: [{ id: "t1", title: "T1", lessons: [] }, { id: "t2", title: "T2", lessons: [] }],
+    items: [{ type: "zzz-new", topic: "t1", title: "Нове в тесті" }, { type: "choice", topic: "t2", title: "Питання тесту", opts: ["а", "б"], correct: 0 }] };
+  await page.reload(); await page.evaluate(install, FIX);
+  await page.evaluate(([u, dq]) => { const c = SLID_SUBJECTS.find(c => c.id === "math"); c.sections.push(u); c.diags = [dq]; window.__slidStart("fu1"); }, [UNK, DQ]);
+  await page.click("#action");
+  ok(await page.locator("#unsupported").isVisible(), "запобіжник: на екрані невідомого типу — повідомлення #unsupported");
+  ok(/Онови застосунок/.test(await page.locator("#unsupported").innerText()), "запобіжник: текст «Онови застосунок»");
+  ok(await page.locator("#action").isEnabled() && (await page.locator("#action").innerText()).trim() === "Пропустити", "запобіжник: «Пропустити» активна");
+  await page.click("#action");
+  ok((await page.locator("#stage h2").innerText()) === "Кінець", "запобіжник: «Пропустити» веде на наступний екран");
+  await page.click("#action");   // → підсумок
+  const st1 = await page.evaluate(() => JSON.parse(localStorage.getItem("slid.v1")));
+  ok(!st1.mast?.fu1 && !(st1.errs || []).some(e => e.at === "fu1"), "запобіжник: пропущений екран не зараховано (немає mast/errs уроку)");
+  await page.click("#action");   // закрити
+  await page.click('button[data-subject="math"]'); await page.click('[data-diag="math"]'); await page.click("[data-diag-go]");
+  ok(await page.locator("#unsupported").isVisible() && await page.locator("#action").isEnabled(), "запобіжник у тесті рівня: повідомлення, кнопка активна");
+  await page.click("#action");
+  ok((await page.locator("#stage h2").innerText()) === "Питання тесту", "запобіжник у тесті рівня: далі — наступне завдання");
+  const dres = await page.evaluate(() => JSON.parse(localStorage.getItem("slid.v1")).diagRun.dq5);
+  ok(same(dres, { 0: await page.evaluate(() => SLID_LEARN.SKIP) }), `запобіжник у тесті рівня: завдання — «Ще не знаю» (SKIP), а ${JSON.stringify(dres)}`);
   ok(!errors.length, "помилки сторінки: " + errors.join(" | "));
   await ctx.close();
-} finally { await browser.close(); server.close(); }
+
+  // 5–7) Оновлення service worker без змішування версій (engine-sw-version-skew; docs/PUBLISHING.md «Оновлення PWA»)
+  await swScenarios(browser);
+} finally { await browser.close(); server.close(); swServer.close(); }
 
 console.log(`test-ui: ${pass} ok, ${fail} ✗`);
 process.exit(fail ? 1 : 0);
