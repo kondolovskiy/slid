@@ -1,5 +1,5 @@
 /* Слід · Математика, 9 клас — діагностика «Що ти вже вмієш?»
-   Статус: draft з 2026-11-05 (лише for тем linear і pyth, див. нижче); до того verified (reports/verify/dg9.md). 10 тем-передумов (5–8 кл., по 2 завдання) + 7 тем 9 класу (по 1 завданню) = 27 завдань.
+   Статус: verified (verifier-dg9, reports/verify/dg9.md); for тем linear і pyth (див. нижче) — reviewer-dg9, 2026-11-05 (reports/review/refine-math-diag-g9-ister-required.md). 10 тем-передумов (5–8 кл., по 2 завдання) + 7 тем 9 класу (по 1 завданню) = 27 завдань.
    Обсяг і зв'язки — docs/math-personalization-coverage.md, dg9 (матриця 2026-10-16.v2).
    Порядок: спершу базові завдання всіх тем-передумов (1–10), далі складніші; теми 9 класу — лише в другій половині (14–27).
    Кожна тема 9 класу — один multi/sort, що перевіряє всі компоненти ядра одного уроку (coverageObjectives матриці).
@@ -17,7 +17,7 @@ SLID.diag("math", {
   grade: 9,
   title: "Що ти вже вмієш?",
   why: "Знайдемо теми, які варто згадати, щоб нові уроки давалися легше.",
-  status: "draft",   // 2026-11-05 refine-math-diag-g9-ister-required: for тем linear і pyth розширено — до повторної перевірки зв'язків; завдання й ключі — verified (verifier-dg9)
+  status: "verified",   // 2026-11-05 linear.for + g9m3, pyth.for + g9m3, g9m8 (refine-math-diag-g9-ister-required) — reviewer-dg9; завдання й ключі — verifier-dg9
   meta: { author: "claude-opus", created: "2026-10-31", factcheck: "verifier-dg9", teacher: null },
   topics: [
     // передумови з 5–8 класів
