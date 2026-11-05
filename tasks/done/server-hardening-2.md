@@ -4,7 +4,7 @@ claimed_at: 2026-11-05T07:32:03.985Z
 id: server-hardening-2
 type: engine
 subject: server
-status: review
+status: done
 claimed_by: eng-server2
 created: 2026-11-04
 depends_on: [server-hardening]
