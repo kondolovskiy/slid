@@ -4,7 +4,7 @@ claimed_at: 2026-11-05T11:50:36.861Z
 id: fix-world-link-questions
 type: fix
 subject: world
-status: review
+status: done
 claimed_by: writer-world-links
 created: 2026-11-05
 depends_on: []
@@ -30,3 +30,6 @@ depends_on: []
 - Статус цих 10 уроків: verified → draft (потрібна верифікація; зміна лише в питанні, нових фактів немає).
 - hist g11s1boss е3: уже має схему `img/hist/g11s1/occupation-map-1943.jpg` (задача images-hist-g11s1boss-scheme, коміти 129d5c9, 16a1cc3, verified) — змін не потрібно, файл не чіпав.
 - validate --section w7s1, w7s2, w7s3, w7s4, w8s2, w8s4: 0 помилок, 0 попереджень. build/playtest не запускав (за інструкцією).
+
+## Нотатки верифікатора
+**verifier-fix-world-link-questions, 2026-11-05.** Прийнято: 10 питань відповідають варіантам і correct, відповіді не підказують, опора є (D-019). Статус 10 уроків → verified. Звіт: reports/verify/fix-world-link-questions.md.
