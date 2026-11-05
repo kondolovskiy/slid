@@ -710,6 +710,17 @@ const order = l => ({ L1: 3, L2: 1, L3: 2, L4: 4 }[l] ?? 50);
   eq(L.practiceGroups(c, []), [], "practiceGroups: без вправ — порожньо");
   eq(L.practiceGroups(c, L.practiceItems({ grade: 5, lessons: {}, seen: {}, srs: {} }, c)).map(x => x.sec.id), ["a5", "b5"], "practiceGroups: 5 кл. — без розділу 6 кл.");
 }
+/* Порядок програми, на який спирається practiceGroups, дає app/registry.js finalize: розділи за класом, далі за першим тижнем, незалежно
+   від порядку завантаження файлів (рев'ю tools-ister-p3 P3-3; tools-math-ister-p3 п. 14). Розділ без weeks — у кінці свого класу. */
+{
+  const rc = { console }; rc.window = rc; vm.createContext(rc);
+  vm.runInContext(fs.readFileSync(path.join(ROOT, "app/registry.js"), "utf8"), rc, { filename: "app/registry.js" });
+  rc.SLID.subject({ id: "fx", subject: "Фікстура" });
+  for (const [id, grade, weeks] of [["v6", 6, [1, 4]], ["b5", 5, [9, 12]], ["n5", 5, null], ["a5", 5, [1, 4]], ["c5", 5, [5, 8]]])
+    rc.SLID.section("fx", { id, grade, ...(weeks ? { weeks } : {}), lessons: [] });
+  rc.SLID.finalize();
+  eq(rc.SLID_SUBJECTS.find(x => x.id === "fx").sections.map(x => x.id), ["a5", "c5", "b5", "n5", "v6"], "registry finalize: розділи за класом і першим тижнем (без weeks — у кінці класу)");
+}
 /* Замок уроку (app.js unlocked → LEARN.lessonOpen): пройдений урок не замикається, коли перед ним вставили новий (D-043, рев'ю
    math-ister-migration P2-1 / P3-8). open(id) — урок пройдено або знайомий з тесту рівня. */
 {
@@ -1139,9 +1150,10 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
     items: [{ topic: "k", type: "number", sk: "num", title: "t", answer: 1, rev }] }, ctxV).filter(e => /rev/.test(e)).length;
   eq([dv(undefined), dv(2), dv(7), dv(1), dv(0), dv(1.5), dv("2")], [0, 0, 0, 1, 1, 1, 1], "validate: rev лише ціле ≥ 2");
 }
-{ const { loadContent } = await import("./lib.mjs");
+{ const { loadContent, readJSON } = await import("./lib.mjs");
   const { subjects } = loadContent(), math = subjects.find(s => s.id === "math"), d = math.diags.find(x => x.id === "dg6");
-  // реальний dg6: 30 завдань; rev 2 — п'ять cur-проб, rev 3 — ще дві (pct №7, pct-of №27, refine-math-dg6-pct-rev3); індекси й порядок не змінено.
+  const MATRIX = readJSON("docs/math-personalization-coverage.json");
+  // реальний dg6: 30 завдань; rev 2 — п'ять проб (індекси 16, 20 g6-div — з 2026-11-03 pre-тема; 24, 27, 28 — cur), rev 3 — ще дві (pct №7, pct-of №27, refine-math-dg6-pct-rev3); індекси й порядок не змінено.
   // 2026-11-03 (D-043, docs/design/math-ister.md §5.2): №21 g6-lcm → pre-тема g6-div, №27 pct → cur-тема pct-of — завдання ті самі
   const TOPICS = "ord frac frac-cmp rem frac-add eq pct dec mixed geom frac-of dec-ops ord frac rem frac-cmp g6-div eq dec frac-add g6-div frac-of geom mixed g6-fadd dec-ops pct-of g6-prop g6-neg g6-eq".split(" ");
   eq(d.items.map(it => it.topic), TOPICS, "dg6: теми за індексами (збережені вердикти не зсуваються)");
@@ -1181,9 +1193,13 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
     const grid = new Set(hist.flatMap((_, k) => Array.from({ length: 8 }, (_, j) => String.fromCharCode(97 + k) + "0" + (j + 1))).concat(ADDED[p.id] || []));
     eq(p.items.filter(it => !hist.includes(it.lesson) && grid.has(it.id)).map(it => it.id), [], `${p.id}: вправи нових уроків — не на старих id`);
     eq(p.items.some(it => (REMOVED[p.id] || []).includes(it.id)), false, `${p.id}: вилучені id не використано знову`);
-    // історичні (required) уроки — строго 6–8; новий урок без пулу (D-043, pending у матриці) — 0, з пулом — так само 6–8
-    for (const l of lessons) { const n = p.items.filter(it => it.lesson === l).length;
-      eq((n >= 6 && n <= 8) || (n === 0 && !hist.includes(l)), true, `${p.id}/${l}: 6–8 вправ (${n})`); }
+    // рев'ю curate-math-ister-gaps-matrix P3-1: кожна вправа — урок свого розділу (section чи also), а не id поза розділом
+    const homeLessons = [p.section, ...(p.also || [])].flatMap(id => (math.sections.find(s => s.id === id)?.lessons || []).filter(l => !l.boss).map(l => l.id));
+    eq(p.items.filter(it => !homeLessons.includes(it.lesson)).map(it => `${it.id}→${it.lesson}`), [], `${p.id}: вправи лише уроків свого розділу`);
+    // історичні уроки — строго 6–8; 0 вправ — лише урок, який матриця не робить required (pending/optional: новий урок без пулу, D-043).
+    // Виняток — за scope матриці, а не за списком HIST (там само P3-2): урок, переведений у required, без вправ тест зловить
+    for (const l of lessons) { const n = p.items.filter(it => it.lesson === l).length, scope = MATRIX.lessons.find(r => r.lesson === l)?.curricularScope;
+      eq((n >= 6 && n <= 8) || (n === 0 && !hist.includes(l) && scope !== "required"), true, `${p.id}/${l}: 6–8 вправ (${n}; у матриці ${scope})`); }
   }
   // старий прогрес тренування: seen вилучених вправ не ламає добору, SRS теми не змінюється, нова вправа — першою (ще не бачили)
   const lessons1 = math.sections.find(s => s.id === "g6m1").lessons.filter(l => !l.boss).map(l => l.id);

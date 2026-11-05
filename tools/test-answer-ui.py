@@ -91,12 +91,13 @@ async def grade_context_checks(browser, url):
     # moves to the current revision (learn.js resumeDiag). Not tied to a revision number: the current one is the largest item rev,
     # read from the items here (not via SLID_LEARN.diagRev). Saved revision None = a run saved before diagRunRev existed (revision 1);
     # 2..current-1 — e.g. a revision-2 run under revision 3 must keep its rev-2 verdicts (guards `itemRev(it) > from`).
-    planted = 28
+    # Verdicts of ALL items are planted (review tests-answer-ui-dg6-rev3 P2-1): an item of the current revision max_rev always exists,
+    # so for every saved revision < max_rev there is something to drop — also when a future revision replaces only the last items.
     await page.goto(url)
     item_revs =await page.evaluate("""() => SLID_SUBJECTS.find(c=>c.id==='math').diags.find(d=>d.id==='dg6').items
       .map(it=>Number.isInteger(it.rev)&&it.rev>1?it.rev:1)""")
-    max_rev = max(item_revs)
-    assert max_rev >= 2 and planted < len(item_revs), item_revs
+    max_rev, planted = max(item_revs), len(item_revs)
+    assert max_rev >= 2, f"dg6 has no item with rev >= 2 ({item_revs}): the revision-resume scenario degenerates — use a revised diag or drop the scenario"
     for saved_rev in [None] + list(range(2, max_rev)):
         await page.goto(url)
         await page.evaluate("""([n, saved]) => {
@@ -112,7 +113,7 @@ async def grade_context_checks(browser, url):
         dropped = [i for i in range(planted) if item_revs[i] > from_rev]
         kept_revised = [i for i in range(planted) if 2 <= item_revs[i] <= from_rev]
         # the scenario must be able to fail both ways: something to drop, and (for saved >= 2) revised verdicts that must stay
-        assert dropped and (saved_rev is None or kept_revised), (saved_rev, item_revs)
+        assert dropped and (saved_rev is None or kept_revised), f"saved rev {saved_rev}: nothing to drop or no revised verdict to keep — the scenario cannot fail ({item_revs})"
         assert legacy['rev'] == max_rev, (saved_rev, legacy)
         assert legacy['keys'] == [i for i in range(planted) if i not in dropped] and legacy['next'] == dropped[0], (saved_rev, dropped, legacy)
         assert 'Продовжити тест' in await page.locator('#view').inner_text()
@@ -129,8 +130,9 @@ async def grade_context_checks(browser, url):
     fixed = (await state()).get('skFix')
     assert fixed == await page.evaluate("SLID_LEARN.SK_MIGRATIONS.map(f=>f.id)"), fixed
     await page.click('[data-diag="math"]'); await page.click('[data-diag-go]')
-    rev_items = await page.evaluate("SLID_SUBJECTS.find(c=>c.id==='math').diags.find(d=>d.id==='dg6').items.flatMap((it,i)=>it.rev?[i]:[])")
-    assert rev_items, rev_items
+    # revised = itemRev(it) > 1, as in the engine and item_revs above (review P3-2): rev 1 or a non-integer rev is revision 1
+    rev_items = await page.evaluate("SLID_SUBJECTS.find(c=>c.id==='math').diags.find(d=>d.id==='dg6').items.flatMap((it,i)=>Number.isInteger(it.rev)&&it.rev>1?[i]:[])")
+    assert rev_items, "dg6 has no revised items (rev >= 2): the 'started in the current revision' scenario has nothing to check"
     answered = []
     while not set(rev_items[:2]) <= set(answered):
         screen, i = await page.evaluate("""() => {const S=JSON.parse(localStorage.getItem('slid.v1')),d=SLID_SUBJECTS.find(c=>c.id==='math').diags.find(d=>d.id==='dg6');
@@ -1494,7 +1496,7 @@ async def diag_answer_checks(browser, url):
     real_rev = await page.evaluate("""() => Math.max(1,...SLID_SUBJECTS.find(c=>c.id==='math').diags.find(d=>d.id==='dg6').items
       .map(it=>Number.isInteger(it.rev)&&it.rev>1?it.rev:1))""")
     fix_rev = real_rev + 1
-    assert real_rev >= 2, real_rev
+    assert real_rev >= 2, f"real dg6 revision {real_rev} < 2: the fixture revision fix_rev = real_rev + 1 would not test a revision bump over a revised run"
     await page.evaluate("""rev => {
       const c=SLID_SUBJECTS.find(c=>c.id==='math'), d=c.diags.find(d=>d.id==='dg6');
       d.items=[

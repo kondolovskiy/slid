@@ -51,7 +51,7 @@ npm run check               # build + node-тести + validate + graph-report 
 python3 tools/playtest.py [--section ID[,ID…]] [--port N]    # пройти уроки в браузері; невідомий id — код 2
 python3 tools/test-answer-ui.py --suite regression           # браузерна регресія рушія (не в check; у CI — job browser, блокує deploy)
 node tools/playtest-pick.mjs [--max-lessons N] [файли…]      # піднабір плейтесту CI: змінені розділи + покриття типів екранів + тести рівня
-node tools/test-ui-ister.mjs                                 # браузер (Node Playwright): «Тренування» з also, замок уроку; не в check і CI
+node tools/test-ui.mjs                                       # браузер (Node Playwright): «Тренування» з also, замок уроку (unlockAll, known); не в check і CI
 node tools/stats.mjs [--subject S]                           # метрики стилю → reports/style-S.md
 node tools/claim.mjs list|claim|move ...                     # черга задач
 node tools/make-tasks.mjs [--subject S]                      # задачі на написання з плану

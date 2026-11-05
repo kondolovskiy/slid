@@ -90,6 +90,11 @@ function checkTex(S, s) {
   //    підписи-шаблони (svgLabels(…, true)) перевіряємо так, як їх намалює fill(): {вираз} — значення, {,} — кома
   if (s.lab) { const tpl = new Set(lab.svgLabels(s.lab, true).map(([p]) => p));
     for (const [path, x] of lab.svgLabels(s.lab)) for (const is of lab.svgTexIssues(x, tpl.has(path))) E(S, `lab.${path} «${x}»: ${is.msg}`); }
+  // 3б) індекс поза $…$ у підписі lab («A_1», «x_{2}»): ні SVG-підпис, ні fmt не обробляють «_» поза формулою — видно сирим
+  //     (pitfalls «label точки поза $…$ не обробляє _», g9m8 — 20 підписів; tools-math-ister-p3 п. 12). Шаблони {…} не рахуються.
+  if (s.lab) { const SUB = /(?<![\p{L}\p{N}\\])[A-Za-z]_\{?\d/u, bare = x => outsideMath(x).replace(/(?<![_^])\{[^{}]*\}/g, " ");
+    for (const [path, x] of lab.svgLabels(s.lab).concat(Object.entries(s.lab.params || {}).map(([id, p]) => [`params.${id}.label`, p?.label]), [].concat(s.lab.show || []).map((x, i) => [`show.${i}`, x])))
+      if (typeof x === "string" && SUB.test(bare(x))) W(S, `lab.${path} «${x}»: індекс «${bare(x).match(SUB)[0]}» поза $…$ покажеться сирим — пиши $A_1$ або A₁`); }
   // 3а) назва функції без лапок — попередження (звичайні змінні sin не утворюють, але це не помилка рушія)
   const fns = [...new Set(html.flatMap(bareFns))];
   if (fns.length) W(S, `у формулі назва функції без лапок: ${fns.join(", ")} — покажеться курсивом як добуток літер; пиши "${fns[0]}" (у лапках) або \\${fns[0]}, якщо команда є в app/math.js`);
@@ -203,10 +208,11 @@ function diagFormatIssues(s) {
 // перевірка одного екрана; diag — завдання діагностики (без фідбеку: дитина не бачить, правильно чи ні)
 // pool — задача пулу: її поля answer уже перевірив learn.validatePool
 // tools-math-fig-audit: умова прямо посилається на рисунок («на рисунку», «за графіком», «на кресленні»), а ілюстрації немає
-// ні на екрані, ні (в уроці) на попередньому екрані — попередження; повний перелік із геометрією без рисунка — tools/fig-audit.mjs
+// ні на екрані, ні (в уроці) на попередньому екрані — попередження; повний перелік із геометрією без рисунка — tools/fig-audit.mjs.
+// Сюжетний вступ (intro) не попереджає: його показує fig-audit окремою групою
 function figRef(S, s, prev = null) {
   const cue = figCues(s, prev);
-  if (cue?.level === "ref" && !cue.ill && !cue.prevIll) W(S, `умова посилається на рисунок («${cue.ref}»), а ілюстрації (fig, img, svg, lab) немає — додай рисунок точно за умовою або перепиши умову`);
+  if (cue?.level === "ref" && !cue.intro && !cue.ill && !cue.prevIll) W(S, `умова посилається на рисунок («${cue.ref}»), а ілюстрації (fig, img, svg, lab) немає — додай рисунок точно за умовою або перепиши умову`);
 }
 // заборонені фрази, яких дитина не бачить як зразок (engine-lang-p3, п. 6): у <s>…</s> (закреслене — помилка, яку урок виправляє),
 // у неправильних варіантах gaps і в цілях та хибних групах pick («Знайди помилку»: [вірно], [!на протязі]) — не рахуються.
@@ -249,7 +255,18 @@ const OPT_TYPES = ["choice", "multi", "gaps", "pick", "sort", "order"];
 // милозвучність у/в, і/й, з/із/зі (УП § 23–25; engine-lang-p3, п. 15): лише правила з малим шумом, лише мовні предмети; решта — tools/euphony.mjs
 const EUPHONY = { ukr: true };
 const euphonyWarn = (S, list) => { for (const x of list) if (EUPHONY_RULES.has(x.rule)) W(S, `милозвучність: «${x.ctx}» — ${EUPHONY_DESC[x.rule]} (якщо так навмисно — обґрунтуй у нотатках; повний звіт: node tools/euphony.mjs)`); };
+// link-завдання (зв'язок з іншим курсом чи уроком: «Пригадай: …») без питання — заголовок-твердження й факти в тілі, а що робити,
+// не сказано (pitfalls «link-завдання без питання», w9s1 l5, w9s2 l5; tools-math-ister-p3 п. 12). Питання — «?» у title чи body,
+// або спонукання «Обери / Познач / Визнач …»
+const LINK_RE = /(?<![\p{L}])Пригадай(?![\p{L}])/u;
+const ASK_RE = /\?|(?<![\p{L}])(?:обери|оберіть|вибери|виберіть|познач|позначте|визнач|вкажи|знайди|встанови|віднови|зістав|розклади|допиши|заверши|постав)(?![\p{L}])/iu;
+function linkNoQuestion(S, s) {
+  if (!["choice", "multi"].includes(s.type)) return;
+  const t = plain([s.title, s.body].filter(x => typeof x === "string").join(" \n "));
+  if (LINK_RE.test(t) && !ASK_RE.test(t)) W(S, "link-завдання («Пригадай…») без питання: ні title, ні body не питають і не кажуть, що обрати — додай у body окремий абзац із питанням");
+}
 function checkScreen(S, s, c, diag, pool = false) {
+  linkNoQuestion(S, s);
   if (!TYPES.includes(s.type)) return E(S, `невідомий тип «${s.type}»`);
   if (!s.title && !(diag && !pool)) E(S, "немає title");   // у тесті рівня «немає title» уже дає learn.validate — не дублюємо (рев'ю diag-answer-kinds, P3-4)
   const noteTxt = typeof s.note === "string" ? s.note : s.note?.text;
