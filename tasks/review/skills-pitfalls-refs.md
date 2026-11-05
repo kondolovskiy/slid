@@ -21,6 +21,6 @@ eng-playtest, 2026-11-05 (worktree wt-playtest). Лише посилання, п
 - content-author: → `pitfalls-content.md` («Контент і код», ukr) + файл предмета (math → pitfalls-math, hist/world → pitfalls-hist); покажчик — pitfalls.md.
 - content-verify: → файл предмета («Джерела для верифікації» є в pitfalls-math і pitfalls-hist), ukr → pitfalls-content.
 - memory-curate п. 2: «→ pitfalls.md, у тематичний розділ» → тематичний файл pitfalls-content|math|hist|engine.md, розділ «Додано <дата>» (як велить шапка pitfalls.md).
-- skill-graph (доручення координатора): замість «лінія «дроби» verified» — «які лінії verified — див. `st` у `lines` content/math/graph.js» (зараз frac, prob, tri; без переліку, щоб не застарівало).
+- skill-graph (доручення координатора): замість «лінія «дроби» verified» — «які лінії verified — див. `st` у `lines` content/math/graph.js» (без переліку, щоб не застарівало; у гілці wt-playtest verified лише frac; prob і tri стають verified окремою задачею tests-hyp-g3-verified-lines).
 - `.claude/agents/`, `.claude/commands/` — посилань на pitfalls немає. AGENTS.md §6 посилається на pitfalls.md як на покажчик — коректно, не змінював.
 - `npm run check` — EXIT 0.

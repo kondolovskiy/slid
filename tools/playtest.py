@@ -187,8 +187,8 @@ async def main():
                             # tools-playtest-verdict-msg: незарахована правильна відповідь лишає #action неактивною («Спробувати ще раз») —
                             # наступний click висів би 30 с і падав TimeoutError, схожим на флейк. Тут — явне повідомлення й перехід до наступного уроку.
                             try: await expect_credited(pg, f"{c['id']} урок {l['id']}, екран {si+1} з {len(l['screens'])} ({t})", given)
-                            except NotCredited as e:
-                                errs.append(str(e)); broken = True; break
+                            except NotCredited as e:   # друк одразу (рев'ю P2-1): необроблений виняток далі не загубить уже знайдене
+                                print("ПОМИЛКА ", e, flush=True); broken = True; break
                             await pg.click("#action")
                     else: broken = False
                     if broken:   # урок не дограти: скинути плеєр перезавантаженням (стан slid.v1 лишається) і грати наступний
@@ -231,6 +231,6 @@ async def main():
             print("ПОМИЛКА  нічого не пройдено (0 уроків, 0 тестів рівня)"); sys.exit(2)
         print(f"Пройдено уроків: {played}" + (f" (ще {failed} не дограно: не зараховано правильну відповідь)" if failed else "") + f", тестів рівня: {diags}" + (f", мовних вправ: {lang_n} (хибних спроб: {lang_bad})" if lang_n else ""))
         for e in errs: print("ПОМИЛКА ", e)
-        sys.exit(1 if errs else 0)
+        sys.exit(1 if errs or failed else 0)   # failed — уроки з «не зараховано» (надруковано вище, не в errs)
 
 asyncio.run(main())

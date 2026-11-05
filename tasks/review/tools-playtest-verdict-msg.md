@@ -42,3 +42,9 @@ eng-playtest, 2026-11-05 (worktree wt-playtest).
 
 **Обмеження**: тест рівня (mode ok) у playtest.py вердикт по завданню не перевіряє — як і раніше, ловиться планом («якусь відповідь не зараховано»). Інші місця test-answer-ui.py з `assert 'ok' in …` (поза play_prerequisite) не чіпав — поза задачею.
 - `npm run check` у worktree — EXIT 0 (test-verdict 23/23 у складі).
+
+**Після рев'ю (a5afce3, прийнято; закрито P2-1, P3-1)**
+- P2-1: `except NotCredited` друкує `ПОМИЛКА  не зараховано: …` одразу (`flush=True`), а не копить у `errs` — необроблений виняток пізніше (TimeoutError деінде) не загубить уже знайдене.
+- P3-1: `sys.exit(1 if errs or failed else 0)`.
+- test-verdict.py: +3 статичні перевірки (26/26): except друкує з flush і обриває урок; `failed += 1`; код виходу з `failed`. Мутанти в копії (scratchpad playtest/m2): except ковтає (`pass; broken = False`) → 25/26; exit без failed → 25/26; print без flush → 25/26.
+- `npm run check` — EXIT 0.

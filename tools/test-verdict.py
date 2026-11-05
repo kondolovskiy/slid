@@ -67,6 +67,11 @@ async def main():
     ui = open(os.path.join(ROOT, "tools/test-answer-ui.py"), encoding="utf-8").read()
     check("playtest.py викликає expect_credited", "await expect_credited(pg," in pt)
     check("playtest.py: немає старого «правильну відповідь не зараховано» без деталей", "правильну відповідь не зараховано\")" not in pt)
+    exc = re.search(r"except NotCredited as e:(.*?)\n\s*await pg\.click", pt, re.S)
+    check("playtest.py: except NotCredited друкує одразу з flush і обриває урок (не ковтає)",
+          exc and re.search(r"print\([^\n]*\be\b[^\n]*flush=True\)", exc.group(1)) and "broken = True" in exc.group(1) and "break" in exc.group(1), exc and exc.group(1))
+    check("playtest.py: не дограний урок рахується в failed", "failed += 1" in pt)
+    check("playtest.py: код виходу враховує failed", "sys.exit(1 if errs or failed else 0)" in pt)
     body = re.search(r"async def play_prerequisite\(\):(.*?)\n    #", ui, re.S)
     check("test-answer-ui.py: play_prerequisite знайдено", body is not None)
     check("play_prerequisite через expect_credited, без голого assert", body and "expect_credited(" in body.group(1) and "assert " not in body.group(1),
