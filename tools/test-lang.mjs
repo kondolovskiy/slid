@@ -174,6 +174,10 @@ const no = (v, msg) => eq(!!v, false, msg);
   ok(L.warnings({ type: "gaps", text: "<b>б{*е|и}р</b>{*е|и}за" }).some(w => w.includes("розірване HTML-тегом")), "warnings gaps: тег посеред слова з пропуском");
   ok(L.warnings({ type: "gaps", text: "с{*е|и}<b>ло</b>" }).some(w => w.includes("розірване")), "warnings gaps: тег одразу після пропуску");
   eq(L.warnings({ type: "gaps", text: "<b>б{*е|и}р{*е|и}за</b>, (<i>с{*е|и}ло</i>) і <b>Ми</b> с{*е|и}ло" }), [], "warnings gaps: тег довкола всього слова — чисто");
+  // рев'ю engine-lang-p3 P3-3 (engine-list-quadratic п. 3): блоковий тег — межа рядка, не «тег у слові»
+  for (const t of ["<p>Перше слово</p><p>{*А|О}кно…</p>", "Ден{ь|*—}<br>ки", "Ден{ь|*—}<br/>ки", "<li>ст{*і|и}л</li><li>{*о|а}кно</li>", "<P>Перше</P><DIV>{*А|О}кно</DIV>"])
+    eq(L.warnings({ type: "gaps", text: t }), [], `warnings gaps: блоковий тег на межі слова — чисто («${t}»)`);
+  ok(L.warnings({ type: "gaps", text: "<p>б<i>{*е|и}</i>реза</p>" }).some(w => w.includes("розірване")), "warnings gaps: рядковий тег у слові всередині абзацу — попередження");
   // п. 16 (pick-groups P3)
   ok(L.parsePick("Він [!!книжку читає] і [спить]").error, "pick: [!!…] — помилка (раніше кнопка «!книжку»)");
   eq(L.parsePick("Він [ ! книжку читає] і [ спить ]").words.map(w => [w.v, w.ok, !!w.group]), [["Він", false, false], ["книжку читає", false, true], ["і", false, false], ["спить", true, true]], "pick: пробіли біля «!» і в дужках");

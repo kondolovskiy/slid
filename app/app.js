@@ -405,7 +405,7 @@ function practiceEntry(c){
   return `<button type="button" class="secitem pracentry s-${c.id}" data-practice-view="${c.id}"><span class="secnum">${ic("bolt")}</span><span class="grow"><b>Тренування${S.subject===c.id&&nav.v!=="home"?"":" · "+c.short}</b><span class="muted small">${open.length? `Відкрито ${open.length} з ${all.size} тем${due?` · ${due} ${plural(due,["чекає","чекають","чекають"])} на повторення`:""}` : "Задачі відкриються після першого пройденого уроку"}</span></span>${ic("chev","chev")}</button>`;
 }
 function viewPractice(){
-  const c=course(nav.id), items=poolItems(c), cnt={}; items.forEach(it=>cnt[it.lesson]=(cnt[it.lesson]||0)+1);
+  const c=course(nav.id), items=poolItems(c), cnt=LEARN.lessonCounts(items);
   const open=Object.keys(cnt).filter(topicOpen), due=open.filter(l=>LEARN.isDue(S,l,dkey())).length;
   return `${backBtn(c.subject)}
   <section class="sec pat-${c.pattern||"none"}">
@@ -420,7 +420,7 @@ function viewPractice(){
       <span class="grow"><span class="eyebrow">Мікс · до 6 задач з різних тем</span><b>Тренування на сьогодні</b><span class="muted" style="font-size:13px">${due? `${due} ${plural(due,["тема чекає","теми чекають","тем чекають"])} на повторення` : "Усе повторено вчасно. Можна потренуватися наперед"}</span></span>
       <span class="play">${icF("play")}</span></button>`
     : `<div class="empty">Тут з'являться задачі, щойно ти пройдеш перший урок: тренуватися можна лише з пройдених тем.</div>`}
-  ${LEARN.practiceGroups(c, items).map(({sec, lessons:LS})=>{   /* розділи за програмою (клас, тижні), а не за порядком пулів; also — уроки пулу в іншому розділі */
+  ${LEARN.practiceGroups(c, items, cnt).map(({sec, lessons:LS})=>{   /* розділи за програмою (клас, тижні), а не за порядком пулів; also — уроки пулу в іншому розділі */
     return `<div class="eyebrow">${esc(sec.title)}</div><div class="seclist">${LS.map(l=> topicOpen(l.id)
       ? `<button type="button" class="secitem" data-practice="${l.id}"><span class="secnum">${ic(l.icon)}</span><span class="grow"><b>${esc(l.title)}</b><span class="muted small">${cnt[l.id]} ${plural(cnt[l.id],["задача","задачі","задач"])}${S.srs[l.id]&&LEARN.isDue(S,l.id,dkey())?" · час повторити":""}</span>${strength(l.id)}</span><span class="play sm">${icF("play")}</span></button>`
       : `<div class="secitem locked"><span class="secnum">${ic("lock")}</span><span class="grow"><b>${esc(l.title)}</b><span class="muted small">Відкриється, коли пройдеш урок</span></span></div>`).join("")}</div>`; }).join("")}
