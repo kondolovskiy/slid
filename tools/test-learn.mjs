@@ -1538,7 +1538,9 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
     [Lq("±3", "$x^2 = 9$"), "x₁,₂ = ±3", "ok"], [Lq("±3", "$x^2 = 9$"), "x_{1,2} = ±3", "ok"], [Lq("±3", "$x^2 = 9$"), "x1,2 = ±3", "ok"], [Lq("±3", "$x^2 = 9$"), "х₁,₂ = ±3", "ok"],
     [Lq("(1 ± √5)/2", "$x^2 - x - 1 = 0$"), "x₁,₂ = (1 ± √5)/2", "ok"], [Lq("(1 ± √5)/2", "$x^2 - x - 1 = 0$"), "x₁,₂ = (1 ∓ √5)/2", "ok"],
     [Lq("±3", "$x^2 = 9$"), "y₁,₂ = ±3", "bad"], [Lq("3; -3", "$x^2 = 9$"), "x₁,₂ = ±3", "ok"] /* engine-answer-formats-ister п. 1: «±» — у будь-якому list (раніше bad) */, [Lq("±3", "$x^2 = 9$"), "x₁,₂ = 3", "bad"], [Lq("±3", "$x^2 = 9$"), "x₁,₂ = ±3; x = 1", "bad"],
-    [Lq("±3", "$x^2 = 9$"), "x₁,₂ = ±2", "bad"], [Lq("±3", "$x^2 + y = 9$"), "x₁,₂ = ±3", "bad"], [Lq("±3", "Знайди $b$: $x^2 = b$"), "x₁,₂ = ±3", "bad"], [Lq("±3", "$x^2 = 9$"), "x₁,₂ = x₃ = ±3", "bad"]],
+    [Lq("±3", "$x^2 = 9$"), "x₁,₂ = ±2", "bad"], [Lq("±3", "$x^2 + y = 9$"), "x₁,₂ = ±3", "bad"], [Lq("±3", "Знайди $b$: $x^2 = b$"), "x₁,₂ = ±3", "bad"], [Lq("±3", "$x^2 = 9$"), "x₁,₂ = x₃ = ±3", "bad"],
+    // engine-list-p3 п. 1 (P3-1): пробіли й перенос одразу після «=» — як до engine-list-quadratic (там «\s*»)
+    [Lq("±3", "$x^2 = 9$"), "x₁,₂ =\n±3", "ok"], [Lq("±3", "$x^2 = 9$"), "x₁,₂ =\n ±3", "ok"], [Lq("±3", "$x^2 = 9$"), "x₁,₂ = \t ±3", "ok"], [Lq("±3", "$x^2 = 9$"), "x₁,₂ =\n±2", "bad"], [Lq("±3", "$x^2 = 9$"), "x₁,₂ =\n\n±3 =", "bad"]],
     "g11 п.8 x₁,₂");
   { const pools = (await import("./lib.mjs")).loadContent().subjects.flatMap(c => c.pools || []);
     for (const [pid, iid] of [["pg8m5", "a04"], ["pg8m5", "b05"], ["pg10m3", "a07"]]) {
@@ -2491,20 +2493,24 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
   eq(L.listKey(K("list", [50, 50], { ordered: true }))?.length, 2, "list-ordered: listKey з повтором");
   // scale (п. 2, pg9m6 f08): «1 : n» при ключі n і scale: true — ok; без scale — як і раніше
   const SC = N(10000, { scale: true });
-  [[SC, "10000", "ok"], [SC, "10 000", "ok"], [SC, "1 : 10000", "ok"], [SC, "1:10 000", "ok"], [SC, "1 ∶ 10000", "ok"], [SC, "1 : 1000", "bad"], [SC, "2 : 20000", "bad"], [SC, "10000 : 1", "bad"],
+  [[SC, "10000", "ok"], [SC, "10 000", "ok"], [SC, "1 : 10000", "ok"], [SC, "1:10 000", "ok"], [SC, "1 ∶ 10000", "ok"], [SC, "1 : 1000", "bad"], [SC, "1 : 100000", "bad"] /* engine-list-p3 п. 2: більше число теж bad (мутант «>=») */, [SC, "1 : 100 000", "bad"], [SC, "2 : 20000", "bad"], [SC, "10000 : 1", "bad"],
    [SC, "1 : 10000 : 1", "bad"], [SC, "1,0 : 10000", "bad"], [SC, "1/10000", "bad"], [SC, "1 : 10000,5", "bad"], [SC, "1 : 10000/1", "bad"], [N(10000), "1 : 10000", "bad"], [N("1/4"), "1 : 4", "form"], [N(4, { scale: true }), "1 : 4", "ok"]]
     .forEach(([s, v, exp]) => eq(L.checkAns(s, v), exp, `scale: ${JSON.stringify(s)} ← «${v}»`));
+  eq([L.numberHelp(SC), L.numberHelp(N(10000)), L.numberHelp(N(10000, { scale: false }))], ["Масштаб можна записати й повністю — через двокрапку (кнопка «:»).", null, null], "scale: numberHelp — про кнопку «:» (engine-list-p3 п. 4)");
   const vp = it => L.validatePool({ id: "p", section: "s", status: "draft", sources: [{ id: "b", title: "t", url: "https://x" }], items: [{ id: "a", lesson: "l", lvl: 1, sk: "num", src: "b 1", type: "answer", title: "t", steps: ["s"], ...it }] },
     { sections: new Map([["s", { grade: 4, lessons: ["l"] }]]), skills: { num: {} } });
-  for (const it of [ORD, K("list", [50, 50], { ordered: true }), K("list", [1, 2], { ordered: false }), SC]) eq(vp(it), [], `validatePool: коректне ${JSON.stringify(it)}`);
+  for (const it of [ORD, K("list", [50, 50], { ordered: true }), K("list", [1, 2], { ordered: false }), SC, K("list", "±3"), K("list", "±3", { ordered: false }), K("list", [-3, 3], { ordered: true })]) eq(vp(it), [], `validatePool: коректне ${JSON.stringify(it)}`);
   [[K("list", [1, 2], { ordered: "так" }), /ordered має бути boolean/], [N(2, { ordered: true }), /ordered має бути boolean/], [K("list", [1, 2], { ordered: true, multiset: true }), /multiset не потрібен/],
-   [K("list", [1, 2], { scale: true }), /scale має бути boolean/], [N(10000, { scale: 1 }), /scale має бути boolean/], [N("1/4", { scale: true }), /scale — ключ/], [N(1, { scale: true }), /scale — ключ/], [N("10000,5", { scale: true }), /scale — ключ/]]
+   [K("list", [1, 2], { scale: true }), /scale має бути boolean/], [N(10000, { scale: 1 }), /scale має бути boolean/], [N("1/4", { scale: true }), /scale — ключ/], [N(1, { scale: true }), /scale — ключ/], [N("10000,5", { scale: true }), /scale — ключ/],
+   // engine-list-p3 п. 3 (P3-3 рев'ю engine-list): «±» у ключі розгортається без порядку — з ordered поведінка невизначена
+   [K("list", "±3", { ordered: true }), /ordered.*±/], [K("list", ["±3", 5], { ordered: true }), /ordered.*±/], [K("list", ["(1 ∓ √5)/2"], { ordered: true }), /ordered.*±/]]
     .forEach(([it, re]) => eq(vp(it).some(e => re.test(e)), true, `validatePool відхиляє ${JSON.stringify(it)}`));
   // п. 1: лінійно на 50 000 символів (раніше «x» + 20 000 пробілів ≈ 0,5 с, 50 000 ≈ 6 с; тисячі різних елементів ≈ 1,3 с)
   const M = 50000, seq = f => { const o = []; for (let i = 1, len = 0; len < M; i++) { o.push(f(i)); len += o[o.length - 1].length + 2; } return o.join("; "); }, sp = " ".repeat(M);
   const LONG = ["x" + sp, "x" + sp + "= 1", "у" + sp + "2 рази", "x₁" + sp + "= 1", "x_{1,2}" + sp + "= ±1", "x =" + sp + "1", "x₁,₂ = " + "±".repeat(M), "x₁,₂ = " + "±".repeat(M) + "=", "x₁,₂ = " + "±1".repeat(M / 2) + ";", "x =" + sp + "a", "x₁" + sp + "=" + sp,
+    "x₁,₂ =" + sp, "x₁,₂ =" + sp + "=", "x₁,₂ =" + sp + ";", "x₁,₂ =" + sp + "±1", "x₁,₂ =" + "\n".repeat(M) + "±1", "x₁,₂ =" + sp + "±".repeat(M), "1 :" + sp + "10000", "1" + ":".repeat(M), "1 : " + "1 ".repeat(M / 2),
     seq(String), seq(i => "x = " + i), seq(i => "±" + i), seq(i => i + "√" + (i + 1)), seq(i => i + "/" + (i + 1)), seq(i => "у " + i + " рази"), "1" + ",".repeat(M), "1" + sp + "; 2"];
-  const KEYS = [K("list", [1, 2]), K("list", ["√2", 1]), K("list", [-1, 1], { body: "$x^2 = 1$" }), RZL, ORD, K("list", [2, 2, 3], { multiset: true })];
+  const KEYS = [K("list", [1, 2]), K("list", ["√2", 1]), K("list", [-1, 1], { body: "$x^2 = 1$" }), RZL, ORD, K("list", [2, 2, 3], { multiset: true }), SC];
   for (const v of LONG) { let worst = 0; for (const s of KEYS) { const t0 = performance.now(); const r = L.checkAns(s, v); L.badHint(s, v, r); L.answerSig(s, v); worst = Math.max(worst, performance.now() - t0); }
     eq(worst < 200, true, `list-quadratic: «${JSON.stringify(v.slice(0, 14))}…» (${v.length} симв.) — ${Math.round(worst)} мс (< 200)`); }
 }
