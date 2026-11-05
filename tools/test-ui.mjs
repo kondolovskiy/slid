@@ -295,6 +295,15 @@ async function syncScenarios(browser) {
   const sb = await B.st(); ok(sb.name === "Аня" && sb.lessons.fa1?.done && sb.lessons.fb1?.done, "sync: уроки з обох пристроїв, ім'я пристрою лишилось");
   await A.page.click("#syncNow"); ok(await until(async () => (await A.st()).xp === 130), "sync: перший пристрій отримав злитий прогрес");
   ok((await A.st()).name === "Анна", "sync: на першому пристрої ім'я своє");
+  // посеред уроку злиття не застосовується (рев'ю P2-2): сервер змінився, урок відкрито — стан той самий; урок закрито — злито
+  await A.page.evaluate(() => window.__slidStart(SLID_SUBJECTS.find(c => c.id === "math").sections.find(x => x.lessons?.length).lessons[0].id));
+  { const x = L.get("tok-anna"); x.data = { ...x.data, xp: x.data.xp + 7 }; x.rev++; }
+  await A.page.evaluate(() => window.dispatchEvent(new Event("online"))); await A.page.waitForTimeout(1500);
+  ok((await A.st()).xp === 130 && !(await A.page.locator("#player").isHidden()), `sync: урок відкрито — злиття відкладено (xp ${(await A.st()).xp})`);
+  await A.page.click("#pClose"); await A.page.click("#pClose"); await A.page.click('.tab[data-tab="profile"]');
+  await A.page.evaluate(() => window.dispatchEvent(new Event("online")));
+  ok(await until(async () => (await A.st()).xp === 137), `sync: урок закрито — злито (137), а ${(await A.st()).xp}`);
+  await B.page.evaluate(() => window.dispatchEvent(new Event("online"))); ok(await until(async () => (await B.st()).xp === 137), "sync: другий пристрій теж 137");
   // офлайн: зміни в черзі, з мережею — відправлено
   await B.ctx.setOffline(true);
   await B.page.evaluate(() => { const s = JSON.parse(localStorage.getItem("slid.v1")); return s; });
@@ -312,7 +321,7 @@ async function syncScenarios(browser) {
   ok(await until(async () => (await C.st()).xp === demoXp), `sync: «Ні, не мій» — на пристрої прогрес акаунта (${(await C.st()).xp})`);
   const sc = await C.st(); ok(!sc.lessons.zz9 && !L.get("tok-anna").data.lessons.zz9 && L.get("tok-anna").data.xp === demoXp && sc.grade === 5 && sc.name === "Петро", "sync: «не мій» — чужого уроку немає ні на пристрої, ні на сервері; клас з акаунта");
   // помилки входу
-  await C.page.click("#syncOut"); ok(await C.page.locator("#syncCode").count() === 1 && (await C.sy()) === null, "sync: «Вийти на цьому пристрої» — slid.sync очищено");
+  await C.page.click("#syncOut"); ok(await C.page.locator("#syncCode").count() === 1 && !(await C.sy())?.token, "sync: «Вийти на цьому пристрої» — токена в slid.sync немає (лишився лише base акаунта для повторного входу)");
   ok((await C.st()).xp === demoXp, "sync: після виходу прогрес лишився на пристрої");
   await C.page.click("#syncCode"); await C.page.fill("#pairIn", "ZZZZZZ"); await C.page.click("#pairGo"); await C.page.click("#mineYes");
   ok(await until(async () => /Код невірний/.test(await C.page.locator(".sync-err").innerText().catch(() => ""))), "sync: невірний код — «Код невірний або вже не діє»");
@@ -320,7 +329,7 @@ async function syncScenarios(browser) {
   ok(await until(async () => /не шкільний/.test(await C.page.locator(".sync-err").innerText().catch(() => ""))), "sync: особистий акаунт (401) — «Цей акаунт не шкільний»");
   // «Скинути прогрес» на пристрої з входом — синхронізацію вимкнено, сервер не чіпаємо
   await A.page.click("#reset"); await A.page.click("#reset");
-  ok((await A.sy()) === null && L.get("tok-anna").data.xp === demoXp, "sync: «Скинути прогрес» — вихід на пристрої, прогрес на сервері лишився");
+  ok(!(await A.sy())?.token && L.get("tok-anna").data.xp === demoXp, "sync: «Скинути прогрес» — вихід на пристрої, прогрес на сервері лишився");
   for (const d of [A, B, C]) { ok(!d.errors.length, "sync: помилки сторінки: " + d.errors.join(" | ")); await d.ctx.close(); }
   // без адреси API — картки немає, мережевих запитів до API немає
   const ctx = await browser.newContext({ serviceWorkers: "block" }), p0 = await ctx.newPage(); await p0.route("**/fonts.googleapis.com/**", r => r.abort());

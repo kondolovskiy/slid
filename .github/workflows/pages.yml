@@ -58,8 +58,8 @@ jobs:
           node tools/validate.mjs --quiet
       - name: Згенеровані файли закомічені
         run: |
-          git diff --exit-code -- index.html sw.js content/manifest.json \
-            || (echo "::error::Запусти локально node tools/build.mjs і закоміть index.html, sw.js, content/manifest.json" && exit 1)
+          git diff --exit-code -- index.html sw.js content/manifest.json app/config.js \
+            || (echo "::error::Запусти локально node tools/build.mjs і закоміть index.html, sw.js, content/manifest.json, app/config.js (без SLID_API)" && exit 1)
       - name: Зібрати сайт (лише файли застосунку)
         if: github.event_name != 'pull_request'
         # адреса бекенду й Google client id — змінні репозиторію (Settings → Variables), лише для публікації: build записує їх

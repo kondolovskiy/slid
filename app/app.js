@@ -171,6 +171,9 @@ const SYNC = (() => {
         const keep = { name:S.name, theme:S.theme, subject:S.subject, unlockAll:S.unlockAll, weekOverride:S.weekOverride };
         const next = Object.assign(fresh(), data, keep); if (next.grade==null) next.grade = S.grade;
         if (!SUBJ.some(c=>c.id===next.subject)) next.subject = SUBJ[0].id;
+        // журнал подій: зміни srs/plan/grade з іншого пристрою — by = sync_merge, а не остання відповідь дитини (рев'ю P2-3);
+        // «не мій прогрес» — як «Скинути прогрес»: новий профіль журналу й гіпотез (на пристрої тепер інша дитина)
+        try { if (how==="replace") { HYPS.reset(); EV.log("reset"); EV.newProfile(); } EV.log("sync_merge", { how }); } catch(e) {}
         S = next; try { SUBJ.forEach(activePlan); } catch(e) {}
         syncApplying = true; try { save(); } finally { syncApplying = false; }
         try { render(); } catch(e) {}
@@ -680,7 +683,7 @@ function viewProfile(){
 /* ---------- «Мої пристрої»: вхід шкільним акаунтом, код прив'язки, стан синхронізації ---------- */
 let syncMsg="";
 function syncCard(){
-  if(!SYNC.enabled) return "";
+  if(!SYNC.enabled || (!window.SLID_SYNC.googleClientId && !SYNC.signedIn())) return "";   // без входу Google код узяти нізвідки (рев'ю P3)
   const st=SYNC.status(), on=SYNC.signedIn(), sc=SYNC.school();
   const line = !on ? "Увійди, щоб твій прогрес був і на інших пристроях. Ім'я на сервер не передається."
     : ({busy:"Синхронізація…", pending:"Є нові результати — надішлю, щойно буде мережа.", offline:"Немає мережі. Результати збережено на пристрої, надішлю пізніше.",
@@ -710,7 +713,7 @@ function askMine(then){
   if(!SYNC.core.hasProgress(S)) return then(false);
   const n=Object.values(S.lessons||{}).filter(x=>x&&x.done).length;
   syncSheet("Чий це прогрес", `<h2>Це твій прогрес на цьому пристрої?</h2>
-    <p class="muted">Тут уже є ${n} пройдених уроків і ${S.xp||0} балів. Якщо це твоє — додамо до акаунта. Якщо ні (наприклад, це спільний комп'ютер у школі) — на пристрої буде прогрес з твого акаунта, а чужий сюди не потрапить.</p>
+    <p class="muted">Тут уже є ${n} пройдених уроків і ${S.xp||0} балів. Якщо це твоє — додамо до акаунта. Якщо ні (наприклад, це спільний комп'ютер у школі) — цей прогрес буде <b>стерто з пристрою</b>, а натомість з'явиться прогрес з твого акаунта. На сервер чужий прогрес не потрапить.</p>
     <button class="btn" id="mineYes" type="button">Так, мій</button><button class="btn ghost" id="mineNo" type="button">Ні, не мій</button>`,
     close=>{ $("#mineYes").onclick=()=>{ close(); then(true); }; $("#mineNo").onclick=()=>{ close(); then(false); }; });
 }

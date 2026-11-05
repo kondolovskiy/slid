@@ -97,6 +97,8 @@
     srs: (b, l, r) => map3(b, l, r, either((x, y) => later(y.due, x.due) ? y : x)),
     errs: errs3,
     skFix: (b, l, r) => [...new Set([...(Array.isArray(r) ? r : []), ...(Array.isArray(l) ? l : [])])],
+    /** Службове: номер останнього запису кожного пристрою (клієнт, P1-2) — за ключем максимум. */
+    _sync: (b, l, r) => { const o = {}; for (const k of keys(l, r)) o[k] = Math.max(num(obj(l)[k]), num(obj(r)[k])); return o; },
   };
   const FIELDS = [...DEVICE, ...Object.keys(RULES)];
 
@@ -129,10 +131,31 @@
 
   /** env: { api, request(method, path, body, token) → Promise<{ status, data }> (мережа — throw), load() / persist(st) — slid.sync,
       getState(), setState(data, how: "merge"|"replace") → false, якщо зараз не можна (урок відкрито), now(), setTimeout, clearTimeout, onChange() } */
+  /** Порівняння стану без службового _sync (маркери записів пристроїв). */
+  const bare = x => { const o = strip(x); delete o._sync; return o; };
+  const same = (a, b) => eq(bare(a), bare(b || {}));
+
+  /** env: { api, request(method, path, body, token) → Promise<{ status, data }> (мережа — throw), load() / persist(rec) — slid.sync,
+      getState(), setState(data, how: "merge"|"replace") → false, якщо зараз не можна (урок відкрито), now(), rid() — випадковий id,
+      setTimeout, clearTimeout, onChange() }.
+      Запис slid.sync: увійшли — { token, id, school, rev, base, dirty, replace, dev, seq, sent }; вийшли — { dev, seq, prev: { id, rev, base, sent } }.
+      prev (рев'ю engine-sync-login P1-1): вихід чи 401, потім вхід у той самий акаунт із «так» — злиття з тим самим base, а не сума.
+      sent / _sync (P1-2): перед PUT пристрій дописує в документ _sync[dev] = номер запису; відповідь загубилась, а сервер запис прийняв —
+      за маркером видно, що base = відправлене (інакше приріст пристрою злився б удруге). */
   function create(env) {
-    let st = null, busy = null, timer = null, status = { s: "off" };
-    try { const v = env.load(); if (isObj(v) && typeof v.token === "string" && v.token) st = v; } catch (e) {}
-    const persist = () => { try { env.persist(st); } catch (e) {} };
+    let st = null, keep = {}, busy = null, timer = null, status = { s: "off" };
+    try { const v = env.load(); if (isObj(v) && typeof v.token === "string" && v.token) st = v; else if (isObj(v)) keep = { dev: v.dev, seq: v.seq, prev: v.prev }; } catch (e) {}
+    const rid = () => { try { return env.rid ? env.rid() : Math.random().toString(36).slice(2, 12); } catch (e) { return "d" + Date.now(); } };
+    const dev = (st && st.dev) || keep.dev || rid();
+    let seq = num((st && st.seq) || keep.seq);
+    /** Запис slid.sync. Не вмістився (квота, P2-1) — запасний без base з позначкою lost: після перезавантаження злиття візьме base = сервер
+        (бали не подвоюються; незаписаний приріст може загубитись); не вмістився й він — ключ геть (вхід лише до перезавантаження). */
+    const persist = () => {
+      const rec = st ? { ...st, dev, seq } : (keep.prev ? { dev, seq, prev: keep.prev } : null);
+      try { env.persist(rec); return; } catch (e) {}
+      try { env.persist(st ? { ...rec, base: null, sent: null, lost: true } : { dev, seq }); return; } catch (e) {}
+      try { env.persist(null); } catch (e) {}
+    };
     const set = s => { status = s; try { env.onChange && env.onChange(status); } catch (e) {} };
     if (st) status = { s: st.dirty ? "pending" : "idle" };
     const call = async (m, p, body, tok) => { try { return await env.request(m, p, body, tok); } catch (e) { return { status: "offline" }; } };
@@ -142,16 +165,25 @@
       for (let i = 0; i < 4 && st; i++) {
         const local = env.getState();
         if (st.dirty && !st.replace) {
-          if (st.base && st.rev && eq(strip(local), st.base)) { st.dirty = false; persist(); continue; }
-          const data = strip(local), r = await call("PUT", "/v1/progress", { rev: st.rev || 0, data }, st.token);
-          if (r.status === 200) { st.rev = r.data.rev; st.base = r.data.data ?? data; st.dirty = false; st.at = env.now(); persist(); return { s: "ok", at: st.at }; }
+          if (st.base && st.rev && !(st.sent && st.sent.length) && !st.lost && same(local, st.base)) { st.dirty = false; persist(); continue; }
+          const data = strip(local); data._sync = { ...obj(data._sync), [dev]: ++seq };
+          // до запиту: відповідь може загубитись, а запис — ні. Непідтверджених спроб кілька (обрив, повтор): прийняти сервер міг лише одну
+          st.sent = [...(Array.isArray(st.sent) ? st.sent : []), { w: seq, data }].slice(-5); persist();
+          const r = await call("PUT", "/v1/progress", { rev: st.rev || 0, data }, st.token);
+          if (!st) return { s: "off" };
+          if (r.status === 200) {
+            st.rev = r.data.rev; st.base = r.data.data ?? data; st.sent = null; st.lost = false;
+            st.dirty = !same(env.getState(), st.base);   // змінилось під час запиту (P1-3) — лишається в черзі
+            st.at = env.now(); persist(); if (st.dirty) { schedule(3000); return { s: "pending", at: st.at }; } return { s: "ok", at: st.at };
+          }
           if (r.status !== 409) return fail(r.status);
           if (!apply(r.data)) { schedule(10000); return { s: "later" }; }
           continue;
         }
         const r = await call("GET", "/v1/progress", null, st.token);
+        if (!st) return { s: "off" };
         if (r.status !== 200) return fail(r.status);
-        if (!st.replace && r.data.rev === st.rev) { st.at = env.now(); persist(); return { s: "ok", at: st.at }; }
+        if (!st.replace && !st.lost && r.data.rev === st.rev) { st.at = env.now(); persist(); return { s: "ok", at: st.at }; }
         if (!apply(r.data)) { schedule(10000); return { s: "later" }; }
         if (!st.dirty) return { s: "ok", at: st.at = env.now() };
       }
@@ -160,20 +192,28 @@
     /** Серверна версія { rev, data } → злити (або замінити — вхід «це не мій прогрес»), запам'ятати як base. */
     function apply(srv) {
       const data = isObj(srv && srv.data) ? srv.data : null, local = env.getState();
-      const how = st.replace ? "replace" : "merge", next = how === "replace" ? (data || {}) : merge3(st.base, local, data || {});
+      let base = st.base;
+      const landed = Array.isArray(st.sent) && st.sent.find(x => x.w === num(obj(data && data._sync)[dev]));
+      if (landed) base = landed.data;   // наш запис уже на сервері (P1-2): base — відправлене, а не старий
+      if (st.lost) base = data;   // base загубився (P2-1): лише значення пристрою поверх сервера, без суми лічильників
+      const how = st.replace ? "replace" : "merge", next = how === "replace" ? (data || {}) : merge3(base, local, data || {});
       if (how === "replace" || !eq(strip(next), strip(local))) { if (env.setState(clone(next), how) === false) return false; }
-      st.rev = srv.rev || 0; st.base = data; st.replace = false; st.dirty = !eq(strip(next), data || {}); persist();
+      st.rev = srv.rev || 0; st.base = data; st.replace = false; st.sent = null; st.lost = false; st.dirty = !same(next, data); persist();
       return true;
     }
+    /** Вихід на пристрої (кнопка, 401, «Скинути прогрес»): base акаунта лишається для повторного входу (P1-1). */
+    function drop() { if (timer) env.clearTimeout(timer); timer = null; if (st) keep = { prev: { id: st.id, rev: st.rev, base: st.base, sent: st.sent || null, lost: !!st.lost } }; st = null; persist(); }
     function fail(code) {
-      if (code === 401) { st = null; persist(); return { s: "error", code, text: errText(401, "auth") }; }   // токен відкликано — вихід на пристрої
+      if (code === 401) { drop(); return { s: "error", code, text: errText(401, "auth") }; }   // токен відкликано — вихід на пристрої
       schedule(code === "offline" ? 60000 : 30000);
       return { s: code === "offline" ? "offline" : "error", code, text: errText(code) };
     }
     async function login(path, body, ctx, mine) {
       const r = await call("POST", path, body);
       if (r.status !== 200 && r.status !== 201) return { ok: false, text: errText(r.status, ctx) };
-      st = { token: r.data.token, id: r.data.id, school: null, rev: 0, base: null, dirty: !!mine, replace: !mine }; persist();
+      st = { token: r.data.token, id: r.data.id, school: null, rev: 0, base: null, dirty: !!mine, replace: !mine, sent: null };
+      const p = keep.prev; if (mine && p && p.id === st.id) Object.assign(st, { rev: p.rev || 0, base: p.base || null, sent: p.sent || null, lost: !!p.lost });   // той самий акаунт — той самий base
+      keep = {}; persist();
       const me = await call("GET", "/v1/me", null, st.token); if (me.status === 200 && st) { st.school = me.data.school || null; persist(); }
       const res = await api.sync();
       return { ok: true, res };
@@ -187,9 +227,9 @@
       async pairing() { if (!st) return { ok: false, text: MSG.auth401 }; const r = await call("POST", "/v1/pairing", {}, st.token);
         if (r.status === 401) { fail(401); set({ s: "off" }); }
         return r.status === 200 || r.status === 201 ? { ok: true, code: r.data.code, expiresAt: r.data.expiresAt } : { ok: false, text: errText(r.status) }; },
-      signOut() { if (timer) env.clearTimeout(timer); timer = null; st = null; persist(); set({ s: "off" }); },
+      signOut() { drop(); set({ s: "off" }); },
       /** Після кожного save: стан змінився — у чергу, відправка з паузою. */
-      changed() { if (!st || st.dirty) { if (st) schedule(3000); return; } st.dirty = true; persist(); set({ s: "pending" }); schedule(3000); },
+      changed() { if (!st) return; if (!st.dirty) { st.dirty = true; persist(); set({ s: "pending" }); } schedule(3000); },
       sync() {
         if (!st || !env.api) return Promise.resolve({ s: "off" });
         if (busy) return busy;
@@ -227,6 +267,7 @@
         },
         load: () => { try { return JSON.parse(localStorage.getItem(KEY) || "null"); } catch (e) { return null; } },
         persist: st => { if (st) localStorage.setItem(KEY, JSON.stringify(st)); else localStorage.removeItem(KEY); },
+        rid: () => { try { const a = new Uint8Array(8); crypto.getRandomValues(a); return [...a].map(x => x.toString(16).padStart(2, "0")).join(""); } catch (e) { return Math.random().toString(36).slice(2, 12); } },
         getState: hooks.getState, setState: hooks.setState, onChange: hooks.onChange,
         now: () => Date.now(), setTimeout: (f, ms) => setTimeout(f, ms), clearTimeout: t => clearTimeout(t),
       });

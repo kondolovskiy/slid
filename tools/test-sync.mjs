@@ -10,6 +10,7 @@ const Y = c.SLID_SYNC_CORE, J = x => JSON.parse(JSON.stringify(x));
 let n = 0, fails = 0;
 const eq = (a, b, what) => { n++; const A = JSON.stringify(J(a ?? null)), B = JSON.stringify(J(b ?? null)); if (A !== B) { fails++; console.log(`ПОМИЛКА ${what}\n  отримано:  ${A}\n  очікувано: ${B}`); } };
 const M = (b, l, r) => J(Y.merge3(b, l, r));
+const nos = d => { if (!d) return d; const o = J(d); delete o._sync; return o; };   // без службового маркера записів
 
 // ---------- 1. Перелік полів: кожне поле стану рушія має правило (жодне не губиться мовчки) ----------
 { const app = fs.readFileSync(path.join(ROOT, "app/app.js"), "utf8"), fr = app.match(/const fresh = \(\) => \(\{([^\n]*)\}\);/);
@@ -20,7 +21,7 @@ const M = (b, l, r) => J(Y.merge3(b, l, r));
   const used = new Set(); for (const f of fs.readdirSync(path.join(ROOT, "app")).filter(f => f.endsWith(".js") && f !== "sync.js"))
     for (const m of fs.readFileSync(path.join(ROOT, "app", f), "utf8").matchAll(/\bS\.([a-zA-Z]+)\b/g)) used.add(m[1]);
   eq([...used].filter(k => !Y.FIELDS.includes(k)).sort(), [], "кожне S.<поле> з app/*.js має правило злиття (нове поле — правило в sync.js)");
-  eq(Y.FIELDS.filter(k => !used.has(k) && !freshKeys.includes(k)), [], "у переліку немає зайвих полів"); }
+  eq(Y.FIELDS.filter(k => !used.has(k) && !freshKeys.includes(k) && k !== "_sync"), [], "у переліку немає зайвих полів (крім службового _sync)"); }
 
 // ---------- 2. Правила полів ----------
 const B = { xp: 100, days: { "2026-11-04": 40, "2026-11-05": 10 }, skills: { "math.frac": { ok: 3, total: 4 } }, grade: 6, name: "Оля", theme: "dark" };
@@ -89,7 +90,7 @@ function server() {
 }
 function device(srv, state, store = { v: null }) {
   const D = { state: J(state), store, timers: [], canApply: true, applied: [] };
-  D.client = Y.create({ api: "https://api", request: srv.request, load: () => J(store.v), persist: st => { store.v = st ? J(st) : null; },
+  D.client = Y.create({ api: "https://api", request: (...a) => srv.request(...a), load: () => J(store.v), persist: st => { store.v = st ? J(st) : null; },
     getState: () => J(D.state), setState: (d, how) => { if (!D.canApply) return false; D.applied.push(how); D.state = how === "replace" ? { ...J(d), name: D.state.name } : J(d); return true; },
     now: () => 1, setTimeout: (f) => { D.timers.push(f); return D.timers.length; }, clearTimeout: () => {} });
   D.save = patch => { Object.assign(D.state, patch); D.client.changed(); };
@@ -97,7 +98,7 @@ function device(srv, state, store = { v: null }) {
 }
 { const srv = server(), A = device(srv, { name: "Оля", xp: 100, lessons: { a: { done: true, stars: 2, best: 40 } }, grade: 6 });
   const r = await A.client.loginGoogle("u1", true);
-  eq([r.ok, A.client.signedIn(), A.client.school(), srv.L.get("g:u1").data], [true, true, "school.ua", { xp: 100, lessons: { a: { done: true, stars: 2, best: 40 } }, grade: 6 }], "вхід «мій прогрес»: прогрес пристрою на сервері, name не передано");
+  eq([r.ok, A.client.signedIn(), A.client.school(), nos(srv.L.get("g:u1").data)], [true, true, "school.ua", { xp: 100, lessons: { a: { done: true, stars: 2, best: 40 } }, grade: 6 }], "вхід «мій прогрес»: прогрес пристрою на сервері, name не передано");
   // другий пристрій: код прив'язки, свій прогрес — «мій»
   const code = (await A.client.pairing()).code, Bd = device(srv, { name: "Оля", xp: 30, lessons: { b: { done: true, stars: 3, best: 30 } }, grade: 6 });
   const rb = await Bd.client.claim(code.toLowerCase(), true);
@@ -124,7 +125,7 @@ function device(srv, state, store = { v: null }) {
   await A2.timers.at(-1)(); await new Promise(r => setTimeout(r, 0)); eq(srv.L.get("g:u1").data.xp, 177, "changed: відправлено після паузи");
   // токен відкликано
   srv.L.get("g:u1").tokens.length = 0; const r401 = await A2.client.sync();
-  eq([r401.s, r401.code, A2.client.signedIn(), A2.store.v], ["error", 401, false, null], "401 при синхронізації — вихід на пристрої (прогрес лишається локально)");
+  eq([r401.s, r401.code, A2.client.signedIn(), !!A2.store.v.token, A2.store.v.prev.id], ["error", 401, false, false, "gu1"], "401 при синхронізації — вихід на пристрої (токена немає, base акаунта — у prev)");
   eq(A2.state.xp, 177, "після 401 прогрес на пристрої не зник"); }
 { // «не мій прогрес»: прогрес акаунта замінює пристрій, чужий локальний не зливається
   const srv = server(), A = device(srv, { xp: 50, lessons: { a: { done: true } }, grade: 6 }); await A.client.loginGoogle("u2", true);
@@ -141,5 +142,46 @@ function device(srv, state, store = { v: null }) {
   const nc = srv.calls.length; eq(await A.client.sync(), { s: "off" }, "без входу sync нічого не робить"); A.client.changed(); eq([A.timers.length, srv.calls.length - nc], [0, 0], "без входу changed нічого не робить");
   const off = Y.create({ api: "", request: srv.request, load: () => ({ token: "t" }), persist() {}, getState: () => ({}), setState() {}, now: () => 1, setTimeout() {}, clearTimeout() {} });
   eq([off.enabled, (await off.sync()).s], [false, "off"], "без адреси API — вимкнено"); }
+// ---------- 5. Рев'ю engine-sync-login: P1-1 (повторний вхід), P1-2 (загублена відповідь PUT), P1-3 (зміна під час PUT), P2-1 (квота) ----------
+{ // P1-1: вихід (кнопка чи 401) і вхід у той самий акаунт із «так» — без подвоєння; інший акаунт — prev не береться
+  const srv = server(), A = device(srv, { xp: 100, days: { d: 100 }, errs: [{ l: "a", d: "1" }] }); await A.client.loginGoogle("p1", true);
+  A.client.signOut(); await A.client.loginGoogle("p1", true);
+  eq([A.state.xp, A.state.days.d, A.state.errs.length, srv.L.get("g:p1").data.xp], [100, 100, 1, 100], "P1-1: вихід → вхід «так» у той самий акаунт — xp, days, errs не подвоєні");
+  A.save({ xp: 110 }); await A.client.sync(); srv.L.get("g:p1").tokens.length = 0; await A.client.sync(); eq(A.client.signedIn(), false, "P1-1: 401 — вихід");
+  A.save({ xp: 115 }); await A.client.loginGoogle("p1", true);
+  eq([A.state.xp, srv.L.get("g:p1").data.xp], [115, 115], "P1-1: 401 → вхід «так» — лише приріст після виходу (110 + 5)");
+  A.client.signOut(); await A.client.loginGoogle("other", true);
+  eq(srv.L.get("g:other").data.xp, 115, "P1-1: інший акаунт — prev не береться (перший вхід: прогрес пристрою)"); }
+{ // P1-2: сервер прийняв PUT, відповідь загубилась (обрив) — наступна синхронізація не зливає приріст удруге; і коли між тим писав інший пристрій
+  for (const other of [false, true]) {
+    const srv = server(), A = device(srv, { xp: 100 }); await A.client.loginGoogle("p2", true);
+    const B = other ? device(srv, { xp: 0 }) : null; if (B) { const code = (await A.client.pairing()).code; await B.client.claim(code, false); }
+    A.save({ xp: 150 }); const req = srv.request; srv.request = async (m, p, body, tok) => { const r = await req(m, p, body, tok); if (m === "PUT") { srv.request = req; throw new Error("обрив"); } return r; };
+    eq((await A.client.sync()).s, "offline", `P1-2${other ? " + інший пристрій" : ""}: відповідь загубилась — «offline»`);
+    if (B) { B.save({ xp: B.state.xp + 10 }); await B.client.sync(); }   // B: +10 від своєї бази 100
+    await A.client.sync(); await A.client.sync();
+    eq([A.state.xp, srv.L.get("g:p2").data.xp], other ? [160, 160] : [150, 150], `P1-2${other ? " + інший пристрій" : ""}: приріст не подвоєно`);
+    const A2 = device(srv, A.state, A.store); A2.save({ xp: A.state.xp + 1 }); await A2.client.sync(); eq(srv.L.get("g:p2").data.xp, A.state.xp + 1, `P1-2${other ? " + інший" : ""}: далі — звичайна синхронізація`); } }
+{ // P1-2 після перезавантаження: sent записано до запиту
+  const srv = server(), A = device(srv, { xp: 100 }); await A.client.loginGoogle("p2r", true);
+  A.save({ xp: 140 }); const req = srv.request; srv.request = async (m, p, b, t) => { const r = await req(m, p, b, t); if (m === "PUT") { srv.request = req; throw new Error("обрив"); } return r; };
+  await A.client.sync(); const A2 = device(srv, A.state, A.store); await A2.client.sync();
+  eq([A2.state.xp, srv.L.get("g:p2r").data.xp], [140, 140], "P1-2: відповідь загубилась, сторінку перезавантажено — без подвоєння"); }
+{ // P1-3: зміна під час PUT лишається в черзі й доходить до сервера
+  const srv = server(), A = device(srv, { xp: 10 }); await A.client.loginGoogle("p3", true);
+  A.save({ xp: 20 }); const req = srv.request; srv.request = async (m, p, b, t) => { if (m === "PUT") { srv.request = req; A.save({ xp: 30 }); } return req(m, p, b, t); };
+  const r = await A.client.sync(); eq([r.s, A.store.v.dirty, srv.L.get("g:p3").data.xp], ["pending", true, 20], "P1-3: змінилось під час PUT — dirty лишається, статус «pending»");
+  await A.client.sync(); eq([srv.L.get("g:p3").data.xp, A.store.v.dirty], [30, false], "P1-3: наступна синхронізація відправила зміну"); }
+{ // P2-1: slid.sync не вмістився — запасний запис без base (lost): після перезавантаження бали не подвоюються
+  const srv = server(), store = { v: null }, A = device(srv, { xp: 50 }, store); await A.client.loginGoogle("q", true);
+  const D = device(srv, A.state, store);
+  const big = { v: null }; const persist0 = st => { if (st && st.base) throw new Error("QuotaExceeded"); big.v = st ? J(st) : null; };
+  const A3 = { state: J(A.state), timers: [] };
+  A3.client = Y.create({ api: "x", request: srv.request, load: () => J(store.v), persist: persist0, getState: () => J(A3.state), setState: d => { A3.state = J(d); return true; }, now: () => 1, setTimeout: f => { A3.timers.push(f); }, clearTimeout() {} });
+  A3.state.xp = 90; A3.client.changed(); await A3.client.sync();
+  eq([big.v && big.v.lost, big.v && big.v.base], [true, null], "P2-1: квота — запасний slid.sync без base, з lost");
+  const A4 = { state: J(A3.state) }; A4.client = Y.create({ api: "x", request: srv.request, load: () => J(big.v), persist: st => { big.v = st ? J(st) : null; }, getState: () => J(A4.state), setState: d => { A4.state = J(d); return true; }, now: () => 1, setTimeout() {}, clearTimeout() {} });
+  await A4.client.sync(); await A4.client.sync();
+  eq([A4.state.xp, srv.L.get("g:q").data.xp], [90, 90], "P2-1: після перезавантаження з lost — без подвоєння (90, не 130)"); void D; }
 console.log(`\n${n} перевірок, ${fails ? fails + " з помилками" : "усе гаразд"}`);
 if (fails) process.exit(1);
