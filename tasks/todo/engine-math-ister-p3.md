@@ -34,5 +34,11 @@ depends_on: []
 16. P3 refine-math-dg6-pct-rev3: коментар tools/test-learn.mjs ≈ 1116 «п'ять проб» → чотири (6, 16, 20, 24). P2/P3 tests-answer-ui-dg6-rev3: test-answer-ui.py:94/115 засіює лише завдання 0..27 → planted = len(item_revs); guards без пояснення; rev_items за it.rev, не itemRev.
 17. P3 engine-lang-p3 (reports/review/engine-lang-p3.md): validate.mjs:344 милозвучність title/why/outro без тесту; playtest.py:101 лічильник хибних спроб завищений; lang.js:197 «тег у слові» на межі блоку; lib.mjs:48,52 випадають «а й у», «α і β»; euphony.mjs:32 тире/дужка як пауза (§ 24 п. 1.2); app.js:817 answerSig без прапорця кириличності. (Частину могли закрити tools-lang-p4 — звірити.)
 
+## Розподіл (оркестратор, 2026-11-05, D-049)
+- Ця задача: п. 1, 2, 5, 6, 8, 9, 10 (рушій і креслення).
+- П. 11–17 — задача tools-math-ister-p3.
+- П. 3, 4 (регістр `5r`/`5R`, «1 : 4» у тесті рівня) — питання оцінювання → docs/teacher-questions.md; поведінку не змінювати.
+- П. 7 (pickSession) — технічне питання людині; поки обхід у fix-math-pools-ister-formats п. 5.
+
 ## Готово, коли
 - Кожен узятий пункт — тест, `npm run check` зелений, рев'ю D-026 «прийнято»; пункти з «рішення» — після рішення в decisions.md (D-046 тут не діє — це оцінювання/добір, не зміст).
