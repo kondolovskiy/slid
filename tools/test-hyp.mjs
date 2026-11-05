@@ -531,7 +531,12 @@ const sum = (R, pid) => R.events.filter(e => e.pid === pid).map(e => e.type === 
   // pre-тем (linear + g9m3, pyth + g9m3 і g9m8; завдання й rev не змінено). «Теми тестів» 186 → 197: +11 — уроки
   // g9m8l1–l11 з пулом pg9m8 (boss g9m8l12 вправ не має); g9m3 уже мав теми з for (quad,
   // func), тож його не додано. Усі 11 уже мали requires — разом так само 215. Решта знімків не зсунулась. Попередній знімок [187,186,27,215,215].
-  eq([s0.gradedScreens, s0.byType.choice, s0.choiceHypPoll, s0.fbBad, s0.hint, s0.pre, s0.preLessons], [1624, 691, 74, 1604, 1152, 87, 39], "§0 екрани уроків");  // 691: верифікатор g6m3 замінив один lab на choice (2fcb431)
+  // 2026-11-05, tests-hyp-snapshot-style-math: рушій (pickSession, hyp.js) не змінювався. Зсуви — зміст style-math-ister-followup (e8c30a1;
+  // верифікація 0d6eac3 лише ставить verified і дописує речення в теорію g9m6l4 — цифр не зсуває): pre на оцінюваних екранах фіналів 7–8 кл.
+  // (14 уроків: g7m1l4, g7m2l4, g7m3l5, g7m4l4, g7m5l4, g7m6l4, g7m7l5, g7m8l4, g8m1l5, g8m2l5, g8m3l5, g8m4l4, g8m5l5, g8m6l3) — pre 87 → 173 (+86),
+  // уроків з pre 39 → 53; у g9m6l4 прибрано lab «площа вчетверо» (оцінюваних 1624 → 1623, fbBad 1604 → 1603, hint 1152 → 1151; choice
+  // і hyp/poll — без змін). Копія дерева з content/math/g*-*.js на e8c30a1^ дає рівно попередній знімок. Попередній знімок [1624,691,74,1604,1152,87,39].
+  eq([s0.gradedScreens, s0.byType.choice, s0.choiceHypPoll, s0.fbBad, s0.hint, s0.pre, s0.preLessons], [1623, 691, 74, 1603, 1151, 173, 53], "§0 екрани уроків");  // 691: верифікатор g6m3 замінив один lab на choice (2fcb431)
   eq([s0.pools, s0.poolItems, s0.lvl, s0.poolHint, s0.poolPre, s0.gen, s0.itemTypes, s0.answerNumber], [52, 1802, { 1: 689, 2: 679, 3: 434 }, 1135, 0, 0, { answer: 1629, choice: 113, multi: 60 }, 1161], "§0 пули");
   eq([s0.pairs, s0.pairs2a1, s0.diags, s0.diagItems, s0.pureTitle], [236, 206, 8, 209, 331], "§0 пари, тести, чисті вирази");
   eq([s21.errors, s21.A, s21.Dle, s21.byLvl[1].Dle, s21.byLvl[1].errors, s21.byLvl[2].Dle, s21.byLvl[2].errors], [908, 461, 204, 0, 689, 204, 219], "§2.1 A 461; D≤ 204/908, рівень 1 — 0/689");
