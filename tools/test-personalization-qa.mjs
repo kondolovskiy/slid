@@ -22,7 +22,8 @@ check(() => assert.equal(all.missing.filter(e => /^Діагностика/.test(
 const pools11 = subject.pools.filter(p => /^pg11m/.test(p.id));
 check(() => assert(pools11.length > 0, 'немає жодного пулу pg11m'));
 for (const p of pools11) check(() => assert.deepEqual(audit(subject, matrix, learn, { pool: p.id }).errors, [], p.id));
-check(() => assert(!all.missing.some(e => /^pg11m[26]:/.test(e))));
+// статус пулу (pg11m6 → draft до повторної верифікації порядку, fix-math-pool-g11m6-order 2026-11-05) — стан процесу, як у dg6 нижче
+check(() => assert(!all.missing.some(e => /^pg11m[26]:/.test(e) && !/: ще не verified$/.test(e)), JSON.stringify(all.missing.filter(e => /^pg11m/.test(e)))));
 // dg6 перевіряє сам зміст, а не лише узгодженість із собою: живий dg6 без прогалин, а зіпсовані зв'язки (sk, lesson) і порядок
 // завдань у копії живого dg6 — прогалини itemSkills / itemIndices.
 const cloneMath = () => JSON.parse(JSON.stringify(subject));
