@@ -28,3 +28,4 @@
 - **2026-11-01-3** — Evidence V2 (app/evidence.js, docs/EVIDENCE.md), HALF = 0,5 у тесті рівня, гіпотези E1/E2 (app/hyp.js, тінь), Skill Graph G0/G1 (SLID.graph, graph-report), engine-p3-1101; злиття main з бекендом (server/ NestJS + Postgres); D-033–D-037.
 - **2026-11-02-1** — Skill Graph G2/G3 (лінія «дроби» в graph.js, graphBind, тінь у hyp-replay), engine-hyp-e2-p3 / e4-shadow-routes, diff-answers на фікстурі b799dfa, engine-unit-hint, дизайн ШІ-перевірки A0 (docs/design/ai-solution-check.md); D-036 уточнення.
 - **2026-11-02-2** — старт ukr 5 кл. (D-040, D-041): план за З5, app/lang.js (gaps, pick, stress, word, split; ∅ і «–»), 11 розділів u5s1–u5s11 — 69 уроків verified, style-sync ukr 5 кл.; facts/ukr №1–83, glossary/ukr.
+- **2026-11-02-3** — ukr 6 кл. (D-042: «із» після голосного; уточнення D-041 — словники СУМ-11/СУМ-20/ОС УМІФ/ВЕСУМ): 14 розділів u6s1–u6s14 — 94 уроки verified, style-sync ukr 6 кл., fix-pick-groups, euphony.
