@@ -680,15 +680,18 @@ window.SLID_LEARN = (() => {
      (askedPoint: «точки $B$», «вектора $\overrightarrow{AB}$», «вершини $C$»), назва в записі має бути саме нею — «CD = (−3; 1)»
      чи «A(1; 6)» при «знайди точку B» не зараховуються. Якщо умова такої назви не має — будь-яка назва, як у D-030 (2) («M = (6; -33)»,
      «B = (3; 5)»), крім назв даних точок умови («A(3; 5)», коли $A(4; -3)$ — дана) — варіант B оркестратора, уточнення D-030 (2).
-     Значення правильне, а назву відкинуто — «form» з поясненням (nameMsg), не «ok». */
-  const NAME_AT = /^(?:\\(?:vec|overrightarrow)\s*\{\s*([A-Z]{1,2})\s*\}|([A-Z]{1,2})|([a-z]))\s*(=?)\s*(?=\()/;
+     Значення правильне, а назву відкинуто — «form» з поясненням (nameMsg), не «ok».
+     Вектор малою літерою (engine-coordinates-vector-name; D-047 — у підручниках «c(−13; −2; 17)»): «c(…)», «c = (…)», «c→(…)»,
+     «c⃗ = (…)», «\vec{c} = (…)»; «→» / «⃗» — і після великої назви («AB→ = (…)»). Групи: 1 — \vec{…} (велика чи мала), 2 — велика,
+     3 — мала, 4 — стрілка, 5 — «=» (4 і 5 — undefined, якщо їх немає). «\vec c» без дужок у записі — як «\vec{c}» (vecBraces). Мала назва звіряється лише з малими назвами умови (askedPoint.vask, given): див. nameLen. */
+  const NAME_AT = /^(?:\\(?:vec|overrightarrow)\s*\{\s*([A-Z]{1,2}|[a-z])\s*\}|([A-Z]{1,2})|([a-z]))\s*(?:([→\u20D7])\s*)?(?:(=)\s*)?(?=\()/;   // хвіст без «\s*» поспіль: лінійний час на «c      …» (рев'ю P1-1)
   // Назва з індексом чи штрихом — образ точки «A_1(…)», «A₁(…)», «A1(…)», «A'(…)» (engine-learn-prefixes-p3b). Не зараховується, крім
   // образу даної точки (IMG_ONE нижче); якщо значення правильне — «form» з поясненням «запиши лише координати», а не мовчазне «bad».
-  const IMG_AT = /^([A-Z]{1,2})\s*(?:_\s*\{?\s*\d{1,2}\s*\}?|[₀-₉]{1,2}|\d{1,2}|['’′ʼ]{1,2})\s*=?\s*(?=\()/;
+  const IMG_AT = /^([A-Z]{1,2})\s*(?:_\s*(?:\{\s*)?\d{1,2}(?:\s*\})?|[₀-₉]{1,2}|\d{1,2}|['’′ʼ]{1,2})\s*(?:=\s*)?(?=\()/;
   // Виняток (рішення людини 2026-11-01, уточнення D-031 (б); engine-decisions-1101): умова питає образ даної точки — «Знайди образ точки
   // $A(-2; 3)$», «координати точки, симетричної точці $A(3; -1)$» (askedPoint.img) — тоді назва образу цієї точки з індексом 1 чи одним
   // штрихом (A₁, A_1, A_{1}, A1, A′, A') перед координатами — ok. Інша літера (B₁), інший індекс чи два штрихи (A₂, A'') — form, як раніше.
-  const IMG_ONE = /^([A-Z])\s*(?:_\s*\{?\s*1\s*\}?|₁|1|['’′ʼ])\s*=?\s*(?=\()/;
+  const IMG_ONE = /^([A-Z])\s*(?:_\s*(?:\{\s*)?1(?:\s*\})?|₁|1|['’′ʼ])\s*(?:=\s*)?(?=\()/;   // як і IMG_AT, без «\s*» поспіль (рев'ю P1-1)
   const IMG_SRC = /(?:^|[^а-яґєії])(?:образ[а-яґєії]*\s+точк[а-яґєії]*|симетричн[а-яґєії]*\s+точц[іи])\s*$/iu;
   // Текст умови для пошуку назви: без HTML-тегів (лише справжніх — «<» у формулі лишається) і без прикладів формату
   // («Наприклад, $(1; 5]$ — це всі числа $y$…» до кінця абзацу): приклад не називає шукане.
@@ -703,32 +706,38 @@ window.SLID_LEARN = (() => {
   // заголовок-назва шуканого: маркер на самому початку («Вершина $D$», «Координати точки $D$»), не «Образ точки $A$» чи «Середина відрізка $AB$»
   const ASK_TITLE = /^\s*(?:координат[а-яґєії]*\s+)?(?:точк|вершин|вектор|кін[еця]|центр)[а-яґєії]*\s*$/iu;
   const OBJ_TOK = /\\(?:vec|overrightarrow)\s*\{\s*([A-Z]{1,2})\s*\}|(?<![A-Za-z\\])([A-Z]{1,2})(?![A-Za-z])/g;
-  const ASKED = new WeakMap(), NO_NAMES = { ask: null, given: new Set(), objs: new Set(), img: null };
+  const ASKED = new WeakMap(), NO_NAMES = { ask: null, vask: null, vec: false, given: new Set(), objs: new Set(), img: null };
+  // «\vec a» без дужок (запис Істера: $\vec a(0; −2)$) — як «\vec{a}»
+  const vecBraces = t => t.replace(/\\(vec|overrightarrow)\s+([a-z])(?![A-Za-z])/g, "\\$1{$2}");
   /** Назви умови: { ask — єдина назва точки чи вектора, про яку питає умова (формула-назва без координат, перед нею — ASK_WORD), або null;
       given — назви точок і векторів із даними координатами ($A(4; -3)$, $\\vec{AB} = (…)$);
       objs — решта назв з формул умови, без координат: відрізок $BC$, пряма $AO$, довільна точка $X$ з означення, промінь $OX$ (p3b);
+      vask — єдина назва вектора малою літерою, про яку питає умова («Знайди координати вектора $\\vec{c}$»), або null;
+        given має й малі назви даних векторів ($\\vec{a}(-3; 2; 5)$); vec — умова має вектор малою літерою (шуканий чи даний),
+        тобто мала назва перед координатами тут — назва вектора (engine-coordinates-vector-name);
       img — дана точка, образ якої шукають («образ точки $A(…)$», «симетричної точці $A(…)$»), якщо вона одна, ask немає й умова сама
       не називає образу ($A_1$, $A'$ ніде в формулах), інакше null (engine-decisions-1101) }. */
   function askedPoint(s) {
     if (!s || typeof s !== "object") return null;
     if (ASKED.has(s)) return ASKED.get(s);
-    const text = stmtText(s), names = new Set(), given = new Set();
+    const text = vecBraces(stmtText(s)), names = new Set(), vnames = new Set(), given = new Set();
     // шукане — лише в реченні із запитанням («Знайди координати точки $B$»), не в означенні («кожна точка $X$ переходить…»)
     const ask = text.split(/(?<=[.?!])\s+(?=[^$]*(?:\$[^$]*\$[^$]*)*$)|<\/p>/).filter(x => /знайд|визнач|які координати|яких координат/i.test(x)).join(" </p> ");
-    const bare = f => f.trim().match(/^(?:\\(?:vec|overrightarrow)\s*\{\s*([A-Z]{1,2})\s*\}|([A-Z]{1,2}))$/);
+    const bare = f => f.trim().match(/^(?:\\(?:vec|overrightarrow)\s*\{\s*([A-Z]{1,2}|[a-z])\s*\}|([A-Z]{1,2}))$/);
+    const low = n => /^[a-z]$/.test(n);
     // перед назвою — ASK_WORD або саме запитання без слова-маркера: «Знайди координати $D$», «Знайди $D$» (рев'ю diag-answer-kinds, P3-2)
     for (const m of ask.matchAll(/\$([^$]+)\$/g)) {
       const before = ask.slice(Math.max(0, m.index - 40), m.index);
       const n = bare(m[1]), mid = n && n[2] && n[2].length === 1 && ASK_MID.test(before);
       if (!ASK_WORD.test(before) && !ASK_BARE.test(before) && !mid) continue;
-      if (n) names.add(n[1] || n[2]);
+      if (n) (low(n[1]) ? vnames : names).add(n[1] || n[2]);
     }
     // точка з даними координатами — дане, не шукане: «симетрична точці A відносно точки $M(2; -3)$» (заголовок «…точки $M$»)
-    for (const [, f] of text.matchAll(/\$([^$]+)\$/g)) for (const g of f.matchAll(/(?:\\(?:vec|overrightarrow)\s*\{\s*([A-Z]{1,2})\s*\}|(?<![A-Za-z])([A-Z]{1,2}))\s*=?\s*\(/g)) given.add(g[1] || g[2]);
+    for (const [, f] of text.matchAll(/\$([^$]+)\$/g)) for (const g of f.matchAll(/(?:\\(?:vec|overrightarrow)\s*\{\s*([A-Z]{1,2}|[a-z])\s*\}|(?<![A-Za-z])([A-Z]{1,2}))\s*(?:=\s*)?\(/g)) given.add(g[1] || g[2]);
     // точка, якій умова дає координати словами: «Точка $A$ має координати $(2; 3)$» — теж дане (рев'ю engine-lab-aria-p3d, P3-1;
     // рев'ю engine-practice-pool, P2-1: відкидати назву із заголовка лише тоді, коли тіло дає цій точці дані)
     for (const g of text.matchAll(/\$\s*([A-Z]{1,2})\s*\$\s*(?:ма(?:є|ла|ють)|мали)\s+координат/gu)) given.add(g[1]);
-    for (const g of given) names.delete(g);
+    for (const g of given) { names.delete(g); vnames.delete(g); }
     // назва шуканого лише в заголовку («Вершина $D$», а в умові — «Знайди її координати» чи «$D$ — четверта вершина»): з заголовка,
     // якщо умова назви не дала; лише заголовок, що починається маркером: у «Образ точки $A$» названо дану точку, а не шукану.
     // Назву заголовка, якій тіло дає дані (given), не беремо — заголовок лише звужує, не розширює.
@@ -736,9 +745,10 @@ window.SLID_LEARN = (() => {
     // перетину» — K береться шуканою, хоча шукана точка тут безіменна (K — лише точка прямої без координат). Текстової ознаки, яка
     // відрізнила б це від «Вершина $D$» + «Знайди координати четвертої вершини» (D — шукана), не знайдено: наслідок — «K(1; 2)» ok,
     // «M(1; 2)» form (не bad), тобто хибного «неправильно» немає. Поведінку зафіксовано тестом «ask-title N2» у test-learn.mjs.
-    if (!names.size && typeof s.title === "string") for (const m of s.title.matchAll(/\$([^$]+)\$/g)) {
-      if (!ASK_TITLE.test(s.title.slice(0, m.index))) continue;
-      const n = bare(m[1]), nm = n && (n[1] || n[2]); if (nm && !given.has(nm)) names.add(nm);
+    const title = typeof s.title === "string" ? vecBraces(s.title) : "";
+    if (!names.size && !vnames.size) for (const m of title.matchAll(/\$([^$]+)\$/g)) {   // «Вектор $\vec{p}$» — і мала назва
+      if (!ASK_TITLE.test(title.slice(0, m.index))) continue;
+      const n = bare(m[1]), nm = n && (n[1] || n[2]); if (nm && !given.has(nm)) (low(nm) ? vnames : names).add(nm);
     }
     // назви об'єктів умови: окремий токен з 1–2 великих латинських літер у формулі (не частина слова чи TeX-команди: \Delta, ABCD), \vec{AB}
     const objs = new Set();
@@ -747,7 +757,7 @@ window.SLID_LEARN = (() => {
     for (const m of ask.matchAll(/\$\s*([A-Z])\s*\(/g)) if (IMG_SRC.test(ask.slice(Math.max(0, m.index - 40), m.index))) src.add(m[1]);
     const one = src.size === 1 && !names.size ? [...src][0] : null, named = one && [...text.matchAll(/\$([^$]+)\$/g)]
       .some(([, f]) => new RegExp(`(?<![A-Za-z\\\\])${one}\\s*(?:_|[₀-₉]|['’′ʼ]|\\^\\s*\\{?\\s*\\\\prime|\\\\prime|\\d)`).test(f));
-    const r = { ask: names.size === 1 ? [...names][0] : null, given, objs, img: one && !named ? one : null };
+    const r = { ask: names.size === 1 ? [...names][0] : null, vask: vnames.size === 1 ? [...vnames][0] : null, vec: vnames.size > 0 || [...given].some(low), given, objs, img: one && !named ? one : null };
     ASKED.set(s, r); return r;
   }
   /** Довжина назви на початку запису t (0 — назви немає або її не можна зняти). low — мала літера дозволена (числовий шлях). */
@@ -757,15 +767,24 @@ window.SLID_LEARN = (() => {
   function nameLen(s, t, low) {
     const m = NAME_AT.exec(t);
     if (!m) { const g = IMG_ONE.exec(t); return g && g[1] === (askedPoint(s) || NO_NAMES).img ? g[0].length : 0; }   // образ даної точки: A₁(…), A′(…)
-    if (m[3]) return low && !m[4] ? m[0].length : 0;
-    const { ask, given, objs } = askedPoint(s) || NO_NAMES, big = m[1] || m[2];
+    const { ask, vask, vec, given, objs } = askedPoint(s) || NO_NAMES, big = m[1] || m[2] || m[3];
+    // Мала назва (engine-coordinates-vector-name). Лише в умові з вектором малою літерою (vec): шуканий вектор — лише він (vask),
+    // даний вектор — ні, інакше будь-яка мала назва. Без такого вектора в умові — як раніше: «m(…)» без «=» у числовому ключі, решта — ні (D-031 (1)).
+    if (/^[a-z]$/.test(big)) {
+      const plain = m[3] && !m[4] && !m[5];          // «m(…)» без «=» і стрілки
+      if (plain && !low) return 0;                   // символьний ключ: k(p − m; k − n) — множник, не назва
+      if (!vec) return plain ? m[0].length : 0;
+      if (vask) return big === vask ? m[0].length : 0;
+      if (given.has(big)) return 0;                  // даний вектор умови
+      return plain || !ask ? m[0].length : 0;        // «c = (…)» при шуканій великій назві (AB) — ні
+    }
     if (ask) return big === ask ? m[0].length : 0;
     return given.has(big) || objs.has(big) ? 0 : m[0].length;
   }
   /** Впорядковані координати (3; −2) / A(3; -2) / AB = (3; −2) / [3, -2]: рівно n компонент, порядок і знак важливі. s — вправа (назва з умови). */
   function parsePoint(v, n, exact, s) {
     let parts = Array.isArray(v) ? v.map(String) : null;
-    if (!parts) { let t = norm(v); t = t.slice(nameLen(s, t, true)); const m = t.match(/^\((.*)\)$/s); if (m) t = m[1]; parts = t.split(t.includes(";") ? ";" : ","); }
+    if (!parts) { let t = vecBraces(norm(v)); t = t.slice(nameLen(s, t, true)); const m = t.match(/^\((.*)\)$/s); if (m) t = m[1]; parts = t.split(t.includes(";") ? ";" : ","); }
     const xs = parts.length === n ? parts.map(p => elemOf(String(p).replace(/^\s*-\s+/, "-"), exact)) : [];
     return xs.length && xs.every(Boolean) ? xs : null;
   }
@@ -776,7 +795,7 @@ window.SLID_LEARN = (() => {
   // sym — запис дитини до символьного ключа: мала літера перед дужками — множник (k(p − m; k − n)), не назва точки.
   function splitPair(v, sym = false, s = null) {
     if (Array.isArray(v)) return v.map(String);
-    let t = norm(v);
+    let t = vecBraces(norm(v));
     const close = i => { let d = 0; for (let j = i; j < t.length; j++) { if (t[j] === "(") d++; else if (t[j] === ")" && !--d) return j; } return -1; };
     const nl = nameLen(s, t, !sym); if (nl && close(nl) === t.length - 1) t = t.slice(nl);
     if (t[0] === "(" && close(0) === t.length - 1) t = t.slice(1, -1);
@@ -1137,7 +1156,8 @@ window.SLID_LEARN = (() => {
   };
   const DEC_WORD = ["цілим числом, без коми", "з одним знаком після коми", "з двома знаками після коми", "з трьома знаками після коми"];
   const decMsg = n => n === 0 ? "Значення правильне. Запиши відповідь цілим числом, без коми." : `Значення правильне. Запиши відповідь десятковим дробом ${DEC_WORD[n] || `з ${n} знаками після коми`}.`;
-  const givenMsg = g => `Координати правильні, але ${g} — дана точка умови. Запиши лише координати.`;
+  const givenMsg = g => /^[a-z]$/.test(g) ? `Координати правильні, але ${g} — даний вектор умови. Запиши лише координати.` : `Координати правильні, але ${g} — дана точка умови. Запиши лише координати.`;
+  const vaskMsg = g => `Координати правильні, але тут шукають вектор ${g}.`;
   const objMsg = g => `Координати правильні, але ${g} — інше позначення з умови, а не шукана точка. Запиши лише координати.`;
   const unitMsg = s => `Перевір одиницю: тут відповідь записують у «${s.unit}». Одиницю можна й не писати.`;
   // та сама величина в іншій одиниці (unitEq «conv»): «можна й не писати» тут відволікає — «2000» без «г» знову неправильне (рев'ю engine-unit-hint P3-2)
@@ -1377,8 +1397,8 @@ window.SLID_LEARN = (() => {
     if (["exactRoot", "list", "coordinates2", "coordinates3", "intervalSet", "pairSet"].includes(kind)) out.push(MSG.rootReduce);
     if (kind === "list") out.push(MSG.listSep);
     if (kind === "intervalSet") { const lab = askedSet(s)?.label; out.push(MSG.setRange, MSG.setName, ...(lab && lab !== "range" ? [`Проміжок правильний, але тут шукають значення ${lab.replace(/-/g, "−")}.`] : [])); }
-    if (kind === "coordinates2" || kind === "coordinates3") { const { ask, given, objs } = askedPoint(s) || NO_NAMES;
-      out.push(MSG.pointName, MSG.pointImage, ...(ask ? [`Координати правильні, але тут шукають ${ask}.`] : []), ...[...given].map(givenMsg), ...[...objs].map(objMsg)); }
+    if (kind === "coordinates2" || kind === "coordinates3") { const { ask, vask, given, objs } = askedPoint(s) || NO_NAMES;
+      out.push(MSG.pointName, MSG.pointImage, ...(ask ? [`Координати правильні, але тут шукають ${ask}.`] : []), ...(vask ? [vaskMsg(vask)] : []), ...[...given].map(givenMsg), ...[...objs].map(objMsg)); }
     if (kind === "time") out.push(timeMsg(s));
     if (U) out.push(qtyForeignMsg(U), qtyMissingMsg(U), qtyFormMsg(U), qtyTailMsg(U), qtyFracMsg(U), ...(U.dim === "час" ? [qtyClockMsg(U)] : []));
     return out;
@@ -1603,9 +1623,9 @@ window.SLID_LEARN = (() => {
   /* Назва відкинута, а значення правильне (рев'ю engine-learn-list-prefixes-p3, P2-1): «M(1; -5)», коли M — дана точка, «n ∈ [-4; 3)»
      при −n. Не «ok» (назва хибна), а «form» з поясненням (nameMsg); якщо й без назви запис неправильний — звичайне «bad», без підказки. */
   function dropName(s, v) {
-    const kind = s.answerKind || "number", t = norm(v);
+    const kind = s.answerKind || "number", t = vecBraces(norm(v));
     if (kind === "intervalSet") { const at = t.search(/[=∈]/), pre = at > 0 ? t.slice(0, at) : ""; const rest = t.slice(at + 1).trim(); return pre && !/[[\]{};∪∞]/.test(pre) && !/[=∈]/.test(rest) ? rest : null; }   // «x ∈ y ∈ …» — bad
-    if (kind === "coordinates2" || kind === "coordinates3") { const m = NAME_AT.exec(t) || IMG_AT.exec(t), rest = m && t.slice(m[0].length); return m && !m[3] && !NAME_AT.test(rest) && !IMG_AT.test(rest) ? rest : null; }   // «AB = AB = (…)», «A₁ = A(…)» — bad
+    if (kind === "coordinates2" || kind === "coordinates3") { const m = NAME_AT.exec(t) || IMG_AT.exec(t), rest = m && t.slice(m[0].length); return m && !(/^[a-z]$/.test(m[1] || m[3] || "") && (!(askedPoint(s) || NO_NAMES).vec || m[3] && !m[4] && !m[5] && symPair(s))) && !NAME_AT.test(rest) && !IMG_AT.test(rest) ? rest : null; }   // «AB = AB = (…)», «A₁ = A(…)» — bad; k(p − m; …) — множник
     return null;
   }
   function checkAns0(s, v) {
@@ -1623,7 +1643,8 @@ window.SLID_LEARN = (() => {
       const names = askedSet(s), lab = names?.label;
       return lab === "range" ? MSG.setRange : lab ? `Проміжок правильний, але тут шукають значення ${lab.replace(/-/g, "−")}.` : MSG.setName;
     }
-    const t = norm(v), m = NAME_AT.exec(t), { ask, given, objs } = askedPoint(s) || NO_NAMES, big = m && (m[1] || m[2]);
+    const t = vecBraces(norm(v)), m = NAME_AT.exec(t), { ask, vask, given, objs } = askedPoint(s) || NO_NAMES, big = m && (m[1] || m[2] || m[3]);
+    if (big && /^[a-z]$/.test(big)) return given.has(big) ? givenMsg(big) : vask ? vaskMsg(vask) : ask ? `Координати правильні, але тут шукають ${ask}.` : MSG.pointName;
     return ask ? `Координати правильні, але тут шукають ${ask}.` : !m && IMG_AT.test(t) ? MSG.pointImage : big && given.has(big) ? givenMsg(big) : big && objs.has(big) ? objMsg(big) : MSG.pointName;
   }
   function checkCore(s, v) {
