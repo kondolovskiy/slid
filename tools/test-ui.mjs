@@ -15,8 +15,8 @@
 //  8) Телефон (devices["Pixel 7"], engine-list-p3 п. 4): поле масштабу (number + scale) — inputmode="decimal" і кнопка «:» (на цифровій
 //     клавіатурі двокрапки немає); «1 : 10000» набирається дотиками й зараховується; ratio — кнопка «:» вставляє в місце курсора;
 //     без scale кнопки «:» немає.
-//  5–7) Service worker (engine-sw-version-skew): деплой нової версії не змішує index.html і app.js; оновлення не перезавантажує
-//     сторінку посеред уроку; застосунок зі старим SW після одного змішаного відкриття сам переходить на консистентну нову версію.
+//  5–7) Service worker (engine-sw-version-skew): деплой нової версії не змішує index.html і app.js; файл зі старого кешу не віддається
+//     (P3-6); оновлення не перезавантажує сторінку посеред уроку, а версія подій журналу лишається версією сторінки (P3-4); застосунок зі старим SW після одного змішаного відкриття сам переходить на консистентну нову версію.
 // Запуск: node tools/test-ui.mjs [--browser /opt/pw-browsers/chromium]
 // Playwright: require("playwright") (NODE_PATH) або PLAYWRIGHT_MODULE / /opt/node-tools/node_modules/playwright.
 // Браузер, як у test-answer-ui.py: --browser / SLID_BROWSER → /opt/pw-browsers/chromium, якщо є (PW_DEFAULT=1 вимикає) → Chromium самого
@@ -27,7 +27,11 @@ import { ROOT } from "./lib.mjs";
 const args = process.argv.slice(2), opt = (k, d) => args.includes(k) ? args[args.indexOf(k) + 1] : d;
 const require = createRequire(import.meta.url);
 let pw;
-for (const m of [process.env.PLAYWRIGHT_MODULE, "playwright", "/opt/node-tools/node_modules/playwright"].filter(Boolean)) { try { pw = require(m); break; } catch {} }
+// явно заданий PLAYWRIGHT_MODULE не підміняємо іншим модулем (рев'ю tools-ci-test-ui P3-1): не завантажився — rc 2
+if (process.env.PLAYWRIGHT_MODULE) {
+  try { pw = require(process.env.PLAYWRIGHT_MODULE); }
+  catch (e) { console.error(`PLAYWRIGHT_MODULE=${process.env.PLAYWRIGHT_MODULE} не завантажується: ${e.message.split("\n")[0]}`); process.exit(2); }
+} else for (const m of ["playwright", "/opt/node-tools/node_modules/playwright"]) { try { pw = require(m); break; } catch {} }
 if (!pw) { console.error("Немає Node-модуля playwright: задай NODE_PATH або PLAYWRIGHT_MODULE"); process.exit(2); }
 const BROWSER = opt("--browser", process.env.SLID_BROWSER || (fs.existsSync("/opt/pw-browsers/chromium") && !process.env.PW_DEFAULT ? "/opt/pw-browsers/chromium" : undefined));
 
@@ -115,6 +119,12 @@ async function swScenarios(browser) {
   await page.goto(SWU);
   await page.evaluate(s => localStorage.setItem("slid.v1", JSON.stringify(s)), { ...seed, unlockAll: true });
   ok(await controlled(page, "A"), "SW: версія A встановлена й керує сторінкою");
+  // рев'ю engine-sw-version-skew P3-6: SW бере файли лише з кешу СВОЄЇ версії (c.match), а не з будь-якого (caches.match) — інакше файл,
+  // якого в новій версії немає, прийшов би зі старого кешу, ще не видаленого. Імітація: інший кеш slid-… з файлом, якого немає ні в
+  // кеші A, ні на сервері: правильний SW іде в мережу (404), мутант caches.match віддав би «старий» вміст.
+  const planted = await page.evaluate(async () => { const c = await caches.open("slid-zz-old"); await c.put(new Request("qa-old-only.txt"), new Response("old"));
+    const r = await fetch("qa-old-only.txt"); return [r.status, await r.text()]; });
+  ok(planted[0] === 404 && planted[1] !== "old", `SW: файл лише зі старого кешу не віддається (мережа, 404), а ${JSON.stringify(planted)}`);
   await page.waitForTimeout(1500);
   ok(loads.length === 1, `SW: перше встановлення не перезавантажує сторінку (завантажень ${loads.length})`);
   ok(await page.evaluate(() => window.SLID_UPDATE && !SLID_UPDATE.pending), "SW: після першого встановлення оновлення не чекає");
@@ -128,6 +138,12 @@ async function swScenarios(browser) {
   const full = same0.filter(([, c]) => c === 200).map(([r]) => r), n304 = same0.filter(([, c]) => c === 304).length;
   ok(n304 >= 10 && !full.length, `SW: незмінні файли при оновленні — 304 (${n304}), повних завантажень ${full.length}: ${full.slice(0, 5).join(", ")}`);
 
+  // п. 10: версію змісту сторінка з кешу SW питає одразу (warmVersion), а не при першому записі журналу. Детерміновано: друга вкладка, де
+  // IndexedDB не відповідає (запис журналу ніколи не почнеться), — версія однаково має стати відомою
+  { const p2 = await ctx.newPage(); await p2.addInitScript(() => Object.defineProperty(window, "indexedDB", { value: { open: () => ({}) } }));
+    await p2.goto(SWU);
+    ok(await until(() => p2.evaluate(() => !!navigator.serviceWorker.controller && SLID_EVIDENCE.cv === "qa-B"), 8000), `evidence: версію спитано при завантаженні, без запису (warmVersion), а ${await p2.evaluate(() => SLID_EVIDENCE.cv)}`);
+    await p2.close(); }
   // умови «безпечно перезавантажити» (app/update.js U.safe): аркуш, фокус у полі, онбординг, плеєр
   ok(await page.evaluate(() => SLID_UPDATE.safe()), "update: на головній — безпечно");
   ok(!(await page.evaluate(() => { const h = document.getElementById("sheetHost"); h.innerHTML = "<div class='scrim'></div>"; const r = SLID_UPDATE.safe(); h.innerHTML = ""; return r; })), "update: відкритий аркуш — не безпечно");
@@ -150,9 +166,12 @@ async function swScenarios(browser) {
   await page.waitForTimeout(2500);
   ok(await page.evaluate(() => window.__mark === 1 && !document.getElementById("player").hidden), "SW: посеред уроку сторінку не перезавантажено, плеєр відкритий");
   ok(/Є оновлення.*щойно буде можна/.test(await page.locator("#toast").innerText()), "SW: тост «Є оновлення… щойно буде можна» під час уроку");
+  // tools-engine-p3-1105 п. 10 (рев'ю engine-sw-version-skew P3-4): сторінка B під керуванням нового SW C — версія змісту в журналі подій лишається B
+  ok(await page.evaluate(() => SLID_EVIDENCE.cv) === "qa-B", `evidence: посеред уроку з новим SW версія подій — сторінки (qa-B), а ${await page.evaluate(() => SLID_EVIDENCE.cv)}`);
   await page.click("#pClose"); await page.click("#pClose");
   ok(await until(async () => same(last(loads), ["C", "C"])), `SW: після закриття уроку — нова версія [C, C], завантаження ${JSON.stringify(loads)}`);
   ok(loads.every(([p, e]) => p === e), `SW: урок — жодного змішаного завантаження, а ${JSON.stringify(loads)}`);
+  ok(await until(() => page.evaluate(() => SLID_EVIDENCE.cv === "qa-C")), `evidence: після перезавантаження в C версія подій — qa-C, а ${await page.evaluate(() => SLID_EVIDENCE.cv)}`);
   await ctx.close();
 
   // 7) застосунок зі СТАРИМ SW (до виправлення): деплой нової версії — одне змішане відкриття (старий SW так працює), далі

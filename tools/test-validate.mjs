@@ -317,7 +317,14 @@ expectRun("drag: at і без drag — без попередження", one("fx
     ["sci: ключ не в стандартному вигляді — помилка", { answerKind: "sci", answer: "27,2 · 10^4", body: "Запиши в стандартному вигляді." }, "sci — ключ рядком"],
     ["pairSet — чисто", { answerKind: "pairSet", answer: [[3, 2], [-2, -3]] }, null],
     ["pairSet з повтором пари — помилка", { answerKind: "pairSet", answer: [[3, 2], [3, 2]] }, "pairSet — ключ"],
-    ["form improper зі змішаним ключем — помилка", { answer: "2 1/3", form: "improper" }, "form improper"]]) {
+    ["form improper зі змішаним ключем — помилка", { answer: "2 1/3", form: "improper" }, "form improper"],
+    // tools-engine-p3-1105 п. 5 (рев'ю engine-list-p3 P3-2): ordered / multiset / scale на екрані уроку — ті самі правила, що в пулі
+    ["list ordered — чисто", { answerKind: "list", answer: [3, 5], ordered: true }, null],
+    ["list ordered з «±» не в першому елементі — помилка", { answerKind: "list", answer: [5, "±3"], ordered: true }, "ordered не поєднується з «±»"],
+    ["ordered з multiset — помилка", { answerKind: "list", answer: [1, 2], ordered: true, multiset: true }, "ordered уже порівнює елементи по місцях"],
+    ["multiset поза list — помилка", { answer: 5, multiset: true }, "multiset має бути boolean"],
+    ["scale — чисто", { answer: 10000, scale: true }, null],
+    ["scale з дробовим ключем — помилка", { answer: "1/4", scale: true }, "scale — ключ"]]) {
     const id = "fxk";
     const rep = expectRun(`answer в уроці: ${name}`, ans(id, f), ["--section", id], { err: err && `answer: ${err}`, also: "сам проходить перевірку" });
     if (rep && err) ok(rep.errors.every(e => e.includes("#fxkl1 екран 4 (answer)")), `answer в уроці: ${name}: помилка вказує на екран`, rep.errors.join("\n  ")); }
@@ -395,7 +402,12 @@ expectRun("drag: at і без drag — без попередження", one("fx
     ["time з unit — помилка поля", { type: "answer", answerKind: "time", answer: "9:55", unit: "год" }, "time — без unit"],
     ["quantity без units — помилка поля", { type: "answer", answerKind: "quantity", answer: 245 }, "quantity — units"],
     ["decimals 1 з ключем «37» — помилка поля", { type: "answer", answer: "37", decimals: 1 }, "decimals 1 — ключ рядком"],
-    ["ключ, що сам не проходить, — помилка", { type: "answer", answer: "abc" }, "сам проходить перевірку"]]) {
+    ["ключ, що сам не проходить, — помилка", { type: "answer", answer: "abc" }, "сам проходить перевірку"],
+    // tools-engine-p3-1105 п. 5: scale / ordered / multiset у тесті рівня — ті самі правила поля
+    ["answer scale — чисто", { type: "answer", answer: 10000, scale: true }, null],
+    ["answer scale з ключем 1 — помилка поля", { type: "answer", answer: 1, scale: true }, "scale — ключ"],
+    ["ordered поза list — помилка поля", { type: "answer", answer: 5, ordered: true }, "ordered має бути boolean"],
+    ["multiset поза list — помилка поля", { type: "answer", answer: 5, multiset: true }, "multiset має бути boolean"]]) {
     const rep = expectRun(`diag answer: ${name}`, tree(item), ["--diag", "dgfx"], { err, also: err && "сам проходить перевірку" });
     if (rep && err) ok(rep.errors.every(e => e.includes("diag-g8.js#dgfx")), `diag answer: ${name}: помилка вказує на тест`, rep.errors.join("\n  ")); }
   // P3-3 (рев'ю engine-diag-answer-kinds) + engine-diag-half-credit: вигляд, який поле вимагає (compound, reduced, mixed, improper; без нього —

@@ -13,7 +13,7 @@
 
 ## 1. Стек
 - Фронтенд: ванільний JS без залежностей і збирача; `index.html` + `app/*.js`; PWA (`sw.js`).
-- Інструменти: Node 22 (`tools/*.mjs`, без npm-залежностей); Python + Playwright (`playtest.py`, `test-answer-ui.py`).
+- Інструменти: Node 22 (`tools/*.mjs`, без npm-залежностей у `package.json`; виняток — `test-ui.mjs` бере Node-пакет `playwright` поза ним: локально з `NODE_PATH`/`PLAYWRIGHT_MODULE`, у CI ставиться в `$RUNNER_TEMP`); Python + Playwright (`playtest.py`, `test-answer-ui.py`).
 - Бекенд `server/`: TypeScript, NestJS 11, Kysely 0.28, PostgreSQL 16, Jest; Railway. Офлайн-перший: фронтенд працює без нього.
 - CI: `.github/workflows/pages.yml` (тести + згенеровані файли закомічені + job `browser`: регресія рушія, test-ui і плейтест піднабору → GitHub Pages; на PR — без публікації), `server.yml` (бекенд на Postgres).
 
