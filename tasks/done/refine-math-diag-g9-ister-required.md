@@ -5,7 +5,7 @@ claimed_by: eng-math-dg9
 id: refine-math-diag-g9-ister-required
 type: refine
 subject: math
-status: review
+status: done
 created: 2026-11-04
 depends_on: [curate-math-matrix-v9]
 ---
