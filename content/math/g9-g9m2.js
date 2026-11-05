@@ -1,4 +1,5 @@
 /* Слід · Математика, 9 клас — «Геометрія: координати і вектори»
+   style-math-finals-pre, 2026-11-05: у завдання фіналу додано pre (id уроку теми; style/common.md, D-048 п. 1); зміст не змінено.
    Статус уроків: verified (g9m2l3, g9m2l4, g9m2l5 — 2026-11-03, fix-math-vectors-ister: вектор без «=» і в обчисленнях та підписах lab, D-043 уточнення п. 4; verified — verifier-fix-math-vectors-ister, reports/verify/fix-math-vectors-ister.md). 5 уроків (4 теми + boss).
    Інтерактив: plane — точки drag, вектори segs/arrows, коло; ≥2 explore/lab на урок.
    Перевірка: node tools/validate.mjs --section g9m2 && node tools/stats.mjs --subject math
@@ -845,6 +846,7 @@ SLID.section("math", {
           type: "number",
           sk: "coord",
           eyebrow: "Завдання 1",
+          pre: "g9m2l1",
           title: "Відстань між чекпоінтами",
           body: "<p>На карті два чекпоінти: $P(-1; 2)$ і $Q(3; 5)$. Яка відстань між ними за формулою з першого уроку?</p>",
           answer: 5,
@@ -857,6 +859,7 @@ SLID.section("math", {
           type: "lab",
           sk: "coord",
           eyebrow: "Завдання 2",
+          pre: "g9m2l2",
           title: "Постав маяк на колі зони",
           body: "<p>База стоїть у $(0; 0)$, а зона покриття має радіус 5 (пунктирне коло). Постав маяк $M$ точно на межі цієї зони.</p>",
           lab: {
@@ -883,6 +886,7 @@ SLID.section("math", {
           type: "choice",
           sk: "coord",
           eyebrow: "Завдання 3",
+          pre: "g9m2l2",
           title: "Яка пряма проходить через $(0; 2)$ з нахилом 1?",
           body: "<p>Кутовий коефіцієнт прямої $k = 1$, а з віссю $y$ вона перетинається в точці $(0; 2)$. Яке рівняння їй відповідає?</p>",
           opts: [
@@ -899,6 +903,7 @@ SLID.section("math", {
           type: "lab",
           sk: "coord",
           eyebrow: "Завдання 4",
+          pre: "g9m2l3",
           title: "Відклади крок $\\vec{v}(2; -3)$",
           body: "<p>Герой стоїть у точці $A(1; 4)$. Постав кінець $B$ так, щоб крок мав координати вектора саме $(2; -3)$.</p>",
           lab: {
@@ -926,6 +931,7 @@ SLID.section("math", {
           type: "number",
           sk: "coord",
           eyebrow: "Завдання 5",
+          pre: "g9m2l4",
           title: "Скалярний добуток для перпендикуляра",
           body: "<p>Дано вектори $\\vec{a}(3; 1)$ і $\\vec{b}(-1; n)$. При якому цілому $n$ кут між ними стає прямим?</p>",
           answer: 3,
@@ -938,6 +944,7 @@ SLID.section("math", {
           type: "choice",
           sk: "coord",
           eyebrow: "Завдання 6",
+          pre: "g9m2l1",
           title: "Середина маршруту",
           body: "<p>Старт маршруту — точка $S(2; -2)$, а фініш — $F(6; 4)$. Які координати має середина відрізка $SF$?</p>",
           opts: [

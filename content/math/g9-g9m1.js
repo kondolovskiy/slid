@@ -1,4 +1,5 @@
 /* Слід · Математика, 9 клас — «Алгебра: нерівності»
+   style-math-finals-pre, 2026-11-05: у завдання фіналу додано pre (id уроку теми; style/common.md, D-048 п. 1); зміст не змінено.
    Статус уроків: verified (l3, l4 — повторно 2026-11-01, verifier-fix-math-terms-g8m4-g9m1: «переріз» → «перетин»). 4 уроки (3 теми + boss).
    Інтерактив: numline з intervals; plane fills для напівплощин; ≥2 explore/lab на урок.
    Перевірка: node tools/validate.mjs --section g9m1 && node tools/stats.mjs --subject math
@@ -611,6 +612,7 @@ SLID.section("math", {
           type: "choice",
           sk: "eq",
           eyebrow: "Завдання 1",
+          pre: "g9m1l1",
           title: "Властивість: множення на −4",
           body: "<p>З правильної нерівності $2 < 5$ після множення обох частин на −4 що отримаємо?</p>",
           opts: [
@@ -629,6 +631,7 @@ SLID.section("math", {
           type: "lab",
           sk: "eq",
           eyebrow: "Завдання 2",
+          pre: "g9m1l2",
           title: "Рюкзак: $x + 3 < 11$",
           body: "<p>Вага речей $x$ кг плюс 3 кг намету має бути меншою за 11 кг. Постав межу розв'язку на прямій.</p>",
           lab: {
@@ -658,6 +661,7 @@ SLID.section("math", {
           type: "choice",
           sk: "eq",
           eyebrow: "Завдання 3",
+          pre: "g9m1l2",
           title: "Вік у таборі: $-3x < 12$",
           body: "<p>Розв'яжи нерівність (поділи на −3).</p>",
           opts: [
@@ -676,6 +680,7 @@ SLID.section("math", {
           type: "lab",
           sk: "eq",
           eyebrow: "Завдання 4",
+          pre: "g9m1l3",
           title: "Години тиші: $21 \\le t \\le 7$? Ні — смуга",
           body: "<p>На площині вистав вертикальну смугу $2 \\le x \\le 5$ — «денний коридор» між корпусами.</p>",
           lab: {
@@ -706,6 +711,7 @@ SLID.section("math", {
           type: "choice",
           sk: "eq",
           eyebrow: "Завдання 5",
+          pre: "g9m1l3",
           title: "Система: $x \\ge -1$ і $x < 3$",
           body: "<p>Який проміжок є розв'язком?</p>",
           opts: [
@@ -724,6 +730,7 @@ SLID.section("math", {
           type: "number",
           sk: "eq",
           eyebrow: "Завдання 6",
+          pre: "g9m1l3",
           title: "Найменша ціна квитка",
           body: "<p>Квиток $x$ грн: $x \\ge 120$ і $x \\le 200$. Яке найменше ціле значення $x$ (у гривнях)?</p>",
           answer: 120,
