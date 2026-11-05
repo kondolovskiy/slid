@@ -60,3 +60,19 @@
 - `python3 tools/test-answer-ui.py --suite regression` і `playtest.py`: немає Python-модуля playwright (лише CI, job `browser`).
 - Реальні мобільні браузери (iOS Safari standalone, Android Chrome), квоти сховища, поведінка GitHub Pages під час деплою.
 - `scratchpad/splitbug/skew.cjs` не переганявся; сценарій 7 відтворює той самий баг на фікстурі старого SW.
+
+## Повторна перевірка ead85ba
+Diff `git diff 6b53d42 ead85ba`: `tools/sw.template.js` → `sw.js`, `app/update.js`, `app/app.js`, `tools/test-ui.mjs`, `docs/PUBLISHING.md`, `docs/EVIDENCE.md`, задача.
+
+- **P1-1 закрито.** Precache тепер `new Request(u, { cache: "no-cache" })` (`tools/sw.template.js:16`), `sw.js` перезібрано. Повторив власну ETag-пробу (`scratchpad/review-sw/etag/run.cjs`, оновлення A→B, 10 незмінних зображень): `reload` — 10 повних 200, `no-cache` — **0 повних, 10 × 304**, `default` — 0 запитів (застарілий HTTP-кеш). Тестовий сервер test-ui тепер надсилає ETag, сценарій 5 перевіряє «незмінні — 304, повних 0». Мутанти: повернення до `reload` → 1 ✗ (228 повних завантажень), режим `default` (`addAll(u)`) → 6 ✗ (змішані `[B, A]`, `[M, L]`).
+- **P2-1, P2-2:** описані як обмеження в docs/PUBLISHING.md п. 2. Цього достатньо, бо обидві не блокують.
+- **P3-1 закрито.** Тести `U.safe` (аркуш, фокус, онбординг) і тест «урок не зараховано». Мутанти: без перевірки аркуша, фокуса чи онбордингу → по 1 ✗; без лічильника `run.unsup` → 3 ✗ (`done:true, stars:3`, досвід 30). Мутант «пропуск додає `run.graded/first/xp`» виживає, але тепер він еквівалентний: у гілці `run.unsup` ці поля не використовуються (немає `lesson_end` і зірок), а `S.xp` не змінюється.
+- **P3-2 закрито.** `renderEnd` (`app/app.js:1374-1378`): якщо `run.unsup` — `save()` (досвід за інші відповіді), підсумок `#unsupEnd` «урок не зараховано», без done, зірок, `lessonDone`, `detect`, SRS і `lesson_end`, кнопка «Повернутися» → `closePlayer`. Звичайні уроки не зачеплено. Повторний прогін рендеру всього змісту (`allscreens.cjs` на ead85ba): 9660 екранів, `#unsupported` 0, «Пропустити» 0, тож `run.unsup` у легальних уроках не виникає. Тренування й тест рівня йдуть своїми гілками підсумку (`renderPracticeEnd`, `renderDiagEnd`, `app/app.js:984`) і не змінені. Docs/EVIDENCE.md описує відсутність `lesson_end`.
+- **P3-3 закрито.** `sw.getRegistration().then(r => { if (r && r.active) U.had = true; })` (`app/update.js:14`). На першому візиті реєстрація ще не існує (`register` викликається на `load`), тож перше встановлення так само не перезавантажує сторінку: сценарій 5 зелений. Тест Shift+F5 через CDP `Page.reload ignoreCache`, мутант без цього рядка → 1 ✗.
+- **P3-5 закрито:** тост «…щойно буде можна».
+- P3-4, P3-6, P3-7 лишаються як відомі (не блокують). Сценарії test-ui 5–7 і далі поза check/CI, у docs це прямо сказано.
+
+Перевірки: `npm run check` → EXIT 0 (змінено лише позначку часу в `reports/validate.json`, не комічу); `NODE_PATH=/opt/node-tools/node_modules node tools/test-ui.mjs` → `test-ui: 45 ok, 0 ✗`; 8 мутантів у копії дерева ead85ba (`scratchpad/review-sw/mut.sh`): 7 тести ловлять, 1 еквівалентний.
+Не перевірено (як і раніше): test-answer-ui і playtest (немає Python-модуля playwright), реальні мобільні браузери.
+
+**Вердикт повторної перевірки: прийнято.**
