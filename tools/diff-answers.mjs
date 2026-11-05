@@ -13,6 +13,8 @@
 // engine-diag-half-credit — «half …»: вердикт тесту рівня (старий diagAnswerOk → новий diagVerdict: OK / HALF / BAD) на всіх вправах
 // answer з DIAG_ANSWER_KINDS, ніби вони стояли в тесті (чинні SLID.diag answer ще не мають); пробні записи — нескорочений дріб,
 // мішане/неправильне число, десятковий запис, √(K²), 2√(K²/4), інші одиниці величини. Старий learn.js без diagAnswerOk — блок пропущено.
+// engine-math-ister-p3 — «ister-p3 …»: pairSet з √(n) і «,,», exactRoot без π (form «допиши π»), розряди через пробіл у точних записах,
+// ratio дробом p/q (form), «у N рази» при unit «раз».
 // engine-diag-answer-kinds — answer у діагностиках (SLID.diag) теж у прогоні; режим --content-old: старий і новий ЗМІСТ на одному
 // (поточному) learn.js — які вердикти змінила правка вправ (ключ, answerKind, умова з назвами), а не рушія.
 // Межі --content-old: рушій зміст старої ревізії бере з неї ж (ревізії без app/lab.js, learn.js, math.js чи registry.js — rc 2);
@@ -147,6 +149,12 @@ function records(s) {
   if (k === "list" && !/[±∓√∛∜π]|sqrt|pi/.test(K)) { const ps = K.split(/[;\n]/.test(K) ? /[;\n]/ : /,/).map(x => x.trim()), ab = ps[0].replace(/^-/, ""), rest = ps.filter(x => x.replace(/^-/, "") !== ab);
     for (const r of [`±${ab}`, `± ${ab}`, `∓${ab}`, [`±${ab}`, ...rest].join("; "), [...rest, `±${ab}`].join("; "), `x₁,₂ = ±${ab}`, `±${ab}; ${ab}`, `±${ab} + 0`]) out.add(r); }
   if (k === "number" && a && a.frac) { const p = Math.abs(a.n), q = a.d; for (const r of [`${p} : ${q}`, `${p}:${q}`, `${q} : ${p}`, `${2 * p} : ${2 * q}`, `${p} : ${q} : 1`]) out.add(r); }
+  // engine-math-ister-p3 п. 1: дужки в компоненті пари (√(2)), «,,» між парами; п. 2: exactRoot без π, розряди через пробіл, ratio дробом, «у N рази»
+  if (k === "pairSet") { out.add(K.replace(/√(\d+)/g, "√($1)")); out.add(K.replace(/\), \(/g, "),, (")); out.add(K.replace(/(\d+)(?=;)/, "($1)")); }
+  if (k === "exactRoot" && /π/.test(K)) { out.add(K.replace(/π/g, "")); out.add(K.replace(/π/g, "").replace(/(\d+)/, d => String(+d + 1))); }
+  if (k === "exactRoot" || k === "list" || k === "coordinates2") { const g = K.replace(/\d{4,}/g, d => d.replace(/\B(?=(\d{3})+$)/g, " ")); if (g !== K) { out.add(g); out.add(g.replace(/ (\d{3})/, " $1 0")); } }
+  if (k === "ratio") { const ps = K.split(":").map(x => x.trim()); if (ps.length === 2) { out.add(`${ps[0]}/${ps[1]}`); out.add(`${ps[1]}/${ps[0]}`); if (/^\d+$/.test(ps[0]) && /^\d+$/.test(ps[1])) out.add(`${2 * ps[0]}/${2 * ps[1]}`); } }
+  if (s.unit === "раз") for (const r of [`у ${K} рази`, `в ${K} рази`, `у ${K}`, `у ${K} разів`]) out.add(r);
   if (s.unit) {
     const u = s.unit, alt = u.replace(/°/g, "º");
     for (const r of [`${K} ${u}`, `${K}${u}`, `${K} ${u}.`, `${K} ${u},`, `${K}${alt}`, `${K} ${alt}.`]) out.add(r);
@@ -279,6 +287,16 @@ const CATS = [
     const L = m[1] || m[2] || m[3], vn = vecNames(s);
     return vn.all.size > 0 && OLD.checkAns(s, lat(v).slice(m[0].length)) === "ok" && (vn.given.has(L) ? n.h === `Координати правильні, але ${L} — даний вектор умови. Запиши лише координати.`
       : /^Координати правильні, але тут шукають (?:вектор [a-z]|[A-Z]{1,2})\.$/.test(n.h || "") && !vn.asked.has(L)); }],
+  // engine-math-ister-p3: старий рушій на «очищеному» записі (√(n) → √n, без розрядів, без «у») дає те саме, що новий; π і ratio — незалежна звірка значення
+  ["ister-p3 п.1 дужки в компоненті пари √(n)", (s, v, o, n) => s.answerKind === "pairSet" && /√\(\d+\)/.test(v) && same(verdict(OLD, s, v.replace(/√\((\d+)\)/g, "√$1")), n)],
+  ["ister-p3 п.1 «,,» між парами — bad", (s, v, o, n) => s.answerKind === "pairSet" && /\),\s*,/.test(v) && n.r === "bad"],
+  ["ister-p3 п.2 exactRoot без π — form «допиши π»", (s, v, o, n) => s.answerKind === "exactRoot" && /π/.test(keyText(s)) && !/π/.test(v) && o.r === "bad" && n.r === "form" && /^Число правильне, але відповідь — з π/.test(n.h || "")
+    && OLD.checkAns(s, `(${v})π`) !== "bad"],
+  ["ister-p3 п.2 розряди через пробіл у точному записі", (s, v, o, n) => ["exactRoot", "list", "coordinates2"].includes(s.answerKind) && /\d \d{3}(?!\d)/.test(v) && same(verdict(OLD, s, v.replace(/(\d) (?=\d{3}(?!\d))/g, "$1")), n)],
+  ["ister-p3 п.2 ratio дробом p/q — form «через двокрапку»", (s, v, o, n) => { const m = /^(\d+)\/(\d+)$/.exec(v), a = s.answerKind === "ratio" && keyText(s).split(":").map(x => NEW.parseAns(x.trim()));
+    return !!m && !!a && a.length === 2 && a.every(Boolean) && o.r === "bad" && n.r === "form" && /через двокрапку/.test(n.h || "")
+      && BigInt(m[1]) * BigInt(a[0].d) * BigInt(a[1].n) === BigInt(a[0].n) * BigInt(a[1].d) * BigInt(m[2]); }],
+  ["ister-p3 п.2 «у N рази» при unit «раз»", (s, v, o, n) => s.unit === "раз" && /^[ув] /.test(v) && same(verdict(OLD, s, v.replace(/^[ув] /, "")), n)],
   ["p3 quantity: підказка формату («2 м 45», дріб, «3:20»)", (s, v, o, n) => s.answerKind === "quantity" && o.r === "bad" && n.r === "bad" && !o.h && /^(Після кожного числа|Звичайний дріб тут|Тут час записують)/.test(n.h || "")],
 ];
 const NAME0 = /^(?:\\vec\{[A-Z]{1,2}\}|[A-Z]{1,2})\s*=?\s*(?=\()/;
@@ -398,7 +416,7 @@ if (args.includes("--time")) {
 // Класифікація незалежна від diagVerdict: «вимаганий вигляд» — поле reduced/mixed/improper/compound є, запис зі знятими ВСІМА полями вигляду
 // дає ok (значення правильне), а зі знятими лише decimals/fractionOnly лишається form; «корінь» — запис із √/∛ і checkAns form, зокрема
 // дослівна копія виразу з умови (рішення людини 2026-11-01: теж півбала з поясненням).
-const halfCounts = { "half вимаганий вигляд (reduced, mixed, improper, compound): OK → HALF": 0, "half корінь не обчислено (√576 при 24, і копія з умови): BAD → HALF": 0 }, halfBad = [];
+const halfCounts = { "half вимаганий вигляд (reduced, mixed, improper, compound): OK → HALF": 0, "half корінь не обчислено (√576 при 24, і копія з умови): BAD → HALF": 0, "ister-p3 «у N рази» при unit «раз»: BAD → OK": 0 }, halfBad = [];
 let halfTotal = 0;
 // Стара сторона: якщо в старому learn.js уже є diagVerdict (ревізії від half-credit), порівнюємо вердикт з вердиктом —
 // diagAnswerOk там = diagVerdict === OK і кожен HALF виглядав би як «BAD → HALF» (рев'ю engine-evidence-p3, T-1). Тоді будь-яка
@@ -425,7 +443,10 @@ if ((OLD_VERDICT || typeof OLD.diagAnswerOk === "function") && typeof NEW.diagVe
       const isForm = !OLD_VERDICT && o === "OK" && n === "HALF" && r === "form" && need && NEW.checkAns(strip(s, ["reduced", "mixed", "form", "decimals", "fractionOnly"]), v) === "ok"
         && NEW.checkAns(strip(s, ["decimals", "fractionOnly"]), v) === "form";
       const isRoot = !OLD_VERDICT && o === "BAD" && n === "HALF" && r === "form" && /[√∛]|sqrt/.test(v);
-      if (isForm) halfCounts["half вимаганий вигляд (reduced, mixed, improper, compound): OK → HALF"]++;
+      // engine-math-ister-p3 п. 2: «у N рази» — той самий вердикт, що старий рушій дає записові без прийменника
+      const isRaz = s.unit === "раз" && /^[ув] /.test(v) && n === (OLD_VERDICT ? VO[OLD.diagVerdict(s, v.replace(/^[ув] /, ""))] : OLD.diagAnswerOk(s, v.replace(/^[ув] /, "")) ? "OK" : "BAD");
+      if (isRaz) halfCounts["ister-p3 «у N рази» при unit «раз»: BAD → OK"]++;
+      else if (isForm) halfCounts["half вимаганий вигляд (reduced, mixed, improper, compound): OK → HALF"]++;
       else if (isRoot) halfCounts["half корінь не обчислено (√576 при 24, і копія з умови): BAD → HALF"]++;
       else halfBad.push(`${id} ${JSON.stringify(s.answer)} ← «${v}»: тест ${o} → ${n} (checkAns ${r})`);
       if (args.includes("--list-cat") && /^half/.test(opt("--list-cat")) && (isForm || isRoot)) console.log(`    ${id} «${v}»: ${o} → ${n}`);

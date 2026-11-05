@@ -206,5 +206,69 @@ eq([L.svgTexIssues("$x_{a_{bc}}$").map(i => i.level), L.svgTexIssues("$x^{2{,}5}
   eq([L.svgTexIssues("$x^{2{,}5}$", false).length, L.svgTexIssues("$\\sqrt{n}$", true).length, L.svgTexIssues("${a}^2", true).map(i => i.level)], [1, 1, ["warn"]], "svgTexIssues: без tpl {,} у індексі — помилка; команди й непарний $ у шаблоні — як раніше");
   const html = L.fill("$x^{2{,}5}$ $a^{{n}}$ $x_{{k}0}$", { n: 3, k: 2 });
   eq(html, "$x^{2,5}$ $a^{3}$ $x_{20}$", "fill: підстановка, яку моделює tpl-перевірка"); }
+// ---------- engine-math-ister-p3: креслення (п. 6 solid, п. 8 plane, п. 9 chart, п. 10 numline) ----------
+{ const R = (sp, view) => { const K = L.KINDS[sp.kind]; return K.render(sp, L.makeEnv(sp, L.startState(sp)), view || (K.view ? K.view(sp) : {})); };
+  // п. 6: видимі грані паралелепіпеда — за замовчуванням верх (y = b), а не низ: середня екранна y видимих граней вища за центр
+  const faces = body => [...body.matchAll(/<polygon points="([^"]+)"/g)].map(m => m[1].split(" ").map(p => p.split(",").map(Number)));
+  const cy = f => f.reduce((a, p) => a + p[1], 0) / f.length, box = { kind: "solid", shape: "box", a: "5", b: "2", c: "3" };
+  const top = body => Math.min(...faces(body).map(cy));
+  const d = R(box), up = R({ ...box, view: { yaw: -34, pitch: 24 } }), down = R({ ...box, view: { yaw: -34, pitch: -24 } });
+  eq(faces(d.body).length, 3, "solid box: три видимі грані");
+  eq(top(d.body) < 120 - 20, true, `solid box: за замовчуванням видно верхню грань (найвища грань ${Math.round(top(d.body))} < 100)`);
+  eq(Math.max(...faces(down.body).map(cy)) > 120 + 20, true, "solid box: pitch < 0 — видно нижню грань");
+  { const pa = faces(up.body).flat(2), pb = faces(d.body).flat(2); eq(pa.length === pb.length && pa.every((v, i) => Math.abs(v - pb[i]) < 2), true, "solid view: { yaw: −34°, pitch: 24° } ≈ ракурс за замовчуванням"); }
+  // кожна грань box видима рівно з одного з двох протилежних ракурсів (обхід граней узгоджений — назовні)
+  { const K = L.KINDS.solid, env = L.makeEnv(box, {}); const n1 = faces(K.render(box, env, { yaw: 0.3, pitch: 0.5 }).body).length, n2 = faces(K.render(box, env, { yaw: 0.3 + Math.PI, pitch: -0.5 }).body).length;
+    eq(n1 + n2, 6, "solid box: протилежні ракурси разом бачать 6 граней"); }
+  for (const shape of ["prism", "pyramid"]) eq(top(R({ kind: "solid", shape, n: "4", r: "1", h: "2" }).body) < 120, true, `solid ${shape}: ракурс згори як і раніше`);
+  eq(R({ ...box, view: { yaw: 10, pitch: 200 } }).body, R({ ...box, view: { yaw: 10, pitch: 80 } }).body, "solid view: pitch обмежено ±80°");
+  eq(L.validate({ ...box, view: { yaw: 10, pitch: 30 } }), [], "validate: solid view");
+  eq(L.validate({ ...box, view: { yaw: 10, pitch: 95 } }).length, 1, "validate: solid view pitch > 80");
+  eq(L.validate({ ...box, view: [1, 2] }).length, 1, "validate: solid view — не масив");
+  eq(L.validate({ ...box, view: { yaw: "a" } }).length, 1, "validate: solid view yaw — число");
+  eq(L.validate({ ...box, view: { roll: 3 } }).length, 1, "validate: solid view — лише yaw, pitch");
+  // п. 8: labelDir і ticks
+  const pl = (pt, segs = []) => ({ kind: "plane", view: [-5, 5, -5, 5], points: { A: { at: [0, 0], ...pt } }, segs });
+  const lab = sp => { const m = R(sp).body.match(/<text x="([\d.]+)" y="([\d.]+)"([^>]*)>(?:<tspan[^>]*>)?A</); return m && [+m[1], +m[2], (m[3].match(/text-anchor="(\w+)"/) || [])[1] || "start"]; };
+  eq(lab(pl({})), [169, 151, "start"], "plane: підпис точки за замовчуванням — праворуч угорі (як раніше)");
+  eq(lab(pl({ labelDir: "ne" })), lab(pl({})), "plane labelDir ne = за замовчуванням");
+  eq(lab(pl({ labelDir: "sw" })), [151, 179, "end"], "plane labelDir sw — ліворуч унизу");
+  eq(lab(pl({ labelDir: "n" })), [160, 149, "middle"], "plane labelDir n — над точкою");
+  eq(lab(pl({ labelDir: "w" })), [149, 165, "end"], "plane labelDir w — ліворуч");
+  eq(R(pl({})).body, R(pl({ labelDir: "ne" })).body, "plane labelDir ne — той самий SVG, що без поля");
+  eq(L.validate(pl({ labelDir: "up" })).length, 1, "validate: labelDir — лише сторони світу");
+  eq(L.validate(pl({ labelDir: "se" })), [], "validate: labelDir se");
+  const tk = n => { const sp = pl({}, [{ a: [-4, 0], b: [4, 0], ticks: n }]); return (R(sp).body.match(/stroke-width="1.8" stroke-linecap="round"/g) || []).length; };
+  eq([tk(undefined), tk(1), tk(2), tk(3)], [0, 1, 2, 3], "plane segs ticks: 0–3 рисочки");
+  { const b = R(pl({}, [{ a: [-4, 0], b: [4, 0], ticks: 1 }])).body, m = b.match(/<line x1="([\d.]+)" y1="([\d.]+)" x2="([\d.]+)" y2="([\d.]+)" stroke="var\(--ink\)" stroke-width="1.8"/);
+    eq(m && [+m[1], +m[3], Math.abs(m[2] - m[4])], [160, 160, 12], "plane ticks: рисочка посередині, поперек відрізка"); }
+  eq(L.validate(pl({}, [{ a: [-4, 0], b: [4, 0], ticks: 4 }])).length, 1, "validate: ticks 4 — помилка");
+  eq(L.validate(pl({}, [{ a: [-4, 0], b: [4, 0], ticks: 2 }])), [], "validate: ticks 2");
+  // п. 9: chart horizontal / line; підпис середнього — у легенді над полем, не на лінії
+  const bars = [{ label: "пн", v: "4" }, { label: "вт", v: "7" }, { label: "ср", v: "5" }];
+  const ch = R({ kind: "chart", bars }), hz = R({ kind: "chart", bars, horizontal: true }), ln = R({ kind: "chart", bars, line: true }), mn = R({ kind: "chart", bars, mean: true });
+  eq([(ch.body.match(/<rect/g) || []).length, (hz.body.match(/<rect/g) || []).length, (ln.body.match(/<rect/g) || []).length, (ln.body.match(/<polyline/g) || []).length, (ln.body.match(/<circle/g) || []).length], [3, 3, 0, 1, 3], "chart: стовпчики, смуги, лінія з точками");
+  { const ws = [...hz.body.matchAll(/<rect x="([\d.]+)" y="[\d.]+" width="([\d.]+)" height="([\d.]+)"/g)].map(m => [+m[2], +m[3]]);
+    eq(ws.every(([w, h]) => h < 20) && ws[1][0] > ws[2][0] && ws[2][0] > ws[0][0], true, "chart horizontal: довжина смуги — значення (7 > 5 > 4)"); }
+  eq([hz.alt, ln.alt, ch.alt], ["Стовпчаста діаграма (горизонтальна)", "Лінійна діаграма", "Стовпчаста діаграма"], "chart: alt за видом");
+  { const m = mn.body.match(/<text x="([\d.]+)" y="([\d.]+)"[^>]*>середнє 5,3</), vals = [...mn.body.matchAll(/<text x="[\d.]+" y="([\d.]+)"[^>]*font-weight="700"[^>]*>[47]</g)].map(x => +x[1]);
+    eq(!!m && +m[2] < 18 && vals.every(y => y > +m[2] + 10), true, "chart mean: підпис «середнє» над полем, вище за підписи стовпчиків"); }
+  eq(mn.h, ch.h + 18, "chart mean: поле вище на рядок легенди");
+  for (const sp of [{ mean: true }, { mean: true, horizontal: true }, { mean: true, line: true }]) { const b = R({ kind: "chart", bars, ...sp }).body;
+    eq(b.indexOf('stroke-dasharray="6 4"/>', 200) < b.search(/font-weight="700"[^>]*>7<\/text>/), true, `chart ${Object.keys(sp).join("+")}: підписи значень — після лінії середнього (поверх пунктиру)`); }
+  eq(/середнє 5,3/.test(R({ kind: "chart", bars, mean: true, horizontal: true }).body) && /середнє 5,3/.test(R({ kind: "chart", bars, mean: true, line: true }).body), true, "chart mean: horizontal і line теж");
+  eq(L.validate({ kind: "chart", bars, horizontal: true, line: true }).length, 1, "validate: horizontal і line разом — помилка");
+  eq(L.validate({ kind: "chart", bars, line: "так" }).length, 1, "validate: line — boolean");
+  eq(L.validate({ kind: "chart", bars, line: true }), [], "validate: chart line");
+  for (const sp of [{ kind: "chart", bars: [] , horizontal: true }, { kind: "chart", bars: [], line: true }, { kind: "chart", bars: [{ label: "a", v: "0" }], line: true, mean: true }])
+    eq(/NaN|undefined/.test(R(sp).body), false, `chart ${sp.horizontal ? "horizontal" : "line"}: порожні/нульові дані без NaN`);
+  // п. 10: numline ray — лінія від view[0], без «хвостика»
+  const nl = R({ kind: "numline", view: [0, 10] }), ray = R({ kind: "numline", view: [0, 10], ray: true });
+  const x1 = b => +b.match(/<line x1="([\d.]+)" x2="316" y1="24" y2="24" stroke="var\(--ink\)" stroke-width="2"\/>/)[1];
+  eq([x1(nl.body), x1(ray.body)], [6, 16], "numline ray: лінія з точки 0 (x = 16), без ray — з хвостиком (x = 6)");
+  { const iv = R({ kind: "numline", view: [0, 10], ray: true, intervals: [{ from: null, to: 3 }] }).body.match(/<rect x="([\d.]+)"/); eq(+iv[1], 16, "numline ray: проміжок до −∞ — від початку променя"); }
+  eq(L.validate({ kind: "numline", view: [0, 10], ray: 1 }).length, 1, "validate: ray — boolean");
+  eq(L.validate({ kind: "numline", view: [0, 10], ray: true }), [], "validate: numline ray");
+}
 console.log(`${n - fails}/${n} тестів лабораторії пройдено`);
 process.exit(fails ? 1 : 0);

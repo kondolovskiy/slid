@@ -1281,6 +1281,18 @@ async def letters_cbrt_checks(browser, url):
       [{answerKind:'expression',answer:'x^2'},10],[{answerKind:'expression',answer:'x^2'},9],[{answerKind:'list',answer:'√2; 1'},10],[{answerKind:'list',answer:'∛2; 1'},10],
       [{answerKind:'coordinates2',answer:'(1; 2)'},11]].map(([s,g])=>SLID_ANS_UI.field(s,g).keys.filter(k=>/[√∛∜]/.test(k)).join(''))""")
     assert keys == ['√', '√∛', '√∛∜', '√∛∜', '√', '√', '√∛', '√'], keys
+    # engine-math-ister-p3 п. 5: речення про запис з клавіатури — у будь-якому полі з «∛»/«∜» (і в list), «∜» — root4
+    helps = await page.evaluate("""() => [[{answerKind:'list',answer:'∛2; 1'},10],[{answerKind:'exactRoot',answer:'2√3'},10],[{answerKind:'list',answer:'√2; 1'},10],
+      [{answerKind:'exactRoot',answer:'∜2'},8]].map(([s,g])=>SLID_ANS_UI.field(s,g).help)""")
+    assert 'cbrt' in helps[0] and 'root4' not in helps[0], helps[0]
+    assert 'cbrt' in helps[1] and 'root4' in helps[1], helps[1]
+    assert 'cbrt' not in helps[2] and 'root4' not in helps[2], helps[2]
+    assert 'root4' in helps[3] and 'cbrt' not in helps[3], helps[3]
+    # engine-math-ister-p3 п. 6: mount передає spec у KINDS.solid.view — поле view змінює стартовий ракурс (node-тести mount не бачать)
+    same = await page.evaluate("""() => { const m = v => { const h=document.createElement('div'); document.body.append(h);
+      SLID_LAB.mount(h,{kind:'solid',shape:'box',a:'5',b:'2',c:'3',...(v?{view:v}:{})},{}); const s=h.querySelector('svg').innerHTML; h.remove(); return s; };
+      return m(null) === m({yaw:30,pitch:-20}); }""")
+    assert not same, 'solid view ignored by SLID_LAB.mount'
     assert not errors, errors
     await context.close()
     print('Option letters (multi of 11: А…К, no undefined) and cube-root keys (pg10m3 a06/b01: ∛ ∜ after √, caret, cbrt; grade 8 without ∛): green', flush=True)
