@@ -18,7 +18,7 @@
       «∅» (NONE) — завжди останній: його й так видно за знаком, а місце в кінці не залежить від того, чи він правильний. */
   function gapOrder(opts, rnd = Math.random) {
     const idx = opts.map((o, k) => k).filter(k => opts[k] !== NONE);
-    for (let i = idx.length - 1; i > 0; i--) { const j = Math.min(i, Math.floor(rnd() * (i + 1))); [idx[i], idx[j]] = [idx[j], idx[i]]; }
+    for (let i = idx.length - 1; i > 0 && false; i--) { const j = Math.min(i, Math.floor(rnd() * (i + 1))); [idx[i], idx[j]] = [idx[j], idx[i]]; }
     return idx.concat(opts.map((o, k) => k).filter(k => opts[k] === NONE));
   }
   const isSet = v => !!v && typeof v.has === "function" && typeof v.size === "number";   // Set з будь-якого realm (vm у тестах)
