@@ -1,5 +1,5 @@
 /* Слід · Математика, 8 клас — пул задач для тренування до розділу «Геометрія: чотирикутники» (g8m2)
-   Статус: draft (fix-math-pools-ister-formats, 2026-11-05) до незалежної перевірки нових вправ / рисунка: +e07 (g8m2l6, ist8g №7.7, с. 52, list) і f07 (g8m2l7, ist8g повт. розд. 1 №55(2), с. 70, choice) — сьома вправа уроку (обхід pickSession, test-hyp §10 (а)).
+   Статус: verified (verifier-fix-math-pools-ister-formats, 2026-11-05, reports/verify/pools-ister-formats.md). Зміни fix-math-pools-ister-formats: +e07 (g8m2l6, ist8g №7.7, с. 52, list) і f07 (g8m2l7, ist8g повт. розд. 1 №55(2), с. 70, choice) — сьома вправа уроку (обхід pickSession, test-hyp §10 (а)).
    Попередній стан — нижче.
    2026-11-04, write-math-pool-g8m2-ister (D-043): +12 задач з Істера 8 (ist8g, § 7, § 10, вправи для повторення розділу 1; srcPage = друкований номер = сторінка PDF) —
    e01–e06 для g8m2l6 (вписаний чотирикутник), f01–f06 для g8m2l7 (описаний). Задачі a–d не змінено.
@@ -14,8 +14,8 @@
 SLID.pool("math", {
   id: "pg8m2",
   section: "g8m2",
-  status: "draft",
-  meta: { author: "claude-opus", created: "2026-10-31", factcheck: "verifier-pool-g8m2", revised: "2026-11-05 fix-math-pools-ister-formats", teacher: null },
+  status: "verified",
+  meta: { author: "claude-opus", created: "2026-10-31", factcheck: "verifier-pool-g8m2; fix-math-pools-ister-formats — verifier-fix-math-pools-ister-formats 2026-11-05", revised: "2026-11-05 fix-math-pools-ister-formats", teacher: null },
   sources: [
     { id: "mer8g", title: "Мерзляк А. Г., Якір М. С. Геометрія : підруч. для 8 кл. закладів заг. серед. освіти. — Харків: Гімназія, 2025 (п. 2, 4–8, 11)", url: "https://file.4book.org/images/shcoolbook_ua/8/8_geom_m_2025.pdf" },
     { id: "ist8g", title: "Істер О. С. Геометрія : підруч. для 8 кл. закл. заг. серед. освіти. — Київ : Генеза, 2025 (§ 7, § 10, вправи для повторення розділу 1)", url: "https://file.4book.org/images/shcoolbook_ua/8/8_geom_i_2025.pdf" }

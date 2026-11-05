@@ -53,3 +53,12 @@ depends_on: [engine-math-ister-p3]
 - **Інженерна частина (рев'ю D-026 потрібне):** (а) tools/test-hyp.mjs §10 — знімки зсунуто лише цим змістом, коментар 2026-11-05 з поясненням кожного числа, тексти пояснень (а)/(б) оновлено; рушій не змінювався. (б) tools/diff-answers.mjs — категорія «ister п.2–3 новий answerKind sci / pairSet — старий рушій його не знає» (діє лише коли старий checkAns не зараховує навіть ключ): перші вправи sci/pairSet давали 29 непояснених у test-diff-answers (фікстура b799dfa). Без неї `npm run check` червоний.
 - Перевірки: `node tools/validate.mjs --pool` pg6m4, pg7m4, pg7m8, pg8m1, pg8m2, pg9m3, pg9m8 — 0 помилок, 0 попереджень; `node tools/validate.mjs` — 0 помилок, 253 попередження (як до змін); `node tools/personalization-qa.mjs` — без прогалин; `npm run check` — EXIT 0; fig-audit — нових прапорців немає. `test-answer-ui.py --suite content` не запускав — Python playwright у контейнері немає (CI job browser).
 - Далі: content-verify нових вправ (14) і двох рисунків; engineering-review двох змін у tools/.
+
+## Нотатки верифікатора (контент)
+verifier-fix-math-pools-ister-formats, 2026-11-05. Скіли content-verify і math-pool-diag. Звіт — reports/verify/pools-ister-formats.md.
+- 14 нових вправ: умови звірено з відрендереними сторінками PDF (URL facts/math №226; ist6b с. 120, ist8a с. 65, 85, 86, ist8g с. 52, 70, ist9a с. 129, 130, ist9g с. 231). Кожну розв'язав сам: усі ключі правильні. Формати sci, pairSet, intervalSet, list і choice перевірено через `checkAns` на типових записах і помилках. Рівні узгоджено з підручником.
+- D-019: опора є для всіх вправ. Виняток — f12: правила $a^m : a^n$ в уроках немає, тому в підказку додано крок через $10^{-2} = 1/10^2$. Це єдина змістова правка.
+- Рисунки e07, f07, f08, b04, b08 переглянув у Chromium, а для e07, f07 і f08 ще й перерахував координати: зміст на рисунках відповідає умовам.
+- Усі 7 пулів переведено в verified; `validate --pool` дає 0 помилок і 0 попереджень.
+- Людині: ∅ у 8 кл. (pg8m1 e09) — питання до вчителя, вправу не блокує. ENGINE: потрібен впорядкований `list` (e07 приймає «132; 41»).
+- Задачу не переміщав: вона чекає на engineering-review інженерної частини (D-026).

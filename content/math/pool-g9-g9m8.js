@@ -1,5 +1,5 @@
 /* Слід · Математика, 9 клас — пул задач для тренування до розділу «Геометрія: початки стереометрії» (g9m8)
-   Статус: draft (fix-math-pools-ister-formats, 2026-11-05) до незалежної перевірки нових вправ / рисунка: +h08 (g9m8l8, рівень 1: площа основи з V і h; ist9g § 30, приклад 2, крок 1, с. 231, adapted — у підручнику «24 см²» замість см³).
+   Статус: verified (verifier-fix-math-pools-ister-formats, 2026-11-05, reports/verify/pools-ister-formats.md). Зміни fix-math-pools-ister-formats: +h08 (g9m8l8, рівень 1: площа основи з V і h; ist9g § 30, приклад 2, крок 1, с. 231, adapted — у підручнику «24 см²» замість см³).
    Попередній стан — нижче.
    Статус: verified (verifier-write-math-pool-g9m8, 2026-11-04, reports/verify/write-math-pool-g9m8.md: 86 вправ розв'язано незалежно, умови звірено з ist9g с. 215–246; правки: k07 — порядок і формат відношення; h02 — дані піраміди Хеопса за сучасними вимірами, «спочатку мала висоту близько 146,6 м, сторона основи близько 230 м» замість підручникових 233 м).
    Попередньо: draft (write-math-pool-g9m8, 2026-11-04). Новий пул до уроків g9m8l1–l11 за Істером (D-043); boss g9m8l12 без задач.
@@ -16,8 +16,8 @@
 SLID.pool("math", {
   id: "pg9m8",
   section: "g9m8",
-  status: "draft",
-  meta: { author: "writer-write-math-pool-g9m8", created: "2026-11-04", factcheck: "verifier-write-math-pool-g9m8", revised: "2026-11-05 fix-math-pools-ister-formats", teacher: null },
+  status: "verified",
+  meta: { author: "writer-write-math-pool-g9m8", created: "2026-11-04", factcheck: "verifier-write-math-pool-g9m8; fix-math-pools-ister-formats — verifier-fix-math-pools-ister-formats 2026-11-05", revised: "2026-11-05 fix-math-pools-ister-formats", teacher: null },
   sources: [
     { id: "ist9g", title: "Істер О. С., Істер Д. О. Геометрія : підруч. для 9 кл. закл. заг. серед. освіти. — Київ: Генеза, 2026 (розділ 6, § 25–33; вправи для повторення розділу 6)", url: "https://file.4book.org/images/shcoolbook_ua/9/9_geom_i_2026.pdf" }
   ],

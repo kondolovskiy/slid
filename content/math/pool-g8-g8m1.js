@@ -1,5 +1,5 @@
 /* Слід · Математика, 8 клас — пул задач для тренування до розділу «Алгебра: раціональні вирази» (g8m1)
-   Статус: draft (fix-math-pools-ister-formats, 2026-11-05) до незалежної перевірки нових вправ / рисунка: +e09 (g8m1l6, ist8a №8.7(4), с. 65: «Розв'яжи рівняння», коренів немає — intervalSet «∅»; адаптовану e04 не змінено);
+   Статус: verified (verifier-fix-math-pools-ister-formats, 2026-11-05, reports/verify/pools-ister-formats.md). Зміни fix-math-pools-ister-formats: +e09 (g8m1l6, ist8a №8.7(4), с. 65: «Розв'яжи рівняння», коренів немає — intervalSet «∅»; адаптовану e04 не змінено);
    +f09–f14 (g8m1l7, ist8a №11.5(2), 11.6(10), 11.8(2), 11.15(2), 11.19(2), 11.23(1), с. 85–86) — повний стандартний вигляд, answerKind "sci"; адаптовані f01, f04–f06 лишаються.
    Попередній стан — нижче.
    Статус: verified (verifier-write-math-pool-g8m1-ister, 2026-11-04, reports/verify/write-math-pool-g8m1-ister.md; нові e01–f08 розв'язано й звірено з рендером ist8a с. 65–67, 85–86).
@@ -21,8 +21,8 @@
 SLID.pool("math", {
   id: "pg8m1",
   section: "g8m1",
-  status: "draft",
-  meta: { author: "claude-opus", created: "2026-10-31", factcheck: "verifier-write-math-pool-g8m1-ister 2026-11-04 (reports/verify/write-math-pool-g8m1-ister.md)", revised: "2026-11-05 fix-math-pools-ister-formats", teacher: null },
+  status: "verified",
+  meta: { author: "claude-opus", created: "2026-10-31", factcheck: "verifier-write-math-pool-g8m1-ister 2026-11-04 (reports/verify/write-math-pool-g8m1-ister.md); fix-math-pools-ister-formats — verifier-fix-math-pools-ister-formats 2026-11-05", revised: "2026-11-05 fix-math-pools-ister-formats", teacher: null },
   sources: [
     { id: "a8", title: "Мерзляк А. Г., Якір М. С. Алгебра: підручник для 8 класу закладів загальної середньої освіти. — Харків: Гімназія, 2025 (§ 1, п. 1–3, 5, 8–10)", url: "https://file.4book.org/images/shcoolbook_ua/8/8_a_m_2025.pdf" },
     { id: "ist8a", title: "Істер О. С. Алгебра: підручник для 8 класу закладів загальної середньої освіти. — Київ: Генеза, 2025 (наказ МОН від 21.02.2025 № 347; § 8, § 11)", url: "https://file.4book.org/images/shcoolbook_ua/8/8_a_i_2025.pdf" }
@@ -293,7 +293,7 @@ SLID.pool("math", {
       type: "answer", answerKind: "sci", title: "$(1,4 * 10^{5}) : (2,8 * 10^{-2})$",
       body: "<p>Виконай ділення та подай результат у стандартному вигляді.</p>",
       answer: "5 · 10^6",
-      hint: "Поділи окремо числа й окремо степені 10. Перевір, чи перший множник не менший за 1.",
+      hint: "Поділи окремо числа й окремо степені 10: ділити на $10^{-2} = 1/10^{2}$ — те саме, що множити на $10^{2}$. Перевір, чи перший множник не менший за 1.",
       steps: ["$1,4 : 2,8 = 0,5$, $10^{5} : 10^{-2} = 10^{5 - (-2)} = 10^{7}$.", "$0,5 * 10^{7}$ — ще не стандартний вигляд: $0,5 < 1$.", "$0,5 = 5 * 10^{-1}$, тож $0,5 * 10^{7} = 5 * 10^{6}$."] },
     { id: "f13", lesson: "g8m1l7", lvl: 2, sk: "num", src: "ist8a №11.19(2)", srcPage: 86,
       type: "answer", answerKind: "sci", title: "$4,7 * 10^{-15} - 3,2 * 10^{-15}$",

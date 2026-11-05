@@ -1,5 +1,5 @@
 /* Слід · Математика, 9 клас — пул задач для тренування до розділу «Алгебра: квадратична функція» (g9m3)
-   Статус: draft (fix-math-pools-ister-formats, 2026-11-05) до незалежної перевірки нових вправ / рисунка: +e09–e11 (g9m3l6, ist9a №13.8(1), 13.9(2), 13.18(1), с. 129–130) — усі розв'язки системи, answerKind "pairSet" (цілі компоненти); обхідні e02–e04 лишаються.
+   Статус: verified (verifier-fix-math-pools-ister-formats, 2026-11-05, reports/verify/pools-ister-formats.md). Зміни fix-math-pools-ister-formats: +e09–e11 (g9m3l6, ist9a №13.8(1), 13.9(2), 13.18(1), с. 129–130) — усі розв'язки системи, answerKind "pairSet" (цілі компоненти); обхідні e02–e04 лишаються.
    Попередній стан — нижче.
    Статус: verified (verifier-write-math-pool-g9m3-ister, 2026-11-04, reports/verify/write-math-pool-g9m3-ister.md) — доповнено 2026-11-04 (write-math-pool-g9m3-ister, D-043): +16 задач для нових уроків за Істером —
    e01–e08 (g9m3l6, системи 2-го степеня, ist9a § 13, с. 129–130) і f01–f08 (g9m3l7, задачі системами, ist9a § 14, с. 135–137).
@@ -15,8 +15,8 @@
 SLID.pool("math", {
   id: "pg9m3",
   section: "g9m3",
-  status: "draft",
-  meta: { author: "claude-opus", created: "2026-10-31", factcheck: "verifier-write-math-pool-g9m3-ister", revised: "2026-11-05 fix-math-pools-ister-formats", teacher: null },
+  status: "verified",
+  meta: { author: "claude-opus", created: "2026-10-31", factcheck: "verifier-write-math-pool-g9m3-ister; fix-math-pools-ister-formats — verifier-fix-math-pools-ister-formats 2026-11-05", revised: "2026-11-05 fix-math-pools-ister-formats", teacher: null },
   sources: [
     { id: "a9", title: "Мерзляк А. Г., Якір М. С. Алгебра. 9 клас. — Харків: Гімназія, 2026 (п. 7–12; дзеркало PDF на 4book.org)", url: "https://file.4book.org/images/shcoolbook_ua/9/9_a_m_2026.pdf" },
     { id: "ist9a", title: "Істер О. С., Істер Д. О. Алгебра: підручник для 9 класу. — Київ: Генеза, 2026 (§ 13–14; дзеркало PDF на 4book.org)", url: "https://file.4book.org/images/shcoolbook_ua/9/9_a_i_2026.pdf" }
