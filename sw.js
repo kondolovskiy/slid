@@ -1,10 +1,10 @@
 /* Слід — service worker. ЗГЕНЕРОВАНО tools/build.mjs із tools/sw.template.js — не редагуй sw.js вручну.
    Стратегія — атомарна версія (engine-sw-version-skew): сторінка (index.html) і всі файли застосунку беруться з кешу
    ЦІЄЇ версії (slid-<VERSION>), тож новий список скриптів і старий рушій не змішуються. Мережа — лише для того,
-   чого в кеші цієї версії немає. Нова версія: встановлення (усі файли з мережі в обхід HTTP-кешу) → skipWaiting →
+   чого в кеші цієї версії немає. Нова версія: встановлення (кожен файл перевіряється на сервері, cache: "no-cache") → skipWaiting →
    activate (старі кеші видаляються) → clients.claim → сторінка отримує controllerchange й перезавантажується,
    коли це безпечно (app/update.js: не посеред уроку чи тесту рівня). Google Fonts — з кешу з фоновим оновленням. */
-const VERSION = "12e6768cbe";
+const VERSION = "f498eaae77";
 const CACHE = "slid-" + VERSION;
 const FONTS = "slid-fonts";
 const ASSETS = [
@@ -590,8 +590,10 @@ const ASSETS = [
 ];
 
 self.addEventListener("install", e => {
-  // cache: "reload" — повз HTTP-кеш браузера (GitHub Pages: max-age=600), інакше в нову версію потрапить старий app.js
-  e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS.map(u => new Request(u, { cache: "reload" })))).then(() => self.skipWaiting()));
+  // cache: "no-cache" — кожен файл перевіряється на сервері (умовний запит; незмінний — 304 без завантаження), а не береться
+  // із застарілого HTTP-кешу браузера (GitHub Pages: max-age=600) — інакше в нову версію потрапить старий app.js.
+  // Не "reload": той щоразу завантажує всі ~58 МБ заново (рев'ю P1-1).
+  e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS.map(u => new Request(u, { cache: "no-cache" })))).then(() => self.skipWaiting()));
 });
 
 self.addEventListener("activate", e => {

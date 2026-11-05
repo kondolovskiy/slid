@@ -1361,7 +1361,7 @@ $("#action").onclick=()=>{
   if(idx>=L.screens.length){ const f=afterEnd; afterEnd=null; closePlayer(); if(f) f(); return; }
   const s=L.screens[idx];
   if(checked&&run.diag) return diagNext();   // після екрана-пояснення HALF
-  if(unsup){ if(run.diag) diagAnswer(LEARN.SKIP); else { idx++; renderScreen(); } return; }   // запобіжник версій: без зарахування
+  if(unsup){ if(run.diag) diagAnswer(LEARN.SKIP); else { run.unsup=(run.unsup||0)+1; idx++; renderScreen(); } return; }   // запобіжник версій: без зарахування
   if(PLAIN.includes(s.type)||checked){ idx++; renderScreen(); return; }
   check();
 };
@@ -1369,6 +1369,13 @@ $("#action").onclick=()=>{
 /* ---------- Кінець уроку ---------- */
 function renderEnd(){
   pProgress(); $("#pCombo").innerHTML="";
+  /* запобіжник версій (engine-sw-version-skew): у уроці пропущено екрани, яких рушій не вміє показати, — урок не зараховано
+     (без done, зірок, кроку плану, detect, SRS, lesson_end); досвід за відповіді на інші екрани лишається. Закриття — подія close. */
+  if(run.unsup){ save(); renderTop();
+    $("#stage").innerHTML=fmt(`<section class="screen endhero" id="unsupEnd"><div class="bigicon">${ic("info")}</div>
+    <div class="eyebrow">${C.short} · урок не зараховано</div><h1>${esc(L.title)}</h1>
+    <p>${run.unsup} ${plural(run.unsup,["завдання","завдання","завдань"])} з новішої версії застосунку цей застосунок ще не вміє показати. Онови застосунок: закрий і відкрий знову, а тоді пройди урок ще раз.</p></section>`);
+    setDock("","","","Повернутися"); return; }
   const acc = run.graded? run.first/run.graded : 1;
   const stars = acc>=0.9?3 : acc>=0.65?2 : 1;
   const bonus = gain(20 + (run.mistakes===0?10:0));
