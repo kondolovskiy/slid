@@ -1,6 +1,6 @@
-import { Global, Inject, LoggerService, Module, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
+import { Global, Inject, Logger, LoggerService, Module, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { ADMIN_TOKEN, AdminController } from './admin';
-import { jsonLogger } from './log';
+import { jsonLogger, LEARNER_HASH, learnerHasher, logHashKey } from './log';
 import { Metrics } from './metrics';
 import { MemoryRateLimitStorage, RATE_LIMIT_STORAGE } from './rate-limit';
 
@@ -19,8 +19,9 @@ export const APP_LOG = Symbol('AppLog');
     { provide: Metrics, inject: [APP_LOG], useFactory: (log: LoggerService) => new Metrics(log) },
     { provide: RATE_LIMIT_STORAGE, useClass: MemoryRateLimitStorage },
     { provide: ADMIN_TOKEN, useFactory: () => process.env.ADMIN_TOKEN },
+    { provide: LEARNER_HASH, useFactory: () => learnerHasher(logHashKey(process.env, (m) => new Logger('ops').warn(m))) },
   ],
-  exports: [APP_LOG, Metrics, RATE_LIMIT_STORAGE],
+  exports: [APP_LOG, Metrics, RATE_LIMIT_STORAGE, LEARNER_HASH],
 })
 export class OpsModule implements OnModuleInit, OnModuleDestroy {
   private timer?: NodeJS.Timeout;
@@ -29,6 +30,6 @@ export class OpsModule implements OnModuleInit, OnModuleDestroy {
   onModuleDestroy() { clearInterval(this.timer); this.metrics.rollover(); } // підсумок неповного вікна перед перезапуском
 }
 
-export { httpLog, jsonLogger, learnerHash } from './log';
+export { httpLog, jsonLogger, LEARNER_HASH, LearnerHash, learnerHasher } from './log';
 export { Metrics } from './metrics';
 export { RATE_LIMIT_STORAGE, RateLimitStorage } from './rate-limit';

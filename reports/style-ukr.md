@@ -73,7 +73,7 @@
 | u5s10l4 Чужі слова в лапках | 5 | 11 | 0.55 | 29 | 55 | 6.6 | 0.014 | 3 | sentenceWords нетипово для сім'ї (z=2.4) |
 | u5s10l5 Розмова на папері | 5 | 11 | 0.64 | 28 | 53 | 5.1 | 0.038 | 3 | — |
 | u5s10l6 Шкільна газета (фінал) | 5 | 7 | 0.86 | 18 | 41 | 4.9 | 0.03 | 3 | — |
-| u6s1l1 Мова, що співає | 6 | 12 | 0.5 | 30 | 55 | 5.4 | 0.045 | 5 | — |
+| u6s1l1 Мова, що співає | 6 | 12 | 0.5 | 31 | 55 | 5.4 | 0.045 | 5 | — |
 | u6s1l2 Куди тобі? | 6 | 12 | 0.58 | 25 | 51 | 4.8 | 0.041 | 4 | — |
 | u6s1l3 Кома на щастя | 6 | 12 | 0.5 | 28 | 56 | 6 | 0.034 | 3 | — |
 | u6s1l4 Хто сказав і що сказав | 6 | 11 | 0.55 | 24 | 54 | 5.7 | 0.026 | 4 | — |
@@ -252,7 +252,7 @@
 
 Для z-оцінок sd не менше 10 % середнього; нижче наведено фактичне sd.
 
-- **5-6:lesson**: screens 11.46±0.72, gradedShare 0.55±0.05, readWordsPerScreen 26.32±3.13, maxReadWords 49.51±6.29, sentenceWords 5.34±0.46, longWordShare 0.03±0.02, typeVariety 4.04±0.75
+- **5-6:lesson**: screens 11.46±0.72, gradedShare 0.55±0.05, readWordsPerScreen 26.33±3.14, maxReadWords 49.51±6.29, sentenceWords 5.34±0.46, longWordShare 0.03±0.02, typeVariety 4.04±0.75
 - **5-6:boss**: screens 7.44±0.7, gradedShare 0.86±0.03, readWordsPerScreen 19.36±2.96, maxReadWords 34.28±3.82, sentenceWords 4.96±0.43, longWordShare 0.04±0.01, typeVariety 3.88±0.65
 - **7-9:lesson**: screens 10.37±0.71, gradedShare 0.54±0.04, readWordsPerScreen 27.06±3.74, maxReadWords 50.51±6.51, sentenceWords 5.55±0.58, longWordShare 0.05±0.02, typeVariety 4.12±0.86
 - **7-9:boss**: screens 7.08±0.27, gradedShare 0.86±0.01, readWordsPerScreen 22.15±2.96, maxReadWords 40.15±5.61, sentenceWords 5.09±0.56, longWordShare 0.05±0.02, typeVariety 3.46±0.75

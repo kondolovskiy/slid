@@ -75,7 +75,7 @@ const MF = path.join(tmp, "matrix.json"); fs.writeFileSync(MF, JSON.stringify(ma
 const runN = (...a) => { const r = spawnSync(process.execPath, [path.join(ROOT, "tools/make-tasks.mjs"), ...a], { cwd: ROOT, encoding: "utf8" }); return { out: r.stdout + r.stderr, status: r.status }; };
 const FX = path.join(tmp, "content-root");
 fs.cpSync(path.join(ROOT, "tools/fixtures/make-tasks/content"), path.join(FX, "content"), { recursive: true });
-for (const f of ["registry.js", "lab.js", "learn.js", "math.js"]) fs.cpSync(path.join(ROOT, "app", f), path.join(FX, "app", f));
+fs.cpSync(path.join(ROOT, "app"), path.join(FX, "app"), { recursive: true });   // уся app/ (рев'ю tools-make-tasks-template P3-3): manifest() може вимагати нових файлів рушія
 const newTasks = name => { const d = path.join(tmp, name); for (const s of ["todo", "doing", "review", "done"]) fs.mkdirSync(path.join(d, s), { recursive: true }); return d; };
 { const T2 = newTasks("tasks-normal");
   fs.writeFileSync(path.join(T2, "review", "write-math-fm6.md"), "---\nid: write-math-fm6\n---\n");
@@ -103,6 +103,12 @@ const newTasks = name => { const d = path.join(tmp, name); for (const s of ["tod
 { const T3 = newTasks("tasks-filter");
   const r = runN("--content", FX, "--tasks", T3, "--subject", "math", "--grade", "6");
   ok(r.status === 0 && /Створено задач: 1\b/.test(r.out) && fs.existsSync(path.join(T3, "todo", "write-math-fm6.md")), "--subject math --grade 6: лише fm6", r.out); }
+// рев'ю tools-make-tasks-template P3-1: --write-pool з --content шукає файл пулу в тому самому дереві, а не в репозиторії
+{ const FX2 = path.join(tmp, "content-root-pool"); fs.cpSync(FX, FX2, { recursive: true });
+  fs.writeFileSync(path.join(FX2, "content/math/pool-g8-zz1.js"), "// файл пулу zz1 без SLID.pool (чернетка)\n");
+  const r = run("--dry-run", "--matrix", MF, "--tasks", newTasks("tasks-pool-content"), "--content", FX2);
+  ok(r.status === 0 && /пул уже є — 1 \(zz1\)/.test(r.out) && /створилося б задач на пули: \d+ \([^)]*g8m2/.test(r.out),
+    "--write-pool --content: файл пулу — з дерева --content (zz1 пропущено; g8m2 там пулу не має)", r.out); }
 { // справжній зміст — лише інваріанти (склад плану змінюється): код 0, справжня черга tasks/ не змінилася
   const before = listTasks(path.join(ROOT, "tasks")), T4 = path.join(tmp, "tasks-real");
   const r = runN("--tasks", T4);

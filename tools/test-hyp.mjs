@@ -531,27 +531,50 @@ const sum = (R, pid) => R.events.filter(e => e.pid === pid).map(e => e.type === 
   // pre-тем (linear + g9m3, pyth + g9m3 і g9m8; завдання й rev не змінено). «Теми тестів» 186 → 197: +11 — уроки
   // g9m8l1–l11 з пулом pg9m8 (boss g9m8l12 вправ не має); g9m3 уже мав теми з for (quad,
   // func), тож його не додано. Усі 11 уже мали requires — разом так само 215. Решта знімків не зсунулась. Попередній знімок [187,186,27,215,215].
-  eq([s0.gradedScreens, s0.byType.choice, s0.choiceHypPoll, s0.fbBad, s0.hint, s0.pre, s0.preLessons], [1624, 691, 74, 1604, 1152, 87, 39], "§0 екрани уроків");  // 691: верифікатор g6m3 замінив один lab на choice (2fcb431)
-  eq([s0.pools, s0.poolItems, s0.lvl, s0.poolHint, s0.poolPre, s0.gen, s0.itemTypes, s0.answerNumber], [52, 1802, { 1: 689, 2: 679, 3: 434 }, 1135, 0, 0, { answer: 1629, choice: 113, multi: 60 }, 1161], "§0 пули");
-  eq([s0.pairs, s0.pairs2a1, s0.diags, s0.diagItems, s0.pureTitle], [236, 206, 8, 209, 331], "§0 пари, тести, чисті вирази");
-  eq([s21.errors, s21.A, s21.Dle, s21.byLvl[1].Dle, s21.byLvl[1].errors, s21.byLvl[2].Dle, s21.byLvl[2].errors], [908, 461, 204, 0, 689, 204, 219], "§2.1 A 461; D≤ 204/908, рівень 1 — 0/689");
-  eq([s21.Dgt, s21.Dseen, s21.none, s21.anyUnseen, s21.F, s21.natDle, s21.natAny], [691, 653, 51, 895, 176, 204, 895], "§2.1 D>, D°, F, природні");
+  // 2026-11-05, tests-hyp-snapshot-style-math: рушій (pickSession, hyp.js) не змінювався. Зсуви — зміст style-math-ister-followup (e8c30a1;
+  // верифікація 0d6eac3 лише ставить verified і дописує речення в теорію g9m6l4 — цифр не зсуває): pre на оцінюваних екранах фіналів 7–8 кл.
+  // (14 уроків: g7m1l4, g7m2l4, g7m3l5, g7m4l4, g7m5l4, g7m6l4, g7m7l5, g7m8l4, g8m1l5, g8m2l5, g8m3l5, g8m4l4, g8m5l5, g8m6l3) — pre 87 → 173 (+86),
+  // уроків з pre 39 → 53; у g9m6l4 прибрано lab «площа вчетверо» (оцінюваних 1624 → 1623, fbBad 1604 → 1603, hint 1152 → 1151; choice
+  // і hyp/poll — без змін). Копія дерева з content/math/g*-*.js на e8c30a1^ дає рівно попередній знімок. Попередній знімок [1624,691,74,1604,1152,87,39].
+  // 2026-11-05, fix-math-pools-ister-formats (матриця v12): рушій (pickSession, hyp.js) не змінювався. Зсуви — +14 вправ у 5 пулах
+  // (рівень 1 +5: pg6m4 f08, pg8m1 f09, pg8m2 f07, pg9m3 e09, pg9m8 h08; рівень 2 +7: pg8m1 e09, f10–f13, pg8m2 e07, pg9m3 e10;
+  // рівень 3 +2: pg8m1 f14, pg9m3 e11). answer +13, choice +1 (pg8m2 f07); answerNumber +2 (f08, h08 — решта sci/pairSet/list/intervalSet);
+  // hint +12 (без hint — pg8m1 f09, pg9m3 e09); «чистий вираз» у title +7 (pg8m1 e09, f09–f14); пар з ≥ 2 answer рівня 1 +1 (g9m8l8: h01, h08).
+  // Помилок рівня 1 +5, рівня 2 −5: нова вправа рівня 1 у п'яти уроках витісняє з першої сесії вправу рівня 2.
+  // Рівень 1: усі 694 помилки мають чисту перевірку (було 683/689: 6 нечистих — pg8m2 e01–e03, f01–f03, пояснення (а) нижче; сьома вправа
+  // в g8m2l6/l7 їх прибрала). sol0 рівня 2: 3 → 1 — лишилась pg9m8:h02 (g9m8l8 і тепер має 2 вправи рівня 1, (б)); pg6m4:f03 зникла
+  // (g6m4l7 тепер має 3 вправи рівня 1), pg9m8:h03 — після першої сесії (h01, h08, h02, h03) лишилась небачена h04 рівня 2;
+  // D> рівня 2: 3 → 0 (у цих уроках наступного дня тепер є небачена вправа рівня ≤ 2).
+  // pg8m1 f10 свідомо рівня 2: з п'ятьма вправами рівня 1 у g8m1l7 одна не вмістилась би в першу сесію й наступного дня дала б перевірку D≤
+  // рівня 1 (інваріант нижче). Попередні знімки: пули [52,1802,{689,679,434},1135,0,0,{1629,113,60},1161]; пари [236,206,8,209,331];
+  // §2.1 [908,461,204,0,689,204,219], [691,653,51,895,176,204,895]; §2.3 [677,689,0,677,214,219,203,11], [671,3,220];
+  // hyp.js [683,0,671,3,461], [683,689,{D> 613,F 70},216,219,{D≤ 191,F 22,D> 3}].
+  // 2026-11-05, style-math-finals-pre: рушій (pickSession, hyp.js) не змінювався. Зсув — лише метадані змісту: pre на оцінюваних екранах фіналів
+  // math 4–6, 9 (g9m1, g9m2, g9m7) і 10–11 кл. (+186 pre у 32 фіналах; 26 фіналів раніше без жодного pre → уроків з pre 53 → 79; ms0, ms0b,
+  // ms1, g6m3, g6m4, ms4 мали pre частково). Дві заміни значення без зміни кількості: ms1 m6 Задача 5 m4a → m5, g6m4l6 Задача 5 g6m4l8 → g6m4l7.
+  // Оцінюваних екранів, choice, fbBad, hint — без змін. Копія дерева на батьківському коміті дає попередній знімок. Попередній знімок [1623,691,74,1603,1151,173,53].
+  eq([s0.gradedScreens, s0.byType.choice, s0.choiceHypPoll, s0.fbBad, s0.hint, s0.pre, s0.preLessons], [1623, 691, 74, 1603, 1151, 359, 79], "§0 екрани уроків");  // 691: верифікатор g6m3 замінив один lab на choice (2fcb431)
+  eq([s0.pools, s0.poolItems, s0.lvl, s0.poolHint, s0.poolPre, s0.gen, s0.itemTypes, s0.answerNumber], [52, 1816, { 1: 694, 2: 686, 3: 436 }, 1147, 0, 0, { answer: 1642, choice: 114, multi: 60 }, 1163], "§0 пули");
+  eq([s0.pairs, s0.pairs2a1, s0.diags, s0.diagItems, s0.pureTitle], [236, 207, 8, 209, 338], "§0 пари, тести, чисті вирази");
+  eq([s21.errors, s21.A, s21.Dle, s21.byLvl[1].Dle, s21.byLvl[1].errors, s21.byLvl[2].Dle, s21.byLvl[2].errors], [908, 464, 202, 0, 694, 202, 214], "§2.1 A 464; D≤ 202/908, рівень 1 — 0/694");
+  eq([s21.Dgt, s21.Dseen, s21.none, s21.anyUnseen, s21.F, s21.natDle, s21.natAny], [693, 657, 49, 895, 180, 202, 895], "§2.1 D>, D°, F, природні");
   eq([st.pre.viaRequires, st.pre.viaDiagTopicFor, st.pre.viaPreScreens, st.pre.any, st.pre.anyWithPrePool], [187, 197, 27, 215, 215], "§2.1 передумови 215/227");
-  eq([s23[1].clean, s23[1].errors, s23[1].cleanDle, s23[1].cleanDgt, s23[2].clean, s23[2].errors, s23[2].cleanDle, s23[2].cleanDgt], [677, 689, 0, 677, 214, 219, 203, 11], "§2.3 чисті наступного дня 677/689 і 214/219");
-  eq([s23[1].sol0, s23[2].sol0, st.pairSizes[4]], [671, 3, 220], "§2.3 sol0 ≥ 1 — 671/689 і 3/219; 220 уроків — одна пара");
+  eq([s23[1].clean, s23[1].errors, s23[1].cleanDle, s23[1].cleanDgt, s23[2].clean, s23[2].errors, s23[2].cleanDle, s23[2].cleanDgt], [685, 694, 0, 685, 210, 214, 202, 8], "§2.3 чисті наступного дня 685/694 і 210/214");
+  eq([s23[1].sol0, s23[2].sol0, st.pairSizes[4]], [673, 1, 220], "§2.3 sol0 ≥ 1 — 673/694 і 1/214; 220 уроків — одна пара");
   // та сама модель через app/hyp.js: D≤ для помилок рівня 1 — жодної (інваріант: усі вправи рівня 1 пари вже в першій сесії); sol0 — як у скрипті; A — з lvl ≤ (M.A.le, знімок нижче)
   const M = st.module;
-  eq([M.byLvl[1].clean, M.byLvl[1].kinds["D≤"] || 0, M.byLvl[1].sol0ge1, M.byLvl[2].sol0ge1, M.A.le], [683, 0, 671, 3, 461], "модель через hyp.js");
-  eq([M.byLvl[1].clean, M.byLvl[1].errors, M.byLvl[1].kinds, M.byLvl[2].clean, M.byLvl[2].errors, M.byLvl[2].kinds], [683, 689, { "D>": 613, F: 70 }, 216, 219, { "D≤": 191, F: 22, "D>": 3 }], "через hyp.js: 683/689 (D> 613, F 70), 216/219 (D≤ 191, F 22, D> 3)");
+  eq([M.byLvl[1].clean, M.byLvl[1].kinds["D≤"] || 0, M.byLvl[1].sol0ge1, M.byLvl[2].sol0ge1, M.A.le], [694, 0, 673, 1, 464], "модель через hyp.js");
+  eq([M.byLvl[1].clean, M.byLvl[1].errors, M.byLvl[1].kinds, M.byLvl[2].clean, M.byLvl[2].errors, M.byLvl[2].kinds], [694, 694, { "D>": 621, F: 73 }, 213, 214, { "D≤": 190, F: 23 }], "через hyp.js: 694/694 (D> 621, F 73), 213/214 (D≤ 190, F 23)");
   // Звідки «нечисті» й sol0 рівня 2 (2026-11-04). Не прив'язуємо до id уроків — лише до будови пулу уроку:
   // (а) помилка рівня 1 без чистої перевірки — лише в уроках з 6 вправами (мінімум CONTENT_SCHEMA §10): після першої сесії (4 вправи) небачених
   //     лишається 2, і pickSession доповнює сесію наступного дня баченою вправою рівня 1 тієї ж пари; сортування за рівнем ставить її перед
-  //     першою небаченою → sol 1 (g8m2l6, g8m2l7 — по 3 помилки). В уроках з 7–8 вправами такого бути не може.
+  //     першою небаченою → sol 1 (так було в g8m2l6, g8m2l7 — по 3 помилки; з 2026-11-05 там по 7 вправ, таких уроків 0).
+  //     В уроках з 7 і більше вправами такого бути не може.
   // (а′) помилка рівня 1 без жодної перевірки наступного дня — лише коли вся пара (урок, sk) помилки вміщується в першу сесію: перша
   //     сесія теми — 4 вправи найнижчих рівнів у порядку пулу (n 6 − 2 на повторення); якщо всі вправи цієї sk серед них, наступного дня
   //     небаченої вправи пари немає (так було в g11m6l3: func c01–c04 = уся перша сесія; g11m6l4: geom d01–d04 — до
   //     fix-math-pool-g11m6-order, 2026-11-05; тепер таких уроків 0). У 6-вправних уроках — sol 1, як (а).
-  // (б) sol0 ≥ 1 на рівні 2 — лише в уроках, де рівня 1 менше 3: перша сесія бере дві вправи рівня 2 тієї самої sk (g6m4l7: рівня 1 лише f01, f02).
+  // (б) sol0 ≥ 1 на рівні 2 — лише в уроках, де рівня 1 менше 3: перша сесія бере дві вправи рівня 2 тієї самої sk (g9m8l8: рівня 1 лише h01, h08; до 2026-11-05 — ще g6m4l7).
   const nIn = {}, n1In = {}; for (const p of E.math.pools) for (const it of p.items) { nIn[it.lesson] = (nIn[it.lesson] || 0) + 1; if ((it.lvl || 1) === 1) n1In[it.lesson] = (n1In[it.lesson] || 0) + 1; }
   const lessonOf = key => { const [pid, id] = key.split(":"); return E.math.pools.find(p => p.id === pid).items.find(i => i.id === id).lesson; };
   const byL = {}; for (const p of E.math.pools) p.items.forEach((it, i) => (byL[it.lesson] ||= []).push({ it, i, key: p.id + ":" + it.id }));
@@ -743,7 +766,18 @@ const sum = (R, pid) => R.events.filter(e => e.pid === pid).map(e => e.type === 
   const R0 = replay(JSON.parse(JSON.stringify(X)), { ...E, graph: null });
   eq(JSON.stringify(R.events), JSON.stringify(R0.events), "G3: події реплею (hyp-1, старі pres) з графом і без нього однакові");
   eq(R0.graph.presDiff + R0.graph.preWeakDiff + R0.graph.inLine, 0, "G3: без графа — нові pres = старі");
-  eq([G.answers, G.inLine, G.lines], [12, 9, ["frac"]], "G3: відповідей 12, у лінії frac — 9 (тест рівня dg6 у темах лінії, e01; a01 — поза)");
+  // склад ліній verified — живий зміст (tests-hyp-g3-verified-lines): тест не перелічує їх, лише вимагає frac і що всі взяті — verified/approved;
+  // фікстури — об'єкти лінії frac (g6m2l5, g6m3l1, теми dg6), тож inLine від інших ліній не залежить
+  const stOf = id => (E.math.graph.lines[id] || {}).st, liveVer = Object.keys(E.math.graph.lines).filter(id => ["verified", "approved"].includes(stOf(id)));
+  eq([G.answers, G.inLine, G.lines.includes("frac"), G.lines.filter(id => !["verified", "approved"].includes(stOf(id))), G.lines], [12, 9, true, [], liveVer],
+    "G3: відповідей 12, у лінії frac — 9 (тест рівня dg6 у темах лінії, e01; a01 — поза); frac серед ліній verified; лише verified/approved");
+  // draft-лінію G3 не бере, verified і approved — бере: синтетичні лінії поверх живих (живі, крім frac, → draft; zz — урок a01 g6m3l1, поза frac)
+  { const withLines = zz => { const L0 = E.math.graph.lines, L = Object.fromEntries(Object.entries(L0).map(([k, v]) => [k, k === "frac" ? v : { ...v, st: "draft" }]));
+      if (zz) L.zz = { lessons: ["g6m3l1"], topics: [], st: zz };
+      const Rz = replay(JSON.parse(JSON.stringify(X)), { ...E, graph: E.learn.graphBind({ ...E.math, graph: { ...E.math.graph, lines: L } }) }).graph;
+      return [Rz.lines, Rz.inLine, Rz.examples.some(x => x.at.key === "pg6m3:a01")]; };
+    eq(["draft", "x", "verified", "approved"].map(withLines), [[["frac"], 9, false], [["frac"], 9, false], [["frac", "zz"], 12, true], [["frac", "zz"], 12, true]],
+      "G3: лінія draft (і невідомий st) — поза G3 (inLine 9); verified / approved — у G3 (a01 трьох профілів у лінії zz: inLine 12, a01 серед прикладів)"); }
   const e01 = G.examples.filter(x => x.at.key === "pg6m2:e01");
   eq(e01.map(x => [x.line, x.u, x.pre.slice().sort(), x.presNew.slice().sort(), x.pres.includes("m3"), x.preWeak, x.preWeakNew]),
     [["frac", ["frac-mul"], ["frac-read", "frac-reduce"], ["g6m2l2", "m1"], true, true, false],
@@ -821,6 +855,18 @@ const sum = (R, pid) => R.events.filter(e => e.pid === pid).map(e => e.type === 
   // число без чужої одиниці правильне («2500 мм» при 2500 см) — підказка була й раніше: не S13, як і до зміни
   eq(H.assess(pool("pg4m4:d01"), "2500 мм", {}).sig.includes("S13"), false, "unit-hint: «2500 мм» (bare) — не S13, як і раніше");
 }
+
+/* ---------- engine-math-ister-p3 (рев'ю P2-1): «12» при ключі 12π — помилка значення, не form ----------
+   Вердикт трекерові дає app.js через checkAns; «допиши π» — лише підказка badHint. Тож запис без π: bad (а не form), formCode null,
+   на першій спробі немає hyp_fmt, у перевірці гіпотези — ✘ (update як bad), а не ✔ як form. Фікстура, не живий зміст. */
+{ const s = { type: "answer", answerKind: "exactRoot", answer: "12π", title: "Площа круга радіуса $2\\sqrt{3}$", lesson: "fx-pi", key: "fx-pi:a01", sk: "fx-pi", lvl: 1 };
+  const v = LN.checkAns(s, "12");
+  eq([v, LN.formCode(s, "12"), /допиши/.test(LN.badHint(s, "12") || "")], ["bad", null, true], "pi: «12» при 12π — bad, без formCode, з підказкою");
+  const T = H.tracker({ seed: "pi" }), ev = T.onAnswer(A(s, { day: D1, verdict: v, raw: "12", try: 1, final: true }));
+  eq(of(ev, "hyp_fmt").length, 0, "pi: перша спроба — не hyp_fmt (не «значення правильне»)");
+  const pr = [0.2, 0.2, 0.2, 0.2, 0.2], kind = Object.keys(H.LIK)[0];
+  eq(H.update(pr, kind, v, 0), H.update(pr, kind, "bad", 0), "pi: у перевірці гіпотези — як bad (✘)");
+  ok(JSON.stringify(H.update(pr, kind, v, 0)) !== JSON.stringify(H.update(pr, kind, "form", 0)), "pi: не як form (✔)"); }
 
 console.log(fails ? `test-hyp: ${fails} з ${n} перевірок не пройшли` : `test-hyp: усі ${n} перевірок пройшли`);
 process.exit(fails ? 1 : 0);

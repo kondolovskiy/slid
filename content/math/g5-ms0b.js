@@ -1,6 +1,8 @@
 /* Слід · Математика, 5 клас — «Фігури і величини»
+   style-math-finals-pre, 2026-11-05: у завдання фіналу додано pre (id уроку теми; style/common.md, D-048 п. 1); зміст не змінено.
    Статус уроків: l1 — повторно verified 2026-11-01 (refine-math-diag-probes-v3: AB = AC + CB на екрані теорії; reports/verify/refine-math-diag-probes-v3.md); l2–l5 verified (повторна верифікація після ревізії D-019, 2026-10-13, reports/verify/ms0b.md); ms3l3, ms4l1 — verified 2026-11-03 (verifier-revise-math-ms0b-ister, reports/verify/revise-math-ms0b-ister.md). 7 уроків (ms3l3, ms4l1 перенесено, D-043).
    style-math-ister-followup, 2026-11-05: ms0bl6 — рухома точка дослідження K → P (K(1) лишилась у теорії) → draft.
+   verifier-style-math-ister-followup, 2026-11-05: ms0bl6 → verified (reports/verify/style-math-ister-followup.md).
    Статус уроків: l1 — verified (2026-11-03, verifier-fix-math-figs-g4-g6, reports/verify/fix-math-figs-g4-g6.md; fix-math-figs-g4-g6: статичний рисунок на екрані теорії «Відрізок, промінь, пряма»; промінь CD перейменовано на MN, щоб C не означала двох різних точок). Раніше l1 — повторно verified 2026-11-01 (refine-math-diag-probes-v3: AB = AC + CB на екрані теорії; reports/verify/refine-math-diag-probes-v3.md); l2–l5 verified (повторна верифікація після ревізії D-019, 2026-10-13, reports/verify/ms0b.md). 5 уроків.
    Інтерактив (D-014): plane без осей — перетягувані точки (відрізок, промінь, пряма, кути, трикутники); rect — периметр.
    Перевірка: node tools/validate.mjs --section ms0b && node tools/stats.mjs --subject math
@@ -175,7 +177,7 @@ SLID.section("math", {
       title: "Промінь з поділками",
       short: "Координатний промінь",
       icon: "line",
-      status: "draft",
+      status: "verified",
       why: "Лінійка, термометр і спідометр показують числа поділками. Хто вміє їх читати, той не помилиться ні в сантиметрах, ні в градусах.",
       screens: [
         {
@@ -1142,6 +1144,7 @@ SLID.section("math", {
           type: "lab",
           sk: "geom",
           eyebrow: "Завдання 1",
+          pre: "ms0bl1",
           title: "Доріжка завдовжки 6 м",
           body: "<p>Тягни точку $B$, щоб доріжка $AB$ мала 6 м.</p>",
           lab: {
@@ -1206,6 +1209,7 @@ SLID.section("math", {
           type: "lab",
           sk: "geom",
           eyebrow: "Завдання 4",
+          pre: "ms0bl2",
           title: "Гірка під кутом 45°",
           body: "<p>Скат гірки має утворювати з землею кут 45°. Тягни верх гірки $B$.</p>",
           lab: {
@@ -1231,6 +1235,7 @@ SLID.section("math", {
           type: "number",
           sk: "geom",
           eyebrow: "Завдання 5",
+          pre: "ms0bl3",
           title: "Трикутна клумба",
           body: "<p>Клумба — прямокутний трикутник. Один з його гострих кутів — 35°. Знайди другий гострий кут.</p>",
           answer: 55,
@@ -1244,6 +1249,7 @@ SLID.section("math", {
           type: "lab",
           sk: "meas",
           eyebrow: "Завдання 6",
+          pre: "ms0bl4",
           title: "Бортик пісочниці — 14 м",
           body: "<p>Дощок на бортик вистачить рівно на 14 м. Склади прямокутну пісочницю.</p>",
           lab: {

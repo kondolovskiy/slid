@@ -305,3 +305,4 @@ _Рішення дизайну / оркестратора (людина не з�
 6. **ПД / GDPR / протокол `concern`** — записати задачу, зробити пізніше (design-privacy-gdpr).
 **Хто:** Віктор.
 **Доповнення оркестратора (2026-11-05, за прецедентом D-047 для ukr/hist):** профіль `math` 7–9 `sentenceWords` [4, 10] і 10–11 [4, 11] (було `_default` [6, 13] / [7, 15]; поза профілем 128/133 і 53/53 уроків; reports/style-math.md, tasks style-math-ister-followup).
+**Виконано (2026-11-05, сесія 5, куратор):** п. 1 — 7-мі вправи g8m2 (fix-math-pools-ister-formats, done); п. 3 — qa-ci-browser-mutant done (мутанти gapOrder і choice червонять job `browser`, deploy не стартує; reports/qa/qa-ci-browser-mutant.md); п. 5 — server-log-hmac done (`LOG_HASH_KEY` обов'язковий на production); п. 6 — tasks/todo/design-privacy-gdpr.md; п. 2 — людина вмикає вручну (відкрито); профіль math 7–9 / 10–11 — у style (style-math-ister-followup done).

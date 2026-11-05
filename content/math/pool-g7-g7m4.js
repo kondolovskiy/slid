@@ -1,4 +1,6 @@
 /* Слід · Математика, 7 клас — пул задач для тренування до розділу «Геометрія: трикутники» (g7m4)
+   Статус: verified (verifier-fix-math-pools-ister-formats, 2026-11-05, reports/verify/pools-ister-formats.md). Зміни fix-math-pools-ister-formats: косметика рисунка b04: підпис 48° винесено з бісектриси (відрізка KO) у texts праворуч від вершини K; зміст і ключ не змінено.
+   Попередній стан — нижче.
    Статус: verified (a, b, c — 2026-10-31, reports/verify/pg7m4.md; d–h — 2026-11-04, reports/verify/write-math-pool-g7m4-ister.md). 64 задачі (24 + 40): по 8 на required-уроки g7m4l1, g7m4l2, g7m4l3 (boss без задач).
    Усі задачі — з підручника Мерзляк, Якір «Геометрія. 7 клас» (2024); умови, числа й рисунки звірено
    за відрендереними сторінками PDF 2026-10-31. srcPage — друкований номер сторінки (у цьому PDF збігається з номером сторінки файлу).
@@ -15,7 +17,7 @@ SLID.pool("math", {
   id: "pg7m4",
   section: "g7m4",
   status: "verified",
-  meta: { author: "claude-opus", created: "2026-10-31", factcheck: "verifier-pool-g7m4", teacher: null },
+  meta: { author: "claude-opus", created: "2026-10-31", factcheck: "verifier-pool-g7m4; fix-math-pools-ister-formats — verifier-fix-math-pools-ister-formats 2026-11-05", revised: "2026-11-05 fix-math-pools-ister-formats", teacher: null },
   sources: [
     { id: "mer7g", title: "Мерзляк А. Г., Якір М. С. Геометрія : підруч. для 7 кл. закладів заг. серед. освіти. — Харків: Гімназія, 2024 (п. 7–11, 16, 17)", url: "https://file.4book.org/images/shcoolbook_ua/7/7_geom_m_2024.pdf" },
     { id: "ist7g", title: "Істер О. С. Геометрія : підруч. для 7-го кл. закл. заг. серед. освіти. — Київ : Генеза, 2024 (§ 18–20, ДСР № 4, вправи для повторення розділу 3)", url: "https://file.4book.org/images/shcoolbook_ua/7/7_geom_i_2024.pdf" }
@@ -96,7 +98,7 @@ SLID.pool("math", {
     { id: "b04", lesson: "g7m4l2", lvl: 2, sk: "geom", src: "mer7g №225", srcPage: 90, adapted: true,
       type: "answer", title: "Знайди кут $MKO$",
       body: "<p>У трикутнику $MKE$ сторони $MK$ і $KE$ рівні, $\\angle MKE = 48°$. З вершини $K$ провели відрізок $KO$ до сторони $ME$, перпендикулярний до неї. Знайди кут $MKO$.</p>",
-      lab: { kind: "plane", axes: false, grid: false, view: [0, 8, 0, 8], points: { M: { at: [1.329, 1], label: false }, K: { at: [4, 7], label: false }, E: { at: [6.671, 1], label: false }, O: { at: [4, 1], label: false } }, segs: [["M", "K"], ["K", "E"], ["M", "E"], ["K", "O"]], angles: [{ from: "M", at: "K", to: "E", label: "48°", r: 40, color: "purple" }, { from: "K", at: "O", to: "E", label: false, r: 22, color: "green" }], alt: "Трикутник MKE з рівними сторонами MK і KE; KO перпендикулярний до ME", texts: [{ at: [0.98, 0.704], t: "M", color: "accent", bold: true }, { at: [4, 7.3], t: "K", color: "accent", bold: true }, { at: [7.02, 0.704], t: "E", color: "accent", bold: true }, { at: [4, 0.5], t: "O", color: "accent", bold: true }] },
+      lab: { kind: "plane", axes: false, grid: false, view: [0, 8, 0, 8], points: { M: { at: [1.329, 1], label: false }, K: { at: [4, 7], label: false }, E: { at: [6.671, 1], label: false }, O: { at: [4, 1], label: false } }, segs: [["M", "K"], ["K", "E"], ["M", "E"], ["K", "O"]], angles: [{ from: "M", at: "K", to: "E", label: false, r: 40, color: "purple" }, { from: "K", at: "O", to: "E", label: false, r: 22, color: "green" }], alt: "Трикутник MKE з рівними сторонами MK і KE; KO перпендикулярний до ME", texts: [{ at: [4.62, 6.62], t: "48°", color: "purple", bold: true, anchor: "start" }, { at: [0.98, 0.704], t: "M", color: "accent", bold: true }, { at: [4, 7.3], t: "K", color: "accent", bold: true }, { at: [7.02, 0.704], t: "E", color: "accent", bold: true }, { at: [4, 0.5], t: "O", color: "accent", bold: true }] },
       answer: 24, unit: "°",
       hint: "Висота — відрізок з вершини, перпендикулярний до протилежної сторони. Тож $KO$ — висота до основи рівнобедреного трикутника. Яку ще роль він виконує? Згадай: бісектриса ділить кут навпіл.",
       steps: ["$MK = KE$, тож $ME$ — основа, а $KO$ — висота до основи.", "У рівнобедреному трикутнику висота до основи — також бісектриса.", "$\\angle MKO = 48° : 2 = 24°$."] },

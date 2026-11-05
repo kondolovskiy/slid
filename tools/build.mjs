@@ -46,7 +46,7 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
 export function writeServiceWorker(files = manifest()) {
   const walk = d => fs.existsSync(path.join(ROOT, d)) ? fs.readdirSync(path.join(ROOT, d), { withFileTypes: true })
     .sort((a, b) => a.name.localeCompare(b.name, "en")).flatMap(e => e.isDirectory() ? walk(`${d}/${e.name}`) : [`${d}/${e.name}`]) : [];
-  const assets = ["index.html", "manifest.webmanifest", "app/pwa.js", ...files,
+  const assets = ["index.html", "manifest.webmanifest", "app/pwa.js", "app/update.js", ...files,
     ...walk("img").filter(f => /\.(jpe?g|png|webp|svg)$/i.test(f)), ...walk("icons")];
   const uniq = [...new Set(assets)];
   const h = crypto.createHash("sha1");

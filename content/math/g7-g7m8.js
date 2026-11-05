@@ -1,4 +1,5 @@
 /* Слід · Математика, 7 клас — «Геометрія: коло»
+   fix-math-figs-1105, 2026-11-05: g7m8l3 — у вступ додано статичний рисунок відрізка AB (fig-audit: «Є відрізок AB» без рисунка); урок → draft; verified — verifier-math-pre-figs-1105, 2026-11-05 (reports/verify/math-pre-figs-1105.md).
    Статус уроків: verified (g7m8l2, g7m8l3: рисунки на екранах теорії, fix-math-figs-g7-geo-b — перевірено 2026-11-03, reports/verify/fix-math-figs-g7-geo-b.md). 4 уроки (3 теми + boss).
    style-math-ister-followup, 2026-11-05: у завдання фіналу додано pre (id уроку теми; style/common.md, D-048 п. 1); зміст не змінено.
    Нові уроки g7m8l5, g7m8l6 (verified 2026-11-03, reports/verify/write-math-g7-geometry-gaps.md; write-math-g7-geometry-gaps; Істер Г7 §§ 23–25): вписане й описане коло, центральні й вписані кути. Стоять перед boss g7m8l4. 6 уроків (5 тем + boss).
@@ -460,6 +461,16 @@ SLID.section("math", {
           type: "intro",
           eyebrow: "Урок 3",
           title: "Як побудувати без кутоміра?",
+          lab: {
+            kind: "plane",
+            axes: false,
+            grid: 0,
+            view: [-0.6, 6.6, -0.5, 0.9],
+            h: 110,
+            points: { A: { at: [0, 0] }, B: { at: [6, 0] } },
+            segs: [["A", "B"]],
+            alt: "Відрізок AB"
+          },
           body: `<p class="lead">Є відрізок $AB$. Треба третю вершину $C$, щоб усі сторони були рівні.</p>
           <p>Кутоміра немає. Є циркуль і лінійка. З чого почати?</p>`,
           cta: "Почати"

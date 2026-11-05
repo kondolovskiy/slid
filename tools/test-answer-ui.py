@@ -13,6 +13,7 @@ import pathlib
 import re
 import threading
 from playwright.async_api import async_playwright
+from verdict import NO_VERDICT, expect_credited   # tools/verdict.py: явне «не зараховано» (tools-playtest-verdict-msg)
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 class Quiet(http.server.SimpleHTTPRequestHandler):
@@ -80,23 +81,27 @@ async def grade_context_checks(browser, url):
         await page.click(f'[data-grade="{grade}"]')
     async def play_prerequisite():
         screens = await page.evaluate("SLID_SUBJECTS.find(c=>c.id==='math').sections.flatMap(s=>s.lessons||[]).find(l=>l.id==='ms2l4').screens")
-        for screen in screens:
+        for n, screen in enumerate(screens, 1):
             await answer_context_screen(page, screen)
             await page.click('#action')
-            if screen['type'] not in ('intro', 'info', 'explore'):
-                assert 'ok' in await page.locator('#dock').get_attribute('class') or screen.get('hyp')
+            if screen['type'] not in NO_VERDICT:
+                # hyp: any class (the guess is not graded); otherwise 'ok' — NotCredited names lesson, screen, answer, #dock class
+                if not screen.get('hyp'):
+                    given = {k: screen[k] for k in ('correct', 'answer', 'den', 'target', 'solution') if k in screen}
+                    await expect_credited(page, f"play_prerequisite: урок ms2l4, екран {n} з {len(screens)} ({screen['type']})", given, accept=('ok',))
                 await page.click('#action')
     # A dg6 run saved in an older revision: on load the verdicts of probes revised AFTER the run's revision are dropped, the other
     # answers (incl. probes revised up to the run's revision) and their order stay, the dropped probes are asked again, and the run
     # moves to the current revision (learn.js resumeDiag). Not tied to a revision number: the current one is the largest item rev,
     # read from the items here (not via SLID_LEARN.diagRev). Saved revision None = a run saved before diagRunRev existed (revision 1);
     # 2..current-1 — e.g. a revision-2 run under revision 3 must keep its rev-2 verdicts (guards `itemRev(it) > from`).
-    planted = 28
+    # Verdicts of ALL items are planted (review tests-answer-ui-dg6-rev3 P2-1): an item of the current revision max_rev always exists,
+    # so for every saved revision < max_rev there is something to drop — also when a future revision replaces only the last items.
     await page.goto(url)
     item_revs =await page.evaluate("""() => SLID_SUBJECTS.find(c=>c.id==='math').diags.find(d=>d.id==='dg6').items
       .map(it=>Number.isInteger(it.rev)&&it.rev>1?it.rev:1)""")
-    max_rev = max(item_revs)
-    assert max_rev >= 2 and planted < len(item_revs), item_revs
+    max_rev, planted = max(item_revs), len(item_revs)
+    assert max_rev >= 2, f"dg6 has no item with rev >= 2 ({item_revs}): the revision-resume scenario degenerates — use a revised diag or drop the scenario"
     for saved_rev in [None] + list(range(2, max_rev)):
         await page.goto(url)
         await page.evaluate("""([n, saved]) => {
@@ -112,7 +117,7 @@ async def grade_context_checks(browser, url):
         dropped = [i for i in range(planted) if item_revs[i] > from_rev]
         kept_revised = [i for i in range(planted) if 2 <= item_revs[i] <= from_rev]
         # the scenario must be able to fail both ways: something to drop, and (for saved >= 2) revised verdicts that must stay
-        assert dropped and (saved_rev is None or kept_revised), (saved_rev, item_revs)
+        assert dropped and (saved_rev is None or kept_revised), f"saved rev {saved_rev}: nothing to drop or no revised verdict to keep — the scenario cannot fail ({item_revs})"
         assert legacy['rev'] == max_rev, (saved_rev, legacy)
         assert legacy['keys'] == [i for i in range(planted) if i not in dropped] and legacy['next'] == dropped[0], (saved_rev, dropped, legacy)
         assert 'Продовжити тест' in await page.locator('#view').inner_text()
@@ -129,8 +134,9 @@ async def grade_context_checks(browser, url):
     fixed = (await state()).get('skFix')
     assert fixed == await page.evaluate("SLID_LEARN.SK_MIGRATIONS.map(f=>f.id)"), fixed
     await page.click('[data-diag="math"]'); await page.click('[data-diag-go]')
-    rev_items = await page.evaluate("SLID_SUBJECTS.find(c=>c.id==='math').diags.find(d=>d.id==='dg6').items.flatMap((it,i)=>it.rev?[i]:[])")
-    assert rev_items, rev_items
+    # revised = itemRev(it) > 1, as in the engine and item_revs above (review P3-2): rev 1 or a non-integer rev is revision 1
+    rev_items = await page.evaluate("SLID_SUBJECTS.find(c=>c.id==='math').diags.find(d=>d.id==='dg6').items.flatMap((it,i)=>Number.isInteger(it.rev)&&it.rev>1?[i]:[])")
+    assert rev_items, "dg6 has no revised items (rev >= 2): the 'started in the current revision' scenario has nothing to check"
     answered = []
     while not set(rev_items[:2]) <= set(answered):
         screen, i = await page.evaluate("""() => {const S=JSON.parse(localStorage.getItem('slid.v1')),d=SLID_SUBJECTS.find(c=>c.id==='math').diags.find(d=>d.id==='dg6');
@@ -436,6 +442,11 @@ FORMAT_FIXTURES = [
     ({'answerKind': 'pairSet', 'answer': [[3, 2], [-2, -3]]}, '(2; 3), (−3; −2)', 'Зміни відповідь', '(−2; −3), (3; 2)'),
     ({'answerKind': 'list', 'answer': [-3, 3]}, '±4', 'Зміни відповідь', '±3'),
     ({'answer': '1/4'}, '1 : 4', 'це відношення', '1/4'),
+    # engine-list-ordered: list з порядком (переставлено — «Перевір порядок»), масштаб «1 : n» при ключі n і scale;
+    # engine-list-quadratic п. 2: «у/в» перед кожним елементом list при unit «раз»
+    ({'answerKind': 'list', 'answer': [41, 132], 'ordered': True, 'unit': '°'}, '132°; 41°', 'Перевір порядок', '41°; 132°'),
+    ({'answer': 10000, 'scale': True}, '1 : 1000', 'Зміни відповідь', '1 : 10 000'),
+    ({'answerKind': 'list', 'answer': [2, 3], 'unit': 'раз'}, 'у 2 рази; у 4 рази', 'Зміни відповідь', 'у 3 рази; у 2 рази'),
 ]
 
 async def answer_format_checks(browser, url):
@@ -1281,6 +1292,18 @@ async def letters_cbrt_checks(browser, url):
       [{answerKind:'expression',answer:'x^2'},10],[{answerKind:'expression',answer:'x^2'},9],[{answerKind:'list',answer:'√2; 1'},10],[{answerKind:'list',answer:'∛2; 1'},10],
       [{answerKind:'coordinates2',answer:'(1; 2)'},11]].map(([s,g])=>SLID_ANS_UI.field(s,g).keys.filter(k=>/[√∛∜]/.test(k)).join(''))""")
     assert keys == ['√', '√∛', '√∛∜', '√∛∜', '√', '√', '√∛', '√'], keys
+    # engine-math-ister-p3 п. 5: речення про запис з клавіатури — у будь-якому полі з «∛»/«∜» (і в list), «∜» — root4
+    helps = await page.evaluate("""() => [[{answerKind:'list',answer:'∛2; 1'},10],[{answerKind:'exactRoot',answer:'2√3'},10],[{answerKind:'list',answer:'√2; 1'},10],
+      [{answerKind:'exactRoot',answer:'∜2'},8]].map(([s,g])=>SLID_ANS_UI.field(s,g).help)""")
+    assert 'cbrt' in helps[0] and 'root4' not in helps[0], helps[0]
+    assert 'cbrt' in helps[1] and 'root4' in helps[1], helps[1]
+    assert 'cbrt' not in helps[2] and 'root4' not in helps[2], helps[2]
+    assert 'root4' in helps[3] and 'cbrt' not in helps[3], helps[3]
+    # engine-math-ister-p3 п. 6: mount передає spec у KINDS.solid.view — поле view змінює стартовий ракурс (node-тести mount не бачать)
+    same = await page.evaluate("""() => { const m = v => { const h=document.createElement('div'); document.body.append(h);
+      SLID_LAB.mount(h,{kind:'solid',shape:'box',a:'5',b:'2',c:'3',...(v?{view:v}:{})},{}); const s=h.querySelector('svg').innerHTML; h.remove(); return s; };
+      return m(null) === m({yaw:30,pitch:-20}); }""")
+    assert not same, 'solid view ignored by SLID_LAB.mount'
     assert not errors, errors
     await context.close()
     print('Option letters (multi of 11: А…К, no undefined) and cube-root keys (pg10m3 a06/b01: ∛ ∜ after √, caret, cbrt; grade 8 without ∛): green', flush=True)
@@ -1482,7 +1505,7 @@ async def diag_answer_checks(browser, url):
     real_rev = await page.evaluate("""() => Math.max(1,...SLID_SUBJECTS.find(c=>c.id==='math').diags.find(d=>d.id==='dg6').items
       .map(it=>Number.isInteger(it.rev)&&it.rev>1?it.rev:1))""")
     fix_rev = real_rev + 1
-    assert real_rev >= 2, real_rev
+    assert real_rev >= 2, f"real dg6 revision {real_rev} < 2: the fixture revision fix_rev = real_rev + 1 would not test a revision bump over a revised run"
     await page.evaluate("""rev => {
       const c=SLID_SUBJECTS.find(c=>c.id==='math'), d=c.diags.find(d=>d.id==='dg6');
       d.items=[

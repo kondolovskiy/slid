@@ -267,7 +267,7 @@ server/src/modules/solution-check/
 
 **Сигнал розсинхрону змісту:** частка відповідей 422 `content_unknown` за годину (лічильник у лозі); > 1 % або будь-які за 6 год після деплою Pages — сповіщення адміністратору (механізм — docs/BACKEND.md «Спостереження»: лічильник `metrics.inc`, правило в `RULES`, рядок `warn` `"event":"alert"`).
 
-У логах **немає** фото, тексту розв'язання, `raw`, `seen`, підказки, `adult_note`, токенів і `learner_id` у відкритому вигляді. Є: хеш `learner_id`, `sid`, `key`, `ch`, `mv`, статус, вердикт (лише enum), `stop_reason`, `tokens_in/out`, вартість, затримка, код помилки API. Структуровані логи — docs/BACKEND.md «Спостереження» (server-hardening-2).
+У логах **немає** фото, тексту розв'язання, `raw`, `seen`, підказки, `adult_note`, токенів і `learner_id` у відкритому вигляді. Є: `lh` — HMAC `learner_id` із серверним ключем (`LOG_HASH_KEY`, docs/BACKEND.md «Спостереження»), `sid`, `key`, `ch`, `mv`, статус, вердикт (лише enum), `stop_reason`, `tokens_in/out`, вартість, затримка, код помилки API. Структуровані логи — docs/BACKEND.md «Спостереження» (server-hardening-2).
 
 ## 4. Модель і промпт
 

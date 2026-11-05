@@ -405,7 +405,7 @@ function practiceEntry(c){
   return `<button type="button" class="secitem pracentry s-${c.id}" data-practice-view="${c.id}"><span class="secnum">${ic("bolt")}</span><span class="grow"><b>Тренування${S.subject===c.id&&nav.v!=="home"?"":" · "+c.short}</b><span class="muted small">${open.length? `Відкрито ${open.length} з ${all.size} тем${due?` · ${due} ${plural(due,["чекає","чекають","чекають"])} на повторення`:""}` : "Задачі відкриються після першого пройденого уроку"}</span></span>${ic("chev","chev")}</button>`;
 }
 function viewPractice(){
-  const c=course(nav.id), items=poolItems(c), cnt={}; items.forEach(it=>cnt[it.lesson]=(cnt[it.lesson]||0)+1);
+  const c=course(nav.id), items=poolItems(c), cnt=LEARN.lessonCounts(items);
   const open=Object.keys(cnt).filter(topicOpen), due=open.filter(l=>LEARN.isDue(S,l,dkey())).length;
   return `${backBtn(c.subject)}
   <section class="sec pat-${c.pattern||"none"}">
@@ -420,7 +420,7 @@ function viewPractice(){
       <span class="grow"><span class="eyebrow">Мікс · до 6 задач з різних тем</span><b>Тренування на сьогодні</b><span class="muted" style="font-size:13px">${due? `${due} ${plural(due,["тема чекає","теми чекають","тем чекають"])} на повторення` : "Усе повторено вчасно. Можна потренуватися наперед"}</span></span>
       <span class="play">${icF("play")}</span></button>`
     : `<div class="empty">Тут з'являться задачі, щойно ти пройдеш перший урок: тренуватися можна лише з пройдених тем.</div>`}
-  ${LEARN.practiceGroups(c, items).map(({sec, lessons:LS})=>{   /* розділи за програмою (клас, тижні), а не за порядком пулів; also — уроки пулу в іншому розділі */
+  ${LEARN.practiceGroups(c, items, cnt).map(({sec, lessons:LS})=>{   /* розділи за програмою (клас, тижні), а не за порядком пулів; also — уроки пулу в іншому розділі */
     return `<div class="eyebrow">${esc(sec.title)}</div><div class="seclist">${LS.map(l=> topicOpen(l.id)
       ? `<button type="button" class="secitem" data-practice="${l.id}"><span class="secnum">${ic(l.icon)}</span><span class="grow"><b>${esc(l.title)}</b><span class="muted small">${cnt[l.id]} ${plural(cnt[l.id],["задача","задачі","задач"])}${S.srs[l.id]&&LEARN.isDue(S,l.id,dkey())?" · час повторити":""}</span>${strength(l.id)}</span><span class="play sm">${icF("play")}</span></button>`
       : `<div class="secitem locked"><span class="secnum">${ic("lock")}</span><span class="grow"><b>${esc(l.title)}</b><span class="muted small">Відкриється, коли пройдеш урок</span></span></div>`).join("")}</div>`; }).join("")}
@@ -976,7 +976,10 @@ function noteHtml(s){
   const links = (n.links||[]).map(([t,u])=>`<li><a href="${urlAttr(u)}" target="_blank" rel="noopener">${t}</a></li>`).join("");
   return `<details class="note"><summary>${ic("info")}<span>${n.label||"Чому дві дати?"}</span></summary><div class="note-b">${n.text}${links?`<ul>${links}</ul>`:""}</div></details>`;
 }
+const PLAIN=["intro","info","explore"];   // екрани без відповіді; оцінювані — GRADED
+let unsup=false;   // поточний екран рушій показати не вміє (renderScreen, запобіжник версій)
 function renderScreen(){
+  unsup=false;
   $("#player").scrollTo({top:0, behavior:"instant"});   // і для підсумку: інакше він відкривається з прокруткою попереднього екрана
   if(idx>=L.screens.length){ if(run.diag) renderDiagEnd(); else if(run.practice) renderPracticeEnd(); else renderEnd(); $("#player").scrollTo({top:0, behavior:"instant"}); return focusAction(); }
   const s=L.screens[idx]; checked=false; tries=0; tried=null; pProgress();
@@ -984,6 +987,7 @@ function renderScreen(){
   let h=`<section class="screen" tabindex="-1"><div class="eyebrow">${run.diag? `Тест рівня · завдання ${Object.keys(run.res).length+1}` : s.eyebrow||""}</div>`;
   h+= s.type==="intro"? `<h1>${s.title}</h1>` : `<h2>${s.title}</h2>`;
   h+= fig(s) + (s.body||"") + noteHtml(s);
+  const h0=h.length;
   if(s.type==="choice"||s.type==="multi"){
     st= s.type==="multi"? new Set() : null;
     if(s.type==="multi") h+=`<div class="fix">Можна обрати кілька</div>`;
@@ -1009,9 +1013,14 @@ function renderScreen(){
   if(s.type==="answer"){ st=""; h+=answerInput(s); }
   if(s.type==="fracin"){ st=""; h+=s.hideDen? `<div class="mblock">${mathHTML(s.expr)} =</div>`+answerInput(s) : `<div class="numbox big"><span class="m">${mathHTML(s.expr)}<span class="mo">=</span><span class="fr"><span class="nu"><input id="numIn" inputmode="numeric" pattern="[0-9]*" autocomplete="off" placeholder="?" aria-label="Чисельник відповіді"></span><span class="sr">/</span><span class="de">${s.den}</span></span></span></div>`; }
   if(LANG.TYPES.includes(s.type)) h+=langHtml(s);
+  /* запобіжник (engine-sw-version-skew): тип екрана, який цей рушій не вміє показати (зміст новіший за рушій — змішані версії
+     застосунку), — не тупик із неактивною «Перевірити», а повідомлення й «Пропустити» без зарахування (unsupported) */
+  unsup= !PLAIN.includes(s.type) && (s.type==="lab"? !(s.lab && window.SLID_LAB) : h.length===h0);
+  if(unsup) h+=`<div class="hint" id="unsupported">${ic("info")}<span><b>Це завдання з новішої версії застосунку.</b> Онови застосунок: закрий і відкрий знову. Зараз це завдання можна пропустити${run.diag? "" : " — на результат це не вплине"}.</span></div>`;
   h+=`<div id="hintHost"></div></section>`;
   $("#stage").innerHTML=fmt(h);
-  if(s.type==="intro"||s.type==="info"||s.type==="explore") setDock("","","",s.cta||"Далі");
+  if(unsup){ setDock("","","","Пропустити"); return focusAction(); }
+  if(PLAIN.includes(s.type)) setDock("","","",s.cta||"Далі");
   else if(["slider","align","numline","lab"].includes(s.type)) setDock("","","","Перевірити");
   else setDock("","","","Перевірити",false);
   bindScreen(s);
@@ -1048,7 +1057,7 @@ const ANS_UI={
   expression:[["^","(",")","·","/","√"],"Степінь — ^ (x^2), множення — · або без знака (3ab), дріб — / з дужками: (a + 1)/(a − 1)."],
   periodicSet:[["π","k","±","/","(",")","^",";"],"Серія розв'язків через k: π/6 + 2πk. Кілька серій — через ; або ±."],
   // engine-answer-formats-ister: стандартний вигляд числа і множина пар (розв'язки системи); приклади не збігаються з ключем вправи (test-answer-ui)
-  sci:[["·","10^","(",")","-"],"Стандартний вигляд: a · 10^n, де 1 ≤ a < 10. Від'ємний показник — у дужках: 10^(-3)."],
+  sci:[["·","10^","(",")","-"],"Стандартний вигляд: a · 10^n, де 1 ≤ a < 10. Від'ємний показник — зі знаком мінус, можна в дужках: 10^(-3)."],
   pairSet:[["(",";",")",",","-","/","√"],"Кожну пару — у дужках через крапку з комою, пари — через кому: (1; −4), (0; 5). Спершу x, потім y."],
   // час і величини: приклад і одиниці — з самої вправи (answerUI), тож підказка не збігається з ключем
   time:[[":"],""],
@@ -1062,6 +1071,9 @@ function answerUI(s, grade, signed){
   const keys=sym? sym[0].slice() : kind==="comparison"? ["<",">","="] : kind==="list"? ["-","/",";"," "] : kind==="factors"? ["*","^"] : kind==="divrem"? [" ост. "] : [...(nk.minus?["-"]:[]), ...(nk.frac?["/"," "]:[])];
   if(kind==="list" && /[√∛∜±]/.test(String(s.answer))) keys.push("√","±");
   else if(kind==="list" && (Number(grade)||0)>=8) keys.push("±");   // «±3» приймає будь-який list (engine-answer-formats-ister п. 1); з 8 класу — квадратні рівняння
+  /* масштаб «1 : n» (scale, engine-list-p3 п. 4): поле лишається inputmode="decimal" (цифрова клавіатура), а «:» — кнопкою, як у time:
+     на цифровій клавіатурі телефона двокрапки немає. ratio має «:» в ANS_UI (inputmode="text"). */
+  if(kind==="number" && s.scale===true) keys.push(":");
   if(kind==="expression") for(const c of new Set(String(s.answer).match(/[\u0370-\u03ff]/g)||[])) if(c!=="π") keys.push(c);   // α, β… з ключа
   const units= kind==="quantity"? LEARN.quantityUnits(s)||[] : null;
   if(units) keys.push(...units);
@@ -1075,10 +1087,14 @@ function answerUI(s, grade, signed){
   const hi=(Number(grade)||0)>=10 && (kind==="exactRoot"||kind==="expression");
   const extra=["∛","∜"].filter(c=>!keys.includes(c) && (ansStr.includes(c) || (hi && keys.includes("√"))));
   if(extra.length) keys.splice(keys.includes("√")? keys.indexOf("√")+1 : keys.length, 0, ...extra);
-  const help=pv? "Координати — у дужках через крапку з комою: (2a; b − 1). Спершу x, потім y. Множення — · або без знака (2a), степінь — ^."
+  /* Корені з фізичної клавіатури (engine-math-ister-p3 п. 5): речення — у будь-якому полі з кнопкою «∛»/«∜», зокрема list
+     (раніше лише символьні поля); «∜» — запис root4 (learn.js norm). */
+  const rootHelp=keys.includes("∛")||keys.includes("∜")? " "+[keys.includes("∛")&&"Кубічний корінь — ∛ (з клавіатури — cbrt)", keys.includes("∜")&&"корінь 4-го степеня — ∜ (root4)"].filter(Boolean).join(", ").replace(/^к/,"К")+": "+(keys.includes("∛")? "2∛3." : "2∜3.") : "";
+  const help0=pv? "Координати — у дужках через крапку з комою: (2a; b − 1). Спершу x, потім y. Множення — · або без знака (2a), степінь — ^."
     : kind==="time"? `Час — години й хвилини через двокрапку: ${LEARN.timeExample(s)}.`
     : units? `Запиши число й одиницю (${units.join(", ")}). Кілька одиниць — через пробіл, спершу більші.`
-    : sym? sym[1]+(keys.includes("∛")? " Кубічний корінь — ∛ (з клавіатури — cbrt): 2∛3." : "") : kind==="comparison"? "Запиши знак: <, > або =." : kind==="list"? "Запиши всі числа через крапку з комою. Порядок не має значення." : kind==="factors"? "Множники — через · або *. Степінь — через ^, наприклад 2^3 · 5." : kind==="divrem"? "Запиши неповну частку, потім кнопкою «ост.» — остачу: 3 ост. 2." : LEARN.numberHelp(s) || (nk.frac? "Дріб — через риску: 7/12. Мішане число — через пробіл: 2 1/3." : nk.dec? "Десятковий дріб — через кому: 2,5." : "");   // decimals, form "improper" — своя підказка (learn.js numberHelp)
+    : sym? sym[1] : kind==="comparison"? "Запиши знак: <, > або =." : kind==="list"? "Запиши всі числа через крапку з комою. Порядок не має значення." : kind==="factors"? "Множники — через · або *. Степінь — через ^, наприклад 2^3 · 5." : kind==="divrem"? "Запиши неповну частку, потім кнопкою «ост.» — остачу: 3 ост. 2." : LEARN.numberHelp(s) || (nk.frac? "Дріб — через риску: 7/12. Мішане число — через пробіл: 2 1/3." : nk.dec? "Десятковий дріб — через кому: 2,5." : "");   // decimals, form "improper" — своя підказка (learn.js numberHelp)
+  const help=help0? help0+rootHelp : help0;
   return { keys, help, sym:!!sym };
 }
 // Лише для читання (глибоко заморожена копія, рев'ю followup P3-4): test-answer-ui звіряє приклади підказок із ключами вправ.
@@ -1348,13 +1364,21 @@ $("#action").onclick=()=>{
   if(idx>=L.screens.length){ const f=afterEnd; afterEnd=null; closePlayer(); if(f) f(); return; }
   const s=L.screens[idx];
   if(checked&&run.diag) return diagNext();   // після екрана-пояснення HALF
-  if(s.type==="intro"||s.type==="info"||s.type==="explore"||checked){ idx++; renderScreen(); return; }
+  if(unsup){ if(run.diag) diagAnswer(LEARN.SKIP); else { run.unsup=(run.unsup||0)+1; idx++; renderScreen(); } return; }   // запобіжник версій: без зарахування
+  if(PLAIN.includes(s.type)||checked){ idx++; renderScreen(); return; }
   check();
 };
 
 /* ---------- Кінець уроку ---------- */
 function renderEnd(){
   pProgress(); $("#pCombo").innerHTML="";
+  /* запобіжник версій (engine-sw-version-skew): у уроці пропущено екрани, яких рушій не вміє показати, — урок не зараховано
+     (без done, зірок, кроку плану, detect, SRS, lesson_end); досвід за відповіді на інші екрани лишається. Закриття — подія close. */
+  if(run.unsup){ save(); renderTop();
+    $("#stage").innerHTML=fmt(`<section class="screen endhero" id="unsupEnd"><div class="bigicon">${ic("info")}</div>
+    <div class="eyebrow">${C.short} · урок не зараховано</div><h1>${esc(L.title)}</h1>
+    <p>${run.unsup} ${plural(run.unsup,["завдання","завдання","завдань"])} з новішої версії застосунку цей застосунок ще не вміє показати. Онови застосунок: закрий і відкрий знову, а тоді пройди урок ще раз.</p></section>`);
+    setDock("","","","Повернутися"); return; }
   const acc = run.graded? run.first/run.graded : 1;
   const stars = acc>=0.9?3 : acc>=0.65?2 : 1;
   const bonus = gain(20 + (run.mistakes===0?10:0));

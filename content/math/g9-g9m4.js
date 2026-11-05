@@ -1,6 +1,7 @@
 /* Слід · Математика, 9 клас — «Геометрія: розв'язування трикутників»
    Статус уроків: verified (l1 — повторно 01.11 після refine: таблиця 30°/45°/60°, тотожність); l3 — повторно після fix-math-figs-g9 (рисунок на екрані 4 «Теорема синусів»; verifier-fix-math-figs-g9, 2026-11-03, reports/verify/fix-math-figs-g9.md). 4 уроки (3 теми + boss).
    style-math-ister-followup, 2026-11-05: boss g9m4l4 з. 2 — сторони 7, 8, 13 (було 3, 5, 7, дубль фіналу l2), відповідь та сама 120°. → draft, потрібна content-verify.
+   verifier-style-math-ister-followup, 2026-11-05: g9m4l4 → verified (reports/verify/style-math-ister-followup.md).
    Нові уроки 2026-11-03 (write-math-g9-gaps, D-043, Істер Геом. 9 § 14): g9m4l5 (S = ½ab sin γ), g9m4l6 (Герон, S = abc/4R, S = pr) — verified (verifier-write-math-g9-gaps, 2026-11-03, reports/verify/write-math-g9-gaps.md), перед boss. Тепер 6 уроків (5 тем + boss).
    Boss g9m4l4 — verified (2026-11-04, reports/verify/revise-math-finals-g8-g9.md) після revise-math-finals-g9 (2026-11-04, D-045): 6 завдань (l1, l2, l3, l3, l5, l6); дублі l1 (sin 150°) і l2 (лабораторія 60°) замінено на l5 і l6; дубль l3 (сторона й R) лишився — шосте місце, тем лише 5.
    Інтерактив: plane — трикутник drag (live angle/dist); одиничне півколо;
@@ -1056,7 +1057,7 @@ SLID.section("math", {
       title: "Помічник геодезиста",
       short: "Фінал розділу",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "g9m4boss",
       why: "Sin і cos до 180°, теореми косинусів і синусів, площа трикутника — на одній зйомці. Бали подвоєні.",

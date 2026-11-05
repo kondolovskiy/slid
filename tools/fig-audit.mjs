@@ -3,10 +3,12 @@
 // Евристики — figCues (tools/lib.mjs), ті самі, що й у правилі validate «умова посилається на рисунок».
 //   ref   — пряме посилання: «на рисунку», «за графіком», «на кресленні», «на діаграмі», «зображено на»;
 //   geo   — геометрія з ≥ 3 позначеннями точок у формулах ($\triangle ABC$, $BB_1$) — рисунок, імовірно, потрібен;
-//   graph — згадка графіка, координатної площини чи діаграми без прямого посилання — перевір вручну.
+//   graph — згадка графіка, координатної площини, діаграми, «на плані», «на схемі» без прямого посилання — перевір вручну
+//           (графік чи діаграму, які треба побудувати, — «побудуй графік», «показують діаграмою» — не згадка);
+//   intro — сюжетний вступ уроку з ref чи geo (validate про вступ мовчить).
 // Екран уроку, що посилається на ілюстрацію попереднього екрана («рядок під рисунком»), іде окремо («попередній екран»).
 // Запуск: node tools/fig-audit.mjs [--subject math] [--json] [--quiet]
-//   → reports/fig-audit-<предмет>.md і .json. Код виходу завжди 0: це звіт для автора, а не перевірка (перевірка — validate).
+//   → reports/fig-audit-<предмет>.md; --json — те саме JSON-ом у stdout (файл .json не пишеться: шум у diff на кожен check, рев'ю P3-5). Код виходу завжди 0: це звіт для автора, а не перевірка (перевірка — validate).
 import fs from "node:fs"; import path from "node:path";
 import { loadContent, figCues, ROOT } from "./lib.mjs";
 
@@ -20,9 +22,13 @@ const c = subjects.find(x => x.id === sid);
 if (!c) { console.error(`предмет «${sid}» не знайдено`); process.exit(2); }
 
 const rows = [];
+// мовні предмети: «на схемі» — схема речення, а не рисунок; така згадка — шум у звіті (рев'ю tools-math-ister-p3 P3-3)
+const LANG_SUBJECTS = new Set(["ukr"]);
 const add = (file, where, kind, s, prev) => {
   const cue = figCues(s, prev); if (!cue || cue.ill) return;
-  const group = cue.level === "ref" && cue.prevIll ? "prev" : cue.level;
+  if (cue.level === "graph" && LANG_SUBJECTS.has(sid) && /схем/i.test(cue.graph || "")) return;
+  const group = cue.intro ? (cue.level === "graph" ? null : "intro") : cue.level === "ref" && cue.prevIll ? "prev" : cue.level;
+  if (!group) return;
   rows.push({ group, file, where, kind, type: s.type, ...cue });
 };
 let screens = 0;
@@ -33,7 +39,8 @@ for (const d of c.diags || []) (d.items || []).forEach((it, i) => { screens++; a
 const GROUPS = [
   ["ref", "Пряме посилання на рисунок, а рисунка немає", "Додай рисунок (`fig`, статичний `lab` plane/solid/chart, `img`) точно за умовою або перепиши умову без посилання. validate попереджає саме про це."],
   ["geo", "Геометрія з позначеннями точок без рисунка", "Рисунок, імовірно, потрібен, якщо без нього не зрозуміло, де які точки (паралелепіпед $ABCDA_1B_1C_1D_1$, висота до сторони, перетин діагоналей). Задача «у трикутнику $ABC$ кут $A$ = 50°, кут $B$ = 60°» зрозуміла й без рисунка."],
-  ["graph", "Згадка графіка, площини чи діаграми", "Зазвичай «побудуй графік» чи «графік функції проходить через…» — рисунок не потрібен. Потрібен, якщо дані треба прочитати з графіка чи діаграми."],
+  ["graph", "Згадка графіка, площини, діаграми, плану чи схеми", "Зазвичай «графік функції проходить через…» чи «на плані міста» — рисунок не потрібен. Потрібен, якщо дані треба прочитати з графіка, діаграми, плану чи схеми."],
+  ["intro", "Сюжетний вступ посилається на рисунок чи геометрію", "Вступ уроку (intro) згадує креслення, рисунок чи фігуру з позначеннями, а ілюстрації немає. validate про вступ не попереджає: перевір, чи дитина не шукатиме рисунок, якого немає, — додай ілюстрацію або перепиши речення."],
   ["prev", "Посилання на ілюстрацію попереднього екрана", "Екран уроку посилається на модель попереднього екрана («порівняй рядки під рисунком»). Переконайся, що та модель справді про це; інакше — власна ілюстрація."]];
 const esc = t => String(t).replace(/\|/g, "\\|");
 const L = [`# Аудит рисунків: ${c.title || sid}`, "",
@@ -47,6 +54,5 @@ for (const [g, title, note] of GROUPS) {
 }
 fs.mkdirSync(path.join(ROOT, "reports"), { recursive: true });
 fs.writeFileSync(path.join(ROOT, `reports/fig-audit-${sid}.md`), L.join("\n"));
-fs.writeFileSync(path.join(ROOT, `reports/fig-audit-${sid}.json`), JSON.stringify({ subject: sid, screens, rows }, null, 1) + "\n");
 if (args.includes("--json")) console.log(JSON.stringify({ subject: sid, screens, rows }));
 else if (!args.includes("--quiet")) console.log(`${sid}: переглянуто ${screens}; ${GROUPS.map(([g]) => `${g} ${rows.filter(r => r.group === g).length}`).join(", ")} → reports/fig-audit-${sid}.md`);

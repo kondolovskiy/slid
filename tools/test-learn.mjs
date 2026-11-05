@@ -485,7 +485,7 @@ const order = l => ({ L1: 3, L2: 1, L3: 2, L4: 4 }[l] ?? 50);
   const cases = [
     // відношення: рівні відношення, порядок, натуральні члени без спільного дільника лише з reduced
     [K("ratio", "2 : 3"), "4 : 6", "ok"], [K("ratio", "2 : 3"), "0,4 : 0,6", "ok"], [K("ratio", "2 : 3"), "2/3 : 1", "ok"], [K("ratio", "2 : 3"), "3 : 2", "bad"],
-    [K("ratio", "2 : 3"), "2/3", "bad"], [K("ratio", "2 : 3"), "-2 : -3", "bad"], [K("ratio", "2 : 3"), "2 : 3 : 1", "bad"], [K("ratio", "2 : 3", { reduced: true }), "4 : 6", "form"],
+    [K("ratio", "2 : 3"), "2/3", "form"], [K("ratio", "2 : 3"), "-2 : -3", "bad"], [K("ratio", "2 : 3"), "2 : 3 : 1", "bad"], [K("ratio", "2 : 3", { reduced: true }), "4 : 6", "form"],
     [K("ratio", "2 : 3", { reduced: true }), "2 : 3", "ok"], [K("ratio", "2 : 3", { reduced: true }), "1 : 1,5", "form"], [K("ratio", [1, 3], { reduced: true }), "1∶3", "ok"], [K("ratio", "2 : 3 : 5"), "4 : 6 : 10", "ok"], [K("ratio", "2 : 3 : 5"), "4 : 6 : 11", "bad"],
     // впорядкована пара/трійка: порядок і знак, кома лише без «;», десяткова кома з «;»
     [K("coordinates2", "(3; -2)"), "(3; −2)", "ok"], [K("coordinates2", "(3; -2)"), "A(3;-2)", "ok"], [K("coordinates2", "(3; -2)"), "3; -2", "ok"], [K("coordinates2", "(3; -2)"), "(3, -2)", "ok"],
@@ -709,6 +709,21 @@ const order = l => ({ L1: 3, L2: 1, L3: 2, L4: 4 }[l] ?? 50);
   eq(g.map(x => x.lessons.map(l => x.cnt[l.id])), [[1, 2], [1], [1, 1]], "practiceGroups: кількість задач уроку з усіх пулів");
   eq(L.practiceGroups(c, []), [], "practiceGroups: без вправ — порожньо");
   eq(L.practiceGroups(c, L.practiceItems({ grade: 5, lessons: {}, seen: {}, srs: {} }, c)).map(x => x.sec.id), ["a5", "b5"], "practiceGroups: 5 кл. — без розділу 6 кл.");
+  // рев'ю tools-ister-p3 P3-2 (engine-list-quadratic п. 3): екран рахує cnt один раз (lessonCounts) і передає його в practiceGroups
+  const its = L.practiceItems(S6, c), cnt = L.lessonCounts(its);
+  eq(JSON.stringify(cnt), JSON.stringify({ b1: 1, v2: 1, a2: 2, v1: 1, a1: 1 }), "lessonCounts: вправи на урок з усіх пулів");
+  eq(L.practiceGroups(c, its, cnt).every(x => x.cnt === cnt), true, "practiceGroups: переданий cnt — той самий об'єкт, без другого підрахунку");
+}
+/* Порядок програми, на який спирається practiceGroups, дає app/registry.js finalize: розділи за класом, далі за першим тижнем, незалежно
+   від порядку завантаження файлів (рев'ю tools-ister-p3 P3-3; tools-math-ister-p3 п. 14). Розділ без weeks — у кінці свого класу. */
+{
+  const rc = { console }; rc.window = rc; vm.createContext(rc);
+  vm.runInContext(fs.readFileSync(path.join(ROOT, "app/registry.js"), "utf8"), rc, { filename: "app/registry.js" });
+  rc.SLID.subject({ id: "fx", subject: "Фікстура" });
+  for (const [id, grade, weeks] of [["v6", 6, [1, 4]], ["b5", 5, [9, 12]], ["n5", 5, null], ["a5", 5, [1, 4]], ["c5", 5, [5, 8]]])
+    rc.SLID.section("fx", { id, grade, ...(weeks ? { weeks } : {}), lessons: [] });
+  rc.SLID.finalize();
+  eq(rc.SLID_SUBJECTS.find(x => x.id === "fx").sections.map(x => x.id), ["a5", "c5", "b5", "n5", "v6"], "registry finalize: розділи за класом і першим тижнем (без weeks — у кінці класу)");
 }
 /* Замок уроку (app.js unlocked → LEARN.lessonOpen): пройдений урок не замикається, коли перед ним вставили новий (D-043, рев'ю
    math-ister-migration P2-1 / P3-8). open(id) — урок пройдено або знайомий з тесту рівня. */
@@ -1139,9 +1154,10 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
     items: [{ topic: "k", type: "number", sk: "num", title: "t", answer: 1, rev }] }, ctxV).filter(e => /rev/.test(e)).length;
   eq([dv(undefined), dv(2), dv(7), dv(1), dv(0), dv(1.5), dv("2")], [0, 0, 0, 1, 1, 1, 1], "validate: rev лише ціле ≥ 2");
 }
-{ const { loadContent } = await import("./lib.mjs");
+{ const { loadContent, readJSON } = await import("./lib.mjs");
   const { subjects } = loadContent(), math = subjects.find(s => s.id === "math"), d = math.diags.find(x => x.id === "dg6");
-  // реальний dg6: 30 завдань; rev 2 — п'ять cur-проб, rev 3 — ще дві (pct №7, pct-of №27, refine-math-dg6-pct-rev3); індекси й порядок не змінено.
+  const MATRIX = readJSON("docs/math-personalization-coverage.json");
+  // реальний dg6: 30 завдань; rev 2 — п'ять проб (індекси 16, 20 g6-div — з 2026-11-03 pre-тема; 24, 27, 28 — cur), rev 3 — ще дві (pct №7, pct-of №27, refine-math-dg6-pct-rev3); індекси й порядок не змінено.
   // 2026-11-03 (D-043, docs/design/math-ister.md §5.2): №21 g6-lcm → pre-тема g6-div, №27 pct → cur-тема pct-of — завдання ті самі
   const TOPICS = "ord frac frac-cmp rem frac-add eq pct dec mixed geom frac-of dec-ops ord frac rem frac-cmp g6-div eq dec frac-add g6-div frac-of geom mixed g6-fadd dec-ops pct-of g6-prop g6-neg g6-eq".split(" ");
   eq(d.items.map(it => it.topic), TOPICS, "dg6: теми за індексами (збережені вердикти не зсуваються)");
@@ -1181,9 +1197,13 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
     const grid = new Set(hist.flatMap((_, k) => Array.from({ length: 8 }, (_, j) => String.fromCharCode(97 + k) + "0" + (j + 1))).concat(ADDED[p.id] || []));
     eq(p.items.filter(it => !hist.includes(it.lesson) && grid.has(it.id)).map(it => it.id), [], `${p.id}: вправи нових уроків — не на старих id`);
     eq(p.items.some(it => (REMOVED[p.id] || []).includes(it.id)), false, `${p.id}: вилучені id не використано знову`);
-    // історичні (required) уроки — строго 6–8; новий урок без пулу (D-043, pending у матриці) — 0, з пулом — так само 6–8
-    for (const l of lessons) { const n = p.items.filter(it => it.lesson === l).length;
-      eq((n >= 6 && n <= 8) || (n === 0 && !hist.includes(l)), true, `${p.id}/${l}: 6–8 вправ (${n})`); }
+    // рев'ю curate-math-ister-gaps-matrix P3-1: кожна вправа — урок свого розділу (section чи also), а не id поза розділом
+    const homeLessons = [p.section, ...(p.also || [])].flatMap(id => (math.sections.find(s => s.id === id)?.lessons || []).filter(l => !l.boss).map(l => l.id));
+    eq(p.items.filter(it => !homeLessons.includes(it.lesson)).map(it => `${it.id}→${it.lesson}`), [], `${p.id}: вправи лише уроків свого розділу`);
+    // історичні уроки — строго 6–8; 0 вправ — лише урок, який матриця не робить required (pending/optional: новий урок без пулу, D-043).
+    // Виняток — за scope матриці, а не за списком HIST (там само P3-2): урок, переведений у required, без вправ тест зловить
+    for (const l of lessons) { const n = p.items.filter(it => it.lesson === l).length, scope = MATRIX.lessons.find(r => r.lesson === l)?.curricularScope;
+      eq((n >= 6 && n <= 8) || (n === 0 && !hist.includes(l) && scope !== "required"), true, `${p.id}/${l}: 6–8 вправ (${n}; у матриці ${scope})`); }
   }
   // старий прогрес тренування: seen вилучених вправ не ламає добору, SRS теми не змінюється, нова вправа — першою (ще не бачили)
   const lessons1 = math.sections.find(s => s.id === "g6m1").lessons.filter(l => !l.boss).map(l => l.id);
@@ -1518,7 +1538,9 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
     [Lq("±3", "$x^2 = 9$"), "x₁,₂ = ±3", "ok"], [Lq("±3", "$x^2 = 9$"), "x_{1,2} = ±3", "ok"], [Lq("±3", "$x^2 = 9$"), "x1,2 = ±3", "ok"], [Lq("±3", "$x^2 = 9$"), "х₁,₂ = ±3", "ok"],
     [Lq("(1 ± √5)/2", "$x^2 - x - 1 = 0$"), "x₁,₂ = (1 ± √5)/2", "ok"], [Lq("(1 ± √5)/2", "$x^2 - x - 1 = 0$"), "x₁,₂ = (1 ∓ √5)/2", "ok"],
     [Lq("±3", "$x^2 = 9$"), "y₁,₂ = ±3", "bad"], [Lq("3; -3", "$x^2 = 9$"), "x₁,₂ = ±3", "ok"] /* engine-answer-formats-ister п. 1: «±» — у будь-якому list (раніше bad) */, [Lq("±3", "$x^2 = 9$"), "x₁,₂ = 3", "bad"], [Lq("±3", "$x^2 = 9$"), "x₁,₂ = ±3; x = 1", "bad"],
-    [Lq("±3", "$x^2 = 9$"), "x₁,₂ = ±2", "bad"], [Lq("±3", "$x^2 + y = 9$"), "x₁,₂ = ±3", "bad"], [Lq("±3", "Знайди $b$: $x^2 = b$"), "x₁,₂ = ±3", "bad"], [Lq("±3", "$x^2 = 9$"), "x₁,₂ = x₃ = ±3", "bad"]],
+    [Lq("±3", "$x^2 = 9$"), "x₁,₂ = ±2", "bad"], [Lq("±3", "$x^2 + y = 9$"), "x₁,₂ = ±3", "bad"], [Lq("±3", "Знайди $b$: $x^2 = b$"), "x₁,₂ = ±3", "bad"], [Lq("±3", "$x^2 = 9$"), "x₁,₂ = x₃ = ±3", "bad"],
+    // engine-list-p3 п. 1 (P3-1): пробіли й перенос одразу після «=» — як до engine-list-quadratic (там «\s*»)
+    [Lq("±3", "$x^2 = 9$"), "x₁,₂ =\n±3", "ok"], [Lq("±3", "$x^2 = 9$"), "x₁,₂ =\n ±3", "ok"], [Lq("±3", "$x^2 = 9$"), "x₁,₂ = \t ±3", "ok"], [Lq("±3", "$x^2 = 9$"), "x₁,₂ =\n±2", "bad"], [Lq("±3", "$x^2 = 9$"), "x₁,₂ =\n\n±3 =", "bad"]],
     "g11 п.8 x₁,₂");
   { const pools = (await import("./lib.mjs")).loadContent().subjects.flatMap(c => c.pools || []);
     for (const [pid, iid] of [["pg8m5", "a04"], ["pg8m5", "b05"], ["pg10m3", "a07"]]) {
@@ -2386,6 +2408,111 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
   // підказки назв є в hintTexts (test-answer-ui: «підказка ≠ ключ»)
   const H = L.hintTexts(B4);
   eq(["Координати правильні, але тут шукають вектор c.", "Координати правильні, але a — даний вектор умови. Запиши лише координати.", "Координати правильні, але b — даний вектор умови. Запиши лише координати."].every(t => H.includes(t)), true, "vec-name hintTexts b04");
+}
+// ---------- engine-math-ister-p3: pairSet з дужками в парі (п. 1), «допиши π», розряди з π, ratio дробом, «у 2 рази» (п. 2), root4 (п. 5) ----------
+{ const K = (answerKind, answer, extra = {}) => ({ answerKind, answer, ...extra });
+  const P = K("pairSet", [["√2", 1], ["-√2", 1]]), P3 = K("pairSet", [[3, 2], [-2, -3]]), PI = K("exactRoot", "12π"), RA = K("ratio", [27, 64]);
+  const RZ = { answer: 2, unit: "раз", unitForms: ["раз", "рази", "разів"] };
+  const cases = [
+    // п. 1 (P2-1): дужки всередині пари — за глибиною; P3-1: між парами не більше одного роздільника
+    [P, "(√(2); 1), (-√(2); 1)", "ok"], [P, "(-√(2); 1); (√2; 1)", "ok"], [P, "{(√(2); 1), (-√(2); 1)}", "ok"], [P, "(√(2); 1)(-√(2); 1)", "ok"],
+    // числовий ключ: компонента — лише число, як у числовому coordinates2 («(1/(2); 1)» там теж bad); з коренем у ключі — точний розбір
+    [K("pairSet", [[0.5, 1]]), "(1/(2); 1)", "bad"], [K("coordinates2", [0.5, 1]), "(1/(2); 1)", "bad"], [K("pairSet", [["√2/2", 1]]), "(1/√(2); 1)", "form"],
+    [K("pairSet", [["-√3", 2]]), "(-(√3); 2)", "ok"], [K("pairSet", [["√2", 1]]), "(√(2); (1))", "ok"], [P, "(√(2; 1), (-√2; 1)", "bad"],
+    [P, "(√(2); 1), (-√(3); 1)", "bad"], [P, "(√(2); 1),, (-√(2); 1)", "bad"], [P3, "(3; 2),, (-2; -3)", "bad"], [P3, "(3; 2) ; , (-2; -3)", "bad"],
+    [P3, "(3; 2), (-2; -3),", "bad"], [P3, ", (3; 2), (-2; -3)", "bad"], [P3, "((3; 2), (-2; -3))", "bad"], [P3, "(3; 2)), ((-2; -3)", "bad"],
+    [P3, "(3; 2) ∪ (-2; -3)", "ok"], [P3, ")(3; 2), (-2; -3)", "bad"],
+    [K("pairSet", [[3, 2]]), "3; 2", "bad"],   // P3-2: одна пара без дужок — не множина пар (задокументовано)
+    [P, "(2√(2)/2; 1), (-√2; 1)", "form"],
+    // п. 2: π у ключі exactRoot, а в записі немає — значення неправильне: bad (рев'ю P2-1), лише підказка «допиши π» (нижче)
+    [PI, "12", "bad"], [PI, "24/2", "bad"], [PI, "12π", "ok"], [PI, "13", "bad"], [PI, "-12", "bad"], [PI, "π", "bad"], [PI, "12π^2", "bad"],
+    [K("exactRoot", "16π/3"), "16/3", "bad"], [K("exactRoot", "16π/3"), "16", "bad"], [K("exactRoot", "2√3π"), "2√3", "bad"], [K("exactRoot", "2√3π"), "2√3π", "ok"],
+    [K("exactRoot", "12π^2"), "12π", "bad"], [K("exactRoot", "12π^2"), "12", "bad"], [K("exactRoot", "1 + π"), "1", "bad"], [K("exactRoot", "1 + π"), "2", "bad"], [K("exactRoot", "2√3"), "2", "bad"], [K("exactRoot", "12π"), "12π/π", "bad"],
+    // п. 2: розряди через пробіл у точному записі, як «1 950» у number
+    [K("exactRoot", "6400π"), "6 400π", "ok"], [K("exactRoot", "6400π"), "6 400π", "ok"], [K("exactRoot", "6400π"), "6 400 π", "ok"], [K("exactRoot", "6400π"), "6 400", "bad"], [K("exactRoot", "6400π"), "6,4 000π", "bad"], [K("exactRoot", "6,4π"), "6,4 000π", "bad"],
+    [K("exactRoot", "6400π"), "6 4000π", "bad"], [K("exactRoot", "64000π"), "6 4000π", "bad"], [K("exactRoot", "6400π"), "64 00π", "bad"], [K("exactRoot", "6400π"), "6 40π", "bad"], [K("exactRoot", "1000000π"), "1 000 000π", "ok"],
+    [K("exactRoot", "2000√3"), "2 000√3", "ok"], [K("exactRoot", "(1 + √5)/2"), "(1 + √5)/2", "ok"], [K("exactRoot", "6400π"), "6 400,5π", "bad"],
+    [K("list", ["6400π", "π"]), "6 400π; π", "ok"], [K("coordinates2", ["6400π", 1]), "(6 400π; 1)", "ok"],
+    // мішане число лишається мішаним: «2 100/3» не стає 2100/3
+    [K("exactRoot", "700π/1"), "2 100/3 π", "bad"], [K("exactRoot", "2100π/3"), "2 100/3 π", "bad"], [K("exactRoot", "2100π/3"), "2 100 /3 π", "bad"],
+    [K("exactRoot", "6301π/3"), "2 100 1/3", "bad"], [K("exactRoot", "6301π/3"), "2 100 1/3 π", "bad"], [K("exactRoot", "1000000π/3"), "1 000 000/3 π", "bad"],
+    // п. 2: ratio, записане дробом p/q — form «через двокрапку»
+    [RA, "27/64", "form"], [RA, "54/128", "form"], [RA, "27 : 64", "ok"], [RA, "64/27", "bad"], [RA, "1 27/64", "bad"], [RA, "0,421875", "bad"], [RA, "-27/64", "bad"], [K("ratio", [91, 64]), "1 27/64", "bad"], [K("ratio", [91, 64]), "91/64", "form"],
+    [K("ratio", [2, 3, 4]), "2/3", "bad"], [K("ratio", [1, 2]), "1/2", "form"], [K("ratio", [1, 2]), "2", "bad"],
+    // п. 2: «у 2 рази» при unit «раз»; без одиниці чи інша одиниця — як і раніше
+    [RZ, "у 2 рази", "ok"], [RZ, "в 2 рази", "ok"], [RZ, "У 2 рази", "ok"], [RZ, "у 2 раз", "ok"], [RZ, "у 3 рази", "bad"], [RZ, "у 2", "bad"], [RZ, "уу 2 рази", "bad"],
+    [RZ, "у2 рази", "bad"], [{ answer: 2, unit: "см" }, "у 2 см", "bad"], [RZ, "2 рази", "ok"],
+    // п. 5: «root4» з фізичної клавіатури = «∜», «root3» = «cbrt» = «∛»
+    [K("exactRoot", "2∜2"), "2root4(2)", "ok"], [K("exactRoot", "2∜2"), "2 root4 2", "ok"], [K("exactRoot", "∛5"), "root3(5)", "ok"], [K("exactRoot", "2∜2"), "2root4(3)", "bad"],
+    [K("exactRoot", "2∜2"), "∜32", "form"], [K("expression", "∜x"), "root4(x)", "ok"]];
+  cases.forEach(([s, v, exp]) => eq(L.checkAns(s, v), exp, `ister-p3: ${JSON.stringify(s)} ← «${v}»`));
+  // підказки й коди форм
+  // «допиши π» — пояснення до bad (badHint), не form: значення неправильне, formCode null, hyp бачить звичайну помилку
+  const PIM = "Бракує множника π. Точну відповідь тут записують з π — допиши його.";
+  for (const [s, v] of [[PI, "12"], [PI, "24/2"], [K("exactRoot", "16π/3"), "16/3"], [K("exactRoot", "2√3π"), "2√3"], [K("exactRoot", "6400π"), "6 400"],
+    [K("exactRoot", "6301π/3"), "2 100 1/3"], [K("exactRoot", "12π", { unit: "см" }), "12 см"]]) eq([L.checkAns(s, v), L.badHint(s, v), L.formCode(s, v)], ["bad", PIM, null], `ister-p3: «${v}» при ${s.answer} — bad, підказка «допиши π»`);
+  for (const [s, v] of [[PI, "13"], [PI, "-12"], [K("exactRoot", "12π^2"), "12π"], [K("exactRoot", "12π^2"), "12"], [K("exactRoot", "1 + π"), "1"], [K("exactRoot", "2√3"), "2"],
+    [K("exactRoot", "6400π"), "6,4 000"], [K("list", ["12π"]), "12"], [K("exactRoot", "12π"), "12π"]]) eq(L.badHint(s, v), null, `ister-p3: «${v}» при ${s.answer} — без «допиши π»`);
+  eq(L.formHint(RA, "27/64"), "Значення правильне, але відповідь тут — відношення. Запиши його через двокрапку, а не дробом.", "ister-p3: formHint ratio дробом");
+  eq(L.formCode(RA, "27/64"), "ratioFrac", "ister-p3: formCode ratioFrac");
+  eq(L.formHint(K("ratio", [27, 64], { reduced: true }), "54 : 128").startsWith("Відношення правильне."), true, "ister-p3: ratio reduced — стара підказка");
+  eq(L.formHint(K("exactRoot", "16π/3"), "32π/6").includes("π"), false, "ister-p3: «32π/6» — не «допиши π»");
+  eq([L.hintTexts(PI).includes(L.badHint(PI, "12")), L.hintTexts(RA).includes(L.formHint(RA, "27/64")), L.hintTexts(K("list", [1, 2])).some(t => /Допиши π|через двокрапку/.test(t))], [true, true, false], "ister-p3: hintTexts");
+  eq([L.diagVerdict(RZ, "у 2 рази"), L.diagVerdict(RZ, "у 3 рази")], [L.OK, L.BAD], "ister-p3: «у 2 рази» у тесті рівня");
+  // ReDoS (pitfalls): довгі ряди пробілів і груп розрядів — лінійно
+  for (const v of ["1" + " ".repeat(20000) + "000π", "6 400" + " ".repeat(20000) + "/π", Array(5000).fill("100").join(" ") + "/3", "(" + " ".repeat(20000) + "√2; 1)" + ", (".repeat(3000), "у" + " ".repeat(20000) + "2 рази"]) {
+    const t0 = performance.now(); for (const s of [PI, P, RZ, RA]) L.checkAns(s, v); const ms = performance.now() - t0;
+    eq(ms < 300, true, `ister-p3: довгий запис (${v.length} симв.) — ${Math.round(ms)} мс (< 300)`); }
+}
+/* engine-list-quadratic, engine-list-ordered: лінійний list на довгих записах, «у/в» перед кожним елементом, ordered, scale */
+{ const K = (answerKind, answer, extra = {}) => ({ answerKind, answer, ...extra }), N = (answer, extra = {}) => ({ answer, ...extra });
+  const RZL = K("list", [2, 3], { unit: "раз", unitForms: ["раз", "рази", "разів"] });
+  // п. 2: «у/в» перед кожним елементом list при unit «раз» (як «у 2 рази; 3», TQ-067)
+  [[RZL, "у 2 рази; у 3 рази", "ok"], [RZL, "в 2 рази, в 3 рази", "ok"], [RZL, "у 2 рази;у 3 рази", "ok"], [RZL, "у 3 рази; в 2 рази", "ok"], [RZL, "у 2 рази; 3", "ok"],
+   [RZL, "2; у 3 рази", "ok"], [RZL, "у 2; у 3", "bad"], [RZL, "2; у 3", "bad"], [RZL, "у 2 рази; уу 3 рази", "bad"], [RZL, "у 2 рази; у3 рази", "bad"], [RZL, "у 2 рази; у 4 рази", "bad"],
+   [K("list", [2, 3], { unit: "см" }), "у 2 см; у 3 см", "bad"], [K("list", ["1,5", 3], { unit: "раз" }), "у 1,5 рази; у 3 рази", "ok"],
+   // більше 4 «±» в елементі — не розбирається, а не зникає з переліку (раніше «1; ±±±±±7» = «1»)
+   [K("list", [1]), "1; ±±±±±7", "bad"], [K("list", ["1"]), "1; ±±±±±√7", "bad"], [K("list", [-1, 1]), "±1", "ok"], [K("list", [1, 2, 3]), "1; 2", "bad"],
+   // «x₁,₂ = …» без «±» — bad (CONTENT_SCHEMA §10), і з довгим хвостом
+   [K("list", [3], { body: "$x^2 = 9$" }), "x₁,₂ = 3", "bad"], [K("list", [-3, 3], { body: "$x^2 = 9$" }), "x₁,₂ = ±3", "ok"]]
+    .forEach(([s, v, exp]) => eq(L.checkAns(s, v), exp, `list-quadratic: ${JSON.stringify(s)} ← «${v}»`));
+  eq(L.listKey(K("list", "1; ±±±±±7")), null, "list-quadratic: ключ з елементом понад 4 «±» не розбирається");
+  eq(L.answerSig(RZL, "у 2 рази; у 3 рази"), L.answerSig(RZL, "2; 3"), "list-quadratic: answerSig «у 2 рази; у 3 рази» = «2; 3»");
+  // ordered (engine-list-ordered п. 1): «Запиши ∠C і ∠D» — по місцях; переставлено — bad з підказкою «перевір порядок»
+  const ORD = K("list", [41, 132], { ordered: true, unit: "°" }), ORDM = "Перевір порядок: запиши величини в тій послідовності, у якій їх названо в умові.";
+  [[ORD, "41; 132", "ok"], [ORD, "41°; 132°", "ok"], [ORD, "132; 41", "bad"], [ORD, "132°; 41°", "bad"], [ORD, "41; 41", "bad"], [ORD, "41", "bad"], [ORD, "41; 132; 7", "bad"],
+   [K("list", [41, 132]), "132; 41", "ok"], [K("list", [50, 50], { ordered: true }), "50; 50", "ok"], [K("list", [50, 50], { ordered: true }), "50", "bad"],
+   [K("list", ["√2", "1/2"], { ordered: true }), "√2; 0,5", "ok"], [K("list", ["√2", "1/2"], { ordered: true }), "0,5; √2", "bad"], [K("list", ["1/2", 3], { ordered: true }), "2/4; 3", "ok"],
+   [K("list", [1, 2], { ordered: true, body: "$x^2 - 3x + 2 = 0$" }), "x₁ = 1; x₂ = 2", "ok"], [K("list", [1, 2], { ordered: true, body: "$x^2 - 3x + 2 = 0$" }), "x₁ = 2; x₂ = 1", "bad"]]
+    .forEach(([s, v, exp]) => eq(L.checkAns(s, v), exp, `list-ordered: ${JSON.stringify(s)} ← «${v}»`));
+  eq([L.badHint(ORD, "132; 41"), L.badHint(ORD, "132°; 41°"), L.badHint(ORD, "132; 40"), L.badHint(ORD, "41; 41"), L.badHint(K("list", [41, 132]), "132; 42"), L.formCode(ORD, "132; 41")],
+    [ORDM, ORDM, null, null, null, null], "list-ordered: підказка «перевір порядок» лише для переставлених правильних значень");
+  eq(L.formHint(K("list", ["√2/2", 3], { ordered: true }), "2√2/4; 3"), L.formHint(K("list", ["√2/2", 3]), "2√2/4; 3"), "list-ordered: form — та сама підказка, що й без ordered");
+  eq(L.checkAns(K("list", ["√2/2", 3], { ordered: true }), "2√2/4; 3"), "form", "list-ordered: нескорочений запис на своєму місці — form, як і без ordered");
+  eq([L.hintTexts(ORD).includes(ORDM), L.hintTexts(K("list", [1, 2])).includes(ORDM)], [true, false], "list-ordered: hintTexts");
+  eq(L.listKey(K("list", [50, 50], { ordered: true }))?.length, 2, "list-ordered: listKey з повтором");
+  // scale (п. 2, pg9m6 f08): «1 : n» при ключі n і scale: true — ok; без scale — як і раніше
+  const SC = N(10000, { scale: true });
+  [[SC, "10000", "ok"], [SC, "10 000", "ok"], [SC, "1 : 10000", "ok"], [SC, "1:10 000", "ok"], [SC, "1 ∶ 10000", "ok"], [SC, "1 : 1000", "bad"], [SC, "1 : 100000", "bad"] /* engine-list-p3 п. 2: більше число теж bad (мутант «>=») */, [SC, "1 : 100 000", "bad"], [SC, "2 : 20000", "bad"], [SC, "10000 : 1", "bad"],
+   [SC, "1 : 10000 : 1", "bad"], [SC, "1,0 : 10000", "bad"], [SC, "1/10000", "bad"], [SC, "1 : 10000,5", "bad"], [SC, "1 : 10000/1", "bad"], [N(10000), "1 : 10000", "bad"], [N("1/4"), "1 : 4", "form"], [N(4, { scale: true }), "1 : 4", "ok"]]
+    .forEach(([s, v, exp]) => eq(L.checkAns(s, v), exp, `scale: ${JSON.stringify(s)} ← «${v}»`));
+  eq([L.numberHelp(SC), L.numberHelp(N(10000)), L.numberHelp(N(10000, { scale: false }))], ["Масштаб можна записати й повністю — через двокрапку (кнопка «:»).", null, null], "scale: numberHelp — про кнопку «:» (engine-list-p3 п. 4)");
+  const vp = it => L.validatePool({ id: "p", section: "s", status: "draft", sources: [{ id: "b", title: "t", url: "https://x" }], items: [{ id: "a", lesson: "l", lvl: 1, sk: "num", src: "b 1", type: "answer", title: "t", steps: ["s"], ...it }] },
+    { sections: new Map([["s", { grade: 4, lessons: ["l"] }]]), skills: { num: {} } });
+  for (const it of [ORD, K("list", [50, 50], { ordered: true }), K("list", [1, 2], { ordered: false }), SC, K("list", "±3"), K("list", "±3", { ordered: false }), K("list", [-3, 3], { ordered: true })]) eq(vp(it), [], `validatePool: коректне ${JSON.stringify(it)}`);
+  [[K("list", [1, 2], { ordered: "так" }), /ordered має бути boolean/], [N(2, { ordered: true }), /ordered має бути boolean/], [K("list", [1, 2], { ordered: true, multiset: true }), /multiset не потрібен/],
+   [K("list", [1, 2], { scale: true }), /scale має бути boolean/], [N(10000, { scale: 1 }), /scale має бути boolean/], [N("1/4", { scale: true }), /scale — ключ/], [N(1, { scale: true }), /scale — ключ/], [N("10000,5", { scale: true }), /scale — ключ/],
+   // engine-list-p3 п. 3 (P3-3 рев'ю engine-list): «±» у ключі розгортається без порядку — з ordered поведінка невизначена
+   [K("list", "±3", { ordered: true }), /ordered.*±/], [K("list", ["±3", 5], { ordered: true }), /ordered.*±/], [K("list", ["(1 ∓ √5)/2"], { ordered: true }), /ordered.*±/]]
+    .forEach(([it, re]) => eq(vp(it).some(e => re.test(e)), true, `validatePool відхиляє ${JSON.stringify(it)}`));
+  // п. 1: лінійно на 50 000 символів (раніше «x» + 20 000 пробілів ≈ 0,5 с, 50 000 ≈ 6 с; тисячі різних елементів ≈ 1,3 с)
+  const M = 50000, seq = f => { const o = []; for (let i = 1, len = 0; len < M; i++) { o.push(f(i)); len += o[o.length - 1].length + 2; } return o.join("; "); }, sp = " ".repeat(M);
+  const LONG = ["x" + sp, "x" + sp + "= 1", "у" + sp + "2 рази", "x₁" + sp + "= 1", "x_{1,2}" + sp + "= ±1", "x =" + sp + "1", "x₁,₂ = " + "±".repeat(M), "x₁,₂ = " + "±".repeat(M) + "=", "x₁,₂ = " + "±1".repeat(M / 2) + ";", "x =" + sp + "a", "x₁" + sp + "=" + sp,
+    "x₁,₂ =" + sp, "x₁,₂ =" + sp + "=", "x₁,₂ =" + sp + ";", "x₁,₂ =" + sp + "±1", "x₁,₂ =" + "\n".repeat(M) + "±1", "x₁,₂ =" + sp + "±".repeat(M), "1 :" + sp + "10000", "1" + ":".repeat(M), "1 : " + "1 ".repeat(M / 2),
+    seq(String), seq(i => "x = " + i), seq(i => "±" + i), seq(i => i + "√" + (i + 1)), seq(i => i + "/" + (i + 1)), seq(i => "у " + i + " рази"), "1" + ",".repeat(M), "1" + sp + "; 2"];
+  const KEYS = [K("list", [1, 2]), K("list", ["√2", 1]), K("list", [-1, 1], { body: "$x^2 = 1$" }), RZL, ORD, K("list", [2, 2, 3], { multiset: true }), SC];
+  for (const v of LONG) { let worst = 0; for (const s of KEYS) { const t0 = performance.now(); const r = L.checkAns(s, v); L.badHint(s, v, r); L.answerSig(s, v); worst = Math.max(worst, performance.now() - t0); }
+    eq(worst < 200, true, `list-quadratic: «${JSON.stringify(v.slice(0, 14))}…» (${v.length} симв.) — ${Math.round(worst)} мс (< 200)`); }
 }
 console.log(`\n${n} перевірок, ${fails ? fails + " з помилками" : "усе гаразд"}`);
 if (fails) process.exit(1);

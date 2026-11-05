@@ -15,14 +15,14 @@
 - Фронтенд: ванільний JS без залежностей і збирача; `index.html` + `app/*.js`; PWA (`sw.js`).
 - Інструменти: Node 22 (`tools/*.mjs`, без npm-залежностей); Python + Playwright (`playtest.py`, `test-answer-ui.py`).
 - Бекенд `server/`: TypeScript, NestJS 11, Kysely 0.28, PostgreSQL 16, Jest; Railway. Офлайн-перший: фронтенд працює без нього.
-- CI: `.github/workflows/pages.yml` (тести + згенеровані файли закомічені + job `browser`: регресія рушія й плейтест піднабору → GitHub Pages; на PR — без публікації), `server.yml` (бекенд на Postgres).
+- CI: `.github/workflows/pages.yml` (тести + згенеровані файли закомічені + job `browser`: регресія рушія, test-ui і плейтест піднабору → GitHub Pages; на PR — без публікації), `server.yml` (бекенд на Postgres).
 
 ## 2. Карта
 | Шлях | Що | Хто змінює |
 |---|---|---|
 | `index.html` | оболонка, CSS; блок скриптів `CONTENT:START/END` | блок — лише `tools/build.mjs`; решта — розробник |
 | `sw.js`, `content/manifest.json` | згенеровані build (офлайн-кеш, список скриптів) | ніхто вручну; коміть після build |
-| `manifest.webmanifest`, `icons/`, `app/pwa.js` | PWA | розробник |
+| `manifest.webmanifest`, `icons/`, `app/pwa.js`, `app/update.js` | PWA (оновлення без змішування версій — docs/PUBLISHING.md) | розробник |
 | `app/app.js` | рушій: навігація, екрани, гейміфікація, збереження `slid.v1` | розробник |
 | `app/learn.js` · `evidence.js` · `hyp.js` | персоналізація · журнал подій · гіпотези (тінь) | розробник |
 | `app/math.js` · `lab.js` · `registry.js` | формули · лабораторія · реєстр `SLID.*` | розробник |
@@ -51,7 +51,7 @@ npm run check               # build + node-тести + validate + graph-report 
 python3 tools/playtest.py [--section ID[,ID…]] [--port N]    # пройти уроки в браузері; невідомий id — код 2
 python3 tools/test-answer-ui.py --suite regression           # браузерна регресія рушія (не в check; у CI — job browser, блокує deploy)
 node tools/playtest-pick.mjs [--max-lessons N] [файли…]      # піднабір плейтесту CI: змінені розділи + покриття типів екранів + тести рівня
-node tools/test-ui-ister.mjs                                 # браузер (Node Playwright): «Тренування» з also, замок уроку; не в check і CI
+node tools/test-ui.mjs [--browser P]                         # браузер (Node Playwright): «Тренування» з also, замок уроку, запобіжник екрана, оновлення PWA; не в check, у CI — job browser
 node tools/stats.mjs [--subject S]                           # метрики стилю → reports/style-S.md
 node tools/claim.mjs list|claim|move ...                     # черга задач
 node tools/make-tasks.mjs [--subject S]                      # задачі на написання з плану

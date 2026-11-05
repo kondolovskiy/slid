@@ -14,7 +14,7 @@ description: Use when creating or editing a math practice pool content/math/pool
 - decisions.md: D-030 (пороги, answerKind), D-031 (назва перед координатами/множиною), D-032 (SRS з тесту, OK/HALF), D-039 (одиниці).
 - glossary/math.md (нотація, сигли джерел: mer5, g4a/g4b, l4a/l4b, a7, mer7g, a8, mer8g, a9, mer9g, m10, m11).
 - facts/math.md (бібліографія, сторінки, хибні умови підручників).
-- pitfalls.md: «Формати відповідей пулів», «Підручники: сторінки», «Контент і формули» (01.11).
+- `memory/long/pitfalls-math.md`: «Формати відповідей пулів», «Підручники: сторінки», «Контент і формули» (01.11).
 - Сусідні пули того ж класу як еталон.
 
 ## 2. Правила змісту
