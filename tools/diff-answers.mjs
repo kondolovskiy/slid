@@ -22,6 +22,7 @@
 // engine-unit-hint-p3 — «uh-p3 …»: для тієї самої величини хвіст підказки «Перевір одиницю: переведи відповідь у …» замість «Одиницю можна й не писати».
 // engine-coordinates-vector-name — «vec …»: назва вектора малою літерою перед координатами («c = (…)», «c→(…)», «\vec{c} = (…)», «m(…)» —
 // даний вектор) в умові з вектором малою літерою і «→» після великої назви («AB→ = (…)»). Класифікація — за текстом умови (vecNames нижче).
+// engine-answer-formats-ister — «ister п.1–п.4 …»; «п.2–3» пояснює вправи sci / pairSet лише проти рушія, що цих форматів не знає (fix-math-pools-ister-formats).
 // Запуск: node tools/diff-answers.mjs [--old <git-rev>] [--grades 4-9 | 4] [--time] [--show N] [--list-cat "<категорія>"] (записи однієї категорії)
 //         node tools/diff-answers.mjs --content-old <git-rev> [--grades 4-11] [--show N]   (зміст <rev> проти поточного, обидва — поточним learn.js)
 import fs from "node:fs"; import os from "node:os"; import vm from "node:vm"; import path from "node:path"; import { execFileSync } from "node:child_process";
@@ -266,6 +267,11 @@ const CATS = [
     const w = v.replace(/^\s*[a-zа-яії](?:₁,₂|_\{1,2\}) = /u, ""), ps = w.split(/[;\n]/.test(w) ? /[;\n]/ : /,/);
     const ex = ps.flatMap(p => { const m = /^\s*[±∓]\s*(\d+(?:,\d+)?(?:\/\d+)?)\s*$/.exec(p); return m ? [m[1], "-" + m[1]] : [p]; });
     return ex.every(p => !/[±∓]/.test(p)) && same(verdict(OLD, s, ex.join("; ")), n); }],
+  // п. 2–3: вправа з answerKind sci / pairSet, якого старий рушій не знає (його checkAns не зараховує навіть сам ключ) — старий вердикт
+  // bad, новий будь-який. Якщо старий рушій формат знає (ключ у нього ok), категорія не діє — розбіжність лишиться непоясненою
+  // (fix-math-pools-ister-formats: перші вправи sci у pg8m1 і pairSet у pg9m3; без цього фікстура b799dfa давала 29 непояснених)
+  ["ister п.2–3 новий answerKind sci / pairSet — старий рушій його не знає", (s, v, o, n) => /^(sci|pairSet)$/.test(s.answerKind || "") && o.r === "bad"
+    && OLD.checkAns(s, keyText(s)) !== "ok"],
   // п. 4: «p : q» при ключі-дробі p/q (те саме значення, незалежна перевірка) — bad → form «це відношення»
   ["ister п.4 «p : q» при ключі-дробі — form «це відношення»", (s, v, o, n) => { const a = NEW.parseAns(keyText(s)), m = /^(\d+) ?: ?(\d+)$/.exec(v);
     return (s.answerKind || "number") === "number" && !!a && a.frac && !!m && o.r === "bad" && n.r === "form" && /^Значення правильне, але це відношення/.test(n.h || "")

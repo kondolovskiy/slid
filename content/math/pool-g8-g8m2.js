@@ -1,4 +1,6 @@
 /* Слід · Математика, 8 клас — пул задач для тренування до розділу «Геометрія: чотирикутники» (g8m2)
+   Статус: draft (fix-math-pools-ister-formats, 2026-11-05) до незалежної перевірки нових вправ / рисунка: +e07 (g8m2l6, ist8g №7.7, с. 52, list) і f07 (g8m2l7, ist8g повт. розд. 1 №55(2), с. 70, choice) — сьома вправа уроку (обхід pickSession, test-hyp §10 (а)).
+   Попередній стан — нижче.
    2026-11-04, write-math-pool-g8m2-ister (D-043): +12 задач з Істера 8 (ist8g, § 7, § 10, вправи для повторення розділу 1; srcPage = друкований номер = сторінка PDF) —
    e01–e06 для g8m2l6 (вписаний чотирикутник), f01–f06 для g8m2l7 (описаний). Задачі a–d не змінено.
    Статус: verified 2026-11-04 (нові e, f — verifier-write-math-pool-g8m2-ister, reports/verify/write-math-pool-g8m2-ister.md). Задачі a–d — verified (повторно після fix-math-figs-g8-geo, 2026-11-03: статичні рисунки lab до 17 задач; verifier-fix-math-figs-g8-geo, reports/verify/fix-math-figs-g8-geo.md; b07 — підпис «BD = 10» над рисунком). Попередньо — verified (автор agent-write-math-pool-g8m2, 2026-10-31; верифікатор verifier-pool-g8m2, 2026-10-31, reports/verify/pg8m2.md). 32 задачі: по 8 на required-уроки
@@ -12,8 +14,8 @@
 SLID.pool("math", {
   id: "pg8m2",
   section: "g8m2",
-  status: "verified",
-  meta: { author: "claude-opus", created: "2026-10-31", factcheck: "verifier-pool-g8m2", teacher: null },
+  status: "draft",
+  meta: { author: "claude-opus", created: "2026-10-31", factcheck: "verifier-pool-g8m2", revised: "2026-11-05 fix-math-pools-ister-formats", teacher: null },
   sources: [
     { id: "mer8g", title: "Мерзляк А. Г., Якір М. С. Геометрія : підруч. для 8 кл. закладів заг. серед. освіти. — Харків: Гімназія, 2025 (п. 2, 4–8, 11)", url: "https://file.4book.org/images/shcoolbook_ua/8/8_geom_m_2025.pdf" },
     { id: "ist8g", title: "Істер О. С. Геометрія : підруч. для 8 кл. закл. заг. серед. освіти. — Київ : Генеза, 2025 (§ 7, § 10, вправи для повторення розділу 1)", url: "https://file.4book.org/images/shcoolbook_ua/8/8_geom_i_2025.pdf" }
@@ -385,6 +387,18 @@ SLID.pool("math", {
       answer: "5R",
       hint: "Проведи радіуси $OB$ і $OC$. Порівняй трикутники $AOB$, $BOC$ і $COD$.",
       steps: ["$OA = OB = OC = OD = R$, а $AB = BC = CD$ (трапеція вписана, тож рівнобічна). Отже, $\\triangle AOB = \\triangle BOC = \\triangle COD$ за третьою ознакою.", "Їхні кути при $O$ рівні й разом дають розгорнутий кут: кожен по $180° : 3 = 60°$.", "Рівнобедрений трикутник з кутом $60°$ — рівносторонній: $AB = BC = CD = R$.", "$P = R + R + R + 2R = 5R$."] },
+    { id: "e07", lesson: "g8m2l6", lvl: 2, sk: "geom", src: "ist8g №7.7", srcPage: 52,
+      type: "answer", answerKind: "list", title: "Кути $C$ і $D$ вписаного",
+      body: "<p>Чотирикутник $ABCD$ вписаний у коло, $\\angle A = 139°$, $\\angle B = 48°$. Знайди кути $C$ і $D$.</p><p>Запиши $\\angle C$ і $\\angle D$ через крапку з комою.</p>",
+      lab: { kind: "plane", axes: false, grid: 0, view: [-5.2, 5.2, 1.5, 5.6],
+        circles: [{ c: "O", r: "5", color: "muted" }],
+        points: { O: { at: [0, 0], label: false, color: "muted" }, A: { at: [-2.868, 4.096] }, B: { at: [-4.373, 2.424] }, C: { at: [4.373, 2.424] }, D: { at: [1.792, 4.668] } },
+        polys: [{ pts: ["A", "B", "C", "D"], color: "accent", opacity: 0.16 }],
+        angles: [{ from: "D", at: "A", to: "B", color: "gold", r: 20 }, { from: "A", at: "B", to: "C", color: "blue", r: 30 }, { from: "B", at: "C", to: "D", color: "gold", r: 30, label: false }, { from: "C", at: "D", to: "A", color: "blue", r: 20, label: false }],
+        alt: "Чотирикутник ABCD, вписаний у коло; кут A дорівнює 139 градусів, кут B — 48 градусів, кути C і D невідомі" },
+      answer: [41, 132], unit: "°",
+      hint: "У вписаному чотирикутнику сума протилежних кутів дорівнює $180°$. Протилежні — $A$ і $C$, $B$ і $D$.",
+      steps: ["Чотирикутник вписаний, тож $\\angle A + \\angle C = 180°$ і $\\angle B + \\angle D = 180°$.", "$\\angle C = 180° - 139° = 41°$.", "$\\angle D = 180° - 48° = 132°$."] },
 
     /* ───────────── Урок 6. Описаний чотирикутник (g8m2l7; Істер 8, § 7 п. 3–4) ───────────── */
     { id: "f01", lesson: "g8m2l7", lvl: 1, sk: "geom", src: "ist8g повт. розд. 1 №57", srcPage: 70,
@@ -454,6 +468,22 @@ SLID.pool("math", {
         alt: "Прямокутна трапеція ABCD з вписаним колом; менша бічна сторона AB дорівнює a, кути C і D не підписано" },
       answer: "6a",
       hint: "Гострий і тупий кути при бічній стороні разом дають $180°$. Потім згадай катет проти кута $30°$.",
-      steps: ["Гострий кут $x$, тупий $5x$: $x + 5x = 180°$, $x = 30°$.", "Менша бічна сторона $AB = a$ — висота. Проведемо висоту $CH = a$: у $\\triangle CHD$ катет $CH$ лежить проти кута $30°$, тож $CD = 2a$.", "Описана: $AD + BC = AB + CD = a + 2a = 3a$.", "$P = 3a + 3a = 6a$ (см)."] }
+      steps: ["Гострий кут $x$, тупий $5x$: $x + 5x = 180°$, $x = 30°$.", "Менша бічна сторона $AB = a$ — висота. Проведемо висоту $CH = a$: у $\\triangle CHD$ катет $CH$ лежить проти кута $30°$, тож $CD = 2a$.", "Описана: $AD + BC = AB + CD = a + 2a = 3a$.", "$P = 3a + 3a = 6a$ (см)."] },
+    { id: "f07", lesson: "g8m2l7", lvl: 1, sk: "geom", src: "ist8g повт. розд. 1 №55(2)", srcPage: 70,
+      type: "choice", title: "$AB = 3$, $BC = 7$, $CD = 8$, $DA = 10$",
+      body: "<p>У чотирикутнику $ABCD$ сторони $AB = 3$ дм, $BC = 7$ дм, $CD = 8$ дм, $DA = 10$ дм. Чи можна вписати в нього коло?</p>",
+      lab: { kind: "plane", axes: false, grid: 0, view: [-1, 11, -1, 8],
+        points: { A: { at: [0, 0] }, B: { at: [0.521, 2.954] }, C: { at: [6.204, 7.042] }, D: { at: [10, 0] } },
+        polys: [{ pts: ["A", "B", "C", "D"], color: "accent", opacity: 0.12 }],
+        segs: [{ a: "A", b: "B", label: "3" }, { a: "B", b: "C", label: "7" }, { a: "C", b: "D", label: "8" }, { a: "D", b: "A", label: "10" }],
+        alt: "Чотирикутник ABCD зі сторонами AB 3, BC 7, CD 8, DA 10" },
+      opts: [
+        "Ні: $3 + 8 = 11$, а $7 + 10 = 17$",
+        "Так: $3 + 7 = 10$, тобто $AB + BC = DA$",
+        "Так: коло можна вписати в будь-який чотирикутник"
+      ],
+      correct: 0,
+      hint: "Згадай ознаку описаного чотирикутника: які суми сторін мають бути рівні?",
+      steps: ["Протилежні сторони — $AB$ і $CD$, $BC$ і $DA$.", "$AB + CD = 3 + 8 = 11$ дм, $BC + DA = 7 + 10 = 17$ дм.", "Суми різні — коло вписати не можна."] }
   ]
 });

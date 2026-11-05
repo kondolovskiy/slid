@@ -1,4 +1,6 @@
 /* Слід · Математика, 6 клас — пул задач для тренування до розділу «Раціональні числа» (g6m4)
+   Статус: draft (fix-math-pools-ister-formats, 2026-11-05) до незалежної перевірки нових вправ / рисунка: +f08 (g6m4l7, рівень 1, answer: кут AOC при перпендикулярних прямих; ist6b №1505, с. 120, adapted) — перша вправа answer рівня 1 уроку.
+   Попередній стан — нижче.
    Статус: verified (verifier-write-math-pool-g6m4-ister, 2026-11-04; reports/verify/write-math-pool-g6m4-ister.md). write-math-pool-g6m4-ister (2026-11-04): +21 вправа для нових уроків за Істером (D-043): g6m4l7 — f01–f07, g6m4l8 — g01–g07,
    g6m4l9 — h01–h07 (ist6b § 44, 45, 47; mer6 п. 41, 42). Наявні 40 вправ, їхні id, lesson і ключі не змінені.
    Попередній статус: verified (verifier-refine-math-diag-g6-coverage, 2026-10-31; reports/verify/refine-math-diag-g6-coverage.md) після refine-math-diag-g6-coverage (2026-10-31): e05 → e09 (mer6 №1231(2), уся пара координат) — формат матриці coordinates2; повторна незалежна
@@ -10,8 +12,8 @@
 SLID.pool("math", {
   id: "pg6m4",
   section: "g6m4",
-  status: "verified",
-  meta: { author: "claude-opus", created: "2026-10-13", factcheck: "verifier-write-math-pool-g6m4-ister", revised: "2026-11-04 write-math-pool-g6m4-ister", teacher: null },
+  status: "draft",
+  meta: { author: "claude-opus", created: "2026-10-13", factcheck: "verifier-write-math-pool-g6m4-ister", revised: "2026-11-05 fix-math-pools-ister-formats", teacher: null },
   sources: [
     { id: "ist6", title: "Істер О. С. Математика. 6 клас. Ч. 2. — Київ: Генеза, 2023 (§ 26–32, 34, 36, 40, 46)", url: "https://www.geneza.ua/sites/default/files/%D0%86%D1%81%D1%82%D0%B5%D1%80_%D0%9C%D0%B0%D1%82_%D0%9F(%D1%87.2)_6.pdf" },
     { id: "ist6b", title: "Істер О. С. Математика. 6 клас. Ч. 2. — Київ: Генеза, 2023 (§ 44, 45, 47; те саме видання, що ist6; сигла задач write-math-*-ister)", url: "https://file.4book.org/images/shcoolbook_ua/6/6_m_i_2023-2.pdf" },
@@ -303,6 +305,17 @@ SLID.pool("math", {
       answer: 126, unit: "°",
       hint: "Кут $DBC$ прямий, тож знайди кут $OBC$. Кут $OBF$ теж прямий — звідси кут $CBF$.",
       steps: ["$AC \\perp DK$, тому $\\angle DBC = 90°$, і $\\angle OBC = 90° - 54° = 36°$.", "$OB \\perp BF$, тому $\\angle OBF = 90°$, і $\\angle CBF = 90° - 36° = 54°$.", "Кути $ABF$ і $CBF$ разом — розгорнутий кут $ABC$: $\\angle ABF = 180° - 54° = 126°$."] },
+    { id: "f08", lesson: "g6m4l7", lvl: 1, sk: "geom", src: "ist6b №1505", srcPage: 120, adapted: true,
+      type: "answer", title: "Кут $AOC$",
+      body: "<p>Прямі $AB$ і $CD$ перетинаються в точці $O$, кут $AOD$ прямий. Знайди градусну міру кута $AOC$.</p>",
+      lab: { kind: "plane", axes: false, grid: 0, view: [-5, 5, -4, 4],
+        points: { A: { at: [0, 3] }, B: { at: [0, -3] }, C: { at: [-4, 0] }, D: { at: [4, 0] }, O: { at: [0, 0] } },
+        lines: [{ through: ["A", "B"] }, { through: ["C", "D"], color: "blue" }],
+        angles: [{ from: "D", at: "O", to: "A", label: false }, { from: "A", at: "O", to: "C", label: false, right: false, color: "gold" }],
+        alt: "Прямі AB і CD перетинаються в точці O; кут AOD позначено як прямий, кут AOC — дугою без числа" },
+      answer: 90, unit: "°",
+      hint: "Промені $OC$ і $OD$ лежать на одній прямій. Який кут вони утворюють?",
+      steps: ["Кут $COD$ розгорнутий: $\\angle COD = 180°$.", "Промінь $OA$ ділить його на кути $AOC$ і $AOD$: $\\angle AOC + \\angle AOD = 180°$.", "$\\angle AOC = 180° - 90° = 90°$. Усі чотири кути при перпендикулярних прямих — прямі."] },
 
     /* ---------- g6m4l8 · Дороги, що йдуть поруч: паралельні прямі (ist6b § 45) ---------- */
     { id: "g01", lesson: "g6m4l8", lvl: 1, sk: "geom", src: "ist6b №1523", srcPage: 123,

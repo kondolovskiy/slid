@@ -1,4 +1,6 @@
 /* Слід · Математика, 7 клас — пул задач для тренування до розділу «Геометрія: коло» (g7m8)
+   Статус: draft (fix-math-pools-ister-formats, 2026-11-05) до незалежної перевірки нових вправ / рисунка: підписи довжин рисунка b08 — без «см» (8, 2, 4), як в інших пулах (одиниця — в умові); зміст і ключ не змінено.
+   Попередній стан — нижче.
    Статус: verified — 2026-11-04 додано d01–d08 (g7m8l5) і e01–e08 (g7m8l6) за Істером (write-math-pool-g7m8-ister); перевірено verifier-write-math-pool-g7m8-ister (reports/verify/write-math-pool-g7m8-ister.md; підпис B у d07 винесено з-під точки M).
    Раніше: verified (рисунки lab до a07, a08, b01, b02, b05–b08 — fix-math-figs-g7-geo-b, перевірено 2026-11-03, reports/verify/fix-math-figs-g7-geo-b.md; раніше verifier-pg7m8, 2026-10-31, reports/verify/pg7m8.md).
    40 задач: по 8 на уроки g7m8l1, g7m8l2, g7m8l3, g7m8l5, g7m8l6 (3 рівня 1, 3 рівня 2, 2 рівня 3). Серії a, b, c — без змін.
@@ -14,8 +16,8 @@
 SLID.pool("math", {
   id: "pg7m8",
   section: "g7m8",
-  status: "verified",
-  meta: { author: "w-write-math-pool-g7m8", created: "2026-10-31", factcheck: "verifier-pg7m8 (a–c); d, e — verifier-write-math-pool-g7m8-ister (2026-11-04, reports/verify/write-math-pool-g7m8-ister.md)", revised: "2026-11-04 write-math-pool-g7m8-ister (d01–d08, e01–e08)", teacher: null },
+  status: "draft",
+  meta: { author: "w-write-math-pool-g7m8", created: "2026-10-31", factcheck: "verifier-pg7m8 (a–c); d, e — verifier-write-math-pool-g7m8-ister (2026-11-04, reports/verify/write-math-pool-g7m8-ister.md)", revised: "2026-11-05 fix-math-pools-ister-formats", teacher: null },
   sources: [
     { id: "mer7g", title: "Мерзляк А. Г., Якір М. С. Геометрія : підручник для 7 класу закладів загальної середньої освіти. — Харків : Гімназія, 2024 (наказ МОН № 124 від 05.02.2024); PDF — дзеркало 4book.org", url: "https://file.4book.org/images/shcoolbook_ua/7/7_geom_m_2024.pdf" },
     { id: "ist7g", title: "Істер О. С. Геометрія : підручник для 7 класу закладів загальної середньої освіти. — Київ : Генеза, 2024 (наказ МОН № 124 від 05.02.2024); PDF — дзеркало 4book.org", url: "https://file.4book.org/images/shcoolbook_ua/7/7_geom_i_2024.pdf" }
@@ -170,7 +172,7 @@ SLID.pool("math", {
         points: { A: { at: [0, 0] }, B: { at: [8.667, 4.989] }, C: { at: [12, 0] },
           M: { at: [6.933, 3.991], color: "blue" }, K: { at: [9.778, 3.326], color: "blue" }, E: { at: [8, 0], color: "blue" } },
         polys: [{ pts: ["A", "B", "C"], color: "accent", opacity: 0.06 }],
-        segs: [{ a: "A", b: "M", color: "gold", label: "8 см" }, { a: "B", b: "K", color: "gold", label: "2 см" }, { a: "K", b: "C", color: "gold", label: "4 см" }],
+        segs: [{ a: "A", b: "M", color: "gold", label: "8" }, { a: "B", b: "K", color: "gold", label: "2" }, { a: "K", b: "C", color: "gold", label: "4" }],
         alt: "Трикутник ABC і вписане коло з точками дотику M, K, E; AM 8 см, BK 2 см, KC 4 см" },
       hint: "З кожної вершини до кола проведено дві дотичні. Які відрізки сторін через це рівні?",
       steps: ["Відрізки дотичних з однієї точки рівні: $BM = BK = 2$ см, $CE = CK = 4$ см, $AE = AM = 8$ см.", "$AB = 8 + 2 = 10$ см, $BC = 2 + 4 = 6$ см, $AC = 8 + 4 = 12$ см.", "$P = 10 + 6 + 12 = 28$ см."] },
