@@ -157,12 +157,14 @@ async def main():
                             order0 = await pg.evaluate(GAP_ORDER) if t == "gaps" else None
                             mark, undo = await lang_wrong(pg, s)
                             if mark:
-                                lang_bad += 1; await pg.click("#action")
+                                await pg.click("#action")
                                 cls = await pg.get_attribute("#dock", "class")
                                 lab = await pg.get_attribute(mark, "aria-label") if await pg.locator(mark).count() else None
                                 if "bad" not in cls:   # екран уже закрито («Далі») — далі не відповідаємо, а йдемо на наступний
                                     errs.append(f"{c['id']} {l['id']} екран {si+1} ({t}): хибну спробу зараховано (dock: {cls})")
                                     await pg.click("#action"); continue
+                                # лічимо лише спробу, яку рушій справді відхилив (рев'ю engine-lang-p3: зарахована «хибна» спроба лічильник завищувала)
+                                lang_bad += 1
                                 # tests-lang-gaps-order (рев'ю engine-lang-gaps-shuffle, P3-1): порядок кнопок пропусків не стрибає між спробами
                                 if order0 is not None and (o1 := await pg.evaluate(GAP_ORDER)) != order0: errs.append(f"{c['id']} {l['id']} екран {si+1} (gaps): порядок кнопок змінився після хибної спроби {order0} → {o1}")
                                 if not lab or not lab.endswith("неправильно"): errs.append(f"{c['id']} {l['id']} екран {si+1} ({t}): хибний вибір без позначки «неправильно» для диктора ({mark}: {lab!r})")

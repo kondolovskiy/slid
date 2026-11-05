@@ -50,9 +50,17 @@ export function plain(s = "") {
 }
 /** Текст для метрик стилю (stats, профіль validate, довгі речення): plain() без транскрипцій [йа́ма] і переліків звуків [а], [о]
     (п. 13) та без рядків з одиночних літер — алфавіт «А Б В … Я», переліки «а, о, у, е» (п. 11; «Ф» — формула, її не чіпаємо). */
-const LETTER_RUN = /(?:(?<![\p{L}\p{M}\p{N}'’ʼ-])(?!Ф(?![\p{L}]))\p{L}\p{M}?(?![\p{L}\p{M}\p{N}'’ʼ-])[\s,;/·–—-]*){4,}/gu;
+// tools-math-ister-p3 п. 17 (рев'ю engine-lang-p3): грецькі літери — назви площин і кутів («площини α, β і γ»), не перелік літер;
+// рядок лише з однолітерних слів української («а й у», «і в») — текст, а не перелік
+const LETTER_RUN = /(?:(?<![\p{L}\p{M}\p{N}'’ʼ-])(?!Ф(?![\p{L}]))(?!\p{Script=Greek})\p{L}\p{M}?(?![\p{L}\p{M}\p{N}'’ʼ-])[\s,;/·–—-]*){4,}/gu;
+const ONE_WORDS = new Set(["а", "в", "є", "з", "й", "і", "о", "у"]);
+const letterRun = m => (m.match(/\p{L}/gu) || []).every(ch => ONE_WORDS.has(ch.toLocaleLowerCase("uk"))) ? m : " ";
+// [йа́ма], [а], [ш′] — транскрипції (прибираємо); [їм], [про неї] у «цитаті» — вставка упорядника (hist), її читають: лишаємо слова.
+// Вставка — лише в «…», без знаків транскрипції (наголос, ′, ', :) і довша за 1 літеру: «Звук [й]», «Треба [с:ади́ти]» — транскрипції
+const bracket = (m, x, off, src) => { const h = src.slice(0, off);
+  return (h.match(/«/g) || []).length > (h.match(/»/g) || []).length && !/[\u0301′'’ʼ:ː]/.test(x) && (x.match(/\p{L}/gu) || []).length > 1 ? x : " "; };
 export function mplain(s = "") {
-  return plain(s).replace(/\[[^\[\]]{1,40}\]/g, " ").replace(LETTER_RUN, " ").replace(/\s+([,.;:!?…])/g, "$1").replace(/(?:[,;:]\s*)+(?=[,;.!?…]|$)/g, "").replace(/\s+/g, " ").trim();
+  return plain(s).replace(/\[([^\[\]]{1,40})\]/g, bracket).replace(LETTER_RUN, letterRun).replace(/\s+([,.;:!?…])/g, "$1").replace(/(?:[,;:]\s*)+(?=[,;.!?…]|$)/g, "").replace(/\s+/g, " ").trim();
 }
 const VOW = /[аеєиіїоуюяaeiouy]/gi;
 // \p{M}: комбінований наголос U+0301 — частина слова («листопа́д» — одне слово, п. 12)
@@ -116,30 +124,44 @@ export function readJSON(p) { return JSON.parse(fs.readFileSync(path.join(ROOT, 
    Спільне для tools/fig-audit.mjs і правила validate (попередження лише для "ref"). */
 // «на графіку функції $y = …$», «дотична до графіка», «площа під графіком» — поняття, а не посилання на рисунок: графік рахуємо,
 // лише коли за ним не йде формула (Ф), «функції», «рівняння» тощо («за графіком знайди», «на графіку видно»)
-export const FIG_REF = /(?:^|[^\p{L}])(?:на|за|з|під|над|до)\s+(?:цьому\s+|цим\s+|даному\s+)?(?:рисун(?:ку|ком|ка|ок)|малюн(?:ку|ком|ка|ок)|кресленн(?:і|ям|я)|діаграм(?:і|ою|и|у))(?![\p{L}])|(?:^|[^\p{L}])(?:на|за|з)\s+графі?к(?:у|ом|а)(?![\p{L}])(?!\s*,?\s*(?:Ф|функці|рівнянн|залежн|многочлен|ціє|цьог|похідн|первісн|якщо|тоді))|(?:рисун|малюн)\S*\s+(?:нижче|вище|поруч)|зображен\S*\s+на\s|(?:див\.|подивись на|розглянь)\s+(?:рисун|малюн|кресл|графік|діаграм)/iu;
+export const FIG_REF = /(?:^|[^\p{L}])(?:на|за|з|під|над|до)\s+(?:цьому\s+|цим\s+|даному\s+)?(?:рисун(?:ку|ком|ка|ок)|малюн(?:ку|ком|ка|ок)|кресленн(?:і|ям|я)|діаграм(?:і|ою|и|у))(?![\p{L}])|(?:^|[^\p{L}])(?:на|за|з)\s+графі?к(?:у|ом|а)(?![\p{L}])(?!\s*,?\s*(?:Ф|функці|рівнянн|залежн|многочлен|ціє|цьог|похідн|первісн|якщо|тоді|рух|робот|чергуван|змін|занят|урок|прийом|тренуван|відвідуван|поїзд|автобус|платеж))|(?:рисун|малюн)\S*\s+(?:нижче|вище|поруч)|(?:^|[^\p{L}])рис\.\s*\d|зображен\S*\s+на\s(?!(?:передньому|задньому|другому|першому)\s+плані|тлі)|(?:див\.|подивись на|розглянь)\s+(?:рисун|малюн|кресл|графік|діаграм)/iu;
 const FIG_GEO = /трикутник|чотирикутник|паралелограм|трапеці|ромб|прямокутник|квадрат|кут(?:[аиіуо]|ом|ів)?(?![\p{L}])|бісектрис|медіан|висот[аиуіо]|серединн|перпендикуляр|паралельн|мимобіжн|коло|кола|колі|хорд|дотичн|вписан|описан|призм|пірамід|куб(?:[аіу]|ом)?(?![\p{L}])|паралелепіпед|тетраедр|цилінд|конус|відріз|промен|площин/iu;
-const FIG_GRAPH = /графік|координатн\S*\s+площин|діаграм/iu;
+// згадка (група graph у fig-audit, validate мовчить): графік, площина, діаграма, а також «на плані», «на схемі» — часто сюжет
+// («на плані міста», масштаб 1 : 1000) чи мовна схема речення, тож лише кандидати для ручного перегляду (рев'ю tools-math-fig-audit P3-2)
+const FIG_GRAPH = /графік|координатн\S*\s+площин|діаграм|(?:^|[^\p{L}])(?:на|за)\s+(?:план[іу]|схем(?:і|ою|у))(?![\p{L}])/iu;
+// графік чи діаграму треба побудувати, а не прочитати: «побудуй графік», «дані показують круговою діаграмою», «Іра малює діаграму» —
+// рисунок не потрібен (рев'ю tools-math-fig-audit: хибні pg6m3 f04, f06–f08)
+const FIG_MAKE = /(?:побуд|будуй|будує|будуют|показу|покаж|намал|малю|зобраз|накресл|склад)\p{L}*\s+(?:\p{L}+\s+){0,2}(?:графік|діаграм)/iu;
 export const hasIllustration = s => !!(s && (s.fig || s.img || s.svg || s.lab));
+// Величини, а не точки (рев'ю tools-math-fig-audit P3-3: «$V = S * H$», «$πR^2H$», «$2πRH$» давали точки S, H, R, P):
+// одна велика літера в добутку (·, *, \cdot, \times), у степені ($R^2$) чи після π — величина на всьому екрані.
+// Позначення з кількох літер ($AB \cdot CD$, $AB^2$) лишаються точками.
+const FIG_QTY = [/π\s*([A-Z]+)/g, /(?<![A-Za-z'′])([A-Z])(?=\s*(?:\^|\*))/g, /\*\s*([A-Z])(?![A-Za-z_'′])/g];
 export function figPoints(text) {
-  const P = new Set();
+  const P = new Set(), Q = new Set();
   for (const m of String(text).matchAll(/\$([^$]+)\$/g)) {
-    const f = m[1].replace(/\\(?:text|mathrm|operatorname)\s*\{[^{}]*\}/g, " ").replace(/\\[a-zA-Z]+/g, " ")
+    const f = m[1].replace(/\\(?:text|mathrm|operatorname)\s*\{[^{}]*\}/g, " ").replace(/\\(?:cdot|times)(?![a-zA-Z])|·/g, " * ").replace(/\\pi(?![a-zA-Z])/g, "π").replace(/\\[a-zA-Z]+/g, " ")
       .replace(/(?<![A-Za-z])[DE]\s*\(\s*[a-z]\s*\)/g, " ")                 // D(f), E(f) — області, не точки
       .replace(/(?<![A-Za-z])[SVRPQ]\s*(?=[=_(]|$|\s*[<>≤≥])/g, " ");      // S =, V =, P =, R = — величини, не точки
+    for (const re of FIG_QTY) for (const q of f.matchAll(re)) for (const ch of q[1]) Q.add(ch);
     for (const w of f.matchAll(/(?<![A-Za-z])[A-Z](?:[A-Z]|_\{?\d\}?|'|′)*(?![a-z])/g)) for (const ch of w[0].match(/[A-Z]/g)) P.add(ch);
   }
+  for (const q of Q) P.delete(q);
   return P;
 }
 export function figCues(s, prev = null) {
-  if (!s || s.type === "intro") return null;
+  if (!s) return null;
   const raw = [s.title, s.body, s.q].filter(x => typeof x === "string").join(" ");   // text — речення мовної вправи, не умова
   const text = raw.replace(/<[^>]+>/g, " ");
   const prose = text.replace(/\$\$[\s\S]*?\$\$|\$[^$]*\$/g, " Ф ");
   const ill = hasIllustration(s), prevIll = hasIllustration(prev);
   const ref = prose.match(FIG_REF)?.[0]?.trim();
   const pts = figPoints(text), geo = FIG_GEO.test(prose) && pts.size >= 3;
-  const graph = prose.match(FIG_GRAPH)?.[0];
+  const graph = FIG_MAKE.test(prose) ? null : prose.match(FIG_GRAPH)?.[0]?.trim();
   const level = ref ? "ref" : geo ? "geo" : graph ? "graph" : null;
   if (!level) return null;
-  return { level, ill, prevIll, ref: ref || null, points: [...pts].join(""), graph: graph || null, text: plain(raw).slice(0, 200) };
+  // intro — сюжетний вступ («На кресленні двору…»): validate про нього не попереджає, fig-audit показує окремою групою (рев'ю P3-2)
+  // text — сирий TeX без тегів, а не plain() з «Ф» (рев'ю P3-4): для ручного перегляду формули потрібні
+  return { level, intro: s.type === "intro", ill, prevIll, ref: ref || null, points: [...pts].join(""), graph: graph || null,
+    text: text.replace(/&nbsp;/g, " ").replace(/\s+/g, " ").trim().slice(0, 200) };
 }

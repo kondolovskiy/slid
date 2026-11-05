@@ -572,7 +572,7 @@ expectRun("drag: at і без drag — без попередження", one("fx
 
 // tools-math-fig-audit: умова посилається на рисунок без ілюстрації — попередження (не помилка); з lab на екрані чи на попередньому
 // екрані уроку — чисто; «на графіку функції $…$», «дотична до графіка» — поняття, не посилання
-const { figCues: figCuesT } = await import(path.join(ROOT, "tools/lib.mjs"));
+const { figCues: figCuesT, figPoints: figPointsT } = await import(path.join(ROOT, "tools/lib.mjs"));
 { const REF = "умова посилається на рисунок";
   expectRun("«На рисунку» без ілюстрації — попередження", one("fxf", { body: "На рисунку трикутник $ABC$. Скільки в ньому кутів?" }), ["--section", "fxf"], { warn: REF });
   expectRun("«За графіком» на екрані answer уроку — попередження", one("fxf", { extra: { type: "answer", title: "Висота", body: "За графіком знайди висоту в метрах.", answer: 4 } }), ["--section", "fxf"], { warn: REF });
@@ -593,15 +593,56 @@ const { figCues: figCuesT } = await import(path.join(ROOT, "tools/lib.mjs"));
   expectRun("«На рисунку» з lab на екрані й перед ним — чисто", one("fxf", { body: "На рисунку трикутник $ABC$.", lab: plane({}) }), ["--section", "fxf"], { noWarn: REF });
   expectRun("«на графіку функції $y = x$», «до графіка» — не посилання", one("fxf", { body: "Точка $M$ лежить на графіку функції $y = x$. Дотична до графіка $y = x^2$, площа під графіком." }), ["--section", "fxf"], { noWarn: REF });
   // tools/fig-audit.mjs на тому самому фікстурному дереві: геометрія з позначеннями — група geo, ref — окремо, ілюстроване — не в звіті
-  runTree(one("fxf", { body: "У паралелепіпеді $ABCDA_1B_1C_1D_1$ знайди ребро $BB_1$.", extra: { type: "answer", title: "Висота", body: "За графіком знайди висоту.", answer: 4 } }), ["--section", "fxf"]);
+  // tools-math-ister-p3 (рев'ю tools-math-fig-audit P3-2…P3-5): межі евристик figCues
+  { const lv = (body, type = "answer") => figCuesT({ type, title: "Задача", body })?.level ?? null;
+    ok(lv("За графіком руху поїзда знайди час у дорозі.") === "graph" && lv("За графіком роботи магазину скільки годин він відчинений?") === "graph" && lv("За графіком знайди час у дорозі.") === "ref", "figCues: «за графіком руху / роботи» — розклад (згадка), не посилання на рисунок");
+    ok(lv("Що зображено на передньому плані картини?") === null && lv("Що зображено на рисунку?") === "ref", "figCues: «зображено на передньому плані» — не посилання, «зображено на рисунку» — так");
+    ok(lv("Знайди кут, див. рис. 3.") === "ref" && lv("Як на рис. 2, знайди відрізок.") === "ref", "figCues: «рис. N» — пряме посилання");
+    ok(lv("На плані міста дві вулиці.") === "graph" && lv("На схемі видно кордони.") === "graph", "figCues: «на плані», «на схемі» — згадка (graph), не ref");
+    ok(lv("Побудуй графік функції $y = 2x$.") === null && lv("У класі 14 хлопців. Ці дані показують круговою діаграмою. Який кут сектора?") === null && lv("Іра малює діаграму голосів.") === null,
+      "figCues: графік чи діаграму треба побудувати — не згадка");
+    ok(lv("За діаграмою визнач найбільше значення.") === "ref" && lv("Графік функції $y = x^2$ — парабола.") === "graph", "figCues: читати з діаграми — ref; графік як поняття — graph");
+    // P3-3: величини в добутку, степені й після π — не точки
+    const pts = t => [...figPointsT(t)].sort().join("");
+    ok(pts("$V = S * H$, $S = πR^2$, $V = πR^2H$") === "" && pts("$S_{бічн} = P \\cdot H$, $2\\pi RH$") === "", "figPoints: S·H, R², 2πRH — величини", pts("$V = S * H$, $V = πR^2H$") + "|" + pts("$P \\cdot H$, $2\\pi RH$"));
+    ok(pts("$AB \\cdot CD = AC^2$, $BB_1$") === "ABCD" && pts("$\\triangle ABC$") === "ABC", "figPoints: AB·CD, AC² — точки", pts("$AB \\cdot CD = AC^2$, $BB_1$"));
+    ok(lv("У призмі об'єм $V = S * H$, де $S$ — площа основи, а у циліндра $V = πR^2H$.") === null, "figCues: формули об'ємів у призмі — не geo (g11m4l3)");
+    // intro: cue з intro: true; validate мовчить, fig-audit — група intro
+    const ci = figCuesT({ type: "intro", title: "Двір", body: "На кресленні двору є трикутний газон." });
+    ok(ci?.level === "ref" && ci.intro === true && figCuesT({ type: "answer", body: "На кресленні двору." })?.intro === false, "figCues: intro повертає cue з intro: true", JSON.stringify(ci)); }
+  const introTree = files => Object.fromEntries(Object.entries(files).map(([f, src]) => [f, src.replace('"Як записати число?"', '"На кресленні двору трикутник $ABC$ і газон $|x|$."')]));
+  expectRun("intro «На кресленні двору» без ілюстрації — validate не попереджає", introTree(one("fxf", {})), ["--section", "fxf"], { noWarn: REF });
+  runTree(introTree(one("fxf", { body: "У паралелепіпеді $ABCDA_1B_1C_1D_1$ знайди ребро $BB_1$.", extra: { type: "answer", title: "Висота", body: "За графіком знайди висоту.", answer: 4 } })), ["--section", "fxf"]);
   const r = spawnSync(process.execPath, [path.join(tmp, "tools/fig-audit.mjs"), "--json"], { cwd: tmp, encoding: "utf8" });
   let rep = null; try { rep = JSON.parse(r.stdout); } catch {}
   ok(rep && r.status === 0, "fig-audit: JSON і код 0", (r.stdout || "") + (r.stderr || ""));
   if (rep) { const g = rep.rows.map(x => `${x.where}:${x.group}`).sort();
-    ok(JSON.stringify(g) === JSON.stringify(["fxfl1 екран 2:geo", "fxfl1 екран 3:geo", "fxfl1 екран 4:ref"]), "fig-audit: групи geo/ref за фікстурою", JSON.stringify(g));
-    ok(rep.screens === 4, "fig-audit: переглянуто 4 екрани (не 0)", String(rep.screens)); }
+    ok(JSON.stringify(g) === JSON.stringify(["fxfl1 екран 1:intro", "fxfl1 екран 2:geo", "fxfl1 екран 3:geo", "fxfl1 екран 4:ref"]), "fig-audit: групи intro/geo/ref за фікстурою", JSON.stringify(g));
+    ok(rep.screens === 4, "fig-audit: переглянуто 4 екрани (не 0)", String(rep.screens));
+    const t = rep.rows.find(x => x.where === "fxfl1 екран 1")?.text || "";
+    ok(t.includes("$ABC$") && !t.includes(" Ф "), "fig-audit: умова з сирим TeX, а не «Ф» (P3-4)", t); }
+  const md = fs.existsSync(path.join(tmp, "reports/fig-audit-math.md")) ? fs.readFileSync(path.join(tmp, "reports/fig-audit-math.md"), "utf8") : "";
+  ok(md.includes("$ABC$") && md.includes("\\|x\\|") && md.includes("Сюжетний вступ"), "fig-audit: у .md сирий TeX (| екрановано) і група вступу", md.slice(0, 300));
+  ok(!fs.existsSync(path.join(tmp, "reports/fig-audit-math.json")), "fig-audit: файл .json не пишеться (P3-5: шум у diff на кожен check)");
   const bad = spawnSync(process.execPath, [path.join(tmp, "tools/fig-audit.mjs"), "--subjekt", "math"], { cwd: tmp, encoding: "utf8" });
   ok(bad.status === 2, "fig-audit: невідомий аргумент — код 2", String(bad.status)); }
+
+// tools-math-ister-p3 п. 12: індекс поза $…$ у підписах lab; link-завдання («Пригадай…») без питання
+{ const SUB = "поза $…$ покажеться сирим";
+  const st = extra => ({ kind: "plane", axes: false, grid: 0, view: [-5, 5, -5, 5], ...extra });
+  expectRun("lab: підпис точки «A_1» поза $…$ — попередження", one("fxs", { lab: st({ points: { A: { x: "1", y: "1", label: "A_1" } } }) }), ["--section", "fxs"], { warn: SUB });
+  expectRun("lab: «x_{2}» у texts поза $…$ — попередження", one("fxs", { lab: st({ texts: [{ x: 0, y: 0, t: "x_{2} = 3" }] }) }), ["--section", "fxs"], { warn: SUB });
+  expectRun("lab: «$A_1$», «A₁», шаблон {a_1} — чисто", one("fxs", { lab: st({ params: { a_1: { min: 0, max: 4, start: 1 } }, points: { A: { x: "a_1", y: "1", label: "$A_1$" }, B: { x: "2", y: "1", label: "B₁" } },
+    texts: [{ x: 0, y: 0, t: "Довжина {a_1}" }] }) }), ["--section", "fxs"], { noWarn: SUB });
+  const LINK = "link-завдання";
+  const hw = body => { const l = lesson("fxwl1", IMG); Object.assign(l.screens[2], { title: "Зять Ярослава Мудрого", body });
+    return { "content/world/g7-fxw.js": secJS("world", { id: "fxw", grade: 7, weeks: [1, 2], title: "Фікстура", why: "Регресійний тест валідатора: link-завдання.",
+      meta: { author: "test", created: "2026-11-05", factcheck: null, teacher: null }, lessons: [l] }) }; };
+  expectRun("world: «Пригадай: …» без питання — попередження", hw("<p>Пригадай: Єлизавета стала королевою Норвегії.</p>"), ["--section", "fxw"], { warn: LINK });
+  expectRun("world: «Пригадай: …» з питанням — чисто", hw("<p>Пригадай: Єлизавета стала королевою Норвегії.</p><p>Що з цього випливає?</p>"), ["--section", "fxw"], { noWarn: LINK });
+  expectRun("world: «Пригадай: …» з «Обери всі…» — чисто", hw("<p>Пригадай: Єлизавета стала королевою.</p><p>Обери всі правильні твердження.</p>"), ["--section", "fxw"], { noWarn: LINK });
+  expectRun("world: без «Пригадай» і без «?» — правило не про це", hw("<p>Єлизавета стала королевою Норвегії.</p>"), ["--section", "fxw"], { noWarn: LINK });
+  fs.rmSync(path.join(tmp, "content", "world"), { recursive: true, force: true }); }
 
 // ---- engine-lang-p3: мовні вправи й правила ukr ----
 { const UKR_SK = "orth";
@@ -640,6 +681,9 @@ const { figCues: figCuesT } = await import(path.join(ROOT, "tools/lib.mjs"));
   expectRun("ukr: «брат в сестри» — попередження милозвучності", u({ type: "info", title: "Гості", body: "Брат в сестри гостює." }), A, { warn: EU });
   expectRun("ukr: «вода і повітря», «Марія і Олег» — без попередження", u({ type: "info", title: "Природа", body: "Вода і повітря потрібні всім. Марія і Олег гуляють." }), A, { noWarn: EU });
   expectRun("ukr: милозвучність в outro — попередження", { "content/ukr/g5-fxu.js": secJS("ukr", (x => (x.lessons[0].outro.learned[0] = "Млинці з сметаною", x))(ukrSec("fxu", []))) }, A, { warn: EU });
+  // tools-math-ister-p3 п. 17 (рев'ю engine-lang-p3): назва й why уроку теж перевіряються (validate: euphonyWarn для l.title, l.why)
+  for (const [k, v] of [["title", "Брат й сестра"], ["why", "Навчитися писати млинці з сметаною."]])
+    expectRun(`ukr: милозвучність у ${k} уроку — попередження`, { "content/ukr/g5-fxu.js": secJS("ukr", (x => (x.lessons[0][k] = v, x))(ukrSec("fxu", []))) }, A, { warn: EU });
   expectRun("math: «брат в сестри» — правило лише для ukr", one("fxm", { body: "Брат в сестри має $2 + 2$ яблука." }), ["--section", "fxm"], { noWarn: EU });
   // tools-lang-p4, P3-6 (рев'ю engine-lang-p3, мутант А): validate не перевіряє милозвучність варіантів opts — хибний варіант навмисний
   expectRun("ukr: choice з хибним варіантом «Брат й сестра» — без попередження милозвучності", u({ type: "choice", title: "Що правильно?", opts: ["Брат і сестра", "Брат й сестра"], correct: 0 }), A, { noWarn: EU });

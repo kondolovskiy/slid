@@ -2,19 +2,20 @@
 // Слід · створює задачі на написання розділів з плану (content/<предмет>/plan.js).
 // Для кожного розділу без уроків, для якого ще немає задачі в tasks/*, з'являється tasks/todo/write-<предмет>-<id>.md.
 // Запуск: node tools/make-tasks.mjs [--subject math] [--grade 6] [--tasks DIR] [--content DIR]
-//   --tasks — інша тека задач; --content — інше дерево змісту (корінь з content/ і app/; фікстура в tools/test-make-tasks.mjs).
+//   --tasks — інша тека задач; --content — інше дерево змісту (корінь з content/ і app/; фікстура в tools/test-make-tasks.mjs) — у обох режимах.
 //   Шаблон автора не велить запускати build (його запускає оркестратор, AGENTS.md §4 п. 8); для предметів з IMG_REQUIRED (lib.mjs) — D-027.
 // Режим пулів (engine-practice-pool): node tools/make-tasks.mjs --write-pool [--grade 8] [--dry-run] [--matrix FILE] [--tasks DIR]
 //   задачі write-math-pool-<розділ> за матрицею покриття (docs/math-personalization-coverage.json) і чинним шаблоном пакета:
 //   лише розділи з required-уроками; пропускає розділ, якщо задача з таким id уже є в todo/doing/review/done або пул уже є в змісті.
-//   --dry-run нічого не пише, лише показує; --matrix / --tasks — інші файл матриці й тека задач (fixtures у tools/test-make-tasks.mjs).
+//   --dry-run нічого не пише, лише показує; --matrix / --tasks / --content — інші файл матриці, тека задач і дерево змісту (fixtures у tools/test-make-tasks.mjs).
 import fs from "node:fs"; import path from "node:path";
 import { loadContent, ROOT, IMG_REQUIRED } from "./lib.mjs";
 
 const args = process.argv.slice(2);
 const opt = k => args.includes(k) ? args[args.indexOf(k) + 1] : null;
 const onlySubj = opt("--subject"), onlyGrade = opt("--grade") ? +opt("--grade") : null;
-const { subjects } = loadContent(opt("--content") ? path.resolve(opt("--content")) : ROOT);
+const CROOT = opt("--content") ? path.resolve(opt("--content")) : ROOT;   // корінь змісту: і loadContent, і перевірка файлу пулу (рев'ю tools-make-tasks-template P3-1)
+const { subjects } = loadContent(CROOT);
 const TASKS = opt("--tasks") ? path.resolve(opt("--tasks")) : path.join(ROOT, "tasks"), DRY = args.includes("--dry-run");
 const STATES = ["todo", "doing", "review", "done"];
 const existing = new Set(STATES.flatMap(d => fs.existsSync(path.join(TASKS, d)) ? fs.readdirSync(path.join(TASKS, d)) : []));
@@ -24,7 +25,7 @@ const existingIds = new Set(STATES.flatMap(d => fs.existsSync(path.join(TASKS, d
 if (args.includes("--write-pool")) { writePool(); process.exit(0); }
 const exemplar = { hist: "content/hist/g5-s2.js", math: "content/math/g5-ms1.js", ukr: "content/ukr/g5-u5s1.js і g5-u5s4.js (verified; style/ukr.md → «Еталони»)", world: "content/world/g7-w7s1.js (еталон після верифікації; style/world.md → «Еталони»)" };
 let made = 0;
-if (!args.includes("--write-pool")) fs.mkdirSync(path.join(TASKS, "todo"), { recursive: true });
+fs.mkdirSync(path.join(TASKS, "todo"), { recursive: true });
 for (const c of subjects) {
   if (onlySubj && c.id !== onlySubj) continue;
   c.sections.forEach((sec, k) => {
@@ -99,7 +100,7 @@ function writePool() {
     if (!req.length || deferred.has(secId)) { out.deferred.push(secId); continue; }
     if (existing.has(name) || existingIds.has(id)) { out.task.push(secId); continue; }
     const pfile = `content/math/pool-g${grade}-${secId}.js`;
-    if (poolIds.has(pool) || fs.existsSync(path.join(ROOT, pfile))) { out.pool.push(secId); continue; }
+    if (poolIds.has(pool) || fs.existsSync(path.join(CROOT, pfile))) { out.pool.push(secId); continue; }
     const sec = c.sections.find(s => s.id === secId), title = l => (sec?.lessons || []).find(x => x.id === l.lesson)?.title || l.title;
     const lo = req.reduce((a, l) => a + (l.exercises?.min ?? 6), 0), hi = req.reduce((a, l) => a + (l.exercises?.max ?? 8), 0);
     const deps = ["curate-math-personalization-map", ...(ls.some(l => (l.formats || []).some(f => NEW_KINDS.includes(f))) ? ["engine-math-pool-answer-formats"] : [])];

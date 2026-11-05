@@ -1,12 +1,15 @@
 #!/usr/bin/env node
-// Слід · браузерний сценарій до рев'ю math-ister-migration (P3-1, P3-3, P3-8; задача tools-ister-p3). Node + Playwright (не Python:
-// модуль playwright для Python є не скрізь). Не входить у npm run check і CI — як tools/test-answer-ui.py; запускати окремо й по одному.
+// Слід · браузерні сценарії рушія на Node + Playwright (не Python: модуль playwright для Python є не скрізь). Почався як test-ui-ister.mjs
+// (рев'ю math-ister-migration P3-1, P3-3, P3-8; задача tools-ister-p3); перейменовано за темою (tools-math-ister-p3, рев'ю tools-ister-p3 P3-4) —
+// сюди додавай нові швидкі UI-сценарії рушія. Не входить у npm run check і CI — як tools/test-answer-ui.py; запускати окремо й по одному.
 // Зміст — синтетична фікстура: після завантаження сторінки розділи, пули й тести математики підміняються (як pool_checks у
 // test-answer-ui.py), тож від живого content/ сценарій не залежить.
 //  1) «Тренування» з also: заголовки розділів — за програмою (клас, тижні), а не за порядком пулів; розділ один раз, хоч на нього
 //     посилаються два пули; порожній розділ і розділ старшого класу не показано; лічильник задач — з усіх пулів.
 //  2) Замок уроку: пройдений урок не замикається, коли перед ним вставлено новий (app.js unlocked → learn.js lessonOpen).
-// Запуск: node tools/test-ui-ister.mjs [--browser /opt/pw-browsers/chromium]
+//  3) Замок уроку, інші гілки unlocked (рев'ю tools-ister-p3 P3-1): unlockAll відкриває все; урок із plan.known (тест рівня: тема
+//     «знайоме») відкритий сам і відкриває наступний; known плану іншого класу — ні.
+// Запуск: node tools/test-ui.mjs [--browser /opt/pw-browsers/chromium]
 // Playwright: require("playwright") (NODE_PATH) або PLAYWRIGHT_MODULE / /opt/node-tools/node_modules/playwright.
 import http from "node:http"; import fs from "node:fs"; import path from "node:path"; import { createRequire } from "node:module";
 import { ROOT } from "./lib.mjs";
@@ -80,9 +83,23 @@ try {
   const nodes = await page.locator(".path .node").evaluateAll(ns => ns.map(n => ({ lock: n.classList.contains("lock"), done: n.classList.contains("done") })));
   ok(same(nodes.map(n => n.lock), [false, true, false, false, true]), `замок: закриті лише fiNew і fi4, а ${JSON.stringify(nodes.map(n => n.lock))}`);
   ok(same(nodes.map(n => n.done), [false, false, true, false, false]), `замок: пройдений — fiOld, а ${JSON.stringify(nodes.map(n => n.done))}`);
+
+  // 3) Гілки unlocked: unlockAll і known (той самий розділ fI; fiOld пройдено)
+  const locks = async st => {
+    await page.evaluate(s => localStorage.setItem("slid.v1", JSON.stringify(s)), st);
+    await page.reload(); await page.evaluate(install, FIX);
+    await page.click('button[data-subject="math"]'); await page.click(`[data-topic="${k}"]`);
+    return page.locator(".path .node").evaluateAll(ns => ns.map(n => n.classList.contains("lock")));
+  };
+  const all = await locks({ ...seed, unlockAll: true });
+  ok(same(all, [false, false, false, false, false]), `unlockAll: відкриті всі уроки розділу, а ${JSON.stringify(all)}`);
+  const kn = await locks({ ...seed, planByGrade: { math: { 5: { grade: 5, known: ["fi3"], steps: [] } } } });
+  ok(same(kn, [false, true, false, false, false]), `known: fi3 зі «знайомих» відкриває fi4, fiNew закритий, а ${JSON.stringify(kn)}`);
+  const kn6 = await locks({ ...seed, planByGrade: { math: { 6: { grade: 6, known: ["fi3"], steps: [] } } } });
+  ok(same(kn6, [false, true, false, false, true]), `known плану 6 кл. для учня 5 кл. не відкриває fi4, а ${JSON.stringify(kn6)}`);
   ok(!errors.length, "помилки сторінки: " + errors.join(" | "));
   await ctx.close();
 } finally { await browser.close(); server.close(); }
 
-console.log(`test-ui-ister: ${pass} ok, ${fail} ✗`);
+console.log(`test-ui: ${pass} ok, ${fail} ✗`);
 process.exit(fail ? 1 : 0);
