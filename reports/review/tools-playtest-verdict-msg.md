@@ -60,3 +60,33 @@ Diff `.claude/skills/*`: 7 файлів, по 1 рядку в кожному, з
 
 - Python-прогони `playtest.py` і `test-answer-ui.py --suite regression` у браузері: локально немає Python playwright. Покладаюсь на CI.
 - Повний плейтест і тести рівня (`mode ok`) під мутантом. Вердикт по завданню тесту рівня, як і раніше, не перевіряється (обмеження, яке автор зазначив).
+
+## Повторна перевірка deb4d93
+
+Diff: `git diff a5afce3 deb4d93`. Змінено `tools/playtest.py`, `tools/test-verdict.py` і нотатки двох задач.
+
+- **P2-1: закрито.** `tools/playtest.py:190`: `except NotCredited` одразу друкує `ПОМИЛКА  не зараховано: …` з `flush=True`, а потім виконує `broken = True; break`. Рядок більше не копиться в `errs`, тож пізніший необроблений виняток уже надрукованого не загубить.
+- **P3-1: закрито.** `tools/playtest.py:234`: `sys.exit(1 if errs or failed else 0)`. Кожен незарахований урок збільшує `failed` (`failed += 1` перед `goto`), отже код 1 при будь-якому незарахуванні, хоча цих рядків тепер немає в `errs`. Гілка «нічого не пройдено» (код 2) враховує `failed`, як і раніше.
+- **P3-3: закрито.** Нотатка skills-pitfalls-refs тепер каже, що verified лише frac.
+- `tools/test-verdict.py`: додано 3 статичні перевірки.
+
+Мої прогони:
+
+| Команда | Підсумок |
+|---|---|
+| `python3 -m py_compile tools/playtest.py tools/test-verdict.py` | ок |
+| `python3 tools/test-verdict.py` | 26/26 |
+| `npm run check` | EXIT 0, `test-verdict: 26/26` |
+
+Мутанти playtest.py (на копії в scratchpad `review-playtest/m2`):
+
+| Мутант | Підсумок |
+|---|---|
+| except без print (ковтає) | 25/26, ловиться |
+| exit без `failed` | 25/26, ловиться |
+| print без `flush` | 25/26, ловиться |
+| без `failed += 1` | 25/26, ловиться |
+
+Не перевірено, як і раніше: браузерний Python-прогін (Python playwright немає), приймання в CI за планом автора.
+
+**Вердикт: прийнято.** Відкритих блокувальних знахідок немає. P3-4 (курація `pitfalls-content.md`) — пропозиція куратору, а не до цього diff.
