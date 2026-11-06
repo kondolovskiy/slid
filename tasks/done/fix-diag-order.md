@@ -2,7 +2,7 @@
 id: fix-diag-order
 type: engine
 subject: all
-status: review
+status: done
 claimed_by: orchestrator
 created: 2026-11-06
 depends_on: []
@@ -18,3 +18,4 @@ CI job `browser` PR #20 (run 42219082558): `tools/test-answer-ui.py` чекав 
 - Мутанти: `find` замість сортування → 2 ✗; `<=` замість `<` → 2 ✗ (без diagOrder / рівні); прибрано правило validate → test-validate 2 ✗.
 - `node tools/test-validate.mjs` 1431/1431; `npm run check` — exit 0; `node tools/test-ui.mjs` 105/0.
 - Не запускалось локально: `python3 tools/test-answer-ui.py --suite regression` (немає Python-модуля playwright) — перевірить CI PR #20.
+- 2026-11-06 · рев'ю «прийнято» (reports/review/fix-diag-order.md). P3-1…P3-4 — у задачі engine-diag-one-invite.

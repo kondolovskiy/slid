@@ -21,6 +21,8 @@
 //     продовження після перезавантаження, підсумок тем.
 //  11) Порядок тестів рівня після вибору класу (fix-diag-order): відкривається тест предмета з найменшим diagOrder (метадані предмета),
 //      а не перший предмет за порядком файлів; без diagOrder і за рівних — порядок предметів; відкладений тест («Пізніше») не пропонується.
+//  12) Один тест рівня на головній (engine-diag-one-invite): одне запрошення на новий тест (перший за diagOrder незавершений; «Пізніше» не змінює),
+//      перерваний — завжди; тест іншого предмета — з екрана предмета.
 //  5–7) Service worker (engine-sw-version-skew): деплой нової версії не змішує index.html і app.js; файл зі старого кешу не віддається
 //     (P3-6); оновлення не перезавантажує сторінку посеред уроку, а версія подій журналу лишається версією сторінки (P3-4); застосунок зі старим SW після одного змішаного відкриття сам переходить на консистентну нову версію.
 // Запуск: node tools/test-ui.mjs [--browser /opt/pw-browsers/chromium]
@@ -343,33 +345,71 @@ async function syncScenarios(browser) {
 }
 
 
+/* фікстура сценаріїв 11–12: у кожного предмета розділ 6 кл. і тест dgo-<id>; mode: reverse — diagOrder навпаки до порядку SLID_SUBJECTS,
+   tie — усі 1, none — без поля, mixed — у першого предмета поля немає, решта навпаки (він має йти останнім, рев'ю fix-diag-order P3-1) */
+const DIAG_ORDER_FX = mode => { const n = SLID_SUBJECTS.length;
+    SLID_SUBJECTS.forEach((c, i) => {
+      const lesson = { id: "lo-" + c.id, title: "Урок", icon: "book", screens: [{ type: "intro", title: "QA", body: "QA" }] };
+      c.sections = [{ id: "so-" + c.id, grade: 6, weeks: [1, 2], title: "QA", why: "QA", lessons: [lesson] }]; c.pools = [];
+      c.diags = [{ id: "dgo-" + c.id, grade: 6, title: "QA", why: "QA", status: "draft", topics: [{ id: "t", title: "Т", kind: "cur", lessons: [lesson.id] }],
+        items: [{ topic: "t", type: "choice", title: "QA", options: ["а", "б"], correct: 0 }] }];
+      if (mode === "reverse" || mode === "mixed" && i) c.diagOrder = n - i; else if (mode === "tie") c.diagOrder = 1; else delete c.diagOrder; });
+    return SLID_SUBJECTS.map(c => c.id); };
 /* 11) Порядок тестів рівня після вибору класу (fix-diag-order). Фікстура: у кожного предмета — розділ 6 кл. і тест dgo-<id>;
    diagOrder задається навпаки до порядку SLID_SUBJECTS, тож перший предмет масиву не може «випадково» виграти. */
 async function diagOrderScenario(browser) {
   const ctx = await browser.newContext({ viewport: { width: 400, height: 860 }, serviceWorkers: "block" });
   const page = await ctx.newPage(), errors = []; page.on("pageerror", e => errors.push(String(e))); page.setDefaultTimeout(8000);
   await page.route("**/fonts.googleapis.com/**", r => r.abort());
-  const install = mode => { const n = SLID_SUBJECTS.length;
-    SLID_SUBJECTS.forEach((c, i) => {
-      const lesson = { id: "lo-" + c.id, title: "Урок", icon: "book", screens: [{ type: "intro", title: "QA", body: "QA" }] };
-      c.sections = [{ id: "so-" + c.id, grade: 6, weeks: [1, 2], title: "QA", why: "QA", lessons: [lesson] }]; c.pools = [];
-      c.diags = [{ id: "dgo-" + c.id, grade: 6, title: "QA", why: "QA", status: "draft", topics: [{ id: "t", title: "Т", kind: "cur", lessons: [lesson.id] }],
-        items: [{ topic: "t", type: "choice", title: "QA", options: ["а", "б"], correct: 0 }] }];
-      if (mode === "reverse") c.diagOrder = n - i; else if (mode === "tie") c.diagOrder = 1; else delete c.diagOrder; });
-    return SLID_SUBJECTS.map(c => c.id); };
-  const onboard = async (mode, skip) => {
-    await page.goto(URL0); await page.evaluate(s => { localStorage.clear(); if (s) localStorage.setItem("slid.v1", JSON.stringify({ diagSkip: s })); }, skip || null); await page.reload();
+  const install = DIAG_ORDER_FX;
+  const onboard = async (mode, skip, diag) => {
+    await page.goto(URL0); await page.evaluate(([s, d]) => { localStorage.clear(); if (s || d) localStorage.setItem("slid.v1", JSON.stringify({ diagSkip: s || {}, diag: d || {} })); }, [skip || null, diag || null]); await page.reload();
     const ids = await page.evaluate(install, mode); await page.click('[data-grade="6"]');
     const opened = await page.locator("[data-diag-skip]").first().getAttribute("data-diag-skip"); return { ids, opened }; };
   { const { ids, opened } = await onboard("reverse");
     ok(ids.length >= 2 && opened === "dgo-" + ids[ids.length - 1], `diagOrder: відкрито тест з найменшим diagOrder (dgo-${ids[ids.length - 1]}), а ${opened}`);
     const nxt = await onboard("reverse", { ["dgo-" + ids[ids.length - 1]]: true });
     ok(nxt.opened === "dgo-" + ids[ids.length - 2], `diagOrder: відкладений тест пропущено — наступний за diagOrder (dgo-${ids[ids.length - 2]}), а ${nxt.opened}`); }
+  { const { ids, opened } = await onboard("mixed");
+    ok(opened === "dgo-" + ids[ids.length - 1], `мішаний diagOrder: предмет без поля — після всіх із полем (dgo-${ids[ids.length - 1]}), а ${opened}`); }
+  { const ids = (await onboard("reverse")).ids, last = "dgo-" + ids[ids.length - 1];
+    const { opened } = await onboard("reverse", null, { [last]: { done: true, topics: {} } });
+    ok(opened === "dgo-" + ids[ids.length - 2], `пройдений тест не пропонується знову (dgo-${ids[ids.length - 2]}), а ${opened}`); }
   { const { ids, opened } = await onboard("none");
     ok(opened === "dgo-" + ids[0], `без diagOrder: порядок предметів (dgo-${ids[0]}), а ${opened}`); }
   { const { ids, opened } = await onboard("tie");
     ok(opened === "dgo-" + ids[0], `рівні diagOrder: порядок предметів (dgo-${ids[0]}), а ${opened}`); }
   ok(!errors.length, "diagOrder: помилки сторінки: " + errors.join(" | "));
+  await ctx.close();
+}
+
+/* 12) Один тест рівня на головній (engine-diag-one-invite, рішення людини щодо P2-1 qa-hist-diag): лише одне запрошення на новий тест —
+   перший за diagOrder серед незавершених («Пізніше» не змінює); перерваний тест — завжди; решта — на екрані предмета. */
+async function diagOneInviteScenario(browser) {
+  const ctx = await browser.newContext({ viewport: { width: 400, height: 860 }, serviceWorkers: "block" });
+  const page = await ctx.newPage(), errors = []; page.on("pageerror", e => errors.push(String(e))); page.setDefaultTimeout(8000);
+  await page.route("**/fonts.googleapis.com/**", r => r.abort());
+  const home = async (mode, st) => {
+    await page.goto(URL0); await page.evaluate(s => { localStorage.clear(); localStorage.setItem("slid.v1", JSON.stringify({ grade: 6, unlockAll: false, ...s })); }, st || {}); await page.reload();
+    const ids = await page.evaluate(DIAG_ORDER_FX, mode); await page.evaluate(() => { document.querySelector('.tab[data-tab="path"]').click(); document.querySelector('.tab[data-tab="path"]').click(); });
+    const inv = await page.locator("#view .diaginv").evaluateAll(b => b.map(x => x.dataset.diag)); return { ids, inv }; };
+  const D = id => "dgo-" + id;
+  { const { ids, inv } = await home("reverse"); const n = ids.length;
+    ok(n >= 3 && same(inv, [ids[n - 1]]), `головна: одне запрошення — перший за diagOrder (${ids[n - 1]}), а ${JSON.stringify(inv)}`);
+    const sk = await home("reverse", { diagSkip: { [D(ids[n - 1])]: true } });
+    ok(same(sk.inv, [ids[n - 1]]), `головна: відкладений («Пізніше») лишається єдиним запрошенням (${ids[n - 1]}), а ${JSON.stringify(sk.inv)}`);
+    const dn = await home("reverse", { diag: { [D(ids[n - 1])]: { done: true, topics: {} } } });
+    ok(!dn.inv.includes(ids[n - 1]) && dn.inv.length === 1 && dn.inv[0] === ids[n - 2], `головна: після пройденого — наступний за diagOrder (${ids[n - 2]}), а ${JSON.stringify(dn.inv)}`);
+    const all = await home("reverse", { diagSkip: Object.fromEntries(ids.map(i => [D(i), true])) });
+    ok(same(all.inv, [ids[n - 1]]), `головна: усі відкладені — одне запрошення, перший за diagOrder (${ids[n - 1]}), а ${JSON.stringify(all.inv)}`);
+    const part = await home("reverse", { diagRun: { [D(ids[0])]: { 0: 1 } } });
+    ok(same([...part.inv].sort(), [ids[0], ids[n - 1]].sort()), `головна: перерваний тест (${ids[0]}) лишається поряд із новим (${ids[n - 1]}), а ${JSON.stringify(part.inv)}`);
+    const mx = await home("mixed");
+    ok(same(mx.inv, [ids[n - 1]]), `головна: предмет без diagOrder не першим (${ids[n - 1]}), а ${JSON.stringify(mx.inv)}`);
+    // «коли захочеш»: тест іншого предмета доступний з екрана предмета
+    await home("reverse"); await page.click(`button[data-subject="${ids[0]}"]`);
+    ok(await page.locator(`#view [data-diag="${ids[0]}"], #view [data-plan="${ids[0]}"]`).count() > 0, `екран предмета ${ids[0]}: тест рівня доступний`); }
+  ok(!errors.length, "один тест на головній: помилки сторінки: " + errors.join(" | "));
   await ctx.close();
 }
 
@@ -516,6 +556,9 @@ try {
 
   // 11) Порядок тестів рівня після вибору класу (fix-diag-order)
   await diagOrderScenario(browser);
+
+  // 12) Один тест рівня на головній (engine-diag-one-invite)
+  await diagOneInviteScenario(browser);
 
   // 5–7) Оновлення service worker без змішування версій (engine-sw-version-skew; docs/PUBLISHING.md «Оновлення PWA»)
   await swScenarios(browser);
