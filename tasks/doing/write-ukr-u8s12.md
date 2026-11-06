@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-06T09:21:16.410Z
 id: write-ukr-u8s12
 type: write-section
 subject: ukr
@@ -6,7 +8,7 @@ grade: 8
 section: u8s12
 weeks: [31, 33]
 status: todo
-claimed_by:
+claimed_by: w-write-ukr-u8s12
 created: 2026-11-06
 ---
 # Написати розділ «Відокремлені обставини, додатки й уточнювальні члени» (Українська мова, 8 клас)
