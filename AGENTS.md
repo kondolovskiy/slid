@@ -96,7 +96,7 @@ cd server && npm run check && DATABASE_URL=postgres://… npm run test:e2e   # �
 |---|---|
 | написати чи переписати розділ уроків (`write-*`, `revise-*`, `refine-*`, `fix-*` у файлі розділу) | `content-author` |
 | перевірити розділ, тест рівня, пул чи лінію графа, яких ти не писав (задача в `tasks/review/`) | `content-verify` |
-| пул вправ `pool-*.js` або тест рівня `diag-*.js` (написати, виправити, змінити формат відповіді) | `math-pool-diag` |
+| пул вправ `pool-*.js` або тест рівня `diag-*.js` (написати, виправити, змінити формат відповіді; для ukr — ще й `content-author`) | `math-pool-diag` |
 | зображення в уроці, Вікісховище, помилка D-027 (`images-*`) | `hist-images` |
 | будь-яка зміна в `app/`, `tools/`, тестах, CI (`engine-*`, `tools-*`, `tests-*`) | `engine-change` |
 | будь-яка зміна в `server/` (`server-*`) | `backend-change` |

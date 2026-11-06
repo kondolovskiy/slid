@@ -1,6 +1,6 @@
 ---
 name: math-pool-diag
-description: Use when creating or editing a math practice pool content/math/pool-g*-*.js or a grade diagnostic content/math/diag-g*.js, or when changing answer formats (answerKind, form, unit, rev) of their items.
+description: Use when creating or editing a math practice pool content/math/pool-g*-*.js or a grade diagnostic content/<subject>/diag-g*.js (math or ukr), or when changing answer formats (answerKind, form, unit, rev) of their items.
 ---
 
 # Пули вправ і тести рівня (math)
@@ -29,6 +29,13 @@ description: Use when creating or editing a math practice pool content/math/pool
 - **id пулу й задач — ключі прогресу**, не перейменовувати. Зміна `sk` задачі → рядок у `SK_RETAG` (app/learn.js) — це вже інженерна зміна (скіл `engine-change`).
 - **Тест рівня:** заміна проби на тому самому індексі — лише з `rev` (CONTENT_SCHEMA §9), інакше перервані тести змішають відповіді.
 - Формат, якого немає в рушії, — не обходь: рядок ENGINE в inbox.
+
+## 2а. Тест рівня з мови (ukr: `content/ukr/diag-g*.js`, engine-diag-lang-types)
+Пулів для ukr немає — цей розділ лише про тест рівня. Разом зі скілом `content-author` (стиль і норми ukr).
+- Прочитай: style/ukr.md, glossary/ukr.md, facts/ukr.md (джерела З5–З7), decisions D-040, D-041/D-042 (як помилку оцінюємо лише ненормативне і за правописом/підручником, і за словником; вибір між двома нормативними варіантами — не оцінюється), D-045 (`sk`: `gram` — форми, `orth` — букви й написання; відміни й дієвідміни латиницею I–IV), D-047.
+- Мовні вправи в тесті (CONTENT_SCHEMA §9): `gaps` ≤ 3 пропуски, `stress` ≤ 3 слова, `pick` ≤ 20 слів-кнопок і ≤ 3 правильні, `split` — одне слово, `word`. Вердикт — правильно все або ні; позначок і показу відповіді немає. Наголос — лише слова з одним нормативним наголосом (звір зі словником).
+- `fbOk`, `fbText`, `hint` у тесті не потрібні (попередження validate).
+- Немає уроків класу нижче (ukr 5 кл.) — передумови `baseline: true` за програмою попередніх класів (джерело — у нотатки).
 
 ## 3. Перевір
 ```bash

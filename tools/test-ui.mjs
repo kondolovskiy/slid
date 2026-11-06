@@ -17,6 +17,8 @@
 //     без scale кнопки «:» немає.
 //  9) Синхронізація прогресу (engine-sync-login): фейковий API і фейк Google Identity Services; вхід «мій прогрес», код прив'язки на другому
 //     пристрої, злиття балів, офлайн-черга, «не мій прогрес» на спільному пристрої, помилки 401, вихід, «Скинути прогрес»; без адреси API — картки немає.
+//  10) Мовні вправи в тесті рівня (engine-diag-lang-types): gaps, pick, stress, word, split у тесті ukr-фікстури — без позначок, вердикти, «Ще не знаю»,
+//     продовження після перезавантаження, підсумок тем.
 //  5–7) Service worker (engine-sw-version-skew): деплой нової версії не змішує index.html і app.js; файл зі старого кешу не віддається
 //     (P3-6); оновлення не перезавантажує сторінку посеред уроку, а версія подій журналу лишається версією сторінки (P3-4); застосунок зі старим SW після одного змішаного відкриття сам переходить на консистентну нову версію.
 // Запуск: node tools/test-ui.mjs [--browser /opt/pw-browsers/chromium]
@@ -338,6 +340,61 @@ async function syncScenarios(browser) {
   await ctx.close(); api.close();
 }
 
+
+/* 10) Мовні вправи в тесті рівня (engine-diag-lang-types): фікстура предмета ukr (розділи 5 і 6 кл., тест dgfu6) замість живого змісту.
+   gaps, pick, stress, word, split у тесті — без позначок і показу відповіді, вердикт одразу (OK / BAD / «Ще не знаю»), продовження після
+   перезавантаження, підсумок тем. */
+async function diagLangScenario(browser) {
+  const ctx = await browser.newContext({ viewport: { width: 400, height: 860 }, serviceWorkers: "block" });
+  const page = await ctx.newPage(), errors = []; page.on("pageerror", e => errors.push(String(e))); page.setDefaultTimeout(8000);
+  await page.route("**/fonts.googleapis.com/**", r => r.abort());
+  const FXU = { id: "dgfu6", grade: 6, title: "Що ти вже вмієш?", why: "QA", status: "draft",
+    topics: [{ id: "p", title: "Передумова", kind: "pre", lessons: ["fu5l1"] }, { id: "c1", title: "Тема 1", kind: "cur", lessons: ["fu6l1"] },
+      { id: "c2", title: "Тема 2", kind: "cur", lessons: ["fu6l2"] }, { id: "c3", title: "Тема 3", kind: "cur", lessons: ["fu6l3"] }],
+    items: [{ topic: "p", type: "gaps", sk: "orth", title: "Встав букву", text: "с{*е|и}ло" },
+      { topic: "c1", type: "pick", sk: "synt", title: "Знайди підмет", text: "[Сонце] яскраво світить." },
+      { topic: "p", type: "stress", sk: "oral", title: "Де наголос?", words: ["черг+овий"] },
+      { topic: "c2", type: "word", sk: "orth", title: "Напиши слово", answer: "м'ята", keys: ["'"] },
+      { topic: "c3", type: "split", sk: "phon", title: "Поділи на склади", word: "мо|ло|ко" }] };
+  const installU = fx => { const c = SLID_SUBJECTS.find(c => c.id === "ukr");
+    const lesson = id => ({ id, title: "Урок " + id, icon: "book", screens: [{ type: "intro", title: id, body: "QA" }] });
+    c.sections = [{ id: "fu5", grade: 5, weeks: [1, 2], title: "QA 5", why: "QA", lessons: [lesson("fu5l1")] }, { id: "fu6", grade: 6, weeks: [1, 2], title: "QA 6", why: "QA", lessons: ["fu6l1", "fu6l2", "fu6l3"].map(lesson) }];
+    c.diags = [fx]; c.pools = []; };
+  const open = async () => { await page.evaluate(installU, FXU); await page.evaluate(() => document.querySelector('.tab[data-tab="path"]').click());
+    await page.click('button[data-subject="ukr"]'); const d = page.locator("[data-diag]"); if (await d.count()) await d.first().click(); else await page.click('[data-plan="ukr"]');
+    await page.click("[data-diag-go]"); };
+  const st = () => page.evaluate(() => JSON.parse(localStorage.getItem("slid.v1")));
+  const noMarks = async () => page.evaluate(() => !document.querySelector("#stage .ok, #stage .bad, #stage .right, #stage .wrong") && !/Правильн/.test(document.querySelector("#hintHost")?.textContent || ""));
+  const eyebrow = () => page.locator("#stage .eyebrow").first().innerText();
+  await page.goto(URL0); await page.evaluate(() => { localStorage.clear(); localStorage.setItem("slid.v1", JSON.stringify({ grade: 6, subject: "ukr", unlockAll: false })); }); await page.reload();
+  await open();
+  ok(/завдання 1/i.test(await eyebrow()), `diag ukr: тест почався з завдання 1 (${await eyebrow()})`);
+  // 1) gaps: правильно (варіант з data-o 0 — «е»)
+  await page.click('.gopt[data-g="0"][data-o="0"]'); await page.click("#action");
+  ok(/завдання 2/i.test(await eyebrow()) && await noMarks(), "diag ukr: gaps — одразу наступне завдання, без позначок і показу відповіді");
+  // 2) pick: хибне слово
+  await page.click('.pw[data-w="1"]'); await page.click("#action");
+  ok(/завдання 3/i.test(await eyebrow()) && await noMarks(), "diag ukr: pick (хибно) — без позначок");
+  // перезавантаження посеред тесту — продовження з того самого місця
+  await page.reload(); await open();
+  ok(/Наголос|наголос/.test(await page.locator("#stage h2, #stage .title, #stage").first().innerText()), "diag ukr: після перезавантаження — продовження з stress");
+  // 3) stress: правильно (голосний після «+»)
+  const vi = await page.evaluate(() => SLID_LANG.parseStress("черг+овий").correct);
+  await page.click(`.sv[data-w="0"][data-i="${vi}"]`); await page.click("#action");
+  ok(await noMarks(), "diag ukr: stress — без позначок");
+  // 4) word: «м'ята» з кнопкою апострофа
+  await page.fill("#numIn", "м'ята"); await page.click("#action");
+  ok(await noMarks(), "diag ukr: word — без позначок");
+  // 5) split: «Ще не знаю»
+  await page.click("#skip");
+  const S1 = await st(), rec = S1.diag?.dgfu6;
+  ok(rec && rec.done, `diag ukr: тест завершено (${JSON.stringify(S1.diag)})`);
+  ok(rec && same(rec.res, { 0: 1, 1: 0, 2: 1, 3: 1, 4: -1 }), `diag ukr: вердикти gaps OK, pick BAD, stress OK, word OK, split «Ще не знаю» — а ${JSON.stringify(rec && rec.res)}`);
+  ok(rec && same(rec.topics, { p: "ok", c1: "new", c2: "known", c3: "new" }), `diag ukr: підсумок тем p ok, c1 new, c2 known, c3 new — а ${JSON.stringify(rec && rec.topics)}`);
+  ok(!errors.length, "diag ukr: помилки сторінки: " + errors.join(" | "));
+  await ctx.close();
+}
+
 const browser = await pw.chromium.launch(BROWSER ? { executablePath: BROWSER } : {});
 console.log(`test-ui: Chromium ${browser.version()} (${BROWSER || "власний Playwright, " + (process.env.PLAYWRIGHT_BROWSERS_PATH || "~/.cache/ms-playwright")})`);
 try {
@@ -421,6 +478,9 @@ try {
 
   // 9) Синхронізація прогресу між пристроями (engine-sync-login)
   await syncScenarios(browser);
+
+  // 10) Мовні вправи в тесті рівня (engine-diag-lang-types)
+  await diagLangScenario(browser);
 
   // 5–7) Оновлення service worker без змішування версій (engine-sw-version-skew; docs/PUBLISHING.md «Оновлення PWA»)
   await swScenarios(browser);

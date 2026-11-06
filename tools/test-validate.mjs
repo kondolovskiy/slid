@@ -380,6 +380,32 @@ expectRun("drag: at і без drag — без попередження", one("fx
         ok(r && !r.errors.some(e => e.includes("answer: ")), "diag: без рядків answer: для title", r && r.errors.join("\n  ")); }
     } finally { fs.writeFileSync(lp, orig); } } }
 
+// ---- engine-diag-lang-types: мовні вправи (app/lang.js) у тесті рівня ukr — допуск і межі «одне завдання = одне вміння» ----
+{ const usec = (id, grade) => secJS("ukr", { ...mathSec(id), grade });
+  const diagJS = item => `SLID.diag("ukr", ${JSON.stringify({ id: "dgfu6", grade: 6, title: "Тест-фікстура", why: "Регресійний тест валідатора: мовні вправи в тесті.", status: "draft",
+    meta: { author: "test", created: "2026-11-06", factcheck: null, teacher: null },
+    topics: [{ id: "p", title: "Передумова", kind: "pre", lessons: ["fu5l1"] }, { id: "c", title: "Тема класу", kind: "cur", lessons: ["fu6l1"] }],
+    items: [{ topic: "p", type: "choice", sk: "orth", title: "Обери", opts: ["бур'ян", "бурян"], correct: 0 }, { topic: "p", type: "choice", sk: "orth", title: "Обери ще", opts: ["м'ята", "мята"], correct: 0 },
+      { topic: "c", sk: "orth", title: "Встав букву", ...item }] }, null, 1)});\n`;
+  const tree = item => ({ "content/ukr/g5-fu5.js": usec("fu5", 5), "content/ukr/g6-fu6.js": usec("fu6", 6), "content/ukr/diag-g6.js": diagJS(item) });
+  const words = n => Array.from({ length: n }, (_, i) => ["сад", "ліс", "дім", "кіт", "мак"][i % 5]).join(" ");
+  for (const [name, item, err, warn] of [
+    ["gaps з 3 пропусками — чисто", { type: "gaps", text: "с{*е|и}ло, з{е|*и}ма, д{*е|и}сять" }, null],
+    ["gaps з 4 пропусками — помилка", { type: "gaps", text: "с{*е|и}ло, з{е|*и}ма, д{*е|и}сять, в{*е|и}сна" }, "не більше 3 пропусків"],
+    ["stress з 3 словами — чисто", { type: "stress", words: ["черг+овий", "вип+адок", "кв+арта"] }, null],
+    ["stress з 4 словами — помилка", { type: "stress", words: ["черг+овий", "вип+адок", "кв+арта", "сл+ово"] }, "не більше 3 слів"],
+    ["pick з 3 правильними — чисто", { type: "pick", text: "[Сонце] яскраво [світить] і [гріє] над полем." }, null],
+    ["pick з 4 правильними — помилка", { type: "pick", text: "[Сонце] [яскраво] [світить] і [гріє] над полем." }, "не більше 3 правильних"],
+    ["pick з 21 словом — помилка", { type: "pick", text: "[Сонце] " + words(20) }, "не більше 20 слів"],
+    ["word — чисто", { type: "word", answer: "м'ята", keys: ["'"] }, null],
+    ["split — чисто", { type: "split", word: "мо|ло|ко" }, null],
+    ["gaps з fbText — попередження: у тесті фідбеку немає", { type: "gaps", text: "с{*е|и}ло", fbText: "Село — села: перевіряємо наголосом." }, null, "фідбеку дитина не бачить"],
+    ["gaps з hyp — помилка", { type: "gaps", text: "с{*е|и}ло", hyp: true, fbTitle: "Здогадка" }, "poll/hyp у тесті не можна"]]) {
+    const rep = expectRun(`diag ukr: ${name}`, tree(item), ["--diag", "dgfu6"], { err, warn, noWarn: warn ? null : "фідбеку дитина не бачить" });
+    if (rep && err) ok(rep.errors.every(e => e.includes("diag-g6.js#dgfu6")), `diag ukr: ${name}: помилка вказує на тест`, rep.errors.join("\n  ")); }
+  // choice з hint у тесті — те саме попередження (для будь-якого типу)
+  expectRun("diag ukr: choice з hint — попередження", tree({ type: "choice", opts: ["е", "и"], correct: 0, hint: "Зміни слово." }), ["--diag", "dgfu6"], { warn: "фідбеку дитина не бачить" });
+  fs.rmSync(path.join(tmp, "content/ukr"), { recursive: true, force: true }); }
 // ---- engine-diag-answer-kinds: answer з answerKind у тесті рівня (SLID.diag) — окремий блок (паралельна гілка змінює validate вище) ----
 // learn.validate: answer дозволено лише з number | time | quantity; поля answer перевіряє той самий answerFieldIssues, що в уроці
 { const sk = Object.keys(MATH_SKILLS)[0], pre7 = { ...mathSec("fxq"), grade: 7 };

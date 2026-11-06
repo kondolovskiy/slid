@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-06T07:11:21.166Z
 id: engine-diag-lang-types
 type: engine
 subject: ukr
-status: todo
-claimed_by:
+status: review
+claimed_by: eng-diag-lang
 created: 2026-11-06
 depends_on: []
 ---
@@ -36,3 +38,13 @@ depends_on: []
 - [ ] Рядок в inbox: що можна використовувати в тестах рівня ukr і з якими межами.
 
 ## Нотатки виконавця
+### eng-diag-lang, 2026-11-06
+- **Плеєр не змінено:** перевірено, що в тесті рівня `check()` для будь-якого типу, крім answer, дає `gradeNow(s) ? OK : BAD` → `diagAnswer` (без `showMarks`, без другої спроби, одразу наступне завдання); для мовних типів `gradeNow` → `LANG.check`. Журнал: `answer` з `raw` = стан вправи (`evRaw` = `st`), `res` — як для інших типів.
+- `app/learn.js`: `DIAG_TYPES` + gaps, pick, stress, word, split. Збіг з `SLID_LANG.TYPES` — тест у test-lang.mjs.
+- `tools/validate.mjs`: межі в тесті (`DIAG_LANG_LIMITS`): gaps ≤ 3 пропуски, stress ≤ 3 слова, pick ≤ 20 слів-кнопок і ≤ 3 правильні; split — одне слово вже гарантує lang.issues. `hyp` у тесті — помилка learn.validate (як і раніше). Попередження про `fbOk`/`fbText`/`fbBad`/`hint` у будь-якому завданні тесту (у діагностиках математики таких полів немає — нових попереджень 0).
+- Тести: test-validate (+13: фікстура ukr dgfu6 — допуск кожного типу, межі, попередження, hyp), test-lang (+1: DIAG_TYPES ⊇ LANG.TYPES), test-ui сценарій 10 (+10): ukr-фікстура, gaps OK, pick BAD, перезавантаження → продовження, stress OK, word OK, split «Ще не знаю» → `res` {0:1,1:0,2:1,3:1,4:−1}, теми p ok / c1 new / c2 known / c3 new, без позначок і показу відповіді.
+- Мутант «мовні типи в тесті — шляхом уроку» (`if(run.diag && !LANG.TYPES.includes(s.type))`) — test-ui ✗.
+- Документація: CONTENT_SCHEMA §9 (типи, межі, приклад, фідбек), AGENTS.md §6 (ukr — ще й content-author), `.claude/skills/math-pool-diag` — розділ 2а «Тест рівня з мови» і description.
+- Прогони: `npm run check` rc 0 (test-validate 1411, test-lang 150, validate 0 помилок); `node tools/test-ui.mjs` 100 ok. test-answer-ui.py локально не запускався (немає Python playwright) — CI.
+- Межі — моє рішення (задача дозволяла): 3/3/20/3 — одне вміння на екран; якщо автори тестів упруться в них, змінювати разом з CONTENT_SCHEMA.
+

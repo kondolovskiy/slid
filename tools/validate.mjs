@@ -265,6 +265,18 @@ function linkNoQuestion(S, s) {
   const t = plain([s.title, s.body].filter(x => typeof x === "string").join(" \n "));
   if (LINK_RE.test(t) && !ASK_RE.test(t)) W(S, "link-завдання («Пригадай…») без питання: ні title, ні body не питають і не кажуть, що обрати — додай у body окремий абзац із питанням");
 }
+// мовні вправи в тесті рівня (engine-diag-lang-types): одне завдання — одне вміння, без фідбеку, тож коротко — інакше одна помилка
+// з багатьох «з'їдає» тему, а дитина вгадує. Межі — CONTENT_SCHEMA §9
+const DIAG_LANG_LIMITS = { gaps: 3, stress: 3, pickWords: 20, pickCorrect: 3 };
+function diagLangIssues(s) {
+  const E = [];
+  if (s.type === "gaps") { const g = lang.parseGaps(s.text || ""); if (!g.error && g.gaps.length > DIAG_LANG_LIMITS.gaps) E.push(`у тесті рівня — не більше ${DIAG_LANG_LIMITS.gaps} пропусків (є ${g.gaps.length})`); }
+  if (s.type === "stress" && Array.isArray(s.words) && s.words.length > DIAG_LANG_LIMITS.stress) E.push(`у тесті рівня — не більше ${DIAG_LANG_LIMITS.stress} слів (є ${s.words.length})`);
+  if (s.type === "pick") { const p = lang.parsePick(s.text || ""); if (!p.error) {
+    if (p.words.length > DIAG_LANG_LIMITS.pickWords) E.push(`у тесті рівня — не більше ${DIAG_LANG_LIMITS.pickWords} слів-кнопок (є ${p.words.length})`);
+    if (p.correct.length > DIAG_LANG_LIMITS.pickCorrect) E.push(`у тесті рівня — не більше ${DIAG_LANG_LIMITS.pickCorrect} правильних слів (є ${p.correct.length})`); } }
+  return E;
+}
 function checkScreen(S, s, c, diag, pool = false) {
   linkNoQuestion(S, s);
   if (!TYPES.includes(s.type)) return E(S, `невідомий тип «${s.type}»`);
@@ -304,6 +316,8 @@ function checkScreen(S, s, c, diag, pool = false) {
     if (!s.fbOk) W(S, "немає fbOk");
   }
   if ((s.poll || s.hyp) && !s.fbTitle) E(S, "poll/hyp потребує fbTitle");
+  if (diag && !pool) { const fb = ["fbOk", "fbText", "fbBad", "hint"].filter(k => s[k] !== undefined && !(s.hyp || s.poll));
+    if (fb.length) W(S, `${fb.join(", ")}: у тесті рівня фідбеку дитина не бачить — поля зайві (CONTENT_SCHEMA §9)`); }
   if ((s.type === "choice" || s.type === "multi") && (s.opts || []).length > OPT_LETTERS.length) E(S, `${s.opts.length} варіантів — більше, ніж літер (${OPT_LETTERS.length}): частина варіантів залишиться без літери`);
   switch (s.type) {
     case "choice": if (!s.poll && !s.hyp && !(Number.isInteger(s.correct) && s.correct >= 0 && s.correct < (s.opts || []).length)) E(S, "correct поза межами opts");
@@ -330,6 +344,7 @@ function checkScreen(S, s, c, diag, pool = false) {
       for (const m of lang.issues(s)) E(S, m);
       for (const m of lang.warnings ? lang.warnings(s) : []) W(S, m);
       for (const m of gapCaseIssues(s)) W(S, m);
+      if (diag && !pool) for (const m of diagLangIssues(s)) E(S, m);
       if (["gaps", "pick"].includes(s.type) && typeof s.text !== "string") E(S, `${s.type}: потрібне поле text`);
       // pick: слова з тексту стають кнопками, тож HTML-теги в text дали б кнопки «b», «br» (рушій екранує text)
       // hyp — здогадка без оцінки (engine-lang-p3, п. 2): плеєр не позначає й не зараховує, лише показує fbTitle і fbText; poll — ні:

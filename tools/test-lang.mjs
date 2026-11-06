@@ -192,5 +192,10 @@ const no = (v, msg) => eq(!!v, false, msg);
 for (const s of [{ type: "gaps", text: "с{*е|и}ло" }, { type: "pick", text: "[а] б" }, { type: "stress", words: ["м+ама"] }, { type: "word", answer: "так" }, { type: "split", word: "ма|ма" }])
   ok(L.check(s, L.solution(s)), `solution → check: ${s.type}`);
 
+// engine-diag-lang-types: кожен мовний тип дозволено в тесті рівня (SLID_LEARN.DIAG_TYPES), і в тесті вердикт — той самий LANG.check
+// (app.js gradeNow): новий мовний тип без допуску в тест — червоно
+{ const lc = { console, JSON, Math }; lc.window = lc; vm.createContext(lc); vm.runInContext(fs.readFileSync(path.join(ROOT, "app/learn.js"), "utf8"), lc);
+  eq(L.TYPES.filter(t => !lc.SLID_LEARN.DIAG_TYPES.includes(t)), [], "кожен мовний тип дозволено в тесті рівня (learn.DIAG_TYPES)"); }
+
 console.log(fail ? `test-lang: ${fail} з ${n} не пройшли` : `test-lang: ${n} перевірок — усі пройшли`);
 process.exit(fail ? 1 : 0);
