@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-06T09:08:48.655Z
 id: write-ukr-u8s9
 type: write-section
 subject: ukr
@@ -6,7 +8,7 @@ grade: 8
 section: u8s9
 weeks: [22, 25]
 status: todo
-claimed_by:
+claimed_by: w-write-ukr-u8s9
 created: 2026-11-06
 ---
 # Написати розділ «Речення з однорідними членами» (Українська мова, 8 клас)
