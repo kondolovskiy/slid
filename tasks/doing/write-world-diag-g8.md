@@ -1,11 +1,13 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-06T08:42:28.501Z
 id: write-world-diag-g8
 type: write-diag
 subject: world
 grade: 8
 section: dgw8
 status: todo
-claimed_by:
+claimed_by: w-write-world-diag-g8
 created: 2026-11-06
 depends_on: []
 ---
