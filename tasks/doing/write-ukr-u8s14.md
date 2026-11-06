@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-06T09:16:53.288Z
 id: write-ukr-u8s14
 type: write-section
 subject: ukr
@@ -6,7 +8,7 @@ grade: 8
 section: u8s14
 weeks: [1, 35]
 status: todo
-claimed_by:
+claimed_by: w-write-ukr-u8s14
 created: 2026-11-06
 ---
 # Написати розділ «Пишемо самі: опис пам'ятки й місцевості, есе, ділові листи» (Українська мова, 8 клас)
