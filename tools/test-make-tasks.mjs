@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Слід · тести режиму --write-pool у tools/make-tasks.mjs (engine-practice-pool): задачі на пули за матрицею без дублів.
+// Слід · тести tools/make-tasks.mjs: режим --write-pool (engine-practice-pool, задачі на пули за матрицею без дублів), звичайний режим і --dry-run в обох.
 // Справжня черга перевіряється лише в --dry-run (нічого не пише); створення — на фікстурній матриці й тимчасовій теці задач.
 // Запуск: node tools/test-make-tasks.mjs   (без залежностей)
 import fs from "node:fs"; import os from "node:os"; import path from "node:path";
