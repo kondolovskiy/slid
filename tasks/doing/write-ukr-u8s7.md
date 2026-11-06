@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-06T09:02:00.525Z
 id: write-ukr-u8s7
 type: write-section
 subject: ukr
@@ -6,7 +8,7 @@ grade: 8
 section: u8s7
 weeks: [17, 19]
 status: todo
-claimed_by:
+claimed_by: w-write-ukr-u8s7
 created: 2026-11-06
 ---
 # Написати розділ «Односкладні речення» (Українська мова, 8 клас)
