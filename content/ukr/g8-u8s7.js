@@ -16,7 +16,7 @@ SLID.section("ukr", {
   weeks: [17, 19],
   title: "Односкладні речення",
   why: "Щоб розуміти речення з одним головним членом — «Люблю осінь», «Вечоріє», «Тут продають квіти» — і доречно вживати їх у мовленні.",
-  requires: ["u5s8l3", "u7s4l2", "u7s4l3", "u7s6l3"],
+  requires: ["u5s8l3", "u7s4l2", "u7s4l3", "u7s6l3", "u8s4l1"],
   meta: { author: "w-write-ukr-u8s7", created: "2026-11-06", factcheck: "verifier-u8s7", teacher: null },
   badges: [
     { id: "u8s7boss", name: "Редактор коротких речень", icon: "trophy", desc: "Пройти фінальний урок розділу «Односкладні речення»" }

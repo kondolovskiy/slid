@@ -1,10 +1,12 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-06T11:59:30.208Z
 id: fix-ukr-u8-requires
 type: fix-section
 subject: ukr
 grade: 8
-status: todo
-claimed_by:
+status: done
+claimed_by: orchestrator
 created: 2026-11-06
 depends_on: [write-ukr-u8s4]
 ---
@@ -16,3 +18,7 @@ depends_on: [write-ukr-u8s4]
 `node tools/validate.mjs` — 0 помилок. Робить оркестратор після пакета 8 кл.
 
 ## Нотатки виконавця
+
+### orchestrator, 2026-11-06
+Перевірено `requires` усіх u8s1–u8s14 проти нотаток задач і inbox. Бракувало лише u8s7 ← `u8s4l1` (верифікатор u8s7) — додано. Парні розділи вже мають попередника (u8s4←u8s3, u8s6←u8s5, u8s8←u8s7, u8s10←u8s9, u8s12←u8s11); u8s13 — переключає на u8s10/u8s12 його верифікатор. Зміст уроків не змінено. `validate --section u8s7` — 0 помилок.
+
