@@ -1,11 +1,13 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-06T08:40:26.408Z
 id: write-hist-diag-g10
 type: write-diag
 subject: hist
 grade: 10
 section: dgh10
 status: todo
-claimed_by:
+claimed_by: w-write-hist-diag-g10
 created: 2026-11-06
 depends_on: []
 ---
