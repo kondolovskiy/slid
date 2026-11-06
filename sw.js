@@ -4,7 +4,7 @@
    чого в кеші цієї версії немає. Нова версія: встановлення (кожен файл перевіряється на сервері, cache: "no-cache") → skipWaiting →
    activate (старі кеші видаляються) → clients.claim → сторінка отримує controllerchange й перезавантажується,
    коли це безпечно (app/update.js: не посеред уроку чи тесту рівня). Google Fonts — з кешу з фоновим оновленням. */
-const VERSION = "104f7970d0";
+const VERSION = "639bff551f";
 const CACHE = "slid-" + VERSION;
 const FONTS = "slid-fonts";
 const ASSETS = [
@@ -18,6 +18,13 @@ const ASSETS = [
   "./content/subjects/ukr.js",
   "./content/subjects/world.js",
   "./content/hist/plan.js",
+  "./content/hist/diag-g10.js",
+  "./content/hist/diag-g11.js",
+  "./content/hist/diag-g5.js",
+  "./content/hist/diag-g6.js",
+  "./content/hist/diag-g7.js",
+  "./content/hist/diag-g8.js",
+  "./content/hist/diag-g9.js",
   "./content/hist/g10-g10s1.js",
   "./content/hist/g10-g10s2.js",
   "./content/hist/g10-g10s3.js",
@@ -213,7 +220,24 @@ const ASSETS = [
   "./content/ukr/g7-u7s7.js",
   "./content/ukr/g7-u7s8.js",
   "./content/ukr/g7-u7s9.js",
+  "./content/ukr/g8-u8s1.js",
+  "./content/ukr/g8-u8s10.js",
+  "./content/ukr/g8-u8s11.js",
+  "./content/ukr/g8-u8s12.js",
+  "./content/ukr/g8-u8s13.js",
+  "./content/ukr/g8-u8s14.js",
+  "./content/ukr/g8-u8s2.js",
+  "./content/ukr/g8-u8s3.js",
+  "./content/ukr/g8-u8s4.js",
+  "./content/ukr/g8-u8s5.js",
+  "./content/ukr/g8-u8s6.js",
+  "./content/ukr/g8-u8s7.js",
+  "./content/ukr/g8-u8s8.js",
+  "./content/ukr/g8-u8s9.js",
   "./content/world/plan.js",
+  "./content/world/diag-g7.js",
+  "./content/world/diag-g8.js",
+  "./content/world/diag-g9.js",
   "./content/world/g7-w7s1.js",
   "./content/world/g7-w7s2.js",
   "./content/world/g7-w7s3.js",
@@ -473,6 +497,7 @@ const ASSETS = [
   "./img/trypillia-pot.jpg",
   "./img/ukr/u6s14/kozacha-levada.jpg",
   "./img/ukr/u7s13/shevchenko-1840.jpg",
+  "./img/ukr/u8s14/sofia.jpg",
   "./img/world/w7s1/aachen-chapel.jpg",
   "./img/world/w7s1/charlemagne-denier.jpg",
   "./img/world/w7s1/clovis-baptism-1500.jpg",
