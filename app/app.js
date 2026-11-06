@@ -403,10 +403,11 @@ function diagInvite(c){
 /** Картка плану; запрошення до тесту рівня (diagInvite) — коли картки плану немає або тест перервано (тоді обидві). */
 const planOrDiag = c => { const pc=planCard(c); return pc&&!diagPart(c)? pc : pc+diagInvite(c); };
 /** Головна (engine-diag-one-invite, рішення людини щодо P2-1): картки плану в порядку diagOrder; запрошення на новий тест — лише одне:
-    перший за diagOrder незавершений тест («Пізніше» його не прибирає й не замінює іншим); перерваний тест — завжди. Решта — на екрані предмета. */
+    перший за diagOrder незавершений тест («Пізніше» його не прибирає й не замінює іншим); перерваний тест — завжди, і тоді він і є запрошенням (нового немає;
+    рев'ю engine-diag-one-invite P2-1). Решта — на екрані предмета. */
 function homeDiags(subs){
   const order=[...subs].sort((a,b)=>diagRank(a)-diagRank(b)).map(c=>({c, pc:planCard(c), part:diagPart(c)}));   // sort стабільний: за рівних — порядок предметів
-  const one=order.find(({c,pc,part})=>{ const d=diagFor(c); return d && !pc && !part && !S.diag[d.id]?.done; })?.c;   // з карткою плану запрошення й так не показується (planOrDiag)
+  const one=!order.some(x=>x.part) && order.find(({c,pc,part})=>{ const d=diagFor(c); return d && !pc && !part && !S.diag[d.id]?.done; })?.c;   // з карткою плану запрошення й так не показується (planOrDiag)
   return order.map(({c,pc,part})=> pc&&!part? pc : pc+(part||c===one? diagInvite(c) : "")).join("");
 }
 function stepRow(st, cls, extra=""){

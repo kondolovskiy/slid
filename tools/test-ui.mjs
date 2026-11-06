@@ -384,7 +384,7 @@ async function diagOrderScenario(browser) {
 }
 
 /* 12) Один тест рівня на головній (engine-diag-one-invite, рішення людини щодо P2-1 qa-hist-diag): лише одне запрошення на новий тест —
-   перший за diagOrder серед незавершених («Пізніше» не змінює); перерваний тест — завжди; решта — на екрані предмета. */
+   перший за diagOrder серед незавершених («Пізніше» не змінює); перерваний тест — завжди, і тоді нового запрошення немає; решта — на екрані предмета. */
 async function diagOneInviteScenario(browser) {
   const ctx = await browser.newContext({ viewport: { width: 400, height: 860 }, serviceWorkers: "block" });
   const page = await ctx.newPage(), errors = []; page.on("pageerror", e => errors.push(String(e))); page.setDefaultTimeout(8000);
@@ -403,12 +403,12 @@ async function diagOneInviteScenario(browser) {
     const all = await home("reverse", { diagSkip: Object.fromEntries(ids.map(i => [D(i), true])) });
     ok(same(all.inv, [ids[n - 1]]), `головна: усі відкладені — одне запрошення, перший за diagOrder (${ids[n - 1]}), а ${JSON.stringify(all.inv)}`);
     const part = await home("reverse", { diagRun: { [D(ids[0])]: { 0: 1 } } });
-    ok(same([...part.inv].sort(), [ids[0], ids[n - 1]].sort()), `головна: перерваний тест (${ids[0]}) лишається поряд із новим (${ids[n - 1]}), а ${JSON.stringify(part.inv)}`);
+    ok(same(part.inv, [ids[0]]), `головна: перерваний тест (${ids[0]}) — і є те одне запрошення, нового поряд немає (рев'ю engine-diag-one-invite P2-1), а ${JSON.stringify(part.inv)}`);
     const mx = await home("mixed");
     ok(same(mx.inv, [ids[n - 1]]), `головна: предмет без diagOrder не першим (${ids[n - 1]}), а ${JSON.stringify(mx.inv)}`);
     // «коли захочеш»: тест іншого предмета доступний з екрана предмета
     await home("reverse"); await page.click(`button[data-subject="${ids[0]}"]`);
-    ok(await page.locator(`#view [data-diag="${ids[0]}"], #view [data-plan="${ids[0]}"]`).count() > 0, `екран предмета ${ids[0]}: тест рівня доступний`); }
+    ok(await page.locator(`#view [data-diag="${ids[0]}"]`).count() > 0, `екран предмета ${ids[0]}: тест рівня доступний`); }
   ok(!errors.length, "один тест на головній: помилки сторінки: " + errors.join(" | "));
   await ctx.close();
 }
