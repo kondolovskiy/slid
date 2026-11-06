@@ -4,7 +4,7 @@ claimed_at: 2026-11-06T07:56:37.837Z
 id: qa-ukr-diag
 type: qa
 subject: ukr
-status: todo
+status: done
 claimed_by: orchestrator-qa
 created: 2026-11-06
 depends_on: [write-ukr-diag-g5, write-ukr-diag-g6, write-ukr-diag-g7]
@@ -28,3 +28,6 @@ depends_on: [write-ukr-diag-g5, write-ukr-diag-g6, write-ukr-diag-g7]
 - [ ] Звіт є; P1 відкрито задачами; рядок в inbox; питання про потік двох тестів (якщо є) — у handoff «Технічні питання людині».
 
 ## Нотатки виконавця
+### orchestrator-qa, 2026-11-06
+Звіт — reports/qa/qa-ukr-diag.md (знімки — reports/qa/qa-ukr-diag-shots/, скрипт — reports/qa/qa-ukr-diag.script.mjs, Node Playwright на справжньому змісті). Блокувальних знахідок немає: плани за трьома профілями правильні (dgu5 — baseline-поради без кроків; dgu6/dgu7 — кроки на уроки 5–6 кл., «знайоме» для тем класу), потік двох тестів 6 кл. спокійний (тест мови — окрема картка на головній і на сторінці предмета, не нав'язується), 360 px без горизонтальної прокрутки. P3 — у звіті §6 і inbox. playtest / test-answer-ui для dgu5–dgu7 — лише в CI (немає Python playwright).
+
