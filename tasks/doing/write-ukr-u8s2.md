@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-06T08:53:01.265Z
 id: write-ukr-u8s2
 type: write-section
 subject: ukr
@@ -6,7 +8,7 @@ grade: 8
 section: u8s2
 weeks: [4, 5]
 status: todo
-claimed_by:
+claimed_by: w-write-ukr-u8s2
 created: 2026-11-06
 ---
 # Написати розділ «Граматичні помилки» (Українська мова, 8 клас)

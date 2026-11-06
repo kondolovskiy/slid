@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-06T08:53:01.229Z
 id: write-ukr-u8s1
 type: write-section
 subject: ukr
@@ -6,7 +8,7 @@ grade: 8
 section: u8s1
 weeks: [1, 3]
 status: todo
-claimed_by:
+claimed_by: w-write-ukr-u8s1
 created: 2026-11-06
 ---
 # Написати розділ «Згадуємо 7 клас: частини мови й правопис» (Українська мова, 8 клас)
