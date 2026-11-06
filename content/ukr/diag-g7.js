@@ -13,7 +13,7 @@ SLID.diag("ukr", {
   title: "Що ти вже вмієш?",
   why: "Знайдемо теми, які варто згадати, щоб нові уроки давалися легше.",
   status: "verified",
-  meta: { author: "claude-opus", created: "2026-11-06", factcheck: "verifier-dgu7", teacher: null },
+  meta: { author: "writer-write-ukr-diag-g7", created: "2026-11-06", factcheck: "verifier-dgu7", teacher: null },
   topics: [
     // передумови з 5–6 класів
     { id: "ne-adj", title: "Не з прикметниками", kind: "pre", lessons: ["u6s11l3"], for: ["u7s6", "u7s9", "u7s12"] },
