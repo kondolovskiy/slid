@@ -1,0 +1,392 @@
+# Милозвучність у/в, і/й, з/із/зі: hist
+
+Згенеровано: 2026-11-06 · tools/euphony.mjs · екранів: 1716, відхилень: 354
+
+Механічна підказка за УП § 23–25: перевір кожне вручну. Правила з позначкою «validate» дають попередження валідатора; решта — лише тут.
+
+## «В» на початку речення чи після паузи перед приголосним → «У» (§ 23) · validate — 9
+
+- h55 екран 5 (content/hist/g5-g5s5.js): «в Криму»
+- g6s6-l3 екран 9 (content/hist/g6-g6s6.js): «різне: в Єгипті»
+- g6s8-l6 екран 6 (content/hist/g6-g6s8.js): «в Європі»
+- g7s5l4 екран 1 (content/hist/g7-g7s5.js): «в Криму»
+- g9s2l3 екран 6 (content/hist/g9-g9s2.js): «Галичина — в якій»
+- g9s3l5 екран 1 (content/hist/g9-g9s3.js): «Удома, в Російській»
+- g9s4l1 екран 4 (content/hist/g9-g9s4.js): «Одесі, в Російській»
+- g10s1l1 екран 6 (content/hist/g10-g10s1.js): «Буковина — в якій»
+- g10s5l2 екран 4 (content/hist/g10-g10s5.js): «що — в селі»
+
+## «в» перед в, ф, льв, св, тв, хв… → «у» (§ 23) · validate — 8
+
+- g6s6-l5 екран 9 (content/hist/g6-g6s6.js): «стіни в Велику»
+- g8s4l1 екран 4 (content/hist/g8-g8s4.js): «державу в федерації»
+- g8s4l5 екран 3 (content/hist/g8-g8s4.js): «Руське в федерації»
+- g8s5l8 екран 2 (content/hist/g8-g8s5.js): «діяла в два»
+- g9s5l1 outro/назва (content/hist/g9-g9s5.js): «умови в двох»
+- g10s1l1 екран 6 (content/hist/g10-g10s1.js): «опинилися в ворожих»
+- g10s1l1 outro/назва (content/hist/g10-g10s1.js): «воювали в двох»
+- g10s1l4 екран 7 (content/hist/g10-g10s1.js): «воювали в двох»
+
+## «у» після голосного перед приголосним → «в» (§ 23; звіт) — 11
+
+- h33 екран 3 (content/hist/g5-s3.js): «залишалося у складі»
+- h61 екран 7 (content/hist/g5-g5s6.js): «переможці у Першій»
+- g6s3l3 екран 1 (content/hist/g6-g6s3.js): «зберігається у Скарбниці»
+- h645 екран 1 (content/hist/g6-g6s4.js): «купцеві у п'яти»
+- g7s5l1 екран 4 (content/hist/g7-g7s5.js): «опинилися у складі»
+- g7s5l1 outro/назва (content/hist/g7-g7s5.js): «опинилися у складі»
+- g7s5l5 outro/назва (content/hist/g7-g7s5.js): «опинилися у складі»
+- g10s1l1 outro/назва (content/hist/g10-g10s1.js): «чому у Першій»
+- g11s1l1 екран 3 (content/hist/g11-g11s1.js): «впливу у Східній»
+- g11s1l5 екран 6 (content/hist/g11-g11s1.js): «свободи у спецпоселеннях»
+- g11s1l6 екран 2 (content/hist/g11-g11s1.js): «воювали у складі»
+
+## «Й» на початку речення чи після паузи → «і» (§ 24) · validate — 1
+
+- g6s8-l1 екран 4 (content/hist/g6-g6s8.js): «можливо, й вовчиця»
+
+## «й» перед й, я, ю, є, ї → «і» (§ 24) · validate — 8
+
+- l1 екран 4 (content/hist/g5-s1.js): «пшениці й ячменю»
+- h23 екран 2 (content/hist/g5-s2.js): «Землі й їхні»
+- h63 екран 7 (content/hist/g5-g5s6.js): «вбити й їх»
+- g6s1l3 outro/назва (content/hist/g6-g6s1.js): «коли й як»
+- g6s1l5 екран 3 (content/hist/g6-g6s1.js): «пшеницю й ячмінь»
+- g9s4l3 екран 3 (content/hist/g9-g9s4.js): «поляки й євреї»
+- g9s4l3 екран 7 (content/hist/g9-g9s4.js): «поляки й євреї»
+- g10s3l2 екран 2 (content/hist/g10-g10s3.js): «хто й якою»
+
+## «і» між голосними → «й» (§ 24; не для зіставлених понять — звіт) — 4
+
+- h61 екран 4 (content/hist/g5-g5s6.js): «держави і одна»
+- g6s8-l3 екран 4 (content/hist/g6-g6s8.js): «по 365 і один»
+- g8s2l4 екран 3 (content/hist/g8-g8s2.js): «Дорошенко і уклав»
+- g8s2l4 екран 6 (content/hist/g8-g8s2.js): «Жмайло і угода»
+
+## «і» після голосного перед приголосним → «й» (§ 24; не для зіставлених понять — звіт) — 164
+
+- l3 outro/назва (content/hist/g5-s1.js): «пізніше і скільки»
+- l4 екран 3 (content/hist/g5-s1.js): «мета і перевірка»
+- l4 outro/назва (content/hist/g5-s1.js): «навіщо і хто»
+- l5 екран 1 (content/hist/g5-s1.js): «брати і сестра»
+- l6 екран 1 (content/hist/g5-s1.js): «природи і науки»
+- l6 outro/назва (content/hist/g5-s1.js): «часу і критичне»
+- h22 екран 6 (content/hist/g5-s2.js): «зробили і що»
+- h22 outro/назва (content/hist/g5-s2.js): «міста і де»
+- h31 екран 5 (content/hist/g5-s3.js): «Віче і козацька»
+- h32 екран 2 (content/hist/g5-s3.js): «Правило і закон»
+- h32 outro/назва (content/hist/g5-s3.js): «Правила і права»
+- h33 екран 6 (content/hist/g5-s3.js): «голову і міську»
+- h33 outro/назва (content/hist/g5-s3.js): «ратуша і магістрат»
+- h34 outro/назва (content/hist/g5-s3.js): «підрахунку і повага»
+- h35 екран 5 (content/hist/g5-s3.js): «Брауна і Франса»
+- h42 екран 2 (content/hist/g5-s4.js): «науки і культури»
+- h42 outro/назва (content/hist/g5-s4.js): «це і собори»
+- h43 екран 7 (content/hist/g5-s4.js): «Європи і Південної»
+- h44 outro/назва (content/hist/g5-s4.js): «Острозьку і Києво-Могилянську»
+- h45 outro/назва (content/hist/g5-s4.js): «розділу і всього»
+- h52 екран 3 (content/hist/g5-g5s5.js): «Ольга і Володимир»
+- h52 екран 8 (content/hist/g5-g5s5.js): «Чесно і точно»
+- h54 екран 3 (content/hist/g5-g5s5.js): «Козаки і гетьмани»
+- h54 екран 6 (content/hist/g5-g5s5.js): «Мазепа і що»
+- h54 outro/назва (content/hist/g5-g5s5.js): «Булава і Січ»
+- h54 outro/назва (content/hist/g5-g5s5.js): «постала і жила»
+- h55 екран 7 (content/hist/g5-g5s5.js): «ліквідувала і Гетьманщину»
+- h55 outro/назва (content/hist/g5-g5s5.js): «ханство і кримських»
+- h56 екран 5 (content/hist/g5-g5s5.js): «Штернберга і перша»
+- h56 екран 7 (content/hist/g5-g5s5.js): «Франко і Леся»
+- h57 екран 5 (content/hist/g5-g5s5.js): «палацу і всього»
+- h61 екран 6 (content/hist/g5-g5s6.js): «фото і згадай»
+- h61 outro/назва (content/hist/g5-g5s6.js): «державу і боронили»
+- h62 екран 1 (content/hist/g5-g5s6.js): «зробила і що»
+- h62 outro/назва (content/hist/g5-g5s6.js): «влади і шанувати»
+- h63 outro/назва (content/hist/g5-g5s6.js): «пам'ятаємо і жертв»
+- h64 екран 3 (content/hist/g5-g5s6.js): «роки і русифікація»
+- h65 екран 6 (content/hist/g5-g5s6.js): «люди і скільки»
+- h67 outro/назва (content/hist/g5-g5s6.js): «втрачали і знову»
+- g6s1l2 екран 8 (content/hist/g6-g6s1.js): «Королево і Вондерверк»
+- g6s1l3 екран 1 (content/hist/g6-g6s1.js): «природи і науки»
+- g6s1l3 екран 6 (content/hist/g6-g6s1.js): «потрібно і людям»
+- g6s1l5 екран 5 (content/hist/g6-g6s1.js): «сіяти і жив»
+- g6s1l6 екран 1 (content/hist/g6-g6s1.js): «природи і науки»
+- tr1 екран 6 (content/hist/g6-g6s2.js): «чи і ті»
+- tr2 екран 3 (content/hist/g6-g6s2.js): «Майданецького і Тальянок»
+- tr2 outro/назва (content/hist/g6-g6s2.js): «Майданецьке і Тальянки»
+- tr3 екран 3 (content/hist/g6-g6s2.js): «фарбу і робив»
+- tr3 екран 5 (content/hist/g6-g6s2.js): «посуду і жар»
+- tr4 екран 6 (content/hist/g6-g6s2.js): «згоріли і скільки»
+- g6s6-l1 екран 5 (content/hist/g6-g6s6.js): «влітку і взимку»
+- g6s6-l1 екран 6 (content/hist/g6-g6s6.js): «копати і хто»
+- g6s6-l3 екран 9 (content/hist/g6-g6s6.js): «Ієрогліфи і клинопис»
+- g6s6-l5 екран 6 (content/hist/g6-g6s6.js): «Будди і статуєю»
+- g6s6-l5 екран 6 (content/hist/g6-g6s6.js): «Будда і коли»
+- g6s6-l5 outro/назва (content/hist/g6-g6s6.js): «варни і вчення»
+- g6s6-l6 екран 4 (content/hist/g6-g6s6.js): «записано і грецькою»
+- g6s6-l6 екран 6 (content/hist/g6-g6s6.js): «глина і стела»
+- g6s7-l2 екран 7 (content/hist/g6-g6s7.js): «коротку і влучну»
+- g6s7-l2 outro/назва (content/hist/g6-g6s7.js): «Афіни і Спарту»
+- g6s7-l5 outro/назва (content/hist/g6-g6s7.js): «маска і запитання»
+- g6s3l2 екран 5 (content/hist/g6-g6s3.js): «жаба і п'ять»
+- g6s3l3 екран 6 (content/hist/g6-g6s3.js): «бути і прикрасою»
+- g6s3l4 outro/назва (content/hist/g6-g6s3.js): «сармати і звідки»
+- h643 екран 1 (content/hist/g6-g6s4.js): «возили і звідки»
+- h643 екран 3 (content/hist/g6-g6s4.js): «Що і куди»
+- h644 екран 4 (content/hist/g6-g6s4.js): «Геродота і напис»
+- h645 екран 5 (content/hist/g6-g6s4.js): «роки і віднімаємо»
+- h645 екран 5 (content/hist/g6-g6s4.js): «дати і згадай»
+- g6s8-l2 екран 9 (content/hist/g6-g6s8.js): «війни і довгі»
+- g6s8-l4 outro/назва (content/hist/g6-g6s8.js): «римлянина і звідки»
+- g6s8-l5 outro/назва (content/hist/g6-g6s8.js): «постало і поширилося»
+- g6s8-l5 outro/назва (content/hist/g6-g6s8.js): «можна і чого»
+- g6s8-l6 екран 4 (content/hist/g6-g6s8.js): «Західна і Східна»
+- g6s8-l7 екран 1 (content/hist/g6-g6s8.js): «це і що»
+- g6s8-l7 екран 4 (content/hist/g6-g6s8.js): «це і чому»
+- g6s5-l2 екран 2 (content/hist/g6-g6s5.js): «поступово і ведуть»
+- g6s5-l3 екран 7 (content/hist/g6-g6s5.js): «Обережно і точно»
+- g7s1l2 екран 1 (content/hist/g7-g7s1.js): «Аскольда і Діра»
+- g7s1l5 екран 6 (content/hist/g7-g7s1.js): «данину і де»
+- g7s2l2 екран 4 (content/hist/g7-g7s2.js): «джерела і додаємо»
+- g7s2l2 екран 5 (content/hist/g7-g7s2.js): «родичами і скріплювали»
+- g7s2l2 екран 6 (content/hist/g7-g7s2.js): «родичами і скріплювали»
+- g7s2l2 outro/назва (content/hist/g7-g7s2.js): «книги і весілля»
+- g7s2l3 outro/назва (content/hist/g7-g7s2.js): «штрафу і суду»
+- g7s2l3 outro/назва (content/hist/g7-g7s2.js): «Ярослава і Правду»
+- g7s2l4 екран 4 (content/hist/g7-g7s2.js): «скла) і каменю»
+- g7s2l4 екран 7 (content/hist/g7-g7s2.js): «Хто і коли»
+- g7s2l4 outro/назва (content/hist/g7-g7s2.js): «Київська і літописи»
+- g7s2l5 екран 1 (content/hist/g7-g7s2.js): «точно і чесно»
+- g7s3l4 outro/назва (content/hist/g7-g7s3.js): «половці і чому»
+- g7s4l1 екран 2 (content/hist/g7-g7s4.js): «хто і коли»
+- g7s4l2 екран 8 (content/hist/g7-g7s4.js): «Хто і коли»
+- g7s4l2 outro/назва (content/hist/g7-g7s4.js): «державу і навіщо»
+- g7s4l4 екран 1 (content/hist/g7-g7s4.js): «Брауна і Франса»
+- g7s4l4 outro/назва (content/hist/g7-g7s4.js): «згадку і дату»
+- g7s4l5 екран 7 (content/hist/g7-g7s4.js): «Польща і Литва»
+- g7s4l6 екран 3 (content/hist/g7-g7s4.js): «корону і скіпетр»
+- g7s4l6 екран 5 (content/hist/g7-g7s4.js): «заснували і хто»
+- g7s5l1 екран 3 (content/hist/g7-g7s5.js): «Діяли і походами»
+- g7s5l2 екран 8 (content/hist/g7-g7s5.js): «місце і навіть»
+- g7s5l2 outro/назва (content/hist/g7-g7s5.js): «коли і навіщо»
+- g7s5l3 екран 1 (content/hist/g7-g7s5.js): «Кому і навіщо»
+- g7s5l3 екран 9 (content/hist/g7-g7s5.js): «Вітовта і Городельську»
+- g7s5l4 екран 4 (content/hist/g7-g7s5.js): «Тому і дати»
+- g7s5l6 екран 7 (content/hist/g7-g7s5.js): «султана і мав»
+- g8s1l1 екран 3 (content/hist/g8-g8s1.js): «королівство і Велике»
+- g8s1l2 екран 3 (content/hist/g8-g8s1.js): «Шляхта і магнати»
+- g8s1l2 екран 4 (content/hist/g8-g8s1.js): «Корони і Великого»
+- g8s1l2 екран 5 (content/hist/g8-g8s1.js): «пана і не»
+- g8s1l2 outro/назва (content/hist/g8-g8s1.js): «шляхту і магнатів»
+- g8s1l6 екран 1 (content/hist/g8-g8s1.js): «спілка і навіщо»
+- g8s1l6 outro/назва (content/hist/g8-g8s1.js): «братство і ставропігія»
+- g8s2l2 екран 5 (content/hist/g8-g8s2.js): «Рада і кошовий»
+- g8s2l4 екран 2 (content/hist/g8-g8s2.js): «правами і політикою»
+- g8s2l4 екран 3 (content/hist/g8-g8s2.js): «Жмайло і Куруків»
+- g8s2l5 екран 7 (content/hist/g8-g8s2.js): «воювало і торгувалося»
+- g8s3l2 екран 3 (content/hist/g8-g8s3.js): «Води і Корсунь»
+- g8s4l3 екран 5 (content/hist/g8-g8s4.js): «Мета і засіб»
+- g8s4l3 outro/назва (content/hist/g8-g8s4.js): «Дорошенко і чому»
+- g8s5l1 outro/назва (content/hist/g8-g8s5.js): «Мазепа і чому»
+- g8s5l5 outro/назва (content/hist/g8-g8s5.js): «булави і Січі»
+- g8s5l8 екран 8 (content/hist/g8-g8s5.js): «Обіцянка і дійсність»
+- g8s5l8 outro/назва (content/hist/g8-g8s5.js): «ханство і що»
+- g9s1l1 outro/назва (content/hist/g9-g9s1.js): «Посполиту і куди»
+- g9s1l2 outro/назва (content/hist/g9-g9s1.js): «землями і що»
+- g9s1l3 екран 2 (content/hist/g9-g9s1.js): «Галичини і Володимирії»
+- g9s1l3 екран 3 (content/hist/g9-g9s1.js): «Галичини і Володимирії»
+- g9s1l4 екран 6 (content/hist/g9-g9s1.js): «дні) і життям»
+- g9s1l4 outro/назва (content/hist/g9-g9s1.js): «панщина і чому»
+- g9s1l5 екран 4 (content/hist/g9-g9s1.js): «Галичини і Володимирії»
+- g9s2l3 екран 6 (content/hist/g9-g9s2.js): «уроку 2 і цього»
+- g9s2l5 екран 3 (content/hist/g9-g9s2.js): «Кирила і Мефодія»
+- g9s2l5 екран 7 (content/hist/g9-g9s2.js): «слідства і висновок»
+- g9s2l5 outro/назва (content/hist/g9-g9s2.js): «кирило-мефодіївці і чому»
+- g9s3l1 екран 4 (content/hist/g9-g9s3.js): «панщину і кому»
+- g9s3l4 екран 4 (content/hist/g9-g9s3.js): «слова і що»
+- g9s3l5 екран 3 (content/hist/g9-g9s3.js): «ради і рік»
+- g9s4l3 екран 5 (content/hist/g9-g9s4.js): «рівно 22 % і не»
+- g9s4l5 екран 7 (content/hist/g9-g9s4.js): «агенти і що»
+- g9s5l1 екран 4 (content/hist/g9-g9s5.js): «Програма і вибори»
+- g10s1l1 екран 5 (content/hist/g10-g10s1.js): «втрачали і рідних»
+- g10s1l1 outro/назва (content/hist/g10-g10s1.js): «одного і що»
+- g10s1l2 екран 6 (content/hist/g10-g10s1.js): «Маківка і Лисоня»
+- g10s1l3 екран 6 (content/hist/g10-g10s1.js): «Бобринського і те»
+- g10s1l3 outro/назва (content/hist/g10-g10s1.js): «арміями і чому»
+- g10s2l1 екран 8 (content/hist/g10-g10s2.js): «влітку і що»
+- g10s2l3 екран 1 (content/hist/g10-g10s2.js): «школи і студентів-добровольців»
+- g10s2l4 outro/назва (content/hist/g10-g10s2.js): «Скоропадського і чому»
+- g10s2l6 outro/назва (content/hist/g10-g10s2.js): «держава і чому»
+- g10s2l8 outro/назва (content/hist/g10-g10s2.js): «поразці і внутрішні»
+- g10s2l9 екран 4 (content/hist/g10-g10s2.js): «бути і здобутки»
+- g10s3l1 екран 9 (content/hist/g10-g10s3.js): «НЕПу і продподатку»
+- g10s3l2 outro/назва (content/hist/g10-g10s3.js): «змінила і чому»
+- g10s4l2 екран 2 (content/hist/g10-g10s4.js): «Посуха і неврожай»
+- g10s4l4 екран 5 (content/hist/g10-g10s4.js): «Москви і сам»
+- g10s5l2 outro/назва (content/hist/g10-g10s5.js): «права і чому»
+- g10s5l2 outro/назва (content/hist/g10-g10s5.js): «Просвіта») і підпільним»
+- g11s1l2 екран 7 (content/hist/g11-g11s1.js): «змінила і кордони»
+- g11s1l3 екран 7 (content/hist/g11-g11s1.js): «назвати і злочин»
+- g11s2l4 екран 3 (content/hist/g11-g11s2.js): «дружби і культурних»
+- g11s4l1 екран 5 (content/hist/g11-g11s4.js): «мала і спадкові»
+- g11s4l2 екран 5 (content/hist/g11-g11s4.js): «Площа і суд»
+- g11s4l3 екран 2 (content/hist/g11-g11s4.js): «змінили і масштаб»
+
+## «з» перед з, с, ш, щ + приголосний (і «мною») → «зі» (§ 25) · validate — 3
+
+- g8s5l3 екран 6 (content/hist/g8-g8s5.js): «порівняння з США»
+- g10s3l3 екран 6 (content/hist/g10-g10s3.js): «вихід з СРСР»
+- g10s3l3 екран 6 (content/hist/g10-g10s3.js): «УСРР з СРСР»
+
+## «З» на початку речення чи після тире перед з, с, ц, ж, ч, ш → «Із» (§ 25 п. 2) · validate — 13
+
+- h25 екран 6 (content/hist/g5-s2.js): «які — з чужих»
+- g6s1l3 екран 1 (content/hist/g6-g6s1.js): «З чого»
+- g6s1l4 екран 6 (content/hist/g6-g6s1.js): «З чого»
+- g6s6-l4 екран 7 (content/hist/g6-g6s6.js): «З цієї»
+- g7s1l2 екран 1 (content/hist/g7-g7s1.js): «З човнів»
+- g7s1l4 екран 4 (content/hist/g7-g7s1.js): «З Чехів»
+- g7s1l4 екран 7 (content/hist/g7-g7s1.js): «З чого»
+- g7s2l2 екран 9 (content/hist/g7-g7s2.js): «подія — з часів»
+- g7s3l3 екран 5 (content/hist/g7-g7s3.js): «Святославич — з чернігівських»
+- g8s2l4 екран 1 (content/hist/g8-g8s2.js): «З чого»
+- g8s4l3 екран 3 (content/hist/g8-g8s4.js): «Дорошенко  (1627–1698) з Чигирина»
+- g9s1l2 екран 9 (content/hist/g9-g9s1.js): «твердження — з часів»
+- g9s3l4 екран 4 (content/hist/g9-g9s3.js): «З циркуляра»
+
+## «з» між приголосними → «із» (§ 25; звіт) — 119
+
+- l5 екран 3 (content/hist/g5-s1.js): «переказом з часом»
+- l6 екран 4 (content/hist/g5-s1.js): «аналіз з перерахунком»
+- h22 екран 4 (content/hist/g5-s2.js): «шлях з півночі»
+- h22 екран 7 (content/hist/g5-s2.js): «землях з півночі»
+- h31 екран 8 (content/hist/g5-s3.js): «малюнок з книжки»
+- h32 екран 4 (content/hist/g5-s3.js): «пов'язують з Ярославом»
+- h33 екран 4 (content/hist/g5-s3.js): «Міщанам з Магдебурзьким»
+- h35 екран 3 (content/hist/g5-s3.js): «Порівняй 110 з половиною»
+- h41 екран 3 (content/hist/g5-s4.js): «відомий з монет»
+- h41 outro/назва (content/hist/g5-s4.js): «Тризуб з монет»
+- h42 екран 2 (content/hist/g5-s4.js): «ООН з питань»
+- h43 екран 2 (content/hist/g5-s4.js): «один з найдавніших»
+- h43 екран 6 (content/hist/g5-s4.js): «людей з кількома»
+- h52 екран 1 (content/hist/g5-g5s5.js): «вигляд з півдня»
+- h54 екран 6 (content/hist/g5-g5s5.js): «жезл з кулястим»
+- h54 екран 6 (content/hist/g5-g5s5.js): «річ з кулею»
+- h54 екран 7 (content/hist/g5-g5s5.js): «один з найдовших»
+- h57 екран 4 (content/hist/g5-g5s5.js): «правив з Чигирина»
+- h57 екран 4 (content/hist/g5-g5s5.js): «правив з Батурина»
+- h62 екран 5 (content/hist/g5-g5s6.js): «документ з початку»
+- h64 екран 4 (content/hist/g5-g5s6.js): «книжок з російської»
+- g6s1l1 екран 1 (content/hist/g6-g6s1.js): «каменів з гострими»
+- g6s1l1 екран 2 (content/hist/g6-g6s1.js): «знаряддям з Королева»
+- g6s1l1 екран 3 (content/hist/g6-g6s1.js): «один з найдавніших»
+- g6s1l2 екран 2 (content/hist/g6-g6s1.js): «Ніж з кременю»
+- g6s1l2 екран 3 (content/hist/g6-g6s1.js): «оббитий з двох»
+- g6s1l3 екран 2 (content/hist/g6-g6s1.js): «дім з кісток»
+- g6s1l3 екран 4 (content/hist/g6-g6s1.js): «тварин з тих»
+- g6s1l3 outro/назва (content/hist/g6-g6s1.js): «Дім з кісток»
+- g6s1l4 екран 1 (content/hist/g6-g6s1.js): «браслет з бивня»
+- g6s1l4 екран 1 (content/hist/g6-g6s1.js): «візерунок з ламаних»
+- g6s1l4 екран 1 (content/hist/g6-g6s1.js): «Браслет з бивня»
+- g6s1l4 outro/назва (content/hist/g6-g6s1.js): «Браслет з бивня»
+- g6s1l4 outro/назва (content/hist/g6-g6s1.js): «Браслет з Мізина»
+- g6s1l5 екран 5 (content/hist/g6-g6s1.js): «сусідів-землеробів з Балкан»
+- g6s1l6 екран 5 (content/hist/g6-g6s1.js): «Браслет з Мізина»
+- g6s1l6 екран 5 (content/hist/g6-g6s1.js): «Браслет з бивня»
+- g6s6-l1 екран 3 (content/hist/g6-g6s6.js): «виходив з берегів»
+- g6s6-l2 екран 6 (content/hist/g6-g6s6.js): «Камінь з трьома»
+- g6s6-l2 екран 7 (content/hist/g6-g6s6.js): «їх з тим»
+- g6s6-l3 екран 6 (content/hist/g6-g6s6.js): «цар з волі»
+- g6s6-l4 екран 2 (content/hist/g6-g6s6.js): «пурпуром з морських»
+- g6s6-l6 екран 3 (content/hist/g6-g6s6.js): «Ніл з космосу»
+- g6s7-l4 екран 4 (content/hist/g6-g6s7.js): «біжить з Марафона»
+- g6s7-l4 екран 4 (content/hist/g6-g6s7.js): «біг з Марафона»
+- g6s7-l4 екран 5 (content/hist/g6-g6s7.js): «Ксеркс з величезним»
+- g6s7-l5 екран 6 (content/hist/g6-g6s7.js): «кепкують з відомого»
+- g6s3l2 екран 2 (content/hist/g6-g6s3.js): «степом з пасовища»
+- g6s3l2 екран 4 (content/hist/g6-g6s3.js): «пішов з військом»
+- g6s3l3 екран 4 (content/hist/g6-g6s3.js): «разом з яблуком»
+- g6s3l3 outro/назва (content/hist/g6-g6s3.js): «Пектораль з Товстої»
+- g6s3l3 outro/назва (content/hist/g6-g6s3.js): «пектораль з Товстої»
+- g6s3l4 екран 5 (content/hist/g6-g6s3.js): «Пектораль з Товстої»
+- g6s3l5 екран 5 (content/hist/g6-g6s3.js): «Пектораль з кургану»
+- h645 екран 1 (content/hist/g6-g6s4.js): «Корабель з Мілета»
+- g6s8-l3 екран 2 (content/hist/g6-g6s8.js): «правителем з необмеженою»
+- g6s8-l5 екран 2 (content/hist/g6-g6s8.js): «Учитель з Юдеї»
+- g6s8-l6 екран 5 (content/hist/g6-g6s8.js): «імператор з цієї»
+- g6s5-l1 екран 3 (content/hist/g6-g6s5.js): «знають з письмових»
+- g6s5-l2 екран 6 (content/hist/g6-g6s5.js): «могильник з посудом»
+- g6s5-l3 outro/назва (content/hist/g6-g6s5.js): «їх з поправкою»
+- g6s5-l5 екран 3 (content/hist/g6-g6s5.js): «жителів з Римом»
+- g7s1l2 екран 6 (content/hist/g7-g7s1.js): «прийшов з півночі»
+- g7s1l2 екран 8 (content/hist/g7-g7s1.js): «договір з Візантією»
+- g7s1l4 екран 7 (content/hist/g7-g7s1.js): «Мир з Візантією»
+- g7s1l4 екран 8 (content/hist/g7-g7s1.js): «мир з Візантією»
+- g7s2l1 екран 6 (content/hist/g7-g7s2.js): «Разом з новою»
+- g7s2l2 екран 9 (content/hist/g7-g7s2.js): «пов'язують з Ярославом»
+- g7s2l3 екран 3 (content/hist/g7-g7s2.js): «пов'язують з Ярославом»
+- g7s2l4 екран 1 (content/hist/g7-g7s2.js): «вигляд з півдня»
+- g7s2l4 екран 3 (content/hist/g7-g7s2.js): «викладають з кубиків»
+- g7s2l4 екран 4 (content/hist/g7-g7s2.js): «викладають з кубиків»
+- g7s2l5 екран 1 (content/hist/g7-g7s2.js): «вигляд з півдня»
+- g7s3l1 екран 3 (content/hist/g7-g7s3.js): «Ігоревич з Волині»
+- g7s3l3 екран 6 (content/hist/g7-g7s3.js): «зник з карти»
+- g7s3l4 екран 3 (content/hist/g7-g7s3.js): «мир з князем»
+- g7s4l1 екран 3 (content/hist/g7-g7s4.js): «князь з роду»
+- g7s4l4 екран 8 (content/hist/g7-g7s4.js): «поруч з Галичиною»
+- g7s5l1 outro/назва (content/hist/g7-g7s5.js): «висновок з речового»
+- g7s5l2 екран 5 (content/hist/g7-g7s5.js): «писав з чужих»
+- g7s5l3 екран 2 (content/hist/g7-g7s5.js): «шлюб з королевою»
+- g7s5l4 екран 8 (content/hist/g7-g7s5.js): «дружив з Литвою»
+- g7s5l4 екран 8 (content/hist/g7-g7s5.js): «дружив з Литвою»
+- g7s5l4 outro/назва (content/hist/g7-g7s5.js): «союзів з подіями»
+- g7s5l6 екран 1 (content/hist/g7-g7s5.js): «прийшов з такою»
+- g7s5l5 екран 2 (content/hist/g7-g7s5.js): «Лист з Луцька»
+- g7s5l5 екран 2 (content/hist/g7-g7s5.js): «Лист з Києва»
+- g7s5l5 екран 5 (content/hist/g7-g7s5.js): «Боярин з Волині»
+- g7s5l5 екран 6 (content/hist/g7-g7s5.js): «Гість з Криму»
+- g8s1l5 екран 3 (content/hist/g8-g8s1.js): «Лист з Києва»
+- g8s1l5 екран 3 (content/hist/g8-g8s1.js): «Лист з Волині»
+- g8s1l5 екран 3 (content/hist/g8-g8s1.js): «Лист з білоруських»
+- g8s1l5 екран 7 (content/hist/g8-g8s1.js): «Лист з Подолу»
+- g8s1l5 екран 7 (content/hist/g8-g8s1.js): «Сагайдачний з козаками»
+- g8s2l5 екран 1 (content/hist/g8-g8s2.js): «писар з пером»
+- g8s4l2 екран 3 (content/hist/g8-g8s4.js): «Брюховецький з булавою»
+- g8s5l3 екран 3 (content/hist/g8-g8s5.js): «кордон з Польщею»
+- g9s5l2 екран 3 (content/hist/g9-g9s5.js): «Одним з ватажків»
+- g10s1l1 екран 6 (content/hist/g10-g10s1.js): «Селянин з Полтавщини»
+- g10s1l1 екран 6 (content/hist/g10-g10s1.js): «Робітник з Катеринослава»
+- g10s1l1 екран 6 (content/hist/g10-g10s1.js): «Подолянин з лівого»
+- g10s1l1 екран 6 (content/hist/g10-g10s1.js): «Гуцул з Карпат»
+- g10s1l1 екран 7 (content/hist/g10-g10s1.js): «українців з російської»
+- g10s1l1 екран 7 (content/hist/g10-g10s1.js): «Згодом з цих»
+- g10s1l4 екран 3 (content/hist/g10-g10s1.js): «УСС з Маківки»
+- g10s2l2 екран 1 (content/hist/g10-g10s2.js): «мир з Росією»
+- g10s2l2 екран 4 (content/hist/g10-g10s2.js): «зв'язок з Росією»
+- g10s2l2 екран 5 (content/hist/g10-g10s2.js): «Разом з військом»
+- g10s2l2 екран 6 (content/hist/g10-g10s2.js): «договір з Центральними»
+- g10s2l4 екран 3 (content/hist/g10-g10s2.js): «походив з роду»
+- g10s2l4 екран 4 (content/hist/g10-g10s2.js): «парламент з багатьох»
+- g10s2l5 екран 6 (content/hist/g10-g10s2.js): «противників з минулого»
+- g10s2l7 екран 6 (content/hist/g10-g10s2.js): «насамперед з Польщею»
+- g10s3l3 екран 6 (content/hist/g10-g10s3.js): «союз з Росією»
+- g10s5l1 екран 11 (content/hist/g10-g10s5.js): «висновок з порівняння»
+- g10s5l3 екран 5 (content/hist/g10-g10s5.js): «ОУН з Галичини»
+- g10s5l3 екран 6 (content/hist/g10-g10s5.js): «виборців з кожних»
+- g11s1l2 екран 5 (content/hist/g11-g11s1.js): «грабунок з терором»
+- g11s5l5 екран 5 (content/hist/g11-g11s5.js): «ООН з прав»
+
+## «зі» лише перед з, с, ш, щ + приголосний і «мною» (§ 25) · validate — 14
+
+- h55 екран 3 (content/hist/g5-g5s5.js): «Галичина зі Львовом»
+- h55 екран 4 (content/hist/g5-g5s5.js): «Галичина зі Львовом»
+- g7s4l4 екран 5 (content/hist/g7-g7s4.js): «Зі Львова»
+- g7s4l6 екран 5 (content/hist/g7-g7s4.js): «Виправ: зі Львова»
+- g7s5l1 екран 4 (content/hist/g7-g7s5.js): «Галичина зі Львовом»
+- g7s5l5 екран 2 (content/hist/g7-g7s5.js): «Галичина зі Львовом»
+- g7s5l5 екран 2 (content/hist/g7-g7s5.js): «Лист зі Львова»
+- g8s1l1 екран 5 (content/hist/g8-g8s1.js): «Галичина зі Львовом»
+- g9s1l1 екран 4 (content/hist/g9-g9s1.js): «Галичина зі Львовом»
+- g9s1l1 екран 9 (content/hist/g9-g9s1.js): «Галичина зі Львовом»
+- g9s1l3 екран 9 (content/hist/g9-g9s1.js): «королівство зі Львовом»
+- g9s2l3 екран 6 (content/hist/g9-g9s2.js): «Галичина зі Львовом»
+- g10s1l1 екран 6 (content/hist/g10-g10s1.js): «Студент зі Львова»
+- g10s5l1 екран 1 (content/hist/g10-g10s5.js): «Родина зі Львова»
