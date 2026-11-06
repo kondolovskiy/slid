@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-06T07:56:37.837Z
 id: qa-ukr-diag
 type: qa
 subject: ukr
 status: todo
-claimed_by:
+claimed_by: orchestrator-qa
 created: 2026-11-06
 depends_on: [write-ukr-diag-g5, write-ukr-diag-g6, write-ukr-diag-g7]
 ---
