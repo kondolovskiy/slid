@@ -1,11 +1,13 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-06T12:11:00.404Z
 id: write-ukr-diag-g8
 type: write-diag
 subject: ukr
 grade: 8
 section: dgu8
 status: todo
-claimed_by:
+claimed_by: orchestrator-writer
 created: 2026-11-06
 depends_on: [plan-ukr-g8]
 ---
