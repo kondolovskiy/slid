@@ -6,7 +6,7 @@ type: write-diag
 subject: ukr
 grade: 8
 section: dgu8
-status: review
+status: done
 claimed_by: orchestrator-writer
 created: 2026-11-06
 depends_on: [plan-ukr-g8]
@@ -90,3 +90,6 @@ u5s8l3 — 4 (u8s3, u8s4, u8s7, u8s8); по 2: u7s8l2, u7s10l1, u7s11l2, u6s7l5,
 7. Наголосу в ядрі обраних уроків немає; stress/split не потрібні.
 
 Побічне: validate перезаписує спільний `reports/validate.json` (зміна — від прогонів, не правка руками).
+
+## Верифікація
+**verifier-dgu8, 2026-11-06:** verified. 30/30 ключів збіглися з власним розв'язком. Правка: №20 + картка «вовк / жаднюга» → «Через дефіс» (learned 2 u8s5l3 — оцінка після іменника); статус і factcheck. Сумнівні №13, №25, №26, №29 — лишено (З8 с. 130–131, 157, 191; УП не суперечить); sort №18/№23/№28 не скорочено (кожна картка — пункт learned; тривалість ≈ 12,6 хв — P3-2 після пілоту). `validate --diag dgu8` — 0/0. Звіт: reports/verify/dgu8.md.
