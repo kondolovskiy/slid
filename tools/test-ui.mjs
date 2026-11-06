@@ -19,6 +19,8 @@
 //     пристрої, злиття балів, офлайн-черга, «не мій прогрес» на спільному пристрої, помилки 401, вихід, «Скинути прогрес»; без адреси API — картки немає.
 //  10) Мовні вправи в тесті рівня (engine-diag-lang-types): gaps, pick, stress, word, split у тесті ukr-фікстури — без позначок, вердикти, «Ще не знаю»,
 //     продовження після перезавантаження, підсумок тем.
+//  11) Порядок тестів рівня після вибору класу (fix-diag-order): відкривається тест предмета з найменшим diagOrder (метадані предмета),
+//      а не перший предмет за порядком файлів; без diagOrder і за рівних — порядок предметів; відкладений тест («Пізніше») не пропонується.
 //  5–7) Service worker (engine-sw-version-skew): деплой нової версії не змішує index.html і app.js; файл зі старого кешу не віддається
 //     (P3-6); оновлення не перезавантажує сторінку посеред уроку, а версія подій журналу лишається версією сторінки (P3-4); застосунок зі старим SW після одного змішаного відкриття сам переходить на консистентну нову версію.
 // Запуск: node tools/test-ui.mjs [--browser /opt/pw-browsers/chromium]
@@ -341,6 +343,36 @@ async function syncScenarios(browser) {
 }
 
 
+/* 11) Порядок тестів рівня після вибору класу (fix-diag-order). Фікстура: у кожного предмета — розділ 6 кл. і тест dgo-<id>;
+   diagOrder задається навпаки до порядку SLID_SUBJECTS, тож перший предмет масиву не може «випадково» виграти. */
+async function diagOrderScenario(browser) {
+  const ctx = await browser.newContext({ viewport: { width: 400, height: 860 }, serviceWorkers: "block" });
+  const page = await ctx.newPage(), errors = []; page.on("pageerror", e => errors.push(String(e))); page.setDefaultTimeout(8000);
+  await page.route("**/fonts.googleapis.com/**", r => r.abort());
+  const install = mode => { const n = SLID_SUBJECTS.length;
+    SLID_SUBJECTS.forEach((c, i) => {
+      const lesson = { id: "lo-" + c.id, title: "Урок", icon: "book", screens: [{ type: "intro", title: "QA", body: "QA" }] };
+      c.sections = [{ id: "so-" + c.id, grade: 6, weeks: [1, 2], title: "QA", why: "QA", lessons: [lesson] }]; c.pools = [];
+      c.diags = [{ id: "dgo-" + c.id, grade: 6, title: "QA", why: "QA", status: "draft", topics: [{ id: "t", title: "Т", kind: "cur", lessons: [lesson.id] }],
+        items: [{ topic: "t", type: "choice", title: "QA", options: ["а", "б"], correct: 0 }] }];
+      if (mode === "reverse") c.diagOrder = n - i; else if (mode === "tie") c.diagOrder = 1; else delete c.diagOrder; });
+    return SLID_SUBJECTS.map(c => c.id); };
+  const onboard = async (mode, skip) => {
+    await page.goto(URL0); await page.evaluate(s => { localStorage.clear(); if (s) localStorage.setItem("slid.v1", JSON.stringify({ diagSkip: s })); }, skip || null); await page.reload();
+    const ids = await page.evaluate(install, mode); await page.click('[data-grade="6"]');
+    const opened = await page.locator("[data-diag-skip]").first().getAttribute("data-diag-skip"); return { ids, opened }; };
+  { const { ids, opened } = await onboard("reverse");
+    ok(ids.length >= 2 && opened === "dgo-" + ids[ids.length - 1], `diagOrder: відкрито тест з найменшим diagOrder (dgo-${ids[ids.length - 1]}), а ${opened}`);
+    const nxt = await onboard("reverse", { ["dgo-" + ids[ids.length - 1]]: true });
+    ok(nxt.opened === "dgo-" + ids[ids.length - 2], `diagOrder: відкладений тест пропущено — наступний за diagOrder (dgo-${ids[ids.length - 2]}), а ${nxt.opened}`); }
+  { const { ids, opened } = await onboard("none");
+    ok(opened === "dgo-" + ids[0], `без diagOrder: порядок предметів (dgo-${ids[0]}), а ${opened}`); }
+  { const { ids, opened } = await onboard("tie");
+    ok(opened === "dgo-" + ids[0], `рівні diagOrder: порядок предметів (dgo-${ids[0]}), а ${opened}`); }
+  ok(!errors.length, "diagOrder: помилки сторінки: " + errors.join(" | "));
+  await ctx.close();
+}
+
 /* 10) Мовні вправи в тесті рівня (engine-diag-lang-types): фікстура предмета ukr (розділи 5 і 6 кл., тест dgfu6) замість живого змісту.
    gaps, pick, stress, word, split у тесті — без позначок і показу відповіді, вердикт одразу (OK / BAD / «Ще не знаю»), продовження після
    перезавантаження, підсумок тем. */
@@ -481,6 +513,9 @@ try {
 
   // 10) Мовні вправи в тесті рівня (engine-diag-lang-types)
   await diagLangScenario(browser);
+
+  // 11) Порядок тестів рівня після вибору класу (fix-diag-order)
+  await diagOrderScenario(browser);
 
   // 5–7) Оновлення service worker без змішування версій (engine-sw-version-skew; docs/PUBLISHING.md «Оновлення PWA»)
   await swScenarios(browser);

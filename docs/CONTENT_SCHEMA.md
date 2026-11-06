@@ -7,14 +7,14 @@
 
 ```js
 SLID.subject({
-  id: "hist", subject: "Історія України", short: "Історія", icon: "pot", pattern: "spiral",   // pattern: spiral | grid | none
+  id: "hist", subject: "Історія України", diagOrder: 3, short: "Історія", icon: "pot", pattern: "spiral",   // pattern: spiral | grid | none
   colors: { light: { accent: "#A8431F", soft: "#F3E3DA", mid: "#D98E6E", ink: "#FFFFFF" },
             dark:  { accent: "#E0764E", soft: "#3A2419", mid: "#8A4A33", ink: "#1A1310" } },
   skills: { src: { name: "Джерела", hint: "Розрізняти види джерел…" } },   // навички для екрана «Прогрес»
   badges: [ { id: "hstar", name: "Зіркова історія", icon: "star", desc: "…", allstar: true } ]
 });
 ```
-Кольори генерують CSS автоматично. `allstar: true` — значок за 3 зірки в усіх уроках предмета в поточному класі.
+`diagOrder` (необов'язково, число): після вибору класу відкривається тест рівня предмета з найменшим `diagOrder` (зараз math 1, ukr 2, hist 3, world 4); без нього й за рівних — порядок предметів у збірці. Інші тести — картками на головній. Кольори генерують CSS автоматично. `allstar: true` — значок за 3 зірки в усіх уроках предмета в поточному класі.
 
 ## 2. Розділ — `content/<предмет>/g<клас>-<id>.js`
 

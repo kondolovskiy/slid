@@ -40,7 +40,9 @@ const poolItems = c => LEARN.practiceItems(S,c,planCtx(c));
 const diagOpen = id => { const f=findLesson(id); return !!f && LEARN.diagOpen(S,f.c.id,id,planCtx(f.c)); };
 const topicOpen = id => done(id) || S.unlockAll || diagOpen(id);
 const openItems = c => poolItems(c).filter(it=>topicOpen(it.lesson));
-const pendingDiag = () => subjectsFor().find(c=>{ const d=diagFor(c); return d && !S.diag[d.id]?.done && !S.diagSkip[d.id]; });
+/* тест рівня, що відкривається після вибору класу: найменший diagOrder предмета (метадані, CONTENT_SCHEMA §1), за рівних і без нього — порядок предметів (fix-diag-order) */
+const diagRank = c => Number.isFinite(c.diagOrder) ? c.diagOrder : Number.MAX_VALUE;
+const pendingDiag = () => subjectsFor().filter(c=>{ const d=diagFor(c); return d && !S.diag[d.id]?.done && !S.diagSkip[d.id]; }).reduce((best,c)=> !best || diagRank(c)<diagRank(best) ? c : best, null) || undefined;
 function schoolWeek(){ if(S.weekOverride) return S.weekOverride; const now=new Date(); const y=now.getMonth()>=7? now.getFullYear() : now.getFullYear()-1;
   const d0=new Date(y,8,1); d0.setDate(d0.getDate()-((d0.getDay()+6)%7)); return Math.max(1, Math.min(35, Math.floor((now-d0)/(7*864e5))+1)); }
 

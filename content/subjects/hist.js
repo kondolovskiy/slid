@@ -5,6 +5,7 @@
 SLID.subject({
   id: "hist",
   subject: "Історія України",
+  diagOrder: 3,   // порядок тесту рівня після вибору класу (CONTENT_SCHEMA §1)
   short: "Історія",
   icon: "pot",
   pattern: "spiral",

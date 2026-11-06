@@ -35,6 +35,7 @@ const SVGS = [...fs.readFileSync(path.join(ROOT, "app/app.js"), "utf8").matchAll
 
 for (const c of subjects) {
   if (!c.colors?.light?.accent || !c.colors?.dark?.accent) E(`предмет ${c.id}`, "немає colors.light/dark");
+  if (c.diagOrder !== undefined && !Number.isFinite(c.diagOrder)) E(`предмет ${c.id}`, "diagOrder — число (порядок тесту рівня після вибору класу, CONTENT_SCHEMA §1)");
   for (const sec of c.sections) {
     const where0 = `${origin[sec.id] || c.id}#${sec.id}`;
     if (allSectionIds.has(sec.id)) E(where0, "id розділу не унікальний"); allSectionIds.add(sec.id);

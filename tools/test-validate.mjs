@@ -360,6 +360,12 @@ expectRun("drag: at і без drag — без попередження", one("fx
     const bad = JSON.parse(JSON.stringify(sec)); bad.lessons[0].screens.at(-1).units = ["м", "см"];
     expectRun("answer у предметі без skills — поля перевіряються (units поза quantity)", files(bad), ["--section", "fxns"], { err: "answer: units — лише для answerKind quantity" });
     fs.rmSync(path.join(tmp, "content/fxns"), { recursive: true, force: true }); }
+  // fix-diag-order: diagOrder предмета — лише число
+  { const subj = o => `SLID.subject(${JSON.stringify({ id: "fxdo", subject: "Фікстура", short: "Ф", icon: "frac", colors: { light: { accent: "#000" }, dark: { accent: "#fff" } }, skills: MATH_SKILLS, ...o })});\n`;
+    const files = o => ({ "content/fxdo/aa-subj.js": subj(o), "content/fxdo/g8-fxdo.js": secJS("fxdo", mathSec("fxdo")) });
+    expectRun("diagOrder: число — без помилки", files({ diagOrder: 2 }), ["--section", "fxdo"], {});
+    expectRun("diagOrder: рядок — помилка", files({ diagOrder: "1" }), ["--section", "fxdo"], { err: "diagOrder — число" });
+    fs.rmSync(path.join(tmp, "content/fxdo"), { recursive: true, force: true }); }
   // діагностика: поля answer перевіряються лише тоді, коли answer дозволено в тесті (learn.DIAG_TYPES). Обидва стани задаємо явно
   // в копії app/learn.js, щоб тест не залежав від того, чи дозволено answer у діагностиці зараз (engine-diag-answer-kinds)
   { const lp = path.join(tmp, "app/learn.js"), orig = fs.readFileSync(lp, "utf8"), DT = /const DIAG_TYPES = \[[^\]]*\];/;
