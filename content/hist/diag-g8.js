@@ -1,5 +1,5 @@
 /* Слід · Історія України, 8 клас — тест рівня «Що ти вже вмієш?»
-   Задача: tasks/review/write-hist-diag-g8.md (2026-11-06). Статус: draft.
+   Задача: tasks/review/write-hist-diag-g8.md (2026-11-06). Статус: verified (verifier-dgh8, reports/verify/dgh8.md).
    10 тем-передумов (по 2 завдання: базове → складніше) + 5 тем 8 класу (по 1 складеному завданню) = 25 завдань.
    Передумови: наскрізні вміння історика (століття, критика джерела, факт і оцінка) з 5–7 кл. і ключові поняття
    й події 7 кл. (устрій Русі, хрещення, роздробленість, Королівство Руське, литовська доба, Кревська унія, Кримське ханство).
@@ -13,13 +13,13 @@ SLID.diag("hist", {
   grade: 8,
   title: "Що ти вже вмієш?",
   why: "Знайдемо теми з минулих класів, які варто згадати, і те, що з 8 класу ти вже знаєш.",
-  status: "draft",
-  meta: { author: "writer-write-hist-diag-g8", created: "2026-11-06", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "writer-write-hist-diag-g8", created: "2026-11-06", factcheck: "verifier-dgh8", teacher: null },
   topics: [
     // передумови: уміння історика
     { id: "cent", title: "Століття за роком", kind: "pre", lessons: ["l3"], for: ["g8s1", "g8s3", "g8s5"] },
     { id: "srcq", title: "Чи можна вірити джерелу", kind: "pre", lessons: ["l4"], for: ["g8s3", "g8s5"] },
-    { id: "fact", title: "Факт і оцінка", kind: "pre", lessons: ["g7s1l4", "g7s3l1"], for: ["g8s3", "g8s4", "g8s5"] },
+    { id: "fact", title: "Факт і оцінка", kind: "pre", lessons: ["g7s1l4", "g7s4l2"], for: ["g8s1", "g8s3", "g8s4", "g8s5"] },
     // передумови: Русь і її устрій
     { id: "rus-power", title: "Князь, дружина, віче, данина", kind: "pre", lessons: ["g7s1l1"], for: ["g8s2", "g8s3"] },
     { id: "bapt", title: "Хрещення Русі та його наслідки", kind: "pre", lessons: ["g7s2l1"], for: ["g8s1"] },
@@ -333,7 +333,7 @@ SLID.diag("hist", {
       topic: "fact",
       type: "sort",
       sk: "crit",
-      lesson: "g7s3l1",
+      lesson: "g7s4l2",
       title: "Факт чи оцінка?",
       body: "<p>Розклади твердження про Данила Романовича.</p>",
       bins: ["Факт", "Оцінка або тлумачення"],
