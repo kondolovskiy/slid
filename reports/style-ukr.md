@@ -285,8 +285,8 @@
 | u8s7l3 Порада для всіх | 8 | 10 | 0.6 | 28 | 46 | 5.7 | 0.053 | 4 | — |
 | u8s7l4 Світає саме | 8 | 10 | 0.5 | 26 | 54 | 5.1 | 0.06 | 4 | — |
 | u8s7l5 Новини перед публікацією (фінал) | 8 | 7 | 0.86 | 24 | 32 | 5.2 | 0.071 | 4 | — |
-| u8s9l1 Слова в одному строю | 8 | 9 | 0.56 | 29 | 57 | 5.5 | 0.041 | 4 | — |
-| u8s9l2 Кома залежить від сполучника | 8 | 10 | 0.6 | 32 | 54 | 6.4 | 0.032 | 3 | — |
+| u8s9l1 Слова в одному строю | 8 | 9 | 0.56 | 29 | 58 | 5.5 | 0.041 | 4 | — |
+| u8s9l2 Кома залежить від сполучника | 8 | 10 | 0.6 | 33 | 55 | 6.4 | 0.032 | 3 | — |
 | u8s9l3 Чому тут кома, а там ні? | 8 | 9 | 0.56 | 29 | 51 | 6.2 | 0.047 | 3 | — |
 | u8s9l4 Одне слово на весь перелік | 8 | 10 | 0.5 | 30 | 52 | 6.5 | 0.041 | 4 | — |
 | u8s9l5 Яблунька серед квітів | 8 | 11 | 0.55 | 31 | 62 | 6.2 | 0.038 | 3 | — |
@@ -302,5 +302,5 @@
 
 - **5-6:lesson**: screens 11.46±0.72, gradedShare 0.55±0.05, readWordsPerScreen 26.33±3.14, maxReadWords 49.51±6.29, sentenceWords 5.34±0.46, longWordShare 0.03±0.02, typeVariety 4.04±0.75
 - **5-6:boss**: screens 7.44±0.7, gradedShare 0.86±0.03, readWordsPerScreen 19.36±2.96, maxReadWords 34.28±3.82, sentenceWords 4.96±0.43, longWordShare 0.04±0.01, typeVariety 3.88±0.65
-- **7-9:lesson**: screens 10.34±0.76, gradedShare 0.53±0.04, readWordsPerScreen 27.56±3.46, maxReadWords 51.1±6.28, sentenceWords 5.63±0.57, longWordShare 0.04±0.02, typeVariety 4.05±0.81
+- **7-9:lesson**: screens 10.34±0.76, gradedShare 0.53±0.04, readWordsPerScreen 27.57±3.48, maxReadWords 51.12±6.3, sentenceWords 5.63±0.57, longWordShare 0.04±0.02, typeVariety 4.05±0.81
 - **7-9:boss**: screens 7.18±0.39, gradedShare 0.86±0.01, readWordsPerScreen 22.32±2.91, maxReadWords 39.05±5.3, sentenceWords 5.2±0.55, longWordShare 0.05±0.02, typeVariety 3.77±0.85
