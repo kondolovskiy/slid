@@ -271,6 +271,8 @@ const DIAG_LANG_LIMITS = { gaps: 3, stress: 3, pickWords: 20, pickCorrect: 3 };
 function diagLangIssues(s) {
   const E = [];
   if (s.type === "gaps") { const g = lang.parseGaps(s.text || ""); if (!g.error && g.gaps.length > DIAG_LANG_LIMITS.gaps) E.push(`у тесті рівня — не більше ${DIAG_LANG_LIMITS.gaps} пропусків (є ${g.gaps.length})`); }
+  // split — одне слово (рев'ю engine-diag-lang-types P2-1: lang.issues пробіл у word пропускає)
+  if (s.type === "split" && [].concat(s.word).some(w => typeof w === "string" && /\s/.test(w.trim()))) E.push("у тесті рівня split — одне слово, без пробілів");
   if (s.type === "stress" && Array.isArray(s.words) && s.words.length > DIAG_LANG_LIMITS.stress) E.push(`у тесті рівня — не більше ${DIAG_LANG_LIMITS.stress} слів (є ${s.words.length})`);
   if (s.type === "pick") { const p = lang.parsePick(s.text || ""); if (!p.error) {
     if (p.words.length > DIAG_LANG_LIMITS.pickWords) E.push(`у тесті рівня — не більше ${DIAG_LANG_LIMITS.pickWords} слів-кнопок (є ${p.words.length})`);

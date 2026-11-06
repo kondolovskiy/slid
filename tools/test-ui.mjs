@@ -364,7 +364,7 @@ async function diagLangScenario(browser) {
     await page.click('button[data-subject="ukr"]'); const d = page.locator("[data-diag]"); if (await d.count()) await d.first().click(); else await page.click('[data-plan="ukr"]');
     await page.click("[data-diag-go]"); };
   const st = () => page.evaluate(() => JSON.parse(localStorage.getItem("slid.v1")));
-  const noMarks = async () => page.evaluate(() => !document.querySelector("#stage .ok, #stage .bad, #stage .right, #stage .wrong") && !/Правильн/.test(document.querySelector("#hintHost")?.textContent || ""));
+  const noMarks = async () => page.evaluate(() => !document.querySelector("#stage .is-ok, #stage .is-bad") && !/Правильн/.test(document.querySelector("#hintHost")?.textContent || ""));
   const eyebrow = () => page.locator("#stage .eyebrow").first().innerText();
   await page.goto(URL0); await page.evaluate(() => { localStorage.clear(); localStorage.setItem("slid.v1", JSON.stringify({ grade: 6, subject: "ukr", unlockAll: false })); }); await page.reload();
   await open();

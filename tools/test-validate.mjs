@@ -334,6 +334,7 @@ expectRun("drag: at і без drag — без попередження", one("fx
     items: [{ id: "a01", lesson: "fxpl1", lvl: 1, sk: Object.keys(MATH_SKILLS)[0], src: "src №1", type: "answer", title: "Обчисли", body: "<p>Скільки?</p>", answer: 5, units: ["м", "см"], steps: ["Пояснення."] }] }, null, 1)});\n`;
   const rp = expectRun("answer у пулі: units поза quantity — помилка один раз", { "content/math/g8-fxp.js": secJS("math", mathSec("fxp")), "content/math/pool-g8-fxp.js": bad }, ["--pool", "pfx"], { err: "units — лише для answerKind quantity" });
   ok(rp && rp.errors.length === 1, "answer у пулі: без дубля з checkScreen", rp && rp.errors.join("\n  "));
+  ok(rp && !rp.warnings.some(w => w.includes("фідбеку дитина не бачить")), "пул: steps задачі — не «фідбек у тесті» (рев'ю engine-diag-lang-types P3-3)", rp && rp.warnings.join("\n  "));
   // engine-practice-pool: генератор gen у пулі — правила gen (learn.validatePool) і перевірка екрана на першому наборі
   { const gp = item => `SLID.pool("math", ${JSON.stringify({ id: "pgx", section: "fxp", status: "draft", meta: { author: "test", created: "2026-11-01", factcheck: null, teacher: null },
       sources: [{ id: "src", title: "Фікстура", url: "https://example.org/" }],
@@ -399,6 +400,8 @@ expectRun("drag: at і без drag — без попередження", one("fx
     ["pick з 21 словом — помилка", { type: "pick", text: "[Сонце] " + words(20) }, "не більше 20 слів"],
     ["word — чисто", { type: "word", answer: "м'ята", keys: ["'"] }, null],
     ["split — чисто", { type: "split", word: "мо|ло|ко" }, null],
+    ["split з двома словами — помилка", { type: "split", word: "ма|ма та|то" }, "split — одне слово"],
+    ["split, обидва варіанти з двома словами — помилка", { type: "split", word: ["ма|ма та|то", "мам|а та|то"] }, "split — одне слово"],
     ["gaps з fbText — попередження: у тесті фідбеку немає", { type: "gaps", text: "с{*е|и}ло", fbText: "Село — села: перевіряємо наголосом." }, null, "фідбеку дитина не бачить"],
     ["gaps з hyp — помилка", { type: "gaps", text: "с{*е|и}ло", hyp: true, fbTitle: "Здогадка" }, "poll/hyp у тесті не можна"]]) {
     const rep = expectRun(`diag ukr: ${name}`, tree(item), ["--diag", "dgfu6"], { err, warn, noWarn: warn ? null : "фідбеку дитина не бачить" });

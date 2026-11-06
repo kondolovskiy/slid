@@ -48,3 +48,10 @@ depends_on: []
 - Прогони: `npm run check` rc 0 (test-validate 1411, test-lang 150, validate 0 помилок); `node tools/test-ui.mjs` 100 ok. test-answer-ui.py локально не запускався (немає Python playwright) — CI.
 - Межі — моє рішення (задача дозволяла): 3/3/20/3 — одне вміння на екран; якщо автори тестів упруться в них, змінювати разом з CONTENT_SCHEMA.
 
+### Виправлення після рев'ю (reports/review/engine-diag-lang-types.md)
+- **P2-1** split у тесті — одне слово: `diagLangIssues` — помилка, якщо будь-який варіант `word` містить пробіл. test-validate: «ма|ма та|то» і масив із двох таких варіантів → помилка. Мутант «без перевірки split» — 4 ✗.
+- **P3-1** test-ui `noMarks` — класи рушія `.is-ok` / `.is-bad`.
+- **P3-3** test-validate: задача пулу (steps → fbText) не дає попередження «фідбеку дитина не бачить»; мутант «без !pool» — 1 ✗.
+- Не зроблено (P3): ширше покриття сценарію 10 (split zero, кілька пропусків, «∅», кнопка keys, raw у журналі) — рецензент перевірив вручну; EVIDENCE.md raw для мовних типів — давній пропуск.
+- Прогони: test-validate 1424; test-ui 100 ok.
+
