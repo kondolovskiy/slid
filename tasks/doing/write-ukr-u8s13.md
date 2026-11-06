@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-06T11:47:58.193Z
 id: write-ukr-u8s13
 type: write-section
 subject: ukr
@@ -6,7 +8,7 @@ grade: 8
 section: u8s13
 weeks: [34, 35]
 status: todo
-claimed_by:
+claimed_by: w-write-ukr-u8s13
 created: 2026-11-06
 ---
 # Написати розділ «Повторюємо вивчене у 8 класі» (Українська мова, 8 клас)
