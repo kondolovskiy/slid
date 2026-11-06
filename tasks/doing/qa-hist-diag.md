@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-06T09:04:58.010Z
 id: qa-hist-diag
 type: qa
 subject: hist
 status: todo
-claimed_by:
+claimed_by: orchestrator-qa
 created: 2026-11-06
 depends_on: [write-hist-diag-g5, write-hist-diag-g6, write-hist-diag-g7, write-hist-diag-g8, write-hist-diag-g9, write-hist-diag-g10, write-hist-diag-g11, write-world-diag-g7, write-world-diag-g8, write-world-diag-g9]
 ---
