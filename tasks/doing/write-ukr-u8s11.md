@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-06T09:09:30.873Z
 id: write-ukr-u8s11
 type: write-section
 subject: ukr
@@ -6,7 +8,7 @@ grade: 8
 section: u8s11
 weeks: [29, 30]
 status: todo
-claimed_by:
+claimed_by: w-write-ukr-u8s11
 created: 2026-11-06
 ---
 # Написати розділ «Відокремлені означення і прикладки» (Українська мова, 8 клас)

@@ -216,7 +216,7 @@
 | u7s7l3 Заходячи до класу | 7 | 10 | 0.5 | 24 | 55 | 6.3 | 0.048 | 3 | — |
 | u7s7l4 Читаючи чи прочитавши? | 7 | 10 | 0.5 | 23 | 46 | 5 | 0.088 | 4 | — |
 | u7s7l5 Не поспішаючи, але нехтуючи | 7 | 10 | 0.5 | 25 | 41 | 5.5 | 0.104 | 5 | longWordShare нетипово для сім'ї (z=2.6) |
-| u7s7l6 Репортаж із гончарні (фінал) | 7 | 7 | 0.86 | 27 | 46 | 5.2 | 0.099 | 4 | longWordShare нетипово для сім'ї (z=2.6) |
+| u7s7l6 Репортаж із гончарні (фінал) | 7 | 7 | 0.86 | 27 | 46 | 5.2 | 0.099 | 4 | longWordShare нетипово для сім'ї (z=2.7) |
 | u7s8l1 Слово, що не змінюється | 7 | 11 | 0.55 | 26 | 48 | 5.1 | 0.009 | 4 | — |
 | u7s8l2 Коли, чому і як? | 7 | 10 | 0.6 | 25 | 52 | 4.3 | 0.011 | 3 | sentenceWords нетипово для сім'ї (z=-2.3) |
 | u7s8l3 Босоніж — це як? | 7 | 10 | 0.6 | 20 | 42 | 4.6 | 0.037 | 4 | readWordsPerScreen нетипово для сім'ї (z=-2) |
@@ -263,9 +263,9 @@
 | u8s5l4 Путівник рідним селом (фінал) | 8 | 7 | 0.86 | 18 | 33 | 5 | 0.034 | 5 | — |
 | u8s7l1 Одного члена досить | 8 | 10 | 0.5 | 28 | 55 | 5.5 | 0.028 | 4 | — |
 | u8s7l2 Я, ти чи хтось? | 8 | 9 | 0.56 | 30 | 54 | 5.6 | 0.057 | 4 | — |
-| u8s7l3 Порада для всіх | 8 | 8 | 0.63 | 28 | 46 | 5.8 | 0.044 | 4 | screens нетипово для сім'ї (z=-2.2) |
+| u8s7l3 Порада для всіх | 8 | 10 | 0.6 | 28 | 46 | 5.7 | 0.053 | 4 | — |
 | u8s7l4 Світає саме | 8 | 10 | 0.5 | 26 | 54 | 5.1 | 0.058 | 4 | — |
-| u8s7l5 Редакція шкільного сайту (фінал) | 8 | 7 | 0.86 | 14 | 32 | 5 | 0.077 | 4 | readWordsPerScreen нетипово для сім'ї (z=-2.1) |
+| u8s7l5 Новини перед публікацією (фінал) | 8 | 7 | 0.86 | 24 | 32 | 5.2 | 0.069 | 4 | — |
 
 ## Середні по сім'ях (предмет + класи + звичайний урок / фінал)
 
@@ -273,5 +273,5 @@
 
 - **5-6:lesson**: screens 11.46±0.72, gradedShare 0.55±0.05, readWordsPerScreen 26.33±3.14, maxReadWords 49.51±6.29, sentenceWords 5.34±0.46, longWordShare 0.03±0.02, typeVariety 4.04±0.75
 - **5-6:boss**: screens 7.44±0.7, gradedShare 0.86±0.03, readWordsPerScreen 19.36±2.96, maxReadWords 34.28±3.82, sentenceWords 4.96±0.43, longWordShare 0.04±0.01, typeVariety 3.88±0.65
-- **7-9:lesson**: screens 10.3±0.78, gradedShare 0.53±0.04, readWordsPerScreen 27.09±3.54, maxReadWords 50.65±6.19, sentenceWords 5.58±0.54, longWordShare 0.04±0.02, typeVariety 4.12±0.82
-- **7-9:boss**: screens 7.06±0.24, gradedShare 0.86±0, readWordsPerScreen 21.65±3.58, maxReadWords 39.35±5.61, sentenceWords 5.14±0.53, longWordShare 0.05±0.02, typeVariety 3.59±0.77
+- **7-9:lesson**: screens 10.33±0.73, gradedShare 0.53±0.04, readWordsPerScreen 27.09±3.54, maxReadWords 50.65±6.19, sentenceWords 5.58±0.54, longWordShare 0.04±0.02, typeVariety 4.12±0.82
+- **7-9:boss**: screens 7.06±0.24, gradedShare 0.86±0, readWordsPerScreen 22.24±3.06, maxReadWords 39.35±5.61, sentenceWords 5.15±0.53, longWordShare 0.05±0.02, typeVariety 3.59±0.77
