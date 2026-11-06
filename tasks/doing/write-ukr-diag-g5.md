@@ -1,11 +1,13 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-06T07:21:38.588Z
 id: write-ukr-diag-g5
 type: write-diag
 subject: ukr
 grade: 5
 section: dgu5
 status: todo
-claimed_by:
+claimed_by: writer-write-ukr-diag-g5
 created: 2026-11-06
 depends_on: [engine-diag-lang-types]
 ---
