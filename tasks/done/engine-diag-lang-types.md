@@ -4,7 +4,7 @@ claimed_at: 2026-11-06T07:11:21.166Z
 id: engine-diag-lang-types
 type: engine
 subject: ukr
-status: review
+status: done
 claimed_by: eng-diag-lang
 created: 2026-11-06
 depends_on: []
@@ -54,4 +54,7 @@ depends_on: []
 - **P3-3** test-validate: задача пулу (steps → fbText) не дає попередження «фідбеку дитина не бачить»; мутант «без !pool» — 1 ✗.
 - Не зроблено (P3): ширше покриття сценарію 10 (split zero, кілька пропусків, «∅», кнопка keys, raw у журналі) — рецензент перевірив вручну; EVIDENCE.md raw для мовних типів — давній пропуск.
 - Прогони: test-validate 1424; test-ui 100 ok.
+
+### Рев'ю: прийнято (повторне, a98775c; reports/review/engine-diag-lang-types.md)
+Лишаються P3 (не блокують): P3-2 — ширше покриття сценарію 10 test-ui (split zero, кілька пропусків, «∅», keys, raw); P3-4 — EVIDENCE.md: raw мовних типів; P3-5 — пробіл на краю слова split (`"мо|ло|ко "`) проходить lang.issues і в уроках — виправляти в lang.issues для всіх екранів.
 
