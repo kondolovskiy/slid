@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-06T09:15:50.928Z
 id: write-ukr-u8s8
 type: write-section
 subject: ukr
@@ -6,7 +8,7 @@ grade: 8
 section: u8s8
 weeks: [20, 21]
 status: todo
-claimed_by:
+claimed_by: w-write-ukr-u8s8
 created: 2026-11-06
 ---
 # Написати розділ «Називні речення. Повні й неповні речення» (Українська мова, 8 клас)
