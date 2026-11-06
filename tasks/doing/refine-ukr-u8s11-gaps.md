@@ -1,11 +1,13 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-06T12:00:02.853Z
 id: refine-ukr-u8s11-gaps
 type: refine-section
 subject: ukr
 grade: 8
 section: u8s11
 status: todo
-claimed_by:
+claimed_by: w-refine-ukr-u8s11-gaps
 created: 2026-11-06
 depends_on: []
 ---
