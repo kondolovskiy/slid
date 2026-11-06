@@ -6,7 +6,7 @@ type: refine-section
 subject: ukr
 grade: 8
 section: u8s6
-status: review
+status: done
 claimed_by: w-refine-ukr-u8s6-final
 created: 2026-11-06
 depends_on: []
@@ -22,3 +22,6 @@ depends_on: []
 - Шапка файлу: рядок статусу оновлено.
 - validate --section u8s6: 0 помилок, 0 попереджень; stats: u8s6l5 без прапорців (0,88); euphony — лише давні «міри і ступеня» (термін З8), «у разі».
 - Джерело: З8 https://file.4book.org/images/shcoolbook_ua/8/8_um_z_2025.pdf, с. 93, 99; u8s5l1 (verified, reports/verify/u8s5.md).
+
+## Нотатки верифікатора
+- verifier-refine-ukr-u8s6-final, 2026-11-06: правку перевірено (reports/verify/u8s6.md, розділ «Повторна верифікація»). Нове завдання розв'язав сам: [0, 2, 5] = ключ; опора u8s5l1 е4, е6, е9; фінал 7/7 тем, `pre` у кожному. Пояснення l2 е2 (З8 с. 93) і l3 е5 (З8 с. 98–99) точні. Правка: `why` фіналу + «означення». u8s6l5 → verified. validate 0/0.

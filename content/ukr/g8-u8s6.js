@@ -7,7 +7,7 @@
    Вікі «Обставина» (види за значенням); коми з порівняльним зворотом — конспект https://ua.pistacja.tv/images/summaries/ukr50346_Porivnialnyy_zvorot.pdf .
    Опора з молодших класів: u5s9l1 (додаток), u5s9l3 (обставина), u7s8l2 (розряди прислівників), u7s11l1 (сполучник).
    Фінал узагальнює всю тему «Другорядні члени речення» (§24) — разом з u8s5 (requires: u8s5l1–l3).
-   5 уроків (4 + фінал). Статус: l1–l4 verified (reports/verify/u8s6.md); l5 — draft після refine-ukr-u8s6-final (завдання 6 на означення).
+   5 уроків (4 + фінал). Статус: l1–l4 verified (reports/verify/u8s6.md); l5 — verified повторно після refine-ukr-u8s6-final (завдання 6 на означення).
    Перевірка: node tools/validate.mjs --section u8s6 && node tools/stats.mjs --subject ukr
    Схема й правила: docs/CONTENT_SCHEMA.md §4.1, style/ukr.md */
 SLID.section("ukr", {
@@ -607,10 +607,10 @@ SLID.section("ukr", {
       title: "Репортаж з осіннього походу",
       short: "Фінал розділу",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "u8s6boss",
-      why: "Перевірка всієї теми «Другорядні члени речення»: прикладки, додатки, обставини, порівняльні звороти й порядок слів. Бали подвоєні.",
+      why: "Перевірка всієї теми «Другорядні члени речення»: означення, прикладки, додатки, обставини, порівняльні звороти й порядок слів. Бали подвоєні.",
       screens: [
         {
           type: "intro",
