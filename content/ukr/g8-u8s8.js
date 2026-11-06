@@ -7,7 +7,7 @@
    без потреби увиразнити паузу тире можна не ставити — https://slovnyk.ua/pravopys.php?prav_par=161 ; З8 с. 136.
    Опора: u5s8l3 (граматична основа), u6s7l2 (іменник), u8s7l1 (односкладні речення), u8s7l2 (пропущений підмет),
    u8s7l4 (безособові). Прислів'я — лише ті, що наведено в З8 (с. 134, 136, «Нар. творчість»).
-   3 уроки (2 + фінал). Статус: draft.
+   3 уроки (2 + фінал). Статус: verified (verifier-u8s8, 2026-11-06, reports/verify/u8s8.md).
    Перевірка: node tools/validate.mjs --section u8s8 && node tools/stats.mjs --subject ukr
    Схема й правила: docs/CONTENT_SCHEMA.md §4.1, style/ukr.md */
 SLID.section("ukr", {
@@ -17,7 +17,7 @@ SLID.section("ukr", {
   title: "Називні речення. Повні й неповні речення",
   why: "Щоб починати опис коротким «Зима. Тиша.», розуміти, яких слів бракує в неповному реченні, і знати, коли на їхньому місці ставимо тире.",
   requires: ["u5s8l3", "u6s7l2", "u8s7l1", "u8s7l2", "u8s7l4"],
-  meta: { author: "w-write-ukr-u8s8", created: "2026-11-06", factcheck: "self", teacher: null },
+  meta: { author: "w-write-ukr-u8s8", created: "2026-11-06", factcheck: "verifier-u8s8", teacher: null },
   badges: [
     { id: "u8s8boss", name: "Майстер коротких підписів", icon: "trophy", desc: "Пройти фінальний урок розділу «Називні речення. Повні й неповні речення»" }
   ],
@@ -28,7 +28,7 @@ SLID.section("ukr", {
       title: "Ранок. Туман. Тиша.",
       short: "Називні речення",
       icon: "eye",
-      status: "draft",
+      status: "verified",
       why: "Називні речення малюють картину кількома словами. Ними починають описи, підписують фото й пишуть вірші.",
       screens: [
         {
@@ -198,7 +198,7 @@ SLID.section("ukr", {
       title: "Чого бракує в репліці?",
       short: "Неповні речення",
       icon: "voice",
-      status: "draft",
+      status: "verified",
       why: "У розмові ми рідко повторюємо слова, які й так зрозумілі. Неповні речення роблять мовлення коротким і жвавим.",
       screens: [
         {
@@ -358,7 +358,7 @@ SLID.section("ukr", {
       title: "Фотоблог із Карпат",
       short: "Фінал розділу",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "u8s8boss",
       why: "Перевірка всього розділу: називні речення, повні й неповні, тире на місці пропуску — і односкладні речення з попереднього розділу. Бали подвоєні.",
