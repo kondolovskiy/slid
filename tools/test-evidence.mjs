@@ -361,6 +361,19 @@ const evs = (k, pad = 80, p = "s") => Array.from({ length: k }, (_, i) => ({ v: 
   eq(ev.filter(e => ["srs", "plan", "grade"].includes(e.type)).map(e => [e.type, e.by]), [["srs", n1], ["plan", n1], ["grade", n1]], "зміни SRS/плану/класу після practice_end і hyp_* — by = practice_end");
   truthy(ev.filter(e => e.type.startsWith("hyp_")).every(e => !("by" in e)), "hyp_* не отримують by");
   eq(J.cv, "abc123", "cv після запису — VERSION із SW"); }
+// ---------- 11б. warmVersion (tools-engine-p3-1105 п. 10, рев'ю engine-sw-version-skew P3-4): версія — та, що була при завантаженні ----------
+{ let ver = "old", calls = 0; const b = mem(), en = env({ version: async () => { calls++; return ver; } }), J = C.create(b, en, E.LIMITS);
+  J.warmVersion(); J.warmVersion(); await new Promise(r => setTimeout(r, 0));
+  eq([J.cv, calls], ["old", 1], "warmVersion: версія відома до першого запису, SW спитано один раз");
+  ver = "new"; J.log("screen", {}); await J.flush();
+  eq([[...b.st.ev.values()][0].cv, calls], ["old", 1], "warmVersion: новий SW після завантаження не підміняє версію подій сторінки");
+  J.resetVersion(); J.log("screen", {}); await J.flush();
+  eq([[...b.st.ev.values()].map(e => e.cv), calls], [["old", "new"], 2], "resetVersion: наступний запис питає версію знову");
+  // відповідь, що прийшла після resetVersion, відкидається (vgen): версія — від нового запиту
+  let open, k = 0; const b2 = mem(), J2 = C.create(b2, env({ version: () => k++ ? Promise.resolve("fresh") : new Promise(r => open = r) }), E.LIMITS);
+  J2.warmVersion(); await new Promise(r => setTimeout(r, 0)); J2.resetVersion(); open("stale"); J2.log("screen", {}); await J2.flush();
+  eq([J2.cv, [...b2.st.ev.values()][0].cv], ["fresh", "fresh"], "resetVersion під час запиту: стара відповідь відкинута");
+  const b3 = mem(), J3 = C.create(null, env({ version: async () => { throw 1; } }), E.LIMITS); J3.warmVersion(); eq(J3.cv, null, "warmVersion без сховища — нічого не робить"); }
 { // розмір hyp_* і answer з новими полями на справжньому змісті: кожна вправа пулів математики з помилкою, перевірка наступного дня
   const { hypEnv } = await import("./hyp-replay.mjs");
   const HE = hypEnv(ROOT), HH = HE.hyp, items = [...HE.pool.values()];

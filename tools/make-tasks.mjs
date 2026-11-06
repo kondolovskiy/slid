@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 // Слід · створює задачі на написання розділів з плану (content/<предмет>/plan.js).
 // Для кожного розділу без уроків, для якого ще немає задачі в tasks/*, з'являється tasks/todo/write-<предмет>-<id>.md.
-// Запуск: node tools/make-tasks.mjs [--subject math] [--grade 6] [--tasks DIR] [--content DIR]
+// Запуск: node tools/make-tasks.mjs [--subject math] [--grade 6] [--dry-run] [--tasks DIR] [--content DIR]
+//   --dry-run (в обох режимах) нічого не пише, навіть теку todo, лише показує, які задачі створилися б (tools-make-tasks-dry-run).
 //   --tasks — інша тека задач; --content — інше дерево змісту (корінь з content/ і app/; фікстура в tools/test-make-tasks.mjs) — у обох режимах.
 //   Шаблон автора не велить запускати build (його запускає оркестратор, AGENTS.md §4 п. 8); для предметів з IMG_REQUIRED (lib.mjs) — D-027.
 // Режим пулів (engine-practice-pool): node tools/make-tasks.mjs --write-pool [--grade 8] [--dry-run] [--matrix FILE] [--tasks DIR]
@@ -24,8 +25,8 @@ const existingIds = new Set(STATES.flatMap(d => fs.existsSync(path.join(TASKS, d
   .map(f => (fs.readFileSync(path.join(TASKS, d, f), "utf8").match(/^id:\s*(\S+)/m) || [])[1]).filter(Boolean) : []));
 if (args.includes("--write-pool")) { writePool(); process.exit(0); }
 const exemplar = { hist: "content/hist/g5-s2.js", math: "content/math/g5-ms1.js", ukr: "content/ukr/g5-u5s1.js і g5-u5s4.js (verified; style/ukr.md → «Еталони»)", world: "content/world/g7-w7s1.js (еталон після верифікації; style/world.md → «Еталони»)" };
-let made = 0;
-fs.mkdirSync(path.join(TASKS, "todo"), { recursive: true });
+const made = [];
+if (!DRY) fs.mkdirSync(path.join(TASKS, "todo"), { recursive: true });
 for (const c of subjects) {
   if (onlySubj && c.id !== onlySubj) continue;
   c.sections.forEach((sec, k) => {
@@ -80,10 +81,11 @@ Build не запускай: під час паралельного запуск
 ## Нотатки агента
 <!-- Виконавець: що зроблено, спірні місця, факти з джерелами, пропозиції до style/ чи glossary/ -->
 `;
-    fs.writeFileSync(path.join(TASKS, "todo", name), body, { flag: "wx" }); made++;
+    if (!DRY) fs.writeFileSync(path.join(TASKS, "todo", name), body, { flag: "wx" });
+    made.push(name);
   });
 }
-console.log(`Створено задач: ${made}`);
+console.log(DRY ? `[dry-run] Створилося б задач: ${made.length}${made.length ? " (" + made.join(", ") + ")" : ""}` : `Створено задач: ${made.length}`);
 
 /* ---------- --write-pool: задачі на пули тренування за матрицею (шаблон пакета tasks/README-math-personalization.md) ---------- */
 function writePool() {

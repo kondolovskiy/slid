@@ -5,6 +5,7 @@
 SLID.subject({
   id: "world",
   subject: "Всесвітня історія",
+  diagOrder: 4,   // порядок тесту рівня після вибору класу (CONTENT_SCHEMA §1)
   short: "Світ",
   icon: "globe",
   pattern: "spiral",

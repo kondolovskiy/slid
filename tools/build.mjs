@@ -24,11 +24,27 @@ export function manifest(root = ROOT) {   // root — інше дерево (dif
   if (fs.existsSync(path.join(root, "app/lang.js"))) files.push("app/lang.js");
   // гіпотези «обчислення чи поняття» (app/hyp.js, тіньовий режим E2) — після learn.js, до app.js; у старих ревізіях файлу ще немає
   if (fs.existsSync(path.join(root, "app/hyp.js"))) files.push("app/hyp.js");
+  // синхронізація прогресу (engine-sync-login): config.js (адреса API, генерує build) і sync.js — до app.js; у старих ревізіях їх немає
+  if (fs.existsSync(path.join(root, "app/sync.js"))) files.push("app/config.js", "app/sync.js");
   files.push("app/app.js");
   return files;
 }
 
+/** app/config.js — адреса бекенду й Google client id з середовища збірки (SLID_API, SLID_GOOGLE_CLIENT_ID; pages.yml бере їх із
+    vars репозиторію лише для публікації). Порожні — синхронізацію вимкнено, застосунок як раніше. Закомічений файл — порожній. */
+export function configJS(env = process.env) {
+  const api = (env.SLID_API || "").trim().replace(/\/+$/, ""), gid = (env.SLID_GOOGLE_CLIENT_ID || "").trim();
+  if (api && !/^https:\/\/[a-z0-9.-]+(?::\d+)?(?:\/[\w./-]*)?$/i.test(api) && !/^http:\/\/(?:localhost|127\.0\.0\.1)(?::\d+)?$/.test(api))
+    throw new Error(`SLID_API «${api}»: потрібна адреса https://… (або http://localhost для розробки)`);
+  if (gid && !/^[\w-]+\.apps\.googleusercontent\.com$/.test(gid)) throw new Error(`SLID_GOOGLE_CLIENT_ID «${gid}»: очікувано …apps.googleusercontent.com`);
+  return `/* ЗГЕНЕРОВАНО tools/build.mjs із SLID_API / SLID_GOOGLE_CLIENT_ID — не редагуй вручну. Порожньо — синхронізацію вимкнено. */\n` +
+    `window.SLID_CONFIG = ${JSON.stringify({ api, googleClientId: gid })};\n`;
+}
+
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
+  if (fs.existsSync(path.join(ROOT, "app/sync.js"))) {
+    try { fs.writeFileSync(path.join(ROOT, "app/config.js"), configJS()); } catch (e) { console.error(e.message); process.exit(1); }
+  }
   const files = manifest();
   const idx = path.join(ROOT, "index.html");
   const html = fs.readFileSync(idx, "utf8");

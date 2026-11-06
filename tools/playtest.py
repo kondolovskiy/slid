@@ -205,7 +205,8 @@ async def main():
                 for mode in ("ok", "skip"):
                     await pg.evaluate(f"localStorage.setItem('slid.v1', JSON.stringify({{grade:{d['grade']}}}))")
                     await pg.goto(f"http://127.0.0.1:{PORT}/index.html")
-                    await pg.click(f'[data-diag="{c["id"]}"]'); await pg.click("[data-diag-go]")
+                    # з екрана предмета: на головній — лише одне запрошення на тест (engine-diag-one-invite)
+                    await pg.click(f'button[data-subject="{c["id"]}"]'); await pg.click(f'#view [data-diag="{c["id"]}"]'); await pg.click("[data-diag-go]")
                     shown = 0
                     while await pg.is_visible("#skip"):
                         i = await pg.evaluate("(() => { const S = JSON.parse(localStorage.getItem('slid.v1')), d = SLID_SUBJECTS.flatMap(c => c.diags).find(x => x.id === '%s'); return SLID_LEARN.nextItem(d, (S.diagRun || {})[d.id] || {}); })()" % d["id"])

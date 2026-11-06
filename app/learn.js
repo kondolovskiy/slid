@@ -10,7 +10,9 @@ window.SLID_LEARN = (() => {
   const ERR_DAYS = 14, ERR_CAP = 80;             // журнал помилок: давність і розмір
 
   /* ---------- Діагностика ---------- */
-  const DIAG_TYPES = ["choice", "multi", "sort", "order", "number", "fracin", "shade", "numline", "lab", "answer"];
+  // мовні вправи (app/lang.js, engine-diag-lang-types): у тесті вердикт без фідбеку — gradeNow → LANG.check, правильно все або BAD;
+  // межі «одне завдання = одне вміння» — tools/validate.mjs (DIAG_LANG_LIMITS); перелік мовних типів звіряє test-learn з SLID_LANG.TYPES
+  const DIAG_TYPES = ["choice", "multi", "sort", "order", "number", "fracin", "shade", "numline", "lab", "answer", "gaps", "pick", "stress", "word", "split"];
   /* answer у тесті (engine-diag-answer-kinds): лише формати, де вердикт — «правильно / ні» без розмови. Плеєр у тесті не показує
      ні підказки form/bad і не дає другої спроби. Вердикт — diagVerdict (engine-diag-half-credit, рішення людини й методичне
      правило 2026-11-01): «ok» — OK; «form» без вимоги вигляду (інший запис того самого: «37» при decimals 1, «3/4» при

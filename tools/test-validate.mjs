@@ -317,7 +317,14 @@ expectRun("drag: at і без drag — без попередження", one("fx
     ["sci: ключ не в стандартному вигляді — помилка", { answerKind: "sci", answer: "27,2 · 10^4", body: "Запиши в стандартному вигляді." }, "sci — ключ рядком"],
     ["pairSet — чисто", { answerKind: "pairSet", answer: [[3, 2], [-2, -3]] }, null],
     ["pairSet з повтором пари — помилка", { answerKind: "pairSet", answer: [[3, 2], [3, 2]] }, "pairSet — ключ"],
-    ["form improper зі змішаним ключем — помилка", { answer: "2 1/3", form: "improper" }, "form improper"]]) {
+    ["form improper зі змішаним ключем — помилка", { answer: "2 1/3", form: "improper" }, "form improper"],
+    // tools-engine-p3-1105 п. 5 (рев'ю engine-list-p3 P3-2): ordered / multiset / scale на екрані уроку — ті самі правила, що в пулі
+    ["list ordered — чисто", { answerKind: "list", answer: [3, 5], ordered: true }, null],
+    ["list ordered з «±» не в першому елементі — помилка", { answerKind: "list", answer: [5, "±3"], ordered: true }, "ordered не поєднується з «±»"],
+    ["ordered з multiset — помилка", { answerKind: "list", answer: [1, 2], ordered: true, multiset: true }, "ordered уже порівнює елементи по місцях"],
+    ["multiset поза list — помилка", { answer: 5, multiset: true }, "multiset має бути boolean"],
+    ["scale — чисто", { answer: 10000, scale: true }, null],
+    ["scale з дробовим ключем — помилка", { answer: "1/4", scale: true }, "scale — ключ"]]) {
     const id = "fxk";
     const rep = expectRun(`answer в уроці: ${name}`, ans(id, f), ["--section", id], { err: err && `answer: ${err}`, also: "сам проходить перевірку" });
     if (rep && err) ok(rep.errors.every(e => e.includes("#fxkl1 екран 4 (answer)")), `answer в уроці: ${name}: помилка вказує на екран`, rep.errors.join("\n  ")); }
@@ -327,6 +334,7 @@ expectRun("drag: at і без drag — без попередження", one("fx
     items: [{ id: "a01", lesson: "fxpl1", lvl: 1, sk: Object.keys(MATH_SKILLS)[0], src: "src №1", type: "answer", title: "Обчисли", body: "<p>Скільки?</p>", answer: 5, units: ["м", "см"], steps: ["Пояснення."] }] }, null, 1)});\n`;
   const rp = expectRun("answer у пулі: units поза quantity — помилка один раз", { "content/math/g8-fxp.js": secJS("math", mathSec("fxp")), "content/math/pool-g8-fxp.js": bad }, ["--pool", "pfx"], { err: "units — лише для answerKind quantity" });
   ok(rp && rp.errors.length === 1, "answer у пулі: без дубля з checkScreen", rp && rp.errors.join("\n  "));
+  ok(rp && !rp.warnings.some(w => w.includes("фідбеку дитина не бачить")), "пул: steps задачі — не «фідбек у тесті» (рев'ю engine-diag-lang-types P3-3)", rp && rp.warnings.join("\n  "));
   // engine-practice-pool: генератор gen у пулі — правила gen (learn.validatePool) і перевірка екрана на першому наборі
   { const gp = item => `SLID.pool("math", ${JSON.stringify({ id: "pgx", section: "fxp", status: "draft", meta: { author: "test", created: "2026-11-01", factcheck: null, teacher: null },
       sources: [{ id: "src", title: "Фікстура", url: "https://example.org/" }],
@@ -352,6 +360,12 @@ expectRun("drag: at і без drag — без попередження", one("fx
     const bad = JSON.parse(JSON.stringify(sec)); bad.lessons[0].screens.at(-1).units = ["м", "см"];
     expectRun("answer у предметі без skills — поля перевіряються (units поза quantity)", files(bad), ["--section", "fxns"], { err: "answer: units — лише для answerKind quantity" });
     fs.rmSync(path.join(tmp, "content/fxns"), { recursive: true, force: true }); }
+  // fix-diag-order: diagOrder предмета — лише число
+  { const subj = o => `SLID.subject(${JSON.stringify({ id: "fxdo", subject: "Фікстура", short: "Ф", icon: "frac", colors: { light: { accent: "#000" }, dark: { accent: "#fff" } }, skills: MATH_SKILLS, ...o })});\n`;
+    const files = o => ({ "content/fxdo/aa-subj.js": subj(o), "content/fxdo/g8-fxdo.js": secJS("fxdo", mathSec("fxdo")) });
+    expectRun("diagOrder: число — без помилки", files({ diagOrder: 2 }), ["--section", "fxdo"], {});
+    expectRun("diagOrder: рядок — помилка", files({ diagOrder: "1" }), ["--section", "fxdo"], { err: "diagOrder — число" });
+    fs.rmSync(path.join(tmp, "content/fxdo"), { recursive: true, force: true }); }
   // діагностика: поля answer перевіряються лише тоді, коли answer дозволено в тесті (learn.DIAG_TYPES). Обидва стани задаємо явно
   // в копії app/learn.js, щоб тест не залежав від того, чи дозволено answer у діагностиці зараз (engine-diag-answer-kinds)
   { const lp = path.join(tmp, "app/learn.js"), orig = fs.readFileSync(lp, "utf8"), DT = /const DIAG_TYPES = \[[^\]]*\];/;
@@ -373,6 +387,34 @@ expectRun("drag: at і без drag — без попередження", one("fx
         ok(r && !r.errors.some(e => e.includes("answer: ")), "diag: без рядків answer: для title", r && r.errors.join("\n  ")); }
     } finally { fs.writeFileSync(lp, orig); } } }
 
+// ---- engine-diag-lang-types: мовні вправи (app/lang.js) у тесті рівня ukr — допуск і межі «одне завдання = одне вміння» ----
+{ const usec = (id, grade) => secJS("ukr", { ...mathSec(id), grade });
+  const diagJS = item => `SLID.diag("ukr", ${JSON.stringify({ id: "dgfu6", grade: 6, title: "Тест-фікстура", why: "Регресійний тест валідатора: мовні вправи в тесті.", status: "draft",
+    meta: { author: "test", created: "2026-11-06", factcheck: null, teacher: null },
+    topics: [{ id: "p", title: "Передумова", kind: "pre", lessons: ["fu5l1"] }, { id: "c", title: "Тема класу", kind: "cur", lessons: ["fu6l1"] }],
+    items: [{ topic: "p", type: "choice", sk: "orth", title: "Обери", opts: ["бур'ян", "бурян"], correct: 0 }, { topic: "p", type: "choice", sk: "orth", title: "Обери ще", opts: ["м'ята", "мята"], correct: 0 },
+      { topic: "c", sk: "orth", title: "Встав букву", ...item }] }, null, 1)});\n`;
+  const tree = item => ({ "content/ukr/g5-fu5.js": usec("fu5", 5), "content/ukr/g6-fu6.js": usec("fu6", 6), "content/ukr/diag-g6.js": diagJS(item) });
+  const words = n => Array.from({ length: n }, (_, i) => ["сад", "ліс", "дім", "кіт", "мак"][i % 5]).join(" ");
+  for (const [name, item, err, warn] of [
+    ["gaps з 3 пропусками — чисто", { type: "gaps", text: "с{*е|и}ло, з{е|*и}ма, д{*е|и}сять" }, null],
+    ["gaps з 4 пропусками — помилка", { type: "gaps", text: "с{*е|и}ло, з{е|*и}ма, д{*е|и}сять, в{*е|и}сна" }, "не більше 3 пропусків"],
+    ["stress з 3 словами — чисто", { type: "stress", words: ["черг+овий", "вип+адок", "кв+арта"] }, null],
+    ["stress з 4 словами — помилка", { type: "stress", words: ["черг+овий", "вип+адок", "кв+арта", "сл+ово"] }, "не більше 3 слів"],
+    ["pick з 3 правильними — чисто", { type: "pick", text: "[Сонце] яскраво [світить] і [гріє] над полем." }, null],
+    ["pick з 4 правильними — помилка", { type: "pick", text: "[Сонце] [яскраво] [світить] і [гріє] над полем." }, "не більше 3 правильних"],
+    ["pick з 21 словом — помилка", { type: "pick", text: "[Сонце] " + words(20) }, "не більше 20 слів"],
+    ["word — чисто", { type: "word", answer: "м'ята", keys: ["'"] }, null],
+    ["split — чисто", { type: "split", word: "мо|ло|ко" }, null],
+    ["split з двома словами — помилка", { type: "split", word: "ма|ма та|то" }, "split — одне слово"],
+    ["split, обидва варіанти з двома словами — помилка", { type: "split", word: ["ма|ма та|то", "мам|а та|то"] }, "split — одне слово"],
+    ["gaps з fbText — попередження: у тесті фідбеку немає", { type: "gaps", text: "с{*е|и}ло", fbText: "Село — села: перевіряємо наголосом." }, null, "фідбеку дитина не бачить"],
+    ["gaps з hyp — помилка", { type: "gaps", text: "с{*е|и}ло", hyp: true, fbTitle: "Здогадка" }, "poll/hyp у тесті не можна"]]) {
+    const rep = expectRun(`diag ukr: ${name}`, tree(item), ["--diag", "dgfu6"], { err, warn, noWarn: warn ? null : "фідбеку дитина не бачить" });
+    if (rep && err) ok(rep.errors.every(e => e.includes("diag-g6.js#dgfu6")), `diag ukr: ${name}: помилка вказує на тест`, rep.errors.join("\n  ")); }
+  // choice з hint у тесті — те саме попередження (для будь-якого типу)
+  expectRun("diag ukr: choice з hint — попередження", tree({ type: "choice", opts: ["е", "и"], correct: 0, hint: "Зміни слово." }), ["--diag", "dgfu6"], { warn: "фідбеку дитина не бачить" });
+  fs.rmSync(path.join(tmp, "content/ukr"), { recursive: true, force: true }); }
 // ---- engine-diag-answer-kinds: answer з answerKind у тесті рівня (SLID.diag) — окремий блок (паралельна гілка змінює validate вище) ----
 // learn.validate: answer дозволено лише з number | time | quantity; поля answer перевіряє той самий answerFieldIssues, що в уроці
 { const sk = Object.keys(MATH_SKILLS)[0], pre7 = { ...mathSec("fxq"), grade: 7 };
@@ -395,7 +437,12 @@ expectRun("drag: at і без drag — без попередження", one("fx
     ["time з unit — помилка поля", { type: "answer", answerKind: "time", answer: "9:55", unit: "год" }, "time — без unit"],
     ["quantity без units — помилка поля", { type: "answer", answerKind: "quantity", answer: 245 }, "quantity — units"],
     ["decimals 1 з ключем «37» — помилка поля", { type: "answer", answer: "37", decimals: 1 }, "decimals 1 — ключ рядком"],
-    ["ключ, що сам не проходить, — помилка", { type: "answer", answer: "abc" }, "сам проходить перевірку"]]) {
+    ["ключ, що сам не проходить, — помилка", { type: "answer", answer: "abc" }, "сам проходить перевірку"],
+    // tools-engine-p3-1105 п. 5: scale / ordered / multiset у тесті рівня — ті самі правила поля
+    ["answer scale — чисто", { type: "answer", answer: 10000, scale: true }, null],
+    ["answer scale з ключем 1 — помилка поля", { type: "answer", answer: 1, scale: true }, "scale — ключ"],
+    ["ordered поза list — помилка поля", { type: "answer", answer: 5, ordered: true }, "ordered має бути boolean"],
+    ["multiset поза list — помилка поля", { type: "answer", answer: 5, multiset: true }, "multiset має бути boolean"]]) {
     const rep = expectRun(`diag answer: ${name}`, tree(item), ["--diag", "dgfx"], { err, also: err && "сам проходить перевірку" });
     if (rep && err) ok(rep.errors.every(e => e.includes("diag-g8.js#dgfx")), `diag answer: ${name}: помилка вказує на тест`, rep.errors.join("\n  ")); }
   // P3-3 (рев'ю engine-diag-answer-kinds) + engine-diag-half-credit: вигляд, який поле вимагає (compound, reduced, mixed, improper; без нього —

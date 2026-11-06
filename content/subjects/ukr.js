@@ -5,6 +5,7 @@
 SLID.subject({
   id: "ukr",
   subject: "Українська мова",
+  diagOrder: 2,   // порядок тесту рівня після вибору класу (CONTENT_SCHEMA §1)
   short: "Мова",
   icon: "book",
   pattern: "none",

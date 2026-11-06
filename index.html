@@ -432,6 +432,10 @@ button.nowrow{cursor:pointer} button.nowrow:hover{background:var(--chip)} button
 /* PWA: офлайн-індикатор і встановлення */
 .chip.net{color:var(--muted)} .chip.net[hidden]{display:none}
 .install-card{display:grid;gap:10px}
+.sync-card{display:grid;gap:10px}.sync-card p{font-size:14px;margin:0}
+.sync-err{font-size:14px;margin:0;color:var(--bad,#b3261e)}
+.pair-code{font:700 34px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.18em;text-align:center;padding:14px;border-radius:14px;background:var(--chip);user-select:all}
+.gsi-btn{min-height:44px;display:flex;justify-content:center}
 .install-card ol{margin:0;padding-left:20px;font-size:14px;color:var(--muted)}
 html,body{margin:0}
 [hidden]{display:none!important}
@@ -538,6 +542,13 @@ button.nowrow{cursor:pointer;width:100%} button.nowrow:hover{background:var(--ch
 <script src="content/subjects/ukr.js"></script>
 <script src="content/subjects/world.js"></script>
 <script src="content/hist/plan.js"></script>
+<script src="content/hist/diag-g10.js"></script>
+<script src="content/hist/diag-g11.js"></script>
+<script src="content/hist/diag-g5.js"></script>
+<script src="content/hist/diag-g6.js"></script>
+<script src="content/hist/diag-g7.js"></script>
+<script src="content/hist/diag-g8.js"></script>
+<script src="content/hist/diag-g9.js"></script>
 <script src="content/hist/g10-g10s1.js"></script>
 <script src="content/hist/g10-g10s2.js"></script>
 <script src="content/hist/g10-g10s3.js"></script>
@@ -692,6 +703,10 @@ button.nowrow{cursor:pointer;width:100%} button.nowrow:hover{background:var(--ch
 <script src="content/math/pool-g9-g9m7.js"></script>
 <script src="content/math/pool-g9-g9m8.js"></script>
 <script src="content/ukr/plan.js"></script>
+<script src="content/ukr/diag-g5.js"></script>
+<script src="content/ukr/diag-g6.js"></script>
+<script src="content/ukr/diag-g7.js"></script>
+<script src="content/ukr/diag-g8.js"></script>
 <script src="content/ukr/g5-u5s1.js"></script>
 <script src="content/ukr/g5-u5s10.js"></script>
 <script src="content/ukr/g5-u5s11.js"></script>
@@ -730,7 +745,24 @@ button.nowrow{cursor:pointer;width:100%} button.nowrow:hover{background:var(--ch
 <script src="content/ukr/g7-u7s7.js"></script>
 <script src="content/ukr/g7-u7s8.js"></script>
 <script src="content/ukr/g7-u7s9.js"></script>
+<script src="content/ukr/g8-u8s1.js"></script>
+<script src="content/ukr/g8-u8s10.js"></script>
+<script src="content/ukr/g8-u8s11.js"></script>
+<script src="content/ukr/g8-u8s12.js"></script>
+<script src="content/ukr/g8-u8s13.js"></script>
+<script src="content/ukr/g8-u8s14.js"></script>
+<script src="content/ukr/g8-u8s2.js"></script>
+<script src="content/ukr/g8-u8s3.js"></script>
+<script src="content/ukr/g8-u8s4.js"></script>
+<script src="content/ukr/g8-u8s5.js"></script>
+<script src="content/ukr/g8-u8s6.js"></script>
+<script src="content/ukr/g8-u8s7.js"></script>
+<script src="content/ukr/g8-u8s8.js"></script>
+<script src="content/ukr/g8-u8s9.js"></script>
 <script src="content/world/plan.js"></script>
+<script src="content/world/diag-g7.js"></script>
+<script src="content/world/diag-g8.js"></script>
+<script src="content/world/diag-g9.js"></script>
 <script src="content/world/g7-w7s1.js"></script>
 <script src="content/world/g7-w7s2.js"></script>
 <script src="content/world/g7-w7s3.js"></script>
@@ -753,6 +785,8 @@ button.nowrow{cursor:pointer;width:100%} button.nowrow:hover{background:var(--ch
 <script src="app/math.js"></script>
 <script src="app/lang.js"></script>
 <script src="app/hyp.js"></script>
+<script src="app/config.js"></script>
+<script src="app/sync.js"></script>
 <script src="app/app.js"></script>
 <!-- CONTENT:END -->
 <script src="app/pwa.js"></script>

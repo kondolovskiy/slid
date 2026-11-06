@@ -13,6 +13,7 @@
 // 3) --content-old: поле u не вимагає rev і не ховає інших змін.
 // 4) мінімальна фікстура змісту: точні кількості категорій half і нове правило HALF поза категоріями — НЕПОЯСНЕНЕ (мутант M2).
 // 5) engine-unit-hint: «--grades 4» (один клас) і хибні --grades — rc 2; категорія «uh …» і мутант «підказка для не рівної величини».
+// 7) категорія «ordered …»: пояснює переставлені записи list з ordered; мутант без категорії — непояснені (tools-engine-p3-1105).
 // Запуск: node tools/test-diff-answers.mjs (≈ 30 с). Від git-історії проєкту не залежить (1б, 2, 3, 4 — тимчасові репозиторії, 1 — лише
 // HEAD), тож працює в неглибокому клоні й після squash-злиття; тому він і в CI (.github/workflows/pages.yml), і в npm run check.
 import { spawnSync } from "node:child_process";
@@ -201,6 +202,36 @@ await tmpRepo("slid-test-diff-pairs-", async (tmp, g) => {
   const r = run("HEAD", tmp), cat = CAT23(r.out);
   ok(base > 0 && cat === base, `ister п.2–3 (б): ключ pairSet масивом — у категорії ${cat}, а з рядковим ключем ${base}`);
   ok(r.mainBad === 0, `ister п.2–3 (б): основний блок — ${r.mainBad} непояснених`);
+});
+// 7) категорія «ordered …» (рев'ю fix-math-pools-ordered-scale, P3-1, P3-2; tools-engine-p3-1105 п. 6–7): мінімальний зміст — урок з двома
+//    екранами list з ordered: true; «старий» learn.js — поточний, але ordered ігнорує (list без порядку). Переставлені записи (reverse ключа)
+//    мають бути пояснені категорією; (а) мутант diff-answers без категорії — НЕПОЯСНЕНІ, rc 1; (б) мутант «перестановка = будь-який запис
+//    тієї самої довжини» не змінює кількості (категорія не ширша, ніж треба): новий рушій дає «Перевір порядок» лише перестановкам.
+await tmpRepo("slid-test-diff-ord-", async (tmp, g) => {
+  for (const d of fs.readdirSync(path.join(tmp, "content"))) if (d !== "subjects") fs.rmSync(path.join(tmp, "content", d), { recursive: true, force: true });
+  for (const f of fs.readdirSync(path.join(tmp, "content/subjects"))) if (f !== "math.js") fs.rmSync(path.join(tmp, "content/subjects", f));
+  fs.mkdirSync(path.join(tmp, "content/math"));
+  fs.writeFileSync(path.join(tmp, "content/math/g8-qa.js"), `SLID.section("math", { id: "qa8", grade: 8, title: "QA", lessons: [{ id: "qa8l1", title: "QA", screens: [
+  { type: "answer", title: "Кути C і D", answerKind: "list", answer: [41, 132], ordered: true },
+  { type: "answer", title: "a, b, c", answerKind: "list", answer: ["1/2", 3, "2,5"], ordered: true } ] }] });\n`);
+  const lf = path.join(tmp, "app/learn.js"), cur = fs.readFileSync(lf, "utf8"), ORD = "const ord = s.ordered === true, ms = s.multiset === true || ord,";
+  ok(cur.split(ORD).length === 2, `ordered: у learn.js рядок «${ORD}» має бути рівно один`);
+  fs.writeFileSync(lf, cur.replace(ORD, "const ord = false, ms = s.multiset === true,")); g("add", "-A"); g("commit", "-qm", "fixture + old: без ordered"); fs.writeFileSync(lf, cur);
+  const CAT = "ordered переставлений запис у list з ordered";
+  const cnt = () => { const r = spawnSync(process.execPath, [path.join(tmp, "tools/diff-answers.mjs"), "--old", "HEAD", "--grades", "8", "--show", "50"], { cwd: tmp, encoding: "utf8", maxBuffer: 64 << 20 });
+    const o = r.stdout || "", c = o.match(new RegExp(String.raw`^\s*(\d+)\s+${CAT}`, "m")), u = o.match(/(\d+)\s+НЕПОЯСНЕНІ\s*$/m); return [c ? +c[1] : NaN, u ? +u[1] : NaN, r.status]; };
+  const a = cnt();
+  ok(a[0] >= 2 && a[1] === 0 && a[2] === 0, `ordered: переставлені записи пояснені категорією (≥ 2), 0 непояснених, rc 0; а ${a.join(" / ")}`);
+  const df = path.join(tmp, "tools/diff-answers.mjs"), dsrc = fs.readFileSync(df, "utf8"), IS = "return isPermutation(keyParts(s), v.split(\";\")); }],";
+  ok(dsrc.split(IS).length === 2, "ordered: у diff-answers рядок isPermutation категорії — рівно один");
+  fs.writeFileSync(df, dsrc.replace(IS, "return false; }],"));
+  const b = cnt();
+  ok(b[1] === a[0] && b[2] === 1, `ordered (а): без категорії ці записи — НЕПОЯСНЕНІ (${a[0]}), rc 1; а ${b.join(" / ")}`);
+  fs.writeFileSync(df, dsrc.replace(IS, "return v.split(\";\").length === keyParts(s).length; }],"));
+  const c = cnt();
+  ok(c[0] === a[0] && c[1] === 0, `ordered (б): ширша умова не додає записів (новий рушій «Перевір порядок» дає лише перестановкам) — ${c.join(" / ")}`);
+  fs.writeFileSync(df, dsrc);
+  console.log(`  ordered: пояснено ${a[0]}; без категорії — ${b[1]} непояснених`);
 });
 console.log(`test-diff-answers: ${pass} ok, ${fail} ✗`);
 process.exit(fail ? 1 : 0);

@@ -15,8 +15,16 @@
 //  8) Телефон (devices["Pixel 7"], engine-list-p3 п. 4): поле масштабу (number + scale) — inputmode="decimal" і кнопка «:» (на цифровій
 //     клавіатурі двокрапки немає); «1 : 10000» набирається дотиками й зараховується; ratio — кнопка «:» вставляє в місце курсора;
 //     без scale кнопки «:» немає.
-//  5–7) Service worker (engine-sw-version-skew): деплой нової версії не змішує index.html і app.js; оновлення не перезавантажує
-//     сторінку посеред уроку; застосунок зі старим SW після одного змішаного відкриття сам переходить на консистентну нову версію.
+//  9) Синхронізація прогресу (engine-sync-login): фейковий API і фейк Google Identity Services; вхід «мій прогрес», код прив'язки на другому
+//     пристрої, злиття балів, офлайн-черга, «не мій прогрес» на спільному пристрої, помилки 401, вихід, «Скинути прогрес»; без адреси API — картки немає.
+//  10) Мовні вправи в тесті рівня (engine-diag-lang-types): gaps, pick, stress, word, split у тесті ukr-фікстури — без позначок, вердикти, «Ще не знаю»,
+//     продовження після перезавантаження, підсумок тем.
+//  11) Порядок тестів рівня після вибору класу (fix-diag-order): відкривається тест предмета з найменшим diagOrder (метадані предмета),
+//      а не перший предмет за порядком файлів; без diagOrder і за рівних — порядок предметів; відкладений тест («Пізніше») не пропонується.
+//  12) Один тест рівня на головній (engine-diag-one-invite): одне запрошення на новий тест (перший за diagOrder незавершений; «Пізніше» не змінює),
+//      перерваний — завжди; тест іншого предмета — з екрана предмета.
+//  5–7) Service worker (engine-sw-version-skew): деплой нової версії не змішує index.html і app.js; файл зі старого кешу не віддається
+//     (P3-6); оновлення не перезавантажує сторінку посеред уроку, а версія подій журналу лишається версією сторінки (P3-4); застосунок зі старим SW після одного змішаного відкриття сам переходить на консистентну нову версію.
 // Запуск: node tools/test-ui.mjs [--browser /opt/pw-browsers/chromium]
 // Playwright: require("playwright") (NODE_PATH) або PLAYWRIGHT_MODULE / /opt/node-tools/node_modules/playwright.
 // Браузер, як у test-answer-ui.py: --browser / SLID_BROWSER → /opt/pw-browsers/chromium, якщо є (PW_DEFAULT=1 вимикає) → Chromium самого
@@ -27,7 +35,11 @@ import { ROOT } from "./lib.mjs";
 const args = process.argv.slice(2), opt = (k, d) => args.includes(k) ? args[args.indexOf(k) + 1] : d;
 const require = createRequire(import.meta.url);
 let pw;
-for (const m of [process.env.PLAYWRIGHT_MODULE, "playwright", "/opt/node-tools/node_modules/playwright"].filter(Boolean)) { try { pw = require(m); break; } catch {} }
+// явно заданий PLAYWRIGHT_MODULE не підміняємо іншим модулем (рев'ю tools-ci-test-ui P3-1): не завантажився — rc 2
+if (process.env.PLAYWRIGHT_MODULE) {
+  try { pw = require(process.env.PLAYWRIGHT_MODULE); }
+  catch (e) { console.error(`PLAYWRIGHT_MODULE=${process.env.PLAYWRIGHT_MODULE} не завантажується: ${e.message.split("\n")[0]}`); process.exit(2); }
+} else for (const m of ["playwright", "/opt/node-tools/node_modules/playwright"]) { try { pw = require(m); break; } catch {} }
 if (!pw) { console.error("Немає Node-модуля playwright: задай NODE_PATH або PLAYWRIGHT_MODULE"); process.exit(2); }
 const BROWSER = opt("--browser", process.env.SLID_BROWSER || (fs.existsSync("/opt/pw-browsers/chromium") && !process.env.PW_DEFAULT ? "/opt/pw-browsers/chromium" : undefined));
 
@@ -115,6 +127,12 @@ async function swScenarios(browser) {
   await page.goto(SWU);
   await page.evaluate(s => localStorage.setItem("slid.v1", JSON.stringify(s)), { ...seed, unlockAll: true });
   ok(await controlled(page, "A"), "SW: версія A встановлена й керує сторінкою");
+  // рев'ю engine-sw-version-skew P3-6: SW бере файли лише з кешу СВОЄЇ версії (c.match), а не з будь-якого (caches.match) — інакше файл,
+  // якого в новій версії немає, прийшов би зі старого кешу, ще не видаленого. Імітація: інший кеш slid-… з файлом, якого немає ні в
+  // кеші A, ні на сервері: правильний SW іде в мережу (404), мутант caches.match віддав би «старий» вміст.
+  const planted = await page.evaluate(async () => { const c = await caches.open("slid-zz-old"); await c.put(new Request("qa-old-only.txt"), new Response("old"));
+    const r = await fetch("qa-old-only.txt"); return [r.status, await r.text()]; });
+  ok(planted[0] === 404 && planted[1] !== "old", `SW: файл лише зі старого кешу не віддається (мережа, 404), а ${JSON.stringify(planted)}`);
   await page.waitForTimeout(1500);
   ok(loads.length === 1, `SW: перше встановлення не перезавантажує сторінку (завантажень ${loads.length})`);
   ok(await page.evaluate(() => window.SLID_UPDATE && !SLID_UPDATE.pending), "SW: після першого встановлення оновлення не чекає");
@@ -128,6 +146,12 @@ async function swScenarios(browser) {
   const full = same0.filter(([, c]) => c === 200).map(([r]) => r), n304 = same0.filter(([, c]) => c === 304).length;
   ok(n304 >= 10 && !full.length, `SW: незмінні файли при оновленні — 304 (${n304}), повних завантажень ${full.length}: ${full.slice(0, 5).join(", ")}`);
 
+  // п. 10: версію змісту сторінка з кешу SW питає одразу (warmVersion), а не при першому записі журналу. Детерміновано: друга вкладка, де
+  // IndexedDB не відповідає (запис журналу ніколи не почнеться), — версія однаково має стати відомою
+  { const p2 = await ctx.newPage(); await p2.addInitScript(() => Object.defineProperty(window, "indexedDB", { value: { open: () => ({}) } }));
+    await p2.goto(SWU);
+    ok(await until(() => p2.evaluate(() => !!navigator.serviceWorker.controller && SLID_EVIDENCE.cv === "qa-B"), 8000), `evidence: версію спитано при завантаженні, без запису (warmVersion), а ${await p2.evaluate(() => SLID_EVIDENCE.cv)}`);
+    await p2.close(); }
   // умови «безпечно перезавантажити» (app/update.js U.safe): аркуш, фокус у полі, онбординг, плеєр
   ok(await page.evaluate(() => SLID_UPDATE.safe()), "update: на головній — безпечно");
   ok(!(await page.evaluate(() => { const h = document.getElementById("sheetHost"); h.innerHTML = "<div class='scrim'></div>"; const r = SLID_UPDATE.safe(); h.innerHTML = ""; return r; })), "update: відкритий аркуш — не безпечно");
@@ -150,9 +174,12 @@ async function swScenarios(browser) {
   await page.waitForTimeout(2500);
   ok(await page.evaluate(() => window.__mark === 1 && !document.getElementById("player").hidden), "SW: посеред уроку сторінку не перезавантажено, плеєр відкритий");
   ok(/Є оновлення.*щойно буде можна/.test(await page.locator("#toast").innerText()), "SW: тост «Є оновлення… щойно буде можна» під час уроку");
+  // tools-engine-p3-1105 п. 10 (рев'ю engine-sw-version-skew P3-4): сторінка B під керуванням нового SW C — версія змісту в журналі подій лишається B
+  ok(await page.evaluate(() => SLID_EVIDENCE.cv) === "qa-B", `evidence: посеред уроку з новим SW версія подій — сторінки (qa-B), а ${await page.evaluate(() => SLID_EVIDENCE.cv)}`);
   await page.click("#pClose"); await page.click("#pClose");
   ok(await until(async () => same(last(loads), ["C", "C"])), `SW: після закриття уроку — нова версія [C, C], завантаження ${JSON.stringify(loads)}`);
   ok(loads.every(([p, e]) => p === e), `SW: урок — жодного змішаного завантаження, а ${JSON.stringify(loads)}`);
+  ok(await until(() => page.evaluate(() => SLID_EVIDENCE.cv === "qa-C")), `evidence: після перезавантаження в C версія подій — qa-C, а ${await page.evaluate(() => SLID_EVIDENCE.cv)}`);
   await ctx.close();
 
   // 7) застосунок зі СТАРИМ SW (до виправлення): деплой нової версії — одне змішане відкриття (старий SW так працює), далі
@@ -216,6 +243,227 @@ async function phoneScenarios(browser) {
   const f3 = await field();
   ok(f3.mode === "decimal" && !f3.keys.includes(":") && !/кнопка «:»/.test(f3.help), `телефон, без scale: ні кнопки «:», ні підказки, а ${JSON.stringify(f3)}`);
   ok(!errors.length, "телефон, помилки сторінки: " + errors.join(" | "));
+  await ctx.close();
+}
+
+
+/* 9) Синхронізація прогресу (engine-sync-login): фейковий API (семантика server/: CAS за rev, 409, name відкидається, коди прив'язки
+   одноразові, CORS), app/config.js з адресою фейку, скрипт Google Identity Services — фейк із кнопкою, що повертає id_token.
+   Два пристрої — два контексти браузера (окремі localStorage). Без справжнього Google і бекенду. */
+async function syncScenarios(browser) {
+  const L = new Map(), codes = new Map(), bodies = []; let seq = 0;
+  const api = http.createServer((req, res) => {
+    const send = (st, d) => { res.writeHead(st, { "content-type": "application/json", "access-control-allow-origin": "*" }); res.end(d === undefined ? "" : JSON.stringify(d)); };
+    if (req.method === "OPTIONS") { res.writeHead(204, { "access-control-allow-origin": "*", "access-control-allow-headers": "authorization, content-type", "access-control-allow-methods": "GET, PUT, POST" }); res.end(); return; }
+    let raw = ""; req.on("data", c => raw += c); req.on("end", () => {
+      const body = raw ? JSON.parse(raw) : null, p = new URL(req.url, "http://x").pathname, tok = (req.headers.authorization || "").replace(/^Bearer /, "");
+      if (body) bodies.push(raw);
+      const who = tok && [...L.values()].find(x => x.tokens.includes(tok)), issue = x => { const t = "t" + (++seq); x.tokens.push(t); send(200, { id: x.id, token: t }); };
+      if (req.method === "POST" && p === "/v1/auth/google") { if (!/^tok-/.test(body.idToken)) return send(401, {}); let x = L.get(body.idToken); if (!x) L.set(body.idToken, x = { id: "L" + (++seq), tokens: [], rev: 0, data: null }); return issue(x); }
+      if (req.method === "POST" && p === "/v1/pairing/claim") { const k = String(body.code).toUpperCase().replace(/[\s-]/g, ""), x = codes.get(k); if (!x) return send(401, {}); codes.delete(k); return issue(x); }
+      if (!who) return send(401, {});
+      if (req.method === "POST" && p === "/v1/pairing") { const code = "K" + String(++seq).padStart(5, "7"); codes.set(code, who); return send(201, { code, expiresAt: new Date(Date.now() + 600000).toISOString() }); }
+      if (req.method === "GET" && p === "/v1/me") return send(200, { id: who.id, school: "school.example" });
+      if (req.method === "GET" && p === "/v1/progress") return send(200, { rev: who.rev, data: who.data });
+      if (req.method === "PUT" && p === "/v1/progress") { if (body.rev !== who.rev) return send(409, { rev: who.rev, data: who.data }); delete body.data.name; who.rev++; who.data = body.data; return send(200, { rev: who.rev, data: who.data }); }
+      send(404, {});
+    });
+  });
+  await new Promise(r => api.listen(0, "127.0.0.1", r));
+  const API = `http://127.0.0.1:${api.address().port}`;
+  const GSI = `window.google={accounts:{id:{initialize(o){window.__gsi=o;},renderButton(el){const b=document.createElement("button");b.id="fakeGsi";b.type="button";b.textContent="Google";b.onclick=()=>window.__gsi.callback({credential:window.__gsiTok||"tok-anna"});el.appendChild(b);}}}};`;
+  const device = async (state) => {
+    const ctx = await browser.newContext({ viewport: { width: 400, height: 860 }, serviceWorkers: "block" });
+    const page = await ctx.newPage(), errors = []; page.on("pageerror", e => errors.push(String(e))); page.setDefaultTimeout(8000);
+    await page.route("**/fonts.googleapis.com/**", r => r.abort());
+    await page.route("**/app/config.js", r => r.fulfill({ contentType: "text/javascript", body: `window.SLID_CONFIG=${JSON.stringify({ api: API, googleClientId: "qa.apps.googleusercontent.com" })};` }));
+    await page.route("https://accounts.google.com/gsi/client", r => r.fulfill({ contentType: "text/javascript", body: GSI }));
+    await page.goto(URL0); await page.evaluate(s => { localStorage.clear(); localStorage.setItem("slid.v1", JSON.stringify(s)); }, state); await page.reload();
+    await page.click('.tab[data-tab="profile"]');
+    return { ctx, page, errors, st: () => page.evaluate(() => JSON.parse(localStorage.getItem("slid.v1"))), sy: () => page.evaluate(() => JSON.parse(localStorage.getItem("slid.sync") || "null")) };
+  };
+  const base = { grade: 5, subject: "math", unlockAll: true };
+  const A = await device({ ...base, name: "Анна", xp: 100, days: { "2026-11-04": 100 }, lessons: { fa1: { done: true, stars: 2, best: 40 } } });
+  ok(await A.page.locator("#syncCard").count() === 1, "sync: з адресою API у профілі є «Мої пристрої»");
+  await A.page.click("#syncGoogle"); await A.page.click("#fakeGsi");
+  ok(/Це твій прогрес/.test(await A.page.locator(".sheet h2").innerText()), "sync: є прогрес на пристрої — питання «Це твій прогрес?»");
+  await A.page.click("#mineYes");
+  ok(await until(async () => L.get("tok-anna")?.data?.xp === 100), `sync: «Так, мій» — прогрес пристрою на сервері (xp ${L.get("tok-anna")?.data?.xp})`);
+  ok(!bodies.some(b => /Анна|"name"/.test(b)), "sync: ім'я на сервер не передано");
+  ok(await until(async () => /school\.example/.test(await A.page.locator("#syncState").innerText())), "sync: картка — шкільний акаунт і стан");
+  // код прив'язки → другий пристрій зі своїм прогресом
+  await A.page.click("#syncPair"); const code = await A.page.locator("#pairCode").innerText();
+  ok(/^K\d{5}$/.test(code) && /Код діє ще 9:5\d|Код діє ще 10:00/.test(await A.page.locator("#pairLeft").innerText()), `sync: код для іншого пристрою з таймером (${code})`);
+  await A.page.click("#closeSheet");
+  const B = await device({ ...base, name: "Аня", xp: 30, days: { "2026-11-05": 30 }, lessons: { fb1: { done: true, stars: 3, best: 30 } } });
+  await B.page.click("#syncCode"); await B.page.fill("#pairIn", code.toLowerCase().slice(0, 3) + " " + code.toLowerCase().slice(3)); await B.page.click("#pairGo"); await B.page.click("#mineYes");
+  ok(await until(async () => (await B.st()).xp === 130), `sync: код + «мій» — бали разом (130), а ${(await B.st()).xp}`);
+  const sb = await B.st(); ok(sb.name === "Аня" && sb.lessons.fa1?.done && sb.lessons.fb1?.done, "sync: уроки з обох пристроїв, ім'я пристрою лишилось");
+  await A.page.click("#syncNow"); ok(await until(async () => (await A.st()).xp === 130), "sync: перший пристрій отримав злитий прогрес");
+  ok((await A.st()).name === "Анна", "sync: на першому пристрої ім'я своє");
+  // посеред уроку злиття не застосовується (рев'ю P2-2): сервер змінився, урок відкрито — стан той самий; урок закрито — злито
+  await A.page.evaluate(() => window.__slidStart(SLID_SUBJECTS.find(c => c.id === "math").sections.find(x => x.lessons?.length).lessons[0].id));
+  { const x = L.get("tok-anna"); x.data = { ...x.data, xp: x.data.xp + 7 }; x.rev++; }
+  await A.page.evaluate(() => window.dispatchEvent(new Event("online"))); await A.page.waitForTimeout(1500);
+  ok((await A.st()).xp === 130 && !(await A.page.locator("#player").isHidden()), `sync: урок відкрито — злиття відкладено (xp ${(await A.st()).xp})`);
+  await A.page.click("#pClose"); await A.page.click("#pClose"); await A.page.click('.tab[data-tab="profile"]');
+  await A.page.evaluate(() => window.dispatchEvent(new Event("online")));
+  ok(await until(async () => (await A.st()).xp === 137), `sync: урок закрито — злито (137), а ${(await A.st()).xp}`);
+  await B.page.evaluate(() => window.dispatchEvent(new Event("online"))); ok(await until(async () => (await B.st()).xp === 137), "sync: другий пристрій теж 137");
+  // офлайн: зміни в черзі, з мережею — відправлено
+  await B.ctx.setOffline(true);
+  await B.page.evaluate(() => { const s = JSON.parse(localStorage.getItem("slid.v1")); return s; });
+  await B.page.click("#demo");   // save() → у чергу
+  await B.page.click('.tab[data-tab="profile"]'); await B.page.click("#syncNow");
+  ok(await until(async () => /Немає мережі/.test(await B.page.locator("#syncState").innerText())), `sync: офлайн — «Немає мережі…», а «${await B.page.locator("#syncState").innerText()}»`);
+  const q = await B.sy(); ok(q && q.dirty === true, "sync: офлайн — зміни в черзі (slid.sync dirty)");
+  const demoXp = (await B.st()).xp;
+  await B.ctx.setOffline(false);
+  ok(await until(async () => L.get("tok-anna").data.xp === demoXp && (await B.sy()).dirty === false), `sync: мережа повернулась — черга відправлена сама (сервер ${L.get("tok-anna").data.xp}, пристрій ${demoXp})`);
+  // «Ні, не мій»: спільний пристрій — чужий прогрес не потрапляє на сервер, пристрій отримує прогрес акаунта
+  await A.page.click("#syncPair"); const code2 = await A.page.locator("#pairCode").innerText(); await A.page.click("#closeSheet");
+  const C = await device({ ...base, grade: 7, name: "Петро", xp: 999, lessons: { zz9: { done: true, stars: 1, best: 1 } } });
+  await C.page.click("#syncCode"); await C.page.fill("#pairIn", code2); await C.page.click("#pairGo"); await C.page.click("#mineNo");
+  ok(await until(async () => (await C.st()).xp === demoXp), `sync: «Ні, не мій» — на пристрої прогрес акаунта (${(await C.st()).xp})`);
+  const sc = await C.st(); ok(!sc.lessons.zz9 && !L.get("tok-anna").data.lessons.zz9 && L.get("tok-anna").data.xp === demoXp && sc.grade === 5 && sc.name === "Петро", "sync: «не мій» — чужого уроку немає ні на пристрої, ні на сервері; клас з акаунта");
+  // помилки входу
+  await C.page.click("#syncOut"); ok(await C.page.locator("#syncCode").count() === 1 && !(await C.sy())?.token, "sync: «Вийти на цьому пристрої» — токена в slid.sync немає (лишився лише base акаунта для повторного входу)");
+  ok((await C.st()).xp === demoXp, "sync: після виходу прогрес лишився на пристрої");
+  await C.page.click("#syncCode"); await C.page.fill("#pairIn", "ZZZZZZ"); await C.page.click("#pairGo"); await C.page.click("#mineYes");
+  ok(await until(async () => /Код невірний/.test(await C.page.locator(".sync-err").innerText().catch(() => ""))), "sync: невірний код — «Код невірний або вже не діє»");
+  await C.page.evaluate(() => { window.__gsiTok = "personal"; }); await C.page.click("#syncGoogle"); await C.page.click("#fakeGsi"); await C.page.click("#mineNo");
+  ok(await until(async () => /не шкільний/.test(await C.page.locator(".sync-err").innerText().catch(() => ""))), "sync: особистий акаунт (401) — «Цей акаунт не шкільний»");
+  // «Скинути прогрес» на пристрої з входом — синхронізацію вимкнено, сервер не чіпаємо
+  await A.page.click("#reset"); await A.page.click("#reset");
+  ok(!(await A.sy())?.token && L.get("tok-anna").data.xp === demoXp, "sync: «Скинути прогрес» — вихід на пристрої, прогрес на сервері лишився");
+  for (const d of [A, B, C]) { ok(!d.errors.length, "sync: помилки сторінки: " + d.errors.join(" | ")); await d.ctx.close(); }
+  // без адреси API — картки немає, мережевих запитів до API немає
+  const ctx = await browser.newContext({ serviceWorkers: "block" }), p0 = await ctx.newPage(); await p0.route("**/fonts.googleapis.com/**", r => r.abort());
+  await p0.goto(URL0); await p0.evaluate(s => localStorage.setItem("slid.v1", JSON.stringify(s)), base); await p0.reload(); await p0.click('.tab[data-tab="profile"]');
+  ok(await p0.locator("#syncCard").count() === 0, "sync: без адреси API (типовий config.js) картки немає");
+  await ctx.close(); api.close();
+}
+
+
+/* фікстура сценаріїв 11–12: у кожного предмета розділ 6 кл. і тест dgo-<id>; mode: reverse — diagOrder навпаки до порядку SLID_SUBJECTS,
+   tie — усі 1, none — без поля, mixed — у першого предмета поля немає, решта навпаки (він має йти останнім, рев'ю fix-diag-order P3-1) */
+const DIAG_ORDER_FX = mode => { const n = SLID_SUBJECTS.length;
+    SLID_SUBJECTS.forEach((c, i) => {
+      const lesson = { id: "lo-" + c.id, title: "Урок", icon: "book", screens: [{ type: "intro", title: "QA", body: "QA" }] };
+      c.sections = [{ id: "so-" + c.id, grade: 6, weeks: [1, 2], title: "QA", why: "QA", lessons: [lesson] }]; c.pools = [];
+      c.diags = [{ id: "dgo-" + c.id, grade: 6, title: "QA", why: "QA", status: "draft", topics: [{ id: "t", title: "Т", kind: "cur", lessons: [lesson.id] }],
+        items: [{ topic: "t", type: "choice", title: "QA", options: ["а", "б"], correct: 0 }] }];
+      if (mode === "reverse" || mode === "mixed" && i) c.diagOrder = n - i; else if (mode === "tie") c.diagOrder = 1; else delete c.diagOrder; });
+    return SLID_SUBJECTS.map(c => c.id); };
+/* 11) Порядок тестів рівня після вибору класу (fix-diag-order). Фікстура: у кожного предмета — розділ 6 кл. і тест dgo-<id>;
+   diagOrder задається навпаки до порядку SLID_SUBJECTS, тож перший предмет масиву не може «випадково» виграти. */
+async function diagOrderScenario(browser) {
+  const ctx = await browser.newContext({ viewport: { width: 400, height: 860 }, serviceWorkers: "block" });
+  const page = await ctx.newPage(), errors = []; page.on("pageerror", e => errors.push(String(e))); page.setDefaultTimeout(8000);
+  await page.route("**/fonts.googleapis.com/**", r => r.abort());
+  const install = DIAG_ORDER_FX;
+  const onboard = async (mode, skip, diag) => {
+    await page.goto(URL0); await page.evaluate(([s, d]) => { localStorage.clear(); if (s || d) localStorage.setItem("slid.v1", JSON.stringify({ diagSkip: s || {}, diag: d || {} })); }, [skip || null, diag || null]); await page.reload();
+    const ids = await page.evaluate(install, mode); await page.click('[data-grade="6"]');
+    const opened = await page.locator("[data-diag-skip]").first().getAttribute("data-diag-skip"); return { ids, opened }; };
+  { const { ids, opened } = await onboard("reverse");
+    ok(ids.length >= 2 && opened === "dgo-" + ids[ids.length - 1], `diagOrder: відкрито тест з найменшим diagOrder (dgo-${ids[ids.length - 1]}), а ${opened}`);
+    const nxt = await onboard("reverse", { ["dgo-" + ids[ids.length - 1]]: true });
+    ok(nxt.opened === "dgo-" + ids[ids.length - 2], `diagOrder: відкладений тест пропущено — наступний за diagOrder (dgo-${ids[ids.length - 2]}), а ${nxt.opened}`); }
+  { const { ids, opened } = await onboard("mixed");
+    ok(opened === "dgo-" + ids[ids.length - 1], `мішаний diagOrder: предмет без поля — після всіх із полем (dgo-${ids[ids.length - 1]}), а ${opened}`); }
+  { const ids = (await onboard("reverse")).ids, last = "dgo-" + ids[ids.length - 1];
+    const { opened } = await onboard("reverse", null, { [last]: { done: true, topics: {} } });
+    ok(opened === "dgo-" + ids[ids.length - 2], `пройдений тест не пропонується знову (dgo-${ids[ids.length - 2]}), а ${opened}`); }
+  { const { ids, opened } = await onboard("none");
+    ok(opened === "dgo-" + ids[0], `без diagOrder: порядок предметів (dgo-${ids[0]}), а ${opened}`); }
+  { const { ids, opened } = await onboard("tie");
+    ok(opened === "dgo-" + ids[0], `рівні diagOrder: порядок предметів (dgo-${ids[0]}), а ${opened}`); }
+  ok(!errors.length, "diagOrder: помилки сторінки: " + errors.join(" | "));
+  await ctx.close();
+}
+
+/* 12) Один тест рівня на головній (engine-diag-one-invite, рішення людини щодо P2-1 qa-hist-diag): лише одне запрошення на новий тест —
+   перший за diagOrder серед незавершених («Пізніше» не змінює); перерваний тест — завжди, і тоді нового запрошення немає; решта — на екрані предмета. */
+async function diagOneInviteScenario(browser) {
+  const ctx = await browser.newContext({ viewport: { width: 400, height: 860 }, serviceWorkers: "block" });
+  const page = await ctx.newPage(), errors = []; page.on("pageerror", e => errors.push(String(e))); page.setDefaultTimeout(8000);
+  await page.route("**/fonts.googleapis.com/**", r => r.abort());
+  const home = async (mode, st) => {
+    await page.goto(URL0); await page.evaluate(s => { localStorage.clear(); localStorage.setItem("slid.v1", JSON.stringify({ grade: 6, unlockAll: false, ...s })); }, st || {}); await page.reload();
+    const ids = await page.evaluate(DIAG_ORDER_FX, mode); await page.evaluate(() => { document.querySelector('.tab[data-tab="path"]').click(); document.querySelector('.tab[data-tab="path"]').click(); });
+    const inv = await page.locator("#view .diaginv").evaluateAll(b => b.map(x => x.dataset.diag)); return { ids, inv }; };
+  const D = id => "dgo-" + id;
+  { const { ids, inv } = await home("reverse"); const n = ids.length;
+    ok(n >= 3 && same(inv, [ids[n - 1]]), `головна: одне запрошення — перший за diagOrder (${ids[n - 1]}), а ${JSON.stringify(inv)}`);
+    const sk = await home("reverse", { diagSkip: { [D(ids[n - 1])]: true } });
+    ok(same(sk.inv, [ids[n - 1]]), `головна: відкладений («Пізніше») лишається єдиним запрошенням (${ids[n - 1]}), а ${JSON.stringify(sk.inv)}`);
+    const dn = await home("reverse", { diag: { [D(ids[n - 1])]: { done: true, topics: {} } } });
+    ok(!dn.inv.includes(ids[n - 1]) && dn.inv.length === 1 && dn.inv[0] === ids[n - 2], `головна: після пройденого — наступний за diagOrder (${ids[n - 2]}), а ${JSON.stringify(dn.inv)}`);
+    const all = await home("reverse", { diagSkip: Object.fromEntries(ids.map(i => [D(i), true])) });
+    ok(same(all.inv, [ids[n - 1]]), `головна: усі відкладені — одне запрошення, перший за diagOrder (${ids[n - 1]}), а ${JSON.stringify(all.inv)}`);
+    const part = await home("reverse", { diagRun: { [D(ids[0])]: { 0: 1 } } });
+    ok(same(part.inv, [ids[0]]), `головна: перерваний тест (${ids[0]}) — і є те одне запрошення, нового поряд немає (рев'ю engine-diag-one-invite P2-1), а ${JSON.stringify(part.inv)}`);
+    const mx = await home("mixed");
+    ok(same(mx.inv, [ids[n - 1]]), `головна: предмет без diagOrder не першим (${ids[n - 1]}), а ${JSON.stringify(mx.inv)}`);
+    // «коли захочеш»: тест іншого предмета доступний з екрана предмета
+    await home("reverse"); await page.click(`button[data-subject="${ids[0]}"]`);
+    ok(await page.locator(`#view [data-diag="${ids[0]}"]`).count() > 0, `екран предмета ${ids[0]}: тест рівня доступний`); }
+  ok(!errors.length, "один тест на головній: помилки сторінки: " + errors.join(" | "));
+  await ctx.close();
+}
+
+/* 10) Мовні вправи в тесті рівня (engine-diag-lang-types): фікстура предмета ukr (розділи 5 і 6 кл., тест dgfu6) замість живого змісту.
+   gaps, pick, stress, word, split у тесті — без позначок і показу відповіді, вердикт одразу (OK / BAD / «Ще не знаю»), продовження після
+   перезавантаження, підсумок тем. */
+async function diagLangScenario(browser) {
+  const ctx = await browser.newContext({ viewport: { width: 400, height: 860 }, serviceWorkers: "block" });
+  const page = await ctx.newPage(), errors = []; page.on("pageerror", e => errors.push(String(e))); page.setDefaultTimeout(8000);
+  await page.route("**/fonts.googleapis.com/**", r => r.abort());
+  const FXU = { id: "dgfu6", grade: 6, title: "Що ти вже вмієш?", why: "QA", status: "draft",
+    topics: [{ id: "p", title: "Передумова", kind: "pre", lessons: ["fu5l1"] }, { id: "c1", title: "Тема 1", kind: "cur", lessons: ["fu6l1"] },
+      { id: "c2", title: "Тема 2", kind: "cur", lessons: ["fu6l2"] }, { id: "c3", title: "Тема 3", kind: "cur", lessons: ["fu6l3"] }],
+    items: [{ topic: "p", type: "gaps", sk: "orth", title: "Встав букву", text: "с{*е|и}ло" },
+      { topic: "c1", type: "pick", sk: "synt", title: "Знайди підмет", text: "[Сонце] яскраво світить." },
+      { topic: "p", type: "stress", sk: "oral", title: "Де наголос?", words: ["черг+овий"] },
+      { topic: "c2", type: "word", sk: "orth", title: "Напиши слово", answer: "м'ята", keys: ["'"] },
+      { topic: "c3", type: "split", sk: "phon", title: "Поділи на склади", word: "мо|ло|ко" }] };
+  const installU = fx => { const c = SLID_SUBJECTS.find(c => c.id === "ukr");
+    const lesson = id => ({ id, title: "Урок " + id, icon: "book", screens: [{ type: "intro", title: id, body: "QA" }] });
+    c.sections = [{ id: "fu5", grade: 5, weeks: [1, 2], title: "QA 5", why: "QA", lessons: [lesson("fu5l1")] }, { id: "fu6", grade: 6, weeks: [1, 2], title: "QA 6", why: "QA", lessons: ["fu6l1", "fu6l2", "fu6l3"].map(lesson) }];
+    c.diags = [fx]; c.pools = []; };
+  const open = async () => { await page.evaluate(installU, FXU); await page.evaluate(() => document.querySelector('.tab[data-tab="path"]').click());
+    await page.click('button[data-subject="ukr"]'); const d = page.locator("[data-diag]"); if (await d.count()) await d.first().click(); else await page.click('[data-plan="ukr"]');
+    await page.click("[data-diag-go]"); };
+  const st = () => page.evaluate(() => JSON.parse(localStorage.getItem("slid.v1")));
+  const noMarks = async () => page.evaluate(() => !document.querySelector("#stage .is-ok, #stage .is-bad") && !/Правильн/.test(document.querySelector("#hintHost")?.textContent || ""));
+  const eyebrow = () => page.locator("#stage .eyebrow").first().innerText();
+  await page.goto(URL0); await page.evaluate(() => { localStorage.clear(); localStorage.setItem("slid.v1", JSON.stringify({ grade: 6, subject: "ukr", unlockAll: false })); }); await page.reload();
+  await open();
+  ok(/завдання 1/i.test(await eyebrow()), `diag ukr: тест почався з завдання 1 (${await eyebrow()})`);
+  // 1) gaps: правильно (варіант з data-o 0 — «е»)
+  await page.click('.gopt[data-g="0"][data-o="0"]'); await page.click("#action");
+  ok(/завдання 2/i.test(await eyebrow()) && await noMarks(), "diag ukr: gaps — одразу наступне завдання, без позначок і показу відповіді");
+  // 2) pick: хибне слово
+  await page.click('.pw[data-w="1"]'); await page.click("#action");
+  ok(/завдання 3/i.test(await eyebrow()) && await noMarks(), "diag ukr: pick (хибно) — без позначок");
+  // перезавантаження посеред тесту — продовження з того самого місця
+  await page.reload(); await open();
+  ok(/Наголос|наголос/.test(await page.locator("#stage h2, #stage .title, #stage").first().innerText()), "diag ukr: після перезавантаження — продовження з stress");
+  // 3) stress: правильно (голосний після «+»)
+  const vi = await page.evaluate(() => SLID_LANG.parseStress("черг+овий").correct);
+  await page.click(`.sv[data-w="0"][data-i="${vi}"]`); await page.click("#action");
+  ok(await noMarks(), "diag ukr: stress — без позначок");
+  // 4) word: «м'ята» з кнопкою апострофа
+  await page.fill("#numIn", "м'ята"); await page.click("#action");
+  ok(await noMarks(), "diag ukr: word — без позначок");
+  // 5) split: «Ще не знаю»
+  await page.click("#skip");
+  const S1 = await st(), rec = S1.diag?.dgfu6;
+  ok(rec && rec.done, `diag ukr: тест завершено (${JSON.stringify(S1.diag)})`);
+  ok(rec && same(rec.res, { 0: 1, 1: 0, 2: 1, 3: 1, 4: -1 }), `diag ukr: вердикти gaps OK, pick BAD, stress OK, word OK, split «Ще не знаю» — а ${JSON.stringify(rec && rec.res)}`);
+  ok(rec && same(rec.topics, { p: "ok", c1: "new", c2: "known", c3: "new" }), `diag ukr: підсумок тем p ok, c1 new, c2 known, c3 new — а ${JSON.stringify(rec && rec.topics)}`);
+  ok(!errors.length, "diag ukr: помилки сторінки: " + errors.join(" | "));
   await ctx.close();
 }
 
@@ -299,6 +547,18 @@ try {
 
   // 8) Телефон: «:» у полях масштабу й відношення (engine-list-p3 п. 4)
   await phoneScenarios(browser);
+
+  // 9) Синхронізація прогресу між пристроями (engine-sync-login)
+  await syncScenarios(browser);
+
+  // 10) Мовні вправи в тесті рівня (engine-diag-lang-types)
+  await diagLangScenario(browser);
+
+  // 11) Порядок тестів рівня після вибору класу (fix-diag-order)
+  await diagOrderScenario(browser);
+
+  // 12) Один тест рівня на головній (engine-diag-one-invite)
+  await diagOneInviteScenario(browser);
 
   // 5–7) Оновлення service worker без змішування версій (engine-sw-version-skew; docs/PUBLISHING.md «Оновлення PWA»)
   await swScenarios(browser);

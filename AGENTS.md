@@ -13,7 +13,7 @@
 
 ## 1. Стек
 - Фронтенд: ванільний JS без залежностей і збирача; `index.html` + `app/*.js`; PWA (`sw.js`).
-- Інструменти: Node 22 (`tools/*.mjs`, без npm-залежностей); Python + Playwright (`playtest.py`, `test-answer-ui.py`).
+- Інструменти: Node 22 (`tools/*.mjs`, без npm-залежностей у `package.json`; виняток — `test-ui.mjs` бере Node-пакет `playwright` поза ним: локально з `NODE_PATH`/`PLAYWRIGHT_MODULE`, у CI ставиться в `$RUNNER_TEMP`); Python + Playwright (`playtest.py`, `test-answer-ui.py`).
 - Бекенд `server/`: TypeScript, NestJS 11, Kysely 0.28, PostgreSQL 16, Jest; Railway. Офлайн-перший: фронтенд працює без нього.
 - CI: `.github/workflows/pages.yml` (тести + згенеровані файли закомічені + job `browser`: регресія рушія, test-ui і плейтест піднабору → GitHub Pages; на PR — без публікації), `server.yml` (бекенд на Postgres).
 
@@ -26,6 +26,7 @@
 | `app/app.js` | рушій: навігація, екрани, гейміфікація, збереження `slid.v1` | розробник |
 | `app/learn.js` · `evidence.js` · `hyp.js` | персоналізація · журнал подій · гіпотези (тінь) | розробник |
 | `app/math.js` · `lab.js` · `registry.js` | формули · лабораторія · реєстр `SLID.*` | розробник |
+| `app/sync.js`, `app/config.js` | синхронізація прогресу з бекендом: злиття стану, вхід, код прив'язки (тести `node tools/test-sync.mjs`); config.js генерує build із `SLID_API` | розробник |
 | `app/lang.js` | мовні вправи gaps / pick / stress / word / split (CONTENT_SCHEMA §4.1; тести `node tools/test-lang.mjs`) | розробник |
 | `content/subjects/<предмет>.js`, `content/<предмет>/plan.js`, `content/catalog.js` | метадані, план, «скоро» | лише куратор |
 | `content/<предмет>/g<клас>-<id>.js` | **один файл = один розділ з уроками** | автор розділу |
@@ -51,7 +52,7 @@ npm run check               # build + node-тести + validate + graph-report 
 python3 tools/playtest.py [--section ID[,ID…]] [--port N]    # пройти уроки в браузері; невідомий id — код 2
 python3 tools/test-answer-ui.py --suite regression           # браузерна регресія рушія (не в check; у CI — job browser, блокує deploy)
 node tools/playtest-pick.mjs [--max-lessons N] [файли…]      # піднабір плейтесту CI: змінені розділи + покриття типів екранів + тести рівня
-node tools/test-ui.mjs [--browser P]                         # браузер (Node Playwright): «Тренування» з also, замок уроку, запобіжник екрана, оновлення PWA; не в check, у CI — job browser
+node tools/test-ui.mjs [--browser P]                         # браузер (Node Playwright): «Тренування» з also, замок уроку, запобіжник екрана, оновлення PWA, синхронізація двох пристроїв; не в check, у CI — job browser
 node tools/stats.mjs [--subject S]                           # метрики стилю → reports/style-S.md
 node tools/claim.mjs list|claim|move ...                     # черга задач
 node tools/make-tasks.mjs [--subject S]                      # задачі на написання з плану
@@ -95,7 +96,7 @@ cd server && npm run check && DATABASE_URL=postgres://… npm run test:e2e   # �
 |---|---|
 | написати чи переписати розділ уроків (`write-*`, `revise-*`, `refine-*`, `fix-*` у файлі розділу) | `content-author` |
 | перевірити розділ, тест рівня, пул чи лінію графа, яких ти не писав (задача в `tasks/review/`) | `content-verify` |
-| пул вправ `pool-*.js` або тест рівня `diag-*.js` (написати, виправити, змінити формат відповіді) | `math-pool-diag` |
+| пул вправ `pool-*.js` або тест рівня `diag-*.js` (написати, виправити, змінити формат відповіді; для ukr — ще й `content-author`) | `math-pool-diag` |
 | зображення в уроці, Вікісховище, помилка D-027 (`images-*`) | `hist-images` |
 | будь-яка зміна в `app/`, `tools/`, тестах, CI (`engine-*`, `tools-*`, `tests-*`) | `engine-change` |
 | будь-яка зміна в `server/` (`server-*`) | `backend-change` |

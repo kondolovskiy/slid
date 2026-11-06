@@ -5,6 +5,7 @@
 SLID.subject({
   id: "math",
   subject: "Математика",
+  diagOrder: 1,   // порядок тесту рівня після вибору класу (CONTENT_SCHEMA §1)
   short: "Математика",
   icon: "frac",
   pattern: "grid",

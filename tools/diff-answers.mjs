@@ -211,6 +211,15 @@ const symCoord = s => s.answerKind === "coordinates2" && /[a-z]/.test(keyText(s)
 const exactVal = (s, v) => { const a = NEW.parseAns(keyText(s)), m = String(v).replace(/^\s*[A-Za-zА-Яа-яіїєґ]\s*=\s*/u, "").replace(/−/g, "-").match(/^(-?)(\d+),(\d*)\((\d+)\)$/);
   if (!a || !m) return false; const A = BigInt(m[2] + m[3]), F = BigInt(m[2] + m[3] + m[4]), n = (F - A) * (m[1] ? -1n : 1n), d = 10n ** BigInt(m[3].length) * (10n ** BigInt(m[4].length) - 1n);
   return n * BigInt(a.d) === BigInt(a.n) * d; };
+// ordered (рев'ю fix-math-pools-ordered-scale, P3-1): перестановку перевіряємо без checkAns рушія — елементи запису й ключа як мультимножини
+// рівні (той самий рядок після нормалізації або те саме раціональне число), а по місцях — ні. 2–5 елементів; префікс «x =» / «x₁ =» знято.
+const keyParts = s => Array.isArray(s.answer) ? s.answer.map(String) : keyText(s).split(";");
+const elNorm = x => String(x).trim().replace(/[−–]/g, "-").replace(/\./g, ",").replace(/^[a-zа-яіїєґ][₀-₉0-9]*\s*=\s*/iu, "").replace(/\s+/g, " ");
+const elEq = (x, y) => { const a = elNorm(x), b = elNorm(y), p = NEW.parseAns(a), q = NEW.parseAns(b); return a === b || (!!p && !!q && BigInt(p.n) * BigInt(q.d) === BigInt(q.n) * BigInt(p.d)); };
+function isPermutation(key, rec) {
+  if (key.length < 2 || key.length > 5 || rec.length !== key.length || key.every((x, i) => elEq(x, rec[i]))) return false;
+  const left = [...rec]; return key.every(x => { const i = left.findIndex(y => elEq(x, y)); return i >= 0 && !!left.splice(i, 1); });
+}
 const CATS = [
   // g11 п.1 першою: кириличний запис інакше потрапив би в категорію іншого нововведення (х ∈ …)
   ["g11 п.1 кириличні двійники латинських літер", (s, v, o, n) => SYM.includes(s.answerKind) && lat(v) !== v && /^[^а-яґєіїА-ЯҐЄІЇ]*$/u.test(lat(v)) && same(verdict(OLD, s, lat(v)), n)],
@@ -286,13 +295,11 @@ const CATS = [
   ["ister п.2–3 новий answerKind sci / pairSet — старий рушій його не знає", (s, v, o, n) => /^(sci|pairSet)$/.test(s.answerKind || "") && o.r === "bad" && n.r === "ok"
     && keyVariant(s, v) && (Array.isArray(OLD.ANSWER_KINDS) ? !OLD.ANSWER_KINDS.includes(s.answerKind) : OLD.checkAns(s, keyText(s)) !== "ok")],
   // fix-math-pools-ordered-scale (engine-list-ordered): у list з ordered: true переставлений запис тих самих значень — ok → bad з підказкою
-  // про порядок. Незалежно від реалізації ordered: запис (2–5 елементів через «;») має перестановку, яку новий рушій зараховує, а старий
-  // рушій (порядку не перевіряв) зараховував і сам запис. Інший запис чи інша підказка — непояснені.
+  // про порядок. Незалежно від реалізації ordered (isPermutation, без NEW.checkAns): запис — перестановка елементів ключа, яку старий
+  // рушій (порядку не перевіряв) зараховував. Інший запис чи інша підказка — непояснені.
   ["ordered переставлений запис у list з ordered — bad «Перевір порядок»", (s, v, o, n) => { if (s.answerKind !== "list" || s.ordered !== true || o.r !== "ok" || n.r !== "bad"
       || !/^Перевір порядок: запиши величини в тій послідовності, у якій їх названо в умові\.$/.test(n.h || "")) return false;
-    const ps = v.split(";").map(x => x.trim()); if (ps.length < 2 || ps.length > 5) return false;
-    const perms = a => a.length < 2 ? [a] : a.flatMap((x, i) => perms(a.slice(0, i).concat(a.slice(i + 1))).map(r => [x, ...r]));
-    return perms(ps).some(q => q.join("; ") !== ps.join("; ") && NEW.checkAns(s, q.join("; ")) === "ok"); }],
+    return isPermutation(keyParts(s), v.split(";")); }],
   // п. 4: «p : q» при ключі-дробі p/q (те саме значення, незалежна перевірка) — bad → form «це відношення»
   ["ister п.4 «p : q» при ключі-дробі — form «це відношення»", (s, v, o, n) => { const a = NEW.parseAns(keyText(s)), m = /^(\d+) ?: ?(\d+)$/.exec(v);
     return (s.answerKind || "number") === "number" && !!a && a.frac && !!m && o.r === "bad" && n.r === "form" && /^Значення правильне, але це відношення/.test(n.h || "")

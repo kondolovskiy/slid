@@ -170,7 +170,11 @@
     if (backend) ready = backend.init().then(r => { ids = r; }, () => disable());
     // черга, скинута попередньою сторінкою під час переходу (P3-1): дописується першою, дублікати відкидає eid
     if (enabled && env.unstash) try { const old = env.unstash() || []; for (const e of old) if (e && typeof e === "object" && e.eid && e.v) { delete e.seq; queue.push(e); recovered++; } } catch (e) {}
-    const verP = () => cv !== undefined ? Promise.resolve(cv) : Promise.race([Promise.resolve().then(env.version).catch(() => null), new Promise(ok => env.setTimeout(() => ok(null), lim.versionWait))]).then(v => (cv = v || null));
+    // один запит версії за раз (warmVersion і перший запис не питають SW двічі); vgen — відповідь, що прийшла після resetVersion, відкидається
+    let vp = null, vgen = 0;
+    const verP = () => { if (cv !== undefined) return Promise.resolve(cv); if (vp) return vp; const g = vgen;
+      return vp = Promise.race([Promise.resolve().then(env.version).catch(() => null), new Promise(ok => env.setTimeout(() => ok(null), lim.versionWait))])
+        .then(v => { if (g !== vgen) return verP(); vp = null; return (cv = v || null); }); };
     function schedule() {
       if (timer || !enabled) return;
       if (queue.length >= lim.batch) { timer = MICRO; Promise.resolve().then(() => { timer = null; api.flush(); }); return; }
@@ -235,7 +239,10 @@
           if (list.length) { env.stash(list); for (const e of list) stashed.add(e.eid); } return list.length; } catch (e) { return 0; }
       },
       /** SW змінився (controllerchange): наступний запис спитає версію змісту знову. */
-      resetVersion() { cv = undefined; },
+      resetVersion() { cv = undefined; vp = null; vgen++; },
+      /** Спитати версію змісту зараз, не чекаючи першого запису (tools-engine-p3-1105 п. 10, рев'ю engine-sw-version-skew P3-4): сторінку,
+          завантажену з кешу SW, описує версія саме цього SW — новий SW, що візьме керування пізніше (оновлення чекає кінця уроку), її не підміняє. */
+      warmVersion() { try { if (enabled) verP(); } catch (e) {} },
       /** Записати чергу зараз. Промис завжди виконується (без відхилення). */
       flush() { if (timer && timer !== MICRO) { env.clearTimeout(timer); timer = null; } chain = chain.then(write).catch(() => {}); return chain; },
       async stats() {
@@ -307,7 +314,12 @@
     // транзакція IndexedDB, почата в pagehide, може не встигнути: спершу синхронна копія черги, потім спроба запису
     addEventListener("pagehide", () => { api.stash(); api.flush(); });
     document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") { api.stash(); api.flush(); } });
-    if (navigator.serviceWorker) navigator.serviceWorker.addEventListener("controllerchange", () => api.resetVersion());
+    // сторінка з кешу SW (контролер уже є): її зміст — версії цього SW, тож версію беремо одразу й при controllerchange не скидаємо —
+    // новий SW, активний посеред уроку, має інший зміст, ніж відкрита сторінка (P3-4). Сторінка без контролера (перший візит, Shift+F5):
+    // версію спитаємо в SW, який візьме керування (до нього SW не відповідає — null).
+    const sw = navigator.serviceWorker, had = !!(sw && sw.controller);
+    if (had) api.warmVersion();
+    if (sw) sw.addEventListener("controllerchange", () => { if (!had) api.resetVersion(); });
   } catch (e) {}
   g.SLID_EVIDENCE = api;
 })();

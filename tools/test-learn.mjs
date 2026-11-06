@@ -2503,7 +2503,7 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
   [[K("list", [1, 2], { ordered: "так" }), /ordered має бути boolean/], [N(2, { ordered: true }), /ordered має бути boolean/], [K("list", [1, 2], { ordered: true, multiset: true }), /multiset не потрібен/],
    [K("list", [1, 2], { scale: true }), /scale має бути boolean/], [N(10000, { scale: 1 }), /scale має бути boolean/], [N("1/4", { scale: true }), /scale — ключ/], [N(1, { scale: true }), /scale — ключ/], [N("10000,5", { scale: true }), /scale — ключ/],
    // engine-list-p3 п. 3 (P3-3 рев'ю engine-list): «±» у ключі розгортається без порядку — з ordered поведінка невизначена
-   [K("list", "±3", { ordered: true }), /ordered.*±/], [K("list", ["±3", 5], { ordered: true }), /ordered.*±/], [K("list", ["(1 ∓ √5)/2"], { ordered: true }), /ordered.*±/]]
+   [K("list", "±3", { ordered: true }), /ordered.*±/], [K("list", ["±3", 5], { ordered: true }), /ordered.*±/], [K("list", [5, "±3"], { ordered: true }), /ordered.*±/] /* «±» не в першому елементі (рев'ю engine-list-p3 P3-1) */, [K("list", ["(1 ∓ √5)/2"], { ordered: true }), /ordered.*±/]]
     .forEach(([it, re]) => eq(vp(it).some(e => re.test(e)), true, `validatePool відхиляє ${JSON.stringify(it)}`));
   // п. 1: лінійно на 50 000 символів (раніше «x» + 20 000 пробілів ≈ 0,5 с, 50 000 ≈ 6 с; тисячі різних елементів ≈ 1,3 с)
   const M = 50000, seq = f => { const o = []; for (let i = 1, len = 0; len < M; i++) { o.push(f(i)); len += o[o.length - 1].length + 2; } return o.join("; "); }, sp = " ".repeat(M);
