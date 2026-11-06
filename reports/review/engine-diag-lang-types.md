@@ -2,7 +2,8 @@
 
 - **Перевірено:** коміт `b6378d1` (гілка `claude/trusting-faraday-y1ztaw`), весь diff: `app/learn.js`, `tools/validate.mjs`, `tools/test-validate.mjs`, `tools/test-lang.mjs`, `tools/test-ui.mjs`, `docs/CONTENT_SCHEMA.md` §9, `AGENTS.md` §6, `.claude/skills/math-pool-diag/SKILL.md` (розділ 2а). Навколишній код: `app/app.js` (`check`, `gradeNow`, `diagAnswer`, `langHtml`, `bindLang`, `langMarks`, `showMarks`, `evRaw`, `evKey`, `renderDiagEnd`), `app/lang.js` (`check`, `issues`, `parseSplit`), `app/evidence.js` (серіалізація `raw`), `tools/playtest.py` (тести рівня).
 - **Рецензент:** незалежний агент, реалізацію не писав.
-- **Вердикт: потрібні виправлення** (одна P2: обіцяну межу «`split` — одне слово» validate не перевіряє; P1 немає).
+- **Вердикт (первинне рев'ю b6378d1): потрібні виправлення** (одна P2: обіцяну межу «`split` — одне слово» validate не перевіряє; P1 немає).
+- **Вердикт після повторного рев'ю (a98775c): прийнято** (див. «Повторне рев'ю» в кінці).
 
 ## Плеєр без змін: заяву виконавця підтверджено
 `app/app.js:1400`: у тесті рівня для будь-якого типу, крім `answer`, вердикт дає `gradeNow(s) ? OK : BAD`, далі `diagAnswer`. Для мовних типів `gradeNow` викликає `LANG.check` (`app/app.js:1345`). `showMarks`/`langMarks` у гілці тесту не викликаються, другої спроби немає, і `renderScreen` одразу показує наступне завдання. Підтвердив власним браузерним зондом (окремий скрипт на копії дерева, фікстура ukr; файл не закомічено):
@@ -60,3 +61,22 @@
 - `python3 tools/test-answer-ui.py` і `python3 tools/playtest.py` (з тестами рівня ukr): у контейнері немає Python-модуля playwright. Лише CI (job `browser`).
 - Екранний диктор (aria) на мовних вправах у тесті і вигляд на реальному телефоні.
 - Межі 3/3/20/3 педагогічно не оцінював: це рішення виконавця, задача його дозволяла.
+
+## Повторне рев'ю (коміт a98775c, diff проти b6378d1)
+Інженерна частина diff: `tools/validate.mjs` (+2), `tools/test-validate.mjs` (+3), `tools/test-ui.mjs` (1 рядок). Решта diff — зміст і задачі авторів тестів ukr: `content/ukr/diag-g5/6/7.js`, `tasks/`, `inbox`, `reports/validate.json`, а також цей звіт.
+
+- **P2-1 закрито.** Нове правило `tools/validate.mjs:274-275`: якщо в будь-якому варіанті `word` (після `trim`) є пробільний символ, тест рівня дає помилку «у тесті рівня split — одне слово, без пробілів». Правило діє лише при `diag && !pool`. Покривають його два рядки test-validate: рядок `«ма|ма та|то»` і масив із двох таких варіантів. Мутант без перевірки дає test-validate ✗4 (мій прогін).
+- **P3-1 закрито.** `noMarks` тепер шукає `.is-ok, .is-bad` (`tools/test-ui.mjs:367`).
+- **P3-3 закрито.** У test-validate додано рядок «пул: steps задачі — не фідбек у тесті». Мутант, що прибирає `!pool`, дає ✗1 (мій прогін).
+- **P3-2 і P3-4** не робили, записано в задачі. Вони не блокують.
+- **Нова P3-5 (не блокує).** `trim()` пропускає пробіл на краю: `split` `"мо|ло|ко "` проходить і `lang.issues`, і нову перевірку. `parseSplit` повертає слово `"молоко "`, тож на екрані з'явиться зайвий проміжок для межі перед пробілом. Таке саме є й в уроках. Варто відкидати пробіли на краях у `lang.issues` для всіх екранів. У наявному змісті тестів рівня такого немає.
+
+**Перевірки (копія дерева `git archive a98775c` у scratchpad):**
+- `npm run check`: rc 0 (`test-validate: усі 1424 перевірок пройшли`, `test-lang: 150`, `validate: 0 помилок, 72 попереджень`).
+- `node tools/test-ui.mjs --browser /opt/pw-browsers/chromium`: `100 ok, 0 ✗`.
+- Справжні тести рівня ukr: `node tools/validate.mjs --diag dgu5|dgu6|dgu7` — у кожному 0 помилок і 0 попереджень. id звірено з файлами: неіснуючий id дає «1 помилок». Типи завдань у трьох тестах: gaps 31, choice 18, multi 16, pick 9, sort 5, order 2, stress 2, word 2, split 1.
+- Мутанти: без перевірки split → ✗4; попередження про фідбек і в пулі → ✗1.
+
+**Не перевірено (як і раніше):** `test-answer-ui.py` і `playtest.py` (немає Python playwright, лише CI). Зміст `diag-g5/6/7` педагогічно й фактично не перевіряв — це справа `content-verify`.
+
+**Вердикт: прийнято.**
