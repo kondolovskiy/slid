@@ -103,6 +103,14 @@ const newTasks = name => { const d = path.join(tmp, name); for (const s of ["tod
 { const T3 = newTasks("tasks-filter");
   const r = runN("--content", FX, "--tasks", T3, "--subject", "math", "--grade", "6");
   ok(r.status === 0 && /Створено задач: 1\b/.test(r.out) && fs.existsSync(path.join(T3, "todo", "write-math-fm6.md")), "--subject math --grade 6: лише fm6", r.out); }
+// tools-make-tasks-dry-run: --dry-run і в звичайному режимі нічого не пише (ні задач, ні теки todo), лише показує, що створилося б
+{ const T5 = path.join(tmp, "tasks-normal-dry");
+  const r = runN("--content", FX, "--tasks", T5, "--dry-run");
+  ok(r.status === 0 && /^\[dry-run\] Створилося б задач: 4 \(write-hist-fh5\.md, write-math-fm5\.md, write-math-fm6\.md, write-world-fw7\.md\)$/m.test(r.out), "звичайний --dry-run: показано 4 задачі (fh5, fm5, fm6, fw7)", r.out);
+  ok(!fs.existsSync(T5), "звичайний --dry-run: тека задач не створена й нічого не записано", fs.existsSync(T5) ? JSON.stringify(listTasks(T5)) : "");
+  const T6 = newTasks("tasks-normal-dry2");
+  const r2 = runN("--content", FX, "--tasks", T6, "--dry-run", "--subject", "math", "--grade", "6");
+  ok(r2.status === 0 && /Створилося б задач: 1 \(write-math-fm6\.md\)/.test(r2.out) && !fs.readdirSync(path.join(T6, "todo")).length, "звичайний --dry-run з фільтром: 1 задача, todo порожня", r2.out); }
 // рев'ю tools-make-tasks-template P3-1: --write-pool з --content шукає файл пулу в тому самому дереві, а не в репозиторії
 { const FX2 = path.join(tmp, "content-root-pool"); fs.cpSync(FX, FX2, { recursive: true });
   fs.writeFileSync(path.join(FX2, "content/math/pool-g8-zz1.js"), "// файл пулу zz1 без SLID.pool (чернетка)\n");
