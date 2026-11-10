@@ -6,7 +6,7 @@
    §6 Правопис службових частин мови (с. 23–26). Модельна програма «Українська мова. 7–9 класи» (наказ МОН № 883 від 24.07.2023).
    Норма — «Український правопис» (ред. 2019 = стандарт 2026): § 23–25 (милозвучність), § 41 (прислівники), § 42 (прийменники),
    § 43 (сполучники), § 44 (частки, не) — https://slovnyk.ua/pravopys.php?prav_par=N ; словники goroh.pp.ua; D-041, D-042.
-   8 уроків (7 + фінал). Статус: verified (verifier-u8s1, reports/verify/u8s1.md); l1, l2, l4, l6 — draft після style-ukr-g8 (додано «Знайди помилку»).
+   8 уроків (7 + фінал). Статус: verified (verifier-u8s1, reports/verify/u8s1.md); l1, l2, l4, l6 — повторно verified після style-ukr-g8 (verifier-style-ukr-g8, reports/verify/style-ukr-g8.md).
    Перевірка: node tools/validate.mjs --section u8s1 && node tools/stats.mjs --subject ukr
    Схема й правила: docs/CONTENT_SCHEMA.md §4.1, style/ukr.md */
 SLID.section("ukr", {
@@ -27,7 +27,7 @@ SLID.section("ukr", {
       title: "Найкраще і найгірше",
       short: "Сила мови",
       icon: "voice",
-      status: "draft",
+      status: "verified",
       why: "Мова допомагає пізнавати світ і впливати на людей. А ще — відчувати себе частиною свого народу.",
       screens: [
         {
@@ -167,7 +167,7 @@ SLID.section("ukr", {
       title: "Один корінь — чотири слова",
       short: "Самостійні",
       icon: "book",
-      status: "draft",
+      status: "verified",
       why: "Частина мови підказує, як слово змінюється й пишеться. Без цього не розібрати речення.",
       screens: [
         {
@@ -458,7 +458,7 @@ SLID.section("ukr", {
       title: "Сім питань до дії",
       short: "Розряди",
       icon: "target",
-      status: "draft",
+      status: "verified",
       why: "Прислівник додає подробиці: коли, де, як і навіщо. Розряд допомагає добрати точне слово.",
       screens: [
         {
@@ -732,7 +732,7 @@ SLID.section("ukr", {
       title: "Три помічники",
       short: "Службові",
       icon: "path",
-      status: "draft",
+      status: "verified",
       why: "Короткі службові слова зв'язують слова й речення. Без них мова розсипалася б на окремі слова.",
       screens: [
         {

@@ -5,7 +5,7 @@ id: style-ukr-g8
 type: style
 subject: ukr
 grade: 8
-status: review
+status: done
 claimed_by: style-ukr8
 created: 2026-11-10
 ---

@@ -8,7 +8,7 @@
    Опора з молодших класів: u5s9l4 (однорідні члени, кома), u5s9l5 (узагальнювальне слово), u6s1l3 (коми в реченні),
    u7s11l2 (групи сполучників), u8s5l1 (означення). Схеми: ○ — однорідний член, △ — узагальнювальне слово (glossary/ukr).
    Узагальнення §39 (однорідні члени + звертання й вставні слова) — у фіналі u8s10.
-   6 уроків (5 + фінал). Статус: verified (reports/verify/u8s9.md); l1, l2 — draft після style-ukr-g8 (додано «Знайди помилку»).
+   6 уроків (5 + фінал). Статус: verified (reports/verify/u8s9.md); l1, l2 — повторно verified після style-ukr-g8 (verifier-style-ukr-g8, reports/verify/style-ukr-g8.md).
    Перевірка: node tools/validate.mjs --section u8s9 && node tools/stats.mjs --subject ukr
    Схема й правила: docs/CONTENT_SCHEMA.md §4.1, style/ukr.md */
 SLID.section("ukr", {
@@ -29,7 +29,7 @@ SLID.section("ukr", {
       title: "Слова в одному строю",
       short: "Однорідні члени",
       icon: "users",
-      status: "draft",
+      status: "verified",
       why: "Однорідні члени дають змогу сказати багато в одному реченні. Сполучник між ними показує, як пов'язані думки: поєднуються, протиставляються чи чергуються.",
       screens: [
         {
@@ -171,7 +171,7 @@ SLID.section("ukr", {
       title: "Кома залежить від сполучника",
       short: "Кома",
       icon: "check",
-      status: "draft",
+      status: "verified",
       why: "Кома між однорідними членами допомагає читати перелік із правильною інтонацією. Де вона потрібна, підказує сполучник.",
       screens: [
         {
