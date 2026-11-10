@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-10T20:19:59.007Z
 id: write-ukr-u9s8
 type: write-section
 subject: ukr
@@ -6,7 +8,7 @@ grade: 9
 section: u9s8
 weeks: [24, 26]
 status: todo
-claimed_by:
+claimed_by: w-write-ukr-u9s8
 created: 2026-11-10
 ---
 # Написати розділ «Складне речення з різними видами зв'язку» (Українська мова, 9 клас)
