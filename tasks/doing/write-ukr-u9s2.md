@@ -1,6 +1,6 @@
 ---
-claimed_from: todo
-claimed_at: 2026-11-10T20:10:43.538Z
+claimed_from: review
+claimed_at: 2026-11-10T20:21:56.038Z
 id: write-ukr-u9s2
 type: write-section
 subject: ukr
@@ -8,7 +8,7 @@ grade: 9
 section: u9s2
 weeks: [5, 9]
 status: review
-claimed_by: w-write-ukr-u9s2
+claimed_by: verifier-u9s2
 created: 2026-11-10
 ---
 # Написати розділ «Складне речення. Складносурядне речення» (Українська мова, 9 клас)
