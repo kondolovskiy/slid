@@ -8,7 +8,7 @@ SLID.section("hist", {
   weeks: [7, 13],
   title: "Русь за Володимира і Ярослава",
   why: "Щоб знати час найбільшої могутності Русі: хрещення, закони, собори, освіта.",
-  meta: { author: "claude-opus", created: "2026-10-07", factcheck: "verifier-g7s2-d019", teacher: null },
+  meta: { author: "write-hist-g7s2", created: "2026-10-07", factcheck: "verifier-g7s2-d019", teacher: null },
   badges: [{ id: "sofguide", name: "Екскурсовод Софії", icon: "trophy", desc: "Пройти розділ «Русь за Володимира і Ярослава»" }],
   credits: [
     [

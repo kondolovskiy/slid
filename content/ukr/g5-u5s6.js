@@ -11,7 +11,7 @@ SLID.section("ukr", {
   weeks: [21, 23],
   title: "Чергування звуків",
   why: "Щоб розуміти, чому в різних формах того самого слова звуки змінюються, і не помилятися через це.",
-  meta: { author: "claude-opus", created: "2026-11-02", factcheck: "verifier-u5s6", teacher: null },
+  meta: { author: "write-ukr-u5s6", created: "2026-11-02", factcheck: "verifier-u5s6", teacher: null },
   badges: [
     { id: "u5s6boss", name: "Майстер милозвучності", icon: "trophy", desc: "Пройти фінальний урок розділу «Чергування звуків»" }
   ],

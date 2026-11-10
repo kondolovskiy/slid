@@ -9,7 +9,7 @@ SLID.section("hist", {
   title: "Слов'яни і Велике переселення народів",
   why: "Щоб розуміти, звідки походять слов'яни і як рух народів змінив Європу.",
   requires: ["l5"],
-  meta: { author: "claude-opus", created: "2026-10-05", factcheck: "verifier-g6s5-d019", teacher: null },
+  meta: { author: "write-hist-g6s5", created: "2026-10-05", factcheck: "verifier-g6s5-d019", teacher: null },
   badges: [{ id: "migrate", name: "Дослідник переселень", icon: "path", desc: "Пройти розділ «Слов'яни і Велике переселення народів»" }],
   credits: [
     [

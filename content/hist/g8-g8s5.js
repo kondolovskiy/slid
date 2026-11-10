@@ -13,7 +13,7 @@ SLID.section("hist", {
   weeks: [27, 35],
   title: "Гетьманщина в XVIII ст.",
   why: "Щоб знати, як імперія крок за кроком ліквідувала українську автономію.",
-  meta: { author: "cursor-composer", created: "2026-10-12", factcheck: "verifier-g8s5", teacher: null },
+  meta: { author: "write-hist-g8s5", created: "2026-10-12", factcheck: "verifier-g8s5", teacher: null },
   badges: [
     {
       id: "autonomytrace",

@@ -14,7 +14,7 @@ SLID.diag("math", {
   why: "Згадаємо, що ти вчив у 1–3 класах, і знайдемо, з чого почати 4 клас.",
   status: "verified",
   signed: false,
-  meta: { author: "claude-opus", created: "2026-10-21", factcheck: "self", teacher: null },
+  meta: { author: "write-math-diag-g4", created: "2026-10-21", factcheck: "self", teacher: null },
   topics: [
     // опори 1–3 класів (baseline: уроків молодших класів у застосунку немає)
     { id: "place", title: "Розряди до тисячі", kind: "pre", baseline: true, lessons: [], for: ["g4m1", "g4m2"] },

@@ -11,7 +11,7 @@ SLID.section("math", {
   weeks: [7, 13],
   title: "Додавання і віднімання",
   why: "Щоб швидко й без помилок рахувати письмово й усно.",
-  meta: { author: "claude-opus", created: "2026-10-06", factcheck: "ai-verified", teacher: null },
+  meta: { author: "write-math-g4m2", created: "2026-10-06", factcheck: "ai-verified", teacher: null },
   badges: [
     { id: "g4m2boss", name: "Диспетчер вокзалу", icon: "trophy", desc: "Пройти фінальну задачу з додавання й віднімання" }
   ],

@@ -12,7 +12,7 @@ SLID.section("hist", {
   title: "Під владою двох імперій",
   why: "Щоб розуміти, чому українці опинилися в різних державах і як це вплинуло на їхнє життя.",
   requires: ["g8s5l5"],
-  meta: { author: "claude-opus", created: "2026-10-13", factcheck: "verifier-g9s1", teacher: null },
+  meta: { author: "write-hist-g9s1", created: "2026-10-13", factcheck: "verifier-g9s1", teacher: null },
   badges: [
     {
       id: "twoempires",

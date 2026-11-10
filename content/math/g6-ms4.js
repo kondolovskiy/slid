@@ -14,7 +14,7 @@ SLID.section("math", {
   title: "Об'єм",
   requires: ["ms4l1"],
   why: "Щоб порахувати, скільки води вміщує акваріум, скільки коробок влізе на полицю і скільки дроту піде на каркас.",
-  meta: { author: "claude-opus", created: "2026-10-05", factcheck: "verifier-ms4", teacher: null },
+  meta: { author: "write-math-ms4", created: "2026-10-05", factcheck: "verifier-ms4", teacher: null },
   badges: [
     { id: "ms4boss", name: "Помічник майстра", icon: "trophy", desc: "Пройти фінальну задачу про площу, паралелепіпед, площу поверхні й об'єм" }
   ],

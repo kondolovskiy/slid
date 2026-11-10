@@ -13,7 +13,7 @@ SLID.section("world", {
   weeks: [15, 21],
   title: "Нові держави і реформи 1850–1870-х",
   why: "Щоб знати, як постали Італія й Німеччина, як Кримська війна і реформи змінили Росію та Австрію.",
-  meta: { author: "claude-opus", created: "2026-11-04", factcheck: "verifier-write-world-w9s3", teacher: null },
+  meta: { author: "write-world-w9s3", created: "2026-11-04", factcheck: "verifier-write-world-w9s3", teacher: null },
   badges: [{ id: "newstates", name: "Репортер нової Європи", icon: "flag", desc: "Пройти розділ «Нові держави і реформи 1850–1870-х»" }],
   credits: [
     [

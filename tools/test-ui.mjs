@@ -18,7 +18,7 @@
 //  9) Синхронізація прогресу (engine-sync-login): фейковий API і фейк Google Identity Services; вхід «мій прогрес», код прив'язки на другому
 //     пристрої, злиття балів, офлайн-черга, «не мій прогрес» на спільному пристрої, помилки 401, вихід, «Скинути прогрес»; без адреси API — картки немає.
 //  10) Мовні вправи в тесті рівня (engine-diag-lang-types): gaps, pick, stress, word, split у тесті ukr-фікстури — без позначок, вердикти, «Ще не знаю»,
-//     продовження після перезавантаження, підсумок тем.
+//     продовження після перезавантаження, підсумок тем; друга фікстура — протилежні вердикти (split з варіантами, gaps 1 з 2 — BAD) і raw у журналі подій.
 //  11) Порядок тестів рівня після вибору класу (fix-diag-order): відкривається тест предмета з найменшим diagOrder (метадані предмета),
 //      а не перший предмет за порядком файлів; без diagOrder і за рівних — порядок предметів; відкладений тест («Пізніше») не пропонується.
 //  12) Один тест рівня на головній (engine-diag-one-invite): одне запрошення на новий тест (перший за diagOrder незавершений; «Пізніше» не змінює),
@@ -415,7 +415,8 @@ async function diagOneInviteScenario(browser) {
 
 /* 10) Мовні вправи в тесті рівня (engine-diag-lang-types): фікстура предмета ukr (розділи 5 і 6 кл., тест dgfu6) замість живого змісту.
    gaps, pick, stress, word, split у тесті — без позначок і показу відповіді, вердикт одразу (OK / BAD / «Ще не знаю»), продовження після
-   перезавантаження, підсумок тем. */
+   перезавантаження, підсумок тем. tools-diag-nonmath-p3 п. 4: raw кожного мовного типу в журналі подій (docs/EVIDENCE.md) і друга фікстура dgfu6b
+   з протилежними вердиктами (gaps і stress хибно, pick і split правильно, split — другий варіант, gaps 1 з 2 пропусків — BAD). */
 async function diagLangScenario(browser) {
   const ctx = await browser.newContext({ viewport: { width: 400, height: 860 }, serviceWorkers: "block" });
   const page = await ctx.newPage(), errors = []; page.on("pageerror", e => errors.push(String(e))); page.setDefaultTimeout(8000);
@@ -463,6 +464,42 @@ async function diagLangScenario(browser) {
   ok(rec && rec.done, `diag ukr: тест завершено (${JSON.stringify(S1.diag)})`);
   ok(rec && same(rec.res, { 0: 1, 1: 0, 2: 1, 3: 1, 4: -1 }), `diag ukr: вердикти gaps OK, pick BAD, stress OK, word OK, split «Ще не знаю» — а ${JSON.stringify(rec && rec.res)}`);
   ok(rec && same(rec.topics, { p: "ok", c1: "new", c2: "known", c3: "new" }), `diag ukr: підсумок тем p ok, c1 new, c2 known, c3 new — а ${JSON.stringify(rec && rec.topics)}`);
+  // tools-diag-nonmath-p3 п. 4: raw мовних типів у журналі подій (docs/EVIDENCE.md, «raw мовних вправ»)
+  const diagEv = id => page.evaluate(async id => { if (!window.SLID_EVIDENCE) return null; await SLID_EVIDENCE.flush?.();
+    return (await SLID_EVIDENCE.export()).events.filter(e => e.type === "answer" && e.d.mode === "diag" && e.d.l === id).map(e => [e.d.i, e.d.type, e.d.verdict, e.d.raw]); }, id);
+  const ev1 = await diagEv("dgfu6");
+  ok(same(ev1, [[0, "gaps", "ok", [0]], [1, "pick", "bad", [1]], [2, "stress", "ok", [vi]], [3, "word", "ok", "м'ята"], [4, "split", "skip", null]]),
+    `diag ukr: журнал — raw gaps [індекс варіанта з тексту], pick [номер слова], stress [позиція голосного], word рядок, «Ще не знаю» null — а ${JSON.stringify(ev1)}`);
+  // Друга фікстура — протилежні вердикти: gaps і stress хибно, pick і split правильно, word хибно, gaps з двома пропусками — частково (без
+  // часткового зарахування, CONTENT_SCHEMA §9). Варіанти gaps — у перемішаному порядку: клікаємо за видимою літерою (gopt), а raw — індекс з розмітки, не з екрана.
+  // Кожне завдання — своя тема: хибна відповідь не пропускає решту завдань теми (LEARN.nextItem)
+  const FXU2 = { ...FXU, id: "dgfu6b",
+    topics: ["fu5l1", "fu6l1", "fu6l2", "fu6l3", "fu6l1", "fu6l2"].map((l, k) => ({ id: "t" + k, title: "Тема " + k, kind: k ? "cur" : "pre", lessons: [l] })),
+    items: [{ type: "gaps", sk: "orth", title: "Встав букву", text: "с{*е|и}ло" },
+      { type: "pick", sk: "synt", title: "Знайди підмет", text: "[Сонце] яскраво [!світить]." },
+      { type: "stress", sk: "oral", title: "Де наголос?", words: ["черг+овий"] },
+      { type: "word", sk: "orth", title: "Напиши слово", answer: "м'ята", keys: ["'"] },
+      { type: "split", sk: "phon", title: "Поділи на склади", word: ["ли|сти|на", "лис|ти|на"] },
+      { type: "gaps", sk: "orth", title: "Встав букви", text: "с{*е|и}ло, з{е|*и}ма" }].map((it, k) => ({ topic: "t" + k, ...it })) };
+  await page.evaluate(() => { localStorage.setItem("slid.v1", JSON.stringify({ grade: 6, subject: "ukr", unlockAll: false })); }); await page.reload();
+  await page.evaluate(installU, FXU2); await page.evaluate(() => document.querySelector('.tab[data-tab="path"]').click());
+  await page.click('button[data-subject="ukr"]'); { const d = page.locator("[data-diag]"); if (await d.count()) await d.first().click(); else await page.click('[data-plan="ukr"]'); }
+  await page.click("[data-diag-go]");
+  const gopt = (g, t) => page.locator(`.gopt[data-g="${g}"]`, { hasText: t }).click();
+  await gopt(0, "и"); await page.click("#action");                                                     // gaps: «и» — хибно
+  await page.click('.pw[data-w="0"]'); await page.click("#action");                                      // pick: «Сонце» — правильно
+  const wrong = await page.evaluate(() => { const p = SLID_LANG.parseStress("черг+овий"); return p.letters.find(l => l.v && l.i !== p.correct).i; });
+  await page.click(`.sv[data-w="0"][data-i="${wrong}"]`); await page.click("#action");                   // stress: не той голосний
+  await page.fill("#numIn", "мята"); await page.click("#action");                                         // word: без апострофа — хибно
+  await page.click('.cut[data-c="3"]'); await page.click('.cut[data-c="5"]'); await page.click("#action"); // split: другий варіант «лис|ти|на»
+  ok(await noMarks(), "diag ukr (2): без позначок і після split");
+  await gopt(0, "е"); await gopt(1, "е"); await page.click("#action");   // gaps: 1 з 2
+  const rec2 = (await st()).diag?.dgfu6b;
+  ok(rec2 && rec2.done && same(rec2.res, { 0: 0, 1: 1, 2: 0, 3: 0, 4: 1, 5: 0 }),
+    `diag ukr (2): вердикти gaps BAD, pick OK, stress BAD, word BAD, split (другий варіант) OK, gaps 1 з 2 BAD — а ${JSON.stringify(rec2 && rec2.res)}`);
+  const ev2 = await diagEv("dgfu6b");
+  ok(same(ev2, [[0, "gaps", "bad", [1]], [1, "pick", "ok", [0]], [2, "stress", "bad", [wrong]], [3, "word", "bad", "мята"], [4, "split", "ok", [3, 5]], [5, "gaps", "bad", [0, 0]]]),
+    `diag ukr (2): журнал — raw split [межі після 3-ї і 5-ї літери], gaps [по пропуску] — а ${JSON.stringify(ev2)}`);
   ok(!errors.length, "diag ukr: помилки сторінки: " + errors.join(" | "));
   await ctx.close();
 }

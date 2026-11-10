@@ -11,7 +11,7 @@ SLID.section("ukr", {
   weeks: [30, 32],
   title: "Другорядні та однорідні члени речення",
   why: "Щоб розуміти, як речення розгортає думку, і правильно ставити коми між однорідними членами.",
-  meta: { author: "claude-opus", created: "2026-11-02", factcheck: "verifier-u5s9", teacher: null },
+  meta: { author: "write-ukr-u5s9", created: "2026-11-02", factcheck: "verifier-u5s9", teacher: null },
   badges: [
     { id: "u5s9boss", name: "Майстер речення", icon: "trophy", desc: "Пройти фінальний урок розділу «Другорядні та однорідні члени речення»" }
   ],

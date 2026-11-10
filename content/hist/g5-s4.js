@@ -8,7 +8,7 @@ SLID.section("hist", {
   weeks: [18, 23],
   title: "Україна у світі",
   why: "Щоб бачити історію України як частину історії Європи і світу, а не окремий острів.",
-  meta: { author: "claude-opus", created: "2026-09-27", factcheck: "verifier-s4", teacher: null },
+  meta: { author: "slid", created: "2026-09-27", factcheck: "verifier-s4", teacher: null },
   badges: [{ id: "envoy", name: "Посол України", icon: "flag", desc: "Пройти розділ «Україна у світі»" }],
   credits: [
     [

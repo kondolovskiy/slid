@@ -11,7 +11,7 @@ SLID.section("ukr", {
   weeks: [24, 26],
   title: "М'який знак, апостроф, подвоєння",
   why: "Щоб упевнено писати слова з м'яким знаком, апострофом і подвоєними буквами.",
-  meta: { author: "claude-opus", created: "2026-11-02", factcheck: "verifier-u5s7", teacher: null },
+  meta: { author: "write-ukr-u5s7", created: "2026-11-02", factcheck: "verifier-u5s7", teacher: null },
   badges: [
     { id: "u5s7boss", name: "Коректор", icon: "trophy", desc: "Пройти фінальний урок розділу «М'який знак, апостроф, подвоєння»" }
   ],

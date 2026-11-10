@@ -20,7 +20,7 @@ SLID.section("ukr", {
   title: "Пишемо самі: опис пам'ятки й місцевості, есе, ділові листи",
   why: "Щоб уміти обстояти думку в дискусії, перевірити джерело інформації, описати пам'ятку чи вулицю, написати есе, конспект і лист-запрошення.",
   requires: ["u5s1l5", "u6s14l1", "u6s14l6", "u7s13l1", "u7s13l4"],
-  meta: { author: "claude-opus", created: "2026-11-06", factcheck: "verifier-write-ukr-u8s14, 2026-11-06", teacher: null },
+  meta: { author: "write-ukr-u8s14", created: "2026-11-06", factcheck: "verifier-write-ukr-u8s14, 2026-11-06", teacher: null },
   badges: [
     { id: "u8s14boss", name: "Голос громади", icon: "trophy", desc: "Пройти фінальний урок розділу «Пишемо самі: опис пам'ятки й місцевості, есе, ділові листи»" }
   ],

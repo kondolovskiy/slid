@@ -11,7 +11,7 @@ SLID.section("math", {
   weeks: [1, 8],
   title: "Натуральні числа",
   why: "Щоб упевнено рахувати великі числа, округлювати й розуміти порядок дій — на цьому стоїть уся математика далі.",
-  meta: { author: "claude-opus", created: "2026-10-05", factcheck: "verifier-ms0-d019", teacher: null },
+  meta: { author: "write-math-ms0", created: "2026-10-05", factcheck: "verifier-ms0-d019", teacher: null },
   badges: [
     { id: "nboss", name: "Скарбник походу", icon: "flag", desc: "Пройти фінальну задачу з натуральних чисел" }
   ],

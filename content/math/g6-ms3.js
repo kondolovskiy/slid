@@ -11,7 +11,7 @@ SLID.section("math", {
   title: "Відсотки",
   why: "Щоб розуміти знижки, заряд батареї й опитування, а не вірити на слово рекламі.",
   requires: ["m3"],
-  meta: { author: "claude-opus", created: "2026-10-05", factcheck: "verifier-ms3", teacher: null },
+  meta: { author: "write-math-ms3", created: "2026-10-05", factcheck: "verifier-ms3", teacher: null },
   badges: [
     { id: "ms3boss", name: "Шкільний аналітик", icon: "chart", desc: "Пройти фінальну задачу з відсотків" }
   ],

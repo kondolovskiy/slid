@@ -10,7 +10,7 @@ SLID.section("hist", {
   weeks: [22, 28],
   title: "Незалежна Україна",
   why: "Щоб розуміти, як будувалася держава і як громадяни захищали свій вибір.",
-  meta: { author: "codex", created: "2026-10-14", factcheck: "verifier-g11s4", teacher: null },
+  meta: { author: "write-hist-g11s4", created: "2026-10-14", factcheck: "verifier-g11s4", teacher: null },
   credits: [
     [
       "Купон Національного банку України на 1 000 000 українських карбованців, 1995 р. (аверс)",

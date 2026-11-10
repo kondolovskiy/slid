@@ -13,7 +13,7 @@ SLID.section("ukr", {
   title: "Пишемо самі: опис, розповідь, роздум",
   why: "Щоб уміти описати улюблену річ чи тварину, розповісти про свою пригоду й переконливо пояснити свою думку.",
   requires: ["u5s1l5"],
-  meta: { author: "claude-opus", created: "2026-11-02", factcheck: "self", teacher: null },
+  meta: { author: "write-ukr-u5s11", created: "2026-11-02", factcheck: "self", teacher: null },
   badges: [
     { id: "u5s11boss", name: "Юне перо", icon: "trophy", desc: "Пройти фінальний урок «Пишемо самі: опис, розповідь, роздум»" }
   ],

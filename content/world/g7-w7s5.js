@@ -11,7 +11,7 @@ SLID.section("world", {
   weeks: [29, 35],
   title: "Пізнє Середньовіччя",
   why: "Щоб знати, як чума, Столітня війна, книгодрукування й падіння Константинополя завершили Середньовіччя.",
-  meta: { author: "claude-opus", created: "2026-11-03", factcheck: "verifier-w7s5", teacher: null },
+  meta: { author: "write-world-w7s5", created: "2026-11-03", factcheck: "verifier-w7s5", teacher: null },
   badges: [{ id: "latemed", name: "Хроніст Пізнього Середньовіччя", icon: "scroll", desc: "Пройти розділ «Пізнє Середньовіччя»" }],
   credits: [
     [

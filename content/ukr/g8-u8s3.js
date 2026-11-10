@@ -19,7 +19,7 @@ SLID.section("ukr", {
   title: "Словосполучення і речення",
   why: "Щоб бачити, як слова зчіплюються в словосполучення, а словосполучення — в речення, і казати «дякую вам», а не «дякую вас».",
   requires: ["u5s8l1", "u5s8l2", "u5s8l3", "u5s8l4", "u6s1l2"],
-  meta: { author: "claude-opus", created: "2026-11-06", factcheck: "verifier-u8s3", teacher: null },
+  meta: { author: "write-ukr-u8s3", created: "2026-11-06", factcheck: "verifier-u8s3", teacher: null },
   badges: [
     { id: "u8s3boss", name: "Будівничий речень", icon: "trophy", desc: "Пройти фінальний урок розділу «Словосполучення і речення»" }
   ],

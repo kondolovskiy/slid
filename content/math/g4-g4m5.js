@@ -11,7 +11,7 @@ SLID.section("math", {
   weeks: [31, 35],
   title: "Частини цілого і геометрія",
   why: "Щоб чесно ділити пиріг, рахувати частину від числа і міряти город. У 5 класі це стане дробами, площами й об'ємами.",
-  meta: { author: "claude-opus", created: "2026-10-06", factcheck: "verifier-g4m5", teacher: null },
+  meta: { author: "write-math-g4m5", created: "2026-10-06", factcheck: "verifier-g4m5", teacher: null },
   badges: [
     { id: "g4m5boss", name: "Майстер ярмарку", icon: "trophy", desc: "Пройти фінальну задачу про частини й фігури" }
   ],

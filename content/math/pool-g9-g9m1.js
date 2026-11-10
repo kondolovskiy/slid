@@ -13,7 +13,7 @@ SLID.pool("math", {
   id: "pg9m1",
   section: "g9m1",
   status: "verified",
-  meta: { author: "claude-opus", created: "2026-10-31", factcheck: "verifier-refine-math-content-from-matrix-v3", revised: "2026-11-01 refine-math-content-from-matrix-v3", teacher: null },
+  meta: { author: "write-math-pool-g9m1", created: "2026-10-31", factcheck: "verifier-refine-math-content-from-matrix-v3", revised: "2026-11-01 refine-math-content-from-matrix-v3", teacher: null },
   sources: [
     { id: "a9", title: "Мерзляк А. Г., Якір М. С. Алгебра: підручник для 9 класу закладів загальної середньої освіти. — Харків: Гімназія, 2026 (§ 1, п. 2, 5, 6)", url: "https://file.4book.org/images/shcoolbook_ua/9/9_a_m_2026.pdf" }
   ],

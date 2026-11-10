@@ -16,7 +16,7 @@ SLID.pool("math", {
   id: "pg7m3",
   section: "g7m3",
   status: "verified",
-  meta: { author: "claude-opus", created: "2026-10-31", factcheck: "verifier-pool-g7m3", teacher: null },
+  meta: { author: "write-math-pool-g7m3", created: "2026-10-31", factcheck: "verifier-pool-g7m3", teacher: null },
   sources: [
     { id: "a7", title: "Мерзляк А. Г., Якір М. С. Алгебра: підручник для 7 класу закладів загальної середньої освіти. — Харків: Гімназія, 2024 (§ 1, п. 5–9, 12–17, 19)", url: "https://file.4book.org/images/shcoolbook_ua/7/7_a_m_2024.pdf" },
     { id: "ist7a", title: "Істер О. С. Алгебра: підручник для 7 класу закладів загальної середньої освіти. — Київ: Генеза, 2024 (наказ МОН від 05.02.2024 № 124; § 5, § 20)", url: "https://file.4book.org/images/shcoolbook_ua/7/7_a_i_2024.pdf" }

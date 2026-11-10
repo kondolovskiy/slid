@@ -10,7 +10,7 @@ SLID.section("hist", {
   weeks: [7, 13],
   title: "Козацтво",
   why: "Щоб знати, як виникло козацтво і чому воно стало символом волі.",
-  meta: { author: "claude-opus", created: "2026-10-12", factcheck: "verifier-g8s2", teacher: null },
+  meta: { author: "write-hist-g8s2", created: "2026-10-12", factcheck: "verifier-g8s2", teacher: null },
   badges: [{ id: "sichscout", name: "Слід на Січі", icon: "shield", desc: "Пройти розділ «Козацтво»" }],
   credits: [
     [

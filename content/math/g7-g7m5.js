@@ -12,7 +12,7 @@ SLID.section("math", {
   title: "Алгебра: функції",
   why: "Щоб бачити залежності на графіках: від тарифу на телефон до руху автобуса.",
   requires: ["g6m4l5"],
-  meta: { author: "composer", created: "2026-10-11", factcheck: "verifier-g7m5", teacher: null },
+  meta: { author: "write-math-g7m5", created: "2026-10-11", factcheck: "verifier-g7m5", teacher: null },
   badges: [
     { id: "g7m5boss", name: "Читач графіків", icon: "chart", desc: "Пройти фінальну задачу з функцій і графіків" }
   ],

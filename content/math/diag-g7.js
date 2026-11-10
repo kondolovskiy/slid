@@ -11,7 +11,7 @@ SLID.diag("math", {
   title: "Що ти вже вмієш?",
   why: "Знайдемо теми, які варто згадати, щоб нові уроки давалися легше.",
   status: "verified",
-  meta: { author: "claude-opus", created: "2026-10-31", factcheck: "self", teacher: null },
+  meta: { author: "write-math-diag-g7", created: "2026-10-31", factcheck: "self", teacher: null },
   topics: [
     // передумови з 5–6 класів
     { id: "sign-add", title: "Раціональні числа: сума", kind: "pre", lessons: ["g6m4l3"], for: ["g7m1", "g7m3"] },

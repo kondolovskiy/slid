@@ -15,7 +15,7 @@ SLID.section("ukr", {
   title: "Дієприкметник",
   why: "Щоб розуміти слова на кшталт «зігрітий», «пожовклий», «написаний» і будувати з ними речення без помилок.",
   requires: ["u6s10l1", "u6s10l6", "u7s3l1", "u7s3l3"],
-  meta: { author: "claude-opus", created: "2026-11-04", factcheck: "verifier-u7s5", teacher: null },
+  meta: { author: "write-ukr-u7s5", created: "2026-11-04", factcheck: "verifier-u7s5", teacher: null },
   badges: [
     { id: "u7s5boss", name: "Хранитель ознак", icon: "trophy", desc: "Пройти фінальний урок розділу «Дієприкметник»" }
   ],

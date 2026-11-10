@@ -9,7 +9,7 @@ SLID.section("hist", {
   title: "Литовсько-польська доба",
   why: "Щоб розуміти, як жили українські землі в Речі Посполитій і чому виникло напруження.",
   requires: ["g7s5l5"],
-  meta: { author: "claude-opus", created: "2026-10-12", factcheck: "verifier-g8s1", teacher: null },
+  meta: { author: "write-hist-g8s1", created: "2026-10-12", factcheck: "verifier-g8s1", teacher: null },
   badges: [{ id: "rpclerk", name: "Писар сейму", icon: "scroll", desc: "Пройти розділ «Литовсько-польська доба»" }],
   credits: [
     [

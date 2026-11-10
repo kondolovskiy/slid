@@ -10,7 +10,7 @@ SLID.section("math", {
   weeks: [1, 6],
   title: "Багатоцифрові числа",
   why: "Щоб читати й порівнювати великі числа: населення міста, відстані, ціни.",
-  meta: { author: "claude-opus", created: "2026-10-06", factcheck: "verifier-g4m1", teacher: null },
+  meta: { author: "write-math-g4m1", created: "2026-10-06", factcheck: "verifier-g4m1", teacher: null },
   badges: [
     { id: "g4m1boss", name: "Диктор стадіону", icon: "star", desc: "Пройти фінальну задачу з великих чисел" }
   ],

@@ -21,7 +21,7 @@ SLID.section("ukr", {
   title: "Граматичні помилки",
   why: "Щоб казати «Сергію!», «найкращий», «о пів на третю» й «опале листя» — і помічати граматичні помилки в оголошеннях і дописах.",
   requires: ["u6s7l5", "u6s7l6", "u6s8l9", "u6s8l11", "u6s10l4", "u6s12l3", "u6s12l7", "u7s4l2", "u7s5l2", "u7s7l3", "u7s10l4"],
-  meta: { author: "claude-opus", created: "2026-11-06", factcheck: "verifier-u8s2", teacher: null },
+  meta: { author: "write-ukr-u8s2", created: "2026-11-06", factcheck: "verifier-u8s2", teacher: null },
   badges: [
     { id: "u8s2boss", name: "Мовний редактор", icon: "trophy", desc: "Пройти фінальний урок розділу «Граматичні помилки»" }
   ],

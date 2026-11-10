@@ -10,7 +10,7 @@ SLID.section("ukr", {
   weeks: [1, 3],
   title: "Мова, текст і спілкування",
   why: "Щоб розуміти, навіщо нам мова, і вміти скласти текст, який інші зрозуміють саме так, як задумано.",
-  meta: { author: "claude-opus", created: "2026-11-02", factcheck: "verifier-u5s1", teacher: null },
+  meta: { author: "write-ukr-u5s1", created: "2026-11-02", factcheck: "verifier-u5s1", teacher: null },
   badges: [
     { id: "u5s1boss", name: "Перо редакції", icon: "trophy", desc: "Пройти фінальний урок «Мова, текст і спілкування»" }
   ],

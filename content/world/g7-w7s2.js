@@ -11,7 +11,7 @@ SLID.section("world", {
   weeks: [8, 14],
   title: "Візантія, арабський світ і Схід",
   why: "Щоб знати сусідів Русі — Візантію й Арабський халіфат — і великі цивілізації Китаю та Індії.",
-  meta: { author: "claude-opus", created: "2026-11-03", factcheck: "verifier-w7s2", teacher: null },
+  meta: { author: "write-world-w7s2", created: "2026-11-03", factcheck: "verifier-w7s2", teacher: null },
   badges: [{ id: "silkroad", name: "Купець Шовкового шляху", icon: "map", desc: "Пройти розділ «Візантія, арабський світ і Схід»" }],
   credits: [
     [

@@ -10,7 +10,7 @@ SLID.section("math", {
   title: "Величини",
   why: "Щоб вимірювати й переводити: години у хвилини, кілограми в грами, метри в сантиметри.",
   requires: ["m4a"],
-  meta: { author: "claude-opus", created: "2026-10-06", factcheck: "verifier-g4m4", teacher: null },
+  meta: { author: "write-math-g4m4", created: "2026-10-06", factcheck: "verifier-g4m4", teacher: null },
   badges: [
     { id: "g4m4boss", name: "Помічник на ярмарку", icon: "scale", desc: "Пройти фінальне завдання розділу «Величини»" }
   ],

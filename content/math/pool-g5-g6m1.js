@@ -10,7 +10,7 @@ SLID.pool("math", {
   id: "pg6m1",
   section: "g6m1",
   status: "verified",
-  meta: { author: "claude-opus", created: "2026-10-13", factcheck: "verifier-refine-math-diag-g6-coverage", revised: "2026-10-31 refine-math-diag-g6-coverage", teacher: null },
+  meta: { author: "write-math-pool-g6m1", created: "2026-10-13", factcheck: "verifier-refine-math-diag-g6-coverage", revised: "2026-10-31 refine-math-diag-g6-coverage", teacher: null },
   sources: [
     { id: "mer6", title: "Мерзляк А. Г., Полонський В. Б., Якір М. С. Математика : підручник для 6 класу (у 2-х ч.). Ч. 1. — Харків : Гімназія, 2023", url: "https://znayshov.com/FR/23000/matematika_6kl_Merzlyak_2023_1.pdf" },
     { id: "krav6", title: "Кравчук В., Янченко Г. Математика : підручник для 6 класу. — Тернопіль : Підручники і посібники, 2023", url: "https://znayshov.com/FR/23005/matematika_6kl_Kravchuk_2023.pdf" },

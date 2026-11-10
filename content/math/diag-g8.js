@@ -14,7 +14,7 @@ SLID.diag("math", {
   title: "Що ти вже вмієш?",
   why: "Знайдемо теми, які варто згадати, щоб нові уроки давалися легше.",
   status: "verified",
-  meta: { author: "claude-opus", created: "2026-10-31", factcheck: "self", teacher: null },
+  meta: { author: "write-math-diag-g8", created: "2026-10-31", factcheck: "self", teacher: null },
   topics: [
     // передумови з 5–7 класів
     { id: "power", title: "Натуральний степінь", kind: "pre", lessons: ["g7m3l1"], for: ["g8m1", "g8m3"] },

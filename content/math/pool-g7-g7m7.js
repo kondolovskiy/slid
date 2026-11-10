@@ -10,7 +10,7 @@ SLID.pool("math", {
   id: "pg7m7",
   section: "g7m7",
   status: "verified",
-  meta: { author: "claude-opus", created: "2026-10-31", factcheck: "verifier-refine-math-content-from-matrix-v3", revised: "2026-11-01 refine-math-content-from-matrix-v3", teacher: null },
+  meta: { author: "write-math-pool-g7m7", created: "2026-10-31", factcheck: "verifier-refine-math-content-from-matrix-v3", revised: "2026-11-01 refine-math-content-from-matrix-v3", teacher: null },
   sources: [
     { id: "a7", title: "Мерзляк А. Г., Якір М. С. Алгебра : підруч. для 7 кл. — Харків: Гімназія, 2024 (наказ МОН № 124 від 05.02.2024; дзеркало PDF на 4book.org)", url: "https://file.4book.org/images/shcoolbook_ua/7/7_a_m_2024.pdf" }
   ],

@@ -12,7 +12,7 @@ SLID.section("world", {
   weeks: [15, 21],
   title: "Європа XVI ст. і її сусіди",
   why: "Щоб бачити Європу часів Карла V, Єлизавети І й Сулеймана Пишного і зв'язки цих держав з українськими землями.",
-  meta: { author: "claude-opus", created: "2026-11-04", factcheck: "verifier-write-world-w8s3", teacher: null },
+  meta: { author: "write-world-w8s3", created: "2026-11-04", factcheck: "verifier-write-world-w8s3", teacher: null },
   badges: [{ id: "europe16", name: "Знавець Європи XVI століття", icon: "globe", desc: "Пройти розділ «Європа XVI ст. і її сусіди»" }],
   credits: [
     [

@@ -12,7 +12,7 @@ SLID.section("ukr", {
   weeks: [33, 35],
   title: "Звертання, складне речення, пряма мова",
   why: "Щоб записувати чужі слова, звертатися до людей і поєднувати думки в одному реченні без помилок у розділових знаках.",
-  meta: { author: "claude-opus", created: "2026-11-02", factcheck: "verifier-u5s10", teacher: null },
+  meta: { author: "write-ukr-u5s10", created: "2026-11-02", factcheck: "verifier-u5s10", teacher: null },
   badges: [
     { id: "u5s10boss", name: "Коректор газети", icon: "trophy", desc: "Пройти фінальний урок розділу «Звертання, складне речення, пряма мова»" }
   ],

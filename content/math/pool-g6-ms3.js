@@ -8,7 +8,7 @@ SLID.pool("math", {
   id: "pms3",
   section: "ms3",
   status: "verified",
-  meta: { author: "claude-opus", created: "2026-10-30", factcheck: "verifier-pms3", teacher: null },
+  meta: { author: "write-math-pool-ms3", created: "2026-10-30", factcheck: "verifier-pms3", teacher: null },
   sources: [
     { id: "mer5", title: "Мерзляк А. Г., Полонський В. Б., Якір М. С. Математика. 5 клас. — Харків: Гімназія, 2022 (дзеркало PDF 4book.org)", url: "https://file.4book.org/images/shcoolbook_ua/5/5_m_m_2022.pdf" }
   ],

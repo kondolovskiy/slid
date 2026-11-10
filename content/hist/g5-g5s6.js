@@ -9,7 +9,7 @@ SLID.section("hist", {
   weeks: [30, 35],
   title: "Шлях до незалежності",
   why: "Щоб знати, як українці у XX–XXI ст. виборювали, втрачали і знову здобули власну державу — і як захищають її сьогодні.",
-  meta: { author: "claude-opus", created: "2026-11-03", factcheck: "verifier-g5s6", teacher: null },
+  meta: { author: "write-hist-g5s6", created: "2026-11-03", factcheck: "verifier-g5s6", teacher: null },
   badges: [{ id: "freedomroad", name: "Літописець свободи", icon: "flag", desc: "Пройти розділ «Шлях до незалежності»" }],
   credits: [
     [

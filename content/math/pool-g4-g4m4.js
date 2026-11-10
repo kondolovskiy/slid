@@ -14,7 +14,7 @@ SLID.pool("math", {
   id: "pg4m4",
   section: "g4m4",
   status: "verified",
-  meta: { author: "claude-opus", created: "2026-10-30", factcheck: "verifier-write-math-pools-multiset-compound (2026-11-01: d09, d10); verifier-refine-math-pools-new-kinds (a08, d06, d07); решта — verifier-pg4m4", revised: "2026-11-01 write-math-pools-multiset-compound", teacher: null },
+  meta: { author: "write-math-pool-g4m4", created: "2026-10-30", factcheck: "verifier-write-math-pools-multiset-compound (2026-11-01: d09, d10); verifier-refine-math-pools-new-kinds (a08, d06, d07); решта — verifier-pg4m4", revised: "2026-11-01 write-math-pools-multiset-compound", teacher: null },
   sources: [
     { id: "g4a", title: "Гісь О. М., Філяк І. В. Математика : підручник для 4 класу закладів загальної середньої освіти (у 2-х ч.). Ч. 1. — Харків : Ранок, 2026 (наказ МОН № 111 від 27.01.2026). PDF-дзеркало 4book.org", url: "https://file.4book.org/images/shcoolbook_ua/4/4_m_gis_2026-1.pdf" },
     { id: "g4b", title: "Гісь О. М., Філяк І. В. Математика : підручник для 4 класу закладів загальної середньої освіти (у 2-х ч.). Ч. 2. — Харків : Ранок, 2026 (наказ МОН № 111 від 27.01.2026). PDF-дзеркало 4book.org", url: "https://file.4book.org/images/shcoolbook_ua/4/4_m_gis_2026-2.pdf" },

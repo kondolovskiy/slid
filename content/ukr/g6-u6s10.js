@@ -16,7 +16,7 @@ SLID.section("ukr", {
   title: "Прикметник",
   why: "Щоб точно описувати ознаки й порівнювати: «вищий», «найвищий», «вищий за всіх».",
   requires: ["u5s9l2", "u5s3l1", "u6s7l5", "u6s7l7", "u6s8l1"],
-  meta: { author: "claude-opus", created: "2026-11-02", factcheck: "verifier-u6s10", teacher: null },
+  meta: { author: "write-ukr-u6s10", created: "2026-11-02", factcheck: "verifier-u6s10", teacher: null },
   badges: [
     { id: "u6s10boss", name: "Майстер ознак", icon: "trophy", desc: "Пройти фінальний урок розділу «Прикметник»" }
   ],

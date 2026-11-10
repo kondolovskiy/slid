@@ -13,7 +13,7 @@ SLID.section("hist", {
   weeks: [28, 35],
   title: "Українські землі в XIV–XV ст.",
   why: "Щоб розуміти, як наші землі опинилися у складі Великого князівства Литовського і Польщі і як у Криму постало ханство.",
-  meta: { author: "claude-opus", created: "2026-10-07", factcheck: "verifier-g7s5-d019", teacher: null },
+  meta: { author: "write-hist-g7s5", created: "2026-10-07", factcheck: "verifier-g7s5-d019", teacher: null },
   badges: [{ id: "gdlscribe", name: "Писар великого князя", icon: "scroll", desc: "Пройти розділ «Українські землі в XIV–XV ст.»" }],
   credits: [
     [

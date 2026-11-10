@@ -9,7 +9,7 @@ SLID.pool("math", {
   id: "pg9m5",
   section: "g9m5",
   status: "verified",
-  meta: { author: "claude-opus", created: "2026-10-31", factcheck: "verifier-write-math-pool-g9m5-ister", teacher: null },
+  meta: { author: "write-math-pool-g9m5", created: "2026-10-31", factcheck: "verifier-write-math-pool-g9m5-ister", teacher: null },
   sources: [
     { id: "a9", title: "Мерзляк А. Г., Якір М. С. Алгебра. 9 клас. — Харків: Гімназія, 2026 (п. 15–19; дзеркало PDF на 4book.org)", url: "https://file.4book.org/images/shcoolbook_ua/9/9_a_m_2026.pdf" },
     { id: "ist9a", title: "Істер О. С., Істер Д. О. Алгебра: підручник для 9 класу. — Київ: Генеза, 2026 (§ 21; дзеркало PDF на 4book.org)", url: "https://file.4book.org/images/shcoolbook_ua/9/9_a_i_2026.pdf" }

@@ -13,7 +13,7 @@ SLID.section("ukr", {
   title: "Згадуємо 5 клас: речення й орфограми",
   why: "Щоб швидко пригадати, як будувати речення й писати без помилок, і впевнено почати новий рік.",
   requires: ["u5s6l3", "u5s6l4", "u5s8l3", "u5s9l4", "u5s10l2", "u5s10l4", "u5s7l3", "u5s1l2"],
-  meta: { author: "claude-opus", created: "2026-11-02", factcheck: "verifier-u6s1", teacher: null },
+  meta: { author: "write-ukr-u6s1", created: "2026-11-02", factcheck: "verifier-u6s1", teacher: null },
   badges: [
     { id: "u6s1boss", name: "Мовний компас", icon: "trophy", desc: "Пройти фінальний урок розділу «Згадуємо 5 клас: речення й орфограми»" }
   ],

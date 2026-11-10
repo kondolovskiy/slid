@@ -17,7 +17,7 @@ SLID.section("ukr", {
   title: "Правопис прикметників",
   why: "Щоб правильно писати суфікси прикметників, «не», н чи нн і складні прикметники.",
   requires: ["u6s5l2", "u6s5l3", "u5s7l4", "u6s6l2", "u6s10l2", "u6s10l3", "u6s10l4"],
-  meta: { author: "claude-opus", created: "2026-11-02", factcheck: "verifier-u6s11", teacher: null },
+  meta: { author: "write-ukr-u6s11", created: "2026-11-02", factcheck: "verifier-u6s11", teacher: null },
   badges: [
     { id: "u6s11boss", name: "Майстер правопису ознак", icon: "trophy", desc: "Пройти фінальний урок розділу «Правопис прикметників»" }
   ],

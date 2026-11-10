@@ -11,7 +11,7 @@ SLID.section("hist", {
   weeks: [22, 28],
   title: "Модернізація",
   why: "Щоб розуміти, як залізниці, шахти й заводи змінили життя людей.",
-  meta: { author: "claude-opus", created: "2026-10-13", factcheck: "verifier-g9s4", teacher: null },
+  meta: { author: "write-hist-g9s4", created: "2026-10-13", factcheck: "verifier-g9s4", teacher: null },
   badges: [{ id: "steamtrace", name: "Слід паровоза", icon: "bolt", desc: "Пройти розділ «Модернізація»" }],
   credits: [
     [

@@ -16,7 +16,7 @@ SLID.section("ukr", {
   title: "Правопис прислівників",
   why: "Щоб без вагань писати «по-українськи», «нашвидкуруч», «до побачення», «невесело» й «ніяк».",
   requires: ["u6s6l1", "u6s6l2", "u6s11l3", "u6s11l4", "u7s8l1", "u7s8l2", "u7s8l3", "u7s8l4", "u7s8l5", "u7s8l6"],
-  meta: { author: "claude-opus", created: "2026-11-04", factcheck: "verifier-u7s9", teacher: null },
+  meta: { author: "write-ukr-u7s9", created: "2026-11-04", factcheck: "verifier-u7s9", teacher: null },
   badges: [
     { id: "u7s9boss", name: "Редактор прислівників", icon: "trophy", desc: "Пройти фінальний урок розділу «Правопис прислівників»" }
   ],

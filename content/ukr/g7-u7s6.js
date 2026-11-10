@@ -16,7 +16,7 @@ SLID.section("ukr", {
   title: "Правопис дієприкметників. Форми на -но, -то",
   why: "Щоб знати, коли писати «здійснений», а коли «незрівнянний», як писати «не» з дієприкметниками і чому кажуть «рух відновлено».",
   requires: ["u6s11l3", "u6s11l4", "u7s5l3", "u7s5l4"],
-  meta: { author: "claude-opus", created: "2026-11-04", factcheck: "verifier-u7s6", teacher: null },
+  meta: { author: "write-ukr-u7s6", created: "2026-11-04", factcheck: "verifier-u7s6", teacher: null },
   badges: [
     { id: "u7s6boss", name: "Пильний коректор", icon: "trophy", desc: "Пройти фінальний урок розділу «Правопис дієприкметників. Форми на -но, -то»" }
   ],

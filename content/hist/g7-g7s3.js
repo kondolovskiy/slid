@@ -9,7 +9,7 @@ SLID.section("hist", {
   weeks: [14, 19],
   title: "Русь у часи роздробленості",
   why: "Щоб розуміти, чому велика держава розпадається на князівства і що з цього вийшло.",
-  meta: { author: "claude-opus", created: "2026-10-07", factcheck: "verifier-g7s3-d019", teacher: null },
+  meta: { author: "write-hist-g7s3", created: "2026-10-07", factcheck: "verifier-g7s3-d019", teacher: null },
   badges: [{ id: "princecouncil", name: "Миротворець князів", icon: "shield", desc: "Пройти розділ «Русь у часи роздробленості»" }],
   credits: [
     [

@@ -10,7 +10,7 @@ SLID.section("hist", {
   weeks: [16, 21],
   title: "Відновлення незалежності",
   why: "Щоб знати, як Україна мирно здобула незалежність і чому це стало можливим.",
-  meta: { author: "gpt-5-codex", created: "2026-10-14", factcheck: "verifier-g11s3", teacher: null },
+  meta: { author: "write-hist-g11s3", created: "2026-10-14", factcheck: "verifier-g11s3", teacher: null },
   credits: [
     [
       "Полотнище «Наші вимоги» учасників студентського голодування 1990 р. (фото з виставки, 2012)",

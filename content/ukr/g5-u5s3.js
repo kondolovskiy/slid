@@ -11,7 +11,7 @@ SLID.section("ukr", {
   weeks: [9, 12],
   title: "Будова слова",
   why: "Щоб бачити, з яких частин складається слово, і через це писати його без помилок.",
-  meta: { author: "claude-opus", created: "2026-11-02", factcheck: "verifier-u5s3", teacher: null },
+  meta: { author: "write-ukr-u5s3", created: "2026-11-02", factcheck: "verifier-u5s3", teacher: null },
   badges: [
     { id: "u5s3boss", name: "Конструктор слів", icon: "trophy", desc: "Пройти фінальний урок розділу «Будова слова»" }
   ],

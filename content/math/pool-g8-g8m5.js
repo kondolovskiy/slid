@@ -9,7 +9,7 @@ SLID.pool("math", {
   id: "pg8m5",
   section: "g8m5",
   status: "verified",
-  meta: { author: "claude-opus", created: "2026-10-31", factcheck: "verifier-pg8m5", teacher: null },
+  meta: { author: "write-math-pool-g8m5", created: "2026-10-31", factcheck: "verifier-pg8m5", teacher: null },
   sources: [
     { id: "a8", title: "Мерзляк А. Г., Якір М. С. Алгебра. 8 клас. — Харків: Гімназія, 2025 (п. 18–20; дзеркало PDF на 4book.org)", url: "https://file.4book.org/images/shcoolbook_ua/8/8_a_m_2025.pdf" },
     { id: "ist8a", title: "Істер О. С. Алгебра: підручник для 8 класу. — Київ: Генеза, 2025 (§ 24–26; дзеркало PDF на 4book.org)", url: "https://file.4book.org/images/shcoolbook_ua/8/8_a_i_2025.pdf" }

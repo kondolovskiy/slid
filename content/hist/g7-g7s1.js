@@ -10,7 +10,7 @@ SLID.section("hist", {
   title: "Виникнення Русі",
   why: "Щоб розуміти, як постала держава, від якої ведемо свою історію, і як про це дізнаються з літописів.",
   requires: ["l4", "g6s5-l4"],
-  meta: { author: "claude-opus", created: "2026-10-07", factcheck: "verifier-g7s1-d019", teacher: null },
+  meta: { author: "write-hist-g7s1", created: "2026-10-07", factcheck: "verifier-g7s1-d019", teacher: null },
   badges: [{ id: "rusorigin", name: "Слідчий у літописі", icon: "scroll", desc: "Пройти розділ «Виникнення Русі»" }],
   credits: [
     [

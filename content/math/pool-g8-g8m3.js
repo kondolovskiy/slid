@@ -15,7 +15,7 @@ SLID.pool("math", {
   id: "pg8m3",
   section: "g8m3",
   status: "verified",
-  meta: { author: "claude-opus", created: "2026-10-31", factcheck: "verifier-write-math-pool-g8m3-ister 2026-11-04 (reports/verify/write-math-pool-g8m3-ister.md)", revised: "2026-11-04 write-math-pool-g8m3-ister (+e01–e08 для g8m3l6)", teacher: null },
+  meta: { author: "write-math-pool-g8m3", created: "2026-10-31", factcheck: "verifier-write-math-pool-g8m3-ister 2026-11-04 (reports/verify/write-math-pool-g8m3-ister.md)", revised: "2026-11-04 write-math-pool-g8m3-ister (+e01–e08 для g8m3l6)", teacher: null },
   sources: [
     { id: "a8", title: "Мерзляк А. Г., Якір М. С. Алгебра: підручник для 8 класу закладів загальної середньої освіти. — Харків: Гімназія, 2025 (§ 2, п. 12, 14–17)", url: "https://file.4book.org/images/shcoolbook_ua/8/8_a_m_2025.pdf" },
     { id: "ist8a", title: "Істер О. С. Алгебра: підручник для 8 класу закладів загальної середньої освіти. — Київ: Генеза, 2025 (наказ МОН від 21.02.2025 № 347; § 13)", url: "https://file.4book.org/images/shcoolbook_ua/8/8_a_i_2025.pdf" }

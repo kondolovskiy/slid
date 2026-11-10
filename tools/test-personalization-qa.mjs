@@ -245,11 +245,50 @@ check(() => assert(skDiag('meas').warnings.some(w => w.startsWith('dgfx6/c1 №'
 check(() => assert(skDiag('meas').missing.includes('dgfx6/c1: itemSkills не збігається з матрицею')));
 check(() => assert(!skDiag('coord').warnings.some(w => w.startsWith('dgfx6/c1'))));
 
+// ---------- tools-diag-nonmath-p3 п. 1: тест рівня не з math — лише структура (learn.validate) і явне «пропущено» ----------
+{ const ukr = { id: 'ukr', skills: { orth: { name: 'Орфографія' } }, sections: [
+    { id: 'fu5', grade: 5, lessons: [L('fu5l1', 'orth')] }, { id: 'fu6', grade: 6, lessons: [L('fu6l1', 'orth')] }], pools: [] };
+  const dgu = (extra = {}) => ({ id: 'dgfu6', grade: 6, title: 'QA', why: 'QA', status: 'draft',
+    topics: [{ id: 'p', title: 'P', kind: 'pre', lessons: ['fu5l1'], for: ['fu6'] }, { id: 'c', title: 'C', kind: 'cur', lessons: ['fu6l1'] }],
+    items: [{ topic: 'p', type: 'gaps', sk: 'orth', title: 'QA', text: 'с{*е|и}ло' }, { topic: 'p', type: 'split', sk: 'orth', title: 'QA', word: 'мо|ло|ко' },
+      { topic: 'c', type: 'choice', sk: 'orth', title: 'QA', opts: ['а', 'б'], correct: 0 }], ...extra });
+  const ok1 = qa.auditOther(ukr, dgu(), learn);
+  check(() => assert.deepEqual(ok1.errors, [], JSON.stringify(ok1.errors)));
+  check(() => assert(ok1.skipped.startsWith('dgfu6 (ukr, 6 кл.): матриця покриття є лише для math') && ok1.counts.items === 3));
+  // зламаний зв'язок теми з уроком — помилка learn.validate; нуль завдань — помилка, а не «0 прогалин»
+  check(() => assert(qa.auditOther(ukr, dgu({ topics: [{ id: 'p', title: 'P', kind: 'pre', lessons: ['nope'], for: ['fu6'] }, { id: 'c', title: 'C', kind: 'cur', lessons: ['fu6l1'] }] }), learn)
+    .errors.some(e => e.startsWith('dgfu6: ') && e.includes('nope'))));
+  check(() => assert(qa.auditOther(ukr, dgu({ items: [] }), learn).errors.includes('dgfu6: нуль завдань для перевірки')));
+  // CLI: перший тест рівня не з math у живому змісті (без прив'язки до конкретного id) — rc 0 і «ПРОПУЩЕНО», а не «Невідома діагностика»
+  const live = subjects.filter(c => c.id !== 'math').flatMap(c => (c.diags || []).map(d => [c, d]))[0];
+  check(() => assert(live, 'немає жодного тесту рівня не з math'));
+  const r = spawnSync(process.execPath, ['tools/personalization-qa.mjs', '--diag', live[1].id], { cwd: ROOT, encoding: 'utf8' });
+  check(() => assert.equal(r.status, qa.auditOther(live[0], live[1], learn).errors.length ? 1 : 0, r.stderr));
+  check(() => assert(r.stdout.startsWith(`ПРОПУЩЕНО: ${live[1].id} (${live[0].id}, `) && !/Невідома/.test(r.stdout + r.stderr), r.stdout + r.stderr));
+  const rj = spawnSync(process.execPath, ['tools/personalization-qa.mjs', '--diag', live[1].id, '--json'], { cwd: ROOT, encoding: 'utf8' });
+  check(() => assert.equal(JSON.parse(rj.stdout).subject, live[0].id));
+  check(() => assert.equal(spawnSync(process.execPath, ['tools/personalization-qa.mjs', '--diag', live[1].id, '--grade', String(live[1].grade === 4 ? 5 : 4)], { cwd: ROOT }).status, 1));
+  // рев'ю P3-2: контекст як у validate.mjs (diagCtx) — розділ лише з планом у for теми не помилка
+  { const planned = { ...ukr, sections: [...ukr.sections, { id: 'fu6plan', grade: 6, plan: ['тема'] }] };
+    const rp = qa.auditOther(planned, dgu({ topics: [{ id: 'p', title: 'P', kind: 'pre', lessons: ['fu5l1'], for: ['fu6', 'fu6plan'] }, { id: 'c', title: 'C', kind: 'cur', lessons: ['fu6l1'] }] }), learn);
+    check(() => assert.deepEqual(rp.errors, [], JSON.stringify(rp.errors))); }
+  // рев'ю P3-1, P3-3: run() з підміненим змістом — rc 1 при структурній помилці в гілці не-math, rc 1 з --strict, вивід «ПРОПУЩЕНО» / «ПОМИЛКА»
+  { const runOut = (args, d) => { const lines = [], log = console.log; console.log = (...a) => lines.push(a.join(' '));
+      try { return { rc: qa.run(args, () => ({ subjects: [{ ...ukr, diags: [d] }], learn })), out: lines.join('\n') }; } finally { console.log = log; } };
+    const broken = dgu({ topics: [{ id: 'p', title: 'P', kind: 'pre', lessons: ['nope'], for: ['fu6'] }, { id: 'c', title: 'C', kind: 'cur', lessons: ['fu6l1'] }] });
+    const rb = runOut(['--diag', 'dgfu6'], broken), rg = runOut(['--diag', 'dgfu6'], dgu()), rs = runOut(['--diag', 'dgfu6', '--strict'], dgu());
+    check(() => assert(rb.rc === 1 && /^ПРОПУЩЕНО: dgfu6 /.test(rb.out) && /\nПОМИЛКА: dgfu6: .*nope/.test(rb.out), JSON.stringify(rb)));
+    check(() => assert(rg.rc === 0 && !/ПОМИЛКА/.test(rg.out), JSON.stringify(rg)));
+    check(() => assert(rs.rc === 1 && /--strict: суворе приймання dgfu6 неможливе/.test(rs.out), JSON.stringify(rs))); } }
+
 // ---------- CLI на живому змісті: аргументи й коди виходу ----------
 for (const args of [['--pool','typo'], ['--diag','typo'], ['--grade','12'], ['--pool','pg6m1','--grade','6'], ['--pool','pg6m1','--grade','7'], ['--wat'], ['--diag'], ['--diag','dg6','--pool','pg6m1']]) {
   check(() => assert.equal(spawnSync(process.execPath, ['tools/personalization-qa.mjs', ...args], { cwd: ROOT }).status, 1));
 }
-check(() => assert.equal(spawnSync(process.execPath, ['tools/personalization-qa.mjs','--diag','dg6'], { cwd: ROOT }).status, audit(subject, matrix, learn, { diag: 'dg6' }).errors.length ? 1 : 0));
+{ const r6 = spawnSync(process.execPath, ['tools/personalization-qa.mjs','--diag','dg6'], { cwd: ROOT, encoding: 'utf8' });
+  check(() => assert.equal(r6.status, audit(subject, matrix, learn, { diag: 'dg6' }).errors.length ? 1 : 0));
+  // тест math іде в аудит матриці, а не в гілку не-math (рев'ю P3-1: rc 0 в обох гілках — дивимося вивід)
+  check(() => assert(/^Матриця /.test(r6.stdout) && !/ПРОПУЩЕНО/.test(r6.stdout), r6.stdout.slice(0, 300))); }
 check(() => assert.equal(spawnSync(process.execPath, ['tools/personalization-qa.mjs','--strict'], { cwd: ROOT }).status,
   all.errors.length || all.missing.length || all.unsupported.length ? 1 : 0));
 console.log(`Personalization QA: ${checks} checks green`);

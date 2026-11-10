@@ -10,7 +10,7 @@ SLID.section("math", {
   title: "Звичайні дроби",
   why: "Щоб чесно ділити піцу, рахувати знижки, читати рецепти й розуміти, що означає «половина», «третина» чи «три чверті».",
   requires: ["m4a"],
-  meta: { author: "claude-opus", created: "2026-09-27", factcheck: "verifier-ms1", teacher: null },
+  meta: { author: "slid", created: "2026-09-27", factcheck: "verifier-ms1", teacher: null },
   badges: [
     { id: "cmpr", name: "Хто більший?", icon: "scale", desc: "Пройти урок «Який дріб більший?»" },
     { id: "mboss", name: "Кондитер", icon: "trophy", desc: "Пройти фінальну задачу з дробів" }

@@ -9,7 +9,7 @@ SLID.section("hist", {
   title: "Цивілізації Стародавнього Сходу",
   why: "Щоб знати, як у долинах великих річок постали перші держави, письмо й закони — і що з цього ми використовуємо досі.",
   requires: ["l3"],
-  meta: { author: "claude-opus", created: "2026-11-03", factcheck: "verifier-g6s6", teacher: null },
+  meta: { author: "write-hist-g6s6", created: "2026-11-03", factcheck: "verifier-g6s6", teacher: null },
   badges: [{ id: "oldeast", name: "Знавець Стародавнього Сходу", icon: "river", desc: "Пройти розділ «Цивілізації Стародавнього Сходу»" }],
   credits: [
     [

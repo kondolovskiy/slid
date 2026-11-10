@@ -17,7 +17,7 @@ SLID.diag("math", {
   title: "Що ти вже вмієш?",
   why: "Знайдемо теми, які варто згадати, щоб нові уроки давалися легше.",
   status: "verified",   // 2026-11-05 tri.for + g11m2 (curate-math-g11m2-to-g10) — verifier-math-g11-d047; завдання й ключі — verifier-dg10
-  meta: { author: "claude-opus", created: "2026-10-31", factcheck: "verifier-dg10", teacher: null },
+  meta: { author: "write-math-diag-g10", created: "2026-10-31", factcheck: "verifier-dg10", teacher: null },
   topics: [
     // передумови з 5–9 класів
     { id: "ineq", title: "Нерівності", kind: "pre", lessons: ["g9m1l2", "g9m1l3"], for: ["g10m1", "g10m3"] },

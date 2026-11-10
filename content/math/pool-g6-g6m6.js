@@ -10,7 +10,7 @@ SLID.pool("math", {
   id: "pg6m6",
   section: "g6m6",
   status: "verified",
-  meta: { author: "claude-opus", created: "2026-11-04", factcheck: "verifier-write-math-pool-g6m6", teacher: null },
+  meta: { author: "write-math-pool-g6m6", created: "2026-11-04", factcheck: "verifier-write-math-pool-g6m6", teacher: null },
   sources: [
     { id: "ist5k", title: "Істер О. С. Математика: підручник для 5 класу. — Київ: Генеза, 2022. Додаткова тема «Найпростіші комбінаторні задачі» (матеріал за QR-кодом зі с. 290)", url: "https://drive.google.com/file/d/1UFGuRRODD5nF1NtXbN0ubzlcn0s5cI4D/view" },
     { id: "ist6b", title: "Істер О. С. Математика: підручник для 6 класу. У 2 ч. Ч. 2. — Київ: Генеза, 2023", url: "https://file.4book.org/images/shcoolbook_ua/6/6_m_i_2023-2.pdf" }

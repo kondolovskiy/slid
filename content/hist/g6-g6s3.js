@@ -9,7 +9,7 @@ SLID.section("hist", {
   title: "Кіммерійці, скіфи, сармати",
   why: "Щоб зрозуміти, як жили кочові народи степу і чому їхнє золото досі вражає світ.",
   requires: ["l1", "l4"],
-  meta: { author: "claude-opus", created: "2026-10-05", factcheck: "verifier-g6s3", teacher: null },
+  meta: { author: "write-hist-g6s3", created: "2026-10-05", factcheck: "verifier-g6s3", teacher: null },
   badges: [{ id: "steppegold", name: "Хранитель степу", icon: "trophy", desc: "Пройти розділ «Кіммерійці, скіфи, сармати»" }],
   credits: [
     [

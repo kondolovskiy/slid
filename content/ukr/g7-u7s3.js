@@ -14,7 +14,7 @@ SLID.section("ukr", {
   title: "Дієслово: форми, вид і час",
   why: "Щоб розуміти, як дієслово розповідає про дію — що вона вже сталася, триває чи ще буде, — і правильно змінювати його.",
   requires: ["u5s8l3", "u6s13l2"],
-  meta: { author: "claude-opus", created: "2026-11-03", factcheck: "verifier-u7s3", teacher: null },
+  meta: { author: "write-ukr-u7s3", created: "2026-11-03", factcheck: "verifier-u7s3", teacher: null },
   badges: [
     { id: "u7s3boss", name: "Володар часу", icon: "trophy", desc: "Пройти фінальний урок розділу «Дієслово: форми, вид і час»" }
   ],

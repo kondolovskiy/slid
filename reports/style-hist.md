@@ -1,6 +1,6 @@
 # Стиль і складність: hist
 
-Згенеровано: 2026-11-06 · tools/stats.mjs
+Згенеровано: 2026-11-10 · tools/stats.mjs
 
 | урок | клас | екр. | частка завдань | слів/екран | макс. слів | слів/речення | довгі слова | типів | прапорці |
 |---|---|---|---|---|---|---|---|---|---|
@@ -58,7 +58,7 @@
 | g6s6-l6 Зал Стародавнього Сходу (фінал) | 6 | 7 | 0.86 | 8 | 19 | 5.6 | 0.035 | 3 | — |
 | g6s7-l1 Маска не того царя | 6 | 7 | 0.57 | 23 | 60 | 6.3 | 0.048 | 2 | — |
 | g6s7-l2 Сотня маленьких держав | 6 | 8 | 0.5 | 25 | 53 | 5.7 | 0.019 | 3 | — |
-| g6s7-l3 Голос на черепку | 6 | 8 | 0.5 | 19 | 55 | 5.8 | 0.052 | 4 | — |
+| g6s7-l3 Голос на черепку | 6 | 10 | 0.5 | 21 | 55 | 6.3 | 0.057 | 4 | — |
 | g6s7-l4 Звідки взявся марафон | 6 | 8 | 0.5 | 28 | 55 | 6.9 | 0.023 | 4 | — |
 | g6s7-l5 Вінок, маска і запитання | 6 | 8 | 0.5 | 24 | 58 | 5.3 | 0.018 | 3 | — |
 | g6s7-l6 Похід на край світу | 6 | 8 | 0.5 | 23 | 59 | 6.4 | 0.042 | 3 | — |
@@ -225,7 +225,7 @@
 
 Для z-оцінок sd не менше 10 % середнього; нижче наведено фактичне sd.
 
-- **5-6:lesson**: screens 7.82±1.13, gradedShare 0.58±0.08, readWordsPerScreen 22.91±3.82, maxReadWords 53.48±6.42, sentenceWords 6.04±0.39, longWordShare 0.04±0.01, typeVariety 3.18±0.73
+- **5-6:lesson**: screens 7.85±1.16, gradedShare 0.58±0.08, readWordsPerScreen 22.94±3.8, maxReadWords 53.48±6.42, sentenceWords 6.05±0.39, longWordShare 0.04±0.01, typeVariety 3.18±0.73
 - **5-6:boss**: screens 6.64±0.48, gradedShare 0.85±0.01, readWordsPerScreen 12.57±3.04, maxReadWords 22.86±5.99, sentenceWords 5.08±0.42, longWordShare 0.04±0.01, typeVariety 3.29±0.45
 - **7-9:lesson**: screens 8.03±0.82, gradedShare 0.58±0.06, readWordsPerScreen 24.63±2.95, maxReadWords 61.19±7.77, sentenceWords 5.93±0.42, longWordShare 0.04±0.01, typeVariety 3.28±0.45
 - **7-9:boss**: screens 7.2±0.4, gradedShare 0.86±0.01, readWordsPerScreen 21.47±2.83, maxReadWords 42.93±4.88, sentenceWords 5.49±0.41, longWordShare 0.03±0.01, typeVariety 3.13±0.34

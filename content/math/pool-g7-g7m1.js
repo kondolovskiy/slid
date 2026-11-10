@@ -9,7 +9,7 @@ SLID.pool("math", {
   id: "pg7m1",
   section: "g7m1",
   status: "verified",
-  meta: { author: "claude-opus", created: "2026-10-31", factcheck: "verifier-pg7m1", teacher: null },
+  meta: { author: "write-math-pool-g7m1", created: "2026-10-31", factcheck: "verifier-pg7m1", teacher: null },
   sources: [
     { id: "a7", title: "Мерзляк А. Г., Якір М. С. Алгебра : підручник для 7 класу закладів загальної середньої освіти. — Харків : Гімназія, 2024 (дзеркало PDF на 4book.org)", url: "https://file.4book.org/images/shcoolbook_ua/7/7_a_m_2024.pdf" }
   ],

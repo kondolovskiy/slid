@@ -13,7 +13,7 @@ SLID.section("hist", {
   title: "Перша світова війна",
   why: "Щоб розуміти трагедію українців, які воювали по різні боки фронту.",
   requires: ["g9s5l4"],
-  meta: { author: "claude-opus", created: "2026-10-14", factcheck: "verifier-g10s1", teacher: null },
+  meta: { author: "write-hist-g10s1", created: "2026-10-14", factcheck: "verifier-g10s1", teacher: null },
   badges: [
     {
       id: "twofronts",

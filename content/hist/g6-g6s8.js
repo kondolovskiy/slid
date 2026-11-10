@@ -9,7 +9,7 @@ SLID.section("hist", {
   title: "Стародавній Рим",
   why: "Щоб знати, як місто на Тибрі стало імперією, що об'єднала Середземномор'я, і що Рим залишив світові: право, дороги, латину, християнство.",
   requires: ["l3", "g6s6-l4"],
-  meta: { author: "claude-opus", created: "2026-11-03", factcheck: "verifier-g6s8", teacher: null },
+  meta: { author: "write-hist-g6s8", created: "2026-11-03", factcheck: "verifier-g6s8", teacher: null },
   badges: [{ id: "roma", name: "Знавець Стародавнього Риму", icon: "shield", desc: "Пройти розділ «Стародавній Рим»" }],
   credits: [
     ["«Капітолійська вовчиця», Капітолійські музеї, Рим (MC 1181)", "Marie-Lan Nguyen (Jastrow)", "суспільне надбання", "https://commons.wikimedia.org/wiki/File:Capitoline_she-wolf_Musei_Capitolini_MC1181.jpg"],

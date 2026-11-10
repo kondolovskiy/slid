@@ -14,7 +14,7 @@ SLID.section("ukr", {
   title: "Складні слова",
   why: "Щоб знати, коли писати слово разом, коли через дефіс, і як правильно писати «пів», «напів-», «полу-».",
   requires: ["u6s5l2", "u6s5l3"],
-  meta: { author: "claude-opus", created: "2026-11-02", factcheck: "verifier-u6s6", teacher: null },
+  meta: { author: "write-ukr-u6s6", created: "2026-11-02", factcheck: "verifier-u6s6", teacher: null },
   badges: [
     { id: "u6s6boss", name: "Майстер складних слів", icon: "trophy", desc: "Пройти фінальний урок розділу «Складні слова»" }
   ],

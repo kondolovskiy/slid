@@ -13,7 +13,7 @@ SLID.pool("math", {
   id: "pg6m4",
   section: "g6m4",
   status: "verified",
-  meta: { author: "claude-opus", created: "2026-10-13", factcheck: "verifier-write-math-pool-g6m4-ister; fix-math-pools-ister-formats — verifier-fix-math-pools-ister-formats 2026-11-05", revised: "2026-11-05 fix-math-pools-ister-formats", teacher: null },
+  meta: { author: "write-math-pool-g6m4", created: "2026-10-13", factcheck: "verifier-write-math-pool-g6m4-ister; fix-math-pools-ister-formats — verifier-fix-math-pools-ister-formats 2026-11-05", revised: "2026-11-05 fix-math-pools-ister-formats", teacher: null },
   sources: [
     { id: "ist6", title: "Істер О. С. Математика. 6 клас. Ч. 2. — Київ: Генеза, 2023 (§ 26–32, 34, 36, 40, 46)", url: "https://www.geneza.ua/sites/default/files/%D0%86%D1%81%D1%82%D0%B5%D1%80_%D0%9C%D0%B0%D1%82_%D0%9F(%D1%87.2)_6.pdf" },
     { id: "ist6b", title: "Істер О. С. Математика. 6 клас. Ч. 2. — Київ: Генеза, 2023 (§ 44, 45, 47; те саме видання, що ist6; сигла задач write-math-*-ister)", url: "https://file.4book.org/images/shcoolbook_ua/6/6_m_i_2023-2.pdf" },

@@ -15,7 +15,7 @@ SLID.section("ukr", {
   title: "Числівник",
   why: "Щоб правильно казати «двоє друзів», «о пів на третю» й «п'ятьма гривнями».",
   requires: ["u5s2l7", "u5s7l2", "u6s8l1"],
-  meta: { author: "claude-opus", created: "2026-11-02", factcheck: "verifier-u6s12", teacher: null },
+  meta: { author: "write-ukr-u6s12", created: "2026-11-02", factcheck: "verifier-u6s12", teacher: null },
   badges: [
     { id: "u6s12boss", name: "Майстер чисел", icon: "trophy", desc: "Пройти фінальний урок розділу «Числівник»" }
   ],

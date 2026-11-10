@@ -9,7 +9,7 @@ SLID.section("hist", {
   title: "Перші люди на наших землях",
   why: "Щоб знати, що історія людей на цих землях почалася сотні тисяч років тому, і розуміти, як учені це з'ясовують.",
   requires: ["l2", "l3"],
-  meta: { author: "claude-opus", created: "2026-10-05", factcheck: "verifier-g6s1-d019", teacher: null },
+  meta: { author: "write-hist-g6s1", created: "2026-10-05", factcheck: "verifier-g6s1-d019", teacher: null },
   badges: [{ id: "stoneage", name: "Слідопит кам'яного віку", icon: "flame", desc: "Пройти розділ «Перші люди на наших землях»" }],
   credits: [
     [

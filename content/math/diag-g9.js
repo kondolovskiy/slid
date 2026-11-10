@@ -19,7 +19,7 @@ SLID.diag("math", {
   title: "Що ти вже вмієш?",
   why: "Знайдемо теми, які варто згадати, щоб нові уроки давалися легше.",
   status: "verified",   // 2026-11-05 linear.for + g9m3, pyth.for + g9m3, g9m8 (refine-math-diag-g9-ister-required) — reviewer-dg9; завдання й ключі — verifier-dg9
-  meta: { author: "claude-opus", created: "2026-10-31", factcheck: "verifier-dg9", teacher: null },
+  meta: { author: "write-math-diag-g9", created: "2026-10-31", factcheck: "verifier-dg9", teacher: null },
   topics: [
     // передумови з 5–8 класів
     { id: "linear", title: "Лінійні рівняння", kind: "pre", lessons: ["g7m1l2"], for: ["g9m1", "g9m3", "g9m5"] },

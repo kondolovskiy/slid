@@ -11,7 +11,7 @@ SLID.section("hist", {
   weeks: [14, 20],
   title: "Національно-визвольна війна",
   why: "Щоб розуміти, як постала козацька держава — Гетьманщина.",
-  meta: { author: "cursor-composer", created: "2026-10-12", factcheck: "verifier-g8s3", teacher: null },
+  meta: { author: "write-hist-g8s3", created: "2026-10-12", factcheck: "verifier-g8s3", teacher: null },
   badges: [
     {
       id: "hetmanstate",
