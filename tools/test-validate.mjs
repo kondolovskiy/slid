@@ -408,10 +408,16 @@ expectRun("drag: at і без drag — без попередження", one("fx
     ["split — чисто", { type: "split", word: "мо|ло|ко" }, null],
     ["split з двома словами — помилка", { type: "split", word: "ма|ма та|то" }, "split — одне слово"],
     ["split, обидва варіанти з двома словами — помилка", { type: "split", word: ["ма|ма та|то", "мам|а та|то"] }, "split — одне слово"],
+    // tools-diag-nonmath-p3 п. 2: пробіл на краю слова (раніше w.trim() його пропускав) — теж помилка
+    ["split з пробілом на початку — помилка", { type: "split", word: " мо|ло|ко" }, "split — одне слово"],
+    ["split з пробілом у кінці (масив) — помилка", { type: "split", word: ["ли|сти|на ", "лис|ти|на "] }, "split — одне слово"],
     ["gaps з fbText — попередження: у тесті фідбеку немає", { type: "gaps", text: "с{*е|и}ло", fbText: "Село — села: перевіряємо наголосом." }, null, "фідбеку дитина не бачить"],
     ["gaps з hyp — помилка", { type: "gaps", text: "с{*е|и}ло", hyp: true, fbTitle: "Здогадка" }, "poll/hyp у тесті не можна"]]) {
     const rep = expectRun(`diag ukr: ${name}`, tree(item), ["--diag", "dgfu6"], { err, warn, noWarn: warn ? null : "фідбеку дитина не бачить" });
     if (rep && err) ok(rep.errors.every(e => e.includes("diag-g6.js#dgfu6")), `diag ukr: ${name}: помилка вказує на тест`, rep.errors.join("\n  ")); }
+  // tools-diag-nonmath-p3 п. 5: meta.author тесту рівня, схожий на модель ШІ, — попередження
+  { const t = tree({ type: "split", word: "мо|ло|ко" }); t["content/ukr/diag-g6.js"] = t["content/ukr/diag-g6.js"].replace('"author": "test"', '"author": "Gemini"');
+    expectRun("diag ukr: meta.author «Gemini» — попередження", t, ["--diag", "dgfu6"], { warn: "meta.author «Gemini» схоже на назву моделі ШІ" }); }
   // choice з hint у тесті — те саме попередження (для будь-якого типу)
   expectRun("diag ukr: choice з hint — попередження", tree({ type: "choice", opts: ["е", "и"], correct: 0, hint: "Зміни слово." }), ["--diag", "dgfu6"], { warn: "фідбеку дитина не бачить" });
   fs.rmSync(path.join(tmp, "content/ukr"), { recursive: true, force: true }); }
@@ -749,9 +755,15 @@ const { figCues: figCuesT, figPoints: figPointsT } = await import(path.join(ROOT
   // п. 7: split з нульовим закінченням
   expectRun("ukr: split zero «стіл|» — чисто", u({ type: "split", title: "Основа й закінчення", word: "стіл|", zero: true }), A, {});
   expectRun("ukr: split «стіл|» без zero — помилка", u({ type: "split", title: "Основа й закінчення", word: "стіл|" }), A, { err: "zero: true" });
+  // tools-diag-nonmath-p3 п. 2: пробіл у word уроку (і на краю) — помилка; плеєр зробив би з нього клітинку з межею
+  for (const [k, word] of [["на початку", " мо|ло|ко"], ["у кінці", "мо|ло|ко "], ["нерозривний у кінці", "мо|ло|ко "], ["посередині", "ма|ма та|то"], ["у кінці з zero", ["стіл| "]]])
+    expectRun(`ukr: split — пробіл ${k} — помилка`, u({ type: "split", title: "Склади", word, ...(Array.isArray(word) ? { zero: true } : {}) }), A, { err: "split — одне слово без пробілів" });
   // п. 15: милозвучність — попередження лише для ukr і лише правила з малим шумом; «і» між зіставленими поняттями — ні
   const EU = "милозвучність";
   expectRun("ukr: «брат в сестри» — попередження милозвучності", u({ type: "info", title: "Гості", body: "Брат в сестри гостює." }), A, { warn: EU });
+  // tools-diag-nonmath-p3 п. 3: «<b>В лісі</b>» на початку речення fbText — попередження; «Влітку» (в- самого слова) — лише звіт euphony.mjs
+  expectRun("ukr: fbText «Ні. <b>В лісі</b> …» — попередження милозвучності", u({ type: "choice", title: "Обери", opts: ["Тихо", "Гучно"], correct: 0, fbText: "Ні. <b>В лісі</b> тихо, бо вітру немає." }), A, { warn: EU });
+  expectRun("ukr: sort «Влітку тепло» — у validate без попередження (лише звіт)", u({ type: "sort", title: "Розклади", bins: ["Так", "Ні"], items: [["Влітку тепло", 0], ["Узимку холодно", 1]] }), A, { noWarn: EU });
   expectRun("ukr: «вода і повітря», «Марія і Олег» — без попередження", u({ type: "info", title: "Природа", body: "Вода і повітря потрібні всім. Марія і Олег гуляють." }), A, { noWarn: EU });
   expectRun("ukr: милозвучність в outro — попередження", { "content/ukr/g5-fxu.js": secJS("ukr", (x => (x.lessons[0].outro.learned[0] = "Млинці з сметаною", x))(ukrSec("fxu", []))) }, A, { warn: EU });
   // tools-math-ister-p3 п. 17 (рев'ю engine-lang-p3): назва й why уроку теж перевіряються (validate: euphonyWarn для l.title, l.why)
@@ -782,6 +794,23 @@ const { figCues: figCuesT, figPoints: figPointsT } = await import(path.join(ROOT
   expectRun("ukr: gaps {*весну|Весну}, fbText «Приклад: Весну чекаємо» — чисто", u({ type: "gaps", title: "Велика чи мала?", text: "Ми чекаємо {*весну|Весну}.", fbText: "Назви пір року пишемо з малої. Інакше було б так: Весну чекаємо." }), A, { noWarn: CASE });
   expectRun("ukr: gaps {*питає|Питає}, «Питає» на початку речення fbText — чисто", u({ type: "gaps", title: "Велика чи мала?", text: "«Де ти?» — {*питає|Питає} мама.", fbText: "Слова автора після репліки — з малої букви. Питає мама, а не хтось інший." }), A, { noWarn: CASE });
 }
+
+// ---- tools-diag-nonmath-p3 п. 5: meta.author — не назва моделі ШІ (AGENTS.md §5); попередження, не помилка ----
+{ const AI = "схоже на назву моделі ШІ";
+  const sec = (id, author) => secJS("math", { ...mathSec(id), meta: { author, created: "2026-11-10", factcheck: null, teacher: null } });
+  for (const a of ["claude-opus", "Codex", "gpt-5-codex", "gemini", "cursor-composer"])
+    expectRun(`meta.author «${a}» — попередження`, { "content/math/g8-fxa.js": sec("fxa", a) }, ["--section", "fxa"], { warn: AI });
+  for (const a of ["writer-g8m1", "test", "Олена Петренко", "claudia", "gptx"])
+    expectRun(`meta.author «${a}» — чисто`, { "content/math/g8-fxa.js": sec("fxa", a) }, ["--section", "fxa"], { noWarn: AI });
+  // з --section — лише свій розділ: чужий автор-модель не підсвічується; повний прогін — підсвічується
+  const two = { "content/math/g8-fxa.js": sec("fxa", "claude-opus"), "content/math/g8-fxb.js": sec("fxb", "writer-fxb") };
+  expectRun("meta.author: --section іншого розділу — без попередження", two, ["--section", "fxb"], { noWarn: AI });
+  { const rep = expectRun("meta.author: повний прогін — попередження з файлом розділу", two, [], { warn: AI });
+    ok(rep && rep.warnings.filter(w => w.includes(AI)).length === 1 && rep.warnings.some(w => w.includes(AI) && w.includes("#fxa:")), "meta.author: рівно одне попередження й указує на fxa", rep && rep.warnings.filter(w => w.includes(AI)).join("\n  ")); }
+  // пул (гілка SLID.pool)
+  const pool = poolJS("fxp", ["Відповідь: $4$."]).replace('"author": "test"', '"author": "Claude"');
+  ok(pool.includes('"author": "Claude"'), "meta.author: у фікстурі пулу замінено автора");
+  expectRun("meta.author пулу «Claude» — попередження", { "content/math/g8-fxp.js": secJS("math", mathSec("fxp")), "content/math/pool-g8-fxp.js": pool }, ["--pool", "pfx"], { warn: AI }); }
 
 console.log(fails ? `\n${fails} з ${n} перевірок не пройшли` : `test-validate: усі ${n} перевірок пройшли`);
 process.exit(fails ? 1 : 0);

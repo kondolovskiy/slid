@@ -32,6 +32,11 @@ const FIGS = ["circle","circles","bar","unequal","bars","grid","dots","rem"];
 const OPT_LETTERS = fs.readFileSync(path.join(ROOT, "app/app.js"), "utf8").match(/const OPT_LETTERS="([^"]+)"/)?.[1];
 if (!OPT_LETTERS) { console.error("ПОМИЛКА ЗАВАНТАЖЕННЯ: app/app.js не має const OPT_LETTERS"); process.exit(1); }
 const SVGS = [...fs.readFileSync(path.join(ROOT, "app/app.js"), "utf8").matchAll(/if\(name==="(\w+)"\)/g)].map(m => m[1]);
+// meta.author — роль агента (writer-<задача>) чи людина, не назва моделі ШІ (AGENTS.md §5; curate-meta-author п. 2). Лише загальний
+// шаблон родин на початку рядка — конкретних id моделей тут немає й не буде. Попередження: старий зміст ще може мати такі автори
+const AI_AUTHOR = /^(?:claude|chatgpt|gpt|gemini|codex|llama|mistral|grok|deepseek|cursor|composer)(?![\p{L}])/iu;
+const authorWarn = (where, meta) => { const a = meta?.author;
+  if (typeof a === "string" && AI_AUTHOR.test(a.trim())) W(where, `meta.author «${a}» схоже на назву моделі ШІ — пиши роль агента (writer-<задача>) чи ім'я людини (AGENTS.md §5)`); };
 
 for (const c of subjects) {
   if (!c.colors?.light?.accent || !c.colors?.dark?.accent) E(`предмет ${c.id}`, "немає colors.light/dark");
@@ -45,6 +50,7 @@ for (const c of subjects) {
     if (!sec.lessons && !sec.plan) W(where0, "розділ без уроків і без плану тем");
     if (!sec.lessons) continue;
     if (!sec.meta) W(where0, "немає meta {author, created, factcheck, teacher}");
+    if (onlySec ? onlySec === sec.id : !onlyDiag) authorWarn(where0, sec.meta);   // з --section/--diag/--pool — лише свій об'єкт
     for (const l of sec.lessons) {
       if (allLessonIds.has(l.id)) E(where0, `id уроку ${l.id} уже є в ${allLessonIds.get(l.id)}`);
       allLessonIds.set(l.id, where0);
@@ -272,8 +278,7 @@ const DIAG_LANG_LIMITS = { gaps: 3, stress: 3, pickWords: 20, pickCorrect: 3 };
 function diagLangIssues(s) {
   const E = [];
   if (s.type === "gaps") { const g = lang.parseGaps(s.text || ""); if (!g.error && g.gaps.length > DIAG_LANG_LIMITS.gaps) E.push(`у тесті рівня — не більше ${DIAG_LANG_LIMITS.gaps} пропусків (є ${g.gaps.length})`); }
-  // split — одне слово (рев'ю engine-diag-lang-types P2-1: lang.issues пробіл у word пропускає)
-  if (s.type === "split" && [].concat(s.word).some(w => typeof w === "string" && /\s/.test(w.trim()))) E.push("у тесті рівня split — одне слово, без пробілів");
+  // split — одне слово: спільна для уроків і тестів перевірка пробілів у checkScreen (case split) (tools-diag-nonmath-p3 п. 2)
   if (s.type === "stress" && Array.isArray(s.words) && s.words.length > DIAG_LANG_LIMITS.stress) E.push(`у тесті рівня — не більше ${DIAG_LANG_LIMITS.stress} слів (є ${s.words.length})`);
   if (s.type === "pick") { const p = lang.parsePick(s.text || ""); if (!p.error) {
     if (p.words.length > DIAG_LANG_LIMITS.pickWords) E.push(`у тесті рівня — не більше ${DIAG_LANG_LIMITS.pickWords} слів-кнопок (є ${p.words.length})`);
@@ -355,6 +360,9 @@ function checkScreen(S, s, c, diag, pool = false) {
       if (s.poll) E(S, `${s.type}: poll лише для choice — відповідь мовної вправи не збережеться для outro (здогадка без оцінки — hyp: true)`);
       if (s.type === "pick" && /<[^>]+>|&#?\w+;/i.test(s.text || "")) E(S, "pick: у text не може бути HTML — пиши простим текстом (пояснення — у body)");
       if (s.type === "split" && /[<>&]/.test([].concat(s.word).join(""))) E(S, "split: у word не може бути HTML");
+      // пробіл будь-де, і на краю слова (" мо|ло|ко"), lang.issues пропускає, а плеєр робить з нього клітинку з межею (app.js split:
+      // кожен символ — span.sl); у тесті рівня це ще й «два слова — два вміння» (рев'ю engine-diag-lang-types P2-1; tools-diag-nonmath-p3 п. 2)
+      if (s.type === "split" && [].concat(s.word).some(w => typeof w === "string" && /\s/.test(w))) E(S, "split — одне слово без пробілів (і на краю слова): пробіл стає клітинкою для межі");
       break;
     case "fracin": if (!(Number.isInteger(s.answer) && s.answer >= 0 && s.answer < 1e6)) E(S, "answer — ціле невід'ємне число (поле приймає лише цифри)");
       if (!(s.expr && s.den)) E(S, "fracin потребує expr і den"); break;
@@ -430,6 +438,7 @@ for (const c of subjects) for (const d of c.diags || []) {
   if (c.diags.filter(x => x.grade === d.grade).length > 1) E(D, `для ${d.grade} класу вже є діагностика з цього предмета`);
   for (const m of learn.validate(d, { ...subjectMaps(c), skills: c.skills })) E(D, m);
   if (!d.meta) W(D, "немає meta {author, created, factcheck, teacher}");
+  authorWarn(D, d.meta);
   (d.items || []).forEach((s, i) => { if (TYPES.includes(s.type)) { checkScreen(`${D} завдання ${i + 1} (${s.type})`, s, c, true); figRef(`${D} завдання ${i + 1} (${s.type})`, s); } });
   const ch = (d.items || []).filter(s => s.type === "choice" && Number.isInteger(s.correct));
   if (ch.length >= 4) { const cnt = {}; ch.forEach(s => cnt[s.correct] = (cnt[s.correct] || 0) + 1); const [k, n] = Object.entries(cnt).sort((a, b) => b[1] - a[1])[0];
@@ -444,6 +453,7 @@ for (const c of subjects) for (const p of c.pools || []) {
   const D = `content/${c.id}/pool#${p.id}`; diagIds.add(p.id);
   for (const m of learn.validatePool(p, { sections: sectionLessons, skills: c.skills })) E(D, m);
   if (!p.meta) W(D, "немає meta {author, created, factcheck, teacher}");
+  authorWarn(D, p.meta);
   // генератор (gen): екран перевіряємо на першому наборі значень — так, як його побачить дитина (правила gen — learn.validatePool)
   (p.items || []).forEach((s0, i) => { const s = s0.gen !== undefined ? learn.genInstance(s0, "validate", 0) || s0 : s0;
     if (TYPES.includes(s.type)) { checkScreen(`${D} задача ${i + 1} «${s.id}» (${s.type})`, { ...s, fbText: (s.steps || []).join(" ") }, c, true, true); figRef(`${D} задача ${i + 1} «${s.id}» (${s.type})`, s); } });
