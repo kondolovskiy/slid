@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-10T20:36:07.474Z
 id: write-ukr-u10s6
 type: write-section
 subject: ukr
@@ -6,7 +8,7 @@ grade: 10
 section: u10s6
 weeks: [18, 20]
 status: todo
-claimed_by:
+claimed_by: w-write-ukr-u10s6
 created: 2026-11-10
 ---
 # Написати розділ «Орфографія: подвоєння, префікси й суфікси, велика буква» (Українська мова, 10 клас)
