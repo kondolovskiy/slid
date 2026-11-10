@@ -11,7 +11,7 @@ SLID.section("hist", {
   weeks: [29, 35],
   title: "Російсько-українська війна",
   why: "Щоб знати, що відбувається з нашою країною, спираючись на факти й документи.",
-  meta: { author: "gpt-5-codex", created: "2026-10-14", factcheck: "verifier-g11s5", teacher: null },
+  meta: { author: "write-hist-g11s5", created: "2026-10-14", factcheck: "verifier-g11s5", teacher: null },
   credits: [
     [
       "Військові без розпізнавальних знаків у Сімферополі, 2 березня 2014 р.",

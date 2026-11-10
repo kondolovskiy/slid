@@ -13,7 +13,7 @@ SLID.section("math", {
   title: "Алгебра: квадратні корені",
   why: "Щоб знаходити сторону квадрата за площею і працювати з ірраціональними числами.",
   requires: ["g7m5l1"],
-  meta: { author: "composer", created: "2026-10-11", factcheck: "verifier-g8m3", teacher: null },
+  meta: { author: "write-math-g8m3", created: "2026-10-11", factcheck: "verifier-g8m3", teacher: null },
   badges: [
     { id: "g8m3boss", name: "Корінь справи", icon: "target", desc: "Пройти фінальну задачу з квадратних коренів" }
   ],

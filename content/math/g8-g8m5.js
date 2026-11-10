@@ -13,7 +13,7 @@ SLID.section("math", {
   title: "Алгебра: квадратні рівняння",
   why: "Щоб розв'язувати задачі, де невідоме множиться саме на себе: площі, рух, польоти.",
   requires: ["g8m3l1", "g8m1l6"],
-  meta: { author: "composer", created: "2026-10-11", factcheck: "verifier-g8m5", teacher: null },
+  meta: { author: "write-math-g8m5", created: "2026-10-11", factcheck: "verifier-g8m5", teacher: null },
   badges: [
     { id: "g8m5boss", name: "Мисливець за коренями", icon: "target", desc: "Пройти фінальну задачу з квадратних рівнянь" }
   ],

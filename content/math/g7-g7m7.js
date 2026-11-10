@@ -12,7 +12,7 @@ SLID.section("math", {
   title: "Алгебра: системи рівнянь",
   why: "Щоб розв'язувати задачі з двома невідомими.",
   requires: ["g7m5l3"],
-  meta: { author: "composer", created: "2026-10-11", factcheck: "verifier-g7m7", teacher: null },
+  meta: { author: "write-math-g7m7", created: "2026-10-11", factcheck: "verifier-g7m7", teacher: null },
   badges: [
     { id: "g7m7boss", name: "Два невідомих", icon: "chart", desc: "Пройти фінальну задачу із систем рівнянь" }
   ],

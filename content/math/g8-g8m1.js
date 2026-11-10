@@ -13,7 +13,7 @@ SLID.section("math", {
   title: "Алгебра: раціональні вирази",
   why: "Щоб працювати з дробами, у яких є змінні.",
   requires: ["g7m3l4", "g7m5l1"],
-  meta: { author: "composer", created: "2026-10-11", factcheck: "self", teacher: null },
+  meta: { author: "write-math-g8m1", created: "2026-10-11", factcheck: "self", teacher: null },
   badges: [
     { id: "g8m1boss", name: "Майстер дробів", icon: "frac", desc: "Пройти фінальну задачу з раціональних виразів" }
   ],

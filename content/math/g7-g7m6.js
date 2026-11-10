@@ -13,7 +13,7 @@ SLID.section("math", {
   title: "Геометрія: паралельні прямі",
   why: "Щоб розуміти, на чому тримаються креслення, карти й архітектура.",
   requires: ["g7m2l2"],
-  meta: { author: "composer", created: "2026-10-11", factcheck: "verifier-g7m6", teacher: null },
+  meta: { author: "write-math-g7m6", created: "2026-10-11", factcheck: "verifier-g7m6", teacher: null },
   badges: [
     {
       id: "g7m6boss",

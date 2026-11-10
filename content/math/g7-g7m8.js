@@ -14,7 +14,7 @@ SLID.section("math", {
   weeks: [31, 35],
   title: "Геометрія: коло",
   why: "Щоб будувати фігури циркулем і лінійкою, як давні геометри.",
-  meta: { author: "composer", created: "2026-10-11", factcheck: "verifier-g7m8", teacher: null },
+  meta: { author: "write-math-g7m8", created: "2026-10-11", factcheck: "verifier-g7m8", teacher: null },
   badges: [
     {
       id: "g7m8boss",

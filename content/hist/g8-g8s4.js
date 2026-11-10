@@ -10,7 +10,7 @@ SLID.section("hist", {
   weeks: [21, 26],
   title: "Руїна",
   why: "Щоб бачити, до чого призводять розбрат еліт і втручання сусідів.",
-  meta: { author: "cursor-composer", created: "2026-10-12", factcheck: "verifier-g8s4", teacher: null },
+  meta: { author: "write-hist-g8s4", created: "2026-10-12", factcheck: "verifier-g8s4", teacher: null },
   badges: [
     {
       id: "ruintrace",

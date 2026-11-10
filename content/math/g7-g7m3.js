@@ -13,7 +13,7 @@ SLID.section("math", {
   title: "Алгебра: цілі вирази",
   why: "Щоб спрощувати довгі вирази й рахувати в думці хитрими способами.",
   requires: ["g6m5l2"],
-  meta: { author: "composer", created: "2026-10-11", factcheck: "verifier-g7m3", teacher: null },
+  meta: { author: "write-math-g7m3", created: "2026-10-11", factcheck: "verifier-g7m3", teacher: null },
   badges: [
     { id: "g7m3boss", name: "Майстер виразів", icon: "bolt", desc: "Пройти фінальну задачу з цілих виразів" }
   ],
