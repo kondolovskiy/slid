@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-10T20:21:10.359Z
 id: write-ukr-u9s10
 type: write-section
 subject: ukr
@@ -6,7 +8,7 @@ grade: 9
 section: u9s10
 weeks: [31, 33]
 status: todo
-claimed_by:
+claimed_by: w-write-ukr-u9s10
 created: 2026-11-10
 ---
 # Написати розділ «Повторюємо: від звука до тексту. Лексичні й граматичні помилки» (Українська мова, 9 клас)
