@@ -327,7 +327,7 @@
 | u9s4l2 Мама сказала, що… | 9 | 11 | 0.64 | 29 | 55 | 5.9 | 0.028 | 5 | — |
 | u9s4l3 Сценарій подкасту (фінал) | 9 | 7 | 0.86 | 20 | 32 | 6.2 | 0.037 | 5 | — |
 | u9s5l1 Там, де, і тоді, коли | 9 | 12 | 0.5 | 31 | 50 | 6.2 | 0.025 | 5 | — |
-| u9s5l2 Так, що дрижали шибки | 9 | 10 | 0.6 | 30 | 54 | 7 | 0.018 | 5 | sentenceWords нетипово для сім'ї (z=2.1) |
+| u9s5l2 Так, що дрижали шибки | 9 | 10 | 0.6 | 29 | 51 | 6.8 | 0.018 | 5 | — |
 | u9s5l3 Якщо, бо і щоб | 9 | 11 | 0.55 | 28 | 56 | 6.2 | 0.027 | 4 | — |
 | u9s5l4 Хоч ішов дощ | 9 | 11 | 0.55 | 29 | 50 | 6.4 | 0.029 | 4 | — |
 | u9s5l5 Путівник для гостей міста (фінал) | 9 | 7 | 0.86 | 19 | 38 | 6.4 | 0.027 | 5 | — |
@@ -341,5 +341,5 @@
 
 - **5-6:lesson**: screens 11.46±0.72, gradedShare 0.55±0.05, readWordsPerScreen 26.33±3.14, maxReadWords 49.51±6.29, sentenceWords 5.34±0.46, longWordShare 0.03±0.02, typeVariety 4.04±0.75
 - **5-6:boss**: screens 7.44±0.7, gradedShare 0.86±0.03, readWordsPerScreen 19.36±2.96, maxReadWords 34.28±3.82, sentenceWords 4.96±0.43, longWordShare 0.04±0.01, typeVariety 3.88±0.65
-- **7-9:lesson**: screens 10.46±0.85, gradedShare 0.54±0.04, readWordsPerScreen 28.24±3.59, maxReadWords 51.74±6.05, sentenceWords 5.74±0.61, longWordShare 0.04±0.02, typeVariety 4.01±0.78
+- **7-9:lesson**: screens 10.46±0.85, gradedShare 0.54±0.04, readWordsPerScreen 28.24±3.59, maxReadWords 51.72±6.05, sentenceWords 5.74±0.61, longWordShare 0.04±0.02, typeVariety 4.01±0.78
 - **7-9:boss**: screens 7.19±0.4, gradedShare 0.86±0.01, readWordsPerScreen 22.19±2.86, maxReadWords 38.23±4.87, sentenceWords 5.37±0.61, longWordShare 0.05±0.02, typeVariety 3.97±0.82

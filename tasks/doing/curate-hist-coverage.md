@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-10T20:19:25.730Z
 id: curate-hist-coverage
 type: curate
 subject: hist
 status: todo
-claimed_by:
+claimed_by: w-curate-hist-coverage
 created: 2026-11-10
 depends_on: [research-hist-coverage-g5-6, research-hist-coverage-g7-9, research-hist-coverage-g10-11]
 ---
