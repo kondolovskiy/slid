@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-10T20:20:53.259Z
 id: write-ukr-u9s9
 type: write-section
 subject: ukr
@@ -6,7 +8,7 @@ grade: 9
 section: u9s9
 weeks: [27, 30]
 status: todo
-claimed_by:
+claimed_by: w-write-ukr-u9s9
 created: 2026-11-10
 ---
 # Написати розділ «Чуже мовлення: пряма й непряма мова, діалог, цитата» (Українська мова, 9 клас)
