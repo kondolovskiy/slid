@@ -1,0 +1,46 @@
+---
+id: refine-world-w9s4
+type: refine-section
+subject: world
+grade: 9
+section: w9s4
+weeks: [18, 23]
+status: todo
+claimed_by:
+created: 2026-11-10
+depends_on: [revise-world-w9s4]
+---
+# Доповнення w9s4: Муцухіто, Фашода, англо-бурська війна (Всесвітня історія, 9 клас; розділ «Америка й Азія в XIX ст.»)
+
+## Навіщо
+Запит людини 10.11.2026 — повне покриття програми. Звіт покриття `reports/research/coverage-research-world-coverage-g7-9.md` (верифіковано, §9): одиниці, які в розділі згадано частково або немає, а нового уроку вони не потребують — досить екрана й завдання в наявному уроці. Задача створена curate-world-coverage.
+
+## Що зробити
+1. **w9s4l4:** ім'я імператора Муцухіто (facts/world №29) — в уроці й завданні; cur g9-meiji: наявні відповіді не змінюй.
+2. **w9s4l5** (9.3.13): Фашодська криза 10.07–3.11.1898 (https://en.wikipedia.org/wiki/Fashoda_Incident + друге); англо-бурська війна 1899–1902 (https://en.wikipedia.org/wiki/Second_Boer_War + друге) — екран + завдання; табори для цивільних — обережно (style/hist.md).
+- Виконувати **після revise-world-w9s4** (той самий файл).
+
+## Прочитати перед роботою
+- AGENTS.md; скіл `content-author` і для нових зображень — `hist-images` (docs/IMAGES.md)
+- style/common.md, style/world.md, style/hist.md (чутливі теми), style/profiles.json
+- memory/long/glossary/world.md, memory/long/facts/world.md (і facts/hist*.md для синхронізації), memory/long/pitfalls-hist.md
+- Звіт `reports/research/coverage-research-world-coverage-g7-9.md`: §3 (одиниці програми), §4, **§9 — незалежна верифікація, має пріоритет**; рядки FACT verifier-coverage-world-g7-9 в memory/short/inbox.md
+
+## Загальне
+- Файл: `content/world/g9-w9s4.js` (лише він, `img/world/w9s4/` і ця задача). Програма — модельна програма Гісема та ін. «Всесвітня історія. 7–9 класи» (наказ МОН № 1449 від 27.11.2023; https://znayshov.com/FR/46261/Vsesvitnya.istoriya.7-9%20kl.Hisem.ta.in.30.11.2023.pdf).
+- Правило 11: наявні id уроків, навичок, значків не перейменовувати; нові id — лише ті, що в задачі.
+- D-027: у кожному новому уроці ≥ 1 справжнє `img` з відкритою ліцензією, `cap` і `credits` (скіл hist-images; Commons — ≤ 2 фото-агенти одночасно). Нові екрани в наявних уроках — img за потреби.
+- D-019: відповідь кожного оцінюваного завдання вже була в уроці, є на екрані або виводиться міркуванням; дат, імен, назв не питати до того, як їх подано; факт уперше — не у `fbText`.
+- Дати й числа — з facts/world.md або ≥ 2 джерел з URL (скіл content-author §3); англомовна Вікіпедія — лише перше джерело. «Україна у світі» (`link`) — коротким екраном і посиланням на уроки hist, не дублюй їх.
+- Кожен змінений урок → `status: "draft"`; незмінені verified не чіпай; `approved` не ставити.
+- **Тести рівня dgw7–dgw9 не зачіпаються:** тема `cur`/`pre` цього розділу — w9s4l4 (cur g9-meiji); нові екрани в цьому уроці не змінюють відповідей тесту (ключ теми — id уроку). Нічого в diag-*.js не міняй.
+- Тимчасові файли — `<scratchpad>/<task-id>/`. Build не запускай (AGENTS.md §4 п. 8).
+
+## Готово, коли
+- [ ] `node tools/validate.mjs --section w9s4` — 0 помилок; кожен новий урок має ≥ 1 справжнє `img`
+- [ ] `node tools/stats.mjs --subject world` — змінені й нові уроки без прапорців «нетипово для сім'ї» (або пояснено)
+- [ ] У нотатках: що змінено по уроках, опора для кожного нового оцінюваного завдання (екран), факти з URL; рядки FACT/TERM в inbox
+- [ ] `node tools/claim.mjs move <task-id> review` → content-verifier (`/verify-section w9s4`): факти, D-019, покриття одиниць програми з цієї задачі
+
+## Нотатки агента
+<!-- Виконавець: зміни по уроках, факти з джерелами, сумнівне -->
