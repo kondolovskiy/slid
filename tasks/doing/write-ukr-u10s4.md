@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-10T20:30:44.922Z
 id: write-ukr-u10s4
 type: write-section
 subject: ukr
@@ -6,7 +8,7 @@ grade: 10
 section: u10s4
 weeks: [13, 14]
 status: todo
-claimed_by:
+claimed_by: w-write-ukr-u10s4
 created: 2026-11-10
 ---
 # Написати розділ «Орфоепічна норма: вимова й наголос» (Українська мова, 10 клас)
