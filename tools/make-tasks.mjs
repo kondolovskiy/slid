@@ -9,8 +9,14 @@
 //   задачі write-math-pool-<розділ> за матрицею покриття (docs/math-personalization-coverage.json) і чинним шаблоном пакета:
 //   лише розділи з required-уроками; пропускає розділ, якщо задача з таким id уже є в todo/doing/review/done або пул уже є в змісті.
 //   --dry-run нічого не пише, лише показує; --matrix / --tasks / --content — інші файл матриці, тека задач і дерево змісту (fixtures у tools/test-make-tasks.mjs).
+// Пули мовних предметів (engine-pool-lang): node tools/make-tasks.mjs --write-pool --subject ukr [--grade 9] [--dry-run] [--tasks DIR] [--content DIR]
+//   матриці немає: задача write-ukr-pool-<розділ> для кожного розділу з уроками, у якого немає пулу (id p<розділ>, пул із section = розділ або
+//   файл content/ukr/pool-g<клас>-<розділ>.js) і задачі (за іменем файлу чи id у frontmatter); «Пишемо самі…» (NO_POOL_SECTION) — без пулу.
+//   Шаблон — CONTENT_SCHEMA §10 «Пули мовних предметів»; depends_on: [engine-pool-lang], доки та задача не в done.
 import fs from "node:fs"; import path from "node:path";
-import { loadContent, ROOT, IMG_REQUIRED } from "./lib.mjs";
+import { loadContent, ROOT, IMG_REQUIRED, NO_POOL_SECTION } from "./lib.mjs";
+// пули мовних предметів без матриці (engine-pool-lang): предмет → { book: базовий підручник у шаблоні, style: стиль-гайд }
+const LANG_POOL = { ukr: { book: "З<клас> (memory/long/facts/ukr.md «Джерела»: бібліографія, URL, відповідність сторінок PDF)", style: "style/ukr.md" } };
 
 const args = process.argv.slice(2);
 const opt = k => args.includes(k) ? args[args.indexOf(k) + 1] : null;
@@ -89,7 +95,8 @@ console.log(DRY ? `[dry-run] Створилося б задач: ${made.length}$
 
 /* ---------- --write-pool: задачі на пули тренування за матрицею (шаблон пакета tasks/README-math-personalization.md) ---------- */
 function writePool() {
-  if (onlySubj && onlySubj !== "math") { console.error("--write-pool: матриця покриття є лише для math"); process.exit(2); }
+  if (onlySubj && LANG_POOL[onlySubj]) return writePoolLang(subjects.find(x => x.id === onlySubj));
+  if (onlySubj && onlySubj !== "math") { console.error(`--write-pool: матриця покриття є лише для math; без матриці — ${Object.keys(LANG_POOL).join(", ")}; пули для ${onlySubj} не заплановано`); process.exit(2); }
   const mfile = opt("--matrix") ? path.resolve(opt("--matrix")) : path.join(ROOT, "docs/math-personalization-coverage.json");
   const M = JSON.parse(fs.readFileSync(mfile, "utf8")), c = subjects.find(x => x.id === "math");
   const NEW_KINDS = ["ratio", "coordinates2", "coordinates3", "exactRoot", "intervalSet", "expression", "periodicSet"];
@@ -175,4 +182,69 @@ ${ls.filter(l => l.curricularScope !== "required").map(l => `- ${l.lesson}: ${l.
   }
   console.log(`${DRY ? "[dry-run] " : ""}Матриця ${M.version}: ${DRY ? "створилося б" : "створено"} задач на пули: ${out.made.length}${out.made.length ? " (" + out.made.join(", ") + ")" : ""}`);
   console.log(`Пропущено: задача вже є — ${out.task.length}; пул уже є — ${out.pool.length}${out.pool.length ? " (" + out.pool.join(", ") + ")" : ""}; без required / відкладено — ${out.deferred.length}${out.deferred.length ? " (" + out.deferred.join(", ") + ")" : ""}`);
+}
+
+/* ---------- --write-pool --subject ukr: задачі на пули мовного предмета без матриці (engine-pool-lang) ---------- */
+function writePoolLang(c) {
+  const L = LANG_POOL[c.id], out = { made: [], task: [], pool: [], nopool: [] };
+  const doneIds = new Set(fs.existsSync(path.join(TASKS, "done")) ? fs.readdirSync(path.join(TASKS, "done")).filter(f => f.endsWith(".md"))
+    .map(f => (fs.readFileSync(path.join(TASKS, "done", f), "utf8").match(/^id:\s*(\S+)/m) || [])[1] || f.replace(/\.md$/, "")) : []);
+  const engineDone = doneIds.has("engine-pool-lang");
+  for (const sec of c.sections) {
+    if (!sec.lessons?.length || (onlyGrade && sec.grade !== onlyGrade)) continue;
+    if (NO_POOL_SECTION.test(sec.title || "")) { out.nopool.push(sec.id); continue; }
+    const id = `write-${c.id}-pool-${sec.id}`, name = `${id}.md`, pool = `p${sec.id}`, pfile = `content/${c.id}/pool-g${sec.grade}-${sec.id}.js`;
+    if (existing.has(name) || existingIds.has(id)) { out.task.push(sec.id); continue; }
+    if ((c.pools || []).some(p => p.id === pool || p.section === sec.id) || fs.existsSync(path.join(CROOT, pfile))) { out.pool.push(sec.id); continue; }
+    const lessons = sec.lessons.filter(l => !l.boss);
+    const body = `---
+id: ${id}
+type: write-pool
+subject: ${c.id}
+grade: ${sec.grade}
+section: ${sec.id}
+status: todo
+claimed_by:
+created: ${new Date().toISOString().slice(0, 10)}
+depends_on: [${engineDone ? "" : "engine-pool-lang"}]
+generated_by: tools/make-tasks.mjs --write-pool --subject ${c.id}
+---
+# Зібрати пул тренування «${sec.title}» (${c.subject}, ${sec.grade} клас, ${sec.id})
+
+## Навіщо
+Пул — вправи для самостійного тренування після уроку з інтервальним повторенням (docs/PERSONALIZATION.md §3).
+${engineDone ? "" : "\n**Не брати, доки `engine-pool-lang` не в done** (мовні вправи в пулі — нова можливість рушія; claim.mjs `depends_on` не перевіряє).\n"}
+Контракт полів — docs/CONTENT_SCHEMA.md §10, «Пули мовних предметів»; якщо він розходиться з цим текстом — правий CONTENT_SCHEMA.
+
+## Результат
+Один файл \`${pfile}\`: \`SLID.pool("${c.id}", { id: "${pool}", section: "${sec.id}", status: "draft", meta: {…}, sources: [...], items: [...] })\`. **id \`${pool}\` і id вправ — ключі прогресу, не перейменовувати.**
+
+## Уроки для покриття (без фіналу)
+${lessons.map(l => `- \`${l.id}\` — ${l.title}`).join("\n")}
+
+## Що зробити (скіли \`math-pool-diag\` — розділ про пули мовних предметів — і \`content-author\`)
+1. Прочитай уроки розділу повністю: що саме пояснено, які приклади й винятки, \`sk\` екранів, \`learned\`. **Чесне завдання (D-019):** вправа тренує лише те, що урок пояснив; нового правила пул не вчить.
+2. На кожен урок з оцінюваними екранами — **4–6 вправ** (мінімум personalization-qa — 3): ~2 рівня 1 (одне правило, типовий випадок), 2 рівня 2 (кілька слів чи випадків, змішані з уже вивченим), 1–2 рівня 3 (виняток, складний випадок, пастка з уроку).
+3. **Джерела — реальні вправи:** базовий підручник ${L.book} — номер вправи в \`src\` («З${sec.grade} впр. 123(2)»), сторінка в \`srcPage\`; додаткові — інші рекомендовані МОН підручники чи збірники з URL. Не вигадувати джерел і номерів; речення можна скоротити (\`adapted: true\`), зберігаючи орфограму. Літературні цитати — з автором.
+4. **Типи:** переважно мовні вправи, де дитина пише чи позначає сама — \`gaps\` (≤ 6 пропусків), \`stress\` (≤ 6 слів), \`pick\` (≤ 40 слів), \`word\`, \`split\`; \`sort\` / \`order\` — для класифікацій і порядку; \`choice\` / \`multi\` — лише для поняттєвих питань («чому так пишемо»), не замість правопису. Поля числової відповіді (\`unit\`, \`answerKind\`, \`gen\`…) і \`hyp\`/\`poll\` у пулі заборонено.
+5. Кожна вправа: сталий \`id\`, \`lesson\` з переліку, \`sk\` (з \`sk\` екранів уроку), \`lvl\`, \`steps\` — пояснення-розбір 1–4 рядки (правило + чому саме так; дитина бачить його як «Пояснення»), \`hint\` для рівнів 2–3.
+6. **Норма (D-041, D-042):** помилкою — лише ненормативне і за підручником чи УП, і за словником (СУМ, ОС, ВЕСУМ / Горох); вибір між нормативними варіантами (у/в, і/й, із/зі перед збігом) не оцінювати; наголос — за словником, звіряти за зображенням сторінки. Кожну вправу розв'язати двічі.
+7. Милозвучність і стиль — ${L.style}, \`node tools/euphony.mjs --subject ${c.id}\` (лише stdout для свого файлу).
+
+## Обмеження
+Змінюй лише \`${pfile}\`, цю задачу й дописуй inbox. build і check — оркестратор. Уроки розділу не правити — пропозиції в inbox.
+
+## Готово, коли
+- [ ] \`node tools/validate.mjs --pool ${pool}\` і \`node tools/personalization-qa.mjs --pool ${pool}\` — 0 помилок; \`status: "draft"\`.
+- [ ] Нотатки: таблиця «урок → кількість / рівні / типи / джерела», адаптації, що не ввійшло й чому; рядок в inbox.
+- [ ] Задача → \`tasks/review/\` для **content-verifier зі свіжим контекстом** (розв'язати кожну вправу, звірити джерела й норму); браузерне приймання — qa-${c.id}-pool.
+
+## Нотатки виконавця
+`;
+    if (!DRY) { fs.mkdirSync(path.join(TASKS, "todo"), { recursive: true }); fs.writeFileSync(path.join(TASKS, "todo", name), body, { flag: "wx" }); }
+    out.made.push(sec.id);
+  }
+  const ls = a => a.length ? " (" + a.join(", ") + ")" : "";
+  console.log(`${DRY ? "[dry-run] " : ""}${c.id}: ${DRY ? "створилося б" : "створено"} задач на пули: ${out.made.length}${ls(out.made)}`);
+  console.log(`Пропущено: задача вже є — ${out.task.length}${ls(out.task)}; пул уже є — ${out.pool.length}${ls(out.pool)}; без пулу («Пишемо самі») — ${out.nopool.length}${ls(out.nopool)}`);
 }

@@ -2514,5 +2514,80 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
   for (const v of LONG) { let worst = 0; for (const s of KEYS) { const t0 = performance.now(); const r = L.checkAns(s, v); L.badHint(s, v, r); L.answerSig(s, v); worst = Math.max(worst, performance.now() - t0); }
     eq(worst < 200, true, `list-quadratic: «${JSON.stringify(v.slice(0, 14))}…» (${v.length} симв.) — ${Math.round(worst)} мс (< 200)`); }
 }
+// ---------- engine-pool-lang: мовні вправи й sort/order у пулі тренування (CONTENT_SCHEMA §10, «Пули мовних предметів») ----------
+// Рушій мовних вправ (app/lang.js) у тому самому контексті, що й learn.js, — як у браузері й loadContent
+{ const c = { console }; c.window = c; vm.createContext(c);
+  for (const f of ["app/lang.js", "app/learn.js"]) vm.runInContext(fs.readFileSync(path.join(ROOT, f), "utf8"), c, { filename: f });
+  const LL = c.SLID_LEARN, LG = c.SLID_LANG;
+  const ctxU = { sections: new Map([["u5s3", { grade: 5, lessons: ["u5s3l1", "u5s3l2"] }]]), skills: { orth: {}, oral: {}, synt: {}, morph: {} } };
+  const base = { id: "a01", lesson: "u5s3l1", lvl: 1, sk: "orth", src: "z5 впр. 123(2)", title: "Встав букву", steps: ["Ненаголошене [е] перевіряємо наголосом: сéла."] };
+  const FIX = [
+    { ...base, id: "a01", type: "gaps", text: "с{*е|и}ло, з{е|*и}ма" },
+    { ...base, id: "a02", type: "pick", sk: "synt", title: "Знайди підмет", text: "[Сонце] яскраво [!світить]." },
+    { ...base, id: "a03", type: "stress", sk: "oral", title: "Де наголос?", words: ["черг+овий", "кв+артал"] },
+    { ...base, id: "a04", type: "word", title: "Напиши слово", answer: "м'ята", keys: ["'"] },
+    { ...base, id: "a05", type: "split", sk: "morph", title: "Поділи на морфеми", word: "стіл|", zero: true },
+    { ...base, id: "a06", type: "sort", sk: "morph", title: "Розклади слова", bins: ["Іменник", "Дієслово"], items: [["ліс", 0], ["біжить", 1]] },
+    { ...base, id: "a07", type: "order", sk: "synt", title: "Склади речення", items: ["Сонце", "світить", "яскраво"], shuffle: [2, 0, 1] },
+    { ...base, id: "a08", lesson: "u5s3l2", lvl: 2, type: "choice", title: "Чому так?", opts: ["а", "б"], correct: 0 }];
+  const P = items => ({ id: "pu5s3", section: "u5s3", status: "draft", sources: [{ id: "z5", title: "Заболотний О. В. Українська мова. 5 клас", url: "https://example.org" }], items });
+  const vp = (...its) => LL.validatePool(P(its), ctxU);
+  eq(vp(...FIX), [], "pool-lang: gaps, pick, stress, word, split, sort, order і choice у пулі — коректно");
+  for (const t of ["gaps", "pick", "stress", "word", "split", "sort", "order"]) eq(LL.POOL_TYPES.includes(t), true, `pool-lang: ${t} у POOL_TYPES`);
+  eq(LG.TYPES.filter(t => !LL.POOL_TYPES.includes(t)), [], "pool-lang: кожен мовний тип SLID_LANG.TYPES дозволено в пулі (один перелік)");
+  // розмітка — тими самими правилами, що в уроці (SLID_LANG.issues)
+  const has = (E, re, what) => eq(E.some(e => re.test(e)), true, `${what} (${JSON.stringify(E)})`);
+  has(vp({ ...FIX[0], text: "с{е|и}ло" }), /правильний варіант/, "pool-lang: gaps без «*» — помилка lang.issues");
+  has(vp({ ...FIX[1], text: "Сонце світить." }), /немає жодного правильного/, "pool-lang: pick без [дужок] — помилка");
+  has(vp({ ...FIX[2], words: ["черговий"] }), /«\+»/, "pool-lang: stress без «+» — помилка");
+  has(vp({ ...FIX[3], answer: "" }), /word/, "pool-lang: word з порожньою відповіддю — помилка");
+  has(vp({ ...FIX[4], word: "стіл" }), /межі/, "pool-lang: split без меж — помилка");
+  // межі пулу: gaps ≤ 6 пропусків (в уроці — 12); stress ≤ 6 і pick ≤ 40 — як в уроці
+  const g = n => Array.from({ length: n }, () => "с{*е|и}ло").join(", ");
+  eq(vp({ ...FIX[0], text: g(6) }), [], "pool-lang: gaps з 6 пропусками — можна");
+  has(vp({ ...FIX[0], text: g(7) }), /не більше 6 пропусків/, "pool-lang: gaps з 7 пропусками — помилка межі пулу");
+  has(vp({ ...FIX[2], words: Array(7).fill("черг+овий") }), /1–6 слів/, "pool-lang: stress із 7 слів — помилка");
+  has(vp({ ...FIX[1], text: "[Сонце] " + Array(40).fill("слово").join(" ") }), /≤ 40/, "pool-lang: pick із 41 слова — помилка");
+  // sort / order — ті самі правила, що в уроці
+  has(vp({ ...FIX[5], bins: ["Іменник"] }), /bins/, "pool-lang: sort з одним кошиком — помилка");
+  has(vp({ ...FIX[5], items: [["ліс", 0], ["біжить", 5]] }), /кошик/, "pool-lang: sort — неіснуючий кошик");
+  has(vp({ ...FIX[6], shuffle: [0, 1, 2] }), /shuffle/, "pool-lang: order у правильному порядку — помилка");
+  has(vp({ ...FIX[6], shuffle: [0, 0, 1] }), /shuffle/, "pool-lang: order — shuffle не перестановка");
+  // поля математики в мовній вправі заборонено
+  for (const [f, v] of [["answer", "е"], ["unit", "см"], ["unitForms", ["а", "б", "в"]], ["answerKind", "number"], ["reduced", true], ["tol", 0.1], ["form", "expanded"]])
+    has(vp({ ...FIX[0], [f]: v }), new RegExp(f), `pool-lang: поле ${f} у gaps — помилка`);
+  has(vp({ ...FIX[5], answer: 1 }), /answer/, "pool-lang: answer у sort — помилка");
+  eq(vp({ ...FIX[3] }), [], "pool-lang: answer у word — це ключ слова, можна");
+  has(vp({ ...FIX[0], gen: { vars: { a: { min: 1, max: 3 } }, answer: "a" } }), /gen/, "pool-lang: gen у мовній вправі — помилка");
+  // hyp / poll у пулі — помилка: тренування оцінює кожну вправу
+  has(vp({ ...FIX[0], hyp: true, fbTitle: "x" }), /hyp/, "pool-lang: hyp у мовній вправі пулу — помилка");
+  has(vp({ ...FIX[5], poll: "p1" }), /poll/, "pool-lang: poll у sort — помилка");
+  // пояснення-розбір: 1–4 рядки
+  has(vp({ ...FIX[0], steps: ["1", "2", "3", "4", "5"] }), /1–4/, "pool-lang: 5 рядків пояснення — помилка");
+  has(vp({ ...FIX[0], steps: [] }), /steps/, "pool-lang: без пояснення — помилка");
+  eq(vp({ ...FIX[0], steps: ["1", "2", "3", "4"], hint: "Наголос." }), [], "pool-lang: 4 рядки пояснення й hint — можна");
+  // без рушія мовних вправ (лише learn.js) — не мовчазний успіх, а помилка (fail closed)
+  has(L.validatePool(P([FIX[0]]), ctxU), /app\/lang\.js/, "pool-lang: без SLID_LANG мовна вправа — помилка «не завантажено»");
+  eq(L.validatePool(P([FIX[5]]), ctxU), [], "pool-lang: sort без SLID_LANG — перевіряється й так");
+  // вердикт у SRS: вправа зарахована лише повністю правильна (часткового зарахування немає; gaps 1 з 2 — bad)
+  const S0 = { srs: {}, seen: {}, lessons: {} };
+  const ok1 = LG.check(FIX[0], [0, 1]), half = LG.check(FIX[0], [0, 0]);
+  eq([ok1, half], [true, false], "pool-lang: gaps — обидва пропуски правильні → true, один з двох → false");
+  LL.srsUpdate(S0, [{ lesson: "u5s3l1", ok: ok1 }, { lesson: "u5s3l2", ok: half }], "2026-11-10");
+  eq([S0.srs.u5s3l1.box, S0.srs.u5s3l2.box], [0, 0], "pool-lang: srsUpdate — перша коробка для обох (без запису й не пройдено → −1+1 = 0; хибно → 0)");
+  LL.srsUpdate(S0, [{ lesson: "u5s3l1", ok: true }, { lesson: "u5s3l2", ok: false }], "2026-11-10");
+  eq([S0.srs.u5s3l1.box, S0.srs.u5s3l2.box], [1, 0], "pool-lang: повністю правильно → наступна коробка, частково → 0");
+  // practiceItems / pickSession не залежать від типу: мовні вправи йдуть у сесію як будь-які інші
+  const subj = { id: "ukr", sections: [{ id: "u5s3", grade: 5, lessons: [{ id: "u5s3l1" }, { id: "u5s3l2" }] }], pools: [P(FIX)] };
+  const its = LL.practiceItems({ grade: 5, lessons: { u5s3l1: { done: true } }, srs: {}, seen: {} }, subj, null);
+  eq(its.map(x => x.key), FIX.map(x => "pu5s3:" + x.id), "pool-lang: practiceItems — усі типи, ключ pu5s3:a01…");
+  eq(LL.pickSession({ srs: {}, seen: {} }, { items: its, focus: "u5s3l1", n: 6, day: "2026-11-10" }).length, 6, "pool-lang: pickSession — 6 вправ з мовних типів");
+}
+// engine-pool-lang: math-пули не змінюються — choice з unit чи hyp (чого в змісті немає) і далі не перевіряються новими правилами
+{ const ctx = { sections: new Map([["s1", { grade: 6, lessons: ["a"] }]]), skills: { ops: {} } };
+  const p = it => L.validatePool({ id: "p", section: "s1", status: "draft", sources: [{ id: "bk", title: "t", url: "https://x" }], items: [{ id: "t1", lesson: "a", lvl: 1, sk: "ops", src: "bk 1", title: "x", steps: ["1", "2", "3", "4", "5"], ...it }] }, ctx);
+  eq(p({ type: "answer", answer: 5 }), [], "pool-lang: answer з 5 рядками розв'язання — як раніше");
+  eq(p({ type: "choice", opts: ["а", "б"], correct: 0, unit: "см" }), [], "pool-lang: choice математики — нові правила мовних вправ не застосовуються"); }
+
 console.log(`\n${n} перевірок, ${fails ? fails + " з помилками" : "усе гаразд"}`);
 if (fails) process.exit(1);

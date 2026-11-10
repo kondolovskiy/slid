@@ -28,6 +28,10 @@ export const GRADED = ["choice","multi","sort","slider","order","align","shade",
 export const TYPES = ["intro","info","explore", ...GRADED];
 // предмети, де кожен урок має справжнє img (D-027, D-044): validate (помилка) і шаблон задачі автора в make-tasks.mjs
 export const IMG_REQUIRED = { hist: "error", world: "error" };
+// розділи без пулу тренування (engine-pool-lang): розвиток мовлення «Пишемо самі…» (u5s11, u6s14, u7s13, u8s14) — письмо автоматично
+// не перевірити. Спільне для make-tasks.mjs (задач не створює) і personalization-qa.mjs (пул такого розділу — помилка). За назвою, щоб
+// правило діяло й на розділи 9–11 класів; перевірювані уроки там (ділові папери: реквізити) — окремим рішенням пізніше
+export const NO_POOL_SECTION = /^Пишемо самі/;
 /** Контекст learn.validate для тесту рівня предмета: усі розділи (і лише з планом), уроки-боси — поза списком уроків розділу.
     Одне джерело для validate.mjs і personalization-qa.mjs (рев'ю tools-diag-nonmath-p3, P3-2). */
 export function diagCtx(c) {
