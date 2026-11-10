@@ -5,7 +5,7 @@ id: research-hist-coverage-g5-6
 type: research
 subject: hist
 grade: 5
-status: todo
+status: review
 claimed_by: w-research-hist-coverage-g5-6
 created: 2026-11-10
 depends_on: []
@@ -42,3 +42,9 @@ depends_on: []
 - [ ] Далі: curate-hist-coverage.
 
 ## Нотатки виконавця
+- 2026-11-10 w-research-hist-coverage-g5-6: звіт reports/research/coverage-research-hist-coverage-g5-6.md. Джерела відкрито: ПВас (ippo.if.ua, наказ № 795), КТП5 / НП6 / КТП6 (Астон; структура підручників — самих підручників у мережі немає), Конституція (ccu.gov.ua). Держстандарт (№ 898) не відкрито: zakon.rada — reset, mon.gov.ua — 403.
+- 119 одиниць: П 61 / Ч 41 / Н 17, покриття ≈ 68 % (5 кл. 68 %, 6 кл. 69 %).
+- Пропозиції: нові розділи g5s7, g6s9, g6s10 (20 уроків) + 9 уроків у наявних розділах + 9 refine; чернетки plan.js і тижні — у звіті §4.
+- Спірне — звіт §5 (Возняк — пропозиція TQ в inbox; teacher-questions.md не редагував за вказівкою оркестратора).
+- Рядки FACT / CONFLICT / IDEA — в inbox.
+- Верифікатору: вибірково перевірити ≥ 20 % одиниць (П і Н) у звіті §2.
