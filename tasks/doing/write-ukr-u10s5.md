@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-10T20:30:52.457Z
 id: write-ukr-u10s5
 type: write-section
 subject: ukr
@@ -6,7 +8,7 @@ grade: 10
 section: u10s5
 weeks: [15, 17]
 status: todo
-claimed_by:
+claimed_by: w-write-ukr-u10s5
 created: 2026-11-10
 ---
 # Написати розділ «Орфографія: е та и, апостроф, м'який знак, чергування» (Українська мова, 10 клас)
