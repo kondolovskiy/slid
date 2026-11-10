@@ -3,7 +3,7 @@ claimed_from: todo
 claimed_at: 2026-11-10T09:59:27.638Z
 id: tools-diag-nonmath-p3
 type: tools
-status: review
+status: done
 claimed_by: eng-diag-nonmath
 created: 2026-11-10
 ---
