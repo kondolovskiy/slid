@@ -1,10 +1,12 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-10T19:56:08.995Z
 id: plan-world-g10-11
 type: curate
 subject: world
 grade: 10
 status: todo
-claimed_by:
+claimed_by: w-plan-world-g10-11
 created: 2026-11-10
 depends_on: []
 ---

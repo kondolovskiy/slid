@@ -1,10 +1,12 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-10T19:56:09.171Z
 id: research-world-coverage-g7-9
 type: research
 subject: world
 grade: 7
 status: todo
-claimed_by:
+claimed_by: w-research-world-coverage-g7-9
 created: 2026-11-10
 depends_on: []
 ---

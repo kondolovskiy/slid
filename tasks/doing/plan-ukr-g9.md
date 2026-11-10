@@ -1,10 +1,12 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-10T19:56:08.946Z
 id: plan-ukr-g9
 type: curate
 subject: ukr
 grade: 9
 status: todo
-claimed_by:
+claimed_by: w-plan-ukr-g9
 created: 2026-11-10
 depends_on: []
 ---

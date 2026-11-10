@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-10T19:56:09.210Z
 id: engine-pool-lang
 type: engine
 subject: ukr
 status: todo
-claimed_by:
+claimed_by: w-engine-pool-lang
 created: 2026-11-10
 depends_on: []
 ---
