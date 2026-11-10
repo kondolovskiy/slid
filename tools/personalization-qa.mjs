@@ -1,6 +1,6 @@
 // Structural acceptance against the curator's matrix; no network and no mathematical verification.
 import { pathToFileURL } from 'node:url';
-import { loadContent, readJSON } from './lib.mjs';
+import { loadContent, readJSON, diagCtx } from './lib.mjs';
 
 // Вимогу exactRoot закриває також list, у ключі якого є точний корінь (√, ∛…) і який checkAns справді перевіряє точно:
 // ключ як записано — "ok", ключ із десятковими наближеннями коренів — "bad". Наближення, π без кореня, числовий list — ні.
@@ -139,17 +139,16 @@ export function audit(subject, matrix, learn, filter = {}) {
 // forEvidence…) тут немає — лише структурна перевірка тим самим learn.validate, що й у validate.mjs, і явне повідомлення, що решту пропущено.
 // Нуль завдань — помилка (не «0 прогалин»).
 export function auditOther(subject, d, learn) {
-  const sections = subject.sections.filter(s => s.lessons?.length);
-  const ctx = { lessons: new Map(sections.flatMap(s => s.lessons.map(l => [l.id, { ...l, grade: s.grade, section: s.id }]))),
-    sections: new Map(sections.map(s => [s.id, { ...s, lessons: s.lessons.map(l => l.id) }])), skills: subject.skills };
-  const errors = [...learn.validate(d, ctx)].map(e => `${d.id}: ${e}`);   // масив з vm-контексту → звичайний
+  // контекст — той самий diagCtx, що в validate.mjs (розділи лише з планом, боси поза уроками розділу; рев'ю P3-2)
+  const errors = [...learn.validate(d, diagCtx(subject))].map(e => `${d.id}: ${e}`);   // масив з vm-контексту → звичайний
   if (!d.items?.length) errors.push(`${d.id}: нуль завдань для перевірки`);
   return { subject: subject.id, id: d.id, grade: d.grade, errors, missing: [], unsupported: [], warnings: [],
     skipped: `${d.id} (${subject.id}, ${d.grade} кл.): матриця покриття є лише для math (docs/math-personalization-coverage.json) — перевірено лише структуру тесту (learn.validate), вимоги матриці пропущено`,
     counts: { diagnostics: 1, items: d.items?.length || 0 } };
 }
 
-export function run(args) {
+// load — для тестів (зіпсований зміст без копії дерева); за замовчуванням живий зміст
+export function run(args, load = loadContent) {
   const filter = {}, flags = new Set(['--strict', '--json']);
   for (let i = 0; i < args.length; i++) {
     const arg = args[i];
@@ -161,7 +160,7 @@ export function run(args) {
   }
   if ('grade' in filter && (!Number.isInteger(filter.grade) || filter.grade < 4 || filter.grade > 11)) throw new Error('Клас має бути 4–11');
   if (filter.diag && filter.pool) throw new Error('--diag і --pool взаємовиключні');
-  const { subjects, learn } = loadContent(), matrix = readJSON('docs/math-personalization-coverage.json');
+  const { subjects, learn } = load(), matrix = readJSON('docs/math-personalization-coverage.json');
   const other = filter.diag && subjects.filter(c => c.id !== 'math').flatMap(c => (c.diags || []).filter(d => d.id === filter.diag).map(d => [c, d]))[0];
   if (other) {
     const [c, d] = other;
@@ -169,7 +168,9 @@ export function run(args) {
     const report = auditOther(c, d, learn);
     if (args.includes('--json')) console.log(JSON.stringify(report));
     else { console.log(`ПРОПУЩЕНО: ${report.skipped}`); console.log(`Завдань: ${report.counts.items}`); for (const line of report.errors) console.log(`ПОМИЛКА: ${line}`); }
-    return report.errors.length ? 1 : 0;
+    // --strict — суворе приймання за матрицею; без матриці його не буває, тож не «зелено», а rc 1 (рев'ю P3-3)
+    if (args.includes('--strict') && !args.includes('--json')) console.log(`--strict: суворе приймання ${d.id} неможливе — матриці покриття для ${c.id} немає`);
+    return report.errors.length || args.includes('--strict') ? 1 : 0;
   }
   if (filter.diag && !matrix.diagnostics.some(d => d.id === filter.diag)) throw new Error(`Невідома діагностика ${filter.diag}`);
   if (filter.pool && !matrix.lessons.some(r => r.pool === filter.pool)) throw new Error(`Невідомий пул ${filter.pool}`);

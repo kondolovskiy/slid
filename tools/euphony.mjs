@@ -8,7 +8,8 @@
 // механічно не відрізнити, лише у звіті).
 // Межа (tools-diag-nonmath-p3 п. 3): «в» на початку самого слова («Влітку», «Встановлено» на початку речення → «Улітку», «Установлено») — лише
 // у звіті (правило «в-слово-на-початку»), не в validate: частина слів уживається тільки з «в» (вплив, вправа, вставні…). Тег виділення на початку
-// речення (<b>В лісі</b>) межею не є; посеред речення — є (навмисні приклади в поясненнях). Елементи sort (items) перевіряються як авторський текст.
+// речення (<b>В лісі</b>) межею не є; посеред речення — є (навмисні приклади в поясненнях). Для «в-слово-на-початку» велика «В…» одразу
+// після відкривного тегу виділення й посеред речення («…або <b>Встановлено…</b>») — теж початок речення-прикладу; курсив і лапки — ні (цитати). Елементи sort (items) перевіряються як авторський текст.
 // Запуск: node tools/euphony.mjs [--subject ukr] [--section ID] [--exercises] [--json]  → reports/euphony-<предмет>.md (з --section — лише stdout)
 //   --exercises — окремий режим: варіанти, items і речення gaps/pick поза пропусками → reports/euphony-<предмет>-exercises.md
 import fs from "node:fs"; import path from "node:path"; import { fileURLToPath } from "node:url";
@@ -79,12 +80,15 @@ const TARGET = new Set(["в", "у", "і", "й", "з", "із", "зі"]);
 const VFIXED = /^в(?:плив|прав|провад|лад|ласн|заєм|ступ|клад|дач|важа|бача|сесвіт|селен|тор|бивств|став(?:те)?(?![\p{L}])|ставн|ставк|пиш|каж|казівн|лучн|вічлив)/u;
 function initialV(src, toks, k, lw, out) {
   const t = toks[k], p = toks[k - 1];
-  if (t.w[0] !== "В" || [...lw].length < 3 || !isC(lw[1]) || VFIXED.test(lw)) return;
+  // абревіатури («ВВП», «ВНЗ») — не слова з префіксом (рев'ю P3-4)
+  if (t.w[0] !== "В" || t.w === t.w.toLocaleUpperCase("uk") || [...lw].length < 3 || !isC(lw[1]) || VFIXED.test(lw)) return;
   const head = src.slice(0, t.i);
   if (head.lastIndexOf(IO) > head.lastIndexOf(IC) || (head.match(/«/g) || []).length > (head.match(/»/g) || []).length) return;   // приклади й цитати
-  const before = (p ? src.slice(p.e, t.i) : head).replace(/[\u0002\u0004\u0005]/g, "");
+  const rawBefore = (p ? src.slice(p.e, t.i) : head).replace(/[\u0004\u0005]/g, ""), before = rawBefore.replace(/\u0002/g, "");
   if (/[«"“„[/]\s*$/.test(before)) return;
-  if (!p || END.test(before)) out.push({ rule: "в-слово-на-початку", word: t.w, ctx: t.w + (toks[k + 1] ? " " + toks[k + 1].w : "") });
+  // велика «В…» одразу після відкривного тегу виділення посеред речення — початок виділеного речення-прикладу: «…або <b>Встановлено
+  // нові знаки</b>» (u8s7, рев'ю P2-1). Лише звіт, тож шум допустимий; тег закриття з пробілом після нього («</b> Влітку») — ні
+  if (!p || END.test(before) || /\u0002$/.test(rawBefore)) out.push({ rule: "в-слово-на-початку", word: t.w, ctx: t.w + (toks[k + 1] ? " " + toks[k + 1].w : "") });
 }
 
 /** Відхилення в одному тексті: [{ rule, word, ctx }] */

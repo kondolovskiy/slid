@@ -756,7 +756,8 @@ const { figCues: figCuesT, figPoints: figPointsT } = await import(path.join(ROOT
   expectRun("ukr: split zero «стіл|» — чисто", u({ type: "split", title: "Основа й закінчення", word: "стіл|", zero: true }), A, {});
   expectRun("ukr: split «стіл|» без zero — помилка", u({ type: "split", title: "Основа й закінчення", word: "стіл|" }), A, { err: "zero: true" });
   // tools-diag-nonmath-p3 п. 2: пробіл у word уроку (і на краю) — помилка; плеєр зробив би з нього клітинку з межею
-  for (const [k, word] of [["на початку", " мо|ло|ко"], ["у кінці", "мо|ло|ко "], ["нерозривний у кінці", "мо|ло|ко "], ["посередині", "ма|ма та|то"], ["у кінці з zero", ["стіл| "]]])
+  for (const [k, word] of [["на початку", " мо|ло|ко"], ["у кінці", "мо|ло|ко "], ["нерозривний у кінці", "мо|ло|ко\u00A0"], ["посередині", "ма|ма та|то"], ["у кінці з zero", ["стіл| "]],
+    ["нульової ширини U+200B (рев'ю P3-5)", "мо|ло\u200B|ко"], ["м'який перенос U+00AD", "мо\u00AD|ло|ко"], ["U+2060 на початку", "\u2060мо|ло|ко"]])
     expectRun(`ukr: split — пробіл ${k} — помилка`, u({ type: "split", title: "Склади", word, ...(Array.isArray(word) ? { zero: true } : {}) }), A, { err: "split — одне слово без пробілів" });
   // п. 15: милозвучність — попередження лише для ukr і лише правила з малим шумом; «і» між зіставленими поняттями — ні
   const EU = "милозвучність";
@@ -798,12 +799,14 @@ const { figCues: figCuesT, figPoints: figPointsT } = await import(path.join(ROOT
 // ---- tools-diag-nonmath-p3 п. 5: meta.author — не назва моделі ШІ (AGENTS.md §5); попередження, не помилка ----
 { const AI = "схоже на назву моделі ШІ";
   const sec = (id, author) => secJS("math", { ...mathSec(id), meta: { author, created: "2026-11-10", factcheck: null, teacher: null } });
-  for (const a of ["claude-opus", "Codex", "gpt-5-codex", "gemini", "cursor-composer"])
+  // фікстури — вигадані форми (родина + «-x»), без справжніх назв моделей (AGENTS.md §5; рев'ю P1-1); « claude-x» — пробіл на початку (trim);
+  // «writer-gpt-task», «acme-claude» — родина не на початку рядка (якір ^)
+  for (const a of ["claude-x", "Codex", "gpt-x-codex", "gemini", "cursor-x", "composer-x", " claude-x"])
     expectRun(`meta.author «${a}» — попередження`, { "content/math/g8-fxa.js": sec("fxa", a) }, ["--section", "fxa"], { warn: AI });
-  for (const a of ["writer-g8m1", "test", "Олена Петренко", "claudia", "gptx"])
+  for (const a of ["writer-g8m1", "test", "Олена Петренко", "claudia", "gptx", "writer-gpt-task", "acme-claude"])
     expectRun(`meta.author «${a}» — чисто`, { "content/math/g8-fxa.js": sec("fxa", a) }, ["--section", "fxa"], { noWarn: AI });
   // з --section — лише свій розділ: чужий автор-модель не підсвічується; повний прогін — підсвічується
-  const two = { "content/math/g8-fxa.js": sec("fxa", "claude-opus"), "content/math/g8-fxb.js": sec("fxb", "writer-fxb") };
+  const two = { "content/math/g8-fxa.js": sec("fxa", "claude-x"), "content/math/g8-fxb.js": sec("fxb", "writer-fxb") };
   expectRun("meta.author: --section іншого розділу — без попередження", two, ["--section", "fxb"], { noWarn: AI });
   { const rep = expectRun("meta.author: повний прогін — попередження з файлом розділу", two, [], { warn: AI });
     ok(rep && rep.warnings.filter(w => w.includes(AI)).length === 1 && rep.warnings.some(w => w.includes(AI) && w.includes("#fxa:")), "meta.author: рівно одне попередження й указує на fxa", rep && rep.warnings.filter(w => w.includes(AI)).join("\n  ")); }

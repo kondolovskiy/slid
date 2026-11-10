@@ -28,6 +28,13 @@ export const GRADED = ["choice","multi","sort","slider","order","align","shade",
 export const TYPES = ["intro","info","explore", ...GRADED];
 // предмети, де кожен урок має справжнє img (D-027, D-044): validate (помилка) і шаблон задачі автора в make-tasks.mjs
 export const IMG_REQUIRED = { hist: "error", world: "error" };
+/** Контекст learn.validate для тесту рівня предмета: усі розділи (і лише з планом), уроки-боси — поза списком уроків розділу.
+    Одне джерело для validate.mjs і personalization-qa.mjs (рев'ю tools-diag-nonmath-p3, P3-2). */
+export function diagCtx(c) {
+  const lessons = new Map(), sections = new Map();
+  for (const sec of c.sections) { sections.set(sec.id, { grade: sec.grade, lessons: (sec.lessons || []).filter(l => !l.boss).map(l => l.id) }); (sec.lessons || []).forEach(l => lessons.set(l.id, { grade: sec.grade })); }
+  return { lessons, sections, skills: c.skills };
+}
 
 /** Прибирає HTML і формули, повертає чистий текст.
     engine-lang-p3: тег між літерами без пробілу (велос<b>и</b>пед) — частина слова, а не межа (п. 17); кожен пункт списку <li> — окреме речення,

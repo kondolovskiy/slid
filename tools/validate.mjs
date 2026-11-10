@@ -3,7 +3,7 @@
 // ПОПЕРЕДЖЕННЯ — порушення стилю (style/*.md, style/profiles.json) — їх треба виправити або обґрунтувати в нотатках задачі.
 // Запуск: node tools/validate.mjs [--section <id> | --diag <id> | --pool <id>] [--quiet]
 import fs from "node:fs"; import path from "node:path";
-import { loadContent, GRADED, TYPES, plain, mplain, words, sentences, lessonMetrics, gradeBand, readJSON, ROOT, figCues, IMG_REQUIRED } from "./lib.mjs";
+import { loadContent, GRADED, TYPES, plain, mplain, words, sentences, lessonMetrics, gradeBand, readJSON, ROOT, figCues, IMG_REQUIRED, diagCtx } from "./lib.mjs";
 import { analyzeGraph } from "./graph-lib.mjs";
 import { euphonyScreen, euphonyIssues, VALIDATE_RULES as EUPHONY_RULES, RULES as EUPHONY_DESC } from "./euphony.mjs";
 
@@ -362,7 +362,8 @@ function checkScreen(S, s, c, diag, pool = false) {
       if (s.type === "split" && /[<>&]/.test([].concat(s.word).join(""))) E(S, "split: у word не може бути HTML");
       // пробіл будь-де, і на краю слова (" мо|ло|ко"), lang.issues пропускає, а плеєр робить з нього клітинку з межею (app.js split:
       // кожен символ — span.sl); у тесті рівня це ще й «два слова — два вміння» (рев'ю engine-diag-lang-types P2-1; tools-diag-nonmath-p3 п. 2)
-      if (s.type === "split" && [].concat(s.word).some(w => typeof w === "string" && /\s/.test(w))) E(S, "split — одне слово без пробілів (і на краю слова): пробіл стає клітинкою для межі");
+      // невидимі символи нульової ширини (U+200B–U+200D, U+2060, м'який перенос U+00AD) — так само клітинка (рев'ю P3-5)
+      if (s.type === "split" && [].concat(s.word).some(w => typeof w === "string" && /[\s\u00AD\u200B-\u200D\u2060]/.test(w))) E(S, "split — одне слово без пробілів і невидимих символів (і на краю слова): кожен символ стає клітинкою для межі");
       break;
     case "fracin": if (!(Number.isInteger(s.answer) && s.answer >= 0 && s.answer < 1e6)) E(S, "answer — ціле невід'ємне число (поле приймає лише цифри)");
       if (!(s.expr && s.den)) E(S, "fracin потребує expr і den"); break;
@@ -425,11 +426,7 @@ for (const c of subjects) for (const sec of c.sections) {
 }
 // діагностика класів (SLID.diag, docs/CONTENT_SCHEMA.md §9)
 // уроки й розділи лише свого предмета: план веде тільки на них, а baseline перевіряє, чи є в предметі молодші класи
-const subjectMaps = c => {
-  const lessons = new Map(), sections = new Map();
-  for (const sec of c.sections) { sections.set(sec.id, { grade: sec.grade, lessons: (sec.lessons || []).filter(l => !l.boss).map(l => l.id) }); (sec.lessons || []).forEach(l => lessons.set(l.id, { grade: sec.grade })); }
-  return { lessons, sections };
-};
+const subjectMaps = diagCtx;   // tools/lib.mjs — спільно з personalization-qa.mjs (auditOther)
 const diagIds = new Set();
 for (const c of subjects) for (const d of c.diags || []) {
   if (onlySec || (onlyDiag && d.id !== onlyDiag)) continue;
