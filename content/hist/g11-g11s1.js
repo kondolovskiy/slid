@@ -1,13 +1,12 @@
-/* Слід · Історія України, 10 клас — «Друга світова війна»
-   Клас: 10 (до 2026-11-10 — 11 кл.). Програма МОН № 698 від 03.08.2022: 10 кл. — 1914–1945 рр., 11 кл. — від 1945 р.; id розділу й уроків без змін (правило 11, прецедент D-047 g11m2). Підстава — reports/research/coverage-research-hist-coverage-g10-11.md §4.0, задача curate-hist-coverage.
+/* Слід · Історія України, 11 клас — «Друга світова війна»
    Статус уроків: verified (D-027: архівні зображення — w-images-hist-g11s1, 2026-10-31; повторна незалежна перевірка — verifier-d027-g11s1, 2026-10-31; первинна — verifier-g11s1, 2026-10-14). 7 уроків (6 тем + boss).
    Перевірка: node tools/validate.mjs --section g11s1
    Факти: УІНП; USHMM; Яд Вашем; Encyclopedia of Ukraine; документи ООН.
    Повні URL і нотатки для верифікатора — у tasks/doing/write-hist-g11s1.md. */
 SLID.section("hist", {
   id: "g11s1",
-  grade: 10,
-  weeks: [29, 35],
+  grade: 11,
+  weeks: [1, 8],
   title: "Друга світова війна",
   why: "Щоб знати ціну війни для України і розрізняти правду й радянські міфи.",
   meta: { author: "writer-g11s1", created: "2026-10-14", factcheck: "self", teacher: null },
