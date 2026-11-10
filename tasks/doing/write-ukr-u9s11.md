@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-10T20:21:17.959Z
 id: write-ukr-u9s11
 type: write-section
 subject: ukr
@@ -6,7 +8,7 @@ grade: 9
 section: u9s11
 weeks: [34, 35]
 status: todo
-claimed_by:
+claimed_by: w-write-ukr-u9s11
 created: 2026-11-10
 ---
 # Написати розділ «Повторюємо: орфографія і пунктуація» (Українська мова, 9 клас)

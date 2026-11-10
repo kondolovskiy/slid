@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-10T20:21:18.014Z
 id: curate-world-coverage
 type: curate
 subject: world
 status: todo
-claimed_by:
+claimed_by: w-curate-world-coverage
 created: 2026-11-10
 depends_on: [research-world-coverage-g7-9, plan-world-g10-11]
 ---
