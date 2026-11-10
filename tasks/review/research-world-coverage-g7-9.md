@@ -5,7 +5,7 @@ id: research-world-coverage-g7-9
 type: research
 subject: world
 grade: 7
-status: todo
+status: review
 claimed_by: w-research-world-coverage-g7-9
 created: 2026-11-10
 depends_on: []
@@ -42,3 +42,10 @@ depends_on: []
 - [ ] Далі: curate-world-coverage.
 
 ## Нотатки виконавця
+2026-11-10, w-research-world-coverage-g7-9:
+- Звіт: reports/research/coverage-research-world-coverage-g7-9.md. Програма ПВ відкрита (znayshov.com, наказ № 1449, 37 с.); Підр.7 Гісем — Мартинюк 2020 (noordhoff.nl) — лише для звірки складу тем; підручники НУШ 8–9 кл. недоступні (lib.imzo, noordhoff — немає файлів).
+- 175 одиниць програми: покрито 85, частково 38, немає 52 → 59 % (7 кл. 64 %, 8 кл. 60 %, 9 кл. 53 %). Найслабші — розд. III кожного класу (39–43 %). Персоналії ≈ 58 %, терміни ≈ 59 %.
+- Пропозиції: 3 нові розділи (w7s6, w8s6, w9s6 — чернетки plan.js §5), 14 нових уроків у наявних розділах, refine-доповнення в 13 уроках; разом +35 уроків. Тести dgw7–dgw9 не зачеплено.
+- inbox: IDEA ×3, FACT ×7 (з URL), TERM ×1, → teacher-questions ×2 («війни розкоші», «Анрі VII»).
+- Для content-verifier: вибірка 36 одиниць (21 %) — звіт §8.
+- Зміст, plan.js, memory/long не змінено; build не запускав.
