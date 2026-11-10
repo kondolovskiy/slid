@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-10T20:38:36.351Z
 id: write-world-w10s2
 type: write-section
 subject: world
@@ -6,7 +8,7 @@ grade: 10
 section: w10s2
 weeks: [6, 9]
 status: todo
-claimed_by:
+claimed_by: w-write-world-w10s2
 created: 2026-11-10
 ---
 # Написати розділ «Мир після Великої війни» (Всесвітня історія, 10 клас)
