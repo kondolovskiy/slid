@@ -1,5 +1,5 @@
 /* Слід · Історія, 6 клас — «Стародавня Греція»
-   Статус уроків: g6s7-l1, l2, l4…l7 verified (verifier-g6s7, 2026-11-03); l3 draft (fix-hist-g6s7-l3-learned, 2026-11-10: порівняння з Україною сьогодні). Написано writer-write-hist-g6s7 (програма Васильків та ін., D-043/D-044). 7 уроків.
+   Статус уроків: g6s7-l1, l2, l4…l7 verified (verifier-g6s7, 2026-11-03); l3 verified (verifier-g6s7-l3, 2026-11-10, після fix-hist-g6s7-l3-learned: порівняння з Україною сьогодні). Написано writer-write-hist-g6s7 (програма Васильків та ін., D-043/D-044). 7 уроків.
    Перевірка: node tools/validate.mjs && node tools/stats.mjs
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("hist", {
@@ -9,7 +9,7 @@ SLID.section("hist", {
   title: "Стародавня Греція",
   why: "Щоб розуміти, звідки походять демократія, театр, Олімпійські ігри й наука — і чому грецькі міста з'явилися й на наших берегах.",
   requires: ["l3", "g6s6-l1"],
-  meta: { author: "fix-hist-g6s7-l3-learned", created: "2026-11-03", factcheck: "verifier-g6s7", teacher: null },
+  meta: { author: "write-hist-g6s7", created: "2026-11-03", factcheck: "verifier-g6s7", teacher: null },
   badges: [{ id: "hellas", name: "Екскурсовод грецької зали", icon: "scroll", desc: "Пройти розділ «Стародавня Греція»" }],
   credits: [
     ["Золота поховальна маска з Мікен («маска Агамемнона»), Національний археологічний музей, Афіни", "Jebulon", "CC0 1.0", "https://commons.wikimedia.org/wiki/File:Agamemnon_mask_NAMA_Athens_Greece.jpg"],
@@ -275,7 +275,7 @@ SLID.section("hist", {
       title: "Голос на черепку",
       short: "Демократія",
       icon: "vote",
-      status: "draft",
+      status: "verified",
       why: "Слово «демократія» ми чуємо щодня. Ти дізнаєшся, як влада народу працювала в Афінах і чим вона відрізнялася від сучасної.",
       screens: [
         {

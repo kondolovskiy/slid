@@ -5,7 +5,7 @@ id: fix-hist-g6s7-l3-learned
 type: fix-section
 subject: hist
 grade: 6
-status: review
+status: done
 claimed_by: writer-g6s7-l3
 created: 2026-11-10
 ---
