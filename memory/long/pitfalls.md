@@ -112,6 +112,7 @@ _Розбито з `pitfalls.md` 2026-11-05 (куратор пам'яті): за
 - _(2026-10-31)_ Недоступні з середовища 31.10: chtyvo.org.ua (закрився; **05.11 — проєкт «Чтиво» завершено**, shron1.chtyvo.org.ua віддає 301 на сторінку закриття — старі посилання в facts мертві, див. «Додано 2026-11-05»), dlibra.kul.pl, bcul.lib.uni.lodz.pl, dchp.arts.ubc.ca (503), archives.gov.ua, LAC recherche (403), web.archive.org, bigenc.ru (401), krugosvet; для енциклопедичних довідок — Universalis.
 - _(2026-11-02)_ **mon.gov.ua (Cloudflare), zakon.rada.gov.ua (403/503) і pravopys.net (503) з проксі недоступні.** Правопис — https://2019.pravopys.net/sections/N/ через `curl` або https://slovnyk.ua/pravopys.php?prav_par=N (обидва = ред. 2019 = стандарт 2026); закони — osvita.ua/legislation, protocol.ua, ccu.gov.ua (writer-u5s1, u5s4, verifier-u5s4).
 - _(2026-11-05)_ **chtyvo.org.ua закрито:** PDF не віддаються (301 → «Завершення проєкту Чтиво»). Не цитувати chtyvo як джерело; для статей шукати видавця, ЕСУ, ZAXID.NET, academia тощо. Наявне посилання в facts/hist №98 позначено мертвим; у h33 note замінено на ZAXID.NET.
+- _(2026-11-06)_ **2019.pravopys.net — 503, pravopys.net — 403** (знову); текст ч. «Розділові знаки» є лише на slovnyk.ua — статус не звірено (handoff). **lib.imzo.gov.ua** (PDF підручників) з проксі — самопідписаний сертифікат. **Конституція — PDF КСУ** https://ccu.gov.ua/sites/default/files/konstytuciya_ukrayiny_0.pdf відкривається (замість zakon.rada). Онатій 8 кл. (4book) — текстовий шар зі зсувом кодів (facts/ukr-8 «Джерела»).
 
 ## Додано 2026-11-05, сесія 5 (пакет 05.11-4: math Істер P3 у worktree)
 
@@ -125,3 +126,9 @@ _Розбито з `pitfalls.md` 2026-11-05 (куратор пам'яті): за
 - **`npm run check` після злиття КОЖНОГО worktree**, а не одним прогоном у кінці пакета: злиття wt-poolsos і wt-listp3 міняли пули й рушій — кожне зі своїм build-комітом (bcc9652, d8ac836). Зсуви test-hyp / diff-answers так видно на своєму злитті. Доповнює рядок «check після кожного змістового коміту» (сесія 5).
 - **Виправлення PWA доходить до дітей лише після злиття в main** (Pages публікує з main): гілка з фіксом — не реліз. У handoff тримай «злити PR» окремим технічним питанням людині.
 
+
+## Додано 2026-11-10 (пакет 06.11: ukr 8 кл., тести рівня)
+
+### Процес
+- **`stats`/`validate` у задачах авторів перезаписують спільні reports/** (style-ukr.md, validate.json) — повторилось у 06.11 (writer-u8s10, verifier-u8s14); коміт звітів — лише оркестратор (як у «Обмеженнях середовища» handoff).
+- **`requires` розділу у файлі й у plan.js розходяться,** коли розділи пишуться паралельно: автор дописує у свій файл уроки пізніше написаних розділів (u8s4 ← u8s3, u8s7 ← u8s4, u8s12 ← u8s11, u8s13 ← u8s10), а plan.js лишається старим. Після пакета — одна задача куратора на синхронізацію plan.js (tasks/todo/curate-ukr-g8-plan-sync).
