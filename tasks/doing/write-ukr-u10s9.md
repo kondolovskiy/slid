@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-10T20:39:42.614Z
 id: write-ukr-u10s9
 type: write-section
 subject: ukr
@@ -6,7 +8,7 @@ grade: 10
 section: u10s9
 weeks: [28, 30]
 status: todo
-claimed_by:
+claimed_by: w-write-ukr-u10s9
 created: 2026-11-10
 ---
 # Написати розділ «Морфологічна норма: паралельні закінчення, кличний відмінок, по батькові» (Українська мова, 10 клас)
