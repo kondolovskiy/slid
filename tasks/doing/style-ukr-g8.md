@@ -1,10 +1,12 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-10T07:14:11.309Z
 id: style-ukr-g8
 type: style
 subject: ukr
 grade: 8
 status: todo
-claimed_by:
+claimed_by: style-ukr8
 created: 2026-11-10
 ---
 # style-sync ukr 8 кл. (u8s1–u8s14)

@@ -1,10 +1,12 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-10T07:14:11.247Z
 id: curate-ukr-g8-plan-sync
 type: curate
 subject: ukr
 grade: 8
 status: todo
-claimed_by:
+claimed_by: curator-plan-ukr8
 created: 2026-11-10
 ---
 # ukr 8 кл.: plan.js — синхронізувати з verified-розділами
