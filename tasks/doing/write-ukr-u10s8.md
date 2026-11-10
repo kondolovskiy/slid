@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-10T20:37:29.096Z
 id: write-ukr-u10s8
 type: write-section
 subject: ukr
@@ -6,7 +8,7 @@ grade: 10
 section: u10s8
 weeks: [25, 27]
 status: todo
-claimed_by:
+claimed_by: w-write-ukr-u10s8
 created: 2026-11-10
 ---
 # Написати розділ «Морфологічна норма: рід, число й відмінки іменників» (Українська мова, 10 клас)
