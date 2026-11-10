@@ -92,6 +92,12 @@
 | w9s5l4 Два табори Європи | 9 | 10 | 0.6 | 32 | 73 | 6.1 | 0.063 | 4 | — |
 | w9s5l5 Мистецтво без правил | 9 | 10 | 0.5 | 28 | 65 | 6.5 | 0.034 | 4 | — |
 | w9s5l6 Капсула часу 1914 р. (фінал) | 9 | 7 | 0.86 | 17 | 39 | 6 | 0.023 | 3 | — |
+| w10s1l1 Постріл, що підпалив Європу | 10 | 9 | 0.56 | 34 | 75 | 7.4 | 0.053 | 4 | — |
+| w10s1l2 Війна в окопах | 10 | 10 | 0.5 | 35 | 76 | 7.6 | 0.026 | 3 | — |
+| w10s1l3 Війна, що забрала всіх | 10 | 9 | 0.56 | 28 | 75 | 7.1 | 0.021 | 3 | — |
+| w10s1l4 Телеграма й революція | 10 | 9 | 0.56 | 40 | 90 | 7.3 | 0.052 | 5 | — |
+| w10s1l5 Тиша об одинадцятій | 10 | 10 | 0.5 | 34 | 85 | 7.7 | 0.061 | 4 | — |
+| w10s1l6 Музей Великої війни (фінал) | 10 | 7 | 0.86 | 16 | 33 | 7.7 | 0.031 | 3 | — |
 
 ## Середні по сім'ях (предмет + класи + звичайний урок / фінал)
 
@@ -99,3 +105,5 @@
 
 - **7-9:lesson**: screens 9.52±0.64, gradedShare 0.54±0.04, readWordsPerScreen 31.07±3.42, maxReadWords 63.55±6.49, sentenceWords 6.59±0.33, longWordShare 0.04±0.01, typeVariety 3.42±0.49
 - **7-9:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 18.93±1.73, maxReadWords 34.73±4.88, sentenceWords 6.19±0.21, longWordShare 0.04±0.01, typeVariety 3.07±0.25
+- **10-11:lesson**: screens 9.4±0.49, gradedShare 0.54±0.03, readWordsPerScreen 34.2±3.82, maxReadWords 80.2±6.18, sentenceWords 7.42±0.21, longWordShare 0.04±0.02, typeVariety 3.8±0.75
+- **10-11:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 16±0, maxReadWords 33±0, sentenceWords 7.7±0, longWordShare 0.03±0, typeVariety 3±0

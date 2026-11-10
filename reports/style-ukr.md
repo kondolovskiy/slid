@@ -365,7 +365,7 @@
 | u9s10l3 Найбільш зручніший? Ні! | 9 | 12 | 0.5 | 33 | 50 | 6.1 | 0.053 | 3 | — |
 | u9s10l4 Відвідавши музей, ми… | 9 | 12 | 0.5 | 35 | 61 | 6.4 | 0.038 | 3 | — |
 | u9s10l5 Редакція шкільного сайту (фінал) | 9 | 7 | 0.86 | 26 | 38 | 5.4 | 0.045 | 3 | — |
-| u9s11l1 Пресконференція, але фітнес-клуб | 9 | 12 | 0.5 | 36 | 55 | 5.8 | 0.037 | 3 | readWordsPerScreen нетипово для сім'ї (z=2) |
+| u9s11l1 Пресконференція, але фітнес-клуб | 9 | 12 | 0.5 | 35 | 54 | 5.8 | 0.038 | 3 | — |
 | u9s11l2 Кома, двокрапка чи тире? | 9 | 12 | 0.5 | 35 | 56 | 5.8 | 0.043 | 3 | — |
 | u9s11l3 Випускний альбом (фінал) | 9 | 7 | 0.86 | 25 | 47 | 5.6 | 0.039 | 3 | — |
 
@@ -375,5 +375,5 @@
 
 - **5-6:lesson**: screens 11.46±0.72, gradedShare 0.55±0.05, readWordsPerScreen 26.33±3.14, maxReadWords 49.51±6.29, sentenceWords 5.34±0.46, longWordShare 0.03±0.02, typeVariety 4.04±0.75
 - **5-6:boss**: screens 7.44±0.7, gradedShare 0.86±0.03, readWordsPerScreen 19.36±2.96, maxReadWords 34.28±3.82, sentenceWords 4.96±0.43, longWordShare 0.04±0.01, typeVariety 3.88±0.65
-- **7-9:lesson**: screens 10.57±0.87, gradedShare 0.54±0.04, readWordsPerScreen 28.63±3.63, maxReadWords 52.47±6.12, sentenceWords 5.79±0.58, longWordShare 0.04±0.02, typeVariety 3.93±0.81
+- **7-9:lesson**: screens 10.57±0.87, gradedShare 0.54±0.04, readWordsPerScreen 28.62±3.62, maxReadWords 52.47±6.11, sentenceWords 5.79±0.58, longWordShare 0.04±0.02, typeVariety 3.93±0.81
 - **7-9:boss**: screens 7.16±0.36, gradedShare 0.86±0.01, readWordsPerScreen 22.16±3.03, maxReadWords 38.39±4.86, sentenceWords 5.43±0.59, longWordShare 0.05±0.02, typeVariety 3.84±0.81
