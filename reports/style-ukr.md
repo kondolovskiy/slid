@@ -361,7 +361,7 @@
 | u9s9l4 Чужі слова як доказ | 9 | 11 | 0.55 | 27 | 56 | 6.7 | 0.049 | 4 | — |
 | u9s9l5 Інтерв'ю з переможницею (фінал) | 9 | 7 | 0.86 | 17 | 32 | 5.9 | 0.053 | 3 | — |
 | u9s10l1 Від звука до тексту | 9 | 12 | 0.5 | 29 | 60 | 6.3 | 0.032 | 6 | typeVariety нетипово для сім'ї (z=2.6) |
-| u9s10l2 Слово не на своєму місці | 9 | 11 | 0.55 | 33 | 48 | 5.8 | 0.037 | 5 | — |
+| u9s10l2 Слово не на своєму місці | 9 | 11 | 0.55 | 33 | 53 | 5.7 | 0.037 | 5 | — |
 | u9s10l3 Найбільш зручніший? Ні! | 9 | 12 | 0.5 | 33 | 50 | 6.1 | 0.053 | 3 | — |
 | u9s10l4 Відвідавши музей, ми… | 9 | 12 | 0.5 | 35 | 61 | 6.4 | 0.038 | 3 | — |
 | u9s10l5 Редакція шкільного сайту (фінал) | 9 | 7 | 0.86 | 26 | 38 | 5.4 | 0.045 | 3 | — |
@@ -375,5 +375,5 @@
 
 - **5-6:lesson**: screens 11.46±0.72, gradedShare 0.55±0.05, readWordsPerScreen 26.33±3.14, maxReadWords 49.51±6.29, sentenceWords 5.34±0.46, longWordShare 0.03±0.02, typeVariety 4.04±0.75
 - **5-6:boss**: screens 7.44±0.7, gradedShare 0.86±0.03, readWordsPerScreen 19.36±2.96, maxReadWords 34.28±3.82, sentenceWords 4.96±0.43, longWordShare 0.04±0.01, typeVariety 3.88±0.65
-- **7-9:lesson**: screens 10.57±0.87, gradedShare 0.54±0.04, readWordsPerScreen 28.63±3.64, maxReadWords 52.41±6.13, sentenceWords 5.8±0.58, longWordShare 0.04±0.02, typeVariety 3.93±0.81
+- **7-9:lesson**: screens 10.57±0.87, gradedShare 0.54±0.04, readWordsPerScreen 28.63±3.64, maxReadWords 52.44±6.12, sentenceWords 5.8±0.58, longWordShare 0.04±0.02, typeVariety 3.93±0.81
 - **7-9:boss**: screens 7.16±0.36, gradedShare 0.86±0.01, readWordsPerScreen 22.16±3.03, maxReadWords 38.39±4.86, sentenceWords 5.43±0.59, longWordShare 0.05±0.02, typeVariety 3.84±0.81
