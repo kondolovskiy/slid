@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-10T20:36:41.144Z
 id: write-ukr-u10s7
 type: write-section
 subject: ukr
@@ -6,7 +8,7 @@ grade: 10
 section: u10s7
 weeks: [21, 24]
 status: todo
-claimed_by:
+claimed_by: w-write-ukr-u10s7
 created: 2026-11-10
 ---
 # Написати розділ «Орфографія: складні й іншомовні слова, прізвища, не і ні» (Українська мова, 10 клас)
