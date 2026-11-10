@@ -8,7 +8,7 @@ SLID.section("hist", {
   weeks: [23, 25],
   title: "Античні міста Причорномор'я",
   why: "Щоб знати, що грецькі міста на нашому узбережжі пов'язували ці землі зі Середземномор'ям.",
-  meta: { author: "claude-opus", created: "2026-10-05", factcheck: "verifier-g6s4-d019", teacher: null },
+  meta: { author: "write-hist-g6s4", created: "2026-10-05", factcheck: "verifier-g6s4-d019", teacher: null },
   credits: [
     ["Ольвія, розкопки (житловий квартал)", "Вітер (Wind), Вікісховище", "суспільне надбання (PD-self)", "https://commons.wikimedia.org/wiki/File:Olvio_kvartal.jpg"],
     ["Монета у формі дельфіна, Ольвія (Національний археологічний музей Іспанії)", "Dorieo (Jerónimo Roure Pérez)", "CC BY-SA 4.0", "https://commons.wikimedia.org/wiki/File:Moneda_en_forma_de_delf%C3%ADn._Olbia_(M.A.N.).jpg"],

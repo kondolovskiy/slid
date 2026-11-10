@@ -10,7 +10,7 @@ SLID.section("hist", {
   weeks: [24, 29],
   title: "Сторінки нашого минулого",
   why: "Щоб побачити всю історію наших земель як одну стрічку: від Русі й Королівства Руського до козаків, імперій і людей, що зберегли українське слово.",
-  meta: { author: "claude-opus", created: "2026-11-03", factcheck: "verifier-g5s5", teacher: null },
+  meta: { author: "write-hist-g5s5", created: "2026-11-03", factcheck: "verifier-g5s5", teacher: null },
   badges: [{ id: "pageskeeper", name: "Хранитель сторінок", icon: "scroll", desc: "Пройти розділ «Сторінки нашого минулого»" }],
   credits: [
     [

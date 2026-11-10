@@ -16,7 +16,7 @@ SLID.section("ukr", {
   title: "Сполучник",
   why: "Щоб зв'язувати думки словами «і», «але», «бо», «щоб» і знати, коли писати «що б» окремо, а «щоб» — разом.",
   requires: ["u5s9l4", "u5s10l3"],
-  meta: { author: "claude-opus", created: "2026-11-04", factcheck: "verifier-u7s11", teacher: null },
+  meta: { author: "write-ukr-u7s11", created: "2026-11-04", factcheck: "verifier-u7s11", teacher: null },
   badges: [
     { id: "u7s11boss", name: "Майстер зв'язку", icon: "trophy", desc: "Пройти фінальний урок розділу «Сполучник»" }
   ],

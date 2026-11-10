@@ -10,7 +10,7 @@ SLID.section("ukr", {
   weeks: [4, 8],
   title: "Слово і його значення",
   why: "Щоб добирати точне слово, розуміти жарти й загадки та не плутати схожі слова.",
-  meta: { author: "claude-opus", created: "2026-11-02", factcheck: "verifier-u5s2", teacher: null },
+  meta: { author: "write-ukr-u5s2", created: "2026-11-02", factcheck: "verifier-u5s2", teacher: null },
   badges: [
     { id: "u5s2boss", name: "Знавець слів", icon: "trophy", desc: "Пройти фінальний урок розділу «Слово і його значення»" }
   ],

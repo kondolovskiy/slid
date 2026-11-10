@@ -16,7 +16,7 @@ SLID.section("ukr", {
   title: "Згадуємо 7 клас: частини мови й правопис",
   why: "Щоб пригадати всі частини мови, дієслівні форми й правопис прислівників і службових слів — перед великою темою «Синтаксис».",
   requires: ["u6s7l1", "u7s3l1", "u7s8l2", "u7s9l3", "u7s10l1", "u7s10l5", "u7s11l2", "u7s12l1", "u7s12l3"],
-  meta: { author: "claude-opus", created: "2026-11-06", factcheck: "verifier-u8s1", teacher: null },
+  meta: { author: "write-ukr-u8s1", created: "2026-11-06", factcheck: "verifier-u8s1", teacher: null },
   badges: [
     { id: "u8s1boss", name: "Мовний гід", icon: "trophy", desc: "Пройти фінальний урок розділу «Згадуємо 7 клас: частини мови й правопис»" }
   ],

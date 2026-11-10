@@ -8,7 +8,7 @@ SLID.section("hist", {
   weeks: [12, 17],
   title: "Людина і громада",
   why: "Щоб зрозуміти, як люди в минулому жили разом, домовлялися і сперечалися — і що з цього дійшло до нас.",
-  meta: { author: "claude-opus", created: "2026-09-27", factcheck: "verifier-s3", teacher: null },
+  meta: { author: "slid", created: "2026-09-27", factcheck: "verifier-s3", teacher: null },
   badges: [{ id: "citizen", name: "Громадянин", icon: "vote", desc: "Пройти розділ «Людина і громада»" }],
   credits: [
     [

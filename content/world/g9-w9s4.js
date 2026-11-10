@@ -13,7 +13,7 @@ SLID.section("world", {
   weeks: [22, 28],
   title: "Америка й Азія в XIX ст.",
   why: "Щоб розуміти, як Латинська Америка здобула незалежність, США пережили громадянську війну, а Японія — модернізацію.",
-  meta: { author: "claude-opus", created: "2026-11-04", factcheck: "verifier-write-world-w9s4", teacher: null },
+  meta: { author: "write-world-w9s4", created: "2026-11-04", factcheck: "verifier-write-world-w9s4", teacher: null },
   badges: [{ id: "worldbeyond", name: "Мандрівник XIX століття", icon: "globe", desc: "Пройти розділ «Америка й Азія в XIX ст.»" }],
   credits: [
     [

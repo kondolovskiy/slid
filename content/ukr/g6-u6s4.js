@@ -12,7 +12,7 @@ SLID.section("ukr", {
   title: "Фразеологізми",
   why: "Щоб розуміти й уживати вирази на кшталт «байдики бити» чи «пекти раків» і знати, звідки вони взялися.",
   requires: ["u5s2l3", "u5s2l4", "u5s8l1", "u6s2l2", "u6s2l3", "u6s3l1", "u6s3l4"],
-  meta: { author: "claude-opus", created: "2026-11-02", factcheck: "verifier-u6s4", teacher: null },
+  meta: { author: "write-ukr-u6s4", created: "2026-11-02", factcheck: "verifier-u6s4", teacher: null },
   badges: [
     { id: "u6s4boss", name: "Перлини мови", icon: "trophy", desc: "Пройти фінальний урок розділу «Фразеологізми»" }
   ],

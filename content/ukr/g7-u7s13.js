@@ -17,7 +17,7 @@ SLID.section("ukr", {
   title: "Пишемо самі: публіцистика, есе, портрет",
   why: "Щоб уміти написати есе й допис у соцмережі, описати зовнішність людини, ввічливо поспілкуватися й уважно вислухати інших.",
   requires: ["u5s1l2", "u5s11l5", "u5s11l6", "u6s14l1", "u6s14l3"],
-  meta: { author: "claude-opus", created: "2026-11-03", factcheck: "verifier-write-ukr-u7s13, 2026-11-04", teacher: null },
+  meta: { author: "write-ukr-u7s13", created: "2026-11-03", factcheck: "verifier-write-ukr-u7s13, 2026-11-04", teacher: null },
   badges: [
     { id: "u7s13boss", name: "Перо публіциста", icon: "trophy", desc: "Пройти фінальний урок розділу «Пишемо самі: публіцистика, есе, портрет»" }
   ],

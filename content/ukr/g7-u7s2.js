@@ -15,7 +15,7 @@ SLID.section("ukr", {
   title: "Орфографічний практикум",
   why: "Щоб упевнено писати слова з ненаголошеними е та и, апострофом, м'яким знаком і подвоєними буквами — перед великою темою «Дієслово».",
   requires: ["u5s3l6", "u5s5l2", "u5s5l4", "u6s2l2", "u6s7l3", "u6s7l4", "u5s7l4", "u5s7l5", "u6s2l3", "u6s11l4", "u6s6l2", "u6s9l3", "u6s11l5", "u6s5l3", "u6s5l4", "u5s7l1", "u5s7l3", "u6s2l4", "u6s2l5"],
-  meta: { author: "claude-opus", created: "2026-11-03", factcheck: "verifier-u7s2", teacher: null },
+  meta: { author: "write-ukr-u7s2", created: "2026-11-03", factcheck: "verifier-u7s2", teacher: null },
   badges: [
     { id: "u7s2boss", name: "Орфографічний патруль", icon: "trophy", desc: "Пройти фінальний урок розділу «Орфографічний практикум»" }
   ],

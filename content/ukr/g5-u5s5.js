@@ -13,7 +13,7 @@ SLID.section("ukr", {
   weeks: [17, 20],
   title: "Наголос і вимова",
   why: "Щоб говорити правильно й красиво та перевіряти, як писати ненаголошені звуки.",
-  meta: { author: "claude-opus", created: "2026-11-02", factcheck: "verifier-u5s5", teacher: null },
+  meta: { author: "write-ukr-u5s5", created: "2026-11-02", factcheck: "verifier-u5s5", teacher: null },
   badges: [
     { id: "u5s5boss", name: "Голос вокзалу", icon: "trophy", desc: "Пройти фінальний урок «Наголос і вимова»" }
   ],

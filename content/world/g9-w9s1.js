@@ -14,7 +14,7 @@ SLID.section("world", {
   weeks: [1, 7],
   title: "Французька революція і Наполеон",
   why: "Щоб розуміти, як революція проголосила права людини і чому імперія Наполеона змінила карту Європи.",
-  meta: { author: "claude-opus", created: "2026-11-04", factcheck: "verifier-write-world-w9s1", teacher: null },
+  meta: { author: "write-world-w9s1", created: "2026-11-04", factcheck: "verifier-write-world-w9s1", teacher: null },
   badges: [{ id: "revnap", name: "Гід доби революції", icon: "path", desc: "Пройти розділ «Французька революція і Наполеон»" }],
   credits: [
     [

@@ -14,7 +14,7 @@ SLID.section("ukr", {
   title: "Відмінювання іменників",
   why: "Щоб правильно казати «до Києва» чи «до Києву», «пане Олеже» чи «пан Олег» — і пояснювати чому.",
   requires: ["u5s3l1", "u5s7l5", "u5s9l1", "u5s10l1"],
-  meta: { author: "claude-opus", created: "2026-11-02", factcheck: "verifier-u6s8", teacher: null },
+  meta: { author: "write-ukr-u6s8", created: "2026-11-02", factcheck: "verifier-u6s8", teacher: null },
   badges: [
     { id: "u6s8boss", name: "Майстер відмінків", icon: "trophy", desc: "Пройти фінальний урок розділу «Відмінювання іменників»" }
   ],

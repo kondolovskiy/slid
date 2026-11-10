@@ -14,7 +14,7 @@ SLID.section("ukr", {
   title: "Правопис іменників",
   why: "Щоб без помилок писати суфікси іменників, «не» з іменниками й складні іменники.",
   requires: ["u5s3l5", "u5s2l3", "u6s5l2", "u5s6l1", "u6s6l1", "u6s6l2", "u6s7l2", "u6s8l1", "u6s8l11"],
-  meta: { author: "claude-opus", created: "2026-11-02", factcheck: "verifier-u6s9", teacher: null },
+  meta: { author: "write-ukr-u6s9", created: "2026-11-02", factcheck: "verifier-u6s9", teacher: null },
   badges: [
     { id: "u6s9boss", name: "Редактор журналу «Іменник»", icon: "trophy", desc: "Пройти фінальний урок розділу «Правопис іменників»" }
   ],

@@ -12,7 +12,7 @@ SLID.section("math", {
   title: "Алгебра: лінійні рівняння",
   why: "Щоб будь-яку текстову задачу перетворити на рівняння і розв'язати його.",
   requires: ["g6m5l3"],
-  meta: { author: "claude-opus", created: "2026-10-11", factcheck: "verifier-g7m1", teacher: null },
+  meta: { author: "write-math-g7m1", created: "2026-10-11", factcheck: "verifier-g7m1", teacher: null },
   badges: [
     { id: "g7m1boss", name: "Рівновага", icon: "scale", desc: "Пройти фінальну задачу з лінійних рівнянь" }
   ],

@@ -16,7 +16,7 @@ SLID.section("ukr", {
   title: "Пишемо самі: ділові папери, роздум, описи",
   why: "Щоб уміти написати оголошення, скласти план, обґрунтувати думку й описати кімнату чи краєвид.",
   requires: ["u5s1l4", "u5s11l1", "u5s11l4", "u5s11l6", "u6s1l6"],
-  meta: { author: "claude-opus", created: "2026-11-02", factcheck: "verifier-u6s14", teacher: null },
+  meta: { author: "write-ukr-u6s14", created: "2026-11-02", factcheck: "verifier-u6s14", teacher: null },
   badges: [
     { id: "u6s14boss", name: "Шкільна редакція", icon: "trophy", desc: "Пройти фінальний урок розділу «Пишемо самі: ділові папери, роздум, описи»" }
   ],

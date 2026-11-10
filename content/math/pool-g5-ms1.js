@@ -9,7 +9,7 @@ SLID.pool("math", {
   id: "pms1",
   section: "ms1",
   status: "verified",
-  meta: { author: "claude-opus", created: "2026-10-30", factcheck: "verifier-refine-math-pools-new-kinds (2026-11-01: e03, e05); решта — verifier-pool-ms1", teacher: null },
+  meta: { author: "write-math-pool-ms1", created: "2026-10-30", factcheck: "verifier-refine-math-pools-new-kinds (2026-11-01: e03, e05); решта — verifier-pool-ms1", teacher: null },
   sources: [
     { id: "mer5", title: "Мерзляк А. Г., Полонський В. Б., Якір М. С. Математика. 5 клас. — Харків: Гімназія, 2022 (дзеркало PDF на 4book.org)", url: "https://file.4book.org/images/shcoolbook_ua/5/5_m_m_2022.pdf" }
   ],

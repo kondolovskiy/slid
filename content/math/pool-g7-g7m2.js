@@ -10,7 +10,7 @@ SLID.pool("math", {
   id: "pg7m2",
   section: "g7m2",
   status: "verified",
-  meta: { author: "claude-opus", created: "2026-10-31", factcheck: "verifier-pool-g7m2 2026-10-31 (reports/verify/pg7m2.md)", teacher: null },
+  meta: { author: "write-math-pool-g7m2", created: "2026-10-31", factcheck: "verifier-pool-g7m2 2026-10-31 (reports/verify/pg7m2.md)", teacher: null },
   sources: [
     { id: "g7", title: "Мерзляк А. Г., Якір М. С. Геометрія. 7 клас. — Харків: Гімназія, 2024", url: "https://file.4book.org/images/shcoolbook_ua/7/7_geom_m_2024.pdf" }
   ],

@@ -12,7 +12,7 @@ SLID.section("ukr", {
   weeks: [27, 29],
   title: "Словосполучення і речення",
   why: "Щоб правильно поєднувати слова й будувати речення, які звучать природно.",
-  meta: { author: "claude-opus", created: "2026-11-02", factcheck: "verifier-u5s8", teacher: null },
+  meta: { author: "write-ukr-u5s8", created: "2026-11-02", factcheck: "verifier-u5s8", teacher: null },
   badges: [
     { id: "u5s8boss", name: "Будівничий речень", icon: "trophy", desc: "Пройти фінальний урок розділу «Словосполучення і речення»" }
   ],

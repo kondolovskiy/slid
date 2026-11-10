@@ -8,7 +8,7 @@ SLID.pool("math", {
   id: "pg7m5",
   section: "g7m5",
   status: "verified",
-  meta: { author: "claude-opus", created: "2026-10-31", factcheck: "verifier-pg7m5 (reports/verify/pg7m5.md)", teacher: null },
+  meta: { author: "write-math-pool-g7m5", created: "2026-10-31", factcheck: "verifier-pg7m5 (reports/verify/pg7m5.md)", teacher: null },
   sources: [
     { id: "a7", title: "Мерзляк А. Г., Якір М. С. Алгебра. 7 клас. — Харків: Гімназія, 2024 (п. 20–23; дзеркало PDF на 4book.org)", url: "https://file.4book.org/images/shcoolbook_ua/7/7_a_m_2024.pdf" }
   ],

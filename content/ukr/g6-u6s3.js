@@ -13,7 +13,7 @@ SLID.section("ukr", {
   title: "Які бувають слова",
   why: "Щоб відчувати, де доречне слово з повсякдення, а де — термін, діалектне чи застаріле слово.",
   requires: ["u5s2l1", "u5s2l6", "u5s2l7"],
-  meta: { author: "claude-opus", created: "2026-11-02", factcheck: "verifier-u6s3", teacher: null },
+  meta: { author: "write-ukr-u6s3", created: "2026-11-02", factcheck: "verifier-u6s3", teacher: null },
   badges: [
     { id: "u6s3boss", name: "Укладач словника", icon: "trophy", desc: "Пройти фінальний урок розділу «Які бувають слова»" }
   ],

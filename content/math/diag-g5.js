@@ -15,7 +15,7 @@ SLID.diag("math", {
   title: "Що ти вже вмієш?",
   why: "Знайдемо теми, які варто згадати, щоб нові уроки давалися легше.",
   status: "verified",   // verify-math-ister-diag, 2026-11-03: reports/verify/verify-math-ister-diag.md
-  meta: { author: "claude-opus", created: "2026-10-30", factcheck: "self", teacher: null },
+  meta: { author: "write-math-diag-g5", created: "2026-10-30", factcheck: "self", teacher: null },
   topics: [
     // передумови з 4 класу
     { id: "place", title: "Запис і розряди", kind: "pre", lessons: ["g4m1l1", "g4m1l2"], for: ["ms0", "ms0b", "ms2"] },

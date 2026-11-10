@@ -10,7 +10,7 @@ SLID.section("hist", {
   title: "Трипільська цивілізація",
   why: "Щоб побачити, що на наших землях жили одні з перших землеробів Європи з величезними поселеннями.",
   requires: ["l1"],
-  meta: { author: "claude-opus", created: "2026-10-05", factcheck: "verifier-g6s2", teacher: null },
+  meta: { author: "write-hist-g6s2", created: "2026-10-05", factcheck: "verifier-g6s2", teacher: null },
   badges: [{ id: "trypil", name: "Трипільський археолог", icon: "pot", desc: "Пройти розділ «Трипільська цивілізація»" }],
   credits: [
     [

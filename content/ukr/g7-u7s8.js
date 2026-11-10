@@ -15,7 +15,7 @@ SLID.section("ukr", {
   title: "Прислівник",
   why: "Щоб точно сказати, як, де, коли й чому відбувається дія, і порівнювати: «швидше», «найшвидше».",
   requires: ["u5s9l3", "u5s10l2", "u6s5l2", "u6s7l1", "u6s10l3", "u6s10l4"],
-  meta: { author: "claude-opus", created: "2026-11-04", factcheck: "verifier-u7s8", teacher: null },
+  meta: { author: "write-ukr-u7s8", created: "2026-11-04", factcheck: "verifier-u7s8", teacher: null },
   badges: [
     { id: "u7s8boss", name: "Коментатор перегонів", icon: "trophy", desc: "Пройти фінальний урок розділу «Прислівник»" }
   ],

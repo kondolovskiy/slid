@@ -11,7 +11,7 @@ SLID.section("hist", {
   weeks: [15, 21],
   title: "Від «Весни народів» до заборон",
   why: "Щоб бачити, як імперії то давали свободи, то забороняли українське слово.",
-  meta: { author: "claude-opus", created: "2026-10-13", factcheck: "verifier-g9s3", teacher: null },
+  meta: { author: "write-hist-g9s3", created: "2026-10-13", factcheck: "verifier-g9s3", teacher: null },
   badges: [
     {
       id: "wordtrace",

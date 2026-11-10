@@ -18,7 +18,7 @@ SLID.section("math", {
   weeks: [9, 15],
   title: "Фігури і величини",
   why: "Щоб вимірювати, креслити й порівнювати: кути, відрізки, периметри — від зошита до плану кімнати.",
-  meta: { author: "claude-opus", created: "2026-10-06", factcheck: "verifier-ms0b; verifier-ms0b-d019", teacher: null },
+  meta: { author: "write-math-ms0b", created: "2026-10-06", factcheck: "verifier-ms0b; verifier-ms0b-d019", teacher: null },
   badges: [
     { id: "kutomir", name: "Кутомір", icon: "target", desc: "Пройти урок про кути" },
     { id: "ms0bboss", name: "Помічник архітектора", icon: "map", desc: "Пройти фінальну задачу про фігури й величини" }

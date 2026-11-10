@@ -11,7 +11,7 @@ SLID.section("world", {
   weeks: [22, 28],
   title: "Королівства і монгольська навала",
   why: "Щоб розуміти, як складалися Франція, Англія, Польща, Угорщина і як монгольська імперія змінила Євразію.",
-  meta: { author: "claude-opus", created: "2026-11-03", factcheck: "verifier-w7s4", teacher: null },
+  meta: { author: "write-world-w7s4", created: "2026-11-03", factcheck: "verifier-w7s4", teacher: null },
   badges: [{ id: "kingshorde", name: "Куратор королівств і Орди", icon: "scroll", desc: "Пройти розділ «Королівства і монгольська навала»" }],
   credits: [
     [

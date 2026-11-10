@@ -13,7 +13,7 @@ SLID.section("hist", {
   weeks: [23, 29],
   title: "Сталінський режим",
   why: "Щоб знати правду про колективізацію, Голодомор і терор та вшановувати пам'ять жертв.",
-  meta: { author: "claude-opus", created: "2026-10-14", factcheck: "verifier-g10s4", teacher: null },
+  meta: { author: "write-hist-g10s4", created: "2026-10-14", factcheck: "verifier-g10s4", teacher: null },
   badges: [
     {
       id: "memorykeeper",

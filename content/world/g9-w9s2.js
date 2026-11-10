@@ -14,7 +14,7 @@ SLID.section("world", {
   weeks: [8, 14],
   title: "Індустріальний світ першої половини XIX ст.",
   why: "Щоб бачити, як залізниця, фабрики й нові ідеї змінили міста, працю й політику.",
-  meta: { author: "claude-opus", created: "2026-11-04", factcheck: "verifier-write-world-w9s2", teacher: null },
+  meta: { author: "write-world-w9s2", created: "2026-11-04", factcheck: "verifier-write-world-w9s2", teacher: null },
   badges: [{ id: "steamspring", name: "Знавець доби пари", icon: "bolt", desc: "Пройти розділ «Індустріальний світ першої половини XIX ст.»" }],
   credits: [
     [

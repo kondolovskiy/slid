@@ -13,7 +13,7 @@ SLID.pool("math", {
   id: "pm4s1",
   section: "m4s1",
   status: "verified",
-  meta: { author: "claude-opus", created: "2026-10-22", factcheck: "verifier-refine-math-content-from-matrix-v3", revised: "2026-11-01 refine-math-content-from-matrix-v3", teacher: null },
+  meta: { author: "write-math-pool-m4s1", created: "2026-10-22", factcheck: "verifier-refine-math-content-from-matrix-v3", revised: "2026-11-01 refine-math-content-from-matrix-v3", teacher: null },
   sources: [
     { id: "g4a", title: "Гісь О. М., Філяк І. В. Математика : підручник для 4 класу закладів загальної середньої освіти (у 2-х ч.). Ч. 1. — Харків : Ранок, 2026 (наказ МОН № 111 від 27.01.2026; с. 61–64). PDF-дзеркало 4book.org", url: "https://file.4book.org/images/shcoolbook_ua/4/4_m_gis_2026-1.pdf" },
     { id: "l4a", title: "Логачевська С. П., Ларіна О. В., Паук Л. О. Математика : підручник для 4 класу закладів загальної середньої освіти (у 2-х ч.). Ч. 1. — Київ : Літера ЛТД, 2026 (наказ МОН № 111 від 27.01.2026; с. 17–18). PDF-дзеркало 4book.org", url: "https://file.4book.org/images/shcoolbook_ua/4/4_m_log_2026-1.pdf" }

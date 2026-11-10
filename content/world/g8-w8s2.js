@@ -15,7 +15,7 @@ SLID.section("world", {
   title: "Відродження і Реформація",
   why: "Щоб знати, як гуманісти й митці змінили погляд на людину, а Лютер — на церкву, і чому Європа розкололася.",
   requires: ["w7s5l1", "w7s5l3"],
-  meta: { author: "claude-opus", created: "2026-11-04", factcheck: "verifier-w8s2", teacher: null },
+  meta: { author: "write-world-w8s2", created: "2026-11-04", factcheck: "verifier-w8s2", teacher: null },
   badges: [{ id: "renref", name: "Знавець Відродження і Реформації", icon: "book", desc: "Пройти розділ «Відродження і Реформація»" }],
   credits: [
     [

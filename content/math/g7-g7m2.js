@@ -10,7 +10,7 @@ SLID.section("math", {
   weeks: [1, 8],
   title: "Геометрія: найпростіші фігури",
   why: "Щоб навчитися доводити, а не лише вимірювати.",
-  meta: { author: "claude-opus", created: "2026-10-11", factcheck: "verifier-g7m2", teacher: null },
+  meta: { author: "write-math-g7m2", created: "2026-10-11", factcheck: "verifier-g7m2", teacher: null },
   badges: [
     {
       id: "g7m2boss",

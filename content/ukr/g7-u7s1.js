@@ -18,7 +18,7 @@ SLID.section("ukr", {
   title: "Згадуємо 6 клас: слово, частини мови, медіа",
   why: "Щоб пригадати, як твориться слово і змінюються частини мови, а ще — навчитися відрізняти правдиву новину від фейку.",
   requires: ["u5s4l4", "u6s3l3", "u6s4l1", "u6s5l2", "u6s6l3", "u6s7l6", "u6s8l11", "u6s10l4", "u6s12l6", "u6s12l7", "u6s13l1"],
-  meta: { author: "claude-opus", created: "2026-11-03", factcheck: "verifier-u7s1", teacher: null },
+  meta: { author: "write-ukr-u7s1", created: "2026-11-03", factcheck: "verifier-u7s1", teacher: null },
   badges: [
     { id: "u7s1boss", name: "Редактор новин", icon: "trophy", desc: "Пройти фінальний урок розділу «Згадуємо 6 клас: слово, частини мови, медіа»" }
   ],

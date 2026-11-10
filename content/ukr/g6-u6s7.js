@@ -15,7 +15,7 @@ SLID.section("ukr", {
   title: "Іменник: назви, рід і число",
   why: "Щоб розуміти, як слова-предмети змінюються, і правильно писати власні назви.",
   requires: ["u5s3l1", "u5s8l3", "u5s9l1"],
-  meta: { author: "claude-opus", created: "2026-11-02", factcheck: "verifier-u6s7", teacher: null },
+  meta: { author: "write-ukr-u6s7", created: "2026-11-02", factcheck: "verifier-u6s7", teacher: null },
   badges: [
     { id: "u6s7boss", name: "Хранитель імен", icon: "trophy", desc: "Пройти фінальний урок розділу «Іменник: назви, рід і число»" }
   ],

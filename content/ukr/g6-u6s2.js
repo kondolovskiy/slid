@@ -14,7 +14,7 @@ SLID.section("ukr", {
   title: "Слова з інших мов",
   why: "Щоб розуміти, звідки прийшли слова «піца», «футбол» чи «кафе», і писати їх правильно.",
   requires: ["u5s2l1", "u5s7l1", "u5s7l3", "u5s7l4"],
-  meta: { author: "claude-opus", created: "2026-11-02", factcheck: "verifier-u6s2", teacher: null },
+  meta: { author: "write-ukr-u6s2", created: "2026-11-02", factcheck: "verifier-u6s2", teacher: null },
   badges: [
     { id: "u6s2boss", name: "Митник слів", icon: "trophy", desc: "Пройти фінальний урок розділу «Слова з інших мов»" }
   ],

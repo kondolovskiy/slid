@@ -13,7 +13,7 @@ SLID.section("hist", {
   weeks: [17, 22],
   title: "Радянська Україна 1920-х",
   why: "Щоб бачити, як більшовики поєднували поступки з насильством.",
-  meta: { author: "claude-opus", created: "2026-10-14", factcheck: "verifier-g10s3", teacher: null },
+  meta: { author: "write-hist-g10s3", created: "2026-10-14", factcheck: "verifier-g10s3", teacher: null },
   badges: [
     {
       id: "renaissancekeeper",

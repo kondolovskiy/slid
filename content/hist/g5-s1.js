@@ -8,7 +8,7 @@ SLID.section("hist", {
   weeks: [1, 6],
   title: "Як історики пізнають минуле",
   why: "Щоб не вірити на слово ні підручнику, ні відео в мережі, а вміти запитати: «А звідки це відомо?»",
-  meta: { author: "claude-opus", created: "2026-09-27", factcheck: "verifier-s1", teacher: null },
+  meta: { author: "slid", created: "2026-09-27", factcheck: "verifier-s1", teacher: null },
   badges: [
     { id: "chrono", name: "Хронолог", icon: "line", desc: "Пройти урок «Лінія часу»" },
     { id: "sceptic", name: "Скептик", icon: "eye", desc: "Пройти урок «Кому вірити?»" },

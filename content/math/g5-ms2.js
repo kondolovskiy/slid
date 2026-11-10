@@ -13,7 +13,7 @@ SLID.section("math", {
   title: "Десяткові дроби",
   why: "Щоб читати ціни, зріст, вагу й результати забігів: 12,50 грн, 1,45 м, 9,8 с.",
   requires: ["m1"],
-  meta: { author: "claude-opus", created: "2026-10-06", factcheck: "verifier-ms2", teacher: null },
+  meta: { author: "write-math-ms2", created: "2026-10-06", factcheck: "verifier-ms2", teacher: null },
   badges: [
     { id: "ms2boss", name: "Касир ярмарку", icon: "trophy", desc: "Пройти фінальну задачу з десяткових дробів" }
   ],

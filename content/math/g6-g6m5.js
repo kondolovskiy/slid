@@ -12,7 +12,7 @@ SLID.section("math", {
   title: "Рівняння",
   why: "Щоб розв'язувати задачі, записавши невідоме буквою.",
   requires: ["ms0l4"],
-  meta: { author: "claude-opus", created: "2026-10-11", factcheck: "verifier-g6m5, verifier-g6m5-d019", teacher: null },
+  meta: { author: "write-math-g6m5", created: "2026-10-11", factcheck: "verifier-g6m5, verifier-g6m5-d019", teacher: null },
   badges: [
     { id: "g6m5boss", name: "Мисливець за іксом", icon: "lock", desc: "Пройти фінальну задачу з рівнянь" }
   ],

@@ -11,7 +11,7 @@ SLID.pool("math", {
   section: "ms4",
   also: ["ms0b"],
   status: "verified",
-  meta: { author: "claude-opus", created: "2026-10-30", factcheck: "verifier-pms4; d — verifier-write-math-pool-ms4-ister (2026-11-04)", teacher: null },
+  meta: { author: "write-math-pool-ms4", created: "2026-10-30", factcheck: "verifier-pms4; d — verifier-write-math-pool-ms4-ister (2026-11-04)", teacher: null },
   sources: [
     { id: "mer5", title: "Мерзляк А. Г., Полонський В. Б., Якір М. С. Математика. 5 клас. — Харків: Гімназія, 2022 (дзеркало PDF на 4book.org)", url: "https://file.4book.org/images/shcoolbook_ua/5/5_m_m_2022.pdf" },
     { id: "ist6b", title: "Істер О. С. Математика: підручник для 6 класу. У 2 ч. Ч. 2. — Київ: Генеза, 2023 (дзеркало PDF на 4book.org)", url: "https://file.4book.org/images/shcoolbook_ua/6/6_m_i_2023-2.pdf" }

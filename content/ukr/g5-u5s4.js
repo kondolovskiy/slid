@@ -11,7 +11,7 @@ SLID.section("ukr", {
   weeks: [13, 16],
   title: "Звуки і букви",
   why: "Щоб чути, як звучить слово, і розуміти, чому на письмі воно виглядає саме так.",
-  meta: { author: "claude-opus", created: "2026-11-02", factcheck: "verifier-u5s4", teacher: null },
+  meta: { author: "write-ukr-u5s4", created: "2026-11-02", factcheck: "verifier-u5s4", teacher: null },
   badges: [
     { id: "u5s4boss", name: "Знавець звуків", icon: "trophy", desc: "Пройти фінальний урок розділу «Звуки і букви»" }
   ],

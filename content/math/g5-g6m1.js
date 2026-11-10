@@ -15,7 +15,7 @@ SLID.section("math", {
   title: "Подільність чисел",
   why: "Щоб швидко скорочувати дроби, знаходити спільний знаменник і розуміти, як влаштовані числа.",
   requires: ["m4a"],   // ділення з остачею (D-043: раніше зв'язок давала тема dg6 rem.for; граф — div-rem → divis-mult)
-  meta: { author: "claude-opus", created: "2026-10-11", factcheck: "verifier-g6m1", teacher: null },
+  meta: { author: "write-math-g6m1", created: "2026-10-11", factcheck: "verifier-g6m1", teacher: null },
   badges: [
     { id: "g6m1boss", name: "Організатор ярмарку", icon: "trophy", desc: "Пройти фінальну задачу про подільність чисел" }
   ],

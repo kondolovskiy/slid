@@ -11,7 +11,7 @@ SLID.section("world", {
   weeks: [1, 7],
   title: "Раннє Середньовіччя в Європі",
   why: "Щоб розуміти, як на руїнах Римської імперії постала нова Європа: королівства, імперія Карла Великого, вікінги й християнська церква.",
-  meta: { author: "claude-opus", created: "2026-11-03", factcheck: "verifier-w7s1", teacher: null },
+  meta: { author: "write-world-w7s1", created: "2026-11-03", factcheck: "verifier-w7s1", teacher: null },
   badges: [{ id: "earlymed", name: "Гід Раннього Середньовіччя", icon: "path", desc: "Пройти розділ «Раннє Середньовіччя в Європі»" }],
   credits: [
     [

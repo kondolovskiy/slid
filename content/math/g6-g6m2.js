@@ -10,7 +10,7 @@ SLID.section("math", {
   title: "Дії зі звичайними дробами",
   why: "Щоб працювати з будь-якими дробами, а не лише з однаковими знаменниками: складати рецепти, ділити шлях і рахувати частину від частини.",
   requires: ["m2", "m4", "m5", "g6m1l4"],
-  meta: { author: "claude-opus", created: "2026-10-11", factcheck: "verifier-g6m2", teacher: null },
+  meta: { author: "write-math-g6m2", created: "2026-10-11", factcheck: "verifier-g6m2", teacher: null },
   badges: [
     { id: "g6m2boss", name: "Штурман походу", icon: "map", desc: "Пройти фінальну задачу з дій зі звичайними дробами" }
   ],

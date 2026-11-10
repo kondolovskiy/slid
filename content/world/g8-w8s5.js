@@ -16,7 +16,7 @@ SLID.section("world", {
   title: "Доба Просвітництва",
   why: "Щоб знати ідеї, з яких виросли сучасні права людини, і події XVIII ст.: від промислового перевороту до незалежності США.",
   requires: ["w8s4l1", "w8s4l2"],
-  meta: { author: "claude-opus", created: "2026-11-04", factcheck: "verifier-write-world-w8s5", teacher: null },
+  meta: { author: "write-world-w8s5", created: "2026-11-04", factcheck: "verifier-write-world-w8s5", teacher: null },
   badges: [{ id: "enlight", name: "Знавець доби Просвітництва", icon: "bulb", desc: "Пройти розділ «Доба Просвітництва»" }],
   credits: [
     [

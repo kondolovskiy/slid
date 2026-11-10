@@ -11,7 +11,7 @@ SLID.pool("math", {
   id: "pg6m3",
   section: "g6m3",
   status: "verified",
-  meta: { author: "claude-opus", created: "2026-10-13", factcheck: "verifier-write-math-pool-g6m3-ister", revised: "2026-11-04 write-math-pool-g6m3-ister", teacher: null },
+  meta: { author: "write-math-pool-g6m3", created: "2026-10-13", factcheck: "verifier-write-math-pool-g6m3-ister", revised: "2026-11-04 write-math-pool-g6m3-ister", teacher: null },
   sources: [
     { id: "mer6a", title: "Мерзляк А. Г., Полонський В. Б., Якір М. С. Математика. 6 клас. Частина 1. — Харків: Гімназія, 2023", url: "https://znayshov.com/FR/23000/matematika_6kl_Merzlyak_2023_1.pdf" },
     { id: "mer6b", title: "Мерзляк А. Г., Полонський В. Б., Якір М. С. Математика. 6 клас. Частина 2. — Харків: Гімназія, 2023", url: "https://znayshov.com/FR/23001/matematika_6kl_Merzlyak_2023_2.pdf" },

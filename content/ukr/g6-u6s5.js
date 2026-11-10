@@ -14,7 +14,7 @@ SLID.section("ukr", {
   title: "Як твориться слово",
   why: "Щоб бачити, від якого слова утворено інше, і правильно писати слова із суфіксами -ськ-, -ств-, -ин-.",
   requires: ["u5s3l2", "u5s3l3", "u5s3l4", "u5s6l2"],
-  meta: { author: "claude-opus", created: "2026-11-02", factcheck: "verifier-u6s5", teacher: null },
+  meta: { author: "write-ukr-u6s5", created: "2026-11-02", factcheck: "verifier-u6s5", teacher: null },
   badges: [
     { id: "u6s5boss", name: "Словотворець", icon: "trophy", desc: "Пройти фінальний урок розділу «Як твориться слово»" }
   ],

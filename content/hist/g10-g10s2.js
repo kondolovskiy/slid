@@ -15,7 +15,7 @@ SLID.section("hist", {
   title: "Українська революція 1917–1921",
   why: "Щоб знати, як українці вибороли власну державу і чому не змогли її втримати.",
   requires: ["g10s1l4"],
-  meta: { author: "claude-opus", created: "2026-10-14", factcheck: "verifier-g10s2", teacher: null },
+  meta: { author: "write-hist-g10s2", created: "2026-10-14", factcheck: "verifier-g10s2", teacher: null },
   badges: [
     {
       id: "zlukaseal",

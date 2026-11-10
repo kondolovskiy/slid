@@ -15,7 +15,7 @@ SLID.section("math", {
   title: "Комбінаторні задачі та ймовірність",
   why: "Щоб перелічувати всі варіанти без пропусків і чесно оцінювати шанси в грі чи лотереї.",
   requires: ["g6m2l2", "g6m2l3", "ms3l1"],
-  meta: { author: "claude-opus", created: "2026-11-03", verified: "2026-11-03", factcheck: "verifier-g6m6 (reports/verify/write-math-g6-probability.md)", teacher: null },
+  meta: { author: "write-math-g6-probability", created: "2026-11-03", verified: "2026-11-03", factcheck: "verifier-g6m6 (reports/verify/write-math-g6-probability.md)", teacher: null },
   badges: [
     { id: "g6m6boss", name: "Майстер настільних ігор", icon: "star", desc: "Пройти фінальну задачу про варіанти та ймовірність" }
   ],

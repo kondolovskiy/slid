@@ -15,7 +15,7 @@ SLID.section("math", {
   title: "Раціональні числа. Прямі й графіки",
   why: "Щоб працювати з від'ємними числами: температура, борги, висота нижче рівня моря.",
   requires: ["ms2l2"],
-  meta: { author: "claude-opus", created: "2026-10-11", factcheck: "verifier-g6m4", teacher: null },
+  meta: { author: "write-math-g6m4", created: "2026-10-11", factcheck: "verifier-g6m4", teacher: null },
   badges: [
     { id: "g6m4boss", name: "Штурман глибин", icon: "trophy", desc: "Пройти фінальну задачу з раціональних чисел, прямих і графіків" }
   ],

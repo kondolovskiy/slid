@@ -14,7 +14,7 @@ SLID.section("world", {
   weeks: [29, 35],
   title: "Світ на порозі XX ст.",
   why: "Щоб бачити, як винаходи, масова культура й союзи держав готували XX століття — і Першу світову війну.",
-  meta: { author: "claude-opus", created: "2026-11-04", factcheck: "verifier-write-world-w9s5", teacher: null },
+  meta: { author: "write-world-w9s5", created: "2026-11-04", factcheck: "verifier-write-world-w9s5", teacher: null },
   badges: [{ id: "newcentury", name: "Свідок нового століття", icon: "bolt", desc: "Пройти розділ «Світ на порозі XX ст.»" }],
   credits: [
     [

@@ -14,7 +14,7 @@ SLID.section("world", {
   weeks: [22, 28],
   title: "Європа і світ у XVII ст.",
   why: "Щоб розуміти, як абсолютні монархії, Англійська революція й Тридцятилітня війна змінили правила життя держав.",
-  meta: { author: "claude-opus", created: "2026-11-04", factcheck: "verifier-write-world-w8s4", teacher: null },
+  meta: { author: "write-world-w8s4", created: "2026-11-04", factcheck: "verifier-write-world-w8s4", teacher: null },
   badges: [{ id: "europe17", name: "Гід XVII століття", icon: "path", desc: "Пройти розділ «Європа і світ у XVII ст.»" }],
   credits: [
     [

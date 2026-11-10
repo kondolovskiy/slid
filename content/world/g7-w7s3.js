@@ -11,7 +11,7 @@ SLID.section("world", {
   weeks: [15, 21],
   title: "Зріле Середньовіччя: люди, міста, віра",
   why: "Щоб уявляти, як жили селяни, лицарі, ченці й міщани і чому виникли університети та готичні собори.",
-  meta: { author: "claude-opus", created: "2026-11-03", factcheck: "verifier-w7s3", teacher: null },
+  meta: { author: "write-world-w7s3", created: "2026-11-03", factcheck: "verifier-w7s3", teacher: null },
   badges: [{ id: "highmed", name: "Мандрівник Зрілого Середньовіччя", icon: "shield", desc: "Пройти розділ «Зріле Середньовіччя: люди, міста, віра»" }],
   credits: [
     [

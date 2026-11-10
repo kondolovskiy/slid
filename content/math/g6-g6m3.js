@@ -16,7 +16,7 @@ SLID.section("math", {
   title: "Відношення і пропорції",
   why: "Щоб розуміти масштаб, рецепти, знижки і швидкість — усе, де величини залежать одна від одної.",
   requires: ["ms3l2", "g6m2l1"],
-  meta: { author: "claude-opus", created: "2026-10-11", factcheck: "verifier-g6m3", teacher: null },
+  meta: { author: "write-math-g6m3", created: "2026-10-11", factcheck: "verifier-g6m3", teacher: null },
   badges: [
     { id: "g6m3boss", name: "Шеф шкільного кафе", icon: "cake", desc: "Пройти фінальну задачу про відношення і пропорції" }
   ],

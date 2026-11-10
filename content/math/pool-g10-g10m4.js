@@ -12,7 +12,7 @@ SLID.pool("math", {
   id: "pg10m4",
   section: "g10m4",
   status: "verified",
-  meta: { author: "claude-opus", created: "2026-10-31", factcheck: "verifier-pg10m4", teacher: null },
+  meta: { author: "write-math-pool-g10m4", created: "2026-10-31", factcheck: "verifier-pg10m4", teacher: null },
   sources: [
     { id: "m10", title: "Мерзляк А. Г., Номіровський Д. А., Полонський В. Б., Якір М. С. Математика: алгебра і початки аналізу та геометрія. Рівень стандарту. 10 клас. — Харків: Гімназія, 2018 (п. 30, 31, 34–36; дзеркало PDF на 4book.org)", url: "https://file.4book.org/images/shcoolbook_ua/10/10_m_m_2018_ua.pdf" }
   ],

@@ -12,7 +12,7 @@ SLID.pool("math", {
   id: "pms0",
   section: "ms0",
   status: "verified",
-  meta: { author: "claude-opus", created: "2026-10-30", factcheck: "verifier-pool-ms0; f, g — verifier-write-math-pool-ms0-ister (2026-11-04)", teacher: null },
+  meta: { author: "write-math-pool-ms0", created: "2026-10-30", factcheck: "verifier-pool-ms0; f, g — verifier-write-math-pool-ms0-ister (2026-11-04)", teacher: null },
   sources: [
     { id: "mer5", title: "Мерзляк А. Г., Полонський В. Б., Якір М. С. Математика : підручник для 5 класу закладів загальної середньої освіти. — Харків : Гімназія, 2022 (наказ МОН № 140 від 08.02.2022)", url: "https://file.4book.org/images/shcoolbook_ua/5/5_m_m_2022.pdf" },
     { id: "ist5", title: "Істер О. С. Математика : підручник для 5 класу закладів загальної середньої освіти. — Київ : Генеза, 2022 (наказ МОН № 140 від 08.02.2022)", url: "https://file.4book.org/images/shcoolbook_ua/5/5_m_i_2022.pdf" }

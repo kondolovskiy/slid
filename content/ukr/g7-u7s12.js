@@ -20,7 +20,7 @@ SLID.section("ukr", {
   title: "Частка і вигук",
   why: "Щоб надавати словам відтінків («хай», «навіть», «ж»), правильно писати «не» з різними словами й вигуки на кшталт «ой-ой-ой».",
   requires: ["u6s9l2", "u6s11l3", "u6s12l1", "u6s13l4", "u7s4l1", "u7s4l2", "u7s4l4", "u7s5l2", "u7s6l2", "u7s6l3", "u7s7l1", "u7s7l3", "u7s7l4", "u7s7l5", "u7s8l5", "u7s9l2", "u7s9l3", "u7s9l6", "u7s10l1", "u7s10l3", "u7s11l1", "u7s11l3"],
-  meta: { author: "claude-opus", created: "2026-11-04", factcheck: "verifier-u7s12", teacher: null },
+  meta: { author: "write-ukr-u7s12", created: "2026-11-04", factcheck: "verifier-u7s12", teacher: null },
   badges: [
     { id: "u7s12boss", name: "Майстер службових слів", icon: "trophy", desc: "Пройти фінальний урок розділу «Частка і вигук»" }
   ],

@@ -10,7 +10,7 @@ SLID.section("math", {
   title: "Множення і ділення",
   why: "Щоб розв'язувати задачі про групи, ціни й швидкість.",
   requires: ["m4a"],
-  meta: { author: "claude-opus", created: "2026-10-06", factcheck: "verifier-g4m3", teacher: null },
+  meta: { author: "write-math-g4m3", created: "2026-10-06", factcheck: "verifier-g4m3", teacher: null },
   badges: [
     { id: "g4m3boss", name: "Помічник у поході", icon: "trophy", desc: "Пройти фінальну задачу з множення, ділення й руху" }
   ],

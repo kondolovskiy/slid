@@ -11,7 +11,7 @@ SLID.section("world", {
   weeks: [1, 7],
   title: "Великі географічні відкриття",
   why: "Щоб розуміти, як європейці вийшли в океан, що вони знайшли і що це означало для мешканців Америки, Африки й Азії.",
-  meta: { author: "claude-opus", created: "2026-11-04", factcheck: "verifier-write-world-w8s1", teacher: null },
+  meta: { author: "write-world-w8s1", created: "2026-11-04", factcheck: "verifier-write-world-w8s1", teacher: null },
   badges: [{ id: "discoveries", name: "Мореплавець епохи відкриттів", icon: "globe", desc: "Пройти розділ «Великі географічні відкриття»" }],
   credits: [
     [

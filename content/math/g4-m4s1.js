@@ -8,7 +8,7 @@ SLID.section("math", {
   weeks: [14, 18],
   title: "Ділення з остачею",
   why: "Щоб чесно ділити, коли порівну не виходить: цукерки, місця в автобусі, команди. У 5 класі це знадобиться для мішаних чисел.",
-  meta: { author: "claude-opus", created: "2026-09-27", factcheck: "verified", teacher: null },
+  meta: { author: "slid", created: "2026-09-27", factcheck: "verified", teacher: null },
   lessons: [
     {
       id: "m4a",

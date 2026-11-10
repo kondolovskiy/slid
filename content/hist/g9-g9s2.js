@@ -12,7 +12,7 @@ SLID.section("hist", {
   weeks: [7, 14],
   title: "Українське національне відродження",
   why: "Щоб знати, як мова, література й наука стали основою нації.",
-  meta: { author: "claude-opus", created: "2026-10-13", factcheck: "verifier-g9s2", teacher: null },
+  meta: { author: "write-hist-g9s2", created: "2026-10-13", factcheck: "verifier-g9s2", teacher: null },
   badges: [
     {
       id: "revivalkeeper",

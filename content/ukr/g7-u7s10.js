@@ -19,7 +19,7 @@ SLID.section("ukr", {
   title: "Прийменник",
   why: "Щоб правильно поєднувати слова маленькими «містками»: казати «завдання з географії» і «згідно з наказом» та писати «з-під» через дефіс.",
   requires: ["u6s7l1", "u7s8l1", "u7s8l4", "u5s6l3", "u5s6l4"],
-  meta: { author: "claude-opus", created: "2026-11-04", factcheck: "verifier-u7s10", teacher: null },
+  meta: { author: "write-ukr-u7s10", created: "2026-11-04", factcheck: "verifier-u7s10", teacher: null },
   badges: [
     { id: "u7s10boss", name: "Будівничий містків", icon: "trophy", desc: "Пройти фінальний урок розділу «Прийменник»" }
   ],

@@ -12,7 +12,7 @@ SLID.section("hist", {
   weeks: [20, 27],
   title: "Королівство Руське",
   why: "Щоб знати державу, яка продовжила традиції Русі на заході і мала короля. У підручниках її також називають Галицько-Волинською державою.",
-  meta: { author: "claude-opus", created: "2026-10-07", factcheck: "verifier-g7s4-d019", teacher: null },
+  meta: { author: "write-hist-g7s4", created: "2026-10-07", factcheck: "verifier-g7s4-d019", teacher: null },
   badges: [{ id: "rusking", name: "Літописець королівства", icon: "scroll", desc: "Пройти розділ «Королівство Руське»" }],
   credits: [
     [

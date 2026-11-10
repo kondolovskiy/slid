@@ -15,7 +15,7 @@ SLID.section("ukr", {
   title: "Дієслово: дієвідміни, способи, правопис",
   why: "Щоб не вагатися, як писати — «пишемо» чи «пишимо», «не знаю» чи «незнаю», — і знати, чому краще сказати «ходімо», ніж «давайте підемо».",
   requires: ["u7s3l2", "u7s3l3", "u7s3l4", "u7s3l5", "u7s3l6"],
-  meta: { author: "claude-opus", created: "2026-11-04", factcheck: "verifier-u7s4", teacher: null },
+  meta: { author: "write-ukr-u7s4", created: "2026-11-04", factcheck: "verifier-u7s4", teacher: null },
   badges: [
     { id: "u7s4boss", name: "Знавець дієслова", icon: "trophy", desc: "Пройти фінальний урок розділу «Дієслово: дієвідміни, способи, правопис»" }
   ],

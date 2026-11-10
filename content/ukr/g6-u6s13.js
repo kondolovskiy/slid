@@ -15,7 +15,7 @@ SLID.section("ukr", {
   title: "Займенник",
   why: "Щоб замінювати слова без плутанини й правильно писати «будь-хто», «ні в кого», «абичий».",
   requires: ["u5s9l1", "u6s7l1", "u6s8l1", "u6s8l9", "u6s8l11"],
-  meta: { author: "claude-opus", created: "2026-11-02", factcheck: "verifier-u6s13", teacher: null },
+  meta: { author: "write-ukr-u6s13", created: "2026-11-02", factcheck: "verifier-u6s13", teacher: null },
   badges: [
     { id: "u6s13boss", name: "Редактор пам'ятки", icon: "trophy", desc: "Пройти фінальний урок розділу «Займенник»" }
   ],

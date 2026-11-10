@@ -19,7 +19,7 @@ SLID.section("ukr", {
   title: "Дієприслівник",
   why: "Щоб коротко передати додаткову дію — «усміхаючись», «прочитавши» — і правильно ставити коми біля неї.",
   requires: ["u7s3l1", "u7s3l3", "u7s3l4", "u7s3l5", "u7s4l4", "u7s5l1", "u7s5l2", "u7s5l3", "u7s5l4", "u7s6l1", "u7s6l2", "u7s6l3"],
-  meta: { author: "claude-opus", created: "2026-11-04", factcheck: "verifier-u7s7", teacher: null },
+  meta: { author: "write-ukr-u7s7", created: "2026-11-04", factcheck: "verifier-u7s7", teacher: null },
   badges: [
     { id: "u7s7boss", name: "Майстер дієслівних форм", icon: "trophy", desc: "Пройти фінальний урок розділу «Дієприслівник»" }
   ],

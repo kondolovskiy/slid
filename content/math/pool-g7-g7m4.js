@@ -17,7 +17,7 @@ SLID.pool("math", {
   id: "pg7m4",
   section: "g7m4",
   status: "verified",
-  meta: { author: "claude-opus", created: "2026-10-31", factcheck: "verifier-pool-g7m4; fix-math-pools-ister-formats — verifier-fix-math-pools-ister-formats 2026-11-05", revised: "2026-11-05 fix-math-pools-ister-formats", teacher: null },
+  meta: { author: "write-math-pool-g7m4", created: "2026-10-31", factcheck: "verifier-pool-g7m4; fix-math-pools-ister-formats — verifier-fix-math-pools-ister-formats 2026-11-05", revised: "2026-11-05 fix-math-pools-ister-formats", teacher: null },
   sources: [
     { id: "mer7g", title: "Мерзляк А. Г., Якір М. С. Геометрія : підруч. для 7 кл. закладів заг. серед. освіти. — Харків: Гімназія, 2024 (п. 7–11, 16, 17)", url: "https://file.4book.org/images/shcoolbook_ua/7/7_geom_m_2024.pdf" },
     { id: "ist7g", title: "Істер О. С. Геометрія : підруч. для 7-го кл. закл. заг. серед. освіти. — Київ : Генеза, 2024 (§ 18–20, ДСР № 4, вправи для повторення розділу 3)", url: "https://file.4book.org/images/shcoolbook_ua/7/7_geom_i_2024.pdf" }
