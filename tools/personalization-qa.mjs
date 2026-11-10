@@ -135,6 +135,20 @@ export function audit(subject, matrix, learn, filter = {}) {
     diags, pools: selectedPools };
 }
 
+// Тест рівня не з math (ukr, hist, world; tools-diag-nonmath-p3 п. 1): матриця покриття є лише для math, тож вимог (теми, itemLessons,
+// forEvidence…) тут немає — лише структурна перевірка тим самим learn.validate, що й у validate.mjs, і явне повідомлення, що решту пропущено.
+// Нуль завдань — помилка (не «0 прогалин»).
+export function auditOther(subject, d, learn) {
+  const sections = subject.sections.filter(s => s.lessons?.length);
+  const ctx = { lessons: new Map(sections.flatMap(s => s.lessons.map(l => [l.id, { ...l, grade: s.grade, section: s.id }]))),
+    sections: new Map(sections.map(s => [s.id, { ...s, lessons: s.lessons.map(l => l.id) }])), skills: subject.skills };
+  const errors = [...learn.validate(d, ctx)].map(e => `${d.id}: ${e}`);   // масив з vm-контексту → звичайний
+  if (!d.items?.length) errors.push(`${d.id}: нуль завдань для перевірки`);
+  return { subject: subject.id, id: d.id, grade: d.grade, errors, missing: [], unsupported: [], warnings: [],
+    skipped: `${d.id} (${subject.id}, ${d.grade} кл.): матриця покриття є лише для math (docs/math-personalization-coverage.json) — перевірено лише структуру тесту (learn.validate), вимоги матриці пропущено`,
+    counts: { diagnostics: 1, items: d.items?.length || 0 } };
+}
+
 export function run(args) {
   const filter = {}, flags = new Set(['--strict', '--json']);
   for (let i = 0; i < args.length; i++) {
@@ -148,6 +162,15 @@ export function run(args) {
   if ('grade' in filter && (!Number.isInteger(filter.grade) || filter.grade < 4 || filter.grade > 11)) throw new Error('Клас має бути 4–11');
   if (filter.diag && filter.pool) throw new Error('--diag і --pool взаємовиключні');
   const { subjects, learn } = loadContent(), matrix = readJSON('docs/math-personalization-coverage.json');
+  const other = filter.diag && subjects.filter(c => c.id !== 'math').flatMap(c => (c.diags || []).filter(d => d.id === filter.diag).map(d => [c, d]))[0];
+  if (other) {
+    const [c, d] = other;
+    if ('grade' in filter && filter.grade !== d.grade) throw new Error(`--grade ${filter.grade} не збігається з класом тесту ${d.id} (${d.grade})`);
+    const report = auditOther(c, d, learn);
+    if (args.includes('--json')) console.log(JSON.stringify(report));
+    else { console.log(`ПРОПУЩЕНО: ${report.skipped}`); console.log(`Завдань: ${report.counts.items}`); for (const line of report.errors) console.log(`ПОМИЛКА: ${line}`); }
+    return report.errors.length ? 1 : 0;
+  }
   if (filter.diag && !matrix.diagnostics.some(d => d.id === filter.diag)) throw new Error(`Невідома діагностика ${filter.diag}`);
   if (filter.pool && !matrix.lessons.some(r => r.pool === filter.pool)) throw new Error(`Невідомий пул ${filter.pool}`);
   const report = audit(subjects.find(c => c.id === 'math'), matrix, learn, filter);
