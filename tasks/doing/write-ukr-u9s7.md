@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-10T20:18:19.388Z
 id: write-ukr-u9s7
 type: write-section
 subject: ukr
@@ -6,7 +8,7 @@ grade: 9
 section: u9s7
 weeks: [19, 23]
 status: todo
-claimed_by:
+claimed_by: w-write-ukr-u9s7
 created: 2026-11-10
 ---
 # Написати розділ «Безсполучникове складне речення» (Українська мова, 9 клас)
