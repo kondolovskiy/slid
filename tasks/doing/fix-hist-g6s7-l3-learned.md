@@ -1,10 +1,12 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-10T09:59:27.685Z
 id: fix-hist-g6s7-l3-learned
 type: fix-section
 subject: hist
 grade: 6
 status: todo
-claimed_by:
+claimed_by: writer-g6s7-l3
 created: 2026-11-10
 ---
 # g6s7-l3: `learned` без екрана

@@ -1,8 +1,10 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-10T09:59:27.726Z
 id: curate-meta-author
 type: curate
 status: todo
-claimed_by:
+claimed_by: curator-meta-author
 created: 2026-11-10
 ---
 # meta.author: прибрати назву моделі зі змісту
