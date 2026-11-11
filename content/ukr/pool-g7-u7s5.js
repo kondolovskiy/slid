@@ -13,14 +13,14 @@
 SLID.pool("ukr", {
   id: "pu7s5",
   section: "u7s5",
-  status: "draft",
-  meta: { author: "w-write-ukr-pool-u7s5", created: "2026-11-11", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "w-write-ukr-pool-u7s5", created: "2026-11-11", factcheck: "verifier-pu7s5", teacher: null },
   sources: [
     { id: "z7", title: "Заболотний О. В., Заболотний В. В. Українська мова : підруч. для 7-го кл. — Київ : Генеза, 2024", url: "https://file.4book.org/images/shcoolbook_ua/7/7_um_z_2024.pdf" }
   ],
   items: [
     /* ───────── u7s5l1 «Мокрий чи намочений?» — що таке дієприкметник, вид, активні й пасивні (§24) ───────── */
-    { id: "a01", lesson: "u7s5l1", lvl: 1, sk: "gram", src: "z7 впр. 201", srcPage: 89,
+    { id: "a01", lesson: "u7s5l1", lvl: 1, sk: "gram", src: "z7 впр. 201", srcPage: 89, adapted: true,
       type: "sort", title: "Прикметник чи дієприкметник?",
       bins: ["З прикметником", "З дієприкметником"],
       items: [["морський берег", 0], ["холодний чай", 0], ["сильний буревій", 0], ["світлий колір", 0],
@@ -55,7 +55,7 @@ SLID.pool("ukr", {
 
     /* ───────── u7s5l2 «Опале, а не „опавше“» — активні дієприкметники: суфікси, -ш-/-вш-, відмінювання (§25) ───────── */
     { id: "a07", lesson: "u7s5l2", lvl: 1, sk: "gram", src: "z7 впр. 218", srcPage: 96,
-      type: "word", title: "Туристи, які зголодніли, — це … туристи",
+      type: "word", title: "Утвори активний дієприкметник: туристи, які зголодніли, — це … туристи",
       after: "туристи", answer: ["зголоднілі"],
       steps: ["Активний дієприкметник минулого часу творимо від інфінітива за допомогою суфікса -л-.", "Зголодніти → зголоднілий; туристи (які?) зголоднілі."] },
     { id: "a08", lesson: "u7s5l2", lvl: 1, sk: "gram", src: "z7 впр. 220(І)", srcPage: 96, adapted: true,
