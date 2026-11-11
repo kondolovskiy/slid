@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-11T01:19:08.887Z
 id: write-world-w10s3
 type: write-section
 subject: world
@@ -6,7 +8,7 @@ grade: 10
 section: w10s3
 weeks: [10, 13]
 status: todo
-claimed_by:
+claimed_by: w-write-world-w10s3
 created: 2026-11-10
 ---
 # Написати розділ «Демократії між війнами» (Всесвітня історія, 10 клас)
