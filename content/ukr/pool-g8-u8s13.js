@@ -14,8 +14,8 @@
 SLID.pool("ukr", {
   id: "pu8s13",
   section: "u8s13",
-  status: "draft",
-  meta: { author: "w-write-ukr-pool-u8s13", created: "2026-11-11", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "w-write-ukr-pool-u8s13", created: "2026-11-11", factcheck: "verifier-pu8s13", teacher: null },
   sources: [
     { id: "z8", title: "Заболотний О. В., Заболотний В. В. Українська мова : підруч. для 8-го кл. — Київ : Генеза, 2025", url: "https://file.4book.org/images/shcoolbook_ua/8/8_um_z_2025.pdf" }
   ],
