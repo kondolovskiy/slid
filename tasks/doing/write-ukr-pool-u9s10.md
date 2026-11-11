@@ -1,11 +1,13 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-11T18:25:35.306Z
 id: write-ukr-pool-u9s10
 type: write-pool
 subject: ukr
 grade: 9
 section: u9s10
 status: todo
-claimed_by:
+claimed_by: w-write-ukr-pool-u9s10
 created: 2026-11-11
 depends_on: []
 generated_by: tools/make-tasks.mjs --write-pool --subject ukr
