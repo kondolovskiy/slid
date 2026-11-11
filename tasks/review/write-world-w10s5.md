@@ -7,7 +7,7 @@ subject: world
 grade: 10
 section: w10s5
 weeks: [18, 21]
-status: todo
+status: review
 claimed_by: w-write-world-w10s5
 created: 2026-11-10
 ---
