@@ -6,7 +6,7 @@ type: write-pool
 subject: ukr
 grade: 5
 section: u5s8
-status: review
+status: done
 claimed_by: w-write-ukr-pool-u5s8
 created: 2026-11-10
 depends_on: [engine-pool-lang]
@@ -73,3 +73,6 @@ depends_on: [engine-pool-lang]
 - Не взято: впр. 398 (дієслова-присудки за змістом — два варіанти допустимі), 392 (порядок слів у прислів'ях неоднозначний), 380 «заварити кашу» без пояснення.
 - Милозвучність: § 24 п. 4 — «прислів'я і речення» виправлено. Знахідки euphonyIssues лишилися лише в цитатах З5 («зустрітися з товаришем», «сім з половиною»). `euphony.mjs --section` пулів не бачить — прогнав euphonyScreen скриптом у scratchpad.
 - Перевірка: `validate --pool pu5s8` — 0 помилок, 0 попереджень; `personalization-qa --pool pu5s8 --strict` — 4 уроки, 23 вправи, бракує лише «ще не verified». Браузерного прогону немає (playwright) — qa-ukr-pool.
+
+## Верифікація (verifier-pool-u5s8, 2026-11-11)
+Вердикт: **придатний → verified** (reports/verify/pu5s8.md). Звірено з PDF З5 23 вправи з 23, усі 23 розв'язано самостійно, розв'язки збіглися з ключем. Керування перевірено за D-041 (СУМ-20 + СУМ-11). Правки: a05 — глоса («затіяти клопітну справу»), a13, a14 — srcPage 162. Спірне автора: a06 і a16 мають опору через міркування рівня 3, a05 — значення підтверджено двома словниками. validate 0/0, personalization-qa --strict rc 0.
