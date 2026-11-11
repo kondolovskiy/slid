@@ -42,7 +42,7 @@ SLID.section("ukr", {
   title: "Пунктуаційна норма: складне речення й пряма мова",
   why: "Щоб правильно розставляти розділові знаки в складних реченнях усіх видів і в реченнях із прямою мовою.",
   requires: ["u5s10l3", "u5s10l4", "u6s1l4", "u7s11l2", "u8s9l2", "u9s2l3", "u9s2l4", "u9s3l2", "u9s5l1", "u9s6l2", "u9s7l2", "u9s7l3", "u9s7l4", "u9s8l3", "u9s9l1", "u9s9l2", "u9s9l4"],
-  meta: { author: "w-write-ukr-u11s8", created: "2026-11-11", factcheck: null, teacher: null },
+  meta: { author: "w-write-ukr-u11s8", created: "2026-11-11", factcheck: "verifier-u11s8", teacher: null },
   badges: [
     { id: "u11s8boss", name: "Майстер розділових знаків", icon: "trophy", desc: "Пройти фінальний урок розділу «Пунктуаційна норма: складне речення й пряма мова»" }
   ],
@@ -53,7 +53,7 @@ SLID.section("ukr", {
       title: "Кома перед «і»",
       short: "Складносурядне",
       icon: "scale",
-      status: "draft",
+      status: "verified",
       why: "Кома перед «і» — одна з найчастіших помилок у творах і на НМТ. Хто бачить межу частин, ставить її лише там, де треба.",
       screens: [
         {
@@ -210,7 +210,7 @@ SLID.section("ukr", {
       title: "Не те, як, а що",
       short: "Складнопідрядне",
       icon: "path",
-      status: "draft",
+      status: "verified",
       why: "У складнопідрядному реченні кома зазвичай очевидна. Проте є кілька пасток, на яких помиляються навіть дорослі.",
       screens: [
         {
@@ -362,7 +362,7 @@ SLID.section("ukr", {
       title: "Слова ті самі, знак інший",
       short: "Безсполучникове",
       icon: "bolt",
-      status: "draft",
+      status: "verified",
       why: "Без сполучника зміст речення тримає розділовий знак. Правильний знак показує читачеві, де причина, а де наслідок.",
       screens: [
         {
@@ -512,7 +512,7 @@ SLID.section("ukr", {
       title: "Сказав і додав",
       short: "Пряма мова",
       icon: "voice",
-      status: "draft",
+      status: "verified",
       why: "Інтерв'ю, репортаж, есе з цитатою — усюди потрібна пряма мова. Знаки в ній показують, де чиї слова.",
       screens: [
         {
@@ -647,7 +647,7 @@ SLID.section("ukr", {
       title: "Коректор випускного альманаху",
       short: "Фінал розділу",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "u11s8boss",
       why: "Перевірка всього розділу на текстах випускного альманаху. Бали подвоєні.",
