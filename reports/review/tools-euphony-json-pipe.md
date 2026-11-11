@@ -52,3 +52,42 @@ node tools/euphony.mjs --subject math --json | head -c 10 >/dev/null; echo ${PIP
 - Повний `npm run check` у worktree (червоний на validate через чужу правку w11s2 — помилка відтворена й не з цієї задачі); validate на основному дереві не запускав.
 - Браузерні тести (не зачеплені змінами).
 - diff-answers без `--content-old` у реальному pipe з великим виводом — лише через test-diff-answers і читання коду.
+
+---
+
+## Повторне рев'ю (раунд 2): коміт `bf10c6e` (diff від `e6afc5d`)
+
+**Вердикт: прийнято.** P2-1 і P3-1 закрито й перевірено повторно. Відкритих P1/P2 немає.
+
+### Що змінилося
+- `tools/lib.mjs`: `ignoreEpipe()` — обробник `error` на stdout і stderr: EPIPE тихо, решта помилок кидається далі. Обробник ставиться один раз (перевірка `listeners`). Викликається в `exitFlushed()` і на початку `cli()` у `tools/euphony.mjs:216`.
+- `tools/fixtures/slow-pipe.mjs`: спільний повільний або рано закритий читач.
+- Pipe-тести з повільним читачем: test-validate (3000 попереджень), test-graph-report (`--uses` на 6000 вправах), test-diff-answers (1500 НЕПОЯСНЕНИХ); у test-euphony додано варіанти з читачем, що закриває pipe рано.
+
+### Перевірка P2-1
+- `node tools/euphony.mjs --subject math --json | head -c 10` → rc 0, stderr порожній (у раунді 1 тут був стек і rc 1).
+- `--json | (sleep 1; wc -c)` → 157754, як і раніше; `--section nope` → 2.
+- Фікстура: `process.stdout.write` 2 МБ, далі `exitFlushed(3)`, `| head -c 5` → rc 3, без стеку.
+
+### Перевірка P3-1
+Мутанти в копії дерева bf10c6e, у scratchpad рецензента:
+
+| Мутант | Тест | Результат |
+|---|---|---|
+| M5: прибрати `ignoreEpipe()` з `cli()` euphony | test-euphony | 2 ✗ — вбито |
+| M6: прибрати `ignoreEpipe()` з `exitFlushed` | test-euphony | 0 ✗ — **вижив** (див. P3-3) |
+| M7: `onStdError` кидає й EPIPE | test-euphony | 3 ✗ — вбито |
+| M8: `validate.mjs` кінець → `process.exit(...)` | test-validate | 1 ✗ — вбито |
+| M9: `graph-report.mjs` кінець → `process.exit(...)` | test-graph-report | 1 ✗ — вбито |
+| M10: `diff-answers.mjs` кінець → `process.exit(...)` | test-diff-answers | 1 ✗ — вбито |
+
+### Нові дрібні знахідки
+- **P3-3.** Виклик `ignoreEpipe()` у `exitFlushed` (`tools/lib.mjs:10`) тестом не захищений. Фікстура пише через `console.log`, а він EPIPE ковтає сам, тож M6 виживає. Вручну з `process.stdout.write` захист працює (rc 3). Щоб зловити мутант, фікстура для `closeEarly` має писати через `process.stdout.write`. Не блокує.
+- **P3-4 (вартість тестів).** test-diff-answers триває 102 с, але без нового pipe-блоку — 96 с: блок додає близько 6 с, решта була й раніше. test-validate: 75 с проти 71 с, test-graph-report: 4 с, test-euphony: 5 с. Для `npm run check` і CI це прийнятно. Повільність самого test-diff-answers з цією задачею не пов'язана; її можна розглянути окремо.
+
+### Прогони (worktree, bf10c6e)
+test-euphony 131/131 (5 с); test-validate 1621 (75 с); test-graph-report 68 (4 с); test-diff-answers 55 ok / 0 ✗ (102 с); test-hyp 625 (3 с); test-make-tasks 69 (7 с) — усе зелене. Назв моделей ШІ в diff немає.
+
+### Не перевірено
+- Повний `npm run check` у worktree: застаріла база, validate показує чужу помилку w11s2 «poll»; за словами оркестратора, в основному дереві вона виправлена.
+- Браузерні тести: зміни їх не зачіпають.
