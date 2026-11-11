@@ -44,6 +44,18 @@ const no = (v, msg) => eq(!!v, false, msg);
   for (let i = 0; i < 100; i++) { const p = L.gapOrder([",", "–", "—", ":"], r2); noneLast &&= isPerm(p, 4) && p[3] === 2; firstPos.add(p.indexOf(0)); }
   ok(noneLast, "gapOrder: ∅ завжди останній, результат — перестановка (4 варіанти)");
   eq([...firstPos].sort(), [0, 1, 2], "gapOrder: тире «–» та інші перемішуються");
+  /* порядок показу рядків sort (rowOrder, engine-sort-order): перестановка індексів items; стан і оцінювання — за індексами items */
+  const r3 = lcg(11), rpos = [0, 0, 0, 0], rseen = new Set(); let rperm = true;
+  for (let i = 0; i < 1200; i++) { const p = L.rowOrder(4, r3); rperm &&= isPerm(p, 4); if (!rperm) break; rpos[p.indexOf(0)]++; rseen.add(p.join("")); }
+  ok(rperm, "rowOrder: перестановка індексів items");
+  ok(rpos.every(c => c > 200), `rowOrder: перший рядок буває на кожній позиції ${JSON.stringify(rpos)}`);
+  eq(rseen.size, 24, "rowOrder: трапляються всі 24 перестановки чотирьох рядків");
+  eq(L.rowOrder(3, () => 0), [1, 2, 0], "rowOrder: rnd=0 — Фішер — Єйтс як у gapOrder");
+  eq(L.rowOrder(3, () => 0.999), [0, 1, 2], "rowOrder: rnd≈1 — без обміну");
+  eq(L.rowOrder(3, () => 1), [0, 1, 2], "rowOrder: rnd=1 (поза [0,1)) — індекс не виходить за межі");
+  eq(L.rowOrder(1, () => 0), [0], "rowOrder: один рядок");
+  eq(L.rowOrder(0), [], "rowOrder: порожньо");
+  eq(L.gapOrder(["е", "и", "і"], () => 0), L.rowOrder(3, () => 0), "rowOrder і gapOrder без «∅» — та сама перестановка");
   ok(isPerm(L.gapOrder(["а", "б", "в", "г", "ґ"]), 5), "gapOrder: без rnd (Math.random) — перестановка");
   eq(L.issues({ type: "gaps", text: "с{*е|и}ло" }), [], "gaps: issues чисто");
 }
