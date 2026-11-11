@@ -114,11 +114,11 @@
 | w11s1l5 На межі ядерної війни | 11 | 10 | 0.5 | 36 | 66 | 7.6 | 0.04 | 3 | — |
 | w11s1l6 Архів 1945–1962 (фінал) | 11 | 7 | 0.86 | 24 | 39 | 7.1 | 0.043 | 3 | — |
 | w11s2l1 Диво з нових грошей | 11 | 8 | 0.63 | 37 | 66 | 7 | 0.055 | 4 | — |
-| w11s2l2 Мрія про рівність | 11 | 10 | 0.5 | 33 | 82 | 6.7 | 0.047 | 4 | sentenceWords=6.7 поза [7; 15] |
+| w11s2l2 Мрія про рівність | 11 | 10 | 0.5 | 33 | 82 | 7.2 | 0.046 | 4 | — |
 | w11s2l3 Покоління, що сказало «ні» | 11 | 10 | 0.5 | 37 | 73 | 7.5 | 0.057 | 3 | — |
-| w11s2l4 Весна після диктатур | 11 | 8 | 0.5 | 34 | 89 | 6.5 | 0.065 | 4 | sentenceWords=6.5 поза [7; 15] |
+| w11s2l4 Весна після диктатур | 11 | 8 | 0.5 | 35 | 89 | 7.4 | 0.062 | 4 | — |
 | w11s2l5 Вугілля, сталь і мир | 11 | 9 | 0.56 | 38 | 86 | 7.2 | 0.048 | 3 | — |
-| w11s2l6 Виставка «Європа і Америка після війни» (фінал) | 11 | 7 | 0.86 | 17 | 41 | 6.6 | 0.044 | 4 | sentenceWords=6.6 поза [7; 15] |
+| w11s2l6 Виставка «Європа і Америка після війни» (фінал) | 11 | 7 | 0.86 | 17 | 41 | 6.9 | 0.043 | 4 | sentenceWords=6.9 поза [7; 15] |
 
 ## Середні по сім'ях (предмет + класи + звичайний урок / фінал)
 
@@ -126,5 +126,5 @@
 
 - **7-9:lesson**: screens 9.52±0.64, gradedShare 0.54±0.04, readWordsPerScreen 31.07±3.42, maxReadWords 63.55±6.49, sentenceWords 6.59±0.33, longWordShare 0.04±0.01, typeVariety 3.42±0.49
 - **7-9:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 18.93±1.73, maxReadWords 34.73±4.88, sentenceWords 6.19±0.21, longWordShare 0.04±0.01, typeVariety 3.07±0.25
-- **10-11:lesson**: screens 9.5±0.94, gradedShare 0.54±0.04, readWordsPerScreen 35.86±3.55, maxReadWords 76.05±8.62, sentenceWords 7.32±0.34, longWordShare 0.05±0.02, typeVariety 3.5±0.58
-- **10-11:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 18.6±3.77, maxReadWords 36.8±3.6, sentenceWords 7.12±0.35, longWordShare 0.04±0.01, typeVariety 3.4±0.49
+- **10-11:lesson**: screens 9.5±0.94, gradedShare 0.54±0.04, readWordsPerScreen 35.91±3.53, maxReadWords 76.05±8.62, sentenceWords 7.38±0.26, longWordShare 0.05±0.02, typeVariety 3.5±0.58
+- **10-11:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 18.6±3.77, maxReadWords 36.8±3.6, sentenceWords 7.18±0.28, longWordShare 0.04±0.01, typeVariety 3.4±0.49
