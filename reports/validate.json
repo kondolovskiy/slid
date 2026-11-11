@@ -1,5 +1,7 @@
 {
-  "date": "2026-11-11T20:51:18.073Z",
+  "date": "2026-11-11T20:51:28.754Z",
   "errors": [],
-  "warnings": []
+  "warnings": [
+    "content/world/g8-w8s1.js#w8s1l1: maxReadWords=94 поза профілем [0; 75] для world, 7-9 кл."
+  ]
 }
