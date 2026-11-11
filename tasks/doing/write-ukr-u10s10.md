@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-11T01:29:24.573Z
 id: write-ukr-u10s10
 type: write-section
 subject: ukr
@@ -6,7 +8,7 @@ grade: 10
 section: u10s10
 weeks: [31, 35]
 status: todo
-claimed_by:
+claimed_by: w-write-ukr-u10s10
 created: 2026-11-10
 ---
 # Написати розділ «Суперечка: аргументи, правила, полемічні прийоми» (Українська мова, 10 клас)
