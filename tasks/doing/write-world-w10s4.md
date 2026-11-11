@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-11T07:36:30.687Z
 id: write-world-w10s4
 type: write-section
 subject: world
@@ -6,7 +8,7 @@ grade: 10
 section: w10s4
 weeks: [14, 17]
 status: todo
-claimed_by:
+claimed_by: w-write-world-w10s4
 created: 2026-11-10
 ---
 # Написати розділ «Тоталітарні режими» (Всесвітня історія, 10 клас)
