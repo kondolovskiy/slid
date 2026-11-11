@@ -6,7 +6,7 @@ type: write-pool
 subject: ukr
 grade: 6
 section: u6s13
-status: review
+status: done
 claimed_by: w-write-ukr-pool-u6s13
 created: 2026-11-10
 depends_on: [engine-pool-lang]
@@ -83,3 +83,6 @@ depends_on: [engine-pool-lang]
 - Позиції правильних у choice: a01 — 1, a04 — 2, a10 — 1, a17 — 1, a23 — 3, a29 — 2, a30 — 2, a41 — 2.
 
 **Перевірка:** `validate --pool pu6s13` — 0 помилок, 0 попереджень; `personalization-qa --pool pu6s13 --strict` — 0 прогалин, лише «ще не verified»; `euphony --pool pu6s13` — 0 відхилень; вручну виправлено «прислів'я й» → «прислів'я і» (§ 24 п. 4). Кожну вправу розв'язано двічі.
+
+## Верифікація (verifier-pool-u6s13, 2026-11-11)
+Вердикт: **придатний → verified** (reports/verify/pu6s13.md). З6 — зображення 19 з 27 сторінок (70 %), 41/41 вправ звірено й розв'язано, ключі збіглися. Правки: a40 «Шестикласниц… Натал…» → «Сестр{*о|а|у} Марі{*є|я|ю}» (steps хибно «мішана група»; опора поза l7; «Натале» спірне за УП § 74); a27 + В. Дніпровський; a41 hint менш навідний. validate 0/0, personalization-qa --strict exit 0, euphony 0.
