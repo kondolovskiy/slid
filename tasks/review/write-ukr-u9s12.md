@@ -7,7 +7,7 @@ subject: ukr
 grade: 9
 section: u9s12
 weeks: [1, 35]
-status: todo
+status: review
 claimed_by: w-write-ukr-u9s12
 created: 2026-11-10
 ---
