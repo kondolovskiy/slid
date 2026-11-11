@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-11T20:44:21.177Z
 id: tools-euphony-z-validate-gw
 type: tools
 subject: all
 status: todo
-claimed_by:
+claimed_by: w-tools-euphony-z
 created: 2026-11-11
 depends_on: []
 ---
