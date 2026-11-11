@@ -1,11 +1,13 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-11T18:10:34.222Z
 id: write-ukr-pool-u8s9
 type: write-pool
 subject: ukr
 grade: 8
 section: u8s9
 status: todo
-claimed_by:
+claimed_by: w-write-ukr-pool-u8s9
 created: 2026-11-10
 depends_on: [engine-pool-lang]
 ---

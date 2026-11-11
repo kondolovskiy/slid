@@ -1,11 +1,13 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-11T18:10:34.273Z
 id: images-world-w10s4-l4
 type: images
 subject: world
 grade: 10
 section: w10s4
 status: todo
-claimed_by:
+claimed_by: w-images-world-w10s4-l4
 created: 2026-11-11
 depends_on: []
 ---

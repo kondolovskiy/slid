@@ -1,11 +1,13 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-11T18:10:34.314Z
 id: fix-ukr-u7s2-bjudzhet
 type: fix
 subject: ukr
 grade: 7
 section: u7s2
 status: todo
-claimed_by:
+claimed_by: w-fix-ukr-u7s2-bjudzhet
 created: 2026-11-11
 depends_on: []
 ---
