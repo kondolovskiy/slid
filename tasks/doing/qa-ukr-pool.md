@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-11T20:51:24.405Z
 id: qa-ukr-pool
 type: qa
 subject: ukr
 status: todo
-claimed_by:
+claimed_by: w-qa-ukr-pool
 created: 2026-11-10
 depends_on: [engine-pool-lang, write-ukr-pool-u5s1, write-ukr-pool-u5s10, write-ukr-pool-u5s2, write-ukr-pool-u5s3, write-ukr-pool-u5s4, write-ukr-pool-u5s5, write-ukr-pool-u5s6, write-ukr-pool-u5s7, write-ukr-pool-u5s8, write-ukr-pool-u5s9, write-ukr-pool-u6s1, write-ukr-pool-u6s10, write-ukr-pool-u6s11, write-ukr-pool-u6s12, write-ukr-pool-u6s13, write-ukr-pool-u6s2, write-ukr-pool-u6s3, write-ukr-pool-u6s4, write-ukr-pool-u6s5, write-ukr-pool-u6s6, write-ukr-pool-u6s7, write-ukr-pool-u6s8, write-ukr-pool-u6s9, write-ukr-pool-u7s1, write-ukr-pool-u7s10, write-ukr-pool-u7s11, write-ukr-pool-u7s12, write-ukr-pool-u7s2, write-ukr-pool-u7s3, write-ukr-pool-u7s4, write-ukr-pool-u7s5, write-ukr-pool-u7s6, write-ukr-pool-u7s7, write-ukr-pool-u7s8, write-ukr-pool-u7s9, write-ukr-pool-u8s1, write-ukr-pool-u8s10, write-ukr-pool-u8s11, write-ukr-pool-u8s12, write-ukr-pool-u8s13, write-ukr-pool-u8s2, write-ukr-pool-u8s3, write-ukr-pool-u8s4, write-ukr-pool-u8s5, write-ukr-pool-u8s6, write-ukr-pool-u8s7, write-ukr-pool-u8s8, write-ukr-pool-u8s9]
 ---
