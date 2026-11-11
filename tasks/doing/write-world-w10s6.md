@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-11T18:17:26.038Z
 id: write-world-w10s6
 type: write-section
 subject: world
@@ -6,7 +8,7 @@ grade: 10
 section: w10s6
 weeks: [22, 25]
 status: todo
-claimed_by:
+claimed_by: w-write-world-w10s6
 created: 2026-11-10
 ---
 # Написати розділ «Азія й Латинська Америка між війнами» (Всесвітня історія, 10 клас)
