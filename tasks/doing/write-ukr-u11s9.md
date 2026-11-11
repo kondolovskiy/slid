@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-11T01:30:18.724Z
 id: write-ukr-u11s9
 type: write-section
 subject: ukr
@@ -6,7 +8,7 @@ grade: 11
 section: u11s9
 weeks: [25, 29]
 status: todo
-claimed_by:
+claimed_by: w-write-ukr-u11s9
 created: 2026-11-10
 ---
 # Написати розділ «Стилістична норма: слово, доречне в стилі» (Українська мова, 11 клас)
