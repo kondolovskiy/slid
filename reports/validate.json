@@ -1,8 +1,15 @@
 {
-  "date": "2026-11-11T20:32:35.128Z",
+  "date": "2026-11-11T20:33:10.975Z",
   "errors": [],
   "warnings": [
-    "content/ukr/pool#pu10s4 задача 9 «a09» (gaps): gaps: слово з пропуском розірване HTML-тегом («ди́ви<sup>е</sup>{…}а») — рядок може перенестися посеред слова; обгорни тегом усе слово або винеси тег за його межі",
-    "content/ukr/pool#pu10s4 задача 10 «a10» (gaps): gaps: слово з пропуском розірване HTML-тегом («ле<sup>и</sup>{…}ки́й») — рядок може перенестися посеред слова; обгорни тегом усе слово або винеси тег за його межі"
+    "content/world/g10-w10s6.js#w10s6l1: maxReadWords=91 поза профілем [0; 90] для world, 10-11 кл.",
+    "content/world/g10-w10s6.js#w10s6l2: maxReadWords=114 поза профілем [0; 90] для world, 10-11 кл.",
+    "content/world/g10-w10s6.js#w10s6l2: sentenceWords=6.8 поза профілем [7; 15] для world, 10-11 кл.",
+    "content/world/g10-w10s6.js#w10s6l3: gradedShare=0.4 поза профілем [0.5; 0.9] для world, 10-11 кл.",
+    "content/world/g10-w10s6.js#w10s6l4: sentenceWords=6.7 поза профілем [7; 15] для world, 10-11 кл.",
+    "content/world/g10-w10s6.js#w10s6l4: у 3 з 3 завдань choice правильний варіант — А: переставляй варіанти",
+    "content/world/g10-w10s6.js#w10s6l5: у 3 з 3 завдань choice правильний варіант — А: переставляй варіанти",
+    "content/world/g10-w10s6.js#w10s6l6: sentenceWords=5.8 поза профілем [7; 15] для world, 10-11 кл.",
+    "content/world/g10-w10s6.js#w10s6l6: у 3 з 3 завдань choice правильний варіант — А: переставляй варіанти"
   ]
 }

@@ -11,13 +11,14 @@
    Літературні рядки З9 без другого джерела — без підпису автора (src указує вправу); «В мілкій траві» → «У мілкій
    траві» (УП § 23, adapted). Пряма мова: у §41 є лише схема А: «П» — окремої вправи немає (див. нотатки задачі).
    Уроки: u9s11l1, u9s11l2 (u9s11l3 — фінал, не тренується).
+   Статус: verified (verifier-pu9s11, 2026-11-11; reports/verify/pu9s11.md).
    Перевірка: node tools/validate.mjs --pool pu9s11 && node tools/personalization-qa.mjs --pool pu9s11 --strict
    id пулу й вправ — ключі прогресу, не перейменовувати. */
 SLID.pool("ukr", {
   id: "pu9s11",
   section: "u9s11",
-  status: "draft",
-  meta: { author: "w-write-ukr-pool-u9s11", created: "2026-11-11", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "w-write-ukr-pool-u9s11", created: "2026-11-11", factcheck: "verifier-pu9s11", teacher: null },
   sources: [
     { id: "z9", title: "Заболотний О. В., Заболотний В. В. Українська мова : підруч. для 9-го кл. — Київ : Генеза, 2026", url: "https://file.4book.org/images/shcoolbook_ua/9/9_um_z_2026.pdf" }
   ],
