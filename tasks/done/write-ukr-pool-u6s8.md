@@ -6,7 +6,7 @@ type: write-pool
 subject: ukr
 grade: 6
 section: u6s8
-status: review
+status: done
 claimed_by: w-write-ukr-pool-u6s8
 created: 2026-11-10
 depends_on: [engine-pool-lang]
@@ -95,3 +95,8 @@ depends_on: [engine-pool-lang]
 7. a33: групи «місто — -а, складена назва — -у, річка з наголосом на закінченні — -а, інші річки/острови/країни — -у» — l6 е4, е7.
 
 Побічно: validate перезаписав reports/validate.json (спільний звіт) — не комітити з моєї задачі.
+
+## Верифікація (verifier-pool-u6s8, 2026-11-11)
+Звіт: reports/verify/pu6s8.md. **Придатний → `status: "verified"`.** З6 звірено за зображенням 29 сторінок — 62/62 вправи; кожна оцінювана форма — УП § 32, 67, 72, 74, 82, 87, 95, 98, 100, 142, 143 + Горох + орф. словник slovnyk.ua.
+Правки (6): a16 — другий хибний варіант («мрії» — Зн. в. мн., не Р. одн.) → варіант і steps виправлено; a45 — «з (кошеня)» допускало «кошенятами» → «з рудим (кошеня)»; a02 — заголовок «…знахідний відмінок однини»; a22 — цитата «надо мною» (Леся Українка, З6); a05 — «двадцяти років» → «багатьох років»; status/factcheck.
+validate --pool pu6s8: 0/0; personalization-qa --pool pu6s8 --strict: 0 прогалин; euphony: 0. Браузерний прогін — CI / qa-ukr-pool.
