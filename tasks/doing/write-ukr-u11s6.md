@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-11T01:20:36.482Z
 id: write-ukr-u11s6
 type: write-section
 subject: ukr
@@ -6,7 +8,7 @@ grade: 11
 section: u11s6
 weeks: [15, 17]
 status: todo
-claimed_by:
+claimed_by: w-write-ukr-u11s6
 created: 2026-11-10
 ---
 # Написати розділ «Ускладнені й складні речення без помилок» (Українська мова, 11 клас)

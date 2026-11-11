@@ -4,8 +4,8 @@
    Вправа тренує лише те, що пояснив урок (D-019); норма — D-041/D-042. Контракт — docs/CONTENT_SCHEMA.md §10 «Пули мовних предметів».
    Перевірка: node tools/validate.mjs --pool pu5s1 && node tools/personalization-qa.mjs --pool pu5s1 --strict */
 SLID.pool("ukr", {
-  id: "pu5s1", section: "u5s1", status: "draft",
-  meta: { author: "write-ukr-pool-u5s1", created: "2026-11-11", factcheck: "self", teacher: null },
+  id: "pu5s1", section: "u5s1", status: "verified",
+  meta: { author: "write-ukr-pool-u5s1", created: "2026-11-11", factcheck: "verifier-pool-u5s1", teacher: null },
   sources: [
     { id: "z5", short: "Заболотний, 5 клас", title: "Заболотний О. В., Заболотний В. В. Українська мова : підруч. для 5-го кл. закл. заг. серед. освіти. — Київ : Генеза, 2022",
       url: "https://www.geneza.ua/sites/default/files/ebooks/Українська%20мова_5кл_Генеза.pdf" },
@@ -240,7 +240,7 @@ SLID.pool("ukr", {
       shuffle: [2, 0, 3, 1],
       hint: "Що сталося спочатку, а чим усе закінчилося?",
       steps: ["Розповідь — події одна за одною: початок, розвиток, кінець дії.", "Спершу гарбузиння лізе на тин, потім — на гілляку, там цвіте, а наприкінці з'являється гарбуз. Слова «потім», «там, на гілляці» показують черговість."] },
-    { id: "a26", lesson: "u5s1l5", lvl: 2, sk: "text", src: "a5 § 3 впр. 2", srcPage: 11, adapted: true,
+    { id: "a26", lesson: "u5s1l5", lvl: 2, sk: "text", src: "a5 § 3 впр. 2", srcPage: 10, adapted: true,
       type: "pick", title: "Знайди ознаки",
       body: "<p>Дівчинка розглядає пару голубів на балконі. Торкнися слів, які відповідають на питання <i>який? яка? яке? які?</i></p>",
       text: "Голубка трохи [менша], [світло-сіренька], а відлив на шиї в неї [золотавий], [блискучий]. Голуб [більший], [темний], але крила в нього [світлі].",
