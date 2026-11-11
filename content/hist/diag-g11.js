@@ -20,9 +20,9 @@ SLID.diag("hist", {
   grade: 11,
   title: "Що ти вже вмієш?",
   why: "Знайдемо теми з попередніх класів, які варто згадати, і те, що з 11 класу ти вже знаєш.",
-  status: "draft",
+  status: "verified",
   signed: false,
-  meta: { author: "w-write-hist-diag-g11", created: "2026-11-06", factcheck: "verifier-dgh11 (редакція dgh11)", revised: "2026-11-11 w-refine-hist-diag-g10-g11 (новий id dgh11b)", teacher: null },
+  meta: { author: "w-write-hist-diag-g11", created: "2026-11-06", factcheck: "verifier-dgh11 (редакція dgh11); verifier-refine-hist-diag-g10-g11 (dgh11b, 2026-11-11)", revised: "2026-11-11 w-refine-hist-diag-g10-g11 (новий id dgh11b)", teacher: null },
   topics: [
     // передумови: вміння історика
     { id: "cent", title: "Століття за роком", kind: "pre", lessons: ["l3"], for: ["g11s2", "g11s3", "g11s4", "g11s5"] },

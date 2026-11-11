@@ -11,16 +11,16 @@
    id тесту dgh10 і порядок завдань — ключі прогресу: заміна на місці — лише з rev (CONTENT_SCHEMA §9).
    2026-11-11 (refine-hist-diag-g10-g11): розділ g11s1 «Друга світова війна» перенесено в 10 кл. (програма № 698; D-047) — лише метадані:
    g11s1 додано у for тем srccrit, fact, lands; завдання, індекси, id і rev не змінено. Cur-теми g11s1 і нових уроків 10 кл. —
-   наступною редакцією з новим id тесту. Статус знову draft до повторної перевірки.
+   наступною редакцією з новим id тесту. Повторна перевірка — verifier-refine-hist-diag-g10-g11 (2026-11-11), verified.
    Перевірка: node tools/validate.mjs --diag dgh10 */
 SLID.diag("hist", {
   id: "dgh10",
   grade: 10,
   title: "Що ти вже вмієш?",
   why: "Знайдемо теми з попередніх класів, які варто згадати, і те, що з 10 класу ти вже знаєш.",
-  status: "draft",
+  status: "verified",
   signed: false,
-  meta: { author: "w-write-hist-diag-g10", created: "2026-11-06", factcheck: "verifier-dgh10", revised: "2026-11-11 w-refine-hist-diag-g10-g11", teacher: null },
+  meta: { author: "w-write-hist-diag-g10", created: "2026-11-06", factcheck: "verifier-dgh10; for g11s1 — verifier-refine-hist-diag-g10-g11 (2026-11-11)", revised: "2026-11-11 w-refine-hist-diag-g10-g11", teacher: null },
   topics: [
     // передумови: вміння історика (5 кл.)
     { id: "cent", title: "Століття за роком", kind: "pre", lessons: ["l3"], for: ["g10s1", "g10s2", "g10s3", "g10s4", "g10s5"] },
