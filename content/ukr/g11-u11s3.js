@@ -30,7 +30,7 @@
    Форма на -но, -то з орудним виконавця — оцінюється, як у 7–8 кл. (facts/ukr №181, facts/ukr-8 №236).
    Спосіб у значенні іншого: З11 вправи 107, 109 (с. 49); https://naurok.com.ua/urok-tvorennya-diesliv-umovnogo-ta-nakazovogo-sposobiv-346030.html
    Опора з попередніх класів: u7s3l3, u7s4l1, u7s4l2, u7s5l2, u7s5l3, u7s6l3, u7s7l3, u8s2l4.
-   4 уроки (3 + фінал). Статус: draft.
+   4 уроки (3 + фінал). Статус: verified (verifier-u11s3, 2026-11-11; reports/verify/u11s3.md).
    Перевірка: node tools/validate.mjs --section u11s3 && node tools/stats.mjs --subject ukr
    Схема й правила: docs/CONTENT_SCHEMA.md §4.1, style/ukr.md */
 SLID.section("ukr", {
@@ -40,7 +40,7 @@ SLID.section("ukr", {
   title: "Дієслово й дієслівні форми: складні випадки",
   why: "Щоб правильно змінювати дієслова на кшталт «дати», «їсти», «відповісти», вибирати форму наказового способу й не вживати невдалих дієприкметників.",
   requires: ["u7s3l3", "u7s4l1", "u7s4l2", "u7s5l2", "u7s5l3", "u7s6l3", "u7s7l3", "u8s2l4"],
-  meta: { author: "w-write-ukr-u11s3", created: "2026-11-11", factcheck: null, teacher: null },
+  meta: { author: "w-write-ukr-u11s3", created: "2026-11-11", factcheck: "verifier-u11s3", teacher: null },
   badges: [
     { id: "u11s3boss", name: "Майстер дієслова", icon: "trophy", desc: "Пройти фінальний урок розділу «Дієслово й дієслівні форми: складні випадки»" }
   ],
@@ -51,7 +51,7 @@ SLID.section("ukr", {
       title: "Назвемо, а не будемо назвати",
       short: "Дієслівні форми",
       icon: "voice",
-      status: "draft",
+      status: "verified",
       why: "Вид, спосіб і форма дієслова змінюють те, як звучить повідомлення. Помилки тут видно в оголошенні, листі й на іспиті.",
       screens: [
         {
@@ -178,7 +178,7 @@ SLID.section("ukr", {
       title: "Даси, а не дасиш",
       short: "Словозміна",
       icon: "check",
-      status: "draft",
+      status: "verified",
       why: "Кілька дієслів змінюються не за загальним зразком, а наказовий спосіб має свої закінчення. Саме тут найчастіше помиляються в мовленні.",
       screens: [
         {
@@ -313,7 +313,7 @@ SLID.section("ukr", {
       title: "Потемніле, а не потемнівше",
       short: "Дієприкметники",
       icon: "leaf",
-      status: "draft",
+      status: "verified",
       why: "Дієприкметник робить речення коротшим, але невдалий дієприкметник звучить як переклад. Ти навчишся бачити, коли його краще замінити.",
       screens: [
         {
@@ -466,7 +466,7 @@ SLID.section("ukr", {
       title: "Редактор бібліотечного сайту",
       short: "Фінал розділу",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "u11s3boss",
       why: "Перевірка всього розділу на текстах сайту бібліотеки: вид і форми дієслова, словозміна, наказовий спосіб, дієприкметники. Бали подвоєні.",
