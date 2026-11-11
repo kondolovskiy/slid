@@ -390,9 +390,9 @@
 | u10s5l1 Пишемо, як чуємо? | 10 | 12 | 0.5 | 27 | 52 | 5.9 | 0.031 | 4 | — |
 | u10s5l2 Мін'юст і пів яблука | 10 | 11 | 0.55 | 24 | 51 | 6.2 | 0.012 | 5 | — |
 | u10s5l3 Гальці чи галці? | 10 | 10 | 0.5 | 26 | 51 | 5.9 | 0.026 | 4 | — |
-| u10s5l4 Екскурсовод і пішохід | 10 | 12 | 0.5 | 27 | 48 | 5.8 | 0.042 | 5 | — |
+| u10s5l4 Екскурсовод і пішохід | 10 | 12 | 0.5 | 27 | 48 | 5.6 | 0.042 | 5 | — |
 | u10s5l5 Празький, але чеський | 10 | 12 | 0.5 | 25 | 46 | 5.6 | 0.024 | 4 | — |
-| u10s5l6 Коректор новинного сайту (фінал) | 10 | 7 | 0.86 | 17 | 31 | 4.9 | 0.039 | 3 | — |
+| u10s5l6 Коректор новинного сайту (фінал) | 10 | 7 | 0.86 | 17 | 31 | 5 | 0.039 | 3 | — |
 | u11s2l1 Пальним, а не пальнем | 11 | 11 | 0.55 | 28 | 52 | 5.2 | 0.057 | 4 | — |
 | u11s2l2 Величезна чи завелика? | 11 | 10 | 0.6 | 26 | 48 | 5.1 | 0.024 | 4 | — |
 | u11s2l3 Дорожча чи дорожче? | 11 | 11 | 0.55 | 25 | 44 | 5.5 | 0.039 | 4 | — |
@@ -412,5 +412,5 @@
 - **5-6:boss**: screens 7.44±0.7, gradedShare 0.86±0.03, readWordsPerScreen 19.36±2.96, maxReadWords 34.28±3.82, sentenceWords 4.96±0.43, longWordShare 0.04±0.01, typeVariety 3.88±0.65
 - **7-9:lesson**: screens 10.56±0.87, gradedShare 0.54±0.04, readWordsPerScreen 28.63±3.57, maxReadWords 52.49±6.05, sentenceWords 5.82±0.58, longWordShare 0.04±0.02, typeVariety 3.93±0.8
 - **7-9:boss**: screens 7.18±0.38, gradedShare 0.86±0.01, readWordsPerScreen 22.13±3, maxReadWords 38.26±4.87, sentenceWords 5.45±0.6, longWordShare 0.05±0.02, typeVariety 3.82±0.81
-- **10-11:lesson**: screens 11.1±0.75, gradedShare 0.54±0.04, readWordsPerScreen 26.05±2.95, maxReadWords 48.29±5.41, sentenceWords 5.51±0.51, longWordShare 0.05±0.02, typeVariety 4.1±0.68
-- **10-11:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 18±1.26, maxReadWords 33.4±7.86, sentenceWords 5.04±0.1, longWordShare 0.05±0.01, typeVariety 3.4±0.49
+- **10-11:lesson**: screens 11.1±0.75, gradedShare 0.54±0.04, readWordsPerScreen 26.05±2.95, maxReadWords 48.29±5.41, sentenceWords 5.5±0.5, longWordShare 0.05±0.02, typeVariety 4.1±0.68
+- **10-11:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 18±1.26, maxReadWords 33.4±7.86, sentenceWords 5.06±0.08, longWordShare 0.05±0.01, typeVariety 3.4±0.49
