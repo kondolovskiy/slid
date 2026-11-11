@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-11T07:38:02.278Z
 id: write-ukr-u10s11
 type: write-section
 subject: ukr
@@ -6,7 +8,7 @@ grade: 10
 section: u10s11
 weeks: [1, 35]
 status: todo
-claimed_by:
+claimed_by: w-write-ukr-u10s11
 created: 2026-11-10
 ---
 # Написати розділ «Пишемо самі: переказ, есе, діловий лист, обґрунтування позиції» (Українська мова, 10 клас)
