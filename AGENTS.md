@@ -58,7 +58,7 @@ node tools/claim.mjs list|claim|move ...                     # черга зад
 node tools/make-tasks.mjs [--subject S]                      # задачі на написання з плану; --write-pool [--subject ukr] — задачі на пули
 node tools/graph-report.mjs [--line ID --strict]             # граф умінь → reports/graph-<предмет>.md
 node tools/fig-audit.mjs [--subject S]                       # де умова потребує рисунка, а його немає → reports/fig-audit-S.md
-node tools/euphony.mjs [--subject S] [--section ID]          # милозвучність у/в, і/й, з/із/зі → reports/euphony-S.md (з --section — лише stdout)
+node tools/euphony.mjs [--subject S] [--section|--pool|--diag ID]   # милозвучність у/в, і/й, з/із/зі (уроки, пули, тести рівня) → reports/euphony-S.md (з ID — лише stdout)
 python3 -m http.server 8000                                  # запустити локально
 cd server && npm run check && DATABASE_URL=postgres://… npm run test:e2e   # бекенд
 ```
