@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-11T01:26:32.391Z
 id: write-ukr-u11s7
 type: write-section
 subject: ukr
@@ -6,7 +8,7 @@ grade: 11
 section: u11s7
 weeks: [18, 20]
 status: todo
-claimed_by:
+claimed_by: w-write-ukr-u11s7
 created: 2026-11-10
 ---
 # Написати розділ «Пунктуаційна норма: просте речення» (Українська мова, 11 клас)

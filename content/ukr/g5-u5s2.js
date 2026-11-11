@@ -1,7 +1,7 @@
 /* Слід · Українська мова, 5 клас — «Слово і його значення»
    Джерело змісту: О. Заболотний, В. Заболотний «Українська мова. 5 клас» (Генеза, 2022), §2–9 «Лексикологія», с. 17–44.
    Значення слів звірено з СУМ-11 (goroh.pp.ua). Норма — «Український правопис» (ред. 2019).
-   8 уроків (u5s2l8 — фінал). Статус: verified (verifier-u5s2, 2026-11-02; reports/verify/u5s2.md). u5s2l2, u5s2l8 — хибна група в pick (fix-ukr-pick-groups, 2026-11-02), повторно verified (reports/verify/fix-ukr-pick-groups.md). u5s2l1, u5s2l7, u5s2l8 — D-041 (fix-ukr-u5s2-d041, 2026-11-11): форми без позначки словника (включити, розкрити, відкрити, на протязі, повезло) — лише порада, не оцінюються; статус draft.
+   8 уроків (u5s2l8 — фінал). Статус: verified (verifier-u5s2, 2026-11-02; reports/verify/u5s2.md). u5s2l2, u5s2l8 — хибна група в pick (fix-ukr-pick-groups, 2026-11-02), повторно verified (reports/verify/fix-ukr-pick-groups.md). u5s2l1, u5s2l7, u5s2l8 — D-041 (fix-ukr-u5s2-d041, 2026-11-11): форми без позначки словника (включити, розкрити, відкрити, на протязі, повезло) — лише порада, не оцінюються; повторно verified (verifier-fix-ukr-u5s2-d041, 2026-11-11; reports/verify/fix-ukr-u5s2-d041.md).
    Перевірка: node tools/validate.mjs --section u5s2 && node tools/stats.mjs --subject ukr
    Схема й правила: docs/CONTENT_SCHEMA.md §4.1, style/ukr.md */
 SLID.section("ukr", {
@@ -21,7 +21,7 @@ SLID.section("ukr", {
       title: "Ручка, що не пише",
       short: "Значення слова",
       icon: "book",
-      status: "draft",
+      status: "verified",
       why: "Одне слово може мати кілька значень. Коли знаєш їх, легко зрозуміти інших і не насмішити помилкою.",
       screens: [
         {
@@ -866,7 +866,7 @@ SLID.section("ukr", {
       title: "Два часа чи дві години?",
       short: "Точне слово",
       icon: "check",
-      status: "draft",
+      status: "verified",
       why: "Точне слово робить оголошення, лист чи розповідь зрозумілими й грамотними.",
       screens: [
         {
@@ -1004,7 +1004,7 @@ SLID.section("ukr", {
       title: "Дитячий словник",
       short: "Фінал розділу",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "u5s2boss",
       why: "Перевірка всього розділу на справах укладачів словника. Бали подвоєні.",

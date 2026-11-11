@@ -387,7 +387,7 @@
 | u10s2l4 Абонент чи абонемент? | 10 | 11 | 0.55 | 23 | 46 | 4.4 | 0.067 | 4 | — |
 | u10s2l5 Пекти раків чи смажити? | 10 | 11 | 0.55 | 22 | 38 | 5.6 | 0.075 | 3 | maxReadWords нетипово для сім'ї (z=-2) |
 | u10s2l6 Редакція шкільного сайту (фінал) | 10 | 7 | 0.86 | 17 | 28 | 5.1 | 0.076 | 3 | — |
-| u10s4l1 Учиться чи вчиться? | 10 | 12 | 0.5 | 35 | 61 | 5.9 | 0.026 | 3 | readWordsPerScreen нетипово для сім'ї (z=2.6) |
+| u10s4l1 Учиться чи вчиться? | 10 | 12 | 0.5 | 35 | 63 | 5.9 | 0.026 | 3 | readWordsPerScreen нетипово для сім'ї (z=2.6); maxReadWords нетипово для сім'ї (z=2.2) |
 | u10s4l2 Не по буквах | 10 | 10 | 0.5 | 18 | 39 | 4.4 | 0.049 | 3 | readWordsPerScreen нетипово для сім'ї (z=-2.5) |
 | u10s4l3 Ма́буть чи мабу́ть? | 10 | 10 | 0.5 | 23 | 52 | 5.1 | 0.05 | 4 | — |
 | u10s4l4 Кни́жки чи книжки́? | 10 | 10 | 0.5 | 24 | 42 | 4.6 | 0.034 | 3 | — |
@@ -427,7 +427,7 @@
 | u11s2l4 Шістьмастами, а не шестистами | 11 | 11 | 0.55 | 26 | 48 | 5.3 | 0.029 | 5 | — |
 | u11s2l5 Двадцять одна гривня | 11 | 11 | 0.55 | 25 | 52 | 5.5 | 0.035 | 5 | — |
 | u11s2l6 Редакція обласних новин (фінал) | 11 | 7 | 0.86 | 19 | 30 | 5.2 | 0.04 | 4 | — |
-| u11s4l1 З міста Харкова | 11 | 12 | 0.5 | 33 | 62 | 6 | 0.078 | 3 | readWordsPerScreen нетипово для сім'ї (z=2); maxReadWords нетипово для сім'ї (z=2.1) |
+| u11s4l1 З міста Харкова | 11 | 12 | 0.5 | 33 | 62 | 6 | 0.078 | 3 | readWordsPerScreen нетипово для сім'ї (z=2); maxReadWords нетипово для сім'ї (z=2) |
 | u11s4l2 Радіти перемозі | 11 | 12 | 0.5 | 27 | 45 | 5.7 | 0.049 | 5 | — |
 | u11s4l3 В Україні, на Полтавщині | 11 | 12 | 0.5 | 33 | 58 | 6.7 | 0.024 | 3 | readWordsPerScreen нетипово для сім'ї (z=2) |
 | u11s4l4 Коректор журналу мандрів (фінал) | 11 | 7 | 0.86 | 17 | 33 | 5.1 | 0.032 | 4 | — |
@@ -440,5 +440,5 @@
 - **5-6:boss**: screens 7.44±0.7, gradedShare 0.86±0.03, readWordsPerScreen 19.36±2.96, maxReadWords 34.48±3.83, sentenceWords 4.96±0.43, longWordShare 0.04±0.01, typeVariety 3.88±0.65
 - **7-9:lesson**: screens 10.56±0.87, gradedShare 0.54±0.04, readWordsPerScreen 28.63±3.57, maxReadWords 52.49±6.05, sentenceWords 5.82±0.58, longWordShare 0.04±0.02, typeVariety 3.93±0.8
 - **7-9:boss**: screens 7.18±0.38, gradedShare 0.86±0.01, readWordsPerScreen 22.13±3, maxReadWords 38.26±4.87, sentenceWords 5.45±0.6, longWordShare 0.05±0.02, typeVariety 3.82±0.81
-- **10-11:lesson**: screens 10.98±0.92, gradedShare 0.53±0.04, readWordsPerScreen 26.27±3.31, maxReadWords 49.89±5.83, sentenceWords 5.49±0.64, longWordShare 0.05±0.02, typeVariety 3.93±0.65
+- **10-11:lesson**: screens 10.98±0.92, gradedShare 0.53±0.04, readWordsPerScreen 26.27±3.31, maxReadWords 49.93±5.92, sentenceWords 5.49±0.64, longWordShare 0.05±0.02, typeVariety 3.93±0.65
 - **10-11:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 18.3±1.68, maxReadWords 32.2±5.81, sentenceWords 5.02±0.32, longWordShare 0.05±0.02, typeVariety 3.5±0.5
