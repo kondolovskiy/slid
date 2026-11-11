@@ -13,8 +13,8 @@
 SLID.pool("ukr", {
   id: "pu9s5",
   section: "u9s5",
-  status: "draft",
-  meta: { author: "w-write-ukr-pool-u9s5", created: "2026-11-11", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "w-write-ukr-pool-u9s5", created: "2026-11-11", factcheck: "verifier-pu9s5", teacher: null },
   sources: [
     { id: "z9", title: "Заболотний О. В., Заболотний В. В. Українська мова : підруч. для 9-го кл. — Київ : Генеза, 2026", url: "https://file.4book.org/images/shcoolbook_ua/9/9_um_z_2026.pdf" }
   ],
@@ -172,7 +172,7 @@ SLID.pool("ukr", {
       hint: "Скільки ком потрібно при складеному сполучнику? Чи одне місце для неї можливе?",
       steps: ["При складеному сполучнику <i>тому що</i> ставимо <b>одну кому</b>: перед усім сполучником або перед <i>що</i>. Обидва такі записи правильні.", "Дві коми — зайва; без коми підрядна причини не відокремлена від головної."] },
     { id: "a18", lesson: "u9s5l3", lvl: 3, sk: "synt", src: "z9 впр. 116, 133(5), 143, 159(7)", srcPage: 89, adapted: true,
-      type: "choice", title: "Яке «як» — умовне?",
+      type: "choice", title: "Де умова?",
       body: "<p>У якому реченні підрядна частина — <b>умови</b>?</p>",
       opts: [
         "Синоптики повідомили, коли закінчиться сезон дощів.",
