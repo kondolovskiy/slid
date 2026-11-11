@@ -1,11 +1,5 @@
 {
-  "date": "2026-11-11T18:15:11.173Z",
+  "date": "2026-11-11T18:16:02.914Z",
   "errors": [],
-  "warnings": [
-    "content/world/g11-w11s4.js#w11s4l3: maxReadWords=94 поза профілем [0; 90] для world, 10-11 кл.",
-    "content/world/g11-w11s4.js#w11s4l4: sentenceWords=6.5 поза профілем [7; 15] для world, 10-11 кл.",
-    "content/world/g11-w11s4.js#w11s4l5: у 3 з 3 завдань choice правильний варіант — А: переставляй варіанти",
-    "content/world/g11-w11s4.js#w11s4l6: sentenceWords=6.2 поза профілем [7; 15] для world, 10-11 кл.",
-    "content/world/g11-w11s4.js#w11s4l6: у 4 з 4 завдань choice правильний варіант — А: переставляй варіанти"
-  ]
+  "warnings": []
 }
