@@ -1,12 +1,21 @@
 {
-  "date": "2026-11-11T07:38:18.488Z",
-  "errors": [],
+  "date": "2026-11-11T07:38:51.237Z",
+  "errors": [
+    "content/world/g11-w11s2.js#w11s2l3 екран 2 (poll): невідомий тип «poll»"
+  ],
   "warnings": [
-    "content/ukr/g11-u11s9.js#u11s9l1: gradedShare=0.45 поза профілем [0.5; 0.9] для ukr, 10-11 кл.",
-    "content/ukr/g11-u11s9.js#u11s9l2: gradedShare=0.45 поза профілем [0.5; 0.9] для ukr, 10-11 кл.",
-    "content/ukr/g11-u11s9.js#u11s9l3: gradedShare=0.44 поза профілем [0.5; 0.9] для ukr, 10-11 кл.",
-    "content/ukr/g11-u11s9.js#u11s9l4: gradedShare=0.4 поза профілем [0.5; 0.9] для ukr, 10-11 кл.",
-    "content/ukr/g11-u11s9.js#u11s9l5: gradedShare=0.44 поза профілем [0.5; 0.9] для ukr, 10-11 кл.",
-    "content/ukr/g11-u11s9.js#u11s9l6: gradedShare=0.44 поза профілем [0.5; 0.9] для ukr, 10-11 кл."
+    "content/world/g11-w11s2.js#w11s2l1: sentenceWords=6.8 поза профілем [7; 15] для world, 10-11 кл.",
+    "content/world/g11-w11s2.js#w11s2l2 екран 7 (info): дуже довге речення (34 слів): «Кінг виголосив промову «У мене є мрія»: «Я мрію, що мої четв…»",
+    "content/world/g11-w11s2.js#w11s2l2: gradedShare=0.44 поза профілем [0.5; 0.9] для world, 10-11 кл.",
+    "content/world/g11-w11s2.js#w11s2l2: maxReadWords=98 поза профілем [0; 90] для world, 10-11 кл.",
+    "content/world/g11-w11s2.js#w11s2l2: sentenceWords=6.9 поза профілем [7; 15] для world, 10-11 кл.",
+    "content/world/g11-w11s2.js#w11s2l3: gradedShare=0.44 поза профілем [0.5; 0.9] для world, 10-11 кл.",
+    "content/world/g11-w11s2.js#w11s2l3: у 2 з 3 завдань choice правильний варіант — А: переставляй варіанти",
+    "content/world/g11-w11s2.js#w11s2l4: maxReadWords=93 поза профілем [0; 90] для world, 10-11 кл.",
+    "content/world/g11-w11s2.js#w11s2l4: sentenceWords=6.3 поза профілем [7; 15] для world, 10-11 кл.",
+    "content/world/g11-w11s2.js#w11s2l5: maxReadWords=93 поза профілем [0; 90] для world, 10-11 кл.",
+    "content/world/g11-w11s2.js#w11s2l5: у 2 з 3 завдань choice правильний варіант — А: переставляй варіанти",
+    "content/world/g11-w11s2.js#w11s2l6: sentenceWords=6.3 поза профілем [7; 15] для world, 10-11 кл.",
+    "content/world/g11-w11s2.js#w11s2l6: у 2 з 3 завдань choice правильний варіант — А: переставляй варіанти"
   ]
 }

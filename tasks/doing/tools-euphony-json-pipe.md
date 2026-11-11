@@ -1,8 +1,10 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-11T07:38:51.742Z
 id: tools-euphony-json-pipe
 type: tools
 status: todo
-claimed_by:
+claimed_by: w-tools-euphony-json-pipe
 created: 2026-11-11
 depends_on: []
 ---
