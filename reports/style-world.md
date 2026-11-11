@@ -118,7 +118,7 @@
 | w11s2l3 Покоління, що сказало «ні» | 11 | 10 | 0.5 | 37 | 73 | 7.5 | 0.057 | 3 | — |
 | w11s2l4 Весна після диктатур | 11 | 8 | 0.5 | 35 | 89 | 7.4 | 0.062 | 4 | — |
 | w11s2l5 Вугілля, сталь і мир | 11 | 9 | 0.56 | 38 | 86 | 7.2 | 0.048 | 3 | — |
-| w11s2l6 Виставка «Європа і Америка після війни» (фінал) | 11 | 7 | 0.86 | 17 | 41 | 6.9 | 0.043 | 4 | sentenceWords=6.9 поза [7; 15] |
+| w11s2l6 Виставка «Європа і Америка після війни» (фінал) | 11 | 7 | 0.86 | 17 | 42 | 7.1 | 0.045 | 4 | — |
 
 ## Середні по сім'ях (предмет + класи + звичайний урок / фінал)
 
@@ -127,4 +127,4 @@
 - **7-9:lesson**: screens 9.52±0.64, gradedShare 0.54±0.04, readWordsPerScreen 31.07±3.42, maxReadWords 63.55±6.49, sentenceWords 6.59±0.33, longWordShare 0.04±0.01, typeVariety 3.42±0.49
 - **7-9:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 18.93±1.73, maxReadWords 34.73±4.88, sentenceWords 6.19±0.21, longWordShare 0.04±0.01, typeVariety 3.07±0.25
 - **10-11:lesson**: screens 9.5±0.94, gradedShare 0.54±0.04, readWordsPerScreen 35.91±3.53, maxReadWords 76.05±8.62, sentenceWords 7.38±0.26, longWordShare 0.05±0.02, typeVariety 3.5±0.58
-- **10-11:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 18.6±3.77, maxReadWords 36.8±3.6, sentenceWords 7.18±0.28, longWordShare 0.04±0.01, typeVariety 3.4±0.49
+- **10-11:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 18.6±3.77, maxReadWords 37±3.85, sentenceWords 7.22±0.25, longWordShare 0.04±0.01, typeVariety 3.4±0.49
