@@ -7,7 +7,7 @@ subject: world
 grade: 10
 section: w10s4
 weeks: [14, 17]
-status: review
+status: done
 claimed_by: verifier-w10s4
 created: 2026-11-10
 ---

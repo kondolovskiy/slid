@@ -6,7 +6,7 @@ type: images
 subject: world
 grade: 10
 section: w10s4
-status: review
+status: done
 claimed_by: w-images-world-w10s4-l4
 created: 2026-11-11
 depends_on: []
