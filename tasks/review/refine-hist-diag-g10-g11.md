@@ -6,7 +6,7 @@ type: refine-diag
 subject: hist
 grade: 10
 section: dgh10
-status: todo
+status: review
 claimed_by: w-refine-hist-diag-g10-g11
 created: 2026-11-10
 depends_on: []
@@ -31,8 +31,22 @@ depends_on: []
 Лише: файл розділу g11s1 (перенос, шапка, `grade`, `weeks`), рядки `weeks` у g10-g10s2…g10s5, g11-g11s2…g11s5, diag-g10.js, diag-g11.js, ця задача, inbox (і знімки тестів інструментів — лише з рев'ю D-026). Задачі revise-hist-g10s2-cov … revise-hist-g11s5-cov залежать від цієї: роби її першою. Build не запускай (оркестратор: після цієї задачі build обов'язковий — ім'я файлу змінилося, index.html і sw.js посилаються на g11-g11s1.js).
 
 ## Готово, коли
-- [ ] `node tools/validate.mjs` — 0 помилок; `node tools/validate.mjs --diag dgh10` і `--diag <новий id dgh11>` — 0 помилок; `npm run check` — EXIT 0.
-- [ ] Нотатки: що перенесено, новий id dgh11, теми й завдання (індекси), наслідки для тестів інструментів.
+- [x] `node tools/validate.mjs` — 0 помилок; `node tools/validate.mjs --diag dgh10` і `--diag <новий id dgh11>` — 0 помилок; `npm run check` — EXIT 0.
+- [x] Нотатки: що перенесено, новий id dgh11, теми й завдання (індекси), наслідки для тестів інструментів.
 - [ ] `node tools/claim.mjs move refine-hist-diag-g10-g11 review` → content-verifier (і engineering-review, якщо змінено tools/).
 
 ## Нотатки виконавця
+
+### w-refine-hist-diag-g10-g11 · 2026-11-11
+**1. Перенос.** `git mv content/hist/g11-g11s1.js content/hist/g10-g11s1.js`; `grade: 10`, `weeks: [29, 35]`; шапка за задачею; посилання на задачу автора → `tasks/done/write-hist-g11s1.md`. id розділу, уроків (g11s1l1…l6, g11s1boss), значка `archivecase` — без змін.
+**2. Тижні** (лише рядок `weeks`): g10s2 [6, 17]; g10s3 [18, 20]; g10s4 [21, 24]; g10s5 [25, 28]; g11s2 [1, 14]; g11s3 [15, 20]; g11s4 [21, 26]; g11s5 [27, 35]; g10s1 [1, 5] без змін — збігається з plan.js.
+**3. dgh11 → новий id `dgh11b`** (той самий файл `content/hist/diag-g11.js`). Чому `dgh11b`: прецедента нового id тесту в репозиторії немає (dg5/dg6 Істер-міграції лише розширювали `for`, tasks/done/refine-math-diag-for-ister.md); суфікс «b» зберігає префікс предмета й клас, `grade` і `diagFor` (app/app.js — тест класу шукається за `grade`, не за id) не змінюються; validate формату id не перевіряє.
+- Вилучено теми `g11-pact` (g11s1l1), `g11-crimea` (g11s1l5) і їхні завдання — у dgh11 це індекси 14 і 16 (0-based; №15 і №17). Решта 26 завдань без змін, порядок збережено, `rev` немає.
+- Індекси dgh11b (0-based): 0–9 базові pre (cent, univ, fact, holod, west, srccrit, fail, terror, ukrz, oun); 10 cent, 11 univ, 12 fact, 13 holod, 14 srccrit, 15 fail, 16 g11-dissid, 17 west, 18 g11-chnpp, 19 terror, 20 g11-ref, 21 ukrz, 22 g11-const, 23 oun, 24 g11-money, 25 g11-2014. 10 pre × 2 + 6 cur × 1 = 26 (≤ 30; ≈ 12–14 хв — на 2 multi менше, ніж dgh11).
+- `for`: g11s1 прибрано з усіх pre-тем; `west`, `oun` → `["g11s2"]` (за задачею — під урок радянізації заходу g11s2l7; поки його немає, g11s2 як найближчий розділ 11 кл.); `fail` → g11s3; `holod`, `terror` → g11s2.
+- Нові cur-теми g11s2l6, g11s2l7, g11s4l5 не додано — цих уроків ще немає (перевірено grep) → наступна редакція (IDEA в inbox).
+- Наслідки для дітей: S.diag.dgh11 і план 11 кл. (planByGrade.hist[11]) у профілі лишаються — `planFor` бере наявний план класу; запрошення на тест покаже dgh11b (S.diag.dgh11b немає). Перерваний dgh11 (S.diagRun.dgh11) не продовжується.
+**4. dgh10** — id і завдання без змін, `rev` немає; `g11s1` додано у `for` тем `srccrit` (уроки g11s1 читають пропаганду, оголошення окупантів, самозвіти), `fact` (факт vs міф/оцінка — ядро g11s1, «Спростовувати міфи»), `lands` (Галичина, окупаційний поділ земель — g11s1l1, l2, boss). Не додано: `cent` (століття в g11s1 не потрібні, хронологія в межах 1939–1945), `twoemp` (імперії до 1917 у g11s1 не згадуються). meta.revised; статус → draft.
+**5. Перевірки.** `node tools/validate.mjs` — 0 помилок, 72 попередження (як було); `--diag dgh10` 0/0; `--diag dgh11b` 0/0; `--section g11s1` 0 помилок, 2 попередження (давні). `npm run check` — на копії дерева в scratchpad (build у спільному дереві заборонено): build + усі node-тести (test-learn 2934, test-evidence 258, test-hyp 625, personalization-qa 154, test-validate 1620 …), validate, graph-report, stats, fig-audit — зелені; test-diff-answers потребує git, прогнано в спільному дереві — 52 ok, 0 ✗. Знімки тестів інструментів не змінювались → engine-change/D-026 не потрібні. `diagOrder` (content/subjects/hist.js) не змінено. content/world/plan.js не змінено: w10s7 (requires g10s5l3) і w11s1 (requires g11s1l6) — без помилок.
+**Оркестратору:** build обов'язковий (index.html, sw.js, manifest посилаються на g11-g11s1.js). Далі — content-verifier для dgh10 і dgh11b (статус draft).
+
