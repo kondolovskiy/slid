@@ -6,11 +6,15 @@
 // Не позначає: слово в тегах/лапках/дужках («у», <b>в</b> — мова про саму літеру), поруч з однолітерними словами (переліки «а, о, у»),
 // закреслене <s>…</s>, «і» після слів на й/я/ю/є/ї (§ 24: там «і»/«та»), «і» між голосними й після голосного (зіставлені поняття, § 24 п. 3.1 —
 // механічно не відрізнити, лише у звіті).
+// «й» після слова на й, я, ю, є, ї (§ 24 п. 4 — «моя й твоя» → «моя і твоя»; tools-euphony-i-after-j) — правило «й-після-йотованого», лише звіт,
+// не validate: частку «й» (= «також», «допускає й інші») механічно не відрізнити від сполучника. Усередині <b>…</b> не позначає (навмисні приклади).
+// Якщо «й» уже порушує правило validate («Андрій й брат» — між приголосними; «моя й Юля» — перед йотованим), позначається лише воно.
 // Межа (tools-diag-nonmath-p3 п. 3): «в» на початку самого слова («Влітку», «Встановлено» на початку речення → «Улітку», «Установлено») — лише
 // у звіті (правило «в-слово-на-початку»), не в validate: частина слів уживається тільки з «в» (вплив, вправа, вставні…). Тег виділення на початку
 // речення (<b>В лісі</b>) межею не є; посеред речення — є (навмисні приклади в поясненнях). Для «в-слово-на-початку» велика «В…» одразу
 // після відкривного тегу виділення й посеред речення («…або <b>Встановлено…</b>») — теж початок речення-прикладу; курсив і лапки — ні (цитати). Елементи sort (items) перевіряються як авторський текст.
-// Запуск: node tools/euphony.mjs [--subject ukr] [--section ID] [--exercises] [--json]  → reports/euphony-<предмет>.md (з --section — лише stdout)
+// Запуск: node tools/euphony.mjs [--subject ukr] [--section ID | --pool ID | --diag ID] [--exercises] [--json]  → reports/euphony-<предмет>.md
+//   (уроки, пули й тести рівня предмета; з --section / --pool / --diag — лише цей об'єкт і лише stdout)
 //   --exercises — окремий режим: варіанти, items і речення gaps/pick поза пропусками → reports/euphony-<предмет>-exercises.md
 import fs from "node:fs"; import path from "node:path"; import { fileURLToPath } from "node:url";
 
@@ -38,6 +42,7 @@ export const RULES = {
   "й-між-приголосними": "«й» між приголосними → «і» (§ 24)",
   "й-на-початку": "«Й» на початку речення чи після паузи → «і» (§ 24)",
   "й-перед-йотованим": "«й» перед й, я, ю, є, ї → «і» (§ 24)",
+  "й-після-йотованого": "«й» після слова на й, я, ю, є, ї → «і» або «та» (§ 24 п. 4; звіт: перевір — сполучник чи частка «й» = «також»)",
   "і-між-голосними": "«і» між голосними → «й» (§ 24; не для зіставлених понять — звіт)",
   "і-голосний-приголосний": "«і» після голосного перед приголосним → «й» (§ 24; не для зіставлених понять — звіт)",
   "з-перед-збігом": "«з» перед з, с, ш, щ + приголосний (і «мною») → «зі» (§ 25)",
@@ -49,16 +54,18 @@ export const RULES = {
 export const VALIDATE_RULES = new Set(["в-між-приголосними", "в-на-початку", "в-перед-в-ф", "у-між-голосними", "й-між-приголосними", "й-на-початку",
   "й-перед-йотованим", "з-перед-збігом", "з-на-початку-шиплячий", "зі-не-перед-збігом", "із-між-голосними"]);
 
-const EMPH = "\u0002", BREAK = "\u0003", IO = "\u0004", IC = "\u0005";
-/** Сирий текст (HTML, формули) → рядок, де теги виділення — EMPH, курсив — IO…IC (приклади, цитати), блокові теги — BREAK, формули — «Ф». */
+const EMPH = "\u0002", BREAK = "\u0003", IO = "\u0004", IC = "\u0005", BO = "\u0006", BC = "\u0007";
+/** Сирий текст (HTML, формули) → рядок, де теги виділення — EMPH, курсив — IO…IC (приклади, цитати), блокові теги — BREAK, формули — «Ф».
+ *  <b>/<strong> — ще й BO перед EMPH і BC після нього (межа виділеного для «й-після-йотованого»); решта правил BO/BC не бачить (MARKS). */
 function prep(raw) {
   return String(raw).replace(/<s>[\s\S]*?<\/s>/gi, " ").replace(/\$\$[\s\S]*?\$\$|\$[^$]*\$/g, " Ф ")
     .replace(/(?<=[\p{L}\p{M}'’ʼ])(?:<\/?(?:b|i|u|em|strong|mark|span)\b[^>]*>)+(?=[\p{L}\p{M}])/gu, "")
     .replace(/<\/?(?:p|li|ul|ol|br|div|h\d|table|tr|td)\b[^>]*>/gi, BREAK).replace(/<(?:i|em)\b[^>]*>/gi, IO).replace(/<\/(?:i|em)>/gi, IC)
+    .replace(/<(?:b|strong)\b[^>]*>/gi, BO + EMPH).replace(/<\/(?:b|strong)>/gi, EMPH + BC)
     .replace(/<[^>]+>/g, EMPH).replace(/&nbsp;/g, " ").replace(/&[a-z]+;/g, " ");
 }
 // однолітерні слова української; інша одиночна літера поруч (п, т, к…) — мова про літери («перед п стоїть в»)
-const ONE = new Set(["а", "в", "є", "з", "й", "і", "о", "у"]);
+const ONE = new Set(["а", "в", "є", "з", "й", "і", "о", "у", "я"]);
 // прийменник перед цільовим словом — отже, це не прийменник, а назва літери («перед в пишемо», «після з»)
 const PREP = new Set(["перед", "після", "між", "на", "до", "від", "за", "під", "над", "без", "біля", "через", "про"]);
 // сполучник одразу після цільового слова — назва літери («З чи С?», «Зі та з»)
@@ -71,6 +78,9 @@ const WORD = /[\p{L}\p{M}'’ʼ-]+/gu;
 const PAUSE = /[,;:—–(…]|\s-\s/;
 const END = new RegExp(`[.!?…]["»”]?\\s*$|${BREAK}`);
 const GUARD = new RegExp(`[«»"“”„\\[\\]/${EMPH}]`);
+const MARKS = /[\u0004-\u0007]/g;   // курсив і межі <b> — не текст між словами
+// § 24 п. 4: після букв й, я, ю, є, ї — єднальні «і» або «та»
+const IOT_END = /[йяюєї]/;
 const TARGET = new Set(["в", "у", "і", "й", "з", "із", "зі"]);
 
 // «в-слово-на-початку» (tools-diag-nonmath-p3 п. 3; verifier-u8s7: «Влітку…», «Встановлено…» в елементах sort і в <b> fbText): початкове
@@ -84,7 +94,7 @@ function initialV(src, toks, k, lw, out) {
   if (t.w[0] !== "В" || t.w === t.w.toLocaleUpperCase("uk") || [...lw].length < 3 || !isC(lw[1]) || VFIXED.test(lw)) return;
   const head = src.slice(0, t.i);
   if (head.lastIndexOf(IO) > head.lastIndexOf(IC) || (head.match(/«/g) || []).length > (head.match(/»/g) || []).length) return;   // приклади й цитати
-  const rawBefore = (p ? src.slice(p.e, t.i) : head).replace(/[\u0004\u0005]/g, ""), before = rawBefore.replace(/\u0002/g, "");
+  const rawBefore = (p ? src.slice(p.e, t.i) : head).replace(MARKS, ""), before = rawBefore.replace(/\u0002/g, "");
   if (/[«"“„[/]\s*$/.test(before)) return;
   // велика «В…» одразу після відкривного тегу виділення посеред речення — початок виділеного речення-прикладу: «…або <b>Встановлено
   // нові знаки</b>» (u8s7, рев'ю P2-1). Лише звіт, тож шум допустимий; тег закриття з пробілом після нього («</b> Влітку») — ні
@@ -106,12 +116,12 @@ export function euphonyIssues(raw) {
     // тег виділення перед словом на початку речення не вирішує сам (tools-diag-nonmath-p3 п. 3): «Ні. <b>В лісі</b> тихо» — прийменник
     // у виділеній фразі; мову про саму літеру (<b>в</b>) видає тег одразу після неї (after нижче). Посеред речення тег лишається межею:
     // «ударив <b>в бік</b>, <b>в перше</b> село» — навмисні приклади в поясненні
-    const rawBefore = (p ? src.slice(p.e, t.i) : head).replace(/[\u0004\u0005]/g, ""), noEmph = rawBefore.replace(/\u0002/g, "");
-    const before = !p || END.test(noEmph) ? noEmph : rawBefore, after = src.slice(t.e, n.i).replace(/[\u0004\u0005]/g, "");
+    const rawBefore = (p ? src.slice(p.e, t.i) : head).replace(MARKS, ""), noEmph = rawBefore.replace(/\u0002/g, "");
+    const before = !p || END.test(noEmph) ? noEmph : rawBefore, after = src.slice(t.e, n.i).replace(MARKS, "");
     if (GUARD.test(before.slice(-2)) || GUARD.test(after) || /^\s*[«"„“]/.test(after)) return;   // мова про саму літеру: «у», <b>в</b>
     if (!/^\s+$/.test(after)) return;   // після слова розділовий знак чи тег — не прийменник/сполучник перед словом
     const nw = n.w.toLocaleLowerCase("uk").replace(/\u0301/g, ""), pw = p ? p.w.toLocaleLowerCase("uk").replace(/\u0301/g, "") : "";
-    if ([...nw].length === 1 || (p && [...pw].length === 1)) return;   // переліки літер «а, о, у, е»; «Ф» — формула (звуку не знаємо)
+    if ([...nw].length === 1 || (p && [...pw].length === 1 && !(lw === "й" && pw === "я"))) return;   // переліки літер «а, о, у, е»; «Ф» — формула (звуку не знаємо); «я й ти» — займенник
     if (PREP.has(pw) || NAME.has(pw) || CONJ.has(nw)) return;
     if ([toks[k - 2], toks[k + 2]].some(x => x && [...x.w].length === 1 && !ONE.has(x.w.toLocaleLowerCase("uk")))) return;
     const start = !p || END.test(before), pause = !start && PAUSE.test(before);
@@ -131,6 +141,9 @@ export function euphonyIssues(raw) {
         if (start || pause) add("й-на-початку");
         else if (/^[йяюєї]/.test(ns)) add("й-перед-йотованим");
         else if (isC(pe) && isCs(ns)) add("й-між-приголосними");
+        // § 24 п. 4 (tools-euphony-i-after-j): після й, я, ю, є, ї — «і»/«та». Лише звіт: частку «й» (= «також»: «допускає й інші»)
+        // механічно не відрізнити від сполучника. Виділене <b>…</b> — навмисні приклади («<b>моя й твоя</b> — так не пишемо»)
+        else if (IOT_END.test(pe) && head.lastIndexOf(BO) <= head.lastIndexOf(BC)) add("й-після-йотованого");
         break;
       case "і":
         if (start || pause || /[йяюєї]/.test(pe) || /^[йяюєї]/.test(ns)) break;
@@ -174,26 +187,37 @@ export function euphonyExercise(s) {
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const { loadContent, ROOT } = await import("./lib.mjs");
   const args = process.argv.slice(2), opt = k => args.includes(k) ? args[args.indexOf(k) + 1] : null;
-  const subj = opt("--subject") || "ukr", only = opt("--section"), exMode = args.includes("--exercises");
-  const { subjects, origin } = loadContent();
+  const subj = opt("--subject") || "ukr", only = opt("--section"), onlyPool = opt("--pool"), onlyDiag = opt("--diag"), exMode = args.includes("--exercises");
+  if ([only, onlyPool, onlyDiag].filter(x => x !== null).length > 1) { console.error("--section, --pool і --diag — лише щось одне"); process.exit(2); }
+  const { subjects, origin, poolOrigin, diagOrigin, learn } = loadContent();
   const c = subjects.find(x => x.id === subj);
   if (!c) { console.error(`немає предмета ${subj}`); process.exit(2); }
   if (only && !c.sections.some(x => x.id === only)) { console.error(`немає розділу ${only} у предметі ${subj}`); process.exit(2); }
+  if (onlyPool && !c.pools.some(x => x.id === onlyPool)) { console.error(`немає пулу ${onlyPool} у предметі ${subj}`); process.exit(2); }
+  if (onlyDiag && !c.diags.some(x => x.id === onlyDiag)) { console.error(`немає тесту рівня ${onlyDiag} у предметі ${subj}`); process.exit(2); }
+  const scoped = only || onlyPool || onlyDiag, scope = only ? `розділ ${only}` : onlyPool ? `пул ${onlyPool}` : onlyDiag ? `тест рівня ${onlyDiag}` : "";
   const rows = []; let screens = 0;
-  for (const sec of c.sections.filter(x => x.lessons && (!only || x.id === only))) for (const l of sec.lessons) {
-    l.screens.forEach((s, i) => { screens++; for (const x of exMode ? euphonyExercise(s) : euphonyScreen(s)) rows.push({ where: `${l.id} екран ${i + 1}`, file: origin[sec.id], ...x }); });
+  const scan = (s, where, file) => { screens++; for (const x of exMode ? euphonyExercise(s) : euphonyScreen(s)) rows.push({ where, file, ...x }); };
+  for (const sec of c.sections.filter(x => x.lessons && (scoped ? x.id === only : true))) for (const l of sec.lessons) {
+    l.screens.forEach((s, i) => scan(s, `${l.id} екран ${i + 1}`, origin[sec.id]));
     if (!exMode) for (const x of [l.title, l.why, l.outro?.text, ...(l.outro?.learned || [])].filter(t => typeof t === "string").flatMap(euphonyIssues)) rows.push({ where: `${l.id} outro/назва`, file: origin[sec.id], ...x });
   }
+  // пули й тести рівня (tools-euphony-i-after-j п. 4): задача — як екран; кроки розв'язку пулу (steps) — пояснення, як fbText у validate;
+  // генератор (gen) — перший набір значень, як у validate
+  for (const p of c.pools.filter(x => scoped ? x.id === onlyPool : true)) (p.items || []).forEach((s0, i) => {
+    const s = s0.gen !== undefined ? learn.genInstance(s0, "validate", 0) || s0 : s0;
+    scan({ ...s, fbText: (s.steps || []).join(" ") }, `${p.id} задача ${i + 1} «${s0.id}»`, poolOrigin[p.id]); });
+  for (const d of c.diags.filter(x => scoped ? x.id === onlyDiag : true)) (d.items || []).forEach((s, i) => scan(s, `${d.id} завдання ${i + 1}`, diagOrigin[d.id]));
   const byRule = {}; rows.forEach(r => (byRule[r.rule] ||= []).push(r));
   if (args.includes("--json")) { process.stdout.write(JSON.stringify({ subject: subj, mode: exMode ? "exercises" : "text", screens, rows }, null, 1) + "\n"); process.exit(0); }
-  const L = [`# Милозвучність у/в, і/й, з/із/зі: ${subj}${exMode ? " · текст вправ" : ""}${only ? ` · розділ ${only}` : ""}`, "", `Згенеровано: ${new Date().toISOString().slice(0, 10)} · tools/euphony.mjs${exMode ? " --exercises" : ""} · екранів: ${screens}, відхилень: ${rows.length}`, "",
+  const L = [`# Милозвучність у/в, і/й, з/із/зі: ${subj}${exMode ? " · текст вправ" : ""}${scoped ? ` · ${scope}` : ""}`, "", `Згенеровано: ${new Date().toISOString().slice(0, 10)} · tools/euphony.mjs${exMode ? " --exercises" : ""} · екранів: ${screens}, відхилень: ${rows.length}`, "",
     exMode ? "Варіанти відповідей (і хибні), items і речення вправ gaps/pick поза пропусками. Хибний варіант може бути навмисним — перевір кожне вручну; validate цього не перевіряє."
       : "Механічна підказка за УП § 23–25: перевір кожне вручну. Правила з позначкою «validate» дають попередження валідатора; решта — лише тут.", ""];
   for (const [id, desc] of Object.entries(RULES)) { const rs = byRule[id] || []; if (!rs.length) continue;
     L.push(`## ${desc}${VALIDATE_RULES.has(id) && !exMode ? " · validate" : ""} — ${rs.length}`, "");
     rs.forEach(r => L.push(`- ${r.where} (${r.file}): «${r.ctx}»`)); L.push(""); }
-  // --section: лише stdout — спільний звіт предмета не перезаписуємо одним розділом (tools-lang-p4, п. 7)
-  if (only) { process.stdout.write(L.join("\n") + "\n"); process.exit(0); }
+  // --section / --pool / --diag: лише stdout — спільний звіт предмета не перезаписуємо одним об'єктом (tools-lang-p4, п. 7)
+  if (scoped) { process.stdout.write(L.join("\n") + "\n"); process.exit(0); }
   fs.mkdirSync(path.join(ROOT, "reports"), { recursive: true });
   const out = `reports/euphony-${subj}${exMode ? "-exercises" : ""}.md`;
   fs.writeFileSync(path.join(ROOT, out), L.join("\n"));

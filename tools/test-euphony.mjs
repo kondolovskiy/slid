@@ -32,6 +32,32 @@ for (const t of ["Він прийшов — в руках квіти.", "Він 
 clean("Прийшла — і сіла. Прийшла - і сіла. Він прийшов (у руках квіти).", "після паузи — «і», «у»");
 clean("Марія і Олег. Чай і кава. Мрія і бажання.", "§ 24: після слів на й/я/ю/є/ї — «і»");
 clean("Сергій і Юрій.", "«і» перед й, я, ю, є, ї");
+// § 24 п. 4 (tools-euphony-i-after-j): після слова на й, я, ю, є, ї — «і» або «та», а не «й» (навіть між голосними); лише звіт
+has("Моя й твоя мрії.", "й-після-йотованого");
+has("Сім'я й друзі.", "й-після-йотованого");
+has("Сім’я й друзі.", "й-після-йотованого");
+has("Андрій й Ольга.", "й-після-йотованого");
+has("Я п'ю й співаю.", "й-після-йотованого");
+has("Я й ти.", "й-після-йотованого");   // «я» — займенник, не назва літери
+clean("Голосні а, е, и, я. Я і ти.", "перелік літер і правильне «я і ти»");
+has("Наші мрії й плани.", "й-після-йотованого");
+has("Вона допускає й інші варіанти.", "й-після-йотованого");   // частка «й» (= «також») — механічно не відрізнити: звіт «перевір»
+has("Мовчазна моя й Олина пісня.", "й-після-йотованого");
+{ n++; const r = rules("Андрій й брат.");   // «й» після й перед приголосним — уже validate-правило «між приголосними», не дублюємо
+  if (JSON.stringify(r) !== JSON.stringify(["й-між-приголосними"])) { fail++; console.log("✗ «Андрій й брат»: лише й-між-приголосними", r); } }
+{ n++; const r = rules("Моя й Юля.");   // перед йотованим — правило validate «й-перед-йотованим», не дублюємо
+  if (JSON.stringify(r) !== JSON.stringify(["й-перед-йотованим"])) { fail++; console.log("✗ «Моя й Юля»: лише й-перед-йотованим", r); } }
+clean("Мама й тато. Моя і твоя мрії. Сім'я та друзі. Андрій і Ольга. Вона й Оля.", "правильно: після голосного (не йотованого) — «й»; після я/ю/є/ї/й — «і», «та»");
+clean("Пишемо <b>моя й твоя</b> так. Ліна пише: <i>моя й твоя</i>. Він каже: «моя й твоя».", "розмітка: виділене посеред речення, курсив, лапки");
+clean("Сполучник й після я — помилка.", "мова про сам сполучник");
+// маркери меж <b> (BO/BC) не заважають іншим правилам бачити кінець речення: «<b>Тихо.</b> В лісі…»
+has("<b>Тихо.</b> В лісі темно.", "в-на-початку");
+has("<b>Тихо.</b> Влітку тепло.", "в-слово-на-початку");
+{ n++; const r = euphonyExercise({ type: "gaps", text: "Моя {*і|й} твоя мрії, сім'я й друзі." }).map(x => x.rule);   // пропуск — межа; поза ним — звіт вправ
+  if (JSON.stringify(r) !== JSON.stringify(["й-після-йотованого"])) { fail++; console.log("✗ euphonyExercise gaps: «сім'я й друзі» поза пропуском", r); } }
+{ n++; const r = euphonyExercise({ type: "pick", text: "Моя [й] твоя мрії." }).map(x => x.rule);
+  if (r.length) { fail++; console.log("✗ euphonyExercise pick: «й» у […] — слово-ціль вправи", r); } }
+{ n++; if (VALIDATE_RULES.has("й-після-йотованого") || !/частка/.test(RULES["й-після-йотованого"] || "")) { fail++; console.log("✗ й-після-йотованого — лише звіт, опис згадує частку"); } }
 // § 25 з/із/зі
 has("Млинці з сметаною.", "з-перед-збігом");
 has("Говорив з мною.", "з-перед-збігом");
@@ -129,6 +155,25 @@ clean("Так. влітку тепло — з малої не позначаєм
     n++; if (r.status !== 0 || !/Степ й море/.test(exTxt) || /Брат в сестри/.test(exTxt) || /· validate/.test(exTxt) || fs.readFileSync(rep, "utf8") !== before) { fail++; console.log("✗ euphony --exercises: окремий звіт з варіантами, без авторського тексту", r.status, r.stderr, exTxt); }
     r = run("--section", "nope");
     n++; if (r.status !== 2) { fail++; console.log("✗ euphony --section неіснуючого розділу — код 2", r.status, r.stdout); }
+    // tools-euphony-i-after-j п. 4: пули (SLID.pool) і тести рівня (SLID.diag) — у звіті предмета; --pool / --diag ID — лише stdout;
+    // кроки розв'язку пулу (steps) — авторський текст, як fbText; варіанти — як в уроках (звіт так, validate ні)
+    fs.writeFileSync(path.join(tmp, "content/ukr/pool-g5-fxa.js"), `SLID.pool("ukr", ${JSON.stringify({ id: "pfxa", section: "fxa", status: "draft", items: [
+      { id: "pfxa1", lesson: "fxal1", type: "choice", title: "Моя й твоя мрії", steps: ["Сім'я й друзі разом."], opts: ["Андрій й Ольга", "Андрій і Ольга"], correct: 1 }] })});\n`);
+    fs.writeFileSync(path.join(tmp, "content/ukr/diag-g5.js"), `SLID.diag("ukr", ${JSON.stringify({ id: "dfx5", grade: 5, title: "Тест", status: "draft", topics: [],
+      items: [{ type: "choice", title: "Наші мрії й плани", opts: ["Моя й Олина", "Моя і Олина"], correct: 1 }] })});\n`);
+    r = run();
+    const full = fs.existsSync(rep) ? fs.readFileSync(rep, "utf8") : "";
+    n++; if (r.status !== 0 || !/pfxa задача 1 «pfxa1» \(content\/ukr\/pool-g5-fxa\.js\): «Моя й твоя»/.test(full) || !/«Сім'я й друзі»/.test(full)
+      || !/dfx5 завдання 1 \(content\/ukr\/diag-g5\.js\): «мрії й плани»/.test(full) || !/«Андрій й Ольга»/.test(full) || !/«Моя й Олина»/.test(full)) { fail++; console.log("✗ euphony: пул і тест рівня у звіті предмета", r.status, r.stderr, full); }
+    const fullBefore = full;
+    r = run("--pool", "pfxa");
+    n++; if (r.status !== 0 || !/розділ|пул pfxa/.test(r.stdout) || !/pfxa задача 1/.test(r.stdout) || /fxal1|dfx5/.test(r.stdout) || fs.readFileSync(rep, "utf8") !== fullBefore) { fail++; console.log("✗ euphony --pool pfxa: лише пул, у stdout", r.status, r.stdout, r.stderr); }
+    r = run("--diag", "dfx5");
+    n++; if (r.status !== 0 || !/тест рівня dfx5/.test(r.stdout) || !/dfx5 завдання 1/.test(r.stdout) || /fxal1|pfxa/.test(r.stdout) || fs.readFileSync(rep, "utf8") !== fullBefore) { fail++; console.log("✗ euphony --diag dfx5: лише тест рівня, у stdout", r.status, r.stdout, r.stderr); }
+    r = run("--exercises", "--pool", "pfxa");
+    n++; if (r.status !== 0 || !/Андрій й Ольга/.test(r.stdout) || /Моя й твоя/.test(r.stdout)) { fail++; console.log("✗ euphony --exercises --pool: варіанти пулу", r.status, r.stdout, r.stderr); }
+    for (const a of [["--pool", "nope"], ["--diag", "nope"], ["--pool", "dfx5"], ["--section", "fxa", "--pool", "pfxa"]]) {
+      r = run(...a); n++; if (r.status !== 2) { fail++; console.log(`✗ euphony ${a.join(" ")} — код 2`, r.status, r.stdout); } }
   } finally { fs.rmSync(tmp, { recursive: true, force: true }); } }
 
 console.log(fail ? `test-euphony: ${fail} з ${n} не пройшли` : `test-euphony: ${n} перевірок — усі пройшли`);
