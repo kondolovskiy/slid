@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-11T01:09:26.260Z
 id: fix-hist-weeks-cov
 type: fix
 subject: hist
 status: todo
-claimed_by:
+claimed_by: w-fix-hist-weeks-cov
 created: 2026-11-10
 depends_on: []
 ---
