@@ -62,7 +62,7 @@
 | w8s5l4 Тринадцять колоній | 8 | 10 | 0.5 | 36 | 58 | 7.4 | 0.057 | 3 | — |
 | w8s5l5 Держава, яку з'їли сусіди | 8 | 10 | 0.5 | 27 | 61 | 6.3 | 0.049 | 4 | — |
 | w8s5l6 Словник XVIII століття (фінал) | 8 | 7 | 0.86 | 16 | 29 | 6.5 | 0.052 | 3 | — |
-| w9s1l1 Хто кого несе на спині? | 9 | 10 | 0.6 | 31 | 63 | 6.6 | 0.045 | 4 | — |
+| w9s1l1 Хто кого несе на спині? | 9 | 11 | 0.64 | 33 | 63 | 6.7 | 0.053 | 5 | typeVariety нетипово для сім'ї (z=3) |
 | w9s1l2 Права від народження | 9 | 9 | 0.56 | 27 | 60 | 6.5 | 0.059 | 3 | — |
 | w9s1l3 Республіка в небезпеці | 9 | 10 | 0.5 | 29 | 54 | 6.3 | 0.06 | 3 | — |
 | w9s1l4 Генерал на баскому коні | 9 | 11 | 0.55 | 32 | 62 | 6.2 | 0.052 | 4 | — |
@@ -154,7 +154,7 @@
 
 Для z-оцінок sd не менше 10 % середнього; нижче наведено фактичне sd.
 
-- **7-9:lesson**: screens 9.52±0.64, gradedShare 0.54±0.04, readWordsPerScreen 31.07±3.42, maxReadWords 63.55±6.49, sentenceWords 6.59±0.33, longWordShare 0.04±0.01, typeVariety 3.42±0.49
+- **7-9:lesson**: screens 9.53±0.66, gradedShare 0.54±0.05, readWordsPerScreen 31.1±3.42, maxReadWords 63.55±6.49, sentenceWords 6.6±0.33, longWordShare 0.04±0.01, typeVariety 3.44±0.52
 - **7-9:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 18.93±1.73, maxReadWords 34.73±4.88, sentenceWords 6.19±0.21, longWordShare 0.04±0.01, typeVariety 3.07±0.25
 - **10-11:lesson**: screens 9.47±0.82, gradedShare 0.54±0.04, readWordsPerScreen 36.96±4.03, maxReadWords 77.87±8.36, sentenceWords 7.34±0.26, longWordShare 0.05±0.02, typeVariety 3.6±0.57
 - **10-11:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 18.9±3.33, maxReadWords 36.6±3.83, sentenceWords 7.14±0.2, longWordShare 0.05±0.01, typeVariety 3.4±0.49
