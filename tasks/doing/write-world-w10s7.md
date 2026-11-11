@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-11T18:33:49.557Z
 id: write-world-w10s7
 type: write-section
 subject: world
@@ -6,7 +8,7 @@ grade: 10
 section: w10s7
 weeks: [26, 35]
 status: todo
-claimed_by:
+claimed_by: w-write-world-w10s7
 created: 2026-11-10
 ---
 # Написати розділ «Друга світова війна» (Всесвітня історія, 10 клас)
