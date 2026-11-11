@@ -8,8 +8,8 @@
 SLID.pool("ukr", {
   id: "pu5s2",
   section: "u5s2",
-  status: "draft",
-  meta: { author: "w-write-ukr-pool-u5s2", created: "2026-11-11", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "w-write-ukr-pool-u5s2", created: "2026-11-11", factcheck: "verifier-pool-u5s2", teacher: null },
   sources: [
     { id: "z5", title: "Заболотний О. В., Заболотний В. В. Українська мова : підруч. для 5-го кл. — Київ : Генеза, 2022", url: "https://www.geneza.ua/sites/default/files/ebooks/Українська%20мова_5кл_Генеза.pdf" }
   ],
@@ -345,7 +345,7 @@ SLID.pool("ukr", {
       ] },
     { id: "a30", lesson: "u5s2l6", lvl: 3, sk: "lex", src: "z5 впр. 73, 77(1)", srcPage: 35, adapted: true,
       type: "gaps", title: "Пастки паронімів",
-      text: "Котлети, приготовані на парі, називають {*паровими|парними}. Наша вчителька — {*людяна|людна} жінка: завжди вислухає й допоможе.",
+      text: "Котлети, приготовані на парі, називають {*паровими|парними}. Наша вчителька — {*людяна|людна} жінка: завжди вислухає і допоможе.",
       hint: "Парне — це молоко. А котлети? Учителька добра чи там багато людей?",
       steps: [
         "Парне молоко — щойно надоєне. Котлети на парі — <b>парові</b>.",
