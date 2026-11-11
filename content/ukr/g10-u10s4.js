@@ -12,7 +12,7 @@
    ди́хання/диха́ння, све́рдло/свердло́, катало́г, дові́дник (СУМ-11 — подвійний), чорнозем (facts/ukr №44);
    ві́домість «документ» (СУМ-20 — ві́до́мість; verifier-u10s4).
    Опора: u5s4l3, u5s5l1, u5s5l3, u5s5l5, u5s6l3, u5s6l4, u7s10l5 (u9s10 ще не написано).
-   5 уроків (4 + фінал). Статус: draft.
+   5 уроків (4 + фінал). Статус: verified (verifier-u10s4, 2026-11-11; reports/verify/u10s4.md).
    Перевірка: node tools/validate.mjs --section u10s4 && node tools/stats.mjs --subject ukr
    Схема й правила: docs/CONTENT_SCHEMA.md §4.1, style/ukr.md */
 SLID.section("ukr", {
@@ -22,7 +22,7 @@ SLID.section("ukr", {
   title: "Орфоепічна норма: вимова й наголос",
   why: "Щоб говорити милозвучно, вимовляти звуки за нормою й ставити наголос у словах, у яких найчастіше помиляються.",
   requires: ["u5s4l3", "u5s5l1", "u5s5l3", "u5s5l5", "u5s6l3", "u5s6l4", "u7s10l5"],
-  meta: { author: "w-write-ukr-u10s4", created: "2026-11-11", factcheck: null, teacher: null },
+  meta: { author: "w-write-ukr-u10s4", created: "2026-11-11", factcheck: "verifier-u10s4", teacher: null },
   badges: [
     { id: "u10s4boss", name: "Голос ефіру", icon: "trophy", desc: "Пройти фінальний урок розділу «Орфоепічна норма: вимова й наголос»" }
   ],
@@ -33,7 +33,7 @@ SLID.section("ukr", {
       title: "Учиться чи вчиться?",
       short: "у — в, і — й",
       icon: "voice",
-      status: "draft",
+      status: "verified",
       why: "Милозвучна мова легко звучить і легко читається. Правопис 2019 року має кілька випадків, яких не було в школі раніше.",
       screens: [
         {
@@ -177,7 +177,7 @@ SLID.section("ukr", {
       title: "Не по буквах",
       short: "Вимова звуків",
       icon: "eye",
-      status: "draft",
+      status: "verified",
       why: "Хто читає по буквах, звучить штучно. Норми вимови роблять мовлення природним і зрозумілим.",
       screens: [
         {
@@ -327,7 +327,7 @@ SLID.section("ukr", {
       title: "Ма́буть чи мабу́ть?",
       short: "Норма й варіанти",
       icon: "target",
-      status: "draft",
+      status: "verified",
       why: "Неправильний наголос одразу помітний у виступі чи на співбесіді. Варто знати, де варіантів два, а де помилка.",
       screens: [
         {
@@ -462,7 +462,7 @@ SLID.section("ukr", {
       title: "Кни́жки чи книжки́?",
       short: "Слова й форми",
       icon: "book",
-      status: "draft",
+      status: "verified",
       why: "Наголос може змінити значення слова чи його форму. Хто це чує, той точніше розуміє й говорить.",
       screens: [
         {
@@ -585,7 +585,7 @@ SLID.section("ukr", {
       title: "Голос ефіру",
       short: "Фінал розділу",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "u10s4boss",
       why: "Перевірка всього розділу на підготовці радіовипуску. Бали подвоєні.",
