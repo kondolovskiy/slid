@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-11T01:21:01.397Z
 id: write-ukr-u10s3
 type: write-section
 subject: ukr
@@ -6,7 +8,7 @@ grade: 10
 section: u10s3
 weeks: [8, 12]
 status: todo
-claimed_by:
+claimed_by: w-write-ukr-u10s3
 created: 2026-11-10
 ---
 # Написати розділ «Практична риторика: як говорити, щоб слухали» (Українська мова, 10 клас)
