@@ -86,11 +86,11 @@
 | w9s4l4 Паротяг у Йокогамі | 9 | 11 | 0.55 | 33 | 74 | 6.8 | 0.06 | 4 | — |
 | w9s4l5 Велетень над континентом | 9 | 11 | 0.55 | 35 | 74 | 6.8 | 0.043 | 3 | — |
 | w9s4l6 Атлас далеких країн (фінал) | 9 | 7 | 0.86 | 20 | 38 | 6 | 0.052 | 3 | — |
-| w9s5l1 Карета без коня | 9 | 10 | 0.5 | 33 | 75 | 6.8 | 0.039 | 4 | — |
+| w9s5l1 Карета без коня | 9 | 11 | 0.55 | 36 | 75 | 7 | 0.034 | 4 | — |
 | w9s5l2 Ігри, що повернулися | 9 | 9 | 0.56 | 35 | 71 | 6.7 | 0.031 | 4 | — |
 | w9s5l3 Голос для жінок | 9 | 10 | 0.5 | 29 | 72 | 6.5 | 0.047 | 4 | — |
 | w9s5l4 Два табори Європи | 9 | 10 | 0.6 | 32 | 73 | 6.1 | 0.063 | 4 | — |
-| w9s5l5 Мистецтво без правил | 9 | 10 | 0.5 | 28 | 65 | 6.5 | 0.034 | 4 | — |
+| w9s5l5 Мистецтво без правил | 9 | 11 | 0.55 | 36 | 71 | 7.1 | 0.03 | 3 | — |
 | w9s5l6 Капсула часу 1914 р. (фінал) | 9 | 7 | 0.86 | 17 | 39 | 6 | 0.023 | 3 | — |
 | w10s1l1 Постріл, що підпалив Європу | 10 | 9 | 0.56 | 34 | 72 | 7.3 | 0.055 | 4 | — |
 | w10s1l2 Війна в окопах | 10 | 10 | 0.5 | 36 | 81 | 7.7 | 0.025 | 3 | — |
@@ -161,7 +161,7 @@
 
 Для z-оцінок sd не менше 10 % середнього; нижче наведено фактичне sd.
 
-- **7-9:lesson**: screens 9.67±0.83, gradedShare 0.55±0.04, readWordsPerScreen 31.42±3.57, maxReadWords 63.82±6.5, sentenceWords 6.6±0.32, longWordShare 0.04±0.01, typeVariety 3.44±0.52
+- **7-9:lesson**: screens 9.7±0.86, gradedShare 0.55±0.04, readWordsPerScreen 31.58±3.61, maxReadWords 63.9±6.55, sentenceWords 6.61±0.33, longWordShare 0.04±0.01, typeVariety 3.42±0.52
 - **7-9:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 18.93±1.73, maxReadWords 34.73±4.88, sentenceWords 6.19±0.21, longWordShare 0.04±0.01, typeVariety 3.07±0.25
 - **10-11:lesson**: screens 9.49±0.79, gradedShare 0.54±0.04, readWordsPerScreen 37.3±4.06, maxReadWords 78.32±8.1, sentenceWords 7.35±0.28, longWordShare 0.05±0.02, typeVariety 3.57±0.57
 - **10-11:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 18.36±3.6, maxReadWords 36.36±3.72, sentenceWords 7.14±0.19, longWordShare 0.05±0.01, typeVariety 3.45±0.5
