@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-11T07:42:28.230Z
 id: write-world-w11s3
 type: write-section
 subject: world
@@ -6,7 +8,7 @@ grade: 11
 section: w11s3
 weeks: [12, 17]
 status: todo
-claimed_by:
+claimed_by: w-write-world-w11s3
 created: 2026-11-10
 ---
 # Написати розділ «Центрально-Східна Європа під владою комунізму» (Всесвітня історія, 11 клас)
