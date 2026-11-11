@@ -9,8 +9,8 @@
 SLID.pool("ukr", {
   id: "pu6s2",
   section: "u6s2",
-  status: "draft",
-  meta: { author: "w-write-ukr-pool-u6s2", created: "2026-11-11", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "w-write-ukr-pool-u6s2", created: "2026-11-11", factcheck: "verifier-pool-u6s2", teacher: null },
   sources: [
     { id: "z6", title: "Заболотний О. В., Заболотний В. В. Українська мова : підруч. для 6-го кл. — Київ : Генеза, 2023", url: "https://file.4book.org/images/shcoolbook_ua/6/6_um_z_2023.pdf" },
     { id: "sum11", title: "Словник української мови : в 11 т. (СУМ-11) — slovnyk.ua", url: "https://slovnyk.ua/" }
