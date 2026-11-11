@@ -12,7 +12,7 @@
 //     (логіка scratchpad-скриптів рецензента й автора дизайну: hyp-rev-count, -natural, -probe, hyp-fix-delayed, hyp-r3-sol-v2,
 //     hyp-r4-check) і та сама модель через app/hyp.js (види перевірок, sol/sol0).
 import fs from "node:fs"; import vm from "node:vm"; import path from "node:path"; import { fileURLToPath } from "node:url";
-import { loadContent, GRADED } from "./lib.mjs";
+import { loadContent, GRADED, exitFlushed } from "./lib.mjs";
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
 
 /** Зміст, SLID_LEARN і SLID_HYP (app/hyp.js вантажиться окремо в контекст із тим самим SLID_LEARN — щоб HYP_FILE міг підмінити модуль).
@@ -392,8 +392,8 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
     const input = argv.find((a, i) => !a.startsWith("--") && !["--root", "--out", "--date", "--fixture"].includes(argv[i - 1]));
     if (!input) { console.error("Використання: node tools/hyp-replay.mjs <export.json> [--out DIR] [--date YYYY-MM-DD] | --content-stats [--json]"); process.exit(2); }
     const exp = JSON.parse(fs.readFileSync(input, "utf8")), R = replay(exp, E);
-    if (argv.includes("--events")) { console.log(JSON.stringify(R.events)); process.exit(0); }
-    if (argv.includes("--graph-diff")) { console.log(JSON.stringify(R.graph, null, 1)); process.exit(0); }
+    if (argv.includes("--events")) { console.log(JSON.stringify(R.events)); await exitFlushed(0); }
+    if (argv.includes("--graph-diff")) { console.log(JSON.stringify(R.graph, null, 1)); await exitFlushed(0); }   // не process.exit(): у pipe обрізав би JSON (tools-euphony-json-pipe)
     const M = metrics(R, E);
     const date = opt("--date") || new Date().toISOString().slice(0, 10), dir = path.resolve(opt("--out") || path.join(root, "reports/hyp"));
     fs.mkdirSync(dir, { recursive: true });

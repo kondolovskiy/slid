@@ -2,7 +2,7 @@
 // Слід · тести перевірки милозвучності у/в, і/й, з/із/зі (tools/euphony.mjs; УП § 23–25). Запуск: node tools/test-euphony.mjs
 import { euphonyIssues, euphonyScreen, euphonyExercise, RULES, VALIDATE_RULES } from "./euphony.mjs";
 import fs from "node:fs"; import os from "node:os"; import path from "node:path";
-import { spawnSync } from "node:child_process"; import { fileURLToPath } from "node:url";
+import { spawnSync } from "node:child_process"; import { slowPipe } from "./fixtures/slow-pipe.mjs"; import { fileURLToPath } from "node:url";
 let fail = 0, n = 0;
 const rules = t => euphonyIssues(t).map(x => x.rule);
 const has = (t, rule) => { n++; const r = rules(t); if (!r.includes(rule)) { fail++; console.log(`✗ «${t}»: очікувалось ${rule}, отримано ${JSON.stringify(r)}`); } };
@@ -181,6 +181,38 @@ clean("Так. влітку тепло — з малої не позначаєм
     n++; if (r.status !== 0 || !/Андрій й Ольга/.test(r.stdout) || /Моя й твоя/.test(r.stdout)) { fail++; console.log("✗ euphony --exercises --pool: варіанти пулу", r.status, r.stdout, r.stderr); }
     for (const a of [["--pool", "nope"], ["--diag", "nope"], ["--pool", "dfx5"], ["--section", "fxa", "--pool", "pfxa"]]) {
       r = run(...a); n++; if (r.status !== 2) { fail++; console.log(`✗ euphony ${a.join(" ")} — код 2`, r.status, r.stdout); } }
+    // tools-euphony-json-pipe п. 2: --help / -h — довідка без прогону; невідомий прапорець, прапорець без значення, зайвий аргумент —
+    // код 2 і повідомлення; спільний звіт не перезаписано (автори пулів запускали --help і перезаписували reports/euphony-*.md)
+    const SENTINEL = "не чіпати\n"; fs.writeFileSync(rep, SENTINEL);
+    for (const h of ["--help", "-h"]) { r = run(h);
+      n++; if (r.status !== 0 || !/Використання/.test(r.stdout) || !/--pool/.test(r.stdout) || !/--json/.test(r.stdout) || /відхилень/.test(r.stdout) || fs.readFileSync(rep, "utf8") !== SENTINEL) { fail++; console.log(`✗ euphony ${h}: довідка без прогону`, r.status, r.stdout, r.stderr); } }
+    for (const a of [["--bogus"], ["--subject", "ukr", "--jsno"], ["--section"], ["--section", "--json"], ["--subject"], ["fxa"], ["--json", "--help2"]]) { r = run(...a);
+      n++; if (r.status !== 2 || !r.stderr.trim() || r.stdout || fs.readFileSync(rep, "utf8") !== SENTINEL) { fail++; console.log(`✗ euphony ${a.join(" ")}: код 2 і повідомлення, без прогону`, r.status, r.stdout.slice(0, 200), r.stderr); } }
+    r = run("--bogus"); n++; if (!/«--bogus»/.test(r.stderr) || !/--help/.test(r.stderr)) { fail++; console.log("✗ euphony --bogus: повідомлення називає прапорець і --help", r.stderr); }
+    // tools-euphony-json-pipe п. 1: великий вивід у pipe не обрізається на 64 КБ (process.exit(0) одразу після stdout.write).
+    // Читач навмисно повільний (tools/fixtures/slow-pipe.mjs): 300 мс не читає pipe, тож дочірній процес упирається в заповнений буфер
+    const late = (script, ...a) => slowPipe(script, a, { cwd: tmp });
+    // 2000 екранів по 10 відхилень (один довгий body перевіряється нелінійно повільно)
+    const SCR = 2000, PER = 10, BIG = SCR * PER;
+    fs.writeFileSync(path.join(tmp, "content/ukr/g5-fxbig.js"), sec("fxbig").replace('[{"type":"info","title":"Гості","body":"Брат в сестри гостює."}]',
+      JSON.stringify(Array.from({ length: SCR }, () => ({ type: "info", title: "Гості", body: "Брат в сестри гостює. ".repeat(PER) })))));
+    r = await late(path.join(tmp, "tools/euphony.mjs"), "--json");
+    { let j = null; try { j = JSON.parse(r.stdout); } catch {}
+      n++; if (r.status !== 0 || Buffer.byteLength(r.stdout) < 1e6 || !j || j.rows.filter(x => x.where.startsWith("fxbigl1 екран ")).length !== BIG) { fail++; console.log("✗ euphony --json у pipe: повний JSON ≥ 1 МБ", r.status, r.stdout.length, r.stderr.slice(0, 300)); } }
+    r = await late(path.join(tmp, "tools/euphony.mjs"), "--section", "fxbig");
+    n++; if (r.status !== 0 || Buffer.byteLength(r.stdout) < 1e6 || (r.stdout.match(/^- fxbigl1 екран \d+ /gm) || []).length !== BIG) { fail++; console.log("✗ euphony --section у pipe: повний звіт ≥ 1 МБ", r.status, r.stdout.length); }
+    r = await late(path.join(tmp, "tools/euphony.mjs"), "--section", "nope");
+    n++; if (r.status !== 2) { fail++; console.log("✗ euphony --section nope (async) — код 2", r.status); }
+    // спільний помічник exitFlushed (lib.mjs) для ранніх виходів інших інструментів: дочекатися stdout/stderr, тоді вийти з кодом
+    fs.writeFileSync(path.join(tmp, "tools/flush-fixture.mjs"), `import { exitFlushed } from "./lib.mjs";\nconsole.log("x".repeat(2e6)); await exitFlushed(3); console.log("після виходу");\n`);
+    r = await late(path.join(tmp, "tools/flush-fixture.mjs"));
+    n++; if (r.status !== 3 || r.stdout !== "x".repeat(2e6) + "\n") { fail++; console.log("✗ exitFlushed: увесь вивід, код 3, далі не виконується", r.status, r.stdout.length, r.stderr.slice(0, 300)); }
+    // рев'ю P2-1: читач закриває pipe рано (`| head -c 10`) — EPIPE тихо, код той самий, що з повним читанням (0 / 3), без стеку в stderr
+    for (const [a, what] of [[["--json"], "--json"], [["--section", "fxbig"], "--section"]]) {
+      r = await slowPipe(path.join(tmp, "tools/euphony.mjs"), a, { cwd: tmp, closeEarly: true });
+      n++; if (r.status !== 0 || r.stderr || !r.stdout) { fail++; console.log(`✗ euphony ${what} | head: EPIPE тихо, код 0`, r.status, r.signal, r.stderr.slice(0, 300)); } }
+    r = await slowPipe(path.join(tmp, "tools/flush-fixture.mjs"), [], { cwd: tmp, closeEarly: true });
+    n++; if (r.status !== 3 || r.stderr) { fail++; console.log("✗ exitFlushed | head: EPIPE тихо, код 3", r.status, r.signal, r.stderr.slice(0, 300)); }
   } finally { fs.rmSync(tmp, { recursive: true, force: true }); } }
 
 console.log(fail ? `test-euphony: ${fail} з ${n} не пройшли` : `test-euphony: ${n} перевірок — усі пройшли`);

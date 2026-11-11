@@ -14,7 +14,7 @@
 // у звіті (правило «в-слово-на-початку»), не в validate: частина слів уживається тільки з «в» (вплив, вправа, вставні…). Тег виділення на початку
 // речення (<b>В лісі</b>) межею не є; посеред речення — є (навмисні приклади в поясненнях). Для «в-слово-на-початку» велика «В…» одразу
 // після відкривного тегу виділення й посеред речення («…або <b>Встановлено…</b>») — теж початок речення-прикладу; курсив і лапки — ні (цитати). Елементи sort (items) перевіряються як авторський текст.
-// Запуск: node tools/euphony.mjs [--subject ukr] [--section ID | --pool ID | --diag ID] [--exercises] [--json]  → reports/euphony-<предмет>.md
+// Запуск: node tools/euphony.mjs [--subject ukr] [--section ID | --pool ID | --diag ID] [--exercises] [--json] [--help]  → reports/euphony-<предмет>.md
 //   (уроки, пули й тести рівня предмета; з --section / --pool / --diag — лише цей об'єкт і лише stdout)
 //   --exercises — окремий режим: варіанти, items і речення gaps/pick поза пропусками → reports/euphony-<предмет>-exercises.md
 import fs from "node:fs"; import path from "node:path"; import { fileURLToPath } from "node:url";
@@ -184,17 +184,47 @@ export function euphonyExercise(s) {
 }
 
 // ---- CLI ----
-if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-  const { loadContent, ROOT } = await import("./lib.mjs");
-  const args = process.argv.slice(2), opt = k => args.includes(k) ? args[args.indexOf(k) + 1] : null;
-  const subj = opt("--subject") || "ukr", only = opt("--section"), onlyPool = opt("--pool"), onlyDiag = opt("--diag"), exMode = args.includes("--exercises");
-  if ([only, onlyPool, onlyDiag].filter(x => x !== null).length > 1) { console.error("--section, --pool і --diag — лише щось одне"); process.exit(2); }
+export const HELP = `Використання: node tools/euphony.mjs [--subject ukr] [--section ID | --pool ID | --diag ID] [--exercises] [--json]
+  Милозвучність у/в, і/й, з/із/зі (УП 2019, § 23–25): уроки, пули й тести рівня предмета → reports/euphony-<предмет>.md
+  --subject S      предмет (типово ukr)
+  --section ID     лише розділ ID — звіт у stdout, спільний звіт не перезаписується
+  --pool ID        лише пул ID — stdout
+  --diag ID        лише тест рівня ID — stdout
+  --exercises      текст вправ (варіанти, items, речення gaps/pick) → reports/euphony-<предмет>-exercises.md
+  --json           рядки звіту JSON у stdout, без файлу
+  -h, --help       ця довідка
+Коди: 0 — готово (відхилення не помилка), 2 — неправильні аргументи чи немає предмета / розділу / пулу / тесту рівня.`;
+const CLI_VALUED = new Set(["--subject", "--section", "--pool", "--diag"]), CLI_FLAGS = new Set(["--exercises", "--json", "--help", "-h"]);
+
+/** Розбір аргументів CLI: { opts } або { error }. Невідомий прапорець, прапорець без значення, зайвий аргумент — помилка
+ *  (tools-euphony-json-pipe п. 2: раніше «--help» запускав повний прогін і перезаписував спільний звіт). */
+export function parseArgs(args) {
+  const o = {};
+  for (let i = 0; i < args.length; i++) { const a = args[i];
+    if (CLI_VALUED.has(a)) { const v = args[i + 1];
+      if (v === undefined || v.startsWith("-")) return { error: `${a} потребує значення` };
+      o[a] = v; i++; }
+    else if (CLI_FLAGS.has(a)) o[a] = true;
+    else return { error: a.startsWith("-") ? `невідомий прапорець «${a}»` : `зайвий аргумент «${a}»` };
+  }
+  return { opts: o };
+}
+
+/** Прогін CLI; повертає код виходу. Вихід — через process.exitCode, не process.exit(): у pipe stdout асинхронний,
+ *  і process.exit() одразу після stdout.write обрізав великий --json на 64 КБ (tools-euphony-json-pipe п. 1). */
+function cli(args, { loadContent, ROOT, ignoreEpipe }) {
+  ignoreEpipe();   // `--json | head`: EPIPE тихо, код як був (рев'ю P2-1)
+  const { opts: o, error } = parseArgs(args);
+  if (error) { console.error(`${error}. Довідка: node tools/euphony.mjs --help`); return 2; }
+  if (o["--help"] || o["-h"]) { process.stdout.write(HELP + "\n"); return 0; }
+  const subj = o["--subject"] || "ukr", only = o["--section"] ?? null, onlyPool = o["--pool"] ?? null, onlyDiag = o["--diag"] ?? null, exMode = !!o["--exercises"];
+  if ([only, onlyPool, onlyDiag].filter(x => x !== null).length > 1) { console.error("--section, --pool і --diag — лише щось одне"); return 2; }
   const { subjects, origin, poolOrigin, diagOrigin, learn } = loadContent();
   const c = subjects.find(x => x.id === subj);
-  if (!c) { console.error(`немає предмета ${subj}`); process.exit(2); }
-  if (only && !c.sections.some(x => x.id === only)) { console.error(`немає розділу ${only} у предметі ${subj}`); process.exit(2); }
-  if (onlyPool && !c.pools.some(x => x.id === onlyPool)) { console.error(`немає пулу ${onlyPool} у предметі ${subj}`); process.exit(2); }
-  if (onlyDiag && !c.diags.some(x => x.id === onlyDiag)) { console.error(`немає тесту рівня ${onlyDiag} у предметі ${subj}`); process.exit(2); }
+  if (!c) { console.error(`немає предмета ${subj}`); return 2; }
+  if (only && !c.sections.some(x => x.id === only)) { console.error(`немає розділу ${only} у предметі ${subj}`); return 2; }
+  if (onlyPool && !c.pools.some(x => x.id === onlyPool)) { console.error(`немає пулу ${onlyPool} у предметі ${subj}`); return 2; }
+  if (onlyDiag && !c.diags.some(x => x.id === onlyDiag)) { console.error(`немає тесту рівня ${onlyDiag} у предметі ${subj}`); return 2; }
   const scoped = only || onlyPool || onlyDiag, scope = only ? `розділ ${only}` : onlyPool ? `пул ${onlyPool}` : onlyDiag ? `тест рівня ${onlyDiag}` : "";
   const rows = []; let screens = 0;
   const scan = (s, where, file) => { screens++; for (const x of exMode ? euphonyExercise(s) : euphonyScreen(s)) rows.push({ where, file, ...x }); };
@@ -209,7 +239,7 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
     scan({ ...s, fbText: (s.steps || []).join(" ") }, `${p.id} задача ${i + 1} «${s0.id}»`, poolOrigin[p.id]); });
   for (const d of c.diags.filter(x => scoped ? x.id === onlyDiag : true)) (d.items || []).forEach((s, i) => scan(s, `${d.id} завдання ${i + 1}`, diagOrigin[d.id]));
   const byRule = {}; rows.forEach(r => (byRule[r.rule] ||= []).push(r));
-  if (args.includes("--json")) { process.stdout.write(JSON.stringify({ subject: subj, mode: exMode ? "exercises" : "text", screens, rows }, null, 1) + "\n"); process.exit(0); }
+  if (o["--json"]) { process.stdout.write(JSON.stringify({ subject: subj, mode: exMode ? "exercises" : "text", screens, rows }, null, 1) + "\n"); return 0; }
   const L = [`# Милозвучність у/в, і/й, з/із/зі: ${subj}${exMode ? " · текст вправ" : ""}${scoped ? ` · ${scope}` : ""}`, "", `Згенеровано: ${new Date().toISOString().slice(0, 10)} · tools/euphony.mjs${exMode ? " --exercises" : ""} · екранів: ${screens}, відхилень: ${rows.length}`, "",
     exMode ? "Варіанти відповідей (і хибні), items і речення вправ gaps/pick поза пропусками. Хибний варіант може бути навмисним — перевір кожне вручну; validate цього не перевіряє."
       : "Механічна підказка за УП § 23–25: перевір кожне вручну. Правила з позначкою «validate» дають попередження валідатора; решта — лише тут.", ""];
@@ -217,10 +247,13 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
     L.push(`## ${desc}${VALIDATE_RULES.has(id) && !exMode ? " · validate" : ""} — ${rs.length}`, "");
     rs.forEach(r => L.push(`- ${r.where} (${r.file}): «${r.ctx}»`)); L.push(""); }
   // --section / --pool / --diag: лише stdout — спільний звіт предмета не перезаписуємо одним об'єктом (tools-lang-p4, п. 7)
-  if (scoped) { process.stdout.write(L.join("\n") + "\n"); process.exit(0); }
+  if (scoped) { process.stdout.write(L.join("\n") + "\n"); return 0; }
   fs.mkdirSync(path.join(ROOT, "reports"), { recursive: true });
   const out = `reports/euphony-${subj}${exMode ? "-exercises" : ""}.md`;
   fs.writeFileSync(path.join(ROOT, out), L.join("\n"));
   console.log(`${subj}: екранів ${screens}, відхилень ${rows.length} → ${out}`);
   for (const [id, rs] of Object.entries(byRule)) console.log(`  ${id}${VALIDATE_RULES.has(id) ? " (validate)" : ""}: ${rs.length}`);
+  return 0;
 }
+
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) process.exitCode = cli(process.argv.slice(2), await import("./lib.mjs"));

@@ -29,7 +29,7 @@
 // Запуск: node tools/diff-answers.mjs [--old <git-rev>] [--grades 4-9 | 4] [--time] [--show N] [--list-cat "<категорія>"] (записи однієї категорії)
 //         node tools/diff-answers.mjs --content-old <git-rev> [--grades 4-11] [--show N]   (зміст <rev> проти поточного, обидва — поточним learn.js)
 import fs from "node:fs"; import os from "node:os"; import vm from "node:vm"; import path from "node:path"; import { execFileSync } from "node:child_process";
-import { loadContent, ROOT } from "./lib.mjs";
+import { loadContent, ROOT, exitFlushed } from "./lib.mjs";
 
 const args = process.argv.slice(2), opt = (k, d) => args.includes(k) ? args[args.indexOf(k) + 1] : d;
 const CONTENT_OLD = opt("--content-old", null);
@@ -387,9 +387,9 @@ function contentDiff() {
   console.log(`  ${String(diagBad.length).padStart(5)}  ТЕСТИ РІВНЯ без rev / зі зміненою структурою`); diagBad.forEach(x => console.log("    " + x));
   console.log(`  ${String(unexplained.length).padStart(5)}  НЕПОЯСНЕНІ`); unexplained.slice(0, SHOW).forEach(x => console.log("    " + x));
   keyBad.forEach(x => console.log("  КЛЮЧ: " + x));
-  process.exit(unexplained.length || keyBad.length || diagBad.length ? 1 : 0);
+  process.exitCode = unexplained.length || keyBad.length || diagBad.length ? 1 : 0;
 }
-if (CONTENT_OLD) { contentDiff(); process.exit(process.exitCode ?? 0); }
+if (CONTENT_OLD) { contentDiff(); await exitFlushed(process.exitCode ?? 0); }   // далі — інший режим; вихід лише після виводу (tools-euphony-json-pipe)
 
 // ---------- прогін ----------
 const P2 = new Set();
@@ -484,4 +484,4 @@ if ((OLD_VERDICT || typeof OLD.diagAnswerOk === "function") && typeof NEW.diagVe
   console.log(`  ${String(halfBad.length).padStart(5)}  НЕПОЯСНЕНІ (тест рівня)`);
   halfBad.slice(0, SHOW).forEach(x => console.log("    " + x));
 } else console.log("Вердикт тесту рівня: у старому learn.js немає diagAnswerOk (чи в новому diagVerdict) — порівняння пропущено.");
-process.exit(unexplained.length || keyBad.length || halfBad.length ? 1 : 0);
+process.exitCode = unexplained.length || keyBad.length || halfBad.length ? 1 : 0;   // не process.exit(): у pipe обрізав би вивід (tools-euphony-json-pipe)
