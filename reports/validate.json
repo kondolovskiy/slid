@@ -1,7 +1,5 @@
 {
-  "date": "2026-11-11T01:11:51.945Z",
+  "date": "2026-11-11T01:13:05.889Z",
   "errors": [],
-  "warnings": [
-    "content/ukr/g10-u10s9.js#u10s9l1: gradedShare=0.45 поза профілем [0.5; 0.9] для ukr, 10-11 кл."
-  ]
+  "warnings": []
 }
