@@ -1,5 +1,13 @@
 {
-  "date": "2026-11-11T12:45:57.731Z",
+  "date": "2026-11-11T12:46:29.999Z",
   "errors": [],
-  "warnings": []
+  "warnings": [
+    "content/world/g10-w10s5.js#w10s5l1: maxReadWords=103 поза профілем [0; 90] для world, 10-11 кл.",
+    "content/world/g10-w10s5.js#w10s5l3 екран 6 (info): дуже довге речення (29 слів): «Болгарія: 1923 р. військові скинули прем'єра Александра Стам…»",
+    "content/world/g10-w10s5.js#w10s5l3: maxReadWords=120 поза профілем [0; 90] для world, 10-11 кл.",
+    "content/world/g10-w10s5.js#w10s5l4 екран 6 (info): дуже довге речення (30 слів): «13 вересня 1934 р. міністр закордонних справ Польщі Юзеф Бек…»",
+    "content/world/g10-w10s5.js#w10s5l4: maxReadWords=100 поза профілем [0; 90] для world, 10-11 кл.",
+    "content/world/g10-w10s5.js#w10s5l5: sentenceWords=6.7 поза профілем [7; 15] для world, 10-11 кл.",
+    "content/world/g10-w10s5.js#w10s5l5: у 4 з 4 завдань choice правильний варіант — А: переставляй варіанти"
+  ]
 }
