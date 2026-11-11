@@ -13,8 +13,8 @@
 SLID.pool("ukr", {
   id: "pu8s7",
   section: "u8s7",
-  status: "draft",
-  meta: { author: "w-pool-u8s7", created: "2026-11-11", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "w-pool-u8s7", created: "2026-11-11", factcheck: "verifier-pu8s7", teacher: null },
   sources: [
     { id: "z8", title: "Заболотний О. В., Заболотний В. В. Українська мова : підруч. для 8-го кл. — Київ : Генеза, 2025", url: "https://file.4book.org/images/shcoolbook_ua/8/8_um_z_2025.pdf" }
   ],
@@ -157,7 +157,7 @@ SLID.pool("ukr", {
 
     /* ───────── u8s7l3 «Порада для всіх» — узагальнено-особові, межа з неозначено-особовими (§27, с. 122–125) ───────── */
     { id: "a13", lesson: "u8s7l3", lvl: 1, sk: "synt", src: "z8 впр. 283, 285, 289, 290; с. 122", srcPage: 123, adapted: true,
-      type: "sort", title: "Прислів'я з підметом і без",
+      type: "sort", title: "Вислови з підметом і без",
       body: "<p>Це прислів'я та крилаті вислови. Розклади їх за будовою. (<i>Завше</i> — завжди.)</p>",
       bins: ["Узагальнено-особове", "Двоскладне"],
       items: [
