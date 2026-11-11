@@ -48,9 +48,14 @@ has("Мовчазна моя й Олина пісня.", "й-після-йото
 { n++; const r = rules("Моя й Юля.");   // перед йотованим — правило validate «й-перед-йотованим», не дублюємо
   if (JSON.stringify(r) !== JSON.stringify(["й-перед-йотованим"])) { fail++; console.log("✗ «Моя й Юля»: лише й-перед-йотованим", r); } }
 clean("Мама й тато. Моя і твоя мрії. Сім'я та друзі. Андрій і Ольга. Вона й Оля.", "правильно: після голосного (не йотованого) — «й»; після я/ю/є/ї/й — «і», «та»");
-clean("Пишемо <b>моя й твоя</b> так. Ліна пише: <i>моя й твоя</i>. Він каже: «моя й твоя».", "розмітка: виділене посеред речення, курсив, лапки");
+clean("Ліна пише: <i>моя й твоя</i>. Він каже: «моя й твоя». Пишемо моя <b>й</b> твоя.", "розмітка: курсив, лапки, сам сполучник у тегах");
+// рев'ю P2-1: виділене <b> перевіряється (на живому змісті там правильний авторський текст); P3-1: частина слова в <b> не вимикає правило
+has("Олена Пчілка, <b>письменниця й перекладачка</b>.", "й-після-йотованого");
+has("<b>при</b>йшов додому, моя й твоя.", "й-після-йотованого");
+{ n++; const r = rules("Тоді я мав в кишені.");   // «я» в ONE (займенник) — сусід на k±2 не вимикає й правила validate (рев'ю P3-3)
+  if (JSON.stringify(r) !== JSON.stringify(["в-між-приголосними"])) { fail++; console.log("✗ «я мав в кишені»: в-між-приголосними", r); } }
 clean("Сполучник й після я — помилка.", "мова про сам сполучник");
-// маркери меж <b> (BO/BC) не заважають іншим правилам бачити кінець речення: «<b>Тихо.</b> В лісі…»
+// виділений кінець речення: «<b>Тихо.</b> В лісі…» — далі початок речення
 has("<b>Тихо.</b> В лісі темно.", "в-на-початку");
 has("<b>Тихо.</b> Влітку тепло.", "в-слово-на-початку");
 { n++; const r = euphonyExercise({ type: "gaps", text: "Моя {*і|й} твоя мрії, сім'я й друзі." }).map(x => x.rule);   // пропуск — межа; поза ним — звіт вправ
@@ -158,13 +163,15 @@ clean("Так. влітку тепло — з малої не позначаєм
     // tools-euphony-i-after-j п. 4: пули (SLID.pool) і тести рівня (SLID.diag) — у звіті предмета; --pool / --diag ID — лише stdout;
     // кроки розв'язку пулу (steps) — авторський текст, як fbText; варіанти — як в уроках (звіт так, validate ні)
     fs.writeFileSync(path.join(tmp, "content/ukr/pool-g5-fxa.js"), `SLID.pool("ukr", ${JSON.stringify({ id: "pfxa", section: "fxa", status: "draft", items: [
-      { id: "pfxa1", lesson: "fxal1", type: "choice", title: "Моя й твоя мрії", steps: ["Сім'я й друзі разом."], opts: ["Андрій й Ольга", "Андрій і Ольга"], correct: 1 }] })});\n`);
+      { id: "pfxa1", lesson: "fxal1", type: "choice", title: "Моя й твоя мрії", steps: ["Сім'я й друзі разом."], opts: ["Андрій й Ольга", "Андрій і Ольга"], correct: 1 },
+      // генератор: перевіряється перший набір значень, як у validate («{a}» → число), а не шаблон (рев'ю P3-2)
+      { id: "pfxa2", lesson: "fxal1", lvl: 1, adapted: true, type: "answer", title: "{a} мрії й плани", body: "<p>Скільки?</p>", steps: ["Відповідь {a}."], gen: { vars: { a: { min: 2, max: 3 } }, answer: "a" } }] })});\n`);
     fs.writeFileSync(path.join(tmp, "content/ukr/diag-g5.js"), `SLID.diag("ukr", ${JSON.stringify({ id: "dfx5", grade: 5, title: "Тест", status: "draft", topics: [],
       items: [{ type: "choice", title: "Наші мрії й плани", opts: ["Моя й Олина", "Моя і Олина"], correct: 1 }] })});\n`);
     r = run();
     const full = fs.existsSync(rep) ? fs.readFileSync(rep, "utf8") : "";
     n++; if (r.status !== 0 || !/pfxa задача 1 «pfxa1» \(content\/ukr\/pool-g5-fxa\.js\): «Моя й твоя»/.test(full) || !/«Сім'я й друзі»/.test(full)
-      || !/dfx5 завдання 1 \(content\/ukr\/diag-g5\.js\): «мрії й плани»/.test(full) || !/«Андрій й Ольга»/.test(full) || !/«Моя й Олина»/.test(full)) { fail++; console.log("✗ euphony: пул і тест рівня у звіті предмета", r.status, r.stderr, full); }
+      || !/dfx5 завдання 1 \(content\/ukr\/diag-g5\.js\): «мрії й плани»/.test(full) || !/pfxa задача 2 «pfxa2» \(content\/ukr\/pool-g5-fxa\.js\): «мрії й плани»/.test(full) || !/«Андрій й Ольга»/.test(full) || !/«Моя й Олина»/.test(full)) { fail++; console.log("✗ euphony: пул і тест рівня у звіті предмета", r.status, r.stderr, full); }
     const fullBefore = full;
     r = run("--pool", "pfxa");
     n++; if (r.status !== 0 || !/розділ|пул pfxa/.test(r.stdout) || !/pfxa задача 1/.test(r.stdout) || /fxal1|dfx5/.test(r.stdout) || fs.readFileSync(rep, "utf8") !== fullBefore) { fail++; console.log("✗ euphony --pool pfxa: лише пул, у stdout", r.status, r.stdout, r.stderr); }
