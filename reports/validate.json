@@ -1,5 +1,12 @@
 {
-  "date": "2026-11-11T07:38:01.894Z",
+  "date": "2026-11-11T07:38:18.488Z",
   "errors": [],
-  "warnings": []
+  "warnings": [
+    "content/ukr/g11-u11s9.js#u11s9l1: gradedShare=0.45 поза профілем [0.5; 0.9] для ukr, 10-11 кл.",
+    "content/ukr/g11-u11s9.js#u11s9l2: gradedShare=0.45 поза профілем [0.5; 0.9] для ukr, 10-11 кл.",
+    "content/ukr/g11-u11s9.js#u11s9l3: gradedShare=0.44 поза профілем [0.5; 0.9] для ukr, 10-11 кл.",
+    "content/ukr/g11-u11s9.js#u11s9l4: gradedShare=0.4 поза профілем [0.5; 0.9] для ukr, 10-11 кл.",
+    "content/ukr/g11-u11s9.js#u11s9l5: gradedShare=0.44 поза профілем [0.5; 0.9] для ukr, 10-11 кл.",
+    "content/ukr/g11-u11s9.js#u11s9l6: gradedShare=0.44 поза профілем [0.5; 0.9] для ukr, 10-11 кл."
+  ]
 }

@@ -32,7 +32,7 @@ SLID.section("ukr", {
   title: "Практична риторика: як говорити, щоб слухали",
   why: "Щоб готувати виступ від задуму до останнього слова: зважати на ситуацію й слухачів, тримати з ними контакт і досягати своєї мети.",
   requires: ["u5s1l2", "u6s1l6", "u7s13l2", "u8s14l1", "u8s14l8", "u8s10l2", "u10s2l1", "u10s2l4"],
-  meta: { author: "w-write-ukr-u10s3", created: "2026-11-11", factcheck: null, teacher: null },
+  meta: { author: "w-write-ukr-u10s3", created: "2026-11-11", factcheck: "verifier-u10s3, 2026-11-11", teacher: null },
   badges: [
     { id: "u10s3boss", name: "Голос, який чують", icon: "trophy", desc: "Пройти фінальний урок розділу «Практична риторика: як говорити, щоб слухали»" }
   ],
