@@ -11,7 +11,7 @@
 SLID.section("world", {
   id: "w9s5",
   grade: 9,
-  weeks: [29, 35],
+  weeks: [30, 35],
   title: "Світ на порозі XX ст.",
   why: "Щоб бачити, як винаходи, масова культура й союзи держав готували XX століття — і Першу світову війну.",
   meta: { author: "write-world-w9s5", created: "2026-11-04", factcheck: "verifier-write-world-w9s5", teacher: null },
@@ -77,7 +77,7 @@ SLID.section("world", {
       screens: [
         {
           type: "intro",
-          eyebrow: "Розділ 5 · Урок 1",
+          eyebrow: "Розділ 6 · Урок 1",
           title: "Хто везе цю карету?",
           img: "img/world/w9s5/benz-motorwagen-1888.jpg",
           cap: "Малюнок Г. Франца в німецькому журналі «Illustrirte Zeitung», 1 грудня 1888 р.",
@@ -228,7 +228,7 @@ SLID.section("world", {
       screens: [
         {
           type: "intro",
-          eyebrow: "Розділ 5 · Урок 2",
+          eyebrow: "Розділ 6 · Урок 2",
           title: "Що означають дві дати?",
           img: "img/world/w9s5/athens-1896-report-cover.jpg",
           tall: true,
@@ -369,7 +369,7 @@ SLID.section("world", {
       screens: [
         {
           type: "intro",
-          eyebrow: "Розділ 5 · Урок 3",
+          eyebrow: "Розділ 6 · Урок 3",
           title: "За що арештували цю жінку?",
           img: "img/world/w9s5/pankhurst-arrest-1914.jpg",
           tall: true,
@@ -528,7 +528,7 @@ SLID.section("world", {
       screens: [
         {
           type: "intro",
-          eyebrow: "Розділ 5 · Урок 4",
+          eyebrow: "Розділ 6 · Урок 4",
           title: "Хто з ким гризеться?",
           img: "img/world/w9s5/hark-dogs-map-1914.jpg",
           cap: "«Чуєш, чуєш? Собаки гавкають!» Сатирична мапа Європи, Лондон, 1914 р. Бібліотека Корнелльського університету.",
@@ -689,7 +689,7 @@ SLID.section("world", {
       screens: [
         {
           type: "intro",
-          eyebrow: "Розділ 5 · Урок 5",
+          eyebrow: "Розділ 6 · Урок 5",
           title: "Чому з картини сміялися?",
           img: "img/world/w9s5/monet-impression-sunrise.jpg",
           cap: "Клод Моне. Картина 1872 р. Музей Мармоттан-Моне, Париж.",
