@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-11T01:05:12.118Z
 id: write-world-w11s2
 type: write-section
 subject: world
@@ -6,7 +8,7 @@ grade: 11
 section: w11s2
 weeks: [5, 11]
 status: todo
-claimed_by:
+claimed_by: w-write-world-w11s2
 created: 2026-11-10
 ---
 # Написати розділ «Захід: демократія, добробут, права людини» (Всесвітня історія, 11 клас)
