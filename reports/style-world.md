@@ -103,7 +103,7 @@
 | w11s1l3 Завіса через Європу | 11 | 8 | 0.5 | 37 | 56 | 7.1 | 0.066 | 3 | maxReadWords нетипово для сім'ї (z=-2) |
 | w11s1l4 Одна країна — дві держави | 11 | 11 | 0.64 | 28 | 72 | 7.1 | 0.031 | 3 | — |
 | w11s1l5 На межі ядерної війни | 11 | 10 | 0.5 | 36 | 66 | 7.6 | 0.04 | 3 | — |
-| w11s1l6 Архів 1945–1962 (фінал) | 11 | 7 | 0.86 | 23 | 39 | 6.5 | 0.045 | 3 | sentenceWords=6.5 поза [7; 15] |
+| w11s1l6 Архів 1945–1962 (фінал) | 11 | 7 | 0.86 | 24 | 39 | 7.1 | 0.043 | 3 | — |
 
 ## Середні по сім'ях (предмет + класи + звичайний урок / фінал)
 
@@ -112,4 +112,4 @@
 - **7-9:lesson**: screens 9.52±0.64, gradedShare 0.54±0.04, readWordsPerScreen 31.07±3.42, maxReadWords 63.55±6.49, sentenceWords 6.59±0.33, longWordShare 0.04±0.01, typeVariety 3.42±0.49
 - **7-9:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 18.93±1.73, maxReadWords 34.73±4.88, sentenceWords 6.19±0.21, longWordShare 0.04±0.01, typeVariety 3.07±0.25
 - **10-11:lesson**: screens 9.3±0.9, gradedShare 0.54±0.04, readWordsPerScreen 34.8±3.87, maxReadWords 74.2±9.14, sentenceWords 7.39±0.22, longWordShare 0.05±0.02, typeVariety 3.4±0.66
-- **10-11:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 19.5±3.5, maxReadWords 36±3, sentenceWords 7.1±0.6, longWordShare 0.04±0.01, typeVariety 3±0
+- **10-11:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 20±4, maxReadWords 36±3, sentenceWords 7.4±0.3, longWordShare 0.04±0.01, typeVariety 3±0
