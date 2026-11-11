@@ -9,7 +9,7 @@
 // і запускає справжній validate.mjs (--section) як окремий процес — перевіряється сам валідатор, а не його копія.
 // Запуск: node tools/test-validate.mjs   (без залежностей)
 import fs from "node:fs"; import os from "node:os"; import path from "node:path";
-import { spawnSync } from "node:child_process"; import { fileURLToPath } from "node:url";
+import { spawnSync } from "node:child_process"; import { fileURLToPath } from "node:url"; import { slowPipe } from "./fixtures/slow-pipe.mjs";
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
 let fails = 0, n = 0;
 const ok = (cond, what, extra = "") => { n++; if (!cond) { fails++; console.log(`ПОМИЛКА ${what}${extra ? "\n  " + extra : ""}`); } };
@@ -796,6 +796,16 @@ const { figCues: figCuesT, figPoints: figPointsT } = await import(path.join(ROOT
   // п. 15: милозвучність — попередження лише для ukr і лише правила з малим шумом; «і» між зіставленими поняттями — ні
   const EU = "милозвучність";
   expectRun("ukr: «брат в сестри» — попередження милозвучності", u({ type: "info", title: "Гості", body: "Брат в сестри гостює." }), A, { warn: EU });
+  // рев'ю tools-euphony-json-pipe P3-1: великий вивід (тисячі попереджень, без --quiet) у pipe з повільним читачем не обрізається —
+  // захист від повернення process.exit() наприкінці validate.mjs: усі рядки «увага» на місці, підсумок останнім рядком
+  { fs.rmSync(path.join(tmp, "content/ukr"), { recursive: true, force: true }); fs.mkdirSync(path.join(tmp, "content/ukr"), { recursive: true });
+    for (const [f, src] of Object.entries(u(Array.from({ length: 3000 }, (_, i) => ({ type: "info", title: `Гості ${i}`, body: "Брат в сестри гостює." })))))
+      fs.writeFileSync(path.join(tmp, f), src);
+    const r = await slowPipe(path.join(tmp, "tools/validate.mjs"), A, { cwd: tmp }), m = r.stdout.match(/\n(\d+) помилок, (\d+) попереджень \(розділ fxu\)\. Звіт: reports\/validate\.json\n$/);
+    const warns = (r.stdout.match(/^увага {4}/gm) || []).length;
+    ok(r.status === 0 && Buffer.byteLength(r.stdout) > 256 << 10 && m && +m[2] >= 3000 && warns === +m[2],
+      `validate у pipe: повний вивід ≥ 256 КБ, рядків «увага» стільки ж, скільки в підсумку (rc ${r.status}, ${Buffer.byteLength(r.stdout)} Б, ${warns} / ${m?.[2]})`, r.stderr.slice(0, 300));
+    fs.rmSync(path.join(tmp, "reports/validate.json"), { force: true }); }
   // tools-diag-nonmath-p3 п. 3: «<b>В лісі</b>» на початку речення fbText — попередження; «Влітку» (в- самого слова) — лише звіт euphony.mjs
   expectRun("ukr: fbText «Ні. <b>В лісі</b> …» — попередження милозвучності", u({ type: "choice", title: "Обери", opts: ["Тихо", "Гучно"], correct: 0, fbText: "Ні. <b>В лісі</b> тихо, бо вітру немає." }), A, { warn: EU });
   expectRun("ukr: sort «Влітку тепло» — у validate без попередження (лише звіт)", u({ type: "sort", title: "Розклади", bins: ["Так", "Ні"], items: [["Влітку тепло", 0], ["Узимку холодно", 1]] }), A, { noWarn: EU });

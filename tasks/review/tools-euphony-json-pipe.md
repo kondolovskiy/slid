@@ -38,3 +38,15 @@ depends_on: []
 - Прогони: `node tools/test-euphony.mjs` — 128/128; `npm run check` — усі node-тести зелені (test-lang 150, test-euphony 128, test-hyp 625, test-validate 1620, test-graph-report 67, test-make-tasks 69, test-diff-answers 52, test-playtest-pick 22 …), але `node tools/validate.mjs` — **1 помилка не з цієї задачі**: `content/world/g11-w11s2.js#w11s2l3 екран 2 (poll): невідомий тип «poll»` — правку w11s2 захопив коміт claim `02c12de` (чужа незавершена робота автора world); далі graph-report, stats, fig-audit вручну — rc 0.
 - Документація: AGENTS.md §3 (рядок euphony: `--help`, код 2 на невідомий прапорець), шапка euphony.mjs.
 - Обмеження: дубльований прапорець (`--section a --section b`) — бере останній, не помилка. Перевірка `euphonyIssues` на одному дуже довгому body нелінійна (8000 речень ≈ 0,9 с) — тому фікстура розбита на екрани; на живому змісті не проблема.
+
+**Виправлення за рев'ю (reports/review/tools-euphony-json-pipe.md, e6afc5d), w-tools-euphony-json-pipe, 2026-11-11.**
+- P2-1 (EPIPE): `lib.mjs` — `ignoreEpipe()`: обробник `error` на stdout/stderr, EPIPE — тихо (код виходу не змінюється), інші помилки — кидаються далі. Викликається на початку `cli()` в euphony і в `exitFlushed()`.
+  `node tools/euphony.mjs --subject math --json | head -c 10` → rc 0, без стеку. Тест: `tools/fixtures/slow-pipe.mjs` (`slowPipe(script, args, { cwd, delay, closeEarly })` — спільний повільний / рано закритий читач);
+  test-euphony: `--json` і `--section` з читачем, що закривається після першого шматка, — код 0 і порожній stderr; `exitFlushed(3)` так само — код 3 (128 → 131 перевірка). Мутант «без ignoreEpipe()» → 2 ✗ («Unhandled 'error' event», код 1).
+  Не чіпав: `stats.mjs --json` (власний stdout.write із колбеком, той самий EPIPE — було й до задачі); console.log (validate, graph-report…) помилки потоку ковтає сам.
+- P3-1: pipe-тести на великий вивід із повільним читачем —
+  test-validate: розділ ukr із 3000 екранів «Брат в сестри» без `--quiet` → ≥ 256 КБ, рядків «увага» стільки, скільки в підсумку, підсумок останнім рядком (1620 → 1621);
+  test-graph-report: `--uses na2` на 6000 вправах пулу з `u: "na2"` → усі 6000 рядків і «граф math: …» останнім (67 → 68);
+  test-diff-answers: зміст як у сценарії 7 (1500 екранів list з ordered, категорію «ordered» вимкнено в копії) з `--show 1000000` → усі 1500 НЕПОЯСНЕНІ показано й розділ «Вердикт тесту рівня» на місці, rc 1 (52 → 55).
+  Мутанти в копії дерева (повернути `process.exit(...)` наприкінці): validate → ✗ (підсумку немає, 1450 рядків), graph-report → ✗ (1173 з 6000), diff-answers → ✗ (373 з 1500).
+- Прогін: `npm run check` — усі node-тести зелені (test-euphony 131, test-validate 1621, test-graph-report 68, test-diff-answers 55 ok / 0 ✗, решта без змін); validate — та сама 1 чужа помилка w11s2 «poll» (коміт claim 02c12de), тож check червоний не через задачу.

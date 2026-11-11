@@ -7,10 +7,18 @@ export { ROOT };
  *  одразу після великого console.log / stdout.write обриває його на 64 КБ. Порожній запис із колбеком виконується після всіх
  *  попередніх, тож чекаємо обидва потоки й лише тоді виходимо. Наприкінці скрипта досить process.exitCode = code. */
 export async function exitFlushed(code = 0) {
+  ignoreEpipe();
   process.exitCode = code;
   await Promise.all([process.stdout, process.stderr].map(s => new Promise(res => s.write("", res))));
   process.exit(code);
 }
+
+/** Читач закрив pipe рано (`| head`): прямий process.stdout.write без обробника дає «Unhandled 'error' event» (EPIPE) і код 1
+ *  (рев'ю tools-euphony-json-pipe P2-1; console.log помилки потоку й так ковтає). EPIPE — тихо, код виходу лишається; решта помилок — як були. */
+export function ignoreEpipe() {
+  for (const s of [process.stdout, process.stderr]) if (!s.listeners("error").includes(onStdError)) s.on("error", onStdError);
+}
+function onStdError(e) { if (e?.code !== "EPIPE") throw e; }
 
 /** Завантажує весь контент так само, як браузер, і повертає { subjects, soon, files }. root — інше дерево (типово — репозиторій). */
 export function loadContent(root = ROOT) {

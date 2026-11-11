@@ -212,7 +212,8 @@ export function parseArgs(args) {
 
 /** Прогін CLI; повертає код виходу. Вихід — через process.exitCode, не process.exit(): у pipe stdout асинхронний,
  *  і process.exit() одразу після stdout.write обрізав великий --json на 64 КБ (tools-euphony-json-pipe п. 1). */
-function cli(args, { loadContent, ROOT }) {
+function cli(args, { loadContent, ROOT, ignoreEpipe }) {
+  ignoreEpipe();   // `--json | head`: EPIPE тихо, код як був (рев'ю P2-1)
   const { opts: o, error } = parseArgs(args);
   if (error) { console.error(`${error}. Довідка: node tools/euphony.mjs --help`); return 2; }
   if (o["--help"] || o["-h"]) { process.stdout.write(HELP + "\n"); return 0; }
