@@ -7,7 +7,7 @@
 SLID.section("hist", {
   id: "g11s4",
   grade: 11,
-  weeks: [22, 28],
+  weeks: [21, 26],
   title: "Незалежна Україна",
   why: "Щоб розуміти, як будувалася держава і як громадяни захищали свій вибір.",
   meta: { author: "write-hist-g11s4", created: "2026-10-14", factcheck: "verifier-g11s4", teacher: null },

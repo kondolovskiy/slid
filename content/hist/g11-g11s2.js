@@ -7,7 +7,7 @@
 SLID.section("hist", {
   id: "g11s2",
   grade: 11,
-  weeks: [9, 15],
+  weeks: [1, 14],
   title: "Повоєнна УРСР",
   why: "Щоб розуміти, як жили українці в радянській системі і як їй опиралися.",
   meta: { author: "write-hist-g11s2", created: "2026-10-14", factcheck: "verifier-g11s2", teacher: null },

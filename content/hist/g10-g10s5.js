@@ -8,7 +8,7 @@
 SLID.section("hist", {
   id: "g10s5",
   grade: 10,
-  weeks: [30, 35],
+  weeks: [25, 28],
   title: "Західноукраїнські землі між війнами",
   why: "Щоб розуміти, як жили українці в Польщі, Румунії й Чехословаччині.",
   meta: { author: "write-hist-g10s5", created: "2026-10-14", factcheck: "verifier-g10s5", teacher: null },

@@ -8,7 +8,7 @@
 SLID.section("hist", {
   id: "g11s5",
   grade: 11,
-  weeks: [29, 35],
+  weeks: [27, 35],
   title: "Російсько-українська війна",
   why: "Щоб знати, що відбувається з нашою країною, спираючись на факти й документи.",
   meta: { author: "write-hist-g11s5", created: "2026-10-14", factcheck: "verifier-g11s5", teacher: null },

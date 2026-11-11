@@ -7,7 +7,7 @@
 SLID.section("hist", {
   id: "g11s3",
   grade: 11,
-  weeks: [16, 21],
+  weeks: [15, 20],
   title: "Відновлення незалежності",
   why: "Щоб знати, як Україна мирно здобула незалежність і чому це стало можливим.",
   meta: { author: "write-hist-g11s3", created: "2026-10-14", factcheck: "verifier-g11s3", teacher: null },
