@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-11T01:15:52.462Z
 id: write-ukr-u11s1
 type: write-section
 subject: ukr
@@ -6,7 +8,7 @@ grade: 11
 section: u11s1
 weeks: [1, 4]
 status: todo
-claimed_by:
+claimed_by: w-write-ukr-u11s1
 created: 2026-11-10
 ---
 # Написати розділ «Мовна стійкість і виражальні засоби промови» (Українська мова, 11 клас)
