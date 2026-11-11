@@ -17,7 +17,7 @@ SLID.section("world", {
   title: "Перша світова війна",
   why: "Щоб розуміти, як постріл у Сараєві перетворився на війну мільйонів і чому після неї впали чотири імперії.",
   requires: ["w9s5l4", "w9s3l4", "g10s1l1"],
-  meta: { author: "write-world-w10s1", created: "2026-11-10", factcheck: null, teacher: null },
+  meta: { author: "write-world-w10s1", created: "2026-11-10", factcheck: "verifier-w10s1", teacher: null },
   badges: [{ id: "greatwar", name: "Літописець Великої війни", icon: "shield", desc: "Пройти розділ «Перша світова війна»" }],
   credits: [
     [
@@ -63,7 +63,7 @@ SLID.section("world", {
       title: "Постріл, що підпалив Європу",
       short: "Початок війни",
       icon: "flame",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, як за п'ять тижнів після пострілу в Сараєві війною охопило всю Європу. І навчишся відрізняти малюнок у газеті від свідчення очевидця.",
       screens: [
         {
@@ -209,7 +209,7 @@ SLID.section("world", {
       title: "Війна в окопах",
       short: "Позиційна війна",
       icon: "shield",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, чому війна на заході на роки застрягла в окопах і яку зброю придумали, щоб вирватися з них. І навчишся читати воєнне фото як джерело.",
       screens: [
         {
@@ -365,7 +365,7 @@ SLID.section("world", {
       title: "Війна, що забрала всіх",
       short: "Фронт і тил",
       icon: "users",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, як війна змінила життя не лише солдатів, а й робітниць, селян і дітей у тилу. І навчишся пояснювати, що таке тотальна війна.",
       screens: [
         {
@@ -513,7 +513,7 @@ SLID.section("world", {
       title: "Телеграма й революція",
       short: "1917 рік",
       icon: "scale",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, чому 1917 р. Росія вийшла з війни, а США в неї вступили. І навчишся читати перехоплений дипломатичний документ.",
       screens: [
         {
@@ -655,7 +655,7 @@ SLID.section("world", {
       title: "Тиша об одинадцятій",
       short: "Кінець війни",
       icon: "flag",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, як закінчилася Перша світова війна й чому разом із нею впали чотири імперії. І навчишся бачити зв'язок між розпадом імперій і новими державами Європи.",
       screens: [
         {
@@ -818,7 +818,7 @@ SLID.section("world", {
       title: "Музей Великої війни",
       short: "Фінал розділу",
       icon: "star",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "greatwar",
       why: "Перевірка всього розділу. Бали подвоєні.",
