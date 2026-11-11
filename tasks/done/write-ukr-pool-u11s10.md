@@ -6,7 +6,7 @@ type: write-pool
 subject: ukr
 grade: 11
 section: u11s10
-status: review
+status: done
 claimed_by: w-write-ukr-pool-u11s10
 created: 2026-11-11
 depends_on: []
@@ -72,3 +72,6 @@ generated_by: tools/make-tasks.mjs --write-pool --subject ukr
 - Факт: «Вітер з-під сонця» О. Лущевської — про першу любов Женьки й Рисі: З11 впр. 461 + https://www.goodreads.com/book/show/29149239 , https://pen.org.ua/en/members/lushhevska-oksana .
 - Питання верифікатору: a12 «Пробачте, це бібліотека?» віднесено до налагодження контакту (з уроку: перепитування на початку розмови; З11 с. 207 подає його окремо від схеми складників); a13 «приватний / офіційний» виводиться з адресата (означення приватного в уроці немає, є «до людини чи організації» й інтро про офіційний лист директорці).
 - Прогін: validate --pool pu11s10 — 0/0; personalization-qa --strict — лише «ще не verified»; euphony --pool (і --exercises) — 0.
+
+## Верифікація
+**verifier-pu11s10, 2026-11-11:** verified. Розв'язано всі 28 вправ, ключі збіглися з моїми розв'язками; номери вправ і сторінки З11 звірено (с. 207 і 219 — за зображенням). Правок 2 (a03 hint, a22 рамка), ключів вони не змінюють. a12 і a13 однозначні. Звіт — reports/verify/pu11s10.md. validate 0/0, personalization-qa --strict — код 0, euphony — 0.
