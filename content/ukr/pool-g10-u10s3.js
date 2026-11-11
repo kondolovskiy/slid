@@ -19,8 +19,8 @@
 SLID.pool("ukr", {
   id: "pu10s3",
   section: "u10s3",
-  status: "draft",
-  meta: { author: "w-write-ukr-pool-u10s3", created: "2026-11-11", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "w-write-ukr-pool-u10s3", created: "2026-11-11", factcheck: "verifier-pu10s3", teacher: null },
   sources: [
     { id: "z10", title: "Заболотний О. В., Заболотний В. В. Українська мова (рівень стандарту) : підруч. для 10-го кл. — Київ : Генеза, 2018", url: "https://file.4book.org/images/shcoolbook_ua/10/10_um_z_2018_stand.pdf" }
   ],
