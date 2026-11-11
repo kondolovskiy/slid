@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-11T20:36:28.559Z
 id: write-world-w11s5
 type: write-section
 subject: world
@@ -6,7 +8,7 @@ grade: 11
 section: w11s5
 weeks: [22, 29]
 status: todo
-claimed_by:
+claimed_by: w-write-world-w11s5
 created: 2026-11-10
 ---
 # Написати розділ «Азія, Африка й Латинська Америка» (Всесвітня історія, 11 клас)
