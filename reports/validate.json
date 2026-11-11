@@ -1,7 +1,7 @@
 {
-  "date": "2026-11-11T12:31:33.043Z",
-  "errors": [],
-  "warnings": [
-    "content/ukr/diag-g11.js#dgu11: у 4 з 4 завдань choice правильний варіант — В: переставляй варіанти"
-  ]
+  "date": "2026-11-11T12:33:01.094Z",
+  "errors": [
+    "content/ukr/pool#pu7s1: задача 9 «a09»: order: shuffle має бути перестановкою індексів items"
+  ],
+  "warnings": []
 }
