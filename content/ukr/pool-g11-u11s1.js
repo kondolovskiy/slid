@@ -18,8 +18,8 @@
 SLID.pool("ukr", {
   id: "pu11s1",
   section: "u11s1",
-  status: "draft",
-  meta: { author: "w-write-ukr-pool-u11s1", created: "2026-11-11", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "w-write-ukr-pool-u11s1", created: "2026-11-11", factcheck: "verifier-pu11s1", teacher: null },
   sources: [
     { id: "z11", title: "Заболотний О. В., Заболотний В. В. Українська мова (рівень стандарту) : підруч. для 11 кл. — Київ : Генеза, 2019", url: "https://file.4book.org/images/shcoolbook_ua/11/11_um_z_2019.pdf" }
   ],
