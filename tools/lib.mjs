@@ -3,6 +3,15 @@ import fs from "node:fs"; import vm from "node:vm"; import path from "node:path"
 import { ROOT, manifest } from "./build.mjs";
 export { ROOT };
 
+/** Ранній вихід із кодом без обрізання виводу (tools-euphony-json-pipe): у pipe process.stdout асинхронний, і process.exit()
+ *  одразу після великого console.log / stdout.write обриває його на 64 КБ. Порожній запис із колбеком виконується після всіх
+ *  попередніх, тож чекаємо обидва потоки й лише тоді виходимо. Наприкінці скрипта досить process.exitCode = code. */
+export async function exitFlushed(code = 0) {
+  process.exitCode = code;
+  await Promise.all([process.stdout, process.stderr].map(s => new Promise(res => s.write("", res))));
+  process.exit(code);
+}
+
 /** Завантажує весь контент так само, як браузер, і повертає { subjects, soon, files }. root — інше дерево (типово — репозиторій). */
 export function loadContent(root = ROOT) {
   const ctx = { console }; vm.createContext(ctx); ctx.window = ctx;

@@ -164,4 +164,4 @@ if (!QUIET) {
 // --strict друкує причини й з --quiet: у npm run check видно, чому rc 1
 if (STRICT) [...errs, ...drift].forEach(i => console.log(`${i.cls === "error" ? "ПОМИЛКА" : "ДРЕЙФ  "}  ${i.where}: ${i.msg}`));
 console.log(`граф ${SUBJ}${LINE ? `, лінія ${LINE}` : ""}: вузлів ${A.nodes.size}, помилок ${errs.length}, дрейфу ${drift.length}, V10б ${warn.length}. Звіт: ${rp}`);
-process.exit(STRICT && (errs.length || drift.length) ? 1 : 0);
+process.exitCode = STRICT && (errs.length || drift.length) ? 1 : 0;   // не process.exit(): у pipe обрізав би вивід (tools-euphony-json-pipe)

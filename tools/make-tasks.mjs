@@ -14,7 +14,7 @@
 //   файл content/ukr/pool-g<клас>-<розділ>.js) і задачі (за іменем файлу чи id у frontmatter); «Пишемо самі…» (NO_POOL_SECTION) — без пулу.
 //   Шаблон — CONTENT_SCHEMA §10 «Пули мовних предметів»; depends_on: [engine-pool-lang], доки та задача не в done.
 import fs from "node:fs"; import path from "node:path";
-import { loadContent, ROOT, IMG_REQUIRED, NO_POOL_SECTION } from "./lib.mjs";
+import { loadContent, ROOT, IMG_REQUIRED, NO_POOL_SECTION, exitFlushed } from "./lib.mjs";
 // пули мовних предметів без матриці (engine-pool-lang): предмет → { book: базовий підручник у шаблоні, style: стиль-гайд }
 const LANG_POOL = { ukr: { book: "З<клас> (memory/long/facts/ukr.md «Джерела»: бібліографія, URL, відповідність сторінок PDF)", style: "style/ukr.md" } };
 
@@ -29,7 +29,7 @@ const existing = new Set(STATES.flatMap(d => fs.existsSync(path.join(TASKS, d)) 
 // id задач з frontmatter (файл могли перейменувати): «id: write-math-pool-g8m2»
 const existingIds = new Set(STATES.flatMap(d => fs.existsSync(path.join(TASKS, d)) ? fs.readdirSync(path.join(TASKS, d)).filter(f => f.endsWith(".md"))
   .map(f => (fs.readFileSync(path.join(TASKS, d, f), "utf8").match(/^id:\s*(\S+)/m) || [])[1]).filter(Boolean) : []));
-if (args.includes("--write-pool")) { writePool(); process.exit(0); }
+if (args.includes("--write-pool")) { writePool(); await exitFlushed(process.exitCode ?? 0); }   // далі — звичайний режим (tools-euphony-json-pipe)
 const exemplar = { hist: "content/hist/g5-s2.js", math: "content/math/g5-ms1.js", ukr: "content/ukr/g5-u5s1.js і g5-u5s4.js (verified; style/ukr.md → «Еталони»)", world: "content/world/g7-w7s1.js (еталон після верифікації; style/world.md → «Еталони»)" };
 const made = [];
 if (!DRY) fs.mkdirSync(path.join(TASKS, "todo"), { recursive: true });
