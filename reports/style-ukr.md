@@ -414,10 +414,10 @@
 | u11s2l4 Шістьмастами, а не шестистами | 11 | 11 | 0.55 | 26 | 46 | 5.3 | 0.029 | 5 | — |
 | u11s2l5 Двадцять одна гривня | 11 | 11 | 0.55 | 25 | 52 | 5.5 | 0.035 | 5 | — |
 | u11s2l6 Редакція обласних новин (фінал) | 11 | 7 | 0.86 | 19 | 30 | 5.2 | 0.04 | 4 | — |
-| u11s4l1 З міста Харкова | 11 | 12 | 0.5 | 32 | 59 | 5.9 | 0.078 | 3 | — |
+| u11s4l1 З міста Харкова | 11 | 12 | 0.5 | 33 | 62 | 6 | 0.078 | 3 | — |
 | u11s4l2 Радіти перемозі | 11 | 12 | 0.5 | 27 | 45 | 5.7 | 0.049 | 5 | — |
-| u11s4l3 В Україні, на Полтавщині | 11 | 12 | 0.5 | 33 | 55 | 6.7 | 0.025 | 3 | — |
-| u11s4l4 Коректор журналу мандрів (фінал) | 11 | 7 | 0.86 | 17 | 29 | 5.1 | 0.035 | 4 | — |
+| u11s4l3 В Україні, на Полтавщині | 11 | 12 | 0.5 | 33 | 58 | 6.7 | 0.024 | 3 | — |
+| u11s4l4 Коректор журналу мандрів (фінал) | 11 | 7 | 0.86 | 17 | 33 | 5.1 | 0.032 | 4 | — |
 
 ## Середні по сім'ях (предмет + класи + звичайний урок / фінал)
 
@@ -427,5 +427,5 @@
 - **5-6:boss**: screens 7.44±0.7, gradedShare 0.86±0.03, readWordsPerScreen 19.36±2.96, maxReadWords 34.28±3.82, sentenceWords 4.96±0.43, longWordShare 0.04±0.01, typeVariety 3.88±0.65
 - **7-9:lesson**: screens 10.56±0.87, gradedShare 0.54±0.04, readWordsPerScreen 28.63±3.57, maxReadWords 52.49±6.05, sentenceWords 5.82±0.58, longWordShare 0.04±0.02, typeVariety 3.93±0.8
 - **7-9:boss**: screens 7.18±0.38, gradedShare 0.86±0.01, readWordsPerScreen 22.13±3, maxReadWords 38.26±4.87, sentenceWords 5.45±0.6, longWordShare 0.05±0.02, typeVariety 3.82±0.81
-- **10-11:lesson**: screens 11.03±0.83, gradedShare 0.53±0.04, readWordsPerScreen 26.12±3.63, maxReadWords 49.36±6.26, sentenceWords 5.48±0.66, longWordShare 0.05±0.02, typeVariety 3.94±0.69
-- **10-11:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 17.88±1.54, maxReadWords 31.88±6.53, sentenceWords 4.91±0.28, longWordShare 0.04±0.01, typeVariety 3.63±0.48
+- **10-11:lesson**: screens 11.03±0.83, gradedShare 0.53±0.04, readWordsPerScreen 26.15±3.69, maxReadWords 49.55±6.52, sentenceWords 5.49±0.66, longWordShare 0.05±0.02, typeVariety 3.94±0.69
+- **10-11:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 17.88±1.54, maxReadWords 32.38±6.44, sentenceWords 4.91±0.28, longWordShare 0.04±0.01, typeVariety 3.63±0.48
