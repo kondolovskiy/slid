@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-11T12:34:34.005Z
 id: write-world-w11s4
 type: write-section
 subject: world
@@ -6,7 +8,7 @@ grade: 11
 section: w11s4
 weeks: [18, 21]
 status: todo
-claimed_by:
+claimed_by: w-write-world-w11s4
 created: 2026-11-10
 ---
 # Написати розділ «Падіння комунізму й нова Європа» (Всесвітня історія, 11 клас)
