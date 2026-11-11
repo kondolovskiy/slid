@@ -7,7 +7,7 @@ subject: world
 grade: 9
 section: w9s4
 weeks: [18, 23]
-status: review
+status: done
 claimed_by: w-refine-world-w9s4
 created: 2026-11-10
 depends_on: [revise-world-w9s4]
@@ -42,7 +42,7 @@ depends_on: [revise-world-w9s4]
 - [x] `node tools/validate.mjs --section w9s4` — 0 помилок; кожен новий урок має ≥ 1 справжнє `img`
 - [x] `node tools/stats.mjs --subject world` — змінені й нові уроки без прапорців «нетипово для сім'ї» (або пояснено)
 - [x] У нотатках: що змінено по уроках, опора для кожного нового оцінюваного завдання (екран), факти з URL; рядки FACT/TERM в inbox
-- [ ] `node tools/claim.mjs move <task-id> review` → content-verifier (`/verify-section w9s4`): факти, D-019, покриття одиниць програми з цієї задачі
+- [x] `node tools/claim.mjs move <task-id> review` → content-verifier (`/verify-section w9s4`): факти, D-019, покриття одиниць програми з цієї задачі
 
 ## Нотатки агента
 <!-- Виконавець: зміни по уроках, факти з джерелами, сумнівне -->
@@ -69,3 +69,5 @@ depends_on: [revise-world-w9s4]
 **Перевірити верифікатору:** формулювання «нащадки переселенців, переважно голландських» (серед предків бурів були також німці й французькі гугеноти); «Британія прокладала смугу колоній з півдня на північ» — спрощення (план Родса «Кейптаун — Каїр», політика уряду — вісь Ніл/Капська колонія).
 - `validate --section w9s4`: 0 помилок, 0 попереджень. `stats`: l4, l5 — без прапорців (11 екранів, 0,55). `euphony --section w9s4`: 0 у l4/l5; 20 відхилень лишилися в незмінених verified l1–l3, l6 — не чіпав (рядок STYLE в inbox).
 
+
+**Верифікатор verifier-refine-w9s4, 2026-11-11:** w9s4l4, w9s4l5 → verified. 4 правки в l5 е8 (Британія «прагнула» смуги; бури — нащадки голландських, німецьких і французьких переселенців; «у Фашоді»; fbText «не корінні африканці»). dgw9 g9-meiji не зачеплено. Звіт: reports/verify/refine-w9s4.md.
