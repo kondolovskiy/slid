@@ -12,11 +12,11 @@
 SLID.pool("ukr", {
   id: "pu6s6",
   section: "u6s6",
-  status: "draft",
-  meta: { author: "w-write-ukr-pool-u6s6", created: "2026-11-11", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "w-write-ukr-pool-u6s6", created: "2026-11-11", factcheck: "verifier-pool-u6s6", teacher: null },
   sources: [
     { id: "z6", title: "Заболотний О. В., Заболотний В. В. Українська мова : підруч. для 6-го кл. — Київ : Генеза, 2023", url: "https://file.4book.org/images/shcoolbook_ua/6/6_um_z_2023.pdf" },
-    { id: "up", title: "Український правопис (ред. 2019), § 36 — наголоси полу́мисок, піво́стрів, півко́ло", url: "https://slovnyk.ua/pravopys.php?prav_par=36" }
+    { id: "up", title: "Український правопис (ред. 2019), § 36 — наголоси полу́мисок, піво́стрів, півко́ло", url: "https://2019.pravopys.net/sections/36/" }
   ],
   items: [
     /* ───────── u6s6l1 «Вітер плюс двигун» — складні слова, сполучні о, е (є), разом (§23) ───────── */

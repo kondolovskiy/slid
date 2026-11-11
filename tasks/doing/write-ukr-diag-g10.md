@@ -1,11 +1,13 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-11T12:26:03.418Z
 id: write-ukr-diag-g10
 type: write-diag
 subject: ukr
 grade: 10
 section: dgu10
 status: todo
-claimed_by:
+claimed_by: w-write-ukr-diag-g10
 created: 2026-11-10
 depends_on: [plan-ukr-g10-11]
 ---
