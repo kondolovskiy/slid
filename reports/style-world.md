@@ -119,7 +119,7 @@
 | w10s5l4 П'ять мов на одній банкноті | 10 | 9 | 0.67 | 40 | 89 | 7.5 | 0.043 | 4 | gradedShare нетипово для сім'ї (z=2.4) |
 | w10s5l5 Атлас «Європа між війнами» (фінал) | 10 | 7 | 0.86 | 22 | 32 | 7 | 0.065 | 3 | — |
 | w10s6l1 Війна на шовку | 10 | 10 | 0.5 | 43 | 87 | 7.2 | 0.042 | 4 | — |
-| w10s6l2 Два шляхи для Китаю | 10 | 10 | 0.5 | 45 | 88 | 7.1 | 0.028 | 4 | readWordsPerScreen нетипово для сім'ї (z=2) |
+| w10s6l2 Два шляхи для Китаю | 10 | 10 | 0.5 | 44 | 88 | 7.1 | 0.027 | 4 | — |
 | w10s6l3 Сіль проти імперії | 10 | 10 | 0.5 | 37 | 83 | 7.3 | 0.045 | 4 | — |
 | w10s6l4 Нові літери для нової країни | 10 | 10 | 0.5 | 35 | 82 | 7.1 | 0.059 | 3 | — |
 | w10s6l5 Переворот у Буенос-Айресі | 10 | 9 | 0.56 | 41 | 81 | 7.1 | 0.053 | 3 | — |
@@ -156,5 +156,5 @@
 
 - **7-9:lesson**: screens 9.52±0.64, gradedShare 0.54±0.04, readWordsPerScreen 31.07±3.42, maxReadWords 63.55±6.49, sentenceWords 6.59±0.33, longWordShare 0.04±0.01, typeVariety 3.42±0.49
 - **7-9:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 18.93±1.73, maxReadWords 34.73±4.88, sentenceWords 6.19±0.21, longWordShare 0.04±0.01, typeVariety 3.07±0.25
-- **10-11:lesson**: screens 9.47±0.82, gradedShare 0.54±0.04, readWordsPerScreen 36.98±4.07, maxReadWords 77.87±8.36, sentenceWords 7.34±0.26, longWordShare 0.05±0.02, typeVariety 3.6±0.57
+- **10-11:lesson**: screens 9.47±0.82, gradedShare 0.54±0.04, readWordsPerScreen 36.96±4.03, maxReadWords 77.87±8.36, sentenceWords 7.34±0.26, longWordShare 0.05±0.02, typeVariety 3.6±0.57
 - **10-11:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 18.9±3.33, maxReadWords 36.6±3.83, sentenceWords 7.14±0.2, longWordShare 0.05±0.01, typeVariety 3.4±0.49
