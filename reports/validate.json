@@ -1,8 +1,5 @@
 {
-  "date": "2026-11-11T20:34:30.713Z",
+  "date": "2026-11-11T20:34:53.339Z",
   "errors": [],
-  "warnings": [
-    "content/world/g10-w10s6.js#w10s6l2: maxReadWords=91 поза профілем [0; 90] для world, 10-11 кл.",
-    "content/world/g10-w10s6.js#w10s6l6: sentenceWords=6.4 поза профілем [7; 15] для world, 10-11 кл."
-  ]
+  "warnings": []
 }
