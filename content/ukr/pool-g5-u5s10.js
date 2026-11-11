@@ -11,8 +11,8 @@
 SLID.pool("ukr", {
   id: "pu5s10",
   section: "u5s10",
-  status: "draft",
-  meta: { author: "w-write-ukr-pool-u5s10", created: "2026-11-11", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "w-write-ukr-pool-u5s10", created: "2026-11-11", factcheck: "verifier-pool-u5s10", teacher: null },
   sources: [
     { id: "z5", title: "Заболотний О. В., Заболотний В. В. Українська мова : підруч. для 5-го кл. — Київ : Генеза, 2022", url: "https://www.geneza.ua/sites/default/files/ebooks/Українська%20мова_5кл_Генеза.pdf" }
   ],
