@@ -1,16 +1,18 @@
 ---
-id: write-ukr-pool-u10s2
+claimed_from: todo
+claimed_at: 2026-11-11T18:26:25.868Z
+id: write-ukr-pool-u10s3
 type: write-pool
 subject: ukr
 grade: 10
-section: u10s2
+section: u10s3
 status: todo
-claimed_by:
+claimed_by: w-write-ukr-pool-u10s3
 created: 2026-11-11
 depends_on: []
 generated_by: tools/make-tasks.mjs --write-pool --subject ukr
 ---
-# Зібрати пул тренування «Лексична норма: точне слово» (Українська мова, 10 клас, u10s2)
+# Зібрати пул тренування «Практична риторика: як говорити, щоб слухали» (Українська мова, 10 клас, u10s3)
 
 ## Навіщо
 Пул — вправи для самостійного тренування після уроку з інтервальним повторенням (docs/PERSONALIZATION.md §3).
@@ -18,14 +20,16 @@ generated_by: tools/make-tasks.mjs --write-pool --subject ukr
 Контракт полів — docs/CONTENT_SCHEMA.md §10, «Пули мовних предметів»; якщо він розходиться з цим текстом — правий CONTENT_SCHEMA.
 
 ## Результат
-Один файл `content/ukr/pool-g10-u10s2.js`: `SLID.pool("ukr", { id: "pu10s2", section: "u10s2", status: "draft", meta: {…}, sources: [...], items: [...] })`. **id `pu10s2` і id вправ — ключі прогресу, не перейменовувати.**
+Один файл `content/ukr/pool-g10-u10s3.js`: `SLID.pool("ukr", { id: "pu10s3", section: "u10s3", status: "draft", meta: {…}, sources: [...], items: [...] })`. **id `pu10s3` і id вправ — ключі прогресу, не перейменовувати.**
 
 ## Уроки для покриття (без фіналу)
-- `u10s2l1` — У якій області болить?
-- `u10s2l2` — Одіозна гостя
-- `u10s2l3` — Цікавий, цікава, цікаві
-- `u10s2l4` — Абонент чи абонемент?
-- `u10s2l5` — Пекти раків чи смажити?
+- `u10s3l1` — Одна ідея — два результати
+- `u10s3l2` — Хто, кому й навіщо
+- `u10s3l3` — Добрий текст, сонний зал
+- `u10s3l4` — Хто тебе слухає
+- `u10s3l5` — Промова має визріти
+- `u10s3l6` — Чого я хочу від слухачів?
+- `u10s3l7` — Від чернетки до оплесків
 
 ## Що зробити (скіли `math-pool-diag` — розділ про пули мовних предметів — і `content-author`)
 1. Прочитай уроки розділу повністю: що саме пояснено, які приклади й винятки, `sk` екранів, `learned`. **Чесне завдання (D-019):** вправа тренує лише те, що урок пояснив; нового правила пул не вчить.
@@ -37,10 +41,10 @@ generated_by: tools/make-tasks.mjs --write-pool --subject ukr
 7. Милозвучність і стиль — style/ukr.md, `node tools/euphony.mjs --subject ukr` (лише stdout для свого файлу).
 
 ## Обмеження
-Змінюй лише `content/ukr/pool-g10-u10s2.js`, цю задачу й дописуй inbox. build і check — оркестратор. Уроки розділу не правити — пропозиції в inbox.
+Змінюй лише `content/ukr/pool-g10-u10s3.js`, цю задачу й дописуй inbox. build і check — оркестратор. Уроки розділу не правити — пропозиції в inbox.
 
 ## Готово, коли
-- [ ] `node tools/validate.mjs --pool pu10s2` і `node tools/personalization-qa.mjs --pool pu10s2` — 0 помилок; `status: "draft"`.
+- [ ] `node tools/validate.mjs --pool pu10s3` і `node tools/personalization-qa.mjs --pool pu10s3` — 0 помилок; `status: "draft"`.
 - [ ] Нотатки: таблиця «урок → кількість / рівні / типи / джерела», адаптації, що не ввійшло й чому; рядок в inbox.
 - [ ] Задача → `tasks/review/` для **content-verifier зі свіжим контекстом** (розв'язати кожну вправу, звірити джерела й норму); браузерне приймання — qa-ukr-pool.
 
