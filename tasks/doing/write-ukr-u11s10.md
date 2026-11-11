@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-11T07:30:38.088Z
 id: write-ukr-u11s10
 type: write-section
 subject: ukr
@@ -6,7 +8,7 @@ grade: 11
 section: u11s10
 weeks: [30, 35]
 status: todo
-claimed_by:
+claimed_by: w-write-ukr-u11s10
 created: 2026-11-10
 ---
 # Написати розділ «Мовленнєві жанри: від інструкції до вибачення» (Українська мова, 11 клас)
