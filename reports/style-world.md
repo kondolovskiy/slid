@@ -83,8 +83,8 @@
 | w9s4l1 Крик біля струмка | 9 | 10 | 0.5 | 37 | 60 | 6.7 | 0.063 | 3 | — |
 | w9s4l2 Дім, поділений навпіл | 9 | 10 | 0.5 | 37 | 68 | 6.5 | 0.045 | 3 | — |
 | w9s4l3 Пароплав проти джонок | 9 | 9 | 0.56 | 37 | 69 | 6.3 | 0.028 | 3 | — |
-| w9s4l4 Паротяг у Йокогамі | 9 | 10 | 0.5 | 36 | 74 | 6.9 | 0.059 | 4 | — |
-| w9s4l5 Велетень над континентом | 9 | 10 | 0.5 | 31 | 72 | 6.6 | 0.042 | 3 | — |
+| w9s4l4 Паротяг у Йокогамі | 9 | 11 | 0.55 | 33 | 74 | 6.8 | 0.059 | 4 | — |
+| w9s4l5 Велетень над континентом | 9 | 11 | 0.55 | 35 | 74 | 6.8 | 0.041 | 3 | — |
 | w9s4l6 Атлас далеких країн (фінал) | 9 | 7 | 0.86 | 20 | 38 | 6 | 0.052 | 3 | — |
 | w9s5l1 Карета без коня | 9 | 10 | 0.5 | 33 | 75 | 6.8 | 0.039 | 4 | — |
 | w9s5l2 Ігри, що повернулися | 9 | 9 | 0.56 | 35 | 71 | 6.7 | 0.031 | 4 | — |
@@ -161,7 +161,7 @@
 
 Для z-оцінок sd не менше 10 % середнього; нижче наведено фактичне sd.
 
-- **7-9:lesson**: screens 9.64±0.8, gradedShare 0.55±0.04, readWordsPerScreen 31.41±3.58, maxReadWords 63.79±6.46, sentenceWords 6.6±0.32, longWordShare 0.04±0.01, typeVariety 3.44±0.52
+- **7-9:lesson**: screens 9.67±0.83, gradedShare 0.55±0.04, readWordsPerScreen 31.42±3.57, maxReadWords 63.82±6.5, sentenceWords 6.6±0.32, longWordShare 0.04±0.01, typeVariety 3.44±0.52
 - **7-9:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 18.93±1.73, maxReadWords 34.73±4.88, sentenceWords 6.19±0.21, longWordShare 0.04±0.01, typeVariety 3.07±0.25
 - **10-11:lesson**: screens 9.49±0.79, gradedShare 0.54±0.04, readWordsPerScreen 37.3±4.06, maxReadWords 78.32±8.1, sentenceWords 7.35±0.28, longWordShare 0.05±0.02, typeVariety 3.57±0.57
 - **10-11:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 18.36±3.6, maxReadWords 36.36±3.72, sentenceWords 7.14±0.19, longWordShare 0.05±0.01, typeVariety 3.45±0.5

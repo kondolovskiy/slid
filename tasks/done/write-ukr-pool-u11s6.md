@@ -6,7 +6,7 @@ type: write-pool
 subject: ukr
 grade: 11
 section: u11s6
-status: review
+status: done
 claimed_by: w-write-ukr-pool-u11s6
 created: 2026-11-11
 depends_on: []
