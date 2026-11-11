@@ -14,8 +14,8 @@
 SLID.pool("ukr", {
   id: "pu9s4",
   section: "u9s4",
-  status: "draft",
-  meta: { author: "w-write-ukr-pool-u9s4", created: "2026-11-11", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "w-write-ukr-pool-u9s4", created: "2026-11-11", factcheck: "verifier-pu9s4", teacher: null },
   sources: [
     { id: "z9", title: "Заболотний О. В., Заболотний В. В. Українська мова : підруч. для 9-го кл. — Київ : Генеза, 2026", url: "https://file.4book.org/images/shcoolbook_ua/9/9_um_z_2026.pdf" }
   ],
