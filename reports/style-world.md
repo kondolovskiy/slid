@@ -77,7 +77,7 @@
 | w9s3l1 Ядра на дорозі | 9 | 10 | 0.6 | 36 | 73 | 6.9 | 0.03 | 3 | — |
 | w9s3l2 Чобіт для короля | 9 | 10 | 0.5 | 33 | 72 | 6.1 | 0.024 | 3 | — |
 | w9s3l3 Залізом і кров'ю | 9 | 10 | 0.6 | 30 | 73 | 6.5 | 0.047 | 3 | — |
-| w9s3l4 Одна корона на двох | 9 | 12 | 0.58 | 39 | 77 | 6.9 | 0.056 | 3 | screens=12 поза [5; 11]; maxReadWords=77 поза [0; 75]; screens нетипово для сім'ї (z=2.4); readWordsPerScreen нетипово для сім'ї (z=2.1); maxReadWords нетипово для сім'ї (z=2) |
+| w9s3l4 Одна корона на двох | 9 | 12 | 0.58 | 39 | 73 | 6.9 | 0.057 | 3 | screens=12 поза [5; 11]; screens нетипово для сім'ї (z=2.4); readWordsPerScreen нетипово для сім'ї (z=2.1) |
 | w9s3l5 Усі — брати | 9 | 10 | 0.6 | 34 | 73 | 6.2 | 0.033 | 3 | — |
 | w9s3l6 Репортаж з нової Європи (фінал) | 9 | 7 | 0.86 | 17 | 35 | 6 | 0.057 | 3 | — |
 | w9s4l1 Крик біля струмка | 9 | 10 | 0.5 | 37 | 60 | 6.7 | 0.063 | 3 | — |
@@ -161,7 +161,7 @@
 
 Для z-оцінок sd не менше 10 % середнього; нижче наведено фактичне sd.
 
-- **7-9:lesson**: screens 9.64±0.8, gradedShare 0.55±0.04, readWordsPerScreen 31.41±3.58, maxReadWords 63.85±6.56, sentenceWords 6.6±0.32, longWordShare 0.04±0.01, typeVariety 3.44±0.52
+- **7-9:lesson**: screens 9.64±0.8, gradedShare 0.55±0.04, readWordsPerScreen 31.41±3.58, maxReadWords 63.79±6.46, sentenceWords 6.6±0.32, longWordShare 0.04±0.01, typeVariety 3.44±0.52
 - **7-9:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 18.93±1.73, maxReadWords 34.73±4.88, sentenceWords 6.19±0.21, longWordShare 0.04±0.01, typeVariety 3.07±0.25
 - **10-11:lesson**: screens 9.49±0.79, gradedShare 0.54±0.04, readWordsPerScreen 37.3±4.06, maxReadWords 78.32±8.1, sentenceWords 7.35±0.28, longWordShare 0.05±0.02, typeVariety 3.57±0.57
 - **10-11:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 18.36±3.6, maxReadWords 36.36±3.72, sentenceWords 7.14±0.19, longWordShare 0.05±0.01, typeVariety 3.45±0.5
