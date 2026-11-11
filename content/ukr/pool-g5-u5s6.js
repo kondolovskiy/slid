@@ -1,5 +1,5 @@
 /* Слід · Українська мова, 5 клас — пул вправ для тренування до розділу «Чергування звуків» (u5s6)
-   Статус: draft (автор w-write-ukr-pool-u5s6, 2026-11-11). 24 вправи: по 6 на уроки u5s6l1–u5s6l4; boss u5s6l5 без вправ.
+   Статус: verified (автор w-write-ukr-pool-u5s6, верифікатор verifier-pool-u5s6, 2026-11-11; звіт reports/verify/pu5s6.md). 24 вправи: по 6 на уроки u5s6l1–u5s6l4; boss u5s6l5 без вправ.
    Джерело: z5 — Заболотний О. В., Заболотний В. В. «Українська мова. 5 клас» (Генеза, 2022), §27–30, с. 113–125.
    Сторінки — друковані (PDF − 3), звірено за текстовим шаром PDF 2026-11-11. Речення скорочено — adapted: true.
    Форми із чергуванням звірено за Горохом «Словозміна» (перелік — у нотатках задачі); норма — УП § 9–16, 23–25; D-041, D-042.
@@ -8,8 +8,8 @@
 SLID.pool("ukr", {
   id: "pu5s6",
   section: "u5s6",
-  status: "draft",
-  meta: { author: "w-write-ukr-pool-u5s6", created: "2026-11-11", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "w-write-ukr-pool-u5s6", created: "2026-11-11", factcheck: "verifier-pool-u5s6", teacher: null },
   sources: [
     { id: "z5", title: "Заболотний О. В., Заболотний В. В. Українська мова : підруч. для 5-го кл. — Київ : Генеза, 2022 (§27–30)", url: "https://www.geneza.ua/sites/default/files/ebooks/Українська%20мова_5кл_Генеза.pdf" }
   ],

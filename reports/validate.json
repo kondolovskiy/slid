@@ -1,5 +1,15 @@
 {
-  "date": "2026-11-11T07:33:45.768Z",
+  "date": "2026-11-11T07:33:50.522Z",
   "errors": [],
-  "warnings": []
+  "warnings": [
+    "content/world/g10-w10s3.js#w10s3l1: sentenceWords=6.9 поза профілем [7; 15] для world, 10-11 кл.",
+    "content/world/g10-w10s3.js#w10s3l2: maxReadWords=95 поза профілем [0; 90] для world, 10-11 кл.",
+    "content/world/g10-w10s3.js#w10s3l3: gradedShare=0.44 поза профілем [0.5; 0.9] для world, 10-11 кл.",
+    "content/world/g10-w10s3.js#w10s3l3: maxReadWords=93 поза профілем [0; 90] для world, 10-11 кл.",
+    "content/world/g10-w10s3.js#w10s3l4: gradedShare=0.4 поза профілем [0.5; 0.9] для world, 10-11 кл.",
+    "content/world/g10-w10s3.js#w10s3l4: sentenceWords=6.9 поза профілем [7; 15] для world, 10-11 кл.",
+    "content/world/g10-w10s3.js#w10s3l4: у 2 з 3 завдань choice правильний варіант — Б: переставляй варіанти",
+    "content/world/g10-w10s3.js#w10s3l5: sentenceWords=6.4 поза профілем [7; 15] для world, 10-11 кл.",
+    "content/world/g10-w10s3.js#w10s3l5: у 4 з 4 завдань choice правильний варіант — А: переставляй варіанти"
+  ]
 }
