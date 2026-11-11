@@ -10,13 +10,14 @@
    (СУМ-11 «рідко»), «учбовий», «виборний», «старший Юлі / вищий мене» (сполучуваність — З10 с. 14–15 і лексична, і синтаксична),
    варіанти зал / зала, синові / сину, по́милка / поми́лка (у a17 — пастки, які не треба позначати).
    Уроки: u10s1l1 … u10s1l3 (u10s1l4 — фінал, не тренується). sk: lex (усі), orth (a04, u10s1l1).
+   Статус: verified (verifier-pu10s1, 2026-11-11, reports/verify/pu10s1.md).
    Перевірка: node tools/validate.mjs --pool pu10s1 && node tools/personalization-qa.mjs --pool pu10s1 --strict
    id пулу й вправ — ключі прогресу, не перейменовувати. */
 SLID.pool("ukr", {
   id: "pu10s1",
   section: "u10s1",
-  status: "draft",
-  meta: { author: "w-write-ukr-pool-u10s1", created: "2026-11-11", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "w-write-ukr-pool-u10s1", created: "2026-11-11", factcheck: "verifier-pu10s1", teacher: null },
   sources: [
     { id: "z10", title: "Заболотний О. В., Заболотний В. В. Українська мова (рівень стандарту) : підруч. для 10 кл. — Київ : Генеза, 2018", url: "https://file.4book.org/images/shcoolbook_ua/10/10_um_z_2018_stand.pdf" }
   ],

@@ -1450,6 +1450,7 @@ async def main():
                 await half_credit_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
                 await hyp_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
                 await gaps_order_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
+                await sort_order_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
                 await graph_g3_checks(browser, f"http://127.0.0.1:{server.server_address[1]}/index.html")
             await browser.close()
             print('Обрані браузерні сценарії: green')
@@ -1492,6 +1493,50 @@ async def gaps_order_checks(browser, url):
     assert not errors, errors
     await context.close()
     print('gaps: варіанти перемішано (Math.random = 0 → [1,0], [1,0,∅], [1,2,0]), порядок стабільний після хибної спроби: green', flush=True)
+
+async def sort_order_checks(browser, url):
+    """engine-sort-order: рушій перемішує рядки sort (LANG.rowOrder у renderScreen), а стан, позначки й журнал — за індексом items
+    (data-row / data-r), не за місцем рядка на екрані. Детерміновано: Math.random = 0 → для 3 рядків порядок [1,2,0]; без rowOrder
+    рядки стояли б у порядку items [0,1,2]. Хибна спроба (рядок 0 — не в той кошик) має позначити червоним саме рядок items[0],
+    що стоїть на екрані останнім; перед нею rnd = 0.999 (тотожна перестановка) — перемальований екран змінив би порядок.
+    Диктор: кнопки кошиків кожного рядка — група з назвою рядка (role=group, aria-labelledby)."""
+    context = await browser.new_context(viewport={"width": 400, "height": 860})
+    page = await context.new_page()
+    errors = []
+    page.on("pageerror", lambda error: errors.append(str(error)))
+    await context.add_init_script("Math.random = () => 0; localStorage.setItem('slid.v1', JSON.stringify({grade:6,unlockAll:true}))")
+    await page.goto(url)
+    lesson = await page.evaluate("""() => { const c = SLID_SUBJECTS.find(c => c.id === 'math'), L = c.sections.find(s => (s.lessons || []).length).lessons[0];
+      L.screens = [{ type: 'sort', sk: L.screens.find(s => s.sk)?.sk, title: 'Фікстура sort', bins: ['Парні', 'Непарні'],
+        items: [['2', 0], ['4', 0], ['7', 1]], fbOk: 'Так.', fbText: 'Пояснення фікстури.' }]; return L.id; }""")
+    await page.evaluate("id => window.__slidStart(id)", lesson)
+    async def order():
+        return await page.evaluate("() => [...document.querySelectorAll('#stage .srow')].map(r => +r.dataset.row)")
+    first = await order()
+    assert first == [1, 2, 0], ('порядок рядків sort з Math.random = 0 — rowOrder не викликано?', first)
+    labels = await page.evaluate("""() => [...document.querySelectorAll('#stage .srow')].map(r => { const g = r.querySelector('.seg');
+      return [g.getAttribute('role'), document.getElementById(g.getAttribute('aria-labelledby'))?.textContent,
+        [...g.querySelectorAll('button')].every(b => b.dataset.r === r.dataset.row)]; })""")
+    assert labels == [['group', '4', True], ['group', '7', True], ['group', '2', True]], ('група кнопок рядка не названа його текстом', labels)
+    await page.evaluate("() => { Math.random = () => 0.999; }")
+    await page.click('#stage [data-r="0"][data-b="1"]')
+    await page.click('#stage [data-r="1"][data-b="0"]')
+    await page.click('#stage [data-r="2"][data-b="1"]')
+    await page.click('#action')
+    assert 'bad' in (await page.get_attribute('#dock', 'class')), await page.get_attribute('#dock', 'class')
+    marks = await page.evaluate("() => [...document.querySelectorAll('#stage .srow')].map(r => [+r.dataset.row, r.classList.contains('is-bad')])")
+    assert marks == [[1, False], [2, False], [0, True]], ('червоним має бути рядок items[0] (на екрані останній)', marks)
+    assert await order() == first, ('порядок рядків змінився після хибної спроби', await order(), first)
+    # журнал: сирий запис — за індексом items, не за порядком рядків на екрані (тоді він був би [0,1,1])
+    raw = await page.evaluate("async () => window.SLID_EVIDENCE ? (await SLID_EVIDENCE.export()).events.filter(e => e.type === 'answer').map(e => e.d.raw) : null")
+    assert raw == [[1, 0, 1]], ('raw хибної спроби sort — за індексами items', raw)
+    await page.click('#stage [data-r="0"][data-b="0"]')
+    await page.click('#action')
+    assert 'ok' in (await page.get_attribute('#dock', 'class')), await page.get_attribute('#dock', 'class')
+    assert await order() == first, ('порядок рядків змінився після правильної відповіді', await order(), first)
+    assert not errors, errors
+    await context.close()
+    print('sort: рядки перемішано (Math.random = 0 → [1,2,0]), позначки за індексом items, порядок стабільний після хибної спроби: green', flush=True)
 
 async def diag_answer_checks(browser, url):
     """engine-diag-answer-kinds: answer з answerKind time / quantity / decimals у тесті рівня через справжній плеєр.
