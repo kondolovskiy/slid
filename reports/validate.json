@@ -1,5 +1,7 @@
 {
-  "date": "2026-11-11T20:44:34.617Z",
+  "date": "2026-11-11T20:45:04.046Z",
   "errors": [],
-  "warnings": []
+  "warnings": [
+    "content/ukr/pool#pu11s9 задача 29 «a29» (gaps): заборонена фраза «як відомо» (style/banned-phrases.txt)"
+  ]
 }
