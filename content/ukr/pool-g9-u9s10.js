@@ -22,8 +22,8 @@
 SLID.pool("ukr", {
   id: "pu9s10",
   section: "u9s10",
-  status: "draft",
-  meta: { author: "w-write-ukr-pool-u9s10", created: "2026-11-11", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "w-write-ukr-pool-u9s10", created: "2026-11-11", factcheck: "verifier-pu9s10", teacher: null },
   sources: [
     { id: "z9", title: "Заболотний О. В., Заболотний В. В. Українська мова : підруч. для 9-го кл. — Київ : Генеза, 2026", url: "https://file.4book.org/images/shcoolbook_ua/9/9_um_z_2026.pdf" },
     { id: "z5", title: "Заболотний О. В., Заболотний В. В. Українська мова : підруч. для 5-го кл. — Київ : Генеза, 2022 (§22)", url: "https://www.geneza.ua/sites/default/files/ebooks/Українська%20мова_5кл_Генеза.pdf" }
