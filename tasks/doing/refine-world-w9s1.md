@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-11T20:41:06.151Z
 id: refine-world-w9s1
 type: refine-section
 subject: world
@@ -6,7 +8,7 @@ grade: 9
 section: w9s1
 weeks: [1, 6]
 status: todo
-claimed_by:
+claimed_by: w-refine-world-w9s1
 created: 2026-11-10
 depends_on: []
 ---
