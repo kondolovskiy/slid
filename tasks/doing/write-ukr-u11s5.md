@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-11T01:19:02.144Z
 id: write-ukr-u11s5
 type: write-section
 subject: ukr
@@ -6,7 +8,7 @@ grade: 11
 section: u11s5
 weeks: [12, 14]
 status: todo
-claimed_by:
+claimed_by: w-write-ukr-u11s5
 created: 2026-11-10
 ---
 # Написати розділ «Підмет і присудок, порядок слів, односкладні й неповні речення» (Українська мова, 11 клас)
