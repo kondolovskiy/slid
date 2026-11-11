@@ -23,6 +23,8 @@
 //      а не перший предмет за порядком файлів; без diagOrder і за рівних — порядок предметів; відкладений тест («Пізніше») не пропонується.
 //  12) Один тест рівня на головній (engine-diag-one-invite): одне запрошення на новий тест (перший за diagOrder незавершений; «Пізніше» не змінює),
 //      перерваний — завжди; тест іншого предмета — з екрана предмета.
+//  13) «Тренування» української (engine-pool-lang): пул ukr-фікстури (gaps, pick, stress) — помилка → hint → друга спроба; «Пояснення»; seen і SRS
+//      (з другої спроби — не зараховано); answer у журналі з key, pool, try, raw.
 //  5–7) Service worker (engine-sw-version-skew): деплой нової версії не змішує index.html і app.js; файл зі старого кешу не віддається
 //     (P3-6); оновлення не перезавантажує сторінку посеред уроку, а версія подій журналу лишається версією сторінки (P3-4); застосунок зі старим SW після одного змішаного відкриття сам переходить на консистентну нову версію.
 // Запуск: node tools/test-ui.mjs [--browser /opt/pw-browsers/chromium]
@@ -504,6 +506,63 @@ async function diagLangScenario(browser) {
   await ctx.close();
 }
 
+/* 13) «Тренування» української (engine-pool-lang): пул ukr-фікстури з gaps, pick і stress. gaps з двома пропусками, один хибний —
+   «не зовсім», червоне лише хибне, підказка hint, друга спроба правильно → зараховано без «першої» (seen 0); pick і stress — з першої.
+   Наприкінці — SRS: тема з другою спробою — коробка 0, тема без помилок — 1; блок пояснення — «Пояснення» (не «Розв'язання»); журнал —
+   answer з mode practice, key, pool і raw мовної вправи. Без помилок сторінки. */
+async function practiceLangScenario(browser) {
+  const ctx = await browser.newContext({ viewport: { width: 400, height: 860 }, serviceWorkers: "block" });
+  const page = await ctx.newPage(), errors = []; page.on("pageerror", e => errors.push(String(e))); page.setDefaultTimeout(8000);
+  await page.route("**/fonts.googleapis.com/**", r => r.abort());
+  const it = (id, lesson, x) => ({ id, lesson, lvl: 1, sk: "orth", src: "z5 впр. 12", title: "Вправа " + id, ...x });
+  const POOL = { id: "pfu5", section: "fu5", status: "draft", sources: [{ id: "z5", title: "Підручник-фікстура", url: "https://example.org/" }], items: [
+    it("a01", "fu5l1", { type: "gaps", text: "с{*е|и}ло, з{е|*и}ма", hint: "Добери слово, де звук під наголосом.", steps: ["Село — сéла: [е] під наголосом.", "Зима — зúмній: [и] під наголосом."] }),
+    it("a02", "fu5l2", { type: "stress", sk: "oral", words: ["черг+овий"], steps: ["Наголос — на другому складі: черго́вий."] }),
+    it("a03", "fu5l1", { type: "pick", sk: "synt", text: "[Сонце] яскраво [!світить].", steps: ["Підмет відповідає на питання що? — сонце."] })] };
+  const installP = pool => { const c = SLID_SUBJECTS.find(c => c.id === "ukr");
+    const lesson = id => ({ id, title: "Урок " + id, icon: "book", screens: [{ type: "intro", title: id, body: "QA" }] });
+    c.sections = [{ id: "fu5", grade: 5, weeks: [1, 2], title: "QA 5", why: "QA", lessons: ["fu5l1", "fu5l2"].map(lesson) }];
+    c.pools = [pool]; c.diags = []; delete c.graph; };
+  await page.goto(URL0);
+  await page.evaluate(() => { localStorage.clear(); localStorage.setItem("slid.v1", JSON.stringify({ grade: 5, subject: "ukr", unlockAll: false, lessons: { fu5l1: { done: true, stars: 3 }, fu5l2: { done: true, stars: 3 } } })); });
+  await page.reload(); await page.evaluate(installP, POOL);
+  await page.evaluate(() => document.querySelector('.tab[data-tab="path"]').click());
+  await page.click('button[data-subject="ukr"]'); await page.click('[data-practice-view="ukr"]'); await page.click('[data-practice="fu5l1"]');
+  const title = () => page.locator("#stage h2").first().innerText();
+  const gopt = (g, t) => page.locator(`.gopt[data-g="${g}"]`, { hasText: new RegExp(`^${t}$`) }).click();
+  // 1) gaps: перший пропуск правильно, другий хибно
+  ok((await title()) === "Вправа a01", `practice ukr: перша вправа — gaps a01, а ${await title()}`);
+  await gopt(0, "е"); await gopt(1, "е"); await page.click("#action");
+  const dock1 = await page.locator("#action").innerText();
+  ok(/Спробувати ще раз/.test(dock1), `practice ukr: gaps 1 з 2 — не зараховано, друга спроба («${dock1}»)`);
+  ok(await page.locator("#stage .is-bad").count() >= 1, "practice ukr: хибний пропуск позначено червоним");
+  ok(/Добери слово, де звук під наголосом/.test(await page.locator("#hintHost").innerText()), "practice ukr: після першої помилки — hint вправи");
+  ok(!/Пояснення|Розв'язання/.test(await page.locator("#dock").innerText().catch(() => "")), "practice ukr: після першої помилки пояснення ще не показано");
+  await gopt(1, "и"); await page.click("#action");
+  const dock2 = await page.locator("#dock").innerText();
+  ok(/Пояснення/.test(dock2) && !/Розв'язання/.test(dock2) && /сéла/.test(dock2), `practice ukr: друга спроба правильно — блок «Пояснення» зі steps («${dock2.slice(0, 120)}»)`);
+  await page.click("#action");
+  // 2) pick: правильно з першої
+  ok((await title()) === "Вправа a03", `practice ukr: друга вправа — pick a03 (тема в фокусі), а ${await title()}`);
+  await page.click('.pw[data-w="0"]'); await page.click("#action");
+  ok(/Правильно/.test(await page.locator("#dock").innerText()), "practice ukr: pick з першої — «Правильно»");
+  await page.click("#action");
+  // 3) stress (повторення іншої теми): правильно з першої
+  ok((await title()) === "Вправа a02", `practice ukr: третя — stress a02 (повторення), а ${await title()}`);
+  const vi = await page.evaluate(() => SLID_LANG.parseStress("черг+овий").correct);
+  await page.click(`.sv[data-w="0"][data-i="${vi}"]`); await page.click("#action"); await page.click("#action");
+  // підсумок: SRS і seen
+  const S = await page.evaluate(() => JSON.parse(localStorage.getItem("slid.v1")));
+  ok(same(S.seen, { "pfu5:a01": 0, "pfu5:a03": 1, "pfu5:a02": 1 }), `practice ukr: seen — gaps з другої спроби 0, pick і stress 1, а ${JSON.stringify(S.seen)}`);
+  ok(S.srs?.fu5l1?.box === 0 && S.srs?.fu5l2?.box === 1, `practice ukr: SRS — fu5l1 (gaps з другої спроби) коробка 0, fu5l2 (без помилок) 1, а ${JSON.stringify(S.srs)}`);
+  const ev = await page.evaluate(async () => { if (!window.SLID_EVIDENCE) return null; await SLID_EVIDENCE.flush?.();
+    return (await SLID_EVIDENCE.export()).events.filter(e => e.type === "answer" && e.d.mode === "practice").map(e => [e.d.key, e.d.pool, e.d.type, e.d.try, e.d.verdict, e.d.raw]); });
+  ok(same(ev, [["pfu5:a01", "pfu5", "gaps", 1, "bad", [0, 0]], ["pfu5:a01", "pfu5", "gaps", 2, "ok", [0, 1]], ["pfu5:a03", "pfu5", "pick", 1, "ok", [0]], ["pfu5:a02", "pfu5", "stress", 1, "ok", [vi]]]),
+    `practice ukr: журнал — answer із key, pool, try, verdict і raw мовної вправи, а ${JSON.stringify(ev)}`);
+  ok(!errors.length, "practice ukr: помилки сторінки: " + errors.join(" | "));
+  await ctx.close();
+}
+
 const browser = await pw.chromium.launch(BROWSER ? { executablePath: BROWSER } : {});
 console.log(`test-ui: Chromium ${browser.version()} (${BROWSER || "власний Playwright, " + (process.env.PLAYWRIGHT_BROWSERS_PATH || "~/.cache/ms-playwright")})`);
 try {
@@ -590,6 +649,9 @@ try {
 
   // 10) Мовні вправи в тесті рівня (engine-diag-lang-types)
   await diagLangScenario(browser);
+
+  // 13) «Тренування» української: мовні вправи в пулі (engine-pool-lang)
+  await practiceLangScenario(browser);
 
   // 11) Порядок тестів рівня після вибору класу (fix-diag-order)
   await diagOrderScenario(browser);

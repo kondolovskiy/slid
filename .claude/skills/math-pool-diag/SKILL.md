@@ -1,9 +1,9 @@
 ---
 name: math-pool-diag
-description: Use when creating or editing a math practice pool content/math/pool-g*-*.js or a grade diagnostic content/<subject>/diag-g*.js (math or ukr), or when changing answer formats (answerKind, form, unit, rev) of their items.
+description: Use when creating or editing a practice pool content/<subject>/pool-g*-*.js (math or ukr) or a grade diagnostic content/<subject>/diag-g*.js (math or ukr), or when changing answer formats (answerKind, form, unit, rev) of their items.
 ---
 
-# Пули вправ і тести рівня (math)
+# Пули вправ і тести рівня (math, ukr)
 
 Пул (`SLID.pool`) — задачі для тренування після уроку; дитина **записує** відповідь. Тест рівня (`SLID.diag`) — діагностика класу.
 Задача — `tasks/doing/<task-id>.md` (зазвичай `write-math-pool-*`, `write-math-diag-*`, `revise-math-pool-*`).
@@ -31,17 +31,26 @@ description: Use when creating or editing a math practice pool content/math/pool
 - Формат, якого немає в рушії, — не обходь: рядок ENGINE в inbox.
 
 ## 2а. Тест рівня з мови (ukr: `content/ukr/diag-g*.js`, engine-diag-lang-types)
-Пулів для ukr немає — цей розділ лише про тест рівня. Разом зі скілом `content-author` (стиль і норми ukr).
+Про пули ukr — розділ 2б. Разом зі скілом `content-author` (стиль і норми ukr).
 - Прочитай: style/ukr.md, glossary/ukr.md, facts/ukr.md (джерела З5–З7), decisions D-040, D-041/D-042 (як помилку оцінюємо лише ненормативне і за правописом/підручником, і за словником; вибір між двома нормативними варіантами — не оцінюється), D-045 (`sk`: `gram` — форми, `orth` — букви й написання; відміни й дієвідміни латиницею I–IV), D-047.
 - Мовні вправи в тесті (CONTENT_SCHEMA §9): `gaps` ≤ 3 пропуски, `stress` ≤ 3 слова, `pick` ≤ 20 слів-кнопок і ≤ 3 правильні, `split` — одне слово, `word`. Вердикт — правильно все або ні; позначок і показу відповіді немає. Наголос — лише слова з одним нормативним наголосом (звір зі словником).
 - `fbOk`, `fbText`, `hint` у тесті не потрібні (попередження validate).
 - Немає уроків класу нижче (ukr 5 кл.) — передумови `baseline: true` за програмою попередніх класів (джерело — у нотатки).
 
+## 2б. Пул тренування з мови (ukr: `content/ukr/pool-g<клас>-<розділ>.js`, engine-pool-lang)
+Задача — `write-ukr-pool-*` (`make-tasks --write-pool --subject ukr`). Разом зі скілом `content-author`. Контракт — CONTENT_SCHEMA §10 «Пули мовних предметів».
+- Прочитай те саме, що для тесту рівня (2а), і **уроки розділу повністю**: вправа тренує лише те, що урок пояснив (D-019); `sk` вправи — з `sk` екранів її уроку.
+- id пулу `p<розділ>` (`pu5s1`), id вправ `a01`… — ключі прогресу. Розділи «Пишемо самі…» — без пулу.
+- Типи: переважно `gaps` (≤ 6 пропусків), `stress` (≤ 6 слів), `pick` (≤ 40 слів), `word`, `split`; `sort` / `order` — класифікації й порядок; `choice` / `multi` — лише поняттєві питання, не замість правопису. Межі тесту рівня (2а) тут не діють. Поля математики (`unit`, `answerKind`, `gen`…) і `hyp`/`poll` — помилка.
+- 4–6 вправ на урок з оцінюваними екранами (~2 рівня 1, 2 рівня 2, 1–2 рівня 3); `steps` — пояснення 1–4 рядки (правило + розбір: дитина бачить його як «Пояснення»), `hint` для рівнів 2–3.
+- Часткового зарахування немає: вправа з кількома пропусками зараховується, лише коли правильні всі. Не склеюй різні правила в один `gaps` — одна помилка «з'їсть» тему в SRS.
+- Джерела — реальні вправи підручника (З<клас> впр. N, `srcPage`; `adapted: true`, якщо речення скорочено); норма — D-041/D-042: вибір між нормативними варіантами не оцінювати; наголос — за словником.
+
 ## 3. Перевір
 ```bash
 node tools/validate.mjs --pool <id>        # або --diag <id>; 0 помилок
 python3 tools/test-answer-ui.py --suite content --pool <id>    # або --diag <id>; приклади з підказок не мають зараховуватися
-node tools/personalization-qa.mjs          # покриття матриці персоналізації (docs/PERSONALIZATION_QA.md)
+node tools/personalization-qa.mjs          # покриття матриці персоналізації (docs/PERSONALIZATION_QA.md); пул ukr — --pool <id> (без матриці: ≥ 3 вправи й рівні 1–3 на урок)
 node tools/diff-answers.mjs --grades <N>   # за зміни ключів: перевір, що кількість вправ ненульова
 ```
 Під паралельним запуском чужий напівзаписаний `pool-*.js` ламає validate для всіх пулів — тоді прогін на копії дерева у своїй підтеці scratchpad.

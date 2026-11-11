@@ -281,6 +281,42 @@ check(() => assert(!skDiag('coord').warnings.some(w => w.startsWith('dgfx6/c1'))
     check(() => assert(rg.rc === 0 && !/ПОМИЛКА/.test(rg.out), JSON.stringify(rg)));
     check(() => assert(rs.rc === 1 && /--strict: суворе приймання dgfu6 неможливе/.test(rs.out), JSON.stringify(rs))); } }
 
+// ---------- engine-pool-lang: пул не з math (ukr) — без матриці, власне правило покриття ----------
+// кожен не-boss урок розділу з оцінюваними екранами (sk) — ≥ 3 вправи, рівні 1–3, sk вправи — серед sk екранів уроку (прогалини, --strict);
+// розділ «Пишемо самі» — без пулу (помилка); структура — learn.validatePool (помилки, rc 1 і без --strict)
+{ const SL = (id, sks) => ({ id, title: id, screens: sks.map(sk => ({ type: 'choice', sk })) });
+  const ukr = { id: 'ukr', skills: { orth: {}, oral: {}, text: {} }, sections: [
+    { id: 'fu5', grade: 5, title: 'QA', lessons: [SL('fu5l1', ['orth']), SL('fu5l2', ['oral', 'orth']), SL('fu5l3', []), { ...SL('fu5b', ['orth']), boss: true }] },
+    { id: 'fu5rm', grade: 5, title: 'Пишемо самі: QA', lessons: [SL('fu5rml1', ['text'])] }], diags: [], pools: [] };
+  const I = (id, lesson, lvl, x = {}) => ({ id, lesson, lvl, sk: 'orth', src: 'z5 1', type: 'gaps', title: 'QA', text: 'с{*е|и}ло', steps: ['QA'], ...x });
+  const full = l => [I(l + 'a', l, 1), I(l + 'b', l, 2), I(l + 'c', l, 3)];
+  const pool = (items, extra = {}) => ({ id: 'pufx', section: 'fu5', status: 'verified', sources: [{ id: 'z5', title: 'QA', url: 'https://example.org' }], items, ...extra });
+  const A = (p, subj = ukr) => qa.auditOtherPool({ ...subj, pools: [p] }, p, learn);
+  const r0 = A(pool([...full('fu5l1'), ...full('fu5l2').map(x => ({ ...x, sk: 'oral', type: 'stress', words: ['черг+овий'], text: undefined }))]));
+  check(() => assert.deepEqual([r0.errors, r0.missing], [[], []], JSON.stringify(r0)));
+  check(() => assert(r0.skipped.includes('fu5l3') && r0.counts.items === 6 && r0.counts.lessons === 2, JSON.stringify(r0)));   // урок без оцінюваних екранів — пропущено явно
+  const m1 = A(pool([...full('fu5l1'), I('x', 'fu5l2', 1), I('y', 'fu5l2', 1)]));
+  check(() => assert(m1.missing.includes('pufx/fu5l2: 2 вправи, потрібно ≥ 3') && m1.missing.includes('pufx/fu5l2: немає рівня 2') && m1.missing.includes('pufx/fu5l2: немає рівня 3'), JSON.stringify(m1.missing)));
+  check(() => assert(A(pool(full('fu5l1'))).missing.includes('pufx/fu5l2: 0 вправ, потрібно ≥ 3')));
+  check(() => assert(A(pool([...full('fu5l1'), ...full('fu5l2').map(x => ({ ...x, sk: 'text' }))])).missing.some(e => e.startsWith('pufx/fu5l2c: sk text не тренує урок fu5l2'))));
+  check(() => assert(A(pool([...full('fu5l1'), ...full('fu5l2')], { status: 'draft' })).missing.includes('pufx: ще не verified')));
+  // структура: розмітка мовної вправи (SLID_LANG через learn.validatePool), boss, нуль вправ, розділ «Пишемо самі»
+  check(() => assert(A(pool([I('z', 'fu5l1', 1, { text: 'с{е|и}ло' })])).errors.some(e => e.startsWith('pufx: ') && e.includes('правильний варіант'))));
+  check(() => assert(A(pool([I('z', 'fu5b', 1)])).errors.includes('pufx/z: boss не тренується')));
+  check(() => assert(A(pool([])).errors.some(e => /нуль вправ|немає items/.test(e))));
+  check(() => assert(A(pool(full('fu5rml1').map(x => ({ ...x, sk: 'text' })), { section: 'fu5rm' })).errors.some(e => e.includes('«Пишемо самі»'))));
+  // run(): --pool пулу ukr — гілка без матриці; rc 1 лише за помилки, --strict — і за прогалини; невідомий пул — як і раніше «Невідомий пул»
+  { const runOut = (args, p) => { const lines = [], log = console.log; console.log = (...a) => lines.push(a.join(' '));
+      try { return { rc: qa.run(args, () => ({ subjects: [{ ...ukr, pools: [p] }], learn })), out: lines.join('\n') }; } finally { console.log = log; } };
+    const good = pool([...full('fu5l1'), ...full('fu5l2')]), gap = pool(full('fu5l1'));
+    const a = runOut(['--pool', 'pufx'], good), b = runOut(['--pool', 'pufx'], gap), c = runOut(['--pool', 'pufx', '--strict'], gap), d = runOut(['--pool', 'pufx', '--strict'], good);
+    check(() => assert(a.rc === 0 && /^Пул pufx \(ukr, розділ fu5\): без матриці покриття/.test(a.out) && !/БРАКУЄ|ПОМИЛКА/.test(a.out), JSON.stringify(a)));
+    check(() => assert(b.rc === 0 && /БРАКУЄ: pufx\/fu5l2: 0 вправ/.test(b.out), JSON.stringify(b)));
+    check(() => assert(c.rc === 1 && d.rc === 0, JSON.stringify([c, d])));
+    check(() => assert.equal(runOut(['--pool', 'pufx'], pool([I('z', 'fu5l1', 1, { text: 'с{е|и}ло' })])).rc, 1));
+    check(() => assert.throws(() => runOut(['--pool', 'pufx', '--grade', '6'], good), /не збігається/));
+    check(() => assert.throws(() => runOut(['--pool', 'nope'], good), /Невідомий пул/)); } }
+
 // ---------- CLI на живому змісті: аргументи й коди виходу ----------
 for (const args of [['--pool','typo'], ['--diag','typo'], ['--grade','12'], ['--pool','pg6m1','--grade','6'], ['--pool','pg6m1','--grade','7'], ['--wat'], ['--diag'], ['--diag','dg6','--pool','pg6m1']]) {
   check(() => assert.equal(spawnSync(process.execPath, ['tools/personalization-qa.mjs', ...args], { cwd: ROOT }).status, 1));

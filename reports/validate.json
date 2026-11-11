@@ -1,8 +1,7 @@
 {
-  "date": "2026-11-11T01:03:16.609Z",
+  "date": "2026-11-11T01:03:32.433Z",
   "errors": [],
   "warnings": [
-    "content/world/g11-w11s1.js#w11s1l4: sentenceWords=6.9 поза профілем [7; 15] для world, 10-11 кл.",
-    "content/world/g11-w11s1.js#w11s1l6: sentenceWords=6.3 поза профілем [7; 15] для world, 10-11 кл."
+    "content/ukr/g11-u11s4.js#u11s4l3: у 2 з 3 завдань choice правильний варіант — Б: переставляй варіанти"
   ]
 }

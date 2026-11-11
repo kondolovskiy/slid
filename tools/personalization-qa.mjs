@@ -1,6 +1,6 @@
 // Structural acceptance against the curator's matrix; no network and no mathematical verification.
 import { pathToFileURL } from 'node:url';
-import { loadContent, readJSON, diagCtx } from './lib.mjs';
+import { loadContent, readJSON, diagCtx, NO_POOL_SECTION } from './lib.mjs';
 
 // Вимогу exactRoot закриває також list, у ключі якого є точний корінь (√, ∛…) і який checkAns справді перевіряє точно:
 // ключ як записано — "ok", ключ із десятковими наближеннями коренів — "bad". Наближення, π без кореня, числовий list — ні.
@@ -147,6 +147,40 @@ export function auditOther(subject, d, learn) {
     counts: { diagnostics: 1, items: d.items?.length || 0 } };
 }
 
+// Пул не з math (ukr; engine-pool-lang): матриці покриття немає, тож правило — власне й просте:
+//  - помилки (rc 1): learn.validatePool (той самий, що в validate.mjs: розмітка мовних вправ, поля, межі), вправа на boss-уроці,
+//    повторений id пулу, нуль вправ, пул розділу «Пишемо самі» (NO_POOL_SECTION — письмо автоматично не перевірити);
+//  - прогалини (лише --strict, D-050 п. 7): кожен не-boss урок розділів пулу (section + also), що має оцінювані екрани зі sk, — ≥ 3 вправи
+//    і всі рівні 1–3; sk вправи — серед sk екранів її уроку; статус verified / approved.
+//  Урок без оцінюваних екранів (лише читання й письмо) тренувати нічим — він у skipped, а не в прогалинах.
+export const OTHER_POOL_MIN = 3;
+export function auditOtherPool(subject, p, learn) {
+  const errors = [], missing = [], warnings = [];
+  const ctx = { sections: new Map(subject.sections.map(s => [s.id, { grade: s.grade, lessons: (s.lessons || []).map(l => l.id) }])), skills: subject.skills };
+  errors.push(...[...learn.validatePool(p, ctx)].map(e => `${p.id}: ${e}`));
+  if ((subject.pools || []).filter(x => x.id === p.id).length > 1) errors.push(`Повторений пул ${p.id}`);
+  const homes = [p.section, ...(Array.isArray(p.also) ? p.also : [])].map(id => subject.sections.find(s => s.id === id)).filter(Boolean);
+  for (const s of homes) if (NO_POOL_SECTION.test(s.title || "")) errors.push(`${p.id}: розділ ${s.id} «${s.title}» — без пулу: «Пишемо самі» (письмо) автоматично не перевірити`);
+  const items = p.items || [], lessons = new Map(homes.flatMap(s => (s.lessons || []).map(l => [l.id, l])));
+  if (!items.length) errors.push(`${p.id}: нуль вправ для перевірки`);
+  for (const it of items) if (lessons.get(it.lesson)?.boss) errors.push(`${p.id}/${it.id}: boss не тренується`);
+  if (!['verified', 'approved'].includes(p.status)) missing.push(`${p.id}: ще не verified`);
+  const skipped = [], counted = [];
+  for (const s of homes) for (const l of s.lessons || []) {
+    if (l.boss) continue;
+    const sks = lessonSkills(l);
+    if (!sks.size) { skipped.push(l.id); continue; }
+    counted.push(l.id);
+    const its = items.filter(it => it.lesson === l.id);
+    if (its.length < OTHER_POOL_MIN) missing.push(`${p.id}/${l.id}: ${its.length} ${its.length === 1 ? 'вправа' : its.length >= 2 && its.length <= 4 ? 'вправи' : 'вправ'}, потрібно ≥ ${OTHER_POOL_MIN}`);
+    for (const lvl of [1, 2, 3]) if (!its.some(it => it.lvl === lvl)) missing.push(`${p.id}/${l.id}: немає рівня ${lvl}`);
+    for (const it of its) if (!sks.has(it.sk)) missing.push(`${p.id}/${it.id}: sk ${it.sk} не тренує урок ${l.id} (${[...sks].join(', ')})`);
+  }
+  return { subject: subject.id, id: p.id, section: p.section, errors, missing, unsupported: [], warnings,
+    skipped: skipped.length ? `уроки без оцінюваних екранів (sk) — не тренуються: ${skipped.join(', ')}` : '',
+    counts: { lessons: counted.length, items: items.length } };
+}
+
 // load — для тестів (зіпсований зміст без копії дерева); за замовчуванням живий зміст
 export function run(args, load = loadContent) {
   const filter = {}, flags = new Set(['--strict', '--json']);
@@ -171,6 +205,19 @@ export function run(args, load = loadContent) {
     // --strict — суворе приймання за матрицею; без матриці його не буває, тож не «зелено», а rc 1 (рев'ю P3-3)
     if (args.includes('--strict') && !args.includes('--json')) console.log(`--strict: суворе приймання ${d.id} неможливе — матриці покриття для ${c.id} немає`);
     return report.errors.length || args.includes('--strict') ? 1 : 0;
+  }
+  const otherPool = filter.pool && subjects.filter(c => c.id !== 'math').flatMap(c => (c.pools || []).filter(p => p.id === filter.pool).map(p => [c, p]))[0];
+  if (otherPool) {
+    const [c, p] = otherPool, grade = c.sections.find(s => s.id === p.section)?.grade;
+    if ('grade' in filter && filter.grade !== grade) throw new Error(`--grade ${filter.grade} не збігається з класом пулу ${p.id} (${grade})`);
+    const report = auditOtherPool(c, p, learn);
+    if (args.includes('--json')) console.log(JSON.stringify(report));
+    else {
+      console.log(`Пул ${p.id} (${c.id}, розділ ${p.section}): без матриці покриття — правило ≥ ${OTHER_POOL_MIN} вправ і рівні 1–3 на кожен урок з оцінюваними екранами; ${JSON.stringify(report.counts)}`);
+      if (report.skipped) console.log(`ПРОПУЩЕНО: ${report.skipped}`);
+      for (const [label, key] of [['ПОМИЛКА', 'errors'], ['БРАКУЄ', 'missing'], ['ПОПЕРЕДЖЕННЯ', 'warnings']]) for (const line of report[key]) console.log(`${label}: ${line}`);
+    }
+    return report.errors.length || (args.includes('--strict') && report.missing.length) ? 1 : 0;
   }
   if (filter.diag && !matrix.diagnostics.some(d => d.id === filter.diag)) throw new Error(`Невідома діагностика ${filter.diag}`);
   if (filter.pool && !matrix.lessons.some(r => r.pool === filter.pool)) throw new Error(`Невідомий пул ${filter.pool}`);

@@ -117,6 +117,43 @@ const newTasks = name => { const d = path.join(tmp, name); for (const s of ["tod
   const r = run("--dry-run", "--matrix", MF, "--tasks", newTasks("tasks-pool-content"), "--content", FX2);
   ok(r.status === 0 && /пул уже є — 1 \(zz1\)/.test(r.out) && /створилося б задач на пули: \d+ \([^)]*g8m2/.test(r.out),
     "--write-pool --content: файл пулу — з дерева --content (zz1 пропущено; g8m2 там пулу не має)", r.out); }
+// engine-pool-lang: --write-pool --subject ukr — задачі write-ukr-pool-<розділ> без матриці, для розділів з уроками без пулу й без задачі;
+// «Пишемо самі…» — без пулу; шаблон — як tasks/todo/write-ukr-pool-u5s1.md (id пулу p<розділ>, файл pool-g<клас>-<розділ>.js)
+{ const TU = newTasks("tasks-ukr");
+  fs.writeFileSync(path.join(TU, "done", "renamed.md"), "---\nid: write-ukr-pool-fu5c\n---\n");
+  const r0 = run("--subject", "ukr", "--content", FX, "--tasks", TU, "--dry-run");
+  ok(r0.status === 0 && /^\[dry-run\] ukr: створилося б задач на пули: 2 \(fu5a, fu6a\)$/m.test(r0.out), "ukr --dry-run: лише fu5a і fu6a", r0.out);
+  ok(/задача вже є — 1 \(fu5c\); пул уже є — 2 \(fu5b, fu5d\); без пулу \(«Пишемо самі»\) — 1 \(fu5rm\)/.test(r0.out), "ukr: пропущено задачу (id у frontmatter), пул за файлом і за id, «Пишемо самі»", r0.out);
+  ok(!fs.readdirSync(path.join(TU, "todo")).length, "ukr --dry-run: нічого не записано");
+  const r = run("--subject", "ukr", "--content", FX, "--tasks", TU, "--grade", "5");
+  ok(r.status === 0 && /^ukr: створено задач на пули: 1 \(fu5a\)$/m.test(r.out), "ukr --grade 5: створено лише fu5a", r.out);
+  const f = path.join(TU, "todo", "write-ukr-pool-fu5a.md"), b = fs.existsSync(f) ? fs.readFileSync(f, "utf8") : "";
+  ok(b.startsWith("---\nid: write-ukr-pool-fu5a\ntype: write-pool\nsubject: ukr\ngrade: 5\nsection: fu5a\nstatus: todo\nclaimed_by:\n"), "ukr шаблон: frontmatter", b.slice(0, 220));
+  ok(/\ndepends_on: \[engine-pool-lang\]\n/.test(b), "ukr шаблон: engine-pool-lang ще не в done — залежність", b.slice(0, 300));
+  ok(b.includes("# Зібрати пул тренування «Фікстура правопису» (Українська мова, 5 клас, fu5a)"), "ukr шаблон: заголовок", b);
+  ok(b.includes('`content/ukr/pool-g5-fu5a.js`') && b.includes('SLID.pool("ukr", { id: "pfu5a", section: "fu5a"'), "ukr шаблон: файл і id пулу p<розділ>", b);
+  ok(b.includes("- `fu5al1` — Перший урок\n- `fu5al2` — Другий урок\n") && !b.includes("fu5ab"), "ukr шаблон: уроки без фіналу (boss)", b);
+  ok(b.includes("node tools/validate.mjs --pool pfu5a") && b.includes("node tools/personalization-qa.mjs --pool pfu5a") && b.includes("content-verifier"), "ukr шаблон: validate, personalization-qa, верифікатор", b);
+  ok(b.includes("math-pool-diag") && b.includes("content-author") && b.includes("D-019") && b.includes("D-041"), "ukr шаблон: скіли, чесне завдання, норма", b);
+  ok(b.includes("`gaps`") && b.includes("`stress`") && b.includes("docs/CONTENT_SCHEMA.md §10, «Пули мовних предметів»"), "ukr шаблон: мовні типи й контракт CONTENT_SCHEMA §10", b);
+  const r2 = run("--subject", "ukr", "--content", FX, "--tasks", TU);
+  ok(/^ukr: створено задач на пули: 1 \(fu6a\)$/m.test(r2.out) && /задача вже є — 2/.test(r2.out), "ukr повторний запуск: лише fu6a (ідемпотентно)", r2.out);
+  // engine-pool-lang у done — без залежності
+  const TD = newTasks("tasks-ukr-done"); fs.writeFileSync(path.join(TD, "done", "engine-pool-lang.md"), "---\nid: engine-pool-lang\n---\n");
+  run("--subject", "ukr", "--content", FX, "--tasks", TD, "--grade", "6");
+  const b6 = fs.readFileSync(path.join(TD, "todo", "write-ukr-pool-fu6a.md"), "utf8");
+  ok(/\ndepends_on: \[\]\n/.test(b6) && !b6.includes("Не брати, доки"), "ukr шаблон: engine-pool-lang у done — depends_on порожній, без застереження", b6.slice(0, 300));
+  // предмет без пулів — код 2
+  const rh = run("--subject", "hist", "--content", FX, "--tasks", TD, "--dry-run");
+  ok(rh.status === 2 && /hist/.test(rh.out), "--write-pool --subject hist: пули не заплановано — код 2", rh.out); }
+// справжній зміст ukr — лише інваріанти: код 0, нічого не записано, кожен розділ з уроками — рівно в одній групі
+{ const before = listTasks(path.join(ROOT, "tasks"));
+  const r = run("--subject", "ukr", "--dry-run");
+  ok(r.status === 0 && JSON.stringify(listTasks(path.join(ROOT, "tasks"))) === JSON.stringify(before), "ukr справжня черга: код 0, dry-run нічого не записав", r.out);
+  const m = r.out.match(/створилося б задач на пули: (\d+)/), s = r.out.match(/задача вже є — (\d+)(?: \([^)]*\))?; пул уже є — (\d+)(?: \([^)]*\))?; без пулу \(«Пишемо самі»\) — (\d+)/);
+  const { subjects } = await import(path.join(ROOT, "tools/lib.mjs")).then(l => l.loadContent());
+  const secs = subjects.find(c => c.id === "ukr").sections.filter(x => x.lessons?.length).length;
+  ok(m && s && +m[1] + +s[1] + +s[2] + +s[3] === secs, `ukr справжня черга: made + task + pool + «Пишемо самі» = ${secs} розділів з уроками`, r.out); }
 { // справжній зміст — лише інваріанти (склад плану змінюється): код 0, справжня черга tasks/ не змінилася
   const before = listTasks(path.join(ROOT, "tasks")), T4 = path.join(tmp, "tasks-real");
   const r = runN("--tasks", T4);
