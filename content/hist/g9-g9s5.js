@@ -8,7 +8,7 @@
 SLID.section("hist", {
   id: "g9s5",
   grade: 9,
-  weeks: [29, 35],
+  weeks: [30, 35],
   title: "Початок XX століття",
   why: "Щоб знати, з чим українці підійшли до великих потрясінь XX ст.",
   meta: { author: "write-hist-g9s5", created: "2026-10-13", factcheck: "verifier-g9s5", teacher: null },

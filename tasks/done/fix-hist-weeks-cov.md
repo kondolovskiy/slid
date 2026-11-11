@@ -4,7 +4,7 @@ claimed_at: 2026-11-11T01:09:26.260Z
 id: fix-hist-weeks-cov
 type: fix
 subject: hist
-status: todo
+status: done
 claimed_by: w-fix-hist-weeks-cov
 created: 2026-11-10
 depends_on: []
@@ -44,3 +44,6 @@ depends_on: []
 - `node tools/validate.mjs` — 0 помилок. Build не запускай. Рядок в inbox. `node tools/claim.mjs move fix-hist-weeks-cov review` (перевірка — content-verifier: таблиця ↔ файли ↔ plan.js).
 
 ## Нотатки виконавця
+
+## Нотатки виконавця
+orchestrator, 2026-11-11: змінено лише 17 рядків `weeks` за таблицею (sed з перевіркою «рівно одне входження»). `node tools/validate.mjs --quiet` — помилок у hist 0 (єдина помилка — чужий незавершений content/ukr/g10-u10s4.js, автор у роботі). Метадані розділу — повторна верифікація уроків не потрібна (як D-044). → done.

@@ -5,7 +5,7 @@
 SLID.section("hist", {
   id: "s1",
   grade: 5,
-  weeks: [1, 6],
+  weeks: [6, 10],
   title: "Як історики пізнають минуле",
   why: "Щоб не вірити на слово ні підручнику, ні відео в мережі, а вміти запитати: «А звідки це відомо?»",
   meta: { author: "slid", created: "2026-09-27", factcheck: "verifier-s1", teacher: null },

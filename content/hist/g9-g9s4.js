@@ -8,7 +8,7 @@
 SLID.section("hist", {
   id: "g9s4",
   grade: 9,
-  weeks: [22, 28],
+  weeks: [22, 25],
   title: "Модернізація",
   why: "Щоб розуміти, як залізниці, шахти й заводи змінили життя людей.",
   meta: { author: "write-hist-g9s4", created: "2026-10-13", factcheck: "verifier-g9s4", teacher: null },

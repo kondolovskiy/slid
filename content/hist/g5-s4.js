@@ -5,7 +5,7 @@
 SLID.section("hist", {
   id: "s4",
   grade: 5,
-  weeks: [18, 23],
+  weeks: [20, 24],
   title: "Україна у світі",
   why: "Щоб бачити історію України як частину історії Європи і світу, а не окремий острів.",
   meta: { author: "slid", created: "2026-09-27", factcheck: "verifier-s4", teacher: null },

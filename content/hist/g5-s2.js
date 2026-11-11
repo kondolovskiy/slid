@@ -5,7 +5,7 @@
 SLID.section("hist", {
   id: "s2",
   grade: 5,
-  weeks: [7, 11],
+  weeks: [11, 14],
   title: "Історична карта",
   why: "Щоб бачити, де відбувалися події, і розуміти, чому саме там: річки, степи, ліси, торгові шляхи.",
   meta: { author: "slid", created: "2026-09-27", factcheck: "verifier-s2", teacher: null },

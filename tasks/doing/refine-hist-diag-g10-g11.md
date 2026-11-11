@@ -1,11 +1,13 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-11T01:10:05.242Z
 id: refine-hist-diag-g10-g11
 type: refine-diag
 subject: hist
 grade: 10
 section: dgh10
 status: todo
-claimed_by:
+claimed_by: w-refine-hist-diag-g10-g11
 created: 2026-11-10
 depends_on: []
 ---
