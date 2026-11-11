@@ -1,15 +1,17 @@
 ---
-id: write-ukr-pool-u8s11
+claimed_from: todo
+claimed_at: 2026-11-11T18:12:59.513Z
+id: write-ukr-pool-u8s12
 type: write-pool
 subject: ukr
 grade: 8
-section: u8s11
+section: u8s12
 status: todo
-claimed_by:
+claimed_by: w-write-ukr-pool-u8s12
 created: 2026-11-10
 depends_on: [engine-pool-lang]
 ---
-# Зібрати пул тренування «Відокремлені означення і прикладки» (українська мова, 8 клас, u8s11)
+# Зібрати пул тренування «Відокремлені обставини, додатки й уточнювальні члени» (українська мова, 8 клас, u8s12)
 
 ## Навіщо
 Запит людини (чат 2026-11-10): пул задач для української мови для всіх класів. Пул — вправи для самостійного тренування після уроку з інтервальним повторенням (docs/PERSONALIZATION.md §3).
@@ -27,12 +29,12 @@ depends_on: [engine-pool-lang]
 - Милозвучність: § 24 п. 4 правопису — після слів на й/я/ю/є/ї пиши «і», не «й» (euphony цього не ловить).
 
 ## Результат
-Один файл `content/ukr/pool-g8-u8s11.js`: `SLID.pool("ukr", { id: "pu8s11", section: "u8s11", status: "draft", meta: {…}, sources: [...], items: [...] })`. **id `pu8s11` і id вправ — ключі прогресу, не перейменовувати.**
+Один файл `content/ukr/pool-g8-u8s12.js`: `SLID.pool("ukr", { id: "pu8s12", section: "u8s12", status: "draft", meta: {…}, sources: [...], items: [...] })`. **id `pu8s12` і id вправ — ключі прогресу, не перейменовувати.**
 
 ## Уроки для покриття (без фіналу)
-- `u8s11l1` — Стежка, освітлена сонцем
-- `u8s11l2` — Кома, тире чи нічого?
-- `u8s11l3` — Олег Петрович, учитель фізики
+- `u8s12l1` — Незважаючи на дощ
+- `u8s12l2` — Усі, крім останнього
+- `u8s12l3` — А де саме?
 
 ## Що зробити (скіли `math-pool-diag` — розділ про пули ukr — і `content-author`)
 1. Прочитай уроки розділу повністю: що саме пояснено, які приклади й винятки, `sk` екранів, `learned`. **Чесне завдання (D-019):** вправа тренує лише те, що урок пояснив; нового правила пул не вчить.
@@ -44,10 +46,10 @@ depends_on: [engine-pool-lang]
 7. Милозвучність і стиль — style/ukr.md, `node tools/euphony.mjs --subject ukr` (лише stdout для свого файлу).
 
 ## Обмеження
-Змінюй лише `content/ukr/pool-g8-u8s11.js`, цю задачу й дописуй inbox. build і check — оркестратор. Уроки розділу не правити — пропозиції в inbox.
+Змінюй лише `content/ukr/pool-g8-u8s12.js`, цю задачу й дописуй inbox. build і check — оркестратор. Уроки розділу не правити — пропозиції в inbox.
 
 ## Готово, коли
-- [ ] `node tools/validate.mjs --pool pu8s11` і `node tools/personalization-qa.mjs --pool pu8s11` — 0 помилок; `status: "draft"`.
+- [ ] `node tools/validate.mjs --pool pu8s12` і `node tools/personalization-qa.mjs --pool pu8s12` — 0 помилок; `status: "draft"`.
 - [ ] Нотатки: таблиця «урок → кількість / рівні / типи / джерела», адаптації, що не ввійшло й чому; рядок в inbox.
 - [ ] Задача → `tasks/review/` для **content-verifier зі свіжим контекстом** (розв'язати кожну вправу, звірити джерела й норму); браузерне приймання — qa-ukr-pool.
 
