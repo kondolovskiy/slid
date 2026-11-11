@@ -1,16 +1,18 @@
 ---
-id: write-ukr-pool-u9s5
+claimed_from: todo
+claimed_at: 2026-11-11T18:18:48.000Z
+id: write-ukr-pool-u9s6
 type: write-pool
 subject: ukr
 grade: 9
-section: u9s5
+section: u9s6
 status: todo
-claimed_by:
+claimed_by: w-write-ukr-pool-u9s6
 created: 2026-11-11
 depends_on: []
 generated_by: tools/make-tasks.mjs --write-pool --subject ukr
 ---
-# Зібрати пул тренування «Підрядні обставинні» (Українська мова, 9 клас, u9s5)
+# Зібрати пул тренування «Складнопідрядне речення з кількома підрядними» (Українська мова, 9 клас, u9s6)
 
 ## Навіщо
 Пул — вправи для самостійного тренування після уроку з інтервальним повторенням (docs/PERSONALIZATION.md §3).
@@ -18,13 +20,11 @@ generated_by: tools/make-tasks.mjs --write-pool --subject ukr
 Контракт полів — docs/CONTENT_SCHEMA.md §10, «Пули мовних предметів»; якщо він розходиться з цим текстом — правий CONTENT_SCHEMA.
 
 ## Результат
-Один файл `content/ukr/pool-g9-u9s5.js`: `SLID.pool("ukr", { id: "pu9s5", section: "u9s5", status: "draft", meta: {…}, sources: [...], items: [...] })`. **id `pu9s5` і id вправ — ключі прогресу, не перейменовувати.**
+Один файл `content/ukr/pool-g9-u9s6.js`: `SLID.pool("ukr", { id: "pu9s6", section: "u9s6", status: "draft", meta: {…}, sources: [...], items: [...] })`. **id `pu9s6` і id вправ — ключі прогресу, не перейменовувати.**
 
 ## Уроки для покриття (без фіналу)
-- `u9s5l1` — Там, де, і тоді, коли
-- `u9s5l2` — Так, що дрижали шибки
-- `u9s5l3` — Якщо, бо, щоб
-- `u9s5l4` — Хоч ішов дощ
+- `u9s6l1` — Одна головна, кілька підрядних
+- `u9s6l2` — Кома перед «і»: так чи ні?
 
 ## Що зробити (скіли `math-pool-diag` — розділ про пули мовних предметів — і `content-author`)
 1. Прочитай уроки розділу повністю: що саме пояснено, які приклади й винятки, `sk` екранів, `learned`. **Чесне завдання (D-019):** вправа тренує лише те, що урок пояснив; нового правила пул не вчить.
@@ -36,10 +36,10 @@ generated_by: tools/make-tasks.mjs --write-pool --subject ukr
 7. Милозвучність і стиль — style/ukr.md, `node tools/euphony.mjs --subject ukr` (лише stdout для свого файлу).
 
 ## Обмеження
-Змінюй лише `content/ukr/pool-g9-u9s5.js`, цю задачу й дописуй inbox. build і check — оркестратор. Уроки розділу не правити — пропозиції в inbox.
+Змінюй лише `content/ukr/pool-g9-u9s6.js`, цю задачу й дописуй inbox. build і check — оркестратор. Уроки розділу не правити — пропозиції в inbox.
 
 ## Готово, коли
-- [ ] `node tools/validate.mjs --pool pu9s5` і `node tools/personalization-qa.mjs --pool pu9s5` — 0 помилок; `status: "draft"`.
+- [ ] `node tools/validate.mjs --pool pu9s6` і `node tools/personalization-qa.mjs --pool pu9s6` — 0 помилок; `status: "draft"`.
 - [ ] Нотатки: таблиця «урок → кількість / рівні / типи / джерела», адаптації, що не ввійшло й чому; рядок в inbox.
 - [ ] Задача → `tasks/review/` для **content-verifier зі свіжим контекстом** (розв'язати кожну вправу, звірити джерела й норму); браузерне приймання — qa-ukr-pool.
 
