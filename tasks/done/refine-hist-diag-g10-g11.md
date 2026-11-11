@@ -6,7 +6,7 @@ type: refine-diag
 subject: hist
 grade: 10
 section: dgh10
-status: review
+status: done
 claimed_by: w-refine-hist-diag-g10-g11
 created: 2026-11-10
 depends_on: []
@@ -50,3 +50,6 @@ depends_on: []
 **5. Перевірки.** `node tools/validate.mjs` — 0 помилок, 72 попередження (як було); `--diag dgh10` 0/0; `--diag dgh11b` 0/0; `--section g11s1` 0 помилок, 2 попередження (давні). `npm run check` — на копії дерева в scratchpad (build у спільному дереві заборонено): build + усі node-тести (test-learn 2934, test-evidence 258, test-hyp 625, personalization-qa 154, test-validate 1620 …), validate, graph-report, stats, fig-audit — зелені; test-diff-answers потребує git, прогнано в спільному дереві — 52 ok, 0 ✗. Знімки тестів інструментів не змінювались → engine-change/D-026 не потрібні. `diagOrder` (content/subjects/hist.js) не змінено. content/world/plan.js не змінено: w10s7 (requires g10s5l3) і w11s1 (requires g11s1l6) — без помилок.
 **Оркестратору:** build обов'язковий (index.html, sw.js, manifest посилаються на g11-g11s1.js). Далі — content-verifier для dgh10 і dgh11b (статус draft).
 
+
+### verifier-refine-hist-diag-g10-g11 · 2026-11-11
+Вердикт: **придатний**. dgh10 і dgh11b → `verified` (правки лише статусу й meta). Перенос g11s1 і тижні 10–11 кл. коректні, усі 26 завдань dgh11b розв'язано незалежно — збіг 26/26; validate --diag обох 0/0, personalization-qa EXIT 0, повний validate 0 помилок. Звіт: reports/verify/refine-hist-diag-g10-g11.md. Людині: новий id dgh11b скидає підсумок тесту 11 кл. (план лишається, тренування, відкрите pre-темами, закривається до повторного тесту); TQ-086.
