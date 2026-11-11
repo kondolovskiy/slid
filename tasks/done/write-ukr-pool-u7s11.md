@@ -6,7 +6,7 @@ type: write-pool
 subject: ukr
 grade: 7
 section: u7s11
-status: review
+status: done
 claimed_by: w-pool-u7s11
 created: 2026-11-10
 depends_on: [engine-pool-lang]
@@ -83,3 +83,6 @@ sk: l1 — synt (a01), gram; l2 — synt, gram, punct; l3 — orth, punct (ус�
 - a16 «Що б не сталося» / «як би не просив» — контекст однозначний (перенесення «б»: що не сталося б, як не просив би) — ключ З7 впр. 467.
 - a18 — дві правильні відповіді (кома перед усім сполучником або перед «що» — З7 с. 201–202, facts/ukr №202); «без коми» — помилка за З7 («кому ставимо один раз»).
 Браузерного прогону (test-answer-ui --suite content) не було: Python-playwright у контейнері немає → CI / qa-ukr-pool.
+
+### verifier-pu7s11, 2026-11-11
+Вердикт: **придатний**, `status: "verified"`. Звіт: reports/verify/pu7s11.md. Ключі 18 вправ збіглися з моїм розв'язком, номери й сторінки З7 звірено (с. 195 і 203 — за зображенням). Правки: a02 «поки» → «що» (другого джерела для «поки» як простого немає; ХНЕУ вважає його сполучним словом); hint a18 більше не відкидає варіанти; «й» у hint (euphony). a16, a18 підтверджено З7 і довідником Зайця. validate, personalization-qa --strict і euphony — 0.
