@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-11T01:18:33.310Z
 id: write-ukr-u11s3
 type: write-section
 subject: ukr
@@ -6,7 +8,7 @@ grade: 11
 section: u11s3
 weeks: [8, 9]
 status: todo
-claimed_by:
+claimed_by: w-write-ukr-u11s3
 created: 2026-11-10
 ---
 # Написати розділ «Дієслово й дієслівні форми: складні випадки» (Українська мова, 11 клас)
