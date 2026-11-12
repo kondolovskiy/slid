@@ -72,6 +72,24 @@ SLID.section("hist", {
       "Severin.stalder",
       "CC BY-SA 3.0",
       "https://commons.wikimedia.org/wiki/File:The_Great_Wall_of_China_at_Jinshanling-edit.jpg"
+    ],
+    [
+      "Крилатий бик з головою людини, палац Ашшурнасірпала II у Калху (Метрополітен-музей 32.143.1)",
+      "The Metropolitan Museum of Art",
+      "CC0",
+      "https://www.metmuseum.org/art/collection/search/322608"
+    ],
+    [
+      "Лідійці з дарами, рельєф Ападани в Персеполі",
+      "Carole Raddato",
+      "CC BY-SA 2.0",
+      "https://commons.wikimedia.org/wiki/File:Relief_on_the_southern_wall_of_the_east_stairway_of_the_Apadana_depicting_Lydians_who_offer_vases,_cups_and_bracelets_and_a_chariot_drawn_by_diminutive_horses,_Persepolis,_Iran_(32836014327).jpg"
+    ],
+    [
+      "Золотий статер, Лідія, скарб із Сард (Метрополітен-музей 26.59.2)",
+      "The Metropolitan Museum of Art",
+      "CC0",
+      "https://www.metmuseum.org/art/collection/search/252454"
     ]
   ],
   lessons: [
@@ -961,7 +979,7 @@ SLID.section("hist", {
       title: "Зал Стародавнього Сходу",
       short: "Фінал розділу",
       icon: "star",
-      status: "verified",
+      status: "draft",
       boss: true,
       badge: "oldeast",
       why: "Перевірка всього розділу. Бали подвоєні.",
@@ -1099,7 +1117,7 @@ SLID.section("hist", {
           correct: 1,
           fbOk: "Екскурсію завершено!",
           fbBad: "Згадай урок 6.",
-          fbText: "Дарій I поділив імперію на сатрапії: сатрапи збирали податки й стежили за порядком. А Царською дорогою новини й накази йшли за дні. Переселяти непокірних — звичай ассирійців, і повністю так ніхто не робив."
+          fbText: "Дарій I поділив імперію на сатрапії: сатрапи збирали податки й стежили за порядком. А Царською дорогою новини й накази йшли за дні. Силою переселяти непокірних — звичай ассирійців."
         }
       ],
       outro: {

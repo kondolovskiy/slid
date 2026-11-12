@@ -1,5 +1,8 @@
 /* Слід · Історія, 6 клас — «Стародавня Греція»
-   Статус уроків: g6s7-l1, l2, l4…l7 verified (verifier-g6s7, 2026-11-03); l3 verified (verifier-g6s7-l3, 2026-11-10, після fix-hist-g6s7-l3-learned: порівняння з Україною сьогодні). Написано writer-write-hist-g6s7 (програма Васильків та ін., D-043/D-044). 7 уроків.
+   Статус уроків: g6s7-l1, l2, l4…l6 verified (verifier-g6s7, 2026-11-03); l3 verified (verifier-g6s7-l3, 2026-11-10, після fix-hist-g6s7-l3-learned: порівняння з Україною сьогодні).
+   g6s7l8 «Один день в Афінах» — новий, draft (revise-hist-g6s7-cov, 2026-11-12; звіт reports/research/coverage-research-hist-coverage-g5-6.md §4.2); стоїть шостим, тож у l6 eyebrow «Урок 7».
+   Фінал g6s7-l7 — draft: + Завдання 6 (g6s7l8), `pre` у всіх завданнях. Школу докладно вчить g6s10l4, еллінізм — g6s10l7; тут не дублюємо.
+   Написано writer-write-hist-g6s7 (програма Васильків та ін., D-043/D-044). 8 уроків.
    Перевірка: node tools/validate.mjs && node tools/stats.mjs
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("hist", {
@@ -21,7 +24,9 @@ SLID.section("hist", {
     ["Призова амфора з бігунами, Евфілетів художник, близько 530 р. до н. е., Метрополітен-музей, 14.130.12", "The Metropolitan Museum of Art", "CC0 1.0", "https://www.metmuseum.org/art/collection/search/248902"],
     ["Теракотова статуетка актора, кінець V — початок IV ст. до н. е., Метрополітен-музей, 13.225.26", "The Metropolitan Museum of Art", "CC0 1.0", "https://www.metmuseum.org/art/collection/search/248776"],
     ["Олександр у битві, деталь мозаїки з Помпеї, Національний археологічний музей, Неаполь", "Berthold Werner (фото)", "CC BY-SA 3.0 (оригінал — суспільне надбання)", "https://commons.wikimedia.org/wiki/File:Alexander_and_Bucephalus_-_Battle_of_Issus_mosaic_-_Museo_Archeologico_Nazionale_-_Naples_BW.jpg"],
-    ["Тетрадрахма Олександра Македонського, близько 325–319 рр. до н. е., Метрополітен-музей, 1978.93.21", "The Metropolitan Museum of Art", "CC0 1.0", "https://www.metmuseum.org/art/collection/search/326395"]
+    ["Тетрадрахма Олександра Македонського, близько 325–319 рр. до н. е., Метрополітен-музей, 1978.93.21", "The Metropolitan Museum of Art", "CC0 1.0", "https://www.metmuseum.org/art/collection/search/326395"],
+    ["Посудина для олії (лекіф) з розписом: жінки тчуть і прядуть, Амасісів художник, близько 550–530 рр. до н. е., Метрополітен-музей, 31.11.10 (два фрагменти, обрізано)", "The Metropolitan Museum of Art", "CC0 1.0", "https://www.metmuseum.org/art/collection/search/253348"],
+    ["Мармуровий надгробок молодої жінки й служниці, Аттика, близько 400–390 рр. до н. е., Метрополітен-музей, 36.11.1 (обрізано)", "The Metropolitan Museum of Art", "CC0 1.0", "https://www.metmuseum.org/art/collection/search/253505"]
   ],
   lessons: [
     {
@@ -962,7 +967,7 @@ SLID.section("hist", {
       title: "Грецька зала музею",
       short: "Фінал розділу",
       icon: "star",
-      status: "verified",
+      status: "draft",
       boss: true,
       badge: "hellas",
       why: "Перевірка всього розділу. Бали подвоєні.",
@@ -979,6 +984,7 @@ SLID.section("hist", {
         {
           type: "choice",
           sk: "crit",
+          pre: "g6s7-l1",
           eyebrow: "Завдання 1",
           title: "Табличка до маски",
           body: "<p>Який підпис до золотої маски з Мікен чесний?</p>",
@@ -995,6 +1001,7 @@ SLID.section("hist", {
         {
           type: "sort",
           sk: "civ",
+          pre: "g6s7-l2",
           eyebrow: "Завдання 2",
           title: "Дві вітрини",
           bins: ["Спарта", "Афіни"],
@@ -1011,6 +1018,7 @@ SLID.section("hist", {
         {
           type: "choice",
           sk: "src",
+          pre: "g6s7-l3",
           eyebrow: "Завдання 3",
           title: "Питання відвідувача",
           img: "img/hist/g6s7/ostraka-themistocles.jpg",
@@ -1029,6 +1037,7 @@ SLID.section("hist", {
         {
           type: "order",
           sk: "time",
+          pre: "g6s7-l4",
           eyebrow: "Завдання 4",
           title: "Стрічка часу на стіні",
           items: [
@@ -1046,6 +1055,7 @@ SLID.section("hist", {
         {
           type: "multi",
           sk: "cult",
+          pre: "g6s7-l5",
           eyebrow: "Завдання 5",
           title: "Таблички в залі культури",
           body: "<p>Обери всі правильні таблички.</p>",
@@ -1062,8 +1072,26 @@ SLID.section("hist", {
         },
         {
           type: "choice",
-          sk: "time",
+          sk: "civ",
+          pre: "g6s7l8",
           eyebrow: "Завдання 6",
+          title: "Ще одне питання відвідувача",
+          body: "<p>Біля вітрини «Афінський дім» відвідувач питає: «Звідки в Афінах V ст. до н. е. брали рабів?» Що відповісти?</p>",
+          opts: [
+            "Продавали афінян, які не віддали борг",
+            "Рабами ставали всі чужинці в місті",
+            "Купували полонених з війни й піратських набігів"
+          ],
+          correct: 2,
+          fbOk: "Відповідь точна.",
+          fbBad: "Згадай урок 6.",
+          fbText: "Рабами ставали полонені на війні й люди, захоплені піратами. Афінян за борги не продавали з часів Солона. А чужинці жили в Афінах вільно, хоч і без права голосу."
+        },
+        {
+          type: "choice",
+          sk: "time",
+          pre: "g6s7-l6",
+          eyebrow: "Завдання 7",
           title: "Табличка до мозаїки",
           img: "img/hist/g6s7/alexander-mosaic.jpg",
           cap: "Деталь мозаїки з Помпеї, близько 100 р. до н. е.",
@@ -1075,7 +1103,7 @@ SLID.section("hist", {
           ],
           correct: 0,
           fbOk: "Екскурсію завершено!",
-          fbBad: "Згадай урок 6.",
+          fbBad: "Згадай урок 7.",
           fbText: "Олександр став царем Македонії 336 р. до н. е. Його вчитель — Арістотель. На Грецію 480 р. до н. е. напав Ксеркс."
         }
       ],
