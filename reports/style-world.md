@@ -24,7 +24,7 @@
 | w7s3l6 Від села до Святої землі (фінал) | 7 | 8 | 0.88 | 22 | 37 | 6.1 | 0.03 | 3 | — |
 | w7s4l1 Вишивка про завоювання | 7 | 10 | 0.6 | 35 | 55 | 6.6 | 0.025 | 3 | — |
 | w7s4l2 Король босоніж у снігу | 7 | 10 | 0.6 | 32 | 65 | 6.4 | 0.051 | 4 | — |
-| w7s4l3 Срібло й коні з-за гір | 7 | 8 | 0.5 | 31 | 69 | 6.3 | 0.031 | 3 | — |
+| w7s4l3 Срібло й коні з-за гір | 7 | 10 | 0.5 | 31 | 69 | 6.4 | 0.035 | 3 | — |
 | w7s4l4 Сила Вічного Неба | 7 | 10 | 0.6 | 30 | 61 | 6.1 | 0.017 | 4 | — |
 | w7s4l6 Компас, гроші й мінарет | 7 | 10 | 0.5 | 39 | 75 | 6.4 | 0.034 | 3 | — |
 | w7s4l5 Музей королів і ханів (фінал) | 7 | 7 | 0.86 | 21 | 42 | 6.7 | 0.027 | 3 | — |
@@ -190,7 +190,7 @@
 
 Для z-оцінок sd не менше 10 % середнього; нижче наведено фактичне sd.
 
-- **7-9:lesson**: screens 9.88±0.77, gradedShare 0.55±0.05, readWordsPerScreen 33.03±4.42, maxReadWords 65.45±6.79, sentenceWords 6.68±0.37, longWordShare 0.04±0.01, typeVariety 3.4±0.51
+- **7-9:lesson**: screens 9.9±0.74, gradedShare 0.55±0.05, readWordsPerScreen 33.03±4.42, maxReadWords 65.45±6.79, sentenceWords 6.68±0.37, longWordShare 0.04±0.01, typeVariety 3.4±0.51
 - **7-9:boss**: screens 7.6±0.49, gradedShare 0.87±0.01, readWordsPerScreen 19.13±1.86, maxReadWords 36.33±5.19, sentenceWords 6.28±0.25, longWordShare 0.04±0.01, typeVariety 3.2±0.4
 - **10-11:lesson**: screens 9.57±0.78, gradedShare 0.54±0.04, readWordsPerScreen 37.34±3.88, maxReadWords 77.89±8.25, sentenceWords 7.37±0.26, longWordShare 0.05±0.02, typeVariety 3.52±0.56
 - **10-11:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 18±3.42, maxReadWords 36.77±4.06, sentenceWords 7.14±0.19, longWordShare 0.05±0.01, typeVariety 3.38±0.49
