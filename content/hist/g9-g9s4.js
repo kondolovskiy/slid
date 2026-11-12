@@ -1,5 +1,5 @@
 /* Слід · Історія, 9 клас — «Модернізація»
-   style-hist-1112 (2026-11-12): милозвучність у/в, і/й, з/із (УП § 23–25) у g9s4l1; ці уроки → draft, потрібен content-verifier.
+   style-hist-1112 (2026-11-12): милозвучність у/в, і/й, з/із (УП § 23–25) у g9s4l1; перевірив verifier-style-hist-1112 (2026-11-12) → verified, звіт reports/verify/style-hist-1112.md.
    Статус уроків: l1, l2, l4 — verified (verifier-g9s4; зображення D-027 — verifier-images-g9s4, 31.10.2026);
    l3 (меценати, міста), l6–l8 (нові), l5 (фінал) — verified (verifier-revise-hist-g9s4-cov, 12.11.2026). 8 уроків (7 тем + boss).
    Перевірка: node tools/validate.mjs --section g9s4 && node tools/stats.mjs --subject hist
@@ -68,7 +68,7 @@ SLID.section("hist", {
       title: "Колія до моря",
       short: "Залізниці",
       icon: "path",
-      status: "draft",
+      status: "verified",
       why: "Ти побачиш, як паровоз і парова машина змінили господарство українських земель.",
       screens: [
         {

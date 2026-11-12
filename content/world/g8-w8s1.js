@@ -240,7 +240,7 @@ SLID.section("world", {
       title: "Дві дороги до Індії",
       short: "Колумб і да Гама",
       icon: "flag",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, як Колумб шукав Індію, а знайшов Новий Світ. І чому Америку назвали не на його честь.",
       screens: [
         {
@@ -389,7 +389,7 @@ SLID.section("world", {
       title: "Загублений день «Вікторії»",
       short: "Магеллан",
       icon: "map",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, як перше плавання навколо світу довело, що Земля — куля. І чому в одній події різні народи бачать різних героїв.",
       screens: [
         {
@@ -529,7 +529,7 @@ SLID.section("world", {
       title: "Місто посеред озера",
       short: "Америка і конкіста",
       icon: "city",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, які держави існували в Америці до європейців і чому вони впали. І навчишся питати, хто й для кого створив джерело.",
       screens: [
         {
@@ -980,7 +980,7 @@ SLID.section("world", {
       title: "Атлас нового світу",
       short: "Фінал розділу",
       icon: "star",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "discoveries",
       why: "Перевірка всього розділу. Бали подвоєні.",

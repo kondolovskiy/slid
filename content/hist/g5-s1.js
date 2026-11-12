@@ -1,5 +1,5 @@
 /* Слід · Історія, 5 клас — «Як історики пізнають минуле»
-   style-hist-1112 (2026-11-12): eyebrow «Розділ N» перенумеровано за weeks[0] у класі (лише номер; статус не змінено); милозвучність у/в, і/й, з/із (УП § 23–25) у l1; ці уроки → draft, потрібен content-verifier.
+   style-hist-1112 (2026-11-12): eyebrow «Розділ N» перенумеровано за weeks[0] у класі (лише номер; статус не змінено); милозвучність у/в, і/й, з/із (УП § 23–25) у l1; перевірив verifier-style-hist-1112 (2026-11-12) → verified, звіт reports/verify/style-hist-1112.md.
    Статус: l1–l5 verified (l3 — нове завдання crit, style-hist-g5-finals; verify 2026-11-04, reports/verify/style-hist-g5.md);
    s1l7 «Родинний архів» і фінал l6 (нове питання 5) — verified (revise-hist-s1-cov; verify 2026-11-12, reports/verify/revise-s1-cov.md). 7 уроків.
    Перевірка: node tools/validate.mjs && node tools/stats.mjs
@@ -96,7 +96,7 @@ SLID.section("hist", {
       title: "Трипільське розслідування",
       short: "Речові джерела",
       icon: "pot",
-      status: "draft",
+      status: "verified",
       why: "Більшу частину історії люди не писали. Щоб знати про них хоч щось, треба вміти читати речі.",
       screens: [
         {

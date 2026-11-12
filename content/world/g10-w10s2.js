@@ -56,7 +56,7 @@ SLID.section("world", {
       title: "Мир, який писали переможці",
       short: "Версальський мир",
       icon: "scroll",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, чим мир, обіцяний Вільсоном, відрізнявся від миру, підписаного у Версалі. І побачиш, чому українців у Парижі не почули.",
       screens: [
         {
@@ -231,7 +231,7 @@ SLID.section("world", {
       title: "Міст без замкового каменя",
       short: "Ліга Націй",
       icon: "globe",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, як Ліга Націй мала зберігати мир і чому їй це не вдалося. І навчишся читати політичну карикатуру.",
       screens: [
         {
@@ -376,7 +376,7 @@ SLID.section("world", {
       title: "Гармати на злам",
       short: "Роззброєння",
       icon: "shield",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, як держави 1920-х рр. обмежили флоти й навіть зреклися війни. І зважиш, чому підписи на папері не зберегли мир.",
       screens: [
         {
@@ -555,7 +555,7 @@ SLID.section("world", {
       title: "Архів миру",
       short: "Фінал розділу",
       icon: "star",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "peacebuilder",
       why: "Перевірка всього розділу. Бали подвоєні.",

@@ -79,7 +79,7 @@ SLID.section("world", {
       title: "Хто кого несе на спині?",
       short: "Старий порядок",
       icon: "users",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, чому 1789 р. у Франції почалася революція. І навчишся читати карикатуру як історичне джерело.",
       screens: [
         {
@@ -920,7 +920,7 @@ SLID.section("world", {
       title: "Від Бастилії до Відня",
       short: "Фінал розділу",
       icon: "star",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "revnap",
       why: "Перевірка всього розділу. Бали подвоєні.",

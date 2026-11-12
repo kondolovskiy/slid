@@ -4,7 +4,7 @@ claimed_at: 2026-11-12T20:16:00.904Z
 id: style-hist-1112
 type: style
 subject: hist
-status: review
+status: done
 claimed_by: orch-style-hist-1112
 created: 2026-11-12
 ---
@@ -40,3 +40,6 @@ created: 2026-11-12
 **Перевірки:** validate --section для всіх 33 змінених розділів — 0 помилок; --diag dgh5, dgh6, dgh7, dgh8, dgh9, dgh10, dgh11b — 0/0 (id тесту 10 кл. — `dgh10`, не dgh10b); повний validate — 0 помилок, 73 попередження; stats/euphony --subject hist прогнано. Build не запускав, не комітив. Playtest — лише CI (немає python playwright).
 
 **Потрібно:** content-verifier (свіжий контекст) для 45 draft-уроків: 17 — лише порядок варіантів, 28 — точкові мовні правки.
+
+## Верифікація (verifier-style-hist-1112, 2026-11-12)
+Придатне після 1 виправлення: позиційні hint «Останнє твердження…» у g11s3l4 e7 і g11s5l1 e8 після перестановки вказували на правильний варіант → «Одне твердження…». 45 уроків → verified. Звіт: reports/verify/style-hist-1112.md.

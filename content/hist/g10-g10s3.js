@@ -1,5 +1,5 @@
 /* Слід · Історія, 10 клас — «Радянська Україна 1920-х»
-   style-hist-1112 (2026-11-12): милозвучність у/в, і/й, з/із (УП § 23–25) у g10s3l2; ці уроки → draft, потрібен content-verifier.
+   style-hist-1112 (2026-11-12): милозвучність у/в, і/й, з/із (УП § 23–25) у g10s3l2; перевірив verifier-style-hist-1112 (2026-11-12) → verified, звіт reports/verify/style-hist-1112.md.
    Статус уроків: усі verified (l1 — 30.10.2026; l5, l2, l3, boss — verifier-revise-hist-g10s3-cov, 12.11.2026). 5 уроків (4 + boss).
    Порядок: l1, l5 (новий, «Республіка без суверенітету»), l2, l3, boss l4.
    Перевірка: node tools/validate.mjs --section g10s3
@@ -359,7 +359,7 @@ SLID.section("hist", {
       title: "Влада вчить українську",
       short: "Українізація",
       icon: "voice",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, навіщо більшовики запровадили українізацію, що вона змінила і чому її згорнули.",
       screens: [
         {

@@ -1,5 +1,5 @@
 /* Слід · Історія, 9 клас — «Початок XX століття»
-   style-hist-1112 (2026-11-12): милозвучність у/в, і/й, з/із (УП § 23–25) у g9s5l1; ці уроки → draft, потрібен content-verifier.
+   style-hist-1112 (2026-11-12): милозвучність у/в, і/й, з/із (УП § 23–25) у g9s5l1; перевірив verifier-style-hist-1112 (2026-11-12) → verified, звіт reports/verify/style-hist-1112.md.
    Статус уроків: l1, l3, l4 — verified (verifier-g9s5; зображення D-027 — photo-g9s5, перевірив verifier-images-g9s5, 31.10.2026);
    l2 (+ чорносотенці, ТУП, справа Бейліса), нові l6–l8 і фінал l5 — verified (revise-hist-g9s5-cov, 12.11.2026;
    verifier-revise-hist-g9s5-cov, 12.11.2026 — reports/verify/revise-g9s5-cov.md; у l7 — портрет Шептицького з g10s1, 1905). 8 уроків (7 + boss).
@@ -83,7 +83,7 @@ SLID.section("hist", {
       title: "Від гуртка до партії",
       short: "Перші партії",
       icon: "users",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, де й навіщо українці створили перші політичні партії і чого вони вимагали.",
       screens: [
         {

@@ -1,5 +1,5 @@
 /* Слід · Історія, 8 клас — «Гетьманщина в XVIII ст.»
-   style-hist-1112 (2026-11-12): милозвучність у/в, і/й, з/із (УП § 23–25) у g8s5l3, g8s5l8; ці уроки → draft, потрібен content-verifier.
+   style-hist-1112 (2026-11-12): милозвучність у/в, і/й, з/із (УП § 23–25) у g8s5l3, g8s5l8; перевірив verifier-style-hist-1112 (2026-11-12) → verified, звіт reports/verify/style-hist-1112.md.
    Статус уроків: verified (verifier-g8s5; фото D-027 у l3, l5–l7 — verifier-images-g8s5). З 2026-11-12 — 10 уроків (9 + boss).
    2026-11-03 (revise-hist-g8s5-crimea, D-043/D-044 п. 3): новий урок g8s5l8 «Кінець Кримського ханства» (1774 → 1775 → 1783) перед фіналом; у фіналі l7 — завдання 6 про Крим. l7, l8 — verified (verifier-g8s5-crimea, reports/verify/g8s5-crimea.md).
    2026-11-05 (fix-hist-gerai-hetmanate, D-046/D-047): l8 — «Шагін Герай (також Гірей)»; l5 — 1781 р., ліквідація полкового устрою (EoU Kyiv vicegerency; uk.wiki Чернігівське намісництво). l5, l8 → draft.
@@ -333,7 +333,7 @@ SLID.section("hist", {
       title: "Угода в Бендерах",
       short: "Орлик",
       icon: "scroll",
-      status: "draft",
+      status: "verified",
       why: "Ти прочитаєш, що обіцяла Конституція Пилипа Орлика 1710 р.",
       screens: [
         {
@@ -1119,7 +1119,7 @@ SLID.section("hist", {
       title: "Кінець Кримського ханства",
       short: "Крим, 1783",
       icon: "map",
-      status: "draft",
+      status: "verified",
       why: "Ти простежиш, як Російська імперія за дев'ять років ліквідувала Кримське ханство і що це означало для кримських татар.",
       screens: [
         {

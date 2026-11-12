@@ -476,7 +476,7 @@
 | u11s6l2 Вийшовши віч-на-віч | 11 | 12 | 0.5 | 30 | 54 | 6.6 | 0.065 | 4 | — |
 | u11s6l3 Олімпіада, яка знає хімію | 11 | 12 | 0.5 | 29 | 57 | 6.9 | 0.06 | 3 | sentenceWords нетипово для сім'ї (z=2) |
 | u11s6l4 Редактор альманаху (фінал) | 11 | 7 | 0.86 | 18 | 29 | 5.9 | 0.087 | 3 | — |
-| u11s7l1 Де сховалося «є» | 11 | 12 | 0.5 | 29 | 52 | 5.4 | 0.028 | 3 | — |
+| u11s7l1 Де сховалося «є» | 11 | 12 | 0.5 | 30 | 52 | 5.4 | 0.03 | 3 | — |
 | u11s7l2 Друже, ти, мабуть, правий | 11 | 10 | 0.5 | 30 | 50 | 5.7 | 0.039 | 3 | — |
 | u11s7l3 Не лише кома, а й двокрапка | 11 | 12 | 0.5 | 31 | 53 | 5.9 | 0.047 | 3 | — |
 | u11s7l4 Вишня, укрита інеєм | 11 | 10 | 0.5 | 31 | 49 | 6.6 | 0.046 | 3 | — |
@@ -509,5 +509,5 @@
 - **5-6:boss**: screens 7.44±0.7, gradedShare 0.86±0.03, readWordsPerScreen 19.36±2.96, maxReadWords 34.48±3.83, sentenceWords 4.96±0.43, longWordShare 0.04±0.01, typeVariety 3.88±0.65
 - **7-9:lesson**: screens 10.56±0.87, gradedShare 0.54±0.04, readWordsPerScreen 28.64±3.57, maxReadWords 52.55±6.12, sentenceWords 5.82±0.58, longWordShare 0.04±0.02, typeVariety 3.93±0.8
 - **7-9:boss**: screens 7.18±0.38, gradedShare 0.86±0.01, readWordsPerScreen 22.13±3, maxReadWords 38.26±4.87, sentenceWords 5.45±0.6, longWordShare 0.05±0.02, typeVariety 3.82±0.81
-- **10-11:lesson**: screens 10.74±0.94, gradedShare 0.52±0.04, readWordsPerScreen 26.59±3.03, maxReadWords 49.69±5.14, sentenceWords 5.71±0.59, longWordShare 0.05±0.02, typeVariety 3.86±0.68
+- **10-11:lesson**: screens 10.74±0.94, gradedShare 0.52±0.04, readWordsPerScreen 26.6±3.03, maxReadWords 49.69±5.14, sentenceWords 5.71±0.59, longWordShare 0.05±0.02, typeVariety 3.86±0.68
 - **10-11:boss**: screens 7.05±0.21, gradedShare 0.86±0, readWordsPerScreen 19.27±2.65, maxReadWords 33.36±5.3, sentenceWords 5.3±0.47, longWordShare 0.06±0.02, typeVariety 3.45±0.5

@@ -1,5 +1,5 @@
 /* Слід · Історія, 9 клас — «Від «Весни народів» до заборон»
-   style-hist-1112 (2026-11-12): милозвучність у/в, і/й, з/із (УП § 23–25) у g9s3l4; ці уроки → draft, потрібен content-verifier.
+   style-hist-1112 (2026-11-12): милозвучність у/в, і/й, з/із (УП § 23–25) у g9s3l4; перевірив verifier-style-hist-1112 (2026-11-12) → verified, звіт reports/verify/style-hist-1112.md.
    Статус уроків: verified (verifier-g9s3, 13.10.2026); l1, l2, l5 — фото D-027 (photo-g9s3), повторно verified (verifier-images-g9s3, 31.10.2026; reports/verify/images-hist-g9s3.md).
    12.11.2026 (revise-hist-g9s3-cov): нові l6 «Після Севастополя», l7 «Громади й «Основа»», l8 «Наука, сцена й клятва»;
    фінал l5 перероблено (7 завдань); l4 — лише eyebrow «Урок 6». l5–l8 verified (verifier-revise-g9s3-cov, 12.11.2026; reports/verify/revise-g9s3-cov.md). 8 уроків (7 + boss), порядок: l1, l2, l3, l6, l7, l4, l8, l5.
@@ -787,7 +787,7 @@ SLID.section("hist", {
       title: "Мова під забороною",
       short: "1863 і 1876",
       icon: "lock",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, як Російська імперія забороняла українські книжки і як українці обходили заборони.",
       screens: [
         {

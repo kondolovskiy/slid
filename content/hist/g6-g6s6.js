@@ -1,5 +1,5 @@
 /* Слід · Історія, 6 клас — «Цивілізації Стародавнього Сходу»
-   style-hist-1112 (2026-11-12): eyebrow «Розділ N» перенумеровано за weeks[0] у класі (лише номер; статус не змінено); милозвучність у/в, і/й, з/із (УП § 23–25) у g6s6-l3, g6s6-l4, g6s6-l5; ці уроки → draft, потрібен content-verifier.
+   style-hist-1112 (2026-11-12): eyebrow «Розділ N» перенумеровано за weeks[0] у класі (лише номер; статус не змінено); милозвучність у/в, і/й, з/із (УП § 23–25) у g6s6-l3, g6s6-l4, g6s6-l5; перевірив verifier-style-hist-1112 (2026-11-12) → verified, звіт reports/verify/style-hist-1112.md.
    Статус уроків: l1–l5 verified (verifier-g6s6, 2026-11-03; написано write-hist-g6s6; програма Васильківа, розд. 2–4, D-043/D-044).
    g6s6l7 (новий, «Ассирія і Персія») і фінал l6 (завдання 7, pre у завданнях 1–7) — verified (revise-hist-g6s6-cov, 2026-11-12; verifier-revise-hist-g6s6-cov, reports/verify/revise-g6s6-cov.md). 7 уроків.
    Перевірка: node tools/validate.mjs && node tools/stats.mjs
@@ -382,7 +382,7 @@ SLID.section("hist", {
       title: "Табличка з колосками",
       short: "Клинопис і закони",
       icon: "scale",
-      status: "draft",
+      status: "verified",
       why: "Письмо почалося з рахунків, а закони — з каменю на площі. Ти навчишся читати найдавніші записи як історик.",
       screens: [
         {
@@ -530,7 +530,7 @@ SLID.section("hist", {
       title: "Літери, що мандрували морем",
       short: "Алфавіт і Ізраїль",
       icon: "book",
-      status: "draft",
+      status: "verified",
       why: "Букви, якими ти пишеш, мають предків. А віра в одного Бога змінила світ. Ти дізнаєшся, звідки це все прийшло.",
       screens: [
         {
@@ -670,7 +670,7 @@ SLID.section("hist", {
       title: "Мудреці й мури Сходу",
       short: "Індія і Китай",
       icon: "globe",
-      status: "draft",
+      status: "verified",
       why: "Ідеї Будди й Конфуція досі живуть у мільйонах людей. Ти дізнаєшся, про що вони вчили і як жили Індія та Китай.",
       screens: [
         {
