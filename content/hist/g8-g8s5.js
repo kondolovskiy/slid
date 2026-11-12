@@ -1,8 +1,14 @@
 /* Слід · Історія, 8 клас — «Гетьманщина в XVIII ст.»
-   Статус уроків: verified (verifier-g8s5; фото D-027 у l3, l5–l7 — verifier-images-g8s5). 8 уроків (7 + boss).
+   Статус уроків: verified (verifier-g8s5; фото D-027 у l3, l5–l7 — verifier-images-g8s5). З 2026-11-12 — 10 уроків (9 + boss).
    2026-11-03 (revise-hist-g8s5-crimea, D-043/D-044 п. 3): новий урок g8s5l8 «Кінець Кримського ханства» (1774 → 1775 → 1783) перед фіналом; у фіналі l7 — завдання 6 про Крим. l7, l8 — verified (verifier-g8s5-crimea, reports/verify/g8s5-crimea.md).
    2026-11-05 (fix-hist-gerai-hetmanate, D-046/D-047): l8 — «Шагін Герай (також Гірей)»; l5 — 1781 р., ліквідація полкового устрою (EoU Kyiv vicegerency; uk.wiki Чернігівське намісництво). l5, l8 → draft.
    2026-11-05 (verifier-fix-hist-gerai-hetmanate): l5 — «1781 р. імперським указом» (указ вересня 1781; ЕСУ «Лівобережна Україна»), екран «Крок за кроком»; l8 — «приєднає/приєднала» → «захопить / ліквідувала ханство» (D-047); l5, l8 verified (reports/verify/fix-hist-gerai-hetmanate.md).
+   2026-11-12 (revise-hist-g8s5-cov, програма Гісема 8 кл. розд. IV–V; звіт coverage-research-hist-coverage-g7-9 B6, B7):
+     нові уроки g8s5l9 «Перша Малоросійська колегія» (Скоропадський, 1721, 1722, Полуботок) і g8s5l10 «Гетьман Данило Апостол»
+     («Рішительні пункти» 1728, політична культура старшини, Правління гетьманського уряду) — після l3 за хронологією;
+     l5 — Калнишевський і доля запорожців, слобідські полки 1765; l8 — екран-місток «Поділи Речі Посполитої» (докладно — g9s1l1, g9s1l3);
+     фінал l7 — 7 завдань з `pre` (l1+l2 і l5+l6 — суміжні пари, D-048 п. 1). Нумерація «Урок N» — за позицією (l4 → 6, l5 → 7, l6 → 8, l8 → 9).
+     l5, l7, l8, l9, l10 → draft; l4, l6 змінено лише eyebrow.
    Перевірка: node tools/validate.mjs --section g8s5
    Схема й правила: docs/CONTENT_SCHEMA.md, style/; D-019.
    Факти: EoU Mazepa / Orlyk / Bendery Constitution / Rozumovsky / Koliivshchyna;
@@ -76,6 +82,18 @@ SLID.section("hist", {
       "Ян Гендрік ван Кінсберген (за описом архіву), 1776",
       "суспільне надбання (PD Mark 1.0)",
       "https://commons.wikimedia.org/wiki/File:1776_map_of_the_Crimean_peninsula.jpg"
+    ],
+    [
+      "Запис 1721 р. про вклад гетьмана Івана Скоропадського на відбудову Успенського собору Києво-Печерської лаври",
+      "Іван Скоропадський (підпис); скан — Наукова бібліотека ім. М. Максимовича КНУ ім. Т. Шевченка",
+      "CC0 1.0",
+      "https://commons.wikimedia.org/wiki/File:Skoropadsky_1721.jpg"
+    ],
+    [
+      "Портрет гетьмана Данила Апостола (Національний музей у Варшаві, інв. 35697)",
+      "Невідомий художник, XVIII ст.",
+      "суспільне надбання (PD Mark 1.0)",
+      "https://commons.wikimedia.org/wiki/File:Nieznany_malarz_rosyjski_-_Hetman_Apostolov_-_35697_-_National_Museum_in_Warsaw.jpg"
     ]
   ],
   lessons: [

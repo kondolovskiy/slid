@@ -1,10 +1,5 @@
 {
-  "date": "2026-11-12T14:32:42.588Z",
+  "date": "2026-11-12T14:32:53.264Z",
   "errors": [],
-  "warnings": [
-    "content/hist/g10-g10s3.js#g10s3l1: sentenceWords=6.5 поза профілем [7; 15] для hist, 10-11 кл.",
-    "content/hist/g10-g10s3.js#g10s3l2: sentenceWords=6.8 поза профілем [7; 15] для hist, 10-11 кл.",
-    "content/hist/g10-g10s3.js#g10s3l3: sentenceWords=6 поза профілем [7; 15] для hist, 10-11 кл.",
-    "content/hist/g10-g10s3.js#g10s3l4: sentenceWords=6.1 поза профілем [7; 15] для hist, 10-11 кл."
-  ]
+  "warnings": []
 }
