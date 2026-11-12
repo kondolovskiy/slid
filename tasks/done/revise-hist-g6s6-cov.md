@@ -6,7 +6,7 @@ type: revise-section
 subject: hist
 grade: 6
 section: g6s6
-status: review
+status: done
 claimed_by: writer-hist-g6s6
 created: 2026-11-10
 depends_on: [fix-hist-weeks-cov]
@@ -72,3 +72,6 @@ depends_on: [fix-hist-weeks-cov]
 - «Фараон чи вавилонський цар … владу успадковував син» — узагальнення для 6 кл. (монархія — «як правило спадкова»).
 - Кількість сатрапій не наводжу (20 за Геродотом / 23–24 / 26→36 — джерела розходяться).
 - 612 р. до н. е.: у тексті «вороги зруйнували» (хто саме — не оцінюється).
+
+### Незалежна верифікація (verifier-revise-hist-g6s6-cov, 2026-11-12)
+Звіт: reports/verify/revise-g6s6-cov.md. g6s6l7 і g6s6-l6 → verified. Правки: «зазвичай успадковував син»; «тарани» без «для мурів» (stats); cap Ападани → «кінець VI – початок V ст. до н. е.»; Царська дорога «понад 2400 км»; fbText завд. 7 фіналу; `pre` у завданнях 1–6 фіналу (l1, l1, l2, l3, l2, l5). validate g6s6 і dgh6 — 0/0; playtest — лише CI (немає python playwright).
