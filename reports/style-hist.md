@@ -33,10 +33,10 @@
 | h41 Знак, якому тисяча років | 5 | 6 | 0.5 | 22 | 70 | 5.7 | 0.055 | 3 | maxReadWords=70 поза [0; 60]; maxReadWords нетипово для сім'ї (z=2.7) |
 | h42 Скарби зі списку ЮНЕСКО | 5 | 6 | 0.67 | 23 | 79 | 6.4 | 0.069 | 3 | maxReadWords=79 поза [0; 60]; maxReadWords нетипово для сім'ї (z=4.2); longWordShare нетипово для сім'ї (z=2) |
 | h43 Українці, яких знає світ | 5 | 7 | 0.43 | 21 | 47 | 6.4 | 0.055 | 2 | gradedShare=0.43 поза [0.5; 0.9] |
-| s4l6 Від чайки до Місяця | 5 | 10 | 0.5 | 32 | 56 | 6.5 | 0.019 | 3 | readWordsPerScreen нетипово для сім'ї (z=2) |
+| s4l6 Від чайки до Місяця | 5 | 10 | 0.5 | 30 | 55 | 6.5 | 0.02 | 3 | — |
 | s4l7 Чотири шляхи у світ | 5 | 8 | 0.5 | 27 | 53 | 6 | 0.023 | 3 | — |
 | h44 Україна і Європа | 5 | 5 | 0.4 | 22 | 57 | 6.2 | 0.083 | 2 | gradedShare=0.4 поза [0.5; 0.9]; screens нетипово для сім'ї (z=-2.7); gradedShare нетипово для сім'ї (z=-2.2); longWordShare нетипово для сім'ї (z=2.9) |
-| h45 Посол України (фінал) | 5 | 6 | 0.83 | 9 | 19 | 4.6 | 0.067 | 3 | sentenceWords=4.6 поза [5; 11] |
+| h45 Посол України (фінал) | 5 | 8 | 0.88 | 9 | 19 | 5 | 0.052 | 3 | — |
 | h51 Одна земля — багато народів | 5 | 8 | 0.5 | 20 | 57 | 5.4 | 0.019 | 4 | — |
 | h52 Князі, що лишили сліди | 5 | 8 | 0.5 | 21 | 55 | 5.4 | 0.041 | 3 | — |
 | h53 Король на печатці | 5 | 7 | 0.57 | 17 | 53 | 5.3 | 0.026 | 3 | — |
@@ -320,8 +320,8 @@
 
 Для z-оцінок sd не менше 10 % середнього; нижче наведено фактичне sd.
 
-- **5-6:lesson**: screens 8.29±1.24, gradedShare 0.57±0.08, readWordsPerScreen 23.98±3.92, maxReadWords 53.95±5.9, sentenceWords 6.04±0.39, longWordShare 0.04±0.02, typeVariety 3.16±0.68
-- **5-6:boss**: screens 7.18±0.71, gradedShare 0.86±0.02, readWordsPerScreen 12.82±2.59, maxReadWords 23.82±5.11, sentenceWords 5.2±0.41, longWordShare 0.04±0.01, typeVariety 3.41±0.49
+- **5-6:lesson**: screens 8.29±1.24, gradedShare 0.57±0.08, readWordsPerScreen 23.96±3.89, maxReadWords 53.94±5.9, sentenceWords 6.04±0.39, longWordShare 0.04±0.02, typeVariety 3.16±0.68
+- **5-6:boss**: screens 7.29±0.67, gradedShare 0.86±0.02, readWordsPerScreen 12.82±2.59, maxReadWords 23.82±5.11, sentenceWords 5.22±0.38, longWordShare 0.04±0.01, typeVariety 3.41±0.49
 - **7-9:lesson**: screens 8.93±1.18, gradedShare 0.56±0.06, readWordsPerScreen 27.36±3.81, maxReadWords 62.69±7.6, sentenceWords 6.1±0.43, longWordShare 0.04±0.01, typeVariety 3.32±0.46
 - **7-9:boss**: screens 7.94±0.24, gradedShare 0.88±0, readWordsPerScreen 21.35±2.57, maxReadWords 43.41±5.02, sentenceWords 5.7±0.33, longWordShare 0.04±0.01, typeVariety 3.24±0.42
 - **10-11:lesson**: screens 9.57±1.28, gradedShare 0.54±0.04, readWordsPerScreen 30.62±6.09, maxReadWords 65.1±10.16, sentenceWords 6.76±0.58, longWordShare 0.07±0.02, typeVariety 3.44±0.5
