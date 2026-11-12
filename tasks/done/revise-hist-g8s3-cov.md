@@ -6,7 +6,7 @@ type: revise-section
 subject: hist
 grade: 8
 section: g8s3
-status: review
+status: done
 claimed_by: writer-hist-g8s3
 created: 2026-11-10
 depends_on: []
@@ -65,3 +65,5 @@ depends_on: []
 - l8 е8: «майже вся шляхта втратила маєтки» — за Степанковим; православна шляхта, що визнала гетьмана, частину зберегла (у тексті не згадано).
 - Boss: прибрано колишнє «Завдання 6» (crit на 1648–1649); навичка crit збережена в новому «Завданні 7».
 - Перевірки: `validate --section g8s3` — 0/0; `--diag dgh8`, `--diag dgh9` — 0/0; euphony — у l7/l8 знахідок немає (старі знахідки l1–l6 не чіпав); stats — l7, l8 без прапорців. Build не запускав; validate/stats перезаписали reports/validate.json, reports/style-hist.md — не мої зміни комітити оркестратору.
+
+**verifier-revise-hist-g8s3-cov, 12.11.2026.** Звіт: reports/verify/revise-g8s3-cov.md. Факти — по ≥ 2 відкритих джерела; 3 змістові правки (l7 е6 «Після Батогу…» — опора order е9; l8 е6 Раднот — «землі для козаків мали визначити пізніше»; l8 е7 fbText «у Ракоці й у гетьмана»). l1, l7, l8, l6 → verified; l4, l5 — лише eyebrow, verified лишено. validate g8s3 / dgh8 / dgh9 — 0/0. Опори тестів рівня не зачеплено.
