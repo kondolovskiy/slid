@@ -6,7 +6,7 @@ type: revise-section
 subject: hist
 grade: 6
 section: g6s3
-status: review
+status: done
 claimed_by: writer-hist-g6s3
 created: 2026-11-10
 depends_on: [fix-hist-weeks-cov]
@@ -59,3 +59,5 @@ depends_on: [fix-hist-weeks-cov]
 Commons API давав 429 — пошук через Special:MediaSearch/категорії (WebFetch), мініатюри з thumb.wikimedia.org.
 
 **Сумнівне / верифікатору:** (1) зсув eyebrow у verified l1, l3, l4; (2) «Розділ 5» у g6s3 не відповідає порядку weeks (g6s9 [1,3] теж «Розділ 1») — не моє, в inbox; (3) мечі на фото е1 — з Центральної Європи, не з наших земель (немає вільних фото бронзової зброї з України, перевірено Category:Bronze Age in Ukraine, Catacomb culture, Yamna culture (Kyiv museum — лише посуд і кістяні прикраси), Srubna culture).
+
+**verifier-revise-g6s3-cov, 2026-11-12.** Прийнято з 6 мінімальними правками (кіммерійські «залізні мечі» — прибрано з l6 е9 і l5 завд. 1; hint l5 завд. 1; «орачі над Дніпром» і www у посиланні ЕІУ в note l2; «бойова» в cap сокири). l6, l2, l5 → verified; l1/l3/l4 — лише eyebrow, verified. Звіт: reports/verify/revise-g6s3-cov.md.
