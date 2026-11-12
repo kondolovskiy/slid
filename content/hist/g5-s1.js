@@ -1,6 +1,6 @@
 /* Слід · Історія, 5 клас — «Як історики пізнають минуле»
    Статус: l1–l5 verified (l3 — нове завдання crit, style-hist-g5-finals; verify 2026-11-04, reports/verify/style-hist-g5.md);
-   s1l7 «Родинний архів» і фінал l6 (нове питання 5) — draft (revise-hist-s1-cov, 2026-11-12). 7 уроків.
+   s1l7 «Родинний архів» і фінал l6 (нове питання 5) — verified (revise-hist-s1-cov; verify 2026-11-12, reports/verify/revise-s1-cov.md). 7 уроків.
    Перевірка: node tools/validate.mjs && node tools/stats.mjs
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("hist", {
@@ -707,7 +707,7 @@ SLID.section("hist", {
       title: "Родинний архів",
       short: "Історія родини",
       icon: "users",
-      status: "draft",
+      status: "verified",
       why: "У кожної родини є своя історія. Її досліджують так само, як історію країни: за документами, фото й спогадами.",
       screens: [
         {
@@ -831,7 +831,7 @@ SLID.section("hist", {
       title: "Справа мамонтового селища",
       short: "Фінальна справа",
       icon: "star",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "hboss",
       why: "Перевірка всього розділу на одній справжній знахідці. Бали подвоєні.",
