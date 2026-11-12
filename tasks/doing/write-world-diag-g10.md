@@ -1,11 +1,13 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-12T04:26:27.117Z
 id: write-world-diag-g10
 type: write-diag
 subject: world
 grade: 10
 section: dgw10
 status: todo
-claimed_by:
+claimed_by: w-write-world-diag-g10
 created: 2026-11-10
 depends_on: [plan-world-g10-11]
 ---
