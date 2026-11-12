@@ -234,10 +234,10 @@
 | g10s3l2 Влада вчить українську | 10 | 10 | 0.5 | 34 | 52 | 6.8 | 0.064 | 3 | sentenceWords=6.8 поза [7; 15] |
 | g10s3l3 Відродження, яке розстріляли | 10 | 10 | 0.5 | 30 | 58 | 6 | 0.051 | 4 | sentenceWords=6 поза [7; 15] |
 | g10s3l4 Журнал про 1920-ті (фінал) | 10 | 8 | 0.88 | 23 | 46 | 6.1 | 0.049 | 3 | sentenceWords=6.1 поза [7; 15] |
-| g10s4l5 П'ятирічки й показові суди | 10 | 11 | 0.55 | 39 | 70 | 7.2 | 0.049 | 3 | readWordsPerScreen нетипово для сім'ї (z=2.1) |
+| g10s4l5 П'ятирічки й показові суди | 10 | 11 | 0.55 | 38 | 68 | 7.2 | 0.05 | 3 | — |
 | g10s4l1 Село без господаря | 10 | 10 | 0.6 | 34 | 69 | 6.8 | 0.056 | 3 | sentenceWords=6.8 поза [7; 15] |
 | g10s4l2 Голод, створений людьми | 10 | 11 | 0.55 | 33 | 72 | 6.7 | 0.037 | 3 | sentenceWords=6.7 поза [7; 15] |
-| g10s4l3 Вироки за лімітом | 10 | 12 | 0.58 | 37 | 89 | 6.6 | 0.061 | 3 | sentenceWords=6.6 поза [7; 15]; screens нетипово для сім'ї (z=2.1); maxReadWords нетипово для сім'ї (z=3.2) |
+| g10s4l3 Вироки за лімітом | 10 | 12 | 0.58 | 37 | 89 | 6.6 | 0.061 | 3 | sentenceWords=6.6 поза [7; 15]; screens нетипово для сім'ї (z=2.1); maxReadWords нетипово для сім'ї (z=3.3) |
 | g10s4l4 Альбом пам'яті (фінал) | 10 | 8 | 0.88 | 25 | 45 | 6.2 | 0.044 | 3 | sentenceWords=6.2 поза [7; 15] |
 | g10s5l1 Один народ, три кордони | 10 | 11 | 0.55 | 32 | 68 | 6.3 | 0.068 | 3 | sentenceWords=6.3 поза [7; 15] |
 | g10s5l2 Сейм чи підпілля? | 10 | 8 | 0.5 | 30 | 67 | 5.7 | 0.073 | 3 | sentenceWords=5.7 поза [7; 15] |
@@ -279,5 +279,5 @@
 - **5-6:boss**: screens 6.76±0.55, gradedShare 0.85±0.02, readWordsPerScreen 12.47±2.91, maxReadWords 23.06±5.48, sentenceWords 5.12±0.4, longWordShare 0.05±0.01, typeVariety 3.35±0.48
 - **7-9:lesson**: screens 8.68±1.14, gradedShare 0.56±0.06, readWordsPerScreen 26.77±3.77, maxReadWords 62.43±7.51, sentenceWords 6.09±0.45, longWordShare 0.04±0.01, typeVariety 3.27±0.45
 - **7-9:boss**: screens 7.93±0.25, gradedShare 0.88±0, readWordsPerScreen 21.67±2.27, maxReadWords 43.47±5.28, sentenceWords 5.67±0.38, longWordShare 0.04±0.01, typeVariety 3.2±0.4
-- **10-11:lesson**: screens 9.09±1.36, gradedShare 0.55±0.05, readWordsPerScreen 27.82±5.31, maxReadWords 61.16±8.57, sentenceWords 6.49±0.51, longWordShare 0.07±0.03, typeVariety 3.42±0.49
+- **10-11:lesson**: screens 9.09±1.36, gradedShare 0.55±0.05, readWordsPerScreen 27.8±5.26, maxReadWords 61.11±8.53, sentenceWords 6.49±0.51, longWordShare 0.07±0.03, typeVariety 3.42±0.49
 - **10-11:boss**: screens 7.3±0.46, gradedShare 0.87±0.01, readWordsPerScreen 24.1±2.81, maxReadWords 47.7±7.13, sentenceWords 6.22±0.59, longWordShare 0.07±0.03, typeVariety 3.6±0.49
