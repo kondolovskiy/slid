@@ -6,6 +6,7 @@
    2026-11-05 (fix-hist-gerai-hetmanate, D-046/D-047): основна форма «Герай» (програма Гісема), перша згадка в уроці — «(також Гірей)»; l4, l6, l5 → draft.
    2026-11-05 (verifier-fix-hist-gerai-hetmanate): «Герай» перевірено (програма Гісема, Крим.Реалії) — l4, l6, l5 verified (reports/verify/fix-hist-gerai-hetmanate.md).
    2026-11-12 (refine-hist-g7s5-cov, програма Гісема 7.4.9, 7.6.15): l4 — устрій ханства (хан, беї, курултай), Бахчисарай (фото палацу), війни з Москвою XVI ст.; l6 — візантійські володіння в Криму XII–XIII ст. Нових уроків немає, фінал без змін — l4, l6 draft.
+   2026-11-12 (verifier-refine-hist-g7s5-cov): беї без «загонів» (немає 2 джерел), війни з Москвою з поч. XVI ст. (не після 1552), «на Русі — Корсунь» — l4, l6 verified (reports/verify/refine-g7s5-cov.md).
    Перевірка: node tools/validate.mjs && node tools/stats.mjs
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("hist", {
@@ -468,7 +469,7 @@ SLID.section("hist", {
       title: "Нова держава на півострові",
       short: "Кримське ханство",
       icon: "city",
-      status: "draft",
+      status: "verified",
       why: "Кримське ханство понад три століття було сусідом українських земель. Без нього не зрозуміти ні козацтва, ні Криму сьогодні.",
       screens: [
         {
@@ -634,7 +635,7 @@ SLID.section("hist", {
       title: "Крим під владою султана",
       short: "Крим і Османи",
       icon: "shield",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, хто ділив Крим у XV ст. і як ханство стало залежним від Османської імперії. Без цього не зрозуміти ні Дикого поля, ні козацтва.",
       screens: [
         {

@@ -272,7 +272,7 @@ SLID.section("hist", {
       title: "Однині — самостійна",
       short: "IV Універсал",
       icon: "flag",
-      status: "draft",
+      status: "verified",
       why: "Ти зрозумієш, чому Центральна Рада проголосила незалежність саме в січні 1918 р.",
       screens: [
         {
@@ -585,7 +585,7 @@ SLID.section("hist", {
       title: "Курултай і Кримська Народна Республіка",
       short: "Кримська республіка",
       icon: "flag",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, як 1917 р. кримські татари творили власну державу та чому УНР не втримала Крим.",
       screens: [
         {
@@ -1050,7 +1050,7 @@ SLID.section("hist", {
       title: "Ніч на 1 листопада",
       short: "ЗУНР",
       icon: "city",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, як у Галичині постала друга українська держава і чому їй довелося воювати за Львів.",
       screens: [
         {
@@ -1377,7 +1377,7 @@ SLID.section("hist", {
       title: "Зимові походи й Холодний Яр",
       short: "Зимові походи",
       icon: "path",
-      status: "draft",
+      status: "verified",
       why: "Ти побачиш, як армія УНР і повстанці боролися з більшовиками, коли держава вже втрачала землі.",
       screens: [
         {
@@ -1557,7 +1557,7 @@ SLID.section("hist", {
       title: "Сусіди в революції",
       short: "Народи й культура",
       icon: "users",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, як жили в революції різні народи України, які трагедії їх спіткали та що створила тоді українська культура.",
       screens: [
         {
@@ -1894,7 +1894,7 @@ SLID.section("hist", {
       title: "Архів революції",
       short: "Фінал розділу",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "zlukaseal",
       why: "Перевірка всього розділу. Бали подвоєні.",
