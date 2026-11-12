@@ -7,7 +7,7 @@ subject: world
 grade: 11
 section: w11s6
 weeks: [30, 35]
-status: review
+status: done
 claimed_by: w-write-world-w11s6
 created: 2026-11-10
 ---
