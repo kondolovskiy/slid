@@ -6,24 +6,25 @@
    теми 6 кл. — по одній на розділ g6s1…g6s8; завдання cur перевіряє все ядро (outro.learned) уроку.
    Дати — з memory/long/facts/hist.md і hist-2.md (№1, 9–11, 56, 57, 126, 325, 328, 333) і з самих уроків.
    id тесту dgh6 і порядок завдань — ключі прогресу: заміна на місці — лише з rev (CONTENT_SCHEMA §9).
+   2026-11-12 (refine-hist-diag-g5-g6-cov): лише for — g6s9 у era, srckind; g6s10 у era, evid, legend; завдання, порядок і rev без змін; статус → draft.
    Перевірка: node tools/validate.mjs --diag dgh6 */
 SLID.diag("hist", {
   id: "dgh6",
   grade: 6,
   title: "Що ти вже вмієш?",
   why: "Знайдемо вміння історика з 5 класу, які варто згадати, і те, що з 6 класу ти вже знаєш.",
-  status: "verified",
+  status: "draft",
   meta: { author: "w-write-hist-diag-g6", created: "2026-11-06", factcheck: "verifier-dgh6", teacher: null },
   topics: [
     // передумови з 5 класу
-    { id: "era", title: "До нашої ери і наша ера", kind: "pre", lessons: ["l3"], for: ["g6s1", "g6s6", "g6s7", "g6s8"] },
+    { id: "era", title: "До нашої ери і наша ера", kind: "pre", lessons: ["l3"], for: ["g6s9", "g6s1", "g6s6", "g6s7", "g6s8", "g6s10"] },
     { id: "cent", title: "Століття за роком", kind: "pre", lessons: ["l3"], for: ["g6s3", "g6s4", "g6s7"] },
     { id: "gap", title: "Скільки років минуло: рахунок без року нуль", kind: "pre", lessons: ["l3"], for: ["g6s3", "g6s4", "g6s8"] },
-    { id: "srckind", title: "Види історичних джерел", kind: "pre", lessons: ["l1"], for: ["g6s2", "g6s3", "g6s4"] },
-    { id: "evid", title: "Висновок, не сильніший за доказ", kind: "pre", lessons: ["l1"], for: ["g6s1", "g6s2", "g6s3"] },
+    { id: "srckind", title: "Види історичних джерел", kind: "pre", lessons: ["l1"], for: ["g6s9", "g6s2", "g6s3", "g6s4"] },
+    { id: "evid", title: "Висновок, не сильніший за доказ", kind: "pre", lessons: ["l1"], for: ["g6s1", "g6s2", "g6s3", "g6s10"] },
     { id: "dating", title: "Як визначають вік знахідки", kind: "pre", lessons: ["l2"], for: ["g6s1", "g6s2"] },
     { id: "critic", title: "Кому вірити: перевірка писемного джерела", kind: "pre", lessons: ["l4"], for: ["g6s3", "g6s5"] },
-    { id: "legend", title: "Легенда чи історія", kind: "pre", lessons: ["l5"], for: ["g6s5", "g6s8"] },
+    { id: "legend", title: "Легенда чи історія", kind: "pre", lessons: ["l5"], for: ["g6s5", "g6s8", "g6s10"] },
     { id: "map", title: "Як читати історичну карту", kind: "pre", lessons: ["h21"], for: ["g6s4", "g6s5"] },
     { id: "nature", title: "Природа і життя людей", kind: "pre", lessons: ["h22"], for: ["g6s3", "g6s6", "g6s7"] },
     // теми 6 класу
