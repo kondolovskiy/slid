@@ -1,12 +1,5 @@
 {
-  "date": "2026-11-12T09:31:24.972Z",
+  "date": "2026-11-12T09:32:17.138Z",
   "errors": [],
-  "warnings": [
-    "content/hist/g6-g6s10.js#g6s10l2: gradedShare=0.44 поза профілем [0.5; 0.9] для hist, 5-6 кл.",
-    "content/hist/g6-g6s10.js#g6s10l3: gradedShare=0.44 поза профілем [0.5; 0.9] для hist, 5-6 кл.",
-    "content/hist/g6-g6s10.js#g6s10l5: gradedShare=0.44 поза профілем [0.5; 0.9] для hist, 5-6 кл.",
-    "content/hist/g6-g6s10.js#g6s10l6: gradedShare=0.44 поза профілем [0.5; 0.9] для hist, 5-6 кл.",
-    "content/hist/g6-g6s10.js#g6s10l7: gradedShare=0.44 поза профілем [0.5; 0.9] для hist, 5-6 кл.",
-    "content/hist/g6-g6s10.js#g6s10l7: maxReadWords=63 поза профілем [0; 60] для hist, 5-6 кл."
-  ]
+  "warnings": []
 }
