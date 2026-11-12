@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-12T05:17:37.777Z
 id: write-world-w8s6
 type: write-section
 subject: world
@@ -6,7 +8,7 @@ grade: 8
 section: w8s6
 weeks: [24, 29]
 status: todo
-claimed_by:
+claimed_by: writer-world-w8s6
 created: 2026-11-10
 ---
 # Написати розділ «Війни й імперії XVIII ст.» (Всесвітня історія, 8 клас)
