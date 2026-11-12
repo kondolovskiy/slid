@@ -1,6 +1,6 @@
 /* Слід · Історія, 6 клас — «Стародавній Рим»
    Статус уроків: g6s8-l1…l7 verified (verifier-g6s8, 2026-11-03; написано writer-write-hist-g6s8; програма Васильків та ін., розд. 2–4, D-043/D-044). 7 уроків.
-   2026-11-12 refine-hist-g6s8-cov: g6s8-l4 + екран 9 «Побут» (інсула, їжа) + речення про туніку на екрані 5 → draft.
+   2026-11-12 refine-hist-g6s8-cov: g6s8-l4 + екран 9 «Побут» (інсула, їжа) + речення про туніку на екрані 5 → verified (verifier-refine-hist-g6s8-cov, 2026-11-12).
    Перевірка: node tools/validate.mjs && node tools/stats.mjs
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("hist", {
@@ -462,7 +462,7 @@ SLID.section("hist", {
       title: "Хліба й видовищ",
       short: "Життя римлян",
       icon: "users",
-      status: "draft",
+      status: "verified",
       why: "Римляни жили в місті з площами, лазнями й амфітеатрами. Ти побачиш, як минав день римлянина і звідки ми це знаємо.",
       screens: [
         {
