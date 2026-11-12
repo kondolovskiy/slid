@@ -6,7 +6,7 @@ type: revise-section
 subject: hist
 grade: 5
 section: s4
-status: todo
+status: review
 claimed_by: writer-hist-s4
 created: 2026-11-10
 depends_on: [fix-hist-weeks-cov]
@@ -43,3 +43,26 @@ depends_on: [fix-hist-weeks-cov]
 - Готово: `node tools/validate.mjs --section s4` — 0 помилок; `node tools/stats.mjs --subject hist` — без прапорців для змінених уроків; нотатки з переліком уроків і URL; `node tools/claim.mjs move <task-id> review` → незалежна перевірка `content-verifier` (факти, D-019, D-027).
 
 ## Нотатки агента
+(writer-hist-s4, 2026-11-12)
+
+**Уроки.** Файл `content/hist/g5-s4.js`; порядок: h41, h42, h43, **s4l6** «Від чайки до Місяця» (10 екранів, 5 оцінюваних + hyp), **s4l7** «Чотири шляхи у світ» (8 екранів, 4 оцінюваних), h44 (змінено лише eyebrow «Урок 4» → «Урок 6», статус verified лишено, як у g9s5 l4), **h45** — draft: + Питання 4 (pre s4l6, «Щедрик»), Питання 5 (pre s4l7, Мечников — Нобелівська), колишні 4–5 → 6–7; `pre` додано всім 7 оцінюваним завданням (h41, h42, h43, s4l6, s4l7, h41, h44). Наявних фактів, дат, відповідей і id не змінено; dgh5 — 0 помилок.
+
+**Зображення (D-027).** s4l6: `img/hist/s4/apollo-eagle-1969.jpg` — NASA, PD-USGov-NASA, https://commons.wikimedia.org/wiki/File:Apollo_11_Lunar_Module_Eagle_in_landing_configuration_in_lunar_orbit_from_the_Command_and_Service_Module_Columbia.jpg ; `img/hist/s4/chaika-beauplan-1660.jpg` — Боплан, «Description d'Vkranie», Руан 1660, JCB Library/Internet Archive, PD-old-100-expired + PD-US (до 1931), https://commons.wikimedia.org/wiki/File:Description_d%27Vkranie_(page_74_crop_Cossack_boat).jpg . s4l7: повторно використано verified `img/hist/g9s4/mechnikov-lab-1913.jpg` (credits — як у g9s4). Усі три переглянуто; мініатюри — thumb.wikimedia.org. Зображення Дрогобича («Iudicium pronosticon») на Commons не знайдено.
+
+**Факти й джерела.**
+- Чайка: 18–20 м, 50–60 козаків, очерет при бортах, два кермові весла — EoU ChaikaIT (https://www.encyclopediaofukraine.com/display.asp?linkpath=pages%5CC%5CH%5CChaikaIT.htm), https://en.wikipedia.org/wiki/Chaika_(boat) (XVI ст.).
+- Прокопович, рамковий вулик 1814 р., «один із перших у світі» (EoU — без «першого», en.wiki — «world's first»), бджіл не губили (EoU: «first … to obtain clear comb honey without destroying bees») — EoU ProkopovychPetro; https://en.wikipedia.org/wiki/Petro_Prokopovych
+- Кондратюк: нар. 1897 Полтава; праця 1919; «траса Кондратюка»; ідеї в «Аполлоні» — https://en.wikipedia.org/wiki/Yuri_Kondratyuk ; https://www.encyclopediaofukraine.com/display.asp?linkpath=pages%5CK%5CO%5CKondratiukYurii.htm . Apollo 11, «Орел», 20.07.1969 — https://www.nasa.gov/mission/apollo-11/ + сторінка файлу Commons. Узгоджено з h43 («на початку XX ст. розрахував траєкторію»).
+- «Щедрик»: 1916 р. Київ; 1922 р. хор Кошиця в Нью-Йорку (Карнегі-хол); англ. слова — П. Вільговський, «у 1930-х рр.» — https://en.wikipedia.org/wiki/Shchedryk_(song) ; https://zaxid.net/oleksandr_koshits_yak_dirigent_zrobiv_shhedrik_gollivudskim_hitom_istoriya_n1627351 ; https://ui.org.ua/en/sectors-en/carol-of-the-bells-at-carnegie-hall/ ; https://www.ukrinform.ua/rubric-culture/3586785-u-kievi-predstavili-unikalni-zapisi-sedrika.html
+- Ян Кум: 1976 р., «на Київщині» (Київ / Фастів — джерела різняться), у 16 років до США, WhatsApp 2009 з Б. Ектоном — https://en.wikipedia.org/wiki/Jan_Koum ; https://phys.org/news/2014-02-whatsapp-founders-swap-struggle-billionaire.html . Суму угоди Facebook (≈ 19 млрд) з уроку прибрано (довжина екрана).
+- Дрогобич: ректор 1481–1482, книжка 1483 р. в Римі латиною, підпис «з Русі» — facts/world №47, w8s2 (verified); https://en.wikipedia.org/wiki/Yuriy_Drohobych ; EoU DrohobychYurii.
+- Мечников: 1845, Харківщина, Одеса, Париж з 1888, Нобелівська 1908 за імунітет — як verified g9s4 l6; https://en.wikipedia.org/wiki/%C3%89lie_Metchnikoff
+- Миклухо-Маклай: 1846, Новгородська губ. («на півночі Росії»), козацьке коріння, з 1871 — Нова Гвінея, рівність людей — https://en.wikipedia.org/wiki/Nicholas_Miklouho-Maclay ; https://www.encyclopediaofukraine.com/pages%5CM%5CI%5CMiklukho6MaklaiNikolai.htm ; https://navyhistory.au/?p=39432
+- Лифар: нар. у Києві; з 1930 р. багато років керував балетом Паризької опери (роки перерви 1944/1945 різняться — не пишу) — https://en.wikipedia.org/wiki/Serge_Lifar ; https://www.esu.com.ua/pdf/file/55275.pdf
+- Возняк (TQ-082): лише `note` на екрані 6 s4l7, не оцінюється, формулювання з задачі.
+
+**Опори завдань (D-019).** s4l6: е4 — міркування (вага → паливо), опора е3; е6 — сам малюнок + е5; е8 — дати з е3, е5, е7 (1969 — е1); е9 — body (Кум) + h43 е1 (Сікорський); е10 — body (Вільговський) + е7. s4l7: е3 — 1051 з h43 е2, 1481 з е2; е5 — е4; е7 — е2, е4, е6, h43 е2 (Анна — Франція); е8 — е6. h45 П4 — s4l6 е7, е10; П5 — s4l7 е4.
+
+**Сумнівне / для верифікатора.** «Один із перших у світі» (вулик) — пом'якшено; «Боплан — картограф, його карта була в розділі 2» (s2 — карта за зйомками Боплана). Спорт (бажане) не додано. Позиції правильних: s4l6 — 1, [0,2], 2, 0; s4l7 — 0, 1; h45 — 0, sort, 2, 1, 0, 1, order.
+
+**Перевірки.** validate --section s4: 0 помилок, 4 попередження (старі h41–h44); validate --diag dgh5: 0/0; euphony --section s4: у нових текстах відхилень немає (лишилися старі h41–h45 і цитата «з Русі»); stats: s4l6, s4l7, h45 — без прапорців. Build не запускав — нові файли img/hist/s4/ потрапять у sw.js після build оркестратора.
