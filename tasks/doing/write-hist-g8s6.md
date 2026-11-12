@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-12T14:32:45.423Z
 id: write-hist-g8s6
 type: write-section
 subject: hist
@@ -6,7 +8,7 @@ grade: 8
 section: g8s6
 weeks: [32, 35]
 status: todo
-claimed_by:
+claimed_by: writer-hist-g8s6
 created: 2026-11-10
 ---
 # Написати розділ «Карпати, Південь і культура козацької доби» (Історія України, 8 клас)
