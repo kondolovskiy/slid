@@ -216,10 +216,10 @@
 | g9s5l2 Рік, що розхитав імперію | 9 | 10 | 0.5 | 33 | 61 | 5.6 | 0.06 | 3 | — |
 | g9s5l3 Історик, що написав націю | 9 | 7 | 0.57 | 29 | 65 | 5.6 | 0.053 | 3 | — |
 | g9s5l6 Заводи, хутори й Клини | 9 | 10 | 0.5 | 28 | 58 | 6.1 | 0.045 | 4 | — |
-| g9s5l7 Університет, страйк і вибори | 9 | 9 | 0.56 | 32 | 64 | 6 | 0.067 | 3 | longWordShare нетипово для сім'ї (z=2.5) |
+| g9s5l7 Університет, страйк і вибори | 9 | 9 | 0.56 | 32 | 65 | 6 | 0.058 | 3 | — |
 | g9s5l8 Химери, опери й меценати | 9 | 10 | 0.5 | 28 | 60 | 5.9 | 0.026 | 3 | — |
 | g9s5l4 Літо, коли все змінилося | 9 | 7 | 0.57 | 29 | 65 | 5.7 | 0.041 | 3 | — |
-| g9s5l5 Архів редакції (фінал) | 9 | 8 | 0.88 | 24 | 44 | 5.2 | 0.034 | 2 | typeVariety нетипово для сім'ї (z=-2.2) |
+| g9s5l5 Архів редакції (фінал) | 9 | 8 | 0.88 | 24 | 44 | 5.3 | 0.034 | 3 | — |
 | g10s1l1 Два береги Збруча | 10 | 10 | 0.6 | 34 | 62 | 6.7 | 0.036 | 4 | sentenceWords=6.7 поза [7; 15] |
 | g10s1l2 Стрільці під калиною | 10 | 10 | 0.5 | 30 | 67 | 6.6 | 0.045 | 4 | sentenceWords=6.6 поза [7; 15] |
 | g10s1l3 Львів під чужою владою | 10 | 11 | 0.55 | 32 | 59 | 6.5 | 0.062 | 4 | sentenceWords=6.5 поза [7; 15] |
@@ -283,7 +283,7 @@
 
 - **5-6:lesson**: screens 8.11±1.22, gradedShare 0.57±0.08, readWordsPerScreen 23.37±3.69, maxReadWords 53.88±6.02, sentenceWords 6.02±0.39, longWordShare 0.04±0.02, typeVariety 3.18±0.71
 - **5-6:boss**: screens 6.76±0.55, gradedShare 0.85±0.02, readWordsPerScreen 12.47±2.91, maxReadWords 23.06±5.48, sentenceWords 5.12±0.4, longWordShare 0.05±0.01, typeVariety 3.35±0.48
-- **7-9:lesson**: screens 8.78±1.13, gradedShare 0.56±0.06, readWordsPerScreen 27.12±3.88, maxReadWords 62.75±7.42, sentenceWords 6.1±0.44, longWordShare 0.04±0.01, typeVariety 3.29±0.45
-- **7-9:boss**: screens 8±0, gradedShare 0.88±0, readWordsPerScreen 21.67±2.33, maxReadWords 44±5.05, sentenceWords 5.71±0.36, longWordShare 0.04±0.01, typeVariety 3.2±0.54
+- **7-9:lesson**: screens 8.78±1.13, gradedShare 0.56±0.06, readWordsPerScreen 27.12±3.88, maxReadWords 62.76±7.42, sentenceWords 6.1±0.44, longWordShare 0.04±0.01, typeVariety 3.29±0.45
+- **7-9:boss**: screens 8±0, gradedShare 0.88±0, readWordsPerScreen 21.67±2.33, maxReadWords 44±5.05, sentenceWords 5.71±0.35, longWordShare 0.04±0.01, typeVariety 3.27±0.44
 - **10-11:lesson**: screens 9.26±1.41, gradedShare 0.55±0.05, readWordsPerScreen 28.28±5.61, maxReadWords 62.15±9.47, sentenceWords 6.54±0.51, longWordShare 0.07±0.03, typeVariety 3.41±0.49
 - **10-11:boss**: screens 7.4±0.49, gradedShare 0.87±0.01, readWordsPerScreen 24.3±2.87, maxReadWords 47.7±7.13, sentenceWords 6.24±0.57, longWordShare 0.07±0.03, typeVariety 3.6±0.49

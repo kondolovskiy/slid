@@ -6,7 +6,7 @@ type: revise-section
 subject: hist
 grade: 10
 section: g10s3
-status: review
+status: done
 claimed_by: writer-hist-g10s3
 created: 2026-11-10
 depends_on: [refine-hist-diag-g10-g11]
@@ -58,3 +58,5 @@ depends_on: [refine-hist-diag-g10-g11]
 - Вигадана сцена в [9] (парафіянка, 1925) подана як ситуація, не як джерело чи цитата.
 - euphony: лишились позначки лише в незмінених текстах — l2 why «змінила і чому», l3 опція «Про негайний вихід УСРР з СРСР» (verified-текст уроку-опори dgh11b, не чіпав).
 - validate: попередження sentenceWords 6–6,8 для l1–l4 — були й раніше (не мої правки).
+
+**verifier-revise-hist-g10s3-cov, 12.11.2026** — прийнято: l5, l2, l3, l4 → verified. Правки: l5 [5] «Історики називають це» → «Таке становище називають» (термін — з програми № 698); l5 [6] + «У 1920-х рр.» (нацрайони). Звіт: reports/verify/revise-g10s3-cov.md.
