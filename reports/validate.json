@@ -1,12 +1,8 @@
 {
-  "date": "2026-11-12T14:48:57.986Z",
+  "date": "2026-11-12T14:49:02.896Z",
   "errors": [],
   "warnings": [
-    "content/hist/g11-g11s2.js#g11s2l1: sentenceWords=5.9 поза профілем [7; 15] для hist, 10-11 кл.",
-    "content/hist/g11-g11s2.js#g11s2l6 екран 6 (choice): дуже довге речення (26 слів): «Переклад напису: «З району Сянока в межах акції \"Вісла\" в пе…»",
-    "content/hist/g11-g11s2.js#g11s2l2: sentenceWords=6.4 поза профілем [7; 15] для hist, 10-11 кл.",
-    "content/hist/g11-g11s2.js#g11s2l3: sentenceWords=6 поза профілем [7; 15] для hist, 10-11 кл.",
-    "content/hist/g11-g11s2.js#g11s2l4: sentenceWords=6.6 поза профілем [7; 15] для hist, 10-11 кл.",
-    "content/hist/g11-g11s2.js#g11s2l5: sentenceWords=6.4 поза профілем [7; 15] для hist, 10-11 кл."
+    "content/hist/g10-g11s1.js#g11s1l1: sentenceWords=6.7 поза профілем [7; 15] для hist, 10-11 кл.",
+    "content/hist/g10-g11s1.js#g11s1l2: sentenceWords=6.8 поза профілем [7; 15] для hist, 10-11 кл."
   ]
 }

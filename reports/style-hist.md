@@ -257,13 +257,13 @@
 | g11s1l7 Перший прихід Совітів | 10 | 10 | 0.5 | 33 | 62 | 7.1 | 0.053 | 4 | — |
 | g11s1l8 Відступ і «випалена земля» | 10 | 10 | 0.5 | 34 | 58 | 7.3 | 0.045 | 3 | — |
 | g11s1l2 Порядок окупантів | 10 | 7 | 0.57 | 27 | 55 | 6.8 | 0.112 | 3 | sentenceWords=6.8 поза [7; 15]; screens нетипово для сім'ї (z=-2) |
-| g11s1l3 Імена проти стирання | 10 | 9 | 0.56 | 29 | 63 | 8.2 | 0.06 | 3 | sentenceWords нетипово для сім'ї (z=2.1) |
+| g11s1l3 Імена проти стирання | 10 | 9 | 0.56 | 29 | 66 | 8 | 0.059 | 3 | — |
 | g11s1l4 Не один рух опору | 10 | 7 | 0.57 | 27 | 64 | 7.4 | 0.081 | 3 | screens нетипово для сім'ї (z=-2) |
 | g11s1l9 Трагедія двох народів | 10 | 10 | 0.5 | 36 | 66 | 8 | 0.052 | 3 | — |
 | g11s1l10 Фронт повертається | 10 | 10 | 0.5 | 35 | 62 | 7.5 | 0.045 | 3 | — |
 | g11s1l5 Вигнання з Криму | 10 | 7 | 0.57 | 25 | 59 | 7.1 | 0.11 | 3 | screens нетипово для сім'ї (z=-2) |
 | g11s1l6 Перемога без монополії | 10 | 7 | 0.57 | 26 | 61 | 7.6 | 0.049 | 3 | screens нетипово для сім'ї (z=-2) |
-| g11s1boss Архівна справа № 1939–1945 (фінал) | 10 | 8 | 0.88 | 27 | 51 | 8.1 | 0.064 | 3 | sentenceWords нетипово для сім'ї (z=2.4) |
+| g11s1boss Архівна справа № 1939–1945 (фінал) | 10 | 8 | 0.88 | 27 | 51 | 8 | 0.063 | 3 | sentenceWords нетипово для сім'ї (z=2.3) |
 | g11s2l1 Хліб після перемоги | 11 | 11 | 0.55 | 24 | 60 | 5.9 | 0.064 | 4 | sentenceWords=5.9 поза [7; 15] |
 | g11s2l6 Нові кордони, чужі домівки | 11 | 9 | 0.56 | 36 | 67 | 7.3 | 0.083 | 4 | — |
 | g11s2l7 Радянізація заходу | 11 | 10 | 0.5 | 33 | 67 | 7.3 | 0.07 | 4 | — |
@@ -303,5 +303,5 @@
 - **5-6:boss**: screens 6.82±0.62, gradedShare 0.85±0.02, readWordsPerScreen 12.53±2.85, maxReadWords 23.35±5.34, sentenceWords 5.14±0.4, longWordShare 0.05±0.01, typeVariety 3.35±0.48
 - **7-9:lesson**: screens 8.78±1.13, gradedShare 0.56±0.06, readWordsPerScreen 27.13±3.9, maxReadWords 62.87±7.47, sentenceWords 6.1±0.44, longWordShare 0.04±0.01, typeVariety 3.29±0.45
 - **7-9:boss**: screens 8±0, gradedShare 0.88±0, readWordsPerScreen 21.67±2.33, maxReadWords 44±5.05, sentenceWords 5.71±0.35, longWordShare 0.04±0.01, typeVariety 3.27±0.44
-- **10-11:lesson**: screens 9.57±1.28, gradedShare 0.54±0.04, readWordsPerScreen 30.54±5.98, maxReadWords 64.84±9.92, sentenceWords 6.76±0.58, longWordShare 0.07±0.02, typeVariety 3.44±0.5
-- **10-11:boss**: screens 8±0, gradedShare 0.88±0, readWordsPerScreen 24.6±2.94, maxReadWords 47.1±4.41, sentenceWords 6.54±0.65, longWordShare 0.07±0.02, typeVariety 3.6±0.49
+- **10-11:lesson**: screens 9.57±1.28, gradedShare 0.54±0.04, readWordsPerScreen 30.54±5.98, maxReadWords 64.89±9.92, sentenceWords 6.76±0.57, longWordShare 0.07±0.02, typeVariety 3.44±0.5
+- **10-11:boss**: screens 8±0, gradedShare 0.88±0, readWordsPerScreen 24.6±2.94, maxReadWords 47.1±4.41, sentenceWords 6.53±0.62, longWordShare 0.07±0.02, typeVariety 3.6±0.49
