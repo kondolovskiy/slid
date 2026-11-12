@@ -1,14 +1,7 @@
 {
-  "date": "2026-11-12T09:20:01.361Z",
+  "date": "2026-11-12T09:20:46.418Z",
   "errors": [],
   "warnings": [
-    "content/world/g7-w7s6.js#w7s6l1: maxReadWords=84 поза профілем [0; 75] для world, 7-9 кл.",
-    "content/world/g7-w7s6.js#w7s6l3: maxReadWords=94 поза профілем [0; 75] для world, 7-9 кл.",
-    "content/world/g7-w7s6.js#w7s6l3: у 2 з 3 завдань choice правильний варіант — Б: переставляй варіанти",
-    "content/world/g7-w7s6.js#w7s6l4: у 2 з 3 завдань choice правильний варіант — В: переставляй варіанти",
-    "content/world/g7-w7s6.js#w7s6l5: maxReadWords=89 поза профілем [0; 75] для world, 7-9 кл.",
-    "content/world/g7-w7s6.js#w7s6l6: у 2 з 3 завдань choice правильний варіант — В: переставляй варіанти",
-    "content/world/g7-w7s6.js#w7s6l7: gradedShare=0.44 поза профілем [0.5; 0.9] для world, 7-9 кл.",
-    "content/world/g7-w7s6.js#w7s6l8: sentenceWords=5.1 поза профілем [6; 13] для world, 7-9 кл."
+    "content/world/g7-w7s6.js#w7s6l8: sentenceWords=5.2 поза профілем [6; 13] для world, 7-9 кл."
   ]
 }
