@@ -1,11 +1,7 @@
 {
-  "date": "2026-11-12T19:19:32.615Z",
+  "date": "2026-11-12T19:19:51.921Z",
   "errors": [],
   "warnings": [
-    "content/hist/g11-g11s5.js#g11s5l1: sentenceWords=6.3 поза профілем [7; 15] для hist, 10-11 кл.",
-    "content/hist/g11-g11s5.js#g11s5l2: sentenceWords=6.4 поза профілем [7; 15] для hist, 10-11 кл.",
-    "content/hist/g11-g11s5.js#g11s5l3: sentenceWords=6.5 поза профілем [7; 15] для hist, 10-11 кл.",
-    "content/hist/g11-g11s5.js#g11s5l4: sentenceWords=6 поза профілем [7; 15] для hist, 10-11 кл.",
-    "content/hist/g11-g11s5.js#g11s5l5: sentenceWords=6.2 поза профілем [7; 15] для hist, 10-11 кл."
+    "content/hist/g5-s1.js#l5 екран 4 (sort): дуже довге речення (28 слів): «Відомо з уроку й досліджень: легенду про Кия записано в «Пов…»"
   ]
 }
