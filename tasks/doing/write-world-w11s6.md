@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-12T04:41:41.938Z
 id: write-world-w11s6
 type: write-section
 subject: world
@@ -6,7 +8,7 @@ grade: 11
 section: w11s6
 weeks: [30, 35]
 status: todo
-claimed_by:
+claimed_by: w-write-world-w11s6
 created: 2026-11-10
 ---
 # Написати розділ «Від розрядки до сьогодення» (Всесвітня історія, 11 клас)
