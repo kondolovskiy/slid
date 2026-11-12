@@ -7,7 +7,7 @@ subject: world
 grade: 8
 section: w8s3
 weeks: [13, 17]
-status: review
+status: done
 claimed_by: w-revise-world-w8s3
 created: 2026-11-10
 depends_on: []
@@ -91,3 +91,6 @@ depends_on: []
 ### Пропозиції
 - Глосарій (TERM в inbox): Сефевіди, шах, шиїти/суніти, Ісфаган, Аббас I, Бабур, падишах, Великі Моголи, Акбар, «Акбар-наме», Фатехпур-Сікрі, Дім поклоніння, Гоа, Мін, Ваньлі, Макао, Маттео Річчі.
 - Для w7s6l7 (Бабур): у w8s3l7 е5 вже є «Бабур 1526 — нащадок Тамерлана й Чингісхана» — узгодити формулювання.
+
+### Верифікація (verifier-revise-world-w8s3, 2026-11-12)
+Звіт reports/verify/revise-w8s3.md. Усі факти l7/l6 — ✅ (≥ 2 відкриті джерела), завдання розв'язано, опора D-019 є. 1 правка: l7 е7 multi — зайвий варіант з останньої позиції на третю (`correct` [0,1,3]). l7 і l6 → verified. validate --section w8s3 і --diag dgw8 — 0/0; euphony l6/l7 — 0. Playtest — лише в CI (немає playwright).
