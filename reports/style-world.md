@@ -37,7 +37,8 @@
 | w8s1l3 Загублений день «Вікторії» | 8 | 9 | 0.56 | 32 | 61 | 6.6 | 0.017 | 3 | — |
 | w8s1l4 Місто посеред озера | 8 | 8 | 0.5 | 29 | 71 | 6.3 | 0.055 | 4 | — |
 | w8s1l5 Срібна гора | 8 | 10 | 0.5 | 35 | 63 | 7.1 | 0.066 | 4 | — |
-| w8s1l6 Атлас нового світу (фінал) | 8 | 7 | 0.86 | 21 | 40 | 6.1 | 0.049 | 3 | — |
+| w8s1l7 Сукня, сукно й зерно | 8 | 10 | 0.5 | 38 | 74 | 7.4 | 0.049 | 3 | — |
+| w8s1l6 Атлас нового світу (фінал) | 8 | 8 | 0.88 | 21 | 40 | 6.1 | 0.056 | 3 | — |
 | w8s2l1 Філософи в бібліотеці папи | 8 | 9 | 0.56 | 34 | 66 | 7.3 | 0.033 | 4 | — |
 | w8s2l2 Крила, мармур і фарби | 8 | 9 | 0.56 | 29 | 58 | 6.8 | 0.048 | 3 | — |
 | w8s2l3 Тези з Віттенберга | 8 | 10 | 0.5 | 33 | 70 | 7 | 0.056 | 4 | — |
@@ -172,7 +173,7 @@
 
 Для z-оцінок sd не менше 10 % середнього; нижче наведено фактичне sd.
 
-- **7-9:lesson**: screens 9.82±0.8, gradedShare 0.55±0.04, readWordsPerScreen 32.05±3.94, maxReadWords 64.36±6.66, sentenceWords 6.62±0.33, longWordShare 0.04±0.01, typeVariety 3.42±0.52
-- **7-9:boss**: screens 7.13±0.34, gradedShare 0.86±0.01, readWordsPerScreen 18.93±1.73, maxReadWords 35±4.99, sentenceWords 6.19±0.21, longWordShare 0.04±0.01, typeVariety 3.13±0.34
+- **7-9:lesson**: screens 9.82±0.8, gradedShare 0.55±0.04, readWordsPerScreen 32.13±3.97, maxReadWords 64.49±6.7, sentenceWords 6.63±0.34, longWordShare 0.04±0.01, typeVariety 3.41±0.52
+- **7-9:boss**: screens 7.2±0.4, gradedShare 0.86±0.01, readWordsPerScreen 18.93±1.73, maxReadWords 35±4.99, sentenceWords 6.19±0.21, longWordShare 0.04±0.01, typeVariety 3.13±0.34
 - **10-11:lesson**: screens 9.53±0.79, gradedShare 0.54±0.04, readWordsPerScreen 37.39±3.96, maxReadWords 77.68±8.15, sentenceWords 7.36±0.26, longWordShare 0.05±0.02, typeVariety 3.53±0.56
 - **10-11:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 18.17±3.51, maxReadWords 36.17±3.62, sentenceWords 7.13±0.19, longWordShare 0.05±0.01, typeVariety 3.42±0.49
