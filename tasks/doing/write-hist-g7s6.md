@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-12T14:28:45.335Z
 id: write-hist-g7s6
 type: write-section
 subject: hist
@@ -6,7 +8,7 @@ grade: 7
 section: g7s6
 weeks: [32, 35]
 status: todo
-claimed_by:
+claimed_by: writer-hist-g7s6
 created: 2026-11-10
 ---
 # Написати розділ «Від Вітовта до Орші» (Історія України, 7 клас)
