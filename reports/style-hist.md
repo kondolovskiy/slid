@@ -142,7 +142,7 @@
 | g8s1l1 Дві держави — одна печатка | 8 | 9 | 0.56 | 28 | 69 | 6.4 | 0.028 | 4 | — |
 | g8s1l2 Хто править у сеймі | 8 | 8 | 0.63 | 21 | 53 | 6 | 0.025 | 3 | — |
 | g8s1l3 Два собори в одному місті | 8 | 8 | 0.63 | 21 | 61 | 6 | 0.036 | 3 | — |
-| g8s1l4 Школа князя й братства | 8 | 9 | 0.56 | 18 | 45 | 5.5 | 0.043 | 3 | readWordsPerScreen нетипово для сім'ї (z=-2.1); maxReadWords нетипово для сім'ї (z=-2.2) |
+| g8s1l4 Школа князя й братства | 8 | 9 | 0.56 | 18 | 45 | 5.5 | 0.043 | 3 | readWordsPerScreen нетипово для сім'ї (z=-2.2); maxReadWords нетипово для сім'ї (z=-2.2) |
 | g8s1l6 Церкву збудували міщани | 8 | 10 | 0.5 | 30 | 67 | 6.5 | 0.043 | 3 | — |
 | g8s1l7 Хто жив у Речі Посполитій | 8 | 10 | 0.5 | 30 | 63 | 6.2 | 0.052 | 3 | — |
 | g8s1l8 Ікона, вежа і проповідь | 8 | 10 | 0.5 | 28 | 63 | 6.4 | 0.05 | 4 | — |
@@ -167,8 +167,8 @@
 | g8s4l3 Булава на обаполи | 8 | 8 | 0.63 | 23 | 71 | 6.1 | 0.034 | 3 | — |
 | g8s4l4 Мир без козаків за столом | 8 | 7 | 0.57 | 22 | 65 | 5.7 | 0.045 | 3 | — |
 | g8s4l6 Край вільних поселень | 8 | 10 | 0.5 | 32 | 72 | 7.1 | 0.04 | 3 | — |
-| g8s4l7 Чигирин у вогні | 8 | 10 | 0.5 | 34 | 76 | 6.8 | 0.052 | 3 | maxReadWords=76 поза [0; 75]; readWordsPerScreen нетипово для сім'ї (z=2.1) |
-| g8s4l8 Полковник із Фастова | 8 | 10 | 0.5 | 35 | 68 | 6.9 | 0.046 | 4 | readWordsPerScreen нетипово для сім'ї (z=2.3) |
+| g8s4l7 Чигирин у вогні | 8 | 10 | 0.5 | 33 | 75 | 6.8 | 0.052 | 3 | — |
+| g8s4l8 Полковник із Фастова | 8 | 10 | 0.5 | 35 | 68 | 6.9 | 0.046 | 4 | readWordsPerScreen нетипово для сім'ї (z=2.4) |
 | g8s4l5 Архів доби Руїни (фінал) | 8 | 8 | 0.88 | 19 | 50 | 5.2 | 0.041 | 4 | typeVariety нетипово для сім'ї (z=2) |
 | g8s5l1 Гетьман із Батурина | 8 | 7 | 0.57 | 23 | 63 | 5.8 | 0.037 | 3 | — |
 | g8s5l2 День під Полтавою | 8 | 7 | 0.57 | 23 | 70 | 5.6 | 0.045 | 3 | — |
@@ -264,7 +264,7 @@
 
 - **5-6:lesson**: screens 8.11±1.22, gradedShare 0.57±0.08, readWordsPerScreen 23.37±3.69, maxReadWords 53.88±6.02, sentenceWords 6.02±0.39, longWordShare 0.04±0.02, typeVariety 3.18±0.71
 - **5-6:boss**: screens 6.76±0.55, gradedShare 0.85±0.02, readWordsPerScreen 12.47±2.91, maxReadWords 23.06±5.48, sentenceWords 5.12±0.4, longWordShare 0.05±0.01, typeVariety 3.35±0.48
-- **7-9:lesson**: screens 8.48±1.09, gradedShare 0.57±0.06, readWordsPerScreen 26.14±3.79, maxReadWords 61.92±7.56, sentenceWords 6.06±0.47, longWordShare 0.04±0.01, typeVariety 3.3±0.46
+- **7-9:lesson**: screens 8.48±1.09, gradedShare 0.57±0.06, readWordsPerScreen 26.13±3.77, maxReadWords 61.9±7.54, sentenceWords 6.06±0.47, longWordShare 0.04±0.01, typeVariety 3.3±0.46
 - **7-9:boss**: screens 7.67±0.47, gradedShare 0.87±0.01, readWordsPerScreen 22±2.34, maxReadWords 43.67±5.32, sentenceWords 5.62±0.37, longWordShare 0.04±0.01, typeVariety 3.2±0.4
 - **10-11:lesson**: screens 9±1.31, gradedShare 0.55±0.05, readWordsPerScreen 27.28±4.85, maxReadWords 61.09±8.24, sentenceWords 6.44±0.5, longWordShare 0.07±0.03, typeVariety 3.47±0.5
 - **10-11:boss**: screens 7.1±0.3, gradedShare 0.86±0.01, readWordsPerScreen 24±2.79, maxReadWords 47.7±7.13, sentenceWords 6.16±0.61, longWordShare 0.07±0.03, typeVariety 3.6±0.49

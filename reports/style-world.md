@@ -117,7 +117,7 @@
 | w9s6l1 Мішки в Сенаті | 9 | 9 | 0.56 | 30 | 62 | 6.4 | 0.058 | 3 | — |
 | w9s6l2 «Я звинувачую!» | 9 | 10 | 0.5 | 30 | 65 | 6.2 | 0.058 | 4 | — |
 | w9s6l3 Місце під сонцем | 9 | 10 | 0.5 | 33 | 61 | 7.3 | 0.029 | 3 | — |
-| w9s6l4 Великий кийок | 9 | 10 | 0.5 | 32 | 72 | 6.7 | 0.044 | 3 | — |
+| w9s6l4 Великий кийок | 9 | 10 | 0.5 | 31 | 69 | 6.7 | 0.044 | 3 | — |
 | w9s6l5 Імперія наздоганяє | 9 | 10 | 0.5 | 34 | 70 | 6.6 | 0.039 | 4 | — |
 | w9s6l6 Азія прокидається | 9 | 10 | 0.5 | 36 | 66 | 7 | 0.061 | 3 | — |
 | w9s6l7 Огляд світу 1912 року (фінал) | 9 | 7 | 0.86 | 18 | 37 | 6.6 | 0.059 | 4 | — |
@@ -210,7 +210,7 @@
 
 Для z-оцінок sd не менше 10 % середнього; нижче наведено фактичне sd.
 
-- **7-9:lesson**: screens 10.01±0.74, gradedShare 0.55±0.04, readWordsPerScreen 33.14±4.09, maxReadWords 66.04±6.15, sentenceWords 6.69±0.35, longWordShare 0.04±0.01, typeVariety 3.4±0.53
+- **7-9:lesson**: screens 10.01±0.74, gradedShare 0.55±0.04, readWordsPerScreen 33.13±4.09, maxReadWords 66.01±6.13, sentenceWords 6.69±0.35, longWordShare 0.04±0.01, typeVariety 3.4±0.53
 - **7-9:boss**: screens 7.61±0.49, gradedShare 0.87±0.01, readWordsPerScreen 19.06±1.72, maxReadWords 35.5±5.37, sentenceWords 6.28±0.24, longWordShare 0.04±0.01, typeVariety 3.28±0.45
 - **10-11:lesson**: screens 9.57±0.78, gradedShare 0.54±0.04, readWordsPerScreen 37.34±3.88, maxReadWords 77.89±8.25, sentenceWords 7.37±0.26, longWordShare 0.05±0.02, typeVariety 3.52±0.56
 - **10-11:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 18±3.42, maxReadWords 36.77±4.06, sentenceWords 7.14±0.19, longWordShare 0.05±0.01, typeVariety 3.38±0.49
