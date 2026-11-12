@@ -201,6 +201,14 @@
     return E;
   }
 
+  /** Відрізки [початок, кінець) вмісту авторських <span class="gw">…</span> (з урахуванням вкладених span) у рядку з тегами */
+  function gwRanges(src) {
+    const R = [], stack = [];
+    for (const m of src.matchAll(/<(\/?)span\b([^>]*)>/gi))
+      if (!m[1]) stack.push(/\bclass\s*=\s*["'](?:[^"']*\s)?gw(?:\s[^"']*)?["']/i.test(m[2]) ? m.index + m[0].length : -1);
+      else if (stack.length) { const a = stack.pop(); if (a >= 0) R.push([a, m.index]); }
+    return R;
+  }
   const BLOCK_TAG = /<\/?(?:p|br|hr|li|ul|ol|div|h[1-6]|table|thead|tbody|tr|td|th|blockquote|section|figure|figcaption|dl|dt|dd)\b[^>]*>/gi;
   /** Попередження розмітки (не ламають екран, але підказують відповідь чи плутають дитину): масив рядків. Розмітка з помилкою — [] (її дає issues) */
   function warnings(s) {
@@ -218,9 +226,12 @@
       // слово з пропуском, розірване HTML-тегом (<b>б{…}р</b>{…}за): рядок може перенестися посеред слова (рев'ю engine-lang-types R2-P3-3)
       // (тег між літерою чи пропуском і літерою чи пропуском, а в слові є пропуск; плеєр загортає в span.gw лише суцільні літери біля пропуску)
       // блокові теги (<p>, <br>, <li>…) — межа рядка, не «тег у слові»: після них переносу посеред слова немає (рев'ю engine-lang-p3 P3-3)
-      if (!g.error) { const src = String(s.text).replace(/\{[^}]*\}/g, "\u0001").replace(BLOCK_TAG, " ");
+      // розрив усередині авторського <span class="gw">…</span> (nowrap, як обгортка плеєра) — не попередження: рядок там не переноситься
+      // (tools-euphony-z-validate-gw п. 2: транскрипції «[ди́ви<sup>е</sup>{…}а]» у pu10s4)
+      if (!g.error) { const src = String(s.text).replace(/\{[^}]*\}/g, "\u0001").replace(BLOCK_TAG, " "), gw = gwRanges(src);
         for (const m of src.matchAll(/(?:[\p{L}\p{M}'’ʼ\u0001-]|<[^>]*>)*\u0001(?:[\p{L}\p{M}'’ʼ\u0001-]|<[^>]*>)*/gu))
-          if (/[\p{L}\u0001](?:<[^>]*>)+[\p{L}\u0001]/u.test(m[0])) { W.push(`gaps: слово з пропуском розірване HTML-тегом («${m[0].replace(/^(?:<[^>]*>)+|(?:<[^>]*>)+$/g, "").replace(/\u0001/g, "{…}")}») — рядок може перенестися посеред слова; обгорни тегом усе слово або винеси тег за його межі`); break; } } }
+          if ([...m[0].matchAll(/[\p{L}\u0001](?=((?:<[^>]*>)+)[\p{L}\u0001])/gu)].some(b => { const i = m.index + b.index, e = i + b[0].length + b[1].length + 1;
+            return !gw.some(([a, z]) => a <= i && e <= z); })) { W.push(`gaps: слово з пропуском розірване HTML-тегом («${m[0].replace(/^(?:<[^>]*>)+|(?:<[^>]*>)+$/g, "").replace(/\u0001/g, "{…}")}») — рядок може перенестися посеред слова; обгорни тегом усе слово або винеси тег за його межі`); break; } } }
     return W;
   }
   const TYPES = ["gaps", "pick", "stress", "word", "split"];

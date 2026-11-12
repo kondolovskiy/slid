@@ -190,6 +190,13 @@ const no = (v, msg) => eq(!!v, false, msg);
   for (const t of ["<p>Перше слово</p><p>{*А|О}кно…</p>", "Ден{ь|*—}<br>ки", "Ден{ь|*—}<br/>ки", "<li>ст{*і|и}л</li><li>{*о|а}кно</li>", "<P>Перше</P><DIV>{*А|О}кно</DIV>"])
     eq(L.warnings({ type: "gaps", text: t }), [], `warnings gaps: блоковий тег на межі слова — чисто («${t}»)`);
   ok(L.warnings({ type: "gaps", text: "<p>б<i>{*е|и}</i>реза</p>" }).some(w => w.includes("розірване")), "warnings gaps: рядковий тег у слові всередині абзацу — попередження");
+  // tools-euphony-z-validate-gw п. 2 (verify pu10s4 a09, a10): слово з пропуском і теги всередині одного <span class="gw"> (nowrap рушія) — чисто
+  for (const t of ['<i>дивишся</i> — <span class="gw">[ди́ви<sup>е</sup>{*с′:|шс′}а]</span><br><i>легкий</i> — <span class="gw">[ле<sup>и</sup>{*х|г}ки́й]</span>',
+    '<span class="gw">б<i>{*е|и}</i>реза</span>', "<span class='big gw'>б<b>{*е|и}</b>реза</span>", '<span class="gw">б<span class="x">{*е|и}</span>р<i>еза</i></span> і с{*е|и}ло'])
+    eq(L.warnings({ type: "gaps", text: t }), [], `warnings gaps: усе слово в span.gw — чисто («${t}»)`);
+  for (const t of ['<span class="gw">б{*е|и}р</span><b>еза</b>', '<span class="gwx">б<i>{*е|и}</i>реза</span>', '<span class="x">б<i>{*е|и}</i>реза</span>',
+    '<span class="gw">ліс</span> б<i>{*е|и}</i>реза', 'б<i>{*е|и}</i><span class="gw">реза</span>', '<span class="gw">с{*е|и}ло</span> б<i>{*е|и}</i>реза', '<span class="gw">б<i>{*е|и}</i>реза</span> с{*е|и}<b>ло</b>'])
+    ok(L.warnings({ type: "gaps", text: t }).some(w => w.includes("розірване")), `warnings gaps: розрив поза span.gw — попередження («${t}»)`);
   // п. 16 (pick-groups P3)
   ok(L.parsePick("Він [!!книжку читає] і [спить]").error, "pick: [!!…] — помилка (раніше кнопка «!книжку»)");
   eq(L.parsePick("Він [ ! книжку читає] і [ спить ]").words.map(w => [w.v, w.ok, !!w.group]), [["Він", false, false], ["книжку читає", false, true], ["і", false, false], ["спить", true, true]], "pick: пробіли біля «!» і в дужках");
