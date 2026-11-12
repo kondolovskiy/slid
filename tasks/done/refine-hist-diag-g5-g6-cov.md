@@ -4,7 +4,7 @@ claimed_at: 2026-11-12T09:47:12.868Z
 id: refine-hist-diag-g5-g6-cov
 type: refine-diag
 subject: hist
-status: review
+status: done
 claimed_by: writer-dgh56
 created: 2026-11-10
 depends_on: [write-hist-g5s7, write-hist-g6s9, write-hist-g6s10]

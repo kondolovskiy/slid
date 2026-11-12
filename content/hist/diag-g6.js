@@ -6,14 +6,14 @@
    теми 6 кл. — по одній на розділ g6s1…g6s8; завдання cur перевіряє все ядро (outro.learned) уроку.
    Дати — з memory/long/facts/hist.md і hist-2.md (№1, 9–11, 56, 57, 126, 325, 328, 333) і з самих уроків.
    id тесту dgh6 і порядок завдань — ключі прогресу: заміна на місці — лише з rev (CONTENT_SCHEMA §9).
-   2026-11-12 (refine-hist-diag-g5-g6-cov): лише for — g6s9 у era, srckind; g6s10 у era, evid, legend; завдання, порядок і rev без змін; статус → draft.
+   2026-11-12 (refine-hist-diag-g5-g6-cov): лише for — g6s9 у era, srckind; g6s10 у era, evid, legend; завдання, порядок і rev без змін.
    Перевірка: node tools/validate.mjs --diag dgh6 */
 SLID.diag("hist", {
   id: "dgh6",
   grade: 6,
   title: "Що ти вже вмієш?",
   why: "Знайдемо вміння історика з 5 класу, які варто згадати, і те, що з 6 класу ти вже знаєш.",
-  status: "draft",
+  status: "verified",
   meta: { author: "w-write-hist-diag-g6", created: "2026-11-06", factcheck: "verifier-dgh6", teacher: null },
   topics: [
     // передумови з 5 класу
