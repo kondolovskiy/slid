@@ -1,11 +1,13 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-12T14:36:48.825Z
 id: revise-hist-g6s3-cov
 type: revise-section
 subject: hist
 grade: 6
 section: g6s3
 status: todo
-claimed_by:
+claimed_by: writer-hist-g6s3
 created: 2026-11-10
 depends_on: [fix-hist-weeks-cov]
 ---
