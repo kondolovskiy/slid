@@ -1,5 +1,6 @@
 /* Слід · Історія, 6 клас — «Кіммерійці, скіфи, сармати»
-   Статус уроків: l1–l2 verified після фото D-027 (photo-g6s3; verifier-images-g6s3, 2026-10-31; reports/verify/images-hist-g6s3.md); l3–l5 verified (D-019 revise reviser-g6s3, verifier-g6s3-d019, 2026-10-13). 5 уроків.
+   Статус уроків: l6 (новий, «Від бронзи до заліза», перший за порядком) — draft; l2 (+ екран про устрій скіфів) і l5 (фінал, + завдання на l6) — draft (revise-hist-g6s3-cov, 2026-11-12).
+   l1, l3, l4 verified (фото D-027 — verifier-images-g6s3, 2026-10-31; D-019 — verifier-g6s3-d019, 2026-10-13); у них змінено лише номер уроку в eyebrow. 6 уроків.
    Перевірка: node tools/validate.mjs && node tools/stats.mjs
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("hist", {
@@ -41,6 +42,24 @@ SLID.section("hist", {
       "Conrad Cichorius",
       "CC BY-SA 4.0",
       "https://commons.wikimedia.org/wiki/File:Sarmatian_cataphracts_in_Trajan%27s_column,_2nd_century_CE.jpg"
+    ],
+    [
+      "Бронзовий меч, XIII ст. до н. е. (Метрополітен-музей 54.46.8)",
+      "The Metropolitan Museum of Art",
+      "CC0",
+      "https://www.metmuseum.org/art/collection/search/27513"
+    ],
+    [
+      "Скіфська сокира із залізним лезом, VI–V ст. до н. е. (Метрополітен-музей 65.4)",
+      "The Metropolitan Museum of Art",
+      "CC0",
+      "https://www.metmuseum.org/art/collection/search/325704"
+    ],
+    [
+      "Курган з кромлехом, Томаківська громада, Дніпропетровщина (кадровано)",
+      "Сарапулов",
+      "CC BY-SA 4.0",
+      "https://commons.wikimedia.org/wiki/File:%D0%9A%D1%83%D1%80%D0%B3%D0%B0%D0%BD_%D0%B7_%D0%BA%D1%80%D0%BE%D0%BC%D0%BB%D0%B5%D1%85%D0%BE%D0%BC_IMG_7273.jpg"
     ]
   ],
   lessons: [
@@ -54,7 +73,7 @@ SLID.section("hist", {
       screens: [
         {
           type: "intro",
-          eyebrow: "Розділ 5 · Урок 1",
+          eyebrow: "Розділ 5 · Урок 2",
           title: "Як звали перших людей наших земель?",
           body: `<p class="lead">Люди жили тут задовго до кіммерійців. Згадай трипільців: величезні поселення, розписний посуд.</p><p>Але як трипільці називали себе, ніхто не знає. Вони не мали письма. Тож коли вперше записали <b>назву</b> народу з наших земель?</p>`,
           cta: "Розслідувати"
@@ -164,7 +183,7 @@ SLID.section("hist", {
       screens: [
         {
           type: "intro",
-          eyebrow: "Розділ 5 · Урок 2",
+          eyebrow: "Розділ 5 · Урок 3",
           title: "Чи можна вірити чужинцеві?",
           img: "img/hist/g6s3/herodotus.jpg",
           tall: true,
@@ -279,7 +298,7 @@ SLID.section("hist", {
       screens: [
         {
           type: "intro",
-          eyebrow: "Розділ 5 · Урок 3",
+          eyebrow: "Розділ 5 · Урок 4",
           title: "Чому скіфське золото ховалося в землі?",
           img: "img/hist/g6s3/pectoral.jpg",
           cap: "Копія пекторалі з кургану Товста Могила (IV ст. до н. е.) в Археологічному музеї НАН України. Оригінал зберігається у Скарбниці Національного музею історії України в Києві.",
@@ -399,7 +418,7 @@ SLID.section("hist", {
       screens: [
         {
           type: "intro",
-          eyebrow: "Розділ 5 · Урок 4",
+          eyebrow: "Розділ 5 · Урок 5",
           title: "Хто ці воїни в лусці?",
           img: "img/hist/g6s3/sarmatians-trajan.jpg",
           tall: true,

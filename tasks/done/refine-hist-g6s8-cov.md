@@ -6,7 +6,7 @@ type: refine-section
 subject: hist
 grade: 6
 section: g6s8
-status: review
+status: done
 claimed_by: writer-hist-g6s8
 created: 2026-11-10
 depends_on: [fix-hist-weeks-cov]
