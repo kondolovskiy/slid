@@ -1,5 +1,7 @@
 /* Слід · Історія, 5 клас — «Україна у світі»
-   Статус: h41–h45 verified (h41–h43 — нові фінали src/crit, h43 — порядок екранів, style-hist-g5-finals; verify 2026-11-04, reports/verify/style-hist-g5.md). 5 уроків.
+   Статус: h41–h44 verified (h41–h43 — нові фінали src/crit, h43 — порядок екранів, style-hist-g5-finals; verify 2026-11-04, reports/verify/style-hist-g5.md;
+   у h44 змінено лише номер в eyebrow — «Урок 6»). Нові s4l6 «Винаходи», s4l7 «Українці світу» і фінал h45 (+ питання 4–5, pre) — draft
+   (revise-hist-s4-cov, 2026-11-12; джерела — нотатки задачі). Порядок: h41, h42, h43, s4l6, s4l7, h44, h45. 7 уроків.
    Перевірка: node tools/validate.mjs --section s4 && node tools/stats.mjs --subject hist
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("hist", {
@@ -46,6 +48,24 @@ SLID.section("hist", {
       "Петров Эдуард (скан)",
       "CC0",
       "https://commons.wikimedia.org/wiki/File:Zlatniks_of_prince_Vladimir.jpg"
+    ],
+    [
+      "Місячний модуль «Орел» (Apollo 11) на орбіті Місяця, 20 липня 1969 р.",
+      "NASA (фото Майкла Коллінза з корабля «Колумбія»)",
+      "суспільне надбання (твір NASA, PD-USGov-NASA)",
+      "https://commons.wikimedia.org/wiki/File:Apollo_11_Lunar_Module_Eagle_in_landing_configuration_in_lunar_orbit_from_the_Command_and_Service_Module_Columbia.jpg"
+    ],
+    [
+      "Козацька чайка: малюнок з книжки «Description d'Ukranie», Руан, 1660 р. (John Carter Brown Library, Internet Archive)",
+      "Гійом Левассер де Боплан",
+      "суспільне надбання (PD-old-100-expired)",
+      "https://commons.wikimedia.org/wiki/File:Description_d%27Vkranie_(page_74_crop_Cossack_boat).jpg"
+    ],
+    [
+      "Ілля Мечников у лабораторії, Париж, 1913 р. (Gallica, BnF, btv1b6926750k)",
+      "Agence Rol; реставрація — Adam Cuerden (Вікісховище)",
+      "суспільне надбання (PD-anon-70-EU, PD-1923)",
+      "https://commons.wikimedia.org/wiki/File:Professeur_Metchnikoff,_portrait_du_scientifique_dans_un_laboratoire_de_recherche.jpg"
     ]
   ],
   lessons: [
@@ -638,7 +658,7 @@ SLID.section("hist", {
       screens: [
         {
           type: "intro",
-          eyebrow: "Розділ 4 · Урок 4",
+          eyebrow: "Розділ 4 · Урок 6",
           title: "Історія цієї академії почалася понад 400 років тому",
           img: "img/h5-kma.jpg",
           cap: "Старий академічний корпус Києво-Могилянської академії, 2020 р.",
@@ -714,7 +734,7 @@ SLID.section("hist", {
       title: "Посол України",
       short: "Фінал розділу",
       icon: "star",
-      status: "verified",
+      status: "draft",
       boss: true,
       badge: "envoy",
       why: "Перевірка всього розділу і всього року. Бали подвоєні.",
@@ -730,6 +750,7 @@ SLID.section("hist", {
           type: "choice",
           sk: "cult",
           eyebrow: "Питання 1",
+          pre: "h41",
           title: "«Звідки ваш герб?»",
           opts: ["Тризуб — знак київського князя Володимира X–XI ст.", "Його вигадали 1991 р.", "Це герб козацької Січі"],
           correct: 0,
@@ -741,6 +762,7 @@ SLID.section("hist", {
           type: "sort",
           sk: "cult",
           eyebrow: "Питання 2",
+          pre: "h42",
           title: "«Що у вас у списку ЮНЕСКО?»",
           bins: ["Об'єкт", "Традиція"],
           items: [
@@ -756,6 +778,7 @@ SLID.section("hist", {
           type: "choice",
           sk: "cult",
           eyebrow: "Питання 3",
+          pre: "h43",
           title: "«А хто з українців відомий у світі?»",
           opts: ["Таких немає", "Всі українці — козаки", "Ігор Сікорський — конструктор гелікоптерів"],
           correct: 2,
@@ -765,8 +788,41 @@ SLID.section("hist", {
         },
         {
           type: "choice",
-          sk: "crit",
+          sk: "cult",
           eyebrow: "Питання 4",
+          pre: "s4l6",
+          title: "«Ми співаємо на Різдво Carol of the Bells. До чого тут Україна?»",
+          opts: [
+            "Це англійська пісня, Україна ні до чого",
+            "Її мелодія — «Щедрик» в обробці Леонтовича",
+            "Її склали козаки в поході на чайках"
+          ],
+          correct: 1,
+          fbOk: "Саме так.",
+          fbBad: "Згадай урок 4.",
+          fbText: "«Щедрик» Миколи Леонтовича вперше заспівали в Києві 1916 р. Англійські слова до його мелодії склав Пітер Вільговський."
+        },
+        {
+          type: "choice",
+          sk: "cult",
+          eyebrow: "Питання 5",
+          pre: "s4l7",
+          title: "«Хто з ваших учених отримав Нобелівську премію?»",
+          opts: [
+            "Ілля Мечников — за праці про імунітет",
+            "Юрій Дрогобич — за книжку 1483 р.",
+            "Серж Лифар — за балет у Парижі"
+          ],
+          correct: 0,
+          fbOk: "Точно.",
+          fbBad: "Згадай урок 5.",
+          fbText: "Мечников, родом з Харківщини, отримав премію 1908 р. Дрогобич був ректором у Болоньї, а Лифар керував балетом Паризької опери."
+        },
+        {
+          type: "choice",
+          sk: "crit",
+          eyebrow: "Питання 6",
+          pre: "h41",
           title: "Іноземець каже: «Україна з'явилася лише 1991 року»",
           img: "img/hist/s4/zlatnyky.jpg",
           cap: "Златники князя Володимира, кінець X — початок XI ст. Малюнки з книги І. Толстого про найдавніші монети Русі, 1882 р.",
@@ -784,7 +840,8 @@ SLID.section("hist", {
         {
           type: "order",
           sk: "time",
-          eyebrow: "Питання 5",
+          eyebrow: "Питання 7",
+          pre: "h44",
           title: "Коротка історія для гостей",
           items: [
             "Монети князя Володимира з тризубом (кін. X — поч. XI ст.)",

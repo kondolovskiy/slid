@@ -3,7 +3,8 @@
    2026-11-12 (revise-hist-g11s4-cov, програма № 698, од. 5.4, 5.5, 5.7, 5.9): нові уроки g11s4l5 «Між Заходом і Москвою» (після l1)
    і g11s4l6 «Влада, гроші й Конституція» (після l2) — draft; у фіналі l4 — завдання на l5 і l6 (пункти 3 і 5), прибрано дубль на l2
    (сортування «Хто захищає голос?»), додано pre; l4 — draft. Eyebrow l2 → «Урок 3», l3 → «Урок 5» (зміст verified-уроків не змінено).
-   Тепер 6 уроків (5 тем + boss). URL нових фактів — у tasks/review/revise-hist-g11s4-cov.md.
+   Тепер 6 уроків (5 тем + boss). URL нових фактів — у tasks/done/revise-hist-g11s4-cov.md.
+   2026-11-12 verifier-revise-hist-g11s4-cov: l5, l6, l4 → verified (звіт reports/verify/revise-g11s4-cov.md).
    Перевірка: node tools/validate.mjs --section g11s4
    Схема й правила: docs/CONTENT_SCHEMA.md, style/; D-019, D-020, D-020a.
    Джерела: НБУ, Світовий банк, ЦВК, Верховний Суд, Верховна Рада, ОБСЄ/БДІПЛ, УІНП, ООН, Рада Європи.
@@ -224,7 +225,7 @@ SLID.section("hist", {
       title: "Між Заходом і Москвою",
       short: "Зовнішня політика",
       icon: "globe",
-      status: "draft",
+      status: "verified",
       why: "Ти дослідиш, що Україна отримала за відмову від ядерної зброї і чому шукала захисту в європейських та євроатлантичних організаціях.",
       screens: [
         {
@@ -531,7 +532,7 @@ SLID.section("hist", {
       title: "Влада, гроші й Конституція",
       short: "Олігархи й Конституція",
       icon: "scale",
-      status: "draft",
+      status: "verified",
       why: "Ти дослідиш, як великі гроші впливали на рішення держави і як змінювали правила розподілу влади.",
       screens: [
         {
@@ -835,7 +836,7 @@ SLID.section("hist", {
       title: "Дорожня карта демократії",
       short: "Фінал розділу",
       icon: "path",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "demroadmap",
       why: "Громадська рада перевіряє дорожню карту демократичних змін. Бали подвоєні.",
