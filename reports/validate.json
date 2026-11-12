@@ -1,7 +1,5 @@
 {
-  "date": "2026-11-12T09:20:46.418Z",
+  "date": "2026-11-12T09:23:08.957Z",
   "errors": [],
-  "warnings": [
-    "content/world/g7-w7s6.js#w7s6l8: sentenceWords=5.2 поза профілем [6; 13] для world, 7-9 кл."
-  ]
+  "warnings": []
 }
