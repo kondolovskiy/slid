@@ -6,7 +6,7 @@ type: revise-section
 subject: hist
 grade: 11
 section: g11s2
-status: review
+status: done
 claimed_by: writer-hist-g11s2
 created: 2026-11-10
 depends_on: [refine-hist-diag-g10-g11]
@@ -70,3 +70,6 @@ depends_on: [refine-hist-diag-g10-g11]
 **Build не запускав.** Нові зображення вже опинилися в чужому коміті 26dcf12 («hist: g9s4 cov verified») — оркестратору звірити, що в ньому фінальна версія `st-george-lviv.jpg` (Aeou, без пам'ятника).
 **Тест рівня:** cur-теми l6/l7 — лише нова редакція dgh11 з новим id (задача п. 7), dgh11b не змінював.
 **Git:** я нічого не комітив, але фінальна версія `content/hist/g11-g11s2.js` уже потрапила в чужий коміт d1b2b34, а зображення — у 26dcf12 (HEAD = робоче дерево; `st-george-lviv.jpg` — фінальна версія від Aeou). Оркестратору — врахувати під час злиття.
+
+### verifier-revise-hist-g11s2-cov · 2026-11-12
+Вердикт: придатний. l1, l6–l9, l5 → verified; l2–l4 — лише eyebrow (опори dgh11b не зачеплено). 11 правок: l7 ек. 9 варіант «без єпископів»; l9 Шелест («м'якість до інакодумців» → «націоналізм»), ст. 6 Конституції (КПРС), «Червона рута» «з 1970 р.»; l8 кукурудза «без урахування місцевих умов» (ек. 2 і sort); l6 ек. 3 hint; милозвучність l1 (3). Звіт — reports/verify/revise-g11s2-cov.md. validate g11s2 0 помилок, dgh11b 0/0. Правки потрапили в чужі коміти 80572a0, 19fda9b, feb8e17.
