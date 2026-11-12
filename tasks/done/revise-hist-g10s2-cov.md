@@ -6,7 +6,7 @@ type: revise-section
 subject: hist
 grade: 10
 section: g10s2
-status: review
+status: done
 claimed_by: writer-hist-g10s2
 created: 2026-11-10
 depends_on: [refine-hist-diag-g10-g11]
