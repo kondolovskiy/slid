@@ -1,11 +1,13 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-12T09:25:32.041Z
 id: refine-hist-g5s6-cov
 type: refine-section
 subject: hist
 grade: 5
 section: g5s6
 status: todo
-claimed_by:
+claimed_by: writer-hist-g5s6
 created: 2026-11-10
 depends_on: []
 ---
