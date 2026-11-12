@@ -7,7 +7,7 @@ subject: world
 grade: 8
 section: w8s3
 weeks: [13, 17]
-status: todo
+status: review
 claimed_by: w-revise-world-w8s3
 created: 2026-11-10
 depends_on: []
