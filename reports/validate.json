@@ -1,5 +1,19 @@
 {
-  "date": "2026-11-12T14:34:50.568Z",
+  "date": "2026-11-12T14:35:07.413Z",
   "errors": [],
-  "warnings": []
+  "warnings": [
+    "content/hist/g10-g10s2.js#g10s2l1: sentenceWords=6.2 поза профілем [7; 15] для hist, 10-11 кл.",
+    "content/hist/g10-g10s2.js#g10s2l2: sentenceWords=6.5 поза профілем [7; 15] для hist, 10-11 кл.",
+    "content/hist/g10-g10s2.js#g10s2l3: sentenceWords=6.4 поза профілем [7; 15] для hist, 10-11 кл.",
+    "content/hist/g10-g10s2.js#g10s2l10: gradedShare=0.45 поза профілем [0.5; 0.9] для hist, 10-11 кл.",
+    "content/hist/g10-g10s2.js#g10s2l4: sentenceWords=6 поза профілем [7; 15] для hist, 10-11 кл.",
+    "content/hist/g10-g10s2.js#g10s2l5: sentenceWords=5.8 поза профілем [7; 15] для hist, 10-11 кл.",
+    "content/hist/g10-g10s2.js#g10s2l6: sentenceWords=6.3 поза профілем [7; 15] для hist, 10-11 кл.",
+    "content/hist/g10-g10s2.js#g10s2l7: sentenceWords=6.2 поза профілем [7; 15] для hist, 10-11 кл.",
+    "content/hist/g10-g10s2.js#g10s2l11: gradedShare=0.45 поза профілем [0.5; 0.9] для hist, 10-11 кл.",
+    "content/hist/g10-g10s2.js#g10s2l12 екран 8 (choice): дуже довге речення (35 слів): «У липні 1919 р. члени комісії писали Симонові Петлюрі, що ба…»",
+    "content/hist/g10-g10s2.js#g10s2l12: maxReadWords=96 поза профілем [0; 90] для hist, 10-11 кл.",
+    "content/hist/g10-g10s2.js#g10s2l8: sentenceWords=5.4 поза профілем [7; 15] для hist, 10-11 кл.",
+    "content/hist/g10-g10s2.js#g10s2l9: sentenceWords=6.2 поза профілем [7; 15] для hist, 10-11 кл."
+  ]
 }

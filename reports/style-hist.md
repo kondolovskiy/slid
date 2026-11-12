@@ -208,7 +208,7 @@
 | g9s4l2 Місто з димарів | 9 | 8 | 0.75 | 22 | 60 | 5.5 | 0.027 | 4 | gradedShare нетипово для сім'ї (z=3) |
 | g9s4l3 Чия мова на вулиці? | 9 | 10 | 0.6 | 25 | 60 | 6.1 | 0.023 | 3 | — |
 | g9s4l4 Земля за океаном | 9 | 9 | 0.56 | 25 | 65 | 5.5 | 0.05 | 3 | — |
-| g9s4l6 Від Одеси до Праги | 9 | 8 | 0.5 | 29 | 78 | 7.1 | 0.06 | 3 | maxReadWords=78 поза [0; 75]; maxReadWords нетипово для сім'ї (z=2) |
+| g9s4l6 Від Одеси до Праги | 9 | 8 | 0.5 | 29 | 77 | 7 | 0.061 | 3 | maxReadWords=77 поза [0; 75]; longWordShare нетипово для сім'ї (z=2) |
 | g9s4l7 Бахчисарай і Бердичів | 9 | 10 | 0.5 | 28 | 75 | 6.5 | 0.07 | 3 | longWordShare нетипово для сім'ї (z=2.8) |
 | g9s4l8 Життя без прикрас | 9 | 8 | 0.5 | 23 | 52 | 6.1 | 0.028 | 3 | — |
 | g9s4l5 Номер до друку (фінал) | 9 | 8 | 0.88 | 18 | 52 | 6.1 | 0.037 | 3 | — |
@@ -286,7 +286,7 @@
 
 - **5-6:lesson**: screens 8.11±1.22, gradedShare 0.57±0.08, readWordsPerScreen 23.37±3.69, maxReadWords 53.88±6.02, sentenceWords 6.02±0.39, longWordShare 0.04±0.02, typeVariety 3.18±0.71
 - **5-6:boss**: screens 6.76±0.55, gradedShare 0.85±0.02, readWordsPerScreen 12.47±2.91, maxReadWords 23.06±5.48, sentenceWords 5.12±0.4, longWordShare 0.05±0.01, typeVariety 3.35±0.48
-- **7-9:lesson**: screens 8.78±1.13, gradedShare 0.56±0.06, readWordsPerScreen 27.11±3.89, maxReadWords 62.71±7.48, sentenceWords 6.1±0.44, longWordShare 0.04±0.01, typeVariety 3.29±0.45
+- **7-9:lesson**: screens 8.78±1.13, gradedShare 0.56±0.06, readWordsPerScreen 27.11±3.89, maxReadWords 62.7±7.46, sentenceWords 6.1±0.44, longWordShare 0.04±0.01, typeVariety 3.29±0.45
 - **7-9:boss**: screens 8±0, gradedShare 0.88±0, readWordsPerScreen 21.67±2.33, maxReadWords 44±5.05, sentenceWords 5.71±0.35, longWordShare 0.04±0.01, typeVariety 3.27±0.44
 - **10-11:lesson**: screens 9.37±1.42, gradedShare 0.54±0.05, readWordsPerScreen 28.9±5.98, maxReadWords 63.53±10.83, sentenceWords 6.58±0.52, longWordShare 0.07±0.03, typeVariety 3.43±0.49
 - **10-11:boss**: screens 7.4±0.49, gradedShare 0.87±0.01, readWordsPerScreen 24.3±2.87, maxReadWords 47.7±7.13, sentenceWords 6.24±0.57, longWordShare 0.07±0.03, typeVariety 3.6±0.49
