@@ -237,9 +237,9 @@
 | g9s6l1 Листівка без жодного слова | 9 | 9 | 0.67 | 29 | 69 | 5.9 | 0.047 | 4 | — |
 | g9s6l2 Будинок, що дістався іншим | 9 | 8 | 0.5 | 30 | 63 | 5.4 | 0.027 | 3 | — |
 | g9s6l3 В'язниця, вибори й компроміс | 9 | 10 | 0.5 | 30 | 69 | 6 | 0.048 | 4 | — |
-| g9s6l4 Ліс, нафта й крамниця | 9 | 11 | 0.55 | 28 | 51 | 6.1 | 0.033 | 3 | — |
-| g9s6l5 Три краї під однією короною | 9 | 10 | 0.5 | 32 | 60 | 6.3 | 0.069 | 3 | longWordShare нетипово для сім'ї (z=2.6) |
-| g9s6l6 Виставка в Народному домі (фінал) | 9 | 7 | 0.86 | 16 | 38 | 5.6 | 0.036 | 3 | readWordsPerScreen нетипово для сім'ї (z=-2) |
+| g9s6l4 Ліс, нафта й крамниця | 9 | 11 | 0.55 | 27 | 51 | 6.1 | 0.032 | 3 | — |
+| g9s6l5 Три краї під однією короною | 9 | 10 | 0.5 | 34 | 63 | 6.4 | 0.067 | 3 | longWordShare нетипово для сім'ї (z=2.4) |
+| g9s6l6 Виставка в Народному домі (фінал) | 9 | 7 | 0.86 | 16 | 38 | 5.7 | 0.036 | 3 | readWordsPerScreen нетипово для сім'ї (z=-2) |
 | g9s5l1 Від гуртка до партії | 9 | 8 | 0.63 | 29 | 62 | 5.9 | 0.049 | 3 | — |
 | g9s5l2 Рік, що розхитав імперію | 9 | 10 | 0.5 | 33 | 61 | 5.6 | 0.06 | 3 | — |
 | g9s5l3 Історик, що написав націю | 9 | 7 | 0.57 | 29 | 65 | 5.6 | 0.053 | 3 | — |
@@ -328,7 +328,7 @@
 
 - **5-6:lesson**: screens 8.29±1.24, gradedShare 0.57±0.08, readWordsPerScreen 23.95±3.89, maxReadWords 53.91±5.92, sentenceWords 6.04±0.39, longWordShare 0.04±0.02, typeVariety 3.16±0.68
 - **5-6:boss**: screens 7.29±0.67, gradedShare 0.86±0.02, readWordsPerScreen 12.82±2.59, maxReadWords 23.82±5.11, sentenceWords 5.24±0.4, longWordShare 0.04±0.01, typeVariety 3.41±0.49
-- **7-9:lesson**: screens 8.95±1.17, gradedShare 0.55±0.06, readWordsPerScreen 27.45±3.76, maxReadWords 63.01±7.52, sentenceWords 6.12±0.43, longWordShare 0.04±0.01, typeVariety 3.32±0.47
-- **7-9:boss**: screens 7.94±0.23, gradedShare 0.88±0, readWordsPerScreen 21.22±2.55, maxReadWords 43.5±4.89, sentenceWords 5.68±0.33, longWordShare 0.04±0.01, typeVariety 3.22±0.42
+- **7-9:lesson**: screens 8.95±1.17, gradedShare 0.55±0.06, readWordsPerScreen 27.46±3.78, maxReadWords 63.03±7.51, sentenceWords 6.12±0.43, longWordShare 0.04±0.01, typeVariety 3.32±0.47
+- **7-9:boss**: screens 7.94±0.23, gradedShare 0.88±0, readWordsPerScreen 21.22±2.55, maxReadWords 43.5±4.89, sentenceWords 5.69±0.33, longWordShare 0.04±0.01, typeVariety 3.22±0.42
 - **10-11:lesson**: screens 9.57±1.28, gradedShare 0.54±0.04, readWordsPerScreen 30.63±6.1, maxReadWords 65.14±10.14, sentenceWords 6.77±0.58, longWordShare 0.07±0.02, typeVariety 3.44±0.5
 - **10-11:boss**: screens 8±0, gradedShare 0.88±0, readWordsPerScreen 24.6±2.94, maxReadWords 47.1±4.41, sentenceWords 6.55±0.64, longWordShare 0.07±0.02, typeVariety 3.6±0.49
