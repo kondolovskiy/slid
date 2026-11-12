@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-12T05:16:02.846Z
 id: write-world-w7s6
 type: write-section
 subject: world
@@ -6,7 +8,7 @@ grade: 7
 section: w7s6
 weeks: [30, 35]
 status: todo
-claimed_by:
+claimed_by: writer-world-w7s6
 created: 2026-11-10
 ---
 # Написати розділ «Європа і Азія в XIV–XV ст.» (Всесвітня історія, 7 клас)

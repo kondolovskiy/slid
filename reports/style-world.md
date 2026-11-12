@@ -16,11 +16,12 @@
 | w7s2l5 Книга, якій понад 1150 років | 7 | 10 | 0.5 | 26 | 55 | 6.4 | 0.023 | 4 | — |
 | w7s2l6 Караван із Києва до Чан'аня (фінал) | 7 | 7 | 0.86 | 17 | 27 | 6.1 | 0.038 | 3 | — |
 | w7s3l1 Молитва, меч і плуг | 7 | 9 | 0.56 | 31 | 61 | 6.4 | 0.018 | 3 | — |
-| w7s3l2 Присяга на вірність | 7 | 9 | 0.56 | 30 | 56 | 6.5 | 0.022 | 3 | — |
-| w7s3l3 Міське повітря | 7 | 10 | 0.6 | 25 | 53 | 6.3 | 0.029 | 3 | — |
+| w7s3l2 Присяга на вірність | 7 | 10 | 0.6 | 32 | 56 | 6.6 | 0.021 | 3 | — |
+| w7s3l3 Міське повітря | 7 | 11 | 0.64 | 26 | 53 | 6.4 | 0.035 | 3 | — |
 | w7s3l4 Світло в камені | 7 | 9 | 0.56 | 23 | 55 | 6 | 0.054 | 4 | readWordsPerScreen нетипово для сім'ї (z=-2.3) |
 | w7s3l5 Похід під знаком хреста | 7 | 10 | 0.5 | 33 | 54 | 6.4 | 0.038 | 3 | — |
-| w7s3l6 Від села до Святої землі (фінал) | 7 | 7 | 0.86 | 21 | 32 | 6.1 | 0.028 | 3 | — |
+| w7s3l7 Ченці, вчені й єретики | 7 | 10 | 0.5 | 39 | 85 | 6.7 | 0.063 | 3 | maxReadWords=85 поза [0; 75]; maxReadWords нетипово для сім'ї (z=2.8) |
+| w7s3l6 Від села до Святої землі (фінал) | 7 | 7 | 0.86 | 22 | 37 | 6.1 | 0.028 | 3 | — |
 | w7s4l1 Вишивка про завоювання | 7 | 10 | 0.6 | 35 | 55 | 6.6 | 0.025 | 3 | — |
 | w7s4l2 Король босоніж у снігу | 7 | 10 | 0.6 | 32 | 65 | 6.4 | 0.051 | 4 | — |
 | w7s4l3 Срібло й коні з-за гір | 7 | 8 | 0.5 | 31 | 69 | 6.3 | 0.031 | 3 | — |
@@ -188,7 +189,7 @@
 
 Для z-оцінок sd не менше 10 % середнього; нижче наведено фактичне sd.
 
-- **7-9:lesson**: screens 9.84±0.76, gradedShare 0.55±0.04, readWordsPerScreen 32.8±4.34, maxReadWords 65.14±6.77, sentenceWords 6.68±0.37, longWordShare 0.04±0.01, typeVariety 3.4±0.51
-- **7-9:boss**: screens 7.53±0.5, gradedShare 0.87±0.01, readWordsPerScreen 19±1.71, maxReadWords 35.8±5.11, sentenceWords 6.25±0.22, longWordShare 0.04±0.01, typeVariety 3.2±0.4
+- **7-9:lesson**: screens 9.86±0.76, gradedShare 0.55±0.05, readWordsPerScreen 32.91±4.34, maxReadWords 65.37±7.06, sentenceWords 6.68±0.37, longWordShare 0.04±0.01, typeVariety 3.39±0.51
+- **7-9:boss**: screens 7.53±0.5, gradedShare 0.87±0.01, readWordsPerScreen 19.07±1.81, maxReadWords 36.13±5.02, sentenceWords 6.25±0.22, longWordShare 0.04±0.01, typeVariety 3.2±0.4
 - **10-11:lesson**: screens 9.57±0.78, gradedShare 0.54±0.04, readWordsPerScreen 37.31±3.88, maxReadWords 77.65±8.12, sentenceWords 7.37±0.26, longWordShare 0.05±0.02, typeVariety 3.52±0.56
 - **10-11:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 18±3.42, maxReadWords 36.77±4.06, sentenceWords 7.14±0.19, longWordShare 0.05±0.01, typeVariety 3.38±0.49
