@@ -97,7 +97,7 @@
 | g6s10l3 Чотири обличчя зі Збруча | 6 | 9 | 0.56 | 28 | 53 | 6.2 | 0.009 | 3 | — |
 | g6s10l4 Глина, віск і ліра | 6 | 9 | 0.56 | 24 | 43 | 5.6 | 0.022 | 3 | — |
 | g6s10l5 Машина з морського дна | 6 | 10 | 0.5 | 26 | 54 | 6.3 | 0.017 | 3 | — |
-| g6s10l6 Табличка про потоп | 6 | 10 | 0.5 | 28 | 54 | 6.4 | 0.057 | 3 | — |
+| g6s10l6 Табличка про потоп | 6 | 10 | 0.5 | 28 | 54 | 6.3 | 0.057 | 3 | — |
 | g6s10l7 Чудеса, яких ніхто не бачив | 6 | 10 | 0.5 | 25 | 59 | 6.6 | 0.033 | 3 | — |
 | g6s10l8 Зала ідей (фінал) | 6 | 8 | 0.88 | 9 | 23 | 5.5 | 0.035 | 3 | — |
 | g6s5-l1 Коли рушила Європа | 6 | 8 | 0.5 | 26 | 58 | 6.4 | 0.037 | 4 | — |
@@ -191,7 +191,8 @@
 | g10s1l1 Два береги Збруча | 10 | 10 | 0.6 | 34 | 62 | 6.7 | 0.036 | 4 | sentenceWords=6.7 поза [7; 15] |
 | g10s1l2 Стрільці під калиною | 10 | 10 | 0.5 | 30 | 67 | 6.6 | 0.045 | 4 | sentenceWords=6.6 поза [7; 15] |
 | g10s1l3 Львів під чужою владою | 10 | 11 | 0.55 | 32 | 59 | 6.5 | 0.062 | 4 | sentenceWords=6.5 поза [7; 15] |
-| g10s1l4 Фільм про Велику війну (фінал) | 10 | 7 | 0.86 | 22 | 44 | 5.7 | 0.043 | 3 | sentenceWords=5.7 поза [7; 15] |
+| g10s1l5 Тил, біженці й полонені | 10 | 12 | 0.58 | 36 | 60 | 6.9 | 0.044 | 4 | sentenceWords=6.9 поза [7; 15]; screens нетипово для сім'ї (z=2.3) |
+| g10s1l4 Фільм про Велику війну (фінал) | 10 | 8 | 0.88 | 23 | 44 | 5.9 | 0.038 | 3 | sentenceWords=5.9 поза [7; 15] |
 | g10s2l1 Рада, що писала універсали | 10 | 10 | 0.5 | 32 | 61 | 6.2 | 0.083 | 3 | sentenceWords=6.2 поза [7; 15] |
 | g10s2l2 Однині — самостійна | 10 | 8 | 0.63 | 34 | 65 | 6.3 | 0.074 | 3 | sentenceWords=6.3 поза [7; 15] |
 | g10s2l3 Станція Крути | 10 | 10 | 0.5 | 28 | 71 | 6.4 | 0.04 | 4 | sentenceWords=6.4 поза [7; 15] |
@@ -219,7 +220,7 @@
 | g11s1l4 Не один рух опору | 10 | 7 | 0.57 | 27 | 64 | 7.4 | 0.081 | 3 | — |
 | g11s1l5 Вигнання з Криму | 10 | 7 | 0.57 | 25 | 59 | 7.1 | 0.11 | 3 | — |
 | g11s1l6 Перемога без монополії | 10 | 7 | 0.57 | 26 | 61 | 7.6 | 0.049 | 3 | — |
-| g11s1boss Архівна справа № 1939–1945 (фінал) | 10 | 7 | 0.86 | 27 | 51 | 7.6 | 0.066 | 4 | sentenceWords нетипово для сім'ї (z=2.3) |
+| g11s1boss Архівна справа № 1939–1945 (фінал) | 10 | 7 | 0.86 | 27 | 51 | 7.6 | 0.066 | 4 | sentenceWords нетипово для сім'ї (z=2.4) |
 | g11s2l1 Хліб після перемоги | 11 | 9 | 0.56 | 20 | 48 | 5.6 | 0.049 | 4 | sentenceWords=5.6 поза [7; 15] |
 | g11s2l2 Тріщина в цензурі | 11 | 9 | 0.56 | 21 | 49 | 6.4 | 0.076 | 3 | sentenceWords=6.4 поза [7; 15] |
 | g11s2l3 Право говорити | 11 | 10 | 0.6 | 21 | 48 | 6 | 0.109 | 4 | sentenceWords=6 поза [7; 15] |
@@ -245,9 +246,9 @@
 
 Для z-оцінок sd не менше 10 % середнього; нижче наведено фактичне sd.
 
-- **5-6:lesson**: screens 8.11±1.22, gradedShare 0.57±0.08, readWordsPerScreen 23.36±3.67, maxReadWords 53.9±6.02, sentenceWords 6.02±0.39, longWordShare 0.04±0.02, typeVariety 3.18±0.71
+- **5-6:lesson**: screens 8.11±1.22, gradedShare 0.57±0.08, readWordsPerScreen 23.36±3.67, maxReadWords 53.9±6.02, sentenceWords 6.01±0.39, longWordShare 0.04±0.02, typeVariety 3.18±0.71
 - **5-6:boss**: screens 6.76±0.55, gradedShare 0.85±0.02, readWordsPerScreen 12.47±2.91, maxReadWords 23.06±5.48, sentenceWords 5.12±0.4, longWordShare 0.05±0.01, typeVariety 3.35±0.48
 - **7-9:lesson**: screens 8.03±0.82, gradedShare 0.58±0.06, readWordsPerScreen 24.63±2.95, maxReadWords 61.19±7.77, sentenceWords 5.93±0.42, longWordShare 0.04±0.01, typeVariety 3.28±0.45
 - **7-9:boss**: screens 7.2±0.4, gradedShare 0.86±0.01, readWordsPerScreen 21.47±2.83, maxReadWords 42.93±4.88, sentenceWords 5.49±0.41, longWordShare 0.03±0.01, typeVariety 3.13±0.34
-- **10-11:lesson**: screens 8.93±1.24, gradedShare 0.55±0.05, readWordsPerScreen 27.07±4.71, maxReadWords 61.12±8.34, sentenceWords 6.43±0.49, longWordShare 0.07±0.03, typeVariety 3.45±0.5
-- **10-11:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 23.9±2.84, maxReadWords 47.7±7.13, sentenceWords 6.13±0.63, longWordShare 0.07±0.02, typeVariety 3.6±0.49
+- **10-11:lesson**: screens 9±1.31, gradedShare 0.55±0.05, readWordsPerScreen 27.28±4.85, maxReadWords 61.09±8.24, sentenceWords 6.44±0.49, longWordShare 0.07±0.03, typeVariety 3.47±0.5
+- **10-11:boss**: screens 7.1±0.3, gradedShare 0.86±0.01, readWordsPerScreen 24±2.79, maxReadWords 47.7±7.13, sentenceWords 6.15±0.62, longWordShare 0.07±0.03, typeVariety 3.6±0.49
