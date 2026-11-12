@@ -7,7 +7,7 @@ subject: world
 grade: 8
 section: w8s5
 weeks: [30, 35]
-status: review
+status: done
 claimed_by: writer-refine-w8s5
 created: 2026-11-10
 depends_on: [revise-world-w8s5]
@@ -65,3 +65,5 @@ depends_on: [revise-world-w8s5]
 **Для верифікатора:** «протестанти, яких переслідували за віру» — спрощення «сепаратистів / батьків-пілігримів» (термін не вводив — ≤ 5 нових термінів); «посол» у cap — Франклін 1776–1779 комісіонер, з 1779 повноважний міністр (history.state.gov) — «посол» як шкільне спрощення.
 
 **Перевірки:** validate --section w8s5 — 0 помилок, 0 попереджень; validate --diag dgw9 — 0/0; euphony --section w8s5 — у l4 лишилося 1 (варіант е2); stats — l4 без прапорців (11 екранів, 0,55, maxReadWords 68). Build не запускав.
+
+**Верифікатор verifier-refine-world-w8s5, 2026-11-12.** w8s5l4 → verified. Правки: е8 «посли США» → «представники США» (1778 — комісіонери); е2 варіант «саме і коли» → «саме й коли». Звіт: reports/verify/refine-w8s5.md.
