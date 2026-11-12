@@ -25,6 +25,9 @@
 //      перерваний — завжди; тест іншого предмета — з екрана предмета.
 //  13) «Тренування» української (engine-pool-lang): пул ukr-фікстури (gaps, pick, stress) — помилка → hint → друга спроба; «Пояснення»; seen і SRS
 //      (з другої спроби — не зараховано); answer у журналі з key, pool, try, raw.
+//  14) Ширина gaps на телефоні (engine-gaps-wrap, QA qa-ukr-pool Q-1): на 360 і 375 px жоден екран gaps (фікстура з довгими варіантами з кількох
+//      слів + усі gaps уроків, пулів і тестів рівня, які завантажує сторінка) не виходить за край: картка .ltext без горизонтального переповнення,
+//      кнопки варіантів у межах екрана, #player не прокручується вбік; слово з пропуском (span.gw) — в одному рядку (не рветься посеред слова).
 //  5–7) Service worker (engine-sw-version-skew): деплой нової версії не змішує index.html і app.js; файл зі старого кешу не віддається
 //     (P3-6); оновлення не перезавантажує сторінку посеред уроку, а версія подій журналу лишається версією сторінки (P3-4); застосунок зі старим SW після одного змішаного відкриття сам переходить на консистентну нову версію.
 // Запуск: node tools/test-ui.mjs [--browser /opt/pw-browsers/chromium]
@@ -563,6 +566,62 @@ async function practiceLangScenario(browser) {
   await ctx.close();
 }
 
+/* 14) Ширина gaps на телефоні (engine-gaps-wrap; reports/qa/qa-ukr-pool.md Q-1). Кожен екран gaps показуємо як окремий урок
+   (window.__slidStart) і міряємо: .ltext — scrollWidth ≤ clientWidth і в межах вікна; кнопки .gopt — у межах вікна; #player без
+   горизонтальної прокрутки; кожен span.gw — один прямокутник (рядок не переноситься посеред слова з пропуском). Фікстура дає червоне
+   незалежно від змісту; живий зміст (усі gaps уроків, пулів і тестів рівня, які підключає сторінка) — повний обхід, без прив'язки до складу. */
+const GAPS_FIX = [
+  { type: "gaps", title: "Склади прислів'я", text: "Час, як вода, {*усе вперед тече|й конем не доженеш|дим не заховаєш}." },
+  { type: "gaps", title: "Довгі варіанти", text: "Він {*прийшов додому пізно ввечері|повернувся до школи вранці|так і не з'явився} — і всі {*зраділи цьому несподіваному|засмутилися через це|не помітили} поверненню." },
+  { type: "gaps", title: "Пропуск у слові", text: "Наш пере{*в|ф}ірений учитель роз{*с|з}казав про над{*з|с}вичайно дов{*г|х}ий шлях." },
+  { type: "gaps", title: "Довге слово", text: "Найрізноманітні{*ш|щ}ого, сільськогоспо{*д|т}арський, високопродукти{*в|ф}ний." },
+  // пропуск з довгими варіантами в лапках із розділовим знаком після: .gw тримає «…» і ». в одному рядку з пропуском — запас 2em у max-width
+  // (з max-width:100% виходить за край; рев'ю engine-gaps-wrap P1-1)
+  { type: "gaps", title: "Пропуск у лапках", text: "«{*Ой-ой-ой, яка ж біда|Ой лишенько, що ж робити}»." },
+  // суцільне довге слово у варіанті — переноситься всередині кнопки (overflow-wrap:anywhere у .gopt; рев'ю P3-3)
+  { type: "gaps", title: "Надто довгий варіант", text: "Слово {*тридцятитрьохсотсорокап'ятимільйоннотисячний|інше}." }];
+async function gapsWidthScenario(browser) {
+  for (const W of [360, 375]) {
+    const ctx = await browser.newContext({ viewport: { width: W, height: 760 }, isMobile: true, hasTouch: true, reducedMotion: "reduce", serviceWorkers: "block" });
+    const page = await ctx.newPage(), errors = []; page.on("pageerror", e => errors.push(String(e))); page.setDefaultTimeout(8000);
+    await page.route("**/fonts.googleapis.com/**", r => r.abort());
+    await page.goto(URL0);
+    await page.evaluate(() => { localStorage.clear(); localStorage.setItem("slid.v1", JSON.stringify({ grade: 5, subject: "ukr", unlockAll: true })); });
+    await page.reload();
+    const r = await page.evaluate(fix => {
+      const all = fix.map((s, i) => ["фікстура#" + i, s]);
+      for (const c of SLID_SUBJECTS) {
+        for (const sec of c.sections || []) for (const l of sec.lessons || []) (l.screens || []).forEach((s, i) => { if (s.type === "gaps") all.push([`${l.id}#${i}`, s]); });
+        for (const p of c.pools || []) for (const it of p.items || []) if (it.type === "gaps") all.push([`${p.id}:${it.id}`, it]);
+        for (const d of c.diags || []) (d.items || []).forEach((it, i) => { if (it.type === "gaps") all.push([`${d.id}#${i}`, it]); });
+      }
+      const c = SLID_SUBJECTS.find(c => c.id === "ukr") || SLID_SUBJECTS[0];
+      c.sections.push({ id: "fgw", grade: 5, weeks: [1, 1], title: "QA gaps", why: "QA", lessons: all.map(([, s], i) => ({ id: "fgw" + i, title: "QA", icon: "book", screens: [{ ...s, title: s.title || "QA" }] })) });
+      const vw = document.documentElement.clientWidth, bad = [];
+      all.forEach(([key], i) => {
+        window.__slidStart("fgw" + i);
+        const t = document.querySelector("#stage .ltext"), pl = document.querySelector("#player");
+        if (!t) { bad.push(`${key}: немає .ltext`); return; }
+        const tr = t.getBoundingClientRect(), why = [];
+        if (t.scrollWidth > t.clientWidth + 1) why.push(`.ltext scrollWidth ${t.scrollWidth} > clientWidth ${t.clientWidth}`);
+        if (tr.right > vw + 0.5 || tr.left < -0.5) why.push(`.ltext ${Math.round(tr.left)}–${Math.round(tr.right)} за вікном ${vw}`);
+        if (pl.scrollWidth > pl.clientWidth + 1) why.push(`#player scrollWidth ${pl.scrollWidth} > ${pl.clientWidth}`);
+        const out = [...t.querySelectorAll(".gopt")].filter(b => { const q = b.getBoundingClientRect(); return q.right > vw + 0.5 || q.left < -0.5; });
+        if (out.length) why.push(`за краєм варіанти «${out.map(b => b.textContent).join("», «")}»`);
+        const torn = [...t.querySelectorAll(".gw")].filter(g => g.getClientRects().length > 1);
+        if (torn.length) why.push(`слово з пропуском розірване: «${torn.map(g => g.textContent).join("», «")}»`);
+        if (why.length) bad.push(`${key}: ${why.join("; ")}`);
+      });
+      return { n: all.length, live: all.length - fix.length, bad };
+    }, GAPS_FIX);
+    ok(r.live > 0, `gaps ${W} px: у змісті сторінки не знайдено жодного екрана gaps (0 перевірок ≠ успіх)`);
+    ok(!r.bad.length, `gaps ${W} px: ${r.bad.length} з ${r.n} екранів gaps виходять за край або рвуть слово:\n  ${r.bad.slice(0, 15).join("\n  ")}`);
+    if (!r.bad.length) console.log(`gaps ${W} px: ${r.n} екранів gaps (${r.live} зі змісту) — без переповнення`);
+    ok(!errors.length, `gaps ${W} px: помилки сторінки: ` + errors.join(" | "));
+    await ctx.close();
+  }
+}
+
 const browser = await pw.chromium.launch(BROWSER ? { executablePath: BROWSER } : {});
 console.log(`test-ui: Chromium ${browser.version()} (${BROWSER || "власний Playwright, " + (process.env.PLAYWRIGHT_BROWSERS_PATH || "~/.cache/ms-playwright")})`);
 try {
@@ -658,6 +717,9 @@ try {
 
   // 12) Один тест рівня на головній (engine-diag-one-invite)
   await diagOneInviteScenario(browser);
+
+  // 14) Ширина gaps на телефоні (engine-gaps-wrap)
+  await gapsWidthScenario(browser);
 
   // 5–7) Оновлення service worker без змішування версій (engine-sw-version-skew; docs/PUBLISHING.md «Оновлення PWA»)
   await swScenarios(browser);
