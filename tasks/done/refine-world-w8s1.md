@@ -7,7 +7,7 @@ subject: world
 grade: 8
 section: w8s1
 weeks: [1, 6]
-status: review
+status: done
 claimed_by: w-refine-world-w8s1
 created: 2026-11-10
 depends_on: [revise-world-w8s1]
@@ -63,3 +63,5 @@ depends_on: [revise-world-w8s1]
 Перевірки: validate --section w8s1 — 0 помилок, 0 попереджень; stats — l1 і l5 без прапорців; euphony — у l1 і l5 0, лишилося 14 звітних підказок у verified l2–l4, l6 (не правив, рядок STYLE в inbox).
 Увага: проміжний стан файлу потрапив у чужі коміти b40b650, 4c5f0a3 (рядок в inbox); фінал — у робочому дереві.
 Верифікатору: формулювання меж 8.0.1 (за глосарієм; у ПВ явно не сказано); чи досить одного завдання на два терміни в l5 (3-кошиковий sort).
+
+Верифікатор: verifier-refine-w8s1, 2026-11-12 — w8s1l1, w8s1l5 → verified; змістових правок 0; звіт reports/verify/refine-w8s1.md.

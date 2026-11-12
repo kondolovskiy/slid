@@ -7,7 +7,7 @@ subject: world
 grade: 8
 section: w8s4
 weeks: [18, 23]
-status: review
+status: done
 claimed_by: w-refine-world-w8s4
 created: 2026-11-10
 depends_on: [revise-world-w8s4]
@@ -68,3 +68,5 @@ depends_on: [revise-world-w8s4]
 - Передача: «Тойотомі Хідейосі», «Ода Нобунага», «Рішельє», «Вільям III Оранський» — у glossary/world немає; TERM в inbox.
 
 **Перевірки:** validate --section w8s4 — 0 помилок, 0 попереджень; euphony --section w8s4 — 0 у l1, l2, l3, l5 (у l4, l6 лишились старі — не змінював); stats — l1/l2/l3/l5 без прапорців (по 11 екранів, частка завдань 0.55–0.64).
+
+**verifier-refine-w8s4, 2026-11-12.** Вердикт: прийнято, w8s4l1, l2, l3, l5 → `verified`. Правка: l3 е6 «здебільшого власним коштом» → «не взявши грошей з імператорської скарбниці: на власні й позичені кошти». «Славна» з «зокрема» — точно. Звіт reports/verify/refine-w8s4.md. validate --section w8s4 — 0/0; euphony — 0 у змінених уроках.
