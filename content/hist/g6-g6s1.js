@@ -1,6 +1,6 @@
 /* Слід · Історія, 6 клас — «Перші люди на наших землях»
    Статус уроків: l3, l6 verified (verifier-g6s1-d019, 2026-10-13); l1, l2, l4, l5 — фото D-027 (photo-g6s1), повторно verified (verifier-images-g6s1, 2026-10-31; reports/verify/images-hist-g6s1.md).
-   2026-11-12 (revise-hist-g6s1-cov): новий урок g6s1l7 «Після льодовика» (мезоліт) — draft; g6s1l5 (+ Єрихон, Чатал-Гююк) і фінал g6s1l6 (+ вітрина 5, pre) — draft. 7 уроків.
+   2026-11-12 (revise-hist-g6s1-cov): новий урок g6s1l7 «Після льодовика» (мезоліт); g6s1l5 (+ Єрихон, Чатал-Гююк) і фінал g6s1l6 (+ вітрина 5, pre) — verified (verifier-revise-g6s1-cov, 2026-11-12; reports/verify/revise-g6s1-cov.md). 7 уроків.
    Перевірка: node tools/validate.mjs --section g6s1 && node tools/stats.mjs --subject hist
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("hist", {
@@ -549,7 +549,7 @@ SLID.section("hist", {
       title: "Після льодовика",
       short: "Мезоліт",
       icon: "map",
-      status: "draft",
+      status: "verified",
       why: "Клімат змінювався ще в давнину. Побачиш, як мисливці пристосувалися, коли зникли мамонти.",
       screens: [
         {
@@ -694,7 +694,7 @@ SLID.section("hist", {
       title: "Від мисливця до хлібороба",
       short: "Землеробство",
       icon: "leaf",
-      status: "draft",
+      status: "verified",
       why: "Хліб на твоєму столі — наслідок однієї з найбільших змін у житті людей. Дізнаєшся, як вона почалася.",
       screens: [
         {
@@ -842,7 +842,7 @@ SLID.section("hist", {
       title: "Виставка кам'яного віку",
       short: "Фінал розділу",
       icon: "star",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "stoneage",
       why: "Перевірка всього розділу на одній виставці. Бали подвоєні.",
