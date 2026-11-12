@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-12T05:04:30.306Z
 id: write-hist-g5s7
 type: write-section
 subject: hist
@@ -6,7 +8,7 @@ grade: 5
 section: g5s7
 weeks: [1, 5]
 status: todo
-claimed_by:
+claimed_by: writer-hist-g5s7
 created: 2026-11-10
 ---
 # Написати розділ «Україна — наша держава» (Історія України, 5 клас)

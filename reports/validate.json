@@ -1,10 +1,7 @@
 {
-  "date": "2026-11-12T05:03:45.576Z",
+  "date": "2026-11-12T05:04:38.436Z",
   "errors": [],
   "warnings": [
-    "content/world/g8-w8s3.js#w8s3l7: readWordsPerScreen=47 поза профілем [8; 45] для world, 7-9 кл.",
-    "content/world/g8-w8s3.js#w8s3l7: maxReadWords=115 поза профілем [0; 75] для world, 7-9 кл.",
-    "content/world/g8-w8s3.js#w8s3l7: у 3 з 3 завдань choice правильний варіант — А: переставляй варіанти",
-    "content/world/g8-w8s3.js#w8s3l6: sentenceWords=5.9 поза профілем [6; 13] для world, 7-9 кл."
+    "content/world/g8-w8s3.js#w8s3l7: maxReadWords=84 поза профілем [0; 75] для world, 7-9 кл."
   ]
 }
