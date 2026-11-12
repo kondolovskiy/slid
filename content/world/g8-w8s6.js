@@ -18,7 +18,7 @@ SLID.section("world", {
   title: "Війни й імперії XVIII ст.",
   why: "Щоб розуміти, як Північна війна, війни за спадщину й російсько-турецькі війни перекроїли Європу та українські землі, а Британія підкорила Індію.",
   requires: ["w8s4l4", "w8s4l5", "w8s4l8", "g8s5l2", "g8s5l8"],
-  meta: { author: "write-world-w8s6", created: "2026-11-12", factcheck: "self", teacher: null },
+  meta: { author: "write-world-w8s6", created: "2026-11-12", factcheck: "verifier-write-world-w8s6", teacher: null },
   badges: [{ id: "wars18", name: "Знавець війн XVIII століття", icon: "shield", desc: "Пройти розділ «Війни й імперії XVIII ст.»" }],
   credits: [
     [
@@ -52,7 +52,7 @@ SLID.section("world", {
       title: "Цар стає імператором",
       short: "Північна війна",
       icon: "flag",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, як Північна війна зробила Московське царство Російською імперією. І навчишся відрізняти факт від оцінки, яку дала собі сама влада.",
       screens: [
         {
@@ -212,7 +212,7 @@ SLID.section("world", {
       title: "Корона в спадок",
       short: "Війни за спадщину",
       icon: "scale",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, чому смерть монарха могла розпалити війну на пів світу. І познайомишся з Фрідріхом II та Марією Терезією.",
       screens: [
         {
@@ -366,7 +366,7 @@ SLID.section("world", {
       title: "Хто успадкує Османів?",
       short: "1774 і 1783",
       icon: "map",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, як сусіди почали ділити землі Османської імперії і що це означало для Криму та півдня України. І навчишся читати урочисту гравюру як голос влади.",
       screens: [
         {
@@ -537,7 +537,7 @@ SLID.section("world", {
       title: "Компанія з власним військом",
       short: "Індія",
       icon: "globe",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, як торгова компанія підкорила одну з найбагатших країн світу. І побачиш, чого не видно на картині переможців.",
       screens: [
         {
@@ -707,7 +707,7 @@ SLID.section("world", {
       title: "Музей війн XVIII століття",
       short: "Фінал розділу",
       icon: "star",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "wars18",
       why: "Перевірка всього розділу. Бали подвоєні.",
