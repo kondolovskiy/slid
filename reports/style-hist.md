@@ -56,8 +56,8 @@
 | g6s1l2 Гострий край і теплий вогонь | 6 | 8 | 0.63 | 18 | 51 | 5.4 | 0.025 | 4 | — |
 | g6s1l3 Дім з кісток мамонта | 6 | 7 | 0.71 | 21 | 56 | 5.8 | 0.022 | 4 | — |
 | g6s1l4 Браслет з бивня мамонта | 6 | 7 | 0.57 | 19 | 54 | 6.2 | 0.025 | 3 | — |
-| g6s1l7 Після льодовика | 6 | 9 | 0.56 | 25 | 55 | 5.8 | 0.039 | 3 | — |
-| g6s1l5 Від мисливця до хлібороба | 6 | 9 | 0.67 | 26 | 54 | 6.2 | 0.037 | 4 | — |
+| g6s1l7 Після льодовика | 6 | 9 | 0.56 | 25 | 55 | 5.8 | 0.041 | 3 | — |
+| g6s1l5 Від мисливця до хлібороба | 6 | 9 | 0.67 | 26 | 54 | 6.1 | 0.038 | 4 | — |
 | g6s1l6 Виставка кам'яного віку (фінал) | 6 | 8 | 0.88 | 10 | 23 | 5.2 | 0.021 | 3 | — |
 | tr1 Люди без імені | 6 | 9 | 0.56 | 27 | 59 | 6.6 | 0.029 | 4 | — |
 | tr2 Поселення-велетні | 6 | 7 | 0.71 | 25 | 39 | 6.1 | 0.029 | 3 | maxReadWords нетипово для сім'ї (z=-2.5) |
@@ -149,7 +149,7 @@
 | g7s6l4 Русь за Карпатами і за Дністром | 7 | 10 | 0.5 | 28 | 56 | 6 | 0.052 | 4 | — |
 | g7s6l5 Війна за «всю Русь» | 7 | 11 | 0.55 | 27 | 57 | 6.3 | 0.04 | 4 | — |
 | g7s6l6 Магістр із Русі | 7 | 10 | 0.5 | 26 | 51 | 6.5 | 0.033 | 3 | — |
-| g7s6l7 Помічник великокнязівського писаря (фінал) | 7 | 8 | 0.88 | 16 | 32 | 5.3 | 0.031 | 3 | readWordsPerScreen нетипово для сім'ї (z=-2); maxReadWords нетипово для сім'ї (z=-2) |
+| g7s6l7 Помічник великокнязівського писаря (фінал) | 7 | 8 | 0.88 | 22 | 40 | 5.6 | 0.03 | 3 | — |
 | g8s1l1 Дві держави — одна печатка | 8 | 9 | 0.56 | 28 | 69 | 6.4 | 0.028 | 4 | — |
 | g8s1l2 Хто править у сеймі | 8 | 8 | 0.63 | 21 | 53 | 6 | 0.025 | 3 | — |
 | g8s1l3 Два собори в одному місті | 8 | 8 | 0.63 | 21 | 61 | 6 | 0.036 | 3 | — |
@@ -309,9 +309,9 @@
 
 Для z-оцінок sd не менше 10 % середнього; нижче наведено фактичне sd.
 
-- **5-6:lesson**: screens 8.22±1.24, gradedShare 0.57±0.08, readWordsPerScreen 23.77±3.88, maxReadWords 54.02±5.98, sentenceWords 6.03±0.39, longWordShare 0.04±0.02, typeVariety 3.17±0.69
+- **5-6:lesson**: screens 8.22±1.24, gradedShare 0.57±0.08, readWordsPerScreen 23.77±3.88, maxReadWords 54.02±5.98, sentenceWords 6.02±0.39, longWordShare 0.04±0.02, typeVariety 3.17±0.69
 - **5-6:boss**: screens 7±0.69, gradedShare 0.86±0.02, readWordsPerScreen 12.76±2.58, maxReadWords 23.82±5.11, sentenceWords 5.17±0.43, longWordShare 0.04±0.01, typeVariety 3.35±0.48
 - **7-9:lesson**: screens 8.9±1.17, gradedShare 0.56±0.06, readWordsPerScreen 27.25±3.85, maxReadWords 62.63±7.57, sentenceWords 6.11±0.44, longWordShare 0.04±0.01, typeVariety 3.31±0.46
-- **7-9:boss**: screens 8±0, gradedShare 0.88±0, readWordsPerScreen 21.31±2.64, maxReadWords 43.25±5.68, sentenceWords 5.69±0.35, longWordShare 0.04±0.01, typeVariety 3.25±0.43
+- **7-9:boss**: screens 8±0, gradedShare 0.88±0, readWordsPerScreen 21.69±2.26, maxReadWords 43.75±4.98, sentenceWords 5.71±0.34, longWordShare 0.04±0.01, typeVariety 3.25±0.43
 - **10-11:lesson**: screens 9.57±1.28, gradedShare 0.54±0.04, readWordsPerScreen 30.54±5.98, maxReadWords 64.89±9.92, sentenceWords 6.76±0.57, longWordShare 0.07±0.02, typeVariety 3.44±0.5
 - **10-11:boss**: screens 8±0, gradedShare 0.88±0, readWordsPerScreen 24.6±2.94, maxReadWords 47.1±4.41, sentenceWords 6.53±0.62, longWordShare 0.07±0.02, typeVariety 3.6±0.49
