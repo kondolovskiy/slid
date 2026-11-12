@@ -7,7 +7,7 @@ subject: world
 grade: 9
 section: w9s5
 weeks: [30, 35]
-status: review
+status: done
 claimed_by: w-refine-world-w9s5
 created: 2026-11-10
 depends_on: []
@@ -68,3 +68,5 @@ depends_on: []
 - l5 без нового фото для архітектури (завдання текстове, з ознак). Якщо потрібна ілюстрація будівлі модерну (будинок Городецького — свобода панорами в Україні обмежена; краще PD-фото до 1920-х чи Палац Гарньє / будинок Тасселя з Commons) — окрема задача `images-world-w9s5`.
 - Статус l2–l4 лишено `verified` (змінено лише «Розділ 5» → «Розділ 6» в eyebrow).
 - stats: l1 і l5 — по 11 екранів, gradedShare 0.55, без прапорців. validate — 0/0; euphony — у l1 і l5 0 відхилень (19 лишились у незмінених verified l2–l4, l6, усі — «звіт», не validate).
+
+**Верифікатор:** verifier-refine-w9s5, 11.11.2026. Звіт — reports/verify/refine-w9s5.md. 10 фактів ✅, 1 ❌ виправлено: «Звідси назва напряму» → «Так Курбе заявив про свій напрям». Усі нові завдання розв'язано, опору знайдено. l1 і l5 → verified. l2–l4 змінено лише в eyebrow, тому verified. dgw9 (l4) не зачеплено. validate 0/0. euphony l1/l5 — 0. Плейтест — лише в CI, бо в контейнері немає playwright.
