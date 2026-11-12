@@ -7,7 +7,7 @@ subject: hist
 grade: 6
 section: g6s10
 weeks: [28, 31]
-status: review
+status: done
 claimed_by: writer-hist-g6s10
 created: 2026-11-10
 ---
