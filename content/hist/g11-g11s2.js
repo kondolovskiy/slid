@@ -1,6 +1,7 @@
 /* Слід · Історія, 11 клас — «Повоєнна УРСР»
    Статус: l2, l3, l4 — verified (D-027: зображення перевірено 2026-10-30); l1, l5 змінено й l6–l9 додано 2026-11-12
-   (задача revise-hist-g11s2-cov, звіт reports/research/coverage-research-hist-coverage-g10-11.md §4.2 B1–B6) — draft.
+   (задача revise-hist-g11s2-cov, звіт reports/research/coverage-research-hist-coverage-g10-11.md §4.2 B1–B6) — verified 2026-11-12
+   (verifier-revise-hist-g11s2-cov, reports/verify/revise-g11s2-cov.md).
    9 уроків (8 + boss). Порядок у масиві хронологічний: l1, l6, l7, l2, l8, l3, l9, l4, фінал l5 (id не перейменовано).
    Перевірка: node tools/validate.mjs --section g11s2
    Схема й правила: docs/CONTENT_SCHEMA.md, style/; D-019, D-020, D-020a.
@@ -83,7 +84,7 @@ SLID.section("hist", {
       title: "Хліб після перемоги",
       short: "Голод 1946–1947",
       icon: "leaf",
-      status: "draft",
+      status: "verified",
       why: "Ти дослідиш, як наслідки війни, посуха й рішення влади спричинили масовий голод.",
       screens: [
         {
@@ -255,7 +256,7 @@ SLID.section("hist", {
       title: "Нові кордони, чужі домівки",
       short: "Кордони й переселення",
       icon: "map",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, як після війни нові кордони й рішення влади змусили сотні тисяч українців покинути домівки.",
       screens: [
         {
@@ -399,7 +400,7 @@ SLID.section("hist", {
       title: "Радянізація заходу",
       short: "УПА, «Захід», УГКЦ",
       icon: "shield",
-      status: "draft",
+      status: "verified",
       why: "Ти дослідиш, як радянська влада підкоряла західні області і як їй опиралися повстанці та віряни.",
       screens: [
         {
@@ -687,7 +688,7 @@ SLID.section("hist", {
       title: "Хрущовські експерименти",
       short: "Реформи Хрущова",
       icon: "bulb",
-      status: "draft",
+      status: "verified",
       why: "Ти оціниш реформи 1953–1964 рр.: що вони дали Україні, а що забрали.",
       screens: [
         {
@@ -992,7 +993,7 @@ SLID.section("hist", {
       title: "Застій: черги, дефіцит і 1972-й",
       short: "Застій",
       icon: "chart",
-      status: "draft",
+      status: "verified",
       why: "Ти побачиш, як у 1964–1985 рр. економіка гальмувала, а влада посилювала контроль, русифікацію та репресії.",
       screens: [
         {
@@ -1289,7 +1290,7 @@ SLID.section("hist", {
       title: "Експозиція пам'яті",
       short: "Фінал розділу",
       icon: "eye",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "g11s2museum",
       why: "Редакційна колегія музейної виставки має відібрати точні підписи й докази. Бали подвоєні.",
