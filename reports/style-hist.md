@@ -302,9 +302,9 @@
 | g11s4l1 Гроші, що тануть | 11 | 10 | 0.5 | 25 | 60 | 6.6 | 0.09 | 3 | sentenceWords=6.6 поза [7; 15] |
 | g11s4l5 Між Заходом і Москвою | 11 | 10 | 0.5 | 40 | 83 | 7 | 0.085 | 4 | — |
 | g11s4l2 Голос, який рахують | 11 | 10 | 0.5 | 23 | 62 | 6.5 | 0.105 | 4 | sentenceWords=6.5 поза [7; 15] |
-| g11s4l6 Влада, гроші й Конституція | 11 | 10 | 0.5 | 37 | 72 | 7.6 | 0.064 | 3 | — |
+| g11s4l6 Влада, гроші й Конституція | 11 | 10 | 0.5 | 38 | 76 | 7.7 | 0.066 | 3 | — |
 | g11s4l3 Гідність виходить на площу | 11 | 10 | 0.5 | 25 | 55 | 6.7 | 0.101 | 4 | sentenceWords=6.7 поза [7; 15] |
-| g11s4l4 Дорожня карта демократії (фінал) | 11 | 8 | 0.88 | 28 | 55 | 6.8 | 0.103 | 4 | sentenceWords=6.8 поза [7; 15] |
+| g11s4l4 Дорожня карта демократії (фінал) | 11 | 8 | 0.88 | 28 | 55 | 6.9 | 0.105 | 4 | sentenceWords=6.9 поза [7; 15] |
 | g11s5l1 Війна почалася 2014-го | 11 | 8 | 0.5 | 24 | 56 | 6.3 | 0.122 | 4 | sentenceWords=6.3 поза [7; 15]; longWordShare нетипово для сім'ї (z=2.2) |
 | g11s5l7 Між 2014 і 2022 | 11 | 10 | 0.5 | 33 | 82 | 7.2 | 0.06 | 4 | — |
 | g11s5l2 Новий масштаб війни | 11 | 8 | 0.5 | 20 | 46 | 6.4 | 0.083 | 4 | sentenceWords=6.4 поза [7; 15] |
@@ -322,5 +322,5 @@
 - **5-6:boss**: screens 7.18±0.71, gradedShare 0.86±0.02, readWordsPerScreen 12.82±2.59, maxReadWords 23.82±5.11, sentenceWords 5.2±0.41, longWordShare 0.04±0.01, typeVariety 3.41±0.49
 - **7-9:lesson**: screens 8.91±1.16, gradedShare 0.55±0.07, readWordsPerScreen 27.34±3.8, maxReadWords 62.69±7.6, sentenceWords 6.1±0.43, longWordShare 0.04±0.01, typeVariety 3.29±0.49
 - **7-9:boss**: screens 7.94±0.24, gradedShare 0.88±0, readWordsPerScreen 21.35±2.57, maxReadWords 43.41±5.02, sentenceWords 5.7±0.33, longWordShare 0.04±0.01, typeVariety 3.24±0.42
-- **10-11:lesson**: screens 9.57±1.28, gradedShare 0.54±0.04, readWordsPerScreen 30.6±6.07, maxReadWords 65.03±10.1, sentenceWords 6.76±0.58, longWordShare 0.07±0.02, typeVariety 3.44±0.5
-- **10-11:boss**: screens 8±0, gradedShare 0.88±0, readWordsPerScreen 24.6±2.94, maxReadWords 47.1±4.41, sentenceWords 6.54±0.63, longWordShare 0.07±0.02, typeVariety 3.6±0.49
+- **10-11:lesson**: screens 9.57±1.28, gradedShare 0.54±0.04, readWordsPerScreen 30.62±6.09, maxReadWords 65.1±10.16, sentenceWords 6.76±0.58, longWordShare 0.07±0.02, typeVariety 3.44±0.5
+- **10-11:boss**: screens 8±0, gradedShare 0.88±0, readWordsPerScreen 24.6±2.94, maxReadWords 47.1±4.41, sentenceWords 6.55±0.64, longWordShare 0.07±0.02, typeVariety 3.6±0.49
