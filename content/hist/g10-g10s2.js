@@ -73,6 +73,30 @@ SLID.section("hist", {
       "невідомий автор, 1920",
       "суспільне надбання",
       "https://commons.wikimedia.org/wiki/File:Symon_Petliura_and_Antoni_Listowski_during_Polish-Soviet_War.PNG"
+    ],
+    [
+      "Курултай кримськотатарського народу біля Ханського палацу, Бахчисарай, 1917 р.",
+      "невідомий автор, 1917",
+      "суспільне надбання",
+      "https://commons.wikimedia.org/wiki/File:Qırımtatarlarınıñ_Qurultaydır.jpg"
+    ],
+    [
+      "Старшини конвою командувача Михайла Омеляновича-Павленка, Перший Зимовий похід",
+      "невідомий автор, 1919",
+      "суспільне надбання",
+      "https://commons.wikimedia.org/wiki/File:Учасники_Першого_зимового_походу.jpg"
+    ],
+    [
+      "Банкнота УНР 100 карбованців, зворот, 1917 р.",
+      "Українська Народна Республіка, 1917",
+      "суспільне надбання (грошові знаки)",
+      "https://commons.wikimedia.org/wiki/File:UKR_1917_100_UAK_rev.jpg"
+    ],
+    [
+      "Банкнота УНР 500 гривень, зворот, 1918 р.",
+      "Георгій Нарбут (1886–1920)",
+      "суспільне надбання",
+      "https://commons.wikimedia.org/wiki/File:500-grn-1918-a.jpg"
     ]
   ],
   lessons: [
