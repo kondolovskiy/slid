@@ -7,7 +7,7 @@ subject: world
 grade: 8
 section: w8s5
 weeks: [30, 35]
-status: review
+status: done
 claimed_by: w-revise-world-w8s5
 created: 2026-11-10
 depends_on: []
@@ -93,3 +93,8 @@ depends_on: []
 - «від латинського «зразковий»» — Щупак (лат. classicus), Ладиченко пише «від італ.»; обрано латинське.
 - Дата Вольтера в ложі (4/7.04.1778) розходиться — в уроці не подано; Вашингтон-масон — прибрано з уроку заради довжини екрана.
 - Eyebrow-only уроки l1, l3–l5 лишено verified — вирішить верифікатор.
+
+### Верифікація (verifier-revise-world-w8s5, 2026-11-12)
+- Звіт: reports/verify/revise-w8s5.md. Усі факти — ≥ 2 відкриті джерела; завдання розв'язано, опора D-019 є; ліцензії 4 зображень звірено з Commons.
+- Правки: D-016 — позиції правильних варіантів (l7 е5, е7, е9, е10; l6 Q6). l2, l6, l7 → verified; l1, l3–l5 — лише eyebrow, verified лишено.
+- Playtest не запущено (немає Python playwright) — CI після build оркестратора.
