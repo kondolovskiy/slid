@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-12T09:20:16.528Z
 id: write-world-w9s6
 type: write-section
 subject: world
@@ -6,7 +8,7 @@ grade: 9
 section: w9s6
 weeks: [24, 29]
 status: todo
-claimed_by:
+claimed_by: writer-world-w9s6
 created: 2026-11-10
 ---
 # Написати розділ «Держави світу на початку XX ст.» (Всесвітня історія, 9 клас)
