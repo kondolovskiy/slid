@@ -7,7 +7,7 @@ subject: world
 grade: 9
 section: w9s6
 weeks: [24, 29]
-status: todo
+status: review
 claimed_by: writer-world-w9s6
 created: 2026-11-10
 ---
@@ -96,7 +96,7 @@ Build не запускай: під час паралельного запуск
 1. Бісмарк: страхування 1883 (хвороба), 1884 (нещасні випадки), 1889 (пенсії за віком та інвалідністю); мета — відвернути робітників від соціал-демократів — https://uk.wikipedia.org/wiki/Отто_фон_Бісмарк ; https://de.wikipedia.org/wiki/Sozialversicherung_(Deutschland). Вік пенсії розходиться (uk.wiki 65, поширене 70) — у тексті не вказано.
 2. Закон проти соціалістів 21/22.10.1878 – 30.09.1890 — https://de.wikipedia.org/wiki/Sozialistengesetz ; uk.wiki Бісмарк (діяв до 1890).
 3. SPD 12.01.1912 — 110 із 397 місць, найбільша фракція рейхстагу — https://en.wikipedia.org/wiki/1912_German_federal_election ; https://de.wikipedia.org/wiki/Reichstagswahl_1912
-4. Карикатура Кепплера, «Puck» 23.01.1889 — Commons (Сенат США 38.00392.001); https://en.wikipedia.org/wiki/Big_stick_ideology (не потрібна); LOC 403.
+4. Карикатура Кепплера, «Puck» 23.01.1889 — сторінка файлу Commons (джерело — Сенат США, 38.00392.001; LOC loc.gov/item/2002718861 з проксі — 403; на Вікісховищі є й LOC-версія LCCN2002718861, 1889).
 5. Третя республіка 4.09.1870 після Седана — https://en.wikipedia.org/wiki/French_Third_Republic ; https://uk.wikipedia.org/wiki/Третя_французька_республіка
 6. Дрейфус: вирок 22.12.1894, Чортів острів, Естергазі (виправданий судом), реабілітація 1906 (uk: липень 1906), повернення в армію — https://en.wikipedia.org/wiki/Dreyfus_affair ; https://uk.wikipedia.org/wiki/Справа_Дрейфуса
 7. «J'Accuse…!» — «L'Aurore» 13.01.1898, адресат Ф. Фор; Золя засуджено 23.02.1898, виїхав до Англії — https://en.wikipedia.org/wiki/J%27Accuse...! ; uk.wiki Справа Дрейфуса (адресат, «Орор»); дата — і на самій шпальті.
@@ -125,7 +125,7 @@ Build не запускай: під час паралельного запуск
 30. Танзимат 1839 (Гюльханейський хат-і шериф, Абдулмеджид I, безпека життя, честі й майна для всіх підданих незалежно від віри) – 1876 (конституція); Абдул-Гамід II невдовзі відійшов від неї — https://en.wikipedia.org/wiki/Tanzimat ; https://uk.wikipedia.org/wiki/Танзимат
 31. Молодотурецька революція 3–24.07.1908, Македонія (Третя армія), відновлення конституції 23–24.07 — https://en.wikipedia.org/wiki/Young_Turk_Revolution ; https://uk.wikipedia.org/wiki/Младотурецька_революція. Ахмед Реза — у Парижі з 1889 р. «майже двадцять років», провідник паризького крила «Єдності і прогресу», голова палати депутатів 17.12.1908 — https://en.wikipedia.org/wiki/Ahmet_R%C4%B1za ; https://tr.wikipedia.org/wiki/Ahmet_Rıza
 32. Іран: 1905 протести; 1906 конституція й меджліс (жовтень — перша сесія, 30.12.1906 — Основний закон); Мухаммед Алі-шах розігнав меджліс у червні 1908 (22/23/24.06 — дати розходяться; у тексті «у червні»), скинутий 16.07.1909, жив в Одесі; 1911 — російські війська — https://en.wikipedia.org/wiki/Persian_Constitutional_Revolution ; https://uk.wikipedia.org/wiki/Конституційна_революція_в_Ірані ; https://uk.wikipedia.org/wiki/Мохаммед_Алі-шах ; https://en.wikipedia.org/wiki/Mohammad_Ali_Shah_Qajar ; https://ru.wikipedia.org/wiki/Мохаммед_Али-шах
-33. Англо-японський союз 30.01.1902, антиросійський — https://en.wikipedia.org/wiki/Anglo-Japanese_Alliance ; https://uk.wikipedia.org/wiki/Англо-японський_союз. Корея: договір 22.08.1910, правління до 1945 — https://en.wikipedia.org/wiki/Japan%E2%80%93Korea_Treaty_of_1910 ; uk.wiki Англо-японський союз (Корея — інтерес Японії) — **друге джерело на 1910 слабке**, верифікатору звірити.
+33. Англо-японський союз 30.01.1902, антиросійський — https://en.wikipedia.org/wiki/Anglo-Japanese_Alliance ; https://uk.wikipedia.org/wiki/Англо-японський_союз. Корея: договір 22.08.1910, правління до 1945 — https://en.wikipedia.org/wiki/Japan%E2%80%93Korea_Treaty_of_1910 ; https://uk.wikipedia.org/wiki/Корея_під_владою_Японії (1910–1945; інфобокс — 29.08.1910).
 34. Іхетуань 1899–1901; Ци Сі — указ 21.06.1900 (фактичне оголошення війни); Пекін 14.08.1900 (вісім держав); протокол 7.09.1901, відшкодування — https://en.wikipedia.org/wiki/Boxer_Rebellion ; https://uk.wikipedia.org/wiki/Боксерське_повстання
 35. Сіньхайська революція: Учан 10.10.1911; Сунь Ятсен — обраний 29.12.1911 (uk), посада з 1.01.1912 (en); зречення 12.02.1912; Юань Шикай — президент 10.03.1912 — https://en.wikipedia.org/wiki/1911_Revolution ; https://uk.wikipedia.org/wiki/Сіньхайська_революція
 
