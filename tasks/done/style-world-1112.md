@@ -4,7 +4,7 @@ claimed_at: 2026-11-12T20:16:00.857Z
 id: style-world-1112
 type: style
 subject: world
-status: review
+status: done
 claimed_by: orch-style-world-1112
 created: 2026-11-12
 ---

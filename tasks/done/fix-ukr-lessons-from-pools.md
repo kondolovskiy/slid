@@ -4,7 +4,7 @@ claimed_at: 2026-11-12T20:16:00.813Z
 id: fix-ukr-lessons-from-pools
 type: fix
 subject: ukr
-status: review
+status: done
 claimed_by: orch-fix-ukr-lessons-from-pools
 created: 2026-11-12
 ---
