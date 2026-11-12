@@ -1,6 +1,6 @@
 # Аудит рисунків: world
 
-_Згенеровано `node tools/fig-audit.mjs --subject world`. Евристики — `figCues` у tools/lib.mjs. Переглянуто екранів і задач: 1125._
+_Згенеровано `node tools/fig-audit.mjs --subject world`. Евристики — `figCues` у tools/lib.mjs. Переглянуто екранів і задач: 1570._
 
 | Група | Кількість |
 |---|---|
