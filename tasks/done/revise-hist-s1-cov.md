@@ -6,7 +6,7 @@ type: revise-section
 subject: hist
 grade: 5
 section: s1
-status: review
+status: done
 claimed_by: writer-hist-s1
 created: 2026-11-10
 depends_on: [fix-hist-weeks-cov]
@@ -45,3 +45,5 @@ depends_on: [fix-hist-weeks-cov]
 - **g6s9:** не дублює — генеалогія, «музей чи архів», звернення до архіву (g6s9l2) не повторено; s1l7 дає лише слова «архів», «родинний архів», «родовід» як ґрунт.
 - **Перевірки:** validate --section s1 — 0 помилок, 1 попередження (старе, l5 е4); --diag dgh5 — 0/0; euphony — у s1l7 і новому П5 відхилень немає (решта — старі уроки); stats — s1l7 без прапорців; l6 — лише `maxReadWords` z=3.6, який був і до зміни (е4 з note).
 - Build не запускав; reports/ перезаписано інструментами — комітить оркестратор.
+
+**verifier-revise-hist-s1-cov, 2026-11-12.** s1l7 і l6 → verified; 3 дрібні правки (П5 варіант 4 «Світлини розкопок у родинних архівах селян», «Буває й», credits «імовірно Павло Рябков»). Ліцензія фото — PD (Рябков † 1926; анонімний варіант — залишковий ризик лише для UA). Звіт: reports/verify/revise-s1-cov.md.
