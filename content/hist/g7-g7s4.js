@@ -4,6 +4,7 @@
    2026-11-03 (revise-hist-g7s4-kingdom, D-043/D-044): назва розділу «Королівство Руське»; пояснення назви в l2, завдання «дві назви» в l5, узгоджено l6 — l2, l5, l6 знову draft.
    2026-11-03 verifier-g7s4-kingdom: l2, l5, l6 — verified (reports/verify/g7s4-kingdom.md).
    2026-11-12 (revise-hist-g7s4-cov): новий урок g7s4l7 «Скарби Холма» (після l4); терміни «ярлик», «баскак» у l3; завдання 5 у фіналі l6; eyebrow l5 «Урок 6» — l3, l5, l6, l7 draft.
+   2026-11-12 verifier-revise-hist-g7s4-cov: l3, l5, l6, l7 — verified (reports/verify/revise-g7s4-cov.md).
    Перевірка: node tools/validate.mjs && node tools/stats.mjs
    Схема й правила: docs/CONTENT_SCHEMA.md, style/
    Цитати літопису — за перекладом Леоніда Махновця («Літопис руський», 1989; litopys.org.ua/litop/). */
@@ -331,7 +332,7 @@ SLID.section("hist", {
       title: "Київ, 1240",
       short: "Монгольська навала",
       icon: "shield",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, як навала змінила життя Русі, і навчишся працювати з джерелами, що суперечать одне одному.",
       screens: [
         {
@@ -616,7 +617,7 @@ SLID.section("hist", {
       title: "Скарби Холма",
       short: "Холм і культура",
       icon: "book",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, як Данило готувався до боротьби з Ордою і що лишилося нам від Королівства Руського.",
       screens: [
         {
@@ -769,7 +770,7 @@ SLID.section("hist", {
       title: "Печатка короля Русі",
       short: "Юрій I і занепад",
       icon: "scroll",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, як держава пережила свій розквіт і чому зникла. А ще навчишся читати печатку як джерело.",
       screens: [
         {
@@ -909,7 +910,7 @@ SLID.section("hist", {
       title: "Помічник літописця",
       short: "Фінал розділу",
       icon: "star",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "rusking",
       why: "Перевірка всього розділу. Бали подвоєні.",
