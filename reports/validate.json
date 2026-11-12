@@ -1,5 +1,11 @@
 {
-  "date": "2026-11-12T14:43:34.374Z",
+  "date": "2026-11-12T14:44:50.765Z",
   "errors": [],
-  "warnings": []
+  "warnings": [
+    "content/hist/g11-g11s3.js#g11s3l1: sentenceWords=6.8 поза профілем [7; 15] для hist, 10-11 кл.",
+    "content/hist/g11-g11s3.js#g11s3l2: sentenceWords=6.2 поза профілем [7; 15] для hist, 10-11 кл.",
+    "content/hist/g11-g11s3.js#g11s3l3: sentenceWords=5.8 поза профілем [7; 15] для hist, 10-11 кл.",
+    "content/hist/g11-g11s3.js#g11s3l4: sentenceWords=6.5 поза профілем [7; 15] для hist, 10-11 кл.",
+    "content/hist/g11-g11s3.js#g11s3l5: sentenceWords=6.9 поза профілем [7; 15] для hist, 10-11 кл."
+  ]
 }
