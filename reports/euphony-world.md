@@ -1,57 +1,191 @@
 # Милозвучність у/в, і/й, з/із/зі: world
 
-Згенеровано: 2026-11-10 · tools/euphony.mjs · екранів: 800, відхилень: 308
+Згенеровано: 2026-11-12 · tools/euphony.mjs · екранів: 2035, відхилень: 433
 
 Механічна підказка за УП § 23–25: перевір кожне вручну. Правила з позначкою «validate» дають попередження валідатора; решта — лише тут.
 
-## «в» між приголосними → «у» (§ 23) · validate — 1
-
-- w8s1l5 екран 8 (content/world/g8-w8s1.js): «вивезених в рабство»
-
-## «В» на початку речення чи після паузи перед приголосним → «У» (§ 23) · validate — 5
+## «В» на початку речення чи після паузи перед приголосним → «У» (§ 23) · validate — 3
 
 - w7s1l1 екран 3 (content/world/g7-w7s1.js): «франки — в Галлії»
 - w7s1l1 екран 4 (content/world/g7-w7s1.js): «франки — в Галлії»
 - w7s5l4 екран 9 (content/world/g7-w7s5.js): «в Криму»
-- w8s4l1 екран 2 (content/world/g8-w8s4.js): «країні — в руках»
-- w9s3l4 outro/назва (content/world/g9-w9s3.js): «Називати, в якій»
 
-## «в» перед в, ф, льв, св, тв, хв… → «у» (§ 23) · validate — 4
+## «в» перед в, ф, льв, св, тв, хв… → «у» (§ 23) · validate — 1
 
-- w7s2l3 екран 7 (content/world/g7-w7s2.js): «арабською в священну»
 - w8s4l4 екран 1 (content/world/g8-w8s4.js): «збираються в дворі»
-- w9s3l4 outro/назва (content/world/g9-w9s3.js): «окреме в двоєдиній»
-- w9s5l1 екран 5 (content/world/g9-w9s5.js): «його в двигуні»
 
-## «у» після голосного перед приголосним → «в» (§ 23; звіт) — 7
+## «у» після голосного перед приголосним → «в» (§ 23; звіт) — 8
 
-- w7s1l4 екран 8 (content/world/g7-w7s1.js): «опинилася у Східній»
+- w7s1l4 екран 10 (content/world/g7-w7s1.js): «опинилася у Східній»
 - w8s2l2 екран 8 (content/world/g8-w8s2.js): «розписи у храмах»
 - w8s2l2 екран 8 (content/world/g8-w8s2.js): «розписи у храмах»
 - w9s1l2 екран 6 (content/world/g9-w9s1.js): «Знайди у статті»
 - w9s4l2 екран 10 (content/world/g9-w9s4.js): «рабство у США»
-- w9s5l1 екран 9 (content/world/g9-w9s5.js): «Приблизно у скільки»
 - w9s5l3 екран 7 (content/world/g9-w9s5.js): «зібрала у Станиславові»
+- w10s3l5 екран 2 (content/world/g10-w10s3.js): «собі у збиток»
+- dgw7 завдання 15 (content/world/diag-g7.js): «лишилася у Східній»
 
-## слово на «В» + приголосний на початку речення («Влітку», «Встановлено») → «У» (§ 23; звіт: «Вплив», «Влада» не чергуються) — 6
+## слово на «В» + приголосний на початку речення («Влітку», «Встановлено») → «У» (§ 23; звіт: «Вплив», «Влада» не чергуються) — 5
 
-- w7s2l5 екран 6 (content/world/g7-w7s2.js): «Вчитися могли»
 - w8s5l1 екран 1 (content/world/g8-w8s5.js): «Внизу рік»
-- w8s5l6 екран 1 (content/world/g8-w8s5.js): «Вгорі великими»
 - w9s2l3 outro/назва (content/world/g9-w9s2.js): «Впізнавати ідеологію»
-- w9s4l4 екран 3 (content/world/g9-w9s4.js): «Вчитиметься в»
-- w9s4l5 екран 6 (content/world/g9-w9s4.js): «Встановили правила»
+- w11s1l4 outro/назва (content/world/g11-w11s1.js): «Встановлювати причину»
+- w11s2l3 екран 5 (content/world/g11-w11s2.js): «Вхід до»
+- w11s2l3 екран 5 (content/world/g11-w11s2.js): «Вхід до»
 
 ## «Й» на початку речення чи після паузи → «і» (§ 24) · validate — 1
 
 - w7s1l3 екран 2 (content/world/g7-w7s1.js): «тими, й іншими»
 
+## «й» після слова на й, я, ю, є, ї → «і» або «та» (§ 24 п. 4; звіт: перевір — сполучник чи частка «й» = «також») — 140
+
+- w7s1l1 екран 11 (content/world/g7-w7s1.js): «Столицю й суму»
+- w7s1l2 екран 3 (content/world/g7-w7s1.js): «Італії й саксів»
+- w7s1l2 екран 9 (content/world/g7-w7s1.js): «Франція й Німеччина»
+- w7s1l2 outro/назва (content/world/g7-w7s1.js): «імперію й відкрив»
+- w7s1l3 екран 1 (content/world/g7-w7s1.js): «Константинополя й навіть»
+- w7s1l3 outro/назва (content/world/g7-w7s1.js): «Руссю й Візантією»
+- w7s1l4 екран 7 (content/world/g7-w7s1.js): «Різнилися й обряди»
+- w7s1l5 екран 4 (content/world/g7-w7s1.js): «Нормандію й короля»
+- w7s2l1 екран 7 (content/world/g7-w7s2.js): «побажання й похвала»
+- w7s2l2 екран 5 (content/world/g7-w7s2.js): «охрестився й узяв»
+- w7s2l2 екран 10 (content/world/g7-w7s2.js): «охрестився й одружився»
+- w7s2l3 екран 2 (content/world/g7-w7s2.js): «Пустеля й каравани»
+- w7s2l3 екран 3 (content/world/g7-w7s2.js): «поля й ріки»
+- w7s2l3 екран 6 (content/world/g7-w7s2.js): «її й обрали»
+- w7s2l4 екран 3 (content/world/g7-w7s2.js): «Візантія й Персія»
+- w7s2l4 екран 3 (content/world/g7-w7s2.js): «Іспанії й розбили»
+- w7s2l4 екран 10 (content/world/g7-w7s2.js): «Завоювання й чужої»
+- w7s2l5 екран 3 (content/world/g7-w7s2.js): «Персії й халіфату»
+- w7s2l5 екран 5 (content/world/g7-w7s2.js): «з'явився й порох»
+- w7s2l5 екран 7 (content/world/g7-w7s2.js): «з'явився й знак»
+- w7s2l6 екран 3 (content/world/g7-w7s2.js): «Ромеї й русь»
+- w7s3l1 екран 9 (content/world/g7-w7s3.js): «молиться й живе»
+- w7s4l1 outro/назва (content/world/g7-w7s4.js): «Англії й Франції»
+- w7s4l3 екран 9 (content/world/g7-w7s4.js): «Візантія й Орда»
+- w7s4l3 outro/назва (content/world/g7-w7s4.js): «Чехії й Польщі»
+- w7s5l1 екран 7 (content/world/g7-w7s5.js): «передається й іншим»
+- w7s5l2 екран 8 (content/world/g7-w7s5.js): «королевою й охрестити»
+- w7s5l2 екран 10 (content/world/g7-w7s5.js): «армії й гармати»
+- w7s5l2 outro/назва (content/world/g7-w7s5.js): «Англія й Франція»
+- w7s5l3 outro/назва (content/world/g7-w7s5.js): «Китаї й Кореї»
+- w7s5l4 outro/назва (content/world/g7-w7s5.js): «пояснює й долю»
+- w7s5l5 екран 2 (content/world/g7-w7s5.js): «Португалія й Іспанія»
+- w7s5l5 екран 8 (content/world/g7-w7s5.js): «Аравії й Африки»
+- w7s5l5 екран 8 (content/world/g7-w7s5.js): «Азії й Африки»
+- w7s5l5 екран 9 (content/world/g7-w7s5.js): «Кастилію й Арагон»
+- w7s5l5 екран 9 (content/world/g7-w7s5.js): «Кастилію й Арагон»
+- w7s5l5 outro/назва (content/world/g7-w7s5.js): «Іспанія й Португалія»
+- w7s5l6 outro/назва (content/world/g7-w7s5.js): «Константинополя й морські»
+- w8s1l2 екран 1 (content/world/g8-w8s1.js): «Індії й Китаю»
+- w8s1l3 екран 7 (content/world/g8-w8s1.js): «Іспанії й Португалії»
+- w8s2l1 екран 3 (content/world/g8-w8s2.js): «Греції й Риму»
+- w8s2l1 екран 5 (content/world/g8-w8s2.js): «статуї й палаци»
+- w8s2l1 екран 8 (content/world/g8-w8s2.js): «навчався й викладав»
+- w8s2l1 екран 8 (content/world/g8-w8s2.js): «навчався й де»
+- w8s2l3 екран 9 (content/world/g8-w8s2.js): «Біблію й службу»
+- w8s3l1 екран 1 (content/world/g8-w8s3.js): «Іспанії й імператор»
+- w8s3l1 екран 1 (content/world/g8-w8s3.js): «Італії й землі»
+- w8s3l1 екран 10 (content/world/g8-w8s3.js): «Америкою й Нідерланди»
+- w8s3l3 екран 5 (content/world/g8-w8s3.js): «Іспанії й ревний»
+- w8s3l3 екран 6 (content/world/g8-w8s3.js): «Шотландію й Ірландію»
+- w8s3l3 екран 8 (content/world/g8-w8s3.js): «Іспанія й Португалія»
+- w8s3l3 екран 8 (content/world/g8-w8s3.js): «моря й заморські»
+- w8s3l4 екран 4 (content/world/g8-w8s3.js): «Франція й османи»
+- w8s3l5 екран 6 (content/world/g8-w8s3.js): «Лівонії й Полоцька»
+- w8s3l5 outro/назва (content/world/g8-w8s3.js): «Посполитої й московського»
+- w8s4l4 екран 7 (content/world/g8-w8s4.js): «життя й свобода»
+- w8s5l1 екран 3 (content/world/g8-w8s5.js): «видання й забороняли»
+- w8s5l1 екран 5 (content/world/g8-w8s5.js): «землю й гроші»
+- w8s5l3 екран 5 (content/world/g8-w8s5.js): «її й поставили»
+- w8s5l3 екран 8 (content/world/g8-w8s5.js): «вугілля й дров»
+- w8s5l5 екран 3 (content/world/g8-w8s5.js): «Пруссія й Австрія»
+- w8s5l5 екран 4 (content/world/g8-w8s5.js): «Пруссія й Австрія»
+- w8s5l5 екран 4 (content/world/g8-w8s5.js): «Швеція й Пруссія»
+- w8s5l5 екран 4 (content/world/g8-w8s5.js): «Пруссія й Австрія»
+- w8s5l5 екран 4 (content/world/g8-w8s5.js): «Франція й Австрія»
+- w8s5l5 екран 5 (content/world/g8-w8s5.js): «Росія й Пруссія»
+- w8s5l5 екран 6 (content/world/g8-w8s5.js): «Росії й Австрії»
+- w8s5l5 екран 7 (content/world/g8-w8s5.js): «билися й селяни»
+- w8s5l5 екран 7 (content/world/g8-w8s5.js): «Пруссія й Австрія»
+- w8s5l5 outro/назва (content/world/g8-w8s5.js): «Пруссія й Австрія»
+- w9s1l4 екран 7 (content/world/g9-w9s1.js): «Австрії й Росії»
+- w9s1l4 екран 8 (content/world/g9-w9s1.js): «торгівлю й багатство»
+- w9s2l1 екран 8 (content/world/g9-w9s2.js): «вугілля й бавовну»
+- w9s2l2 екран 3 (content/world/g9-w9s2.js): «Англії й Уельсу»
+- w9s2l5 outro/назва (content/world/g9-w9s2.js): «Австрії й рабство»
+- w9s3l1 екран 4 (content/world/g9-w9s3.js): «Британії й Франції»
+- w9s3l1 екран 4 (content/world/g9-w9s3.js): «посилилася й не»
+- w9s3l2 екран 8 (content/world/g9-w9s3.js): «королю й поїхав»
+- w9s3l5 екран 6 (content/world/g9-w9s3.js): «Пруссії й імператор»
+- w9s4l1 outro/назва (content/world/g9-w9s4.js): «Іспанії й Португалії»
+- w9s4l1 outro/назва (content/world/g9-w9s4.js): «Португалії й Франції»
+- w9s4l2 екран 5 (content/world/g9-w9s4.js): «опиниться й саме»
+- w9s4l3 екран 7 (content/world/g9-w9s4.js): «Японії й віддав»
+- w9s5l4 екран 4 (content/world/g9-w9s5.js): «Франція й Росія»
+- w9s5l4 екран 5 (content/world/g9-w9s5.js): «Росія й Британія»
+- w9s5l4 екран 6 (content/world/g9-w9s5.js): «Британія й Франція»
+- w9s5l4 екран 8 (content/world/g9-w9s5.js): «Франція й Британія»
+- w10s1l1 екран 7 (content/world/g10-w10s1.js): «Бельгію й наблизилися»
+- w10s1l1 екран 7 (content/world/g10-w10s1.js): «Пруссію й Галичину»
+- w10s1l1 екран 8 (content/world/g10-w10s1.js): «Бельгія й Марна»
+- w10s1l1 екран 8 (content/world/g10-w10s1.js): «Франції й Британії»
+- w10s1l1 екран 8 (content/world/g10-w10s1.js): «Пруссія й Галичина»
+- w10s1l1 екран 8 (content/world/g10-w10s1.js): «Франція й Бельгія»
+- w10s1l1 екран 8 (content/world/g10-w10s1.js): «Росія й Галичина»
+- w10s1l2 екран 8 (content/world/g10-w10s1.js): «Франція й Німеччина»
+- w10s1l3 екран 7 (content/world/g10-w10s1.js): «зброю й чекають»
+- w10s1l3 outro/назва (content/world/g10-w10s1.js): «поля й газети»
+- w10s1l4 екран 8 (content/world/g10-w10s1.js): «Росії й раніше»
+- w10s1l5 екран 7 (content/world/g10-w10s1.js): «Латвія й Литва»
+- w10s1l5 екран 7 (content/world/g10-w10s1.js): «Австрія й Угорщина»
+- w10s1l5 екран 8 (content/world/g10-w10s1.js): «Естонія й Латвія»
+- w10s1l5 екран 8 (content/world/g10-w10s1.js): «Чехія й Угорщина»
+- w10s2l1 екран 2 (content/world/g10-w10s2.js): «примирення й дружби»
+- w10s2l1 екран 7 (content/world/g10-w10s2.js): «авіацію й підводні»
+- w10s2l1 екран 11 (content/world/g10-w10s2.js): «Колонії й армію»
+- w10s2l1 екран 11 (content/world/g10-w10s2.js): «Колонії й армію»
+- w10s2l1 екран 11 (content/world/g10-w10s2.js): «репарації й визнати»
+- w10s2l1 outro/назва (content/world/g10-w10s2.js): «армію й мусила»
+- w10s2l1 outro/назва (content/world/g10-w10s2.js): «замовлення й фото»
+- w10s2l2 екран 2 (content/world/g10-w10s2.js): «Англія й Італія»
+- w10s2l2 екран 2 (content/world/g10-w10s2.js): «Бельгія й Франція»
+- w10s2l2 екран 9 (content/world/g10-w10s2.js): «санкції й історію»
+- w10s2l3 екран 7 (content/world/g10-w10s2.js): «Китаю й рівна»
+- w10s2l4 екран 2 (content/world/g10-w10s2.js): «дипломатія й гарантії»
+- w10s2l4 екран 2 (content/world/g10-w10s2.js): «репарації й стаття»
+- w10s2l4 екран 2 (content/world/g10-w10s2.js): «Репарації й стаття»
+- w10s2l4 екран 7 (content/world/g10-w10s2.js): «покарання й не»
+- w10s3l2 екран 3 (content/world/g10-w10s3.js): «заощадження й переставали»
+- w10s3l5 екран 3 (content/world/g10-w10s3.js): «заощадження й роботу»
+- w10s3l5 екран 6 (content/world/g10-w10s3.js): «звертався й президент»
+- w11s1l1 екран 4 (content/world/g11-w11s1.js): «армію й військове»
+- w11s1l1 екран 4 (content/world/g11-w11s1.js): «армію й заборонити»
+- w11s1l1 екран 5 (content/world/g11-w11s1.js): «Франція й Китай»
+- w11s1l1 екран 8 (content/world/g11-w11s1.js): «армію й зовнішню»
+- w11s1l1 outro/назва (content/world/g11-w11s1.js): «окупації й створили»
+- w11s1l3 екран 4 (content/world/g11-w11s1.js): «Греції й Туреччині»
+- w11s1l3 екран 6 (content/world/g11-w11s1.js): «відмовилася й Польща»
+- w11s1l3 екран 7 (content/world/g11-w11s1.js): «Греції й Туреччині»
+- w11s1l3 екран 7 (content/world/g11-w11s1.js): «Греції й Туреччині»
+- w11s1l4 екран 6 (content/world/g11-w11s1.js): «Британії й Франції»
+- w11s1l4 екран 9 (content/world/g11-w11s1.js): «французькою й німецькою»
+- w11s1l4 екран 9 (content/world/g11-w11s1.js): «Франції й СРСР»
+- w11s1l6 екран 4 (content/world/g11-w11s1.js): «Греції й Туреччині»
+- w11s2l5 екран 9 (content/world/g11-w11s2.js): «об'єднує й досі»
+- dgw8 завдання 14 (content/world/diag-g8.js): «астролябія й каравела»
+- dgw9 завдання 10 (content/world/diag-g9.js): «Пруссія й Австрія»
+- dgw9 завдання 10 (content/world/diag-g9.js): «Швеція й Пруссія»
+- dgw9 завдання 10 (content/world/diag-g9.js): «Франція й Османська»
+- dgw9 завдання 27 (content/world/diag-g9.js): «Франція й Росія»
+- dgw9 завдання 27 (content/world/diag-g9.js): «Францію й Британію»
+
 ## «і» між голосними → «й» (§ 24; не для зіставлених понять — звіт) — 2
 
 - w8s4l4 екран 4 (content/world/g8-w8s4.js): «біржа і українське»
-- w9s4l6 екран 3 (content/world/g9-w9s4.js): «США і Україна»
+- w11s2l2 екран 9 (content/world/g11-w11s2.js): «відніми 1865 і округли»
 
-## «і» після голосного перед приголосним → «й» (§ 24; не для зіставлених понять — звіт) — 163
+## «і» після голосного перед приголосним → «й» (§ 24; не для зіставлених понять — звіт) — 132
 
 - w7s1l1 екран 2 (content/world/g7-w7s1.js): «Хлодвіга і не»
 - w7s1l2 екран 1 (content/world/g7-w7s1.js): «Великого і написав»
@@ -59,10 +193,6 @@
 - w7s1l5 екран 5 (content/world/g7-w7s1.js): «Вікінги і Русь»
 - w7s3l1 екран 5 (content/world/g7-w7s3.js): «пана і не»
 - w7s3l1 outro/назва (content/world/g7-w7s3.js): «суспільство і хто»
-- w7s3l2 екран 6 (content/world/g7-w7s3.js): «барони і внизу»
-- w7s3l3 екран 3 (content/world/g7-w7s3.js): «пана і платило»
-- w7s3l3 екран 6 (content/world/g7-w7s3.js): «ціни і скільки»
-- w7s3l3 екран 7 (content/world/g7-w7s3.js): «плату і готує»
 - w7s3l4 екран 1 (content/world/g7-w7s3.js): «стіни і ще»
 - w7s3l4 екран 4 (content/world/g7-w7s3.js): «арками і великими»
 - w7s3l5 екран 3 (content/world/g7-w7s3.js): «турками-сельджуками і просила»
@@ -70,22 +200,16 @@
 - w7s4l2 екран 8 (content/world/g7-w7s4.js): «Сонце і місяць»
 - w7s4l4 екран 3 (content/world/g7-w7s4.js): «Чингісхана і рік»
 - w7s4l4 екран 8 (content/world/g7-w7s4.js): «написі і що»
-- w7s4l5 екран 3 (content/world/g7-w7s4.js): «пергаменту і питає»
-- w7s4l5 екран 6 (content/world/g7-w7s4.js): «Пайцза і Русь»
+- w7s4l6 екран 9 (content/world/g7-w7s4.js): «завоювали і Русь»
 - w7s5l3 екран 8 (content/world/g7-w7s5.js): «друкували і хто»
 - w7s5l3 outro/назва (content/world/g7-w7s5.js): «литери і друкував»
 - w7s5l4 екран 9 (content/world/g7-w7s5.js): «Кафу і чиїм»
 - w7s5l6 екран 5 (content/world/g7-w7s5.js): «Османи і Крим»
-- w8s1l1 екран 8 (content/world/g8-w8s1.js): «пливли і що»
+- w7s6l3 екран 4 (content/world/g7-w7s6.js): «Загинули і Лазар»
 - w8s1l2 екран 5 (content/world/g8-w8s1.js): «Гама і Тордесільяський»
 - w8s1l3 екран 3 (content/world/g8-w8s1.js): «протока і Тихий»
 - w8s1l3 екран 4 (content/world/g8-w8s1.js): «плисти і скільки»
 - w8s1l4 екран 7 (content/world/g8-w8s1.js): «Хто і для»
-- w8s1l5 екран 1 (content/world/g8-w8s1.js): «Серро-Ріко і місто»
-- w8s1l5 екран 5 (content/world/g8-w8s1.js): «Срібло і ціни»
-- w8s1l5 екран 6 (content/world/g8-w8s1.js): «зерна і чиїми»
-- w8s1l5 екран 8 (content/world/g8-w8s1.js): «ціни і пов'язали»
-- w8s1l6 екран 4 (content/world/g8-w8s1.js): «Африку і доплив»
 - w8s2l1 екран 1 (content/world/g8-w8s2.js): «Христа і не»
 - w8s2l2 екран 4 (content/world/g8-w8s2.js): «автора і вивчає»
 - w8s2l3 екран 4 (content/world/g8-w8s2.js): «собору і не»
@@ -94,43 +218,23 @@
 - w8s2l5 екран 5 (content/world/g8-w8s2.js): «війни і Нантський»
 - w8s2l5 екран 6 (content/world/g8-w8s2.js): «дозволено і що»
 - w8s2l5 екран 9 (content/world/g8-w8s2.js): «гугеноти і хто»
-- w8s2l6 екран 2 (content/world/g8-w8s2.js): «Петрарку і Піко»
-- w8s2l6 екран 2 (content/world/g8-w8s2.js): «книжки і молитви»
-- w8s2l6 екран 6 (content/world/g8-w8s2.js): «гугеноти і де»
 - w8s3l1 екран 5 (content/world/g8-w8s3.js): «імператора і зберегти»
 - w8s3l2 екран 5 (content/world/g8-w8s3.js): «Альба і гези»
 - w8s3l3 екран 2 (content/world/g8-w8s3.js): «битва і загибель»
 - w8s3l3 outro/назва (content/world/g8-w8s3.js): «Королева і глобус»
 - w8s3l4 екран 1 (content/world/g8-w8s3.js): «імператора і бачив»
 - w8s3l5 outro/назва (content/world/g8-w8s3.js): «Посполита і царська»
-- w8s4l2 екран 2 (content/world/g8-w8s4.js): «війни і навіть»
-- w8s4l2 екран 3 (content/world/g8-w8s4.js): «Стюарти і громадянська»
-- w8s4l2 екран 3 (content/world/g8-w8s4.js): «парламенту і сам»
-- w8s4l2 екран 4 (content/world/g8-w8s4.js): «парламенту і сам»
-- w8s4l3 екран 8 (content/world/g8-w8s4.js): «може і точно»
-- w8s4l3 екран 9 (content/world/g8-w8s4.js): «Мюнстері і що»
 - w8s4l4 екран 7 (content/world/g8-w8s4.js): «торгувала і нікого»
 - w8s4l4 outro/назва (content/world/g8-w8s4.js): «оплатили і праця»
-- w8s4l5 екран 4 (content/world/g8-w8s4.js): «країну і боялися»
-- w8s4l5 екран 4 (content/world/g8-w8s4.js): «віру і кого»
 - w8s5l1 екран 1 (content/world/g8-w8s5.js): «цифрами і слова»
 - w8s5l3 екран 6 (content/world/g8-w8s5.js): «працювала і вдень»
-- w8s5l4 екран 2 (content/world/g8-w8s5.js): «саме і коли»
-- w8s5l4 екран 5 (content/world/g8-w8s5.js): «Війна і Декларація»
 - w8s5l5 екран 5 (content/world/g8-w8s5.js): «держави і другою»
 - w8s5l5 екран 6 (content/world/g8-w8s5.js): «Посполита і що»
 - w8s5l5 outro/назва (content/world/g8-w8s5.js): «держава і куди»
-- w8s5l6 екран 5 (content/world/g8-w8s5.js): «свободу і прагнення»
-- w9s1l1 екран 7 (content/world/g9-w9s1.js): «окремо і мав»
-- w9s1l1 екран 9 (content/world/g9-w9s1.js): «суду і закону»
-- w9s1l1 outro/назва (content/world/g9-w9s1.js): «причини і перші»
 - w9s1l2 екран 3 (content/world/g9-w9s1.js): «людини і громадянина»
 - w9s1l2 екран 3 (content/world/g9-w9s1.js): «людини і громадянина»
 - w9s1l2 екран 5 (content/world/g9-w9s1.js): «права і владу»
-- w9s1l3 екран 2 (content/world/g9-w9s1.js): «Війна і страх»
 - w9s1l3 екран 4 (content/world/g9-w9s1.js): «людини і громадянина»
-- w9s1l3 екран 10 (content/world/g9-w9s1.js): «республіку і що»
-- w9s1l3 outro/назва (content/world/g9-w9s1.js): «якобінці і що»
 - w9s1l4 екран 3 (content/world/g9-w9s1.js): «владу і став»
 - w9s1l6 екран 7 (content/world/g9-w9s1.js): «людини і громадянина»
 - w9s2l1 екран 3 (content/world/g9-w9s2.js): «паровози і ходили»
@@ -140,71 +244,46 @@
 - w9s2l2 екран 1 (content/world/g9-w9s2.js): «люди і чого»
 - w9s2l2 екран 4 (content/world/g9-w9s2.js): «вода і відсутність»
 - w9s2l2 екран 4 (content/world/g9-w9s2.js): «води і стоків»
-- w9s2l2 екран 10 (content/world/g9-w9s2.js): «Біда і відповідь»
+- w9s2l2 екран 11 (content/world/g9-w9s2.js): «Біда і відповідь»
 - w9s2l2 outro/назва (content/world/g9-w9s2.js): «фабриками і чого»
 - w9s2l3 екран 1 (content/world/g9-w9s2.js): «Фабрики і революції»
 - w9s2l3 екран 3 (content/world/g9-w9s2.js): «Консерватори і ліберали»
 - w9s2l3 екран 3 (content/world/g9-w9s2.js): «права і свободи»
 - w9s2l3 екран 6 (content/world/g9-w9s2.js): «фабрики і кликали»
 - w9s2l3 екран 7 (content/world/g9-w9s2.js): «Оуена і Маркса»
-- w9s2l3 екран 9 (content/world/g9-w9s2.js): «старе і змінює»
+- w9s2l3 екран 10 (content/world/g9-w9s2.js): «старе і змінює»
 - w9s2l3 outro/назва (content/world/g9-w9s2.js): «права і свободи»
 - w9s2l3 outro/назва (content/world/g9-w9s2.js): «Оуена і Маркса»
 - w9s2l4 екран 1 (content/world/g9-w9s2.js): «спину і далекі»
 - w9s2l4 екран 3 (content/world/g9-w9s2.js): «таємничу і грізну»
 - w9s2l4 екран 4 (content/world/g9-w9s2.js): «природу і народну»
 - w9s2l4 екран 4 (content/world/g9-w9s2.js): «таємнича і грізна»
-- w9s2l4 екран 6 (content/world/g9-w9s2.js): «мову і пам'ять»
-- w9s2l4 екран 8 (content/world/g9-w9s2.js): «мову і пам'ять»
+- w9s2l4 екран 7 (content/world/g9-w9s2.js): «мову і пам'ять»
+- w9s2l4 екран 9 (content/world/g9-w9s2.js): «мову і пам'ять»
 - w9s2l4 outro/назва (content/world/g9-w9s2.js): «природу і народну»
 - w9s2l5 екран 5 (content/world/g9-w9s2.js): «відставку і втік»
 - w9s2l5 екран 6 (content/world/g9-w9s2.js): «права і свободи»
 - w9s2l5 екран 6 (content/world/g9-w9s2.js): «слова і кінець»
 - w9s2l5 екран 6 (content/world/g9-w9s2.js): «Німеччина і самоврядна»
 - w9s2l5 екран 6 (content/world/g9-w9s2.js): «слова і преси»
-- w9s2l5 екран 7 (content/world/g9-w9s2.js): «раду і газету»
-- w9s2l5 екран 7 (content/world/g9-w9s2.js): «раду і газету»
-- w9s2l5 екран 8 (content/world/g9-w9s2.js): «Поразка і здобутки»
+- w9s2l5 екран 8 (content/world/g9-w9s2.js): «раду і газету»
+- w9s2l5 екран 8 (content/world/g9-w9s2.js): «раду і газету»
+- w9s2l5 екран 9 (content/world/g9-w9s2.js): «Поразка і здобутки»
 - w9s2l5 outro/назва (content/world/g9-w9s2.js): «Європи і що»
 - w9s2l5 outro/назва (content/world/g9-w9s2.js): «причини і вимоги»
 - w9s2l5 outro/назва (content/world/g9-w9s2.js): «здобутки і поразки»
-- w9s2l6 екран 2 (content/world/g9-w9s2.js): «паровози і ходили»
-- w9s2l6 екран 4 (content/world/g9-w9s2.js): «права і власність»
-- w9s2l6 екран 6 (content/world/g9-w9s2.js): «рада і вийшла»
-- w9s2l6 екран 6 (content/world/g9-w9s2.js): «раду і першу»
-- w9s2l6 outro/назва (content/world/g9-w9s2.js): «Пара і барикади»
 - w9s3l1 екран 9 (content/world/g9-w9s3.js): «війну і волю»
 - w9s3l2 екран 8 (content/world/g9-w9s3.js): «це і пудра»
 - w9s3l3 екран 2 (content/world/g9-w9s3.js): «шаблями і прапорами»
-- w9s3l4 екран 4 (content/world/g9-w9s3.js): «політика і гроші»
-- w9s3l4 екран 6 (content/world/g9-w9s3.js): «Галичини і депутат»
-- w9s3l4 екран 6 (content/world/g9-w9s3.js): «Галичина і Буковина»
-- w9s3l4 екран 9 (content/world/g9-w9s3.js): «хорвати і серби»
-- w9s3l4 outro/назва (content/world/g9-w9s3.js): «Буковина і Закарпаття»
 - w9s3l5 екран 3 (content/world/g9-w9s3.js): «пораненими і зниклими»
 - w9s3l5 екран 4 (content/world/g9-w9s3.js): «доглядали і французів»
 - w9s3l5 екран 9 (content/world/g9-w9s3.js): «кого і що»
-- w9s3l6 екран 5 (content/world/g9-w9s3.js): «Галичина і Буковина»
 - w9s4l1 екран 4 (content/world/g9-w9s4.js): «повстали і вигнали»
 - w9s4l1 екран 6 (content/world/g9-w9s4.js): «Анди і звільнив»
 - w9s4l1 outro/назва (content/world/g9-w9s4.js): «Болівара і Сан-Мартіна»
 - w9s4l2 екран 9 (content/world/g9-w9s4.js): «Кріпацтво і рабство»
 - w9s4l3 екран 7 (content/world/g9-w9s4.js): «пограбували і спалили»
 - w9s4l3 outro/назва (content/world/g9-w9s4.js): «причини і наслідки»
-- w9s4l4 екран 1 (content/world/g9-w9s4.js): «дереві і надрукував»
-- w9s4l4 екран 7 (content/world/g9-w9s4.js): «гравюрі і чого»
-- w9s4l5 екран 4 (content/world/g9-w9s4.js): «раніше і що»
-- w9s4l5 екран 5 (content/world/g9-w9s4.js): «зайняти і повідомити»
-- w9s4l5 екран 7 (content/world/g9-w9s4.js): «континенту і тягне»
-- w9s4l5 екран 7 (content/world/g9-w9s4.js): «Африку і повернутися»
-- w9s4l5 екран 8 (content/world/g9-w9s4.js): «раби і вільні»
-- w9s4l5 екран 9 (content/world/g9-w9s4.js): «Адуа і республіку»
-- w9s4l6 екран 1 (content/world/g9-w9s4.js): «сторінку і ставить»
-- w9s4l6 екран 2 (content/world/g9-w9s4.js): «ради і поступово»
-- w9s4l6 екран 4 (content/world/g9-w9s4.js): «державі і пізніше»
-- w9s4l6 екран 6 (content/world/g9-w9s4.js): «Адуа і республіку»
-- w9s5l1 outro/назва (content/world/g9-w9s5.js): «лампа і трамвай»
-- w9s5l1 outro/назва (content/world/g9-w9s5.js): «світу і Києва»
 - w9s5l2 екран 5 (content/world/g9-w9s5.js): «приїхало і де»
 - w9s5l2 екран 9 (content/world/g9-w9s5.js): «школа і спорт»
 - w9s5l3 екран 2 (content/world/g9-w9s5.js): «жінки і чому»
@@ -212,23 +291,51 @@
 - w9s5l3 екран 8 (content/world/g9-w9s5.js): «внизу і рядок»
 - w9s5l3 екран 9 (content/world/g9-w9s5.js): «Кобринська і що»
 - w9s5l4 екран 8 (content/world/g9-w9s5.js): «Німеччину і Британію»
-- w9s5l5 екран 5 (content/world/g9-w9s5.js): «Пікассо і Жорж»
-- w9s5l5 екран 10 (content/world/g9-w9s5.js): «Пікассо і Брак»
 - w9s5l6 екран 1 (content/world/g9-w9s5.js): «мапа і картина»
 - w9s5l6 outro/назва (content/world/g9-w9s5.js): «школа і спорт»
+- w10s2l3 екран 10 (content/world/g10-w10s2.js): «підписала і договір»
+- w10s3l1 екран 1 (content/world/g10-w10s3.js): «знову і знову»
+- w10s3l2 екран 7 (content/world/g10-w10s3.js): «фото і що»
+- w10s3l2 екран 9 (content/world/g10-w10s3.js): «США і що»
+- w10s3l2 outro/назва (content/world/g10-w10s3.js): «кризу і що»
+- w10s3l2 outro/назва (content/world/g10-w10s3.js): «США і для»
+- w10s3l4 outro/назва (content/world/g10-w10s3.js): «культуру і чому»
+- w10s3l5 екран 2 (content/world/g10-w10s3.js): «фото і скільки»
+- w11s1l1 екран 6 (content/world/g11-w11s1.js): «Першу і Другу»
+- w11s1l1 екран 6 (content/world/g11-w11s1.js): «світову і холодну»
+- w11s1l1 екран 6 (content/world/g11-w11s1.js): «війни і Першу»
+- w11s1l1 екран 8 (content/world/g11-w11s1.js): «Українська і Білоруська»
+- w11s1l2 екран 6 (content/world/g11-w11s1.js): «Українська і Білоруська»
+- w11s1l3 екран 3 (content/world/g11-w11s1.js): «США і СРСР»
+- w11s1l3 outro/назва (content/world/g11-w11s1.js): «Трумена і план»
+- w11s1l4 екран 2 (content/world/g11-w11s1.js): «аеродромі і що»
+- w11s1l4 екран 3 (content/world/g11-w11s1.js): «Блокада і повітряний»
+- w11s1l4 екран 9 (content/world/g11-w11s1.js): «Потсдамі і хто»
+- w11s1l5 екран 1 (content/world/g11-w11s1.js): «США і СРСР»
+- w11s1l6 екран 2 (content/world/g11-w11s1.js): «США і Франції»
+- w11s1l6 екран 2 (content/world/g11-w11s1.js): «США і Франція»
+- w11s2l3 екран 6 (content/world/g11-w11s2.js): «владі) і суспільні»
+- w11s3l7 екран 2 (content/world/g11-w11s3.js): «офіційні 80 % і радянську»
+- dgw7 завдання 14 (content/world/diag-g7.js): «Західну і Східну»
+- dgw7 завдання 23 (content/world/diag-g7.js): «Західну і Східну»
+- dgw9 завдання 4 (content/world/diag-g9.js): «Африку і доплив»
+
+## «з» перед з, с, ш, щ + приголосний (і «мною») → «зі» (§ 25) · validate — 1
+
+- w11s1l4 екран 10 (content/world/g11-w11s1.js): «чолі з СРСР»
 
 ## «З» на початку речення чи після тире перед з, с, ц, ж, ч, ш → «Із» (§ 25 п. 2) · validate — 4
 
-- w7s1l2 екран 8 (content/world/g7-w7s1.js): «З цих»
+- w7s1l2 екран 9 (content/world/g7-w7s1.js): «З цих»
 - w7s3l4 екран 3 (content/world/g7-w7s3.js): «З середини»
 - w8s2l3 екран 2 (content/world/g8-w8s2.js): «Спершу — з чого»
 - w8s5l1 екран 9 (content/world/g8-w8s5.js): «ідея — з часів»
 
-## «з» між приголосними → «із» (§ 25; звіт) — 108
+## «з» між приголосними → «із» (§ 25; звіт) — 74
 
-- w7s1l2 екран 5 (content/world/g7-w7s1.js): «храм з хрестом»
-- w7s1l2 екран 5 (content/world/g7-w7s1.js): «храм з хрестом»
-- w7s1l2 екран 6 (content/world/g7-w7s1.js): «письмом з малими»
+- w7s1l2 екран 6 (content/world/g7-w7s1.js): «храм з хрестом»
+- w7s1l2 екран 6 (content/world/g7-w7s1.js): «храм з хрестом»
+- w7s1l2 екран 7 (content/world/g7-w7s1.js): «письмом з малими»
 - w7s1l3 екран 4 (content/world/g7-w7s1.js): «Договір з Візантією»
 - w7s1l3 екран 8 (content/world/g7-w7s1.js): «взяв з роду»
 - w7s1l5 екран 2 (content/world/g7-w7s1.js): «першим з германських»
@@ -242,15 +349,11 @@
 - w7s3l1 екран 1 (content/world/g7-w7s3.js): «Адальберон з міста»
 - w7s3l1 екран 2 (content/world/g7-w7s3.js): «Чоловік з лопатою»
 - w7s3l1 екран 2 (content/world/g7-w7s3.js): «Чоловік з виголеною»
-- w7s3l2 екран 8 (content/world/g7-w7s3.js): «ходив з ним»
 - w7s3l4 екран 2 (content/world/g7-w7s3.js): «собор з легкого»
 - w7s3l4 екран 5 (content/world/g7-w7s3.js): «Стиль з фото»
 - w7s3l4 екран 7 (content/world/g7-w7s3.js): «Лаврентій з Волтоліни»
 - w7s3l5 екран 7 (content/world/g7-w7s3.js): «Гість з Русі»
 - w7s3l5 екран 7 (content/world/g7-w7s3.js): «хрестоносців з Русі»
-- w7s3l6 екран 5 (content/world/g7-w7s3.js): «Студент з Болоньї»
-- w7s3l6 екран 6 (content/world/g7-w7s3.js): «паломник з Києва»
-- w7s3l6 outro/назва (content/world/g7-w7s3.js): «походів з Руссю»
 - w7s4l1 екран 9 (content/world/g7-w7s4.js): «разом з такими»
 - w7s4l2 екран 6 (content/world/g7-w7s4.js): «воював з папою»
 - w7s4l2 екран 7 (content/world/g7-w7s4.js): «вчинив з Генріхом»
@@ -259,22 +362,16 @@
 - w7s4l4 екран 2 (content/world/g7-w7s4.js): «воїн з дитинства»
 - w7s4l4 екран 2 (content/world/g7-w7s4.js): «стріляв з лука»
 - w7s4l4 екран 3 (content/world/g7-w7s4.js): «портрет з натури»
-- w7s4l5 екран 1 (content/world/g7-w7s4.js): «Один з чотирьох»
-- w7s4l5 екран 2 (content/world/g7-w7s4.js): «Килим з Байє»
-- w7s4l5 outro/назва (content/world/g7-w7s4.js): «монголів з Руссю»
-- w7s5l1 екран 4 (content/world/g7-w7s5.js): «плавав з Кафи»
-- w7s5l1 екран 5 (content/world/g7-w7s5.js): «виїжджав з П'яченци»
-- w7s5l1 екран 8 (content/world/g7-w7s5.js): «кожен з них»
+- w7s5l1 екран 5 (content/world/g7-w7s5.js): «плавав з Кафи»
+- w7s5l1 екран 6 (content/world/g7-w7s5.js): «виїжджав з П'яченци»
+- w7s5l1 екран 9 (content/world/g7-w7s5.js): «кожен з них»
 - w7s5l4 екран 1 (content/world/g7-w7s5.js): «художник з Венеції»
 - w7s5l5 екран 1 (content/world/g7-w7s5.js): «вивіз з Лісабона»
-- w8s1l1 екран 2 (content/world/g8-w8s1.js): «малював з чужих»
 - w8s1l2 екран 1 (content/world/g8-w8s1.js): «Моряк з Генуї»
 - w8s1l2 екран 5 (content/world/g8-w8s1.js): «вирушив з Лісабона»
 - w8s1l2 екран 8 (content/world/g8-w8s1.js): «козаків з Києва»
 - w8s1l3 екран 3 (content/world/g8-w8s1.js): «кораблів з близько»
 - w8s1l3 екран 5 (content/world/g8-w8s1.js): «Мактан з воїнами»
-- w8s1l6 екран 6 (content/world/g8-w8s1.js): «Купець з Гданська»
-- w8s1l6 екран 6 (content/world/g8-w8s1.js): «Купець з Гданська»
 - w8s2l1 екран 8 (content/world/g8-w8s2.js): «Котермак з Дрогобича»
 - w8s2l2 екран 6 (content/world/g8-w8s2.js): «висік з мармуру»
 - w8s2l2 екран 8 (content/world/g8-w8s2.js): «узятий з Біблії»
@@ -289,58 +386,92 @@
 - w8s3l5 екран 3 (content/world/g8-w8s3.js): «Тож з Литвою»
 - w8s3l5 екран 4 (content/world/g8-w8s3.js): «король з династії»
 - w8s3l5 outro/назва (content/world/g8-w8s3.js): «воював з Литвою»
-- w8s3l6 екран 3 (content/world/g8-w8s3.js): «Документ з Нідерландів»
-- w8s3l6 екран 3 (content/world/g8-w8s3.js): «виганяють з країни»
-- w8s3l6 екран 6 (content/world/g8-w8s3.js): «Читач з Кракова»
 - w8s4l4 екран 4 (content/world/g8-w8s4.js): «Пригадай з розділу»
-- w8s4l5 екран 3 (content/world/g8-w8s4.js): «сьогунам з роду»
-- w8s4l5 екран 6 (content/world/g8-w8s4.js): «з'єднаний з містом»
-- w8s4l5 екран 8 (content/world/g8-w8s4.js): «народ з північного»
-- w8s4l6 екран 4 (content/world/g8-w8s4.js): «турист з Полтави»
-- w8s5l2 екран 8 (content/world/g8-w8s5.js): «вівтар з вогнем»
 - w8s5l3 екран 1 (content/world/g8-w8s5.js): «будинок з рядами»
-- w8s5l4 екран 7 (content/world/g8-w8s5.js): «інженер з Речі»
-- w9s1l1 екран 1 (content/world/g9-w9s1.js): «селянин з мотикою»
-- w9s1l1 екран 1 (content/world/g9-w9s1.js): «Один з них»
-- w9s1l1 екран 3 (content/world/g9-w9s1.js): «король з необмеженою»
-- w9s1l1 екран 4 (content/world/g9-w9s1.js): «Граф з маєтком»
-- w9s1l3 екран 1 (content/world/g9-w9s1.js): «одним з керівників»
-- w9s1l3 екран 6 (content/world/g9-w9s1.js): «Закон з розмитими»
 - w9s1l4 екран 2 (content/world/g9-w9s1.js): «ряд з Ганнібалом»
-- w9s1l5 екран 5 (content/world/g9-w9s1.js): «створив з польських»
-- w9s1l5 екран 7 (content/world/g9-w9s1.js): «миром з Наполеоном»
-- w9s1l5 екран 7 (content/world/g9-w9s1.js): «одним з представників»
 - w9s2l2 екран 2 (content/world/g9-w9s2.js): «містах з фабриками»
 - w9s2l2 outro/назва (content/world/g9-w9s2.js): «містах з фабриками»
 - w9s3l1 екран 2 (content/world/g9-w9s3.js): «знімок з попереднім»
 - w9s3l2 екран 2 (content/world/g9-w9s3.js): «чобіт з написом»
-- w9s3l5 екран 3 (content/world/g9-w9s3.js): «разом з жінками»
 - w9s3l5 екран 7 (content/world/g9-w9s3.js): «Найтінгейл з медсестрами»
-- w9s3l5 екран 9 (content/world/g9-w9s3.js): «шпиталь з червоним»
-- w9s3l6 екран 5 (content/world/g9-w9s3.js): «разом з Галичиною»
-- w9s3l6 outro/назва (content/world/g9-w9s3.js): «Репортаж з нової»
 - w9s4l2 екран 5 (content/world/g9-w9s4.js): «пішов з країни»
 - w9s4l2 екран 9 (content/world/g9-w9s4.js): «людей з неволі»
-- w9s4l4 екран 4 (content/world/g9-w9s4.js): «Один з її»
-- w9s4l4 екран 7 (content/world/g9-w9s4.js): «Самураїв з мечами»
-- w9s4l4 екран 7 (content/world/g9-w9s4.js): «Паротяг з вагонами»
-- w9s4l4 екран 8 (content/world/g9-w9s4.js): «Пригадай з розділу»
-- w9s5l1 екран 5 (content/world/g9-w9s5.js): «струм з дротів»
-- w9s5l1 екран 5 (content/world/g9-w9s5.js): «Трамвай з дротом»
-- w9s5l1 екран 6 (content/world/g9-w9s5.js): «узвіз) з Подолу»
 - w9s5l3 екран 3 (content/world/g9-w9s5.js): «союз з гаслом»
 - w9s5l3 екран 4 (content/world/g9-w9s5.js): «прихильниць з плакатами»
 - w9s5l4 екран 4 (content/world/g9-w9s5.js): «союз з Росією»
 - w9s5l4 екран 6 (content/world/g9-w9s5.js): «бульдог з прапором»
-- w9s5l5 екран 7 (content/world/g9-w9s5.js): «Квадрат з Києва»
 - w9s5l6 екран 4 (content/world/g9-w9s5.js): «Панкгерст з гаслом»
+- w11s1l1 екран 4 (content/world/g11-w11s1.js): «людей з влади»
+- w11s1l1 екран 4 (content/world/g11-w11s1.js): «нацистів з посад»
+- w11s1l2 екран 3 (content/world/g11-w11s1.js): «ООН з прав»
+- w11s1l4 екран 10 (content/world/g11-w11s1.js): «уклав з Польщею»
+- w11s1l5 екран 7 (content/world/g11-w11s1.js): «вивезуть з Куби»
+- dgw7 завдання 22 (content/world/diag-g7.js): «торгують з місцевими»
 
-## «зі» лише перед з, с, ш, щ + приголосний і «мною» (§ 25) · validate — 7
+## «з» усередині речення перед одиничним з, с, ц, ж, ч, ш → «із» незалежно від попереднього слова (§ 25 п. 2; звіт) — 58
+
+- w7s1l1 екран 9 (content/world/g7-w7s1.js): «Миру з сусідами»
+- w7s2l2 екран 6 (content/world/g7-w7s2.js): «князя з сестрою»
+- w7s2l2 екран 7 (content/world/g7-w7s2.js): «прийшло з Царгорода»
+- w7s2l3 екран 8 (content/world/g7-w7s2.js): «Які з цих»
+- w7s3l1 екран 4 (content/world/g7-w7s3.js): «перейти з селян»
+- w7s3l5 екран 2 (content/world/g7-w7s3.js): «Подивимося, з чого»
+- w7s4l1 екран 6 (content/world/g7-w7s4.js): «Хто з цих»
+- w7s4l3 екран 9 (content/world/g7-w7s4.js): «Хто з сусідів»
+- w7s5l1 екран 9 (content/world/g7-w7s5.js): «стається з ціною»
+- w7s5l2 екран 2 (content/world/g7-w7s5.js): «уявляли з чуток»
+- w7s5l3 екран 5 (content/world/g7-w7s5.js): «відбивали з цілих»
+- w7s5l4 екран 6 (content/world/g7-w7s5.js): «не з суші»
+- w8s1l5 екран 2 (content/world/g8-w8s1.js): «сталося з цінами»
+- w8s1l5 екран 2 (content/world/g8-w8s1.js): «буде з цінами»
+- w8s1l5 outro/назва (content/world/g8-w8s1.js): «торгівлі з життям»
+- w8s3l4 екран 4 (content/world/g8-w8s3.js): «союзу з султаном-мусульманином»
+- w8s3l4 екран 6 (content/world/g8-w8s3.js): «випливає з цитати»
+- w8s3l4 екран 6 (content/world/g8-w8s3.js): «походила з земель»
+- w8s4l4 екран 7 (content/world/g8-w8s4.js): «сталося з жителями»
+- w8s4l5 екран 9 (content/world/g8-w8s4.js): «торгувати з чужинцями»
+- w8s5l3 екран 7 (content/world/g8-w8s5.js): «воду з шахт»
+- w9s2l2 екран 7 (content/world/g9-w9s2.js): «чоловіки з чималим»
+- w9s2l3 екран 8 (content/world/g9-w9s2.js): «Перечитай, з чого»
+- w9s2l5 екран 4 (content/world/g9-w9s2.js): «робітники з червоними»
+- w9s3l2 екран 8 (content/world/g9-w9s3.js): «Карикатура з журналу»
+- w9s3l5 екран 3 (content/world/g9-w9s3.js): «разом з жінками»
+- w9s3l5 екран 9 (content/world/g9-w9s3.js): «шпиталь з червоним»
+- w9s4l1 екран 7 (content/world/g9-w9s4.js): «кожної з цих»
+- w9s5l1 екран 5 (content/world/g9-w9s5.js): «пальне з собою»
+- w9s5l1 екран 5 (content/world/g9-w9s5.js): «пальне з собою»
+- w9s5l6 екран 1 (content/world/g9-w9s5.js): «фото з заводу»
+- w9s5l6 екран 2 (content/world/g9-w9s5.js): «фото з заводу»
+- w9s5l6 екран 5 (content/world/g9-w9s5.js): «війну з Сербією»
+- w10s1l1 екран 6 (content/world/g10-w10s1.js): «Почни з Сараєва»
+- w10s1l1 екран 9 (content/world/g10-w10s1.js): «Австро-Угорщини з Сербією»
+- w10s1l4 екран 6 (content/world/g10-w10s1.js): «Бресті) з Центральними»
+- w10s1l5 екран 3 (content/world/g10-w10s1.js): «американці з сотнями»
+- w10s1l6 екран 7 (content/world/g10-w10s1.js): «підписує з Центральними»
+- w10s2l4 екран 1 (content/world/g10-w10s2.js): «Скриньки з Женеви»
+- w10s3l1 екран 1 (content/world/g10-w10s3.js): «пов'язане з цією»
+- w10s3l4 екран 8 (content/world/g10-w10s3.js): «Платівки з записами»
+- w10s4l2 екран 4 (content/world/g10-w10s4.js): «сталося з ціною»
+- w10s4l3 екран 5 (content/world/g10-w10s4.js): «пропаганди з числом»
+- w10s4l4 екран 4 (content/world/g10-w10s4.js): «партії з центром»
+- w10s4l4 екран 8 (content/world/g10-w10s4.js): «вийти з Союзу»
+- w10s4l4 екран 8 (content/world/g10-w10s4.js): «вийти з Союзу»
+- w10s7l3 екран 7 (content/world/g10-w10s7.js): «зроблено з човна»
+- w11s1l2 екран 4 (content/world/g11-w11s1.js): «ситуацію з цитатами»
+- w11s2l3 екран 7 (content/world/g11-w11s2.js): «починали з Сорбонни»
+- w11s2l4 екран 8 (content/world/g11-w11s2.js): «війну з сусідом»
+- w11s3l5 екран 7 (content/world/g11-w11s3.js): «змінилося з цензурою»
+- w11s3l7 екран 2 (content/world/g11-w11s3.js): «Які з цих»
+- w11s3l7 екран 7 (content/world/g11-w11s3.js): «Які з цих»
+- w11s4l1 екран 5 (content/world/g11-w11s4.js): «домовлятися з Заходом»
+- w11s4l2 екран 9 (content/world/g11-w11s4.js): «Почни з червневих»
+- dgw7 завдання 3 (content/world/diag-g7.js): «Яка з цих»
+- dgw7 завдання 21 (content/world/diag-g7.js): «земля з селянами»
+- dgw9 завдання 7 (content/world/diag-g9.js): «радився з церквою»
+
+## «зі» лише перед з, с, ш, щ + приголосний і «мною» (§ 25) · validate — 4
 
 - w7s3l1 екран 2 (content/world/g7-w7s3.js): «кольчузі, зі щитом»
-- w7s5l1 екран 5 (content/world/g7-w7s5.js): «разом зі щурами»
-- w8s3l6 екран 5 (content/world/g8-w8s3.js): «Читач зі Львова»
+- w7s5l1 екран 6 (content/world/g7-w7s5.js): «разом зі щурами»
 - w8s5l5 екран 10 (content/world/g8-w8s5.js): «Галичина зі Львовом»
-- w8s5l6 екран 6 (content/world/g8-w8s5.js): «Читачка зі Львова»
-- w8s5l6 екран 6 (content/world/g8-w8s5.js): «Галичину зі Львовом»
-- w9s2l6 екран 6 (content/world/g9-w9s2.js): «Відвідувач зі Львова»
+- dgw9 завдання 24 (content/world/diag-g9.js): «Галичина зі Львовом»
