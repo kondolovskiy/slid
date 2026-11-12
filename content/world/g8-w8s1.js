@@ -1,14 +1,14 @@
 /* Слід · Всесвітня історія, 8 клас — «Великі географічні відкриття»
-   6 уроків (5 тем + фінал). Еталон будови — content/world/g7-w7s1.js (style/world.md, D-044).
+   7 уроків (6 тем + фінал; l7 «Мануфактура, фільварок і мода» стоїть перед фіналом l6). Еталон будови — content/world/g7-w7s1.js (style/world.md, D-044).
    Програма: Гісем О. В. та ін., модельна «Всесвітня історія. 7–9 класи» (наказ МОН № 1449 від 27.11.2023), 8 кл., «Ранньомодерна доба».
    Спирається на w7s5 l5 (Енріке, Діаш, да Гама, Реконкіста, 1453 р.). Україна у світі: g8s2 l1 (згадка про козаків 1492 р.), g8s1 (фільварки) — подано на екрані.
-   Факти й джерела — tasks/review/write-world-w8s1.md (нотатки агента).
+   Факти й джерела — tasks/review/write-world-w8s1.md, tasks/*/revise-world-w8s1.md (нотатки агента).
    Перевірка: node tools/validate.mjs --section w8s1 && node tools/stats.mjs --subject world
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("world", {
   id: "w8s1",
   grade: 8,
-  weeks: [1, 7],
+  weeks: [1, 6],
   title: "Великі географічні відкриття",
   why: "Щоб розуміти, як європейці вийшли в океан, що вони знайшли і що це означало для мешканців Америки, Африки й Азії.",
   meta: { author: "write-world-w8s1", created: "2026-11-04", factcheck: "verifier-write-world-w8s1", teacher: null },
@@ -55,6 +55,24 @@ SLID.section("world", {
       "Абрахам Ортелій (Abraham Ortelius)",
       "суспільне надбання",
       "https://commons.wikimedia.org/wiki/File:OrteliusWorldMap1570.jpg"
+    ],
+    [
+      "Інфанта Ізабелла Клара Євгенія, 1579 р. Олія на полотні. Музей Прадо, Мадрид (P001137)",
+      "Алонсо Санчес Коельо (Alonso Sánchez Coello)",
+      "суспільне надбання",
+      "https://commons.wikimedia.org/wiki/File:Alonso_S%C3%A1nchez_Coello_001b.jpg"
+    ],
+    [
+      "«Impressio librorum» («Друкування книжок»), аркуш 4 серії «Nova Reperta» («Нові винаходи»). Гравюра, Антверпен, бл. 1600 р. Музей Метрополітен, Нью-Йорк (34.30(5))",
+      "Ян Коллар (Jan Collaert) за малюнком Яна ван дер Страта (Страдануса); видавець Філіпс Галле",
+      "CC0 (суспільне надбання)",
+      "https://www.metmuseum.org/art/collection/search/659683"
+    ],
+    [
+      "Портрет Стефана Баторія, короля Польщі. Олія на міді. Національний музей у Кракові (MNK I-290)",
+      "Марцін Кобер (Marcin Kober); фото — Pracownia Fotograficzna MNK",
+      "суспільне надбання (репродукція — CC0)",
+      "https://commons.wikimedia.org/wiki/File:Marcin_Kober_-_Portret_Stefana_Batorego_(1533-1586),_kr%C3%B3la_Polski_-_MNK_I-290_-_National_Museum_Krak%C3%B3w.jpg"
     ]
   ],
   lessons: [
