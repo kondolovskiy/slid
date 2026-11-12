@@ -1,16 +1,7 @@
 {
-  "date": "2026-11-12T14:35:42.305Z",
-  "errors": [],
-  "warnings": [
-    "content/hist/g10-g10s2.js#g10s2l1: sentenceWords=6.2 поза профілем [7; 15] для hist, 10-11 кл.",
-    "content/hist/g10-g10s2.js#g10s2l2: sentenceWords=6.5 поза профілем [7; 15] для hist, 10-11 кл.",
-    "content/hist/g10-g10s2.js#g10s2l3: sentenceWords=6.4 поза профілем [7; 15] для hist, 10-11 кл.",
-    "content/hist/g10-g10s2.js#g10s2l10: sentenceWords=6.9 поза профілем [7; 15] для hist, 10-11 кл.",
-    "content/hist/g10-g10s2.js#g10s2l4: sentenceWords=6 поза профілем [7; 15] для hist, 10-11 кл.",
-    "content/hist/g10-g10s2.js#g10s2l5: sentenceWords=5.8 поза профілем [7; 15] для hist, 10-11 кл.",
-    "content/hist/g10-g10s2.js#g10s2l6: sentenceWords=6.3 поза профілем [7; 15] для hist, 10-11 кл.",
-    "content/hist/g10-g10s2.js#g10s2l7: sentenceWords=6.2 поза профілем [7; 15] для hist, 10-11 кл.",
-    "content/hist/g10-g10s2.js#g10s2l8: sentenceWords=5.4 поза профілем [7; 15] для hist, 10-11 кл.",
-    "content/hist/g10-g10s2.js#g10s2l9: sentenceWords=6.2 поза профілем [7; 15] для hist, 10-11 кл."
-  ]
+  "date": "2026-11-12T14:36:03.787Z",
+  "errors": [
+    "--diag/--pool dgh11: такої діагностики чи пулу немає"
+  ],
+  "warnings": []
 }
