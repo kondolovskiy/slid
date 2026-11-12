@@ -1,5 +1,5 @@
 /* Слід · Історія, 5 клас — «Україна — наша держава»
-   Статус: g5s7l1–g5s7l7 draft (write-hist-g5s7, 2026-11-12; програма «Досліджуємо історію і суспільство. 5–6 кл.», Васильків та ін., 5 кл., розд. 1). 7 уроків.
+   Статус: g5s7l1–g5s7l7 verified (verifier-g5s7, 2026-11-12; write-hist-g5s7; програма «Досліджуємо історію і суспільство. 5–6 кл.», Васильків та ін., 5 кл., розд. 1). 7 уроків.
    Опора: Конституція України (ст. 3, 5–8, 10, 13, 14, 17, 20, 22, 53, 65–68, 70, 75, 76, 91, 99, 102, 103, 106, 113, 124, 133, 140) —
    https://ccu.gov.ua/sites/default/files/konstytuciya_ukrayiny_0.pdf ; https://osvita.ua/legislation/law/2227 . Області поіменно не оцінюються (звіт coverage §5 п. 4).
    Перевірка: node tools/validate.mjs --section g5s7 && node tools/stats.mjs --subject hist
@@ -10,7 +10,7 @@ SLID.section("hist", {
   weeks: [1, 5],
   title: "Україна — наша держава",
   why: "Щоб знати, як влаштована твоя держава: де її кордони, хто ухвалює закони, які права й обов'язки має кожен громадянин і хто захищає країну.",
-  meta: { author: "writer-hist-g5s7", created: "2026-11-12", factcheck: "self", teacher: null },
+  meta: { author: "writer-hist-g5s7", created: "2026-11-12", factcheck: "verifier-g5s7", teacher: null },
   badges: [{ id: "ourstate", name: "Знавець держави", icon: "shield", desc: "Пройти розділ «Україна — наша держава»" }],
   credits: [
     [
@@ -56,7 +56,7 @@ SLID.section("hist", {
       title: "Країна на карті Європи",
       short: "Територія і кордони",
       icon: "map",
-      status: "draft",
+      status: "verified",
       why: "Знати свою країну на карті — означає розуміти, хто наші сусіди і як влаштована держава.",
       screens: [
         {
@@ -183,7 +183,7 @@ SLID.section("hist", {
       title: "Мова й гроші держави",
       short: "Мова й гривня",
       icon: "voice",
-      status: "draft",
+      status: "verified",
       why: "Державна мова й власні гроші — ознаки незалежної держави. Обидві закріплено в Конституції.",
       screens: [
         {
@@ -327,7 +327,7 @@ SLID.section("hist", {
       title: "Головна книга країни",
       short: "Конституція",
       icon: "book",
-      status: "draft",
+      status: "verified",
       why: "Конституція визначає права й обов'язки кожного громадянина — і твої теж.",
       screens: [
         {
@@ -471,7 +471,7 @@ SLID.section("hist", {
       title: "Три гілки влади",
       short: "Органи влади",
       icon: "vote",
-      status: "draft",
+      status: "verified",
       why: "Хто ухвалює закони, а хто їх виконує? Це допомагає розуміти новини й захищати свої права.",
       screens: [
         {
@@ -609,7 +609,7 @@ SLID.section("hist", {
       title: "Багатства, які треба берегти",
       short: "Господарство",
       icon: "leaf",
-      status: "draft",
+      status: "verified",
       why: "Ґрунти, ліси, ріки й надра годують країну. Як ними користуватися, щоб вистачило й наступним поколінням?",
       screens: [
         {
@@ -762,7 +762,7 @@ SLID.section("hist", {
       title: "Хто захищає країну",
       short: "Військо",
       icon: "shield",
-      status: "draft",
+      status: "verified",
       why: "Незалежність треба не лише здобути, а й захистити. Це справа війська й усього народу.",
       screens: [
         {
@@ -890,7 +890,7 @@ SLID.section("hist", {
       title: "Путівник для гостей",
       short: "Фінал розділу",
       icon: "star",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "ourstate",
       why: "Перевірка всього розділу. Бали подвоєні.",
