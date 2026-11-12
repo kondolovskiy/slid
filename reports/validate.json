@@ -1,16 +1,5 @@
 {
-  "date": "2026-11-11T20:56:49.878Z",
+  "date": "2026-11-12T04:16:17.086Z",
   "errors": [],
-  "warnings": [
-    "content/world/g11-w11s5.js#w11s5l2 екран 6 (choice): дуже довге речення (30 слів): «У § 19 сказано (переклад): «„Культурна революція“, що тривал…»",
-    "content/world/g11-w11s5.js#w11s5l2: sentenceWords=6.8 поза профілем [7; 15] для world, 10-11 кл.",
-    "content/world/g11-w11s5.js#w11s5l2: у 2 з 3 завдань choice правильний варіант — Б: переставляй варіанти",
-    "content/world/g11-w11s5.js#w11s5l3: sentenceWords=6.6 поза профілем [7; 15] для world, 10-11 кл.",
-    "content/world/g11-w11s5.js#w11s5l4 екран 4 (info): дуже довге речення (30 слів): «За Шестиденну війну (5–10 червня 1967 р.) Ізраїль захопив Си…»",
-    "content/world/g11-w11s5.js#w11s5l4: sentenceWords=6.8 поза профілем [7; 15] для world, 10-11 кл.",
-    "content/world/g11-w11s5.js#w11s5l5: у 2 з 3 завдань choice правильний варіант — Б: переставляй варіанти",
-    "content/world/g11-w11s5.js#w11s5l6: sentenceWords=6.9 поза профілем [7; 15] для world, 10-11 кл.",
-    "content/world/g11-w11s5.js#w11s5l6: у 3 з 3 завдань choice правильний варіант — В: переставляй варіанти",
-    "content/world/g11-w11s5.js#w11s5l7: sentenceWords=5.6 поза профілем [7; 15] для world, 10-11 кл."
-  ]
+  "warnings": []
 }
