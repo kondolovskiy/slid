@@ -42,6 +42,24 @@ SLID.section("hist", {
       "Didier Descouens (Archaeodontosaurus)",
       "CC BY-SA 3.0",
       "https://commons.wikimedia.org/wiki/File:Biface_Silex_Venerque_MHNT_PRE_.2009.0.194.1_Fond.jpg"
+    ],
+    [
+      "Крем'яні вкладні пізнього мезоліту з Дістена, Земельний музей Нижньої Саксонії",
+      "Hajotthu",
+      "CC BY-SA 3.0",
+      "https://commons.wikimedia.org/wiki/File:Flinteinsätze_Diesten@Nieders._Landesmuseum20170622.jpg"
+    ],
+    [
+      "Кам'яна Могила, Запорізька область",
+      "Shaplykoff",
+      "CC BY-SA 3.0",
+      "https://commons.wikimedia.org/wiki/File:Кам'яна_могила.jpg"
+    ],
+    [
+      "Вежа Єрихона, Телль-ес-Султан",
+      "Reinhard Dietrich",
+      "суспільне надбання (PD-self, передано автором)",
+      "https://commons.wikimedia.org/wiki/File:Tower_of_Jericho.jpg"
     ]
   ],
   lessons: [
@@ -574,8 +592,8 @@ SLID.section("hist", {
           eyebrow: "Причина",
           title: "Чому мисливцям стало важче?",
           opts: [
-            "Звірів стало більше, і списів не вистачало",
-            "Звіри ховалися в лісі поодинці чи малими гуртами",
+            "Звірів стало більше, і списів на всіх не вистачало",
+            "Лісові звірі жили поодинці, а не стадами",
             "Люди почали сіяти зерно й забули, як полювати"
           ],
           correct: 1,
@@ -618,7 +636,7 @@ SLID.section("hist", {
           opts: [
             "Пас стада овець і корів",
             "Тягав плуг на полі",
-            "Знаходив звіра за запахом і гнав його"
+            "Знаходив звіра за запахом"
           ],
           correct: 2,
           hint: "Собака — перша свійська тварина. Чи були тоді інші?",
