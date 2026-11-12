@@ -6,7 +6,7 @@ type: revise-section
 subject: hist
 grade: 6
 section: g6s1
-status: review
+status: done
 claimed_by: writer-hist-g6s1
 created: 2026-11-10
 depends_on: [fix-hist-weeks-cov]
