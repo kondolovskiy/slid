@@ -1585,3 +1585,26 @@
 - 2026-11-12 · writer-hist-g11s1 · IDEA (TQ, docs/teacher-questions.md — номер TQ-085 за задачею): показати вчителю урок g11s1l9 «Трагедія двох народів» (Волинь 1943–1944): формулювання, роль окупантів і радянських партизанів, числа жертв з атрибуцією (ІНП ≈ 100 тис.; українські дослідники 10–20 тис.), карта GUS 1931 як джерело.
 - 2026-11-12 · writer-hist-g11s1 · IDEA (dgh10, наступна редакція з новим id): cur-теми з g11s1l7 (радянізація 1939–1941), g11s1l9 (Волинь) — за задачею refine-hist-diag-g10-g11.
 - 2026-11-12 · writer-hist-g11s1 · STYLE (img, дублікати): img/hist/g11s1/yalta-1945.jpg — копія img/world/w11s1/yalta-1945.jpg (той самий NARA-файл); до рішення людини про дублікати між теками.
+- 2026-11-12 · writer-hist-g6s7 · DONE: revise-hist-g6s7-cov → review. content/hist/g6-g6s7.js:
+  - новий g6s7l8 «Один день в Афінах» (draft, шостий урок);
+  - l6 — лише eyebrow «Урок 7» (лишено verified — на розсуд верифікатора);
+  - фінал l7 — draft, + Завдання 6, `pre` у всіх завданнях;
+  - validate 0, dgh6 0.
+  Зображення img/hist/g6s7/{lekythos-loom,lekythos-spinning,stele-servant}.jpg і частину правок файлу вже закомітили чужі коміти (5f5ec14, cae0bb9 / 9e21b6e) — звірити.
+- 2026-11-12 · writer-hist-g6s7 · FACT (hist 6, g6s7l8): грецькі будинки — сирцева цегла на кам'яній основі, кімнати навколо двору, на вулицю обернені глухими стінами.
+  - https://en.wikipedia.org/wiki/Ancient_Greek_architecture
+  - https://www.historyhit.com/what-were-houses-like-in-ancient-greece/
+  τοιχωρύχος = «той, хто прокопує стіну» → злодій.
+  - https://atlas.perseus.tufts.edu/dictionaries/entry/urn:cite2:scaife-viewer:dictionaries.v1:lsj-n104200
+  - https://digi.hadw-bw.de/view/frc8_2/0339
+- 2026-11-12 · writer-hist-g6s7 · FACT (hist 6, g6s7l8): їжа — зерно, оливки, олія, сир, фіги, вино з водою; м'ясо рідко, переважно на святах і жертвоприношеннях (рибу не брати: джерела розходяться).
+  - https://en.wikipedia.org/wiki/Ancient_Greek_cuisine
+  - https://www.historyhit.com/what-did-the-ancient-greeks-eat-and-drink/
+  Хітон і гіматій, одяг ткали вдома.
+  - https://en.wikipedia.org/wiki/Clothing_in_ancient_Greece
+  - https://www.metmuseum.org/essays/ancient-greek-dress
+- 2026-11-12 · writer-hist-g6s7 · FACT (hist 6, g6s7l8): раби в Афінах — власність господаря; полонені, захоплені піратами, діти рабів; багато з-поза Греції, зокрема з Причорномор'я; праця в домі, майстернях, на полях, у копальнях Лавріону.
+  - https://en.wikipedia.org/wiki/Slavery_in_ancient_Greece
+  - https://www.historyskills.com/classroom/ancient-history/ancient-greek-slavery
+- 2026-11-12 · writer-hist-g6s7 · FACT (зображення D-027): Met 31.11.10 — лекіф Амасісового художника, близько 550–530 рр. до н. е., жінки прядуть і тчуть (CC0); Met 36.11.1 — надгробок молодої жінки й служниці, Аттика, близько 400–390 рр. до н. е. (CC0). Статус дівчинки (служниця / сестра / рабиня) не встановлено.
+- 2026-11-12 · writer-hist-g6s7 · TERM (glossary hist, 6 кл.): хітон, гіматій, раб (g6s7l8).
