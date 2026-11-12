@@ -30,3 +30,4 @@
 - **2026-11-02-2** — старт ukr 5 кл. (D-040, D-041): план за З5, app/lang.js (gaps, pick, stress, word, split; ∅ і «–»), 11 розділів u5s1–u5s11 — 69 уроків verified, style-sync ukr 5 кл.; facts/ukr №1–83, glossary/ukr.
 - **2026-11-02-3** — ukr 6 кл. (D-042: «із» після голосного; уточнення D-041 — словники СУМ-11/СУМ-20/ОС УМІФ/ВЕСУМ): 14 розділів u6s1–u6s14 — 94 уроки verified, style-sync ukr 6 кл., fix-pick-groups, euphony.
 - **2026-11-03-1** — hist за програмою «Артинов» (D-044): нові g5s5, g5s6, g6s6–g6s8 і revise g7s4, g7s5, g8s1, g8s5 — verified; новий предмет world, w7s1–w7s5 verified; tools-world-img; facts/hist №314–345, facts/world №1–25, glossary/world.
+- **2026-11-04-1** — ukr 7 кл. за Заболотними 2024 (D-045): план і u7s1–u7s13 — 80 уроків verified; style-ukr-g5/g6-unify, engine-lang-p3, engine-lang-gaps-shuffle, style-sync-ukr-g7; facts/ukr №154–211.
