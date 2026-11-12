@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-12T20:16:00.857Z
 id: style-world-1112
 type: style
 subject: world
 status: todo
-claimed_by:
+claimed_by: orch-style-world-1112
 created: 2026-11-12
 ---
 # style-sync всесвітньої історії 7–11 кл. (10–12.11)

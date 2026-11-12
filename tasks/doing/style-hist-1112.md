@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-12T20:16:00.904Z
 id: style-hist-1112
 type: style
 subject: hist
 status: todo
-claimed_by:
+claimed_by: orch-style-hist-1112
 created: 2026-11-12
 ---
 # style-sync історії 5–11 кл. після покриття програми (10–12.11)

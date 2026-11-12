@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-12T20:16:00.813Z
 id: fix-ukr-lessons-from-pools
 type: fix
 subject: ukr
 status: todo
-claimed_by:
+claimed_by: orch-fix-ukr-lessons-from-pools
 created: 2026-11-12
 ---
 # Дрібні правки уроків ukr за верифікацією пулів (11.11)
