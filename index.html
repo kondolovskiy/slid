@@ -469,7 +469,7 @@ button.nowrow{cursor:pointer;width:100%} button.nowrow:hover{background:var(--ch
    на 2em — місце для цих літер, інакше «{довгі варіанти}!» виходить за край (engine-gaps-wrap) */
 .gap{display:inline-flex;flex-wrap:wrap;max-width:calc(100% - 2em);box-sizing:border-box;white-space:normal;gap:3px;vertical-align:middle;margin:0 2px;padding:2px;border-radius:10px;background:var(--chip);border:1.5px dashed var(--line)}
 .gopt,.pw,.sv{all:unset;box-sizing:border-box;cursor:pointer;border-radius:8px;border:1.5px solid transparent;font:inherit;line-height:1.3}
-.gopt{min-width:30px;padding:2px 7px;text-align:center;font-weight:700;background:var(--surface);border-color:var(--line)}
+.gopt{min-width:30px;padding:2px 7px;text-align:center;font-weight:700;background:var(--surface);border-color:var(--line);overflow-wrap:anywhere}
 .pw{padding:0 3px;margin:0 -1px;border-bottom:2px dotted var(--line);border-radius:6px}
 .gopt:focus-visible,.pw:focus-visible,.sv:focus-visible,.cut:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .gopt[aria-pressed="true"],.pw[aria-pressed="true"],.sv[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
