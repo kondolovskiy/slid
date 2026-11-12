@@ -1,11 +1,10 @@
 {
-  "date": "2026-11-12T19:22:12.046Z",
-  "errors": [
-    "content/hist/g9-g9s6.js#g9s6l4 екран 3 (info): note.links: кожне посилання — [назва, https://…]"
-  ],
+  "date": "2026-11-12T19:22:44.394Z",
+  "errors": [],
   "warnings": [
-    "content/hist/g9-g9s6.js#g9s6l3: gradedShare=0.44 поза профілем [0.5; 0.9] для hist, 7-9 кл.",
-    "content/hist/g9-g9s6.js#g9s6l4: gradedShare=0.4 поза профілем [0.5; 0.9] для hist, 7-9 кл.",
-    "content/hist/g9-g9s6.js#g9s6l5: gradedShare=0.4 поза профілем [0.5; 0.9] для hist, 7-9 кл."
+    "content/hist/g11-g11s4.js#g11s4l1: sentenceWords=6.6 поза профілем [7; 15] для hist, 10-11 кл.",
+    "content/hist/g11-g11s4.js#g11s4l2: sentenceWords=6.5 поза профілем [7; 15] для hist, 10-11 кл.",
+    "content/hist/g11-g11s4.js#g11s4l3: sentenceWords=6.7 поза профілем [7; 15] для hist, 10-11 кл.",
+    "content/hist/g11-g11s4.js#g11s4l4: sentenceWords=6.9 поза профілем [7; 15] для hist, 10-11 кл."
   ]
 }
