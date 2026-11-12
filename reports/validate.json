@@ -1,15 +1,11 @@
 {
-  "date": "2026-11-12T19:21:26.430Z",
-  "errors": [],
+  "date": "2026-11-12T19:22:12.046Z",
+  "errors": [
+    "content/hist/g9-g9s6.js#g9s6l4 екран 3 (info): note.links: кожне посилання — [назва, https://…]"
+  ],
   "warnings": [
-    "content/hist/g10-g10s2.js#g10s2l1: sentenceWords=6.2 поза профілем [7; 15] для hist, 10-11 кл.",
-    "content/hist/g10-g10s2.js#g10s2l2: sentenceWords=6.5 поза профілем [7; 15] для hist, 10-11 кл.",
-    "content/hist/g10-g10s2.js#g10s2l3: sentenceWords=6.4 поза профілем [7; 15] для hist, 10-11 кл.",
-    "content/hist/g10-g10s2.js#g10s2l4: sentenceWords=6 поза профілем [7; 15] для hist, 10-11 кл.",
-    "content/hist/g10-g10s2.js#g10s2l5: sentenceWords=5.8 поза профілем [7; 15] для hist, 10-11 кл.",
-    "content/hist/g10-g10s2.js#g10s2l6: sentenceWords=6.3 поза профілем [7; 15] для hist, 10-11 кл.",
-    "content/hist/g10-g10s2.js#g10s2l7: sentenceWords=6.2 поза профілем [7; 15] для hist, 10-11 кл.",
-    "content/hist/g10-g10s2.js#g10s2l8: sentenceWords=5.4 поза профілем [7; 15] для hist, 10-11 кл.",
-    "content/hist/g10-g10s2.js#g10s2l9: sentenceWords=6.1 поза профілем [7; 15] для hist, 10-11 кл."
+    "content/hist/g9-g9s6.js#g9s6l3: gradedShare=0.44 поза профілем [0.5; 0.9] для hist, 7-9 кл.",
+    "content/hist/g9-g9s6.js#g9s6l4: gradedShare=0.4 поза профілем [0.5; 0.9] для hist, 7-9 кл.",
+    "content/hist/g9-g9s6.js#g9s6l5: gradedShare=0.4 поза профілем [0.5; 0.9] для hist, 7-9 кл."
   ]
 }

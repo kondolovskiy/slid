@@ -6,7 +6,7 @@ type: refine-section
 subject: hist
 grade: 7
 section: g7s5
-status: review
+status: done
 claimed_by: writer-hist-g7s5
 created: 2026-11-10
 depends_on: [fix-hist-weeks-cov]
