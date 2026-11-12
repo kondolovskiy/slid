@@ -57,6 +57,12 @@ SLID.section("hist", {
       "Maxim Gavrilyuk, 2008, Wiki Loves Monuments 2024",
       "CC BY-SA 4.0",
       "https://commons.wikimedia.org/wiki/File:Genoese_fortress_(Sudak)-2008-1.jpg"
+    ],
+    [
+      "Ханський палац у Бахчисараї, панорама",
+      "Fluid70, 2013",
+      "CC BY-SA 3.0",
+      "https://commons.wikimedia.org/wiki/File:Bakhchisaray_Palace,_Panorama,_2013.jpg"
     ]
   ],
   lessons: [
