@@ -143,7 +143,7 @@
 | g7s5l1 Король багатьох русинів | 7 | 8 | 0.63 | 28 | 70 | 6.7 | 0.037 | 4 | — |
 | g7s5l2 Битва, якої могло не бути | 7 | 8 | 0.63 | 24 | 66 | 6.9 | 0.035 | 4 | — |
 | g7s5l3 Шлюб, що змінив карту | 7 | 9 | 0.56 | 21 | 47 | 5.8 | 0.048 | 3 | maxReadWords нетипово для сім'ї (z=-2.1) |
-| g7s5l4 Нова держава на півострові | 7 | 11 | 0.55 | 33 | 66 | 6.6 | 0.025 | 3 | — |
+| g7s5l4 Нова держава на півострові | 7 | 11 | 0.55 | 33 | 74 | 6.7 | 0.024 | 3 | — |
 | g7s5l6 Крим під владою султана | 7 | 11 | 0.55 | 31 | 74 | 6.9 | 0.021 | 3 | — |
 | g7s5l5 Канцелярія великого князя (фінал) | 7 | 8 | 0.88 | 20 | 40 | 5.2 | 0.026 | 3 | — |
 | g7s6l1 Князь, що чекав корону | 7 | 10 | 0.5 | 29 | 61 | 6.3 | 0.024 | 4 | — |
@@ -245,10 +245,10 @@
 | g10s2l10 Курултай і Кримська Народна Республіка | 10 | 11 | 0.55 | 37 | 78 | 7 | 0.055 | 4 | — |
 | g10s2l4 Гетьман у XX столітті | 10 | 9 | 0.56 | 33 | 64 | 6 | 0.082 | 3 | sentenceWords=6 поза [7; 15] |
 | g10s2l5 Директорія в кільці фронтів | 10 | 8 | 0.63 | 27 | 73 | 5.8 | 0.055 | 4 | sentenceWords=5.8 поза [7; 15] |
-| g10s2l6 Ніч на 1 листопада | 10 | 11 | 0.55 | 34 | 79 | 6.3 | 0.057 | 4 | sentenceWords=6.3 поза [7; 15] |
+| g10s2l6 Ніч на 1 листопада | 10 | 11 | 0.55 | 33 | 79 | 6.3 | 0.057 | 4 | sentenceWords=6.3 поза [7; 15] |
 | g10s2l7 Соборна площа | 10 | 9 | 0.67 | 29 | 60 | 6.2 | 0.057 | 3 | sentenceWords=6.2 поза [7; 15]; gradedShare нетипово для сім'ї (z=2.4) |
-| g10s2l11 Зимові походи й Холодний Яр | 10 | 12 | 0.5 | 35 | 80 | 7.2 | 0.042 | 4 | — |
-| g10s2l12 Сусіди в революції | 10 | 11 | 0.55 | 39 | 82 | 7.1 | 0.04 | 3 | — |
+| g10s2l11 Зимові походи й Холодний Яр | 10 | 12 | 0.5 | 35 | 83 | 7.2 | 0.041 | 4 | — |
+| g10s2l12 Сусіди в революції | 10 | 11 | 0.55 | 40 | 82 | 7.1 | 0.04 | 3 | — |
 | g10s2l8 Чому держава не встояла | 10 | 9 | 0.56 | 27 | 72 | 5.4 | 0.067 | 3 | sentenceWords=5.4 поза [7; 15]; sentenceWords нетипово для сім'ї (z=-2) |
 | g10s2l9 Архів революції (фінал) | 10 | 8 | 0.88 | 22 | 39 | 6.1 | 0.059 | 4 | sentenceWords=6.1 поза [7; 15] |
 | g10s3l1 Хліб, податок і базар | 10 | 9 | 0.56 | 36 | 62 | 6.5 | 0.029 | 3 | sentenceWords=6.5 поза [7; 15] |
@@ -314,7 +314,7 @@
 
 - **5-6:lesson**: screens 8.27±1.24, gradedShare 0.57±0.08, readWordsPerScreen 23.86±3.86, maxReadWords 53.93±5.96, sentenceWords 6.04±0.39, longWordShare 0.04±0.02, typeVariety 3.16±0.68
 - **5-6:boss**: screens 7.18±0.71, gradedShare 0.86±0.02, readWordsPerScreen 12.82±2.59, maxReadWords 23.82±5.11, sentenceWords 5.2±0.41, longWordShare 0.04±0.01, typeVariety 3.41±0.49
-- **7-9:lesson**: screens 8.9±1.17, gradedShare 0.56±0.06, readWordsPerScreen 27.25±3.85, maxReadWords 62.63±7.57, sentenceWords 6.11±0.44, longWordShare 0.04±0.01, typeVariety 3.31±0.46
+- **7-9:lesson**: screens 8.9±1.17, gradedShare 0.56±0.06, readWordsPerScreen 27.25±3.85, maxReadWords 62.71±7.64, sentenceWords 6.11±0.44, longWordShare 0.04±0.01, typeVariety 3.31±0.46
 - **7-9:boss**: screens 8±0, gradedShare 0.88±0, readWordsPerScreen 21.69±2.26, maxReadWords 43.75±4.98, sentenceWords 5.71±0.34, longWordShare 0.04±0.01, typeVariety 3.25±0.43
-- **10-11:lesson**: screens 9.57±1.28, gradedShare 0.54±0.04, readWordsPerScreen 30.57±6.01, maxReadWords 64.89±9.92, sentenceWords 6.76±0.57, longWordShare 0.07±0.02, typeVariety 3.44±0.5
+- **10-11:lesson**: screens 9.57±1.28, gradedShare 0.54±0.04, readWordsPerScreen 30.57±6.02, maxReadWords 64.94±10, sentenceWords 6.76±0.57, longWordShare 0.07±0.02, typeVariety 3.44±0.5
 - **10-11:boss**: screens 8±0, gradedShare 0.88±0, readWordsPerScreen 24.6±2.94, maxReadWords 47.1±4.41, sentenceWords 6.54±0.63, longWordShare 0.07±0.02, typeVariety 3.6±0.49
