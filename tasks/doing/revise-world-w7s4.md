@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-12T05:07:23.654Z
 id: revise-world-w7s4
 type: revise-section
 subject: world
@@ -6,7 +8,7 @@ grade: 7
 section: w7s4
 weeks: [19, 24]
 status: todo
-claimed_by:
+claimed_by: writer-world-w7s4
 created: 2026-11-10
 depends_on: []
 ---

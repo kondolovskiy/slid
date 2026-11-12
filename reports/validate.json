@@ -1,5 +1,9 @@
 {
-  "date": "2026-11-12T05:06:58.680Z",
+  "date": "2026-11-12T05:07:32.457Z",
   "errors": [],
-  "warnings": []
+  "warnings": [
+    "content/world/g8-w8s5.js#w8s5l2: maxReadWords=87 поза профілем [0; 75] для world, 7-9 кл.",
+    "content/world/g8-w8s5.js#w8s5l7: readWordsPerScreen=47 поза профілем [8; 45] для world, 7-9 кл.",
+    "content/world/g8-w8s5.js#w8s5l7: maxReadWords=113 поза профілем [0; 75] для world, 7-9 кл."
+  ]
 }
