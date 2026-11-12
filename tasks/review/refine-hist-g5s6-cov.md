@@ -6,7 +6,7 @@ type: refine-section
 subject: hist
 grade: 5
 section: g5s6
-status: todo
+status: review
 claimed_by: writer-hist-g5s6
 created: 2026-11-10
 depends_on: []
@@ -34,3 +34,19 @@ depends_on: []
 - Готово: `node tools/validate.mjs --section g5s6` — 0 помилок; `node tools/stats.mjs --subject hist` — без прапорців для змінених уроків; нотатки з переліком уроків і URL; `node tools/claim.mjs move <task-id> review` → незалежна перевірка `content-verifier` (факти, D-019, D-027).
 
 ## Нотатки агента
+
+**writer-hist-g5s6, 2026-11-12.** Файл: `content/hist/g5-g5s6.js`. Уроків — 7 (нових немає; нових id немає). Змінено й переведено в `draft`: **h62**, **h66**. h61, h63–h65, h67 — verified, не чіпано (h67 не змінено: нових уроків немає, екран про ЄС — у h66).
+
+1. **h62 е3 (новий, після е2 «Україна в СРСР")** — `choice` з опорою в body: розквіт літератури й театру 1920-х, Лесь Курбас і «Березіль» у Києві, арешти митців у 1930-х, розстріл Курбаса восени 1937 р. → назва «Розстріляне відродження» (у лапках — glossary/hist, TQ-041). Новий термін один. Факти — facts/hist №175 (Курбас, «Березіль», Київ, 1922), №176 (Курбас розстріляний 3.11.1937, Сандармох; число українців не подано). Відповідь — індекс 1; позиції в уроці: 1, [0,2,3], 2, 0 + число. Опора — body того ж екрана (D-019). `learned` + «Пояснювати назву «Розстріляне відродження»»; outro і `why` — дрібні правки (милозвучність).
+2. **h66 е8 (новий, після е7 «Документ ООН»)** — `choice` «Що означає статус кандидата в члени ЄС?»: заявка 28.02.2022 («на п'ятий день вторгнення»: 24.02 — перший день), Європейська рада 23.06.2022, кандидат — ще не член, «попереду переговори й реформи»; зв'язок з Євромайданом (h65 е5). Відповідь — індекс 2 (у h66: 2, 1, 0, **2**, 1). Опора — body того ж екрана. `learned` + «Пояснювати, що означає статус кандидата в члени ЄС».
+   Джерела (≥ 2, офіційне ЄС):
+   - https://enlargement.ec.europa.eu/european-neighbourhood-policy/countries-region/ukraine_en — «On 28 February 2022, Ukraine applied for EU membership»; «Since June 2022, Ukraine has official EU candidate status»;
+   - https://enlargement.ec.europa.eu/news/european-council-conclusions-ukraine-membership-applications-ukraine-republic-moldova-and-georgia-2022-06-24_en — висновки Європейської ради 23.06.2022: «decided to grant the status of candidate country to Ukraine and to the Republic of Moldova»;
+   - https://uk.wikipedia.org/wiki/Вступ_України_до_Європейського_Союзу — 28.02.2022 заявка; 23.06.2022 Європейська рада надала статус кандидата.
+   - consilium.europa.eu, eeas.europa.eu, president.gov.ua, pravda.com.ua — 403 (дати Ради підтверджено лише витягом пошуку з consilium.europa.eu/en/policies/ukraine/).
+3. Милозвучність у змінених уроках: h62 «зробила й що», «влади й шанувати», «документ із початку»; h66 «дивувався і прозвав». h66 е10 «Внутрішній конфлікт» — не чергується, лишено. Решта знахідок euphony — у verified-уроках, не чіпано (для style-sync).
+4. Зображень не додано: обидва уроки вже мають справжні `img` (D-027 виконано); `credits` не змінено.
+
+Перевірки: `validate --section g5s6` — 0 помилок, 0 попереджень; `validate --diag dgh5` — 0/0 (dgh5 спирається лише на h64 і ballot-1991.jpg, не зачеплено); `stats --subject hist` — h62 10 екранів, частка завдань 0,6, без прапорців; h66 — 10 екранів, 0,6, без прапорців. Build не запускав.
+
+Для верифікатора: перевірити дати ЄС напряму на consilium.europa.eu (у мене 403); формулювання «Європейська рада — зібрання керівників держав ЄС» (точніше — глав держав або урядів; для 5 кл. спрощено).

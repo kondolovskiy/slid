@@ -7,7 +7,7 @@ subject: world
 grade: 7
 section: w7s5
 weeks: [25, 29]
-status: review
+status: done
 claimed_by: writer-refine-w7s5
 created: 2026-11-10
 depends_on: []
@@ -65,3 +65,6 @@ depends_on: []
 - stats: w7s5l1 gradedShare 0.73 — «нетипово для сім'ї» (z = 3.3), але в межах профілю 7–9 [0.5, 0.9]: два нові завдання мають опору в body (як «Як чума перепливла море?»), окремий info не вміщався в 11 екранів. Найдовший екран l1 — 60 слів, l3 — 65.
 - Позиції правильних: l1 — 2, (нове 2), 1, 1, 0, (нове 2); l3 — 1, 1, (нове [1, 2]), [0, 2, 3].
 - validate --section w7s5 / --diag dgw7 / --diag dgw8 — 0 помилок, 0 попереджень; euphony — у нових текстах відхилень немає.
+
+### verifier-refine-w7s5, 2026-11-12
+Прийнято: w7s5l1, w7s5l3 → verified. 4 правки: формулювання похолодання (без «згодом»), завдання «закон про одяг» → info (gradedShare l1 0.64), позиції правильних у l1 (0) і l3 ([0, 3]). Опори dgw7/dgw8/dgw9 не змінено. Звіт — reports/verify/refine-w7s5.md.
