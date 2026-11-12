@@ -103,7 +103,7 @@ SLID.section("hist", {
       screens: [
         {
           type: "intro",
-          eyebrow: "Розділ 5 · Урок 1",
+          eyebrow: "Розділ 6 · Урок 1",
           title: "Хто залишив це золото на нашій землі?",
           img: "img/hist/g5s5/pectoral.jpg",
           cap: "Копія золотої пекторалі з кургану Товста Могила, IV ст. до н. е. Археологічний музей НАН України. Оригінал зберігається в Національному музеї історії України.",
@@ -221,7 +221,7 @@ SLID.section("hist", {
       screens: [
         {
           type: "intro",
-          eyebrow: "Розділ 5 · Урок 2",
+          eyebrow: "Розділ 6 · Урок 2",
           title: "Хто звів цей собор майже тисячу років тому?",
           img: "img/hist/g5s5/sofia.jpg",
           cap: "Софійський собор у Києві, вигляд з півдня. Фото 2023 р.",
@@ -338,7 +338,7 @@ SLID.section("hist", {
       screens: [
         {
           type: "intro",
-          eyebrow: "Розділ 5 · Урок 3",
+          eyebrow: "Розділ 6 · Урок 3",
           title: "Король на наших землях?",
           img: "img/hist/g5s5/seal-yurii.jpg",
           fit: true,
@@ -452,7 +452,7 @@ SLID.section("hist", {
       screens: [
         {
           type: "intro",
-          eyebrow: "Розділ 5 · Урок 4",
+          eyebrow: "Розділ 6 · Урок 4",
           title: "Чому козацька фортеця стояла саме тут?",
           img: "img/hist/g5s5/beauplan-sich.jpg",
           cap: "Дніпрові пороги й Запорожжя на карті Гійома де Боплана, XVII ст. (фрагмент).",
@@ -580,7 +580,7 @@ SLID.section("hist", {
       screens: [
         {
           type: "intro",
-          eyebrow: "Розділ 5 · Урок 5",
+          eyebrow: "Розділ 6 · Урок 5",
           title: "Куди зникла козацька держава?",
           img: "img/hist/g5s5/kiepert-1849.jpg",
           cap: "Карта Генріха Кіперта, Веймар, 1849 р. (фрагмент). Ліворуч — Galizien (Галичина), праворуч — Wolhynien і Podolien (Волинь і Поділля). Між ними пролягав кордон двох імперій.",
@@ -708,7 +708,7 @@ SLID.section("hist", {
       screens: [
         {
           type: "intro",
-          eyebrow: "Розділ 5 · Урок 6",
+          eyebrow: "Розділ 6 · Урок 6",
           title: "Чим ця книжка здивувала читачів?",
           img: "img/hist/g5s5/eneida-1798.jpg",
           tall: true,

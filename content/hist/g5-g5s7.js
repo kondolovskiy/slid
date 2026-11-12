@@ -61,7 +61,7 @@ SLID.section("hist", {
       screens: [
         {
           type: "intro",
-          eyebrow: "Наша держава · Урок 1",
+          eyebrow: "Розділ 1 · Урок 1",
           title: "Як пояснити гостеві, де Україна?",
           img: "img/hist/g5s7/map-ukraine.jpg",
           fit: true,
@@ -188,7 +188,7 @@ SLID.section("hist", {
       screens: [
         {
           type: "intro",
-          eyebrow: "Наша держава · Урок 2",
+          eyebrow: "Розділ 1 · Урок 2",
           title: "Що розповідає звичайна банкнота?",
           img: "img/hist/g5s7/hryvnia-1992.jpg",
           fit: true,
@@ -332,7 +332,7 @@ SLID.section("hist", {
       screens: [
         {
           type: "intro",
-          eyebrow: "Наша держава · Урок 3",
+          eyebrow: "Розділ 1 · Урок 3",
           title: "Чому цей закон називають Основним?",
           img: "img/hist/g5s7/constitution-title.jpg",
           fit: true,
@@ -476,7 +476,7 @@ SLID.section("hist", {
       screens: [
         {
           type: "intro",
-          eyebrow: "Наша держава · Урок 4",
+          eyebrow: "Розділ 1 · Урок 4",
           title: "Хто в Україні головний?",
           img: "img/hist/g5s7/mariinsky-palace.jpg",
           cap: "Маріїнський палац у Києві, збудований у середині XVIII ст. Фото 2018 р.",
@@ -614,7 +614,7 @@ SLID.section("hist", {
       screens: [
         {
           type: "intro",
-          eyebrow: "Наша держава · Урок 5",
+          eyebrow: "Розділ 1 · Урок 5",
           title: "Що спільного в соняшника й залізної руди?",
           img: "img/hist/g5s7/sunflowers.jpg",
           cap: "Поле соняшнику в Україні, липень 2013 р.",
@@ -767,7 +767,7 @@ SLID.section("hist", {
       screens: [
         {
           type: "intro",
-          eyebrow: "Наша держава · Урок 6",
+          eyebrow: "Розділ 1 · Урок 6",
           title: "Чому свято війська — 6 грудня?",
           img: "img/hist/g5s7/afu-day-2021.jpg",
           cap: "Харків, площа Свободи, 6 грудня 2021 р. Урочистості з нагоди 30-річчя Збройних Сил України. Фото Офісу Президента України.",

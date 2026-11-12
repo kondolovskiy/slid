@@ -67,7 +67,7 @@ SLID.section("hist", {
       screens: [
         {
           type: "intro",
-          eyebrow: "Розділ 2 · Урок 1",
+          eyebrow: "Розділ 3 · Урок 1",
           title: "Як назвати народ, який не залишив жодного слова?",
           img: "img/trypillia-pot.jpg",
           cap: "Розписні посудини культури Кукутені–Трипілля з села Кукутені (Румунія), V–IV тис. до н. е. Новий музей, Берлін.",
@@ -209,7 +209,7 @@ SLID.section("hist", {
       screens: [
         {
           type: "intro",
-          eyebrow: "Розділ 2 · Урок 2",
+          eyebrow: "Розділ 3 · Урок 2",
           title: "Місто чи велике село?",
           img: "img/hist/g6s2/talianky.jpg",
           cap: "Художня реконструкція трипільського поселення біля с. Тальянки (Черкащина), IV тис. до н. е.",
@@ -332,7 +332,7 @@ SLID.section("hist", {
       screens: [
         {
           type: "intro",
-          eyebrow: "Розділ 2 · Урок 3",
+          eyebrow: "Розділ 3 · Урок 3",
           title: "Навіщо малювати на горщику?",
           img: "img/hist/g6s2/animal-pot.jpg",
           tall: true,
@@ -472,7 +472,7 @@ SLID.section("hist", {
       screens: [
         {
           type: "intro",
-          eyebrow: "Розділ 2 · Урок 4",
+          eyebrow: "Розділ 3 · Урок 4",
           title: "Куди зникли тисячі будинків?",
           img: "img/hist/g6s2/house.jpg",
           cap: "Художня реконструкція великого будинку з Майданецького, близько 3700 р. до н. е.",
