@@ -7,7 +7,7 @@ subject: world
 grade: 8
 section: w8s1
 weeks: [1, 6]
-status: review
+status: done
 claimed_by: w-revise-world-w8s1
 created: 2026-11-10
 depends_on: []
@@ -84,3 +84,6 @@ depends_on: []
 - «Друге кріпацтво» — лише в `note`, із застереженням «інші вважають назву неточною» (Wyczański).
 - Уривок Груневега — переклад (не оригінал), подано з `note` про джерело; верифікатору звірити зі статтею Замостяник (с. 1 PDF).
 - Euphony: у verified l2–l5 лишилися підказки (зокрема l5 «сталося з цінами», «торгівлі з життям») — не правив, щоб не знімати verified.
+
+## Верифікація
+**verifier-revise-w8s1, 2026-11-12.** Звіт reports/verify/revise-w8s1.md. w8s1l7, w8s1l6 → verified. 6 дрібних правок: l6 Q6 «у своїх хатах»; l7 е1 «хліб для міст заходу Європи часто везли…»; note е9 «дослідниці»; credits гравюри — гравер не підписаний (Met: Jan Collaert I; Princeton: Theodoor Galle); credits Баторія — «приписують Марцінові Коберу», 1580-ті за написом ANNO AETATIS LII. Уривок Груневега збігається з Замостяник 2016 дослівно. validate --section w8s1 — 0/0.
