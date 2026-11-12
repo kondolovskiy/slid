@@ -6,7 +6,7 @@ type: revise-section
 subject: hist
 grade: 8
 section: g8s4
-status: review
+status: done
 claimed_by: writer-hist-g8s4
 created: 2026-11-10
 depends_on: []
