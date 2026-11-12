@@ -7,7 +7,7 @@ subject: world
 grade: 8
 section: w8s4
 weeks: [18, 23]
-status: review
+status: done
 claimed_by: w-revise-world-w8s4
 created: 2026-11-10
 depends_on: []
@@ -105,3 +105,6 @@ depends_on: []
 - Страта Кара-Мустафи (25.12.1683, Белград; наказ султана — EBSCO, uk.wiki; en.wiki приписує яничарському азі) — не згадано.
 - validate 0/0; euphony — 0 у l7, l8 (у l6 виправлено «турист із Полтави»; лишились старі відхилення лише в l4); stats — l7, l8, l6 без прапорців (l7/l8: 10 екранів, частка 0.5 — hyp не зараховано).
 - Build не запускав: нові файли img/world/w8s4/{zemsky-sobor-1613,mansi-yermak-remezov,vienna-1683-geffels}.jpg потраплять у sw.js після build оркестратора.
+
+### Верифікатор verifier-revise-w8s4, 2026-11-12
+Звіт: reports/verify/revise-w8s4.md. Вердикт: l7, l8, l6 → `verified`. Факти — ≥ 2 відкриті джерела кожен (Романови до 1917 — допустимо; «порожнє крісло» видно; книга 1672–1673 — Музеї Кремля + en.wiki). Правок 6 (мінімальні): fbText l7 е8 і е10; лист Собеського — порядок речень як в оригіналі + […] і fbBad; Карловиць — «майже всю Угорщину»; outro фіналу. validate 0/0; D-019 — усі завдання з опорою; dgw8/dgw9 не зачеплено.

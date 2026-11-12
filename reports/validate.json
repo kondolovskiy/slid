@@ -1,5 +1,10 @@
 {
-  "date": "2026-11-12T04:53:27.349Z",
+  "date": "2026-11-12T04:59:42.202Z",
   "errors": [],
-  "warnings": []
+  "warnings": [
+    "content/world/g9-w9s2.js#w9s2l2: у 2 з 3 завдань choice правильний варіант — Б: переставляй варіанти",
+    "content/world/g9-w9s2.js#w9s2l5: у 2 з 3 завдань choice правильний варіант — Б: переставляй варіанти",
+    "content/world/g9-w9s2.js#w9s2l7: maxReadWords=77 поза профілем [0; 75] для world, 7-9 кл.",
+    "content/world/g9-w9s2.js#w9s2l8: maxReadWords=77 поза профілем [0; 75] для world, 7-9 кл."
+  ]
 }
