@@ -7,7 +7,7 @@ subject: world
 grade: 7
 section: w7s2
 weeks: [7, 12]
-status: review
+status: done
 claimed_by: writer-refine-w7s2
 created: 2026-11-10
 depends_on: []
