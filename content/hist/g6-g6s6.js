@@ -1,6 +1,6 @@
 /* Слід · Історія, 6 клас — «Цивілізації Стародавнього Сходу»
    Статус уроків: l1–l5 verified (verifier-g6s6, 2026-11-03; написано write-hist-g6s6; програма Васильківа, розд. 2–4, D-043/D-044).
-   g6s6l7 (новий, «Ассирія і Персія») і фінал l6 (завдання 7) — draft (revise-hist-g6s6-cov, 2026-11-12). 7 уроків.
+   g6s6l7 (новий, «Ассирія і Персія») і фінал l6 (завдання 7, pre у завданнях 1–7) — verified (revise-hist-g6s6-cov, 2026-11-12; verifier-revise-hist-g6s6-cov, reports/verify/revise-g6s6-cov.md). 7 уроків.
    Перевірка: node tools/validate.mjs && node tools/stats.mjs
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("hist", {
@@ -817,7 +817,7 @@ SLID.section("hist", {
       title: "Велетні біля воріт",
       short: "Ассирія і Персія",
       icon: "map",
-      status: "draft",
+      status: "verified",
       why: "Перші імперії правили багатьма народами. Ти дізнаєшся, що робить державу державою і як Ассирія та Персія тримали владу.",
       screens: [
         {
@@ -979,7 +979,7 @@ SLID.section("hist", {
       title: "Зал Стародавнього Сходу",
       short: "Фінал розділу",
       icon: "star",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "oldeast",
       why: "Перевірка всього розділу. Бали подвоєні.",

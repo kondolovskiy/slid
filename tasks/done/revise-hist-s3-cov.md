@@ -6,7 +6,7 @@ type: revise-section
 subject: hist
 grade: 5
 section: s3
-status: review
+status: done
 claimed_by: writer-hist-s3
 created: 2026-11-10
 depends_on: [fix-hist-weeks-cov]
