@@ -157,10 +157,10 @@
 | g8s3l1 Від Суботова до булави | 8 | 8 | 0.63 | 28 | 63 | 6.2 | 0.02 | 3 | — |
 | g8s3l2 Дві перемоги за травень | 8 | 7 | 0.57 | 24 | 56 | 6.2 | 0.034 | 3 | — |
 | g8s3l3 Від Зборова до Білої Церкви | 8 | 7 | 0.57 | 22 | 66 | 5.6 | 0.023 | 3 | — |
-| g8s3l7 Похід на весілля | 8 | 9 | 0.56 | 30 | 71 | 6.4 | 0.031 | 3 | — |
+| g8s3l7 Похід на весілля | 8 | 9 | 0.56 | 30 | 71 | 6.5 | 0.031 | 3 | — |
 | g8s3l4 Що насправді підписали | 8 | 7 | 0.57 | 25 | 67 | 5.7 | 0.034 | 3 | — |
 | g8s3l5 Держава з полків і сотень | 8 | 7 | 0.57 | 21 | 55 | 5.4 | 0.048 | 3 | — |
-| g8s3l8 Перемир'я без козаків | 8 | 10 | 0.5 | 29 | 64 | 6.5 | 0.043 | 3 | — |
+| g8s3l8 Перемир'я без козаків | 8 | 10 | 0.5 | 30 | 64 | 6.5 | 0.043 | 3 | — |
 | g8s3l6 Справи Війська Запорозького (фінал) | 8 | 8 | 0.88 | 21 | 45 | 5.7 | 0.031 | 3 | — |
 | g8s4l1 Перемога без спокою | 8 | 8 | 0.5 | 26 | 57 | 6 | 0.044 | 3 | — |
 | g8s4l2 Два береги — дві булави | 8 | 7 | 0.57 | 21 | 68 | 6.2 | 0.025 | 3 | — |
@@ -261,7 +261,7 @@
 
 - **5-6:lesson**: screens 8.11±1.22, gradedShare 0.57±0.08, readWordsPerScreen 23.37±3.69, maxReadWords 53.88±6.02, sentenceWords 6.02±0.39, longWordShare 0.04±0.02, typeVariety 3.18±0.71
 - **5-6:boss**: screens 6.76±0.55, gradedShare 0.85±0.02, readWordsPerScreen 12.47±2.91, maxReadWords 23.06±5.48, sentenceWords 5.12±0.4, longWordShare 0.05±0.01, typeVariety 3.35±0.48
-- **7-9:lesson**: screens 8.42±1.06, gradedShare 0.57±0.06, readWordsPerScreen 25.84±3.54, maxReadWords 61.54±7.42, sentenceWords 6.02±0.44, longWordShare 0.04±0.01, typeVariety 3.3±0.46
+- **7-9:lesson**: screens 8.42±1.06, gradedShare 0.57±0.06, readWordsPerScreen 25.85±3.55, maxReadWords 61.54±7.42, sentenceWords 6.03±0.45, longWordShare 0.04±0.01, typeVariety 3.3±0.46
 - **7-9:boss**: screens 7.6±0.49, gradedShare 0.87±0.01, readWordsPerScreen 21.8±2.69, maxReadWords 43.2±5.05, sentenceWords 5.59±0.41, longWordShare 0.03±0.01, typeVariety 3.13±0.34
 - **10-11:lesson**: screens 9±1.31, gradedShare 0.55±0.05, readWordsPerScreen 27.28±4.85, maxReadWords 61.09±8.24, sentenceWords 6.44±0.5, longWordShare 0.07±0.03, typeVariety 3.47±0.5
 - **10-11:boss**: screens 7.1±0.3, gradedShare 0.86±0.01, readWordsPerScreen 24±2.79, maxReadWords 47.7±7.13, sentenceWords 6.16±0.61, longWordShare 0.07±0.03, typeVariety 3.6±0.49
