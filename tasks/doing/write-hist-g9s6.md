@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-12T14:34:34.766Z
 id: write-hist-g9s6
 type: write-section
 subject: hist
@@ -6,7 +8,7 @@ grade: 9
 section: g9s6
 weeks: [26, 29]
 status: todo
-claimed_by:
+claimed_by: writer-hist-g9s6
 created: 2026-11-10
 ---
 # Написати розділ «Галичина — український П'ємонт» (Історія України, 9 клас)
