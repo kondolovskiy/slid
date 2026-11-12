@@ -1,4 +1,5 @@
 /* Слід · Історія України, 11 клас — «Відновлення незалежності»
+   style-hist-1112 (2026-11-12): переставлено варіанти choice/multi (лише порядок і correct, D-016) у g11s3l1, g11s3l2, g11s3l3, g11s3l4; ці уроки → draft, потрібен content-verifier.
    Статус уроків: verified (зображення D-027 перевірив verifier-images-g11s3, 2026-10-31; додав photo-g11s3 2026-10-31; попередня перевірка verifier-g11s3, 2026-10-14). 7 уроків (6 тем + boss).
    revise-hist-g11s3-cov (2026-11-12): нові уроки g11s3l6 (перед l1) і g11s3l7 (після l3), фінал l5 доповнено; у l1–l4 змінено лише номер уроку в eyebrow. l6, l7, l5 — verified (verifier-revise-hist-g11s3-cov, 2026-11-12; звіт reports/verify/revise-g11s3-cov.md).
    Джерела нових уроків — tasks/review/revise-hist-g11s3-cov.md.
@@ -236,7 +237,7 @@ SLID.section("hist", {
       title: "Площа змінює політику",
       short: "Рух і протест",
       icon: "users",
-      status: "verified",
+      status: "draft",
       why: "Ти простежиш, як організована громадська дія впливає на рішення парламенту.",
       screens: [
         {
@@ -362,7 +363,7 @@ SLID.section("hist", {
       title: "Один день для держави",
       short: "Акт незалежності",
       icon: "flag",
-      status: "verified",
+      status: "draft",
       why: "Ти прочитаєш Акт як джерело. Потім відокремиш причини його ухвалення від змісту документа.",
       screens: [
         {
@@ -498,7 +499,7 @@ SLID.section("hist", {
       title: "Бюлетень вирішує",
       short: "Референдум",
       icon: "vote",
-      status: "verified",
+      status: "draft",
       why: "Ти з'ясуєш, що саме підтвердили громадяни 1 грудня 1991 р. і як читати результат голосування.",
       screens: [
         {
@@ -775,7 +776,7 @@ SLID.section("hist", {
       title: "Правила для держави",
       short: "Конституція",
       icon: "scroll",
-      status: "verified",
+      status: "draft",
       why: "Ти дослідиш, як Конституція визначає державу, владу й місце людини.",
       screens: [
         {

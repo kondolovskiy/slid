@@ -1,4 +1,5 @@
 /* Слід · Історія України, 8 клас — «Козацтво»
+   style-hist-1112 (2026-11-12): милозвучність у/в, і/й, з/із (УП § 23–25) у g8s2l4; ці уроки → draft, потрібен content-verifier.
    Статус уроків: verified (l4, l5 — повторно після фото D-027, 31.10). 7 уроків (6 тем + boss).
    2026-11-05 (fix-hist-gerai-hetmanate, D-047): l1 — «Менглі Герай (також Гірей)»; l1 → draft.
    2026-11-05 (verifier-fix-hist-gerai-hetmanate): l1 verified (reports/verify/fix-hist-gerai-hetmanate.md).
@@ -613,7 +614,7 @@ SLID.section("hist", {
       title: "Повстання перед бурею",
       short: "Повстання 1620–30-х",
       icon: "flame",
-      status: "verified",
+      status: "draft",
       why: "У 1620–1630-х козаки знову бралися за зброю. Ти складеш стрічку цих виступів і побачиш, чим вони закінчилися.",
       screens: [
         {

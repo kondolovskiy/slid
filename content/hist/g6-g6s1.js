@@ -1,4 +1,5 @@
 /* Слід · Історія, 6 клас — «Перші люди на наших землях»
+   style-hist-1112 (2026-11-12): eyebrow «Розділ N» перенумеровано за weeks[0] у класі (лише номер; статус не змінено); милозвучність у/в, і/й, з/із (УП § 23–25) у g6s1l3, g6s1l4, g6s1l5; ці уроки → draft, потрібен content-verifier.
    Статус уроків: l3, l6 verified (verifier-g6s1-d019, 2026-10-13); l1, l2, l4, l5 — фото D-027 (photo-g6s1), повторно verified (verifier-images-g6s1, 2026-10-31; reports/verify/images-hist-g6s1.md).
    2026-11-12 (revise-hist-g6s1-cov): новий урок g6s1l7 «Після льодовика» (мезоліт); g6s1l5 (+ Єрихон, Чатал-Гююк) і фінал g6s1l6 (+ вітрина 5, pre) — verified (verifier-revise-g6s1-cov, 2026-11-12; reports/verify/revise-g6s1-cov.md). 7 уроків.
    Перевірка: node tools/validate.mjs --section g6s1 && node tools/stats.mjs --subject hist
@@ -319,7 +320,7 @@ SLID.section("hist", {
       title: "Дім з кісток мамонта",
       short: "Межиріч і Мізин",
       icon: "home",
-      status: "verified",
+      status: "draft",
       why: "Щоб побачити, як люди пристосовувалися до суворого клімату — і як учені уточнюють свої висновки.",
       screens: [
         {
@@ -433,7 +434,7 @@ SLID.section("hist", {
       title: "Браслет з бивня мамонта",
       short: "Мистецтво",
       icon: "spiral",
-      status: "verified",
+      status: "draft",
       why: "Мистецтво — доказ, що давні люди думали не лише про їжу. Навчишся відрізняти знахідку від здогадки про неї.",
       screens: [
         {
@@ -694,7 +695,7 @@ SLID.section("hist", {
       title: "Від мисливця до хлібороба",
       short: "Землеробство",
       icon: "leaf",
-      status: "verified",
+      status: "draft",
       why: "Хліб на твоєму столі — наслідок однієї з найбільших змін у житті людей. Дізнаєшся, як вона почалася.",
       screens: [
         {

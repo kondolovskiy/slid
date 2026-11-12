@@ -1,4 +1,5 @@
 /* Слід · Історія, 6 клас — «Античні міста Причорномор'я»
+   style-hist-1112 (2026-11-12): eyebrow «Розділ N» перенумеровано за weeks[0] у класі (лише номер; статус не змінено).
    Статус уроків: h641–h645 verified (D-027: зображення photo-g6s4; повторна верифікація verifier-images-g6s4, 2026-10-31; reports/verify/images-hist-g6s4.md). 5 уроків.
    Перевірка: node tools/validate.mjs && node tools/stats.mjs
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */

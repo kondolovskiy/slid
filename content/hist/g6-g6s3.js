@@ -1,4 +1,5 @@
 /* Слід · Історія, 6 клас — «Кіммерійці, скіфи, сармати»
+   style-hist-1112 (2026-11-12): eyebrow «Розділ N» перенумеровано за weeks[0] у класі (лише номер; статус не змінено).
    Статус уроків: l6 (новий, «Від бронзи до заліза», перший за порядком), l2 (+ екран про устрій скіфів) і l5 (фінал, + завдання на l6) — verified (revise-hist-g6s3-cov, 2026-11-12; verifier-revise-g6s3-cov, reports/verify/revise-g6s3-cov.md).
    l1, l3, l4 verified (фото D-027 — verifier-images-g6s3, 2026-10-31; D-019 — verifier-g6s3-d019, 2026-10-13); у них змінено лише номер уроку в eyebrow. 6 уроків.
    Перевірка: node tools/validate.mjs && node tools/stats.mjs

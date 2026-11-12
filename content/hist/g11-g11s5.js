@@ -1,4 +1,5 @@
 /* Слід · Історія України, 11 клас — «Російсько-українська війна»
+   style-hist-1112 (2026-11-12): переставлено варіанти choice/multi (лише порядок і correct, D-016) у g11s5l1, g11s5l2, g11s5l3, g11s5l4, g11s5l5; ці уроки → draft, потрібен content-verifier.
    Статус уроків: l1–l5 verified (зображення D-027 перевірив verifier-images-g11s5, 2026-10-31; додав photo-g11s5 2026-10-31; попередня перевірка verifier-g11s5, 2026-10-14);
    l7, l8 (нові) і фінал l6 — verified (revise-hist-g11s5-cov, 2026-11-12; перевірив verifier-revise-hist-g11s5-cov, звіт reports/verify/revise-g11s5-cov.md; у l2–l5 змінено лише нумерацію eyebrow «Урок N» за позицією).
    8 уроків (7 тем + boss). Порядок: l1, l7, l2, l3, l4, l8, l5, l6.
@@ -78,7 +79,7 @@ SLID.section("hist", {
       title: "Війна почалася 2014-го",
       short: "Крим і Донбас",
       icon: "map",
-      status: "verified",
+      status: "draft",
       why: "Ти встановиш початок російської агресії та прочитаєш міжнародний документ про Крим.",
       screens: [
         {
@@ -357,7 +358,7 @@ SLID.section("hist", {
       title: "Новий масштаб війни",
       short: "24 лютого 2022",
       icon: "shield",
-      status: "verified",
+      status: "draft",
       why: "Ти відрізниш початок повномасштабного вторгнення від початку війни й перевіриш міжнародну оцінку нападу.",
       screens: [
         {
@@ -481,7 +482,7 @@ SLID.section("hist", {
       title: "Три міста тримають удар",
       short: "Оборона міст",
       icon: "city",
-      status: "verified",
+      status: "draft",
       why: "Ти порівняєш оборону Києва, Харкова й Маріуполя без перетворення людського досвіду на гру.",
       screens: [
         {
@@ -606,7 +607,7 @@ SLID.section("hist", {
       title: "Повернути — не означає завершити",
       short: "Звільнення",
       icon: "flag",
-      status: "verified",
+      status: "draft",
       why: "Ти відновиш хронологію звільнень 2022 р. й побачиш ризики, що лишаються після окупації.",
       screens: [
         {
@@ -877,7 +878,7 @@ SLID.section("hist", {
       title: "Доказ не дорівнює допису",
       short: "Документи й пам'ять",
       icon: "eye",
-      status: "verified",
+      status: "draft",
       why: "Ти навчишся перевіряти цифрові матеріали, берегти приватність і розрізняти доказ, висновок та пам'ять.",
       screens: [
         {

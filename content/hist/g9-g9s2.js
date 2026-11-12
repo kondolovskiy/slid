@@ -1,4 +1,5 @@
 /* Слід · Історія України, 9 клас — «Українське національне відродження»
+   style-hist-1112 (2026-11-12): милозвучність у/в, і/й, з/із (УП § 23–25) у g9s2l3; ці уроки → draft, потрібен content-verifier.
    Статус уроків: verified (verifier-g9s2, 2026-10-13); l1, l2, l5, l6 — фото D-027 (photo-g9s2), повторно verified (verifier-images-g9s2, 2026-10-31; reports/verify/images-hist-g9s2.md).
    revise-hist-g9s2-cov (2026-11-12): нові l7 («Історія Русів»), l8 (театр і живопис), l9 (Київ 1818–1848); l3 доповнено будителями й «азбучною війною» 1834 р.; фінал l6 — 7 завдань з `pre`.
    Верифікація revise-hist-g9s2-cov: усі змінені й нові уроки verified (verifier-revise-hist-g9s2-cov, 2026-11-12; reports/verify/revise-g9s2-cov.md).
@@ -672,7 +673,7 @@ SLID.section("hist", {
       title: "Книжка під арештом",
       short: "Руська трійця",
       icon: "scroll",
-      status: "verified",
+      status: "draft",
       why: "Ти дізнаєшся, як троє львівських студентів видали книжку живою мовою і чому її конфіскували.",
       screens: [
         {

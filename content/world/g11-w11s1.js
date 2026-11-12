@@ -226,7 +226,7 @@ SLID.section("world", {
       title: "Права, які не дарують",
       short: "Права людини",
       icon: "scroll",
-      status: "verified",
+      status: "draft",
       why: "Ти дізнаєшся, звідки взялися права людини, на які сьогодні посилаються суди й правозахисники в усьому світі. І навчишся впізнавати їх порушення.",
       screens: [
         {
@@ -352,7 +352,7 @@ SLID.section("world", {
       title: "Завіса через Європу",
       short: "Початок холодної війни",
       icon: "eye",
-      status: "verified",
+      status: "draft",
       why: "Ти дізнаєшся, чому союзники з війни проти Гітлера за два роки стали суперниками. І як США вирішили допомагати Європі.",
       screens: [
         {
@@ -788,7 +788,7 @@ SLID.section("world", {
       title: "Архів 1945–1962",
       short: "Фінал розділу",
       icon: "trophy",
-      status: "verified",
+      status: "draft",
       boss: true,
       badge: "coldwar",
       why: "Перевірка всього розділу. Бали подвоєні.",

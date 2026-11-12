@@ -775,7 +775,7 @@ SLID.section("world", {
       title: "Усі — брати",
       short: "Червоний Хрест",
       icon: "plus",
-      status: "verified",
+      status: "draft",
       why: "Ти дізнаєшся, як одна книжка про битву привела до Червоного Хреста. І зрозумієш, які правила війни з'явилися 1864 р.",
       screens: [
         {
@@ -1263,7 +1263,7 @@ SLID.section("world", {
       title: "Репортаж із нової Європи",
       short: "Фінал розділу",
       icon: "star",
-      status: "verified",
+      status: "draft",
       boss: true,
       badge: "newstates",
       why: "Перевірка всього розділу. Бали подвоєні.",

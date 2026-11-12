@@ -1,4 +1,5 @@
 /* Слід · Історія, 8 клас — «Руїна»
+   style-hist-1112 (2026-11-12): милозвучність у/в, і/й, з/із (УП § 23–25) у g8s4l1, g8s4l3; ці уроки → draft, потрібен content-verifier.
    Статус уроків: l1–l4 verified (фото D-027 перевірено 2026-10-31); l6–l8 (нові, revise-hist-g8s4-cov) і фінал l5 — verified (verifier-revise-hist-g8s4-cov, 2026-11-12; reports/verify/revise-g8s4-cov.md).
    8 уроків (7 + boss); порядок у масиві: l1–l4, l6, l7, l8, l5.
    Перевірка: node tools/validate.mjs --section g8s4
@@ -78,7 +79,7 @@ SLID.section("hist", {
       title: "Перемога без спокою",
       short: "Виговський",
       icon: "shield",
-      status: "verified",
+      status: "draft",
       why: "Ти дізнаєшся, чому Конотопська перемога 1659 р. не врятувала єдність Гетьманщини.",
       screens: [
         {
@@ -324,7 +325,7 @@ SLID.section("hist", {
       title: "Булава на обаполи",
       short: "Дорошенко",
       icon: "user",
-      status: "verified",
+      status: "draft",
       why: "Ти дізнаєшся, чого прагнув Петро Дорошенко і чому його політику так важко було втримати.",
       screens: [
         {

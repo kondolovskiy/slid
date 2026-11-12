@@ -1,4 +1,5 @@
 /* Слід · Історія, 10 клас — «Перша світова війна»
+   style-hist-1112 (2026-11-12): милозвучність у/в, і/й, з/із (УП § 23–25) у g10s1l1, g10s1l4; ці уроки → draft, потрібен content-verifier.
    Статус уроків: l1–l3 verified (verifier-g10s1; зображення D-027 перезвірено 30.10.2026 — verifier-images-g10s1);
    l5 «Тил, біженці й полонені» і boss l4 (+ завдання 6) — verified (revise-hist-g10s1-cov, verifier 12.11.2026). 5 уроків (4 + boss).
    Перевірка: node tools/validate.mjs --section g10s1
@@ -62,7 +63,7 @@ SLID.section("hist", {
       title: "Два береги Збруча",
       short: "Дві армії",
       icon: "users",
-      status: "verified",
+      status: "draft",
       why: "Ти зрозумієш, чому у Першій світовій війні українці стріляли одне в одного і що з цього вийшло.",
       screens: [
         {
@@ -726,7 +727,7 @@ SLID.section("hist", {
       title: "Фільм про Велику війну",
       short: "Фінал розділу",
       icon: "trophy",
-      status: "verified",
+      status: "draft",
       boss: true,
       badge: "twofronts",
       why: "Перевірка всього розділу. Бали подвоєні.",

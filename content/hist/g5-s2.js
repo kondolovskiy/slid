@@ -1,4 +1,5 @@
 /* Слід · Історія, 5 клас — «Історична карта»
+   style-hist-1112 (2026-11-12): eyebrow «Розділ N» перенумеровано за weeks[0] у класі (лише номер; статус не змінено); милозвучність у/в, і/й, з/із (УП § 23–25) у h23, h25; ці уроки → draft, потрібен content-verifier.
    Статус: усі уроки verified (h22, h23 — нові завдання src, style-hist-g5-finals; verify 2026-11-04, reports/verify/style-hist-g5.md). 5 уроків.
    Перевірка: node tools/validate.mjs && node tools/stats.mjs
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
@@ -279,7 +280,7 @@ SLID.section("hist", {
       title: "Галичина, Поділля, Слобожанщина",
       short: "Історичні землі",
       icon: "map",
-      status: "verified",
+      status: "draft",
       why: "Назви регіонів — живі сліди минулого. Вони пояснюють діалекти, архітектуру й традиції.",
       screens: [
         {
@@ -486,7 +487,7 @@ SLID.section("hist", {
       title: "Експедиція картографа",
       short: "Фінал розділу",
       icon: "star",
-      status: "verified",
+      status: "draft",
       boss: true,
       badge: "carto",
       why: "Перевірка всього розділу. Бали подвоєні.",

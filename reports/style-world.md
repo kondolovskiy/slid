@@ -74,7 +74,7 @@
 | w8s4l6 Мандрівка XVII століттям (фінал) | 8 | 8 | 0.88 | 19 | 31 | 6.6 | 0.027 | 3 | — |
 | w8s6l1 Цар стає імператором | 8 | 10 | 0.6 | 35 | 67 | 6.7 | 0.022 | 4 | — |
 | w8s6l2 Корона в спадок | 8 | 10 | 0.5 | 31 | 59 | 6.9 | 0.018 | 3 | — |
-| w8s6l3 Хто успадкує Османів? | 8 | 11 | 0.55 | 35 | 60 | 6.7 | 0.038 | 4 | — |
+| w8s6l3 Хто успадкує Османів? | 8 | 11 | 0.55 | 36 | 69 | 6.9 | 0.039 | 4 | — |
 | w8s6l4 Компанія з власним військом | 8 | 11 | 0.55 | 32 | 61 | 6.6 | 0.037 | 4 | — |
 | w8s6l5 Музей війн XVIII століття (фінал) | 8 | 8 | 0.88 | 19 | 27 | 6.1 | 0.026 | 3 | — |
 | w8s5l1 Книжка, що налякала короля | 8 | 9 | 0.56 | 35 | 70 | 6.5 | 0.026 | 3 | — |
@@ -210,7 +210,7 @@
 
 Для z-оцінок sd не менше 10 % середнього; нижче наведено фактичне sd.
 
-- **7-9:lesson**: screens 10.01±0.74, gradedShare 0.55±0.04, readWordsPerScreen 33.13±4.09, maxReadWords 66.01±6.13, sentenceWords 6.69±0.35, longWordShare 0.04±0.01, typeVariety 3.4±0.53
+- **7-9:lesson**: screens 10.01±0.74, gradedShare 0.55±0.04, readWordsPerScreen 33.14±4.1, maxReadWords 66.1±6.11, sentenceWords 6.7±0.35, longWordShare 0.04±0.01, typeVariety 3.4±0.53
 - **7-9:boss**: screens 7.61±0.49, gradedShare 0.87±0.01, readWordsPerScreen 19.06±1.72, maxReadWords 35.5±5.37, sentenceWords 6.28±0.24, longWordShare 0.04±0.01, typeVariety 3.28±0.45
 - **10-11:lesson**: screens 9.57±0.78, gradedShare 0.54±0.04, readWordsPerScreen 37.34±3.88, maxReadWords 77.89±8.25, sentenceWords 7.37±0.26, longWordShare 0.05±0.02, typeVariety 3.52±0.56
 - **10-11:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 18±3.42, maxReadWords 36.77±4.06, sentenceWords 7.14±0.19, longWordShare 0.05±0.01, typeVariety 3.38±0.49

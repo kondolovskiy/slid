@@ -1,4 +1,5 @@
 /* Слід · Історія, 6 клас — «Стародавня Греція»
+   style-hist-1112 (2026-11-12): eyebrow «Розділ N» перенумеровано за weeks[0] у класі (лише номер; статус не змінено).
    Статус уроків: g6s7-l1, l2, l4…l6 verified (verifier-g6s7, 2026-11-03); l3 verified (verifier-g6s7-l3, 2026-11-10, після fix-hist-g6s7-l3-learned: порівняння з Україною сьогодні).
    g6s7l8 «Один день в Афінах» — новий, verified (verifier-revise-hist-g6s7-cov, 2026-11-12; reports/verify/revise-g6s7-cov.md; написано revise-hist-g6s7-cov; звіт reports/research/coverage-research-hist-coverage-g5-6.md §4.2); стоїть шостим, тож у l6 eyebrow «Урок 7».
    Фінал g6s7-l7 — verified (той самий верифікатор): + Завдання 6 (g6s7l8), `pre` у всіх завданнях. Школу докладно вчить g6s10l4, еллінізм — g6s10l7; тут не дублюємо.
