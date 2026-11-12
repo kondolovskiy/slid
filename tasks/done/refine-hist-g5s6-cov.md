@@ -6,7 +6,7 @@ type: refine-section
 subject: hist
 grade: 5
 section: g5s6
-status: review
+status: done
 claimed_by: writer-hist-g5s6
 created: 2026-11-10
 depends_on: []
@@ -50,3 +50,5 @@ depends_on: []
 Перевірки: `validate --section g5s6` — 0 помилок, 0 попереджень; `validate --diag dgh5` — 0/0 (dgh5 спирається лише на h64 і ballot-1991.jpg, не зачеплено); `stats --subject hist` — h62 10 екранів, частка завдань 0,6, без прапорців; h66 — 10 екранів, 0,6, без прапорців. Build не запускав.
 
 Для верифікатора: перевірити дати ЄС напряму на consilium.europa.eu (у мене 403); формулювання «Європейська рада — зібрання керівників держав ЄС» (точніше — глав держав або урядів; для 5 кл. спрощено).
+
+**verifier-refine-hist-g5s6-cov, 2026-11-12.** Прийнято; h62, h66 → verified. Правки (3): h62 е3 — варіанти переставлено (`correct` 1 → 0, бо е4 теж 1), «почала арештовувати» → «арештувала багатьох митців»; h66 е8 — «керівників» → «лідерів» держав ЄС. Дати ЄС звірено з офіційними висновками EUCO 24/22 (data.consilium.europa.eu). Звіт: reports/verify/refine-g5s6-cov.md.
