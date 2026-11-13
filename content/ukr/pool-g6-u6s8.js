@@ -7,11 +7,12 @@
    канікул/канікулів, кури — кур/курей, біль — болем/біллю) не оцінюються як помилка: або не вжиті, або `word` приймає обидві.
    Уроки: u6s8l1–u6s8l11 (u6s8l12 — фінал, не тренується).
    Перевірка: node tools/validate.mjs --pool pu6s8 && node tools/personalization-qa.mjs --pool pu6s8 --strict
-   id пулу й вправ — ключі прогресу, не перейменовувати. */
+   id пулу й вправ — ключі прогресу, не перейменовувати.
+   2026-11-13 verifier-pu6s8-a58: a58 — варіанти повними формами (переповнення 360 px у CI); ключі й дистрактори звірено з УП 2019 § 32 п. 11, goroh.pp.ua і slovnyk.ua — reports/verify/pu6s8-a58.md. */
 SLID.pool("ukr", {
   id: "pu6s8",
   section: "u6s8",
-  status: "draft",
+  status: "verified",
   meta: { author: "w-write-ukr-pool-u6s8", created: "2026-11-11", factcheck: "verifier-pool-u6s8", teacher: null },
   sources: [
     { id: "z6", title: "Заболотний О. В., Заболотний В. В. Українська мова : підруч. для 6-го кл. — Київ : Генеза, 2023", url: "https://file.4book.org/images/shcoolbook_ua/6/6_um_z_2023.pdf" },
