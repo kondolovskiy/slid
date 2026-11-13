@@ -2,7 +2,7 @@
 // Слід · тести перевірки милозвучності у/в, і/й, з/із/зі (tools/euphony.mjs; УП § 23–25). Запуск: node tools/test-euphony.mjs
 import { euphonyIssues, euphonyScreen, euphonyExercise, RULES, VALIDATE_RULES } from "./euphony.mjs";
 import fs from "node:fs"; import os from "node:os"; import path from "node:path";
-import { spawnSync } from "node:child_process"; import { fileURLToPath } from "node:url";
+import { spawnSync } from "node:child_process"; import { slowPipe } from "./fixtures/slow-pipe.mjs"; import { fileURLToPath } from "node:url";
 let fail = 0, n = 0;
 const rules = t => euphonyIssues(t).map(x => x.rule);
 const has = (t, rule) => { n++; const r = rules(t); if (!r.includes(rule)) { fail++; console.log(`✗ «${t}»: очікувалось ${rule}, отримано ${JSON.stringify(r)}`); } };
@@ -32,6 +32,37 @@ for (const t of ["Він прийшов — в руках квіти.", "Він 
 clean("Прийшла — і сіла. Прийшла - і сіла. Він прийшов (у руках квіти).", "після паузи — «і», «у»");
 clean("Марія і Олег. Чай і кава. Мрія і бажання.", "§ 24: після слів на й/я/ю/є/ї — «і»");
 clean("Сергій і Юрій.", "«і» перед й, я, ю, є, ї");
+// § 24 п. 4 (tools-euphony-i-after-j): після слова на й, я, ю, є, ї — «і» або «та», а не «й» (навіть між голосними); лише звіт
+has("Моя й твоя мрії.", "й-після-йотованого");
+has("Сім'я й друзі.", "й-після-йотованого");
+has("Сім’я й друзі.", "й-після-йотованого");
+has("Андрій й Ольга.", "й-після-йотованого");
+has("Я п'ю й співаю.", "й-після-йотованого");
+has("Я й ти.", "й-після-йотованого");   // «я» — займенник, не назва літери
+clean("Голосні а, е, и, я. Я і ти.", "перелік літер і правильне «я і ти»");
+has("Наші мрії й плани.", "й-після-йотованого");
+has("Вона допускає й інші варіанти.", "й-після-йотованого");   // частка «й» (= «також») — механічно не відрізнити: звіт «перевір»
+has("Мовчазна моя й Олина пісня.", "й-після-йотованого");
+{ n++; const r = rules("Андрій й брат.");   // «й» після й перед приголосним — уже validate-правило «між приголосними», не дублюємо
+  if (JSON.stringify(r) !== JSON.stringify(["й-між-приголосними"])) { fail++; console.log("✗ «Андрій й брат»: лише й-між-приголосними", r); } }
+{ n++; const r = rules("Моя й Юля.");   // перед йотованим — правило validate «й-перед-йотованим», не дублюємо
+  if (JSON.stringify(r) !== JSON.stringify(["й-перед-йотованим"])) { fail++; console.log("✗ «Моя й Юля»: лише й-перед-йотованим", r); } }
+clean("Мама й тато. Моя і твоя мрії. Сім'я та друзі. Андрій і Ольга. Вона й Оля.", "правильно: після голосного (не йотованого) — «й»; після я/ю/є/ї/й — «і», «та»");
+clean("Ліна пише: <i>моя й твоя</i>. Він каже: «моя й твоя». Пишемо моя <b>й</b> твоя.", "розмітка: курсив, лапки, сам сполучник у тегах");
+// рев'ю P2-1: виділене <b> перевіряється (на живому змісті там правильний авторський текст); P3-1: частина слова в <b> не вимикає правило
+has("Олена Пчілка, <b>письменниця й перекладачка</b>.", "й-після-йотованого");
+has("<b>при</b>йшов додому, моя й твоя.", "й-після-йотованого");
+{ n++; const r = rules("Тоді я мав в кишені.");   // «я» в ONE (займенник) — сусід на k±2 не вимикає й правила validate (рев'ю P3-3)
+  if (JSON.stringify(r) !== JSON.stringify(["в-між-приголосними"])) { fail++; console.log("✗ «я мав в кишені»: в-між-приголосними", r); } }
+clean("Сполучник й після я — помилка.", "мова про сам сполучник");
+// виділений кінець речення: «<b>Тихо.</b> В лісі…» — далі початок речення
+has("<b>Тихо.</b> В лісі темно.", "в-на-початку");
+has("<b>Тихо.</b> Влітку тепло.", "в-слово-на-початку");
+{ n++; const r = euphonyExercise({ type: "gaps", text: "Моя {*і|й} твоя мрії, сім'я й друзі." }).map(x => x.rule);   // пропуск — межа; поза ним — звіт вправ
+  if (JSON.stringify(r) !== JSON.stringify(["й-після-йотованого"])) { fail++; console.log("✗ euphonyExercise gaps: «сім'я й друзі» поза пропуском", r); } }
+{ n++; const r = euphonyExercise({ type: "pick", text: "Моя [й] твоя мрії." }).map(x => x.rule);
+  if (r.length) { fail++; console.log("✗ euphonyExercise pick: «й» у […] — слово-ціль вправи", r); } }
+{ n++; if (VALIDATE_RULES.has("й-після-йотованого") || !/частка/.test(RULES["й-після-йотованого"] || "")) { fail++; console.log("✗ й-після-йотованого — лише звіт, опис згадує частку"); } }
 // § 25 з/із/зі
 has("Млинці з сметаною.", "з-перед-збігом");
 has("Говорив з мною.", "з-перед-збігом");
@@ -39,6 +70,24 @@ has("З чого почати?", "з-на-початку-шиплячий");
 has("Обидва — з чоловічим родом.", "з-на-початку-шиплячий");
 has("Ліс з дубів.", "з-між-приголосними");
 has("Вийшла зі хати.", "зі-не-перед-збігом");
+// tools-euphony-z-validate-gw п. 1 (verify pu10s4, УП § 25 п. 2): «із» перед одиничними з, с, ц, ж, ч, ш — незалежно від
+// закінчення попереднього слова (усередині речення — лише звіт; на початку — «з-на-початку-шиплячий», validate)
+has("Перстень виготовлено з золота.", "з-перед-шиплячим");
+has("Родина з семи душ.", "з-перед-шиплячим");
+has("Рибалка вискочив з човна.", "з-перед-шиплячим");
+has("Циліндр зроблено з цупкого паперу.", "з-перед-шиплячим");
+has("Ішли довго, з шумом.", "з-перед-шиплячим");
+has("Учитель навів приклад з байки.", "з-між-приголосними");
+{ n++; const r = rules("Рибалка вискочив з човна.");   // одне відхилення, не два (з-між-приголосними не дублює)
+  if (JSON.stringify(r) !== JSON.stringify(["з-перед-шиплячим"])) { fail++; console.log("✗ «вискочив з човна»: лише з-перед-шиплячим", r); } }
+clean("Перстень виготовлено із золота. Родина із семи душ. Рибалка вискочив із човна. Із шовку виготовили вітрила. Зі школи. Зі сходу сонця. Вода з чверті відра.", "§ 25: із перед одиничним свистячим/шиплячим; перед збігом — зі; ч + в — збіг");
+clean("Він сказав: «Перстень з золота». Ліна пише: <i>Родина з семи душ.</i>", "цитата й приклад курсивом");
+clean("Після з стоїть с. Прийменник з чи із?", "мова про саму літеру");
+clean("Діяли згідно з чинним законом. Залишився ні з чим. Усе змінюється з часом.", "сталі звороти: «згідно з», «ні з чим», «з часом»");
+has("Він залишився ні з чого.", "з-перед-шиплячим");
+has("Діяли разом з сусідами.", "з-перед-шиплячим");
+has("Минуло сто років з часу заснування.", "з-перед-шиплячим");
+{ n++; if (VALIDATE_RULES.has("з-перед-шиплячим") || VALIDATE_RULES.has("з-між-приголосними") || !/§ 25/.test(RULES["з-перед-шиплячим"] || "")) { fail++; console.log("✗ з-перед-шиплячим — описане правило лише звіту"); } }
 has("Вона із Олею.", "із-між-голосними");
 clean("Млинці зі сметаною. Зі мною. Із чого почати? З Олею. Ліс із дубів. Вона з Олею. Вийшла з хати. Зі школи.", "правильно");
 clean("Зі сходу. Зі столу.", "зі перед с + приголосний");
@@ -94,7 +143,16 @@ clean("Так. влітку тепло — з малої не позначаєм
   const t = (got, want, what) => { n++; if (JSON.stringify(got) !== JSON.stringify(want)) { fail++; console.log(`✗ euphonyExercise: ${what}`, JSON.stringify(got)); } };
   t(ex({ type: "gaps", title: "Брат й сестра", fbText: "Ліс з дубів.", text: "Тарас й Світлана {*у|в} школі. Мама {*й|і} тато." }), ["Тарас й Світлана"], "gaps: речення поза {…}; пропуск і сусіди — межа; title/fbText — не тут");
   t(ex({ type: "pick", text: "Брат й сестра [!в] школі, [вірно]." }), ["Брат й сестра"], "pick: поза […]");
-  t(ex({ type: "gaps", text: "Ми {*пішли|пішов} й сіли." }), [], "gaps: слово перед «й» — у пропуску (який варіант, невідомо) — не позначаємо за хибним «пішов»");
+  t(ex({ type: "gaps", text: "Ми {*пішли|пішов} й сіли." }), [], "gaps: слово перед «й» — у пропуску; перевіряємо правильний варіант «пішли», не хибний «пішов»");
+  // tools-euphony-z-validate-gw п. 1 (verify pu10s4 a18): пропуск, де жоден варіант не є у/в/і/й/з/із/зі, — це слово (наголос, буква в корені),
+  // а не милозвучність: на його місце стає правильний варіант, і прийменник поруч перевіряється
+  t(ex({ type: "gaps", text: "Учитель навів {*при́клад|прикла́д} з байки." }), ["при́клад з байки"], "gaps: наголос у пропуску — сусіднє «з» між приголосними");
+  t(ex({ type: "gaps", text: "Учитель навів пр{*и|е}клад з байки." }), ["приклад з байки"], "gaps: буква в слові — слово цілком");
+  t(ex({ type: "gaps", text: "Ми {*пішов|пішли} й сіли." }), ["пішов й сіли"], "gaps: правильний варіант «пішов» — «й» між приголосними");
+  t(ex({ type: "gaps", text: "Ліс{ь|*—} з дубів." }), ["Ліс з дубів"], "gaps: «нічого не писати» — порожньо");
+  t(ex({ type: "gaps", text: "Ми прийшли{*,|;} й сіли." }), ["прийшли, й сіли"], "gaps: розділовий знак у пропуску — пауза");
+  t(ex({ type: "gaps", text: "Брат {*і|й} з сестрою, {*з|із} братом {*у|в} школі, {*У|В}читель {*в|у}сміхнувся, {*з байки|із байки} навів." }), [], "gaps: варіанти — у/в/і/й/з/із/зі (і в групі слів) — пропуск лишається межею");
+  t(ex({ type: "gaps", text: "Брат {*й сестра|і сестра} прийшли. Брат {*й́|і́} сестра." }), [], "gaps: «й» у групі слів чи з наголосом у варіанті — відповідь вправи, не перевіряємо");
   t(ex({ type: "choice", opts: ["Брат й сестра", "Брат і сестра"], correct: 1 }), ["Брат й сестра"], "choice: і хибні варіанти");
   t(ex({ type: "sort", items: [["Степ й море", 0], ["Ліс", 1]] }).concat(ex({ type: "order", items: ["Вона у Америці"] })).sort(), ["Степ й море", "Вона у Америці"].sort(), "items sort ([текст, кошик]) і order");
   t(ex({ type: "info", title: "Брат й сестра", body: "Ліс з дубів." }), [], "авторський текст (title, body) — не в цьому режимі"); }
@@ -129,6 +187,59 @@ clean("Так. влітку тепло — з малої не позначаєм
     n++; if (r.status !== 0 || !/Степ й море/.test(exTxt) || /Брат в сестри/.test(exTxt) || /· validate/.test(exTxt) || fs.readFileSync(rep, "utf8") !== before) { fail++; console.log("✗ euphony --exercises: окремий звіт з варіантами, без авторського тексту", r.status, r.stderr, exTxt); }
     r = run("--section", "nope");
     n++; if (r.status !== 2) { fail++; console.log("✗ euphony --section неіснуючого розділу — код 2", r.status, r.stdout); }
+    // tools-euphony-i-after-j п. 4: пули (SLID.pool) і тести рівня (SLID.diag) — у звіті предмета; --pool / --diag ID — лише stdout;
+    // кроки розв'язку пулу (steps) — авторський текст, як fbText; варіанти — як в уроках (звіт так, validate ні)
+    fs.writeFileSync(path.join(tmp, "content/ukr/pool-g5-fxa.js"), `SLID.pool("ukr", ${JSON.stringify({ id: "pfxa", section: "fxa", status: "draft", items: [
+      { id: "pfxa1", lesson: "fxal1", type: "choice", title: "Моя й твоя мрії", steps: ["Сім'я й друзі разом."], opts: ["Андрій й Ольга", "Андрій і Ольга"], correct: 1 },
+      // генератор: перевіряється перший набір значень, як у validate («{a}» → число), а не шаблон (рев'ю P3-2)
+      { id: "pfxa2", lesson: "fxal1", lvl: 1, adapted: true, type: "answer", title: "{a} мрії й плани", body: "<p>Скільки?</p>", steps: ["Відповідь {a}."], gen: { vars: { a: { min: 2, max: 3 } }, answer: "a" } }] })});\n`);
+    fs.writeFileSync(path.join(tmp, "content/ukr/diag-g5.js"), `SLID.diag("ukr", ${JSON.stringify({ id: "dfx5", grade: 5, title: "Тест", status: "draft", topics: [],
+      items: [{ type: "choice", title: "Наші мрії й плани", opts: ["Моя й Олина", "Моя і Олина"], correct: 1 }] })});\n`);
+    r = run();
+    const full = fs.existsSync(rep) ? fs.readFileSync(rep, "utf8") : "";
+    n++; if (r.status !== 0 || !/pfxa задача 1 «pfxa1» \(content\/ukr\/pool-g5-fxa\.js\): «Моя й твоя»/.test(full) || !/«Сім'я й друзі»/.test(full)
+      || !/dfx5 завдання 1 \(content\/ukr\/diag-g5\.js\): «мрії й плани»/.test(full) || !/pfxa задача 2 «pfxa2» \(content\/ukr\/pool-g5-fxa\.js\): «мрії й плани»/.test(full) || !/«Андрій й Ольга»/.test(full) || !/«Моя й Олина»/.test(full)) { fail++; console.log("✗ euphony: пул і тест рівня у звіті предмета", r.status, r.stderr, full); }
+    const fullBefore = full;
+    r = run("--pool", "pfxa");
+    n++; if (r.status !== 0 || !/розділ|пул pfxa/.test(r.stdout) || !/pfxa задача 1/.test(r.stdout) || /fxal1|dfx5/.test(r.stdout) || fs.readFileSync(rep, "utf8") !== fullBefore) { fail++; console.log("✗ euphony --pool pfxa: лише пул, у stdout", r.status, r.stdout, r.stderr); }
+    r = run("--diag", "dfx5");
+    n++; if (r.status !== 0 || !/тест рівня dfx5/.test(r.stdout) || !/dfx5 завдання 1/.test(r.stdout) || /fxal1|pfxa/.test(r.stdout) || fs.readFileSync(rep, "utf8") !== fullBefore) { fail++; console.log("✗ euphony --diag dfx5: лише тест рівня, у stdout", r.status, r.stdout, r.stderr); }
+    r = run("--exercises", "--pool", "pfxa");
+    n++; if (r.status !== 0 || !/Андрій й Ольга/.test(r.stdout) || /Моя й твоя/.test(r.stdout)) { fail++; console.log("✗ euphony --exercises --pool: варіанти пулу", r.status, r.stdout, r.stderr); }
+    for (const a of [["--pool", "nope"], ["--diag", "nope"], ["--pool", "dfx5"], ["--section", "fxa", "--pool", "pfxa"]]) {
+      r = run(...a); n++; if (r.status !== 2) { fail++; console.log(`✗ euphony ${a.join(" ")} — код 2`, r.status, r.stdout); } }
+    // tools-euphony-json-pipe п. 2: --help / -h — довідка без прогону; невідомий прапорець, прапорець без значення, зайвий аргумент —
+    // код 2 і повідомлення; спільний звіт не перезаписано (автори пулів запускали --help і перезаписували reports/euphony-*.md)
+    const SENTINEL = "не чіпати\n"; fs.writeFileSync(rep, SENTINEL);
+    for (const h of ["--help", "-h"]) { r = run(h);
+      n++; if (r.status !== 0 || !/Використання/.test(r.stdout) || !/--pool/.test(r.stdout) || !/--json/.test(r.stdout) || /відхилень/.test(r.stdout) || fs.readFileSync(rep, "utf8") !== SENTINEL) { fail++; console.log(`✗ euphony ${h}: довідка без прогону`, r.status, r.stdout, r.stderr); } }
+    for (const a of [["--bogus"], ["--subject", "ukr", "--jsno"], ["--section"], ["--section", "--json"], ["--subject"], ["fxa"], ["--json", "--help2"]]) { r = run(...a);
+      n++; if (r.status !== 2 || !r.stderr.trim() || r.stdout || fs.readFileSync(rep, "utf8") !== SENTINEL) { fail++; console.log(`✗ euphony ${a.join(" ")}: код 2 і повідомлення, без прогону`, r.status, r.stdout.slice(0, 200), r.stderr); } }
+    r = run("--bogus"); n++; if (!/«--bogus»/.test(r.stderr) || !/--help/.test(r.stderr)) { fail++; console.log("✗ euphony --bogus: повідомлення називає прапорець і --help", r.stderr); }
+    // tools-euphony-json-pipe п. 1: великий вивід у pipe не обрізається на 64 КБ (process.exit(0) одразу після stdout.write).
+    // Читач навмисно повільний (tools/fixtures/slow-pipe.mjs): 300 мс не читає pipe, тож дочірній процес упирається в заповнений буфер
+    const late = (script, ...a) => slowPipe(script, a, { cwd: tmp });
+    // 2000 екранів по 10 відхилень (один довгий body перевіряється нелінійно повільно)
+    const SCR = 2000, PER = 10, BIG = SCR * PER;
+    fs.writeFileSync(path.join(tmp, "content/ukr/g5-fxbig.js"), sec("fxbig").replace('[{"type":"info","title":"Гості","body":"Брат в сестри гостює."}]',
+      JSON.stringify(Array.from({ length: SCR }, () => ({ type: "info", title: "Гості", body: "Брат в сестри гостює. ".repeat(PER) })))));
+    r = await late(path.join(tmp, "tools/euphony.mjs"), "--json");
+    { let j = null; try { j = JSON.parse(r.stdout); } catch {}
+      n++; if (r.status !== 0 || Buffer.byteLength(r.stdout) < 1e6 || !j || j.rows.filter(x => x.where.startsWith("fxbigl1 екран ")).length !== BIG) { fail++; console.log("✗ euphony --json у pipe: повний JSON ≥ 1 МБ", r.status, r.stdout.length, r.stderr.slice(0, 300)); } }
+    r = await late(path.join(tmp, "tools/euphony.mjs"), "--section", "fxbig");
+    n++; if (r.status !== 0 || Buffer.byteLength(r.stdout) < 1e6 || (r.stdout.match(/^- fxbigl1 екран \d+ /gm) || []).length !== BIG) { fail++; console.log("✗ euphony --section у pipe: повний звіт ≥ 1 МБ", r.status, r.stdout.length); }
+    r = await late(path.join(tmp, "tools/euphony.mjs"), "--section", "nope");
+    n++; if (r.status !== 2) { fail++; console.log("✗ euphony --section nope (async) — код 2", r.status); }
+    // спільний помічник exitFlushed (lib.mjs) для ранніх виходів інших інструментів: дочекатися stdout/stderr, тоді вийти з кодом
+    fs.writeFileSync(path.join(tmp, "tools/flush-fixture.mjs"), `import { exitFlushed } from "./lib.mjs";\nconsole.log("x".repeat(2e6)); await exitFlushed(3); console.log("після виходу");\n`);
+    r = await late(path.join(tmp, "tools/flush-fixture.mjs"));
+    n++; if (r.status !== 3 || r.stdout !== "x".repeat(2e6) + "\n") { fail++; console.log("✗ exitFlushed: увесь вивід, код 3, далі не виконується", r.status, r.stdout.length, r.stderr.slice(0, 300)); }
+    // рев'ю P2-1: читач закриває pipe рано (`| head -c 10`) — EPIPE тихо, код той самий, що з повним читанням (0 / 3), без стеку в stderr
+    for (const [a, what] of [[["--json"], "--json"], [["--section", "fxbig"], "--section"]]) {
+      r = await slowPipe(path.join(tmp, "tools/euphony.mjs"), a, { cwd: tmp, closeEarly: true });
+      n++; if (r.status !== 0 || r.stderr || !r.stdout) { fail++; console.log(`✗ euphony ${what} | head: EPIPE тихо, код 0`, r.status, r.signal, r.stderr.slice(0, 300)); } }
+    r = await slowPipe(path.join(tmp, "tools/flush-fixture.mjs"), [], { cwd: tmp, closeEarly: true });
+    n++; if (r.status !== 3 || r.stderr) { fail++; console.log("✗ exitFlushed | head: EPIPE тихо, код 3", r.status, r.signal, r.stderr.slice(0, 300)); }
   } finally { fs.rmSync(tmp, { recursive: true, force: true }); } }
 
 console.log(fail ? `test-euphony: ${fail} з ${n} не пройшли` : `test-euphony: ${n} перевірок — усі пройшли`);

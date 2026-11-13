@@ -16,11 +16,17 @@
   const optView = o => o === NONE ? { text: "\u2205", label: "нічого не писати" } : o === DASH ? { text: "\u2014", label: "тире" } : { text: o, label: null };
   /** Порядок показу варіантів пропуску: перестановка індексів opts (Фішер — Єйтс), бо автори майже завжди пишуть правильний першим.
       «∅» (NONE) — завжди останній: його й так видно за знаком, а місце в кінці не залежить від того, чи він правильний. */
-  function gapOrder(opts, rnd = Math.random) {
-    const idx = opts.map((o, k) => k).filter(k => opts[k] !== NONE);
+  function permute(idx, rnd) {   // Фішер — Єйтс на місці; rnd — у тестах детермінований
     for (let i = idx.length - 1; i > 0; i--) { const j = Math.min(i, Math.floor(rnd() * (i + 1))); [idx[i], idx[j]] = [idx[j], idx[i]]; }
+    return idx;
+  }
+  function gapOrder(opts, rnd = Math.random) {
+    const idx = permute(opts.map((o, k) => k).filter(k => opts[k] !== NONE), rnd);
     return idx.concat(opts.map((o, k) => k).filter(k => opts[k] === NONE));
   }
+  /** Порядок показу рядків екрана sort (не мовна вправа, але той самий прийом): перестановка індексів 0…n−1.
+   *  Автори групують items за кошиками — у порядку items рядки підказували б відповідь (engine-sort-order). */
+  const rowOrder = (n, rnd = Math.random) => permute(Array.from({ length: Math.max(0, n | 0) }, (x, k) => k), rnd);
   const isSet = v => !!v && typeof v.has === "function" && typeof v.size === "number";   // Set з будь-якого realm (vm у тестах)
 
   /** gaps: [{t:"text", v:"с"}, {t:"gap", opts:["е","и"], correct:0}, …] або { error } */
@@ -195,6 +201,14 @@
     return E;
   }
 
+  /** Відрізки [початок, кінець) вмісту авторських <span class="gw">…</span> (з урахуванням вкладених span) у рядку з тегами */
+  function gwRanges(src) {
+    const R = [], stack = [];
+    for (const m of src.matchAll(/<(\/?)span\b([^>]*)>/gi))
+      if (!m[1]) stack.push(/\bclass\s*=\s*["'](?:[^"']*\s)?gw(?:\s[^"']*)?["']/i.test(m[2]) ? m.index + m[0].length : -1);
+      else if (stack.length) { const a = stack.pop(); if (a >= 0) R.push([a, m.index]); }
+    return R;
+  }
   const BLOCK_TAG = /<\/?(?:p|br|hr|li|ul|ol|div|h[1-6]|table|thead|tbody|tr|td|th|blockquote|section|figure|figcaption|dl|dt|dd)\b[^>]*>/gi;
   /** Попередження розмітки (не ламають екран, але підказують відповідь чи плутають дитину): масив рядків. Розмітка з помилкою — [] (її дає issues) */
   function warnings(s) {
@@ -212,9 +226,12 @@
       // слово з пропуском, розірване HTML-тегом (<b>б{…}р</b>{…}за): рядок може перенестися посеред слова (рев'ю engine-lang-types R2-P3-3)
       // (тег між літерою чи пропуском і літерою чи пропуском, а в слові є пропуск; плеєр загортає в span.gw лише суцільні літери біля пропуску)
       // блокові теги (<p>, <br>, <li>…) — межа рядка, не «тег у слові»: після них переносу посеред слова немає (рев'ю engine-lang-p3 P3-3)
-      if (!g.error) { const src = String(s.text).replace(/\{[^}]*\}/g, "\u0001").replace(BLOCK_TAG, " ");
+      // розрив усередині авторського <span class="gw">…</span> (nowrap, як обгортка плеєра) — не попередження: рядок там не переноситься
+      // (tools-euphony-z-validate-gw п. 2: транскрипції «[ди́ви<sup>е</sup>{…}а]» у pu10s4)
+      if (!g.error) { const src = String(s.text).replace(/\{[^}]*\}/g, "\u0001").replace(BLOCK_TAG, " "), gw = gwRanges(src);
         for (const m of src.matchAll(/(?:[\p{L}\p{M}'’ʼ\u0001-]|<[^>]*>)*\u0001(?:[\p{L}\p{M}'’ʼ\u0001-]|<[^>]*>)*/gu))
-          if (/[\p{L}\u0001](?:<[^>]*>)+[\p{L}\u0001]/u.test(m[0])) { W.push(`gaps: слово з пропуском розірване HTML-тегом («${m[0].replace(/^(?:<[^>]*>)+|(?:<[^>]*>)+$/g, "").replace(/\u0001/g, "{…}")}») — рядок може перенестися посеред слова; обгорни тегом усе слово або винеси тег за його межі`); break; } } }
+          if ([...m[0].matchAll(/[\p{L}\u0001](?=((?:<[^>]*>)+)[\p{L}\u0001])/gu)].some(b => { const i = m.index + b.index, e = i + b[0].length + b[1].length + 1;
+            return !gw.some(([a, z]) => a <= i && e <= z); })) { W.push(`gaps: слово з пропуском розірване HTML-тегом («${m[0].replace(/^(?:<[^>]*>)+|(?:<[^>]*>)+$/g, "").replace(/\u0001/g, "{…}")}») — рядок може перенестися посеред слова; обгорни тегом усе слово або винеси тег за його межі`); break; } } }
     return W;
   }
   const TYPES = ["gaps", "pick", "stress", "word", "split"];
@@ -228,5 +245,5 @@
     if (s.type === "split") return [].concat(s.word)[0]?.replace?.(/\|/g, "") || "";
     return "";
   }
-  window.SLID_LANG = { TYPES, warnings, readText, NONE, DASH, optView, gapOrder, isVowel, parseGaps, parsePick, parseStress, parseSplit, splitShow, normWord, wordInput, wordAnswers, check, solution, issues, sameCuts };
+  window.SLID_LANG = { TYPES, warnings, readText, NONE, DASH, optView, gapOrder, rowOrder, isVowel, parseGaps, parsePick, parseStress, parseSplit, splitShow, normWord, wordInput, wordAnswers, check, solution, issues, sameCuts };
 })();

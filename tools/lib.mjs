@@ -3,6 +3,23 @@ import fs from "node:fs"; import vm from "node:vm"; import path from "node:path"
 import { ROOT, manifest } from "./build.mjs";
 export { ROOT };
 
+/** Ранній вихід із кодом без обрізання виводу (tools-euphony-json-pipe): у pipe process.stdout асинхронний, і process.exit()
+ *  одразу після великого console.log / stdout.write обриває його на 64 КБ. Порожній запис із колбеком виконується після всіх
+ *  попередніх, тож чекаємо обидва потоки й лише тоді виходимо. Наприкінці скрипта досить process.exitCode = code. */
+export async function exitFlushed(code = 0) {
+  ignoreEpipe();
+  process.exitCode = code;
+  await Promise.all([process.stdout, process.stderr].map(s => new Promise(res => s.write("", res))));
+  process.exit(code);
+}
+
+/** Читач закрив pipe рано (`| head`): прямий process.stdout.write без обробника дає «Unhandled 'error' event» (EPIPE) і код 1
+ *  (рев'ю tools-euphony-json-pipe P2-1; console.log помилки потоку й так ковтає). EPIPE — тихо, код виходу лишається; решта помилок — як були. */
+export function ignoreEpipe() {
+  for (const s of [process.stdout, process.stderr]) if (!s.listeners("error").includes(onStdError)) s.on("error", onStdError);
+}
+function onStdError(e) { if (e?.code !== "EPIPE") throw e; }
+
 /** Завантажує весь контент так само, як браузер, і повертає { subjects, soon, files }. root — інше дерево (типово — репозиторій). */
 export function loadContent(root = ROOT) {
   const ctx = { console }; vm.createContext(ctx); ctx.window = ctx;
@@ -28,6 +45,10 @@ export const GRADED = ["choice","multi","sort","slider","order","align","shade",
 export const TYPES = ["intro","info","explore", ...GRADED];
 // предмети, де кожен урок має справжнє img (D-027, D-044): validate (помилка) і шаблон задачі автора в make-tasks.mjs
 export const IMG_REQUIRED = { hist: "error", world: "error" };
+// розділи без пулу тренування (engine-pool-lang): розвиток мовлення «Пишемо самі…» (u5s11, u6s14, u7s13, u8s14) — письмо автоматично
+// не перевірити. Спільне для make-tasks.mjs (задач не створює) і personalization-qa.mjs (пул такого розділу — помилка). За назвою, щоб
+// правило діяло й на розділи 9–11 класів; перевірювані уроки там (ділові папери: реквізити) — окремим рішенням пізніше
+export const NO_POOL_SECTION = /^Пишемо самі/;
 /** Контекст learn.validate для тесту рівня предмета: усі розділи (і лише з планом), уроки-боси — поза списком уроків розділу.
     Одне джерело для validate.mjs і personalization-qa.mjs (рев'ю tools-diag-nonmath-p3, P3-2). */
 export function diagCtx(c) {

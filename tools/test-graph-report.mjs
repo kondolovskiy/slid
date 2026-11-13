@@ -5,7 +5,7 @@
 // (історія проєкту не потрібна, тож тест працює й у CI з неглибоким checkout); git має бути встановлений — інакше тест падає.
 // Запуск: node tools/test-graph-report.mjs   (без залежностей)
 import fs from "node:fs"; import os from "node:os"; import path from "node:path";
-import { spawnSync, execFileSync } from "node:child_process"; import { fileURLToPath } from "node:url";
+import { spawnSync, execFileSync } from "node:child_process"; import { fileURLToPath } from "node:url"; import { slowPipe } from "./fixtures/slow-pipe.mjs";
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
 let fails = 0, n = 0;
 const ok = (cond, what, extra = "") => { n++; if (!cond) { fails++; console.log(`ПОМИЛКА ${what}${extra ? "\n  " + String(extra).slice(0, 3000) : ""}`); } };
@@ -81,6 +81,16 @@ for (const [name, args] of [["невідома лінія", ["--line", "nope"]],
   ok(!line.includes("fxal1#5") && !line.includes("dgfx#2"), "за замовчуванням: об'єкти з u до списку не входять", line);
   ok(/u на «na2»: 2/.test(r.out) && r.out.includes("екран 5 (choice)") && r.out.includes("dgfx завдання 2"), "--uses na2: екран і завдання тесту", r.out);
   ok(r.md && /^Файли: math, content\/math\/diag-g6\.js$/m.test(r.md), "--uses: перелік файлів (розділ фікстури без origin — як у validate)", r.md && r.md.split("\n").filter(x => x.startsWith("Файли")).join("\n")); }
+
+// ---- рев'ю tools-euphony-json-pipe P3-1: великий вивід --uses (тисячі вправ пулу) у pipe з повільним читачем не обрізається —
+//      захист від повернення process.exit() наприкінці graph-report.mjs: усі рядки на місці, підсумок «граф math: …» останнім
+{ const K = 6000;
+  write(tree(M => { M.graph.nodes.push(node("na2", "frac", [{ l: "fxal1", by: "u" }]));
+    M.pools[0].items = Array.from({ length: K }, (_, i) => item(`u${String(i).padStart(5, "0")}`, "fxal1", "frac", { u: "na2" })); }));
+  const r = await slowPipe(path.join(tmp, "tools/graph-report.mjs"), ["--uses", "na2"], { cwd: tmp });
+  const listed = (r.stdout.match(/^ {2}\S.*«u\d{5}»/gm) || []).length;
+  ok(r.status === 0 && Buffer.byteLength(r.stdout) > 256 << 10 && r.stdout.includes(`u на «na2»: ${K}\n`) && listed === K && /\nграф math: [^\n]*Звіт: [^\n]+\n$/.test(r.stdout),
+    `graph-report --uses у pipe: повний вивід ≥ 256 КБ (rc ${r.status}, ${Buffer.byteLength(r.stdout)} Б, рядків ${listed} з ${K})`, r.stdout.slice(0, 300) + r.stderr.slice(0, 300)); }
 
 // ---- --since: за хешем вмісту; нова вправа розщепленої пари без u — у списку; вставка екрана не робить змінними наступні
 { let git = true; try { execFileSync("git", ["--version"], { stdio: "ignore" }); } catch { git = false; }

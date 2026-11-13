@@ -1,4 +1,5 @@
 /* Слід · Історія, 5 клас — «Сторінки нашого минулого»
+   style-hist-1112 (2026-11-12): eyebrow «Розділ N» перенумеровано за weeks[0] у класі (лише номер; статус не змінено).
    Написано: write-hist-g5s5 (2026-11-03; програма Васильків та ін., розд. 4; D-043, D-044). 7 уроків.
    2026-11-03 verifier-g5s5: h51–h57 verified, 11 дрібних правок (reports/verify/g5s5.md).
    2026-11-04 style-hist-h56: h56 — нове завдання src («Кобзар» 1840); verify 2026-11-04 — verified (reports/verify/style-hist-g5.md).
@@ -7,7 +8,7 @@
 SLID.section("hist", {
   id: "g5s5",
   grade: 5,
-  weeks: [24, 29],
+  weeks: [25, 29],
   title: "Сторінки нашого минулого",
   why: "Щоб побачити всю історію наших земель як одну стрічку: від Русі й Королівства Руського до козаків, імперій і людей, що зберегли українське слово.",
   meta: { author: "write-hist-g5s5", created: "2026-11-03", factcheck: "verifier-g5s5", teacher: null },
@@ -103,7 +104,7 @@ SLID.section("hist", {
       screens: [
         {
           type: "intro",
-          eyebrow: "Розділ 5 · Урок 1",
+          eyebrow: "Розділ 6 · Урок 1",
           title: "Хто залишив це золото на нашій землі?",
           img: "img/hist/g5s5/pectoral.jpg",
           cap: "Копія золотої пекторалі з кургану Товста Могила, IV ст. до н. е. Археологічний музей НАН України. Оригінал зберігається в Національному музеї історії України.",
@@ -221,7 +222,7 @@ SLID.section("hist", {
       screens: [
         {
           type: "intro",
-          eyebrow: "Розділ 5 · Урок 2",
+          eyebrow: "Розділ 6 · Урок 2",
           title: "Хто звів цей собор майже тисячу років тому?",
           img: "img/hist/g5s5/sofia.jpg",
           cap: "Софійський собор у Києві, вигляд з півдня. Фото 2023 р.",
@@ -338,7 +339,7 @@ SLID.section("hist", {
       screens: [
         {
           type: "intro",
-          eyebrow: "Розділ 5 · Урок 3",
+          eyebrow: "Розділ 6 · Урок 3",
           title: "Король на наших землях?",
           img: "img/hist/g5s5/seal-yurii.jpg",
           fit: true,
@@ -452,7 +453,7 @@ SLID.section("hist", {
       screens: [
         {
           type: "intro",
-          eyebrow: "Розділ 5 · Урок 4",
+          eyebrow: "Розділ 6 · Урок 4",
           title: "Чому козацька фортеця стояла саме тут?",
           img: "img/hist/g5s5/beauplan-sich.jpg",
           cap: "Дніпрові пороги й Запорожжя на карті Гійома де Боплана, XVII ст. (фрагмент).",
@@ -580,7 +581,7 @@ SLID.section("hist", {
       screens: [
         {
           type: "intro",
-          eyebrow: "Розділ 5 · Урок 5",
+          eyebrow: "Розділ 6 · Урок 5",
           title: "Куди зникла козацька держава?",
           img: "img/hist/g5s5/kiepert-1849.jpg",
           cap: "Карта Генріха Кіперта, Веймар, 1849 р. (фрагмент). Ліворуч — Galizien (Галичина), праворуч — Wolhynien і Podolien (Волинь і Поділля). Між ними пролягав кордон двох імперій.",
@@ -708,7 +709,7 @@ SLID.section("hist", {
       screens: [
         {
           type: "intro",
-          eyebrow: "Розділ 5 · Урок 6",
+          eyebrow: "Розділ 6 · Урок 6",
           title: "Чим ця книжка здивувала читачів?",
           img: "img/hist/g5s5/eneida-1798.jpg",
           tall: true,

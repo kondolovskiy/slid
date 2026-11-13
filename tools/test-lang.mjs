@@ -44,6 +44,18 @@ const no = (v, msg) => eq(!!v, false, msg);
   for (let i = 0; i < 100; i++) { const p = L.gapOrder([",", "–", "—", ":"], r2); noneLast &&= isPerm(p, 4) && p[3] === 2; firstPos.add(p.indexOf(0)); }
   ok(noneLast, "gapOrder: ∅ завжди останній, результат — перестановка (4 варіанти)");
   eq([...firstPos].sort(), [0, 1, 2], "gapOrder: тире «–» та інші перемішуються");
+  /* порядок показу рядків sort (rowOrder, engine-sort-order): перестановка індексів items; стан і оцінювання — за індексами items */
+  const r3 = lcg(11), rpos = [0, 0, 0, 0], rseen = new Set(); let rperm = true;
+  for (let i = 0; i < 1200; i++) { const p = L.rowOrder(4, r3); rperm &&= isPerm(p, 4); if (!rperm) break; rpos[p.indexOf(0)]++; rseen.add(p.join("")); }
+  ok(rperm, "rowOrder: перестановка індексів items");
+  ok(rpos.every(c => c > 200), `rowOrder: перший рядок буває на кожній позиції ${JSON.stringify(rpos)}`);
+  eq(rseen.size, 24, "rowOrder: трапляються всі 24 перестановки чотирьох рядків");
+  eq(L.rowOrder(3, () => 0), [1, 2, 0], "rowOrder: rnd=0 — Фішер — Єйтс як у gapOrder");
+  eq(L.rowOrder(3, () => 0.999), [0, 1, 2], "rowOrder: rnd≈1 — без обміну");
+  eq(L.rowOrder(3, () => 1), [0, 1, 2], "rowOrder: rnd=1 (поза [0,1)) — індекс не виходить за межі");
+  eq(L.rowOrder(1, () => 0), [0], "rowOrder: один рядок");
+  eq(L.rowOrder(0), [], "rowOrder: порожньо");
+  eq(L.gapOrder(["е", "и", "і"], () => 0), L.rowOrder(3, () => 0), "rowOrder і gapOrder без «∅» — та сама перестановка");
   ok(isPerm(L.gapOrder(["а", "б", "в", "г", "ґ"]), 5), "gapOrder: без rnd (Math.random) — перестановка");
   eq(L.issues({ type: "gaps", text: "с{*е|и}ло" }), [], "gaps: issues чисто");
 }
@@ -178,6 +190,13 @@ const no = (v, msg) => eq(!!v, false, msg);
   for (const t of ["<p>Перше слово</p><p>{*А|О}кно…</p>", "Ден{ь|*—}<br>ки", "Ден{ь|*—}<br/>ки", "<li>ст{*і|и}л</li><li>{*о|а}кно</li>", "<P>Перше</P><DIV>{*А|О}кно</DIV>"])
     eq(L.warnings({ type: "gaps", text: t }), [], `warnings gaps: блоковий тег на межі слова — чисто («${t}»)`);
   ok(L.warnings({ type: "gaps", text: "<p>б<i>{*е|и}</i>реза</p>" }).some(w => w.includes("розірване")), "warnings gaps: рядковий тег у слові всередині абзацу — попередження");
+  // tools-euphony-z-validate-gw п. 2 (verify pu10s4 a09, a10): слово з пропуском і теги всередині одного <span class="gw"> (nowrap рушія) — чисто
+  for (const t of ['<i>дивишся</i> — <span class="gw">[ди́ви<sup>е</sup>{*с′:|шс′}а]</span><br><i>легкий</i> — <span class="gw">[ле<sup>и</sup>{*х|г}ки́й]</span>',
+    '<span class="gw">б<i>{*е|и}</i>реза</span>', "<span class='big gw'>б<b>{*е|и}</b>реза</span>", '<span class="gw">б<span class="x">{*е|и}</span>р<i>еза</i></span> і с{*е|и}ло'])
+    eq(L.warnings({ type: "gaps", text: t }), [], `warnings gaps: усе слово в span.gw — чисто («${t}»)`);
+  for (const t of ['<span class="gw">б{*е|и}р</span><b>еза</b>', '<span class="gwx">б<i>{*е|и}</i>реза</span>', '<span class="x">б<i>{*е|и}</i>реза</span>',
+    '<span class="gw">ліс</span> б<i>{*е|и}</i>реза', 'б<i>{*е|и}</i><span class="gw">реза</span>', '<span class="gw">с{*е|и}ло</span> б<i>{*е|и}</i>реза', '<span class="gw">б<i>{*е|и}</i>реза</span> с{*е|и}<b>ло</b>'])
+    ok(L.warnings({ type: "gaps", text: t }).some(w => w.includes("розірване")), `warnings gaps: розрив поза span.gw — попередження («${t}»)`);
   // п. 16 (pick-groups P3)
   ok(L.parsePick("Він [!!книжку читає] і [спить]").error, "pick: [!!…] — помилка (раніше кнопка «!книжку»)");
   eq(L.parsePick("Він [ ! книжку читає] і [ спить ]").words.map(w => [w.v, w.ok, !!w.group]), [["Він", false, false], ["книжку читає", false, true], ["і", false, false], ["спить", true, true]], "pick: пробіли біля «!» і в дужках");

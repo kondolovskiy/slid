@@ -52,13 +52,13 @@ npm run check               # build + node-тести + validate + graph-report 
 python3 tools/playtest.py [--section ID[,ID…]] [--port N]    # пройти уроки в браузері; невідомий id — код 2
 python3 tools/test-answer-ui.py --suite regression           # браузерна регресія рушія (не в check; у CI — job browser, блокує deploy)
 node tools/playtest-pick.mjs [--max-lessons N] [файли…]      # піднабір плейтесту CI: змінені розділи + покриття типів екранів + тести рівня
-node tools/test-ui.mjs [--browser P]                         # браузер (Node Playwright): «Тренування» з also, замок уроку, запобіжник екрана, оновлення PWA, синхронізація двох пристроїв; не в check, у CI — job browser
+node tools/test-ui.mjs [--browser P]                         # браузер (Node Playwright): «Тренування» з also, замок уроку, запобіжник екрана, оновлення PWA, синхронізація двох пристроїв, тренування ukr; не в check, у CI — job browser
 node tools/stats.mjs [--subject S]                           # метрики стилю → reports/style-S.md
 node tools/claim.mjs list|claim|move ...                     # черга задач
-node tools/make-tasks.mjs [--subject S]                      # задачі на написання з плану
+node tools/make-tasks.mjs [--subject S]                      # задачі на написання з плану; --write-pool [--subject ukr] — задачі на пули
 node tools/graph-report.mjs [--line ID --strict]             # граф умінь → reports/graph-<предмет>.md
 node tools/fig-audit.mjs [--subject S]                       # де умова потребує рисунка, а його немає → reports/fig-audit-S.md
-node tools/euphony.mjs [--subject S] [--section ID]          # милозвучність у/в, і/й, з/із/зі → reports/euphony-S.md (з --section — лише stdout)
+node tools/euphony.mjs [--subject S] [--section|--pool|--diag ID]   # милозвучність у/в, і/й, з/із/зі (уроки, пули, тести рівня) → reports/euphony-S.md (з ID — лише stdout); --help — довідка; невідомий прапорець — код 2
 python3 -m http.server 8000                                  # запустити локально
 cd server && npm run check && DATABASE_URL=postgres://… npm run test:e2e   # бекенд
 ```

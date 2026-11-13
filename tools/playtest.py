@@ -25,25 +25,31 @@ srv = http.server.ThreadingHTTPServer(("127.0.0.1", PORT), functools.partial(Q, 
 PORT = srv.server_address[1]
 threading.Thread(target=srv.serve_forever, daemon=True).start()
 
+async def tap(pg, sel):
+    """Клік по елементу вправи, спершу прокрученому в центр (tests-playtest-tap-center): нижній варіант, що переноситься
+    на два рядки, Playwright вважає видимим, хоча його низ під фіксованою панеллю #dock, — клік влучав у панель і губився."""
+    await pg.eval_on_selector(sel, "e => e.scrollIntoView({block: 'center', inline: 'nearest'})")
+    await pg.click(sel)
+
 async def answer(pg, s):
     """Дає правильну відповідь; повертає, що саме дано (для повідомлення «не зараховано»)."""
     t = s["type"]
-    if t == "choice": await pg.click(f'#stage .opt[data-k="{s.get("correct", 0)}"]'); return s.get("correct", 0)
+    if t == "choice": await tap(pg, f'#stage .opt[data-k="{s.get("correct", 0)}"]'); return s.get("correct", 0)
     elif t == "multi":
-        for k in s["correct"]: await pg.click(f'#stage .opt[data-k="{k}"]')
+        for k in s["correct"]: await tap(pg, f'#stage .opt[data-k="{k}"]')
         return s["correct"]
     elif t == "sort":
-        for r, it in enumerate(s["items"]): await pg.click(f'#stage [data-r="{r}"][data-b="{it[1]}"]')
+        for r, it in enumerate(s["items"]): await tap(pg, f'#stage [data-r="{r}"][data-b="{it[1]}"]')
         return [it[1] for it in s["items"]]
     elif t == "order":
-        for k in range(len(s["items"])): await pg.click(f'#ord .opt[data-k="{k}"]')
+        for k in range(len(s["items"])): await tap(pg, f'#ord .opt[data-k="{k}"]')
         return list(range(len(s["items"])))
     elif t == "slider": await pg.eval_on_selector("#rng", f"e=>{{e.value={s['answer']};e.dispatchEvent(new Event('input'))}}"); return s["answer"]
     elif t == "align":
         off = s["sample"]["endYear"] - s["sample"]["len"] + 1 - s["ref"]["from"]
         await pg.eval_on_selector("#alrng", f"e=>{{e.value={off};e.dispatchEvent(new Event('input'))}}"); return off
     elif t == "shade":
-        for k in range(s["target"]): await pg.click(f'#shade [data-p="{k}"]')
+        for k in range(s["target"]): await tap(pg, f'#shade [data-p="{k}"]')
         return s["target"]
     elif t == "numline": await pg.eval_on_selector("#nlrng", f"e=>{{e.value={s['answer']};e.dispatchEvent(new Event('input'))}}"); return s["answer"]
     elif t == "answer":
@@ -60,13 +66,13 @@ async def answer(pg, s):
     elif t in ("gaps", "pick", "stress", "split", "word"):   # мовні вправи: правильний стан дає сам рушій (SLID_LANG.solution)
         sol = await pg.evaluate("s => { const v = SLID_LANG.solution(s); return v instanceof Set ? [...v] : v; }", s)
         if t == "gaps":
-            for k, o in enumerate(sol): await pg.click(f'#stage .gopt[data-g="{k}"][data-o="{o}"]')
+            for k, o in enumerate(sol): await tap(pg, f'#stage .gopt[data-g="{k}"][data-o="{o}"]')
         elif t == "pick":
-            for n in sol: await pg.click(f'#stage .pw[data-w="{n}"]')
+            for n in sol: await tap(pg, f'#stage .pw[data-w="{n}"]')
         elif t == "stress":
-            for k, i in enumerate(sol): await pg.click(f'#stage .sv[data-w="{k}"][data-i="{i}"]')
+            for k, i in enumerate(sol): await tap(pg, f'#stage .sv[data-w="{k}"][data-i="{i}"]')
         elif t == "split":
-            for c in sol: await pg.click(f'#stage .cut[data-c="{c}"]')
+            for c in sol: await tap(pg, f'#stage .cut[data-c="{c}"]')
         else: await pg.fill("#numIn", sol); await pg.dispatch_event("#numIn", "input")
         return sol
     return None   # intro, info, explore: відповіді немає
@@ -112,23 +118,23 @@ async def lang_wrong(pg, s):
     sol = await pg.evaluate("s => { const v = SLID_LANG.solution(s); return v instanceof Set ? [...v] : v; }", s)
     if t == "gaps":
         n0 = len(await pg.evaluate("s => SLID_LANG.parseGaps(s.text).gaps[0].opts", s))
-        await pg.click(f'#stage .gopt[data-g="0"][data-o="{(sol[0] + 1) % n0}"]')
-        for k, o in enumerate(sol[1:], 1): await pg.click(f'#stage .gopt[data-g="{k}"][data-o="{o}"]')
+        await tap(pg, f'#stage .gopt[data-g="0"][data-o="{(sol[0] + 1) % n0}"]')
+        for k, o in enumerate(sol[1:], 1): await tap(pg, f'#stage .gopt[data-g="{k}"][data-o="{o}"]')
         return '#stage .gopt[data-g="0"].is-bad', None
     if t == "stress":
         vs = await pg.evaluate("s => SLID_LANG.parseStress(s.words[0]).letters.filter(l => l.v).map(l => l.i)", s)
-        await pg.click(f'#stage .sv[data-w="0"][data-i="{next(i for i in vs if i != sol[0])}"]')
-        for k, i in enumerate(sol[1:], 1): await pg.click(f'#stage .sv[data-w="{k}"][data-i="{i}"]')
+        await tap(pg, f'#stage .sv[data-w="0"][data-i="{next(i for i in vs if i != sol[0])}"]')
+        for k, i in enumerate(sol[1:], 1): await tap(pg, f'#stage .sv[data-w="{k}"][data-i="{i}"]')
         return '#stage .sv[data-w="0"].is-bad', None
     if t == "pick":
         n = await pg.evaluate("s => ((SLID_LANG.parsePick(s.text).words || []).find(w => !w.ok) || {}).n ?? null", s)   # tools-lang-p4, P3-4: без хибного слова — без спроби
         if n is None: return None, None
-        await pg.click(f'#stage .pw[data-w="{n}"]')
+        await tap(pg, f'#stage .pw[data-w="{n}"]')
         return f'#stage .pw[data-w="{n}"].is-bad', f'#stage .pw[data-w="{n}"]'
     if t == "split":
         c = await pg.evaluate("s => { const p = SLID_LANG.parseSplit(s.word, s.zero), all = p.variants.flat(); for (let c = 1; c <= [...p.word].length; c++) if (!all.includes(c) && (c < [...p.word].length || s.zero)) return c; return null; }", s)
         if c is None: return None, None
-        await pg.click(f'#stage .cut[data-c="{c}"]')
+        await tap(pg, f'#stage .cut[data-c="{c}"]')
         return f'#stage .cut[data-c="{c}"].is-bad', f'#stage .cut[data-c="{c}"]'
     if t == "word":
         await pg.fill("#numIn", "ъъъ"); await pg.dispatch_event("#numIn", "input")
@@ -181,7 +187,7 @@ async def main():
                                 # tests-lang-gaps-order (рев'ю engine-lang-gaps-shuffle, P3-1): порядок кнопок пропусків не стрибає між спробами
                                 if order0 is not None and (o1 := await pg.evaluate(GAP_ORDER)) != order0: errs.append(f"{c['id']} {l['id']} екран {si+1} (gaps): порядок кнопок змінився після хибної спроби {order0} → {o1}")
                                 if not lab or not lab.endswith("неправильно"): errs.append(f"{c['id']} {l['id']} екран {si+1} ({t}): хибний вибір без позначки «неправильно» для диктора ({mark}: {lab!r})")
-                                if undo: await pg.click(undo)
+                                if undo: await tap(pg, undo)
                         given = await answer(pg, s); await pg.click("#action")
                         if t not in NO_VERDICT:
                             # tools-playtest-verdict-msg: незарахована правильна відповідь лишає #action неактивною («Спробувати ще раз») —

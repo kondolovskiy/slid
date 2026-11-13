@@ -1008,7 +1008,7 @@ function startPractice(cid, focus){
   L={ id:"practice", title: focus? findLesson(focus).l.title : "Тренування на сьогодні", screens: picked.map(it=>{ const f=findLesson(it.lesson), [sid,ref]=String(it.src).split(/\s+(.*)/s), src=it.pool.sources.find(x=>x.id===sid);
     const where=LEARN.srcRef(ref, it.srcPage);   // «с. N» не подвоюється, якщо сторінка вже є в src
     return { ...it, _hs:it, grade:f.sec.grade, eyebrow:(it.review?"Повторення · ":"Тренування · ")+esc(f.l.title), body:(it.body||"")+`<p class="srcnote">Джерело: ${esc(src? src.short||src.title : sid)}${where? ", "+esc(where) : ""}${it.adapted? " · адаптовано" : ""}</p>`,
-      fbOk:it.fbOk||"Правильно.", fbBad:it.fbBad||"Не зовсім.", fbText:`<span class="steps"><b>Розв'язання</b>${it.steps.map((t,i)=>`<span>${i+1}. ${t}</span>`).join("")}</span>` }; }) };
+      fbOk:it.fbOk||"Правильно.", fbBad:it.fbBad||"Не зовсім.", fbText:`<span class="steps"><b>${LEARN.EXPLAIN_TYPES?.includes(it.type)? "Пояснення" : "Розв'язання"}</b>${it.steps.map((t,i)=>`<span>${i+1}. ${t}</span>`).join("")}</span>` }; }) };   /* мовна вправа, sort, order — «Пояснення»: правило й розбір (engine-pool-lang) */
   run={ practice:{ focus, res:[] }, linked:true, weak:new Set(), xp:0, first:0, graded:0, combo:0, best:0, mistakes:0, startLvl:levelOf(S.xp).n };
   EV.log("practice_start", ()=>({ c:C.id, focus:focus||null, prN, items:picked.map(it=>({ key:it.key, l:it.lesson, review:!!it.review, lvl:it.lvl ?? null })) })); HYPS.newRun();
   applyTheme(C.id);
@@ -1108,7 +1108,10 @@ function renderScreen(){
   }
   if(s.type==="sort"){
     st=s.items.map(()=>null);
-    h+=`<div class="sort">${s.items.map((it,k)=>`<div class="srow" data-row="${k}"><b>${it[0]}</b><div class="seg">${s.bins.map((b,j)=>`<button type="button" data-r="${k}" data-b="${j}" aria-pressed="false">${b}</button>`).join("")}</div></div>`).join("")}</div>`;
+    // рядки — у перемішаному порядку (LANG.rowOrder, раз на показ екрана): автори групують items за кошиками (engine-sort-order).
+    // Стан, оцінювання й журнал — за індексом items (data-row / data-r), не за місцем рядка на екрані
+    const rows= LANG&&LANG.rowOrder? LANG.rowOrder(s.items.length) : s.items.map((it,k)=>k);
+    h+=`<div class="sort">${rows.map(k=>[s.items[k],k]).map(([it,k])=>`<div class="srow" data-row="${k}"><b id="srow${k}">${it[0]}</b><div class="seg" role="group" aria-labelledby="srow${k}">${s.bins.map((b,j)=>`<button type="button" data-r="${k}" data-b="${j}" aria-pressed="false">${b}</button>`).join("")}</div></div>`).join("")}</div>`;
   }
   if(s.type==="order"){
     st=[];
@@ -1360,7 +1363,7 @@ function showMarks(s, reveal){
   const stage=$("#stage");
   if(s.type==="choice") stage.querySelectorAll(".opt").forEach((el,k)=>{ el.classList.remove("is-ok","is-bad"); if(k===st) el.classList.add(k===s.correct?"is-ok":"is-bad"); else if(reveal&&k===s.correct) el.classList.add("is-ok"); });
   if(s.type==="multi"){ const c=new Set(s.correct); stage.querySelectorAll(".opt").forEach((el,k)=>{ el.classList.remove("is-ok","is-bad"); if(st.has(k)) el.classList.add(c.has(k)?"is-ok":"is-bad"); else if(reveal&&c.has(k)) el.classList.add("is-ok"); }); }
-  if(s.type==="sort") stage.querySelectorAll(".srow").forEach((el,k)=>{ el.classList.remove("is-ok","is-bad"); el.classList.add(st[k]===s.items[k][1]?"is-ok":"is-bad"); if(reveal&&st[k]!==s.items[k][1]) el.insertAdjacentHTML("beforeend",`<span class="fix">Правильно: ${fmt(s.bins[s.items[k][1]])}</span>`); });
+  if(s.type==="sort") stage.querySelectorAll(".srow").forEach(el=>{ const k=+el.dataset.row; el.classList.remove("is-ok","is-bad"); el.classList.add(st[k]===s.items[k][1]?"is-ok":"is-bad"); if(reveal&&st[k]!==s.items[k][1]) el.insertAdjacentHTML("beforeend",`<span class="fix">Правильно: ${fmt(s.bins[s.items[k][1]])}</span>`); });
   if(s.type==="order") stage.querySelectorAll("#ord .opt").forEach(el=>{ const k=+el.dataset.k, p=st.indexOf(k); el.classList.remove("is-ok","is-bad"); el.classList.add(p===k?"is-ok":"is-bad"); if(reveal&&p!==k) el.querySelector(".k").textContent=`${p+1}→${k+1}`; });
   if(s.type==="number"||s.type==="fracin"||s.type==="answer"){ const ni=$("#numIn"), ok=gradeNow(s); ni.classList.remove("is-ok","is-bad"); ni.classList.add(ok?"is-ok":"is-bad"); if(reveal && !ok){ const sym=s.type==="answer"&&ANS_UI[s.answerKind]; const value=s.hideDen? `${s.answer}/${s.den}` : sym? LEARN.ansText(s) : Array.isArray(s.answer)? s.answer.join("; ") : String(s.answer); const a=LEARN.parseAns(value); const unit=s.unitForms&&a? plural(a.n/a.d,s.unitForms) : s.unit||""; $("#hintHost").innerHTML=`<div class="hint">${ic("check")}<span>Правильна відповідь: <b>${s.answerKind==="divrem"? `${s.answer[0]} (ост. ${s.answer[1]})`+(s.unit?" "+esc(s.unit):"") : s.answerKind==="quantity"? esc(value) : sym? fmt("$"+esc(value).replace(/\./g,",")+"$")+(unit?" "+esc(unit):"") : s.type==="answer"||s.hideDen? fmt("$"+esc(value).replace(".",",").replace(" ","~")+"$")+(unit?" "+esc(unit):"") : numShow(s.answer)}</b></span></div>`; } }
   if(s.type==="lab"){ const ok=gradeNow(s); if(reveal && !ok){ LAB.set(s.solution); LAB.mark("is-ok"); $("#hintHost").innerHTML=fmt(`<div class="hint">${ic("check")}<span>${s.reveal||"Ось як має бути — подивись на модель."}</span></div>`); } else LAB.mark(ok?"is-ok":"is-bad"); }

@@ -233,5 +233,27 @@ await tmpRepo("slid-test-diff-ord-", async (tmp, g) => {
   fs.writeFileSync(df, dsrc);
   console.log(`  ordered: пояснено ${a[0]}; без категорії — ${b[1]} непояснених`);
 });
+// 8) рев'ю tools-euphony-json-pipe P3-1: великий вивід (тисячі НЕПОЯСНЕНИХ з --show) у pipe з повільним читачем не обрізається —
+//    захист від повернення process.exit() наприкінці diff-answers.mjs. Зміст — як у 7): «старий» learn.js ігнорує ordered, а категорію
+//    «ordered …» вимкнено в копії diff-answers, тож кожен переставлений запис — НЕПОЯСНЕНИЙ (вивід, а не логіка категорій, тут предмет перевірки)
+await tmpRepo("slid-test-diff-pipe-", async (tmp, g) => {
+  for (const d of fs.readdirSync(path.join(tmp, "content"))) if (d !== "subjects") fs.rmSync(path.join(tmp, "content", d), { recursive: true, force: true });
+  for (const f of fs.readdirSync(path.join(tmp, "content/subjects"))) if (f !== "math.js") fs.rmSync(path.join(tmp, "content/subjects", f));
+  fs.mkdirSync(path.join(tmp, "content/math"));
+  const scr = Array.from({ length: 1500 }, (_, i) => `{ type: "answer", title: "Кути ${i}", answerKind: "list", answer: [${i + 1}, ${i + 200}], ordered: true }`).join(",\n");
+  fs.writeFileSync(path.join(tmp, "content/math/g8-qa.js"), `SLID.section("math", { id: "qa8", grade: 8, title: "QA", lessons: [{ id: "qa8l1", title: "QA", screens: [\n${scr}] }] });\n`);
+  const lf = path.join(tmp, "app/learn.js"), cur = fs.readFileSync(lf, "utf8"), ORD = "const ord = s.ordered === true, ms = s.multiset === true || ord,";
+  ok(cur.split(ORD).length === 2, `pipe: у learn.js рядок «${ORD}» має бути рівно один`);
+  fs.writeFileSync(lf, cur.replace(ORD, "const ord = false, ms = s.multiset === true,")); g("add", "-A"); g("commit", "-qm", "fixture + old: без ordered"); fs.writeFileSync(lf, cur);
+  const df = path.join(tmp, "tools/diff-answers.mjs"), dsrc = fs.readFileSync(df, "utf8"), IS = "return isPermutation(keyParts(s), v.split(\";\")); }],";
+  ok(dsrc.split(IS).length === 2, "pipe: у diff-answers рядок isPermutation категорії — рівно один");
+  fs.writeFileSync(df, dsrc.replace(IS, "return false; }],"));
+  const { slowPipe } = await import("./fixtures/slow-pipe.mjs");
+  const r = await slowPipe(df, ["--old", "HEAD", "--grades", "8", "--show", "1000000"], { cwd: tmp });
+  const u = r.stdout.match(/^\s*(\d+)\s+НЕПОЯСНЕНІ\s*$/m), shown = u ? r.stdout.slice(r.stdout.indexOf(u[0]) + u[0].length).split("\n").filter(x => /^ {4}\S/.test(x)).length : NaN;
+  ok(r.status === 1 && Buffer.byteLength(r.stdout) > 256 << 10 && u && +u[1] >= 1500 && shown === +u[1] && /\nВердикт тесту рівня[^\n]*\n[\s\S]*\n$/.test(r.stdout),
+    `pipe: повний вивід ≥ 256 КБ, усі ${u?.[1]} НЕПОЯСНЕНІ показано, розділ «Вердикт тесту рівня» на місці (rc ${r.status}, ${Buffer.byteLength(r.stdout)} Б, рядків ${shown})`);
+  console.log(`  pipe: ${Buffer.byteLength(r.stdout)} Б, непояснених ${u?.[1]}`);
+});
 console.log(`test-diff-answers: ${pass} ok, ${fail} ✗`);
 process.exit(fail ? 1 : 0);

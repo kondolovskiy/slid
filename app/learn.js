@@ -1997,7 +1997,42 @@ window.SLID_LEARN = (() => {
     return E;
   }
   /** Перевірка пулу (валідатор). ctx: { sections: Map id → { grade, lessons: [id] }, skills }. */
-  const POOL_TYPES = ["answer", "choice", "multi"];
+  /* Типи вправ пулу — один перелік для всіх предметів (рушій не знає предметів; engine-pool-lang): answer, choice, multi — як у математиці;
+     мовні вправи (app/lang.js: gaps, pick, stress, word, split) і sort / order — для мовних предметів, де дитина пише чи позначає сама.
+     Для «пояснювальних» типів (EXPLAIN_TYPES) — свої правила (validatePool нижче): steps — пояснення 1–4 рядки, без полів числової
+     відповіді, без hyp/poll, розмітка — тими самими правилами, що в уроці (SLID_LANG.issues; sort/order — як у tools/validate.mjs),
+     межа пулу gaps ≤ 6 пропусків (в уроці — 12; stress ≤ 6 слів і pick ≤ 40 — як в уроці). Правила answer/choice/multi не змінилися. */
+  const POOL_LANG = ["gaps", "pick", "stress", "word", "split"];
+  const EXPLAIN_TYPES = [...POOL_LANG, "sort", "order"];
+  const POOL_TYPES = ["answer", "choice", "multi", ...EXPLAIN_TYPES];
+  const POOL_LANG_LIMITS = { gaps: 6 };
+  /** Помилки «пояснювальної» вправи пулу (мовна, sort, order) — без префікса вправи. */
+  function poolExplainIssues(it) {
+    const E = [];
+    // поля числової відповіді (математика); answer у word — ключ слова
+    for (const f of ["unit", "unitForms", ...(it.type === "word" ? [] : ["answer"])]) if (it[f] !== undefined) E.push(`${f} — поле числової відповіді (answer); у ${it.type} не пишеться`);
+    if (it.hyp !== undefined || it.poll !== undefined) E.push(`hyp / poll у пулі не дозволено — тренування оцінює кожну вправу`);
+    if (Array.isArray(it.steps) && it.steps.length > 4) E.push(`steps — пояснення: правило й розбір, 1–4 рядки (є ${it.steps.length})`);
+    if (POOL_LANG.includes(it.type)) {
+      const LG = typeof window !== "undefined" && window.SLID_LANG;
+      if (!LG) return E.concat("рушій мовних вправ (app/lang.js) не завантажено — розмітку не перевірено");
+      if (["gaps", "pick"].includes(it.type) && typeof it.text !== "string") E.push(`${it.type}: потрібне поле text`);
+      else for (const m of LG.issues(it)) E.push(m);
+      if (it.type === "gaps" && typeof it.text === "string") { const g = LG.parseGaps(it.text); if (!g.error && g.gaps.length > POOL_LANG_LIMITS.gaps) E.push(`gaps: у пулі — не більше ${POOL_LANG_LIMITS.gaps} пропусків (є ${g.gaps.length})`); }
+    }
+    if (it.type === "sort") {
+      if (!Array.isArray(it.bins) || it.bins.length < 2 || it.bins.some(b => typeof b !== "string" || !b.trim())) E.push("sort: bins — щонайменше 2 непорожні кошики");
+      else if (!Array.isArray(it.items) || it.items.length < 2) E.push("sort: items — щонайменше 2 елементи [текст, кошик]");
+      else for (const x of it.items) if (!Array.isArray(x) || typeof x[0] !== "string" || !Number.isInteger(x[1]) || x[1] < 0 || x[1] >= it.bins.length) { E.push(`sort: елемент ${JSON.stringify(x)} — [текст, номер кошика 0…${it.bins.length - 1}]`); break; }
+    }
+    if (it.type === "order") {
+      const n = Array.isArray(it.items) ? it.items.length : 0, sh = Array.isArray(it.shuffle) ? it.shuffle : [];
+      if (n < 2 || it.items.some(x => typeof x !== "string")) E.push("order: items — щонайменше 2 рядки в правильному порядку");
+      else if (sh.length !== n || [...sh].sort((a, b) => a - b).some((v, k) => v !== k)) E.push("order: shuffle має бути перестановкою індексів items");
+      else if (sh.every((v, k) => v === k)) E.push("order: shuffle показує вже правильний порядок");
+    }
+    return E;
+  }
   const ANSWER_KINDS = ["number", "comparison", "list", "factors", "divrem", "ratio", "coordinates2", "coordinates3", "exactRoot", "intervalSet", "expression", "periodicSet", "time", "quantity", "sci", "pairSet"];
   function validatePool(p, ctx) {
     const E = [], sec = ctx.sections.get(p.section), ids = new Set(), src = new Set((p.sources || []).map(x => x.id));
@@ -2086,6 +2121,7 @@ window.SLID_LEARN = (() => {
       if (it.signed !== undefined && (typeof it.signed !== "boolean" || it.type !== "answer" || kind !== "number")) E.push(`${w}: signed має бути boolean для числової answer`);
       if (it.tol !== undefined && (it.type !== "answer" || kind !== "number" || !Number.isFinite(it.tol) || it.tol < 0)) E.push(`${w}: tol має бути скінченним числом ≥ 0 для числової answer`);
       if (it.type === "answer" && checkAns(it, keyInput(it)) !== "ok") E.push(`${w}: answer «${it.answer}» не читається або сам не проходить перевірку (reduced/mixed)`);
+      if (EXPLAIN_TYPES.includes(it.type)) for (const m of poolExplainIssues(it)) E.push(`${w}: ${m}`);
     });
     return E;
   }
@@ -2319,6 +2355,6 @@ window.SLID_LEARN = (() => {
   }
 
   return { OK, BAD, SKIP, HALF, PASS, DIAG_TYPES, G_GRADED, graphBind, nodesOf, inLine, graphPre, nodeState, DIAG_ANSWER_KINDS, planFor, practiceItems, practiceGroups, lessonCounts, lessonOpen, nextItem, remaining, topicStatus, level, buildPlan, diagRev, resumeDiag, finishDiag, record, detect, syncPlan, lessonDone, todo, isKnown, diagOpen, work, SK_RETAG, SK_RETAG2, SK_MIGRATIONS, migrateSk, validate,
-    parseAns, parseDivrem, checkAns, diagAnswerOk, diagVerdict, diagHalfHint, DIAG_FORM, badHint, unitEq, hintTexts, keyInput, timeExample, quantityUnits: s => qtyUnits(s)?.units || null, stripUnit, listKey, pairKey, answerSig, formHint, ansText, srcRef, numberKeys, numberHelp, ANSWER_KINDS, BOX_DAYS, srsInit, srsUpdate, srsFromDiag, DIAG_BOX, genAll, genInstance, genIssues, genHash, GEN_MAX, isDue, pickSession, POOL_TYPES, validatePool,
+    parseAns, parseDivrem, checkAns, diagAnswerOk, diagVerdict, diagHalfHint, DIAG_FORM, badHint, unitEq, hintTexts, keyInput, timeExample, quantityUnits: s => qtyUnits(s)?.units || null, stripUnit, listKey, pairKey, answerSig, formHint, ansText, srcRef, numberKeys, numberHelp, ANSWER_KINDS, BOX_DAYS, srsInit, srsUpdate, srsFromDiag, DIAG_BOX, genAll, genInstance, genIssues, genHash, GEN_MAX, isDue, pickSession, POOL_TYPES, POOL_LANG, EXPLAIN_TYPES, POOL_LANG_LIMITS, validatePool,
     numVal, formCode };
 })();

@@ -8,6 +8,7 @@
    Уроків історії 1–4 кл. у застосунку немає, тому опори — baseline: lessons порожні, for обов'язковий (CONTENT_SCHEMA §9).
    Порядок: спершу базові завдання всіх опор (1–10), далі складніші впереміш із темами 5 класу (cur).
    Дати — facts/hist.md, hist-2.md; таблиця тем і джерела — tasks/…/write-hist-diag-g5.md, «Нотатки виконавця».
+   2026-11-12 (refine-hist-diag-g5-g6-cov): лише for — g5s7 додано в map, indep, rights (symbols — ні: прапора, герба й гімну в g5s7 немає, verifier); завдання, порядок і rev без змін.
    Перевірка: node tools/validate.mjs --diag dgh5
    Схема й правила: docs/CONTENT_SCHEMA.md §9; style/hist.md */
 SLID.diag("hist", {
@@ -25,10 +26,10 @@ SLID.diag("hist", {
     { id: "past", title: "Звідки ми знаємо про минуле", kind: "pre", baseline: true, lessons: [], for: ["s1"] },
     { id: "check", title: "Факт чи думка", kind: "pre", baseline: true, lessons: [], for: ["s1", "g5s6"] },
     { id: "names", title: "Походження назв", kind: "pre", baseline: true, lessons: [], for: ["s2"] },
-    { id: "map", title: "Україна на карті", kind: "pre", baseline: true, lessons: [], for: ["s2", "s4"] },
+    { id: "map", title: "Україна на карті", kind: "pre", baseline: true, lessons: [], for: ["g5s7", "s2", "s4"] },
     { id: "symbols", title: "Символи держави", kind: "pre", baseline: true, lessons: [], for: ["s4"] },
-    { id: "indep", title: "Незалежність і державні свята", kind: "pre", baseline: true, lessons: [], for: ["g5s6", "s4"] },
-    { id: "rights", title: "Права дитини", kind: "pre", baseline: true, lessons: [], for: ["s3"] },
+    { id: "indep", title: "Незалежність і державні свята", kind: "pre", baseline: true, lessons: [], for: ["g5s7", "g5s6", "s4"] },
+    { id: "rights", title: "Права дитини", kind: "pre", baseline: true, lessons: [], for: ["g5s7", "s3"] },
     // теми 5 класу: по одному уроку (без boss), завдання охоплює ядро уроку (learned)
     { id: "cur-s1", title: "Лінія часу", kind: "cur", lessons: ["l3"] },
     { id: "cur-s2", title: "Історична карта", kind: "cur", lessons: ["h21"] },

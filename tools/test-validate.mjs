@@ -9,7 +9,7 @@
 // і запускає справжній validate.mjs (--section) як окремий процес — перевіряється сам валідатор, а не його копія.
 // Запуск: node tools/test-validate.mjs   (без залежностей)
 import fs from "node:fs"; import os from "node:os"; import path from "node:path";
-import { spawnSync } from "node:child_process"; import { fileURLToPath } from "node:url";
+import { spawnSync } from "node:child_process"; import { fileURLToPath } from "node:url"; import { slowPipe } from "./fixtures/slow-pipe.mjs";
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
 let fails = 0, n = 0;
 const ok = (cond, what, extra = "") => { n++; if (!cond) { fails++; console.log(`ПОМИЛКА ${what}${extra ? "\n  " + extra : ""}`); } };
@@ -421,6 +421,40 @@ expectRun("drag: at і без drag — без попередження", one("fx
   // choice з hint у тесті — те саме попередження (для будь-якого типу)
   expectRun("diag ukr: choice з hint — попередження", tree({ type: "choice", opts: ["е", "и"], correct: 0, hint: "Зміни слово." }), ["--diag", "dgfu6"], { warn: "фідбеку дитина не бачить" });
   fs.rmSync(path.join(tmp, "content/ukr"), { recursive: true, force: true }); }
+// ---- engine-pool-lang: пул тренування ukr з мовними вправами, sort і order (CONTENT_SCHEMA §10, «Пули мовних предметів») ----
+// learn.validatePool (розмітка SLID_LANG.issues, межа пулу gaps ≤ 6, поля числової відповіді, hyp/poll, steps 1–4) + checkScreen (стиль,
+// милозвучність, gapCaseIssues) — кожна помилка один раз; --pool pu5fx знаходить пул; на рівні 2–3 без hint — попередження
+{ const SEC = { ...mathSec("u5fx"), grade: 5 };
+  const it = (id, x) => ({ id, lesson: "u5fxl1", lvl: 1, sk: "orth", src: "z5 впр. 12", title: "Встав букву", steps: ["Ненаголошене [е] перевіряємо наголосом: села."], ...x });
+  const ITEMS = [it("a01", { type: "gaps", text: "с{*е|и}ло" }), it("a02", { type: "pick", sk: "synt", title: "Знайди підмет", text: "[Сонце] яскраво [!світить]." }),
+    it("a03", { type: "stress", sk: "oral", title: "Де наголос?", words: ["черг+овий"] }), it("a04", { type: "word", title: "Напиши слово", answer: "м'ята", keys: ["'"] }),
+    it("a05", { type: "split", sk: "phon", title: "Поділи на склади", word: "мо|ло|ко" }),
+    it("a06", { type: "sort", sk: "gram", title: "Розклади слова", bins: ["Іменник", "Дієслово"], items: [["ліс", 0], ["біжить", 1]] }),
+    it("a07", { type: "order", sk: "synt", title: "Склади речення", items: ["Сонце", "світить", "яскраво"], shuffle: [2, 0, 1] })];
+  const poolU = (items, id = "pu5fx") => `SLID.pool("ukr", ${JSON.stringify({ id, section: "u5fx", status: "draft", meta: { author: "test", created: "2026-11-10", factcheck: null, teacher: null },
+    sources: [{ id: "z5", title: "Заболотний О. В. Українська мова. 5 клас", url: "https://example.org/" }], items }, null, 1)});\n`;
+  const tree = items => ({ "content/ukr/g5-u5fx.js": secJS("ukr", SEC), "content/ukr/pool-g5-u5fx.js": poolU(items) });
+  const clean = expectRun("pool ukr: усі мовні типи, sort, order — чисто", tree(ITEMS), ["--pool", "pu5fx"], {});
+  ok(clean && /пул pu5fx/.test(runTree(tree(ITEMS), ["--pool", "pu5fx"]).out), "pool ukr: --pool pu5fx знаходить пул (підсумок «пул pu5fx»)");
+  expectRun("pool ukr: --pool неіснуючого id — помилка", tree(ITEMS), ["--pool", "pu5zz"], { err: "такої діагностики чи пулу немає" });
+  for (const [name, x, err] of [
+    ["gaps без «*» — помилка розмітки один раз", { type: "gaps", text: "с{е|и}ло" }, "правильний варіант"],
+    ["gaps з 7 пропусками — межа пулу", { type: "gaps", text: Array(7).fill("с{*е|и}ло").join(", ") }, "не більше 6 пропусків"],
+    ["stress без «+» — помилка", { type: "stress", words: ["черговий"] }, "«+»"],
+    ["unit у gaps — помилка", { type: "gaps", text: "с{*е|и}ло", unit: "см" }, "unit — поле числової відповіді"],
+    ["hyp у gaps — помилка", { type: "gaps", text: "с{*е|и}ло", hyp: true, fbTitle: "Здогадка" }, "hyp / poll у пулі"],
+    ["sort з одним кошиком — помилка", { type: "sort", bins: ["Іменник"], items: [["ліс", 0], ["дім", 0]] }, "bins"],
+    ["order у правильному порядку — помилка", { type: "order", items: ["а", "б"], shuffle: [0, 1] }, "вже правильний порядок"]]) {
+    const rep = expectRun(`pool ukr: ${name}`, tree([it("b01", x)]), ["--pool", "pu5fx"], { err });
+    if (rep) ok(rep.errors.length === 1 && rep.errors[0].includes("pool#pu5fx"), `pool ukr: ${name}: рівно одна помилка, вказує на пул`, rep.errors.join("\n  ")); }
+  expectRun("pool ukr: рівень 2 без hint — попередження", tree([it("b01", { type: "gaps", text: "с{*е|и}ло", lvl: 2 })]), ["--pool", "pu5fx"], { warn: "рівня 2–3 без hint" });
+  expectRun("pool ukr: рівень 2 з hint — без попередження", tree([it("b01", { type: "gaps", text: "с{*е|и}ло", lvl: 2, hint: "Зміни слово: села." })]), ["--pool", "pu5fx"], { noWarn: "без hint" });
+  // стиль уроку діє й у пулі: милозвучність ukr (у/в) — попередження, як в уроці
+  expectRun("pool ukr: милозвучність у поясненні — попередження", tree([it("b01", { type: "gaps", text: "с{*е|и}ло", steps: ["Він в школі пише слово село."] })]), ["--pool", "pu5fx"], { warn: "милозвучність" });
+  // 4 вправи на урок — для мовного пулу без попередження «для чергування» (поріг math — 5)
+  expectRun("pool ukr: 4 вправи на урок — без попередження про чергування", tree(ITEMS.slice(0, 4)), ["--pool", "pu5fx"], { noWarn: "для чергування" });
+  expectRun("pool ukr: 3 вправи на урок — попередження", tree(ITEMS.slice(0, 3)), ["--pool", "pu5fx"], { warn: "для чергування треба щонайменше 4" });
+  fs.rmSync(path.join(tmp, "content/ukr"), { recursive: true, force: true }); }
 // ---- engine-diag-answer-kinds: answer з answerKind у тесті рівня (SLID.diag) — окремий блок (паралельна гілка змінює validate вище) ----
 // learn.validate: answer дозволено лише з number | time | quantity; поля answer перевіряє той самий answerFieldIssues, що в уроці
 { const sk = Object.keys(MATH_SKILLS)[0], pre7 = { ...mathSec("fxq"), grade: 7 };
@@ -762,6 +796,16 @@ const { figCues: figCuesT, figPoints: figPointsT } = await import(path.join(ROOT
   // п. 15: милозвучність — попередження лише для ukr і лише правила з малим шумом; «і» між зіставленими поняттями — ні
   const EU = "милозвучність";
   expectRun("ukr: «брат в сестри» — попередження милозвучності", u({ type: "info", title: "Гості", body: "Брат в сестри гостює." }), A, { warn: EU });
+  // рев'ю tools-euphony-json-pipe P3-1: великий вивід (тисячі попереджень, без --quiet) у pipe з повільним читачем не обрізається —
+  // захист від повернення process.exit() наприкінці validate.mjs: усі рядки «увага» на місці, підсумок останнім рядком
+  { fs.rmSync(path.join(tmp, "content/ukr"), { recursive: true, force: true }); fs.mkdirSync(path.join(tmp, "content/ukr"), { recursive: true });
+    for (const [f, src] of Object.entries(u(Array.from({ length: 3000 }, (_, i) => ({ type: "info", title: `Гості ${i}`, body: "Брат в сестри гостює." })))))
+      fs.writeFileSync(path.join(tmp, f), src);
+    const r = await slowPipe(path.join(tmp, "tools/validate.mjs"), A, { cwd: tmp }), m = r.stdout.match(/\n(\d+) помилок, (\d+) попереджень \(розділ fxu\)\. Звіт: reports\/validate\.json\n$/);
+    const warns = (r.stdout.match(/^увага {4}/gm) || []).length;
+    ok(r.status === 0 && Buffer.byteLength(r.stdout) > 256 << 10 && m && +m[2] >= 3000 && warns === +m[2],
+      `validate у pipe: повний вивід ≥ 256 КБ, рядків «увага» стільки ж, скільки в підсумку (rc ${r.status}, ${Buffer.byteLength(r.stdout)} Б, ${warns} / ${m?.[2]})`, r.stderr.slice(0, 300));
+    fs.rmSync(path.join(tmp, "reports/validate.json"), { force: true }); }
   // tools-diag-nonmath-p3 п. 3: «<b>В лісі</b>» на початку речення fbText — попередження; «Влітку» (в- самого слова) — лише звіт euphony.mjs
   expectRun("ukr: fbText «Ні. <b>В лісі</b> …» — попередження милозвучності", u({ type: "choice", title: "Обери", opts: ["Тихо", "Гучно"], correct: 0, fbText: "Ні. <b>В лісі</b> тихо, бо вітру немає." }), A, { warn: EU });
   expectRun("ukr: sort «Влітку тепло» — у validate без попередження (лише звіт)", u({ type: "sort", title: "Розклади", bins: ["Так", "Ні"], items: [["Влітку тепло", 0], ["Узимку холодно", 1]] }), A, { noWarn: EU });

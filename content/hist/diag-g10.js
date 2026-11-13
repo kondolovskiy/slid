@@ -9,6 +9,9 @@
    твердження на кожне вміння learned.
    Дати й формулювання — memory/long/facts/hist.md (№145, 151–155, 163, 167, 168, 171–173, 177, 183–185) і самі уроки.
    id тесту dgh10 і порядок завдань — ключі прогресу: заміна на місці — лише з rev (CONTENT_SCHEMA §9).
+   2026-11-11 (refine-hist-diag-g10-g11): розділ g11s1 «Друга світова війна» перенесено в 10 кл. (програма № 698; D-047) — лише метадані:
+   g11s1 додано у for тем srccrit, fact, lands; завдання, індекси, id і rev не змінено. Cur-теми g11s1 і нових уроків 10 кл. —
+   наступною редакцією з новим id тесту. Повторна перевірка — verifier-refine-hist-diag-g10-g11 (2026-11-11), verified.
    Перевірка: node tools/validate.mjs --diag dgh10 */
 SLID.diag("hist", {
   id: "dgh10",
@@ -17,13 +20,13 @@ SLID.diag("hist", {
   why: "Знайдемо теми з попередніх класів, які варто згадати, і те, що з 10 класу ти вже знаєш.",
   status: "verified",
   signed: false,
-  meta: { author: "w-write-hist-diag-g10", created: "2026-11-06", factcheck: "verifier-dgh10", teacher: null },
+  meta: { author: "w-write-hist-diag-g10", created: "2026-11-06", factcheck: "verifier-dgh10; for g11s1 — verifier-refine-hist-diag-g10-g11 (2026-11-11)", revised: "2026-11-11 w-refine-hist-diag-g10-g11", teacher: null },
   topics: [
     // передумови: вміння історика (5 кл.)
     { id: "cent", title: "Століття за роком", kind: "pre", lessons: ["l3"], for: ["g10s1", "g10s2", "g10s3", "g10s4", "g10s5"] },
-    { id: "srccrit", title: "Кому вірити: автор і мета джерела", kind: "pre", lessons: ["l4"], for: ["g10s1", "g10s2", "g10s4"] },
-    { id: "fact", title: "Факт і тлумачення", kind: "pre", lessons: ["l1"], for: ["g10s1", "g10s2", "g10s3", "g10s4", "g10s5"] },
-    { id: "lands", title: "Історичні землі та їхні центри", kind: "pre", lessons: ["h23"], for: ["g10s1", "g10s5"] },
+    { id: "srccrit", title: "Кому вірити: автор і мета джерела", kind: "pre", lessons: ["l4"], for: ["g10s1", "g10s2", "g10s4", "g11s1"] },
+    { id: "fact", title: "Факт і тлумачення", kind: "pre", lessons: ["l1"], for: ["g10s1", "g10s2", "g10s3", "g10s4", "g10s5", "g11s1"] },
+    { id: "lands", title: "Історичні землі та їхні центри", kind: "pre", lessons: ["h23"], for: ["g10s1", "g10s5", "g11s1"] },
     { id: "twoemp", title: "Українські землі у двох імперіях", kind: "pre", lessons: ["h24", "g9s1l3"], for: ["g10s1", "g10s5"] },
     // передумови: XIX — початок XX ст. (9 кл.)
     { id: "ban", title: "Валуєвський циркуляр і Емський указ", kind: "pre", lessons: ["g9s3l4"], for: ["g10s3"] },

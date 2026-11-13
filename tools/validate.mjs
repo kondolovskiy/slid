@@ -332,10 +332,11 @@ function checkScreen(S, s, c, diag, pool = false) {
       if ((s.opts || []).length < 2 || s.opts.length > 5) E(S, "варіантів має бути 2–5"); break;
     case "multi": if (!Array.isArray(s.correct) || !s.correct.length || s.correct.some(k => k < 0 || k >= s.opts.length)) E(S, "correct: непорожній масив індексів opts");
       if (s.correct?.length === s.opts?.length) W(S, "усі варіанти правильні — завдання нічого не перевіряє"); break;
-    case "sort": if (!Array.isArray(s.bins) || s.bins.length < 2) E(S, "bins: щонайменше 2 кошики");
+    // у пулі структуру sort/order і мовних вправ уже перевірив learn.validatePool (poolExplainIssues) — тут не дублюємо (engine-pool-lang)
+    case "sort": if (pool) break; if (!Array.isArray(s.bins) || s.bins.length < 2) E(S, "bins: щонайменше 2 кошики");
       (s.items || []).forEach(([t, b]) => { if (!(b >= 0 && b < s.bins.length)) E(S, `елемент «${t}» має неіснуючий кошик ${b}`); });
       if (new Set((s.items || []).map(i => i[1])).size < 2) W(S, "усі елементи в одному кошику"); break;
-    case "order": { const n = (s.items || []).length, sh = s.shuffle || [];
+    case "order": { if (pool) break; const n = (s.items || []).length, sh = s.shuffle || [];
       if (sh.length !== n || [...sh].sort((a, b) => a - b).some((v, k) => v !== k)) E(S, "shuffle має бути перестановкою індексів items");
       if (sh.every((v, k) => v === k)) E(S, "shuffle показує вже правильний порядок"); break; }
     case "slider": if (!(s.answer >= s.min && s.answer <= s.max)) E(S, "answer поза [min; max]"); if (!s.unit) W(S, "немає unit"); break;
@@ -349,15 +350,15 @@ function checkScreen(S, s, c, diag, pool = false) {
       if (!pool && (!diag || learn.DIAG_TYPES.includes("answer"))) for (const m of answerFieldIssues(s, diag)) E(S, m);
       if (diag && !pool) for (const m of diagFormatIssues(s)) (m.err ? E : W)(S, m.msg); break;
     case "gaps": case "pick": case "stress": case "word": case "split":
-      for (const m of lang.issues(s)) E(S, m);
+      if (!pool) for (const m of lang.issues(s)) E(S, m);   // у пулі — learn.validatePool (той самий SLID_LANG.issues), без дублю
       for (const m of lang.warnings ? lang.warnings(s) : []) W(S, m);
       for (const m of gapCaseIssues(s)) W(S, m);
       if (diag && !pool) for (const m of diagLangIssues(s)) E(S, m);
-      if (["gaps", "pick"].includes(s.type) && typeof s.text !== "string") E(S, `${s.type}: потрібне поле text`);
+      if (["gaps", "pick"].includes(s.type) && typeof s.text !== "string" && !pool) E(S, `${s.type}: потрібне поле text`);
       // pick: слова з тексту стають кнопками, тож HTML-теги в text дали б кнопки «b», «br» (рушій екранує text)
       // hyp — здогадка без оцінки (engine-lang-p3, п. 2): плеєр не позначає й не зараховує, лише показує fbTitle і fbText; poll — ні:
       // S.polls зберігає стан (Set для pick/split стає {} у JSON), а outro pollKey показав би «undefined»
-      if (s.poll) E(S, `${s.type}: poll лише для choice — відповідь мовної вправи не збережеться для outro (здогадка без оцінки — hyp: true)`);
+      if (s.poll && !pool) E(S, `${s.type}: poll лише для choice — відповідь мовної вправи не збережеться для outro (здогадка без оцінки — hyp: true)`);
       if (s.type === "pick" && /<[^>]+>|&#?\w+;/i.test(s.text || "")) E(S, "pick: у text не може бути HTML — пиши простим текстом (пояснення — у body)");
       if (s.type === "split" && /[<>&]/.test([].concat(s.word).join(""))) E(S, "split: у word не може бути HTML");
       // пробіл будь-де, і на краю слова (" мо|ло|ко"), lang.issues пропускає, а плеєр робить з нього клітинку з межею (app.js split:
@@ -453,9 +454,12 @@ for (const c of subjects) for (const p of c.pools || []) {
   authorWarn(D, p.meta);
   // генератор (gen): екран перевіряємо на першому наборі значень — так, як його побачить дитина (правила gen — learn.validatePool)
   (p.items || []).forEach((s0, i) => { const s = s0.gen !== undefined ? learn.genInstance(s0, "validate", 0) || s0 : s0;
-    if (TYPES.includes(s.type)) { checkScreen(`${D} задача ${i + 1} «${s.id}» (${s.type})`, { ...s, fbText: (s.steps || []).join(" ") }, c, true, true); figRef(`${D} задача ${i + 1} «${s.id}» (${s.type})`, s); } });
-  const per = {}; (p.items || []).forEach(s => per[s.lesson] = (per[s.lesson] || 0) + 1);
-  for (const [l, n] of Object.entries(per)) if (n < 5) W(D, `урок ${l}: лише ${n} задач — для чергування треба щонайменше 5`);
+    if (TYPES.includes(s.type)) { checkScreen(`${D} задача ${i + 1} «${s.id}» (${s.type})`, { ...s, fbText: (s.steps || []).join(" ") }, c, true, true); figRef(`${D} задача ${i + 1} «${s.id}» (${s.type})`, s); }
+    // мовна вправа, sort, order (engine-pool-lang): на рівнях 2–3 підказка після першої помилки — як у шаблоні задачі пулу
+    if (learn.EXPLAIN_TYPES?.includes(s.type) && s.lvl >= 2 && !s.hint) W(`${D} задача ${i + 1} «${s.id}» (${s.type})`, "вправа рівня 2–3 без hint — підказки після першої помилки не буде"); });
+  // мінімум вправ на урок для чергування: математика — 5 (6–8 за матрицею), мовні предмети — 4 (4–6 за шаблоном write-ukr-pool; personalization-qa — ≥ 3)
+  const per = {}, minPer = c.id === "math" ? 5 : 4; (p.items || []).forEach(s => per[s.lesson] = (per[s.lesson] || 0) + 1);
+  for (const [l, n] of Object.entries(per)) if (n < minPer) W(D, `урок ${l}: лише ${n} задач — для чергування треба щонайменше ${minPer}`);
 }
 if (onlyDiag && !diagIds.has(onlyDiag)) E(`--diag/--pool ${onlyDiag}`, "такої діагностики чи пулу немає");
 for (const s of soon) if (!s.colors?.light?.accent) E(`catalog ${s.id}`, "немає colors.light.accent");
@@ -484,4 +488,4 @@ fs.writeFileSync(path.join(ROOT, "reports/validate.json"), JSON.stringify(out, n
 if (!quiet || errors.length) errors.forEach(e => console.log("ПОМИЛКА  " + e));
 if (!quiet) warnings.forEach(w => console.log("увага    " + w));
 console.log(`\n${errors.length} помилок, ${warnings.length} попереджень${onlySec ? ` (розділ ${onlySec})` : onlyDiag ? ` (${args.includes("--pool") ? "пул" : "діагностика"} ${onlyDiag})` : ""}. Звіт: reports/validate.json`);
-process.exit(errors.length ? 1 : 0);
+process.exitCode = errors.length ? 1 : 0;   // не process.exit(): у pipe обрізав би вивід (tools-euphony-json-pipe)
