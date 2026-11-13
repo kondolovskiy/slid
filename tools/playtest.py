@@ -187,7 +187,7 @@ async def main():
                                 # tests-lang-gaps-order (рев'ю engine-lang-gaps-shuffle, P3-1): порядок кнопок пропусків не стрибає між спробами
                                 if order0 is not None and (o1 := await pg.evaluate(GAP_ORDER)) != order0: errs.append(f"{c['id']} {l['id']} екран {si+1} (gaps): порядок кнопок змінився після хибної спроби {order0} → {o1}")
                                 if not lab or not lab.endswith("неправильно"): errs.append(f"{c['id']} {l['id']} екран {si+1} ({t}): хибний вибір без позначки «неправильно» для диктора ({mark}: {lab!r})")
-                                if undo: await pg.click(undo)
+                                if undo: await tap(pg, undo)
                         given = await answer(pg, s); await pg.click("#action")
                         if t not in NO_VERDICT:
                             # tools-playtest-verdict-msg: незарахована правильна відповідь лишає #action неактивною («Спробувати ще раз») —

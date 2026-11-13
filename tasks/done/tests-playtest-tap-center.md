@@ -2,7 +2,7 @@
 id: tests-playtest-tap-center
 type: tests
 subject: engine
-status: review
+status: done
 claimed_by: orchestrator
 created: 2026-11-13
 ---
@@ -22,3 +22,6 @@ CI job `browser` (PR #22, run 43301380973) упав: «не зараховано
 - Python-модуля playwright у контейнері немає — playtest.py локально не запускається; синтаксис перевірено `ast.parse`.
 - Відтворення й перевірка підходу — Node-скрипт у scratchpad (rep4.mjs: без центрування — 3/3 «bad», з центруванням — «ok»).
 - Остаточно — CI job `browser`.
+
+## Рев'ю
+reports/review/tests-playtest-tap-center.md — «прийнято». P3-1 (undo через tap) застосовано окремим однорядковим комітом; P3-2/P3-3 — рекомендації на майбутнє.
