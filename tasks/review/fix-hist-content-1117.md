@@ -4,7 +4,7 @@ claimed_at: 2026-11-17T13:46:28.368Z
 id: fix-hist-content-1117
 type: fix
 subject: hist
-status: todo
+status: review
 claimed_by: writer-hist-1117
 created: 2026-11-17
 source: student-playtest-1117
