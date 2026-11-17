@@ -9,25 +9,28 @@
    Схема й правила: docs/CONTENT_SCHEMA.md §9, docs/PERSONALIZATION.md «Baseline», style/math.md
    Редакція 2 (fix-math-content-g4-g7-1117, 2026-11-17): завдання №12 (індекс 11, cur-g4m1) — варіант Д був про інше число (60 802),
    замінено твердженням про 40 305; ключ [0, 2, 4] той самий, rev: 2. Інструкції sort №14 і №22 — без «кошиків» (рушій показує кнопки під карткою),
-   зміст не змінено. Статус → draft до повторної верифікації. */
+   зміст не змінено. Статус → draft до повторної верифікації.
+   Ред. engine-1117-followups (2026-11-17): baseline-темам додано see — урок, де тему повторюють (CONTENT_SCHEMA §9),
+   щоб план вів на урок, а не «попроси дорослого»; завдання й порядок не змінено (rev не потрібен). Статус → draft до верифікації.
+   «Табличне множення/ділення» і «Порядок дій» — без see: уроку 4 кл., що їх повторює, немає. */
 SLID.diag("math", {
   id: "dg4",
   grade: 4,
   title: "Що ти вже вмієш?",
   why: "Згадаємо, що ти вчив у 1–3 класах, і знайдемо, з чого почати 4 клас.",
-  status: "verified",   // verifier-math-g4g7-1117 (2026-11-17): ред. 2 (№12) і інструкції sort №14, №22 перевірено; reports/verify/fix-math-content-g4-g7-1117.md
+  status: "draft",   // engine-1117-followups: see baseline-тем — до верифікації; попередня: verifier-math-g4g7-1117, reports/verify/fix-math-content-g4-g7-1117.md
   signed: false,
   meta: { author: "write-math-diag-g4", created: "2026-10-21", factcheck: "self", teacher: null },
   topics: [
     // опори 1–3 класів (baseline: уроків молодших класів у застосунку немає)
-    { id: "place", title: "Розряди до тисячі", kind: "pre", baseline: true, lessons: [], for: ["g4m1", "g4m2"] },
-    { id: "add", title: "Додавання до тисячі", kind: "pre", baseline: true, lessons: [], for: ["g4m2"] },
-    { id: "sub", title: "Віднімання до тисячі", kind: "pre", baseline: true, lessons: [], for: ["g4m2"] },
+    { id: "place", title: "Розряди до тисячі", kind: "pre", baseline: true, lessons: [], for: ["g4m1", "g4m2"], see: ["g4m1l1"] },
+    { id: "add", title: "Додавання до тисячі", kind: "pre", baseline: true, lessons: [], for: ["g4m2"], see: ["g4m2l1"] },
+    { id: "sub", title: "Віднімання до тисячі", kind: "pre", baseline: true, lessons: [], for: ["g4m2"], see: ["g4m2l2"] },
     { id: "mul", title: "Табличне множення", kind: "pre", baseline: true, lessons: [], for: ["g4m3", "m4s1"], u: "mul-table" },
     { id: "quot", title: "Табличне ділення", kind: "pre", baseline: true, lessons: [], for: ["g4m3", "m4s1"], u: "div-table" },
     { id: "ord", title: "Порядок дій", kind: "pre", baseline: true, lessons: [], for: ["g4m2", "g4m3"] },
-    { id: "units", title: "Довжина й час", kind: "pre", baseline: true, lessons: [], for: ["g4m4", "g4m5"], u: "units-lt" },
-    { id: "parts", title: "Рівні частини", kind: "pre", baseline: true, lessons: [], for: ["g4m5"], u: "parts-equal" },
+    { id: "units", title: "Довжина й час", kind: "pre", baseline: true, lessons: [], for: ["g4m4", "g4m5"], see: ["g4m4l4", "g4m4l1"], u: "units-lt" },
+    { id: "parts", title: "Рівні частини", kind: "pre", baseline: true, lessons: [], for: ["g4m5"], see: ["g4m5l1"], u: "parts-equal" },
     // теми 4 класу: по одному required-уроку, усі компоненти ядра — на одному екрані
     { id: "cur-g4m1", title: "Класи і розряди", kind: "cur", lessons: ["g4m1l1"] },
     { id: "cur-g4m2", title: "Письмове додавання", kind: "cur", lessons: ["g4m2l1"] },

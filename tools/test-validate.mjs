@@ -420,6 +420,18 @@ expectRun("drag: at і без drag — без попередження", one("fx
     expectRun("diag ukr: meta.author «Gemini» — попередження", t, ["--diag", "dgfu6"], { warn: "meta.author «Gemini» схоже на назву моделі ШІ" }); }
   // choice з hint у тесті — те саме попередження (для будь-якого типу)
   expectRun("diag ukr: choice з hint — попередження", tree({ type: "choice", opts: ["е", "и"], correct: 0, hint: "Зміни слово." }), ["--diag", "dgfu6"], { warn: "фідбеку дитина не бачить" });
+  // engine-1117-followups п. 3: see baseline-теми на урок іншого предмета (dgw7 era → «Історія») — diagCtx передає allLessons
+  { const diag5 = see => `SLID.diag("ukr", ${JSON.stringify({ id: "dgfu5", grade: 5, title: "Тест-фікстура", why: "Регресійний тест валідатора: see на урок іншого предмета.", status: "draft",
+      meta: { author: "test", created: "2026-11-17", factcheck: null, teacher: null },
+      topics: [{ id: "p", title: "Базове", kind: "pre", baseline: true, for: ["fu5"], see }, { id: "c", title: "Тема класу", kind: "cur", lessons: ["fu5l1"] }],
+      items: [{ topic: "p", type: "choice", sk: "orth", title: "Обери", opts: ["бур'ян", "бурян"], correct: 0 }, { topic: "p", type: "choice", sk: "orth", title: "Обери ще", opts: ["м'ята", "мята"], correct: 0 },
+        { topic: "c", type: "split", sk: "orth", title: "Поділи", word: "мо|ло|ко" }] }, null, 1)});\n`;
+    const t5 = see => ({ "content/ukr/g5-fu5.js": usec("fu5", 5), "content/hist/g5-fh5.js": secJS("hist", { ...mathSec("fh5"), grade: 5 }),
+      "content/hist/g7-fh7.js": secJS("hist", { ...mathSec("fh7"), grade: 7 }), "content/ukr/diag-g5.js": diag5(see) });
+    expectRun("diag see: урок іншого предмета (hist, 5 кл.) — чисто", t5(["fh5l1"]), ["--diag", "dgfu5"], {});
+    expectRun("diag see: урок іншого предмета старшого класу — помилка", t5(["fh7l1"]), ["--diag", "dgfu5"], { err: "see — урок fh7l1 старшого класу" });
+    expectRun("diag see: вигаданий урок — помилка", t5(["zz1"]), ["--diag", "dgfu5"], { err: "see — немає уроку zz1" });
+    fs.rmSync(path.join(tmp, "content/hist"), { recursive: true, force: true }); }
   fs.rmSync(path.join(tmp, "content/ukr"), { recursive: true, force: true }); }
 // ---- engine-pool-lang: пул тренування ukr з мовними вправами, sort і order (CONTENT_SCHEMA §10, «Пули мовних предметів») ----
 // learn.validatePool (розмітка SLID_LANG.issues, межа пулу gaps ≤ 6, поля числової відповіді, hyp/poll, steps 1–4) + checkScreen (стиль,

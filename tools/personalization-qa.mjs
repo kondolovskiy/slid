@@ -138,9 +138,9 @@ export function audit(subject, matrix, learn, filter = {}) {
 // Тест рівня не з math (ukr, hist, world; tools-diag-nonmath-p3 п. 1): матриця покриття є лише для math, тож вимог (теми, itemLessons,
 // forEvidence…) тут немає — лише структурна перевірка тим самим learn.validate, що й у validate.mjs, і явне повідомлення, що решту пропущено.
 // Нуль завдань — помилка (не «0 прогалин»).
-export function auditOther(subject, d, learn) {
-  // контекст — той самий diagCtx, що в validate.mjs (розділи лише з планом, боси поза уроками розділу; рев'ю P3-2)
-  const errors = [...learn.validate(d, diagCtx(subject))].map(e => `${d.id}: ${e}`);   // масив з vm-контексту → звичайний
+export function auditOther(subject, d, learn, all = []) {
+  // контекст — той самий diagCtx, що в validate.mjs (розділи лише з планом, боси поза уроками розділу; рев'ю P3-2); all — усі предмети (see на урок іншого предмета)
+  const errors = [...learn.validate(d, diagCtx(subject, all))].map(e => `${d.id}: ${e}`);   // масив з vm-контексту → звичайний
   if (!d.items?.length) errors.push(`${d.id}: нуль завдань для перевірки`);
   return { subject: subject.id, id: d.id, grade: d.grade, errors, missing: [], unsupported: [], warnings: [],
     skipped: `${d.id} (${subject.id}, ${d.grade} кл.): матриця покриття є лише для math (docs/math-personalization-coverage.json) — перевірено лише структуру тесту (learn.validate), вимоги матриці пропущено`,
@@ -199,7 +199,7 @@ export function run(args, load = loadContent) {
   if (other) {
     const [c, d] = other;
     if ('grade' in filter && filter.grade !== d.grade) throw new Error(`--grade ${filter.grade} не збігається з класом тесту ${d.id} (${d.grade})`);
-    const report = auditOther(c, d, learn);
+    const report = auditOther(c, d, learn, subjects);
     if (args.includes('--json')) console.log(JSON.stringify(report));
     else { console.log(`ПРОПУЩЕНО: ${report.skipped}`); console.log(`Завдань: ${report.counts.items}`); for (const line of report.errors) console.log(`ПОМИЛКА: ${line}`); }
     // --strict — суворе приймання за матрицею; без матриці його не буває, тож не «зелено», а rc 1 (рев'ю P3-3)

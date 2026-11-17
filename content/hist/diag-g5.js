@@ -10,26 +10,29 @@
    Дати — facts/hist.md, hist-2.md; таблиця тем і джерела — tasks/…/write-hist-diag-g5.md, «Нотатки виконавця».
    2026-11-12 (refine-hist-diag-g5-g6-cov): лише for — g5s7 додано в map, indep, rights (symbols — ні: прапора, герба й гімну в g5s7 немає, verifier); завдання, порядок і rev без змін.
    Перевірка: node tools/validate.mjs --diag dgh5
-   Схема й правила: docs/CONTENT_SCHEMA.md §9; style/hist.md */
+   Схема й правила: docs/CONTENT_SCHEMA.md §9; style/hist.md
+   Ред. engine-1117-followups (2026-11-17): baseline-темам додано see — урок, де тему повторюють (CONTENT_SCHEMA §9),
+   щоб план вів на урок, а не «попроси дорослого»; завдання й порядок не змінено (rev не потрібен). Статус → draft до верифікації.
+*/
 SLID.diag("hist", {
   id: "dgh5",
   grade: 5,
   title: "Що ти вже вмієш?",
   why: "Згадаємо, що ти дізнався про минуле в 1–4 класах, і знайдемо, з чого почати 5 клас.",
-  status: "verified",
+  status: "draft",
   meta: { author: "w-write-hist-diag-g5", created: "2026-11-06", factcheck: "verifier-dgh5", teacher: null },
   topics: [
     // опори 1–4 класів (baseline: уроків історії молодших класів у застосунку немає)
-    { id: "seq", title: "Що було раніше", kind: "pre", baseline: true, lessons: [], for: ["s1", "g5s5"] },
-    { id: "units", title: "Рік, десятиліття, століття", kind: "pre", baseline: true, lessons: [], for: ["s1", "g5s5"] },
-    { id: "gener", title: "Покоління в родині", kind: "pre", baseline: true, lessons: [], for: ["s1", "s3"] },
-    { id: "past", title: "Звідки ми знаємо про минуле", kind: "pre", baseline: true, lessons: [], for: ["s1"] },
-    { id: "check", title: "Факт чи думка", kind: "pre", baseline: true, lessons: [], for: ["s1", "g5s6"] },
-    { id: "names", title: "Походження назв", kind: "pre", baseline: true, lessons: [], for: ["s2"] },
-    { id: "map", title: "Україна на карті", kind: "pre", baseline: true, lessons: [], for: ["g5s7", "s2", "s4"] },
-    { id: "symbols", title: "Символи держави", kind: "pre", baseline: true, lessons: [], for: ["s4"] },
-    { id: "indep", title: "Незалежність і державні свята", kind: "pre", baseline: true, lessons: [], for: ["g5s7", "g5s6", "s4"] },
-    { id: "rights", title: "Права дитини", kind: "pre", baseline: true, lessons: [], for: ["g5s7", "s3"] },
+    { id: "seq", title: "Що було раніше", kind: "pre", baseline: true, lessons: [], for: ["s1", "g5s5"], see: ["l3"] },
+    { id: "units", title: "Рік, десятиліття, століття", kind: "pre", baseline: true, lessons: [], for: ["s1", "g5s5"], see: ["l3"] },
+    { id: "gener", title: "Покоління в родині", kind: "pre", baseline: true, lessons: [], for: ["s1", "s3"], see: ["s1l7"] },
+    { id: "past", title: "Звідки ми знаємо про минуле", kind: "pre", baseline: true, lessons: [], for: ["s1"], see: ["l1"] },
+    { id: "check", title: "Факт чи думка", kind: "pre", baseline: true, lessons: [], for: ["s1", "g5s6"], see: ["s3l7"] },
+    { id: "names", title: "Походження назв", kind: "pre", baseline: true, lessons: [], for: ["s2"], see: ["h23"] },
+    { id: "map", title: "Україна на карті", kind: "pre", baseline: true, lessons: [], for: ["g5s7", "s2", "s4"], see: ["g5s7l1"] },
+    { id: "symbols", title: "Символи держави", kind: "pre", baseline: true, lessons: [], for: ["s4"], see: ["h41"] },
+    { id: "indep", title: "Незалежність і державні свята", kind: "pre", baseline: true, lessons: [], for: ["g5s7", "g5s6", "s4"], see: ["h64"] },
+    { id: "rights", title: "Права дитини", kind: "pre", baseline: true, lessons: [], for: ["g5s7", "s3"], see: ["h32"] },
     // теми 5 класу: по одному уроку (без boss), завдання охоплює ядро уроку (learned)
     { id: "cur-s1", title: "Лінія часу", kind: "cur", lessons: ["l3"] },
     { id: "cur-s2", title: "Історична карта", kind: "cur", lessons: ["h21"] },

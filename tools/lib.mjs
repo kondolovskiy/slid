@@ -50,11 +50,14 @@ export const IMG_REQUIRED = { hist: "error", world: "error" };
 // правило діяло й на розділи 9–11 класів; перевірювані уроки там (ділові папери: реквізити) — окремим рішенням пізніше
 export const NO_POOL_SECTION = /^Пишемо самі/;
 /** Контекст learn.validate для тесту рівня предмета: усі розділи (і лише з планом), уроки-боси — поза списком уроків розділу.
-    Одне джерело для validate.mjs і personalization-qa.mjs (рев'ю tools-diag-nonmath-p3, P3-2). */
-export function diagCtx(c) {
-  const lessons = new Map(), sections = new Map();
+    Одне джерело для validate.mjs і personalization-qa.mjs (рев'ю tools-diag-nonmath-p3, P3-2).
+    all — усі предмети: allLessons (id → {grade, subject}) лише інших предметів, для see baseline-теми (engine-1117-followups п. 3;
+    dgw7 era → урок «Історії»). Свій предмет туди не потрапляє — свої уроки learn.validate бере з lessons (рев'ю engine-diag-baseline-plan-1117 P3-2). */
+export function diagCtx(c, all = []) {
+  const lessons = new Map(), sections = new Map(), allLessons = new Map();
   for (const sec of c.sections) { sections.set(sec.id, { grade: sec.grade, lessons: (sec.lessons || []).filter(l => !l.boss).map(l => l.id) }); (sec.lessons || []).forEach(l => lessons.set(l.id, { grade: sec.grade })); }
-  return { lessons, sections, skills: c.skills };
+  for (const o of all) if (o.id !== c.id) for (const sec of o.sections || []) for (const l of sec.lessons || []) if (!allLessons.has(l.id)) allLessons.set(l.id, { grade: sec.grade, subject: o.id });
+  return { lessons, sections, skills: c.skills, allLessons };
 }
 
 /** Прибирає HTML і формули, повертає чистий текст.

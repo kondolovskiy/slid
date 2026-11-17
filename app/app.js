@@ -432,12 +432,19 @@ function baseBlock(c, withRow=true){
     ${one}${none}${st?`<p style="margin:0">Уроки ${S.grade} класу можна починати вже зараз.</p>`:""}
     ${withRow&&st? baseRow(st) : ""}</div>`;
 }
+/** Текст картки плану на головній для baseline-тем (engine-1117-followups п. 3, рев'ю engine-diag-baseline-plan-1117 P3-1):
+    тема з see — «є в уроці «…» (клас)», як у підсумку тесту; «з дорослим» — лише для тем без уроку. */
+function planBaseText(c,B){
+  const S1=B.filter(b=>baseSee(b).length), N=B.filter(b=>!baseSee(b).length);
+  return [N.length? `Потренуй з учителем або дорослим: ${baseNames(N)}.` : "",
+    ...S1.map(b=>{ const ids=baseSee(b); return `${N.length? "Повтори" : "Потренуй"} «${esc(b.t.title)}» — тема є в ${ids.length>1?"уроках":"уроці"} ${seeNames(ids,c)}.`; })].filter(Boolean).join(" ");
+}
 function planCard(c){
   const td=stepsTodo(c);
   if(!td.length){ const B=baseTopics(c); if(!B.length) return ""; const st=baseStart(c);
     return `<div class="card now plancard s-${c.id}"><div class="nowhead"><span class="eyebrow">Твій план · ${c.short}</span><span class="pill">${B.length} ${plural(B.length,["вміння","вміння","вмінь"])}</span></div>
-    <p class="small" style="margin:0">${B.some(b=>!baseSee(b).length)? `Потренуй з учителем або дорослим: ${baseNames(B.filter(b=>!baseSee(b).length))}.` : `Потренуй: ${baseNames(B)} — є уроки, де це повторюється.`}${B.some(b=>!baseSee(b).length)&&B.some(b=>baseSee(b).length)? ` Повтори в уроках: ${baseNames(B.filter(b=>baseSee(b).length))}.` : ""}</p>
-    ${st? baseRow(st) : ""}
+    <p class="small" style="margin:0">${planBaseText(c,B)}</p>
+    ${[...new Set(B.flatMap(baseSee))].slice(0,2).map(id=>seeRow(id,c)).join("")}${st? baseRow(st) : ""}
     <button type="button" class="linkbtn" data-plan="${c.id}">Увесь план${ic("chev","chev")}</button></div>`; }
   const n=activePlan(c).steps.filter(st=>planCtx(c).hasLesson(st.l)).length, dn=n-td.length;
   return `<div class="card now plancard s-${c.id}"><div class="nowhead"><span class="eyebrow">Твій план · ${c.short}</span><span class="pill">${dn} з ${n}</span></div>
