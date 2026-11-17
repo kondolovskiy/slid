@@ -919,12 +919,26 @@ function mathFig(f){
   if(f.kind==="bar") return `<div class="mfig">${barSVG(Array(f.n).fill(1), i=>i<f.k?1:0)}</div>`;
   if(f.kind==="unequal") return `<div class="mfig">${barSVG(f.parts, i=>i<f.k?1:0, {label:"Смужка з чотирьох неоднакових частин, зафарбовано найменшу"})}</div>`;
   if(f.kind==="bars") return `<div class="mfig bars">${f.rows.map((r,j)=>`<div class="barrow"><span class="m blab">${mathHTML(f.labels[j])}</span>${barSVG(Array(r[0]).fill(1), i=>i<r[1]?1:0, {h:40})}</div>`).join("")}</div>`;
-  if(f.kind==="grid"){ const cw=40, W=f.cols*cw+6, H=f.rows*cw+6; let g=""; for(let r=0;r<f.rows;r++) for(let c=0;c<f.cols;c++){ const i=r*f.cols+c; g+=`<rect x="${3+c*cw}" y="${3+r*cw}" width="${cw}" height="${cw}" rx="3" fill="${i<f.k?"var(--surface)":"#6B3F26"}" stroke="${i<f.k?"var(--line)":"#3E2415"}" stroke-width="1.6" ${i<f.k?'stroke-dasharray="4 3"':""}/>`; }
-    return `<div class="mfig"><svg viewBox="0 0 ${W} ${H}" style="max-width:220px" role="img" aria-label="Шоколадка з ${f.rows*f.cols} часточок, ${f.k} з'їдено">${g}</svg><div class="fix" style="text-align:center">пунктиром — з'їдені часточки</div></div>`; }
+  if(f.kind==="grid") return gridFig(f);
   if(f.kind==="rem"){ const q=Math.floor(f.total/f.d), r=f.total%f.d;
     return `<div class="mfig rem" role="img" aria-label="${f.total} предметів: ${q} групи по ${f.d} і ще ${r} в остачі">${[...Array(f.d)].map((_,g)=>`<div class="dgroup on">${'<i></i>'.repeat(q)}</div>`).join("")}<div class="dgroup left">${'<i></i>'.repeat(r)}</div></div><div class="fix" style="text-align:center">${f.d} друзів по ${q} цукерки · ${r} залишилось</div>`; }
   if(f.kind==="dots"){ const per=f.total/f.groups; return `<div class="mfig dots" style="grid-template-columns:repeat(${f.groups},1fr)" role="img" aria-label="${f.total} учнів у ${f.groups} групах по ${per}">${[...Array(f.groups)].map((_,g)=>`<div class="dgroup ${g<f.k?"on":""}">${'<i></i>'.repeat(per)}</div>`).join("")}</div>`; }
   return "";
+}
+
+/** Сітка клітинок (engine-fig-grid-caption-1117). Нейтральна за замовчуванням: перші k клітинок зафарбовано (dashed: true — пунктиром),
+    label — aria-label (простий текст), cap — підпис під сіткою. look: "chocolate" — плитка шоколаду: k часточок «з'їдено» (пунктир),
+    підпис «пунктиром — з'їдені часточки» — лише коли k > 0. */
+function gridFig(f){
+  const cw=40, W=f.cols*cw+6, H=f.rows*cw+6, n=f.rows*f.cols, k=f.k||0, choc=f.look==="chocolate"; let g="";
+  for(let r=0;r<f.rows;r++) for(let c=0;c<f.cols;c++){ const on=r*f.cols+c<k;
+    const [fill,stroke,dash]= choc? (on? ["var(--surface)","var(--line)",1] : ["#6B3F26","#3E2415",0])
+      : on? (f.dashed? ["var(--surface)","var(--ink)",1] : ["var(--accent)","var(--ink)",0]) : ["var(--surface)","var(--muted)",0];
+    g+=`<rect x="${3+c*cw}" y="${3+r*cw}" width="${cw}" height="${cw}" rx="${choc?3:0}" fill="${fill}" stroke="${stroke}" stroke-width="1.6" ${dash?'stroke-dasharray="4 3"':""}/>`; }
+  const label= choc? `Шоколадка з ${n} часточок, ${k} з'їдено`
+    : f.label? attr(f.label) : `Сітка ${f.rows} × ${f.cols}: ${n} ${plural(n,["клітинка","клітинки","клітинок"])}${k? `, ${f.dashed?"пунктиром":"зафарбовано"} ${k}`:""}`;
+  const cap= choc? (k>0? "пунктиром — з'їдені часточки" : "") : f.cap||"";
+  return `<div class="mfig"><svg viewBox="0 0 ${W} ${H}" style="max-width:220px" role="img" aria-label="${label}">${g}</svg>${cap?`<div class="fix" style="text-align:center">${cap}</div>`:""}</div>`;
 }
 
 /* ---------- Плеєр уроку ---------- */
@@ -1085,12 +1099,63 @@ function setDock(kind,title,text,label,enabled=true){
 function pProgress(){ const na=run.diag? Object.keys(run.res).length : 0, p= run.diag? Math.round(na/Math.max(1,na+LEARN.remaining(run.diag,run.res))*100) : Math.round(idx/L.screens.length*100); $("#pBar").style.width=p+"%"; $("#pBar").parentElement.setAttribute("aria-valuenow",p);
   $("#pCombo").innerHTML= run.combo>=2? icF("flame")+"×"+run.combo : ""; }
 function fig(s){
-  if(s.img) return `<figure class="${s.tall?"tall":s.fit?"fit":""}"><img src="${s.img}" alt="${attr(s.cap)}"><figcaption>${s.cap}</figcaption></figure>`;
+  if(s.img) return `<figure class="zoomable${s.tall?" tall":s.fit?" fit":""}"><button type="button" class="zoombtn" data-zoom aria-label="Збільшити зображення: ${attr(s.cap)}"><img src="${s.img}" alt="${attr(s.cap)}"><span class="zhint" aria-hidden="true">${ZOOM_ICON}</span></button><figcaption>${s.cap}</figcaption></figure>`;
   if(s.svg) return `<figure class="svgfig">${svgFig(s.svg)}</figure>`;
   if(s.fig) return `<figure class="svgfig">${mathFig(s.fig)}</figure>`;
   if(s.lab) return `<div id="labHost"></div>`;
   return "";
 }
+/* ---------- Збільшення зображення екрана (engine-img-zoom-1117) ----------
+   Дотик / клік / Enter на img екрана (урок, тест рівня, тренування) → повноекранний перегляд: щипок і перетягування на сенсорі,
+   «+ / −», колесо миші, подвійний дотик, стрілки й +/− з клавіатури; «Закрити» або Esc. Той самий src, що вже на екрані
+   (кеш браузера й SW) — офлайн без нових завантажень. Решта сторінки inert, поки перегляд відкрито; фокус повертається на зображення. */
+const ZOOM_ICON='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21M10.5 7.5v6M7.5 10.5h6"/></svg>';
+const ZOOM_MAX=6;
+function zoomOpen(btn){
+  const im=btn.querySelector("img"); if(!im || $("#zoomv")) return;
+  const cap=btn.closest("figure")?.querySelector("figcaption")?.innerHTML||"";
+  const host=document.createElement("div"); host.id="zoomv"; host.className="zoomv";
+  host.setAttribute("role","dialog"); host.setAttribute("aria-modal","true"); host.setAttribute("aria-label","Збільшене зображення");
+  host.innerHTML=`<div class="zbar"><button type="button" id="zOut" aria-label="Зменшити">−</button><button type="button" id="zIn" aria-label="Збільшити">+</button><button type="button" id="zClose">${ic("x")}Закрити</button></div>
+    <div class="zview" id="zView" tabindex="0" role="img"><img alt="" draggable="false"></div>${cap?`<div class="zcap">${cap}</div>`:""}`;
+  const view=host.querySelector("#zView"), img=view.querySelector("img");
+  img.src=im.currentSrc||im.src; view.setAttribute("aria-label", (im.alt||"Зображення")+". Збільшення: + і −, рух — стрілки або перетягування");
+  const bg=[...document.body.children].filter(e=>!e.inert); bg.forEach(e=>e.inert=true);
+  document.body.appendChild(host);
+  let z=1, tx=0, ty=0, last=null; const pts=new Map();
+  const apply=()=>{ const r=view.getBoundingClientRect(), mx=(z-1)*r.width/2, my=(z-1)*r.height/2;
+    tx=Math.max(-mx,Math.min(mx,tx)); ty=Math.max(-my,Math.min(my,ty));
+    img.style.transform=`translate(${tx}px,${ty}px) scale(${z})`; host.dataset.zoom=z.toFixed(2);
+    host.querySelector("#zOut").disabled=z<=1; host.querySelector("#zIn").disabled=z>=ZOOM_MAX; };
+  // масштаб навколо точки (cx, cy) у координатах екрана: точка під пальцем лишається на місці
+  const zoomBy=(f,cx,cy)=>{ const r=view.getBoundingClientRect(), nz=Math.max(1,Math.min(ZOOM_MAX,z*f));
+    const px=(cx??r.left+r.width/2)-(r.left+r.width/2), py=(cy??r.top+r.height/2)-(r.top+r.height/2);
+    tx=px-(px-tx)*nz/z; ty=py-(py-ty)*nz/z; z=nz; apply(); };
+  const close=()=>{ document.removeEventListener("keydown",onKey,true); host.remove(); bg.forEach(e=>e.inert=false); btn.focus({preventScroll:true}); };
+  const onKey=e=>{ const k=e.key, step=60;
+    if(k==="Escape"){ e.preventDefault(); e.stopPropagation(); return close(); }
+    if(k==="+"||k==="=") zoomBy(1.5); else if(k==="-"||k==="_") zoomBy(1/1.5);
+    else if(k.startsWith("Arrow") && document.activeElement===view){ if(k==="ArrowLeft") tx+=step; if(k==="ArrowRight") tx-=step; if(k==="ArrowUp") ty+=step; if(k==="ArrowDown") ty-=step; apply(); }
+    else if(k==="Tab"){ const f=[...host.querySelectorAll("button:not(:disabled),#zView")], i=f.indexOf(document.activeElement);   // фокус — у межах перегляду
+      e.preventDefault(); f[(i+(e.shiftKey?-1:1)+f.length)%f.length].focus(); return; }
+    else return;
+    e.preventDefault(); e.stopPropagation(); };
+  document.addEventListener("keydown",onKey,true);
+  host.querySelector("#zClose").onclick=close;
+  host.querySelector("#zIn").onclick=()=>zoomBy(1.5); host.querySelector("#zOut").onclick=()=>zoomBy(1/1.5);
+  view.addEventListener("wheel",e=>{ e.preventDefault(); zoomBy(e.deltaY<0?1.25:0.8,e.clientX,e.clientY); },{passive:false});
+  view.addEventListener("dblclick",e=>{ if(z>1){ z=1; tx=ty=0; apply(); } else zoomBy(2.5,e.clientX,e.clientY); });
+  const mid=()=>{ const a=[...pts.values()]; return a.length<2? {x:a[0].x,y:a[0].y,d:0} : {x:(a[0].x+a[1].x)/2, y:(a[0].y+a[1].y)/2, d:Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y)}; };
+  view.addEventListener("pointerdown",e=>{ try{ view.setPointerCapture(e.pointerId); }catch(_){} pts.set(e.pointerId,{x:e.clientX,y:e.clientY}); last=mid(); });
+  view.addEventListener("pointermove",e=>{ if(!pts.has(e.pointerId)) return; pts.set(e.pointerId,{x:e.clientX,y:e.clientY}); const m=mid();
+    if(pts.size>=2 && last.d && m.d) zoomBy(m.d/last.d, m.x, m.y);
+    if(z>1){ tx+=m.x-last.x; ty+=m.y-last.y; apply(); }
+    last=m; });
+  const up=e=>{ pts.delete(e.pointerId); last=pts.size? mid() : null; };
+  view.addEventListener("pointerup",up); view.addEventListener("pointercancel",up);
+  apply(); host.querySelector("#zClose").focus();
+}
+$("#stage").addEventListener("click",e=>{ const b=e.target.closest("[data-zoom]"); if(b) zoomOpen(b); });
 // Розгортна примітка під текстом екрана: чому джерела дають різні дати, звідки ці дати (D-022).
 function noteHtml(s){
   if(!s.note) return "";

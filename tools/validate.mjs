@@ -28,6 +28,17 @@ if (!MATH_COMMANDS.size) { console.error("ПОМИЛКА ЗАВАНТАЖЕНН�
 const allLessonIds = new Map(), allSectionIds = new Set();
 const ICONS = fs.readFileSync(path.join(ROOT, "app/app.js"), "utf8").match(/const P = \{([\s\S]*?)\n\};/)[1].match(/^\s{2}(\w+):/gm).map(s => s.trim().slice(0, -1));
 const FIGS = ["circle","circles","bar","unequal","bars","grid","dots","rem"];
+// fig grid (engine-fig-grid-caption-1117): нейтральна сітка за замовчуванням; шоколадка — лише look: "chocolate".
+// label — aria-label (простий текст, без $), cap — підпис; нейтральна сітка без cap — попередження (дитина не знає, що означає клітинка)
+const gridFigCheck = (S, f) => {
+  if (f.look !== undefined && f.look !== "chocolate") E(S, `fig grid: невідомий look «${f.look}» (є лише "chocolate")`);
+  if (f.dashed !== undefined && typeof f.dashed !== "boolean") E(S, "fig grid: dashed — true/false");
+  for (const key of ["label", "cap"]) if (f[key] !== undefined && (typeof f[key] !== "string" || !f[key].trim())) E(S, `fig grid: ${key} — непорожній рядок`);
+  if (typeof f.label === "string" && /[$\\<]/.test(f.label)) E(S, "fig grid: label стає aria-label — простий текст без $, TeX і тегів");
+  if (typeof f.cap === "string" && ((f.cap.match(/\$/g) || []).length) % 2) E(S, "fig grid: непарна кількість $ у cap — формула не закрита");
+  if (f.look === "chocolate" && (f.label || f.cap)) W(S, "fig grid: у шоколадки (look: \"chocolate\") label і cap не показуються");
+  if (f.look !== "chocolate" && !f.cap) W(S, "fig grid без cap: підпиши, що означає сітка й клітинка («грядка 6 м × 4 м, клітинка — 1 м²»)");
+};
 // літери варіантів choice/multi — з рушія (app/app.js OPT_LETTERS), щоб ліміт не розходився з тим, що бачить дитина
 const OPT_LETTERS = fs.readFileSync(path.join(ROOT, "app/app.js"), "utf8").match(/const OPT_LETTERS="([^"]+)"/)?.[1];
 if (!OPT_LETTERS) { console.error("ПОМИЛКА ЗАВАНТАЖЕННЯ: app/app.js не має const OPT_LETTERS"); process.exit(1); }
@@ -303,6 +314,7 @@ function checkScreen(S, s, c, diag, pool = false) {
   if (s.img && !s.cap) E(S, "у фото має бути підпис cap (що, де, коли)");
   if (s.svg && !SVGS.includes(s.svg)) E(S, `немає SVG-ілюстрації «${s.svg}» у svgFig()`);
   if (s.fig && !FIGS.includes(s.fig.kind)) E(S, `невідомий fig.kind «${s.fig.kind}»`);
+  if (s.fig?.kind === "grid") gridFigCheck(S, s.fig);
   if (s.lab) for (const m of lab.validate(s.lab, s)) E(S, "lab: " + m);
   // точка drag, яку не рухає ні миша, ні клавіатура (рев'ю engine-player-a11y-followup P3-1) — попередження: модель працює
   if (s.lab) for (const m of lab.dragIssues(s.lab)) W(S, "lab: " + m);

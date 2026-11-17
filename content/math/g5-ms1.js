@@ -113,7 +113,7 @@ SLID.section("math", {
           sk: "frac",
           eyebrow: "Задача",
           title: "Шоколадка",
-          fig: { kind: "grid", rows: 3, cols: 4, k: 5 },
+          fig: { kind: "grid", rows: 3, cols: 4, k: 5, look: "chocolate" },
           body: "<p>Шоколадка має 12 часточок. З'їдено $5/12$ шоколадки. Скільки часточок залишилось?</p>",
           answer: 7,
           unit: "часточок",
