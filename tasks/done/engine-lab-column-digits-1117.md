@@ -4,7 +4,7 @@ claimed_at: 2026-11-17T13:46:28.175Z
 id: engine-lab-column-digits-1117
 type: engine
 subject: math
-status: review
+status: done
 claimed_by: engine-lab-1117
 created: 2026-11-17
 source: student-playtest-1117
@@ -85,3 +85,6 @@ priority: P1
    - 2-й екран: `__slidLab.set(розв'язок)` робить кнопку активною.
 4. **docs/CONTENT_SCHEMA.md** §8, рядок `column`: ввід цифр дотиком і клавіатурою, автоперехід (порядок), Backspace/Delete/стрілки, «Перевірити» неактивна до заповнення; позика й знак множення — кружки.
 - Повний `node tools/test-ui.mjs` (сценарії 15, 16, 17 і решта) → 171 ok, 0 ✗.
+
+## Рев'ю D-026 (reviewer-engine-1117)
+Вердикт: **прийнято** — reports/review/engine-lab-column-digits-1117.md. Блокувальних немає; P2: стирання з екранної клавіатури через подію input не працює (app/lab.js:809 перевіряє вже відновлене значення) — окремою дрібною задачею.

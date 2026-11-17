@@ -4,7 +4,7 @@ claimed_at: 2026-11-17T13:46:28.143Z
 id: engine-diag-baseline-plan-1117
 type: engine
 subject: all
-status: review
+status: done
 claimed_by: engine-appjs-1117
 created: 2026-11-17
 source: student-playtest-1117
@@ -67,3 +67,6 @@ Baseline-теми (`kind: "pre", baseline: true, lessons: []`) означают�
   - dgw7 `era` → `see: ["l3"]` (hist g5-s1 «Лінія часу»; id «l3» зараз унікальний серед предметів). Можна лише після `allLessons` у diagCtx.
   - Решту baseline-тем (dg4, dgu5, dgh5, dgw7) переглянути на предмет уроків поточного класу, де тему вивчають.
 - Повний `node tools/test-ui.mjs` не запускав після задачі 2: прогін займає 2 хв і конфліктує з іншими браузерними прогонами. Сценарій 16 зелений окремо, сценарій 15 — у повному прогоні після задачі 1 (150 ok).
+
+## Рев'ю D-026 (reviewer-engine-1117)
+Вердикт: **прийнято** — reports/review/engine-diag-baseline-plan-1117.md. Блокувальних немає; P2: у живому dgu5 `see` ще немає, а для `see` іншого предмета потрібен `allLessons` у diagCtx (inbox) — симптом плейтесту зникне лише після цих задач; P3: картка плану на головній без кнопок see.
