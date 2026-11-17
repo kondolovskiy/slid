@@ -41,3 +41,11 @@ priority: P2
    Верифікатору: чи справді урок see вчить тему опори (вибір за outro.learned і екранами). `personalization-qa --diag dg4` пише «БРАКУЄ: dg4: ще не verified» — до верифікації.
 
 Тести: test-lab 206/206, test-learn 2943, test-personalization-qa 156, test-validate 1660, `validate --diag dg4|dgu5|dgh5|dgw7` — 0/0; `NODE_PATH=/opt/node22/lib/node_modules node tools/test-ui.mjs` — 217 ok, 0 ✗ (нові сценарії 20, 21). Сценарій 20 на старому lab.js — 4 ✗; сценарій 21 на старому app.js — 4 ✗. test-answer-ui.py / playtest — лише CI (немає Python playwright).
+
+## Верифікація see (п. 4)
+verifier-diag-see-1117, 2026-11-17 — **прийнято**. Звіт: reports/verify/diag-see-1117.md.
+- Усі 33 теми з see (34 посилання) dg4, dgu5, dgh5, dgw7 ведуть на урок, що вчить саме цю тему. Клас уроків не старший: dgw7 → «Історія» 5–6 кл. Теми без see (dg4 mul, quot, ord; dgw7 anc) уроку справді не мають.
+- dgu5 `apos` → u5s7l3 «Буряк чи бур'ян?»: у браузері (реальний зміст, тест з усіма пропусками) підсумок і картка «Твій план» ведуть на урок, кнопка відкриває його, «попроси дорослого» немає.
+- Завдання, ключі й порядок не змінені, rev не потрібен. `validate --diag` ×4 — 0/0; `personalization-qa` — без «БРАКУЄ».
+- Статус чотирьох тестів → verified (коміт verifier). Після нього потрібен build оркестратора.
+- Необов'язково: dgh5 `indep` + `g5s7l3` (День Конституції). P3 для рушія: дві теми з тим самим see дають у підсумку тесту дві однакові кнопки (`l3` у dgh5 і dgw7).
