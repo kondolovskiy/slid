@@ -575,7 +575,7 @@ SLID.section("math", {
       title: "Диспетчер обмежень",
       short: "Фінал",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "g9m1boss",
       why: "Зберемо властивості, лінійні нерівності й системи — як правила для зміни в таборі.",
@@ -600,7 +600,7 @@ SLID.section("math", {
             labels: 2,
             params: {
               a: { min: 0, max: 4, step: 1, start: 1, label: "$a$" },
-              b: { min: 3, max: 8, step: 1, start: 6, label: "$b$" }
+              b: { min: 5, max: 8, step: 1, start: 6, label: "$b$" }
             },
             intervals: [{ from: "a", to: "b", open: [false, true], color: "accent" }],
             show: ["$[a; b) = [{a|0}; {b|0})$"],

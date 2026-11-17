@@ -5,7 +5,7 @@ id: fix-math-g10m5-cos-1117
 type: fix
 subject: math
 grade: 10
-status: review
+status: done
 claimed_by: writer-math-g9g11-1117
 created: 2026-11-17
 source: student-playtest-1117
@@ -41,3 +41,6 @@ priority: P1
 - Інших `number` в уроці g10m5l3 немає; lab e4 («sin 2α = 1») має підказку «2α = π/2» в умові — це опора теорії, а не готова відповідь (α ще треба знайти).
 - g10m5l5 e6 (sin 0,6 → cos 0,8) правильний; пул pg10m5: c05 (5/13), c06 (−0,8, II чверть), c0x на cos(α+β) (sin α = 4/5) — правильні; diag-g10 рядок 142 (sin a = 0,8 для M(−0,6; 0,8)) — правильний.
 - `node tools/validate.mjs --section g10m5` — 0 помилок, 0 попереджень. Розв'язок перевірено вручну: 1 − 9/25 = 16/25, √(16/25) = 4/5 = 0,8.
+
+## Верифікація verifier-math-g9g11-1117
+**Verified.** Звіт: reports/verify/fix-math-g9g11-1117.md (спільний для трьох задач). Розв'язав сам: cos α = √(1 − 9/25) = 4/5 = 0,8. Решту завдань g10m5l3 теж розв'язав — усе правильно. У застосунку 0,6 відхиляється (fbBad про синус), 0,8 зараховується. g10m5l2 e1: k·π/4 дає sin(π/4) = sin(9π/4) = 0,71. validate g10m5 — 0 помилок. g10m5l2 і g10m5l3 → verified. Playtest g10m5 — у CI чи в оркестратора (Python-playwright локально немає).

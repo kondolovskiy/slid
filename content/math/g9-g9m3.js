@@ -381,7 +381,7 @@ SLID.section("math", {
       title: "Вершина й вісь",
       short: "Парабола",
       icon: "chart",
-      status: "draft",
+      status: "verified",
       why: "Квадратична функція — це парабола: вершина, вісь симетрії й два вигляди формули допомагають її читати.",
       screens: [
         {

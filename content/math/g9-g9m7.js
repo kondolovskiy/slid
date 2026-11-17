@@ -224,7 +224,7 @@ SLID.section("math", {
       title: "Який шанс?",
       short: "Ймовірність",
       icon: "pizza",
-      status: "draft",
+      status: "verified",
       why: "Прогноз «70 % дощу» і гра в кубик — це одна мова: сприятливі випадки до всіх рівноможливих.",
       screens: [
         {
@@ -394,7 +394,7 @@ SLID.section("math", {
       title: "Середнє й діаграми",
       short: "Статистика",
       icon: "chart",
-      status: "draft",
+      status: "verified",
       why: "Опитування й оцінки зручно стискати в одне число й малювати стовпчиками чи секторами.",
       screens: [
         {
@@ -610,7 +610,7 @@ SLID.section("math", {
       title: "Фестиваль шансів",
       short: "Фінал",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "g9m7boss",
       why: "Меню, лотерея й опитування гостей — усі три теми розділу в одному квесті. Бали подвоєні.",

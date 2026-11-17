@@ -28,7 +28,7 @@ SLID.section("math", {
       title: "Година на 22 завдання",
       short: "Числа і вирази",
       icon: "bolt",
-      status: "draft",
+      status: "verified",
       why: "Перші завдання НМТ — обчислення. Тут бали втрачають не через складність, а через дрібну помилку зі степенем.",
       screens: [
         {
@@ -533,7 +533,7 @@ SLID.section("math", {
       title: "Від трикутника до кулі",
       short: "Геометрія",
       icon: "globe",
-      status: "draft",
+      status: "verified",
       why: "Геометричні задачі НМТ — це правильна формула й акуратна підстановка. Як у кухні: чи вміститься борщ у каструлю.",
       screens: [
         {
@@ -630,17 +630,17 @@ SLID.section("math", {
             params: {
               a: { min: 1, max: 5, step: 1, start: 3, label: "довжина $a$" },
               w: { min: 1, max: 5, step: 1, start: 4, label: "ширина $b$" },
-              h: { min: 1, max: 5, step: 1, start: 2, label: "висота $c$" }
+              h: { min: 1, max: 5, step: 1, start: 3, label: "висота $c$" }
             },
             points: {
               A: { at: [0, 0], color: "ink", label: "$A$" },
-              B: { x: "a", y: "0", color: "ink" },
-              C: { x: "a + 0.5*w", y: "0.5*w", color: "ink", label: "$C$" },
-              D: { x: "0.5*w", y: "0.5*w", color: "ink" },
-              A1: { x: "0", y: "h", color: "ink" },
-              B1: { x: "a", y: "h", color: "ink" },
-              C1: { x: "a + 0.5*w", y: "0.5*w + h", color: "ink", label: "$C_1$" },
-              D1: { x: "0.5*w", y: "0.5*w + h", color: "ink" }
+              B: { x: "a", y: "0", color: "ink", label: "$B$" },
+              C: { x: "a + 0.5*w", y: "0.35*w", color: "ink", label: "$C$" },
+              D: { x: "0.5*w", y: "0.35*w", color: "ink", label: "$D$" },
+              A1: { x: "0", y: "h", color: "ink", label: "$A_1$" },
+              B1: { x: "a", y: "h", color: "ink", label: "$B_1$" },
+              C1: { x: "a + 0.5*w", y: "0.35*w + h", color: "ink", label: "$C_1$" },
+              D1: { x: "0.5*w", y: "0.35*w + h", color: "ink", label: "$D_1$" }
             },
             segs: [
               { a: "A", b: "B" },

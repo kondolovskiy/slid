@@ -25,7 +25,7 @@ SLID.section("math", {
       title: "Де формула живе",
       short: "ОВ і ОЗ",
       icon: "path",
-      status: "draft",
+      status: "verified",
       why: "Курс валют, датчик температури, тариф — усе працює лише на певних входах і дає певні виходи.",
       screens: [
         {
@@ -412,7 +412,7 @@ SLID.section("math", {
       title: "Шлях назад",
       short: "Обернена",
       icon: "path",
-      status: "draft",
+      status: "verified",
       why: "Обернена функція «відкочує» правило: з ціни — відстань, з Цельсія — Фаренгейт.",
       screens: [
         {

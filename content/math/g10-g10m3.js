@@ -192,7 +192,7 @@ SLID.section("math", {
       title: "Дробовий показник",
       short: "Рац. степінь",
       icon: "bolt",
-      status: "draft",
+      status: "verified",
       why: "Запис $a^(m/n)$ замінює корінь і степінь одним символом — зручно спрощувати формули.",
       screens: [
         {
@@ -589,7 +589,7 @@ SLID.section("math", {
       title: "Лабораторія вимірювань",
       short: "Фінал",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "g10m3boss",
       why: "Зберемо корінь n-го степеня, дробовий показник і перевірку ірраціональних рівнянь в одному сюжеті.",

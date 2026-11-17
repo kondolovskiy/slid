@@ -223,7 +223,7 @@ SLID.section("math", {
       title: "Синус і косинус числа",
       short: "Функції",
       icon: "chart",
-      status: "draft",
+      status: "verified",
       why: "Звук колонки, маятник годинника, оберт турбіни — усе це хвилі, які описують sin і cos.",
       screens: [
         {
@@ -423,7 +423,7 @@ SLID.section("math", {
       title: "Формули, що рятують",
       short: "Формули",
       icon: "bolt",
-      status: "draft",
+      status: "verified",
       why: "Щоб швидко спрощувати вирази й рахувати подвійні кути без калькулятора.",
       screens: [
         {
