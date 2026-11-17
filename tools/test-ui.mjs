@@ -32,6 +32,8 @@
 //      і підказка — як у тренуванні (answerUI); 4 клас із цілим ключем — без них.
 //  16) Підсумок тесту рівня (engine-diag-baseline-plan-1117): baseline-тема з see — «тема є в уроці …» з кнопкою (і на урок іншого предмета),
 //      «попроси дорослого» — лише без see; «З програми N класу» з «попереду» і без «уже вмієш».
+//  17) Ділення кутом 4572 : 3 з input на телефоні (engine-lab-column-digits-1117): «Перевірити» неактивна на «????», дотик — фокус без «+1»,
+//      автоперехід, дотик по іншій клітинці кладе цифру туди, «1524» зараховано; __slidLab.set (QA) оновлює «Перевірити».
 //  5–7) Service worker (engine-sw-version-skew): деплой нової версії не змішує index.html і app.js; файл зі старого кешу не віддається
 //     (P3-6); оновлення не перезавантажує сторінку посеред уроку, а версія подій журналу лишається версією сторінки (P3-4); застосунок зі старим SW після одного змішаного відкриття сам переходить на консистентну нову версію.
 // Запуск: node tools/test-ui.mjs [--browser /opt/pw-browsers/chromium]
@@ -354,6 +356,38 @@ async function diagBaselineSeeScenario(browser) {
     ok(!/потренувати: [^.]*(Апостроф QA|Межа ер QA)/.test(end), `теми з see не в переліку «попроси дорослого», а ${end}`);
     ok(same(rows.map(r => r[0]), ["fs2", "hx1"]), `з темою без see: кнопки see ті самі, а ${JSON.stringify(rows)}`); }
   ok(!errors.length, "baseline see: помилки сторінки: " + errors.join(" | "));
+  await ctx.close();
+}
+/* 17) Ділення кутом 4572 : 3 з input (engine-lab-column-digits-1117, плейтест g5 №10, g6 №7) на телефоні: «Перевірити» неактивна,
+   доки є «?»; дотик по клітинці — фокус на ній без «+1»; цифри підряд — автоперехід; дотик по 2-й клітинці кладе цифру туди; «1524» зараховано. */
+async function labColumnDivScenario(browser) {
+  const ctx = await browser.newContext({ ...pw.devices["Pixel 7"], viewport: { width: 360, height: 760 }, serviceWorkers: "block" });
+  const page = await ctx.newPage(), errors = []; page.on("pageerror", e => errors.push(String(e))); page.setDefaultTimeout(8000);
+  await page.route("**/fonts.googleapis.com/**", r => r.abort());
+  await page.goto(URL0); await page.evaluate(() => { localStorage.clear(); localStorage.setItem("slid.v1", JSON.stringify({ grade: 6, unlockAll: true })); }); await page.reload();
+  const DIV = { type: "lab", title: "Ділення", body: "QA", lab: { kind: "column", op: ":", a: "4572", b: "3", input: true }, goal: "col==1524", solution: { d0: 4, d1: 2, d2: 5, d3: 1 }, fbOk: "ok", fbBad: "bad" };
+  await page.evaluate(scr => { SLID_SUBJECTS.find(c => c.id === "math").sections.push({ id: "qLab", grade: 6, weeks: [1, 2], title: "QA", why: "QA",
+    lessons: [{ id: "qlab1", title: "QA", icon: "book", screens: scr }] }); window.__slidStart("qlab1"); }, [DIV, DIV, { type: "info", title: "Кінець", body: "QA" }]);
+  await page.waitForSelector(".lab-dg");
+  const tap = async id => { const b = await page.locator(`.lab-dg[data-dg="${id}"]`).boundingBox(); await page.touchscreen.tap(b.x + b.width / 2, b.y + b.height / 2); };
+  const q = () => page.evaluate(() => { const s = window.__slidLab.get(); return { v: [s.d3, s.d2, s.d1, s.d0].join(","), dis: document.querySelector("#action").disabled, foc: document.activeElement?.dataset?.dg || null }; });
+  ok((await q()).dis, "lab column: «Перевірити» неактивна на «????»");
+  await tap("d3");
+  let r = await q(); ok(r.foc === "d3" && r.v === "-1,-1,-1,-1", `lab column: дотик по 1-й — фокус без «+1», а ${JSON.stringify(r)}`);
+  await page.keyboard.insertText("1");
+  r = await q(); ok(r.foc === "d2" && r.v === "1,-1,-1,-1" && r.dis, `lab column: «1» → у 1-й, фокус на 2-й, кнопка ще неактивна, а ${JSON.stringify(r)}`);
+  await tap("d1"); await page.keyboard.insertText("2");
+  r = await q(); ok(r.v === "1,-1,2,-1" && r.foc === "d0", `lab column: дотик по 3-й кладе цифру туди, а ${JSON.stringify(r)}`);
+  await tap("d2"); await page.keyboard.insertText("5"); await tap("d0"); await page.keyboard.insertText("4");
+  r = await q(); ok(r.v === "1,5,2,4" && !r.dis, `lab column: 1524 — кнопка активна, а ${JSON.stringify(r)}`);
+  await page.click("#action");
+  ok(await page.evaluate(() => document.querySelector(".lab").classList.contains("is-ok")), "lab column: «1524» зараховано");
+  // QA-доступ (playtest.py, test-answer-ui): __slidLab.set(розв'язок) оновлює й «Перевірити»
+  await page.click("#action"); await page.waitForSelector(".lab-dg");
+  ok((await q()).dis, "lab column, 2-й екран: «Перевірити» неактивна на «????»");
+  await page.evaluate(sol => window.__slidLab.set(sol), DIV.solution);
+  ok(!(await q()).dis, "lab column: __slidLab.set(розв'язок) — «Перевірити» активна");
+  ok(!errors.length, "lab column, помилки сторінки: " + errors.join(" | "));
   await ctx.close();
 }
 
@@ -813,6 +847,9 @@ try {
 
   // 16) Підсумок тесту рівня: baseline-теми з see, блок «З програми N класу» (engine-diag-baseline-plan-1117)
   await diagBaselineSeeScenario(browser);
+
+  // 17) Ділення кутом з input: автоперехід, дотик по клітинці, «Перевірити» на «????» (engine-lab-column-digits-1117)
+  await labColumnDivScenario(browser);
 
   // 9) Синхронізація прогресу між пристроями (engine-sync-login)
   await syncScenarios(browser);

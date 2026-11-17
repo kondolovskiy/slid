@@ -1321,7 +1321,10 @@ let LAB=null;
 function bindScreen(s){
   const stage=$("#stage");
   LAB=null; window.__slidLab=null;
-  if(s.lab && window.SLID_LAB){ LAB=window.SLID_LAB.mount($("#labHost"), s.lab, { fmt, onChange:()=>{ if(checked) return; clearMarks(); LAB.mark(""); if(s.type==="lab") setDock("","","","Перевірити"); } }); window.__slidLab=LAB; }
+  if(s.lab && window.SLID_LAB){ LAB=window.SLID_LAB.mount($("#labHost"), s.lab, { fmt, onChange:()=>{ if(checked) return; clearMarks(); LAB.mark(""); if(s.type==="lab") setDock("","","","Перевірити", labReady()); } });
+    // QA (playtest.py, test-answer-ui): set з тесту не викликає onChange — док оновлюємо тут, інакше «Перевірити» лишилась би неактивною
+    window.__slidLab={ ...LAB, set:o=>{ LAB.set(o); if(s.type==="lab" && !checked) setDock("","","","Перевірити", labReady()); } };
+    if(s.type==="lab" && !checked && !labReady()) setDock("","","","Перевірити", false); }
   if(s.type==="choice"||s.type==="multi") stage.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{
     if(checked) return; const k=+b.dataset.k;
     if(s.type==="choice"){ stage.querySelectorAll(".opt").forEach(x=>x.setAttribute("aria-pressed","false")); b.setAttribute("aria-pressed","true"); st=k; }
@@ -1356,6 +1359,9 @@ function bindScreen(s){
 }
 function clearMarks(){ $("#stage").querySelectorAll(".is-ok,.is-bad").forEach(e=>{ e.classList.remove("is-ok","is-bad");
   if(e.dataset.al!==undefined){ if(e.dataset.al) e.setAttribute("aria-label",e.dataset.al); else e.removeAttribute("aria-label"); } }); }
+/* «Перевірити» лаби (engine-lab-column-digits-1117): неактивна, доки модель не готова — у стовпчику з input є «?» (LAB.ready, app/lab.js);
+   модель без ready (старша lab.js) чи з помилкою — готова, як раніше */
+const labReady = () => { try { return typeof LAB?.ready!=="function" || LAB.ready()!==false; } catch(e){ return true; } };
 function lock(){ $("#stage").querySelectorAll(".opt,.seg button,input,.sgn,.anskeys button,.gopt,.pw,.sv,.cut").forEach(b=>b.disabled=true); if(LAB) LAB.lock(); }
 
 function gradeNow(s){
