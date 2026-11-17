@@ -17,7 +17,7 @@ SLID.diag("world", {
   grade: 7,
   title: "Що ти вже вмієш?",
   why: "Згадаємо Стародавній світ і вміння історика, а ще з'ясуємо, що про Середньовіччя ти вже знаєш.",
-  status: "draft",
+  status: "verified",   // verifier-diag-see-1117 (2026-11-17): see baseline-тем перевірено, завдання не змінено; reports/verify/diag-see-1117.md
   meta: { author: "w-write-world-diag-g7", created: "2026-11-06", factcheck: "verifier-dgw7", teacher: null },
   topics: [
     // опори: Стародавній світ і вміння історика (baseline: уроків молодших класів у предмета немає)
