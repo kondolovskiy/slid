@@ -217,7 +217,7 @@ SLID.section("math", {
       title: "Сторона за площею",
       short: "Корінь",
       icon: "target",
-      status: "draft",
+      status: "verified",
       why: "Квадратний майданчик 36 м² — яка сторона? Це і є квадратний корінь.",
       screens: [
         {
@@ -404,7 +404,7 @@ SLID.section("math", {
       title: "Де живе √2?",
       short: "Дійсні",
       icon: "line",
-      status: "draft",
+      status: "verified",
       why: "Не всі корені — цілі: деякі числа не записати дробом $m/n$ — це ірраціональні числа, але вони теж є на прямій.",
       screens: [
         {
@@ -962,7 +962,7 @@ SLID.section("math", {
       title: "Плитка для шкільного двору",
       short: "Фінал",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "g8m3boss",
       why: "Зберемо все: параболу, корінь, дійсні числа, властивості й графік $y = \\sqrt{x}$ — як на реальному майданчику.",

@@ -600,7 +600,7 @@ SLID.section("math", {
       title: "Коли хвиля дає число",
       short: "Рівняння",
       icon: "target",
-      status: "draft",
+      status: "verified",
       why: "Щоб знайти всі моменти, коли маятник або звукова хвиля досягає заданої висоти.",
       screens: [
         {

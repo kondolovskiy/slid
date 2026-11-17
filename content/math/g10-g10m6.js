@@ -27,7 +27,7 @@ SLID.section("math", {
       title: "Швидкість зміни",
       short: "Похідна",
       icon: "bolt",
-      status: "draft",
+      status: "verified",
       why: "Спідометр, дотична до графіка, миттєва швидкість — усе це одна ідея: похідна.",
       screens: [
         {
@@ -546,7 +546,7 @@ SLID.section("math", {
       title: "Найкраще значення",
       short: "Оптимізація",
       icon: "target",
-      status: "draft",
+      status: "verified",
       why: "Щоб обирати розміри з найбільшою площею чи найменшими витратами.",
       screens: [
         {

@@ -202,7 +202,7 @@ SLID.section("math", {
       title: "Проміжок на прямій",
       short: "Лінійні",
       icon: "line",
-      status: "draft",
+      status: "verified",
       why: "Лінійну нерівність розв'язують як рівняння, але відповідь — проміжок, а не одна точка.",
       screens: [
         {

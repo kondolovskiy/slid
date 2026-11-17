@@ -30,7 +30,7 @@ SLID.section("math", {
       title: "Три точки — одна стіна",
       short: "Аксіоми",
       icon: "city",
-      status: "draft",
+      status: "verified",
       why: "Щоб зрозуміти, чому стіна «плоска», а трикутник на підлозі задає єдину площину.",
       screens: [
         {

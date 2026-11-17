@@ -491,7 +491,7 @@ SLID.section("math", {
       title: "Висота й проєкції",
       short: "Проєкції",
       icon: "line",
-      status: "draft",
+      status: "verified",
       why: "Щоб знаходити висоту до гіпотенузи й катети через відрізки на гіпотенузі.",
       screens: [
         {

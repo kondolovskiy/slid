@@ -4,7 +4,7 @@ claimed_at: 2026-11-17T19:38:33.105Z
 id: fix-math-notation-1117
 type: fix
 subject: math
-status: review
+status: done
 claimed_by: writer-math-g8g11-1117
 created: 2026-11-17
 source: student-playtest-1117
@@ -63,3 +63,6 @@ priority: P2
 Статуси: зміни лише відображення — уроки лишились verified (g8m1l3, g8m5l7, g8m6l1, g9m6, g10m1, g10m3 l1/l3/l4, g11*); рішення про draft — за верифікатором (п. 5). Уроки, змінені й за fix-math-terms / grade-scope, — draft.
 Перевірка: validate g8m1, g8m3, g8m5, g8m6, g9m3, g9m6, g10m1, g10m3, g10m6, g11m1, g11m3, g11m4, g11m6, pg8m1, pg8m5, pg11m1 — 0/0; test-math 75/75; test-lab 205/205.
 Знімки «після» (Node Playwright, монтування lab із SLID_SUBJECTS): g8m1l3 e1 (n = −3: «2⁻³ = 0,125»), g10m3l2 e1 («∛8 до тисячних: 2», «8^{1/3} до тисячних: 2»), g9m4l1 e4 — у scratchpad агента; повний playtest — CI/оркестратор.
+
+## Верифікація
+verifier-math-g8g11-w2-1117: **прийнято**. Звіт: reports/verify/fix-math-w2-g8g11-1117.md. Браузер — усі змінені уроки пройдено, сирого TeX, «°°», «2⁻2», «1x», «Ap» немає; виняток g11m1l5 `^(t/30)` у show — коректний. Правка верифікатора: `1/a^n` → `1/(a^n)` (16 формул, рендер (1/a)ⁿ); ENGINE-пропозиція в inbox.

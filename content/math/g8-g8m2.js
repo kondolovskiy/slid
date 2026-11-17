@@ -35,7 +35,7 @@ SLID.section("math", {
       title: "Коли сторони біжать поруч",
       short: "Паралелограм",
       icon: "path",
-      status: "draft",
+      status: "verified",
       why: "Щоб перевірити раму, хвіртку чи екран: чи протилежні сторони справді тримають форму.",
       screens: [
         {
@@ -270,7 +270,7 @@ SLID.section("math", {
       title: "Прямі кути й рівні сторони",
       short: "Види",
       icon: "home",
-      status: "draft",
+      status: "verified",
       why: "Щоб розрізняти екран, ромбову плитку й квадратне вікно — і знати, які в них діагоналі.",
       screens: [
         {
@@ -976,7 +976,7 @@ SLID.section("math", {
       title: "Чотири вершини на колі",
       short: "Вписаний",
       icon: "rings",
-      status: "draft",
+      status: "verified",
       why: "Щоб знати, коли чотири точки можна обвести одним колом — і як це видно з кутів.",
       screens: [
         {
@@ -1249,7 +1249,7 @@ SLID.section("math", {
       title: "Коло всередині рамки",
       short: "Описаний",
       icon: "target",
-      status: "draft",
+      status: "verified",
       why: "Щоб за сторонами чотирикутника знати, чи вміститься в нього коло, що торкається всіх сторін.",
       screens: [
         {
@@ -1495,7 +1495,7 @@ SLID.section("math", {
       title: "План ділянки",
       short: "Фінал розділу",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "g8m2boss",
       why: "Паралелограм, особливі види, трапеція, Фалес, вписані й описані чотирикутники — на одному плані. Бали подвоєні.",

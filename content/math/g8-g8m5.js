@@ -27,7 +27,7 @@ SLID.section("math", {
       title: "Коли немає члена",
       short: "Неповні",
       icon: "bolt",
-      status: "draft",
+      status: "verified",
       why: "Іноді в рівнянні немає середнього члена або вільного — тоді корені шукають без важкої формули.",
       screens: [
         {

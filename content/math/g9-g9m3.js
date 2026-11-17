@@ -26,7 +26,7 @@ SLID.section("math", {
       title: "Що розкаже графік",
       short: "Властивості",
       icon: "eye",
-      status: "draft",
+      status: "verified",
       why: "Графік одразу показує нулі, проміжки зростання й найбільше значення — без довгих обчислень.",
       screens: [
         {
@@ -182,7 +182,7 @@ SLID.section("math", {
       title: "Зсуви й розтяги",
       short: "Перетворення",
       icon: "path",
-      status: "draft",
+      status: "verified",
       why: "Одну базову параболу $y = x^2$ можна зсунути, розтягнути й перевернути — і отримати будь-яку іншу.",
       screens: [
         {
