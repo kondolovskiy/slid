@@ -1,5 +1,6 @@
 /* Слід · Історія, 5 клас — «Людина і громада»
    fix-hist-world-terms-1117 (2026-11-17, writer-hist2-1117): терміни пояснено в тексті — h34: е2 розвантажено (остраки й Фемістокл — у е3 з поясненням, демократія — у е6), «V ст. до н. е.» → «близько 2500 років тому» → draft.
+   verifier-hist2-1117 (2026-11-17): fix-hist-world-terms-1117 — змінені уроки → verified; звіти reports/verify/fix-hist-ww2-move-1117.md, fix-hist-world-terms-1117-hist.md.
    style-hist-1112 (2026-11-12): eyebrow «Розділ N» перенумеровано за weeks[0] у класі (лише номер; статус не змінено).
    Статус: verified (h31, h33, h34 — нові завдання src/crit, style-hist-g5-finals; verify 2026-11-04, reports/verify/style-hist-g5.md).
    2026-11-12 (revise-hist-s3-cov): нові уроки s3l6 «Коли порушують права», s3l7 «Факт, судження, фейк» (перед фіналом);
@@ -409,7 +410,7 @@ SLID.section("hist", {
       title: "Як ухвалювати рішення разом",
       short: "Голосування",
       icon: "vote",
-      status: "draft",
+      status: "verified",
       why: "Голосування здається простим, поки не порахуєш голоси. Уміння домовлятися — основа демократії.",
       screens: [
         {

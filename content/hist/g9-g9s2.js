@@ -1,5 +1,6 @@
 /* Слід · Історія України, 9 клас — «Українське національне відродження»
    fix-hist-world-terms-1117 (2026-11-17, writer-hist2-1117): терміни пояснено в тексті — l5, l6 жандарми → draft.
+   verifier-hist2-1117 (2026-11-17): fix-hist-world-terms-1117 — змінені уроки → verified; звіти reports/verify/fix-hist-ww2-move-1117.md, fix-hist-world-terms-1117-hist.md.
    style-hist-1112 (2026-11-12): милозвучність у/в, і/й, з/із (УП § 23–25) у g9s2l3; перевірив verifier-style-hist-1112 (2026-11-12) → verified, звіт reports/verify/style-hist-1112.md.
    Статус уроків: verified (verifier-g9s2, 2026-10-13); l1, l2, l5, l6 — фото D-027 (photo-g9s2), повторно verified (verifier-images-g9s2, 2026-10-31; reports/verify/images-hist-g9s2.md).
    revise-hist-g9s2-cov (2026-11-12): нові l7 («Історія Русів»), l8 (театр і живопис), l9 (Київ 1818–1848); l3 доповнено будителями й «азбучною війною» 1834 р.; фінал l6 — 7 завдань з `pre`.
@@ -1131,7 +1132,7 @@ SLID.section("hist", {
       title: "Таємне братство в Києві",
       short: "Кирило-мефодіївці",
       icon: "users",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, про яке майбутнє мріяли кирило-мефодіївці і чому влада їх покарала.",
       screens: [
         {
@@ -1261,7 +1262,7 @@ SLID.section("hist", {
       title: "Шафа з першодруками",
       short: "Фінал розділу",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "revivalkeeper",
       why: "Перевірка всього розділу. Бали подвоєні.",

@@ -1,6 +1,7 @@
 /* Слід · Історія України, 11 клас — «Російсько-українська війна»
    fix-hist-ww2-move-1117 (2026-11-17, writer-hist2-1117): eyebrow «Розділ 5» → «Розділ 4» (g11s1 тепер у 10 кл.).
    fix-hist-world-terms-1117 (2026-11-17, writer-hist2-1117): УВКПЛ ООН розшифровано при першій згадці в l2, l3, l4, l8, l5, l6 → draft.
+   verifier-hist2-1117 (2026-11-17): fix-hist-ww2-move-1117, fix-hist-world-terms-1117 — змінені уроки → verified; звіти reports/verify/fix-hist-ww2-move-1117.md, fix-hist-world-terms-1117-hist.md.
    style-hist-1112 (2026-11-12): переставлено варіанти choice/multi (лише порядок і correct, D-016) у g11s5l1, g11s5l2, g11s5l3, g11s5l4, g11s5l5; перевірив verifier-style-hist-1112 (2026-11-12) → verified, звіт reports/verify/style-hist-1112.md.
    Статус уроків: l1–l5 verified (зображення D-027 перевірив verifier-images-g11s5, 2026-10-31; додав photo-g11s5 2026-10-31; попередня перевірка verifier-g11s5, 2026-10-14);
    l7, l8 (нові) і фінал l6 — verified (revise-hist-g11s5-cov, 2026-11-12; перевірив verifier-revise-hist-g11s5-cov, звіт reports/verify/revise-g11s5-cov.md; у l2–l5 змінено лише нумерацію eyebrow «Урок N» за позицією).
@@ -360,7 +361,7 @@ SLID.section("hist", {
       title: "Новий масштаб війни",
       short: "24 лютого 2022",
       icon: "shield",
-      status: "draft",
+      status: "verified",
       why: "Ти відрізниш початок повномасштабного вторгнення від початку війни й перевіриш міжнародну оцінку нападу.",
       screens: [
         {
@@ -484,7 +485,7 @@ SLID.section("hist", {
       title: "Три міста тримають удар",
       short: "Оборона міст",
       icon: "city",
-      status: "draft",
+      status: "verified",
       why: "Ти порівняєш оборону Києва, Харкова й Маріуполя без перетворення людського досвіду на гру.",
       screens: [
         {
@@ -609,7 +610,7 @@ SLID.section("hist", {
       title: "Повернути — не означає завершити",
       short: "Звільнення",
       icon: "flag",
-      status: "draft",
+      status: "verified",
       why: "Ти відновиш хронологію звільнень 2022 р. й побачиш ризики, що лишаються після окупації.",
       screens: [
         {
@@ -733,7 +734,7 @@ SLID.section("hist", {
       title: "Злочини окупантів і відповідь світу",
       short: "Злочини й відповідь",
       icon: "scale",
-      status: "draft",
+      status: "verified",
       why: "Ти відрізниш пропагандистське гасло від доказу, точно перекажеш звіт ООН і рішення судів та відновиш, як Україна й світ відповіли на злочини.",
       screens: [
         {
@@ -880,7 +881,7 @@ SLID.section("hist", {
       title: "Доказ не дорівнює допису",
       short: "Документи й пам'ять",
       icon: "eye",
-      status: "draft",
+      status: "verified",
       why: "Ти навчишся перевіряти цифрові матеріали, берегти приватність і розрізняти доказ, висновок та пам'ять.",
       screens: [
         {
@@ -1006,7 +1007,7 @@ SLID.section("hist", {
       title: "Хроніка спротиву й пам'яті",
       short: "Фінал розділу",
       icon: "scroll",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "evidencechronicle",
       why: "Уклади доказову хроніку війни для центру документування за реальними публічними джерелами.",

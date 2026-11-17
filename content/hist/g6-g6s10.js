@@ -1,5 +1,6 @@
 /* Слід · Історія, 6 клас — «Світ ідей Стародавнього світу»
    fix-hist-world-terms-1117 (2026-11-17, writer-hist2-1117): терміни пояснено в тексті — l3 Візантія, Світовид → draft.
+   verifier-hist2-1117 (2026-11-17): fix-hist-world-terms-1117 — змінені уроки → verified; звіти reports/verify/fix-hist-ww2-move-1117.md, fix-hist-world-terms-1117-hist.md.
    Статус: g6s10l1–g6s10l8 verified (write-hist-g6s10, 2026-11-12; verifier-g6s10 2026-11-12, reports/verify/write-g6s10.md; програма «Досліджуємо історію і суспільство. 5–6 кл.», Васильків та ін., 6 кл., розд. 3;
    звіт reports/research/coverage-research-hist-coverage-g5-6.md §4.1 N3). 8 уроків (7 + фінал).
    Не дублює: юдаїзм (g6s6-l4), буддизм і Конфуцій (g6s6-l5), християнство (g6s8-l5), Олімпійські ігри й театр (g6s7-l5), Висячі сади (g6s6-l3),
@@ -363,7 +364,7 @@ SLID.section("hist", {
       title: "Чотири обличчя зі Збруча",
       short: "Вірування предків",
       icon: "eye",
-      status: "draft",
+      status: "verified",
       why: "Наші землі мають свою давню історію вірувань. Ти дізнаєшся, кого шанували трипільці, скіфи й слов'яни й що з цього відомо напевно.",
       screens: [
         {

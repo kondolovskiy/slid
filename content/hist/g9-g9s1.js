@@ -1,5 +1,6 @@
 /* Слід · Історія України, 9 клас — «Під владою двох імперій»
    fix-hist-world-terms-1117 (2026-11-17, writer-hist2-1117): терміни пояснено в тексті — l3 цісар → draft.
+   verifier-hist2-1117 (2026-11-17): fix-hist-world-terms-1117 — змінені уроки → verified; звіти reports/verify/fix-hist-ww2-move-1117.md, fix-hist-world-terms-1117-hist.md.
    style-hist-1112 (2026-11-12): милозвучність у/в, і/й, з/із (УП § 23–25) у g9s1l2; перевірив verifier-style-hist-1112 (2026-11-12) → verified, звіт reports/verify/style-hist-1112.md.
    Статус уроків: l2, l3 — verified (verifier-images-g9s1, 2026-10-31; раніше verifier-g9s1, 2026-10-13).
    2026-11-12 (revise-hist-g9s1-cov, ПУ Гісема 2023, 9.0, 9.1.2–9.1.5, 9.2.2): l1 — екран «Стрічка доби»; l4 — Кармелюк і Кобилиця;
@@ -378,7 +379,7 @@ SLID.section("hist", {
       title: "Землі під цісарем",
       short: "Австрія",
       icon: "shield",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, як Галичина, Буковина й Закарпаття опинилися в Австрійській імперії і що там змінили реформи.",
       screens: [
         {

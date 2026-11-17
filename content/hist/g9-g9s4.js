@@ -1,5 +1,6 @@
 /* Слід · Історія, 9 клас — «Модернізація»
    fix-hist-world-terms-1117 (2026-11-17, writer-hist2-1117): терміни пояснено в тексті — l3 їдиш → draft.
+   verifier-hist2-1117 (2026-11-17): fix-hist-world-terms-1117 — змінені уроки → verified; звіти reports/verify/fix-hist-ww2-move-1117.md, fix-hist-world-terms-1117-hist.md.
    style-hist-1112 (2026-11-12): милозвучність у/в, і/й, з/із (УП § 23–25) у g9s4l1; перевірив verifier-style-hist-1112 (2026-11-12) → verified, звіт reports/verify/style-hist-1112.md.
    Статус уроків: l1, l2, l4 — verified (verifier-g9s4; зображення D-027 — verifier-images-g9s4, 31.10.2026);
    l3 (меценати, міста), l6–l8 (нові), l5 (фінал) — verified (verifier-revise-hist-g9s4-cov, 12.11.2026). 8 уроків (7 тем + boss).
@@ -333,7 +334,7 @@ SLID.section("hist", {
       title: "Чия мова на вулиці?",
       short: "Українці в містах",
       icon: "city",
-      status: "draft",
+      status: "verified",
       why: "Ти прочитаєш дані перепису й зрозумієш, чому міста наприкінці XIX ст. говорили не українською.",
       screens: [
         {

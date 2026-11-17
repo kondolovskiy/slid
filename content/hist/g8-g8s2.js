@@ -1,5 +1,6 @@
 /* Слід · Історія України, 8 клас — «Козацтво»
    fix-hist-world-terms-1117 (2026-11-17, writer-hist2-1117): терміни пояснено в тексті — l1 уходники; l6 Острозький і l7 колегія без «ти знаєш із розділу 1» → draft.
+   verifier-hist2-1117 (2026-11-17): fix-hist-world-terms-1117 — змінені уроки → verified; звіти reports/verify/fix-hist-ww2-move-1117.md, fix-hist-world-terms-1117-hist.md.
    style-hist-1112 (2026-11-12): милозвучність у/в, і/й, з/із (УП § 23–25) у g8s2l4; перевірив verifier-style-hist-1112 (2026-11-12) → verified, звіт reports/verify/style-hist-1112.md.
    Статус уроків: verified (l4, l5 — повторно після фото D-027, 31.10). 7 уроків (6 тем + boss).
    2026-11-05 (fix-hist-gerai-hetmanate, D-047): l1 — «Менглі Герай (також Гірей)»; l1 → draft.
@@ -73,7 +74,7 @@ SLID.section("hist", {
       title: "Вільні люди степу",
       short: "Звідки козаки",
       icon: "users",
-      status: "draft",
+      status: "verified",
       why: "Козацтво не з'явилося «раптом». Ти дізнаєшся, хто йшов у степ і чому слово «козак» стало важливим.",
       screens: [
         {
@@ -331,7 +332,7 @@ SLID.section("hist", {
       title: "Косинський і Наливайко",
       short: "Повстання 1590-х",
       icon: "bolt",
-      status: "draft",
+      status: "verified",
       why: "Наприкінці XVI ст. козаки вперше піднялися проти влади Речі Посполитої. Ти з'ясуєш, чого вони хотіли й чому програли.",
       screens: [
         {
@@ -744,7 +745,7 @@ SLID.section("hist", {
       title: "Митрополит Петро Могила",
       short: "Петро Могила",
       icon: "book",
-      status: "draft",
+      status: "verified",
       why: "Козаки боронили не лише права, а й свою церкву. Ти побачиш, як її відновили 1620 р. і як її змінив Петро Могила.",
       screens: [
         {

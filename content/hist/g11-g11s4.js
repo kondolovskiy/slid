@@ -1,6 +1,7 @@
 /* Слід · Історія України, 11 клас — «Незалежна Україна»
    fix-hist-ww2-move-1117 (2026-11-17, writer-hist2-1117): eyebrow «Розділ 4» → «Розділ 3» (g11s1 тепер у 10 кл.).
    fix-hist-world-terms-1117 (2026-11-17, writer-hist2-1117): l2 ОБСЄ/БДІПЛ розшифровано → draft.
+   verifier-hist2-1117 (2026-11-17): fix-hist-ww2-move-1117, fix-hist-world-terms-1117 — змінені уроки → verified; звіти reports/verify/fix-hist-ww2-move-1117.md, fix-hist-world-terms-1117-hist.md.
    style-hist-1112 (2026-11-12): переставлено варіанти choice/multi (лише порядок і correct, D-016) у g11s4l1, g11s4l2, g11s4l3; перевірив verifier-style-hist-1112 (2026-11-12) → verified, звіт reports/verify/style-hist-1112.md.
    Статус уроків: verified (зображення D-027 перевірив verifier-images-g11s4, 2026-10-31; додав photo-g11s4 2026-10-31; попередня перевірка verifier-g11s4). 4 уроки (3 теми + boss).
    2026-11-12 (revise-hist-g11s4-cov, програма № 698, од. 5.4, 5.5, 5.7, 5.9): нові уроки g11s4l5 «Між Заходом і Москвою» (після l1)
@@ -385,7 +386,7 @@ SLID.section("hist", {
       title: "Голос, який рахують",
       short: "Помаранчева революція",
       icon: "vote",
-      status: "draft",
+      status: "verified",
       why: "Ти простежиш, як громадський протест, спостереження й суд разом захистили виборчий результат.",
       screens: [
         {

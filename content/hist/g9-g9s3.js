@@ -1,5 +1,6 @@
 /* Слід · Історія, 9 клас — «Від «Весни народів» до заборон»
    fix-hist-world-terms-1117 (2026-11-17, writer-hist2-1117): терміни пояснено в тексті — l3 «новий стиль» → draft.
+   verifier-hist2-1117 (2026-11-17): fix-hist-world-terms-1117 — змінені уроки → verified; звіти reports/verify/fix-hist-ww2-move-1117.md, fix-hist-world-terms-1117-hist.md.
    style-hist-1112 (2026-11-12): милозвучність у/в, і/й, з/із (УП § 23–25) у g9s3l4; перевірив verifier-style-hist-1112 (2026-11-12) → verified, звіт reports/verify/style-hist-1112.md.
    Статус уроків: verified (verifier-g9s3, 13.10.2026); l1, l2, l5 — фото D-027 (photo-g9s3), повторно verified (verifier-images-g9s3, 31.10.2026; reports/verify/images-hist-g9s3.md).
    12.11.2026 (revise-hist-g9s3-cov): нові l6 «Після Севастополя», l7 «Громади й «Основа»», l8 «Наука, сцена й клятва»;
@@ -353,7 +354,7 @@ SLID.section("hist", {
       title: "Маніфест 19 лютого",
       short: "1861 р.",
       icon: "scroll",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, як скасували кріпацтво в Російській імперії і чому воля виявилася дорогою.",
       screens: [
         {

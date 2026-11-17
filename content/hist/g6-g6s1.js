@@ -1,5 +1,6 @@
 /* Слід · Історія, 6 клас — «Перші люди на наших землях»
    fix-hist-world-terms-1117 (2026-11-17, writer-hist2-1117): терміни пояснено в тексті — l1 людина прямоходяча, палеоліт у cap; l5 привласнювальне/відтворювальне господарство, археологічна культура, переведення «до н. е.» у «років тому» → draft.
+   verifier-hist2-1117 (2026-11-17): fix-hist-world-terms-1117 — змінені уроки → verified; звіти reports/verify/fix-hist-ww2-move-1117.md, fix-hist-world-terms-1117-hist.md.
    style-hist-1112 (2026-11-12): eyebrow «Розділ N» перенумеровано за weeks[0] у класі (лише номер; статус не змінено); милозвучність у/в, і/й, з/із (УП § 23–25) у g6s1l3, g6s1l4, g6s1l5; перевірив verifier-style-hist-1112 (2026-11-12) → verified, звіт reports/verify/style-hist-1112.md.
    Статус уроків: l3, l6 verified (verifier-g6s1-d019, 2026-10-13); l1, l2, l4, l5 — фото D-027 (photo-g6s1), повторно verified (verifier-images-g6s1, 2026-10-31; reports/verify/images-hist-g6s1.md).
    2026-11-12 (revise-hist-g6s1-cov): новий урок g6s1l7 «Після льодовика» (мезоліт); g6s1l5 (+ Єрихон, Чатал-Гююк) і фінал g6s1l6 (+ вітрина 5, pre) — verified (verifier-revise-g6s1-cov, 2026-11-12; reports/verify/revise-g6s1-cov.md). 7 уроків.
@@ -70,7 +71,7 @@ SLID.section("hist", {
       title: "Камінь, якому 1,4 мільйона років",
       short: "Королево",
       icon: "map",
-      status: "draft",
+      status: "verified",
       why: "Найдавніші сліди людей в Україні — не кістки й не написи, а камені. Навчишся бачити в них доказ.",
       screens: [
         {
@@ -697,7 +698,7 @@ SLID.section("hist", {
       title: "Від мисливця до хлібороба",
       short: "Землеробство",
       icon: "leaf",
-      status: "draft",
+      status: "verified",
       why: "Хліб на твоєму столі — наслідок однієї з найбільших змін у житті людей. Дізнаєшся, як вона почалася.",
       screens: [
         {

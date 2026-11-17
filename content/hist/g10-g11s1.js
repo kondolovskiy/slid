@@ -1,6 +1,7 @@
 /* Слід · Історія України, 10 клас — «Друга світова війна». Клас: 10 (до 2026-11 — 11 кл.). Програма № 698: 10 кл. — 1914–1945 рр., 11 кл. — від 1945 р.;
    fix-hist-ww2-move-1117 (2026-11-17, writer-hist2-1117): eyebrow «Розділ 1» → «Розділ 6» (порядок розділів 10 кл. у plan.js, weeks 29–35).
    fix-hist-world-terms-1117 (2026-11-17, writer-hist2-1117): l2 штадткомісар, l3 айнзацгрупи, l4 і l9 ОУН / ОУН(б) — пояснено в тексті → draft.
+   verifier-hist2-1117 (2026-11-17): fix-hist-ww2-move-1117, fix-hist-world-terms-1117 — змінені уроки → verified; звіти reports/verify/fix-hist-ww2-move-1117.md, fix-hist-world-terms-1117-hist.md.
    style-hist-1112 (2026-11-12): переставлено варіанти choice/multi (лише порядок і correct, D-016) у g11s1l1, g11s1l2, g11s1l4, g11s1l5, g11s1l6; перевірив verifier-style-hist-1112 (2026-11-12) → verified, звіт reports/verify/style-hist-1112.md.
    id без змін (правило 11, прецедент D-047). Перенос — задача refine-hist-diag-g10-g11 (2026-11-11).
    Статус уроків: l1, l2, l4–l6 — verified (D-027: архівні зображення — w-images-hist-g11s1, 2026-10-31; повторна незалежна перевірка — verifier-d027-g11s1, 2026-10-31; первинна — verifier-g11s1, 2026-10-14).
@@ -493,7 +494,7 @@ SLID.section("hist", {
       title: "Порядок окупантів",
       short: "Окупація",
       icon: "shield",
-      status: "draft",
+      status: "verified",
       why: "Ти дослідиш, як нацистська влада поділила й використовувала українські землі.",
       screens: [
         {
@@ -600,7 +601,7 @@ SLID.section("hist", {
       title: "Імена проти стирання",
       short: "Голокост",
       icon: "book",
-      status: "draft",
+      status: "verified",
       why: "Ти побачиш, як Голокост відбувався в Україні, дізнаєшся про тих, хто рятував переслідуваних, і навчишся перевіряти мову памʼяті.",
       screens: [
         {
@@ -731,7 +732,7 @@ SLID.section("hist", {
       title: "Не один рух опору",
       short: "Опір",
       icon: "users",
-      status: "draft",
+      status: "verified",
       why: "Ти порівняєш цілі УПА й радянських партизанів без спрощення складної історії.",
       screens: [
         {
@@ -838,7 +839,7 @@ SLID.section("hist", {
       title: "Трагедія двох народів",
       short: "Волинь 1943",
       icon: "scale",
-      status: "draft",
+      status: "verified",
       why: "Ти дослідиш, як війна перетворила сусідів на ворогів, і навчишся говорити про болісне минуле точно й чесно.",
       screens: [
         {

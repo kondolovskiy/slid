@@ -1,5 +1,6 @@
 /* Слід · Історія України, 9 клас — «Галичина — український П'ємонт»
    fix-hist-world-terms-1117 (2026-11-17, writer-hist2-1117): терміни пояснено в тексті — l5 Сардинія / П'ємонт без «Пригадай із всесвітньої» → draft.
+   verifier-hist2-1117 (2026-11-17): fix-hist-world-terms-1117 — змінені уроки → verified; звіти reports/verify/fix-hist-ww2-move-1117.md, fix-hist-world-terms-1117-hist.md.
    Статус уроків: усі verified (verifier-write-hist-g9s6, 12.11.2026; звіт reports/verify/write-g9s6.md). 6 уроків (5 тем + boss), порядок: l1–l5, l6 (фінал).
    Програма: модельна «Історія України. 7–9 кл.» (Гісем та ін., наказ МОН № 1449 від 27.11.2023), 9 кл., розд. IV:
    9.4.1, 9.4.3–9.4.5, 9.4.7–9.4.9 (reports/research/coverage-research-hist-coverage-g7-9.md, C7).
@@ -651,7 +652,7 @@ SLID.section("hist", {
       title: "Три краї під однією короною",
       short: "Буковина й Закарпаття",
       icon: "globe",
-      status: "draft",
+      status: "verified",
       why: "Ти порівняєш, як жили українці Галичини, Буковини й Закарпаття, і зрозумієш, чому Галичину називали «П'ємонтом».",
       screens: [
         {

@@ -1,5 +1,6 @@
 /* Слід · Історія, 5 клас — «Як історики пізнають минуле»
    fix-hist-world-terms-1117 (2026-11-17, writer-hist2-1117): терміни пояснено в тексті — l2 «період напіврозпаду» введено в е7 → draft.
+   verifier-hist2-1117 (2026-11-17): fix-hist-world-terms-1117 — змінені уроки → verified; звіти reports/verify/fix-hist-ww2-move-1117.md, fix-hist-world-terms-1117-hist.md.
    style-hist-1112 (2026-11-12): eyebrow «Розділ N» перенумеровано за weeks[0] у класі (лише номер; статус не змінено); милозвучність у/в, і/й, з/із (УП § 23–25) у l1; перевірив verifier-style-hist-1112 (2026-11-12) → verified, звіт reports/verify/style-hist-1112.md.
    Статус: l1–l5 verified (l3 — нове завдання crit, style-hist-g5-finals; verify 2026-11-04, reports/verify/style-hist-g5.md);
    s1l7 «Родинний архів» і фінал l6 (нове питання 5) — verified (revise-hist-s1-cov; verify 2026-11-12, reports/verify/revise-s1-cov.md). 7 уроків.
@@ -259,7 +260,7 @@ SLID.section("hist", {
       title: "Скільки років цій речі?",
       short: "Датування",
       icon: "rings",
-      status: "draft",
+      status: "verified",
       why: "Знахідка без дати — як фото без підпису. Вік речі перетворює її на доказ.",
       screens: [
         {

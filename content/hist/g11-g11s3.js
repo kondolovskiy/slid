@@ -1,6 +1,7 @@
 /* Слід · Історія України, 11 клас — «Відновлення незалежності»
    fix-hist-ww2-move-1117 (2026-11-17, writer-hist2-1117): eyebrow «Розділ 3» → «Розділ 2»; l7 e0 — депортацію 1944 р. пояснено без «Пригадай» → l7 draft.
    fix-hist-world-terms-1117 (2026-11-17, writer-hist2-1117): l1 площа Жовтневої революції = Майдан Незалежності → draft.
+   verifier-hist2-1117 (2026-11-17): fix-hist-ww2-move-1117, fix-hist-world-terms-1117 — змінені уроки → verified; звіти reports/verify/fix-hist-ww2-move-1117.md, fix-hist-world-terms-1117-hist.md.
    style-hist-1112 (2026-11-12): переставлено варіанти choice/multi (лише порядок і correct, D-016) у g11s3l1, g11s3l2, g11s3l3, g11s3l4; перевірив verifier-style-hist-1112 (2026-11-12) → verified, звіт reports/verify/style-hist-1112.md.
    Статус уроків: verified (зображення D-027 перевірив verifier-images-g11s3, 2026-10-31; додав photo-g11s3 2026-10-31; попередня перевірка verifier-g11s3, 2026-10-14). 7 уроків (6 тем + boss).
    revise-hist-g11s3-cov (2026-11-12): нові уроки g11s3l6 (перед l1) і g11s3l7 (після l3), фінал l5 доповнено; у l1–l4 змінено лише номер уроку в eyebrow. l6, l7, l5 — verified (verifier-revise-hist-g11s3-cov, 2026-11-12; звіт reports/verify/revise-g11s3-cov.md).
@@ -239,7 +240,7 @@ SLID.section("hist", {
       title: "Площа змінює політику",
       short: "Рух і протест",
       icon: "users",
-      status: "draft",
+      status: "verified",
       why: "Ти простежиш, як організована громадська дія впливає на рішення парламенту.",
       screens: [
         {
@@ -624,7 +625,7 @@ SLID.section("hist", {
       title: "Півострів вирішує",
       short: "Крим 1991",
       icon: "map",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, як 1991 р. Крим став автономією в складі України, що таке Курултай і Меджліс і яку роль Україна відіграла в розпаді СРСР.",
       screens: [
         {

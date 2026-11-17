@@ -1,5 +1,6 @@
 /* Слід · Історія, 8 клас — «Карпати, Південь і культура козацької доби»
    fix-hist-world-terms-1117 (2026-11-17, writer-hist2-1117): терміни пояснено в тексті — l2 Запорозька Січ, l3 Мазепа без «ти знаєш із розділу 5» → draft.
+   verifier-hist2-1117 (2026-11-17): fix-hist-world-terms-1117 — змінені уроки → verified; звіти reports/verify/fix-hist-ww2-move-1117.md, fix-hist-world-terms-1117-hist.md.
    Статус уроків: verified (verifier-g8s6, 2026-11-12; звіт reports/verify/write-g8s6.md). 6 уроків (5 тем + boss).
    Програма Гісема 8 кл. (розд. IV–V): 8.4.13, 8.4.14, 8.5.7, 8.5.10, 8.5.12; звіт reports/research/coverage-research-hist-coverage-g7-9.md B8.
    Перетин 8.5.5: Калнишевський і 1775 р. — g8s5l5, Задунайська Січ — g9s1l6; тут лише Південь після 1775 р.
@@ -265,7 +266,7 @@ SLID.section("hist", {
       title: "Степ після Січі",
       short: "Південь",
       icon: "map",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, як після 1775 р. змінився Південь: нові міста, переселенці, сухий степ і «межа осілості».",
       screens: [
         {
@@ -438,7 +439,7 @@ SLID.section("hist", {
       title: "Храми гетьманської доби",
       short: "Козацьке бароко",
       icon: "city",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, що таке козацьке бароко, як Мазепа підтримував академію і ким був Феофан Прокопович.",
       screens: [
         {

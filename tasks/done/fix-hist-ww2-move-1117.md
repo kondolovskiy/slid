@@ -4,7 +4,7 @@ claimed_at: 2026-11-17T19:38:33.143Z
 id: fix-hist-ww2-move-1117
 type: fix
 subject: hist
-status: review
+status: done
 claimed_by: writer-hist2-1117
 created: 2026-11-17
 source: student-playtest-1117
@@ -56,3 +56,6 @@ priority: P2
 **НМТ з історії** (рядок таблиці) — пропозиція, не виконувалась (design-difficulty-1117).
 **validate:** --section g11s1, g11s2, g11s3, g11s4, g11s5 — 0 помилок (попередження давні: sentenceWords уроків, довге речення-переклад у g11s2l6 e5).
 Для верифікатора: diff — від коміту 6fa9f06.
+
+## Верифікація
+verifier-hist2-1117 (2026-11-17): **verified** — g11s2l6–l9, g11s3l7 → verified; нумерація «Розділ 6» (g11s1, 10 кл.) і «Розділ 1…4» (g11s2–g11s5) збігається з порядком у застосунку (registry.js: клас, потім weeks[0]); змінено лише цифру eyebrow. Правка (1): g11s2l7 e3 — додано відплатні вбивства українських цивільних польськими формуваннями (facts/hist №190, як у g11s1l4). Факти (УПА/ОУН, Волинь, Хасевич, остарбайтери, депортація 1944 р., «найбільше до Узбекистану» — 151 136 із ≈194 тис.) — ≥ 2 відкриті джерела. Звіт: reports/verify/fix-hist-ww2-move-1117.md.
