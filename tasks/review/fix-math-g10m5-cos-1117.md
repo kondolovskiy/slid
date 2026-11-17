@@ -5,7 +5,7 @@ id: fix-math-g10m5-cos-1117
 type: fix
 subject: math
 grade: 10
-status: todo
+status: review
 claimed_by: writer-math-g9g11-1117
 created: 2026-11-17
 source: student-playtest-1117
