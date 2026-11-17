@@ -393,7 +393,7 @@ SLID.section("world", {
       title: "Букви з металу",
       short: "Книгодрукування",
       icon: "book",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, як друкарський верстат змінив світ книжок і де друкували ще до Гутенберга.",
       screens: [
         {
@@ -846,7 +846,7 @@ SLID.section("world", {
       title: "Хроніка 1500 року",
       short: "Фінал розділу",
       icon: "star",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "latemed",
       why: "Перевірка всього розділу. Бали подвоєні.",

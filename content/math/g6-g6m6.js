@@ -376,7 +376,7 @@ SLID.section("math", {
       title: "Буде, не буде чи як пощастить",
       short: "Види подій",
       icon: "eye",
-      status: "verified",
+      status: "draft",
       why: "Одні події точно стануться, інші — ніколи, а треті залежать від випадку. Уміння їх розрізняти — перший крок до підрахунку шансів.",
       screens: [
         {
@@ -440,8 +440,8 @@ SLID.section("math", {
           lab: {
             kind: "fraction",
             params: {
-              c: { min: 0, max: 8, start: 3, label: "синіх" },
-              b: { min: 1, max: 8, start: 3, label: "білих" }
+              c: { min: "1 - min(b, 1)", max: 8, start: 3, label: "синіх" },
+              b: { min: "1 - min(c, 1)", max: 8, start: 3, label: "білих" }
             },
             items: [{ shape: "bar", n: "b+c", k: "c", color: "blue" }],
             show: "Синіх: {c|0}, білих: {b|0}",

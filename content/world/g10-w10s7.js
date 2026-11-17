@@ -995,7 +995,7 @@ SLID.section("world", {
       title: "Музей пам'яті",
       short: "Фінал розділу",
       icon: "star",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "ww2archive",
       why: "Перевірка всього розділу. Бали подвоєні.",

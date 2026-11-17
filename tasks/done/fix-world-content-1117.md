@@ -4,7 +4,7 @@ claimed_at: 2026-11-17T13:46:28.401Z
 id: fix-world-content-1117
 type: fix
 subject: world
-status: review
+status: done
 claimed_by: writer-world-1117
 created: 2026-11-17
 source: student-playtest-1117
@@ -50,3 +50,6 @@ priority: P1
 **validate:** 0 помилок, 0 попереджень — w7s1, w7s4, w7s5, w8s2, w8s4, w9s1, w9s3, w9s4, w9s5, w9s6, w10s7, w11s3, w11s5.
 **Inbox:** 2 × ENGINE (id у тексті; choice без питання), TERM «націоналізація», STYLE посилання на уроки. TQ не додавав.
 **Для верифікатора:** w11s5 може паралельно міняти images-maps-hist-world-1117 — у мене лише текстові правки l3–l6.
+
+## Верифікація (verifier-fix-world-content-1117)
+Вердикт: verified, 20 уроків → `verified`, змістових правок верифікатора 0. Звіт: reports/verify/fix-world-content-1117.md. Рекомендація (некритично): w7s5l3 e8 — питання «…про книжки Фіоля?» не пасує до варіанта про самого Фіоля.

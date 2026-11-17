@@ -920,7 +920,7 @@ SLID.section("world", {
       title: "Від Бастилії до Відня",
       short: "Фінал розділу",
       icon: "star",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "revnap",
       why: "Перевірка всього розділу. Бали подвоєні.",
