@@ -39,3 +39,23 @@ priority: P2
 - Тест рендеру `mathFig` (test-math / test-ui): grid без `look` → без слова «шоколад»/«з'їдені»; `look: "chocolate"` → як раніше.
 - `node tools/validate.mjs` — 0 помилок (валідатор знає нові поля); `npm run check` зелений.
 - Незалежне рев'ю D-026: `reports/review/engine-fig-grid-caption-1117.md` «прийнято»; playtest g4m5, ms0b, g6m1, ms2, ms3, ms4 — CI.
+
+## Нотатки engine-appjs2-1117
+**Рушій (app/app.js):** `mathFig` → `gridFig(f)` (нова функція перед «Плеєр уроку»). Без `look` — нейтральна сітка: клітинки `var(--surface)` з контуром `var(--muted)`, перші k — `var(--accent)` (`dashed: true` — пунктирний контур замість заливки); `label` → aria-label (через attr), інакше «Сітка R × C: N клітинок[, зафарбовано k]»; `cap` → підпис під сіткою (без cap підпису немає). `look: "chocolate"` — як раніше (коричнева плитка, «Шоколадка з N часточок, k з'їдено»), підпис «пунктиром — з'їдені часточки» лише при k > 0.
+**Валідатор (tools/validate.mjs `gridFigCheck`):** помилки — невідомий `look`, `dashed` не boolean, порожні/нерядкові `label`/`cap`, `$`/`\`/`<` у `label`, непарний `$` у `cap`; попередження — нейтральна сітка без `cap`, `label`/`cap` у шоколадки. Тести — `tools/test-validate.mjs` (7 випадків, блок у кінці).
+**Тест рендеру:** `tools/test-ui.mjs` сценарій 19 (у `imgZoomGridScenarios`): grid з cap/label — без «шоколад»/«з'їдені» й без коричневого; без cap/label — типовий aria-label і 3 зафарбовані; `look: "chocolate"` k 5 — як раніше; k 0 — без підпису.
+**Документація:** docs/CONTENT_SCHEMA.md §6, рядок `grid`.
+**Контент — змінено ЛИШЕ рядки `fig` (окремий коміт; номери рядків — у файлах гілки claude/student-playtest-1117-tasks @ 6fa9f06):**
+- content/math/g4-g4m5.js:312 (g4m5l3 e0) — cap «Загін 4 м на 2 м: кожна клітинка — квадрат 1 м на 1 м», label.
+- content/math/g5-ms0b.js:930 (ms0bl4 e0) — cap «Грядка 6 м на 4 м, клітинка — квадрат 1 м на 1 м», label.
+- content/math/g5-ms0b.js:1061 (ms4l1 e0) — cap «Тераса 6 м на 4 м, клітинка — одна плита 1 м на 1 м», label.
+- content/math/g5-ms0b.js:1094 (ms4l1 e3 «Площа прямокутника») — cap «Прямокутник 6 на 4: 4 ряди по 6 однакових квадратів», label.
+- content/math/g5-g6m1.js:35 (g6m1l1 e0) — cap «Кожна клітинка — місце для одного куща», label.
+- content/math/g5-ms2.js:33 (ms2l1 e0) — cap «Ціле — 100 клітинок, зафарбовано 45 з них», label (навмисно без «1,45 м = 1 м і 45 см»: наступний екран — здогадка «1,45 м — це скільки сантиметрів?»).
+- content/math/g6-ms3.js:65 (ms3l1 e3) — cap «100 клітинок — ціле, 100 %. Одна зафарбована клітинка — 1 %», label.
+- content/math/g6-ms3.js:301 (ms3boss e0) — cap «Сотка: 100 клітинок — це 100 %», label.
+- content/math/g6-ms4.js:492 (ms4boss e0) — cap «План підлоги класу: 8 м на 6 м», label (без «клітинка — 1 м²»: завдання 1 — площа підлоги 8 × 6).
+- content/math/g5-ms1.js:116 (m1 e7 «Шоколадка») — додано `look: "chocolate"` (інакше стала б нейтральною сіткою; файла немає в переліку задачі, але це вимога зворотної сумісності).
+Між числом і «м»/«%» у cap — нерозривний пробіл (U+00A0).
+**Статус уроків не змінено** (рядки `status` — поза рядками fig, щоб не конфліктувати з паралельним агентом математики): оркестратору — вирішити, чи переводити g4m5, ms0b, g6m1, ms2, ms3, ms4 у `draft` через нові підписи (зміст підписів — опис рисунка, фактів немає).
+Перевірки: `node tools/validate.mjs --section g4m5|ms0b|g6m1|ms2|ms3|ms4|ms1` — 0 помилок (ms1 — 2 давні попередження sentenceWords); `npm run check` rc 0; test-ui 199 ok. Playtest зачеплених розділів — CI (Python playwright немає).

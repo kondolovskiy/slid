@@ -192,6 +192,22 @@ figure.tall img{object-fit:contain;background:#000;max-height:340px}
 figure.svgfig{padding:12px;color:var(--ink)}
 figure.svgfig svg{width:100%;height:auto}
 figcaption{font-size:13px;color:var(--muted);padding:8px 12px;line-height:1.4}
+/* збільшення зображення екрана (engine-img-zoom-1117) */
+.zoombtn{display:block;position:relative;width:100%;padding:0;margin:0;border:0;background:none;color:inherit;font:inherit;cursor:zoom-in}
+.zoombtn:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
+.zhint{position:absolute;right:8px;bottom:8px;width:36px;height:36px;border-radius:99px;background:rgba(15,12,10,.62);color:#fff;display:grid;place-items:center;pointer-events:none}
+.zhint svg{width:20px;height:20px}
+.zoomv{position:fixed;inset:0;z-index:50;background:#0d0b0a;color:#fff;display:grid;grid-template-rows:auto minmax(0,1fr) auto}
+.zbar{display:flex;gap:8px;justify-content:flex-end;padding:calc(10px + env(safe-area-inset-top,0px)) 12px 10px}
+.zbar button{min-width:44px;height:44px;padding:0 12px;border-radius:12px;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.12);color:#fff;font:600 22px var(--body);display:inline-flex;align-items:center;justify-content:center;gap:6px;cursor:pointer}
+.zbar button:disabled{opacity:.4;cursor:default}
+.zbar #zClose{font-size:15px}
+.zbar svg{width:18px;height:18px}
+.zbar button:focus-visible,.zview:focus-visible{outline:3px solid #fff;outline-offset:-3px}
+.zview{overflow:hidden;touch-action:none;min-height:0;cursor:grab;display:grid}
+.zview img{width:100%;height:100%;object-fit:contain;transform-origin:50% 50%;user-select:none;-webkit-user-select:none;pointer-events:none}
+.zcap{padding:10px 16px calc(12px + env(safe-area-inset-bottom,0px));font-size:14px;line-height:1.4;max-height:30vh;overflow-y:auto;color:#e8e2dc}
+.zcap a{color:#fff}
 .opts{display:grid;gap:10px;margin-top:10px}
 .opt{all:unset;box-sizing:border-box;display:flex;gap:12px;align-items:flex-start;padding:14px 16px;background:var(--surface);border:2px solid var(--line);border-radius:14px;cursor:pointer;line-height:1.4;box-shadow:0 3px 0 var(--line);transition:border-color .15s,background .15s}
 .opt:focus-visible{outline:3px solid var(--accent);outline-offset:2px}

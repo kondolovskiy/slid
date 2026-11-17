@@ -34,6 +34,11 @@
 //      «попроси дорослого» — лише без see; «З програми N класу» з «попереду» і без «уже вмієш».
 //  17) Ділення кутом 4572 : 3 з input на телефоні (engine-lab-column-digits-1117): «Перевірити» неактивна на «????», дотик — фокус без «+1»,
 //      автоперехід, дотик по іншій клітинці кладе цифру туди, «1524» зараховано; __slidLab.set (QA) оновлює «Перевірити».
+//  18) Збільшення зображення (engine-img-zoom-1117), 360 px, сенсор: img екрана — кнопка з лупою; дотик → повноекранний перегляд (той самий src, cap),
+//      решта сторінки inert, «+ / −», щипок двома пальцями й перетягування, Esc закриває й повертає фокус (урок лишається відкритим);
+//      з клавіатури — Enter, «+», Tab у межах перегляду; у тесті рівня — те саме; перегляд не ширший за екран.
+//  19) fig grid (engine-fig-grid-caption-1117): без look — нейтральна сітка з cap і label, без «шоколад»/«з'їдені»; look: "chocolate" — як раніше,
+//      підпис «пунктиром — з'їдені часточки» лише при k > 0.
 //  5–7) Service worker (engine-sw-version-skew): деплой нової версії не змішує index.html і app.js; файл зі старого кешу не віддається
 //     (P3-6); оновлення не перезавантажує сторінку посеред уроку, а версія подій журналу лишається версією сторінки (P3-4); застосунок зі старим SW після одного змішаного відкриття сам переходить на консистентну нову версію.
 // Запуск: node tools/test-ui.mjs [--browser /opt/pw-browsers/chromium]
@@ -869,9 +874,105 @@ try {
   // 14) Ширина gaps на телефоні (engine-gaps-wrap)
   await gapsWidthScenario(browser);
 
+  // 18–19) Збільшення img і нейтральна сітка fig grid (engine-img-zoom-1117, engine-fig-grid-caption-1117)
+  await imgZoomGridScenarios(browser);
+
   // 5–7) Оновлення service worker без змішування версій (engine-sw-version-skew; docs/PUBLISHING.md «Оновлення PWA»)
   await swScenarios(browser);
 } finally { await browser.close(); server.close(); swServer.close(); }
 
 console.log(`test-ui: ${pass} ok, ${fail} ✗`);
 process.exit(fail || !pass ? 1 : 0);   // 0 перевірок — не успіх
+
+/* 18–19) Збільшення зображення екрана (engine-img-zoom-1117) і нейтральна сітка fig grid (engine-fig-grid-caption-1117).
+   Телефон 360 px із сенсором; синтетична фікстура (icons/icon-192.png як «карта»), без живого content/. */
+async function imgZoomGridScenarios(browser) {
+  const ctx = await browser.newContext({ viewport: { width: 360, height: 740 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true, serviceWorkers: "block" });
+  const page = await ctx.newPage(), errors = [];
+  page.on("pageerror", e => errors.push(String(e)));
+  await page.route("**/fonts.googleapis.com/**", r => r.abort());
+  page.setDefaultTimeout(7000);
+  await page.goto(URL0);
+  await page.evaluate(s => localStorage.setItem("slid.v1", JSON.stringify(s)), seed);
+  await page.reload();
+  const IMGS = "icons/icon-192.png", G = o => ({ type: "info", title: "Сітка", body: "QA", fig: { kind: "grid", rows: 4, cols: 6, k: 0, ...o } });
+  const SEC = { id: "fZ", grade: 5, weeks: [13, 14], title: "QA Z", why: "QA", lessons: [{ id: "fz1", title: "Урок fz1", icon: "book", screens: [
+    { type: "info", title: "Карта", body: "QA", img: IMGS, cap: "Карта QA <b>з підписом</b>" },
+    G({ cap: "Грядка 6 м на 4 м, клітинка — квадрат 1 м на 1 м", label: "Грядка 6 на 4 метри" }),
+    G({ k: 3 }),
+    G({ rows: 3, cols: 4, k: 5, look: "chocolate" }),
+    G({ rows: 3, cols: 4, k: 0, look: "chocolate" }),
+    { type: "info", title: "Кінець", body: "QA" }] }] };
+  await page.evaluate(install, FIX);
+  await page.evaluate(sec => { SLID_SUBJECTS.find(c => c.id === "math").sections.push(sec); window.__slidStart("fz1"); }, SEC);
+  // 18) зображення — кнопка з лупою й aria-label
+  const btn = page.locator("#stage figure .zoombtn");
+  ok(await btn.count() === 1 && await page.locator("#stage figure .zoombtn img").count() === 1, "збільшення: img екрана загорнуто в кнопку .zoombtn");
+  ok(await page.locator("#stage .zoombtn .zhint svg").isVisible(), "збільшення: видима іконка-лупа на зображенні");
+  ok((await btn.getAttribute("aria-label")) === "Збільшити зображення: Карта QA з підписом", `збільшення: aria-label кнопки, а «${await btn.getAttribute("aria-label")}»`);
+  await btn.tap();
+  const zv = page.locator("#zoomv");
+  ok(await zv.isVisible(), "збільшення: дотик відкриває повноекранний перегляд #zoomv");
+  const st = await page.evaluate(() => { const z = document.querySelector("#zoomv"), r = z.getBoundingClientRect();
+    return { role: z.getAttribute("role"), modal: z.getAttribute("aria-modal"), src: z.querySelector("img").getAttribute("src"), cap: z.querySelector(".zcap")?.innerHTML || "",
+      w: r.width, h: r.height, sw: document.documentElement.scrollWidth, bar: [...z.querySelectorAll(".zbar button")].every(b => b.getBoundingClientRect().right <= innerWidth + 0.5),
+      inert: ["#player", "#app"].map(q => document.querySelector(q).inert), focus: document.activeElement?.id, zoom: z.dataset.zoom }; });
+  ok(st.role === "dialog" && st.modal === "true", `збільшення: role=dialog aria-modal, а ${st.role}/${st.modal}`);
+  ok(/icons\/icon-192\.png$/.test(st.src), `збільшення: той самий файл, що на екрані, а ${st.src}`);
+  ok(st.cap === "Карта QA <b>з підписом</b>", `збільшення: під зображенням — cap, а «${st.cap}»`);
+  ok(st.w === 360 && st.h === 740 && st.sw <= 360 && st.bar, `збільшення: на весь екран 360 px без виходу за край, а ${JSON.stringify(st)}`);
+  ok(same(st.inert, [true, true]), `збільшення: плеєр і застосунок inert, поки відкрито, а ${JSON.stringify(st.inert)}`);
+  ok(st.focus === "zClose" && st.zoom === "1.00", `збільшення: фокус на «Закрити», масштаб 1, а ${st.focus} ${st.zoom}`);
+  const zoom = () => page.evaluate(() => +document.querySelector("#zoomv").dataset.zoom);
+  await page.tap("#zIn");
+  ok(await zoom() === 1.5, `збільшення: «+» → 1.5, а ${await zoom()}`);
+  await page.tap("#zOut");
+  ok(await zoom() === 1 && await page.locator("#zOut").isDisabled(), "збільшення: «−» повертає 1 і вимикається");
+  // щипок двома пальцями: відстань 100 → 200 px — масштаб ×2; потім перетягування одним пальцем зсуває зображення
+  const pinch = await page.evaluate(() => { const v = document.querySelector("#zView"), r = v.getBoundingClientRect(), cy = r.top + r.height / 2, cx = r.left + r.width / 2;
+    const ev = (t, id, x, y) => v.dispatchEvent(new PointerEvent(t, { pointerId: id, pointerType: "touch", clientX: x, clientY: y, bubbles: true, cancelable: true, isPrimary: id === 1 }));
+    ev("pointerdown", 1, cx - 50, cy); ev("pointerdown", 2, cx + 50, cy); ev("pointermove", 2, cx + 150, cy); ev("pointermove", 1, cx - 50, cy);
+    const z = +document.querySelector("#zoomv").dataset.zoom; ev("pointerup", 2, cx + 150, cy);
+    const t0 = v.querySelector("img").style.transform; ev("pointermove", 1, cx - 10, cy + 20); const t1 = v.querySelector("img").style.transform; ev("pointerup", 1, cx - 10, cy + 20);
+    return { z, t0, t1 }; });
+  ok(pinch.z === 2, `збільшення: щипок 100 → 200 px — масштаб 2, а ${pinch.z}`);
+  ok(pinch.t0 !== pinch.t1 && /scale\(2\)/.test(pinch.t1), `збільшення: перетягування одним пальцем зсуває зображення, а ${pinch.t0} → ${pinch.t1}`);
+  await page.keyboard.press("Escape");
+  const after = await page.evaluate(() => ({ open: !!document.querySelector("#zoomv"), player: !document.querySelector("#player").hidden, inert: document.querySelector("#player").inert,
+    focus: document.activeElement?.classList.contains("zoombtn") }));
+  ok(!after.open && after.player && !after.inert, `збільшення: Esc закриває перегляд, урок лишається відкритим, а ${JSON.stringify(after)}`);
+  ok(after.focus, "збільшення: після закриття фокус повертається на зображення");
+  // з клавіатури: Enter відкриває, «+» збільшує, Tab не виходить за межі перегляду
+  await btn.focus(); await page.keyboard.press("Enter");
+  ok(await zv.isVisible(), "збільшення: Enter на зображенні відкриває перегляд");
+  await page.keyboard.press("+");
+  ok(await zoom() === 1.5, "збільшення: клавіша «+» збільшує");
+  for (let i = 0; i < 5; i++) await page.keyboard.press("Tab");
+  ok(await page.evaluate(() => !!document.activeElement?.closest("#zoomv")), "збільшення: Tab не виходить за межі перегляду");
+  await page.tap("#zClose");
+  ok(!(await zv.count()), "збільшення: «Закрити» прибирає перегляд");
+  // 19) нейтральна сітка й шоколадка
+  const grid = async () => { await page.tap("#action"); return page.evaluate(() => ({ label: document.querySelector("#stage figure svg").getAttribute("aria-label"),
+    text: document.querySelector("#stage figure").textContent.trim(), fills: [...document.querySelectorAll("#stage figure rect")].map(r => r.getAttribute("fill")) })); };
+  const g1 = await grid();
+  ok(g1.label === "Грядка 6 на 4 метри" && g1.text === "Грядка 6 м на 4 м, клітинка — квадрат 1 м на 1 м", `сітка: label і cap з fig, а ${JSON.stringify([g1.label, g1.text])}`);
+  ok(!/шоколад|з'їден/i.test(g1.label + g1.text) && !g1.fills.includes("#6B3F26"), "сітка без look: ні шоколаду, ні «з'їдені»");
+  const g2 = await grid();
+  ok(g2.label === "Сітка 4 × 6: 24 клітинки, зафарбовано 3" && g2.text === "" && g2.fills.filter(f => f === "var(--accent)").length === 3, `сітка без cap і label: типовий aria-label, 3 зафарбовано, а ${JSON.stringify(g2)}`);
+  const g3 = await grid();
+  ok(g3.label === "Шоколадка з 12 часточок, 5 з'їдено" && g3.text === "пунктиром — з'їдені часточки" && g3.fills.filter(f => f === "#6B3F26").length === 7, `шоколадка (look): як раніше, а ${JSON.stringify(g3)}`);
+  const g4 = await grid();
+  ok(g4.label === "Шоколадка з 12 часточок, 0 з'їдено" && g4.text === "", `шоколадка з k 0: без підпису про пунктир, а ${JSON.stringify(g4)}`);
+  // 18) у тесті рівня — та сама кнопка й перегляд
+  const DQ = { id: "dqz", grade: 5, title: "QA тест", topics: [{ id: "t1", title: "T1", lessons: [] }],
+    items: [{ type: "choice", topic: "t1", title: "Розглянь бюлетень", img: IMGS, cap: "Бюлетень QA", opts: ["а", "б"], correct: 0 }] };
+  await page.reload(); await page.evaluate(install, FIX);
+  await page.evaluate(dq => { SLID_SUBJECTS.find(c => c.id === "math").diags = [dq]; }, DQ);
+  await page.tap('button[data-subject="math"]'); await page.tap('[data-diag="math"]'); await page.tap("[data-diag-go]");
+  await page.tap("#stage figure .zoombtn");
+  ok(await zv.isVisible() && (await page.locator("#zoomv .zcap").innerText()) === "Бюлетень QA", "збільшення в тесті рівня: дотик відкриває перегляд з cap");
+  await page.keyboard.press("Escape");
+  ok(!(await zv.count()) && await page.locator("#player").isVisible(), "збільшення в тесті рівня: Esc закриває, тест лишається");
+  ok(!errors.length, "збільшення й сітка, помилки сторінки: " + errors.join(" | "));
+  await ctx.close();
+}

@@ -859,5 +859,15 @@ const { figCues: figCuesT, figPoints: figPointsT } = await import(path.join(ROOT
   ok(pool.includes('"author": "Claude"'), "meta.author: у фікстурі пулу замінено автора");
   expectRun("meta.author пулу «Claude» — попередження", { "content/math/g8-fxp.js": secJS("math", mathSec("fxp")), "content/math/pool-g8-fxp.js": pool }, ["--pool", "pfx"], { warn: AI }); }
 
+// engine-fig-grid-caption-1117: fig grid — нейтральна сітка з cap/label; шоколадка лише look: "chocolate"
+{ const G = "fig grid", grid = (fig, id = "fxg") => ({ [`content/math/g8-${id}.js`]: secJS("math", mathSec(id, { extra: { type: "info", title: "Сітка", body: "Подивись.", fig: { kind: "grid", rows: 4, cols: 6, k: 0, ...fig } } })) });
+  expectRun("fig grid з cap і label — чисто", grid({ cap: "Грядка 6 м × 4 м, клітинка — 1 м²", label: "Грядка: 24 клітинки по 1 м²" }), ["--section", "fxg"], { noWarn: G });
+  expectRun("fig grid без cap — попередження", grid({}), ["--section", "fxg"], { warn: "fig grid без cap" });
+  expectRun("fig grid look: \"chocolate\" без cap — чисто", grid({ look: "chocolate", k: 5 }), ["--section", "fxg"], { noWarn: G });
+  expectRun("fig grid з невідомим look — помилка", grid({ look: "pizza", cap: "QA" }), ["--section", "fxg"], { err: "невідомий look" });
+  expectRun("fig grid з $ у label — помилка", grid({ label: "Площа $S = 24$", cap: "QA" }), ["--section", "fxg"], { err: "label стає aria-label" });
+  expectRun("fig grid з непарним $ у cap — помилка", grid({ cap: "Площа $S = 24" }), ["--section", "fxg"], { err: "fig grid: непарна кількість $", also: "непарна кількість $" });
+  expectRun("fig grid з dashed не boolean — помилка", grid({ dashed: "так", cap: "QA" }), ["--section", "fxg"], { err: "dashed — true/false" }); }
+
 console.log(fails ? `\n${fails} з ${n} перевірок не пройшли` : `test-validate: усі ${n} перевірок пройшли`);
 process.exit(fails ? 1 : 0);
