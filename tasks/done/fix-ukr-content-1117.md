@@ -4,7 +4,7 @@ claimed_at: 2026-11-17T13:46:28.432Z
 id: fix-ukr-content-1117
 type: fix
 subject: ukr
-status: review
+status: done
 claimed_by: writer-ukr-1117
 created: 2026-11-17
 source: student-playtest-1117
@@ -67,3 +67,6 @@ priority: P1
 Перевірка: `validate --section` u5s2, u5s3, u5s4, u5s7, u6s1, u6s3, u7s13, u8s5, u8s12, u10s8, u10s9, u11s11 — 0 помилок, 0 попереджень; `--pool pu5s4` — 0/0; `node tools/test-lang.mjs` — 170 ✓. Build не запускав (оркестратор).
 Змінені уроки (draft): u5s2l4, u5s3l1, u5s3l4, u5s4l1, u5s4l5, u5s7l1, u5s7l5, u6s1l5, u6s3l3, u7s13l3, u7s13l6, u8s5l1, u8s12l4, u10s8l1, u10s8l4, u10s9l3, u11s11l4; пул pu5s4.
 Верифікатору: reports/verify/fix-ukr-content-1117.md ще немає — потрібна незалежна верифікація (content-verify).
+
+## Верифікація (verifier-fix-ukr-content-1117, 2026-11-17)
+Звіт: reports/verify/fix-ukr-content-1117.md. Норми звірено з УП § 23, 25, 63, 87 (slovnyk.ua), Горохом, ВЕСУМ, СУМ-11, Вікіпедією — ✅. Правки верифікатора: u8s12l4 e6 (fbText «присівши» — одиничний дієприслівник; body — уточнювальний член в окремий кошик), u5s3l1 «має також інші форми», u10s9l3 «із чергуванням» (3 місця), u7s13l3 «розмова із читачем». 17 уроків і pu5s4 → verified. TQ-113…TQ-116 не зачеплено.

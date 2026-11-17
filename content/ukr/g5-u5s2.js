@@ -456,7 +456,7 @@ SLID.section("ukr", {
       title: "Гра «Навпаки»",
       short: "Антоніми",
       icon: "scale",
-      status: "draft",
+      status: "verified",
       why: "Антоніми допомагають порівнювати, сперечатися і говорити яскраво.",
       screens: [
         {
