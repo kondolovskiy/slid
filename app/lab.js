@@ -809,12 +809,16 @@ function mount(host, spec, opt = {}) {
         // сире значення беремо до відновлення поля (рев'ю engine-lab-column-digits-1117 P2-1): «стерти» з екранної клавіатури
         // приходить лише як input з порожнім полем. Порожня клітинка тримає невидимий заповнювач CELL_NIL, тож Backspace у ній
         // теж дає input (поле стає зовсім порожнім) — і повертає до попередньої клітинки, як keydown Backspace (P3-1).
-        c.addEventListener("input", () => { const raw = c.value, v = typedDigit(raw, state[id]); c.value = state[id] >= 0 ? String(state[id]) : CELL_NIL;
-          if (locked) return;
+        // «Стерти» — лише порожнє поле або inputType deleteContent*: не-цифра («,», «.», «-», пробіл, літера з числової клавіатури)
+        // теж замінює виділений заповнювач, але її ігноруємо — поле повертається до попереднього значення (рев'ю engine-1117-followups P1-1).
+        // Так само поле з не-цифрою поруч зі старою цифрою («5.»): це не нова цифра, і фокус лишається на місці.
+        c.addEventListener("input", e => { const raw = c.value; c.value = state[id] >= 0 ? String(state[id]) : CELL_NIL;
+          if (locked || /[^0-9\u200B]/.test(raw)) return;
+          const v = typedDigit(raw, state[id]);
           if (v >= 0) return enterDigit(id, v);
-          if (/\d/.test(raw)) return;
+          if (/\d/.test(raw) || !(raw === "" || /^delete/.test(e.inputType || ""))) return;
           if (state[id] >= 0) { setParams({ [id]: -1 }, true); focusDigit(digitNext(last.handles, id, -1)); }
-          else if (!raw.includes(CELL_NIL)) { const p = digitNext(last.handles, id, -1); if (p) { setParams({ [p]: -1 }, true); focusDigit(p); } } });
+          else if (raw === "") { const p = digitNext(last.handles, id, -1); if (p) { setParams({ [p]: -1 }, true); focusDigit(p); } } });
         stage.appendChild(c); cells.set(id, c); }
       const [bx, by, bw, bh] = h.box, v = state[h.digit];
       Object.assign(c.style, { left: bx / r.w * 100 + "%", top: by / r.h * 100 + "%", width: bw / r.w * 100 + "%", height: bh / r.h * 100 + "%" });

@@ -414,6 +414,13 @@ async function labColumnEraseScenario(browser) {
     let kd = 0; const f = () => kd++; c.addEventListener("keydown", f); document.execCommand("delete"); c.removeEventListener("keydown", f); return kd; }, id);
   await page.focus('.lab-dg[data-dg="d3"]'); await page.keyboard.insertText("1"); await page.keyboard.insertText("5");
   let r = await q(); ok(r.v === "1,5,-1,-1" && r.foc === "d1", `lab erase: «1», «5» вписано, фокус на 3-й, а ${JSON.stringify(r)}`);
+  // рев'ю engine-1117-followups P1-1: не-цифра з числової клавіатури («,» «.» «-» пробіл, літера) нічого не стирає — ні в порожній клітинці, ні в заповненій
+  for (const ch of [",", ".", "-", " ", "a"]) { await page.focus('.lab-dg[data-dg="d1"]'); await page.keyboard.insertText(ch);
+    r = await q(); ok(r.v === "1,5,-1,-1" && r.foc === "d1", `lab erase: «${ch}» у порожній 3-й не стирає 2-гу, а ${JSON.stringify(r)}`); }
+  // і з виділеною цифрою (фокус дотиком), і з кареткою після неї (поле вже у фокусі, «5.»)
+  for (const ch of [",", ".", "-"]) { await page.focus('.lab-dg[data-dg="d2"]'); await page.keyboard.insertText(ch);
+    r = await q(); ok(r.v === "1,5,-1,-1" && r.foc === "d2", `lab erase: «${ch}» над заповненою 2-ю не стирає її, а ${JSON.stringify(r)}`); }
+  await page.focus('.lab-dg[data-dg="d1"]');
   ok(await erase("d2") === 0, "lab erase: імітація без keydown");
   r = await q(); ok(r.v === "1,-1,-1,-1" && r.foc === "d3" && r.dis, `lab erase: стерти заповнену 2-гу через input — «?», фокус на 1-й, кнопка неактивна, а ${JSON.stringify(r)}`);
   await page.focus('.lab-dg[data-dg="d3"]'); await page.keyboard.insertText("1");
@@ -429,52 +436,60 @@ async function labColumnEraseScenario(browser) {
   ok(!errors.length, "lab erase, помилки сторінки: " + errors.join(" | "));
   await ctx.close();
 }
-
 /* 21) Картка «Твій план» на головній для baseline-тем із see (engine-1117-followups п. 3; рев'ю engine-diag-baseline-plan-1117 P3-1):
-   називає урок(и) see і дає кнопку на них, як підсумок тесту; «з дорослим» — лише для теми без see. Фікстура — як у сценарії 16. */
+   коротко («Потренуй: «А», «Б» — є уроки…», урок названо, лише коли він один) і кнопки на уроки see; «з дорослим» — лише для теми без see.
+   Кнопка на урок — одна: дві теми з тим самим see і see = урок «з чого почати» не дублюють кнопок ні на картці, ні в підсумку тесту
+   (рев'ю engine-1117-followups P3-1, P3-2). Фікстура — як у сценарії 16. */
 async function planCardSeeScenario(browser) {
   const ctx = await browser.newContext({ viewport: { width: 400, height: 860 }, serviceWorkers: "block" });
   const page = await ctx.newPage(), errors = []; page.on("pageerror", e => errors.push(String(e))); page.setDefaultTimeout(8000);
   await page.route("**/fonts.googleapis.com/**", r => r.abort());
-  const fx = ([withPlain]) => {
+  const fx = ([mode]) => {
     const lesson = id => ({ id, title: "Урок " + id, icon: "book", screens: [{ type: "intro", title: id, body: "QA" }] });
     const m = SLID_SUBJECTS.find(c => c.id === "math"), h = SLID_SUBJECTS.find(c => c.id !== "math");
     m.sections = [{ id: "fS5", grade: 5, weeks: [1, 52], title: "QA S5", why: "QA", lessons: ["fs1", "fs2", "fs3"].map(lesson) }];
     h.sections.push({ id: "fH5", grade: 5, weeks: [1, 52], title: "QA H5", why: "QA", lessons: [lesson("hx1")] });
     m.pools = []; delete m.graph;
-    const topics = [{ id: "apos", title: "Апостроф QA", kind: "pre", baseline: true, lessons: [], for: ["fS5"], see: ["fs2"] },
-      { id: "era", title: "Межа ер QA", kind: "pre", baseline: true, lessons: [], for: ["fS5"], see: ["hx1"] },
-      ...(withPlain ? [{ id: "nob", title: "Без уроку QA", kind: "pre", baseline: true, lessons: [], for: ["fS5"] }] : []),
+    // dup: обидві теми ведуть на fs1 — це ж і перший урок «з чого почати» (baseStart за for: fS5)
+    const see = mode === "dup" ? [["fs1"], ["fs1"]] : [["fs2"], ["hx1"]];
+    const topics = [{ id: "apos", title: "Апостроф QA", kind: "pre", baseline: true, lessons: [], for: ["fS5"], see: see[0] },
+      { id: "era", title: "Межа ер QA", kind: "pre", baseline: true, lessons: [], for: ["fS5"], see: see[1] },
+      ...(mode === "plain" ? [{ id: "nob", title: "Без уроку QA", kind: "pre", baseline: true, lessons: [], for: ["fS5"] }] : []),
       { id: "c1", title: "Тема класу QA", kind: "cur", lessons: ["fs3"] }];
     const ch = topic => ({ topic, type: "choice", sk: "num", title: "Q " + topic, opts: ["a", "b"], correct: 0 });
     m.diags = [{ id: "dgS", grade: 5, title: "QA тест", why: "QA", status: "draft", topics,
       items: topics.flatMap(t => t.kind === "pre" ? [ch(t.id), ch(t.id)] : [ch(t.id)]) }];
     return h.short;
   };
-  const run = async withPlain => {
+  const run = async mode => {
     await page.goto(URL0); await page.evaluate(() => { localStorage.clear(); localStorage.setItem("slid.v1", JSON.stringify({ grade: 5, unlockAll: false, subject: "math" })); }); await page.reload();
-    const hShort = await page.evaluate(fx, [withPlain]);
+    const hShort = await page.evaluate(fx, [mode]);
     await page.evaluate(() => { document.querySelector('.tab[data-tab="path"]').click(); document.querySelector('.tab[data-tab="path"]').click(); });
     await page.click('[data-diag="math"]'); await page.click("[data-diag-go]");
     while (await page.locator("#skip").isVisible()) await page.click("#skip");
+    const endIds = await page.locator("#stage .basegap [data-lesson]").evaluateAll(bs => bs.map(b => b.dataset.lesson));
     while (await page.locator("#player").isVisible()) await page.click("#pClose");   // «#action» підсумку відкриває урок — закриваємо тест
     if (await page.locator("#view [data-up]").count()) await page.click("#view [data-up]");
     const card = page.locator("#view .plancard.s-math");
     const text = (await card.innerText()).replace(/\s+/g, " ");
-    const ids = await card.locator("[data-lesson]").evaluateAll(bs => bs.map(b => b.dataset.lesson));
-    return { text, ids, hShort, card };
+    const rows = await card.locator("[data-lesson]").evaluateAll(bs => bs.map(b => [b.dataset.lesson, b.innerText.replace(/\s+/g, " ")]));
+    return { text, ids: rows.map(r => r[0]), rows, endIds, hShort, card };
   };
-  { const { text, ids, hShort, card } = await run(false);
-    ok(text.includes("«Апостроф QA» — тема є в уроці «Урок fs2» (5 клас)"), `картка плану: тема з see свого предмета називає урок, а ${text}`);
-    ok(text.includes(`«Межа ер QA» — тема є в уроці «Урок hx1» (${hShort}, 5 клас)`), `картка плану: see іншого предмета — з назвою предмета, а ${text}`);
-    ok(!/учителем або дорослим|є уроки, де це повторюється/.test(text), `картка плану: усі теми з see — без «з дорослим» і без безіменного «є уроки», а ${text}`);
-    ok(ids.slice(0, 2).join(",") === "fs2,hx1", `картка плану: кнопки на уроки see (fs2, hx1), а ${JSON.stringify(ids)}`);
+  { const { text, ids, rows, hShort, card } = await run("two");
+    ok(text.includes("Потренуй: «Апостроф QA», «Межа ер QA» — є уроки, де це повторюється."), `картка плану: теми з see одним коротким реченням, а ${text}`);
+    ok(!/учителем або дорослим/.test(text), `картка плану: усі теми з see — без «з дорослим», а ${text}`);
+    ok(same(ids, ["fs2", "hx1", "fs1"]), `картка плану: кнопки на уроки see (fs2, hx1) і «з чого почати» (fs1), а ${JSON.stringify(ids)}`);
+    ok(rows[1] && rows[1][1].includes(hShort) && rows[1][1].includes("Урок hx1"), `картка плану: кнопка see іншого предмета — з назвою уроку й предмета, а ${JSON.stringify(rows)}`);
     await card.locator('[data-lesson="hx1"]').click();
     ok(await page.locator("#player").isVisible(), "картка плану: кнопка see відкриває урок іншого предмета"); }
-  { const { text, ids } = await run(true);
+  { const { text, ids } = await run("plain");
     ok(/Потренуй з учителем або дорослим: «Без уроку QA»\./.test(text) && !/дорослим: [^.]*(Апостроф|Межа ер)/.test(text), `картка плану: «з дорослим» лише для теми без see, а ${text}`);
-    ok(text.includes("Повтори «Апостроф QA» — тема є в уроці «Урок fs2»"), `картка плану: тема з see поруч із темою без see — «Повтори …», а ${text}`);
+    ok(text.includes("Повтори: «Апостроф QA», «Межа ер QA» — є уроки"), `картка плану: теми з see поруч із темою без see — «Повтори: …», а ${text}`);
     ok(ids.includes("fs2") && ids.includes("hx1"), `картка плану з темою без see: кнопки see ті самі, а ${JSON.stringify(ids)}`); }
+  { const { text, ids, endIds } = await run("dup");
+    ok(text.includes("— тема є в уроці «Урок fs1» (5 клас)."), `картка плану: один урок see — названо в тексті, а ${text}`);
+    ok(same(ids, ["fs1"]), `картка плану: see = «з чого почати», дві теми з тим самим see — одна кнопка, а ${JSON.stringify(ids)}`);
+    ok(same(endIds, ["fs1"]), `підсумок тесту: дві теми з тим самим see і «з чого почати» — одна кнопка, а ${JSON.stringify(endIds)}`); }
   ok(!errors.length, "картка плану see: помилки сторінки: " + errors.join(" | "));
   await ctx.close();
 }
