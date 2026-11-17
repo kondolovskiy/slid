@@ -393,7 +393,7 @@ SLID.section("world", {
       title: "Букви з металу",
       short: "Книгодрукування",
       icon: "book",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, як друкарський верстат змінив світ книжок і де друкували ще до Гутенберга.",
       screens: [
         {
