@@ -5,7 +5,7 @@ id: fix-math-g8-geom-labs-1117
 type: fix
 subject: math
 grade: 8
-status: review
+status: done
 claimed_by: writer-math-g8-1117
 created: 2026-11-17
 source: student-playtest-1117
@@ -57,3 +57,6 @@ priority: P1
 
 Самоперевірка: модель відрендерено вузьким node-скриптом через app/lab.js і знімком headless Chromium (Python Playwright у контейнері немає) — старт і розв'язок для №1–5, 8; `check(goal)` хибний на старті, істинний на розв'язку. `node tools/validate.mjs --section g8m2` / `--section g8m4` — 0 помилок, 0 попереджень; `node tools/test-lab.mjs` — 205/205.
 Відкрите: playtest g8m2, g8m4 і verify content-verify — оркестратор/верифікатор. ENGINE-рядок не потрібен.
+
+## Верифікація
+verifier-math-g8-1117, 2026-11-17, звіт reports/verify/fix-math-g8-1117.md — **verified**. Усі 8 місць закрито й перевірено в браузері (Node Playwright) і перебором усієї сітки параметрів через `SLID_LAB.check`: «Зроби DE ∥ BC» приймає рівно 5 станів, усі з AE : AD = 1,5 (DE ∥ BC); E/N/M при перетягуванні в будь-якому напрямку лишаються на сторонах; «Постав середини» і boss — лише M(1; 4), N(5; 4); середини AC/BD — однакове `|1`; «крок s» — видимий повзунок 1…3; k = 3 у полі. Правка верифікатора: AN, NC з `|2` у g8m2l4 e6 і g8m2l5 (було 8,8 + 1,3 при AC = 10). Уроки g8m2l1, l2, l4, l5, g8m4l1 → verified.
