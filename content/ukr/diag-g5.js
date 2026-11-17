@@ -9,24 +9,27 @@
    Порядок: спершу базові завдання всіх опор (1–8), далі складніші впереміш із темами 5 класу (cur).
    Норми — facts/ukr.md (З5, УП, Горох); таблиця тем і джерела слів — tasks/…/write-ukr-diag-g5.md, «Нотатки виконавця».
    Перевірка: node tools/validate.mjs --diag dgu5
-   Схема й правила: docs/CONTENT_SCHEMA.md §9, §4.1; style/ukr.md */
+   Схема й правила: docs/CONTENT_SCHEMA.md §9, §4.1; style/ukr.md
+   Ред. engine-1117-followups (2026-11-17): baseline-темам додано see — урок, де тему повторюють (CONTENT_SCHEMA §9),
+   щоб план вів на урок, а не «попроси дорослого»; завдання й порядок не змінено (rev не потрібен). Статус → draft до верифікації.
+*/
 SLID.diag("ukr", {
   id: "dgu5",
   grade: 5,
   title: "Що ти вже вмієш?",
   why: "Згадаємо, що ти вчив у 1–4 класах, і знайдемо, з чого почати 5 клас.",
-  status: "verified",
+  status: "draft",
   meta: { author: "writer-write-ukr-diag-g5", created: "2026-11-06", factcheck: "verifier-write-ukr-diag-g5; повторно verifier-fix-ukr-diag-g5-cur (cur-u5s9, cur-u5s10)", teacher: null },
   topics: [
     // опори 1–4 класів (baseline: уроків молодших класів у застосунку немає)
-    { id: "abc", title: "Алфавіт", kind: "pre", baseline: true, lessons: [], for: ["u5s4"] },
-    { id: "stress", title: "Наголос", kind: "pre", baseline: true, lessons: [], for: ["u5s5"] },
-    { id: "root", title: "Корінь і спільнокореневі слова", kind: "pre", baseline: true, lessons: [], for: ["u5s3"] },
-    { id: "e-y", title: "Ненаголошені е та и", kind: "pre", baseline: true, lessons: [], for: ["u5s5", "u5s3"] },
-    { id: "apos", title: "Апостроф", kind: "pre", baseline: true, lessons: [], for: ["u5s7"] },
-    { id: "syn", title: "Синоніми", kind: "pre", baseline: true, lessons: [], for: ["u5s2"] },
-    { id: "main", title: "Головні члени речення", kind: "pre", baseline: true, lessons: [], for: ["u5s8"] },
-    { id: "text", title: "Текст і заголовок", kind: "pre", baseline: true, lessons: [], for: ["u5s1"] },
+    { id: "abc", title: "Алфавіт", kind: "pre", baseline: true, lessons: [], for: ["u5s4"], see: ["u5s4l4"] },
+    { id: "stress", title: "Наголос", kind: "pre", baseline: true, lessons: [], for: ["u5s5"], see: ["u5s5l1"] },
+    { id: "root", title: "Корінь і спільнокореневі слова", kind: "pre", baseline: true, lessons: [], for: ["u5s3"], see: ["u5s3l2"] },
+    { id: "e-y", title: "Ненаголошені е та и", kind: "pre", baseline: true, lessons: [], for: ["u5s5", "u5s3"], see: ["u5s5l2"] },
+    { id: "apos", title: "Апостроф", kind: "pre", baseline: true, lessons: [], for: ["u5s7"], see: ["u5s7l3"] },
+    { id: "syn", title: "Синоніми", kind: "pre", baseline: true, lessons: [], for: ["u5s2"], see: ["u5s2l3"] },
+    { id: "main", title: "Головні члени речення", kind: "pre", baseline: true, lessons: [], for: ["u5s8"], see: ["u5s8l3"] },
+    { id: "text", title: "Текст і заголовок", kind: "pre", baseline: true, lessons: [], for: ["u5s1"], see: ["u5s1l3"] },
     // теми 5 класу: по одному уроку (без boss), завдання охоплює ядро уроку
     { id: "cur-u5s1", title: "Ознаки тексту", kind: "cur", lessons: ["u5s1l3"] },
     { id: "cur-u5s2", title: "Антоніми", kind: "cur", lessons: ["u5s2l4"] },
