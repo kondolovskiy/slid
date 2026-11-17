@@ -272,6 +272,12 @@ check(() => assert(!skDiag('coord').warnings.some(w => w.startsWith('dgfx6/c1'))
   { const planned = { ...ukr, sections: [...ukr.sections, { id: 'fu6plan', grade: 6, plan: ['тема'] }] };
     const rp = qa.auditOther(planned, dgu({ topics: [{ id: 'p', title: 'P', kind: 'pre', lessons: ['fu5l1'], for: ['fu6', 'fu6plan'] }, { id: 'c', title: 'C', kind: 'cur', lessons: ['fu6l1'] }] }), learn);
     check(() => assert.deepEqual(rp.errors, [], JSON.stringify(rp.errors))); }
+  // engine-1117-followups п. 3: see baseline-теми на урок іншого предмета — auditOther бачить усі предмети (як validate.mjs)
+  { const u5 = { ...ukr, sections: [ukr.sections[0]] }, hist = { id: 'hist', sections: [{ id: 'fh5', grade: 5, lessons: [L('fh5l1', 'orth')] }] };
+    const dsee = dgu({ id: 'dgfu5', grade: 5, topics: [{ id: 'p', title: 'P', kind: 'pre', baseline: true, for: ['fu5'], see: ['fh5l1'] }, { id: 'c', title: 'C', kind: 'cur', lessons: ['fu5l1'] }] });
+    const rs = qa.auditOther(u5, dsee, learn, [u5, hist]);
+    check(() => assert.deepEqual(rs.errors, [], JSON.stringify(rs.errors)));
+    check(() => assert(qa.auditOther(u5, dsee, learn).errors.some(e => e.includes('see — немає уроку fh5l1')))); }
   // рев'ю P3-1, P3-3: run() з підміненим змістом — rc 1 при структурній помилці в гілці не-math, rc 1 з --strict, вивід «ПРОПУЩЕНО» / «ПОМИЛКА»
   { const runOut = (args, d) => { const lines = [], log = console.log; console.log = (...a) => lines.push(a.join(' '));
       try { return { rc: qa.run(args, () => ({ subjects: [{ ...ukr, diags: [d] }], learn })), out: lines.join('\n') }; } finally { console.log = log; } };

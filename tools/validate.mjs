@@ -446,7 +446,7 @@ for (const c of subjects) for (const d of c.diags || []) {
   const D = `content/${c.id}/diag-g${d.grade}.js#${d.id}`;
   if (diagIds.has(d.id)) E(D, "id діагностики не унікальний"); diagIds.add(d.id);
   if (c.diags.filter(x => x.grade === d.grade).length > 1) E(D, `для ${d.grade} класу вже є діагностика з цього предмета`);
-  for (const m of learn.validate(d, { ...subjectMaps(c), skills: c.skills })) E(D, m);
+  for (const m of learn.validate(d, { ...subjectMaps(c, subjects), skills: c.skills })) E(D, m);
   if (!d.meta) W(D, "немає meta {author, created, factcheck, teacher}");
   authorWarn(D, d.meta);
   (d.items || []).forEach((s, i) => { if (TYPES.includes(s.type)) { checkScreen(`${D} завдання ${i + 1} (${s.type})`, s, c, true); figRef(`${D} завдання ${i + 1} (${s.type})`, s); } });

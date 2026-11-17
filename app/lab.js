@@ -806,11 +806,19 @@ function mount(host, spec, opt = {}) {
           if (k === "ArrowLeft" || k === "ArrowRight") { e.preventDefault(); return focusDigit(digitSide(last.handles, id, k === "ArrowLeft" ? -1 : 1)); }
           const o = handleKey(last.handles.find(q => q.digit === id) || { digit: id }, k, state, params); if (o) { e.preventDefault(); setParams(o, true); } });
         // екранна клавіатура телефона часто не дає key у keydown («Unidentified») — тоді читаємо саме поле
-        c.addEventListener("input", () => { const v = typedDigit(c.value, state[id]); c.value = state[id] >= 0 ? String(state[id]) : ""; if (v >= 0) enterDigit(id, v); else if (!/\d/.test(c.value)) setParams({ [id]: -1 }, true); });
+        // сире значення беремо до відновлення поля (рев'ю engine-lab-column-digits-1117 P2-1): «стерти» з екранної клавіатури
+        // приходить лише як input з порожнім полем. Порожня клітинка тримає невидимий заповнювач CELL_NIL, тож Backspace у ній
+        // теж дає input (поле стає зовсім порожнім) — і повертає до попередньої клітинки, як keydown Backspace (P3-1).
+        c.addEventListener("input", () => { const raw = c.value, v = typedDigit(raw, state[id]); c.value = state[id] >= 0 ? String(state[id]) : CELL_NIL;
+          if (locked) return;
+          if (v >= 0) return enterDigit(id, v);
+          if (/\d/.test(raw)) return;
+          if (state[id] >= 0) { setParams({ [id]: -1 }, true); focusDigit(digitNext(last.handles, id, -1)); }
+          else if (!raw.includes(CELL_NIL)) { const p = digitNext(last.handles, id, -1); if (p) { setParams({ [p]: -1 }, true); focusDigit(p); } } });
         stage.appendChild(c); cells.set(id, c); }
       const [bx, by, bw, bh] = h.box, v = state[h.digit];
       Object.assign(c.style, { left: bx / r.w * 100 + "%", top: by / r.h * 100 + "%", width: bw / r.w * 100 + "%", height: bh / r.h * 100 + "%" });
-      if (G.document.activeElement !== c || c.value !== (v >= 0 ? String(v) : "")) c.value = v >= 0 ? String(v) : "";
+      if (G.document.activeElement !== c || c.value !== (v >= 0 ? String(v) : CELL_NIL)) c.value = v >= 0 ? String(v) : CELL_NIL;
       c.dataset.h = r.handles.indexOf(h); c.setAttribute("aria-label", `${h.name}, впиши цифру або змінюй стрілками`); c.setAttribute("aria-valuenow", v >= 0 ? v : 0); c.setAttribute("aria-valuetext", h.value ?? "");
       c.disabled = locked; c.tabIndex = locked ? -1 : 0; });
   }
@@ -877,6 +885,8 @@ function mount(host, spec, opt = {}) {
   };
 }
 
+/** Невидимий заповнювач порожньої клітинки цифри: без нього Backspace у порожньому полі з екранної клавіатури не дає події. */
+const CELL_NIL = "\u200B";
 /** Наступна (dir = 1) чи попередня (−1) клітинка цифри в порядку вписування — порядку handles; null на краю. */
 function digitNext(handles, id, dir) { const ds = (handles || []).filter(h => h.digit), i = ds.findIndex(h => h.digit === id), j = i + dir;
   return i >= 0 && j >= 0 && j < ds.length ? ds[j].digit : null; }

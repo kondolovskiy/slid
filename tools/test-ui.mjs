@@ -396,6 +396,89 @@ async function labColumnDivScenario(browser) {
   await ctx.close();
 }
 
+/* 18) Стирання цифри в ділення кутом без keydown (engine-1117-followups п. 1–2; рев'ю engine-lab-column-digits-1117 P2-1, P3-1).
+   Екранна клавіатура Android шле keydown «Unidentified», тож «стерти» видно лише як input. Імітуємо справжнім видаленням
+   (execCommand("delete") — beforeinput/input deleteContentBackward без keydown Backspace). */
+async function labColumnEraseScenario(browser) {
+  const ctx = await browser.newContext({ ...pw.devices["Pixel 7"], viewport: { width: 360, height: 760 }, serviceWorkers: "block" });
+  const page = await ctx.newPage(), errors = []; page.on("pageerror", e => errors.push(String(e))); page.setDefaultTimeout(8000);
+  await page.route("**/fonts.googleapis.com/**", r => r.abort());
+  await page.goto(URL0); await page.evaluate(() => { localStorage.clear(); localStorage.setItem("slid.v1", JSON.stringify({ grade: 6, unlockAll: true })); }); await page.reload();
+  const DIV = { type: "lab", title: "Ділення", body: "QA", lab: { kind: "column", op: ":", a: "4572", b: "3", input: true }, goal: "col==1524", solution: { d0: 4, d1: 2, d2: 5, d3: 1 }, fbOk: "ok", fbBad: "bad" };
+  await page.evaluate(scr => { SLID_SUBJECTS.find(c => c.id === "math").sections.push({ id: "qLabE", grade: 6, weeks: [1, 2], title: "QA", why: "QA",
+    lessons: [{ id: "qlabe1", title: "QA", icon: "book", screens: scr }] }); window.__slidStart("qlabe1"); }, [DIV, { type: "info", title: "Кінець", body: "QA" }]);
+  await page.waitForSelector(".lab-dg");
+  const q = () => page.evaluate(() => { const s = window.__slidLab.get(); return { v: [s.d3, s.d2, s.d1, s.d0].join(","), dis: document.querySelector("#action").disabled, foc: document.activeElement?.dataset?.dg || null }; });
+  // видалення «як з екранної клавіатури»: фокус, курсор у кінець поля, delete — без keydown Backspace
+  const erase = id => page.evaluate(id => { const c = document.querySelector(`.lab-dg[data-dg="${id}"]`); c.focus(); c.setSelectionRange(c.value.length, c.value.length);
+    let kd = 0; const f = () => kd++; c.addEventListener("keydown", f); document.execCommand("delete"); c.removeEventListener("keydown", f); return kd; }, id);
+  await page.focus('.lab-dg[data-dg="d3"]'); await page.keyboard.insertText("1"); await page.keyboard.insertText("5");
+  let r = await q(); ok(r.v === "1,5,-1,-1" && r.foc === "d1", `lab erase: «1», «5» вписано, фокус на 3-й, а ${JSON.stringify(r)}`);
+  ok(await erase("d2") === 0, "lab erase: імітація без keydown");
+  r = await q(); ok(r.v === "1,-1,-1,-1" && r.foc === "d3" && r.dis, `lab erase: стерти заповнену 2-гу через input — «?», фокус на 1-й, кнопка неактивна, а ${JSON.stringify(r)}`);
+  await page.focus('.lab-dg[data-dg="d3"]'); await page.keyboard.insertText("1");
+  r = await q(); ok(r.foc === "d2" && r.v === "1,-1,-1,-1", `lab erase: після стирання знову вписуємо, а ${JSON.stringify(r)}`);
+  await erase("d2");
+  r = await q(); ok(r.v === "-1,-1,-1,-1" && r.foc === "d3", `lab erase: Backspace у порожній 2-й (без keydown) — назад до 1-ї й стерти її, а ${JSON.stringify(r)}`);
+  await erase("d3");
+  r = await q(); ok(r.v === "-1,-1,-1,-1" && r.foc === "d3", `lab erase: Backspace у порожній 1-й — нічого не ламає, а ${JSON.stringify(r)}`);
+  for (const d of "1524") await page.keyboard.insertText(d);
+  r = await q(); ok(r.v === "1,5,2,4" && !r.dis, `lab erase: після стирань 1524 вписано, кнопка активна, а ${JSON.stringify(r)}`);
+  await page.click("#action");
+  ok(await page.evaluate(() => document.querySelector(".lab").classList.contains("is-ok")), "lab erase: «1524» зараховано");
+  ok(!errors.length, "lab erase, помилки сторінки: " + errors.join(" | "));
+  await ctx.close();
+}
+
+/* 19) Картка «Твій план» на головній для baseline-тем із see (engine-1117-followups п. 3; рев'ю engine-diag-baseline-plan-1117 P3-1):
+   називає урок(и) see і дає кнопку на них, як підсумок тесту; «з дорослим» — лише для теми без see. Фікстура — як у сценарії 16. */
+async function planCardSeeScenario(browser) {
+  const ctx = await browser.newContext({ viewport: { width: 400, height: 860 }, serviceWorkers: "block" });
+  const page = await ctx.newPage(), errors = []; page.on("pageerror", e => errors.push(String(e))); page.setDefaultTimeout(8000);
+  await page.route("**/fonts.googleapis.com/**", r => r.abort());
+  const fx = ([withPlain]) => {
+    const lesson = id => ({ id, title: "Урок " + id, icon: "book", screens: [{ type: "intro", title: id, body: "QA" }] });
+    const m = SLID_SUBJECTS.find(c => c.id === "math"), h = SLID_SUBJECTS.find(c => c.id !== "math");
+    m.sections = [{ id: "fS5", grade: 5, weeks: [1, 52], title: "QA S5", why: "QA", lessons: ["fs1", "fs2", "fs3"].map(lesson) }];
+    h.sections.push({ id: "fH5", grade: 5, weeks: [1, 52], title: "QA H5", why: "QA", lessons: [lesson("hx1")] });
+    m.pools = []; delete m.graph;
+    const topics = [{ id: "apos", title: "Апостроф QA", kind: "pre", baseline: true, lessons: [], for: ["fS5"], see: ["fs2"] },
+      { id: "era", title: "Межа ер QA", kind: "pre", baseline: true, lessons: [], for: ["fS5"], see: ["hx1"] },
+      ...(withPlain ? [{ id: "nob", title: "Без уроку QA", kind: "pre", baseline: true, lessons: [], for: ["fS5"] }] : []),
+      { id: "c1", title: "Тема класу QA", kind: "cur", lessons: ["fs3"] }];
+    const ch = topic => ({ topic, type: "choice", sk: "num", title: "Q " + topic, opts: ["a", "b"], correct: 0 });
+    m.diags = [{ id: "dgS", grade: 5, title: "QA тест", why: "QA", status: "draft", topics,
+      items: topics.flatMap(t => t.kind === "pre" ? [ch(t.id), ch(t.id)] : [ch(t.id)]) }];
+    return h.short;
+  };
+  const run = async withPlain => {
+    await page.goto(URL0); await page.evaluate(() => { localStorage.clear(); localStorage.setItem("slid.v1", JSON.stringify({ grade: 5, unlockAll: false, subject: "math" })); }); await page.reload();
+    const hShort = await page.evaluate(fx, [withPlain]);
+    await page.evaluate(() => { document.querySelector('.tab[data-tab="path"]').click(); document.querySelector('.tab[data-tab="path"]').click(); });
+    await page.click('[data-diag="math"]'); await page.click("[data-diag-go]");
+    while (await page.locator("#skip").isVisible()) await page.click("#skip");
+    while (await page.locator("#player").isVisible()) await page.click("#pClose");   // «#action» підсумку відкриває урок — закриваємо тест
+    if (await page.locator("#view [data-up]").count()) await page.click("#view [data-up]");
+    const card = page.locator("#view .plancard.s-math");
+    const text = (await card.innerText()).replace(/\s+/g, " ");
+    const ids = await card.locator("[data-lesson]").evaluateAll(bs => bs.map(b => b.dataset.lesson));
+    return { text, ids, hShort, card };
+  };
+  { const { text, ids, hShort, card } = await run(false);
+    ok(text.includes("«Апостроф QA» — тема є в уроці «Урок fs2» (5 клас)"), `картка плану: тема з see свого предмета називає урок, а ${text}`);
+    ok(text.includes(`«Межа ер QA» — тема є в уроці «Урок hx1» (${hShort}, 5 клас)`), `картка плану: see іншого предмета — з назвою предмета, а ${text}`);
+    ok(!/учителем або дорослим|є уроки, де це повторюється/.test(text), `картка плану: усі теми з see — без «з дорослим» і без безіменного «є уроки», а ${text}`);
+    ok(ids.slice(0, 2).join(",") === "fs2,hx1", `картка плану: кнопки на уроки see (fs2, hx1), а ${JSON.stringify(ids)}`);
+    await card.locator('[data-lesson="hx1"]').click();
+    ok(await page.locator("#player").isVisible(), "картка плану: кнопка see відкриває урок іншого предмета"); }
+  { const { text, ids } = await run(true);
+    ok(/Потренуй з учителем або дорослим: «Без уроку QA»\./.test(text) && !/дорослим: [^.]*(Апостроф|Межа ер)/.test(text), `картка плану: «з дорослим» лише для теми без see, а ${text}`);
+    ok(text.includes("Повтори «Апостроф QA» — тема є в уроці «Урок fs2»"), `картка плану: тема з see поруч із темою без see — «Повтори …», а ${text}`);
+    ok(ids.includes("fs2") && ids.includes("hx1"), `картка плану з темою без see: кнопки see ті самі, а ${JSON.stringify(ids)}`); }
+  ok(!errors.length, "картка плану see: помилки сторінки: " + errors.join(" | "));
+  await ctx.close();
+}
+
 /* 9) Синхронізація прогресу (engine-sync-login): фейковий API (семантика server/: CAS за rev, 409, name відкидається, коди прив'язки
    одноразові, CORS), app/config.js з адресою фейку, скрипт Google Identity Services — фейк із кнопкою, що повертає id_token.
    Два пристрої — два контексти браузера (окремі localStorage). Без справжнього Google і бекенду. */
@@ -879,6 +962,12 @@ try {
 
   // 5–7) Оновлення service worker без змішування версій (engine-sw-version-skew; docs/PUBLISHING.md «Оновлення PWA»)
   await swScenarios(browser);
+
+  // 18) Ділення кутом: стирання цифри з екранної клавіатури без keydown (engine-1117-followups п. 1–2)
+  await labColumnEraseScenario(browser);
+
+  // 19) Картка «Твій план» на головній: уроки see baseline-тем (engine-1117-followups п. 3)
+  await planCardSeeScenario(browser);
 } finally { await browser.close(); server.close(); swServer.close(); }
 
 console.log(`test-ui: ${pass} ok, ${fail} ✗`);
