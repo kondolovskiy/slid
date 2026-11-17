@@ -396,7 +396,7 @@ async function labColumnDivScenario(browser) {
   await ctx.close();
 }
 
-/* 18) Стирання цифри в ділення кутом без keydown (engine-1117-followups п. 1–2; рев'ю engine-lab-column-digits-1117 P2-1, P3-1).
+/* 20) Стирання цифри в ділення кутом без keydown (engine-1117-followups п. 1–2; рев'ю engine-lab-column-digits-1117 P2-1, P3-1).
    Екранна клавіатура Android шле keydown «Unidentified», тож «стерти» видно лише як input. Імітуємо справжнім видаленням
    (execCommand("delete") — beforeinput/input deleteContentBackward без keydown Backspace). */
 async function labColumnEraseScenario(browser) {
@@ -430,7 +430,7 @@ async function labColumnEraseScenario(browser) {
   await ctx.close();
 }
 
-/* 19) Картка «Твій план» на головній для baseline-тем із see (engine-1117-followups п. 3; рев'ю engine-diag-baseline-plan-1117 P3-1):
+/* 21) Картка «Твій план» на головній для baseline-тем із see (engine-1117-followups п. 3; рев'ю engine-diag-baseline-plan-1117 P3-1):
    називає урок(и) see і дає кнопку на них, як підсумок тесту; «з дорослим» — лише для теми без see. Фікстура — як у сценарії 16. */
 async function planCardSeeScenario(browser) {
   const ctx = await browser.newContext({ viewport: { width: 400, height: 860 }, serviceWorkers: "block" });
@@ -963,10 +963,10 @@ try {
   // 5–7) Оновлення service worker без змішування версій (engine-sw-version-skew; docs/PUBLISHING.md «Оновлення PWA»)
   await swScenarios(browser);
 
-  // 18) Ділення кутом: стирання цифри з екранної клавіатури без keydown (engine-1117-followups п. 1–2)
+  // 20) Ділення кутом: стирання цифри з екранної клавіатури без keydown (engine-1117-followups п. 1–2)
   await labColumnEraseScenario(browser);
 
-  // 19) Картка «Твій план» на головній: уроки see baseline-тем (engine-1117-followups п. 3)
+  // 21) Картка «Твій план» на головній: уроки see baseline-тем (engine-1117-followups п. 3)
   await planCardSeeScenario(browser);
 } finally { await browser.close(); server.close(); swServer.close(); }
 
