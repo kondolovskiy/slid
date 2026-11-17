@@ -28,6 +28,8 @@
 //  14) Ширина gaps на телефоні (engine-gaps-wrap, QA qa-ukr-pool Q-1): на 360 і 375 px жоден екран gaps (фікстура з довгими варіантами з кількох
 //      слів + усі gaps уроків, пулів і тестів рівня, які завантажує сторінка) не виходить за край: картка .ltext без горизонтального переповнення,
 //      кнопки варіантів у межах екрана, #player не прокручується вбік; слово з пропуском (span.gw) — в одному рядку (не рветься посеред слова).
+//  15) Поле number уроку (engine-number-fraction-input-1117): «3/2», «1 1/2», «-3/4» за значенням, «32» — помилка; кнопки «/», «пробіл»
+//      і підказка — як у тренуванні (answerUI); 4 клас із цілим ключем — без них.
 //  5–7) Service worker (engine-sw-version-skew): деплой нової версії не змішує index.html і app.js; файл зі старого кешу не віддається
 //     (P3-6); оновлення не перезавантажує сторінку посеред уроку, а версія подій журналу лишається версією сторінки (P3-4); застосунок зі старим SW після одного змішаного відкриття сам переходить на консистентну нову версію.
 // Запуск: node tools/test-ui.mjs [--browser /opt/pw-browsers/chromium]
@@ -251,6 +253,58 @@ async function phoneScenarios(browser) {
   await ctx.close();
 }
 
+/* 15) Звичайний дріб у полі number уроку (engine-number-fraction-input-1117, плейтест g8 №6, №17): «/» і пробіл не викидаються,
+   «3/2» і «1 1/2» при ключі 1.5 зараховано за значенням, «32» — ні; кнопки «/», «пробіл» і підказка «Дріб — через риску» — як у тренуванні;
+   4 клас із цілим ключем — без кнопок і підказки (дробів ще немає). Синтетична фікстура, без живого content/. */
+async function numberFractionScenario(browser) {
+  const ctx = await browser.newContext({ viewport: { width: 400, height: 860 }, serviceWorkers: "block" });
+  const page = await ctx.newPage(), errors = [];
+  page.on("pageerror", e => errors.push(String(e)));
+  await page.route("**/fonts.googleapis.com/**", r => r.abort());
+  page.setDefaultTimeout(7000);
+  await page.goto(URL0);
+  await page.evaluate(s => localStorage.setItem("slid.v1", JSON.stringify(s)), { ...seed, grade: 8, unlockAll: true });
+  await page.reload();
+  const N = (answer, title) => ({ type: "number", title, body: "QA", answer });
+  const secs = [{ id: "fN", grade: 8, weeks: [15, 16], title: "QA N", why: "QA", lessons: [{ id: "fn1", title: "Урок fn1", icon: "book", screens: [
+      { type: "intro", title: "Початок", body: "QA" }, N(1.5, "Дріб 1"), N(1.5, "Дріб 2"), N(1.5, "Дріб 3"), N(-0.75, "Від'ємний"), { type: "info", title: "Кінець", body: "QA" }] }] },
+    { id: "fM", grade: 4, weeks: [15, 16], title: "QA M", why: "QA", lessons: [{ id: "fm1", title: "Урок fm1", icon: "book", screens: [
+      { type: "intro", title: "Початок", body: "QA" }, N(12, "Ціле"), { type: "info", title: "Кінець", body: "QA" }] }] }];
+  await page.evaluate(install, FIX);
+  await page.evaluate(ss => { SLID_SUBJECTS.find(c => c.id === "math").sections.push(...ss); window.__slidStart("fn1"); }, secs);
+  await page.click("#action");   // інтро → «Дріб 1»
+  const field = () => page.evaluate(() => ({ keys: [...document.querySelectorAll("#stage .anskeys button")].map(b => b.dataset.ins),
+    help: document.querySelector("#stage .numbox ~ .anskeys ~ .fix, #stage .numbox ~ .fix")?.textContent || "", sign: !!document.querySelector("#numSign") }));
+  const verdict = async () => { await page.click("#action"); return page.locator("#numIn").evaluate(i => i.classList.contains("is-ok") ? "ok" : i.classList.contains("is-bad") ? "bad" : "—"); };
+  const typeIn = async v => { await page.fill("#numIn", ""); await page.type("#numIn", v); return page.inputValue("#numIn"); };
+  const f1 = await field();
+  ok(f1.keys.includes("/") && f1.keys.includes(" "), `number 8 кл.: кнопки «/» і «пробіл», а ${JSON.stringify(f1.keys)}`);
+  ok(!f1.keys.includes("-") && f1.sign, `number 8 кл.: знак — кнопкою «±», без другої «−», а ${JSON.stringify(f1)}`);
+  ok(/Дріб — через риску/.test(f1.help), `number 8 кл.: підказка «Дріб — через риску», а «${f1.help}»`);
+  const v1 = await typeIn("3/2");
+  ok(v1 === "3/2", `number: «3/2» лишається «3/2» (не «32»), а «${v1}»`);
+  ok(await verdict() === "ok", "number: «3/2» при ключі 1.5 зараховано");
+  await page.click("#action");   // → «Дріб 2»: «32» — помилка, далі мішане «1 1/2» кнопками
+  await typeIn("32");
+  ok(await verdict() === "bad", "number: «32» при ключі 1.5 — не зараховано");
+  await page.fill("#numIn", ""); await page.type("#numIn", "1"); await page.click('#stage .anskeys button[data-ins=" "]');
+  await page.type("#numIn", "1"); await page.click('#stage .anskeys button[data-ins="/"]'); await page.type("#numIn", "2");
+  const v2 = await page.inputValue("#numIn");
+  ok(v2 === "1 1/2", `number: кнопки дають «1 1/2», а «${v2}»`);
+  ok(await verdict() === "ok", "number: «1 1/2» при ключі 1.5 зараховано (друга спроба)");
+  await page.click("#action");   // → «Дріб 3»: десятковий запис, як і раніше
+  await typeIn("1.5");
+  ok(await page.inputValue("#numIn") === "1,5" && await verdict() === "ok", "number: «1.5» → «1,5» і зараховано");
+  await page.click("#action");   // → від'ємний: «-3/4» при ключі −0.75
+  await typeIn("-3/4");
+  ok(await verdict() === "ok", "number: «-3/4» при ключі −0.75 зараховано");
+  await page.evaluate(() => window.__slidStart("fm1"));
+  await page.click("#action");
+  const f2 = await field();
+  ok(!f2.keys.length && !f2.help, `number 4 кл., цілий ключ: без кнопок і підказки, а ${JSON.stringify(f2)}`);
+  ok(!errors.length, "number дроби, помилки сторінки: " + errors.join(" | "));
+  await ctx.close();
+}
 
 /* 9) Синхронізація прогресу (engine-sync-login): фейковий API (семантика server/: CAS за rev, 409, name відкидається, коди прив'язки
    одноразові, CORS), app/config.js з адресою фейку, скрипт Google Identity Services — фейк із кнопкою, що повертає id_token.
@@ -702,6 +756,9 @@ try {
 
   // 8) Телефон: «:» у полях масштабу й відношення (engine-list-p3 п. 4)
   await phoneScenarios(browser);
+
+  // 15) Звичайний дріб у полі number уроку (engine-number-fraction-input-1117)
+  await numberFractionScenario(browser);
 
   // 9) Синхронізація прогресу між пристроями (engine-sync-login)
   await syncScenarios(browser);

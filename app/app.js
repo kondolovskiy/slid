@@ -1125,7 +1125,7 @@ function renderScreen(){
   if(s.type==="shade"){ st=new Set(); h+=`<div class="shade" id="shade"></div><div class="counter" id="shcount" ${run.diag||s.hideCount?"hidden":""}></div>`; }
   if(s.type==="numline"){ st=0; h+=`<div class="numline"><div id="nlsvg"></div><div class="readout" ${run.diag||s.hideCount?"hidden":""}><span>Точка:</span><b id="nlval"></b></div><input id="nlrng" type="range" min="0" max="${s.max*s.den}" step="1" value="0" aria-label="Положення точки на промені"></div>`; }
   if(s.type==="number"){ st=""; const dec=numDecimal(s), sg=s.signed||s.answer<0||SEC.signed||SEC.grade>=7;   // «±» не має видавати знак відповіді: з 7 класу (або в розділі з signed) — завжди
-    h+=`<div class="numbox">${sg?`<button type="button" class="sgn" id="numSign" aria-label="Змінити знак" aria-pressed="false">±</button>`:""}<input id="numIn" inputmode="${dec?"decimal":"numeric"}" ${dec?"":'pattern="[0-9]*"'} autocomplete="off" placeholder="?" aria-label="Відповідь"><span class="unit">${s.unit||""}</span></div>`; }
+    h+=`<div class="numbox">${sg?`<button type="button" class="sgn" id="numSign" aria-label="Змінити знак" aria-pressed="false">±</button>`:""}<input id="numIn" inputmode="${dec?"decimal":"numeric"}" ${dec?"":'pattern="[0-9]*"'} autocomplete="off" placeholder="?" aria-label="Відповідь"><span class="unit">${s.unit||""}</span></div>`+numKeysHtml(s, sg); }
   if(s.type==="answer"){ st=""; h+=answerInput(s); }
   if(s.type==="fracin"){ st=""; h+=s.hideDen? `<div class="mblock">${mathHTML(s.expr)} =</div>`+answerInput(s) : `<div class="numbox big"><span class="m">${mathHTML(s.expr)}<span class="mo">=</span><span class="fr"><span class="nu"><input id="numIn" inputmode="numeric" pattern="[0-9]*" autocomplete="off" placeholder="?" aria-label="Чисельник відповіді"></span><span class="sr">/</span><span class="de">${s.den}</span></span></span></div>`; }
   if(LANG.TYPES.includes(s.type)) h+=langHtml(s);
@@ -1243,8 +1243,15 @@ function numlineUpdate(s){
 
 /* числове поле: десяткові й від'ємні відповіді */
 const numDecimal = s => true;   // кома дозволена завжди: інакше цифрова клавіатура підказує, що відповідь ціла
-const numParse = v => +String(v).replace(/\u2212/g,"-").replace(",",".");
+/* Звичайний дріб у полі number (engine-number-fraction-input-1117): «3/2», «1 1/2», «-3/4» читаються за значенням (LEARN.parseAns,
+   як у полі answer); решта — як раніше (кома/крапка, «5,» = 5). Кнопки «/», «пробіл» і підказка — ті самі, що в тренуванні (answerUI). */
+const numParse = v => { const t=String(v).replace(/\u2212/g,"-").replace(/\s+/g," ").trim(), a=/[\/ ]/.test(t)? LEARN.parseAns(t) : null; return a? a.n/a.d : /[\/ ]/.test(t)? NaN : +t.replace(",","."); };
 const numOk = (s,v) => String(v).trim()!=="" && Math.abs(numParse(v)-s.answer) <= (s.tol ?? 1e-9);
+/** Кнопки й підказка під полем number — з answerUI (як у тренуванні); «−» тут дає кнопка «±» (sg), тож «-» з кнопок прибрано. */
+function numKeysHtml(s, sg){
+  const { keys, help }=answerUI({ answer:s.answer, signed:s.signed }, SEC.grade, SEC.signed), ks=sg? keys.filter(k=>k!=="-") : keys;
+  return `${ks.length? `<div class="anskeys">${ks.map(v=>`<button type="button" data-ins="${esc(v)}" aria-label="Вставити ${esc(v===" "?"пробіл":v)}">${esc(v===" "?"пробіл":v==="-"?"−":v)}</button>`).join("")}</div>` : ""}${help? `<div class="fix" style="text-align:center">${esc(help)}</div>` : ""}`;
+}
 const numShow = v => String(v).replace(".",",").replace("-","−");
 /* мовні вправи (app/lang.js, docs/CONTENT_SCHEMA.md §4.1): розмітка, стан st, позначки */
 function langHtml(s){
@@ -1329,7 +1336,7 @@ function bindScreen(s){
   if(LANG.TYPES.includes(s.type)) bindLang(s);
   const nl=$("#nlrng"); if(nl){ numlineUpdate(s); nl.oninput=()=>{ if(checked) return; st=+nl.value; numlineUpdate(s); if(tries) setDock("","","","Перевірити"); }; }
   const sgn=$("#numSign"); if(sgn) sgn.onclick=()=>{ if(checked) return; const ni=$("#numIn"); ni.value= ni.value.startsWith("-")? ni.value.slice(1) : "-"+ni.value; ni.oninput(); ni.focus(); };
-  const ni=$("#numIn"); if(ni){ ni.oninput=()=>{ ni.value= s.type==="word" ? ni.value.slice(0,80) : s.answerKind==="divrem" ? ni.value.replace(/\s+/g," ").slice(0,40) : s.type==="answer"||s.hideDen ? ni.value.replace(/\./g,",").replace(/\u2212/g,"-").slice(0,120) : s.type==="number"&&numDecimal(s) ? ni.value.replace(/\./g,",").replace(/[^0-9,-]/g,"").replace(/(?!^)-/g,"").replace(/(,.*),/g,"$1").slice(0,10) : ni.value.replace(/[^0-9]/g,"").slice(0,6); st=ni.value; if(s.unitForms&&$("#answerUnit")) $("#answerUnit").textContent=answerUnit(s,st); ni.classList.remove("is-ok","is-bad"); setDock("","","","Перевірити", st.trim().length>0); };
+  const ni=$("#numIn"); if(ni){ ni.oninput=()=>{ ni.value= s.type==="word" ? ni.value.slice(0,80) : s.answerKind==="divrem" ? ni.value.replace(/\s+/g," ").slice(0,40) : s.type==="answer"||s.hideDen ? ni.value.replace(/\./g,",").replace(/\u2212/g,"-").slice(0,120) : s.type==="number"&&numDecimal(s) ? ni.value.replace(/\./g,",").replace(/\u2212/g,"-").replace(/[^0-9,\/ -]/g,"").replace(/(?!^)-/g,"").replace(/(,.*),/g,"$1").replace(/ {2,}/g," ").slice(0,16) : ni.value.replace(/[^0-9]/g,"").slice(0,6); st=ni.value; if(s.unitForms&&$("#answerUnit")) $("#answerUnit").textContent=answerUnit(s,st); ni.classList.remove("is-ok","is-bad"); setDock("","","","Перевірити", st.trim().length>0); };
     stage.querySelectorAll(".anskeys button").forEach(b=>b.onclick=()=>{ if(checked) return; const v=b.dataset.ins;
       if(b.parentNode.classList.contains("sym")){ const a=ni.selectionStart??ni.value.length, z=ni.selectionEnd??a; ni.value=ni.value.slice(0,a)+v+ni.value.slice(z); ni.oninput(); ni.focus(); ni.setSelectionRange(a+v.length,a+v.length); return; }
       if(v.trim()==="ост." && (!/\d/.test(ni.value) || /ост/i.test(ni.value))) return ni.focus(); ni.value= v==="-"? (ni.value.startsWith("-")? ni.value.slice(1) : "-"+ni.value) : ni.value+v; ni.oninput(); ni.focus(); });
