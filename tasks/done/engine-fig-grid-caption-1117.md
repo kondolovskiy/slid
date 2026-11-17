@@ -4,7 +4,7 @@ claimed_at: 2026-11-17T19:38:32.983Z
 id: engine-fig-grid-caption-1117
 type: engine
 subject: math
-status: review
+status: done
 claimed_by: engine-appjs2-1117
 created: 2026-11-17
 source: student-playtest-1117
@@ -59,3 +59,6 @@ priority: P2
 Між числом і «м»/«%» у cap — нерозривний пробіл (U+00A0).
 **Статус уроків не змінено** (рядки `status` — поза рядками fig, щоб не конфліктувати з паралельним агентом математики): оркестратору — вирішити, чи переводити g4m5, ms0b, g6m1, ms2, ms3, ms4 у `draft` через нові підписи (зміст підписів — опис рисунка, фактів немає).
 Перевірки: `node tools/validate.mjs --section g4m5|ms0b|g6m1|ms2|ms3|ms4|ms1` — 0 помилок (ms1 — 2 давні попередження sentenceWords); `npm run check` rc 0; test-ui 199 ok. Playtest зачеплених розділів — CI (Python playwright немає).
+
+## Рев'ю D-026 (reviewer-engine-w2-1117)
+Прийнято — reports/review/engine-fig-grid-caption-1117.md (лише P3; D-019 у підписах — без порушень).

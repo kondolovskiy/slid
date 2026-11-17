@@ -4,7 +4,7 @@ claimed_at: 2026-11-17T19:38:32.949Z
 id: engine-img-zoom-1117
 type: engine
 subject: all
-status: review
+status: done
 claimed_by: engine-appjs2-1117
 created: 2026-11-17
 source: student-playtest-1117
@@ -56,3 +56,6 @@ CSS — index.html поруч із `figcaption` (`.zoombtn`, `.zhint`, `.zoomv`,
 Прогони: `NODE_PATH=/opt/node22/lib/node_modules node tools/test-ui.mjs` — 199 ok, 0 ✗; `npm run check` — rc 0 (validate 0 помилок). Ручна перевірка в Chromium 360 px (g5s7l1, карта України): лупа видна, перегляд і «+» читабельні.
 **Не прогнано:** `python3 tools/test-answer-ui.py --suite regression` і `playtest.py` — немає Python-модуля playwright (CI job browser). Зачеплено: `#stage figure img` (alt лишився тим самим — attr_math_checks має пройти).
 **Обмеження:** img у `svgFig`/`fig`/`lab` не збільшуються (лише `img`); масштаб до 6×.
+
+## Рев'ю D-026 (reviewer-engine-w2-1117)
+Прийнято — reports/review/engine-img-zoom-1117.md (лише P3).
