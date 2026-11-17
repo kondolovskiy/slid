@@ -30,6 +30,8 @@
 //      кнопки варіантів у межах екрана, #player не прокручується вбік; слово з пропуском (span.gw) — в одному рядку (не рветься посеред слова).
 //  15) Поле number уроку (engine-number-fraction-input-1117): «3/2», «1 1/2», «-3/4» за значенням, «32» — помилка; кнопки «/», «пробіл»
 //      і підказка — як у тренуванні (answerUI); 4 клас із цілим ключем — без них.
+//  16) Підсумок тесту рівня (engine-diag-baseline-plan-1117): baseline-тема з see — «тема є в уроці …» з кнопкою (і на урок іншого предмета),
+//      «попроси дорослого» — лише без see; «З програми N класу» з «попереду» і без «уже вмієш».
 //  5–7) Service worker (engine-sw-version-skew): деплой нової версії не змішує index.html і app.js; файл зі старого кешу не віддається
 //     (P3-6); оновлення не перезавантажує сторінку посеред уроку, а версія подій журналу лишається версією сторінки (P3-4); застосунок зі старим SW після одного змішаного відкриття сам переходить на консистентну нову версію.
 // Запуск: node tools/test-ui.mjs [--browser /opt/pw-browsers/chromium]
@@ -303,6 +305,55 @@ async function numberFractionScenario(browser) {
   const f2 = await field();
   ok(!f2.keys.length && !f2.help, `number 4 кл., цілий ключ: без кнопок і підказки, а ${JSON.stringify(f2)}`);
   ok(!errors.length, "number дроби, помилки сторінки: " + errors.join(" | "));
+  await ctx.close();
+}
+/* 16) Підсумок тесту рівня з baseline-темами (engine-diag-baseline-plan-1117, плейтест g5 №3, g7 №10, g9 №8): тема з see — «тема є в уроці …»
+   з кнопкою на урок (свого предмета — без назви предмета, іншого — з нею), без «попроси дорослого»; «попроси дорослого» — лише для теми без see;
+   блок «З програми N класу» — і без жодної «уже вмієш» (теми cur «попереду»). Синтетична фікстура (математика 5 кл. + урок «Історії»). */
+async function diagBaselineSeeScenario(browser) {
+  const ctx = await browser.newContext({ viewport: { width: 400, height: 860 }, serviceWorkers: "block" });
+  const page = await ctx.newPage(), errors = []; page.on("pageerror", e => errors.push(String(e))); page.setDefaultTimeout(8000);
+  await page.route("**/fonts.googleapis.com/**", r => r.abort());
+  const fx = ([withPlain]) => {
+    const lesson = id => ({ id, title: "Урок " + id, icon: "book", screens: [{ type: "intro", title: id, body: "QA" }] });
+    const m = SLID_SUBJECTS.find(c => c.id === "math"), h = SLID_SUBJECTS.find(c => c.id !== "math");
+    m.sections = [{ id: "fS5", grade: 5, weeks: [1, 52], title: "QA S5", why: "QA", lessons: ["fs1", "fs2", "fs3"].map(lesson) }];
+    h.sections.push({ id: "fH5", grade: 5, weeks: [1, 52], title: "QA H5", why: "QA", lessons: [lesson("hx1")] });
+    m.pools = []; delete m.graph;
+    const topics = [{ id: "apos", title: "Апостроф QA", kind: "pre", baseline: true, lessons: [], for: ["fS5"], see: ["fs2"] },
+      { id: "era", title: "Межа ер QA", kind: "pre", baseline: true, lessons: [], for: ["fS5"], see: ["hx1"] },
+      ...(withPlain ? [{ id: "nob", title: "Без уроку QA", kind: "pre", baseline: true, lessons: [], for: ["fS5"] }] : []),
+      { id: "c1", title: "Тема класу QA", kind: "cur", lessons: ["fs3"] }];
+    const ch = topic => ({ topic, type: "choice", sk: "num", title: "Q " + topic, opts: ["a", "b"], correct: 0 });
+    m.diags = [{ id: "dgS", grade: 5, title: "QA тест", why: "QA", status: "draft", topics,
+      items: topics.flatMap(t => t.kind === "pre" ? [ch(t.id), ch(t.id)] : [ch(t.id)]) }];
+    return h.short;
+  };
+  const run = async withPlain => {
+    await page.goto(URL0); await page.evaluate(() => { localStorage.clear(); localStorage.setItem("slid.v1", JSON.stringify({ grade: 5, unlockAll: false, subject: "math" })); }); await page.reload();
+    const hShort = await page.evaluate(fx, [withPlain]);
+    await page.evaluate(() => { document.querySelector('.tab[data-tab="path"]').click(); document.querySelector('.tab[data-tab="path"]').click(); });
+    await page.click('[data-diag="math"]'); await page.click("[data-diag-go]");
+    while (await page.locator("#skip").isVisible()) await page.click("#skip");
+    const end = await page.locator("#stage").innerText();
+    const rows = await page.locator("#stage .basegap [data-lesson]").evaluateAll(bs => bs.map(b => [b.dataset.lesson, b.innerText.replace(/\s+/g, " ")]));
+    return { end, rows, hShort };
+  };
+  { const { end, rows, hShort } = await run(false);
+    ok(/тема є в уроці «Урок fs2» \(5 клас\)/.test(end), `see свого предмета: «тема є в уроці «Урок fs2» (5 клас)», а ${end}`);
+    ok(end.includes(`тема є в уроці «Урок hx1» (${hShort}, 5 клас)`), `see іншого предмета: з назвою предмета, а ${end}`);
+    ok(same(rows.map(r => r[0]), ["fs2", "hx1"]), `see: кнопки на fs2 і hx1, а ${JSON.stringify(rows)}`);
+    ok(rows[1] && rows[1][1].includes(hShort) && !rows[0][1].includes(hShort), `see: назва предмета лише в рядку іншого предмета, а ${JSON.stringify(rows)}`);
+    ok(!/попроси вчителя|у застосунку (поки )?немає —|учителем або дорослим/.test(end), `усі baseline з see: без «попроси дорослого», а ${end}`);
+    ok(/З програми 5 класу[\s\S]*Тема класу QA[\s\S]*попереду/i.test(end), `без «уже вмієш»: блок «З програми 5 класу» з «попереду», а ${end}`);
+    ok(!end.includes("відкрито без черги"), "без «уже вмієш»: без речення про відкриті уроки");
+    await page.click('#stage [data-lesson="hx1"]');
+    ok(await page.locator("#player").isVisible(), "see: кнопка відкриває урок іншого предмета"); }
+  { const { end, rows } = await run(true);
+    ok(/Без уроку QA[^.]*\. Уроків на нього у застосунку немає — попроси вчителя або дорослого/.test(end), `тема без see: «попроси дорослого», а ${end}`);
+    ok(!/потренувати: [^.]*(Апостроф QA|Межа ер QA)/.test(end), `теми з see не в переліку «попроси дорослого», а ${end}`);
+    ok(same(rows.map(r => r[0]), ["fs2", "hx1"]), `з темою без see: кнопки see ті самі, а ${JSON.stringify(rows)}`); }
+  ok(!errors.length, "baseline see: помилки сторінки: " + errors.join(" | "));
   await ctx.close();
 }
 
@@ -759,6 +810,9 @@ try {
 
   // 15) Звичайний дріб у полі number уроку (engine-number-fraction-input-1117)
   await numberFractionScenario(browser);
+
+  // 16) Підсумок тесту рівня: baseline-теми з see, блок «З програми N класу» (engine-diag-baseline-plan-1117)
+  await diagBaselineSeeScenario(browser);
 
   // 9) Синхронізація прогресу між пристроями (engine-sync-login)
   await syncScenarios(browser);

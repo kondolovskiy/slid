@@ -417,17 +417,26 @@ function stepRow(st, cls, extra=""){
 function baseRow(id){ const f=findLesson(id);
   return `<button type="button" class="nowrow s-${f.c.id}" data-lesson="${id}"><span class="dot s-${f.c.id}">${ic(f.l.icon)}</span><span class="grow"><span class="muted small">з чого почати · ${f.sec.grade} клас</span><b>${esc(f.l.title)}</b></span><span class="play sm">${icF("play")}</span></button>`; }
 const baseNames = B => B.map(b=>`«${esc(b.t.title)}»`).join(", ");
+/** Уроки see baseline-теми (engine-diag-baseline-plan-1117): урок поточного класу чи іншого предмета, де тему повторюють; лише наявні. */
+const baseSee = b => (b.t.see||[]).filter(id=>findLesson(id));
+function seeRow(id, c){ const f=findLesson(id);
+  return `<button type="button" class="nowrow s-${f.c.id}" data-lesson="${id}"><span class="dot s-${f.c.id}">${ic(f.l.icon)}</span><span class="grow"><span class="muted small">тема в уроці · ${f.c.id===c.id? "" : esc(f.c.short)+" · "}${f.sec.grade} клас</span><b>${esc(f.l.title)}</b></span><span class="play sm">${icF("play")}</span></button>`; }
+const seeNames = (ids, c) => ids.map(id=>{ const f=findLesson(id); return `«${esc(f.l.title)}» (${f.c.id===c.id? "" : esc(f.c.short)+", "}${f.sec.grade} клас)`; }).join(", ");
+/** Baseline-опори (уроків молодших класів немає). Тема з see — «тема є в уроці …» з кнопкою; «попроси дорослого» — лише для тем,
+    на які в застосунку справді немає жодного уроку (плейтест 17.11, g5 №3: «Апостроф» є в u5s7l3). */
 function baseBlock(c, withRow=true){
-  const B=baseTopics(c); if(!B.length) return ""; const st=baseStart(c);
-  return `<div class="rec basegap"><div class="eyebrow">Потренуй з учителем або дорослим</div>
-    <p style="margin:0">${B.length>1?"Ці вміння":"Це вміння"} з молодших класів варто потренувати: ${baseNames(B)}. Уроків на ${B.length>1?"них":"нього"} у застосунку поки немає — попроси вчителя або дорослого дати кілька прикладів.${st?` Уроки ${S.grade} класу можна починати вже зараз.`:""}</p>
+  const B=baseTopics(c); if(!B.length) return ""; const st=baseStart(c), S1=B.filter(b=>baseSee(b).length), N=B.filter(b=>!baseSee(b).length);
+  const one=S1.map(b=>{ const ids=baseSee(b); return `<p style="margin:0">«${esc(b.t.title)}»: уроків молодших класів на це немає, але тема є в ${ids.length>1?"уроках":"уроці"} ${seeNames(ids,c)}.</p>${ids.map(id=>seeRow(id,c)).join("")}`; }).join("");
+  const none=N.length? `<p style="margin:0">${N.length>1?"Ці вміння":"Це вміння"} з молодших класів варто потренувати: ${baseNames(N)}. Уроків на ${N.length>1?"них":"нього"} у застосунку немає — попроси вчителя або дорослого дати кілька прикладів.</p>` : "";
+  return `<div class="rec basegap"><div class="eyebrow">${N.length? "Потренуй з учителем або дорослим" : "Варто потренувати"}</div>
+    ${one}${none}${st?`<p style="margin:0">Уроки ${S.grade} класу можна починати вже зараз.</p>`:""}
     ${withRow&&st? baseRow(st) : ""}</div>`;
 }
 function planCard(c){
   const td=stepsTodo(c);
   if(!td.length){ const B=baseTopics(c); if(!B.length) return ""; const st=baseStart(c);
     return `<div class="card now plancard s-${c.id}"><div class="nowhead"><span class="eyebrow">Твій план · ${c.short}</span><span class="pill">${B.length} ${plural(B.length,["вміння","вміння","вмінь"])}</span></div>
-    <p class="small" style="margin:0">Потренуй з учителем або дорослим: ${baseNames(B)}.</p>
+    <p class="small" style="margin:0">${B.some(b=>!baseSee(b).length)? `Потренуй з учителем або дорослим: ${baseNames(B.filter(b=>!baseSee(b).length))}.` : `Потренуй: ${baseNames(B)} — є уроки, де це повторюється.`}${B.some(b=>!baseSee(b).length)&&B.some(b=>baseSee(b).length)? ` Повтори в уроках: ${baseNames(B.filter(b=>baseSee(b).length))}.` : ""}</p>
     ${st? baseRow(st) : ""}
     <button type="button" class="linkbtn" data-plan="${c.id}">Увесь план${ic("chev","chev")}</button></div>`; }
   const n=activePlan(c).steps.filter(st=>planCtx(c).hasLesson(st.l)).length, dn=n-td.length;
@@ -980,13 +989,13 @@ function renderDiagEnd(){
     ${levelStats(lv)}
     <div class="rec"><div class="eyebrow">Твій план</div>
       ${td.length? `<p style="margin:0">Спершу ${td.length} ${plural(td.length,["короткий урок","короткі уроки","коротких уроків"])} на повторення, далі — програма ${d.grade} класу.</p>${td.slice(0,3).map(st=>stepRow(st,"nowrow")).join("")}${td.length>3?`<p class="muted small" style="margin:0">…і ще ${td.length-3}. Увесь план — на головному екрані.</p>`:""}`
-        : start? `<p style="margin:0">Уроків на повторення в застосунку немає. Почни з уроків ${d.grade} класу.</p>${baseRow(start)}`
-        : baseTopics(C).length? `<p style="margin:0">Уроків на повторення в застосунку немає. Уроки ${d.grade} класу — на сторінці предмета.</p>`
+        : start? `<p style="margin:0">Уроків молодших класів на повторення в застосунку немає. Почни з уроків ${d.grade} класу.</p>${baseRow(start)}`
+        : baseTopics(C).length? `<p style="margin:0">Уроків молодших класів на повторення в застосунку немає. Уроки ${d.grade} класу — на сторінці предмета.</p>`
         : `<p style="margin:0">Тем на повторення не знайшлося. Берися за уроки ${d.grade} класу.</p>`}
     </div>
     ${baseBlock(C,false)}
     <div class="learned"><div class="eyebrow">Теми попередніх класів</div>${topicsHtml(d,plan.topics,"pre")}</div>
-    ${kn?`<div class="learned"><div class="eyebrow">З програми ${d.grade} класу</div>${topicsHtml(d,plan.topics,"cur")}<p class="muted small" style="margin:0">Уроки тем, які ти вже вмієш, відкрито без черги.</p></div>`:""}
+    ${d.topics.some(t=>t.kind==="cur")?`<div class="learned"><div class="eyebrow">З програми ${d.grade} класу</div>${topicsHtml(d,plan.topics,"cur")}${kn?`<p class="muted small" style="margin:0">Уроки тем, які ти вже вмієш, відкрито без черги.</p>`:""}</div>`:""}
   </section>`);
   setDock("","","", td.length? "Почати з першого кроку" : start? "До першого уроку" : "До уроків");
   // baseline-прогалина не закривається переходом: start — лише доступний урок класу
