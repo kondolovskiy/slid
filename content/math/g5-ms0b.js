@@ -783,7 +783,7 @@ SLID.section("math", {
       title: "Три кути на трьох",
       short: "Трикутники",
       icon: "flag",
-      status: "verified",
+      status: "draft",
       why: "Трикутники тримають дахи й мости. Їх легко впізнати за кутами й сторонами.",
       screens: [
         {
@@ -858,7 +858,7 @@ SLID.section("math", {
             kind: "plane", axes: false, view: [0, 10, 0, 8],
             points: { A: { at: [1, 1] }, B: { at: [7, 1] }, C: { at: [2, 4], drag: true, min: [0, 2] } },
             polys: [{ pts: ["A", "B", "C"] }],
-            show: "$AC ≈ {dist(A,C)|2}$, $BC ≈ {dist(B,C)|2}$",
+            show: "Клітинок по горизонталі: від $A$ до $C$ — {abs(Cx-1)|0}, від $C$ до $B$ — {abs(7-Cx)|0}",
             alt: "Трикутник ABC, вершину C можна перетягувати"
           },
           goal: "dist(A,C)==dist(B,C) && area(A,B,C)>0",
