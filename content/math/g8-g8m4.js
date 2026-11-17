@@ -1,4 +1,5 @@
 /* Слід · Математика, 8 клас — «Геометрія: подібність, теорема Піфагора і тригонометрія»
+   fix-math-g8-geom-labs-1117 / fix-math-content-g8-g11-1117 (writer-math-g8-1117, 2026-11-17): l1 — масштаб уміщено в поле; «Паралельний відрізок» і «Зроби DE ∥ BC»: D ковзає по AB, E — по AC, мета — ∠ADE = ∠ABC (відповідні кути) замість «нахилу»; l2 — «Знайди помилку: Ігор» (6 + 8 > 10 замість хибного 6 + 8 = 10). Уроки l1, l2 → draft.
    fix-math-figs-1105, 2026-11-05: g8m4l4 (фінал) — у вступі «висоту на кресленні» → «висоту прямокутного трикутника» (посилання на креслення без рисунка); урок → draft; verified — verifier-math-pre-figs-1105, 2026-11-05 (reports/verify/math-pre-figs-1105.md); Завдання 5 рисунок має — заголовок «Висота на кресленні» коректний.
    Статус уроків: verified; g8m4l2 — повторно після fix-math-figs-g8-geo (рисунки до умов; verifier-fix-math-figs-g8-geo, 2026-11-03, reports/verify/fix-math-figs-g8-geo.md); g8m4l1, g8m4l3 (l3 повторно 2026-11-01, verifier-fix-math-terms-g8m4-g9m1: «проекція» → «проєкція»).
    style-math-ister-followup, 2026-11-05: у завдання фіналу додано pre (id уроку теми; style/common.md, D-048 п. 1); зміст не змінено; назва розділу узгоджена з plan.js (+ тригонометрія).
@@ -33,7 +34,7 @@ SLID.section("math", {
       title: "Одна форма, різний розмір",
       short: "Подібність",
       icon: "scale",
-      status: "verified",
+      status: "draft",
       why: "Щоб міряти висоту дерева або ширину річки за маленьким трикутником-моделлю.",
       screens: [
         {
@@ -66,15 +67,15 @@ SLID.section("math", {
           title: "Зміни масштаб",
           body: "<p>Тягни повзунок $k$. Синій трикутник росте, але кути лишаються тими самими.</p><p>Стеж за відношенням сторін.</p>",
           lab: {
-            kind: "plane", axes: false, view: [0, 14, 0, 8],
+            kind: "plane", axes: false, view: [0, 12, 0, 7],
             params: { k: { min: 1, max: 3, step: 0.5, start: 1, label: "$k$" } },
             points: {
-              A: { at: [1, 1] },
-              B: { at: [5, 1] },
-              C: { at: [1, 4] },
-              D: { x: "8", y: "1" },
-              E: { x: "8+4*k", y: "1" },
-              F: { x: "8", y: "1+3*k" }
+              A: { at: [1, 1], labelDir: "sw" },
+              B: { at: [3, 1], labelDir: "se" },
+              C: { at: [1, 2.5], labelDir: "n" },
+              D: { x: "5", y: "1", labelDir: "sw" },
+              E: { x: "5+2*k", y: "1", labelDir: "se" },
+              F: { x: "5", y: "1+1.5*k", labelDir: "n" }
             },
             polys: [
               { pts: ["A", "B", "C"], color: "ink", opacity: 0.14 },
@@ -85,8 +86,8 @@ SLID.section("math", {
               { from: "E", at: "D", to: "F", color: "blue" }
             ],
             show: [
-              "$AB={dist(A,B)|0}$, $DE={dist(D,E)|1}$",
-              "$AC={dist(A,C)|0}$, $DF={dist(D,F)|1}$",
+              "$AB={dist(A,B)|1}$, $DE={dist(D,E)|1}$",
+              "$AC={dist(A,C)|1}$, $DF={dist(D,F)|2}$",
               "$DE:AB={dist(D,E)/dist(A,B)|1}$, $k={k|1}$"
             ],
             alt: "Два подібні трикутники з коефіцієнтом k"
@@ -122,20 +123,19 @@ SLID.section("math", {
           type: "explore",
           eyebrow: "Дослідження",
           title: "Паралельний відрізок",
-          body: "<p>У великому $ABC$ тягни $D$ і $E$. Коли $DE \\parallel BC$, малий $ADE$ подібний до $ABC$.</p><p>Стеж за кутами при $A$ і за нахилами.</p>",
+          body: "<p>У великому $ABC$ тягни $D$ по стороні $AB$ і $E$ по стороні $AC$. Відрізок $DE$ відтинає малий трикутник $ADE$.</p><p>Стеж за кутами $ADE$ і $ABC$. Це відповідні кути при прямих $DE$, $BC$ і січній $AB$: коли вони рівні, $DE \\parallel BC$.</p>",
           lab: {
             kind: "plane", axes: false, view: [0, 12, 0, 8],
             params: {
               dy: { min: 2, max: 6, step: 1, start: 3, hide: true },
-              ex: { min: 2, max: 9, step: 1, start: 4, hide: true },
-              ey: { min: 1, max: 5, step: 1, start: 3, hide: true }
+              ex: { min: 1.5, max: 9.5, step: 0.5, start: 7, hide: true }
             },
             points: {
-              A: { at: [1, 1] },
-              B: { at: [1, 7] },
-              C: { at: [10, 1] },
-              D: { x: "1", y: "dy", drag: true, color: "green" },
-              E: { x: "ex", y: "ey", drag: true, color: "green" }
+              A: { at: [1, 1], labelDir: "sw" },
+              B: { at: [1, 7], labelDir: "w" },
+              C: { at: [10, 1], labelDir: "se" },
+              D: { x: "1", y: "dy", drag: true, color: "green", labelDir: "w" },
+              E: { x: "ex", y: "1", drag: true, color: "green", labelDir: "s" }
             },
             polys: [
               { pts: ["A", "B", "C"], opacity: 0.1 },
@@ -143,14 +143,14 @@ SLID.section("math", {
             ],
             segs: [{ a: "D", b: "E", color: "green" }],
             angles: [
-              { from: "B", at: "A", to: "C" },
-              { from: "D", at: "A", to: "E", color: "green" }
+              { from: "A", at: "B", to: "C", r: 22 },
+              { from: "A", at: "D", to: "E", color: "green", r: 22 }
             ],
             show: [
-              "нахил $BC={slope(B,C)|2}$, нахил $DE={slope(D,E)|2}$",
-              "$\\angle BAC={angle(B,A,C)|deg}$ (спільний)"
+              "$\\angle ABC={angle(A,B,C)|deg}$, $\\angle ADE={angle(A,D,E)|deg}$",
+              "$\\angle A$ — спільний для обох трикутників"
             ],
-            alt: "Малий трикутник ADE всередині ABC"
+            alt: "Малий трикутник ADE всередині ABC: D на стороні AB, E на стороні AC"
           },
           cta: "Далі"
         },
@@ -159,20 +159,19 @@ SLID.section("math", {
           sk: "geom",
           eyebrow: "Спробуй",
           title: "Зроби $DE \\parallel BC$",
-          body: "<p>Тягни $D$ і $E$, доки нахили збіжаться. Тоді $ADE \\sim ABC$ за двома кутами.</p>",
+          body: "<p>Тягни $D$ по $AB$ і $E$ по $AC$, доки $\\angle ADE = \\angle ABC$. Тоді $DE \\parallel BC$, а $ADE \\sim ABC$ за двома кутами.</p>",
           lab: {
             kind: "plane", axes: false, view: [0, 12, 0, 8],
             params: {
-              dy: { min: 2, max: 6, step: 1, start: 4, hide: true },
-              ex: { min: 2, max: 9, step: 1, start: 5, hide: true },
-              ey: { min: 1, max: 5, step: 1, start: 4, hide: true }
+              dy: { min: 2, max: 6, step: 1, start: 5, hide: true },
+              ex: { min: 1.5, max: 9.5, step: 0.5, start: 4, hide: true }
             },
             points: {
-              A: { at: [1, 1] },
-              B: { at: [1, 7] },
-              C: { at: [10, 1] },
-              D: { x: "1", y: "dy", drag: true, color: "green" },
-              E: { x: "ex", y: "ey", drag: true, color: "green" }
+              A: { at: [1, 1], labelDir: "sw" },
+              B: { at: [1, 7], labelDir: "w" },
+              C: { at: [10, 1], labelDir: "se" },
+              D: { x: "1", y: "dy", drag: true, color: "green", labelDir: "w" },
+              E: { x: "ex", y: "1", drag: true, color: "green", labelDir: "s" }
             },
             polys: [
               { pts: ["A", "B", "C"], opacity: 0.1 },
@@ -182,19 +181,23 @@ SLID.section("math", {
               { a: "B", b: "C", color: "ink" },
               { a: "D", b: "E", color: "green" }
             ],
-            show: [
-              "нахил $BC={slope(B,C)|2}$",
-              "нахил $DE={slope(D,E)|2}$"
+            angles: [
+              { from: "A", at: "B", to: "C", r: 22 },
+              { from: "A", at: "D", to: "E", color: "green", r: 22 }
             ],
-            alt: "Підігнати DE паралельно BC"
+            show: [
+              "$\\angle ABC={angle(A,B,C)|deg}$",
+              "$\\angle ADE={angle(A,D,E)|deg}$"
+            ],
+            alt: "Підігнати DE паралельно BC: D ковзає по AB, E — по AC"
           },
-          goal: "slope(D,E)==slope(B,C) && dist(D,E)>0 && area(A,D,E)>0",
-          solution: { dy: 4, ex: 4, ey: 2 },
-          reveal: "Наприклад $D(1; 4)$, $E(4; 2)$: нахил $DE = -2/3$, як у $BC$.",
-          hint: "Нахил $BC$ дорівнює $-2/3$. Постав $D$ на висоті 4 і піджени $E$, щоб $\\Delta y / \\Delta x = -2/3$.",
+          goal: "angle(A,D,E)==angle(A,B,C)",
+          solution: { dy: 4, ex: 5.5 },
+          reveal: "Наприклад, $AD = 3$ і $AE = 4{,}5$: тоді $\\angle ADE = \\angle ABC$ і $DE \\parallel BC$.",
+          hint: "Кут $ADE$ замалий — посунь $E$ далі від $A$; завеликий — ближче. Якщо точного збігу немає, зміни й $D$.",
           fbOk: "Паралельно.",
-          fbBad: "Нахили ще різні.",
-          fbText: "Однакові нахили означають $DE \\parallel BC$. Кут при $A$ спільний — отже, два кути рівні й трикутники подібні."
+          fbBad: "Кути при $D$ і $B$ ще різні.",
+          fbText: "$\\angle ADE = \\angle ABC$ — відповідні кути рівні, тож $DE \\parallel BC$. Кут $A$ спільний — два кути рівні, і $ADE \\sim ABC$."
         },
         {
           type: "lab",
@@ -276,7 +279,7 @@ SLID.section("math", {
       title: "Квадрати на сторонах",
       short: "Піфагор",
       icon: "path",
-      status: "verified",
+      status: "draft",
       why: "Щоб знайти діагональ екрана, довжину драбини чи відстань між двома точками на плані.",
       screens: [
         {
@@ -443,7 +446,7 @@ SLID.section("math", {
           sk: "geom",
           eyebrow: "Знайди помилку",
           title: "Де схибив Ігор?",
-          body: "<p>Ігор для сторін $6$, $8$, $10$ написав $6 + 8 = 10$ і сказав: «Піфагор виконано». Що не так?</p>",
+          body: "<p>Ігор перевіряє, чи прямокутний трикутник зі сторонами $6$, $8$, $10$. Він написав $6 + 8 > 10$ і сказав: «Так, прямокутний». Що не так?</p>",
           opts: [
             "Треба порівнювати квадрати: $6^2 + 8^2$ і $10^2$",
             "Трійка 6, 8, 10 не прямокутна",
@@ -453,7 +456,7 @@ SLID.section("math", {
           hint: "Згадай формулу з теорії.",
           fbOk: "Саме так.",
           fbBad: "Піфагор — про квадрати, не про суму сторін.",
-          fbText: "$6^2 + 8^2 = 36 + 64 = 100 = 10^2$. Сума сторін $6 + 8 ≠ 10$ — це вже інше правило. Трійка схожа на $3$, $4$, $5$."
+          fbText: "$6 + 8 > 10$ показує лише, що такий трикутник існує. Прямий кут перевіряють квадратами: $6^2 + 8^2 = 36 + 64 = 100 = 10^2$ — так, прямокутний. Трійка схожа на $3$, $4$, $5$."
         },
         {
           type: "number",

@@ -1,4 +1,5 @@
 /* Слід · Математика, 8 клас — «Геометрія: чотирикутники»
+   fix-math-g8-geom-labs-1117 (writer-math-g8-1117, 2026-11-17): l1 — середини AC/BD з однаковим округленням |1; l2 — висновок «тягни D» на тому ж екрані; l4 — видимий повзунок s, промені й паралельні — segs без допоміжних точок, N ковзає по AC, «BC : 2»; boss l5 — N по AC. Уроки l1, l2, l4, l5 → draft.
    Статус уроків: verified (g8m2l1–g8m2l4 — повторно після fix-math-figs-g8-geo, рисунки до умов: verifier-fix-math-figs-g8-geo, 2026-11-03, reports/verify/fix-math-figs-g8-geo.md).
    style-math-ister-followup, 2026-11-05: у завдання фіналу додано pre (id уроку теми; style/common.md, D-048 п. 1); зміст не змінено.
    2026-11-03 write-math-g8-trig-acute (D-043, Істер Геометрія 8 § 7): нові g8m2l6 (вписаний чотирикутник), g8m2l7 (описаний);
@@ -32,7 +33,7 @@ SLID.section("math", {
       title: "Коли сторони біжать поруч",
       short: "Паралелограм",
       icon: "path",
-      status: "verified",
+      status: "draft",
       why: "Щоб перевірити раму, хвіртку чи екран: чи протилежні сторони справді тримають форму.",
       screens: [
         {
@@ -196,7 +197,7 @@ SLID.section("math", {
               B: { at: [8, 1] },
               C: { at: [9, 4] },
               D: { at: [4, 5], drag: true, min: [1, 2], max: [6, 6] },
-              M: { x: "(X(A)+X(C))/2", y: "(Y(A)+Y(C))/2", color: "gold" },
+              M: { x: "(X(A)+X(C))/2", y: "(Y(A)+Y(C))/2", color: "gold", labelDir: "s" },
               N: { x: "(X(B)+X(D))/2", y: "(Y(B)+Y(D))/2", color: "blue" }
             },
             polys: [{ pts: ["A", "B", "C", "D"], opacity: 0.12 }],
@@ -205,7 +206,7 @@ SLID.section("math", {
               { a: "B", b: "D", color: "blue", dash: true }
             ],
             show: [
-              "середина $AC$: $({(X(A)+X(C))/2|0}; {(Y(A)+Y(C))/2|0})$",
+              "середина $AC$: $({(X(A)+X(C))/2|1}; {(Y(A)+Y(C))/2|1})$",
               "середина $BD$: $({(X(B)+X(D))/2|1}; {(Y(B)+Y(D))/2|1})$"
             ],
             alt: "Збігти середини діагоналей перетягуванням D"
@@ -213,7 +214,7 @@ SLID.section("math", {
           goal: "(X(A)+X(C))/2==(X(B)+X(D))/2 && (Y(A)+Y(C))/2==(Y(B)+Y(D))/2 && area(A,B,C,D)>0",
           solution: { Dx: 3, Dy: 4 },
           reveal: "$D(3; 4)$: обидві середини в точці $(5{,}5; 2{,}5)$.",
-          hint: "Середина $AC$ уже відома. Піджени $D$, щоб середина $BD$ стала такою самою.",
+          hint: "Середина $AC$ не рухається: $(5{,}5; 2{,}5)$. Піджени $D$, щоб середина $BD$ стала такою самою.",
           fbOk: "Навпіл.",
           fbBad: "Середини ще різні.",
           fbText: "Ознака: якщо $AC$ і $BD$ діляться навпіл, фігура — той вид з теорії. Точки $M$ і $N$ мають збігтися."
@@ -266,7 +267,7 @@ SLID.section("math", {
       title: "Прямі кути й рівні сторони",
       short: "Види",
       icon: "home",
-      status: "verified",
+      status: "draft",
       why: "Щоб розрізняти екран, ромбову плитку й квадратне вікно — і знати, які в них діагоналі.",
       screens: [
         {
@@ -310,7 +311,7 @@ SLID.section("math", {
           sk: "geom",
           eyebrow: "Висновок",
           title: "Коли кути стали прямими, $AC$ і $BD$…",
-          body: "<p>Коли $D$ стоїть точно над $A$, кут $A$ — $90°$. Порівняй довжини $AC$ і $BD$ у рядку під рисунком.</p>",
+          body: "<p>Тягни $D$, доки він стане точно над $A$: кут $A$ — $90°$. Тоді порівняй довжини $AC$ і $BD$ у рядку під рисунком.</p>",
           lab: {
             kind: "plane", axes: false, view: [0, 12, 0, 7],
             params: { dx: { min: 2, max: 6, step: 1, start: 5, hide: true } },
@@ -714,7 +715,7 @@ SLID.section("math", {
       title: "Рівні відрізки на променях",
       short: "Фалес",
       icon: "target",
-      status: "verified",
+      status: "draft",
       why: "Щоб ділити відрізок на рівні частини й бачити середню лінію трикутника без зайвих вимірювань.",
       screens: [
         {
@@ -729,37 +730,29 @@ SLID.section("math", {
           type: "explore",
           eyebrow: "Дослідження",
           title: "Паралельні ріжуть кут",
-          body: "<p>З вершини $O$ йдуть два промені. Зелені прямі паралельні й ріжуть нижній промінь на рівні шматки.</p><p>Тягни крок $s$. Порівняй відрізки на верхньому промені.</p>",
+          body: "<p>З вершини $O$ йдуть два промені. Зелені прямі паралельні й відтинають на нижньому промені рівні відрізки $OA = AB = s$.</p><p>Тягни повзунок $s$. Порівняй відрізки $OP$ і $PQ$ на верхньому промені.</p>",
           lab: {
             kind: "plane", axes: false, view: [0, 12, 0, 8],
-            params: { s: { min: 2, max: 3, step: 1, start: 2, hide: true } },
+            params: { s: { min: 1, max: 3, step: 0.5, start: 2, label: "крок $s$" } },
             points: {
-              O: { at: [1, 1] },
-              R: { at: [11, 1] },
-              U: { at: [11, 6] },
-              A: { x: "1+s", y: "1", color: "ink" },
-              B: { x: "1+2*s", y: "1", color: "ink" },
-              P: { x: "1+s", y: "1+0.5*s", color: "blue" },
-              Q: { x: "1+2*s", y: "1+s", color: "blue" },
-              A2: { x: "1+s", y: "0.2", color: "green" },
-              A3: { x: "1+s", y: "7", color: "green" },
-              B2: { x: "1+2*s", y: "0.2", color: "green" },
-              B3: { x: "1+2*s", y: "7", color: "green" }
+              O: { at: [1, 1], labelDir: "nw" },
+              A: { x: "1+s", y: "1", color: "ink", labelDir: "se" },
+              B: { x: "1+2*s", y: "1", color: "ink", labelDir: "se" },
+              P: { x: "1+s", y: "1+0.5*s", color: "blue", labelDir: "nw" },
+              Q: { x: "1+2*s", y: "1+s", color: "blue", labelDir: "nw" }
             },
-            lines: [
-              { through: ["O", "R"] },
-              { through: ["O", "U"], color: "blue" },
-              { through: ["A2", "A3"], color: "green" },
-              { through: ["B2", "B3"], color: "green" }
-            ],
             segs: [
+              { a: "O", b: [11.5, 1], color: "muted", arrow: true },
+              { a: "O", b: [11.5, 6.25], color: "muted", arrow: true },
+              { a: ["1+s", 0.3], b: ["1+s", 7.5], color: "green" },
+              { a: ["1+2*s", 0.3], b: ["1+2*s", 7.5], color: "green" },
               { a: "O", b: "A", color: "ink" },
               { a: "A", b: "B", color: "ink" },
               { a: "O", b: "P", color: "blue" },
               { a: "P", b: "Q", color: "blue" }
             ],
             show: [
-              "низ: $OA={dist(O,A)|0}$, $AB={dist(A,B)|0}$",
+              "низ: $OA={dist(O,A)|1}$, $AB={dist(A,B)|1}$",
               "верх: $OP={dist(O,P)|1}$, $PQ={dist(P,Q)|1}$"
             ],
             alt: "Кут із двома паралельними січними й рівними відрізками"
@@ -774,34 +767,26 @@ SLID.section("math", {
           body: "<p>У моделі $OA = AB$. Що видно про $OP$ і $PQ$ на другому промені?</p>",
           lab: {
             kind: "plane", axes: false, view: [0, 12, 0, 8],
-            params: { s: { min: 2, max: 3, step: 1, start: 2, hide: true } },
+            params: { s: { min: 1, max: 3, step: 0.5, start: 2, label: "крок $s$" } },
             points: {
-              O: { at: [1, 1] },
-              R: { at: [11, 1] },
-              U: { at: [11, 6] },
-              A: { x: "1+s", y: "1", color: "ink" },
-              B: { x: "1+2*s", y: "1", color: "ink" },
-              P: { x: "1+s", y: "1+0.5*s", color: "blue" },
-              Q: { x: "1+2*s", y: "1+s", color: "blue" },
-              A2: { x: "1+s", y: "0.2", color: "green" },
-              A3: { x: "1+s", y: "7", color: "green" },
-              B2: { x: "1+2*s", y: "0.2", color: "green" },
-              B3: { x: "1+2*s", y: "7", color: "green" }
+              O: { at: [1, 1], labelDir: "nw" },
+              A: { x: "1+s", y: "1", color: "ink", labelDir: "se" },
+              B: { x: "1+2*s", y: "1", color: "ink", labelDir: "se" },
+              P: { x: "1+s", y: "1+0.5*s", color: "blue", labelDir: "nw" },
+              Q: { x: "1+2*s", y: "1+s", color: "blue", labelDir: "nw" }
             },
-            lines: [
-              { through: ["O", "R"] },
-              { through: ["O", "U"], color: "blue" },
-              { through: ["A2", "A3"], color: "green" },
-              { through: ["B2", "B3"], color: "green" }
-            ],
             segs: [
+              { a: "O", b: [11.5, 1], color: "muted", arrow: true },
+              { a: "O", b: [11.5, 6.25], color: "muted", arrow: true },
+              { a: ["1+s", 0.3], b: ["1+s", 7.5], color: "green" },
+              { a: ["1+2*s", 0.3], b: ["1+2*s", 7.5], color: "green" },
               { a: "O", b: "A", color: "ink" },
               { a: "A", b: "B", color: "ink" },
               { a: "O", b: "P", color: "blue" },
               { a: "P", b: "Q", color: "blue" }
             ],
             show: [
-              "низ: $OA={dist(O,A)|0}$, $AB={dist(A,B)|0}$",
+              "низ: $OA={dist(O,A)|1}$, $AB={dist(A,B)|1}$",
               "верх: $OP={dist(O,P)|1}$, $PQ={dist(P,Q)|1}$"
             ],
             alt: "Кут із двома паралельними січними й рівними відрізками"
@@ -838,19 +823,14 @@ SLID.section("math", {
               O: { at: [1, 1] },
               B: { at: [7, 1] },
               A: { x: "ax", y: "1", drag: true, color: "blue" },
-              P: { x: "ax", y: "1+0.5*(ax-1)", color: "blue" },
-              Q: { x: "7", y: "4", color: "blue" },
-              A2: { x: "ax", y: "0.2", color: "green" },
-              A3: { x: "ax", y: "7", color: "green" },
-              B2: { at: [7, 0.2], color: "green" },
-              B3: { at: [7, 7], color: "green" },
-              U: { at: [11, 6] }
+              P: { x: "ax", y: "1+0.5*(ax-1)", color: "blue", labelDir: "nw" },
+              Q: { x: "7", y: "4", color: "blue", labelDir: "nw" }
             },
-            lines: [
-              { through: ["O", "B"] },
-              { through: ["O", "U"], color: "blue" },
-              { through: ["A2", "A3"], color: "green" },
-              { through: ["B2", "B3"], color: "green" }
+            segs: [
+              { a: "O", b: [11.5, 1], color: "muted", arrow: true },
+              { a: "O", b: [11.5, 6.25], color: "muted", arrow: true },
+              { a: ["ax", 0.3], b: ["ax", 7.5], color: "green" },
+              { a: [7, 0.3], b: [7, 7.5], color: "green" }
             ],
             show: [
               "$OA={dist(O,A)|0}$, $AB={dist(A,B)|0}$",
@@ -895,20 +875,19 @@ SLID.section("math", {
           sk: "geom",
           eyebrow: "Спробуй",
           title: "Постав середини сторін",
-          body: "<p>У $\\triangle ABC$ постав $M$ — середину $AB$, а $N$ — середину $AC$. Тоді $MN$ стане середньою лінією.</p>",
+          body: "<p>У $\\triangle ABC$ тягни $M$ по стороні $AB$ і $N$ по стороні $AC$. Постав $M$ у середину $AB$, а $N$ — у середину $AC$. Тоді $MN$ стане середньою лінією.</p>",
           lab: {
             kind: "plane", axes: false, view: [0, 12, 0, 9],
             params: {
               my: { min: 1, max: 7, step: 1, start: 5, hide: true },
-              nx: { min: 1, max: 9, step: 1, start: 4, hide: true },
-              ny: { min: 1, max: 7, step: 1, start: 5, hide: true }
+              nx: { min: 2, max: 9, step: 1, start: 7, hide: true }
             },
             points: {
               A: { at: [1, 7] },
               B: { at: [1, 1] },
               C: { at: [9, 1] },
               M: { x: "1", y: "my", drag: true, color: "green" },
-              N: { x: "nx", y: "ny", drag: true, color: "green" }
+              N: { x: "nx", y: "7-0.75*(nx-1)", drag: true, color: "green" }
             },
             polys: [{ pts: ["A", "B", "C"], opacity: 0.1 }],
             segs: [
@@ -918,14 +897,14 @@ SLID.section("math", {
             show: [
               "$AM={dist(A,M)|1}$, $MB={dist(M,B)|1}$",
               "$AN={dist(A,N)|1}$, $NC={dist(N,C)|1}$",
-              "$MN={dist(M,N)|1}$, $BC/2={dist(B,C)/2|0}$"
+              "$MN={dist(M,N)|1}$, $BC : 2={dist(B,C)/2|0}$"
             ],
             alt: "Поставити середини сторін трикутника"
           },
           goal: "dist(A,M)==dist(M,B) && dist(A,N)==dist(N,C) && area(A,B,C)>0",
-          solution: { my: 4, nx: 5, ny: 4 },
+          solution: { my: 4, nx: 5 },
           reveal: "$M(1; 4)$, $N(5; 4)$: $MN = 4 = BC : 2$ і $MN \\parallel BC$.",
-          hint: "Середина $AB$ на вертикалі $x = 1$ має висоту 4. Середина $AC$ — $(5; 4)$.",
+          hint: "Стеж за рядками під рисунком: має бути $AM = MB$ і $AN = NC$.",
           fbOk: "Середня лінія готова.",
           fbBad: "Точки ще не в серединах.",
           fbText: "Середня лінія сполучає середини двох сторін. Вона паралельна третій і дорівнює половині її довжини."
@@ -1513,7 +1492,7 @@ SLID.section("math", {
       title: "План ділянки",
       short: "Фінал розділу",
       icon: "trophy",
-      status: "verified",
+      status: "draft",
       boss: true,
       badge: "g8m2boss",
       why: "Паралелограм, особливі види, трапеція, Фалес, вписані й описані чотирикутники — на одному плані. Бали подвоєні.",
@@ -1607,20 +1586,19 @@ SLID.section("math", {
           eyebrow: "Завдання 4",
           pre: "g8m2l4",
           title: "Середня лінія на схемі стежок",
-          body: "<p>Трикутник стежок $ABC$. Постав середини $M$ на $AB$ і $N$ на $AC$, як у теоремі Фалеса.</p>",
+          body: "<p>Трикутник стежок $ABC$. Тягни $M$ по $AB$ і $N$ по $AC$ і постав їх у середини цих сторін.</p>",
           lab: {
             kind: "plane", axes: false, view: [0, 12, 0, 9],
             params: {
               my: { min: 1, max: 7, step: 1, start: 6, hide: true },
-              nx: { min: 1, max: 9, step: 1, start: 3, hide: true },
-              ny: { min: 1, max: 7, step: 1, start: 6, hide: true }
+              nx: { min: 2, max: 9, step: 1, start: 3, hide: true }
             },
             points: {
               A: { at: [1, 7] },
               B: { at: [1, 1] },
               C: { at: [9, 1] },
               M: { x: "1", y: "my", drag: true, color: "green" },
-              N: { x: "nx", y: "ny", drag: true, color: "green" }
+              N: { x: "nx", y: "7-0.75*(nx-1)", drag: true, color: "green" }
             },
             polys: [{ pts: ["A", "B", "C"], opacity: 0.1 }],
             segs: [{ a: "M", b: "N", color: "green" }],
@@ -1631,9 +1609,9 @@ SLID.section("math", {
             alt: "Середня лінія стежок"
           },
           goal: "dist(A,M)==dist(M,B) && dist(A,N)==dist(N,C)",
-          solution: { my: 4, nx: 5, ny: 4 },
+          solution: { my: 4, nx: 5 },
           reveal: "$M(1; 4)$, $N(5; 4)$ — середня лінія завдовжки 4.",
-          hint: "Середини: висота 4 на лівій стороні й точка $(5; 4)$.",
+          hint: "Середина ділить сторону на дві рівні частини: $AM = MB$, $AN = NC$.",
           fbOk: "Стежка посередині.",
           fbBad: "Точки ще не середини.",
           fbText: "Середня лінія сполучає середини сторін. Вона паралельна основі й удвічі коротша — як у уроці про Фалеса."

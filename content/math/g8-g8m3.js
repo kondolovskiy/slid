@@ -1,4 +1,5 @@
 /* Слід · Математика, 8 клас — «Алгебра: квадратні корені»
+   fix-math-content-g8-g11-1117 / fix-math-lab-impossible-1117 (writer-math-g8-1117, 2026-11-17): l1 — майданчик замість плитки 36 м², лаба √n на екрані «Між якими цілими лежить √10»; l4 — повзунок x від −2 (точка зникає, y «—»), e7 «Від ординати до абсциси» замість дубля e8. Уроки l1, l4 → draft.
    Статус уроків: verified (g8m3l1, g8m3l3 — повторно після refine-math-lessons-g7-g9-support, reports/verify/refine-math-lessons-support-g8.md); раніше (g8m3l1, g8m3l3 дописано 2026-10-31, refine-math-g8m3-roots; повторна верифікація reports/verify/refine-g8m3.md). 6 уроків (5 тем + boss); 2026-11-03 додано g8m3l6 (функція y = x², перший у розділі) — verified (reports/verify/write-math-g8-algebra-gaps.md; write-math-g8-algebra-gaps, Істер А8 § 13); eyebrow «Урок N» перенумеровано за порядком; boss g8m3l5 переписано 2026-11-04 (revise-math-finals-g8, D-043/D-045: одне завдання на урок, 5 завдань; + l6) — verified (verifier-revise-math-finals-g8-g9, 2026-11-04, reports/verify/revise-math-finals-g8-g9.md).
    style-math-ister-followup, 2026-11-05: boss g8m3l5 — розминка про параболу y = x² (було √x перед з. 1 про параболу); g8m3l6 фінал — рівняння x² = x + 6 (було x² = 3 − 2x, як у е8). l5, l6 → draft; у boss додано pre.
    verifier-style-math-ister-followup, 2026-11-05: g8m3l5, g8m3l6 → verified (reports/verify/style-math-ister-followup.md).
@@ -214,14 +215,14 @@ SLID.section("math", {
       title: "Сторона за площею",
       short: "Корінь",
       icon: "target",
-      status: "verified",
-      why: "Квадратна плитка 36 м² — яка сторона? Це і є квадратний корінь.",
+      status: "draft",
+      why: "Квадратний майданчик 36 м² — яка сторона? Це і є квадратний корінь.",
       screens: [
         {
           type: "intro",
           eyebrow: "Урок 2",
           title: "Яка сторона у квадрата площею 36 м²?",
-          body: `<p class="lead">На подвір'ї кладуть квадратну плитку. Площа однієї — 36 м².</p>
+          body: `<p class="lead">На подвір'ї роблять квадратний майданчик для гри. Його площа — 36 м².</p>
         <p>Яку довжину сторони взяти, щоб площа вийшла саме 36?</p>`,
           cta: "Дослідити"
         },
@@ -289,7 +290,21 @@ SLID.section("math", {
           sk: "expr",
           eyebrow: "Висновок",
           title: "Між якими цілими лежить $\\sqrt{10}$?",
-          body: "<p>Постав $n = 10$ у лабораторії. Куди впала точка?</p>",
+          body: "<p>Постав $n = 10$ у лабораторії нижче. Куди впала точка?</p>",
+          lab: {
+            kind: "numline",
+            view: [0, 6],
+            tick: 1,
+            labels: 1,
+            params: {
+              n: { min: 1, max: 25, step: 1, start: 2, label: "$n$" }
+            },
+            points: {
+              P: { x: "sqrt(n)", y: "0", color: "red", label: "√n" }
+            },
+            show: ["√{n|0} ≈ {sqrt(n)}", "Між цілими: дивись на пряму"],
+            alt: "Числова пряма з точкою √n"
+          },
           opts: ["Між 0 і 1", "Між 1 і 2", "Між 2 і 3", "Між 3 і 4"],
           correct: 3,
           hint: "Знайди найбільший цілий квадрат, менший за 10, і наступний.",
@@ -742,7 +757,7 @@ SLID.section("math", {
       title: "Графік y = √x",
       short: "$y = \\sqrt{x}$",
       icon: "chart",
-      status: "verified",
+      status: "draft",
       why: "Корінь — це ще й функція: одному $x \\ge 0$ відповідає одне $y \\ge 0$, і графік — знайома «гілка».",
       screens: [
         {
@@ -757,18 +772,18 @@ SLID.section("math", {
           type: "explore",
           eyebrow: "Дослідь",
           title: "Пограйся з $y = \\sqrt{x}$",
-          body: "<p>Тягни точку по графіку. Стеж за координатами. Спробуй від'ємне $x$ — чи є точка?</p>",
+          body: "<p>Тягни точку по графіку або крути повзунок $x$. Стеж за координатами. Спробуй від'ємне $x$ — чи є точка?</p>",
           lab: {
             kind: "plane",
             view: [-2, 10, -1, 4],
             params: {
-              x0: { min: 0, max: 9, step: 0.5, start: 4, label: "$x$", out: false }
+              x0: { min: -2, max: 9, step: 0.5, start: 4, label: "$x$", out: false }
             },
             fns: [{ id: "f", y: "sqrt(x)", color: "accent", from: 0 }],
             points: {
               P: { x: "x0", y: "sqrt(x0)", color: "red", coords: true, drag: true }
             },
-            show: ["$y = √x$", "$({x0};\\,{sqrt(x0)})$"],
+            show: ["$y = √x$", "$x = {x0}$, $y = {sqrt(x0)}$"],
             alt: "Графік y=√x з рухомою точкою"
           },
           cta: "Далі"
@@ -778,7 +793,7 @@ SLID.section("math", {
           sk: "func",
           eyebrow: "Висновок",
           title: "Для яких $x$ існує $y = \\sqrt{x}$?",
-          body: "<p>У лабораторії повзунок починався з нуля. Чому не з мінуса?</p>",
+          body: "<p>У лабораторії при від'ємному $x$ точка зникала, а замість $y$ стояв прочерк. Чому?</p>",
           opts: [
             "Лише для $x > 1$",
             "Для всіх дійсних $x$",
@@ -862,8 +877,8 @@ SLID.section("math", {
         {
           type: "explore",
           eyebrow: "Дослідь",
-          title: "Знайди $x$, коли $\\sqrt{x} = 3$",
-          body: "<p>Тягни точку, доки ордината не стане 3. Запам'ятай абсцису — далі буде завдання.</p>",
+          title: "Від ординати до абсциси",
+          body: "<p>Тягни точку по графіку. Порівнюй ординату $y$ з абсцисою $x$: що буде, якщо $y$ піднести до квадрата?</p><p>Знайди точки з $y = 1$ і $y = 2$.</p>",
           lab: {
             kind: "plane",
             view: [-1, 12, -1, 4],
@@ -872,11 +887,10 @@ SLID.section("math", {
             },
             fns: [{ id: "f", y: "sqrt(x)", color: "accent", from: 0 }],
             points: {
-              P: { x: "x0", y: "sqrt(x0)", color: "red", coords: true, drag: true },
-              T: { x: "9", y: "3", color: "gold", label: "ціль" }
+              P: { x: "x0", y: "sqrt(x0)", color: "red", coords: true, drag: true }
             },
-            show: ["$y = √x$", "Зараз: $y = {sqrt(x0)}$"],
-            alt: "Знайти x, при якому √x = 3"
+            show: ["$y = √x$", "Зараз: $y = {sqrt(x0)}$, $y^2 = {sqrt(x0)^2}$, $x = {x0|0}$"],
+            alt: "Точка на графіку y=√x: абсциса дорівнює квадрату ординати"
           },
           cta: "Далі"
         },
