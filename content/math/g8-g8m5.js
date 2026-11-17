@@ -1,4 +1,5 @@
 /* Слід · Математика, 8 клас — «Алгебра: квадратні рівняння»
+   fix-math-notation-1117 / fix-math-grade-scope-1117 / fix-math-terms-1117 (writer-math-g8g11-1117, 2026-11-17): l1 outro — без $D$ до l2; l7 фінал — $(x^2)/(x - 2)$ дробом. l1 → draft.
    verifier-math-g8-1117, 2026-11-17: l2, l3, l4, l5, l7 → verified (reports/verify/fix-math-g8-1117.md).
    fix-math-content-g8-g11-1117 (writer-math-g8-1117, 2026-11-17): «теорема Вієта» (Вієт — чол. р.) скрізь; l2 «Зроби так, щоб коренів не було»; l7 вступ — «у шкільному курсі формули немає». Уроки l2, l3, l4, l5, l7 → draft.
    Статус уроків: verified. 8 уроків (7 тем + boss); 2026-11-03 додано g8m5l6 (квадратний тричлен), g8m5l7 (рівняння, що зводяться до квадратних), g8m5l8 (задачі на дробові рівняння) — перед boss, verified (reports/verify/write-math-g8-algebra-gaps.md; write-math-g8-algebra-gaps, Істер А8 § 24–26); requires + g8m1l6 (ОВР для l7, l8); boss g8m5l5 переписано 2026-11-04 (revise-math-finals-g8, D-043/D-045: одне завдання на урок, 7 завдань; + l6, l7, l8) — verified (verifier-revise-math-finals-g8-g9, 2026-11-04, reports/verify/revise-math-finals-g8-g9.md).
@@ -26,7 +27,7 @@ SLID.section("math", {
       title: "Коли немає члена",
       short: "Неповні",
       icon: "bolt",
-      status: "verified",
+      status: "draft",
       why: "Іноді в рівнянні немає середнього члена або вільного — тоді корені шукають без важкої формули.",
       screens: [
         {
@@ -176,7 +177,7 @@ SLID.section("math", {
         }
       ],
       outro: {
-        text: "Неповне квадратне рівняння розв'язують без $D$: виносять $x$ або зводять до $x^2 = k$.",
+        text: "Неповне квадратне рівняння розв'язують без загальної формули коренів: виносять $x$ або зводять до $x^2 = k$.",
         learned: [
           "Розпізнавати квадратне й неповне рівняння",
           "Розв'язувати $ax^2 + c = 0$ і $ax^2 + bx = 0$",
@@ -964,7 +965,7 @@ SLID.section("math", {
           type: "number",
           sk: "eq",
           eyebrow: "Фінал",
-          title: "Розв'яжи $x^2/(x - 2) = 4/(x - 2)$",
+          title: "Розв'яжи $(x^2)/(x - 2) = 4/(x - 2)$",
           body: "<p>Це дробове рівняння. Згадай про область визначення рівняння (ОВР). Запиши корінь.</p>",
           answer: -2,
           hint: "ОВР: $x \\neq 2$. Звідси $x^2 = 4$.",

@@ -1,4 +1,5 @@
 /* Слід · Математика, 9 клас — «Геометрія: правильні многокутники і перетворення»
+   fix-math-notation-1117 / fix-math-grade-scope-1117 / fix-math-terms-1117 (writer-math-g8g11-1117, 2026-11-17): l1 — «60°°»; l4 — підписи A′, B′, C′ (було Ap, Bp, Cp).
    Статус уроків: verified (l2, l5 — повторно 01.11 після refine: r → R). 5 уроків (4 теми + boss).
    style-math-ister-followup, 2026-11-05: g9m6l4 — прибрано lab «площу вчетверо» (дубль із l7); g9m6l7 — теорема посилається на l4, екран «Висновок» 16 : 25 → 4 : 5 замість 9 : 4. l4, l7 → draft, потрібна content-verify.
    verifier-style-math-ister-followup, 2026-11-05: g9m6l4, g9m6l7 (у теорію l4 додано обернений крок «площа вчетверо → сторони вдвічі» — опора пулу d02, d04, d08) → verified (reports/verify/style-math-ister-followup.md).
@@ -79,7 +80,7 @@ SLID.section("math", {
             ],
             angles: [{ from: "A", at: "O", to: "B", color: "gold" }],
             show: [
-              "центральний кут: {angle(A,O,B)|deg}°",
+              "центральний кут: {angle(A,O,B)|deg}",
               "сторона $AB = {dist(A,B)|1}$ · радіус $OA = {dist(O,A)|1}$"
             ],
             alt: "Правильний 6-кутник із радіусами з центра"
@@ -912,9 +913,9 @@ SLID.section("math", {
               A: { at: [4, 2], color: "blue" },
               B: { at: [3, 5], color: "blue" },
               C: { at: [6, 4], color: "blue" },
-              Ap: { x: "1.5+k*(4-1.5)", y: "1.5+k*(2-1.5)", color: "red" },
-              Bp: { x: "1.5+k*(3-1.5)", y: "1.5+k*(5-1.5)", color: "red" },
-              Cp: { x: "1.5+k*(6-1.5)", y: "1.5+k*(4-1.5)", color: "red" }
+              Ap: { x: "1.5+k*(4-1.5)", y: "1.5+k*(2-1.5)", color: "red", label: "$A'$" },
+              Bp: { x: "1.5+k*(3-1.5)", y: "1.5+k*(5-1.5)", color: "red", label: "$B'$" },
+              Cp: { x: "1.5+k*(6-1.5)", y: "1.5+k*(4-1.5)", color: "red", label: "$C'$" }
             },
             polys: [
               { pts: ["A", "B", "C"], color: "blue", opacity: 0.12 },

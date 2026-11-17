@@ -1,11 +1,12 @@
 /* Слід · Математика, 9 клас — «Геометрія: розв'язування трикутників»
+   fix-math-notation-1117 / fix-math-grade-scope-1117 / fix-math-terms-1117 (writer-math-g8g11-1117, 2026-11-17): l1 e4 — графік синуса в градусах (радіани — 10 кл.). l1 → draft.
    Статус уроків: verified (l1 — повторно 01.11 після refine: таблиця 30°/45°/60°, тотожність); l3 — повторно після fix-math-figs-g9 (рисунок на екрані 4 «Теорема синусів»; verifier-fix-math-figs-g9, 2026-11-03, reports/verify/fix-math-figs-g9.md). 4 уроки (3 теми + boss).
    style-math-ister-followup, 2026-11-05: boss g9m4l4 з. 2 — сторони 7, 8, 13 (було 3, 5, 7, дубль фіналу l2), відповідь та сама 120°. → draft, потрібна content-verify.
    verifier-style-math-ister-followup, 2026-11-05: g9m4l4 → verified (reports/verify/style-math-ister-followup.md).
    Нові уроки 2026-11-03 (write-math-g9-gaps, D-043, Істер Геом. 9 § 14): g9m4l5 (S = ½ab sin γ), g9m4l6 (Герон, S = abc/4R, S = pr) — verified (verifier-write-math-g9-gaps, 2026-11-03, reports/verify/write-math-g9-gaps.md), перед boss. Тепер 6 уроків (5 тем + boss).
    Boss g9m4l4 — verified (2026-11-04, reports/verify/revise-math-finals-g8-g9.md) після revise-math-finals-g9 (2026-11-04, D-045): 6 завдань (l1, l2, l3, l3, l5, l6); дублі l1 (sin 150°) і l2 (лабораторія 60°) замінено на l5 і l6; дубль l3 (сторона й R) лишився — шосте місце, тем лише 5.
    Інтерактив: plane — трикутник drag (live angle/dist); одиничне півколо;
-   графік sin з xpi; ≥2 explore/lab на урок. signed:true (від'ємний cos). D-019.
+   графік sin у градусах (fix-math-grade-scope-1117: радіани — 10 кл.); ≥2 explore/lab на урок. signed:true (від'ємний cos). D-019.
    Перевірка: node tools/validate.mjs --section g9m4 && node tools/stats.mjs --subject math
    Схема й правила: docs/CONTENT_SCHEMA.md §8, style/, D-019.
    Еталони: g8-g8m4.js, g9-g9m2.js. Scratchpad: scratchpad/g9m4/ */
@@ -33,7 +34,7 @@ SLID.section("math", {
       title: "Одиничне півколо",
       short: "sin, cos, tg",
       icon: "rings",
-      status: "verified",
+      status: "draft",
       why: "Щоб читати синус і косинус тупого кута — без цього не розв'язати будь-який трикутник.",
       screens: [
         {
@@ -106,26 +107,27 @@ SLID.section("math", {
         {
           type: "explore",
           eyebrow: "Дослідь",
-          title: "Графік синуса від 0 до π",
-          body: "<p>Тут кут у радіанах на осі (підписи в частках $\\pi$). Точка їде разом із повзунком у градусах. Порівняй із півколом.</p>",
+          title: "Графік синуса від 0° до 180°",
+          body: "<p>Тут по осі $x$ — кут у градусах, по осі $y$ — його синус. Точка $P$ їде разом із повзунком. Порівняй її висоту з ординатою точки $M$ на півколі.</p>",
           lab: {
             kind: "plane",
-            view: [-0.2, 3.5, -0.25, 1.25],
-            xpi: true,
-            xstep: "pi/2",
+            view: [-10, 190, -0.25, 1.25],
+            grid: [30, 0.5],
+            xstep: 30,
             ystep: 0.5,
+            h: 220,
             params: {
               a: { min: 0, max: 180, step: 15, start: 90, label: "$a$", unit: "°" }
             },
-            fns: [{ id: "s", y: "sin(x)", color: "accent", from: 0, to: "pi" }],
+            fns: [{ id: "s", y: "sind(x)", color: "accent", from: 0, to: 180 }],
             points: {
-              P: { x: "a*pi/180", y: "sind(a)", color: "red", label: "$P$", coords: true }
+              P: { x: "a", y: "sind(a)", color: "red", label: "$P$" }
             },
             show: [
-              "$a = {a|0}° = {a*pi/180|pi}$",
+              "$a = {a|0}°$",
               `$"sin"\\,a = {sind(a)}$`
             ],
-            alt: "Графік sin від 0 до π з підписами в частках π"
+            alt: "Графік синуса від 0° до 180°, кут у градусах на осі x"
           },
           cta: "Далі"
         },
