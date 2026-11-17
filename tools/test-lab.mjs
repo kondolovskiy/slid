@@ -51,7 +51,25 @@ for (const kind of Object.keys(L.KINDS)) { const sp = { kind, params: { a: { min
 { const sp = { kind: "column", op: "+", a: "478", b: "256", input: true };
   eq(L.paramList(sp).map(p => p.id).join(","), "d0,d1,d2", "column input: параметри цифр");
   eq(L.validate(sp, { type: "lab", goal: "col==734", solution: { d0: 4, d1: 3, d2: 7 } }), [], "column input: мета col==734");
-  const r = L.KINDS.column.render(sp, L.makeEnv(sp, L.startState(sp)), {}); eq(r.handles.length, 3, "column input: три клітинки для торкання"); eq(r.handles[0].tap().d0, 0, "column input: «?» → 0"); }
+  const r = L.KINDS.column.render(sp, L.makeEnv(sp, L.startState(sp)), {}); eq(r.handles.length, 3, "column input: три клітинки для торкання");
+  eq(r.handles.some(h => h.tap), false, "column input: дотик не крутить цифру +1 (engine-lab-column-digits-1117) — він ставить фокус у клітинку");
+  eq(r.handles.every(h => Array.isArray(h.box) && h.box.length === 4 && h.box[2] >= 20 && h.box[3] >= 26), true, "column input: кожна клітинка має прямокутник для поля вводу"); }
+// engine-lab-column-digits-1117: порядок вписування, готовність, розбір введеного
+{ const sum = { kind: "column", op: "+", a: "5476", b: "2859", input: true }, hs = L.KINDS.column.render(sum, L.makeEnv(sum, L.startState(sum)), {}).handles;
+  eq([L.digitNext(hs, "d0", 1), L.digitNext(hs, "d1", 1), L.digitNext(hs, "d3", 1), L.digitNext(hs, "d0", -1), L.digitNext(hs, "d2", -1)], ["d1", "d2", null, null, "d1"], "сума: вписуємо справа наліво (одиниці → тисячі), назад — до попередньої");
+  const dv = { kind: "column", op: ":", a: "4572", b: "3", input: true }, hd = L.KINDS.column.render(dv, L.makeEnv(dv, L.startState(dv)), {}).handles;
+  eq(hd.map(h => h.digit), ["d3", "d2", "d1", "d0"], "ділення кутом 4572 : 3: клітинки частки зліва направо");
+  eq([L.digitNext(hd, "d3", 1), L.digitNext(hd, "d0", 1), L.digitNext(hd, "d2", -1)], ["d2", null, "d3"], "ділення: вписуємо зліва направо");
+  eq(hd.every((h, i) => i === 0 || h.box[0] > hd[i - 1].box[0]), true, "ділення: клітинки йдуть зліва направо на рисунку");
+  eq([L.digitsReady(dv, L.startState(dv)), L.digitsReady(dv, { d0: 4, d1: 2, d2: 5, d3: -1 }), L.digitsReady(dv, { d0: 4, d1: 2, d2: 5, d3: 1 })], [false, false, true], "ділення: готово лише без «?»");
+  eq(L.check(dv, { d0: 4, d1: 2, d2: 5, d3: 1 }, "col==1524"), true, "ділення: 1524 зараховано");
+  eq(L.digitsReady({ kind: "plane" }, {}), true, "інші моделі завжди готові до перевірки");
+  eq([["7", -1], ["57", 5], ["75", 5], ["55", 5], ["", 5], ["a", -1], ["٣", -1]].map(([v, p]) => L.typedDigit(v, p)), [7, 7, 7, 5, -1, -1, -1], "розбір введеного в клітинку: нова цифра або «?»"); }
+// позика й знак множення читабельні: крапки — кола, а не гліф «·» 13 px
+{ const sb = { kind: "column", op: "-", a: "403", b: "158" }, b = L.KINDS.column.render(sb, L.makeEnv(sb, {}), {}).body;
+  eq((b.match(/<circle [^>]*class="col-borrow"/g) || []).length, 2, "403 − 158: дві позики (через нуль) — кружки над розрядами");
+  const ml = { kind: "column", op: "*", a: "23", b: "14" }, m = L.KINDS.column.render(ml, L.makeEnv(ml, {}), {}).body;
+  eq(/<circle [^>]*class="col-times"[^>]*r="(3\.[0-9]|[4-9])/.test(m), true, "23 · 14: знак множення — помітна крапка (коло r ≥ 3)"); }
 { const sp = { kind: "column", op: ":", a: "984", b: "8", params: { s: { min: 0, max: 3, start: 3 } }, step: "s" }, r = L.KINDS.column.render(sp, L.makeEnv(sp, { s: 3 }), {});
   eq(/NaN|undefined/.test(r.body), false, "ділення куточком: без NaN"); eq(r.body.includes(">2<") && r.body.includes(">3<"), true, "ділення: цифри частки 123");
   const si = { kind: "column", op: ":", a: "84", b: "6", input: true }; eq(L.validate(si, { type: "lab", goal: "col==14", solution: { d0: 4, d1: 1 } }), [], "ділення input: col==14");

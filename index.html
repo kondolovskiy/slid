@@ -331,6 +331,9 @@ h1 .fr,h2 .fr{font-size:.82em}
 .lab-stage svg{width:100%;height:auto;touch-action:none;user-select:none;-webkit-user-select:none;font-family:var(--body)}
 .lab-h:focus{outline:none} .lab-h:focus-visible{stroke:var(--accent);stroke-width:3;stroke-dasharray:4 3}   /* ручка моделі з клавіатури (app/lab.js handleTargets) */
 .lab-stage svg:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:8px}
+.lab-stage{position:relative;line-height:0}
+.lab-dg{position:absolute;box-sizing:border-box;line-height:normal;margin:0;padding:0;border:0;border-radius:6px;background:transparent;color:transparent;caret-color:transparent;font-size:16px;text-align:center;outline:none;-webkit-tap-highlight-color:transparent;cursor:pointer}   /* клітинка цифри стовпчика поверх SVG (app/lab.js digitCells): цифру малює SVG, поле дає фокус і числову клавіатуру */
+.lab-dg:focus{outline:3px solid var(--accent);outline-offset:-1px;background:color-mix(in srgb,var(--accent) 14%,transparent)} .lab-dg::selection{background:transparent} .lab-dg:disabled{cursor:default}
 .lab-read{display:grid;gap:2px;text-align:center;font-size:17px;min-height:1.5em}
 .lab-read .m,.lab-read .mblock{font-size:19px}
 sup.mp{font-size:.7em;vertical-align:.55em;line-height:0;margin-left:1px}

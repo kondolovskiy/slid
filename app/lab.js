@@ -639,13 +639,17 @@ KINDS.column = {
     const H = top + rows.reduce((h, r) => h + (r.line ? 8 : rh), 0) + 10;
     let g = "", y = top; const handles = [];
     if (isFinite(st) && !(op === "*" && db.length > 1) && st >= 1 && st <= resultRow.digits.length) g += `<rect x="${R - st * cw}" y="${top - 26}" width="${cw}" height="${H - top + 18}" rx="6" fill="var(--accent)" opacity=".1"/>`;
-    for (const [i, m] of Object.entries(marks)) g += t(R - (+i + .5) * cw, top - 8, m, { anchor: "middle", size: 13, fill: "var(--bad)", bold: true });
+    // позика — кружок над розрядом (гліф «·» 13 px на 360 px ледь видно, плейтест 1117 g4 №8); перенос — цифра
+    for (const [i, m] of Object.entries(marks)) g += m === "·" ? `<circle class="col-borrow" cx="${(R - (+i + .5) * cw).toFixed(1)}" cy="${top - 13}" r="3.5" fill="var(--bad)"/>`
+      : t(R - (+i + .5) * cw, top - 8, m, { anchor: "middle", size: 13, fill: "var(--bad)", bold: true });
     for (const r of rows) {
       if (r.line) { g += `<line x1="${R - ncol * cw}" x2="${R}" y1="${y + 2}" y2="${y + 2}" stroke="var(--ink)" stroke-width="2"/>`; y += 8; continue; }
-      if (r.op) g += t(R - ncol * cw + 4, y + 20, r.op, { size: 20, fill: "var(--muted)" });
+      // знак множення «·» (глосарій math) — кружок, а не гліф: інакше в стовпчику «ледь помітна крапка» (плейтест 1117 g4 №16)
+      if (r.op === "·") g += `<circle class="col-times" cx="${(R - ncol * cw + 9).toFixed(1)}" cy="${y + 14}" r="3.2" fill="var(--ink)"/>`;
+      else if (r.op) g += t(R - ncol * cw + 4, y + 20, r.op, { size: 20, fill: "var(--muted)" });
       r.digits.forEach((d, i) => { const vis = !r.hidden && (r.upto == null || i < r.upto); const x = R - (i + r.shift + .5) * cw;
         if (r.input) { const empty = !(d >= 0); g += `<rect x="${x - 10}" y="${y + 3}" width="20" height="26" rx="4" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>` + t(x, y + 22, empty ? "?" : String(d), { anchor: "middle", size: 20, fill: empty ? "var(--muted)" : "var(--accent)", bold: true });
-          handles.push({ x, y: y + 16, digit: "d" + i, name: `Цифра відповіді, ${RANK[i] || "розряд " + (i + 1)}`, value: empty ? "не вписано" : String(d), tap: () => ({ ["d" + i]: d >= 9 ? 0 : (d < 0 ? 0 : d + 1) }), set: () => ({}) }); return; }
+          handles.push({ x, y: y + 16, box: [x - cw / 2, y + 1, cw, 30], digit: "d" + i, name: `Цифра відповіді, ${RANK[i] || "розряд " + (i + 1)}`, value: empty ? "не вписано" : String(d), set: () => ({}) }); return; }
         g += vis ? t(x, y + 22, String(d), { anchor: "middle", size: 22, fill: r.result ? "var(--accent)" : "var(--ink)", bold: r.result, italic: false })
                  : `<rect x="${x - 8}" y="${y + 6}" width="16" height="20" rx="3" fill="none" stroke="var(--line)" stroke-dasharray="3 3"/>`; });
       y += rh;
@@ -667,7 +671,7 @@ function divRender(spec, env, a, b, st) {
   steps.forEach((s, k) => { const qx = bar + 10 + k * cw + cw / 2, qy = top + rh + 22;
     if (spec.input) { const d = env["d" + (steps.length - 1 - k)], empty = !(d >= 0), idx = steps.length - 1 - k;
       g += `<rect x="${qx - 10}" y="${qy - 18}" width="20" height="26" rx="4" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>` + t(qx, qy, empty ? "?" : String(d), { anchor: "middle", size: 20, fill: empty ? "var(--muted)" : "var(--accent)", bold: true });
-      handles.push({ x: qx, y: qy - 6, digit: "d" + idx, name: `Цифра частки, ${RANK[idx] || "розряд " + (idx + 1)}`, value: empty ? "не вписано" : String(d), tap: () => ({ ["d" + idx]: d >= 9 ? 0 : (d < 0 ? 0 : d + 1) }), set: () => ({}) }); }
+      handles.push({ x: qx, y: qy - 6, box: [qx - cw / 2, qy - 20, cw, 30], digit: "d" + idx, name: `Цифра частки, ${RANK[idx] || "розряд " + (idx + 1)}`, value: empty ? "не вписано" : String(d), set: () => ({}) }); }
     else if (k < shown) g += t(qx, qy, String(s.q), { anchor: "middle", size: 20, fill: "var(--accent)", bold: true });
     else g += `<rect x="${qx - 8}" y="${qy - 16}" width="16" height="20" rx="3" fill="none" stroke="var(--line)" stroke-dasharray="3 3"/>`; });
   // проміжні кроки: віднімання й знесення наступної цифри
@@ -779,12 +783,45 @@ function mount(host, spec, opt = {}) {
     ${spec.show ? `<div class="lab-read" aria-live="polite"></div>` : ""}
     ${visible.length ? `<div class="lab-ctl">${visible.map(p => `<div class="lab-p"><span class="lab-pl">${fmt(p.label ?? `$${p.id}$`)}</span><button type="button" class="lab-nb" data-nb="${p.id}" data-d="-1" aria-label="Зменшити на крок">−</button><input type="range" data-p="${p.id}" min="${typeof p.min === "number" ? p.min : 0}" max="${typeof p.max === "number" ? p.max : 100}" step="${p.step}" value="${p.start}" aria-label="${String(p.label ?? p.id).replace(/[$"<>]/g, "")}"><button type="button" class="lab-nb" data-nb="${p.id}" data-d="1" aria-label="Збільшити на крок">+</button><output data-o="${p.id}" ${p.out ? "" : "hidden"}></output></div>`).join("")}</div>` : ""}`;
   const svg = host.querySelector("svg"), read = host.querySelector(".lab-read"), alt = spec.alt || "Інтерактивна модель";
+  /* Цифри відповіді (стовпчик, ділення кутом): прозорі <input inputmode="numeric"> поверх клітинок SVG.
+     Дотик ставить фокус і відкриває числову клавіатуру; цифра вписується й фокус іде до наступної клітинки
+     (порядок handles: сума/різниця — справа наліво, ділення — зліва направо); Backspace стирає й повертає назад.
+     Поля живуть між перемальовуваннями, тож фокус і екранна клавіатура не губляться. */
+  const stage = host.querySelector(".lab-stage"), cells = new Map();
+  const focusDigit = id => { const c = id && cells.get(id); if (c) { c.focus({ preventScroll: true }); try { c.select(); } catch (e) {} } };
+  function enterDigit(id, v) { if (locked) return; setParams({ [id]: v }, true); if (v >= 0) focusDigit(digitNext(last.handles, id, 1)); }
+  function digitCells(r) {
+    const hs = (r.handles || []).filter(h => h.digit && h.box);
+    for (const [id, c] of cells) if (!hs.some(h => h.digit === id)) { c.remove(); cells.delete(id); }
+    hs.forEach(h => { let c = cells.get(h.digit);
+      if (!c) { c = G.document.createElement("input"); c.className = "lab-h lab-dg"; c.type = "text"; c.inputMode = "numeric"; c.autocomplete = "off"; c.setAttribute("enterkeyhint", "next"); c.dataset.dg = h.digit;
+        c.setAttribute("role", "spinbutton"); c.setAttribute("aria-valuemin", "0"); c.setAttribute("aria-valuemax", "9");
+        const id = h.digit;
+        c.addEventListener("focus", () => { try { c.select(); } catch (e) {} });
+        c.addEventListener("keydown", e => { if (locked || e.altKey || e.ctrlKey || e.metaKey) return; const k = e.key;
+          if (/^[0-9]$/.test(k)) { e.preventDefault(); return enterDigit(id, +k); }
+          if (k === "Backspace") { e.preventDefault(); if (state[id] >= 0) { setParams({ [id]: -1 }, true); focusDigit(digitNext(last.handles, id, -1)); }
+            else { const p = digitNext(last.handles, id, -1); if (p) { setParams({ [p]: -1 }, true); focusDigit(p); } } return; }
+          if (k === "Delete") { e.preventDefault(); return setParams({ [id]: -1 }, true); }
+          if (k === "ArrowLeft" || k === "ArrowRight") { e.preventDefault(); return focusDigit(digitSide(last.handles, id, k === "ArrowLeft" ? -1 : 1)); }
+          const o = handleKey(last.handles.find(q => q.digit === id) || { digit: id }, k, state, params); if (o) { e.preventDefault(); setParams(o, true); } });
+        // екранна клавіатура телефона часто не дає key у keydown («Unidentified») — тоді читаємо саме поле
+        c.addEventListener("input", () => { const v = typedDigit(c.value, state[id]); c.value = state[id] >= 0 ? String(state[id]) : ""; if (v >= 0) enterDigit(id, v); else if (!/\d/.test(c.value)) setParams({ [id]: -1 }, true); });
+        stage.appendChild(c); cells.set(id, c); }
+      const [bx, by, bw, bh] = h.box, v = state[h.digit];
+      Object.assign(c.style, { left: bx / r.w * 100 + "%", top: by / r.h * 100 + "%", width: bw / r.w * 100 + "%", height: bh / r.h * 100 + "%" });
+      if (G.document.activeElement !== c || c.value !== (v >= 0 ? String(v) : "")) c.value = v >= 0 ? String(v) : "";
+      c.dataset.h = r.handles.indexOf(h); c.setAttribute("aria-label", `${h.name}, впиши цифру або змінюй стрілками`); c.setAttribute("aria-valuenow", v >= 0 ? v : 0); c.setAttribute("aria-valuetext", h.value ?? "");
+      c.disabled = locked; c.tabIndex = locked ? -1 : 0; });
+  }
   function draw() {
     const env = makeEnv(spec, state);
     let r; try { r = K.render(spec, env, view); } catch (e) { r = { w: 320, h: 60, body: `<text x="10" y="30" fill="var(--bad)">${String(e.message)}</text>`, handles: [] }; }
     // фокус на ручці переживає перемальовування: ручки створюються наново, тож повертаємо його за номером
     const ae = G.document && G.document.activeElement, fi = ae && svg.contains(ae) && ae.dataset && ae.dataset.h != null ? +ae.dataset.h : -1;
-    last = r; svg.setAttribute("viewBox", `0 0 ${r.w} ${r.h}`); svg.innerHTML = r.body + handleTargets(r.handles || [], state, params, locked);
+    // цифри стовпчика вписують у справжні поля (digitCells), тож невидимі SVG-цілі для них не потрібні; {} зберігає нумерацію data-h
+    last = r; svg.setAttribute("viewBox", `0 0 ${r.w} ${r.h}`); svg.innerHTML = r.body + handleTargets((r.handles || []).map(h => h.digit ? {} : h), state, params, locked);
+    digitCells(r);
     svg.setAttribute("role", (r.handles || []).some(h => liveHandle(h, params)) ? "group" : "img");   // у role="img" вкладені ручки для читача екрана не існують
     if (r.rotate) { svg.setAttribute("tabindex", locked ? "-1" : "0"); svg.setAttribute("aria-label", alt + ". Стрілки обертають тіло"); }
     if (fi >= 0) { const h = svg.querySelector(`.lab-h[data-h="${fi}"]`); if (h) h.focus({ preventScroll: true }); }
@@ -810,6 +847,7 @@ function mount(host, spec, opt = {}) {
     if (locked) return; const p = toSvg(e); if (!p) return;
     let best = null, bd = 30 * Math.max(1, p.k);
     (last?.handles || []).forEach(h => { const d = Math.hypot(h.x - p.x, h.y - p.y); if (d < bd) { bd = d; best = h; } });
+    if (best && best.digit && cells.has(best.digit)) { e.preventDefault(); return focusDigit(best.digit); }   // дотик поруч із клітинкою — фокус у неї
     if (best) drag = { h: best, idx: last.handles.indexOf(best), x0: e.clientX, y0: e.clientY }; else if (last?.rotate) drag = { rot: true, x: e.clientX, y: e.clientY }; else return;
     svg.setPointerCapture(e.pointerId); e.preventDefault();
   });
@@ -833,11 +871,24 @@ function mount(host, spec, opt = {}) {
     get: () => ({ ...state }),
     set: o => setParams(o, false),
     reset: () => { state = startState(spec); syncInputs(); draw(); },
+    ready: () => digitsReady(spec, state),   // false, доки в стовпчику є «?»: «Перевірити» ще неактивна
     lock: () => { locked = true; host.querySelectorAll("input,button").forEach(i => i.disabled = true); host.classList.add("locked"); draw(); },
     mark: cls => { host.classList.remove("is-ok", "is-bad"); if (cls) host.classList.add(cls); }
   };
 }
 
+/** Наступна (dir = 1) чи попередня (−1) клітинка цифри в порядку вписування — порядку handles; null на краю. */
+function digitNext(handles, id, dir) { const ds = (handles || []).filter(h => h.digit), i = ds.findIndex(h => h.digit === id), j = i + dir;
+  return i >= 0 && j >= 0 && j < ds.length ? ds[j].digit : null; }
+/** Сусідня клітинка ліворуч (dir = −1) чи праворуч (1) на рисунку — для стрілок ←/→. */
+function digitSide(handles, id, dir) { const ds = (handles || []).filter(h => h.digit), h0 = ds.find(h => h.digit === id); if (!h0) return null;
+  const c = ds.filter(h => (h.x - h0.x) * dir > 0 && Math.abs(h.y - h0.y) < 1).sort((a, b) => Math.abs(a.x - h0.x) - Math.abs(b.x - h0.x))[0]; return c ? c.digit : null; }
+/** Чи вписано всі цифри відповіді (стовпчик з input): поки є «?», перевіряти нічого. Іншим моделям — завжди true. */
+function digitsReady(spec, state) { return !(spec && spec.kind === "column" && spec.input) || paramList(spec).filter(p => /^d\d+$/.test(p.id)).every(p => state[p.id] >= 0); }
+/** Цифра, яку дитина щойно ввела в поле зі старим значенням prev (−1 — «?»): каретка могла стояти до чи після старої цифри; −1 — порожньо. */
+function typedDigit(value, prev) { let s = String(value || "").replace(/[^0-9]/g, "");
+  if (s.length > 1 && prev >= 0) { const i = s.indexOf(String(prev)); if (i >= 0) s = s.slice(0, i) + s.slice(i + 1); }
+  return s ? +s[s.length - 1] : -1; }
 /** Чи може дитина змінити ручку: вона рухає параметр моделі (kx/ky) або вписує цифру (digit/tap).
     «Мертва» ручка — точка drag, у якої обидві координати — вирази (x: "2+t"): її не рухає ні миша, ні клавіші. */
 function liveHandle(h, params) { return !!(h.digit || h.tap || [h.kx, h.ky].some(k => k && params.some(p => p.id === k))); }
@@ -959,5 +1010,5 @@ function validate(spec, screen = {}) {
   return errs;
 }
 
-G.SLID_LAB = { KINDS, compile, makeEnv, startState, paramList, fill, num, check, validate, mount, FN, svgTex, svgTexIssues, ariaTex, svgLabels, handleKey, handleTargets, liveHandle, dragIssues };
+G.SLID_LAB = { KINDS, compile, makeEnv, startState, paramList, fill, num, check, validate, mount, FN, svgTex, svgTexIssues, ariaTex, svgLabels, handleKey, handleTargets, liveHandle, dragIssues, digitNext, digitSide, digitsReady, typedDigit };
 })();
