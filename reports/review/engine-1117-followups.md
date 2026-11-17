@@ -46,3 +46,15 @@ else if (!raw.includes(CELL_NIL)) { const p = digitNext(last.handles, id, -1); i
 - P3-3 — без змін (обмеження платформи, справжній телефон не перевірено).
 
 Перевірки: `node tools/test-lab.mjs` 206/206; `node tools/test-learn.mjs` 2943; `node tools/test-validate.mjs` 1660; `node tools/test-personalization-qa.mjs` 156; `NODE_PATH=/opt/node22/lib/node_modules node tools/test-ui.mjs` — 228 ok, 0 ✗ (з app/lab.js і app/app.js з HEAD 5ba69f5 — 215 ok, 13 ✗). test-answer-ui.py, playtest — лише CI.
+
+## Повторне рев'ю (reviewer-engine-w2-1117)
+Перевірено: c8421e1 (`git show c8421e1 -- app/ tools/ docs/`), злите в 51f2e81; HEAD 51f2e81.
+
+- **P1-1 — закрито.** app/lab.js:815: поле з будь-яким символом, крім цифр і CELL_NIL, ігнорується (поле відновлено, стан і фокус ті самі); «стерти» — лише `raw === ""` або `inputType` `delete*`; повернення до попередньої клітинки — лише з порожньої, коли поле стало зовсім порожнім. Власний зонд (Playwright, Pixel 7, 4572 : 3) на HEAD: після «1» у порожній клітинці «,» / «a» / пробіл — стан `1,-1,-1,-1`, фокус на місці; після «15» у порожній 3-й «,» «.» «-» « » «a» — `1,5,-1,-1`; «.» над заповненою — без змін; «5.» (каретка після цифри) — без змін; `execCommand("delete")` у заповненій — «?» і фокус назад; у порожній — назад і стерти попередню; цифра з кареткою перед CELL_NIL — вписується. U+200B у localStorage немає.
+- **P3-1 — закрито.** `baseBlock`: множина `shown`, `baseRow(st)` пропускається, якщо урок уже серед see; картка — `planBaseRows` без повторів.
+- **P3-2 — закрито.** `planBaseText`: одне речення до 3 назв (+ «і ще N»), урок у тексті лише коли він один. docs/PERSONALIZATION.md оновлено.
+- P3-3 — без змін (обмеження платформи; справжній телефон не перевірено).
+
+Перевірки (HEAD): test-lab 206/206, test-learn 2943, test-validate 1660, test-personalization-qa 156, test-math 75/75; `NODE_PATH=/opt/node22/lib/node_modules node tools/test-ui.mjs` — 228 ok, 0 ✗, rc 0. Мутаційна перевірка: tools/test-ui.mjs з HEAD на коді 5ba69f5 (тимчасовий worktree, прибрано) — 215 ok, 13 ✗ (9 lab erase, 4 картка/підсумок), як заявив автор. Не запускалось: test-answer-ui.py, playtest — CI.
+
+**Вердикт: прийнято.**

@@ -4,7 +4,7 @@ claimed_at: 2026-11-17T19:38:32.909Z
 id: engine-1117-followups
 type: engine
 subject: all
-status: review
+status: done
 claimed_by: engine-followups-1117
 created: 2026-11-17
 source: student-playtest-1117
@@ -52,3 +52,6 @@ verifier-diag-see-1117, 2026-11-17 — **прийнято**. Звіт: reports/v
 
 ## Рев'ю D-026 (reviewer-engine-w2-1117)
 Потрібні виправлення — reports/review/engine-1117-followups.md: P1-1 app/lab.js:812–816 — не-цифровий символ («,», «.», пробіл) у порожній клітинці стирає попередню цифру (регресія від CELL_NIL); P3 — дублі кнопок see/baseStart, стіна тексту в картці плану. Задача лишається в review.
+
+## Повторне рев'ю D-026 (reviewer-engine-w2-1117)
+Прийнято — reports/review/engine-1117-followups.md, «Повторне рев'ю» (c8421e1: P1-1, P3-1, P3-2 закрито).
