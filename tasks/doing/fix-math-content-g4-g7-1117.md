@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-17T13:46:28.209Z
 id: fix-math-content-g4-g7-1117
 type: fix
 subject: math
 status: todo
-claimed_by:
+claimed_by: writer-math-g4g7-1117
 created: 2026-11-17
 source: student-playtest-1117
 priority: P1
