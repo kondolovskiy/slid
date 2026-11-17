@@ -426,25 +426,31 @@ const seeNames = (ids, c) => ids.map(id=>{ const f=findLesson(id); return `«${e
     на які в застосунку справді немає жодного уроку (плейтест 17.11, g5 №3: «Апостроф» є в u5s7l3). */
 function baseBlock(c, withRow=true){
   const B=baseTopics(c); if(!B.length) return ""; const st=baseStart(c), S1=B.filter(b=>baseSee(b).length), N=B.filter(b=>!baseSee(b).length);
-  const one=S1.map(b=>{ const ids=baseSee(b); return `<p style="margin:0">«${esc(b.t.title)}»: уроків молодших класів на це немає, але тема є в ${ids.length>1?"уроках":"уроці"} ${seeNames(ids,c)}.</p>${ids.map(id=>seeRow(id,c)).join("")}`; }).join("");
+  const shown=new Set();   // кнопка на урок — один раз: кілька тем з тим самим see (dgh5 seq/units → l3) чи see = урок «з чого почати» (рев'ю engine-1117-followups P3-1)
+  const one=S1.map(b=>{ const ids=baseSee(b), fresh=ids.filter(id=>!shown.has(id)); fresh.forEach(id=>shown.add(id));
+    return `<p style="margin:0">«${esc(b.t.title)}»: уроків молодших класів на це немає, але тема є в ${ids.length>1?"уроках":"уроці"} ${seeNames(ids,c)}.</p>${fresh.map(id=>seeRow(id,c)).join("")}`; }).join("");
   const none=N.length? `<p style="margin:0">${N.length>1?"Ці вміння":"Це вміння"} з молодших класів варто потренувати: ${baseNames(N)}. Уроків на ${N.length>1?"них":"нього"} у застосунку немає — попроси вчителя або дорослого дати кілька прикладів.</p>` : "";
   return `<div class="rec basegap"><div class="eyebrow">${N.length? "Потренуй з учителем або дорослим" : "Варто потренувати"}</div>
     ${one}${none}${st?`<p style="margin:0">Уроки ${S.grade} класу можна починати вже зараз.</p>`:""}
-    ${withRow&&st? baseRow(st) : ""}</div>`;
+    ${withRow&&st&&!shown.has(st)? baseRow(st) : ""}</div>`;
 }
-/** Текст картки плану на головній для baseline-тем (engine-1117-followups п. 3, рев'ю engine-diag-baseline-plan-1117 P3-1):
-    тема з see — «є в уроці «…» (клас)», як у підсумку тесту; «з дорослим» — лише для тем без уроку. */
+/** Текст картки плану на головній для baseline-тем (engine-1117-followups п. 3): коротко, бо картка мала (рев'ю engine-1117-followups P3-2) —
+    теми з see одним реченням (до 3 назв), урок названо, лише коли він один; уроки — на кнопках під текстом, повний перелік — «Увесь план».
+    «З дорослим» — лише для тем без уроку. */
 function planBaseText(c,B){
-  const S1=B.filter(b=>baseSee(b).length), N=B.filter(b=>!baseSee(b).length);
+  const S1=B.filter(b=>baseSee(b).length), N=B.filter(b=>!baseSee(b).length), ids=[...new Set(S1.flatMap(baseSee))];
+  const names=baseNames(S1.slice(0,3))+(S1.length>3? ` і ще ${S1.length-3}` : "");
   return [N.length? `Потренуй з учителем або дорослим: ${baseNames(N)}.` : "",
-    ...S1.map(b=>{ const ids=baseSee(b); return `${N.length? "Повтори" : "Потренуй"} «${esc(b.t.title)}» — тема є в ${ids.length>1?"уроках":"уроці"} ${seeNames(ids,c)}.`; })].filter(Boolean).join(" ");
+    S1.length? `${N.length? "Повтори" : "Потренуй"}: ${names} — ${ids.length===1? `тема є в уроці ${seeNames(ids,c)}` : "є уроки, де це повторюється"}.` : ""].filter(Boolean).join(" ");
 }
+/** Кнопки картки плану: до двох уроків see і «з чого почати», без повторів (рев'ю engine-1117-followups P3-1: dg4 place → g4m1l1 = baseStart). */
+function planBaseRows(c,B,st){ const ids=[...new Set(B.flatMap(baseSee))].slice(0,2); return ids.map(id=>seeRow(id,c)).join("")+(st&&!ids.includes(st)? baseRow(st) : ""); }
 function planCard(c){
   const td=stepsTodo(c);
   if(!td.length){ const B=baseTopics(c); if(!B.length) return ""; const st=baseStart(c);
     return `<div class="card now plancard s-${c.id}"><div class="nowhead"><span class="eyebrow">Твій план · ${c.short}</span><span class="pill">${B.length} ${plural(B.length,["вміння","вміння","вмінь"])}</span></div>
     <p class="small" style="margin:0">${planBaseText(c,B)}</p>
-    ${[...new Set(B.flatMap(baseSee))].slice(0,2).map(id=>seeRow(id,c)).join("")}${st? baseRow(st) : ""}
+    ${planBaseRows(c,B,st)}
     <button type="button" class="linkbtn" data-plan="${c.id}">Увесь план${ic("chev","chev")}</button></div>`; }
   const n=activePlan(c).steps.filter(st=>planCtx(c).hasLesson(st.l)).length, dn=n-td.length;
   return `<div class="card now plancard s-${c.id}"><div class="nowhead"><span class="eyebrow">Твій план · ${c.short}</span><span class="pill">${dn} з ${n}</span></div>
