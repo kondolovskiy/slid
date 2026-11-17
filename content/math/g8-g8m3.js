@@ -1,4 +1,5 @@
 /* Слід · Математика, 8 клас — «Алгебра: квадратні корені»
+   verifier-math-g8-1117, 2026-11-17: l1, l4 → verified (reports/verify/fix-math-g8-1117.md).
    fix-math-content-g8-g11-1117 / fix-math-lab-impossible-1117 (writer-math-g8-1117, 2026-11-17): l1 — майданчик замість плитки 36 м², лаба √n на екрані «Між якими цілими лежить √10»; l4 — повзунок x від −2 (точка зникає, y «—»), e7 «Від ординати до абсциси» замість дубля e8. Уроки l1, l4 → draft.
    Статус уроків: verified (g8m3l1, g8m3l3 — повторно після refine-math-lessons-g7-g9-support, reports/verify/refine-math-lessons-support-g8.md); раніше (g8m3l1, g8m3l3 дописано 2026-10-31, refine-math-g8m3-roots; повторна верифікація reports/verify/refine-g8m3.md). 6 уроків (5 тем + boss); 2026-11-03 додано g8m3l6 (функція y = x², перший у розділі) — verified (reports/verify/write-math-g8-algebra-gaps.md; write-math-g8-algebra-gaps, Істер А8 § 13); eyebrow «Урок N» перенумеровано за порядком; boss g8m3l5 переписано 2026-11-04 (revise-math-finals-g8, D-043/D-045: одне завдання на урок, 5 завдань; + l6) — verified (verifier-revise-math-finals-g8-g9, 2026-11-04, reports/verify/revise-math-finals-g8-g9.md).
    style-math-ister-followup, 2026-11-05: boss g8m3l5 — розминка про параболу y = x² (було √x перед з. 1 про параболу); g8m3l6 фінал — рівняння x² = x + 6 (було x² = 3 − 2x, як у е8). l5, l6 → draft; у boss додано pre.
@@ -215,7 +216,7 @@ SLID.section("math", {
       title: "Сторона за площею",
       short: "Корінь",
       icon: "target",
-      status: "draft",
+      status: "verified",
       why: "Квадратний майданчик 36 м² — яка сторона? Це і є квадратний корінь.",
       screens: [
         {
@@ -757,7 +758,7 @@ SLID.section("math", {
       title: "Графік y = √x",
       short: "$y = \\sqrt{x}$",
       icon: "chart",
-      status: "draft",
+      status: "verified",
       why: "Корінь — це ще й функція: одному $x \\ge 0$ відповідає одне $y \\ge 0$, і графік — знайома «гілка».",
       screens: [
         {

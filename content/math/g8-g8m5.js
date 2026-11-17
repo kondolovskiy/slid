@@ -1,4 +1,5 @@
 /* Слід · Математика, 8 клас — «Алгебра: квадратні рівняння»
+   verifier-math-g8-1117, 2026-11-17: l2, l3, l4, l5, l7 → verified (reports/verify/fix-math-g8-1117.md).
    fix-math-content-g8-g11-1117 (writer-math-g8-1117, 2026-11-17): «теорема Вієта» (Вієт — чол. р.) скрізь; l2 «Зроби так, щоб коренів не було»; l7 вступ — «у шкільному курсі формули немає». Уроки l2, l3, l4, l5, l7 → draft.
    Статус уроків: verified. 8 уроків (7 тем + boss); 2026-11-03 додано g8m5l6 (квадратний тричлен), g8m5l7 (рівняння, що зводяться до квадратних), g8m5l8 (задачі на дробові рівняння) — перед boss, verified (reports/verify/write-math-g8-algebra-gaps.md; write-math-g8-algebra-gaps, Істер А8 § 24–26); requires + g8m1l6 (ОВР для l7, l8); boss g8m5l5 переписано 2026-11-04 (revise-math-finals-g8, D-043/D-045: одне завдання на урок, 7 завдань; + l6, l7, l8) — verified (verifier-revise-math-finals-g8-g9, 2026-11-04, reports/verify/revise-math-finals-g8-g9.md).
    style-math-ister-followup, 2026-11-05: у завдання фіналу додано pre (id уроку теми; style/common.md, D-048 п. 1); зміст не змінено.
@@ -190,7 +191,7 @@ SLID.section("math", {
       title: "Скільки коренів?",
       short: "Дискримінант",
       icon: "chart",
-      status: "draft",
+      status: "verified",
       why: "Один вираз $D = b^2 - 4ac$ одразу каже: два корені, один чи жодного.",
       screens: [
         {
@@ -376,7 +377,7 @@ SLID.section("math", {
       title: "Сума й добуток",
       short: "Вієт",
       icon: "scale",
-      status: "draft",
+      status: "verified",
       why: "Іноді корені видно з суми й добутку — без довгих обчислень під коренем.",
       screens: [
         {
@@ -526,7 +527,7 @@ SLID.section("math", {
       title: "Площа й політ",
       short: "Задачі",
       icon: "map",
-      status: "draft",
+      status: "verified",
       why: "Квадратне рівняння з'являється, коли площа, шлях або добуток залежать від невідомого в квадраті.",
       screens: [
         {
@@ -834,7 +835,7 @@ SLID.section("math", {
       title: "Заміна змінної",
       short: "Біквадратні",
       icon: "bolt",
-      status: "draft",
+      status: "verified",
       why: "Рівняння четвертого степеня чи з дробами часто зводяться до квадратного. Треба лише помітити заміну або спільний множник.",
       screens: [
         {
@@ -1157,7 +1158,7 @@ SLID.section("math", {
       title: "Квадратна зміна",
       short: "Фінал",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "g8m5boss",
       why: "Зберемо неповні рівняння, дискримінант, теорему Вієта, тричлен, заміну змінної й задачі — як на одній шкільній зміні.",

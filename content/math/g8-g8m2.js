@@ -1,4 +1,5 @@
 /* Слід · Математика, 8 клас — «Геометрія: чотирикутники»
+   verifier-math-g8-1117, 2026-11-17: l1, l2, l4, l5 → verified (reports/verify/fix-math-g8-1117.md); правка: AN, NC з |2 (сума 8,8 + 1,3 ≠ 10).
    fix-math-g8-geom-labs-1117 (writer-math-g8-1117, 2026-11-17): l1 — середини AC/BD з однаковим округленням |1; l2 — висновок «тягни D» на тому ж екрані; l4 — видимий повзунок s, промені й паралельні — segs без допоміжних точок, N ковзає по AC, «BC : 2»; boss l5 — N по AC. Уроки l1, l2, l4, l5 → draft.
    Статус уроків: verified (g8m2l1–g8m2l4 — повторно після fix-math-figs-g8-geo, рисунки до умов: verifier-fix-math-figs-g8-geo, 2026-11-03, reports/verify/fix-math-figs-g8-geo.md).
    style-math-ister-followup, 2026-11-05: у завдання фіналу додано pre (id уроку теми; style/common.md, D-048 п. 1); зміст не змінено.
@@ -33,7 +34,7 @@ SLID.section("math", {
       title: "Коли сторони біжать поруч",
       short: "Паралелограм",
       icon: "path",
-      status: "draft",
+      status: "verified",
       why: "Щоб перевірити раму, хвіртку чи екран: чи протилежні сторони справді тримають форму.",
       screens: [
         {
@@ -267,7 +268,7 @@ SLID.section("math", {
       title: "Прямі кути й рівні сторони",
       short: "Види",
       icon: "home",
-      status: "draft",
+      status: "verified",
       why: "Щоб розрізняти екран, ромбову плитку й квадратне вікно — і знати, які в них діагоналі.",
       screens: [
         {
@@ -715,7 +716,7 @@ SLID.section("math", {
       title: "Рівні відрізки на променях",
       short: "Фалес",
       icon: "target",
-      status: "draft",
+      status: "verified",
       why: "Щоб ділити відрізок на рівні частини й бачити середню лінію трикутника без зайвих вимірювань.",
       screens: [
         {
@@ -896,7 +897,7 @@ SLID.section("math", {
             ],
             show: [
               "$AM={dist(A,M)|1}$, $MB={dist(M,B)|1}$",
-              "$AN={dist(A,N)|1}$, $NC={dist(N,C)|1}$",
+              "$AN={dist(A,N)|2}$, $NC={dist(N,C)|2}$",
               "$MN={dist(M,N)|1}$, $BC : 2={dist(B,C)/2|0}$"
             ],
             alt: "Поставити середини сторін трикутника"
@@ -1492,7 +1493,7 @@ SLID.section("math", {
       title: "План ділянки",
       short: "Фінал розділу",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "g8m2boss",
       why: "Паралелограм, особливі види, трапеція, Фалес, вписані й описані чотирикутники — на одному плані. Бали подвоєні.",
@@ -1604,7 +1605,7 @@ SLID.section("math", {
             segs: [{ a: "M", b: "N", color: "green" }],
             show: [
               "$AM={dist(A,M)|1}$, $MB={dist(M,B)|1}$",
-              "$AN={dist(A,N)|1}$, $NC={dist(N,C)|1}$"
+              "$AN={dist(A,N)|2}$, $NC={dist(N,C)|2}$"
             ],
             alt: "Середня лінія стежок"
           },

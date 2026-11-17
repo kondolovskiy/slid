@@ -1,4 +1,5 @@
 /* Слід · Математика, 8 клас — «Геометрія: подібність, теорема Піфагора і тригонометрія»
+   verifier-math-g8-1117, 2026-11-17: l1, l2 → verified (reports/verify/fix-math-g8-1117.md).
    fix-math-g8-geom-labs-1117 / fix-math-content-g8-g11-1117 (writer-math-g8-1117, 2026-11-17): l1 — масштаб уміщено в поле; «Паралельний відрізок» і «Зроби DE ∥ BC»: D ковзає по AB, E — по AC, мета — ∠ADE = ∠ABC (відповідні кути) замість «нахилу»; l2 — «Знайди помилку: Ігор» (6 + 8 > 10 замість хибного 6 + 8 = 10). Уроки l1, l2 → draft.
    fix-math-figs-1105, 2026-11-05: g8m4l4 (фінал) — у вступі «висоту на кресленні» → «висоту прямокутного трикутника» (посилання на креслення без рисунка); урок → draft; verified — verifier-math-pre-figs-1105, 2026-11-05 (reports/verify/math-pre-figs-1105.md); Завдання 5 рисунок має — заголовок «Висота на кресленні» коректний.
    Статус уроків: verified; g8m4l2 — повторно після fix-math-figs-g8-geo (рисунки до умов; verifier-fix-math-figs-g8-geo, 2026-11-03, reports/verify/fix-math-figs-g8-geo.md); g8m4l1, g8m4l3 (l3 повторно 2026-11-01, verifier-fix-math-terms-g8m4-g9m1: «проекція» → «проєкція»).
@@ -34,7 +35,7 @@ SLID.section("math", {
       title: "Одна форма, різний розмір",
       short: "Подібність",
       icon: "scale",
-      status: "draft",
+      status: "verified",
       why: "Щоб міряти висоту дерева або ширину річки за маленьким трикутником-моделлю.",
       screens: [
         {
@@ -279,7 +280,7 @@ SLID.section("math", {
       title: "Квадрати на сторонах",
       short: "Піфагор",
       icon: "path",
-      status: "draft",
+      status: "verified",
       why: "Щоб знайти діагональ екрана, довжину драбини чи відстань між двома точками на плані.",
       screens: [
         {
