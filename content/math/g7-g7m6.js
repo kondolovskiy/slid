@@ -225,7 +225,7 @@ SLID.section("math", {
       title: "Коли рейки не зустрінуться",
       short: "Ознаки",
       icon: "line",
-      status: "draft",
+      status: "verified",
       why: "Щоб перевірити на кресленні, чи дві лінії справді не перетнуться.",
       screens: [
         {

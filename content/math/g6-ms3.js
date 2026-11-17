@@ -21,7 +21,7 @@ SLID.section("math", {
       title: "Що таке відсоток?",
       short: "Сота частина",
       icon: "frac",
-      status: "draft",
+      status: "verified",
       why: "Відсотки всюди: заряд телефона, знижки, оцінки за тест. Розберімося, що означає цей значок %.",
       screens: [
         {

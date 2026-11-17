@@ -456,7 +456,7 @@ SLID.section("math", {
       title: "Крок за кроком",
       short: "Кілька дій",
       icon: "path",
-      status: "draft",
+      status: "verified",
       why: "Справжні задачі рідко розв'язуються однією дією. Треба бачити, що знайти спершу.",
       screens: [
         {

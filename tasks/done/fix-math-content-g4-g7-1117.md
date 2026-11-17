@@ -4,7 +4,7 @@ claimed_at: 2026-11-17T13:46:28.209Z
 id: fix-math-content-g4-g7-1117
 type: fix
 subject: math
-status: review
+status: done
 claimed_by: writer-math-g4g7-1117
 created: 2026-11-17
 source: student-playtest-1117
@@ -65,3 +65,6 @@ priority: P1
 
 Опора (D-019): новий sort g7m3l1 спирається на екран «Три правила» (e6) і «Знайди помилку». Транспортир ms0bl2 e7 — на рисунку того ж екрана.
 Для верифікатора: розв'язати dg4 №12 (rev 2), g7m3l1 sort, ms0bl2 e7; перевірити рисунок транспортира в браузері (playtest — оркестратор/CI).
+
+## Верифікація (verifier-math-g4g7-1117, 2026-11-17)
+Вердикт: **verified**. Усі змінені завдання розв'язано наново (dg4 №12 rev 2 → [0, 2, 4]; новий sort g7m3l1; ms0bl2 e7 — 60°/120°), опора D-019 є для кожного. Рисунок транспортира й лабораторії g6m6/g7m6 перевірено в браузері. Правка: ms0bl2 e7 дистрактор «130°» → «120°» (умова змінилась на 120°). Змінені уроки й dg4 → `verified`. Звіт: reports/verify/fix-math-content-g4-g7-1117.md. Плейтест — CI/оркестратор (Python playwright у контейнері відсутній).

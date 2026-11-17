@@ -15,7 +15,7 @@ SLID.diag("math", {
   grade: 4,
   title: "Що ти вже вмієш?",
   why: "Згадаємо, що ти вчив у 1–3 класах, і знайдемо, з чого почати 4 клас.",
-  status: "draft",
+  status: "verified",   // verifier-math-g4g7-1117 (2026-11-17): ред. 2 (№12) і інструкції sort №14, №22 перевірено; reports/verify/fix-math-content-g4-g7-1117.md
   signed: false,
   meta: { author: "write-math-diag-g4", created: "2026-10-21", factcheck: "self", teacher: null },
   topics: [

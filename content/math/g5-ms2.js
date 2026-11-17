@@ -460,7 +460,7 @@ SLID.section("math", {
       title: "Куди тікає кома?",
       short: "Множення й ділення",
       icon: "bolt",
-      status: "draft",
+      status: "verified",
       why: "Щоб рахувати вартість кількох кілограмів, ділити стрічку чи гроші порівну.",
       screens: [
         {

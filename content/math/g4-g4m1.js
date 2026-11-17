@@ -466,7 +466,7 @@ SLID.section("math", {
       title: "Майже п'ять тисяч",
       short: "Округлення",
       icon: "target",
-      status: "draft",
+      status: "verified",
       why: "Ми часто кажемо «приблизно». Округлення робить числа зручними, але має свої правила.",
       screens: [
         {
@@ -615,7 +615,7 @@ SLID.section("math", {
       title: "Диктор стадіону",
       short: "Фінал розділу",
       icon: "star",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "g4m1boss",
       why: "Усе про великі числа в одній пригоді. Бали подвоєні.",

@@ -594,7 +594,7 @@ SLID.section("math", {
       title: "Похід у гори",
       short: "Фінал розділу",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "g4m3boss",
       why: "Множення, ділення й рух в одній справжній справі. Бали подвоєні.",

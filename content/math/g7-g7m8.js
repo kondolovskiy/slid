@@ -219,7 +219,7 @@ SLID.section("math", {
       title: "Дотик однієї точки",
       short: "Дотична",
       icon: "target",
-      status: "draft",
+      status: "verified",
       why: "Ремені, колеса, тіні від круглих предметів — скрізь дотична. Її властивість економить вимірювання.",
       screens: [
         {

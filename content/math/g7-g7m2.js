@@ -26,7 +26,7 @@ SLID.section("math", {
       title: "Дві точки — одна пряма",
       short: "Точки й прямі",
       icon: "line",
-      status: "draft",
+      status: "verified",
       why: "Креслення, карти й плани починаються з точок і прямих. Без цього не побудуєш доказ.",
       screens: [
         {
@@ -226,7 +226,7 @@ SLID.section("math", {
       title: "Кути біля перетину",
       short: "Суміжні й вертикальні",
       icon: "target",
-      status: "draft",
+      status: "verified",
       why: "Ножиці, двері й перехрестя доріг — скрізь суміжні й вертикальні кути. Їх можна не міряти, а обчислити.",
       screens: [
         {
