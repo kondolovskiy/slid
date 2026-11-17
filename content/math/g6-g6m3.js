@@ -722,7 +722,7 @@ SLID.section("math", {
       title: "Стрічка для обруча",
       short: "Коло і круг",
       icon: "rings",
-      status: "draft",
+      status: "verified",
       why: "Колеса, тарілки, клумби, піца — круглого навколо багато. Число π допомагає виміряти те, до чого не прикладеш лінійку.",
       screens: [
         {
@@ -1080,7 +1080,7 @@ SLID.section("math", {
       title: "День вареників",
       short: "Фінал розділу",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "g6m3boss",
       why: "Відношення, пропорції, відсотки, коло й кругові діаграми — в одному дні шкільного кафе. Бали подвоєні.",

@@ -149,7 +149,7 @@ SLID.section("math", {
       title: "Тонна і центнер",
       short: "Маса",
       icon: "scale",
-      status: "draft",
+      status: "verified",
       why: "Яблука важать у кілограмах, а врожай — у центнерах і тоннах. Розберемося, як вони пов'язані.",
       screens: [
         {

@@ -466,7 +466,7 @@ SLID.section("math", {
       title: "Майже п'ять тисяч",
       short: "Округлення",
       icon: "target",
-      status: "draft",
+      status: "verified",
       why: "Ми часто кажемо «приблизно». Округлення робить числа зручними, але має свої правила.",
       screens: [
         {

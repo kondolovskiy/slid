@@ -783,7 +783,7 @@ SLID.section("math", {
       title: "Три кути на трьох",
       short: "Трикутники",
       icon: "flag",
-      status: "draft",
+      status: "verified",
       why: "Трикутники тримають дахи й мости. Їх легко впізнати за кутами й сторонами.",
       screens: [
         {

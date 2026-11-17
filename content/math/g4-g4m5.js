@@ -302,7 +302,7 @@ SLID.section("math", {
       title: "Загін для кролика",
       short: "Периметр і площа",
       icon: "leaf",
-      status: "draft",
+      status: "verified",
       why: "Скільки сітки на паркан і скільки місця всередині — це різні питання. Навчись їх не плутати.",
       screens: [
         {
@@ -573,7 +573,7 @@ SLID.section("math", {
       title: "Шкільний ярмарок",
       short: "Фінал розділу",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "g4m5boss",
       why: "Частини, периметр, площа й коробки в одній справі. Бали подвоєні.",
