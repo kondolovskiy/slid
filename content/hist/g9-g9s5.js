@@ -374,7 +374,7 @@ SLID.section("hist", {
       title: "Історик, що написав націю",
       short: "Грушевський",
       icon: "book",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, чому праця Михайла Грушевського змінила погляд на історію України.",
       screens: [
         {

@@ -763,7 +763,7 @@ SLID.section("hist", {
       title: "Хто захищає країну",
       short: "Військо",
       icon: "shield",
-      status: "draft",
+      status: "verified",
       why: "Незалежність треба не лише здобути, а й захистити. Це справа війська й усього народу.",
       screens: [
         {

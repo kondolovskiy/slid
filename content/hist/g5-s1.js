@@ -394,7 +394,7 @@ SLID.section("hist", {
       title: "Лінія часу",
       short: "Роки й століття",
       icon: "line",
-      status: "draft",
+      status: "verified",
       badge: "chrono",
       why: "Без лінії часу події злипаються в кашу. З нею видно, що було раніше, що пізніше і скільки між ними.",
       screens: [

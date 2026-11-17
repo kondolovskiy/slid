@@ -72,7 +72,7 @@ SLID.section("hist", {
       title: "Вільні люди степу",
       short: "Звідки козаки",
       icon: "users",
-      status: "draft",
+      status: "verified",
       why: "Козацтво не з'явилося «раптом». Ти дізнаєшся, хто йшов у степ і чому слово «козак» стало важливим.",
       screens: [
         {

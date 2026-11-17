@@ -670,7 +670,7 @@ SLID.section("hist", {
       title: "Мудреці й мури Сходу",
       short: "Індія і Китай",
       icon: "globe",
-      status: "draft",
+      status: "verified",
       why: "Ідеї Будди й Конфуція досі живуть у мільйонах людей. Ти дізнаєшся, про що вони вчили і як жили Індія та Китай.",
       screens: [
         {
@@ -980,7 +980,7 @@ SLID.section("hist", {
       title: "Зал Стародавнього Сходу",
       short: "Фінал розділу",
       icon: "star",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "oldeast",
       why: "Перевірка всього розділу. Бали подвоєні.",

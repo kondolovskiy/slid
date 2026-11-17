@@ -4,7 +4,7 @@ claimed_at: 2026-11-17T13:46:28.368Z
 id: fix-hist-content-1117
 type: fix
 subject: hist
-status: review
+status: done
 claimed_by: writer-hist-1117
 created: 2026-11-17
 source: student-playtest-1117
@@ -59,3 +59,6 @@ priority: P1
 13. g11s2l5 e1: «Голод мав лише одну причину».
 
 validate: s1, g5s7, g6s6, g7s1, g8s2, g8s6, g9s3, g9s5, g11s1, g11s2 — 0 помилок (попередження давні: sentenceWords 10–11 кл., довгі речення в s1/l5 і g11s2l6). Незалежна верифікація (reports/verify/fix-hist-content-1117.md) — ще не зроблена, це окремий агент content-verify.
+
+## Верифікація (verifier-fix-hist-content-1117, 2026-11-17)
+Вердикт: verified, 13 уроків → `verified`. Змістових правок не знадобилось. Звіт: reports/verify/fix-hist-content-1117.md. WebFetch у сесії блокований DNS — джерела через WebSearch.

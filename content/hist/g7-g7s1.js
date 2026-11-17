@@ -7,6 +7,7 @@
    (тимчасово, до відповіді вчителя, TQ-083): вступ до доби подано одним екраном, а не окремим уроком; межі всесвітньої історії —
    як у курсі «Всесвітня історія» 7 кл.; частини курсу — за модельною програмою «Історія України. 7–9 кл.» (наказ МОН № 1449
    від 27.11.2023), https://znayshov.com/FR/45155/Mod_navch_pr_ist_Ukr_7_9_Gisem.pdf
+   2026-11-17 verifier-fix-hist-content-1117: g7s1l1 → verified (reports/verify/fix-hist-content-1117.md).
    Цитати з «Повісті минулих літ» — за перекладом Л. Махновця (Іпатський список, izbornyk / litopys.org.ua).
    Перевірка: node tools/validate.mjs --section g7s1 && node tools/stats.mjs --subject hist
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
@@ -63,7 +64,7 @@ SLID.section("hist", {
       title: "Поляни, деревляни, сіверяни",
       short: "Східні слов'яни",
       icon: "users",
-      status: "draft",
+      status: "verified",
       why: "До Русі на наших землях жили десятки громад зі своїми князями. Ти дізнаєшся, якими вони були і як про них читати літопис.",
       screens: [
         {

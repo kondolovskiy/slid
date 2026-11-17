@@ -544,7 +544,7 @@ SLID.section("hist", {
       title: "Тріщина в цензурі",
       short: "Відлига",
       icon: "voice",
-      status: "draft",
+      status: "verified",
       why: "Ти побачиш, чому обмежене послаблення режиму породило нове покоління українських митців.",
       screens: [
         {
@@ -1290,7 +1290,7 @@ SLID.section("hist", {
       title: "Експозиція пам'яті",
       short: "Фінал розділу",
       icon: "eye",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "g11s2museum",
       why: "Редакційна колегія музейної виставки має відібрати точні підписи й докази. Бали подвоєні.",
