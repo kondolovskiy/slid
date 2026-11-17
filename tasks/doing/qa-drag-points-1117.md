@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-17T19:38:33.267Z
 id: qa-drag-points-1117
 type: qa
 subject: math
 status: todo
-claimed_by:
+claimed_by: qa-1117
 created: 2026-11-17
 source: student-playtest-1117
 priority: P2

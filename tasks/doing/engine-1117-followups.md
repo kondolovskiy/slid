@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-17T19:38:32.909Z
 id: engine-1117-followups
 type: engine
 subject: all
 status: todo
-claimed_by:
+claimed_by: engine-followups-1117
 created: 2026-11-17
 source: student-playtest-1117
 priority: P2
