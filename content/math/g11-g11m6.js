@@ -534,7 +534,7 @@ SLID.section("math", {
       title: "Від трикутника до кулі",
       short: "Геометрія",
       icon: "globe",
-      status: "verified",
+      status: "draft",
       why: "Геометричні задачі НМТ — це правильна формула й акуратна підстановка. Як у кухні: чи вміститься борщ у каструлю.",
       screens: [
         {
@@ -622,48 +622,35 @@ SLID.section("math", {
           type: "explore",
           eyebrow: "Дослідь",
           title: "Діагональ коробки",
-          body: "<p>Змінюй виміри паралелепіпеда. Червоний відрізок $AC_1$ — його діагональ: з нижнього кута в протилежний верхній. Пунктир $AC$ — діагональ основи. Трикутник $ACC_1$ прямокутний: катети — $AC$ і висота $CC_1$.</p>",
+          body: "<p>Змінюй виміри паралелепіпеда. Червоний відрізок $AC_1$ — його діагональ: з нижнього кута в протилежний верхній. Синій пунктир $AC$ — діагональ основи, зелений $CC_1$ — висота. Трикутник $ACC_1$ прямокутний: катети — $AC$ і $CC_1$. Обертай коробку й дивись на нього з різних боків.</p>",
           lab: {
-            kind: "plane",
-            axes: false,
-            grid: 0,
-            view: [-0.8, 8, -0.8, 8],
+            kind: "solid",
+            shape: "box",
             params: {
               a: { min: 1, max: 5, step: 1, start: 3, label: "довжина $a$" },
-              w: { min: 1, max: 5, step: 1, start: 4, label: "ширина $b$" },
-              h: { min: 1, max: 5, step: 1, start: 3, label: "висота $c$" }
+              c: { min: 1, max: 5, step: 1, start: 4, label: "ширина $b$" },
+              b: { min: 1, max: 5, step: 1, start: 3, label: "висота $c$" }
             },
-            points: {
-              A: { at: [0, 0], color: "ink", label: "$A$" },
-              B: { x: "a", y: "0", color: "ink", label: "$B$" },
-              C: { x: "a + 0.5*w", y: "0.35*w", color: "ink", label: "$C$" },
-              D: { x: "0.5*w", y: "0.35*w", color: "ink", label: "$D$" },
-              A1: { x: "0", y: "h", color: "ink", label: "$A_1$" },
-              B1: { x: "a", y: "h", color: "ink", label: "$B_1$" },
-              C1: { x: "a + 0.5*w", y: "0.35*w + h", color: "ink", label: "$C_1$" },
-              D1: { x: "0.5*w", y: "0.35*w + h", color: "ink", label: "$D_1$" }
-            },
+            a: "a",
+            b: "b",
+            c: "c",
+            labels: false,
+            view: { yaw: 40, pitch: 22 },
+            marks: [
+              { v: 0, label: "A" },
+              { v: 5, label: "C" },
+              { v: 6, label: "C₁" }
+            ],
             segs: [
-              { a: "A", b: "B" },
-              { a: "B", b: "C" },
-              { a: "C", b: "D", dash: true },
-              { a: "D", b: "A", dash: true },
-              { a: "A1", b: "B1" },
-              { a: "B1", b: "C1" },
-              { a: "C1", b: "D1" },
-              { a: "D1", b: "A1" },
-              { a: "A", b: "A1" },
-              { a: "B", b: "B1" },
-              { a: "C", b: "C1" },
-              { a: "D", b: "D1", dash: true },
-              { a: "A", b: "C", color: "blue", dash: true },
-              { a: "A", b: "C1", color: "red" }
+              { a: 0, b: 5, color: "blue", dash: true },
+              { a: 0, b: 6, color: "red" },
+              { a: 5, b: 6, color: "green" }
             ],
             show: [
-              "Діагональ основи: $AC = √(a^2 + b^2) ≈$ {sqrt(a^2 + w^2)}",
-              "Діагональ: $AC_1 = √(AC^2 + c^2) = √(a^2 + b^2 + c^2) ≈$ {sqrt(a^2 + w^2 + h^2)}"
+              "Діагональ основи: $AC = √(a^2 + b^2) ≈$ {sqrt(a^2 + c^2)}",
+              "Діагональ: $AC_1 = √(AC^2 + c^2) = √(a^2 + b^2 + c^2) ≈$ {sqrt(a^2 + b^2 + c^2)}"
             ],
-            alt: "Прямокутний паралелепіпед з діагоналлю основи AC і діагоналлю AC1"
+            alt: "Прямокутний паралелепіпед з діагоналлю основи AC і діагоналлю AC1, яку можна обертати"
           },
           cta: "Далі"
         },
