@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-18T10:28:07.892Z
 id: engine-lab-p3-1117
 type: engine
 subject: math
 status: todo
-claimed_by:
+claimed_by: agent-engine-lab
 created: 2026-11-18
 source: student-playtest-1117
 priority: P3
