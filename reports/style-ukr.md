@@ -1,6 +1,6 @@
 # Стиль і складність: ukr
 
-Згенеровано: 2026-11-17 · tools/stats.mjs
+Згенеровано: 2026-11-18 · tools/stats.mjs
 
 | урок | клас | екр. | частка завдань | слів/екран | макс. слів | слів/речення | довгі слова | типів | прапорці |
 |---|---|---|---|---|---|---|---|---|---|
@@ -274,12 +274,12 @@
 | u8s3l2 Помилка в одному закінченні | 8 | 10 | 0.5 | 27 | 51 | 5.6 | 0.049 | 4 | — |
 | u8s3l3 Думка, а не набір слів | 8 | 12 | 0.5 | 26 | 53 | 5.5 | 0.041 | 5 | — |
 | u8s3l4 Екоакція в парку (фінал) | 8 | 7 | 0.86 | 27 | 44 | 5.2 | 0.053 | 4 | — |
-| u8s4l1 Підмет із кількох слів | 8 | 12 | 0.5 | 28 | 51 | 5.6 | 0.016 | 4 | — |
+| u8s4l1 Підмет із кількох слів | 8 | 12 | 0.5 | 29 | 51 | 5.7 | 0.016 | 4 | — |
 | u8s4l2 Уміє пекти чи пече? | 8 | 12 | 0.5 | 28 | 52 | 5.6 | 0.056 | 5 | — |
 | u8s4l3 Була лікаркою | 8 | 10 | 0.5 | 24 | 40 | 5.2 | 0.047 | 4 | maxReadWords нетипово для сім'ї (z=-2) |
 | u8s4l4 Заспівав чи заспівали? | 8 | 10 | 0.5 | 28 | 47 | 5.7 | 0.026 | 3 | — |
 | u8s4l5 Пауза на місці «є» | 8 | 10 | 0.5 | 28 | 45 | 5.3 | 0.061 | 3 | — |
-| u8s4l6 Репортаж зі стадіону (фінал) | 8 | 8 | 0.88 | 20 | 41 | 5.1 | 0.073 | 5 | — |
+| u8s4l6 Репортаж зі стадіону (фінал) | 8 | 8 | 0.88 | 20 | 41 | 5.1 | 0.072 | 5 | — |
 | u8s5l1 Рюкзак із жовтими смужками | 8 | 10 | 0.5 | 28 | 45 | 6.1 | 0.06 | 4 | — |
 | u8s5l2 Друга назва предмета | 8 | 10 | 0.5 | 24 | 44 | 5.6 | 0.015 | 3 | — |
 | u8s5l3 Дефіс, пробіл чи лапки? | 8 | 9 | 0.56 | 31 | 60 | 6 | 0.041 | 4 | — |
@@ -507,7 +507,7 @@
 
 - **5-6:lesson**: screens 11.46±0.72, gradedShare 0.55±0.05, readWordsPerScreen 26.43±3.16, maxReadWords 50.39±6.45, sentenceWords 5.35±0.45, longWordShare 0.03±0.02, typeVariety 4.04±0.75
 - **5-6:boss**: screens 7.44±0.7, gradedShare 0.86±0.03, readWordsPerScreen 19.36±2.96, maxReadWords 34.48±3.83, sentenceWords 4.96±0.43, longWordShare 0.04±0.01, typeVariety 3.88±0.65
-- **7-9:lesson**: screens 10.56±0.87, gradedShare 0.54±0.04, readWordsPerScreen 28.65±3.6, maxReadWords 52.69±6.34, sentenceWords 5.82±0.58, longWordShare 0.04±0.02, typeVariety 3.93±0.8
+- **7-9:lesson**: screens 10.56±0.87, gradedShare 0.54±0.04, readWordsPerScreen 28.66±3.6, maxReadWords 52.69±6.34, sentenceWords 5.82±0.58, longWordShare 0.04±0.02, typeVariety 3.93±0.8
 - **7-9:boss**: screens 7.18±0.38, gradedShare 0.86±0.01, readWordsPerScreen 22.21±3.06, maxReadWords 38.26±4.87, sentenceWords 5.46±0.59, longWordShare 0.05±0.02, typeVariety 3.82±0.81
 - **10-11:lesson**: screens 10.74±0.94, gradedShare 0.52±0.04, readWordsPerScreen 26.6±3.03, maxReadWords 49.69±5.14, sentenceWords 5.71±0.6, longWordShare 0.05±0.02, typeVariety 3.86±0.68
 - **10-11:boss**: screens 7.05±0.21, gradedShare 0.86±0, readWordsPerScreen 19.27±2.65, maxReadWords 33.36±5.3, sentenceWords 5.3±0.47, longWordShare 0.06±0.02, typeVariety 3.45±0.5
