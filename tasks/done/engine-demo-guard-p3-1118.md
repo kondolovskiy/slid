@@ -4,7 +4,7 @@ claimed_at: 2026-11-18T12:05:20.127Z
 id: engine-demo-guard-p3-1118
 type: engine
 subject: all
-status: review
+status: done
 claimed_by: agent-engine-demo2
 created: 2026-11-18
 source: engine-demo-guard-1118
