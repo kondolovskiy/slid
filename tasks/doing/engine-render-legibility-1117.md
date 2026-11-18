@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-18T06:53:27.546Z
 id: engine-render-legibility-1117
 type: engine
 subject: all
 status: todo
-claimed_by:
+claimed_by: engine-w3-1117
 created: 2026-11-17
 source: student-playtest-1117
 priority: P3

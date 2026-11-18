@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-18T06:53:27.593Z
 id: images-maps-hist-world-1117
 type: images
 subject: hist
 status: todo
-claimed_by:
+claimed_by: images-team-1117
 created: 2026-11-17
 source: student-playtest-1117
 priority: P2

@@ -1,9 +1,11 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-18T06:53:27.799Z
 id: design-student-service-info-1117
 type: design
 subject: all
 status: todo
-claimed_by:
+claimed_by: design-w3-1117
 created: 2026-11-17
 source: student-playtest-1117
 priority: P3
