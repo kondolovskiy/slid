@@ -503,6 +503,36 @@ async function planCardSeeScenario(browser) {
 /* 9) Синхронізація прогресу (engine-sync-login): фейковий API (семантика server/: CAS за rev, 409, name відкидається, коди прив'язки
    одноразові, CORS), app/config.js з адресою фейку, скрипт Google Identity Services — фейк із кнопкою, що повертає id_token.
    Два пристрої — два контексти браузера (окремі localStorage). Без справжнього Google і бекенду. */
+async function demoGuardScenario(browser) {
+  const ctx = await browser.newContext({ viewport: { width: 400, height: 860 }, serviceWorkers: "block" });
+  const page = await ctx.newPage(), errors = []; page.on("pageerror", e => errors.push(String(e))); page.setDefaultTimeout(8000);
+  await page.route("**/fonts.googleapis.com/**", r => r.abort());
+  const st = () => page.evaluate(() => JSON.parse(localStorage.getItem("slid.v1")));
+  const boot = async q => { await page.goto(URL0 + q); await page.evaluate(() => { sessionStorage.clear(); localStorage.clear(); localStorage.setItem("slid.v1", JSON.stringify({ grade: 5, subject: "math", unlockAll: false, name: "Дитина", xp: 7 })); }); await page.goto(URL0 + q); await page.click('.tab[data-tab="profile"]'); };
+  for (const q of ["", "?demo=x", "?demo=", "?demo=RUTAS1DW"]) {
+    await boot(q); ok(await page.locator("#demo").count() === 0, `demo: URL «${q}» — кнопки немає взагалі`);
+  }
+  await boot(""); await page.click('.tab[data-tab="progress"]');
+  ok(!/демо-дані/.test(await page.locator(".empty").innerText()), "demo: без ключа порожній «Прогрес» не радить демо-дані");
+  await boot("?demo=rutas1dw");
+  ok(await page.locator("#demo").count() === 1, "demo: з ключем кнопка є");
+  await page.click('.tab[data-tab="path"]'); await page.click('.tab[data-tab="profile"]');
+  ok(await page.locator("#demo").count() === 1, "demo: перерендер не губить кнопку");
+  const keyStored = await page.evaluate(() => JSON.stringify(localStorage).includes("rutas1dw") || document.cookie.includes("rutas1dw"));
+  ok(!keyStored, "demo: ключ не потрапляє в localStorage (slid.v1)");
+  await page.goto(URL0); await page.click('.tab[data-tab="profile"]');
+  ok(await page.locator("#demo").count() === 1, "demo: ключ пам'ятається до кінця вкладки (sessionStorage)");
+  await page.click('.tab[data-tab="progress"]');
+  ok(/демо-дані/.test(await page.locator(".empty").innerText()), "demo: з ключем порожній «Прогрес» радить демо-дані");
+  await page.click('.tab[data-tab="profile"]');
+  await page.click("#demo");
+  ok(/Натисни ще раз/.test(await page.locator("#demo").innerText()) && (await st()).xp === 7, "demo: перше натискання лише просить підтвердження, прогрес не змінено");
+  await page.click("#demo");
+  ok(await until(async () => (await st()).xp !== 7), "demo: друге натискання заповнює демо-прогрес");
+  ok(!errors.length, "demo: помилки сторінки: " + errors.join(" | "));
+  await ctx.close();
+}
+
 async function syncScenarios(browser) {
   const L = new Map(), codes = new Map(), bodies = []; let seq = 0;
   const api = http.createServer((req, res) => {
@@ -531,7 +561,7 @@ async function syncScenarios(browser) {
     await page.route("**/fonts.googleapis.com/**", r => r.abort());
     await page.route("**/app/config.js", r => r.fulfill({ contentType: "text/javascript", body: `window.SLID_CONFIG=${JSON.stringify({ api: API, googleClientId: "qa.apps.googleusercontent.com" })};` }));
     await page.route("https://accounts.google.com/gsi/client", r => r.fulfill({ contentType: "text/javascript", body: GSI }));
-    await page.goto(URL0); await page.evaluate(s => { localStorage.clear(); localStorage.setItem("slid.v1", JSON.stringify(s)); }, state); await page.reload();
+    await page.goto(URL0 + "?demo=rutas1dw"); await page.evaluate(s => { localStorage.clear(); localStorage.setItem("slid.v1", JSON.stringify(s)); }, state); await page.reload();
     await page.click('.tab[data-tab="profile"]');
     return { ctx, page, errors, st: () => page.evaluate(() => JSON.parse(localStorage.getItem("slid.v1"))), sy: () => page.evaluate(() => JSON.parse(localStorage.getItem("slid.sync") || "null")) };
   };
@@ -566,7 +596,7 @@ async function syncScenarios(browser) {
   // офлайн: зміни в черзі, з мережею — відправлено
   await B.ctx.setOffline(true);
   await B.page.evaluate(() => { const s = JSON.parse(localStorage.getItem("slid.v1")); return s; });
-  await B.page.click("#demo");   // save() → у чергу
+  await B.page.click("#demo"); await B.page.click("#demo");   // демо: друге натискання → save() → у чергу
   await B.page.click('.tab[data-tab="profile"]'); await B.page.click("#syncNow");
   ok(await until(async () => /Немає мережі/.test(await B.page.locator("#syncState").innerText())), `sync: офлайн — «Немає мережі…», а «${await B.page.locator("#syncState").innerText()}»`);
   const q = await B.sy(); ok(q && q.dirty === true, "sync: офлайн — зміни в черзі (slid.sync dirty)");
@@ -959,6 +989,9 @@ try {
 
   // 17) Ділення кутом з input: автоперехід, дотик по клітинці, «Перевірити» на «????» (engine-lab-column-digits-1117)
   await labColumnDivScenario(browser);
+
+  // 9a) Демо-прогрес захищено ключем ?demo= і подвійним натисканням (engine-demo-guard-1118)
+  await demoGuardScenario(browser);
 
   // 9) Синхронізація прогресу між пристроями (engine-sync-login)
   await syncScenarios(browser);

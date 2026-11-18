@@ -666,7 +666,7 @@ function viewProgress(){
       <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px"><h3>Значки</h3><span class="muted" style="font-size:13px">${BADGES.filter(b=>S.badges[b.id]).length} з ${BADGES.length}</span></div>
       <div class="badges">${BADGES.map(b=>{ const on=!!S.badges[b.id]; return `<div class="bdg ${on?"":"off"}" title="${attr(b.desc)}"><div class="medal">${ic(on?b.icon:"lock")}</div>${b.name}</div>`; }).join("")}</div>
     </div>
-    ${tot? "" : `<div class="empty">Пройди перший урок, і тут з'явиться статистика. Щоб подивитися на заповнений прогрес, увімкни демо-дані в «Профілі».</div>`}
+    ${tot? "" : `<div class="empty">Пройди перший урок, і тут з'явиться статистика. ${demoOn?"Щоб подивитися на заповнений прогрес, увімкни демо-дані в «Профілі».":""}</div>`}
   </div>`;
 }
 function weekChart(){
@@ -686,7 +686,12 @@ function weekChart(){
 }
 
 /* ---------- Екран «Профіль» ---------- */
-let confirmReset=false;
+let confirmReset=false, confirmDemo=false;
+/* демо-прогрес — лише для дорослих: кнопка є тільки з ключем ?demo=… в URL (пам'ятається до кінця вкладки, у slid.v1 не йде) */
+const DEMO_KEY="rutas1dw";
+const demoOn=(()=>{ let ok=false; try{ ok=new URLSearchParams(location.search).get("demo")===DEMO_KEY; }catch(e){}
+  try{ if(ok) sessionStorage.setItem("slid.demo",DEMO_KEY); else ok=sessionStorage.getItem("slid.demo")===DEMO_KEY; }catch(e){}
+  return ok; })();
 function viewProfile(){
   const L=levelOf(S.xp), nm=S.name||"Учень";
   return `<div class="stack">
@@ -700,7 +705,7 @@ function viewProfile(){
       <div class="eyebrow">Для тестування прототипу</div>
       <div class="setrow"><div><b>Відкрити всі уроки</b><div class="muted" style="font-size:13px">Не треба проходити по черзі</div></div><button class="switch" id="swUnlock" role="switch" aria-checked="${S.unlockAll}" aria-label="Відкрити всі уроки" type="button"></button></div>
       <div class="setrow"><div><b>Тиждень навчального року</b><div class="muted" style="font-size:13px">Для картки «Зараз у школі»</div></div><select id="weekSel" aria-label="Тиждень навчального року"><option value="">авто (${(()=>{ const o=S.weekOverride; S.weekOverride=null; const w=schoolWeek(); S.weekOverride=o; return w; })()})</option>${[...Array(35)].map((_,i)=>`<option value="${i+1}" ${S.weekOverride===i+1?"selected":""}>${i+1}</option>`).join("")}</select></div>
-      <button class="btn ghost" id="demo" type="button">Заповнити демо-прогресом</button>
+      ${demoOn?`<button class="btn ${confirmDemo?"danger":"ghost"}" id="demo" type="button">${confirmDemo?"Натисни ще раз — демо замінить твій прогрес":"Заповнити демо-прогресом"}</button>`:""}
       <button class="btn ${confirmReset?"danger":"ghost"}" id="reset" type="button">${confirmReset?"Натисни ще раз, щоб стерти все":"Скинути прогрес"}</button>
     </div>
     ${syncCard()}
@@ -829,7 +834,8 @@ function bindView(){
   document.querySelectorAll("#themeSeg button").forEach(b=>b.onclick=()=>{ S.theme=b.dataset.v; save(); render(); });
   const sw=$("#swUnlock"); if(sw) sw.onclick=()=>{ S.unlockAll=!S.unlockAll; save(); render(); };
   const ib=$("#installBtn"); if(ib) ib.onclick=async()=>{ if(await window.SLID_PWA.install()) toast(ic("check")+"Встановлено"); render(); };
-  const dm=$("#demo"); if(dm) dm.onclick=()=>{ fillDemo(); save(); toast(ic("check")+"Демо-прогрес заповнено"); tab="progress"; render(); };
+  const dm=$("#demo"); if(dm&&demoOn) dm.onclick=()=>{ if(!confirmDemo){ confirmDemo=true; render(); setTimeout(()=>{ confirmDemo=false; if(tab==="profile") render(); },4000); return; }
+    confirmDemo=false; fillDemo(); save(); toast(ic("check")+"Демо-прогрес заповнено"); tab="progress"; render(); };
   const sg=$("#syncGoogle"); if(sg) sg.onclick=syncGoogle;
   const sc=$("#syncCode"); if(sc) sc.onclick=syncCodeEnter;
   const sn=$("#syncNow"); if(sn) sn.onclick=async()=>{ syncMsg=""; const r=await SYNC.sync(); if(r.text) syncMsg=r.text; else if(r.s==="ok") toast(ic("check")+"Синхронізовано"); if($("#player").hidden) render(); };

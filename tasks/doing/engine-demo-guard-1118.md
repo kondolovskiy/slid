@@ -25,3 +25,10 @@ priority: P2
 
 ## Критерії готовності
 - `node tools/test-ui.mjs` зелений; node-тести зелені; reports/review/engine-demo-guard-1118.md — «прийнято».
+
+## Нотатки agent-engine-demo
+- app/app.js: `DEMO_KEY`/`demoOn` (URL `?demo=rutas1dw` → sessionStorage `slid.demo`, try/catch, у `slid.v1` не йде); кнопка `#demo` рендериться лише з ключем; обробник теж перевіряє `demoOn`; подвійне натискання (`confirmDemo`, скидається за 4 с, як `confirmReset`, підпис «Натисни ще раз — демо замінить твій прогрес»); текст про демо-дані у порожньому «Прогресі» — лише з ключем.
+- tools/test-ui.mjs: новий `demoGuardScenario` (URL без ключа / `?demo=x` / порожнє / інший регістр — кнопки немає; з ключем є, переживає перерендер і перезавантаження без ключа в адресі, у localStorage ключа немає; текст у «Прогресі»; одне натискання стан не міняє, друге заповнює); sync-сценарії відкриваються з `?demo=rutas1dw` і клікають `#demo` двічі.
+- Документація: docs/ARCHITECTURE.md (абзац про демо-ключ). Дизайн docs/design/student-service-info.md не чіпав (історичний).
+- Тести: `NODE_PATH=/opt/node22/lib/node_modules node tools/test-ui.mjs` — 279 ok, 0 ✗ (build не потрібен: index.html підключає app/*.js напряму; build не запускав — оркестратору треба збілдити, бо змінено app/app.js). node-тести test-*.mjs зелені, окрім test-hyp: «§0 екрани уроків: отримано [1624,…], очікувалось [1622,…]» — залежить від складу контенту, який паралельно змінюють інші агенти (не від цієї задачі).
+- Python playtest.py/test-answer-ui.py не запускались (недоступні); якщо playtest клікає `#demo` — перевірити в CI (у репозиторії grep по `#demo` — лише test-ui).
