@@ -556,7 +556,8 @@ const sum = (R, pid) => R.events.filter(e => e.pid === pid).map(e => e.type === 
   // fix-math-content-g4-g7-1117: у g7m3l1 додано sort «Який це степінь двійки?» з hint (оцінюваних 1623 → 1624, hint 1151 → 1152).
   // хвиля 2 *-1117: g4m4 m4a e6 choice → hyp «Заглянь наперед» (оцінюваних −1, choice −1, hyp/poll +1, fbBad −1); з g10m4l2 вилучено «Градусна міра прямого кута» (оцінюваних −1, fbBad −1, hint −1) → [1622,690,75,1601,1151].
   // хвиля 3 style-math-1117 (f876a02, verified): +1 hint у переписаному завданні D-019 → hint 1152.
-  eq([s0.gradedScreens, s0.byType.choice, s0.choiceHypPoll, s0.fbBad, s0.hint, s0.pre, s0.preLessons], [1622, 690, 75, 1601, 1152, 359, 79], "§0 екрани уроків");  // 691: верифікатор g6m3 замінив один lab на choice (2fcb431)
+  // fix-content-followups-1117 (6fb1116): у g10m2l3 додано lab «Побудуй слід» і number «Ще одна точка сліду» (оцінюваних +2, fbBad +2, hint +2); дерево HEAD з g10-g10m2.js на 6fb1116^ дає попередній знімок [1622,690,75,1601,1152,359,79].
+  eq([s0.gradedScreens, s0.byType.choice, s0.choiceHypPoll, s0.fbBad, s0.hint, s0.pre, s0.preLessons], [1624, 690, 75, 1603, 1154, 359, 79], "§0 екрани уроків");  // 691: верифікатор g6m3 замінив один lab на choice (2fcb431)
   eq([s0.pools, s0.poolItems, s0.lvl, s0.poolHint, s0.poolPre, s0.gen, s0.itemTypes, s0.answerNumber], [52, 1816, { 1: 694, 2: 686, 3: 436 }, 1147, 0, 0, { answer: 1642, choice: 114, multi: 60 }, 1163], "§0 пули");
   eq([s0.pairs, s0.pairs2a1, s0.diags, s0.diagItems, s0.pureTitle], [236, 207, 8, 209, 338], "§0 пари, тести, чисті вирази");
   eq([s21.errors, s21.A, s21.Dle, s21.byLvl[1].Dle, s21.byLvl[1].errors, s21.byLvl[2].Dle, s21.byLvl[2].errors], [908, 464, 202, 0, 694, 202, 214], "§2.1 A 464; D≤ 202/908, рівень 1 — 0/694");
