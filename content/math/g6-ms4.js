@@ -353,7 +353,7 @@ SLID.section("math", {
       title: "Скільки води в акваріумі?",
       short: "Об'єм",
       icon: "river",
-      status: "verified",
+      status: "draft",
       why: "Об'єм підкаже, скільки води налити в акваріум, скільки піску в пісочницю і чи влізуть речі в коробку.",
       screens: [
         {
@@ -372,7 +372,7 @@ SLID.section("math", {
             kind: "solid", shape: "box", cubes: true,
             params: { a: { min: 1, max: 6, start: 3, label: "довжина" }, c: { min: 1, max: 5, start: 2, label: "ширина" }, b: { min: 1, max: 5, start: 2, label: "висота" } },
             a: "a", b: "b", c: "c",
-            show: ["В одному шарі: {a|0} · {c|0} = {a*c|0} кубиків", "Шарів: {b|0}"]
+            show: ["В одному шарі: {a|0} · {c|0} = {a*c|0} {a*c|pl:кубик,кубики,кубиків}", "Шарів: {b|0}"]
           },
           cta: "Далі"
         },

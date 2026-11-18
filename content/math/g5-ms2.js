@@ -764,7 +764,7 @@ SLID.section("math", {
       title: "Скільки стрибків?",
       short: "Ділення на дріб",
       icon: "target",
-      status: "verified",
+      status: "draft",
       why: "Щоб ділити стрічку, сік чи площу, коли дільник теж з комою.",
       screens: [
         {
@@ -827,7 +827,7 @@ SLID.section("math", {
             params: { n: { min: 1, max: 10, step: 1, start: 4, label: "Стрибків" } },
             jumps: [{ from: "0", by: "0.4", repeat: "n" }],
             points: { E: { x: "2.8", y: "0", color: "red", label: "2,8 м" } },
-            show: "{n|0} стрибків по 0,4 м = {n*0.4} м",
+            show: "{n|0} {n|pl:стрибок,стрибки,стрибків} по 0,4 м = {n*0.4} м",
             alt: "Числова пряма зі стрибками по 0,4 м до позначки 2,8 м"
           },
           goal: "n*0.4==2.8",

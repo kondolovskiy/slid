@@ -207,7 +207,7 @@ SLID.section("math", {
       title: "Коло й пряма числами",
       short: "Коло і пряма",
       icon: "home",
-      status: "verified",
+      status: "draft",
       why: "Щоб записувати коло й пряму рівняннями — як у кресленнях і іграх.",
       screens: [
         {
@@ -239,7 +239,7 @@ SLID.section("math", {
             segs: [{ a: "O", b: "P", color: "gold" }],
             show: [
               "$OP = {dist(O,P)|1}$, радіус $r = {r|0}$",
-              "$(x {-a|s})^2 + (y {-b|s})^2 = {r*r|0}$"
+              "${a|shift:x}^2 + {b|shift:y}^2 = {r*r|0}$"
             ],
             alt: "Коло зі змінним центром і радіусом; рухома точка P"
           },

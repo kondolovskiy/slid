@@ -21,7 +21,7 @@ SLID.section("math", {
       title: "Що таке відсоток?",
       short: "Сота частина",
       icon: "frac",
-      status: "verified",
+      status: "draft",
       why: "Відсотки всюди: заряд телефона, знижки, оцінки за тест. Розберімося, що означає цей значок %.",
       screens: [
         {
@@ -41,7 +41,7 @@ SLID.section("math", {
             kind: "fraction",
             params: { p: { min: 0, max: 100, step: 1, start: 10, label: "Клітинок" } },
             items: [{ shape: "grid", k: "p" }],
-            show: "Зафарбовано {p|0} клітинок зі 100. Це {p|0} %."
+            show: "Зафарбовано {p|0} {p|pl:клітинку,клітинки,клітинок} зі 100. Це {p|0} %."
           },
           cta: "Далі"
         },
@@ -78,7 +78,7 @@ SLID.section("math", {
             kind: "fraction",
             params: { p: { min: 0, max: 100, step: 1, start: 0, label: "Клітинок" } },
             items: [{ shape: "grid", k: "p" }],
-            show: "Зафарбовано {p|0} клітинок зі 100."
+            show: "Зафарбовано {p|0} {p|pl:клітинку,клітинки,клітинок} зі 100."
           },
           goal: "p==35",
           solution: { p: 35 },
@@ -99,7 +99,7 @@ SLID.section("math", {
               k: { min: 0, max: 12, step: 1, start: 1, label: "Зафарбовано" }
             },
             items: [{ shape: "circle", n: "n", k: "k" }],
-            show: "Зафарбовано {k|0} з {n|0} шматків."
+            show: "Зафарбовано {k|0} з {n|0} {n|pl:шматка,шматків,шматків}."
           },
           goal: "k/n==0.25",
           solution: { n: 4, k: 1 },
