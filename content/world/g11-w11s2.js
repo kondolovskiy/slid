@@ -792,7 +792,7 @@ SLID.section("world", {
       title: "Виставка «Європа і Америка після війни»",
       short: "Фінал розділу",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "westdem",
       why: "Перевірка всього розділу. Бали подвоєні.",

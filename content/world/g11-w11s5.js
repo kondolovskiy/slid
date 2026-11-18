@@ -969,7 +969,7 @@ SLID.section("world", {
       title: "Атлас трьох континентів",
       short: "Фінал розділу",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "threecontinents",
       why: "Перевірка всього розділу. Бали подвоєні.",
