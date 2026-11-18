@@ -404,7 +404,7 @@ SLID.section("math", {
       title: "Де живе √2?",
       short: "Дійсні",
       icon: "line",
-      status: "draft",
+      status: "verified",
       why: "Не всі корені — цілі: деякі числа не записати дробом $m/n$ — це ірраціональні числа, але вони теж є на прямій.",
       screens: [
         {

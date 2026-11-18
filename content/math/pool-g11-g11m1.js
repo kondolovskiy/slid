@@ -12,7 +12,7 @@
 SLID.pool("math", {
   id: "pg11m1",
   section: "g11m1",
-  status: "draft",
+  status: "verified",
   meta: { author: "agent-write-math-pool-g11m1", created: "2026-10-31", verified: "2026-10-31", factcheck: "verifier-pg11m1 (reports/verify/pg11m1.md)", teacher: null },
   sources: [
     { id: "m11", title: "Мерзляк А. Г., Номіровський Д. А., Полонський В. Б., Якір М. С. Математика: алгебра і початки аналізу та геометрія, рівень стандарту. 11 клас. — Харків: Гімназія, 2019 (§ 1, пп. 1–7; дзеркало PDF на znayshov.com)", url: "https://znayshov.com/FR/553/2.pdf" }

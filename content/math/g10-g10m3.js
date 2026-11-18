@@ -25,7 +25,7 @@ SLID.section("math", {
       title: "Корінь будь-якого степеня",
       short: "Корінь n-го",
       icon: "target",
-      status: "draft",
+      status: "verified",
       why: "Куб об'ємом 27 дм³ — яке ребро? Це корінь 3-го степеня. Так само для 4-го, 5-го…",
       screens: [
         {
@@ -55,7 +55,8 @@ SLID.section("math", {
             },
             show: [
               "$n = {n|0}$, $a = {a|0}$",
-              "$\\sqrt[{n|0}]{{a|0}}$ {root(n,a)|eq:3}"
+              "$\\sqrt[{n|0}]{{a|0}}$ {root(n,a)|eq:3}",
+              "{root(n,a) == root(n,a)|if:;Червоної точки на прямій немає}"
             ],
             alt: "Числова пряма з коренем n-го степеня"
           },
@@ -193,7 +194,7 @@ SLID.section("math", {
       title: "Дробовий показник",
       short: "Рац. степінь",
       icon: "bolt",
-      status: "draft",
+      status: "verified",
       why: "Запис $a^{m/n}$ замінює корінь і степінь одним символом — зручно спрощувати формули.",
       screens: [
         {
@@ -590,7 +591,7 @@ SLID.section("math", {
       title: "Лабораторія вимірювань",
       short: "Фінал",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "g10m3boss",
       why: "Зберемо корінь n-го степеня, дробовий показник і перевірку ірраціональних рівнянь в одному сюжеті.",

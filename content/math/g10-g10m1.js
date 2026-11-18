@@ -26,7 +26,7 @@ SLID.section("math", {
       title: "Де формула живе",
       short: "ОВ і ОЗ",
       icon: "path",
-      status: "draft",
+      status: "verified",
       why: "Курс валют, датчик температури, тариф — усе працює лише на певних входах і дає певні виходи.",
       screens: [
         {
@@ -612,7 +612,7 @@ SLID.section("math", {
       title: "Зміна аналітика",
       short: "Фінал",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "g10m1boss",
       why: "Зберемо область визначення, парність, монотонність і обернену в одній зміні аналітика даних.",

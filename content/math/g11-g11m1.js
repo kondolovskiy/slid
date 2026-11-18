@@ -384,7 +384,7 @@ SLID.section("math", {
       title: "Графік у дзеркалі",
       short: "Функція log",
       icon: "eye",
-      status: "draft",
+      status: "verified",
       why: "Логарифм росте дуже повільно. Так влаштовані шкали, де кожна поділка — «у 10 разів більше».",
       screens: [
         {
