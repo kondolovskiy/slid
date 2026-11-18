@@ -233,7 +233,7 @@ SLID.section("world", {
       title: "Від вогню до весілля",
       short: "Візантія і Русь",
       icon: "flame",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, як Візантія воювала, торгувала й укладала союзи з Руссю. І як ромеї описували наших предків.",
       screens: [
         {
@@ -740,7 +740,7 @@ SLID.section("world", {
       title: "Книга, якій понад 1150 років",
       short: "Китай та Індія",
       icon: "book",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, як жили найбільші держави Азії — Китай та Індія. І які їхні винаходи досі з нами.",
       screens: [
         {
@@ -902,7 +902,7 @@ SLID.section("world", {
       title: "Караван із Києва до Чан'аня",
       short: "Фінал розділу",
       icon: "star",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "silkroad",
       why: "Перевірка всього розділу. Бали подвоєні.",

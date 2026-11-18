@@ -1007,7 +1007,7 @@ SLID.section("world", {
       title: "Світло, тінь і телескоп",
       short: "Бароко і нова наука",
       icon: "globe",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, яким було мистецтво бароко. І як учені XVI–XVII ст. по-новому побачили Всесвіт.",
       screens: [
         {
@@ -1171,7 +1171,7 @@ SLID.section("world", {
       title: "Виставка двох епох",
       short: "Фінал розділу",
       icon: "star",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "renref",
       why: "Перевірка всього розділу. Бали подвоєні.",

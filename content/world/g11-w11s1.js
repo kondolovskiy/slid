@@ -226,7 +226,7 @@ SLID.section("world", {
       title: "Права, які не дарують",
       short: "Права людини",
       icon: "scroll",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, звідки взялися права людини, на які сьогодні посилаються суди й правозахисники в усьому світі. І навчишся впізнавати їх порушення.",
       screens: [
         {
@@ -788,7 +788,7 @@ SLID.section("world", {
       title: "Архів 1945–1962",
       short: "Фінал розділу",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "coldwar",
       why: "Перевірка всього розділу. Бали подвоєні.",

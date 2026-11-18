@@ -818,7 +818,7 @@ SLID.section("world", {
       title: "Музей Великої війни",
       short: "Фінал розділу",
       icon: "star",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "greatwar",
       why: "Перевірка всього розділу. Бали подвоєні.",

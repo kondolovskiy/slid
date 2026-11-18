@@ -1007,7 +1007,7 @@ SLID.section("world", {
       title: "Словник XVIII століття",
       short: "Фінал розділу",
       icon: "star",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "enlight",
       why: "Перевірка всього розділу. Бали подвоєні.",

@@ -515,7 +515,7 @@ SLID.section("world", {
       title: "Весна, яку зупинили танки",
       short: "Празька весна",
       icon: "leaf",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, як Чехословаччина 1968 р. спробувала змінити соціалізм і чому союзники відповіли вторгненням.",
       screens: [
         {
@@ -933,7 +933,7 @@ SLID.section("world", {
       title: "Архів за залізною завісою",
       short: "Фінал розділу",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "eastbloc",
       why: "Перевірка всього розділу. Бали подвоєні.",

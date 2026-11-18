@@ -87,7 +87,7 @@ SLID.section("world", {
       title: "Перець за тридев'ять земель",
       short: "Шлях до Індії",
       icon: "scroll",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, чому європейці XV ст. так прагнули дістатися Індії. І навчишся перевіряти популярні пояснення подій датами.",
       screens: [
         {
@@ -820,7 +820,7 @@ SLID.section("world", {
       title: "Сукня, сукно й зерно",
       short: "Мануфактура і фільварок",
       icon: "city",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, як у XVI ст. змінилася праця в майстерні й на полі — на заході і на сході Європи. І що одяг може розповісти про епоху.",
       screens: [
         {
@@ -988,7 +988,7 @@ SLID.section("world", {
       title: "Атлас нового світу",
       short: "Фінал розділу",
       icon: "star",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "discoveries",
       why: "Перевірка всього розділу. Бали подвоєні.",
