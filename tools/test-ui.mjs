@@ -1044,6 +1044,9 @@ try {
 
   // 24) Колесо миші над панеллю «Перевірити» гортає екран sort (g8 №33, engine-lab-p3-1117 п. 7)
   await dockWheelScenario(browser);
+
+  // 25) Випадковий тап по полю не зсуває єдину точку: переносить лише короткий тап без руху (engine-lab-p4-1118 п. 2)
+  await tapMoveScenario(browser);
 } finally { await browser.close(); server.close(); swServer.close(); }
 
 console.log(`test-ui: ${pass} ok, ${fail} ✗`);
@@ -1244,6 +1247,65 @@ async function dockWheelScenario(browser) {
   await page.evaluate(() => window.__slidStart("wh2l1")); await page.waitForSelector("#stage .lab");
   const h2t = await page.locator("#stage .lab .lab-hint").innerText();
   ok(/Тягни точку/.test(h2t) && !/торкнись/.test(h2t), `дві точки: підказка без «торкнись», а «${h2t}»`);
+  await ctx.close();
+}
+async function tapMoveScenario(browser) {
+  const ctx = await browser.newContext({ viewport: { width: 360, height: 760 }, hasTouch: true, serviceWorkers: "block" });
+  const page = await ctx.newPage(), errors = []; page.on("pageerror", e => errors.push(String(e))); page.setDefaultTimeout(8000);
+  await page.route("**/fonts.googleapis.com/**", r => r.abort());
+  await page.goto(URL0);
+  await page.evaluate(s => localStorage.setItem("slid.v1", JSON.stringify(s)), seed);
+  await page.reload();
+  const SEC = { id: "fT", grade: 5, weeks: [30, 31], title: "QA T", why: "QA", lessons: [{ id: "ft1", title: "Урок ft1", icon: "book", screens: [
+    { type: "explore", title: "Тягни", body: "QA", cta: "Далі", lab: { kind: "numline", view: [0, 10], tick: 1, params: { t: { min: 0, max: 10, step: 1, start: 3, hide: true } }, points: { P: { x: "t", drag: true, label: "{t|0}" } } } },
+    { type: "explore", title: "З повзунком", body: "QA", cta: "Далі", lab: { kind: "numline", view: [0, 10], tick: 1, slider: true, params: { t: { min: 0, max: 10, start: 3, hide: true, label: "$t$" } }, points: { P: { x: "t", drag: true, label: "{t|0}" } } } }] }] };
+  await page.evaluate(install, FIX);
+  await page.evaluate(sec => { SLID_SUBJECTS.find(c => c.id === "math").sections.push(sec); window.__slidStart("ft1"); }, SEC);
+  const val = () => page.evaluate(() => +document.querySelector('#stage .lab .lab-h[data-h="0"]').getAttribute("aria-valuenow"));
+  const sb = await page.locator("#stage .lab svg").boundingBox(), h0 = await page.locator('#stage .lab .lab-h[data-h="0"]').boundingBox();
+  const cy = h0.y + h0.height / 2, X = f => sb.x + sb.width * f;
+  ok(await val() === 3, "тап: старт 3");
+  // миша: натискання й рух ≥ 8 px (початок жесту) — точка стоїть
+  await page.mouse.move(X(0.9), cy); await page.mouse.down(); await page.mouse.move(X(0.9), cy + 30, { steps: 5 }); await page.mouse.up();
+  ok(await val() === 3, `миша: рух після натискання по полю не переносить точку, а ${await val()}`);
+  // миша: довге натискання — теж ні
+  await page.mouse.move(X(0.9), cy); await page.mouse.down(); await page.waitForTimeout(700); await page.mouse.up();
+  ok(await val() === 3, `миша: довге натискання по полю не переносить точку, а ${await val()}`);
+  // миша: натискання без відпускання ще не переносить
+  await page.mouse.move(X(0.9), cy); await page.mouse.down();
+  ok(await val() === 3, `миша: поки кнопку не відпущено, точка стоїть, а ${await val()}`);
+  await page.mouse.up(); ok(await val() >= 8, `миша: короткий тап по полю переносить точку, а ${await val()}`);
+  // справжній touch через CDP: тап — переносить, рух — ні
+  const cdp = await ctx.newCDPSession(page), pt = (x, y) => ({ x, y, id: 1 });
+  const touch = async (steps) => { for (const [type, pts, w] of steps) { await cdp.send("Input.dispatchTouchEvent", { type, touchPoints: pts }); if (w) await page.waitForTimeout(w); } };
+  await page.evaluate(() => document.querySelector('#stage .lab .lab-h[data-h="0"]').focus()); await page.keyboard.press("Home");   // назад до 0
+  const v0 = await val();
+  await touch([["touchStart", [pt(X(0.5), cy)]], ["touchMove", [pt(X(0.5), cy + 40)]], ["touchEnd", []]]);
+  ok(await val() === v0, `touch: рух після дотику по полю не переносить точку (${v0}), а ${await val()}`);
+  await touch([["touchStart", [pt(X(0.5), cy)]], ["touchEnd", [], 0]]);
+  const vt = await val(); ok(vt >= 4 && vt <= 6, `touch: короткий тап по полю переносить точку до середини, а ${vt}`);
+  await touch([["touchStart", [pt(X(0.1), cy)], 700], ["touchEnd", []]]);
+  ok(await val() === vt, `touch: довге натискання не переносить точку, а ${await val()}`);
+  ok(await page.locator('#stage .lab input[type="range"]').count() === 0, "slider не заданий: повзунка під моделлю немає (hide)");
+  // повзунок-дубль (slider: true): синхронний з точкою в обидва боки
+  await page.click("#action");
+  ok(await page.locator('#stage .lab input[type="range"][data-p="t"]').count() === 1, "slider: true — під моделлю є повзунок");
+  await page.evaluate(() => { const r = document.querySelector('#stage .lab input[data-p="t"]'); r.value = 7; r.dispatchEvent(new Event("input", { bubbles: true })); });
+  ok(await val() === 7, `slider → точка: 7, а ${await val()}`);
+  await page.evaluate(() => document.querySelector('#stage .lab .lab-h[data-h="0"]').focus()); await page.keyboard.press("ArrowRight");
+  ok(await page.evaluate(() => +document.querySelector('#stage .lab input[data-p="t"]').value) === 8, "точка (стрілка) → повзунок: 8");
+  // align: розмір шрифту років пропорційний ширині шкали (P3-4): на 200 років не мікроскопічний, на 60 — як раніше (≈ 11 px на 360 px)
+  const fsz = [];
+  for (const [i, r] of [{ from: 1180, to: 1240 }, { from: 1000, to: 1200 }].entries()) {
+    await page.reload(); await page.evaluate(install, FIX);
+    await page.evaluate(([i, r]) => { const sec = { id: "fQ" + i, grade: 5, weeks: [30, 31], title: "QA A", why: "QA", lessons: [{ id: "fq" + i, title: "Урок", icon: "book", screens: [{ type: "info", title: "Вступ", body: "QA" },
+      { type: "align", title: "Колода", body: "QA", ref: { ...r, seed: 7 }, sample: { len: 18, endYear: r.to - 20 } }] }] }; SLID_SUBJECTS.find(c => c.id === "math").sections.push(sec); window.__slidStart("fq" + i); }, [i, r]);
+    await page.click("#action");   // інфо-екран → align
+    await page.waitForSelector("#stage .align svg");
+    fsz.push(await page.evaluate(() => { const svg = document.querySelector("#stage .align svg"), t = svg.querySelector("text"), k = svg.getBoundingClientRect().width / svg.viewBox.baseVal.width; return { fs: +t.getAttribute("font-size"), px: +(+t.getAttribute("font-size") * k).toFixed(1) }; }));
+  }
+  ok(fsz.every(x => x.px >= 8 && x.px <= 14), `align: шрифт років на 360 px — 8…14 px для 61 і 201 року, а ${JSON.stringify(fsz)}`);
+  ok(!errors.length, "тап: помилки сторінки: " + errors.join(" | "));
   await ctx.close();
 }
 async function renderLegibilityScenario(browser) {

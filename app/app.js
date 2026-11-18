@@ -1245,8 +1245,8 @@ function ringSeries(from,to,seed){ let x=seed*9301+49297; const out={}; for(let 
 function alignHtml(s){
   const ref=ringSeries(s.ref.from,s.ref.to,s.ref.seed), n=s.ref.to-s.ref.from+1, cw=10, W=n*cw;
   const refBars=Object.entries(ref).map(([y,v],i)=>`<rect x="${i*cw+1}" y="${40-v*36}" width="${cw-2}" height="${v*36}" rx="1.5" fill="var(--muted)"/>`).join("");
-  // роки шкали — повністю: крайні підписи притиснуті до країв (не «180», «124»); шрифт у px вьюбокса ширини ≈ 600 — щоб на 360 px був ≈ 11 px
-  const yrs=[s.ref.from, s.ref.from+20, s.ref.from+40, s.ref.to].map((y,i,a)=>`<text x="${i===0? 0 : i===a.length-1? W : (y-s.ref.from)*cw+cw/2}" y="62" text-anchor="${i===0?"start":i===a.length-1?"end":"middle"}" font-size="20" fill="var(--muted)">${y}</text>`).join("");
+  // роки шкали — повністю: крайні підписи притиснуті до країв (не «180», «124»); шрифт у px вьюбокса пропорційний ширині (W/30: ≈ 20 при W ≈ 600; для широких шкал W/32, щоб роки 20 років одне від одного не злипалися) — щоб на 360 px був ≈ 11 px за будь-якого розмаху років
+  const fs=+(W/(W>800?32:30)).toFixed(1), yrs=[s.ref.from, s.ref.from+20, s.ref.from+40, s.ref.to].map((y,i,a)=>`<text x="${i===0? 0 : i===a.length-1? W : (y-s.ref.from)*cw+cw/2}" y="62" text-anchor="${i===0?"start":i===a.length-1?"end":"middle"}" font-size="${fs}" fill="var(--muted)">${y}</text>`).join("");
   return `<div class="align"><svg viewBox="0 -2 ${W} 118" role="img" aria-label="Еталонний штрихкод кілець і кільця колоди">${refBars}${yrs}<g id="alsample"></g></svg>
     <div class="readout"><span>Останнє кільце колоди:</span><b id="alyear">—</b></div>
     <input id="alrng" type="range" min="0" max="${n-s.sample.len}" step="1" value="0" aria-label="Зсув колоди">

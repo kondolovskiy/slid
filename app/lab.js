@@ -159,9 +159,12 @@ function pointExprs(id, p) {
 function ev(src, env, names) { return compile(src, names || fnNames({ fns: Object.values(env).length ? [] : [] }))(env); }
 
 /* ================= Параметри ================= */
+/* slider (engine-lab-p4-1118 п. 1): `true` або id чи масив id — показати повзунок-дубль для оголошеного параметра з hide: true
+   (точку тягнуть і пальцем, і повзунком; за замовчуванням вимкнено — hide лишається «лише перетягування»). */
+const sliderOn = (spec, id) => { const sl = spec.slider; return sl === true || sl === id || Array.isArray(sl) && sl.includes(id); };
 function paramList(spec) {
   const out = [];
-  for (const [id, p] of Object.entries(spec.params || {})) out.push({ id, min: p.min ?? 0, max: p.max ?? 10, step: p.step ?? 1, start: p.start ?? p.min ?? 0, label: p.label, unit: p.unit || "", hide: !!p.hide, fmt: p.fmt, out: p.out !== false && spec.values !== false });
+  for (const [id, p] of Object.entries(spec.params || {})) out.push({ id, min: p.min ?? 0, max: p.max ?? 10, step: p.step ?? 1, start: p.start ?? p.min ?? 0, label: p.label, unit: p.unit || "", hide: !!p.hide && !sliderOn(spec, id), fmt: p.fmt, out: p.out !== false && spec.values !== false });
   // стовпчик з input: true — цифри відповіді d0 (одиниці), d1, … як приховані параметри; −1 = ще не вписано («?»)
   if (spec.kind === "column" && spec.input) { const n = columnDigits(spec, Object.fromEntries(out.map(p => [p.id, p.start])));
     for (let i = 0; i < n; i++) out.push({ id: "d" + i, min: -1, max: 9, step: 1, start: -1, hide: true }); }
@@ -253,7 +256,7 @@ function fill(tpl, env, names) {
     let v; try { v = compile(ex.trim(), names)(env); } catch (e) { return "?"; }
     if (f === "pl") { const forms = String(arg ?? "").split(",").map(w => w.trim()); return forms.length === 3 ? pluralForm(v, forms) : "?"; }
     if (f === "if") { const [yes, no = ""] = String(arg ?? "").split(";"); return typeof v === "number" && isNaN(v) ? no : v ? yes : no; }   // NaN — не «так»
-    if (f === "eq") { const d = arg == null ? 2 : +arg; if (!isFinite(v)) return "?"; const k = Math.pow(10, d); return (Math.abs(Math.round(v * k) / k - v) < 1e-9 ? "= " : "≈ ") + num(v, d); }
+    if (f === "eq") { const d = arg == null ? 2 : +arg; if (typeof v !== "boolean" && !isFinite(v)) return "не існує";   /* NaN, ±∞ — «не існує» (узгоджено з if: NaN — хибно) */  const k = Math.pow(10, d); return (Math.abs(Math.round(v * k) / k - v) < 1e-9 ? "= " : "≈ ") + num(v, d); }
     if (f === "shift") { const x = String(arg ?? "").trim(); return !isFinite(v) ? "?" : near(v, 0) ? x : `(${x} ${v < 0 ? "+" : "-"} ${num(Math.abs(v))})`; }
     if (f === "c") return v === 1 ? "" : v === -1 ? "-" : num(v).replace("−", "-");
     if (f === "s") return near(v, 0) ? "" : (v < 0 ? "- " : "+ ") + num(Math.abs(v));
@@ -796,6 +799,12 @@ KINDS.solid = {
         (k) => { let s = ""; for (let i = 1; i < c; i++) s += line([0, 0, i], [0, b, i]); for (let j = 1; j < b; j++) s += line([0, j, 0], [0, j, c]); return s; },
         (k) => { let s = ""; for (let i = 1; i < c; i++) s += line([a, 0, i], [a, b, i]); for (let j = 1; j < b; j++) s += line([a, j, 0], [a, j, c]); return s; }];
       F.forEach((f, fi) => { if (vis[fi] && faceGrid[fi]) g += faceGrid[fi](); }); }
+    const scr = v => { const p = rot(v); return [W / 2 + p[0] * sc, H / 2 - p[1] * sc]; };
+    // осі — під ребрами: тонка муарова лінія не перекриває ребра тіла (engine-lab-p4-1118 п. 6)
+    AX.forEach(([tipV, name]) => { const o = S[0], e = scr(tipV), d = Math.hypot(e[0] - o[0], e[1] - o[1]) || 1, ux = (e[0] - o[0]) / d, uy = (e[1] - o[1]) / d;
+      g += `<line x1="${o[0].toFixed(1)}" y1="${o[1].toFixed(1)}" x2="${e[0].toFixed(1)}" y2="${e[1].toFixed(1)}" stroke="var(--muted)" stroke-width="1.4"/>`
+        + `<path d="M${e[0].toFixed(1)} ${e[1].toFixed(1)} l${(-9 * ux + 4 * uy).toFixed(1)} ${(-9 * uy - 4 * ux).toFixed(1)} l${(-8 * uy).toFixed(1)} ${(8 * ux).toFixed(1)} z" fill="var(--muted)"/>`
+        + t(Math.max(8, Math.min(W - 8, e[0] + ux * 10)), Math.max(12, Math.min(H - 4, e[1] + uy * 10 + 4)), `$${name}$`, { anchor: "middle", italic: true, size: 13, fill: "var(--muted)" }); });
     for (const e of edges.values()) g += `<line x1="${S[e.a][0].toFixed(1)}" y1="${S[e.a][1].toFixed(1)}" x2="${S[e.b][0].toFixed(1)}" y2="${S[e.b][1].toFixed(1)}" stroke="var(--ink)" stroke-width="${e.vis ? 2.2 : 1.4}" ${e.vis ? "" : 'stroke-dasharray="5 4" stroke-opacity=".6"'} stroke-linecap="round"/>`;
     // переріз і діагоналі (engine-lab-p3-1117 п. 5): точка — індекс вершини або { e: [i, j], t } на ребрі (t ∈ [0; 1], вирази дозволені)
     const ptS = q => { const v = typeof q === "number" ? V[q] : q && Array.isArray(q.e) && V[q.e[0]] && V[q.e[1]] ? V[q.e[0]].map((c, k) => c + (V[q.e[1]][k] - c) * (q.t === undefined ? .5 : E(q.t))) : null;
@@ -806,11 +815,6 @@ KINDS.solid = {
     (spec.segs || []).forEach(sg => { const a = ptS(sg.a ?? sg[0]), b = ptS(sg.b ?? sg[1]); if (!a || !b) return; const c = col(sg.color, 2);
       g += `<line x1="${a[0].toFixed(1)}" y1="${a[1].toFixed(1)}" x2="${b[0].toFixed(1)}" y2="${b[1].toFixed(1)}" stroke="${c}" stroke-width="2.6" stroke-linecap="round"${sg.dash ? ' stroke-dasharray="6 4"' : ""}/>`;
       if (sg.label) segLab.push([(a[0] + b[0]) / 2, (a[1] + b[1]) / 2, sg.label, c]); });
-    const scr = v => { const p = rot(v); return [W / 2 + p[0] * sc, H / 2 - p[1] * sc]; };
-    AX.forEach(([tipV, name]) => { const o = S[0], e = scr(tipV), d = Math.hypot(e[0] - o[0], e[1] - o[1]) || 1, ux = (e[0] - o[0]) / d, uy = (e[1] - o[1]) / d;
-      g += `<line x1="${o[0].toFixed(1)}" y1="${o[1].toFixed(1)}" x2="${e[0].toFixed(1)}" y2="${e[1].toFixed(1)}" stroke="var(--muted)" stroke-width="1.4"/>`
-        + `<path d="M${e[0].toFixed(1)} ${e[1].toFixed(1)} l${(-9 * ux + 4 * uy).toFixed(1)} ${(-9 * uy - 4 * ux).toFixed(1)} l${(-8 * uy).toFixed(1)} ${(8 * ux).toFixed(1)} z" fill="var(--muted)"/>`
-        + t(Math.max(8, Math.min(W - 8, e[0] + ux * 10)), Math.max(12, Math.min(H - 4, e[1] + uy * 10 + 4)), `$${name}$`, { anchor: "middle", italic: true, size: 13, fill: "var(--muted)" }); });
     // підписи вершин і довжин ребер — назовні від центра тіла (а не завжди вправо-вгору): «M₁» і довжина ребра «2» не зливаються в «M2»
     const out = (x, y, r) => { const dx = x - W / 2, dy = y - H / 2, n = Math.hypot(dx, dy) || 1; return [x + dx / n * r, y + dy / n * r, dx / n]; };
     const anc = k => k > 0.35 ? "start" : k < -0.35 ? "end" : "middle";
@@ -924,14 +928,16 @@ function mount(host, spec, opt = {}) {
   host.querySelectorAll("input[data-p]").forEach(i => i.addEventListener("input", () => { if (!locked) setParams({ [i.dataset.p]: +i.value }, true); }));
   host.querySelectorAll("button[data-nb]").forEach(b => b.addEventListener("click", () => { if (locked) return; const p = params.find(q => q.id === b.dataset.nb); setParams({ [p.id]: state[p.id] + p.step * +b.dataset.d }, true); }));
   // перетягування точок і обертання тіл
-  let drag = null;
+  let drag = null; const TAP_SLOP = 8, TAP_MS = 500;
   const toSvg = e => { const m = svg.getScreenCTM(); if (!m) return null; const p = new DOMPoint(e.clientX, e.clientY).matrixTransform(m.inverse()); return { x: p.x, y: p.y, k: 1 / m.a }; };
   svg.addEventListener("pointerdown", e => {
     if (locked) return; const p = toSvg(e); if (!p) return;
     let best = null, bd = 30 * Math.max(1, p.k);
     (last?.handles || []).forEach(h => { const d = Math.hypot(h.x - p.x, h.y - p.y); if (d < bd) { bd = d; best = h; } });
-    // тап по порожньому місцю: єдина жива ручка-точка перескакує туди й далі тягнеться (qa-drag-points-1117 B2)
-    if (!best) { const dh = dragHandles(last?.handles, params); if (dh.length === 1) { best = dh[0]; const o = best.set(p.x, p.y); if (o) setParams(o, true); } }
+    // тап по порожньому місцю: єдина жива ручка-точка перескакує туди лише на відпусканні, якщо палець/мишу не зсунули ≥ 8 px і не затримали
+    // довше за 500 мс (випадковий дотик, довге натискання чи початок жесту точку не зсувають; engine-lab-p4-1118 п. 2)
+    if (drag && drag.empty) { drag.cancel = true; return; }   // другий дотик — це не тап
+    if (!best) { const dh = dragHandles(last?.handles, params); if (dh.length === 1) { drag = { empty: true, h: dh[0], x0: e.clientX, y0: e.clientY, t0: Date.now(), cancel: false, pid: e.pointerId, p }; svg.setPointerCapture(e.pointerId); e.preventDefault(); return; } }
     if (best && best.digit && cells.has(best.digit)) { e.preventDefault(); return focusDigit(best.digit); }   // дотик поруч із клітинкою — фокус у неї
     if (best) drag = { h: best, idx: last.handles.indexOf(best), x0: e.clientX, y0: e.clientY }; else if (last?.rotate) drag = { rot: true, x: e.clientX, y: e.clientY }; else return;
     // дотик чи клік по точці — фокус на її ручку (preventDefault нижче забирає типовий фокус): після перетягування стрілки рухають ту саму
@@ -940,9 +946,12 @@ function mount(host, spec, opt = {}) {
     svg.setPointerCapture(e.pointerId); e.preventDefault();
   });
   svg.addEventListener("pointermove", e => { if (!drag) return; e.preventDefault();
+    if (drag.empty) { if (e.pointerId === drag.pid && Math.hypot(e.clientX - drag.x0, e.clientY - drag.y0) >= TAP_SLOP) drag.cancel = true; return; }
     if (drag.rot) { view.yaw += (e.clientX - drag.x) * 0.01; view.pitch = Math.max(-1.4, Math.min(1.4, view.pitch + (e.clientY - drag.y) * 0.01)); drag.x = e.clientX; drag.y = e.clientY; draw(); return; }
     const p = toSvg(e); const h = last.handles[drag.idx] || drag.h; if (p && !h.tap) setParams(h.set(p.x, p.y), true); });
-  const end = e => { if (drag && drag.h && drag.h.tap && Math.hypot(e.clientX - drag.x0, e.clientY - drag.y0) < 8) setParams(drag.h.tap(), true); drag = null; };
+  const end = e => {
+    if (drag && drag.empty) { const d = drag; drag = null; if (e.type === "pointerup" && !d.cancel && e.pointerId === d.pid && Date.now() - d.t0 <= TAP_MS && Math.hypot(e.clientX - d.x0, e.clientY - d.y0) < TAP_SLOP) { const o = d.h.set(d.p.x, d.p.y); if (o) setParams(o, true); } return; }
+    if (drag && drag.h && drag.h.tap && Math.hypot(e.clientX - drag.x0, e.clientY - drag.y0) < 8) setParams(drag.h.tap(), true); drag = null; };
   svg.addEventListener("pointerup", end); svg.addEventListener("pointercancel", end);
   // клавіатура: модель, яку змінюють лише дотиком до SVG (точки, кут прямокутника, цифри в стовпчик), — стрілками й цифрами
   svg.addEventListener("keydown", e => {
@@ -1050,6 +1059,18 @@ function svgLabels(spec, tplOnly = false) {
 }
 
 /** Валідація для tools/validate.mjs: повертає список помилок українською. graded — чи це екран type:"lab". */
+/* Найменше n призми/піраміди за всіма значеннями параметрів (min, start, max кожного; декартів добуток, ≤ 729 наборів) — індекси вершин
+   у segs/cut мають існувати для кожного n; не вдалося обчислити — 4 (engine-lab-p4-1118 п. 4). */
+function solidNMin(spec) {
+  if (typeof spec.n === "number") return Math.max(3, Math.round(spec.n));
+  if (spec.n === undefined) return 4;
+  try {
+    const ps = paramList(spec), c = compile(String(spec.n), fnNames(spec)); let sets = [{}];
+    for (const p of ps) { const vs = [...new Set([p.min, p.start, p.max].filter(Number.isFinite))]; if (!vs.length) continue; sets = sets.flatMap(o => vs.map(v => ({ ...o, [p.id]: v }))); if (sets.length > 729) break; }
+    let m = Infinity; for (const st of sets) { const v = c(makeEnv(spec, { ...startState(spec), ...st })); if (typeof v === "number" && isFinite(v)) m = Math.min(m, Math.max(3, Math.round(v))); }
+    return m === Infinity ? 4 : m;
+  } catch (e) { return 4; }
+}
 function validate(spec, screen = {}) {
   const errs = [], graded = screen.type === "lab";
   if (!spec || !KINDS[spec.kind]) return [`lab.kind має бути одним із: ${Object.keys(KINDS).join(", ")}`];
@@ -1080,11 +1101,14 @@ function validate(spec, screen = {}) {
   if (spec.kind === "solid" && spec.axes !== undefined && !(spec.axes === true || Array.isArray(spec.axes) && spec.axes.length === 3 && spec.axes.every(x => typeof x === "string" && x)) || spec.kind === "solid" && spec.axes && (spec.shape || "box") !== "box")
     errs.push("solid.axes: true або три назви осей [уздовж a, уздовж c, уздовж b] — лише для shape: \"box\"");
   if (spec.kind === "solid" && (spec.segs !== undefined || spec.cut !== undefined)) {   // п. 5: індекси вершин (box — 8, prism — 2n, pyramid — n + 1) і точки на ребрах
-    const sh = spec.shape || "box", n = typeof spec.n === "number" ? Math.max(3, Math.round(spec.n)) : 4, nv = sh === "box" ? 8 : sh === "prism" ? 2 * n : n + 1;
+    const sh = spec.shape || "box", n = solidNMin(spec), nv = sh === "box" ? 8 : sh === "prism" ? 2 * n : n + 1;
     const bad = q => !(Number.isInteger(q) && q >= 0 && q < nv || q && typeof q === "object" && Array.isArray(q.e) && q.e.length === 2 && q.e.every(i => Number.isInteger(i) && i >= 0 && i < nv) && (q.t === undefined || typeof q.t === "number" || typeof q.t === "string"));
     if (spec.segs !== undefined && !Array.isArray(spec.segs)) errs.push("solid.segs: масив відрізків { a, b }");
     else (spec.segs || []).forEach((x, i) => { if (!x || bad(x.a ?? x[0]) || bad(x.b ?? x[1])) errs.push(`segs.${i}: a і b — індекс вершини 0…${nv - 1} або { e: [i, j], t }`); });
     if (spec.cut !== undefined && !(spec.cut && Array.isArray(spec.cut.pts) && spec.cut.pts.length >= 3 && !spec.cut.pts.some(bad))) errs.push(`solid.cut: { pts: [≥ 3 точки: індекс вершини 0…${nv - 1} або { e: [i, j], t }] }`); }
+  if (spec.slider !== undefined) {   // повзунок-дубль для параметрів з hide (п. 1): true, id або масив id оголошених параметрів з hide: true
+    const ids = spec.slider === true ? [] : [].concat(spec.slider), bad = ids.filter(id => typeof id !== "string" || !spec.params || !spec.params[id] || !spec.params[id].hide);
+    if (spec.slider !== true && (!ids.length || bad.length) || spec.slider === true && !Object.values(spec.params || {}).some(p => p && p.hide)) errs.push(`slider: true або id параметрів із hide: true${bad.length ? ` (не підходять: ${bad.join(", ")})` : ""}`); }
   if (spec.kind === "plane") {
     for (const [id, p] of Object.entries(spec.points || {})) if (p && p.labelDir !== undefined && !Object.hasOwn(LABEL_DIR, p.labelDir)) errs.push(`points.${id}.labelDir: одне з ${Object.keys(LABEL_DIR).join(", ")}`);
     (spec.segs || []).forEach((x, i) => { if (x && !Array.isArray(x) && x.ticks !== undefined && ![1, 2, 3].includes(x.ticks)) errs.push(`segs.${i}.ticks: 1, 2 або 3 рисочки`); });

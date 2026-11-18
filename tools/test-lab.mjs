@@ -366,7 +366,7 @@ eq([L.fill("{t!=2|if:існує;не існує}", { t: 3 }), L.fill("{t!=2|if:�
 eq(L.validate({ kind: "numline", view: [0, 10], points: { P: { x: 1 } }, show: ["{1|if:а;б}", "{1|if}"] }).length, 1, "validate: if без тексту — помилка, з текстом — чисто");
 // п. 3: {вираз|eq[:d]} → «= 2» або «≈ 2,15»
 eq([L.fill("{2|eq}", {}), L.fill("{x|eq}", { x: 2.15 }), L.fill("{x|eq}", { x: 2.1456 }), L.fill("{x|eq:3}", { x: 2.1456 }), L.fill("{x|eq:3}", { x: 2 }), L.fill("{x|eq:1}", { x: 1 / 3 }), L.fill("{x|eq}", { x: NaN })],
-  ["= 2", "= 2,15", "≈ 2,15", "≈ 2,146", "= 2", "≈ 0,3", "?"], "fill eq: «=» для точного, «≈» для округленого");
+  ["= 2", "= 2,15", "≈ 2,15", "≈ 2,146", "= 2", "≈ 0,3", "не існує"], "fill eq: «=» для точного, «≈» для округленого");
 eq(L.validate({ kind: "numline", view: [0, 10], points: { P: { x: 1 } }, show: ["{1|eq:3}", "{1|eq:ab}"] }).length, 1, "validate: eq:ab — помилка");
 // п. 5: solid — відрізки між вершинами (діагоналі) і переріз площиною; точка — вершина або { e: [i, j], t } на ребрі
 { const R = sp => L.KINDS.solid.render(sp, L.makeEnv(sp, {}), { yaw: -0.6, pitch: 0.4 });
@@ -379,5 +379,23 @@ eq(L.validate({ kind: "numline", view: [0, 10], points: { P: { x: 1 } }, show: [
   eq([L.validate({ ...box, segs: [{ a: 0, b: 8 }] }).length, L.validate({ ...pyr, cut: { pts: [0, 1] } }).length, L.validate({ ...pyr, cut: { pts: [0, 1, 4] } }), L.validate({ ...pyr, cut: { pts: [0, 1, { e: [2, 9] }] } }).length], [1, 1, [], 1], "validate: solid segs/cut — індекси за формою, ≥ 3 точок"); }
 eq(L.validate({ kind: "numline", view: [0, 10], params: { n: { min: 1, max: 9, step: 1, start: 2 } }, points: { P: { x: "n" } }, show: ["{n>1|if:зайве {n|0} шт;ні}"] }).length, 1, "validate: вкладена вставка у гілці if — помилка");
 eq(L.validate({ kind: "numline", view: [0, 10], params: { n: { min: 1, max: 9, step: 1, start: 2 } }, points: { P: { x: "n" } }, show: ["{n>1|if:так;ні} {n|0}", "{,}"] }), [], "validate: if без вкладених вставок — чисто");
+// engine-lab-p4-1118 п. 3: eq для NaN/±∞ — «не існує»; помилка виразу лишається «?»
+eq([L.fill("{sqrt(x)|eq}", { x: -1 }), L.fill("{1/x|eq}", { x: 0 }), L.fill("{-1/x|eq:3}", { x: 0 }), L.fill("{x+|eq}", { x: 1 })], ["не існує", "не існує", "не існує", "?"], "fill eq: NaN і ∞ — «не існує», помилка виразу — «?»");
+eq(L.fill("√{x|0} {sqrt(x)|eq}", { x: -4 }), "√−4 не існує", "fill eq: у реченні");
+// п. 4: solid segs/cut при n-виразі — межа за діапазоном параметра
+{ const mk = (min, cutPts) => ({ kind: "solid", shape: "pyramid", n: "k", r: 2, h: 3, params: { k: { min, max: 8, step: 1, start: 5 } }, cut: { pts: cutPts } });
+  eq(L.validate(mk(3, [0, 1, 4])).length, 1, "validate: solid n-вираз — вершина 4 не існує при n = 3 (піраміда має лише 0…3)");
+  eq(L.validate(mk(4, [0, 1, 4])), [], "validate: solid n-вираз — при n ≥ 4 вершина 4 є");
+  eq(L.validate({ kind: "solid", shape: "prism", n: "k+1", r: 1, h: 2, params: { k: { min: 2, max: 6, step: 1, start: 3 } }, segs: [{ a: 0, b: 7 }] }).length, 1, "validate: solid prism n = k+1 ≥ 3 — вершина 7 не існує при n = 3 (0…5)"); }
+// п. 6: осі solid — під ребрами тіла (ребро не перекривається тонкою лінією осі)
+{ const sp = { kind: "solid", shape: "box", a: 3, b: 4, c: 2, axes: true }, body = L.KINDS.solid.render(sp, L.makeEnv(sp, {}), { yaw: 2.5, pitch: 0.5 }).body;
+  const ia = body.indexOf('stroke="var(--muted)" stroke-width="1.4"/>'), ie = body.indexOf('stroke="var(--ink)"');
+  eq([ia > 0, ie > 0, ia < ie], [true, true, true], "solid axes: осі малюються до ребер, тож ребра лежать поверх"); }
+// п. 1: slider — повзунок-дубль для параметрів з hide (за замовчуванням вимкнено)
+{ const nl = extra => ({ kind: "numline", view: [0, 10], params: { t: { min: 0, max: 10, start: 3, hide: true }, u: { min: 0, max: 10, start: 1, hide: true } }, points: { P: { x: "t", drag: true } }, ...extra });
+  const hid = sp => L.paramList(sp).map(p => p.hide);
+  eq([hid(nl({})), hid(nl({ slider: true })), hid(nl({ slider: "t" })), hid(nl({ slider: ["u"] }))], [[true, true], [false, false], [false, true], [true, false]], "slider: за замовчуванням hide, true/id/масив — повзунок");
+  eq([L.validate(nl({ slider: true })), L.validate(nl({ slider: "t" }))], [[], []], "validate: slider — чисто");
+  eq([L.validate(nl({ slider: "z" })).length, L.validate(nl({ slider: 1 })).length, L.validate({ ...nl({ slider: true }), params: { t: { min: 0, max: 10, start: 3 } } }).length], [1, 1, 1], "validate: slider — невідомий id, не рядок, немає hide-параметрів"); }
 console.log(`${n - fails}/${n} тестів лабораторії пройдено`);
 process.exit(fails ? 1 : 0);
