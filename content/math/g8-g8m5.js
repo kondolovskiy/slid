@@ -528,7 +528,7 @@ SLID.section("math", {
       title: "Площа й політ",
       short: "Задачі",
       icon: "map",
-      status: "draft",
+      status: "verified",
       why: "Квадратне рівняння з'являється, коли площа, шлях або добуток залежать від невідомого в квадраті.",
       screens: [
         {

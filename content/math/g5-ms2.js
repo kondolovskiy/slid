@@ -764,7 +764,7 @@ SLID.section("math", {
       title: "Скільки стрибків?",
       short: "Ділення на дріб",
       icon: "target",
-      status: "draft",
+      status: "verified",
       why: "Щоб ділити стрічку, сік чи площу, коли дільник теж з комою.",
       screens: [
         {

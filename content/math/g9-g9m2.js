@@ -207,7 +207,7 @@ SLID.section("math", {
       title: "Коло й пряма числами",
       short: "Коло і пряма",
       icon: "home",
-      status: "draft",
+      status: "verified",
       why: "Щоб записувати коло й пряму рівняннями — як у кресленнях і іграх.",
       screens: [
         {

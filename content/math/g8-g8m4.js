@@ -1675,7 +1675,7 @@ SLID.section("math", {
       title: "Міряємо недосяжне",
       short: "Фінал розділу",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "g8m4boss",
       why: "Подібність, бісектриса, Піфагор, проєкції й тангенс — на одній виїзній зйомці. Бали подвоєні.",
