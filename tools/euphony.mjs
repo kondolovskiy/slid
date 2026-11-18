@@ -85,6 +85,13 @@ const GUARD = new RegExp(`[«»"“”„\\[\\]/${EMPH}]`);
 const MARKS = /[\u0004\u0005]/g;   // межі курсиву — не текст між словами
 // § 24 п. 4: після букв й, я, ю, є, ї — єднальні «і» або «та»
 const IOT_END = /[йяюєї]/;
+// частка «й» (= «також», «навіть»: «опиниться й саме», «допускає й інші») після я/ю/є/ї — не сполучник, п. 4 її не стосується (verifier-style-world-1112;
+// tools-content-checks-p3 п. 18): перед вказівним чи підсилювальним словом правило «й-після-йотованого» мовчить. Частину випадків усе одно
+// покаже звіт («ходить і навіть й там») — це лише підказка
+const PARTICLE_NEXT = /^(?:саме|ще|вже|так|там|тут|тоді|тепер|інш\p{L}*|такий|така|таке|такі|такої|такому|цей|ця|це|ці|той|ті|навіть|якщо|коли)$/u;
+// скорочення з крапкою («У XV ст. в Криму», «1958 р. в Китаї»): крапка після нього не кінець речення, якщо далі слово з малої літери
+// (tools-content-checks-p3 п. 18; той самий корінь, що sentences() у lib.mjs)
+const ABBR = new Set(["ст", "р", "рр", "тис", "млн", "млрд", "т", "ін", "див", "напр", "пор", "прим"]);
 const TARGET = new Set(["в", "у", "і", "й", "з", "із", "зі"]);
 
 // «в-слово-на-початку» (tools-diag-nonmath-p3 п. 3; verifier-u8s7: «Влітку…», «Встановлено…» в елементах sort і в <b> fbText): початкове
@@ -105,6 +112,7 @@ function initialV(src, toks, k, lw, out) {
   if (!p || END.test(before) || /\u0002$/.test(rawBefore)) out.push({ rule: "в-слово-на-початку", word: t.w, ctx: t.w + (toks[k + 1] ? " " + toks[k + 1].w : "") });
 }
 
+const pw0 = p => p.w.toLocaleLowerCase("uk").replace(/\u0301/g, "");
 /** Відхилення в одному тексті: [{ rule, word, ctx }] */
 export function euphonyIssues(raw) {
   const src = prep(raw), toks = [...src.matchAll(WORD)].filter(m => /[\p{L}]/u.test(m[0])).map(m => ({ w: m[0], i: m.index, e: m.index + m[0].length }));   // « - » без літер — тире, не слово
@@ -121,6 +129,8 @@ export function euphonyIssues(raw) {
     // у виділеній фразі; мову про саму літеру (<b>в</b>) видає тег одразу після неї (after нижче). Посеред речення тег лишається межею:
     // «ударив <b>в бік</b>, <b>в перше</b> село» — навмисні приклади в поясненні
     const rawBefore = (p ? src.slice(p.e, t.i) : head).replace(MARKS, ""), noEmph = rawBefore.replace(/\u0002/g, "");
+    const afterAbbr = !!p && ABBR.has(pw0(p)) && /^\.\s*$/.test(noEmph) && /^\p{Ll}/u.test(t.w);   // «ст. в Криму» — продовження речення
+    if (afterAbbr) return;   // кінець скорочення звучить як повне слово («століття», «року»): ні «початок речення», ні «приголосний перед в» — не визначити
     const before = !p || END.test(noEmph) ? noEmph : rawBefore, after = src.slice(t.e, n.i).replace(MARKS, "");
     if (GUARD.test(before.slice(-2)) || GUARD.test(after) || /^\s*[«"„“]/.test(after)) return;   // мова про саму літеру: «у», <b>в</b>
     if (!/^\s+$/.test(after)) return;   // після слова розділовий знак чи тег — не прийменник/сполучник перед словом
@@ -147,7 +157,7 @@ export function euphonyIssues(raw) {
         else if (isC(pe) && isCs(ns)) add("й-між-приголосними");
         // § 24 п. 4 (tools-euphony-i-after-j): після й, я, ю, є, ї — «і»/«та». Лише звіт: частку «й» (= «також»: «допускає й інші»)
         // механічно не відрізнити від сполучника
-        else if (IOT_END.test(pe)) add("й-після-йотованого");
+        else if (IOT_END.test(pe) && !PARTICLE_NEXT.test(nw)) add("й-після-йотованого");
         break;
       case "і":
         if (start || pause || /[йяюєї]/.test(pe) || /^[йяюєї]/.test(ns)) break;
@@ -237,9 +247,13 @@ function cli(args, { loadContent, ROOT, ignoreEpipe }) {
   const { opts: o, error } = parseArgs(args);
   if (error) { console.error(`${error}. Довідка: node tools/euphony.mjs --help`); return 2; }
   if (o["--help"] || o["-h"]) { process.stdout.write(HELP + "\n"); return 0; }
-  const subj = o["--subject"] || "ukr", only = o["--section"] ?? null, onlyPool = o["--pool"] ?? null, onlyDiag = o["--diag"] ?? null, exMode = !!o["--exercises"];
+  const only = o["--section"] ?? null, onlyPool = o["--pool"] ?? null, onlyDiag = o["--diag"] ?? null, exMode = !!o["--exercises"];
   if ([only, onlyPool, onlyDiag].filter(x => x !== null).length > 1) { console.error("--section, --pool і --diag — лише щось одне"); return 2; }
   const { subjects, origin, poolOrigin, diagOrigin, learn } = loadContent();
+  // без --subject предмет визначає id розділу, пулу чи тесту рівня (tools-content-checks-p3 п. 4: раніше шукало лише в ukr і давало код 2);
+  // id, якого немає ні в одному предметі, лишає типовий ukr — далі звичайне «немає … у предметі ukr», код 2
+  const owner = only ? subjects.find(x => x.sections.some(y => y.id === only)) : onlyPool ? subjects.find(x => x.pools.some(y => y.id === onlyPool)) : onlyDiag ? subjects.find(x => x.diags.some(y => y.id === onlyDiag)) : null;
+  const subj = o["--subject"] || owner?.id || "ukr";
   const c = subjects.find(x => x.id === subj);
   if (!c) { console.error(`немає предмета ${subj}`); return 2; }
   if (only && !c.sections.some(x => x.id === only)) { console.error(`немає розділу ${only} у предметі ${subj}`); return 2; }

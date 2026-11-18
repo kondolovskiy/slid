@@ -101,7 +101,11 @@ export function sentences(t) {
   // Protect abbreviation periods only when the following text continues the sentence.
   const text = String(t).replace(/(?<![\p{L}])н\.(?=\s*е\.)/gu, "н\uE000")
     .replace(/(?<![\p{L}])(?:е\.|рр?\.|ст\.|тис\.|млн\.|[Дд]ив\.)\s*(?=[\p{Ll}\d])/gu,
-    m => m.replace(/\./g, "\uE000"));
+    m => m.replace(/\./g, "\uE000"))
+    // хронології (tools-content-checks-p3 п. 3): «1958 р. Мао…», «1958 р. — Мао…» — дата на початку рядка веде подію, її крапка не кінець речення
+    // (раніше кожна дата давала хибне «коротке речення»). Скорочення перед тире — завжди; перед великою літерою — лише коли дата відкриває речення
+    .replace(/(?<![\p{L}])(?:рр?|ст)\.(?=\s*[—–])/gu, m => m.replace(/\./g, "\uE000"))
+    .replace(/(^|[.!?…]\s+)((?:\d{1,4}(?:\s*[–-]\s*\d{1,4})?|[IVXХ]{1,6})\s*(?:рр?|ст)\.)(?=\s*\p{Lu})/gu, (m, a, b) => a + b.replace(/\./g, "\uE000"));
   return text.split(/(?<=[.!?…])\s+/).map(x => x.replace(/\uE000/g, ".").trim()).filter(x => words(x).length > 0);
 }
 

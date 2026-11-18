@@ -41,7 +41,13 @@ has("Я п'ю й співаю.", "й-після-йотованого");
 has("Я й ти.", "й-після-йотованого");   // «я» — займенник, не назва літери
 clean("Голосні а, е, и, я. Я і ти.", "перелік літер і правильне «я і ти»");
 has("Наші мрії й плани.", "й-після-йотованого");
-has("Вона допускає й інші варіанти.", "й-після-йотованого");   // частка «й» (= «також») — механічно не відрізнити: звіт «перевір»
+has("Вона допускає й твої варіанти.", "й-після-йотованого");   // сполучник чи частка — механічно не відрізнити: звіт «перевір»
+// tools-content-checks-p3 п. 18: частка «й» (= «також») перед вказівним чи підсилювальним словом — не порушення § 24 п. 4
+clean("Вона допускає й інші варіанти.", "частка «й» перед «інші»");
+clean("Згодом і саме рабство опиниться під загрозою. Він опиниться й саме там.", "частка «й» перед «саме»");
+// скорочення з крапкою перед словом з малої літери — не початок речення й не «приголосний перед в» (п. 18, той самий корінь, що sentences())
+clean("У XV ст. в Криму жили татари. У 1958 р. в Китаї було тихо. У V тис. до н. е. в Єгипті будували.", "«ст. в», «р. в» — продовження речення");
+has("Це було у XV ст. В Криму жили татари.", "в-на-початку");   // велика літера після «р.» — справді початок речення
 has("Мовчазна моя й Олина пісня.", "й-після-йотованого");
 { n++; const r = rules("Андрій й брат.");   // «й» після й перед приголосним — уже validate-правило «між приголосними», не дублюємо
   if (JSON.stringify(r) !== JSON.stringify(["й-між-приголосними"])) { fail++; console.log("✗ «Андрій й брат»: лише й-між-приголосними", r); } }
@@ -185,6 +191,13 @@ clean("Так. влітку тепло — з малої не позначаєм
     r = run("--exercises");
     const exRep = path.join(tmp, "reports/euphony-ukr-exercises.md"), exTxt = fs.existsSync(exRep) ? fs.readFileSync(exRep, "utf8") : "";
     n++; if (r.status !== 0 || !/Степ й море/.test(exTxt) || /Брат в сестри/.test(exTxt) || /· validate/.test(exTxt) || fs.readFileSync(rep, "utf8") !== before) { fail++; console.log("✗ euphony --exercises: окремий звіт з варіантами, без авторського тексту", r.status, r.stderr, exTxt); }
+    // tools-content-checks-p3 п. 4: без --subject предмет визначається за id розділу (раніше шукало лише в ukr → код 2)
+    fs.copyFileSync(path.join(ROOT, "content/subjects/world.js"), path.join(tmp, "content/subjects/world.js")); fs.mkdirSync(path.join(tmp, "content/world"), { recursive: true });
+    fs.writeFileSync(path.join(tmp, "content/world/g7-fxw.js"), sec("fxw").replace('SLID.section("ukr"', 'SLID.section("world"').replace('"grade":5', '"grade":7'));
+    r = run("--section", "fxw");
+    n++; if (r.status !== 0 || !/: world · розділ fxw/.test(r.stdout) || !/fxwl1 екран 1/.test(r.stdout)) { fail++; console.log("✗ euphony --section fxw (world) без --subject: предмет за id розділу", r.status, r.stdout, r.stderr); }
+    r = run("--section", "fxw", "--subject", "ukr");
+    n++; if (r.status !== 2) { fail++; console.log("✗ euphony --section fxw --subject ukr — код 2 (розділ в іншому предметі)", r.status); }
     r = run("--section", "nope");
     n++; if (r.status !== 2) { fail++; console.log("✗ euphony --section неіснуючого розділу — код 2", r.status, r.stdout); }
     // tools-euphony-i-after-j п. 4: пули (SLID.pool) і тести рівня (SLID.diag) — у звіті предмета; --pool / --diag ID — лише stdout;
