@@ -25,7 +25,7 @@ SLID.section("ukr", {
       title: "Поличка, але ложечка",
       short: "Е, и, і в суфіксах",
       icon: "star",
-      status: "draft",
+      status: "verified",   // verifier-style-ukr-1117 (2026-11-18): reports/verify/style-ukr-1117.md
       why: "Пестливі слова, назви малят і іменники від дієслів часто пишуть із помилками. Правило підкаже, де е, де и, а де і.",
       screens: [
         {
@@ -296,7 +296,7 @@ SLID.section("ukr", {
       title: "Землетрус і жар-птиця",
       short: "Складні іменники",
       icon: "plus",
-      status: "draft",
+      status: "verified",   // verifier-style-ukr-1117 (2026-11-18): reports/verify/style-ukr-1117.md
       why: "Складні іменники пишемо разом або з дефісом. Правило допоможе не помилитися в словах на зразок «вебсайт» чи «фан-клуб».",
       screens: [
         {

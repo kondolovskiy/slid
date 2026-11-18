@@ -155,7 +155,7 @@ SLID.section("ukr", {
       title: "Йо чи ьо?",
       short: "Йо, ьо",
       icon: "voice",
-      status: "draft",
+      status: "verified",   // verifier-style-ukr-1117 (2026-11-18): reports/verify/style-ukr-1117.md
       why: "Йо й ьо схожі на письмі, але роблять різну роботу. Навчимося чути різницю і не помилятися.",
       screens: [
         {
@@ -414,7 +414,7 @@ SLID.section("ukr", {
       title: "Зустріч двох букв",
       short: "Збіг приголосних",
       icon: "plus",
-      status: "draft",
+      status: "verified",   // verifier-style-ukr-1117 (2026-11-18): reports/verify/style-ukr-1117.md
       why: "Дві однакові букви поруч — не помилка, а зустріч частин слова. Навчимося бачити, де саме вони зустрілися.",
       screens: [
         {
@@ -547,7 +547,7 @@ SLID.section("ukr", {
       title: "Сіллю, але любов'ю",
       short: "Подовжені приголосні",
       icon: "bolt",
-      status: "draft",
+      status: "verified",   // verifier-style-ukr-1117 (2026-11-18): reports/verify/style-ukr-1117.md
       why: "Деякі м'які приголосні ми вимовляємо довше, і на письмі це видно. Навчимося знати, коли писати дві букви.",
       screens: [
         {

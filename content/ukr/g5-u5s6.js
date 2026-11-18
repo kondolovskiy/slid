@@ -22,7 +22,7 @@ SLID.section("ukr", {
       title: "Кінь, але коня",
       short: "Голосні",
       icon: "spiral",
-      status: "draft",
+      status: "verified",   // verifier-style-ukr-1117 (2026-11-18): reports/verify/style-ukr-1117.md
       why: "У формах того самого слова голосні іноді змінюються. Коли знаєш правило, не плутаєш «піч» і «печі».",
       screens: [
         {
@@ -169,7 +169,7 @@ SLID.section("ukr", {
       title: "Друг, друже, друзі",
       short: "Приголосні",
       icon: "users",
-      status: "draft",
+      status: "verified",   // verifier-style-ukr-1117 (2026-11-18): reports/verify/style-ukr-1117.md
       why: "Приголосні теж змінюються: рука — ручка — у руці. Навчимося не плутати ці форми.",
       screens: [
         {
@@ -309,7 +309,7 @@ SLID.section("ukr", {
       title: "У Львові, в Одесі",
       short: "у — в, і — й",
       icon: "voice",
-      status: "draft",
+      status: "verified",   // verifier-style-ukr-1117 (2026-11-18): reports/verify/style-ukr-1117.md
       why: "Мова звучить красиво, коли її легко вимовляти. Для цього ми обираємо у чи в, і чи й.",
       screens: [
         {
@@ -453,7 +453,7 @@ SLID.section("ukr", {
       title: "Із сиром чи зі сметаною?",
       short: "з, із, зі, зо",
       icon: "cake",
-      status: "draft",
+      status: "verified",   // verifier-style-ukr-1117 (2026-11-18): reports/verify/style-ukr-1117.md
       why: "Прийменник з має кілька варіантів. Правильний варіант робить фразу легкою для вимови.",
       screens: [
         {

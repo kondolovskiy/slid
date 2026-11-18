@@ -48,7 +48,7 @@ SLID.section("ukr", {
       title: "Розчин, що ожив",
       short: "Лексика в стилях",
       icon: "eye",
-      status: "draft",
+      status: "verified",   // verifier-style-ukr-1117 (2026-11-18): reports/verify/style-ukr-1117.md
       why: "Те саме слово прикрашає оповідання і псує звіт. Хто знає, де образ доречний, пише і яскраво, і точно.",
       screens: [
         {
@@ -814,7 +814,7 @@ SLID.section("ukr", {
       title: "Вечір. Тиша. Зорі.",
       short: "Синтаксис у стилях",
       icon: "path",
-      status: "draft",
+      status: "verified",   // verifier-style-ukr-1117 (2026-11-18): reports/verify/style-ukr-1117.md
       why: "Стиль тексту видно й за будовою речень. Хто це знає, той пише й живий опис, і чітку інструкцію.",
       screens: [
         {

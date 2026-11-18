@@ -34,7 +34,7 @@ SLID.section("ukr", {
       title: "Розрив, що не шкодить",
       short: "Перенос, скорочення",
       icon: "book",
-      status: "draft",
+      status: "verified",   // verifier-style-ukr-1117 (2026-11-18): reports/verify/style-ukr-1117.md
       why: "Текстовий редактор переносить слова сам, але не завжди правильно. Коректор, верстальник і автор заяви мають знати, де розрив можливий, а де ні.",
       screens: [
         {
@@ -177,7 +177,7 @@ SLID.section("ukr", {
       title: "Священний, але священник",
       short: "Подвоєні букви",
       icon: "eye",
-      status: "draft",
+      status: "verified",   // verifier-style-ukr-1117 (2026-11-18): reports/verify/style-ukr-1117.md
       why: "Подвоєна буква буває з двох різних причин. Коли знаєш причину, не плутаєш «здійснений» і «здійсненний», «радістю» і «ніччю».",
       screens: [
         {
@@ -318,7 +318,7 @@ SLID.section("ukr", {
       title: "Зігнути, але скласти",
       short: "Префікси й суфікси",
       icon: "check",
-      status: "draft",
+      status: "verified",   // verifier-style-ukr-1117 (2026-11-18): reports/verify/style-ukr-1117.md
       why: "Префікси й суфікси повторюються в тисячах слів. Знаєш правило для однієї частини — пишеш правильно цілу родину слів.",
       screens: [
         {
@@ -599,7 +599,7 @@ SLID.section("ukr", {
       title: "Коректор шкільної газети",
       short: "Фінал розділу",
       icon: "trophy",
-      status: "draft",
+      status: "verified",   // verifier-style-ukr-1117 (2026-11-18): reports/verify/style-ukr-1117.md
       boss: true,
       badge: "u10s6boss",
       why: "Перевір себе на всіх правилах розділу перед випуском газети.",

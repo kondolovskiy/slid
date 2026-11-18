@@ -311,7 +311,7 @@ SLID.section("ukr", {
       title: "Неширока чи не широка?",
       short: "Не з прикметниками",
       icon: "scale",
-      status: "draft",
+      status: "verified",   // verifier-style-ukr-1117 (2026-11-18): reports/verify/style-ukr-1117.md
       why: "Пробіл між «не» й прикметником змінює зміст: «річка не широка» і «неширока річка» кажуть різне.",
       screens: [
         {
@@ -436,7 +436,7 @@ SLID.section("ukr", {
       title: "Туманний, але літній",
       short: "Н і нн",
       icon: "plus",
-      status: "draft",
+      status: "verified",   // verifier-style-ukr-1117 (2026-11-18): reports/verify/style-ukr-1117.md
       why: "Туманний ранок, гречана каша, нескінченна дорога — одна н чи дві? Відповідь підкажуть будова слова та його значення.",
       screens: [
         {

@@ -419,7 +419,7 @@ SLID.section("ukr", {
       title: "Напам'ять і на пам'ять",
       short: "Прислівник чи сполучення",
       icon: "scale",
-      status: "draft",
+      status: "verified",   // verifier-style-ukr-1117 (2026-11-18): reports/verify/style-ukr-1117.md
       why: "Прислівник і прийменник з іменником часто звучать однаково, а пишуться по-різному. Розрізнити їх допоможуть питання й вставлене слово.",
       screens: [
         {
@@ -688,7 +688,7 @@ SLID.section("ukr", {
       title: "Недалеко чи не далеко?",
       short: "Не та ні",
       icon: "x",
-      status: "draft",
+      status: "verified",   // verifier-style-ukr-1117 (2026-11-18): reports/verify/style-ukr-1117.md
       why: "Пробіл після «не» змінює зміст: «недалеко» і «не далеко, а близько» кажуть різне.",
       screens: [
         {
@@ -818,7 +818,7 @@ SLID.section("ukr", {
       title: "Гопак у шкільному блозі",
       short: "Фінал розділу",
       icon: "trophy",
-      status: "draft",
+      status: "verified",   // verifier-style-ukr-1117 (2026-11-18): reports/verify/style-ukr-1117.md
       boss: true,
       badge: "u7s9boss",
       why: "Перевірка всієї теми «Прислівник»: розбір, н і нн, и та і, разом, окремо чи з дефісом, не та ні. Бали подвоєні.",

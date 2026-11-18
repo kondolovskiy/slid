@@ -37,7 +37,7 @@ SLID.section("ukr", {
       title: "Підмет із кількох слів",
       short: "Підмет",
       icon: "target",
-      status: "draft",
+      status: "verified",   // verifier-style-ukr-1117 (2026-11-18): reports/verify/style-ukr-1117.md
       why: "Підмет не завжди одне слово. Хто бачить усі його слова, той правильно розуміє речення й узгоджує з ним присудок.",
       screens: [
         {
@@ -771,7 +771,7 @@ SLID.section("ukr", {
       title: "Репортаж зі стадіону",
       short: "Фінал розділу",
       icon: "trophy",
-      status: "draft",
+      status: "verified",   // verifier-style-ukr-1117 (2026-11-18): reports/verify/style-ukr-1117.md
       boss: true,
       badge: "u8s4boss",
       why: "Перевірка всієї теми «Словосполучення і речення»: словосполучення, підмет, присудки, узгодження й тире. Бали подвоєні.",

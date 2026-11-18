@@ -30,7 +30,7 @@ SLID.section("ukr", {
       title: "На шафі чи під шафою?",
       short: "Прийменник",
       icon: "path",
-      status: "draft",
+      status: "verified",   // verifier-style-ukr-1117 (2026-11-18): reports/verify/style-ukr-1117.md
       why: "Маленькі службові слова тримають речення разом. Одне таке слово може змінити весь зміст.",
       screens: [
         {
@@ -167,7 +167,7 @@ SLID.section("ukr", {
       title: "Один прийменник — два слова",
       short: "Будова",
       icon: "spiral",
-      status: "draft",
+      status: "verified",   // verifier-style-ukr-1117 (2026-11-18): reports/verify/style-ukr-1117.md
       why: "Прийменники бувають короткими й довгими, з одного слова чи з кількох. А деякі з них легко сплутати з прислівником.",
       screens: [
         {
@@ -443,7 +443,7 @@ SLID.section("ukr", {
       title: "Завдання з географії",
       short: "Уживання",
       icon: "target",
-      status: "draft",
+      status: "verified",   // verifier-style-ukr-1117 (2026-11-18): reports/verify/style-ukr-1117.md
       why: "Від прийменника залежить, чи звучить фраза по-книжному, чи по-розмовному. У навчанні й документах це важливо.",
       screens: [
         {
@@ -586,7 +586,7 @@ SLID.section("ukr", {
       title: "Зі школи у Львів",
       short: "з, із, зі; у, в",
       icon: "voice",
-      status: "draft",
+      status: "verified",   // verifier-style-ukr-1117 (2026-11-18): reports/verify/style-ukr-1117.md
       why: "Українська мова дбає про милозвучність. Вибір між з, із, зі чи у, в робить фразу легкою для вимови.",
       screens: [
         {
@@ -707,7 +707,7 @@ SLID.section("ukr", {
       title: "Замітки про шкільне життя",
       short: "Фінал розділу",
       icon: "trophy",
-      status: "draft",
+      status: "verified",   // verifier-style-ukr-1117 (2026-11-18): reports/verify/style-ukr-1117.md
       boss: true,
       badge: "u7s10boss",
       why: "Перевірка всього розділу: що таке прийменник, як його писати й уживати. Бали подвоєні.",

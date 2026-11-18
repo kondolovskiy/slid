@@ -40,7 +40,7 @@ SLID.section("ukr", {
       title: "Від звука до тексту",
       short: "Одиниці мови",
       icon: "path",
-      status: "draft",
+      status: "verified",   // verifier-style-ukr-1117 (2026-11-18): reports/verify/style-ukr-1117.md
       why: "Мова влаштована як будинок із поверхів. Коли бачиш усі поверхи, легше розібрати будь-який текст і знайти в ньому помилку.",
       screens: [
         {
@@ -337,7 +337,7 @@ SLID.section("ukr", {
       title: "Найбільш зручніший? Ні!",
       short: "Морфологічні норми",
       icon: "check",
-      status: "draft",
+      status: "verified",   // verifier-style-ukr-1117 (2026-11-18): reports/verify/style-ukr-1117.md
       why: "Форма слова показує, як ти ставишся до мови й до співрозмовника. Правильне звертання, ступінь порівняння чи числівник — ознака грамотності.",
       screens: [
         {
@@ -483,7 +483,7 @@ SLID.section("ukr", {
       title: "Відвідавши музей, ми…",
       short: "Синтаксичні норми",
       icon: "scale",
-      status: "draft",
+      status: "verified",   // verifier-style-ukr-1117 (2026-11-18): reports/verify/style-ukr-1117.md
       why: "Слова можуть бути правильними, а речення — ні. Коли знаєш, як слова поєднуються, легко відредагувати допис чи лист.",
       screens: [
         {

@@ -40,7 +40,7 @@ SLID.section("ukr", {
       title: "Тисяча п'ятсот чи тисячі п'ятисот?",
       short: "Переказ із числами",
       icon: "voice",
-      status: "draft",
+      status: "verified",   // verifier-style-ukr-1117 (2026-11-18): reports/verify/style-ukr-1117.md
       why: "Цифри в тексті легко прочитати очима, але важко — уголос. Навчимося переказувати текст із числами без помилок.",
       screens: [
         {
@@ -312,7 +312,7 @@ SLID.section("ukr", {
       title: "Що для тебе цінне?",
       short: "Есе про цінності",
       icon: "bulb",
-      status: "draft",
+      status: "verified",   // verifier-style-ukr-1117 (2026-11-18): reports/verify/style-ukr-1117.md
       why: "Про цінності легко писати гучними словами, а важче — чесно. Навчимося будувати есе, що міркує, а не повчає.",
       screens: [
         {
@@ -450,7 +450,7 @@ SLID.section("ukr", {
       title: "Переказати й сказати своє",
       short: "Творче завдання",
       icon: "leaf",
-      status: "draft",
+      status: "verified",   // verifier-style-ukr-1117 (2026-11-18): reports/verify/style-ukr-1117.md
       why: "Переказ із творчим завданням перевіряє дві речі: чи розумієш ти автора і чи маєш власну думку. Навчимося не плутати одне з другим.",
       screens: [
         {
@@ -595,7 +595,7 @@ SLID.section("ukr", {
       title: "Без музики",
       short: "Есе про мистецтво",
       icon: "star",
-      status: "draft",
+      status: "verified",   // verifier-style-ukr-1117 (2026-11-18): reports/verify/style-ukr-1117.md
       why: "Есе про мистецтво — не довідка, а враження і роздуми. Навчимося писати так, щоб читач почув музику.",
       screens: [
         {
@@ -734,7 +734,7 @@ SLID.section("ukr", {
       title: "Сподобалося — а чому?",
       short: "Відгук",
       icon: "eye",
-      status: "draft",
+      status: "verified",   // verifier-style-ukr-1117 (2026-11-18): reports/verify/style-ukr-1117.md
       why: "Після фільму чи вистави хочеться поділитися враженнями. Навчимося писати відгук, якому повірять.",
       screens: [
         {

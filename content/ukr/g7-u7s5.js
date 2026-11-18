@@ -26,7 +26,7 @@ SLID.section("ukr", {
       title: "Мокрий чи намочений?",
       short: "Що таке дієприкметник",
       icon: "leaf",
-      status: "draft",
+      status: "verified",   // verifier-style-ukr-1117 (2026-11-18): reports/verify/style-ukr-1117.md
       why: "Дієприкметник одним словом каже і яка річ, і що з нею сталося. Без нього описи довші й нудніші.",
       screens: [
         {
@@ -166,7 +166,7 @@ SLID.section("ukr", {
       title: "Опале, а не «опавше»",
       short: "Активні дієприкметники",
       icon: "flame",
-      status: "draft",
+      status: "verified",   // verifier-style-ukr-1117 (2026-11-18): reports/verify/style-ukr-1117.md
       why: "Активні дієприкметники мають свої суфікси. Хто їх знає, той не напише «опавше листя».",
       screens: [
         {
@@ -433,7 +433,7 @@ SLID.section("ukr", {
       title: "Торт, политий шоколадом",
       short: "Дієприкметниковий зворот",
       icon: "path",
-      status: "draft",
+      status: "verified",   // verifier-style-ukr-1117 (2026-11-18): reports/verify/style-ukr-1117.md
       why: "Дієприкметниковий зворот робить опис точним. А кома при ньому залежить насамперед від того, де він стоїть.",
       screens: [
         {

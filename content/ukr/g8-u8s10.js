@@ -31,7 +31,7 @@ SLID.section("ukr", {
       title: "Кого ми кличемо?",
       short: "Звертання",
       icon: "voice",
-      status: "draft",
+      status: "verified",   // verifier-style-ukr-1117 (2026-11-18): reports/verify/style-ukr-1117.md
       why: "Звертання показує, до кого ми говоримо, і передає наше ставлення. Правильна форма звертання — знак поваги.",
       screens: [
         {
@@ -161,7 +161,7 @@ SLID.section("ukr", {
       title: "Кома, що кличе",
       short: "Знаки при звертанні",
       icon: "check",
-      status: "draft",
+      status: "verified",   // verifier-style-ukr-1117 (2026-11-18): reports/verify/style-ukr-1117.md
       why: "Одна кома вирішує, до кого ти звертаєшся. Без неї повідомлення можна зрозуміти навпаки.",
       screens: [
         {
@@ -294,7 +294,7 @@ SLID.section("ukr", {
       title: "Мабуть, на щастя, по-перше",
       short: "Вставні слова",
       icon: "bulb",
-      status: "draft",
+      status: "verified",   // verifier-style-ukr-1117 (2026-11-18): reports/verify/style-ukr-1117.md
       why: "Вставні слова показують, що мовець думає про сказане, звідки він це знає і як пов'язані думки.",
       screens: [
         {
