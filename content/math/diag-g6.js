@@ -19,7 +19,7 @@ SLID.diag("math", {
   grade: 6,
   title: "Що ти вже вмієш?",
   why: "Знайдемо теми, які варто згадати, щоб нові уроки давалися легше.",
-  status: "draft",   // style-math-1117 (2026-11-18): «Скільки сторінок у книжці?» (topic frac-of) — «Прочитано» замість «Ти прочитав» (D-020), ключ і варіанти ті самі, rev не потрібен. Попередня: verifier-refine-math-dg6-pct-rev3 (2026-11-03): усі 30 завдань розв'язано наново, ред. 3 (№7 pct, №27 pct-of) — опора в ms3l1/ms3l2, ядро уроків покрито; reports/verify/refine-math-dg6-pct-rev3.md
+  status: "verified",   // verifier-style-math-1117 (2026-11-18): reports/verify/style-math-1117.md. style-math-1117: «Скільки сторінок у книжці?» (topic frac-of) — «Прочитано» замість «Ти прочитав» (D-020), ключ і варіанти ті самі, rev не потрібен. Попередня: verifier-refine-math-dg6-pct-rev3 (2026-11-03): усі 30 завдань розв'язано наново, ред. 3 (№7 pct, №27 pct-of) — опора в ms3l1/ms3l2, ядро уроків покрито; reports/verify/refine-math-dg6-pct-rev3.md
   meta: { author: "write-math-diag-g6", created: "2026-10-13", factcheck: "verifier-refine-math-dg6-pct-rev3", revised: "2026-11-03 refine-math-dg6-pct-rev3", teacher: null },
   topics: [
     // передумови з 4–5 класів

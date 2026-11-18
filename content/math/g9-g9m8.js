@@ -209,7 +209,7 @@ SLID.section("math", {
       title: "Прямі, що не зустрінуться",
       short: "Прямі в просторі",
       icon: "line",
-      status: "draft",
+      status: "verified",
       why: "Щоб розрізняти паралельні, мимобіжні й перпендикулярні прямі в кімнаті, на мосту й у коробці.",
       screens: [
         {
@@ -1779,7 +1779,7 @@ SLID.section("math", {
       title: "Етикетка з банки",
       short: "Циліндр",
       icon: "rings",
-      status: "draft",
+      status: "verified",
       why: "Щоб рахувати бляху на банку, фарбу на трубу й об'єм бочки чи мензурки.",
       screens: [
         {

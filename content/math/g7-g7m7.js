@@ -576,7 +576,7 @@ SLID.section("math", {
       title: "Додай — і змінна зникне",
       short: "Додавання",
       icon: "scale",
-      status: "draft",
+      status: "verified",
       why: "Іноді швидше не виражати змінну, а скласти рівняння так, щоб одна зникла.",
       screens: [
         {
@@ -730,7 +730,7 @@ SLID.section("math", {
       title: "Кафе з двома невідомими",
       short: "Фінал",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "g7m7boss",
       why: "Зберемо рівняння з двома змінними, графік, підстановку й додавання — як у справжнього касира зміни.",

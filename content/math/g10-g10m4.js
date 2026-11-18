@@ -509,7 +509,7 @@ SLID.section("math", {
       title: "Кут троса й висота залу",
       short: "Кути й відстані",
       icon: "target",
-      status: "draft",
+      status: "verified",
       why: "Щоб міряти кут між балкою й підлогою та відстань від точки до площини.",
       screens: [
         {

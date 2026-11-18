@@ -154,7 +154,7 @@ SLID.section("math", {
       title: "Який дріб більший?",
       short: "Порівняння",
       icon: "scale",
-      status: "draft",
+      status: "verified",
       badge: "cmpr",
       why: "Порівнювати дроби потрібно щодня: яка знижка більша, яка частина шляху вже позаду, чого в рецепті більше.",
       screens: [
@@ -604,7 +604,7 @@ SLID.section("math", {
       title: "Кондитерська задача",
       short: "Фінал розділу",
       icon: "cake",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "mboss",
       why: "Усе вивчене про дроби, в одній справжній ситуації. Бали подвоєні.",

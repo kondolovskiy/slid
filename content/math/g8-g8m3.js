@@ -962,7 +962,7 @@ SLID.section("math", {
       title: "Плитка для шкільного двору",
       short: "Фінал",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "g8m3boss",
       why: "Зберемо все: параболу, корінь, дійсні числа, властивості й графік $y = \\sqrt{x}$ — як на реальному майданчику.",

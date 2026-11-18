@@ -26,7 +26,7 @@ SLID.section("math", {
       title: "Що розкаже графік",
       short: "Властивості",
       icon: "eye",
-      status: "draft",
+      status: "verified",
       why: "Графік одразу показує нулі, проміжки зростання й найбільше значення — без довгих обчислень.",
       screens: [
         {
@@ -383,7 +383,7 @@ SLID.section("math", {
       title: "Вершина й вісь",
       short: "Парабола",
       icon: "chart",
-      status: "draft",
+      status: "verified",
       why: "Квадратична функція — це парабола: вершина, вісь симетрії й два вигляди формули допомагають її читати.",
       screens: [
         {
@@ -583,7 +583,7 @@ SLID.section("math", {
       title: "Де графік вище нуля",
       short: "Нерівності",
       icon: "scale",
-      status: "draft",
+      status: "verified",
       why: "Квадратна нерівність — це питання: на яких проміжках парабола над віссю, під нею чи на ній.",
       screens: [
         {

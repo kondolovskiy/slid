@@ -26,7 +26,7 @@ SLID.section("math", {
       title: "Ряд за правилом",
       short: "Послідовності",
       icon: "path",
-      status: "draft",
+      status: "verified",
       why: "Щоб бачити правило в ряді чисел і знаходити будь-який член без довгого переліку.",
       screens: [
         {
@@ -701,7 +701,7 @@ SLID.section("math", {
       title: "Планер заощаджень",
       short: "Фінал",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "g9m5boss",
       why: "Зберемо послідовності, арифметичну й геометричну прогресії та нескінченну суму — як у банку й у бюджеті сімʼї.",

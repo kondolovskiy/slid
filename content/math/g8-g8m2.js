@@ -718,7 +718,7 @@ SLID.section("math", {
       title: "Рівні відрізки на променях",
       short: "Фалес",
       icon: "target",
-      status: "draft",
+      status: "verified",
       why: "Щоб ділити відрізок на рівні частини й бачити середню лінію трикутника без зайвих вимірювань.",
       screens: [
         {

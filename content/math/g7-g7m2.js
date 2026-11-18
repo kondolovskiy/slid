@@ -611,7 +611,7 @@ SLID.section("math", {
       title: "Креслення парку",
       short: "Фінал розділу",
       icon: "map",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "g7m2boss",
       why: "Зберемо точки, кути й перший доказ в одній задачі: план алеї в парку.",

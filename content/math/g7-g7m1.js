@@ -165,7 +165,7 @@ SLID.section("math", {
       title: "Лінія одного кореня",
       short: "Лінійне",
       icon: "chart",
-      status: "draft",
+      status: "verified",
       why: "Лінійне рівняння майже завжди має один корінь. Але іноді коренів немає або їх безліч — і це теж відповідь.",
       screens: [
         {
@@ -339,7 +339,7 @@ SLID.section("math", {
       title: "Задача стає рівнянням",
       short: "Задачі",
       icon: "bulb",
-      status: "draft",
+      status: "verified",
       why: "Текстова задача здається довгою, доки не позначиш невідоме буквою. Далі працює вже знайоме рівняння.",
       screens: [
         {
@@ -483,7 +483,7 @@ SLID.section("math", {
       title: "Крамниця рівнянь",
       short: "Фінал розділу",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "g7m1boss",
       why: "Рівняння, лінійні випадки й задачі — усе в одній крамниці. Бали подвоєні.",

@@ -30,7 +30,7 @@ SLID.section("math", {
       title: "Відстань на карті",
       short: "Координати",
       icon: "path",
-      status: "draft",
+      status: "verified",
       why: "Щоб знаходити відстань між точками й середину відрізка за координатами — без лінійки на карті.",
       screens: [
         {
@@ -207,7 +207,7 @@ SLID.section("math", {
       title: "Коло й пряма числами",
       short: "Коло і пряма",
       icon: "home",
-      status: "draft",
+      status: "verified",
       why: "Щоб записувати коло й пряму рівняннями — як у кресленнях і іграх.",
       screens: [
         {
@@ -414,7 +414,7 @@ SLID.section("math", {
       title: "Стрілка з координатами",
       short: "Вектори",
       icon: "line",
-      status: "draft",
+      status: "verified",
       why: "Щоб описувати зсув і напрям однією парою чисел — як у геймпаді чи навігаторі.",
       screens: [
         {

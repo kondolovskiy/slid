@@ -202,7 +202,7 @@ SLID.section("math", {
       title: "Проміжок на прямій",
       short: "Лінійні",
       icon: "line",
-      status: "draft",
+      status: "verified",
       why: "Лінійну нерівність розв'язують як рівняння, але відповідь — проміжок, а не одна точка.",
       screens: [
         {
@@ -392,7 +392,7 @@ SLID.section("math", {
       title: "Спільна смуга",
       short: "Системи",
       icon: "path",
-      status: "draft",
+      status: "verified",
       why: "Система нерівностей — це «і»: підходять лише числа, що задовольняють усі умови разом.",
       screens: [
         {
@@ -576,7 +576,7 @@ SLID.section("math", {
       title: "Диспетчер обмежень",
       short: "Фінал",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "g9m1boss",
       why: "Зберемо властивості, лінійні нерівності й системи — як правила для зміни в таборі.",

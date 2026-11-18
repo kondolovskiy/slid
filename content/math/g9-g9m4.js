@@ -256,7 +256,7 @@ SLID.section("math", {
       title: "Міст між сторонами",
       short: "Косинуси",
       icon: "path",
-      status: "draft",
+      status: "verified",
       why: "Щоб знайти третю сторону за двома сторонами й кутом між ними — або кут за трьома сторонами.",
       screens: [
         {
@@ -446,7 +446,7 @@ SLID.section("math", {
       title: "Сторона й протилежний кут",
       short: "Синуси",
       icon: "scale",
-      status: "draft",
+      status: "verified",
       why: "Щоб знаходити сторону чи кут, коли відома пара «сторона — протилежний кут».",
       screens: [
         {

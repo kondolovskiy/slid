@@ -502,7 +502,7 @@ SLID.section("math", {
       title: "Якщо вже паралельні",
       short: "Властивості",
       icon: "target",
-      status: "draft",
+      status: "verified",
       why: "Щоб з одного кута на плані знайти інші — без нового вимірювання.",
       screens: [
         {
@@ -716,7 +716,7 @@ SLID.section("math", {
       title: "Вісім кутів на січній",
       short: "Кути",
       icon: "bulb",
-      status: "draft",
+      status: "verified",
       why: "Щоб швидко рахувати кути на картах і кресленнях вулиць.",
       screens: [
         {
@@ -891,7 +891,7 @@ SLID.section("math", {
       title: "План кварталу",
       short: "Фінал розділу",
       icon: "map",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "g7m6boss",
       why: "Зберемо перпендикуляр, ознаки, властивості й розрахунок кутів в одній задачі планувальника.",

@@ -210,7 +210,7 @@ SLID.section("math", {
       title: "Дзеркало й нахил",
       short: "Парність",
       icon: "eye",
-      status: "draft",
+      status: "verified",
       why: "Симетрія графіка й напрям «угору / вниз» допомагають швидко описати поведінку функції.",
       screens: [
         {
@@ -612,7 +612,7 @@ SLID.section("math", {
       title: "Зміна аналітика",
       short: "Фінал",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "g10m1boss",
       why: "Зберемо область визначення, парність, монотонність і обернену в одній зміні аналітика даних.",

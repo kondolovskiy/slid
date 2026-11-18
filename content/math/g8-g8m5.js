@@ -27,7 +27,7 @@ SLID.section("math", {
       title: "Коли немає члена",
       short: "Неповні",
       icon: "bolt",
-      status: "draft",
+      status: "verified",
       why: "Іноді в рівнянні немає середнього члена або вільного — тоді корені шукають без важкої формули.",
       screens: [
         {
@@ -192,7 +192,7 @@ SLID.section("math", {
       title: "Скільки коренів?",
       short: "Дискримінант",
       icon: "chart",
-      status: "draft",
+      status: "verified",
       why: "Один вираз $D = b^2 - 4ac$ одразу каже: два корені, один чи жодного.",
       screens: [
         {
@@ -378,7 +378,7 @@ SLID.section("math", {
       title: "Сума й добуток",
       short: "Вієт",
       icon: "scale",
-      status: "draft",
+      status: "verified",
       why: "Іноді корені видно з суми й добутку — без довгих обчислень під коренем.",
       screens: [
         {
@@ -528,7 +528,7 @@ SLID.section("math", {
       title: "Площа й політ",
       short: "Задачі",
       icon: "map",
-      status: "draft",
+      status: "verified",
       why: "Квадратне рівняння з'являється, коли площа, шлях або добуток залежать від невідомого в квадраті.",
       screens: [
         {
@@ -836,7 +836,7 @@ SLID.section("math", {
       title: "Заміна змінної",
       short: "Біквадратні",
       icon: "bolt",
-      status: "draft",
+      status: "verified",
       why: "Рівняння четвертого степеня чи з дробами часто зводяться до квадратного. Треба лише помітити заміну або спільний множник.",
       screens: [
         {
@@ -1159,7 +1159,7 @@ SLID.section("math", {
       title: "Квадратна зміна",
       short: "Фінал",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "g8m5boss",
       why: "Зберемо неповні рівняння, дискримінант, теорему Вієта, тричлен, заміну змінної й задачі — як на одній шкільній зміні.",

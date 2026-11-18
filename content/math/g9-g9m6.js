@@ -233,7 +233,7 @@ SLID.section("math", {
       title: "Коло без нитки",
       short: "Коло і круг",
       icon: "rings",
-      status: "draft",
+      status: "verified",
       why: "Щоб міряти колеса, клумби й арки формулами з π — без обмотування ниткою.",
       screens: [
         {
@@ -411,7 +411,7 @@ SLID.section("math", {
       title: "Шматок кола",
       short: "Дуга і сектор",
       icon: "pizza",
-      status: "draft",
+      status: "verified",
       why: "Щоб рахувати скоринку шматка піци, шлях кінчика стрілки годинника чи площу клумби-сектора.",
       screens: [
         {
@@ -996,7 +996,7 @@ SLID.section("math", {
       title: "Велика піца чи три малі?",
       short: "Площі подібних",
       icon: "scale",
-      status: "draft",
+      status: "verified",
       why: "Щоб порівнювати площі за масштабом: піци, плани квартир, карти.",
       screens: [
         {
