@@ -55,3 +55,8 @@ priority: P3
 6. **Знімки до/після (360 px)** — у scratchpad оркестратора: engine-w3-1117/before.png / after.png (лабораторії g4m2, g4m4, g8m1 ×2, g11m2), css-before.png / css-after.png (корінь, стрілка, 1/aⁿ, підкреслення), shots/before|after-l2-1.png (strata), shots/before|after-l2-5.png (align).
 **Тести:** test-math +9 (1/a^n тощо; 3 старі перевірки \to оновлено під клас marr) — на старому коді 10 ✗; test-lab +15 (підписи numline/fraction/solid у межах поля, дві точки без накладання, осі, validate axes) — на старому коді 9 ✗; test-ui сценарій 23 (18 перевірок: межі підписів у DOM getBBox, aria «α»/«x₁», маска кореня, ширина стрілки, `<u>`, 1/aⁿ, strata, align, B1) — на старому коді 15 ✗. `npm run check` зелений; test-ui 261 ok. test-answer-ui.py і playtest.py тут не запускались (немає Python playwright) — CI job browser.
 **Не зроблено:** g8m3 sort — «останні картки за кнопкою, екран не прокручується колесом миші» (у «Що зробити» немає; окремо, потрібне відтворення); g7m5 «→» — лише рушій (CSS), зміст не чіпав.
+
+## Рев'ю reviewer-engine-w3-1117
+Вердикт: **потрібні виправлення** (reports/review/engine-render-legibility-1117.md).
+- P1-1: g4m2l1 e5 — новий підпис старту «2748» налазить на `{2748+k|0}` за k ≲ 200 (`un: 5`, `hu: 1`). У режимі стрибків лише один ряд підписів (app/lab.js:514); тести перевіряють тільки розв'язаний стан.
+- P3: ширина TeX-підписів (g8m1l5), осі solid поверх ребер, корінь у forced-colors, шрифт align, покриття тестами.
