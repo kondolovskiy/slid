@@ -18,7 +18,7 @@ SLID.diag("hist", {
   grade: 10,
   title: "Що ти вже вмієш?",
   why: "Знайдемо теми з попередніх класів, які варто згадати, і те, що з 10 класу ти вже знаєш.",
-  status: "draft",
+  status: "verified",
   signed: false,
   meta: { author: "w-write-hist-diag-g10", created: "2026-11-06", factcheck: "verifier-dgh10; for g11s1 — verifier-refine-hist-diag-g10-g11 (2026-11-11)", revised: "2026-11-11 w-refine-hist-diag-g10-g11", teacher: null },
   topics: [
@@ -26,7 +26,7 @@ SLID.diag("hist", {
     { id: "cent", title: "Століття за роком", kind: "pre", lessons: ["l3"], for: ["g10s1", "g10s2", "g10s3", "g10s4", "g10s5"] },
     { id: "srccrit", title: "Кому вірити: автор і мета джерела", kind: "pre", lessons: ["l4"], for: ["g10s1", "g10s2", "g10s4", "g11s1"] },
     { id: "fact", title: "Факт і тлумачення", kind: "pre", lessons: ["l1", "g9s1l1"], for: ["g10s1", "g10s2", "g10s3", "g10s4", "g10s5", "g11s1"] },
-    { id: "lands", title: "Історичні землі та їхні центри", kind: "pre", lessons: ["h23", "g9s1l3"], for: ["g10s1", "g10s5", "g11s1"] },
+    { id: "lands", title: "Історичні землі та їхні центри", kind: "pre", lessons: ["h23"], for: ["g10s1", "g10s5", "g11s1"] },
     { id: "twoemp", title: "Українські землі у двох імперіях", kind: "pre", lessons: ["h24", "g9s1l3"], for: ["g10s1", "g10s5"] },
     // передумови: XIX — початок XX ст. (9 кл.)
     { id: "ban", title: "Валуєвський циркуляр і Емський указ", kind: "pre", lessons: ["g9s3l4"], for: ["g10s3"] },
@@ -392,7 +392,6 @@ SLID.diag("hist", {
     },
     {
       topic: "lands",
-      lesson: "g9s1l3",
       type: "sort",
       sk: "geo",
       title: "Яка це земля?",

@@ -328,7 +328,7 @@ SLID.section("hist", {
       title: "Що розповідає глечик",
       short: "Кераміка й символи",
       icon: "spiral",
-      status: "draft",
+      status: "verified",
       why: "Від трипільців лишилися тисячі розписних посудин. Навчися читати їх як книжку без слів.",
       screens: [
         {

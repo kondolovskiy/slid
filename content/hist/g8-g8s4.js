@@ -81,7 +81,7 @@ SLID.section("hist", {
       title: "Перемога без спокою",
       short: "Виговський",
       icon: "shield",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, чому Конотопська перемога 1659 р. не врятувала єдність Гетьманщини.",
       screens: [
         {
