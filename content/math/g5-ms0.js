@@ -623,7 +623,7 @@ SLID.section("math", {
             kind: "rect",
             params: { a: { min: 1, max: 10, start: 3, label: "сторона" } },
             a: "a", b: "a", max: [10, 10], drag: false,
-            show: "$ {a} * {a} = {a*a}$ клітинок",
+            show: "$ {a} * {a} = {a*a}$ {a*a|pl:клітинка,клітинки,клітинок}",
             alt: "Квадрат із клітинок, сторону змінює повзунок"
           },
           cta: "Далі"
@@ -658,7 +658,7 @@ SLID.section("math", {
             kind: "rect",
             params: { a: { min: 1, max: 10, start: 4, label: "довжина" }, b: { min: 1, max: 10, start: 6, label: "ширина" } },
             a: "a", b: "b", max: [10, 10],
-            show: "$ {a} * {b} = {a*b}$ клітинок",
+            show: "$ {a} * {b} = {a*b}$ {a*b|pl:клітинка,клітинки,клітинок}",
             alt: "Прямокутник із клітинок, кут можна тягнути"
           },
           goal: "a==b && a*b==49",
@@ -695,7 +695,7 @@ SLID.section("math", {
             kind: "solid", shape: "box", cubes: true,
             params: { a: { min: 1, max: 5, start: 2, label: "ребро" } },
             a: "a", b: "a", c: "a",
-            show: "${a}^3 = {a} * {a} * {a} = {a*a*a}$ кубиків",
+            show: "${a}^3 = {a} * {a} * {a} = {a*a*a}$ {a*a*a|pl:кубик,кубики,кубиків}",
             alt: "Куб з одиничних кубиків, ребро змінює повзунок"
           },
           cta: "Далі"
@@ -710,7 +710,7 @@ SLID.section("math", {
             kind: "solid", shape: "box", cubes: true,
             params: { a: { min: 1, max: 5, start: 2, label: "довжина" }, c: { min: 1, max: 5, start: 2, label: "ширина" }, b: { min: 1, max: 5, start: 1, label: "висота" } },
             a: "a", b: "b", c: "c",
-            show: "${a} * {c} * {b} = {a*b*c}$ кубиків",
+            show: "${a} * {c} * {b} = {a*b*c}$ {a*b*c|pl:кубик,кубики,кубиків}",
             alt: "Коробка з кубиків, виміри змінюють повзунки"
           },
           goal: "a==b && b==c && a*b*c==27",

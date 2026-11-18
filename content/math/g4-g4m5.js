@@ -606,7 +606,7 @@ SLID.section("math", {
             kind: "fraction",
             params: { n: { min: 3, max: 10, start: 4, label: "Шматків" } },
             items: [{ shape: "circle", n: "n", k: 3 }],
-            show: "Пиріг на {n|0} шматків, зафарбовано 3."
+            show: "Пиріг на {n|0} {n|pl:шматок,шматки,шматків}, зафарбовано 3."
           },
           goal: "n==6",
           solution: { n: 6 },

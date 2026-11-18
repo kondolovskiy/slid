@@ -51,7 +51,7 @@ function nextUnit(tokens, state) {
 function command(tokens, state, name) {
   if (/^[,;:! ]$/.test(name)) return { html:'<span class="mspace thin"></span>', atom:false };
   // стрілки — бінарні знаки з відступами, як «=»: «0 → −1», а не «0→−1» (на 400 px стрілка зливалася з числами, g7m5)
-  if (ARROW.has(name)) return { html:`<span class="mo">${SYMBOL[name]}</span>`, atom:false };
+  if (ARROW.has(name)) return { html:`<span class="mo marr">${SYMBOL[name]}</span>`, atom:false };
   if (SYMBOL[name]) return { html: SYMBOL[name], atom: !["cdot","times","ge","geq","le","leq","neq","ne","pm","to","rightarrow","leftrightarrow","parallel","perp","in","cup","sim"].includes(name) };
   if (name === "quad" || name === "qquad") return { html:`<span class="mspace ${name}"></span>`, atom:false };
   if (name === "left" || name === "right") return { html:"", atom:false };
@@ -76,6 +76,14 @@ function command(tokens, state, name) {
     return { html:`<span class="mfn">${name === "int" ? "∫" : name}</span>${gap ? '<span class="mspace thin"></span>' : ""}`, atom:true };
   }
   return { html:`<span class="munknown">\\${esc(name)}</span>`, atom:false };
+}
+// знаменник дробу «a/b»: атом у tokens[state.i] разом зі степенем чи індексом упритул — вони зв'язуються сильніше за «/»
+// (1/a^n = 1/(aⁿ), 1/x_1; engine-render-legibility-1117). Перед степенем дужки групи лишаються: 1/(a+b)^2, а не 1/a+b².
+function denHTML(tokens, state) {
+  const t = tokens[state.i++]; let tail = "";
+  while ((tokens[state.i] === "^" || tokens[state.i] === "_") && tokens[state.i + 1] != null && !/^\s+$/.test(tokens[state.i + 1])) {
+    const tag = tokens[state.i++] === "^" ? "sup" : "sub"; tail += `<${tag} class="mp">${nextUnit(tokens, state)}</${tag}>`; }
+  return atomHTML(t, !tail) + tail;
 }
 function render(tokens) {
   const state = { i:0 }, units = []; let operand = false;
@@ -112,12 +120,12 @@ function render(tokens) {
     if (r) {
       const nu = (lead ? atomHTML(t, false) : "") + r.html; state.i = r.end;
       if (tokens[state.i] === "/" && isAtomToken(tokens[state.i + 1])) {
-        push(`<span class="fr"><span class="nu">${nu}</span><span class="sr">/</span><span class="de">${atomHTML(tokens[state.i + 1],true)}</span></span>`, true); state.i += 2;
+        state.i++; push(`<span class="fr"><span class="nu">${nu}</span><span class="sr">/</span><span class="de">${denHTML(tokens, state)}</span></span>`, true);
       } else push(nu, true);
       continue;
     }
     if (isAtomToken(t) && tokens[state.i] === "/" && isAtomToken(tokens[state.i + 1])) {
-      push(`<span class="fr"><span class="nu">${atomHTML(t,true)}</span><span class="sr">/</span><span class="de">${atomHTML(tokens[state.i + 1],true)}</span></span>`, true); state.i += 2; continue;
+      state.i++; push(`<span class="fr"><span class="nu">${atomHTML(t,true)}</span><span class="sr">/</span><span class="de">${denHTML(tokens, state)}</span></span>`, true); continue;
     }
     if ((t === "-" || t === "+") && !operand) { push(`<span class="mu">${OPS[t]}</span>`); continue; }
     if (OPS[t]) { push(`<span class="mo">${OPS[t]}</span>`); continue; }
