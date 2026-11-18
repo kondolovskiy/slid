@@ -62,6 +62,12 @@ SLID.section("world", {
       "The Metropolitan Museum of Art",
       "CC0 (суспільне надбання)",
       "https://www.metmuseum.org/art/collection/search/53630"
+    ],
+    [
+      "Східна Римська імперія та її васали 555 р., за Юстиніана I (сучасна карта)",
+      "Tataryn",
+      "CC BY-SA 3.0",
+      "https://commons.wikimedia.org/wiki/File:Justinian555AD.png"
     ]
   ],
   lessons: [
@@ -70,7 +76,7 @@ SLID.section("world", {
       title: "Рим, що не впав",
       short: "Юстиніан",
       icon: "city",
-      status: "verified",
+      status: "draft",
       why: "Ти дізнаєшся, як Східна Римська імперія пережила Західну майже на тисячу років. І що лишив по собі імператор Юстиніан.",
       screens: [
         {
@@ -135,6 +141,9 @@ SLID.section("world", {
           sk: "geo",
           eyebrow: "Карта імперії",
           title: "Які землі повернув Юстиніан?",
+          img: "img/world/w7s2/justinian-555.jpg",
+          cap: "Сучасна карта: Східна Римська імперія (темно-червоне) і залежні від неї землі (рожеве) 555 р. Назви областей — латиною.",
+          body: "<p>Знайди на карті темно-червоні землі на заході Середземного моря. Які з них Юстиніан повернув імперії?</p>",
           opts: [
             "Італію",
             "Північну Африку",

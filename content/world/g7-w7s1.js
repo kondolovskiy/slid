@@ -56,6 +56,12 @@ SLID.section("world", {
       "MapMaster (з правками інших учасників Вікісховища)",
       "CC BY-SA 2.5",
       "https://commons.wikimedia.org/wiki/File:Invasions_of_the_Roman_Empire_1.png"
+    ],
+    [
+      "Германські королівства і Східна Римська імперія 526 р. (The Germanic Kingdoms and the East Roman Empire in 526). «Історичний атлас» (Historical Atlas)",
+      "Вільям Р. Шеферд (William R. Shepherd)",
+      "суспільне надбання",
+      "https://commons.wikimedia.org/wiki/File:C._526_Germanic_Kingdoms.jpg"
     ]
   ],
   lessons: [
@@ -64,7 +70,7 @@ SLID.section("world", {
       title: "Королі на руїнах Риму",
       short: "Хлодвіг і франки",
       icon: "shield",
-      status: "verified",
+      status: "draft",
       why: "Ти дізнаєшся, хто правив Європою після падіння Риму. І навчишся питати про кожну картину: коли її намальовано?",
       screens: [
         {
@@ -106,6 +112,9 @@ SLID.section("world", {
           sk: "geo",
           eyebrow: "Карта Європи",
           title: "Хто де заснував королівство?",
+          img: "img/world/w7s1/germanic-kingdoms-526.jpg",
+          cap: "Карта «Германські королівства і Східна Римська імперія 526 р.» з «Історичного атласу» Вільяма Р. Шеферда (перше видання — 1911 р.). Підписи англійською.",
+          body: "<p>Kingdom of the… — це «королівство…». East Goths — остготи, тобто «східні готи». West Goths — вестготи, «західні готи». Franks — франки, Angles and Saxons — англи й сакси.</p><p>Знайди кожен народ на карті й розклади за колишніми римськими землями.</p>",
           bins: ["Італія", "Іспанія", "Галлія", "Британія"],
           items: [
             ["Остготи", 0],
