@@ -899,7 +899,7 @@ SLID.section("hist", {
       title: "Літописець свободи",
       short: "Фінал розділу",
       icon: "star",
-      status: "verified",
+      status: "draft",
       boss: true,
       badge: "freedomroad",
       why: "Перевірка всього розділу. Бали подвоєні.",
@@ -945,7 +945,7 @@ SLID.section("hist", {
           type: "choice",
           sk: "crit",
           eyebrow: "Завдання 3",
-          title: "Вересень: Бабин Яр",
+          title: "Календар: Бабин Яр",
           body: "<p>На картці написано: «У Бабиному Яру загинуло 33 771 людина». Як виправити картку?</p>",
           opts: [
             "Уточнити: це євреї, убиті у вересні 1941 р.",

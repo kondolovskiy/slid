@@ -18,8 +18,8 @@ SLID.diag("hist", {
   id: "dgh5",
   grade: 5,
   title: "Що ти вже вмієш?",
-  why: "Згадаємо, що ти дізнався про минуле в 1–4 класах, і знайдемо, з чого почати 5 клас.",
-  status: "verified",   // verifier-diag-see-1117 (2026-11-17): see baseline-тем перевірено, завдання не змінено; reports/verify/diag-see-1117.md
+  why: "Згадаємо, що дізналися про минуле в 1–4 класах, і знайдемо, з чого почати 5 клас.",
+  status: "draft",   // style-hist-1117 (2026-11-18): why без роду (D-020), завдання не змінено, rev не потрібен. Раніше: verifier-diag-see-1117 (2026-11-17), reports/verify/diag-see-1117.md
   meta: { author: "w-write-hist-diag-g5", created: "2026-11-06", factcheck: "verifier-dgh5", teacher: null },
   topics: [
     // опори 1–4 класів (baseline: уроків історії молодших класів у застосунку немає)
