@@ -4,7 +4,7 @@ claimed_at: 2026-11-18T10:20:33.790Z
 id: tools-content-checks-p3
 type: tools
 subject: all
-status: review
+status: done
 claimed_by: agent-tools-checks
 created: 2026-11-12
 ---
