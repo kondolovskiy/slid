@@ -4,7 +4,7 @@ claimed_at: 2026-11-18T06:53:27.762Z
 id: design-gamification-1117
 type: design
 subject: all
-status: todo
+status: review
 claimed_by: design-w3-1117
 created: 2026-11-17
 source: student-playtest-1117
