@@ -4,7 +4,7 @@ claimed_at: 2026-11-18T06:53:27.546Z
 id: engine-render-legibility-1117
 type: engine
 subject: all
-status: review
+status: done
 claimed_by: engine-w3-1117
 created: 2026-11-17
 source: student-playtest-1117
@@ -95,3 +95,6 @@ priority: P3
 - Знімки: scratchpad/engine-w3-fix-1117/g4m2-*.png, g8m1l5-*.png.
 
 build не запускав (оркестратор).
+
+## Повторне рев'ю reviewer-engine-w3-1117 (33d57e7)
+Вердикт: **прийнято**. P1-1 і P3 (ширина TeX-підписів, корінь у forced-colors, `pl` для NaN, weakN) закрито й перевірено зондом, сканом лабораторій і тестами на коді до виправлення. Лишаються P3: осі solid, align font-size, давні накладання g8m3l2 і g9m5l3.
