@@ -27,7 +27,7 @@ SLID.section("hist", {
       title: "Греки на нашому березі",
       short: "Грецькі колонії",
       icon: "city",
-      status: "draft",
+      status: "verified",
       why: "Південь України має давнє минуле. Тут стояли міста, де говорили грецькою й торгували з усім морем.",
       screens: [
         {
@@ -364,7 +364,7 @@ SLID.section("hist", {
       title: "Місто під степом",
       short: "Спадщина",
       icon: "eye",
-      status: "draft",
+      status: "verified",
       why: "Рештки давніх міст — це документи без слів. Учені вчаться їх читати, а ми — берегти.",
       screens: [
         {

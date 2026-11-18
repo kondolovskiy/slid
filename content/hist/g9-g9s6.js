@@ -808,7 +808,7 @@ SLID.section("hist", {
       title: "Виставка в Народному домі",
       short: "Фінал розділу",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "piedmont",
       why: "Перевірка всього розділу. Бали подвоєні.",

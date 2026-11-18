@@ -553,7 +553,7 @@ SLID.section("hist", {
       title: "Після льодовика",
       short: "Мезоліт",
       icon: "map",
-      status: "draft",
+      status: "verified",
       why: "Клімат змінювався ще в давнину. Побачиш, як мисливці пристосувалися, коли зникли мамонти.",
       screens: [
         {

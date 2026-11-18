@@ -724,7 +724,7 @@ SLID.section("hist", {
       title: "Путівник трьома кордонами",
       short: "Фінал розділу",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "threeborders",
       why: "Перевірка всього розділу. Бали подвоєні.",

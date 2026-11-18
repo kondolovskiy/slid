@@ -63,7 +63,7 @@ SLID.section("hist", {
       title: "Люди без імені",
       short: "Хто такі трипільці",
       icon: "leaf",
-      status: "draft",
+      status: "verified",
       why: "Трипільці жили на наших землях тисячі років. Дізнаймося, що про них відомо напевно, а що — ні.",
       screens: [
         {
@@ -468,7 +468,7 @@ SLID.section("hist", {
       title: "Пожежа чи обряд?",
       short: "Спалені будинки",
       icon: "flame",
-      status: "draft",
+      status: "verified",
       why: "Учені не завжди знають відповідь. Подивися, як вони перевіряють версії дослідом.",
       screens: [
         {
@@ -579,7 +579,7 @@ SLID.section("hist", {
       title: "Експедиція в Тальянки",
       short: "Фінал розділу",
       icon: "star",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "trypil",
       why: "Перевірка всього розділу. Бали подвоєні.",

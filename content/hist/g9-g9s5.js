@@ -376,7 +376,7 @@ SLID.section("hist", {
       title: "Історик, що написав націю",
       short: "Грушевський",
       icon: "book",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, чому праця Михайла Грушевського змінила погляд на історію України.",
       screens: [
         {
@@ -947,7 +947,7 @@ SLID.section("hist", {
       title: "Літо, коли все змінилося",
       short: "Перед війною",
       icon: "map",
-      status: "draft",
+      status: "verified",
       why: "Ти зрозумієш, чому Перша світова війна стала для українців війною на два фронти.",
       screens: [
         {
@@ -1063,7 +1063,7 @@ SLID.section("hist", {
       title: "Архів редакції",
       short: "Фінал розділу",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "centurythreshold",
       why: "Перевірка всього розділу. Бали подвоєні.",

@@ -834,7 +834,7 @@ SLID.section("hist", {
       title: "Справа мамонтового селища",
       short: "Фінальна справа",
       icon: "star",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "hboss",
       why: "Перевірка всього розділу на одній справжній знахідці. Бали подвоєні.",

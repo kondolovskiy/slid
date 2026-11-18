@@ -1124,7 +1124,7 @@ SLID.section("hist", {
       title: "Вигнання з Криму",
       short: "Депортація",
       icon: "map",
-      status: "draft",
+      status: "verified",
       why: "Ти дослідиш, як радянська влада покарала цілий народ за звинуваченнями проти окремих людей.",
       screens: [
         {
@@ -1336,7 +1336,7 @@ SLID.section("hist", {
       title: "Архівна справа № 1939–1945",
       short: "Фінал розділу",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "archivecase",
       why: "Віднови хронологію за архівними картками та спростуй міфи доказами. Бали подвоєні.",

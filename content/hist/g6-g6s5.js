@@ -46,7 +46,7 @@ SLID.section("hist", {
       title: "Коли рушила Європа",
       short: "Готи й гуни",
       icon: "path",
-      status: "draft",
+      status: "verified",
       why: "Один похід кочовиків запустив ланцюг переселень на кілька століть. Так змінилася карта Європи.",
       screens: [
         {

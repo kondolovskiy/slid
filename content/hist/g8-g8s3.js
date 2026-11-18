@@ -79,7 +79,7 @@ SLID.section("hist", {
       title: "Від Суботова до булави",
       short: "Хмельницький",
       icon: "user",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, хто такий Богдан Хмельницький і чому особиста образа стала початком великої війни.",
       screens: [
         {
@@ -217,7 +217,7 @@ SLID.section("hist", {
       title: "Дві перемоги за травень",
       short: "Жовті Води",
       icon: "bolt",
-      status: "draft",
+      status: "verified",
       why: "Ти простежиш перші битви 1648 р. і побачиш, як швидко змінився баланс сил.",
       screens: [
         {
@@ -331,7 +331,7 @@ SLID.section("hist", {
       title: "Від Зборова до Білої Церкви",
       short: "Договори",
       icon: "scroll",
-      status: "draft",
+      status: "verified",
       why: "Ти порівняєш два договори з Польщею й побачиш, як військова удача змінює умови миру.",
       screens: [
         {
@@ -589,7 +589,7 @@ SLID.section("hist", {
       title: "Що насправді підписали",
       short: "Переяслав",
       icon: "scale",
-      status: "draft",
+      status: "verified",
       why: "Ти розбереш, що сталося в Переяславі 1654 р. і чому історики досі сперечаються про зміст угоди.",
       screens: [
         {

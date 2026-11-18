@@ -899,7 +899,7 @@ SLID.section("hist", {
       title: "Літописець свободи",
       short: "Фінал розділу",
       icon: "star",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "freedomroad",
       why: "Перевірка всього розділу. Бали подвоєні.",
