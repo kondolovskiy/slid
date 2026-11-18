@@ -4,7 +4,7 @@ claimed_at: 2026-11-18T12:50:33.644Z
 id: engine-lab-p4-1118
 type: engine
 subject: math
-status: todo
+status: review
 claimed_by: agent-engine-lab4
 created: 2026-11-18
 source: engine-lab-p3-1117
