@@ -1109,7 +1109,7 @@ async function uiTextScenario(browser) {
   const SEC = { id: "fT", grade: 5, weeks: [30, 31], title: "QA T", why: "QA", lessons: [
     { id: "ft1", title: "Урок ft1", icon: "book", screens: [info("a"), info("b"), info("c"), ch("1"), ch("2"), ch("3"), ch("4")] },
     { id: "ft2", title: "Урок ft2", icon: "book", screens: [ch("Одна", "fa1")] },
-    { id: "ft3", title: "Урок ft3", icon: "book", screens: [ch("Дві", "fa2"), info("кінець")] }] };
+    { id: "ft3", title: "Урок ft3", icon: "book", screens: [ch("Дві", "fa2"), ch("Три", "fa2"), info("кінець")] }] };
   const fx = sec => { SLID_SUBJECTS.find(c => c.id === "math").sections.push(sec); };
   const st0 = { ...seed, weekOverride: 1, lessons: { fa1: { done: true, stars: 2 }, fa2: { done: true, stars: 1 } }, streak: { count: 1, last: today } };
   await boot(st0);
@@ -1135,18 +1135,21 @@ async function uiTextScenario(browser) {
   const m2 = (await page.locator("#sheetHost .meta").innerText()).replace(/\s+/g, " ");
   ok(/(^| )1 крок 1 завдання/.test(m2), `картка уроку: «1 крок · 1 завдання», а ${m2}`);
   await page.evaluate(() => { document.querySelector("#sheetHost").innerHTML = ""; });
-  // «Варто повторити»: одна помилка з pre — «Помилка … пов'язана», дві — «Помилки … пов'язані»
+  // «Варто повторити»: помилки в одному завданні з pre (навіть дві спроби) — «Помилка … пов'язана»; у двох різних завданнях — «Помилки … пов'язані»
+  // (рев'ю engine-render-legibility-1117, P3: рахуємо завдання, а не хибні спроби); "next" — лише кнопка дії (перейти до наступного екрана)
   const play = async (id, picks) => {
     await page.evaluate(id => window.__slidStart(id), id);
-    for (const kk of picks) { await page.click(`#stage .opt[data-k="${kk}"]`); await page.click("#action"); }
+    for (const kk of picks) { if (kk !== "next") await page.click(`#stage .opt[data-k="${kk}"]`); await page.click("#action"); }
     for (let i = 0; i < 8 && !(await page.locator("#stage .rec").count()); i++) { if (!(await page.locator("#action").isEnabled())) break; await page.click("#action"); }
     return (await page.locator("#stage").innerText()).replace(/\s+/g, " ");
   };
-  const r1 = await play("ft2", [1, 0]);
-  ok(/Помилка в цьому уроці пов'язана з цією темою/.test(r1) && !/Кілька помилок/.test(r1), `одна помилка з pre: «Помилка … пов'язана», а ${r1.slice(-300)}`);
+  const r1 = await play("ft2", [1, 2]);
+  ok(/Помилка в цьому уроці пов'язана з цією темою/.test(r1) && !/Помилки в цьому/.test(r1), `дві хибні спроби в одному завданні з pre: «Помилка … пов'язана», а ${r1.slice(-300)}`);
   while (await page.locator("#player").isVisible()) await page.click("#pClose");
-  const r2 = await play("ft3", [1, 2]);
-  ok(/Помилки в цьому уроці пов'язані з цією темою/.test(r2), `дві помилки з pre: «Помилки … пов'язані», а ${r2.slice(-300)}`);
+  // перший прохід кладе fa2 у план («додано в план»); у другому fa2 вже в плані, тож він — у блоці «Варто повторити» з лічильником завдань
+  await play("ft3", [1, 0, "next", 1, 0]); while (await page.locator("#player").isVisible()) await page.click("#pClose");
+  const r2 = await play("ft3", [1, 0, "next", 1, 0]);
+  ok(/Помилки в цьому уроці пов'язані з цією темою/.test(r2), `помилки у двох завданнях з pre: «Помилки … пов'язані», а ${r2.slice(-300)}`);
   while (await page.locator("#player").isVisible()) await page.click("#pClose");
   // «Прогрес»: 1 день поспіль; навичка без тренувань — без граматичного роду
   const progress = async st => { await boot(st); await page.click('.tab[data-tab="progress"]'); return (await page.locator("#view").innerText()).replace(/\s+/g, " "); };
@@ -1199,6 +1202,11 @@ async function renderLegibilityScenario(browser) {
   // 1) стрибки: «+1000» над дугою не обрізано; старт 2748 підписано; точка на правому краю — підпис не виходить за поле
   const r1 = await texts(); inside(r1, "numline зі стрибками");
   ok(r1.t.some(b => b.s === "+1000") && r1.t.some(b => b.s === "2748") && r1.t.some(b => b.s === "кінець"), `numline: підписи +1000, 2748, «кінець» є, а ${r1.t.map(b => b.s)}`);
+  // нерозв'язані стани (рев'ю P1-1): старт «2748» і N поруч — підписи в різних рядах, не накладаються
+  for (const st of [{ th: 0, hu: 0, tn: 0, un: 5 }, { th: 0, hu: 1, tn: 0, un: 0 }]) {
+    await page.evaluate(st => { for (const [k, v] of Object.entries(st)) { const el = document.querySelector(`#stage .lab input[data-p="${k}"]`); el.value = v; el.dispatchEvent(new Event("input", { bubbles: true })); } }, st);
+    const rs = await texts(), want = String(2748 + st.hu * 100 + st.un), m = rs.t.find(b => b.s === "2748"), nn = rs.t.find(b => b.s === want); inside(rs, `numline зі стрибками ${JSON.stringify(st)}`);
+    ok(m && nn && !overlap(m, nn), `numline ${JSON.stringify(st)}: «2748» і «${want}» не накладаються, а ${JSON.stringify([m, nn])}`); }
   await next();
   // 2) дві точки в одному місці: підписи не накладаються; назви повзунків для читача екрана — без TeX
   const r2 = await texts(); inside(r2, "numline з двома точками");
@@ -1226,6 +1234,11 @@ async function renderLegibilityScenario(browser) {
   ok(f.arr > 1.6 * f.minus, `\\to: стрілка помітно ширша за мінус, а ${f.arr} проти ${f.minus}`);
   ok(f.off !== "auto" && parseFloat(f.off) >= 3 && f.skip === "none", `<u>: відступ ≥ 3 px і без розривів, а ${f.off} ${f.skip}`);
   ok(f.den, "1/a^n: показник у знаменнику");
+  // висококонтрастний режим (рев'ю P3-3): знак під маскою малюється системним кольором тексту, а не зникає
+  await page.emulateMedia({ forcedColors: "active" });
+  const fc = await page.evaluate(() => { const bs = getComputedStyle(document.querySelector("#qf .sqrt"), "::before"); return { adj: bs.forcedColorAdjust, bg: bs.backgroundColor, mask: bs.webkitMaskImage || bs.maskImage }; });
+  await page.emulateMedia({ forcedColors: "none" });
+  ok(fc.adj === "none" && !/rgba\(0, 0, 0, 0\)|transparent/.test(fc.bg) && /svg/.test(fc.mask), `корінь у forced-colors: forced-color-adjust none і видимий фон під маскою, а ${JSON.stringify(fc)}`);
   await next();
   // 6) strata: знахідки не налазять на стрілку часу; усі підписи в межах SVG
   const st = await page.evaluate(() => { const svg = document.querySelector("#stage svg[aria-label^='Розріз']"), ts = [...svg.querySelectorAll("text")].map(t => { const b = t.getBBox(); return { s: t.textContent, x0: b.x, x1: b.x + b.width, y0: b.y, y1: b.y + b.height }; });

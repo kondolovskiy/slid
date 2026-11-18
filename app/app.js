@@ -1525,7 +1525,7 @@ function check(){
   if(sameAsTried()) return refocusAnswer();
   const ok=gradeNow(s);
   const ha=evAnswer(s, ()=>{ const vd=evVerdict(s,ok), raw=evRaw(s); return { ...evItem(s), try:tries+1, verdict:vd, raw, hint:tries>0 && !!s.hint, final: ok || tries>0 || s.type==="slider", ...evKey(s, vd, raw) }; });
-  if(!ok && s.pre){ run.weak.add(s.pre); (run.weakN||={})[s.pre]=(run.weakN[s.pre]||0)+1; }
+  if(!ok && s.pre){ run.weak.add(s.pre); ((run.weakN||={})[s.pre]||=new Set).add(idx); }   // різні завдання з помилкою, а не хибні спроби (рев'ю engine-render-legibility-1117)
   const preNote = (!ok && s.pre) ? (()=>{ const f=findLesson(s.pre); return f? `<span class="prenote">${ic("bulb")}Ця задача спирається на тему «${f.l.title}» (${f.sec.grade} клас). Наприкінці уроку запропоную її повторити.</span>` : ""; })() : "";
   if(!(ok || tries>0 || s.type==="slider")){
     tries++; showMarks(s,false); run.combo=0; run.mistakes++; pProgress();
@@ -1645,7 +1645,7 @@ function renderEnd(){
     ${newSteps.map(st=>recCard(st, st.l===L.id)).join("")}
     ${nPool&&!newSteps.some(st=>st.l===L.id)?`<div class="rec prac"><div class="eyebrow">Закріпи тему</div><p class="small" style="margin:0">У тренуванні відкрилися задачі з цієї теми — ${nPool} ${plural(nPool,["задача","задачі","задач"])} з підручників. Відповідь записуєш сам.</p><button class="btn ghost" type="button" data-practice="${L.id}">Потренуватися</button></div>`:""}
     ${!nPool&&run.linked&&SEC.grade<S.grade?`<p class="muted small">Тренувальних задач до цієї теми поки немає. Коли вони з’являться, тренування відкриється без повторного проходження уроку.</p>`:""}
-    ${[...run.weak].filter(id=>!newSteps.some(st=>st.l===id)).map(id=>{ const f=findLesson(id); if(!f) return ""; const nw=run.weakN?.[id]||1; return `<div class="rec"><div class="eyebrow">Варто повторити</div><div class="recrow"><span class="dot lg s-${f.c.id}">${ic(f.l.icon)}</span><span class="grow"><b>${esc(f.l.title)}</b><span class="muted small">${f.c.short} · ${f.sec.grade} клас · ${f.l.screens.length} ${plural(f.l.screens.length,["крок","кроки","кроків"])}</span></span></div><p class="small" style="margin:0">${nw>1? "Помилки в цьому уроці пов'язані" : "Помилка в цьому уроці пов'язана"} з цією темою. Коротке повторення допоможе.</p><button class="btn" type="button" data-lesson="${id}">Повторити зараз</button></div>`; }).join("")}
+    ${[...run.weak].filter(id=>!newSteps.some(st=>st.l===id)).map(id=>{ const f=findLesson(id); if(!f) return ""; const nw=run.weakN?.[id]?.size||1; return `<div class="rec"><div class="eyebrow">Варто повторити</div><div class="recrow"><span class="dot lg s-${f.c.id}">${ic(f.l.icon)}</span><span class="grow"><b>${esc(f.l.title)}</b><span class="muted small">${f.c.short} · ${f.sec.grade} клас · ${f.l.screens.length} ${plural(f.l.screens.length,["крок","кроки","кроків"])}</span></span></div><p class="small" style="margin:0">${nw>1? "Помилки в цьому уроці пов'язані" : "Помилка в цьому уроці пов'язана"} з цією темою. Коротке повторення допоможе.</p><button class="btn" type="button" data-lesson="${id}">Повторити зараз</button></div>`; }).join("")}
     <div class="learned"><div class="eyebrow">Що ти тепер умієш</div>${(o.learned||[]).map(t=>`<div class="li">${ic("check")}<span>${t}</span></div>`).join("")}</div>
   </section>`);
   setDock("","","", run.linked? "Повернутися" : SEC.lessons[li+1]? "До уроків розділу" : "Завершити розділ");

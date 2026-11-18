@@ -221,7 +221,7 @@ function poly(cs, v = "x") {
 }
 /** Форма слова після числа: forms = [1 клітинка, 2 клітинки, 5 клітинок]; дробове число — форма «2,5 клітинки» (як answerUnit у app.js). */
 function pluralForm(v, forms) {
-  if (!isFinite(v)) return forms[2];
+  if (!isFinite(v)) return "?";   // NaN (поза областю, ділення на 0) — «?», як інші формати (рев'ю engine-render-legibility-1117)
   const a = Math.abs(v), r = Math.round(a); if (Math.abs(a - r) > 1e-6) return forms[1];
   const d = r % 10, h = r % 100; return forms[d === 1 && h !== 11 ? 0 : d >= 2 && d <= 4 && (h < 10 || h >= 20) ? 1 : 2];
 }
@@ -482,7 +482,9 @@ function clampY(y, y0, y1) { if (!isFinite(y)) return NaN; const m = (y1 - y0) *
 KINDS.numline = {
   render(spec, env) {
     // з дугами стрибків поле вище: верх найвищої дуги (h ≤ 36) з підписом над нею — у межах SVG (engine-render-legibility-1117: «+1000», «100 хв» обрізало)
-    const names = fnNames(spec), [a, b] = spec.view || [-10, 10], W = 320, pad = 16, top = (spec.jumps || []).length ? 64 : 28, H = top + 46;
+    const names = fnNames(spec), [a, b] = spec.view || [-10, 10], W = 320, pad = 16, top = (spec.jumps || []).length ? 64 : 28;
+    // другий ряд підписів точок під поділками — лише коли є стрибки й підписаних точок кілька (рев'ю engine-render-legibility-1117, P1-1)
+    const jumpRows = (spec.jumps || []).length > 0 && Object.values(spec.points || {}).filter(p => p.label !== false).length > 1, H = top + 46 + (jumpRows ? 14 : 0);
     const X = x => pad + (x - a) / (b - a) * (W - 2 * pad), y = top, E = ex => safe(() => compile(String(ex), names)(env));
     const tick = spec.tick ?? autoStep(b - a) , lstep = spec.labels ?? tick;
     // ray: true — координатний промінь (engine-math-ister-p3 п. 10): лінія починається в точці view[0], без «хвостика» ліворуч
@@ -511,10 +513,14 @@ KINDS.numline = {
       const label = p.label === false ? "" : p.label != null ? fill(p.label, env, names) : id;
       // підпис точки біля краю не виходить за поле; підписи, що налазять один на одного (дві точки в одному місці — g8m1 «добуток»
       // і «степінь»), рознесено: над прямою, далі під підписами поділок (y + 42), з дугами стрибків — лише під ними (engine-render-legibility-1117)
-      if (label) { const lw = ariaTex(label).length * 3.6, lx = Math.max(lw + 1, Math.min(W - lw - 1, sx)), rows = (spec.jumps || []).length ? [y + 42] : [y - 14, y + 42];
-        const row = rows.find(ry => !placed.some(q => q.y === ry && q.x0 < lx + lw + 3 && lx - lw - 3 < q.x1)) ?? rows[rows.length - 1];
-        placed.push({ y: row, x0: lx - lw, x1: lx + lw });
-        g += t(lx, row, label, { anchor: "middle", bold: true, fill: c, size: row > y ? 11 : 12 }); }
+      // з дугами стрибків — два ряди під підписами поділок (y + 42, y + 56): старт «2748» і рухома точка N у g4m2 не зливаються (рев'ю, P1-1);
+      // напівширина — за тим, що справді малюється (svgTex: тонкі пробіли навколо «=», «−»), а не за ariaTex (рев'ю, P3-1: g8m1l5 «x = 2»)
+      if (label) { const lw = [...svgTex(label, 12).replace(/<[^>]+>/g, "").replace(/&[#\w]+;/g, "x")].length * 3.6, lx = Math.max(lw + 1, Math.min(W - lw - 1, sx)), rows = jumpRows ? [y + 42, y + 56] : [y - 14, y + 42];
+        const clash = ry => placed.filter(q => q.y === ry && q.x0 < lx + lw + 3 && lx - lw - 3 < q.x1);
+        // той самий текст уже стоїть тут (дві точки в одному числі: «36», «2748» на старті) — не дублюємо
+        const row = rows.some(ry => clash(ry).some(q => q.s === label)) ? NaN : rows.find(ry => !clash(ry).length) ?? rows[rows.length - 1];
+        if (isFinite(row)) { placed.push({ y: row, x0: lx - lw, x1: lx + lw, s: label });
+          g += t(lx, row, label, { anchor: "middle", bold: true, fill: c, size: row > y ? 11 : 12 }); } }
       const [xe] = pointExprs(id, p);
       // значення для читача екрана: підпис, якщо він сам є числом чи часом ({t|time}, {n|0}); літера чи «?» — лише назва, тож додаємо число
       const vs = spec.pi ? piLabel(xv) : spec.fmt ? fill(`{v|${spec.fmt}}`, { v: xv }) : num(xv), lt = ariaTex(label);

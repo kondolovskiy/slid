@@ -30,7 +30,7 @@ eq(L.fill("{t|time} {m|hm} {k|hm}", { t: 14.5, m: 135, k: 60 }), "14:30 2 год
 eq(L.fill("{a|deg} {p|pi}", { a: 45.2, p: Math.PI * 1.5 }), "45° 3π/2", "deg і pi");
 // engine-ui-text-1117: форма слова після числа — {n|pl:1,2,5} («54 місць» → «54 місця»), лише слово, без числа
 { const PL = "{n|pl:клітинка,клітинки,клітинок}";
-  for (const [v, w] of [[1, "клітинка"], [2, "клітинки"], [5, "клітинок"], [11, "клітинок"], [12, "клітинок"], [14, "клітинок"], [21, "клітинка"], [22, "клітинки"], [54, "клітинки"], [64, "клітинки"], [100, "клітинок"], [111, "клітинок"], [0, "клітинок"], [-3, "клітинки"], [2.5, "клітинки"], [4.9999999999, "клітинок"]])
+  for (const [v, w] of [[1, "клітинка"], [2, "клітинки"], [5, "клітинок"], [11, "клітинок"], [12, "клітинок"], [14, "клітинок"], [21, "клітинка"], [22, "клітинки"], [54, "клітинки"], [64, "клітинки"], [100, "клітинок"], [111, "клітинок"], [0, "клітинок"], [-3, "клітинки"], [2.5, "клітинки"], [0.5, "клітинки"], [5.5, "клітинки"], [NaN, "?"], [4.9999999999, "клітинок"]])
     eq(L.fill(PL, { n: v }), w, `pl n=${v}`);
   eq(L.fill("$ {a|0} * 6 = {a*6|0}$ {a*6|pl:місце, місця, місць}", { a: 9 }), "$ 9 * 6 = 54$ місця", "pl у show з пробілами після коми");
   eq(L.fill("Пиріг на {n|0} {n|pl:шматок,шматки,шматків}", { n: 4 }), "Пиріг на 4 шматки", "pl: 4 шматки");
@@ -62,6 +62,20 @@ eq(L.fill("{a|deg} {p|pi}", { a: 45.2, p: Math.PI * 1.5 }), "45° 3π/2", "deg �
     points: { M: { x: "2748", label: "2748" }, N: { x: "2748+k", label: "{2748+k|0}" }, E: { x: "4800", label: "кінець шляху" } } };
   const b1 = inView("numline: дуга +1000", jumps, { th: 1, hu: 3, tn: 6, un: 5 });
   eq(["+1000", "+300", "2748", "4113"].every(s => b1.some(b => b.s === s)), true, "numline: підписи дуг і старту є");
+  // рев'ю engine-render-legibility-1117, P1-1: нерозв'язані стани g4m2 «Додай 1365» — підпис старту «2748» і підпис N не налазять один на одного
+  const g4 = { ...jumps, jumps: [...jumps.jumps, { from: "2748+1000*th+100*hu", to: "2748+1000*th+100*hu+10*tn" }, { from: "2748+1000*th+100*hu+10*tn", to: "2748+k" }],
+    points: { M: { x: "2748", color: "muted", label: "2748" }, N: { x: "2748+k", label: "{2748+k|0}" } } };
+  const hit = (p, q) => p.x0 < q.x1 && q.x0 < p.x1 && p.y0 < q.y1 && q.y0 < p.y1;
+  for (const st of [{ un: 5 }, { hu: 1 }, { tn: 6, un: 5 }, { hu: 1, un: 9 }, { th: 1, hu: 3, tn: 6, un: 5 }]) {
+    const bx = inView(`numline g4m2 ${JSON.stringify(st)}`, g4, st), k = (st.th || 0) * 1000 + (st.hu || 0) * 100 + (st.tn || 0) * 10 + (st.un || 0);
+    const m = bx.find(b => b.s === "2748"), nn = bx.find(b => b.s === L.num(2748 + k, 0));
+    eq(!!(m && nn) && !hit(m, nn), true, `numline g4m2 ${JSON.stringify(st)}: підписи старту й N обидва є й не накладаються`); }
+  { const bx = inView("numline g4m2 старт", g4, {}); eq(bx.filter(b => b.s === "2748").length, 1, "numline g4m2 старт: M і N в одному числі — підпис 2748 один, без дубля"); }
+  eq(render(g4).h - render({ ...g4, points: { N: g4.points.N } }).h, 14, "numline зі стрибками: другий ряд підписів (+14) лише за кількох підписаних точок");
+  // P3-1: ширина TeX-підпису — за відмальованим текстом (тонкі пробіли навколо «=»), g8m1l5 «знам. −3» і «$x = 2$»
+  { const den = { kind: "numline", view: [0, 10], tick: 1, labels: 1, params: { x: { min: 1, max: 9, step: 1, start: 2 } }, points: { P: { x: "x", label: "$x={x|0}$" }, D: { x: "x-5", label: "знам. {x-5|0}", color: "gold" } } };
+    for (const st of [{}, { x: 1 }, { x: 3 }]) { const bx = inView(`numline g8m1l5 ${JSON.stringify(st)}`, den, st), [pp, dd] = [bx.find(b => b.s.startsWith("x")), bx.find(b => b.s.startsWith("знам"))];
+      eq(!!(pp && dd) && !hit(pp, dd), true, `numline g8m1l5 ${JSON.stringify(st)}: «x = …» і «знам. …» не накладаються`); } }
   inView("numline: час (g4m4)", { kind: "numline", view: [5, 9], tick: 0.25, labels: 1, params: { t: { min: 5, max: 9, step: 1 / 6, start: 6 } },
     jumps: [{ from: "t", to: "8", label: "{(8-t)*60|0} хв" }], points: { S: { x: "t", label: "{t|time}", drag: true }, F: { x: "8", label: "8:00" } } });
   const two = { kind: "numline", view: [0, 5], tick: 0.5, labels: 1, params: { m: { min: -2, max: 3, start: 1 }, n: { min: -2, max: 3, start: -2 } },
