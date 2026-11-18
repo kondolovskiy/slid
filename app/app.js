@@ -686,7 +686,7 @@ function weekChart(){
 }
 
 /* ---------- Екран «Профіль» ---------- */
-let confirmReset=false, confirmDemo=false;
+let confirmReset=false, confirmDemo=false, demoTimer=0, resetTimer=0;
 /* демо-прогрес — лише для дорослих: кнопка є тільки з ключем ?demo=… в URL (пам'ятається до кінця вкладки, у slid.v1 не йде) */
 const DEMO_KEY="rutas1dw";
 const demoOn=(()=>{ let ok=false; try{ ok=new URLSearchParams(location.search).get("demo")===DEMO_KEY; }catch(e){}
@@ -705,7 +705,7 @@ function viewProfile(){
       <div class="eyebrow">Для тестування прототипу</div>
       <div class="setrow"><div><b>Відкрити всі уроки</b><div class="muted" style="font-size:13px">Не треба проходити по черзі</div></div><button class="switch" id="swUnlock" role="switch" aria-checked="${S.unlockAll}" aria-label="Відкрити всі уроки" type="button"></button></div>
       <div class="setrow"><div><b>Тиждень навчального року</b><div class="muted" style="font-size:13px">Для картки «Зараз у школі»</div></div><select id="weekSel" aria-label="Тиждень навчального року"><option value="">авто (${(()=>{ const o=S.weekOverride; S.weekOverride=null; const w=schoolWeek(); S.weekOverride=o; return w; })()})</option>${[...Array(35)].map((_,i)=>`<option value="${i+1}" ${S.weekOverride===i+1?"selected":""}>${i+1}</option>`).join("")}</select></div>
-      ${demoOn?`<button class="btn ${confirmDemo?"danger":"ghost"}" id="demo" type="button">${confirmDemo?"Натисни ще раз — демо замінить твій прогрес":"Заповнити демо-прогресом"}</button>`:""}
+      ${demoOn?`<button class="btn ${confirmDemo?"danger":"ghost"}" id="demo" type="button">${confirmDemo?"Натисни ще раз — демо замінить твій прогрес"+(SYNC.signedIn()?" і піде в акаунт":""):"Заповнити демо-прогресом"}</button>`:""}
       <button class="btn ${confirmReset?"danger":"ghost"}" id="reset" type="button">${confirmReset?"Натисни ще раз, щоб стерти все":"Скинути прогрес"}</button>
     </div>
     ${syncCard()}
@@ -834,15 +834,15 @@ function bindView(){
   document.querySelectorAll("#themeSeg button").forEach(b=>b.onclick=()=>{ S.theme=b.dataset.v; save(); render(); });
   const sw=$("#swUnlock"); if(sw) sw.onclick=()=>{ S.unlockAll=!S.unlockAll; save(); render(); };
   const ib=$("#installBtn"); if(ib) ib.onclick=async()=>{ if(await window.SLID_PWA.install()) toast(ic("check")+"Встановлено"); render(); };
-  const dm=$("#demo"); if(dm&&demoOn) dm.onclick=()=>{ if(!confirmDemo){ confirmDemo=true; render(); setTimeout(()=>{ confirmDemo=false; if(tab==="profile") render(); },4000); return; }
-    confirmDemo=false; fillDemo(); save(); toast(ic("check")+"Демо-прогрес заповнено"); tab="progress"; render(); };
+  const dm=$("#demo"); if(dm&&demoOn) dm.onclick=()=>{ if(!confirmDemo){ confirmDemo=true; render(); clearTimeout(demoTimer); demoTimer=setTimeout(()=>{ confirmDemo=false; if(tab==="profile") render(); },4000); return; }
+    clearTimeout(demoTimer); confirmDemo=false; fillDemo(); save(); toast(ic("check")+"Демо-прогрес заповнено"); tab="progress"; render(); };
   const sg=$("#syncGoogle"); if(sg) sg.onclick=syncGoogle;
   const sc=$("#syncCode"); if(sc) sc.onclick=syncCodeEnter;
   const sn=$("#syncNow"); if(sn) sn.onclick=async()=>{ syncMsg=""; const r=await SYNC.sync(); if(r.text) syncMsg=r.text; else if(r.s==="ok") toast(ic("check")+"Синхронізовано"); if($("#player").hidden) render(); };
   const sp=$("#syncPair"); if(sp) sp.onclick=syncPair;
   const so=$("#syncOut"); if(so) so.onclick=()=>{ SYNC.signOut(); syncMsg=""; toast("Синхронізацію вимкнено. Прогрес лишився на пристрої"); render(); };
-  const rs=$("#reset"); if(rs) rs.onclick=()=>{ if(!confirmReset){ confirmReset=true; render(); setTimeout(()=>{ confirmReset=false; if(tab==="profile") render(); },4000); return; }
-    const keep={name:S.name,theme:S.theme,subject:S.subject,grade:S.grade}; SYNC.signOut(true); HYPS.reset(); EV.log("reset"); EV.newProfile(); S=Object.assign(fresh(),keep); confirmReset=false; save(); toast(ic("check")+"Прогрес скинуто"); render(); };
+  const rs=$("#reset"); if(rs) rs.onclick=()=>{ if(!confirmReset){ confirmReset=true; render(); clearTimeout(resetTimer); resetTimer=setTimeout(()=>{ confirmReset=false; if(tab==="profile") render(); },4000); return; }
+    clearTimeout(resetTimer); const keep={name:S.name,theme:S.theme,subject:S.subject,grade:S.grade}; SYNC.signOut(true); HYPS.reset(); EV.log("reset"); EV.newProfile(); S=Object.assign(fresh(),keep); confirmReset=false; save(); toast(ic("check")+"Прогрес скинуто"); render(); };
 }
 function toast(html){ const t=$("#toast"); t.innerHTML=`<div>${html}</div>`; clearTimeout(toast.t); toast.t=setTimeout(()=>t.innerHTML="",1900); }
 

@@ -500,9 +500,6 @@ async function planCardSeeScenario(browser) {
   await ctx.close();
 }
 
-/* 9) Синхронізація прогресу (engine-sync-login): фейковий API (семантика server/: CAS за rev, 409, name відкидається, коди прив'язки
-   одноразові, CORS), app/config.js з адресою фейку, скрипт Google Identity Services — фейк із кнопкою, що повертає id_token.
-   Два пристрої — два контексти браузера (окремі localStorage). Без справжнього Google і бекенду. */
 async function demoGuardScenario(browser) {
   const ctx = await browser.newContext({ viewport: { width: 400, height: 860 }, serviceWorkers: "block" });
   const page = await ctx.newPage(), errors = []; page.on("pageerror", e => errors.push(String(e))); page.setDefaultTimeout(8000);
@@ -527,12 +524,25 @@ async function demoGuardScenario(browser) {
   await page.click('.tab[data-tab="profile"]');
   await page.click("#demo");
   ok(/Натисни ще раз/.test(await page.locator("#demo").innerText()) && (await st()).xp === 7, "demo: перше натискання лише просить підтвердження, прогрес не змінено");
+  ok(!/акаунт/.test(await page.locator("#demo").innerText()), "demo: без входу підпис не згадує акаунт");
   await page.click("#demo");
   ok(await until(async () => (await st()).xp !== 7), "demo: друге натискання заповнює демо-прогрес");
+  ok(!(await page.evaluate(() => JSON.stringify(localStorage).includes("rutas1dw"))), "demo: після заповнення ключа немає в localStorage (slid.v1)");
+  // P3-1: таймер першого натискання скасовується другим — нове підтвердження живе повні 4 с
+  await page.click('.tab[data-tab="profile"]'); await page.waitForTimeout(3000);
+  await page.click("#demo"); await page.waitForTimeout(2000);
+  ok(/Натисни ще раз/.test(await page.locator("#demo").innerText()), "demo: застарілий таймер не скорочує нове вікно підтвердження");
+  // той самий запобіжник у «Скинути прогрес»
+  await page.click("#reset"); await page.click("#reset"); await page.waitForTimeout(3000);
+  await page.click("#reset"); await page.waitForTimeout(2000);
+  ok(/Натисни ще раз/.test(await page.locator("#reset").innerText()), "demo: «Скинути прогрес» — застарілий таймер не скорочує вікно підтвердження");
   ok(!errors.length, "demo: помилки сторінки: " + errors.join(" | "));
   await ctx.close();
 }
 
+/* 9) Синхронізація прогресу (engine-sync-login): фейковий API (семантика server/: CAS за rev, 409, name відкидається, коди прив'язки
+   одноразові, CORS), app/config.js з адресою фейку, скрипт Google Identity Services — фейк із кнопкою, що повертає id_token.
+   Два пристрої — два контексти браузера (окремі localStorage). Без справжнього Google і бекенду. */
 async function syncScenarios(browser) {
   const L = new Map(), codes = new Map(), bodies = []; let seq = 0;
   const api = http.createServer((req, res) => {
@@ -596,7 +606,9 @@ async function syncScenarios(browser) {
   // офлайн: зміни в черзі, з мережею — відправлено
   await B.ctx.setOffline(true);
   await B.page.evaluate(() => { const s = JSON.parse(localStorage.getItem("slid.v1")); return s; });
-  await B.page.click("#demo"); await B.page.click("#demo");   // демо: друге натискання → save() → у чергу
+  await B.page.click("#demo");
+  ok(/піде в акаунт/.test(await B.page.locator("#demo").innerText()), "sync: з входом підпис демо попереджає, що прогрес піде в акаунт");
+  await B.page.click("#demo");   // демо: друге натискання → save() → у чергу
   await B.page.click('.tab[data-tab="profile"]'); await B.page.click("#syncNow");
   ok(await until(async () => /Немає мережі/.test(await B.page.locator("#syncState").innerText())), `sync: офлайн — «Немає мережі…», а «${await B.page.locator("#syncState").innerText()}»`);
   const q = await B.sy(); ok(q && q.dirty === true, "sync: офлайн — зміни в черзі (slid.sync dirty)");
@@ -619,6 +631,7 @@ async function syncScenarios(browser) {
   // «Скинути прогрес» на пристрої з входом — синхронізацію вимкнено, сервер не чіпаємо
   await A.page.click("#reset"); await A.page.click("#reset");
   ok(!(await A.sy())?.token && L.get("tok-anna").data.xp === demoXp, "sync: «Скинути прогрес» — вихід на пристрої, прогрес на сервері лишився");
+  ok(!bodies.some(b => b.includes("rutas1dw")), "sync: ключ демо не потрапляє в тіла запитів до сервера");
   for (const d of [A, B, C]) { ok(!d.errors.length, "sync: помилки сторінки: " + d.errors.join(" | ")); await d.ctx.close(); }
   // без адреси API — картки немає, мережевих запитів до API немає
   const ctx = await browser.newContext({ serviceWorkers: "block" }), p0 = await ctx.newPage(); await p0.route("**/fonts.googleapis.com/**", r => r.abort());
