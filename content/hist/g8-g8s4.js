@@ -1,4 +1,5 @@
 /* Слід · Історія, 8 клас — «Руїна»
+   images-maps-hist-world-1117 (2026-11-18, images-hist-1117): eyebrow «Карта» → «Поділ по Дніпру» (l2 e3) — g8s4l2 → draft.
    style-hist-1112 (2026-11-12): милозвучність у/в, і/й, з/із (УП § 23–25) у g8s4l1, g8s4l3; перевірив verifier-style-hist-1112 (2026-11-12) → verified, звіт reports/verify/style-hist-1112.md.
    Статус уроків: l1–l4 verified (фото D-027 перевірено 2026-10-31); l6–l8 (нові, revise-hist-g8s4-cov) і фінал l5 — verified (verifier-revise-hist-g8s4-cov, 2026-11-12; reports/verify/revise-g8s4-cov.md).
    8 уроків (7 + boss); порядок у масиві: l1–l4, l6, l7, l8, l5.
@@ -207,7 +208,7 @@ SLID.section("hist", {
       title: "Два береги — дві булави",
       short: "Поділ",
       icon: "map",
-      status: "verified",
+      status: "draft",
       why: "Ти побачиш, як Гетьманщина розкололася на Лівобережжя і Правобережжя з різними гетьманами.",
       screens: [
         {
@@ -247,7 +248,7 @@ SLID.section("hist", {
         {
           type: "choice",
           sk: "geo",
-          eyebrow: "Карта",
+          eyebrow: "Поділ по Дніпру",
           title: "Що таке лівий і правий берег тут?",
           body: "<p>У тексті вже названо поділ по Дніпру.</p>",
           opts: [

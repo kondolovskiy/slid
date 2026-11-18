@@ -1,4 +1,5 @@
 /* Слід · Історія, 8 клас — «Литовсько-польська доба»
+   images-maps-hist-world-1117 (2026-11-18, images-hist-1117): карта Речі Посполитої 1619 (Bogomolov.PL, CC BY-SA 4.0) на l1 e4; «На карті» → «Володарі земель» (l7 e3) — g8s1l1, g8s1l7 → draft.
    Статус уроків: verified усі 8 (l1 «Стрічка доби», нові l7 «Хто жив у Речі Посполитій», l8 «Ікона, вежа і проповідь» і фінал l5 — revise-hist-g8s1-cov, verifier 12.11; reports/verify/revise-g8s1-cov.md).
    Перевірка: node tools/validate.mjs --section g8s1 && node tools/stats.mjs --subject hist
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
@@ -12,6 +13,7 @@ SLID.section("hist", {
   meta: { author: "write-hist-g8s1", created: "2026-10-12", factcheck: "verifier-g8s1", teacher: null },
   badges: [{ id: "rpclerk", name: "Писар сейму", icon: "scroll", desc: "Пройти розділ «Литовсько-польська доба»" }],
   credits: [
+    ["Річ Посполита 1619 р. на тлі сучасних кордонів (українська версія карти)", "Bogomolov.PL, Вікісховище", "CC BY-SA 4.0", "https://commons.wikimedia.org/wiki/File:Polish-Lithuanian_Commonwealth_(1619)_compared_with_today%27s_borders,_Ukrainian_version.png"],
     [
       "Ян Матейко. «Люблінська унія»",
       "Ян Матейко, 1869",
@@ -79,7 +81,7 @@ SLID.section("hist", {
       title: "Дві держави — одна печатка",
       short: "Люблінська унія",
       icon: "scroll",
-      status: "verified",
+      status: "draft",
       why: "1569 р. Польща й Литва створили спільну державу. Ти дізнаєшся, що це змінило для українських земель.",
       screens: [
         {
@@ -137,7 +139,9 @@ SLID.section("hist", {
           sk: "geo",
           eyebrow: "На карті",
           title: "Куди відійшли землі після 1569 р.?",
-          body: "<p>Розклади за частинами Речі Посполитої. Пам'ятай: Волинь, Брацлавщина й Київщина перейшли до Корони.</p>",
+          img: "img/hist/g8s1/commonwealth-1619-map.jpg",
+          cap: "Річ Посполита 1619 р., через 50 років після Люблінської унії, на тлі сучасних кордонів. Великі підписи — назви сучасних держав. Легенда: 1 — Корона (Королівство Польське), 2 — Пруське герцогство, 3 — Велике князівство Литовське, 4 — Лівонія, 5 — Курляндія. Карта: Bogomolov.PL, CC BY-SA 4.0.",
+          body: "<p>Знайди на карті сучасні Україну й Білорусь. Розклади землі за частинами Речі Посполитої.</p>",
           bins: ["Корона (Польща)", "Велике князівство Литовське"],
           items: [
             ["Галичина зі Львовом", 0],
@@ -780,7 +784,7 @@ SLID.section("hist", {
       title: "Хто жив у Речі Посполитій",
       short: "Населення і міста",
       icon: "map",
-      status: "verified",
+      status: "draft",
       why: "У XVI ст. на українських землях жили люди різних мов і вір. Ти побачиш, хто ними правив і чому права в них були різні.",
       screens: [
         {
@@ -818,7 +822,7 @@ SLID.section("hist", {
         {
           type: "sort",
           sk: "geo",
-          eyebrow: "На карті",
+          eyebrow: "Володарі земель",
           title: "Хто володів цим краєм у 1590 р.?",
           body: "<p>Розклади землі за володарями.</p>",
           bins: ["Корона", "Московська держава", "Кримське ханство"],

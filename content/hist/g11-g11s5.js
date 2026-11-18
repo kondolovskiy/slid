@@ -1,4 +1,5 @@
 /* Слід · Історія України, 11 клас — «Російсько-українська війна»
+   images-maps-hist-world-1117 (2026-11-18, images-hist-1117): карта становища 27.03.2022 (Matttest, CC BY-SA 4.0) на l3 e0; «Точність карти» → «Точність формулювання» (l4 e6) — g11s5l3, g11s5l4 → draft.
    fix-hist-ww2-move-1117 (2026-11-17, writer-hist2-1117): eyebrow «Розділ 5» → «Розділ 4» (g11s1 тепер у 10 кл.).
    fix-hist-world-terms-1117 (2026-11-17, writer-hist2-1117): УВКПЛ ООН розшифровано при першій згадці в l2, l3, l4, l8, l5, l6 → draft.
    verifier-hist2-1117 (2026-11-17): fix-hist-ww2-move-1117, fix-hist-world-terms-1117 — змінені уроки → verified; звіти reports/verify/fix-hist-ww2-move-1117.md, fix-hist-world-terms-1117-hist.md.
@@ -19,6 +20,7 @@ SLID.section("hist", {
   why: "Щоб знати, що відбувається з нашою країною, спираючись на факти й документи.",
   meta: { author: "write-hist-g11s5", created: "2026-10-14", factcheck: "verifier-g11s5", teacher: null },
   credits: [
+    ["2022 Russian invasion of Ukraine — становище на 27.03.2022 (схема)", "Matttest, Вікісховище", "CC BY-SA 4.0", "https://commons.wikimedia.org/wiki/File:2022_Russian_invasion_of_Ukraine_27-03-2022.svg"],
     [
       "Військові без розпізнавальних знаків у Сімферополі, 2 березня 2014 р.",
       "Elizabeth Arrott / Voice of America",
@@ -485,13 +487,15 @@ SLID.section("hist", {
       title: "Три міста тримають удар",
       short: "Оборона міст",
       icon: "city",
-      status: "verified",
+      status: "draft",
       why: "Ти порівняєш оборону Києва, Харкова й Маріуполя без перетворення людського досвіду на гру.",
       screens: [
         {
           type: "intro",
           eyebrow: "Розділ 4 · Урок 4",
           title: "Чому долі трьох міст різні?",
+          img: "img/hist/g11s5/invasion-map-2022-03-27.jpg",
+          cap: "Становище на 27 березня 2022 р. (схема з відкритих джерел, підписи англійською). Жовтим — територія під контролем України, рожевим — окупована Росією; червоні стрілки — напрями російського наступу, жовті — українські контрнаступи. Kyiv — Київ, Kharkiv — Харків, Mariupol — Маріуполь. Карта: Matttest, CC BY-SA 4.0.",
           body: `<p class="lead">Російські війська наступають на столицю з півночі, на Харків — зі сходу, а Маріуполь опиняється в оточенні.</p><p>Усі три міста чинять опір. Та географія, постачання й перебіг боїв різняться.</p>`,
           cta: "Порівняти оборону"
         },
@@ -610,7 +614,7 @@ SLID.section("hist", {
       title: "Повернути — не означає завершити",
       short: "Звільнення",
       icon: "flag",
-      status: "verified",
+      status: "draft",
       why: "Ти відновиш хронологію звільнень 2022 р. й побачиш ризики, що лишаються після окупації.",
       screens: [
         {
@@ -689,7 +693,7 @@ SLID.section("hist", {
         {
           type: "choice",
           sk: "crit",
-          eyebrow: "Точність карти",
+          eyebrow: "Точність формулювання",
           title: "Яке твердження коректне?",
           opts: [
             "11 листопада завершилася вся війна",

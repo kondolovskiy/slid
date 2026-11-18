@@ -1,4 +1,5 @@
 /* Слід · Історія, 7 клас — «Русь у часи роздробленості»
+   images-maps-hist-world-1117 (2026-11-18, images-hist-1117): eyebrow «Карта» → «Сусіди степу» (l4 e4) — g7s3l4 → draft.
    style-hist-1112 (2026-11-12): милозвучність у/в, і/й, з/із (УП § 23–25) у g7s3l3; перевірив verifier-style-hist-1112 (2026-11-12) → verified, звіт reports/verify/style-hist-1112.md.
    Статус уроків: l1–l5 verified (ревізія D-019 reviser-g7s3, повторна верифікація verifier-g7s3-d019, 2026-10-13; l1 — зображення D-027 перевірено 2026-10-31, reports/verify/images-hist-g7s3.md). 5 уроків.
    2026-11-12 (revise-hist-g7s3-cov, звіт reports/research/coverage-research-hist-coverage-g7-9.md A5): нові уроки g7s3l6 «Троє синів Ярослава» (перший у розділі),
@@ -625,7 +626,7 @@ SLID.section("hist", {
       title: "Сусіди зі степу",
       short: "Русь і половці",
       icon: "path",
-      status: "verified",
+      status: "draft",
       why: "Ти дізнаєшся, ким були половці і чому з ними то воювали, то ріднилися. Так видно, що в історії рідко буває лише «свої» й «чужі».",
       screens: [
         {
@@ -681,7 +682,7 @@ SLID.section("hist", {
         {
           type: "choice",
           sk: "geo",
-          eyebrow: "Карта",
+          eyebrow: "Сусіди степу",
           title: "Яка земля найбільше потерпала від половців?",
           body: "<p>Згадай, яке князівство лежало найближче до степу.</p>",
           opts: [
