@@ -210,7 +210,7 @@ SLID.section("math", {
       title: "Дзеркало й нахил",
       short: "Парність",
       icon: "eye",
-      status: "verified",
+      status: "draft",
       why: "Симетрія графіка й напрям «угору / вниз» допомагають швидко описати поведінку функції.",
       screens: [
         {
@@ -367,7 +367,7 @@ SLID.section("math", {
               k: { min: -2, max: 2, step: 0.5, start: -1, label: "$k$" }
             },
             fns: [{ id: "f", y: "k*x+1", color: "accent" }],
-            show: ["$y = {k; 1|poly}$", "Потрібно $k > 0$"],
+            show: ["$y = {k; 1|poly}$"],
             alt: "Добрати зростаючу пряму"
           },
           goal: "k>0",
@@ -612,7 +612,7 @@ SLID.section("math", {
       title: "Зміна аналітика",
       short: "Фінал",
       icon: "trophy",
-      status: "verified",
+      status: "draft",
       boss: true,
       badge: "g10m1boss",
       why: "Зберемо область визначення, парність, монотонність і обернену в одній зміні аналітика даних.",
@@ -721,7 +721,7 @@ SLID.section("math", {
               k: { min: -2, max: 2, step: 0.5, start: 1, label: "$k$" }
             },
             fns: [{ id: "f", y: "k*x", color: "accent" }],
-            show: ["$y = {k; 0|poly}$", "Потрібно $k < 0$"],
+            show: ["$y = {k; 0|poly}$"],
             alt: "Boss: спадна пряма"
           },
           goal: "k<0",

@@ -17,8 +17,8 @@ SLID.diag("math", {
   id: "dg4",
   grade: 4,
   title: "Що ти вже вмієш?",
-  why: "Згадаємо, що ти вчив у 1–3 класах, і знайдемо, з чого почати 4 клас.",
-  status: "verified",   // verifier-diag-see-1117 (2026-11-17): see baseline-тем перевірено, завдання не змінено; reports/verify/diag-see-1117.md; попередня: verifier-math-g4g7-1117
+  why: "Згадаємо, що вивчали в 1–3 класах, і знайдемо, з чого почати 4 клас.",
+  status: "draft",   // style-math-1117 (2026-11-18): why без роду (D-020), завдання не змінено, rev не потрібен. Попередня: verifier-diag-see-1117 (2026-11-17): see baseline-тем перевірено, завдання не змінено; reports/verify/diag-see-1117.md; попередня: verifier-math-g4g7-1117
   signed: false,
   meta: { author: "write-math-diag-g4", created: "2026-10-21", factcheck: "self", teacher: null },
   topics: [
