@@ -97,7 +97,7 @@ function render(tokens) {
     if (t === "\\\\") { push('<br class="mline">'); continue; }
     if (t === "&") continue;
     if (t === "{" || t === "}") { push(esc(t)); continue; }
-    if (t === LB || t === RB) { push(t === LB ? "{" : "}", true); continue; }
+    if (t === LB || t === RB) { push(t === LB ? "{" : "}", t === RB)   /* після «{» мінус унарний: \{-1\} */; continue; }
     if (t[0] === "\\") {
       const name = t.slice(1);
       if (name === "begin") { rawGroup(tokens, state); continue; }

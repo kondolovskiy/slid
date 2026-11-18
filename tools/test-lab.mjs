@@ -377,5 +377,7 @@ eq(L.validate({ kind: "numline", view: [0, 10], points: { P: { x: 1 } }, show: [
   eq(polys(b2) - polys(R(pyr).body), 1, "solid cut: переріз піраміди — один многокутник");
   eq(L.validate({ ...box, segs: [{ a: 0, b: 6 }] }), [], "validate: solid segs — чисто");
   eq([L.validate({ ...box, segs: [{ a: 0, b: 8 }] }).length, L.validate({ ...pyr, cut: { pts: [0, 1] } }).length, L.validate({ ...pyr, cut: { pts: [0, 1, 4] } }), L.validate({ ...pyr, cut: { pts: [0, 1, { e: [2, 9] }] } }).length], [1, 1, [], 1], "validate: solid segs/cut — індекси за формою, ≥ 3 точок"); }
+eq(L.validate({ kind: "numline", view: [0, 10], params: { n: { min: 1, max: 9, step: 1, start: 2 } }, points: { P: { x: "n" } }, show: ["{n>1|if:зайве {n|0} шт;ні}"] }).length, 1, "validate: вкладена вставка у гілці if — помилка");
+eq(L.validate({ kind: "numline", view: [0, 10], params: { n: { min: 1, max: 9, step: 1, start: 2 } }, points: { P: { x: "n" } }, show: ["{n>1|if:так;ні} {n|0}", "{,}"] }), [], "validate: if без вкладених вставок — чисто");
 console.log(`${n - fails}/${n} тестів лабораторії пройдено`);
 process.exit(fails ? 1 : 0);

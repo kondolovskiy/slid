@@ -39,3 +39,10 @@ priority: P3
 7. **sort g8m3 — відтворено і виправлено.** Причина: коліщатко над панеллю `#dock` (position:fixed) не гортало `.player` (scrollTop лишався 0, 6 рядків, останні за кнопкою). Виправлення: wheel-обробник на `#dock` в app/app.js (довгий `#fbText` прокручується сам). Тест: test-ui сценарій 24 `dockWheelScenario` (на старому коді scrollTop = 0 → падає). Скрипт відтворення — scratchpad/engine-lab/sortrep.mjs. Решта g8 №33 (зміст: «повний квадрат», картки без кореня) — не рушій.
 8. **НЕ зроблено (P3-2 осі solid поверх ребер, P3-4 font-size align):** потрібні знімки до/після, а Python/скріншот-цикл для цього не налаштовано; лишається в задачі на потім.
 Відомо: у повному прогоні test-ui один ✗ «SW: незмінні файли при оновленні — 304, повних завантажень 1: /app/learn.js» траплявся, поки паралельно правили app/learn.js (tools-content-checks) без build — не пов'язано з моїми змінами; потрібен build оркестратора.
+
+## Виправлення після рев'ю (agent-engine-lab, 18.11)
+- P1: підказка «торкнись місця» лише при одній живій ручці (lab.js); test-ui dockWheelScenario — модель із двома точками. 
+- P2: після `\{` мінус унарний (math.js `push(…, t === RB)`); test-math +2.
+- P3: ctrl+колесо над #dock не гаситься (test-ui); lab.validate — помилка на вкладені `{…}` у гілці `if` (test-lab +2; validate.mjs бере її через lab.validate).
+- Відкладене (P3): eq для NaN/∞ («?»), solid `n` як вираз у validate segs/cut, випадковий тап по полі зсуває точку, п. 6 повзунок-дубль numline з hide (g4m4), п. 8 (осі solid, font-size align), перевід g10m2l3/g11m6l4 на solid cut.
+- Тести: test-lab 286/286, test-math 91/91, test-ui 287 ok 0 ✗, test-validate — див. звіт.

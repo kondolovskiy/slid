@@ -1220,6 +1220,17 @@ async function dockWheelScenario(browser) {
   const a = await st(); ok(a[0] > 0, `колесо над кнопкою «Перевірити» гортає екран, а scrollTop = ${a[0]}`);
   await page.mouse.wheel(0, -1000); await page.waitForTimeout(250);
   ok((await st())[0] === 0, "колесо вгору над панеллю повертає на початок");
+  // ctrl+колесо (масштаб сторінки) над панеллю не перехоплюємо
+  const cw = await page.evaluate(() => { const e = new WheelEvent("wheel", { deltaY: 100, ctrlKey: true, cancelable: true, bubbles: true }); document.querySelector("#dock").dispatchEvent(e); return e.defaultPrevented; });
+  ok(cw === false, "ctrl+колесо над панеллю не гаситься (масштаб)");
+  // підказка «торкнись місця» — лише при одній живій точці; з двома тап нічого не переносить (P1 рев'ю)
+  const SEC2 = { id: "wh2", title: "Дві", lessons: [{ id: "wh2l1", title: "Дві", screens: [{ type: "explore", title: "Дві точки", body: "QA", cta: "Далі",
+    lab: { kind: "numline", view: [0, 10], tick: 1, params: { a: { min: 0, max: 10, step: 1, start: 2, hide: true }, b: { min: 0, max: 10, step: 1, start: 7, hide: true } }, points: { A: { x: "a", drag: true }, B: { x: "b", drag: true } } } }] }] };
+  await page.evaluate(sec => { SLID_SUBJECTS.find(c => c.id === "math").sections.push(sec); }, SEC2);
+  await page.evaluate(() => { document.querySelector("#pClose").click(); document.querySelector("#pClose").click(); }).catch(() => {});
+  await page.evaluate(() => window.__slidStart("wh2l1")); await page.waitForSelector("#stage .lab");
+  const h2t = await page.locator("#stage .lab .lab-hint").innerText();
+  ok(/Тягни точку/.test(h2t) && !/торкнись/.test(h2t), `дві точки: підказка без «торкнись», а «${h2t}»`);
   await ctx.close();
 }
 async function renderLegibilityScenario(browser) {

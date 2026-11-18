@@ -96,5 +96,7 @@ ok(M.mathHTML("A \\rightarrow B").includes('class="mo marr">→') && M.mathHTML(
   ok(H("x \\in \\{a, b\\}").includes("∈") && strip(H("\\text{множина \\{a\\}}")) === "множина {a}", "\\{ у \\text і після \\in");
   ok(strip(M.fmt("$\\{3\\}$")) === "{3}", "\\{ через fmt");
   ok(H("x^{2}") === H("x^2") && !H("x^{2}").includes("{"), "звичайні групи {…} не зачеплені"); }
+ok(M.mathHTML("\\{-1\\}").includes('class="mu"') && !M.mathHTML("\\{-1\\}").includes('class="mo">−'), "\\{-1\\}: мінус після { — унарний знак, не дія");
+ok(M.mathHTML("\\{1, 2\\} - 3").includes('class="mo">−'), "\\{…\\} - 3: після } мінус — бінарний");
 console.log(`${n - fails}/${n} тестів формул пройдено`);
 process.exit(fails ? 1 : 0);

@@ -904,7 +904,7 @@ function mount(host, spec, opt = {}) {
     last = r; svg.setAttribute("viewBox", `0 0 ${r.w} ${r.h}`); svg.innerHTML = r.body + handleTargets((r.handles || []).map(h => h.digit ? {} : h), state, params, locked);
     digitCells(r);
     { const dh = dragHandles(r.handles, params);   // видима підказка під моделлю (qa-drag-points-1117 B2): що можна робити з точкою
-      hint.hidden = locked || !dh.length; hint.textContent = dh.length ? (dh.every(h => /^Точка /.test(h.name)) ? `Тягни ${"точку"} або торкнись місця на рисунку${dh.length === 1 ? ", куди її перенести" : ""}; стрілки на клавіатурі — крок.` : "Тягни за маркер; стрілки на клавіатурі — крок.") : ""; }
+      hint.hidden = locked || !dh.length; hint.textContent = dh.length ? (dh.every(h => /^Точка /.test(h.name)) ? (dh.length === 1 ? "Тягни точку або торкнись місця на рисунку, куди її перенести; стрілки на клавіатурі — крок." : "Тягни точку; стрілки на клавіатурі — крок.") : "Тягни за маркер; стрілки на клавіатурі — крок.") : ""; }
     svg.setAttribute("role", (r.handles || []).some(h => liveHandle(h, params)) ? "group" : "img");   // у role="img" вкладені ручки для читача екрана не існують
     if (r.rotate) { svg.setAttribute("tabindex", locked ? "-1" : "0"); svg.setAttribute("aria-label", alt + ". Стрілки обертають тіло"); }
     if (fi >= 0) { const h = svg.querySelector(`.lab-h[data-h="${fi}"]`); if (h) h.focus({ preventScroll: true }); }
@@ -1071,6 +1071,7 @@ function validate(spec, screen = {}) {
   for (const [id, ex] of Object.entries(spec.let || {})) try { compile(ex, names); } catch (e) { errs.push(`let.${id}: ${e.message}`); }
   const tplExprs = s => [...String(s).matchAll(TPL_RE)].filter(m => m[1] !== ",").flatMap(m => m[2] === "poly" ? m[1].split(";") : [m[1]]).map(x => x.trim());
   const tpls = [].concat(spec.show || [], svgLabels(spec, true).map(x => x[1])).filter(x => typeof x === "string");
+  for (const s of tpls) if (/\{[^{}|]+\|if:[^{}]*\{/.test(String(s))) errs.push(`шаблон «${s}»: у гілках {умова|if:…} не може бути вставок {…} — розбий на кілька рядків show`);
   for (const s of tpls) for (const m of String(s).matchAll(TPL_RE)) { const is = m[1] === "," ? null : fmtIssue(m[2], m[3]); if (is) errs.push(`шаблон «${s}»: ${is}`); }
   for (const s of tpls) for (const ex of tplExprs(s)) try { compile(ex, names); } catch (e) { errs.push(`шаблон «${s}»: ${e.message}`); }
   // поля креслень engine-math-ister-p3 (CONTENT_SCHEMA §8.2): solid view, plane labelDir і ticks, chart horizontal/line, numline ray
