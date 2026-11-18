@@ -71,6 +71,7 @@ SLID.section("math", {
             a: "a",
             b: "b",
             c: "c",
+            axes: true,
             marks: [
               { v: 0, label: "O" },
               { v: 6, label: "M" },
