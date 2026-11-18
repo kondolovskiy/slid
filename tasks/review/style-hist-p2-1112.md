@@ -4,7 +4,7 @@ claimed_at: 2026-11-18T10:20:33.865Z
 id: style-hist-p2-1112
 type: style
 subject: hist
-status: todo
+status: review
 claimed_by: agent-style-hist2
 created: 2026-11-12
 ---
