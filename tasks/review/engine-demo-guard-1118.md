@@ -4,7 +4,7 @@ claimed_at: 2026-11-18T10:20:33.750Z
 id: engine-demo-guard-1118
 type: engine
 subject: all
-status: todo
+status: review
 claimed_by: agent-engine-demo
 created: 2026-11-18
 source: student-playtest-1117
