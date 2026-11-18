@@ -41,6 +41,12 @@
 //      підпис «пунктиром — з'їдені часточки» лише при k > 0.
 //  5–7) Service worker (engine-sw-version-skew): деплой нової версії не змішує index.html і app.js; файл зі старого кешу не віддається
 //     (P3-6); оновлення не перезавантажує сторінку посеред уроку, а версія подій журналу лишається версією сторінки (P3-4); застосунок зі старим SW після одного змішаного відкриття сам переходить на консистентну нову версію.
+//  22) Тексти інтерфейсу (engine-ui-text-1117): «1 день поспіль», «тренувань ще не було» (без роду, D-020), картка уроку «7 кроків · 4 завдання»
+//      і «1 крок · 1 завдання», «0 з 1 уроку», «Помилка в цьому уроці пов'язана…» за однієї помилки й «Помилки…» за двох, «пройдено ✓» замість
+//      «є уроки» / «зараз:» для повністю пройденого розділу.
+//  23) Читабельність рендеру (engine-render-legibility-1117), 360 px: підписи numline (дуги стрибків, точка біля краю, дві точки в одному місці),
+//      смужок fraction і solid з осями — у межах SVG і без накладань; назва повзунка «$\alpha$» — «α» без «\»; знак кореня — маска до риски;
+//      \to ширша за «−»; підкреслення <u> з відступом; align — роки шкали цілком у полі й «N з 18 кілець»; strata — знахідки не налазять на стрілку; клік по точці numline — фокус на її ручку, стрілки рухають її (qa-drag-points B1).
 // Запуск: node tools/test-ui.mjs [--browser /opt/pw-browsers/chromium]
 // Playwright: require("playwright") (NODE_PATH) або PLAYWRIGHT_MODULE / /opt/node-tools/node_modules/playwright.
 // Браузер, як у test-answer-ui.py: --browser / SLID_BROWSER → /opt/pw-browsers/chromium, якщо є (PW_DEFAULT=1 вимикає) → Chromium самого
@@ -983,6 +989,12 @@ try {
 
   // 21) Картка «Твій план» на головній: уроки see baseline-тем (engine-1117-followups п. 3)
   await planCardSeeScenario(browser);
+
+  // 22) Тексти інтерфейсу: лічильні форми, «тренувань ще не було», «Помилка/Помилки…», «пройдено ✓» (engine-ui-text-1117)
+  await uiTextScenario(browser);
+
+  // 23) Читабельність рендеру: підписи лабораторій у межах поля, назва повзунка без TeX, корінь, стрілка, підкреслення, align (engine-render-legibility-1117)
+  await renderLegibilityScenario(browser);
 } finally { await browser.close(); server.close(); swServer.close(); }
 
 console.log(`test-ui: ${pass} ok, ${fail} ✗`);
@@ -1078,5 +1090,165 @@ async function imgZoomGridScenarios(browser) {
   await page.keyboard.press("Escape");
   ok(!(await zv.count()) && await page.locator("#player").isVisible(), "збільшення в тесті рівня: Esc закриває, тест лишається");
   ok(!errors.length, "збільшення й сітка, помилки сторінки: " + errors.join(" | "));
+  await ctx.close();
+}
+
+/* ============ Хвиля 3 (*-1117): сценарії 22–23 ============ */
+
+/* 22) Тексти інтерфейсу (engine-ui-text-1117): лічильні форми через plural, нейтральне «тренувань ще не було» (D-020), «Помилка/Помилки»
+   за кількістю помилок у блоці «Варто повторити», «пройдено ✓» для повністю пройденого розділу. Синтетична фікстура (install). */
+async function uiTextScenario(browser) {
+  const ctx = await browser.newContext({ viewport: { width: 400, height: 860 }, serviceWorkers: "block" });
+  const page = await ctx.newPage(), errors = []; page.on("pageerror", e => errors.push(String(e))); page.setDefaultTimeout(8000);
+  await page.route("**/fonts.googleapis.com/**", r => r.abort());
+  const today = (d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`)(new Date());   // як dkey() в app.js
+  const boot = async st => { await page.goto(URL0); await page.evaluate(s => { localStorage.clear(); localStorage.setItem("slid.v1", JSON.stringify(s)); }, st); await page.reload();
+    await page.evaluate(install, FIX); await page.evaluate(fx, SEC); await page.evaluate(() => { const t = document.querySelector('.tab[data-tab="path"]'); t.click(); t.click(); }); };
+  const ch = (title, pre) => ({ type: "choice", sk: "num", title, body: "QA", opts: ["так", "ні", "може"], correct: 0, fbText: "QA", ...(pre ? { pre } : {}) });
+  const info = t => ({ type: "info", title: t, body: "QA" });
+  const SEC = { id: "fT", grade: 5, weeks: [30, 31], title: "QA T", why: "QA", lessons: [
+    { id: "ft1", title: "Урок ft1", icon: "book", screens: [info("a"), info("b"), info("c"), ch("1"), ch("2"), ch("3"), ch("4")] },
+    { id: "ft2", title: "Урок ft2", icon: "book", screens: [ch("Одна", "fa1")] },
+    { id: "ft3", title: "Урок ft3", icon: "book", screens: [ch("Дві", "fa2"), info("кінець")] }] };
+  const fx = sec => { SLID_SUBJECTS.find(c => c.id === "math").sections.push(sec); };
+  const st0 = { ...seed, weekOverride: 1, lessons: { fa1: { done: true, stars: 2 }, fa2: { done: true, stars: 1 } }, streak: { count: 1, last: today } };
+  await boot(st0);
+  // «Зараз у школі» (тиждень 1 — розділ fA, усі уроки пройдено) і картка предмета
+  const now = (await page.locator("#view .card.now").innerText()).replace(/\s+/g, " ");
+  ok(/QA A пройдено ✓/.test(now) && !/QA A є уроки/.test(now), `«Зараз у школі»: пройдений розділ — «пройдено ✓», а ${now}`);
+  const subj = (await page.locator('#view .subjcard[data-subject="math"]').innerText()).replace(/\s+/g, " ");
+  ok(/зараз: QA B/.test(subj), `картка предмета: «зараз:» — перший непройдений розділ, а ${subj}`);
+  // лічильні форми: план року (fT — 0 з 3 уроків) і розділ з одним уроком (fB — «0 з 1 уроку»)
+  await page.click('#view button[data-subject="math"]');
+  const plan = (await page.locator("#view .seclist").innerText()).replace(/\s+/g, " ");
+  ok(/0 з 1 уроку/.test(plan) && !/з 1 уроків/.test(plan) && /0 з 3 уроків/.test(plan), `план року: «0 з 1 уроку», «0 з 3 уроків», а ${plan}`);
+  // картка уроку (sheet): 7 кроків · 4 завдання; 1 крок · 1 завдання
+  const k = await page.evaluate(() => SLID_SUBJECTS.find(c => c.id === "math").sections.findIndex(s => s.id === "fT"));
+  await page.click(`#view .secitem[data-topic="${k}"]`);
+  const topic = (await page.locator("#view section.sec").innerText()).replace(/\s+/g, " ");
+  ok(/0 з 3 уроків/.test(topic), `розділ: «0 з 3 уроків», а ${topic}`);
+  await page.click('#view [data-open="0"]');
+  const m1 = (await page.locator("#sheetHost .meta").innerText()).replace(/\s+/g, " ");
+  ok(/7 кроків/.test(m1) && /4 завдання/.test(m1) && !/4 завдань/.test(m1), `картка уроку: «7 кроків · 4 завдання», а ${m1}`);
+  await page.keyboard.press("Escape"); await page.evaluate(() => { document.querySelector("#sheetHost").innerHTML = ""; });
+  await page.click('#view [data-open="1"]');
+  const m2 = (await page.locator("#sheetHost .meta").innerText()).replace(/\s+/g, " ");
+  ok(/(^| )1 крок 1 завдання/.test(m2), `картка уроку: «1 крок · 1 завдання», а ${m2}`);
+  await page.evaluate(() => { document.querySelector("#sheetHost").innerHTML = ""; });
+  // «Варто повторити»: одна помилка з pre — «Помилка … пов'язана», дві — «Помилки … пов'язані»
+  const play = async (id, picks) => {
+    await page.evaluate(id => window.__slidStart(id), id);
+    for (const kk of picks) { await page.click(`#stage .opt[data-k="${kk}"]`); await page.click("#action"); }
+    for (let i = 0; i < 8 && !(await page.locator("#stage .rec").count()); i++) { if (!(await page.locator("#action").isEnabled())) break; await page.click("#action"); }
+    return (await page.locator("#stage").innerText()).replace(/\s+/g, " ");
+  };
+  const r1 = await play("ft2", [1, 0]);
+  ok(/Помилка в цьому уроці пов'язана з цією темою/.test(r1) && !/Кілька помилок/.test(r1), `одна помилка з pre: «Помилка … пов'язана», а ${r1.slice(-300)}`);
+  while (await page.locator("#player").isVisible()) await page.click("#pClose");
+  const r2 = await play("ft3", [1, 2]);
+  ok(/Помилки в цьому уроці пов'язані з цією темою/.test(r2), `дві помилки з pre: «Помилки … пов'язані», а ${r2.slice(-300)}`);
+  while (await page.locator("#player").isVisible()) await page.click("#pClose");
+  // «Прогрес»: 1 день поспіль; навичка без тренувань — без граматичного роду
+  const progress = async st => { await boot(st); await page.click('.tab[data-tab="progress"]'); return (await page.locator("#view").innerText()).replace(/\s+/g, " "); };
+  const pr = await progress({ ...st0, skills: {} });
+  ok(/1 день поспіль/.test(pr) && !/1 днів/.test(pr), `«Прогрес»: «1 день поспіль», а ${pr.slice(0, 300)}`);
+  ok(/тренувань ще не було/.test(pr) && !/тренувал/.test(pr), "«Прогрес»: навичка без тренувань — «тренувань ще не було», без «ще не тренувалась»");
+  ok(/3 дні поспіль/.test(await progress({ ...st0, streak: { count: 3, last: today } })), "«Прогрес»: «3 дні поспіль»");
+  // картка предмета, коли пройдено всі розділи класу: «усе пройдено ✓» замість «зараз: …»
+  const allDone = Object.fromEntries([...FIX.sections.filter(s => s[1] === 5).flatMap(s => s[4]), ...SEC.lessons.map(l => l.id)].map(id => [id, { done: true, stars: 1 }]));
+  await boot({ ...st0, lessons: allDone });
+  const all = (await page.locator('#view .subjcard[data-subject="math"]').innerText()).replace(/\s+/g, " ");
+  ok(/усе пройдено ✓/.test(all) && !/зараз:/.test(all), `картка предмета: усі розділи пройдено — «усе пройдено ✓», а ${all}`);
+  ok(!errors.length, "тексти інтерфейсу: помилки сторінки: " + errors.join(" | "));
+  await ctx.close();
+}
+
+/* 23) Читабельність рендеру (engine-render-legibility-1117): справжній CSS index.html, 360 px. Фікстура-уроки з лабораторіями
+   (моделі як у g4m2 «Додай 1365», g8m1 «добуток/степінь», g8m1 смужки, g11m2 «Дрон у куті»), формулами, strata й align. */
+async function renderLegibilityScenario(browser) {
+  const ctx = await browser.newContext({ viewport: { width: 360, height: 760 }, serviceWorkers: "block" });
+  const page = await ctx.newPage(), errors = []; page.on("pageerror", e => errors.push(String(e))); page.setDefaultTimeout(8000);
+  await page.route("**/fonts.googleapis.com/**", r => r.abort());
+  await page.goto(URL0);
+  await page.evaluate(s => localStorage.setItem("slid.v1", JSON.stringify(s)), seed);
+  await page.reload();
+  const P4 = { min: 0, max: 9, start: 0 };
+  const ex = (title, lab) => ({ type: "explore", title, body: "QA", lab, cta: "Далі" });
+  const SEC = { id: "fR", grade: 5, weeks: [30, 31], title: "QA R", why: "QA", lessons: [{ id: "fr1", title: "Урок fr1", icon: "book", screens: [
+    ex("Стрибки", { kind: "numline", view: [2700, 4800], tick: 100, labels: 500, params: { th: { min: 0, max: 1, start: 1 }, hu: { ...P4, start: 3 }, tn: { ...P4, start: 6 }, un: { ...P4, start: 5 } },
+      let: { k: "1000*th+100*hu+10*tn+un" }, jumps: [{ from: "2748", to: "2748+1000*th", label: "+{1000*th|0}" }, { from: "2748+1000*th", to: "2748+1000*th+100*hu", label: "+{100*hu|0}" }],
+      points: { M: { x: "2748", color: "muted", label: "2748" }, N: { x: "2748+k", label: "{2748+k|0}" }, E: { x: "4800", label: "кінець" } } }),
+    ex("Дві точки", { kind: "numline", view: [0, 5], tick: 0.5, labels: 1, params: { m: { min: -2, max: 3, start: 1, label: "$\\alpha$" }, n: { min: -2, max: 3, start: -2, label: "$x_1$" } },
+      points: { A: { x: "2^m * 2^n", label: "добуток {2^m * 2^n|4}" }, B: { x: "2^(m+n)", label: "степінь {2^(m+n)|4}", color: "green" } } }),
+    ex("Смужки", { kind: "fraction", params: { a: { min: 5, max: 12, step: 1, start: 7 } }, items: [{ shape: "bar", n: "a", k: 3, label: "$3/a$" }, { shape: "bar", n: "a", k: 5, label: "сума $5/a$" }] }),
+    ex("Дрон", { kind: "solid", shape: "box", params: { a: { min: 1, max: 5, start: 3 }, c: { min: 1, max: 5, start: 2 }, b: { min: 1, max: 5, start: 4 } }, a: "a", b: "b", c: "c", axes: true,
+      marks: [{ v: 0, label: "O" }, { v: 6, label: "M" }, { v: 5, label: "M₁" }] }),
+    { type: "info", title: "Формули", body: "<p id=qf>$\\sqrt{2}$ і $1 \\to 4$ і $1 - 4$ і $1/a^n$</p><p id=qu>пі<u>д</u>писаний</p>" },
+    { type: "info", title: "Шари", body: "QA", svg: "strata" },
+    ex("Тягни", { kind: "numline", view: [0, 10], tick: 1, params: { t: { min: 0, max: 10, step: 1, start: 3, hide: true } }, points: { P: { x: "t", drag: true, label: "{t|0}" } } }),
+    { type: "align", title: "Колода", body: "QA", ref: { from: 1180, to: 1240, seed: 7 }, sample: { len: 18, endYear: 1212 } }] }] };
+  await page.evaluate(install, FIX);
+  await page.evaluate(sec => { SLID_SUBJECTS.find(c => c.id === "math").sections.push(sec); window.__slidStart("fr1"); }, SEC);
+  // кожен <text> лабораторії — у межах viewBox SVG; рамки підписів — для перевірки накладань
+  const texts = () => page.evaluate(() => { const svg = document.querySelector("#stage .lab svg"), vb = svg.viewBox.baseVal;
+    return { vb: [vb.width, vb.height], t: [...svg.querySelectorAll("text")].map(t => { const b = t.getBBox(); return { s: t.textContent, x0: b.x, y0: b.y, x1: b.x + b.width, y1: b.y + b.height }; }) }; });
+  const inside = (r, what) => { const out = r.t.filter(b => b.x0 < -0.5 || b.y0 < -0.5 || b.x1 > r.vb[0] + 0.5 || b.y1 > r.vb[1] + 0.5);
+    ok(!out.length, `${what}: підписи в межах SVG ${r.vb}, а за межами ${JSON.stringify(out)}`); };
+  const overlap = (a, b) => a.x0 < b.x1 - 1 && b.x0 < a.x1 - 1 && a.y0 < b.y1 - 1 && b.y0 < a.y1 - 1;
+  const next = () => page.click("#action");
+  // 1) стрибки: «+1000» над дугою не обрізано; старт 2748 підписано; точка на правому краю — підпис не виходить за поле
+  const r1 = await texts(); inside(r1, "numline зі стрибками");
+  ok(r1.t.some(b => b.s === "+1000") && r1.t.some(b => b.s === "2748") && r1.t.some(b => b.s === "кінець"), `numline: підписи +1000, 2748, «кінець» є, а ${r1.t.map(b => b.s)}`);
+  await next();
+  // 2) дві точки в одному місці: підписи не накладаються; назви повзунків для читача екрана — без TeX
+  const r2 = await texts(); inside(r2, "numline з двома точками");
+  const [pa, pb] = ["добуток", "степінь"].map(w => r2.t.find(b => b.s.startsWith(w)));
+  ok(pa && pb && !overlap(pa, pb), `numline: «добуток» і «степінь» в одній точці не накладаються, а ${JSON.stringify([pa, pb])}`);
+  const aria = await page.locator('#stage .lab input[type="range"]').evaluateAll(xs => xs.map(x => x.getAttribute("aria-label")));
+  ok(same(aria, ["α", "x₁"]), `назви повзунків: «α», «x₁» без «\\» і «_», а ${JSON.stringify(aria)}`);
+  await next();
+  // 3) смужки: «сума 5/a» не обрізано зліва
+  const r3 = await texts(); inside(r3, "fraction із довгим підписом");
+  await next();
+  // 4) solid: осі x, y, z; «M₁» і довжини ребер не накладаються
+  const r4 = await texts(); inside(r4, "solid з осями");
+  ok(["x", "y", "z"].every(n => r4.t.some(b => b.s === n)), `solid: підписи осей x, y, z, а ${r4.t.map(b => b.s)}`);
+  const m1 = r4.t.find(b => b.s === "M₁"), nums = r4.t.filter(b => /^\d+$/.test(b.s));
+  ok(m1 && nums.length === 3 && nums.every(b => !overlap(m1, b)), `solid: «M₁» не зливається з довжиною ребра, а ${JSON.stringify([m1, nums])}`);
+  await next();
+  // 5) формули й підкреслення: корінь — маска знака до риски, \to помітно ширша за «−», <u> з відступом і без розривів
+  const f = await page.evaluate(() => { const sq = document.querySelector("#qf .sqrt"), bs = getComputedStyle(sq, "::before"), rd = sq.querySelector(".radicand");
+    const mos = [...document.querySelectorAll("#qf .mo")], arr = mos.find(m => m.textContent === "→"), minus = mos.find(m => m.textContent === "−"), u = getComputedStyle(document.querySelector("#qu u"));
+    return { mask: bs.webkitMaskImage || bs.maskImage, stretch: bs.alignSelf, top: rd.getBoundingClientRect().top - sq.getBoundingClientRect().top,
+      arr: arr.getBoundingClientRect().width, minus: minus.getBoundingClientRect().width, off: u.textUnderlineOffset, skip: u.textDecorationSkipInk,
+      den: !!document.querySelector("#qf .fr .de sup") }; });
+  ok(/svg/.test(f.mask) && f.stretch === "stretch" && Math.abs(f.top) < 0.5, `корінь: знак — маска на всю висоту, риска від верху знака, а ${JSON.stringify(f)}`);
+  ok(f.arr > 1.6 * f.minus, `\\to: стрілка помітно ширша за мінус, а ${f.arr} проти ${f.minus}`);
+  ok(f.off !== "auto" && parseFloat(f.off) >= 3 && f.skip === "none", `<u>: відступ ≥ 3 px і без розривів, а ${f.off} ${f.skip}`);
+  ok(f.den, "1/a^n: показник у знаменнику");
+  await next();
+  // 6) strata: знахідки не налазять на стрілку часу; усі підписи в межах SVG
+  const st = await page.evaluate(() => { const svg = document.querySelector("#stage svg[aria-label^='Розріз']"), ts = [...svg.querySelectorAll("text")].map(t => { const b = t.getBBox(); return { s: t.textContent, x0: b.x, x1: b.x + b.width, y0: b.y, y1: b.y + b.height }; });
+    const ar = svg.querySelector("path").getBBox(), vb = svg.viewBox.baseVal; return { ts, ax: ar.x, vb: [vb.width, vb.height] }; });
+  const finds = st.ts.filter(b => b.s.length > 1 && !/новіше|давніше/.test(b.s));
+  ok(finds.length === 4 && finds.every(b => b.x1 < st.ax - 4), `strata: усі 4 знахідки лівіше стрілки (x ${st.ax}), а ${JSON.stringify(finds)}`);
+  ok(st.ts.every(b => b.x0 >= 0 && b.x1 <= st.vb[0] && b.y0 >= 0 && b.y1 <= st.vb[1]), `strata: підписи в межах SVG, а ${JSON.stringify(st.ts)}`);
+  await next();
+  // 6а) клік по точці (без перетягування) ставить фокус на її ручку — далі стрілки рухають цю точку (qa-drag-points-1117 B1)
+  const hb = await page.locator('#stage .lab .lab-h[data-h="0"]').boundingBox();
+  await page.mouse.move(hb.x + hb.width / 2, hb.y + hb.height / 2); await page.mouse.down(); await page.mouse.up();
+  const fh = await page.evaluate(() => document.activeElement?.classList.contains("lab-h") ? document.activeElement.dataset.h : null);
+  await page.keyboard.press("ArrowRight");
+  const now3 = await page.evaluate(() => [document.activeElement?.dataset?.h ?? null, document.querySelector('#stage .lab .lab-h[data-h="0"]').getAttribute("aria-valuenow")]);
+  ok(fh === "0" && same(now3, ["0", "4"]), `клік по точці: фокус на ручці, стрілка → 3 → 4, а ${fh} ${JSON.stringify(now3)}`);
+  await next();
+  // 7) align: роки шкали цілком у полі; «Збіг візерунка» — кількість кілець, на розв'язку 18 з 18
+  const al = await page.evaluate(() => { const svg = document.querySelector("#stage .align svg"), vb = svg.viewBox.baseVal;
+    return { yrs: [...svg.querySelectorAll("text")].map(t => { const b = t.getBBox(); return [t.textContent, b.x, b.x + b.width]; }), x0: vb.x, w: vb.width, m: document.querySelector("#almatch").textContent }; });
+  ok(same(al.yrs.map(y => y[0]), ["1180", "1200", "1220", "1240"]) && al.yrs.every(y => y[1] >= al.x0 - 0.5 && y[2] <= al.x0 + al.w + 0.5), `align: роки шкали повністю в полі, а ${JSON.stringify(al)}`);
+  ok(/^\d+ з 18 кілець$/.test(al.m), `align: збіг — «N з 18 кілець», а «${al.m}»`);
+  await page.evaluate(() => { const r = document.querySelector("#alrng"); r.value = 1212 - 18 + 1 - 1180; r.dispatchEvent(new Event("input")); });
+  ok(await page.locator("#almatch").innerText() === "18 з 18 кілець" && await page.locator("#almeter.full").count() === 1, "align: на правильному зсуві — «18 з 18 кілець», шкала повна");
+  ok(!errors.length, "читабельність рендеру: помилки сторінки: " + errors.join(" | "));
   await ctx.close();
 }

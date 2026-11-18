@@ -34,9 +34,9 @@ ok(M.mathHTML("\\lg\\,x").split("mspace thin").length === 2, "\\lg\\,x: один
 { const h = M.mathHTML("\\sqrt[3]{x^2}"), i = h.indexOf("root-index"), r = h.indexOf("radicand");
   ok(i > 0 && i < r && h.startsWith('<span class="sqrt"><sup class="root-index">'), `показник кореня — всередині .sqrt перед підкореневим (місце задає CSS .root-index, геометрію перевіряє test-answer-ui) (${h})`); }
 ok(!M.mathHTML("\\sqrt{x}").includes("root-index"), "квадратний корінь без показника");
-ok(M.mathHTML("1 \\to 4") === '1<span class="mo">→</span>4', "\\to — бінарний знак з відступами (.mo)");
-ok(M.mathHTML("0 \\to -1").includes('<span class="mo">→</span><span class="mu">−</span>1'), "\\to: мінус після стрілки унарний");
-ok(M.mathHTML("A \\rightarrow B").includes('class="mo">→') && M.mathHTML("a \\leftrightarrow b").includes('class="mo">↔'), "\\rightarrow, \\leftrightarrow — теж з відступами");
+ok(M.mathHTML("1 \\to 4") === '1<span class="mo marr">→</span>4', "\\to — бінарний знак з відступами (.mo)");
+ok(M.mathHTML("0 \\to -1").includes('<span class="mo marr">→</span><span class="mu">−</span>1'), "\\to: мінус після стрілки унарний");
+ok(M.mathHTML("A \\rightarrow B").includes('class="mo marr">→') && M.mathHTML("a \\leftrightarrow b").includes('class="mo marr">↔'), "\\rightarrow, \\leftrightarrow — теж з відступами");
 // engine-math-sqrt-precedence: «√» без дужок бере найближчий атом — √3/2 = (√3)/2 (так само розбирає відповідь learn.js), а не √(3/2)
 { const H = M.mathHTML, FR = (nu, de) => `<span class="fr"><span class="nu">${nu}</span><span class="sr">/</span><span class="de">${de}</span></span>`;
   const noRootOverFrac = src => ok(!/[√∛∜]<span class="fr">/.test(H(src)), `${src}: знак кореня не стоїть над дробом (${H(src)})`);
@@ -74,6 +74,20 @@ ok(M.mathHTML("A \\rightarrow B").includes('class="mo">→') && M.mathHTML("a \\
   // корінь із кореня: зовнішній знак не стоїть над дробом
   ok(H("√√2/2") === FR("√√2", "2") && H("√√2") === "√√2" && H("2 √√2/2") === FR("2√√2", "2"), `√√2/2 — (√√2)/2 (${H("√√2/2")})`);
   for (const src of ["2 √3/3", "2~√3/3", "√√2/2", "√∛8/2"]) noRootOverFrac(src);
+}
+// engine-render-legibility-1117 (inbox verifier-math-g8g11-w2-1117): степінь і індекс у знаменнику зв'язуються сильніше за «/» —
+// 1/a^n = 1/(aⁿ), а не (1/a)ⁿ; дужки групи перед степенем лишаються: 1/(a+b)^2. Запис змісту 1/(a^n) — як був.
+{ const H = M.mathHTML, FR = (nu, de) => `<span class="fr"><span class="nu">${nu}</span><span class="sr">/</span><span class="de">${de}</span></span>`;
+  const AN = '<i class="mv">a</i><sup class="mp"><i class="mv">n</i></sup>';
+  ok(H("1/a^n") === FR("1", AN), `1/a^n — показник у знаменнику (${H("1/a^n")})`);
+  ok(H("1/2^3") === FR("1", '2<sup class="mp">3</sup>'), `1/2^3 — показник у знаменнику (${H("1/2^3")})`);
+  ok(H("a^{-n} = 1/a^n").endsWith(FR("1", AN)), `глосарій a^{-n} = 1/a^n (${H("a^{-n} = 1/a^n")})`);
+  ok(H("1/a^{n+1}") === FR("1", '<i class="mv">a</i><sup class="mp">' + H("n+1") + "</sup>"), `1/a^{n+1} (${H("1/a^{n+1}")})`);
+  ok(H("1/(a+b)^2") === FR("1", "(" + H("a+b") + ')<sup class="mp">2</sup>'), `1/(a+b)^2 — дужки лишаються перед степенем (${H("1/(a+b)^2")})`);
+  ok(H("1/(a^n)") === FR("1", AN), `обхід змісту 1/(a^n) — той самий вигляд (${H("1/(a^n)")})`);
+  ok(H("1/x_1") === FR("1", '<i class="mv">x</i><sub class="mp">1</sub>'), `1/x_1 — індекс у знаменнику (${H("1/x_1")})`);
+  ok(H("√3/2^2") === FR("√3", '2<sup class="mp">2</sup>'), `√3/2^2 (${H("√3/2^2")})`);
+  ok(H("3/4") === FR("3", "4") && H("1/a + b").startsWith(FR("1", '<i class="mv">a</i>')), "без степеня — як було");
 }
 console.log(`${n - fails}/${n} тестів формул пройдено`);
 process.exit(fails ? 1 : 0);
