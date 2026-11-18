@@ -10,12 +10,12 @@
 SLID.pool("math", {
   id: "pg6m1",
   section: "g6m1",
-  status: "draft",
+  status: "verified",
   meta: { author: "write-math-pool-g6m1", created: "2026-10-13", factcheck: "verifier-refine-math-diag-g6-coverage", revised: "2026-10-31 refine-math-diag-g6-coverage", teacher: null },
   sources: [
     { id: "mer6", short: "Мерзляк А. Г., Полонський В. Б., Якір М. С. Математика (Гімназія, 2023; у підручнику ця тема — у 6 класі)", title: "Мерзляк А. Г., Полонський В. Б., Якір М. С. Математика : підручник для 6 класу (у 2-х ч.). Ч. 1. — Харків : Гімназія, 2023", url: "https://znayshov.com/FR/23000/matematika_6kl_Merzlyak_2023_1.pdf" },
     { id: "krav6", short: "Кравчук В., Янченко Г. Математика (Підручники і посібники, 2023; у підручнику ця тема — у 6 класі)", title: "Кравчук В., Янченко Г. Математика : підручник для 6 класу. — Тернопіль : Підручники і посібники, 2023", url: "https://znayshov.com/FR/23005/matematika_6kl_Kravchuk_2023.pdf" },
-    { id: "ist6", short: "Істер О. С. Математика, ч. 1 (Генеза, 2023; у підручнику ця тема — у 6 класі)", title: "Істер О. С. Математика : підручник для 6 класу (у 2-х ч.). Ч. 1. — Київ : Генеза, 2023", url: "https://www.geneza.ua/sites/default/files/%D0%86%D1%81%D1%82%D0%B5%D1%80_%D0%9C%D0%B0%D1%82_%D0%9F(%D1%87.1)_6.pdf" }
+    { id: "ist6", short: "Істер О. С. Математика, ч. 1 (Генеза, 2023; підручник 6 класу)", title: "Істер О. С. Математика : підручник для 6 класу (у 2-х ч.). Ч. 1. — Київ : Генеза, 2023", url: "https://www.geneza.ua/sites/default/files/%D0%86%D1%81%D1%82%D0%B5%D1%80_%D0%9C%D0%B0%D1%82_%D0%9F(%D1%87.1)_6.pdf" }
   ],
   items: [
     /* ---------- Урок 1. Дільники і кратні ---------- */
