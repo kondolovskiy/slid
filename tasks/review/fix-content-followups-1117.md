@@ -4,7 +4,7 @@ claimed_at: 2026-11-18T10:20:33.828Z
 id: fix-content-followups-1117
 type: fix
 subject: all
-status: todo
+status: review
 claimed_by: agent-fix-followups
 created: 2026-11-18
 source: student-playtest-1117
