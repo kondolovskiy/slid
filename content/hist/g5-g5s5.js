@@ -1,5 +1,6 @@
 /* Слід · Історія, 5 клас — «Сторінки нашого минулого»
    images-maps-hist-world-1117 (2026-11-18, images-hist-1117): карта Кіперта з e0 — і на h55 e3 «На карті Кіперта» — h55 → draft.
+   verifier-images-hist-1117 (2026-11-18): images-maps-hist-world-1117 — змінені уроки → verified; звіт reports/verify/images-hist-1117.md.
    style-hist-1112 (2026-11-12): eyebrow «Розділ N» перенумеровано за weeks[0] у класі (лише номер; статус не змінено).
    Написано: write-hist-g5s5 (2026-11-03; програма Васильків та ін., розд. 4; D-043, D-044). 7 уроків.
    2026-11-03 verifier-g5s5: h51–h57 verified, 11 дрібних правок (reports/verify/g5s5.md).
@@ -577,7 +578,7 @@ SLID.section("hist", {
       title: "Між імперіями",
       short: "Імперії й Крим",
       icon: "map",
-      status: "draft",
+      status: "verified",
       why: "Колись українські землі поділили імперії. Знати це — значить розуміти, чому так важливо мати власну державу.",
       screens: [
         {

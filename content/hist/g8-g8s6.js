@@ -1,5 +1,6 @@
 /* Слід · Історія, 8 клас — «Карпати, Південь і культура козацької доби»
    images-maps-hist-world-1117 (2026-11-18, images-hist-1117): l6 e3 «Карта Півдня після 1775 р.» → «Мітки для карти Півдня» (дитина складає карту) — g8s6l6 → draft; pale-map-1905.jpg замінено більшою мініатюрою того самого файлу (1280×1694).
+   verifier-images-hist-1117 (2026-11-18): images-maps-hist-world-1117 — змінені уроки → verified; звіт reports/verify/images-hist-1117.md.
    fix-hist-world-terms-1117 (2026-11-17, writer-hist2-1117): терміни пояснено в тексті — l2 Запорозька Січ, l3 Мазепа без «ти знаєш із розділу 5» → draft.
    verifier-hist2-1117 (2026-11-17): fix-hist-world-terms-1117 — змінені уроки → verified; звіти reports/verify/fix-hist-ww2-move-1117.md, fix-hist-world-terms-1117-hist.md.
    Статус уроків: verified (verifier-g8s6, 2026-11-12; звіт reports/verify/write-g8s6.md). 6 уроків (5 тем + boss).
@@ -911,7 +912,7 @@ SLID.section("hist", {
       title: "Музей козацької доби",
       short: "Фінал розділу",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "baroquetrace",
       why: "Перевірка всього розділу. Бали подвоєні.",

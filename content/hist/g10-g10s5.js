@@ -1,5 +1,6 @@
 /* Слід · Історія України, 10 клас — «Західноукраїнські землі між війнами»
    images-maps-hist-world-1117 (2026-11-18, images-hist-1117): «Карта» → «Кордони між війнами» (l1 e3); l4 e1 «Підписи до карти путівника» — g10s5l1, g10s5l4 → draft.
+   verifier-images-hist-1117 (2026-11-18): images-maps-hist-world-1117 — змінені уроки → verified; звіт reports/verify/images-hist-1117.md.
    Статус уроків: verified (writer-g10s5, 2026-10-14; зображення D-027 — 2026-10-30, перевірено verifier-d027-g10s5). 5 уроків (4 теми + boss).
    revise-hist-g10s5-cov (2026-11-12; verified — verifier-revise-g10s5-cov, 2026-11-12): новий урок g10s5l5 (культура, кооперація, еміграція; у масиві — перед g10s5l3);
    l1 + осадництво й УНП, l2 + Донцов та «інтегральний націоналізм», l3 — лише eyebrow «Урок 4», фінал + завдання на l5.
@@ -55,7 +56,7 @@ SLID.section("hist", {
       title: "Один народ, три кордони",
       short: "Три держави",
       icon: "map",
-      status: "draft",
+      status: "verified",
       why: "Ти порівняєш, як жили українці в Польщі, Румунії й Чехословаччині, і навчишся відрізняти факт від оцінки.",
       screens: [
         {
@@ -723,7 +724,7 @@ SLID.section("hist", {
       title: "Путівник трьома кордонами",
       short: "Фінал розділу",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "threeborders",
       why: "Перевірка всього розділу. Бали подвоєні.",

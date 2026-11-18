@@ -1,5 +1,6 @@
 /* Слід · Історія України, 10 клас — «Друга світова війна». Клас: 10 (до 2026-11 — 11 кл.). Програма № 698: 10 кл. — 1914–1945 рр., 11 кл. — від 1945 р.;
    images-maps-hist-world-1117 (2026-11-18, images-hist-1117): карта окупаційного поділу (XrysD, Poeticbent) — і на l2 e1; файл occupation-map-1943.jpg — більша мініатюра (1280×731) — g11s1l2 → draft.
+   verifier-images-hist-1117 (2026-11-18): images-maps-hist-world-1117 — змінені уроки → verified; звіт reports/verify/images-hist-1117.md.
    fix-hist-ww2-move-1117 (2026-11-17, writer-hist2-1117): eyebrow «Розділ 1» → «Розділ 6» (порядок розділів 10 кл. у plan.js, weeks 29–35).
    fix-hist-world-terms-1117 (2026-11-17, writer-hist2-1117): l2 штадткомісар, l3 айнзацгрупи, l4 і l9 ОУН / ОУН(б) — пояснено в тексті → draft.
    verifier-hist2-1117 (2026-11-17): fix-hist-ww2-move-1117, fix-hist-world-terms-1117 — змінені уроки → verified; звіти reports/verify/fix-hist-ww2-move-1117.md, fix-hist-world-terms-1117-hist.md.
@@ -495,7 +496,7 @@ SLID.section("hist", {
       title: "Порядок окупантів",
       short: "Окупація",
       icon: "shield",
-      status: "draft",
+      status: "verified",
       why: "Ти дослідиш, як нацистська влада поділила й використовувала українські землі.",
       screens: [
         {

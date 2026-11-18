@@ -1,5 +1,6 @@
 /* Слід · Історія, 6 клас — «Слов'яни і Велике переселення народів»
    images-maps-hist-world-1117 (2026-11-18, images-hist-1117): «Карта» → «Джерело» (l3 e3), «Карта антів» → «Землі антів» з питанням без карти (l5 e5) — g6s5-l3, g6s5-l5 → draft.
+   verifier-images-hist-1117 (2026-11-18): images-maps-hist-world-1117 — змінені уроки → verified; звіт reports/verify/images-hist-1117.md.
    style-hist-1112 (2026-11-12): eyebrow «Розділ N» перенумеровано за weeks[0] у класі (лише номер; статус не змінено).
    Статус уроків: l1–l5 verified (повторна верифікація D-019, 2026-10-13). 5 уроків.
    Перевірка: node tools/validate.mjs && node tools/stats.mjs
@@ -304,7 +305,7 @@ SLID.section("hist", {
       title: "Сусіди очима Візантії",
       short: "Анти і склавини",
       icon: "users",
-      status: "draft",
+      status: "verified",
       why: "Про своїх предків ми дізнаємося з чужих записів. Ти навчишся читати їх з поправкою на автора.",
       screens: [
         {
@@ -550,7 +551,7 @@ SLID.section("hist", {
       title: "Виставка «Рух народів»",
       short: "Фінал розділу",
       icon: "star",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "migrate",
       why: "Перевірка всього розділу. Бали подвоєні.",

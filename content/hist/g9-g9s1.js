@@ -1,5 +1,6 @@
 /* Слід · Історія України, 9 клас — «Під владою двох імперій»
    images-maps-hist-world-1117 (2026-11-18, images-hist-1117): карта поділів Речі Посполитої (Halibutt, Sneecs, CC BY-SA 3.0) на l1 e3 — g9s1l1 → draft. g9s1l2: eyebrow «Карта» → «Губернії» (e4), «На карті» → «Три краї» (e5), загальної карти губерній з відкритою ліцензією не знайдено — g9s1l2 → draft.
+   verifier-images-hist-1117 (2026-11-18): images-maps-hist-world-1117 — змінені уроки → verified; звіт reports/verify/images-hist-1117.md.
    fix-hist-world-terms-1117 (2026-11-17, writer-hist2-1117): терміни пояснено в тексті — l3 цісар → draft.
    verifier-hist2-1117 (2026-11-17): fix-hist-world-terms-1117 — змінені уроки → verified; звіти reports/verify/fix-hist-ww2-move-1117.md, fix-hist-world-terms-1117-hist.md.
    style-hist-1112 (2026-11-12): милозвучність у/в, і/й, з/із (УП § 23–25) у g9s1l2; перевірив verifier-style-hist-1112 (2026-11-12) → verified, звіт reports/verify/style-hist-1112.md.
@@ -84,7 +85,7 @@ SLID.section("hist", {
       title: "Держава, що зникла з карти",
       short: "Поділи",
       icon: "map",
-      status: "draft",
+      status: "verified",
       why: "Ти побачиш, як за 23 роки сусіди розділили Річ Посполиту і куди потрапили українські землі.",
       screens: [
         {
@@ -238,7 +239,7 @@ SLID.section("hist", {
       title: "Адреса: губернія, повіт",
       short: "Губернії",
       icon: "city",
-      status: "draft",
+      status: "verified",
       why: "Ти розберешся, як Російська імперія керувала українськими землями і що означали губернія й повіт.",
       screens: [
         {

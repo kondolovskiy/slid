@@ -1,5 +1,6 @@
 /* Слід · Історія України, 10 клас — «Українська революція 1917–1921»
    images-maps-hist-world-1117 (2026-11-18, images-hist-1117): «Карта фронтів» → «Трикутник смерті» (l5 e5); l9 e5 — дитина сама наносить шлях на карту; «Карта» → «Землі ЗУНР» (l6 e4: карта ЗУНР на Вікісховищі — лише з російськими й анахронічними підписами або 493 px) — g10s2l5, g10s2l6, g10s2l9 → draft.
+   verifier-images-hist-1117 (2026-11-18): images-maps-hist-world-1117 — змінені уроки → verified; звіт reports/verify/images-hist-1117.md.
    12 уроків (11 тем + boss); порядок у масиві хронологічний: l1, l2, l3, l10, l4, l5, l6, l7, l11, l12, l8, l9 (revise-hist-g10s2-cov).
    Перевірка: node tools/validate.mjs --section g10s2 && node tools/stats.mjs --subject hist
    Схема й правила: docs/CONTENT_SCHEMA.md, style/; D-019, D-020, D-020a, D-022.
@@ -914,7 +915,7 @@ SLID.section("hist", {
       title: "Директорія в кільці фронтів",
       short: "Директорія",
       icon: "users",
-      status: "draft",
+      status: "verified",
       why: "Ти зрозумієш, чому відновлена УНР воювала одразу з кількома противниками.",
       screens: [
         {
@@ -1051,7 +1052,7 @@ SLID.section("hist", {
       title: "Ніч на 1 листопада",
       short: "ЗУНР",
       icon: "city",
-      status: "draft",
+      status: "verified",
       why: "Ти дізнаєшся, як у Галичині постала друга українська держава і чому їй довелося воювати за Львів.",
       screens: [
         {
@@ -1895,7 +1896,7 @@ SLID.section("hist", {
       title: "Архів революції",
       short: "Фінал розділу",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "zlukaseal",
       why: "Перевірка всього розділу. Бали подвоєні.",

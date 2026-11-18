@@ -1,6 +1,7 @@
 /* Слід · Історія, 6 клас — «Античні міста Причорномор'я»
    style-hist-1112 (2026-11-12): eyebrow «Розділ N» перенумеровано за weeks[0] у класі (лише номер; статус не змінено).
    images-maps-hist-world-1117 (2026-11-18, images-hist-1117): карта грецьких колоній (MapMaster, CC BY-SA 3.0) на h641 e3 і h642 e3 → h641, h642 draft.
+   verifier-images-hist-1117 (2026-11-18): images-maps-hist-world-1117 — змінені уроки → verified; звіт reports/verify/images-hist-1117.md. Правка: у cap h641 e3 і h642 e3 — «Hypanis River», «Borysthenes River» (на карті Borysthenes — ще й місто біля Ольвії).
    Статус уроків: h641–h645 verified (D-027: зображення photo-g6s4; повторна верифікація verifier-images-g6s4, 2026-10-31; reports/verify/images-hist-g6s4.md). 5 уроків.
    Перевірка: node tools/validate.mjs && node tools/stats.mjs
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
@@ -26,7 +27,7 @@ SLID.section("hist", {
       title: "Греки на нашому березі",
       short: "Грецькі колонії",
       icon: "city",
-      status: "draft",
+      status: "verified",
       why: "Південь України має давнє минуле. Тут стояли міста, де говорили грецькою й торгували з усім морем.",
       screens: [
         {
@@ -66,7 +67,7 @@ SLID.section("hist", {
           eyebrow: "На карті",
           title: "Де стояло місто?",
           img: "img/hist/g6s4/greek-colonies-map.jpg",
-          cap: "Грецькі міста Північного Причорномор'я близько 450 р. до н. е. Сучасна схема, підписи англійською: Olbia — Ольвія, Chersonesos — Херсонес, Panticapaeum — Пантікапей; Taurica — Крим, Hypanis — Південний Буг, Borysthenes — Дніпро, Euxine Sea — Чорне море. Карта: MapMaster, CC BY-SA 3.0.",
+          cap: "Грецькі міста Північного Причорномор'я близько 450 р. до н. е. Сучасна схема, підписи англійською: Olbia — Ольвія, Chersonesos — Херсонес, Panticapaeum — Пантікапей; Taurica — Крим, Hypanis River — Південний Буг, Borysthenes River — Дніпро, Euxine Sea — Чорне море. Карта: MapMaster, CC BY-SA 3.0.",
           body: "<p>Знайди кожне місто на карті й розклади за місцем.</p>",
           bins: ["Бузький лиман", "Південний захід Криму", "Схід Криму"],
           items: [
@@ -139,7 +140,7 @@ SLID.section("hist", {
       title: "Царство над протокою",
       short: "Боспорське царство",
       icon: "shield",
-      status: "draft",
+      status: "verified",
       why: "Міста бувають сильнішими разом. Боспор показує, як окремі громади стають однією державою.",
       screens: [
         {
@@ -181,7 +182,7 @@ SLID.section("hist", {
           eyebrow: "На карті",
           title: "Яке сучасне місто стоїть на місці Пантікапея?",
           img: "img/hist/g6s4/greek-colonies-map.jpg",
-          cap: "Грецькі міста Північного Причорномор'я близько 450 р. до н. е. Сучасна схема, підписи англійською: Olbia — Ольвія, Chersonesos — Херсонес, Panticapaeum — Пантікапей; Taurica — Крим, Hypanis — Південний Буг, Borysthenes — Дніпро, Euxine Sea — Чорне море. Карта: MapMaster, CC BY-SA 3.0.",
+          cap: "Грецькі міста Північного Причорномор'я близько 450 р. до н. е. Сучасна схема, підписи англійською: Olbia — Ольвія, Chersonesos — Херсонес, Panticapaeum — Пантікапей; Taurica — Крим, Hypanis River — Південний Буг, Borysthenes River — Дніпро, Euxine Sea — Чорне море. Карта: MapMaster, CC BY-SA 3.0.",
           body: "<p>Знайди Пантікапей на карті. Біля якої протоки він стояв?</p>",
           opts: ["Керч", "Севастополь", "Очаків"],
           correct: 0,

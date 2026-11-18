@@ -1,5 +1,6 @@
 /* Слід · Історія України, 11 клас — «Російсько-українська війна»
    images-maps-hist-world-1117 (2026-11-18, images-hist-1117): карта становища 27.03.2022 (Matttest, CC BY-SA 4.0) на l3 e0; «Точність карти» → «Точність формулювання» (l4 e6) — g11s5l3, g11s5l4 → draft.
+   verifier-images-hist-1117 (2026-11-18): images-maps-hist-world-1117 — змінені уроки → verified; звіт reports/verify/images-hist-1117.md.
    fix-hist-ww2-move-1117 (2026-11-17, writer-hist2-1117): eyebrow «Розділ 5» → «Розділ 4» (g11s1 тепер у 10 кл.).
    fix-hist-world-terms-1117 (2026-11-17, writer-hist2-1117): УВКПЛ ООН розшифровано при першій згадці в l2, l3, l4, l8, l5, l6 → draft.
    verifier-hist2-1117 (2026-11-17): fix-hist-ww2-move-1117, fix-hist-world-terms-1117 — змінені уроки → verified; звіти reports/verify/fix-hist-ww2-move-1117.md, fix-hist-world-terms-1117-hist.md.
@@ -487,7 +488,7 @@ SLID.section("hist", {
       title: "Три міста тримають удар",
       short: "Оборона міст",
       icon: "city",
-      status: "draft",
+      status: "verified",
       why: "Ти порівняєш оборону Києва, Харкова й Маріуполя без перетворення людського досвіду на гру.",
       screens: [
         {
@@ -614,7 +615,7 @@ SLID.section("hist", {
       title: "Повернути — не означає завершити",
       short: "Звільнення",
       icon: "flag",
-      status: "draft",
+      status: "verified",
       why: "Ти відновиш хронологію звільнень 2022 р. й побачиш ризики, що лишаються після окупації.",
       screens: [
         {

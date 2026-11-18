@@ -1,5 +1,6 @@
 /* Слід · Історія, 6 клас — «Інструменти історика»
    images-maps-hist-world-1117 (2026-11-18, images-hist-1117): eyebrow «Карта давнини» → «Річки й цивілізації» (карти на екрані немає) — g6s9l1 → draft.
+   verifier-images-hist-1117 (2026-11-18): images-maps-hist-world-1117 — змінені уроки → verified; звіт reports/verify/images-hist-1117.md.
    Статус уроків: g6s9l1–g6s9l5 verified (write-hist-g6s9, 2026-11-12; verifier-write-hist-g6s9, 2026-11-12, reports/verify/write-g6s9.md). Програма Васильківа, 6 кл., розд. 1 (НП6 §1–10);
    звіт reports/research/coverage-research-hist-coverage-g5-6.md §4.1 N2. 5 уроків (4 + фінал).
    Методи датування й читання карти — у розділах s1/s2 (5 кл.), тут лише посилання.
@@ -52,7 +53,7 @@ SLID.section("hist", {
       title: "Гора із цегли в пустелі",
       short: "Цивілізація",
       icon: "city",
-      status: "draft",
+      status: "verified",
       why: "Слово «цивілізація» трапиться тобі в кожному розділі. Тут ти дізнаєшся, за якими ознаками її впізнають.",
       screens: [
         {

@@ -1,5 +1,6 @@
 /* Слід · Історія, 7 клас — «Українські землі в XIV–XV ст.»
    images-maps-hist-world-1117 (2026-11-18, images-hist-1117): eyebrow «На карті» → «Поділ земель» (l1 e3) — g7s5l1 → draft.
+   verifier-images-hist-1117 (2026-11-18): images-maps-hist-world-1117 — змінені уроки → verified; звіт reports/verify/images-hist-1117.md.
    Статус уроків: verified (verifier-g7s5, 2026-10-07; після ревізії D-019 — verifier-g7s5-d019, 2026-10-13). 5 уроків.
    2026-10-31 (photo-g7s5, D-027): додано зображення в l1, l2, l4, l5; повторна верифікація verifier-images-g7s4g7s5 — verified (reports/verify/images-hist-g7s5.md).
    2026-11-03 (revise-hist-g7s5-khanate, D-043/D-044): «Кримське ханство (ханат)» у l4; новий урок g7s5l6 «Крим під владою султана» (Феодоро, генуезькі колонії, васалітет 1478 р., ясир, Дике поле); «Королівство Руське» в l1; завдання 6 у фіналі — l1, l4, l5, l6 draft.
@@ -74,7 +75,7 @@ SLID.section("hist", {
       title: "Король багатьох русинів",
       short: "Литовська доба",
       icon: "map",
-      status: "draft",
+      status: "verified",
       why: "Кордони змінюються, а люди лишаються. Цей урок пояснює, як руські землі отримали нових правителів і що з цього вийшло.",
       screens: [
         {

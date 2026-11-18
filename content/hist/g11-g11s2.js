@@ -1,5 +1,6 @@
 /* Слід · Історія, 11 клас — «Повоєнна УРСР»
    images-maps-hist-world-1117 (2026-11-18, images-hist-1117): l5 e4 «Підпис до карти Криму» → «Підпис до стенда про Крим» — g11s2l5 → draft.
+   verifier-images-hist-1117 (2026-11-18): images-maps-hist-world-1117 — змінені уроки → verified; звіт reports/verify/images-hist-1117.md.
    fix-hist-ww2-move-1117 (2026-11-17, writer-hist2-1117): eyebrow «Розділ 2» → «Розділ 1» (g11s1 тепер у 10 кл.); у l6 e6 (остарбайтери), l7 e3 (УПА, ОУН, Хасевич), l8 e3 і l9 e7 (депортація 1944 р.) пояснення в самому тексті замість «Пригадай» → l6–l9 draft.
    verifier-hist2-1117 (2026-11-17): fix-hist-ww2-move-1117 — змінені уроки → verified; правка l7 e3: + відплатні вбивства українських цивільних польськими формуваннями (facts/hist №190); звіт reports/verify/fix-hist-ww2-move-1117.md.
    Статус: l2, l3, l4 — verified (D-027: зображення перевірено 2026-10-30); l1, l5 змінено й l6–l9 додано 2026-11-12
@@ -1293,7 +1294,7 @@ SLID.section("hist", {
       title: "Експозиція пам'яті",
       short: "Фінал розділу",
       icon: "eye",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "g11s2museum",
       why: "Редакційна колегія музейної виставки має відібрати точні підписи й докази. Бали подвоєні.",

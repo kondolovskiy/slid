@@ -1,5 +1,6 @@
 /* Слід · Історія, 5 клас — «Історична карта»
    images-maps-hist-world-1117 (2026-11-18, images-hist-1117): карта історичних регіонів України (Д. Сергієнко, CC BY-SA 4.0) на h23 e1, додано Поділля — h23 → draft.
+   verifier-images-hist-1117 (2026-11-18): images-maps-hist-world-1117 — змінені уроки → verified; звіт reports/verify/images-hist-1117.md.
    style-hist-1112 (2026-11-12): eyebrow «Розділ N» перенумеровано за weeks[0] у класі (лише номер; статус не змінено); милозвучність у/в, і/й, з/із (УП § 23–25) у h23, h25; перевірив verifier-style-hist-1112 (2026-11-12) → verified, звіт reports/verify/style-hist-1112.md.
    Статус: усі уроки verified (h22, h23 — нові завдання src, style-hist-g5-finals; verify 2026-11-04, reports/verify/style-hist-g5.md). 5 уроків.
    Перевірка: node tools/validate.mjs && node tools/stats.mjs
@@ -282,7 +283,7 @@ SLID.section("hist", {
       title: "Галичина, Поділля, Слобожанщина",
       short: "Історичні землі",
       icon: "map",
-      status: "draft",
+      status: "verified",
       why: "Назви регіонів — живі сліди минулого. Вони пояснюють діалекти, архітектуру й традиції.",
       screens: [
         {

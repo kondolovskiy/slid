@@ -1,5 +1,6 @@
 /* Слід · Історія, 7 клас — «Від Вітовта до Орші»
    images-maps-hist-world-1117 (2026-11-18, images-hist-1117): eyebrow «На карті» → «Володіння» (l4 e5) — g7s6l4 → draft.
+   verifier-images-hist-1117 (2026-11-18): images-maps-hist-world-1117 — змінені уроки → verified; звіт reports/verify/images-hist-1117.md.
    2026-11-12 (write-hist-g7s6, звіт reports/research/coverage-research-hist-coverage-g7-9.md A8, одиниці програми 7.6.5–7.6.12):
    6 уроків + фінал (g7s6l1–g7s6l7), усі draft. Зображення D-027 — img/hist/g7s6/ (lviv-1618, orsha-1514, bologna-lecture — копії
    вже перевірених файлів з img/hist/g7s4, img/world/w8s3, img/world/w7s3).
@@ -518,7 +519,7 @@ SLID.section("hist", {
       title: "Русь за Карпатами і за Дністром",
       short: "Закарпаття, Буковина",
       icon: "map",
-      status: "draft",
+      status: "verified",
       why: "Не всі українські землі були тоді в Литві чи Польщі. Ти дізнаєшся, як жили Закарпаття та Буковина й чому розділилася церква.",
       screens: [
         {
