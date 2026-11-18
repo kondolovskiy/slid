@@ -887,7 +887,7 @@ SLID.section("world", {
       title: "Капсула часу 1914 р.",
       short: "Фінал розділу",
       icon: "star",
-      status: "verified",
+      status: "draft",
       boss: true,
       badge: "newcentury",
       why: "Перевірка всього розділу. Бали подвоєні.",
@@ -972,7 +972,7 @@ SLID.section("world", {
           type: "choice",
           sk: "cult",
           eyebrow: "Питання 5",
-          title: "Річ п'ята: картина Моне",
+          title: "Річ п'ята: полотно імпресіоніста",
           body: "<p>Хранитель питає: «Звідки взялася назва „імпресіонізм“?»</p>",
           opts: [
             "Так називалася офіційна виставка Салону в Парижі",
