@@ -4,7 +4,7 @@
    чого в кеші цієї версії немає. Нова версія: встановлення (кожен файл перевіряється на сервері, cache: "no-cache") → skipWaiting →
    activate (старі кеші видаляються) → clients.claim → сторінка отримує controllerchange й перезавантажується,
    коли це безпечно (app/update.js: не посеред уроку чи тесту рівня). Google Fonts — з кешу з фоновим оновленням. */
-const VERSION = "6135c9e117";
+const VERSION = "01924f05e9";
 const CACHE = "slid-" + VERSION;
 const FONTS = "slid-fonts";
 const ASSETS = [
@@ -482,6 +482,7 @@ const ASSETS = [
   "./img/hist/g11s5/grain-odesa-2022.jpg",
   "./img/hist/g11s5/hostomel-mriya-2022.jpg",
   "./img/hist/g11s5/icc-hague.jpg",
+  "./img/hist/g11s5/invasion-map-2022-03-27.jpg",
   "./img/hist/g11s5/kherson-flag-2022.jpg",
   "./img/hist/g11s5/tomos-2019.jpg",
   "./img/hist/g11s5/un-68-262.jpg",
@@ -544,6 +545,7 @@ const ASSETS = [
   "./img/hist/g6s3/sarmatians-trajan.jpg",
   "./img/hist/g6s3/scythian-iron-axe.jpg",
   "./img/hist/g6s3/solokha-comb.jpg",
+  "./img/hist/g6s4/greek-colonies-map.jpg",
   "./img/hist/g6s4/olbia-dolphin.jpg",
   "./img/hist/g6s4/olbia-quarter.jpg",
   "./img/hist/g6s4/panticapaeum-stater.jpg",
@@ -592,6 +594,7 @@ const ASSETS = [
   "./img/hist/g6s9/peresopnytsia-page.jpg",
   "./img/hist/g6s9/ur-ziggurat.jpg",
   "./img/hist/g6s9/zlatnyky.jpg",
+  "./img/hist/g7s1/east-slavic-tribes-map.jpg",
   "./img/hist/g7s1/obry-duliby.jpg",
   "./img/hist/g7s1/oleg-igor.jpg",
   "./img/hist/g7s1/olga.jpg",
@@ -634,6 +637,7 @@ const ASSETS = [
   "./img/hist/g7s6/mukachevo-palanok.jpg",
   "./img/hist/g7s6/orsha-1514.jpg",
   "./img/hist/g8s1/clement-viii-medal-1596.jpg",
+  "./img/hist/g8s1/commonwealth-1619-map.jpg",
   "./img/hist/g8s1/fedusko-annunciation-1579.jpg",
   "./img/hist/g8s1/kamianets-castle.jpg",
   "./img/hist/g8s1/lithuanian-statute-1588.jpg",
@@ -693,6 +697,7 @@ const ASSETS = [
   "./img/hist/g9s1/nevrev-torg-1866.jpg",
   "./img/hist/g9s1/odesa-peresyp-1830s.jpg",
   "./img/hist/g9s1/partition-cake-1773.jpg",
+  "./img/hist/g9s1/partitions-map.jpg",
   "./img/hist/g9s1/poltava-map-1821.jpg",
   "./img/hist/g9s2/eneida-1798.jpg",
   "./img/hist/g9s2/istoriia-rusiv-1846.jpg",
@@ -733,6 +738,7 @@ const ASSETS = [
   "./img/hist/s1/franko-family-1904.jpg",
   "./img/hist/s1/khmelnytsky-hondius.jpg",
   "./img/hist/s2/dnipro-rapids.jpg",
+  "./img/hist/s2/historical-regions-map.jpg",
   "./img/hist/s2/kiepert-1849.jpg",
   "./img/hist/s2/panteleimon-halych.jpg",
   "./img/hist/s3/lviv-1618.jpg",
@@ -848,6 +854,7 @@ const ASSETS = [
   "./img/world/w7s1/aachen-chapel.jpg",
   "./img/world/w7s1/charlemagne-denier.jpg",
   "./img/world/w7s1/clovis-baptism-1500.jpg",
+  "./img/world/w7s1/germanic-kingdoms-526.jpg",
   "./img/world/w7s1/hagia-sophia.jpg",
   "./img/world/w7s1/jelling-stone.jpg",
   "./img/world/w7s1/migration-map.jpg",
@@ -857,6 +864,7 @@ const ASSETS = [
   "./img/world/w7s2/blue-quran.jpg",
   "./img/world/w7s2/diamond-sutra.jpg",
   "./img/world/w7s2/greek-fire.jpg",
+  "./img/world/w7s2/justinian-555.jpg",
   "./img/world/w7s2/justinian-mosaic.jpg",
   "./img/world/w7s2/justinian-solidus.jpg",
   "./img/world/w7s2/sui-camel.jpg",
@@ -902,6 +910,7 @@ const ASSETS = [
   "./img/world/w8s1/pepper-harvest.jpg",
   "./img/world/w8s1/potosi-1553.jpg",
   "./img/world/w8s1/printing-nova-reperta.jpg",
+  "./img/world/w8s1/tordesillas-lines.jpg",
   "./img/world/w8s1/waldseemuller-america.jpg",
   "./img/world/w8s2/arnolfini-portrait.jpg",
   "./img/world/w8s2/council-of-trent.jpg",
@@ -957,6 +966,7 @@ const ASSETS = [
   "./img/world/w8s6/peter-kneller-1698.jpg",
   "./img/world/w9s1/bastille-demolition-houel.jpg",
   "./img/world/w9s1/declaration-le-barbier.jpg",
+  "./img/world/w9s1/europe-1815.jpg",
   "./img/world/w9s1/gateau-des-rois-1815.jpg",
   "./img/world/w9s1/napoleon-alps-david.jpg",
   "./img/world/w9s1/napoleon-alps-delaroche.jpg",
