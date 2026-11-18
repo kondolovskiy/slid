@@ -830,6 +830,11 @@ const order = l => ({ L1: 3, L2: 1, L3: 2, L4: 4 }[l] ?? 50);
   eq(L.buildPlan(B, skip, { ...ctx, week: 6 }).base.map(b => b.next), ["s2a", "s2a"], "baseline next: розділ, що вже минув, — у кінець");
   eq(L.buildPlan(B, skip, { ...ctx, hasLesson: l => l !== "s1a" }).base[0].next, "s1b", "baseline next: перший доступний урок розділу");
   eq(L.buildPlan(B, skip, { ...ctx, sections: [] }).base.map(b => b.next), [null, null], "baseline next: без розділів — null, без битого id");
+  // tools-content-checks-p3 п. 6: next — перший доступний урок з see (а не перший урок розділу); недоступний або чужого предмета — наступний see / розділ
+  { const Bs = clone(B); Bs.topics[0].see = ["s2b", "s2a"]; Bs.topics[1].see = ["foreign"];
+    eq(L.buildPlan(Bs, skip, { ...ctx, hasLesson: l => l !== "foreign" }).base.map(b => [b.topic, b.next]), [["p2", "s1a"], ["p1", "s2b"]], "baseline next: see → перший доступний урок з see; see чужого предмета (hasLesson=false) → як раніше, перший урок розділу");
+    eq(L.buildPlan(Bs, skip, { ...ctx, hasLesson: l => l !== "s2b" }).base.find(b => b.topic === "p1").next, "s2a", "baseline next: перший see недоступний → наступний see");
+    eq(L.buildPlan(Bs, skip, { ...ctx, hasLesson: l => !["s2b", "s2a"].includes(l) }).base.find(b => b.topic === "p1").next, null, "baseline next: see недоступні й розділ без доступних уроків → null"); }
   // збереження: уроки не закривають baseline, повторний тест — так
   const S = fresh(); S.grade = 4; L.finishDiag(S, "math", B, skip, ctx);
   eq(S.plan.math.base.length, 2, "baseline finishDiag: base збережено");

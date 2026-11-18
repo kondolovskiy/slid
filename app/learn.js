@@ -115,7 +115,10 @@ window.SLID_LEARN = (() => {
       .sort((a, b) => a.u - b.u || (a.st === "gap" ? 0 : 1) - (b.st === "gap" ? 0 : 1) || a.n - b.n)
       .forEach(x => { if (x.t.baseline) {
           const sec = [...(x.t.for || [])].sort((a, b) => urg(a) - urg(b)).map(id => secs.find(s => s.id === id)).find(s => s && (s.lessons || []).some(has));
-          base.push({ topic: x.t.id, why: x.st, next: sec ? sec.lessons.find(has) : null }); return; }
+          // see (автор тесту: урок, де тему повторюють) — найкраща відповідність темі, тож «з чого почати» — перший доступний урок з see,
+          // а не перший урок розділу (indep, rights → g5s7l1, хоча тема в l3/l6/l7; tools-content-checks-p3 п. 6); без see — як раніше
+          const seen1 = (x.t.see || []).find(has);
+          base.push({ topic: x.t.id, why: x.st, next: seen1 || (sec ? sec.lessons.find(has) : null) }); return; }
         const own = x.st === "shaky" ? [...new Set(d.items.filter((it, i) => it.topic === x.t.id && it.lesson && i in res && res[i] !== OK).map(it => it.lesson))] : [];
         (own.length ? own : x.t.lessons || []).forEach(l => { if (has(l) && !seen.has(l)) { seen.add(l); steps.push({ l, why: x.st, topic: x.t.id, src: "diag", done: false }); } }); });
     const known = [...new Set(d.topics.filter(t => t.kind === "cur" && topics[t.id] === "known").flatMap(t => t.lessons || []).filter(has))];

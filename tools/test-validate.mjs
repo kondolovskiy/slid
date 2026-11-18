@@ -881,5 +881,18 @@ const { figCues: figCuesT, figPoints: figPointsT } = await import(path.join(ROOT
   expectRun("fig grid з непарним $ у cap — помилка", grid({ cap: "Площа $S = 24" }), ["--section", "fxg"], { err: "fig grid: непарна кількість $", also: "непарна кількість $" });
   expectRun("fig grid з dashed не boolean — помилка", grid({ dashed: "так", cap: "QA" }), ["--section", "fxg"], { err: "dashed — true/false" }); }
 
+// tools-content-checks-p3: правила tools/content-checks.mjs доходять до звіту validate як ПОПЕРЕДЖЕННЯ (логіку правил — tools/test-content-checks.mjs)
+{ const cc = (name, extra, warn, noWarn = null) => expectRun(`content-checks: ${name}`, { "content/math/g8-fxcc.js": secJS("math", mathSec("fxcc", { extra })) }, ["--section", "fxcc"], { warn, noWarn });
+  const ch = (title, body, correct = 1) => ({ type: "choice", title, body, opts: ["Так", "Ні"], correct });
+  cc("латиниця всередині кириличного слова", { type: "info", title: "Герой", body: "Це Іпóліто." }, "латиниця всередині кириличного слова");
+  cc("службовий id у тексті", { type: "info", title: "Герой", body: "Дивись урок w11s5l3." }, "службовий id «w11s5l3»");
+  cc("choice без питання", ch("Закон на папері", "Реформи діяли."), "оцінюваний choice без питання");
+  cc("choice з питанням — чисто", ch("Закон на папері", "Що це означає?"), null, "без питання");
+  cc("позиційне посилання у fbText", { ...ch("Вибір", "Що правильно?"), fbText: "Перший текст має думку, бо це очевидно з прикладу." }, "позиційне посилання «Перший текст»");
+  cc("два choice на одній позиції (поріг 2)", ch("Вибір", "Що правильно?", 0), "правильний варіант — А");
+  cc("звертання з родом", { type: "info", title: "Крок", body: "Ти вже зрозумів, як це працює." }, "звертання з родом «Ти вже зрозумів»");
+  cc("звертання без роду — чисто", { type: "info", title: "Крок", body: "Ти вже знаєш, як це працює." }, null, "звертання з родом");
+  cc("lab.show з «Потрібно» і goal", { type: "lab", title: "Зроби так", body: "Налаштуй модель.", lab: { kind: "plane", view: [-5, 5, -5, 5], params: { a: { min: 0, max: 4, start: 1 } }, show: "Потрібно 3", alt: "Модель" }, goal: "a==3", solution: { a: 3 }, hint: "Подивись." }, "слово «Потрібно»"); }
+
 console.log(fails ? `\n${fails} з ${n} перевірок не пройшли` : `test-validate: усі ${n} перевірок пройшли`);
 process.exit(fails ? 1 : 0);

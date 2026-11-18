@@ -5,6 +5,7 @@
 import fs from "node:fs"; import path from "node:path";
 import { loadContent, GRADED, TYPES, plain, mplain, words, sentences, lessonMetrics, gradeBand, readJSON, ROOT, figCues, IMG_REQUIRED, diagCtx } from "./lib.mjs";
 import { analyzeGraph } from "./graph-lib.mjs";
+import * as CC from "./content-checks.mjs";
 import { euphonyScreen, euphonyIssues, VALIDATE_RULES as EUPHONY_RULES, RULES as EUPHONY_DESC } from "./euphony.mjs";
 
 const args = process.argv.slice(2);
@@ -298,6 +299,9 @@ function diagLangIssues(s) {
 }
 function checkScreen(S, s, c, diag, pool = false) {
   linkNoQuestion(S, s);
+  // правила змісту tools-content-checks-p3 (tools/content-checks.mjs) — лише попередження
+  for (const m of [...CC.latinInCyrillic(s), ...CC.serviceIds(s), ...CC.choiceNoQuestion(s), ...CC.positionalRefs(s), ...CC.titleHintsAnswer(s),
+    ...CC.labShowLeak(s), ...CC.labNotation(s, lab), ...CC.powFracNoParens(s), ...CC.genderedAddress(s)]) W(S, m);
   if (!TYPES.includes(s.type)) return E(S, `невідомий тип «${s.type}»`);
   if (!s.title && !(diag && !pool)) E(S, "немає title");   // у тесті рівня «немає title» уже дає learn.validate — не дублюємо (рев'ю diag-answer-kinds, P3-4)
   const noteTxt = typeof s.note === "string" ? s.note : s.note?.text;
@@ -432,10 +436,13 @@ for (const c of subjects) for (const sec of c.sections) {
     if (!l.boss && !l.screens.some(s => s.hint)) W(L, "жодної підказки hint у звичайному уроці");
     if (IMG_REQUIRED[c.id] && !l.screens.some(s => s.img)) (IMG_REQUIRED[c.id] === "error" ? E : W)(L, "урок без зображення img (D-027: обов'язкове фото чи джерело з відкритою ліцензією; svg/fig не рахуються)");
     // правильна відповідь не має стояти завжди на тому самому місці — інакше її вгадують
-    const ch = l.screens.filter(s => s.type === "choice" && !s.poll && !s.hyp && Number.isInteger(s.correct));
-    if (ch.length >= 3) { const cnt = {}; ch.forEach(s => cnt[s.correct] = (cnt[s.correct] || 0) + 1); const [k, n] = Object.entries(cnt).sort((a, b) => b[1] - a[1])[0];
-      if (n / ch.length > 0.6) W(L, `у ${n} з ${ch.length} завдань choice правильний варіант — ${OPT_LETTERS[k]}: переставляй варіанти`); }
+    // D-016 (tools-content-checks-p3 п. 2, 12): у уроці — choice (від 2 завдань) і multi з однаковими правильними поспіль
+    for (const m of CC.lessonPositionIssues(l, OPT_LETTERS)) W(L, m.msg);
+    // службовий id в назві, why, outro; звертання з родом у why; order 7+ кл. з датами в усіх пунктах
+    for (const m of [...CC.serviceIdsLesson(l), ...CC.genderedAddress({ why: l.why })]) W(L, m);
+    l.screens.forEach((s, i) => { for (const m of CC.orderAllDated(s, sec.grade)) W(`${L} екран ${i + 1} (${s.type})`, m); });
   }
+  for (const m of CC.sectionPositionIssues(sec, OPT_LETTERS)) W(`${file}#${sec.id}`, m);   // D-016 на рівні розділу
 }
 // діагностика класів (SLID.diag, docs/CONTENT_SCHEMA.md §9)
 // уроки й розділи лише свого предмета: план веде тільки на них, а baseline перевіряє, чи є в предметі молодші класи
@@ -473,6 +480,9 @@ for (const c of subjects) for (const p of c.pools || []) {
   const per = {}, minPer = c.id === "math" ? 5 : 4; (p.items || []).forEach(s => per[s.lesson] = (per[s.lesson] || 0) + 1);
   for (const [l, n] of Object.entries(per)) if (n < minPer) W(D, `урок ${l}: лише ${n} задач — для чергування треба щонайменше ${minPer}`);
 }
+// перша сесія теми не вичерпує пару (урок, sk) пулу (tools-content-checks-p3 п. 5)
+if (!onlySec) for (const c of subjects) for (const x of CC.poolFirstSessionIssues(c.pools || []).filter(x => !onlyDiag || x.pool === onlyDiag))
+  W(`content/${c.id}/pool#${x.pool}`, `урок ${x.lesson}: усі вправи sk «${x.sk}» (${x.ids.join(", ")}) — серед перших ${CC.POOL_FIRST} за (lvl, порядок): помилка рівня 1 у першій сесії не отримає перевірки наступного дня; переставляй вправи чи додай ще одну на цю sk`);
 if (onlyDiag && !diagIds.has(onlyDiag)) E(`--diag/--pool ${onlyDiag}`, "такої діагностики чи пулу немає");
 for (const s of soon) if (!s.colors?.light?.accent) E(`catalog ${s.id}`, "немає colors.light.accent");
 
