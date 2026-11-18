@@ -25,7 +25,7 @@ SLID.section("math", {
       title: "Корінь будь-якого степеня",
       short: "Корінь n-го",
       icon: "target",
-      status: "verified",
+      status: "draft",
       why: "Куб об'ємом 27 дм³ — яке ребро? Це корінь 3-го степеня. Так само для 4-го, 5-го…",
       screens: [
         {
@@ -55,7 +55,7 @@ SLID.section("math", {
             },
             show: [
               "$n = {n|0}$, $a = {a|0}$",
-              "$\\sqrt[{n|0}]{{a|0}}$ до тисячних: {root(n,a)|3}"
+              "$\\sqrt[{n|0}]{{a|0}}$ {root(n,a)|eq:3}"
             ],
             alt: "Числова пряма з коренем n-го степеня"
           },
@@ -104,7 +104,7 @@ SLID.section("math", {
               P: { x: "root(n, a)", y: "0", color: "red", label: "корінь" },
               T: { x: "2", y: "0", color: "gold", label: "2" }
             },
-            show: ["$\\sqrt[{n|0}]{{a|0}}$ до тисячних: {root(n,a)|3}", "ціль: 2"],
+            show: ["$\\sqrt[{n|0}]{{a|0}}$ {root(n,a)|eq:3}", "ціль: 2"],
             alt: "Дібрати n і a, щоб корінь був 2"
           },
           goal: "abs(root(n,a) - 2) < 0.01",
@@ -193,7 +193,7 @@ SLID.section("math", {
       title: "Дробовий показник",
       short: "Рац. степінь",
       icon: "bolt",
-      status: "verified",
+      status: "draft",
       why: "Запис $a^{m/n}$ замінює корінь і степінь одним символом — зручно спрощувати формули.",
       screens: [
         {
@@ -223,8 +223,8 @@ SLID.section("math", {
               P: { x: "a^(1/n)", y: "0", color: "blue", label: "степінь" }
             },
             show: [
-              "$\\sqrt[{n|0}]{{a|0}}$ до тисячних: {root(n,a)|3}",
-              "${a|0}^{{1}/{n|0}}$ до тисячних: {a^(1/n)|3}"
+              "$\\sqrt[{n|0}]{{a|0}}$ {root(n,a)|eq:3}",
+              "${a|0}^{{1}/{n|0}}$ {a^(1/n)|eq:3}"
             ],
             alt: "Порівняння кореня й степеня з показником 1/n"
           },
@@ -590,7 +590,7 @@ SLID.section("math", {
       title: "Лабораторія вимірювань",
       short: "Фінал",
       icon: "trophy",
-      status: "verified",
+      status: "draft",
       boss: true,
       badge: "g10m3boss",
       why: "Зберемо корінь n-го степеня, дробовий показник і перевірку ірраціональних рівнянь в одному сюжеті.",
@@ -621,7 +621,7 @@ SLID.section("math", {
               R: { x: "root(n, a)", y: "0", color: "red", label: "корінь" },
               P: { x: "a^(1/n)", y: "0", color: "blue", label: "степінь" }
             },
-            show: ["$\\sqrt[{n|0}]{{a|0}}$ до тисячних: {root(n,a)|3}", "${a|0}^{{1}/{n|0}}$ до тисячних: {a^(1/n)|3}"],
+            show: ["$\\sqrt[{n|0}]{{a|0}}$ {root(n,a)|eq:3}", "${a|0}^{{1}/{n|0}}$ {a^(1/n)|eq:3}"],
             alt: "Розминка: корінь і степінь"
           },
           cta: "До завдань"

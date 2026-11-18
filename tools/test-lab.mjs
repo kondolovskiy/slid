@@ -352,5 +352,21 @@ eq([L.svgTexIssues("$x_{a_{bc}}$").map(i => i.level), L.svgTexIssues("$x^{2{,}5}
   eq(L.validate({ kind: "numline", view: [0, 10], ray: 1 }).length, 1, "validate: ray — boolean");
   eq(L.validate({ kind: "numline", view: [0, 10], ray: true }), [], "validate: numline ray");
 }
+// engine-lab-p3-1117 п. 1: pie legend "pct" — відсотки суммуються рівно в 100 (метод найбільшого залишку)
+{ const pct = bars => { const sp = { kind: "chart", pie: true, legend: "pct", bars }, b = L.KINDS.chart.render(sp, L.makeEnv(sp, {}), {}).body;
+    return [...b.matchAll(/(\d+)\u00A0%/g)].map(m => +m[1]); };
+  const a = pct([8, 7, 7].map((v, i) => ({ label: "abc"[i], v }))); eq([a.reduce((x, y) => x + y, 0), a], [100, [36, 32, 32]], "pie pct: 8/7/7 → 100 %");
+  const e = pct([1, 1, 4].map((v, i) => ({ label: "abc"[i], v }))); eq([e.reduce((x, y) => x + y, 0), e], [100, [17, 17, 66]], "pie pct: 1/1/4 → 100 %, не 101");
+  const b = pct([1, 1, 1].map((v, i) => ({ label: "abc"[i], v }))); eq([b.reduce((x, y) => x + y, 0), b], [100, [34, 33, 33]], "pie pct: 1/1/1 → 34+33+33, не 99");
+  const c = pct([{ label: "a", v: 1 }, { label: "b", v: 3 }]); eq(c, [25, 75], "pie pct: точні частки без змін");
+  const d = pct([{ label: "a", v: 0 }, { label: "b", v: 0 }]); eq(d.every(x => x === 0), true, "pie pct: нульові дані без NaN"); }
+// п. 2: умовний текст {умова|if:так;ні}
+eq([L.fill("{t!=2|if:існує;не існує}", { t: 3 }), L.fill("{t!=2|if:існує;не існує}", { t: 2 }), L.fill("{t|if:так;ні}", { t: NaN }), L.fill("{0/0|if:так;ні}", {}), L.fill("[{n>1|if:зайве}]", { n: 0 })],
+  ["існує", "не існує", "ні", "ні", "[]"], "fill if: умовний текст, NaN — гілка «ні», одна гілка");
+eq(L.validate({ kind: "numline", view: [0, 10], points: { P: { x: 1 } }, show: ["{1|if:а;б}", "{1|if}"] }).length, 1, "validate: if без тексту — помилка, з текстом — чисто");
+// п. 3: {вираз|eq[:d]} → «= 2» або «≈ 2,15»
+eq([L.fill("{2|eq}", {}), L.fill("{x|eq}", { x: 2.15 }), L.fill("{x|eq}", { x: 2.1456 }), L.fill("{x|eq:3}", { x: 2.1456 }), L.fill("{x|eq:3}", { x: 2 }), L.fill("{x|eq:1}", { x: 1 / 3 }), L.fill("{x|eq}", { x: NaN })],
+  ["= 2", "= 2,15", "≈ 2,15", "≈ 2,146", "= 2", "≈ 0,3", "?"], "fill eq: «=» для точного, «≈» для округленого");
+eq(L.validate({ kind: "numline", view: [0, 10], points: { P: { x: 1 } }, show: ["{1|eq:3}", "{1|eq:ab}"] }).length, 1, "validate: eq:ab — помилка");
 console.log(`${n - fails}/${n} тестів лабораторії пройдено`);
 process.exit(fails ? 1 : 0);

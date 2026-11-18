@@ -404,7 +404,7 @@ SLID.section("math", {
       title: "Де живе √2?",
       short: "Дійсні",
       icon: "line",
-      status: "verified",
+      status: "draft",
       why: "Не всі корені — цілі: деякі числа не записати дробом $m/n$ — це ірраціональні числа, але вони теж є на прямій.",
       screens: [
         {
@@ -486,7 +486,7 @@ SLID.section("math", {
             points: {
               P: { x: "sqrt(n)", y: "0", color: "red", label: "√n" }
             },
-            show: ["$√{n|0}$ до сотих: {sqrt(n)}", "Ціле число? {sqrt(n) == round(sqrt(n))}"],
+            show: ["$√{n|0}$ {sqrt(n)|eq}", "{sqrt(n) == round(sqrt(n))|if:Ціле число;Не ціле число}"],
             alt: "Положення √n на прямій"
           },
           cta: "Далі"

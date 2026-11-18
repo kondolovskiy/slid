@@ -10,7 +10,9 @@ const SUBDIGIT = /[₀₁₂₃₄₅₆₇₈₉]/;
 const TOK = /\\[A-Za-z]+|\\[,;:! ]|\\\\|"[^"]*"|\((?:[^()]|\([^()]*\))*\)|\d{1,3}(?:[  ]\d{3})+(?:,\d+)?(?!\d)|\d+(?:,\d+)?|[a-zA-Z]|[₀₁₂₃₄₅₆₇₈₉]|[{}_[\]&]|\?|~|\/|\*|:|\^|<|>|=|≈|≠|≤|≥|\+|-|\s+|[^\s]/g;
 
 // {,} — TeX-запис десяткової коми (0{,}6): у нас кома й так не додає пробілу, тож це просто «,»
-function tokenize(src) { return String(src).replace(/\{,\}/g, ",").match(TOK) || []; }
+// \{ і \} — літеральні дужки множини «{» «}», не групи: на час розбору це приватні символи, render повертає їх
+const LB = "\uE000", RB = "\uE001", unLit = s => s.replace(/\uE000/g, "{").replace(/\uE001/g, "}");
+function tokenize(src) { return String(src).replace(/\{,\}/g, ",").replace(/\\\{/g, LB).replace(/\\\}/g, RB).match(TOK) || []; }
 function isAtomToken(t) { return !!t && (/^\(.*\)$/.test(t) || /^\d/.test(t) || /^[a-zA-Z?]$/.test(t) || SUBDIGIT.test(t)); }
 function atomHTML(t, inFrac) {
   if (/^\(.*\)$/.test(t)) return inFrac ? mathHTML(t.slice(1, -1)) : `(${mathHTML(t.slice(1, -1))})`;
@@ -41,7 +43,7 @@ function group(tokens, state, open = "{", close = "}") {
   }
   return tokens.slice(start, state.i - 1);
 }
-function rawGroup(tokens, state, open = "{", close = "}") { const g = group(tokens, state, open, close); return g ? g.join("") : ""; }
+function rawGroup(tokens, state, open = "{", close = "}") { const g = group(tokens, state, open, close); return g ? unLit(g.join("")) : ""; }
 function parsedGroup(tokens, state) { const g = group(tokens, state); return g ? render(g) : ""; }
 function nextUnit(tokens, state) {
   while (/^\s+$/.test(tokens[state.i] || "")) state.i++;
@@ -95,6 +97,7 @@ function render(tokens) {
     if (t === "\\\\") { push('<br class="mline">'); continue; }
     if (t === "&") continue;
     if (t === "{" || t === "}") { push(esc(t)); continue; }
+    if (t === LB || t === RB) { push(t === LB ? "{" : "}", true); continue; }
     if (t[0] === "\\") {
       const name = t.slice(1);
       if (name === "begin") { rawGroup(tokens, state); continue; }

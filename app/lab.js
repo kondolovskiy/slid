@@ -211,6 +211,14 @@ function piLabel(v) {
     const sg = n < 0 ? "−" : "", a = Math.abs(n), top = (a === 1 ? "" : a) + "π"; return sg + (d === 1 ? top : top + "/" + d); } }
   return num(v);
 }
+/** Цілі відсотки з сумою рівно 100: метод найбільшого залишку (рівні залишки — ранішому елементу). */
+function largestRemainder(shares) {
+  if (!shares.some(x => x > 0)) return shares.map(() => 0);
+  const fl = shares.map(x => Math.floor(x + 1e-9)), rest = 100 - fl.reduce((a, b) => a + b, 0);
+  const order = shares.map((x, i) => [x - fl[i], i]).sort((a, b) => b[0] - a[0] || a[1] - b[1]);
+  for (let k = 0; k < rest && k < order.length; k++) fl[order[k][1]]++;
+  return fl;
+}
 /** Многочлен за коефіцієнтами від старшого: [2, -1, 0] → «2x^2 - x». */
 function poly(cs, v = "x") {
   let out = ""; const n = cs.length - 1;
@@ -225,23 +233,27 @@ function pluralForm(v, forms) {
   const a = Math.abs(v), r = Math.round(a); if (Math.abs(a - r) > 1e-6) return forms[1];
   const d = r % 10, h = r % 100; return forms[d === 1 && h !== 11 ? 0 : d >= 2 && d <= 4 && (h < 10 || h >= 20) ? 1 : 2];
 }
-const FMT_NAMES = new Set(["c", "s", "deg", "pi", "time", "hm", "poly", "pl", "shift"]);
+const FMT_NAMES = new Set(["c", "s", "deg", "pi", "time", "hm", "poly", "pl", "shift", "if", "eq"]);
 /** Що не так із форматом вставки {вираз|формат[:аргумент]} — для validate (null — усе гаразд). */
 function fmtIssue(f, arg) {
   if (f == null || /^\d$/.test(f) && arg == null) return null;
   if (!FMT_NAMES.has(f)) return `невідомий формат «${f}» (є: цифра 0–9, ${[...FMT_NAMES].join(", ")})`;
   if (f === "pl") return arg != null && arg.split(",").length === 3 && arg.split(",").every(w => w.trim()) ? null : "формат pl потребує трьох форм через кому: {n|pl:клітинка,клітинки,клітинок}";
+  if (f === "if") return arg != null && arg.split(";").length <= 2 && arg.trim() ? null : "формат if потребує тексту: {умова|if:так;ні} або {умова|if:лише якщо так}";
+  if (f === "eq") return arg == null || /^\s*\d\s*$/.test(arg) ? null : "формат eq бере необов'язкову цифру знаків: {x|eq} або {x|eq:3}";
   if (f === "shift") return arg != null && /^\s*\\?[A-Za-z]\w*\s*$/.test(arg) ? null : "формат shift потребує змінної: {a|shift:x} → «(x − a)»";
   return arg == null ? null : `формат «${f}» не бере аргументу після «:»`;
 }
 /** Шаблон із вставками {вираз|формат}: формат — кількість знаків, c (коефіцієнт), s (доданок зі знаком), deg, pi, time, hm, poly,
-    pl:форма1,форма2,форма5 (лише слово у формі за числом: «54 місця»), shift:x («(x − a)», при a = 0 — «x»; engine-ui-text-1117). */
+    pl:форма1,форма2,форма5 (лише слово у формі за числом: «54 місця»), if:так;ні (умовний текст: {t!=2|if:існує;не існує}), eq[:d] («= 2» точно чи «≈ 2,15» з округленням до d знаків), shift:x («(x − a)», при a = 0 — «x»; engine-ui-text-1117). */
 function fill(tpl, env, names) {
   return String(tpl).replace(TPL_RE, (_, ex, f, arg) => {
     if (ex === ",") return ",";   // {,} — TeX-кома в десятковому дробі, не шаблон
     if (f === "poly") { try { return poly(ex.split(";").map(x => compile(x.trim(), names)(env))); } catch (e) { return "?"; } }
     let v; try { v = compile(ex.trim(), names)(env); } catch (e) { return "?"; }
     if (f === "pl") { const forms = String(arg ?? "").split(",").map(w => w.trim()); return forms.length === 3 ? pluralForm(v, forms) : "?"; }
+    if (f === "if") { const [yes, no = ""] = String(arg ?? "").split(";"); return typeof v === "number" && isNaN(v) ? no : v ? yes : no; }   // NaN — не «так»
+    if (f === "eq") { const d = arg == null ? 2 : +arg; if (!isFinite(v)) return "?"; const k = Math.pow(10, d); return (Math.abs(Math.round(v * k) / k - v) < 1e-9 ? "= " : "≈ ") + num(v, d); }
     if (f === "shift") { const x = String(arg ?? "").trim(); return !isFinite(v) ? "?" : near(v, 0) ? x : `(${x} ${v < 0 ? "+" : "-"} ${num(Math.abs(v))})`; }
     if (f === "c") return v === 1 ? "" : v === -1 ? "-" : num(v).replace("−", "-");
     if (f === "s") return near(v, 0) ? "" : (v < 0 ? "- " : "+ ") + num(Math.abs(v));
@@ -609,7 +621,8 @@ KINDS.chart = {
       bars.forEach((b, i) => { const da = b.v / tot * 2 * Math.PI; if (b.v <= 0) return;
         g += da >= 2 * Math.PI - 1e-9 ? `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${b.c}"/>` : `<path d="M${cx} ${cy} L${(cx + r * Math.cos(a)).toFixed(1)} ${(cy + r * Math.sin(a)).toFixed(1)} A${r} ${r} 0 ${da > Math.PI ? 1 : 0} 1 ${(cx + r * Math.cos(a + da)).toFixed(1)} ${(cy + r * Math.sin(a + da)).toFixed(1)} Z" fill="${b.c}" stroke="var(--surface)" stroke-width="2"/>`;
         a += da; });
-      bars.forEach((b, i) => { const yy = 30 + i * 24; g += `<rect x="205" y="${yy - 11}" width="14" height="14" rx="3" fill="${b.c}"/>` + t(225, yy, spec.legend === false || spec.legend === "label" ? b.label : spec.legend === "value" ? `${b.label} · ${num(b.v)}` : `${b.label} · ${num(b.v / tot * 100, 0)}\u00A0%`, { size: 12 }); });
+      const pcts = largestRemainder(bars.map(b => b.v / tot * 100));   // сума рівно 100 %, а не 99/101 від незалежного округлення
+      bars.forEach((b, i) => { const yy = 30 + i * 24; g += `<rect x="205" y="${yy - 11}" width="14" height="14" rx="3" fill="${b.c}"/>` + t(225, yy, spec.legend === false || spec.legend === "label" ? b.label : spec.legend === "value" ? `${b.label} · ${num(b.v)}` : `${b.label} · ${num(pcts[i], 0)}\u00A0%`, { size: 12 }); });
       return { w: W, h: Math.max(H, 30 + bars.length * 24), body: g, handles: [], alt: spec.alt || "Кругова діаграма" }; }
     /* Середнє (mean) — пунктирна лінія; підпис «середнє …» — у легенді над полем діаграми, а не біля лінії, де він налазив на
        підписи стовпчиків (engine-math-ister-p3 п. 9, g11m5l3). horizontal: true — смуги вправо від підписів; line: true — точки,

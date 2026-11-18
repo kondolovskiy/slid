@@ -21,7 +21,7 @@
 SLID.pool("math", {
   id: "pg8m1",
   section: "g8m1",
-  status: "verified",
+  status: "draft",
   meta: { author: "write-math-pool-g8m1", created: "2026-10-31", factcheck: "verifier-write-math-pool-g8m1-ister 2026-11-04 (reports/verify/write-math-pool-g8m1-ister.md); fix-math-pools-ister-formats — verifier-fix-math-pools-ister-formats 2026-11-05", revised: "2026-11-05 fix-math-pools-ister-formats", teacher: null },
   sources: [
     { id: "a8", title: "Мерзляк А. Г., Якір М. С. Алгебра: підручник для 8 класу закладів загальної середньої освіти. — Харків: Гімназія, 2025 (§ 1, п. 1–3, 5, 8–10)", url: "https://file.4book.org/images/shcoolbook_ua/8/8_a_m_2025.pdf" },
@@ -227,7 +227,7 @@ SLID.pool("math", {
       steps: ["Дріб $x/(x + 5)$; новий дріб $(x + 14)/(x + 4) = (x + 5)/x$. ОВР: $x \\neq 0$, $x \\neq -4$.", "За пропорцією: $x(x + 14) = (x + 4)(x + 5)$, тобто $x^2 + 14x = x^2 + 9x + 20$.", "$5x = 20$, $x = 4$. Початковий дріб $4/9$.", "Перевірка: $(4 + 14)/(9 - 1) = 18/8 = 9/4$ — обернений до $4/9$."] },
     { id: "e09", lesson: "g8m1l6", lvl: 2, sk: "eq", src: "ist8a №8.7(4)", srcPage: 65,
       type: "answer", answerKind: "intervalSet", title: "$(2 - x)/(x - 2) = 0$",
-      body: "<p>Розв'яжи рівняння.</p><p>Запиши множину коренів, наприклад $ {5} $. Якщо коренів немає, напиши $∅$.</p>",
+      body: "<p>Розв'яжи рівняння.</p><p>Запиши множину коренів, наприклад $\\{5\\}$. Якщо коренів немає, напиши $∅$.</p>",
       answer: "∅",
       hint: "Дріб дорівнює нулю, коли чисельник дорівнює нулю, а знаменник — ні. Перевір, чи можуть ці дві умови виконуватися разом.",
       steps: ["ОВР: $x - 2 \\neq 0$, тобто $x \\neq 2$.", "Чисельник $2 - x = 0$ лише при $x = 2$.", "Але $x = 2$ не належить ОВР, тож коренів немає: $∅$."] },
