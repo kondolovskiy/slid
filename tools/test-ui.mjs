@@ -1028,6 +1028,9 @@ try {
 
   // 23) Читабельність рендеру: підписи лабораторій у межах поля, назва повзунка без TeX, корінь, стрілка, підкреслення, align (engine-render-legibility-1117)
   await renderLegibilityScenario(browser);
+
+  // 24) Колесо миші над панеллю «Перевірити» гортає екран sort (g8 №33, engine-lab-p3-1117 п. 7)
+  await dockWheelScenario(browser);
 } finally { await browser.close(); server.close(); swServer.close(); }
 
 console.log(`test-ui: ${pass} ok, ${fail} ✗`);
@@ -1201,6 +1204,24 @@ async function uiTextScenario(browser) {
 
 /* 23) Читабельність рендеру (engine-render-legibility-1117): справжній CSS index.html, 360 px. Фікстура-уроки з лабораторіями
    (моделі як у g4m2 «Додай 1365», g8m1 «добуток/степінь», g8m1 смужки, g11m2 «Дрон у куті»), формулами, strata й align. */
+async function dockWheelScenario(browser) {
+  const ctx = await browser.newContext({ viewport: { width: 360, height: 700 }, serviceWorkers: "block" });
+  const page = await ctx.newPage(); page.setDefaultTimeout(8000);
+  await page.route("**/fonts.googleapis.com/**", r => r.abort());
+  await page.goto(URL0);
+  await page.evaluate(s => localStorage.setItem("slid.v1", JSON.stringify(s)), seed);
+  await page.reload();
+  const SEC = { id: "wh1", title: "Колесо", lessons: [{ id: "wh1l1", title: "Колесо", screens: [{ type: "sort", title: "Розсортуй", bins: ["так", "ні"], items: [1, 2, 3, 4, 5, 6, 7, 8].map(i => ["Картка " + i, i % 2]) }] }] };
+  await page.evaluate(sec => { SLID_SUBJECTS.find(c => c.id === "math").sections.push(sec); window.__slidStart("wh1l1"); }, SEC);
+  await page.waitForSelector(".sort");
+  const ab = await page.locator("#action").boundingBox(), st = () => page.evaluate(() => { const p = document.querySelector("#player"); return [p.scrollTop, p.scrollHeight > p.clientHeight]; });
+  ok((await st())[1], "wheel: екран sort довший за вікно (фікстура)");
+  await page.mouse.move(ab.x + ab.width / 2, ab.y + ab.height / 2); await page.mouse.wheel(0, 300); await page.waitForTimeout(250);
+  const a = await st(); ok(a[0] > 0, `колесо над кнопкою «Перевірити» гортає екран, а scrollTop = ${a[0]}`);
+  await page.mouse.wheel(0, -1000); await page.waitForTimeout(250);
+  ok((await st())[0] === 0, "колесо вгору над панеллю повертає на початок");
+  await ctx.close();
+}
 async function renderLegibilityScenario(browser) {
   const ctx = await browser.newContext({ viewport: { width: 360, height: 760 }, serviceWorkers: "block" });
   const page = await ctx.newPage(), errors = []; page.on("pageerror", e => errors.push(String(e))); page.setDefaultTimeout(8000);
@@ -1287,6 +1308,18 @@ async function renderLegibilityScenario(browser) {
   await page.keyboard.press("ArrowRight");
   const now3 = await page.evaluate(() => [document.activeElement?.dataset?.h ?? null, document.querySelector('#stage .lab .lab-h[data-h="0"]').getAttribute("aria-valuenow")]);
   ok(fh === "0" && same(now3, ["0", "4"]), `клік по точці: фокус на ручці, стрілка → 3 → 4, а ${fh} ${JSON.stringify(now3)}`);
+  // 6б) тап по порожньому місцю шкали переносить єдину жива точку туди й далі її тягне; під моделлю — видима підказка (qa-drag-points-1117 B2)
+  const hint = await page.locator("#stage .lab .lab-hint").innerText().catch(() => ""), hintVis = await page.locator("#stage .lab .lab-hint").isVisible();
+  ok(hintVis && /Тягни точку/.test(hint) && /торкнись/.test(hint) && /стрілки/.test(hint), `lab: видима підказка під моделлю, а «${hint}» (${hintVis})`);
+  const sb = await page.locator("#stage .lab svg").boundingBox(), h1 = await page.locator('#stage .lab .lab-h[data-h="0"]').boundingBox();
+  const cy = h1.y + h1.height / 2, before = await page.evaluate(() => document.querySelector('#stage .lab .lab-h[data-h="0"]').getAttribute("aria-valuenow"));
+  await page.mouse.click(sb.x + sb.width * 0.85, cy);
+  const after = await page.evaluate(() => document.querySelector('#stage .lab .lab-h[data-h="0"]').getAttribute("aria-valuenow"));
+  ok(+after >= 8 && +after > +before, `тап по порожньому місцю шкали: точка перескочила праворуч (було ${before}), а ${after}`);
+  const h2 = await page.locator('#stage .lab .lab-h[data-h="0"]').boundingBox();
+  await page.mouse.move(h2.x + h2.width / 2, cy); await page.mouse.down(); await page.mouse.move(sb.x + sb.width * 0.2, cy, { steps: 8 }); await page.mouse.up();
+  const dragged = await page.evaluate(() => document.querySelector('#stage .lab .lab-h[data-h="0"]').getAttribute("aria-valuenow"));
+  ok(+dragged <= 3, `після тапу точку можна тягнути далі, а ${dragged}`);
   await next();
   // 7) align: роки шкали цілком у полі; «Збіг візерунка» — кількість кілець, на розв'язку 18 з 18
   const al = await page.evaluate(() => { const svg = document.querySelector("#stage .align svg"), vb = svg.viewBox.baseVal;

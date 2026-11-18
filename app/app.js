@@ -1091,6 +1091,8 @@ function renderPracticeEnd(){
 }
 /* плеєр модальний: фон (застосунок і вкладки) inert, поки урок відкрито — Tab не виходить за межі плеєра (QA 4–5 кл.) */
 const PLAYER_BG = ["#app","#tabs","#sheetHost"];
+/* Колесо миші над панеллю «Перевірити» (position:fixed — її ланцюг прокрутки йде повз .player) не гортало екран, і останні картки sort лишались за кнопкою (g8 №33, engine-lab-p3-1117 п. 7): віддаємо коліщатко плеєру; довгий текст пояснення прокручується сам. */
+$("#dock").addEventListener("wheel",e=>{ const fb=$("#fbText"); if(fb.contains(e.target)&&fb.scrollHeight>fb.clientHeight+1) return; const p=$("#player"); if(p.scrollHeight<=p.clientHeight) return; p.scrollTop+=e.deltaMode===1? e.deltaY*16 : e.deltaY; e.preventDefault(); },{passive:false});
 function openPlayer(){ $("#player").hidden=false; document.body.style.overflow="hidden"; $("#pClose").innerHTML=ic("x"); PLAYER_BG.forEach(q=>{ const e=$(q); if(e) e.inert=true; }); }
 function closePlayer(){ EV.log("close", ()=>({ mode:evMode(), l:L.id, i:idx, of:L.screens.length, end:idx>=L.screens.length })); HYPS.close();
   $("#player").hidden=true; document.body.style.overflow=""; PLAYER_BG.forEach(q=>{ const e=$(q); if(e) e.inert=false; }); render(); }

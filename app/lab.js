@@ -797,6 +797,15 @@ KINDS.solid = {
         (k) => { let s = ""; for (let i = 1; i < c; i++) s += line([a, 0, i], [a, b, i]); for (let j = 1; j < b; j++) s += line([a, j, 0], [a, j, c]); return s; }];
       F.forEach((f, fi) => { if (vis[fi] && faceGrid[fi]) g += faceGrid[fi](); }); }
     for (const e of edges.values()) g += `<line x1="${S[e.a][0].toFixed(1)}" y1="${S[e.a][1].toFixed(1)}" x2="${S[e.b][0].toFixed(1)}" y2="${S[e.b][1].toFixed(1)}" stroke="var(--ink)" stroke-width="${e.vis ? 2.2 : 1.4}" ${e.vis ? "" : 'stroke-dasharray="5 4" stroke-opacity=".6"'} stroke-linecap="round"/>`;
+    // переріз і діагоналі (engine-lab-p3-1117 п. 5): точка — індекс вершини або { e: [i, j], t } на ребрі (t ∈ [0; 1], вирази дозволені)
+    const ptS = q => { const v = typeof q === "number" ? V[q] : q && Array.isArray(q.e) && V[q.e[0]] && V[q.e[1]] ? V[q.e[0]].map((c, k) => c + (V[q.e[1]][k] - c) * (q.t === undefined ? .5 : E(q.t))) : null;
+      if (!v || !v.every(isFinite)) return null; const p = rot(v); return [W / 2 + p[0] * sc, H / 2 - p[1] * sc]; };
+    const segLab = [];
+    if (spec.cut) { const pts = (spec.cut.pts || []).map(ptS); if (pts.length >= 3 && pts.every(Boolean)) { const c = col(spec.cut.color, 3);
+      g += `<polygon points="${pts.map(q => q.map(z => z.toFixed(1)).join(",")).join(" ")}" fill="${c}" fill-opacity=".28" stroke="${c}" stroke-width="2" stroke-linejoin="round"/>`; } }
+    (spec.segs || []).forEach(sg => { const a = ptS(sg.a ?? sg[0]), b = ptS(sg.b ?? sg[1]); if (!a || !b) return; const c = col(sg.color, 2);
+      g += `<line x1="${a[0].toFixed(1)}" y1="${a[1].toFixed(1)}" x2="${b[0].toFixed(1)}" y2="${b[1].toFixed(1)}" stroke="${c}" stroke-width="2.6" stroke-linecap="round"${sg.dash ? ' stroke-dasharray="6 4"' : ""}/>`;
+      if (sg.label) segLab.push([(a[0] + b[0]) / 2, (a[1] + b[1]) / 2, sg.label, c]); });
     const scr = v => { const p = rot(v); return [W / 2 + p[0] * sc, H / 2 - p[1] * sc]; };
     AX.forEach(([tipV, name]) => { const o = S[0], e = scr(tipV), d = Math.hypot(e[0] - o[0], e[1] - o[1]) || 1, ux = (e[0] - o[0]) / d, uy = (e[1] - o[1]) / d;
       g += `<line x1="${o[0].toFixed(1)}" y1="${o[1].toFixed(1)}" x2="${e[0].toFixed(1)}" y2="${e[1].toFixed(1)}" stroke="var(--muted)" stroke-width="1.4"/>`
@@ -805,6 +814,7 @@ KINDS.solid = {
     // підписи вершин і довжин ребер — назовні від центра тіла (а не завжди вправо-вгору): «M₁» і довжина ребра «2» не зливаються в «M2»
     const out = (x, y, r) => { const dx = x - W / 2, dy = y - H / 2, n = Math.hypot(dx, dy) || 1; return [x + dx / n * r, y + dy / n * r, dx / n]; };
     const anc = k => k > 0.35 ? "start" : k < -0.35 ? "end" : "middle";
+    segLab.forEach(([x, y, lb, c]) => { const [lx, ly, k] = out(x, y, 9); g += t(lx, ly + 4, lb, { anchor: anc(k), bold: true, fill: c }); });
     (spec.marks || []).forEach(m => { const i = m.v; if (!S[i]) return; const [lx, ly, k] = out(S[i][0], S[i][1], 10);
       g += `<circle cx="${S[i][0]}" cy="${S[i][1]}" r="4" fill="var(--accent)"/>` + t(lx, ly + 4, m.label, { bold: true, anchor: anc(k) }); });
     if (spec.labels !== false && spec.shape === "box") { const a = E(spec.a ?? "a"), b = E(spec.b ?? "b"), c = E(spec.c ?? "c");
@@ -838,9 +848,10 @@ function mount(host, spec, opt = {}) {
   const visible = params.filter(p => !p.hide);
   host.classList.add("lab");
   host.innerHTML = `<div class="lab-stage"><svg role="img" aria-label="${(spec.alt || "Інтерактивна модель").replace(/"/g, "&quot;")}"></svg></div>
+    <p class="lab-hint" hidden style="margin:4px 0 0;text-align:center;font-size:13px;color:var(--muted)"></p>
     ${spec.show ? `<div class="lab-read" aria-live="polite"></div>` : ""}
     ${visible.length ? `<div class="lab-ctl">${visible.map(p => `<div class="lab-p"><span class="lab-pl">${fmt(p.label ?? `$${p.id}$`)}</span><button type="button" class="lab-nb" data-nb="${p.id}" data-d="-1" aria-label="Зменшити на крок">−</button><input type="range" data-p="${p.id}" min="${typeof p.min === "number" ? p.min : 0}" max="${typeof p.max === "number" ? p.max : 100}" step="${p.step}" value="${p.start}" aria-label="${xmlEsc(ariaTex(p.label ?? p.id)).replace(/"/g, "&quot;")}"><button type="button" class="lab-nb" data-nb="${p.id}" data-d="1" aria-label="Збільшити на крок">+</button><output data-o="${p.id}" ${p.out ? "" : "hidden"}></output></div>`).join("")}</div>` : ""}`;
-  const svg = host.querySelector("svg"), read = host.querySelector(".lab-read"), alt = spec.alt || "Інтерактивна модель";
+  const svg = host.querySelector("svg"), read = host.querySelector(".lab-read"), hint = host.querySelector(".lab-hint"), alt = spec.alt || "Інтерактивна модель";
   /* Цифри відповіді (стовпчик, ділення кутом): прозорі <input inputmode="numeric"> поверх клітинок SVG.
      Дотик ставить фокус і відкриває числову клавіатуру; цифра вписується й фокус іде до наступної клітинки
      (порядок handles: сума/різниця — справа наліво, ділення — зліва направо); Backspace стирає й повертає назад.
@@ -892,6 +903,8 @@ function mount(host, spec, opt = {}) {
     // цифри стовпчика вписують у справжні поля (digitCells), тож невидимі SVG-цілі для них не потрібні; {} зберігає нумерацію data-h
     last = r; svg.setAttribute("viewBox", `0 0 ${r.w} ${r.h}`); svg.innerHTML = r.body + handleTargets((r.handles || []).map(h => h.digit ? {} : h), state, params, locked);
     digitCells(r);
+    { const dh = dragHandles(r.handles, params);   // видима підказка під моделлю (qa-drag-points-1117 B2): що можна робити з точкою
+      hint.hidden = locked || !dh.length; hint.textContent = dh.length ? (dh.every(h => /^Точка /.test(h.name)) ? `Тягни ${"точку"} або торкнись місця на рисунку${dh.length === 1 ? ", куди її перенести" : ""}; стрілки на клавіатурі — крок.` : "Тягни за маркер; стрілки на клавіатурі — крок.") : ""; }
     svg.setAttribute("role", (r.handles || []).some(h => liveHandle(h, params)) ? "group" : "img");   // у role="img" вкладені ручки для читача екрана не існують
     if (r.rotate) { svg.setAttribute("tabindex", locked ? "-1" : "0"); svg.setAttribute("aria-label", alt + ". Стрілки обертають тіло"); }
     if (fi >= 0) { const h = svg.querySelector(`.lab-h[data-h="${fi}"]`); if (h) h.focus({ preventScroll: true }); }
@@ -917,6 +930,8 @@ function mount(host, spec, opt = {}) {
     if (locked) return; const p = toSvg(e); if (!p) return;
     let best = null, bd = 30 * Math.max(1, p.k);
     (last?.handles || []).forEach(h => { const d = Math.hypot(h.x - p.x, h.y - p.y); if (d < bd) { bd = d; best = h; } });
+    // тап по порожньому місцю: єдина жива ручка-точка перескакує туди й далі тягнеться (qa-drag-points-1117 B2)
+    if (!best) { const dh = dragHandles(last?.handles, params); if (dh.length === 1) { best = dh[0]; const o = best.set(p.x, p.y); if (o) setParams(o, true); } }
     if (best && best.digit && cells.has(best.digit)) { e.preventDefault(); return focusDigit(best.digit); }   // дотик поруч із клітинкою — фокус у неї
     if (best) drag = { h: best, idx: last.handles.indexOf(best), x0: e.clientX, y0: e.clientY }; else if (last?.rotate) drag = { rot: true, x: e.clientX, y: e.clientY }; else return;
     // дотик чи клік по точці — фокус на її ручку (preventDefault нижче забирає типовий фокус): після перетягування стрілки рухають ту саму
@@ -1005,6 +1020,8 @@ function handleKey(h, key, state, params) {
   return null;
 }
 
+/** Ручки, які дитина може тягнути (точки й кут прямокутника): жива ручка без digit і tap. */
+function dragHandles(handles, params) { return (handles || []).filter(h => !h.digit && !h.tap && liveHandle(h, params)); }
 /** Точки з drag, яких не рухає ні миша, ні клавіатура: кожна перетягувана координата — вираз (x: "2+t") або не параметр.
     Для tools/validate.mjs (попередження: модель працює, але ореол «тягни мене» обманює). Рух лише вздовж однієї осі — не вада. */
 function dragIssues(spec) {
@@ -1061,6 +1078,12 @@ function validate(spec, screen = {}) {
     if (!ok || (v.yaw !== undefined && !Number.isFinite(v.yaw)) || (v.pitch !== undefined && !(Number.isFinite(v.pitch) && Math.abs(v.pitch) <= 80))) errs.push("solid.view: { yaw, pitch } — числа в градусах, |pitch| ≤ 80"); }
   if (spec.kind === "solid" && spec.axes !== undefined && !(spec.axes === true || Array.isArray(spec.axes) && spec.axes.length === 3 && spec.axes.every(x => typeof x === "string" && x)) || spec.kind === "solid" && spec.axes && (spec.shape || "box") !== "box")
     errs.push("solid.axes: true або три назви осей [уздовж a, уздовж c, уздовж b] — лише для shape: \"box\"");
+  if (spec.kind === "solid" && (spec.segs !== undefined || spec.cut !== undefined)) {   // п. 5: індекси вершин (box — 8, prism — 2n, pyramid — n + 1) і точки на ребрах
+    const sh = spec.shape || "box", n = typeof spec.n === "number" ? Math.max(3, Math.round(spec.n)) : 4, nv = sh === "box" ? 8 : sh === "prism" ? 2 * n : n + 1;
+    const bad = q => !(Number.isInteger(q) && q >= 0 && q < nv || q && typeof q === "object" && Array.isArray(q.e) && q.e.length === 2 && q.e.every(i => Number.isInteger(i) && i >= 0 && i < nv) && (q.t === undefined || typeof q.t === "number" || typeof q.t === "string"));
+    if (spec.segs !== undefined && !Array.isArray(spec.segs)) errs.push("solid.segs: масив відрізків { a, b }");
+    else (spec.segs || []).forEach((x, i) => { if (!x || bad(x.a ?? x[0]) || bad(x.b ?? x[1])) errs.push(`segs.${i}: a і b — індекс вершини 0…${nv - 1} або { e: [i, j], t }`); });
+    if (spec.cut !== undefined && !(spec.cut && Array.isArray(spec.cut.pts) && spec.cut.pts.length >= 3 && !spec.cut.pts.some(bad))) errs.push(`solid.cut: { pts: [≥ 3 точки: індекс вершини 0…${nv - 1} або { e: [i, j], t }] }`); }
   if (spec.kind === "plane") {
     for (const [id, p] of Object.entries(spec.points || {})) if (p && p.labelDir !== undefined && !Object.hasOwn(LABEL_DIR, p.labelDir)) errs.push(`points.${id}.labelDir: одне з ${Object.keys(LABEL_DIR).join(", ")}`);
     (spec.segs || []).forEach((x, i) => { if (x && !Array.isArray(x) && x.ticks !== undefined && ![1, 2, 3].includes(x.ticks)) errs.push(`segs.${i}.ticks: 1, 2 або 3 рисочки`); });
@@ -1088,5 +1111,5 @@ function validate(spec, screen = {}) {
   return errs;
 }
 
-G.SLID_LAB = { KINDS, compile, makeEnv, startState, paramList, fill, num, check, validate, mount, FN, svgTex, svgTexIssues, ariaTex, svgLabels, handleKey, handleTargets, liveHandle, dragIssues, digitNext, digitSide, digitsReady, typedDigit };
+G.SLID_LAB = { KINDS, compile, makeEnv, startState, paramList, fill, num, check, validate, mount, FN, svgTex, svgTexIssues, ariaTex, svgLabels, handleKey, handleTargets, liveHandle, dragHandles, dragIssues, digitNext, digitSide, digitsReady, typedDigit };
 })();

@@ -368,5 +368,14 @@ eq(L.validate({ kind: "numline", view: [0, 10], points: { P: { x: 1 } }, show: [
 eq([L.fill("{2|eq}", {}), L.fill("{x|eq}", { x: 2.15 }), L.fill("{x|eq}", { x: 2.1456 }), L.fill("{x|eq:3}", { x: 2.1456 }), L.fill("{x|eq:3}", { x: 2 }), L.fill("{x|eq:1}", { x: 1 / 3 }), L.fill("{x|eq}", { x: NaN })],
   ["= 2", "= 2,15", "≈ 2,15", "≈ 2,146", "= 2", "≈ 0,3", "?"], "fill eq: «=» для точного, «≈» для округленого");
 eq(L.validate({ kind: "numline", view: [0, 10], points: { P: { x: 1 } }, show: ["{1|eq:3}", "{1|eq:ab}"] }).length, 1, "validate: eq:ab — помилка");
+// п. 5: solid — відрізки між вершинами (діагоналі) і переріз площиною; точка — вершина або { e: [i, j], t } на ребрі
+{ const R = sp => L.KINDS.solid.render(sp, L.makeEnv(sp, {}), { yaw: -0.6, pitch: 0.4 });
+  const box = { kind: "solid", shape: "box", a: 3, b: 2, c: 4 }, pyr = { kind: "solid", shape: "pyramid", n: 4, r: 2, h: 3 };
+  const lines = b => (b.match(/<line /g) || []).length, polys = b => (b.match(/<polygon /g) || []).length;
+  const b0 = R(box).body, b1 = R({ ...box, segs: [{ a: 0, b: 6, color: "red", dash: true, label: "d" }] }).body, b2 = R({ ...pyr, cut: { pts: [{ e: [0, 4], t: 0.5 }, { e: [1, 4], t: 0.5 }, { e: [2, 4], t: 0.5 }, { e: [3, 4], t: 0.5 }] } }).body;
+  eq([lines(b1) - lines(b0), /stroke-dasharray="6 4"/.test(b1), />d<\/text>/.test(b1)], [1, true, true], "solid segs: діагональ 0–6 — одна лінія, пунктир, підпис");
+  eq(polys(b2) - polys(R(pyr).body), 1, "solid cut: переріз піраміди — один многокутник");
+  eq(L.validate({ ...box, segs: [{ a: 0, b: 6 }] }), [], "validate: solid segs — чисто");
+  eq([L.validate({ ...box, segs: [{ a: 0, b: 8 }] }).length, L.validate({ ...pyr, cut: { pts: [0, 1] } }).length, L.validate({ ...pyr, cut: { pts: [0, 1, 4] } }), L.validate({ ...pyr, cut: { pts: [0, 1, { e: [2, 9] }] } }).length], [1, 1, [], 1], "validate: solid segs/cut — індекси за формою, ≥ 3 точок"); }
 console.log(`${n - fails}/${n} тестів лабораторії пройдено`);
 process.exit(fails ? 1 : 0);
