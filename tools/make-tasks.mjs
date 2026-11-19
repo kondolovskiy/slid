@@ -35,7 +35,7 @@ const existing = new Set(STATES.flatMap(d => fs.existsSync(path.join(TASKS, d)) 
 // frontmatter задач (файл могли перейменувати): id «write-math-pool-g8m2»; type + subject + section — задачі eng названо
 // write-eng-g<клас>-<розділ>, а не write-eng-<розділ> (engine-eng-tools), тож розділ шукаємо й за полем section:
 const fm = STATES.flatMap(d => fs.existsSync(path.join(TASKS, d)) ? fs.readdirSync(path.join(TASKS, d)).filter(f => f.endsWith(".md")).map(f => {
-  const head = (fs.readFileSync(path.join(TASKS, d, f), "utf8").match(/^---\n([\s\S]*?)\n---/) || [])[1] || "", v = k => (head.match(new RegExp(`^${k}:[ \\t]*(\\S+)`, "m")) || [])[1];
+  const head = (fs.readFileSync(path.join(TASKS, d, f), "utf8").match(/^---\r?\n([\s\S]*?)\r?\n---/) || [])[1] || "", v = k => (head.match(new RegExp(`^${k}:[ \\t]*(\\S+)`, "m")) || [])[1];
   return { id: v("id"), type: v("type"), subject: v("subject"), section: v("section") }; }) : []);
 const existingIds = new Set(fm.map(t => t.id).filter(Boolean));
 /** Є задача цього типу на розділ предмета (за frontmatter). */

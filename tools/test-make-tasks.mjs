@@ -32,7 +32,7 @@ const listTasks = dir => ["todo", "doing", "review", "done"].flatMap(d => fs.exi
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "slid-test-make-tasks-"));
 process.on("exit", () => fs.rmSync(tmp, { recursive: true, force: true }));
 const T = path.join(tmp, "tasks"); for (const d of ["todo", "doing", "review", "done"]) fs.mkdirSync(path.join(T, d), { recursive: true });
-fs.writeFileSync(path.join(T, "done", "pool-zz3-renamed.md"), "---\nid: write-math-pool-zz3\ntype: write-pool\n---\n# Стара задача\n");
+fs.writeFileSync(path.join(T, "done", "pool-zz3-renamed.md"), "---\r\nid: write-math-pool-zz3\r\ntype: write-pool\r\n---\r\n# Стара задача\r\n");   // CRLF (Windows, core.autocrlf): frontmatter має читатись (рев'ю engine-eng-tools P2-1)
 fs.writeFileSync(path.join(T, "review", "write-math-pool-zz4.md"), "---\nid: write-math-pool-zz4\n---\n");
 fs.writeFileSync(path.join(T, "doing", "write-math-pool-zz6.md"), "# без frontmatter id — пропуск лише за іменем файлу\n");
 const L = (section, lesson, scope, extra = {}) => ({ grade: 8, section, lesson, title: `Урок ${lesson}`, curricularScope: scope, reason: `причина ${lesson}`,
