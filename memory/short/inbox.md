@@ -138,3 +138,4 @@
 - 2026-11-19 · verifier-e4s7 · FACT (eng, verified): Hoverla 2061 м (ЕСУ article-25087 + en.wikipedia); столиці Kyiv / London / Washington, DC / Ottawa / Canberra (CD + en.wikipedia); Odesa — Black Sea port (CD); on foot, not by foot (CD Grammar by); old → oldest/eldest (CD Grammar, OALD).
 - 2026-11-19 · verifier-e4s7 · PITFALL (eng): along ≠ лише «паралельно» (CD along: «from one part of a road, river, etc. to another») — контраст along / across будувати на «the river / the road … to the other side», не на bridge.
 - 2026-11-19 · verifier-e4s7 · STYLE (eng): Washington, DC — без крапок (CD, OALD) → glossary/eng.md. Пул e4s7: «transport» у stress — у реченні (дієслово — наголос на 2-му складі).
+- 2026-11-19 · review-engine-eng-match · STYLE (eng): у `match` радити 4–6 пар — при 3 парах після закріплення однієї дві решти визначені однозначно (друга спроба гарантує 5 балів) → style/eng.md.
