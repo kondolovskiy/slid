@@ -22,3 +22,6 @@ source: design-eng
 - [ ] Код, тести (`node tools/test-lang.mjs`, `npm run check`), CONTENT_SCHEMA і, де треба, docs/ARCHITECTURE.md оновлено; українські предмети поводяться як раніше (регресія test-answer-ui — у CI, job browser).
 - [ ] Незалежне рев'ю D-026: `reports/review/<id>.md` з вердиктом «прийнято»; до того задача в tasks/review.
 - [ ] Рядок ENGINE в memory/short/inbox.md.
+
+## Із повторного рев'ю skills-eng (P3-6)
+Скіли content-author:59 і content-verify:39 зараз відносять `build` до типів без нормалізації; після реалізації звір і виправ ці рядки (за D-026 — разом з рев'ю).
