@@ -1,22 +1,22 @@
 # Handoff — стан проєкту
 
-_Оновлено: 2026-11-19, куратор пам'яті (19.11: дизайн англійської, sessions/2026-11-19-1.md; сесія 13–18.11: плейтест від ролі учня 4–11 кл., хвилі 1–3 задач *-1117; журнал sessions/2026-11-18-1.md). Попередні журнали: 2026-11-12-1.md, 2026-11-10-1.md._
+_Оновлено: 2026-11-19, куратор пам'яті (19.11: дизайн англійської, друга редакція й D-054, sessions/2026-11-19-1.md; сесія 13–18.11: плейтест від ролі учня 4–11 кл., хвилі 1–3 задач *-1117; журнал sessions/2026-11-18-1.md). Попередні журнали: 2026-11-12-1.md, 2026-11-10-1.md._
 
 **Пам'ятка (D-046, D-049):** змістове питання вирішуй сам за таким порядком джерел: МОН → програма → правопис і словники D-041 → підручник. Цитату й URL клади у звіт. Якщо сумнів лишився, бери найкращий варіант «тимчасово, до відповіді вчителя» і дописуй питання в `docs/teacher-questions.md` наступним номером (зараз останній **TQ-118**). Роботу це не блокує. Технічні питання — людині (нижче).
 
 **Пам'ятка оркестратору:** комітити лише `git commit -m "…" -- <файли>` — навіть `git add` своїх файлів + окремий commit віддає їх чужому коміту (96bb001; pitfalls.md «Додано 2026-11-18»). Worktree-агенти (isolation) створюються від `main` — перевіряй базу. build + `npm run check` — після кожного злиття.
 
 ## Стан
-- **Гілка `claude/eng-tasks` (19.11): дизайн англійської** — docs/design/english.md і 102 задачі `*-eng-*` у tasks/todo (`source: design-eng`); код і зміст не змінено.
+- **Гілка `claude/eng-tasks` (19.11): дизайн англійської, друга редакція** — рішення людини отримано (**D-054**: зміст англійською, BrE, B2, з 4 кл., A/B/C, поки без звуку); docs/design/english.md і **119 задач** `*-eng-*` у tasks/todo (звукові заблоковано); код і зміст не змінено.
 - **Гілка `claude/student-playtest-1117-tasks`, PR не відкрито.** Останній build/check — 5d8d46d: validate 0 помилок / 73 попередження, test-ui 266 ok. **playtest.py і test-answer-ui.py локально не запускались** (немає Python playwright): потрібен CI, тобто PR (job `browser`).
 - **Плейтест від ролі учня (13–17.11):** 8 агентів-«учнів» 4–11 кл. на GitHub Pages, ≈ 800 уроків, ~280 знахідок, блокерів немає. Звіти — reports/qa/student-playtest-1117/ (SUMMARY.md, g4–g11.md, TASKS-INDEX.md).
 - **Хвилі 1–3:** 27 задач `*-1117` у tasks/done; зміст verified, рушій — рев'ю D-026 прийнято (reports/verify|review|qa/*-1117.md). Рушій: дроби в number, клітинки ділення кутом, zoom, рендер 1/aⁿ і кореня, `pl`/`shift` у show, план після тесту з `see`; зміст math/ukr/hist/world; карти; style-sync (D-019, позиції choice/multi, нейтральний рід).
 - Хвости 12.11 (style-hist-1112, style-world-1112, fix-ukr-lessons-from-pools) — done. Жодного `approved`.
-- Довга пам'ять: decisions до **D-053** + «Чекає рішення людини»; facts/hist-3 до №722, world-2 до №340, ukr-9 до №589, math до №261.
+- Довга пам'ять: decisions до **D-054** + «Чекає рішення людини»; facts/hist-3 до №722, world-2 до №340, ukr-9 до №589, math до №261.
 
 ## У роботі (`node tools/claim.mjs list doing`)
 - **research-math-diag-duration** — пілот, чекає учнів.
-- **tasks/review/design-eng** — чекає рішення людини (12 питань, docs/design/english.md §11); до нього стоять задачі `*-eng-*`.
+- **tasks/review/design-eng** — рішення людини отримано (D-054); у review до відповідей на 7 відкритих питань §11.2 (роботу не блокують) і рев'ю дизайну.
 - **tasks/review — 4 дизайни, чекають рішення людини** (питання — наприкінці кожного документа): docs/design/own-writing.md, gamification.md, student-service-info.md, difficulty.md.
 
 ## Що далі
@@ -28,7 +28,8 @@ _Оновлено: 2026-11-19, куратор пам'яті (19.11: дизайн
 6. **curate-plan-sync-1112** (доповнено 18.11): requires g11s2/g11s3 ← g11s1; ukr `why` «задумав»; перекриття weeks u11; назви навичок math для 4 кл. Лише куратор, не під час пакета.
 7. **style-hist-p2-1112** — спершу перевірити, що вже закрили style-choice-positions/-d019-1117.
 8. **engine-diag-duration-estimate** — після пілоту. Доповнено: dgh11 тема `pre` «Друга світова», dg8 cur-g8m5.
-9. **Карти, що лишились малими** (kiepert-1849, chyhyryn-map, east-slavic-tribes, poltava-map-1821, ballot-1991, pale-map-1905, song-rainbow-bridge) і похідні SVG для g9s1l2, g10s2l5–l6, g10s5l1/l4 — після рішення про розмір (pitfalls-hist «Додано 2026-11-18»).
+9. **Англійська, хвиля 0** (docs/design/english.md §3): engine-eng-lang-attr → engine-eng-lang-core / -validate / -stats / -tools (рев'ю D-026); куратор: curate-eng-agents-rule, -subject, -style, -glossary (сюди — FACT/NOTE design-eng-1119 з inbox у facts/eng.md); skills-eng. Потім curate-eng-plan-g4, -g5 і хвиля 1 (4 і 5 кл.).
+10. **Карти, що лишились малими** (kiepert-1849, chyhyryn-map, east-slavic-tribes, poltava-map-1821, ballot-1991, pale-map-1905, song-rainbow-bridge) і похідні SVG для g9s1l2, g10s2l5–l6, g10s5l1/l4 — після рішення про розмір (pitfalls-hist «Додано 2026-11-18»).
 
 **Заблоковано рішенням людини (без змін):** engine-diag-retest-from-pool, engine-ai-a1 (`server/content/`), design-privacy-gdpr, design-teacher-dashboard.
 
@@ -45,7 +46,7 @@ _Оновлено: 2026-11-19, куратор пам'яті (19.11: дизайн
 5. **Рев'ю знімка tools/test-hyp.mjs §0.** За 17–18.11 його тричі оновлювали під зміни змісту без рев'ю D-026. Чи це прийнятний виняток?
 6. **Стиль (рішення — у decisions.md):** sentenceWords hist/world 10–11 (не рахувати `items` чи межа 6); pick ukr — межі члена речення у фіналі кожним словом-кнопкою (style-ukr-1117); world ~50 задач «скільки років від X до Y» з обома датами — на 8+ брати одну дату з уроку?; закріпити в style/math.md «Для кожного … обери» у sort і формули 4 кл. словами (вже в glossary/math).
 7. **Сіяний порядок рядків** у тесті рівня — так чи ні (зараз перемішування; qa-diag-stability).
-8. **Англійська: 12 питань docs/design/english.md §11** (мова екранів, B1/B2, BrE/AmE, аудіо, IPA, учитель-рецензент тощо; копія — decisions.md «Чекає рішення людини»).
+8. **Англійська:** 7 відкритих питань docs/design/english.md §11.2 (не блокують; копія — decisions.md «Чекає рішення людини»).
 9. Як 12.11: dgh11b (втрата підсумку dgh11); дублікати img/hist ↔ img/world; ліцензії фото (Гмюнд 1916, w10s4 1923, Кайсері 1928, Франки 1904); постанова ВР 14.04.2022 і закон 712-XII; required checks; змінні синхронізації (`SLID_API`, `SLID_GOOGLE_CLIENT_ID`, `CORS_ORIGINS`, `LOG_HASH_KEY`); `personalization-qa --strict`.
 
 ## Обмеження середовища
