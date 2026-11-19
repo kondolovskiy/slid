@@ -15,7 +15,7 @@ SLID.section("eng", {
   weeks: [32, 35],
   title: "Celebrations and school events",
   why: "To invite friends to a party and talk about school events. And to say “Happy New Year!” or “Happy birthday!”",
-  requires: ["e4s1l1", "e4s1l5"],
+  requires: ["e4s1l1", "e4s1l5", "e4s4l5", "e4s6l2", "e4s6l3"],
   meta: { author: "writer-e4s8", created: "2026-11-19", factcheck: null, teacher: null },
   badges: [
     { id: "e4s8boss", name: "Party planner", icon: "trophy", desc: "Finish the final lesson “Celebrations and school events”" }

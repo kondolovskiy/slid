@@ -16,7 +16,7 @@ SLID.section("eng", {
   weeks: [22, 26],
   title: "Nature and weather",
   why: "To talk about the weather and nature. And to say what is happening now.",
-  requires: ["e4s1l1"],
+  requires: ["e4s1l1", "e4s5l1"],
   meta: { author: "writer-e4s6", created: "2026-11-19", factcheck: "self", teacher: null },
   badges: [
     { id: "e4s6boss", name: "Weather reporter", icon: "trophy", desc: "Finish the final lesson “Nature and weather”" }

@@ -105,3 +105,9 @@
 - 2026-11-19 · writer-e4s3 · FACT (eng, self): Kotyhoroshko — герой української народної казки — en/uk.wikipedia (друге незалежне джерело не знайдено); Robin Hood — CD, OALD.
 - 2026-11-19 · writer-e4s3 · FACT (eng): clever — especially BrE, smart — especially NAmE (OALD smart_1) → у ключі word з clever додавати smart / intelligent / bright.
 - 2026-11-19 · writer-e4s3 · STYLE (eng): z-прапорці stats typeVariety / gradedShare у межах профілю (e4s3l1, l6) — переглянути z-критерій у style-eng-g4-5. fantlab.ru з контейнера не резолвиться.
+- 2026-11-19 · writer-e4s6 · FACT (eng, self): the Dnipro ≈ 2,200 km, впадає в Чорне море; Kyiv is on the Dnipro — en.wikipedia Dnieper, ЕСУ article-22159, article-11194. the Thames 346 km, через London — en/uk.wikipedia. Hoverla 2,061 m — en.wikipedia, ЕСУ article-25087. Ben Nevis 1,345 m, Scotland — en/uk.wikipedia.
+- 2026-11-19 · writer-e4s6 · FACT (eng, self): площа Ukraine ≈ 600,000 km², UK ≈ 240,000 km² — en/uk.wikipedia; Київ січень −3.2 °C (en.wiki) / −6.0 °C (ЕСУ), Лондон ≈ 5 °C — Kyiv colder than London in winter.
+- 2026-11-19 · writer-e4s6 · FACT (eng, self): наголос на 1-му складі (CD UK): winter, summer, autumn, weather, mountain, river, forest, nature; -ing: shine → shining, run → running; big → bigger, hot → hotter, sunny → sunnier; rubbish (BrE; US garbage, trash), tap (US faucet), wood (A2) = area covered with trees.
+- 2026-11-19 · writer-e4s6 · STYLE (eng): stats sentenceWords занижує уроки з однослівними пунктами `sort` (місяці) — style-eng-g4-5.
+- 2026-11-19 · writer-e4s6 · NOTE (середовище): ordnancesurvey.co.uk, gre.ac.uk не відкриваються; Wikipedia API через curl дає rate limit.
+- 2026-11-19 · orchestrator · NOTE (requires): додано зв'язки між розділами 4 кл. за plan-eng-g4 §6 і звітами авторів: e4s8 → e4s4l5 (would like), e4s6l2, e4s6l3 (Present Continuous); e4s7 → e4s6l5 (comparatives); e4s6 → e4s5l1 (imperatives).

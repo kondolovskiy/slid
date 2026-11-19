@@ -17,7 +17,7 @@ SLID.section("eng", {
   weeks: [27, 31],
   title: "Holidays and travel",
   why: "To talk about trips and transport. And to tell people about your holiday plans.",
-  requires: ["e4s1l4", "e4s1l6"],
+  requires: ["e4s1l4", "e4s1l6", "e4s6l5"],
   meta: { author: "writer-e4s7", created: "2026-11-19", factcheck: "self", teacher: null },
   badges: [
     { id: "e4s7boss", name: "Young traveller", icon: "trophy", desc: "Finish the final lesson “Holidays and travel”" }
