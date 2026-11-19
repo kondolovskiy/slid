@@ -1,5 +1,7 @@
 {
-  "date": "2026-11-19T14:17:52.266Z",
+  "date": "2026-11-19T14:19:06.611Z",
   "errors": [],
-  "warnings": []
+  "warnings": [
+    "content/eng/g4-e4s7.js#e4s7l3: longWordShare=0.19 поза профілем [0; 0.12] для eng, 4 кл."
+  ]
 }
