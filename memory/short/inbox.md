@@ -98,3 +98,10 @@
 - 2026-11-19 · writer-e4s2 · FACT (eng, self): block of flats — UK (OALD); lift — UK (US elevator); yard — US (UK garden); wardrobe (US closet); furniture — [U]; shelf → shelves. Наголос (CD UK + OALD) на 1-му складі: garden, balcony, kitchen, bedroom, bathroom, wardrobe, carpet, furniture, sofa, poster, window.
 - 2026-11-19 · writer-e4s2 · STYLE (eng): профіль «4» readWordsPerScreen ≤ 30 не вміщає урок читання з текстом за програмою (100–150 слів): e4s2l6 = 33 при тексті 101 слово — style-eng-g4-5.
 - 2026-11-19 · writer-e4s2 · STYLE (eng): прийменникам місця потрібна картинка; дозволити власні SVG у img/eng/ з credits без зовнішнього URL або `svgFig` для eng — разом з engine-eng-match (зображення в match).
+- 2026-11-19 · writer-e4s3 · FACT (eng, self): play + ігри з м'ячем (OALD play_1); go + -ing — go swimming / cycling / skating (OALD go_1); do karate / judo / gymnastics (OALD Collocations «do»).
+- 2026-11-19 · writer-e4s3 · FACT (eng): adverbs of frequency — always / never лише mid position; usually — переважно mid; often, sometimes — front / mid / end → у build лише always / never або всі порядки в answer — CD Grammar always, never, usually, often, adverbs-and-adverb-phrases-position.
+- 2026-11-19 · writer-e4s3 · FACT (eng): or після заперечення замість and («I don’t like tea or coffee») — у вправах на and/but/or не ставити заперечень з and — CD Grammar or.
+- 2026-11-19 · writer-e4s3 · FACT (eng): weekend — UK наголос на 2-му складі (US — на 1-му); на 1-му: tennis, basketball, always, usually, sometimes, never, Monday, Saturday, favourite, hero, clever, funny; на 2-му: gymnastics, karate.
+- 2026-11-19 · writer-e4s3 · FACT (eng, self): Kotyhoroshko — герой української народної казки — en/uk.wikipedia (друге незалежне джерело не знайдено); Robin Hood — CD, OALD.
+- 2026-11-19 · writer-e4s3 · FACT (eng): clever — especially BrE, smart — especially NAmE (OALD smart_1) → у ключі word з clever додавати smart / intelligent / bright.
+- 2026-11-19 · writer-e4s3 · STYLE (eng): z-прапорці stats typeVariety / gradedShare у межах профілю (e4s3l1, l6) — переглянути z-критерій у style-eng-g4-5. fantlab.ru з контейнера не резолвиться.
