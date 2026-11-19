@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-19T09:59:40.346Z
 id: write-ukr-u4s8
 type: write-section
 subject: ukr
@@ -6,7 +8,7 @@ grade: 4
 section: u4s8
 weeks: [26, 28]
 status: todo
-claimed_by:
+claimed_by: writer-u4s8
 created: 2026-11-19
 ---
 # Написати розділ «Прикметник» (Українська мова, 4 клас)
