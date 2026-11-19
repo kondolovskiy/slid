@@ -6,7 +6,7 @@ type: write-pool
 subject: ukr
 grade: 4
 section: u4s1
-status: review
+status: done
 claimed_by: writer-write-ukr-pool-u4s1
 created: 2026-11-19
 depends_on: []
@@ -82,3 +82,6 @@ generated_by: tools/make-tasks.mjs --write-pool --subject ukr
 - a30: імена героїв Даррелла (Марго, Ларрі, Леслі, острів Корфу) — §8, с. 14.
 
 **Що не ввійшло:** §3 впр. 7–8 (доречність слова «відкривати») і §16 впр. 8 (орфографічні помилки в оголошенні) — правил немає в уроках; §12 впр. 4 (заголовок до вірша М. Познанської) — авторський заголовок не перевірив; типи stress/split — у розділі немає орфоепії й будови слова.
+
+### verifier-pu4s1, 2026-11-19
+Незалежна перевірка (content-verify): 34/34 вправи розв'язано самостійно — ключі збіглися; опора D-019 є для кожної; src/srcPage звірено за PDF Ост4-1 (curl + pdftotext; форзац — PDF с. 75). Правка: a33 «Уривок з оповідання» → «За оповіданням Тані Стус» (дослівність не підтверджено). a33 «Дівчинка» — не нове правило: виводиться відкиданням (повтор; «Вона» змінює зміст — l6 е6). `status: "verified"`, factcheck verifier-pu4s1. validate --pool pu4s1 0/0, personalization-qa --pool pu4s1 без прогалин. test-answer-ui --suite content — лише CI. Звіт: reports/verify/pu4s1.md.
