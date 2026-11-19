@@ -82,7 +82,7 @@ CD = https://dictionary.cambridge.org/dictionary/english/<word>; OALD = https://
 - l1 #6 (Dmytro, брудні руки) → info #5 (Wash…; Don’t…); l1 #8 pick «tooths» → info #3 (one tooth → two teeth).
 - l2 #5 (Doesn’t eat) → правило Don’t + verb з l1 #5 і info l2 #3 («Don’t do it»).
 - l4 #6 gaps have got → l4 #5 + e4s1l2 (`requires`).
-- l6 #4 «Because they can be dirty» → poster l1 (intro, «Don’t eat with dirty hands»), hint називає poster; l6 #9 (Andrii at home) → l4 intro (cold, sore throat).
+- l6 #4 «Because they can be dirty» → poster l1 (intro, «Don’t eat with dirty hands»), hint називає poster; l6 #8 (Andrii at home) → l4 intro (cold, sore throat).
 - boss Task 5 → l5 #2 hyp + info #3 (Stay… Drink lots of water).
 
 ### Друга правильна відповідь (перевірено, кожне завдання розв'язано двічі)
