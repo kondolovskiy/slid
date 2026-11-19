@@ -5,7 +5,7 @@ id: curate-eng-glossary
 type: curate
 subject: eng
 depends_on: [design-eng]
-status: review
+status: done
 claimed_by: curator-eng-glossary
 created: 2026-11-19
 source: design-eng

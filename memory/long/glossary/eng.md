@@ -15,7 +15,7 @@
 |---|---|---|---|
 | -our | colour, favourite, neighbour, honour | color, favorite | Cambridge: «colour noun UK (US color)» — https://dictionary.cambridge.org/dictionary/english/colour; M-W: «chiefly British spelling of color» — https://www.merriam-webster.com/dictionary/colour |
 | -re | centre, theatre, metre, litre | center, theater | — |
-| -ise / -yse | realise, organise, recognise, analyse | -ize, -yze | -ize теж британська норма Oxford, але **у «Сліді» лише -ise** (одна форма на предмет) |
+| -ise / -yse | realise, organise, recognise, analyse | -ize, -yze | -ize теж британська норма Oxford (OALD realize «British English also realise»; Wiktionary realise «Non-Oxford British standard spelling»), але **у «Сліді» лише -ise** (одна форма на предмет; TQ-121). **realize у відповіді дитини — не помилка й не «американізм»:** примітка лише «In British English we usually write realise». -yse (analyse) — лише BrE (CD «analyse UK (US analyze)») |
 | подвоєне -ll- | travelled, travelling, cancelled, jewellery | traveled, jewelry | — |
 | інше | grey, programme (телепрограма; але computer program), practise (дієслово) / practice (іменник), licence (ім.) / license (дієсл.), cheque, tyre, pyjamas | gray, program | — |
 | неправильні дієслова | learnt / learned, dreamt / dreamed, spelt / spelled, burnt / burned — **обидві форми правильні** в BrE; у ключі — обидві | — | Cambridge: «learned or UK also learnt» — https://dictionary.cambridge.org/dictionary/english/learn |
@@ -29,12 +29,12 @@
 | have got (I've got a sister) — у 4–6 кл. разом з have | have | — |
 
 ## Дати, час, числа
-- **Дата:** «5 May 2026» — день, місяць, рік, без коми й без закінчень -th у записі. Читаємо: «the fifth of May». Десятиліття — «the 1990s» (без апострофа).
-- **Час:** словами в 4–6 кл. — «half past three», «quarter to four», «ten past six», «three o'clock»; цифрами — «3.30 pm» (крапка, pm без крапок) або 24-годинний «15:30» у розкладах. Американського «a quarter after three» не пишемо.
-- **Числа:** тисячі — комою (2,500), десятковий дріб — крапкою (2.5) — це англійська норма, не українська кома. Порядкові — 1st, 2nd, 3rd, 4th.
+- **Дата:** «5 May 2026» — день, місяць, рік, без коми й без закінчень -th у записі (Cambridge Grammar «Dates»: «The most common way in British English… 20 January 1993» — https://dictionary.cambridge.org/grammar/british-grammar/dates). Читаємо: «the fifth of May». Десятиліття — «the 1990s» (без апострофа).
+- **Час:** словами в 4–6 кл. — «half past three», «quarter to four», «ten past six», «three o'clock»; цифрами — «3.30 pm» (крапка, pm без крапок) або 24-годинний «15.30» у розкладах (Cambridge Grammar «Time»: «12.30 pm», «13.15» — https://dictionary.cambridge.org/grammar/british-grammar/time; словники дають і «p.m.» з крапками — у ключі `word` приймати обидва записи; TQ-120). Американського «a quarter after three» не пишемо (CD quarter: «a quarter past… (also US a quarter after…)»).
+- **Числа:** тисячі — комою (2,500), десятковий дріб — крапкою (2.5) — це англійська норма, не українська кома (Cambridge Grammar «Number»: «£1,250»; CD decimal point). Порядкові — 1st, 2nd, 3rd, 4th.
 
 ## Розділові знаки й типографіка
-- **Лапки — подвійні “ ” (U+201C, U+201D); вкладені — одинарні ‘ ’.** Рішення куратора 2026-11-19: апостроф ’ збігається з закривною одинарною лапкою, а рушій нормалізує ’ → ' у введенні (§5.4 п. 2) — подвійні лапки цю плутанину знімають. Британська видавнича практика частіше бере одинарні; якщо вчитель захоче одинарні — замінити в усьому предметі разом (див. «Не вирішено»).
+- **Лапки — подвійні “ ” (U+201C, U+201D); вкладені — одинарні ‘ ’.** Рішення куратора 2026-11-19: апостроф ’ збігається з закривною одинарною лапкою, а рушій нормалізує ’ → ' у введенні (§5.4 п. 2) — подвійні лапки цю плутанину знімають. Британська видавнича практика частіше бере одинарні (Cambridge Grammar «Punctuation»: «‘…’ or “…” … single quotation marks are becoming more common» — https://dictionary.cambridge.org/grammar/british-grammar/punctuation); якщо вчитель захоче одинарні — замінити в усьому предметі разом (TQ-119).
 - **Апостроф — ’ (U+2019)** у тексті: don’t, Kate’s, the 1990s (без апострофа). У введенні дитини будь-який апостроф = ' (рушій).
 - **Тире** — en dash з пробілами « – » (британська практика); дефіс у складних словах — «-».
 - **Заголовки** — велика літера лише на початку (sentence case): «Food and drink», не «Food And Drink».
@@ -42,7 +42,7 @@
 
 ## Вимова й наголос
 - **IPA-транскрипції немає** (D-054, доповнення п. 3). Вимову показуємо прикладом: «*ee* as in *sheep*», «*th* as in *three*».
-- **Наголос у тексті уроку** — підкреслення наголошеного складу `<u>`: <u>pho</u>tograph, pho<u>tog</u>rapher, ba<u>na</u>na. Поділ на склади для `stress` — `|`, `+` перед наголошеним: `+pho|to|graph`, `pho|+to|gra|pher`. Наголос — **за словником** (Cambridge дає ˈ у транскрипції: photograph /ˈfəʊ.tə.ɡrɑːf/, photographer /fəˈtɒɡ.rə.fər/ — https://dictionary.cambridge.org/dictionary/english/photograph, https://dictionary.cambridge.org/dictionary/english/photographer), не з пам'яті.
+- **Наголос у тексті уроку** — підкреслення наголошеного складу `<u>`: <u>pho</u>tograph, pho<u>tog</u>rapher, ba<u>na</u>na. Поділ на склади для `stress` — `|`, `+` перед наголошеним: `+pho|to|graph`, `pho|+tog|ra|pher` (склади — як у словнику: /fəˈtɒɡ.rə.fər/). Наголос — **за словником** (Cambridge дає ˈ у транскрипції: photograph /ˈfəʊ.tə.ɡrɑːf/, photographer /fəˈtɒɡ.rə.fər/ — https://dictionary.cambridge.org/dictionary/english/photograph, https://dictionary.cambridge.org/dictionary/english/photographer), не з пам'яті.
 - Слово, що читається, курсивом: *sheep*; буквосполучення — курсивом: *ee*.
 
 ## Терміни граматики (англійською; одна форма)
@@ -51,7 +51,7 @@
 | Present Simple, Present Continuous | Simple Present, Present Progressive, Present Indefinite |
 | Past Simple, Past Continuous | Simple Past, Past Indefinite |
 | Present Perfect, Present Perfect Continuous, Past Perfect | Present Perfect Progressive |
-| will (future), be going to | Future Simple / Future Indefinite (як назву часу — ні; «will for predictions») |
+| will (future), be going to | Future Simple / Future Indefinite (як назву часу — ні; «will for predictions»). ТОП 3–4 (с. 63) пише «Future Simple», МП-ІМ (с. 21–22) — «Future with will and shall», «Future with be going to»; беремо МП-ІМ |
 | countable / uncountable nouns | count / non-count nouns |
 | a / an, the, no article | indefinite/definite article — можна в 7–11 кл. як пояснення, не як заголовок |
 | comparative, superlative (adjectives) | degrees of comparison — лише в 10–11 кл. |
@@ -94,6 +94,7 @@
 - Імена героїв уроків — українські (за таблицею: Oksana, Andrii, Yurii, Mariia, Dmytro) і англійські; без героїв підручників.
 
 ## Не вирішено
-- **Лапки:** подвійні “ ” (рішення куратора 2026-11-19, причина вище) чи британські одинарні ‘ ’ — підтвердити з учителем-рецензентом англійської, коли він буде (D-054, «Не вирішено»).
-- **Час цифрами:** «3.30 pm» чи «3:30 pm» — обрано крапку (британська видавнича практика), рівень впевненості — пропозиція куратора; звірити з першим еталоном e4s1/e5s1.
-- **Американська лексика у відповіді `word`** (apartment на місці flat): рушій її не нормалізує (§5.4 п. 6); чи приймати як другу правильну — вирішує автор завдання; загальне правило — після перших верифікацій.
+- **Лапки:** подвійні “ ” (рішення куратора 2026-11-19, причина вище) чи британські одинарні ‘ ’ — **TQ-119** (docs/teacher-questions.md), тимчасово “ ”.
+- **Час цифрами:** «3.30 pm» чи «3:30 pm» — обрано крапку (так у Cambridge Grammar «Time»); **TQ-120**, тимчасово «3.30 pm» у тексті, у відповіді — обидва записи.
+- **Лише -ise:** **TQ-121**, тимчасово -ise у тексті, -ize у відповіді — `ok` з приміткою.
+- **Американська лексика у відповіді `word`** (apartment на місці flat): рушій її не нормалізує (§5.4 п. 6); **TQ-122**, тимчасово — автор або робить завдання однозначним (картинка + слово з уроку), або кладе AmE-синонім у ключ; `bad` за словникове AmE-слово не ставимо.
