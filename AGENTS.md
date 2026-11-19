@@ -27,7 +27,7 @@
 | `app/learn.js` · `evidence.js` · `hyp.js` | персоналізація · журнал подій · гіпотези (тінь) | розробник |
 | `app/math.js` · `lab.js` · `registry.js` | формули · лабораторія · реєстр `SLID.*` | розробник |
 | `app/sync.js`, `app/config.js` | синхронізація прогресу з бекендом: злиття стану, вхід, код прив'язки (тести `node tools/test-sync.mjs`); config.js генерує build із `SLID_API` | розробник |
-| `app/lang.js` | мовні вправи gaps / pick / stress / word / split / build (CONTENT_SCHEMA §4.1; тести `node tools/test-lang.mjs`) | розробник |
+| `app/lang.js` | мовні вправи gaps / pick / stress / word / split / build / match (CONTENT_SCHEMA §4.1; тести `node tools/test-lang.mjs`) | розробник |
 | `content/subjects/<предмет>.js`, `content/<предмет>/plan.js`, `content/catalog.js` | метадані, план, «скоро» | лише куратор |
 | `content/<предмет>/g<клас>-<id>.js` | **один файл = один розділ з уроками** | автор розділу |
 | `content/<предмет>/diag-g<клас>.js` | тест рівня (`SLID.diag`) | автор тесту |

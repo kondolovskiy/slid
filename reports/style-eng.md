@@ -45,7 +45,7 @@
 | e4s6l4 Nature in Ukraine and the UK | 4 | 9 | 0.56 | 30 | 53 | 49 | 5.2 | 0.042 | 4 | — |
 | e4s6l5 Bigger, colder, faster: comparing things | 4 | 9 | 0.56 | 27 | 40 | 36 | 4.8 | 0.024 | 4 | — |
 | e4s6l6 Let’s help nature! | 4 | 8 | 0.63 | 24 | 41 | 38 | 4.9 | 0.02 | 5 | — |
-| e4s6l7 Our nature and weather page (фінал) | 4 | 7 | 0.86 | 23 | 38 | 28 | 5.1 | 0.031 | 5 | — |
+| e4s6l7 Our nature and weather page (фінал) | 4 | 7 | 0.86 | 23 | 38 | 28 | 5.1 | 0.03 | 5 | — |
 | e4s7l1 By bus, by train, on foot | 4 | 9 | 0.56 | 28 | 58 | 57 | 4.8 | 0.043 | 4 | maxReadWords нетипово для сім'ї (z=2); maxText нетипово для сім'ї (z=2.4) |
 | e4s7l2 Which way? Up, down, across, along | 4 | 9 | 0.67 | 29 | 50 | 48 | 5.8 | 0.016 | 5 | sentenceWords нетипово для сім'ї (z=2.4) |
 | e4s7l3 Capital cities: Kyiv, London and more | 4 | 8 | 0.63 | 22 | 42 | 40 | 4.9 | 0.189 | 4 | longWordShare=0.189 поза [0; 0.12]; longWordShare нетипово для сім'ї (z=3.7) |
