@@ -46,8 +46,8 @@ SLID.section("eng", {
   id: "e4s3",
   grade: 4,
   weeks: [10, 13],
-  title: "Free time: sports and heroes",
-  why: "To talk about sports and your free time. And to tell a friend about your favourite hero.",
+  title: "Free time: sport and heroes",
+  why: "To talk about sport and your free time. And to tell a friend about your favourite hero.",
   plan: [
     "Sports: play, go and do",
     "How often? Always, usually, sometimes, never",
@@ -63,7 +63,7 @@ SLID.section("eng", {
   grade: 4,
   weeks: [14, 17],
   title: "Shops and shopping",
-  why: "To go shopping in English. You can ask about prices and say what you would like.",
+  why: "To buy things in a shop. And to ask about prices and say what you would like.",
   plan: [
     "Shops in my town",
     "In a shopping centre: signs and floors",
@@ -118,7 +118,7 @@ SLID.section("eng", {
     "Capital cities: Kyiv, London and more",
     "The biggest and the longest",
     "A postcard from my holiday",
-    "Plans for the summer: I will…"
+    "Plans for the summer: I think I’ll…"
   ]
 });
 
@@ -127,11 +127,11 @@ SLID.section("eng", {
   grade: 4,
   weeks: [32, 35],
   title: "Celebrations and school events",
-  why: "To invite friends to a party and talk about school events. And to say “Happy holidays!”",
+  why: "To invite friends to a party and talk about school events. And to say “Happy New Year!” or “Happy birthday!”",
   plan: [
     "A party at a café: ordering food",
     "Invitations: when and what time?",
-    "Happy holidays! Celebrations in Ukraine and the UK",
+    "Happy New Year! Celebrations in Ukraine and the UK",
     "School events: a concert, a sports day, a fair",
     "Every day or now? I play, I’m playing",
     "Notes and messages to friends"

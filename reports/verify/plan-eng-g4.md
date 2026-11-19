@@ -28,7 +28,7 @@
   - Подорож по Україні та до країн виучуваної мови → поїздка на канікулах, види транспорту, назви столиць, населених пунктів;
   - Свята та традиції → святкування в кафе;
   - Шкільне життя → шкільні події.
-- **Мовленнєві функції** (спільні для 3 і 4 кл.): привітатися, попрощатися, вибачитися, подякувати; представити себе чи когось; називати й описувати когось чи щось; ставити запитання й відповідати на них; розуміти й виконувати прості вказівки, інструкції, команди; вітати зі святом; виражати настрій; висловлювати уподобання.
+- **Мовленнєві функції** (як у 3 кл., але без «розуміти інформаційні вказівники» — та є лише в 3 кл., с. 61; уточнення верифікатора): привітатися, попрощатися, вибачитися, подякувати; представити себе чи когось; називати й описувати когось чи щось; ставити запитання й відповідати на них; розуміти й виконувати прості вказівки, інструкції, команди; вітати зі святом; виражати настрій; висловлювати уподобання.
 - **Граматика (с. 63):**
   - Adjective — comparative and superlative forms;
   - Adverb — adverbs and adverbials of frequency and movement;
@@ -140,3 +140,99 @@ e4s1–e4s8 покривають тижні 1–35 без накладань і 
 - висока — щодо тем, функцій і граматики 4 кл.: прочитано з PDF, сторінки звірено з колонтитулами;
 - середня — щодо тижнів: годин за темами програма не дає;
 - **низька — щодо відповідності програмі, якої вимагає ліцей (№ 1273):** текст не звірено (§0).
+
+# Незалежна верифікація
+
+Верифікатор: verifier-curate-eng-plan-g4 (content-verifier), 2026-11-19. Цей план я не писав. Склад, теми, граматику й сторінки звіряв із самим PDF програми (завантажив заново), а англійську — зі словниками, відкритими в сесії, а не зі звітом автора.
+
+## В1. Джерела (відкрито в цій сесії)
+
+| Сигла | Що відкрито | URL | Результат |
+|---|---|---|---|
+| ТОП 3–4 | PDF завантажено заново: 1 888 013 байт, SHA-1 `aa8d161a330bbede5b21484f47be92d12548f785` (як в автора), 141 с.; `pdftotext -layout`, с. 40, 50–55, 60–63 | https://lib.iitta.gov.ua/714276/1/%D0%A2%D0%9E%D0%9F_3_4_2018.pdf | ✅ с. 40: «на кінець 4-го класу – рівня А1»; с. 60: обсяги 4 кл. (читання 100–150 слів, письмо 40–50, монолог 5–6 речень, діалог 5 реплік) і «рамкова … не обмежує … у виборі порядку»; с. 61: граматика «імпліцитно»; 3 кл. — с. 61–62; **4 кл. — с. 62–63** (теми, функції, граматика), далі «Німецька мова». Дослівна транскрипція автора в §1 збігається з PDF; одне уточнення — функції (див. В6) |
+| CD «sport» | [U] UK «all types of physical activity … do/play sport» | https://dictionary.cambridge.org/dictionary/english/sport | ✅ загальне значення в BrE — незлічуване *sport* |
+| OALD «sport» | «When talking about sport or sports in general, the form is usually the uncountable sport in British English and the plural sports in North American English» | https://www.oxfordlearnersdictionaries.com/definition/english/sport_1 | ✅ → правка П1 |
+| OALD «holiday» | «holidays [plural] … (North American English) the time from late November to early January … Happy Holidays!»; BrE *holiday(s)* = відпустка, канікули («the school/summer/Christmas holidays») | https://www.oxfordlearnersdictionaries.com/definition/english/holiday_1 | ✅ «Happy holidays!» — AmE → правка П3; «Holidays and travel», «holiday plans», «A postcard from my holiday» — BrE ✅ |
+| CD «holiday» | «the holidays [plural] (US also the holiday season)» | https://dictionary.cambridge.org/dictionary/english/holiday | ✅ підтверджує OALD |
+| CD Grammar «Will» | «We use will and be going to for decisions, intentions and plans. We use will when the decision is immediate and be going to when we have already made a plan»; «We usually use ’ll, not will, after I think» | https://dictionary.cambridge.org/grammar/british-grammar/will | ✅ → правка П4 |
+| CD Grammar «Be going to» | «We use be going to to talk about future plans and intentions. Usually the decision … has already been made» | https://dictionary.cambridge.org/grammar/british-grammar/be-going-to | ✅ |
+| CD «fill sth in» | «fill in a form» (also fill sth out) | https://dictionary.cambridge.org/dictionary/english/fill-in | ✅ «filling in a form» — BrE |
+| CD «sports day», «shopping centre», «fair» | sports day — шкільне змагання (UK); «shopping centre … UK (US shopping center)»; «the school fair» | https://dictionary.cambridge.org/dictionary/english/sports-day · https://dictionary.cambridge.org/dictionary/english/shopping-centre · https://dictionary.cambridge.org/dictionary/english/fair | ✅ |
+
+WebFetch до dictionary.cambridge.org у цій сесії не резолвить хост; сторінки відкрито через `curl` (HTTP 200) і прочитано текстом.
+
+## В2. Теми й підтеми 4 кл. (с. 62–63) ↔ розділи
+
+| Тема програми | Підтема | Де в плані | Вердикт |
+|---|---|---|---|
+| Я, моя родина і друзі | місцепроживання | e4s1 «Where do you live? Addresses», «About me: filling in a form» | ✅ |
+| | населені пункти | e4s1 «Cities, towns and villages»; e4s7 «Capital cities…» | ✅ |
+| Помешкання | види помешкань | e4s2 «Homes: a house or a flat?» | ✅ |
+| | умеблювання | e4s2 «Furniture in my room» | ✅ |
+| Відпочинок і дозвілля | спорт | e4s3 «Sports: play, go and do» | ✅ |
+| | улюблені дитячі герої | e4s3 «Favourite heroes from books and films» | ✅ |
+| | магазини і покупки | e4s4 весь | ✅ |
+| Людина | гігієна | e4s5 «Keeping clean…», «Healthy habits…» | ✅ |
+| | стан здоров’я | e4s5 «How do you feel?…», «What’s the matter?…», «At the doctor’s» | ✅ |
+| Природа і навколишнє середовище України та країн виучуваної мови | довкілля | e4s6 «Nature in Ukraine and the UK», «Let’s help nature!» | ✅ |
+| | природні явища | e4s6 «Seasons and weather», «It’s raining now!…» | ✅ |
+| Подорож по Україні та до країн виучуваної мови | поїздка на канікулах | e4s7 «A postcard from my holiday», «Plans for the summer…» | ✅ |
+| | види транспорту | e4s7 «Transport: by bus, by train, on foot» | ✅ |
+| | назви столиць, населених пунктів | e4s7 «Capital cities: Kyiv, London and more» | ✅ |
+| Свята та традиції | святкування в кафе | e4s8 «A party at a café: ordering food» | ✅ |
+| Шкільне життя | шкільні події | e4s8 «School events: a concert, a sports day, a fair» | ✅ |
+
+Усі 8 тем і 16 підтем покрито. Порядок і поєднання тем (e4s8 — дві теми) програма дозволяє (с. 60).
+
+## В3. Граматика 4 кл. (с. 63) — позиції інвентаря
+
+| Позиція | Розділ | Вердикт |
+|---|---|---|
+| comparative / superlative | e4s6 «Bigger, colder, faster» / e4s7 «The biggest and the longest» | ✅ |
+| adverbs and adverbials of frequency / movement | e4s3 «How often?…», «My week…» / e4s7 «Which way? Up, down, across, along» | ✅ |
+| S + V + O | наскрізно (окремого рядка нема — програма й не вимагає тем-граматики, с. 61) | ✅ |
+| but/and/or; because | e4s3; e4s5 «Why? Because…» | ✅ |
+| how-questions: time, measurement, size, quantity | quantity — e4s4; time — e4s8 «when and what time?»; size і measurement — у плані рядком не видно, автор відніс у «Специфіку» e4s6/e4s7 | ✅ (рекомендація Р2) |
+| a/an with jobs | e4s1 «Jobs: a doctor, an engineer» | ✅ |
+| would like to + infinitive | e4s4 «I’d like… I’d like to buy…» | ✅ |
+| Present Continuous | e4s6 (два рядки), e4s8 «I play, I’m playing» | ✅ |
+| Future Simple for plans and intentions | e4s7 «Plans for the summer: I think I’ll…» (після П4) | ✅ |
+
+Розподіл між розділами — **наш, концентричний**: програма його не задає, і автор це позначив (заголовок §2, коментар plan.js). Позиції 3 кл. (some/any, ’s, Past Simple, was/were) як повторення — з інвентаря с. 62 ✅. Imperatives — не позиція інвентаря, а функція «розуміти та виконувати прості вказівки» (с. 62–63); позначено (ф) ✅.
+
+## В4. Тижні
+
+[1,5] [6,9] [10,13] [14,17] [18,21] [22,26] [27,31] [32,35]: 5+4+4+4+4+5+5+4 = 35, без прогалин і накладок ✅. Обґрунтування 5-тижневих розділів (e4s1 — повторення, e4s6/e4s7 — найбільше граматики) розумне; програма годин за темами не дає.
+
+## В5. Англійська `title` / `why` / `plan`
+
+Перевірено кожен рядок: рівень A1, речення короткі, лексика зі шкільного побуту, ’ і “ ” за глосарієм, Kyiv. Британська норма: flat, shopping centre, filling in a form, at the weekend, ill, At the doctor’s, holiday(s) = канікули, sports day, café ✅. Нічого з підручників CUP/OUP: назви й рядки загальні, без персонажів і назв серій ✅.
+Знайдено й виправлено (див. В7): AmE-форми «sports» у загальному значенні та «Happy holidays!»; ненатуральне «To go shopping in English»; «I will…» для вже складених планів.
+
+## В6. Функції (с. 62–63)
+
+- Привітатися, представити себе — e4s1 ✅; описувати — e4s2, e4s6 ✅; ставити запитання — наскрізно ✅; виконувати вказівки — e4s5 ✅; вітати зі святом — e4s8 ✅; виражати настрій — e4s5 ✅; уподобання — e4s3 ✅.
+- **Попрощатися, вибачитися, подякувати** окремим рядком у плані не названі. Це не дірка плану (функції не теми), але автори мають їх дати: Р1.
+- Уточнення до §1 автора: «розуміти інформаційні вказівники» є лише в 3 кл. (с. 61), у 4 кл. її нема — виправлено в §1. Рядок e4s4 «signs and floors» спирається не на функцію, а на дескриптор A1 с. 52 (путівники торговим центром, вказівники) ✅.
+
+## В7. Правки (зроблено в content/eng/plan.js)
+
+| № | Було | Стало | Чому |
+|---|---|---|---|
+| П1 | e4s3 `title` «Free time: sports and heroes»; `why` «To talk about sports and your free time.» | «Free time: sport and heroes»; «To talk about sport and your free time.» | OALD: у загальному значенні BrE — *sport*, AmE — *sports*. Рядок «Sports: play, go and do» лишено: там злічуване (різні види спорту). id не змінено |
+| П2 | e4s4 `why` «To go shopping in English. You can ask about prices…» | «To buy things in a shop. And to ask about prices and say what you would like.» | «go shopping in English» — ненатуральна сполука; тепер той самий зразок «To … . And to …», що в інших розділах |
+| П3 | e4s8 `why` «…And to say “Happy holidays!”»; `plan` «Happy holidays! Celebrations in Ukraine and the UK» | «…And to say “Happy New Year!” or “Happy birthday!”»; «Happy New Year! Celebrations in Ukraine and the UK» | OALD: «Happy Holidays!» — North American English; у BrE *holidays* = канікули, що для учня 4 кл. ще й плутається з e4s7 |
+| П4 | e4s7 `plan` «Plans for the summer: I will…» | «Plans for the summer: I think I’ll…» | CD Grammar: будь-який уже складений план — be going to; will — рішення в момент мовлення, «We usually use ’ll … after I think». Так зберігаємо «Future Simple for … intentions» програми (с. 63) і не вчимо ненатуральної форми; be going to — 5 кл. (дизайн §4.1, e5s9). Знімає відкрите питання автора «will чи be going to» на рівні плану |
+
+## В8. Рекомендації (не блокують)
+
+- **Р1.** «Специфіка» write-eng-g4-e4s4 і -e4s8: вибачитися, подякувати, попрощатися (Thank you, Sorry, Goodbye / See you) — у діалозі покупки й у кафе.
+- **Р2.** «Специфіка» write-eng-g4-e4s6/e4s7: How big…? How long…? How far…? (how-questions for size і measurement, с. 63).
+- **Р3.** Назва e4s3 тепер «Free time: sport and heroes» — оновити заголовки tasks/todo/write-eng-g4-e4s3.md, write-eng-pool-g4-e4s3.md і таблицю docs/design/english.md §4.0 (не мої файли; inbox).
+- **Р4.** e4s7: у «Специфіці» вже є пастка will / be going to; з рядком «I think I’ll…» контекст завдань — спонтанне рішення чи невпевнений намір, be going to — у ключ як друга правильна відповідь.
+- Відкрите в автора лишається відкритим: звірка з ТОП Шияна № 1273 (тексту нема, D-054 доп. п. 7); обсяг тексту 4 кл. (програма с. 60 — 100–150 слів, дизайн §6.1 — 50) — для curate-eng-style.
+
+## В9. Прогін і вердикт
+
+- `node tools/validate.mjs --quiet` після правок — **0 помилок** (230 попереджень — чужі файли; для content/eng/plan.js і e4s* попереджень нема). Build не запускав (паралельна робота агентів рушія).
+- **Вердикт: план придатний** — теми, підтеми й граматика 4 кл. покриті повністю, тижні 1–35 без дір, англійська після 4 правок британська й природна. Застереження про програму (Савченко замість Шияна № 1273) лишається — його знімає лише людина текстом № 1273.

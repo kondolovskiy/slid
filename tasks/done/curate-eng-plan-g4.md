@@ -6,7 +6,7 @@ type: curate
 subject: eng
 grade: 4
 depends_on: [curate-eng-subject]
-status: review
+status: done
 claimed_by: plan-eng-g4
 created: 2026-11-19
 source: design-eng
@@ -54,3 +54,10 @@ plan-eng-g4, 2026-11-19. Звіт автора плану — reports/verify/pla
   - will чи be going to для планів (e4s7);
   - обсяг тексту 4 кл.: програма дає 100–150 слів, дизайн — 50 (для style);
   - виправити сторінки в задачах write-eng-g4-*.
+
+## Нотатки верифікатора
+verifier-curate-eng-plan-g4, 2026-11-19. Звіт — reports/verify/plan-eng-g4.md, «Незалежна верифікація».
+- ТОП 3–4 завантажено заново (SHA-1 той самий), с. 40, 50–55, 60–63 звірено: 8 тем і 16 підтем 4 кл. покрито, інвентар граматики с. 63 — увесь; розподіл наш, позначений. Тижні 1–35 без дір і накладок.
+- 4 правки в plan.js (CD, OALD відкрито в сесії): e4s3 «sports» → «sport» (title, why; BrE); e4s4 why; e4s8 «Happy holidays!» (AmE) → «Happy New Year!»; e4s7 «I will…» → «I think I’ll…» (CD Grammar: будь-який складений план — be going to).
+- Рекомендації Р1–Р4 (функції вибачитися/подякувати, how big/how long, назва e4s3 у задачах і дизайні) — у inbox через оркестратора.
+- `node tools/validate.mjs` — 0 помилок. Вердикт: придатний → done.
