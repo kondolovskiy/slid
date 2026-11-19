@@ -1,11 +1,13 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-19T12:00:37.172Z
 id: curate-eng-plan-g4
 type: curate
 subject: eng
 grade: 4
 depends_on: [curate-eng-subject]
 status: todo
-claimed_by: 
+claimed_by: plan-eng-g4
 created: 2026-11-19
 source: design-eng
 ---
