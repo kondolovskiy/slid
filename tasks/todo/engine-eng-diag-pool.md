@@ -24,3 +24,6 @@ source: design-eng
 - [ ] Код, тести (`node tools/test-lang.mjs`, `npm run check`), CONTENT_SCHEMA і, де треба, docs/ARCHITECTURE.md оновлено; українські предмети поводяться як раніше (регресія test-answer-ui — у CI, job browser).
 - [ ] Незалежне рев'ю D-026: `reports/review/<id>.md` з вердиктом «прийнято»; до того задача в tasks/review.
 - [ ] Рядок ENGINE в memory/short/inbox.md.
+
+## Примітка (skills-eng, 2026-11-19)
+Загальна механіка `baseline: true` з `lessons: []` уже є (app/learn.js:2150–2154, CONTENT_SCHEMA §9; так зроблено тест рівня math 4 і ukr 5). Можливо, п. 2 зводиться до перевірки на фікстурі eng і налаштування `see` на e4s1 — спершу перевір, перш ніж міняти рушій.
