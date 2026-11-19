@@ -6,7 +6,7 @@
    https://lib.iitta.gov.ua/714276/1/%D0%A2%D0%9E%D0%9F_3_4_2018.pdf
    Увесь зміст — англійською, британська норма (D-054). Тексти, діалоги й герої — власні (docs/design/english.md §8).
    Форми, наголос і дати свят — за Cambridge Dictionary, OALD і джерелами з tasks/…/write-eng-g4-e4s8.md, «Нотатки агента».
-   Статус: draft. 7 уроків (6 + фінал).
+   Статус: verified (verifier-e4s8, reports/verify/e4s8.md). 7 уроків (6 + фінал).
    Перевірка: node tools/validate.mjs --section e4s8 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -16,7 +16,7 @@ SLID.section("eng", {
   title: "Celebrations and school events",
   why: "To invite friends to a party and talk about school events. And to say “Happy New Year!” or “Happy birthday!”",
   requires: ["e4s1l1", "e4s1l5", "e4s4l5", "e4s6l2", "e4s6l3"],
-  meta: { author: "writer-e4s8", created: "2026-11-19", factcheck: null, teacher: null },
+  meta: { author: "writer-e4s8", created: "2026-11-19", factcheck: "verifier-e4s8 (reports/verify/e4s8.md)", teacher: null },
   badges: [
     { id: "e4s8boss", name: "Party planner", icon: "trophy", desc: "Finish the final lesson “Celebrations and school events”" }
   ],
@@ -27,7 +27,7 @@ SLID.section("eng", {
       title: "A party at a café",
       short: "At a café",
       icon: "pizza",
-      status: "draft",
+      status: "verified",
       why: "You go to a café with your friends. Order food and be polite.",
       screens: [
         {
@@ -105,7 +105,7 @@ SLID.section("eng", {
             ["Your friend says: “Happy birthday!”", 0],
             ["You are late for the party.", 1],
             ["You drop your friend’s cake.", 1],
-            ["You take your friend’s juice.", 1]
+            ["Your juice is on your friend’s bag.", 1]
           ],
           fbOk: "Yes!",
           fbBad: "Is it good for you or bad for your friend?",
@@ -116,9 +116,10 @@ SLID.section("eng", {
           sk: "gram",
           title: "Put the words in order.",
           body: `<p>Mariia asks her friends.</p>`,
-          tiles: ["would", "you", "like", "some", "cake"],
+          tiles: ["Would", "you", "like", "some", "cake"],
           answer: "Would you like some cake?",
           extra: ["are"],
+          keepCase: true,
           hint: "Start with the waiter’s question: Would you…",
           fbOk: "Well done!",
           fbBad: "Look at the rule: Would you like…?",
@@ -153,7 +154,7 @@ SLID.section("eng", {
       title: "Invitations: when and what time?",
       short: "Invitations",
       icon: "cake",
-      status: "draft",
+      status: "verified",
       why: "A friend has a party. Find out when and where it is.",
       screens: [
         {
@@ -267,7 +268,7 @@ SLID.section("eng", {
       title: "Happy New Year! Celebrations in Ukraine and the UK",
       short: "Celebrations",
       icon: "star",
-      status: "draft",
+      status: "verified",
       why: "Say the right words on a special day. Write a card to a friend.",
       screens: [
         {
@@ -283,7 +284,7 @@ SLID.section("eng", {
           eyebrow: "Guess!",
           title: "What do you think?",
           hyp: true,
-          body: `<p>Today Oksana is ten. What does Emma write?</p>`,
+          body: `<p>Today Halyna is ten. What does Oksana write?</p>`,
           opts: [
             "Happy birthday!",
             "Happy Christmas!",
@@ -392,7 +393,7 @@ SLID.section("eng", {
       title: "School events: a concert, a sports day, a fair",
       short: "School events",
       icon: "users",
-      status: "draft",
+      status: "verified",
       why: "Your school has lots of events. Read about them and take part.",
       screens: [
         {
@@ -515,7 +516,7 @@ SLID.section("eng", {
       title: "Every day or now? I play, I’m playing",
       short: "Now or every day",
       icon: "play",
-      status: "draft",
+      status: "verified",
       why: "Say what you do every day. And say what you are doing now.",
       screens: [
         {
@@ -602,14 +603,14 @@ SLID.section("eng", {
           type: "build",
           sk: "gram",
           title: "Put the words in order.",
-          body: `<p>Look at Sofiia at the school concert!</p>`,
+          body: `<p>Look at Sofiia at the school concert! What is she doing now?</p>`,
           tiles: ["is", "Sofiia", "dancing", "now"],
-          answer: ["Sofiia is dancing now.", "Now Sofiia is dancing."],
+          answer: ["Sofiia is dancing now.", "Now Sofiia is dancing.", "Sofiia is now dancing."],
           extra: ["dances"],
           hint: "Now: is + -ing.",
           fbOk: "Well done!",
           fbBad: "It’s now. Use is + dancing.",
-          fbText: "<b>Sofiia is dancing now.</b> We can also say <b>Now Sofiia is dancing.</b> <i>Dances</i> is for every day."
+          fbText: "<b>Sofiia is dancing now.</b> We can also say <b>Now Sofiia is dancing.</b> or <b>Sofiia is now dancing.</b> <i>Dances</i> is for every day."
         },
         {
           type: "gaps",
@@ -640,7 +641,7 @@ SLID.section("eng", {
       title: "Notes and messages to friends",
       short: "Notes",
       icon: "scroll",
-      status: "draft",
+      status: "verified",
       why: "Your family is not at home? Leave a short note.",
       screens: [
         {
@@ -763,7 +764,7 @@ SLID.section("eng", {
       title: "Party time!",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e4s8boss",
       why: "Check everything from this section. Your points are doubled.",

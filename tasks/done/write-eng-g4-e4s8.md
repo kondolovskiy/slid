@@ -7,7 +7,7 @@ subject: eng
 grade: 4
 section: e4s8
 depends_on: [curate-eng-plan-g4, engine-eng-lang-core, engine-eng-validate, engine-eng-stats, skills-eng, curate-eng-style, curate-eng-glossary, write-eng-g4-e4s1]
-status: review
+status: done
 claimed_by: writer-e4s8
 created: 2026-11-19
 source: design-eng
@@ -86,3 +86,9 @@ writer-e4s8, 2026-11-19. Файл `content/eng/g4-e4s8.js`, 7 уроків (6 + 
 - Один герой — одне місце (pitfalls, verifier-e4s1): Mariia, Bohdan, Kateryna — Kharkiv; Andrii, Sofiia, Maksym — Kyiv (школа Андрія); Oksana, Halyna, Dmytro — село біля Полтави; Emma, Tom — England. Нові імена (КМУ № 55): Bohdan, Kateryna, Olha, Halyna, Maksym.
 - `uk` не додавав. validate: 0 помилок, 0 попереджень. stats: уроки e4s8 без прапорців (longWordShare 0.035–0.1).
 - Плейтест не запускався (build — оркестратор; Python playwright у контейнері немає).
+
+**verifier-e4s8, 2026-11-19 — вердикт: придатний, усі 7 уроків `verified`** (reports/verify/e4s8.md).
+- Правки (5 + статуси): l1 #7 sort — двозначний пункт «You take your friend’s juice» → «Your juice is on your friend’s bag»; l1 #8 build — друга правильна відповідь «you would like some cake» → плитка «Would» + `keepCase: true`; l5 #8 build — додано порядок «Sofiia is now dancing.» і в body «What is she doing now?» (відсікає питання); l3 #2 — «Today Oksana is ten» суперечило e4s1/e4s7 (Оксані вже 10 у вересні) → Halyna; статуси/meta/шапка.
+- Факти: Різдво 25 грудня в Україні з 2023 р. — en.wikipedia (Public holidays in Ukraine; Christmas in Ukraine), uk.wikipedia (Свята в Україні), WebSearch (преса); номер 3258-IX — лише вторинно (виноска uk.wikipedia → zakon.rada.gov.ua/go/3258-20, бухгалтерські сайти через WebSearch); у тексті уроку номера немає. UK 25 December / 1 January — en.wikipedia + OALD.
+- Спірне автора: «Back at 6 pm» — підтверджено (CD back: «Gone out. Back soon.»; OALD back_3); правопис -ing зразком — прийнято.
+- validate --section e4s8: 0/0; stats: e4s8 без прапорців; плейтест — не запускався (немає Python playwright), потрібен після build.
