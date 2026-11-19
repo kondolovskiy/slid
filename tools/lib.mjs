@@ -59,6 +59,9 @@ export const IMG_REQUIRED = { hist: "error", world: "error" };
 // не перевірити. Спільне для make-tasks.mjs (задач не створює) і personalization-qa.mjs (пул такого розділу — помилка). За назвою, щоб
 // правило діяло й на розділи 9–11 класів; перевірювані уроки там (ділові папери: реквізити) — окремим рішенням пізніше
 export const NO_POOL_SECTION = /^Пишемо самі/;
+/** Розділ без пулу тренування: поле розділу noPool: true (engine-eng-tools; предмет, де «Пишемо самі» в назві немає, — eng; можна й у plan.js:
+    реєстр зливає запис плану з файлом розділу) або назва «Пишемо самі…» (NO_POOL_SECTION). make-tasks і personalization-qa — лише через неї. */
+export const noPool = sec => !!sec && (sec.noPool === true || NO_POOL_SECTION.test(sec.title || ""));
 /** Контекст learn.validate для тесту рівня предмета: усі розділи (і лише з планом), уроки-боси — поза списком уроків розділу.
     Одне джерело для validate.mjs і personalization-qa.mjs (рев'ю tools-diag-nonmath-p3, P3-2).
     all — усі предмети: allLessons (id → {grade, subject}) лише інших предметів, для see baseline-теми (engine-1117-followups п. 3;
@@ -270,15 +273,25 @@ export function figPoints(text) {
   for (const q of Q) if (!MULTI.has(q)) P.delete(q);
   return P;
 }
-export function figCues(s, prev = null) {
+// engine-eng-tools: зміст англійською (subjectLang "en") — англійські сигнали; українські на англійському тексті не спрацювали б (тихо вимкнено).
+// ref — «look at / in / on / under / use / study / read the (this, these…) [одне слово] picture / photo / map / chart…», «the picture below»,
+// «picture 2»; graph — згадка map / diagram / chart / graph; FIG_MAKE_EN — намалювати чи скласти самому, не згадка.
+// «Look at the end of the word», «Draw a picture», «I like taking photos» — не посилання. geo (геометрія українською) для en вимкнено.
+const EN_FIG = "(?:pictures?|photos?|photographs?|images?|illustrations?|drawings?|maps?|diagrams?|charts?|graphs?|posters?|cartoons?)";
+const FIG_REF_EN = new RegExp(`\\b(?:look\\s+at|see|in|on|under|use|study|read)\\s+(?:the|this|these|that|those)\\s+(?:[a-z]+\\s+)?${EN_FIG}\\b|\\b${EN_FIG}\\s+(?:below|above|on\\s+the\\s+(?:left|right))\\b|\\b(?:picture|photo|fig\\.?|figure)\\s+\\d`, "i");
+const FIG_GRAPH_EN = /\b(?:maps?|diagrams?|charts?|graphs?)\b/i;
+const FIG_MAKE_EN = /\b(?:draw|make|create|design)\s+(?:[a-z]+\s+){0,3}(?:maps?|diagrams?|charts?|graphs?|pictures?)\b/i;
+/** lang — мова змісту предмета (subjectLang): "" — українські сигнали, "en" — англійські. */
+export function figCues(s, prev = null, lang = "") {
   if (!s) return null;
   const raw = [s.title, s.body, s.q].filter(x => typeof x === "string").join(" ");   // text — речення мовної вправи, не умова
   const text = raw.replace(/<[^>]+>/g, " ");
   const prose = text.replace(/\$\$[\s\S]*?\$\$|\$[^$]*\$/g, " Ф ");
   const ill = hasIllustration(s), prevIll = hasIllustration(prev);
-  const ref = prose.match(FIG_REF)?.[0]?.trim();
-  const pts = figPoints(text), geo = FIG_GEO.test(prose) && pts.size >= 3;
-  const graph = FIG_MAKE.test(prose) ? null : prose.match(FIG_GRAPH)?.[0]?.trim();
+  const en = lang === "en";
+  const ref = prose.match(en ? FIG_REF_EN : FIG_REF)?.[0]?.trim();
+  const pts = figPoints(text), geo = !en && FIG_GEO.test(prose) && pts.size >= 3;
+  const graph = (en ? FIG_MAKE_EN : FIG_MAKE).test(prose) ? null : prose.match(en ? FIG_GRAPH_EN : FIG_GRAPH)?.[0]?.trim();
   const level = ref ? "ref" : geo ? "geo" : graph ? "graph" : null;
   if (!level) return null;
   // intro — сюжетний вступ («На кресленні двору…»): validate про нього не попереджає, fig-audit показує окремою групою (рев'ю P3-2)

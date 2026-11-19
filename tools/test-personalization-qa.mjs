@@ -311,6 +311,10 @@ check(() => assert(!skDiag('coord').warnings.some(w => w.startsWith('dgfx6/c1'))
   check(() => assert(A(pool([I('z', 'fu5b', 1)])).errors.includes('pufx/z: boss не тренується')));
   check(() => assert(A(pool([])).errors.some(e => /нуль вправ|немає items/.test(e))));
   check(() => assert(A(pool(full('fu5rml1').map(x => ({ ...x, sk: 'text' })), { section: 'fu5rm' })).errors.some(e => e.includes('«Пишемо самі»'))));
+  // engine-eng-tools: поле розділу noPool: true (предмет без «Пишемо самі», eng) — так само без пулу (lib.noPool)
+  { const eng = { ...ukr, id: 'eng', sections: [...ukr.sections, { id: 'fe5w', grade: 5, title: 'Write it yourself', noPool: true, lessons: [SL('fe5wl1', ['text'])] }] };
+    check(() => assert(A(pool(full('fe5wl1').map(x => ({ ...x, sk: 'text' })), { section: 'fe5w' }), eng).errors.some(e => e.includes('fe5w') && e.includes('noPool'))));
+    check(() => assert.deepEqual(A(pool([...full('fu5l1'), ...full('fu5l2')]), eng).errors, [])); }
   // run(): --pool пулу ukr — гілка без матриці; rc 1 лише за помилки, --strict — і за прогалини; невідомий пул — як і раніше «Невідомий пул»
   { const runOut = (args, p) => { const lines = [], log = console.log; console.log = (...a) => lines.push(a.join(' '));
       try { return { rc: qa.run(args, () => ({ subjects: [{ ...ukr, pools: [p] }], learn })), out: lines.join('\n') }; } finally { console.log = log; } };

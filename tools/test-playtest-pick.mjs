@@ -58,6 +58,21 @@ ok(p.why.a.length === 2 && p.why.a[0] === "змінено", "pick: причин�
   ok(!z.ids.includes("big") && z.ids.includes("dm"), "бюджет 0: big не пройдено, тест рівня — так", JSON.stringify(z.ids));
   eq(pick(content, ["content/m/diag-g5.js"], { maxLessons: 0 }).ids[0], "dm", "бюджет 0: тест рівня (0 уроків) — у межах"); }
 
+// 5a. engine-eng-tools: предмет з мовою змісту (targetLang, subjectLang) — оцінювані типи ще й з позначкою мови (word@en: англійська
+//     гілка lang.js), тож англійський розділ потрапляє в покриття, навіть якщо той самий тип уже є в українському; нові типи
+//     (build, match, dialog) — звичайні type:*; теорія й вступ мовної позначки не мають; предмет без targetLang — як раніше
+{ const ENG = { id: "e", targetLang: "en", diags: [], sections: [
+    { id: "e1", lessons: [L("intro", "info", "word", "build", "match", "dialog")] } ] };
+  const fe = [...features("e", ENG.sections[0], "en")].sort();
+  eq(fe, ["subject:e", "type:build", "type:build@en", "type:dialog", "type:dialog@en", "type:info", "type:intro", "type:match", "type:match@en", "type:word", "type:word@en"],
+    "features з мовою: оцінювані типи ще й з @en, теорія — без");
+  eq([...features("u", { lessons: [L("word")] })].sort(), ["subject:u", "type:word"], "features без мови — без @");
+  const U = { id: "u", diags: [], sections: [{ id: "uw", lessons: [L("word", "build", "match", "dialog")] }] };
+  const cvE = cover([U, ENG]);
+  ok(cvE.some(x => x.id === "e1" && x.why.includes("type:word@en")), "cover: англійський розділ — заради word@en", JSON.stringify(cvE));
+  eq(cover([U, { ...ENG, targetLang: "de" }]).find(x => x.id === "e1")?.why.filter(k => k.includes("@")) || [], [], "cover: targetLang поза TARGET_LANGS — без @ (subjectLang)");
+  eq(cover([U, { ...ENG, targetLang: undefined }]).find(x => x.id === "e1")?.why.filter(k => k.includes("@")) || [], [], "cover: без targetLang — без @"); }
+
 // 6. CLI на справжньому змісті — лише інваріанти: код 0, непорожній список id через кому, файл розділу дає свій id першим
 { const r = spawnSync(process.execPath, [path.join(ROOT, "tools/playtest-pick.mjs"), "no/such/file.js"], { cwd: ROOT, encoding: "utf8" });
   ok(r.status === 0 && /^[\w-]+(,[\w-]+)*\n$/.test(r.stdout), "CLI: код 0, id через кому", r.stdout + r.stderr);

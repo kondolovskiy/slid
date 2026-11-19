@@ -1,6 +1,6 @@
 // Structural acceptance against the curator's matrix; no network and no mathematical verification.
 import { pathToFileURL } from 'node:url';
-import { loadContent, readJSON, diagCtx, NO_POOL_SECTION } from './lib.mjs';
+import { loadContent, readJSON, diagCtx, noPool } from './lib.mjs';
 
 // Вимогу exactRoot закриває також list, у ключі якого є точний корінь (√, ∛…) і який checkAns справді перевіряє точно:
 // ключ як записано — "ok", ключ із десятковими наближеннями коренів — "bad". Наближення, π без кореня, числовий list — ні.
@@ -149,7 +149,7 @@ export function auditOther(subject, d, learn, all = []) {
 
 // Пул не з math (ukr; engine-pool-lang): матриці покриття немає, тож правило — власне й просте:
 //  - помилки (rc 1): learn.validatePool (той самий, що в validate.mjs: розмітка мовних вправ, поля, межі), вправа на boss-уроці,
-//    повторений id пулу, нуль вправ, пул розділу «Пишемо самі» (NO_POOL_SECTION — письмо автоматично не перевірити);
+//    повторений id пулу, нуль вправ, пул розділу без пулу (lib.noPool: noPool: true чи «Пишемо самі» — письмо автоматично не перевірити);
 //  - прогалини (лише --strict, D-050 п. 7): кожен не-boss урок розділів пулу (section + also), що має оцінювані екрани зі sk, — ≥ 3 вправи
 //    і всі рівні 1–3; sk вправи — серед sk екранів її уроку; статус verified / approved.
 //  Урок без оцінюваних екранів (лише читання й письмо) тренувати нічим — він у skipped, а не в прогалинах.
@@ -160,7 +160,7 @@ export function auditOtherPool(subject, p, learn) {
   errors.push(...[...learn.validatePool(p, ctx)].map(e => `${p.id}: ${e}`));
   if ((subject.pools || []).filter(x => x.id === p.id).length > 1) errors.push(`Повторений пул ${p.id}`);
   const homes = [p.section, ...(Array.isArray(p.also) ? p.also : [])].map(id => subject.sections.find(s => s.id === id)).filter(Boolean);
-  for (const s of homes) if (NO_POOL_SECTION.test(s.title || "")) errors.push(`${p.id}: розділ ${s.id} «${s.title}» — без пулу: «Пишемо самі» (письмо) автоматично не перевірити`);
+  for (const s of homes) if (noPool(s)) errors.push(`${p.id}: розділ ${s.id} «${s.title}» — без пулу: ${s.noPool === true ? "noPool: true" : "«Пишемо самі»"} (письмо) автоматично не перевірити`);
   const items = p.items || [], lessons = new Map(homes.flatMap(s => (s.lessons || []).map(l => [l.id, l])));
   if (!items.length) errors.push(`${p.id}: нуль вправ для перевірки`);
   for (const it of items) if (lessons.get(it.lesson)?.boss) errors.push(`${p.id}/${it.id}: boss не тренується`);

@@ -243,8 +243,8 @@ function diagFormatIssues(s) {
 // tools-math-fig-audit: умова прямо посилається на рисунок («на рисунку», «за графіком», «на кресленні»), а ілюстрації немає
 // ні на екрані, ні (в уроці) на попередньому екрані — попередження; повний перелік із геометрією без рисунка — tools/fig-audit.mjs.
 // Сюжетний вступ (intro) не попереджає: його показує fig-audit окремою групою
-function figRef(S, s, prev = null) {
-  const cue = figCues(s, prev);
+function figRef(S, s, prev = null, lang = "") {   // lang — subjectLang(c): англійські сигнали для eng (engine-eng-tools)
+  const cue = figCues(s, prev, lang);
   if (cue?.level === "ref" && !cue.intro && !cue.ill && !cue.prevIll) W(S, `умова посилається на рисунок («${cue.ref}»), а ілюстрації (fig, img, svg, lab) немає — додай рисунок точно за умовою або перепиши умову`);
 }
 // заборонені фрази, яких дитина не бачить як зразок (engine-lang-p3, п. 6): у <s>…</s> (закреслене — помилка, яку урок виправляє),
@@ -479,7 +479,7 @@ for (const c of subjects) for (const sec of c.sections) {
     if (!l.outro?.text || !Array.isArray(l.outro.learned) || l.outro.learned.length < 2 || l.outro.learned.length > 4) E(L, "outro: потрібні text і 2–4 пункти learned");
     if (l.screens?.[0]?.type !== "intro") E(L, "перший екран має бути intro (проблема, з якої починається урок)");
     if (EUPHONY[c.id] && !tl) euphonyWarn(L, [l.title, l.why, l.outro?.text, ...(l.outro?.learned || [])].filter(t => typeof t === "string").flatMap(euphonyIssues));
-    l.screens.forEach((s, i) => { checkScreen(`${L} екран ${i + 1} (${s.type})`, s, c, false); figRef(`${L} екран ${i + 1} (${s.type})`, s, l.screens[i - 1]);
+    l.screens.forEach((s, i) => { checkScreen(`${L} екран ${i + 1} (${s.type})`, s, c, false); figRef(`${L} екран ${i + 1} (${s.type})`, s, l.screens[i - 1], subjectLang(c));
       // згорнутий переклад uk — лише 4–5 кл. (D-054, доповнення п. 5); решту правил uk — checkScreen
       if (s.uk !== undefined && !UK_GRADES.includes(sec.grade)) E(`${L} екран ${i + 1} (${s.type})`, `uk — лише ${UK_GRADES.join("–")} кл. (D-054, доповнення п. 5), а розділ ${sec.grade} кл.`); });
     if (tl) for (const m of CC.cyrillicInEnglish({ title: l.title, why: l.why, outro: l.outro })) W(L, m);
@@ -509,7 +509,7 @@ for (const c of subjects) for (const d of c.diags || []) {
   for (const m of learn.validate(d, { ...subjectMaps(c, subjects), skills: c.skills })) E(D, m);
   if (!d.meta) W(D, "немає meta {author, created, factcheck, teacher}");
   authorWarn(D, d.meta);
-  (d.items || []).forEach((s, i) => { if (TYPES.includes(s.type)) { checkScreen(`${D} завдання ${i + 1} (${s.type})`, s, c, true); figRef(`${D} завдання ${i + 1} (${s.type})`, s);
+  (d.items || []).forEach((s, i) => { if (TYPES.includes(s.type)) { checkScreen(`${D} завдання ${i + 1} (${s.type})`, s, c, true); figRef(`${D} завдання ${i + 1} (${s.type})`, s, null, subjectLang(c));
     maxTextItem(`${D} завдання ${i + 1} (${s.type})`, s, c, d.grade); } });
   if (subjectLang(c)) for (const m of CC.cyrillicInEnglish({ title: d.title, why: d.why, topics: (d.topics || []).map(t => ({ title: t.title })) })) W(D, m);
   const ch = (d.items || []).filter(s => s.type === "choice" && Number.isInteger(s.correct));
@@ -528,7 +528,7 @@ for (const c of subjects) for (const p of c.pools || []) {
   authorWarn(D, p.meta);
   // генератор (gen): екран перевіряємо на першому наборі значень — так, як його побачить дитина (правила gen — learn.validatePool)
   (p.items || []).forEach((s0, i) => { const s = s0.gen !== undefined ? learn.genInstance(s0, "validate", 0) || s0 : s0;
-    if (TYPES.includes(s.type)) { checkScreen(`${D} задача ${i + 1} «${s.id}» (${s.type})`, { ...s, fbText: (s.steps || []).join(" ") }, c, true, true); figRef(`${D} задача ${i + 1} «${s.id}» (${s.type})`, s);
+    if (TYPES.includes(s.type)) { checkScreen(`${D} задача ${i + 1} «${s.id}» (${s.type})`, { ...s, fbText: (s.steps || []).join(" ") }, c, true, true); figRef(`${D} задача ${i + 1} «${s.id}» (${s.type})`, s, null, subjectLang(c));
       maxTextItem(`${D} задача ${i + 1} «${s.id}» (${s.type})`, s, c, sectionLessons.get(p.section)?.grade); }
     // мовна вправа, sort, order (engine-pool-lang): на рівнях 2–3 підказка після першої помилки — як у шаблоні задачі пулу
     if (learn.EXPLAIN_TYPES?.includes(s.type) && s.lvl >= 2 && !s.hint) W(`${D} задача ${i + 1} «${s.id}» (${s.type})`, "вправа рівня 2–3 без hint — підказки після першої помилки не буде"); });

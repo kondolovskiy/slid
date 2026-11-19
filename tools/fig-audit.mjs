@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // Слід · аудит рисунків: де умова задачі посилається на рисунок або без нього незрозуміла, а ілюстрації (fig/img/svg/lab) немає.
-// Евристики — figCues (tools/lib.mjs), ті самі, що й у правилі validate «умова посилається на рисунок».
+// Евристики — figCues (tools/lib.mjs), ті самі, що й у правилі validate «умова посилається на рисунок»; для предмета з targetLang "en" — англійські
+// («look at the picture», «on the map», «the picture below»; geo вимкнено), engine-eng-tools.
 //   ref   — пряме посилання: «на рисунку», «за графіком», «на кресленні», «на діаграмі», «зображено на»;
 //   geo   — геометрія з ≥ 3 позначеннями точок у формулах ($\triangle ABC$, $BB_1$) — рисунок, імовірно, потрібен;
 //   graph — згадка графіка, координатної площини, діаграми, «на плані», «на схемі» без прямого посилання — перевір вручну
@@ -10,7 +11,7 @@
 // Запуск: node tools/fig-audit.mjs [--subject math] [--json] [--quiet]
 //   → reports/fig-audit-<предмет>.md; --json — те саме JSON-ом у stdout (файл .json не пишеться: шум у diff на кожен check, рев'ю P3-5). Код виходу завжди 0: це звіт для автора, а не перевірка (перевірка — validate).
 import fs from "node:fs"; import path from "node:path";
-import { loadContent, figCues, ROOT } from "./lib.mjs";
+import { loadContent, figCues, subjectLang, ROOT } from "./lib.mjs";
 
 const args = process.argv.slice(2);
 const KNOWN = new Set(["--subject", "--json", "--quiet"]);
@@ -22,11 +23,13 @@ const c = subjects.find(x => x.id === sid);
 if (!c) { console.error(`предмет «${sid}» не знайдено`); process.exit(2); }
 
 const rows = [];
-// мовні предмети: «на схемі» — схема речення, а не рисунок; така згадка — шум у звіті (рев'ю tools-math-ister-p3 P3-3)
+// мовні предмети: «на схемі» — схема речення, а не рисунок; така згадка — шум у звіті (рев'ю tools-math-ister-p3 P3-3).
+// Предмет з мовою змісту (subjectLang, eng — engine-eng-tools) — англійські сигнали figCues (lang); «схем» там не трапляється
 const LANG_SUBJECTS = new Set(["ukr"]);
+const lang = subjectLang(c);
 const add = (file, where, kind, s, prev) => {
-  const cue = figCues(s, prev); if (!cue || cue.ill) return;
-  if (cue.level === "graph" && LANG_SUBJECTS.has(sid) && /схем/i.test(cue.graph || "")) return;
+  const cue = figCues(s, prev, lang); if (!cue || cue.ill) return;
+  if (cue.level === "graph" && (LANG_SUBJECTS.has(sid) || lang) && /схем/i.test(cue.graph || "")) return;
   const group = cue.intro ? (cue.level === "graph" ? null : "intro") : cue.level === "ref" && cue.prevIll ? "prev" : cue.level;
   if (!group) return;
   rows.push({ group, file, where, kind, type: s.type, ...cue });

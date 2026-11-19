@@ -417,6 +417,9 @@ expectRun("drag: at і без drag — без попередження", one("fx
     run("кирилиця в назві розділу", { sec: { title: "Множина" } }, { warn: "#fxen: кирилиця в змісті англійською: title" });
     run("кирилиця в credits розділу й uk — не попередження", { sec: { credits: [["Кіт", "Автор", "CC0", "https://example.org/a.png"]] }, info: { uk: "<p>Переклад.</p>" } }, { noWarn: "кирилиця" });
     run("кирилична «с» у «сats»", { extra: [{ ...CH, opts: ["сats", "cat"] }] }, { warn: "U+0441" });
+    // engine-eng-tools: figRef — англійські сигнали (Look at the picture) для предмета з targetLang; з img — чисто
+    run("«Look at the picture» без ілюстрації — попередження", { extra: [{ ...CH, body: "<p>Look at the picture. Which word is plural?</p>" }] }, { warn: "умова посилається на рисунок («Look at the picture»)" });
+    run("«Look at the picture» з fig — чисто", { extra: [{ ...CH, body: "<p>Look at the picture. Which word is plural?</p>", fig: { kind: "bar", parts: 4, filled: 1 } }] }, { noWarn: "умова посилається на рисунок" });
     // uk — лише 4–5 кл.
     run("uk у 4 кл. — без помилки", { grade: 4, info: { uk: "<p>Додаємо -s.</p>" } }, {});
     run("uk у 6 кл. — помилка", { grade: 6, info: { uk: "<p>Додаємо -s.</p>" } }, { err: "uk — лише 4–5 кл." });
@@ -813,6 +816,24 @@ const { figCues: figCuesT, figPoints: figPointsT } = await import(path.join(ROOT
     // intro: cue з intro: true; validate мовчить, fig-audit — група intro
     const ci = figCuesT({ type: "intro", title: "Двір", body: "На кресленні двору є трикутний газон." });
     ok(ci?.level === "ref" && ci.intro === true && figCuesT({ type: "answer", body: "На кресленні двору." })?.intro === false, "figCues: intro повертає cue з intro: true", JSON.stringify(ci)); }
+  // engine-eng-tools: мова змісту "en" (subjectLang) — англійські сигнали замість українських; geo (українська геометрія) вимкнено
+  { const en = (body, type = "choice") => figCuesT({ type, title: "Task", body }, null, "en")?.level ?? null;
+    for (const b of ["Look at the picture. Who is it?", "What can you see in the photo?", "Find London on the map.", "Look at the pictures below and answer.",
+      "The picture below shows a park.", "Use the chart to answer the question.", "Look at picture 2.", "Who is in the drawing?", "Study this diagram."])
+      ok(en(b) === "ref", `figCues en: «${b}» — посилання (ref)`, String(en(b)));
+    for (const b of ["Draw a picture of your family.", "Look at the end of the word.", "Look at the sentences and choose.", "I like taking photos.", "My plan for the weekend.",
+      "Make a chart of your favourite food.", "На рисунку кіт.", "In triangle $ABC$ find the angle."])
+      ok(en(b) === null, `figCues en: «${b}» — не посилання`, String(en(b)));
+    ok(en("A map of the town has three streets.") === "graph" && en("The bar chart shows our pets.") === "graph" && en("Read the bar chart about pets.") === "ref", "figCues en: map / chart без прямого посилання — згадка (graph); «read the bar chart» — ref");
+    ok(figCuesT({ type: "choice", title: "Task", body: "Look at the picture." }) === null && figCuesT({ type: "choice", body: "На рисунку кіт." })?.level === "ref",
+      "figCues без мови — українські сигнали, як раніше (англійські не діють)");
+    const ei = figCuesT({ type: "intro", title: "Hi", body: "Look at the picture of the park." }, null, "en");
+    ok(ei?.level === "ref" && ei.intro === true, "figCues en: intro — cue з intro: true", JSON.stringify(ei));
+    ok(figCuesT({ type: "choice", body: "Look at the picture.", img: "img/eng/x/a.png" }, null, "en")?.ill === true, "figCues en: img на екрані — ill"); }
+  // engine-eng-tools: noPool — поле розділу noPool: true або назва «Пишемо самі…» (NO_POOL_SECTION)
+  { const { noPool } = await import(path.join(ROOT, "tools/lib.mjs"));
+    ok(noPool({ title: "Write it yourself", noPool: true }) && noPool({ title: "Пишемо самі: лист" }) && !noPool({ title: "Plurals" }) && !noPool({ title: "x", noPool: "yes" }) && !noPool(null),
+      "noPool: noPool: true або «Пишемо самі»; інакше (і noPool не true) — ні"); }
   const introTree = files => Object.fromEntries(Object.entries(files).map(([f, src]) => [f, src.replace('"Як записати число?"', '"На кресленні двору трикутник $ABC$ і газон $|x|$."')]));
   expectRun("intro «На кресленні двору» без ілюстрації — validate не попереджає", introTree(one("fxf", {})), ["--section", "fxf"], { noWarn: REF });
   runTree(introTree(one("fxf", { body: "У паралелепіпеді $ABCDA_1B_1C_1D_1$ знайди ребро $BB_1$.", extra: { type: "answer", title: "Висота", body: "За графіком знайди висоту.", answer: 4 } })), ["--section", "fxf"]);
@@ -836,6 +857,19 @@ const { figCues: figCuesT, figPoints: figPointsT } = await import(path.join(ROOT
       const r2 = spawnSync(process.execPath, [path.join(tmp, "tools/fig-audit.mjs"), "--subject", dir, "--json"], { cwd: tmp, encoding: "utf8" });
       let j = null; try { j = JSON.parse(r2.stdout); } catch {}
       ok(j && JSON.stringify(j.rows.map(x => `${x.where}:${x.group}`)) === JSON.stringify(want), `fig-audit ${dir}: «На схемі» → ${JSON.stringify(want)}`, (r2.stdout || "") + (r2.stderr || "")); } }
+  // engine-eng-tools: предмет з targetLang "en" — англійські сигнали (subjectLang): «Look at the picture» без ілюстрації — ref, «a map of» — graph,
+  // з fig — не в звіті; українська геометрія (geo) і «На схемі» не діють
+  { const subj = `SLID.subject(${JSON.stringify({ id: "fxfa", subject: "Фікстура", short: "Ф", icon: "frac", colors: { light: { accent: "#000" }, dark: { accent: "#fff" } }, skills: { gram: { name: "Граматика", hint: "Речення" } }, targetLang: "en" })});\n`;
+    const sc = (body, x = {}) => ({ type: "choice", sk: "gram", title: "Task", body: `<p>${body}</p>`, opts: ["a", "b"], correct: 0, fbText: "Because.", ...x });
+    const sec = { id: "fxfa", grade: 5, weeks: [1, 2], title: "Pictures", why: "To read pictures and maps in English.", meta: { author: "test", created: "2026-11-19", factcheck: null, teacher: null },
+      lessons: [{ id: "fxfal1", title: "Pictures", status: "draft", screens: [{ type: "intro", title: "Hi", body: "<p>Hello!</p>" }, sc("Look at the picture. Who is it?"), sc("A map of the town has three streets."),
+        sc("Look at the picture.", { fig: { kind: "bar", parts: 4, filled: 1 } }), sc("In triangle $ABC$ find the angle $B$."), sc("На схемі кіт.")] }] };
+    runTree({ "content/fxfa/aa-subj.js": subj, "content/fxfa/g5-fxfa.js": secJS("fxfa", sec) }, ["--section", "fxfa"]);
+    const r3 = spawnSync(process.execPath, [path.join(tmp, "tools/fig-audit.mjs"), "--subject", "fxfa", "--json"], { cwd: tmp, encoding: "utf8" });
+    let j = null; try { j = JSON.parse(r3.stdout); } catch {}
+    ok(j && JSON.stringify(j.rows.map(x => `${x.where}:${x.group}`)) === JSON.stringify(["fxfal1 екран 2:ref", "fxfal1 екран 3:graph"]) && j.screens === 6,
+      "fig-audit eng: «Look at the picture» — ref, «A map of» — graph; з fig, геометрія й «На схемі» — ні", (r3.stdout || "") + (r3.stderr || ""));
+    fs.rmSync(path.join(tmp, "content/fxfa"), { recursive: true, force: true }); }
   const bad = spawnSync(process.execPath, [path.join(tmp, "tools/fig-audit.mjs"), "--subjekt", "math"], { cwd: tmp, encoding: "utf8" });
   ok(bad.status === 2, "fig-audit: невідомий аргумент — код 2", String(bad.status)); }
 
