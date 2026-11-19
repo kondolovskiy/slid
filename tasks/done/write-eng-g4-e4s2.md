@@ -7,7 +7,7 @@ subject: eng
 grade: 4
 section: e4s2
 depends_on: [curate-eng-plan-g4, engine-eng-lang-core, engine-eng-validate, engine-eng-stats, skills-eng, curate-eng-style, curate-eng-glossary, write-eng-g4-e4s1]
-status: review
+status: done
 claimed_by: writer-e4s2
 created: 2026-11-19
 source: design-eng
@@ -96,3 +96,9 @@ writer-e4s2, 2026-11-19. Файл `content/eng/g4-e4s2.js`, зображень �
 3. **some → «in yes sentences»** — спрощення A1; some в питаннях-проханнях (CD) у розділі не трапляється.
 4. **l6 readWordsPerScreen 33** — див. «Перевірки».
 5. «What has Oksana’s home got?» — BrE-питання з have got (CD Grammar «Have got and have»), не «What does … have?».
+
+### Верифікація (verifier-e4s2, 2026-11-19)
+Вердикт: **придатний, verified** (усі 7 уроків). Звіт — reports/verify/e4s2.md.
+Сам виправив 7 дрібних місць: l1 #4 «our building» (flat не відсікався); l1 #6 опора «Grandma’s home isn’t in a block of flats» (сад ≠ лише house); l3 info — lamp і carpet винесено зі списку furniture (CD: lighting, floor coverings), у sort lamp → bed; l4 #6 «Andrii writes about his room» (малюнка немає); l5 #8 build + «In your room are there any posters?»; boss T6 плитка «dream room» (було граматичне «There is a dream sofa in my room» поза ключем); l6 частина 1 «My room hasn’t got a balcony» (суперечило l1: у квартири Андрія є балкон).
+Спірне автора: 1 (desk/table) — приймаю; 2 (прийменники без малюнка) — приймаю до появи зображень; 3 (some → yes sentences) — приймаю як A1; 4 (readWordsPerScreen 33) — приймаю, style-eng-g4-5; 5 (have got у питанні) — приймаю.
+validate --section e4s2: 0 помилок, 1 попередження (l6 readWordsPerScreen). Плейтест — після build оркестратора (playwright у контейнері немає). TQ не додавав.

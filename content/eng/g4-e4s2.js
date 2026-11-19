@@ -5,7 +5,7 @@
    https://lib.iitta.gov.ua/714276/1/%D0%A2%D0%9E%D0%9F_3_4_2018.pdf
    Увесь зміст — англійською, британська норма (D-054). Тексти, діалоги й герої — власні (docs/design/english.md §8); герої й місця — як у e4s1.
    Форми й наголос — за Cambridge Dictionary і OALD (URL — tasks/…/write-eng-g4-e4s2.md, «Нотатки агента»).
-   Статус: draft. 7 уроків (6 + фінал).
+   Статус: verified (verifier-e4s2, 2026-11-19, reports/verify/e4s2.md). 7 уроків (6 + фінал).
    Перевірка: node tools/validate.mjs --section e4s2 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -15,7 +15,7 @@ SLID.section("eng", {
   title: "My home",
   why: "To describe your home and your room. And to say where things are.",
   requires: ["e4s1l2", "e4s1l4", "e4s1l5"],
-  meta: { author: "writer-e4s2", created: "2026-11-19", factcheck: "self", teacher: null },
+  meta: { author: "writer-e4s2", created: "2026-11-19", factcheck: "verifier-e4s2 (reports/verify/e4s2.md)", teacher: null },
   badges: [
     { id: "e4s2boss", name: "Home designer", icon: "trophy", desc: "Finish the final lesson “My home”" }
   ],
@@ -26,7 +26,7 @@ SLID.section("eng", {
       title: "Homes: a house or a flat?",
       short: "Homes",
       icon: "home",
-      status: "draft",
+      status: "verified",
       why: "Some people live in a house. Some people live in a flat. Talk about your home.",
       screens: [
         {
@@ -63,7 +63,7 @@ SLID.section("eng", {
           type: "choice",
           sk: "read",
           title: "Read and choose.",
-          body: `<p>Emma: “Only my family lives in our home. It’s got a big garden.”</p><p>What is Emma’s home?</p>`,
+          body: `<p>Emma: “Only my family lives in our building. It’s got a big garden.”</p><p>What is Emma’s home?</p>`,
           opts: [
             "a flat",
             "a house",
@@ -95,11 +95,11 @@ SLID.section("eng", {
           sk: "vocab",
           title: "Fill in the gaps.",
           body: `<p>Andrii writes to Emma.</p>`,
-          text: "I live in a {*flat|house} in a block of flats. We take the {*lift|garden}. Our flat {*has|have} got a balcony. Grandma has got a {*house|flat} with a big garden.",
+          text: "I live in a {*flat|house} in a block of flats. We take the {*lift|garden}. Our flat {*has|have} got a balcony. Grandma’s home isn’t in a block of flats. She has got a {*house|flat} with a big garden.",
           hint: "Which home is in a block of flats?",
           fbOk: "Exactly.",
           fbBad: "Look at the list again.",
-          fbText: "A home in a block of flats is a <b>flat</b>. We take the <b>lift</b>. Our flat <b>has</b> got a balcony. A home with a garden is a <b>house</b>."
+          fbText: "A home in a block of flats is a <b>flat</b>. We take the <b>lift</b>. Our flat <b>has</b> got a balcony. Grandma’s home isn’t in a block of flats: it’s a <b>house</b>."
         },
         {
           type: "stress",
@@ -158,7 +158,7 @@ SLID.section("eng", {
       title: "Rooms: there is, there are",
       short: "Rooms",
       icon: "map",
-      status: "draft",
+      status: "verified",
       why: "Show a friend your home. Say what rooms it has got.",
       screens: [
         {
@@ -288,7 +288,7 @@ SLID.section("eng", {
       title: "Furniture in my room",
       short: "Furniture",
       icon: "bulb",
-      status: "draft",
+      status: "verified",
       why: "Tell a friend what is in your room.",
       screens: [
         {
@@ -318,7 +318,7 @@ SLID.section("eng", {
         {
           type: "info",
           title: "Furniture",
-          body: `<p>These things are <b><u>fur</u>niture</b>:</p><ul><li>a <b>bed</b> – you sleep in it</li><li>a <b>desk</b> – you do homework at it</li><li>a <b>chair</b> – you sit on it</li><li>a <b><u>ward</u>robe</b> – your clothes are in it</li><li>a <b>shelf</b> – your books are on it</li><li>a <b>lamp</b> – it gives light</li><li>a <b><u>car</u>pet</b> – it’s on the floor</li></ul>`,
+          body: `<p>These things are <b><u>fur</u>niture</b>:</p><ul><li>a <b>bed</b> – you sleep in it</li><li>a <b>desk</b> – you do homework at it</li><li>a <b>chair</b> – you sit on it</li><li>a <b><u>ward</u>robe</b> – your clothes are in it</li><li>a <b>shelf</b> – your books are on it</li></ul><p>Also in a room:</p><ul><li>a <b>lamp</b> – it gives light</li><li>a <b><u>car</u>pet</b> – it’s on the floor</li></ul>`,
           cta: "Next"
         },
         {
@@ -388,11 +388,11 @@ SLID.section("eng", {
             ["hall", 0],
             ["wardrobe", 1],
             ["desk", 1],
-            ["lamp", 1]
+            ["bed", 1]
           ],
           fbOk: "Good eye!",
           fbBad: "Can you walk into it? Then it’s a room.",
-          fbText: "Rooms: <b>kitchen</b>, <b>bedroom</b>, <b>hall</b>. Furniture: <b>wardrobe</b>, <b>desk</b>, <b>lamp</b>."
+          fbText: "Rooms: <b>kitchen</b>, <b>bedroom</b>, <b>hall</b>. Furniture: <b>wardrobe</b>, <b>desk</b>, <b>bed</b>."
         },
         {
           type: "gaps",
@@ -423,7 +423,7 @@ SLID.section("eng", {
       title: "Where is the cat? In, on, under, next to",
       short: "Where is it?",
       icon: "target",
-      status: "draft",
+      status: "verified",
       why: "Things get lost at home. Say where they are.",
       screens: [
         {
@@ -486,7 +486,7 @@ SLID.section("eng", {
           type: "gaps",
           sk: "gram",
           title: "Fill in the gaps.",
-          body: `<p>Look at Andrii’s room.</p>`,
+          body: `<p>Andrii writes about his room.</p>`,
           text: "The carpet is {*on|under} the floor. My clothes are {*in|under} the wardrobe. The chair is {*next to|in} the desk. My football is {*under|on} the bed. It’s dark there.",
           hint: "Where is it dark: on the bed or under it?",
           fbOk: "Exactly.",
@@ -555,7 +555,7 @@ SLID.section("eng", {
       title: "Is there a lamp? Are there any books?",
       short: "Questions",
       icon: "eye",
-      status: "draft",
+      status: "verified",
       why: "Ask a friend about their room. Answer their questions.",
       screens: [
         {
@@ -636,7 +636,7 @@ SLID.section("eng", {
           title: "Put the words in order.",
           body: `<p>Emma asks Andrii a question.</p>`,
           tiles: ["are", "there", "any", "posters", "in", "your", "room"],
-          answer: "Are there any posters in your room?",
+          answer: ["Are there any posters in your room?", "In your room are there any posters?"],
           extra: ["is"],
           hint: "A question: which word comes first?",
           fbOk: "Good eye!",
@@ -684,7 +684,7 @@ SLID.section("eng", {
       title: "My dream room: reading and writing",
       short: "Dream room",
       icon: "book",
-      status: "draft",
+      status: "verified",
       why: "Read about a dream room. Then write about your dream room.",
       screens: [
         {
@@ -699,7 +699,7 @@ SLID.section("eng", {
           sk: "read",
           eyebrow: "Reading: Andrii’s dream room, part 1 of 3",
           title: "Read and choose.",
-          body: `<p><i>I live in a flat in Kyiv. My room is small. My sister Sofiia sleeps there too. There are two beds and a desk. We haven’t got a balcony.</i></p><p>Who sleeps in Andrii’s room?</p>`,
+          body: `<p><i>I live in a flat in Kyiv. My room is small. My sister Sofiia sleeps there too. There are two beds and a desk. My room hasn’t got a balcony.</i></p><p>Who sleeps in Andrii’s room?</p>`,
           opts: [
             "Andrii and Sofiia",
             "Andrii and Emma",
@@ -831,7 +831,7 @@ SLID.section("eng", {
       title: "Welcome to my new home!",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e4s2boss",
       why: "Check everything from this section. Your points are doubled.",
@@ -924,7 +924,7 @@ SLID.section("eng", {
           eyebrow: "Task 6",
           title: "Put the words in order.",
           body: `<p>Taras writes about his dream room.</p>`,
-          tiles: ["there", "is", "a", "sofa", "in", "my", "dream", "room"],
+          tiles: ["there", "is", "a", "sofa", "in", "my", "dream room"],
           answer: ["There is a sofa in my dream room.", "In my dream room there is a sofa."],
           extra: ["are"],
           pre: "e4s2l6",
