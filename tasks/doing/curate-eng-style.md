@@ -1,10 +1,12 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-19T12:21:32.856Z
 id: curate-eng-style
 type: curate
 subject: eng
 depends_on: [design-eng, engine-eng-stats]
 status: todo
-claimed_by: 
+claimed_by: style-eng
 created: 2026-11-19
 source: design-eng
 ---
