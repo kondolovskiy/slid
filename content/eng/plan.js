@@ -8,6 +8,11 @@
    Програма ліцею вимагає ТОП Шияна (№ 1273); її тексту немає — «роби поки без цього» (D-054, доповнення п. 7).
    Порядок тем програма не задає («рамкова», с. 60); розподіл граматики між розділами — наш, концентричний.
    35 тижнів, ≈ 6 уроків на розділ (D-054, доповнення п. 2). Звірка: reports/verify/plan-eng-g4.md.
+   5 клас — за модельною програмою «Іноземна мова. 5–9 класи» (Редько В. Г. та ін., наказ МОН № 795 від 12.07.2021):
+   теми, підтеми й функції 5 кл. — с. 20 (розд. 4.2.1), граматика A2 — с. 21–22 (розд. 4.4), результати на кінець 6 кл. — с. 15–19:
+   https://osvita.ua/doc/files/news/831/83117/Inoz_mov_5-9-kl_Redko_ta_in_14_07.pdf
+   Програма рамкова (с. 20): порядок тем і поєднання — вибір учителя; розподіл граматики A2 між 5 і 6 кл. і розділами — наш, концентричний
+   (спирається на 4 кл. e4s1–e4s8). requires не ставимо: уроків 4 кл. ще немає (reports/verify/plan-eng-g5.md §6). Звірка: plan-eng-g5.md.
    Перевірка: node tools/validate.mjs && node tools/stats.mjs
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -135,5 +140,165 @@ SLID.section("eng", {
     "School events: a concert, a sports day, a fair",
     "Every day or now? I play, I’m playing",
     "Notes and messages to friends"
+  ]
+});
+
+SLID.section("eng", {
+  id: "e5s1",
+  grade: 5,
+  weeks: [1, 4],
+  title: "Me, my family and friends",
+  why: "To talk about your family and your friends. And to say what your parents do.",
+  plan: [
+    "My family tree: who is who?",
+    "Have you got any brothers or sisters?",
+    "Whose is it? My, your, his, her",
+    "This, that, these, those: a family photo",
+    "What do your parents do? Jobs",
+    "My best friend: what does she like?"
+  ]
+});
+
+SLID.section("eng", {
+  id: "e5s2",
+  grade: 5,
+  weeks: [5, 8],
+  title: "School life",
+  why: "To talk about your school day and your timetable. And to understand your teacher in the English lesson.",
+  plan: [
+    "My timetable: subjects and days",
+    "My school day: I get up at seven",
+    "Does she walk to school? Questions and negatives",
+    "She’s always on time: always, usually, never",
+    "Open your books! Classroom activities",
+    "Can I…? Could you repeat that, please?"
+  ]
+});
+
+SLID.section("eng", {
+  id: "e5s3",
+  grade: 5,
+  weeks: [9, 12],
+  title: "Food and drink",
+  why: "To talk about the food you like. And to offer food to a friend and say “Yes, please” or “No, thank you”.",
+  plan: [
+    "Food and drink: my favourite meals",
+    "An apple or some bread? Countable and uncountable",
+    "Is there any milk? Some and any",
+    "How much? How many? A lot of",
+    "Would you like some juice? Offers",
+    "Dishes from Ukraine and the UK"
+  ]
+});
+
+SLID.section("eng", {
+  id: "e5s4",
+  grade: 5,
+  weeks: [13, 15],
+  title: "Clothes",
+  why: "To talk about clothes for every season. And to say what people are wearing now.",
+  plan: [
+    "Clothes: a jumper, a skirt, a coat",
+    "Trousers, jeans, shorts: a pair of…",
+    "What are you wearing today?",
+    "Clothes for every season",
+    "I usually wear…, but today I’m wearing…",
+    "School uniform: do you wear one?"
+  ]
+});
+
+SLID.section("eng", {
+  id: "e5s5",
+  grade: 5,
+  weeks: [16, 18],
+  title: "Weather: rain, sun and storms",
+  why: "To talk about the weather and compare days and seasons. And to understand a weather forecast.",
+  plan: [
+    "What’s the weather like today?",
+    "Storms, fog and rainbows",
+    "Hotter, colder, wetter: comparing the weather",
+    "More beautiful, better, worse",
+    "Tomorrow it will be sunny: a weather forecast",
+    "Seasons in Ukraine and the UK"
+  ]
+});
+
+SLID.section("eng", {
+  id: "e5s6",
+  grade: 5,
+  weeks: [19, 21],
+  title: "Free time, hobbies and holidays",
+  why: "To talk about your hobbies and what you can do well. And to make plans with a friend: say yes or say no politely.",
+  plan: [
+    "Free time: things to do at home and outside",
+    "I love drawing, I don’t like running",
+    "Swimming is fun! My hobby",
+    "I can swim well, but I can’t skate",
+    "Let’s go to the park! Saying yes or no",
+    "The school holidays: what do you like doing?"
+  ]
+});
+
+SLID.section("eng", {
+  id: "e5s7",
+  grade: 5,
+  weeks: [22, 24],
+  title: "My town or village",
+  why: "To say what there is in your town or village. And to ask the way and explain it.",
+  plan: [
+    "Places in town: a library, a bank, a park",
+    "Is there a cinema? There is, there are",
+    "Next to, opposite, between: where is it?",
+    "Excuse me, where is the station? Turn left, turn right",
+    "A walk around the town with a map",
+    "My town: a bit of history"
+  ]
+});
+
+SLID.section("eng", {
+  id: "e5s8",
+  grade: 5,
+  weeks: [25, 27],
+  title: "Festivals and traditions",
+  why: "To talk about festivals in Ukraine and the UK. And to say dates: “the first of January”.",
+  plan: [
+    "First, second, third: ordinal numbers",
+    "When’s your birthday? Months and dates",
+    "A calendar of festivals: Ukraine and the UK",
+    "How do you celebrate? Traditions",
+    "Last New Year was great! Was and were",
+    "Writing a greeting card"
+  ]
+});
+
+SLID.section("eng", {
+  id: "e5s9",
+  grade: 5,
+  weeks: [28, 31],
+  title: "Travel: places to see",
+  why: "To talk about trips and places you want to visit. And to tell people about your plans and your last trip.",
+  plan: [
+    "Where would you like to go?",
+    "At the seaside or in the mountains?",
+    "I’m going to visit my grandma: plans",
+    "Are you going to travel this summer? Questions",
+    "We visited Lviv: the Past Simple",
+    "My travel diary"
+  ]
+});
+
+SLID.section("eng", {
+  id: "e5s10",
+  grade: 5,
+  weeks: [32, 35],
+  title: "Ukraine and English-speaking countries",
+  why: "To tell people about Ukraine. And to learn about the countries where people speak English.",
+  plan: [
+    "Ukraine on the map",
+    "Where do people speak English?",
+    "The UK: England, Scotland, Wales and Northern Ireland",
+    "Bigger or smaller? Comparing countries",
+    "The longest river, the highest mountain",
+    "A fact file about my country"
   ]
 });
