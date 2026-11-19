@@ -391,6 +391,18 @@ expectRun("drag: at і без drag — без попередження", one("fx
         sec.lessons[0].screens.push({ type: "stress", sk: g.sk, title: "Find the stressed syllable", words, fbOk: "Yes.", fbText: "The stress is on the first syllable in both words here." }); return sec; };
       expectRun("stress складами — без помилки", files({ targetLang: "en" }, st(["+pho|to|graph", "pho|+tog|ra|pher"])), ["--section", "fxtl"], {});
       expectRun("stress: англійське слово без складів — помилка", files({ targetLang: "en" }, st(["+photograph"])), ["--section", "fxtl"], { err: "розмітка складами" }); }
+    // engine-eng-build: build — речення з плиток (docs/design/english.md §5.5); пастка, яку рушій зарахує, — попередження з мовою предмета
+    { const bd = more => { const sec = mathSec("fxtl"), g = sec.lessons[0].screens[iGraded];
+        sec.lessons[0].screens.push({ type: "build", sk: g.sk, title: "Put the words in order", tiles: ["does", "she", "Where", "live"], answer: ["Where does she live?"], extra: ["do"],
+          fbOk: "Yes.", fbText: "In a question, does comes before she.", ...more }); return sec; };
+      expectRun("build — без помилки", files({ targetLang: "en" }, bd({})), ["--section", "fxtl"], { noWarn: "build" });
+      expectRun("build без targetLang — без помилки", files({}, bd({})), ["--section", "fxtl"], { noWarn: "build" });
+      expectRun("build: answer не з плиток — помилка", files({ targetLang: "en" }, bd({ answer: "Where does she lives?" })), ["--section", "fxtl"], { err: "не складається рівно з плиток" });
+      expectRun("build: 10 плиток — помилка", files({ targetLang: "en" }, bd({ tiles: ["a", "b", "c", "d", "e", "f", "g", "h"], answer: "a b c d e f g h", extra: ["x", "y"] })), ["--section", "fxtl"], { err: "не більше 9" });
+      expectRun("build: 3 пастки — помилка", files({ targetLang: "en" }, bd({ extra: ["do", "did", "done"] })), ["--section", "fxtl"], { err: "не більше 2" });
+      expectRun("build en: AmE-пастка — попередження", files({ targetLang: "en" }, bd({ tiles: ["I", "like", "this", "colour"], answer: "I like this colour.", extra: ["color"] })), ["--section", "fxtl"], { warn: "пастка extra «color»" });
+      expectRun("build без targetLang: та сама пастка — без попередження", files({}, bd({ tiles: ["I", "like", "this", "colour"], answer: "I like this colour.", extra: ["color"] })), ["--section", "fxtl"], { noWarn: "пастка extra" });
+      expectRun("build з poll — помилка", files({ targetLang: "en" }, bd({ poll: "p1", fbTitle: "Good guess." })), ["--section", "fxtl"], { err: "poll лише для choice" }); }
     fs.rmSync(path.join(tmp, "content/fxtl"), { recursive: true, force: true }); }
   // engine-eng-validate (D-054; docs/design/english.md §2 п. 3, §6.3): предмет з targetLang "en" — англійські правила замість українських,
   // кирилиця в змісті — попередження, uk — лише 4–5 кл., літери варіантів A, B, C, список кальок style/<предмет>-banned.txt, ліміт тексту з профілю

@@ -27,7 +27,7 @@ const GRADES_WITH_CONTENT = [...new Set(SUBJ.flatMap(c=>c.sections.map(x=>x.grad
 function findLesson(id){ for(const c of SUBJ) for(let k=0;k<c.sections.length;k++){ const L=c.sections[k].lessons||[]; const i=L.findIndex(l=>l.id===id); if(i>=0) return {c,k,i,l:L[i],sec:c.sections[k]}; } return null; }
 /* персоналізація (app/learn.js): тест рівня, план, повторювані помилки */
 const LEARN = window.SLID_LEARN;
-const LANG = window.SLID_LANG;   // мовні вправи gaps / pick / stress / word / split (app/lang.js)
+const LANG = window.SLID_LANG;   // мовні вправи gaps / pick / stress / word / split / build (app/lang.js)
 /* журнал подій (app/evidence.js, docs/EVIDENCE.md): лише читає стан, на потік не впливає; без модуля — заглушка */
 const EV = window.SLID_EVIDENCE || { log(){}, observe(){}, newProfile(){} };
 const LORD = new Map(); SUBJ.forEach(c=>c.sections.forEach(x=>(x.lessons||[]).forEach(l=>LORD.set(l.id,LORD.size))));
@@ -605,7 +605,7 @@ function viewTopic(){
       </div>`; }).join("")}
   </div>`;
 }
-const GRADED=["choice","multi","sort","slider","order","align","shade","numline","number","fracin","lab","answer","gaps","pick","stress","word","split"];
+const GRADED=["choice","multi","sort","slider","order","align","shade","numline","number","fracin","lab","answer","gaps","pick","stress","word","split","build"];
 function openSheet(i){
   const c=course(nav.id), sec=c.sections[nav.sec], LS=sec.lessons, l=LS[i], u=unlocked(sec,i), rec=S.lessons[l.id];
   const graded=l.screens.filter(s=>GRADED.includes(s.type) && !s.hyp && !s.poll).length;
@@ -979,6 +979,7 @@ let C=null, L=null, li=0, idx=0, st=null, checked=false, tries=0, tried=null, ru
 /* відбиток відповіді: друга спроба зараховується лише після зміни відповіді (повторний Enter не витрачає її).
    Записи порівнюємо за значенням: «5,», «05», « 5 » після «5» — та сама відповідь (LEARN.answerSig). */
 const answerSig = () => { const s=L.screens[idx], v= LAB && s?.type==="lab"? LAB.get() : st;
+  if(s?.type==="build") return "b:"+LANG.buildText(s, st);   // build: те саме речення з інших плиток (однакові «the») — та сама відповідь
   if(typeof v==="string" && s){ const t=v.replace(/\s+/g," ").trim();
     if(s.type==="number"){ const n=numParse(t); return t && Number.isFinite(n)? "n:"+n : "s:"+t; }
     if(s.type==="fracin" && !s.hideDen){ const n=parseInt(t,10); return Number.isFinite(n)? "i:"+n : "s:"+t; }
@@ -1382,6 +1383,7 @@ function numKeysHtml(s, sg){
 }
 const numShow = v => String(v).replace(".",",").replace("-","−");
 /* мовні вправи (app/lang.js, docs/CONTENT_SCHEMA.md §4.1): розмітка, стан st, позначки */
+const BLINE="display:flex;flex-wrap:wrap;gap:6px;align-items:center;min-height:64px;line-height:1.3", BTILE="padding:8px 12px;min-height:44px;min-width:44px";   // build: рядок і плитка (дотик ≥ 44 px)
 function langHtml(s){
   if(s.type==="gaps"){ const g=LANG.parseGaps(s.text); st=g.gaps.map(()=>null);
     // варіанти — у перемішаному порядку (LANG.gapOrder; «∅» в кінці), data-o — індекс з тексту; порядок береться раз на показ екрана
@@ -1404,6 +1406,11 @@ function langHtml(s){
   if(s.type==="split"){ const p=LANG.parseSplit(s.word, s.zero), ls=[...p.word]; st=new Set();
     const cut=k=>`<button type="button" class="cut" data-c="${k+1}" aria-pressed="false" aria-label="Межа після «${attr(ls.slice(0,k+1).join(""))}»${k===ls.length-1?" (перед нульовим закінченням)":""}"></button>`;
     return `<div class="split" role="group" aria-label="Поділ слова «${attr(p.word)}»${s.zero?" з нульовим закінченням":""}">${ls.map((c,k)=>`<span class="sl">${esc(c)}</span>`+(k<ls.length-1||s.zero? cut(k) : "")).join("")}${s.zero?`<span class="sl zero" role="img" aria-label="нульове закінчення" style="color:var(--muted);font-weight:400;padding-left:2px">\u25A1</span>`:""}</div><div class="fix"${uiA()}>Торкнись проміжку між літерами, щоб поставити межу.</div>`; }
+  /* build (engine-eng-build; docs/design/english.md §5.5): рядок речення #bline (плитки в ньому — кнопки, дотик прибирає) і банк плиток
+     .bank (усі tiles + extra, перемішані LANG.buildOrder раз на показ; aria-pressed — плитка вже в реченні, дотик ще раз — прибрати).
+     Стан st — індекси плиток (buildTiles) у порядку речення. Стилі — наявні класи (.ltext, .gopt) і inline: index.html не змінюємо */
+  if(s.type==="build"){ const all=LANG.buildTiles(s); st=[];
+    return `<div class="ltext" id="bline" role="group" aria-label="Речення" aria-live="polite" style="${BLINE}"></div><div class="bank" role="group" aria-label="Слова" style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:12px">${LANG.buildOrder(s).map(k=>`<button type="button" class="gopt bt" data-t="${k}" aria-pressed="false" style="${BTILE}">${esc(all[k])}</button>`).join("")}</div><div class="fix"${uiA()}>Торкайся слів по черзі, щоб скласти речення. Ще раз — щоб прибрати слово.</div>`; }
   if(s.type==="word"){ st=""; const keys=s.keys||[];
     return `<div class="numbox wide lword">${s.before?`<span class="unit">${esc(s.before)}</span>`:""}<input id="numIn" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="?" aria-label="Відповідь"><span class="unit">${esc(s.after||"")}</span></div>${keys.length?`<div class="anskeys sym">${keys.map(v=>`<button type="button" data-ins="${esc(v)}" aria-label="Вставити ${esc(v)}">${esc(v)}</button>`).join("")}</div>`:""}`; }
   return "";
@@ -1416,6 +1423,13 @@ function bindLang(s){
   if(s.type==="stress") on(".sv",b=>{ const w=+b.dataset.w, i=+b.dataset.i; st[w]=i;
     stage.querySelectorAll(`.sv[data-w="${w}"]`).forEach(x=>x.setAttribute("aria-pressed",x===b)); setDock("","","","Перевірити", st.every(x=>x!==null)); });
   if(s.type==="split") on(".cut",b=>{ const c=+b.dataset.c; st.has(c)?st.delete(c):st.add(c); b.setAttribute("aria-pressed",st.has(c)); setDock("","","","Перевірити", st.size>0); });
+  if(s.type==="build"){ const all=LANG.buildTiles(s), line=$("#bline");
+    // рядок перемальовуємо з st; плитку рядка прибрано — фокус на ту саму плитку в банку (клавіатура не губить місце)
+    const draw=()=>{ line.innerHTML=st.map((k,p)=>`<button type="button" class="gopt bl" data-p="${p}" data-t="${k}" style="${BTILE}">${esc(all[k])}</button>`).join("");
+      stage.querySelectorAll(".bt").forEach(b=>b.setAttribute("aria-pressed", st.includes(+b.dataset.t)));
+      line.querySelectorAll(".bl").forEach(b=>b.onclick=()=>{ if(checked) return; st.splice(+b.dataset.p,1); clearMarks(); draw(); stage.querySelector(`.bt[data-t="${b.dataset.t}"]`)?.focus(); });
+      setDock("","","","Перевірити", st.length>0); };
+    on(".bt",b=>{ const k=+b.dataset.t, p=st.indexOf(k); if(p>=0) st.splice(p,1); else st.push(k); draw(); }); }
 }
 function langMarks(s, reveal){
   // позначка не лише кольором: екранний диктор чує «… — правильно / неправильно» (aria-label; початкова назва — у data-al, її повертає clearMarks)
@@ -1433,6 +1447,10 @@ function langMarks(s, reveal){
   if(s.type==="split"){ const p=LANG.parseSplit(s.word, s.zero), best=p.variants.map(v=>new Set(v)).sort((a,b)=>[...b].filter(x=>st.has(x)).length-[...a].filter(x=>st.has(x)).length)[0];
     stage.querySelectorAll(".cut").forEach(b=>{ const c=+b.dataset.c; mark(b, st.has(c)? best.has(c) : reveal&&best.has(c)? true : null); if(reveal&&best.has(c)) b.setAttribute("aria-pressed","true"); });
     if(reveal && !LANG.check(s,st)) $("#hintHost").innerHTML=`<div class="hint">${ic("check")}<span>${inUi("Правильно:")} <b>${p.variants.map(v=>esc(LANG.splitShow(p.word, v, s.zero))).join("</b> або <b>")}</b></span></div>`; }
+  // build: плитка рядка — правильно, якщо на її місці та сама плитка в найближчому answer (LANG.buildMarks); рядок — вердикт усього речення
+  if(s.type==="build"){ const ok=LANG.check(s,st,TL()), m= ok? st.map(()=>true) : LANG.buildMarks(s,st);
+    stage.querySelectorAll("#bline .bl").forEach((b,p)=>mark(b, !!m[p])); mark($("#bline"), ok);
+    if(reveal && !ok) $("#hintHost").innerHTML=`<div class="hint">${ic("check")}<span>${inUi("Правильно:")} ${LANG.wordAnswers(s).map(a=>`<b>${esc(a)}</b>`).join(" "+inUi("або")+" ")}</span></div>`; }
   if(s.type==="word"){ const ni=$("#numIn"), ok=LANG.check(s,st,TL()); mark(ni, ok);
     if(reveal && !ok) $("#hintHost").innerHTML=`<div class="hint">${ic("check")}<span>${inUi("Правильна відповідь:")} <b>${esc(LANG.wordAnswers(s)[0])}</b></span></div>`; }
 }
@@ -1498,7 +1516,7 @@ function gradeNow(s){
     case "fracin": return s.hideDen? LEARN.checkAns({answer:s.answer+"/"+s.den,fractionOnly:true},st)==="ok" : parseInt(st,10)===s.answer;
     case "answer": return (lastAns=LEARN.checkAns(s,st))==="ok";   // lastAns — вердикт для журналу подій (без другої перевірки)
     case "lab": return window.SLID_LAB.check(s.lab, LAB.get(), s.goal);
-    case "gaps": case "pick": case "stress": case "word": case "split": return LANG.check(s, st, TL());
+    case "gaps": case "pick": case "stress": case "word": case "split": case "build": return LANG.check(s, st, TL());
   }
 }
 function showMarks(s, reveal){
@@ -1520,7 +1538,7 @@ function skillHit(s, ok){ if(!s.sk) return; const k=skey(C,s.sk); const r=S.skil
 const evMode = () => run?.diag? "diag" : run?.practice? "practice" : "lesson";
 const evItem = s => ({ mode:evMode(), c:C?.id, l: run?.practice? s.lesson : L.id, i:idx, id:s.id ?? null, key:s.key ?? null, pool:s.pool?.id ?? null,
   type:s.type, ak:s.answerKind ?? null, sk:s.sk ?? null, pre:s.pre ?? null, topic:s.topic ?? null, rev:s.rev ?? null, boss:!!L.boss, hyp:!!(s.hyp||s.poll), lvl:s.lvl ?? null });
-const evRaw = s => LAB && s.type==="lab"? LAB.get() : st;
+const evRaw = s => LAB && s.type==="lab"? LAB.get() : s.type==="build"? LANG.buildText(s, st) : st;   // build — зібране речення (docs/EVIDENCE.md)
 // answer: ok/form/bad — той самий результат checkAns, що його щойно дав gradeNow (lastAns), без другої перевірки. У тесті рівня
 // вердикт дає diagVerdict (OK / HALF / BAD) і сам checkAns не повертає: для журналу — один checkAns (лише number/time/quantity, дешево),
 // щоб бачити form; HALF пише diagHalf з verdict "half"
@@ -1530,7 +1548,7 @@ const evVerdict = (s, ok) => s.type!=="answer"? (ok? "ok" : "bad") : lastAns || 
    набір gen (gv, genAt) — для гіпотез і реплею (docs/design/diag-hypothesis-math.md §3.1). fc: formCode викликає checkAns, тож у плеєрі
    ця функція стоїть до власного checkAns гілки помилки (formHint/badHint рахуються заново) — тексти доку не змінюються */
 function evKey(s, verdict, raw){ const o={}; try{
-  const a = s.type==="choice"? s.correct : s.type==="multi"? [...s.correct] : s.type==="answer"? LEARN.ansText(s) : s.type==="word"? LANG.wordAnswers(s)[0]
+  const a = s.type==="choice"? s.correct : s.type==="multi"? [...s.correct] : s.type==="answer"? LEARN.ansText(s) : s.type==="word"||s.type==="build"? LANG.wordAnswers(s)[0]
     : s.type==="fracin"? (s.hideDen? `${s.answer}/${s.den}` : String(s.answer)) : ["number","numline","slider"].includes(s.type)? String(s.answer) : s.type==="shade"? String(s.target) : undefined;
   if(typeof a==="string" && a.length>60) o.ansCut=1; else if(a!==undefined) o.ans=a;
   if((verdict==="form"||verdict==="half") && s.type==="answer" && typeof raw==="string") o.fc=LEARN.formCode(s, raw);
@@ -1577,6 +1595,7 @@ function check(){
              : s.type==="pick"? "Червоні слова обрано зайво — або якогось слова бракує. Зміни вибір і перевір ще раз."
              : s.type==="stress"? "Наголос не там. Вимов слово вголос, повільно, і спробуй ще раз."
              : s.type==="split"? "Межі стоять не так. Зміни їх і перевір ще раз."
+             : s.type==="build"? (LANG.buildMarks(s,st).every(Boolean)? "Речення ще не закінчене: бракує слів. Додай їх і перевір ще раз." : "Червоні слова стоять не на своїх місцях або зайві. Зміни речення й перевір ще раз.")
              : wv?.kb? esc(wv.kb)                                   // хром рушія (uk): розкладка не та
              : wv?.hint? inL(esc(wv.hint))                          // зміст предмета (en): «Almost: check the spelling.»
              : s.type==="choice"? "Обери інший варіант і перевір ще раз."

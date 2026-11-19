@@ -413,9 +413,10 @@ function checkScreen(S, s, c, diag, pool = false) {
       // у діагностиці — лише коли тип answer там дозволено (learn.DIAG_TYPES); інакше вже є помилка «тип не дозволено в тесті»
       if (!pool && (!diag || learn.DIAG_TYPES.includes("answer"))) for (const m of answerFieldIssues(s, diag)) E(S, m);
       if (diag && !pool) for (const m of diagFormatIssues(s)) (m.err ? E : W)(S, m.msg); break;
-    case "gaps": case "pick": case "stress": case "word": case "split":
+    case "gaps": case "pick": case "stress": case "word": case "split": case "build":
       if (!pool) for (const m of lang.issues(s)) E(S, m);   // у пулі — learn.validatePool (той самий SLID_LANG.issues), без дублю
-      for (const m of lang.warnings ? lang.warnings(s) : []) W(S, m);
+      // tl — мова змісту предмета: build шукає пастку extra, яку рушій зарахує, тією самою перевіркою, що й плеєр (LANG.check з TL())
+      for (const m of lang.warnings ? lang.warnings(s, tl) : []) W(S, m);
       for (const m of gapCaseIssues(s)) W(S, m);
       if (diag && !pool) for (const m of diagLangIssues(s)) E(S, m);
       if (["gaps", "pick"].includes(s.type) && typeof s.text !== "string" && !pool) E(S, `${s.type}: потрібне поле text`);

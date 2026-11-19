@@ -8,6 +8,8 @@
      word   — answer: "пів'яблука" | [...]  дитина вписує слово; регістр, апостроф і дефіс нормалізуються
               предмет з targetLang "en" (lang у check / wordVerdict / wordInput): ще кінцевий знак, кирилиця-двійник, contractions,
               американський правопис за списком (ok з приміткою), запис часу, «Almost» (docs/design/english.md §5.4)
+     build  — tiles: [...], answer: "…" | [...], extra: [...]   речення з плиток-слів (docs/design/english.md §5.5): кожен answer — усі tiles
+                                            рівно раз (кінцевий .!? і велика перша літера — поза плитками); extra — ≤ 2 пастки; разом ≤ 9 плиток
      split  — word: "мо|ло|ко" | [...]     поділ слова рисками між літерами (склади, перенос, будова слова); zero: true — після слова
                                             клітинка нульового закінчення «□» (межа перед нею — «стіл|») */
 (function () {
@@ -283,6 +285,92 @@
     return almost ? { ok: false, hint: ALMOST } : { ok: false };
   }
 
+  /* ---------- build: речення з плиток (engine-eng-build; docs/design/english.md §5.5) ----------
+     Стан — масив індексів плиток у рядку: 0…tiles−1 — tiles, далі extra (buildTiles). Кожен answer складено рівно з tiles (кожна — один раз,
+     через пробіл); поза плитками дозволено лише кінцевий .!?… і велику першу літеру речення («usually I…» → «Usually I…», кілька порядків).
+     Перевірка: зібране речення проти кожного answer без кінцевого знака; lang "en" — нормалізація wordVerdict (регістр, двійники…),
+     інакше — точно, з нормалізацією пробілів і першої літери. */
+  const BUILD_MAX = 9, BUILD_EXTRA = 2, B_TAIL = /\s*[.!?…]+$/;
+  const sp = v => String(v ?? "").replace(/\s+/g, " ").trim();
+  const ucFirst = v => v.charAt(0).toLocaleUpperCase() + v.slice(1);
+  const buildTiles = s => [...(Array.isArray(s.tiles) ? s.tiles : []), ...(Array.isArray(s.extra) ? s.extra : [])].map(t => typeof t === "string" ? t : "");
+  /** розклад речення a на плитки tiles (кожна рівно раз): масив індексів tiles або null */
+  function buildSplit(tiles, a) {
+    const T = tiles.map(sp);
+    if (!T.length || T.some(t => !t)) return null;
+    const one = str => { const used = T.map(() => false), out = [];
+      const go = pos => {
+        if (pos === str.length) return out.length === T.length;
+        const p = out.length ? (str[pos] === " " ? pos + 1 : -1) : pos;
+        if (p < 0) return false;
+        const tried = new Set();
+        for (let k = 0; k < T.length; k++) {
+          if (used[k] || tried.has(T[k])) continue;
+          const w = !out.length && p === 0 && str.startsWith(ucFirst(T[k])) ? ucFirst(T[k]) : T[k];   // перша плитка — і з великої літери
+          if (!str.startsWith(w, p)) continue;
+          tried.add(T[k]); used[k] = true; out.push(k);
+          if (go(p + w.length)) return true;
+          used[k] = false; out.pop();
+        }
+        return false; };
+      return go(0) ? out : null; };
+    const v = sp(a);
+    return one(v) || (B_TAIL.test(v) ? one(v.replace(B_TAIL, "")) : null);
+  }
+  const buildText = (s, st) => { const all = buildTiles(s); return Array.isArray(st) ? st.map(k => all[k]).filter(x => typeof x === "string").join(" ") : ""; };
+  const buildState = (s, st) => { const n = buildTiles(s).length;
+    return Array.isArray(st) && st.length > 0 && new Set(st).size === st.length && st.every(k => Number.isInteger(k) && k >= 0 && k < n); };
+  function buildOk(s, st, lang) {
+    if (!buildState(s, st)) return false;
+    const v = sp(buildText(s, st)).replace(B_TAIL, ""), keys = wordAnswers(s).map(a => sp(a).replace(B_TAIL, ""));
+    if (!v) return false;
+    if (lang === EN) return wordVerdict({ type: "word", answer: keys, keepCase: s.keepCase }, v, EN).ok;
+    return keys.some(k => ucFirst(k) === ucFirst(v));
+  }
+  /** позначки рядка: позиція правильна, якщо там та сама плитка (за текстом), що в найближчому answer */
+  function buildMarks(s, st) {
+    const all = buildTiles(s).map(sp), T = (Array.isArray(s.tiles) ? s.tiles : []).map(sp), got = (Array.isArray(st) ? st : []).map(k => all[k]);
+    let best = [], bn = -1;
+    for (const a of wordAnswers(s)) { const ix = buildSplit(T, a); if (!ix) continue;
+      const q = ix.map(k => T[k]), n = got.filter((w, i) => q[i] === w).length; if (n > bn) { bn = n; best = q; } }
+    return got.map((w, i) => best[i] === w);
+  }
+  /** порядок показу плиток (усіх, з extra): перемішано; плитки tiles не стоять у правильному порядку (інакше відповідь уже на екрані) */
+  function buildOrder(s, rnd = Math.random) {
+    const n = buildTiles(s).length, nt = Array.isArray(s.tiles) ? s.tiles.length : 0, bad = o => buildOk(s, o.filter(k => k < nt), "");
+    let o = rowOrder(n, rnd);
+    for (let t = 0; t < 12 && bad(o); t++) o = rowOrder(n, rnd);
+    for (let r = 1; r < n && bad(o); r++) o = o.slice(1).concat(o[0]);   // детермінований запас: зсув по колу
+    return o;
+  }
+  function buildIssues(s, E) {
+    const T = s.tiles, X = s.extra === undefined ? [] : s.extra;
+    if (!Array.isArray(T) || T.length < 2) return E.push("build: tiles — масив з 2 і більше плиток");
+    if (!Array.isArray(X)) return E.push("build: extra — масив плиток-пасток");
+    if (X.length > BUILD_EXTRA) E.push(`build: extra — не більше ${BUILD_EXTRA} плиток-пасток (є ${X.length})`);
+    const all = [...T, ...X];
+    if (all.length > BUILD_MAX) E.push(`build: забагато плиток (${all.length}; разом з extra — не більше ${BUILD_MAX})`);
+    if (all.some(t => typeof t !== "string" || !t.trim())) return E.push("build: плитка — непорожній рядок");
+    if (all.some(t => t !== sp(t))) E.push("build: у плитці — без пробілів на краях і подвійних пробілів");
+    if (all.some(t => /[<>&$]/.test(t))) E.push("build: у плитці не може бути HTML чи формули ($) — пиши простим текстом");
+    if (all.some(mixedScript)) E.push("build: у плитці змішано кирилицю й латиницю");
+    if (new Set(T).size === 1) E.push("build: усі плитки однакові — порядок нічого не перевіряє");
+    const A = wordAnswers(s);
+    if (!A.length || A.length !== (Array.isArray(s.answer) ? s.answer.length : 1)) return E.push("build: answer — рядок або масив рядків (кожен — правильний порядок)");
+    for (const a of A) if (!buildSplit(T, a)) E.push(`build: answer «${a}» не складається рівно з плиток tiles (кожна — один раз, через пробіл; пастки extra — ні; поза плитками — лише кінцевий .!? і велика перша літера)`);
+    if (new Set(A.map(a => ucFirst(sp(a).replace(B_TAIL, "")))).size !== A.length) E.push("build: answer повторюються");
+    if (s.keepCase !== undefined && typeof s.keepCase !== "boolean") E.push("build: keepCase — true/false");
+  }
+  /** попередження build: пастка extra, яку рушій зарахує (та сама плитка; для lang "en" — інший регістр чи AmE-правопис ключа) */
+  function buildWarnings(s, lang, W) {
+    const T = Array.isArray(s.tiles) ? s.tiles : [], X = Array.isArray(s.extra) ? s.extra : [];
+    if (!X.length || T.length < 2) return;
+    const ix = wordAnswers(s).map(a => buildSplit(T, a)).filter(Boolean);
+    X.forEach((x, j) => { const xi = T.length + j;
+      if (ix.some(q => q.some((k, p) => buildOk(s, q.map((v, i) => i === p ? xi : v), lang))))
+        W.push(`build: пастка extra «${x}» на місці плитки дає правильне речення — рушій її зарахує${lang === EN ? " (регістр, AmE-правопис — нормалізація word)" : ""}; візьми іншу пастку`); });
+  }
+
   /** Перевірка відповіді st (стан плеєра) для екрана s. true/false. lang — мова змісту предмета (SLID.subjectLang): "en" вмикає правила word англійською. */
   function check(s, st, lang) {
     switch (s.type) {
@@ -291,6 +379,7 @@
       case "stress": { const ws = (s.words || []).map(parseStress); return ws.every(w => !w.error) && Array.isArray(st) && ws.every((w, k) => st[k] === w.correct); }
       case "word": return wordVerdict(s, st, lang).ok;
       case "split": { const p = parseSplit(s.word, s.zero); return !p.error && isSet(st) && p.variants.some(c => sameCuts(c, [...st])); }
+      case "build": return buildOk(s, st, lang);
     }
     return false;
   }
@@ -303,6 +392,7 @@
       case "stress": return s.words.map(w => parseStress(w).correct);
       case "word": return wordAnswers(s)[0];
       case "split": return new Set(parseSplit(s.word, s.zero).variants[0]);
+      case "build": return buildSplit(Array.isArray(s.tiles) ? s.tiles : [], wordAnswers(s)[0]);
     }
   }
 
@@ -327,6 +417,7 @@
         break; }
       case "split": { if (s.zero !== undefined && typeof s.zero !== "boolean") { E.push("split: zero — true/false"); break; }
         const p = parseSplit(s.word, s.zero); if (p.error) E.push("split: " + p.error); break; }
+      case "build": buildIssues(s, E); break;
     }
     return E;
   }
@@ -340,9 +431,11 @@
     return R;
   }
   const BLOCK_TAG = /<\/?(?:p|br|hr|li|ul|ol|div|h[1-6]|table|thead|tbody|tr|td|th|blockquote|section|figure|figcaption|dl|dt|dd)\b[^>]*>/gi;
-  /** Попередження розмітки (не ламають екран, але підказують відповідь чи плутають дитину): масив рядків. Розмітка з помилкою — [] (її дає issues) */
-  function warnings(s) {
+  /** Попередження розмітки (не ламають екран, але підказують відповідь чи плутають дитину): масив рядків. Розмітка з помилкою — [] (її дає issues).
+      lang — мова змісту предмета (як у check): build зважає на неї, коли шукає пастку, яку рушій зарахує */
+  function warnings(s, lang) {
     const W = [];
+    if (s.type === "build") buildWarnings(s, lang, W);
     if (s.type === "pick") { const p = parsePick(s.text);
       if (!p.error) { const multi = p.words.filter(w => /\s/.test(w.v)), ok = multi.filter(w => w.ok), bad = multi.length - ok.length;
         // хибних груп з кількох слів — щонайменше половина правильних: одна хибна на три правильні все ще видає відповідь (рев'ю pick-groups P3)
@@ -364,7 +457,7 @@
             return !gw.some(([a, z]) => a <= i && e <= z); })) { W.push(`gaps: слово з пропуском розірване HTML-тегом («${m[0].replace(/^(?:<[^>]*>)+|(?:<[^>]*>)+$/g, "").replace(/\u0001/g, "{…}")}») — рядок може перенестися посеред слова; обгорни тегом усе слово або винеси тег за його межі`); break; } } }
     return W;
   }
-  const TYPES = ["gaps", "pick", "stress", "word", "split"];
+  const TYPES = ["gaps", "pick", "stress", "word", "split", "build"];
   /** Текст вправи, який дитина читає (для метрик stats/validate): пропуски — правильним варіантом, без дужок і «+» */
   function readText(s) {
     // «—» / «–» замінюємо, лише коли варіант цілком дорівнює токену: «1–2», «», —» лишаються як є (engine-lang-dash P3-1)
@@ -373,7 +466,8 @@
     if (s.type === "pick" && typeof s.text === "string") return s.text.replace(/\[\s*!\s*/g, "[").replace(/[[\]]/g, "");
     if (s.type === "stress" && Array.isArray(s.words)) return s.words.join(", ").replace(/[+|]/g, "");
     if (s.type === "split") return [].concat(s.word)[0]?.replace?.(/\|/g, "") || "";
+    if (s.type === "build") return wordAnswers(s)[0] || "";
     return "";
   }
-  window.SLID_LANG = { TYPES, warnings, readText, NONE, DASH, optView, gapOrder, rowOrder, isVowel, parseGaps, parsePick, parseStress, parseSplit, splitShow, normWord, wordInput, wordAnswers, wordVerdict, check, solution, issues, sameCuts };
+  window.SLID_LANG = { TYPES, warnings, readText, NONE, DASH, optView, gapOrder, rowOrder, isVowel, parseGaps, parsePick, parseStress, parseSplit, splitShow, normWord, wordInput, wordAnswers, wordVerdict, check, solution, issues, sameCuts, buildTiles, buildText, buildMarks, buildOrder };
 })();

@@ -52,6 +52,10 @@
 //      згорнутий переклад uk на екрані теорії й подія uk_open; предмет без targetLang — жодного lang у плеєрі.
 //  27) Мовні вправи англійською (engine-eng-lang-core): word — примітка «In British English: colour.» (en), «Almost: check the spelling.» (en),
 //      «Перемкни клавіатуру на англійську.» (uk), кирилична «с» у «сat», «Yes.»; stress складами; без targetLang — як раніше.
+//  28) Речення з плиток build (engine-eng-build; docs/design/english.md §5.5), 360 px: банк — усі плитки й пастка, перемішані, рядок порожній, «Перевірити»
+//      неактивна; дотик — у рядок, ще раз — назад; клавіатура (Enter, фокус після прибирання); хибний порядок — позначки з «неправильно», повідомлення,
+//      та сама відповідь не витрачає спробу; кілька правильних порядків; показ відповіді; raw — зібране речення; тест рівня — без позначок;
+//      без targetLang — точне порівняння; без горизонтальної прокрутки, плитки ≥ 44 px.
 // Запуск: node tools/test-ui.mjs [--browser /opt/pw-browsers/chromium]
 // Playwright: require("playwright") (NODE_PATH) або PLAYWRIGHT_MODULE / /opt/node-tools/node_modules/playwright.
 // Браузер, як у test-answer-ui.py: --browser / SLID_BROWSER → /opt/pw-browsers/chromium, якщо є (PW_DEFAULT=1 вимикає) → Chromium самого
@@ -1058,6 +1062,9 @@ try {
 
   // 27) Мовні вправи англійською: word з примітками, stress складами (engine-eng-lang-core)
   await engLangScenario(browser);
+
+  // 28) Речення з плиток build (engine-eng-build)
+  await buildScenario(browser);
 } finally { await browser.close(); server.close(); swServer.close(); }
 
 console.log(`test-ui: ${pass} ok, ${fail} ✗`);
@@ -1598,5 +1605,102 @@ async function engLangScenario(browser) {
   await answer("color"); d = await dock();
   ok(/\bbad\b/.test(d.kind) && !/British/.test(d.text) && /Зміни відповідь/.test(d.text), `без targetLang: color ≠ colour, без примітки, а ${JSON.stringify(d)}`);
   ok(!errors.length, "мовні вправи en: помилки сторінки: " + errors.join(" | "));
+  await ctx.close();
+}
+
+/* 28) build — речення з плиток (engine-eng-build; docs/design/english.md §5.5; CONTENT_SCHEMA §4.1): фікстура — предмет ukr з targetLang "en",
+   телефон 360 px з дотиком. Без targetLang — той самий урок з українським реченням, точне порівняння. */
+async function buildScenario(browser) {
+  const ctx = await browser.newContext({ viewport: { width: 360, height: 780 }, hasTouch: true, serviceWorkers: "block" });
+  const page = await ctx.newPage(), errors = []; page.on("pageerror", e => errors.push(String(e))); page.setDefaultTimeout(8000);
+  await page.route("**/fonts.googleapis.com/**", r => r.abort());
+  const fb = t => ({ fbOk: "Yes!", fbBad: "Not quite.", fbText: t });
+  const Q = { type: "build", title: "Put the words in order", body: "Ask about Kate's home.", tiles: ["does", "she", "Where", "live"], answer: ["Where does she live?"], extra: ["do"], ...fb("Where + does + she + live?") };
+  const U = { type: "build", title: "Put the words in order", tiles: ["usually", "I", "walk", "to school"], answer: ["I usually walk to school.", "Usually I walk to school."], ...fb("Usually can go first.") };
+  const LES = { id: "fbl1", title: "Questions", icon: "book", outro: { text: "Well done.", learned: ["I can ask questions."] }, screens: [Q, U, { ...U, title: "Again" }] };
+  const UKR = { id: "fbl1", title: "Речення", icon: "book", outro: { text: "Готово.", learned: ["Складаю речення."] }, screens: [
+    { type: "build", title: "Склади речення", tiles: ["яскраво", "Сонце", "світить"], answer: "Сонце яскраво світить.", fbOk: "Так.", fbText: "Підмет — сонце." }] };
+  const DIAG = { id: "dgfb", grade: 5, title: "Що ти вже вмієш?", why: "QA", status: "draft", topics: [{ id: "c", title: "Questions", kind: "cur", lessons: ["fbl1"] }],
+    items: [{ ...Q, topic: "c", sk: "orth" }, { ...U, topic: "c", sk: "orth" }] };
+  const install = ([les, tl, diag]) => { const c = SLID_SUBJECTS.find(c => c.id === "ukr");
+    c.sections = [{ id: "fb", grade: 5, weeks: [1, 2], title: "QA build", why: "QA", lessons: [les] }]; c.pools = []; c.diags = diag ? [diag] : []; delete c.graph;
+    if (tl) c.targetLang = tl; else delete c.targetLang; };
+  const boot = async (les, tl, diag) => { await page.goto(URL0); await page.evaluate(() => { localStorage.clear(); localStorage.setItem("slid.v1", JSON.stringify({ grade: 5, subject: "ukr", unlockAll: true })); });
+    await page.reload(); await page.evaluate(install, [les, tl, diag]); };
+  const bank = () => page.evaluate(() => [...document.querySelectorAll("#stage .bank .bt")].map(b => [+b.dataset.t, b.textContent, b.getAttribute("aria-pressed")]));
+  const line = () => page.evaluate(() => [...document.querySelectorAll("#bline .bl")].map(b => b.textContent));
+  const tile = k => `#stage .bank .bt[data-t="${k}"]`;
+  const dock = () => page.evaluate(() => ({ kind: document.querySelector("#dock").className, text: document.querySelector("#fbText").textContent, title: document.querySelector("#fbTitle").textContent }));
+  const noScroll = () => page.evaluate(() => { const p = document.querySelector("#player"), d = document.documentElement;
+    return p.scrollWidth <= p.clientWidth + 1 && d.scrollWidth <= d.clientWidth + 1 && [...document.querySelectorAll("#stage .gopt")].every(b => { const r = b.getBoundingClientRect(); return r.left >= 0 && r.right <= innerWidth + 0.5; }); });
+
+  await boot(LES, "en"); await page.evaluate(() => window.__slidStart("fbl1"));
+  // 1) банк: усі плитки й пастка рівно раз, рядок порожній, «Перевірити» неактивна, у тексті екрана lang=en
+  let b = await bank();
+  ok(same(b.map(x => x[0]).sort(), [0, 1, 2, 3, 4]) && b.every(([k, t]) => t === ["does", "she", "Where", "live", "do"][k]) && b.every(x => x[2] === "false"), `build: банк — усі tiles і extra, aria-pressed false, а ${JSON.stringify(b)}`);
+  ok(!(await page.evaluate(() => SLID_LANG.check(SLID_SUBJECTS.find(c => c.id === "ukr").sections[0].lessons[0].screens[0], [...document.querySelectorAll("#stage .bank .bt")].map(b => +b.dataset.t).filter(k => k < 4), ""))), "build: плитки показано не в правильному порядку");
+  ok(same(await line(), []) && await page.locator("#action").isDisabled(), "build: рядок порожній, «Перевірити» неактивна");
+  ok(await page.evaluate(() => document.querySelector("#stage .bank").closest("[lang]")?.getAttribute("lang") === "en" && document.querySelector("#stage .fix").getAttribute("lang") === "uk"), "build: плитки — зміст (lang=en), інструкція — хром (uk)");
+  ok(await page.evaluate(() => [...document.querySelectorAll("#stage .bank .bt")].every(b => { const r = b.getBoundingClientRect(); return r.height >= 44 && r.width >= 44; })), "build: плитка ≥ 44 × 44 px");
+  // 2) дотик: у рядок; ще раз у банку — назад; дотик у рядку — прибрати
+  await page.tap(tile(3)); await page.tap(tile(2));
+  ok(same(await line(), ["live", "Where"]) && await page.getAttribute(tile(3), "aria-pressed") === "true" && await page.locator("#action").isEnabled(), "build: дотик — плитка в рядку, aria-pressed true, «Перевірити» активна");
+  await page.tap(tile(3)); ok(same(await line(), ["Where"]) && await page.getAttribute(tile(3), "aria-pressed") === "false", "build: дотик по плитці банку ще раз — прибрано");
+  await page.tap("#bline .bl >> nth=0"); ok(same(await line(), []) && await page.locator("#action").isDisabled(), "build: дотик по плитці рядка — прибрано, «Перевірити» неактивна");
+  // 3) клавіатура: Enter на плитці банку; прибрана з рядка плитка повертає фокус у банк
+  await page.focus(tile(2)); await page.keyboard.press("Enter"); await page.focus(tile(1)); await page.keyboard.press("Enter");
+  ok(same(await line(), ["Where", "she"]), `build: Enter на плитці — у рядок (${JSON.stringify(await line())})`);
+  await page.focus("#bline .bl >> nth=1"); await page.keyboard.press("Enter");
+  ok(same(await line(), ["Where"]) && await page.evaluate(() => document.activeElement?.dataset?.t) === "1", "build: Enter на плитці рядка — прибрано, фокус на ту саму плитку банку");
+  // 4) хибний порядок: позначки по місцях, «неправильно» для диктора, повідомлення; та сама відповідь — кнопка неактивна
+  for (const k of [1, 0, 3]) await page.tap(tile(k));
+  ok(await noScroll(), "build: 360 px — без горизонтальної прокрутки, плитки в межах екрана");
+  await page.click("#action"); let d = await dock();
+  const marks = await page.evaluate(() => [...document.querySelectorAll("#bline .bl")].map(b => [b.textContent, b.classList.contains("is-ok") ? 1 : b.classList.contains("is-bad") ? 0 : null, b.getAttribute("aria-label")]));
+  ok(/\bbad\b/.test(d.kind) && /не на своїх місцях/.test(d.text), `build: хибний порядок — повідомлення, а ${JSON.stringify(d)}`);
+  ok(same(marks.map(m => m.slice(0, 2)), [["Where", 1], ["she", 0], ["does", 0], ["live", 1]]) && marks.every(m => /— (не)?правильно$/.test(m[2])), `build: позначки по місцях з aria-label, а ${JSON.stringify(marks)}`);
+  ok(await page.getAttribute("#bline", "aria-label") === "Речення — неправильно", "build: рядок — «Речення — неправильно»");
+  ok(await page.locator("#action").isDisabled(), "build: без змін — «Спробувати ще раз» неактивна");
+  // та сама відповідь з іншої плитки — ні; прибрати й повернути ту саму — теж та сама (кнопка неактивна)
+  await page.tap("#bline .bl >> nth=3"); await page.tap(tile(3)); ok(await page.locator("#action").isDisabled(), "build: те саме речення ще раз — спробу не витрачено");
+  // 5) друга спроба — неповне речення: «бракує слів»; показ відповіді
+  await page.tap("#bline .bl >> nth=3");
+  await page.tap("#bline .bl >> nth=2"); await page.tap("#bline .bl >> nth=1"); for (const k of [0, 1]) await page.tap(tile(k));
+  ok(same(await line(), ["Where", "does", "she"]), "build: «Where does she» у рядку");
+  await page.click("#action"); d = await dock();
+  ok(/\bbad\b/.test(d.kind) && /Ось правильна відповідь/.test(d.title), `build: друга хибна спроба — показ відповіді, а ${JSON.stringify(d)}`);
+  ok(/Правильно:\s*Where does she live\?/.test(await page.locator("#hintHost").innerText()), "build: підказка з правильним реченням");
+  ok(await page.locator("#stage .bank .bt:not([disabled])").count() === 0 && await page.locator("#bline .bl:not([disabled])").count() === 0, "build: після відповіді плитки заблоковано");
+  // 6) кілька правильних порядків: «Usually I walk…» і «I usually walk…»
+  await page.click("#action");
+  for (const k of [0, 1, 2, 3]) await page.tap(tile(k));
+  await page.click("#action"); d = await dock();
+  ok(/\bok\b/.test(d.kind), `build: «usually I walk to school» (перша літера — поза плитками) — правильно, а ${JSON.stringify(d)}`);
+  ok(await page.evaluate(() => [...document.querySelectorAll("#bline .bl")].every(b => b.classList.contains("is-ok"))), "build: правильне речення — усі плитки зелені");
+  await page.click("#action");
+  for (const k of [1, 0, 2, 3]) await page.tap(tile(k));
+  await page.click("#action"); ok(/\bok\b/.test((await dock()).kind), "build: другий порядок — правильно");
+  // 7) журнал: raw — зібране речення
+  const ev = await page.evaluate(async () => { if (!window.SLID_EVIDENCE) return null; await SLID_EVIDENCE.flush?.();
+    return (await SLID_EVIDENCE.export()).events.filter(e => e.type === "answer" && e.d.l === "fbl1").map(e => [e.d.i, e.d.type, e.d.try, e.d.verdict, e.d.raw, e.d.ans]); });
+  ok(same(ev, [[0, "build", 1, "bad", "Where she does live", "Where does she live?"], [0, "build", 2, "bad", "Where does she", "Where does she live?"],
+    [1, "build", 1, "ok", "usually I walk to school", "I usually walk to school."], [2, "build", 1, "ok", "I usually walk to school", "I usually walk to school."]]), `build: журнал — raw зібране речення, ans — перший answer, а ${JSON.stringify(ev)}`);
+
+  // 8) тест рівня: без позначок і показу відповіді; вердикт LANG.check
+  await boot(LES, "en", DIAG); await page.evaluate(() => document.querySelector('.tab[data-tab="path"]').click());
+  await page.click('button[data-subject="ukr"]'); { const dg = page.locator("[data-diag]"); if (await dg.count()) await dg.first().click(); else await page.click('[data-plan="ukr"]'); }
+  await page.click("[data-diag-go]");
+  for (const k of [2, 0, 1, 3]) await page.tap(tile(k)); await page.click("#action");
+  ok(await page.evaluate(() => !document.querySelector("#stage .is-ok, #stage .is-bad")), "build у тесті рівня: без позначок");
+  for (const k of [1, 2, 0, 3]) await page.tap(tile(k)); await page.click("#action");
+  const rec = await page.evaluate(() => JSON.parse(localStorage.getItem("slid.v1")).diag?.dgfb);
+  ok(rec && same(rec.res, { 0: 1, 1: 0 }), `build у тесті рівня: OK і BAD, а ${JSON.stringify(rec && rec.res)}`);
+
+  // 9) без targetLang: українське речення, точне порівняння
+  await boot(UKR, null); await page.evaluate(() => window.__slidStart("fbl1"));
+  ok(await page.evaluate(() => !document.querySelector("#player [lang]")), "build без targetLang: жодного lang у плеєрі");
+  for (const k of [1, 0, 2]) await page.tap(tile(k)); await page.click("#action");
+  ok(/\bok\b/.test((await dock()).kind), "build без targetLang: «Сонце яскраво світить» (ключ з крапкою) — правильно");
+  ok(!errors.length, "build: помилки сторінки: " + errors.join(" | "));
   await ctx.close();
 }

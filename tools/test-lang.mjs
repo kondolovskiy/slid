@@ -340,5 +340,76 @@ for (const s of [{ type: "gaps", text: "с{*е|и}ло" }, { type: "pick", text:
   ok(!L.parseStress("черг+овий").syl, "stress ukr: не складовий режим");
 }
 
+/* build — речення з плиток (engine-eng-build; docs/design/english.md §5.5; CONTENT_SCHEMA §4.1): стан — індекси плиток у рядку
+   (0…tiles−1 — tiles, далі extra); кожен answer складено рівно з tiles; кінцевий .!? може стояти поза плитками; кілька порядків */
+{ const B = (more = {}) => ({ type: "build", tiles: ["does", "she", "Where", "live"], answer: ["Where does she live?"], extra: ["do"], ...more });
+  const s = B();
+  eq(L.issues(s), [], "build: issues чисто (зразок дизайну §5.5)");
+  ok(L.TYPES.includes("build"), "build: у SLID_LANG.TYPES");
+  eq(L.buildTiles(s), ["does", "she", "Where", "live", "do"], "buildTiles: tiles, тоді extra");
+  ok(L.check(s, [2, 0, 1, 3], "en"), "build en: правильний порядок");
+  ok(L.check(s, [2, 0, 1, 3], ""), "build без мови: правильний порядок (кінцевий «?» ключа поза плитками)");
+  no(L.check(s, [0, 1, 2, 3], "en"), "build en: інший порядок — неправильно");
+  no(L.check(s, [2, 4, 1, 3], "en"), "build en: пастка extra замість плитки — неправильно");
+  no(L.check(s, [2, 0, 1], "en"), "build en: не всі плитки — неправильно");
+  no(L.check(s, [2, 0, 1, 3, 4], "en"), "build en: зайва пастка в кінці — неправильно");
+  no(L.check(s, [2, 0, 0, 1, 3], "en"), "build: та сама плитка двічі — неправильно");
+  no(L.check(s, [2, 0, 1, 9], "en"), "build: індекс поза плитками — неправильно");
+  no(L.check(s, "Where does she live", "en"), "build: стан не масив — неправильно");
+  no(L.check(s, [], "en"), "build: порожній рядок — неправильно");
+  eq(L.buildText(s, [2, 0, 1, 3]), "Where does she live", "buildText: зібране речення (raw журналу)");
+  eq(L.buildText(s, []), "", "buildText: порожньо");
+  eq(L.solution(s), [2, 0, 1, 3], "build: solution — індекси tiles першого answer");
+  ok(L.check(s, L.solution(s), "en"), "build: solution → check (en)");
+  eq(L.readText(s), "Where does she live?", "readText build: перший answer");
+  // кілька правильних порядків; однакові плитки — за текстом, а не за індексом
+  const m = { type: "build", tiles: ["usually", "I", "walk", "to school"], answer: ["I usually walk to school.", "Usually I walk to school."] };
+  eq(L.issues(m), [], "build: кілька answer, плитка з пробілом — чисто");
+  ok(L.check(m, [1, 0, 2, 3], "en") && L.check(m, [0, 1, 2, 3], "en"), "build: обидва порядки з answer");
+  no(L.check(m, [1, 2, 0, 3], "en"), "build: порядок поза answer — неправильно");
+  ok(L.check(m, [0, 1, 2, 3], ""), "build без мови: другий answer (точне порівняння)");
+  const d = { type: "build", tiles: ["the", "cat", "sees", "the", "dog"], answer: "the cat sees the dog" };
+  ok(L.check(d, [3, 1, 2, 0, 4], "en"), "build: однакові плитки «the» у будь-якому порядку індексів");
+  // регістр: en — нормалізація wordVerdict (регістр не важить), без мови — точно
+  const c = { type: "build", tiles: ["I", "live", "in", "Kyiv"], answer: "I live in kyiv" };
+  ok(L.issues(c).length, "build: answer з іншим регістром, ніж плитки, — помилка validate (не складається з плиток)");
+  ok(L.check(c, [0, 1, 2, 3], "en"), "build en: регістр не важить (нормалізація word англійською)");
+  no(L.check(c, [0, 1, 2, 3], ""), "build без мови: точне порівняння — регістр важить (крім першої літери речення)");
+  ok(L.check({ type: "build", tiles: ["вчора", "йшов", "дощ"], answer: ["Вчора йшов дощ.", "Дощ йшов вчора."] }, [2, 1, 0], ""), "build без мови: велика перша літера речення — поза плитками");
+  ok(L.check({ type: "build", tiles: ["Мама", "мила", "раму"], answer: "Мама  мила раму." }, [0, 1, 2], ""), "build без мови: пробіли й кінцевий знак ключа нормалізуються");
+  // позначки: позиція правильна відносно найближчого answer
+  eq(L.buildMarks(s, [2, 0, 3, 1]), [true, true, false, false], "buildMarks: дві перші на місці");
+  eq(L.buildMarks(m, [1, 0, 3, 2]), [true, true, false, false], "buildMarks: найближчий з кількох answer");
+  eq(L.buildMarks(s, [2, 0, 1, 3, 4]), [true, true, true, true, false], "buildMarks: зайва пастка — неправильно");
+  // validate: плитки, extra, answer
+  ok(L.issues(B({ answer: "Where does she lives?" })).length, "build: слово answer не з плиток — помилка");
+  ok(L.issues(B({ answer: "Where does she?" })).length, "build: answer без однієї плитки — помилка");
+  ok(L.issues(B({ answer: "Where do she live?" })).length, "build: answer з пасткою extra — помилка");
+  ok(L.issues(B({ answer: [] })).length, "build: порожній масив answer — помилка");
+  ok(L.issues(B({ answer: ["Where does she live?", 5] })).length, "build: answer не рядок — помилка");
+  ok(L.issues(B({ extra: ["do", "did", "done"] })).length, "build: extra > 2 — помилка");
+  ok(L.issues(B({ extra: "do" })).length, "build: extra не масив — помилка");
+  ok(L.issues({ type: "build", tiles: ["a", "b", "c", "d", "e", "f", "g", "h"], answer: "a b c d e f g h", extra: ["x", "y"] }).length, "build: 10 плиток з extra — помилка (≤ 9)");
+  eq(L.issues({ type: "build", tiles: ["a", "b", "c", "d", "e", "f", "g"], answer: "a b c d e f g", extra: ["x", "y"] }), [], "build: 9 плиток з extra — чисто");
+  ok(L.issues({ type: "build", tiles: ["Hello"], answer: "Hello" }).length, "build: одна плитка — помилка");
+  ok(L.issues(B({ tiles: ["does", "", "Where", "live"] })).length, "build: порожня плитка — помилка");
+  ok(L.issues(B({ tiles: ["does", " she", "Where", "live"], answer: "Where does she live?" })).length, "build: пробіл на краю плитки — помилка");
+  ok(L.issues(B({ tiles: ["does", "<b>she</b>", "Where", "live"], answer: "Where does <b>she</b> live?" })).length, "build: HTML у плитці — помилка");
+  ok(L.issues({ type: "build", tiles: ["сat", "runs"], answer: "сat runs" }).length, "build: кирилиця й латиниця в плитці — помилка");
+  ok(L.issues({ type: "build", tiles: ["no", "no"], answer: "no no" }).length, "build: усі плитки однакові — помилка");
+  ok(L.issues(B({ answer: ["Where does she live?", "Where does she live"] })).length, "build: answer повторюються — помилка");
+  ok(L.warnings(B({ extra: ["she"] }), "en").some(w => /extra/.test(w)), "build warnings: пастка = плитка — попередження");
+  ok(L.warnings({ type: "build", tiles: ["My", "favourite", "colour"], answer: "My favourite colour", extra: ["color"] }, "en").some(w => /extra/.test(w)), "build warnings en: AmE-пастка дає правильне речення — попередження");
+  eq(L.warnings({ type: "build", tiles: ["My", "favourite", "colour"], answer: "My favourite colour", extra: ["color"] }, ""), [], "build warnings без мови: color ≠ colour — чисто");
+  eq(L.warnings(s, "en"), [], "build warnings: справжня пастка — чисто");
+  // показ: перемішано, але ніколи в правильному порядку плиток
+  const one = () => 0.999999;   // permute з таким rnd лишає порядок як був (tiles у порядку answer)
+  const t2 = { type: "build", tiles: ["I", "am", "ten"], answer: "I am ten.", extra: ["is"] };
+  const o = L.buildOrder(t2, one);
+  eq([...o].sort(), [0, 1, 2, 3], "buildOrder: перестановка всіх плиток з extra");
+  no(L.check(t2, o.filter(k => k < 3), ""), "buildOrder: плитки не стоять у правильному порядку (навіть коли перестановка — тотожна)");
+  for (let i = 0; i < 30; i++) { const r = L.buildOrder(m); no(L.check(m, r, ""), `buildOrder: жоден показ не дає правильного речення (${r})`); }
+}
+
 console.log(fail ? `test-lang: ${fail} з ${n} не пройшли` : `test-lang: ${n} перевірок — усі пройшли`);
 process.exit(fail ? 1 : 0);
