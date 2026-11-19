@@ -1,12 +1,13 @@
 # Handoff — стан проєкту
 
-_Оновлено: 2026-11-18, куратор пам'яті (сесія 13–18.11: плейтест від ролі учня 4–11 кл., хвилі 1–3 задач *-1117; журнал sessions/2026-11-18-1.md). Попередні журнали: 2026-11-12-1.md, 2026-11-10-1.md._
+_Оновлено: 2026-11-19, куратор пам'яті (19.11: дизайн англійської, sessions/2026-11-19-1.md; сесія 13–18.11: плейтест від ролі учня 4–11 кл., хвилі 1–3 задач *-1117; журнал sessions/2026-11-18-1.md). Попередні журнали: 2026-11-12-1.md, 2026-11-10-1.md._
 
 **Пам'ятка (D-046, D-049):** змістове питання вирішуй сам за таким порядком джерел: МОН → програма → правопис і словники D-041 → підручник. Цитату й URL клади у звіт. Якщо сумнів лишився, бери найкращий варіант «тимчасово, до відповіді вчителя» і дописуй питання в `docs/teacher-questions.md` наступним номером (зараз останній **TQ-118**). Роботу це не блокує. Технічні питання — людині (нижче).
 
 **Пам'ятка оркестратору:** комітити лише `git commit -m "…" -- <файли>` — навіть `git add` своїх файлів + окремий commit віддає їх чужому коміту (96bb001; pitfalls.md «Додано 2026-11-18»). Worktree-агенти (isolation) створюються від `main` — перевіряй базу. build + `npm run check` — після кожного злиття.
 
 ## Стан
+- **Гілка `claude/eng-tasks` (19.11): дизайн англійської** — docs/design/english.md і 102 задачі `*-eng-*` у tasks/todo (`source: design-eng`); код і зміст не змінено.
 - **Гілка `claude/student-playtest-1117-tasks`, PR не відкрито.** Останній build/check — 5d8d46d: validate 0 помилок / 73 попередження, test-ui 266 ok. **playtest.py і test-answer-ui.py локально не запускались** (немає Python playwright): потрібен CI, тобто PR (job `browser`).
 - **Плейтест від ролі учня (13–17.11):** 8 агентів-«учнів» 4–11 кл. на GitHub Pages, ≈ 800 уроків, ~280 знахідок, блокерів немає. Звіти — reports/qa/student-playtest-1117/ (SUMMARY.md, g4–g11.md, TASKS-INDEX.md).
 - **Хвилі 1–3:** 27 задач `*-1117` у tasks/done; зміст verified, рушій — рев'ю D-026 прийнято (reports/verify|review|qa/*-1117.md). Рушій: дроби в number, клітинки ділення кутом, zoom, рендер 1/aⁿ і кореня, `pl`/`shift` у show, план після тесту з `see`; зміст math/ukr/hist/world; карти; style-sync (D-019, позиції choice/multi, нейтральний рід).
@@ -15,6 +16,7 @@ _Оновлено: 2026-11-18, куратор пам'яті (сесія 13–18.
 
 ## У роботі (`node tools/claim.mjs list doing`)
 - **research-math-diag-duration** — пілот, чекає учнів.
+- **tasks/review/design-eng** — чекає рішення людини (12 питань, docs/design/english.md §11); до нього стоять задачі `*-eng-*`.
 - **tasks/review — 4 дизайни, чекають рішення людини** (питання — наприкінці кожного документа): docs/design/own-writing.md, gamification.md, student-service-info.md, difficulty.md.
 
 ## Що далі
@@ -43,13 +45,14 @@ _Оновлено: 2026-11-18, куратор пам'яті (сесія 13–18.
 5. **Рев'ю знімка tools/test-hyp.mjs §0.** За 17–18.11 його тричі оновлювали під зміни змісту без рев'ю D-026. Чи це прийнятний виняток?
 6. **Стиль (рішення — у decisions.md):** sentenceWords hist/world 10–11 (не рахувати `items` чи межа 6); pick ukr — межі члена речення у фіналі кожним словом-кнопкою (style-ukr-1117); world ~50 задач «скільки років від X до Y» з обома датами — на 8+ брати одну дату з уроку?; закріпити в style/math.md «Для кожного … обери» у sort і формули 4 кл. словами (вже в glossary/math).
 7. **Сіяний порядок рядків** у тесті рівня — так чи ні (зараз перемішування; qa-diag-stability).
-8. Як 12.11: dgh11b (втрата підсумку dgh11); дублікати img/hist ↔ img/world; ліцензії фото (Гмюнд 1916, w10s4 1923, Кайсері 1928, Франки 1904); постанова ВР 14.04.2022 і закон 712-XII; required checks; змінні синхронізації (`SLID_API`, `SLID_GOOGLE_CLIENT_ID`, `CORS_ORIGINS`, `LOG_HASH_KEY`); `personalization-qa --strict`.
+8. **Англійська: 12 питань docs/design/english.md §11** (мова екранів, B1/B2, BrE/AmE, аудіо, IPA, учитель-рецензент тощо; копія — decisions.md «Чекає рішення людини»).
+9. Як 12.11: dgh11b (втрата підсумку dgh11); дублікати img/hist ↔ img/world; ліцензії фото (Гмюнд 1916, w10s4 1923, Кайсері 1928, Франки 1904); постанова ВР 14.04.2022 і закон 712-XII; required checks; змінні синхронізації (`SLID_API`, `SLID_GOOGLE_CLIENT_ID`, `CORS_ORIGINS`, `LOG_HASH_KEY`); `personalization-qa --strict`.
 
 ## Обмеження середовища
 - **Python-модуля playwright локально немає.** Плейтест і test-answer-ui ганяє лише CI. Браузер — `/opt/pw-browsers/chromium`; test-ui — `NODE_PATH=/opt/node22/lib/node_modules`.
 - **WebFetch не резолвить зовнішні домени.** Працюють curl через проксі (goroh, slovnyk, vesum, uk/en.wikipedia, commons) або WebSearch.
 - **Мініатюри Commons:** лише ширини 960/1280/1920 через upload.wikimedia.org/…/thumb; 429 — з паузами.
-- Недоступні: zakon.rada, mon.gov.ua, britannica/worldhistory (403), Met — через API.
+- Недоступні: zakon.rada, mon.gov.ua, britannica/worldhistory (403), Met — через API. **osvita.ua і lib.iitta.gov.ua з 19.11 доступні** (додано в мережу); програми МОН — з osvita.ua.
 - `npm run check`, validate, stats, euphony перезаписують спільні reports/. Звіти комітить лише оркестратор.
 
 ## Як продовжити

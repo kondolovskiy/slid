@@ -113,6 +113,7 @@ _Розбито з `pitfalls.md` 2026-11-05 (куратор пам'яті): за
 - _(2026-11-02)_ **mon.gov.ua (Cloudflare), zakon.rada.gov.ua (403/503) і pravopys.net (503) з проксі недоступні.** Правопис — https://2019.pravopys.net/sections/N/ через `curl` або https://slovnyk.ua/pravopys.php?prav_par=N (обидва = ред. 2019 = стандарт 2026); закони — osvita.ua/legislation, protocol.ua, ccu.gov.ua (writer-u5s1, u5s4, verifier-u5s4).
 - _(2026-11-05)_ **chtyvo.org.ua закрито:** PDF не віддаються (301 → «Завершення проєкту Чтиво»). Не цитувати chtyvo як джерело; для статей шукати видавця, ЕСУ, ZAXID.NET, academia тощо. Наявне посилання в facts/hist №98 позначено мертвим; у h33 note замінено на ZAXID.NET.
 - _(2026-11-06)_ **2019.pravopys.net — 503, pravopys.net — 403** (знову); текст ч. «Розділові знаки» є лише на slovnyk.ua — статус не звірено (handoff). **lib.imzo.gov.ua** (PDF підручників) з проксі — самопідписаний сертифікат. **Конституція — PDF КСУ** https://ccu.gov.ua/sites/default/files/konstytuciya_ukrayiny_0.pdf відкривається (замість zakon.rada). Онатій 8 кл. (4book) — текстовий шар зі зсувом кодів (facts/ukr-8 «Джерела»).
+- _(2026-11-19)_ **Програми МОН (іноземні мови й інші) — через osvita.ua:** PDF модельних і типових програм відкриваються з `https://osvita.ua/doc/files/news/…` (сторінки `osvita.ua/school/program/…`). До мережі середовища slid-content додано **osvita.ua** і **lib.iitta.gov.ua**. **mon.gov.ua (403) і zakon.rada.gov.ua (скидає з'єднання) досі недоступні**, тому додатки 5–6 ДСБСО (постанова № 898) і ТОП Шияна 1–4 кл. не звірено (design-eng-1119; docs/design/english.md §0).
 
 ## Додано 2026-11-05, сесія 5 (пакет 05.11-4: math Істер P3 у worktree)
 
@@ -157,3 +158,8 @@ _Розбито з `pitfalls.md` 2026-11-05 (куратор пам'яті): за
 
 ### Середовище
 - **WebFetch у хмарній сесії не резолвить зовнішні домени** (britannica, esu.com.ua, uk.wikipedia, osvita.ua, testportal — DNS) — верифікатори 17.11 брали джерела через WebSearch. **curl через проксі працює**; середовище slid-content дозволяє goroh.pp.ua, slovnyk.ua, vesum.nlp.net.ua, uk/en.wikipedia.org, commons.wikimedia.org.
+
+## Додано 2026-11-19 (дизайн англійської, design-eng)
+
+### Процес
+- **make-tasks дублює задачі розділів eng.** Задачі дизайну названо `write-eng-g<клас>-<розділ>`, а `make-tasks` створює `write-eng-<розділ>.md` і не бачить їх як ті самі. Доки не виконано engine-eng-tools п. 1 (дедуплікація write-eng-g*), `make-tasks --subject eng` запускай лише з `--dry-run` (design-eng-1119).
