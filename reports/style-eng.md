@@ -60,13 +60,13 @@
 | e4s8l5 Every day or now? I play, I’m playing | 4 | 9 | 0.67 | 26 | 47 | 40 | 4.6 | 0.085 | 5 | — |
 | e4s8l6 Notes and messages to friends | 4 | 9 | 0.67 | 25 | 38 | 35 | 4.5 | 0.045 | 4 | — |
 | e4s8l7 Party time! (фінал) | 4 | 7 | 0.86 | 26 | 43 | 35 | 4.4 | 0.038 | 3 | — |
-| e5s1l1 My family tree: who is who? | 5 | 8 | 0.63 | 28 | 42 | 37 | 5.3 | 0.114 | 4 | — |
-| e5s1l2 Have you got any brothers or sisters? | 5 | 9 | 0.78 | 32 | 58 | 52 | 5.2 | 0.033 | 5 | — |
+| e5s1l1 My family tree: who is who? | 5 | 8 | 0.63 | 28 | 42 | 37 | 5 | 0.115 | 4 | — |
+| e5s1l2 Have you got any brothers or sisters? | 5 | 9 | 0.78 | 31 | 58 | 52 | 5 | 0.034 | 5 | — |
 | e5s1l3 Whose is it? My, your, his, her | 5 | 10 | 0.6 | 31 | 52 | 48 | 4.7 | 0.034 | 6 | — |
-| e5s1l4 This, that, these, those: a family photo | 5 | 8 | 0.63 | 30 | 59 | 56 | 4.7 | 0.061 | 4 | — |
-| e5s1l5 What do your parents do? Jobs | 5 | 11 | 0.64 | 29 | 56 | 51 | 4.7 | 0.093 | 5 | — |
-| e5s1l6 My best friend: what does she like? | 5 | 10 | 0.7 | 29 | 51 | 48 | 4.6 | 0.062 | 5 | — |
-| e5s1l7 Our family album (фінал) | 5 | 7 | 0.86 | 29 | 36 | 30 | 4.8 | 0.049 | 4 | — |
+| e5s1l4 This, that, these, those: a family photo | 5 | 8 | 0.63 | 30 | 59 | 56 | 4.6 | 0.061 | 4 | — |
+| e5s1l5 What do your parents do? Jobs | 5 | 11 | 0.64 | 29 | 56 | 51 | 4.6 | 0.098 | 5 | — |
+| e5s1l6 My best friend: what does she like? | 5 | 10 | 0.7 | 29 | 51 | 48 | 4.5 | 0.061 | 5 | — |
+| e5s1l7 Our family album (фінал) | 5 | 7 | 0.86 | 29 | 36 | 30 | 4.6 | 0.05 | 4 | — |
 | e5s2l1 My timetable: subjects and days | 5 | 10 | 0.6 | 30 | 41 | 39 | 5.2 | 0.092 | 5 | — |
 | e5s2l2 My school day: I get up at seven | 5 | 10 | 0.6 | 29 | 59 | 53 | 5.2 | 0.055 | 5 | — |
 | e5s2l3 Does she walk to school? Questions and negatives | 5 | 10 | 0.6 | 29 | 48 | 43 | 4.5 | 0.031 | 6 | — |
@@ -94,7 +94,7 @@
 | e5s5l4 More beautiful, better, worse | 5 | 9 | 0.56 | 26 | 45 | 41 | 4.7 | 0.066 | 4 | — |
 | e5s5l5 Tomorrow it will be sunny: a weather forecast | 5 | 10 | 0.6 | 30 | 57 | 54 | 4.9 | 0.085 | 5 | — |
 | e5s5l6 Seasons in Ukraine and the UK | 5 | 9 | 0.78 | 34 | 60 | 57 | 6.1 | 0.037 | 5 | sentenceWords нетипово для сім'ї (z=2.3) |
-| e5s5l7 Our weather page (фінал) | 5 | 7 | 0.86 | 16 | 30 | 24 | 5.1 | 0.05 | 5 | — |
+| e5s5l7 Our weather page (фінал) | 5 | 7 | 0.86 | 16 | 30 | 24 | 5.1 | 0.046 | 5 | — |
 | e5s6l1 Free time: at home and outside | 5 | 9 | 0.67 | 29 | 58 | 52 | 5 | 0.046 | 6 | — |
 | e5s6l2 I love drawing, I don’t like running | 5 | 10 | 0.6 | 25 | 43 | 38 | 4.5 | 0.037 | 5 | — |
 | e5s6l3 Swimming is fun! My hobby | 5 | 10 | 0.7 | 27 | 46 | 43 | 4.9 | 0.044 | 5 | — |
@@ -130,5 +130,5 @@
 
 - **4:lesson**: screens 9.13±0.67, gradedShare 0.62±0.06, readWordsPerScreen 26.19±2.86, maxReadWords 47.4±5.45, sentenceWords 4.67±0.39, longWordShare 0.06±0.04, typeVariety 4.5±0.61, maxText 43.25±5.66
 - **4:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 23.63±1.73, maxReadWords 36.13±3.48, sentenceWords 4.84±0.26, longWordShare 0.04±0.01, typeVariety 3.75±0.83, maxText 30.25±3.6
-- **5-6:lesson**: screens 9.5±0.63, gradedShare 0.65±0.07, readWordsPerScreen 28.35±3.07, maxReadWords 51.43±6.17, sentenceWords 4.96±0.4, longWordShare 0.06±0.04, typeVariety 5.02±0.65, maxText 47.06±5.98
-- **5-6:boss**: screens 7.22±0.42, gradedShare 0.86±0.01, readWordsPerScreen 22.67±3.83, maxReadWords 34.44±3.4, sentenceWords 4.88±0.2, longWordShare 0.06±0.02, typeVariety 3.78±0.63, maxText 28.11±3.66
+- **5-6:lesson**: screens 9.5±0.63, gradedShare 0.65±0.07, readWordsPerScreen 28.33±3.05, maxReadWords 51.43±6.17, sentenceWords 4.94±0.4, longWordShare 0.06±0.04, typeVariety 5.02±0.65, maxText 47.06±5.98
+- **5-6:boss**: screens 7.22±0.42, gradedShare 0.86±0.01, readWordsPerScreen 22.67±3.83, maxReadWords 34.44±3.4, sentenceWords 4.86±0.22, longWordShare 0.06±0.02, typeVariety 3.78±0.63, maxText 28.11±3.66
