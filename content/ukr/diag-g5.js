@@ -1,35 +1,37 @@
 /* Слід · Українська мова, 5 клас — тест рівня «Що ти вже вмієш?»
    Статус: verified — verifier-write-ukr-diag-g5; після правки fix-ukr-diag-g5-cur повторно verifier-fix-ukr-diag-g5-cur, 2026-11-06 (reports/verify/dgu5.md).
-   8 baseline-опор 1–4 кл. (по 2 завдання) + 10 тем 5 класу (по 1 завданню) = 26 завдань.
+   8 опор 1–4 кл. (по 2 завдання) + 10 тем 5 класу (по 1 завданню) = 26 завдань.
    Правка fix-ukr-diag-g5-cur (2026-11-06): повернуто теми cur-u5s9 (u5s9l4) і cur-u5s10 (u5s10l3) складеними multi — твердження на кожне вміння learned
    (верифікатор прибрав їх, бо одне gaps не перевіряло схем, повторюваних сполучників і видів зв'язку).
    Опори — за Типовою освітньою програмою, розробленою під керівництвом Савченко О. Я., 3–4 клас (наказ МОН від 12.08.2022 № 743-22;
    https://osvita.ua/legislation/Ser_osv/87314/ → Savchenko_3-4.pdf, «Українська мова», змістова лінія «Досліджуємо мовні явища»).
-   Уроків 4 класу української в застосунку немає, тому опори — baseline: lessons порожні, for обов'язковий (CONTENT_SCHEMA §9).
+   Опори ведуть на уроки 4 класу (lessons; до fix-ukr-diag-g5-u4 були baseline, бо уроків 4 кл. не було).
    Порядок: спершу базові завдання всіх опор (1–8), далі складніші впереміш із темами 5 класу (cur).
    Норми — facts/ukr.md (З5, УП, Горох); таблиця тем і джерела слів — tasks/…/write-ukr-diag-g5.md, «Нотатки виконавця».
    Перевірка: node tools/validate.mjs --diag dgu5
    Схема й правила: docs/CONTENT_SCHEMA.md §9, §4.1; style/ukr.md
    Ред. engine-1117-followups (2026-11-17): baseline-темам додано see — урок, де тему повторюють (CONTENT_SCHEMA §9),
    щоб план вів на урок, а не «попроси дорослого»; завдання й порядок не змінено (rev не потрібен). Статус → draft до верифікації.
+   Ред. fix-ukr-diag-g5-u4 (2026-11-19): з'явилися уроки 4 класу (D-054) — опори без baseline і see, lessons → уроки u4
+   (abc, text — по 2 уроки й поле lesson у завданнях); for, завдання, ключі й порядок не змінено (rev не потрібен). Статус → draft до верифікації.
 */
 SLID.diag("ukr", {
   id: "dgu5",
   grade: 5,
   title: "Що ти вже вмієш?",
   why: "Згадаємо, що вивчали в 1–4 класах, і знайдемо, з чого почати 5 клас.",
-  status: "verified",   // verifier-style-ukr-1117 (2026-11-18): why без роду перевірено, reports/verify/style-ukr-1117.md; style-ukr-1117 (2026-11-18): why без роду (D-020), завдання й порядок не змінено (rev не потрібен); раніше verified — verifier-diag-see-1117 (2026-11-17): see baseline-тем перевірено, завдання не змінено; reports/verify/diag-see-1117.md
+  status: "draft",   // fix-ukr-diag-g5-u4 (2026-11-19): опори → уроки u4, чекає верифікації; раніше verified — verifier-style-ukr-1117 (2026-11-18): why без роду перевірено, reports/verify/style-ukr-1117.md; style-ukr-1117 (2026-11-18): why без роду (D-020), завдання й порядок не змінено (rev не потрібен); раніше verified — verifier-diag-see-1117 (2026-11-17): see baseline-тем перевірено, завдання не змінено; reports/verify/diag-see-1117.md
   meta: { author: "writer-write-ukr-diag-g5", created: "2026-11-06", factcheck: "verifier-write-ukr-diag-g5; повторно verifier-fix-ukr-diag-g5-cur (cur-u5s9, cur-u5s10)", teacher: null },
   topics: [
-    // опори 1–4 класів (baseline: уроків молодших класів у застосунку немає)
-    { id: "abc", title: "Алфавіт", kind: "pre", baseline: true, lessons: [], for: ["u5s4"], see: ["u5s4l4"] },
-    { id: "stress", title: "Наголос", kind: "pre", baseline: true, lessons: [], for: ["u5s5"], see: ["u5s5l1"] },
-    { id: "root", title: "Корінь і спільнокореневі слова", kind: "pre", baseline: true, lessons: [], for: ["u5s3"], see: ["u5s3l2"] },
-    { id: "e-y", title: "Ненаголошені е та и", kind: "pre", baseline: true, lessons: [], for: ["u5s5", "u5s3"], see: ["u5s5l2"] },
-    { id: "apos", title: "Апостроф", kind: "pre", baseline: true, lessons: [], for: ["u5s7"], see: ["u5s7l3"] },
-    { id: "syn", title: "Синоніми", kind: "pre", baseline: true, lessons: [], for: ["u5s2"], see: ["u5s2l3"] },
-    { id: "main", title: "Головні члени речення", kind: "pre", baseline: true, lessons: [], for: ["u5s8"], see: ["u5s8l3"] },
-    { id: "text", title: "Текст і заголовок", kind: "pre", baseline: true, lessons: [], for: ["u5s1"], see: ["u5s1l3"] },
+    // опори 1–4 класів → уроки 4 класу (fix-ukr-diag-g5-u4)
+    { id: "abc", title: "Алфавіт", kind: "pre", lessons: ["u4s6l1", "u4s4l1"], for: ["u5s4"] },
+    { id: "stress", title: "Наголос", kind: "pre", lessons: ["u4s6l1"], for: ["u5s5"] },
+    { id: "root", title: "Корінь і спільнокореневі слова", kind: "pre", lessons: ["u4s5l2"], for: ["u5s3"] },
+    { id: "e-y", title: "Ненаголошені е та и", kind: "pre", lessons: ["u4s6l5"], for: ["u5s5", "u5s3"] },
+    { id: "apos", title: "Апостроф", kind: "pre", lessons: ["u4s6l3"], for: ["u5s7"] },
+    { id: "syn", title: "Синоніми", kind: "pre", lessons: ["u4s4l4"], for: ["u5s2"] },
+    { id: "main", title: "Головні члени речення", kind: "pre", lessons: ["u4s2l3"], for: ["u5s8"] },
+    { id: "text", title: "Текст і заголовок", kind: "pre", lessons: ["u4s1l3", "u4s1l4"], for: ["u5s1"] },
     // теми 5 класу: по одному уроку (без boss), завдання охоплює ядро уроку
     { id: "cur-u5s1", title: "Ознаки тексту", kind: "cur", lessons: ["u5s1l3"] },
     { id: "cur-u5s2", title: "Антоніми", kind: "cur", lessons: ["u5s2l4"] },
@@ -46,6 +48,7 @@ SLID.diag("ukr", {
     /* ── базові завдання опор 1–4 класів ── */
     {
       topic: "abc",
+      lesson: "u4s4l1",
       type: "choice",
       sk: "phon",
       title: "Яке слово в словнику стоїть першим?",
@@ -102,6 +105,7 @@ SLID.diag("ukr", {
     },
     {
       topic: "text",
+      lesson: "u4s1l3",
       type: "choice",
       sk: "text",
       title: "Який заголовок пасує до тексту?",
@@ -113,6 +117,7 @@ SLID.diag("ukr", {
     /* ── складніші завдання опор і теми 5 класу ── */
     {
       topic: "abc",
+      lesson: "u4s6l1",
       type: "order",
       sk: "phon",
       title: "Розташуй слова за алфавітом",
@@ -272,6 +277,7 @@ SLID.diag("ukr", {
     },
     {
       topic: "text",
+      lesson: "u4s1l4",
       type: "order",
       sk: "text",
       title: "Збери текст",

@@ -1,15 +1,6 @@
 {
-  "date": "2026-11-19T10:37:45.836Z",
-  "errors": [
-    "content/ukr/diag-g5.js#dgu5: тема «abc»: baseline заборонено — у предмета є уроки молодших класів (u4s1l1, u4s1l2, u4s1l3); посилайся на них у lessons",
-    "content/ukr/diag-g5.js#dgu5: тема «stress»: baseline заборонено — у предмета є уроки молодших класів (u4s1l1, u4s1l2, u4s1l3); посилайся на них у lessons",
-    "content/ukr/diag-g5.js#dgu5: тема «root»: baseline заборонено — у предмета є уроки молодших класів (u4s1l1, u4s1l2, u4s1l3); посилайся на них у lessons",
-    "content/ukr/diag-g5.js#dgu5: тема «e-y»: baseline заборонено — у предмета є уроки молодших класів (u4s1l1, u4s1l2, u4s1l3); посилайся на них у lessons",
-    "content/ukr/diag-g5.js#dgu5: тема «apos»: baseline заборонено — у предмета є уроки молодших класів (u4s1l1, u4s1l2, u4s1l3); посилайся на них у lessons",
-    "content/ukr/diag-g5.js#dgu5: тема «syn»: baseline заборонено — у предмета є уроки молодших класів (u4s1l1, u4s1l2, u4s1l3); посилайся на них у lessons",
-    "content/ukr/diag-g5.js#dgu5: тема «main»: baseline заборонено — у предмета є уроки молодших класів (u4s1l1, u4s1l2, u4s1l3); посилайся на них у lessons",
-    "content/ukr/diag-g5.js#dgu5: тема «text»: baseline заборонено — у предмета є уроки молодших класів (u4s1l1, u4s1l2, u4s1l3); посилайся на них у lessons"
-  ],
+  "date": "2026-11-19T10:39:42.352Z",
+  "errors": [],
   "warnings": [
     "content/hist/g5-s1.js#l1 екран 9 (multi): fbText: позиційне посилання «Перші три твердження» — порядок варіантів може змінитися, назви сам варіант чи зміст",
     "content/hist/g5-s1.js#l5 екран 4 (sort): дуже довге речення (28 слів): «Відомо з уроку й досліджень: легенду про Кия записано в «Пов…»",
