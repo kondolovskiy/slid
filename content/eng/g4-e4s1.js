@@ -359,7 +359,7 @@ SLID.section("eng", {
           sk: "gram",
           title: "Find the mistake.",
           body: `<p>One word in Andrii’s message is wrong.</p>`,
-          text: "My dad is [an] farmer. My mum is a doctor. My aunt is an artist.",
+          text: "My uncle is [an] farmer. My mum is a doctor. My aunt is an artist.",
           hint: "Check a and an. What sound starts each job?",
           fbOk: "Good eye!",
           fbBad: "Check each a and an.",
