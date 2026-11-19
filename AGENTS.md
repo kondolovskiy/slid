@@ -67,6 +67,7 @@ cd server && npm run check && DATABASE_URL=postgres://… npm run test:e2e   # �
 
 ## 4. Непорушні правила
 1. **Мова контенту — українська**, сучасний правопис, без канцеляриту (style/common.md, style/banned-phrases.txt).
+   **Виняток — англійська (`eng`, D-054):** увесь зміст уроків, тестів рівня й пулів — англійською, британська норма (style/eng.md, glossary/eng.md); українською — лише інтерфейс рушія і згорнутий переклад правила `uk` у 4–5 кл. за потреби (docs/design/english.md §2).
 2. **Точність вища за швидкість.** Кожна дата, число, ім'я — з перевіреного джерела. Не впевнений — не пиши або познач «потребує перевірки». Вигадані цитати, факти й джерела заборонені.
 3. **Реєстр фактів** `memory/long/facts/<предмет>.md`: якщо факт там є, бери саме це формулювання й дату. Нові — у нотатки задачі з URL.
 4. **Нотація й терміни — з глосарію** `memory/long/glossary/<предмет>.md` (math: ділення «:», множення «·», дріб `$3/4$`).
@@ -96,7 +97,7 @@ cd server && npm run check && DATABASE_URL=postgres://… npm run test:e2e   # �
 |---|---|
 | написати чи переписати розділ уроків (`write-*`, `revise-*`, `refine-*`, `fix-*` у файлі розділу) | `content-author` |
 | перевірити розділ, тест рівня, пул чи лінію графа, яких ти не писав (задача в `tasks/review/`) | `content-verify` |
-| пул вправ `pool-*.js` або тест рівня `diag-*.js` (написати, виправити, змінити формат відповіді; для ukr — ще й `content-author`) | `math-pool-diag` |
+| пул вправ `pool-*.js` або тест рівня `diag-*.js` (написати, виправити, змінити формат відповіді; для ukr і eng — ще й `content-author`) | `math-pool-diag` |
 | зображення в уроці, Вікісховище, помилка D-027 (`images-*`) | `hist-images` |
 | будь-яка зміна в `app/`, `tools/`, тестах, CI (`engine-*`, `tools-*`, `tests-*`) | `engine-change` |
 | будь-яка зміна в `server/` (`server-*`) | `backend-change` |
@@ -114,6 +115,7 @@ cd server && npm run check && DATABASE_URL=postgres://… npm run test:e2e   # �
 - Зображення — `docs/IMAGES.md`; публікація, PWA, артефакт — `docs/PUBLISHING.md`
 - Архітектура рушія — `docs/ARCHITECTURE.md`; персоналізація — `docs/PERSONALIZATION.md`, `docs/PERSONALIZATION_QA.md`
 - Журнал подій — `docs/EVIDENCE.md`; дизайни — `docs/design/*.md`; бекенд — `docs/BACKEND.md`
+- Англійська мова (`eng`): мова екранів, типи вправ, програма 4–11 кл. — `docs/design/english.md`; рішення — D-054
 - Рішення — `memory/long/decisions.md` (D-NNN); пастки — `memory/long/pitfalls.md`; формат inbox — `memory/README.md`
 
 ## 7. Готово означає

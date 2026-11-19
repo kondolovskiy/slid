@@ -1,10 +1,12 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-19T11:25:39.673Z
 id: curate-eng-agents-rule
 type: curate
 subject: eng
 depends_on: [design-eng]
-status: todo
-claimed_by: 
+status: review
+claimed_by: orchestrator-eng
 created: 2026-11-19
 source: design-eng
 ---
@@ -13,3 +15,9 @@ source: design-eng
 
 ## Обмеження
 Спільні файли куратора — не під час паралельного пакета (AGENTS.md §5). Build — оркестратор.
+
+## Нотатки orchestrator-eng (2026-11-19)
+- AGENTS.md §4 п. 1 — виняток для `eng` за D-054 (увесь зміст англійською, британська норма; українською — хром рушія і згорнутий `uk` 4–5 кл.); §6 таблиця — «для ukr і eng — ще й `content-author`» (пули/тести); §6 «Документація» — рядок docs/design/english.md.
+- §2 «Карта» не змінено: шляхи `content/<предмет>/…`, `img/<предмет>/…` уже загальні; audio/eng/ не додано — звук заблоковано (D-054).
+- CLAUDE.md не змінено: предметно-специфічного в ньому немає.
+- Рядок про скіли eng у §6 — задача skills-eng (після curate-eng-style і -glossary).
