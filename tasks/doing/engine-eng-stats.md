@@ -1,10 +1,12 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-19T11:58:42.496Z
 id: engine-eng-stats
 type: engine
 subject: eng
 depends_on: [engine-eng-lang-attr]
 status: todo
-claimed_by: 
+claimed_by: eng-stats
 created: 2026-11-19
 source: design-eng
 ---
