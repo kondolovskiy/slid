@@ -8,7 +8,7 @@
    Увесь зміст — англійською, британська норма (D-054). Тексти, діалоги й герої — власні (docs/design/english.md §8).
    will — рішення в мить мовлення, «I think I’ll…» (CD Grammar «Will»); be going to у вправах не дається як варіант,
    а в `word` прийнято як другу правильну відповідь. Форми, наголос і факти — URL у tasks/…/write-eng-g4-e4s7.md, «Нотатки агента».
-   Статус: draft. 7 уроків (6 + фінал).
+   Статус: verified (verifier-e4s7, reports/verify/e4s7.md). 7 уроків (6 + фінал).
    Перевірка: node tools/validate.mjs --section e4s7 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -18,7 +18,7 @@ SLID.section("eng", {
   title: "Holidays and travel",
   why: "To talk about trips and transport. And to tell people about your holiday plans.",
   requires: ["e4s1l4", "e4s1l6", "e4s6l5"],
-  meta: { author: "writer-e4s7", created: "2026-11-19", factcheck: "self", teacher: null },
+  meta: { author: "writer-e4s7", created: "2026-11-19", factcheck: "verifier-e4s7 (reports/verify/e4s7.md)", teacher: null },
   badges: [
     { id: "e4s7boss", name: "Young traveller", icon: "trophy", desc: "Finish the final lesson “Holidays and travel”" }
   ],
@@ -29,7 +29,7 @@ SLID.section("eng", {
       title: "By bus, by train, on foot",
       short: "Transport",
       icon: "path",
-      status: "draft",
+      status: "verified",
       why: "How do you get to school? Tell your friends about it.",
       screens: [
         {
@@ -150,7 +150,7 @@ SLID.section("eng", {
       title: "Which way? Up, down, across, along",
       short: "Which way?",
       icon: "map",
-      status: "draft",
+      status: "verified",
       why: "Read a short route and find the way. Tell a friend which way to go.",
       screens: [
         {
@@ -197,29 +197,29 @@ SLID.section("eng", {
           hint: "Is the castle in a high place or a low place?",
           fbOk: "Right.",
           fbBad: "The castle is on a high hill.",
-          fbText: "The castle is high, so Taras walks <b>up</b> the hill. After that, he walks <b>down</b> the hill to go home."
+          fbText: "The castle is high, so Taras walks <b>up</b> the hill. <i>Down</i> is to a low place."
         },
         {
           type: "gaps",
           sk: "gram",
           title: "Fill in the gaps.",
           body: `<p>Emma’s walk with her dog.</p>`,
-          text: "I walk {*along|across} the river. It’s next to us all the time. Then we go {*across|along} the bridge to the other side. My house is on a hill. We go {*up|down} the hill.",
+          text: "I walk {*along|across} the river. It’s next to us all the time. Then we go {*across|along} the river to the other side. My house is on a hill. We go {*up|down} the hill.",
           hint: "Next to the river, or to the other side?",
           fbOk: "Exactly.",
           fbBad: "Look at the list again.",
-          fbText: "Next to the river all the time: <b>along</b>. To the other side: <b>across</b> the bridge. The house is on a hill: <b>up</b> the hill."
+          fbText: "Next to the river all the time: <b>along</b>. To the other side: <b>across</b> the river. The house is on a hill: <b>up</b> the hill."
         },
         {
           type: "pick",
           sk: "gram",
           title: "Find the mistake.",
           body: `<p>One word in Andrii’s message is wrong.</p>`,
-          text: "The shop is on the other side of the road. I walk [along] the road to the shop.",
+          text: "The shop is on the other side of the road. I walk [along] the road to the other side.",
           hint: "To the other side: which word do we use?",
           fbOk: "Good eye!",
           fbBad: "The shop is on the other side.",
-          fbText: "To the other side of the road, we go <b>across</b> the road. So <i>along</i> is wrong: I walk <b>across</b> the road to the shop."
+          fbText: "To the other side: <b>across</b> the road. So <i>along</i> is wrong: I walk <b>across</b> the road."
         },
         {
           type: "build",
@@ -228,7 +228,7 @@ SLID.section("eng", {
           body: `<p>The river is next to them all the time.</p>`,
           tiles: ["we", "walk", "along", "the river"],
           extra: ["walks"],
-          answer: "We walk along the river.",
+          answer: ["We walk along the river.", "Along the river we walk."],
           hint: "Start with we.",
           fbOk: "Well done!",
           fbBad: "Who walks? We walk.",
@@ -240,19 +240,19 @@ SLID.section("eng", {
           title: "Write the missing word.",
           body: `<p>Oksana’s friend lives on the other side of the river.</p>`,
           before: "Oksana goes",
-          after: "the bridge.",
+          after: "the river.",
           answer: ["across", "over"],
           hint: "To the other side: …",
           fbOk: "Yes!",
           fbBad: "Which word means “to the other side”?",
-          fbText: "To the other side: Oksana goes <b>across</b> the bridge."
+          fbText: "To the other side: Oksana goes <b>across</b> the river."
         },
         {
           type: "choice",
           sk: "read",
           eyebrow: "Final",
           title: "Read and choose.",
-          body: `<p><i>Walk along Sadova Street. Then go across the bridge. Then go up the hill. My school is there. – Mariia</i></p><p>What do you do after the bridge?</p>`,
+          body: `<p><i>Walk along Sadova Street. Then go across the bridge. Then go up the hill. My grandma’s flat is there. – Mariia</i></p><p>What do you do after the bridge?</p>`,
           opts: [
             "You walk along Sadova Street.",
             "You go up the hill.",
@@ -281,7 +281,7 @@ SLID.section("eng", {
       title: "Capital cities: Kyiv, London and more",
       short: "Capitals",
       icon: "globe",
-      status: "draft",
+      status: "verified",
       why: "Every country has got a capital city. Learn the capitals of Ukraine and English-speaking countries.",
       screens: [
         {
@@ -311,7 +311,7 @@ SLID.section("eng", {
         {
           type: "info",
           title: "Capital cities",
-          body: `<p>A <b><u>cap</u>ital</b> is the main city of a country.</p><ul><li>Ukraine → <b>Kyiv</b></li><li><b>the</b> UK → <b><u>Lon</u>don</b></li><li><b>the</b> USA → <b>Washington, D.C.</b></li><li><u>Can</u>ada → <b><u>Ot</u>tawa</b></li><li>Aus<u>tra</u>lia → <b><u>Can</u>berra</b></li></ul><p>Kyiv <b>is the capital of</b> Ukraine.</p><p>People speak English in the UK, the USA, Canada and Australia.</p>`,
+          body: `<p>A <b><u>cap</u>ital</b> is the main city of a country.</p><ul><li>Ukraine → <b>Kyiv</b></li><li><b>the</b> UK → <b><u>Lon</u>don</b></li><li><b>the</b> USA → <b>Washington, DC</b></li><li><u>Can</u>ada → <b><u>Ot</u>tawa</b></li><li>Aus<u>tra</u>lia → <b><u>Can</u>berra</b></li></ul><p>Kyiv <b>is the capital of</b> Ukraine.</p><p>People speak English in the UK, the USA, Canada and Australia.</p>`,
           cta: "Next"
         },
         {
@@ -397,7 +397,7 @@ SLID.section("eng", {
       title: "The biggest and the longest",
       short: "The biggest",
       icon: "chart",
-      status: "draft",
+      status: "verified",
       why: "Ukraine has got big cities, long rivers and high mountains. Say which is the biggest.",
       screens: [
         {
@@ -444,17 +444,17 @@ SLID.section("eng", {
           type: "choice",
           sk: "gram",
           title: "Choose the correct answer.",
-          body: `<p>Andrii is 140 cm. Taras is 135 cm. Tom is 145 cm.</p><p>Who is the tallest?</p>`,
+          body: `<p>Andrii is 140 cm. Taras is 135 cm. Emma is 145 cm.</p><p>Who is the tallest?</p>`,
           opts: [
             "Andrii",
             "Taras",
-            "Tom"
+            "Emma"
           ],
           correct: 2,
           hint: "Find the biggest number.",
           fbOk: "Right.",
           fbBad: "Look at the numbers again.",
-          fbText: "145 cm is the biggest number. <b>Tom is the tallest.</b> Taras is not very tall: 135 cm."
+          fbText: "145 cm is the biggest number. <b>Emma is the tallest.</b> Taras is not very tall: 135 cm."
         },
         {
           type: "word",
@@ -481,7 +481,7 @@ SLID.section("eng", {
           title: "Put the words in order.",
           tiles: ["Hoverla", "is", "the", "highest", "mountain", "in Ukraine"],
           extra: ["higher"],
-          answer: "Hoverla is the highest mountain in Ukraine.",
+          answer: ["Hoverla is the highest mountain in Ukraine.", "The highest mountain in Ukraine is Hoverla.", "In Ukraine Hoverla is the highest mountain.", "In Ukraine the highest mountain is Hoverla.", "Is Hoverla the highest mountain in Ukraine?", "Is the highest mountain in Ukraine Hoverla?"],
           hint: "Start with Hoverla.",
           fbOk: "Yes!",
           fbBad: "Remember: the + -est.",
@@ -516,7 +516,7 @@ SLID.section("eng", {
       title: "A postcard from my holiday",
       short: "A postcard",
       icon: "book",
-      status: "draft",
+      status: "verified",
       why: "You are on holiday. Write a short postcard to a friend.",
       screens: [
         {
@@ -618,7 +618,7 @@ SLID.section("eng", {
           hint: "Which word starts a postcard? Which word is before your name?",
           fbOk: "Well done!",
           fbBad: "Look at the postcard plan and the list.",
-          fbText: "A postcard starts with <b>Dear</b> and ends with <b>Love</b> and your name. Yesterday: <b>went</b>, <b>saw</b>. The weather <b>was</b>."
+          fbText: "A postcard starts with <b>Dear</b>. It ends with <b>Love</b> and your name. Yesterday: <b>went</b>, <b>saw</b>. The weather <b>was</b>."
         }
       ],
       outro: {
@@ -637,7 +637,7 @@ SLID.section("eng", {
       title: "Plans for the summer: I think I’ll …",
       short: "I think I’ll",
       icon: "star",
-      status: "draft",
+      status: "verified",
       why: "The summer holidays are coming. Tell your friends what you think you’ll do.",
       screens: [
         {
@@ -753,7 +753,7 @@ SLID.section("eng", {
       title: "Our summer trip",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e4s7boss",
       why: "Check everything from this section. Your points are doubled.",

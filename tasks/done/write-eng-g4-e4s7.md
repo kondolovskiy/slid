@@ -7,7 +7,7 @@ subject: eng
 grade: 4
 section: e4s7
 depends_on: [curate-eng-plan-g4, engine-eng-lang-core, engine-eng-validate, engine-eng-stats, skills-eng, curate-eng-style, curate-eng-glossary, write-eng-g4-e4s1]
-status: review
+status: done
 claimed_by: writer-e4s7
 created: 2026-11-19
 source: design-eng
@@ -105,3 +105,11 @@ writer-e4s7, 2026-11-19. Файл: content/eng/g4-e4s7.js — 7 уроків (6 
 - `requires` на e4s6 (comparatives перед superlatives, plan-eng-g4 §6) не поставлено: уроків e4s6 ще немає (паралельний автор). l4 сам показує ряд big → bigger → the biggest. Оркестратору: після злиття e4s6 додати id уроку comparatives у `requires` e4s7.
 - `match` не вжито (у рушії ще в роботі, engine-eng-match).
 - Будова «I am going to» у ключі `word` l6 дає речення «I think I am going to go to the Carpathians» — граматично правильне, хоч і з повтором go.
+
+## Нотатки верифікатора
+verifier-e4s7, 2026-11-19. Звіт: reports/verify/e4s7.md. **Вердикт: придатний, усі 7 уроків → `verified`.**
+- Виправлено самим (❌ → ✅): «along the bridge» — друга правильна відповідь (CD along «from one part of a road, river, etc. to another») у l2 #5 gaps, l2 #6 pick («to the shop» → «to the other side»), l2 #8 word (`after` «the river.»); `build` l2 #7 (+ «Along the river we walk.») і l4 #8 (+ 5 порядків, зокрема «The highest mountain in Ukraine is Hoverla.» і питальні) — перевірено перебором усіх перестановок через app/lang.js.
+- Дрібне: два fbText спрощено до рівня A1; Tom (8 років) → Emma у «Who is the tallest?»; Mariia l2 Final: «My school» → «My grandma’s flat» (узгодження з l1); «Washington, D.C.» → «Washington, DC» (CD, OALD).
+- Dnipro — найдовша річка в межах України: ЕСУ (1121 км в Україні; Дністер — 925 км) + uk.wikipedia «Найдовші річки України» (Каталог річок України) + en.wikipedia. Формулювання «in Ukraine» безпечне.
+- will / be going to: другої правильної немає; be going to — у ключі `word` l6. `uk` не потрібне. TQ не додавав.
+- validate --section e4s7: 0 помилок, 1 попередження (l3 longWordShare, пояснено). Плейтест — після build оркестратора.
