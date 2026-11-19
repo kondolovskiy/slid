@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-19T10:08:53.156Z
 id: write-ukr-u4s11
 type: write-section
 subject: ukr
@@ -6,7 +8,7 @@ grade: 4
 section: u4s11
 weeks: [34, 35]
 status: todo
-claimed_by:
+claimed_by: writer-u4s11
 created: 2026-11-19
 ---
 # Написати розділ «Прислівник і службові слова» (Українська мова, 4 клас)
