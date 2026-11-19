@@ -49,3 +49,16 @@
 - Браузерні прогони (test-answer-ui, test-ui, playtest): `app/` не змінено. Зміни playtest-pick покриті юніт-тестом, а вихід на живому змісті не змінився.
 - Злиття `noPool` з plan.js у реєстрі перевірено лише через фікстуру test-make-tasks (мутант M3), окремо в app/registry.js не читав.
 - Поведінку `figCues` en на справжньому змісті eng не перевіряв: уроків eng ще немає (є лише `content/eng/plan.js`).
+
+## Повторне рев'ю (P2-1), 2026-11-19
+**Перевірено:** ed42698 (`tools/make-tasks.mjs:37`, тепер `/^---\r?\n([\s\S]*?)\r?\n---/`; фікстура `pool-zz3-renamed.md` у `tools/test-make-tasks.mjs` тепер з CRLF). Сам переглянув і 123e335 (`tasks/todo/engine-eng-tools-p3.md` з P3) — коду там немає.
+
+Прогони на чистій копії HEAD 2d4d592 (`git archive` + `git init`, scratchpad):
+- `node tools/test-make-tasks.mjs`: 101/101.
+- Мутант із поверненим старим регексом `/^---\n…\n---/`: 3 з 101 провалів, тобто тест ловить регресію.
+- Ручне відтворення задачі розділу eng: перейменований CRLF-файл (`type: write-section`, `subject: eng`, `section: e5s1`) → `make-tasks --subject eng --grade 5 --dry-run` пропонує 9 задач, а не 10; `e5s1` пропущено.
+- `npm run check`: rc 0.
+
+Тест покриває CRLF лише для дедуплікації за `id`. Дедуплікацію за `section` на CRLF я перевірив вручну, як описано вище. Обидві йдуть через той самий `head`, тож окремий тест не обов'язковий.
+
+**P2-1 закрито. Вердикт лишається: прийнято.** P3 — у tasks/todo/engine-eng-tools-p3.md.
