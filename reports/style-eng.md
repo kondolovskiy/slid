@@ -46,11 +46,11 @@
 | e4s6l5 Bigger, colder, faster: comparing things | 4 | 9 | 0.56 | 27 | 40 | 36 | 4.8 | 0.024 | 4 | — |
 | e4s6l6 Let’s help nature! | 4 | 8 | 0.63 | 24 | 41 | 38 | 4.9 | 0.02 | 5 | — |
 | e4s6l7 Our nature and weather page (фінал) | 4 | 7 | 0.86 | 23 | 38 | 28 | 5.1 | 0.03 | 5 | — |
-| e4s7l1 By bus, by train, on foot | 4 | 9 | 0.56 | 28 | 58 | 57 | 4.8 | 0.043 | 4 | maxReadWords нетипово для сім'ї (z=2); maxText нетипово для сім'ї (z=2.4) |
-| e4s7l2 Which way? Up, down, across, along | 4 | 9 | 0.67 | 29 | 50 | 48 | 5.8 | 0.016 | 5 | sentenceWords нетипово для сім'ї (z=2.4) |
-| e4s7l3 Capital cities: Kyiv, London and more | 4 | 8 | 0.63 | 22 | 42 | 40 | 4.9 | 0.189 | 4 | longWordShare=0.189 поза [0; 0.12]; longWordShare нетипово для сім'ї (z=3.7) |
+| e4s7l1 By bus, by train, on foot | 4 | 9 | 0.56 | 28 | 58 | 57 | 4.8 | 0.043 | 4 | maxText нетипово для сім'ї (z=2.4) |
+| e4s7l2 Which way? Up, down, across, along | 4 | 9 | 0.67 | 30 | 50 | 48 | 5.6 | 0.016 | 5 | sentenceWords нетипово для сім'ї (z=2) |
+| e4s7l3 Capital cities: Kyiv, London and more | 4 | 8 | 0.63 | 22 | 41 | 39 | 4.8 | 0.19 | 4 | longWordShare=0.19 поза [0; 0.12]; longWordShare нетипово для сім'ї (z=3.7) |
 | e4s7l4 The biggest and the longest | 4 | 9 | 0.56 | 27 | 45 | 41 | 4.4 | 0.037 | 4 | — |
-| e4s7l5 A postcard from my holiday | 4 | 9 | 0.56 | 28 | 58 | 54 | 4.6 | 0.089 | 5 | maxReadWords нетипово для сім'ї (z=2) |
+| e4s7l5 A postcard from my holiday | 4 | 9 | 0.56 | 28 | 58 | 54 | 4.5 | 0.089 | 5 | — |
 | e4s7l6 Plans for the summer: I think I’ll … | 4 | 8 | 0.63 | 27 | 50 | 46 | 4.4 | 0.043 | 4 | — |
 | e4s7l7 Our summer trip (фінал) | 4 | 7 | 0.86 | 25 | 32 | 25 | 4.7 | 0.064 | 3 | — |
 | e4s8l1 A party at a café | 4 | 9 | 0.56 | 27 | 49 | 45 | 4.8 | 0.035 | 4 | — |
@@ -60,10 +60,26 @@
 | e4s8l5 Every day or now? I play, I’m playing | 4 | 9 | 0.67 | 26 | 47 | 40 | 4.6 | 0.085 | 5 | — |
 | e4s8l6 Notes and messages to friends | 4 | 9 | 0.67 | 25 | 38 | 35 | 4.5 | 0.045 | 4 | — |
 | e4s8l7 Party time! (фінал) | 4 | 7 | 0.86 | 26 | 43 | 35 | 4.4 | 0.038 | 3 | — |
+| e5s8l1 First, second, third: ordinal numbers | 5 | 9 | 0.56 | 28 | 53 | 50 | 4.4 | 0.062 | 5 | — |
+| e5s8l2 When’s your birthday? Months and dates | 5 | 9 | 0.67 | 24 | 46 | 45 | 4.9 | 0.076 | 5 | — |
+| e5s8l3 A calendar of festivals: Ukraine and the UK | 5 | 9 | 0.56 | 29 | 48 | 43 | 5.4 | 0.16 | 4 | longWordShare=0.16 поза [0; 0.14] |
+| e5s8l4 How do you celebrate? Traditions | 5 | 10 | 0.6 | 32 | 55 | 48 | 5.6 | 0.07 | 5 | — |
+| e5s8l5 Our New Year party was great! Was and were | 5 | 10 | 0.6 | 28 | 53 | 49 | 4.6 | 0.019 | 5 | — |
+| e5s8l6 Writing a greetings card | 5 | 10 | 0.6 | 24 | 45 | 41 | 4.9 | 0.079 | 6 | — |
+| e5s8l7 Our festival calendar (фінал) | 5 | 7 | 0.86 | 25 | 36 | 29 | 5.3 | 0.083 | 4 | — |
+| e5s10l1 Ukraine on the map | 5 | 9 | 0.56 | 31 | 48 | 45 | 5.5 | 0.03 | 4 | — |
+| e5s10l2 Where do people speak English? | 5 | 10 | 0.6 | 26 | 43 | 39 | 4.3 | 0.201 | 6 | longWordShare=0.201 поза [0; 0.14]; longWordShare нетипово для сім'ї (z=2.4) |
+| e5s10l3 The UK: England, Scotland, Wales and Northern Ireland | 5 | 10 | 0.6 | 24 | 43 | 38 | 4.2 | 0.09 | 5 | — |
+| e5s10l4 Bigger or smaller? Comparing countries | 5 | 9 | 0.56 | 28 | 48 | 42 | 4.7 | 0.05 | 4 | — |
+| e5s10l5 The longest river, the highest mountain | 5 | 10 | 0.6 | 30 | 53 | 48 | 5.3 | 0.03 | 5 | — |
+| e5s10l6 Facts about my country | 5 | 9 | 0.78 | 34 | 47 | 41 | 5.6 | 0.069 | 4 | gradedShare нетипово для сім'ї (z=2.8) |
+| e5s10l7 Our world quiz (фінал) | 5 | 7 | 0.86 | 20 | 28 | 22 | 4.9 | 0.08 | 4 | — |
 
 ## Середні по сім'ях (предмет + класи + звичайний урок / фінал)
 
 Для z-оцінок sd не менше 10 % середнього; нижче наведено фактичне sd.
 
-- **4:lesson**: screens 9.13±0.67, gradedShare 0.62±0.06, readWordsPerScreen 26.17±2.83, maxReadWords 47.42±5.43, sentenceWords 4.68±0.4, longWordShare 0.06±0.04, typeVariety 4.5±0.61, maxText 43.27±5.65
+- **4:lesson**: screens 9.13±0.67, gradedShare 0.62±0.06, readWordsPerScreen 26.19±2.86, maxReadWords 47.4±5.45, sentenceWords 4.67±0.39, longWordShare 0.06±0.04, typeVariety 4.5±0.61, maxText 43.25±5.66
 - **4:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 23.63±1.73, maxReadWords 36.13±3.48, sentenceWords 4.84±0.26, longWordShare 0.04±0.01, typeVariety 3.75±0.83, maxText 30.25±3.6
+- **5-6:lesson**: screens 9.5±0.5, gradedShare 0.61±0.06, readWordsPerScreen 28.17±3.13, maxReadWords 48.5±3.93, sentenceWords 4.95±0.5, longWordShare 0.08±0.05, typeVariety 4.83±0.69, maxText 44.08±3.86
+- **5-6:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 22.5±2.5, maxReadWords 32±4, sentenceWords 5.1±0.2, longWordShare 0.08±0, typeVariety 4±0, maxText 25.5±3.5
