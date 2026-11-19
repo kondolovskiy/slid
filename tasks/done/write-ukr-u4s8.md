@@ -7,7 +7,7 @@ subject: ukr
 grade: 4
 section: u4s8
 weeks: [26, 28]
-status: review
+status: done
 claimed_by: writer-u4s8
 created: 2026-11-19
 ---
@@ -86,3 +86,4 @@ Build не запускай: під час паралельного запуск
 
 Пропозиції: рядки TERM / FACT / NOTE / IDEA GRAPH у memory/short/inbox.md (2026-11-19 · write-ukr-u4s8).
 
+**Верифікація (verifier-u4s8, 2026-11-19):** усі 5 уроків verified, критичних знахідок 0, 5 дрібних правок (рід через «мій, моя, моє» як основний спосіб, як у u4s7l3 і О1; «на/у» в М. в.; «вушка» в intro l4; підказка про узгодження в word l4 ек. 7). Звіт: reports/verify/u4s8.md. Playtest не запускався, бо локально немає Python playwright; прогін — у CI.
