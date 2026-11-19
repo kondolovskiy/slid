@@ -87,3 +87,9 @@
 - 2026-11-19 · writer-e4s7 · FACT (eng, self): by car/bus/plane — без детермінатива; on foot (не by foot) — CD by, foot; old → oldest/eldest — CD Grammar comparison-adjectives; will — рішення в мить мовлення, після I think — ’ll; be going to — уже складений план — CD Grammar will.
 - 2026-11-19 · writer-e4s7 · NOTE (requires): після e4s6 додати в `requires` e4s7 урок comparatives (plan-eng-g4 §6).
 - 2026-11-19 · writer-e4s7 · STYLE (eng): longWordShare ≤ 0.12 недосяжний і для уроку про столиці (e4s7l3 = 0.189: назви з програми) — style-eng-g4-5 разом з e4s1l6.
+- 2026-11-19 · writer-e4s4 · FACT (eng, self): bookshop «mainly UK (US bookstore)», sweet shop «UK», shopping centre «UK», shop assistant «UK (US salesclerk)» — CD; toy shop, shoe shop «(British English)» — OALD toy_1, shop_1.
+- 2026-11-19 · writer-e4s4 · FACT (eng, self): BrE ground floor — рівень вулиці, first floor — на поверх вище (OALD ground-floor, first-floor); ground floor — B1 (CD). Що в Україні інакше — лише en.wikipedia Storey, другого джерела немає.
+- 2026-11-19 · writer-e4s4 · FACT (eng, self): £1 = 100 pence (OALD pound_1); hryvnia — у CD/OALD немає; Wikt «plural hryvnias… symbol ₴», en.wikipedia — запис «₴20».
+- 2026-11-19 · writer-e4s4 · FACT (eng, self): наголос (CD UK): fifteen, thirteen — 2-й склад; fifty, thirty — 1-й; assistant — 2-й; sorry, present (ім.), supermarket, bakery, bookshop, market — 1-й. juice — [U] A1 (CD): «an apple juice» не писати; would like + to-infinitive, «Do you like…?» — про вподобання.
+- 2026-11-19 · writer-e4s4 · PITFALL (eng): поверхи — британська система (ground floor), сцену ставити у Великій Британії; у пулі e4s4 не змішувати з українською.
+- 2026-11-19 · writer-e4s4 · STYLE (eng): у `word` з назвою магазину — однозначна умова (supermarket продає все); синоніми зі словника (shut/closed, baker’s/bakery) — у ключ.
