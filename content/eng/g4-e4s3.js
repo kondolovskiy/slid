@@ -6,7 +6,7 @@
    Увесь зміст — англійською, британська норма (D-054). Тексти, діалоги й герої — власні (docs/design/english.md §8);
    Kotyhoroshko (українська народна казка) і Robin Hood (англійські народні оповіді) — суспільне надбання.
    Форми, сполуки й наголос — за Cambridge Dictionary і OALD (URL — tasks/…/write-eng-g4-e4s3.md, «Нотатки агента»).
-   Статус: draft. 7 уроків (6 + фінал). Будова — за еталоном e4s1.
+   Статус: verified (reports/verify/e4s3.md). 7 уроків (6 + фінал). Будова — за еталоном e4s1.
    Перевірка: node tools/validate.mjs --section e4s3 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -16,7 +16,7 @@ SLID.section("eng", {
   title: "Free time: sport and heroes",
   why: "To talk about sport and your free time. And to tell a friend about your favourite hero.",
   requires: ["e4s1l5"],
-  meta: { author: "writer-e4s3", created: "2026-11-19", factcheck: "self", teacher: null },
+  meta: { author: "writer-e4s3", created: "2026-11-19", factcheck: "verifier-e4s3 (reports/verify/e4s3.md)", teacher: null },
   badges: [
     { id: "e4s3boss", name: "Sports day star", icon: "trophy", desc: "Finish the final lesson “Free time: sport and heroes”" }
   ],
@@ -27,7 +27,7 @@ SLID.section("eng", {
       title: "Sports: play, go and do",
       short: "Sports",
       icon: "target",
-      status: "draft",
+      status: "verified",
       why: "Tell your friends about your sport. Say it the right way.",
       screens: [
         {
@@ -129,7 +129,7 @@ SLID.section("eng", {
           type: "word",
           sk: "vocab",
           title: "Write the missing word.",
-          body: `<p>Oksana loves water. She is in the pool every day.</p>`,
+          body: `<p>Oksana loves water. She is in the pool every day. What is her sport?</p>`,
           before: "Oksana: “I go",
           after: "every day.”",
           answer: "swimming",
@@ -166,7 +166,7 @@ SLID.section("eng", {
       title: "How often? Always, usually, sometimes, never",
       short: "How often?",
       icon: "chart",
-      status: "draft",
+      status: "verified",
       why: "How often do you do sport? Tell your friends.",
       screens: [
         {
@@ -229,7 +229,7 @@ SLID.section("eng", {
         {
           type: "info",
           title: "Where does it go?",
-          body: `<p>I <b>always</b> play tennis.<br>She <b>never</b> goes cycling.<br>We <b>usually</b> do judo.</p><ul><li>always, never… → before <b>play</b>, <b>go</b>, <b>do</b></li><li>but after <b>am</b>, <b>is</b>, <b>are</b>: I am <b>always</b> happy.</li></ul><p>Not: <s>I play always tennis.</s></p>`,
+          body: `<p>I <b>always</b> play tennis.<br>She <b>never</b> goes cycling.<br>We <b>usually</b> do judo.</p><ul><li>always, never… → before <b>play</b>, <b>go</b>, <b>do</b></li><li>play, go, do – these are <b>verbs</b>.</li><li>but after <b>am</b>, <b>is</b>, <b>are</b>: I am <b>always</b> happy.</li></ul><p>Not: <s>I play always tennis.</s></p>`,
           cta: "Next"
         },
         {
@@ -298,7 +298,7 @@ SLID.section("eng", {
       title: "My week: on Mondays, at the weekend",
       short: "My week",
       icon: "path",
-      status: "draft",
+      status: "verified",
       why: "Tell a friend about your week. When do you do sport?",
       screens: [
         {
@@ -431,7 +431,7 @@ SLID.section("eng", {
       title: "And, but, or: what I like",
       short: "And, but, or",
       icon: "bulb",
-      status: "draft",
+      status: "verified",
       why: "Tell your friends what you like and what you don’t like.",
       screens: [
         {
@@ -456,7 +456,7 @@ SLID.section("eng", {
           correct: 0,
           fbTitle: "Let’s find out.",
           fbOk: "Interesting!",
-          fbText: "Tennis – yes, basketball – no. The two things are different, so we say <b>but</b>. See the next screen."
+          fbText: "Tennis – yes, basketball – no. The two things are different. So we say <b>but</b>. See the next screen."
         },
         {
           type: "info",
@@ -516,10 +516,10 @@ SLID.section("eng", {
           tiles: ["I", "like", "karate,", "but", "I", "don’t", "like", "basketball"],
           extra: ["or"],
           answer: "I like karate, but I don’t like basketball.",
-          hint: "Start with karate. Then but.",
+          hint: "First say what she likes. Then but.",
           fbOk: "Yes!",
           fbBad: "Karate – yes, basketball – no.",
-          fbText: "<b>I like karate, but I don’t like basketball.</b> The two things are different, so we say <b>but</b>."
+          fbText: "<b>I like karate, but I don’t like basketball.</b> The two things are different. So we say <b>but</b>."
         },
         {
           type: "word",
@@ -528,7 +528,7 @@ SLID.section("eng", {
           body: `<p>Kateryna likes cycling. She doesn’t like tennis.</p>`,
           before: "I like cycling,",
           after: "I don’t like tennis.",
-          answer: "but",
+          answer: ["but", "yet", "though", "although"],
           fbOk: "Good eye!",
           fbBad: "Cycling – yes, tennis – no.",
           fbText: "Two different things: <b>but</b>. I like cycling, <b>but</b> I don’t like tennis."
@@ -562,7 +562,7 @@ SLID.section("eng", {
       title: "Favourite heroes from books and films",
       short: "Heroes",
       icon: "shield",
-      status: "draft",
+      status: "verified",
       why: "Who is your favourite hero? Tell your friends about him or her.",
       screens: [
         {
@@ -645,7 +645,7 @@ SLID.section("eng", {
           body: `<p>Polly is a girl from Emma’s favourite book. She knows a lot.</p>`,
           before: "Polly is",
           after: ".",
-          answer: ["clever", "smart", "intelligent", "bright"],
+          answer: ["clever", "smart", "intelligent", "bright", "wise"],
           hint: "Look at the list: who knows a lot?",
           fbOk: "Yes!",
           fbBad: "Who knows a lot?",
@@ -689,7 +689,7 @@ SLID.section("eng", {
       title: "A post about my hobby",
       short: "My hobby",
       icon: "book",
-      status: "draft",
+      status: "verified",
       why: "Read a friend’s post about her hobby. Then write about your hobby.",
       screens: [
         {
@@ -828,7 +828,7 @@ SLID.section("eng", {
       title: "Sports day at the club",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e4s3boss",
       why: "Check everything from this section. Your points are doubled.",
@@ -905,7 +905,7 @@ SLID.section("eng", {
           body: `<p>Taras’s favourite hero is not afraid of anything.</p>`,
           before: "His hero is very",
           after: ".",
-          answer: ["brave", "fearless", "courageous", "bold"],
+          answer: ["brave", "fearless", "courageous", "bold", "daring"],
           pre: "e4s3l5",
           hint: "Look at the hero words: not afraid.",
           fbOk: "Good eye!",

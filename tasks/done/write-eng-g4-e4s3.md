@@ -7,7 +7,7 @@ subject: eng
 grade: 4
 section: e4s3
 depends_on: [curate-eng-plan-g4, engine-eng-lang-core, engine-eng-validate, engine-eng-stats, skills-eng, curate-eng-style, curate-eng-glossary, write-eng-g4-e4s1]
-status: review
+status: done
 claimed_by: writer-e4s3
 created: 2026-11-19
 source: design-eng
@@ -95,3 +95,6 @@ writer-e4s3, 2026-11-19. Файл `content/eng/g4-e4s3.js`, 7 уроків (6 + 
 6. Плейтест не запускав (розділу ще немає в manifest, build — оркестратор).
 
 **Перевірка:** `node tools/validate.mjs --section e4s3` — 0 помилок, 0 попереджень. Ключі `word` прогнав через `SLID_LANG.wordVerdict(…, "en")`: «Swimming.», «Often?», «smart» → ok; «swiming», «gos», «brav» → Almost; «go» на goes → неправильно.
+
+## Нотатки верифікатора
+verifier-e4s3, 2026-11-19. Звіт — reports/verify/e4s3.md. **Вердикт: verified, усі 7 уроків.** Правок 9, усі дрібні: визначення *verbs* в info l2; `body` у l1 word; синоніми в ключах `word` (l4: yet / though / although; l5: wise; l7: daring); hint у l4 build; два fbText до ≤ 8 слів; статуси. Kotyhoroshko — друге джерело знайдено: ЕСУ «Казка» (https://esu.com.ua/pdf/file/12229.pdf). Спірне автора 1–6 переглянуто: з 1–5 погоджуюсь, 6 (плейтест) — у CI. Нових TQ немає. validate — 0/0.
