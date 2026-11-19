@@ -17,7 +17,7 @@ SLID.section("eng", {
   weeks: [28, 31],
   title: "Travel: places to see",
   why: "To talk about trips and places you want to visit. And to tell people about your plans and your last trip.",
-  requires: ["e4s4l5", "e4s5l6", "e4s7l1", "e4s7l3", "e4s7l5", "e4s7l6"],
+  requires: ["e4s4l5", "e4s5l6", "e4s7l1", "e4s7l3", "e4s7l5", "e4s7l6", "e5s8l5"],
   meta: { author: "writer-e5s9", created: "2026-11-19", factcheck: "self", teacher: null },
   badges: [
     { id: "e5s9boss", name: "Young explorer", icon: "trophy", desc: "Finish the final lesson “Travel: places to see”" }

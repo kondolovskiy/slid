@@ -160,3 +160,8 @@
 - 2026-11-19 · writer-e5s3 · FACT (eng, self): fish and chips — especially UK; porridge — especially BrE; Pancake Day — UK informal; varenyky — лише Wiktionary і en.wikipedia (у CD/OALD немає).
 - 2026-11-19 · writer-e5s3 · PITFALL (eng): на «Would you like…?» «Yes, thank you» теж правильне → пастка — «Yes, I do» / «No, I don’t».
 - 2026-11-19 · writer-e5s3 · NOTE (герої): Dmytro — гість Тараса; Sofiia — Café Smachno, Kyiv; Mariia — пікнік у Kharkiv.
+- 2026-11-19 · writer-e5s9 · FACT (eng, self): be going to — уже складений план; will — рішення в мить мовлення (CD Grammar be-going-to, will). Past Simple regular: -ed / -d, stop–stopped, study–studied; -ed окремим складом лише після t/d; travelled — UK. at/to the seaside — especially BrE (OALD), seaside — B1 (CD); in the mountains. Наголос: seaside, countryside, holiday — 1-й; museum — 2-й.
+- 2026-11-19 · writer-e5s9 · FACT (eng, self, потребує другого джерела): Kamianets-Podilskyi — місто зі старим замком (en/uk.wikipedia; castles.com.ua і whc.unesco.org не резолвляться). Lviv — old town (UNESCO 1998) — en.wikipedia; ЕСУ PDF 59624 (через WebSearch).
+- 2026-11-19 · writer-e5s9 · PITFALL (eng): у `word` з going to підмет «my family» дає другу відповідь (BrE family are / is) — брати підмет-особу.
+- 2026-11-19 · orchestrator · NOTE (requires): e5s9 → e5s8l5 (was/were) додано.
+- 2026-11-19 · orchestrator · CONFLICT (герої eng): Sofiia — сестра Andrii (e4s5, Kyiv) і в e5s3 (Café Smachno, Kyiv); у e5s9 — «тітка в Odesa». Верифікатору e5s9 — перейменувати тітку (одне ім'я — одна людина).
