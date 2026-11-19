@@ -70,3 +70,9 @@
 - 2026-11-19 · verifier-e4s1 · PITFALL (eng): один герой — одне місце проживання в межах розділу.
 - 2026-11-19 · verifier-e4s1 · TQ (eng): TQ-124 — формат адреси англійською для України (індекс, номер перед вулицею), тимчасово як у e4s1.
 - 2026-11-19 · verifier-e4s1 · NOTE (середовище): з контейнера не відкриваються britannica.com, encyclopediaofukraine.com, upu.int, statista.com, learnenglish.britishcouncil.org; друге джерело для міст України — ЕСУ (esu.com.ua, curl).
+- 2026-11-19 · writer-e4s8 · FACT (eng): Різдво в Україні — 25 грудня з 2023 р. (закон від 14.07.2023 № 3258-IX, ст. 73 КЗпП; 7 січня більше не державне свято); під час воєнного стану свята не вихідні — https://en.wikipedia.org/wiki/Public_holidays_in_Ukraine, https://life.pravda.com.ua/society/2023/07/28/255605/ (номер закону — за WebSearch; zakon.rada не відкрито).
+- 2026-11-19 · writer-e4s8 · FACT (eng): у Великій Британії Christmas Day — 25 December, New Year’s Day — 1 January — https://en.wikipedia.org/wiki/Public_holidays_in_the_United_Kingdom.
+- 2026-11-19 · writer-e4s8 · FACT (eng): Happy Christmas! і Merry Christmas! — обидва в OALD (christmas), Merry Christmas не робити хибним варіантом — https://www.oxfordlearnersdictionaries.com/definition/english/christmas.
+- 2026-11-19 · writer-e4s8 · FACT (eng): sports day — CD «UK»; fair — CD B1; lemonade у BrE — газований напій (CD «UK»), для «лимонаду» в 4 кл. краще juice; café — BrE наголос на 1-му складі, US на 2-му (не брати в `stress`).
+- 2026-11-19 · writer-e4s8 · NOTE (requires): e4s8 → e4s4 (would like) і e4s6 (Present Continuous) не поставлено — уроків ще не було; оркестратору додати після злиття e4s4/e4s6.
+- 2026-11-19 · writer-e4s8 · PITFALL (eng): у build питання «Can you come…?» має другий правильний порядок — розповідне «You can come…» (кінцевого «?» дитина не бачить); такі питання в build не давати або класти обидва порядки в `answer`.
