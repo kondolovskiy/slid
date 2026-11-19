@@ -1,12 +1,12 @@
 ---
 name: math-pool-diag
-description: Use when creating or editing a practice pool content/<subject>/pool-g*-*.js (math or ukr) or a grade diagnostic content/<subject>/diag-g*.js (math or ukr), or when changing answer formats (answerKind, form, unit, rev) of their items.
+description: Use when creating or editing a practice pool content/<subject>/pool-g*-*.js (math, ukr or eng) or a grade diagnostic content/<subject>/diag-g*.js (math, ukr or eng), or when changing answer formats (answerKind, form, unit, rev) of their items.
 ---
 
-# Пули вправ і тести рівня (math, ukr)
+# Пули вправ і тести рівня (math, ukr, eng)
 
 Пул (`SLID.pool`) — задачі для тренування після уроку; дитина **записує** відповідь. Тест рівня (`SLID.diag`) — діагностика класу.
-Задача — `tasks/doing/<task-id>.md` (зазвичай `write-math-pool-*`, `write-math-diag-*`, `revise-math-pool-*`).
+Задача — `tasks/doing/<task-id>.md` (зазвичай `write-math-pool-*`, `write-math-diag-*`, `revise-math-pool-*`; мовні — `write-ukr-*`, `write-eng-pool-*`, `write-eng-diag-*`). §1–2 — математика; ukr — §2а–2б, eng — §2в.
 
 ## 1. Прочитай
 - docs/CONTENT_SCHEMA.md: §10 (пул: поля, `answerKind`, одиниці, бюджет обчислень) або §9 (тест рівня: проби, `rev`, HALF).
@@ -45,6 +45,16 @@ description: Use when creating or editing a practice pool content/<subject>/pool
 - 4–6 вправ на урок з оцінюваними екранами (~2 рівня 1, 2 рівня 2, 1–2 рівня 3); `steps` — пояснення 1–4 рядки (правило + розбір: дитина бачить його як «Пояснення»), `hint` для рівнів 2–3.
 - Часткового зарахування немає: вправа з кількома пропусками зараховується, лише коли правильні всі. Не склеюй різні правила в один `gaps` — одна помилка «з'їсть» тему в SRS.
 - Джерела — реальні вправи підручника (З<клас> впр. N, `srcPage`; `adapted: true`, якщо речення скорочено); норма — D-041/D-042: вибір між нормативними варіантами не оцінювати; наголос — за словником.
+
+## 2в. Англійська (eng: `content/eng/diag-g<клас>.js`, `content/eng/pool-g<клас>-<розділ>.js`)
+Разом зі скілом `content-author`, розділ «Англійська» (мова, BrE, словники, друга правильна відповідь, без звуку й IPA, авторське право — там). Контракт — CONTENT_SCHEMA §4.1 («`word` англійською», `stress` складами), §9, §10 «Пули мовних предметів»; дизайн — docs/design/english.md §7. Механіка ukr (2а–2б) діє, крім сказаного тут.
+- **id — ключі прогресу:** тест рівня `dge<клас>` (dge4…dge11), пул `pe<розділ>` (`pe4s1`), вправи `a01`….
+- **Механіка ще не готова — задача engine-eng-diag-pool (todo):** `build` і `match` у тестах рівня й пулах поки недоступні (`DIAG_TYPES` / `POOL_TYPES`), літери A, B, C у тесті рівня й перший клас предмета для eng — теж там. **dge4** — перший клас предмета, уроків нижче немає: `pre` — теми вхідного рівня Pre A1–A1 (ТОП 3–4, 3 кл.) з `baseline: true`, `lessons: []`, `for` і `see` на уроки e4s* (загальна механіка `baseline` — CONTENT_SCHEMA §9, як у math 4 і ukr 5; її погодження для eng — engine-eng-diag-pool п. 2). write-eng-diag-g4 і пули eng від неї залежать — до її приймання не беремо (`depends_on` claim.mjs не перевіряє — дивись сам). `pre` у dge5…dge11 — уроки попереднього класу.
+- **Вправи власні:** правило «задачі — з реальних джерел» (§2) для eng не діє — вправи, тексти й речення підручників CUP/OUP не беремо (docs/design/english.md §8). `sources` — програма (сигла й сторінка з facts/eng.md) і словники, за якими звірено форми.
+- **Лише матеріал уроків розділу (D-019):** слова, форми й правила, що були в уроці; `sk` — з екранів уроку (`read`, `vocab`, `gram`, `phon`, `func`, `write`, `cult`). Тест рівня — рівень класу за програмою (4 кл.: Pre A1 → A1).
+- **Однозначність важливіша, ніж в уроці:** у тесті рівня немає пояснення, у пулі немає часткового зарахування — друга правильна BrE-відповідь (will / be going to, артиклі, прийменники, скорочення) має або бути в ключі (масив `answer`, `contractions: true`), або бути відсічена контекстом. AmE-правопис рушій зараховує сам; AmE-лексику — ні (TQ-122). Час — обидва записи, якщо вправа не вчить перехід 12/24 год. (CONTENT_SCHEMA §4.1).
+- **Типи:** `gaps`, `word`, `pick`, `stress` (`"+pho|to|graph"`, наголос — за словником), `split`; `choice` / `multi` — поняттєві питання й «звук ↔ буквосполучення» (без IPA); варіанти A, B, C ставить рушій. Аудіювання немає й не імітуємо.
+- Усе англійською; `fbOk`/`fbText`/`hint` у тесті не потрібні, `steps` пулу — англійською рівня класу; `uk` у тесті й пулі — помилка validate.
 
 ## 3. Перевір
 ```bash
