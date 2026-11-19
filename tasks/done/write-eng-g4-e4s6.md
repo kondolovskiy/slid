@@ -7,7 +7,7 @@ subject: eng
 grade: 4
 section: e4s6
 depends_on: [curate-eng-plan-g4, engine-eng-lang-core, engine-eng-validate, engine-eng-stats, skills-eng, curate-eng-style, curate-eng-glossary, write-eng-g4-e4s1]
-status: review
+status: done
 claimed_by: writer-e4s6
 created: 2026-11-19
 source: design-eng
@@ -93,3 +93,6 @@ writer-e4s6, 2026-11-19. Файл: content/eng/g4-e4s6.js — 7 уроків (6 
 11. Авторське право: тексти власні (переписка героїв e4s1, плакат); перевірку фрагментів пошуком лишаю верифікатору.
 
 validate --section e4s6: 0 помилок, 0 попереджень. stats: прапорець лише e4s6l1 (п. 10).
+
+### Верифікація (verifier-e4s6, 2026-11-19)
+Звіт: reports/verify/e4s6.md. **Вердикт: verified, усі 7 уроків.** Факти (Dnipro, Thames, Hoverla, Ben Nevis, площі, клімат Києва й Лондона) — по 2+ джерела, відкрито в сесії (ЕСУ, en/uk.wikipedia). Розбіжність −3.2 / −6.0 °C для Києва уроку не шкодить: там лише «usually colder». Усі завдання розв'язано; `word` прогнано через wordVerdict, `build` — перебором усіх перестановок плиток. Другої правильної відповіді немає. Спірні 1–11 автора прийнято. Правки: brackets (B2) і tips (B1) прибрано з пояснень (l4 #5, l6 #8, boss T6); у фінал l4 додано «Oksana writes.». Авторське право — 9 запитів, збігів немає. Плейтест — після build оркестратора (playwright у контейнері немає).

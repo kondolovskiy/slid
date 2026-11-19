@@ -7,7 +7,7 @@
    Увесь зміст — англійською, британська норма (D-054). Тексти, діалоги й герої — власні (docs/design/english.md §8); герої — з e4s1.
    Факти (річки, гори, площі, зима в Києві й Лондоні), форми й наголос — за en.wikipedia, ЕСУ, Cambridge Dictionary, OALD
    (URL — tasks/…/write-eng-g4-e4s6.md, «Нотатки агента»).
-   Статус: draft. 7 уроків (6 + фінал).
+   Статус: verified (verifier-e4s6, reports/verify/e4s6.md); approved — лише вчитель. 7 уроків (6 + фінал).
    Перевірка: node tools/validate.mjs --section e4s6 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -17,7 +17,7 @@ SLID.section("eng", {
   title: "Nature and weather",
   why: "To talk about the weather and nature. And to say what is happening now.",
   requires: ["e4s1l1", "e4s5l1"],
-  meta: { author: "writer-e4s6", created: "2026-11-19", factcheck: "self", teacher: null },
+  meta: { author: "writer-e4s6", created: "2026-11-19", factcheck: "verifier-e4s6 (reports/verify/e4s6.md)", teacher: null },
   badges: [
     { id: "e4s6boss", name: "Weather reporter", icon: "trophy", desc: "Finish the final lesson “Nature and weather”" }
   ],
@@ -28,7 +28,7 @@ SLID.section("eng", {
       title: "Seasons and weather",
       short: "Weather",
       icon: "leaf",
-      status: "draft",
+      status: "verified",
       why: "Your friend lives far away. Ask about the weather there and tell them about yours.",
       screens: [
         {
@@ -149,7 +149,7 @@ SLID.section("eng", {
       title: "It’s raining now! What’s happening?",
       short: "Now",
       icon: "eye",
-      status: "draft",
+      status: "verified",
       why: "Look out of the window. Tell your friend what is happening now.",
       screens: [
         {
@@ -266,7 +266,7 @@ SLID.section("eng", {
       title: "Is it snowing? Questions about now",
       short: "Questions",
       icon: "voice",
-      status: "draft",
+      status: "verified",
       why: "Ask your friend what is happening now. Answer their questions too.",
       screens: [
         {
@@ -379,7 +379,7 @@ SLID.section("eng", {
       title: "Nature in Ukraine and the UK",
       short: "Nature",
       icon: "river",
-      status: "draft",
+      status: "verified",
       why: "Ukraine has got mountains, rivers and the sea. Tell a friend about them.",
       screens: [
         {
@@ -427,7 +427,7 @@ SLID.section("eng", {
           correct: 2,
           hint: "Find Ben Nevis in the list.",
           fbOk: "Good eye!",
-          fbBad: "Look at the word in brackets.",
+          fbBad: "Look at the list again. Where is Ben Nevis?",
           fbText: "Ben Nevis is a mountain in <b>Scotland</b>. Hoverla is a mountain in Ukraine."
         },
         {
@@ -460,7 +460,7 @@ SLID.section("eng", {
           sk: "read",
           eyebrow: "Final",
           title: "Read and choose.",
-          body: `<p><i>In summer, my family goes to the Carpathians. There are high mountains and big forests. We climb Hoverla. It’s 2,061 m high. In winter, there is a lot of snow there.</i></p><p>What is there in the Carpathians?</p>`,
+          body: `<p>Oksana writes.</p><p><i>In summer, my family goes to the Carpathians. There are high mountains and big forests. We climb Hoverla. It’s 2,061 m high. In winter, there is a lot of snow there.</i></p><p>What is there in the Carpathians?</p>`,
           opts: [
             "mountains and forests",
             "the sea and a big city",
@@ -488,7 +488,7 @@ SLID.section("eng", {
       title: "Bigger, colder, faster: comparing things",
       short: "Comparing",
       icon: "scale",
-      status: "draft",
+      status: "verified",
       why: "Which river is longer? Which city is colder? Compare two things.",
       screens: [
         {
@@ -606,7 +606,7 @@ SLID.section("eng", {
       title: "Let’s help nature!",
       short: "Help nature",
       icon: "globe",
-      status: "draft",
+      status: "verified",
       why: "Nature needs our help. Learn what to do and what not to do.",
       screens: [
         {
@@ -708,7 +708,7 @@ SLID.section("eng", {
           correct: 1,
           fbOk: "Good eye!",
           fbBad: "Read the end of the poster again.",
-          fbText: "The poster says: “Our school <b>is cleaning the park</b> today!” Feeding the birds is a tip for winter."
+          fbText: "The poster says: “Our school <b>is cleaning the park</b> today!” The poster says: feed the birds in winter."
         }
       ],
       outro: {
@@ -727,7 +727,7 @@ SLID.section("eng", {
       title: "Our nature and weather page",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e4s6boss",
       why: "Check everything from this section. Your points are doubled.",
@@ -817,7 +817,7 @@ SLID.section("eng", {
           sk: "vocab",
           eyebrow: "Task 6",
           title: "Choose all the correct answers.",
-          body: `<p>Which tips help nature?</p>`,
+          body: `<p>What helps nature?</p>`,
           opts: [
             "Plant trees.",
             "Leave rubbish in the forest.",
