@@ -97,7 +97,7 @@ _Задача: tasks/done/design-eng.md (тип design). Код рушія, зм
 |---|---|---|
 | e4s1 | Me, my family and friends: where we live | to be, have got (повторення 3 кл.); a/an with jobs |
 | e4s2 | My home | there is/are (повторення); prepositions of place |
-| e4s3 | Free time: sports and heroes | adverbs of frequency; but/and/or |
+| e4s3 | Free time: sport and heroes | adverbs of frequency; but/and/or |
 | e4s4 | Shops and shopping | how much/how many; would like to |
 | e4s5 | Health and hygiene | because; imperatives |
 | e4s6 | Nature and weather | Present Continuous |

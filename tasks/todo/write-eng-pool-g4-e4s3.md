@@ -10,7 +10,7 @@ claimed_by:
 created: 2026-11-19
 source: design-eng
 ---
-# Пул вправ для тренування «Free time: sports and heroes» (Англійська мова, 4 клас) — pe4s3
+# Пул вправ для тренування «Free time: sport and heroes» (Англійська мова, 4 клас) — pe4s3
 
 **Брати, коли розділ `e4s3` verified.** Для 6–11 кл. такі задачі створює `node tools/make-tasks.mjs --write-pool --subject eng --grade N` (після engine-eng-tools).
 
