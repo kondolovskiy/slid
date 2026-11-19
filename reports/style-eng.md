@@ -60,20 +60,55 @@
 | e4s8l5 Every day or now? I play, I’m playing | 4 | 9 | 0.67 | 26 | 47 | 40 | 4.6 | 0.085 | 5 | — |
 | e4s8l6 Notes and messages to friends | 4 | 9 | 0.67 | 25 | 38 | 35 | 4.5 | 0.045 | 4 | — |
 | e4s8l7 Party time! (фінал) | 4 | 7 | 0.86 | 26 | 43 | 35 | 4.4 | 0.038 | 3 | — |
+| e5s2l1 My timetable: subjects and days | 5 | 10 | 0.6 | 30 | 41 | 39 | 5.2 | 0.092 | 5 | — |
+| e5s2l2 My school day: I get up at seven | 5 | 10 | 0.6 | 29 | 59 | 53 | 5.2 | 0.055 | 5 | — |
+| e5s2l3 Does she walk to school? Questions and negatives | 5 | 10 | 0.6 | 29 | 48 | 43 | 4.5 | 0.031 | 6 | — |
+| e5s2l4 She’s always on time: always, usually, never | 5 | 10 | 0.6 | 24 | 47 | 43 | 4.5 | 0.065 | 5 | — |
+| e5s2l5 Open your books! Classroom activities | 5 | 10 | 0.6 | 24 | 48 | 43 | 4.6 | 0.033 | 5 | — |
+| e5s2l6 Can I…? Could you repeat that, please? | 5 | 10 | 0.6 | 26 | 52 | 48 | 4.8 | 0.051 | 6 | — |
+| e5s2l7 Letters from two schools (фінал) | 5 | 7 | 0.86 | 22 | 39 | 27 | 4.7 | 0.036 | 3 | — |
+| e5s3l1 Food and drink: my favourite meals | 5 | 10 | 0.7 | 26 | 59 | 53 | 5 | 0.061 | 6 | — |
+| e5s3l2 An apple or some bread? Countable and uncountable | 5 | 10 | 0.7 | 21 | 45 | 41 | 4.8 | 0.066 | 6 | readWordsPerScreen нетипово для сім'ї (z=-2.3) |
+| e5s3l3 Is there any milk? Some and any | 5 | 9 | 0.67 | 28 | 60 | 57 | 4.7 | 0.022 | 5 | — |
+| e5s3l4 How much? How many? A lot of | 5 | 9 | 0.67 | 29 | 57 | 52 | 5.1 | 0.097 | 5 | — |
+| e5s3l5 Would you like some juice? Offers | 5 | 9 | 0.67 | 31 | 54 | 47 | 4.9 | 0.03 | 5 | — |
+| e5s3l6 Dishes from Ukraine and the UK | 5 | 9 | 0.67 | 35 | 68 | 63 | 5.3 | 0.038 | 5 | readWordsPerScreen нетипово для сім'ї (z=2.2); maxReadWords нетипово для сім'ї (z=2.5); maxText нетипово для сім'ї (z=2.6) |
+| e5s3l7 Food fair (фінал) | 5 | 7 | 0.86 | 21 | 34 | 27 | 4.7 | 0.042 | 3 | — |
+| e5s4l1 Clothes: a jumper, a skirt, a coat | 5 | 10 | 0.6 | 29 | 50 | 46 | 5.4 | 0.028 | 5 | — |
+| e5s4l2 Trousers, jeans, shorts: a pair of… | 5 | 10 | 0.6 | 24 | 49 | 46 | 4.8 | 0.011 | 5 | — |
+| e5s4l3 What are you wearing today? | 5 | 9 | 0.78 | 31 | 56 | 52 | 5 | 0.034 | 5 | gradedShare нетипово для сім'ї (z=2) |
+| e5s4l4 Clothes for every season | 5 | 9 | 0.78 | 25 | 46 | 44 | 4.7 | 0.032 | 5 | gradedShare нетипово для сім'ї (z=2) |
+| e5s4l5 I usually wear…, but today I’m wearing… | 5 | 10 | 0.8 | 27 | 48 | 41 | 5 | 0.089 | 6 | gradedShare нетипово для сім'ї (z=2.3) |
+| e5s4l6 School uniform: do you wear one? | 5 | 9 | 0.67 | 31 | 72 | 66 | 5.3 | 0.106 | 4 | maxReadWords нетипово для сім'ї (z=3.1); maxText нетипово для сім'ї (z=3.1) |
+| e5s4l7 Clothes for a trip (фінал) | 5 | 7 | 0.86 | 22 | 33 | 27 | 4.7 | 0.074 | 4 | — |
+| e5s6l1 Free time: at home and outside | 5 | 9 | 0.67 | 29 | 58 | 52 | 5 | 0.046 | 6 | — |
+| e5s6l2 I love drawing, I don’t like running | 5 | 10 | 0.6 | 25 | 43 | 38 | 4.5 | 0.037 | 5 | — |
+| e5s6l3 Swimming is fun! My hobby | 5 | 10 | 0.7 | 27 | 46 | 43 | 4.9 | 0.044 | 5 | — |
+| e5s6l4 I can swim well, but I can’t skate | 5 | 10 | 0.7 | 28 | 47 | 44 | 4.4 | 0.032 | 5 | — |
+| e5s6l5 Let’s go! Saying yes or no | 5 | 10 | 0.6 | 27 | 58 | 52 | 4.7 | 0.029 | 6 | — |
+| e5s6l6 School holidays: what do you like doing? | 5 | 10 | 0.7 | 31 | 53 | 50 | 5.4 | 0.076 | 5 | — |
+| e5s6l7 Hobby day at the club (фінал) | 5 | 8 | 0.88 | 28 | 38 | 34 | 5 | 0.046 | 4 | readWordsPerScreen нетипово для сім'ї (z=2) |
 | e5s8l1 First, second, third: ordinal numbers | 5 | 9 | 0.56 | 28 | 53 | 50 | 4.4 | 0.062 | 5 | — |
 | e5s8l2 When’s your birthday? Months and dates | 5 | 9 | 0.67 | 24 | 46 | 45 | 4.9 | 0.076 | 5 | — |
-| e5s8l3 A calendar of festivals: Ukraine and the UK | 5 | 9 | 0.56 | 29 | 48 | 43 | 5.4 | 0.16 | 4 | longWordShare=0.16 поза [0; 0.14] |
+| e5s8l3 A calendar of festivals: Ukraine and the UK | 5 | 9 | 0.56 | 29 | 48 | 43 | 5.4 | 0.16 | 4 | longWordShare=0.16 поза [0; 0.14]; longWordShare нетипово для сім'ї (z=2.7) |
 | e5s8l4 How do you celebrate? Traditions | 5 | 10 | 0.6 | 32 | 55 | 48 | 5.6 | 0.07 | 5 | — |
 | e5s8l5 Our New Year party was great! Was and were | 5 | 10 | 0.6 | 28 | 53 | 49 | 4.6 | 0.019 | 5 | — |
 | e5s8l6 Writing a greetings card | 5 | 10 | 0.6 | 24 | 45 | 41 | 4.9 | 0.079 | 6 | — |
 | e5s8l7 Our festival calendar (фінал) | 5 | 7 | 0.86 | 25 | 36 | 29 | 5.3 | 0.083 | 4 | — |
-| e5s10l1 Ukraine on the map | 5 | 9 | 0.56 | 31 | 48 | 45 | 5.5 | 0.03 | 4 | — |
-| e5s10l2 Where do people speak English? | 5 | 10 | 0.6 | 26 | 43 | 39 | 4.3 | 0.201 | 6 | longWordShare=0.201 поза [0; 0.14]; longWordShare нетипово для сім'ї (z=2.4) |
+| e5s9l1 Where would you like to go? | 5 | 9 | 0.56 | 34 | 56 | 51 | 5.9 | 0.067 | 4 | — |
+| e5s9l2 At the seaside or in the mountains? | 5 | 10 | 0.7 | 27 | 58 | 53 | 5.6 | 0.05 | 6 | — |
+| e5s9l3 I’m going to visit my grandma: plans | 5 | 10 | 0.6 | 32 | 55 | 52 | 5.2 | 0.027 | 5 | — |
+| e5s9l4 Are you going to travel this summer? Questions | 5 | 9 | 0.67 | 32 | 55 | 51 | 4.8 | 0.006 | 5 | — |
+| e5s9l5 We visited Lviv: the Past Simple | 5 | 10 | 0.6 | 26 | 51 | 47 | 5 | 0.074 | 4 | — |
+| e5s9l6 My travel diary | 5 | 9 | 0.78 | 31 | 49 | 46 | 5.3 | 0.09 | 6 | gradedShare нетипово для сім'ї (z=2) |
+| e5s9l7 Emma’s trip to Ukraine (фінал) | 5 | 8 | 0.88 | 21 | 36 | 33 | 4.7 | 0.075 | 3 | — |
+| e5s10l1 Ukraine on the map | 5 | 9 | 0.56 | 30 | 48 | 45 | 5.5 | 0.03 | 4 | — |
+| e5s10l2 Where do people speak English? | 5 | 10 | 0.6 | 26 | 43 | 39 | 4.3 | 0.201 | 6 | longWordShare=0.201 поза [0; 0.14]; longWordShare нетипово для сім'ї (z=3.8) |
 | e5s10l3 The UK: England, Scotland, Wales and Northern Ireland | 5 | 10 | 0.6 | 24 | 43 | 38 | 4.2 | 0.09 | 5 | — |
 | e5s10l4 Bigger or smaller? Comparing countries | 5 | 9 | 0.56 | 28 | 48 | 42 | 4.7 | 0.05 | 4 | — |
-| e5s10l5 The longest river, the highest mountain | 5 | 10 | 0.6 | 30 | 53 | 48 | 5.3 | 0.03 | 5 | — |
-| e5s10l6 Facts about my country | 5 | 9 | 0.78 | 34 | 47 | 41 | 5.6 | 0.069 | 4 | gradedShare нетипово для сім'ї (z=2.8) |
-| e5s10l7 Our world quiz (фінал) | 5 | 7 | 0.86 | 20 | 28 | 22 | 4.9 | 0.08 | 4 | — |
+| e5s10l5 The longest river, the highest mountain | 5 | 10 | 0.6 | 30 | 53 | 48 | 5.3 | 0.029 | 5 | — |
+| e5s10l6 Facts about my country | 5 | 9 | 0.78 | 34 | 47 | 41 | 5.6 | 0.069 | 4 | gradedShare нетипово для сім'ї (z=2) |
+| e5s10l7 Our world quiz (фінал) | 5 | 7 | 0.86 | 20 | 28 | 22 | 4.9 | 0.08 | 4 | maxReadWords нетипово для сім'ї (z=-2) |
 
 ## Середні по сім'ях (предмет + класи + звичайний урок / фінал)
 
@@ -81,5 +116,5 @@
 
 - **4:lesson**: screens 9.13±0.67, gradedShare 0.62±0.06, readWordsPerScreen 26.19±2.86, maxReadWords 47.4±5.45, sentenceWords 4.67±0.39, longWordShare 0.06±0.04, typeVariety 4.5±0.61, maxText 43.25±5.66
 - **4:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 23.63±1.73, maxReadWords 36.13±3.48, sentenceWords 4.84±0.26, longWordShare 0.04±0.01, typeVariety 3.75±0.83, maxText 30.25±3.6
-- **5-6:lesson**: screens 9.5±0.5, gradedShare 0.61±0.06, readWordsPerScreen 28.17±3.13, maxReadWords 48.5±3.93, sentenceWords 4.95±0.5, longWordShare 0.08±0.05, typeVariety 4.83±0.69, maxText 44.08±3.86
-- **5-6:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 22.5±2.5, maxReadWords 32±4, sentenceWords 5.1±0.2, longWordShare 0.08±0, typeVariety 4±0, maxText 25.5±3.5
+- **5-6:lesson**: screens 9.6±0.49, gradedShare 0.64±0.07, readWordsPerScreen 28.21±3.14, maxReadWords 51.67±6.51, sentenceWords 4.97±0.4, longWordShare 0.06±0.04, typeVariety 5.1±0.65, maxText 47.26±6.12
+- **5-6:boss**: screens 7.29±0.45, gradedShare 0.87±0.01, readWordsPerScreen 22.71±2.6, maxReadWords 34.86±3.4, sentenceWords 4.86±0.21, longWordShare 0.06±0.02, typeVariety 3.57±0.49, maxText 28.43±3.77
