@@ -130,3 +130,7 @@
 - 2026-11-19 · verifier-e4s8 · PITFALL (eng): у `build` з питанням перевіряй розповідний відповідник («you would like some cake»): перша плитка з великої + `keepCase: true`, або всі порядки в `answer`, або контекст; і середню позицію now / usually («Sofiia is now dancing»). Решту питальних build 4 кл. — звірити в style-eng-g4-5.
 - 2026-11-19 · verifier-e4s8 · NOTE (герої): Оксані 10 уже у вересні (e4s1) і в e4s7 — день народження Оксани не ставити на вересень–весну з «is ten».
 - 2026-11-19 · verifier-e4s8 · ENGINE: «sport» на ключ «sports» → «Almost: check the spelling.» — не орфографія (engine-eng-rule-tables п. 2).
+- 2026-11-19 · verifier-e4s3 · FACT (eng, verified): Kotyhoroshko — герой української героїчної народної казки, богатир — ЕСУ «Казка» (2011) https://esu.com.ua/pdf/file/12229.pdf; en.wikipedia Kotyhoroshko. Robin Hood — CD, OALD.
+- 2026-11-19 · verifier-e4s3 · FACT (eng): OALD Collocations: skating — лише go; karate — do / practise / study; judo — do / practise / learn; gymnastics — do; «We did a lot of cycling» (CD) → у пулі не протиставляти do і go, де «do a lot of…» чи шкільний предмет.
+- 2026-11-19 · verifier-e4s3 · STYLE (eng): у ключ `word` на контраст «but» — ще yet / though / although; на «clever» — ще wise; на «brave» — ще daring. Термін verb у 4 кл. — лише після визначення зразком на info.
+- 2026-11-19 · verifier-e4s3 · NOTE (середовище): www.esu.com.ua → 403, esu.com.ua (без www, curl --http1.1) працює; learnenglishkids.britishcouncil.org, wikisource, life.pravda.com.ua, ukrainianweek.com — недоступні.
