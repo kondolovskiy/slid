@@ -165,3 +165,9 @@
 - 2026-11-19 · writer-e5s9 · PITFALL (eng): у `word` з going to підмет «my family» дає другу відповідь (BrE family are / is) — брати підмет-особу.
 - 2026-11-19 · orchestrator · NOTE (requires): e5s9 → e5s8l5 (was/were) додано.
 - 2026-11-19 · orchestrator · CONFLICT (герої eng): Sofiia — сестра Andrii (e4s5, Kyiv) і в e5s3 (Café Smachno, Kyiv); у e5s9 — «тітка в Odesa». Верифікатору e5s9 — перейменувати тітку (одне ім'я — одна людина).
+- 2026-11-19 · writer-e5s4 · FACT (eng, self): jumper — A2 UK (sweater — у ключ разом); trousers — mainly UK (US pants); trainers — UK (US sneaker); mac — UK, B1; scarf → scarves (рідше scarfs — множину не оцінювати); «a pair of» trousers/jeans/shorts/gloves/boots/trainers. Наголос CD UK на 1-му складі: jumper, trousers, trainer, jacket, sandal, raincoat, uniform, T-shirt. Рівні CD: sandal, pattern — B1; cardigan — B2; mitten — C1; hoodie — A1.
+- 2026-11-19 · writer-e5s4 · FACT (eng, self): Vyshyvanka Day — третій четвер травня, з 2006 р. (Леся Воронюк, Чернівецький університет) — en/uk.wikipedia, zn.ua; vyshyvanka у CD/OALD немає.
+- 2026-11-19 · writer-e5s4 · STYLE (eng): у `build` з «is + -ing» плитку «is wearing» — однією (ні питання, ні now у середині); в answer — «X is wearing … now» і «Now X is wearing …».
+- 2026-11-19 · writer-e5s4 · DECISION-NEEDED (людині): ліцензія власних SVG-малюнків у img/eng/ (e5s4 — 15 файлів; також e5s5, e5s7) — ліцензії проєкту в репозиторії немає; зараз credits: «Slid (writer-…), own work, no third-party material» + URL репозиторію. Яку ліцензію ставити (напр. CC BY 4.0) і на що посилатися?
+- 2026-11-19 · writer-e5s4 · ENGINE: «wear» на «wears», «uniforms» на «uniform» → «Almost: check the spelling.» — граматика, не орфографія (engine-eng-rule-tables п. 2).
+- 2026-11-19 · orchestrator · NOTE (requires): e5s4 → e5s2l2, e5s2l3 (Present Simple) додано. NOTE (герої): клас Emma їде до Києва в грудні (e5s4); у школі Emma — форма, у школі Andrii — без форми.

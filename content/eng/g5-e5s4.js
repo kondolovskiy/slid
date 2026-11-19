@@ -18,7 +18,7 @@ SLID.section("eng", {
   weeks: [13, 15],
   title: "Clothes",
   why: "To talk about clothes for every season. And to say what people are wearing now.",
-  requires: ["e4s6l2", "e4s6l3", "e4s8l5"],
+  requires: ["e4s6l2", "e4s6l3", "e4s8l5", "e5s2l2", "e5s2l3"],
   meta: { author: "writer-e5s4", created: "2026-11-19", factcheck: null, teacher: null },
   credits: [
     ["Clothes drawings for the section “Clothes” (img/eng/e5s4/*.svg)", "Slid (writer-e5s4)", "own work, no third-party material", "https://github.com/kondolovskiy/slid"]
