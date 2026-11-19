@@ -8,10 +8,10 @@ claimed_by:
 created: 2026-11-19
 source: design-eng
 ---
-# content/subjects/eng.js; прибрати «скоро» eng з catalog.js
-1. `content/subjects/eng.js`: `SLID.subject({ id: "eng", subject: "Англійська мова", short: "Англійська", icon: "globe", targetLang: "en", diagOrder, colors (з catalog.js + soft/mid/ink), skills, badges })`; навички — docs/design/english.md §7 (listen, read, vocab, gram, phon, func, write, cult) — затвердити.
-2. **У тому самому коміті** видалити `SLID.soon({ id: "eng" … })` з content/catalog.js (інакше дві картки — registry.js `soon()` не дедуплікує).
-3. Порядок: робити тоді, коли є хоча б один verified-розділ 5 кл. (інакше предмет порожній на головній) — або домовитись про прихований режим (рішення оркестратора).
+# content/subjects/eng.js; «скоро» eng у catalog.js (4 клас) і його видалення
+1. Зараз (до першого verified-розділу): у content/catalog.js змінити `grade: "5 клас"` → «4 клас» (перший клас предмета — 4, рішення людини 2026-11-19); `why` — українською (це картка головної, хром).
+2. Коли є хоча б один verified-розділ 4 кл.: `content/subjects/eng.js` — `SLID.subject({ id: "eng", subject: "Англійська мова", short: "Англійська", icon: "globe", targetLang: "en", diagOrder, colors (з catalog.js + soft/mid/ink), skills, badges })`; навички — docs/design/english.md §7 (read, vocab, gram, phon, func, write, cult; `listen` — лише зі звуком); `name`/`hint` навичок — українською (картка прогресу — хром) або англійською — вирішити й записати в style/eng.md.
+3. **У тому самому коміті** видалити `SLID.soon({ id: "eng" … })` (registry.js `soon()` не дедуплікує → дві картки).
 4. `node tools/validate.mjs` — 0 помилок; build — оркестратор.
 
 ## Обмеження

@@ -4,7 +4,7 @@ type: write-section
 subject: eng
 grade: 5
 section: e5s5
-depends_on: [curate-eng-plan-g5, engine-eng-lang-core, engine-eng-validate, engine-eng-stats, skills-eng, curate-eng-style, curate-eng-glossary, write-eng-g5-e5s1]
+depends_on: [curate-eng-plan-g5, engine-eng-lang-core, engine-eng-validate, engine-eng-stats, skills-eng, curate-eng-style, curate-eng-glossary, write-eng-g4-e4s1]
 status: todo
 claimed_by: 
 created: 2026-11-19
@@ -16,19 +16,22 @@ source: design-eng
 - Тема й підтеми: погода; природні явища — МП-ІМ с. 20 (розд. 4.2.1), граматика — с. 21–22 (розд. 4.4).
 - Рівень: A1 → A2 (вхід A1; A2 — наприкінці 6 кл.).
 - Граматика (пропозиція розподілу, docs/design/english.md §4): it's + weather; can (ability); comparatives (form). Остаточно — за `content/eng/plan.js` (curate-eng-plan-g5): якщо план інший, план головніший.
-- Джерела програми — docs/design/english.md §0: МП-ІМ (модельна програма «Іноземна мова. 5–9 класи», Редько В. Г. та ін., наказ МОН № 795 від 12.07.2021) — https://osvita.ua/doc/files/news/831/83117/Inoz_mov_5-9-kl_Redko_ta_in_14_07.pdf; П1407 (програма «Іноземні мови. 10–11 класи», рівень стандарту, наказ МОН № 1407 від 23.10.2017) — https://osvita.ua/doc/files/news/589/58921/inozemni-movi-10-11-19_09_2017.pdf.
+- Джерела програми — docs/design/english.md §0: ТОП 3–4 (4 кл.) — https://lib.iitta.gov.ua/714276/1/%D0%A2%D0%9E%D0%9F_3_4_2018.pdf; МП-ІМ (5–9 кл., наказ МОН № 795 від 12.07.2021) — https://osvita.ua/doc/files/news/831/83117/Inoz_mov_5-9-kl_Redko_ta_in_14_07.pdf; П1407 (10–11 кл., наказ МОН № 1407 від 23.10.2017; для 10–11 кл. — розділ спеціалізованих шкіл, B2) — https://osvita.ua/doc/files/news/589/58921/inozemni-movi-10-11-19_09_2017.pdf.
+
+## Рішення людини, обов'язкові
+Рішення людини 2026-11-19 (docs/design/english.md §11.1): британська норма; увесь зміст англійською (інтерфейс рушія — українською); варіанти A/B/C; поки без звуку й голосу; ціль B2 в 11 кл.; 4 клас робимо; словники дозволено.
 
 ## Прочитати перед роботою
-- AGENTS.md; скіл `content-author` (розділ «Англійська» — skills-eng); docs/design/english.md §2 (мова екранів), §5 (типи вправ), §6 (стиль і пастки), §8 (авторське право).
-- style/common.md, style/eng.md, style/profiles.json (`eng`); memory/long/glossary/eng.md, facts/eng.md, pitfalls-content.md «Англійська».
-- Еталон: style/eng.md «Еталони» (e5s1 після верифікації).
+- AGENTS.md; скіл `content-author` (розділ «Англійська» — skills-eng); docs/design/english.md §2, §5, §6, §8.
+- style/common.md (структура уроку, D-019), style/eng.md, style/profiles.json (`eng`); memory/long/glossary/eng.md, facts/eng.md, pitfalls-content.md «Англійська».
+- Еталон: style/eng.md «Еталони» (e4s1, e5s1 після верифікації).
 
 ## Результат
 - `content/eng/g5-e5s5.js`: `SLID.section("eng", { id: "e5s5", … })` — id з плану; ≈ 5–7 уроків + фінал (boss).
-- Кожен урок: ситуація спілкування з теми → здогадка → правило (українською) → вправи; лексика й граматика — лише з рівня класу і з того, що вже було (D-019).
-- Типи: gaps, pick, word, split, stress (у складі), choice/multi/sort, build і match (якщо вже є в рушії), listen/`say` (якщо є engine-eng-audio-tts; інакше — без аудіювання, не імітувати його текстом).
+- **Усе англійською**, британська норма: назви, `why`, `learned`, теорія, інструкції, підказки, фідбек, варіанти. Пояснення — не складніші за рівень класу (4–5 кл.: короткі речення, шаблонні інструкції, правило — зразком і таблицею; граматику в 4 кл. засвоюють «на рівні мовленнєвих зразків», ТОП 3–4 PDF с. 61).
+- Типи: gaps, pick, word, split, stress (у складі), choice/multi/sort, build і match (якщо вже є в рушії). **Без звуку**: не імітувати аудіювання текстом, не обіцяти в `learned` вмінь на слух.
 - Тексти, діалоги, імена, малюнки — **власні**; нічого з підручників Cambridge/Oxford (docs/design/english.md §8).
-- Кожна англійська форма, неправильне дієслово, ідіома, факт про країну — з джерела (словник, URL) у нотатках; нові — рядками FACT в inbox.
+- Кожна форма, неправильне дієслово, ідіома, факт про країну — зі словника чи джерела (URL) у нотатках; нові — рядками FACT в inbox.
 
 ## Готово, коли
 - [ ] `node tools/validate.mjs --section e5s5` — 0 помилок; попередження виправлено або пояснено.

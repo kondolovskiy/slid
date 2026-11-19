@@ -15,14 +15,14 @@ source: design-eng
 **Брати лише тоді, коли всі розділи 11 кл. мають `status: "verified"`** (claim.mjs `depends_on` не перевіряє).
 
 ## Прочитати
-AGENTS.md §4; скіли `math-pool-diag` («Тест рівня») і `content-author` (eng); docs/CONTENT_SCHEMA.md §9; docs/PERSONALIZATION.md §1; docs/design/english.md §7; зразок — content/ukr/diag-g11.js і tasks/done/write-ukr-diag-g11.md.
+AGENTS.md §4; скіли `math-pool-diag` («Тест рівня») і `content-author` (eng); docs/CONTENT_SCHEMA.md §9; docs/PERSONALIZATION.md §1; docs/design/english.md §7, §11.1; зразок — content/ukr/diag-g11.js.
 
 ## Результат
-`content/eng/diag-g11.js`: `SLID.diag("eng", { id: "dge11", grade: 11, … })`. **id `dge11` — ключ прогресу.**
-- `pre`: опори 10 кл. і наскрізні вміння (граматика циклу, лексика тем) × 2 завдання.
+`content/eng/diag-g11.js`: `SLID.diag("eng", { id: "dge11", grade: 11, … })`. **id `dge11` — ключ прогресу.** Усе англійською; варіанти — A, B, C.
+- `pre`: опори 10 кл. і наскрізна граматика й лексика циклу × 2 завдання.
 - `cur`: по одній темі на розділ 11 кл. (e11s1, e11s2, e11s3, e11s4, e11s5, e11s6, e11s7, e11s8).
-- Типи — DIAG_TYPES (з build/match після engine-eng-diag-pool); listen — лише якщо є звук.
-- Рівень завдань — B1 (рівень стандарту; B2 — за рішенням людини).
+- Типи — DIAG_TYPES (build/match — після engine-eng-diag-pool); без аудіювання.
+- Рівень — B2 (наприкінці 11 кл., рішення людини 2026-11-19).
 
 ## Готово, коли
 - [ ] `node tools/validate.mjs --diag dge11` — 0 помилок; кожне завдання розв'язано двічі; задача → tasks/review.

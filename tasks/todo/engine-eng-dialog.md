@@ -11,11 +11,12 @@ source: design-eng
 # Новий тип екрана `dialog`: репліки з мовцями, пропуск чи вибір репліки
 
 ## Прочитати
-- AGENTS.md, скіл `engine-change`; docs/design/english.md (весь, особливо §2, §5, §10); docs/CONTENT_SCHEMA.md §4, §4.1, §9–10; memory/long/pitfalls-engine.md.
+- AGENTS.md, скіл `engine-change`; docs/design/english.md (особливо §2, §5, §10, §11); docs/CONTENT_SCHEMA.md §4, §4.1, §9–10; memory/long/pitfalls-engine.md.
+- Рішення людини 2026-11-19 (docs/design/english.md §11.1): британська норма; увесь зміст англійською (інтерфейс рушія — українською); варіанти A/B/C; поки без звуку й голосу; ціль B2 в 11 кл.; 4 клас робимо; словники дозволено.
 
 ## Що зробити (docs/design/english.md §5.8)
-`{ type: "dialog", lines: [{ who, text }], ask: { kind: "gaps" | "choice", … } }` — бульбашки з іменами; оцінюване місце — пропуск у репліці (розмітка gaps) або вибір наступної репліки; кнопка «Послухати» (коли буде engine-eng-audio-tts) — двома голосами, якщо є.
-- Рушій, validate (≤ 8 реплік, ≤ 2 мовці на екрані — пропозиція), GRADED/TYPES, DIAG/POOL (лише якщо коротко), playtest.py, 360 px.
+`{ type: "dialog", lines: [{ who, text }], ask: { kind: "gaps" | "choice", … } }` — бульбашки з іменами; оцінюване місце — пропуск у репліці (розмітка gaps) або вибір наступної репліки. Без звуку (рішення людини).
+- Рушій, validate (≤ 8 реплік, ≤ 3 мовці — пропозиція), GRADED/TYPES, DIAG/POOL (коротко), playtest.py, 360 px.
 
 ## Готово, коли
 - [ ] Код, тести (`node tools/test-lang.mjs`, `npm run check`), CONTENT_SCHEMA і, де треба, docs/ARCHITECTURE.md оновлено; українські предмети поводяться як раніше (регресія test-answer-ui — у CI, job browser).

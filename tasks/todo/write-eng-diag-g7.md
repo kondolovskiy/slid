@@ -15,14 +15,14 @@ source: design-eng
 **Брати лише тоді, коли всі розділи 7 кл. мають `status: "verified"`** (claim.mjs `depends_on` не перевіряє).
 
 ## Прочитати
-AGENTS.md §4; скіли `math-pool-diag` («Тест рівня») і `content-author` (eng); docs/CONTENT_SCHEMA.md §9; docs/PERSONALIZATION.md §1; docs/design/english.md §7; зразок — content/ukr/diag-g7.js і tasks/done/write-ukr-diag-g7.md.
+AGENTS.md §4; скіли `math-pool-diag` («Тест рівня») і `content-author` (eng); docs/CONTENT_SCHEMA.md §9; docs/PERSONALIZATION.md §1; docs/design/english.md §7, §11.1; зразок — content/ukr/diag-g7.js.
 
 ## Результат
-`content/eng/diag-g7.js`: `SLID.diag("eng", { id: "dge7", grade: 7, … })`. **id `dge7` — ключ прогресу.**
-- `pre`: опори 6 кл. і наскрізні вміння (граматика циклу, лексика тем) × 2 завдання.
+`content/eng/diag-g7.js`: `SLID.diag("eng", { id: "dge7", grade: 7, … })`. **id `dge7` — ключ прогресу.** Усе англійською; варіанти — A, B, C.
+- `pre`: опори 6 кл. і наскрізна граматика й лексика циклу × 2 завдання.
 - `cur`: по одній темі на розділ 7 кл. (e7s1, e7s2, e7s3, e7s4, e7s5, e7s6, e7s7).
-- Типи — DIAG_TYPES (з build/match після engine-eng-diag-pool); listen — лише якщо є звук.
-- Рівень завдань — A2 → B1 (B1 — наприкінці 9 кл.).
+- Типи — DIAG_TYPES (build/match — після engine-eng-diag-pool); без аудіювання.
+- Рівень — A2 → B1 (B1 — наприкінці 9 кл.).
 
 ## Готово, коли
 - [ ] `node tools/validate.mjs --diag dge7` — 0 помилок; кожне завдання розв'язано двічі; задача → tasks/review.

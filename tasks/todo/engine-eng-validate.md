@@ -8,18 +8,19 @@ claimed_by:
 created: 2026-11-19
 source: design-eng
 ---
-# validate.mjs і content-checks.mjs для англійської
+# validate.mjs і content-checks.mjs для англійської: англійські правила замість українських, A/B/C
 
 ## Прочитати
-- AGENTS.md, скіл `engine-change`; docs/design/english.md (весь, особливо §2, §5, §10); docs/CONTENT_SCHEMA.md §4, §4.1, §9–10; memory/long/pitfalls-engine.md.
+- AGENTS.md, скіл `engine-change`; docs/design/english.md (особливо §2, §5, §10, §11); docs/CONTENT_SCHEMA.md §4, §4.1, §9–10; memory/long/pitfalls-engine.md.
+- Рішення людини 2026-11-19 (docs/design/english.md §11.1): британська норма; увесь зміст англійською (інтерфейс рушія — українською); варіанти A/B/C; поки без звуку й голосу; ціль B2 в 11 кл.; 4 клас робимо; словники дозволено.
 
-## Що зробити (docs/design/english.md §2, §6.3, §9)
-1. Українські перевірки (заборонені фрази, D-016-тексти, рід у звертанні, позиційні посилання, милозвучність) не застосовувати до фрагментів `lang="en"` (хелпер з engine-eng-lang-attr).
-2. eng: латинське слово (≥ 2 літери) в українській прозі поза позначкою мови — попередження.
-3. `ASK_RE`/`ASK_WIDE` (content-checks.mjs:48, :50): англійські наказові (choose, select, complete, match, find, fill, tick, put, write) — щоб «Choose the correct form.» не давало «choice без питання».
-4. `soon` з тим самим id, що й справжній предмет, — помилка (validate :487; зараз дві картки на головній).
-5. Довжина англійського тексту на екрані — за профілем `eng` (`enWordsPerScreen`, ліміт тексту читання, style/eng.md).
-6. Літери варіантів тесту рівня (`OPT_LETTERS`, validate :44, :345; app.js:981) — лише якщо людина обере A/B/C (§11 п. 12).
+## Що зробити (docs/design/english.md §2, §6.3, §11.1)
+1. Для eng (targetLang) **вимкнути** українські правила: заборонені фрази (style/banned-phrases.txt), рід у звертанні, українські наказові `ASK_RE`, позиційні посилання українською, милозвучність (`EUPHONY`), `OPT_NUM_RE` («другий варіант»).
+2. **Увімкнути** англійські відповідники: `ASK_RE` (choose, select, complete, match, find, fill, tick, put, write, which, what…), позиційні посилання («the first option», «the last line»), «option N»; список англійських кальок (style/eng-banned.txt — створює curate-eng-style) як попередження.
+3. Кирилиця в змісті eng — попередження (усі тексти англійською, рішення людини); дозволено лише в `credits`.
+4. **Літери варіантів A, B, C** для eng (`OPT_LETTERS`, validate :44, :345; app.js:981) — з предмета, не глобально.
+5. `soon` з тим самим id, що й справжній предмет, — помилка (validate :487).
+6. Довжина англійського тексту на екрані — за профілем `eng` (style/eng.md).
 7. Тести: tools/test-content-checks.mjs, фікстура eng.
 
 ## Готово, коли

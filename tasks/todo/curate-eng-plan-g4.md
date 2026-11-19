@@ -1,0 +1,36 @@
+---
+id: curate-eng-plan-g4
+type: curate
+subject: eng
+grade: 4
+depends_on: [curate-eng-subject]
+status: todo
+claimed_by: 
+created: 2026-11-19
+source: design-eng
+---
+# План «Англійська мова», 4 клас (content/eng/plan.js)
+
+## Навіщо
+Перший крок класу (як plan-ukr-g9): план → верифікація плану → задачі write-eng-g4-* (уже створено за орієнтовним планом нижче; якщо куратор змінить розділи — оновлює ці задачі: нові розділи — нові задачі, зайві — у done з поясненням).
+
+## Що зробити
+1. Відкрити в сесії джерела (Джерела програми — docs/design/english.md §0: ТОП 3–4 (4 кл.) — https://lib.iitta.gov.ua/714276/1/%D0%A2%D0%9E%D0%9F_3_4_2018.pdf; МП-ІМ (5–9 кл., наказ МОН № 795 від 12.07.2021) — https://osvita.ua/doc/files/news/831/83117/Inoz_mov_5-9-kl_Redko_ta_in_14_07.pdf; П1407 (10–11 кл., наказ МОН № 1407 від 23.10.2017; для 10–11 кл. — розділ спеціалізованих шкіл, B2) — https://osvita.ua/doc/files/news/589/58921/inozemni-movi-10-11-19_09_2017.pdf.) і звірити теми, підтеми, функції й граматику класу. ТОП 3–4: ліцей вимагає програму Шияна (№ 1273), відкрито — ТОП Савченко (2018); звірити, якщо текст № 1273 стане доступним (питання людині §11.2 п. 7).
+2. `content/eng/plan.js`: `SLID.section("eng", { id, grade, weeks (35 тижнів; години — docs/design/english.md §11.2 п. 2), title, why, plan, requires })` — **англійською** (рішення людини), без `lessons`. **id розділів — ключі прогресу.**
+3. Звіт `reports/verify/plan-eng-g4.md` (українською — це звіт, не зміст): розділ ↔ тема/підтема ↔ сторінка програми; розподіл граматики (наш, концентричний — позначити); що не ввійшло й чому.
+4. `node tools/validate.mjs` — 0 помилок.
+
+## Орієнтовний план (docs/design/english.md §4)
+### 4 клас — Pre A1 → A1 (наприкінці 4 кл., ТОП 3–4 PDF с. 40)
+Джерело: ТОП 3–4 (іншомовна освітня галузь, «4-ий клас»), PDF с. 61–62 — https://lib.iitta.gov.ua/714276/1/%D0%A2%D0%9E%D0%9F_3_4_2018.pdf; рівень A1 — PDF с. 40.
+- `e4s1` «Me, my family and friends: where we live» — Я, моя родина і друзі: місце проживання, населені пункти. Граматика (пропозиція): to be, have got (повторення 3 кл.); a/an with jobs.
+- `e4s2` «My home» — Помешкання: види помешкань, умеблювання. Граматика (пропозиція): there is/are; prepositions of place.
+- `e4s3` «Free time: sports and heroes» — Відпочинок і дозвілля: спорт, улюблені дитячі герої. Граматика (пропозиція): adverbs of frequency; but/and/or.
+- `e4s4` «Shops and shopping» — Відпочинок і дозвілля: магазини і покупки. Граматика (пропозиція): how much/how many; would like to.
+- `e4s5` «Health and hygiene» — Людина: гігієна, стан здоров'я. Граматика (пропозиція): because; imperatives.
+- `e4s6` «Nature and weather» — Природа і навколишнє середовище України та країн виучуваної мови: довкілля, природні явища. Граматика (пропозиція): Present Continuous.
+- `e4s7` «Holidays and travel» — Подорож по Україні та до країн виучуваної мови: поїздка на канікулах, транспорт, столиці. Граматика (пропозиція): Future Simple for plans; comparatives and superlatives.
+- `e4s8` «Celebrations and school events» — Свята та традиції (святкування в кафе); Шкільне життя (шкільні події). Граматика (пропозиція): Present Simple vs Present Continuous (на рівні зразків).
+
+## Готово, коли
+- [ ] План у plan.js, звіт, рядки в inbox; задача → tasks/review для content-verifier зі свіжим контекстом.
