@@ -1,24 +1,28 @@
 ---
-id: write-eng-g5-e5s3
+claimed_from: todo
+claimed_at: 2026-11-19T14:22:10.552Z
+id: write-eng-g5-e5s8
 type: write-section
 subject: eng
 grade: 5
-section: e5s3
+section: e5s8
 depends_on: [curate-eng-plan-g5, engine-eng-lang-core, engine-eng-validate, engine-eng-stats, skills-eng, curate-eng-style, curate-eng-glossary, write-eng-g4-e4s1]
 status: todo
-claimed_by: 
+claimed_by: writer-e5s8
 created: 2026-11-19
 source: design-eng
 ---
-# Написати розділ «Харчування» (Англійська мова, 5 клас)
+# Написати розділ «Свята і традиції» (Англійська мова, 5 клас)
 
 ## З програми
-- Тема й підтеми: продукти харчування; улюблені страви; страви в Україні та країнах виучуваної мови — МП-ІМ с. 20 (розд. 4.2.1), граматика — с. 21–22 (розд. 4.4).
+- Тема й підтеми: календар свят в Україні та країнах виучуваної мови; традиції святкування — МП-ІМ с. 20 (розд. 4.2.1), граматика — с. 21–22 (розд. 4.4).
 - Рівень: A1 → A2 (вхід A1; A2 — наприкінці 6 кл.).
-- Граматика (пропозиція розподілу, docs/design/english.md §4): countable/uncountable; some/any; much/many/a lot of; would like. Остаточно — за `content/eng/plan.js` (curate-eng-plan-g5): якщо план інший, план головніший.
+- Граматика (пропозиція розподілу, docs/design/english.md §4): dates, ordinal numbers; was/were. Остаточно — за `content/eng/plan.js` (curate-eng-plan-g5): якщо план інший, план головніший.
 - Джерела програми — docs/design/english.md §0: ТОП 3–4 (4 кл.) — https://lib.iitta.gov.ua/714276/1/%D0%A2%D0%9E%D0%9F_3_4_2018.pdf; МП-ІМ (5–9 кл., наказ МОН № 795 від 12.07.2021) — https://osvita.ua/doc/files/news/831/83117/Inoz_mov_5-9-kl_Redko_ta_in_14_07.pdf; П1407 (10–11 кл., наказ МОН № 1407 від 23.10.2017; для 10–11 кл. — розділ спеціалізованих шкіл, B2) — https://osvita.ua/doc/files/news/589/58921/inozemni-movi-10-11-19_09_2017.pdf.
 
-- **Специфіка (plan-eng-g5):** рецепт як текст для читання; borshch (КМУ № 55) чи borscht (Cambridge Dictionary) — узгодити з glossary/eng.md до написання. `requires` на уроки 4 кл. — за таблицею reports/verify/plan-eng-g5.md §6, коли ті уроки будуть.
+- **Специфіка (plan-eng-g5):** «Festivals» (BrE: holidays = канікули); What a …!. `requires` на уроки 4 кл. — за таблицею reports/verify/plan-eng-g5.md §6, коли ті уроки будуть.
+
+- **Специфіка (verifier plan-eng-g5):** festival — B1 (CD): вводити з поясненням; державні дні — public holiday / bank holiday; «Our New Year party was great!» природніше за «Last New Year was great!» (Р2, Р4).
 
 ## Рішення людини, обов'язкові
 Рішення людини 2026-11-19 (docs/design/english.md §11.1): британська норма; увесь зміст англійською (інтерфейс рушія — українською); варіанти A/B/C; поки без звуку й голосу; ціль B2 в 11 кл.; 4 клас робимо; словники дозволено.
@@ -29,14 +33,14 @@ source: design-eng
 - Еталон: style/eng.md «Еталони» (e4s1, e5s1 після верифікації).
 
 ## Результат
-- `content/eng/g5-e5s3.js`: `SLID.section("eng", { id: "e5s3", … })` — id з плану; ≈ 5–7 уроків + фінал (boss).
+- `content/eng/g5-e5s8.js`: `SLID.section("eng", { id: "e5s8", … })` — id з плану; ≈ 5–7 уроків + фінал (boss).
 - **Усе англійською**, британська норма: назви, `why`, `learned`, теорія, інструкції, підказки, фідбек, варіанти. Пояснення — не складніші за рівень класу (4–5 кл.: короткі речення, шаблонні інструкції, правило — зразком і таблицею; граматику в 4 кл. засвоюють «на рівні мовленнєвих зразків», ТОП 3–4 PDF с. 61). Згорнутий український переклад правила (`uk`) за замовчуванням не додавати — лише якщо верифікатор чи плейтест покажуть потребу (рішення людини 2026-11-19).
 - Типи: gaps, pick, word, split, stress (у складі), choice/multi/sort, build і match (якщо вже є в рушії). **Без звуку**: не імітувати аудіювання текстом, не обіцяти в `learned` вмінь на слух.
 - Тексти, діалоги, імена, малюнки — **власні**; нічого з підручників Cambridge/Oxford (docs/design/english.md §8).
 - Кожна форма, неправильне дієслово, ідіома, факт про країну — зі словника чи джерела (URL) у нотатках; нові — рядками FACT в inbox.
 
 ## Готово, коли
-- [ ] `node tools/validate.mjs --section e5s3` — 0 помилок; попередження виправлено або пояснено.
+- [ ] `node tools/validate.mjs --section e5s8` — 0 помилок; попередження виправлено або пояснено.
 - [ ] `node tools/stats.mjs --subject eng` — без «нетипово для сім'ї» (до калібрування — пояснити).
 - [ ] Кожне оцінюване завдання розв'язано двічі; немає другої правильної відповіді.
 - [ ] Задачу переміщено в tasks/review (content-verifier зі свіжим контекстом).
