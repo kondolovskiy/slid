@@ -49,6 +49,8 @@
 //      \to ширша за «−»; підкреслення <u> з відступом; align — роки шкали цілком у полі й «N з 18 кілець»; strata — знахідки не налазять на стрілку; клік по точці numline — фокус на її ручку, стрілки рухають її (qa-drag-points B1).
 //  26) Мова змісту предмета (engine-eng-lang-attr, D-054): targetLang: "en" — lang="en" на змісті уроку, тесту й тренування, хром рушія — uk;
 //      згорнутий переклад uk на екрані теорії й подія uk_open; предмет без targetLang — жодного lang у плеєрі.
+//  27) Мовні вправи англійською (engine-eng-lang-core): word — примітка «In British English: colour.» (en), «Almost: check the spelling.» (en),
+//      «Перемкни клавіатуру на англійську.» (uk), кирилична «с» у «сat», «Yes.»; stress складами; без targetLang — як раніше.
 // Запуск: node tools/test-ui.mjs [--browser /opt/pw-browsers/chromium]
 // Playwright: require("playwright") (NODE_PATH) або PLAYWRIGHT_MODULE / /opt/node-tools/node_modules/playwright.
 // Браузер, як у test-answer-ui.py: --browser / SLID_BROWSER → /opt/pw-browsers/chromium, якщо є (PW_DEFAULT=1 вимикає) → Chromium самого
@@ -1052,6 +1054,9 @@ try {
 
   // 26) Мова змісту предмета: targetLang, lang="en" на змісті, згорнутий переклад uk (engine-eng-lang-attr)
   await contentLangScenario(browser);
+
+  // 27) Мовні вправи англійською: word з примітками, stress складами (engine-eng-lang-core)
+  await engLangScenario(browser);
 } finally { await browser.close(); server.close(); swServer.close(); }
 
 console.log(`test-ui: ${pass} ok, ${fail} ✗`);
@@ -1529,5 +1534,62 @@ async function contentLangScenario(browser) {
   await page.evaluate(install, [LES, POOL, DIAG, "xx"]);
   ok(await page.evaluate(() => SLID.subjectLang("ukr") === ""), "targetLang: \"xx\" — рушій ігнорує");
   ok(!errors.length, "мова змісту: помилки сторінки: " + errors.join(" | "));
+  await ctx.close();
+}
+
+/* 27) Мовні вправи англійською (engine-eng-lang-core; docs/design/english.md §5.4, §5.6; CONTENT_SCHEMA §4.1): фікстура — предмет ukr
+   з targetLang: "en". word: color на ключ colour — ok і примітка «In British English: colour.» у span lang=en; becuase — «Almost: check
+   the spelling.» (en) після першої спроби; «дім» — «Перемкни клавіатуру на англійську.» (хром uk); «сat» з кириличною «с» — ok; «Yes.» — ok.
+   stress складами: кнопки — склади, інструкція «Торкнись наголошеного складу.». Регресія: без targetLang color ≠ colour, без примітки. */
+async function engLangScenario(browser) {
+  const ctx = await browser.newContext({ viewport: { width: 400, height: 860 }, serviceWorkers: "block" });
+  const page = await ctx.newPage(), errors = []; page.on("pageerror", e => errors.push(String(e))); page.setDefaultTimeout(8000);
+  await page.route("**/fonts.googleapis.com/**", r => r.abort());
+  const fb = t => ({ fbOk: "Yes!", fbBad: "Not quite.", fbText: t });
+  const LES = { id: "fen2", title: "Spelling", icon: "book", outro: { text: "Well done.", learned: ["I can spell."] }, screens: [
+    { type: "word", title: "Type the word", body: "What is red, blue or green? A …", answer: "colour", ...fb("Red is a colour.") },
+    { type: "word", title: "Type the word", body: "I stay at home … I am ill.", answer: "because", ...fb("Because tells us why.") },
+    { type: "word", title: "Type the word", body: "A small pet that says meow.", answer: "cat", ...fb("A cat says meow.") },
+    { type: "stress", title: "Find the stressed syllable", words: ["+pho|to|graph", "pho|+tog|ra|pher"], ...fb("PHOtograph, phoTOGrapher.") },
+    { type: "word", title: "Answer", body: "Is London in the UK?", answer: "yes", ...fb("London is the capital of the UK.") }] };
+  const install = ([les, tl]) => { const c = SLID_SUBJECTS.find(c => c.id === "ukr");
+    c.sections = [{ id: "fen", grade: 5, weeks: [1, 2], title: "QA en", why: "QA", lessons: [les] }]; c.pools = []; c.diags = []; delete c.graph;
+    if (tl) c.targetLang = tl; else delete c.targetLang; };
+  const boot = async tl => { await page.goto(URL0); await page.evaluate(() => { localStorage.clear(); localStorage.setItem("slid.v1", JSON.stringify({ grade: 5, subject: "ukr", unlockAll: true })); });
+    await page.reload(); await page.evaluate(install, [LES, tl]); await page.evaluate(() => window.__slidStart("fen2")); };
+  const answer = async v => { await page.fill("#numIn", v); await page.click("#action"); };
+  const dock = () => page.evaluate(() => ({ kind: document.querySelector("#dock").className, text: document.querySelector("#fbText").textContent,
+    en: [...document.querySelectorAll("#fbText [lang=en]")].map(e => e.textContent), lang: (() => { const t = [...document.querySelector("#fbText").childNodes].find(n => n.textContent.trim()); return t ? (t.nodeType === 3 ? t.parentElement : t).closest("[lang]")?.getAttribute("lang") ?? null : null; })() }));
+
+  await boot("en");
+  await answer("Color");
+  let d = await dock();
+  ok(/\bok\b/.test(d.kind) && d.en.includes("In British English: colour."), `en word: color → ok і примітка в span lang=en, а ${JSON.stringify(d)}`);
+  ok(d.en.includes("Red is a colour."), "en word: fbText після примітки — en");
+  await page.click("#action");
+  await answer("becuase"); d = await dock();
+  ok(/\bbad\b/.test(d.kind) && d.en.includes("Almost: check the spelling."), `en word: одруківка — «Almost» у span lang=en, а ${JSON.stringify(d)}`);
+  ok(await page.locator("#action").isDisabled(), "en word: та сама відповідь — «Спробувати ще раз» неактивна");
+  await answer("because"); d = await dock();
+  ok(/\bok\b/.test(d.kind) && !/British/.test(d.text), "en word: друга спроба правильна, без примітки");
+  await page.click("#action");
+  await answer("дім"); d = await dock();
+  ok(/\bbad\b/.test(d.kind) && d.text.includes("Перемкни клавіатуру на англійську.") && d.lang !== "en", `en word: кирилиця — повідомлення рушія мовою сторінки, а ${JSON.stringify(d)}`);
+  await answer("\u0441at"); d = await dock();
+  ok(/\bok\b/.test(d.kind), `en word: «сat» з кириличною «с» — ok, а ${JSON.stringify(d)}`);
+  await page.click("#action");
+  ok(same(await page.locator("#stage .sv").allTextContents(), ["pho", "to", "graph", "pho", "tog", "ra", "pher"]), "stress складами: кнопки — склади");
+  ok(/Торкнись наголошеного складу/.test(await page.locator("#stage .fix").textContent()), "stress складами: інструкція про склад");
+  await page.click('#stage .sv[data-w="0"][data-i="0"]'); await page.click('#stage .sv[data-w="1"][data-i="1"]'); await page.click("#action");
+  ok(/\bok\b/.test((await dock()).kind), "stress складами: правильно");
+  await page.click("#action");
+  await answer("Yes."); d = await dock();
+  ok(/\bok\b/.test(d.kind), `en word: «Yes.» = yes, а ${JSON.stringify(d)}`);
+
+  // регресія: той самий урок без targetLang — правила англійської вимкнені
+  await boot(null);
+  await answer("color"); d = await dock();
+  ok(/\bbad\b/.test(d.kind) && !/British/.test(d.text) && /Зміни відповідь/.test(d.text), `без targetLang: color ≠ colour, без примітки, а ${JSON.stringify(d)}`);
+  ok(!errors.length, "мовні вправи en: помилки сторінки: " + errors.join(" | "));
   await ctx.close();
 }

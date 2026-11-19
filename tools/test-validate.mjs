@@ -381,6 +381,16 @@ expectRun("drag: at і без drag — без попередження", one("fx
     expectRun("uk на оцінюваному екрані — помилка", files({ targetLang: "en" }, withUk(iGraded)), ["--section", "fxtl"], { err: "uk — лише на неоцінюваному екрані" });
     { const sec = mathSec("fxtl"); sec.lessons[0].screens[iInfo].uk = "  ";
       expectRun("uk порожній — помилка", files({ targetLang: "en" }, sec), ["--section", "fxtl"], { err: "uk — непорожній" }); }
+    // engine-eng-lang-core: contractions у word — лише в предметі з targetLang (рушій без мови змісту поле ігнорує); склади в stress
+    { const withWord = more => { const sec = mathSec("fxtl"), g = sec.lessons[0].screens[iGraded];
+        sec.lessons[0].screens.push({ type: "word", sk: g.sk, title: "Type the words", body: "Write it in full.", answer: "do not", fbOk: "Yes.", fbText: "Do not is the full form of the short form.", ...more }); return sec; };
+      expectRun("contractions у предметі з targetLang — без помилки", files({ targetLang: "en" }, withWord({ contractions: true })), ["--section", "fxtl"], {});
+      expectRun("contractions у предметі без targetLang — помилка", files({}, withWord({ contractions: true })), ["--section", "fxtl"], { err: "contractions — лише в предметі з targetLang" });
+      expectRun("contractions не boolean — помилка", files({ targetLang: "en" }, withWord({ contractions: "yes" })), ["--section", "fxtl"], { err: "contractions — true/false" });
+      const st = words => { const sec = mathSec("fxtl"), g = sec.lessons[0].screens[iGraded];
+        sec.lessons[0].screens.push({ type: "stress", sk: g.sk, title: "Find the stressed syllable", words, fbOk: "Yes.", fbText: "The stress is on the first syllable in both words here." }); return sec; };
+      expectRun("stress складами — без помилки", files({ targetLang: "en" }, st(["+pho|to|graph", "pho|+tog|ra|pher"])), ["--section", "fxtl"], {});
+      expectRun("stress: англійське слово без складів — помилка", files({ targetLang: "en" }, st(["+photograph"])), ["--section", "fxtl"], { err: "розмітка складами" }); }
     fs.rmSync(path.join(tmp, "content/fxtl"), { recursive: true, force: true }); }
   // діагностика: поля answer перевіряються лише тоді, коли answer дозволено в тесті (learn.DIAG_TYPES). Обидва стани задаємо явно
   // в копії app/learn.js, щоб тест не залежав від того, чи дозволено answer у діагностиці зараз (engine-diag-answer-kinds)

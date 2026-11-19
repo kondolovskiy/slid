@@ -235,5 +235,110 @@ for (const s of [{ type: "gaps", text: "с{*е|и}ло" }, { type: "pick", text:
   // живі предмети (без прив'язки до складу): лише значення з TARGET_LANGS або без поля
   for (const c of lib.loadContent().subjects) ok(c.targetLang === undefined || lib.TARGET_LANGS.includes(c.targetLang), `предмет ${c.id}: targetLang з TARGET_LANGS`); }
 
+/* англійська (engine-eng-lang-core; docs/design/english.md §5.4, §5.6; D-054 з доповненням; glossary/eng.md): поведінка — від lang
+   третього аргументу (рушій передає SLID.subjectLang предмета); без lang (і для "") — як було, українські предмети не змінюються */
+{ const W = (answer, more = {}) => ({ type: "word", answer, ...more });
+  const V = (s, v) => { const r = L.wordVerdict(s, v, "en"); return [r.ok, r.note || "", r.hint || "", r.kb || ""]; };
+  // п. 3: кінцевий розділовий знак (.!?) ігнорується, якщо ключ його не має
+  ok(L.check(W("yes"), "Yes.", "en"), "en word: «Yes.» = «yes»");
+  ok(L.check(W("yes"), "yes!", "en") && L.check(W("yes"), "yes?!", "en") && L.check(W("yes"), "yes .", "en"), "en word: «!», «?!», « .» в кінці");
+  no(L.check(W("yes"), "Yes.", ""), "ukr (lang \"\"): «Yes.» ≠ «yes», як раніше");
+  no(L.check(W("yes"), "Yes."), "без lang: як раніше");
+  ok(L.check(W("Wait!"), "wait!", "en"), "en word: ключ зі знаком — знак у відповіді");
+  no(L.check(W("Wait!"), "wait", "en"), "en word: ключ зі знаком — без знака не зараховано (ключ строгий)");
+  no(L.check(W("yes"), "y.es", "en"), "en word: крапка посередині — не кінцевий знак");
+  // п. 4: кирилиця-двійник, коли всі ключі латинські; інша кирилиця — bad з повідомленням рушія українською
+  ok(L.check(W("cat"), "сat", "en"), "en word: кирилична «с» у «сat» читається як латинська");
+  ok(L.check(W("Moscow"), "Мoscow", "en") && L.check(W("box"), "вох", "en"), "en word: кириличні М, в, о, х — двійники");
+  ok(L.check(W("THE CAT", { keepCase: true }), "ТНЕ САТ", "en"), "en word: великі двійники з keepCase");
+  for (const [c, l] of [["с", "c"], ["е", "e"], ["о", "o"], ["а", "a"], ["р", "p"], ["х", "x"], ["і", "i"], ["у", "y"], ["к", "k"], ["м", "m"], ["т", "t"], ["н", "h"], ["в", "b"]])
+    ok(L.check(W(l), c, "en") && L.check(W(l.toUpperCase(), { keepCase: true }), c.toUpperCase(), "en"), `en word: двійник ${c} → ${l} (і велика)`);
+  eq(V(W("cat"), "дім"), [false, "", "", "Перемкни клавіатуру на англійську."], "en word: інша кирилиця — bad, повідомлення про клавіатуру");
+  eq(V(W("cat"), "кіт"), [false, "", "", ""], "en word: «кіт» з самих двійників — це «kit», звичайна помилка (без повідомлення)");
+  eq(V(W("dog"), "dоg"), [true, "", "", ""], "en word: двійник — ok без приміток");
+  no(L.check(W("cat"), "сat", ""), "ukr: латинський ключ — кирилична «с» не зараховується, як раніше");
+  no(L.check(W(["кіт", "cat"]), "сat", "en"), "en word: є кириличний ключ — дзеркала немає (як раніше)");
+  eq(L.wordVerdict(W(["кіт", "cat"]), "кіт", "en").ok, true, "en word: кириличний ключ (не всі латинські) — без дзеркала, кирилиця зараховується");
+  // п. 5: скорочення — лише з contractions: true
+  no(L.check(W("do not"), "don't", "en"), "en word: без contractions ключ строгий");
+  for (const [k, v] of [["do not", "don't"], ["I am", "I'm"], ["I'm", "I am"], ["cannot", "can't"], ["will not", "won't"], ["she is", "she's"], ["he has got", "he's got"],
+    ["they are", "they’re"], ["we have", "we've"], ["you will", "you'll"], ["I would", "I'd"], ["is not", "isn't"], ["let us", "let's"], ["does not", "doesn’t"], ["Kate's", "Kate's"]])
+    ok(L.check(W(k, { contractions: true }), v, "en"), `en word contractions: «${v}» = «${k}»`);
+  no(L.check(W("do not", { contractions: true }), "does not", "en"), "en word contractions: інше дієслово — ні");
+  no(L.check(W("do not", { contractions: true }), "don't", ""), "contractions без en — ігнорується (рушій нічого не знає)");
+  // п. 6: британська норма; американський правопис за явним списком — ok з приміткою (англійською)
+  eq(V(W("colour"), "color"), [true, "In British English: colour.", "", ""], "en word: color → ok, «In British English: colour.»");
+  eq(V(W("my favourite colour"), "My favorite color"), [true, "In British English: favourite, colour.", "", ""], "en word: дві пари в реченні");
+  for (const [b, a] of [["centre", "center"], ["theatre", "theater"], ["metres", "meters"], ["travelled", "traveled"], ["travelling", "traveling"], ["grey", "gray"], ["programme", "program"],
+    ["neighbours", "neighbors"], ["analyse", "analyze"], ["jewellery", "jewelry"], ["pyjamas", "pajamas"], ["cancelled", "canceled"], ["catalogue", "catalog"], ["defence", "defense"]])
+    eq(V(W(b), a)[0], true, `en word: ${a} → ok (ключ ${b})`);
+  eq(V(W("realise"), "realize"), [true, "In British English we usually write realise.", "", ""], "en word: -ize — примітка без «American» (TQ-121)");
+  eq(V(W("organisation"), "organization")[1], "In British English we usually write organisation.", "en word: -ization");
+  ok(!/American/i.test(V(W("recognised"), "recognized")[1]), "en word: -ized — без «American»");
+  eq(V(W("colour"), "colour"), [true, "", "", ""], "en word: британський запис — без примітки");
+  eq(V(W("Colour", { keepCase: true }), "color")[0], false, "en word keepCase: пара не обходить регістр");
+  eq(V(W("Colour", { keepCase: true }), "Color"), [true, "In British English: Colour.", "", ""], "en word keepCase: Color → ok з приміткою");
+  eq(V(W("the colour,"), "the color,")[0], true, "en word: пара біля розділового знака");
+  eq(V(W("2.5"), "2,5"), [false, "", "", ""], "en word: ключ без літер — без «Almost»");
+  eq(V(W("flat"), "apartment"), [false, "", "", ""], "en word: лексика (apartment) не нормалізується");
+  no(L.check(W("color"), "colour", "en"), "en word: пара працює лише від британського ключа (AmE-ключ — помилка автора, validate)");
+  no(L.check(W("colour"), "color", ""), "ukr: color ≠ colour, як раніше");
+  // час: «15.30» = «15:30»; «3.30 pm» = «3:30 pm» = «3.30 p.m.» = «3.30pm» (TQ-120)
+  for (const [k, v] of [["15.30", "15:30"], ["15:30", "15.30"], ["3.30 pm", "3:30 pm"], ["3.30 pm", "3.30 p.m."], ["3.30 pm", "3.30pm"], ["3.30 pm", "3.30 P.M."], ["at 7.15 am", "at 7:15 a.m."], ["It's 3.30 pm.", "it's 3:30 p.m."]])
+    ok(L.check(W(k), v, "en"), `en word час: «${v}» = «${k}»`);
+  no(L.check(W("3.30 pm"), "3.30 am", "en"), "en word час: pm ≠ am");
+  no(L.check(W("15.30"), "3.30 pm", "en"), "en word час: 24-годинний і 12-годинний записи не зводяться (вправа може вчити саме перехід)");
+  no(L.check(W("15.30"), "15:30", ""), "ukr: «15:30» ≠ «15.30», як раніше");
+  // п. 7: одруківка (відстань 1) — bad з підказкою англійською
+  eq(V(W("because"), "becuase"), [false, "", "Almost: check the spelling.", ""], "en word: перестановка сусідніх літер — «Almost»");
+  eq(V(W("friend"), "frend"), [false, "", "Almost: check the spelling.", ""], "en word: пропущена літера — «Almost»");
+  eq(V(W("cat"), "cats"), [false, "", "Almost: check the spelling.", ""], "en word: зайва літера — «Almost»");
+  eq(V(W("cat"), "dog"), [false, "", "", ""], "en word: далеко — без підказки");
+  eq(V(W("a"), "b"), [false, "", "", ""], "en word: однолітерний ключ — без «Almost» (будь-яка літера на відстані 1)");
+  eq(V(W(["colour", "hue"]), "colur")[2], "Almost: check the spelling.", "en word: «Almost» від будь-якого ключа");
+  eq(V(W("cat"), ""), [false, "", "", ""], "en word: порожньо — bad без підказок");
+  eq(L.wordVerdict(W("кіт"), "кит", "").hint, undefined, "ukr: «Almost» немає");
+  eq(L.wordVerdict(W("кіт"), "кіт"), { ok: true }, "ukr: wordVerdict без lang — лише ok");
+  // ключ спроби (answerSig у плеєрі): та сама нормалізація, що й перевірка
+  eq(L.wordInput(W("cat"), "Сat.", "en"), L.wordInput(W("cat"), "cat", "en"), "en wordInput: «Сat.» і «cat» — та сама спроба");
+  eq(L.wordInput(W("I am", { contractions: true }), "I'm", "en"), L.wordInput(W("I am", { contractions: true }), "i am", "en"), "en wordInput: скорочення — та сама спроба");
+  eq(L.wordInput(W("і"), "I"), "і", "ukr wordInput: як раніше");
+  // validate: contractions — true/false
+  ok(L.issues(W("do not", { contractions: "так" })).length, "word: contractions не boolean — помилка");
+  eq(L.issues(W("do not", { contractions: true })), [], "word: contractions: true — чисто");
+  ok(L.check(W("Yes."), L.solution(W("Yes.")), "en"), "en word: solution → check");
+}
+/* pick англійською (п. 2): апостроф-лапки на краях токена — не в кнопці; цифри з літерами — один токен */
+{ const ws = t => L.parsePick(t).words.map(w => w.v);
+  eq(ws("She said 'hello' to [me]."), ["She", "said", "hello", "to", "me"], "pick: 'hello' у прямих лапках — кнопка без лапок");
+  eq(ws("She said ‘hello’ to [me]."), ["She", "said", "hello", "to", "me"], "pick: ‘hello’ у типографських лапках");
+  eq(ws("The [boys'] toys and 'tis [it's]"), ["The", "boys'", "toys", "and", "tis", "it's"], "pick: присвійне boys' — апостроф лишається; it's — одне слово");
+  eq(ws("On the [5th] of May, 2026 at 3pm"), ["On", "the", "5th", "of", "May", "at", "3pm"], "pick: 5th і 3pm — один токен; число без літер — не кнопка");
+  eq(L.parsePick("Say 'hi', [Tom].").parts.filter(p => p.t === "text").map(p => p.v), [" '", "', ", "."], "pick: лапки лишаються в тексті поруч із кнопкою");
+  eq(ws("[м'ята] і п'ять"), ["м'ята", "і", "п'ять"], "pick ukr: апостроф усередині — як раніше");
+  eq(ws("[Сонце] у 1991 році"), ["Сонце", "у", "році"], "pick ukr: число — не кнопка, як раніше");
+}
+/* stress у складі (§5.6): "+pho|to|graph" — склади через «|», «+» перед наголошеним складом; українська розмітка — без змін */
+{ const p = L.parseStress("+pho|to|graph"), q = L.parseStress("pho|+tog|ra|pher");
+  eq([p.word, p.correct, p.syl, p.letters.map(l => [l.ch, l.v, l.i])], ["photograph", 0, true, [["pho", true, 0], ["to", true, 1], ["graph", true, 2]]], "stress склади: +pho|to|graph — перший склад");
+  eq([q.word, q.correct], ["photographer", 1], "stress склади: pho|+tog|ra|pher — другий склад");
+  const s = { type: "stress", words: ["+pho|to|graph", "pho|+tog|ra|pher"] };
+  ok(L.check(s, [0, 1]), "stress склади: правильно"); no(L.check(s, [0, 0]), "stress склади: друге слово хибно");
+  ok(L.check(s, L.solution(s)), "stress склади: solution → check");
+  eq(L.issues(s), [], "stress склади: issues чисто");
+  ok(L.parseStress("pho|to|graph").error, "stress склади: без + — помилка");
+  ok(L.parseStress("+pho|+to|graph").error, "stress склади: два + — помилка");
+  ok(L.parseStress("p+ho|to|graph").error, "stress склади: + не на початку складу — помилка");
+  ok(L.parseStress("+photograph").error, "stress: англійське слово без складів — помилка (голосна не українська)");
+  ok(/склад/.test(L.parseStress("+photograph").error), "stress: помилка підказує розмітку складами");
+  ok(L.parseStress("+pho||graph").error, "stress склади: порожній склад — помилка");
+  ok(L.parseStress("+cat|").error, "stress склади: «|» на краю — помилка");
+  ok(L.parseStress("+cat").error, "stress: односкладове без «|» — помилка");
+  ok(L.parseStress("+pho to|graph").error, "stress склади: пробіл у слові — помилка");
+  eq(L.readText(s), "photograph, photographer", "readText stress: без «+» і «|»");
+  eq(L.parseStress("черг+овий").correct, 4, "stress ukr: як раніше (позиція літери)");
+  ok(!L.parseStress("черг+овий").syl, "stress ukr: не складовий режим");
+}
+
 console.log(fail ? `test-lang: ${fail} з ${n} не пройшли` : `test-lang: ${n} перевірок — усі пройшли`);
 process.exit(fail ? 1 : 0);

@@ -313,6 +313,8 @@ function checkScreen(S, s, c, diag, pool = false) {
     else if (diag || !["intro", "info", "explore"].includes(s.type)) E(S, "uk — лише на неоцінюваному екрані теорії уроку (intro, info, explore)");
     else if (!subjectLang(c)) E(S, "uk — лише в предметі з targetLang (зміст іншою мовою)");
   }
+  // скорочення в word (engine-eng-lang-core, CONTENT_SCHEMA §4.1): рушій зважає на них лише з мовою змісту "en" — деінде поле мовчки нічого не робило б
+  if (s.type === "word" && s.contractions !== undefined && !subjectLang(c)) E(S, "contractions — лише в предметі з targetLang (англійська)");
   const noteTxt = typeof s.note === "string" ? s.note : s.note?.text;
   const txt = [s.title, s.body, noteTxt, s.fbText, s.fbOk, s.fbBad, s.hint, s.text, ...(s.opts || []), ...(s.items || []).flat()].filter(x => typeof x === "string").join(" ");
   if (/\$\{/.test(txt)) E(S, "у тексті лишилось «${» — шаблонний рядок з'їв формулу");

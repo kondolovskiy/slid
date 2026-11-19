@@ -12,7 +12,10 @@ const course = id => SUBJ.find(c=>c.id===id) || SUBJ[0];
    Правило — SLID.subjectLang (app/registry.js), спільне з tools/lib.mjs. Помилка реєстру — "" (мова сторінки), не зупинка уроку. */
 const UI_LANG = document.documentElement.lang || "uk";
 const langOfSubj = c => { try{ const l=window.SLID.subjectLang(c)||""; return l===UI_LANG? "" : l; }catch(e){ return ""; } };
-const CL = () => C? langOfSubj(C) : "";                              // мова змісту поточного предмета плеєра ("" — мова сторінки)
+const CL = () => C? langOfSubj(C) : "";
+/* мова змісту для перевірки мовних вправ (engine-eng-lang-core): LANG.check / wordVerdict / wordInput з "en" вмикають правила word
+   англійською (docs/design/english.md §5.4); "" — як раніше. Не залежить від мови сторінки (на відміну від CL). */
+const TL = () => { try{ return C? (window.SLID.subjectLang(C)||"") : ""; }catch(e){ return ""; } };                              // мова змісту поточного предмета плеєра ("" — мова сторінки)
 const inL = (h, c=C) => { const l=c? langOfSubj(c) : ""; return l && h? `<span lang="${l}">${h}</span>` : h; };   // зміст предмета всередині хрому
 const inUi = h => CL() && h? `<span lang="${UI_LANG}">${h}</span>` : h;            // хром рушія всередині змісту
 const uiA = () => CL()? ` lang="${UI_LANG}"` : "";                                 // атрибут хрому для елемента всередині змісту
@@ -980,7 +983,7 @@ const answerSig = () => { const s=L.screens[idx], v= LAB && s?.type==="lab"? LAB
     if(s.type==="number"){ const n=numParse(t); return t && Number.isFinite(n)? "n:"+n : "s:"+t; }
     if(s.type==="fracin" && !s.hideDen){ const n=parseInt(t,10); return Number.isFinite(n)? "i:"+n : "s:"+t; }
     if(s.type==="answer") return LEARN.answerSig(s, t);
-    if(s.type==="word") return "w:"+LANG.wordInput(s, t);
+    if(s.type==="word") return "w:"+LANG.wordInput(s, t, TL());
     if(s.type==="fracin") return LEARN.answerSig({answerKind:"number"}, t); }
   return v instanceof Set? JSON.stringify([...v].sort((a,b)=>a-b)) : typeof v==="string"? v.replace(/\s+/g," ").trim() : JSON.stringify(v); };
 /* правильну відповідь не блокуємо ніколи, навіть якщо відбиток збігся (напр. «5,» без цифри після коми, а потім «5») */
@@ -1391,8 +1394,9 @@ function langHtml(s){
     return `<div class="ltext">${out}</div>${g.gaps.some(p=>p.opts.includes(LANG.NONE))?`<div class="fix"${uiA()}>∅ — нічого не писати.</div>`:""}`; }
   if(s.type==="pick"){ const p=LANG.parsePick(s.text); st=new Set();
     return `<div class="ltext">${p.parts.map(x=>x.t==="text"? esc(x.v) : `<button type="button" class="pw" data-w="${x.n}" aria-pressed="false">${esc(x.v)}</button>`).join("")}</div><div class="fix"${uiA()}>Торкнись потрібних слів. Ще раз — щоб зняти вибір.</div>`; }
+  // склади (words: ["+pho|to|graph"], engine-eng-lang-core): кнопка — склад; інструкція рушія — про склад
   if(s.type==="stress"){ const ws=s.words.map(LANG.parseStress); st=ws.map(()=>null);
-    return `<div class="stress">${ws.map((w,k)=>`<div class="sword" role="group" aria-label="Наголос у слові «${attr(w.word)}»">${w.letters.map(l=>l.v? `<button type="button" class="sv" data-w="${k}" data-i="${l.i}" aria-pressed="false">${esc(l.ch)}</button>` : `<span>${esc(l.ch)}</span>`).join("")}</div>`).join("")}</div><div class="fix"${uiA()}>Торкнись голосного, на який падає наголос.</div>`; }
+    return `<div class="stress">${ws.map((w,k)=>`<div class="sword" role="group" aria-label="Наголос у слові «${attr(w.word)}»">${w.letters.map(l=>l.v? `<button type="button" class="sv" data-w="${k}" data-i="${l.i}" aria-pressed="false">${esc(l.ch)}</button>` : `<span>${esc(l.ch)}</span>`).join("")}</div>`).join("")}</div><div class="fix"${uiA()}>${ws.some(w=>w.syl)? "Торкнись наголошеного складу." : "Торкнись голосного, на який падає наголос."}</div>`; }
   // zero: true — після слова клітинка нульового закінчення «□» і межа перед нею (CONTENT_SCHEMA §4.1)
   if(s.type==="split"){ const p=LANG.parseSplit(s.word, s.zero), ls=[...p.word]; st=new Set();
     const cut=k=>`<button type="button" class="cut" data-c="${k+1}" aria-pressed="false" aria-label="Межа після «${attr(ls.slice(0,k+1).join(""))}»${k===ls.length-1?" (перед нульовим закінченням)":""}"></button>`;
@@ -1426,7 +1430,7 @@ function langMarks(s, reveal){
   if(s.type==="split"){ const p=LANG.parseSplit(s.word, s.zero), best=p.variants.map(v=>new Set(v)).sort((a,b)=>[...b].filter(x=>st.has(x)).length-[...a].filter(x=>st.has(x)).length)[0];
     stage.querySelectorAll(".cut").forEach(b=>{ const c=+b.dataset.c; mark(b, st.has(c)? best.has(c) : reveal&&best.has(c)? true : null); if(reveal&&best.has(c)) b.setAttribute("aria-pressed","true"); });
     if(reveal && !LANG.check(s,st)) $("#hintHost").innerHTML=`<div class="hint">${ic("check")}<span>${inUi("Правильно:")} <b>${p.variants.map(v=>esc(LANG.splitShow(p.word, v, s.zero))).join("</b> або <b>")}</b></span></div>`; }
-  if(s.type==="word"){ const ni=$("#numIn"), ok=LANG.check(s,st); mark(ni, ok);
+  if(s.type==="word"){ const ni=$("#numIn"), ok=LANG.check(s,st,TL()); mark(ni, ok);
     if(reveal && !ok) $("#hintHost").innerHTML=`<div class="hint">${ic("check")}<span>${inUi("Правильна відповідь:")} <b>${esc(LANG.wordAnswers(s)[0])}</b></span></div>`; }
 }
 /* лабораторія: інтерактивна модель на екрані (app/lab.js) */
@@ -1491,7 +1495,7 @@ function gradeNow(s){
     case "fracin": return s.hideDen? LEARN.checkAns({answer:s.answer+"/"+s.den,fractionOnly:true},st)==="ok" : parseInt(st,10)===s.answer;
     case "answer": return (lastAns=LEARN.checkAns(s,st))==="ok";   // lastAns — вердикт для журналу подій (без другої перевірки)
     case "lab": return window.SLID_LAB.check(s.lab, LAB.get(), s.goal);
-    case "gaps": case "pick": case "stress": case "word": case "split": return LANG.check(s, st);
+    case "gaps": case "pick": case "stress": case "word": case "split": return LANG.check(s, st, TL());
   }
 }
 function showMarks(s, reveal){
@@ -1551,6 +1555,8 @@ function check(){
     setDock("info", `${inL(s.fbTitle)} <span class="gain">+${g}</span>`, inL(s.fbText), "Далі"); return focusAction(); }
   if(sameAsTried()) return refocusAnswer();
   const ok=gradeNow(s);
+  // word англійською: примітка про британський правопис (ok), «Almost» чи «Перемкни клавіатуру» (bad) — LANG.wordVerdict (§5.4 дизайну)
+  const wv= s.type==="word" && TL()? (()=>{ try{ return LANG.wordVerdict(s, st, TL()); }catch(e){ return null; } })() : null;
   const ha=evAnswer(s, ()=>{ const vd=evVerdict(s,ok), raw=evRaw(s); return { ...evItem(s), try:tries+1, verdict:vd, raw, hint:tries>0 && !!s.hint, final: ok || tries>0 || s.type==="slider", ...evKey(s, vd, raw) }; });
   if(!ok && s.pre){ run.weak.add(s.pre); ((run.weakN||={})[s.pre]||=new Set).add(idx); }   // різні завдання з помилкою, а не хибні спроби (рев'ю engine-render-legibility-1117)
   const preNote = (!ok && s.pre) ? (()=>{ const f=findLesson(s.pre); return f? `<span class="prenote">${ic("bulb")}Ця задача спирається на тему «${inL(f.l.title, f.c)}» (${f.sec.grade} клас). Наприкінці уроку запропоную її повторити.</span>` : ""; })() : "";
@@ -1568,6 +1574,8 @@ function check(){
              : s.type==="pick"? "Червоні слова обрано зайво — або якогось слова бракує. Зміни вибір і перевір ще раз."
              : s.type==="stress"? "Наголос не там. Вимов слово вголос, повільно, і спробуй ще раз."
              : s.type==="split"? "Межі стоять не так. Зміни їх і перевір ще раз."
+             : wv?.kb? esc(wv.kb)                                   // хром рушія (uk): розкладка не та
+             : wv?.hint? inL(esc(wv.hint))                          // зміст предмета (en): «Almost: check the spelling.»
              : s.type==="choice"? "Обери інший варіант і перевір ще раз."
              : s.type==="multi"? "Зміни вибір і перевір ще раз."
              : "Зміни відповідь і перевір ще раз.";
@@ -1593,7 +1601,8 @@ function check(){
   if(!ok && s.type==="align"){ st=s.sample.endYear-s.sample.len+1-s.ref.from; $("#alrng").value=st; alignUpdate(s); }
   pProgress(); save(); renderTop();
   const title = ok? inL(s.fbOk) : (s.type==="slider"? inL(s.fbBad) : "Ось правильна відповідь.");
-  setDock(ok?"ok":"bad", `${title}${g?` <span class="gain">+${g}</span>`:""}`, inL(s.fbText)+(ok?"":preNote), "Далі");
+  const note= ok && wv?.note? `<span class="wnote">${inL(esc(wv.note))}</span> ` : "";   // «In British English: colour.» — зміст (en)
+  setDock(ok?"ok":"bad", `${title}${g?` <span class="gain">+${g}</span>`:""}`, note? note+(inL(s.fbText)??"") : inL(s.fbText)+(ok?"":preNote), "Далі");
   HYPS.answer(ha);
   focusAction();   // поле заблоковано — без цього фокус падає на BODY і Enter нікуди не веде
 }
