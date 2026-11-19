@@ -66,8 +66,8 @@
 | u4s10l5 Незнаю чи не знаю? | 4 | 9 | 0.56 | 18 | 34 | 4 | 0.027 | 4 | — |
 | u4s10l6 Шкільна газета (фінал) | 4 | 8 | 0.88 | 12 | 23 | 4.3 | 0.04 | 6 | — |
 | u4s11l1 Як? Де? Коли? | 4 | 9 | 0.67 | 18 | 36 | 4.3 | 0.013 | 5 | — |
-| u4s11l2 Де лежать ключі? | 4 | 10 | 0.6 | 23 | 42 | 4.8 | 0.011 | 4 | — |
-| u4s11l3 «І» чи «або»? | 4 | 10 | 0.7 | 18 | 40 | 4.6 | 0.025 | 4 | — |
+| u4s11l2 Де лежать ключі? | 4 | 10 | 0.6 | 23 | 42 | 4.9 | 0.011 | 4 | — |
+| u4s11l3 «І» чи «або»? | 4 | 10 | 0.7 | 20 | 40 | 4.8 | 0.024 | 4 | — |
 | u4s11l4 Ого! Ой! Няв! | 4 | 9 | 0.56 | 16 | 37 | 4.7 | 0.02 | 4 | — |
 | u4s11l5 Газета «Дзвоник» (фінал) | 4 | 7 | 0.86 | 13 | 27 | 4.2 | 0.022 | 4 | — |
 | u5s1l1 День без слів | 5 | 12 | 0.5 | 31 | 65 | 5.6 | 0.036 | 4 | maxReadWords нетипово для сім'ї (z=2.3) |
@@ -571,7 +571,7 @@
 
 Для z-оцінок sd не менше 10 % середнього; нижче наведено фактичне sd.
 
-- **4:lesson**: screens 9.2±0.61, gradedShare 0.6±0.07, readWordsPerScreen 19.96±2.82, maxReadWords 38.84±4.39, sentenceWords 4.67±0.42, longWordShare 0.02±0.01, typeVariety 3.95±0.8
+- **4:lesson**: screens 9.2±0.61, gradedShare 0.6±0.07, readWordsPerScreen 20±2.81, maxReadWords 38.84±4.39, sentenceWords 4.68±0.42, longWordShare 0.02±0.01, typeVariety 3.95±0.8
 - **4:boss**: screens 7.09±0.29, gradedShare 0.86±0.01, readWordsPerScreen 15.27±3.57, maxReadWords 27.18±3.3, sentenceWords 4.45±0.37, longWordShare 0.02±0.01, typeVariety 4.55±0.99
 - **5-6:lesson**: screens 11.46±0.72, gradedShare 0.55±0.05, readWordsPerScreen 26.43±3.16, maxReadWords 50.39±6.45, sentenceWords 5.35±0.45, longWordShare 0.03±0.02, typeVariety 4.04±0.75
 - **5-6:boss**: screens 7.44±0.7, gradedShare 0.86±0.03, readWordsPerScreen 19.36±2.96, maxReadWords 34.48±3.83, sentenceWords 4.96±0.43, longWordShare 0.04±0.01, typeVariety 3.88±0.65
