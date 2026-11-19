@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-19T13:27:09.673Z
 id: write-eng-g4-e4s1
 type: write-section
 subject: eng
@@ -6,7 +8,7 @@ grade: 4
 section: e4s1
 depends_on: [curate-eng-plan-g4, engine-eng-lang-core, engine-eng-validate, engine-eng-stats, skills-eng, curate-eng-style, curate-eng-glossary]
 status: todo
-claimed_by: 
+claimed_by: writer-e4s1
 created: 2026-11-19
 source: design-eng
 ---
