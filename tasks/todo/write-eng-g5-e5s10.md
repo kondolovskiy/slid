@@ -20,6 +20,8 @@ source: design-eng
 
 - **Специфіка (plan-eng-g5):** склад Великої Британії — England, Scotland, Wales and Northern Ireland; як називати частини (country / nation / province) — лише за офіційним джерелом у facts/eng.md. `requires` на уроки 4 кл. — за таблицею reports/verify/plan-eng-g5.md §6, коли ті уроки будуть.
 
+- **Специфіка (verifier plan-eng-g5):** «fact file» немає в CD/OALD — краще «Facts about my country» (Р3).
+
 ## Рішення людини, обов'язкові
 Рішення людини 2026-11-19 (docs/design/english.md §11.1): британська норма; увесь зміст англійською (інтерфейс рушія — українською); варіанти A/B/C; поки без звуку й голосу; ціль B2 в 11 кл.; 4 клас робимо; словники дозволено.
 
