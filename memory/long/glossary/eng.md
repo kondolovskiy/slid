@@ -26,11 +26,17 @@
 | lift | elevator | OALD lift_2: «(British English) (North American English elevator)» — https://www.oxfordlearnersdictionaries.com/definition/english/lift_2 |
 | autumn, holiday(s), timetable, rubber, pupil, maths, football, biscuit, sweets, chips / crisps, mobile (phone), rubbish, queue, shop, trousers, underground, ground floor / first floor | fall, vacation, schedule, eraser, student (шк.), math, soccer, cookie, candy, fries / chips, cell phone, garbage, line, store, pants, subway, first floor / second floor | за потреби звіряй з OALD (позначка «British English») |
 | at the weekend | on the weekend | Cambridge: «at the weekend UK (US on the weekend)» — https://dictionary.cambridge.org/dictionary/english/weekend |
+| sport (загальне: «I like sport», «do sport») | sports | OALD sport_1 «(British English)» — https://www.oxfordlearnersdictionaries.com/definition/english/sport_1 (verifier-curate-eng-plan-g4, 2026-11-19); «sports» — лише як прикметник чи конкретні види (sports centre). Назва e4s3 — «Free time: sport and heroes» |
+| holiday(s) — канікули, відпустка; вітання «Happy New Year!», «Happy Christmas!» | «Happy holidays!», holidays = зимові свята | OALD holiday_1 (holidays у значенні свят — North American) — https://www.oxfordlearnersdictionaries.com/definition/english/holiday_1 (verifier-curate-eng-plan-g4); у style/eng-banned.txt — «happy holidays» |
+| greetings card | greeting card | CD https://dictionary.cambridge.org/dictionary/english/greetings-card; OALD https://www.oxfordlearnersdictionaries.com/definition/english/greetings-card (verifier-curate-eng-plan-g5, 2026-11-19) |
+| public holiday, bank holiday (державні вихідні); festival — свято-подія, **B1** у CD (у 4–6 кл. — з опорою) | — | CD https://dictionary.cambridge.org/dictionary/english/festival (verifier-curate-eng-plan-g5). «fact file» є лише у Wiktionary, у CD/OALD немає — у 4–6 кл. не вживати як заголовок без пояснення |
+| straight ahead (маршрут) | — | «go straight on» в OALD straight_2 і CD straight **не знайдено** (plan-eng-g5, 2026-11-19); формулу маршруту — лише зі словника, pitfalls-content «Англійська» п. 11 |
 | have got (I've got a sister) — у 4–6 кл. разом з have | have | — |
 
 ## Дати, час, числа
 - **Дата:** «5 May 2026» — день, місяць, рік, без коми й без закінчень -th у записі (Cambridge Grammar «Dates»: «The most common way in British English… 20 January 1993» — https://dictionary.cambridge.org/grammar/british-grammar/dates). Читаємо: «the fifth of May». Десятиліття — «the 1990s» (без апострофа).
 - **Час:** словами в 4–6 кл. — «half past three», «quarter to four», «ten past six», «three o'clock»; цифрами — «3.30 pm» (крапка, pm без крапок) або 24-годинний «15.30» у розкладах (Cambridge Grammar «Time»: «12.30 pm», «13.15» — https://dictionary.cambridge.org/grammar/british-grammar/time; словники дають і «p.m.» з крапками — у ключі `word` приймати обидва записи; TQ-120). Американського «a quarter after three» не пишемо (CD quarter: «a quarter past… (also US a quarter after…)»).
+- **24- і 12-годинний запис рушій не зводить** (додано 2026-11-19, review-engine-eng-lang-core P3-1): `word` прирівнює лише «15.30» = «15:30» і «pm» = «p.m.», а «15.30» ≠ «3.30 pm». Якщо завдання допускає обидва записи — автор кладе обидва в `answer`; інакше умова однозначно задає формат (розклад — 24-годинний, мова — «3.30 pm»). TQ-120.
 - **Числа:** тисячі — комою (2,500), десятковий дріб — крапкою (2.5) — це англійська норма, не українська кома (Cambridge Grammar «Number»: «£1,250»; CD decimal point). Порядкові — 1st, 2nd, 3rd, 4th.
 
 ## Розділові знаки й типографіка
@@ -68,21 +74,25 @@
 Терміни в 4–5 кл. — мінімум: правило показуємо зразком і таблицею, назву часу можна дати одним рядком («This is the Present Simple.»).
 
 ## Інструкції-шаблони (однакові в усьому предметі)
-Формулювання — style/eng.md (curate-eng-style) може уточнити; тоді ця таблиця — за ним.
+_Вирівняно за style/eng.md «Шаблонні інструкції» 2026-11-19 (style-eng, verifier-curate-eng-style); при розбіжності головний style/eng.md._ Інструкція — у `title` екрана, умова — у `body` чи `text`. У 4–5 кл. — лише ці формулювання; у 6–11 кл. — ті самі, з темою в кінці («Complete the sentences with the Past Simple.»).
 
 | Тип | Інструкція |
 |---|---|
-| `choice` | Choose the correct answer. / Read and choose. |
+| `choice` | Choose the correct answer. · Read and choose. (до тексту) |
 | `multi` | Choose all the correct answers. |
-| `gaps` | Fill in the gaps. / Complete the sentences. |
-| `word` | Type the word. / Write the missing word. |
+| `gaps` | Fill in the gaps. · Complete the sentences. |
+| `word` | Write the word. · Write the missing word. ~~Type the word.~~ (2026-11-19: за style/eng.md) |
 | `build` | Put the words in order. |
-| `match` | Match the words and the pictures. / Match the halves. |
+| `match` | Match the words and the pictures. · Match the halves. · Match the questions and the answers. |
 | `stress` | Find the stressed syllable. |
-| `pick` | Find the mistake. / Click on the words that … |
+| `pick` | Find the mistake. · Find the words that … (ознака: «… are verbs», «… mean a place»). ~~Click on the words that …~~ (2026-11-19: без прив'язки до пристрою) |
 | `sort` | Sort the words. |
+| `order` | Put the sentences in order. |
 | `dialog` | Read the dialogue and choose the best answer. |
-| `hyp` / `poll` | Guess! / What do you think? |
+| `hyp` / `poll` | Guess! · What do you think? |
+
+- Без «Click» / «Tap» (телефон і комп'ютер); без позиційних посилань («the first option»); літери A, B, C ставить рушій.
+- `eyebrow` фіналу уроку — «Final»; у boss — «Task 1», «Task 2»… (style/eng.md, таблиця відповідностей ukr → eng).
 
 ## Назви України англійською
 За постановою КМУ від 27.01.2010 № 55 «Про впорядкування транслітерації українського алфавіту латиницею» (першоджерело zakon.rada.gov.ua з контейнера не відкривається — звірено за вторинними, facts/eng.md **КМУ55**).
@@ -98,3 +108,4 @@
 - **Час цифрами:** «3.30 pm» чи «3:30 pm» — обрано крапку (так у Cambridge Grammar «Time»); **TQ-120**, тимчасово «3.30 pm» у тексті, у відповіді — обидва записи.
 - **Лише -ise:** **TQ-121**, тимчасово -ise у тексті, -ize у відповіді — `ok` з приміткою.
 - **Американська лексика у відповіді `word`** (apartment на місці flat): рушій її не нормалізує (§5.4 п. 6); **TQ-122**, тимчасово — автор або робить завдання однозначним (картинка + слово з уроку), або кладе AmE-синонім у ключ; `bad` за словникове AmE-слово не ставимо.
+- **borshch чи borscht** (додано 2026-11-19, plan-eng-g5): транслітерація за КМУ № 55 дає «borshch» (facts/eng.md КМУ55), Cambridge Dictionary — «borscht» (https://dictionary.cambridge.org/dictionary/english/borscht). **Вирішити до write-eng-g5-e5s3** (автор або верифікатор e5s3 за D-046: словники D-041 → TQ, якщо сумнів лишився). До рішення в ключі `word` — обидві форми.
