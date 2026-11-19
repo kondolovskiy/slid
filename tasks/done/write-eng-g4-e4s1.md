@@ -7,7 +7,7 @@ subject: eng
 grade: 4
 section: e4s1
 depends_on: [curate-eng-plan-g4, engine-eng-lang-core, engine-eng-validate, engine-eng-stats, skills-eng, curate-eng-style, curate-eng-glossary]
-status: review
+status: done
 claimed_by: writer-e4s1
 created: 2026-11-19
 source: design-eng
@@ -97,3 +97,11 @@ writer-e4s1, 2026-11-19. Файл `content/eng/g4-e4s1.js`, зображень �
 4. **English як національність** Емми (а не British): info l6 «Emma is from England. She’s English.», l6 екр. 4 «What is her nationality?» → English (CD english: «the people of England»). Офіційно громадянство — British; для 4 кл. пара England → English простіша. Верифікатору — оцінити.
 5. **Taras’s** (присвійний від імені на -s) — правильна BrE-форма; може здивувати дитину, але не оцінюється.
 6. Літери-приклади a, e, i, o, u та «Hello:», «Goodbye:» мають кінцеві пункти без крапки (переліки); stats рахує їх межами речень через `<li>`.
+
+## Верифікація (verifier-e4s1, 2026-11-19)
+Вердикт: **verified**, усі 7 уроків. Звіт — reports/verify/e4s1.md.
+- Усі завдання розв'язав сам: ключі правильні, другої правильної відповіді немає. Опора D-019 є в кожного оцінюваного завдання. Ключі `word` без кінцевого знака; `wordVerdict` перевірено в node.
+- Факти: міста — en.wikipedia + ЕСУ. Норми й наголос — CD + OALD (curl). Збігів з опублікованими текстами немає: 8 фрагментів перевірено WebSearch.
+- Правки верифікатора: «Say the underlined part strong» → «The underlined part is strong» (l1, l3, l6; *strong* не прислівник, OALD); l2 info без *whose* (B1); l4 #4 Mariia → Yurii (у l5–l6 Mariia живе в Харкові, а не в селі); шапка файлу (to be й have got в інвентарі ТОП немає); статуси → verified, `meta.factcheck`.
+- Спірне автора: 1 списки — прийнято; 2 адреса — прийнятне спрощення, питання вчителю TQ-124; 3 «sounds a, e, i, o, u» — прийнято для 4 кл.; 4 English — правильно (OALD English_2); 5 Taras’s — правильно (CD Grammar).
+- `uk` не потрібне. Плейтест — після build оркестратора (окремо подивитися l3 #5).

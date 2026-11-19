@@ -1,11 +1,11 @@
 /* Слід · Англійська мова, 4 клас — «Me, my family and friends: where we live» (e4s1)
    Програма: ТОП 3–4 (Савченко, 2018), «Англійська мова», «4-ий клас»: тема «Я, моя родина і друзі — місцепроживання,
-   населені пункти» (PDF с. 62); граматика — to be, have got, ’s (інвентар 3 кл., с. 62), a/an with jobs (с. 62–63);
+   населені пункти» (PDF с. 62); граматика — ’s, a/an with jobs (інвентар 3 кл., с. 62; a/an with jobs — і 4 кл., с. 63); to be, have got — повторення за content/eng/plan.js;
    функції — привітатися, попрощатися, представити себе (с. 62–63); бланк з ім'ям, адресою, віком, національністю (A1, с. 54):
    https://lib.iitta.gov.ua/714276/1/%D0%A2%D0%9E%D0%9F_3_4_2018.pdf
    Увесь зміст — англійською, британська норма (D-054). Тексти, діалоги й герої — власні (docs/design/english.md §8).
    Форми й наголос — за Cambridge Dictionary і OALD (URL — tasks/…/write-eng-g4-e4s1.md, «Нотатки агента»).
-   Статус: draft. 7 уроків (6 + фінал).
+   Статус: verified (verifier-e4s1, reports/verify/e4s1.md). 7 уроків (6 + фінал).
    Перевірка: node tools/validate.mjs --section e4s1 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -14,7 +14,7 @@ SLID.section("eng", {
   weeks: [1, 5],
   title: "Me, my family and friends: where we live",
   why: "To tell people about your family and friends. And to say where you live: in a city, a town or a village.",
-  meta: { author: "writer-e4s1", created: "2026-11-19", factcheck: "self", teacher: null },
+  meta: { author: "writer-e4s1", created: "2026-11-19", factcheck: "verifier-e4s1 (reports/verify/e4s1.md)", teacher: null },
   badges: [
     { id: "e4s1boss", name: "Pen-friend club", icon: "trophy", desc: "Finish the final lesson “Me, my family and friends: where we live”" }
   ],
@@ -25,7 +25,7 @@ SLID.section("eng", {
       title: "Hello again!",
       short: "Greetings",
       icon: "voice",
-      status: "draft",
+      status: "verified",
       why: "You meet new people every day. Say hello and goodbye the right way.",
       screens: [
         {
@@ -55,7 +55,7 @@ SLID.section("eng", {
         {
           type: "info",
           title: "Hello and goodbye",
-          body: `<p><b>Hello:</b></p><ul><li>Hello! Hi!</li><li>Good morning! <i>(before 12 o’clock)</i></li><li>Good afternoon! <i>(from 12 to 6 pm)</i></li><li>Good evening! <i>(after 6 pm)</i></li></ul><p><b>Goodbye:</b></p><ul><li>Goodbye! Bye! See you!</li><li>Good night! <i>(before bed)</i></li></ul><p>Meet a new friend? Say <b>Nice to meet you!</b></p><p>Say the <u>underlined</u> part strong: hel<u>lo</u>, good<u>bye</u>, after<u>noon</u>. It is <b>stressed</b>.</p>`,
+          body: `<p><b>Hello:</b></p><ul><li>Hello! Hi!</li><li>Good morning! <i>(before 12 o’clock)</i></li><li>Good afternoon! <i>(from 12 to 6 pm)</i></li><li>Good evening! <i>(after 6 pm)</i></li></ul><p><b>Goodbye:</b></p><ul><li>Goodbye! Bye! See you!</li><li>Good night! <i>(before bed)</i></li></ul><p>Meet a new friend? Say <b>Nice to meet you!</b></p><p>The <u>underlined</u> part is strong: hel<u>lo</u>, good<u>bye</u>, after<u>noon</u>. It is <b>stressed</b>.</p>`,
           cta: "Next"
         },
         {
@@ -147,7 +147,7 @@ SLID.section("eng", {
       title: "My family: who is who?",
       short: "Family",
       icon: "users",
-      status: "draft",
+      status: "verified",
       why: "Tell a new friend about your family. Ask about their family too.",
       screens: [
         {
@@ -175,7 +175,7 @@ SLID.section("eng", {
         {
           type: "info",
           title: "My family",
-          body: `<p>Oksana’s <b>mum</b> is Olena. Her <b>dad</b> is Petro. Dmytro is her <b>brother</b>.</p><ul><li><b>grandma</b> – mum’s or dad’s mum</li><li><b>grandad</b> – mum’s or dad’s dad</li><li><b>aunt</b> – mum’s or dad’s sister</li><li><b>uncle</b> – mum’s or dad’s brother</li><li><b>cousin</b> – your aunt’s or uncle’s child</li></ul><p><b>’s</b> says whose: <b>Oksana’s</b> brother, <b>mum’s</b> sister.</p>`,
+          body: `<p>Oksana’s <b>mum</b> is Olena. Her <b>dad</b> is Petro. Dmytro is her <b>brother</b>.</p><ul><li><b>grandma</b> – mum’s or dad’s mum</li><li><b>grandad</b> – mum’s or dad’s dad</li><li><b>aunt</b> – mum’s or dad’s sister</li><li><b>uncle</b> – mum’s or dad’s brother</li><li><b>cousin</b> – your aunt’s or uncle’s child</li></ul><p><b>’s</b>: <b>Oksana’s</b> brother, <b>mum’s</b> sister.</p>`,
           cta: "Next"
         },
         {
@@ -268,7 +268,7 @@ SLID.section("eng", {
       title: "Jobs: a doctor, an engineer",
       short: "Jobs",
       icon: "user",
-      status: "draft",
+      status: "verified",
       why: "Everyone in your family has a job. Tell your friends about it.",
       screens: [
         {
@@ -298,7 +298,7 @@ SLID.section("eng", {
         {
           type: "info",
           title: "Jobs",
-          body: `<ul><li>a <b><u>doc</u>tor</b> – works in a hospital</li><li>a <b><u>teach</u>er</b> – works at a school</li><li>a <b><u>farm</u>er</b> – works on a farm</li><li>a <b><u>driv</u>er</b> – drives a bus</li><li>a <b>cook</b> – cooks food</li><li>a <b><u>pi</u>lot</b> – flies planes</li><li>an <b>engi<u>neer</u></b> – builds bridges and machines</li><li>an <b><u>art</u>ist</b> – paints pictures</li></ul><p>Say the <u>underlined</u> part strong.</p>`,
+          body: `<ul><li>a <b><u>doc</u>tor</b> – works in a hospital</li><li>a <b><u>teach</u>er</b> – works at a school</li><li>a <b><u>farm</u>er</b> – works on a farm</li><li>a <b><u>driv</u>er</b> – drives a bus</li><li>a <b>cook</b> – cooks food</li><li>a <b><u>pi</u>lot</b> – flies planes</li><li>an <b>engi<u>neer</u></b> – builds bridges and machines</li><li>an <b><u>art</u>ist</b> – paints pictures</li></ul><p>The <u>underlined</u> part is strong.</p>`,
           cta: "Next"
         },
         {
@@ -393,7 +393,7 @@ SLID.section("eng", {
       title: "Cities, towns and villages",
       short: "Places",
       icon: "city",
-      status: "draft",
+      status: "verified",
       why: "Do you live in a city, a town or a village? Tell your friends about your place.",
       screens: [
         {
@@ -430,7 +430,7 @@ SLID.section("eng", {
           type: "choice",
           sk: "read",
           title: "Read and choose.",
-          body: `<p>Mariia: “My home is in a small place. There are fields and farms. There is one shop.”</p><p>Where does Mariia live?</p>`,
+          body: `<p>Yurii: “My home is in a small place. There are fields and farms. There is one shop.”</p><p>Where does Yurii live?</p>`,
           opts: [
             "in a city",
             "in a village",
@@ -514,7 +514,7 @@ SLID.section("eng", {
       title: "Where do you live?",
       short: "Addresses",
       icon: "home",
-      status: "draft",
+      status: "verified",
       why: "Your friend wants to send you a postcard. Tell them where you live.",
       screens: [
         {
@@ -642,7 +642,7 @@ SLID.section("eng", {
       title: "About me: a form",
       short: "A form",
       icon: "book",
-      status: "draft",
+      status: "verified",
       why: "Clubs, schools and libraries ask you to fill in a form. Do it in English.",
       screens: [
         {
@@ -713,7 +713,7 @@ SLID.section("eng", {
           words: ["+sur|name", "U|+krai|ni|an", "na|tion|+al|i|ty"],
           fbOk: "Yes!",
           fbBad: "Look at the underlined parts again.",
-          fbText: "<u>Sur</u>name, U<u>krai</u>nian, nation<u>al</u>ity: say the underlined part strong."
+          fbText: "<u>Sur</u>name, U<u>krai</u>nian, nation<u>al</u>ity: the underlined part is strong."
         },
         {
           type: "word",
@@ -757,7 +757,7 @@ SLID.section("eng", {
       title: "Welcome to the club!",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e4s1boss",
       why: "Check everything from this section. Your points are doubled.",
