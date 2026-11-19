@@ -47,7 +47,7 @@
 | e5s2 | School life | 5–8 | Шкільне життя — розклад уроків; робочий день; урок іноземної мови; види діяльності на уроці | Present Simple: affirmative, negative, questions (A2); adverbs of frequency + Adverbs: position mid (A2; 4: e4s3); imperatives: affirmative, negative, instructions (A2; 4: e4s5); Can: permission, Could: requests (A2); час: half past seven (глосарій) | розпитувати з метою роз'яснення й уточнення (ф) — «Could you repeat that, please?»; описує розпорядок дня (19); розпитує й розповідає про навчання (18); розклади (16) |
 | e5s3 | Food and drink | 9–12 | Харчування — продукти харчування; улюблені страви; страви в Україні та країнах виучуваної мови | Nouns: uncountables (A2); some/any, a lot of, much, many — Determiners: quantity (A2; 4: e4s2, e4s4 how much/how many); Would: questions with like (A2; 4: e4s4 I’d like) — пропозиція «Would you like…?» | пропонувати, приймати, відхиляти пропозицію (ф); меню (16); замовляє їжу (17); прості рецепти (16) |
 | e5s4 | Clothes | 13–15 | Одяг — види одягу; сезонний одяг | Present Continuous: affirmative, negative, questions; events in progress (A2; 4: e4s6); Present Simple vs Present Continuous (A2; 4: e4s8); Plurals: regular and irregular — trousers, jeans, a pair of (A2) | описувати; порівнювати; аргументувати свій вибір (ф) — «I usually wear…, but today…» |
-| e5s5 | Weather: rain, sun and storms | 16–18 | Природа — погода; природні явища | Comparatives: form, use + than (A2; 4: e4s6) — правопис hotter/wetter, more + довгі, better/worse; Will: predictions — прогноз погоди (A2, Future with will); it’s + weather | порівнювати (ф); прогноз погоди (15 — на слух; у нас лише читання); описує місця (19) |
+| e5s5 | Weather: rain, sun and storms | 16–18 | Природа — погода; природні явища | Comparatives: form, use + than (A2; 4: e4s6) — правопис hotter/wetter, more + довгі, better/worse; will для прогнозу погоди — Future with will (A2) [верифікатор: «predictions» в інвентарі с. 21 названо лише при be going to; will для прогнозу — наш концентричний вибір, див. В3]; it’s + weather | порівнювати (ф); прогноз погоди (15 — на слух; у нас лише читання); описує місця (19) |
 | e5s6 | Free time, hobbies and holidays | 19–21 | Відпочинок і дозвілля — види відпочинку та занять; захоплення; канікули | like/love/hate + -ing; ‘ing’ forms as nouns: swimming (A2); can (ability) + adverbs of manner: well (A2: Adverbs — manner); Imperatives: suggestions (Let’s) (A2); Shall we…? (A2: Shall — suggestions) — авторові на вибір | пропонувати, приймати, відхиляти пропозицію (ф); що вміє добре й не дуже (19); пропонує, запрошує, вибачається (17); уподобання (17) |
 | e5s7 | My town or village | 22–24 | Рідне місто/село — місцезнаходження; основні історичні та культурні відомості; **+ Подорож — прогулянка містом/селом** (інтеграція, с. 20) | there is/are (4: e4s2); prepositions of place: opposite, between (A2: Preposition; 4: e4s2); Imperatives + Coordinated clauses for directions (A2); adverbials of movement (4: e4s7) | запитує й пояснює, як пройти (17); з опорою на карту (18); пояснює маршрут: праворуч, спочатку, потім (19); брошури й карти (16) |
 | e5s8 | Festivals and traditions | 25–27 | Свята і традиції — календар свят в Україні та країнах виучуваної мови; традиції святкування | ordinal numbers, dates (глосарій: 1 January — «the first of January»); Present Simple для традицій; was/were (4, інвентар 3 кл.; повторення); Exclamations: What a … (A2) — у вітальній листівці | вітальні листівки: день народження, Новий рік (18); занотовує дати (18) |
@@ -75,7 +75,7 @@
 2. **«Прогулянка містом/селом» — підтема «Подорожі» (с. 20), але лишилася в e5s7** (урок «A walk around the town with a map»). Програма дозволяє інтегрувати теми (с. 20), а прогулянка за картою — природне продовження уроку про маршрут. В e5s9 тоді лишається «улюблені напрямки подорожі».
 3. **Додано підтему «Основні історичні та культурні відомості»** (Рідне місто/село, с. 20) — e5s7, урок «My town: a bit of history». В орієнтовному плані її не було.
 4. **can (ability) перенесено з e5s5 в e5s6.** Уміння — це хобі й спорт («I can swim well, but I can’t skate»; результат A2 с. 19: «розповідає про те, що вміє робити добре й не дуже»), а не погода. До e5s6 додано adverbs of manner (well), «ing forms as nouns» (Swimming is fun!) і Shall we…?
-5. **В e5s5 додано will для прогнозу** («Tomorrow it will be sunny: a weather forecast»). Інвентар A2: Future with will; CD Grammar «Will»: «Will is used to make predictions about the future» (https://dictionary.cambridge.org/grammar/british-grammar/will). Прогноз — природний контекст для will, і він не плутається з be going to для планів (e5s9). Для 4 кл. верифікатор плану вже розвів will («I think I’ll…», e4s7) і be going to (5 кл.).
+5. **В e5s5 додано will для прогнозу** («Tomorrow it will be sunny: a weather forecast»). Інвентар A2: Future with will (с. 21 — questions, offers, plans, intentions, requests, suggestions, willingness; «predictions» там лише при be going to — уточнення верифікатора, В3); CD Grammar «Will»: «Will is used to make predictions about the future» (https://dictionary.cambridge.org/grammar/british-grammar/will). Прогноз — природний контекст для will, і він не плутається з be going to для планів (e5s9). Для 4 кл. верифікатор плану вже розвів will («I think I’ll…», e4s7) і be going to (5 кл.).
 6. **В e5s2 додано Can (permission) / Could (requests)** — «Can I…? Could you repeat that, please?». Це функція 5 кл. «розпитувати з метою роз'яснення та уточнення інформації» (с. 20) і підтема «урок іноземної мови». Інвентар A2: Can: permission; Could: requests (с. 21).
 7. **В e5s4 додано plurals** (trousers, jeans, shorts, a pair of…) — Nouns: Plurals (с. 22); одяг — їхній природний контекст.
 8. **Exclamations: What a …** (с. 21) — в e5s8 у вітальній листівці. Рядком плану не винесено; авторові в «Специфіку».
@@ -141,3 +141,113 @@
 - висока — щодо тем, підтем і функцій 5 кл.: прочитано з PDF, колонтитули звірено;
 - середня — щодо розподілу граматики A2 між 5 і 6 кл.: програма його не дає, розподіл наш;
 - середня — щодо тижнів.
+
+# Незалежна верифікація
+
+Верифікатор: verifier-curate-eng-plan-g5 (content-verifier), 2026-11-19. Цей план я не писав. Теми, підтеми, функції й граматику звіряв із самим PDF програми (завантажив заново), англійську — зі словниками, відкритими в сесії через `curl` (WebFetch не резолвить dictionary.cambridge.org; britannica.com, gov.uk, ons.gov.uk, parliament.uk у цій сесії заблоковано проксі).
+
+## В1. Джерела (відкрито в цій сесії)
+
+| Сигла | Що відкрито | URL | Результат |
+|---|---|---|---|
+| МП-ІМ | PDF завантажено заново: SHA-1 `43925b25c52b569201658248a0183b8c3ad90ff7` (як в автора), 42 с.; `pdftotext -layout`, с. 15–22 | https://osvita.ua/doc/files/news/831/83117/Inoz_mov_5-9-kl_Redko_ta_in_14_07.pdf | ✅ с. 20: розд. 4.2 («рамкова… інтегровано»), 4.2.1 — 11 тем, 22 підтеми, 6 функцій; дослівна транскрипція автора в §1 збігається. «Прогулянка містом/селом» справді у рядку «Подорож» (одразу після «Улюблені напрямки подорожі», перед «Рідне місто/село») ✅. с. 21–22: інвентар A2 (англійська), спільний для 5–6 кл. ✅. Вибірково с. 15–19 (прогноз погоди на слух — с. 15; меню, карти — с. 16; рецепти — с. 16; листівки — с. 18; «що вміє робити добре й не дуже», плани на вихідні, щоденник — с. 19) ✅ |
+| CD «greetings card» | «greetings card noun [C] UK … (US greeting card)» | https://dictionary.cambridge.org/dictionary/english/greetings-card · https://dictionary.cambridge.org/dictionary/english/greeting-card («greeting card … US … (UK greetings card)») | ✅ → правка П1 |
+| OALD «greetings card» | «(British English) (North American English greeting card)» | https://www.oxfordlearnersdictionaries.com/definition/english/greetings-card | ✅ → П1 |
+| OALD «way», «direction» | «I stopped to ask the way»; «ask for directions», «A farmer gave us directions to the…» | https://www.oxfordlearnersdictionaries.com/definition/english/way_1 · https://www.oxfordlearnersdictionaries.com/definition/english/direction | ✅ → П2 |
+| CD / OALD «festival» | OALD: «a day or period of the year when people stop working to celebrate a special event, often a religious one»; CD: це значення — **B1** | https://www.oxfordlearnersdictionaries.com/definition/english/festival · https://dictionary.cambridge.org/dictionary/english/festival | ✅ «Festivals and traditions» — BrE коректно; рівень слова вищий за A2 → Р2 |
+| CD Grammar «Will», «Be going to» | «Will is used to make predictions about the future»; «We use be going to to predict something … which we have evidence for now: It’s going to snow» | https://dictionary.cambridge.org/grammar/british-grammar/will · https://dictionary.cambridge.org/grammar/british-grammar/be-going-to | ✅ will для прогнозу — нормативно; див. В3 |
+| CD «straight» | лише «straight ahead», «Go straight along this road…»; окремої статті «straight on» у CD нема (запит веде на «on the home straight»); OALD straight_2 — так само | https://dictionary.cambridge.org/dictionary/english/straight · https://www.oxfordlearnersdictionaries.com/definition/english/straight_2 | ✅ відкрите питання автора підтверджую: у плані «go straight on» немає; формулу маршруту — авторові e5s7 зі словника |
+| «fact file» | CD і OALD статті не мають; Wiktionary: «factfile … A document made up of facts on a particular topic» (fact file — alternative form) | https://en.wiktionary.org/wiki/factfile · https://en.wiktionary.org/wiki/fact_file | ⚠️ слово вживане, але без словника CD/OALD → Р3 |
+
+### Факт у плані: склад Великої Британії (e5s10, рядок 3)
+
+| Твердження | Джерела (відкрито) | Вердикт |
+|---|---|---|
+| The UK: England, Scotland, Wales and Northern Ireland | CD «United Kingdom»: «the island country in Europe that consists of England, Scotland, Wales, and Northern Ireland» — https://dictionary.cambridge.org/dictionary/english/united-kingdom; M-W «United Kingdom»: «country in western Europe in the British Isles comprising Great Britain (England, Scotland, and Wales) and Northern Ireland» — https://www.merriam-webster.com/dictionary/United%20Kingdom; відправна точка — https://en.wikipedia.org/wiki/Countries_of_the_United_Kingdom | ✅ (статус частин — «countries» чи ні — у плані не стверджено; автор e5s10 бере формулювання з facts/eng.md, як і пропонує автор плану) |
+| Kyiv, Lviv | glossary/eng.md «Назви» (КМУ № 55) | ✅ |
+
+## В2. Теми й підтеми 5 кл. (с. 20) ↔ розділи
+
+| Тема | Підтема | Де в плані | Вердикт |
+|---|---|---|---|
+| Я, моя родина, мої друзі | мої родинні зв'язки | e5s1 «My family tree…», «Have you got any brothers or sisters?» | ✅ |
+| | професії батьків | e5s1 «What do your parents do? Jobs» | ✅ |
+| | мої друзі та їхні уподобання | e5s1 «My best friend: what does she like?» | ✅ |
+| Одяг | види одягу | e5s4 «Clothes: a jumper…», «Trousers, jeans, shorts…» | ✅ |
+| | сезонний одяг | e5s4 «Clothes for every season» | ✅ |
+| Харчування | продукти харчування | e5s3 «Food and drink…», «An apple or some bread?…» | ✅ |
+| | улюблені страви | e5s3 «…my favourite meals» | ✅ |
+| | страви в Україні та країнах мови | e5s3 «Dishes from Ukraine and the UK» | ✅ |
+| Відпочинок і дозвілля | види відпочинку та занять | e5s6 «Free time: things to do at home and outside» | ✅ |
+| | захоплення | e5s6 «Swimming is fun! My hobby» | ✅ |
+| | канікули | e5s6 «The school holidays…» | ✅ |
+| Природа | погода | e5s5 «What’s the weather like today?», прогноз | ✅ |
+| | природні явища | e5s5 «Storms, fog and rainbows» | ✅ |
+| Подорож | улюблені напрямки подорожі | e5s9 «Where would you like to go?», «At the seaside or in the mountains?» | ✅ |
+| | прогулянка містом/селом | e5s7 «A walk around the town with a map» (інтеграція, с. 20) | ✅ |
+| Рідне місто/село | місцезнаходження | e5s7 «Next to, opposite, between…», «Excuse me, where is the station?…» | ✅ |
+| | основні історичні та культурні відомості | e5s7 «My town: history and culture» (після П4; було «a bit of history» — лише історія) | ✅ |
+| Свята і традиції | календар свят | e5s8 «A calendar of festivals: Ukraine and the UK» | ✅ |
+| | традиції святкування | e5s8 «How do you celebrate? Traditions» | ✅ |
+| Шкільне життя | розклад уроків | e5s2 «My timetable…» | ✅ |
+| | робочий день | e5s2 «My school day: I get up at seven» | ✅ |
+| | урок іноземної мови | e5s2 «Can I…? Could you repeat that, please?», `why` | ✅ |
+| | види діяльності на уроці | e5s2 «Open your books! Classroom activities» | ✅ |
+| Україна | загальні відомості | e5s10 «Ukraine on the map», «A fact file about my country» | ✅ |
+| Країни виучуваної мови | загальні відомості | e5s10 «Where do people speak English?», «The UK: …» | ✅ |
+
+Усі 11 тем і 22 підтеми покрито (з П4). Поєднання «Україна + Країни» в e5s10 і прогулянки з «Рідним містом» програма дозволяє (с. 20: «рамкова… інтегровано»).
+
+**Функції (с. 20):** описувати, розповідати, характеризувати — e5s1, e5s4, e5s7 ✅; порівнювати — e5s5, e5s10 ✅; запитувати й надавати інформацію — наскрізно ✅; розпитувати для роз'яснення — e5s2 «Could you repeat that, please?» ✅; пропонувати, приймати, відхиляти — e5s3 «Would you like…? Offers», e5s6 «Let’s go to the park! Saying yes or no» ✅; **аргументувати свій вибір** — рядком не названо, природні місця — e5s4 (що вдягти й чому) і e5s9 (куди поїхати й чому) → Р1.
+
+## В3. Граматика: інвентар A2 (с. 21–22) і розподіл 5 / 6 кл.
+
+Кожну позицію таблиці автора §2 звірено з текстом с. 21–22:
+- з інвентаря A2 дослівно: Pronouns possessive; Demonstratives; Interrogatives Yes/No, Wh-; Present simple affirmative/negative/questions з adverbs of indefinite frequency; Adverbs position mid; Imperatives (affirmative, negative, instructions, suggestions Let’s); Can: permission; Could: requests; Uncountables; Quantity some/any/a lot of/much/many; Would: questions with ‘like’; Present continuous; Plurals regular/irregular; Comparatives and superlatives; the + superlatives; ‘ing’ forms as nouns (swimming — приклад самої програми); Adverbs manner; Shall: suggestions; Coordinated clauses for directions; Present simple: directions; Exclamations: What a…; Future with be going to: questions, intentions; Past simple affirmative ✅.
+- позначені як (4) / повторення — to be, have got, ’s, was/were, there is/are, a/an with jobs, would like to — інвентар ТОП 3–4 с. 62–63 (див. plan-eng-g4.md В3) ✅.
+- **Уточнення:** в інвентарі МП-ІМ «predictions» стоїть лише при **be going to**; у «Future with will and shall» і «Modality: Will» прогнозу нема (questions, offers, plans, intentions, requests, suggestions, willingness). Тож will для прогнозу погоди в e5s5 — не «позиція A2», як писав автор, а наш вибір. Він обґрунтований (CD Grammar «Will»: «Will is used to make predictions about the future»; концентрично від e4s7 «I think I’ll…»), але автор e5s5 має прийняти «It’s going to rain» як другу правильну відповідь, якщо в умові є ознаки (хмари) — це вже в §5 автора. Формулювання в §2 і §4 п. 5 звіту виправлено (позначка «верифікатор»).
+- **Концентричність від 4 кл.:** comparatives (e4s6) → e5s5; superlatives (e4s7) → e5s10; Present Continuous і PS vs PC (e4s6, e4s8) → e5s4; frequency (e4s3) → e5s2; I’d like (e4s4) → e5s3; there is/are, prepositions (e4s2) → e5s7; I think I’ll (e4s7) → will (e5s5) і be going to (e5s9) ✅.
+- **Навантаження 5 кл.:** нових для учня позицій — Present Simple у повному обсязі, countable/uncountable з квантифікаторами, be going to, Past Simple affirmative (лише regular), can/could для прохань, -ing як іменник; решта — повторення 4 кл. Важкі позиції A2 (Past Simple irregular/negative/questions, Past Continuous, Present Perfect, modals of obligation, relative clauses, conditionals, passives, reported speech) лишено на 6 кл. (§2 наприкінці) ✅. Розподіл розумний, не перевантажений.
+- Перетини з орієнтовним планом 6 кл. (дизайн §4.2): e6s2 «can/could (requests)» і e6s5 «will / be going to» вже частково є в 5 кл. (e5s2, e5s5, e5s9) — для 6 кл. це повторення з розширенням, не дубль; куратор плану 6 кл. має це врахувати (автор уже виніс NOTE в inbox) ✅.
+
+## В4. Тижні
+
+[1,4] [5,8] [9,12] [13,15] [16,18] [19,21] [22,24] [25,27] [28,31] [32,35]: 4+4+4+3+3+3+3+3+4+4 = 35, без прогалин і накладок (перевірено скриптом по plan.js) ✅. 10 × 6 рядків `plan` ✅. Обґрунтування 4-тижневих розділів розумне.
+
+## В5. Англійська `title` / `why` / `plan`
+
+Перевірено кожен рядок: рівень A1–A2, короткі речення, ’ і “ ” за глосарієм, Kyiv / Lviv. Британська норма: jumper, trousers, timetable, at the seaside, school holidays (= канікули), have got, festivals (не holidays) ✅. «the Past Simple» у рядку e5s9 — британська назва часу (МП-ІМ пише «Past simple») ✅.
+**Нічого з CUP/OUP:** назви й рядки загальні (теми програми, шкільний побут), без персонажів, серій і заголовків юнітів ✅.
+Знайдено й виправлено — В7 (П1–П4).
+
+## В6. `requires`
+
+Рішення автора не ставити `requires` у plan.js — **обґрунтоване**, перевірено в коді:
+- app/registry.js, `section()`: `Object.assign({}, old, sec, { plan: sec.plan || old.plan })` — файл розділу успадковує `requires` запису плану, якщо не задає свого;
+- tools/validate.mjs (рядки ~424–427): `requires` на неіснуючий урок — у розділі плану попередження, у розділі з уроками **помилка**;
+- уроків 4 кл. немає, а `requires` веде на id уроків (CONTENT_SCHEMA §2). Тож будь-який id тепер вигаданий, і він ламав би validate у першому ж файлі e5sN.
+Таблиця зв'язків e5sN → e4sM (§6) змістовна; відповідає граматиці В3 ✅.
+
+## В7. Правки (зроблено в content/eng/plan.js, лише e5s*)
+
+| № | Розділ | Було | Стало | Чому |
+|---|---|---|---|---|
+| П1 | e5s8 `plan` | «Writing a greeting card» | «Writing a greetings card» | CD / OALD: *greeting card* — US / North American English; BrE — *greetings card* |
+| П2 | e5s7 `why` | «And to ask the way and explain it.» | «And to ask the way and give directions.» | «explain it» — неоднозначно (it = the way?); OALD: «ask the way», «give directions» — стійкі сполуки |
+| П3 | e5s2 `why` | «…your teacher in the English lesson.» | «…your teacher in your English lessons.» | означений артикль з одниною звучить як один конкретний урок; йдеться про уроки загалом |
+| П4 | e5s7 `plan` | «My town: a bit of history» | «My town: history and culture» | підтема с. 20 — «основні історичні **та культурні** відомості»; культурна частина рядком не була покрита |
+
+id не змінено. У звіті автора виправлено атрибуцію «will: predictions» (§2, §4 п. 5) — В3.
+
+## В8. Рекомендації (не блокують)
+
+- **Р1.** «Специфіка» write-eng-g5-e5s4 і -e5s9: функція «аргументувати свій вибір» (с. 20) — «I’d like to go to…, because…», «I’m wearing…, because it’s cold».
+- **Р2.** e5s8: *festival* у значенні «свято» — B1 (CD). Авторові e5s8 — ввести слово з картинкою (D-019); для державних днів (Independence Day) BrE вживає *public holiday / bank holiday* — не називати їх «festivals» без потреби. За бажання людини / style-sync назву можна змінити на «Celebrations and traditions» (id незмінний).
+- **Р3.** e5s10 «A fact file about my country»: *fact file* у CD / OALD нема (лише Wiktionary). Автор e5s10 може лишити (поширений жанр шкільного письма) або взяти «Facts about my country».
+- **Р4.** e5s8 «Last New Year was great!» — прийнятно (пор. «last Christmas»), але природніше «New Year’s Eve was great!» чи «Our New Year party was great!»; на розсуд автора e5s8.
+- Відкрите в автора лишається відкритим: «go straight on» (словник), borshch / borscht (TERM), статус частин UK (FACT) — усе в inbox автора.
+
+## В9. Прогін і вердикт
+
+- `node tools/validate.mjs --quiet` після правок — **0 помилок, 230 попереджень** (для content/eng/plan.js і e5s* — жодного). Build не запускав (паралельна робота агента рушія).
+- **Вердикт: план придатний.** Усі 11 тем і 22 підтеми 5 кл. покриті, граматика — з інвентаря A2 (крім will для прогнозу — наш обґрунтований вибір), розподіл 5/6 кл. концентричний і не перевантажений, тижні 1–35 без дір, англійська після 4 дрібних правок британська й природна. Людині: нічого блокувального; Р2 (назва e5s8) — за бажанням.

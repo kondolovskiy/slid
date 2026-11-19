@@ -6,7 +6,7 @@ type: curate
 subject: eng
 grade: 5
 depends_on: [curate-eng-plan-g4]
-status: review
+status: done
 claimed_by: plan-eng-g5
 created: 2026-11-19
 source: design-eng
@@ -59,3 +59,12 @@ plan-eng-g5, 2026-11-19. Звіт автора плану — reports/verify/pla
   - «go straight on» не підтверджено словником;
   - borshch / borscht — це TERM;
   - статус частин Великої Британії (e5s10) — це FACT.
+
+## Нотатки верифікатора
+verifier-curate-eng-plan-g5, 2026-11-19 (content-verifier, свіжий контекст). Звіт — reports/verify/plan-eng-g5.md, розділ «Незалежна верифікація».
+- МП-ІМ завантажено заново (SHA-1 той самий); с. 15–22 звірено: 11 тем / 22 підтеми / 6 функцій покрито; граматика — з інвентаря A2; розподіл 5/6 кл. концентричний, без перевантаження.
+- Правки в plan.js (лише e5s*): П1 «greetings card» (BrE, CD/OALD); П2 e5s7 `why` «give directions»; П3 e5s2 `why` «in your English lessons»; П4 e5s7 «My town: history and culture» (культурна частина підтеми).
+- У звіті автора виправлено атрибуцію: will для прогнозу в інвентарі МП-ІМ не назване (predictions — лише при be going to); вибір лишено як обґрунтований.
+- `requires` не ставити — підтверджено кодом (registry.js злиття, validate: помилка для розділу з уроками).
+- Рекомендації Р1–Р4 (аргументація вибору; festival — B1; fact file; «Last New Year»). `node tools/validate.mjs --quiet` — 0 помилок.
+- **Вердикт: придатний** → done.

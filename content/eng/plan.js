@@ -164,7 +164,7 @@ SLID.section("eng", {
   grade: 5,
   weeks: [5, 8],
   title: "School life",
-  why: "To talk about your school day and your timetable. And to understand your teacher in the English lesson.",
+  why: "To talk about your school day and your timetable. And to understand your teacher in your English lessons.",
   plan: [
     "My timetable: subjects and days",
     "My school day: I get up at seven",
@@ -244,14 +244,14 @@ SLID.section("eng", {
   grade: 5,
   weeks: [22, 24],
   title: "My town or village",
-  why: "To say what there is in your town or village. And to ask the way and explain it.",
+  why: "To say what there is in your town or village. And to ask the way and give directions.",
   plan: [
     "Places in town: a library, a bank, a park",
     "Is there a cinema? There is, there are",
     "Next to, opposite, between: where is it?",
     "Excuse me, where is the station? Turn left, turn right",
     "A walk around the town with a map",
-    "My town: a bit of history"
+    "My town: history and culture"
   ]
 });
 
@@ -267,7 +267,7 @@ SLID.section("eng", {
     "A calendar of festivals: Ukraine and the UK",
     "How do you celebrate? Traditions",
     "Last New Year was great! Was and were",
-    "Writing a greeting card"
+    "Writing a greetings card"
   ]
 });
 
