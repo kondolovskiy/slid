@@ -20,7 +20,8 @@ source: design-eng
 ## Що зробити (docs/design/english.md §2)
 1. `SLID.subject({ targetLang: "en" })` — нове поле (registry.js; validate: поки лише `"en"`).
 2. Для предмета з `targetLang` рушій ставить `lang="en"` на контейнер **змісту** екрана уроку, тесту рівня й тренування (заголовок, текст, варіанти, поля, фідбек); хром рушія (кнопки, меню, службові повідомлення) лишається `lang="uk"`. Назва предмета на головній — українською (з subjects).
-3. Хелпер `isEnglishSubject(subj)` / `subjectLang(id)` у спільному місці (tools/lib.mjs + app), щоб validate, stats і content-checks однаково вимикали українські правила для eng (engine-eng-validate, engine-eng-stats).
+3. **Згорнутий український переклад правила** (рішення людини, docs/design/english.md §2 п. 5, §11.2 п. 5): поле екрана теорії `uk: "<p>…</p>"` — блок, закритий за замовчуванням (кнопка «Переклад українською» — хром), `lang="uk"`; лише в розділах 4–5 кл. (validate — engine-eng-validate). Подія журналу: відкрив чи ні (без ПД).
+4. Хелпер `isEnglishSubject(subj)` / `subjectLang(id)` у спільному місці (tools/lib.mjs + app), щоб validate, stats і content-checks однаково вимикали українські правила для eng (engine-eng-validate, engine-eng-stats).
 
 ## Готово, коли
 - [ ] Код, тести (`node tools/test-lang.mjs`, `npm run check`), CONTENT_SCHEMA і, де треба, docs/ARCHITECTURE.md оновлено; українські предмети поводяться як раніше (регресія test-answer-ui — у CI, job browser).
