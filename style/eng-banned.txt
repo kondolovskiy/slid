@@ -1,6 +1,9 @@
 # Фрази, яких не має бути в змісті англійської (`eng`). Одна на рядок, регістр не важливий. Перевіряє tools/validate.mjs
 # (попередження для предмета з targetLang "en", engine-eng-validate); style/banned-phrases.txt для eng не діє.
 # Рядок — дослівна фраза в межах слова: «explain me» не ловить «explain meaning». Правило й кальки, яких список не ловить, — style/eng.md «Заборонене».
+# Відомі хибні збіги (правильне речення з тією самою послідовністю слів): «make a photo album/frame», «in the internet age», «the Ukraine war», «Chicken Kiev»,
+# «you will hear from me». Попередження тоді не виправляй — перевір і познач у нотатках задачі (verifier-curate-eng-style, 2026-11-19).
+# Сполуки, де хибний збіг типовий для уроку («make homework fun», «Why do mistakes happen?», «make a party hat»), — лише з підметом або не внесено (style/eng.md «Заборонене»).
 # Кожну сполуку звірено зі словником 2026-11-19 (curate-eng-style, curl): CD — dictionary.cambridge.org, OALD — www.oxfordlearnersdictionaries.com,
 # CG — Cambridge Grammar (dictionary.cambridge.org/grammar/british-grammar/…). У дужках коментаря — правильна форма й джерело.
 
@@ -20,19 +23,30 @@ make a photograph
 # make a mistake, не do (OALD mistake_1: «It's easy to make a mistake»)
 do a mistake
 did a mistake
-do mistakes
 doing mistakes
+# «do mistakes» — лише з підметом: «Why do mistakes happen?» правильне
+i do mistakes
+we do mistakes
+you do mistakes
+they do mistakes
+always do mistakes
+often do mistakes
+sometimes do mistakes
 # do (your) homework, не make (OALD homework: «I always do my homework on the bus»; CD homework: «do your homework»)
-make homework
-make my homework
-make your homework
-make the homework
-makes homework
+# лише з підметом: «Games make homework fun», «It makes my homework easier» правильні (make + додаток + прикметник)
+i make homework
+we make homework
+you make homework
+they make homework
+he makes homework
+she makes homework
+i make my homework
+we make our homework
+you make your homework
+they make their homework
 # do sport (BrE) (OALD sport_1: «(British English) Do you do any sport?»)
 make sport
 make sports
-# have/throw/give a party (OALD party_1)
-make a party
 # explain something to somebody (OALD explain: «You cannot say ‘explain me, him, her, etc.’»); him/her/them не беремо — «explain them» (= правила) і «explain her idea» правильні
 explain me
 # tell me, не say me (OALD say_1: say vs tell; «What did he say to you?»)
@@ -74,7 +88,7 @@ want that they
 how is your name
 # in my opinion (CG «According to»: «When we talk about our opinion, we use… ‘in my opinion’… Not: According to me»)
 according to me
-# I like it very much / I really like (CG «Very»: not very before verb phrases with enjoy, hate, know, like, love)
+# I like it very much / I really like (OALD very_1, Grammar Point «very / very much»: «Very is used with adjectives, past participles used as adjectives, and adverbs»; дієслово — very much)
 i very like
 we very like
 they very like

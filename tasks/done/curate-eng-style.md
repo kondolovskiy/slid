@@ -5,7 +5,7 @@ id: curate-eng-style
 type: curate
 subject: eng
 depends_on: [design-eng, engine-eng-stats]
-status: review
+status: done
 claimed_by: style-eng
 created: 2026-11-19
 source: design-eng
@@ -42,3 +42,8 @@ source: design-eng
 **eng-banned.txt:** кожну мовну сполуку звірено curl-ом з CD / OALD / Cambridge Grammar (джерело — коментар над групою); перевірено регекспом validate на 17 правильних реченнях (0 хибних збігів: «explain them», «click on the photo», «make the most of», «maths», «Ukrainian», «watercolour») і 11 помилкових (усі спіймано). Свідомо **не** внесено (хибні збіги): explain him/her/them, borrow you, play in football, on the photo/picture, similar on, say about, how do you call (у OALD не знайшов явної примітки), good appetite (не звірено), sports (у BrE правильне в «team sports»), go straight on (не моя тема — PITFALL plan-eng-g5).
 
 **Перевірка:** `node tools/validate.mjs --quiet` — 0 помилок, 230 попереджень (як до зміни); `node tools/test-metrics.mjs` — 133 перевірки пройдено. Build не запускав (style/ у build не входить).
+
+## Верифікація (verifier-curate-eng-style, 2026-11-19)
+**Вердикт: прийнято з правками** — reports/verify/curate-eng-style.md. Числа ТОП 3–4 с. 60, П1407 с. 21 і відсутність чисел у МП-ІМ підтверджено за PDF у сесії (SHA-1 збігаються). Словникові підстави eng-banned — curl OALD / CD / Cambridge Grammar; одне джерело виправлено (i very like → OALD very_1).
+**Правки:** eng-banned — «do mistakes» і «make homework» лише з підметом (хибні збіги «Why do mistakes happen?», «Games make homework fun»), «make a party» вилучено («make a party hat») → style/eng.md «Заборонене»; шапка — відомі рідкісні хибні збіги. style/eng.md — МП-ІМ с. 16 / 28, 6 кл. 2–3 екрани, рядок «2–5 → 3–6 завдань» у таблиці відмінностей від common.md, позначка TQ-123.
+**Людині:** TQ-123 (обсяги текстів 5–9 кл. і межі екрана; тимчасово — пропозиція style/eng.md). validate --quiet — 0 помилок, 230 попереджень; test-metrics 133, test-content-checks 144 — пройдено.
