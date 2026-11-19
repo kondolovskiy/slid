@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-19T10:01:30.178Z
 id: write-ukr-u4s10
 type: write-section
 subject: ukr
@@ -6,7 +8,7 @@ grade: 4
 section: u4s10
 weeks: [31, 33]
 status: todo
-claimed_by:
+claimed_by: writer-u4s10
 created: 2026-11-19
 ---
 # Написати розділ «Дієслово» (Українська мова, 4 клас)
