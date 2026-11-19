@@ -5,7 +5,7 @@ id: curate-eng-agents-rule
 type: curate
 subject: eng
 depends_on: [design-eng]
-status: review
+status: done
 claimed_by: orchestrator-eng
 created: 2026-11-19
 source: design-eng
