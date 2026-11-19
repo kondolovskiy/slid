@@ -5,7 +5,7 @@ id: skills-eng
 type: skills
 subject: eng
 depends_on: [curate-eng-style, curate-eng-glossary]
-status: review
+status: done
 claimed_by: skills-eng
 created: 2026-11-19
 source: design-eng
