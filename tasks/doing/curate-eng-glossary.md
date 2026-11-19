@@ -1,10 +1,12 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-19T11:25:39.636Z
 id: curate-eng-glossary
 type: curate
 subject: eng
 depends_on: [design-eng]
 status: todo
-claimed_by: 
+claimed_by: curator-eng-glossary
 created: 2026-11-19
 source: design-eng
 ---
