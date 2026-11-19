@@ -16,7 +16,7 @@ SLID.section("eng", {
   weeks: [32, 35],
   title: "Ukraine and English-speaking countries",
   why: "To tell people about Ukraine. And to learn about the countries where people speak English.",
-  requires: ["e4s7l3", "e4s7l4", "e4s6l4", "e4s6l5"],
+  requires: ["e4s7l3", "e4s7l4", "e4s6l4", "e4s6l5", "e5s5l3", "e5s5l4"],
   meta: { author: "writer-e5s10", created: "2026-11-19", factcheck: "self", teacher: null },
   badges: [
     { id: "e5s10boss", name: "Country expert", icon: "trophy", desc: "Finish the final lesson “Ukraine and English-speaking countries”" }
