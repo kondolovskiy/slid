@@ -1,10 +1,12 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-19T12:39:08.262Z
 id: skills-eng
 type: skills
 subject: eng
 depends_on: [curate-eng-style, curate-eng-glossary]
 status: todo
-claimed_by: 
+claimed_by: skills-eng
 created: 2026-11-19
 source: design-eng
 ---
