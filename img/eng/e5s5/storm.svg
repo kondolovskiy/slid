@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 150" role="img" aria-label="dark clouds, rain and lightning">
+  <rect width="200" height="150" fill="#cfd6e0"/>
+  <g fill="#5b6472">
+    <circle cx="70" cy="50" r="26"/><circle cx="105" cy="40" r="32"/><circle cx="140" cy="52" r="24"/>
+    <rect x="48" y="50" width="112" height="26" rx="13"/>
+  </g>
+  <polygon points="108,74 88,112 103,112 92,142 128,98 112,98 124,74" fill="#ffd23f" stroke="#c99a00" stroke-width="2" stroke-linejoin="round"/>
+  <g stroke="#3d7bd9" stroke-width="3" stroke-linecap="round">
+    <line x1="60" y1="86" x2="54" y2="102"/><line x1="72" y1="96" x2="66" y2="112"/><line x1="58" y1="114" x2="52" y2="130"/>
+    <line x1="144" y1="86" x2="138" y2="102"/><line x1="156" y1="98" x2="150" y2="114"/><line x1="142" y1="116" x2="136" y2="132"/>
+  </g>
+</svg>
