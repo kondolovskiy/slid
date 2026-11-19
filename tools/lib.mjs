@@ -106,8 +106,24 @@ export function mplain(s = "") {
 const VOW = /[аеєиіїоуюяaeiouy]/gi;
 // \p{M}: комбінований наголос U+0301 — частина слова («листопа́д» — одне слово, п. 12)
 export const words = t => (t.match(/[\p{L}\p{M}\p{N}'’ʼ-]+/gu) || []);
-export const syllables = w => (w.match(VOW) || []).length;
-export function sentences(t) {
+/** Склади слова. Типово (українська) — кількість голосних. lang "en" (предмет з targetLang "en", engine-eng-stats) — групи голосних
+    латиницею з поправками: німе кінцеве -e (make, smile; але table, people — склад -le), -ed без t/d перед ним (played, але wanted),
+    -es без шиплячого перед ним (makes, але boxes, places, tables), u після q/g — не склад (language),
+    зяяння ia/io/iu/uo/ua — два склади (radio, piano, usual), крім -tion/-sion/-cial… (nation, special). Евристика для метрик стилю,
+    не словник: idea, quiet, something, hundred, recipe рахує на склад менше чи більше. Слово без латинських літер — як типово. */
+export const syllables = (w, lang = "") => lang === "en" && /[a-z]/i.test(w) ? enSyllables(w) : (w.match(VOW) || []).length;
+function enSyllables(w) {
+  let x = w.toLowerCase().replace(/[^a-z]/g, "");   // she, be, are — нуль груп після німого -e → 1 (Math.max нижче)
+  if (/[^aeiouy]ed$/.test(x) && !/[td]ed$/.test(x)) x = x.slice(0, -2);
+  else if (/[^aeiouy]es$/.test(x) && !/(?:[sxz]|[cs]h|[cg]|[^aeiouy]l)es$/.test(x)) x = x.slice(0, -2);
+  else if (/[^aeiouy]e$/.test(x) && !/[^aeiouy]le$/.test(x)) x = x.slice(0, -1);
+  const groups = (x.match(/[aeiouy]+/g) || []).length;
+  const hiatus = (x.match(/(?<![qg])u[ao]|(?<![cstx])i[aou]/g) || []).length;
+  return Math.max(1, groups + hiatus);
+}
+/** Межі речень. lang "en" — англійські скорочення (enAbbr) замість українських. */
+export function sentences(t, lang = "") {
+  if (lang === "en") return splitSentences(enAbbr(String(t)));
   // Protect abbreviation periods only when the following text continues the sentence.
   const text = String(t).replace(/(?<![\p{L}])н\.(?=\s*е\.)/gu, "н\uE000")
     .replace(/(?<![\p{L}])(?:е\.|рр?\.|ст\.|тис\.|млн\.|[Дд]ив\.)\s*(?=[\p{Ll}\d])/gu,
@@ -116,8 +132,19 @@ export function sentences(t) {
     // (раніше кожна дата давала хибне «коротке речення»). Скорочення перед тире — завжди; перед великою літерою — лише коли дата відкриває речення
     .replace(/(?<![\p{L}])(?:рр?|ст)\.(?=\s*[—–])/gu, m => m.replace(/\./g, "\uE000"))
     .replace(/(^|[.!?…]\s+)((?:\d{1,4}(?:\s*[–-]\s*\d{1,4})?|[IVXХ]{1,6})\s*(?:рр?|ст)\.)(?=\s*\p{Lu})/gu, (m, a, b) => a + b.replace(/\./g, "\uE000"));
-  return text.split(/(?<=[.!?…])\s+/).map(x => x.replace(/\uE000/g, ".").trim()).filter(x => words(x).length > 0);
+  return splitSentences(text);
 }
+const splitSentences = text => text.split(/(?<=[.!?…])\s+/).map(x => x.replace(/\uE000/g, ".").trim()).filter(x => words(x).length > 0);
+/* Англійські скорочення (engine-eng-stats): крапка, що не кінець речення, стає \uE000. Звертання (Mr., Mrs., Ms., Dr., Prof., St., Mt., Jr., Sr.),
+   e.g., i.e., vs., cf., viz. — завжди; No. — перед числом; etc., a.m., p.m. і скорочення з крапками (U.S.) — якщо далі не велика літера
+   («…at 3 p.m. Then I go» — два речення); ініціали — ланцюжок із 2+ («J. K. Rowling», «J.K. Rowling»).
+   Відомі межі: один ініціал («J. Smith») ділить речення; «U.K.» перед ім'ям чи «J.K.» перед малою літерою — як вище. Британська норма — Mr, UK без крапок. */
+const protect = m => m.replace(/\./g, "\uE000");
+const enAbbr = t => t
+  .replace(/(?<![\p{L}])(?:Mrs?|Ms|Dr|Prof|St|Mt|Jr|Sr|e\.g|i\.e|vs|cf|viz)\.(?=\s)/gu, protect)
+  .replace(/(?<![\p{L}])No\.(?=\s*\d)/gu, protect)
+  .replace(/(?<![\p{L}])(?:\p{Lu}\.\s?){2,}(?=\p{Lu}\p{Ll})/gu, protect)
+  .replace(/(?<![\p{L}])(?:etc\.|(?:[A-Za-z]\.){2,})(?=\s)(?!\s+\p{Lu})/gu, protect);
 
 /** Текст, який дитина читає на екрані (без варіантів відповідей і фідбеку). */
 // текст мовної вправи (pick/gaps/stress/split) дитина читає так само, як body: SLID_LANG.readText (app/lang.js) — DRY з рушієм
@@ -134,11 +161,24 @@ export function screenAllText(s) {
   return parts.filter(Boolean).map(mplain).filter(Boolean).map(t => /[.!?…]$/.test(t) ? t : t + ".").join(" ");
 }
 
-/** Метрики уроку для синхронізації стилю й складності. */
-export function lessonMetrics(l) {
+/** Метрики, які stats.mjs зводить у звіт і z-оцінки «сім'ї». maxText — лише для предмета з мовою змісту (targetLang, D-054):
+    найдовший текст для читання на екрані, ліміти — style/<предмет>.md (docs/design/english.md §6.1). Українські предмети — як раніше. */
+export const METRIC_KEYS = Object.freeze(["screens","gradedShare","readWordsPerScreen","maxReadWords","sentenceWords","longWordShare","typeVariety"]);
+export const metricKeys = subj => subjectLang(subj) ? [...METRIC_KEYS, "maxText"] : [...METRIC_KEYS];
+/** Профіль складності уроку (style/profiles.json): діапазон класів предмета («4», «5-6», «7-9», «10-11»), інакше _default того ж діапазону;
+    поверх нього — ключі точного класу предмета («5», «10»…), бо ліміти тексту в межах діапазону різні (engine-eng-stats). Спільне для stats і validate. */
+export function profileFor(profiles, subj, grade) {
+  const own = profiles?.[subj?.id] || {}, band = gradeBand(grade);
+  return { ...(own[band] || profiles?._default?.[band] || {}), ...(String(grade) !== band ? own[String(grade)] : {}) };
+}
+// довге слово: українська — від 5 складів; англійська — від 3 (поріг «складного слова» індексу Ганнінга, engine-eng-stats)
+const LONG_SYLLABLES = { en: 3 };
+
+/** Метрики уроку для синхронізації стилю й складності. lang — мова змісту предмета (subjectLang): "en" — англійські склади й речення. */
+export function lessonMetrics(l, { lang = "" } = {}) {
   const all = l.screens.map(screenAllText).join(" ");
-  const w = words(all), sents = sentences(all);
-  const long = w.filter(x => syllables(x) >= 5).length;
+  const w = words(all), sents = sentences(all, lang);
+  const long = w.filter(x => syllables(x, lang) >= (LONG_SYLLABLES[lang] || 5)).length;
   const graded = l.screens.filter(s => GRADED.includes(s.type) && !s.poll && !s.hyp);
   const types = {}; l.screens.forEach(s => types[s.type] = (types[s.type] || 0) + 1);
   const readWordsPerScreen = l.screens.map(s => words(screenReadText(s)).length);
@@ -150,12 +190,41 @@ export function lessonMetrics(l) {
     wordsTotal: w.length,
     readWordsPerScreen: Math.round(readWordsPerScreen.reduce((a, b) => a + b, 0) / l.screens.length),
     maxReadWords: Math.max(...readWordsPerScreen),
+    // найдовший окремий текст екрана без заголовка: body або текст мовної вправи (gaps, pick… — SLID_LANG.readText)
+    maxText: Math.max(0, ...l.screens.flatMap(s => [s.body, langText(s)].map(t => words(mplain(t || "")).length))),
     sentenceWords: +(w.length / Math.max(1, sents.length)).toFixed(1),
     longWordShare: +(long / Math.max(1, w.length)).toFixed(3),
     hints: l.screens.filter(s => s.hint).length,
     typeVariety: Object.keys(types).filter(t => GRADED.includes(t)).length,
     types
   };
+}
+
+/** Звіт stats.mjs для одного предмета: рядки уроків із метриками, z-оцінки «сім'ї» (предмет + діапазон класів + урок/фінал),
+    прапорці профілю. Мова змісту (targetLang, D-054): "en" — англійські склади, речення й поріг довгого слова, ще й maxText (engine-eng-stats).
+    origin — id розділу → файл (з loadContent). Повертає { bands, rows, keys }. */
+export function subjectStats(c, profiles = {}, origin = {}) {
+  const rows = [], KEYS = metricKeys(c), lang = subjectLang(c), bands = {};
+  for (const sec of c.sections.filter(s => s.lessons)) for (const l of sec.lessons)
+    rows.push({ subject: c.id, grade: sec.grade, band: gradeBand(sec.grade), section: sec.id, file: origin[sec.id], lesson: l.id, title: l.title, boss: !!l.boss, status: l.status, ...lessonMetrics(l, { lang }) });
+  // статистика «сім'ї» (предмет + діапазон класів) для z-оцінок
+  const fam = {};
+  for (const r of rows) (fam[`${r.band}:${r.boss ? "boss" : "lesson"}`] ||= []).push(r);
+  for (const [band, rs] of Object.entries(fam)) for (const k of KEYS) {
+    const v = rs.map(r => r[k]), m = v.reduce((a, b) => a + b, 0) / v.length;
+    const sd = Math.sqrt(v.reduce((a, b) => a + (b - m) ** 2, 0) / v.length);
+    const effectiveSd = Math.max(sd, Math.abs(m) * 0.1, Number.EPSILON);
+    rs.forEach(r => (r.z ||= {})[k] = +((r[k] - m) / effectiveSd).toFixed(1));
+    bands[band] = { ...(bands[band] || {}), [k]: { mean: +m.toFixed(2), sd: +sd.toFixed(2), effectiveSd: +effectiveSd.toFixed(3) } };
+  }
+  // відхилення від профілю
+  for (const r of rows) {
+    const p = profileFor(profiles, c, r.grade);
+    r.flags = [];
+    for (const [k, [lo, hi]] of Object.entries(p)) if (r[k] !== undefined && (r[k] < lo || r[k] > hi)) r.flags.push(`${k}=${r[k]} поза [${lo}; ${hi}]`);
+    for (const k of KEYS) if (Math.abs(r.z?.[k] ?? 0) >= 2) r.flags.push(`${k} нетипово для сім'ї (z=${r.z[k]})`);
+  }
+  return { bands, rows, keys: KEYS };
 }
 
 export function gradeBand(g) { return g <= 4 ? "4" : g <= 6 ? "5-6" : g <= 9 ? "7-9" : "10-11"; }

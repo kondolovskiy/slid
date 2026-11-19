@@ -3,7 +3,7 @@
 // ПОПЕРЕДЖЕННЯ — порушення стилю (style/*.md, style/profiles.json) — їх треба виправити або обґрунтувати в нотатках задачі.
 // Запуск: node tools/validate.mjs [--section <id> | --diag <id> | --pool <id>] [--quiet]
 import fs from "node:fs"; import path from "node:path";
-import { loadContent, GRADED, TYPES, plain, mplain, words, sentences, lessonMetrics, gradeBand, readJSON, ROOT, figCues, IMG_REQUIRED, diagCtx, TARGET_LANGS, subjectLang } from "./lib.mjs";
+import { loadContent, GRADED, TYPES, plain, mplain, words, sentences, lessonMetrics, gradeBand, readJSON, ROOT, figCues, IMG_REQUIRED, diagCtx, TARGET_LANGS, subjectLang, profileFor } from "./lib.mjs";
 import { analyzeGraph } from "./graph-lib.mjs";
 import * as CC from "./content-checks.mjs";
 import { euphonyScreen, euphonyIssues, VALIDATE_RULES as EUPHONY_RULES, RULES as EUPHONY_DESC } from "./euphony.mjs";
@@ -440,7 +440,7 @@ for (const c of subjects) for (const sec of c.sections) {
     if (EUPHONY[c.id]) euphonyWarn(L, [l.title, l.why, l.outro?.text, ...(l.outro?.learned || [])].filter(t => typeof t === "string").flatMap(euphonyIssues));
     l.screens.forEach((s, i) => { checkScreen(`${L} екран ${i + 1} (${s.type})`, s, c, false); figRef(`${L} екран ${i + 1} (${s.type})`, s, l.screens[i - 1]); });
     // профіль складності
-    const m = lessonMetrics(l), p = profiles[c.id]?.[gradeBand(sec.grade)] || profiles._default[gradeBand(sec.grade)];
+    const m = lessonMetrics(l, { lang: subjectLang(c) }), p = profileFor(profiles, c, sec.grade);   // engine-eng-stats: англійські метрики, ключі точного класу
     for (const [k, [lo, hi]] of Object.entries(p)) if (m[k] < lo || m[k] > hi) W(L, `${k}=${m[k]} поза профілем [${lo}; ${hi}] для ${c.id}, ${gradeBand(sec.grade)} кл.`);
     if (!l.boss && !l.screens.some(s => s.hint)) W(L, "жодної підказки hint у звичайному уроці");
     if (IMG_REQUIRED[c.id] && !l.screens.some(s => s.img)) (IMG_REQUIRED[c.id] === "error" ? E : W)(L, "урок без зображення img (D-027: обов'язкове фото чи джерело з відкритою ліцензією; svg/fig не рахуються)");
