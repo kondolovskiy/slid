@@ -4,7 +4,7 @@
    чого в кеші цієї версії немає. Нова версія: встановлення (кожен файл перевіряється на сервері, cache: "no-cache") → skipWaiting →
    activate (старі кеші видаляються) → clients.claim → сторінка отримує controllerchange й перезавантажується,
    коли це безпечно (app/update.js: не посеред уроку чи тесту рівня). Google Fonts — з кешу з фоновим оновленням. */
-const VERSION = "a3d3a8d6ab";
+const VERSION = "9066479355";
 const CACHE = "slid-" + VERSION;
 const FONTS = "slid-fonts";
 const ASSETS = [
@@ -187,6 +187,7 @@ const ASSETS = [
   "./content/ukr/plan.js",
   "./content/ukr/diag-g10.js",
   "./content/ukr/diag-g11.js",
+  "./content/ukr/diag-g4.js",
   "./content/ukr/diag-g5.js",
   "./content/ukr/diag-g6.js",
   "./content/ukr/diag-g7.js",
@@ -214,6 +215,17 @@ const ASSETS = [
   "./content/ukr/g11-u11s7.js",
   "./content/ukr/g11-u11s8.js",
   "./content/ukr/g11-u11s9.js",
+  "./content/ukr/g4-u4s1.js",
+  "./content/ukr/g4-u4s10.js",
+  "./content/ukr/g4-u4s11.js",
+  "./content/ukr/g4-u4s2.js",
+  "./content/ukr/g4-u4s3.js",
+  "./content/ukr/g4-u4s4.js",
+  "./content/ukr/g4-u4s5.js",
+  "./content/ukr/g4-u4s6.js",
+  "./content/ukr/g4-u4s7.js",
+  "./content/ukr/g4-u4s8.js",
+  "./content/ukr/g4-u4s9.js",
   "./content/ukr/g5-u5s1.js",
   "./content/ukr/g5-u5s10.js",
   "./content/ukr/g5-u5s11.js",
@@ -298,6 +310,17 @@ const ASSETS = [
   "./content/ukr/pool-g11-u11s7.js",
   "./content/ukr/pool-g11-u11s8.js",
   "./content/ukr/pool-g11-u11s9.js",
+  "./content/ukr/pool-g4-u4s1.js",
+  "./content/ukr/pool-g4-u4s10.js",
+  "./content/ukr/pool-g4-u4s11.js",
+  "./content/ukr/pool-g4-u4s2.js",
+  "./content/ukr/pool-g4-u4s3.js",
+  "./content/ukr/pool-g4-u4s4.js",
+  "./content/ukr/pool-g4-u4s5.js",
+  "./content/ukr/pool-g4-u4s6.js",
+  "./content/ukr/pool-g4-u4s7.js",
+  "./content/ukr/pool-g4-u4s8.js",
+  "./content/ukr/pool-g4-u4s9.js",
   "./content/ukr/pool-g5-u5s1.js",
   "./content/ukr/pool-g5-u5s10.js",
   "./content/ukr/pool-g5-u5s2.js",
