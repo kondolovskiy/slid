@@ -1,0 +1,42 @@
+---
+id: write-eng-g5-e5s10
+type: write-section
+subject: eng
+grade: 5
+section: e5s10
+depends_on: [curate-eng-plan-g5, engine-eng-lang-core, engine-eng-validate, engine-eng-stats, skills-eng, curate-eng-style, curate-eng-glossary, write-eng-g5-e5s1]
+status: todo
+claimed_by: 
+created: 2026-11-19
+source: design-eng
+---
+# Написати розділ «Україна і країни виучуваної мови» (Англійська мова, 5 клас)
+
+## З програми
+- Тема й підтеми: загальні відомості про Україну; загальні відомості про країни виучуваної мови — МП-ІМ с. 20 (розд. 4.2.1), граматика — с. 21–22 (розд. 4.4).
+- Рівень: A1 → A2 (вхід A1; A2 — наприкінці 6 кл.).
+- Граматика (пропозиція розподілу, docs/design/english.md §4): comparatives and superlatives; the + superlatives. Остаточно — за `content/eng/plan.js` (curate-eng-plan-g5): якщо план інший, план головніший.
+- Джерела програми — docs/design/english.md §0: МП-ІМ (модельна програма «Іноземна мова. 5–9 класи», Редько В. Г. та ін., наказ МОН № 795 від 12.07.2021) — https://osvita.ua/doc/files/news/831/83117/Inoz_mov_5-9-kl_Redko_ta_in_14_07.pdf; П1407 (програма «Іноземні мови. 10–11 класи», рівень стандарту, наказ МОН № 1407 від 23.10.2017) — https://osvita.ua/doc/files/news/589/58921/inozemni-movi-10-11-19_09_2017.pdf.
+
+## Прочитати перед роботою
+- AGENTS.md; скіл `content-author` (розділ «Англійська» — skills-eng); docs/design/english.md §2 (мова екранів), §5 (типи вправ), §6 (стиль і пастки), §8 (авторське право).
+- style/common.md, style/eng.md, style/profiles.json (`eng`); memory/long/glossary/eng.md, facts/eng.md, pitfalls-content.md «Англійська».
+- Еталон: style/eng.md «Еталони» (e5s1 після верифікації).
+
+## Результат
+- `content/eng/g5-e5s10.js`: `SLID.section("eng", { id: "e5s10", … })` — id з плану; ≈ 5–7 уроків + фінал (boss).
+- Кожен урок: ситуація спілкування з теми → здогадка → правило (українською) → вправи; лексика й граматика — лише з рівня класу і з того, що вже було (D-019).
+- Типи: gaps, pick, word, split, stress (у складі), choice/multi/sort, build і match (якщо вже є в рушії), listen/`say` (якщо є engine-eng-audio-tts; інакше — без аудіювання, не імітувати його текстом).
+- Тексти, діалоги, імена, малюнки — **власні**; нічого з підручників Cambridge/Oxford (docs/design/english.md §8).
+- Кожна англійська форма, неправильне дієслово, ідіома, факт про країну — з джерела (словник, URL) у нотатках; нові — рядками FACT в inbox.
+
+## Готово, коли
+- [ ] `node tools/validate.mjs --section e5s10` — 0 помилок; попередження виправлено або пояснено.
+- [ ] `node tools/stats.mjs --subject eng` — без «нетипово для сім'ї» (до калібрування — пояснити).
+- [ ] Кожне оцінюване завдання розв'язано двічі; немає другої правильної відповіді.
+- [ ] Задачу переміщено в tasks/review (content-verifier зі свіжим контекстом).
+
+Build не запускай (AGENTS.md §4 п. 8).
+
+## Нотатки агента
+<!-- що зроблено, джерела форм і фактів, спірне -->
