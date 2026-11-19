@@ -1,9 +1,5 @@
 {
-  "date": "2026-11-19T14:03:21.982Z",
+  "date": "2026-11-19T14:06:49.295Z",
   "errors": [],
-  "warnings": [
-    "content/eng/g4-e4s2.js#e4s2l1: readWordsPerScreen=35 поза профілем [4; 30] для eng, 4 кл.",
-    "content/eng/g4-e4s2.js#e4s2l1: maxText=63 поза профілем [0; 60] для eng, 4 кл. (найдовший текст: екран 3)",
-    "content/eng/g4-e4s2.js#e4s2l6: readWordsPerScreen=36 поза профілем [4; 30] для eng, 4 кл."
-  ]
+  "warnings": []
 }
