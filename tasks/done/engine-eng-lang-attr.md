@@ -5,7 +5,7 @@ id: engine-eng-lang-attr
 type: engine
 subject: eng
 depends_on: [design-eng]
-status: review
+status: done
 claimed_by: eng-lang-attr
 created: 2026-11-19
 source: design-eng
