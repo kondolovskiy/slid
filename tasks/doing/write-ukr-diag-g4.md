@@ -1,11 +1,13 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-19T10:31:15.214Z
 id: write-ukr-diag-g4
 type: write-diag
 subject: ukr
 grade: 4
 section: dgu4
 status: todo
-claimed_by:
+claimed_by: writer-dgu4
 created: 2026-11-19
 depends_on: [write-ukr-u4s1, write-ukr-u4s2, write-ukr-u4s3, write-ukr-u4s4, write-ukr-u4s5, write-ukr-u4s6, write-ukr-u4s7, write-ukr-u4s8, write-ukr-u4s9, write-ukr-u4s10, write-ukr-u4s11]
 ---
