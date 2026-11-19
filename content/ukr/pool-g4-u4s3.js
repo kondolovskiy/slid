@@ -9,8 +9,8 @@
 SLID.pool("ukr", {
   id: "pu4s3",
   section: "u4s3",
-  status: "draft",
-  meta: { author: "writer-write-ukr-pool-u4s3", created: "2026-11-19", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "writer-write-ukr-pool-u4s3", created: "2026-11-19", factcheck: "verifier-pu4s3", teacher: null },
   sources: [
     { id: "Ост4-1", title: "Остапенко Г. С., Волощенко О. В., Козак О. П. Українська мова та читання : підруч. для 4 кл., ч. 1. — Київ : Світич, 2021", url: "https://svitdovkola.org/files/books/2021/svitych-ostapenko-ukrmova-ta-chyt-4kl-ch1.pdf" }
   ],
