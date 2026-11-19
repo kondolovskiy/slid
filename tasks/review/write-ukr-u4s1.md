@@ -1,6 +1,6 @@
 ---
-claimed_from: todo
-claimed_at: 2026-11-19T09:48:22.809Z
+claimed_from: review
+claimed_at: 2026-11-19T10:09:29.393Z
 id: write-ukr-u4s1
 type: write-section
 subject: ukr
@@ -8,7 +8,7 @@ grade: 4
 section: u4s1
 weeks: [1, 4]
 status: review
-claimed_by: writer-u4s1
+claimed_by: verifier-u4s1
 created: 2026-11-19
 ---
 # Написати розділ «Мова і текст» (Українська мова, 4 клас)
