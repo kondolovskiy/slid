@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-19T10:01:00.894Z
 id: write-ukr-u4s9
 type: write-section
 subject: ukr
@@ -6,7 +8,7 @@ grade: 4
 section: u4s9
 weeks: [29, 30]
 status: todo
-claimed_by:
+claimed_by: writer-u4s9
 created: 2026-11-19
 ---
 # Написати розділ «Займенник і числівник» (Українська мова, 4 клас)
