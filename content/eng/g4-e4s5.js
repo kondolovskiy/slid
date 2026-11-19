@@ -7,7 +7,7 @@
    Увесь зміст — англійською, британська норма (D-054). Тексти, діалоги й герої — власні (docs/design/english.md §8).
    Поради про гігієну й здоров'я — лише загальновідомі (мити руки, чистити зуби, пити воду, спати); без медичних порад.
    Форми й наголос — за Cambridge Dictionary і OALD (URL — tasks/…/write-eng-g4-e4s5.md, «Нотатки агента»).
-   Статус: draft. 7 уроків (6 + фінал).
+   Статус: verified (verifier-e4s5, reports/verify/e4s5.md). 7 уроків (6 + фінал).
    Перевірка: node tools/validate.mjs --section e4s5 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -17,7 +17,7 @@ SLID.section("eng", {
   title: "Health and hygiene",
   why: "To say how you feel. And to know what helps you stay clean and well.",
   requires: ["e4s1l2"],
-  meta: { author: "writer-e4s5", created: "2026-11-19", factcheck: "self", teacher: null },
+  meta: { author: "writer-e4s5", created: "2026-11-19", factcheck: "verifier-e4s5 (reports/verify/e4s5.md)", teacher: null },
   badges: [
     { id: "e4s5boss", name: "Health hero", icon: "trophy", desc: "Finish the final lesson “Health and hygiene”" }
   ],
@@ -28,7 +28,7 @@ SLID.section("eng", {
       title: "Keeping clean: wash your hands!",
       short: "Keeping clean",
       icon: "shield",
-      status: "draft",
+      status: "verified",
       why: "Clean hands and teeth help you stay well. Learn to say what to do.",
       screens: [
         {
@@ -74,7 +74,7 @@ SLID.section("eng", {
         {
           type: "info",
           title: "Wash! Brush! Don’t eat!",
-          body: `<p>The poster tells us what to do:</p><ul><li><b>Wash</b> your hands.</li><li><b>Brush</b> your teeth.</li></ul><p>Start with the <b>verb</b>. No <i>you</i>, no <i>-s</i>.</p><p>What not to do: <b>Don’t</b> + verb.</p><ul><li><b>Don’t eat</b> with dirty hands.</li></ul>`,
+          body: `<p>The poster tells us what to do:</p><ul><li><b>Wash</b> your hands.</li><li><b>Brush</b> your teeth.</li></ul><p><b>wash</b>, <b>brush</b>, <b>eat</b> – these are <b>verbs</b>.</p><p>Start with the verb. No <i>you</i>, no <i>-s</i>.</p><p>What not to do: <b>Don’t</b> + verb.</p><ul><li><b>Don’t eat</b> with dirty hands.</li></ul>`,
           cta: "Next"
         },
         {
@@ -160,7 +160,7 @@ SLID.section("eng", {
       title: "Stay healthy every day",
       short: "Healthy days",
       icon: "leaf",
-      status: "draft",
+      status: "verified",
       why: "Your body needs good food, water, sleep and play. Learn what helps.",
       screens: [
         {
@@ -291,7 +291,7 @@ SLID.section("eng", {
       title: "How do you feel?",
       short: "Feelings",
       icon: "user",
-      status: "draft",
+      status: "verified",
       why: "Friends ask: “How are you?” Say how you feel today.",
       screens: [
         {
@@ -396,7 +396,7 @@ SLID.section("eng", {
           eyebrow: "Final",
           title: "Complete the sentences.",
           body: `<p>Emma writes to Andrii.</p>`,
-          text: "How {*do|does} you feel today, Andrii? I {*feel|feels} fine. My brother Tom {feel|*feels} {*ill|happy}. He isn’t well, so he stays at home.",
+          text: "How {*do|does} you feel today, Andrii? I {*feel|feels} fine. My brother Tom {feel|*feels} {*ill|happy}. He isn’t well, so he’s at home today.",
           hint: "Who is it: you, I or he?",
           fbOk: "Well done!",
           fbBad: "Check the list: I or he?",
@@ -419,7 +419,7 @@ SLID.section("eng", {
       title: "What’s the matter?",
       short: "Feeling ill",
       icon: "flame",
-      status: "draft",
+      status: "verified",
       why: "You feel ill. Say what is wrong.",
       screens: [
         {
@@ -547,7 +547,7 @@ SLID.section("eng", {
       title: "At the doctor’s",
       short: "The doctor",
       icon: "plus",
-      status: "draft",
+      status: "verified",
       why: "A doctor asks questions and tells you what to do. Understand the doctor.",
       screens: [
         {
@@ -639,7 +639,7 @@ SLID.section("eng", {
           type: "word",
           sk: "func",
           title: "Write the missing word.",
-          body: `<p>Dr Bondar: “You’re ill. Don’t go to school.”</p>`,
+          body: `<p>Dr Bondar: “You’re ill. Don’t go to school. Stay at home.”</p>`,
           before: "Stay in",
           after: "for two days.",
           answer: "bed",
@@ -677,7 +677,7 @@ SLID.section("eng", {
       title: "Why? Because…",
       short: "Because",
       icon: "bulb",
-      status: "draft",
+      status: "verified",
       why: "People often ask “Why?”. Say why with because.",
       screens: [
         {
@@ -775,7 +775,7 @@ SLID.section("eng", {
           correct: 0,
           fbOk: "Good eye!",
           fbBad: "Is Andrii well or ill?",
-          fbText: "Andrii is ill. He stays at home <b>because he’s got a cold</b>. He isn’t at school."
+          fbText: "Andrii is ill. He’s at home <b>because he’s got a cold</b>. He isn’t at school."
         },
         {
           type: "gaps",
@@ -783,7 +783,7 @@ SLID.section("eng", {
           eyebrow: "Final",
           title: "Complete the sentences.",
           body: `<p>Emma and Andrii chat on Friday.</p>`,
-          text: "Emma: {*Why|Where} are you happy, Andrii? Andrii: {*Because|But} I’m well again! I go to school today. I eat fruit every day {*because|why} it’s healthy.",
+          text: "Emma: {*Why|Where} are you happy, Andrii? Andrii: {*Because|But} I’m well again! I can go to school today. I eat fruit every day {*because|why} it’s healthy.",
           hint: "Which word asks? Which word says why?",
           fbOk: "Well done!",
           fbBad: "Look at the examples again.",
@@ -806,7 +806,7 @@ SLID.section("eng", {
       title: "Health Day at school",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e4s5boss",
       why: "Check everything from this section. Your points are doubled.",

@@ -7,7 +7,7 @@ subject: eng
 grade: 4
 section: e4s5
 depends_on: [curate-eng-plan-g4, engine-eng-lang-core, engine-eng-validate, engine-eng-stats, skills-eng, curate-eng-style, curate-eng-glossary, write-eng-g4-e4s1]
-status: review
+status: done
 claimed_by: writer-e4s5
 created: 2026-11-19
 source: design-eng
@@ -102,3 +102,12 @@ CD = https://dictionary.cambridge.org/dictionary/english/<word>; OALD = https://
 2. Артикль toothache / stomach ache: у info — без артикля (перший приклад OALD, British English), у `word` l4 ключ — «headache» (a в `before`). Пулу: в ключі `word` з toothache — обидва записи («toothache», «a toothache»).
 3. Термін **verb** у l1 #5 (один новий термін уроку), далі «The verb comes first» у l5 — без пояснення українською; якщо плейтест покаже нерозуміння — `uk` на l1 #5.
 4. Лікар — жінка (Dr Bondar «she»), у outro l5 — «the doctor» без займенника.
+
+**verifier-e4s5, 2026-11-19 — вердикт: придатний, усі 7 уроків `verified`** (звіт reports/verify/e4s5.md).
+- Кожне оцінюване завдання розв'язано самостійно; `word` — через `LANG.wordVerdict`, `build` — перебором усіх порядків плиток з `extra` через `LANG.check` (app/lang.js у node). Ключі `word` без кінцевого знака.
+- ❌ → виправлено: l5 #8 «Stay in ___» — «hospital» (BrE, OALD hospital) була другою правильною відповіддю. До репліки лікаря додано «Stay at home.»
+- Дрібні правки: l1 #5 *verb* визначено прикладом («wash, brush, eat – these are verbs.»); l6 Final «I go to school today» → «I can go to school today»; l3 Final і l6 #8 fbText «stays at home» → «’s at home (today)».
+- `uk` не потрібне. Якщо плейтест покаже нерозуміння *verb*, `uk` треба додати на l1, екран 5.
+- Спірне автора: 1 приймаю (назву плану синхронізує куратор), 2 ✅, 3 → правка, 4 → правка. Питань до вчителя немає.
+- validate --section e4s5: 0 помилок, 0 попереджень. stats: l1 і l6 — прапорці «сім'ї», у межах профілю.
+- Плейтест не запускався (немає build і Python-модуля playwright) — після build по одному.
