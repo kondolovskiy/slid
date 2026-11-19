@@ -50,11 +50,14 @@ export const IMG_REQUIRED = { hist: "error", world: "error" };
 // правило діяло й на розділи 9–11 класів; перевірювані уроки там (ділові папери: реквізити) — окремим рішенням пізніше
 export const NO_POOL_SECTION = /^Пишемо самі/;
 /** Контекст learn.validate для тесту рівня предмета: усі розділи (і лише з планом), уроки-боси — поза списком уроків розділу.
-    Одне джерело для validate.mjs і personalization-qa.mjs (рев'ю tools-diag-nonmath-p3, P3-2). */
-export function diagCtx(c) {
-  const lessons = new Map(), sections = new Map();
+    Одне джерело для validate.mjs і personalization-qa.mjs (рев'ю tools-diag-nonmath-p3, P3-2).
+    all — усі предмети: allLessons (id → {grade, subject}) лише інших предметів, для see baseline-теми (engine-1117-followups п. 3;
+    dgw7 era → урок «Історії»). Свій предмет туди не потрапляє — свої уроки learn.validate бере з lessons (рев'ю engine-diag-baseline-plan-1117 P3-2). */
+export function diagCtx(c, all = []) {
+  const lessons = new Map(), sections = new Map(), allLessons = new Map();
   for (const sec of c.sections) { sections.set(sec.id, { grade: sec.grade, lessons: (sec.lessons || []).filter(l => !l.boss).map(l => l.id) }); (sec.lessons || []).forEach(l => lessons.set(l.id, { grade: sec.grade })); }
-  return { lessons, sections, skills: c.skills };
+  for (const o of all) if (o.id !== c.id) for (const sec of o.sections || []) for (const l of sec.lessons || []) if (!allLessons.has(l.id)) allLessons.set(l.id, { grade: sec.grade, subject: o.id });
+  return { lessons, sections, skills: c.skills, allLessons };
 }
 
 /** Прибирає HTML і формули, повертає чистий текст.
@@ -98,7 +101,11 @@ export function sentences(t) {
   // Protect abbreviation periods only when the following text continues the sentence.
   const text = String(t).replace(/(?<![\p{L}])н\.(?=\s*е\.)/gu, "н\uE000")
     .replace(/(?<![\p{L}])(?:е\.|рр?\.|ст\.|тис\.|млн\.|[Дд]ив\.)\s*(?=[\p{Ll}\d])/gu,
-    m => m.replace(/\./g, "\uE000"));
+    m => m.replace(/\./g, "\uE000"))
+    // хронології (tools-content-checks-p3 п. 3): «1958 р. Мао…», «1958 р. — Мао…» — дата на початку рядка веде подію, її крапка не кінець речення
+    // (раніше кожна дата давала хибне «коротке речення»). Скорочення перед тире — завжди; перед великою літерою — лише коли дата відкриває речення
+    .replace(/(?<![\p{L}])(?:рр?|ст)\.(?=\s*[—–])/gu, m => m.replace(/\./g, "\uE000"))
+    .replace(/(^|[.!?…]\s+)((?:\d{1,4}(?:\s*[–-]\s*\d{1,4})?|[IVXХ]{1,6})\s*(?:рр?|ст)\.)(?=\s*\p{Lu})/gu, (m, a, b) => a + b.replace(/\./g, "\uE000"));
   return text.split(/(?<=[.!?…])\s+/).map(x => x.replace(/\uE000/g, ".").trim()).filter(x => words(x).length > 0);
 }
 

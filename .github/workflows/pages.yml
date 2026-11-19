@@ -50,6 +50,7 @@ jobs:
           node tools/test-hyp.mjs
           node tools/test-personalization-qa.mjs
           node tools/test-validate.mjs
+          node tools/test-content-checks.mjs
           node tools/test-graph-report.mjs
           node tools/test-make-tasks.mjs
           node tools/test-diff-answers.mjs

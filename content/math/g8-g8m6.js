@@ -1,4 +1,5 @@
 /* Слід · Математика, 8 клас — «Геометрія: многокутники і площі»
+   fix-math-notation-1117 / fix-math-grade-scope-1117 / fix-math-terms-1117 (writer-math-g8g11-1117, 2026-11-17): l1 — «360°°» → «|deg}» без зайвого «°».
    fix-math-figs-1105, 2026-11-05: g8m6l3 (фінал) — у вступі «На кресленні двору є…» → «У дворі є…» (посилання на креслення без рисунка); урок → draft; verified — verifier-math-pre-figs-1105, 2026-11-05 (reports/verify/math-pre-figs-1105.md).
    Статус уроків: verified; g8m6l2 — повторно після fix-math-figs-g8-geo (модель на екрані висновку; verifier-fix-math-figs-g8-geo, 2026-11-03, reports/verify/fix-math-figs-g8-geo.md). 3 уроки (2 теми + boss).
    style-math-ister-followup, 2026-11-05: у завдання фіналу додано pre (id уроку теми; style/common.md, D-048 п. 1); зміст не змінено.
@@ -74,7 +75,7 @@ SLID.section("math", {
             ],
             show: [
               "трикутників: 2",
-              "сума кутів: {angle(D,A,B)+angle(A,B,C)+angle(B,C,D)+angle(C,D,A)|deg}°"
+              "сума кутів: {angle(D,A,B)+angle(A,B,C)+angle(B,C,D)+angle(C,D,A)|deg}"
             ],
             alt: "Чотирикутник із діагоналлю AC"
           },

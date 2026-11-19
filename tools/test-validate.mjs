@@ -420,6 +420,18 @@ expectRun("drag: at і без drag — без попередження", one("fx
     expectRun("diag ukr: meta.author «Gemini» — попередження", t, ["--diag", "dgfu6"], { warn: "meta.author «Gemini» схоже на назву моделі ШІ" }); }
   // choice з hint у тесті — те саме попередження (для будь-якого типу)
   expectRun("diag ukr: choice з hint — попередження", tree({ type: "choice", opts: ["е", "и"], correct: 0, hint: "Зміни слово." }), ["--diag", "dgfu6"], { warn: "фідбеку дитина не бачить" });
+  // engine-1117-followups п. 3: see baseline-теми на урок іншого предмета (dgw7 era → «Історія») — diagCtx передає allLessons
+  { const diag5 = see => `SLID.diag("ukr", ${JSON.stringify({ id: "dgfu5", grade: 5, title: "Тест-фікстура", why: "Регресійний тест валідатора: see на урок іншого предмета.", status: "draft",
+      meta: { author: "test", created: "2026-11-17", factcheck: null, teacher: null },
+      topics: [{ id: "p", title: "Базове", kind: "pre", baseline: true, for: ["fu5"], see }, { id: "c", title: "Тема класу", kind: "cur", lessons: ["fu5l1"] }],
+      items: [{ topic: "p", type: "choice", sk: "orth", title: "Обери", opts: ["бур'ян", "бурян"], correct: 0 }, { topic: "p", type: "choice", sk: "orth", title: "Обери ще", opts: ["м'ята", "мята"], correct: 0 },
+        { topic: "c", type: "split", sk: "orth", title: "Поділи", word: "мо|ло|ко" }] }, null, 1)});\n`;
+    const t5 = see => ({ "content/ukr/g5-fu5.js": usec("fu5", 5), "content/hist/g5-fh5.js": secJS("hist", { ...mathSec("fh5"), grade: 5 }),
+      "content/hist/g7-fh7.js": secJS("hist", { ...mathSec("fh7"), grade: 7 }), "content/ukr/diag-g5.js": diag5(see) });
+    expectRun("diag see: урок іншого предмета (hist, 5 кл.) — чисто", t5(["fh5l1"]), ["--diag", "dgfu5"], {});
+    expectRun("diag see: урок іншого предмета старшого класу — помилка", t5(["fh7l1"]), ["--diag", "dgfu5"], { err: "see — урок fh7l1 старшого класу" });
+    expectRun("diag see: вигаданий урок — помилка", t5(["zz1"]), ["--diag", "dgfu5"], { err: "see — немає уроку zz1" });
+    fs.rmSync(path.join(tmp, "content/hist"), { recursive: true, force: true }); }
   fs.rmSync(path.join(tmp, "content/ukr"), { recursive: true, force: true }); }
 // ---- engine-pool-lang: пул тренування ukr з мовними вправами, sort і order (CONTENT_SCHEMA §10, «Пули мовних предметів») ----
 // learn.validatePool (розмітка SLID_LANG.issues, межа пулу gaps ≤ 6, поля числової відповіді, hyp/poll, steps 1–4) + checkScreen (стиль,
@@ -858,6 +870,29 @@ const { figCues: figCuesT, figPoints: figPointsT } = await import(path.join(ROOT
   const pool = poolJS("fxp", ["Відповідь: $4$."]).replace('"author": "test"', '"author": "Claude"');
   ok(pool.includes('"author": "Claude"'), "meta.author: у фікстурі пулу замінено автора");
   expectRun("meta.author пулу «Claude» — попередження", { "content/math/g8-fxp.js": secJS("math", mathSec("fxp")), "content/math/pool-g8-fxp.js": pool }, ["--pool", "pfx"], { warn: AI }); }
+
+// engine-fig-grid-caption-1117: fig grid — нейтральна сітка з cap/label; шоколадка лише look: "chocolate"
+{ const G = "fig grid", grid = (fig, id = "fxg") => ({ [`content/math/g8-${id}.js`]: secJS("math", mathSec(id, { extra: { type: "info", title: "Сітка", body: "Подивись.", fig: { kind: "grid", rows: 4, cols: 6, k: 0, ...fig } } })) });
+  expectRun("fig grid з cap і label — чисто", grid({ cap: "Грядка 6 м × 4 м, клітинка — 1 м²", label: "Грядка: 24 клітинки по 1 м²" }), ["--section", "fxg"], { noWarn: G });
+  expectRun("fig grid без cap — попередження", grid({}), ["--section", "fxg"], { warn: "fig grid без cap" });
+  expectRun("fig grid look: \"chocolate\" без cap — чисто", grid({ look: "chocolate", k: 5 }), ["--section", "fxg"], { noWarn: G });
+  expectRun("fig grid з невідомим look — помилка", grid({ look: "pizza", cap: "QA" }), ["--section", "fxg"], { err: "невідомий look" });
+  expectRun("fig grid з $ у label — помилка", grid({ label: "Площа $S = 24$", cap: "QA" }), ["--section", "fxg"], { err: "label стає aria-label" });
+  expectRun("fig grid з непарним $ у cap — помилка", grid({ cap: "Площа $S = 24" }), ["--section", "fxg"], { err: "fig grid: непарна кількість $", also: "непарна кількість $" });
+  expectRun("fig grid з dashed не boolean — помилка", grid({ dashed: "так", cap: "QA" }), ["--section", "fxg"], { err: "dashed — true/false" }); }
+
+// tools-content-checks-p3: правила tools/content-checks.mjs доходять до звіту validate як ПОПЕРЕДЖЕННЯ (логіку правил — tools/test-content-checks.mjs)
+{ const cc = (name, extra, warn, noWarn = null) => expectRun(`content-checks: ${name}`, { "content/math/g8-fxcc.js": secJS("math", mathSec("fxcc", { extra })) }, ["--section", "fxcc"], { warn, noWarn });
+  const ch = (title, body, correct = 1) => ({ type: "choice", title, body, opts: ["Так", "Ні"], correct });
+  cc("латиниця всередині кириличного слова", { type: "info", title: "Герой", body: "Це Іпóліто." }, "латиниця всередині кириличного слова");
+  cc("службовий id у тексті", { type: "info", title: "Герой", body: "Дивись урок w11s5l3." }, "службовий id «w11s5l3»");
+  cc("choice без питання", ch("Закон на папері", "Реформи діяли."), "оцінюваний choice без питання");
+  cc("choice з питанням — чисто", ch("Закон на папері", "Що це означає?"), null, "без питання");
+  cc("позиційне посилання у fbText", { ...ch("Вибір", "Що правильно?"), fbText: "Перший текст має думку, бо це очевидно з прикладу." }, "позиційне посилання «Перший текст»");
+  cc("два choice на одній позиції (поріг 2)", ch("Вибір", "Що правильно?", 0), "правильний варіант — А");
+  cc("звертання з родом", { type: "info", title: "Крок", body: "Ти вже зрозумів, як це працює." }, "звертання з родом «Ти вже зрозумів»");
+  cc("звертання без роду — чисто", { type: "info", title: "Крок", body: "Ти вже знаєш, як це працює." }, null, "звертання з родом");
+  cc("lab.show з «Потрібно» і goal", { type: "lab", title: "Зроби так", body: "Налаштуй модель.", lab: { kind: "plane", view: [-5, 5, -5, 5], params: { a: { min: 0, max: 4, start: 1 } }, show: "Потрібно 3", alt: "Модель" }, goal: "a==3", solution: { a: 3 }, hint: "Подивись." }, "слово «Потрібно»"); }
 
 console.log(fails ? `\n${fails} з ${n} перевірок не пройшли` : `test-validate: усі ${n} перевірок пройшли`);
 process.exit(fails ? 1 : 0);

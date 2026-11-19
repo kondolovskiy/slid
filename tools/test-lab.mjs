@@ -28,6 +28,69 @@ eq(L.fill("y = {k|c}x {b|s}", { k: -1, b: -2.5 }), "y = -x - 2,5", "c і s");
 eq(L.fill("{a|0} {a*10}", { a: 21 }), "21 210", "|0 і нулі");
 eq(L.fill("{t|time} {m|hm} {k|hm}", { t: 14.5, m: 135, k: 60 }), "14:30 2 год 15 хв 1 год", "time і hm");
 eq(L.fill("{a|deg} {p|pi}", { a: 45.2, p: Math.PI * 1.5 }), "45° 3π/2", "deg і pi");
+// engine-ui-text-1117: форма слова після числа — {n|pl:1,2,5} («54 місць» → «54 місця»), лише слово, без числа
+{ const PL = "{n|pl:клітинка,клітинки,клітинок}";
+  for (const [v, w] of [[1, "клітинка"], [2, "клітинки"], [5, "клітинок"], [11, "клітинок"], [12, "клітинок"], [14, "клітинок"], [21, "клітинка"], [22, "клітинки"], [54, "клітинки"], [64, "клітинки"], [100, "клітинок"], [111, "клітинок"], [0, "клітинок"], [-3, "клітинки"], [2.5, "клітинки"], [0.5, "клітинки"], [5.5, "клітинки"], [NaN, "?"], [4.9999999999, "клітинок"]])
+    eq(L.fill(PL, { n: v }), w, `pl n=${v}`);
+  eq(L.fill("$ {a|0} * 6 = {a*6|0}$ {a*6|pl:місце, місця, місць}", { a: 9 }), "$ 9 * 6 = 54$ місця", "pl у show з пробілами після коми");
+  eq(L.fill("Пиріг на {n|0} {n|pl:шматок,шматки,шматків}", { n: 4 }), "Пиріг на 4 шматки", "pl: 4 шматки");
+  eq(L.fill("{n|pl:рівний відрізок,рівні відрізки,рівних відрізків}", { n: 1 }), "рівний відрізок", "pl: форми з кількох слів");
+  eq(L.fill("{n|pl:один,два}", { n: 1 }), "?", "pl з двома формами — «?»");
+  // shift:x — «(x − a)» з правильним знаком, при a = 0 — сама змінна (g9m2l2: «(y)²» → «y²»)
+  eq(L.fill("${a|shift:x}^2 + {b|shift:y}^2$", { a: 2, b: 0 }), "$(x - 2)^2 + y^2$", "shift: a=2, b=0");
+  eq(L.fill("{a|shift:x} {a|shift:\\alpha}", { a: -1.5 }), "(x + 1,5) (\\alpha + 1,5)", "shift: від'ємне й дробове");
+  // validate знає формати: невідомий формат і pl без трьох форм — помилки; правильні — чисто
+  const tv = show => L.validate({ kind: "numline", view: [0, 10], params: { n: { min: 1, max: 9, step: 1, start: 2 } }, points: { P: { x: "n" } }, show });
+  eq(tv(["{n|0} {n|pl:клітинка,клітинки,клітинок}", "${n|shift:x}^2$", "{n|deg} {n|2}"]), [], "validate: pl, shift, deg, 2 — чисто");
+  eq(tv("{n|pl:клітинка,клітинок}").length, 1, "validate: pl з двома формами — помилка");
+  eq(tv("{n|pl}").length, 1, "validate: pl без форм — помилка");
+  eq(tv("{n|plural:a,b,c}").length, 1, "validate: невідомий формат — помилка");
+  eq(tv("{n|shift}").length, 1, "validate: shift без змінної — помилка");
+  eq(tv("{n|deg:x}").length, 1, "validate: аргумент у формату без аргументу — помилка");
+}
+// engine-render-legibility-1117: підписи моделей у межах поля (оцінка рамки: ширина ≈ 0,6 кегля на знак, висота — кегль над базовою лінією);
+// моделі — як у g4m2 «Додай 1365» (дуги стрибків), g4m4 «Коли виїжджати?», g8m1 (дві точки в одному місці, смужки «сума 5/a»), g11m2 (solid з осями)
+{ const boxes = r => [...r.body.matchAll(/<text x="([-\d.]+)" y="([-\d.]+)" font-size="(\d+)" (?:text-anchor="(\w+)")?[^>]*>([\s\S]*?)<\/text>/g)].map(m => {
+    const s = m[5].replace(/<[^>]+>/g, ""), fs = +m[3], w = [...s].length * fs * 0.6, x = +m[1], an = m[4] || "start";
+    const x0 = an === "middle" ? x - w / 2 : an === "end" ? x - w : x; return { s, x0, x1: x0 + w, y0: +m[2] - fs * 0.8, y1: +m[2] + fs * 0.2 }; });
+  const render = (spec, st = {}) => { const K = L.KINDS[spec.kind]; return K.render(spec, L.makeEnv(spec, { ...L.startState(spec), ...st }), K.view ? K.view(spec) : {}); };
+  const inView = (what, spec, st) => { const r = render(spec, st), out = boxes(r).filter(b => b.x0 < -0.5 || b.x1 > r.w + 0.5 || b.y0 < -0.5 || b.y1 > r.h + 0.5);
+    eq(out.map(b => b.s), [], `${what}: підписи в межах ${r.w}×${r.h}`); return boxes(r); };
+  const P9 = { min: 0, max: 9, start: 0 };
+  const jumps = { kind: "numline", view: [2700, 4800], tick: 100, labels: 500, params: { th: { min: 0, max: 1, start: 0 }, hu: P9, tn: P9, un: P9 }, let: { k: "1000*th+100*hu+10*tn+un" },
+    jumps: [{ from: "2748", to: "2748+1000*th", label: "+{1000*th|0}" }, { from: "2748+1000*th", to: "2748+1000*th+100*hu", label: "+{100*hu|0}" }],
+    points: { M: { x: "2748", label: "2748" }, N: { x: "2748+k", label: "{2748+k|0}" }, E: { x: "4800", label: "кінець шляху" } } };
+  const b1 = inView("numline: дуга +1000", jumps, { th: 1, hu: 3, tn: 6, un: 5 });
+  eq(["+1000", "+300", "2748", "4113"].every(s => b1.some(b => b.s === s)), true, "numline: підписи дуг і старту є");
+  // рев'ю engine-render-legibility-1117, P1-1: нерозв'язані стани g4m2 «Додай 1365» — підпис старту «2748» і підпис N не налазять один на одного
+  const g4 = { ...jumps, jumps: [...jumps.jumps, { from: "2748+1000*th+100*hu", to: "2748+1000*th+100*hu+10*tn" }, { from: "2748+1000*th+100*hu+10*tn", to: "2748+k" }],
+    points: { M: { x: "2748", color: "muted", label: "2748" }, N: { x: "2748+k", label: "{2748+k|0}" } } };
+  const hit = (p, q) => p.x0 < q.x1 && q.x0 < p.x1 && p.y0 < q.y1 && q.y0 < p.y1;
+  for (const st of [{ un: 5 }, { hu: 1 }, { tn: 6, un: 5 }, { hu: 1, un: 9 }, { th: 1, hu: 3, tn: 6, un: 5 }]) {
+    const bx = inView(`numline g4m2 ${JSON.stringify(st)}`, g4, st), k = (st.th || 0) * 1000 + (st.hu || 0) * 100 + (st.tn || 0) * 10 + (st.un || 0);
+    const m = bx.find(b => b.s === "2748"), nn = bx.find(b => b.s === L.num(2748 + k, 0));
+    eq(!!(m && nn) && !hit(m, nn), true, `numline g4m2 ${JSON.stringify(st)}: підписи старту й N обидва є й не накладаються`); }
+  { const bx = inView("numline g4m2 старт", g4, {}); eq(bx.filter(b => b.s === "2748").length, 1, "numline g4m2 старт: M і N в одному числі — підпис 2748 один, без дубля"); }
+  eq(render(g4).h - render({ ...g4, points: { N: g4.points.N } }).h, 14, "numline зі стрибками: другий ряд підписів (+14) лише за кількох підписаних точок");
+  // P3-1: ширина TeX-підпису — за відмальованим текстом (тонкі пробіли навколо «=»), g8m1l5 «знам. −3» і «$x = 2$»
+  { const den = { kind: "numline", view: [0, 10], tick: 1, labels: 1, params: { x: { min: 1, max: 9, step: 1, start: 2 } }, points: { P: { x: "x", label: "$x={x|0}$" }, D: { x: "x-5", label: "знам. {x-5|0}", color: "gold" } } };
+    for (const st of [{}, { x: 1 }, { x: 3 }]) { const bx = inView(`numline g8m1l5 ${JSON.stringify(st)}`, den, st), [pp, dd] = [bx.find(b => b.s.startsWith("x")), bx.find(b => b.s.startsWith("знам"))];
+      eq(!!(pp && dd) && !hit(pp, dd), true, `numline g8m1l5 ${JSON.stringify(st)}: «x = …» і «знам. …» не накладаються`); } }
+  inView("numline: час (g4m4)", { kind: "numline", view: [5, 9], tick: 0.25, labels: 1, params: { t: { min: 5, max: 9, step: 1 / 6, start: 6 } },
+    jumps: [{ from: "t", to: "8", label: "{(8-t)*60|0} хв" }], points: { S: { x: "t", label: "{t|time}", drag: true }, F: { x: "8", label: "8:00" } } });
+  const two = { kind: "numline", view: [0, 5], tick: 0.5, labels: 1, params: { m: { min: -2, max: 3, start: 1 }, n: { min: -2, max: 3, start: -2 } },
+    points: { A: { x: "2^m * 2^n", label: "добуток {2^m * 2^n|4}" }, B: { x: "2^(m+n)", label: "степінь {2^(m+n)|4}" } } };
+  const b2 = inView("numline: дві точки в одному місці", two), [pa, pb] = ["добуток", "степінь"].map(w => b2.find(b => b.s.startsWith(w)));
+  eq(!!(pa && pb) && !(pa.x0 < pb.x1 && pb.x0 < pa.x1 && pa.y0 < pb.y1 && pb.y0 < pa.y1), true, "numline: підписи двох точок в одному місці не накладаються");
+  inView("fraction: «сума 5/a»", { kind: "fraction", params: { a: { min: 5, max: 12, step: 1, start: 6 } }, items: [{ shape: "bar", n: "a", k: 3, label: "$3/a$" }, { shape: "bar", n: "a", k: 5, label: "сума $5/a$" }] });
+  const drone = { kind: "solid", shape: "box", params: { a: { min: 1, max: 5, start: 3 }, c: { min: 1, max: 5, start: 2 }, b: { min: 1, max: 5, start: 4 } }, a: "a", b: "b", c: "c", axes: true,
+    marks: [{ v: 0, label: "O" }, { v: 6, label: "M" }, { v: 5, label: "M₁" }] };
+  for (const st of [{}, { a: 5, b: 1, c: 5 }, { a: 1, b: 5, c: 1 }]) { const b4 = inView(`solid з осями ${JSON.stringify(st)}`, drone, st);
+    eq(["x", "y", "z"].map(n => b4.filter(b => b.s === n).length), [1, 1, 1], "solid: підписи осей x, y, z"); }
+  eq(L.validate({ ...drone, axes: ["x", "y"] }).length, 1, "validate: solid.axes — три назви");
+  eq(L.validate({ ...drone, axes: ["x", "y", "z"] }), [], "validate: solid.axes — масив назв");
+  eq(L.validate({ kind: "solid", shape: "prism", n: 3, r: 1, h: 2, axes: true }).length, 1, "validate: solid.axes — лише box");
+}
 
 // валідація моделей
 const line = { kind: "plane", params: { k: { min: -3, max: 3, step: 0.5, start: 0 }, b: { min: -4, max: 4, start: 0 } }, fns: [{ id: "f", y: "k*x+b" }] };
@@ -51,7 +114,26 @@ for (const kind of Object.keys(L.KINDS)) { const sp = { kind, params: { a: { min
 { const sp = { kind: "column", op: "+", a: "478", b: "256", input: true };
   eq(L.paramList(sp).map(p => p.id).join(","), "d0,d1,d2", "column input: параметри цифр");
   eq(L.validate(sp, { type: "lab", goal: "col==734", solution: { d0: 4, d1: 3, d2: 7 } }), [], "column input: мета col==734");
-  const r = L.KINDS.column.render(sp, L.makeEnv(sp, L.startState(sp)), {}); eq(r.handles.length, 3, "column input: три клітинки для торкання"); eq(r.handles[0].tap().d0, 0, "column input: «?» → 0"); }
+  const r = L.KINDS.column.render(sp, L.makeEnv(sp, L.startState(sp)), {}); eq(r.handles.length, 3, "column input: три клітинки для торкання");
+  eq(r.handles.some(h => h.tap), false, "column input: дотик не крутить цифру +1 (engine-lab-column-digits-1117) — він ставить фокус у клітинку");
+  eq(r.handles.every(h => Array.isArray(h.box) && h.box.length === 4 && h.box[2] >= 20 && h.box[3] >= 26), true, "column input: кожна клітинка має прямокутник для поля вводу"); }
+// engine-lab-column-digits-1117: порядок вписування, готовність, розбір введеного
+{ const sum = { kind: "column", op: "+", a: "5476", b: "2859", input: true }, hs = L.KINDS.column.render(sum, L.makeEnv(sum, L.startState(sum)), {}).handles;
+  eq([L.digitNext(hs, "d0", 1), L.digitNext(hs, "d1", 1), L.digitNext(hs, "d3", 1), L.digitNext(hs, "d0", -1), L.digitNext(hs, "d2", -1)], ["d1", "d2", null, null, "d1"], "сума: вписуємо справа наліво (одиниці → тисячі), назад — до попередньої");
+  const dv = { kind: "column", op: ":", a: "4572", b: "3", input: true }, hd = L.KINDS.column.render(dv, L.makeEnv(dv, L.startState(dv)), {}).handles;
+  eq(hd.map(h => h.digit), ["d3", "d2", "d1", "d0"], "ділення кутом 4572 : 3: клітинки частки зліва направо");
+  eq([L.digitNext(hd, "d3", 1), L.digitNext(hd, "d0", 1), L.digitNext(hd, "d2", -1)], ["d2", null, "d3"], "ділення: вписуємо зліва направо");
+  eq(hd.every((h, i) => i === 0 || h.box[0] > hd[i - 1].box[0]), true, "ділення: клітинки йдуть зліва направо на рисунку");
+  eq([L.digitsReady(dv, L.startState(dv)), L.digitsReady(dv, { d0: 4, d1: 2, d2: 5, d3: -1 }), L.digitsReady(dv, { d0: 4, d1: 2, d2: 5, d3: 1 })], [false, false, true], "ділення: готово лише без «?»");
+  eq(L.check(dv, { d0: 4, d1: 2, d2: 5, d3: 1 }, "col==1524"), true, "ділення: 1524 зараховано");
+  eq(L.digitsReady({ kind: "plane" }, {}), true, "інші моделі завжди готові до перевірки");
+  eq([["7", -1], ["57", 5], ["75", 5], ["55", 5], ["", 5], ["a", -1], ["٣", -1]].map(([v, p]) => L.typedDigit(v, p)), [7, 7, 7, 5, -1, -1, -1], "розбір введеного в клітинку: нова цифра або «?»");
+  eq([["\u200B7", -1], ["7\u200B", -1], ["\u200B", -1]].map(([v, p]) => L.typedDigit(v, p)), [7, 7, -1], "заповнювач порожньої клітинки не заважає цифрі"); }
+// позика й знак множення читабельні: крапки — кола, а не гліф «·» 13 px
+{ const sb = { kind: "column", op: "-", a: "403", b: "158" }, b = L.KINDS.column.render(sb, L.makeEnv(sb, {}), {}).body;
+  eq((b.match(/<circle [^>]*class="col-borrow"/g) || []).length, 2, "403 − 158: дві позики (через нуль) — кружки над розрядами");
+  const ml = { kind: "column", op: "*", a: "23", b: "14" }, m = L.KINDS.column.render(ml, L.makeEnv(ml, {}), {}).body;
+  eq(/<circle [^>]*class="col-times"[^>]*r="(3\.[0-9]|[4-9])/.test(m), true, "23 · 14: знак множення — помітна крапка (коло r ≥ 3)"); }
 { const sp = { kind: "column", op: ":", a: "984", b: "8", params: { s: { min: 0, max: 3, start: 3 } }, step: "s" }, r = L.KINDS.column.render(sp, L.makeEnv(sp, { s: 3 }), {});
   eq(/NaN|undefined/.test(r.body), false, "ділення куточком: без NaN"); eq(r.body.includes(">2<") && r.body.includes(">3<"), true, "ділення: цифри частки 123");
   const si = { kind: "column", op: ":", a: "84", b: "6", input: true }; eq(L.validate(si, { type: "lab", goal: "col==14", solution: { d0: 4, d1: 1 } }), [], "ділення input: col==14");
@@ -264,11 +346,56 @@ eq([L.svgTexIssues("$x_{a_{bc}}$").map(i => i.level), L.svgTexIssues("$x^{2{,}5}
     eq(/NaN|undefined/.test(R(sp).body), false, `chart ${sp.horizontal ? "horizontal" : "line"}: порожні/нульові дані без NaN`);
   // п. 10: numline ray — лінія від view[0], без «хвостика»
   const nl = R({ kind: "numline", view: [0, 10] }), ray = R({ kind: "numline", view: [0, 10], ray: true });
-  const x1 = b => +b.match(/<line x1="([\d.]+)" x2="316" y1="24" y2="24" stroke="var\(--ink\)" stroke-width="2"\/>/)[1];
+  const x1 = b => +b.match(/<line x1="([\d.]+)" x2="316" y1="(\d+)" y2="\2" stroke="var\(--ink\)" stroke-width="2"\/>/)[1];
   eq([x1(nl.body), x1(ray.body)], [6, 16], "numline ray: лінія з точки 0 (x = 16), без ray — з хвостиком (x = 6)");
   { const iv = R({ kind: "numline", view: [0, 10], ray: true, intervals: [{ from: null, to: 3 }] }).body.match(/<rect x="([\d.]+)"/); eq(+iv[1], 16, "numline ray: проміжок до −∞ — від початку променя"); }
   eq(L.validate({ kind: "numline", view: [0, 10], ray: 1 }).length, 1, "validate: ray — boolean");
   eq(L.validate({ kind: "numline", view: [0, 10], ray: true }), [], "validate: numline ray");
 }
+// engine-lab-p3-1117 п. 1: pie legend "pct" — відсотки суммуються рівно в 100 (метод найбільшого залишку)
+{ const pct = bars => { const sp = { kind: "chart", pie: true, legend: "pct", bars }, b = L.KINDS.chart.render(sp, L.makeEnv(sp, {}), {}).body;
+    return [...b.matchAll(/(\d+)\u00A0%/g)].map(m => +m[1]); };
+  const a = pct([8, 7, 7].map((v, i) => ({ label: "abc"[i], v }))); eq([a.reduce((x, y) => x + y, 0), a], [100, [36, 32, 32]], "pie pct: 8/7/7 → 100 %");
+  const e = pct([1, 1, 4].map((v, i) => ({ label: "abc"[i], v }))); eq([e.reduce((x, y) => x + y, 0), e], [100, [17, 17, 66]], "pie pct: 1/1/4 → 100 %, не 101");
+  const b = pct([1, 1, 1].map((v, i) => ({ label: "abc"[i], v }))); eq([b.reduce((x, y) => x + y, 0), b], [100, [34, 33, 33]], "pie pct: 1/1/1 → 34+33+33, не 99");
+  const c = pct([{ label: "a", v: 1 }, { label: "b", v: 3 }]); eq(c, [25, 75], "pie pct: точні частки без змін");
+  const d = pct([{ label: "a", v: 0 }, { label: "b", v: 0 }]); eq(d.every(x => x === 0), true, "pie pct: нульові дані без NaN"); }
+// п. 2: умовний текст {умова|if:так;ні}
+eq([L.fill("{t!=2|if:існує;не існує}", { t: 3 }), L.fill("{t!=2|if:існує;не існує}", { t: 2 }), L.fill("{t|if:так;ні}", { t: NaN }), L.fill("{0/0|if:так;ні}", {}), L.fill("[{n>1|if:зайве}]", { n: 0 })],
+  ["існує", "не існує", "ні", "ні", "[]"], "fill if: умовний текст, NaN — гілка «ні», одна гілка");
+eq(L.validate({ kind: "numline", view: [0, 10], points: { P: { x: 1 } }, show: ["{1|if:а;б}", "{1|if}"] }).length, 1, "validate: if без тексту — помилка, з текстом — чисто");
+// п. 3: {вираз|eq[:d]} → «= 2» або «≈ 2,15»
+eq([L.fill("{2|eq}", {}), L.fill("{x|eq}", { x: 2.15 }), L.fill("{x|eq}", { x: 2.1456 }), L.fill("{x|eq:3}", { x: 2.1456 }), L.fill("{x|eq:3}", { x: 2 }), L.fill("{x|eq:1}", { x: 1 / 3 }), L.fill("{x|eq}", { x: NaN })],
+  ["= 2", "= 2,15", "≈ 2,15", "≈ 2,146", "= 2", "≈ 0,3", "не існує"], "fill eq: «=» для точного, «≈» для округленого");
+eq(L.validate({ kind: "numline", view: [0, 10], points: { P: { x: 1 } }, show: ["{1|eq:3}", "{1|eq:ab}"] }).length, 1, "validate: eq:ab — помилка");
+// п. 5: solid — відрізки між вершинами (діагоналі) і переріз площиною; точка — вершина або { e: [i, j], t } на ребрі
+{ const R = sp => L.KINDS.solid.render(sp, L.makeEnv(sp, {}), { yaw: -0.6, pitch: 0.4 });
+  const box = { kind: "solid", shape: "box", a: 3, b: 2, c: 4 }, pyr = { kind: "solid", shape: "pyramid", n: 4, r: 2, h: 3 };
+  const lines = b => (b.match(/<line /g) || []).length, polys = b => (b.match(/<polygon /g) || []).length;
+  const b0 = R(box).body, b1 = R({ ...box, segs: [{ a: 0, b: 6, color: "red", dash: true, label: "d" }] }).body, b2 = R({ ...pyr, cut: { pts: [{ e: [0, 4], t: 0.5 }, { e: [1, 4], t: 0.5 }, { e: [2, 4], t: 0.5 }, { e: [3, 4], t: 0.5 }] } }).body;
+  eq([lines(b1) - lines(b0), /stroke-dasharray="6 4"/.test(b1), />d<\/text>/.test(b1)], [1, true, true], "solid segs: діагональ 0–6 — одна лінія, пунктир, підпис");
+  eq(polys(b2) - polys(R(pyr).body), 1, "solid cut: переріз піраміди — один многокутник");
+  eq(L.validate({ ...box, segs: [{ a: 0, b: 6 }] }), [], "validate: solid segs — чисто");
+  eq([L.validate({ ...box, segs: [{ a: 0, b: 8 }] }).length, L.validate({ ...pyr, cut: { pts: [0, 1] } }).length, L.validate({ ...pyr, cut: { pts: [0, 1, 4] } }), L.validate({ ...pyr, cut: { pts: [0, 1, { e: [2, 9] }] } }).length], [1, 1, [], 1], "validate: solid segs/cut — індекси за формою, ≥ 3 точок"); }
+eq(L.validate({ kind: "numline", view: [0, 10], params: { n: { min: 1, max: 9, step: 1, start: 2 } }, points: { P: { x: "n" } }, show: ["{n>1|if:зайве {n|0} шт;ні}"] }).length, 1, "validate: вкладена вставка у гілці if — помилка");
+eq(L.validate({ kind: "numline", view: [0, 10], params: { n: { min: 1, max: 9, step: 1, start: 2 } }, points: { P: { x: "n" } }, show: ["{n>1|if:так;ні} {n|0}", "{,}"] }), [], "validate: if без вкладених вставок — чисто");
+// engine-lab-p4-1118 п. 3: eq для NaN/±∞ — «не існує»; помилка виразу лишається «?»
+eq([L.fill("{sqrt(x)|eq}", { x: -1 }), L.fill("{1/x|eq}", { x: 0 }), L.fill("{-1/x|eq:3}", { x: 0 }), L.fill("{x+|eq}", { x: 1 })], ["не існує", "не існує", "не існує", "?"], "fill eq: NaN і ∞ — «не існує», помилка виразу — «?»");
+eq(L.fill("√{x|0} {sqrt(x)|eq}", { x: -4 }), "√−4 не існує", "fill eq: у реченні");
+// п. 4: solid segs/cut при n-виразі — межа за діапазоном параметра
+{ const mk = (min, cutPts) => ({ kind: "solid", shape: "pyramid", n: "k", r: 2, h: 3, params: { k: { min, max: 8, step: 1, start: 5 } }, cut: { pts: cutPts } });
+  eq(L.validate(mk(3, [0, 1, 4])).length, 1, "validate: solid n-вираз — вершина 4 не існує при n = 3 (піраміда має лише 0…3)");
+  eq(L.validate(mk(4, [0, 1, 4])), [], "validate: solid n-вираз — при n ≥ 4 вершина 4 є");
+  eq(L.validate({ kind: "solid", shape: "prism", n: "k+1", r: 1, h: 2, params: { k: { min: 2, max: 6, step: 1, start: 3 } }, segs: [{ a: 0, b: 7 }] }).length, 1, "validate: solid prism n = k+1 ≥ 3 — вершина 7 не існує при n = 3 (0…5)"); }
+// п. 6: осі solid — під ребрами тіла (ребро не перекривається тонкою лінією осі)
+{ const sp = { kind: "solid", shape: "box", a: 3, b: 4, c: 2, axes: true }, body = L.KINDS.solid.render(sp, L.makeEnv(sp, {}), { yaw: 2.5, pitch: 0.5 }).body;
+  const ia = body.indexOf('stroke="var(--muted)" stroke-width="1.4"/>'), ie = body.indexOf('stroke="var(--ink)"');
+  eq([ia > 0, ie > 0, ia < ie], [true, true, true], "solid axes: осі малюються до ребер, тож ребра лежать поверх"); }
+// п. 1: slider — повзунок-дубль для параметрів з hide (за замовчуванням вимкнено)
+{ const nl = extra => ({ kind: "numline", view: [0, 10], params: { t: { min: 0, max: 10, start: 3, hide: true }, u: { min: 0, max: 10, start: 1, hide: true } }, points: { P: { x: "t", drag: true } }, ...extra });
+  const hid = sp => L.paramList(sp).map(p => p.hide);
+  eq([hid(nl({})), hid(nl({ slider: true })), hid(nl({ slider: "t" })), hid(nl({ slider: ["u"] }))], [[true, true], [false, false], [false, true], [true, false]], "slider: за замовчуванням hide, true/id/масив — повзунок");
+  eq([L.validate(nl({ slider: true })), L.validate(nl({ slider: "t" }))], [[], []], "validate: slider — чисто");
+  eq([L.validate(nl({ slider: "z" })).length, L.validate(nl({ slider: 1 })).length, L.validate({ ...nl({ slider: true }), params: { t: { min: 0, max: 10, start: 3 } } }).length], [1, 1, 1], "validate: slider — невідомий id, не рядок, немає hide-параметрів"); }
 console.log(`${n - fails}/${n} тестів лабораторії пройдено`);
 process.exit(fails ? 1 : 0);

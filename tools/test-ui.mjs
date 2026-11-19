@@ -28,8 +28,25 @@
 //  14) Ширина gaps на телефоні (engine-gaps-wrap, QA qa-ukr-pool Q-1): на 360 і 375 px жоден екран gaps (фікстура з довгими варіантами з кількох
 //      слів + усі gaps уроків, пулів і тестів рівня, які завантажує сторінка) не виходить за край: картка .ltext без горизонтального переповнення,
 //      кнопки варіантів у межах екрана, #player не прокручується вбік; слово з пропуском (span.gw) — в одному рядку (не рветься посеред слова).
+//  15) Поле number уроку (engine-number-fraction-input-1117): «3/2», «1 1/2», «-3/4» за значенням, «32» — помилка; кнопки «/», «пробіл»
+//      і підказка — як у тренуванні (answerUI); 4 клас із цілим ключем — без них.
+//  16) Підсумок тесту рівня (engine-diag-baseline-plan-1117): baseline-тема з see — «тема є в уроці …» з кнопкою (і на урок іншого предмета),
+//      «попроси дорослого» — лише без see; «З програми N класу» з «попереду» і без «уже вмієш».
+//  17) Ділення кутом 4572 : 3 з input на телефоні (engine-lab-column-digits-1117): «Перевірити» неактивна на «????», дотик — фокус без «+1»,
+//      автоперехід, дотик по іншій клітинці кладе цифру туди, «1524» зараховано; __slidLab.set (QA) оновлює «Перевірити».
+//  18) Збільшення зображення (engine-img-zoom-1117), 360 px, сенсор: img екрана — кнопка з лупою; дотик → повноекранний перегляд (той самий src, cap),
+//      решта сторінки inert, «+ / −», щипок двома пальцями й перетягування, Esc закриває й повертає фокус (урок лишається відкритим);
+//      з клавіатури — Enter, «+», Tab у межах перегляду; у тесті рівня — те саме; перегляд не ширший за екран.
+//  19) fig grid (engine-fig-grid-caption-1117): без look — нейтральна сітка з cap і label, без «шоколад»/«з'їдені»; look: "chocolate" — як раніше,
+//      підпис «пунктиром — з'їдені часточки» лише при k > 0.
 //  5–7) Service worker (engine-sw-version-skew): деплой нової версії не змішує index.html і app.js; файл зі старого кешу не віддається
 //     (P3-6); оновлення не перезавантажує сторінку посеред уроку, а версія подій журналу лишається версією сторінки (P3-4); застосунок зі старим SW після одного змішаного відкриття сам переходить на консистентну нову версію.
+//  22) Тексти інтерфейсу (engine-ui-text-1117): «1 день поспіль», «тренувань ще не було» (без роду, D-020), картка уроку «7 кроків · 4 завдання»
+//      і «1 крок · 1 завдання», «0 з 1 уроку», «Помилка в цьому уроці пов'язана…» за однієї помилки й «Помилки…» за двох, «пройдено ✓» замість
+//      «є уроки» / «зараз:» для повністю пройденого розділу.
+//  23) Читабельність рендеру (engine-render-legibility-1117), 360 px: підписи numline (дуги стрибків, точка біля краю, дві точки в одному місці),
+//      смужок fraction і solid з осями — у межах SVG і без накладань; назва повзунка «$\alpha$» — «α» без «\»; знак кореня — маска до риски;
+//      \to ширша за «−»; підкреслення <u> з відступом; align — роки шкали цілком у полі й «N з 18 кілець»; strata — знахідки не налазять на стрілку; клік по точці numline — фокус на її ручку, стрілки рухають її (qa-drag-points B1).
 // Запуск: node tools/test-ui.mjs [--browser /opt/pw-browsers/chromium]
 // Playwright: require("playwright") (NODE_PATH) або PLAYWRIGHT_MODULE / /opt/node-tools/node_modules/playwright.
 // Браузер, як у test-answer-ui.py: --browser / SLID_BROWSER → /opt/pw-browsers/chromium, якщо є (PW_DEFAULT=1 вимикає) → Chromium самого
@@ -251,6 +268,277 @@ async function phoneScenarios(browser) {
   await ctx.close();
 }
 
+/* 15) Звичайний дріб у полі number уроку (engine-number-fraction-input-1117, плейтест g8 №6, №17): «/» і пробіл не викидаються,
+   «3/2» і «1 1/2» при ключі 1.5 зараховано за значенням, «32» — ні; кнопки «/», «пробіл» і підказка «Дріб — через риску» — як у тренуванні;
+   4 клас із цілим ключем — без кнопок і підказки (дробів ще немає). Синтетична фікстура, без живого content/. */
+async function numberFractionScenario(browser) {
+  const ctx = await browser.newContext({ viewport: { width: 400, height: 860 }, serviceWorkers: "block" });
+  const page = await ctx.newPage(), errors = [];
+  page.on("pageerror", e => errors.push(String(e)));
+  await page.route("**/fonts.googleapis.com/**", r => r.abort());
+  page.setDefaultTimeout(7000);
+  await page.goto(URL0);
+  await page.evaluate(s => localStorage.setItem("slid.v1", JSON.stringify(s)), { ...seed, grade: 8, unlockAll: true });
+  await page.reload();
+  const N = (answer, title) => ({ type: "number", title, body: "QA", answer });
+  const secs = [{ id: "fN", grade: 8, weeks: [15, 16], title: "QA N", why: "QA", lessons: [{ id: "fn1", title: "Урок fn1", icon: "book", screens: [
+      { type: "intro", title: "Початок", body: "QA" }, N(1.5, "Дріб 1"), N(1.5, "Дріб 2"), N(1.5, "Дріб 3"), N(-0.75, "Від'ємний"), { type: "info", title: "Кінець", body: "QA" }] }] },
+    { id: "fM", grade: 4, weeks: [15, 16], title: "QA M", why: "QA", lessons: [{ id: "fm1", title: "Урок fm1", icon: "book", screens: [
+      { type: "intro", title: "Початок", body: "QA" }, N(12, "Ціле"), { type: "info", title: "Кінець", body: "QA" }] }] }];
+  await page.evaluate(install, FIX);
+  await page.evaluate(ss => { SLID_SUBJECTS.find(c => c.id === "math").sections.push(...ss); window.__slidStart("fn1"); }, secs);
+  await page.click("#action");   // інтро → «Дріб 1»
+  const field = () => page.evaluate(() => ({ keys: [...document.querySelectorAll("#stage .anskeys button")].map(b => b.dataset.ins),
+    help: document.querySelector("#stage .numbox ~ .anskeys ~ .fix, #stage .numbox ~ .fix")?.textContent || "", sign: !!document.querySelector("#numSign") }));
+  const verdict = async () => { await page.click("#action"); return page.locator("#numIn").evaluate(i => i.classList.contains("is-ok") ? "ok" : i.classList.contains("is-bad") ? "bad" : "—"); };
+  const typeIn = async v => { await page.fill("#numIn", ""); await page.type("#numIn", v); return page.inputValue("#numIn"); };
+  const f1 = await field();
+  ok(f1.keys.includes("/") && f1.keys.includes(" "), `number 8 кл.: кнопки «/» і «пробіл», а ${JSON.stringify(f1.keys)}`);
+  ok(!f1.keys.includes("-") && f1.sign, `number 8 кл.: знак — кнопкою «±», без другої «−», а ${JSON.stringify(f1)}`);
+  ok(/Дріб — через риску/.test(f1.help), `number 8 кл.: підказка «Дріб — через риску», а «${f1.help}»`);
+  const v1 = await typeIn("3/2");
+  ok(v1 === "3/2", `number: «3/2» лишається «3/2» (не «32»), а «${v1}»`);
+  ok(await verdict() === "ok", "number: «3/2» при ключі 1.5 зараховано");
+  await page.click("#action");   // → «Дріб 2»: «32» — помилка, далі мішане «1 1/2» кнопками
+  await typeIn("32");
+  ok(await verdict() === "bad", "number: «32» при ключі 1.5 — не зараховано");
+  await page.fill("#numIn", ""); await page.type("#numIn", "1"); await page.click('#stage .anskeys button[data-ins=" "]');
+  await page.type("#numIn", "1"); await page.click('#stage .anskeys button[data-ins="/"]'); await page.type("#numIn", "2");
+  const v2 = await page.inputValue("#numIn");
+  ok(v2 === "1 1/2", `number: кнопки дають «1 1/2», а «${v2}»`);
+  ok(await verdict() === "ok", "number: «1 1/2» при ключі 1.5 зараховано (друга спроба)");
+  await page.click("#action");   // → «Дріб 3»: десятковий запис, як і раніше
+  await typeIn("1.5");
+  ok(await page.inputValue("#numIn") === "1,5" && await verdict() === "ok", "number: «1.5» → «1,5» і зараховано");
+  await page.click("#action");   // → від'ємний: «-3/4» при ключі −0.75
+  await typeIn("-3/4");
+  ok(await verdict() === "ok", "number: «-3/4» при ключі −0.75 зараховано");
+  await page.evaluate(() => window.__slidStart("fm1"));
+  await page.click("#action");
+  const f2 = await field();
+  ok(!f2.keys.length && !f2.help, `number 4 кл., цілий ключ: без кнопок і підказки, а ${JSON.stringify(f2)}`);
+  ok(!errors.length, "number дроби, помилки сторінки: " + errors.join(" | "));
+  await ctx.close();
+}
+/* 16) Підсумок тесту рівня з baseline-темами (engine-diag-baseline-plan-1117, плейтест g5 №3, g7 №10, g9 №8): тема з see — «тема є в уроці …»
+   з кнопкою на урок (свого предмета — без назви предмета, іншого — з нею), без «попроси дорослого»; «попроси дорослого» — лише для теми без see;
+   блок «З програми N класу» — і без жодної «уже вмієш» (теми cur «попереду»). Синтетична фікстура (математика 5 кл. + урок «Історії»). */
+async function diagBaselineSeeScenario(browser) {
+  const ctx = await browser.newContext({ viewport: { width: 400, height: 860 }, serviceWorkers: "block" });
+  const page = await ctx.newPage(), errors = []; page.on("pageerror", e => errors.push(String(e))); page.setDefaultTimeout(8000);
+  await page.route("**/fonts.googleapis.com/**", r => r.abort());
+  const fx = ([withPlain]) => {
+    const lesson = id => ({ id, title: "Урок " + id, icon: "book", screens: [{ type: "intro", title: id, body: "QA" }] });
+    const m = SLID_SUBJECTS.find(c => c.id === "math"), h = SLID_SUBJECTS.find(c => c.id !== "math");
+    m.sections = [{ id: "fS5", grade: 5, weeks: [1, 52], title: "QA S5", why: "QA", lessons: ["fs1", "fs2", "fs3"].map(lesson) }];
+    h.sections.push({ id: "fH5", grade: 5, weeks: [1, 52], title: "QA H5", why: "QA", lessons: [lesson("hx1")] });
+    m.pools = []; delete m.graph;
+    const topics = [{ id: "apos", title: "Апостроф QA", kind: "pre", baseline: true, lessons: [], for: ["fS5"], see: ["fs2"] },
+      { id: "era", title: "Межа ер QA", kind: "pre", baseline: true, lessons: [], for: ["fS5"], see: ["hx1"] },
+      ...(withPlain ? [{ id: "nob", title: "Без уроку QA", kind: "pre", baseline: true, lessons: [], for: ["fS5"] }] : []),
+      { id: "c1", title: "Тема класу QA", kind: "cur", lessons: ["fs3"] }];
+    const ch = topic => ({ topic, type: "choice", sk: "num", title: "Q " + topic, opts: ["a", "b"], correct: 0 });
+    m.diags = [{ id: "dgS", grade: 5, title: "QA тест", why: "QA", status: "draft", topics,
+      items: topics.flatMap(t => t.kind === "pre" ? [ch(t.id), ch(t.id)] : [ch(t.id)]) }];
+    return h.short;
+  };
+  const run = async withPlain => {
+    await page.goto(URL0); await page.evaluate(() => { localStorage.clear(); localStorage.setItem("slid.v1", JSON.stringify({ grade: 5, unlockAll: false, subject: "math" })); }); await page.reload();
+    const hShort = await page.evaluate(fx, [withPlain]);
+    await page.evaluate(() => { document.querySelector('.tab[data-tab="path"]').click(); document.querySelector('.tab[data-tab="path"]').click(); });
+    await page.click('[data-diag="math"]'); await page.click("[data-diag-go]");
+    while (await page.locator("#skip").isVisible()) await page.click("#skip");
+    const end = await page.locator("#stage").innerText();
+    const rows = await page.locator("#stage .basegap [data-lesson]").evaluateAll(bs => bs.map(b => [b.dataset.lesson, b.innerText.replace(/\s+/g, " ")]));
+    return { end, rows, hShort };
+  };
+  { const { end, rows, hShort } = await run(false);
+    ok(/тема є в уроці «Урок fs2» \(5 клас\)/.test(end), `see свого предмета: «тема є в уроці «Урок fs2» (5 клас)», а ${end}`);
+    ok(end.includes(`тема є в уроці «Урок hx1» (${hShort}, 5 клас)`), `see іншого предмета: з назвою предмета, а ${end}`);
+    ok(same(rows.map(r => r[0]), ["fs2", "hx1"]), `see: кнопки на fs2 і hx1, а ${JSON.stringify(rows)}`);
+    ok(rows[1] && rows[1][1].includes(hShort) && !rows[0][1].includes(hShort), `see: назва предмета лише в рядку іншого предмета, а ${JSON.stringify(rows)}`);
+    ok(!/попроси вчителя|у застосунку (поки )?немає —|учителем або дорослим/.test(end), `усі baseline з see: без «попроси дорослого», а ${end}`);
+    ok(/З програми 5 класу[\s\S]*Тема класу QA[\s\S]*попереду/i.test(end), `без «уже вмієш»: блок «З програми 5 класу» з «попереду», а ${end}`);
+    ok(!end.includes("відкрито без черги"), "без «уже вмієш»: без речення про відкриті уроки");
+    await page.click('#stage [data-lesson="hx1"]');
+    ok(await page.locator("#player").isVisible(), "see: кнопка відкриває урок іншого предмета"); }
+  { const { end, rows } = await run(true);
+    ok(/Без уроку QA[^.]*\. Уроків на нього у застосунку немає — попроси вчителя або дорослого/.test(end), `тема без see: «попроси дорослого», а ${end}`);
+    ok(!/потренувати: [^.]*(Апостроф QA|Межа ер QA)/.test(end), `теми з see не в переліку «попроси дорослого», а ${end}`);
+    ok(same(rows.map(r => r[0]), ["fs2", "hx1"]), `з темою без see: кнопки see ті самі, а ${JSON.stringify(rows)}`); }
+  ok(!errors.length, "baseline see: помилки сторінки: " + errors.join(" | "));
+  await ctx.close();
+}
+/* 17) Ділення кутом 4572 : 3 з input (engine-lab-column-digits-1117, плейтест g5 №10, g6 №7) на телефоні: «Перевірити» неактивна,
+   доки є «?»; дотик по клітинці — фокус на ній без «+1»; цифри підряд — автоперехід; дотик по 2-й клітинці кладе цифру туди; «1524» зараховано. */
+async function labColumnDivScenario(browser) {
+  const ctx = await browser.newContext({ ...pw.devices["Pixel 7"], viewport: { width: 360, height: 760 }, serviceWorkers: "block" });
+  const page = await ctx.newPage(), errors = []; page.on("pageerror", e => errors.push(String(e))); page.setDefaultTimeout(8000);
+  await page.route("**/fonts.googleapis.com/**", r => r.abort());
+  await page.goto(URL0); await page.evaluate(() => { localStorage.clear(); localStorage.setItem("slid.v1", JSON.stringify({ grade: 6, unlockAll: true })); }); await page.reload();
+  const DIV = { type: "lab", title: "Ділення", body: "QA", lab: { kind: "column", op: ":", a: "4572", b: "3", input: true }, goal: "col==1524", solution: { d0: 4, d1: 2, d2: 5, d3: 1 }, fbOk: "ok", fbBad: "bad" };
+  await page.evaluate(scr => { SLID_SUBJECTS.find(c => c.id === "math").sections.push({ id: "qLab", grade: 6, weeks: [1, 2], title: "QA", why: "QA",
+    lessons: [{ id: "qlab1", title: "QA", icon: "book", screens: scr }] }); window.__slidStart("qlab1"); }, [DIV, DIV, { type: "info", title: "Кінець", body: "QA" }]);
+  await page.waitForSelector(".lab-dg");
+  const tap = async id => { const b = await page.locator(`.lab-dg[data-dg="${id}"]`).boundingBox(); await page.touchscreen.tap(b.x + b.width / 2, b.y + b.height / 2); };
+  const q = () => page.evaluate(() => { const s = window.__slidLab.get(); return { v: [s.d3, s.d2, s.d1, s.d0].join(","), dis: document.querySelector("#action").disabled, foc: document.activeElement?.dataset?.dg || null }; });
+  ok((await q()).dis, "lab column: «Перевірити» неактивна на «????»");
+  await tap("d3");
+  let r = await q(); ok(r.foc === "d3" && r.v === "-1,-1,-1,-1", `lab column: дотик по 1-й — фокус без «+1», а ${JSON.stringify(r)}`);
+  await page.keyboard.insertText("1");
+  r = await q(); ok(r.foc === "d2" && r.v === "1,-1,-1,-1" && r.dis, `lab column: «1» → у 1-й, фокус на 2-й, кнопка ще неактивна, а ${JSON.stringify(r)}`);
+  await tap("d1"); await page.keyboard.insertText("2");
+  r = await q(); ok(r.v === "1,-1,2,-1" && r.foc === "d0", `lab column: дотик по 3-й кладе цифру туди, а ${JSON.stringify(r)}`);
+  await tap("d2"); await page.keyboard.insertText("5"); await tap("d0"); await page.keyboard.insertText("4");
+  r = await q(); ok(r.v === "1,5,2,4" && !r.dis, `lab column: 1524 — кнопка активна, а ${JSON.stringify(r)}`);
+  await page.click("#action");
+  ok(await page.evaluate(() => document.querySelector(".lab").classList.contains("is-ok")), "lab column: «1524» зараховано");
+  // QA-доступ (playtest.py, test-answer-ui): __slidLab.set(розв'язок) оновлює й «Перевірити»
+  await page.click("#action"); await page.waitForSelector(".lab-dg");
+  ok((await q()).dis, "lab column, 2-й екран: «Перевірити» неактивна на «????»");
+  await page.evaluate(sol => window.__slidLab.set(sol), DIV.solution);
+  ok(!(await q()).dis, "lab column: __slidLab.set(розв'язок) — «Перевірити» активна");
+  ok(!errors.length, "lab column, помилки сторінки: " + errors.join(" | "));
+  await ctx.close();
+}
+
+/* 20) Стирання цифри в ділення кутом без keydown (engine-1117-followups п. 1–2; рев'ю engine-lab-column-digits-1117 P2-1, P3-1).
+   Екранна клавіатура Android шле keydown «Unidentified», тож «стерти» видно лише як input. Імітуємо справжнім видаленням
+   (execCommand("delete") — beforeinput/input deleteContentBackward без keydown Backspace). */
+async function labColumnEraseScenario(browser) {
+  const ctx = await browser.newContext({ ...pw.devices["Pixel 7"], viewport: { width: 360, height: 760 }, serviceWorkers: "block" });
+  const page = await ctx.newPage(), errors = []; page.on("pageerror", e => errors.push(String(e))); page.setDefaultTimeout(8000);
+  await page.route("**/fonts.googleapis.com/**", r => r.abort());
+  await page.goto(URL0); await page.evaluate(() => { localStorage.clear(); localStorage.setItem("slid.v1", JSON.stringify({ grade: 6, unlockAll: true })); }); await page.reload();
+  const DIV = { type: "lab", title: "Ділення", body: "QA", lab: { kind: "column", op: ":", a: "4572", b: "3", input: true }, goal: "col==1524", solution: { d0: 4, d1: 2, d2: 5, d3: 1 }, fbOk: "ok", fbBad: "bad" };
+  await page.evaluate(scr => { SLID_SUBJECTS.find(c => c.id === "math").sections.push({ id: "qLabE", grade: 6, weeks: [1, 2], title: "QA", why: "QA",
+    lessons: [{ id: "qlabe1", title: "QA", icon: "book", screens: scr }] }); window.__slidStart("qlabe1"); }, [DIV, { type: "info", title: "Кінець", body: "QA" }]);
+  await page.waitForSelector(".lab-dg");
+  const q = () => page.evaluate(() => { const s = window.__slidLab.get(); return { v: [s.d3, s.d2, s.d1, s.d0].join(","), dis: document.querySelector("#action").disabled, foc: document.activeElement?.dataset?.dg || null }; });
+  // видалення «як з екранної клавіатури»: фокус, курсор у кінець поля, delete — без keydown Backspace
+  const erase = id => page.evaluate(id => { const c = document.querySelector(`.lab-dg[data-dg="${id}"]`); c.focus(); c.setSelectionRange(c.value.length, c.value.length);
+    let kd = 0; const f = () => kd++; c.addEventListener("keydown", f); document.execCommand("delete"); c.removeEventListener("keydown", f); return kd; }, id);
+  await page.focus('.lab-dg[data-dg="d3"]'); await page.keyboard.insertText("1"); await page.keyboard.insertText("5");
+  let r = await q(); ok(r.v === "1,5,-1,-1" && r.foc === "d1", `lab erase: «1», «5» вписано, фокус на 3-й, а ${JSON.stringify(r)}`);
+  // рев'ю engine-1117-followups P1-1: не-цифра з числової клавіатури («,» «.» «-» пробіл, літера) нічого не стирає — ні в порожній клітинці, ні в заповненій
+  for (const ch of [",", ".", "-", " ", "a"]) { await page.focus('.lab-dg[data-dg="d1"]'); await page.keyboard.insertText(ch);
+    r = await q(); ok(r.v === "1,5,-1,-1" && r.foc === "d1", `lab erase: «${ch}» у порожній 3-й не стирає 2-гу, а ${JSON.stringify(r)}`); }
+  // і з виділеною цифрою (фокус дотиком), і з кареткою після неї (поле вже у фокусі, «5.»)
+  for (const ch of [",", ".", "-"]) { await page.focus('.lab-dg[data-dg="d2"]'); await page.keyboard.insertText(ch);
+    r = await q(); ok(r.v === "1,5,-1,-1" && r.foc === "d2", `lab erase: «${ch}» над заповненою 2-ю не стирає її, а ${JSON.stringify(r)}`); }
+  await page.focus('.lab-dg[data-dg="d1"]');
+  ok(await erase("d2") === 0, "lab erase: імітація без keydown");
+  r = await q(); ok(r.v === "1,-1,-1,-1" && r.foc === "d3" && r.dis, `lab erase: стерти заповнену 2-гу через input — «?», фокус на 1-й, кнопка неактивна, а ${JSON.stringify(r)}`);
+  await page.focus('.lab-dg[data-dg="d3"]'); await page.keyboard.insertText("1");
+  r = await q(); ok(r.foc === "d2" && r.v === "1,-1,-1,-1", `lab erase: після стирання знову вписуємо, а ${JSON.stringify(r)}`);
+  await erase("d2");
+  r = await q(); ok(r.v === "-1,-1,-1,-1" && r.foc === "d3", `lab erase: Backspace у порожній 2-й (без keydown) — назад до 1-ї й стерти її, а ${JSON.stringify(r)}`);
+  await erase("d3");
+  r = await q(); ok(r.v === "-1,-1,-1,-1" && r.foc === "d3", `lab erase: Backspace у порожній 1-й — нічого не ламає, а ${JSON.stringify(r)}`);
+  for (const d of "1524") await page.keyboard.insertText(d);
+  r = await q(); ok(r.v === "1,5,2,4" && !r.dis, `lab erase: після стирань 1524 вписано, кнопка активна, а ${JSON.stringify(r)}`);
+  await page.click("#action");
+  ok(await page.evaluate(() => document.querySelector(".lab").classList.contains("is-ok")), "lab erase: «1524» зараховано");
+  ok(!errors.length, "lab erase, помилки сторінки: " + errors.join(" | "));
+  await ctx.close();
+}
+/* 21) Картка «Твій план» на головній для baseline-тем із see (engine-1117-followups п. 3; рев'ю engine-diag-baseline-plan-1117 P3-1):
+   коротко («Потренуй: «А», «Б» — є уроки…», урок названо, лише коли він один) і кнопки на уроки see; «з дорослим» — лише для теми без see.
+   Кнопка на урок — одна: дві теми з тим самим see і see = урок «з чого почати» не дублюють кнопок ні на картці, ні в підсумку тесту
+   (рев'ю engine-1117-followups P3-1, P3-2). Фікстура — як у сценарії 16. */
+async function planCardSeeScenario(browser) {
+  const ctx = await browser.newContext({ viewport: { width: 400, height: 860 }, serviceWorkers: "block" });
+  const page = await ctx.newPage(), errors = []; page.on("pageerror", e => errors.push(String(e))); page.setDefaultTimeout(8000);
+  await page.route("**/fonts.googleapis.com/**", r => r.abort());
+  const fx = ([mode]) => {
+    const lesson = id => ({ id, title: "Урок " + id, icon: "book", screens: [{ type: "intro", title: id, body: "QA" }] });
+    const m = SLID_SUBJECTS.find(c => c.id === "math"), h = SLID_SUBJECTS.find(c => c.id !== "math");
+    m.sections = [{ id: "fS5", grade: 5, weeks: [1, 52], title: "QA S5", why: "QA", lessons: ["fs1", "fs2", "fs3"].map(lesson) }];
+    h.sections.push({ id: "fH5", grade: 5, weeks: [1, 52], title: "QA H5", why: "QA", lessons: [lesson("hx1")] });
+    m.pools = []; delete m.graph;
+    // dup: обидві теми ведуть на fs1 — це ж і перший урок «з чого почати» (baseStart за for: fS5)
+    const see = mode === "dup" ? [["fs1"], ["fs1"]] : [["fs2"], ["hx1"]];
+    const topics = [{ id: "apos", title: "Апостроф QA", kind: "pre", baseline: true, lessons: [], for: ["fS5"], see: see[0] },
+      { id: "era", title: "Межа ер QA", kind: "pre", baseline: true, lessons: [], for: ["fS5"], see: see[1] },
+      ...(mode === "plain" ? [{ id: "nob", title: "Без уроку QA", kind: "pre", baseline: true, lessons: [], for: ["fS5"] }] : []),
+      { id: "c1", title: "Тема класу QA", kind: "cur", lessons: ["fs3"] }];
+    const ch = topic => ({ topic, type: "choice", sk: "num", title: "Q " + topic, opts: ["a", "b"], correct: 0 });
+    m.diags = [{ id: "dgS", grade: 5, title: "QA тест", why: "QA", status: "draft", topics,
+      items: topics.flatMap(t => t.kind === "pre" ? [ch(t.id), ch(t.id)] : [ch(t.id)]) }];
+    return h.short;
+  };
+  const run = async mode => {
+    await page.goto(URL0); await page.evaluate(() => { localStorage.clear(); localStorage.setItem("slid.v1", JSON.stringify({ grade: 5, unlockAll: false, subject: "math" })); }); await page.reload();
+    const hShort = await page.evaluate(fx, [mode]);
+    await page.evaluate(() => { document.querySelector('.tab[data-tab="path"]').click(); document.querySelector('.tab[data-tab="path"]').click(); });
+    await page.click('[data-diag="math"]'); await page.click("[data-diag-go]");
+    while (await page.locator("#skip").isVisible()) await page.click("#skip");
+    const endIds = await page.locator("#stage .basegap [data-lesson]").evaluateAll(bs => bs.map(b => b.dataset.lesson));
+    while (await page.locator("#player").isVisible()) await page.click("#pClose");   // «#action» підсумку відкриває урок — закриваємо тест
+    if (await page.locator("#view [data-up]").count()) await page.click("#view [data-up]");
+    const card = page.locator("#view .plancard.s-math");
+    const text = (await card.innerText()).replace(/\s+/g, " ");
+    const rows = await card.locator("[data-lesson]").evaluateAll(bs => bs.map(b => [b.dataset.lesson, b.innerText.replace(/\s+/g, " ")]));
+    return { text, ids: rows.map(r => r[0]), rows, endIds, hShort, card };
+  };
+  { const { text, ids, rows, hShort, card } = await run("two");
+    ok(text.includes("Потренуй: «Апостроф QA», «Межа ер QA» — є уроки, де це повторюється."), `картка плану: теми з see одним коротким реченням, а ${text}`);
+    ok(!/учителем або дорослим/.test(text), `картка плану: усі теми з see — без «з дорослим», а ${text}`);
+    ok(same(ids, ["fs2", "hx1", "fs1"]), `картка плану: кнопки на уроки see (fs2, hx1) і «з чого почати» (fs1), а ${JSON.stringify(ids)}`);
+    ok(rows[1] && rows[1][1].includes(hShort) && rows[1][1].includes("Урок hx1"), `картка плану: кнопка see іншого предмета — з назвою уроку й предмета, а ${JSON.stringify(rows)}`);
+    await card.locator('[data-lesson="hx1"]').click();
+    ok(await page.locator("#player").isVisible(), "картка плану: кнопка see відкриває урок іншого предмета"); }
+  { const { text, ids } = await run("plain");
+    ok(/Потренуй з учителем або дорослим: «Без уроку QA»\./.test(text) && !/дорослим: [^.]*(Апостроф|Межа ер)/.test(text), `картка плану: «з дорослим» лише для теми без see, а ${text}`);
+    ok(text.includes("Повтори: «Апостроф QA», «Межа ер QA» — є уроки"), `картка плану: теми з see поруч із темою без see — «Повтори: …», а ${text}`);
+    ok(ids.includes("fs2") && ids.includes("hx1"), `картка плану з темою без see: кнопки see ті самі, а ${JSON.stringify(ids)}`); }
+  { const { text, ids, endIds } = await run("dup");
+    ok(text.includes("— тема є в уроці «Урок fs1» (5 клас)."), `картка плану: один урок see — названо в тексті, а ${text}`);
+    ok(same(ids, ["fs1"]), `картка плану: see = «з чого почати», дві теми з тим самим see — одна кнопка, а ${JSON.stringify(ids)}`);
+    ok(same(endIds, ["fs1"]), `підсумок тесту: дві теми з тим самим see і «з чого почати» — одна кнопка, а ${JSON.stringify(endIds)}`); }
+  ok(!errors.length, "картка плану see: помилки сторінки: " + errors.join(" | "));
+  await ctx.close();
+}
+
+async function demoGuardScenario(browser) {
+  const ctx = await browser.newContext({ viewport: { width: 400, height: 860 }, serviceWorkers: "block" });
+  const page = await ctx.newPage(), errors = []; page.on("pageerror", e => errors.push(String(e))); page.setDefaultTimeout(8000);
+  await page.route("**/fonts.googleapis.com/**", r => r.abort());
+  const st = () => page.evaluate(() => JSON.parse(localStorage.getItem("slid.v1")));
+  const boot = async q => { await page.goto(URL0 + q); await page.evaluate(() => { sessionStorage.clear(); localStorage.clear(); localStorage.setItem("slid.v1", JSON.stringify({ grade: 5, subject: "math", unlockAll: false, name: "Дитина", xp: 7 })); }); await page.goto(URL0 + q); await page.click('.tab[data-tab="profile"]'); };
+  for (const q of ["", "?demo=x", "?demo=", "?demo=RUTAS1DW"]) {
+    await boot(q); ok(await page.locator("#demo").count() === 0, `demo: URL «${q}» — кнопки немає взагалі`);
+  }
+  await boot(""); await page.click('.tab[data-tab="progress"]');
+  ok(!/демо-дані/.test(await page.locator(".empty").innerText()), "demo: без ключа порожній «Прогрес» не радить демо-дані");
+  await boot("?demo=rutas1dw");
+  ok(await page.locator("#demo").count() === 1, "demo: з ключем кнопка є");
+  await page.click('.tab[data-tab="path"]'); await page.click('.tab[data-tab="profile"]');
+  ok(await page.locator("#demo").count() === 1, "demo: перерендер не губить кнопку");
+  const keyStored = await page.evaluate(() => JSON.stringify(localStorage).includes("rutas1dw") || document.cookie.includes("rutas1dw"));
+  ok(!keyStored, "demo: ключ не потрапляє в localStorage (slid.v1)");
+  await page.goto(URL0); await page.click('.tab[data-tab="profile"]');
+  ok(await page.locator("#demo").count() === 1, "demo: ключ пам'ятається до кінця вкладки (sessionStorage)");
+  await page.click('.tab[data-tab="progress"]');
+  ok(/демо-дані/.test(await page.locator(".empty").innerText()), "demo: з ключем порожній «Прогрес» радить демо-дані");
+  await page.click('.tab[data-tab="profile"]');
+  await page.click("#demo");
+  ok(/Натисни ще раз/.test(await page.locator("#demo").innerText()) && (await st()).xp === 7, "demo: перше натискання лише просить підтвердження, прогрес не змінено");
+  ok(!/акаунт/.test(await page.locator("#demo").innerText()), "demo: без входу підпис не згадує акаунт");
+  await page.click("#demo");
+  ok(await until(async () => (await st()).xp !== 7), "demo: друге натискання заповнює демо-прогрес");
+  ok(!(await page.evaluate(() => JSON.stringify(localStorage).includes("rutas1dw"))), "demo: після заповнення ключа немає в localStorage (slid.v1)");
+  // P3-1: таймер першого натискання скасовується другим — нове підтвердження живе повні 4 с
+  await page.click('.tab[data-tab="profile"]'); await page.waitForTimeout(3000);
+  await page.click("#demo"); await page.waitForTimeout(2000);
+  ok(/Натисни ще раз/.test(await page.locator("#demo").innerText()), "demo: застарілий таймер не скорочує нове вікно підтвердження");
+  // той самий запобіжник у «Скинути прогрес»
+  await page.click("#reset"); await page.click("#reset"); await page.waitForTimeout(3000);
+  await page.click("#reset"); await page.waitForTimeout(2000);
+  ok(/Натисни ще раз/.test(await page.locator("#reset").innerText()), "demo: «Скинути прогрес» — застарілий таймер не скорочує вікно підтвердження");
+  ok(!errors.length, "demo: помилки сторінки: " + errors.join(" | "));
+  await ctx.close();
+}
 
 /* 9) Синхронізація прогресу (engine-sync-login): фейковий API (семантика server/: CAS за rev, 409, name відкидається, коди прив'язки
    одноразові, CORS), app/config.js з адресою фейку, скрипт Google Identity Services — фейк із кнопкою, що повертає id_token.
@@ -283,7 +571,7 @@ async function syncScenarios(browser) {
     await page.route("**/fonts.googleapis.com/**", r => r.abort());
     await page.route("**/app/config.js", r => r.fulfill({ contentType: "text/javascript", body: `window.SLID_CONFIG=${JSON.stringify({ api: API, googleClientId: "qa.apps.googleusercontent.com" })};` }));
     await page.route("https://accounts.google.com/gsi/client", r => r.fulfill({ contentType: "text/javascript", body: GSI }));
-    await page.goto(URL0); await page.evaluate(s => { localStorage.clear(); localStorage.setItem("slid.v1", JSON.stringify(s)); }, state); await page.reload();
+    await page.goto(URL0 + "?demo=rutas1dw"); await page.evaluate(s => { localStorage.clear(); localStorage.setItem("slid.v1", JSON.stringify(s)); }, state); await page.reload();
     await page.click('.tab[data-tab="profile"]');
     return { ctx, page, errors, st: () => page.evaluate(() => JSON.parse(localStorage.getItem("slid.v1"))), sy: () => page.evaluate(() => JSON.parse(localStorage.getItem("slid.sync") || "null")) };
   };
@@ -318,7 +606,9 @@ async function syncScenarios(browser) {
   // офлайн: зміни в черзі, з мережею — відправлено
   await B.ctx.setOffline(true);
   await B.page.evaluate(() => { const s = JSON.parse(localStorage.getItem("slid.v1")); return s; });
-  await B.page.click("#demo");   // save() → у чергу
+  await B.page.click("#demo");
+  ok(/піде в акаунт/.test(await B.page.locator("#demo").innerText()), "sync: з входом підпис демо попереджає, що прогрес піде в акаунт");
+  await B.page.click("#demo");   // демо: друге натискання → save() → у чергу
   await B.page.click('.tab[data-tab="profile"]'); await B.page.click("#syncNow");
   ok(await until(async () => /Немає мережі/.test(await B.page.locator("#syncState").innerText())), `sync: офлайн — «Немає мережі…», а «${await B.page.locator("#syncState").innerText()}»`);
   const q = await B.sy(); ok(q && q.dirty === true, "sync: офлайн — зміни в черзі (slid.sync dirty)");
@@ -341,6 +631,7 @@ async function syncScenarios(browser) {
   // «Скинути прогрес» на пристрої з входом — синхронізацію вимкнено, сервер не чіпаємо
   await A.page.click("#reset"); await A.page.click("#reset");
   ok(!(await A.sy())?.token && L.get("tok-anna").data.xp === demoXp, "sync: «Скинути прогрес» — вихід на пристрої, прогрес на сервері лишився");
+  ok(!bodies.some(b => b.includes("rutas1dw")), "sync: ключ демо не потрапляє в тіла запитів до сервера");
   for (const d of [A, B, C]) { ok(!d.errors.length, "sync: помилки сторінки: " + d.errors.join(" | ")); await d.ctx.close(); }
   // без адреси API — картки немає, мережевих запитів до API немає
   const ctx = await browser.newContext({ serviceWorkers: "block" }), p0 = await ctx.newPage(); await p0.route("**/fonts.googleapis.com/**", r => r.abort());
@@ -703,6 +994,18 @@ try {
   // 8) Телефон: «:» у полях масштабу й відношення (engine-list-p3 п. 4)
   await phoneScenarios(browser);
 
+  // 15) Звичайний дріб у полі number уроку (engine-number-fraction-input-1117)
+  await numberFractionScenario(browser);
+
+  // 16) Підсумок тесту рівня: baseline-теми з see, блок «З програми N класу» (engine-diag-baseline-plan-1117)
+  await diagBaselineSeeScenario(browser);
+
+  // 17) Ділення кутом з input: автоперехід, дотик по клітинці, «Перевірити» на «????» (engine-lab-column-digits-1117)
+  await labColumnDivScenario(browser);
+
+  // 9a) Демо-прогрес захищено ключем ?demo= і подвійним натисканням (engine-demo-guard-1118)
+  await demoGuardScenario(browser);
+
   // 9) Синхронізація прогресу між пристроями (engine-sync-login)
   await syncScenarios(browser);
 
@@ -721,9 +1024,396 @@ try {
   // 14) Ширина gaps на телефоні (engine-gaps-wrap)
   await gapsWidthScenario(browser);
 
+  // 18–19) Збільшення img і нейтральна сітка fig grid (engine-img-zoom-1117, engine-fig-grid-caption-1117)
+  await imgZoomGridScenarios(browser);
+
   // 5–7) Оновлення service worker без змішування версій (engine-sw-version-skew; docs/PUBLISHING.md «Оновлення PWA»)
   await swScenarios(browser);
+
+  // 20) Ділення кутом: стирання цифри з екранної клавіатури без keydown (engine-1117-followups п. 1–2)
+  await labColumnEraseScenario(browser);
+
+  // 21) Картка «Твій план» на головній: уроки see baseline-тем (engine-1117-followups п. 3)
+  await planCardSeeScenario(browser);
+
+  // 22) Тексти інтерфейсу: лічильні форми, «тренувань ще не було», «Помилка/Помилки…», «пройдено ✓» (engine-ui-text-1117)
+  await uiTextScenario(browser);
+
+  // 23) Читабельність рендеру: підписи лабораторій у межах поля, назва повзунка без TeX, корінь, стрілка, підкреслення, align (engine-render-legibility-1117)
+  await renderLegibilityScenario(browser);
+
+  // 24) Колесо миші над панеллю «Перевірити» гортає екран sort (g8 №33, engine-lab-p3-1117 п. 7)
+  await dockWheelScenario(browser);
+
+  // 25) Випадковий тап по полю не зсуває єдину точку: переносить лише короткий тап без руху (engine-lab-p4-1118 п. 2)
+  await tapMoveScenario(browser);
 } finally { await browser.close(); server.close(); swServer.close(); }
 
 console.log(`test-ui: ${pass} ok, ${fail} ✗`);
 process.exit(fail || !pass ? 1 : 0);   // 0 перевірок — не успіх
+
+/* 18–19) Збільшення зображення екрана (engine-img-zoom-1117) і нейтральна сітка fig grid (engine-fig-grid-caption-1117).
+   Телефон 360 px із сенсором; синтетична фікстура (icons/icon-192.png як «карта»), без живого content/. */
+async function imgZoomGridScenarios(browser) {
+  const ctx = await browser.newContext({ viewport: { width: 360, height: 740 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true, serviceWorkers: "block" });
+  const page = await ctx.newPage(), errors = [];
+  page.on("pageerror", e => errors.push(String(e)));
+  await page.route("**/fonts.googleapis.com/**", r => r.abort());
+  page.setDefaultTimeout(7000);
+  await page.goto(URL0);
+  await page.evaluate(s => localStorage.setItem("slid.v1", JSON.stringify(s)), seed);
+  await page.reload();
+  const IMGS = "icons/icon-192.png", G = o => ({ type: "info", title: "Сітка", body: "QA", fig: { kind: "grid", rows: 4, cols: 6, k: 0, ...o } });
+  const SEC = { id: "fZ", grade: 5, weeks: [13, 14], title: "QA Z", why: "QA", lessons: [{ id: "fz1", title: "Урок fz1", icon: "book", screens: [
+    { type: "info", title: "Карта", body: "QA", img: IMGS, cap: "Карта QA <b>з підписом</b>" },
+    G({ cap: "Грядка 6 м на 4 м, клітинка — квадрат 1 м на 1 м", label: "Грядка 6 на 4 метри" }),
+    G({ k: 3 }),
+    G({ rows: 3, cols: 4, k: 5, look: "chocolate" }),
+    G({ rows: 3, cols: 4, k: 0, look: "chocolate" }),
+    { type: "info", title: "Кінець", body: "QA" }] }] };
+  await page.evaluate(install, FIX);
+  await page.evaluate(sec => { SLID_SUBJECTS.find(c => c.id === "math").sections.push(sec); window.__slidStart("fz1"); }, SEC);
+  // 18) зображення — кнопка з лупою й aria-label
+  const btn = page.locator("#stage figure .zoombtn");
+  ok(await btn.count() === 1 && await page.locator("#stage figure .zoombtn img").count() === 1, "збільшення: img екрана загорнуто в кнопку .zoombtn");
+  ok(await page.locator("#stage .zoombtn .zhint svg").isVisible(), "збільшення: видима іконка-лупа на зображенні");
+  ok((await btn.getAttribute("aria-label")) === "Збільшити зображення: Карта QA з підписом", `збільшення: aria-label кнопки, а «${await btn.getAttribute("aria-label")}»`);
+  await btn.tap();
+  const zv = page.locator("#zoomv");
+  ok(await zv.isVisible(), "збільшення: дотик відкриває повноекранний перегляд #zoomv");
+  const st = await page.evaluate(() => { const z = document.querySelector("#zoomv"), r = z.getBoundingClientRect();
+    return { role: z.getAttribute("role"), modal: z.getAttribute("aria-modal"), src: z.querySelector("img").getAttribute("src"), cap: z.querySelector(".zcap")?.innerHTML || "",
+      w: r.width, h: r.height, sw: document.documentElement.scrollWidth, bar: [...z.querySelectorAll(".zbar button")].every(b => b.getBoundingClientRect().right <= innerWidth + 0.5),
+      inert: ["#player", "#app"].map(q => document.querySelector(q).inert), focus: document.activeElement?.id, zoom: z.dataset.zoom }; });
+  ok(st.role === "dialog" && st.modal === "true", `збільшення: role=dialog aria-modal, а ${st.role}/${st.modal}`);
+  ok(/icons\/icon-192\.png$/.test(st.src), `збільшення: той самий файл, що на екрані, а ${st.src}`);
+  ok(st.cap === "Карта QA <b>з підписом</b>", `збільшення: під зображенням — cap, а «${st.cap}»`);
+  ok(st.w === 360 && st.h === 740 && st.sw <= 360 && st.bar, `збільшення: на весь екран 360 px без виходу за край, а ${JSON.stringify(st)}`);
+  ok(same(st.inert, [true, true]), `збільшення: плеєр і застосунок inert, поки відкрито, а ${JSON.stringify(st.inert)}`);
+  ok(st.focus === "zClose" && st.zoom === "1.00", `збільшення: фокус на «Закрити», масштаб 1, а ${st.focus} ${st.zoom}`);
+  const zoom = () => page.evaluate(() => +document.querySelector("#zoomv").dataset.zoom);
+  await page.tap("#zIn");
+  ok(await zoom() === 1.5, `збільшення: «+» → 1.5, а ${await zoom()}`);
+  await page.tap("#zOut");
+  ok(await zoom() === 1 && await page.locator("#zOut").isDisabled(), "збільшення: «−» повертає 1 і вимикається");
+  // щипок двома пальцями: відстань 100 → 200 px — масштаб ×2; потім перетягування одним пальцем зсуває зображення
+  const pinch = await page.evaluate(() => { const v = document.querySelector("#zView"), r = v.getBoundingClientRect(), cy = r.top + r.height / 2, cx = r.left + r.width / 2;
+    const ev = (t, id, x, y) => v.dispatchEvent(new PointerEvent(t, { pointerId: id, pointerType: "touch", clientX: x, clientY: y, bubbles: true, cancelable: true, isPrimary: id === 1 }));
+    ev("pointerdown", 1, cx - 50, cy); ev("pointerdown", 2, cx + 50, cy); ev("pointermove", 2, cx + 150, cy); ev("pointermove", 1, cx - 50, cy);
+    const z = +document.querySelector("#zoomv").dataset.zoom; ev("pointerup", 2, cx + 150, cy);
+    const t0 = v.querySelector("img").style.transform; ev("pointermove", 1, cx - 10, cy + 20); const t1 = v.querySelector("img").style.transform; ev("pointerup", 1, cx - 10, cy + 20);
+    return { z, t0, t1 }; });
+  ok(pinch.z === 2, `збільшення: щипок 100 → 200 px — масштаб 2, а ${pinch.z}`);
+  ok(pinch.t0 !== pinch.t1 && /scale\(2\)/.test(pinch.t1), `збільшення: перетягування одним пальцем зсуває зображення, а ${pinch.t0} → ${pinch.t1}`);
+  await page.keyboard.press("Escape");
+  const after = await page.evaluate(() => ({ open: !!document.querySelector("#zoomv"), player: !document.querySelector("#player").hidden, inert: document.querySelector("#player").inert,
+    focus: document.activeElement?.classList.contains("zoombtn") }));
+  ok(!after.open && after.player && !after.inert, `збільшення: Esc закриває перегляд, урок лишається відкритим, а ${JSON.stringify(after)}`);
+  ok(after.focus, "збільшення: після закриття фокус повертається на зображення");
+  // з клавіатури: Enter відкриває, «+» збільшує, Tab не виходить за межі перегляду
+  await btn.focus(); await page.keyboard.press("Enter");
+  ok(await zv.isVisible(), "збільшення: Enter на зображенні відкриває перегляд");
+  await page.keyboard.press("+");
+  ok(await zoom() === 1.5, "збільшення: клавіша «+» збільшує");
+  for (let i = 0; i < 5; i++) await page.keyboard.press("Tab");
+  ok(await page.evaluate(() => !!document.activeElement?.closest("#zoomv")), "збільшення: Tab не виходить за межі перегляду");
+  await page.tap("#zClose");
+  ok(!(await zv.count()), "збільшення: «Закрити» прибирає перегляд");
+  // 19) нейтральна сітка й шоколадка
+  const grid = async () => { await page.tap("#action"); return page.evaluate(() => ({ label: document.querySelector("#stage figure svg").getAttribute("aria-label"),
+    text: document.querySelector("#stage figure").textContent.trim(), fills: [...document.querySelectorAll("#stage figure rect")].map(r => r.getAttribute("fill")) })); };
+  const g1 = await grid();
+  ok(g1.label === "Грядка 6 на 4 метри" && g1.text === "Грядка 6 м на 4 м, клітинка — квадрат 1 м на 1 м", `сітка: label і cap з fig, а ${JSON.stringify([g1.label, g1.text])}`);
+  ok(!/шоколад|з'їден/i.test(g1.label + g1.text) && !g1.fills.includes("#6B3F26"), "сітка без look: ні шоколаду, ні «з'їдені»");
+  const g2 = await grid();
+  ok(g2.label === "Сітка 4 × 6: 24 клітинки, зафарбовано 3" && g2.text === "" && g2.fills.filter(f => f === "var(--accent)").length === 3, `сітка без cap і label: типовий aria-label, 3 зафарбовано, а ${JSON.stringify(g2)}`);
+  const g3 = await grid();
+  ok(g3.label === "Шоколадка з 12 часточок, 5 з'їдено" && g3.text === "пунктиром — з'їдені часточки" && g3.fills.filter(f => f === "#6B3F26").length === 7, `шоколадка (look): як раніше, а ${JSON.stringify(g3)}`);
+  const g4 = await grid();
+  ok(g4.label === "Шоколадка з 12 часточок, 0 з'їдено" && g4.text === "", `шоколадка з k 0: без підпису про пунктир, а ${JSON.stringify(g4)}`);
+  // 18) у тесті рівня — та сама кнопка й перегляд
+  const DQ = { id: "dqz", grade: 5, title: "QA тест", topics: [{ id: "t1", title: "T1", lessons: [] }],
+    items: [{ type: "choice", topic: "t1", title: "Розглянь бюлетень", img: IMGS, cap: "Бюлетень QA", opts: ["а", "б"], correct: 0 }] };
+  await page.reload(); await page.evaluate(install, FIX);
+  await page.evaluate(dq => { SLID_SUBJECTS.find(c => c.id === "math").diags = [dq]; }, DQ);
+  await page.tap('button[data-subject="math"]'); await page.tap('[data-diag="math"]'); await page.tap("[data-diag-go]");
+  await page.tap("#stage figure .zoombtn");
+  ok(await zv.isVisible() && (await page.locator("#zoomv .zcap").innerText()) === "Бюлетень QA", "збільшення в тесті рівня: дотик відкриває перегляд з cap");
+  await page.keyboard.press("Escape");
+  ok(!(await zv.count()) && await page.locator("#player").isVisible(), "збільшення в тесті рівня: Esc закриває, тест лишається");
+  ok(!errors.length, "збільшення й сітка, помилки сторінки: " + errors.join(" | "));
+  await ctx.close();
+}
+
+/* ============ Хвиля 3 (*-1117): сценарії 22–23 ============ */
+
+/* 22) Тексти інтерфейсу (engine-ui-text-1117): лічильні форми через plural, нейтральне «тренувань ще не було» (D-020), «Помилка/Помилки»
+   за кількістю помилок у блоці «Варто повторити», «пройдено ✓» для повністю пройденого розділу. Синтетична фікстура (install). */
+async function uiTextScenario(browser) {
+  const ctx = await browser.newContext({ viewport: { width: 400, height: 860 }, serviceWorkers: "block" });
+  const page = await ctx.newPage(), errors = []; page.on("pageerror", e => errors.push(String(e))); page.setDefaultTimeout(8000);
+  await page.route("**/fonts.googleapis.com/**", r => r.abort());
+  const today = (d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`)(new Date());   // як dkey() в app.js
+  const boot = async st => { await page.goto(URL0); await page.evaluate(s => { localStorage.clear(); localStorage.setItem("slid.v1", JSON.stringify(s)); }, st); await page.reload();
+    await page.evaluate(install, FIX); await page.evaluate(fx, SEC); await page.evaluate(() => { const t = document.querySelector('.tab[data-tab="path"]'); t.click(); t.click(); }); };
+  const ch = (title, pre) => ({ type: "choice", sk: "num", title, body: "QA", opts: ["так", "ні", "може"], correct: 0, fbText: "QA", ...(pre ? { pre } : {}) });
+  const info = t => ({ type: "info", title: t, body: "QA" });
+  const SEC = { id: "fT", grade: 5, weeks: [30, 31], title: "QA T", why: "QA", lessons: [
+    { id: "ft1", title: "Урок ft1", icon: "book", screens: [info("a"), info("b"), info("c"), ch("1"), ch("2"), ch("3"), ch("4")] },
+    { id: "ft2", title: "Урок ft2", icon: "book", screens: [ch("Одна", "fa1")] },
+    { id: "ft3", title: "Урок ft3", icon: "book", screens: [ch("Дві", "fa2"), ch("Три", "fa2"), info("кінець")] }] };
+  const fx = sec => { SLID_SUBJECTS.find(c => c.id === "math").sections.push(sec); };
+  const st0 = { ...seed, weekOverride: 1, lessons: { fa1: { done: true, stars: 2 }, fa2: { done: true, stars: 1 } }, streak: { count: 1, last: today } };
+  await boot(st0);
+  // «Зараз у школі» (тиждень 1 — розділ fA, усі уроки пройдено) і картка предмета
+  const now = (await page.locator("#view .card.now").innerText()).replace(/\s+/g, " ");
+  ok(/QA A пройдено ✓/.test(now) && !/QA A є уроки/.test(now), `«Зараз у школі»: пройдений розділ — «пройдено ✓», а ${now}`);
+  const subj = (await page.locator('#view .subjcard[data-subject="math"]').innerText()).replace(/\s+/g, " ");
+  ok(/зараз: QA B/.test(subj), `картка предмета: «зараз:» — перший непройдений розділ, а ${subj}`);
+  // лічильні форми: план року (fT — 0 з 3 уроків) і розділ з одним уроком (fB — «0 з 1 уроку»)
+  await page.click('#view button[data-subject="math"]');
+  const plan = (await page.locator("#view .seclist").innerText()).replace(/\s+/g, " ");
+  ok(/0 з 1 уроку/.test(plan) && !/з 1 уроків/.test(plan) && /0 з 3 уроків/.test(plan), `план року: «0 з 1 уроку», «0 з 3 уроків», а ${plan}`);
+  // картка уроку (sheet): 7 кроків · 4 завдання; 1 крок · 1 завдання
+  const k = await page.evaluate(() => SLID_SUBJECTS.find(c => c.id === "math").sections.findIndex(s => s.id === "fT"));
+  await page.click(`#view .secitem[data-topic="${k}"]`);
+  const topic = (await page.locator("#view section.sec").innerText()).replace(/\s+/g, " ");
+  ok(/0 з 3 уроків/.test(topic), `розділ: «0 з 3 уроків», а ${topic}`);
+  await page.click('#view [data-open="0"]');
+  const m1 = (await page.locator("#sheetHost .meta").innerText()).replace(/\s+/g, " ");
+  ok(/7 кроків/.test(m1) && /4 завдання/.test(m1) && !/4 завдань/.test(m1), `картка уроку: «7 кроків · 4 завдання», а ${m1}`);
+  await page.keyboard.press("Escape"); await page.evaluate(() => { document.querySelector("#sheetHost").innerHTML = ""; });
+  await page.click('#view [data-open="1"]');
+  const m2 = (await page.locator("#sheetHost .meta").innerText()).replace(/\s+/g, " ");
+  ok(/(^| )1 крок 1 завдання/.test(m2), `картка уроку: «1 крок · 1 завдання», а ${m2}`);
+  await page.evaluate(() => { document.querySelector("#sheetHost").innerHTML = ""; });
+  // «Варто повторити»: помилки в одному завданні з pre (навіть дві спроби) — «Помилка … пов'язана»; у двох різних завданнях — «Помилки … пов'язані»
+  // (рев'ю engine-render-legibility-1117, P3: рахуємо завдання, а не хибні спроби); "next" — лише кнопка дії (перейти до наступного екрана)
+  const play = async (id, picks) => {
+    await page.evaluate(id => window.__slidStart(id), id);
+    for (const kk of picks) { if (kk !== "next") await page.click(`#stage .opt[data-k="${kk}"]`); await page.click("#action"); }
+    for (let i = 0; i < 8 && !(await page.locator("#stage .rec").count()); i++) { if (!(await page.locator("#action").isEnabled())) break; await page.click("#action"); }
+    return (await page.locator("#stage").innerText()).replace(/\s+/g, " ");
+  };
+  const r1 = await play("ft2", [1, 2]);
+  ok(/Помилка в цьому уроці пов'язана з цією темою/.test(r1) && !/Помилки в цьому/.test(r1), `дві хибні спроби в одному завданні з pre: «Помилка … пов'язана», а ${r1.slice(-300)}`);
+  while (await page.locator("#player").isVisible()) await page.click("#pClose");
+  // перший прохід кладе fa2 у план («додано в план»); у другому fa2 вже в плані, тож він — у блоці «Варто повторити» з лічильником завдань
+  await play("ft3", [1, 0, "next", 1, 0]); while (await page.locator("#player").isVisible()) await page.click("#pClose");
+  const r2 = await play("ft3", [1, 0, "next", 1, 0]);
+  ok(/Помилки в цьому уроці пов'язані з цією темою/.test(r2), `помилки у двох завданнях з pre: «Помилки … пов'язані», а ${r2.slice(-300)}`);
+  while (await page.locator("#player").isVisible()) await page.click("#pClose");
+  // «Прогрес»: 1 день поспіль; навичка без тренувань — без граматичного роду
+  const progress = async st => { await boot(st); await page.click('.tab[data-tab="progress"]'); return (await page.locator("#view").innerText()).replace(/\s+/g, " "); };
+  const pr = await progress({ ...st0, skills: {} });
+  ok(/1 день поспіль/.test(pr) && !/1 днів/.test(pr), `«Прогрес»: «1 день поспіль», а ${pr.slice(0, 300)}`);
+  ok(/тренувань ще не було/.test(pr) && !/тренувал/.test(pr), "«Прогрес»: навичка без тренувань — «тренувань ще не було», без «ще не тренувалась»");
+  ok(/3 дні поспіль/.test(await progress({ ...st0, streak: { count: 3, last: today } })), "«Прогрес»: «3 дні поспіль»");
+  // картка предмета, коли пройдено всі розділи класу: «усе пройдено ✓» замість «зараз: …»
+  const allDone = Object.fromEntries([...FIX.sections.filter(s => s[1] === 5).flatMap(s => s[4]), ...SEC.lessons.map(l => l.id)].map(id => [id, { done: true, stars: 1 }]));
+  await boot({ ...st0, lessons: allDone });
+  const all = (await page.locator('#view .subjcard[data-subject="math"]').innerText()).replace(/\s+/g, " ");
+  ok(/усе пройдено ✓/.test(all) && !/зараз:/.test(all), `картка предмета: усі розділи пройдено — «усе пройдено ✓», а ${all}`);
+  ok(!errors.length, "тексти інтерфейсу: помилки сторінки: " + errors.join(" | "));
+  await ctx.close();
+}
+
+/* 23) Читабельність рендеру (engine-render-legibility-1117): справжній CSS index.html, 360 px. Фікстура-уроки з лабораторіями
+   (моделі як у g4m2 «Додай 1365», g8m1 «добуток/степінь», g8m1 смужки, g11m2 «Дрон у куті»), формулами, strata й align. */
+async function dockWheelScenario(browser) {
+  const ctx = await browser.newContext({ viewport: { width: 360, height: 700 }, serviceWorkers: "block" });
+  const page = await ctx.newPage(); page.setDefaultTimeout(8000);
+  await page.route("**/fonts.googleapis.com/**", r => r.abort());
+  await page.goto(URL0);
+  await page.evaluate(s => localStorage.setItem("slid.v1", JSON.stringify(s)), seed);
+  await page.reload();
+  const SEC = { id: "wh1", title: "Колесо", lessons: [{ id: "wh1l1", title: "Колесо", screens: [{ type: "sort", title: "Розсортуй", bins: ["так", "ні"], items: [1, 2, 3, 4, 5, 6, 7, 8].map(i => ["Картка " + i, i % 2]) }] }] };
+  await page.evaluate(sec => { SLID_SUBJECTS.find(c => c.id === "math").sections.push(sec); window.__slidStart("wh1l1"); }, SEC);
+  await page.waitForSelector(".sort");
+  const ab = await page.locator("#action").boundingBox(), st = () => page.evaluate(() => { const p = document.querySelector("#player"); return [p.scrollTop, p.scrollHeight > p.clientHeight]; });
+  ok((await st())[1], "wheel: екран sort довший за вікно (фікстура)");
+  await page.mouse.move(ab.x + ab.width / 2, ab.y + ab.height / 2); await page.mouse.wheel(0, 300); await page.waitForTimeout(250);
+  const a = await st(); ok(a[0] > 0, `колесо над кнопкою «Перевірити» гортає екран, а scrollTop = ${a[0]}`);
+  await page.mouse.wheel(0, -1000); await page.waitForTimeout(250);
+  ok((await st())[0] === 0, "колесо вгору над панеллю повертає на початок");
+  // ctrl+колесо (масштаб сторінки) над панеллю не перехоплюємо
+  const cw = await page.evaluate(() => { const e = new WheelEvent("wheel", { deltaY: 100, ctrlKey: true, cancelable: true, bubbles: true }); document.querySelector("#dock").dispatchEvent(e); return e.defaultPrevented; });
+  ok(cw === false, "ctrl+колесо над панеллю не гаситься (масштаб)");
+  // підказка «торкнись місця» — лише при одній живій точці; з двома тап нічого не переносить (P1 рев'ю)
+  const SEC2 = { id: "wh2", title: "Дві", lessons: [{ id: "wh2l1", title: "Дві", screens: [{ type: "explore", title: "Дві точки", body: "QA", cta: "Далі",
+    lab: { kind: "numline", view: [0, 10], tick: 1, params: { a: { min: 0, max: 10, step: 1, start: 2, hide: true }, b: { min: 0, max: 10, step: 1, start: 7, hide: true } }, points: { A: { x: "a", drag: true }, B: { x: "b", drag: true } } } }] }] };
+  await page.evaluate(sec => { SLID_SUBJECTS.find(c => c.id === "math").sections.push(sec); }, SEC2);
+  await page.evaluate(() => { document.querySelector("#pClose").click(); document.querySelector("#pClose").click(); }).catch(() => {});
+  await page.evaluate(() => window.__slidStart("wh2l1")); await page.waitForSelector("#stage .lab");
+  const h2t = await page.locator("#stage .lab .lab-hint").innerText();
+  ok(/Тягни точку/.test(h2t) && !/торкнись/.test(h2t), `дві точки: підказка без «торкнись», а «${h2t}»`);
+  await ctx.close();
+}
+async function tapMoveScenario(browser) {
+  const ctx = await browser.newContext({ viewport: { width: 360, height: 760 }, hasTouch: true, serviceWorkers: "block" });
+  const page = await ctx.newPage(), errors = []; page.on("pageerror", e => errors.push(String(e))); page.setDefaultTimeout(8000);
+  await page.route("**/fonts.googleapis.com/**", r => r.abort());
+  await page.goto(URL0);
+  await page.evaluate(s => localStorage.setItem("slid.v1", JSON.stringify(s)), seed);
+  await page.reload();
+  const SEC = { id: "fT", grade: 5, weeks: [30, 31], title: "QA T", why: "QA", lessons: [{ id: "ft1", title: "Урок ft1", icon: "book", screens: [
+    { type: "explore", title: "Тягни", body: "QA", cta: "Далі", lab: { kind: "numline", view: [0, 10], tick: 1, params: { t: { min: 0, max: 10, step: 1, start: 3, hide: true } }, points: { P: { x: "t", drag: true, label: "{t|0}" } } } },
+    { type: "explore", title: "З повзунком", body: "QA", cta: "Далі", lab: { kind: "numline", view: [0, 10], tick: 1, slider: true, params: { t: { min: 0, max: 10, start: 3, hide: true, label: "$t$" } }, points: { P: { x: "t", drag: true, label: "{t|0}" } } } }] }] };
+  await page.evaluate(install, FIX);
+  await page.evaluate(sec => { SLID_SUBJECTS.find(c => c.id === "math").sections.push(sec); window.__slidStart("ft1"); }, SEC);
+  const val = () => page.evaluate(() => +document.querySelector('#stage .lab .lab-h[data-h="0"]').getAttribute("aria-valuenow"));
+  const sb = await page.locator("#stage .lab svg").boundingBox(), h0 = await page.locator('#stage .lab .lab-h[data-h="0"]').boundingBox();
+  const cy = h0.y + h0.height / 2, X = f => sb.x + sb.width * f;
+  ok(await val() === 3, "тап: старт 3");
+  // миша: натискання й рух ≥ 8 px (початок жесту) — точка стоїть
+  await page.mouse.move(X(0.9), cy); await page.mouse.down(); await page.mouse.move(X(0.9), cy + 30, { steps: 5 }); await page.mouse.up();
+  ok(await val() === 3, `миша: рух після натискання по полю не переносить точку, а ${await val()}`);
+  // миша: довге натискання — теж ні
+  await page.mouse.move(X(0.9), cy); await page.mouse.down(); await page.waitForTimeout(700); await page.mouse.up();
+  ok(await val() === 3, `миша: довге натискання по полю не переносить точку, а ${await val()}`);
+  // миша: натискання без відпускання ще не переносить
+  await page.mouse.move(X(0.9), cy); await page.mouse.down();
+  ok(await val() === 3, `миша: поки кнопку не відпущено, точка стоїть, а ${await val()}`);
+  await page.mouse.up(); ok(await val() >= 8, `миша: короткий тап по полю переносить точку, а ${await val()}`);
+  // справжній touch через CDP: тап — переносить, рух — ні
+  const cdp = await ctx.newCDPSession(page), pt = (x, y) => ({ x, y, id: 1 });
+  const touch = async (steps) => { for (const [type, pts, w] of steps) { await cdp.send("Input.dispatchTouchEvent", { type, touchPoints: pts }); if (w) await page.waitForTimeout(w); } };
+  await page.evaluate(() => document.querySelector('#stage .lab .lab-h[data-h="0"]').focus()); await page.keyboard.press("Home");   // назад до 0
+  const v0 = await val();
+  await touch([["touchStart", [pt(X(0.5), cy)]], ["touchMove", [pt(X(0.5), cy + 40)]], ["touchEnd", []]]);
+  ok(await val() === v0, `touch: рух після дотику по полю не переносить точку (${v0}), а ${await val()}`);
+  await touch([["touchStart", [pt(X(0.5), cy)]], ["touchEnd", [], 0]]);
+  const vt = await val(); ok(vt >= 4 && vt <= 6, `touch: короткий тап по полю переносить точку до середини, а ${vt}`);
+  await touch([["touchStart", [pt(X(0.1), cy)], 700], ["touchEnd", []]]);
+  ok(await val() === vt, `touch: довге натискання не переносить точку, а ${await val()}`);
+  ok(await page.locator('#stage .lab input[type="range"]').count() === 0, "slider не заданий: повзунка під моделлю немає (hide)");
+  // повзунок-дубль (slider: true): синхронний з точкою в обидва боки
+  await page.click("#action");
+  ok(await page.locator('#stage .lab input[type="range"][data-p="t"]').count() === 1, "slider: true — під моделлю є повзунок");
+  await page.evaluate(() => { const r = document.querySelector('#stage .lab input[data-p="t"]'); r.value = 7; r.dispatchEvent(new Event("input", { bubbles: true })); });
+  ok(await val() === 7, `slider → точка: 7, а ${await val()}`);
+  await page.evaluate(() => document.querySelector('#stage .lab .lab-h[data-h="0"]').focus()); await page.keyboard.press("ArrowRight");
+  ok(await page.evaluate(() => +document.querySelector('#stage .lab input[data-p="t"]').value) === 8, "точка (стрілка) → повзунок: 8");
+  // align: розмір шрифту років пропорційний ширині шкали (P3-4): на 200 років не мікроскопічний, на 60 — як раніше (≈ 11 px на 360 px)
+  const fsz = [];
+  for (const [i, r] of [{ from: 1180, to: 1240 }, { from: 1000, to: 1200 }].entries()) {
+    await page.reload(); await page.evaluate(install, FIX);
+    await page.evaluate(([i, r]) => { const sec = { id: "fQ" + i, grade: 5, weeks: [30, 31], title: "QA A", why: "QA", lessons: [{ id: "fq" + i, title: "Урок", icon: "book", screens: [{ type: "info", title: "Вступ", body: "QA" },
+      { type: "align", title: "Колода", body: "QA", ref: { ...r, seed: 7 }, sample: { len: 18, endYear: r.to - 20 } }] }] }; SLID_SUBJECTS.find(c => c.id === "math").sections.push(sec); window.__slidStart("fq" + i); }, [i, r]);
+    await page.click("#action");   // інфо-екран → align
+    await page.waitForSelector("#stage .align svg");
+    fsz.push(await page.evaluate(() => { const svg = document.querySelector("#stage .align svg"), t = svg.querySelector("text"), k = svg.getBoundingClientRect().width / svg.viewBox.baseVal.width; return { fs: +t.getAttribute("font-size"), px: +(+t.getAttribute("font-size") * k).toFixed(1) }; }));
+  }
+  ok(fsz.every(x => x.px >= 8 && x.px <= 14), `align: шрифт років на 360 px — 8…14 px для 61 і 201 року, а ${JSON.stringify(fsz)}`);
+  ok(!errors.length, "тап: помилки сторінки: " + errors.join(" | "));
+  await ctx.close();
+}
+async function renderLegibilityScenario(browser) {
+  const ctx = await browser.newContext({ viewport: { width: 360, height: 760 }, serviceWorkers: "block" });
+  const page = await ctx.newPage(), errors = []; page.on("pageerror", e => errors.push(String(e))); page.setDefaultTimeout(8000);
+  await page.route("**/fonts.googleapis.com/**", r => r.abort());
+  await page.goto(URL0);
+  await page.evaluate(s => localStorage.setItem("slid.v1", JSON.stringify(s)), seed);
+  await page.reload();
+  const P4 = { min: 0, max: 9, start: 0 };
+  const ex = (title, lab) => ({ type: "explore", title, body: "QA", lab, cta: "Далі" });
+  const SEC = { id: "fR", grade: 5, weeks: [30, 31], title: "QA R", why: "QA", lessons: [{ id: "fr1", title: "Урок fr1", icon: "book", screens: [
+    ex("Стрибки", { kind: "numline", view: [2700, 4800], tick: 100, labels: 500, params: { th: { min: 0, max: 1, start: 1 }, hu: { ...P4, start: 3 }, tn: { ...P4, start: 6 }, un: { ...P4, start: 5 } },
+      let: { k: "1000*th+100*hu+10*tn+un" }, jumps: [{ from: "2748", to: "2748+1000*th", label: "+{1000*th|0}" }, { from: "2748+1000*th", to: "2748+1000*th+100*hu", label: "+{100*hu|0}" }],
+      points: { M: { x: "2748", color: "muted", label: "2748" }, N: { x: "2748+k", label: "{2748+k|0}" }, E: { x: "4800", label: "кінець" } } }),
+    ex("Дві точки", { kind: "numline", view: [0, 5], tick: 0.5, labels: 1, params: { m: { min: -2, max: 3, start: 1, label: "$\\alpha$" }, n: { min: -2, max: 3, start: -2, label: "$x_1$" } },
+      points: { A: { x: "2^m * 2^n", label: "добуток {2^m * 2^n|4}" }, B: { x: "2^(m+n)", label: "степінь {2^(m+n)|4}", color: "green" } } }),
+    ex("Смужки", { kind: "fraction", params: { a: { min: 5, max: 12, step: 1, start: 7 } }, items: [{ shape: "bar", n: "a", k: 3, label: "$3/a$" }, { shape: "bar", n: "a", k: 5, label: "сума $5/a$" }] }),
+    ex("Дрон", { kind: "solid", shape: "box", params: { a: { min: 1, max: 5, start: 3 }, c: { min: 1, max: 5, start: 2 }, b: { min: 1, max: 5, start: 4 } }, a: "a", b: "b", c: "c", axes: true,
+      marks: [{ v: 0, label: "O" }, { v: 6, label: "M" }, { v: 5, label: "M₁" }] }),
+    { type: "info", title: "Формули", body: "<p id=qf>$\\sqrt{2}$ і $1 \\to 4$ і $1 - 4$ і $1/a^n$</p><p id=qu>пі<u>д</u>писаний</p>" },
+    { type: "info", title: "Шари", body: "QA", svg: "strata" },
+    ex("Тягни", { kind: "numline", view: [0, 10], tick: 1, params: { t: { min: 0, max: 10, step: 1, start: 3, hide: true } }, points: { P: { x: "t", drag: true, label: "{t|0}" } } }),
+    { type: "align", title: "Колода", body: "QA", ref: { from: 1180, to: 1240, seed: 7 }, sample: { len: 18, endYear: 1212 } }] }] };
+  await page.evaluate(install, FIX);
+  await page.evaluate(sec => { SLID_SUBJECTS.find(c => c.id === "math").sections.push(sec); window.__slidStart("fr1"); }, SEC);
+  // кожен <text> лабораторії — у межах viewBox SVG; рамки підписів — для перевірки накладань
+  const texts = () => page.evaluate(() => { const svg = document.querySelector("#stage .lab svg"), vb = svg.viewBox.baseVal;
+    return { vb: [vb.width, vb.height], t: [...svg.querySelectorAll("text")].map(t => { const b = t.getBBox(); return { s: t.textContent, x0: b.x, y0: b.y, x1: b.x + b.width, y1: b.y + b.height }; }) }; });
+  const inside = (r, what) => { const out = r.t.filter(b => b.x0 < -0.5 || b.y0 < -0.5 || b.x1 > r.vb[0] + 0.5 || b.y1 > r.vb[1] + 0.5);
+    ok(!out.length, `${what}: підписи в межах SVG ${r.vb}, а за межами ${JSON.stringify(out)}`); };
+  const overlap = (a, b) => a.x0 < b.x1 - 1 && b.x0 < a.x1 - 1 && a.y0 < b.y1 - 1 && b.y0 < a.y1 - 1;
+  const next = () => page.click("#action");
+  // 1) стрибки: «+1000» над дугою не обрізано; старт 2748 підписано; точка на правому краю — підпис не виходить за поле
+  const r1 = await texts(); inside(r1, "numline зі стрибками");
+  ok(r1.t.some(b => b.s === "+1000") && r1.t.some(b => b.s === "2748") && r1.t.some(b => b.s === "кінець"), `numline: підписи +1000, 2748, «кінець» є, а ${r1.t.map(b => b.s)}`);
+  // нерозв'язані стани (рев'ю P1-1): старт «2748» і N поруч — підписи в різних рядах, не накладаються
+  for (const st of [{ th: 0, hu: 0, tn: 0, un: 5 }, { th: 0, hu: 1, tn: 0, un: 0 }]) {
+    await page.evaluate(st => { for (const [k, v] of Object.entries(st)) { const el = document.querySelector(`#stage .lab input[data-p="${k}"]`); el.value = v; el.dispatchEvent(new Event("input", { bubbles: true })); } }, st);
+    const rs = await texts(), want = String(2748 + st.hu * 100 + st.un), m = rs.t.find(b => b.s === "2748"), nn = rs.t.find(b => b.s === want); inside(rs, `numline зі стрибками ${JSON.stringify(st)}`);
+    ok(m && nn && !overlap(m, nn), `numline ${JSON.stringify(st)}: «2748» і «${want}» не накладаються, а ${JSON.stringify([m, nn])}`); }
+  await next();
+  // 2) дві точки в одному місці: підписи не накладаються; назви повзунків для читача екрана — без TeX
+  const r2 = await texts(); inside(r2, "numline з двома точками");
+  const [pa, pb] = ["добуток", "степінь"].map(w => r2.t.find(b => b.s.startsWith(w)));
+  ok(pa && pb && !overlap(pa, pb), `numline: «добуток» і «степінь» в одній точці не накладаються, а ${JSON.stringify([pa, pb])}`);
+  const aria = await page.locator('#stage .lab input[type="range"]').evaluateAll(xs => xs.map(x => x.getAttribute("aria-label")));
+  ok(same(aria, ["α", "x₁"]), `назви повзунків: «α», «x₁» без «\\» і «_», а ${JSON.stringify(aria)}`);
+  await next();
+  // 3) смужки: «сума 5/a» не обрізано зліва
+  const r3 = await texts(); inside(r3, "fraction із довгим підписом");
+  await next();
+  // 4) solid: осі x, y, z; «M₁» і довжини ребер не накладаються
+  const r4 = await texts(); inside(r4, "solid з осями");
+  ok(["x", "y", "z"].every(n => r4.t.some(b => b.s === n)), `solid: підписи осей x, y, z, а ${r4.t.map(b => b.s)}`);
+  const m1 = r4.t.find(b => b.s === "M₁"), nums = r4.t.filter(b => /^\d+$/.test(b.s));
+  ok(m1 && nums.length === 3 && nums.every(b => !overlap(m1, b)), `solid: «M₁» не зливається з довжиною ребра, а ${JSON.stringify([m1, nums])}`);
+  await next();
+  // 5) формули й підкреслення: корінь — маска знака до риски, \to помітно ширша за «−», <u> з відступом і без розривів
+  const f = await page.evaluate(() => { const sq = document.querySelector("#qf .sqrt"), bs = getComputedStyle(sq, "::before"), rd = sq.querySelector(".radicand");
+    const mos = [...document.querySelectorAll("#qf .mo")], arr = mos.find(m => m.textContent === "→"), minus = mos.find(m => m.textContent === "−"), u = getComputedStyle(document.querySelector("#qu u"));
+    return { mask: bs.webkitMaskImage || bs.maskImage, stretch: bs.alignSelf, top: rd.getBoundingClientRect().top - sq.getBoundingClientRect().top,
+      arr: arr.getBoundingClientRect().width, minus: minus.getBoundingClientRect().width, off: u.textUnderlineOffset, skip: u.textDecorationSkipInk,
+      den: !!document.querySelector("#qf .fr .de sup") }; });
+  ok(/svg/.test(f.mask) && f.stretch === "stretch" && Math.abs(f.top) < 0.5, `корінь: знак — маска на всю висоту, риска від верху знака, а ${JSON.stringify(f)}`);
+  ok(f.arr > 1.6 * f.minus, `\\to: стрілка помітно ширша за мінус, а ${f.arr} проти ${f.minus}`);
+  ok(f.off !== "auto" && parseFloat(f.off) >= 3 && f.skip === "none", `<u>: відступ ≥ 3 px і без розривів, а ${f.off} ${f.skip}`);
+  ok(f.den, "1/a^n: показник у знаменнику");
+  // висококонтрастний режим (рев'ю P3-3): знак під маскою малюється системним кольором тексту, а не зникає
+  await page.emulateMedia({ forcedColors: "active" });
+  const fc = await page.evaluate(() => { const bs = getComputedStyle(document.querySelector("#qf .sqrt"), "::before"); return { adj: bs.forcedColorAdjust, bg: bs.backgroundColor, mask: bs.webkitMaskImage || bs.maskImage }; });
+  await page.emulateMedia({ forcedColors: "none" });
+  ok(fc.adj === "none" && !/rgba\(0, 0, 0, 0\)|transparent/.test(fc.bg) && /svg/.test(fc.mask), `корінь у forced-colors: forced-color-adjust none і видимий фон під маскою, а ${JSON.stringify(fc)}`);
+  await next();
+  // 6) strata: знахідки не налазять на стрілку часу; усі підписи в межах SVG
+  const st = await page.evaluate(() => { const svg = document.querySelector("#stage svg[aria-label^='Розріз']"), ts = [...svg.querySelectorAll("text")].map(t => { const b = t.getBBox(); return { s: t.textContent, x0: b.x, x1: b.x + b.width, y0: b.y, y1: b.y + b.height }; });
+    const ar = svg.querySelector("path").getBBox(), vb = svg.viewBox.baseVal; return { ts, ax: ar.x, vb: [vb.width, vb.height] }; });
+  const finds = st.ts.filter(b => b.s.length > 1 && !/новіше|давніше/.test(b.s));
+  ok(finds.length === 4 && finds.every(b => b.x1 < st.ax - 4), `strata: усі 4 знахідки лівіше стрілки (x ${st.ax}), а ${JSON.stringify(finds)}`);
+  ok(st.ts.every(b => b.x0 >= 0 && b.x1 <= st.vb[0] && b.y0 >= 0 && b.y1 <= st.vb[1]), `strata: підписи в межах SVG, а ${JSON.stringify(st.ts)}`);
+  await next();
+  // 6а) клік по точці (без перетягування) ставить фокус на її ручку — далі стрілки рухають цю точку (qa-drag-points-1117 B1)
+  const hb = await page.locator('#stage .lab .lab-h[data-h="0"]').boundingBox();
+  await page.mouse.move(hb.x + hb.width / 2, hb.y + hb.height / 2); await page.mouse.down(); await page.mouse.up();
+  const fh = await page.evaluate(() => document.activeElement?.classList.contains("lab-h") ? document.activeElement.dataset.h : null);
+  await page.keyboard.press("ArrowRight");
+  const now3 = await page.evaluate(() => [document.activeElement?.dataset?.h ?? null, document.querySelector('#stage .lab .lab-h[data-h="0"]').getAttribute("aria-valuenow")]);
+  ok(fh === "0" && same(now3, ["0", "4"]), `клік по точці: фокус на ручці, стрілка → 3 → 4, а ${fh} ${JSON.stringify(now3)}`);
+  // 6б) тап по порожньому місцю шкали переносить єдину жива точку туди й далі її тягне; під моделлю — видима підказка (qa-drag-points-1117 B2)
+  const hint = await page.locator("#stage .lab .lab-hint").innerText().catch(() => ""), hintVis = await page.locator("#stage .lab .lab-hint").isVisible();
+  ok(hintVis && /Тягни точку/.test(hint) && /торкнись/.test(hint) && /стрілки/.test(hint), `lab: видима підказка під моделлю, а «${hint}» (${hintVis})`);
+  const sb = await page.locator("#stage .lab svg").boundingBox(), h1 = await page.locator('#stage .lab .lab-h[data-h="0"]').boundingBox();
+  const cy = h1.y + h1.height / 2, before = await page.evaluate(() => document.querySelector('#stage .lab .lab-h[data-h="0"]').getAttribute("aria-valuenow"));
+  await page.mouse.click(sb.x + sb.width * 0.85, cy);
+  const after = await page.evaluate(() => document.querySelector('#stage .lab .lab-h[data-h="0"]').getAttribute("aria-valuenow"));
+  ok(+after >= 8 && +after > +before, `тап по порожньому місцю шкали: точка перескочила праворуч (було ${before}), а ${after}`);
+  const h2 = await page.locator('#stage .lab .lab-h[data-h="0"]').boundingBox();
+  await page.mouse.move(h2.x + h2.width / 2, cy); await page.mouse.down(); await page.mouse.move(sb.x + sb.width * 0.2, cy, { steps: 8 }); await page.mouse.up();
+  const dragged = await page.evaluate(() => document.querySelector('#stage .lab .lab-h[data-h="0"]').getAttribute("aria-valuenow"));
+  ok(+dragged <= 3, `після тапу точку можна тягнути далі, а ${dragged}`);
+  await next();
+  // 7) align: роки шкали цілком у полі; «Збіг візерунка» — кількість кілець, на розв'язку 18 з 18
+  const al = await page.evaluate(() => { const svg = document.querySelector("#stage .align svg"), vb = svg.viewBox.baseVal;
+    return { yrs: [...svg.querySelectorAll("text")].map(t => { const b = t.getBBox(); return [t.textContent, b.x, b.x + b.width]; }), x0: vb.x, w: vb.width, m: document.querySelector("#almatch").textContent }; });
+  ok(same(al.yrs.map(y => y[0]), ["1180", "1200", "1220", "1240"]) && al.yrs.every(y => y[1] >= al.x0 - 0.5 && y[2] <= al.x0 + al.w + 0.5), `align: роки шкали повністю в полі, а ${JSON.stringify(al)}`);
+  ok(/^\d+ з 18 кілець$/.test(al.m), `align: збіг — «N з 18 кілець», а «${al.m}»`);
+  await page.evaluate(() => { const r = document.querySelector("#alrng"); r.value = 1212 - 18 + 1 - 1180; r.dispatchEvent(new Event("input")); });
+  ok(await page.locator("#almatch").innerText() === "18 з 18 кілець" && await page.locator("#almeter.full").count() === 1, "align: на правильному зсуві — «18 з 18 кілець», шкала повна");
+  ok(!errors.length, "читабельність рендеру: помилки сторінки: " + errors.join(" | "));
+  await ctx.close();
+}

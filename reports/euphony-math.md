@@ -1,0 +1,934 @@
+# Милозвучність у/в, і/й, з/із/зі: math
+
+Згенеровано: 2026-11-18 · tools/euphony.mjs · екранів: 4590, відхилень: 890
+
+Механічна підказка за УП § 23–25: перевір кожне вручну. Правила з позначкою «validate» дають попередження валідатора; решта — лише тут.
+
+## «в» між приголосними → «у» (§ 23) · validate — 1
+
+- pg9m8 задача 35 «e04» (content/math/pool-g9-g9m8.js): «лежить в її»
+
+## «В» на початку речення чи після паузи перед приголосним → «У» (§ 23) · validate — 2
+
+- g8m2l6 екран 8 (content/math/g8-g8m2.js): «черзі, в порядку»
+- g8m2l7 екран 7 (content/math/g8-g8m2.js): «черзі, в порядку»
+
+## «в» перед в, ф, льв, св, тв, хв… → «у» (§ 23) · validate — 33
+
+- g4m4l3 екран 4 (content/math/g4-g4m4.js): «Бо в квадраті»
+- g4m4l3 екран 8 (content/math/g4-g4m4.js): «площа в квадратних»
+- g4m4l4 outro/назва (content/math/g4-g4m4.js): «величину в двох»
+- g4m5l3 екран 6 (content/math/g4-g4m5.js): «найбільше в квадраті»
+- g6m3l5 екран 8 (content/math/g6-g6m3.js): «число в квадраті»
+- g7m3l3 екран 7 (content/math/g7-g7m3.js): «число в квадраті»
+- g7m5l2 екран 9 (content/math/g7-g7m5.js): «координати в формулу»
+- g8m2l7 екран 5 (content/math/g8-g8m2.js): «лише в квадрат»
+- g8m3l1 екран 7 (content/math/g8-g8m3.js): «число в квадраті»
+- g8m3l1 екран 10 (content/math/g8-g8m3.js): «число в квадраті»
+- g8m3l2 екран 6 (content/math/g8-g8m3.js): «число в квадраті»
+- g8m3l4 екран 9 (content/math/g8-g8m3.js): «число в квадраті»
+- g8m5l4 outro/назва (content/math/g8-g8m5.js): «невідомого в квадраті»
+- g9m3l2 екран 1 (content/math/g9-g9m3.js): «числа в формулі»
+- g9m4l5 екран 8 (content/math/g9-g9m4.js): «половини в формулі»
+- g9m6l1 екран 10 (content/math/g9-g9m6.js): «варіанти в формулу»
+- g9m6l2 екран 7 (content/math/g9-g9m6.js): «число в квадраті»
+- g9m6l2 екран 9 (content/math/g9-g9m6.js): «вже в квадратних»
+- g9m6l7 екран 6 (content/math/g9-g9m6.js): «число в квадраті»
+- g9m6l7 екран 9 (content/math/g9-g9m6.js): «площа в квадратних»
+- pg4m4 задача 20 «c04» (content/math/pool-g4-g4m4.js): «площу в квадратних»
+- pg4m4 задача 21 «c05» (content/math/pool-g4-g4m4.js): «площа в квадратних»
+- pg4m4 задача 22 «c06» (content/math/pool-g4-g4m4.js): «скла в квадратних»
+- pg4m4 задача 23 «c07» (content/math/pool-g4-g4m4.js): «обидві в квадратних»
+- pg6m3 задача 37 «e05» (content/math/pool-g6-g6m3.js): «число в квадраті»
+- pg8m3 задача 4 «e04» (content/math/pool-g8-g8m3.js): «число в квадраті»
+- pg8m5 задача 1 «a01» (content/math/pool-g8-g8m5.js): «числа в квадраті»
+- pg8m5 задача 5 «a05» (content/math/pool-g8-g8m5.js): «число в квадраті»
+- pg9m3 задача 16 «b08» (content/math/pool-g9-g9m3.js): «число в квадраті»
+- pg9m6 задача 28 «d04» (content/math/pool-g9-g9m6.js): «число в квадраті»
+- pg9m6 задача 44 «f04» (content/math/pool-g9-g9m6.js): «число в квадраті»
+- pg9m6 задача 48 «f08» (content/math/pool-g9-g9m6.js): «лісу в квадратні»
+- dg8 завдання 25 (content/math/diag-g8.js): «площу в квадратні»
+
+## «у» після голосного перед приголосним → «в» (§ 23; звіт) — 26
+
+- g4m1l1 екран 9 (content/math/g4-g4m1.js): «цифра 4 у числі»
+- g4m1l2 екран 5 (content/math/g4-g4m1.js): «це 206 у класі»
+- g4m1l2 екран 5 (content/math/g4-g4m1.js): «це 030 у класі»
+- g4m1l5 екран 5 (content/math/g4-g4m1.js): «бо 1 0 у розряді»
+- g4m2l2 екран 5 (content/math/g4-g4m2.js): «Займаємо  1 у сусіда»
+- g4m2l2 екран 5 (content/math/g4-g4m2.js): «Це 10 у нашому»
+- g4m2l5 екран 4 (content/math/g4-g4m2.js): «завдання 2 у стовпчик»
+- g6m3l1 outro/назва (content/math/g6-g6m3.js): «величину у заданому»
+- g7m8l2 екран 1 (content/math/g7-g7m8.js): «спільного у такої»
+- g8m1l7 екран 6 (content/math/g8-g8m1.js): «Місяця у стандартному»
+- g8m1l7 outro/назва (content/math/g8-g8m1.js): «числа у стандартному»
+- g8m1l7 outro/назва (content/math/g8-g8m1.js): «записані у стандартному»
+- g8m1l5 екран 7 (content/math/g8-g8m1.js): «деталі у стандартному»
+- g8m1l5 outro/назва (content/math/g8-g8m1.js): «числа у стандартному»
+- g8m2l2 екран 1 (content/math/g8-g8m2.js): «риса у кого»
+- g11m1l3 екран 1 (content/math/g11-g11m1.js): «її у різні»
+- pg4m1 задача 3 «a09» (content/math/pool-g4-g4m1.js): «Цифра 8 у числі»
+- pg4m1 задача 3 «a09» (content/math/pool-g4-g4m1.js): «цифра 8 у числі»
+- pg4m4 задача 6 «a06» (content/math/pool-g4-g4m4.js): «прибуття у Грибовичі»
+- pms0 задача 16 «b08» (content/math/pool-g5-ms0.js): «Цифра 5 у розряді»
+- pms0 задача 16 «b08» (content/math/pool-g5-ms0.js): «цифру 5 у розряді»
+- pg8m1 задача 45 «f04» (content/math/pool-g8-g8m1.js): «запиши у стандартному»
+- pg8m1 задача 52 «f11» (content/math/pool-g8-g8m1.js): «запиши у стандартному»
+- dg4 завдання 1 (content/math/diag-g4.js): «цифра 7 у числі»
+- dg4 завдання 17 (content/math/diag-g4.js): «по 5 у коробку»
+- dg5 завдання 1 (content/math/diag-g5.js): «цифра 6 у числі»
+
+## слово на «В» + приголосний на початку речення («Влітку», «Встановлено») → «У» (§ 23; звіт: «Вплив», «Влада» не чергуються) — 108
+
+- g4m3l5 екран 7 (content/math/g4-g4m3.js): «Вчасно»
+- g4m4l1 outro/назва (content/math/g4-g4m4.js): «Встигнеш на»
+- g4m4l5 екран 3 (content/math/g4-g4m4.js): «Встигнете»
+- g4m5l4 outro/назва (content/math/g4-g4m5.js): «Впізнавати цю»
+- ms0l7 outro/назва (content/math/g5-ms0.js): «Враховувати течію»
+- ms3l3 outro/назва (content/math/g5-ms0b.js): «Враховувати масштаб»
+- ms3l2 екран 5 (content/math/g6-ms3.js): «Встанови заряд»
+- g6m2l1 екран 8 (content/math/g6-g6m2.js): «Властивість працює»
+- g6m5l4 outro/назва (content/math/g6-g6m5.js): «Вгадувати відповідь»
+- g7m2l2 екран 4 (content/math/g7-g7m2.js): «Властивість сума»
+- g7m2l2 екран 8 (content/math/g7-g7m2.js): «Властивість вертикальні»
+- g7m3l7 екран 8 (content/math/g7-g7m3.js): «Впізнай формулу»
+- g7m6l2 екран 4 (content/math/g7-g7m6.js): «Властивості й»
+- g7m6l2 екран 6 (content/math/g7-g7m6.js): «Властивість відповідні»
+- g7m6l2 екран 8 (content/math/g7-g7m6.js): «Властивість з»
+- g7m6l3 екран 7 (content/math/g7-g7m6.js): «Внутрішні кути»
+- g7m6l3 екран 8 (content/math/g7-g7m6.js): «Внутрішній кут»
+- g7m6l3 екран 8 (content/math/g7-g7m6.js): «Внутрішні кути»
+- g7m6l4 екран 5 (content/math/g7-g7m6.js): «Властивість іде»
+- g7m6l4 екран 7 (content/math/g7-g7m6.js): «Внутрішній кут»
+- g7m6l4 outro/назва (content/math/g7-g7m6.js): «Властивості рахують»
+- g7m4l5 екран 4 (content/math/g7-g7m4.js): «Властивість зовнішній»
+- g7m4l7 екран 4 (content/math/g7-g7m4.js): «Властивість Сума»
+- g7m4l7 екран 4 (content/math/g7-g7m4.js): «Властивість Гіпотенуза»
+- g7m4l7 екран 8 (content/math/g7-g7m4.js): «Властивість Катет»
+- g7m4l7 екран 8 (content/math/g7-g7m4.js): «Властивість обернена»
+- g7m8l5 екран 7 (content/math/g7-g7m8.js): «Вписане коло»
+- g7m8l5 екран 9 (content/math/g7-g7m8.js): «Вписане коло»
+- g7m8l6 екран 4 (content/math/g7-g7m8.js): «Вписаний кут»
+- g7m8l6 екран 5 (content/math/g7-g7m8.js): «Вписаний кут»
+- g7m8l6 екран 6 (content/math/g7-g7m8.js): «Вписаний кут»
+- g7m8l6 екран 6 (content/math/g7-g7m8.js): «Вписаний кут»
+- g7m8l6 екран 7 (content/math/g7-g7m8.js): «Вписаний кут»
+- g7m8l6 екран 7 (content/math/g7-g7m8.js): «Вписаний кут»
+- g7m8l6 екран 8 (content/math/g7-g7m8.js): «Вписаний кут»
+- g7m8l6 екран 8 (content/math/g7-g7m8.js): «Вписаний кут»
+- g7m8l6 outro/назва (content/math/g7-g7m8.js): «Вписаний кут»
+- g7m8l4 екран 4 (content/math/g7-g7m8.js): «Властивість двох»
+- g7m8l4 екран 7 (content/math/g7-g7m8.js): «Вписаний кут»
+- g7m8l4 екран 7 (content/math/g7-g7m8.js): «Вписаний кут»
+- g8m1l3 екран 4 (content/math/g8-g8m1.js): «Властивості степеня»
+- g8m1l3 outro/назва (content/math/g8-g8m1.js): «Властивості степеня»
+- g8m2l1 екран 5 (content/math/g8-g8m2.js): «Властивості протилежні»
+- g8m2l6 екран 5 (content/math/g8-g8m2.js): «Вписаний чотирикутник»
+- g8m2l6 екран 5 (content/math/g8-g8m2.js): «Властивість у»
+- g8m2l6 екран 5 (content/math/g8-g8m2.js): «Вписана трапеція»
+- g8m2l6 екран 9 (content/math/g8-g8m2.js): «Вписана трапеція»
+- g8m2l6 екран 9 (content/math/g8-g8m2.js): «Вписаною буває»
+- g8m2l7 екран 5 (content/math/g8-g8m2.js): «Властивість в»
+- g8m3l6 екран 4 (content/math/g8-g8m3.js): «Властивості Область»
+- g8m3l3 екран 4 (content/math/g8-g8m3.js): «Властивості кореня»
+- g8m4l2 outro/назва (content/math/g8-g8m4.js): «Впізнавати трійку»
+- g8m4l5 екран 5 (content/math/g8-g8m4.js): «Властивість бісектриси»
+- g8m4l4 екран 3 (content/math/g8-g8m4.js): «Властивість бісектриси»
+- g8m6l2 екран 9 (content/math/g8-g8m6.js): «Вчасно помічено»
+- g9m1l1 екран 5 (content/math/g9-g9m1.js): «Властивості нерівностей»
+- g9m1l2 екран 10 (content/math/g9-g9m1.js): «Влізли»
+- g9m1l4 екран 3 (content/math/g9-g9m1.js): «Властивість множення»
+- g9m1l4 outro/назва (content/math/g9-g9m1.js): «Властивості знака»
+- g9m3l4 екран 8 (content/math/g9-g9m3.js): «Введи правий»
+- g9m4l6 екран 9 (content/math/g9-g9m4.js): «Вписане коло»
+- g9m5l4 екран 4 (content/math/g9-g9m5.js): «Внесок знайдено»
+- g9m6l1 екран 7 (content/math/g9-g9m6.js): «Внутрішній кут»
+- g9m6l1 екран 9 (content/math/g9-g9m6.js): «Внутрішній Ф»
+- g9m6l1 екран 10 (content/math/g9-g9m6.js): «Внутрішній кут»
+- g9m8l4 екран 6 (content/math/g9-g9m8.js): «Властивості паралельних»
+- g10m3l2 екран 4 (content/math/g10-g10m3.js): «Властивості степеня»
+- g10m3l2 outro/назва (content/math/g10-g10m3.js): «Властивості степеня»
+- g11m3l3 outro/назва (content/math/g11-g11m3.js): «Враховувати знак»
+- g11m5l3 екран 6 (content/math/g11-g11m5.js): «Впорядкований ряд»
+- g11m5l3 екран 6 (content/math/g11-g11m5.js): «Впорядкуй ряд»
+- g11m5l3 outro/назва (content/math/g11-g11m5.js): «Впорядковувати ряд»
+- g11m5l4 екран 8 (content/math/g11-g11m5.js): «Впорядкований ряд»
+- g11m5l4 екран 8 (content/math/g11-g11m5.js): «Впорядкуй ряд»
+- g11m6l3 екран 9 (content/math/g11-g11m6.js): «Вліво»
+- g11m6l4 екран 1 (content/math/g11-g11m6.js): «Вміститься чи»
+- g11m6l4 екран 2 (content/math/g11-g11m6.js): «Вміститься»
+- g11m6l4 екран 2 (content/math/g11-g11m6.js): «Вміститься але»
+- pg11m4 задача 24 «c08» (content/math/pool-g11-g11m4.js): «Втрати металу»
+- pg4m1 задача 17 «c01» (content/math/pool-g4-g4m1.js): «Введи знак»
+- pg4m1 задача 18 «c09» (content/math/pool-g4-g4m1.js): «Введи знак»
+- pg4m1 задача 19 «c10» (content/math/pool-g4-g4m1.js): «Введи знак»
+- pg4m1 задача 20 «c11» (content/math/pool-g4-g4m1.js): «Введи знак»
+- pg4m4 задача 28 «d04» (content/math/pool-g4-g4m4.js): «Введи знак»
+- pms0 задача 9 «b01» (content/math/pool-g5-ms0.js): «Введи знак»
+- pms0 задача 12 «b04» (content/math/pool-g5-ms0.js): «Введи знак»
+- pg7m3 задача 39 «e07» (content/math/pool-g7-g7m3.js): «Внутрішні дужки»
+- pg7m4 задача 30 «d06» (content/math/pool-g7-g7m4.js): «Внутрішній кут»
+- pg7m4 задача 32 «d08» (content/math/pool-g7-g7m4.js): «Внутрішній кут»
+- pg7m5 задача 8 «a08» (content/math/pool-g7-g7m5.js): «Входу відповідають»
+- pg7m8 задача 18 «c02» (content/math/pool-g7-g7m8.js): «Внутрішні точки»
+- pg7m8 задача 32 «d08» (content/math/pool-g7-g7m8.js): «Вписане в»
+- pg7m8 задача 33 «e01» (content/math/pool-g7-g7m8.js): «Вписаний кут»
+- pg7m8 задача 33 «e01» (content/math/pool-g7-g7m8.js): «Вписаний кут»
+- pg7m8 задача 34 «e02» (content/math/pool-g7-g7m8.js): «Вписаний кут»
+- pg7m8 задача 34 «e02» (content/math/pool-g7-g7m8.js): «Вписаний кут»
+- pg7m8 задача 35 «e03» (content/math/pool-g7-g7m8.js): «Вписані кути»
+- pg7m8 задача 37 «e05» (content/math/pool-g7-g7m8.js): «Вписані кути»
+- pg7m8 задача 38 «e06» (content/math/pool-g7-g7m8.js): «Вписаний кут»
+- pg8m1 задача 48 «f07» (content/math/pool-g8-g8m1.js): «Введи знак»
+- pg9m4 задача 35 «e03» (content/math/pool-g9-g9m4.js): «Вписане коло»
+- pg9m7 задача 3 «a03» (content/math/pool-g9-g9m7.js): «Вбрання це»
+- dg10 завдання 7 (content/math/diag-g10.js): «Внутрішні кути»
+- dg10 завдання 7 (content/math/diag-g10.js): «Внутрішні кути»
+- dg11 завдання 12 (content/math/diag-g11.js): «Взяти одну»
+- dg7 завдання 25 (content/math/diag-g7.js): «Внутрішні кути»
+- dg7 завдання 25 (content/math/diag-g7.js): «Внутрішні кути»
+- dg9 завдання 18 (content/math/diag-g9.js): «Внутрішній кут»
+
+## «й» перед й, я, ю, є, ї → «і» (§ 24) · validate — 1
+
+- g9m7l2 екран 8 (content/math/g9-g9m7.js): «частота й ймовірність»
+
+## «й» після слова на й, я, ю, є, ї → «і» або «та» (§ 24 п. 4; звіт: перевір — сполучник чи частка «й» = «також») — 224
+
+- g4m3l1 екран 9 (content/math/g4-g4m3.js): «місця й учнів»
+- g4m3l4 екран 7 (content/math/g4-g4m3.js): «Оля й Петро»
+- g4m3l4 екран 8 (content/math/g4-g4m3.js): «Олю й Петра»
+- g4m3l5 outro/назва (content/math/g4-g4m3.js): «ділення й рух»
+- g4m3l5 outro/назва (content/math/g4-g4m3.js): «ділення й формула»
+- g4m4l1 екран 5 (content/math/g4-g4m4.js): «Додивитися й не»
+- g4m4l5 екран 1 (content/math/g4-g4m4.js): «картоплю й мед»
+- g4m5l3 екран 2 (content/math/g4-g4m5.js): «сіткою й клітинками»
+- ms0l3 екран 3 (content/math/g5-ms0.js): «множення й ділення»
+- ms0l3 екран 3 (content/math/g5-ms0.js): «додавання й віднімання»
+- ms0l3 екран 7 (content/math/g5-ms0.js): «Множення й ділення»
+- ms0l3 екран 8 (content/math/g5-ms0.js): «ділення й множення»
+- ms0l3 екран 9 (content/math/g5-ms0.js): «множення й так»
+- ms0l3 outro/назва (content/math/g5-ms0.js): «множення й ділення»
+- ms0l3 outro/назва (content/math/g5-ms0.js): «додавання й віднімання»
+- ms0l5 екран 4 (content/math/g5-ms0.js): «множення й додавання»
+- ms0l6 outro/назва (content/math/g5-ms0.js): «дію й порядок»
+- ms3l3 екран 5 (content/math/g5-ms0b.js): «Ігоря й Марка»
+- ms0bl2 екран 8 (content/math/g5-ms0b.js): «зовнішня й внутрішня»
+- ms0bl3 екран 8 (content/math/g5-ms0b.js): «буває й двох»
+- ms0bl5 екран 1 (content/math/g5-ms0b.js): «пісочницю й газон»
+- ms0bl5 outro/назва (content/math/g5-ms0b.js): «пісочниця й газон»
+- ms2l4 екран 4 (content/math/g5-ms2.js): «Множення й ділення»
+- ms2l6 outro/назва (content/math/g5-ms2.js): «дії й середнє»
+- ms2l6 outro/назва (content/math/g5-ms2.js): «середнє й недостатнє»
+- ms3l4 екран 7 (content/math/g6-ms3.js): «виправлення й друку»
+- g6m2l1 екран 8 (content/math/g6-g6m2.js): «множення й ділення»
+- g6m2l6 outro/назва (content/math/g6-g6m2.js): «множення й ділення»
+- g6m4l4 екран 7 (content/math/g6-g6m4.js): «множення й ділення»
+- g6m4l4 outro/назва (content/math/g6-g6m4.js): «множення й ділення»
+- g6m4l7 екран 7 (content/math/g6-g6m4.js): «лінію й позначаємо»
+- g6m4l9 екран 3 (content/math/g6-g6m4.js): «лінією й отримаємо»
+- g6m5l1 outro/назва (content/math/g6-g6m5.js): «Оля й Марко»
+- g6m5l4 екран 1 (content/math/g6-g6m5.js): «Оля й Марко»
+- g6m5l4 екран 1 (content/math/g6-g6m5.js): «буквою й дати»
+- g6m5l4 екран 4 (content/math/g6-g6m5.js): «рівняння й розв'яжи»
+- g6m5l5 outro/назва (content/math/g6-g6m5.js): «рівняння й задачі»
+- ms4l4 outro/назва (content/math/g6-ms4.js): «площею й периметром»
+- g6m6l1 екран 4 (content/math/g6-g6m6.js): «напої й булочки»
+- g6m6l1 екран 6 (content/math/g6-g6m6.js): «синя й чорні»
+- g6m6l1 екран 6 (content/math/g6-g6m6.js): «синя й сині»
+- g6m6l5 outro/назва (content/math/g6-g6m6.js): «подію й порахувати»
+- g7m1l1 екран 4 (content/math/g7-g7m1.js): «Рівняння й корінь»
+- g7m1l3 екран 4 (content/math/g7-g7m1.js): «рівняння й розв'яжи»
+- g7m1l3 outro/назва (content/math/g7-g7m1.js): «рівняння й розв'яжи»
+- g7m2l2 екран 6 (content/math/g7-g7m2.js): «рухається й протилежний»
+- g7m3l4 outro/назва (content/math/g7-g7m3.js): «множення й винесення»
+- g7m3l5 outro/назва (content/math/g7-g7m3.js): «розкладання й куби»
+- g7m3l5 outro/назва (content/math/g7-g7m3.js): «степеня й знаходити»
+- g7m6l1 екран 4 (content/math/g7-g7m6.js): «перетинає й другу»
+- g7m6l1 екран 6 (content/math/g7-g7m6.js): «теорії й видно»
+- g7m6l4 екран 1 (content/math/g7-g7m6.js): «лінії й коротко»
+- g7m4l1 екран 4 (content/math/g7-g7m4.js): «формою й розміром»
+- g7m4l2 екран 7 (content/math/g7-g7m4.js): «висотою й бісектрисою»
+- g7m4l3 outro/назва (content/math/g7-g7m4.js): «навігації й конструкцій»
+- g7m4l9 екран 2 (content/math/g7-g7m4.js): «третьої й подивимося»
+- g7m4l9 outro/назва (content/math/g7-g7m4.js): «креслення й розпилу»
+- g7m4l4 екран 6 (content/math/g7-g7m4.js): «нею й нижнім»
+- g7m5l2 екран 4 (content/math/g7-g7m5.js): «буває й ламана»
+- g7m7l4 екран 1 (content/math/g7-g7m7.js): «собою й окремо»
+- g7m7l4 екран 4 (content/math/g7-g7m7.js): «змінною й знайди»
+- g7m7l5 екран 2 (content/math/g7-g7m7.js): «меню й червоною»
+- g7m7l5 екран 5 (content/math/g7-g7m7.js): «рівняння й знайди»
+- g7m7l5 outro/назва (content/math/g7-g7m7.js): «підстановкою й додаванням»
+- g7m7l5 outro/назва (content/math/g7-g7m7.js): «підстановкою й додаванням»
+- g7m8l2 outro/назва (content/math/g7-g7m8.js): «дотичної й радіуса»
+- g8m1l2 екран 4 (content/math/g8-g8m1.js): «множення й ділення»
+- g8m1l2 екран 4 (content/math/g8-g8m1.js): «додавання й віднімання»
+- g8m1l6 екран 10 (content/math/g8-g8m1.js): «пропорції й перевір»
+- g8m2l1 екран 5 (content/math/g8-g8m2.js): «означення й властивості»
+- g8m2l3 екран 4 (content/math/g8-g8m2.js): «Трапеція й середня»
+- g8m2l3 екран 7 (content/math/g8-g8m2.js): «теорії й моделі»
+- g8m3l4 екран 6 (content/math/g8-g8m3.js): «зсувається й не»
+- g8m3l5 outro/назва (content/math/g8-g8m3.js): «кореня й ставиш»
+- g8m4l2 екран 9 (content/math/g8-g8m4.js): «стіною й підлогою»
+- g8m4l3 екран 5 (content/math/g8-g8m4.js): «гіпотенузою й своєю»
+- g8m4l3 екран 7 (content/math/g8-g8m4.js): «гіпотенузою й своєю»
+- g8m4l3 екран 9 (content/math/g8-g8m4.js): «проєкції й добудь»
+- g8m4l6 екран 3 (content/math/g8-g8m4.js): «змінюються й відношення»
+- g8m4l8 екран 9 (content/math/g8-g8m4.js): «рулеткою й один»
+- g8m4l8 outro/назва (content/math/g8-g8m4.js): «стороною й гострим»
+- g8m4l8 outro/назва (content/math/g8-g8m4.js): «гіпотенузою й кутом»
+- g8m4l4 outro/назва (content/math/g8-g8m4.js): «проєкції й тангенс»
+- g8m4l4 outro/назва (content/math/g8-g8m4.js): «проєкції й тангенс»
+- g8m4l4 outro/назва (content/math/g8-g8m4.js): «креслення й тіні»
+- g8m5l7 екран 4 (content/math/g8-g8m5.js): «рівняння й заміна»
+- g8m5l5 екран 8 (content/math/g8-g8m5.js): «рівняння й повернися»
+- g8m5l5 outro/назва (content/math/g8-g8m5.js): «змінної й задачі»
+- g8m5l5 outro/назва (content/math/g8-g8m5.js): «рівняння й задачі»
+- g8m6l2 екран 3 (content/math/g8-g8m6.js): «сталою й рухай»
+- g8m6l2 outro/назва (content/math/g8-g8m6.js): «основою й висотою»
+- g9m2l2 екран 6 (content/math/g9-g9m2.js): «повертається й піднімається»
+- g9m2l3 екран 3 (content/math/g9-g9m2.js): «кінця й початку»
+- g9m2l5 екран 7 (content/math/g9-g9m2.js): «нуля й розв'яжи»
+- g9m3l1 outro/назва (content/math/g9-g9m3.js): «зростання й найбільше»
+- g9m3l1 outro/назва (content/math/g9-g9m3.js): «зростання й спадання»
+- g9m3l3 outro/назва (content/math/g9-g9m3.js): «симетрії й два»
+- g9m3l4 екран 5 (content/math/g9-g9m3.js): «кореня й праворуч»
+- g9m3l5 outro/назва (content/math/g9-g9m3.js): «степеня й задачі»
+- g9m4l2 екран 6 (content/math/g9-g9m4.js): «горизонталлю й вертикаллю»
+- g9m5l3 outro/назва (content/math/g9-g9m5.js): «популяції й ріст»
+- g9m6l6 екран 1 (content/math/g9-g9m6.js): «краю й площу»
+- g9m6l3 екран 4 (content/math/g9-g9m6.js): «точкою й образом»
+- g9m6l3 outro/назва (content/math/g9-g9m6.js): «симетрію й поворот»
+- g9m6l5 outro/назва (content/math/g9-g9m6.js): «симетрія й подібність»
+- g9m6l5 outro/назва (content/math/g9-g9m6.js): «краї й масштаби»
+- g9m7l3 екран 7 (content/math/g9-g9m7.js): «музею й парку»
+- g9m7l3 outro/назва (content/math/g9-g9m7.js): «Середнє й діаграми»
+- g9m7l3 outro/назва (content/math/g9-g9m7.js): «Опитування й оцінки»
+- g9m7l4 екран 1 (content/math/g9-g9m7.js): «лотереї й середній»
+- g9m7l4 екран 2 (content/math/g9-g9m7.js): «меню й дивись»
+- g9m7l4 outro/назва (content/math/g9-g9m7.js): «лотерея й опитування»
+- g9m7l4 outro/назва (content/math/g9-g9m7.js): «середнє й читати»
+- g9m8l1 екран 4 (content/math/g9-g9m8.js): «стеля й стіни»
+- g9m8l1 екран 5 (content/math/g9-g9m8.js): «відчиняються й зачиняються»
+- g9m8l1 екран 8 (content/math/g9-g9m8.js): «нею й дві»
+- g9m8l4 екран 2 (content/math/g9-g9m8.js): «стеля й підлога»
+- g9m8l8 екран 2 (content/math/g9-g9m8.js): «основою й висотою»
+- g9m8l8 екран 3 (content/math/g9-g9m8.js): «основою й висотою»
+- g9m8l10 екран 2 (content/math/g9-g9m8.js): «краю й розклали»
+- g9m8l12 екран 1 (content/math/g9-g9m8.js): «щебеню й декоративні»
+- g10m1l2 outro/назва (content/math/g10-g10m1.js): «зростання й спадання»
+- g10m1l3 екран 7 (content/math/g10-g10m1.js): «синя й червона»
+- g10m1l3 екран 8 (content/math/g10-g10m1.js): «синьої й червоної»
+- g10m1l3 екран 8 (content/math/g10-g10m1.js): «першої й третьої»
+- g10m1l4 outro/назва (content/math/g10-g10m1.js): «функції й проміжки»
+- g10m2l1 екран 7 (content/math/g10-g10m2.js): «рейкою й столом»
+- g10m2l1 екран 9 (content/math/g10-g10m2.js): «Стеля й стіна»
+- g10m2l1 екран 9 (content/math/g10-g10m2.js): «Стеля й стіна»
+- g10m2l2 екран 4 (content/math/g10-g10m2.js): «зустрічаються й не»
+- g10m2l2 екран 7 (content/math/g10-g10m2.js): «прямої й площини»
+- g10m2l2 екран 7 (content/math/g10-g10m2.js): «прямої й площини»
+- g10m3l1 outro/назва (content/math/g10-g10m3.js): «існує й для»
+- g10m3l3 екран 3 (content/math/g10-g10m3.js): «синя й червона»
+- g10m3l4 outro/назва (content/math/g10-g10m3.js): «кореня й степеня»
+- g10m4l1 екран 4 (content/math/g10-g10m4.js): «прямої й площини»
+- g10m4l1 екран 10 (content/math/g10-g10m4.js): «прямої й площини»
+- g10m4l1 outro/назва (content/math/g10-g10m4.js): «прямої й площини»
+- g10m4l2 екран 4 (content/math/g10-g10m4.js): «прямої й площини»
+- g10m4l2 екран 8 (content/math/g10-g10m4.js): «похилої й перпендикулярна»
+- g10m4l2 outro/назва (content/math/g10-g10m4.js): «прямої й площини»
+- g10m4l2 outro/назва (content/math/g10-g10m4.js): «проєкцію й пряму»
+- g10m4l2 outro/назва (content/math/g10-g10m4.js): «прямої й площини»
+- g10m4l3 екран 1 (content/math/g10-g10m4.js): «прямою й площиною»
+- g10m4l3 екран 2 (content/math/g10-g10m4.js): «прямою й площиною»
+- g10m4l3 екран 4 (content/math/g10-g10m4.js): «похилою й площиною»
+- g10m4l3 екран 7 (content/math/g10-g10m4.js): «похилою й площиною»
+- g10m4l3 екран 8 (content/math/g10-g10m4.js): «похилою й площиною»
+- g10m4l3 екран 9 (content/math/g10-g10m4.js): «підлогою й стелею»
+- g10m4l3 outro/назва (content/math/g10-g10m4.js): «балкою й підлогою»
+- g10m4l3 outro/назва (content/math/g10-g10m4.js): «похилою й площиною»
+- g10m4l3 outro/назва (content/math/g10-g10m4.js): «прямою й площиною»
+- g10m4l4 екран 3 (content/math/g10-g10m4.js): «прямої й площини»
+- g10m4l4 екран 8 (content/math/g10-g10m4.js): «опорою й настилом»
+- g10m4l4 outro/назва (content/math/g10-g10m4.js): «площиною й відстані»
+- g10m4l4 outro/назва (content/math/g10-g10m4.js): «прямої й площини»
+- g10m4l4 outro/назва (content/math/g10-g10m4.js): «прямої й площини»
+- g10m5l3 outro/назва (content/math/g10-g10m5.js): «додавання й подвійного»
+- g10m5l5 outro/назва (content/math/g10-g10m5.js): «градусною й радіанною»
+- g11m2l3 екран 1 (content/math/g10-g11m2.js): «кімнатою й не»
+- g11m2l3 outro/назва (content/math/g10-g11m2.js): «точкою й нормаллю»
+- g11m2l4 outro/назва (content/math/g10-g11m2.js): «переміщення й прямі»
+- g10m6l1 екран 8 (content/math/g10-g10m6.js): «функції й похідна»
+- g10m6l2 екран 10 (content/math/g10-g10m6.js): «степеня й похідну»
+- g10m6l2 outro/назва (content/math/g10-g10m6.js): «таблиця й кілька»
+- g10m6l2 outro/назва (content/math/g10-g10m6.js): «Таблиця й правила»
+- g10m6l3 екран 1 (content/math/g10-g10m6.js): «зростання й точки»
+- g10m6l3 outro/назва (content/math/g10-g10m6.js): «зростання й спадання»
+- g10m6l5 outro/назва (content/math/g10-g10m6.js): «дослідження й оптимізацію»
+- g11m1l1 екран 6 (content/math/g11-g11m1.js): «степеня й порівняй»
+- g11m1l5 outro/назва (content/math/g11-g11m1.js): «рівняння й нерівності»
+- g11m3l1 екран 8 (content/math/g11-g11m3.js): «похідною й визнач»
+- g11m3l3 екран 2 (content/math/g11-g11m3.js): «параболою й віссю»
+- g11m4l2 екран 3 (content/math/g11-g11m4.js): «основою й бічною»
+- g11m5l3 екран 5 (content/math/g11-g11m5.js): «Середнє й медіана»
+- g11m5l4 outro/назва (content/math/g11-g11m5.js): «жеребкування й підсумки»
+- g11m5l4 outro/назва (content/math/g11-g11m5.js): «розміщення й комбінації»
+- g11m6l2 екран 7 (content/math/g11-g11m6.js): «додає й самі»
+- g11m6l3 outro/назва (content/math/g11-g11m6.js): «зростання й спадання»
+- g11m6l3 outro/назва (content/math/g11-g11m6.js): «спадання й точки»
+- pg10m2 задача 2 «a02» (content/math/pool-g10-g10m2.js): «прямої й ця»
+- pg10m2 задача 6 «a06» (content/math/pool-g10-g10m2.js): «прямої й ця»
+- pg10m4 задача 2 «a02» (content/math/pool-g10-g10m4.js): «нижню й верхню»
+- pg10m4 задача 18 «c02» (content/math/pool-g10-g10m4.js): «похилою й перпендикуляром»
+- pg10m4 задача 18 «c02» (content/math/pool-g10-g10m4.js): «похилою й площиною»
+- pg11m2 задача 15 «b07» (content/math/pool-g10-g11m2.js): «значення й запиши»
+- pg11m4 задача 31 «d07» (content/math/pool-g11-g11m4.js): «повної й бічної»
+- pg11m6 задача 26 «d02» (content/math/pool-g11-g11m6.js): «другої й стороною»
+- pg4m4 задача 24 «c08» (content/math/pool-g4-g4m4.js): «поля й ширину»
+- pg4m5 задача 29 «d06» (content/math/pool-g4-g4m5.js): «переднє й заднє»
+- pg4m5 задача 31 «d08» (content/math/pool-g4-g4m5.js): «передня й бічна»
+- pms0 задача 55 «g07» (content/math/pool-g5-ms0.js): «Майстриня й учениці»
+- pms0b задача 23 «d07» (content/math/pool-g5-ms0b.js): «має й прямокутник»
+- pms1 задача 13 «b05» (content/math/pool-g5-ms1.js): «працює й тут»
+- pg6m2 задача 32 «d08» (content/math/pool-g6-g6m2.js): «прибирання й посуд»
+- pg6m3 задача 16 «b08» (content/math/pool-g6-g6m3.js): «Кропивня й Очеретяне»
+- pg6m4 задача 30 «d06» (content/math/pool-g6-g6m4.js): «ділення й множення»
+- pg6m6 задача 3 «a03» (content/math/pool-g6-g6m6.js): «хлопця й одну»
+- pg6m6 задача 18 «c02» (content/math/pool-g6-g6m6.js): «мовою й не»
+- pg7m7 задача 15 «b07» (content/math/pool-g7-g7m7.js): «рівняння й порівняй»
+- pg7m7 задача 25 «d01» (content/math/pool-g7-g7m7.js): «додавання й запиши»
+- pg7m7 задача 26 «d02» (content/math/pool-g7-g7m7.js): «додавання й запиши»
+- pg7m7 задача 27 «d03» (content/math/pool-g7-g7m7.js): «додавання й запиши»
+- pg7m7 задача 29 «d05» (content/math/pool-g7-g7m7.js): «додавання й запиши»
+- pg7m7 задача 30 «d06» (content/math/pool-g7-g7m7.js): «додавання й запиши»
+- pg7m7 задача 31 «d07» (content/math/pool-g7-g7m7.js): «додавання й запиши»
+- pg7m7 задача 32 «d08» (content/math/pool-g7-g7m7.js): «додавання й запиши»
+- pg7m8 задача 24 «c08» (content/math/pool-g7-g7m8.js): «прямої й кола»
+- pg8m1 задача 46 «f05» (content/math/pool-g8-g8m1.js): «множення й подай»
+- pg8m1 задача 47 «f06» (content/math/pool-g8-g8m1.js): «дію й подай»
+- pg8m4 задача 7 «a07» (content/math/pool-g8-g8m4.js): «стороною й основою»
+- pg8m5 задача 10 «b02» (content/math/pool-g8-g8m5.js): «рівняння й обери»
+- pg8m5 задача 15 «b07» (content/math/pool-g8-g8m5.js): «рівняння й залиш»
+- pg9m2 задача 7 «a07» (content/math/pool-g9-g9m2.js): «значення й запиши»
+- pg9m2 задача 14 «b09» (content/math/pool-g9-g9m2.js): «прямою й осями»
+- pg9m2 задача 23 «c07» (content/math/pool-g9-g9m2.js): «значення й запиши»
+- pg9m2 задача 31 «d07» (content/math/pool-g9-g9m2.js): «значення й запиши»
+- pg9m3 задача 4 «a04» (content/math/pool-g9-g9m3.js): «нуля й помнож»
+- pg9m4 задача 24 «c08» (content/math/pool-g9-g9m4.js): «значення й запиши»
+- pg9m7 задача 5 «a05» (content/math/pool-g9-g9m7.js): «працює й для»
+- pg9m8 задача 28 «d05» (content/math/pool-g9-g9m8.js): «перетинає й другу»
+- pg9m8 задача 75 «j04» (content/math/pool-g9-g9m8.js): «твірною й висотою»
+- pg9m8 задача 76 «j05» (content/math/pool-g9-g9m8.js): «висотою й радіусом»
+- dg6 завдання 29 (content/math/diag-g6.js): «Додавання й віднімання»
+
+## «і» між голосними → «й» (§ 24; не для зіставлених понять — звіт) — 8
+
+- ms0l3 outro/назва (content/math/g5-ms0.js): «по-різному і отримати»
+- ms0l4 екран 8 (content/math/g5-ms0.js): «відняли 8 і отримали»
+- pm4s1 задача 7 «a07» (content/math/pool-g4-m4s1.js): «частку 12 і остачу»
+- pms0 задача 27 «d03» (content/math/pool-g5-ms0.js): «відняли 174 і отримали»
+- pms0 задача 27 «d03» (content/math/pool-g5-ms0.js): «відняли 174 і отримали»
+- pms0 задача 30 «d06» (content/math/pool-g5-ms0.js): «відняли 583 і отримали»
+- pg7m2 задача 24 «c08» (content/math/pool-g7-g7m2.js): «суміжні) і один»
+- pg9m8 задача 2 «a02» (content/math/pool-g9-g9m8.js): «пряму і одну»
+
+## «і» після голосного перед приголосним → «й» (§ 24; не для зіставлених понять — звіт) — 168
+
+- g4m1l1 екран 3 (content/math/g4-g4m1.js): «Розряди і класи»
+- g4m1l3 екран 6 (content/math/g4-g4m1.js): «точка і де»
+- g4m1l4 екран 4 (content/math/g4-g4m1.js): «самі. 5 і більше»
+- g4m1l4 екран 7 (content/math/g4-g4m1.js): «це 5 і більше»
+- g4m1l4 екран 8 (content/math/g4-g4m1.js): «це 5 і більше»
+- g4m1l4 екран 9 (content/math/g4-g4m1.js): «це 5 і більше»
+- g4m1l5 екран 7 (content/math/g4-g4m1.js): «це 5 і більше»
+- g4m2l4 екран 3 (content/math/g4-g4m2.js): «стовпчиками і сумою»
+- g4m2l4 екран 5 (content/math/g4-g4m2.js): «відомо і що»
+- m4a екран 7 (content/math/g4-m4s1.js): «цілі і дві»
+- m4a outro/назва (content/math/g4-m4s1.js): «кожному і скільки»
+- g4m3l2 екран 5 (content/math/g4-g4m3.js): «це 10 і ще»
+- g4m4l2 outro/назва (content/math/g4-g4m4.js): «Тонна і центнер»
+- g4m4l3 екран 4 (content/math/g4-g4m4.js): «Довжина і площа»
+- ms0bl6 екран 7 (content/math/g5-ms0b.js): «Шкала і ціна»
+- ms3l3 екран 3 (content/math/g5-ms0b.js): «Стовпчаста і лінійна»
+- g6m1l1 екран 9 (content/math/g5-g6m1.js): «числа 12 і порахуй»
+- g6m1l2 екран 6 (content/math/g5-g6m1.js): «по 5 і перевір»
+- g6m1l4 екран 4 (content/math/g5-g6m1.js): «кратні і числу»
+- m5 екран 4 (content/math/g5-ms1.js): «піца і ще»
+- m5 outro/назва (content/math/g5-ms1.js): «три і три»
+- ms2l3 екран 6 (content/math/g5-ms2.js): «ціла і п'ять»
+- ms2l3 outro/назва (content/math/g5-ms2.js): «решту і не»
+- ms2l4 екран 3 (content/math/g5-ms2.js): «стрибка і кількість»
+- ms3l4 outro/назва (content/math/g6-ms3.js): «відсотки і відсотки»
+- g6m3l1 екран 10 (content/math/g6-g6m3.js): «сиропу і три»
+- g6m3l5 outro/назва (content/math/g6-g6m3.js): «обчислити і довжину»
+- g6m3l5 outro/назва (content/math/g6-g6m3.js): «коло і круг»
+- g6m4l1 екран 7 (content/math/g6-g6m4.js): «числа і нуль»
+- g7m1l1 екран 1 (content/math/g7-g7m1.js): «коробка і гиря»
+- g7m1l4 екран 7 (content/math/g7-g7m1.js): «перенеси 7 і поділи»
+- g7m3l7 екран 4 (content/math/g7-g7m3.js): «Сума і різниця»
+- g7m4l1 екран 5 (content/math/g7-g7m4.js): «сторона і два»
+- g7m4l1 екран 9 (content/math/g7-g7m4.js): «сторона і два»
+- g7m4l6 екран 2 (content/math/g7-g7m4.js): «сторони і кути»
+- g7m4l6 екран 3 (content/math/g7-g7m4.js): «Сторона і кут»
+- g7m4l6 екран 3 (content/math/g7-g7m4.js): «сторона і кут»
+- g7m4l8 екран 3 (content/math/g7-g7m4.js): «Гіпотенуза і гострий»
+- g7m4l8 екран 3 (content/math/g7-g7m4.js): «Гіпотенуза і катет»
+- g7m4l8 екран 4 (content/math/g7-g7m4.js): «Гіпотенуза і катет»
+- g7m4l8 екран 4 (content/math/g7-g7m4.js): «гіпотенуза і катет»
+- g7m4l8 екран 5 (content/math/g7-g7m4.js): «Гіпотенуза і гострий»
+- g7m4l8 екран 6 (content/math/g7-g7m4.js): «Гіпотенуза і кут»
+- g7m4l8 екран 6 (content/math/g7-g7m4.js): «Гіпотенуза і катет»
+- g7m4l8 екран 6 (content/math/g7-g7m4.js): «Гіпотенуза і гострий»
+- g7m4l8 outro/назва (content/math/g7-g7m4.js): «гіпотенуза і гострий»
+- g7m4l8 outro/назва (content/math/g7-g7m4.js): «гіпотенуза і катет»
+- g7m8l1 outro/назва (content/math/g7-g7m8.js): «коло і круг»
+- g8m1l1 екран 7 (content/math/g8-g8m1.js): «знаменнику і знаменник»
+- g8m2l5 екран 3 (content/math/g8-g8m2.js): «сторона 4 і всі»
+- g8m3l2 екран 1 (content/math/g8-g8m3.js): «не 1 і не»
+- g8m5l1 екран 2 (content/math/g8-g8m5.js): «дати і додатне»
+- g9m2l2 екран 4 (content/math/g9-g9m2.js): «кола і прямої»
+- g9m3l6 екран 2 (content/math/g9-g9m3.js): «Пряма і парабола»
+- g9m3l6 екран 5 (content/math/g9-g9m3.js): «точку і не»
+- g9m3l6 екран 6 (content/math/g9-g9m3.js): «Коло і пряма»
+- g9m3l7 екран 6 (content/math/g9-g9m3.js): «Сума і добуток»
+- g9m3l7 екран 7 (content/math/g9-g9m3.js): «системи і відповідь»
+- g9m4l6 екран 8 (content/math/g9-g9m4.js): «Площа і радіуси»
+- g9m5l2 екран 6 (content/math/g9-g9m5.js): «Стовпчики і сума»
+- g9m6l1 екран 5 (content/math/g9-g9m6.js): «можна і вписати»
+- g9m6l2 екран 4 (content/math/g9-g9m6.js): «кола і площа»
+- g9m6l2 outro/назва (content/math/g9-g9m6.js): «коло і круг»
+- g9m6l6 екран 4 (content/math/g9-g9m6.js): «Дуга і сектор»
+- g9m7l4 екран 3 (content/math/g9-g9m7.js): «бере і напій»
+- g9m8l1 екран 6 (content/math/g9-g9m8.js): «пряму і точку»
+- g9m8l1 екран 8 (content/math/g9-g9m8.js): «Пряма і точка»
+- g9m8l3 екран 3 (content/math/g9-g9m8.js): «Пряма і площина»
+- g9m8l3 екран 3 (content/math/g9-g9m8.js): «Пряма і площина»
+- g9m8l3 outro/назва (content/math/g9-g9m8.js): «похилу і проєкцію»
+- g9m8l4 outro/назва (content/math/g9-g9m8.js): «Підлога і стеля»
+- g9m8l8 екран 7 (content/math/g9-g9m8.js): «Піраміда і призма»
+- g9m8l8 екран 8 (content/math/g9-g9m8.js): «Піраміда і пряма»
+- g9m8l9 екран 5 (content/math/g9-g9m8.js): «бічна і дві»
+- g10m1l3 екран 5 (content/math/g10-g10m1.js): «Відніми 10 і поділи»
+- g10m2l1 екран 8 (content/math/g10-g10m2.js): «пряму і точку»
+- g10m2l3 outro/назва (content/math/g10-g10m2.js): «тіла і січної»
+- g10m4l2 outro/назва (content/math/g10-g10m4.js): «похилу і проєкцію»
+- g10m5l3 екран 2 (content/math/g10-g10m5.js): «колі і стеж»
+- g11m1l4 екран 10 (content/math/g11-g11m1.js): «розв'яжи і перевір»
+- g11m4l1 екран 1 (content/math/g11-g11m4.js): «дно і кришка»
+- g11m4l1 екран 1 (content/math/g11-g11m4.js): «основа і верхівка»
+- g11m4l1 outro/назва (content/math/g11-g11m4.js): «Коробка і намет»
+- g11m4l1 outro/назва (content/math/g11-g11m4.js): «основа і трикутні»
+- g11m4l3 екран 1 (content/math/g11-g11m4.js): «склянки-циліндра і келиха-конуса»
+- g11m4l5 outro/назва (content/math/g11-g11m4.js): «потрібні і переріз»
+- g11m5l1 екран 1 (content/math/g11-g11m5.js): «заступника і секретаря»
+- g11m5l1 екран 3 (content/math/g11-g11m5.js): «Перестановки і розміщення»
+- g11m5l2 екран 9 (content/math/g11-g11m5.js): «мішечку і скільки»
+- g11m5l3 екран 3 (content/math/g11-g11m5.js): «найбільшого і найменшого»
+- g11m5l3 екран 7 (content/math/g11-g11m5.js): «Мода і розмах»
+- g11m6l4 екран 8 (content/math/g11-g11m6.js): «радіуса 3 і циліндр»
+- pg10m1 задача 8 «a08» (content/math/pool-g10-g10m1.js): «чисельнику і для»
+- pg10m2 задача 2 «a02» (content/math/pool-g10-g10m2.js): «Пряма і точка»
+- pg10m2 задача 2 «a02» (content/math/pool-g10-g10m2.js): «Пряма і точка»
+- pg10m3 задача 7 «a07» (content/math/pool-g10-g10m3.js): «числа і протилежного»
+- pg11m4 задача 3 «a03» (content/math/pool-g11-g11m4.js): «ребра і висота»
+- pg11m4 задача 7 «a07» (content/math/pool-g11-g11m4.js): «ребро і діагональ»
+- pg4m1 задача 24 «c13» (content/math/pool-g4-g4m1.js): «Зірочка 2 і більше»
+- pg4m2 задача 20 «f04» (content/math/pool-g4-g4m2.js): «зменшуване і перевір»
+- pg4m2 задача 21 «f05» (content/math/pool-g4-g4m2.js): «зменшуване і перевір»
+- pg4m4 задача 16 «b08» (content/math/pool-g4-g4m4.js): «Бджола і пилок»
+- pg4m4 задача 24 «c08» (content/math/pool-g4-g4m4.js): «поле і баскетбольний»
+- pg4m4 задача 31 «d07» (content/math/pool-g4-g4m4.js): «доба і ще»
+- pg4m5 задача 19 «c04» (content/math/pool-g4-g4m5.js): «довжина і ширина»
+- pg6m1 задача 4 «a04» (content/math/pool-g5-g6m1.js): «кратні і числу»
+- pg6m1 задача 5 «a05» (content/math/pool-g5-g6m1.js): «числа 6 і перевір»
+- pg6m1 задача 14 «b06» (content/math/pool-g5-g6m1.js): «цифрами 2 і ділиться»
+- pg6m1 задача 24 «c08» (content/math/pool-g5-g6m1.js): «Число 1 і прості»
+- pg6m1 задача 30 «d06» (content/math/pool-g5-g6m1.js): «числа 35 і перевіряй»
+- pms0 задача 7 «a07» (content/math/pool-g5-ms0.js): «Запиши 4747 і подумай»
+- pms0 задача 47 «f07» (content/math/pool-g5-ms0.js): «Сашко і пішов»
+- pms2 задача 29 «d05» (content/math/pool-g5-ms2.js): «пишемо 0 і кому»
+- pms2 задача 40 «e08» (content/math/pool-g5-ms2.js): «тести і суму»
+- pg6m2 задача 12 «b04» (content/math/pool-g6-g6m2.js): «чисельника і знаменника»
+- pg6m5 задача 1 «a01» (content/math/pool-g6-g6m5.js): «дужки і знайди»
+- pg6m5 задача 2 «a02» (content/math/pool-g6-g6m5.js): «дужки і знайди»
+- pg6m5 задача 4 «a04» (content/math/pool-g6-g6m5.js): «дужки і знайди»
+- pg6m5 задача 5 «a05» (content/math/pool-g6-g6m5.js): «дужки і знайди»
+- pg6m5 задача 6 «a06» (content/math/pool-g6-g6m5.js): «дужки і знайди»
+- pg6m6 задача 32 «d08» (content/math/pool-g6-g6m6.js): «дільники 12 і прості»
+- pg7m3 задача 20 «c04» (content/math/pool-g7-g7m3.js): «квадрата і число»
+- pg7m3 задача 35 «e03» (content/math/pool-g7-g7m3.js): «дужки і зведи»
+- pg7m3 задача 36 «e04» (content/math/pool-g7-g7m3.js): «дужки і зведи»
+- pg7m3 задача 37 «e05» (content/math/pool-g7-g7m3.js): «дужки і зведи»
+- pg7m4 задача 1 «a01» (content/math/pool-g7-g7m4.js): «Сторона і два»
+- pg7m4 задача 1 «a01» (content/math/pool-g7-g7m4.js): «сторона і два»
+- pg7m4 задача 5 «a05» (content/math/pool-g7-g7m4.js): «сторона і два»
+- pg7m4 задача 6 «a06» (content/math/pool-g7-g7m4.js): «Трикутники і периметри»
+- pg7m4 задача 47 «f07» (content/math/pool-g7-g7m4.js): «Гіпотенуза і менший»
+- pg7m4 задача 47 «f07» (content/math/pool-g7-g7m4.js): «гіпотенузи і меншого»
+- pg7m4 задача 49 «g01» (content/math/pool-g7-g7m4.js): «Гіпотенуза і гострий»
+- pg7m4 задача 50 «g02» (content/math/pool-g7-g7m4.js): «Гіпотенуза 7 і кут»
+- pg7m4 задача 50 «g02» (content/math/pool-g7-g7m4.js): «гіпотенуза і гострий»
+- pg7m4 задача 50 «g02» (content/math/pool-g7-g7m4.js): «Гіпотенуза і гострий»
+- pg7m4 задача 50 «g02» (content/math/pool-g7-g7m4.js): «Гіпотенуза і катет»
+- pg7m4 задача 51 «g03» (content/math/pool-g7-g7m4.js): «Гіпотенуза і гострий»
+- pg7m4 задача 51 «g03» (content/math/pool-g7-g7m4.js): «Гіпотенуза і катет»
+- pg7m4 задача 52 «g04» (content/math/pool-g7-g7m4.js): «гіпотенуза і катет»
+- pg7m4 задача 52 «g04» (content/math/pool-g7-g7m4.js): «катету і прилеглому»
+- pg7m4 задача 52 «g04» (content/math/pool-g7-g7m4.js): «катету і гіпотенузі»
+- pg7m4 задача 53 «g05» (content/math/pool-g7-g7m4.js): «Гіпотенуза і катет»
+- pg7m4 задача 54 «g06» (content/math/pool-g7-g7m4.js): «гіпотенуза і гострий»
+- pg7m4 задача 54 «g06» (content/math/pool-g7-g7m4.js): «Гіпотенуза і катет»
+- pg7m4 задача 54 «g06» (content/math/pool-g7-g7m4.js): «Гіпотенуза і гострий»
+- pg7m4 задача 55 «g07» (content/math/pool-g7-g7m4.js): «сторони і висоти»
+- pg7m4 задача 55 «g07» (content/math/pool-g7-g7m4.js): «першого і другого»
+- pg7m4 задача 55 «g07» (content/math/pool-g7-g7m4.js): «Гіпотенуза і катет»
+- pg7m4 задача 55 «g07» (content/math/pool-g7-g7m4.js): «Гіпотенуза і гострий»
+- pg7m4 задача 56 «g08» (content/math/pool-g7-g7m4.js): «гіпотенузи і катет»
+- pg7m6 задача 12 «a04» (content/math/pool-g7-g7m6.js): «йому і лежить»
+- pg7m6 задача 19 «b04» (content/math/pool-g7-g7m6.js): «відомі і сума»
+- pg7m8 задача 2 «a02» (content/math/pool-g7-g7m8.js): «коло і круг»
+- pg7m8 задача 5 «a05» (content/math/pool-g7-g7m8.js): «найдовша і чому»
+- pg7m8 задача 12 «b04» (content/math/pool-g7-g7m8.js): «кола і перпендикулярна»
+- pg8m1 задача 13 «b05» (content/math/pool-g8-g8m1.js): «зверху і знизу»
+- pg8m4 задача 46 «f06» (content/math/pool-g8-g8m4.js): «похила і відрізок»
+- pg8m4 задача 47 «f07» (content/math/pool-g8-g8m4.js): «перпендикуляра і кінцем»
+- pg8m4 задача 47 «f07» (content/math/pool-g8-g8m4.js): «похила і проєкція»
+- pg8m6 задача 7 «a10» (content/math/pool-g8-g8m6.js): «сторони і два»
+- pg9m1 задача 10 «b02» (content/math/pool-g9-g9m1.js): «від'ємне −2 і перевертаємо»
+- pg9m7 задача 4 «a04» (content/math/pool-g9-g9m7.js): «вгору і стежка»
+- pg9m8 задача 2 «a02» (content/math/pool-g9-g9m8.js): «пряму і безліч»
+- dg10 завдання 18 (content/math/diag-g10.js): «пряму і точку»
+- dg10 завдання 18 (content/math/diag-g10.js): «Стіна і стеля»
+- dg11 завдання 12 (content/math/diag-g11.js): «сорочку і штани»
+- dg11 завдання 23 (content/math/diag-g11.js): «голову і секретаря»
+- dg8 завдання 8 (content/math/diag-g8.js): «сторона і два»
+
+## «з» перед з, с, ш, щ + приголосний (і «мною») → «зі» (§ 25) · validate — 6
+
+- ms0l3 екран 6 (content/math/g5-ms0.js): «Почни з множення»
+- g9m5l4 екран 3 (content/math/g9-g9m5.js): «вже з множенням»
+- g10m6l2 екран 2 (content/math/g10-g10m6.js): «рівності з шкільної»
+- pg11m5 задача 9 «b01» (content/math/pool-g11-g11m5.js): «З множини»
+- pg11m5 задача 10 «b02» (content/math/pool-g11-g11m5.js): «З множини»
+- pg9m6 задача 47 «f07» (content/math/pool-g9-g9m6.js): «кожного з многокутників»
+
+## «З» на початку речення чи після тире перед з, с, ц, ж, ч, ш → «Із» (§ 25 п. 2) · validate — 14
+
+- g6m4l7 екран 7 (content/math/g6-g6m4.js): «З чого»
+- ms4l5 екран 2 (content/math/g6-ms4.js): «З чого»
+- g6m6l1 екран 6 (content/math/g6-g6m6.js): «З жовтою»
+- g7m8l3 екран 1 (content/math/g7-g7m8.js): «З чого»
+- pms4 задача 9 «b01» (content/math/pool-g6-ms4.js): «З шести»
+- pms4 задача 9 «b01» (content/math/pool-g6-ms4.js): «З шести»
+- pms4 задача 23 «d07» (content/math/pool-g6-ms4.js): «З жерсті»
+- pg7m6 задача 1 «e01» (content/math/pool-g7-g7m6.js): «З цих»
+- pg7m6 задача 2 «e02» (content/math/pool-g7-g7m6.js): «З цих»
+- pg7m6 задача 9 «a01» (content/math/pool-g7-g7m6.js): «З цих»
+- pg7m6 задача 10 «a02» (content/math/pool-g7-g7m6.js): «З цих»
+- pg7m6 задача 12 «a04» (content/math/pool-g7-g7m6.js): «З цих»
+- pg7m6 задача 21 «b06» (content/math/pool-g7-g7m6.js): «З цих»
+- pg8m4 задача 47 «f07» (content/math/pool-g8-g8m4.js): «З цієї»
+
+## «з» між приголосними → «із» (§ 25; звіт) — 193
+
+- g4m2l3 екран 5 (content/math/g4-g4m2.js): «порівняй з відповіддю»
+- g4m3l5 екран 5 (content/math/g4-g4m3.js): «разом з нашим»
+- g4m5l1 екран 3 (content/math/g4-g4m5.js): «шматок з двох»
+- g4m5l1 екран 3 (content/math/g4-g4m5.js): «один з трьох»
+- g4m5l2 екран 6 (content/math/g4-g4m5.js): «Чверть з них»
+- g4m5l4 екран 9 (content/math/g4-g4m5.js): «Каркас з брусків»
+- ms0l4 екран 4 (content/math/g5-ms0.js): «рівність з невідомим»
+- ms0l5 екран 2 (content/math/g5-ms0.js): «Квадрат з клітинок»
+- ms0l5 екран 7 (content/math/g5-ms0.js): «Куб з кубиків»
+- ms0l6 екран 6 (content/math/g5-ms0.js): «коробочок-кубиків з ребром»
+- ms0bl6 outro/назва (content/math/g5-ms0b.js): «Промінь з поділками»
+- ms0bl2 екран 9 (content/math/g5-ms0b.js): «Один з них»
+- ms0bl3 екран 1 (content/math/g5-ms0b.js): «трикутник з двома»
+- ms0bl3 екран 2 (content/math/g5-ms0b.js): «трикутник з двома»
+- ms0bl3 екран 5 (content/math/g5-ms0b.js): «один з кутів»
+- ms0bl5 екран 6 (content/math/g5-ms0b.js): «Один з його»
+- ms2l7 екран 1 (content/math/g5-ms2.js): «теж з комою»
+- ms2l7 outro/назва (content/math/g5-ms2.js): «теж з комою»
+- ms2l6 екран 1 (content/math/g5-ms2.js): «рахують з комою»
+- ms3l2 екран 7 (content/math/g6-ms3.js): «учнів. 15 % з них»
+- ms3l4 екран 2 (content/math/g6-ms3.js): «учнів. 58 з них»
+- g6m2l2 екран 5 (content/math/g6-g6m2.js): «дріб з найменшою»
+- g6m2l4 екран 8 (content/math/g6-g6m2.js): «відповідь з половиною»
+- g6m3l5 екран 4 (content/math/g6-g6m3.js): «разом з ним»
+- g6m3l7 екран 5 (content/math/g6-g6m3.js): «їздять 3 з них»
+- g6m3l6 екран 7 (content/math/g6-g6m3.js): «кут з кількістю»
+- ms4l2 екран 5 (content/math/g6-ms4.js): «паралелепіпед з рівними»
+- ms4l2 екран 7 (content/math/g6-ms4.js): «Каркас з дроту»
+- ms4l2 екран 8 (content/math/g6-ms4.js): «каркас з дроту»
+- ms4l2 outro/назва (content/math/g6-ms4.js): «випадок з рівними»
+- ms4l5 екран 7 (content/math/g6-ms4.js): «кубик з ребром»
+- ms4l3 екран 4 (content/math/g6-ms4.js): «Куб з ребром»
+- ms4l3 екран 6 (content/math/g6-ms4.js): «куб з ребром»
+- ms4l4 екран 7 (content/math/g6-ms4.js): «коробок-кубів з ребром»
+- g6m6l1 екран 3 (content/math/g6-g6m6.js): «Чай з маком»
+- g6m6l1 екран 3 (content/math/g6-g6m6.js): «Компот з маком»
+- g6m6l1 екран 5 (content/math/g6-g6m6.js): «сік з маком»
+- g6m6l3 екран 5 (content/math/g6-g6m6.js): «Мішечок з кульками»
+- g6m6l4 екран 6 (content/math/g6-g6m6.js): «сектор з трьох»
+- g6m6l5 екран 4 (content/math/g6-g6m6.js): «зрушить з місця»
+- g7m1l1 outro/назва (content/math/g7-g7m1.js): «рівнянь з від'ємними»
+- g7m2l2 екран 4 (content/math/g7-g7m2.js): «промінь з початком»
+- g7m3l6 екран 3 (content/math/g7-g7m3.js): «Жоден з виразів»
+- g7m3l1 екран 4 (content/math/g7-g7m3.js): «Степінь з натуральним»
+- g7m3l1 екран 9 (content/math/g7-g7m3.js): «роблять з показниками»
+- g7m6l5 екран 7 (content/math/g7-g7m6.js): «модель з наметом»
+- g7m6l5 outro/назва (content/math/g7-g7m6.js): «перпендикуляр з точки»
+- g7m4l2 екран 1 (content/math/g7-g7m4.js): «трикутник з двома»
+- g7m4l2 outro/назва (content/math/g7-g7m4.js): «Трикутник з двома»
+- g7m4l2 outro/назва (content/math/g7-g7m4.js): «трикутник з двома»
+- g7m4l2 outro/назва (content/math/g7-g7m4.js): «трикутник з рівними»
+- g7m4l3 екран 7 (content/math/g7-g7m4.js): «трикутник з кутами»
+- g7m4l5 екран 1 (content/math/g7-g7m4.js): «він з кутами»
+- g7m4l5 екран 4 (content/math/g7-g7m4.js): «суміжний з кутом»
+- g7m4l5 екран 4 (content/math/g7-g7m4.js): «суміжних з ним»
+- g7m4l5 екран 4 (content/math/g7-g7m4.js): «суміжний з ним»
+- g7m4l5 екран 7 (content/math/g7-g7m4.js): «суміжних з ним»
+- g7m4l5 екран 8 (content/math/g7-g7m4.js): «суміжний з кутом»
+- g7m4l5 outro/назва (content/math/g7-g7m4.js): «суміжних з ним»
+- g7m4l5 outro/назва (content/math/g7-g7m4.js): «кожен з них»
+- g7m4l7 екран 1 (content/math/g7-g7m4.js): «трикутник з прямим»
+- g7m4l9 outro/назва (content/math/g7-g7m4.js): «трикутник з такими»
+- g7m4l9 outro/назва (content/math/g7-g7m4.js): «трикутник з даними»
+- g7m4l4 outro/назва (content/math/g7-g7m4.js): «трикутник з трьох»
+- g7m5l4 екран 2 (content/math/g7-g7m5.js): «кожен з них»
+- g7m8l3 екран 5 (content/math/g7-g7m8.js): «трикутник з рівними»
+- g7m8l3 outro/назва (content/math/g7-g7m8.js): «Трикутник з рівними»
+- g7m8l3 outro/назва (content/math/g7-g7m8.js): «трикутник з рівними»
+- g7m8l6 екран 1 (content/math/g7-g7m8.js): «воротах з різних»
+- g7m8l6 екран 2 (content/math/g7-g7m8.js): «Кут з вершиною»
+- g7m8l4 екран 1 (content/math/g7-g7m8.js): «кут з лавки»
+- g7m8l4 екран 7 (content/math/g7-g7m8.js): «Кут з лавки»
+- g7m8l4 outro/назва (content/math/g7-g7m8.js): «кут з лавки»
+- g7m8l4 outro/назва (content/math/g7-g7m8.js): «кут з радіусом»
+- g8m1l3 екран 5 (content/math/g8-g8m1.js): «Добуток з від'ємним»
+- g8m2l2 екран 4 (content/math/g8-g8m2.js): «прямокутник з рівними»
+- g8m2l6 екран 8 (content/math/g8-g8m2.js): «паралелограм з непрямими»
+- g8m2l7 екран 5 (content/math/g8-g8m2.js): «дотичних з кожної»
+- g8m3l1 екран 9 (content/math/g8-g8m3.js): «Корінь з від'ємного»
+- g8m3l4 екран 3 (content/math/g8-g8m3.js): «корінь з від'ємного»
+- g8m3l4 екран 10 (content/math/g8-g8m3.js): «Корінь з повного»
+- g8m4l7 екран 2 (content/math/g8-g8m4.js): «трикутник з прямим»
+- g8m4l8 екран 3 (content/math/g8-g8m4.js): «беруть з таблиць»
+- g8m5l7 outro/назва (content/math/g8-g8m5.js): «знаменник з перевіркою»
+- g9m2l1 екран 8 (content/math/g9-g9m2.js): «Порівняй з формулою»
+- g9m3l1 outro/назва (content/math/g9-g9m3.js): «значень з вершини»
+- g9m7l1 екран 10 (content/math/g9-g9m7.js): «об'єкт з двох»
+- g9m7l2 екран 6 (content/math/g9-g9m7.js): «наслідок з двох»
+- g9m7l3 екран 9 (content/math/g9-g9m7.js): «рахують з двох»
+- g9m8l6 екран 8 (content/math/g9-g9m8.js): «трикутник з катетами»
+- g9m8l7 екран 3 (content/math/g9-g9m8.js): «перпендикуляр з вершини»
+- g10m2l4 екран 6 (content/math/g10-g10m2.js): «паралелепіпед з рівними»
+- g10m3l1 екран 8 (content/math/g10-g10m3.js): «корінь з від'ємного»
+- g10m3l2 екран 4 (content/math/g10-g10m3.js): «Степінь з раціональним»
+- g10m3l4 екран 5 (content/math/g10-g10m3.js): «показник з другого»
+- g10m4l2 екран 10 (content/math/g10-g10m4.js): «наслідок з теорії»
+- g10m5l4 екран 7 (content/math/g10-g10m5.js): «випадок з теорії»
+- g10m5l5 екран 7 (content/math/g10-g10m5.js): «тотожність з третього»
+- g11m2l3 екран 3 (content/math/g10-g11m2.js): «разом з нею»
+- g11m1l3 екран 10 (content/math/g11-g11m1.js): «разом з правильною»
+- g11m3l2 екран 3 (content/math/g11-g11m3.js): «трикутник з катетами»
+- g11m3l3 екран 7 (content/math/g11-g11m3.js): «так з відповіддю»
+- g11m4l1 екран 4 (content/math/g11-g11m4.js): «многогранник з двома»
+- g11m4l3 екран 4 (content/math/g11-g11m4.js): «варіантів з квадратним»
+- g11m4l3 екран 7 (content/math/g11-g11m4.js): «конус з тим»
+- g11m4l4 outro/назва (content/math/g11-g11m4.js): «предметів з кривими»
+- g11m4l5 екран 7 (content/math/g11-g11m4.js): «ріжок-конус з тими»
+- g11m5l4 екран 1 (content/math/g11-g11m5.js): «турнір з волейболу»
+- g11m5l4 екран 2 (content/math/g11-g11m5.js): «вибірок з порядком»
+- g11m6l1 екран 1 (content/math/g11-g11m6.js): «НМТ з математики»
+- g11m6l1 екран 6 (content/math/g11-g11m6.js): «відповідь з п'яти»
+- g11m6l1 outro/назва (content/math/g11-g11m6.js): «НМТ з математики»
+- g11m6l4 екран 8 (content/math/g11-g11m6.js): «циліндр з радіусом»
+- g11m6l4 екран 9 (content/math/g11-g11m6.js): «трикутник з катетами»
+- pg10m2 задача 12 «b04» (content/math/pool-g10-g10m2.js): «лежать з ним»
+- pg10m3 задача 13 «b05» (content/math/pool-g10-g10m3.js): «степінь з додатним»
+- pg10m4 задача 3 «a03» (content/math/pool-g10-g10m4.js): «тож з прямою»
+- pg10m4 задача 10 «b02» (content/math/pool-g10-g10m4.js): «виходять з вершин»
+- pg10m4 задача 12 «b04» (content/math/pool-g10-g10m4.js): «виходить з вершини»
+- pg10m4 задача 23 «c07» (content/math/pool-g10-g10m4.js): «утворюють з площиною»
+- pg10m4 задача 24 «c08» (content/math/pool-g10-g10m4.js): «утворюють з площиною»
+- pg10m6 задача 16 «b08» (content/math/pool-g10-g10m6.js): «Перетин з віссю»
+- pg10m6 задача 31 «d07» (content/math/pool-g10-g10m6.js): «добуток з кубом»
+- pg11m1 задача 20 «c04» (content/math/pool-g11-g11m1.js): «Порівняй з нулем»
+- pg11m4 задача 4 «a04» (content/math/pool-g11-g11m4.js): «многокутник з рівними»
+- pg11m4 задача 23 «c07» (content/math/pool-g11-g11m4.js): «циліндр з висотою»
+- pg11m4 задача 23 «c07» (content/math/pool-g11-g11m4.js): «см з тією»
+- pg11m6 задача 26 «d02» (content/math/pool-g11-g11m6.js): «разом з половиною»
+- pg4m5 задача 4 «a04» (content/math/pool-g4-g4m5.js): «клітинок. 6 з них»
+- pg4m5 задача 13 «b06» (content/math/pool-g4-g4m5.js): «ляльок. 330 з них»
+- pg4m5 задача 20 «c05» (content/math/pool-g4-g4m5.js): «Квадрат з периметром»
+- pg4m5 задача 22 «c07» (content/math/pool-g4-g4m5.js): «Квадрат з тим»
+- pms0 задача 24 «c08» (content/math/pool-g5-ms0.js): «булочок з повидлом»
+- pms0 задача 39 «e07» (content/math/pool-g5-ms0.js): «плутай з різницею»
+- pms0 задача 47 «f07» (content/math/pool-g5-ms0.js): «хв з того»
+- pg6m4 задача 15 «b07» (content/math/pool-g6-g6m4.js): «лежать з різних»
+- pg6m4 задача 62 «h07» (content/math/pool-g6-g6m4.js): «ішов з дому»
+- pg6m6 задача 16 «b08» (content/math/pool-g6-g6m6.js): «разом з нулем»
+- pms3 задача 6 «a06» (content/math/pool-g6-ms3.js): «сотих з комою»
+- pms4 задача 6 «a06» (content/math/pool-g6-ms4.js): «Квадрат з периметром»
+- pms4 задача 18 «d02» (content/math/pool-g6-ms4.js): «Куб з ребром»
+- pms4 задача 23 «d07» (content/math/pool-g6-ms4.js): «Фарбують з двох»
+- pms4 задача 24 «d08» (content/math/pool-g6-ms4.js): «Куб з такою»
+- pms4 задача 26 «c02» (content/math/pool-g6-ms4.js): «Куб з ребром»
+- pg7m1 задача 18 «c02» (content/math/pool-g7-g7m1.js): «ніж з другого»
+- pg7m1 задача 18 «c02» (content/math/pool-g7-g7m1.js): «Нехай з першого»
+- pg7m1 задача 19 «c03» (content/math/pool-g7-g7m1.js): «Прямокутник з периметром»
+- pg7m2 задача 1 «a01» (content/math/pool-g7-g7m2.js): «відрізків з кінцями»
+- pg7m2 задача 18 «c02» (content/math/pool-g7-g7m2.js): «відповідь з правильним»
+- pg7m2 задача 22 «c06» (content/math/pool-g7-g7m2.js): «один з них»
+- pg7m2 задача 23 «c07» (content/math/pool-g7-g7m2.js): «один з них»
+- pg7m4 задача 12 «b04» (content/math/pool-g7-g7m4.js): «відрізок з вершини»
+- pg7m4 задача 25 «d01» (content/math/pool-g7-g7m4.js): «суміжних з ним»
+- pg7m4 задача 26 «d02» (content/math/pool-g7-g7m4.js): «суміжний з ним»
+- pg7m4 задача 27 «d03» (content/math/pool-g7-g7m4.js): «суміжний з кутами»
+- pg7m4 задача 29 «d05» (content/math/pool-g7-g7m4.js): «суміжних з ним»
+- pg7m4 задача 45 «f05» (content/math/pool-g7-g7m4.js): «Один з гострих»
+- pg7m4 задача 46 «f06» (content/math/pool-g7-g7m4.js): «Один з гострих»
+- pg7m4 задача 47 «f07» (content/math/pool-g7-g7m4.js): «один з кутів»
+- pg7m4 задача 55 «g07» (content/math/pool-g7-g7m4.js): «кожен з них»
+- pg7m4 задача 55 «g07» (content/math/pool-g7-g7m4.js): «один з катетів»
+- pg7m4 задача 62 «h06» (content/math/pool-g7-g7m4.js): «одній з двох»
+- pg7m8 задача 23 «c07» (content/math/pool-g7-g7m8.js): «Разом з колом»
+- pg7m8 задача 24 «c08» (content/math/pool-g7-g7m8.js): «точок з колом»
+- pg7m8 задача 30 «d06» (content/math/pool-g7-g7m8.js): «виходить з вершини»
+- pg7m8 задача 32 «d08» (content/math/pool-g7-g7m8.js): «дотичних з вершин»
+- pg7m8 задача 37 «e05» (content/math/pool-g7-g7m8.js): «кожній з двох»
+- pg8m2 задача 9 «b01» (content/math/pool-g8-g8m2.js): «прямокутник з рівними»
+- pg8m2 задача 11 «b03» (content/math/pool-g8-g8m2.js): «прямокутник з рівними»
+- pg8m3 задача 14 «a06» (content/math/pool-g8-g8m3.js): «Корінь з від'ємного»
+- pg8m4 задача 21 «c05» (content/math/pool-g8-g8m4.js): «один з яких»
+- pg8m4 задача 21 «c05» (content/math/pool-g8-g8m4.js): «трикутник з прямим»
+- pg8m4 задача 28 «d04» (content/math/pool-g8-g8m4.js): «Менший з відрізків»
+- pg8m4 задача 29 «d05» (content/math/pool-g8-g8m4.js): «Більший з відрізків»
+- pg8m4 задача 46 «f06» (content/math/pool-g8-g8m4.js): «трикутник з прямим»
+- pg8m4 задача 47 «f07» (content/math/pool-g8-g8m4.js): «трикутник з прямим»
+- pg8m4 задача 53 «g05» (content/math/pool-g8-g8m4.js): «порівняй з таблицею»
+- pg8m4 задача 56 «g08» (content/math/pool-g8-g8m4.js): «утворюють з нижньою»
+- pg9m3 задача 19 «c03» (content/math/pool-g9-g9m3.js): «Перетин з віссю»
+- pg9m3 задача 40 «e08» (content/math/pool-g9-g9m3.js): «виходить з нього»
+- pg9m4 задача 30 «d06» (content/math/pool-g9-g9m4.js): «один з кутів»
+- pg9m4 задача 32 «d08» (content/math/pool-g9-g9m4.js): «паралелограм з рівними»
+- pg9m8 задача 15 «b08» (content/math/pool-g9-g9m8.js): «трикутників з прямим»
+- pg9m8 задача 20 «c05» (content/math/pool-g9-g9m8.js): «разом з відрізком»
+- pg9m8 задача 37 «e06» (content/math/pool-g9-g9m8.js): «ромб з діагоналями»
+- pg9m8 задача 43 «f04» (content/math/pool-g9-g9m8.js): «ромб з діагоналями»
+- pg9m8 задача 47 «f08» (content/math/pool-g9-g9m8.js): «Один з гострих»
+- pg9m8 задача 52 «g05» (content/math/pool-g9-g9m8.js): «трикутник з бічними»
+- pg9m8 задача 77 «j06» (content/math/pool-g9-g9m8.js): «трикутник з катетом»
+- pg9m8 задача 79 «j08» (content/math/pool-g9-g9m8.js): «конус з радіусом»
+- dg11 завдання 8 (content/math/diag-g11.js): «кубик з гранями»
+- dg11 завдання 11 (content/math/diag-g11.js): «степінь з раціональним»
+- dg4 завдання 21 (content/math/diag-g4.js): «Чверть з них»
+
+## «з» усередині речення перед одиничним з, с, ц, ж, ч, ш → «із» незалежно від попереднього слова (§ 25 п. 2; звіт) — 106
+
+- ms3l3 екран 4 (content/math/g5-ms0b.js): «стовпчик з числами»
+- ms3l3 екран 6 (content/math/g5-ms0b.js): «відрізка з числом»
+- ms0bl5 екран 5 (content/math/g5-ms0b.js): «утворювати з землею»
+- g6m1l3 екран 3 (content/math/g5-g6m1.js): «Одна з цих»
+- m5 екран 2 (content/math/g5-ms1.js): «складається з цілої»
+- ms3l4 outro/назва (content/math/g6-ms3.js): «задачах з життя»
+- g6m2l6 екран 2 (content/math/g6-g6m2.js): «зробити з чисельником»
+- g6m4l3 екран 1 (content/math/g6-g6m4.js): «одне з чисел»
+- g6m4l7 outro/назва (content/math/g6-g6m4.js): «Перехрестя з чотирма»
+- g6m4l8 екран 3 (content/math/g6-g6m4.js): «сталося з червоною»
+- g6m4l8 екран 4 (content/math/g6-g6m4.js): «Приклад з життя»
+- ms4l5 екран 3 (content/math/g6-ms4.js): «фігура з шести»
+- ms4l5 екран 6 (content/math/g6-ms4.js): «складена з шести»
+- ms4l5 outro/назва (content/math/g6-ms4.js): «розгортку з шести»
+- g6m6l1 екран 6 (content/math/g6-g6m6.js): «пари з синьою»
+- g6m6l1 екран 6 (content/math/g6-g6m6.js): «записала з синьою»
+- g6m6l1 екран 8 (content/math/g6-g6m6.js): «Числа з цифр»
+- g6m6l1 екран 8 (content/math/g6-g6m6.js): «Почни з чисел»
+- g6m6l1 екран 9 (content/math/g6-g6m6.js): «сама з собою»
+- g6m6l2 екран 7 (content/math/g6-g6m6.js): «будь-хто з чотирьох»
+- g6m6l2 екран 9 (content/math/g6-g6m6.js): «кожної з цих»
+- g6m6l4 екран 2 (content/math/g6-g6m6.js): «одна з чотирьох»
+- g6m6l4 екран 2 (content/math/g6-g6m6.js): «дві з чотирьох»
+- g6m6l5 екран 2 (content/math/g6-g6m6.js): «числами з цифр»
+- g6m6l5 екран 7 (content/math/g6-g6m6.js): «фішок з числами»
+- g7m2l3 екран 5 (content/math/g7-g7m2.js): «Почни з суміжних»
+- g7m2l3 екран 5 (content/math/g7-g7m2.js): «суми з суміжними»
+- g7m2l3 екран 6 (content/math/g7-g7m2.js): «вивели з суміжних»
+- g7m3l2 outro/назва (content/math/g7-g7m3.js): «фігури з частин»
+- g7m3l2 outro/назва (content/math/g7-g7m3.js): «фігури з частин»
+- g7m3l2 outro/назва (content/math/g7-g7m3.js): «фігури з частин»
+- g7m6l2 екран 8 (content/math/g7-g7m6.js): «Що з чого»
+- g7m4l9 екран 8 (content/math/g7-g7m4.js): «сторону з сумою»
+- g7m4l4 outro/назва (content/math/g7-g7m4.js): «кути з суми»
+- g7m8l5 екран 1 (content/math/g7-g7m8.js): «коло з центром»
+- g8m1l6 екран 6 (content/math/g8-g8m1.js): «збігається з числом»
+- g8m1l3 екран 4 (content/math/g8-g8m1.js): «Степінь з цілим»
+- g8m1l3 outro/назва (content/math/g8-g8m1.js): «степені з цілими»
+- g8m3l1 екран 5 (content/math/g8-g8m3.js): «її з сусідніми»
+- g8m3l2 екран 1 (content/math/g8-g8m3.js): «складено з чотирьох»
+- g8m3l2 екран 3 (content/math/g8-g8m3.js): «точку з золотими»
+- g8m3l3 екран 7 (content/math/g8-g8m3.js): «кореня з частки»
+- g8m4l1 екран 1 (content/math/g8-g8m4.js): «можна з цих»
+- g8m4l7 екран 1 (content/math/g8-g8m4.js): «можна з цих»
+- g8m5l3 outro/назва (content/math/g8-g8m5.js): «видно з суми»
+- g9m3l6 екран 6 (content/math/g9-g9m3.js): «система з цих»
+- g9m3l7 екран 5 (content/math/g9-g9m3.js): «числа з сумою»
+- g9m3l7 екран 6 (content/math/g9-g9m3.js): «більше з цих»
+- g9m3l5 екран 6 (content/math/g9-g9m3.js): «Нерівність з четвертого»
+- g9m4l1 екран 4 (content/math/g9-g9m4.js): «радіуса 1 з центром»
+- g9m6l6 екран 4 (content/math/g9-g9m6.js): «Дузі з центральним»
+- g9m6l6 екран 6 (content/math/g9-g9m6.js): «дуги з центральним»
+- g9m7l2 екран 3 (content/math/g9-g9m7.js): «сприятливі з шести»
+- g9m8l7 екран 1 (content/math/g9-g9m8.js): «складено з чотирьох»
+- g10m1l3 outro/назва (content/math/g10-g10m1.js): «правило: з ціни»
+- g10m1l3 outro/назва (content/math/g10-g10m1.js): «відстань, з Цельсія»
+- g10m1l4 екран 3 (content/math/g10-g10m1.js): «Виключи з числової»
+- g10m3l2 екран 4 (content/math/g10-g10m3.js): «степеня з цілим»
+- g10m6l4 екран 1 (content/math/g10-g10m6.js): «сторони з сітки»
+- g11m1l2 екран 9 (content/math/g11-g11m1.js): «Що з цим»
+- g11m5l2 екран 4 (content/math/g11-g11m5.js): «стається з шансом»
+- g11m5l3 екран 2 (content/math/g11-g11m5.js): «П'ятеро з шести»
+- g11m6l4 екран 6 (content/math/g11-g11m6.js): «формулою з синусом»
+- g11m6l4 екран 6 (content/math/g11-g11m6.js): «площі з синусом»
+- pg10m3 задача 3 «a03» (content/math/pool-g10-g10m3.js): «Які з записів»
+- pg10m3 задача 15 «b07» (content/math/pool-g10-g10m3.js): «правило з цілих»
+- pg4m1 задача 23 «c12» (content/math/pool-g4-g4m1.js): «кожну з цифр»
+- pg4m1 задача 23 «c12» (content/math/pool-g4-g4m1.js): «число з цих»
+- pg4m1 задача 24 «c13» (content/math/pool-g4-g4m1.js): «зірочки з сотнями»
+- pg4m5 задача 2 «a02» (content/math/pool-g4-g4m5.js): «одна з чотирьох»
+- pg4m5 задача 7 «a07» (content/math/pool-g4-g4m5.js): «одна з цих»
+- pg4m5 задача 7 «a07» (content/math/pool-g4-g4m5.js): «Одна з чотирьох»
+- pm4s1 задача 6 «a06» (content/math/pool-g4-m4s1.js): «Кожне з чисел»
+- pg6m1 задача 14 «b06» (content/math/pool-g5-g6m1.js): «Число з самих»
+- pms0 задача 56 «g08» (content/math/pool-g5-ms0.js): «Родина з чотирьох»
+- pms0b задача 1 «a01» (content/math/pool-g5-ms0b.js): «відрізок з цими»
+- pms2 задача 20 «c04» (content/math/pool-g5-ms2.js): «позичаючи з сусідніх»
+- pg6m4 задача 5 «a05» (content/math/pool-g6-g6m4.js): «Яке з цих»
+- pg6m4 задача 36 «e04» (content/math/pool-g6-g6m4.js): «Коло з центром»
+- pg6m6 задача 6 «a06» (content/math/pool-g6-g6m6.js): «Числа з цифр»
+- pg6m6 задача 6 «a06» (content/math/pool-g6-g6m6.js): «скласти з цифр»
+- pg6m6 задача 10 «b02» (content/math/pool-g6-g6m6.js): «числа з цифр»
+- pg6m6 задача 10 «b02» (content/math/pool-g6-g6m6.js): «скласти з цифр»
+- pg6m6 задача 11 «b03» (content/math/pool-g6-g6m6.js): «скласти з цифр»
+- pg6m6 задача 12 «b04» (content/math/pool-g6-g6m6.js): «Кожну з чотирьох»
+- pg6m6 задача 13 «b05» (content/math/pool-g6-g6m6.js): «числа з цифр»
+- pg6m6 задача 13 «b05» (content/math/pool-g6-g6m6.js): «скласти з цифр»
+- pg6m6 задача 16 «b08» (content/math/pool-g6-g6m6.js): «скласти з цифр»
+- pg7m5 задача 3 «a03» (content/math/pool-g7-g7m5.js): «Яке з цих»
+- pg7m8 задача 11 «b03» (content/math/pool-g7-g7m8.js): «опущеного з центра»
+- pg7m8 задача 19 «c03» (content/math/pool-g7-g7m8.js): «одна з цих»
+- pg7m8 задача 22 «c06» (content/math/pool-g7-g7m8.js): «км з центром»
+- pg7m8 задача 22 «c06» (content/math/pool-g7-g7m8.js): «км з центрами»
+- pg7m8 задача 22 «c06» (content/math/pool-g7-g7m8.js): «км з центром»
+- pg7m8 задача 22 «c06» (content/math/pool-g7-g7m8.js): «км з центрами»
+- pg7m8 задача 30 «d06» (content/math/pool-g7-g7m8.js): «дотичної з цієї»
+- pg8m3 задача 24 «b08» (content/math/pool-g8-g8m3.js): «квадрати з числом»
+- pg8m6 задача 14 «b06» (content/math/pool-g8-g8m6.js): «більшої з цих»
+- pg8m6 задача 14 «b06» (content/math/pool-g8-g8m6.js): «меншої з цих»
+- pg9m2 задача 13 «b05» (content/math/pool-g9-g9m2.js): «кола з центром»
+- pg9m3 задача 40 «e08» (content/math/pool-g9-g9m3.js): «коло з центром»
+- pg9m7 задача 1 «a01» (content/math/pool-g9-g9m7.js): «одне з цих»
+- pg9m7 задача 2 «a02» (content/math/pool-g9-g9m7.js): «одну з цих»
+- pg9m7 задача 7 «a07» (content/math/pool-g9-g9m7.js): «Трицифрові з цифр»
+- pg9m8 задача 4 «a04» (content/math/pool-g9-g9m8.js): «кожну з цих»
+- pg9m8 задача 27 «d04» (content/math/pool-g9-g9m8.js): «кожну з цих»

@@ -349,6 +349,7 @@ function nextLesson(c){
   for(let k=0;k<c.sections.length;k++){ const sec=c.sections[k]; if(!sec.lessons||sec.grade!==S.grade) continue;
     const i=sec.lessons.findIndex((l,j)=>!done(l.id)&&!known(l.id)&&unlocked(sec,j)&&(!l.boss||sec.lessons.every(x=>x.boss||done(x.id)))); if(i>=0) return {c, k, sec, i, l:sec.lessons[i]}; }
   const k=activeSec(c); if(k<0) return null; const sec=c.sections[k]; const i=sec.lessons.findIndex((l,j)=>!done(l.id)&&unlocked(sec,j)); return i<0? null : {c, k, sec, i, l:sec.lessons[i]}; }
+const secDone=sec=>!!sec.lessons && sec.lessons.every(l=>done(l.id));   // розділ пройдено повністю: «зараз:» для нього не показуємо (engine-ui-text-1117)
 const plural=(n,f)=>{ const a=n%10,b=n%100; return f[a===1&&b!==11?0: a>=2&&a<=4&&(b<10||b>=20)?1:2]; };
 const backBtn = label => `<button class="back" type="button" data-up>${ic("back")}<span>${label}</span></button>`;
 
@@ -367,7 +368,7 @@ function viewHome(){
         <span class="play">${icF("play")}</span></button>` : ""}
     ${now.length? `<div class="card now"><div class="nowhead"><span class="eyebrow">Зараз у школі</span><span class="pill">${S.grade} клас · тиждень ${wk}</span></div>
       ${now.map(({c,sec})=>{ const k=c.sections.indexOf(sec); return sec.lessons
-        ? `<button type="button" class="nowrow s-${c.id}" data-jump="${c.id}|${k}"><span class="dot sm s-${c.id}"></span><span class="grow"><span class="muted small">${c.short}</span><b>${esc(sec.title)}</b></span><span class="ready">є уроки</span>${ic("chev","chev")}</button>`
+        ? `<button type="button" class="nowrow s-${c.id}" data-jump="${c.id}|${k}"><span class="dot sm s-${c.id}"></span><span class="grow"><span class="muted small">${c.short}</span><b>${esc(sec.title)}</b></span><span class="ready">${secDone(sec)? "пройдено ✓" : "є уроки"}</span>${ic("chev","chev")}</button>`
         : `<div class="nowrow s-${c.id}"><span class="dot sm s-${c.id}"></span><span class="grow"><span class="muted small">${c.short}</span><b>${esc(sec.title)}</b></span><span class="muted small">уроки готуються</span></div>`; }).join("")}
     </div>` : ""}
     <div class="eyebrow" style="margin-top:6px">Предмети · ${S.grade} клас</div>
@@ -375,7 +376,7 @@ function viewHome(){
       ${subs.map(c=>{ const LS=lessonsOf(c), d=LS.filter(l=>done(l.id)).length, k=activeSec(c);
         return `<button type="button" class="subjcard s-${c.id}" data-subject="${c.id}">
           <span class="dot lg s-${c.id}">${ic(c.icon)}</span>
-          <span class="grow"><b>${c.subject}</b><span class="muted small">${S.grade} клас${k>=0?` · зараз: ${esc(c.sections[k].title)}`:""}</span>
+          <span class="grow"><b>${c.subject}</b><span class="muted small">${S.grade} клас${k<0? "" : secDone(c.sections[k])? " · усе пройдено ✓" : ` · зараз: ${esc(c.sections[k].title)}`}</span>
           <span class="bar s-${c.id}"><i style="width:${LS.length? d/LS.length*100:0}%"></i></span></span>
           <span class="num muted">${LS.length? d+"/"+LS.length : "план"}</span>${ic("chev","chev")}</button>`; }).join("")}
       ${SOON.map(c=>`<div class="subjcard soon s-${c.id}" aria-disabled="true">
@@ -417,18 +418,40 @@ function stepRow(st, cls, extra=""){
 function baseRow(id){ const f=findLesson(id);
   return `<button type="button" class="nowrow s-${f.c.id}" data-lesson="${id}"><span class="dot s-${f.c.id}">${ic(f.l.icon)}</span><span class="grow"><span class="muted small">з чого почати · ${f.sec.grade} клас</span><b>${esc(f.l.title)}</b></span><span class="play sm">${icF("play")}</span></button>`; }
 const baseNames = B => B.map(b=>`«${esc(b.t.title)}»`).join(", ");
+/** Уроки see baseline-теми (engine-diag-baseline-plan-1117): урок поточного класу чи іншого предмета, де тему повторюють; лише наявні. */
+const baseSee = b => (b.t.see||[]).filter(id=>findLesson(id));
+function seeRow(id, c){ const f=findLesson(id);
+  return `<button type="button" class="nowrow s-${f.c.id}" data-lesson="${id}"><span class="dot s-${f.c.id}">${ic(f.l.icon)}</span><span class="grow"><span class="muted small">тема в уроці · ${f.c.id===c.id? "" : esc(f.c.short)+" · "}${f.sec.grade} клас</span><b>${esc(f.l.title)}</b></span><span class="play sm">${icF("play")}</span></button>`; }
+const seeNames = (ids, c) => ids.map(id=>{ const f=findLesson(id); return `«${esc(f.l.title)}» (${f.c.id===c.id? "" : esc(f.c.short)+", "}${f.sec.grade} клас)`; }).join(", ");
+/** Baseline-опори (уроків молодших класів немає). Тема з see — «тема є в уроці …» з кнопкою; «попроси дорослого» — лише для тем,
+    на які в застосунку справді немає жодного уроку (плейтест 17.11, g5 №3: «Апостроф» є в u5s7l3). */
 function baseBlock(c, withRow=true){
-  const B=baseTopics(c); if(!B.length) return ""; const st=baseStart(c);
-  return `<div class="rec basegap"><div class="eyebrow">Потренуй з учителем або дорослим</div>
-    <p style="margin:0">${B.length>1?"Ці вміння":"Це вміння"} з молодших класів варто потренувати: ${baseNames(B)}. Уроків на ${B.length>1?"них":"нього"} у застосунку поки немає — попроси вчителя або дорослого дати кілька прикладів.${st?` Уроки ${S.grade} класу можна починати вже зараз.`:""}</p>
-    ${withRow&&st? baseRow(st) : ""}</div>`;
+  const B=baseTopics(c); if(!B.length) return ""; const st=baseStart(c), S1=B.filter(b=>baseSee(b).length), N=B.filter(b=>!baseSee(b).length);
+  const shown=new Set();   // кнопка на урок — один раз: кілька тем з тим самим see (dgh5 seq/units → l3) чи see = урок «з чого почати» (рев'ю engine-1117-followups P3-1)
+  const one=S1.map(b=>{ const ids=baseSee(b), fresh=ids.filter(id=>!shown.has(id)); fresh.forEach(id=>shown.add(id));
+    return `<p style="margin:0">«${esc(b.t.title)}»: уроків молодших класів на це немає, але тема є в ${ids.length>1?"уроках":"уроці"} ${seeNames(ids,c)}.</p>${fresh.map(id=>seeRow(id,c)).join("")}`; }).join("");
+  const none=N.length? `<p style="margin:0">${N.length>1?"Ці вміння":"Це вміння"} з молодших класів варто потренувати: ${baseNames(N)}. Уроків на ${N.length>1?"них":"нього"} у застосунку немає — попроси вчителя або дорослого дати кілька прикладів.</p>` : "";
+  return `<div class="rec basegap"><div class="eyebrow">${N.length? "Потренуй з учителем або дорослим" : "Варто потренувати"}</div>
+    ${one}${none}${st?`<p style="margin:0">Уроки ${S.grade} класу можна починати вже зараз.</p>`:""}
+    ${withRow&&st&&!shown.has(st)? baseRow(st) : ""}</div>`;
 }
+/** Текст картки плану на головній для baseline-тем (engine-1117-followups п. 3): коротко, бо картка мала (рев'ю engine-1117-followups P3-2) —
+    теми з see одним реченням (до 3 назв), урок названо, лише коли він один; уроки — на кнопках під текстом, повний перелік — «Увесь план».
+    «З дорослим» — лише для тем без уроку. */
+function planBaseText(c,B){
+  const S1=B.filter(b=>baseSee(b).length), N=B.filter(b=>!baseSee(b).length), ids=[...new Set(S1.flatMap(baseSee))];
+  const names=baseNames(S1.slice(0,3))+(S1.length>3? ` і ще ${S1.length-3}` : "");
+  return [N.length? `Потренуй з учителем або дорослим: ${baseNames(N)}.` : "",
+    S1.length? `${N.length? "Повтори" : "Потренуй"}: ${names} — ${ids.length===1? `тема є в уроці ${seeNames(ids,c)}` : "є уроки, де це повторюється"}.` : ""].filter(Boolean).join(" ");
+}
+/** Кнопки картки плану: до двох уроків see і «з чого почати», без повторів (рев'ю engine-1117-followups P3-1: dg4 place → g4m1l1 = baseStart). */
+function planBaseRows(c,B,st){ const ids=[...new Set(B.flatMap(baseSee))].slice(0,2); return ids.map(id=>seeRow(id,c)).join("")+(st&&!ids.includes(st)? baseRow(st) : ""); }
 function planCard(c){
   const td=stepsTodo(c);
   if(!td.length){ const B=baseTopics(c); if(!B.length) return ""; const st=baseStart(c);
     return `<div class="card now plancard s-${c.id}"><div class="nowhead"><span class="eyebrow">Твій план · ${c.short}</span><span class="pill">${B.length} ${plural(B.length,["вміння","вміння","вмінь"])}</span></div>
-    <p class="small" style="margin:0">Потренуй з учителем або дорослим: ${baseNames(B)}.</p>
-    ${st? baseRow(st) : ""}
+    <p class="small" style="margin:0">${planBaseText(c,B)}</p>
+    ${planBaseRows(c,B,st)}
     <button type="button" class="linkbtn" data-plan="${c.id}">Увесь план${ic("chev","chev")}</button></div>`; }
   const n=activePlan(c).steps.filter(st=>planCtx(c).hasLesson(st.l)).length, dn=n-td.length;
   return `<div class="card now plancard s-${c.id}"><div class="nowhead"><span class="eyebrow">Твій план · ${c.short}</span><span class="pill">${dn} з ${n}</span></div>
@@ -441,7 +464,7 @@ const strength = id => { const b=S.srs[id]?.box ?? -1; return `<span class="stre
 function practiceEntry(c){
   const items=poolItems(c); if(!items.length) return "";
   const all=new Set(items.map(it=>it.lesson)), open=[...all].filter(topicOpen), due=open.filter(l=>LEARN.isDue(S,l,dkey())).length;
-  return `<button type="button" class="secitem pracentry s-${c.id}" data-practice-view="${c.id}"><span class="secnum">${ic("bolt")}</span><span class="grow"><b>Тренування${S.subject===c.id&&nav.v!=="home"?"":" · "+c.short}</b><span class="muted small">${open.length? `Відкрито ${open.length} з ${all.size} тем${due?` · ${due} ${plural(due,["чекає","чекають","чекають"])} на повторення`:""}` : "Задачі відкриються після першого пройденого уроку"}</span></span>${ic("chev","chev")}</button>`;
+  return `<button type="button" class="secitem pracentry s-${c.id}" data-practice-view="${c.id}"><span class="secnum">${ic("bolt")}</span><span class="grow"><b>Тренування${S.subject===c.id&&nav.v!=="home"?"":" · "+c.short}</b><span class="muted small">${open.length? `Відкрито ${open.length} з ${all.size} ${plural(all.size,["теми","тем","тем"])}${due?` · ${due} ${plural(due,["чекає","чекають","чекають"])} на повторення`:""}` : "Задачі відкриються після першого пройденого уроку"}</span></span>${ic("chev","chev")}</button>`;
 }
 function viewPractice(){
   const c=course(nav.id), items=poolItems(c), cnt=LEARN.lessonCounts(items);
@@ -467,7 +490,7 @@ function viewPractice(){
 }
 function recCard(st, same){
   const f=findLesson(st.l), skn=st.sk&&f.c.skills[st.sk.split(".")[1]];
-  return `<div class="rec"><div class="eyebrow">Варто повторити · додано в план</div><div class="recrow"><span class="dot lg s-${f.c.id}">${ic(f.l.icon)}</span><span class="grow"><b>${esc(f.l.title)}</b><span class="muted small">${f.c.short} · ${f.sec.grade} клас · ${f.l.screens.length} кроків</span></span></div><p class="small" style="margin:0">${skn? `Помилки в навичці «${skn.name}» повторюються в різних уроках. Почнімо з теми, де вона з'являється вперше.` : same? `У ${st.n} з ${st.of} завдань цієї теми були помилки. Пройди урок ще раз — і вона закріпиться.` : `У ${st.n} з ${st.of} останніх завдань на цю тему були помилки. Коротке повторення допоможе.`}</p><button class="btn" type="button" data-lesson="${st.l}">${same?"Пройти ще раз":"Повторити зараз"}</button></div>`;
+  return `<div class="rec"><div class="eyebrow">Варто повторити · додано в план</div><div class="recrow"><span class="dot lg s-${f.c.id}">${ic(f.l.icon)}</span><span class="grow"><b>${esc(f.l.title)}</b><span class="muted small">${f.c.short} · ${f.sec.grade} клас · ${f.l.screens.length} ${plural(f.l.screens.length,["крок","кроки","кроків"])}</span></span></div><p class="small" style="margin:0">${skn? `Помилки в навичці «${skn.name}» повторюються в різних уроках. Почнімо з теми, де вона з'являється вперше.` : same? `У ${st.n} з ${st.of} ${plural(st.of,["завдання","завдань","завдань"])} цієї теми були помилки. Пройди урок ще раз — і вона закріпиться.` : `У ${st.n} з ${st.of} ${plural(st.of,["останнього завдання","останніх завдань","останніх завдань"])} на цю тему були помилки. Коротке повторення допоможе.`}</p><button class="btn" type="button" data-lesson="${st.l}">${same?"Пройти ще раз":"Повторити зараз"}</button></div>`;
 }
 function viewDiag(){
   const c=course(nav.id), d=diagFor(c); if(!d) return viewHome();
@@ -481,7 +504,7 @@ function viewDiag(){
   </section>
   <div class="learned" style="margin:16px 0">
     <div class="li">${ic("shield")}<span><b>Без оцінок.</b> Під час тесту не видно, правильно чи ні: це не контрольна, а спосіб знайти, що варто згадати.</span></div>
-    <div class="li">${ic("bolt")}<span><b>До ${d.items.length} завдань, ≈ ${diagMins(d)} хв.</b> Можна перерватися й продовжити пізніше.</span></div>
+    <div class="li">${ic("bolt")}<span><b>До ${d.items.length} ${plural(d.items.length,["завдання","завдань","завдань"])}, ≈ ${diagMins(d)} хв.</b> Можна перерватися й продовжити пізніше.</span></div>
     <div class="li">${ic("bulb")}<span><b>Не знаєш — тисни «Ще не знаю».</b> Вгадувати не треба: так план вийде точнішим.</span></div>
     <div class="li">${ic("path")}<span><b>Наприкінці — твій план:</b> ${d.topics.some(t=>t.kind!=="cur"&&!t.baseline)? "спершу теми, які варто повторити," : "які вміння варто потренувати і з чого почати —"} далі уроки ${d.grade} класу.</span></div>
   </div>
@@ -501,7 +524,7 @@ function levelStats(lv){
 function viewPlan(){
   const c=course(nav.id), p=activePlan(c)||{steps:[],known:[]}, d=diagFor(c), rec=d&&S.diag[d.id], lv=rec&&LEARN.level(d,rec.topics);
   const steps=p.steps.filter(st=>planCtx(c).hasLesson(st.l)), td=steps.filter(st=>!st.done), kn=(p.known||[]).filter(known);
-  const topicOf=st=>{ const t=d&&st.topic&&d.topics.find(x=>x.id===st.topic); return t? `<span class="why">У тесті: ${esc(t.title)}</span>` : st.why==="errors"? `<span class="why">${st.sk&&c.skills[st.sk.split(".")[1]]? `Навичка «${c.skills[st.sk.split(".")[1]].name}»: помилки в різних уроках` : `Помилки в ${st.n} з ${st.of} останніх завдань теми`}</span>` : ""; };
+  const topicOf=st=>{ const t=d&&st.topic&&d.topics.find(x=>x.id===st.topic); return t? `<span class="why">У тесті: ${esc(t.title)}</span>` : st.why==="errors"? `<span class="why">${st.sk&&c.skills[st.sk.split(".")[1]]? `Навичка «${c.skills[st.sk.split(".")[1]].name}»: помилки в різних уроках` : `Помилки в ${st.n} з ${st.of} ${plural(st.of,["останнього завдання","останніх завдань","останніх завдань"])} теми`}</span>` : ""; };
   return `${backBtn("На головну")}
   <section class="sec pat-${c.pattern||"none"}">
     <svg class="deco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">${P.path}</svg>
@@ -513,7 +536,7 @@ function viewPlan(){
   ${lv?`<div class="card" style="display:grid;gap:10px"><div><div class="eyebrow">Тест рівня${rec.date?" · "+rec.date.split("-").reverse().slice(0,2).join("."):""}</div><h3 style="font-size:19px">${lv.title}</h3><p class="muted" style="margin:4px 0 0;font-size:14px">${lv.text}</p></div>
     ${levelStats(lv)}
     <details class="plan"><summary>Теми тесту (${d.topics.length})</summary><div class="learned" style="margin-top:8px">${topicsHtml(d,rec.topics,"pre")}${topicsHtml(d,rec.topics,"cur")}</div></details></div>`:""}
-  ${td.length?`<div class="eyebrow">Спершу повтори</div><div class="seclist">${td.map((st,i)=>{ const f=findLesson(st.l); return `<button type="button" class="secitem" data-lesson="${st.l}"><span class="secnum">${i+1}</span><span class="grow"><b>${esc(f.l.title)}</b><span class="muted small">${WHY[st.why]} · ${f.sec.grade} клас · ${f.l.screens.length} кроків</span>${topicOf(st)}</span><span class="play sm">${icF("play")}</span></button>`; }).join("")}</div>`
+  ${td.length?`<div class="eyebrow">Спершу повтори</div><div class="seclist">${td.map((st,i)=>{ const f=findLesson(st.l); return `<button type="button" class="secitem" data-lesson="${st.l}"><span class="secnum">${i+1}</span><span class="grow"><b>${esc(f.l.title)}</b><span class="muted small">${WHY[st.why]} · ${f.sec.grade} клас · ${f.l.screens.length} ${plural(f.l.screens.length,["крок","кроки","кроків"])}</span>${topicOf(st)}</span><span class="play sm">${icF("play")}</span></button>`; }).join("")}</div>`
     : `<div class="empty">${steps.length?"Усі кроки на повторення виконано.":baseTopics(c).length?"Уроків на повторення в застосунку зараз немає.":"Тем на повторення зараз немає."} Якщо в уроках повторюватимуться схожі помилки, тут з'явиться нова порада.</div>`}
   ${baseBlock(c)}
   ${kn.length?`<div class="eyebrow">Уже знайоме з ${S.grade} класу</div><div class="learned">${kn.map(id=>{ const f=findLesson(id); return `<div class="li">${ic("check")}<span class="grow">${esc(f.l.title)}<span class="muted small" style="display:block">${esc(f.sec.title)} · урок відкрито без черги</span></span></div>`; }).join("")}</div>`:""}
@@ -531,7 +554,7 @@ function viewSubject(){
     <div class="eyebrow">${S.grade} клас · ${SECS.length} ${plural(SECS.length,["розділ","розділи","розділів"])} на рік</div>
     <h1 style="color:inherit">${c.subject}</h1>
     <div class="pbar"><i style="width:${LS.length? d/LS.length*100:0}%"></i></div>
-    <div style="font:600 13px var(--body)">${LS.length? `${d} з ${LS.length} уроків · ${stars} ★` : `План на рік готовий · уроки в розробці`}</div>
+    <div style="font:600 13px var(--body)">${LS.length? `${d} з ${LS.length} ${plural(LS.length,["уроку","уроків","уроків"])} · ${stars} ★` : `План на рік готовий · уроки в розробці`}</div>
   </section>
   <div style="display:grid;gap:10px;margin-top:14px">${practiceEntry(c)}${planOrDiag(c)||(activePlan(c)||diagFor(c)?`<button type="button" class="linkbtn" data-plan="${c.id}">Твій план і тест рівня${ic("chev","chev")}</button>`:"")}</div>
   <div class="eyebrow" style="margin:18px 0 10px">План на рік</div>
@@ -541,7 +564,7 @@ function viewSubject(){
       return open? `<button type="button" class="secitem" data-topic="${k}">
           <span class="secnum">${num+1}</span>
           <span class="grow">${tag}<b>${x.title}</b><span class="why"><b>Навіщо:</b> ${x.why}</span>
-          <span class="bar s-${c.id}"><i style="width:${n/x.lessons.length*100}%"></i></span><span class="muted small">${n} з ${x.lessons.length} уроків</span></span>${ic("chev","chev")}</button>`
+          <span class="bar s-${c.id}"><i style="width:${n/x.lessons.length*100}%"></i></span><span class="muted small">${n} з ${x.lessons.length} ${plural(x.lessons.length,["уроку","уроків","уроків"])}</span></span>${ic("chev","chev")}</button>`
       : `<div class="secitem locked"><span class="secnum">${num+1}</span><span class="grow">${tag}<b>${x.title}</b><span class="why"><b>Навіщо:</b> ${x.why}</span><span class="muted small">${x.weeks?`Тижні ${x.weeks[0]}–${x.weeks[1]} · `:""}уроки готуються</span>${x.plan?`<details class="plan"><summary>Теми уроків (${x.plan.length})</summary><ol>${x.plan.map(t=>`<li>${esc(t)}</li>`).join("")}</ol></details>`:""}</span></div>`; }).join("")}
   </div>`;
 }
@@ -556,7 +579,7 @@ function viewTopic(){
     <h2>${sec.title}</h2>
     <p class="why"><b>Навіщо:</b> ${sec.why}</p>
     <div class="pbar"><i style="width:${nDone/LS.length*100}%"></i></div>
-    <div style="font:600 13px var(--body)">${nDone} з ${LS.length} уроків</div>
+    <div style="font:600 13px var(--body)">${nDone} з ${LS.length} ${plural(LS.length,["уроку","уроків","уроків"])}</div>
   </section>
   ${(sec.requires||[]).length? `<div class="prereq"><div class="eyebrow">Спирається на</div>${sec.requires.map(id=>{ const f=findLesson(id); if(!f) return ""; return `<button type="button" class="prechip" data-lesson="${id}">${ic(done(id)?"check":f.l.icon)}<span><b>${esc(f.l.title)}</b><span class="muted small">${f.sec.grade} клас · ${done(id)?"пройдено":"повторити за 3 хв"}</span></span>${ic("chev","chev")}</button>`; }).join("")}</div>` : ""}
   <div class="path">
@@ -579,7 +602,7 @@ function openSheet(i){
     <div class="eyebrow">${c.short} · Урок ${i+1}${l.boss?" · фінал":""}</div>
     <h2>${esc(l.title)}</h2>
     <div class="why-box"><b>Навіщо:</b> ${l.why}</div>
-    <div class="meta"><span>${l.screens.length} кроків</span><span>${graded} завдань</span><span>≈ ${Math.round(l.screens.length*0.8)} хв</span>${l.boss?"<span>бали ×2</span>":""}${l.status!=="approved"?`<span class="st-${l.status||"draft"}" title="Статус перевірки контенту">${({draft:"чернетка",verified:"перевірено ШІ"})[l.status||"draft"]||l.status}</span>`:""}${rec?`<span>найкраще: ${rec.stars} ★</span>`:""}</div>
+    <div class="meta"><span>${l.screens.length} ${plural(l.screens.length,["крок","кроки","кроків"])}</span><span>${graded} ${plural(graded,["завдання","завдання","завдань"])}</span><span>≈ ${Math.round(l.screens.length*0.8)} хв</span>${l.boss?"<span>бали ×2</span>":""}${l.status!=="approved"?`<span class="st-${l.status||"draft"}" title="Статус перевірки контенту">${({draft:"чернетка",verified:"перевірено ШІ"})[l.status||"draft"]||l.status}</span>`:""}${rec?`<span>найкраще: ${rec.stars} ★</span>`:""}</div>
     ${u?`<button class="btn" id="go" type="button">${rec?"Пройти ще раз":"Почати урок"}</button>`:`<div class="empty">Спершу пройди урок «${esc(LS[i-1].title)}».</div>`}
     <button class="btn ghost" id="closeSheet" type="button">Закрити</button>
   </div></div>`);
@@ -620,7 +643,7 @@ function viewProgress(){
       </div>
     </div>
     <div class="stats">
-      <div class="stat" style="color:var(--flame)">${icF("flame")}<b>${st}</b><span>днів поспіль</span></div>
+      <div class="stat" style="color:var(--flame)">${icF("flame")}<b>${st}</b><span>${plural(st,["день","дні","днів"])} поспіль</span></div>
       <div class="stat" style="color:var(--ink)">${ic("path")}<b>${nDone}/${all.length}</b><span>уроків пройдено</span></div>
       <div class="stat" style="color:var(--ok)">${ic("target")}<b>${acc}</b><span>з першої спроби</span></div>
     </div>
@@ -637,13 +660,13 @@ function viewProgress(){
     <div class="card">
       <h3 style="margin-bottom:4px">Навички</h3>
       ${subs.map(c=>{ const used=new Set(lessonsOf(c).flatMap(l=>l.screens.map(x=>x.sk)).filter(Boolean)); return `<div class="skillgroup"><div class="eyebrow"><span class="dot sm s-${c.id}"></span>${c.short}</div>${Object.entries(c.skills).filter(([k])=>used.has(k)||S.skills[skey(c,k)]).map(([k,v])=>{ const s=S.skills[skey(c,k)]||{ok:0,total:0}; const p=s.total? s.ok/s.total : 0;
-        return `<div class="skill"><div class="row"><b>${v.name}</b><span class="muted">${s.total? Math.round(p*100)+"%":"ще не тренувалась"}</span></div><div class="bar s-${c.id}"><i style="width:${p*100}%"></i></div></div>`; }).join("")}</div>`; }).join("")}
+        return `<div class="skill"><div class="row"><b>${v.name}</b><span class="muted">${s.total? Math.round(p*100)+"%":"тренувань ще не було"}</span></div><div class="bar s-${c.id}"><i style="width:${p*100}%"></i></div></div>`; }).join("")}</div>`; }).join("")}
     </div>
     <div class="card">
       <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px"><h3>Значки</h3><span class="muted" style="font-size:13px">${BADGES.filter(b=>S.badges[b.id]).length} з ${BADGES.length}</span></div>
       <div class="badges">${BADGES.map(b=>{ const on=!!S.badges[b.id]; return `<div class="bdg ${on?"":"off"}" title="${attr(b.desc)}"><div class="medal">${ic(on?b.icon:"lock")}</div>${b.name}</div>`; }).join("")}</div>
     </div>
-    ${tot? "" : `<div class="empty">Пройди перший урок, і тут з'явиться статистика. Щоб подивитися на заповнений прогрес, увімкни демо-дані в «Профілі».</div>`}
+    ${tot? "" : `<div class="empty">Пройди перший урок, і тут з'явиться статистика. ${demoOn?"Щоб подивитися на заповнений прогрес, увімкни демо-дані в «Профілі».":""}</div>`}
   </div>`;
 }
 function weekChart(){
@@ -663,7 +686,12 @@ function weekChart(){
 }
 
 /* ---------- Екран «Профіль» ---------- */
-let confirmReset=false;
+let confirmReset=false, confirmDemo=false, demoTimer=0, resetTimer=0;
+/* демо-прогрес — лише для дорослих: кнопка є тільки з ключем ?demo=… в URL (пам'ятається до кінця вкладки, у slid.v1 не йде) */
+const DEMO_KEY="rutas1dw";
+const demoOn=(()=>{ let ok=false; try{ ok=new URLSearchParams(location.search).get("demo")===DEMO_KEY; }catch(e){}
+  try{ if(ok) sessionStorage.setItem("slid.demo",DEMO_KEY); else ok=sessionStorage.getItem("slid.demo")===DEMO_KEY; }catch(e){}
+  return ok; })();
 function viewProfile(){
   const L=levelOf(S.xp), nm=S.name||"Учень";
   return `<div class="stack">
@@ -677,7 +705,7 @@ function viewProfile(){
       <div class="eyebrow">Для тестування прототипу</div>
       <div class="setrow"><div><b>Відкрити всі уроки</b><div class="muted" style="font-size:13px">Не треба проходити по черзі</div></div><button class="switch" id="swUnlock" role="switch" aria-checked="${S.unlockAll}" aria-label="Відкрити всі уроки" type="button"></button></div>
       <div class="setrow"><div><b>Тиждень навчального року</b><div class="muted" style="font-size:13px">Для картки «Зараз у школі»</div></div><select id="weekSel" aria-label="Тиждень навчального року"><option value="">авто (${(()=>{ const o=S.weekOverride; S.weekOverride=null; const w=schoolWeek(); S.weekOverride=o; return w; })()})</option>${[...Array(35)].map((_,i)=>`<option value="${i+1}" ${S.weekOverride===i+1?"selected":""}>${i+1}</option>`).join("")}</select></div>
-      <button class="btn ghost" id="demo" type="button">Заповнити демо-прогресом</button>
+      ${demoOn?`<button class="btn ${confirmDemo?"danger":"ghost"}" id="demo" type="button">${confirmDemo?"Натисни ще раз — демо замінить твій прогрес"+(SYNC.signedIn()?" і піде в акаунт":""):"Заповнити демо-прогресом"}</button>`:""}
       <button class="btn ${confirmReset?"danger":"ghost"}" id="reset" type="button">${confirmReset?"Натисни ще раз, щоб стерти все":"Скинути прогрес"}</button>
     </div>
     ${syncCard()}
@@ -723,7 +751,7 @@ function askMine(then){
   if(!SYNC.core.hasProgress(S)) return then(false);
   const n=Object.values(S.lessons||{}).filter(x=>x&&x.done).length;
   syncSheet("Чий це прогрес", `<h2>Це твій прогрес на цьому пристрої?</h2>
-    <p class="muted">Тут уже є ${n} пройдених уроків і ${S.xp||0} балів. Якщо це твоє — додамо до акаунта. Якщо ні (наприклад, це спільний комп'ютер у школі) — цей прогрес буде <b>стерто з пристрою</b>, а натомість з'явиться прогрес з твого акаунта. На сервер чужий прогрес не потрапить.</p>
+    <p class="muted">Тут уже є ${n} ${plural(n,["пройдений урок","пройдені уроки","пройдених уроків"])} і ${S.xp||0} ${plural(S.xp||0,["бал","бали","балів"])}. Якщо це твоє — додамо до акаунта. Якщо ні (наприклад, це спільний комп'ютер у школі) — цей прогрес буде <b>стерто з пристрою</b>, а натомість з'явиться прогрес з твого акаунта. На сервер чужий прогрес не потрапить.</p>
     <button class="btn" id="mineYes" type="button">Так, мій</button><button class="btn ghost" id="mineNo" type="button">Ні, не мій</button>`,
     close=>{ $("#mineYes").onclick=()=>{ close(); then(true); }; $("#mineNo").onclick=()=>{ close(); then(false); }; });
 }
@@ -806,14 +834,15 @@ function bindView(){
   document.querySelectorAll("#themeSeg button").forEach(b=>b.onclick=()=>{ S.theme=b.dataset.v; save(); render(); });
   const sw=$("#swUnlock"); if(sw) sw.onclick=()=>{ S.unlockAll=!S.unlockAll; save(); render(); };
   const ib=$("#installBtn"); if(ib) ib.onclick=async()=>{ if(await window.SLID_PWA.install()) toast(ic("check")+"Встановлено"); render(); };
-  const dm=$("#demo"); if(dm) dm.onclick=()=>{ fillDemo(); save(); toast(ic("check")+"Демо-прогрес заповнено"); tab="progress"; render(); };
+  const dm=$("#demo"); if(dm&&demoOn) dm.onclick=()=>{ if(!confirmDemo){ confirmDemo=true; render(); clearTimeout(demoTimer); demoTimer=setTimeout(()=>{ confirmDemo=false; if(tab==="profile") render(); },4000); return; }
+    clearTimeout(demoTimer); confirmDemo=false; fillDemo(); save(); toast(ic("check")+"Демо-прогрес заповнено"); tab="progress"; render(); };
   const sg=$("#syncGoogle"); if(sg) sg.onclick=syncGoogle;
   const sc=$("#syncCode"); if(sc) sc.onclick=syncCodeEnter;
   const sn=$("#syncNow"); if(sn) sn.onclick=async()=>{ syncMsg=""; const r=await SYNC.sync(); if(r.text) syncMsg=r.text; else if(r.s==="ok") toast(ic("check")+"Синхронізовано"); if($("#player").hidden) render(); };
   const sp=$("#syncPair"); if(sp) sp.onclick=syncPair;
   const so=$("#syncOut"); if(so) so.onclick=()=>{ SYNC.signOut(); syncMsg=""; toast("Синхронізацію вимкнено. Прогрес лишився на пристрої"); render(); };
-  const rs=$("#reset"); if(rs) rs.onclick=()=>{ if(!confirmReset){ confirmReset=true; render(); setTimeout(()=>{ confirmReset=false; if(tab==="profile") render(); },4000); return; }
-    const keep={name:S.name,theme:S.theme,subject:S.subject,grade:S.grade}; SYNC.signOut(true); HYPS.reset(); EV.log("reset"); EV.newProfile(); S=Object.assign(fresh(),keep); confirmReset=false; save(); toast(ic("check")+"Прогрес скинуто"); render(); };
+  const rs=$("#reset"); if(rs) rs.onclick=()=>{ if(!confirmReset){ confirmReset=true; render(); clearTimeout(resetTimer); resetTimer=setTimeout(()=>{ confirmReset=false; if(tab==="profile") render(); },4000); return; }
+    clearTimeout(resetTimer); const keep={name:S.name,theme:S.theme,subject:S.subject,grade:S.grade}; SYNC.signOut(true); HYPS.reset(); EV.log("reset"); EV.newProfile(); S=Object.assign(fresh(),keep); confirmReset=false; save(); toast(ic("check")+"Прогрес скинуто"); render(); };
 }
 function toast(html){ const t=$("#toast"); t.innerHTML=`<div>${html}</div>`; clearTimeout(toast.t); toast.t=setTimeout(()=>t.innerHTML="",1900); }
 
@@ -821,10 +850,11 @@ function toast(html){ const t=$("#toast"); t.innerHTML=`<div>${html}</div>`; cle
 function svgFig(name){
   if(name==="strata"){
     const L=[["А","#9C8B77","Пластикова кришечка"],["Б","#7E6A55","Срібна монета"],["В","#A0643F","Трипільський черепок"],["Г","#5E4A3A","Кремінний ніж"]];
-    return `<svg viewBox="0 0 320 190" role="img" aria-label="Розріз ґрунту з чотирма шарами, від А зверху до Г знизу">
+    // знахідки — лівіше (до x ≈ 220), стрілка часу — окремою смугою праворуч: «давніше» не налазить на «Кремінний ніж» (g6.md №4)
+    return `<svg viewBox="0 0 320 198" role="img" aria-label="Розріз ґрунту з чотирма шарами, від А зверху до Г знизу">
       <rect x="0" y="0" width="320" height="16" fill="var(--ok)" opacity=".5"/>
-      ${L.map((l,i)=>`<rect x="0" y="${16+i*42}" width="320" height="42" fill="${l[1]}"/><text x="12" y="${42+i*42}" font-size="15" font-weight="700" fill="#fff">${l[0]}</text><rect x="${150+(i%2)*60}" y="${28+i*42}" width="14" height="14" rx="3" fill="#F4EBDD" stroke="#1F1A17" stroke-width="1.5"/><text x="${172+(i%2)*60}" y="${40+i*42}" font-size="11" fill="#fff">${l[2]}</text>`).join("")}
-      <path d="M300 30 v140" stroke="#fff" stroke-width="2"/><path d="M294 162 l6 10 l6 -10" fill="#fff"/><text x="292" y="26" font-size="10" fill="#fff" text-anchor="end">новіше</text><text x="292" y="186" font-size="10" fill="var(--ink)" text-anchor="end">давніше</text>
+      ${L.map((l,i)=>`<rect x="0" y="${16+i*42}" width="320" height="42" fill="${l[1]}"/><text x="12" y="${42+i*42}" font-size="15" font-weight="700" fill="#fff">${l[0]}</text><rect x="${64+(i%2)*50}" y="${28+i*42}" width="14" height="14" rx="3" fill="#F4EBDD" stroke="#1F1A17" stroke-width="1.5"/><text x="${86+(i%2)*50}" y="${40+i*42}" font-size="11" fill="#fff">${l[2]}</text>`).join("")}
+      <path d="M298 22 v148" stroke="#fff" stroke-width="2"/><path d="M292 164 l6 10 l6 -10" fill="#fff"/><text x="314" y="12" font-size="10" fill="var(--ink)" text-anchor="end">новіше</text><text x="314" y="195" font-size="10" fill="var(--ink)" text-anchor="end">давніше</text>
     </svg>`;
   }
   if(name==="rings"){
@@ -910,12 +940,26 @@ function mathFig(f){
   if(f.kind==="bar") return `<div class="mfig">${barSVG(Array(f.n).fill(1), i=>i<f.k?1:0)}</div>`;
   if(f.kind==="unequal") return `<div class="mfig">${barSVG(f.parts, i=>i<f.k?1:0, {label:"Смужка з чотирьох неоднакових частин, зафарбовано найменшу"})}</div>`;
   if(f.kind==="bars") return `<div class="mfig bars">${f.rows.map((r,j)=>`<div class="barrow"><span class="m blab">${mathHTML(f.labels[j])}</span>${barSVG(Array(r[0]).fill(1), i=>i<r[1]?1:0, {h:40})}</div>`).join("")}</div>`;
-  if(f.kind==="grid"){ const cw=40, W=f.cols*cw+6, H=f.rows*cw+6; let g=""; for(let r=0;r<f.rows;r++) for(let c=0;c<f.cols;c++){ const i=r*f.cols+c; g+=`<rect x="${3+c*cw}" y="${3+r*cw}" width="${cw}" height="${cw}" rx="3" fill="${i<f.k?"var(--surface)":"#6B3F26"}" stroke="${i<f.k?"var(--line)":"#3E2415"}" stroke-width="1.6" ${i<f.k?'stroke-dasharray="4 3"':""}/>`; }
-    return `<div class="mfig"><svg viewBox="0 0 ${W} ${H}" style="max-width:220px" role="img" aria-label="Шоколадка з ${f.rows*f.cols} часточок, ${f.k} з'їдено">${g}</svg><div class="fix" style="text-align:center">пунктиром — з'їдені часточки</div></div>`; }
+  if(f.kind==="grid") return gridFig(f);
   if(f.kind==="rem"){ const q=Math.floor(f.total/f.d), r=f.total%f.d;
     return `<div class="mfig rem" role="img" aria-label="${f.total} предметів: ${q} групи по ${f.d} і ще ${r} в остачі">${[...Array(f.d)].map((_,g)=>`<div class="dgroup on">${'<i></i>'.repeat(q)}</div>`).join("")}<div class="dgroup left">${'<i></i>'.repeat(r)}</div></div><div class="fix" style="text-align:center">${f.d} друзів по ${q} цукерки · ${r} залишилось</div>`; }
   if(f.kind==="dots"){ const per=f.total/f.groups; return `<div class="mfig dots" style="grid-template-columns:repeat(${f.groups},1fr)" role="img" aria-label="${f.total} учнів у ${f.groups} групах по ${per}">${[...Array(f.groups)].map((_,g)=>`<div class="dgroup ${g<f.k?"on":""}">${'<i></i>'.repeat(per)}</div>`).join("")}</div>`; }
   return "";
+}
+
+/** Сітка клітинок (engine-fig-grid-caption-1117). Нейтральна за замовчуванням: перші k клітинок зафарбовано (dashed: true — пунктиром),
+    label — aria-label (простий текст), cap — підпис під сіткою. look: "chocolate" — плитка шоколаду: k часточок «з'їдено» (пунктир),
+    підпис «пунктиром — з'їдені часточки» — лише коли k > 0. */
+function gridFig(f){
+  const cw=40, W=f.cols*cw+6, H=f.rows*cw+6, n=f.rows*f.cols, k=f.k||0, choc=f.look==="chocolate"; let g="";
+  for(let r=0;r<f.rows;r++) for(let c=0;c<f.cols;c++){ const on=r*f.cols+c<k;
+    const [fill,stroke,dash]= choc? (on? ["var(--surface)","var(--line)",1] : ["#6B3F26","#3E2415",0])
+      : on? (f.dashed? ["var(--surface)","var(--ink)",1] : ["var(--accent)","var(--ink)",0]) : ["var(--surface)","var(--muted)",0];
+    g+=`<rect x="${3+c*cw}" y="${3+r*cw}" width="${cw}" height="${cw}" rx="${choc?3:0}" fill="${fill}" stroke="${stroke}" stroke-width="1.6" ${dash?'stroke-dasharray="4 3"':""}/>`; }
+  const label= choc? `Шоколадка з ${n} часточок, ${k} з'їдено`
+    : f.label? attr(f.label) : `Сітка ${f.rows} × ${f.cols}: ${n} ${plural(n,["клітинка","клітинки","клітинок"])}${k? `, ${f.dashed?"пунктиром":"зафарбовано"} ${k}`:""}`;
+  const cap= choc? (k>0? "пунктиром — з'їдені часточки" : "") : f.cap||"";
+  return `<div class="mfig"><svg viewBox="0 0 ${W} ${H}" style="max-width:220px" role="img" aria-label="${label}">${g}</svg>${cap?`<div class="fix" style="text-align:center">${cap}</div>`:""}</div>`;
 }
 
 /* ---------- Плеєр уроку ---------- */
@@ -980,13 +1024,13 @@ function renderDiagEnd(){
     ${levelStats(lv)}
     <div class="rec"><div class="eyebrow">Твій план</div>
       ${td.length? `<p style="margin:0">Спершу ${td.length} ${plural(td.length,["короткий урок","короткі уроки","коротких уроків"])} на повторення, далі — програма ${d.grade} класу.</p>${td.slice(0,3).map(st=>stepRow(st,"nowrow")).join("")}${td.length>3?`<p class="muted small" style="margin:0">…і ще ${td.length-3}. Увесь план — на головному екрані.</p>`:""}`
-        : start? `<p style="margin:0">Уроків на повторення в застосунку немає. Почни з уроків ${d.grade} класу.</p>${baseRow(start)}`
-        : baseTopics(C).length? `<p style="margin:0">Уроків на повторення в застосунку немає. Уроки ${d.grade} класу — на сторінці предмета.</p>`
+        : start? `<p style="margin:0">Уроків молодших класів на повторення в застосунку немає. Почни з уроків ${d.grade} класу.</p>${baseRow(start)}`
+        : baseTopics(C).length? `<p style="margin:0">Уроків молодших класів на повторення в застосунку немає. Уроки ${d.grade} класу — на сторінці предмета.</p>`
         : `<p style="margin:0">Тем на повторення не знайшлося. Берися за уроки ${d.grade} класу.</p>`}
     </div>
     ${baseBlock(C,false)}
     <div class="learned"><div class="eyebrow">Теми попередніх класів</div>${topicsHtml(d,plan.topics,"pre")}</div>
-    ${kn?`<div class="learned"><div class="eyebrow">З програми ${d.grade} класу</div>${topicsHtml(d,plan.topics,"cur")}<p class="muted small" style="margin:0">Уроки тем, які ти вже вмієш, відкрито без черги.</p></div>`:""}
+    ${d.topics.some(t=>t.kind==="cur")?`<div class="learned"><div class="eyebrow">З програми ${d.grade} класу</div>${topicsHtml(d,plan.topics,"cur")}${kn?`<p class="muted small" style="margin:0">Уроки тем, які ти вже вмієш, відкрито без черги.</p>`:""}</div>`:""}
   </section>`);
   setDock("","","", td.length? "Почати з першого кроку" : start? "До першого уроку" : "До уроків");
   // baseline-прогалина не закривається переходом: start — лише доступний урок класу
@@ -1047,6 +1091,8 @@ function renderPracticeEnd(){
 }
 /* плеєр модальний: фон (застосунок і вкладки) inert, поки урок відкрито — Tab не виходить за межі плеєра (QA 4–5 кл.) */
 const PLAYER_BG = ["#app","#tabs","#sheetHost"];
+/* Колесо миші над панеллю «Перевірити» (position:fixed — її ланцюг прокрутки йде повз .player) не гортало екран, і останні картки sort лишались за кнопкою (g8 №33, engine-lab-p3-1117 п. 7): віддаємо коліщатко плеєру; довгий текст пояснення прокручується сам. */
+$("#dock").addEventListener("wheel",e=>{ if(e.ctrlKey) return; const fb=$("#fbText"); if(fb.contains(e.target)&&fb.scrollHeight>fb.clientHeight+1) return; const p=$("#player"); if(p.scrollHeight<=p.clientHeight) return; p.scrollTop+=e.deltaMode===1? e.deltaY*16 : e.deltaY; e.preventDefault(); },{passive:false});
 function openPlayer(){ $("#player").hidden=false; document.body.style.overflow="hidden"; $("#pClose").innerHTML=ic("x"); PLAYER_BG.forEach(q=>{ const e=$(q); if(e) e.inert=true; }); }
 function closePlayer(){ EV.log("close", ()=>({ mode:evMode(), l:L.id, i:idx, of:L.screens.length, end:idx>=L.screens.length })); HYPS.close();
   $("#player").hidden=true; document.body.style.overflow=""; PLAYER_BG.forEach(q=>{ const e=$(q); if(e) e.inert=false; }); render(); }
@@ -1076,12 +1122,63 @@ function setDock(kind,title,text,label,enabled=true){
 function pProgress(){ const na=run.diag? Object.keys(run.res).length : 0, p= run.diag? Math.round(na/Math.max(1,na+LEARN.remaining(run.diag,run.res))*100) : Math.round(idx/L.screens.length*100); $("#pBar").style.width=p+"%"; $("#pBar").parentElement.setAttribute("aria-valuenow",p);
   $("#pCombo").innerHTML= run.combo>=2? icF("flame")+"×"+run.combo : ""; }
 function fig(s){
-  if(s.img) return `<figure class="${s.tall?"tall":s.fit?"fit":""}"><img src="${s.img}" alt="${attr(s.cap)}"><figcaption>${s.cap}</figcaption></figure>`;
+  if(s.img) return `<figure class="zoomable${s.tall?" tall":s.fit?" fit":""}"><button type="button" class="zoombtn" data-zoom aria-label="Збільшити зображення: ${attr(s.cap)}"><img src="${s.img}" alt="${attr(s.cap)}"><span class="zhint" aria-hidden="true">${ZOOM_ICON}</span></button><figcaption>${s.cap}</figcaption></figure>`;
   if(s.svg) return `<figure class="svgfig">${svgFig(s.svg)}</figure>`;
   if(s.fig) return `<figure class="svgfig">${mathFig(s.fig)}</figure>`;
   if(s.lab) return `<div id="labHost"></div>`;
   return "";
 }
+/* ---------- Збільшення зображення екрана (engine-img-zoom-1117) ----------
+   Дотик / клік / Enter на img екрана (урок, тест рівня, тренування) → повноекранний перегляд: щипок і перетягування на сенсорі,
+   «+ / −», колесо миші, подвійний дотик, стрілки й +/− з клавіатури; «Закрити» або Esc. Той самий src, що вже на екрані
+   (кеш браузера й SW) — офлайн без нових завантажень. Решта сторінки inert, поки перегляд відкрито; фокус повертається на зображення. */
+const ZOOM_ICON='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21M10.5 7.5v6M7.5 10.5h6"/></svg>';
+const ZOOM_MAX=6;
+function zoomOpen(btn){
+  const im=btn.querySelector("img"); if(!im || $("#zoomv")) return;
+  const cap=btn.closest("figure")?.querySelector("figcaption")?.innerHTML||"";
+  const host=document.createElement("div"); host.id="zoomv"; host.className="zoomv";
+  host.setAttribute("role","dialog"); host.setAttribute("aria-modal","true"); host.setAttribute("aria-label","Збільшене зображення");
+  host.innerHTML=`<div class="zbar"><button type="button" id="zOut" aria-label="Зменшити">−</button><button type="button" id="zIn" aria-label="Збільшити">+</button><button type="button" id="zClose">${ic("x")}Закрити</button></div>
+    <div class="zview" id="zView" tabindex="0" role="img"><img alt="" draggable="false"></div>${cap?`<div class="zcap">${cap}</div>`:""}`;
+  const view=host.querySelector("#zView"), img=view.querySelector("img");
+  img.src=im.currentSrc||im.src; view.setAttribute("aria-label", (im.alt||"Зображення")+". Збільшення: + і −, рух — стрілки або перетягування");
+  const bg=[...document.body.children].filter(e=>!e.inert); bg.forEach(e=>e.inert=true);
+  document.body.appendChild(host);
+  let z=1, tx=0, ty=0, last=null; const pts=new Map();
+  const apply=()=>{ const r=view.getBoundingClientRect(), mx=(z-1)*r.width/2, my=(z-1)*r.height/2;
+    tx=Math.max(-mx,Math.min(mx,tx)); ty=Math.max(-my,Math.min(my,ty));
+    img.style.transform=`translate(${tx}px,${ty}px) scale(${z})`; host.dataset.zoom=z.toFixed(2);
+    host.querySelector("#zOut").disabled=z<=1; host.querySelector("#zIn").disabled=z>=ZOOM_MAX; };
+  // масштаб навколо точки (cx, cy) у координатах екрана: точка під пальцем лишається на місці
+  const zoomBy=(f,cx,cy)=>{ const r=view.getBoundingClientRect(), nz=Math.max(1,Math.min(ZOOM_MAX,z*f));
+    const px=(cx??r.left+r.width/2)-(r.left+r.width/2), py=(cy??r.top+r.height/2)-(r.top+r.height/2);
+    tx=px-(px-tx)*nz/z; ty=py-(py-ty)*nz/z; z=nz; apply(); };
+  const close=()=>{ document.removeEventListener("keydown",onKey,true); host.remove(); bg.forEach(e=>e.inert=false); btn.focus({preventScroll:true}); };
+  const onKey=e=>{ const k=e.key, step=60;
+    if(k==="Escape"){ e.preventDefault(); e.stopPropagation(); return close(); }
+    if(k==="+"||k==="=") zoomBy(1.5); else if(k==="-"||k==="_") zoomBy(1/1.5);
+    else if(k.startsWith("Arrow") && document.activeElement===view){ if(k==="ArrowLeft") tx+=step; if(k==="ArrowRight") tx-=step; if(k==="ArrowUp") ty+=step; if(k==="ArrowDown") ty-=step; apply(); }
+    else if(k==="Tab"){ const f=[...host.querySelectorAll("button:not(:disabled),#zView")], i=f.indexOf(document.activeElement);   // фокус — у межах перегляду
+      e.preventDefault(); f[(i+(e.shiftKey?-1:1)+f.length)%f.length].focus(); return; }
+    else return;
+    e.preventDefault(); e.stopPropagation(); };
+  document.addEventListener("keydown",onKey,true);
+  host.querySelector("#zClose").onclick=close;
+  host.querySelector("#zIn").onclick=()=>zoomBy(1.5); host.querySelector("#zOut").onclick=()=>zoomBy(1/1.5);
+  view.addEventListener("wheel",e=>{ e.preventDefault(); zoomBy(e.deltaY<0?1.25:0.8,e.clientX,e.clientY); },{passive:false});
+  view.addEventListener("dblclick",e=>{ if(z>1){ z=1; tx=ty=0; apply(); } else zoomBy(2.5,e.clientX,e.clientY); });
+  const mid=()=>{ const a=[...pts.values()]; return a.length<2? {x:a[0].x,y:a[0].y,d:0} : {x:(a[0].x+a[1].x)/2, y:(a[0].y+a[1].y)/2, d:Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y)}; };
+  view.addEventListener("pointerdown",e=>{ try{ view.setPointerCapture(e.pointerId); }catch(_){} pts.set(e.pointerId,{x:e.clientX,y:e.clientY}); last=mid(); });
+  view.addEventListener("pointermove",e=>{ if(!pts.has(e.pointerId)) return; pts.set(e.pointerId,{x:e.clientX,y:e.clientY}); const m=mid();
+    if(pts.size>=2 && last.d && m.d) zoomBy(m.d/last.d, m.x, m.y);
+    if(z>1){ tx+=m.x-last.x; ty+=m.y-last.y; apply(); }
+    last=m; });
+  const up=e=>{ pts.delete(e.pointerId); last=pts.size? mid() : null; };
+  view.addEventListener("pointerup",up); view.addEventListener("pointercancel",up);
+  apply(); host.querySelector("#zClose").focus();
+}
+$("#stage").addEventListener("click",e=>{ const b=e.target.closest("[data-zoom]"); if(b) zoomOpen(b); });
 // Розгортна примітка під текстом екрана: чому джерела дають різні дати, звідки ці дати (D-022).
 function noteHtml(s){
   if(!s.note) return "";
@@ -1125,7 +1222,7 @@ function renderScreen(){
   if(s.type==="shade"){ st=new Set(); h+=`<div class="shade" id="shade"></div><div class="counter" id="shcount" ${run.diag||s.hideCount?"hidden":""}></div>`; }
   if(s.type==="numline"){ st=0; h+=`<div class="numline"><div id="nlsvg"></div><div class="readout" ${run.diag||s.hideCount?"hidden":""}><span>Точка:</span><b id="nlval"></b></div><input id="nlrng" type="range" min="0" max="${s.max*s.den}" step="1" value="0" aria-label="Положення точки на промені"></div>`; }
   if(s.type==="number"){ st=""; const dec=numDecimal(s), sg=s.signed||s.answer<0||SEC.signed||SEC.grade>=7;   // «±» не має видавати знак відповіді: з 7 класу (або в розділі з signed) — завжди
-    h+=`<div class="numbox">${sg?`<button type="button" class="sgn" id="numSign" aria-label="Змінити знак" aria-pressed="false">±</button>`:""}<input id="numIn" inputmode="${dec?"decimal":"numeric"}" ${dec?"":'pattern="[0-9]*"'} autocomplete="off" placeholder="?" aria-label="Відповідь"><span class="unit">${s.unit||""}</span></div>`; }
+    h+=`<div class="numbox">${sg?`<button type="button" class="sgn" id="numSign" aria-label="Змінити знак" aria-pressed="false">±</button>`:""}<input id="numIn" inputmode="${dec?"decimal":"numeric"}" ${dec?"":'pattern="[0-9]*"'} autocomplete="off" placeholder="?" aria-label="Відповідь"><span class="unit">${s.unit||""}</span></div>`+numKeysHtml(s, sg); }
   if(s.type==="answer"){ st=""; h+=answerInput(s); }
   if(s.type==="fracin"){ st=""; h+=s.hideDen? `<div class="mblock">${mathHTML(s.expr)} =</div>`+answerInput(s) : `<div class="numbox big"><span class="m">${mathHTML(s.expr)}<span class="mo">=</span><span class="fr"><span class="nu"><input id="numIn" inputmode="numeric" pattern="[0-9]*" autocomplete="off" placeholder="?" aria-label="Чисельник відповіді"></span><span class="sr">/</span><span class="de">${s.den}</span></span></span></div>`; }
   if(LANG.TYPES.includes(s.type)) h+=langHtml(s);
@@ -1148,19 +1245,25 @@ function ringSeries(from,to,seed){ let x=seed*9301+49297; const out={}; for(let 
 function alignHtml(s){
   const ref=ringSeries(s.ref.from,s.ref.to,s.ref.seed), n=s.ref.to-s.ref.from+1, cw=10, W=n*cw;
   const refBars=Object.entries(ref).map(([y,v],i)=>`<rect x="${i*cw+1}" y="${40-v*36}" width="${cw-2}" height="${v*36}" rx="1.5" fill="var(--muted)"/>`).join("");
-  const yrs=[s.ref.from, s.ref.from+20, s.ref.from+40, s.ref.to].map(y=>`<text x="${(y-s.ref.from)*cw+cw/2}" y="54" text-anchor="middle" font-size="11" fill="var(--muted)">${y}</text>`).join("");
-  return `<div class="align"><svg viewBox="0 -2 ${W} 110" role="img" aria-label="Еталонний штрихкод кілець і кільця колоди">${refBars}${yrs}<g id="alsample"></g></svg>
+  // роки шкали — повністю: крайні підписи притиснуті до країв (не «180», «124»); шрифт у px вьюбокса пропорційний ширині (W/30: ≈ 20 при W ≈ 600; для широких шкал W/32, щоб роки 20 років одне від одного не злипалися) — щоб на 360 px був ≈ 11 px за будь-якого розмаху років
+  const fs=+(W/(W>800?32:30)).toFixed(1), yrs=[s.ref.from, s.ref.from+20, s.ref.from+40, s.ref.to].map((y,i,a)=>`<text x="${i===0? 0 : i===a.length-1? W : (y-s.ref.from)*cw+cw/2}" y="62" text-anchor="${i===0?"start":i===a.length-1?"end":"middle"}" font-size="${fs}" fill="var(--muted)">${y}</text>`).join("");
+  return `<div class="align"><svg viewBox="0 -2 ${W} 118" role="img" aria-label="Еталонний штрихкод кілець і кільця колоди">${refBars}${yrs}<g id="alsample"></g></svg>
     <div class="readout"><span>Останнє кільце колоди:</span><b id="alyear">—</b></div>
     <input id="alrng" type="range" min="0" max="${n-s.sample.len}" step="1" value="0" aria-label="Зсув колоди">
-    <div class="readout"><span>Збіг візерунка</span><span id="almatch">—</span></div></div>`;
+    <div class="readout"><span>Збіг візерунка</span><span id="almatch">—</span></div>
+    <div class="almeter" aria-hidden="true"><i id="almeter"></i></div></div>`;
 }
+/** Кільце колоди «збігається» з еталоном, якщо висоти стовпчиків на око однакові (≈ 1 px зі 36): на хибному зсуві частина кілець
+    збігається випадково, тож дитина бачить, скільки кілець уже лягло, а не лише 0 % чи 100 % (engine-render-legibility-1117, g6.md №5). */
+const AL_TOL=0.03;
 function alignUpdate(s){
   const ref=ringSeries(s.ref.from,s.ref.to,s.ref.seed), cw=10, start=s.sample.endYear-s.sample.len+1, off=st, sy=s.ref.from+off;
   let bars="", match=0;
-  for(let k=0;k<s.sample.len;k++){ const v=ref[start+k], m=Math.abs(v-ref[sy+k])<0.001; if(m) match++;
-    bars+=`<rect x="${(off+k)*cw+1}" y="${104-v*36}" width="${cw-2}" height="${v*36}" rx="1.5" fill="${m?"var(--ok)":"var(--accent)"}"/>`; }
-  $("#alsample").innerHTML=`<rect x="${off*cw}" y="64" width="${s.sample.len*cw}" height="42" rx="4" fill="var(--accent-soft)"/>`+bars;
-  $("#alyear").textContent=sy+s.sample.len-1; $("#almatch").textContent=`${Math.round(match/s.sample.len*100)}%`;
+  for(let k=0;k<s.sample.len;k++){ const v=ref[start+k], m=Math.abs(v-ref[sy+k])<AL_TOL; if(m) match++;
+    bars+=`<rect x="${(off+k)*cw+1}" y="${112-v*36}" width="${cw-2}" height="${v*36}" rx="1.5" fill="${m?"var(--ok)":"var(--accent)"}"/>`; }
+  $("#alsample").innerHTML=`<rect x="${off*cw}" y="72" width="${s.sample.len*cw}" height="42" rx="4" fill="var(--accent-soft)"/>`+bars;
+  $("#alyear").textContent=sy+s.sample.len-1; $("#almatch").textContent=`${match} з ${s.sample.len} ${plural(s.sample.len,["кільця","кілець","кілець"])}`;
+  const mt=$("#almeter"); if(mt){ mt.style.width=`${match/s.sample.len*100}%`; mt.classList.toggle("full", match===s.sample.len); }
 }
 /* зафарбуй частини */
 /* символьні формати (docs/CONTENT_SCHEMA.md §10): кнопки вставляють знак у місце курсора, «−» — звичайний мінус */
@@ -1243,8 +1346,15 @@ function numlineUpdate(s){
 
 /* числове поле: десяткові й від'ємні відповіді */
 const numDecimal = s => true;   // кома дозволена завжди: інакше цифрова клавіатура підказує, що відповідь ціла
-const numParse = v => +String(v).replace(/\u2212/g,"-").replace(",",".");
+/* Звичайний дріб у полі number (engine-number-fraction-input-1117): «3/2», «1 1/2», «-3/4» читаються за значенням (LEARN.parseAns,
+   як у полі answer); решта — як раніше (кома/крапка, «5,» = 5). Кнопки «/», «пробіл» і підказка — ті самі, що в тренуванні (answerUI). */
+const numParse = v => { const t=String(v).replace(/\u2212/g,"-").replace(/\s+/g," ").trim(), a=/[\/ ]/.test(t)? LEARN.parseAns(t) : null; return a? a.n/a.d : /[\/ ]/.test(t)? NaN : +t.replace(",","."); };
 const numOk = (s,v) => String(v).trim()!=="" && Math.abs(numParse(v)-s.answer) <= (s.tol ?? 1e-9);
+/** Кнопки й підказка під полем number — з answerUI (як у тренуванні); «−» тут дає кнопка «±» (sg), тож «-» з кнопок прибрано. */
+function numKeysHtml(s, sg){
+  const { keys, help }=answerUI({ answer:s.answer, signed:s.signed }, SEC.grade, SEC.signed), ks=sg? keys.filter(k=>k!=="-") : keys;
+  return `${ks.length? `<div class="anskeys">${ks.map(v=>`<button type="button" data-ins="${esc(v)}" aria-label="Вставити ${esc(v===" "?"пробіл":v)}">${esc(v===" "?"пробіл":v==="-"?"−":v)}</button>`).join("")}</div>` : ""}${help? `<div class="fix" style="text-align:center">${esc(help)}</div>` : ""}`;
+}
 const numShow = v => String(v).replace(".",",").replace("-","−");
 /* мовні вправи (app/lang.js, docs/CONTENT_SCHEMA.md §4.1): розмітка, стан st, позначки */
 function langHtml(s){
@@ -1305,7 +1415,10 @@ let LAB=null;
 function bindScreen(s){
   const stage=$("#stage");
   LAB=null; window.__slidLab=null;
-  if(s.lab && window.SLID_LAB){ LAB=window.SLID_LAB.mount($("#labHost"), s.lab, { fmt, onChange:()=>{ if(checked) return; clearMarks(); LAB.mark(""); if(s.type==="lab") setDock("","","","Перевірити"); } }); window.__slidLab=LAB; }
+  if(s.lab && window.SLID_LAB){ LAB=window.SLID_LAB.mount($("#labHost"), s.lab, { fmt, onChange:()=>{ if(checked) return; clearMarks(); LAB.mark(""); if(s.type==="lab") setDock("","","","Перевірити", labReady()); } });
+    // QA (playtest.py, test-answer-ui): set з тесту не викликає onChange — док оновлюємо тут, інакше «Перевірити» лишилась би неактивною
+    window.__slidLab={ ...LAB, set:o=>{ LAB.set(o); if(s.type==="lab" && !checked) setDock("","","","Перевірити", labReady()); } };
+    if(s.type==="lab" && !checked && !labReady()) setDock("","","","Перевірити", false); }
   if(s.type==="choice"||s.type==="multi") stage.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{
     if(checked) return; const k=+b.dataset.k;
     if(s.type==="choice"){ stage.querySelectorAll(".opt").forEach(x=>x.setAttribute("aria-pressed","false")); b.setAttribute("aria-pressed","true"); st=k; }
@@ -1329,7 +1442,7 @@ function bindScreen(s){
   if(LANG.TYPES.includes(s.type)) bindLang(s);
   const nl=$("#nlrng"); if(nl){ numlineUpdate(s); nl.oninput=()=>{ if(checked) return; st=+nl.value; numlineUpdate(s); if(tries) setDock("","","","Перевірити"); }; }
   const sgn=$("#numSign"); if(sgn) sgn.onclick=()=>{ if(checked) return; const ni=$("#numIn"); ni.value= ni.value.startsWith("-")? ni.value.slice(1) : "-"+ni.value; ni.oninput(); ni.focus(); };
-  const ni=$("#numIn"); if(ni){ ni.oninput=()=>{ ni.value= s.type==="word" ? ni.value.slice(0,80) : s.answerKind==="divrem" ? ni.value.replace(/\s+/g," ").slice(0,40) : s.type==="answer"||s.hideDen ? ni.value.replace(/\./g,",").replace(/\u2212/g,"-").slice(0,120) : s.type==="number"&&numDecimal(s) ? ni.value.replace(/\./g,",").replace(/[^0-9,-]/g,"").replace(/(?!^)-/g,"").replace(/(,.*),/g,"$1").slice(0,10) : ni.value.replace(/[^0-9]/g,"").slice(0,6); st=ni.value; if(s.unitForms&&$("#answerUnit")) $("#answerUnit").textContent=answerUnit(s,st); ni.classList.remove("is-ok","is-bad"); setDock("","","","Перевірити", st.trim().length>0); };
+  const ni=$("#numIn"); if(ni){ ni.oninput=()=>{ ni.value= s.type==="word" ? ni.value.slice(0,80) : s.answerKind==="divrem" ? ni.value.replace(/\s+/g," ").slice(0,40) : s.type==="answer"||s.hideDen ? ni.value.replace(/\./g,",").replace(/\u2212/g,"-").slice(0,120) : s.type==="number"&&numDecimal(s) ? ni.value.replace(/\./g,",").replace(/\u2212/g,"-").replace(/[^0-9,\/ -]/g,"").replace(/(?!^)-/g,"").replace(/(,.*),/g,"$1").replace(/ {2,}/g," ").slice(0,16) : ni.value.replace(/[^0-9]/g,"").slice(0,6); st=ni.value; if(s.unitForms&&$("#answerUnit")) $("#answerUnit").textContent=answerUnit(s,st); ni.classList.remove("is-ok","is-bad"); setDock("","","","Перевірити", st.trim().length>0); };
     stage.querySelectorAll(".anskeys button").forEach(b=>b.onclick=()=>{ if(checked) return; const v=b.dataset.ins;
       if(b.parentNode.classList.contains("sym")){ const a=ni.selectionStart??ni.value.length, z=ni.selectionEnd??a; ni.value=ni.value.slice(0,a)+v+ni.value.slice(z); ni.oninput(); ni.focus(); ni.setSelectionRange(a+v.length,a+v.length); return; }
       if(v.trim()==="ост." && (!/\d/.test(ni.value) || /ост/i.test(ni.value))) return ni.focus(); ni.value= v==="-"? (ni.value.startsWith("-")? ni.value.slice(1) : "-"+ni.value) : ni.value+v; ni.oninput(); ni.focus(); });
@@ -1340,6 +1453,9 @@ function bindScreen(s){
 }
 function clearMarks(){ $("#stage").querySelectorAll(".is-ok,.is-bad").forEach(e=>{ e.classList.remove("is-ok","is-bad");
   if(e.dataset.al!==undefined){ if(e.dataset.al) e.setAttribute("aria-label",e.dataset.al); else e.removeAttribute("aria-label"); } }); }
+/* «Перевірити» лаби (engine-lab-column-digits-1117): неактивна, доки модель не готова — у стовпчику з input є «?» (LAB.ready, app/lab.js);
+   модель без ready (старша lab.js) чи з помилкою — готова, як раніше */
+const labReady = () => { try { return typeof LAB?.ready!=="function" || LAB.ready()!==false; } catch(e){ return true; } };
 function lock(){ $("#stage").querySelectorAll(".opt,.seg button,input,.sgn,.anskeys button,.gopt,.pw,.sv,.cut").forEach(b=>b.disabled=true); if(LAB) LAB.lock(); }
 
 function gradeNow(s){
@@ -1417,7 +1533,7 @@ function check(){
   if(sameAsTried()) return refocusAnswer();
   const ok=gradeNow(s);
   const ha=evAnswer(s, ()=>{ const vd=evVerdict(s,ok), raw=evRaw(s); return { ...evItem(s), try:tries+1, verdict:vd, raw, hint:tries>0 && !!s.hint, final: ok || tries>0 || s.type==="slider", ...evKey(s, vd, raw) }; });
-  if(!ok && s.pre) run.weak.add(s.pre);
+  if(!ok && s.pre){ run.weak.add(s.pre); ((run.weakN||={})[s.pre]||=new Set).add(idx); }   // різні завдання з помилкою, а не хибні спроби (рев'ю engine-render-legibility-1117)
   const preNote = (!ok && s.pre) ? (()=>{ const f=findLesson(s.pre); return f? `<span class="prenote">${ic("bulb")}Ця задача спирається на тему «${f.l.title}» (${f.sec.grade} клас). Наприкінці уроку запропоную її повторити.</span>` : ""; })() : "";
   if(!(ok || tries>0 || s.type==="slider")){
     tries++; showMarks(s,false); run.combo=0; run.mistakes++; pProgress();
@@ -1537,7 +1653,7 @@ function renderEnd(){
     ${newSteps.map(st=>recCard(st, st.l===L.id)).join("")}
     ${nPool&&!newSteps.some(st=>st.l===L.id)?`<div class="rec prac"><div class="eyebrow">Закріпи тему</div><p class="small" style="margin:0">У тренуванні відкрилися задачі з цієї теми — ${nPool} ${plural(nPool,["задача","задачі","задач"])} з підручників. Відповідь записуєш сам.</p><button class="btn ghost" type="button" data-practice="${L.id}">Потренуватися</button></div>`:""}
     ${!nPool&&run.linked&&SEC.grade<S.grade?`<p class="muted small">Тренувальних задач до цієї теми поки немає. Коли вони з’являться, тренування відкриється без повторного проходження уроку.</p>`:""}
-    ${[...run.weak].filter(id=>!newSteps.some(st=>st.l===id)).map(id=>{ const f=findLesson(id); if(!f) return ""; return `<div class="rec"><div class="eyebrow">Варто повторити</div><div class="recrow"><span class="dot lg s-${f.c.id}">${ic(f.l.icon)}</span><span class="grow"><b>${esc(f.l.title)}</b><span class="muted small">${f.c.short} · ${f.sec.grade} клас · ${f.l.screens.length} кроків</span></span></div><p class="small" style="margin:0">Кілька помилок у цьому уроці пов'язані з цією темою. Коротке повторення допоможе.</p><button class="btn" type="button" data-lesson="${id}">Повторити зараз</button></div>`; }).join("")}
+    ${[...run.weak].filter(id=>!newSteps.some(st=>st.l===id)).map(id=>{ const f=findLesson(id); if(!f) return ""; const nw=run.weakN?.[id]?.size||1; return `<div class="rec"><div class="eyebrow">Варто повторити</div><div class="recrow"><span class="dot lg s-${f.c.id}">${ic(f.l.icon)}</span><span class="grow"><b>${esc(f.l.title)}</b><span class="muted small">${f.c.short} · ${f.sec.grade} клас · ${f.l.screens.length} ${plural(f.l.screens.length,["крок","кроки","кроків"])}</span></span></div><p class="small" style="margin:0">${nw>1? "Помилки в цьому уроці пов'язані" : "Помилка в цьому уроці пов'язана"} з цією темою. Коротке повторення допоможе.</p><button class="btn" type="button" data-lesson="${id}">Повторити зараз</button></div>`; }).join("")}
     <div class="learned"><div class="eyebrow">Що ти тепер умієш</div>${(o.learned||[]).map(t=>`<div class="li">${ic("check")}<span>${t}</span></div>`).join("")}</div>
   </section>`);
   setDock("","","", run.linked? "Повернутися" : SEC.lessons[li+1]? "До уроків розділу" : "Завершити розділ");

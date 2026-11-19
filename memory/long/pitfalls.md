@@ -148,3 +148,12 @@ _Розбито з `pitfalls.md` 2026-11-05 (куратор пам'яті): за
 - 2026-11-12 · verifier-revise-hist-s3-cov · PITFALL hist (D-019): у sort «подія ↔ процес» з hint «Чи можна назвати один рік?» не давати подію, датовану лише століттям («кінець XV ст.») — учень віднесе до процесу.
 - PITFALL env: Met сторінки колекції віддають 429, britannica/worldhistory/iranica — 403; ліцензію й дані Met брати з API collectionapi.metmuseum.org (isPublicDomain, subregion).
 - 2026-11-12 · verifier-revise-hist-g11s2-cov · PITFALL (process): правки верифікатора в content/ підхоплюють WIP- і чужі коміти інших агентів (тут 80572a0, 19fda9b, feb8e17) — у звіті фіксувати хеші; оркестратору не відкочувати. (verifier)
+
+## Додано 2026-11-18 (плейтест від ролі учня, хвилі 1–3 задач *-1117)
+
+### Паралельна робота й git
+- **Спільний git-індекс:** навіть `git add <свої файли>` + окремий `git commit` небезпечні — між ними інший агент робить `git commit` і забирає твої проіндексовані файли у свій коміт (96bb001, 17.11; раніше `git add -A` — 7ea492b, 12.11). Комітити лише **`git commit -m "…" -- <файли>`** (pathspec, без проміжного індексу). Вимагай цього в промптах виконавцям.
+- **Worktree-агенти (isolation) створюються від `main`, не від поточної гілки** — перед роботою перевір базу (`git merge-base`, `git log -1`); інакше агент правитиме старий зміст, а злиття дасть конфлікти (17.11).
+
+### Середовище
+- **WebFetch у хмарній сесії не резолвить зовнішні домени** (britannica, esu.com.ua, uk.wikipedia, osvita.ua, testportal — DNS) — верифікатори 17.11 брали джерела через WebSearch. **curl через проксі працює**; середовище slid-content дозволяє goroh.pp.ua, slovnyk.ua, vesum.nlp.net.ua, uk/en.wikipedia.org, commons.wikimedia.org.

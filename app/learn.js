@@ -88,7 +88,8 @@ window.SLID_LEARN = (() => {
     const gaps = pre.filter(t => topics[t.id] === "gap").length, shaky = pre.filter(t => topics[t.id] === "shaky").length;
     const k = share >= 0.85 ? 2 : share >= 0.55 ? 1 : 0;
     // baseline-опори не мають уроків у застосунку: радимо потренувати їх з дорослим, а не «пройти ще раз»
-    const weak = pre.filter(t => topics[t.id] === "gap" || topics[t.id] === "shaky"), base = weak.length > 0 && weak.every(t => t.baseline);
+    // baseline-тема з see (урок поточного класу чи іншого предмета, де тему повторюють; engine-diag-baseline-plan-1117) — урок є, «до дорослого» не радимо
+    const weak = pre.filter(t => topics[t.id] === "gap" || topics[t.id] === "shaky"), base = weak.length > 0 && weak.every(t => t.baseline && !(t.see || []).length);
     return { share, gaps, shaky, ok: pre.length - gaps - shaky, total: pre.length, k, base,
       title: ["Почнемо з основ", "Добра база", "Міцна база"][k],
       text: (base ? ["Кілька вмінь із попередніх класів варто потренувати з учителем або дорослим — тоді нові уроки стануть набагато легшими.",
@@ -114,7 +115,10 @@ window.SLID_LEARN = (() => {
       .sort((a, b) => a.u - b.u || (a.st === "gap" ? 0 : 1) - (b.st === "gap" ? 0 : 1) || a.n - b.n)
       .forEach(x => { if (x.t.baseline) {
           const sec = [...(x.t.for || [])].sort((a, b) => urg(a) - urg(b)).map(id => secs.find(s => s.id === id)).find(s => s && (s.lessons || []).some(has));
-          base.push({ topic: x.t.id, why: x.st, next: sec ? sec.lessons.find(has) : null }); return; }
+          // see (автор тесту: урок, де тему повторюють) — найкраща відповідність темі, тож «з чого почати» — перший доступний урок з see,
+          // а не перший урок розділу (indep, rights → g5s7l1, хоча тема в l3/l6/l7; tools-content-checks-p3 п. 6); без see — як раніше
+          const seen1 = (x.t.see || []).find(has);
+          base.push({ topic: x.t.id, why: x.st, next: seen1 || (sec ? sec.lessons.find(has) : null) }); return; }
         const own = x.st === "shaky" ? [...new Set(d.items.filter((it, i) => it.topic === x.t.id && it.lesson && i in res && res[i] !== OK).map(it => it.lesson))] : [];
         (own.length ? own : x.t.lessons || []).forEach(l => { if (has(l) && !seen.has(l)) { seen.add(l); steps.push({ l, why: x.st, topic: x.t.id, src: "diag", done: false }); } }); });
     const known = [...new Set(d.topics.filter(t => t.kind === "cur" && topics[t.id] === "known").flatMap(t => t.lessons || []).filter(has))];
@@ -2160,6 +2164,18 @@ window.SLID_LEARN = (() => {
       for (const s of t.for || []) { const X = ctx.sections.get(s); if (!X) E.push(`${w}: for — немає розділу ${s}`); else if (X.grade !== d.grade) E.push(`${w}: for — розділ ${s} не з ${d.grade} класу`);
         else if (t.baseline === true && X.lessons && !X.lessons.length) E.push(`${w}: for — у розділі ${s} немає уроків, нікуди вести`); }
       if (t.for && t.kind !== "pre") E.push(`${w}: for має сенс лише для kind: pre`);
+      /* see (engine-diag-baseline-plan-1117): уроки, де baseline-тему повторюють, — поточного класу цього предмета або іншого предмета
+         (не старшого класу). План пише «тема є в уроці …» з кнопкою замість «попроси дорослого». ctx.allLessons — Map id → {grade, subject}
+         усіх предметів; без неї видно лише уроки свого предмета (ctx.lessons). */
+      if (t.see !== undefined) {
+        if (t.baseline !== true) E.push(`${w}: see лише для baseline-теми (у звичайної теми уроки — у lessons)`);
+        if (!Array.isArray(t.see) || !t.see.length || t.see.length > 3 || !t.see.every(l => typeof l === "string" && l)) E.push(`${w}: see — 1–3 id уроків`);
+        else for (const l of t.see) {
+          const own = ctx.lessons.get(l), L = own || ctx.allLessons?.get(l);
+          if (!L) E.push(`${w}: see — немає уроку ${l}`);
+          else if (own ? L.grade !== d.grade : L.grade > d.grade) E.push(`${w}: see — урок ${l} ${own ? `не з ${d.grade} класу` : "старшого класу"}`);
+        }
+      }
       const n = d.items.filter(it => it.topic === t.id).length;
       if (t.kind === "pre" && n !== 2) E.push(`${w}: потрібно рівно 2 завдання (базове і складніше), є ${n}`);
       if (t.kind === "cur" && n !== 1) E.push(`${w}: потрібно рівно 1 завдання, є ${n}`);

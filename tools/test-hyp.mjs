@@ -553,7 +553,11 @@ const sum = (R, pid) => R.events.filter(e => e.pid === pid).map(e => e.type === 
   // math 4–6, 9 (g9m1, g9m2, g9m7) і 10–11 кл. (+186 pre у 32 фіналах; 26 фіналів раніше без жодного pre → уроків з pre 53 → 79; ms0, ms0b,
   // ms1, g6m3, g6m4, ms4 мали pre частково). Дві заміни значення без зміни кількості: ms1 m6 Задача 5 m4a → m5, g6m4l6 Задача 5 g6m4l8 → g6m4l7.
   // Оцінюваних екранів, choice, fbBad, hint — без змін. Копія дерева на батьківському коміті дає попередній знімок. Попередній знімок [1623,691,74,1603,1151,173,53].
-  eq([s0.gradedScreens, s0.byType.choice, s0.choiceHypPoll, s0.fbBad, s0.hint, s0.pre, s0.preLessons], [1623, 691, 74, 1603, 1151, 359, 79], "§0 екрани уроків");  // 691: верифікатор g6m3 замінив один lab на choice (2fcb431)
+  // fix-math-content-g4-g7-1117: у g7m3l1 додано sort «Який це степінь двійки?» з hint (оцінюваних 1623 → 1624, hint 1151 → 1152).
+  // хвиля 2 *-1117: g4m4 m4a e6 choice → hyp «Заглянь наперед» (оцінюваних −1, choice −1, hyp/poll +1, fbBad −1); з g10m4l2 вилучено «Градусна міра прямого кута» (оцінюваних −1, fbBad −1, hint −1) → [1622,690,75,1601,1151].
+  // хвиля 3 style-math-1117 (f876a02, verified): +1 hint у переписаному завданні D-019 → hint 1152.
+  // fix-content-followups-1117 (6fb1116): у g10m2l3 додано lab «Побудуй слід» і number «Ще одна точка сліду» (оцінюваних +2, fbBad +2, hint +2); дерево HEAD з g10-g10m2.js на 6fb1116^ дає попередній знімок [1622,690,75,1601,1152,359,79].
+  eq([s0.gradedScreens, s0.byType.choice, s0.choiceHypPoll, s0.fbBad, s0.hint, s0.pre, s0.preLessons], [1624, 690, 75, 1603, 1154, 359, 79], "§0 екрани уроків");  // 691: верифікатор g6m3 замінив один lab на choice (2fcb431)
   eq([s0.pools, s0.poolItems, s0.lvl, s0.poolHint, s0.poolPre, s0.gen, s0.itemTypes, s0.answerNumber], [52, 1816, { 1: 694, 2: 686, 3: 436 }, 1147, 0, 0, { answer: 1642, choice: 114, multi: 60 }, 1163], "§0 пули");
   eq([s0.pairs, s0.pairs2a1, s0.diags, s0.diagItems, s0.pureTitle], [236, 207, 8, 209, 338], "§0 пари, тести, чисті вирази");
   eq([s21.errors, s21.A, s21.Dle, s21.byLvl[1].Dle, s21.byLvl[1].errors, s21.byLvl[2].Dle, s21.byLvl[2].errors], [908, 464, 202, 0, 694, 202, 214], "§2.1 A 464; D≤ 202/908, рівень 1 — 0/694");

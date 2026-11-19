@@ -786,6 +786,18 @@ const order = l => ({ L1: 3, L2: 1, L3: 2, L4: 4 }[l] ?? 50);
   bad(d => { d.topics[0].for = ["s9"]; }, "немає розділу s9", "baseline for — невідомий розділ");
   const withYounger = { ...vc, lessons: new Map([...vc.lessons, ["g3x", { grade: 3 }]]) };
   bad(() => {}, "baseline заборонено", "baseline, коли в предмета є уроки молодшого класу", withYounger);
+  // see (engine-diag-baseline-plan-1117): уроки, де baseline-тему повторюють — свого предмета того самого класу або іншого предмета (allLessons)
+  const vcAll = { ...vc, allLessons: new Map([["h4a", { grade: 4, subject: "hist" }], ["h5a", { grade: 5, subject: "hist" }]]) };
+  { const d = clone(B); d.topics[0].see = ["s2a"]; d.topics[1].see = ["h4a"]; eq(L.validate(d, vcAll), [], "see validate: урок свого класу й урок іншого предмета → []"); }
+  bad(d => { d.topics[0].see = ["zz9"]; }, "see — немає уроку zz9", "see — вигаданий урок");
+  bad(d => { d.topics[0].see = ["h4a"]; }, "see — немає уроку h4a", "see іншого предмета без allLessons — невідомий");
+  bad(d => { d.topics[0].see = ["h5a"]; }, "see — урок h5a старшого класу", "see — урок іншого предмета старшого класу", vcAll);
+  bad(d => { d.topics[0].see = ["g5x"]; }, "see — урок g5x не з 4 класу", "see — свій урок іншого класу", { ...vc, lessons: new Map([...vc.lessons, ["g5x", { grade: 5 }]]) });
+  bad(d => { d.topics[0].see = []; }, "see — 1–3 id уроків", "see порожній");
+  bad(d => { d.topics[0].see = "s2a"; }, "see — 1–3 id уроків", "see не масив");
+  bad(d => { d.topics[2].see = ["s2a"]; }, "see лише для baseline-теми", "see у звичайної теми");
+  { const t = { ...clone(B).topics[0], see: ["s2a"] }, lv = L.level({ ...B, topics: [t] }, { p1: "gap" });
+    eq(/учителем або дорослим/.test(lv.text), false, "see level: baseline-прогалина з уроком see — без «з дорослим»"); }
   const plain = clone(B); plain.topics.slice(0, 2).forEach(t => { delete t.baseline; t.lessons = ["g3x"]; });
   eq(L.validate(plain, withYounger), [], "baseline validate: звичайні pre з уроками молодшого класу запобіжник не зачіпає");
 
@@ -818,6 +830,11 @@ const order = l => ({ L1: 3, L2: 1, L3: 2, L4: 4 }[l] ?? 50);
   eq(L.buildPlan(B, skip, { ...ctx, week: 6 }).base.map(b => b.next), ["s2a", "s2a"], "baseline next: розділ, що вже минув, — у кінець");
   eq(L.buildPlan(B, skip, { ...ctx, hasLesson: l => l !== "s1a" }).base[0].next, "s1b", "baseline next: перший доступний урок розділу");
   eq(L.buildPlan(B, skip, { ...ctx, sections: [] }).base.map(b => b.next), [null, null], "baseline next: без розділів — null, без битого id");
+  // tools-content-checks-p3 п. 6: next — перший доступний урок з see (а не перший урок розділу); недоступний або чужого предмета — наступний see / розділ
+  { const Bs = clone(B); Bs.topics[0].see = ["s2b", "s2a"]; Bs.topics[1].see = ["foreign"];
+    eq(L.buildPlan(Bs, skip, { ...ctx, hasLesson: l => l !== "foreign" }).base.map(b => [b.topic, b.next]), [["p2", "s1a"], ["p1", "s2b"]], "baseline next: see → перший доступний урок з see; see чужого предмета (hasLesson=false) → як раніше, перший урок розділу");
+    eq(L.buildPlan(Bs, skip, { ...ctx, hasLesson: l => l !== "s2b" }).base.find(b => b.topic === "p1").next, "s2a", "baseline next: перший see недоступний → наступний see");
+    eq(L.buildPlan(Bs, skip, { ...ctx, hasLesson: l => !["s2b", "s2a"].includes(l) }).base.find(b => b.topic === "p1").next, null, "baseline next: see недоступні й розділ без доступних уроків → null"); }
   // збереження: уроки не закривають baseline, повторний тест — так
   const S = fresh(); S.grade = 4; L.finishDiag(S, "math", B, skip, ctx);
   eq(S.plan.math.base.length, 2, "baseline finishDiag: base збережено");

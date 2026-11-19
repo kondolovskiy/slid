@@ -3,32 +3,35 @@
    11 baseline-опор (по 2 завдання: базове → складніше) + 5 тем 7 класу (по 1 складеному завданню) = 27 завдань.
    Опори — Стародавній світ (Схід, Греція, Рим) і вміння історика: століття, лічба через межу ер, джерело й автор,
    факт і тлумачення, карта, причина → наслідок. Стародавній світ учать у предметі «Історія» (g6s6–g6s8),
-   а посилатися на уроки іншого предмета схема не дозволяє (CONTENT_SCHEMA §9) — тому baseline: lessons порожні, for обов'язковий.
+   тому baseline: lessons порожні, for обов'язковий; see — урок «Історії» 5–6 кл., де тему вчать (план веде на нього).
    Теми 7 кл. — по одному уроку на розділ w7s1…w7s5; завдання cur перевіряє все ядро (outro.learned) уроку.
    Порядок: спершу базові завдання всіх опор (1–11), далі складніші впереміш із темами 7 класу.
    Дати — memory/long/facts/hist.md №126, hist-2.md №325–335, facts/world.md №5, 10, 20, 21; джерела нових фактів — у нотатках задачі.
    id тесту dgw7 і порядок завдань — ключі прогресу: заміна на місці — лише з rev (CONTENT_SCHEMA §9).
-   Перевірка: node tools/validate.mjs --diag dgw7 */
+   Перевірка: node tools/validate.mjs --diag dgw7
+   Ред. engine-1117-followups (2026-11-17): baseline-темам додано see — урок, де тему повторюють (CONTENT_SCHEMA §9),
+   щоб план вів на урок, а не «попроси дорослого»; завдання й порядок не змінено (rev не потрібен). Статус → draft до верифікації.
+*/
 SLID.diag("world", {
   id: "dgw7",
   grade: 7,
   title: "Що ти вже вмієш?",
   why: "Згадаємо Стародавній світ і вміння історика, а ще з'ясуємо, що про Середньовіччя ти вже знаєш.",
-  status: "verified",
+  status: "verified",   // verifier-diag-see-1117 (2026-11-17): see baseline-тем перевірено, завдання не змінено; reports/verify/diag-see-1117.md
   meta: { author: "w-write-world-diag-g7", created: "2026-11-06", factcheck: "verifier-dgw7", teacher: null },
   topics: [
     // опори: Стародавній світ і вміння історика (baseline: уроків молодших класів у предмета немає)
-    { id: "cent", title: "Століття за роком", kind: "pre", baseline: true, lessons: [], for: ["w7s1", "w7s5"] },
-    { id: "era", title: "Лічба років через межу ер", kind: "pre", baseline: true, lessons: [], for: ["w7s1", "w7s2"] },
+    { id: "cent", title: "Століття за роком", kind: "pre", baseline: true, lessons: [], for: ["w7s1", "w7s5"], see: ["l3"] },
+    { id: "era", title: "Лічба років через межу ер", kind: "pre", baseline: true, lessons: [], for: ["w7s1", "w7s2"], see: ["l3"] },
     { id: "anc", title: "Хронологія Стародавнього світу", kind: "pre", baseline: true, lessons: [], for: ["w7s1", "w7s2"] },
-    { id: "rome", title: "Римська республіка й імперія", kind: "pre", baseline: true, lessons: [], for: ["w7s1", "w7s2", "w7s4"] },
-    { id: "split", title: "Західна і Східна Римські імперії", kind: "pre", baseline: true, lessons: [], for: ["w7s1", "w7s2"] },
-    { id: "christ", title: "Християнство в Римській імперії", kind: "pre", baseline: true, lessons: [], for: ["w7s1", "w7s3"] },
-    { id: "law", title: "Писані закони як джерело", kind: "pre", baseline: true, lessons: [], for: ["w7s1", "w7s2", "w7s4"] },
-    { id: "critic", title: "Хто і коли створив джерело", kind: "pre", baseline: true, lessons: [], for: ["w7s1", "w7s2", "w7s5"] },
-    { id: "fact", title: "Факт чи тлумачення", kind: "pre", baseline: true, lessons: [], for: ["w7s1", "w7s3", "w7s4"] },
-    { id: "geo", title: "Карта Середземномор'я", kind: "pre", baseline: true, lessons: [], for: ["w7s2", "w7s3", "w7s5"] },
-    { id: "cause", title: "Причина і наслідок", kind: "pre", baseline: true, lessons: [], for: ["w7s3", "w7s5"] },
+    { id: "rome", title: "Римська республіка й імперія", kind: "pre", baseline: true, lessons: [], for: ["w7s1", "w7s2", "w7s4"], see: ["g6s8-l3"] },
+    { id: "split", title: "Західна і Східна Римські імперії", kind: "pre", baseline: true, lessons: [], for: ["w7s1", "w7s2"], see: ["g6s8-l6"] },
+    { id: "christ", title: "Християнство в Римській імперії", kind: "pre", baseline: true, lessons: [], for: ["w7s1", "w7s3"], see: ["g6s8-l5"] },
+    { id: "law", title: "Писані закони як джерело", kind: "pre", baseline: true, lessons: [], for: ["w7s1", "w7s2", "w7s4"], see: ["g6s6-l3"] },
+    { id: "critic", title: "Хто і коли створив джерело", kind: "pre", baseline: true, lessons: [], for: ["w7s1", "w7s2", "w7s5"], see: ["l4"] },
+    { id: "fact", title: "Факт чи тлумачення", kind: "pre", baseline: true, lessons: [], for: ["w7s1", "w7s3", "w7s4"], see: ["l1"] },
+    { id: "geo", title: "Карта Середземномор'я", kind: "pre", baseline: true, lessons: [], for: ["w7s2", "w7s3", "w7s5"], see: ["h21"] },
+    { id: "cause", title: "Причина і наслідок", kind: "pre", baseline: true, lessons: [], for: ["w7s3", "w7s5"], see: ["g6s6-l1"] },
     // теми 7 класу: по одному уроку (без boss), завдання охоплює ядро уроку
     { id: "cur-w7s1", title: "Розкол церкви", kind: "cur", lessons: ["w7s1l4"] },
     { id: "cur-w7s2", title: "Виникнення ісламу", kind: "cur", lessons: ["w7s2l3"] },

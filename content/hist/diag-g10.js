@@ -25,7 +25,7 @@ SLID.diag("hist", {
     // передумови: вміння історика (5 кл.)
     { id: "cent", title: "Століття за роком", kind: "pre", lessons: ["l3"], for: ["g10s1", "g10s2", "g10s3", "g10s4", "g10s5"] },
     { id: "srccrit", title: "Кому вірити: автор і мета джерела", kind: "pre", lessons: ["l4"], for: ["g10s1", "g10s2", "g10s4", "g11s1"] },
-    { id: "fact", title: "Факт і тлумачення", kind: "pre", lessons: ["l1"], for: ["g10s1", "g10s2", "g10s3", "g10s4", "g10s5", "g11s1"] },
+    { id: "fact", title: "Факт і тлумачення", kind: "pre", lessons: ["l1", "g9s1l1"], for: ["g10s1", "g10s2", "g10s3", "g10s4", "g10s5", "g11s1"] },
     { id: "lands", title: "Історичні землі та їхні центри", kind: "pre", lessons: ["h23"], for: ["g10s1", "g10s5", "g11s1"] },
     { id: "twoemp", title: "Українські землі у двох імперіях", kind: "pre", lessons: ["h24", "g9s1l3"], for: ["g10s1", "g10s5"] },
     // передумови: XIX — початок XX ст. (9 кл.)
@@ -230,6 +230,7 @@ SLID.diag("hist", {
     },
     {
       topic: "fact",
+      lesson: "g9s1l1",
       type: "sort",
       sk: "crit",
       title: "Факт чи тлумачення?",

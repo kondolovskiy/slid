@@ -1,4 +1,5 @@
 /* Слід · Математика, 10 клас — «Алгебра: функції і їхні властивості»
+   fix-math-notation-1117 / fix-math-grade-scope-1117 / fix-math-terms-1117 (writer-math-g8g11-1117, 2026-11-17): l1/l4 — множина {2}, {−1} без «\\{» (рушій не знає \\{), «Перевірка: y² = …, x = …» замість Py, Px; l4 — y = kx через poly (не «1x»).
    style-math-finals-pre, 2026-11-05: у завдання фіналу додано pre (id уроку теми; style/common.md, D-048 п. 1); зміст не змінено.
    Статус уроків: verified (verifier-g10m1, 2026-10-12). 4 уроки (3 теми + boss).
    Інтерактив: plane explore/lab (D(f), E(f), парність, монотонність, обернена);
@@ -40,7 +41,7 @@ SLID.section("math", {
           type: "explore",
           eyebrow: "Дослідь",
           title: "Крути точку біля «дірки»",
-          body: "<p>Перед тобою $y = 1/(x - 2)$. Тягни точку. Що стається з $y$, коли $x$ наближається до 2?</p>",
+          body: "<p>Перед тобою $y = 1/(x - 2)$. Тягни точку. Що стається з $y$, коли $x$ наближається до 2? А що буде при самому $x = 2$?</p>",
           lab: {
             kind: "plane",
             view: [-2, 6, -6, 6],
@@ -49,10 +50,10 @@ SLID.section("math", {
             },
             fns: [{ id: "f", y: "1/(x-2)", color: "accent" }],
             points: {
-              P: { x: "t", y: "1/(t-2)", color: "red", coords: true, drag: true },
+              P: { x: "t", y: "1/(t-2) + sqrt(-(t==2))", color: "red", coords: true, drag: true },
               A: { x: "2", y: "0", color: "gold", hollow: true, label: "$x=2$" }
             },
-            show: ["$y = 1/(x - 2)$", "Зараз: $({t};\\,{1/(t-2)})$"],
+            show: ["$y = 1/(x - 2)$", "Зараз: $x = {t}$", "{t!=2|if:Значення $y$ існує;Значення $y$ не існує — знаменник дорівнює нулю}"],
             alt: "Графік y=1/(x-2) з рухомою точкою біля асимптоти"
           },
           cta: "Далі"
@@ -106,7 +107,7 @@ SLID.section("math", {
           type: "lab",
           sk: "func",
           eyebrow: "Зроби так, щоб…",
-          title: "Поставь точку на $y = \\sqrt{x}$",
+          title: "Постав точку на $y = \\sqrt{x}$",
           body: "<p>Графік існує лише при $x \\geq 0$. Тягни $P$, доки вона не ляже на криву.</p>",
           lab: {
             kind: "plane",
@@ -116,7 +117,7 @@ SLID.section("math", {
             points: {
               P: { at: [2, 0], drag: true, color: "red", coords: true, label: "$P$" }
             },
-            show: ["$y = √x$", "$P({Px};\\,{Py})$", "Перевірка: $Py^2$ і $Px$"],
+            show: ["$y = √x$", "$P({Px};\\,{Py})$", "Перевірка: $y^2 = {Py*Py}$, $x = {Px}$"],
             alt: "Поставити точку на y=√x"
           },
           goal: "Px>=0 && abs(Py*Py - Px) < 0.01 && Py>=0",
@@ -366,7 +367,7 @@ SLID.section("math", {
               k: { min: -2, max: 2, step: 0.5, start: -1, label: "$k$" }
             },
             fns: [{ id: "f", y: "k*x+1", color: "accent" }],
-            show: ["$y = {k; 1|poly}$", "Потрібно $k > 0$"],
+            show: ["$y = {k; 1|poly}$"],
             alt: "Добрати зростаючу пряму"
           },
           goal: "k>0",
@@ -427,12 +428,11 @@ SLID.section("math", {
           type: "explore",
           eyebrow: "Дослідь",
           title: "Пряма й «відкат»",
-          body: "<p>Синя — $y = 2x + 10$. Червона — кандидат на обернену $y = (x - 10)/2$. Крути точку на синій і дивись пару.</p>",
+          body: "<p>Синя — $y = 2x + 10$. Червона — кандидат на обернену $y = (x - 10)/2$. Крути точку на синій і дивись пару: у червоної точки координати переставлено. Масштаб осей однаковий — порівняй обидві точки з пунктиром $y = x$.</p>",
           lab: {
             kind: "plane",
-            view: [-4, 20, -4, 40],
-            grid: [2, 5],
-            h: 220,
+            view: [-4, 32, -4, 32],
+            grid: 4,
             params: {
               t: { min: 0, max: 10, step: 1, start: 5, label: "км" }
             },
@@ -721,7 +721,7 @@ SLID.section("math", {
               k: { min: -2, max: 2, step: 0.5, start: 1, label: "$k$" }
             },
             fns: [{ id: "f", y: "k*x", color: "accent" }],
-            show: ["$y = {k}x$", "Потрібно $k < 0$"],
+            show: ["$y = {k; 0|poly}$"],
             alt: "Boss: спадна пряма"
           },
           goal: "k<0",

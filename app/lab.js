@@ -159,9 +159,12 @@ function pointExprs(id, p) {
 function ev(src, env, names) { return compile(src, names || fnNames({ fns: Object.values(env).length ? [] : [] }))(env); }
 
 /* ================= Параметри ================= */
+/* slider (engine-lab-p4-1118 п. 1): `true` або id чи масив id — показати повзунок-дубль для оголошеного параметра з hide: true
+   (точку тягнуть і пальцем, і повзунком; за замовчуванням вимкнено — hide лишається «лише перетягування»). */
+const sliderOn = (spec, id) => { const sl = spec.slider; return sl === true || sl === id || Array.isArray(sl) && sl.includes(id); };
 function paramList(spec) {
   const out = [];
-  for (const [id, p] of Object.entries(spec.params || {})) out.push({ id, min: p.min ?? 0, max: p.max ?? 10, step: p.step ?? 1, start: p.start ?? p.min ?? 0, label: p.label, unit: p.unit || "", hide: !!p.hide, fmt: p.fmt, out: p.out !== false && spec.values !== false });
+  for (const [id, p] of Object.entries(spec.params || {})) out.push({ id, min: p.min ?? 0, max: p.max ?? 10, step: p.step ?? 1, start: p.start ?? p.min ?? 0, label: p.label, unit: p.unit || "", hide: !!p.hide && !sliderOn(spec, id), fmt: p.fmt, out: p.out !== false && spec.values !== false });
   // стовпчик з input: true — цифри відповіді d0 (одиниці), d1, … як приховані параметри; −1 = ще не вписано («?»)
   if (spec.kind === "column" && spec.input) { const n = columnDigits(spec, Object.fromEntries(out.map(p => [p.id, p.start])));
     for (let i = 0; i < n; i++) out.push({ id: "d" + i, min: -1, max: 9, step: 1, start: -1, hide: true }); }
@@ -211,6 +214,14 @@ function piLabel(v) {
     const sg = n < 0 ? "−" : "", a = Math.abs(n), top = (a === 1 ? "" : a) + "π"; return sg + (d === 1 ? top : top + "/" + d); } }
   return num(v);
 }
+/** Цілі відсотки з сумою рівно 100: метод найбільшого залишку (рівні залишки — ранішому елементу). */
+function largestRemainder(shares) {
+  if (!shares.some(x => x > 0)) return shares.map(() => 0);
+  const fl = shares.map(x => Math.floor(x + 1e-9)), rest = 100 - fl.reduce((a, b) => a + b, 0);
+  const order = shares.map((x, i) => [x - fl[i], i]).sort((a, b) => b[0] - a[0] || a[1] - b[1]);
+  for (let k = 0; k < rest && k < order.length; k++) fl[order[k][1]]++;
+  return fl;
+}
 /** Многочлен за коефіцієнтами від старшого: [2, -1, 0] → «2x^2 - x». */
 function poly(cs, v = "x") {
   let out = ""; const n = cs.length - 1;
@@ -219,12 +230,34 @@ function poly(cs, v = "x") {
     out += out ? (c < 0 ? " - " : " + ") + co + vp : (c < 0 ? "-" : "") + co + vp; });
   return out || "0";
 }
-/** Шаблон із вставками {вираз|формат}: формат — кількість знаків, c (коефіцієнт), s (доданок зі знаком), deg, pi. */
+/** Форма слова після числа: forms = [1 клітинка, 2 клітинки, 5 клітинок]; дробове число — форма «2,5 клітинки» (як answerUnit у app.js). */
+function pluralForm(v, forms) {
+  if (!isFinite(v)) return "?";   // NaN (поза областю, ділення на 0) — «?», як інші формати (рев'ю engine-render-legibility-1117)
+  const a = Math.abs(v), r = Math.round(a); if (Math.abs(a - r) > 1e-6) return forms[1];
+  const d = r % 10, h = r % 100; return forms[d === 1 && h !== 11 ? 0 : d >= 2 && d <= 4 && (h < 10 || h >= 20) ? 1 : 2];
+}
+const FMT_NAMES = new Set(["c", "s", "deg", "pi", "time", "hm", "poly", "pl", "shift", "if", "eq"]);
+/** Що не так із форматом вставки {вираз|формат[:аргумент]} — для validate (null — усе гаразд). */
+function fmtIssue(f, arg) {
+  if (f == null || /^\d$/.test(f) && arg == null) return null;
+  if (!FMT_NAMES.has(f)) return `невідомий формат «${f}» (є: цифра 0–9, ${[...FMT_NAMES].join(", ")})`;
+  if (f === "pl") return arg != null && arg.split(",").length === 3 && arg.split(",").every(w => w.trim()) ? null : "формат pl потребує трьох форм через кому: {n|pl:клітинка,клітинки,клітинок}";
+  if (f === "if") return arg != null && arg.split(";").length <= 2 && arg.trim() ? null : "формат if потребує тексту: {умова|if:так;ні} або {умова|if:лише якщо так}";
+  if (f === "eq") return arg == null || /^\s*\d\s*$/.test(arg) ? null : "формат eq бере необов'язкову цифру знаків: {x|eq} або {x|eq:3}";
+  if (f === "shift") return arg != null && /^\s*\\?[A-Za-z]\w*\s*$/.test(arg) ? null : "формат shift потребує змінної: {a|shift:x} → «(x − a)»";
+  return arg == null ? null : `формат «${f}» не бере аргументу після «:»`;
+}
+/** Шаблон із вставками {вираз|формат}: формат — кількість знаків, c (коефіцієнт), s (доданок зі знаком), deg, pi, time, hm, poly,
+    pl:форма1,форма2,форма5 (лише слово у формі за числом: «54 місця»), if:так;ні (умовний текст: {t!=2|if:існує;не існує}), eq[:d] («= 2» точно чи «≈ 2,15» з округленням до d знаків), shift:x («(x − a)», при a = 0 — «x»; engine-ui-text-1117). */
 function fill(tpl, env, names) {
-  return String(tpl).replace(/\{([^{}|]+)(?:\|([a-z0-9]+))?\}/g, (_, ex, f) => {
+  return String(tpl).replace(TPL_RE, (_, ex, f, arg) => {
     if (ex === ",") return ",";   // {,} — TeX-кома в десятковому дробі, не шаблон
     if (f === "poly") { try { return poly(ex.split(";").map(x => compile(x.trim(), names)(env))); } catch (e) { return "?"; } }
     let v; try { v = compile(ex.trim(), names)(env); } catch (e) { return "?"; }
+    if (f === "pl") { const forms = String(arg ?? "").split(",").map(w => w.trim()); return forms.length === 3 ? pluralForm(v, forms) : "?"; }
+    if (f === "if") { const [yes, no = ""] = String(arg ?? "").split(";"); return typeof v === "number" && isNaN(v) ? no : v ? yes : no; }   // NaN — не «так»
+    if (f === "eq") { const d = arg == null ? 2 : +arg; if (typeof v !== "boolean" && !isFinite(v)) return "не існує";   /* NaN, ±∞ — «не існує» (узгоджено з if: NaN — хибно) */  const k = Math.pow(10, d); return (Math.abs(Math.round(v * k) / k - v) < 1e-9 ? "= " : "≈ ") + num(v, d); }
+    if (f === "shift") { const x = String(arg ?? "").trim(); return !isFinite(v) ? "?" : near(v, 0) ? x : `(${x} ${v < 0 ? "+" : "-"} ${num(Math.abs(v))})`; }
     if (f === "c") return v === 1 ? "" : v === -1 ? "-" : num(v).replace("−", "-");
     if (f === "s") return near(v, 0) ? "" : (v < 0 ? "- " : "+ ") + num(Math.abs(v));
     if (f === "deg") return num(v, 0) + "°";
@@ -320,7 +353,7 @@ const SVG_TEX_OK = new Set([...Object.keys(SVG_SYM), ...Object.keys(SVG_SPACE)])
 /** Що в підписі SVG не буде відмальовано: непарні $, команди поза підмножиною. Для tools/validate.mjs.
     tpl — підпис проходить fill() (svgLabels(spec, true)): {вираз} там — вставка значення, {,} — кома, тож вкладеність дужок
     в індексі перевіряємо на рядку після підстановки (рев'ю engine-player-a11y-p3, P3-2: $x^{2{,}5}$, $a^{{n}}$ малюються правильно). */
-const TPL_RE = /\{([^{}|]+)(?:\|([a-z0-9]+))?\}/g;
+const TPL_RE = /\{([^{}|]+)(?:\|([a-z0-9]+)(?::([^{}|]*))?)?\}/g;   // {вираз|формат:аргумент} — аргумент є в pl і shift
 function svgTexIssues(s, tpl = false) {
   const str = String(s), issues = [], shape = tpl ? str.replace(TPL_RE, (_, ex) => ex === "," ? "," : "0") : str;
   if (((str.match(/\$/g) || []).length) % 2) issues.push({ level: "warn", msg: `непарна кількість $ — формула не закрита й покажеться сирим текстом${/\$\{/.test(str) ? " (зайвий $ перед шаблоном {…}?)" : ""}` });
@@ -463,7 +496,10 @@ function clampY(y, y0, y1) { if (!isFinite(y)) return NaN; const m = (y1 - y0) *
 /* ---- numline: числова пряма з точками, стрибками й проміжками ---- */
 KINDS.numline = {
   render(spec, env) {
-    const names = fnNames(spec), [a, b] = spec.view || [-10, 10], W = 320, pad = 16, top = (spec.jumps || []).length ? 52 : 24, H = top + 46;
+    // з дугами стрибків поле вище: верх найвищої дуги (h ≤ 36) з підписом над нею — у межах SVG (engine-render-legibility-1117: «+1000», «100 хв» обрізало)
+    const names = fnNames(spec), [a, b] = spec.view || [-10, 10], W = 320, pad = 16, top = (spec.jumps || []).length ? 64 : 28;
+    // другий ряд підписів точок під поділками — лише коли є стрибки й підписаних точок кілька (рев'ю engine-render-legibility-1117, P1-1)
+    const jumpRows = (spec.jumps || []).length > 0 && Object.values(spec.points || {}).filter(p => p.label !== false).length > 1, H = top + 46 + (jumpRows ? 14 : 0);
     const X = x => pad + (x - a) / (b - a) * (W - 2 * pad), y = top, E = ex => safe(() => compile(String(ex), names)(env));
     const tick = spec.tick ?? autoStep(b - a) , lstep = spec.labels ?? tick;
     // ray: true — координатний промінь (engine-math-ister-p3 п. 10): лінія починається в точці view[0], без «хвостика» ліворуч
@@ -484,14 +520,22 @@ KINDS.numline = {
       const c = col(j.color, i), x1 = X(f), x2 = X(to), h = Math.min(36, 10 + Math.abs(x2 - x1) / 4), dir = Math.sign(x2 - x1);
       g += `<path d="M${x1} ${y - 6} Q${(x1 + x2) / 2} ${y - 6 - 2 * h} ${x2} ${y - 6}" fill="none" stroke="${c}" stroke-width="2.4"/><path d="M${x2} ${y - 5} l${-dir * 9} -7 l${dir * 1} 10 z" fill="${c}"/>`;
       if (j.label) g += t((x1 + x2) / 2, y - 10 - h, fill(j.label, env, names), { anchor: "middle", fill: c, bold: true }); });
-    const handles = [];
+    const handles = [], placed = [];
     Object.entries(spec.points || {}).forEach(([id, p]) => {
       const xv = safe(() => env[id]?.x); if (!isFinite(xv)) return; const sx = X(Math.max(a, Math.min(b, xv))), c = col(p.color, 0);
       if (p.drag) g += `<circle cx="${sx}" cy="${y}" r="14" fill="${c}" opacity=".18"/>`;
       g += `<circle cx="${sx}" cy="${y}" r="${p.drag ? 8 : 6}" fill="${p.hollow ? "var(--surface)" : c}" stroke="${p.hollow ? c : "var(--surface)"}" stroke-width="2.5"/>`;
       const label = p.label === false ? "" : p.label != null ? fill(p.label, env, names) : id;
-      if (label && !(spec.jumps || []).length) g += t(sx, y - 14, label, { anchor: "middle", bold: true, fill: c });
-      else if (label) g += t(sx, y + 42, label, { anchor: "middle", bold: true, fill: c, size: 11 });
+      // підпис точки біля краю не виходить за поле; підписи, що налазять один на одного (дві точки в одному місці — g8m1 «добуток»
+      // і «степінь»), рознесено: над прямою, далі під підписами поділок (y + 42), з дугами стрибків — лише під ними (engine-render-legibility-1117)
+      // з дугами стрибків — два ряди під підписами поділок (y + 42, y + 56): старт «2748» і рухома точка N у g4m2 не зливаються (рев'ю, P1-1);
+      // напівширина — за тим, що справді малюється (svgTex: тонкі пробіли навколо «=», «−»), а не за ariaTex (рев'ю, P3-1: g8m1l5 «x = 2»)
+      if (label) { const lw = [...svgTex(label, 12).replace(/<[^>]+>/g, "").replace(/&[#\w]+;/g, "x")].length * 3.6, lx = Math.max(lw + 1, Math.min(W - lw - 1, sx)), rows = jumpRows ? [y + 42, y + 56] : [y - 14, y + 42];
+        const clash = ry => placed.filter(q => q.y === ry && q.x0 < lx + lw + 3 && lx - lw - 3 < q.x1);
+        // той самий текст уже стоїть тут (дві точки в одному числі: «36», «2748» на старті) — не дублюємо
+        const row = rows.some(ry => clash(ry).some(q => q.s === label)) ? NaN : rows.find(ry => !clash(ry).length) ?? rows[rows.length - 1];
+        if (isFinite(row)) { placed.push({ y: row, x0: lx - lw, x1: lx + lw, s: label });
+          g += t(lx, row, label, { anchor: "middle", bold: true, fill: c, size: row > y ? 11 : 12 }); } }
       const [xe] = pointExprs(id, p);
       // значення для читача екрана: підпис, якщо він сам є числом чи часом ({t|time}, {n|0}); літера чи «?» — лише назва, тож додаємо число
       const vs = spec.pi ? piLabel(xv) : spec.fmt ? fill(`{v|${spec.fmt}}`, { v: xv }) : num(xv), lt = ariaTex(label);
@@ -547,11 +591,13 @@ KINDS.fraction = {
     const items = spec.items || [{ shape: "bar", n: "n", k: "k" }];
     const circles = items.filter(i => i.shape === "circle"), others = items.filter(i => i.shape !== "circle");
     let g = "", y = 6;
+    // ширина колонки підписів смужок — за найдовшим підписом (≈ 8 px на знак 14 px жирного), не менше 56: «сума 5/a» не обрізається зліва
+    const LW = Math.min(150, Math.max(56, ...others.filter(it => it.shape !== "grid" && it.label).map(it => Math.ceil(ariaTex(fill(it.label, env, names)).length * 8 + 10))));
     others.forEach((it, j) => { const c = col(it.color, j);
       if (it.shape === "grid") { const k = Math.round(E(it.k)), s = Math.min(16, (W - 20) / 10), ox = (W - s * 10) / 2;
         for (let i = 0; i < 100; i++) { const r = Math.floor(i / 10), cc = i % 10; g += `<rect x="${ox + cc * s}" y="${y + r * s}" width="${s - 1.5}" height="${s - 1.5}" rx="2" fill="${i < k ? c : "var(--chip)"}" stroke="var(--line)" stroke-width=".8"/>`; }
         if (it.label) g += t(W / 2, y + 10 * s + 16, fill(it.label, env, names), { anchor: "middle", bold: true }); y += 10 * s + (it.label ? 26 : 8); return; }
-      const n = Math.max(1, Math.round(E(it.n))), k = Math.round(E(it.k)), lw = it.label ? 56 : 0, bw = W - 8 - lw, h = 40;
+      const n = Math.max(1, Math.round(E(it.n))), k = Math.round(E(it.k)), lw = it.label ? LW : 0, bw = W - 8 - lw, h = 40;
       for (let i = 0; i < n; i++) g += `<rect x="${(lw + 4 + i * bw / n).toFixed(1)}" y="${y}" width="${(bw / n).toFixed(1)}" height="${h}" fill="${i < k ? c : "var(--surface)"}" stroke="var(--ink)" stroke-width="1.5"/>`;
       if (k > n) g += t(W - 4, y - 2, `+${k - n}`, { anchor: "end", fill: "var(--bad)", bold: true });
       if (it.label) g += t(lw - 4, y + h / 2 + 5, fill(it.label, env, names), { anchor: "end", bold: true, size: 14 });
@@ -578,7 +624,8 @@ KINDS.chart = {
       bars.forEach((b, i) => { const da = b.v / tot * 2 * Math.PI; if (b.v <= 0) return;
         g += da >= 2 * Math.PI - 1e-9 ? `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${b.c}"/>` : `<path d="M${cx} ${cy} L${(cx + r * Math.cos(a)).toFixed(1)} ${(cy + r * Math.sin(a)).toFixed(1)} A${r} ${r} 0 ${da > Math.PI ? 1 : 0} 1 ${(cx + r * Math.cos(a + da)).toFixed(1)} ${(cy + r * Math.sin(a + da)).toFixed(1)} Z" fill="${b.c}" stroke="var(--surface)" stroke-width="2"/>`;
         a += da; });
-      bars.forEach((b, i) => { const yy = 30 + i * 24; g += `<rect x="205" y="${yy - 11}" width="14" height="14" rx="3" fill="${b.c}"/>` + t(225, yy, spec.legend === false || spec.legend === "label" ? b.label : spec.legend === "value" ? `${b.label} · ${num(b.v)}` : `${b.label} · ${num(b.v / tot * 100, 0)}\u00A0%`, { size: 12 }); });
+      const pcts = largestRemainder(bars.map(b => b.v / tot * 100));   // сума рівно 100 %, а не 99/101 від незалежного округлення
+      bars.forEach((b, i) => { const yy = 30 + i * 24; g += `<rect x="205" y="${yy - 11}" width="14" height="14" rx="3" fill="${b.c}"/>` + t(225, yy, spec.legend === false || spec.legend === "label" ? b.label : spec.legend === "value" ? `${b.label} · ${num(b.v)}` : `${b.label} · ${num(pcts[i], 0)}\u00A0%`, { size: 12 }); });
       return { w: W, h: Math.max(H, 30 + bars.length * 24), body: g, handles: [], alt: spec.alt || "Кругова діаграма" }; }
     /* Середнє (mean) — пунктирна лінія; підпис «середнє …» — у легенді над полем діаграми, а не біля лінії, де він налазив на
        підписи стовпчиків (engine-math-ister-p3 п. 9, g11m5l3). horizontal: true — смуги вправо від підписів; line: true — точки,
@@ -639,13 +686,17 @@ KINDS.column = {
     const H = top + rows.reduce((h, r) => h + (r.line ? 8 : rh), 0) + 10;
     let g = "", y = top; const handles = [];
     if (isFinite(st) && !(op === "*" && db.length > 1) && st >= 1 && st <= resultRow.digits.length) g += `<rect x="${R - st * cw}" y="${top - 26}" width="${cw}" height="${H - top + 18}" rx="6" fill="var(--accent)" opacity=".1"/>`;
-    for (const [i, m] of Object.entries(marks)) g += t(R - (+i + .5) * cw, top - 8, m, { anchor: "middle", size: 13, fill: "var(--bad)", bold: true });
+    // позика — кружок над розрядом (гліф «·» 13 px на 360 px ледь видно, плейтест 1117 g4 №8); перенос — цифра
+    for (const [i, m] of Object.entries(marks)) g += m === "·" ? `<circle class="col-borrow" cx="${(R - (+i + .5) * cw).toFixed(1)}" cy="${top - 13}" r="3.5" fill="var(--bad)"/>`
+      : t(R - (+i + .5) * cw, top - 8, m, { anchor: "middle", size: 13, fill: "var(--bad)", bold: true });
     for (const r of rows) {
       if (r.line) { g += `<line x1="${R - ncol * cw}" x2="${R}" y1="${y + 2}" y2="${y + 2}" stroke="var(--ink)" stroke-width="2"/>`; y += 8; continue; }
-      if (r.op) g += t(R - ncol * cw + 4, y + 20, r.op, { size: 20, fill: "var(--muted)" });
+      // знак множення «·» (глосарій math) — кружок, а не гліф: інакше в стовпчику «ледь помітна крапка» (плейтест 1117 g4 №16)
+      if (r.op === "·") g += `<circle class="col-times" cx="${(R - ncol * cw + 9).toFixed(1)}" cy="${y + 14}" r="3.2" fill="var(--ink)"/>`;
+      else if (r.op) g += t(R - ncol * cw + 4, y + 20, r.op, { size: 20, fill: "var(--muted)" });
       r.digits.forEach((d, i) => { const vis = !r.hidden && (r.upto == null || i < r.upto); const x = R - (i + r.shift + .5) * cw;
         if (r.input) { const empty = !(d >= 0); g += `<rect x="${x - 10}" y="${y + 3}" width="20" height="26" rx="4" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>` + t(x, y + 22, empty ? "?" : String(d), { anchor: "middle", size: 20, fill: empty ? "var(--muted)" : "var(--accent)", bold: true });
-          handles.push({ x, y: y + 16, digit: "d" + i, name: `Цифра відповіді, ${RANK[i] || "розряд " + (i + 1)}`, value: empty ? "не вписано" : String(d), tap: () => ({ ["d" + i]: d >= 9 ? 0 : (d < 0 ? 0 : d + 1) }), set: () => ({}) }); return; }
+          handles.push({ x, y: y + 16, box: [x - cw / 2, y + 1, cw, 30], digit: "d" + i, name: `Цифра відповіді, ${RANK[i] || "розряд " + (i + 1)}`, value: empty ? "не вписано" : String(d), set: () => ({}) }); return; }
         g += vis ? t(x, y + 22, String(d), { anchor: "middle", size: 22, fill: r.result ? "var(--accent)" : "var(--ink)", bold: r.result, italic: false })
                  : `<rect x="${x - 8}" y="${y + 6}" width="16" height="20" rx="3" fill="none" stroke="var(--line)" stroke-dasharray="3 3"/>`; });
       y += rh;
@@ -667,7 +718,7 @@ function divRender(spec, env, a, b, st) {
   steps.forEach((s, k) => { const qx = bar + 10 + k * cw + cw / 2, qy = top + rh + 22;
     if (spec.input) { const d = env["d" + (steps.length - 1 - k)], empty = !(d >= 0), idx = steps.length - 1 - k;
       g += `<rect x="${qx - 10}" y="${qy - 18}" width="20" height="26" rx="4" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>` + t(qx, qy, empty ? "?" : String(d), { anchor: "middle", size: 20, fill: empty ? "var(--muted)" : "var(--accent)", bold: true });
-      handles.push({ x: qx, y: qy - 6, digit: "d" + idx, name: `Цифра частки, ${RANK[idx] || "розряд " + (idx + 1)}`, value: empty ? "не вписано" : String(d), tap: () => ({ ["d" + idx]: d >= 9 ? 0 : (d < 0 ? 0 : d + 1) }), set: () => ({}) }); }
+      handles.push({ x: qx, y: qy - 6, box: [qx - cw / 2, qy - 20, cw, 30], digit: "d" + idx, name: `Цифра частки, ${RANK[idx] || "розряд " + (idx + 1)}`, value: empty ? "не вписано" : String(d), set: () => ({}) }); }
     else if (k < shown) g += t(qx, qy, String(s.q), { anchor: "middle", size: 20, fill: "var(--accent)", bold: true });
     else g += `<rect x="${qx - 8}" y="${qy - 16}" width="16" height="20" rx="3" fill="none" stroke="var(--line)" stroke-dasharray="3 3"/>`; });
   // проміжні кроки: віднімання й знесення наступної цифри
@@ -725,7 +776,12 @@ KINDS.solid = {
     if (!V.length) return { w: W, h: H, body: "", handles: [], alt: "" };
     const cyw = Math.cos(view.yaw), syw = Math.sin(view.yaw), cp = Math.cos(view.pitch), sp = Math.sin(view.pitch);
     const ctr = V.reduce((a, v) => [a[0] + v[0] / V.length, a[1] + v[1] / V.length, a[2] + v[2] / V.length], [0, 0, 0]);
-    const R = Math.max(...V.map(v => Math.hypot(v[0] - ctr[0], v[1] - ctr[1], v[2] - ctr[2]))) || 1, sc = (Math.min(W, H) / 2 - 20) / R;
+    // axes (лише box): осі з вершини 0 уздовж ребер a, c, b за межі тіла, зі стрілками й назвами — true дає шкільні x (a), y (c), z (b, висота)
+    // або масив назв [a, c, b]; кінці осей входять у радіус, тож назви не виходять за поле (engine-render-legibility-1117, g11m2)
+    const axN = spec.shape === "box" || !spec.shape ? (spec.axes === true ? ["x", "y", "z"] : Array.isArray(spec.axes) ? spec.axes : null) : null;
+    const AX = axN ? (() => { const a = E(spec.a ?? "a"), b = E(spec.b ?? "b"), c = E(spec.c ?? "c"), m = Math.max(a, b, c) * 0.25, tip = d => Math.max(d * 1.3, d + m);
+      return [[[tip(a), 0, 0], axN[0]], [[0, 0, tip(c)], axN[1]], [[0, tip(b), 0], axN[2]]]; })() : [];
+    const R = Math.max(...V.concat(AX.map(x => x[0])).map(v => Math.hypot(v[0] - ctr[0], v[1] - ctr[1], v[2] - ctr[2]))) || 1, sc = (Math.min(W, H) / 2 - 20) / R;
     const rot = v => { const x = v[0] - ctr[0], y = v[1] - ctr[1], z = v[2] - ctr[2]; const x1 = x * cyw + z * syw, z1 = -x * syw + z * cyw; const y2 = y * cp - z1 * sp, z2 = y * sp + z1 * cp; return [x1, y2, z2]; };
     const P = V.map(rot), S = P.map(p => [W / 2 + p[0] * sc, H / 2 - p[1] * sc]);
     const vis = F.map(f => { const a = P[f[0]], b = P[f[1]], c = P[f[2]]; return ((b[0] - a[0]) * (c[1] - a[1]) - (b[1] - a[1]) * (c[0] - a[0])) > 1e-9; });
@@ -743,10 +799,30 @@ KINDS.solid = {
         (k) => { let s = ""; for (let i = 1; i < c; i++) s += line([0, 0, i], [0, b, i]); for (let j = 1; j < b; j++) s += line([0, j, 0], [0, j, c]); return s; },
         (k) => { let s = ""; for (let i = 1; i < c; i++) s += line([a, 0, i], [a, b, i]); for (let j = 1; j < b; j++) s += line([a, j, 0], [a, j, c]); return s; }];
       F.forEach((f, fi) => { if (vis[fi] && faceGrid[fi]) g += faceGrid[fi](); }); }
+    const scr = v => { const p = rot(v); return [W / 2 + p[0] * sc, H / 2 - p[1] * sc]; };
+    // осі — під ребрами: тонка муарова лінія не перекриває ребра тіла (engine-lab-p4-1118 п. 6)
+    AX.forEach(([tipV, name]) => { const o = S[0], e = scr(tipV), d = Math.hypot(e[0] - o[0], e[1] - o[1]) || 1, ux = (e[0] - o[0]) / d, uy = (e[1] - o[1]) / d;
+      g += `<line x1="${o[0].toFixed(1)}" y1="${o[1].toFixed(1)}" x2="${e[0].toFixed(1)}" y2="${e[1].toFixed(1)}" stroke="var(--muted)" stroke-width="1.4"/>`
+        + `<path d="M${e[0].toFixed(1)} ${e[1].toFixed(1)} l${(-9 * ux + 4 * uy).toFixed(1)} ${(-9 * uy - 4 * ux).toFixed(1)} l${(-8 * uy).toFixed(1)} ${(8 * ux).toFixed(1)} z" fill="var(--muted)"/>`
+        + t(Math.max(8, Math.min(W - 8, e[0] + ux * 10)), Math.max(12, Math.min(H - 4, e[1] + uy * 10 + 4)), `$${name}$`, { anchor: "middle", italic: true, size: 13, fill: "var(--muted)" }); });
     for (const e of edges.values()) g += `<line x1="${S[e.a][0].toFixed(1)}" y1="${S[e.a][1].toFixed(1)}" x2="${S[e.b][0].toFixed(1)}" y2="${S[e.b][1].toFixed(1)}" stroke="var(--ink)" stroke-width="${e.vis ? 2.2 : 1.4}" ${e.vis ? "" : 'stroke-dasharray="5 4" stroke-opacity=".6"'} stroke-linecap="round"/>`;
-    (spec.marks || []).forEach(m => { const i = m.v; if (S[i]) g += `<circle cx="${S[i][0]}" cy="${S[i][1]}" r="4" fill="var(--accent)"/>` + t(S[i][0] + 7, S[i][1] - 7, m.label, { bold: true }); });
+    // переріз і діагоналі (engine-lab-p3-1117 п. 5): точка — індекс вершини або { e: [i, j], t } на ребрі (t ∈ [0; 1], вирази дозволені)
+    const ptS = q => { const v = typeof q === "number" ? V[q] : q && Array.isArray(q.e) && V[q.e[0]] && V[q.e[1]] ? V[q.e[0]].map((c, k) => c + (V[q.e[1]][k] - c) * (q.t === undefined ? .5 : E(q.t))) : null;
+      if (!v || !v.every(isFinite)) return null; const p = rot(v); return [W / 2 + p[0] * sc, H / 2 - p[1] * sc]; };
+    const segLab = [];
+    if (spec.cut) { const pts = (spec.cut.pts || []).map(ptS); if (pts.length >= 3 && pts.every(Boolean)) { const c = col(spec.cut.color, 3);
+      g += `<polygon points="${pts.map(q => q.map(z => z.toFixed(1)).join(",")).join(" ")}" fill="${c}" fill-opacity=".28" stroke="${c}" stroke-width="2" stroke-linejoin="round"/>`; } }
+    (spec.segs || []).forEach(sg => { const a = ptS(sg.a ?? sg[0]), b = ptS(sg.b ?? sg[1]); if (!a || !b) return; const c = col(sg.color, 2);
+      g += `<line x1="${a[0].toFixed(1)}" y1="${a[1].toFixed(1)}" x2="${b[0].toFixed(1)}" y2="${b[1].toFixed(1)}" stroke="${c}" stroke-width="2.6" stroke-linecap="round"${sg.dash ? ' stroke-dasharray="6 4"' : ""}/>`;
+      if (sg.label) segLab.push([(a[0] + b[0]) / 2, (a[1] + b[1]) / 2, sg.label, c]); });
+    // підписи вершин і довжин ребер — назовні від центра тіла (а не завжди вправо-вгору): «M₁» і довжина ребра «2» не зливаються в «M2»
+    const out = (x, y, r) => { const dx = x - W / 2, dy = y - H / 2, n = Math.hypot(dx, dy) || 1; return [x + dx / n * r, y + dy / n * r, dx / n]; };
+    const anc = k => k > 0.35 ? "start" : k < -0.35 ? "end" : "middle";
+    segLab.forEach(([x, y, lb, c]) => { const [lx, ly, k] = out(x, y, 9); g += t(lx, ly + 4, lb, { anchor: anc(k), bold: true, fill: c }); });
+    (spec.marks || []).forEach(m => { const i = m.v; if (!S[i]) return; const [lx, ly, k] = out(S[i][0], S[i][1], 10);
+      g += `<circle cx="${S[i][0]}" cy="${S[i][1]}" r="4" fill="var(--accent)"/>` + t(lx, ly + 4, m.label, { bold: true, anchor: anc(k) }); });
     if (spec.labels !== false && spec.shape === "box") { const a = E(spec.a ?? "a"), b = E(spec.b ?? "b"), c = E(spec.c ?? "c");
-      const mid = (p, q, s) => { const m = rot([(p[0] + q[0]) / 2, (p[1] + q[1]) / 2, (p[2] + q[2]) / 2]); return t(W / 2 + m[0] * sc, H / 2 - m[1] * sc + 4, s, { anchor: "middle", bold: true, fill: "var(--accent)" }); };
+      const mid = (p, q, s) => { const [mx, my] = scr([(p[0] + q[0]) / 2, (p[1] + q[1]) / 2, (p[2] + q[2]) / 2]), [lx, ly, k] = out(mx, my, 9); return t(lx, ly + 4, s, { anchor: anc(k), bold: true, fill: "var(--accent)" }); };
       g += mid([0, 0, c], [a, 0, c], num(a)) + mid([a, 0, c], [a, b, c], num(b)) + mid([a, 0, 0], [a, 0, c], num(c)); }
     g += t(W - 6, H - 8, "обертай пальцем", { anchor: "end", size: 10, fill: "var(--muted)" });
     return { w: W, h: H, body: g, handles: [], alt: spec.alt || "Просторове тіло", rotate: true };
@@ -776,15 +852,63 @@ function mount(host, spec, opt = {}) {
   const visible = params.filter(p => !p.hide);
   host.classList.add("lab");
   host.innerHTML = `<div class="lab-stage"><svg role="img" aria-label="${(spec.alt || "Інтерактивна модель").replace(/"/g, "&quot;")}"></svg></div>
+    <p class="lab-hint" hidden style="margin:4px 0 0;text-align:center;font-size:13px;color:var(--muted)"></p>
     ${spec.show ? `<div class="lab-read" aria-live="polite"></div>` : ""}
-    ${visible.length ? `<div class="lab-ctl">${visible.map(p => `<div class="lab-p"><span class="lab-pl">${fmt(p.label ?? `$${p.id}$`)}</span><button type="button" class="lab-nb" data-nb="${p.id}" data-d="-1" aria-label="Зменшити на крок">−</button><input type="range" data-p="${p.id}" min="${typeof p.min === "number" ? p.min : 0}" max="${typeof p.max === "number" ? p.max : 100}" step="${p.step}" value="${p.start}" aria-label="${String(p.label ?? p.id).replace(/[$"<>]/g, "")}"><button type="button" class="lab-nb" data-nb="${p.id}" data-d="1" aria-label="Збільшити на крок">+</button><output data-o="${p.id}" ${p.out ? "" : "hidden"}></output></div>`).join("")}</div>` : ""}`;
-  const svg = host.querySelector("svg"), read = host.querySelector(".lab-read"), alt = spec.alt || "Інтерактивна модель";
+    ${visible.length ? `<div class="lab-ctl">${visible.map(p => `<div class="lab-p"><span class="lab-pl">${fmt(p.label ?? `$${p.id}$`)}</span><button type="button" class="lab-nb" data-nb="${p.id}" data-d="-1" aria-label="Зменшити на крок">−</button><input type="range" data-p="${p.id}" min="${typeof p.min === "number" ? p.min : 0}" max="${typeof p.max === "number" ? p.max : 100}" step="${p.step}" value="${p.start}" aria-label="${xmlEsc(ariaTex(p.label ?? p.id)).replace(/"/g, "&quot;")}"><button type="button" class="lab-nb" data-nb="${p.id}" data-d="1" aria-label="Збільшити на крок">+</button><output data-o="${p.id}" ${p.out ? "" : "hidden"}></output></div>`).join("")}</div>` : ""}`;
+  const svg = host.querySelector("svg"), read = host.querySelector(".lab-read"), hint = host.querySelector(".lab-hint"), alt = spec.alt || "Інтерактивна модель";
+  /* Цифри відповіді (стовпчик, ділення кутом): прозорі <input inputmode="numeric"> поверх клітинок SVG.
+     Дотик ставить фокус і відкриває числову клавіатуру; цифра вписується й фокус іде до наступної клітинки
+     (порядок handles: сума/різниця — справа наліво, ділення — зліва направо); Backspace стирає й повертає назад.
+     Поля живуть між перемальовуваннями, тож фокус і екранна клавіатура не губляться. */
+  const stage = host.querySelector(".lab-stage"), cells = new Map();
+  const focusDigit = id => { const c = id && cells.get(id); if (c) { c.focus({ preventScroll: true }); try { c.select(); } catch (e) {} } };
+  function enterDigit(id, v) { if (locked) return; setParams({ [id]: v }, true); if (v >= 0) focusDigit(digitNext(last.handles, id, 1)); }
+  function digitCells(r) {
+    const hs = (r.handles || []).filter(h => h.digit && h.box);
+    for (const [id, c] of cells) if (!hs.some(h => h.digit === id)) { c.remove(); cells.delete(id); }
+    hs.forEach(h => { let c = cells.get(h.digit);
+      if (!c) { c = G.document.createElement("input"); c.className = "lab-h lab-dg"; c.type = "text"; c.inputMode = "numeric"; c.autocomplete = "off"; c.setAttribute("enterkeyhint", "next"); c.dataset.dg = h.digit;
+        c.setAttribute("role", "spinbutton"); c.setAttribute("aria-valuemin", "0"); c.setAttribute("aria-valuemax", "9");
+        const id = h.digit;
+        c.addEventListener("focus", () => { try { c.select(); } catch (e) {} });
+        c.addEventListener("keydown", e => { if (locked || e.altKey || e.ctrlKey || e.metaKey) return; const k = e.key;
+          if (/^[0-9]$/.test(k)) { e.preventDefault(); return enterDigit(id, +k); }
+          if (k === "Backspace") { e.preventDefault(); if (state[id] >= 0) { setParams({ [id]: -1 }, true); focusDigit(digitNext(last.handles, id, -1)); }
+            else { const p = digitNext(last.handles, id, -1); if (p) { setParams({ [p]: -1 }, true); focusDigit(p); } } return; }
+          if (k === "Delete") { e.preventDefault(); return setParams({ [id]: -1 }, true); }
+          if (k === "ArrowLeft" || k === "ArrowRight") { e.preventDefault(); return focusDigit(digitSide(last.handles, id, k === "ArrowLeft" ? -1 : 1)); }
+          const o = handleKey(last.handles.find(q => q.digit === id) || { digit: id }, k, state, params); if (o) { e.preventDefault(); setParams(o, true); } });
+        // екранна клавіатура телефона часто не дає key у keydown («Unidentified») — тоді читаємо саме поле
+        // сире значення беремо до відновлення поля (рев'ю engine-lab-column-digits-1117 P2-1): «стерти» з екранної клавіатури
+        // приходить лише як input з порожнім полем. Порожня клітинка тримає невидимий заповнювач CELL_NIL, тож Backspace у ній
+        // теж дає input (поле стає зовсім порожнім) — і повертає до попередньої клітинки, як keydown Backspace (P3-1).
+        // «Стерти» — лише порожнє поле або inputType deleteContent*: не-цифра («,», «.», «-», пробіл, літера з числової клавіатури)
+        // теж замінює виділений заповнювач, але її ігноруємо — поле повертається до попереднього значення (рев'ю engine-1117-followups P1-1).
+        // Так само поле з не-цифрою поруч зі старою цифрою («5.»): це не нова цифра, і фокус лишається на місці.
+        c.addEventListener("input", e => { const raw = c.value; c.value = state[id] >= 0 ? String(state[id]) : CELL_NIL;
+          if (locked || /[^0-9\u200B]/.test(raw)) return;
+          const v = typedDigit(raw, state[id]);
+          if (v >= 0) return enterDigit(id, v);
+          if (/\d/.test(raw) || !(raw === "" || /^delete/.test(e.inputType || ""))) return;
+          if (state[id] >= 0) { setParams({ [id]: -1 }, true); focusDigit(digitNext(last.handles, id, -1)); }
+          else if (raw === "") { const p = digitNext(last.handles, id, -1); if (p) { setParams({ [p]: -1 }, true); focusDigit(p); } } });
+        stage.appendChild(c); cells.set(id, c); }
+      const [bx, by, bw, bh] = h.box, v = state[h.digit];
+      Object.assign(c.style, { left: bx / r.w * 100 + "%", top: by / r.h * 100 + "%", width: bw / r.w * 100 + "%", height: bh / r.h * 100 + "%" });
+      if (G.document.activeElement !== c || c.value !== (v >= 0 ? String(v) : CELL_NIL)) c.value = v >= 0 ? String(v) : CELL_NIL;
+      c.dataset.h = r.handles.indexOf(h); c.setAttribute("aria-label", `${h.name}, впиши цифру або змінюй стрілками`); c.setAttribute("aria-valuenow", v >= 0 ? v : 0); c.setAttribute("aria-valuetext", h.value ?? "");
+      c.disabled = locked; c.tabIndex = locked ? -1 : 0; });
+  }
   function draw() {
     const env = makeEnv(spec, state);
     let r; try { r = K.render(spec, env, view); } catch (e) { r = { w: 320, h: 60, body: `<text x="10" y="30" fill="var(--bad)">${String(e.message)}</text>`, handles: [] }; }
     // фокус на ручці переживає перемальовування: ручки створюються наново, тож повертаємо його за номером
     const ae = G.document && G.document.activeElement, fi = ae && svg.contains(ae) && ae.dataset && ae.dataset.h != null ? +ae.dataset.h : -1;
-    last = r; svg.setAttribute("viewBox", `0 0 ${r.w} ${r.h}`); svg.innerHTML = r.body + handleTargets(r.handles || [], state, params, locked);
+    // цифри стовпчика вписують у справжні поля (digitCells), тож невидимі SVG-цілі для них не потрібні; {} зберігає нумерацію data-h
+    last = r; svg.setAttribute("viewBox", `0 0 ${r.w} ${r.h}`); svg.innerHTML = r.body + handleTargets((r.handles || []).map(h => h.digit ? {} : h), state, params, locked);
+    digitCells(r);
+    { const dh = dragHandles(r.handles, params);   // видима підказка під моделлю (qa-drag-points-1117 B2): що можна робити з точкою
+      hint.hidden = locked || !dh.length; hint.textContent = dh.length ? (dh.every(h => /^Точка /.test(h.name)) ? (dh.length === 1 ? "Тягни точку або торкнись місця на рисунку, куди її перенести; стрілки на клавіатурі — крок." : "Тягни точку; стрілки на клавіатурі — крок.") : "Тягни за маркер; стрілки на клавіатурі — крок.") : ""; }
     svg.setAttribute("role", (r.handles || []).some(h => liveHandle(h, params)) ? "group" : "img");   // у role="img" вкладені ручки для читача екрана не існують
     if (r.rotate) { svg.setAttribute("tabindex", locked ? "-1" : "0"); svg.setAttribute("aria-label", alt + ". Стрілки обертають тіло"); }
     if (fi >= 0) { const h = svg.querySelector(`.lab-h[data-h="${fi}"]`); if (h) h.focus({ preventScroll: true }); }
@@ -804,19 +928,30 @@ function mount(host, spec, opt = {}) {
   host.querySelectorAll("input[data-p]").forEach(i => i.addEventListener("input", () => { if (!locked) setParams({ [i.dataset.p]: +i.value }, true); }));
   host.querySelectorAll("button[data-nb]").forEach(b => b.addEventListener("click", () => { if (locked) return; const p = params.find(q => q.id === b.dataset.nb); setParams({ [p.id]: state[p.id] + p.step * +b.dataset.d }, true); }));
   // перетягування точок і обертання тіл
-  let drag = null;
+  let drag = null; const TAP_SLOP = 8, TAP_MS = 500;
   const toSvg = e => { const m = svg.getScreenCTM(); if (!m) return null; const p = new DOMPoint(e.clientX, e.clientY).matrixTransform(m.inverse()); return { x: p.x, y: p.y, k: 1 / m.a }; };
   svg.addEventListener("pointerdown", e => {
     if (locked) return; const p = toSvg(e); if (!p) return;
     let best = null, bd = 30 * Math.max(1, p.k);
     (last?.handles || []).forEach(h => { const d = Math.hypot(h.x - p.x, h.y - p.y); if (d < bd) { bd = d; best = h; } });
+    // тап по порожньому місцю: єдина жива ручка-точка перескакує туди лише на відпусканні, якщо палець/мишу не зсунули ≥ 8 px і не затримали
+    // довше за 500 мс (випадковий дотик, довге натискання чи початок жесту точку не зсувають; engine-lab-p4-1118 п. 2)
+    if (drag && drag.empty) { drag.cancel = true; return; }   // другий дотик — це не тап
+    if (!best) { const dh = dragHandles(last?.handles, params); if (dh.length === 1) { drag = { empty: true, h: dh[0], x0: e.clientX, y0: e.clientY, t0: Date.now(), cancel: false, pid: e.pointerId, p }; svg.setPointerCapture(e.pointerId); e.preventDefault(); return; } }
+    if (best && best.digit && cells.has(best.digit)) { e.preventDefault(); return focusDigit(best.digit); }   // дотик поруч із клітинкою — фокус у неї
     if (best) drag = { h: best, idx: last.handles.indexOf(best), x0: e.clientX, y0: e.clientY }; else if (last?.rotate) drag = { rot: true, x: e.clientX, y: e.clientY }; else return;
+    // дотик чи клік по точці — фокус на її ручку (preventDefault нижче забирає типовий фокус): після перетягування стрілки рухають ту саму
+    // точку, draw() зберігає фокус за номером (qa-drag-points-1117 B1; engine-render-legibility-1117)
+    if (best) { const el = svg.querySelector(`.lab-h[data-h="${drag.idx}"]`); if (el && el.getAttribute("tabindex") === "0") el.focus({ preventScroll: true }); }
     svg.setPointerCapture(e.pointerId); e.preventDefault();
   });
   svg.addEventListener("pointermove", e => { if (!drag) return; e.preventDefault();
+    if (drag.empty) { if (e.pointerId === drag.pid && Math.hypot(e.clientX - drag.x0, e.clientY - drag.y0) >= TAP_SLOP) drag.cancel = true; return; }
     if (drag.rot) { view.yaw += (e.clientX - drag.x) * 0.01; view.pitch = Math.max(-1.4, Math.min(1.4, view.pitch + (e.clientY - drag.y) * 0.01)); drag.x = e.clientX; drag.y = e.clientY; draw(); return; }
     const p = toSvg(e); const h = last.handles[drag.idx] || drag.h; if (p && !h.tap) setParams(h.set(p.x, p.y), true); });
-  const end = e => { if (drag && drag.h && drag.h.tap && Math.hypot(e.clientX - drag.x0, e.clientY - drag.y0) < 8) setParams(drag.h.tap(), true); drag = null; };
+  const end = e => {
+    if (drag && drag.empty) { const d = drag; drag = null; if (e.type === "pointerup" && !d.cancel && e.pointerId === d.pid && Date.now() - d.t0 <= TAP_MS && Math.hypot(e.clientX - d.x0, e.clientY - d.y0) < TAP_SLOP) { const o = d.h.set(d.p.x, d.p.y); if (o) setParams(o, true); } return; }
+    if (drag && drag.h && drag.h.tap && Math.hypot(e.clientX - drag.x0, e.clientY - drag.y0) < 8) setParams(drag.h.tap(), true); drag = null; };
   svg.addEventListener("pointerup", end); svg.addEventListener("pointercancel", end);
   // клавіатура: модель, яку змінюють лише дотиком до SVG (точки, кут прямокутника, цифри в стовпчик), — стрілками й цифрами
   svg.addEventListener("keydown", e => {
@@ -833,11 +968,26 @@ function mount(host, spec, opt = {}) {
     get: () => ({ ...state }),
     set: o => setParams(o, false),
     reset: () => { state = startState(spec); syncInputs(); draw(); },
+    ready: () => digitsReady(spec, state),   // false, доки в стовпчику є «?»: «Перевірити» ще неактивна
     lock: () => { locked = true; host.querySelectorAll("input,button").forEach(i => i.disabled = true); host.classList.add("locked"); draw(); },
     mark: cls => { host.classList.remove("is-ok", "is-bad"); if (cls) host.classList.add(cls); }
   };
 }
 
+/** Невидимий заповнювач порожньої клітинки цифри: без нього Backspace у порожньому полі з екранної клавіатури не дає події. */
+const CELL_NIL = "\u200B";
+/** Наступна (dir = 1) чи попередня (−1) клітинка цифри в порядку вписування — порядку handles; null на краю. */
+function digitNext(handles, id, dir) { const ds = (handles || []).filter(h => h.digit), i = ds.findIndex(h => h.digit === id), j = i + dir;
+  return i >= 0 && j >= 0 && j < ds.length ? ds[j].digit : null; }
+/** Сусідня клітинка ліворуч (dir = −1) чи праворуч (1) на рисунку — для стрілок ←/→. */
+function digitSide(handles, id, dir) { const ds = (handles || []).filter(h => h.digit), h0 = ds.find(h => h.digit === id); if (!h0) return null;
+  const c = ds.filter(h => (h.x - h0.x) * dir > 0 && Math.abs(h.y - h0.y) < 1).sort((a, b) => Math.abs(a.x - h0.x) - Math.abs(b.x - h0.x))[0]; return c ? c.digit : null; }
+/** Чи вписано всі цифри відповіді (стовпчик з input): поки є «?», перевіряти нічого. Іншим моделям — завжди true. */
+function digitsReady(spec, state) { return !(spec && spec.kind === "column" && spec.input) || paramList(spec).filter(p => /^d\d+$/.test(p.id)).every(p => state[p.id] >= 0); }
+/** Цифра, яку дитина щойно ввела в поле зі старим значенням prev (−1 — «?»): каретка могла стояти до чи після старої цифри; −1 — порожньо. */
+function typedDigit(value, prev) { let s = String(value || "").replace(/[^0-9]/g, "");
+  if (s.length > 1 && prev >= 0) { const i = s.indexOf(String(prev)); if (i >= 0) s = s.slice(0, i) + s.slice(i + 1); }
+  return s ? +s[s.length - 1] : -1; }
 /** Чи може дитина змінити ручку: вона рухає параметр моделі (kx/ky) або вписує цифру (digit/tap).
     «Мертва» ручка — точка drag, у якої обидві координати — вирази (x: "2+t"): її не рухає ні миша, ні клавіші. */
 function liveHandle(h, params) { return !!(h.digit || h.tap || [h.kx, h.ky].some(k => k && params.some(p => p.id === k))); }
@@ -879,6 +1029,8 @@ function handleKey(h, key, state, params) {
   return null;
 }
 
+/** Ручки, які дитина може тягнути (точки й кут прямокутника): жива ручка без digit і tap. */
+function dragHandles(handles, params) { return (handles || []).filter(h => !h.digit && !h.tap && liveHandle(h, params)); }
 /** Точки з drag, яких не рухає ні миша, ні клавіатура: кожна перетягувана координата — вираз (x: "2+t") або не параметр.
     Для tools/validate.mjs (попередження: модель працює, але ореол «тягни мене» обманює). Рух лише вздовж однієї осі — не вада. */
 function dragIssues(spec) {
@@ -907,6 +1059,18 @@ function svgLabels(spec, tplOnly = false) {
 }
 
 /** Валідація для tools/validate.mjs: повертає список помилок українською. graded — чи це екран type:"lab". */
+/* Найменше n призми/піраміди за всіма значеннями параметрів (min, start, max кожного; декартів добуток, ≤ 729 наборів) — індекси вершин
+   у segs/cut мають існувати для кожного n; не вдалося обчислити — 4 (engine-lab-p4-1118 п. 4). */
+function solidNMin(spec) {
+  if (typeof spec.n === "number") return Math.max(3, Math.round(spec.n));
+  if (spec.n === undefined) return 4;
+  try {
+    const ps = paramList(spec), c = compile(String(spec.n), fnNames(spec)); let sets = [{}];
+    for (const p of ps) { const vs = [...new Set([p.min, p.start, p.max].filter(Number.isFinite))]; if (!vs.length) continue; sets = sets.flatMap(o => vs.map(v => ({ ...o, [p.id]: v }))); if (sets.length > 729) break; }
+    let m = Infinity; for (const st of sets) { const v = c(makeEnv(spec, { ...startState(spec), ...st })); if (typeof v === "number" && isFinite(v)) m = Math.min(m, Math.max(3, Math.round(v))); }
+    return m === Infinity ? 4 : m;
+  } catch (e) { return 4; }
+}
 function validate(spec, screen = {}) {
   const errs = [], graded = screen.type === "lab";
   if (!spec || !KINDS[spec.kind]) return [`lab.kind має бути одним із: ${Object.keys(KINDS).join(", ")}`];
@@ -926,12 +1090,25 @@ function validate(spec, screen = {}) {
   for (const [p, ex] of exprs) { if (["y2"].includes(p.split(".").pop()) && ["top", "bottom"].includes(ex)) continue; try { compile(ex, names); } catch (e) { errs.push(`${p}: ${e.message}`); } }
   for (const [id, p] of Object.entries(spec.points || {})) for (const ex of pointExprs(id, p)) try { compile(ex, names); } catch (e) { errs.push(`points.${id}: ${e.message}`); }
   for (const [id, ex] of Object.entries(spec.let || {})) try { compile(ex, names); } catch (e) { errs.push(`let.${id}: ${e.message}`); }
-  const tplExprs = s => [...String(s).matchAll(/\{([^{}|]+)(?:\|([a-z0-9]+))?\}/g)].filter(m => m[1] !== ",").flatMap(m => m[2] === "poly" ? m[1].split(";") : [m[1]]).map(x => x.trim());
+  const tplExprs = s => [...String(s).matchAll(TPL_RE)].filter(m => m[1] !== ",").flatMap(m => m[2] === "poly" ? m[1].split(";") : [m[1]]).map(x => x.trim());
   const tpls = [].concat(spec.show || [], svgLabels(spec, true).map(x => x[1])).filter(x => typeof x === "string");
+  for (const s of tpls) if (/\{[^{}|]+\|if:[^{}]*\{/.test(String(s))) errs.push(`шаблон «${s}»: у гілках {умова|if:…} не може бути вставок {…} — розбий на кілька рядків show`);
+  for (const s of tpls) for (const m of String(s).matchAll(TPL_RE)) { const is = m[1] === "," ? null : fmtIssue(m[2], m[3]); if (is) errs.push(`шаблон «${s}»: ${is}`); }
   for (const s of tpls) for (const ex of tplExprs(s)) try { compile(ex, names); } catch (e) { errs.push(`шаблон «${s}»: ${e.message}`); }
   // поля креслень engine-math-ister-p3 (CONTENT_SCHEMA §8.2): solid view, plane labelDir і ticks, chart horizontal/line, numline ray
   if (spec.kind === "solid" && spec.view !== undefined) { const v = spec.view, ok = v && typeof v === "object" && !Array.isArray(v) && Object.keys(v).every(k => k === "yaw" || k === "pitch");
     if (!ok || (v.yaw !== undefined && !Number.isFinite(v.yaw)) || (v.pitch !== undefined && !(Number.isFinite(v.pitch) && Math.abs(v.pitch) <= 80))) errs.push("solid.view: { yaw, pitch } — числа в градусах, |pitch| ≤ 80"); }
+  if (spec.kind === "solid" && spec.axes !== undefined && !(spec.axes === true || Array.isArray(spec.axes) && spec.axes.length === 3 && spec.axes.every(x => typeof x === "string" && x)) || spec.kind === "solid" && spec.axes && (spec.shape || "box") !== "box")
+    errs.push("solid.axes: true або три назви осей [уздовж a, уздовж c, уздовж b] — лише для shape: \"box\"");
+  if (spec.kind === "solid" && (spec.segs !== undefined || spec.cut !== undefined)) {   // п. 5: індекси вершин (box — 8, prism — 2n, pyramid — n + 1) і точки на ребрах
+    const sh = spec.shape || "box", n = solidNMin(spec), nv = sh === "box" ? 8 : sh === "prism" ? 2 * n : n + 1;
+    const bad = q => !(Number.isInteger(q) && q >= 0 && q < nv || q && typeof q === "object" && Array.isArray(q.e) && q.e.length === 2 && q.e.every(i => Number.isInteger(i) && i >= 0 && i < nv) && (q.t === undefined || typeof q.t === "number" || typeof q.t === "string"));
+    if (spec.segs !== undefined && !Array.isArray(spec.segs)) errs.push("solid.segs: масив відрізків { a, b }");
+    else (spec.segs || []).forEach((x, i) => { if (!x || bad(x.a ?? x[0]) || bad(x.b ?? x[1])) errs.push(`segs.${i}: a і b — індекс вершини 0…${nv - 1} або { e: [i, j], t }`); });
+    if (spec.cut !== undefined && !(spec.cut && Array.isArray(spec.cut.pts) && spec.cut.pts.length >= 3 && !spec.cut.pts.some(bad))) errs.push(`solid.cut: { pts: [≥ 3 точки: індекс вершини 0…${nv - 1} або { e: [i, j], t }] }`); }
+  if (spec.slider !== undefined) {   // повзунок-дубль для параметрів з hide (п. 1): true, id або масив id оголошених параметрів з hide: true
+    const ids = spec.slider === true ? [] : [].concat(spec.slider), bad = ids.filter(id => typeof id !== "string" || !spec.params || !spec.params[id] || !spec.params[id].hide);
+    if (spec.slider !== true && (!ids.length || bad.length) || spec.slider === true && !Object.values(spec.params || {}).some(p => p && p.hide)) errs.push(`slider: true або id параметрів із hide: true${bad.length ? ` (не підходять: ${bad.join(", ")})` : ""}`); }
   if (spec.kind === "plane") {
     for (const [id, p] of Object.entries(spec.points || {})) if (p && p.labelDir !== undefined && !Object.hasOwn(LABEL_DIR, p.labelDir)) errs.push(`points.${id}.labelDir: одне з ${Object.keys(LABEL_DIR).join(", ")}`);
     (spec.segs || []).forEach((x, i) => { if (x && !Array.isArray(x) && x.ticks !== undefined && ![1, 2, 3].includes(x.ticks)) errs.push(`segs.${i}.ticks: 1, 2 або 3 рисочки`); });
@@ -959,5 +1136,5 @@ function validate(spec, screen = {}) {
   return errs;
 }
 
-G.SLID_LAB = { KINDS, compile, makeEnv, startState, paramList, fill, num, check, validate, mount, FN, svgTex, svgTexIssues, ariaTex, svgLabels, handleKey, handleTargets, liveHandle, dragIssues };
+G.SLID_LAB = { KINDS, compile, makeEnv, startState, paramList, fill, num, check, validate, mount, FN, svgTex, svgTexIssues, ariaTex, svgLabels, handleKey, handleTargets, liveHandle, dragHandles, dragIssues, digitNext, digitSide, digitsReady, typedDigit };
 })();

@@ -1,4 +1,6 @@
 /* Слід · Історія, 7 клас — «Королівство Руське» (Галицько-Волинська держава)
+   images-maps-hist-world-1117 (2026-11-18, images-hist-1117): eyebrow «Карта» → «Землі Лева» (l4 e7) — g7s4l4 → draft.
+   verifier-images-hist-1117 (2026-11-18): images-maps-hist-world-1117 — змінені уроки → verified; звіт reports/verify/images-hist-1117.md.
    7 уроків. Ревізія D-019 (2026-10-13); повторна верифікація verifier-g7s4-d019 — усі уроки verified.
    2026-10-31 (photo-g7s4, D-027): зображення в l1, l2, l3, l6; повторна верифікація verifier-images-g7s4g7s5 — verified (reports/verify/images-hist-g7s4.md).
    2026-11-03 (revise-hist-g7s4-kingdom, D-043/D-044): назва розділу «Королівство Руське»; пояснення назви в l2, завдання «дві назви» в l5, узгоджено l6 — l2, l5, l6 знову draft.
@@ -579,7 +581,7 @@ SLID.section("hist", {
         {
           type: "multi",
           sk: "geo",
-          eyebrow: "Карта",
+          eyebrow: "Землі Лева",
           title: "Які землі приєднав Лев?",
           opts: ["Частину Закарпаття з Мукачевом", "Крим", "Люблінську землю", "Новгород"],
           correct: [0, 2],

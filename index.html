@@ -192,6 +192,22 @@ figure.tall img{object-fit:contain;background:#000;max-height:340px}
 figure.svgfig{padding:12px;color:var(--ink)}
 figure.svgfig svg{width:100%;height:auto}
 figcaption{font-size:13px;color:var(--muted);padding:8px 12px;line-height:1.4}
+/* збільшення зображення екрана (engine-img-zoom-1117) */
+.zoombtn{display:block;position:relative;width:100%;padding:0;margin:0;border:0;background:none;color:inherit;font:inherit;cursor:zoom-in}
+.zoombtn:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
+.zhint{position:absolute;right:8px;bottom:8px;width:36px;height:36px;border-radius:99px;background:rgba(15,12,10,.62);color:#fff;display:grid;place-items:center;pointer-events:none}
+.zhint svg{width:20px;height:20px}
+.zoomv{position:fixed;inset:0;z-index:50;background:#0d0b0a;color:#fff;display:grid;grid-template-rows:auto minmax(0,1fr) auto}
+.zbar{display:flex;gap:8px;justify-content:flex-end;padding:calc(10px + env(safe-area-inset-top,0px)) 12px 10px}
+.zbar button{min-width:44px;height:44px;padding:0 12px;border-radius:12px;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.12);color:#fff;font:600 22px var(--body);display:inline-flex;align-items:center;justify-content:center;gap:6px;cursor:pointer}
+.zbar button:disabled{opacity:.4;cursor:default}
+.zbar #zClose{font-size:15px}
+.zbar svg{width:18px;height:18px}
+.zbar button:focus-visible,.zview:focus-visible{outline:3px solid #fff;outline-offset:-3px}
+.zview{overflow:hidden;touch-action:none;min-height:0;cursor:grab;display:grid}
+.zview img{width:100%;height:100%;object-fit:contain;transform-origin:50% 50%;user-select:none;-webkit-user-select:none;pointer-events:none}
+.zcap{padding:10px 16px calc(12px + env(safe-area-inset-bottom,0px));font-size:14px;line-height:1.4;max-height:30vh;overflow-y:auto;color:#e8e2dc}
+.zcap a{color:#fff}
 .opts{display:grid;gap:10px;margin-top:10px}
 .opt{all:unset;box-sizing:border-box;display:flex;gap:12px;align-items:flex-start;padding:14px 16px;background:var(--surface);border:2px solid var(--line);border-radius:14px;cursor:pointer;line-height:1.4;box-shadow:0 3px 0 var(--line);transition:border-color .15s,background .15s}
 .opt:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
@@ -216,6 +232,7 @@ figcaption{font-size:13px;color:var(--muted);padding:8px 12px;line-height:1.4}
 .align .readout{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:14px;color:var(--muted)}
 .align .readout b{font:700 24px var(--display);color:var(--accent);font-variant-numeric:tabular-nums}
 .align input{width:100%;accent-color:var(--accent)}
+.almeter{height:8px;border-radius:4px;background:var(--chip);overflow:hidden}.almeter i{display:block;height:100%;width:0;background:var(--accent);border-radius:4px;transition:width .15s}.almeter i.full{background:var(--ok)}
 .hint{background:var(--gold-soft);color:var(--ink);border-radius:12px;padding:10px 12px;font-size:15px;display:flex;gap:8px;margin-top:10px}
 .hint svg{flex:none;width:18px;height:18px;color:var(--gold);margin-top:3px}
 .note{margin-top:12px;border:1px solid var(--line);border-radius:12px;font-size:15px}
@@ -285,12 +302,15 @@ figcaption{font-size:13px;color:var(--muted);padding:8px 12px;line-height:1.4}
 .skillgroup{display:grid;gap:10px;margin-top:14px}
 .stat b{color:var(--ink)}
 
+/* підкреслення (орфограма в мовних вправах): нижче хвостиків д, у, р і без розривів — інакше риска під «д» зникає (u5s3l5) */
+u{text-decoration-thickness:max(2px,.09em);text-underline-offset:.24em;text-decoration-skip-ink:none}
 /* формули */
 .m,.mblock{font-family:var(--mathf);font-variant-numeric:lining-nums;white-space:nowrap}
 .m{font-size:1.06em}
 .mblock{display:block;text-align:center;font-size:1.45em;margin:6px 0;white-space:normal}
 .mv{font-style:italic}
 .mo{margin:0 .22em}
+.mo.marr{display:inline-block;transform:scaleX(1.35);margin:0 .36em;font-weight:600}   /* \to: довша й товща стрілка — на 360 px «1 → 4» не читається як «1 − 4» (g7m5) */
 .mu{margin:0 .04em 0 0}
 .fr{display:inline-flex;flex-direction:column;align-items:stretch;vertical-align:middle;text-align:center;font-size:.9em;line-height:1.12;margin:0 .1em}
 .fr .nu{border-bottom:.08em solid currentColor;padding:0 .18em .04em}
@@ -331,10 +351,20 @@ h1 .fr,h2 .fr{font-size:.82em}
 .lab-stage svg{width:100%;height:auto;touch-action:none;user-select:none;-webkit-user-select:none;font-family:var(--body)}
 .lab-h:focus{outline:none} .lab-h:focus-visible{stroke:var(--accent);stroke-width:3;stroke-dasharray:4 3}   /* ручка моделі з клавіатури (app/lab.js handleTargets) */
 .lab-stage svg:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:8px}
+.lab-stage{position:relative;line-height:0}
+.lab-dg{position:absolute;box-sizing:border-box;line-height:normal;margin:0;padding:0;border:0;border-radius:6px;background:transparent;color:transparent;caret-color:transparent;font-size:16px;text-align:center;outline:none;-webkit-tap-highlight-color:transparent;cursor:pointer}   /* клітинка цифри стовпчика поверх SVG (app/lab.js digitCells): цифру малює SVG, поле дає фокус і числову клавіатуру */
+.lab-dg:focus{outline:3px solid var(--accent);outline-offset:-1px;background:color-mix(in srgb,var(--accent) 14%,transparent)} .lab-dg::selection{background:transparent} .lab-dg:disabled{cursor:default}
 .lab-read{display:grid;gap:2px;text-align:center;font-size:17px;min-height:1.5em}
 .lab-read .m,.lab-read .mblock{font-size:19px}
 sup.mp{font-size:.7em;vertical-align:.55em;line-height:0;margin-left:1px}
-.sqrt{display:inline-flex;align-items:flex-start;vertical-align:middle}.sqrt::before{content:"√";font-size:1.15em;line-height:1}.radicand{border-top:.07em solid currentColor;padding:0 .08em}.root-index{font-size:.55em;align-self:flex-start;order:-1;margin:.45em -.32em 0 .15em}.mover{display:inline-block;text-decoration:overline;text-decoration-thickness:.07em}.mbb{font-family:Georgia,"Times New Roman",serif;font-weight:700}.mfn{font-style:normal}.mspace{display:inline-block}.mspace.thin{width:.18em}.mspace.quad{width:1em}.mspace.qquad{width:2em}.mcases{display:inline-flex;align-items:center;vertical-align:middle}.case-brace{font-size:2.5em;font-weight:200;line-height:1}.case-rows{display:flex;flex-direction:column;text-align:left;line-height:1.3}.mline{display:block}
+.sqrt{display:inline-flex;align-items:flex-start;vertical-align:middle}.sqrt::before{content:"√";font-size:1.15em;line-height:1}.radicand{border-top:.07em solid currentColor;padding:0 .08em}
+/* знак кореня — маска на всю висоту підкореневого: верхній кінець знака сходиться з рискою над числом за будь-якого шрифту
+   (гліф «√» шрифту давав розрив і «обірвану» риску, g8m3 sort; engine-render-legibility-1117). Сам гліф лишається для читача екрана, але зсунутий за межі */
+@supports ((mask-size:100% 100%) or (-webkit-mask-size:100% 100%)){
+.sqrt::before{overflow:hidden;text-indent:2em;white-space:nowrap;flex:none;align-self:stretch;width:.56em;min-height:1.05em;font-size:1em;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 24' preserveAspectRatio='none'%3E%3Cpath d='M0 13.4L3 12L5.4 19.6L11 0H12V1.6H11.7L5.9 24H5L2.3 14.3L.4 14.7Z'/%3E%3C/svg%3E") 0 0/100% 100% no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 24' preserveAspectRatio='none'%3E%3Cpath d='M0 13.4L3 12L5.4 19.6L11 0H12V1.6H11.7L5.9 24H5L2.3 14.3L.4 14.7Z'/%3E%3C/svg%3E") 0 0/100% 100% no-repeat}
+.radicand{padding:.04em .08em 0 .06em}
+/* висококонтрастний режим: фон під маскою інакше замінюється системним і знак зникає — малюємо системним кольором тексту (рев'ю engine-render-legibility-1117, P3-3) */
+@media (forced-colors:active){.sqrt::before{forced-color-adjust:none;background:CanvasText}}}.root-index{font-size:.55em;align-self:flex-start;order:-1;margin:.45em -.32em 0 .15em}.mover{display:inline-block;text-decoration:overline;text-decoration-thickness:.07em}.mbb{font-family:Georgia,"Times New Roman",serif;font-weight:700}.mfn{font-style:normal}.mspace{display:inline-block}.mspace.thin{width:.18em}.mspace.quad{width:1em}.mspace.qquad{width:2em}.mcases{display:inline-flex;align-items:center;vertical-align:middle}.case-brace{font-size:2.5em;font-weight:200;line-height:1}.case-rows{display:flex;flex-direction:column;text-align:left;line-height:1.3}.mline{display:block}
 .lab-ctl{display:grid;gap:6px}
 .lab-p{display:grid;grid-template-columns:minmax(28px,auto) 30px 1fr 30px 50px;align-items:center;gap:6px;font-size:15px}
 .lab-nb{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--line);background:var(--chip);font:700 17px/1 var(--body);color:var(--accent);padding:0;cursor:pointer}

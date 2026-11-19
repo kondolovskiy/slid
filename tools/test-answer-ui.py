@@ -1028,6 +1028,14 @@ async def open_lesson_at(page, lesson, at):
         await page.click('#action')
     return screens
 
+async def lab_wrong_digits(page, sol):
+    """Column with input: every digit cell gets a wrong digit (focus on the first cell, then digits only — the cells advance by themselves)."""
+    await page.focus('#stage .lab-h[data-h="0"]')
+    for i in range(len(sol)):
+        await page.keyboard.press(str((sol[f'd{i}'] + 1) % 10))
+    assert await page.locator('#action').is_enabled()
+
+
 async def player_focus_checks(browser, url):
     """engine-player-focus-followup: after a mistake focus never lands on ✕ (labs with SVG-only input), and after a tap
     the answer field is not refocused (the on-screen keyboard would cover the hint)."""
@@ -1035,7 +1043,10 @@ async def player_focus_checks(browser, url):
         context, page, errors = await qa_page(browser, url, {'grade': 4, 'unlockAll': True})
         screens = await open_lesson_at(page, lesson, at)
         assert screens[at]['type'] == 'lab', (lesson, at, screens[at]['type'])
-        await page.click('#action')   # the untouched model is wrong
+        # engine-lab-column-digits-1117: «Перевірити» неактивна, доки в стовпчику є «?» — спершу вписуємо хибні цифри
+        assert await page.locator('#action').is_disabled(), (lesson, 'Перевірити на «????»')
+        await lab_wrong_digits(page, screens[at]['solution'])
+        await page.click('#action')
         assert 'bad' in await page.locator('#dock').get_attribute('class')
         assert await page.locator('#action').is_disabled()
         active = await page.evaluate("(a => a.id || a.className || a.tagName)(document.activeElement)")
@@ -1071,11 +1082,14 @@ async def player_a11y_checks(browser, url):
     """engine-player-a11y-followup: labs changed only by touching the SVG work from the keyboard; on a coarse-pointer
     device (phone, tablet) the field is neither autofocused nor refocused after Enter from the on-screen keyboard;
     image credits are labelled by site; fig/shade aria-labels agree with the number of parts."""
-    # Column addition g4m2l1#4: digits only by tapping the SVG. After the mistake focus is on the first digit cell
-    # (units), typing a digit keeps focus on that cell through the re-render, Tab goes to the next one.
+    # Column addition g4m2l1#4: digit cells over the SVG. «Перевірити» is disabled while a cell is «?»; after a mistake focus
+    # is on the first digit cell (units); a digit stays in that cell through the re-render and focus moves on by itself
+    # (engine-lab-column-digits-1117: no Tab between digits).
     context, page, errors = await qa_page(browser, url, {'grade': 4, 'unlockAll': True})
     screens = await open_lesson_at(page, 'g4m2l1', 4)
     sol = screens[4]['solution']
+    assert await page.locator('#action').is_disabled(), 'Перевірити на «????»'
+    await lab_wrong_digits(page, sol)
     await page.click('#action')
     assert 'bad' in await page.locator('#dock').get_attribute('class')
     assert await page.evaluate("document.activeElement.classList.contains('lab-h') && document.activeElement.dataset.h==='0'"), await active_desc(page)
@@ -1086,10 +1100,9 @@ async def player_a11y_checks(browser, url):
     for i in range(n):
         assert await page.evaluate("document.activeElement.dataset.h") == str(i), await active_desc(page)
         await page.keyboard.press(str(sol[f'd{i}']))
-        assert await page.evaluate("document.activeElement.dataset.h") == str(i), ('focus lost on re-render', await active_desc(page))
-        assert await page.evaluate("document.activeElement.getAttribute('aria-valuetext')") == str(sol[f'd{i}'])
+        assert await page.evaluate(f"document.querySelector('#stage .lab-h[data-h=\"{i}\"]').getAttribute('aria-valuetext')") == str(sol[f'd{i}'])
         if i < n - 1:
-            await page.keyboard.press('Tab')
+            assert await page.evaluate("document.activeElement.dataset.h") == str(i + 1), ('no auto-advance to the next cell', await active_desc(page))
     assert await page.evaluate("window.__slidLab.get()") == {**sol}, await page.evaluate("window.__slidLab.get()")
     assert await page.locator('#action').is_enabled()
     await page.focus('#action'); await page.keyboard.press('Enter')
