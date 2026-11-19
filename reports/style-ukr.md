@@ -7,7 +7,7 @@
 | u4s1l1 Сказати без слів | 4 | 9 | 0.56 | 21 | 38 | 5.2 | 0.039 | 3 | — |
 | u4s1l2 Чарівні слова в чаті | 4 | 9 | 0.67 | 25 | 42 | 4.5 | 0.053 | 4 | longWordShare нетипово для сім'ї (z=2) |
 | u4s1l3 Про що цей текст? | 4 | 10 | 0.5 | 27 | 42 | 5.1 | 0.021 | 3 | readWordsPerScreen нетипово для сім'ї (z=2.5) |
-| u4s1l4 Початок, середина, кінець | 4 | 9 | 0.67 | 28 | 49 | 5.3 | 0.036 | 4 | readWordsPerScreen нетипово для сім'ї (z=2.8); maxReadWords нетипово для сім'ї (z=2.4) |
+| u4s1l4 Початок, середина, кінець | 4 | 9 | 0.67 | 28 | 49 | 5.3 | 0.036 | 4 | readWordsPerScreen нетипово для сім'ї (z=2.8); maxReadWords нетипово для сім'ї (z=2.3) |
 | u4s1l5 Що сталося, яке й чому | 4 | 10 | 0.6 | 22 | 39 | 5.5 | 0.028 | 5 | — |
 | u4s1l6 План і чистовик | 4 | 9 | 0.56 | 28 | 42 | 5.3 | 0.034 | 5 | readWordsPerScreen нетипово для сім'ї (z=2.8) |
 | u4s1l7 Сторінка класу (фінал) | 4 | 7 | 0.86 | 25 | 35 | 5.4 | 0.032 | 4 | readWordsPerScreen нетипово для сім'ї (z=2.5); maxReadWords нетипово для сім'ї (z=2.2); sentenceWords нетипово для сім'ї (z=2.1) |
@@ -39,7 +39,7 @@
 | u4s6l1 Три букви, чотири звуки | 4 | 10 | 0.5 | 18 | 39 | 4.5 | 0.024 | 5 | — |
 | u4s6l2 Рис для рисі? | 4 | 10 | 0.5 | 18 | 42 | 5.1 | 0.02 | 3 | — |
 | u4s6l3 М'ясо чи мясо? | 4 | 10 | 0.5 | 18 | 33 | 5 | 0.007 | 3 | — |
-| u4s6l4 Прозьба чи просьба? | 4 | 10 | 0.5 | 18 | 36 | 4.5 | 0.037 | 4 | — |
+| u4s6l4 Прозьба чи просьба? | 4 | 10 | 0.5 | 19 | 42 | 4.6 | 0.037 | 4 | — |
 | u4s6l5 Вишневий чи вишнивий? | 4 | 10 | 0.5 | 16 | 31 | 4.4 | 0.043 | 3 | — |
 | u4s6l6 Нога, але на нозі | 4 | 9 | 0.56 | 16 | 44 | 4.3 | 0.016 | 4 | — |
 | u4s6l7 Помилки робота Буквика (фінал) | 4 | 7 | 0.86 | 14 | 24 | 4.1 | 0.008 | 3 | — |
@@ -566,7 +566,7 @@
 
 Для z-оцінок sd не менше 10 % середнього; нижче наведено фактичне sd.
 
-- **4:lesson**: screens 9.18±0.62, gradedShare 0.6±0.07, readWordsPerScreen 20.02±2.85, maxReadWords 38.59±4.43, sentenceWords 4.68±0.43, longWordShare 0.02±0.02, typeVariety 3.92±0.81
+- **4:lesson**: screens 9.18±0.62, gradedShare 0.6±0.07, readWordsPerScreen 20.04±2.84, maxReadWords 38.71±4.44, sentenceWords 4.68±0.43, longWordShare 0.02±0.02, typeVariety 3.92±0.81
 - **4:boss**: screens 7.1±0.3, gradedShare 0.86±0.01, readWordsPerScreen 15.6±3.72, maxReadWords 27.3±3.47, sentenceWords 4.46±0.38, longWordShare 0.02±0.01, typeVariety 4.6±1.02
 - **5-6:lesson**: screens 11.46±0.72, gradedShare 0.55±0.05, readWordsPerScreen 26.43±3.16, maxReadWords 50.39±6.45, sentenceWords 5.35±0.45, longWordShare 0.03±0.02, typeVariety 4.04±0.75
 - **5-6:boss**: screens 7.44±0.7, gradedShare 0.86±0.03, readWordsPerScreen 19.36±2.96, maxReadWords 34.48±3.83, sentenceWords 4.96±0.43, longWordShare 0.04±0.01, typeVariety 3.88±0.65
