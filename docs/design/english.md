@@ -115,9 +115,9 @@ _Задача: tasks/done/design-eng.md (тип design). Код рушія, зм
 | e5s4 | Одяг (види одягу, сезонний одяг) | Present Continuous; Present Simple vs Present Continuous |
 | e5s5 | Природа (погода, природні явища) | it's + weather; can (ability); comparatives |
 | e5s6 | Відпочинок і дозвілля (види відпочинку, захоплення, канікули) | like/love/hate + -ing; Let's…; suggestions |
-| e5s7 | Рідне місто/село (прогулянка, місцезнаходження) | there is/are; prepositions of place; directions |
+| e5s7 | Рідне місто/село (місцезнаходження, основні історичні та культурні відомості; + «прогулянка містом/селом» — за програмою підтема «Подорожі», с. 20, поєднано) | there is/are; prepositions of place; directions |
 | e5s8 | Свята і традиції (календар свят, традиції святкування) | dates, ordinal numbers; was/were |
-| e5s9 | Подорож (улюблені напрямки) | be going to; Past Simple (regular) |
+| e5s9 | Подорож (улюблені напрямки подорожі) | be going to; Past Simple (regular) |
 | e5s10 | Україна і країни виучуваної мови (загальні відомості) | comparatives and superlatives |
 
 ### 4.2. 6 клас (до A2)
