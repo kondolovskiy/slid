@@ -2579,6 +2579,12 @@ eq([L.SK_RETAG.prev.id, L.SK_RETAG.prev.rules.length], ["sk-2026-10-31", 13], "S
   const BLD = { ...base, id: "a09", type: "build", sk: "synt", title: "Склади речення", tiles: ["світить", "сонце", "яскраво"], answer: ["Сонце яскраво світить.", "Яскраво світить сонце."], extra: ["світять"] };
   eq(vp(BLD), [], "pool-lang: build з кількома порядками й пасткою — можна (answer — ключ речення)");
   eq(LL.POOL_TYPES.includes("build") && LL.DIAG_TYPES.includes("build"), true, "build: у POOL_TYPES і DIAG_TYPES");
+  // match (engine-eng-match): у пулі — ті самі правила, що в уроці (SLID_LANG.issues); межі тесту рівня/пулу — engine-eng-diag-pool
+  const MT = { ...base, id: "a10", type: "match", sk: "synt", title: "Знайди пари", left: ["кіт", "пес", "птах"], right: ["кошеня", "цуценя", "пташеня"] };
+  eq(vp(MT), [], "pool-lang: match — можна");
+  eq(LL.POOL_TYPES.includes("match") && LL.DIAG_TYPES.includes("match") && L.G_GRADED.includes("match"), true, "match: у POOL_TYPES, DIAG_TYPES і G_GRADED");
+  has(vp({ ...MT, right: ["кошеня", "цуценя"] }), /match/, "pool-lang: match — left і right різної довжини — помилка lang.issues");
+  has(vp({ ...MT, answer: 1 }), /answer/, "pool-lang: answer у match — помилка (поле числової відповіді)");
   has(vp({ ...BLD, answer: "Сонце світить." }), /build/, "pool-lang: build — answer не з усіх плиток — помилка lang.issues");
   has(vp({ ...BLD, unit: "см" }), /unit/, "pool-lang: unit у build — помилка");
   has(vp({ ...FIX[0], gen: { vars: { a: { min: 1, max: 3 } }, answer: "a" } }), /gen/, "pool-lang: gen у мовній вправі — помилка");

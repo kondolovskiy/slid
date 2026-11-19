@@ -51,7 +51,7 @@ export const TARGET_LANGS = Object.freeze([...registry().TARGET_LANGS]);
 export const subjectLang = subj => subj && typeof subj === "object" ? registry().subjectLang(subj) : "";
 export const isEnglishSubject = subj => subjectLang(subj) === "en";
 
-export const GRADED = ["choice","multi","sort","slider","order","align","shade","numline","number","fracin","lab","answer","gaps","pick","stress","word","split","build"];
+export const GRADED = ["choice","multi","sort","slider","order","align","shade","numline","number","fracin","lab","answer","gaps","pick","stress","word","split","build","match"];
 export const TYPES = ["intro","info","explore", ...GRADED];
 // предмети, де кожен урок має справжнє img (D-027, D-044): validate (помилка) і шаблон задачі автора в make-tasks.mjs
 export const IMG_REQUIRED = { hist: "error", world: "error" };
@@ -150,10 +150,10 @@ const enAbbr = t => t
   .replace(/(?<![\p{L}])(?:etc\.|(?:[A-Za-z]\.){2,})(?=\s)(?!\s+\p{Lu})/gu, protect);
 
 /** Текст, який дитина читає на екрані (без варіантів відповідей і фідбеку). */
-// текст мовної вправи (pick/gaps/stress/split; build — зібране речення, перший answer) дитина читає так само, як body: SLID_LANG.readText (app/lang.js) — DRY з рушієм
+// текст мовної вправи (pick/gaps/stress/split; build — зібране речення, перший answer; match — обидві колонки без alt) дитина читає так само, як body: SLID_LANG.readText (app/lang.js) — DRY з рушієм
 let LANG_READ = null;
 function langText(s) {
-  if (!["gaps", "pick", "stress", "split", "build"].includes(s?.type)) return "";
+  if (!["gaps", "pick", "stress", "split", "build", "match"].includes(s?.type)) return "";
   if (!LANG_READ) { const ctx = {}; ctx.window = ctx; vm.createContext(ctx); vm.runInContext(fs.readFileSync(path.join(ROOT, "app/lang.js"), "utf8"), ctx); LANG_READ = ctx.SLID_LANG.readText; }
   return LANG_READ(s);
 }

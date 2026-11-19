@@ -27,7 +27,7 @@ const GRADES_WITH_CONTENT = [...new Set(SUBJ.flatMap(c=>c.sections.map(x=>x.grad
 function findLesson(id){ for(const c of SUBJ) for(let k=0;k<c.sections.length;k++){ const L=c.sections[k].lessons||[]; const i=L.findIndex(l=>l.id===id); if(i>=0) return {c,k,i,l:L[i],sec:c.sections[k]}; } return null; }
 /* персоналізація (app/learn.js): тест рівня, план, повторювані помилки */
 const LEARN = window.SLID_LEARN;
-const LANG = window.SLID_LANG;   // мовні вправи gaps / pick / stress / word / split / build (app/lang.js)
+const LANG = window.SLID_LANG;   // мовні вправи gaps / pick / stress / word / split / build / match (app/lang.js)
 /* журнал подій (app/evidence.js, docs/EVIDENCE.md): лише читає стан, на потік не впливає; без модуля — заглушка */
 const EV = window.SLID_EVIDENCE || { log(){}, observe(){}, newProfile(){} };
 const LORD = new Map(); SUBJ.forEach(c=>c.sections.forEach(x=>(x.lessons||[]).forEach(l=>LORD.set(l.id,LORD.size))));
@@ -605,7 +605,7 @@ function viewTopic(){
       </div>`; }).join("")}
   </div>`;
 }
-const GRADED=["choice","multi","sort","slider","order","align","shade","numline","number","fracin","lab","answer","gaps","pick","stress","word","split","build"];
+const GRADED=["choice","multi","sort","slider","order","align","shade","numline","number","fracin","lab","answer","gaps","pick","stress","word","split","build","match"];
 function openSheet(i){
   const c=course(nav.id), sec=c.sections[nav.sec], LS=sec.lessons, l=LS[i], u=unlocked(sec,i), rec=S.lessons[l.id];
   const graded=l.screens.filter(s=>GRADED.includes(s.type) && !s.hyp && !s.poll).length;
@@ -1383,6 +1383,11 @@ function numKeysHtml(s, sg){
 }
 const numShow = v => String(v).replace(".",",").replace("-","−");
 /* мовні вправи (app/lang.js, docs/CONTENT_SCHEMA.md §4.1): розмітка, стан st, позначки */
+/* match: колонка, кнопка (дотик ≥ 44 px), мітка пари, картинка; SRONLY — повідомлення для диктора без місця на екрані */
+const MCOL="flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:8px", MBTN="display:flex;align-items:center;gap:8px;width:100%;min-height:44px;padding:6px 10px;text-align:left;white-space:normal;overflow-wrap:anywhere",
+  MTAG="flex:none;display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;border:2px solid currentColor;font-size:.8em;font-weight:700",
+  MIMG="width:64px;height:64px;max-width:100%;object-fit:contain;flex:none", SRONLY="position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0";
+let mSel=null, mLock=new Set(), mOrder=[], matchDraw=()=>{};
 const BLINE="display:flex;flex-wrap:wrap;gap:6px;align-items:center;min-height:64px;line-height:1.3", BTILE="padding:8px 12px;min-height:44px;min-width:44px";   // build: рядок і плитка (дотик ≥ 44 px)
 function langHtml(s){
   if(s.type==="gaps"){ const g=LANG.parseGaps(s.text); st=g.gaps.map(()=>null);
@@ -1411,6 +1416,11 @@ function langHtml(s){
      Стан st — індекси плиток (buildTiles) у порядку речення. Стилі — наявні класи (.ltext, .gopt) і inline: index.html не змінюємо */
   if(s.type==="build"){ const all=LANG.buildTiles(s); st=[];
     return `<div class="ltext" id="bline" role="group" aria-label="Речення" aria-live="polite" style="${BLINE}"></div><div class="bank" role="group" aria-label="Слова" style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:12px">${LANG.buildOrder(s).map(k=>`<button type="button" class="gopt bt" data-t="${k}" aria-pressed="false" style="${BTILE}">${esc(all[k])}</button>`).join("")}</div><div class="fix"${uiA()}>Торкайся слів по черзі, щоб скласти речення. Ще раз — щоб прибрати слово.</div>`; }
+  /* match (engine-eng-match; docs/design/english.md §5.7): дві колонки кнопок — ліва в порядку розмітки (номер — мітка пари), права
+     перемішана LANG.matchOrder раз на показ. Стан st — за лівими: індекс правого в розмітці або null; вибраний елемент (mSel) і пари,
+     закріплені після першої помилки (mLock), — стан плеєра, не відповідь. Кнопки малює matchDraw (bindLang) — з mSel, st і mLock */
+  if(s.type==="match"){ const n=s.left.length; st=Array(n).fill(null); mSel=null; mLock=new Set(); mOrder=LANG.matchOrder(s);
+    return `<div class="match" style="display:flex;gap:8px;align-items:flex-start"><div class="mcol" id="mleft" role="group" aria-label="Ліва колонка" style="${MCOL}"></div><div class="mcol" id="mright" role="group" aria-label="Права колонка" style="${MCOL}"></div></div><div id="mlive" role="status" aria-live="polite"${uiA()} style="${SRONLY}"></div><div class="fix"${uiA()}>Торкнись елемента ліворуч, потім — його пари праворуч. Ще раз по парі — щоб роз'єднати.</div>`; }
   if(s.type==="word"){ st=""; const keys=s.keys||[];
     return `<div class="numbox wide lword">${s.before?`<span class="unit">${esc(s.before)}</span>`:""}<input id="numIn" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="?" aria-label="Відповідь"><span class="unit">${esc(s.after||"")}</span></div>${keys.length?`<div class="anskeys sym">${keys.map(v=>`<button type="button" data-ins="${esc(v)}" aria-label="Вставити ${esc(v)}">${esc(v)}</button>`).join("")}</div>`:""}`; }
   return "";
@@ -1430,6 +1440,31 @@ function bindLang(s){
       line.querySelectorAll(".bl").forEach(b=>b.onclick=()=>{ if(checked) return; st.splice(+b.dataset.p,1); clearMarks(); draw(); stage.querySelector(`.bt[data-t="${b.dataset.t}"]`)?.focus(); });
       setDock("","","","Перевірити", st.length>0); };
     on(".bt",b=>{ const k=+b.dataset.t, p=st.indexOf(k); if(p>=0) st.splice(p,1); else st.push(k); draw(); }); }
+  /* match: торкнутися лівого, потім правого (або навпаки) — пара; та сама пара ще раз — роз'єднати; правий, уже в іншій парі, переходить
+     до нового лівого. Закріплені пари (mLock — правильні після першої помилки) не змінюються. Кнопки перемальовуємо з st, фокус лишається
+     на тій самій кнопці (клавіатура: Tab, Enter/пробіл), #mlive каже диктору, що сталося */
+  if(s.type==="match"){ const live=$("#mlive"), lbl=j=>LANG.matchLabel(s.right[j]), say=t=>{ live.innerHTML=t; };
+    const q=v=>"«"+inL(esc(v))+"»";
+    matchDraw=()=>{ const right=j=>{ const r=s.right[j]; return typeof r==="string"? `<span>${esc(r)}</span>` : `<img src="${esc(r.img)}" alt="${attr(r.alt)}" style="${MIMG}">`; };
+      const tag=i=>`<span class="mtag" aria-hidden="true" style="${MTAG}${i===null?";visibility:hidden":""}">${i===null?"":i+1}</span>`;
+      const pairOf=j=>st.indexOf(j), state=(al,on)=>on? `${al} — правильно, закріплено` : al;
+      $("#mleft").innerHTML=s.left.map((t,i)=>{ const j=st[i], on=mLock.has(i), al=`${i+1}. ${t}${j!==null? " — пара: "+lbl(j) : ""}`;
+        return `<button type="button" class="gopt ml${on?" is-ok":""}" data-l="${i}" aria-pressed="${mSel?.l===i}" aria-label="${attr(state(al,on))}"${on||checked?" disabled":""} style="${MBTN}">${tag(i)}<span>${esc(t)}</span></button>`; }).join("");
+      $("#mright").innerHTML=mOrder.map(j=>{ const i=pairOf(j), on=i>=0 && mLock.has(i), al=`${lbl(j)}${i>=0? " — пара: "+(i+1)+". "+s.left[i] : ""}`;
+        return `<button type="button" class="gopt mr${on?" is-ok":""}" data-r="${j}" aria-pressed="${mSel?.r===j}" aria-label="${attr(state(al,on))}"${on||checked?" disabled":""} style="${MBTN}">${tag(i>=0? i : null)}${right(j)}</button>`; }).join("");
+      stage.querySelectorAll(".ml").forEach(b=>b.onclick=()=>tap(+b.dataset.l, null));
+      stage.querySelectorAll(".mr").forEach(b=>b.onclick=()=>tap(null, +b.dataset.r)); };
+    const redraw=el=>{ clearMarks(); matchDraw(); setDock("","","","Перевірити", st.every(x=>x!==null)); stage.querySelector(el)?.focus(); };
+    const tap=(i,j)=>{ if(checked) return;
+      if(i!==null && mSel?.r!==undefined) j=mSel.r; else if(j!==null && mSel?.l!==undefined) i=mSel.l;
+      else { const same= i!==null? mSel?.l===i : mSel?.r===j; mSel= same? null : i!==null? {l:i} : {r:j};
+        say(mSel? `Обрано ${q(i!==null? s.left[i] : lbl(j))}. Тепер — пара ${i!==null?"праворуч":"ліворуч"}.` : "Вибір знято.");
+        return redraw(i!==null? `.ml[data-l="${i}"]` : `.mr[data-r="${j}"]`); }
+      const from=mSel; mSel=null;
+      if(st[i]===j){ st[i]=null; say(`Пару роз'єднано: ${q(s.left[i])} і ${q(lbl(j))}.`); }
+      else { const k=st.indexOf(j); if(k>=0) st[k]=null; st[i]=j; say(`Пара: ${q(s.left[i])} — ${q(lbl(j))}.`); }
+      redraw(from.l!==undefined? `.mr[data-r="${j}"]` : `.ml[data-l="${i}"]`); };
+    matchDraw(); }
 }
 function langMarks(s, reveal){
   // позначка не лише кольором: екранний диктор чує «… — правильно / неправильно» (aria-label; початкова назва — у data-al, її повертає clearMarks)
@@ -1451,6 +1486,12 @@ function langMarks(s, reveal){
   if(s.type==="build"){ const ok=LANG.check(s,st,TL()), m= ok? st.map(()=>true) : LANG.buildMarks(s,st);
     stage.querySelectorAll("#bline .bl").forEach((b,p)=>mark(b, !!m[p])); mark($("#bline"), ok);
     if(reveal && !ok) $("#hintHost").innerHTML=`<div class="hint">${ic("check")}<span>${inUi("Правильно:")} ${LANG.wordAnswers(s).map(a=>`<b>${esc(a)}</b>`).join(" "+inUi("або")+" ")}</span></div>`; }
+  /* match: пара правильна, якщо st[i] === i. Перша помилка (reveal false) — правильні пари закріплюються (mLock: зелені, кнопки неактивні),
+     хибні — червоні, їх переставляють; друга — показ усіх правильних пар (alt — замість картинки) */
+  if(s.type==="match"){ mSel=null; if(!reveal) st.forEach((j,i)=>{ if(j===i) mLock.add(i); }); matchDraw();
+    stage.querySelectorAll(".ml").forEach(b=>{ const i=+b.dataset.l; if(!mLock.has(i)) mark(b, st[i]===null? null : st[i]===i); });
+    stage.querySelectorAll(".mr").forEach(b=>{ const j=+b.dataset.r, i=st.indexOf(j); if(!(i>=0 && mLock.has(i))) mark(b, i<0? null : i===j); });
+    if(reveal && !LANG.check(s,st)) $("#hintHost").innerHTML=`<div class="hint">${ic("check")}<span>${inUi("Правильно:")} ${s.left.map((t,i)=>`<b>${esc(t)}</b> — ${esc(LANG.matchLabel(s.right[i]))}`).join("; ")}</span></div>`; }
   if(s.type==="word"){ const ni=$("#numIn"), ok=LANG.check(s,st,TL()); mark(ni, ok);
     if(reveal && !ok) $("#hintHost").innerHTML=`<div class="hint">${ic("check")}<span>${inUi("Правильна відповідь:")} <b>${esc(LANG.wordAnswers(s)[0])}</b></span></div>`; }
 }
@@ -1516,7 +1557,7 @@ function gradeNow(s){
     case "fracin": return s.hideDen? LEARN.checkAns({answer:s.answer+"/"+s.den,fractionOnly:true},st)==="ok" : parseInt(st,10)===s.answer;
     case "answer": return (lastAns=LEARN.checkAns(s,st))==="ok";   // lastAns — вердикт для журналу подій (без другої перевірки)
     case "lab": return window.SLID_LAB.check(s.lab, LAB.get(), s.goal);
-    case "gaps": case "pick": case "stress": case "word": case "split": case "build": return LANG.check(s, st, TL());
+    case "gaps": case "pick": case "stress": case "word": case "split": case "build": case "match": return LANG.check(s, st, TL());
   }
 }
 function showMarks(s, reveal){
@@ -1595,6 +1636,7 @@ function check(){
              : s.type==="pick"? "Червоні слова обрано зайво — або якогось слова бракує. Зміни вибір і перевір ще раз."
              : s.type==="stress"? "Наголос не там. Вимов слово вголос, повільно, і спробуй ще раз."
              : s.type==="split"? "Межі стоять не так. Зміни їх і перевір ще раз."
+             : s.type==="match"? "Червоні пари складено неправильно. Зелені вже закріплено — переставляй решту й перевір ще раз."
              : s.type==="build"? (LANG.buildMarks(s,st).every(Boolean)? "Речення ще не закінчене: бракує слів. Додай їх і перевір ще раз." : "Червоні слова стоять не на своїх місцях або зайві. Зміни речення й перевір ще раз.")
              : wv?.kb? esc(wv.kb)                                   // хром рушія (uk): розкладка не та
              : wv?.hint? inL(esc(wv.hint))                          // зміст предмета (en): «Almost: check the spelling.»

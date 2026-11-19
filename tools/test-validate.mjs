@@ -464,6 +464,29 @@ expectRun("drag: at і без drag — без попередження", one("fx
         expectRun("eng: тест рівня — кирилиця в назві теми", { ...files(), "content/fxen/diag-g5.js": diag({}).replace('"title": "Plurals"', '"title": "Множина"') }, ["--diag", "dgfxen"], { warn: "кирилиця в змісті англійською: topics[0].title" });
         fs.rmSync(path.join(tmp, "content/fxen/diag-g5.js"), { force: true });
       } finally { fs.writeFileSync(pf, orig); } }
+    // engine-eng-match (docs/design/english.md §5.7): зображення правої колонки — файл у img/<предмет>/, alt, credits; emoji — помилка
+    { fs.mkdirSync(path.join(tmp, "img/fxen/fxen"), { recursive: true });
+      for (const f of ["sun", "tree"]) fs.copyFileSync(path.join(ROOT, `tools/fixtures/match-${f}.svg`), path.join(tmp, `img/fxen/fxen/${f}.svg`));
+      const CR = { credits: [["Sun and tree", "Slid", "CC0", "https://example.org/sun"]] };
+      const MT = (more = {}) => ({ type: "match", sk: "gram", title: "Match the words and the pictures", left: ["sun", "tree", "cat"],
+        right: [{ img: "img/fxen/fxen/sun.svg", alt: "the sun" }, { img: "img/fxen/fxen/tree.svg", alt: "a tree" }, "a pet that says miaow"], fbOk: "Yes!", fbText: "The sun is in the sky, a tree is green and a cat is a pet.", hint: "Look at the colours.", ...more });
+      run("match з картинками й credits — чисто", { extra: [MT()], sec: CR }, { noWarn: "match" });
+      run("match лише з текстом, без credits — чисто", { extra: [MT({ right: ["a star", "a plant", "a pet"] })] }, { noWarn: "match" });
+      run("match: картинки без credits розділу — помилка", { extra: [MT()] }, { err: "credits порожні" });
+      run("match: немає файлу — помилка", { extra: [MT({ right: [{ img: "img/fxen/fxen/moon.svg", alt: "the moon" }, "a plant", "a pet"] })], sec: CR }, { err: "match: немає файлу img/fxen/fxen/moon.svg" });
+      run("match: файл поза img/<предмет>/ — помилка", { extra: [MT({ right: [{ img: "tools/fixtures/match-sun.svg", alt: "the sun" }, "a plant", "a pet"] })], sec: CR }, { err: "у теці img/fxen/" });
+      run("match: картинка без alt — помилка", { extra: [MT({ right: [{ img: "img/fxen/fxen/sun.svg" }, "a plant", "a pet"] })], sec: CR }, { err: "alt обов'язковий" });
+      run("match: emoji замість картинки — помилка", { extra: [MT({ right: ["\u2600\uFE0F", "a plant", "a pet"] })] }, { err: "emoji системного шрифту" });
+      run("match: 2 пари — помилка", { extra: [MT({ left: ["sun", "tree"], right: ["a star", "a plant"] })] }, { err: "3–6 пар" });
+      run("match: alt українською — попередження кирилиці", { extra: [MT({ right: [{ img: "img/fxen/fxen/sun.svg", alt: "сонце" }, { img: "img/fxen/fxen/tree.svg", alt: "a tree" }, "a pet"] })], sec: CR }, { warn: "кирилиця в змісті англійською" });
+      run("match з poll — помилка", { extra: [MT({ poll: "p1", fbTitle: "Good guess." })], sec: CR }, { err: "poll лише для choice" });
+      // тест рівня: власних credits немає — джерело в credits предмета чи будь-якого розділу
+      const dg = item => `SLID.diag("fxen", ${JSON.stringify({ id: "dgfxen", grade: 5, title: "Level test", why: "Regression test of the validator for English.", status: "draft",
+        meta: { author: "test", created: "2026-11-19", factcheck: null, teacher: null }, topics: [{ id: "t", title: "Plurals", kind: "cur", lessons: ["fxenl1"] }],
+        items: [{ topic: "t", ...MT(), fbOk: undefined, fbText: undefined, hint: undefined, ...item }] }, null, 1)});\n`;
+      expectRun("eng: match у тесті рівня з credits розділу — чисто", { "content/fxen/aa-subj.js": SUBJ(), "content/fxen/g5-fxen.js": secJS("fxen", enSec({ sec: CR })), "content/fxen/diag-g5.js": dg({}) }, ["--diag", "dgfxen"], { noWarn: "match" });
+      expectRun("eng: match у тесті рівня без жодних credits — помилка", { ...files(), "content/fxen/diag-g5.js": dg({}) }, ["--diag", "dgfxen"], { err: "credits порожні" });
+      fs.rmSync(path.join(tmp, "content/fxen/diag-g5.js"), { force: true }); }
     // soon з id справжнього предмета — помилка (рушій показав би предмет двічі: справжній і «скоро»)
     { const soon = id => `SLID.soon(${JSON.stringify({ id, short: "Ф", subject: "Фікстура", grade: "5 клас", icon: "leaf", why: "Скоро.", colors: { light: { accent: "#000" }, dark: { accent: "#fff" } } })});\n`;
       const r1 = runTree({ ...files(), "content/catalog.js": soon("fxen") }, []);

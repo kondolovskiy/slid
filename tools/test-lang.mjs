@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Слід · тести мовних вправ (app/lang.js): розбір розмітки gaps / pick / stress / word / split і перевірка відповідей. Також мова змісту предмета: SLID.subjectLang (app/registry.js) = tools/lib.mjs subjectLang (engine-eng-lang-attr).
+// Слід · тести мовних вправ (app/lang.js): розбір розмітки gaps / pick / stress / word / split / build / match і перевірка відповідей. Також мова змісту предмета: SLID.subjectLang (app/registry.js) = tools/lib.mjs subjectLang (engine-eng-lang-attr).
 // Очікування записані вручну (не через solution), щоб тест ловив помилки самого розбору. Запуск: node tools/test-lang.mjs
 import fs from "node:fs"; import vm from "node:vm"; import path from "node:path";
 import { ROOT } from "./lib.mjs";
@@ -409,6 +409,58 @@ for (const s of [{ type: "gaps", text: "с{*е|и}ло" }, { type: "pick", text:
   eq([...o].sort(), [0, 1, 2, 3], "buildOrder: перестановка всіх плиток з extra");
   no(L.check(t2, o.filter(k => k < 3), ""), "buildOrder: плитки не стоять у правильному порядку (навіть коли перестановка — тотожна)");
   for (let i = 0; i < 30; i++) { const r = L.buildOrder(m); no(L.check(m, r, ""), `buildOrder: жоден показ не дає правильного речення (${r})`); }
+}
+
+/* match — пари слово ↔ картинка / значення (engine-eng-match; docs/design/english.md §5.7; CONTENT_SCHEMA §4.1): left[i] ↔ right[i];
+   стан — масив за лівими: індекс правого елемента в розмітці або null; праву колонку плеєр показує перемішаною (matchOrder) */
+{ const M = (more = {}) => ({ type: "match", left: ["cat", "dog", "bird"], right: [{ img: "img/eng/e4s1/cat.svg", alt: "a cat" }, "a dog", "a bird"], ...more });
+  const s = M();
+  eq(L.issues(s), [], "match: issues чисто (картинка й текст у правій колонці)");
+  ok(L.TYPES.includes("match"), "match: у SLID_LANG.TYPES");
+  ok(L.check(s, [0, 1, 2]), "match: усі пари правильні");
+  no(L.check(s, [1, 0, 2]), "match: дві пари переплутано");
+  no(L.check(s, [0, 1, null]), "match: не всі пари складено");
+  no(L.check(s, [0, 1]), "match: стан коротший за left");
+  no(L.check(s, "0,1,2"), "match: стан не масив");
+  no(L.check({ ...s, right: ["a cat", "a dog"] }, [0, 1, 2]), "match: зламана розмітка (right коротший) — не зараховується");
+  eq(L.solution(s), [0, 1, 2], "match: solution — кожен лівий до свого правого");
+  eq(L.matchLabel(s.right[0]), "a cat", "matchLabel: картинка — alt");
+  eq(L.matchLabel("a dog"), "a dog", "matchLabel: текст — сам текст");
+  eq(L.readText(s), "cat, dog, bird, a dog, a bird", "readText: ліва колонка й текст правої (alt дитина не читає)");
+  // межі й поля
+  ok(L.issues(M({ left: ["cat", "dog"], right: ["a cat", "a dog"] })).some(e => /3–6 пар/.test(e)), "match: 2 пари — помилка");
+  eq(L.issues(M({ left: ["a", "b", "c", "d", "e", "f"], right: ["1", "2", "3", "4", "5", "6"] })), [], "match: 6 пар — чисто");
+  ok(L.issues(M({ left: ["a", "b", "c", "d", "e", "f", "g"], right: ["1", "2", "3", "4", "5", "6", "7"] })).some(e => /3–6 пар/.test(e)), "match: 7 пар — помилка");
+  ok(L.issues(M({ right: ["a cat", "a dog"] })).some(e => /однакова кількість/.test(e)), "match: left і right різної довжини — помилка");
+  ok(L.issues(M({ left: "cat" })).length, "match: left не масив — помилка");
+  ok(L.issues(M({ left: ["cat", "", "bird"] })).length, "match: порожній лівий — помилка");
+  ok(L.issues(M({ right: [{ img: "img/eng/e4s1/cat.svg" }, "a dog", "a bird"] })).some(e => /alt обов'язковий/.test(e)), "match: картинка без alt — помилка");
+  ok(L.issues(M({ right: [{ img: "img/eng/e4s1/cat.svg", alt: "  " }, "a dog", "a bird"] })).some(e => /alt обов'язковий/.test(e)), "match: порожній alt — помилка");
+  ok(L.issues(M({ right: [{ img: "https://example.org/cat.svg", alt: "a cat" }, "a dog", "a bird"] })).some(e => /img:/.test(e)), "match: img за URL — помилка (офлайн)");
+  ok(L.issues(M({ right: [{ img: "img/../../etc/cat.svg", alt: "a cat" }, "a dog", "a bird"] })).some(e => /img:/.test(e)), "match: img з .. — помилка");
+  ok(L.issues(M({ right: [{ img: "img/eng/e4s1/cat.gif", alt: "a cat" }, "a dog", "a bird"] })).some(e => /img:/.test(e)), "match: img .gif — помилка");
+  ok(L.issues(M({ right: [{ img: "img/eng/e4s1/cat.svg", alt: "a cat", cap: "x" }, "a dog", "a bird"] })).some(e => /зайве: cap/.test(e)), "match: зайве поле в { img, alt } — помилка");
+  ok(L.issues(M({ right: [5, "a dog", "a bird"] })).some(e => /рядок або \{ img, alt \}/.test(e)), "match: правий — не рядок і не об'єкт — помилка");
+  // emoji системного шрифту — ні (і в left, і в right, і в alt)
+  ok(L.issues(M({ left: ["cat \u{1F431}", "dog", "bird"] })).some(e => /emoji/.test(e)), "match: emoji в left — помилка");
+  ok(L.issues(M({ right: ["\u{1F431}", "a dog", "a bird"] })).some(e => /emoji/.test(e)), "match: emoji замість картинки — помилка");
+  ok(L.issues(M({ right: ["☀️", "a dog", "a bird"] })).some(e => /emoji/.test(e)), "match: ☀️ (U+2600 + FE0F) — помилка");
+  ok(L.issues(M({ right: [{ img: "img/eng/e4s1/cat.svg", alt: "\u{1F431}" }, "a dog", "a bird"] })).some(e => /emoji/.test(e)), "match: emoji в alt — помилка");
+  eq(L.issues(M({ left: ["café", "dog → dogs", "bird"] })), [], "match: діакритика й стрілка — не emoji");
+  // повтори, HTML, кирилиця з латиницею
+  ok(L.issues(M({ left: ["cat", "Cat", "bird"] })).some(e => /повтор/.test(e)), "match: лівий повторюється (регістр не важить) — помилка");
+  ok(L.issues(M({ right: ["a dog", "a dog", "a bird"] })).some(e => /повтор/.test(e)), "match: правий текст повторюється — помилка");
+  ok(L.issues(M({ right: [{ img: "img/eng/e4s1/cat.svg", alt: "a cat" }, { img: "img/eng/e4s1/cat.svg", alt: "a kitten" }, "a bird"] })).some(e => /повтор/.test(e)), "match: та сама картинка двічі — помилка");
+  ok(L.issues(M({ right: [{ img: "img/eng/e4s1/cat.svg", alt: "a cat" }, "a cat", "a bird"] })).some(e => /повтор/.test(e)), "match: alt = текст іншого правого — помилка (диктор чує однакове)");
+  ok(L.issues(M({ left: ["<b>cat</b>", "dog", "bird"] })).some(e => /HTML/.test(e)), "match: HTML у left — помилка");
+  ok(L.issues(M({ left: ["сat", "dog", "bird"] })).some(e => /кирилицю й латиницю/.test(e)), "match: кирилична «с» у «сat» — помилка");
+  // показ правої колонки: перестановка, ніколи не в порядку розмітки (інакше пари стоять навпроти — відповідь на екрані)
+  const one = () => 0.999999;   // permute з таким rnd лишає порядок як був
+  const o = L.matchOrder(s, one);
+  eq([...o].sort(), [0, 1, 2], "matchOrder: перестановка правих");
+  ok(o.some((k, i) => k !== i), "matchOrder: не тотожна навіть із rnd, що лишає порядок");
+  for (let i = 0; i < 30; i++) { const r = L.matchOrder(M({ left: ["a", "b", "c", "d"], right: ["1", "2", "3", "4"] })); ok(r.some((k, j) => k !== j) && [...r].sort().join() === "0,1,2,3", `matchOrder: випадковий показ — не тотожний (${r})`); }
+  eq(L.matchOrder({ type: "match", left: "x", right: "y" }), [], "matchOrder: зламана розмітка — порожньо, без винятку");
 }
 
 console.log(fail ? `test-lang: ${fail} з ${n} не пройшли` : `test-lang: ${n} перевірок — усі пройшли`);

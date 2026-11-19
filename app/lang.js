@@ -10,6 +10,8 @@
               американський правопис за списком (ok з приміткою), запис часу, «Almost» (docs/design/english.md §5.4)
      build  — tiles: [...], answer: "…" | [...], extra: [...]   речення з плиток-слів (docs/design/english.md §5.5): кожен answer — усі tiles
                                             рівно раз (кінцевий .!? і велика перша літера — поза плитками); extra — ≤ 2 пастки; разом ≤ 9 плиток
+     match  — left: [...], right: ["…" | { img, alt }]   пари (docs/design/english.md §5.7): left[i] ↔ right[i], 3–6 пар; праву колонку
+                                            плеєр показує перемішаною (matchOrder); картинка — файл з alt, emoji системного шрифту — ні
      split  — word: "мо|ло|ко" | [...]     поділ слова рисками між літерами (склади, перенос, будова слова); zero: true — після слова
                                             клітинка нульового закінчення «□» (межа перед нею — «стіл|») */
 (function () {
@@ -371,6 +373,49 @@
         W.push(`build: пастка extra «${x}» на місці плитки дає правильне речення — рушій її зарахує${lang === EN ? " (регістр, AmE-правопис — нормалізація word)" : ""}; візьми іншу пастку`); });
   }
 
+  /* ---------- match: пари слово ↔ картинка / значення / відповідь (engine-eng-match; docs/design/english.md §5.7) ----------
+     У розмітці пари стоять навпроти: left[i] ↔ right[i]; праву колонку плеєр показує перемішаною (matchOrder, ніколи не в порядку розмітки).
+     Правий елемент — текст або { img, alt } (файл зображення з відкритою ліцензією; alt — що на ньому, для диктора й показу відповіді).
+     Стан — масив за лівими: індекс правого елемента в розмітці або null. Правильно — st[i] === i для кожного i (повтори validate забороняє). */
+  const MATCH_MIN = 3, MATCH_MAX = 6;
+  const MATCH_IMG = /^(?![a-z][\w+.-]*:)(?!\/)(?!.*\.\.)[\w./-]+\.(?:svg|png|jpe?g|webp)$/i;   // відносний шлях до файлу застосунку (офлайн-кеш)
+  // emoji системного шрифту (вигляд залежить від пристрою, docs/design/english.md §5.7): піктограми, символи, прапори, варіант-селектор і ZWJ
+  const EMOJI = /[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{FE0F}\u{200D}]/u;
+  const matchN = s => Array.isArray(s.left) && Array.isArray(s.right) && s.left.length === s.right.length ? s.left.length : 0;
+  /** що назвати для правого елемента (показ відповіді, aria-label): текст або alt картинки */
+  const matchLabel = r => typeof r === "string" ? r : r && typeof r === "object" && typeof r.alt === "string" ? r.alt : "";
+  function matchOk(s, st) { const n = matchN(s); return n > 0 && Array.isArray(st) && st.length === n && st.every((j, i) => j === i); }
+  /** порядок показу правої колонки: перестановка індексів right, не тотожна (інакше пари стоять навпроти — відповідь на екрані) */
+  function matchOrder(s, rnd = Math.random) {
+    const n = matchN(s), same = o => o.every((k, i) => k === i);
+    let o = rowOrder(n, rnd);
+    for (let t = 0; t < 12 && n > 1 && same(o); t++) o = rowOrder(n, rnd);
+    if (n > 1 && same(o)) o = o.slice(1).concat(o[0]);   // детермінований запас: зсув по колу
+    return o;
+  }
+  function matchIssues(s, E) {
+    const Lf = s.left, R = s.right;
+    if (!Array.isArray(Lf) || !Array.isArray(R)) return E.push("match: left і right — масиви (пара — left[i] ↔ right[i])");
+    if (Lf.length !== R.length) return E.push(`match: left і right — однакова кількість (є ${Lf.length} і ${R.length}); пара — left[i] ↔ right[i]`);
+    if (Lf.length < MATCH_MIN || Lf.length > MATCH_MAX) E.push(`match: ${MATCH_MIN}–${MATCH_MAX} пар (є ${Lf.length})`);
+    Lf.forEach((x, i) => { if (typeof x !== "string" || !x.trim()) E.push(`match: left ${i + 1} — непорожній рядок`); });
+    R.forEach((r, i) => {
+      if (typeof r === "string") { if (!r.trim()) E.push(`match: right ${i + 1} — непорожній рядок`); return; }
+      if (!r || typeof r !== "object" || Array.isArray(r)) return E.push(`match: right ${i + 1} — рядок або { img, alt }`);
+      const extra = Object.keys(r).filter(k => k !== "img" && k !== "alt");
+      if (extra.length) E.push(`match: right ${i + 1} — лише { img, alt } (зайве: ${extra.join(", ")})`);
+      if (typeof r.img !== "string" || !MATCH_IMG.test(r.img)) E.push(`match: right ${i + 1} — img: відносний шлях до файлу .svg, .png, .jpg чи .webp (img/<предмет>/<розділ>/…), без адреси й «..»`);
+      if (typeof r.alt !== "string" || !r.alt.trim()) E.push(`match: right ${i + 1} — alt обов'язковий: що на зображенні (його чує екранний диктор і бачить дитина в показі відповіді)`); });
+    const L2 = Lf.filter(x => typeof x === "string"), R2 = R.map(matchLabel).filter(Boolean), all = [...L2, ...R2];
+    if (all.some(t => /[<>&$]/.test(t))) E.push("match: у left, right і alt — простий текст без HTML і формул ($)");
+    if (all.some(t => EMOJI.test(t))) E.push("match: emoji системного шрифту не беремо (на різних пристроях різний вигляд) — картинка { img, alt } з відкритою ліцензією (docs/design/english.md §5.7)");
+    if (all.some(mixedScript)) E.push("match: змішано кирилицю й латиницю (латинська c, o, a… у кириличному слові чи навпаки?)");
+    const key = t => sp(t).toLocaleLowerCase();
+    if (new Set(L2.map(key)).size !== L2.length) E.push("match: у left повтор — пари мають бути однозначні");
+    const imgs = R.filter(r => r && typeof r === "object" && typeof r.img === "string").map(r => r.img);
+    if (new Set(R2.map(key)).size !== R2.length || new Set(imgs).size !== imgs.length) E.push("match: у right повтор (текст, alt чи та сама картинка) — пари мають бути однозначні");
+  }
+
   /** Перевірка відповіді st (стан плеєра) для екрана s. true/false. lang — мова змісту предмета (SLID.subjectLang): "en" вмикає правила word англійською. */
   function check(s, st, lang) {
     switch (s.type) {
@@ -380,6 +425,7 @@
       case "word": return wordVerdict(s, st, lang).ok;
       case "split": { const p = parseSplit(s.word, s.zero); return !p.error && isSet(st) && p.variants.some(c => sameCuts(c, [...st])); }
       case "build": return buildOk(s, st, lang);
+      case "match": return matchOk(s, st);
     }
     return false;
   }
@@ -393,6 +439,7 @@
       case "word": return wordAnswers(s)[0];
       case "split": return new Set(parseSplit(s.word, s.zero).variants[0]);
       case "build": return buildSplit(Array.isArray(s.tiles) ? s.tiles : [], wordAnswers(s)[0]);
+      case "match": return Array.from({ length: matchN(s) }, (x, i) => i);
     }
   }
 
@@ -418,6 +465,7 @@
       case "split": { if (s.zero !== undefined && typeof s.zero !== "boolean") { E.push("split: zero — true/false"); break; }
         const p = parseSplit(s.word, s.zero); if (p.error) E.push("split: " + p.error); break; }
       case "build": buildIssues(s, E); break;
+      case "match": matchIssues(s, E); break;
     }
     return E;
   }
@@ -457,7 +505,7 @@
             return !gw.some(([a, z]) => a <= i && e <= z); })) { W.push(`gaps: слово з пропуском розірване HTML-тегом («${m[0].replace(/^(?:<[^>]*>)+|(?:<[^>]*>)+$/g, "").replace(/\u0001/g, "{…}")}») — рядок може перенестися посеред слова; обгорни тегом усе слово або винеси тег за його межі`); break; } } }
     return W;
   }
-  const TYPES = ["gaps", "pick", "stress", "word", "split", "build"];
+  const TYPES = ["gaps", "pick", "stress", "word", "split", "build", "match"];
   /** Текст вправи, який дитина читає (для метрик stats/validate): пропуски — правильним варіантом, без дужок і «+» */
   function readText(s) {
     // «—» / «–» замінюємо, лише коли варіант цілком дорівнює токену: «1–2», «», —» лишаються як є (engine-lang-dash P3-1)
@@ -467,7 +515,9 @@
     if (s.type === "stress" && Array.isArray(s.words)) return s.words.join(", ").replace(/[+|]/g, "");
     if (s.type === "split") return [].concat(s.word)[0]?.replace?.(/\|/g, "") || "";
     if (s.type === "build") return wordAnswers(s)[0] || "";
+    // match: ліва колонка й текст правої (alt картинки дитина не читає — його чує диктор)
+    if (s.type === "match") return [...(Array.isArray(s.left) ? s.left : []), ...(Array.isArray(s.right) ? s.right : [])].filter(x => typeof x === "string").join(", ");
     return "";
   }
-  window.SLID_LANG = { TYPES, warnings, readText, NONE, DASH, optView, gapOrder, rowOrder, isVowel, parseGaps, parsePick, parseStress, parseSplit, splitShow, normWord, wordInput, wordAnswers, wordVerdict, check, solution, issues, sameCuts, buildTiles, buildText, buildMarks, buildOrder };
+  window.SLID_LANG = { TYPES, warnings, readText, NONE, DASH, optView, gapOrder, rowOrder, isVowel, parseGaps, parsePick, parseStress, parseSplit, splitShow, normWord, wordInput, wordAnswers, wordVerdict, check, solution, issues, sameCuts, buildTiles, buildText, buildMarks, buildOrder, matchLabel, matchOrder };
 })();

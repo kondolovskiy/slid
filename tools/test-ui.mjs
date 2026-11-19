@@ -56,6 +56,11 @@
 //      неактивна; дотик — у рядок, ще раз — назад; клавіатура (Enter, фокус після прибирання); хибний порядок — позначки з «неправильно», повідомлення,
 //      та сама відповідь не витрачає спробу; кілька правильних порядків; показ відповіді; raw — зібране речення; тест рівня — без позначок;
 //      без targetLang — точне порівняння; без горизонтальної прокрутки, плитки ≥ 44 px.
+//  29) Пари match (engine-eng-match; docs/design/english.md §5.7), 360 px: права колонка перемішана, картинки з alt (SVG-фікстури tools/fixtures/),
+//      «Перевірити» — лише коли всі пари складено; дотик лівий → правий і правий → лівий, роз'єднання, перехід правого до іншої пари; клавіатура
+//      (Enter, пробіл, фокус), aria-pressed і #mlive; перша помилка — правильні пари закріплено (зелені, неактивні), хибні — «неправильно»,
+//      та сама відповідь не витрачає спробу; друга — показ усіх пар (alt замість картинки); 6 пар без горизонтальної прокрутки, кнопки ≥ 44 px;
+//      raw — масив за лівими; тест рівня — без позначок; без targetLang — жодного lang.
 // Запуск: node tools/test-ui.mjs [--browser /opt/pw-browsers/chromium]
 // Playwright: require("playwright") (NODE_PATH) або PLAYWRIGHT_MODULE / /opt/node-tools/node_modules/playwright.
 // Браузер, як у test-answer-ui.py: --browser / SLID_BROWSER → /opt/pw-browsers/chromium, якщо є (PW_DEFAULT=1 вимикає) → Chromium самого
@@ -1065,6 +1070,9 @@ try {
 
   // 28) Речення з плиток build (engine-eng-build)
   await buildScenario(browser);
+
+  // 29) Пари match: слово ↔ картинка / значення (engine-eng-match)
+  await matchScenario(browser);
 } finally { await browser.close(); server.close(); swServer.close(); }
 
 console.log(`test-ui: ${pass} ok, ${fail} ✗`);
@@ -1702,5 +1710,115 @@ async function buildScenario(browser) {
   for (const k of [1, 0, 2]) await page.tap(tile(k)); await page.click("#action");
   ok(/\bok\b/.test((await dock()).kind), "build без targetLang: «Сонце яскраво світить» (ключ з крапкою) — правильно");
   ok(!errors.length, "build: помилки сторінки: " + errors.join(" | "));
+  await ctx.close();
+}
+
+/* 29) match — пари слово ↔ картинка / значення (engine-eng-match; docs/design/english.md §5.7; CONTENT_SCHEMA §4.1): фікстура — предмет ukr
+   з targetLang "en", картинки — tools/fixtures/match-*.svg, телефон 360 px з дотиком. Без targetLang — той самий тип з українським змістом. */
+async function matchScenario(browser) {
+  const ctx = await browser.newContext({ viewport: { width: 360, height: 780 }, hasTouch: true, serviceWorkers: "block" });
+  const page = await ctx.newPage(), errors = []; page.on("pageerror", e => errors.push(String(e))); page.setDefaultTimeout(8000);
+  await page.route("**/fonts.googleapis.com/**", r => r.abort());
+  const fb = t => ({ fbOk: "Yes!", fbBad: "Not quite.", fbText: t });
+  const P = { type: "match", title: "Match the words and the pictures", left: ["sun", "tree", "cat"],
+    right: [{ img: "tools/fixtures/match-sun.svg", alt: "the sun" }, { img: "tools/fixtures/match-tree.svg", alt: "a tree" }, "a pet that says miaow"], ...fb("The sun is in the sky, a tree is green, a cat is a pet.") };
+  const T = { type: "match", title: "Match the opposites", left: ["big", "hot", "old"], right: ["small", "cold", "new"], ...fb("Big — small, hot — cold, old — new.") };
+  const SIX = { type: "match", title: "Match the questions and the answers", left: ["How old are you?", "Where do you live?", "What is your favourite colour?", "Have you got a pet?", "Can you swim?", "Is it a pencil?"],
+    right: ["I am ten years old.", "I live in a small flat in Lviv.", "My favourite colour is dark green.", "Yes, I have got a white rabbit.", "No, I can't, but I can ride a bike.", "No, it isn't. It is a long blue pen."], ...fb("Each answer fits its question.") };
+  const LES = { id: "fml1", title: "Pairs", icon: "book", outro: { text: "Well done.", learned: ["I can match words."] }, screens: [P, T, SIX] };
+  const UKR = { id: "fml1", title: "Пари", icon: "book", outro: { text: "Готово.", learned: ["Добираю пари."] }, screens: [
+    { type: "match", title: "Добери антоніми", left: ["великий", "гарячий", "старий"], right: ["малий", "холодний", "новий"], fbOk: "Так.", fbText: "Антоніми — слова з протилежним значенням." }] };
+  const DIAG = { id: "dgfm", grade: 5, title: "Що ти вже вмієш?", why: "QA", status: "draft", topics: [{ id: "c", title: "Pairs", kind: "cur", lessons: ["fml1"] }],
+    items: [{ ...P, topic: "c", sk: "orth" }, { ...T, topic: "c", sk: "orth" }] };
+  const install = ([les, tl, diag]) => { const c = SLID_SUBJECTS.find(c => c.id === "ukr");
+    c.sections = [{ id: "fm", grade: 5, weeks: [1, 2], title: "QA match", why: "QA", lessons: [les] }]; c.pools = []; c.diags = diag ? [diag] : []; delete c.graph;
+    if (tl) c.targetLang = tl; else delete c.targetLang; };
+  const boot = async (les, tl, diag) => { await page.goto(URL0); await page.evaluate(() => { localStorage.clear(); localStorage.setItem("slid.v1", JSON.stringify({ grade: 5, subject: "ukr", unlockAll: true })); });
+    await page.reload(); await page.evaluate(install, [les, tl, diag]); };
+  const Lb = i => `#mleft .ml[data-l="${i}"]`, Rb = j => `#mright .mr[data-r="${j}"]`;
+  const pair = async (i, j) => { await page.tap(Lb(i)); await page.tap(Rb(j)); };
+  const cls = sel => page.evaluate(sel => { const b = document.querySelector(sel); return b.classList.contains("is-ok") ? 1 : b.classList.contains("is-bad") ? 0 : null; }, sel);
+  const al = sel => page.getAttribute(sel, "aria-label");
+  const dock = () => page.evaluate(() => ({ kind: document.querySelector("#dock").className, text: document.querySelector("#fbText").textContent, title: document.querySelector("#fbTitle").textContent }));
+  const noScroll = () => page.evaluate(() => { const p = document.querySelector("#player"), d = document.documentElement;
+    return p.scrollWidth <= p.clientWidth + 1 && d.scrollWidth <= d.clientWidth + 1 && [...document.querySelectorAll("#stage .gopt")].every(b => { const r = b.getBoundingClientRect(); return r.left >= 0 && r.right <= innerWidth + 0.5; }); });
+  const sizes = () => page.evaluate(() => [...document.querySelectorAll("#stage .ml, #stage .mr")].map(b => { const r = b.getBoundingClientRect(); return [Math.round(r.width * 10) / 10, Math.round(r.height * 10) / 10]; }));
+  const big = async () => { const z = await sizes(); ok(z.length && z.every(([w, h]) => w >= 44 && h >= 44), `match: кнопки ≥ 44 × 44 px, а ${JSON.stringify(z)}`); return true; };
+
+  await boot(LES, "en"); await page.evaluate(() => window.__slidStart("fml1"));
+  // 1) колонки: ліва в порядку розмітки, права — перестановка, не тотожна; картинки завантажено, з alt; «Перевірити» неактивна
+  const shown = await page.evaluate(() => [...document.querySelectorAll("#mright .mr")].map(b => +b.dataset.r));
+  ok(same([...shown].sort(), [0, 1, 2]) && shown.some((k, i) => k !== i), `match: права колонка — перестановка, не в порядку розмітки, а ${JSON.stringify(shown)}`);
+  ok(same(await page.evaluate(() => [...document.querySelectorAll("#mleft .ml")].map(b => b.textContent.replace(/^\d+/, "").trim())), ["sun", "tree", "cat"]), "match: ліва колонка — у порядку розмітки, з номерами");
+  await page.waitForFunction(() => [...document.querySelectorAll("#mright img")].every(i => i.complete));
+  ok(same(await page.evaluate(() => [...document.querySelectorAll("#mright img")].map(i => [i.alt, i.naturalWidth > 0]).sort()), [["a tree", true], ["the sun", true]]), "match: картинки завантажено, alt — з розмітки");
+  ok(await page.locator("#action").isDisabled(), "match: без пар — «Перевірити» неактивна");
+  ok(await page.evaluate(() => document.querySelector("#stage .match").closest("[lang]")?.getAttribute("lang") === "en" && document.querySelector("#stage .fix").getAttribute("lang") === "uk" && document.querySelector("#mlive").getAttribute("lang") === "uk"), "match: колонки — зміст (lang=en), інструкція й #mlive — хром (uk)");
+  await big();
+  // 2) дотик: лівий → правий — пара; ще раз — роз'єднати; правий → лівий; правий переходить до іншого лівого
+  await page.tap(Lb(0)); ok(await page.getAttribute(Lb(0), "aria-pressed") === "true", "match: обраний лівий — aria-pressed true");
+  ok(/Обрано «sun»\. Тепер — пара праворуч/.test(await page.textContent("#mlive")), "match: #mlive — що обрано й що далі");
+  await page.tap(Rb(0));
+  ok(await page.getAttribute(Lb(0), "aria-pressed") === "false" && /^1\. sun — пара: the sun$/.test(await al(Lb(0))) && /^the sun — пара: 1\. sun$/.test(await al(Rb(0))), `match: пара — у назвах обох кнопок (${await al(Lb(0))} / ${await al(Rb(0))})`);
+  ok(/Пара: «sun» — «the sun»/.test(await page.textContent("#mlive")), "match: #mlive — «Пара: …»");
+  ok(await page.evaluate(() => document.querySelector('#mright .mr[data-r="0"] .mtag').textContent) === "1", "match: правий у парі — з номером лівого");
+  await pair(0, 0); ok(await al(Lb(0)) === "1. sun" && /Пару роз'єднано/.test(await page.textContent("#mlive")), "match: та сама пара ще раз — роз'єднано");
+  await page.tap(Rb(1)); await page.tap(Lb(1)); ok(/пара: a tree$/.test(await al(Lb(1))), "match: правий → лівий — теж пара");
+  await pair(0, 1); ok(await al(Lb(1)) === "2. tree" && /пара: a tree$/.test(await al(Lb(0))), "match: правий з іншої пари переходить до нового лівого");
+  await page.tap(Lb(2)); await page.tap(Lb(2)); ok(await page.getAttribute(Lb(2), "aria-pressed") === "false", "match: дотик ще раз по обраному — вибір знято");
+  ok(await page.locator("#action").isDisabled(), "match: не всі пари — «Перевірити» неактивна");
+  // 3) клавіатура: Enter на лівому, пробіл на правому; фокус лишається на кнопці
+  await page.focus(Lb(1)); await page.keyboard.press("Enter"); await page.focus(Rb(0)); await page.keyboard.press(" ");
+  ok(/пара: the sun$/.test(await al(Lb(1))) && await page.evaluate(() => document.activeElement?.dataset?.r) === "0", "match: клавіатура — пара, фокус на тій самій кнопці");
+  // 4) хибна спроба: sun–tree, tree–sun, cat–pet → правильна пара закріплена, хибні червоні, повідомлення
+  await pair(2, 2); ok(await page.locator("#action").isEnabled(), "match: усі пари — «Перевірити» активна");
+  ok(await noScroll(), "match: 360 px — без горизонтальної прокрутки");
+  await page.click("#action"); let d = await dock();
+  ok(/\bbad\b/.test(d.kind) && /Червоні пари/.test(d.text), `match: хибна спроба — повідомлення, а ${JSON.stringify(d)}`);
+  ok(await cls(Lb(2)) === 1 && await cls(Rb(2)) === 1 && await page.locator(Lb(2)).isDisabled() && await page.locator(Rb(2)).isDisabled() && /правильно, закріплено$/.test(await al(Lb(2))), "match: правильна пара — зелена й закріплена");
+  ok(await cls(Lb(0)) === 0 && await cls(Lb(1)) === 0 && await cls(Rb(0)) === 0 && /— неправильно$/.test(await al(Lb(0))) && await page.locator(Lb(0)).isEnabled(), "match: хибні пари — червоні, «неправильно», їх можна змінити");
+  ok(await page.locator("#action").isDisabled(), "match: без змін — «Спробувати ще раз» неактивна");
+  await pair(0, 1); await pair(0, 1); ok(await page.locator("#action").isDisabled(), "match: ту саму відповідь складено знову — спробу не витрачено");
+  ok(await cls(Lb(2)) === 1 && await page.locator(Lb(2)).isDisabled(), "match: після змін закріплена пара лишилась зеленою");
+  // 5) друга спроба — правильно (з другої спроби)
+  await pair(0, 0); await pair(1, 1); await page.click("#action"); d = await dock();
+  ok(/\bok\b/.test(d.kind), `match: друга спроба правильно, а ${JSON.stringify(d)}`);
+  ok(await page.evaluate(() => [...document.querySelectorAll("#stage .ml, #stage .mr")].every(b => b.disabled && b.classList.contains("is-ok"))), "match: усі пари зелені й заблоковані");
+  // 6) дві хибні спроби (усі пари хибні — нічого не закріплено) — показ усіх пар
+  await page.click("#action");
+  await pair(0, 1); await pair(1, 2); await pair(2, 0); await page.click("#action");
+  ok(await page.locator("#stage .ml[disabled], #stage .mr[disabled]").count() === 0, "match: жодної правильної пари — нічого не закріплено");
+  await pair(0, 2); await pair(1, 0);   // правий іде від попереднього лівого: tree без пари
+  ok(await page.locator("#action").isDisabled() && await al(Lb(2)) === "3. old", "match: правий перейшов до іншого лівого — той без пари, «Перевірити» неактивна");
+  await pair(2, 1); await page.click("#action"); d = await dock();
+  ok(/\bbad\b/.test(d.kind) && /Ось правильна відповідь/.test(d.title), `match: друга хибна спроба — показ відповіді, а ${JSON.stringify(d)}`);
+  ok(/Правильно:\s*big — small; hot — cold; old — new/.test(await page.locator("#hintHost").innerText()), "match: підказка — усі пари");
+  ok(await page.locator("#stage .ml:not([disabled]), #stage .mr:not([disabled])").count() === 0, "match: після відповіді кнопки заблоковано");
+  // 7) 6 пар з довгим текстом на 360 px
+  await page.click("#action");
+  ok(await noScroll(), "match: 6 пар — без горизонтальної прокрутки"); await big();
+  for (let i = 0; i < 6; i++) await pair(i, i);
+  await page.click("#action"); ok(/\bok\b/.test((await dock()).kind), "match: 6 пар — правильно з першої спроби");
+  // 8) журнал: raw — масив за лівими (індекс правого в розмітці)
+  const ev = await page.evaluate(async () => { if (!window.SLID_EVIDENCE) return null; await SLID_EVIDENCE.flush?.();
+    return (await SLID_EVIDENCE.export()).events.filter(e => e.type === "answer" && e.d.l === "fml1").map(e => [e.d.i, e.d.type, e.d.try, e.d.verdict, e.d.raw]); });
+  ok(same(ev, [[0, "match", 1, "bad", [1, 0, 2]], [0, "match", 2, "ok", [0, 1, 2]], [1, "match", 1, "bad", [1, 2, 0]], [1, "match", 2, "bad", [2, 0, 1]], [2, "match", 1, "ok", [0, 1, 2, 3, 4, 5]]]), `match: журнал — raw масив за лівими, а ${JSON.stringify(ev)}`);
+
+  // 9) тест рівня: без позначок, вердикт LANG.check
+  await boot(LES, "en", DIAG); await page.evaluate(() => document.querySelector('.tab[data-tab="path"]').click());
+  await page.click('button[data-subject="ukr"]'); { const dg = page.locator("[data-diag]"); if (await dg.count()) await dg.first().click(); else await page.click('[data-plan="ukr"]'); }
+  await page.click("[data-diag-go]");
+  for (let i = 0; i < 3; i++) await pair(i, i); await page.click("#action");
+  ok(await page.evaluate(() => !document.querySelector("#stage .is-ok, #stage .is-bad")), "match у тесті рівня: без позначок");
+  await pair(0, 1); await pair(1, 0); await pair(2, 2); await page.click("#action");
+  const rec = await page.evaluate(() => JSON.parse(localStorage.getItem("slid.v1")).diag?.dgfm);
+  ok(rec && same(rec.res, { 0: 1, 1: 0 }), `match у тесті рівня: OK і BAD, а ${JSON.stringify(rec && rec.res)}`);
+
+  // 10) без targetLang: українські пари, жодного lang у плеєрі
+  await boot(UKR, null); await page.evaluate(() => window.__slidStart("fml1"));
+  ok(await page.evaluate(() => !document.querySelector("#player [lang]")), "match без targetLang: жодного lang у плеєрі");
+  for (let i = 0; i < 3; i++) await pair(i, i); await page.click("#action");
+  ok(/\bok\b/.test((await dock()).kind), "match без targetLang: правильні пари — зараховано");
+  ok(!errors.length, "match: помилки сторінки: " + errors.join(" | "));
   await ctx.close();
 }

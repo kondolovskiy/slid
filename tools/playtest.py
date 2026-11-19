@@ -63,7 +63,7 @@ async def answer(pg, s):
         v = s["answer"]; txt = (str(int(v)) if float(v).is_integer() else repr(v)).replace(".", ",")
         await pg.fill("#numIn", txt); await pg.dispatch_event("#numIn", "input"); return txt
     elif t == "lab": await pg.evaluate("sol => window.__slidLab.set(sol)", s["solution"]); return s["solution"]
-    elif t in ("gaps", "pick", "stress", "split", "word", "build"):   # мовні вправи: правильний стан дає сам рушій (SLID_LANG.solution)
+    elif t in ("gaps", "pick", "stress", "split", "word", "build", "match"):   # мовні вправи: правильний стан дає сам рушій (SLID_LANG.solution)
         sol = await pg.evaluate("s => { const v = SLID_LANG.solution(s); return v instanceof Set ? [...v] : v; }", s)
         if t == "gaps":
             for k, o in enumerate(sol): await tap(pg, f'#stage .gopt[data-g="{k}"][data-o="{o}"]')
@@ -75,11 +75,15 @@ async def answer(pg, s):
             for c in sol: await tap(pg, f'#stage .cut[data-c="{c}"]')
         elif t == "build":   # плитки банку по черзі (індекси buildTiles першого answer)
             for k in sol: await tap(pg, f'#stage .bank .bt[data-t="{k}"]')
+        elif t == "match":   # лівий → його правий; пари, закріплені після хибної спроби (disabled), не чіпаємо
+            for i, j in enumerate(sol):
+                if not await pg.locator(f'#mleft .ml[data-l="{i}"]').is_disabled():
+                    await tap(pg, f'#mleft .ml[data-l="{i}"]'); await tap(pg, f'#mright .mr[data-r="{j}"]')
         else: await pg.fill("#numIn", sol); await pg.dispatch_event("#numIn", "input")
         return sol
     return None   # intro, info, explore: відповіді немає
 
-LANG_TYPES = ("gaps", "pick", "stress", "split", "word", "build")
+LANG_TYPES = ("gaps", "pick", "stress", "split", "word", "build", "match")
 BUILD_UNDO = "#bline .bl"   # build: відкат хибної спроби — прибрати всі плитки з рядка (кожну — дотиком)
 GAP_ORDER = "() => [...document.querySelectorAll('#stage .gap')].map(g => [...g.querySelectorAll('.gopt')].map(b => +b.dataset.o))"   # показаний порядок варіантів кожного пропуску
 OPT_SHOW = {"\u2014": ("\u2205", "нічого не писати"), "\u2013": ("\u2014", "тире")}   # розмітка → що бачить дитина (CONTENT_SCHEMA §4.1), записано тут, а не взято з рушія
@@ -121,6 +125,19 @@ async def lang_seen(pg, s):
         if await pg.locator("#stage #bline .bl").count(): bad.append("рядок речення не порожній на початку")
         shown = [k for k in ks if k < len(s["tiles"])]
         if await pg.evaluate("([s, o]) => SLID_LANG.check(s, o, '')", [s, shown]): bad.append(f"плитки показано в правильному порядку {shown}")
+    elif t == "match":   # ліва — у порядку розмітки; права — перестановка, не тотожна; картинка — з alt розмітки, текст — як є; пар ще немає
+        seen = [x.strip() for x in await pg.locator("#mleft .ml > span:not(.mtag)").all_text_contents()]
+        if seen != list(s["left"]): bad.append(f"ліва колонка {seen} ≠ {s['left']}")
+        ks = [int(k) for k in await pg.eval_on_selector_all("#mright .mr", "bs => bs.map(b => b.dataset.r)")]
+        if sorted(ks) != list(range(len(s["right"]))) or ks == sorted(ks): bad.append(f"права колонка {ks} — не перестановка або в порядку розмітки (пари навпроти)")
+        for j in ks:
+            r, el = s["right"][j], f'#mright .mr[data-r="{j}"]'
+            if isinstance(r, str):
+                if (await pg.text_content(el)).strip() != r: bad.append(f"правий {j+1}: текст ≠ «{r}»")
+            else:
+                im = await pg.evaluate("sel => { const i = document.querySelector(sel + ' img'); return i && [i.getAttribute('alt'), i.complete && i.naturalWidth > 0]; }", el)
+                if im != [r["alt"], True]: bad.append(f"правий {j+1}: картинка {r['img']} не завантажилась чи alt ≠ «{r['alt']}» ({im})")
+        if await pg.locator("#mright .mtag:not([style*='hidden'])").count(): bad.append("на початку вже є пари (номер у правій колонці)")
     return bad
 
 async def lang_wrong(pg, s):
@@ -150,6 +167,10 @@ async def lang_wrong(pg, s):
     if t == "word":
         await pg.fill("#numIn", "ъъъ"); await pg.dispatch_event("#numIn", "input")
         return "#numIn.is-bad", None
+    if t == "match":   # перші дві пари переставлено, решта правильні: після спроби правильні закріплено, answer дотягне хибні
+        n = len(sol)
+        for i in range(n): await tap(pg, f'#mleft .ml[data-l="{i}"]'); await tap(pg, f'#mright .mr[data-r="{sol[1 - i] if i < 2 else sol[i]}"]')
+        return '#mleft .ml[data-l="0"].is-bad', None
     if t == "build":   # правильне речення без останньої плитки — неправильно завжди (кожен answer бере всі tiles)
         for k in sol[:-1]: await tap(pg, f'#stage .bank .bt[data-t="{k}"]')
         return "#bline.is-bad", BUILD_UNDO

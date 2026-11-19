@@ -326,7 +326,18 @@ function maxTextItem(S, s, c, grade) {
   if (hi === undefined) return;
   const n = screenText(s); if (n > hi) W(S, `текст ${n} слів — понад maxText ${hi} профілю ${c.id}, ${grade} кл.`);
 }
-function checkScreen(S, s, c, diag, pool = false) {
+/* match (engine-eng-match; docs/design/english.md §5.7): зображення правої колонки — файл існує, лежить у img/<предмет>/ (лише img/ потрапляє
+   в офлайн-кеш sw.js, tools/build.mjs), а джерело записане в credits (уроку — credits розділу; тесту рівня й пулу — credits предмета чи
+   будь-якого його розділу: власних credits у них немає). Розмітку (alt, шлях без адреси, emoji) перевіряє lang.issues */
+function matchImgIssues(s, c, credits) {
+  const imgs = (Array.isArray(s.right) ? s.right : []).filter(r => r && typeof r === "object" && typeof r.img === "string").map(r => r.img), out = [];
+  for (const f of imgs) {
+    if (!f.startsWith(`img/${c.id}/`)) out.push(`match: зображення ${f} — у теці img/${c.id}/<розділ>/ (docs/IMAGES.md; лише img/ є в офлайн-кеші)`);
+    else if (!fs.existsSync(path.join(ROOT, f))) out.push(`match: немає файлу ${f}`); }
+  if (imgs.length && !(Array.isArray(credits) && credits.length)) out.push("match: є зображення, а credits порожні — запиши джерело й ліцензію кожного файлу в credits розділу (docs/IMAGES.md)");
+  return out;
+}
+function checkScreen(S, s, c, diag, pool = false, credits = undefined) {
   // мова змісту (engine-eng-validate, D-054): tl — "" (українська, як раніше) або мова предмета ("en"): українські правила (заборонені фрази,
   // «Пригадай», наказові ASK_RE, позиційні посилання й «варіант N», рід у звертанні, латиниця в кириличному слові, милозвучність) — лише для "";
   // для "en" — англійські відповідники (CC.*, lang "en") і кирилиця в змісті (CC.cyrillicInEnglish)
@@ -413,7 +424,7 @@ function checkScreen(S, s, c, diag, pool = false) {
       // у діагностиці — лише коли тип answer там дозволено (learn.DIAG_TYPES); інакше вже є помилка «тип не дозволено в тесті»
       if (!pool && (!diag || learn.DIAG_TYPES.includes("answer"))) for (const m of answerFieldIssues(s, diag)) E(S, m);
       if (diag && !pool) for (const m of diagFormatIssues(s)) (m.err ? E : W)(S, m.msg); break;
-    case "gaps": case "pick": case "stress": case "word": case "split": case "build":
+    case "gaps": case "pick": case "stress": case "word": case "split": case "build": case "match":
       if (!pool) for (const m of lang.issues(s)) E(S, m);   // у пулі — learn.validatePool (той самий SLID_LANG.issues), без дублю
       // tl — мова змісту предмета: build шукає пастку extra, яку рушій зарахує, тією самою перевіркою, що й плеєр (LANG.check з TL())
       for (const m of lang.warnings ? lang.warnings(s, tl) : []) W(S, m);
@@ -430,6 +441,7 @@ function checkScreen(S, s, c, diag, pool = false) {
       // кожен символ — span.sl); у тесті рівня це ще й «два слова — два вміння» (рев'ю engine-diag-lang-types P2-1; tools-diag-nonmath-p3 п. 2)
       // невидимі символи нульової ширини (U+200B–U+200D, U+2060, м'який перенос U+00AD) — так само клітинка (рев'ю P3-5)
       if (s.type === "split" && [].concat(s.word).some(w => typeof w === "string" && /[\s\u00AD\u200B-\u200D\u2060]/.test(w))) E(S, "split — одне слово без пробілів і невидимих символів (і на краю слова): кожен символ стає клітинкою для межі");
+      if (s.type === "match") for (const m of matchImgIssues(s, c, credits)) E(S, m);
       break;
     case "fracin": if (!(Number.isInteger(s.answer) && s.answer >= 0 && s.answer < 1e6)) E(S, "answer — ціле невід'ємне число (поле приймає лише цифри)");
       if (!(s.expr && s.den)) E(S, "fracin потребує expr і den"); break;
@@ -480,7 +492,7 @@ for (const c of subjects) for (const sec of c.sections) {
     if (!l.outro?.text || !Array.isArray(l.outro.learned) || l.outro.learned.length < 2 || l.outro.learned.length > 4) E(L, "outro: потрібні text і 2–4 пункти learned");
     if (l.screens?.[0]?.type !== "intro") E(L, "перший екран має бути intro (проблема, з якої починається урок)");
     if (EUPHONY[c.id] && !tl) euphonyWarn(L, [l.title, l.why, l.outro?.text, ...(l.outro?.learned || [])].filter(t => typeof t === "string").flatMap(euphonyIssues));
-    l.screens.forEach((s, i) => { checkScreen(`${L} екран ${i + 1} (${s.type})`, s, c, false); figRef(`${L} екран ${i + 1} (${s.type})`, s, l.screens[i - 1], subjectLang(c));
+    l.screens.forEach((s, i) => { checkScreen(`${L} екран ${i + 1} (${s.type})`, s, c, false, false, sec.credits); figRef(`${L} екран ${i + 1} (${s.type})`, s, l.screens[i - 1], subjectLang(c));
       // згорнутий переклад uk — лише 4–5 кл. (D-054, доповнення п. 5); решту правил uk — checkScreen
       if (s.uk !== undefined && !UK_GRADES.includes(sec.grade)) E(`${L} екран ${i + 1} (${s.type})`, `uk — лише ${UK_GRADES.join("–")} кл. (D-054, доповнення п. 5), а розділ ${sec.grade} кл.`); });
     if (tl) for (const m of CC.cyrillicInEnglish({ title: l.title, why: l.why, outro: l.outro })) W(L, m);
@@ -510,7 +522,7 @@ for (const c of subjects) for (const d of c.diags || []) {
   for (const m of learn.validate(d, { ...subjectMaps(c, subjects), skills: c.skills })) E(D, m);
   if (!d.meta) W(D, "немає meta {author, created, factcheck, teacher}");
   authorWarn(D, d.meta);
-  (d.items || []).forEach((s, i) => { if (TYPES.includes(s.type)) { checkScreen(`${D} завдання ${i + 1} (${s.type})`, s, c, true); figRef(`${D} завдання ${i + 1} (${s.type})`, s, null, subjectLang(c));
+  (d.items || []).forEach((s, i) => { if (TYPES.includes(s.type)) { checkScreen(`${D} завдання ${i + 1} (${s.type})`, s, c, true, false, c.credits); figRef(`${D} завдання ${i + 1} (${s.type})`, s, null, subjectLang(c));
     maxTextItem(`${D} завдання ${i + 1} (${s.type})`, s, c, d.grade); } });
   if (subjectLang(c)) for (const m of CC.cyrillicInEnglish({ title: d.title, why: d.why, topics: (d.topics || []).map(t => ({ title: t.title })) })) W(D, m);
   const ch = (d.items || []).filter(s => s.type === "choice" && Number.isInteger(s.correct));
@@ -529,7 +541,7 @@ for (const c of subjects) for (const p of c.pools || []) {
   authorWarn(D, p.meta);
   // генератор (gen): екран перевіряємо на першому наборі значень — так, як його побачить дитина (правила gen — learn.validatePool)
   (p.items || []).forEach((s0, i) => { const s = s0.gen !== undefined ? learn.genInstance(s0, "validate", 0) || s0 : s0;
-    if (TYPES.includes(s.type)) { checkScreen(`${D} задача ${i + 1} «${s.id}» (${s.type})`, { ...s, fbText: (s.steps || []).join(" ") }, c, true, true); figRef(`${D} задача ${i + 1} «${s.id}» (${s.type})`, s, null, subjectLang(c));
+    if (TYPES.includes(s.type)) { checkScreen(`${D} задача ${i + 1} «${s.id}» (${s.type})`, { ...s, fbText: (s.steps || []).join(" ") }, c, true, true, c.credits); figRef(`${D} задача ${i + 1} «${s.id}» (${s.type})`, s, null, subjectLang(c));
       maxTextItem(`${D} задача ${i + 1} «${s.id}» (${s.type})`, s, c, sectionLessons.get(p.section)?.grade); }
     // мовна вправа, sort, order (engine-pool-lang): на рівнях 2–3 підказка після першої помилки — як у шаблоні задачі пулу
     if (learn.EXPLAIN_TYPES?.includes(s.type) && s.lvl >= 2 && !s.hint) W(`${D} задача ${i + 1} «${s.id}» (${s.type})`, "вправа рівня 2–3 без hint — підказки після першої помилки не буде"); });
