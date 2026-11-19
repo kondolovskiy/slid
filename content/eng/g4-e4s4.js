@@ -5,7 +5,7 @@
    https://lib.iitta.gov.ua/714276/1/%D0%A2%D0%9E%D0%9F_3_4_2018.pdf
    Увесь зміст — англійською, британська норма (D-054). Тексти, діалоги й герої — власні (docs/design/english.md §8).
    Форми й наголос — за Cambridge Dictionary і OALD (URL — tasks/…/write-eng-g4-e4s4.md, «Нотатки агента»).
-   Статус: draft (writer-e4s4). 7 уроків (6 + фінал).
+   Статус: verified (verifier-e4s4, reports/verify/e4s4.md; approved — лише вчитель). 7 уроків (6 + фінал).
    Перевірка: node tools/validate.mjs --section e4s4 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -14,7 +14,7 @@ SLID.section("eng", {
   weeks: [14, 17],
   title: "Shops and shopping",
   why: "To buy things in a shop. And to ask about prices and say what you would like.",
-  meta: { author: "writer-e4s4", created: "2026-11-19", factcheck: null, teacher: null },
+  meta: { author: "writer-e4s4", created: "2026-11-19", factcheck: "verifier-e4s4 (reports/verify/e4s4.md)", teacher: null },
   requires: ["e4s1l1"],
   badges: [
     { id: "e4s4boss", name: "Smart shopper", icon: "trophy", desc: "Finish the final lesson “Shops and shopping”" }
@@ -26,7 +26,7 @@ SLID.section("eng", {
       title: "Shops in my town",
       short: "Shops",
       icon: "city",
-      status: "draft",
+      status: "verified",
       why: "Where can you buy bread, books or toys? Learn the names of shops.",
       screens: [
         {
@@ -152,7 +152,7 @@ SLID.section("eng", {
       title: "In a shopping centre: signs and floors",
       short: "Signs",
       icon: "map",
-      status: "draft",
+      status: "verified",
       why: "A shopping centre is big. Signs and floors help you find a shop.",
       screens: [
         {
@@ -168,7 +168,7 @@ SLID.section("eng", {
           eyebrow: "Guess!",
           title: "What do you think?",
           hyp: true,
-          body: `<p>In Britain, which floor is at street level?</p>`,
+          body: `<p>In Britain, you walk in from the street. Which floor is it?</p>`,
           opts: [
             "the first floor",
             "the second floor",
@@ -177,12 +177,12 @@ SLID.section("eng", {
           correct: 2,
           fbTitle: "Let’s find out.",
           fbOk: "Interesting!",
-          fbText: "In Britain, the floor at street level is the <b>ground floor</b>. The first floor is one floor up."
+          fbText: "In Britain, you walk in from the street on the <b>ground floor</b>. The first floor is one floor up."
         },
         {
           type: "info",
           title: "Floors",
-          body: `<p>In Britain:</p><ul><li>the <b>second floor</b> – two floors up</li><li>the <b>first floor</b> – one floor up</li><li>the <b>ground floor</b> – at street level</li></ul><p>The toy shop is <b>on</b> the second floor.</p><p>Go up in the <b>lift</b>.</p>`,
+          body: `<p>In Britain:</p><ul><li>the <b>second floor</b> – two floors up</li><li>the <b>first floor</b> – one floor up</li><li>the <b>ground floor</b> – you walk in from the street</li></ul><p>The toy shop is <b>on</b> the second floor.</p><p>Go up in the <b>lift</b>.</p>`,
           cta: "Next"
         },
         {
@@ -275,7 +275,7 @@ SLID.section("eng", {
         }
       ],
       outro: {
-        text: "In Britain, the floor at street level is the ground floor. Signs like EXIT and CLOSED help you in a shopping centre.",
+        text: "In Britain, you walk in from the street on the ground floor. Signs like EXIT and CLOSED help you in a shopping centre.",
         learned: [
           "Say where a shop is: on the first floor.",
           "Understand signs: OPEN, CLOSED, PUSH, PULL, EXIT, LIFT.",
@@ -290,7 +290,7 @@ SLID.section("eng", {
       title: "How many? How much?",
       short: "How many?",
       icon: "plus",
-      status: "draft",
+      status: "verified",
       why: "Before you go shopping, ask: how many eggs, how much milk?",
       screens: [
         {
@@ -395,7 +395,7 @@ SLID.section("eng", {
           eyebrow: "Final",
           title: "Complete the sentences.",
           body: `<p>Emma is at the supermarket. She writes to her mum.</p>`,
-          text: "Mum, how {*many|much} oranges do we need? And how {many|*much} bread? Mum: Five oranges and bread, please. How {many|*much} water have we got? Emma: Not much!",
+          text: "Emma: Mum, how {*many|much} oranges do we need? Mum: Five, please. Emma: And how {many|*much} bread? Mum: Not much. Emma: How {many|*much} water have we got at home? Mum: Not much! Buy water too, please.",
           hint: "Oranges: one, two, three… Bread and water?",
           fbOk: "Well done!",
           fbBad: "Can you count it?",
@@ -418,7 +418,7 @@ SLID.section("eng", {
       title: "Prices: how much is it?",
       short: "Prices",
       icon: "scale",
-      status: "draft",
+      status: "verified",
       why: "In a shop, you ask about the price. Ask and answer in English.",
       screens: [
         {
@@ -485,7 +485,7 @@ SLID.section("eng", {
           before: "How",
           after: "is the book? – It’s £6.",
           answer: "much",
-          hint: "Look at the title of the lesson.",
+          hint: "Is it a price or a number of things?",
           fbOk: "Yes!",
           fbBad: "We ask about a price: How … is it?",
           fbText: "Ask about a price: How <b>much</b> is it?"
@@ -539,7 +539,7 @@ SLID.section("eng", {
       title: "I’d like… I’d like to buy…",
       short: "I’d like",
       icon: "cake",
-      status: "draft",
+      status: "verified",
       why: "In a shop, say what you want. Do it politely.",
       screens: [
         {
@@ -652,7 +652,7 @@ SLID.section("eng", {
       title: "Buying a present: a dialogue",
       short: "A present",
       icon: "star",
-      status: "draft",
+      status: "verified",
       why: "Buy a present in English. Say thank you, sorry and goodbye.",
       screens: [
         {
@@ -789,7 +789,7 @@ SLID.section("eng", {
       title: "Shopping day",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e4s4boss",
       why: "Check everything from this section. Your points are doubled.",

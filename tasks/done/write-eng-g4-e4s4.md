@@ -7,7 +7,7 @@ subject: eng
 grade: 4
 section: e4s4
 depends_on: [curate-eng-plan-g4, engine-eng-lang-core, engine-eng-validate, engine-eng-stats, skills-eng, curate-eng-style, curate-eng-glossary, write-eng-g4-e4s1]
-status: review
+status: done
 claimed_by: writer-e4s4
 created: 2026-11-19
 source: design-eng
@@ -99,3 +99,11 @@ Build не запускай (AGENTS.md §4 п. 8).
 ### validate / stats
 - `node tools/validate.mjs --section e4s4` — 0 помилок, 0 попереджень (було readWordsPerScreen 34 у l6 — скоротив і додав здогадку).
 - `node tools/stats.mjs --subject eng` — прапорців в e4s4 немає; longWordShare 0.014–0.106 (≤ 0.12). Найближче до меж: l2 слів/екран 29 з 30, l6 longWordShare 0.106 (assistant, birthday, Grandma).
+
+## Верифікація
+**verifier-e4s4, 2026-11-19.** Вердикт: **verified**, усі 7 уроків `verified` (не approved). Звіт — reports/verify/e4s4.md.
+- Програма ТОП 3–4 с. 52, 62–63 звірена (PDF заново, SHA-1 aa8d161a…); факти (£1 = 100p, гривня ₴, британські поверхи, would like, how much / how many, назви магазинів BrE) — CD + OALD (curl) і en.wikipedia + Wiktionary (гривня), URL у звіті.
+- Усі 44 оцінювані завдання розв'язано самостійно; другої правильної відповіді немає; `word` (wordVerdict) і всі перестановки `build` прогнано через app/lang.js; опора D-019 є в кожного.
+- Правки (4): l2 «at street level» → «you walk in from the street» (рівень A1); l3 Final — логіка діалогу (ключі ті самі); l4 #7 hint більше не видає відповідь; статуси й meta.factcheck.
+- Спірне автора 1–6 прийнято (обґрунтування — звіт §2–§4). Авторське право: 8 фрагментів, збігів немає.
+- validate --section e4s4: 0 помилок, 0 попереджень; stats: прапорців в e4s4 немає. Плейтест — після build (оркестратор).
