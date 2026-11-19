@@ -24,3 +24,10 @@ source: design-eng
 - Не зачеплено: файли engine-eng-validate (tools/, app/app.js, docs/CONTENT_SCHEMA.md) — лише читав. Build не запускав (зміни не в content/app/img).
 - **Знахідка для куратора/engine-eng-diag-pool:** у задачі engine-eng-diag-pool п. 2 сказано «validate вимагає уроків попередніх класів для `pre`», але `baseline: true` з `lessons: []` уже підтримує `SLID_LEARN.validate` (app/learn.js:2150–2154; CONTENT_SCHEMA §9) — п. 2, можливо, зводиться до перевірки й `see`. Не перевіряв прогоном.
 - Незалежне рев'ю D-026 — потрібне (`engineering-review`), до вердикту задача в review.
+
+### Виправлення за рев'ю (reports/review/skills-eng.md, коміт 755c858)
+- **P1-1:** content-author і content-verify — кінцевий `.!?` ігнорується лише тоді, коли його немає в ключі (app/lang.js `endsPunct`); автор не ставить знак у `answer`, якщо знак не предмет завдання; верифікатор перевіряє кожен ключ `word` (зайвий знак — ❌). Те саме — у math-pool-diag §2в.
+- **P2-1:** нормалізація (AmE-правопис, кирилиця-двійник, `contractions`, кінцевий знак) — лише у `word`; «Almost» — неправильна відповідь з підказкою; у `gaps`/`choice`/`multi`/`pick`/`build` порівняння точне — AmE-написання не можна робити хибним варіантом (D-054 доп. п. 1; у верифікатора — ❌).
+- **P2-2:** math-pool-diag — A/B/C у тесті рівня рушій уже ставить (`OPT_LETTERS_LANG`); з переліку того, чого бракує в engine-eng-diag-pool, прибрано.
+- **P2-3:** правило `src` для eng: `sources` — лише програма класу (`top34` / `mpim` / `p1407`, title і url — з facts/eng.md), `src` — «<сигла> с. N» (сторінка теми чи граматики програми), без `srcPage`/`adapted`; номерів вправ не вигадувати, словники — у нотатки.
+- **P3:** `p<розділ>` (`pe4s1`); `for` — id розділів, `see` — id уроків; кирилиця дозволена ще й у `credits`; be going to — друга правильна відповідь і для прогнозу за видимими ознаками; curl — `grep -io '.\{0,80\}…'`, номер омоніма OALD — facts/eng.md.
