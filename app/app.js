@@ -989,9 +989,12 @@ const answerSig = () => { const s=L.screens[idx], v= LAB && s?.type==="lab"? LAB
 /* правильну відповідь не блокуємо ніколи, навіть якщо відбиток збігся (напр. «5,» без цифри після коми, а потім «5») */
 const sameAsTried = () => tried!==null && !checked && answerSig()===tried && !gradeNow(L.screens[idx]);
 /* Літери варіантів choice/multi: український алфавіт без Ґ, Є, Ї, Й, Ь (як у тестах ЗНО/НМТ — літери, які не сплутати); 28 літер.
-   Варіант понад алфавіт отримує номер, а не «undefined»; validate (OPT_LETTERS) не пропускає більше варіантів, ніж літер. */
+   Предмет з мовою змісту — літери цієї мови (OPT_LETTERS_LANG; англійська — A, B, C…, D-054 п. 3, engine-eng-validate): літера — частина
+   змісту (span.k усередині section.screen lang="en"). Мова — TL() поточного предмета плеєра (урок, тест рівня, тренування).
+   Варіант понад алфавіт отримує номер, а не «undefined»; validate (OPT_LETTERS, OPT_LETTERS_LANG) не пропускає більше варіантів, ніж літер. */
 const OPT_LETTERS="АБВГДЕЖЗИІКЛМНОПРСТУФХЦЧШЩЮЯ";
-const optLetter=k=> k<OPT_LETTERS.length? OPT_LETTERS[k] : String(k+1);
+const OPT_LETTERS_LANG={en:"ABCDEFGHIJKLMNOPQRSTUVWXYZ"};
+const optLetter=k=>{ const L=OPT_LETTERS_LANG[TL()]||OPT_LETTERS; return k<L.length? L[k] : String(k+1); };
 let SEC=null;
 function startById(id){ const f=findLesson(id); if(f) startLesson(f.c.id,f.k,f.i,true); }
 window.__slidStart=startById;   /* QA (test-answer-ui): відкрити урок за id, як кнопки data-lesson, — зокрема урок іншого класу після перенесення розділу (D-043) */

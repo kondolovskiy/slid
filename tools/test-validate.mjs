@@ -368,7 +368,7 @@ expectRun("drag: at і без drag — без попередження", one("fx
     fs.rmSync(path.join(tmp, "content/fxdo"), { recursive: true, force: true }); }
   // engine-eng-lang-attr (D-054): targetLang предмета — лише з TARGET_LANGS; поле uk — лише екран теорії уроку в предметі з targetLang
   { const subj = o => `SLID.subject(${JSON.stringify({ id: "fxtl", subject: "Фікстура", short: "Ф", icon: "frac", colors: { light: { accent: "#000" }, dark: { accent: "#fff" } }, skills: MATH_SKILLS, ...o })});\n`;
-    const withUk = (sc, ex = {}) => { const sec = mathSec("fxtl", ex); sec.lessons[0].screens[sc].uk = "<p>Переклад правила.</p>"; return sec; };
+    const withUk = (sc, ex = {}) => { const sec = mathSec("fxtl", ex); sec.grade = 5; sec.lessons[0].screens[sc].uk = "<p>Переклад правила.</p>"; return sec; };   // uk — лише 4–5 кл. (engine-eng-validate)
     const files = (o, sec = mathSec("fxtl")) => ({ "content/fxtl/aa-subj.js": subj(o), "content/fxtl/g8-fxtl.js": secJS("fxtl", sec) });
     const iInfo = mathSec("fxtl").lessons[0].screens.findIndex(x => ["intro", "info", "explore"].includes(x.type)),
       iGraded = mathSec("fxtl").lessons[0].screens.findIndex(x => !["intro", "info", "explore"].includes(x.type));
@@ -379,7 +379,7 @@ expectRun("drag: at і без drag — без попередження", one("fx
     expectRun("uk на екрані теорії в предметі з targetLang — без помилки", files({ targetLang: "en" }, withUk(iInfo)), ["--section", "fxtl"], {});
     expectRun("uk у предметі без targetLang — помилка", files({}, withUk(iInfo)), ["--section", "fxtl"], { err: "uk — лише в предметі з targetLang" });
     expectRun("uk на оцінюваному екрані — помилка", files({ targetLang: "en" }, withUk(iGraded)), ["--section", "fxtl"], { err: "uk — лише на неоцінюваному екрані" });
-    { const sec = mathSec("fxtl"); sec.lessons[0].screens[iInfo].uk = "  ";
+    { const sec = mathSec("fxtl"); sec.grade = 5; sec.lessons[0].screens[iInfo].uk = "  ";
       expectRun("uk порожній — помилка", files({ targetLang: "en" }, sec), ["--section", "fxtl"], { err: "uk — непорожній" }); }
     // engine-eng-lang-core: contractions у word — лише в предметі з targetLang (рушій без мови змісту поле ігнорує); склади в stress
     { const withWord = more => { const sec = mathSec("fxtl"), g = sec.lessons[0].screens[iGraded];
@@ -392,6 +392,73 @@ expectRun("drag: at і без drag — без попередження", one("fx
       expectRun("stress складами — без помилки", files({ targetLang: "en" }, st(["+pho|to|graph", "pho|+tog|ra|pher"])), ["--section", "fxtl"], {});
       expectRun("stress: англійське слово без складів — помилка", files({ targetLang: "en" }, st(["+photograph"])), ["--section", "fxtl"], { err: "розмітка складами" }); }
     fs.rmSync(path.join(tmp, "content/fxtl"), { recursive: true, force: true }); }
+  // engine-eng-validate (D-054; docs/design/english.md §2 п. 3, §6.3): предмет з targetLang "en" — англійські правила замість українських,
+  // кирилиця в змісті — попередження, uk — лише 4–5 кл., літери варіантів A, B, C, список кальок style/<предмет>-banned.txt, ліміт тексту з профілю
+  { const SUBJ = (o = {}) => `SLID.subject(${JSON.stringify({ id: "fxen", subject: "Фікстура", short: "Ф", icon: "frac", colors: { light: { accent: "#000" }, dark: { accent: "#fff" } },
+      skills: { gram: { name: "Граматика", hint: "Будувати речення" } }, targetLang: "en", ...o })});\n`;
+    const CH = { type: "choice", sk: "gram", title: "Which word is plural?", body: "<p>Choose the correct answer.</p>", opts: ["cats", "cat"], correct: 0, fbOk: "Yes!", fbText: "Cats ends in -s, so it means more than one cat.", hint: "Look at the end of the word." };
+    const enSec = ({ grade = 5, extra = [], info = {}, les = {}, sec = {} } = {}) => ({ id: "fxen", grade, weeks: [1, 2], title: "Plurals", why: "To talk about one thing and many things.",
+      meta: { author: "test", created: "2026-11-19", factcheck: null, teacher: null }, ...sec,
+      lessons: [{ id: "fxenl1", title: "Plurals", why: "To talk about more than one thing.", icon: "pot", status: "draft", outro: { text: "Well done.", learned: ["I can add -s.", "I can say two cats."] }, ...les,
+        screens: [{ type: "intro", title: "Two cats", body: "<p>Look! One cat and two cats.</p>" }, { type: "info", title: "One cat, two cats", body: "<p>We add -s: cat, cats.</p>", ...info }, CH, ...extra] }] });
+    const files = (o = {}, subj = {}) => ({ "content/fxen/aa-subj.js": SUBJ(subj), "content/fxen/g5-fxen.js": secJS("fxen", enSec(o)) });
+    const run = (name, o, exp, subj) => expectRun(`eng: ${name}`, files(o, subj), ["--section", "fxen"], exp);
+    const has = (rep, s) => rep && rep.warnings.some(w => w.includes(s));
+    { const rep = run("чистий англійський розділ з uk (5 кл.) — без помилок", { info: { uk: "<p>Додаємо -s.</p>" }, extra: [{ ...CH, title: "Plurals", body: "<p>Choose the plural.</p>", correct: 1, opts: ["cat", "cats"] }] }, { noWarn: "кирилиця" });
+      for (const w of ["без питання", "заборонена фраза", "позиційне посилання", "номер варіанта", "звертання з родом"]) ok(rep && !has(rep, w), `eng: чистий розділ — без «${w}»`, rep && rep.warnings.join("\n  ")); }
+    // українські правила вимкнено: «Choose the plural.» без «?» — для українського предмета це «без питання»
+    run("ukr-правило «без питання» вимкнено, «Choose» — питання", { extra: [{ ...CH, title: "Plurals", body: "<p>Choose the plural.</p>" }] }, { noWarn: "без питання" });
+    run("той самий екран без targetLang — українське правило спрацьовує (контроль)", { extra: [{ ...CH, title: "Plurals", body: "<p>Choose the plural.</p>" }] }, { warn: "без питання" }, { targetLang: undefined });
+    run("англійський choice без питання — попередження", { extra: [{ ...CH, title: "Pets", body: "<p>Cats are pets.</p>", correct: 1, opts: ["dog", "cat"] }] }, { warn: "без питання" });
+    run("позиційне посилання англійською", { extra: [{ type: "sort", sk: "gram", title: "Sort the words", bins: ["One", "Many"], items: [["cat", 0], ["cats", 1]], fbOk: "Yes!", fbText: "Cats ends in -s, so it means more than one.", hint: "Look at the last line." }] }, { warn: "позиційне посилання «last line»" });
+    run("«Option B» у поясненні", { extra: [{ ...CH, correct: 1, opts: ["cat", "cats"], fbText: "Option B ends in -s, so it means more than one cat." }] }, { warn: "посилається на номер варіанта («Option B»)" });
+    run("кирилиця в body — попередження з полем", { info: { body: "<p>Привіт! We add -s.</p>" } }, { warn: "екран 2 (info): кирилиця в змісті англійською: body «Привіт»" });
+    run("кирилиця в why уроку", { les: { why: "Щоб говорити про багато речей." } }, { warn: "#fxenl1: кирилиця в змісті англійською: why" });
+    run("кирилиця в назві розділу", { sec: { title: "Множина" } }, { warn: "#fxen: кирилиця в змісті англійською: title" });
+    run("кирилиця в credits розділу й uk — не попередження", { sec: { credits: [["Кіт", "Автор", "CC0", "https://example.org/a.png"]] }, info: { uk: "<p>Переклад.</p>" } }, { noWarn: "кирилиця" });
+    run("кирилична «с» у «сats»", { extra: [{ ...CH, opts: ["сats", "cat"] }] }, { warn: "U+0441" });
+    // uk — лише 4–5 кл.
+    run("uk у 4 кл. — без помилки", { grade: 4, info: { uk: "<p>Додаємо -s.</p>" } }, {});
+    run("uk у 6 кл. — помилка", { grade: 6, info: { uk: "<p>Додаємо -s.</p>" } }, { err: "uk — лише 4–5 кл." });
+    run("uk: українські правила (рід у звертанні)", { info: { uk: "<p>Ти вже зрозумів правило.</p>" } }, { warn: "uk: звертання з родом" });
+    run("uk: українські заборонені фрази", { info: { uk: "<p>Як відомо, додаємо -s.</p>" } }, { warn: "заборонена фраза «як відомо»" });
+    // кальки: style/<предмет>-banned.txt — є файл → попередження з виправленням; немає — мовчки
+    { const bf = path.join(tmp, "style/fxen-banned.txt");
+      fs.writeFileSync(bf, "# кальки\nmake a photo → take a photo\n");
+      run("калька зі style/fxen-banned.txt — попередження", { info: { body: "<p>Let's make a photo of the cats.</p>" } }, { warn: "заборонена фраза «make a photo» (style/fxen-banned.txt) — краще «take a photo»" });
+      run("калька в «лапках» — згадка, не попередження", { info: { body: "<p>We say “take a photo”, not “make a photo”.</p>" } }, { noWarn: "заборонена фраза" });
+      fs.rmSync(bf);
+      run("файлу кальок немає — мовчки", { info: { body: "<p>Let's make a photo of the cats.</p>" } }, { noWarn: "заборонена фраза" }); }
+    // літери варіантів — з предмета: A, B, C (OPT_LETTERS_LANG.en в app/app.js)
+    { const rep = run("D-016: літера латиницею", { extra: [{ ...CH, title: "Plurals", body: "<p>Choose the plural.</p>", opts: ["dogs", "dog"] }] }, { warn: "правильний варіант — A:" });
+      ok(rep && !has(rep, "правильний варіант — А:"), "eng: D-016 — не кирилична «А»", rep && rep.warnings.join("\n  ")); }
+    run("той самий урок без targetLang — кирилична «А» (контроль)", { extra: [{ ...CH, title: "Plurals", body: "<p>Choose the plural?</p>", opts: ["dogs", "dog"] }] }, { warn: "правильний варіант — А:" }, { targetLang: undefined });
+    run("multi з 27 варіантами — більше, ніж латинських літер (26)", { extra: [{ type: "multi", sk: "gram", title: "Which are plural?", opts: Array.from({ length: 27 }, (_, i) => `w${i}s`), correct: [0], fbOk: "Yes!", fbText: "Plural words end in -s, so they mean more than one." }] }, { err: "більше, ніж літер (26)" });
+    // ліміт тексту екрана з профілю предмета (maxText) — з номером екрана; тест рівня — по завданню
+    { const pf = path.join(tmp, "style/profiles.json"), orig = fs.readFileSync(pf, "utf8"), P = JSON.parse(orig);
+      P.fxen = { "5": { maxText: [0, 20] } }; fs.writeFileSync(pf, JSON.stringify(P));
+      const long = "<p>" + Array.from({ length: 30 }, (_, i) => i % 2 ? "cats" : "two").join(" ") + ".</p>";
+      try {
+        run("maxText понад профіль — номер екрана", { extra: [{ type: "info", title: "Read", body: long }] }, { warn: "maxText=30 поза профілем [0; 20] для fxen, 5-6 кл. (найдовший текст: екран 4" });
+        const diag = item => `SLID.diag("fxen", ${JSON.stringify({ id: "dgfxen", grade: 5, title: "Level test", why: "Regression test of the validator for English.", status: "draft",
+          meta: { author: "test", created: "2026-11-19", factcheck: null, teacher: null }, topics: [{ id: "t", title: "Plurals", kind: "cur", lessons: ["fxenl1"] }],
+          items: [{ topic: "t", type: "choice", sk: "gram", title: "Which is plural?", body: "<p>Choose one.</p>", opts: ["pens", "pen"], correct: 0, ...item }] }, null, 1)});\n`;
+        const dfiles = item => ({ ...files(), "content/fxen/diag-g5.js": diag(item) });
+        expectRun("eng: тест рівня — текст завдання понад maxText", dfiles({ body: long }), ["--diag", "dgfxen"], { warn: "завдання 1 (choice): текст 30 слів — понад maxText 20" });
+        expectRun("eng: тест рівня — кирилиця в завданні", dfiles({ title: "Яке слово?" }), ["--diag", "dgfxen"], { warn: "кирилиця в змісті англійською: title" });
+        expectRun("eng: тест рівня — кирилиця в назві теми", { ...files(), "content/fxen/diag-g5.js": diag({}).replace('"title": "Plurals"', '"title": "Множина"') }, ["--diag", "dgfxen"], { warn: "кирилиця в змісті англійською: topics[0].title" });
+        fs.rmSync(path.join(tmp, "content/fxen/diag-g5.js"), { force: true });
+      } finally { fs.writeFileSync(pf, orig); } }
+    // soon з id справжнього предмета — помилка (рушій показав би предмет двічі: справжній і «скоро»)
+    { const soon = id => `SLID.soon(${JSON.stringify({ id, short: "Ф", subject: "Фікстура", grade: "5 клас", icon: "leaf", why: "Скоро.", colors: { light: { accent: "#000" }, dark: { accent: "#fff" } } })});\n`;
+      const r1 = runTree({ ...files(), "content/catalog.js": soon("fxen") }, []);
+      ok(r1.rep && r1.rep.errors.some(e => e.startsWith("catalog fxen:") && e.includes("уже є справжній предмет")), "soon з id справжнього предмета — помилка", r1.rep ? r1.rep.errors.join("\n  ") : r1.out);
+      const r2 = runTree({ "content/catalog.js": soon("fxnew") + soon("fxnew") }, []);
+      ok(r2.rep && r2.rep.errors.some(e => e.startsWith("catalog fxnew:") && e.includes("не унікальний")), "soon: id двічі — помилка", r2.rep ? r2.rep.errors.join("\n  ") : r2.out);
+      const r3 = runTree({ "content/catalog.js": soon("fxnew") }, []);
+      ok(r3.rep && !r3.rep.errors.some(e => e.startsWith("catalog")), "soon з новим id — без помилки catalog", r3.rep ? r3.rep.errors.join("\n  ") : r3.out);
+      fs.rmSync(path.join(tmp, "content/catalog.js"), { force: true }); }
+    fs.rmSync(path.join(tmp, "content/fxen"), { recursive: true, force: true }); }
   // діагностика: поля answer перевіряються лише тоді, коли answer дозволено в тесті (learn.DIAG_TYPES). Обидва стани задаємо явно
   // в копії app/learn.js, щоб тест не залежав від того, чи дозволено answer у діагностиці зараз (engine-diag-answer-kinds)
   { const lp = path.join(tmp, "app/learn.js"), orig = fs.readFileSync(lp, "utf8"), DT = /const DIAG_TYPES = \[[^\]]*\];/;

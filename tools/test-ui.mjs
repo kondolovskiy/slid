@@ -48,6 +48,7 @@
 //      смужок fraction і solid з осями — у межах SVG і без накладань; назва повзунка «$\alpha$» — «α» без «\»; знак кореня — маска до риски;
 //      \to ширша за «−»; підкреслення <u> з відступом; align — роки шкали цілком у полі й «N з 18 кілець»; strata — знахідки не налазять на стрілку; клік по точці numline — фокус на її ручку, стрілки рухають її (qa-drag-points B1).
 //  26) Мова змісту предмета (engine-eng-lang-attr, D-054): targetLang: "en" — lang="en" на змісті уроку, тесту й тренування, хром рушія — uk;
+//      літери варіантів A, B, C (engine-eng-validate), без targetLang — А, Б, В;
 //      згорнутий переклад uk на екрані теорії й подія uk_open; предмет без targetLang — жодного lang у плеєрі.
 //  27) Мовні вправи англійською (engine-eng-lang-core): word — примітка «In British English: colour.» (en), «Almost: check the spelling.» (en),
 //      «Перемкни клавіатуру на англійську.» (uk), кирилична «с» у «сat», «Yes.»; stress складами; без targetLang — як раніше.
@@ -1481,6 +1482,8 @@ async function contentLangScenario(browser) {
   // choice: помилка → «Підказка:» uk, підказка en; fbBad — en; повідомлення рушія — uk
   ok(await page.locator("#stage details.uktr").count() === 0, "урок en: на оцінюваному екрані uk не показано");
   ok(await langOf('#stage .opt[data-k="0"]') === "en", "урок en: варіанти — en");
+  const optKs = () => page.locator("#stage .opt .k").allInnerTexts();
+  ok(same(await optKs(), ["A", "B", "C"]), `урок en: літери варіантів — латиниця A, B, C (engine-eng-validate), а ${JSON.stringify(await optKs())}`);
   await page.click('#stage .opt[data-k="0"]'); await page.click("#action");
   ok(await page.evaluate(() => document.querySelector("#fbTitle [lang]")?.getAttribute("lang") === "en" && document.querySelector("#fbTitle [lang=en]").textContent === "Not quite."), "урок en: fbBad у span lang=en");
   ok(await page.evaluate(() => { const t = document.querySelector("#fbText"); return /Обери інший варіант/.test(t.textContent) && !t.querySelector("[lang=en]"); }), "урок en: службове повідомлення після помилки — без lang en");
@@ -1504,6 +1507,7 @@ async function contentLangScenario(browser) {
   await page.click('button[data-subject="ukr"]'); { const d = page.locator("[data-diag]"); if (await d.count()) await d.first().click(); else await page.click('[data-plan="ukr"]'); }
   await page.click("[data-diag-go]");
   ok(await langOf("#stage section.screen") === "en", "тест en: section.screen — en");
+  ok(same(await optKs(), ["A", "B"]), `тест en: літери варіантів — A, B, а ${JSON.stringify(await optKs())}`);
   ok(await textLang("#stage .eyebrow") === "uk" && /Тест рівня/.test(await page.locator("#stage .eyebrow").textContent()), `тест en: «Тест рівня · завдання N» — uk, а ${await textLang("#stage .eyebrow")}`);
   ok(await langOf("#skip") === "uk", "тест en: «Ще не знаю» — uk");
   await page.click('#stage .opt[data-k="0"]'); await page.click("#action");
@@ -1518,6 +1522,7 @@ async function contentLangScenario(browser) {
   ok(await langOf("#stage section.screen") === "en", "тренування en: section.screen — en");
   ok(await page.evaluate(() => { const e = document.querySelector("#stage .eyebrow"); const u = e.querySelector("[lang=uk]"); return !!u && /Тренування/.test(u.textContent) && !/Plurals/.test(u.textContent) && e.closest("[lang]").getAttribute("lang") === "en"; }), "тренування en: «Тренування ·» — uk, назва уроку — en");
   ok(await langOf("#stage .srcnote") === "uk", "тренування en: «Джерело:» — uk");
+  ok(same(await optKs(), ["A", "B"]), `тренування en: літери варіантів — A, B, а ${JSON.stringify(await optKs())}`);
   await page.click('#stage .opt[data-k="0"]'); await page.click("#action");
   ok(await page.evaluate(() => { const t = document.querySelector("#fbTitle"); const u = t.querySelector("[lang=uk]"); return !!u && u.textContent === "Правильно."; }), "тренування en: типове «Правильно.» — uk, хоч і в обгортці змісту");
   ok(await page.evaluate(() => { const b = document.querySelector("#fbText .steps b"); return b && b.closest("[lang]").getAttribute("lang") === "uk" && document.querySelector("#fbText .steps > span").closest("[lang]").getAttribute("lang") === "en"; }), "тренування en: «Пояснення» — uk, кроки — en");
@@ -1528,7 +1533,9 @@ async function contentLangScenario(browser) {
   ok(await page.evaluate(() => SLID.subjectLang("ukr") === ""), "без targetLang: SLID.subjectLang — порожньо");
   await page.evaluate(() => window.__slidStart("fen1"));
   ok(await page.locator("#stage details.uktr").count() === 0, "без targetLang: блоку перекладу немає");
-  await page.click("#action"); await page.click('#stage .opt[data-k="0"]'); await page.click("#action");
+  await page.click("#action");
+  ok(same(await optKs(), ["А", "Б", "В"]), `без targetLang: літери варіантів — кирилиця А, Б, В (як раніше), а ${JSON.stringify(await optKs())}`);
+  await page.click('#stage .opt[data-k="0"]'); await page.click("#action");
   ok(await page.evaluate(() => !document.querySelector("#stage [lang], #dock [lang]")), "без targetLang: у #stage і #dock немає жодного lang (як раніше)");
   // невідома мова — ігнорується (validate — помилка)
   await page.evaluate(install, [LES, POOL, DIAG, "xx"]);
