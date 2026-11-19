@@ -47,6 +47,8 @@
 //  23) Читабельність рендеру (engine-render-legibility-1117), 360 px: підписи numline (дуги стрибків, точка біля краю, дві точки в одному місці),
 //      смужок fraction і solid з осями — у межах SVG і без накладань; назва повзунка «$\alpha$» — «α» без «\»; знак кореня — маска до риски;
 //      \to ширша за «−»; підкреслення <u> з відступом; align — роки шкали цілком у полі й «N з 18 кілець»; strata — знахідки не налазять на стрілку; клік по точці numline — фокус на її ручку, стрілки рухають її (qa-drag-points B1).
+//  26) Мова змісту предмета (engine-eng-lang-attr, D-054): targetLang: "en" — lang="en" на змісті уроку, тесту й тренування, хром рушія — uk;
+//      згорнутий переклад uk на екрані теорії й подія uk_open; предмет без targetLang — жодного lang у плеєрі.
 // Запуск: node tools/test-ui.mjs [--browser /opt/pw-browsers/chromium]
 // Playwright: require("playwright") (NODE_PATH) або PLAYWRIGHT_MODULE / /opt/node-tools/node_modules/playwright.
 // Браузер, як у test-answer-ui.py: --browser / SLID_BROWSER → /opt/pw-browsers/chromium, якщо є (PW_DEFAULT=1 вимикає) → Chromium самого
@@ -1047,6 +1049,9 @@ try {
 
   // 25) Випадковий тап по полю не зсуває єдину точку: переносить лише короткий тап без руху (engine-lab-p4-1118 п. 2)
   await tapMoveScenario(browser);
+
+  // 26) Мова змісту предмета: targetLang, lang="en" на змісті, згорнутий переклад uk (engine-eng-lang-attr)
+  await contentLangScenario(browser);
 } finally { await browser.close(); server.close(); swServer.close(); }
 
 console.log(`test-ui: ${pass} ok, ${fail} ✗`);
@@ -1415,5 +1420,114 @@ async function renderLegibilityScenario(browser) {
   await page.evaluate(() => { const r = document.querySelector("#alrng"); r.value = 1212 - 18 + 1 - 1180; r.dispatchEvent(new Event("input")); });
   ok(await page.locator("#almatch").innerText() === "18 з 18 кілець" && await page.locator("#almeter.full").count() === 1, "align: на правильному зсуві — «18 з 18 кілець», шкала повна");
   ok(!errors.length, "читабельність рендеру: помилки сторінки: " + errors.join(" | "));
+  await ctx.close();
+}
+
+/* 26) Мова змісту предмета (engine-eng-lang-attr, D-054; docs/design/english.md §2): фікстура — предмет ukr з targetLang: "en".
+   Урок, тест рівня й тренування: section.screen — lang="en" (заголовок, текст, варіанти, поля); хром рушія всередині (eyebrow тесту,
+   «Тренування ·», .fix, «Підказка:», «Правильна відповідь:», «Джерело:») — lang="uk"; у панелі відповіді зміст (fbOk/fbBad/fbText)
+   — у span lang="en", службові повідомлення — мовою сторінки (uk). Поле uk екрана теорії — згорнутий details lang="uk"
+   «Переклад українською», подія журналу uk_open один раз на показ; на оцінюваному екрані й у предметі без targetLang блоку немає.
+   Регресія: той самий урок без targetLang — жодного lang усередині #stage і #dock (українські предмети як раніше). */
+async function contentLangScenario(browser) {
+  const ctx = await browser.newContext({ viewport: { width: 400, height: 860 }, serviceWorkers: "block" });
+  const page = await ctx.newPage(), errors = []; page.on("pageerror", e => errors.push(String(e))); page.setDefaultTimeout(8000);
+  await page.route("**/fonts.googleapis.com/**", r => r.abort());
+  const LES = { id: "fen1", title: "Plurals", icon: "book", outro: { text: "Well done.", learned: ["I can make plurals."] }, screens: [
+    { type: "info", title: "One cat, two cats", body: "<p>We add <b>-s</b>.</p>", uk: "<p>Додаємо <b>-s</b>.</p>" },
+    { type: "choice", title: "Choose", body: "Which word is plural?", opts: ["cat", "cats", "dog"], correct: 1, fbOk: "Yes!", fbBad: "Not quite.", fbText: "Plurals end in -s.", hint: "Look at the end.", uk: "<p>Не має показатися.</p>" },
+    { type: "pick", title: "Find", text: "Two [cats] and one [!dog].", fbOk: "Great!", fbText: "Cats is plural." }] };
+  const POOL = { id: "pfen", section: "fen", status: "draft", sources: [{ id: "z", title: "Fixture book", url: "https://example.org/" }],
+    items: [{ id: "a01", lesson: "fen1", lvl: 1, sk: "orth", src: "z p. 3", type: "choice", title: "Pick one", body: "Which is plural?", opts: ["dogs", "dog"], correct: 0, steps: ["Dogs ends in -s."] }] };
+  const DIAG = { id: "dgfen", grade: 5, title: "Level test", why: "QA", status: "draft", topics: [{ id: "t", title: "Plurals", kind: "cur", lessons: ["fen1"] }],
+    items: [{ topic: "t", type: "choice", sk: "orth", title: "Which?", body: "Which is plural?", opts: ["pens", "pen"], correct: 0 }] };
+  const install = ([les, pool, diag, tl]) => { const c = SLID_SUBJECTS.find(c => c.id === "ukr");
+    c.sections = [{ id: "fen", grade: 5, weeks: [1, 2], title: "QA en", why: "QA", lessons: [les] }]; c.pools = [pool]; c.diags = [diag]; delete c.graph;
+    if (tl) c.targetLang = tl; else delete c.targetLang; };
+  // мова, якою браузер читає елемент: найближчий предок з lang
+  const langOf = sel => page.evaluate(sel => { const e = document.querySelector(sel); return e ? (e.closest("[lang]")?.getAttribute("lang") ?? null) : "немає"; }, sel);
+  // мова, якою браузер читає ТЕКСТ елемента: перший непорожній текстовий вузол усередині (обгортки span lang — усередині заголовків)
+  const textLang = sel => page.evaluate(sel => { const e = document.querySelector(sel); if (!e) return "немає";
+    const w = document.createTreeWalker(e, NodeFilter.SHOW_TEXT, { acceptNode: n => n.textContent.trim() ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP }), t = w.nextNode();
+    return t ? (t.parentElement.closest("[lang]")?.getAttribute("lang") ?? null) : "без тексту"; }, sel);
+  const ukOpens = () => page.evaluate(async () => { if (!window.SLID_EVIDENCE) return null; await SLID_EVIDENCE.flush?.();
+    return (await SLID_EVIDENCE.export()).events.filter(e => e.type === "uk_open").map(e => [e.d.mode, e.d.l, e.d.i]); });
+  const boot = async st => { await page.goto(URL0); await page.evaluate(s => { localStorage.clear(); localStorage.setItem("slid.v1", JSON.stringify(s)); }, st); await page.reload(); };
+
+  // урок
+  await boot({ grade: 5, subject: "ukr", unlockAll: true });
+  await page.evaluate(install, [LES, POOL, DIAG, "en"]);
+  ok(await page.evaluate(() => SLID.subjectLang("ukr") === "en" && SLID.subjectLang(SLID_SUBJECTS.find(c => c.id === "ukr")) === "en"), "мова змісту: SLID.subjectLang(id і предмет) — en");
+  await page.evaluate(() => window.__slidStart("fen1"));
+  ok(await langOf("#stage section.screen") === "en", `урок en: section.screen lang="en", а ${await langOf("#stage section.screen")}`);
+  ok(await langOf("#stage h2") === "en", "урок en: заголовок екрана — en");
+  ok(await langOf("#action") === "uk", `урок en: кнопка дії — мовою сторінки uk, а ${await langOf("#action")}`);
+  ok(await langOf("#pClose") === "uk", "урок en: ✕ — uk");
+  const uk = page.locator("#stage details.uktr");
+  ok(await uk.count() === 1, "урок en: екран теорії з uk — блок перекладу");
+  ok(await uk.count() === 1 && !(await uk.evaluate(d => d.open)), "урок en: переклад згорнуто за замовчуванням");
+  ok(await langOf("#stage details.uktr .note-b") === "uk", "урок en: текст перекладу — lang uk");
+  ok(await langOf("#stage details.uktr summary") === "uk" && /Переклад українською/.test(await page.locator("#stage details.uktr summary").innerText()), "урок en: кнопка «Переклад українською» — хром uk");
+  ok(same(await ukOpens(), []), "урок en: до відкриття uk_open немає");
+  if (await uk.count()) { await page.click("#stage details.uktr summary"); await page.click("#stage details.uktr summary"); await page.click("#stage details.uktr summary"); }
+  ok(await uk.count() && await uk.evaluate(d => d.open), "урок en: переклад відкривається");
+  ok(same(await ukOpens(), [["lesson", "fen1", 0]]), `урок en: uk_open один раз на показ екрана (mode, l, i), а ${JSON.stringify(await ukOpens())}`);
+  await page.click("#action");
+  // choice: помилка → «Підказка:» uk, підказка en; fbBad — en; повідомлення рушія — uk
+  ok(await page.locator("#stage details.uktr").count() === 0, "урок en: на оцінюваному екрані uk не показано");
+  ok(await langOf('#stage .opt[data-k="0"]') === "en", "урок en: варіанти — en");
+  await page.click('#stage .opt[data-k="0"]'); await page.click("#action");
+  ok(await page.evaluate(() => document.querySelector("#fbTitle [lang]")?.getAttribute("lang") === "en" && document.querySelector("#fbTitle [lang=en]").textContent === "Not quite."), "урок en: fbBad у span lang=en");
+  ok(await page.evaluate(() => { const t = document.querySelector("#fbText"); return /Обери інший варіант/.test(t.textContent) && !t.querySelector("[lang=en]"); }), "урок en: службове повідомлення після помилки — без lang en");
+  ok(await langOf("#hintHost .hint b") === "uk", `урок en: «Підказка:» — uk, а ${await langOf("#hintHost .hint b")}`);
+  ok(await page.evaluate(() => { const h = document.querySelector("#hintHost .hint span"); const tx = [...h.childNodes].filter(n => n.nodeType === 3).map(n => n.textContent).join(""); return /Look at the end/.test(tx) && h.closest("[lang]").getAttribute("lang") === "en"; }), "урок en: текст підказки — en");
+  await page.click('#stage .opt[data-k="2"]'); await page.click("#action");
+  ok(await page.evaluate(() => { const t = document.querySelector("#fbTitle"); return /Ось правильна відповідь/.test(t.textContent) && !t.querySelector("[lang=en]"); }), "урок en: «Ось правильна відповідь.» — хром без lang en");
+  ok(await page.evaluate(() => document.querySelector("#fbText [lang=en]")?.textContent === "Plurals end in -s."), "урок en: fbText — у span lang=en");
+  await page.click("#action");
+  ok(await langOf("#stage .fix") === "uk", `урок en: інструкція рушія .fix (pick) — uk, а ${await langOf("#stage .fix")}`);
+  ok(await langOf("#stage .pw") === "en", "урок en: слова pick — en");
+  await page.locator(".pw", { hasText: /^cats$/ }).click(); await page.click("#action");
+  ok(await page.evaluate(() => document.querySelector("#fbTitle [lang=en]")?.textContent === "Great!"), "урок en: fbOk — у span lang=en");
+  await page.click("#action");
+  ok(await textLang("#stage h1") === "en" && await textLang("#stage .learned .li") === "en" && await textLang("#stage .endhero > div:has(> p)") === "en", "підсумок уроку en: назва, outro й «умієш» — en");
+  ok(await textLang("#stage .endhero > .eyebrow") === "uk" && await textLang("#stage .learned > .eyebrow") === "uk", "підсумок уроку en: службові eyebrow — uk");
+  await page.click("#action");
+
+  // тест рівня
+  await page.evaluate(() => document.querySelector('.tab[data-tab="path"]').click());
+  await page.click('button[data-subject="ukr"]'); { const d = page.locator("[data-diag]"); if (await d.count()) await d.first().click(); else await page.click('[data-plan="ukr"]'); }
+  await page.click("[data-diag-go]");
+  ok(await langOf("#stage section.screen") === "en", "тест en: section.screen — en");
+  ok(await textLang("#stage .eyebrow") === "uk" && /Тест рівня/.test(await page.locator("#stage .eyebrow").textContent()), `тест en: «Тест рівня · завдання N» — uk, а ${await textLang("#stage .eyebrow")}`);
+  ok(await langOf("#skip") === "uk", "тест en: «Ще не знаю» — uk");
+  await page.click('#stage .opt[data-k="0"]'); await page.click("#action");
+  ok(await textLang("#stage .learned .li .grow") === "en" && await textLang("#stage .learned .li .tchip") === "uk", `підсумок тесту en: назви тем — en, статус теми — uk, а ${await textLang("#stage .learned .li .grow")}`);
+  await page.locator("#pClose").click();
+
+  // тренування
+  await boot({ grade: 5, subject: "ukr", unlockAll: false, lessons: { fen1: { done: true, stars: 3 } } });
+  await page.evaluate(install, [LES, POOL, DIAG, "en"]);
+  await page.evaluate(() => document.querySelector('.tab[data-tab="path"]').click());
+  await page.click('button[data-subject="ukr"]'); await page.click('[data-practice-view="ukr"]'); await page.click('[data-practice="fen1"]');
+  ok(await langOf("#stage section.screen") === "en", "тренування en: section.screen — en");
+  ok(await page.evaluate(() => { const e = document.querySelector("#stage .eyebrow"); const u = e.querySelector("[lang=uk]"); return !!u && /Тренування/.test(u.textContent) && !/Plurals/.test(u.textContent) && e.closest("[lang]").getAttribute("lang") === "en"; }), "тренування en: «Тренування ·» — uk, назва уроку — en");
+  ok(await langOf("#stage .srcnote") === "uk", "тренування en: «Джерело:» — uk");
+  await page.click('#stage .opt[data-k="0"]'); await page.click("#action");
+  ok(await page.evaluate(() => { const t = document.querySelector("#fbTitle"); const u = t.querySelector("[lang=uk]"); return !!u && u.textContent === "Правильно."; }), "тренування en: типове «Правильно.» — uk, хоч і в обгортці змісту");
+  ok(await page.evaluate(() => { const b = document.querySelector("#fbText .steps b"); return b && b.closest("[lang]").getAttribute("lang") === "uk" && document.querySelector("#fbText .steps > span").closest("[lang]").getAttribute("lang") === "en"; }), "тренування en: «Пояснення» — uk, кроки — en");
+
+  // регресія: предмет без targetLang — жодного lang у плеєрі, uk не показано
+  await boot({ grade: 5, subject: "ukr", unlockAll: true });
+  await page.evaluate(install, [LES, POOL, DIAG, null]);
+  ok(await page.evaluate(() => SLID.subjectLang("ukr") === ""), "без targetLang: SLID.subjectLang — порожньо");
+  await page.evaluate(() => window.__slidStart("fen1"));
+  ok(await page.locator("#stage details.uktr").count() === 0, "без targetLang: блоку перекладу немає");
+  await page.click("#action"); await page.click('#stage .opt[data-k="0"]'); await page.click("#action");
+  ok(await page.evaluate(() => !document.querySelector("#stage [lang], #dock [lang]")), "без targetLang: у #stage і #dock немає жодного lang (як раніше)");
+  // невідома мова — ігнорується (validate — помилка)
+  await page.evaluate(install, [LES, POOL, DIAG, "xx"]);
+  ok(await page.evaluate(() => SLID.subjectLang("ukr") === ""), "targetLang: \"xx\" — рушій ігнорує");
+  ok(!errors.length, "мова змісту: помилки сторінки: " + errors.join(" | "));
   await ctx.close();
 }

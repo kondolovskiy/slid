@@ -7,6 +7,15 @@ const SUBJ = window.SLID_SUBJECTS;
 const $ = s => document.querySelector(s);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const course = id => SUBJ.find(c=>c.id===id) || SUBJ[0];
+/* Мова змісту (engine-eng-lang-attr, D-054; CONTENT_SCHEMA §1): предмет з targetLang — зміст плеєра (section.screen і зміст у панелі
+   відповіді) з lang цієї мови, хром рушія — мовою сторінки (<html lang>). Предмет без targetLang — розмітка без жодного lang, як раніше.
+   Правило — SLID.subjectLang (app/registry.js), спільне з tools/lib.mjs. Помилка реєстру — "" (мова сторінки), не зупинка уроку. */
+const UI_LANG = document.documentElement.lang || "uk";
+const langOfSubj = c => { try{ const l=window.SLID.subjectLang(c)||""; return l===UI_LANG? "" : l; }catch(e){ return ""; } };
+const CL = () => C? langOfSubj(C) : "";                              // мова змісту поточного предмета плеєра ("" — мова сторінки)
+const inL = (h, c=C) => { const l=c? langOfSubj(c) : ""; return l && h? `<span lang="${l}">${h}</span>` : h; };   // зміст предмета всередині хрому
+const inUi = h => CL() && h? `<span lang="${UI_LANG}">${h}</span>` : h;            // хром рушія всередині змісту
+const uiA = () => CL()? ` lang="${UI_LANG}"` : "";                                 // атрибут хрому для елемента всередині змісту
 const SOON = window.SLID_SOON || [];
 const secsFor = (c, g) => c.sections.filter(x=>x.grade===(g??S.grade));
 const lessonsOf = (c, g) => secsFor(c,g).filter(x=>x.lessons).flatMap(x=>x.lessons);
@@ -490,7 +499,7 @@ function viewPractice(){
 }
 function recCard(st, same){
   const f=findLesson(st.l), skn=st.sk&&f.c.skills[st.sk.split(".")[1]];
-  return `<div class="rec"><div class="eyebrow">Варто повторити · додано в план</div><div class="recrow"><span class="dot lg s-${f.c.id}">${ic(f.l.icon)}</span><span class="grow"><b>${esc(f.l.title)}</b><span class="muted small">${f.c.short} · ${f.sec.grade} клас · ${f.l.screens.length} ${plural(f.l.screens.length,["крок","кроки","кроків"])}</span></span></div><p class="small" style="margin:0">${skn? `Помилки в навичці «${skn.name}» повторюються в різних уроках. Почнімо з теми, де вона з'являється вперше.` : same? `У ${st.n} з ${st.of} ${plural(st.of,["завдання","завдань","завдань"])} цієї теми були помилки. Пройди урок ще раз — і вона закріпиться.` : `У ${st.n} з ${st.of} ${plural(st.of,["останнього завдання","останніх завдань","останніх завдань"])} на цю тему були помилки. Коротке повторення допоможе.`}</p><button class="btn" type="button" data-lesson="${st.l}">${same?"Пройти ще раз":"Повторити зараз"}</button></div>`;
+  return `<div class="rec"><div class="eyebrow">Варто повторити · додано в план</div><div class="recrow"><span class="dot lg s-${f.c.id}">${ic(f.l.icon)}</span><span class="grow"><b>${inL(esc(f.l.title), f.c)}</b><span class="muted small">${f.c.short} · ${f.sec.grade} клас · ${f.l.screens.length} ${plural(f.l.screens.length,["крок","кроки","кроків"])}</span></span></div><p class="small" style="margin:0">${skn? `Помилки в навичці «${skn.name}» повторюються в різних уроках. Почнімо з теми, де вона з'являється вперше.` : same? `У ${st.n} з ${st.of} ${plural(st.of,["завдання","завдань","завдань"])} цієї теми були помилки. Пройди урок ще раз — і вона закріпиться.` : `У ${st.n} з ${st.of} ${plural(st.of,["останнього завдання","останніх завдань","останніх завдань"])} на цю тему були помилки. Коротке повторення допоможе.`}</p><button class="btn" type="button" data-lesson="${st.l}">${same?"Пройти ще раз":"Повторити зараз"}</button></div>`;
 }
 function viewDiag(){
   const c=course(nav.id), d=diagFor(c); if(!d) return viewHome();
@@ -513,8 +522,8 @@ function viewDiag(){
     ${was?`<button class="btn ghost" type="button" data-plan="${c.id}">Мій план</button>`:`<button class="btn ghost" type="button" data-diag-skip="${d.id}">Пізніше</button>`}
   </div>`;
 }
-function topicsHtml(d, topics, kind){
-  return d.topics.filter(t=>(t.kind==="cur")===(kind==="cur")).map(t=>{ const st=topics[t.id]|| (kind==="cur"?"new":"gap"); return `<div class="li tst-${st}">${ic(TST[st][0])}<span class="grow">${esc(t.title)}</span><span class="tchip">${TST[st][1]}</span></div>`; }).join("");
+function topicsHtml(d, topics, kind, c=C){
+  return d.topics.filter(t=>(t.kind==="cur")===(kind==="cur")).map(t=>{ const st=topics[t.id]|| (kind==="cur"?"new":"gap"); return `<div class="li tst-${st}">${ic(TST[st][0])}<span class="grow">${inL(esc(t.title), c)}</span><span class="tchip">${TST[st][1]}</span></div>`; }).join("");
 }
 function levelStats(lv){
   return `<div class="gains"><div class="stat" style="color:var(--ok)">${ic("check")}<b>${lv.ok}</b><span>${plural(lv.ok,["тему","теми","тем"])} засвоєно</span></div>
@@ -535,7 +544,7 @@ function viewPlan(){
   <div class="stack" style="margin-top:14px">
   ${lv?`<div class="card" style="display:grid;gap:10px"><div><div class="eyebrow">Тест рівня${rec.date?" · "+rec.date.split("-").reverse().slice(0,2).join("."):""}</div><h3 style="font-size:19px">${lv.title}</h3><p class="muted" style="margin:4px 0 0;font-size:14px">${lv.text}</p></div>
     ${levelStats(lv)}
-    <details class="plan"><summary>Теми тесту (${d.topics.length})</summary><div class="learned" style="margin-top:8px">${topicsHtml(d,rec.topics,"pre")}${topicsHtml(d,rec.topics,"cur")}</div></details></div>`:""}
+    <details class="plan"><summary>Теми тесту (${d.topics.length})</summary><div class="learned" style="margin-top:8px">${topicsHtml(d,rec.topics,"pre",c)}${topicsHtml(d,rec.topics,"cur",c)}</div></details></div>`:""}
   ${td.length?`<div class="eyebrow">Спершу повтори</div><div class="seclist">${td.map((st,i)=>{ const f=findLesson(st.l); return `<button type="button" class="secitem" data-lesson="${st.l}"><span class="secnum">${i+1}</span><span class="grow"><b>${esc(f.l.title)}</b><span class="muted small">${WHY[st.why]} · ${f.sec.grade} клас · ${f.l.screens.length} ${plural(f.l.screens.length,["крок","кроки","кроків"])}</span>${topicOf(st)}</span><span class="play sm">${icF("play")}</span></button>`; }).join("")}</div>`
     : `<div class="empty">${steps.length?"Усі кроки на повторення виконано.":baseTopics(c).length?"Уроків на повторення в застосунку зараз немає.":"Тем на повторення зараз немає."} Якщо в уроках повторюватимуться схожі помилки, тут з'явиться нова порада.</div>`}
   ${baseBlock(c)}
@@ -1051,8 +1060,8 @@ function startPractice(cid, focus){
   SEC={ grade:S.grade, signed:true, lessons:[] }; li=0; idx=0;
   L={ id:"practice", title: focus? findLesson(focus).l.title : "Тренування на сьогодні", screens: picked.map(it=>{ const f=findLesson(it.lesson), [sid,ref]=String(it.src).split(/\s+(.*)/s), src=it.pool.sources.find(x=>x.id===sid);
     const where=LEARN.srcRef(ref, it.srcPage);   // «с. N» не подвоюється, якщо сторінка вже є в src
-    return { ...it, _hs:it, grade:f.sec.grade, eyebrow:(it.review?"Повторення · ":"Тренування · ")+esc(f.l.title), body:(it.body||"")+`<p class="srcnote">Джерело: ${esc(src? src.short||src.title : sid)}${where? ", "+esc(where) : ""}${it.adapted? " · адаптовано" : ""}</p>`,
-      fbOk:it.fbOk||"Правильно.", fbBad:it.fbBad||"Не зовсім.", fbText:`<span class="steps"><b>${LEARN.EXPLAIN_TYPES?.includes(it.type)? "Пояснення" : "Розв'язання"}</b>${it.steps.map((t,i)=>`<span>${i+1}. ${t}</span>`).join("")}</span>` }; }) };   /* мовна вправа, sort, order — «Пояснення»: правило й розбір (engine-pool-lang) */
+    return { ...it, _hs:it, grade:f.sec.grade, eyebrow:inUi(it.review?"Повторення · ":"Тренування · ")+esc(f.l.title), body:(it.body||"")+`<p class="srcnote"${uiA()}>Джерело: ${inL(esc(src? src.short||src.title : sid))}${where? ", "+esc(where) : ""}${it.adapted? " · адаптовано" : ""}</p>`,
+      fbOk:it.fbOk||inUi("Правильно."), fbBad:it.fbBad||inUi("Не зовсім."), fbText:`<span class="steps"><b${uiA()}>${LEARN.EXPLAIN_TYPES?.includes(it.type)? "Пояснення" : "Розв'язання"}</b>${it.steps.map((t,i)=>`<span>${i+1}. ${t}</span>`).join("")}</span>` }; }) };   /* мовна вправа, sort, order — «Пояснення»: правило й розбір (engine-pool-lang) */
   run={ practice:{ focus, res:[] }, linked:true, weak:new Set(), xp:0, first:0, graded:0, combo:0, best:0, mistakes:0, startLvl:levelOf(S.xp).n };
   EV.log("practice_start", ()=>({ c:C.id, focus:focus||null, prN, items:picked.map(it=>({ key:it.key, l:it.lesson, review:!!it.review, lvl:it.lvl ?? null })) })); HYPS.newRun();
   applyTheme(C.id);
@@ -1073,14 +1082,14 @@ function renderPracticeEnd(){
   $("#stage").innerHTML=fmt(`<section class="screen endhero">
     <div class="bigicon">${ic("bolt")}</div>
     <div class="eyebrow">${C.short} · тренування завершено</div>
-    <h1>${esc(L.title)}</h1>
+    <h1>${pr.focus? inL(esc(L.title)) : esc(L.title)}</h1>
     <div class="gains">
       <div class="stat" style="color:var(--gold)">${icF("bolt")}<b>+${run.xp}</b><span>досвіду</span></div>
       <div class="stat" style="color:var(--ok)">${ic("target")}<b>${run.first}/${run.graded}</b><span>з першої спроби</span></div>
       <div class="stat" style="color:var(--flame)">${icF("flame")}<b>${run.best}</b><span>найдовше комбо</span></div>
     </div>
     <div class="learned"><div class="eyebrow">Міцність тем</div>${upd.map(u=>{ const f=findLesson(u.lesson), up=pr.res.filter(r=>r.lesson===u.lesson).every(r=>r.ok);
-      return `<div class="li ${up?"":"tst-shaky"}">${ic(up?"check":"bulb")}<span class="grow">${esc(f.l.title)}<span class="muted small" style="display:block">${up? `Без помилок. Повернемося до теми через ${u.days} ${plural(u.days,["день","дні","днів"])}.` : "Були помилки — повторимо завтра."}</span>${strength(u.lesson)}</span></div>`; }).join("")}</div>
+      return `<div class="li ${up?"":"tst-shaky"}">${ic(up?"check":"bulb")}<span class="grow">${inL(esc(f.l.title))}<span class="muted small" style="display:block">${up? `Без помилок. Повернемося до теми через ${u.days} ${plural(u.days,["день","дні","днів"])}.` : "Були помилки — повторимо завтра."}</span>${strength(u.lesson)}</span></div>`; }).join("")}</div>
     ${newSteps.map(st=>recCard(st,false)).join("")}
     <button class="btn ghost" type="button" id="again" style="width:100%">Ще одне тренування</button>
   </section>`);
@@ -1184,7 +1193,14 @@ function noteHtml(s){
   if(!s.note) return "";
   const n = typeof s.note==="string"? {text:s.note} : s.note;
   const links = (n.links||[]).map(([t,u])=>`<li><a href="${urlAttr(u)}" target="_blank" rel="noopener">${t}</a></li>`).join("");
-  return `<details class="note"><summary>${ic("info")}<span>${n.label||"Чому дві дати?"}</span></summary><div class="note-b">${n.text}${links?`<ul>${links}</ul>`:""}</div></details>`;
+  return `<details class="note"><summary>${ic("info")}<span>${n.label||inUi("Чому дві дати?")}</span></summary><div class="note-b">${n.text}${links?`<ul>${links}</ul>`:""}</div></details>`;
+}
+/* Згорнутий український переклад правила (engine-eng-lang-attr, D-054; docs/design/english.md §2 п. 5): поле uk екрана теорії уроку
+   в предметі з targetLang — details, закритий за замовчуванням, lang мови сторінки. Деінде (оцінюваний екран, тест, тренування,
+   предмет без targetLang) не показується; validate — помилка. Відкриття — подія журналу uk_open (item), раз на показ екрана. */
+function ukHtml(s){
+  if(typeof s.uk!=="string" || !s.uk.trim() || !CL() || !PLAIN.includes(s.type) || run.diag || run.practice) return "";
+  return `<details class="note uktr" lang="${UI_LANG}"><summary>${ic("info")}<span>Переклад українською</span></summary><div class="note-b">${s.uk}</div></details>`;
 }
 const PLAIN=["intro","info","explore"];   // екрани без відповіді; оцінювані — GRADED
 let unsup=false;   // поточний екран рушій показати не вміє (renderScreen, запобіжник версій)
@@ -1194,13 +1210,14 @@ function renderScreen(){
   if(idx>=L.screens.length){ if(run.diag) renderDiagEnd(); else if(run.practice) renderPracticeEnd(); else renderEnd(); $("#player").scrollTo({top:0, behavior:"instant"}); return focusAction(); }
   const s=L.screens[idx]; checked=false; tries=0; tried=null; pProgress();
   lastAns=null; EV.log("screen", ()=>evItem(s)); HYPS.screen(s);
-  let h=`<section class="screen" tabindex="-1"><div class="eyebrow">${run.diag? `Тест рівня · завдання ${Object.keys(run.res).length+1}` : s.eyebrow||""}</div>`;
+  const cl=CL();
+  let h=`<section class="screen" tabindex="-1"${cl?` lang="${cl}"`:""}><div class="eyebrow">${run.diag? inUi(`Тест рівня · завдання ${Object.keys(run.res).length+1}`) : s.eyebrow||""}</div>`;
   h+= s.type==="intro"? `<h1>${s.title}</h1>` : `<h2>${s.title}</h2>`;
-  h+= fig(s) + (s.body||"") + noteHtml(s);
+  h+= fig(s) + (s.body||"") + noteHtml(s) + ukHtml(s);
   const h0=h.length;
   if(s.type==="choice"||s.type==="multi"){
     st= s.type==="multi"? new Set() : null;
-    if(s.type==="multi") h+=`<div class="fix">Можна обрати кілька</div>`;
+    if(s.type==="multi") h+=`<div class="fix"${uiA()}>Можна обрати кілька</div>`;
     h+=`<div class="opts">${s.opts.map((o,k)=>`<button class="opt" type="button" data-k="${k}" aria-pressed="false"><span class="k">${optLetter(k)}</span><span>${o}</span></button>`).join("")}</div>`;
   }
   if(s.type==="sort"){
@@ -1212,15 +1229,15 @@ function renderScreen(){
   }
   if(s.type==="order"){
     st=[];
-    h+=`<div class="opts" id="ord">${s.shuffle.map(k=>`<button class="opt" type="button" data-k="${k}" aria-pressed="false"><span class="k"></span><span>${s.items[k]}</span></button>`).join("")}</div><div class="fix" style="margin-top:6px">Торкнись ще раз, щоб прибрати номер.</div>`;
+    h+=`<div class="opts" id="ord">${s.shuffle.map(k=>`<button class="opt" type="button" data-k="${k}" aria-pressed="false"><span class="k"></span><span>${s.items[k]}</span></button>`).join("")}</div><div class="fix"${uiA()} style="margin-top:6px">Торкнись ще раз, щоб прибрати номер.</div>`;
   }
   if(s.type==="slider"){
     st=s.start;
     h+=`<div class="slider"><output id="out">${s.start.toLocaleString("uk-UA")}</output><div class="fix" style="text-align:center">${s.unit}</div><input id="rng" type="range" min="${s.min}" max="${s.max}" step="${s.step}" value="${s.start}" aria-label="Твоя оцінка"><div class="scale"><span>${s.min}</span><span>${s.max.toLocaleString("uk-UA")}</span></div></div>`;
   }
   if(s.type==="align"){ st=0; h+=alignHtml(s); }
-  if(s.type==="shade"){ st=new Set(); h+=`<div class="shade" id="shade"></div><div class="counter" id="shcount" ${run.diag||s.hideCount?"hidden":""}></div>`; }
-  if(s.type==="numline"){ st=0; h+=`<div class="numline"><div id="nlsvg"></div><div class="readout" ${run.diag||s.hideCount?"hidden":""}><span>Точка:</span><b id="nlval"></b></div><input id="nlrng" type="range" min="0" max="${s.max*s.den}" step="1" value="0" aria-label="Положення точки на промені"></div>`; }
+  if(s.type==="shade"){ st=new Set(); h+=`<div class="shade" id="shade"></div><div class="counter" id="shcount"${uiA()} ${run.diag||s.hideCount?"hidden":""}></div>`; }
+  if(s.type==="numline"){ st=0; h+=`<div class="numline"><div id="nlsvg"></div><div class="readout" ${run.diag||s.hideCount?"hidden":""}><span${uiA()}>Точка:</span><b id="nlval"></b></div><input id="nlrng" type="range" min="0" max="${s.max*s.den}" step="1" value="0" aria-label="Положення точки на промені"></div>`; }
   if(s.type==="number"){ st=""; const dec=numDecimal(s), sg=s.signed||s.answer<0||SEC.signed||SEC.grade>=7;   // «±» не має видавати знак відповіді: з 7 класу (або в розділі з signed) — завжди
     h+=`<div class="numbox">${sg?`<button type="button" class="sgn" id="numSign" aria-label="Змінити знак" aria-pressed="false">±</button>`:""}<input id="numIn" inputmode="${dec?"decimal":"numeric"}" ${dec?"":'pattern="[0-9]*"'} autocomplete="off" placeholder="?" aria-label="Відповідь"><span class="unit">${s.unit||""}</span></div>`+numKeysHtml(s, sg); }
   if(s.type==="answer"){ st=""; h+=answerInput(s); }
@@ -1229,9 +1246,11 @@ function renderScreen(){
   /* запобіжник (engine-sw-version-skew): тип екрана, який цей рушій не вміє показати (зміст новіший за рушій — змішані версії
      застосунку), — не тупик із неактивною «Перевірити», а повідомлення й «Пропустити» без зарахування (unsupported) */
   unsup= !PLAIN.includes(s.type) && (s.type==="lab"? !(s.lab && window.SLID_LAB) : h.length===h0);
-  if(unsup) h+=`<div class="hint" id="unsupported">${ic("info")}<span><b>Це завдання з новішої версії застосунку.</b> Онови застосунок: закрий і відкрий знову. Зараз це завдання можна пропустити${run.diag? "" : " — на результат це не вплине"}.</span></div>`;
+  if(unsup) h+=`<div class="hint" id="unsupported"${uiA()}>${ic("info")}<span><b>Це завдання з новішої версії застосунку.</b> Онови застосунок: закрий і відкрий знову. Зараз це завдання можна пропустити${run.diag? "" : " — на результат це не вплине"}.</span></div>`;
   h+=`<div id="hintHost"></div></section>`;
   $("#stage").innerHTML=fmt(h);
+  const ukd=$("#stage details.uktr");   // переклад правила: відкрив чи ні — подія uk_open раз на показ екрана (docs/EVIDENCE.md)
+  if(ukd) ukd.addEventListener("toggle",()=>{ if(ukd.open && !ukd.dataset.ev){ ukd.dataset.ev="1"; EV.log("uk_open", ()=>evItem(s)); } });
   if(unsup){ setDock("","","","Пропустити"); return focusAction(); }
   if(PLAIN.includes(s.type)) setDock("","","",s.cta||"Далі");
   else if(["slider","align","numline","lab"].includes(s.type)) setDock("","","","Перевірити");
@@ -1248,9 +1267,9 @@ function alignHtml(s){
   // роки шкали — повністю: крайні підписи притиснуті до країв (не «180», «124»); шрифт у px вьюбокса пропорційний ширині (W/30: ≈ 20 при W ≈ 600; для широких шкал W/32, щоб роки 20 років одне від одного не злипалися) — щоб на 360 px був ≈ 11 px за будь-якого розмаху років
   const fs=+(W/(W>800?32:30)).toFixed(1), yrs=[s.ref.from, s.ref.from+20, s.ref.from+40, s.ref.to].map((y,i,a)=>`<text x="${i===0? 0 : i===a.length-1? W : (y-s.ref.from)*cw+cw/2}" y="62" text-anchor="${i===0?"start":i===a.length-1?"end":"middle"}" font-size="${fs}" fill="var(--muted)">${y}</text>`).join("");
   return `<div class="align"><svg viewBox="0 -2 ${W} 118" role="img" aria-label="Еталонний штрихкод кілець і кільця колоди">${refBars}${yrs}<g id="alsample"></g></svg>
-    <div class="readout"><span>Останнє кільце колоди:</span><b id="alyear">—</b></div>
+    <div class="readout"><span${uiA()}>Останнє кільце колоди:</span><b id="alyear">—</b></div>
     <input id="alrng" type="range" min="0" max="${n-s.sample.len}" step="1" value="0" aria-label="Зсув колоди">
-    <div class="readout"><span>Збіг візерунка</span><span id="almatch">—</span></div>
+    <div class="readout"><span${uiA()}>Збіг візерунка</span><span id="almatch">—</span></div>
     <div class="almeter" aria-hidden="true"><i id="almeter"></i></div></div>`;
 }
 /** Кільце колоди «збігається» з еталоном, якщо висоти стовпчиків на око однакові (≈ 1 px зі 36): на хибному зсуві частина кілець
@@ -1322,7 +1341,7 @@ window.SLID_ANS_UI=deepFreeze({...JSON.parse(JSON.stringify(ANS_UI)), field:answ
 function answerInput(s){
   const kind=s.answerKind||"number", { keys, help, sym }=answerUI(s, s.grade ?? SEC.grade, !run.practice && SEC.signed);
   const unit=s.unit||(kind==="periodicSet"? "k ∈ ℤ" : "");
-  return `<div class="numbox wide"><input id="numIn" inputmode="${kind==="number"||kind==="time"?"decimal":kind==="divrem"?"numeric":"text"}" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="?" aria-label="Відповідь"><span class="unit" id="answerUnit">${esc(unit)}</span></div>${keys.length? `<div class="anskeys${sym?" sym":""}">${keys.map(v=>`<button type="button" data-ins="${esc(v)}" aria-label="Вставити ${esc(v===" "?"пробіл":v.trim()==="ост."?"остачу":v)}">${esc(v===" "?"пробіл":v==="-"?"−":v.trim())}</button>`).join("")}</div>` : ""}${help? `<div class="fix" style="text-align:center">${esc(help)}</div>` : ""}`;
+  return `<div class="numbox wide"><input id="numIn" inputmode="${kind==="number"||kind==="time"?"decimal":kind==="divrem"?"numeric":"text"}" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="?" aria-label="Відповідь"><span class="unit" id="answerUnit">${esc(unit)}</span></div>${keys.length? `<div class="anskeys${sym?" sym":""}">${keys.map(v=>`<button type="button" data-ins="${esc(v)}" aria-label="Вставити ${esc(v===" "?"пробіл":v.trim()==="ост."?"остачу":v)}">${esc(v===" "?"пробіл":v==="-"?"−":v.trim())}</button>`).join("")}</div>` : ""}${help? `<div class="fix"${uiA()} style="text-align:center">${esc(help)}</div>` : ""}`;
 }
 const answerUnit = (s, value) => { const a=LEARN.parseAns(value); if(!s.unitForms||!a) return s.unit||""; const n=Math.abs(a.n/a.d); return Number.isInteger(n)? plural(n,s.unitForms) : s.unitForms[1]; };
 function shadeUpdate(s){
@@ -1353,7 +1372,7 @@ const numOk = (s,v) => String(v).trim()!=="" && Math.abs(numParse(v)-s.answer) <
 /** Кнопки й підказка під полем number — з answerUI (як у тренуванні); «−» тут дає кнопка «±» (sg), тож «-» з кнопок прибрано. */
 function numKeysHtml(s, sg){
   const { keys, help }=answerUI({ answer:s.answer, signed:s.signed }, SEC.grade, SEC.signed), ks=sg? keys.filter(k=>k!=="-") : keys;
-  return `${ks.length? `<div class="anskeys">${ks.map(v=>`<button type="button" data-ins="${esc(v)}" aria-label="Вставити ${esc(v===" "?"пробіл":v)}">${esc(v===" "?"пробіл":v==="-"?"−":v)}</button>`).join("")}</div>` : ""}${help? `<div class="fix" style="text-align:center">${esc(help)}</div>` : ""}`;
+  return `${ks.length? `<div class="anskeys">${ks.map(v=>`<button type="button" data-ins="${esc(v)}" aria-label="Вставити ${esc(v===" "?"пробіл":v)}">${esc(v===" "?"пробіл":v==="-"?"−":v)}</button>`).join("")}</div>` : ""}${help? `<div class="fix"${uiA()} style="text-align:center">${esc(help)}</div>` : ""}`;
 }
 const numShow = v => String(v).replace(".",",").replace("-","−");
 /* мовні вправи (app/lang.js, docs/CONTENT_SCHEMA.md §4.1): розмітка, стан st, позначки */
@@ -1369,15 +1388,15 @@ function langHtml(s){
       if(pg){ const h=v.match(/^[^\s<>]*/)[0]; out+=h; v=v.slice(h.length); if(v||!ng) X(); if(!v) return; }
       if(ng){ const t=v.match(/[^\s<>]*$/)[0]; out+=v.slice(0,v.length-t.length); X(); O(); out+=t; } else out+=v; });
     X();
-    return `<div class="ltext">${out}</div>${g.gaps.some(p=>p.opts.includes(LANG.NONE))?`<div class="fix">∅ — нічого не писати.</div>`:""}`; }
+    return `<div class="ltext">${out}</div>${g.gaps.some(p=>p.opts.includes(LANG.NONE))?`<div class="fix"${uiA()}>∅ — нічого не писати.</div>`:""}`; }
   if(s.type==="pick"){ const p=LANG.parsePick(s.text); st=new Set();
-    return `<div class="ltext">${p.parts.map(x=>x.t==="text"? esc(x.v) : `<button type="button" class="pw" data-w="${x.n}" aria-pressed="false">${esc(x.v)}</button>`).join("")}</div><div class="fix">Торкнись потрібних слів. Ще раз — щоб зняти вибір.</div>`; }
+    return `<div class="ltext">${p.parts.map(x=>x.t==="text"? esc(x.v) : `<button type="button" class="pw" data-w="${x.n}" aria-pressed="false">${esc(x.v)}</button>`).join("")}</div><div class="fix"${uiA()}>Торкнись потрібних слів. Ще раз — щоб зняти вибір.</div>`; }
   if(s.type==="stress"){ const ws=s.words.map(LANG.parseStress); st=ws.map(()=>null);
-    return `<div class="stress">${ws.map((w,k)=>`<div class="sword" role="group" aria-label="Наголос у слові «${attr(w.word)}»">${w.letters.map(l=>l.v? `<button type="button" class="sv" data-w="${k}" data-i="${l.i}" aria-pressed="false">${esc(l.ch)}</button>` : `<span>${esc(l.ch)}</span>`).join("")}</div>`).join("")}</div><div class="fix">Торкнись голосного, на який падає наголос.</div>`; }
+    return `<div class="stress">${ws.map((w,k)=>`<div class="sword" role="group" aria-label="Наголос у слові «${attr(w.word)}»">${w.letters.map(l=>l.v? `<button type="button" class="sv" data-w="${k}" data-i="${l.i}" aria-pressed="false">${esc(l.ch)}</button>` : `<span>${esc(l.ch)}</span>`).join("")}</div>`).join("")}</div><div class="fix"${uiA()}>Торкнись голосного, на який падає наголос.</div>`; }
   // zero: true — після слова клітинка нульового закінчення «□» і межа перед нею (CONTENT_SCHEMA §4.1)
   if(s.type==="split"){ const p=LANG.parseSplit(s.word, s.zero), ls=[...p.word]; st=new Set();
     const cut=k=>`<button type="button" class="cut" data-c="${k+1}" aria-pressed="false" aria-label="Межа після «${attr(ls.slice(0,k+1).join(""))}»${k===ls.length-1?" (перед нульовим закінченням)":""}"></button>`;
-    return `<div class="split" role="group" aria-label="Поділ слова «${attr(p.word)}»${s.zero?" з нульовим закінченням":""}">${ls.map((c,k)=>`<span class="sl">${esc(c)}</span>`+(k<ls.length-1||s.zero? cut(k) : "")).join("")}${s.zero?`<span class="sl zero" role="img" aria-label="нульове закінчення" style="color:var(--muted);font-weight:400;padding-left:2px">\u25A1</span>`:""}</div><div class="fix">Торкнись проміжку між літерами, щоб поставити межу.</div>`; }
+    return `<div class="split" role="group" aria-label="Поділ слова «${attr(p.word)}»${s.zero?" з нульовим закінченням":""}">${ls.map((c,k)=>`<span class="sl">${esc(c)}</span>`+(k<ls.length-1||s.zero? cut(k) : "")).join("")}${s.zero?`<span class="sl zero" role="img" aria-label="нульове закінчення" style="color:var(--muted);font-weight:400;padding-left:2px">\u25A1</span>`:""}</div><div class="fix"${uiA()}>Торкнись проміжку між літерами, щоб поставити межу.</div>`; }
   if(s.type==="word"){ st=""; const keys=s.keys||[];
     return `<div class="numbox wide lword">${s.before?`<span class="unit">${esc(s.before)}</span>`:""}<input id="numIn" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="?" aria-label="Відповідь"><span class="unit">${esc(s.after||"")}</span></div>${keys.length?`<div class="anskeys sym">${keys.map(v=>`<button type="button" data-ins="${esc(v)}" aria-label="Вставити ${esc(v)}">${esc(v)}</button>`).join("")}</div>`:""}`; }
   return "";
@@ -1406,9 +1425,9 @@ function langMarks(s, reveal){
     stage.querySelectorAll(".sv").forEach(b=>{ const w=+b.dataset.w, i=+b.dataset.i; mark(b, st[w]===i? i===ws[w].correct : reveal&&i===ws[w].correct? true : null); }); }
   if(s.type==="split"){ const p=LANG.parseSplit(s.word, s.zero), best=p.variants.map(v=>new Set(v)).sort((a,b)=>[...b].filter(x=>st.has(x)).length-[...a].filter(x=>st.has(x)).length)[0];
     stage.querySelectorAll(".cut").forEach(b=>{ const c=+b.dataset.c; mark(b, st.has(c)? best.has(c) : reveal&&best.has(c)? true : null); if(reveal&&best.has(c)) b.setAttribute("aria-pressed","true"); });
-    if(reveal && !LANG.check(s,st)) $("#hintHost").innerHTML=`<div class="hint">${ic("check")}<span>Правильно: <b>${p.variants.map(v=>esc(LANG.splitShow(p.word, v, s.zero))).join("</b> або <b>")}</b></span></div>`; }
+    if(reveal && !LANG.check(s,st)) $("#hintHost").innerHTML=`<div class="hint">${ic("check")}<span>${inUi("Правильно:")} <b>${p.variants.map(v=>esc(LANG.splitShow(p.word, v, s.zero))).join("</b> або <b>")}</b></span></div>`; }
   if(s.type==="word"){ const ni=$("#numIn"), ok=LANG.check(s,st); mark(ni, ok);
-    if(reveal && !ok) $("#hintHost").innerHTML=`<div class="hint">${ic("check")}<span>Правильна відповідь: <b>${esc(LANG.wordAnswers(s)[0])}</b></span></div>`; }
+    if(reveal && !ok) $("#hintHost").innerHTML=`<div class="hint">${ic("check")}<span>${inUi("Правильна відповідь:")} <b>${esc(LANG.wordAnswers(s)[0])}</b></span></div>`; }
 }
 /* лабораторія: інтерактивна модель на екрані (app/lab.js) */
 let LAB=null;
@@ -1529,15 +1548,15 @@ function check(){
   if(run.diag){ const v= s.type==="answer"? LEARN.diagVerdict(s,st) : gradeNow(s)? LEARN.OK : LEARN.BAD; return v===LEARN.HALF? diagHalf(s) : diagAnswer(v); }
   if(s.poll||s.hyp){ EV.log("answer", ()=>({ ...evItem(s), try:1, verdict:"hyp", raw:evRaw(s), hint:false, final:true }));
     if(s.poll) S.polls[s.poll]=st; const g=gain(5); checked=true; lock();
-    setDock("info", `${s.fbTitle} <span class="gain">+${g}</span>`, s.fbText, "Далі"); return focusAction(); }
+    setDock("info", `${inL(s.fbTitle)} <span class="gain">+${g}</span>`, inL(s.fbText), "Далі"); return focusAction(); }
   if(sameAsTried()) return refocusAnswer();
   const ok=gradeNow(s);
   const ha=evAnswer(s, ()=>{ const vd=evVerdict(s,ok), raw=evRaw(s); return { ...evItem(s), try:tries+1, verdict:vd, raw, hint:tries>0 && !!s.hint, final: ok || tries>0 || s.type==="slider", ...evKey(s, vd, raw) }; });
   if(!ok && s.pre){ run.weak.add(s.pre); ((run.weakN||={})[s.pre]||=new Set).add(idx); }   // різні завдання з помилкою, а не хибні спроби (рев'ю engine-render-legibility-1117)
-  const preNote = (!ok && s.pre) ? (()=>{ const f=findLesson(s.pre); return f? `<span class="prenote">${ic("bulb")}Ця задача спирається на тему «${f.l.title}» (${f.sec.grade} клас). Наприкінці уроку запропоную її повторити.</span>` : ""; })() : "";
+  const preNote = (!ok && s.pre) ? (()=>{ const f=findLesson(s.pre); return f? `<span class="prenote">${ic("bulb")}Ця задача спирається на тему «${inL(f.l.title, f.c)}» (${f.sec.grade} клас). Наприкінці уроку запропоную її повторити.</span>` : ""; })() : "";
   if(!(ok || tries>0 || s.type==="slider")){
     tries++; showMarks(s,false); run.combo=0; run.mistakes++; pProgress();
-    if(s.hint) $("#hintHost").innerHTML=fmt(`<div class="hint">${ic("bulb")}<span><b>Підказка:</b> ${s.hint}</span></div>`);
+    if(s.hint) $("#hintHost").innerHTML=fmt(`<div class="hint">${ic("bulb")}<span><b${uiA()}>Підказка:</b> ${s.hint}</span></div>`);
     const msg = s.type==="sort"? "Червоні рядки розкладено неправильно. Зміни їх і перевір ще раз."
              : s.type==="order"? "Червоні пункти стоять не на своїх місцях. Торкнись, щоб прибрати номер, і спробуй ще."
              : s.type==="align"? "Посувай колоду, поки всі стовпчики не стануть зеленими."
@@ -1553,7 +1572,7 @@ function check(){
              : s.type==="multi"? "Зміни вибір і перевір ще раз."
              : "Зміни відповідь і перевір ще раз.";
     tried=answerSig();
-    setDock("bad", s.fbBad||"Не зовсім.", msg+preNote, "Спробувати ще раз", false);   // активна знову, щойно відповідь змінено
+    setDock("bad", s.fbBad? inL(s.fbBad) : "Не зовсім.", msg+preNote, "Спробувати ще раз", false);   // активна знову, щойно відповідь змінено
     HYPS.answer(ha);   // тінь гіпотез — після показаного повідомлення (formHint/badHint уже обчислено)
     return refocusAnswer();
   }
@@ -1573,8 +1592,8 @@ function check(){
   showMarks(s, !ok);
   if(!ok && s.type==="align"){ st=s.sample.endYear-s.sample.len+1-s.ref.from; $("#alrng").value=st; alignUpdate(s); }
   pProgress(); save(); renderTop();
-  const title = ok? s.fbOk : (s.type==="slider"? s.fbBad : "Ось правильна відповідь.");
-  setDock(ok?"ok":"bad", `${title}${g?` <span class="gain">+${g}</span>`:""}`, s.fbText+(ok?"":preNote), "Далі");
+  const title = ok? inL(s.fbOk) : (s.type==="slider"? inL(s.fbBad) : "Ось правильна відповідь.");
+  setDock(ok?"ok":"bad", `${title}${g?` <span class="gain">+${g}</span>`:""}`, inL(s.fbText)+(ok?"":preNote), "Далі");
   HYPS.answer(ha);
   focusAction();   // поле заблоковано — без цього фокус падає на BODY і Enter нікуди не веде
 }
@@ -1608,7 +1627,7 @@ function renderEnd(){
      (без done, зірок, кроку плану, detect, SRS, lesson_end); досвід за відповіді на інші екрани лишається. Закриття — подія close. */
   if(run.unsup){ save(); renderTop();
     $("#stage").innerHTML=fmt(`<section class="screen endhero" id="unsupEnd"><div class="bigicon">${ic("info")}</div>
-    <div class="eyebrow">${C.short} · урок не зараховано</div><h1>${esc(L.title)}</h1>
+    <div class="eyebrow">${C.short} · урок не зараховано</div><h1>${inL(esc(L.title))}</h1>
     <p>${run.unsup} ${plural(run.unsup,["завдання","завдання","завдань"])} з новішої версії застосунку цей застосунок ще не вміє показати. Онови застосунок: закрий і відкрий знову, а тоді пройди урок ще раз.</p></section>`);
     setDock("","","","Повернутися"); return; }
   const acc = run.graded? run.first/run.graded : 1;
@@ -1635,11 +1654,11 @@ function renderEnd(){
   const star=(C.badges||[]).find(b=>b.allstar); if(star && lessonsOf(C).every(l=>S.lessons[l.id]?.stars===3)) award(star.id,nb);
   save();
   const lvl=levelOf(S.xp), up=lvl.n>run.startLvl, o=L.outro||{};
-  const pollLine = (o.pollKey && S.polls[o.pollKey]!=null) ? `<p>Твій вибір на початку: ${o.pollText[S.polls[o.pollKey]]}. ${o.text}</p>` : `<p>${o.text||""}</p>`;
+  const pollLine = (o.pollKey && S.polls[o.pollKey]!=null) ? `<p>Твій вибір на початку: ${inL(o.pollText[S.polls[o.pollKey]])}. ${inL(o.text)}</p>` : `<p>${inL(o.text||"")}</p>`;
   $("#stage").innerHTML=fmt(`<section class="screen endhero">
     <div class="bigstars" aria-label="${stars} з 3 зірок">${[0,1,2].map(i=>`<span class="${i<stars?"":"off"}">${icF("star")}</span>`).join("")}</div>
     <div class="eyebrow">${C.short} · ${L.boss?"фінал розділу":"урок пройдено"}</div>
-    <h1>${esc(L.title)}</h1>
+    <h1>${inL(esc(L.title))}</h1>
     <div style="text-align:left;width:100%">${pollLine}</div>
     <div class="gains">
       <div class="stat" style="color:var(--gold)">${icF("bolt")}<b>+${run.xp}</b><span>досвіду (з них ${bonus} бонус)</span></div>
@@ -1653,8 +1672,8 @@ function renderEnd(){
     ${newSteps.map(st=>recCard(st, st.l===L.id)).join("")}
     ${nPool&&!newSteps.some(st=>st.l===L.id)?`<div class="rec prac"><div class="eyebrow">Закріпи тему</div><p class="small" style="margin:0">У тренуванні відкрилися задачі з цієї теми — ${nPool} ${plural(nPool,["задача","задачі","задач"])} з підручників. Відповідь записуєш сам.</p><button class="btn ghost" type="button" data-practice="${L.id}">Потренуватися</button></div>`:""}
     ${!nPool&&run.linked&&SEC.grade<S.grade?`<p class="muted small">Тренувальних задач до цієї теми поки немає. Коли вони з’являться, тренування відкриється без повторного проходження уроку.</p>`:""}
-    ${[...run.weak].filter(id=>!newSteps.some(st=>st.l===id)).map(id=>{ const f=findLesson(id); if(!f) return ""; const nw=run.weakN?.[id]?.size||1; return `<div class="rec"><div class="eyebrow">Варто повторити</div><div class="recrow"><span class="dot lg s-${f.c.id}">${ic(f.l.icon)}</span><span class="grow"><b>${esc(f.l.title)}</b><span class="muted small">${f.c.short} · ${f.sec.grade} клас · ${f.l.screens.length} ${plural(f.l.screens.length,["крок","кроки","кроків"])}</span></span></div><p class="small" style="margin:0">${nw>1? "Помилки в цьому уроці пов'язані" : "Помилка в цьому уроці пов'язана"} з цією темою. Коротке повторення допоможе.</p><button class="btn" type="button" data-lesson="${id}">Повторити зараз</button></div>`; }).join("")}
-    <div class="learned"><div class="eyebrow">Що ти тепер умієш</div>${(o.learned||[]).map(t=>`<div class="li">${ic("check")}<span>${t}</span></div>`).join("")}</div>
+    ${[...run.weak].filter(id=>!newSteps.some(st=>st.l===id)).map(id=>{ const f=findLesson(id); if(!f) return ""; const nw=run.weakN?.[id]?.size||1; return `<div class="rec"><div class="eyebrow">Варто повторити</div><div class="recrow"><span class="dot lg s-${f.c.id}">${ic(f.l.icon)}</span><span class="grow"><b>${inL(esc(f.l.title), f.c)}</b><span class="muted small">${f.c.short} · ${f.sec.grade} клас · ${f.l.screens.length} ${plural(f.l.screens.length,["крок","кроки","кроків"])}</span></span></div><p class="small" style="margin:0">${nw>1? "Помилки в цьому уроці пов'язані" : "Помилка в цьому уроці пов'язана"} з цією темою. Коротке повторення допоможе.</p><button class="btn" type="button" data-lesson="${id}">Повторити зараз</button></div>`; }).join("")}
+    <div class="learned"><div class="eyebrow">Що ти тепер умієш</div>${(o.learned||[]).map(t=>`<div class="li">${ic("check")}<span>${inL(t)}</span></div>`).join("")}</div>
   </section>`);
   setDock("","","", run.linked? "Повернутися" : SEC.lessons[li+1]? "До уроків розділу" : "Завершити розділ");
   $("#stage").querySelectorAll("[data-lesson]").forEach(b=>b.onclick=()=>startById(b.dataset.lesson));

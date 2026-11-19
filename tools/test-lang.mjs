@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Слід · тести мовних вправ (app/lang.js): розбір розмітки gaps / pick / stress / word / split і перевірка відповідей.
+// Слід · тести мовних вправ (app/lang.js): розбір розмітки gaps / pick / stress / word / split і перевірка відповідей. Також мова змісту предмета: SLID.subjectLang (app/registry.js) = tools/lib.mjs subjectLang (engine-eng-lang-attr).
 // Очікування записані вручну (не через solution), щоб тест ловив помилки самого розбору. Запуск: node tools/test-lang.mjs
 import fs from "node:fs"; import vm from "node:vm"; import path from "node:path";
 import { ROOT } from "./lib.mjs";
@@ -215,6 +215,25 @@ for (const s of [{ type: "gaps", text: "с{*е|и}ло" }, { type: "pick", text:
 // (app.js gradeNow): новий мовний тип без допуску в тест — червоно
 { const lc = { console, JSON, Math }; lc.window = lc; vm.createContext(lc); vm.runInContext(fs.readFileSync(path.join(ROOT, "app/learn.js"), "utf8"), lc);
   eq(L.TYPES.filter(t => !lc.SLID_LEARN.DIAG_TYPES.includes(t)), [], "кожен мовний тип дозволено в тесті рівня (learn.DIAG_TYPES)"); }
+
+/* мова змісту предмета (engine-eng-lang-attr, D-054): SLID.subjectLang (app/registry.js) і обгортки tools/lib.mjs — одне правило */
+{ const rc = { console }; rc.window = rc; vm.createContext(rc); vm.runInContext(fs.readFileSync(path.join(ROOT, "app/registry.js"), "utf8"), rc);
+  const R = rc.SLID, col = { light: { accent: "#000" }, dark: { accent: "#fff" } };
+  R.subject({ id: "fxen", subject: "English", short: "Eng", colors: col, targetLang: "en" });
+  R.subject({ id: "fxuk", subject: "Фікстура", short: "Ф", colors: col });
+  R.subject({ id: "fxxx", subject: "Фікстура", short: "Ф", colors: col, targetLang: "xx" });
+  R.subject({ id: "fxEN", subject: "Фікстура", short: "Ф", colors: col, targetLang: "EN" });
+  eq([...R.TARGET_LANGS], ["en"], "TARGET_LANGS: поки лише en (D-054)");
+  eq(["fxen", "fxuk", "fxxx", "fxEN", "nope"].map(id => R.subjectLang(id)), ["en", "", "", "", ""], "subjectLang за id: en / без поля / невідома мова / регістр / невідомий предмет");
+  eq(R.subjectLang(R.subjects.find(c => c.id === "fxen")), "en", "subjectLang за об'єктом предмета");
+  eq([null, undefined, 5, {}].map(x => R.subjectLang(x)), ["", "", "", ""], "subjectLang: сміття — порожньо, без винятку");
+  ok(Object.isFrozen(R.TARGET_LANGS), "TARGET_LANGS заморожено");
+  const lib = await import("./lib.mjs");
+  eq([...lib.TARGET_LANGS], [...R.TARGET_LANGS], "lib.TARGET_LANGS = SLID.TARGET_LANGS (одне джерело)");
+  eq([{ targetLang: "en" }, { id: "ukr" }, { targetLang: "xx" }, null, "eng"].map(lib.subjectLang), ["en", "", "", "", ""], "lib.subjectLang: об'єкт предмета; рядок-id — порожньо");
+  eq([{ targetLang: "en" }, { id: "ukr" }, null].map(lib.isEnglishSubject), [true, false, false], "lib.isEnglishSubject");
+  // живі предмети (без прив'язки до складу): лише значення з TARGET_LANGS або без поля
+  for (const c of lib.loadContent().subjects) ok(c.targetLang === undefined || lib.TARGET_LANGS.includes(c.targetLang), `предмет ${c.id}: targetLang з TARGET_LANGS`); }
 
 console.log(fail ? `test-lang: ${fail} з ${n} не пройшли` : `test-lang: ${n} перевірок — усі пройшли`);
 process.exit(fail ? 1 : 0);

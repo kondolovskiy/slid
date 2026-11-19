@@ -3,7 +3,7 @@
 // ПОПЕРЕДЖЕННЯ — порушення стилю (style/*.md, style/profiles.json) — їх треба виправити або обґрунтувати в нотатках задачі.
 // Запуск: node tools/validate.mjs [--section <id> | --diag <id> | --pool <id>] [--quiet]
 import fs from "node:fs"; import path from "node:path";
-import { loadContent, GRADED, TYPES, plain, mplain, words, sentences, lessonMetrics, gradeBand, readJSON, ROOT, figCues, IMG_REQUIRED, diagCtx } from "./lib.mjs";
+import { loadContent, GRADED, TYPES, plain, mplain, words, sentences, lessonMetrics, gradeBand, readJSON, ROOT, figCues, IMG_REQUIRED, diagCtx, TARGET_LANGS, subjectLang } from "./lib.mjs";
 import { analyzeGraph } from "./graph-lib.mjs";
 import * as CC from "./content-checks.mjs";
 import { euphonyScreen, euphonyIssues, VALIDATE_RULES as EUPHONY_RULES, RULES as EUPHONY_DESC } from "./euphony.mjs";
@@ -52,6 +52,8 @@ const authorWarn = (where, meta) => { const a = meta?.author;
 
 for (const c of subjects) {
   if (!c.colors?.light?.accent || !c.colors?.dark?.accent) E(`предмет ${c.id}`, "немає colors.light/dark");
+  // мова змісту (engine-eng-lang-attr, D-054): рушій невідоме значення мовчки ігнорує — тут помилка
+  if (c.targetLang !== undefined && !TARGET_LANGS.includes(c.targetLang)) E(`предмет ${c.id}`, `targetLang «${c.targetLang}» — лише ${TARGET_LANGS.map(x => `"${x}"`).join(", ")} (CONTENT_SCHEMA §1)`);
   if (c.diagOrder !== undefined && !Number.isFinite(c.diagOrder)) E(`предмет ${c.id}`, "diagOrder — число (порядок тесту рівня після вибору класу, CONTENT_SCHEMA §1)");
   for (const sec of c.sections) {
     const where0 = `${origin[sec.id] || c.id}#${sec.id}`;
@@ -304,6 +306,13 @@ function checkScreen(S, s, c, diag, pool = false) {
     ...CC.labShowLeak(s), ...CC.labNotation(s, lab), ...CC.powFracNoParens(s), ...CC.genderedAddress(s)]) W(S, m);
   if (!TYPES.includes(s.type)) return E(S, `невідомий тип «${s.type}»`);
   if (!s.title && !(diag && !pool)) E(S, "немає title");   // у тесті рівня «немає title» уже дає learn.validate — не дублюємо (рев'ю diag-answer-kinds, P3-4)
+  // згорнутий український переклад правила (engine-eng-lang-attr, D-054; CONTENT_SCHEMA §4): рушій показує його лише на екрані теорії
+  // уроку в предметі з targetLang — деінде поле мовчки зникло б. Обмеження «лише 4–5 кл.» — engine-eng-validate
+  if (s.uk !== undefined) {
+    if (typeof s.uk !== "string" || !s.uk.trim()) E(S, "uk — непорожній HTML-рядок (переклад правила українською)");
+    else if (diag || !["intro", "info", "explore"].includes(s.type)) E(S, "uk — лише на неоцінюваному екрані теорії уроку (intro, info, explore)");
+    else if (!subjectLang(c)) E(S, "uk — лише в предметі з targetLang (зміст іншою мовою)");
+  }
   const noteTxt = typeof s.note === "string" ? s.note : s.note?.text;
   const txt = [s.title, s.body, noteTxt, s.fbText, s.fbOk, s.fbBad, s.hint, s.text, ...(s.opts || []), ...(s.items || []).flat()].filter(x => typeof x === "string").join(" ");
   if (/\$\{/.test(txt)) E(S, "у тексті лишилось «${» — шаблонний рядок з'їв формулу");

@@ -366,6 +366,22 @@ expectRun("drag: at і без drag — без попередження", one("fx
     expectRun("diagOrder: число — без помилки", files({ diagOrder: 2 }), ["--section", "fxdo"], {});
     expectRun("diagOrder: рядок — помилка", files({ diagOrder: "1" }), ["--section", "fxdo"], { err: "diagOrder — число" });
     fs.rmSync(path.join(tmp, "content/fxdo"), { recursive: true, force: true }); }
+  // engine-eng-lang-attr (D-054): targetLang предмета — лише з TARGET_LANGS; поле uk — лише екран теорії уроку в предметі з targetLang
+  { const subj = o => `SLID.subject(${JSON.stringify({ id: "fxtl", subject: "Фікстура", short: "Ф", icon: "frac", colors: { light: { accent: "#000" }, dark: { accent: "#fff" } }, skills: MATH_SKILLS, ...o })});\n`;
+    const withUk = (sc, ex = {}) => { const sec = mathSec("fxtl", ex); sec.lessons[0].screens[sc].uk = "<p>Переклад правила.</p>"; return sec; };
+    const files = (o, sec = mathSec("fxtl")) => ({ "content/fxtl/aa-subj.js": subj(o), "content/fxtl/g8-fxtl.js": secJS("fxtl", sec) });
+    const iInfo = mathSec("fxtl").lessons[0].screens.findIndex(x => ["intro", "info", "explore"].includes(x.type)),
+      iGraded = mathSec("fxtl").lessons[0].screens.findIndex(x => !["intro", "info", "explore"].includes(x.type));
+    ok(iInfo >= 0 && iGraded >= 0, "targetLang: у фікстурі mathSec є екран теорії й оцінюваний");
+    expectRun("targetLang: \"en\" — без помилки", files({ targetLang: "en" }), ["--section", "fxtl"], {});
+    expectRun("targetLang: \"de\" — помилка", files({ targetLang: "de" }), ["--section", "fxtl"], { err: "targetLang «de»" });
+    expectRun("targetLang: 1 — помилка", files({ targetLang: 1 }), ["--section", "fxtl"], { err: "targetLang «1»" });
+    expectRun("uk на екрані теорії в предметі з targetLang — без помилки", files({ targetLang: "en" }, withUk(iInfo)), ["--section", "fxtl"], {});
+    expectRun("uk у предметі без targetLang — помилка", files({}, withUk(iInfo)), ["--section", "fxtl"], { err: "uk — лише в предметі з targetLang" });
+    expectRun("uk на оцінюваному екрані — помилка", files({ targetLang: "en" }, withUk(iGraded)), ["--section", "fxtl"], { err: "uk — лише на неоцінюваному екрані" });
+    { const sec = mathSec("fxtl"); sec.lessons[0].screens[iInfo].uk = "  ";
+      expectRun("uk порожній — помилка", files({ targetLang: "en" }, sec), ["--section", "fxtl"], { err: "uk — непорожній" }); }
+    fs.rmSync(path.join(tmp, "content/fxtl"), { recursive: true, force: true }); }
   // діагностика: поля answer перевіряються лише тоді, коли answer дозволено в тесті (learn.DIAG_TYPES). Обидва стани задаємо явно
   // в копії app/learn.js, щоб тест не залежав від того, чи дозволено answer у діагностиці зараз (engine-diag-answer-kinds)
   { const lp = path.join(tmp, "app/learn.js"), orig = fs.readFileSync(lp, "utf8"), DT = /const DIAG_TYPES = \[[^\]]*\];/;

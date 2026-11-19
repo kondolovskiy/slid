@@ -41,6 +41,16 @@ export function loadContent(root = ROOT) {
   return { subjects: ctx.SLID_SUBJECTS, soon: ctx.SLID_SOON, files, origin, graphOrigin, poolOrigin, diagOrigin, graphs: ctx.SLID.graphs || [], lab: ctx.SLID_LAB, learn: ctx.SLID_LEARN, math: ctx.SLID_MATH, lang: ctx.SLID_LANG };
 }
 
+/* Мова змісту предмета (engine-eng-lang-attr, D-054): правило одне — SLID.subjectLang з app/registry.js (рушій ставить за ним lang
+   на зміст плеєра). validate, stats і content-checks вимикають українські правила для предмета з subjectLang(c) !== "" (engine-eng-validate,
+   engine-eng-stats). subj — об'єкт предмета (з loadContent) або meta з SLID.subject; рядок-id тут не розпізнати (немає змісту) — "". */
+let REG = null;
+const registry = () => { if (!REG) { const ctx = {}; ctx.window = ctx; vm.createContext(ctx);
+  vm.runInContext(fs.readFileSync(path.join(ROOT, "app/registry.js"), "utf8"), ctx); REG = ctx.SLID; } return REG; };
+export const TARGET_LANGS = Object.freeze([...registry().TARGET_LANGS]);
+export const subjectLang = subj => subj && typeof subj === "object" ? registry().subjectLang(subj) : "";
+export const isEnglishSubject = subj => subjectLang(subj) === "en";
+
 export const GRADED = ["choice","multi","sort","slider","order","align","shade","numline","number","fracin","lab","answer","gaps","pick","stress","word","split"];
 export const TYPES = ["intro","info","explore", ...GRADED];
 // предмети, де кожен урок має справжнє img (D-027, D-044): validate (помилка) і шаблон задачі автора в make-tasks.mjs
