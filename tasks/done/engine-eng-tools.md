@@ -5,7 +5,7 @@ id: engine-eng-tools
 type: engine
 subject: eng
 depends_on: [engine-eng-validate]
-status: review
+status: done
 claimed_by: eng-tools
 created: 2026-11-19
 source: design-eng
