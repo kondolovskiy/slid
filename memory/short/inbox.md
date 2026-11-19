@@ -81,3 +81,9 @@
 - 2026-11-19 · writer-e4s5 · FACT (eng, self): наголос (CD UK + OALD BrE) на 1-му складі — toothbrush, toothpaste, healthy, happy, hungry, thirsty, headache, toothache, stomach, children; на 2-му — computer, because; shower, tired — один склад; outside — два варіанти наголосу: у `stress` не брати.
 - 2026-11-19 · writer-e4s5 · STYLE (eng): habit — B1 (CD); назва уроку e4s5 «Healthy habits every day» → «Stay healthy every day»; куратору плану — синхронізувати plan.js чи лишити.
 - 2026-11-19 · writer-e4s5 · STYLE (eng): у `build` не брати «X because Y» (порядок «Because Y X» без коми не зібрати); because — лише у відповіді на Why.
+- 2026-11-19 · writer-e4s7 · FACT (eng, self): столиці Kyiv — Ukraine, London — the UK, Washington, D.C. — the USA, Ottawa — Canada, Canberra — Australia — CD «the capital city of …» + en.wikipedia.
+- 2026-11-19 · writer-e4s7 · FACT (eng, self): Hoverla — найвища гора України, 2,061 m — en/uk.wikipedia; Kyiv — найбільше місто України — en/uk.wikipedia.
+- 2026-11-19 · writer-e4s7 · FACT (eng, self, потребує другого джерела): Dnipro — найдовша річка України — https://en.wikipedia.org/wiki/Dnieper; ЕСУ лише «найбільша ріка в Україні» — https://esu.com.ua/article-22159.
+- 2026-11-19 · writer-e4s7 · FACT (eng, self): by car/bus/plane — без детермінатива; on foot (не by foot) — CD by, foot; old → oldest/eldest — CD Grammar comparison-adjectives; will — рішення в мить мовлення, після I think — ’ll; be going to — уже складений план — CD Grammar will.
+- 2026-11-19 · writer-e4s7 · NOTE (requires): після e4s6 додати в `requires` e4s7 урок comparatives (plan-eng-g4 §6).
+- 2026-11-19 · writer-e4s7 · STYLE (eng): longWordShare ≤ 0.12 недосяжний і для уроку про столиці (e4s7l3 = 0.189: назви з програми) — style-eng-g4-5 разом з e4s1l6.
