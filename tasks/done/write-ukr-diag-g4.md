@@ -6,7 +6,7 @@ type: write-diag
 subject: ukr
 grade: 4
 section: dgu4
-status: review
+status: done
 claimed_by: writer-dgu4
 created: 2026-11-19
 depends_on: [write-ukr-u4s1, write-ukr-u4s2, write-ukr-u4s3, write-ukr-u4s4, write-ukr-u4s5, write-ukr-u4s6, write-ukr-u4s7, write-ukr-u4s8, write-ukr-u4s9, write-ukr-u4s10, write-ukr-u4s11]
@@ -93,3 +93,6 @@ D-054 п. 5 (за D-051): після вибору 4 класу дитина пр
 3. cur-u4s8: «гілці (чого?) високої ялинки» — відмінок прикметника визначається через іменник «ялинки», залежний від «гілці»; для 4 кл. може бути складно.
 4. Термін «головна думка» (4 кл.) vs «основна думка» (З3) — у завданні pre термін не вжито («Що найважливіше хоче сказати автор?»).
 5. Опори dgu5 тепер дають 8 помилок validate («baseline заборонено — у предмета є уроки молодших класів»: u4 з'явились) — це не мій файл; рядок BUG в inbox.
+
+## Нотатки верифікатора
+**2026-11-19, verifier-write-ukr-diag-g4.** Звіт — reports/verify/dgu4.md. Усі 23 завдання розв'язано двічі, ключі збігаються; джерела З3 (svitdovkola PDF ч. 1, ч. 2), УП § 1, 7, 26, 44, Горох/СУМ відкрито в сесії. Правки: cur-u4s5 → складений multi (значення й пошук префікса), cur-u4s10 → gaps «смієшся / ненавидить / не купається» (усі 3 learned). Відповідь на сумнів 1: так, одне gaps не покривало learned — виправлено; сумніви 2–3 — прийнятно. `validate --diag dgu4` 0/0. Status → verified.

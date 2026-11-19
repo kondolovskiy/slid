@@ -14,13 +14,14 @@
    щоб план вів на урок, а не «попроси дорослого»; завдання й порядок не змінено (rev не потрібен). Статус → draft до верифікації.
    Ред. fix-ukr-diag-g5-u4 (2026-11-19): з'явилися уроки 4 класу (D-054) — опори без baseline і see, lessons → уроки u4
    (abc, text — по 2 уроки й поле lesson у завданнях); for, завдання, ключі й порядок не змінено (rev не потрібен). Статус → draft до верифікації.
+   Верифіковано verifier-fix-ukr-diag-g5-u4 (2026-11-19, reports/verify/dgu5-u4.md).
 */
 SLID.diag("ukr", {
   id: "dgu5",
   grade: 5,
   title: "Що ти вже вмієш?",
   why: "Згадаємо, що вивчали в 1–4 класах, і знайдемо, з чого почати 5 клас.",
-  status: "draft",   // fix-ukr-diag-g5-u4 (2026-11-19): опори → уроки u4, чекає верифікації; раніше verified — verifier-style-ukr-1117 (2026-11-18): why без роду перевірено, reports/verify/style-ukr-1117.md; style-ukr-1117 (2026-11-18): why без роду (D-020), завдання й порядок не змінено (rev не потрібен); раніше verified — verifier-diag-see-1117 (2026-11-17): see baseline-тем перевірено, завдання не змінено; reports/verify/diag-see-1117.md
+  status: "verified",   // verifier-fix-ukr-diag-g5-u4 (2026-11-19): lessons опор u4 перевірено, завдання не змінено, reports/verify/dgu5-u4.md; fix-ukr-diag-g5-u4 (2026-11-19): опори → уроки u4; раніше verified — verifier-style-ukr-1117 (2026-11-18): why без роду перевірено, reports/verify/style-ukr-1117.md; style-ukr-1117 (2026-11-18): why без роду (D-020), завдання й порядок не змінено (rev не потрібен); раніше verified — verifier-diag-see-1117 (2026-11-17): see baseline-тем перевірено, завдання не змінено; reports/verify/diag-see-1117.md
   meta: { author: "writer-write-ukr-diag-g5", created: "2026-11-06", factcheck: "verifier-write-ukr-diag-g5; повторно verifier-fix-ukr-diag-g5-cur (cur-u5s9, cur-u5s10)", teacher: null },
   topics: [
     // опори 1–4 класів → уроки 4 класу (fix-ukr-diag-g5-u4)

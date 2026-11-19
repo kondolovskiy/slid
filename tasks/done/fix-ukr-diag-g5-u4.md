@@ -4,7 +4,7 @@ type: fix-diag
 subject: ukr
 grade: 5
 section: dgu5
-status: review
+status: done
 claimed_by: writer-fix-dgu5-u4
 created: 2026-11-19
 ---
@@ -41,3 +41,6 @@ created: 2026-11-19
 - Шапка доповнена рядком про правку; `status: "draft"` до верифікації.
 - `node tools/validate.mjs --diag dgu5` — 0 помилок, 0 попереджень; повний `node tools/validate.mjs` — 0 помилок (230 попереджень, жодного про dgu5). Build не запускав (паралельна робота).
 - Для верифікатора: перевірити, чи stress → u4s6l1 достатньо (урок про звуки/букви, наголос — один info + одна вправа).
+
+## Нотатки верифікатора
+**2026-11-19, verifier-fix-ukr-diag-g5-u4.** Звіт — reports/verify/dgu5-u4.md. diff коміту 00e5ff0: змінено лише topics (baseline/see → lessons u4) і `lesson` у завданнях 0, 7, 8, 23; завдання, ключі, варіанти й порядок — без змін, rev не потрібен. Кожен урок u4 справді вчить свою тему; stress → u4s6l1 достатньо (базове слово «листопад» — з уроку; норми складнішого завдання — 5 кл., for u5s5). `validate --diag dgu5` 0/0. Status → verified.
