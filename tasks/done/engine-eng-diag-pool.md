@@ -5,7 +5,7 @@ id: engine-eng-diag-pool
 type: engine
 subject: eng
 depends_on: [engine-eng-build, engine-eng-match]
-status: review
+status: done
 claimed_by: engine-eng-diag-pool
 created: 2026-11-19
 source: design-eng
