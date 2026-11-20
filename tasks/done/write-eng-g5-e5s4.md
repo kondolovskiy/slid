@@ -7,7 +7,7 @@ subject: eng
 grade: 5
 section: e5s4
 depends_on: [curate-eng-plan-g5, engine-eng-lang-core, engine-eng-validate, engine-eng-stats, skills-eng, curate-eng-style, curate-eng-glossary, write-eng-g4-e4s1]
-status: review
+status: done
 claimed_by: writer-e5s4
 created: 2026-11-19
 source: design-eng
@@ -96,3 +96,9 @@ Oksana (село) і брат Dmytro; Andrii (Kyiv) і сестра Sofiia; Emma
 6. **ENGINE (відоме):** «wear» на ключ «wears» (l5 #9) і «uniforms» на «uniform» → «Almost: check the spelling.» — граматика, не правопис (той самий випадок, що «lives»/«live», engine-eng-rule-tables п. 2).
 7. `requires` на e5s2 (Present Simple, plan-eng-g5 §6 «Усередині 5 кл.») не ставив: розділ пишеться паралельно. Оркестратору — додати id уроку Present Simple з e5s2, коли той буде готовий.
 8. Плейтест не запускався (build робить оркестратор; модуля playwright у контейнері немає).
+
+**verifier-e5s4, 2026-11-20.** Вердикт: **verified**, усі 7 уроків → `verified`. Звіт — reports/verify/e5s4.md.
+- Правки у файлі: (1) l3 #4 «His sisters» → «His friends» — у Тараса одна сестра Zlata (e5s1); (2) друга правильна відповідь у `word`: l1 #8 + sweatshirt, fleece; l4 #6 + waterproof (CD); (3) пропуски «I {*’m not|…}» → «I {*am not|…}» (l3 #4, l3 #9, boss T6) — рушій показував «I ’m»; (4) статуси, `meta.factcheck`, шапка.
+- Факти: Vyshyvanka Day — en/uk.wikipedia (відкрито), невікі-джерела (zn.ua, ukrinform, glavcom) з контейнера не резолвляться; форми й наголос — CD + OALD (curl), «two pairs of» — OALD pair_1.
+- build — повний перебір через SLID_LANG.check: l3 #6 — один порядок, l5 #8 — два, обидва в answer. SVG — 15 файлів переглянуто (Chromium), однозначні.
+- Не блокує: ліцензія власних SVG (DECISION-NEEDED в inbox); ENGINE «wear»/«uniforms» → «Almost: spelling»; плейтест — після build.

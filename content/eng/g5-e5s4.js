@@ -9,7 +9,7 @@
    (docs/design/english.md §8); герої — з розділів 4 кл. Форми, наголос і позначки UK/US — за Cambridge Dictionary і OALD;
    День вишиванки — en/uk.wikipedia, zn.ua (URL — tasks/…/write-eng-g5-e5s4.md, «Нотатки агента»).
    Малюнки img/eng/e5s4/*.svg — власні (writer-e5s4), без стороннього матеріалу.
-   Статус: draft. 7 уроків (6 + фінал).
+   Статус: verified (verifier-e5s4, 2026-11-20, reports/verify/e5s4.md). 7 уроків (6 + фінал).
    Перевірка: node tools/validate.mjs --section e5s4 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -19,7 +19,7 @@ SLID.section("eng", {
   title: "Clothes",
   why: "To talk about clothes for every season. And to say what people are wearing now.",
   requires: ["e4s6l2", "e4s6l3", "e4s8l5", "e5s2l2", "e5s2l3"],
-  meta: { author: "writer-e5s4", created: "2026-11-19", factcheck: null, teacher: null },
+  meta: { author: "writer-e5s4", created: "2026-11-19", factcheck: "verifier-e5s4 (reports/verify/e5s4.md)", teacher: null },
   credits: [
     ["Clothes drawings for the section “Clothes” (img/eng/e5s4/*.svg)", "Slid (writer-e5s4)", "own work, no third-party material", "https://github.com/kondolovskiy/slid"]
   ],
@@ -33,7 +33,7 @@ SLID.section("eng", {
       title: "Clothes: a jumper, a skirt, a coat",
       short: "Clothes",
       icon: "user",
-      status: "draft",
+      status: "verified",
       why: "Name your clothes in English. Then help a friend choose clothes for a trip.",
       screens: [
         {
@@ -125,7 +125,7 @@ SLID.section("eng", {
           body: `<p>It’s red and warm. Andrii wears it over his T-shirt at home on cold days.</p>`,
           before: "It’s a",
           after: ".",
-          answer: ["jumper", "sweater", "pullover", "cardigan", "hoodie"],
+          answer: ["jumper", "sweater", "pullover", "cardigan", "hoodie", "sweatshirt", "fleece"],
           hint: "Look at the pictures: it’s red.",
           fbOk: "Well done!",
           fbBad: "It’s warm and you wear it over a T-shirt.",
@@ -171,7 +171,7 @@ SLID.section("eng", {
       title: "Trousers, jeans, shorts: a pair of…",
       short: "A pair of",
       icon: "users",
-      status: "draft",
+      status: "verified",
       why: "Some clothes words are always plural. Talk about them the right way.",
       screens: [
         {
@@ -307,7 +307,7 @@ SLID.section("eng", {
       title: "What are you wearing today?",
       short: "Wearing now",
       icon: "eye",
-      status: "draft",
+      status: "verified",
       why: "Tell a friend what you are wearing now. Ask about their clothes too.",
       screens: [
         {
@@ -345,11 +345,11 @@ SLID.section("eng", {
           sk: "gram",
           title: "Fill in the gaps.",
           body: `<p>Look at Taras in the park!</p>`,
-          text: "Taras {*is wearing|are wearing|wearing} a green jacket. He {*isn’t|aren’t} wearing a hat. His sisters {is wearing|*are wearing} red coats. I {*’m not|isn’t} wearing a coat.",
+          text: "Taras {*is wearing|are wearing|wearing} a green jacket. He {*isn’t|aren’t} wearing a hat. His friends {is wearing|*are wearing} red coats. I {*am not|isn’t} wearing a coat.",
           hint: "Who is it: he, they or I?",
           fbOk: "Exactly.",
           fbBad: "Check am, is and are.",
-          fbText: "Taras is <b>he</b>: he <b>is wearing</b>, he <b>isn’t</b> wearing. His sisters are <b>they</b>: they <b>are wearing</b>. With <b>I</b>: I<b>’m not</b>."
+          fbText: "Taras is <b>he</b>: he <b>is wearing</b>, he <b>isn’t</b> wearing. His friends are <b>they</b>: they <b>are wearing</b>. With <b>I</b>: I <b>am not</b> (I’m not)."
         },
         {
           type: "choice",
@@ -411,11 +411,11 @@ SLID.section("eng", {
           eyebrow: "Final",
           title: "Complete the sentences.",
           body: `<p>Emma and Oksana chat.</p>`,
-          text: "<b>Emma:</b> What {*are|is} you wearing today?<br><b>Oksana:</b> I {*’m wearing|wear|wearing} my new jumper.<br><b>Emma:</b> {*Are|Is} you wearing your blue jeans?<br><b>Oksana:</b> No, I {*’m not|don’t|isn’t}. I’m wearing a skirt.",
+          text: "<b>Emma:</b> What {*are|is} you wearing today?<br><b>Oksana:</b> I {*am wearing|wear|wearing} my new jumper.<br><b>Emma:</b> {*Are|Is} you wearing your blue jeans?<br><b>Oksana:</b> No, I {*am not|don’t|isn’t}. I’m wearing a skirt.",
           hint: "Who is it: you or I? Then check am, is, are.",
           fbOk: "Good eye!",
           fbBad: "Look at the list: questions and short answers.",
-          fbText: "<b>What are you wearing?</b> – <b>I’m wearing</b> my new jumper. <b>Are you wearing…?</b> – <b>No, I’m not.</b>"
+          fbText: "<b>What are you wearing?</b> – <b>I am wearing</b> (I’m wearing) my new jumper. <b>Are you wearing…?</b> – <b>No, I am not</b> (No, I’m not)."
         }
       ],
       outro: {
@@ -434,7 +434,7 @@ SLID.section("eng", {
       title: "Clothes for every season",
       short: "Seasons",
       icon: "leaf",
-      status: "draft",
+      status: "verified",
       why: "Choose the right clothes for the weather. And say why you wear them.",
       screens: [
         {
@@ -501,7 +501,7 @@ SLID.section("eng", {
           body: `<p>Write one word.</p>`,
           before: "A coat for rainy days is a",
           after: ".",
-          answer: ["raincoat", "rain coat", "mac", "mackintosh"],
+          answer: ["raincoat", "rain coat", "mac", "mackintosh", "waterproof"],
           hint: "rain + coat = …",
           fbOk: "Well done!",
           fbBad: "rain + coat: one word.",
@@ -561,7 +561,7 @@ SLID.section("eng", {
       title: "I usually wear…, but today I’m wearing…",
       short: "Usually or now",
       icon: "scale",
-      status: "draft",
+      status: "verified",
       why: "Say what you usually wear. And say what you are wearing now, and why.",
       screens: [
         {
@@ -699,7 +699,7 @@ SLID.section("eng", {
       title: "School uniform: do you wear one?",
       short: "Uniform",
       icon: "book",
-      status: "draft",
+      status: "verified",
       why: "Talk about school clothes in England and Ukraine. And say what you like to wear and why.",
       screens: [
         {
@@ -827,7 +827,7 @@ SLID.section("eng", {
       title: "Clothes for a trip",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e5s4boss",
       why: "Check everything from this section. Your points are doubled.",
@@ -921,7 +921,7 @@ SLID.section("eng", {
           eyebrow: "Task 6",
           title: "Complete the sentences.",
           body: `<p>Emma and Oksana chat.</p>`,
-          text: "<b>Emma:</b> Do you wear a uniform, Oksana?<br><b>Oksana:</b> No, I {*don’t|’m not}. But on Vyshyvanka Day, I {*wear|wears} a vyshyvanka. It’s a Ukrainian {*shirt|coat}.",
+          text: "<b>Emma:</b> Do you wear a uniform, Oksana?<br><b>Oksana:</b> No, I {*don’t|am not}. But on Vyshyvanka Day, I {*wear|wears} a vyshyvanka. It’s a Ukrainian {*shirt|coat}.",
           pre: "e5s4l6",
           hint: "Do you…? – No, I … Then: I wear or I wears?",
           fbOk: "Good eye!",
