@@ -470,3 +470,6 @@
 - 2026-11-20 · verifier-pe4s5 · PITFALL (eng, build): обставину способу/знаряддя перед наказом («With a dirty towel don't dry…») у `answer` не класти; велика «Don't» + keepCase відсікає. Обставину часу на початку приймати.
 - 2026-11-20 · verifier-pe4s5 · PITFALL (eng): у `word` «Sofiia, ___ eat sweets» лягає й «never» — класти в ключ поруч з don't / do not.
 - 2026-11-20 · verifier-pe4s5 · NOTE (герої eng): Ostap лягає рано, Taras — пізно (e4s5l6); Bohdan — tennis після школи.
+- 2026-11-20 · verifier-pe5s8 · VERIFY: pe5s8 → verified, 1 дрібна правка (a05 «Which word is right for each number?»), reports/verify/pe5s8.md.
+- 2026-11-20 · verifier-pe5s8 · FACT (eng, verified): наголос thirteenth, thirtieth, twentieth, January, September, October, November — CD UK і OALD BrE збігаються.
+- 2026-11-20 · verifier-pe5s8 · NOTE (eng, build): рушій не зараховує граматичне речення з невикористаною не-пасткою (pe5s8 a23 без «on», a60 без «very»; e5s8 l2 #8) — вирішити: інструкція «Use all the words» у шаблоні build чи підказка рушія «Use all the words» при неповному рядку (ENGINE, engine-eng-build-p3).
