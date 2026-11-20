@@ -7,7 +7,7 @@ subject: eng
 grade: 4
 section: e4s5
 depends_on: [write-eng-g4-e4s5, engine-eng-diag-pool, engine-eng-tools]
-status: review
+status: done
 claimed_by: writer-pe4s5
 created: 2026-11-19
 source: design-eng
@@ -34,3 +34,18 @@ source: design-eng
 - **Спірне для верифікатора:** a06 другий порядок без коми — прийнято, а не відсічено (неприродний, але граматичний); a11 «Don’t play computer games / all day» — «Go to bed all day» безглузде, тож пара одна; a42 — повна форма «I have got» (у l4 Final теж «I have got»), пастка `has`.
 - **Словники (curl):** https://dictionary.cambridge.org/dictionary/english/clean, https://dictionary.cambridge.org/dictionary/english/unwell, https://dictionary.cambridge.org/dictionary/english/sick, https://www.oxfordlearnersdictionaries.com/definition/english/sick_1 (ill BrE / sick NAmE), решта форм — з reports/verify/e4s5.md §2.
 - **Герої:** лише канон: Andrii + Sofiia (Kyiv), Oksana + Dmytro, Emma + Tom, Mariia (без братів і сестер), Taras і його собака, Bohdan, Dr Bondar, Dr Kovalenko (Poltava), Ms Savchuk. Нових немає.
+
+## Нотатки верифікатора (verifier-pe4s5, 2026-11-20)
+- **Вердикт: verified** — reports/verify/pe4s5.md. У 46 вправах автора неправильних ключів і завдань без опори немає.
+- **Спірне автора:**
+  - a06 — порядок «With a dirty towel don’t dry your hands» прибрано з `answer` (неприродний); натомість `keepCase: true`, плитка «Don’t», пастка «Doesn’t».
+  - a09 — «Before lunch wash your hands» лишено (обставина часу; PITFALL writer-pe4s3).
+  - a11, a42 — ✅.
+- **Додано a47–a67** (21 вправа: stress, choice/gaps на читання, func) — пари l2 phon/read/func, l3 phon/read, l4 phon, l6 read, яких не було в пулі. Наголос — CD UK + OALD BrE (URL у звіті §2), лише слова з `<u>` уроків e4s5.
+- **Дрібні правки:** a05, a17, a37 (talks), a14 (twenty), a33 (illness), a44 (sun) — слова поза уроками.
+- **Герої:** Bohdan — tennis (не football), у a66 пізно лягає Taras, рано — Ostap.
+- **Прогони:**
+  - `validate --pool pe4s5` — 0/0;
+  - `personalization-qa --pool pe4s5 --strict` — exit 0;
+  - перебір build/word через app/lang.js — лише ключі.
+- `test-answer-ui.py --suite content --pool pe4s5` — лише в CI (немає Python playwright).
