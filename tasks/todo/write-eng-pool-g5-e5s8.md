@@ -18,7 +18,7 @@ source: design-eng
 Скіли `math-pool-diag` (пули мовних предметів) і `content-author` (eng); docs/CONTENT_SCHEMA.md §10 «Пули мовних предметів»; docs/design/english.md §7, §11.1; зразок — content/ukr/pool-g5-*.js.
 
 ## Результат
-`content/eng/pool-g5-e5s8.js`: `SLID.pool("eng", { id: "pe5s8", section: "e5s8", status: "draft", sources: [...], items: [...] })`. **id пулу й вправ — ключі прогресу.** Усе англійською, британська норма; вправи власні; лише лексика й граматика уроків розділу; типи gaps/word/pick/build/match; кожен урок × `sk` — ≥ 3 вправи.
+`content/eng/pool-g5-e5s8.js`: `SLID.pool("eng", { id: "pe5s8", section: "e5s8", status: "draft", sources: [...], items: [...] })`. **id пулу й вправ — ключі прогресу.** Усе англійською, британська норма; вправи власні; лише лексика й граматика уроків розділу; типи gaps/word/pick/build/match, а для `sk` phon — stress, для read — choice/multi (POOL_TYPES); кожен урок × `sk` — ≥ 3 вправи.
 
 ## Готово, коли
 - [ ] `node tools/validate.mjs --pool pe5s8` — 0 помилок; кожну вправу розв'язано; задача → tasks/review.

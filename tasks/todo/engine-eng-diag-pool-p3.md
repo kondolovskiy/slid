@@ -15,4 +15,6 @@ source: review engine-eng-diag-pool
 2. P3-2: негативний тест — попередження про `program` (tools/validate.mjs:548) не з'являється для предметів без `targetLang` (math/ukr).
 3. P3-3: validate — попередження «baseline-тема без `see`» для предмета з `targetLang`, якщо в тесті є baseline-теми з `see` і без (текст плану радить «пройти теми попередніх класів», а уроку немає).
 
+4. tools/make-tasks.mjs:323 — шаблон пулу eng: «типи gaps/word/pick/build/match» → додати stress (phon), choice/multi (read), як POOL_TYPES.
+
 Готово: тести падають без зміни; `npm run check`; незалежне рев'ю D-026.
