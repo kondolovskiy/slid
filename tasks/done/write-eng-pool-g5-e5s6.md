@@ -7,7 +7,7 @@ subject: eng
 grade: 5
 section: e5s6
 depends_on: [write-eng-g5-e5s6, engine-eng-diag-pool, engine-eng-tools]
-status: review
+status: done
 claimed_by: writer-pe5s6
 created: 2026-11-19
 source: design-eng
@@ -52,3 +52,8 @@ source: design-eng
 3. a51/a53 — skating «on the river / on the lake» узимку; camping vs skating розрізняє сніг і серпень.
 4. a12, a13, a35 — шкала ●●●/●●○/●○○/○○○ (як в уроках l2, l4) задає єдину відповідь love/like/don’t like/hate і very well/well/can’t.
 5. a33 «Ms Kravets’s note» — присвійне з ’s після s (BrE прийнятне, CD Grammar); можна замінити на «the club note».
+
+## Нотатки верифікатора (verifier-pe5s6, 2026-11-20)
+**Вердикт: verified** — reports/verify/pe5s6.md. Кожну з 65 вправ розв'язано; build — усі перестановки підмножин плиток з extra через app/lang.js (рушій приймає лише ключі); word — wordVerdict на варіантах; матриця урок × sk звірена вручну (≥ 3, рівні 1–3); наголос 7 слів — CD UK + OALD BrE (curl); 11 запитів WebSearch на фрагменти — збігів немає.
+Правки (9, ключі не змінено): a10 football → tennis (Bohdan не любить футбол, pool-g4-e4s3 a38, e6s4); a27 Mondays → Tuesdays (канон e4s3l3 «every Tuesday»); a43 — новий контекст (був копією l5 #9); a48 eleven → twelve (лексика); a49 skating → for a walk (Emma не катається); a51 Mariia → Taras (a41 «can’t skate»); a23, a30 «Write the -ing word.» (відсікає «hobby is to take/do»); статус verified.
+Спірні автора 1–5: усі прийнято (a65 — CD Grammar «Go»: загальне заняття → go + -ing).

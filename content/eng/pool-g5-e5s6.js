@@ -1,5 +1,5 @@
 /* Слід · Англійська мова, 5 клас — пул вправ для тренування до розділу «Free time, hobbies and holidays» (e5s6)
-   Статус: draft (автор writer-pe5s6, 2026-11-20). 65 вправ: уроки e5s6l1–e5s6l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e5s6l7 без вправ.
+   Статус: verified (автор writer-pe5s6, 2026-11-20; верифікатор verifier-pe5s6, reports/verify/pe5s6.md). 65 вправ: уроки e5s6l1–e5s6l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e5s6l7 без вправ.
    Вправи власні (docs/design/english.md §8): лише слова, форми й правила уроків e5s6 і попередніх розділів; англійською, британська норма (D-054).
    Джерело — програма класу (program: true): МП-ІМ, 5 кл. — тема «Відпочинок і дозвілля» (види відпочинку, захоплення, канікули)
    і функція «пропонувати, приймати, відхиляти пропозицію» (с. 20); «розповідає, що вміє робити добре й не дуже» (с. 19);
@@ -10,8 +10,8 @@
 SLID.pool("eng", {
   id: "pe5s6",
   section: "e5s6",
-  status: "draft",
-  meta: { author: "writer-pe5s6", created: "2026-11-20", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "writer-pe5s6", created: "2026-11-20", factcheck: "verifier-pe5s6 (reports/verify/pe5s6.md)", teacher: null },
   sources: [
     { id: "mpim", program: true, title: "Модельна навчальна програма «Іноземна мова. 5–9 класи» (Редько В. Г., Шаленко О. П., Сотникова С. І. та ін.), наказ МОН від 12.07.2021 № 795 — 5 клас (с. 19–22)", url: "https://osvita.ua/doc/files/news/831/83117/Inoz_mov_5-9-kl_Redko_ta_in_14_07.pdf" }
   ],
@@ -69,11 +69,11 @@ SLID.pool("eng", {
       steps: ["Emma goes for a walk <b>with her dog</b>. She rides her bike <b>with Tom</b>.", "On rainy days, they <b>watch cartoons at home</b>."] },
     { id: "a10", lesson: "e5s6l1", lvl: 3, sk: "read", src: "mpim с. 20",
       type: "choice", title: "Read and choose.",
-      body: "<p><i>I’m Andrii. On Saturdays, I meet my friend Bohdan. We play football in the park. In the evening, I play chess with my grandad at home.</i></p><p>What does Andrii do outside?</p>",
-      opts: ["He plays football.", "He plays chess.", "He watches TV."],
+      body: "<p><i>I’m Andrii. On Saturdays, I meet my friend Bohdan. We play tennis in the park. In the evening, I play chess with my grandad at home.</i></p><p>What does Andrii do outside?</p>",
+      opts: ["He plays tennis.", "He plays chess.", "He watches TV."],
       correct: 0,
       hint: "Where is the park: at home or outside?",
-      steps: ["Andrii plays chess <b>at home</b>.", "He plays football <b>in the park</b>. The park is outside."] },
+      steps: ["Andrii plays chess <b>at home</b>.", "He plays tennis <b>in the park</b>. The park is outside."] },
 
     /* ───────────── Урок 2. I love drawing, I don’t like running ───────────── */
     { id: "a11", lesson: "e5s6l2", lvl: 1, sk: "vocab", src: "mpim с. 20",
@@ -151,7 +151,7 @@ SLID.pool("eng", {
       steps: ["A hobby, an -ing word: one thing, so <b>is</b>.", "My hobby <b>is</b>… Playing the guitar <b>is</b> fun. Reading <b>is</b> my hobby."] },
     { id: "a23", lesson: "e5s6l3", lvl: 2, sk: "gram", src: "mpim с. 22",
       type: "word", title: "Write the missing word.",
-      body: "<p>Taras takes photos every day. It’s his hobby. Use the verb <b>take</b>.</p>",
+      body: "<p>Taras takes photos every day. It’s his hobby. Use the verb <b>take</b>. Write the -ing word.</p>",
       before: "His hobby is", after: "photos.",
       answer: "taking",
       hint: "take + -ing. What happens to the e?",
@@ -178,11 +178,11 @@ SLID.pool("eng", {
       steps: ["Mariia’s hobby is <b>drawing</b>.", "She draws cats and trees. She doesn’t like drawing <b>cars</b>."] },
     { id: "a27", lesson: "e5s6l3", lvl: 3, sk: "read", src: "mpim с. 20",
       type: "multi", title: "Choose all the correct answers.",
-      body: "<p><i>I’m Oksana. My hobby is karate. I do karate on Mondays and Fridays. My brother Dmytro’s hobby is playing computer games. He doesn’t like karate.</i></p><p>Which sentences are true?</p>",
+      body: "<p><i>I’m Oksana. My hobby is karate. I do karate on Tuesdays and Fridays. My brother Dmytro’s hobby is playing computer games. He doesn’t like karate.</i></p><p>Which sentences are true?</p>",
       opts: ["Oksana does karate on Fridays.", "Dmytro loves karate.", "Dmytro’s hobby is playing computer games.", "Oksana’s hobby is playing computer games."],
       correct: [0, 2],
       hint: "Read about Oksana and about Dmytro again.",
-      steps: ["Oksana does karate on Mondays <b>and Fridays</b>. Her hobby is karate.", "Dmytro <b>doesn’t like</b> karate. His hobby is <b>playing computer games</b>."] },
+      steps: ["Oksana does karate on Tuesdays <b>and Fridays</b>. Her hobby is karate.", "Dmytro <b>doesn’t like</b> karate. His hobby is <b>playing computer games</b>."] },
     { id: "a28", lesson: "e5s6l3", lvl: 1, sk: "write", src: "mpim с. 20",
       type: "gaps", title: "Fill in the gaps.",
       text: "What’s your hobby, Taras? – My hobby {*is|are} {*taking|take} photos.",
@@ -197,7 +197,7 @@ SLID.pool("eng", {
       steps: ["Drawing is one thing, so it’s <b>is</b>.", "<b>Drawing is my hobby.</b> Or: <b>My hobby is drawing.</b>"] },
     { id: "a30", lesson: "e5s6l3", lvl: 3, sk: "write", src: "mpim с. 20",
       type: "word", title: "Write the missing word.",
-      body: "<p>Emma: “What’s your hobby, Oksana?” Use the verb <b>do</b>.</p>",
+      body: "<p>Emma: “What’s your hobby, Oksana?” Use the verb <b>do</b>. Write the -ing word.</p>",
       before: "Oksana: “My hobby is", after: "karate.”",
       answer: "doing",
       hint: "Look at the rule: Taking photos is fun. do + -ing.",
@@ -278,12 +278,12 @@ SLID.pool("eng", {
       steps: ["Let’s + verb: Let’s <b>go</b>, Let’s <b>watch</b>. No -ing, no to."] },
     { id: "a43", lesson: "e5s6l5", lvl: 2, sk: "gram", src: "mpim с. 21",
       type: "word", title: "Write the missing word.",
-      body: "<p>It’s sunny. Emma wants to go to the park with Tom.</p>",
-      before: "Emma: “It’s sunny, Tom!", after: "go to the park!” Tom: “Good idea!”",
+      body: "<p>Andrii wants to play chess with Grandad.</p>",
+      before: "Andrii: “", after: "play chess, Grandad!” Grandad: “Good idea!”",
       answer: "Let’s",
       contractions: true,
       hint: "You and I, together: …",
-      steps: ["You and I, together: <b>Let’s</b> go to the park!"] },
+      steps: ["You and I, together: <b>Let’s</b> play chess!"] },
     { id: "a44", lesson: "e5s6l5", lvl: 2, sk: "gram", src: "mpim с. 21",
       type: "pick", title: "Find the mistake.",
       body: "<p>One word in Andrii’s message is wrong.</p>",
@@ -311,12 +311,12 @@ SLID.pool("eng", {
     { id: "a48", lesson: "e5s6l5", lvl: 2, sk: "func", src: "mpim с. 20",
       type: "match", title: "Match the questions and the answers.",
       left: ["Let’s watch a film!", "Shall we play football?", "Let’s go swimming!", "Shall we meet at ten?"],
-      right: ["Great! I love films.", "OK! I’ve got a ball.", "Sorry, I can’t swim.", "Sorry, I can’t. Let’s meet at eleven."],
-      hint: "Look for the same words: films, ball, swim, ten and eleven.",
-      steps: ["A film → <b>I love films</b>. Football → <b>a ball</b>.", "Swimming → <b>I can’t swim</b>. At ten? → <b>Let’s meet at eleven</b>."] },
+      right: ["Great! I love films.", "OK! I’ve got a ball.", "Sorry, I can’t swim.", "Sorry, I can’t. Let’s meet at twelve."],
+      hint: "Look for the same words: films, ball, swim, ten and twelve.",
+      steps: ["A film → <b>I love films</b>. Football → <b>a ball</b>.", "Swimming → <b>I can’t swim</b>. At ten? → <b>Let’s meet at twelve</b>."] },
     { id: "a49", lesson: "e5s6l5", lvl: 2, sk: "func", src: "mpim с. 20",
       type: "gaps", title: "Fill in the gaps.",
-      text: "Emma: Shall we go skating today? Tom: Sorry, I {*can’t|can}. I’ve got a lot of homework. Let’s go {*tomorrow|yesterday}.",
+      text: "Emma: Shall we go for a walk today? Tom: Sorry, I {*can’t|can}. I’ve got a lot of homework. Let’s go {*tomorrow|yesterday}.",
       hint: "Tom says sorry: yes or no? When can they go?",
       steps: ["Tom says no: <b>Sorry, I can’t.</b> Then he says why.", "A new plan: Let’s go <b>tomorrow</b>."] },
     { id: "a50", lesson: "e5s6l5", lvl: 3, sk: "func", src: "mpim с. 20",
@@ -329,7 +329,7 @@ SLID.pool("eng", {
     /* ───────────── Урок 6. School holidays: what do you like doing? ───────────── */
     { id: "a51", lesson: "e5s6l6", lvl: 1, sk: "vocab", src: "mpim с. 20",
       type: "gaps", title: "Fill in the gaps.",
-      body: "<p>Mariia writes about her holidays.</p>",
+      body: "<p>Taras writes about his holidays.</p>",
       text: "In the {*winter|summer} holidays, there’s a lot of snow. We go {*skating|camping} on the river.",
       steps: ["Snow: the <b>winter</b> holidays.", "On the ice of the river, we go <b>skating</b>."] },
     { id: "a52", lesson: "e5s6l6", lvl: 2, sk: "vocab", src: "mpim с. 20",
