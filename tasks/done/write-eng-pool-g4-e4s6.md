@@ -7,7 +7,7 @@ subject: eng
 grade: 4
 section: e4s6
 depends_on: [write-eng-g4-e4s6, engine-eng-diag-pool, engine-eng-tools]
-status: review
+status: done
 claimed_by: writer-pe4s6
 created: 2026-11-19
 source: design-eng
@@ -43,3 +43,9 @@ source: design-eng
 - Герої — лише канон: Oksana (village near Poltava, brother Dmytro, Nazar), Andrii (Kyiv, sister Sofiia), Emma (England, town with a river and a forest, brother Tom), Taras (Lviv). Нових героїв немає; Taras's brothers (e4s7) не брав.
 - Словники (curl, 2026-11-20): наголос — CD https://dictionary.cambridge.org/dictionary/english/{assistant,saturday,garden,computer,autumn,winter,weather} (ˈ на 1-му складі; assistant, computer — 2-й); OALD https://www.oxfordlearnersdictionaries.com/definition/english/{assistant,saturday,garden_1,computer} — збігається. Слова stress — лише підкреслені в уроках e4s1–e4s6 (winter, summer, autumn, weather, river, forest, mountain, nature + Saturday e4s3, garden e4s2, assistant e4s4, computer e4s5). fall — CD «US (UK autumn)»; litter — OALD litter_1; trash — OALD trash_1 «(North American English)»; larger — CD large; форми sunnier, windier, hotter, bigger — OALD/CD за звітом reports/verify/e4s6.md.
 - Не запускав: test-answer-ui.py (браузерний; під паралельним запуском — на оркестраторі).
+
+## Нотатки верифікатора (verifier-pe4s6, 2026-11-20)
+- Вердикт: **verified** — reports/verify/pe4s6.md. Кожну з 56 вправ розв'язано, ключі збіглися; `build` перебрано всі перестановки всіх підмножин плиток з extra через SLID_LANG.check — рушій приймає лише ключ; ключі `word` без кінцевого знака; stress — один наголос у CD і OALD (URL у звіті); факт a45 (Kyiv colder than London in winter) — en.wikipedia Kyiv/Climate of London, ЕСУ, uk.wikipedia; 8 фрагментів ≥ 12 слів — збігів немає.
+- Правки (3, дрібні): a42 — рамка без yesterday/was (немає в уроках); a49 — відкрите питання «What do we put in the bin?» (paper) → «Don’t leave it in the forest! Write the word from the lesson.» + «Put ___ in the bin.»; a53 — «our class» → «our school» (Dmytro, 6 років, не в класі Oksana). id не змінювалися.
+- Спірні місця автора 1–4 (fall, forest/wood…, a33 long, build-контексти) — прийнято. validate --pool pe4s6 — 0/0; personalization-qa --strict — чисто. TQ немає.
+- Не запускав test-answer-ui.py --pool pe4s6 (браузер, паралельний запуск) — оркестратору.

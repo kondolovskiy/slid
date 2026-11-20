@@ -6,8 +6,8 @@
    Контракт — docs/CONTENT_SCHEMA.md §10 «Пули мовних предметів»; скіл math-pool-diag §2в.
    Перевірка: node tools/validate.mjs --pool pe4s6 && node tools/personalization-qa.mjs --pool pe4s6 --strict */
 SLID.pool("eng", {
-  id: "pe4s6", section: "e4s6", status: "draft",
-  meta: { author: "writer-pe4s6", created: "2026-11-20", factcheck: "self", teacher: null },
+  id: "pe4s6", section: "e4s6", status: "verified",
+  meta: { author: "writer-pe4s6", created: "2026-11-20", factcheck: "verifier-pe4s6 (reports/verify/pe4s6.md)", teacher: null },
   sources: [
     { id: "top34", short: "ТОП 3–4, 4 клас", title: "Типова освітня програма для закладів загальної середньої освіти, 3–4 класи (розроблена під керівництвом О. Я. Савченко), 2018 — «Англійська мова», 4 клас",
       url: "https://lib.iitta.gov.ua/714276/1/%D0%A2%D0%9E%D0%9F_3_4_2018.pdf", program: true }
@@ -238,8 +238,8 @@ SLID.pool("eng", {
       hint: "Check the words with -er.",
       steps: ["hot → <b>hotter</b>: two <i>t</i>.", "<b>Colder</b> is correct."] },
     { id: "a42", lesson: "e4s6l5", lvl: 3, sk: "gram", src: "top34 с. 63",
-      type: "word", title: "Write the missing word.", body: "<p>Write the <b>-er</b> form: sunny → ?</p>",
-      before: "Today it’s sunny, but yesterday was", after: ".", answer: "sunnier",
+      type: "word", title: "Write the missing word.", body: "<p>Lviv is sunny today. Kyiv is very sunny. Write the <b>-er</b> form: sunny → ?</p>",
+      before: "Kyiv is", after: "than Lviv today.", answer: "sunnier",
       hint: "sunny ends in y. What happens to the y?",
       steps: ["sunny → <b>sunnier</b>: y → i, then -er.", "Like windy → windier."] },
     { id: "a43", lesson: "e4s6l5", lvl: 3, sk: "gram", src: "top34 с. 63",
@@ -277,10 +277,10 @@ SLID.pool("eng", {
       hint: "Where do we put rubbish?",
       steps: ["Rubbish goes in the <b>bin</b>. We turn off the <b>tap</b>.", "In winter, we feed the <b>birds</b>."] },
     { id: "a49", lesson: "e4s6l6", lvl: 3, sk: "vocab", src: "top34 с. 63",
-      type: "word", title: "Write the word.", body: "<p>What do we put in the bin?</p>",
-      before: "We put", after: "in the bin.", answer: ["rubbish", "litter", "trash", "garbage"],
-      hint: "Don’t leave it in the forest!",
-      steps: ["We put <b>rubbish</b> in the bin.", "Spell it: r-u-b-b-i-s-h, two <i>b</i>."] },
+      type: "word", title: "Write the word.", body: "<p>Don’t leave it in the forest! Write the word from the lesson.</p>",
+      before: "Put", after: "in the bin.", answer: ["rubbish", "litter", "trash", "garbage"],
+      hint: "Help nature: put … in the bin. It starts with r.",
+      steps: ["Don’t leave <b>rubbish</b> in the forest. Put it in the bin.", "Spell it: r-u-b-b-i-s-h, two <i>b</i>."] },
     { id: "a50", lesson: "e4s6l6", lvl: 1, sk: "gram", src: "top34 с. 63",
       type: "gaps", title: "Fill in the gaps.",
       text: "{*Don’t leave|Leave} rubbish in the park. {*Plant|Don’t plant} flowers in the garden.",
@@ -299,9 +299,9 @@ SLID.pool("eng", {
       steps: ["he + <b>is</b> + feeding + the birds.", "With <i>he</i>, we say <b>is</b>, not <i>are</i>."] },
     { id: "a53", lesson: "e4s6l6", lvl: 3, sk: "gram", src: "top34 с. 63",
       type: "pick", title: "Find the mistake.", body: "<p>One word in Oksana’s message is wrong.</p>",
-      text: "Today our class is in the forest. Nazar and Dmytro [is] picking up rubbish. I am feeding the birds.",
+      text: "Today our school is in the forest. Nazar and Dmytro [is] picking up rubbish. I am feeding the birds.",
       hint: "Nazar and Dmytro: he or they?",
-      steps: ["Nazar and Dmytro are <b>they</b>: they <b>are</b> picking up rubbish.", "Our class <b>is</b> in the forest. I <b>am</b> feeding. Both are correct."] },
+      steps: ["Nazar and Dmytro are <b>they</b>: they <b>are</b> picking up rubbish.", "Our school <b>is</b> in the forest. I <b>am</b> feeding. Both are correct."] },
     { id: "a54", lesson: "e4s6l6", lvl: 1, sk: "read", src: "top34 с. 63",
       type: "choice", title: "Read and choose.",
       body: "<p>Emma’s school makes a poster.</p><p><i>Our river needs help! Don’t leave rubbish near the water. Put it in the bin. On Saturday, we are cleaning the river. Help us!</i></p><p>What is the school cleaning on Saturday?</p>",
