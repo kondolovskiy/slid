@@ -473,3 +473,6 @@
 - 2026-11-20 · verifier-pe5s8 · VERIFY: pe5s8 → verified, 1 дрібна правка (a05 «Which word is right for each number?»), reports/verify/pe5s8.md.
 - 2026-11-20 · verifier-pe5s8 · FACT (eng, verified): наголос thirteenth, thirtieth, twentieth, January, September, October, November — CD UK і OALD BrE збігаються.
 - 2026-11-20 · verifier-pe5s8 · NOTE (eng, build): рушій не зараховує граматичне речення з невикористаною не-пасткою (pe5s8 a23 без «on», a60 без «very»; e5s8 l2 #8) — вирішити: інструкція «Use all the words» у шаблоні build чи підказка рушія «Use all the words» при неповному рядку (ENGINE, engine-eng-build-p3).
+- 2026-11-20 · verifier-pe5s3 · VERIFY: pe5s3 → verified, 1 правка (a48 hint «texts and the poster»), reports/verify/pe5s3.md.
+- 2026-11-20 · verifier-pe5s3 · PITFALL (eng, пул): `hint` «Remember the poster» має вести туди, де справді є всі відповіді; якщо частина фактів лише в тексті для читання — посилатися й на texts.
+- 2026-11-20 · verifier-pe5s3 · FACT (eng): porridge — CD «made from oats boiled in milk or water, eaten hot for breakfast», OALD «eaten hot, especially for breakfast»; chip (BrE) — CD «a long, thin piece of potato that is fried», OALD chip_1; banana в CD [C] і [U] — у пулах a/some і much/many з нею не оцінювати.
