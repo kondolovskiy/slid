@@ -7,7 +7,7 @@ subject: eng
 grade: 5
 section: e5s4
 depends_on: [write-eng-g5-e5s4, engine-eng-diag-pool, engine-eng-tools]
-status: review
+status: done
 claimed_by: writer-pe5s4
 created: 2026-11-19
 source: design-eng
@@ -50,3 +50,8 @@ source: design-eng
 2. a61, a65–a67 — Emma «at the weekend» без форми, a82 — «I don’t like my tie because it isn’t comfortable»: нові дрібні деталі героя, канону не суперечать.
 3. Усі слова `stress` — з наголосом на 1-му складі (інших підкреслених у розділі немає), тож вправа перевіряє лише впізнавання.
 4. a59 «But today I {wear|*am wearing} jeans» — маркер лише today (контраст з usually в попередньому реченні), як в уроці l5.
+
+## Нотатки верифікатора (verifier-pe5s4, 2026-11-20)
+**Вердикт: verified** (reports/verify/pe5s4.md). Кожну з 82 вправ розв'язано. `word` перевірено через wordVerdict, `build` — перебором усіх перестановок з extra (a29, a35, a44, a58 — по 1 956, a76 — 325): зараховуються лише ключі. Матрицю урок × sk звірено вручну з `sk` уроків: у кожній парі ≥ 3 вправи, рівні 1–3, чужих `sk` немає. Наголос 9 слів `stress` — CD UK + OALD BrE (URL у звіті §2). Лексику кожної вправи звірено скриптом з її уроком і раніше; поза ними лише pink (базовий колір). Збігів з опублікованими текстами за WebSearch немає.
+**Правки (12):** a11, a19, a61 — слова з пізніших уроків (gloves, own, uniform). a49, a68, a70, a71, a80, a81 і текст a65–a67 — копії умов уроку чи boss з іншим ім'ям, переписано. a59 — маркер лише «today» → «today is different: now». hint a67. Статус. id не змінено. validate — 0/0.
+**Спірне автора:** 1 (a76 без коми) — прийнято. 2 (деталі героїв) — канону не суперечать. 3 (усі `stress` на 1-му складі) — не блокує, рекомендація для style-sync. 4 (a59) — виправлено.
