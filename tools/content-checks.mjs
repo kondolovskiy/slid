@@ -48,9 +48,15 @@ export function serviceIdsLesson(l) {
 export const ASK_RE = /\?|(?<![\p{L}])(?:обери|оберіть|вибери|виберіть|познач|позначте|визнач|вкажи|знайди|встанови|віднови|зістав|розклади|допиши|заверши|постав)(?![\p{L}])/iu;
 // наказові звороти «Обери / Познач / Розклади…» і ширше: «Вибери», «Оціни», «Скажи», «Порівняй», «Розстав», «Назви»… — дитині сказано, що робити
 const ASK_WIDE = /(?<![\p{L}])(?:обер\p{L}*|вибер\p{L}*|вибир\p{L}*|позна\p{L}*|визна\p{L}*|вкаж\p{L}*|знайд\p{L}*|встанов\p{L}*|віднов\p{L}*|зістав\p{L}*|розклад\p{L}*|розстав\p{L}*|допиш\p{L}*|заверш\p{L}*|постав\p{L}*|оціни\p{L}*|скаж\p{L}*|порівня\p{L}*|назви\p{L}*|поясн\p{L}*|відпов\p{L}*|вирішуй\p{L}*|продовж\p{L}*|добер\p{L}*|підбер\p{L}*|відшукай\p{L}*|з'ясуй\p{L}*|викрес\p{L}*|укаж\p{L}*|пригадай\p{L}*|придума\p{L}*|розкри\p{L}*|спрост\p{L}*|округл\p{L}*|розв['’]яж\p{L}*|запиш\p{L}*|скорот\p{L}*|помнож\p{L}*|перемнож\p{L}*|обчисл\p{L}*|перебуд\p{L}*|об['’]єдн\p{L}*|скористай\p{L}*|подума\p{L}*|перевір\p{L}*|зроб\p{L}*|виконай\p{L}*|порахуй\p{L}*|склад\p{L}*|підстав\p{L}*|поділ\p{L}*|розбер\p{L}*|уяв\p{L}*|згада\p{L}*|прочита\p{L}*|подив\p{L}*|скільки|який|яка|яке|які|якого|якій|яких|яким|чому|чи|що|хто|де|коли|навіщо|куди|звідки|як)(?![\p{L}])/iu;
-export function choiceNoQuestion(s) {
+// англійською (engine-eng-validate, D-054): шаблонні інструкції glossary/eng.md («Choose / Match / Fill in / Put the words in order…») і wh-слова
+export const ASK_EN = /\?|(?<![\p{L}])(?:choose|read|select|pick|complete|match|find|fill|tick|put|write|sort|click|tap|mark|circle|underline|guess|which|what|who|whose|whom|where|when|why|how)(?![\p{L}])/iu;
+/** lang — мова змісту предмета (subjectLang): "" — українські правила, "en" — англійські, інша — правил немає (мовчить). */
+export function choiceNoQuestion(s, lang = "") {
   if (!["choice", "multi"].includes(s.type) || s.poll || s.hyp) return [];
+  if (lang && lang !== "en") return [];
   const raw = [s.title, s.body].filter(x => typeof x === "string").join(" \n "), t = plain(raw);
+  if (lang === "en") return !t.trim() || ASK_EN.test(t) || /\?/.test(raw) || /…|\.\.\./.test(t) ? []
+    : [`оцінюваний ${s.type} без питання: ні title, ні body не питають і не кажуть, що обрати («${short(t)}…») — додай «?» чи шаблонну інструкцію «Choose the correct answer.» (glossary/eng.md)`];
   // «?» усередині формули ($2x - 5x = ?$) і «…» (незакінчене речення: «245 см — це…») — теж питання
   if (!t.trim() || ASK_RE.test(t) || /\?/.test(raw) || /…|\.\.\./.test(t)) return [];
   if (/(?<![\p{L}])Пригадай(?![\p{L}])/u.test(t)) return [];   // це вже ловить правило link-завдання («Пригадай…» без питання)
@@ -62,11 +68,19 @@ export function choiceNoQuestion(s) {
 // «Перший текст», «Перші два записи», «останній рядок» у поясненні до вправи з варіантами/елементами, порядок яких рушій може змінити
 // (shuffle у choice/multi/sort, показ order). «варіант» уже ловить OPT_NUM_RE у validate.mjs — тут решта іменників.
 const POS_RE = /(?<![\p{L}])(?:[Пп]ерш|[Дд]руг|[Тт]рет|[Чч]етверт|[Оо]станн)\p{L}*\s+(?:(?:два|дві|три|чотири|\d+)\s+)?(?:текст\p{L}*|запис(?:и|ів|ом|ам|ах|і|у)?(?![\p{L}])|рядк\p{L}*|рядок|пункт\p{L}*|твердження|відповід\p{L}*|картк\p{L}*)/u;
-export function positionalRefs(s) {
+// англійською: «the first line», «the last two cards»; «the second option», «option B» — OPT_NUM_EN (у validate замість OPT_NUM_RE).
+// Без «word» і «sentence»: «the first word of a sentence» — про текст, не про варіант
+const POS_EN = /(?<![\p{L}])(?:first|second|third|fourth|fifth|last)\s+(?:(?:two|three|four|\d+)\s+)?(?:texts?|lines?|items?|cards?|statements?|rows?)(?![\p{L}])/iu;
+/** Пояснення посилається на номер чи місце варіанта англійською: «the second option», «option B», «option 2», «Answer C». Літера — лише велика
+    (A–H): «answer a question» — не посилання */
+export const OPT_NUM_EN = /(?<![\p{L}])(?:(?:[Ff]irst|[Ss]econd|[Tt]hird|[Ff]ourth|[Ff]ifth|[Ss]ixth|[Ll]ast)\s+(?:\p{L}+\s+)?(?:options?|choices?|answers?)(?![\p{L}])|(?:[Oo]ption|[Cc]hoice|[Aa]nswer)\s+(?:No\.?\s*|№\s*)?(?:\d+|[A-H])(?![\p{L}\d]))/u;
+export function positionalRefs(s, lang = "") {
   if (!["choice", "multi", "sort", "order"].includes(s.type)) return [];
+  const re = !lang ? POS_RE : lang === "en" ? POS_EN : null;
+  if (!re) return [];
   const out = [];
   for (const [k, v] of [["fbText", s.fbText], ["fbBad", s.fbBad], ["fbOk", s.fbOk], ["hint", s.hint]]) {
-    const m = typeof v === "string" && plain(v).match(POS_RE);
+    const m = typeof v === "string" && plain(v).match(re);
     if (m) out.push(`${k}: позиційне посилання «${m[0]}» — порядок варіантів може змінитися, назви сам варіант чи зміст`);
   }
   return out;
@@ -217,4 +231,36 @@ export function genderedAddress(s) {
     const t = plain(unQuote(v).replace(/<\/p>|<br\s*\/?>/gi, ". ")); if (DIALOGUE.test(t)) continue;
     const m = t.match(GENDER_RE); if (m) out.push(`${k}: звертання з родом «${m[0]}» — нейтрально (D-020): «ти вже знаєш», «вийшло»`); }
   return out;
+}
+
+// ---- предмет з мовою змісту (engine-eng-validate, D-054; docs/design/english.md §2 п. 3) ----
+// Кирилиця в змісті англійської — попередження: увесь зміст англійською; українською — лише поле uk (згорнутий переклад правила)
+// і credits (як у джерелі ліцензії). Службові поля (id, sk, img, src, meta…) — не текст для учня. Формули $…$ не чіпаємо (там лише TeX).
+export const FOREIGN_SKIP = new Set(["id", "sk", "type", "img", "svg", "pre", "u", "uk", "credits", "meta", "src", "lesson", "section", "topic", "kind", "status", "icon"]);
+const CYR = /\p{Script=Cyrillic}/u;
+const cyrText = v => String(v).replace(/<[^>]*>/g, " ").replace(/&#?\w+;/g, " ").replace(/\$\$[\s\S]*?\$\$|\$[^$]*\$/g, " ");
+/** Об'єкт змісту (екран, урок, розділ…) → [] або одне повідомлення з переліком полів (до 3) і прикладами слів. */
+export function cyrillicInEnglish(o, skip = FOREIGN_SKIP) {
+  const hits = [];
+  const walk = (v, p) => {
+    if (typeof v === "string") { const t = cyrText(v); if (CYR.test(t)) hits.push([p, (t.match(/[\p{L}\p{M}'’-]+/gu) || []).filter(w => CYR.test(w))]); }
+    else if (Array.isArray(v)) v.forEach((x, i) => walk(x, `${p}[${i}]`));
+    else if (v && typeof v === "object") for (const [k, x] of Object.entries(v)) if (!skip.has(k)) walk(x, p ? `${p}.${k}` : k);
+  };
+  walk(o, "");
+  if (!hits.length) return [];
+  const mixed = [...new Set(hits.flatMap(([, w]) => w).filter(w => /\p{Script=Latin}/u.test(w)))];
+  const code = mixed.length ? ` (кирилиця в латинському слові «${mixed[0]}»: ${[...mixed[0]].filter(c => CYR.test(c)).map(c => "U+" + c.codePointAt(0).toString(16).toUpperCase().padStart(4, "0")).join(" ")} — заміни латинською літерою)` : "";
+  const list = hits.slice(0, 3).map(([p, w]) => `${p} «${w.slice(0, 3).join(" ")}»`).join(", ") + (hits.length > 3 ? ` і ще ${hits.length - 3}` : "");
+  return [`кирилиця в змісті англійською: ${list}${code} — увесь зміст англійською (D-054); українською лише uk на екрані теорії 4–5 кл. і credits`];
+}
+
+// ---- заборонені фрази (style/banned-phrases.txt; предмет з мовою змісту — style/<предмет>-banned.txt) ----
+/** Текст списку → [{ phrase, fix, re }]. Рядок — фраза; «фраза → як краще» (або «->») — з виправленням для повідомлення; «#» — коментар.
+    Фраза — цілими словами, без регістру: «вірно» не ловить «ймовірно», «I am agree» — не «I am agreeing». */
+export function parseBanned(text) {
+  return String(text).split("\n").map(s => s.trim()).filter(s => s && !s.startsWith("#")).map(line => {
+    const [phrase, fix = ""] = line.split(/\s*(?:→|->)\s*/);
+    return { phrase, fix, re: new RegExp(`(?<![\\p{L}'’ʼ])${phrase.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(?![\\p{L}])`, "iu") };
+  }).filter(b => b.phrase);
 }

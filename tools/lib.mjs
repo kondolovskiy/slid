@@ -41,7 +41,17 @@ export function loadContent(root = ROOT) {
   return { subjects: ctx.SLID_SUBJECTS, soon: ctx.SLID_SOON, files, origin, graphOrigin, poolOrigin, diagOrigin, graphs: ctx.SLID.graphs || [], lab: ctx.SLID_LAB, learn: ctx.SLID_LEARN, math: ctx.SLID_MATH, lang: ctx.SLID_LANG };
 }
 
-export const GRADED = ["choice","multi","sort","slider","order","align","shade","numline","number","fracin","lab","answer","gaps","pick","stress","word","split"];
+/* Мова змісту предмета (engine-eng-lang-attr, D-054): правило одне — SLID.subjectLang з app/registry.js (рушій ставить за ним lang
+   на зміст плеєра). validate, stats і content-checks вимикають українські правила для предмета з subjectLang(c) !== "" (engine-eng-validate,
+   engine-eng-stats). subj — об'єкт предмета (з loadContent) або meta з SLID.subject; рядок-id тут не розпізнати (немає змісту) — "". */
+let REG = null;
+const registry = () => { if (!REG) { const ctx = {}; ctx.window = ctx; vm.createContext(ctx);
+  vm.runInContext(fs.readFileSync(path.join(ROOT, "app/registry.js"), "utf8"), ctx); REG = ctx.SLID; } return REG; };
+export const TARGET_LANGS = Object.freeze([...registry().TARGET_LANGS]);
+export const subjectLang = subj => subj && typeof subj === "object" ? registry().subjectLang(subj) : "";
+export const isEnglishSubject = subj => subjectLang(subj) === "en";
+
+export const GRADED = ["choice","multi","sort","slider","order","align","shade","numline","number","fracin","lab","answer","gaps","pick","stress","word","split","build","match"];
 export const TYPES = ["intro","info","explore", ...GRADED];
 // предмети, де кожен урок має справжнє img (D-027, D-044): validate (помилка) і шаблон задачі автора в make-tasks.mjs
 export const IMG_REQUIRED = { hist: "error", world: "error" };
@@ -49,6 +59,9 @@ export const IMG_REQUIRED = { hist: "error", world: "error" };
 // не перевірити. Спільне для make-tasks.mjs (задач не створює) і personalization-qa.mjs (пул такого розділу — помилка). За назвою, щоб
 // правило діяло й на розділи 9–11 класів; перевірювані уроки там (ділові папери: реквізити) — окремим рішенням пізніше
 export const NO_POOL_SECTION = /^Пишемо самі/;
+/** Розділ без пулу тренування: поле розділу noPool: true (engine-eng-tools; предмет, де «Пишемо самі» в назві немає, — eng; можна й у plan.js:
+    реєстр зливає запис плану з файлом розділу) або назва «Пишемо самі…» (NO_POOL_SECTION). make-tasks і personalization-qa — лише через неї. */
+export const noPool = sec => !!sec && (sec.noPool === true || NO_POOL_SECTION.test(sec.title || ""));
 /** Контекст learn.validate для тесту рівня предмета: усі розділи (і лише з планом), уроки-боси — поза списком уроків розділу.
     Одне джерело для validate.mjs і personalization-qa.mjs (рев'ю tools-diag-nonmath-p3, P3-2).
     all — усі предмети: allLessons (id → {grade, subject}) лише інших предметів, для see baseline-теми (engine-1117-followups п. 3;
@@ -96,8 +109,24 @@ export function mplain(s = "") {
 const VOW = /[аеєиіїоуюяaeiouy]/gi;
 // \p{M}: комбінований наголос U+0301 — частина слова («листопа́д» — одне слово, п. 12)
 export const words = t => (t.match(/[\p{L}\p{M}\p{N}'’ʼ-]+/gu) || []);
-export const syllables = w => (w.match(VOW) || []).length;
-export function sentences(t) {
+/** Склади слова. Типово (українська) — кількість голосних. lang "en" (предмет з targetLang "en", engine-eng-stats) — групи голосних
+    латиницею з поправками: німе кінцеве -e (make, smile; але table, people — склад -le), -ed без t/d перед ним (played, але wanted),
+    -es без шиплячого перед ним (makes, але boxes, places, tables), u після q/g — не склад (language),
+    зяяння ia/io/iu/uo/ua — два склади (radio, piano, usual), крім -tion/-sion/-cial… (nation, special). Евристика для метрик стилю,
+    не словник: idea, quiet, something, hundred, recipe рахує на склад менше чи більше. Слово без латинських літер — як типово. */
+export const syllables = (w, lang = "") => lang === "en" && /[a-z]/i.test(w) ? enSyllables(w) : (w.match(VOW) || []).length;
+function enSyllables(w) {
+  let x = w.toLowerCase().replace(/[^a-z]/g, "");   // she, be, are — нуль груп після німого -e → 1 (Math.max нижче)
+  if (/[^aeiouy]ed$/.test(x) && !/[td]ed$/.test(x)) x = x.slice(0, -2);
+  else if (/[^aeiouy]es$/.test(x) && !/(?:[sxz]|[cs]h|[cg]|[^aeiouy]l)es$/.test(x)) x = x.slice(0, -2);
+  else if (/[^aeiouy]e$/.test(x) && !/[^aeiouy]le$/.test(x)) x = x.slice(0, -1);
+  const groups = (x.match(/[aeiouy]+/g) || []).length;
+  const hiatus = (x.match(/(?<![qg])u[ao]|(?<![cstx])i[aou]/g) || []).length;
+  return Math.max(1, groups + hiatus);
+}
+/** Межі речень. lang "en" — англійські скорочення (enAbbr) замість українських. */
+export function sentences(t, lang = "") {
+  if (lang === "en") return splitSentences(enAbbr(String(t)));
   // Protect abbreviation periods only when the following text continues the sentence.
   const text = String(t).replace(/(?<![\p{L}])н\.(?=\s*е\.)/gu, "н\uE000")
     .replace(/(?<![\p{L}])(?:е\.|рр?\.|ст\.|тис\.|млн\.|[Дд]ив\.)\s*(?=[\p{Ll}\d])/gu,
@@ -106,14 +135,25 @@ export function sentences(t) {
     // (раніше кожна дата давала хибне «коротке речення»). Скорочення перед тире — завжди; перед великою літерою — лише коли дата відкриває речення
     .replace(/(?<![\p{L}])(?:рр?|ст)\.(?=\s*[—–])/gu, m => m.replace(/\./g, "\uE000"))
     .replace(/(^|[.!?…]\s+)((?:\d{1,4}(?:\s*[–-]\s*\d{1,4})?|[IVXХ]{1,6})\s*(?:рр?|ст)\.)(?=\s*\p{Lu})/gu, (m, a, b) => a + b.replace(/\./g, "\uE000"));
-  return text.split(/(?<=[.!?…])\s+/).map(x => x.replace(/\uE000/g, ".").trim()).filter(x => words(x).length > 0);
+  return splitSentences(text);
 }
+const splitSentences = text => text.split(/(?<=[.!?…])\s+/).map(x => x.replace(/\uE000/g, ".").trim()).filter(x => words(x).length > 0);
+/* Англійські скорочення (engine-eng-stats): крапка, що не кінець речення, стає \uE000. Звертання (Mr., Mrs., Ms., Dr., Prof., St., Mt., Jr., Sr.),
+   e.g., i.e., vs., cf., viz. — завжди; No. — перед числом; etc., a.m., p.m. і скорочення з крапками (U.S.) — якщо далі не велика літера
+   («…at 3 p.m. Then I go» — два речення); ініціали — ланцюжок із 2+ («J. K. Rowling», «J.K. Rowling»).
+   Відомі межі: один ініціал («J. Smith») ділить речення; «U.K.» перед ім'ям чи «J.K.» перед малою літерою — як вище. Британська норма — Mr, UK без крапок. */
+const protect = m => m.replace(/\./g, "\uE000");
+const enAbbr = t => t
+  .replace(/(?<![\p{L}])(?:Mrs?|Ms|Dr|Prof|St|Mt|Jr|Sr|e\.g|i\.e|vs|cf|viz)\.(?=\s)/gu, protect)
+  .replace(/(?<![\p{L}])No\.(?=\s*\d)/gu, protect)
+  .replace(/(?<![\p{L}])(?:\p{Lu}\.\s?){2,}(?=\p{Lu}\p{Ll})/gu, protect)
+  .replace(/(?<![\p{L}])(?:etc\.|(?:[A-Za-z]\.){2,})(?=\s)(?!\s+\p{Lu})/gu, protect);
 
 /** Текст, який дитина читає на екрані (без варіантів відповідей і фідбеку). */
-// текст мовної вправи (pick/gaps/stress/split) дитина читає так само, як body: SLID_LANG.readText (app/lang.js) — DRY з рушієм
+// текст мовної вправи (pick/gaps/stress/split; build — зібране речення, перший answer; match — обидві колонки без alt) дитина читає так само, як body: SLID_LANG.readText (app/lang.js) — DRY з рушієм
 let LANG_READ = null;
 function langText(s) {
-  if (!["gaps", "pick", "stress", "split"].includes(s?.type)) return "";
+  if (!["gaps", "pick", "stress", "split", "build", "match"].includes(s?.type)) return "";
   if (!LANG_READ) { const ctx = {}; ctx.window = ctx; vm.createContext(ctx); vm.runInContext(fs.readFileSync(path.join(ROOT, "app/lang.js"), "utf8"), ctx); LANG_READ = ctx.SLID_LANG.readText; }
   return LANG_READ(s);
 }
@@ -124,11 +164,24 @@ export function screenAllText(s) {
   return parts.filter(Boolean).map(mplain).filter(Boolean).map(t => /[.!?…]$/.test(t) ? t : t + ".").join(" ");
 }
 
-/** Метрики уроку для синхронізації стилю й складності. */
-export function lessonMetrics(l) {
+/** Метрики, які stats.mjs зводить у звіт і z-оцінки «сім'ї». maxText — лише для предмета з мовою змісту (targetLang, D-054):
+    найдовший текст для читання на екрані, ліміти — style/<предмет>.md (docs/design/english.md §6.1). Українські предмети — як раніше. */
+export const METRIC_KEYS = Object.freeze(["screens","gradedShare","readWordsPerScreen","maxReadWords","sentenceWords","longWordShare","typeVariety"]);
+export const metricKeys = subj => subjectLang(subj) ? [...METRIC_KEYS, "maxText"] : [...METRIC_KEYS];
+/** Профіль складності уроку (style/profiles.json): діапазон класів предмета («4», «5-6», «7-9», «10-11»), інакше _default того ж діапазону;
+    поверх нього — ключі точного класу предмета («5», «10»…), бо ліміти тексту в межах діапазону різні (engine-eng-stats). Спільне для stats і validate. */
+export function profileFor(profiles, subj, grade) {
+  const own = profiles?.[subj?.id] || {}, band = gradeBand(grade);
+  return { ...(own[band] || profiles?._default?.[band] || {}), ...(String(grade) !== band ? own[String(grade)] : {}) };
+}
+// довге слово: українська — від 5 складів; англійська — від 3 (поріг «складного слова» індексу Ганнінга, engine-eng-stats)
+const LONG_SYLLABLES = { en: 3 };
+
+/** Метрики уроку для синхронізації стилю й складності. lang — мова змісту предмета (subjectLang): "en" — англійські склади й речення. */
+export function lessonMetrics(l, { lang = "" } = {}) {
   const all = l.screens.map(screenAllText).join(" ");
-  const w = words(all), sents = sentences(all);
-  const long = w.filter(x => syllables(x) >= 5).length;
+  const w = words(all), sents = sentences(all, lang);
+  const long = w.filter(x => syllables(x, lang) >= (LONG_SYLLABLES[lang] || 5)).length;
   const graded = l.screens.filter(s => GRADED.includes(s.type) && !s.poll && !s.hyp);
   const types = {}; l.screens.forEach(s => types[s.type] = (types[s.type] || 0) + 1);
   const readWordsPerScreen = l.screens.map(s => words(screenReadText(s)).length);
@@ -140,12 +193,41 @@ export function lessonMetrics(l) {
     wordsTotal: w.length,
     readWordsPerScreen: Math.round(readWordsPerScreen.reduce((a, b) => a + b, 0) / l.screens.length),
     maxReadWords: Math.max(...readWordsPerScreen),
+    // найдовший окремий текст екрана без заголовка: body або текст мовної вправи (gaps, pick… — SLID_LANG.readText)
+    maxText: Math.max(0, ...l.screens.flatMap(s => [s.body, langText(s)].map(t => words(mplain(t || "")).length))),
     sentenceWords: +(w.length / Math.max(1, sents.length)).toFixed(1),
     longWordShare: +(long / Math.max(1, w.length)).toFixed(3),
     hints: l.screens.filter(s => s.hint).length,
     typeVariety: Object.keys(types).filter(t => GRADED.includes(t)).length,
     types
   };
+}
+
+/** Звіт stats.mjs для одного предмета: рядки уроків із метриками, z-оцінки «сім'ї» (предмет + діапазон класів + урок/фінал),
+    прапорці профілю. Мова змісту (targetLang, D-054): "en" — англійські склади, речення й поріг довгого слова, ще й maxText (engine-eng-stats).
+    origin — id розділу → файл (з loadContent). Повертає { bands, rows, keys }. */
+export function subjectStats(c, profiles = {}, origin = {}) {
+  const rows = [], KEYS = metricKeys(c), lang = subjectLang(c), bands = {};
+  for (const sec of c.sections.filter(s => s.lessons)) for (const l of sec.lessons)
+    rows.push({ subject: c.id, grade: sec.grade, band: gradeBand(sec.grade), section: sec.id, file: origin[sec.id], lesson: l.id, title: l.title, boss: !!l.boss, status: l.status, ...lessonMetrics(l, { lang }) });
+  // статистика «сім'ї» (предмет + діапазон класів) для z-оцінок
+  const fam = {};
+  for (const r of rows) (fam[`${r.band}:${r.boss ? "boss" : "lesson"}`] ||= []).push(r);
+  for (const [band, rs] of Object.entries(fam)) for (const k of KEYS) {
+    const v = rs.map(r => r[k]), m = v.reduce((a, b) => a + b, 0) / v.length;
+    const sd = Math.sqrt(v.reduce((a, b) => a + (b - m) ** 2, 0) / v.length);
+    const effectiveSd = Math.max(sd, Math.abs(m) * 0.1, Number.EPSILON);
+    rs.forEach(r => (r.z ||= {})[k] = +((r[k] - m) / effectiveSd).toFixed(1));
+    bands[band] = { ...(bands[band] || {}), [k]: { mean: +m.toFixed(2), sd: +sd.toFixed(2), effectiveSd: +effectiveSd.toFixed(3) } };
+  }
+  // відхилення від профілю
+  for (const r of rows) {
+    const p = profileFor(profiles, c, r.grade);
+    r.flags = [];
+    for (const [k, [lo, hi]] of Object.entries(p)) if (r[k] !== undefined && (r[k] < lo || r[k] > hi)) r.flags.push(`${k}=${r[k]} поза [${lo}; ${hi}]`);
+    for (const k of KEYS) if (Math.abs(r.z?.[k] ?? 0) >= 2) r.flags.push(`${k} нетипово для сім'ї (z=${r.z[k]})`);
+  }
+  return { bands, rows, keys: KEYS };
 }
 
 export function gradeBand(g) { return g <= 4 ? "4" : g <= 6 ? "5-6" : g <= 9 ? "7-9" : "10-11"; }
@@ -191,15 +273,25 @@ export function figPoints(text) {
   for (const q of Q) if (!MULTI.has(q)) P.delete(q);
   return P;
 }
-export function figCues(s, prev = null) {
+// engine-eng-tools: зміст англійською (subjectLang "en") — англійські сигнали; українські на англійському тексті не спрацювали б (тихо вимкнено).
+// ref — «look at / in / on / under / use / study / read the (this, these…) [одне слово] picture / photo / map / chart…», «the picture below»,
+// «picture 2»; graph — згадка map / diagram / chart / graph; FIG_MAKE_EN — намалювати чи скласти самому, не згадка.
+// «Look at the end of the word», «Draw a picture», «I like taking photos» — не посилання. geo (геометрія українською) для en вимкнено.
+const EN_FIG = "(?:pictures?|photos?|photographs?|images?|illustrations?|drawings?|maps?|diagrams?|charts?|graphs?|posters?|cartoons?)";
+const FIG_REF_EN = new RegExp(`\\b(?:look\\s+at|see|in|on|under|use|study|read)\\s+(?:the|this|these|that|those)\\s+(?:[a-z]+\\s+)?${EN_FIG}\\b|\\b${EN_FIG}\\s+(?:below|above|on\\s+the\\s+(?:left|right))\\b|\\b(?:picture|photo|fig\\.?|figure)\\s+\\d`, "i");
+const FIG_GRAPH_EN = /\b(?:maps?|diagrams?|charts?|graphs?)\b/i;
+const FIG_MAKE_EN = /\b(?:draw|make|create|design)\s+(?:[a-z]+\s+){0,3}(?:maps?|diagrams?|charts?|graphs?|pictures?)\b/i;
+/** lang — мова змісту предмета (subjectLang): "" — українські сигнали, "en" — англійські. */
+export function figCues(s, prev = null, lang = "") {
   if (!s) return null;
   const raw = [s.title, s.body, s.q].filter(x => typeof x === "string").join(" ");   // text — речення мовної вправи, не умова
   const text = raw.replace(/<[^>]+>/g, " ");
   const prose = text.replace(/\$\$[\s\S]*?\$\$|\$[^$]*\$/g, " Ф ");
   const ill = hasIllustration(s), prevIll = hasIllustration(prev);
-  const ref = prose.match(FIG_REF)?.[0]?.trim();
-  const pts = figPoints(text), geo = FIG_GEO.test(prose) && pts.size >= 3;
-  const graph = FIG_MAKE.test(prose) ? null : prose.match(FIG_GRAPH)?.[0]?.trim();
+  const en = lang === "en";
+  const ref = prose.match(en ? FIG_REF_EN : FIG_REF)?.[0]?.trim();
+  const pts = figPoints(text), geo = !en && FIG_GEO.test(prose) && pts.size >= 3;
+  const graph = (en ? FIG_MAKE_EN : FIG_MAKE).test(prose) ? null : prose.match(en ? FIG_GRAPH_EN : FIG_GRAPH)?.[0]?.trim();
   const level = ref ? "ref" : geo ? "geo" : graph ? "graph" : null;
   if (!level) return null;
   // intro — сюжетний вступ («На кресленні двору…»): validate про нього не попереджає, fig-audit показує окремою групою (рев'ю P3-2)

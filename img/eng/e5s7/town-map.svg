@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 624 424" width="624" height="424" font-family="Arial, Helvetica, sans-serif" text-anchor="middle">
+  <title>A map of the centre of Emma’s town</title>
+  <rect x="0" y="0" width="624" height="424" fill="#f4f1ea"/>
+  <!-- High Street -->
+  <rect x="0" y="180" width="624" height="52" fill="#cfcfcf"/>
+  <line x1="0" y1="206" x2="624" y2="206" stroke="#ffffff" stroke-width="3" stroke-dasharray="18 14"/>
+  <text x="140" y="214" font-size="15" font-weight="bold" fill="#555555" letter-spacing="2">HIGH STREET</text>
+  <!-- Station Road -->
+  <rect x="382" y="232" width="104" height="122" fill="#cfcfcf"/>
+  <line x1="434" y1="232" x2="434" y2="354" stroke="#ffffff" stroke-width="3" stroke-dasharray="18 14"/>
+  <text x="0" y="0" font-size="13" font-weight="bold" fill="#555555" letter-spacing="1" transform="translate(414 293) rotate(-90)">STATION ROAD</text>
+  <!-- North side of High Street -->
+  <rect x="10" y="40" width="116" height="130" rx="6" fill="#f6c9a8" stroke="#8a6a50" stroke-width="2"/>
+  <text x="68" y="112" font-size="18" fill="#222222">Café</text>
+  <rect x="132" y="40" width="116" height="130" rx="6" fill="#c9d8f0" stroke="#55698a" stroke-width="2"/>
+  <text x="190" y="112" font-size="18" fill="#222222">Bank</text>
+  <rect x="254" y="40" width="116" height="130" rx="6" fill="#d9c9ef" stroke="#6c5a8a" stroke-width="2"/>
+  <text x="312" y="112" font-size="18" fill="#222222">Library</text>
+  <rect x="376" y="40" width="116" height="130" rx="6" fill="#f5e08a" stroke="#8a7a30" stroke-width="2"/>
+  <text x="434" y="104" font-size="18" fill="#222222">Post</text>
+  <text x="434" y="126" font-size="18" fill="#222222">office</text>
+  <rect x="498" y="40" width="116" height="130" rx="6" fill="#f3a9a9" stroke="#8a4f4f" stroke-width="2"/>
+  <text x="556" y="112" font-size="18" fill="#222222">Cinema</text>
+  <!-- South side of High Street -->
+  <rect x="10" y="242" width="238" height="172" rx="6" fill="#b8dfa6" stroke="#5b8a4a" stroke-width="2"/>
+  <circle cx="50" cy="285" r="18" fill="#6fae5a"/>
+  <circle cx="205" cy="290" r="18" fill="#6fae5a"/>
+  <circle cx="60" cy="375" r="18" fill="#6fae5a"/>
+  <circle cx="200" cy="378" r="18" fill="#6fae5a"/>
+  <text x="129" y="336" font-size="18" fill="#222222">Park</text>
+  <rect x="254" y="242" width="116" height="104" rx="6" fill="#e8d3b0" stroke="#8a744f" stroke-width="2"/>
+  <text x="312" y="300" font-size="18" fill="#222222">Museum</text>
+  <rect x="498" y="242" width="116" height="104" rx="6" fill="#bfe3e0" stroke="#4f8a85" stroke-width="2"/>
+  <text x="556" y="300" font-size="18" fill="#222222">School</text>
+  <!-- Station at the end of Station Road -->
+  <rect x="300" y="360" width="268" height="54" rx="6" fill="#d0d0e0" stroke="#5a5a7a" stroke-width="2"/>
+  <text x="434" y="393" font-size="18" fill="#222222">Station</text>
+</svg>

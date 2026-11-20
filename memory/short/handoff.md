@@ -1,17 +1,19 @@
 # Handoff — стан проєкту
 
-_Оновлено: 2026-11-18, куратор пам'яті (сесія 13–18.11: плейтест від ролі учня 4–11 кл., хвилі 1–3 задач *-1117; журнал sessions/2026-11-18-1.md). Попередні журнали: 2026-11-12-1.md, 2026-11-10-1.md._
+_Оновлено: 2026-11-19, куратор пам'яті (19.11: хвиля 0 англійської завершена; дизайн англійської, друга редакція, D-054 і доповнення — відповіді на §11.2, sessions/2026-11-19-1.md; сесія 13–18.11: плейтест від ролі учня 4–11 кл., хвилі 1–3 задач *-1117; журнал sessions/2026-11-18-1.md). Попередні журнали: 2026-11-12-1.md, 2026-11-10-1.md._
 
-**Пам'ятка (D-046, D-049):** змістове питання вирішуй сам за таким порядком джерел: МОН → програма → правопис і словники D-041 → підручник. Цитату й URL клади у звіт. Якщо сумнів лишився, бери найкращий варіант «тимчасово, до відповіді вчителя» і дописуй питання в `docs/teacher-questions.md` наступним номером (зараз останній **TQ-118**). Роботу це не блокує. Технічні питання — людині (нижче).
+**Пам'ятка (D-046, D-049):** змістове питання вирішуй сам за таким порядком джерел: МОН → програма → правопис і словники D-041 → підручник. Цитату й URL клади у звіт. Якщо сумнів лишився, бери найкращий варіант «тимчасово, до відповіді вчителя» і дописуй питання в `docs/teacher-questions.md` наступним номером (зараз останній **TQ-123**). Роботу це не блокує. Технічні питання — людині (нижче).
 
 **Пам'ятка оркестратору:** комітити лише `git commit -m "…" -- <файли>` — навіть `git add` своїх файлів + окремий commit віддає їх чужому коміту (96bb001; pitfalls.md «Додано 2026-11-18»). Worktree-агенти (isolation) створюються від `main` — перевіряй базу. build + `npm run check` — після кожного злиття.
 
 ## Стан
+- **Гілка `claude/eng-tasks` (19.11): дизайн англійської, друга редакція** — рішення людини отримано (**D-054**: зміст англійською, BrE, B2, з 4 кл., A/B/C, поки без звуку); docs/design/english.md і **119 задач** `*-eng-*` у tasks/todo (звукові заблоковано). Відповіді людини на §11.2 — **D-054, «Доповнення 2026-11-19»** (AmE — `ok` з приміткою; ≈ 6 уроків на розділ; без IPA; порядок за програмою; поле `uk` у 4–5 кл. за потреби; 4 кл. — ТОП 3–4 Савченко). **design-eng → done.**
+- **Англійська, хвиля 0 — завершена 19.11** (гілка `claude/eng-tasks`, **PR не відкрито; CI `browser` не запускався** — Python playwright локально немає). Done з рев'ю D-026 / верифікацією: curate-eng-agents-rule, engine-eng-lang-attr, -lang-core, -stats, -validate, -tools (+ виправлення frontmatter з CRLF), curate-eng-glossary, curate-eng-subject (subjects/eng.js, `soon` прибрано), curate-eng-style (style/eng.md, eng-banned, профіль `eng` — decisions D-054 «Робоче доповнення»), skills-eng, curate-eng-plan-g4 (8 розділів), curate-eng-plan-g5 (10 розділів). Нові P2/P3 у todo: engine-eng-lang-attr-p3, engine-eng-stats-p2 (склади — до калібрування профілю), engine-eng-lang-core-p3, engine-eng-validate-p3, engine-eng-tools-p3. Нові TQ-119…123 (лапки, час цифрами, -ise/-ize, AmE-лексика у `word`, обсяг текстів 5–9 кл.) — вчителю англійської.
 - **Гілка `claude/student-playtest-1117-tasks`, PR не відкрито.** Останній build/check — 5d8d46d: validate 0 помилок / 73 попередження, test-ui 266 ok. **playtest.py і test-answer-ui.py локально не запускались** (немає Python playwright): потрібен CI, тобто PR (job `browser`).
 - **Плейтест від ролі учня (13–17.11):** 8 агентів-«учнів» 4–11 кл. на GitHub Pages, ≈ 800 уроків, ~280 знахідок, блокерів немає. Звіти — reports/qa/student-playtest-1117/ (SUMMARY.md, g4–g11.md, TASKS-INDEX.md).
 - **Хвилі 1–3:** 27 задач `*-1117` у tasks/done; зміст verified, рушій — рев'ю D-026 прийнято (reports/verify|review|qa/*-1117.md). Рушій: дроби в number, клітинки ділення кутом, zoom, рендер 1/aⁿ і кореня, `pl`/`shift` у show, план після тесту з `see`; зміст math/ukr/hist/world; карти; style-sync (D-019, позиції choice/multi, нейтральний рід).
 - Хвости 12.11 (style-hist-1112, style-world-1112, fix-ukr-lessons-from-pools) — done. Жодного `approved`.
-- Довга пам'ять: decisions до **D-053** + «Чекає рішення людини»; facts/hist-3 до №722, world-2 до №340, ukr-9 до №589, math до №261.
+- Довга пам'ять: decisions до **D-054** + «Чекає рішення людини»; facts/eng №1–17 + К1, glossary/eng, pitfalls-content «Англійська» п. 1–13; facts/hist-3 до №722, world-2 до №340, ukr-9 до №589, math до №261.
 
 ## У роботі (`node tools/claim.mjs list doing`)
 - **research-math-diag-duration** — пілот, чекає учнів.
@@ -26,7 +28,8 @@ _Оновлено: 2026-11-18, куратор пам'яті (сесія 13–18.
 6. **curate-plan-sync-1112** (доповнено 18.11): requires g11s2/g11s3 ← g11s1; ukr `why` «задумав»; перекриття weeks u11; назви навичок math для 4 кл. Лише куратор, не під час пакета.
 7. **style-hist-p2-1112** — спершу перевірити, що вже закрили style-choice-positions/-d019-1117.
 8. **engine-diag-duration-estimate** — після пілоту. Доповнено: dgh11 тема `pre` «Друга світова», dg8 cur-g8m5.
-9. **Карти, що лишились малими** (kiepert-1849, chyhyryn-map, east-slavic-tribes, poltava-map-1821, ballot-1991, pale-map-1905, song-rainbow-bridge) і похідні SVG для g9s1l2, g10s2l5–l6, g10s5l1/l4 — після рішення про розмір (pitfalls-hist «Додано 2026-11-18»).
+9. **Англійська, хвиля 1** (docs/design/english.md §3): спершу **engine-eng-build, engine-eng-match** (рев'ю D-026; бажано до авторів), потім **write-eng-g4-e4s1** (еталон) → верифікація → style-eng-g4-5 (калібрування профілю) → решта розділів 4–5 кл.; **engine-eng-diag-pool** — до тестів рівня й пулів. Для curate-eng-plan-g6 — розподіл інвентаря A2 між 5 і 6 кл. і зв'язки e5sN → e4sM (`requires` поки не ставити) — reports/verify/plan-eng-g5.md §2, §6. borshch / borscht — вирішити до e5s3 (glossary/eng «Не вирішено»).
+10. **Карти, що лишились малими** (kiepert-1849, chyhyryn-map, east-slavic-tribes, poltava-map-1821, ballot-1991, pale-map-1905, song-rainbow-bridge) і похідні SVG для g9s1l2, g10s2l5–l6, g10s5l1/l4 — після рішення про розмір (pitfalls-hist «Додано 2026-11-18»).
 
 **Заблоковано рішенням людини (без змін):** engine-diag-retest-from-pool, engine-ai-a1 (`server/content/`), design-privacy-gdpr, design-teacher-dashboard.
 
@@ -43,14 +46,15 @@ _Оновлено: 2026-11-18, куратор пам'яті (сесія 13–18.
 5. **Рев'ю знімка tools/test-hyp.mjs §0.** За 17–18.11 його тричі оновлювали під зміни змісту без рев'ю D-026. Чи це прийнятний виняток?
 6. **Стиль (рішення — у decisions.md):** sentenceWords hist/world 10–11 (не рахувати `items` чи межа 6); pick ukr — межі члена речення у фіналі кожним словом-кнопкою (style-ukr-1117); world ~50 задач «скільки років від X до Y» з обома датами — на 8+ брати одну дату з уроку?; закріпити в style/math.md «Для кожного … обери» у sort і формули 4 кл. словами (вже в glossary/math).
 7. **Сіяний порядок рядків** у тесті рівня — так чи ні (зараз перемішування; qa-diag-stability).
-8. Як 12.11: dgh11b (втрата підсумку dgh11); дублікати img/hist ↔ img/world; ліцензії фото (Гмюнд 1916, w10s4 1923, Кайсері 1928, Франки 1904); постанова ВР 14.04.2022 і закон 712-XII; required checks; змінні синхронізації (`SLID_API`, `SLID_GOOGLE_CLIENT_ID`, `CORS_ORIGINS`, `LOG_HASH_KEY`); `personalization-qa --strict`.
+8. **Англійська:** учитель-рецензент англійської для `approved` (не блокує; D-054 «Не вирішено») — йому ж TQ-119…123; необов'язково — перейменувати e5s8 «Festivals and traditions» → «Celebrations and traditions» (festival — B1 у CD; id не змінюється).
+9. Як 12.11: dgh11b (втрата підсумку dgh11); дублікати img/hist ↔ img/world; ліцензії фото (Гмюнд 1916, w10s4 1923, Кайсері 1928, Франки 1904); постанова ВР 14.04.2022 і закон 712-XII; required checks; змінні синхронізації (`SLID_API`, `SLID_GOOGLE_CLIENT_ID`, `CORS_ORIGINS`, `LOG_HASH_KEY`); `personalization-qa --strict`.
 
 ## Обмеження середовища
 - **Python-модуля playwright локально немає.** Плейтест і test-answer-ui ганяє лише CI. Браузер — `/opt/pw-browsers/chromium`; test-ui — `NODE_PATH=/opt/node22/lib/node_modules`.
 - **WebFetch не резолвить зовнішні домени.** Працюють curl через проксі (goroh, slovnyk, vesum, uk/en.wikipedia, commons) або WebSearch.
 - **Мініатюри Commons:** лише ширини 960/1280/1920 через upload.wikimedia.org/…/thumb; 429 — з паузами.
-- Недоступні: zakon.rada, mon.gov.ua, britannica/worldhistory (403), Met — через API.
+- Недоступні: zakon.rada, mon.gov.ua, britannica/worldhistory (403), gov.uk, ons.gov.uk, parliament.uk; словники англійської (cambridge, oxfordlearners, merriam-webster, wiktionary) — лише через curl (WebFetch не резолвить cambridge), Met — через API. **osvita.ua і lib.iitta.gov.ua з 19.11 доступні** (додано в мережу); програми МОН — з osvita.ua.
 - `npm run check`, validate, stats, euphony перезаписують спільні reports/. Звіти комітить лише оркестратор.
 
 ## Як продовжити
-«Прочитай AGENTS.md і handoff. Відкрий PR гілки claude/student-playtest-1117-tasks і дочекайся CI `browser`. Паралельно можна брати: tools-content-checks-p3, engine-lab-p3-1117, fix-content-followups-1117 (по пунктах). curate-plan-sync-1112 — окремо. Людині: технічні питання 1–5, 4 дизайни в tasks/review, TQ-113…118 і TQ-085.»
+«Прочитай AGENTS.md і handoff. Відкрий PR гілки claude/student-playtest-1117-tasks і дочекайся CI `browser`. Паралельно можна брати: tools-content-checks-p3, engine-lab-p3-1117, fix-content-followups-1117 (по пунктах). curate-plan-sync-1112 — окремо. Людині: технічні питання 1–5, 4 дизайни в tasks/review, TQ-113…118 і TQ-085. Англійська (`claude/eng-tasks`): відкрити PR, дочекатися CI `browser`; хвиля 1 — engine-eng-build, engine-eng-match, потім write-eng-g4-e4s1.»

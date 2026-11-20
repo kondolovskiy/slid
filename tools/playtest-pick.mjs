@@ -3,22 +3,27 @@
 // Повний `python3 tools/playtest.py` — це ≈ 3,3 с на урок (reports/qa/math-personalization-release.md: 410 уроків за 1369 с),
 // тобто для 800+ уроків ≈ 45–50 хв: для кожного PR задовго. Тому CI бере:
 //   1) розділи й тести рівня, чиї файли змінено (content/<предмет>/*.js, img/<предмет>/<id>/…);
-//   2) покриття: жадібно найменше уроків, щоб кожен предмет, кожен тип екрана й кожен вид лабораторії/answerKind,
+//   2) покриття: жадібно найменше уроків, щоб кожен предмет, кожен тип екрана (і в предметі з targetLang — тип з мовою, word@en) й кожен вид лабораторії/answerKind,
 //      що трапляються в змісті, пройшли хоча б раз (рушій перевіряє регресія, а тут — що кожна гілка player живе на справжньому змісті);
 //   3) усі тести рівня (вони короткі).
 // Бюджет: змінені розділи — не більше --max-lessons уроків (типово 200 ≈ 11 хв); понад бюджет — по черзі між предметами, а решту
 // названо в stderr рядком «Понад бюджет: …» (великий пакет розділів — повний плейтест: workflow_dispatch з playtest: full).
 // Запуск: node tools/playtest-pick.mjs [--max-lessons N] [змінений-файл ...]  → у stdout id через кому (для playtest.py --section), у stderr — чому.
 import { pathToFileURL } from "node:url";
+import { subjectLang } from "./lib.mjs";
 
-/** Ознаки розділу для покриття: предмет, тип екрана, вид лабораторії, answerKind, мовна вправа-здогадка (без хибної спроби). */
-export function features(subjectId, sec) {
+const THEORY = new Set(["intro", "info", "explore"]);
+/** Ознаки розділу для покриття: предмет, тип екрана, вид лабораторії, answerKind, мовна вправа-здогадка (без хибної спроби).
+    lang — мова змісту предмета (subjectLang, engine-eng-tools): оцінюваний тип ще й як «type:word@en» — англійська гілка lang.js
+    (word, pick, stress, build…) інша, ніж українська, тож англійський розділ потрапляє в покриття, навіть якщо тип уже є в ukr. */
+export function features(subjectId, sec, lang = "") {
   const f = new Set([`subject:${subjectId}`]);
   for (const l of sec.lessons || []) for (const s of l.screens || []) {
     f.add(`type:${s.type}`);
+    if (lang && !THEORY.has(s.type)) f.add(`type:${s.type}@${lang}`);
     if (s.type === "lab") f.add(`lab:${(s.lab && s.lab.kind) || "?"}`);
     if (s.type === "answer") f.add(`answerKind:${s.answerKind || "-"}`);
-    if ((s.hyp || s.poll) && s.type !== "intro" && s.type !== "info" && s.type !== "explore") f.add(`hyp:${s.type}`);
+    if ((s.hyp || s.poll) && !THEORY.has(s.type)) f.add(`hyp:${s.type}`);
   }
   return f;
 }
@@ -26,7 +31,7 @@ export function features(subjectId, sec) {
 /** Жадібне покриття ознак: щоразу розділ з найбільшою кількістю нових ознак на урок; нічия — менше уроків, потім id (детерміновано). */
 export function cover(subjects) {
   const cands = [];
-  for (const c of subjects) for (const sec of c.sections || []) if (sec.lessons && sec.lessons.length) cands.push({ id: sec.id, n: sec.lessons.length, f: features(c.id, sec) });
+  for (const c of subjects) for (const sec of c.sections || []) if (sec.lessons && sec.lessons.length) cands.push({ id: sec.id, n: sec.lessons.length, f: features(c.id, sec, subjectLang(c)) });
   const need = new Set(cands.flatMap(x => [...x.f])), got = [];
   while (need.size) {
     let best = null, bestGain = 0;
@@ -81,7 +86,7 @@ export function pick(content, files = [], { maxLessons = Infinity } = {}) {
 }
 
 if (import.meta.url === pathToFileURL(process.argv[1] || "").href) {
-  const { loadContent } = await import("./lib.mjs");
+  const { loadContent } = await import("./lib.mjs");   // зміст вантажимо лише в CLI; функції вище — чисті
   const content = loadContent();
   const args = process.argv.slice(2), mi = args.indexOf("--max-lessons");
   const maxLessons = mi >= 0 ? Number(args[mi + 1]) : 200;

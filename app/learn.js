@@ -12,7 +12,7 @@ window.SLID_LEARN = (() => {
   /* ---------- Діагностика ---------- */
   // мовні вправи (app/lang.js, engine-diag-lang-types): у тесті вердикт без фідбеку — gradeNow → LANG.check, правильно все або BAD;
   // межі «одне завдання = одне вміння» — tools/validate.mjs (DIAG_LANG_LIMITS); перелік мовних типів звіряє test-learn з SLID_LANG.TYPES
-  const DIAG_TYPES = ["choice", "multi", "sort", "order", "number", "fracin", "shade", "numline", "lab", "answer", "gaps", "pick", "stress", "word", "split"];
+  const DIAG_TYPES = ["choice", "multi", "sort", "order", "number", "fracin", "shade", "numline", "lab", "answer", "gaps", "pick", "stress", "word", "split", "build", "match"];
   /* answer у тесті (engine-diag-answer-kinds): лише формати, де вердикт — «правильно / ні» без розмови. Плеєр у тесті не показує
      ні підказки form/bad і не дає другої спроби. Вердикт — diagVerdict (engine-diag-half-credit, рішення людини й методичне
      правило 2026-11-01): «ok» — OK; «form» без вимоги вигляду (інший запис того самого: «37» при decimals 1, «3/4» при
@@ -2002,19 +2002,19 @@ window.SLID_LEARN = (() => {
   }
   /** Перевірка пулу (валідатор). ctx: { sections: Map id → { grade, lessons: [id] }, skills }. */
   /* Типи вправ пулу — один перелік для всіх предметів (рушій не знає предметів; engine-pool-lang): answer, choice, multi — як у математиці;
-     мовні вправи (app/lang.js: gaps, pick, stress, word, split) і sort / order — для мовних предметів, де дитина пише чи позначає сама.
+     мовні вправи (app/lang.js: gaps, pick, stress, word, split, build, match) і sort / order — для мовних предметів, де дитина пише чи позначає сама.
      Для «пояснювальних» типів (EXPLAIN_TYPES) — свої правила (validatePool нижче): steps — пояснення 1–4 рядки, без полів числової
      відповіді, без hyp/poll, розмітка — тими самими правилами, що в уроці (SLID_LANG.issues; sort/order — як у tools/validate.mjs),
      межа пулу gaps ≤ 6 пропусків (в уроці — 12; stress ≤ 6 слів і pick ≤ 40 — як в уроці). Правила answer/choice/multi не змінилися. */
-  const POOL_LANG = ["gaps", "pick", "stress", "word", "split"];
+  const POOL_LANG = ["gaps", "pick", "stress", "word", "split", "build", "match"];
   const EXPLAIN_TYPES = [...POOL_LANG, "sort", "order"];
   const POOL_TYPES = ["answer", "choice", "multi", ...EXPLAIN_TYPES];
   const POOL_LANG_LIMITS = { gaps: 6 };
   /** Помилки «пояснювальної» вправи пулу (мовна, sort, order) — без префікса вправи. */
   function poolExplainIssues(it) {
     const E = [];
-    // поля числової відповіді (математика); answer у word — ключ слова
-    for (const f of ["unit", "unitForms", ...(it.type === "word" ? [] : ["answer"])]) if (it[f] !== undefined) E.push(`${f} — поле числової відповіді (answer); у ${it.type} не пишеться`);
+    // поля числової відповіді (математика); answer у word — ключ слова, у build — ключ речення
+    for (const f of ["unit", "unitForms", ...(["word", "build"].includes(it.type) ? [] : ["answer"])]) if (it[f] !== undefined) E.push(`${f} — поле числової відповіді (answer); у ${it.type} не пишеться`);
     if (it.hyp !== undefined || it.poll !== undefined) E.push(`hyp / poll у пулі не дозволено — тренування оцінює кожну вправу`);
     if (Array.isArray(it.steps) && it.steps.length > 4) E.push(`steps — пояснення: правило й розбір, 1–4 рядки (є ${it.steps.length})`);
     if (POOL_LANG.includes(it.type)) {
@@ -2056,6 +2056,9 @@ window.SLID_LEARN = (() => {
     if (!["draft", "verified", "approved"].includes(p.status)) E.push("status має бути draft | verified | approved");
     if (!Array.isArray(p.sources) || !p.sources.length) E.push("немає sources — звідки взято задачі");
     for (const x of p.sources || []) if (!x.id || !x.title || !/^https?:\/\//.test(x.url || "")) E.push(`джерело «${x.id}»: потрібні id, title, url`);
+    // program: true — джерело-програма, вправи власні (eng, engine-eng-diag-pool): тренування не показує «Джерело», adapted не має сенсу
+    for (const x of p.sources || []) if (x.program !== undefined && typeof x.program !== "boolean") E.push(`джерело «${x.id}»: program має бути boolean`);
+    const prog = new Set((p.sources || []).filter(x => x.program === true).map(x => x.id));
     if (!Array.isArray(p.items) || !p.items.length) return E.concat("немає items");
     p.items.forEach((it0, i) => {
       const w = `задача ${i + 1} «${it0.id}»`;
@@ -2073,6 +2076,7 @@ window.SLID_LEARN = (() => {
       if (!Array.isArray(it.steps) || !it.steps.length) E.push(`${w}: немає steps — розв'язання кроками`);
       if (it.srcPage !== undefined && (!Number.isSafeInteger(it.srcPage) || it.srcPage < 1)) E.push(`${w}: srcPage має бути додатним цілим числом`);
       if (it.adapted !== undefined && typeof it.adapted !== "boolean") E.push(`${w}: adapted має бути boolean`);
+      if (it.adapted === true && prog.has(sid)) E.push(`${w}: adapted — для вправи, взятої з джерела; у джерела-програми «${sid}» (program: true) вправи власні`);
       if (it.unitForms !== undefined && it.answerKind === "divrem") E.push(`${w}: unitForms не для divrem — лише unit`);
       if (it.unitForms !== undefined && (!Array.isArray(it.unitForms) || it.unitForms.length !== 3 || it.unitForms.some(x => typeof x !== "string" || !x.trim()))) E.push(`${w}: unitForms має містити три непорожні рядки (1 / 2–4 / 5+)`);
       const kind = it.answerKind || "number";
@@ -2246,7 +2250,7 @@ window.SLID_LEARN = (() => {
      5) завдання тесту: u завдання → u теми → типові вузли уроку lesson завдання, інакше уроків теми; вузли теми — u теми або об'єднання
      вузлів завдань. Поле live — вузли для nodeState і graphPre: без gone-вузла, чия ціль має іншу sk, ніж об'єкт (§4.1, рев'ю G1 P3-8),
      доки u не оновлено (stale — такі id). */
-  const G_GRADED = ["choice", "multi", "sort", "slider", "order", "align", "shade", "numline", "number", "fracin", "lab", "answer", "gaps", "pick", "stress", "word", "split"];   // = tools/lib.mjs GRADED (тест)
+  const G_GRADED = ["choice", "multi", "sort", "slider", "order", "align", "shade", "numline", "number", "fracin", "lab", "answer", "gaps", "pick", "stress", "word", "split", "build", "match"];   // = tools/lib.mjs GRADED (тест)
   const G_ID = /^[a-z][a-z0-9-]*$/;
   const gStr = x => typeof x === "string" && x.trim() !== "";
   const gGraded = s => !!s && G_GRADED.includes(s.type) && !s.poll && !s.hyp;

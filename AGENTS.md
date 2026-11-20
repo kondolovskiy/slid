@@ -27,7 +27,7 @@
 | `app/learn.js` · `evidence.js` · `hyp.js` | персоналізація · журнал подій · гіпотези (тінь) | розробник |
 | `app/math.js` · `lab.js` · `registry.js` | формули · лабораторія · реєстр `SLID.*` | розробник |
 | `app/sync.js`, `app/config.js` | синхронізація прогресу з бекендом: злиття стану, вхід, код прив'язки (тести `node tools/test-sync.mjs`); config.js генерує build із `SLID_API` | розробник |
-| `app/lang.js` | мовні вправи gaps / pick / stress / word / split (CONTENT_SCHEMA §4.1; тести `node tools/test-lang.mjs`) | розробник |
+| `app/lang.js` | мовні вправи gaps / pick / stress / word / split / build / match (CONTENT_SCHEMA §4.1; тести `node tools/test-lang.mjs`) | розробник |
 | `content/subjects/<предмет>.js`, `content/<предмет>/plan.js`, `content/catalog.js` | метадані, план, «скоро» | лише куратор |
 | `content/<предмет>/g<клас>-<id>.js` | **один файл = один розділ з уроками** | автор розділу |
 | `content/<предмет>/diag-g<клас>.js` | тест рівня (`SLID.diag`) | автор тесту |
@@ -55,7 +55,7 @@ node tools/playtest-pick.mjs [--max-lessons N] [файли…]      # підна
 node tools/test-ui.mjs [--browser P]                         # браузер (Node Playwright): «Тренування» з also, замок уроку, запобіжник екрана, оновлення PWA, синхронізація двох пристроїв, тренування ukr; не в check, у CI — job browser
 node tools/stats.mjs [--subject S]                           # метрики стилю → reports/style-S.md
 node tools/claim.mjs list|claim|move ...                     # черга задач
-node tools/make-tasks.mjs [--subject S]                      # задачі на написання з плану; --write-pool [--subject ukr] — задачі на пули
+node tools/make-tasks.mjs [--subject S]                      # задачі на написання з плану; --write-pool [--subject ukr|eng] — задачі на пули; eng — write-eng-g<клас>-<розділ>
 node tools/graph-report.mjs [--line ID --strict]             # граф умінь → reports/graph-<предмет>.md
 node tools/fig-audit.mjs [--subject S]                       # де умова потребує рисунка, а його немає → reports/fig-audit-S.md
 node tools/euphony.mjs [--subject S] [--section|--pool|--diag ID]   # милозвучність у/в, і/й, з/із/зі (уроки, пули, тести рівня) → reports/euphony-S.md (з ID — лише stdout); --help — довідка; невідомий прапорець — код 2
@@ -67,6 +67,7 @@ cd server && npm run check && DATABASE_URL=postgres://… npm run test:e2e   # �
 
 ## 4. Непорушні правила
 1. **Мова контенту — українська**, сучасний правопис, без канцеляриту (style/common.md, style/banned-phrases.txt).
+   **Виняток — англійська (`eng`, D-054):** увесь зміст уроків, тестів рівня й пулів — англійською, британська норма (style/eng.md, memory/long/glossary/eng.md); українською — лише інтерфейс рушія і згорнутий переклад правила `uk`: 4–5 кл., неоцінювані екрани теорії, лише там, де верифікатор чи плейтест показали потребу (docs/design/english.md §2).
 2. **Точність вища за швидкість.** Кожна дата, число, ім'я — з перевіреного джерела. Не впевнений — не пиши або познач «потребує перевірки». Вигадані цитати, факти й джерела заборонені.
 3. **Реєстр фактів** `memory/long/facts/<предмет>.md`: якщо факт там є, бери саме це формулювання й дату. Нові — у нотатки задачі з URL.
 4. **Нотація й терміни — з глосарію** `memory/long/glossary/<предмет>.md` (math: ділення «:», множення «·», дріб `$3/4$`).
@@ -96,7 +97,8 @@ cd server && npm run check && DATABASE_URL=postgres://… npm run test:e2e   # �
 |---|---|
 | написати чи переписати розділ уроків (`write-*`, `revise-*`, `refine-*`, `fix-*` у файлі розділу) | `content-author` |
 | перевірити розділ, тест рівня, пул чи лінію графа, яких ти не писав (задача в `tasks/review/`) | `content-verify` |
-| пул вправ `pool-*.js` або тест рівня `diag-*.js` (написати, виправити, змінити формат відповіді; для ukr — ще й `content-author`) | `math-pool-diag` |
+| пул вправ `pool-*.js` або тест рівня `diag-*.js` (написати, виправити, змінити формат відповіді; для ukr і eng — ще й `content-author`) | `math-pool-diag` |
+| англійська (`*-eng-*`): розділ, пул, тест рівня — написати чи перевірити | скіл ролі вище + його розділ «Англійська» (`content-author`, `content-verify`, `math-pool-diag` §2в) |
 | зображення в уроці, Вікісховище, помилка D-027 (`images-*`) | `hist-images` |
 | будь-яка зміна в `app/`, `tools/`, тестах, CI (`engine-*`, `tools-*`, `tests-*`) | `engine-change` |
 | будь-яка зміна в `server/` (`server-*`) | `backend-change` |
@@ -114,6 +116,7 @@ cd server && npm run check && DATABASE_URL=postgres://… npm run test:e2e   # �
 - Зображення — `docs/IMAGES.md`; публікація, PWA, артефакт — `docs/PUBLISHING.md`
 - Архітектура рушія — `docs/ARCHITECTURE.md`; персоналізація — `docs/PERSONALIZATION.md`, `docs/PERSONALIZATION_QA.md`
 - Журнал подій — `docs/EVIDENCE.md`; дизайни — `docs/design/*.md`; бекенд — `docs/BACKEND.md`
+- Англійська мова (`eng`): мова екранів, типи вправ, програма 4–11 кл. — `docs/design/english.md`; рішення — D-054
 - Рішення — `memory/long/decisions.md` (D-NNN); пастки — `memory/long/pitfalls.md`; формат inbox — `memory/README.md`
 
 ## 7. Готово означає

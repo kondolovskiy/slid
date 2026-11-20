@@ -1,0 +1,157 @@
+# Фрази, яких не має бути в змісті англійської (`eng`). Одна на рядок, регістр не важливий. Перевіряє tools/validate.mjs
+# (попередження для предмета з targetLang "en", engine-eng-validate); style/banned-phrases.txt для eng не діє.
+# Рядок — дослівна фраза в межах слова: «explain me» не ловить «explain meaning». Правило й кальки, яких список не ловить, — style/eng.md «Заборонене».
+# Відомі хибні збіги (правильне речення з тією самою послідовністю слів): «make a photo album/frame», «in the internet age», «the Ukraine war», «Chicken Kiev»,
+# «you will hear from me». Попередження тоді не виправляй — перевір і познач у нотатках задачі (verifier-curate-eng-style, 2026-11-19).
+# Сполуки, де хибний збіг типовий для уроку («make homework fun», «Why do mistakes happen?», «make a party hat»), — лише з підметом або не внесено (style/eng.md «Заборонене»).
+# Кожну сполуку звірено зі словником 2026-11-19 (curate-eng-style, curl): CD — dictionary.cambridge.org, OALD — www.oxfordlearnersdictionaries.com,
+# CG — Cambridge Grammar (dictionary.cambridge.org/grammar/british-grammar/…). У дужках коментаря — правильна форма й джерело.
+
+# 1. Кальки з української
+# agree — дієслово: «I agree», не «I am agree» (CD agree: «[ I or T ]… I agree with you»; OALD agree)
+am agree
+is agree
+are agree
+i'm agree
+i’m agree
+# take a photo, не make (OALD photo: «I'll take a photo of you»; CD photo: «take a photo of»)
+make a photo
+made a photo
+make photos
+made photos
+make a photograph
+# make a mistake, не do (OALD mistake_1: «It's easy to make a mistake»)
+do a mistake
+did a mistake
+doing mistakes
+# «do mistakes» — лише з підметом: «Why do mistakes happen?» правильне
+i do mistakes
+we do mistakes
+you do mistakes
+they do mistakes
+always do mistakes
+often do mistakes
+sometimes do mistakes
+# do (your) homework, не make (OALD homework: «I always do my homework on the bus»; CD homework: «do your homework»)
+# лише з підметом: «Games make homework fun», «It makes my homework easier» правильні (make + додаток + прикметник)
+i make homework
+we make homework
+you make homework
+they make homework
+he makes homework
+she makes homework
+i make my homework
+we make our homework
+you make your homework
+they make their homework
+# do sport (BrE) (OALD sport_1: «(British English) Do you do any sport?»)
+make sport
+make sports
+# explain something to somebody (OALD explain: «You cannot say ‘explain me, him, her, etc.’»); him/her/them не беремо — «explain them» (= правила) і «explain her idea» правильні
+explain me
+# tell me, не say me (OALD say_1: say vs tell; «What did he say to you?»)
+say me
+# discuss something (OALD discuss: «People sometimes say ‘discuss about something’. However, this is still considered incorrect»)
+discuss about
+discussed about
+discussing about
+discusses about
+# depend on (OALD depend: «depend on somebody/something»)
+depend from
+depends from
+depending from
+# listen to (OALD listen_1: «to listen to music/the radio»)
+listen music
+listens music
+listening music
+# on the internet (OALD internet: «I looked it up on the internet»)
+in the internet
+# wait for somebody (OALD wait_1: «Wait for me!»)
+wait you
+waiting you
+# borrow from / lend (OALD borrow: «Which Word? borrow / lend… You borrow something from somebody»)
+borrow me
+# the same as (OALD same_1: «Your dress is nearly the same as mine»)
+the same like
+# at the end of (OALD end_1: «at the end of something… at the end of the week»)
+in the end of
+# turn/switch the light on/off (OALD light_1: «to turn/switch the lights on/off»)
+open the light
+close the light
+# want somebody to do (OALD want_1: «Notice that you cannot say ‘want that…’»)
+want that you
+want that he
+want that she
+want that we
+want that they
+# What's your name? (OALD name_1: «What's your name?»)
+how is your name
+# in my opinion (CG «According to»: «When we talk about our opinion, we use… ‘in my opinion’… Not: According to me»)
+according to me
+# I like it very much / I really like (OALD very_1, Grammar Point «very / very much»: «Very is used with adjectives, past participles used as adjectives, and adverbs»; дієслово — very much)
+i very like
+we very like
+they very like
+you very like
+i very love
+
+# 2. Граматичні помилки, типові й для ШІ-генерації вправ
+# uncountable (OALD homework, advice, information, furniture: «[uncountable]»; OALD «Uncountable nouns often used wrongly»)
+homeworks
+informations
+advices
+furnitures
+# plural of child — children (OALD child: «(plural children)»)
+childrens
+# more/most не разом з -er/-est (CG «Comparison: adjectives»: «Not: … a more better life», «Not: … the most biggest»)
+more better
+more bigger
+more easier
+most biggest
+most best
+
+# 3. Американська норма в тексті (ключ і текст — BrE, D-054; відповідь дитини з AmE-правописом рушій приймає сам)
+# at the weekend, at weekends (BrE) (OALD weekend_1: «at the weekend (British English)… on the weekend (especially North American English)»; CD weekend: «at weekends UK (US on (the) weekends)»)
+on the weekend
+on weekends
+# holidays [plural] = зимові свята — North American (OALD holiday_1); у BrE — «Happy New Year!», «Happy Christmas!»
+happy holidays
+# правопис (facts/eng.md №1, №11: CD colour «UK (US color)», centre, theatre, grey, travel; glossary/eng.md)
+color
+colors
+colorful
+favorite
+favorites
+center
+theater
+gray
+neighbor
+neighbors
+traveled
+traveling
+# maths (BrE) (facts/eng.md №12; glossary/eng.md); «maths» не ловиться — межа слова
+math
+# назви України (glossary/eng.md «Назви України англійською», КМУ № 55; facts/eng.md №13: Wikt Ukraine, Kyiv — usage notes)
+the ukraine
+kiev
+odessa
+lvov
+kharkov
+
+# 4. Звуку немає (D-054 п. 4; glossary/eng.md «Загальне»): аудіювання текстом не імітуємо
+listen and repeat
+listen and choose
+listen and match
+you will hear
+imagine you hear
+
+# 5. Порожні звороти — відповідник banned-phrases.txt (стиль, не помилка мови; словник не потрібен)
+it is worth noting
+it's worth noting
+it’s worth noting
+it is important to note
+delve into
+a rich tapestry
+embark on a journey
+in today's world
+in today’s world

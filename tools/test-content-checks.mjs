@@ -144,5 +144,55 @@ eq(C.poolFirstSessionIssues(pool([it("a", "l1", "x"), it("b", "l1", "x"), it("c"
 eq(C.poolFirstSessionIssues(pool([it("a", "l1", "x"), it("b", "l1", "y"), it("c", "l1", "z"), it("d", "l1", "w"), it("e", "l1", "v"), it("f", "l1", "v")])).length, 0, "п. 5: одиночні sk у 4 різних парах — типова будова ukr, не вичерпання (пара < 3 вправ)");
 eq(C.poolFirstSessionIssues(pool([it("a", "l1", "x", 2), it("b", "l1", "x", 2), it("c", "l1", "x", 2), it("d", "l1", "y"), it("e", "l1", "y"), it("f", "l1", "z"), it("g", "l1", "z")])).length, 0, "п. 5: вичерпана sk без вправи рівня 1 — помилка рівня 1 неможлива");
 
+// ---- англійська (engine-eng-validate, D-054; docs/design/english.md §2 п. 3, §6.3) ----
+// п. 10 англійською: питання — «?», «…» чи шаблонна інструкція (glossary/eng.md «Інструкції-шаблони»), wh-слово
+const qe = (o, lang = "en", type = "choice") => C.choiceNoQuestion({ type, opts: ["a", "b"], correct: 0, ...o }, lang).length;
+ok(qe({ title: "My family", body: "Olena has a brother." }) === 1, "en п. 10: ні «?», ні інструкції — попередження");
+ok(qe({ title: "My family", body: "Choose the correct answer." }) === 0, "en п. 10: «Choose» — чисто");
+for (const w of ["Read", "Select", "Complete", "Match", "Find", "Fill in", "Tick", "Put", "Write", "Sort", "Pick", "Guess"]) ok(qe({ title: "Words", body: `${w} the words.` }) === 0, `en п. 10: «${w}» — чисто`);
+ok(qe({ title: "Which word is plural" }) === 0 && qe({ title: "What does Olena like" }) === 0, "en п. 10: which / what — питання й без «?»");
+ok(qe({ title: "Plurals", body: "Is it a cat?" }) === 0 && qe({ title: "She lives in…" }) === 0, "en п. 10: «?» і «…» — чисто");
+ok(qe({ title: "Слова", body: "Обери правильне." }) === 1, "en п. 10: українські наказові в англійському предметі не рахуються");
+ok(qe({ title: "Закон на папері", body: "Шляхта опиралася реформам." }, "") === 1 && qe({ title: "Words", body: "Choose the answer." }, "") === 1, "п. 10: без мови змісту — українські правила, як раніше");
+ok(qe({ title: "My family", body: "Olena has a brother." }, "de") === 0, "п. 10: мова без своїх правил — мовчить");
+ok(qe({ title: "My family", hyp: true }) === 0 && qe({ title: "My family" }, "en", "sort") === 0, "en п. 10: hyp і не choice/multi — чисто");
+ok(/Choose/.test(C.choiceNoQuestion({ type: "multi", title: "Pets", body: "Cats are pets.", opts: ["a", "b", "c"], correct: [0] }, "en")[0] || ""), "en п. 10: повідомлення радить англійську інструкцію");
+
+// п. 11 англійською: позиційні посилання (без «option N» — окреме правило OPT_NUM_EN)
+const pe = (type, o, lang = "en") => C.positionalRefs({ type, ...o }, lang).length;
+ok(pe("choice", { fbText: "The first line is a greeting." }) === 1, "en п. 11: «the first line»");
+ok(pe("sort", { hint: "Look at the last two cards." }) === 1, "en п. 11: «the last two cards»");
+ok(pe("order", { fbBad: "The second statement comes later." }) === 1, "en п. 11: «second statement»");
+ok(pe("choice", { fbText: "The first word of a sentence starts with a capital letter." }) === 0, "en п. 11: «the first word» — про текст, не варіант");
+ok(pe("choice", { fbText: "Перший текст має думку." }) === 0, "en п. 11: український зворот в англійському предметі — не тут");
+ok(pe("choice", { fbText: "The first line is a greeting." }, "") === 0, "п. 11: англійський зворот в українському предметі — як раніше, чисто");
+ok(pe("choice", { fbText: "Перший текст має думку." }, "") === 1, "п. 11: без мови змісту — українське правило як раніше");
+ok(pe("info", { body: "The first line." }) === 0, "en п. 11: лише екрани з варіантами");
+
+// «option N» / «the second option» англійською (у validate замість OPT_NUM_RE)
+const on = t => C.OPT_NUM_EN.test(t);
+ok(on("The second option is wrong.") && on("Option B is a verb.") && on("Look at option 2.") && on("the last answer") && on("Answer C has a mistake."), "OPT_NUM_EN: «the second option», «option B», «option 2», «last answer», «Answer C»");
+ok(!on("There are two options here.") && !on("Choose the best answer.") && !on("Answer the question.") && !on("an option before lunch") && !on("Answer a question."), "OPT_NUM_EN: звичайні речення — чисто");
+
+// п. 1 англійською: кирилиця в змісті (D-054); дозволено лише в uk і credits (і службових полях)
+const cy = o => C.cyrillicInEnglish(o);
+ok(cy({ title: "Cats", body: "<p>One cat, two cats.</p>", opts: ["cat", "cats"], fbText: "We add -s." }).length === 0, "en п. 1: усе латиницею — чисто");
+ok(cy({ title: "Cats", body: "<p>Привіт, cats!</p>" }).length === 1 && /body/.test(cy({ title: "Cats", body: "<p>Привіт, cats!</p>" })[0]), "en п. 1: кирилиця в body — попередження з назвою поля");
+ok(/U\+0441/.test(cy({ title: "A black сat" })[0] || ""), "en п. 1: кирилична «с» у латинському слові — код символа");
+ok(cy({ type: "info", title: "Plurals", body: "<p>We add -s.</p>", uk: "<p>Додаємо -s.</p>", img: "img/eng/фото.jpg", cap: "A cat", credits: [["Кіт", "Автор", "CC0", "https://x.org"]], id: "кіт", sk: "слова", src: "Підручник с. 5", meta: { author: "Віктор" } }).length === 0, "en п. 1: uk, credits, img, id, sk, src, meta — не зміст англійською");
+ok(/opts\[1\]/.test(cy({ title: "Pets", opts: ["cat", "кіт"] })[0] || ""), "en п. 1: варіант відповіді");
+ok(/items/.test(cy({ type: "sort", title: "Sort", items: [["кіт", 0], ["dog", 1]] })[0] || ""), "en п. 1: items (вкладені масиви)");
+ok(/steps/.test(cy({ title: "Pets", steps: ["Кіт — cat."] })[0] || ""), "en п. 1: steps пулу");
+ok(cy({ title: "Pets", text: "This is {*a|ан} cat." }).length === 1, "en п. 1: текст мовної вправи (варіант пропуску)");
+ok(cy({ title: "Кіт", body: "Кіт", hint: "Кіт", fbText: "Кіт", fbOk: "Кіт" }).length === 1, "en п. 1: один екран — одне попередження з переліком полів");
+ok(cy({ title: "Sum", body: "$a + b$ and <b>bold</b> &nbsp; text" }).length === 0, "en п. 1: формули, теги й сутності — чисто");
+
+// заборонені фрази з файлу (style/banned-phrases.txt, style/<предмет>-banned.txt): «фраза» або «фраза → як краще»
+const bl = C.parseBanned("# кальки\n\nI am agree → I agree\nmake a photo\n  He has 12 years -> He is 12  \n");
+eq(bl.map(b => [b.phrase, b.fix]), [["I am agree", "I agree"], ["make a photo", ""], ["He has 12 years", "He is 12"]], "parseBanned: коментарі й порожні рядки пропущено, «→» і «->» — виправлення");
+ok(bl[0].re.test("Yes, i am agree with you.") && !bl[0].re.test("I am agreeing.") && bl[1].re.test("Let's make a photo!") && !bl[1].re.test("make a photograph"), "parseBanned: ціле слово, без регістру");
+eq(C.parseBanned("вірно\nна протязі").map(b => b.re.test("ймовірно")), [false, false], "parseBanned: українські фрази — як раніше (ціле слово: «вірно» не ловить «ймовірно»)");
+ok(C.parseBanned("вірно")[0].re.test("Це вірно.") && C.parseBanned("приймати участь")[0].re.test("Приймати участь"), "parseBanned: українські фрази знаходить");
+
 console.log(fails ? `\n${fails} з ${n} перевірок не пройшли` : `test-content-checks: усі ${n} перевірок пройшли`);
 process.exit(fails ? 1 : 0);
