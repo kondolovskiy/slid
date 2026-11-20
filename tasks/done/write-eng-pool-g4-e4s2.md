@@ -7,7 +7,7 @@ subject: eng
 grade: 4
 section: e4s2
 depends_on: [write-eng-g4-e4s2, engine-eng-diag-pool, engine-eng-tools]
-status: review
+status: done
 claimed_by: writer-pe4s2
 created: 2026-11-19
 source: design-eng
@@ -34,3 +34,9 @@ source: design-eng
 - Словник: https://dictionary.cambridge.org/dictionary/english/wardrobe , https://dictionary.cambridge.org/dictionary/english/cupboard , https://dictionary.cambridge.org/dictionary/english/closet
 - Герої — канон розділу, нових немає (Andrii flat Kyiv, балкон, без саду, три полиці; Oksana house, Murka, Dmytro, коробка на килимі, постери коней; Taras new flat Lviv, три спальні, велика кухня, три полиці; Mariia flat Kharkiv; Emma house з садом; Grandma — «house with a big garden» з e4s2l1, місто не назване).
 - Спірне для верифікатора: a24 — «Is a lamp there on your desk?» (тими самими плитками) не зараховується, вважаю неприродним; a33 — «bed under the window» хибне лише за текстом; a09 — «watch TV» прив'язано до living room за уроком.
+
+## Нотатки верифікатора (verifier-pe4s2, 2026-11-20)
+- Вердикт: **verified**, звіт reports/verify/pe4s2.md. 35 вправ автора — без знахідок: ключі правильні, другої правильної немає, у build прийнято рівно 1 порядок (перебір через app/lang.js), ключі `word` без `.!?`, збігів з опублікованими текстами немає (WebSearch).
+- Додав a36–a50 (15): пари урок × sk з уроків без вправ — l1 phon, l1 read, l2 write, l3 phon, l4 read (по 3, рівні 1–3). Stress — лише слова з `<u>` свого уроку (garden, balcony; furniture, wardrobe, carpet), один наголос у CD і OALD (URL — у звіті).
+- Спірне автора (a24, a33, a09) — прийнято, обґрунтування в звіті §2. a30: велика «There» + keepCase відсікає і обставину на початку, і питання «Isn’t there…» (PITFALL verifier-e4s8).
+- validate --pool pe4s2: 0/0; personalization-qa --pool pe4s2 --strict: код 0. Браузерні прогони — у CI (немає Python playwright).
