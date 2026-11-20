@@ -1067,7 +1067,9 @@ function startPractice(cid, focus){
   SEC={ grade:S.grade, signed:true, lessons:[] }; li=0; idx=0;
   L={ id:"practice", title: focus? findLesson(focus).l.title : "Тренування на сьогодні", screens: picked.map(it=>{ const f=findLesson(it.lesson), [sid,ref]=String(it.src).split(/\s+(.*)/s), src=it.pool.sources.find(x=>x.id===sid);
     const where=LEARN.srcRef(ref, it.srcPage);   // «с. N» не подвоюється, якщо сторінка вже є в src
-    return { ...it, _hs:it, grade:f.sec.grade, eyebrow:inUi(it.review?"Повторення · ":"Тренування · ")+esc(f.l.title), body:(it.body||"")+`<p class="srcnote"${uiA()}>Джерело: ${inL(esc(src? src.short||src.title : sid))}${where? ", "+esc(where) : ""}${it.adapted? " · адаптовано" : ""}</p>`,
+    /* джерело-програма (program: true; eng — вправи власні, engine-eng-diag-pool, рев'ю skills-eng P2-4): рядка «Джерело» немає — він читався б
+       як «вправа з програми», а українську назву програми диктор читав би мовою змісту (inL) */
+    return { ...it, _hs:it, grade:f.sec.grade, eyebrow:inUi(it.review?"Повторення · ":"Тренування · ")+esc(f.l.title), body:(it.body||"")+(src?.program===true? "" : `<p class="srcnote"${uiA()}>Джерело: ${inL(esc(src? src.short||src.title : sid))}${where? ", "+esc(where) : ""}${it.adapted? " · адаптовано" : ""}</p>`),
       fbOk:it.fbOk||inUi("Правильно."), fbBad:it.fbBad||inUi("Не зовсім."), fbText:`<span class="steps"><b${uiA()}>${LEARN.EXPLAIN_TYPES?.includes(it.type)? "Пояснення" : "Розв'язання"}</b>${it.steps.map((t,i)=>`<span>${i+1}. ${t}</span>`).join("")}</span>` }; }) };   /* мовна вправа, sort, order — «Пояснення»: правило й розбір (engine-pool-lang) */
   run={ practice:{ focus, res:[] }, linked:true, weak:new Set(), xp:0, first:0, graded:0, combo:0, best:0, mistakes:0, startLvl:levelOf(S.xp).n };
   EV.log("practice_start", ()=>({ c:C.id, focus:focus||null, prN, items:picked.map(it=>({ key:it.key, l:it.lesson, review:!!it.review, lvl:it.lvl ?? null })) })); HYPS.newRun();

@@ -305,7 +305,9 @@ function linkNoQuestion(S, s) {
 }
 // мовні вправи в тесті рівня (engine-diag-lang-types): одне завдання — одне вміння, без фідбеку, тож коротко — інакше одна помилка
 // з багатьох «з'їдає» тему, а дитина вгадує. Межі — CONTENT_SCHEMA §9
-const DIAG_LANG_LIMITS = { gaps: 3, stress: 3, pickWords: 20, pickCorrect: 3 };
+// build і match (engine-eng-diag-pool): у тесті — коротше, ніж в уроці (lang.js BUILD_MAX 9 / BUILD_EXTRA 2, MATCH_MAX 6): одна плитка-пастка
+// на одне вміння, речення до 7 плиток разом із пасткою, до 4 пар
+const DIAG_LANG_LIMITS = { gaps: 3, stress: 3, pickWords: 20, pickCorrect: 3, buildTiles: 7, buildExtra: 1, matchPairs: 4 };
 function diagLangIssues(s) {
   const E = [];
   if (s.type === "gaps") { const g = lang.parseGaps(s.text || ""); if (!g.error && g.gaps.length > DIAG_LANG_LIMITS.gaps) E.push(`у тесті рівня — не більше ${DIAG_LANG_LIMITS.gaps} пропусків (є ${g.gaps.length})`); }
@@ -314,6 +316,10 @@ function diagLangIssues(s) {
   if (s.type === "pick") { const p = lang.parsePick(s.text || ""); if (!p.error) {
     if (p.words.length > DIAG_LANG_LIMITS.pickWords) E.push(`у тесті рівня — не більше ${DIAG_LANG_LIMITS.pickWords} слів-кнопок (є ${p.words.length})`);
     if (p.correct.length > DIAG_LANG_LIMITS.pickCorrect) E.push(`у тесті рівня — не більше ${DIAG_LANG_LIMITS.pickCorrect} правильних слів (є ${p.correct.length})`); } }
+  if (s.type === "build" && Array.isArray(s.tiles)) { const x = Array.isArray(s.extra) ? s.extra.length : 0;
+    if (s.tiles.length + x > DIAG_LANG_LIMITS.buildTiles) E.push(`у тесті рівня — не більше ${DIAG_LANG_LIMITS.buildTiles} плиток разом з extra (є ${s.tiles.length + x})`);
+    if (x > DIAG_LANG_LIMITS.buildExtra) E.push(`у тесті рівня — не більше ${DIAG_LANG_LIMITS.buildExtra} плитки-пастки extra (є ${x})`); }
+  if (s.type === "match" && Array.isArray(s.left) && s.left.length > DIAG_LANG_LIMITS.matchPairs) E.push(`у тесті рівня — не більше ${DIAG_LANG_LIMITS.matchPairs} пар (є ${s.left.length})`);
   return E;
 }
 // згорнутий переклад правила uk — лише 4–5 кл. (D-054, доповнення п. 5; docs/design/english.md §2 п. 5)
@@ -537,6 +543,9 @@ for (const c of subjects) for (const p of c.pools || []) {
   if (onlySec || (onlyDiag && p.id !== onlyDiag)) continue;
   const D = `content/${c.id}/pool#${p.id}`; diagIds.add(p.id);
   for (const m of learn.validatePool(p, { sections: sectionLessons, skills: c.skills })) E(D, m);
+  // зміст іншою мовою (eng, math-pool-diag §2в): вправи власні, джерело — програма класу. Без program: true тренування показало б під вправою
+  // «Джерело: <назва програми>» — ніби вправу взято з програми (рев'ю skills-eng P2-4; engine-eng-diag-pool)
+  if (subjectLang(c)) for (const x of p.sources || []) if (x.program !== true) W(D, `джерело «${x.id}»: у предметі з мовою змісту вправи власні — для програми класу постав program: true (тренування не покаже «Джерело»); підручник — лише за рішенням у decisions.md`);
   if (!p.meta) W(D, "немає meta {author, created, factcheck, teacher}");
   authorWarn(D, p.meta);
   // генератор (gen): екран перевіряємо на першому наборі значень — так, як його побачить дитина (правила gen — learn.validatePool)

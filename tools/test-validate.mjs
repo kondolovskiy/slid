@@ -487,6 +487,43 @@ expectRun("drag: at і без drag — без попередження", one("fx
       expectRun("eng: match у тесті рівня з credits розділу — чисто", { "content/fxen/aa-subj.js": SUBJ(), "content/fxen/g5-fxen.js": secJS("fxen", enSec({ sec: CR })), "content/fxen/diag-g5.js": dg({}) }, ["--diag", "dgfxen"], { noWarn: "match" });
       expectRun("eng: match у тесті рівня без жодних credits — помилка", { ...files(), "content/fxen/diag-g5.js": dg({}) }, ["--diag", "dgfxen"], { err: "credits порожні" });
       fs.rmSync(path.join(tmp, "content/fxen/diag-g5.js"), { force: true }); }
+    // engine-eng-diag-pool (docs/design/english.md §7): тест рівня — межі build і match «одне завдання = одне вміння» (CONTENT_SCHEMA §9);
+    // перший клас предмета — pre з baseline: true, lessons: [] і see на перший урок класу; пул — джерело-програма program: true (рев'ю skills-eng P2-4)
+    { const META = { author: "test", created: "2026-11-20", factcheck: null, teacher: null };
+      const BT = { type: "build", tiles: ["Where", "does", "she", "live?"], answer: ["Where does she live?"] };
+      const MP = n => ({ type: "match", left: ["big", "hot", "old", "fast", "happy"].slice(0, n), right: ["small", "cold", "new", "slow", "sad"].slice(0, n) });
+      const dg = (items, grade = 5, topics = [{ id: "t", title: "Plurals", kind: "cur", lessons: ["fxenl1"] }]) => `SLID.diag("fxen", ${JSON.stringify({ id: "dgfxen", grade, title: "Level test",
+        why: "Regression test of the validator for English.", status: "draft", meta: META, topics, items: items.map(x => ({ topic: "t", sk: "gram", title: "Put the words in order", ...x })) }, null, 1)});\n`;
+      const dfiles = items => ({ ...files(), "content/fxen/diag-g5.js": dg(items) });
+      { const two = [{ id: "t", title: "Plurals", kind: "cur", lessons: ["fxenl1"] }, { id: "t2", title: "Opposites", kind: "cur", lessons: ["fxenl1"] }];
+        expectRun("eng: тест рівня — build 4 плитки + 1 пастка, match 4 пари — чисто", { ...files(), "content/fxen/diag-g5.js": dg([{ ...BT, extra: ["do"] }, { ...MP(4), topic: "t2", title: "Match the opposites" }], 5, two) }, ["--diag", "dgfxen"], {}); }
+      expectRun("eng: тест рівня — build 8 плиток разом з extra — помилка", dfiles([{ type: "build", tiles: ["I", "usually", "walk", "to", "school", "with", "Tom."], answer: ["I usually walk to school with Tom."], extra: ["do"] }]), ["--diag", "dgfxen"], { err: "не більше 7 плиток разом з extra (є 8)" });
+      expectRun("eng: тест рівня — build з 2 пастками — помилка", dfiles([{ ...BT, extra: ["do", "lives"] }]), ["--diag", "dgfxen"], { err: "не більше 1 плитки-пастки extra (є 2)" });
+      expectRun("eng: тест рівня — match 5 пар — помилка", dfiles([{ ...MP(5), title: "Match the opposites" }]), ["--diag", "dgfxen"], { err: "не більше 4 пар (є 5)" });
+      // в уроці ті самі 8 плиток, 2 пастки й 5 пар — без помилок (межі уроку: 9, 2, 6)
+      run("урок — build 8 плиток і 2 пастки, match 5 пар — чисто (межі тесту рівня лише в тесті)", { extra: [{ ...BT, extra: ["do", "lives"], sk: "gram", title: "Put the words in order", fbOk: "Yes!", fbText: "Where + does + she + live?" },
+        { ...MP(5), sk: "gram", title: "Match the opposites", fbOk: "Yes!", fbText: "Big and small are opposites." }] }, {});
+      // dge4: найнижчий клас предмета — baseline-передумова без уроків, see — перший урок класу (gap → план веде на нього, без «до дорослого»)
+      const PRE = { id: "p", title: "Greetings", kind: "pre", baseline: true, lessons: [], for: ["fxen"], see: ["fxenl1"] };
+      const CHP = (title, correct) => ({ topic: "p", type: "choice", title, body: "<p>Choose the answer.</p>", opts: ["Hello!", "Goodbye!"], correct });
+      const d4 = dg([CHP("You meet a friend. What do you say?", 0), CHP("You leave school. What do you say?", 1), { ...BT, topic: "t" }], 4, [PRE, { id: "t", title: "Questions", kind: "cur", lessons: ["fxenl1"] }]).replace('"dgfxen"', '"dgfxen4"');
+      fs.rmSync(path.join(tmp, "content/fxen"), { recursive: true, force: true });   // runTree теку fxen не чистить: розділ 5 кл. з тим самим id
+      const g4 = { "content/fxen/aa-subj.js": SUBJ(), "content/fxen/g4-fxen.js": secJS("fxen", enSec({ grade: 4 })), "content/fxen/diag-g4.js": d4 };
+      expectRun("eng: dge4 — pre baseline з lessons: [] і see на перший урок 4 кл. — чисто", g4, ["--diag", "dgfxen4"], {});
+      const g3 = { ...g4, "content/fxen/g3-fxen3.js": secJS("fxen", { ...enSec({ grade: 3 }), id: "fxen3", lessons: [{ ...enSec().lessons[0], id: "fxen3l1" }] }) };
+      expectRun("eng: dge4 — є урок 3 кл. — baseline заборонено (лише найнижчий клас)", g3, ["--diag", "dgfxen4"], { err: "baseline заборонено" });
+      fs.rmSync(path.join(tmp, "content/fxen/diag-g4.js"), { force: true }); fs.rmSync(path.join(tmp, "content/fxen/g3-fxen3.js"), { force: true }); fs.rmSync(path.join(tmp, "content/fxen/g4-fxen.js"), { force: true });
+      // пул eng: build і match; джерело — програма класу (program: true)
+      const it = (id, x) => ({ id, lesson: "fxenl1", lvl: 1, sk: "gram", src: "top34 с. 62", title: "Put the words in order", steps: ["Where + does + she + live?"], ...x });
+      const ITEMS = [it("a01", BT), it("a02", { ...BT, extra: ["do"] }), it("a03", { ...MP(5), title: "Match the opposites", steps: ["Big and small are opposites."] }), it("a04", { ...MP(3), title: "Match the opposites", steps: ["Hot and cold are opposites."] })];
+      const pool = (src = {}, items = ITEMS) => `SLID.pool("fxen", ${JSON.stringify({ id: "pfxen", section: "fxen", status: "draft", meta: META,
+        sources: [{ id: "top34", title: "Typical curriculum, grades 3–4", url: "https://example.org/top34.pdf", ...src }], items }, null, 1)});\n`;
+      const pfiles = (src, items) => ({ ...files(), "content/fxen/pool-g5-fxen.js": pool(src, items) });
+      expectRun("eng: пул з build і match, джерело program: true — чисто", pfiles({ program: true }), ["--pool", "pfxen"], { noWarn: "program" });
+      expectRun("eng: пул без program — попередження (тренування показало б «Джерело»)", pfiles({}), ["--pool", "pfxen"], { warn: "джерело «top34»: у предметі з мовою змісту вправи власні — для програми класу постав program: true" });
+      expectRun("eng: пул — program не boolean — помилка", pfiles({ program: "yes" }), ["--pool", "pfxen"], { err: "program має бути boolean" });
+      expectRun("eng: пул — adapted у вправи з джерела-програми — помилка", pfiles({ program: true }, [...ITEMS.slice(1), it("a01", { ...BT, adapted: true })]), ["--pool", "pfxen"], { err: "у джерела-програми «top34» (program: true) вправи власні" });
+      fs.rmSync(path.join(tmp, "content/fxen/pool-g5-fxen.js"), { force: true }); fs.rmSync(path.join(tmp, "content/fxen/diag-g5.js"), { force: true }); }
     // soon з id справжнього предмета — помилка (рушій показав би предмет двічі: справжній і «скоро»)
     { const soon = id => `SLID.soon(${JSON.stringify({ id, short: "Ф", subject: "Фікстура", grade: "5 клас", icon: "leaf", why: "Скоро.", colors: { light: { accent: "#000" }, dark: { accent: "#fff" } } })});\n`;
       const r1 = runTree({ ...files(), "content/catalog.js": soon("fxen") }, []);

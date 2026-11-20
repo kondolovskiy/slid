@@ -5,7 +5,7 @@ id: engine-eng-diag-pool
 type: engine
 subject: eng
 depends_on: [engine-eng-build, engine-eng-match]
-status: todo
+status: review
 claimed_by: engine-eng-diag-pool
 created: 2026-11-19
 source: design-eng
@@ -55,7 +55,7 @@ source: design-eng
 - tools/test-ui.mjs №30 `practiceEngScenario`: тренування eng (360 px, дотик) — build хибно → hint і друга спроба → «Пояснення»; match з першої; джерело-програма — без «Джерело», звичайне джерело — з ним; seen, SRS, журнал (raw build — речення, match — масив).
 - Мутанти (копія дерева в scratchpad): buildTiles 9, buildExtra 2, matchPairs 6, без попередження program, без перевірки boolean, без перевірки adapted — усі 6 ловить test-validate; app.js без умови `program` — ловить test-ui №30.
 
-**Прогони:** `node tools/test-validate.mjs` — 2001 ok; `node tools/test-lang.mjs` — 463 ok; `node tools/test-learn.mjs` — 2956 ok; `node tools/test-make-tasks.mjs` — 101 ok; `NODE_PATH=/opt/node22/lib/node_modules node tools/test-ui.mjs` — 442 ok, 0 ✗; `npm run check` — див. нижче.
+**Прогони:** `node tools/test-validate.mjs` — 2001 ok; `node tools/test-lang.mjs` — 463 ok; `node tools/test-learn.mjs` — 2956 ok; `node tools/test-make-tasks.mjs` — 101 ok; `NODE_PATH=/opt/node22/lib/node_modules node tools/test-ui.mjs` — 442 ok, 0 ✗; `npm run check` — rc 0 (validate: 0 помилок, 235 попереджень на живому змісті); мутант app.js (без умови `program`) — test-ui 441 ok, 1 ✗ (№30).
 Не запускалось: `python3 tools/playtest.py`, `python3 tools/test-answer-ui.py --suite regression` (немає Python playwright — лише CI, job browser). Зміна app.js для українських предметів — лише вираз умови в рядку «Джерело» (без `program` — той самий рядок), test-ui №13 (тренування ukr) і №26 («Джерело:» uk) зелені.
 
 **Обмеження / що лишилось:**

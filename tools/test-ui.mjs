@@ -56,6 +56,9 @@
 //      неактивна; дотик — у рядок, ще раз — назад; клавіатура (Enter, фокус після прибирання); хибний порядок — позначки з «неправильно», повідомлення,
 //      та сама відповідь не витрачає спробу; кілька правильних порядків; показ відповіді; raw — зібране речення; тест рівня — без позначок;
 //      без targetLang — точне порівняння; без горизонтальної прокрутки, плитки ≥ 44 px.
+//  30) «Тренування» англійської (engine-eng-diag-pool): пул з build і match (targetLang "en", 360 px, дотик) — build хибно → hint → друга спроба,
+//      «Пояснення»; match з першої; джерело-програма (program: true) — без рядка «Джерело» (рев'ю skills-eng P2-4), звичайне джерело — з ним;
+//      seen, SRS, журнал (raw build — речення, match — масив).
 //  29) Пари match (engine-eng-match; docs/design/english.md §5.7), 360 px: права колонка перемішана, картинки з alt (SVG-фікстури tools/fixtures/),
 //      «Перевірити» — лише коли всі пари складено; дотик лівий → правий і правий → лівий, роз'єднання, перехід правого до іншої пари; клавіатура
 //      (Enter, пробіл, фокус), aria-pressed і #mlive; перша помилка — правильні пари закріплено (зелені, неактивні), хибні — «неправильно»,
@@ -1073,6 +1076,9 @@ try {
 
   // 29) Пари match: слово ↔ картинка / значення (engine-eng-match)
   await matchScenario(browser);
+
+  // 30) «Тренування» англійської: build і match у пулі, джерело-програма без рядка «Джерело» (engine-eng-diag-pool)
+  await practiceEngScenario(browser);
 } finally { await browser.close(); server.close(); swServer.close(); }
 
 console.log(`test-ui: ${pass} ok, ${fail} ✗`);
@@ -1820,5 +1826,63 @@ async function matchScenario(browser) {
   for (let i = 0; i < 3; i++) await pair(i, i); await page.click("#action");
   ok(/\bok\b/.test((await dock()).kind), "match без targetLang: правильні пари — зараховано");
   ok(!errors.length, "match: помилки сторінки: " + errors.join(" | "));
+  await ctx.close();
+}
+
+/* 30) «Тренування» англійської (engine-eng-diag-pool; docs/design/english.md §7): фікстура — предмет ukr з targetLang "en", пул з build, match
+   і choice. Джерело top34 — програма класу (program: true; вправи власні): рядка «Джерело» під вправою немає (рев'ю skills-eng P2-4: читався б
+   як «вправа з програми», а назву програми диктор читав би англійською); choice з джерела без program — рядок є, як раніше. build: хибний
+   порядок → «Спробувати ще раз» і hint, друга спроба правильно → «Пояснення»; match — з першої. Підсумок: seen, SRS, журнал answer. */
+async function practiceEngScenario(browser) {
+  const ctx = await browser.newContext({ viewport: { width: 360, height: 780 }, hasTouch: true, serviceWorkers: "block" });
+  const page = await ctx.newPage(), errors = []; page.on("pageerror", e => errors.push(String(e))); page.setDefaultTimeout(8000);
+  await page.route("**/fonts.googleapis.com/**", r => r.abort());
+  const it = (id, lesson, x) => ({ id, lesson, lvl: 2, sk: "orth", src: "top34 с. 62", ...x });
+  const POOL = { id: "pfpe", section: "fpe", status: "draft",
+    sources: [{ id: "top34", title: "Типова освітня програма, 3–4 класи", url: "https://example.org/top34.pdf", program: true }, { id: "dict", title: "Fixture dictionary", url: "https://example.org/dict" }],
+    items: [it("a01", "fpe1", { type: "build", title: "Put the words in order", tiles: ["Where", "does", "she", "live?"], answer: ["Where does she live?"], hint: "Start with Where.", steps: ["Where + does + she + live?"] }),
+      it("a02", "fpe1", { type: "match", title: "Match the opposites", left: ["big", "hot", "old"], right: ["small", "cold", "new"], hint: "Big is not small.", steps: ["Big — small, hot — cold, old — new."] }),
+      it("a03", "fpe2", { type: "choice", lvl: 1, src: "dict p. 3", title: "Which word is plural?", body: "<p>Choose one.</p>", opts: ["cats", "cat"], correct: 0, steps: ["Cats ends in -s."] })] };
+  const install = pool => { const c = SLID_SUBJECTS.find(c => c.id === "ukr");
+    const lesson = id => ({ id, title: "Lesson " + id, icon: "book", screens: [{ type: "intro", title: id, body: "QA" }] });
+    c.sections = [{ id: "fpe", grade: 5, weeks: [1, 2], title: "QA practice en", why: "QA", lessons: ["fpe1", "fpe2"].map(lesson) }];
+    c.pools = [pool]; c.diags = []; delete c.graph; c.targetLang = "en"; };
+  await page.goto(URL0);
+  await page.evaluate(() => { localStorage.clear(); localStorage.setItem("slid.v1", JSON.stringify({ grade: 5, subject: "ukr", unlockAll: false, lessons: { fpe1: { done: true, stars: 3 }, fpe2: { done: true, stars: 3 } } })); });
+  await page.reload(); await page.evaluate(install, POOL);
+  await page.evaluate(() => document.querySelector('.tab[data-tab="path"]').click());
+  await page.click('button[data-subject="ukr"]'); await page.click('[data-practice-view="ukr"]'); await page.click('[data-practice="fpe1"]');
+  const title = () => page.locator("#stage h2").first().innerText();
+  const srcnote = () => page.evaluate(() => [...document.querySelectorAll("#stage .srcnote")].map(e => e.textContent));
+  const tile = k => `#stage .bank .bt[data-t="${k}"]`;
+  const seen = {};
+  for (let n = 0; n < 3; n++) {
+    const t = await title(); seen[t] = await srcnote();
+    if (t === "Put the words in order") {
+      for (const k of [1, 0, 2, 3]) await page.tap(tile(k)); await page.click("#action");
+      ok(/Спробувати ще раз/.test(await page.locator("#action").innerText()) && /Start with Where/.test(await page.locator("#hintHost").innerText()), "practice en: build хибно — друга спроба й hint");
+      for (let i = 0; i < 4; i++) await page.tap("#bline .bl >> nth=0");
+      for (const k of [0, 1, 2, 3]) await page.tap(tile(k)); await page.click("#action");
+      const d = await page.locator("#dock").innerText();
+      ok(/Пояснення/.test(d) && !/Розв'язання/.test(d) && /Where \+ does/.test(d), `practice en: build з другої спроби — «Пояснення» зі steps («${d.slice(0, 120)}»)`);
+    } else if (t === "Match the opposites") {
+      for (let i = 0; i < 3; i++) { await page.tap(`#mleft .ml[data-l="${i}"]`); await page.tap(`#mright .mr[data-r="${i}"]`); }
+      await page.click("#action");
+      ok(/Правильно/.test(await page.locator("#dock").innerText()), "practice en: match з першої — «Правильно»");
+    } else if (t === "Which word is plural?") {
+      await page.click('#stage .opt[data-k="0"]'); await page.click("#action");
+    } else { ok(false, `practice en: несподівана вправа «${t}»`); break; }
+    await page.click("#action");
+  }
+  ok(same(seen["Put the words in order"], []) && same(seen["Match the opposites"], []), `practice en: джерело-програма (program: true) — рядка «Джерело» немає, а ${JSON.stringify(seen)}`);
+  ok((seen["Which word is plural?"] || []).length === 1 && /^Джерело: Fixture dictionary, (p\. 3|с\. 3|p\. 3)/.test(seen["Which word is plural?"][0]), `practice en: звичайне джерело — рядок «Джерело» як раніше, а ${JSON.stringify(seen["Which word is plural?"])}`);
+  const S = await page.evaluate(() => JSON.parse(localStorage.getItem("slid.v1")));
+  ok(same(S.seen, { "pfpe:a01": 0, "pfpe:a02": 1, "pfpe:a03": 1 }), `practice en: seen — build з другої спроби 0, match і choice 1, а ${JSON.stringify(S.seen)}`);
+  ok(S.srs?.fpe1?.box === 0 && S.srs?.fpe2?.box === 1, `practice en: SRS — fpe1 (build з другої спроби) коробка 0, fpe2 — 1, а ${JSON.stringify(S.srs)}`);
+  const ev = await page.evaluate(async () => { if (!window.SLID_EVIDENCE) return null; await SLID_EVIDENCE.flush?.();
+    return (await SLID_EVIDENCE.export()).events.filter(e => e.type === "answer" && e.d.mode === "practice" && e.d.type !== "choice").map(e => [e.d.key, e.d.type, e.d.try, e.d.verdict, e.d.raw]); });
+  ok(same(ev, [["pfpe:a01", "build", 1, "bad", "does Where she live?"], ["pfpe:a01", "build", 2, "ok", "Where does she live?"], ["pfpe:a02", "match", 1, "ok", [0, 1, 2]]]),
+    `practice en: журнал — raw build (речення) і match (масив), а ${JSON.stringify(ev)}`);
+  ok(!errors.length, "practice en: помилки сторінки: " + errors.join(" | "));
   await ctx.close();
 }

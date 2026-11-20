@@ -2056,6 +2056,9 @@ window.SLID_LEARN = (() => {
     if (!["draft", "verified", "approved"].includes(p.status)) E.push("status має бути draft | verified | approved");
     if (!Array.isArray(p.sources) || !p.sources.length) E.push("немає sources — звідки взято задачі");
     for (const x of p.sources || []) if (!x.id || !x.title || !/^https?:\/\//.test(x.url || "")) E.push(`джерело «${x.id}»: потрібні id, title, url`);
+    // program: true — джерело-програма, вправи власні (eng, engine-eng-diag-pool): тренування не показує «Джерело», adapted не має сенсу
+    for (const x of p.sources || []) if (x.program !== undefined && typeof x.program !== "boolean") E.push(`джерело «${x.id}»: program має бути boolean`);
+    const prog = new Set((p.sources || []).filter(x => x.program === true).map(x => x.id));
     if (!Array.isArray(p.items) || !p.items.length) return E.concat("немає items");
     p.items.forEach((it0, i) => {
       const w = `задача ${i + 1} «${it0.id}»`;
@@ -2073,6 +2076,7 @@ window.SLID_LEARN = (() => {
       if (!Array.isArray(it.steps) || !it.steps.length) E.push(`${w}: немає steps — розв'язання кроками`);
       if (it.srcPage !== undefined && (!Number.isSafeInteger(it.srcPage) || it.srcPage < 1)) E.push(`${w}: srcPage має бути додатним цілим числом`);
       if (it.adapted !== undefined && typeof it.adapted !== "boolean") E.push(`${w}: adapted має бути boolean`);
+      if (it.adapted === true && prog.has(sid)) E.push(`${w}: adapted — для вправи, взятої з джерела; у джерела-програми «${sid}» (program: true) вправи власні`);
       if (it.unitForms !== undefined && it.answerKind === "divrem") E.push(`${w}: unitForms не для divrem — лише unit`);
       if (it.unitForms !== undefined && (!Array.isArray(it.unitForms) || it.unitForms.length !== 3 || it.unitForms.some(x => typeof x !== "string" || !x.trim()))) E.push(`${w}: unitForms має містити три непорожні рядки (1 / 2–4 / 5+)`);
       const kind = it.answerKind || "number";
