@@ -352,3 +352,11 @@
 - 2026-11-20 · verifier-e6s1 · NOTE (герої eng): канон зовнішності writer-e6s1 перевірено проти 4–6 кл. — суперечностей немає (Taras 135 см / Emma 145 см — e4s7; Tom — молодший брат Emma). Канон переносити в довгу пам'ять як є; окуляри — лише Andrii і Ms Lysenko, борода — лише Grandad Mykola.
 - 2026-11-20 · verifier-e6s1 · VERIFY: e6s1 → verified (7 уроків), змісту не правлено, reports/verify/e6s1.md.
 - 2026-11-20 · orchestrator · FIX (requires): e6s5 → + e5s5l4 (comparatives «more expensive»), за рекомендацією verifier-e6s5.
+- 2026-11-20 · verifier-e6s4 · FACT (eng): Yaroslava Mahuchikh — з Дніпра; 4 серпня 2024 — олімпійська чемпіонка зі стрибків у висоту в Парижі — uk.wikipedia Магучіх_Ярослава_Олексіївна (raw, curl); en.wikipedia Athletics_at_the_2024_Summer_Olympics_–_Women's_high_jump (raw); WebSearch: mms.gov.ua, kmu.gov.ua (verified, verifier-e6s4).
+- 2026-11-20 · verifier-e6s4 · FACT (eng): sports day — OALD «(British English) (North American English field day) a special day at school when there are no classes and children compete in sports events»; CD «noun [C] UK».
+- 2026-11-20 · verifier-e6s4 · PITFALL (eng): gaps чи word на won / win, lost / lose з підметом «our team» без маркера часу — BrE «Our team win» (collective noun + дієслово в множині) граматичне → давати Yesterday / Last week у реченні.
+- 2026-11-20 · verifier-e6s4 · NOTE (eng, рівень): «what was going on» (go on = happen, B1) у поясненнях 6 кл. → «what was happening» (A2).
+- 2026-11-20 · verifier-e6s4 · NOTE (герої eng): у e4s1 Tom «is eight», молодший за Emma на 1–2 роки; e6s4 ставить його на sports day у школі Emma — узгодити в style-sync 6 кл. (спільна школа чи день).
+- 2026-11-20 · verifier-e6s4 · NOTE (eng): Past Continuous vs Past Simple у gaps — шкала часу з позначками (long) / (short) у body достатня (l5 #4, boss T5) — зразок для пулу e6s4.
+- 2026-11-20 · verifier-e6s4 · NOTE (середовище): kmu.gov.ua, mms.gov.ua, lb.ua, ukrinform.ua, noc-ukr.org — ENOTFOUND; worldathletics.org, olympics.com, britannica.com, wikidata.org — 403 проксі. uk.wikipedia raw працює за назвою статті (API search — 429).
+- 2026-11-20 · verifier-e6s4 · VERIFY: e6s4 → verified (7 уроків), 2 правки (l6 #4 Yesterday; go on → happening), reports/verify/e6s4.md.
