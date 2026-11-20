@@ -405,3 +405,12 @@
 - 2026-11-20 · writer-dge4 · NOTE (eng, герої): у dge4 нове — Bohdan по суботах грає в теніс з татом і має кота; Andrii має кота (e4s6l2), у dge4 він удома через застуду (як e4s5l4). Pick з «my brothers room» — від Oksana, бо Mariia єдина дитина.
 - 2026-11-20 · writer-dge4 · PITFALL (eng, build): у тесті рівня пасткою extra краще брати слово, що перевіряє значення (always при «doesn’t play it»), а не лише форму. Неповне речення з частини плиток рушій не зараховує — це не друга відповідь.
 - 2026-11-20 · writer-dge4 · NOTE (eng, diag): `see` baseline-тем dge4 веде на урок повторення теми (e4s2l2, e4s2l4, e4s5l2, e4s1l5, e4s6l1), а не лише на e4s1 — верифікатору звірити з english.md §7 і PERSONALIZATION.md «Baseline».
+- 2026-11-20 · writer-pe4s6 · NOTE (eng, пул): pe4s6 — AmE-лексику поклав у ключ `word` (a04 fall; a49 trash, garbage) поруч із BrE за TQ-122/рішенням людини (AmE у відповіді дитини — не помилка). Узгодити підхід для всіх пулів eng.
+- 2026-11-20 · writer-pe4s6 · ENGINE: «mountains» на ключ «mountain», «forests» на «forest» (pe4s6 a28, a31) → «Almost: check the spelling.» — однина/множина, не правопис; до engine-eng-rule-tables п. 2 (разом з wind, worse/worst, these/those).
+- 2026-11-20 · writer-pe4s6 · PITFALL (eng, пул): дистрактори погоди мають суперечити умові — з «a lot of rain» не давати cloudy, windy чи hot; відповідник — rainy, дистрактор — sunny.
+- 2026-11-20 · writer-pe4s6 · PITFALL (eng, build): плитка з обставиною часу (`today`) у реченні порівняння дає другий порядок («X is hotter today than Y») — дані дня давати в `body`, не плиткою.
+- 2026-11-20 · writer-pe4s8 · PITFALL (eng): When / What time — не давати «When…?» з відповіддю-годиною («When is the concert? – At 5 pm» правильне); «When» лише для дня.
+- 2026-11-20 · writer-pe4s8 · PITFALL (eng, build): пастка «do» в питанні з would like складає «Do you like…?» — граматичне; пасткою брати «are».
+- 2026-11-20 · writer-pe4s8 · NOTE (stress eng): weekend — CD UK /ˌwiːkˈend/, US /ˈwiːk.end/ — у пулах і тестах рівня не брати (e4s3 має week|+end — звірити в style-sync).
+- 2026-11-20 · writer-pe4s8 · NOTE (герої eng): Maksym — в e4s7 кузен в Ottawa, в e4s8 — у Києві (концерт Andrii); узгодити в style-sync 4 кл. (можливо, приїжджав у гості).
+- 2026-11-20 · writer-pe4s8 · FACT (eng): school fete — BrE, синонім school fair (CD fete «UK (also fête)») — у `word` на fair класти обидва.
