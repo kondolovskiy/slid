@@ -10,7 +10,7 @@
    Увесь зміст — англійською, британська норма (D-054). Тексти, діалоги, рецепти й герої — власні (docs/design/english.md §8).
    Форми, рівні слів, наголос і факти про страви — Cambridge Dictionary, OALD, en/uk.wikipedia, Wiktionary
    (URL — tasks/…/write-eng-g6-e6s3.md, «Нотатки агента»). borscht — як у e5s3 (CD, OALD, назва елемента ЮНЕСКО 2022).
-   Статус: draft. 7 уроків (6 + фінал).
+   Статус: verified (verifier-e6s3, reports/verify/e6s3.md). 7 уроків (6 + фінал).
    Перевірка: node tools/validate.mjs --section e6s3 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -20,7 +20,7 @@ SLID.section("eng", {
   title: "Food traditions and dishes",
   why: "To name dishes and say what is in them. And to talk about food traditions and meals you had.",
   requires: ["e4s7l5", "e5s9l5", "e5s8l5", "e5s3l6"],
-  meta: { author: "writer-e6s3", created: "2026-11-20", factcheck: null, teacher: null },
+  meta: { author: "writer-e6s3", created: "2026-11-20", factcheck: "verifier-e6s3 (reports/verify/e6s3.md)", teacher: null },
   badges: [
     { id: "e6s3boss", name: "Young chef", icon: "trophy", desc: "Finish the final lesson “Food traditions and dishes”" }
   ],
@@ -31,7 +31,7 @@ SLID.section("eng", {
       title: "What’s on the menu? Names of dishes",
       short: "Menu",
       icon: "pot",
-      status: "draft",
+      status: "verified",
       why: "Read a menu in a café. Say what you’d like for each part of the meal.",
       screens: [
         {
@@ -123,7 +123,7 @@ SLID.section("eng", {
           sk: "phon",
           title: "Find the stressed syllable.",
           words: ["+men|u", "+sal|ad", "+mush|room", "des|+sert"],
-          hint: "Look at the underlined parts on the menu screen.",
+          hint: "Look at the underlined parts on the screen “Starter, main course, dessert”.",
           fbOk: "Well done!",
           fbBad: "Look at the underlined parts again.",
           fbText: "<u>men</u>u, <u>sal</u>ad, <u>mush</u>room: the first part is strong. des<u>sert</u>: the second part is strong."
@@ -170,7 +170,7 @@ SLID.section("eng", {
       title: "What’s in it? It’s made with…",
       short: "Made with",
       icon: "scale",
-      status: "draft",
+      status: "verified",
       why: "Tell a friend what is in a dish. Use is made with and are made with.",
       screens: [
         {
@@ -281,7 +281,7 @@ SLID.section("eng", {
           extra: ["serves"],
           keepCase: true,
           hint: "Start with Borscht. Then is + served.",
-          fbOk: "Well done!",
+          fbOk: "Right.",
           fbBad: "Look at the rule: is + served.",
           fbText: "<b>Borscht is served with sour cream.</b> One dish: <b>is</b> + served."
         },
@@ -314,7 +314,7 @@ SLID.section("eng", {
       title: "First, then, after that: a simple recipe",
       short: "Recipe",
       icon: "check",
-      status: "draft",
+      status: "verified",
       why: "Read and write a simple recipe. Show the steps with first, then, after that and finally.",
       screens: [
         {
@@ -411,7 +411,7 @@ SLID.section("eng", {
           after: ", fry the syrnyky.",
           answer: ["finally", "lastly"],
           hint: "Which word shows the last step?",
-          fbOk: "Well done!",
+          fbOk: "Right.",
           fbBad: "Look at the list: the last step.",
           fbText: "<b>Finally</b> shows the last step: <b>Finally</b>, fry the syrnyky."
         },
@@ -444,7 +444,7 @@ SLID.section("eng", {
       title: "We ate pancakes: irregular verbs",
       short: "Irregular verbs",
       icon: "star",
-      status: "draft",
+      status: "verified",
       why: "Tell a friend about a meal in the past. Learn the past of buy, make, eat and drink.",
       screens: [
         {
@@ -558,7 +558,7 @@ SLID.section("eng", {
           answer: ["We had pancakes for breakfast.", "For breakfast we had pancakes."],
           extra: ["have"],
           hint: "Last Saturday: have or had?",
-          fbOk: "Well done!",
+          fbOk: "Right.",
           fbBad: "Last Saturday is in the past: have → had.",
           fbText: "<b>We had pancakes for breakfast.</b> Last Saturday: the past of <i>have</i> is <b>had</b>."
         },
@@ -591,7 +591,7 @@ SLID.section("eng", {
       title: "Did you try it? I didn’t like it: questions and negatives",
       short: "Did, didn’t",
       icon: "voice",
-      status: "draft",
+      status: "verified",
       why: "Ask a friend about food they tried. Say what you didn’t eat or like.",
       screens: [
         {
@@ -704,7 +704,7 @@ SLID.section("eng", {
           ],
           correct: [0, 2, 4],
           hint: "After did and didn’t: like, eat, drink.",
-          fbOk: "Well done!",
+          fbOk: "Exactly.",
           fbBad: "Check the verb after did and didn’t.",
           fbText: "Correct: Did you <b>like</b>…? I didn’t <b>eat</b>… What did you <b>drink</b>? Not: <s>Did you liked</s>, <s>I didn’t ate</s>."
         },
@@ -737,14 +737,14 @@ SLID.section("eng", {
       title: "Food traditions in Ukraine and the UK",
       short: "Traditions",
       icon: "globe",
-      status: "draft",
+      status: "verified",
       why: "Read about food traditions in Ukraine and the UK. Tell a friend about them.",
       screens: [
         {
           type: "intro",
           eyebrow: "Lesson 6",
           title: "Bread and salt or afternoon tea?",
-          body: `<p class="lead">Mariia in Kharkiv and Emma in England make a page for their English clubs: “Food traditions in Ukraine and the UK”.</p><p>What food traditions do you know?</p>`,
+          body: `<p class="lead">Mariia in Kharkiv and Emma in England make a page for their school clubs: “Food traditions in Ukraine and the UK”.</p><p>What food traditions do you know?</p>`,
           cta: "Let’s read"
         },
         {
@@ -767,7 +767,7 @@ SLID.section("eng", {
         {
           type: "info",
           title: "Words for traditions",
-          body: `<ul><li>a <b>tra<u>di</u>tion</b> → something people do for a long time</li><li>a <b>guest</b> → a person who visits your home</li><li><b><u>wel</u>come</b> a guest → say hello and be nice to a guest</li><li>a <b>rushnyk</b> → a special long Ukrainian towel</li><li><b><u>after</u>noon tea</b> → a small meal in the afternoon</li></ul>`,
+          body: `<ul><li>a <b>tra<u>di</u>tion</b> → something people do for a long time</li><li>a <b>guest</b> → a person who visits your home</li><li><b><u>wel</u>come</b> a guest → say hello and be nice to a guest</li><li>a <b>rushnyk</b> → a special long Ukrainian towel</li><li><b>afternoon tea</b> → a small meal in the afternoon</li></ul>`,
           cta: "Next"
         },
         {
@@ -859,7 +859,7 @@ SLID.section("eng", {
           after: ".",
           answer: "salt",
           hint: "Look at the page: Ukraine.",
-          fbOk: "Well done!",
+          fbOk: "Right.",
           fbBad: "Bread and … : look at the page again.",
           fbText: "Important guests are welcomed with bread and <b>salt</b>."
         },
@@ -892,7 +892,7 @@ SLID.section("eng", {
       title: "Lunch for Grandma and Grandad",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e6s3boss",
       why: "Check everything from this section. Your points are doubled.",

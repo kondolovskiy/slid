@@ -7,7 +7,7 @@ subject: eng
 grade: 6
 section: e6s3
 depends_on: [curate-eng-plan-g6, engine-eng-lang-core, engine-eng-validate, engine-eng-stats, skills-eng, curate-eng-style, curate-eng-glossary]
-status: review
+status: done
 claimed_by: writer-e6s3
 created: 2026-11-19
 source: design-eng
@@ -95,3 +95,5 @@ yoghurt / yogurt — обидва британські (OALD yogurt «British En
 5. Назва boss «Lunch for Grandma and Grandad» — не з плану (у плані boss немає).
 
 **TERM:** borscht — як у e5s3 (CD, OALD, назва елемента ЮНЕСКО); у ключах `word` цього розділу слова borscht немає.
+
+**verifier-e6s3, 2026-11-20.** Вердикт: **verified** (усі 7 уроків). Звіт — reports/verify/e6s3.md. Факти (deruny, syrnyky, holubtsi, borscht + сметана, ЮНЕСКО 2022, хліб-сіль, Sunday roast, afternoon tea, scones) мають по ≥ 2 відкриті джерела. Форми й наголос звірено з CD і OALD. Кожне завдання я розв'язав сам. `build` перебрав через `SLID_LANG.check`: другої правильної відповіді немає. D-019 виконано. Збігів з опублікованими текстами немає (12 запитів). Правки (8 дрібних): `<u>after</u>noon tea` → без підкреслення (наголос на *noon* / *tea*, CD, OALD); `hint` stress l1; «English clubs» → «school clubs» (l6 intro); 5 однакових `fbOk` на сусідніх екранах; статуси й `meta.factcheck`. Спірне 1–3 і 5 приймаю, 4 — для style-sync 6 кл. TQ немає. Уточнення до inbox NOTE автора: Nina й Vasyl — батьки мами Andrii (e5s1 «Mum’s mum and dad»).
