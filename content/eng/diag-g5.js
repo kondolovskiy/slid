@@ -1,5 +1,5 @@
 /* Слід · Англійська мова, 5 клас — тест рівня «What do you know?» (dge5)
-   Статус: draft — writer-dge5 (write-eng-diag-g5), 2026-11-20; до незалежної верифікації (content-verify).
+   Статус: verified — verifier-dge5, 2026-11-20 (reports/verify/dge5.md); автор — writer-dge5 (write-eng-diag-g5).
    10 тем-передумов з 4 класу (по 2 завдання: базове → складніше) + 10 тем 5 класу (по 1 завданню на розділ e5s1–e5s10) = 30 завдань.
    Передумови — уроки e4s*, на які посилаються requires розділів 5 кл. (reports/verify/plan-eng-g5.md §6); уроки 4 кл. є, тому без baseline.
    Теми cur — один урок розділу (без boss); завдання охоплює ядро його learned; лексика й граматика — лише з цих уроків.
@@ -14,8 +14,8 @@ SLID.diag("eng", {
   grade: 5,
   title: "What do you know?",
   why: "Let’s see what you know from Year 4 and Year 5. Then we can find the best place to start.",
-  status: "draft",
-  meta: { author: "writer-dge5", created: "2026-11-20", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "writer-dge5", created: "2026-11-20", factcheck: "verifier-dge5 (reports/verify/dge5.md)", teacher: null },
   topics: [
     // передумови з 4 класу (уроки, на які спираються розділи 5 кл.)
     { id: "have", title: "Have got, has got", kind: "pre", lessons: ["e4s1l2"], for: ["e5s1"] },
@@ -27,7 +27,7 @@ SLID.diag("eng", {
     { id: "comp", title: "Bigger, hotter, sunnier", kind: "pre", lessons: ["e4s6l5"], for: ["e5s5", "e5s10"] },
     { id: "when", title: "On Saturday, at 3 pm, in May", kind: "pre", lessons: ["e4s8l2"], for: ["e5s8", "e5s2"] },
     { id: "past", title: "Went, swam, was, were", kind: "pre", lessons: ["e4s7l5"], for: ["e5s8", "e5s9"] },
-    { id: "will", title: "I think I’ll …", kind: "pre", lessons: ["e4s7l6"], for: ["e5s9", "e5s5"] },
+    { id: "will", title: "I think I’ll …", kind: "pre", lessons: ["e4s7l6"], for: ["e5s9"] },
     // теми 5 класу: по одному уроку на розділ (без boss)
     { id: "cur-e5s1", title: "My, his, their, its", kind: "cur", lessons: ["e5s1l3"] },
     { id: "cur-e5s2", title: "Does he…? He doesn’t…", kind: "cur", lessons: ["e5s2l3"] },

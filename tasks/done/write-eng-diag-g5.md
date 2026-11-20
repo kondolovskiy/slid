@@ -7,7 +7,7 @@ subject: eng
 grade: 5
 section: dge5
 depends_on: [write-eng-g5-e5s1, write-eng-g5-e5s2, write-eng-g5-e5s3, write-eng-g5-e5s4, write-eng-g5-e5s5, write-eng-g5-e5s6, write-eng-g5-e5s7, write-eng-g5-e5s8, write-eng-g5-e5s9, write-eng-g5-e5s10, engine-eng-diag-pool, write-eng-diag-g4]
-status: review
+status: done
 claimed_by: writer-dge5
 created: 2026-11-19
 source: design-eng
@@ -54,3 +54,10 @@ AGENTS.md §4; скіли `math-pool-diag` («Тест рівня») і `content
 Спірні дистрактори на розсуд верифікатора: «two pair of trainers» (розмовне, за уроком e5s4l2 хибне), «There aren’t some chairs» (за правилом e4s2l5), «He sometimes does cycling» (за правилом e4s3l1 — go + -ing), «Now I go to school by bus» (за e4s8l5 — now → Present Continuous).
 
 **Герої — за канонами inbox:** Bohdan — теніс по суботах, автобусом до школи (клас Andrii); Sofiia — gymnastics on Saturdays; Ostap — football on Mondays, cycling з Taras; Oksana — karate, кузен Denys, без сестри; Petro — червоний телефон, кішка Murka (e5s1l3); Taras — день народження 5 May (e5s8l2), сестра Zlata, кузина Marta; Emma — день народження в травні, плаває; Mariia — до школи з Polina. Нове дрібне: Taras з Zlata наступного тижня їдуть потягом до Kyiv; Taras листівка з Carpathians (купався в річці).
+
+## Нотатки верифікатора (verifier-dge5, 2026-11-20)
+**Вердикт: verified** (reports/verify/dge5.md). Блокувальних знахідок немає. Усі 30 завдань я розв'язав сам: 10 choice збіглися з ключем; 20 gaps перебрано через `SLID_LANG.check` у node, у кожному зараховано рівно одну комбінацію, і вона збігається з моїм розв'язком.
+- Спірні дистрактори автора — усі хибні за BrE і за уроком: «two pair of» (OALD pair_1: informal NAmE, «not considered correct in written English»), «There aren’t some» (CD Grammar some/any), «does cycling» (OALD cycling: «to go cycling»; do — лише з «a lot of»), «Now I go» (контекст «today it’s snowing», CD Grammar present continuous).
+- Taras 5 May — канон (e5s8l2 build + pool-g5-e5s8). «My birthday is on 9 October» у e5s8l2 — анонімний gaps без мовця.
+- Правки: `will.for` e5s5 прибрано (e4s7l6 немає в requires e5s5); status/meta/коментар. Зміст завдань не змінено, `rev` не потрібен.
+- `node tools/validate.mjs --diag dge5` — 0 помилок, 0 попереджень.
