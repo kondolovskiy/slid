@@ -1,5 +1,5 @@
 /* Слід · Англійська мова, 4 клас — пул вправ для тренування до розділу «Celebrations and school events» (e4s8)
-   Статус: draft (автор writer-pe4s8, 2026-11-20). 52 вправи: уроки e4s8l1–e4s8l6, кожна пара урок × sk — ≥ 3 вправи, рівні 1–3; boss e4s8l7 без вправ.
+   Статус: verified (verifier-pe4s8, reports/verify/pe4s8.md; автор writer-pe4s8, 2026-11-20). 52 вправи: уроки e4s8l1–e4s8l6, кожна пара урок × sk — ≥ 3 вправи, рівні 1–3; boss e4s8l7 без вправ.
    Джерело: top34 — ТОП 3–4 (Савченко, 2018) як програма класу (program: true): теми й граматика 4 кл. — с. 63, записки — с. 54.
    Вправи, тексти й речення власні (docs/design/english.md §8); лише лексика й граматика уроків e4s8 і попередніх розділів 4 кл.
    Наголос — CD (UK) і OALD; словники й розв'язання кожної вправи — у tasks/…/write-eng-pool-g4-e4s8.md, «Нотатки агента».
@@ -8,8 +8,8 @@
 SLID.pool("eng", {
   id: "pe4s8",
   section: "e4s8",
-  status: "draft",
-  meta: { author: "writer-pe4s8", created: "2026-11-20", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "writer-pe4s8", created: "2026-11-20", factcheck: "verifier-pe4s8 (reports/verify/pe4s8.md)", teacher: null },
   sources: [
     { id: "top34", title: "Типова освітня програма для ЗЗСО, 3–4 класи (під керівництвом О. Я. Савченко), 2018 — «Англійська мова»", url: "https://lib.iitta.gov.ua/714276/1/%D0%A2%D0%9E%D0%9F_3_4_2018.pdf", program: true }
   ],
@@ -67,7 +67,7 @@ SLID.pool("eng", {
     /* ───────────── Урок 2. Invitations: when and what time? ───────────── */
     { id: "a09", lesson: "e4s8l2", lvl: 1, sk: "gram", src: "top34 с. 63",
       type: "gaps", title: "Fill in the gaps.",
-      text: "The school fair is {*on|in|at} Saturday. It starts {*at|on|in} 11 am.",
+      text: "The party is {*on|in|at} Saturday. It starts {*at|on|in} 11 am.",
       steps: ["Saturday is a day: <b>on</b> Saturday.", "11 am is a time: <b>at</b> 11 am."] },
     { id: "a10", lesson: "e4s8l2", lvl: 2, sk: "gram", src: "top34 с. 63",
       type: "gaps", title: "Fill in the gaps.",
@@ -76,12 +76,12 @@ SLID.pool("eng", {
       steps: ["June is a month: <b>in</b> June.", "Saturday is a day: <b>on</b> Saturday. 2 pm is a time: <b>at</b> 2 pm."] },
     { id: "a11", lesson: "e4s8l2", lvl: 2, sk: "gram", src: "top34 с. 63",
       type: "build", title: "Put the words in order.",
-      body: "<p>Bohdan asks Andrii about the school fair.</p>",
-      tiles: ["When", "is", "the", "school", "fair"], keepCase: true,
-      answer: "When is the school fair?",
+      body: "<p>Bohdan asks Andrii about the school concert.</p>",
+      tiles: ["When", "is", "the", "school", "concert"], keepCase: true,
+      answer: "When is the school concert?",
       extra: ["does"],
       hint: "Start with the question word.",
-      steps: ["<b>When</b> is the school fair?", "We don’t need <i>does</i> with <i>is</i>."] },
+      steps: ["<b>When</b> is the school concert?", "We don’t need <i>does</i> with <i>is</i>."] },
     { id: "a12", lesson: "e4s8l2", lvl: 3, sk: "gram", src: "top34 с. 63",
       type: "pick", title: "Find the mistake.",
       body: "<p>One word in Bohdan’s invitation is wrong.</p>",
@@ -179,13 +179,13 @@ SLID.pool("eng", {
       hint: "Read the card again. When is the party?",
       steps: ["Oksana writes: “Have a great party on <b>Saturday</b>.”", "So <i>Sunday</i> is wrong. The present is a book: that is right."] },
 
-    /* ───────────── Урок 4. School events: a concert, a sports day, a fair ───────────── */
     { id: "a50", lesson: "e4s8l3", lvl: 2, sk: "read", src: "top34 с. 63",
       type: "choice", title: "Read and choose.",
       body: "<p><i>Dear Tom,<br>Happy birthday! My present for you is a red ball. Have a great party!<br>Love, Andrii</i></p><p>What is Andrii’s present for Tom?</p>",
       opts: ["a red ball", "a birthday cake", "a book"], correct: 0,
       hint: "Find the word present in the card.",
       steps: ["Andrii writes: “My present for you is <b>a red ball</b>.”"] },
+    /* ───────────── Урок 4. School events: a concert, a sports day, a fair ───────────── */
     { id: "a29", lesson: "e4s8l4", lvl: 1, sk: "vocab", src: "top34 с. 63",
       type: "gaps", title: "Fill in the gaps.",
       text: "Children sing and play music at a {*concert|fair|sports day}.",
@@ -197,7 +197,7 @@ SLID.pool("eng", {
       steps: ["Concert: <b>sing and dance</b>. Sports day: <b>run and jump</b>.", "Fair: <b>sell and buy things</b>."] },
     { id: "a31", lesson: "e4s8l4", lvl: 2, sk: "vocab", src: "top34 с. 63",
       type: "word", title: "Write the missing word.",
-      body: "<p>Mariia writes about her school.</p>",
+      body: "<p>Mariia writes about a school event.</p>",
       before: "We sell cakes and old toys at our school", after: ". The money is for the school.",
       answer: ["fair", "fete", "fête"],
       hint: "Where do people sell and buy things?",
@@ -232,12 +232,12 @@ SLID.pool("eng", {
       hint: "Check the day, the time and who does what.",
       steps: ["Andrii writes: “Our school concert is on <b>Friday</b>.”", "So <i>Saturday</i> is wrong. The time and the rest are right."] },
 
-    /* ───────────── Урок 5. Every day or now? I play, I’m playing ───────────── */
     { id: "a51", lesson: "e4s8l4", lvl: 1, sk: "read", src: "top34 с. 63",
       type: "choice", title: "Read and choose.",
-      body: "<p><i>Hi Taras! Our school sports day is on Monday. I run, and my sister Sofiia jumps. Andrii</i></p><p>What does Sofiia do at the sports day?</p>",
+      body: "<p><i>Hi Taras! Our school sports day is on Wednesday. I run, and my sister Sofiia jumps. Andrii</i></p><p>What does Sofiia do at the sports day?</p>",
       opts: ["She jumps.", "She runs.", "She sings."], correct: 0,
       steps: ["Andrii writes: “I run, and my sister Sofiia <b>jumps</b>.”"] },
+    /* ───────────── Урок 5. Every day or now? I play, I’m playing ───────────── */
     { id: "a37", lesson: "e4s8l5", lvl: 1, sk: "gram", src: "top34 с. 63",
       type: "gaps", title: "Fill in the gaps.",
       text: "Look! Tom {*is running|runs} in the park. Every morning, Emma {*reads|is reading} a book.",

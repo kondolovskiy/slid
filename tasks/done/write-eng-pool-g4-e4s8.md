@@ -7,7 +7,7 @@ subject: eng
 grade: 4
 section: e4s8
 depends_on: [write-eng-g4-e4s8, engine-eng-diag-pool, engine-eng-tools]
-status: review
+status: done
 claimed_by: writer-pe4s8
 created: 2026-11-19
 source: design-eng
@@ -47,3 +47,10 @@ source: design-eng
 **Герої (лише канон):** Mariia, Kateryna, Danylo (Kharkiv; день народження Danylo — June, вечірка брата — Sunday 4 pm); Andrii, Sofiia, Bohdan (Kyiv); Zoriana (однокласниця Andrii, e5s2); Oksana, Dmytro, Halyna (Halyna десять у грудні — a21, a28); Emma, Tom, бабуся Emma (робить chocolate cake — як у l3). Maksym не брав (в e4s7 — кузен в Ottawa).
 
 **Спірне для верифікатора:** a01 варіант «What are you like?» — граматичний як ідіома, але не репліка офіціанта; a37 «Every morning, Emma is reading» — хибне за правилом уроку; a39 «cook» не з уроку дослівно, але відома дієслівна база Present Simple 3-ї особи (e4s1–e4s2); a35 — оголошення школи Emma (свої дні, не перетинається з Andrii/Mariia).
+
+## Нотатки верифікатора (verifier-pe4s8, 2026-11-20)
+**Вердикт: verified** — reports/verify/pe4s8.md. Розв'язав усі 52 вправи. Перевірка через app/lang.js у node: build — усі впорядковані підмножини tiles+extra (зараховується рівно ключ), word — варіанти через wordVerdict. validate --pool pe4s8 — 0/0, personalization-qa --pool pe4s8 --strict — чисто.
+**Правки (4 змістові, id не змінено):** a09 — «school fair» → «party» (fair з'являється лише в l4); a11 — «school fair» → «school concert» (те саме); a31 — body «about a school event» (без цього «school shop» — друга відповідь); a51 — sports day Monday → Wednesday (як l4 intro). Ще перенесено коментарі уроків 4/5 і поставлено статус.
+**Спірне автора:** a01 «What are you like?» — ✅, у репліці офіціанта не підходить; a37 — ✅, хибне за правилом уроку (як boss T5); a39 cook — ✅, слово є в e4s1 («A cook cooks food»); a06 match — ✅, усі праві перебрано, другої пари немає.
+**Джерела:** CD/OALD — наголос birthday, December, Christmas, happy, Saturday, computer; fete (CD «UK (also fête)», OALD «(also fair) (both British English)»); ice cream [C or U]. Різдво 25 грудня — en.wikipedia (Christmas in Ukraine, Public holidays in Ukraine) + WebSearch (Irish Times, Religion News). URL — у звіті.
+**Після build:** test-answer-ui --suite content --pool pe4s8 і плейтест (у контейнері немає Python-playwright).
