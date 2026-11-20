@@ -4,7 +4,7 @@
    чого в кеші цієї версії немає. Нова версія: встановлення (кожен файл перевіряється на сервері, cache: "no-cache") → skipWaiting →
    activate (старі кеші видаляються) → clients.claim → сторінка отримує controllerchange й перезавантажується,
    коли це безпечно (app/update.js: не посеред уроку чи тесту рівня). Google Fonts — з кешу з фоновим оновленням. */
-const VERSION = "c95d7decf9";
+const VERSION = "92d346f0e3";
 const CACHE = "slid-" + VERSION;
 const FONTS = "slid-fonts";
 const ASSETS = [
@@ -37,6 +37,14 @@ const ASSETS = [
   "./content/eng/g5-e5s7.js",
   "./content/eng/g5-e5s8.js",
   "./content/eng/g5-e5s9.js",
+  "./content/eng/g6-e6s1.js",
+  "./content/eng/g6-e6s2.js",
+  "./content/eng/g6-e6s3.js",
+  "./content/eng/g6-e6s4.js",
+  "./content/eng/g6-e6s5.js",
+  "./content/eng/g6-e6s6.js",
+  "./content/eng/g6-e6s7.js",
+  "./content/eng/g6-e6s8.js",
   "./content/hist/plan.js",
   "./content/hist/diag-g10.js",
   "./content/hist/diag-g11.js",
@@ -445,6 +453,15 @@ const ASSETS = [
   "./img/eng/e5s5/snow.svg",
   "./img/eng/e5s5/storm.svg",
   "./img/eng/e5s7/town-map.svg",
+  "./img/eng/e6s1/andrii.svg",
+  "./img/eng/e6s1/emma.svg",
+  "./img/eng/e6s1/grandad.svg",
+  "./img/eng/e6s1/hair.svg",
+  "./img/eng/e6s1/mariia.svg",
+  "./img/eng/e6s1/oksana.svg",
+  "./img/eng/e6s7/sofia.jpg",
+  "./img/eng/e6s7/st-andrews-church.jpg",
+  "./img/eng/e6s8/london-map.svg",
   "./img/h5-anna.jpg",
   "./img/h5-kma.jpg",
   "./img/h5-lviv.jpg",
