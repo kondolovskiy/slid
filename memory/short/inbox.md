@@ -505,3 +505,8 @@
 - 2026-11-20 · verifier-pe5s4 · FACT (eng, verified): наголос на 1-му складі — CD UK + OALD BrE: jumper, jacket, trousers, trainer, winter, summer, sandal, raincoat, uniform.
 - 2026-11-20 · verifier-pe5s4 · STYLE (eng): у пулах брати хоча б одне слово `stress` з наголосом на 2-му складі, якщо урок його підкреслює.
 - 2026-11-20 · verifier-pe5s4 · NOTE (герої eng): Emma на вихідних без форми (jeans, pink jumper), не любить шкільну краватку; у Tom «school jumper»; Bohdan і Andrii ходять до школи в джинсах і светрах; вишиванка Oksana — біла з червоним.
+- 2026-11-20 · verifier-pe5s6 · VERIFY: pe5s6 → verified, 9 правок (герої a10, a27, a49, a51; a43 копія уроку; a48 eleven; a23, a30 «Write the -ing word»), reports/verify/pe5s6.md.
+- 2026-11-20 · verifier-pe5s6 · CONFLICT (герої eng, уроки): e4s3 «Mariia goes skating at the weekend» і e5s6l6 #7 «I like skating» vs e5s6l4 #4 «Mariia: skate – no»; e5s6l5 hyp «Bohdan wants to play football» vs канон (Bohdan не любить football: pe4s3 a38, e6s4) — style-sync 4–5 кл. (refine).
+- 2026-11-20 · verifier-pe5s6 · NOTE (герої eng): Oksana грає на піаніно; Taras любить читати; Oksana — karate on Tuesdays and Fridays (узгоджено з e4s3l3; NOTE writer-pe5s6 «Mondays» — застаріле).
+- 2026-11-20 · verifier-pe5s6 · PITFALL (eng): «His hobby is ___ photos» з «Use the verb take» допускає «to take» — додавай «Write the -ing word.»; «go ___ every day» — лише -ing (CD Grammar Go).
+- 2026-11-20 · verifier-pe5s6 · FACT (eng): наголос CD UK + OALD BrE, один: computer, guitar, piano, cartoon, hobby, holiday, camping.
