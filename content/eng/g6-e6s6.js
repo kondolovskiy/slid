@@ -9,7 +9,7 @@
    Kyrylo — новий учень цього класу (новий герой); Emma — школа в Англії з формою; Taras і Yaryna — Lviv. Зовнішність героїв не описано (канон — e6s1).
    Увесь зміст — англійською, британська норма (D-054). Тексти, діалоги й герої — власні (docs/design/english.md §8).
    Форми, рівні слів і наголос — за Cambridge Dictionary і OALD (URL — tasks/…/write-eng-g6-e6s6.md, «Нотатки агента»).
-   Статус: draft. 7 уроків (6 + фінал).
+   Статус: verified (verifier-e6s6, reports/verify/e6s6.md). 7 уроків (6 + фінал).
    Перевірка: node tools/validate.mjs --section e6s6 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -19,7 +19,7 @@ SLID.section("eng", {
   title: "School life: subjects and lessons",
   why: "To talk about your favourite subjects and what you do in lessons. And to talk about school rules and give advice.",
   requires: ["e5s2l1", "e5s2l5", "e5s2l6", "e6s5l5"],
-  meta: { author: "writer-e6s6", created: "2026-11-20", factcheck: null, teacher: null },
+  meta: { author: "writer-e6s6", created: "2026-11-20", factcheck: "verifier-e6s6 (reports/verify/e6s6.md)", teacher: null },
   badges: [
     { id: "e6s6boss", name: "School magazine editor", icon: "trophy", desc: "Finish the final lesson “School life: subjects and lessons”" }
   ],
@@ -30,7 +30,7 @@ SLID.section("eng", {
       title: "My favourite subject and why",
       short: "Favourite subjects",
       icon: "star",
-      status: "draft",
+      status: "verified",
       why: "Say which subjects you like. And say why: because it’s fun or useful.",
       screens: [
         {
@@ -156,7 +156,7 @@ SLID.section("eng", {
       title: "Projects, tests, experiments: what we do in lessons",
       short: "In lessons",
       icon: "bulb",
-      status: "draft",
+      status: "verified",
       why: "Lessons are not only books. Talk about what you do in your lessons.",
       screens: [
         {
@@ -186,7 +186,7 @@ SLID.section("eng", {
         {
           type: "info",
           title: "In our lessons",
-          body: `<ul><li>do an <b>ex<u>per</u>iment</b> – try something and find out what happens</li><li>do a <b>test</b> – answer questions and show what you know</li><li>do a <b><u>pro</u>ject</b> – work on one topic for some days</li><li>make a <b><u>pos</u>ter</b> – a big picture with words</li><li><b>work in groups</b> / <b>in pairs</b></li><li>watch a video, read a text</li></ul>`,
+          body: `<ul><li>do an <b>ex<u>per</u>iment</b> – try something and find out what happens</li><li>do a <b>test</b> – answer questions and show what you know</li><li>do a <b><u>pro</u>ject</b> – work on one topic for a few days</li><li>make a <b><u>pos</u>ter</b> – a big picture with words</li><li><b>work in groups</b> / <b>in pairs</b></li><li>watch a video, read a text</li></ul>`,
           cta: "Next"
         },
         {
@@ -197,7 +197,7 @@ SLID.section("eng", {
           right: ["experiment with water.", "pairs and ask questions.", "video about old Kyiv.", "test every Friday."],
           hint: "Look at the small words: an or a?",
           fbOk: "Right.",
-          fbBad: "Check the words before the gap: an, a or in?",
+          fbBad: "Check the last word of each half: an, a or in?",
           fbText: "Do an <b>experiment</b>. Work in <b>pairs</b>. Watch a <b>video</b>. Do a <b>test</b>."
         },
         {
@@ -286,7 +286,7 @@ SLID.section("eng", {
       title: "A subject that I love, a teacher who helps",
       short: "Who, which, that",
       icon: "users",
-      status: "draft",
+      status: "verified",
       why: "Say which person or thing you mean. Use who, which and that.",
       screens: [
         {
@@ -407,7 +407,7 @@ SLID.section("eng", {
       title: "School rules: you must, you mustn’t",
       short: "Must, mustn’t",
       icon: "shield",
-      status: "draft",
+      status: "verified",
       why: "Every school has rules. Say what you must and mustn’t do.",
       screens: [
         {
@@ -538,7 +538,7 @@ SLID.section("eng", {
       title: "You should ask for help: advice",
       short: "Should",
       icon: "bulb",
-      status: "draft",
+      status: "verified",
       why: "Friends help with good ideas. Give advice and ask for it.",
       screens: [
         {
@@ -669,7 +669,7 @@ SLID.section("eng", {
       title: "The best lesson of the year",
       short: "Best lesson",
       icon: "star",
-      status: "draft",
+      status: "verified",
       why: "Some lessons you never forget. Say what happened and how you felt.",
       screens: [
         {
@@ -821,7 +821,7 @@ SLID.section("eng", {
       title: "Our school magazine",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e6s6boss",
       why: "Check everything from this section. Your points are doubled.",
@@ -870,14 +870,14 @@ SLID.section("eng", {
           eyebrow: "Task 3",
           title: "Write the missing word.",
           body: `<p>Page 3: our new classmate. Write one word.</p>`,
-          before: "IT is the subject",
+          before: "History is the subject",
           after: "Kyrylo likes best.",
           answer: ["which", "that"],
           pre: "e6s6l3",
-          hint: "IT is a thing, not a person.",
+          hint: "History is a thing, not a person.",
           fbOk: "Good eye!",
-          fbBad: "Is IT a person or a thing?",
-          fbText: "IT is a thing: the subject <b>which</b> (or <b>that</b>) Kyrylo likes best."
+          fbBad: "Is history a person or a thing?",
+          fbText: "History is a thing: the subject <b>which</b> (or <b>that</b>) Kyrylo likes best."
         },
         {
           type: "gaps",

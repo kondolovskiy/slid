@@ -7,7 +7,7 @@ subject: eng
 grade: 6
 section: e6s6
 depends_on: [curate-eng-plan-g6, engine-eng-lang-core, engine-eng-validate, engine-eng-stats, skills-eng, curate-eng-style, curate-eng-glossary]
-status: review
+status: done
 claimed_by: writer-e6s6
 created: 2026-11-19
 source: design-eng
@@ -75,3 +75,13 @@ writer-e6s6, 2026-11-20. Файл `content/eng/g6-e6s6.js`, 7 уроків (6 + 
 2. l6 текст для читання має неправильні форми поза списком info (found, drew, wrote, told, said, learnt) — лише для читання; оцінюються was, had, made, did, went, saw (у списку info) і played/loved.
 3. l4 gaps «You don’t have to use phones…» буквально теж правда — відсічено позначками «it’s a rule» / «it’s your choice» в умові.
 4. l2 gaps «Every Friday we {*do|doing}» — пастка не are doing (щоб не відкривати «this term we’re doing…»).
+
+### Верифікація (verifier-e6s6, 2026-11-20)
+**Вердикт: verified, 7/7 уроків.** Звіт — reports/verify/e6s6.md.
+- Відповіді на «Спірне»: 1) classmate у l3 match — прийнятно: CD A2, пару видно з визначення й виключення. 2) Неправильні форми в тексті l6 лише для читання — D-019 ✅. 3) mustn’t / don’t have to відсічено позначками rule / your choice — ✅. 4) {*do|doing} — ✅.
+- Правка 1 (блокувальна, герой): l7 T3 «IT is the subject ___ Kyrylo likes best» суперечила l3 (у Kyrylo улюблений предмет — history) → «History is the subject…», hint/fbBad/fbText узгоджено.
+- Правки 2–3 (мова): l2 match fbBad «before the gap» → «the last word of each half»; l2 info «for some days» → «for a few days».
+- Перебір build через SLID_LANG.check (усі підмножини й перестановки з extra): у l1, l5, l6, l7 приймається по 1 порядку, у l3 — 2 (обидва в `answer`).
+- Джерела форм: CD Grammar must / have-got-to / should / relative-pronouns; OALD must_1, should, who, which, that_2; наголос — CD + OALD + Wiktionary. Факт «Kyiv on the Dnipro» — en.wikipedia Kyiv + ЕСУ article-11194. WebSearch 10 фрагментів — збігів немає.
+- Рекомендація оркестратору: requires += e6s3l4 (irregular verbs; plan-eng-g6 §61). Не блокує: опора є в info l6.
+- Плейтест не запускався (у контейнері немає модуля playwright, build ще не зроблено) → CI після build.
