@@ -7,7 +7,7 @@
    Склад UK — лише перелік England, Scotland, Wales and Northern Ireland, без родового слова (facts/eng.md К1).
    «Fact file» немає в CD/OALD — урок 6 «Facts about my country» (reports/verify/plan-eng-g5.md Р3).
    Форми, наголос і факти — URL у tasks/…/write-eng-g5-e5s10.md, «Нотатки агента».
-   Статус: draft. 7 уроків (6 + фінал).
+   Статус: verified (reports/verify/e5s10.md). 7 уроків (6 + фінал).
    Перевірка: node tools/validate.mjs --section e5s10 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -17,7 +17,7 @@ SLID.section("eng", {
   title: "Ukraine and English-speaking countries",
   why: "To tell people about Ukraine. And to learn about the countries where people speak English.",
   requires: ["e4s7l3", "e4s7l4", "e4s6l4", "e4s6l5", "e5s5l3", "e5s5l4"],
-  meta: { author: "writer-e5s10", created: "2026-11-19", factcheck: "self", teacher: null },
+  meta: { author: "writer-e5s10", created: "2026-11-19", factcheck: "verifier-e5s10 (reports/verify/e5s10.md)", teacher: null },
   badges: [
     { id: "e5s10boss", name: "Country expert", icon: "trophy", desc: "Finish the final lesson “Ukraine and English-speaking countries”" }
   ],
@@ -28,7 +28,7 @@ SLID.section("eng", {
       title: "Ukraine on the map",
       short: "Ukraine",
       icon: "map",
-      status: "draft",
+      status: "verified",
       why: "Your friends abroad want to know about Ukraine. Show them where the cities are.",
       screens: [
         {
@@ -151,7 +151,7 @@ SLID.section("eng", {
       title: "Where do people speak English?",
       short: "English-speaking countries",
       icon: "globe",
-      status: "draft",
+      status: "verified",
       why: "People speak English in many countries. Learn their names, capitals and people.",
       screens: [
         {
@@ -279,7 +279,7 @@ SLID.section("eng", {
       title: "The UK: England, Scotland, Wales and Northern Ireland",
       short: "The UK",
       icon: "flag",
-      status: "draft",
+      status: "verified",
       why: "England is not the UK. Learn what the UK is and its capital cities.",
       screens: [
         {
@@ -420,7 +420,7 @@ SLID.section("eng", {
       title: "Bigger or smaller? Comparing countries",
       short: "Comparing",
       icon: "scale",
-      status: "draft",
+      status: "verified",
       why: "Which country is bigger? Which mountain is higher? Compare two places.",
       screens: [
         {
@@ -541,7 +541,7 @@ SLID.section("eng", {
       title: "The longest river, the highest mountain",
       short: "The longest",
       icon: "chart",
-      status: "draft",
+      status: "verified",
       why: "Which is the biggest city? Which is the most famous place? Make a quiz about Ukraine and the UK.",
       screens: [
         {
@@ -561,7 +561,7 @@ SLID.section("eng", {
           opts: [
             "most beautiful",
             "beautifulest",
-            "more beautiful"
+            "beautifuller"
           ],
           correct: 0,
           fbTitle: "Let’s check.",
@@ -672,7 +672,7 @@ SLID.section("eng", {
       title: "Facts about my country",
       short: "My country",
       icon: "book",
-      status: "draft",
+      status: "verified",
       why: "Tell a friend from another country about Ukraine. Say why you like a place.",
       screens: [
         {
@@ -760,7 +760,8 @@ SLID.section("eng", {
           type: "gaps",
           sk: "func",
           title: "Fill in the gaps.",
-          text: "My favourite city is Lviv {*because|but} it’s very old. I want to visit Scotland {*because|so} I love mountains. I like summer {*because|but} I can swim in the sea.",
+          body: `<p>Each sentence says why.</p>`,
+          text: "My favourite city is Lviv {*because|so} it’s very old. I want to visit Scotland {*because|so} I love mountains. I like summer {*because|but} I can swim in the sea.",
           hint: "Each sentence says why. Which word says why?",
           fbOk: "Exactly.",
           fbBad: "Look at the rule again: why → because.",
@@ -806,7 +807,7 @@ SLID.section("eng", {
       title: "Our world quiz",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e5s10boss",
       why: "Check everything from this section. Your points are doubled.",

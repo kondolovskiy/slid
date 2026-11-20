@@ -7,7 +7,7 @@ subject: eng
 grade: 5
 section: e5s10
 depends_on: [curate-eng-plan-g5, engine-eng-lang-core, engine-eng-validate, engine-eng-stats, skills-eng, curate-eng-style, curate-eng-glossary, write-eng-g4-e4s1]
-status: review
+status: done
 claimed_by: writer-e5s10
 created: 2026-11-19
 source: design-eng
@@ -89,3 +89,10 @@ writer-e5s10, 2026-11-19. Файл: content/eng/g5-e5s10.js, 7 уроків (6 +
 - l1 info: стрілки ↑ ↓ → ← (U+2191…) замість карти: власної карти України немає; validate не попереджає.
 - stats: e5s10l2 longWordShare 0.201 (назви національностей — Ukrainian, American, Canadian, Australian — сам предмет уроку; як e4s7l3); e5s10l6 gradedShare / readWordsPerScreen — «нетипово для сім'ї» (урок читання: текст на 3 екрани), у межах профілю.
 - Назва l6 відрізняється від plan.js («A fact file about my country») — куратору плану синхронізувати.
+
+## Нотатки верифікатора
+verifier-e5s10, 2026-11-20. Звіт: reports/verify/e5s10.md. **Вердикт: verified, усі 7 уроків.**
+- Chernihiv «in the north» — три джерела: en.wikipedia (northern Ukraine), Britannica (WebSearch: north-central Ukraine), uk.wikipedia «Чернігівська область» («у Північній Україні», центр — Чернігів). ЕСУ статті про місто не має. Odesa south-west — CD odesa «southwestern part of Ukraine» + en.wikipedia; Lviv / Kharkiv — Britannica (WebSearch) + en.wikipedia.
+- Правки: l5 hyp «more beautiful» → «beautifuller» (правильний дистрактор); l6 gaps — body «Each sentence says why.», «but» → «so» (друга можлива відповідь). Статуси → verified.
+- build (l4, l5, l6) перебрано через app/lang.js: пропущених порядків немає. Авторське право — 9 запитів, збігу немає.
+- Плейтест — після build оркестратора. TQ не додавав. plan.js: назва l6 — куратору (Р3).
