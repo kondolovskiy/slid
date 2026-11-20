@@ -422,3 +422,7 @@
 - 2026-11-20 · writer-pe5s8 · NOTE (герої eng, пул pe5s8): у Emma різдвяний обід о 2-й, увечері ігри, kutia немає; Dmytro отримав м'яч на St Nicholas Day; Andrii і Bohdan були на вечірці «last week». Звірити в наступному style-sync.
 - 2026-11-20 · writer-pe5s8 · PITFALL (eng, build): у вигуку «What a + adj + noun» не давати другий прикметник як `extra` («a lovely big dinner» — граматична друга відповідь); пастка — лише форма a/an.
 - 2026-11-20 · writer-pe5s8 · NOTE (eng, пул): `build` ≤ 9 плиток з extra, тож речення з датою (8 плиток) бере лише одну пастку.
+- 2026-11-20 · verifier-pe4s4 · VERIFY: pe4s4 → verified, 3 дрібні правки (a03 + bookstore, a46 «What present…?», a24 hint), reports/verify/pe4s4.md. style-sync: a47 steps — тире замість мінуса.
+- 2026-11-20 · verifier-pe4s4 · PITFALL (eng, пул): у `word` «What does X buy?» після «Would you like a bag? – Yes, please» відповідь «bag» теж правильна — питати конкретніше («What present…?») або давати «No, thank you».
+- 2026-11-20 · verifier-pe4s4 · NOTE (eng, TQ-122): у `word` з назвою магазину без британської сцени класти в ключ AmE-синонім (bookstore; CD «mainly US»).
+- 2026-11-20 · verifier-pe4s4 · FACT (eng): наголос -teen/-ty (14–19 / 40–90) — CD UK і OALD BrE збігаються; seventeen в OALD — два склади (/ˌsevnˈtiːn/), у CD — три. https://dictionary.cambridge.org/dictionary/english/sixteen, https://www.oxfordlearnersdictionaries.com/definition/english/sixteen
