@@ -7,7 +7,7 @@ subject: eng
 grade: 5
 section: e5s2
 depends_on: [write-eng-g5-e5s2, engine-eng-diag-pool, engine-eng-tools]
-status: review
+status: done
 claimed_by: writer-pe5s2
 created: 2026-11-19
 source: design-eng
@@ -49,3 +49,8 @@ source: design-eng
 2. a57: «Can I open the window?» — body «She wants to open the window» (робить сама, як у правилі уроку); «Could you open…» як прохання до вчителя відсічено лише цим.
 3. a48: `before: ""` — пропуск на початку речення (validate не заперечує).
 4. Тип `choice` для sk read (4 вправи) — за брифом оркестратора; решта read — gaps/word на короткому тексті.
+
+## Нотатки верифікатора (verifier-pe5s2, 2026-11-20)
+**Вердикт: verified** — reports/verify/pe5s2.md. Кожну вправу розв'язано; `build` — усі перестановки всіх підмножин з extra через SLID_LANG.check (рушій приймає лише ключі); `word` — ключі без кінцевого знака; урок × sk — ≥ 3 вправи рівнів 1–3; наголос — CD + OALD (curl у сесії); 9 фрагментів ≥ 12 слів — WebSearch, збігів немає.
+**Правки (4):** a10 stress subject → history (subject: ім. ˈsʌb-, дієсл. səbˈ- — два наголоси); a11 дистрактор subject → break (друга відповідь «a new subject»); a16 ключ + am, a.m. («nine am»); a55 ключ + write («How do you write “board”?»). Статус → verified.
+**Спірне автора 1–4:** прийнято (див. звіт §4). Примітки: e5s2l1 #7 теж має «+sub|ject» (NOTE в inbox); pe5s3 a03 «Mariia gets up at 7 o’clock» суперечить e5s2l2 (CONFLICT в inbox). TQ немає.

@@ -1,5 +1,5 @@
 /* Слід · Англійська мова, 5 клас — пул вправ для тренування до розділу «School life» (e5s2)
-   Статус: draft (автор writer-pe5s2, 2026-11-20). 57 вправ: уроки e5s2l1–e5s2l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e5s2l7 без вправ.
+   Статус: verified (автор writer-pe5s2, 2026-11-20; reports/verify/pe5s2.md). 57 вправ: уроки e5s2l1–e5s2l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e5s2l7 без вправ.
    Вправи власні (docs/design/english.md §8): лише слова, форми й правила уроків e5s2 і 4 кл.; англійською, британська норма (D-054).
    Джерело — програма класу (program: true): МП-ІМ, 5 кл. — тема «Шкільне життя» і функція «розпитувати з метою роз'яснення» (с. 20);
    Adverbs position, Imperatives, Can: permission, Could: requests (с. 21); Present Simple affirmative, negative, questions, with adverbs of frequency (с. 22).
@@ -10,8 +10,8 @@
 SLID.pool("eng", {
   id: "pe5s2",
   section: "e5s2",
-  status: "draft",
-  meta: { author: "writer-pe5s2", created: "2026-11-20", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "writer-pe5s2", created: "2026-11-20", factcheck: "verifier-pe5s2 (reports/verify/pe5s2.md)", teacher: null },
   sources: [
     { id: "mpim", short: "МП-ІМ", program: true,
       title: "Модельна навчальна програма «Іноземна мова. 5–9 класи» (Редько В. Г., Шаленко О. П., Сотникова С. І. та ін.), наказ МОН від 12.07.2021 № 795",
@@ -72,14 +72,14 @@ SLID.pool("eng", {
       steps: ["<u>time</u>table, <u>Eng</u>lish, <u>his</u>tory: the strong part is at the start."] },
     { id: "a10", lesson: "e5s2l1", lvl: 3, sk: "phon", src: "mpim с. 20",
       type: "stress", title: "Find the stressed syllable.",
-      words: ["U|+krai|ni|an", "+Eng|lish", "+sub|ject", "+mu|sic"],
+      words: ["U|+krai|ni|an", "+Eng|lish", "+his|to|ry", "+mu|sic"],
       hint: "Three words have the strong part at the start. One word doesn’t.",
-      steps: ["<u>Eng</u>lish, <u>sub</u>ject, <u>mu</u>sic: the strong part is at the start.", "U<u>krai</u>nian: the strong part is <b>krai</b>."] },
+      steps: ["<u>Eng</u>lish, <u>his</u>tory, <u>mu</u>sic: the strong part is at the start.", "U<u>krai</u>nian: the strong part is <b>krai</b>."] },
 
     { id: "a11", lesson: "e5s2l1", lvl: 1, sk: "write", src: "mpim с. 20",
       type: "gaps", title: "Complete the message.",
       body: "<p>Andrii writes to Taras.</p>",
-      text: "Hi Taras! I’ve got a new {*timetable|subject}. We’ve got maths {*on|in} Monday.",
+      text: "Hi Taras! I’ve got a new {*timetable|break}. We’ve got maths {*on|in} Monday.",
       steps: ["A list of lessons is a <b>timetable</b>.", "A day: <b>on</b> Monday."] },
     { id: "a12", lesson: "e5s2l1", lvl: 2, sk: "write", src: "mpim с. 20",
       type: "build", title: "Put the words in order.",
@@ -111,9 +111,9 @@ SLID.pool("eng", {
       type: "word", title: "Write the missing word.",
       body: "<p>Lessons start at 9.00.</p>",
       before: "Lessons start at nine", after: ".",
-      answer: ["o’clock", "o'clock"],
+      answer: ["o’clock", "o'clock", "am", "a.m."],
       hint: "9.00, not 9.30. Is it half past?",
-      steps: ["9.00 is nine <b>o’clock</b>.", "9.30 is half past nine."] },
+      steps: ["9.00 is nine <b>o’clock</b>. Nine <b>am</b> is right too.", "9.30 is half past nine."] },
 
     { id: "a17", lesson: "e5s2l2", lvl: 1, sk: "gram", src: "mpim с. 22",
       type: "gaps", title: "Fill in the gaps.",
@@ -366,7 +366,7 @@ SLID.pool("eng", {
       type: "word", title: "Write the missing word.",
       body: "<p>Zoriana wants the letters of the word “board”. The teacher answers: B-O-A-R-D.</p>",
       before: "How do you", after: "“board”?",
-      answer: "spell",
+      answer: ["spell", "write"],
       hint: "You want the letters of a word. Look at “In the English lesson”.",
       steps: ["<b>How do you spell</b> “board”? – B-O-A-R-D."] },
     { id: "a56", lesson: "e5s2l6", lvl: 2, sk: "func", src: "mpim с. 21",
