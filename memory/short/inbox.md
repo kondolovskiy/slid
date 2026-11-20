@@ -500,3 +500,8 @@
 - 2026-11-20 · verifier-pe5s7 · PITFALL (eng, build): пастка `right` з go + along/to/up дає правильне «Go right along X…» (OALD right_2 — all the way); у build з напрямками пасткою брати `goes`.
 - 2026-11-20 · verifier-pe5s7 · PITFALL (eng, word): відповідь на «Where is the X?» з порожнім `before` — і «It’s», і «The X is» в `answer`.
 - 2026-11-20 · verifier-pe5s7 · NOTE (eng, лексика): «years old» до e5s7 в уроках 4–5 кл. немає; давність — «more than N years ago» (e5s7l6).
+- 2026-11-20 · verifier-pe5s4 · VERIFY: pe5s4 → verified, 12 правок (6 вправ і текст читання a65–a67 копіювали умови уроку чи boss з іншим ім'ям; 3 вправи брали слова з пізніших уроків; маркер a59), reports/verify/pe5s4.md.
+- 2026-11-20 · verifier-pe5s4 · PITFALL (eng, пули): перевіряй збіг умов пулу з уроком і boss від 7 слів поспіль (n-gram скриптом); лексику вправи звіряй з її уроком, а не з усім розділом. (ENGINE: n-gram-перевірка копій у validate/personalization-qa — до engine-eng-diag-pool-p3.)
+- 2026-11-20 · verifier-pe5s4 · FACT (eng, verified): наголос на 1-му складі — CD UK + OALD BrE: jumper, jacket, trousers, trainer, winter, summer, sandal, raincoat, uniform.
+- 2026-11-20 · verifier-pe5s4 · STYLE (eng): у пулах брати хоча б одне слово `stress` з наголосом на 2-му складі, якщо урок його підкреслює.
+- 2026-11-20 · verifier-pe5s4 · NOTE (герої eng): Emma на вихідних без форми (jeans, pink jumper), не любить шкільну краватку; у Tom «school jumper»; Bohdan і Andrii ходять до школи в джинсах і светрах; вишиванка Oksana — біла з червоним.
