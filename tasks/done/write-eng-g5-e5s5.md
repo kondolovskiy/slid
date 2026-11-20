@@ -7,7 +7,7 @@ subject: eng
 grade: 5
 section: e5s5
 depends_on: [curate-eng-plan-g5, engine-eng-lang-core, engine-eng-validate, engine-eng-stats, skills-eng, curate-eng-style, curate-eng-glossary, write-eng-g4-e4s1]
-status: review
+status: done
 claimed_by: writer-e5s5
 created: 2026-11-19
 source: design-eng
@@ -88,3 +88,12 @@ writer-e5s5, 2026-11-19. Файл `content/eng/g5-e5s5.js`, 7 уроків (6 + 
 3. Питальний порядок у build (див. вище) — як прецедент e4s6.
 4. l6 читання: частина 1 — 56 слів + питання, частина 2 — 53 слова + питання (maxText 60 ≤ 85); весь текст ≈ 110 слів (менше 130–180 за TQ-123 — урок, не фінал розділу).
 5. Плейтест не запускався (build — оркестратор; Python-playwright у контейнері може не бути).
+
+## Нотатки верифікатора
+verifier-e5s5, 2026-11-20. Звіт — reports/verify/e5s5.md. **Вердикт: verified, усі 7 уроків.**
+- Факти (клімат Києва, України, Карпат, Великої Британії й Лондона; веселка) — по два відкриті джерела (ЕСУ article-11194, article-9920; en/uk.wikipedia), усі ✅. Форми й наголос — CD + OALD; comparatives і will / be going to — Cambridge Grammar.
+- Усі оцінювані завдання розв'язано; `word` — через wordVerdict, `build` — перебором 1800/300 наборів через app/lang.js. Ключі правильні; be going to варіантом ніде не стоїть, у l5 #8 — у ключі.
+- `build` «X is …-er than Y»: умова «tells» + fbBad достатні (підмет — власна назва з великої, плитка «is» з малої; для l5 #5 keepCase неможливий — два порядки).
+- Правки: (1) l6 #7 build — до умови додано «He starts with Kyiv.» (з плиток і пастки «warmer» складалося правильне «London is warmer than Kyiv»); (2) l2 #7 stress — «+fog|gy» → «de|+grees» (усі слова мали 1-й склад, і завдання розв'язувалося шаблоном); (3) статуси verified, meta.factcheck.
+- validate --section e5s5 — 0/0; stats — l6 sentenceWords, l7 typeVariety (z ≈ 2) пояснено. Плейтест не запускався (немає Python playwright; build — оркестратор).
+- Рекомендовано: 4-та пара в boss T2 match; ENGINE «worst»/«rainbows» → Almost; уніфікувати ліцензію SVG після рішення людини.

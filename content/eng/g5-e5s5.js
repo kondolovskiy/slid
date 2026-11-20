@@ -10,7 +10,7 @@
    Факти про клімат України й Великої Британії — лише якісні (без точних середніх: джерела розходяться), з двох джерел;
    форми й наголос — Cambridge Dictionary, OALD, Cambridge Grammar (URL — tasks/…/write-eng-g5-e5s5.md, «Нотатки агента»).
    Малюнки img/eng/e5s5/*.svg — власні (writer-e5s5), CC0.
-   Статус: draft. 7 уроків (6 + фінал).
+   Статус: verified (verifier-e5s5, 2026-11-20, reports/verify/e5s5.md). 7 уроків (6 + фінал).
    Перевірка: node tools/validate.mjs --section e5s5 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -20,7 +20,7 @@ SLID.section("eng", {
   title: "Weather: rain, sun and storms",
   why: "To talk about the weather and compare days and seasons. And to understand a weather forecast.",
   requires: ["e4s6l1", "e4s6l5"],
-  meta: { author: "writer-e5s5", created: "2026-11-19", factcheck: "self", teacher: null },
+  meta: { author: "writer-e5s5", created: "2026-11-19", factcheck: "verifier-e5s5 (reports/verify/e5s5.md)", teacher: null },
   badges: [
     { id: "e5s5boss", name: "Weather watcher", icon: "trophy", desc: "Finish the final lesson “Weather: rain, sun and storms”" }
   ],
@@ -34,7 +34,7 @@ SLID.section("eng", {
       title: "What’s the weather like today?",
       short: "Weather today",
       icon: "eye",
-      status: "draft",
+      status: "verified",
       why: "Your friend asks about the weather. Tell them about it and the temperature.",
       screens: [
         {
@@ -153,7 +153,7 @@ SLID.section("eng", {
       title: "Storms, fog and rainbows",
       short: "Storms and fog",
       icon: "bolt",
-      status: "draft",
+      status: "verified",
       why: "Storms, fog, rainbows: name them and say what you can see.",
       screens: [
         {
@@ -233,10 +233,10 @@ SLID.section("eng", {
           type: "stress",
           sk: "phon",
           title: "Find the stressed syllable.",
-          words: ["+rain|bow", "+thun|der", "+light|ning", "+fog|gy"],
+          words: ["+rain|bow", "+thun|der", "+light|ning", "de|+grees"],
           fbOk: "Well done!",
           fbBad: "Look at the underlined parts again.",
-          fbText: "<u>rain</u>bow, <u>thun</u>der, <u>light</u>ning, <u>fog</u>gy: the strong part is at the start."
+          fbText: "<u>rain</u>bow, <u>thun</u>der, <u>light</u>ning: the strong part is at the start. But de<u>grees</u>: the strong part is at the end."
         },
         {
           type: "word",
@@ -285,7 +285,7 @@ SLID.section("eng", {
       title: "Hotter, colder, wetter: comparing the weather",
       short: "Comparing",
       icon: "scale",
-      status: "draft",
+      status: "verified",
       why: "Which city is warmer today? Compare the weather in two places.",
       screens: [
         {
@@ -396,7 +396,7 @@ SLID.section("eng", {
       title: "More beautiful, better, worse",
       short: "Better, worse",
       icon: "star",
-      status: "draft",
+      status: "verified",
       why: "Which season is better for you? Compare with long words and with good and bad.",
       screens: [
         {
@@ -514,7 +514,7 @@ SLID.section("eng", {
       title: "Tomorrow it will be sunny: a weather forecast",
       short: "Forecast",
       icon: "chart",
-      status: "draft",
+      status: "verified",
       why: "Read a weather forecast. Then you know what the weather will be like.",
       screens: [
         {
@@ -653,7 +653,7 @@ SLID.section("eng", {
       title: "Seasons in Ukraine and the UK",
       short: "Seasons",
       icon: "globe",
-      status: "draft",
+      status: "verified",
       why: "Winter in Kyiv and winter in London are different. Read and compare.",
       screens: [
         {
@@ -738,7 +738,7 @@ SLID.section("eng", {
           type: "build",
           sk: "gram",
           title: "Put the words in order.",
-          body: `<p>Emma writes: “In winter, London is usually warmer than Kyiv.”</p><p>Andrii says it about Kyiv.</p>`,
+          body: `<p>Emma writes: “In winter, London is usually warmer than Kyiv.”</p><p>Andrii says it about Kyiv. He starts with <b>Kyiv</b>.</p>`,
           tiles: ["Kyiv", "is", "colder", "than", "London"],
           answer: "Kyiv is colder than London.",
           extra: ["warmer"],
@@ -789,7 +789,7 @@ SLID.section("eng", {
       title: "Our weather page",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e5s5boss",
       why: "Check everything from this section. Your points are doubled.",
