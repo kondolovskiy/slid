@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-20T08:47:10.689Z
 id: write-eng-g6-e6s2
 type: write-section
 subject: eng
@@ -6,7 +8,7 @@ grade: 6
 section: e6s2
 depends_on: [curate-eng-plan-g6, engine-eng-lang-core, engine-eng-validate, engine-eng-stats, skills-eng, curate-eng-style, curate-eng-glossary]
 status: todo
-claimed_by: 
+claimed_by: writer-e6s2
 created: 2026-11-19
 source: design-eng
 ---
