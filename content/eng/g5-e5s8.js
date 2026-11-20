@@ -5,7 +5,7 @@
    Концентрично спирається на e4s8 (Happy New Year!, Christmas 25 December, on/in з датами) і e4s7 (was/were) — reports/verify/plan-eng-g5.md §6.
    Увесь зміст — англійською, британська норма (D-054). Тексти, діалоги й герої — власні (docs/design/english.md §8).
    Форми, наголос і дати свят — за Cambridge Dictionary, OALD, en/uk.wikipedia (URL — tasks/…/write-eng-g5-e5s8.md, «Нотатки агента»).
-   Статус: draft. 7 уроків (6 + фінал).
+   Статус: verified (verifier-e5s8, reports/verify/e5s8.md). 7 уроків (6 + фінал).
    Перевірка: node tools/validate.mjs --section e5s8 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -15,7 +15,7 @@ SLID.section("eng", {
   title: "Festivals and traditions",
   why: "To talk about festivals in Ukraine and the UK. And to say dates: “the first of January”.",
   requires: ["e4s8l2", "e4s8l3", "e4s7l5"],
-  meta: { author: "writer-e5s8", created: "2026-11-19", factcheck: null, teacher: null },
+  meta: { author: "writer-e5s8", created: "2026-11-19", factcheck: "verifier-e5s8 (reports/verify/e5s8.md)", teacher: null },
   badges: [
     { id: "e5s8boss", name: "Festival calendar", icon: "trophy", desc: "Finish the final lesson “Festivals and traditions”" }
   ],
@@ -26,7 +26,7 @@ SLID.section("eng", {
       title: "First, second, third: ordinal numbers",
       short: "Ordinal numbers",
       icon: "target",
-      status: "draft",
+      status: "verified",
       why: "Who is first in the race? Which month is the fifth? Learn the words for it.",
       screens: [
         {
@@ -103,11 +103,11 @@ SLID.section("eng", {
           sk: "vocab",
           title: "Find the mistake.",
           body: `<p>One word in Taras’s message is wrong.</p>`,
-          text: "Today is my brother’s [nine] birthday. He is the second child in our family.",
+          text: "Today is my sister’s [nine] birthday. She is the second child in our family.",
           hint: "Is it counting or order?",
           fbOk: "Good eye!",
           fbBad: "Check each number word.",
-          fbText: "We say <b>my brother’s ninth birthday</b>, not <i>nine birthday</i>. <b>The second child</b> is correct."
+          fbText: "We say <b>my sister’s ninth birthday</b>, not <i>nine birthday</i>. <b>The second child</b> is correct."
         },
         {
           type: "gaps",
@@ -138,7 +138,7 @@ SLID.section("eng", {
       title: "When’s your birthday? Months and dates",
       short: "Dates",
       icon: "cake",
-      status: "draft",
+      status: "verified",
       why: "Ask your friends about their birthdays. Read and say dates the British way.",
       screens: [
         {
@@ -260,7 +260,7 @@ SLID.section("eng", {
       title: "A calendar of festivals: Ukraine and the UK",
       short: "Festivals",
       icon: "flag",
-      status: "draft",
+      status: "verified",
       why: "Learn about special days in Ukraine and the UK. Say when they are.",
       screens: [
         {
@@ -290,7 +290,7 @@ SLID.section("eng", {
         {
           type: "info",
           title: "Festivals",
-          body: `<p>Christmas, Easter and Bonfire Night are <b><u>fes</u>tivals</b>. A festival is a special day. People <b>celebrate</b> it every year.</p><p>Some special days are <b>public holidays</b>. In the UK, we also say <b>bank holidays</b>. Many people don’t go to work.</p>`,
+          body: `<p>Christmas, Easter and Bonfire Night are <b><u>fes</u>tivals</b>. A festival is a special day. People <b>celebrate</b> it every year.</p><p>Some special days are <b>public holidays</b>. In the UK, people also say <b>bank holidays</b>. Many people don’t go to work.</p>`,
           cta: "Next"
         },
         {
@@ -382,7 +382,7 @@ SLID.section("eng", {
       title: "How do you celebrate? Traditions",
       short: "Traditions",
       icon: "star",
-      status: "draft",
+      status: "verified",
       why: "Every family has its traditions. Tell your friends what you do on special days.",
       screens: [
         {
@@ -517,14 +517,14 @@ SLID.section("eng", {
       title: "Our New Year party was great! Was and were",
       short: "Was and were",
       icon: "scroll",
-      status: "draft",
+      status: "verified",
       why: "Tell your friends about a party or a festival in the past.",
       screens: [
         {
           type: "intro",
           eyebrow: "Lesson 5",
           title: "How was the party?",
-          body: `<p class="lead">It’s March. Andrii writes to Emma about New Year.</p><p><i>Hi Emma! Our New Year party was great! My aunt and uncle were at our flat. My cousins were there too. The cake was very big. Where were you on New Year’s Eve?<br>Andrii</i></p><p>Was, were: when was the party?</p>`,
+          body: `<p class="lead">It’s March. Andrii writes to Emma about New Year.</p><p><i>Hi Emma! Our New Year party was great! My aunt and uncle were at our flat. My cousins were there too. The cake was very big. Where were you on New Year’s Eve?<br>Andrii</i></p><p><b>Was</b>, <b>were</b>: is the party now or in the past?</p>`,
           cta: "Let’s see"
         },
         {
@@ -654,7 +654,7 @@ SLID.section("eng", {
       title: "Writing a greetings card",
       short: "Cards",
       icon: "book",
-      status: "draft",
+      status: "verified",
       why: "Write a card for a birthday or a festival. Say “What a lovely card!” to a friend.",
       screens: [
         {
@@ -740,7 +740,7 @@ SLID.section("eng", {
           body: `<p>Ostap ends his card.</p>`,
           before: "Best",
           after: ", Ostap",
-          answer: "wishes",
+          answer: ["wishes", "regards"],
           hint: "Look at the card rules: the end.",
           fbOk: "Good eye!",
           fbBad: "We end a card with Love or Best …",
@@ -786,7 +786,7 @@ SLID.section("eng", {
       title: "Our festival calendar",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e5s8boss",
       why: "Check everything from this section. Your points are doubled.",
@@ -858,9 +858,9 @@ SLID.section("eng", {
           sk: "gram",
           eyebrow: "Task 5",
           title: "Write the missing word.",
-          body: `<p>Emma writes about Christmas Day.</p>`,
+          body: `<p>It’s 27 December. Emma writes about Christmas Day. Write <b>was</b> or <b>were</b>.</p>`,
           before: "My grandparents",
-          after: "at our house on Christmas Day.",
+          after: "at our house on Christmas Day. Grandma’s cake was great!",
           answer: "were",
           pre: "e5s8l5",
           hint: "My grandparents: one or more than one? It’s in the past.",

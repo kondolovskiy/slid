@@ -7,7 +7,7 @@ subject: eng
 grade: 5
 section: e5s8
 depends_on: [curate-eng-plan-g5, engine-eng-lang-core, engine-eng-validate, engine-eng-stats, skills-eng, curate-eng-style, curate-eng-glossary, write-eng-g4-e4s1]
-status: review
+status: done
 claimed_by: writer-e5s8
 created: 2026-11-19
 source: design-eng
@@ -92,3 +92,5 @@ writer-e5s8, 2026-11-19. Файл: content/eng/g5-e5s8.js, 7 уроків (6 + b
 8. Плейтест не запускав (build не запускаю; Python-модуля playwright у контейнері може не бути).
 
 **Рядки для inbox** — передано оркестратору текстом (автор у inbox не пише під час паралельного запуску за вказівкою оркестратора).
+
+**verifier-e5s8, 2026-11-20 — verified.** Звіт: reports/verify/e5s8.md. Факти (24 August, 6 December, 12 страв, Boxing Day, Bonfire Night, Pancake Day, festival, bank holiday) — по 2+ відкритих джерела ✅. Правки: (1) l1 #8 — «my brother’s» → «my sister’s» (у e5s1 Тарас без братів); (2) boss T5 word — друга правильна відповідь («are», «stay»…): дата 27 December, «Write was or were», «Grandma’s cake was great!»; (3) l6 #8 — «regards» у ключ; (4) l3 #3 «we also say» → «people also say»; (5) l5 intro — питання про was/were. Усі уроки → `verified`. validate 0 помилок, 1 попередження (l3 longWordShare 0.16 — слова теми). Плейтест — ні (немає playwright). Yaryna лишено Lviv (CONFLICT — узгоджує e5s2). Назва l5 — прийнятне відхилення (Р4), plan.js — куратору.
