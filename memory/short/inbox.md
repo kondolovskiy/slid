@@ -426,3 +426,5 @@
 - 2026-11-20 · verifier-pe4s4 · PITFALL (eng, пул): у `word` «What does X buy?» після «Would you like a bag? – Yes, please» відповідь «bag» теж правильна — питати конкретніше («What present…?») або давати «No, thank you».
 - 2026-11-20 · verifier-pe4s4 · NOTE (eng, TQ-122): у `word` з назвою магазину без британської сцени класти в ключ AmE-синонім (bookstore; CD «mainly US»).
 - 2026-11-20 · verifier-pe4s4 · FACT (eng): наголос -teen/-ty (14–19 / 40–90) — CD UK і OALD BrE збігаються; seventeen в OALD — два склади (/ˌsevnˈtiːn/), у CD — три. https://dictionary.cambridge.org/dictionary/english/sixteen, https://www.oxfordlearnersdictionaries.com/definition/english/sixteen
+- 2026-11-20 · writer-dge5 · NOTE (eng, герої): у dge5 нове — Taras із Zlata наступного тижня їдуть потягом до Kyiv; Taras купався в річці в Carpathians (листівка); Taras — день народження 5 May (звірити з e5s8 / inbox «дні народження»); Emma — у травні.
+- 2026-11-20 · writer-dge5 · PITFALL (eng, тест рівня): `build` з be, модальним чи do у твердженні складається ще й у питання — у тесті без фідбеку краще `gaps`. «the X-est … of + місце» не робити хибним варіантом без потреби.
