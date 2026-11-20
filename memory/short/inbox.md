@@ -466,3 +466,7 @@
 - 2026-11-20 · verifier-pe4s7 · VERIFY: pe4s7 → verified, a21 + «America» у ключ, +15 вправ a45–a59 (phon stress, read), reports/verify/pe4s7.md; a12 інверсія «Up the hill walks Taras.» лишена (прецедент e4s7l2).
 - 2026-11-20 · verifier-pe4s7 · FACT (eng): America = the United States — CD america, OALD america. PITFALL: у `word` «the capital of ___» для США класти й «America».
 - 2026-11-20 · verifier-pe4s7 · PITFALL (eng, stress): transport у `stress` не брати (іменник ˈtræn.spɔːt / дієслово trænˈspɔːt); Canberra — три склади (Can|ber|ra).
+- 2026-11-20 · verifier-pe4s5 · VERIFY: pe4s5 → verified, 8 правок (a06 keepCase + Don't, слова поза уроками, +21 вправа a47–a67 phon/read/func, герої a60/a66), reports/verify/pe4s5.md. Плейтест: чи зрозуміла підказка «One word is not strong at the start.» (a49, a58, a64).
+- 2026-11-20 · verifier-pe4s5 · PITFALL (eng, build): обставину способу/знаряддя перед наказом («With a dirty towel don't dry…») у `answer` не класти; велика «Don't» + keepCase відсікає. Обставину часу на початку приймати.
+- 2026-11-20 · verifier-pe4s5 · PITFALL (eng): у `word` «Sofiia, ___ eat sweets» лягає й «never» — класти в ключ поруч з don't / do not.
+- 2026-11-20 · verifier-pe4s5 · NOTE (герої eng): Ostap лягає рано, Taras — пізно (e4s5l6); Bohdan — tennis після школи.
