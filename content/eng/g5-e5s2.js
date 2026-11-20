@@ -8,7 +8,7 @@
    reports/verify/plan-eng-g5.md §6. Герої 4 кл. — без суперечностей (Andrii — Kyiv, автобус; Oksana — село біля Poltava, пішки; Emma — велосипед).
    Увесь зміст — англійською, британська норма (D-054). Тексти, діалоги й герої — власні (docs/design/english.md §8).
    Форми, сполуки й наголос — за Cambridge Dictionary і OALD (URL — tasks/…/write-eng-g5-e5s2.md, «Нотатки агента»).
-   Статус: draft. 7 уроків (6 + фінал). Будова — за еталоном e4s1.
+   Статус: verified (reports/verify/e5s2.md). 7 уроків (6 + фінал). Будова — за еталоном e4s1.
    Перевірка: node tools/validate.mjs --section e5s2 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -18,7 +18,7 @@ SLID.section("eng", {
   title: "School life",
   why: "To talk about your school day and your timetable. And to understand your teacher in your English lessons.",
   requires: ["e4s3l2", "e4s3l3", "e4s5l1", "e4s8l2"],
-  meta: { author: "writer-e5s2", created: "2026-11-19", factcheck: null, teacher: null },
+  meta: { author: "writer-e5s2", created: "2026-11-19", factcheck: "verifier-e5s2 (reports/verify/e5s2.md)", teacher: null },
   badges: [
     { id: "e5s2boss", name: "Star of the class", icon: "trophy", desc: "Finish the final lesson “School life”" }
   ],
@@ -29,7 +29,7 @@ SLID.section("eng", {
       title: "My timetable: subjects and days",
       short: "Timetable",
       icon: "book",
-      status: "draft",
+      status: "verified",
       why: "What lessons have you got on Monday? Tell a friend about your timetable.",
       screens: [
         {
@@ -156,7 +156,7 @@ SLID.section("eng", {
       title: "My school day: I get up at seven",
       short: "School day",
       icon: "path",
-      status: "draft",
+      status: "verified",
       why: "Every day is a little story. Tell a friend about your school day.",
       screens: [
         {
@@ -186,7 +186,7 @@ SLID.section("eng", {
         {
           type: "info",
           title: "What time is it?",
-          body: `<ul><li>7.00 → seven <b>o’clock</b></li><li>7.30 → <b>half past</b> seven</li><li>8.30 → <b>half past</b> eight</li></ul><p><b>half</b> = 30 minutes</p><p><b>What time</b> do you get up?<br>– <b>At</b> seven o’clock.</p>`,
+          body: `<ul><li>7.00 → seven <b>o’clock</b></li><li>7.30 → <b>half past</b> seven</li><li>8.30 → <b>half past</b> eight</li></ul><p><b>half</b> = 30 minutes</p><p><b>What time</b> do you get up?<br>– <b>At</b> seven o’clock.</p><p>The underlined part is strong: <u>break</u>fast, <u>home</u>work, after<u>noon</u>.</p>`,
           cta: "Next"
         },
         {
@@ -291,7 +291,7 @@ SLID.section("eng", {
       title: "Does she walk to school? Questions and negatives",
       short: "Questions",
       icon: "users",
-      status: "draft",
+      status: "verified",
       why: "Ask a friend about their day. And say what you don’t do.",
       screens: [
         {
@@ -417,14 +417,14 @@ SLID.section("eng", {
       title: "She’s always on time: always, usually, never",
       short: "How often?",
       icon: "chart",
-      status: "draft",
+      status: "verified",
       why: "Are you always on time? Say how often you do things.",
       screens: [
         {
           type: "intro",
           eyebrow: "Lesson 4",
           title: "Who is never late?",
-          body: `<p class="lead">Andrii writes about his class.</p><p><i>Bohdan is always on time. He is never late. Yaryna usually walks to school. She often reads at break. I sometimes get up late. Then I am late for school!</i></p><p>Always, usually, never: where do these words go?</p>`,
+          body: `<p class="lead">Andrii writes about his class.</p><p><i>Bohdan is always on time. He is never late. Daryna usually walks to school. She often reads at break. I sometimes get up late. Then I am late for school!</i></p><p>Always, usually, never: where do these words go?</p>`,
           cta: "Let’s see"
         },
         {
@@ -454,7 +454,7 @@ SLID.section("eng", {
           type: "choice",
           sk: "gram",
           title: "Choose the correct answer.",
-          body: `<p>Yaryna walks to school every day. How often does she walk to school?</p>`,
+          body: `<p>Kateryna walks to school every day. How often does she walk to school?</p>`,
           opts: [
             "She sometimes walks to school.",
             "She never walks to school.",
@@ -500,7 +500,7 @@ SLID.section("eng", {
           type: "pick",
           sk: "gram",
           title: "Find the mistake.",
-          body: `<p>One word in Yaryna’s message is wrong.</p>`,
+          body: `<p>One word in Daryna’s message is wrong.</p>`,
           text: "I usually walk to school. My brother always [get] up late. He is never on time.",
           hint: "My brother is he. Check each verb.",
           fbOk: "Good eye!",
@@ -525,11 +525,11 @@ SLID.section("eng", {
           sk: "read",
           eyebrow: "Final",
           title: "Read and choose.",
-          body: `<p><i>Hi Emma! In my class, Bohdan is always on time. Yaryna usually walks to school. She often reads at break. I am sometimes late. And you? Andrii</i></p><p>Who is sometimes late for school?</p>`,
+          body: `<p><i>Hi Emma! In my class, Bohdan is always on time. Daryna usually walks to school. She often reads at break. I am sometimes late. And you? Andrii</i></p><p>Who is sometimes late for school?</p>`,
           opts: [
             "Bohdan",
             "Andrii",
-            "Yaryna"
+            "Daryna"
           ],
           correct: 1,
           hint: "Find the word sometimes. Who writes I?",
@@ -554,7 +554,7 @@ SLID.section("eng", {
       title: "Open your books! Classroom activities",
       short: "In class",
       icon: "target",
-      status: "draft",
+      status: "verified",
       why: "Your teacher says “Open your books!” Understand the teacher in English.",
       screens: [
         {
@@ -646,7 +646,7 @@ SLID.section("eng", {
           type: "word",
           sk: "vocab",
           title: "Write the missing word.",
-          body: `<p>Taras knows the answer.</p>`,
+          body: `<p>Bohdan knows the answer.</p>`,
           before: "Put your hand",
           after: "!",
           answer: "up",
@@ -684,7 +684,7 @@ SLID.section("eng", {
       title: "Can I…? Could you repeat that, please?",
       short: "Asking",
       icon: "voice",
-      status: "draft",
+      status: "verified",
       why: "Sometimes you don’t understand. Ask the teacher in English.",
       screens: [
         {
@@ -823,7 +823,7 @@ SLID.section("eng", {
       title: "Letters from two schools",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e5s2boss",
       why: "Check everything from this section. Your points are doubled.",

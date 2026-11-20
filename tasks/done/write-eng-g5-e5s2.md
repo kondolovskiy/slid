@@ -7,7 +7,7 @@ subject: eng
 grade: 5
 section: e5s2
 depends_on: [curate-eng-plan-g5, engine-eng-lang-core, engine-eng-validate, engine-eng-stats, skills-eng, curate-eng-style, curate-eng-glossary, write-eng-g4-e4s1]
-status: review
+status: done
 claimed_by: writer-e5s2
 created: 2026-11-19
 source: design-eng
@@ -86,3 +86,7 @@ writer-e5s2, 2026-11-19. Файл `content/eng/g5-e5s2.js`, 7 уроків (6 + 
 3. l4 hyp «Bohdan is always on time» — правило після be вже було в e4s3l2 (requires); лишив здогадкою для ритму уроку.
 4. PE — B1 (OALD); пояснено в info l1 («PE – sport and games»), перш ніж питати.
 5. Позиційні вправи l4 — лише always/never (usually/often/sometimes можуть стояти на початку й у кінці; CD Grammar).
+
+## Нотатки верифікатора
+verifier-e5s2, 2026-11-20. Звіт: reports/verify/e5s2.md. **Вердикт: verified (7 уроків).** Блокувальних знахідок немає; кожне завдання розв'язано, build перебрано всіма перестановками через app/lang.js, word — wordVerdict; форми й наголос — CD + OALD (curl), програма — МП-ІМ с. 20–22 (PDF у сесії); фрагменти ≥ 12 слів — WebSearch, збігів немає.
+Правки: (1) Yaryna → Daryna (CONFLICT inbox: Yaryna лишається в e5s8, Lviv); (2) l4 #3 choice — «Yaryna walks every day/always» суперечило «usually» в intro/Final → Kateryna; (3) l5 #8 word — Taras (Lviv) → Bohdan (клас Andrii); (4) l2 #7 stress — опори не було → `<u>`breakfast/homework/afternoon в info «What time is it?»; статуси verified, meta.factcheck. validate --section e5s2 — 0/0; stats — без прапорців. TQ не додано.
