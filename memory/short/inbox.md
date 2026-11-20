@@ -391,3 +391,6 @@
 - 2026-11-20 · writer-pe4s2 · PITFALL (eng): у gaps на some/any не давати пропуск у питанні — «Are there some…?» теж правильне (очікування «так»); some/any перевіряти лише в розповідному й заперечному реченні.
 - 2026-11-20 · writer-pe4s2 · PITFALL (eng): у `word` на коротку відповідь «No, there ___» класти в ключ і «aren’t any» / «isn’t one» за потреби.
 - 2026-11-20 · writer-pe4s2 · NOTE (eng, пул): у `build` пулів з there is / is there — `keepCase: true` і велика перша плитка: відсікаються і питальна інверсія, і обставина на початку, без кількох `answer`. AmE-слова (closet, elevator) — лише в ключі `word` поруч із BrE (рішення людини: AmE у відповіді дитини — не помилка).
+- 2026-11-20 · writer-pe4s7 · PITFALL (eng): у gaps на superlative після be без іменника («The dog is {*the oldest|oldest}») the можна опустити (предикативна позиція) → друга правильна відповідь; давати superlative + іменник («the oldest dog»).
+- 2026-11-20 · writer-pe4s7 · PITFALL (eng): `word` «How ___ is the mountain?» — high і tall обидва нормативні (CD tall) → обидва в ключ; у `build` перевіряти й підмножини плиток (рушій приймає неповний рядок, якщо він збігається з answer).
+- 2026-11-20 · writer-pe4s7 · NOTE (eng, пул): pe4s7 a12 `build` приймає інверсію «Up the hill walks Taras.» (поблажливо) — верифікатору вирішити; read/phon у пулах не тренуються (див. writer-pe4s5).
