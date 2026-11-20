@@ -57,3 +57,5 @@ source: design-eng
 1. a43: відповідь «It’s 25 Lisova Street, Kyiv.» парується лише з «What’s your address?» — на «Where do you live?» природніше «I live in…» / «At…»; вважаю однозначним.
 2. a46: другий порядок «I live near Poltava in a village» узято в ключ (без коми — граматичне); якщо верифікатор вважає його неприродним — лишити, бо відкидати правильне гірше.
 3. a54: пропуск на початку рядка бланка («___: 10») → «age»; регістр не оцінюється (keepCase немає).
+
+**Доповнення (корекція оркестратора: пули можуть мати stress/choice/multi).** phon уже покрито `stress` (l1, l3, l6 — по 3 вправи); read (l2, l4 — по 3) — `gaps`/`word` на короткому тексті з однією правильною відповіддю, тож `choice`/`multi` не додавав. Усі слова `stress` мають один наголос і в CD, і в OALD: CD/OALD — звіт reports/verify/e4s1.md §2; бракувало OALD для teacher /ˈtiːtʃə(r)/, driver /ˈdraɪvə(r)/, Ukrainian /juːˈkreɪniən/ — звірено 2026-11-20: https://www.oxfordlearnersdictionaries.com/definition/english/teacher, …/driver, …/ukrainian (IPA лише для звірки, у пул не перенесено).
