@@ -1,11 +1,13 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-20T08:28:12.056Z
 id: style-eng-g4-5
 type: style
 subject: eng
 grade: 
 depends_on: [write-eng-g4-e4s1, write-eng-g4-e4s2, write-eng-g4-e4s3, write-eng-g4-e4s4, write-eng-g4-e4s5, write-eng-g4-e4s6, write-eng-g4-e4s7, write-eng-g4-e4s8, write-eng-g5-e5s1, write-eng-g5-e5s2, write-eng-g5-e5s3, write-eng-g5-e5s4, write-eng-g5-e5s5, write-eng-g5-e5s6, write-eng-g5-e5s7, write-eng-g5-e5s8, write-eng-g5-e5s9, write-eng-g5-e5s10]
 status: todo
-claimed_by: 
+claimed_by: style-eng-g4-5
 created: 2026-11-19
 source: design-eng
 ---
