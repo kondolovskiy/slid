@@ -18,7 +18,7 @@ SLID.section("eng", {
   weeks: [24, 27],
   title: "School life: subjects and lessons",
   why: "To talk about your favourite subjects and what you do in lessons. And to talk about school rules and give advice.",
-  requires: ["e5s2l1", "e5s2l5", "e5s2l6", "e6s5l5"],
+  requires: ["e5s2l1", "e5s2l5", "e5s2l6", "e6s5l5", "e6s3l4"],
   meta: { author: "writer-e6s6", created: "2026-11-20", factcheck: "verifier-e6s6 (reports/verify/e6s6.md)", teacher: null },
   badges: [
     { id: "e6s6boss", name: "School magazine editor", icon: "trophy", desc: "Finish the final lesson “School life: subjects and lessons”" }

@@ -327,3 +327,8 @@
 - 2026-11-20 · writer-e6s7 · TERM (eng): «the third form of the verb» (e6s7l5) чи «past participle» — у glossary/eng немає; вирішити для 6 кл. (style-eng-g6).
 - 2026-11-20 · writer-e6s7 · NOTE (фото): img/eng/e6s7/sofia.jpg — копія img/hist/g5s5/sofia.jpg (дублікат); st-andrews-church.jpg — Commons, Maksym Kozlenko, CC BY-SA 4.0. Золоті ворота (1982) і фунікулер не брав — в Україні немає свободи панорами.
 - 2026-11-20 · orchestrator · FIX (requires): після злиття 6 кл. додано e6s6 → e6s5l5 (have to), e6s7 → e6s3l4, e6s3l5 (irregular, did), e6s8 → e6s7l4 (Present Perfect). e6s4 → e6s3l4 автор поставив сам.
+- 2026-11-20 · verifier-e6s6 · FACT ✅ (eng): must / mustn't / don't have to / should / who-which-that звірено за CD Grammar (must, have-got-to-have-to, should, relative-pronouns) і OALD must_1, should, who, which, that_2; наголос geography, useful, difficult, experiment, amazing — CD + OALD + Wiktionary; Kyiv on both banks of the Dnipro — en.wikipedia Kyiv, ЕСУ article-11194. Звіт reports/verify/e6s6.md.
+- 2026-11-20 · verifier-e6s6 · FIX (герої eng): у e6s6 улюблений предмет Kyrylo — history (l3, l7 T3 виправлено з IT); IT — улюблений предмет Zoriana.
+- 2026-11-20 · verifier-e6s6 · PITFALL (eng): у фінальному уроці перевіряй уподобання героїв на збіг з уроками розділу (e6s6 l7 T3 мав IT замість history для Kyrylo).
+- 2026-11-20 · verifier-e6s6 · NOTE (stress eng): Wiktionary дає для UK ще /ˈdʒɒɡɹəfi/ (geography), а CD і OALD — лише /dʒiˈɒɡrəfi/ → у пулах брати слова з однозначним наголосом у всіх трьох словниках.
+- 2026-11-20 · orchestrator · FIX (requires): e6s6 → + e6s3l4 (irregular verbs), за рекомендацією verifier-e6s6.
