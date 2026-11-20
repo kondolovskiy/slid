@@ -7,7 +7,7 @@ subject: eng
 grade: 6
 section: e6s7
 depends_on: [curate-eng-plan-g6, engine-eng-lang-core, engine-eng-validate, engine-eng-stats, skills-eng, curate-eng-style, curate-eng-glossary]
-status: review
+status: done
 claimed_by: writer-e6s7
 created: 2026-11-19
 source: design-eng
@@ -88,3 +88,10 @@ Build не запускай (AGENTS.md §4 п. 8).
 - `why` розділу з Present Perfect до уроку — як і в плані (Р2 curate-eng-plan-g6).
 - requires усередині 6 кл. (e6s7 → урок Past Simple irregular з e6s3) — оркестратору після злиття (curator-plan-eng-g6 NOTE).
 - Дубль файлу sofia.jpg з img/hist/g5s5 — як інші дублікати img/hist ↔ img/world (handoff, людині).
+
+**verifier-e6s7, 2026-11-20.** Вердикт: **verified** (7 уроків). Звіт: reports/verify/e6s7.md. Факти про Київ я звірив за ЕСУ (article-11194, 16975, 44207, 44209, 11337), en/uk.wikipedia і Commons — кожен щонайменше за двома відкритими джерелами. Правки в content/eng/g6-e6s7.js:
+1. «almost a thousand years» → «about a thousand years» (l3 intro, l6 part 1). Дату 1011 визнали ЮНЕСКО й уряд, 1000-річчя відзначали у 2011 (en/uk.wikipedia), тож собор може бути й старшим за 1000 років.
+2. l2 `word` «the ___ café»: ключ ["only", "one"], бо «the one café» правильне (OALD one_1).
+3. l5 info: ряд see – saw – seen, eat – ate – eaten, be – was / were – been, щоб «the third form» мав опору.
+4. l6 part 3: +«Have dinner in a café near the square.». Текст тепер 160 слів (TQ-123), readWordsPerScreen = 40.
+`build` перебрано через app/lang.js, пропущених порядків немає. Авторське право: 8 запитів, збігів немає. TQ-125 — термін «the third form» чи «past participle». validate 0/0. Плейтест — після build (у контейнері немає Python-модуля playwright).

@@ -11,7 +11,7 @@
    Факти про Київ — щонайменше два відкриті джерела кожен (ЕСУ, en/uk.wikipedia; URL — tasks/…/write-eng-g6-e6s7.md, «Нотатки агента»);
    дати будівництва — лише встановлені (століття там, де точний рік спірний).
    Увесь зміст — англійською, британська норма (D-054). Тексти, діалоги й герої — власні (docs/design/english.md §8).
-   Статус: draft. 7 уроків (6 + фінал).
+   Статус: verified (reports/verify/e6s7.md). 7 уроків (6 + фінал).
    Перевірка: node tools/validate.mjs --section e6s7 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -21,7 +21,7 @@ SLID.section("eng", {
   title: "Kyiv, the capital of Ukraine",
   why: "To tell people about Kyiv and its famous places. And to talk about places you have visited.",
   requires: ["e4s7l3", "e5s10l1", "e5s10l5", "e5s7l6", "e6s3l4", "e6s3l5"],
-  meta: { author: "writer-e6s7", created: "2026-11-20", factcheck: null, teacher: null },
+  meta: { author: "writer-e6s7", created: "2026-11-20", factcheck: "verifier-e6s7 (reports/verify/e6s7.md)", teacher: null },
   badges: [
     { id: "e6s7boss", name: "Kyiv guide", icon: "trophy", desc: "Finish the final lesson “Kyiv, the capital of Ukraine”" }
   ],
@@ -36,7 +36,7 @@ SLID.section("eng", {
       title: "Kyiv on the map: a city on the Dnipro",
       short: "On the map",
       icon: "map",
-      status: "draft",
+      status: "verified",
       why: "Visitors often ask where Kyiv is. Learn to describe the city on the map.",
       screens: [
         {
@@ -146,7 +146,7 @@ SLID.section("eng", {
       title: "The main street, the main square: sightseeing in Kyiv",
       short: "Sightseeing",
       icon: "city",
-      status: "draft",
+      status: "verified",
       why: "Visitors want to see the main places. Learn to name them and say what is special.",
       screens: [
         {
@@ -242,7 +242,7 @@ SLID.section("eng", {
           body: `<p>There is one café in Andrii’s street. There are no other cafés there.</p>`,
           before: "So it’s the",
           after: "café in his street.",
-          answer: "only",
+          answer: ["only", "one"],
           hint: "One café, no others: the …",
           fbOk: "Well done!",
           fbBad: "Look at the rule: one, no others → the …",
@@ -277,7 +277,7 @@ SLID.section("eng", {
       title: "When was it built? Old buildings in Kyiv",
       short: "It was built",
       icon: "scroll",
-      status: "draft",
+      status: "verified",
       why: "Visitors often ask how old a building is. Learn to answer: It was built in…",
       screens: [
         {
@@ -286,7 +286,7 @@ SLID.section("eng", {
           title: "When was it built?",
           img: "img/eng/e6s7/sofia.jpg",
           cap: "St Sophia’s Cathedral in Kyiv, view from the south",
-          body: `<p class="lead">Amelia finds a photo on the internet and sends it to Andrii.</p><p><b>Amelia:</b> Is this St Sophia’s Cathedral? It looks very old! When was it built?<br><b>Andrii:</b> Yes, it is! It was built in the 11th century. That’s almost a thousand years ago!</p><p>What does “It was built” mean?</p>`,
+          body: `<p class="lead">Amelia finds a photo on the internet and sends it to Andrii.</p><p><b>Amelia:</b> Is this St Sophia’s Cathedral? It looks very old! When was it built?<br><b>Andrii:</b> Yes, it is! It was built in the 11th century. That’s about a thousand years ago!</p><p>What does “It was built” mean?</p>`,
           cta: "Let’s see"
         },
         {
@@ -423,7 +423,7 @@ SLID.section("eng", {
       title: "Have you ever been to Kyiv?",
       short: "Been to",
       icon: "globe",
-      status: "draft",
+      status: "verified",
       why: "Friends often ask about places you know. Learn to ask: Have you ever been to…?",
       screens: [
         {
@@ -547,7 +547,7 @@ SLID.section("eng", {
       title: "I’ve visited…, I’ve never seen…: my experiences",
       short: "Experiences",
       icon: "star",
-      status: "draft",
+      status: "verified",
       why: "Tell friends about places you have visited and things you have seen. Then say when.",
       screens: [
         {
@@ -575,7 +575,7 @@ SLID.section("eng", {
         {
           type: "info",
           title: "I’ve visited, I’ve seen",
-          body: `<p><b>have / has</b> + the third form of the verb:</p><ul><li>regular verbs → <b>-ed</b>: visit → I’ve <b>visited</b>, try → I’ve <b>tried</b></li><li>irregular verbs → learn them: be → <b>been</b>, see → <b>seen</b>, eat → <b>eaten</b></li></ul><p>Have you ever <b>eaten</b> varenyky? – Yes, I have!<br>I’ve never <b>seen</b> the Golden Gate.</p>`,
+          body: `<p><b>have / has</b> + the third form of the verb:</p><ul><li>regular verbs → <b>-ed</b>: visit → I’ve <b>visited</b>, try → I’ve <b>tried</b></li><li>irregular verbs → learn them: see – saw – <b>seen</b>, eat – ate – <b>eaten</b>, be – was / were – <b>been</b></li></ul><p>Have you ever <b>eaten</b> varenyky? – Yes, I have!<br>I’ve never <b>seen</b> the Golden Gate.</p>`,
           cta: "Next"
         },
         {
@@ -683,7 +683,7 @@ SLID.section("eng", {
       title: "A day in Kyiv: a page for visitors",
       short: "A day in Kyiv",
       icon: "path",
-      status: "draft",
+      status: "verified",
       why: "Visitors like a plan for the day. Read a page about Kyiv and answer a visitor.",
       screens: [
         {
@@ -700,7 +700,7 @@ SLID.section("eng", {
           title: "Read and choose.",
           img: "img/eng/e6s7/sofia.jpg",
           cap: "St Sophia’s Cathedral, Kyiv",
-          body: `<p><i><b>Morning.</b> Start your day at St Sophia’s Cathedral. It was built in the 11th century, so it’s almost a thousand years old! Then walk to the Golden Gate. It was the main gate of old Kyiv. The old gate was built in the 11th century too. The gate you can see today was built again in 1982.</i></p><p>When was the Golden Gate built again?</p>`,
+          body: `<p><i><b>Morning.</b> Start your day at St Sophia’s Cathedral. It was built in the 11th century, so it’s about a thousand years old! Then walk to the Golden Gate. It was the main gate of old Kyiv. The old gate was built in the 11th century too. The gate you can see today was built again in 1982.</i></p><p>When was the Golden Gate built again?</p>`,
           opts: [
             "in the 11th century",
             "in 1982",
@@ -737,7 +737,7 @@ SLID.section("eng", {
           sk: "read",
           eyebrow: "Reading: A day in Kyiv, part 3 of 3",
           title: "Read and choose.",
-          body: `<p><i><b>Evening.</b> In the evening, go to Khreshchatyk, the main street of Kyiv. Walk to Maidan Nezalezhnosti, Independence Square. It’s on Khreshchatyk. Have you ever seen Kyiv in the evening? It’s beautiful! – Andrii, Bohdan, Daryna and Zoriana</i></p><p>Where is Independence Square?</p>`,
+          body: `<p><i><b>Evening.</b> In the evening, go to Khreshchatyk, the main street of Kyiv. Walk to Maidan Nezalezhnosti, Independence Square. It’s on Khreshchatyk. Have dinner in a café near the square. Have you ever seen Kyiv in the evening? It’s beautiful! – Andrii, Bohdan, Daryna and Zoriana</i></p><p>Where is Independence Square?</p>`,
           opts: [
             "in Podil",
             "next to St Andrew’s Church",
@@ -819,7 +819,7 @@ SLID.section("eng", {
       title: "Kyiv for visitors",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e6s7boss",
       why: "Check everything from this section. Your points are doubled.",
