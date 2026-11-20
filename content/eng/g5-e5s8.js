@@ -751,7 +751,7 @@ SLID.section("eng", {
           sk: "gram",
           title: "Find the mistake.",
           body: `<p>One word in Mariia’s card is wrong.</p>`,
-          text: "Dear Bohdan, Happy birthday! What [an] lovely party! Love, Mariia",
+          text: "Dear Danylo, Happy birthday! What [an] lovely party! Love, Mariia",
           hint: "Lovely: is the first sound a vowel?",
           fbOk: "Good eye!",
           fbBad: "Check a and an.",

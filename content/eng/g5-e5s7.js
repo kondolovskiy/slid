@@ -578,7 +578,7 @@ SLID.section("eng", {
           img: "img/eng/e5s7/town-map.svg",
           fit: true,
           cap: "A map of the centre of Emma’s town",
-          body: `<p class="lead">Emma writes to the pen-friend club.</p><p><i>Start at the station. Go along Station Road to High Street. Turn left. My favourite place is on the left. It’s got old and interesting things!</i></p><p>Can you find the way on the map?</p>`,
+          body: `<p class="lead">Emma writes to the penfriend club.</p><p><i>Start at the station. Go along Station Road to High Street. Turn left. My favourite place is on the left. It’s got old and interesting things!</i></p><p>Can you find the way on the map?</p>`,
           cta: "Let’s see"
         },
         {

@@ -34,7 +34,7 @@ SLID.section("eng", {
           type: "intro",
           eyebrow: "Lesson 1",
           title: "What sport do they do?",
-          body: `<p class="lead">Today the pen-friend club chat is about sport.</p><p><b>Andrii:</b> I play football.<br><b>Emma:</b> I go swimming.<br><b>Oksana:</b> I do karate.</p><p>Play, go or do: when do we say each word?</p>`,
+          body: `<p class="lead">Today the penfriend club chat is about sport.</p><p><b>Andrii:</b> I play football.<br><b>Emma:</b> I go swimming.<br><b>Oksana:</b> I do karate.</p><p>Play, go or do: when do we say each word?</p>`,
           cta: "Let’s see"
         },
         {
@@ -696,7 +696,7 @@ SLID.section("eng", {
           type: "intro",
           eyebrow: "Lesson 6",
           title: "What is Mariia’s hobby?",
-          body: `<p class="lead">Mariia from Kharkiv writes a post for the pen-friend club.</p><p>A post is a message on a website. Read Mariia’s post in three parts.</p><p>What is her hobby? How often does she do it?</p>`,
+          body: `<p class="lead">Mariia from Kharkiv writes a post for the penfriend club.</p><p>A post is a message on a website. Read Mariia’s post in three parts.</p><p>What is her hobby? How often does she do it?</p>`,
           cta: "Let’s read"
         },
         {
@@ -761,8 +761,9 @@ SLID.section("eng", {
           sk: "write",
           title: "Put the words in order.",
           body: `<p>Write a question for the end of your post.</p>`,
-          tiles: ["do", "you", "like", "swimming", "or", "cycling"],
+          tiles: ["Do", "you", "like", "swimming", "or", "cycling"],
           extra: ["but"],
+          keepCase: true,
           answer: ["Do you like swimming or cycling?", "Do you like cycling or swimming?"],
           hint: "A question starts with Do.",
           fbOk: "Yes!",
@@ -837,7 +838,7 @@ SLID.section("eng", {
           type: "intro",
           eyebrow: "Section final · points ×2",
           title: "Can you help at sports day?",
-          body: `<p class="lead">Today is sports day at the pen-friend club. Ms Kravets has a quiz.</p><p>Taras writes about his sport and his hero. Help him. You need everything from this section.</p>`,
+          body: `<p class="lead">Today is sports day at the penfriend club. Ms Kravets has a quiz.</p><p>Taras writes about his sport and his hero. Help him. You need everything from this section.</p>`,
           cta: "Let’s go"
         },
         {

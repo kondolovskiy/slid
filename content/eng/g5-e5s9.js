@@ -36,7 +36,7 @@ SLID.section("eng", {
           type: "intro",
           eyebrow: "Lesson 1",
           title: "Where would they like to go?",
-          body: `<p class="lead">The friends chat about the summer holidays.</p><p><b>Oksana:</b> I’d like to go to Odesa because I love the sea.<br><b>Taras:</b> I’d like to go to the Carpathians because I love mountains.<br><b>Emma:</b> I’d like to visit Kyiv because my pen friend lives there.</p><p>Which word tells us why?</p>`,
+          body: `<p class="lead">The friends chat about the summer holidays.</p><p><b>Oksana:</b> I’d like to go to Odesa again because I love the sea.<br><b>Taras:</b> I’d like to go to the Carpathians because I love mountains.<br><b>Emma:</b> I’d like to visit Kyiv because my penfriend lives there.</p><p>Which word tells us why?</p>`,
           cta: "Let’s see"
         },
         {
@@ -618,7 +618,7 @@ SLID.section("eng", {
           sk: "gram",
           title: "Fill in the gaps.",
           body: `<p>Daryna writes about her trip.</p>`,
-          text: "Last summer we {*visited|visit|visitted} Kyiv. We {*stayed|staied} in a small hotel. I {*liked|likeed} the big park.",
+          text: "Last summer we {*visited|visit|visitted} Lviv. We {*stayed|staied} in a small hotel. I {*liked|likeed} the big park.",
           hint: "Last summer: add -ed. Like ends in e: add d.",
           fbOk: "Exactly.",
           fbBad: "Look at the list again.",

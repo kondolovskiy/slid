@@ -660,7 +660,7 @@ SLID.section("eng", {
           type: "intro",
           eyebrow: "Lesson 6",
           title: "Is winter the same everywhere?",
-          body: `<p class="lead">The pen-friend club makes a new page: “Seasons in Ukraine and the UK”.</p><p>Andrii writes about Ukraine. Emma writes about England.</p><p>Is winter in Kyiv like winter in London?</p>`,
+          body: `<p class="lead">The penfriend club makes a new page: “Seasons in Ukraine and the UK”.</p><p>Andrii writes about Ukraine. Emma writes about England.</p><p>Is winter in Kyiv like winter in London?</p>`,
           cta: "Let’s read"
         },
         {
@@ -798,7 +798,7 @@ SLID.section("eng", {
           type: "intro",
           eyebrow: "Section final · points ×2",
           title: "Can you check the weather page?",
-          body: `<p class="lead">The pen-friend club has a weather page. Ms Kravets needs your help.</p><p>Read the posts and check them. You need everything from this section.</p>`,
+          body: `<p class="lead">The penfriend club has a weather page. Ms Kravets needs your help.</p><p>Read the posts and check them. You need everything from this section.</p>`,
           cta: "Let’s go"
         },
         {

@@ -186,7 +186,7 @@ SLID.section("eng", {
         {
           type: "info",
           title: "What time is it?",
-          body: `<ul><li>7.00 → seven <b>o’clock</b></li><li>7.30 → <b>half past</b> seven</li><li>8.30 → <b>half past</b> eight</li></ul><p><b>half</b> = 30 minutes</p><p><b>What time</b> do you get up?<br>– <b>At</b> seven o’clock.</p><p>The underlined part is strong: <u>break</u>fast, <u>home</u>work, after<u>noon</u>.</p>`,
+          body: `<ul><li>7.00 → seven <b>o’clock</b></li><li>7.30 → <b>half past</b> seven</li><li>8.30 → <b>half past</b> eight</li></ul><p><b>half</b> = 30 minutes</p><p><b>What time</b> do you get up?<br>– <b>At</b> seven o’clock.</p><p>The <u>underlined</u> part is strong: <u>break</u>fast, <u>home</u>work, after<u>noon</u>.</p>`,
           cta: "Next"
         },
         {
@@ -356,8 +356,9 @@ SLID.section("eng", {
           sk: "gram",
           title: "Put the words in order.",
           body: `<p>Ask about Oksana’s day.</p>`,
-          tiles: ["what time", "does", "Oksana", "get up"],
+          tiles: ["What time", "does", "Oksana", "get up"],
           extra: ["gets up"],
+          keepCase: true,
           answer: "What time does Oksana get up?",
           hint: "What time + does + Oksana + …",
           fbOk: "Well done!",
@@ -454,7 +455,7 @@ SLID.section("eng", {
           type: "choice",
           sk: "gram",
           title: "Choose the correct answer.",
-          body: `<p>Kateryna walks to school every day. How often does she walk to school?</p>`,
+          body: `<p>Zoriana walks to school every day. How often does she walk to school?</p>`,
           opts: [
             "She sometimes walks to school.",
             "She never walks to school.",
@@ -591,7 +592,7 @@ SLID.section("eng", {
           type: "choice",
           sk: "vocab",
           title: "Choose the correct answer.",
-          body: `<p>Kateryna knows the answer. What does she do?</p>`,
+          body: `<p>Zoriana knows the answer. What does she do?</p>`,
           opts: [
             "She closes her book.",
             "She puts her hand up.",
@@ -600,7 +601,7 @@ SLID.section("eng", {
           correct: 1,
           fbOk: "Right.",
           fbBad: "Look at the list: you know the answer.",
-          fbText: "You know the answer? <b>Put your hand up</b>. Kateryna <b>puts her hand up</b>."
+          fbText: "You know the answer? <b>Put your hand up</b>. Zoriana <b>puts her hand up</b>."
         },
         {
           type: "info",
@@ -700,7 +701,7 @@ SLID.section("eng", {
           eyebrow: "Guess!",
           title: "What do you think?",
           hyp: true,
-          body: `<p>Kateryna doesn’t understand the teacher. What does she say?</p>`,
+          body: `<p>Zoriana doesn’t understand the teacher. What does she say?</p>`,
           opts: [
             "Repeat that!",
             "Could you repeat that, please?",
@@ -766,8 +767,9 @@ SLID.section("eng", {
           sk: "func",
           title: "Put the words in order.",
           body: `<p>Ask about the word “pencil”.</p>`,
-          tiles: ["how", "do", "you", "spell", "“pencil”"],
+          tiles: ["How", "do", "you", "spell", "“pencil”"],
           extra: ["does"],
+          keepCase: true,
           answer: "How do you spell “pencil”?",
           hint: "How + do + you + …",
           fbOk: "Good eye!",
@@ -778,7 +780,7 @@ SLID.section("eng", {
           type: "word",
           sk: "func",
           title: "Write the missing word.",
-          body: `<p>Kateryna doesn’t know the word “board”.</p>`,
+          body: `<p>Zoriana doesn’t know the word “board”.</p>`,
           before: "What does “board”",
           after: "?",
           answer: "mean",

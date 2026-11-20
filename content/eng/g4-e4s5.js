@@ -249,7 +249,7 @@ SLID.section("eng", {
           words: ["+health|y", "com|+pu|ter", "+chil|dren"],
           fbOk: "Yes!",
           fbBad: "Look at the underlined parts again.",
-          fbText: "<u>health</u>y, com<u>pu</u>ter, <u>chil</u>dren: the underlined part is strong."
+          fbText: "<u>health</u>y, com<u>pu</u>ter, <u>chil</u>dren: the <u>underlined</u> part is strong."
         },
         {
           type: "word",
@@ -369,8 +369,9 @@ SLID.section("eng", {
           sk: "gram",
           title: "Put the words in order.",
           body: `<p>Ask Andrii a question.</p>`,
-          tiles: ["you", "how", "feel", "do"],
+          tiles: ["you", "How", "feel", "do"],
           extra: ["does"],
+          keepCase: true,
           answer: "How do you feel?",
           hint: "Start with How. Is it you or she?",
           fbOk: "Yes!",

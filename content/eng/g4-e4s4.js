@@ -382,9 +382,10 @@ SLID.section("eng", {
           type: "build",
           sk: "gram",
           title: "Put the words in order.",
-          tiles: ["how", "many", "apples", "do", "we", "need"],
+          tiles: ["How", "many", "apples", "do", "we", "need"],
           answer: "How many apples do we need?",
           extra: ["much"],
+          keepCase: true,
           hint: "Start with How. Can you count apples?",
           fbOk: "Well done!",
           fbText: "<b>How many apples do we need?</b> We can count apples, so it’s <b>many</b>."
@@ -798,7 +799,7 @@ SLID.section("eng", {
           type: "intro",
           eyebrow: "Section final · points ×2",
           title: "Can you help Taras go shopping?",
-          body: `<p class="lead">Taras lives in Lviv. Today he goes shopping. He wants presents for his family.</p><p>Help Taras and his pen friend Emma. You need everything from this section.</p>`,
+          body: `<p class="lead">Taras lives in Lviv. Today he goes shopping. He wants presents for his family.</p><p>Help Taras and his penfriend Emma. You need everything from this section.</p>`,
           cta: "Let’s go"
         },
         {

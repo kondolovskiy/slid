@@ -36,7 +36,7 @@ SLID.section("eng", {
           type: "intro",
           eyebrow: "Lesson 1",
           title: "How do they get to school?",
-          body: `<p class="lead">The pen friends write about their mornings.</p><p><b>Andrii:</b> I live in Kyiv. I go to school by bus.<br><b>Emma:</b> I go to school by bike.<br><b>Oksana:</b> My school isn’t far. I go on foot.</p><p>By bus, by bike, on foot: what do the words mean?</p>`,
+          body: `<p class="lead">The penfriends write about their mornings.</p><p><b>Andrii:</b> I live in Kyiv. I go to school by bus.<br><b>Emma:</b> I go to school by bike.<br><b>Oksana:</b> My school isn’t far. I go on foot.</p><p>By bus, by bike, on foot: what do the words mean?</p>`,
           cta: "Let’s see"
         },
         {

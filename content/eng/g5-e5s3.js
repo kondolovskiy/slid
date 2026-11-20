@@ -35,7 +35,7 @@ SLID.section("eng", {
           type: "intro",
           eyebrow: "Lesson 1",
           title: "What does Taras have for breakfast?",
-          body: `<p class="lead">Taras lives in Lviv. He writes to his pen friend Emma in England.</p><p><i>For breakfast, I have eggs and bread. At school, I have soup for lunch. My favourite meal is dinner. Mum often makes varenyky. They’re a Ukrainian dish with potato inside. Yum! What about you?</i></p><p>What do you have for breakfast?</p>`,
+          body: `<p class="lead">Taras lives in Lviv. He writes to his penfriend Emma in England.</p><p><i>For breakfast, I have eggs and bread. At school, I have soup for lunch. My favourite meal is dinner. Mum often makes varenyky. They’re a Ukrainian dish with potato inside. Yum! What about you?</i></p><p>What do you have for breakfast?</p>`,
           cta: "Let’s see"
         },
         {

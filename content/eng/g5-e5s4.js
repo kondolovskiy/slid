@@ -66,7 +66,7 @@ SLID.section("eng", {
           img: "img/eng/e5s4/clothes-1.svg",
           fit: true,
           cap: "A T-shirt, a jumper, a skirt, a dress, a coat, a jacket, a hat and a scarf.",
-          body: `<p>We <b>wear</b> clothes. Look at the pictures.</p><ul><li>cold days → a <b><u>jum</u>per</b>, a <b>coat</b>, a <b>hat</b>, a <b>scarf</b></li><li>a <b>T-shirt</b> → for hot days</li><li>a <b><u>jack</u>et</b> → shorter than a coat</li><li>a <b>dress</b>, a <b>skirt</b> → girls and women wear them</li></ul><p>The <u>underlined</u> part is strong.</p>`,
+          body: `<p>We <b>wear</b> clothes. Look at the pictures.</p><ul><li>cold days → a <b><u>jum</u>per</b>, a <b>coat</b>, a <b>hat</b>, a <b>scarf</b></li><li>a <b>T-shirt</b> → for hot days</li><li>a <b><u>jack</u>et</b> → shorter than a coat</li><li>a <b>dress</b> → like a T-shirt and a skirt in one</li></ul><p>The <u>underlined</u> part is strong.</p>`,
           cta: "Next"
         },
         {
@@ -81,9 +81,9 @@ SLID.section("eng", {
             { img: "img/eng/e5s4/hat.svg", alt: "a blue hat" },
             { img: "img/eng/e5s4/scarf.svg", alt: "a green scarf" }
           ],
-          hint: "Look at the red pairs again. Find each picture on the list screen.",
+          hint: "A hat is for your head. A coat is long and warm.",
           fbOk: "Yes!",
-          fbBad: "Look at the pictures on the list again.",
+          fbBad: "Look at each picture again. What is it?",
           fbText: "A <b>jumper</b> is red, the <b>skirt</b> is purple, the <b>coat</b> is long and brown. The <b>hat</b> is blue, the <b>scarf</b> is green."
         },
         {

@@ -32,8 +32,8 @@ SLID.section("eng", {
         {
           type: "intro",
           eyebrow: "Lesson 1",
-          title: "Where do the pen friends live?",
-          body: `<p class="lead">The pen friends write about their homes.</p><p><b>Andrii:</b> I live in a flat in Kyiv. It’s in a big block of flats.<br><b>Emma:</b> I live in a house. It’s got a garden.<br><b>Oksana:</b> My home is a house too. It’s in Zelena Dolyna.</p><p>A house or a flat: what is different?</p>`,
+          title: "Where do the penfriends live?",
+          body: `<p class="lead">The penfriends write about their homes.</p><p><b>Andrii:</b> I live in a flat in Kyiv. It’s in a big block of flats.<br><b>Emma:</b> I live in a house. It’s got a garden.<br><b>Oksana:</b> My home is a house too. It’s in Zelena Dolyna.</p><p>A house or a flat: what is different?</p>`,
           cta: "Let’s see"
         },
         {
@@ -56,7 +56,7 @@ SLID.section("eng", {
         {
           type: "info",
           title: "A house and a flat",
-          body: `<ul><li>a <b>house</b> – a home for one family</li><li>a <b>flat</b> – a home in a big building</li><li>a <b>block of flats</b> – lots of flats in one building</li><li>a <b>lift</b> – it goes up and down</li><li><b>stairs</b> – you walk up them</li><li>a <b><u>bal</u>cony</b> – a small place outside a flat</li><li>a <b><u>gar</u>den</b> – grass, flowers and trees</li></ul><p>The underlined part is strong.</p>`,
+          body: `<ul><li>a <b>house</b> – a home for one family</li><li>a <b>flat</b> – a home in a big building</li><li>a <b>block of flats</b> – lots of flats in one building</li><li>a <b>lift</b> – it goes up and down</li><li><b>stairs</b> – you walk up them</li><li>a <b><u>bal</u>cony</b> – a small place outside a flat</li><li>a <b><u>gar</u>den</b> – grass, flowers and trees</li></ul><p>The <u>underlined</u> part is strong.</p>`,
           cta: "Next"
         },
         {
@@ -188,7 +188,7 @@ SLID.section("eng", {
         {
           type: "info",
           title: "Rooms",
-          body: `<ul><li>a <b><u>kitch</u>en</b> – we cook and eat here</li><li>a <b><u>liv</u>ing room</b> – we sit, talk and watch TV</li><li>a <b><u>bed</u>room</b> – we sleep here</li><li>a <b><u>bath</u>room</b> – we wash here</li><li>a <b>hall</b> – we come into the flat here</li></ul><p>The underlined part is strong.</p>`,
+          body: `<ul><li>a <b><u>kitch</u>en</b> – we cook and eat here</li><li>a <b><u>liv</u>ing room</b> – we sit, talk and watch TV</li><li>a <b><u>bed</u>room</b> – we sleep here</li><li>a <b><u>bath</u>room</b> – we wash here</li><li>a <b>hall</b> – we come into the flat here</li></ul><p>The <u>underlined</u> part is strong.</p>`,
           cta: "Next"
         },
         {
@@ -295,7 +295,7 @@ SLID.section("eng", {
           type: "intro",
           eyebrow: "Lesson 3",
           title: "What’s in Mariia’s room?",
-          body: `<p class="lead">Mariia writes to the pen-friend club about her room.</p><p><i>This is my room. There’s a bed. There’s a desk with a chair. My clothes are in a big wardrobe. There are two shelves for books. I love my yellow lamp!</i></p><p>What do we call these things?</p>`,
+          body: `<p class="lead">Mariia writes to the penfriend club about her room.</p><p><i>This is my room. There’s a bed. There’s a desk with a chair. My clothes are in a big wardrobe. There are two shelves for books. I love my yellow lamp!</i></p><p>What do we call these things?</p>`,
           cta: "Let’s see"
         },
         {
@@ -514,9 +514,10 @@ SLID.section("eng", {
           sk: "gram",
           title: "Put the words in order.",
           body: `<p>Oksana can’t find her books. She asks Dmytro.</p>`,
-          tiles: ["where", "are", "my", "books"],
+          tiles: ["Where", "are", "my", "books"],
           answer: "Where are my books?",
           extra: ["is"],
+          keepCase: true,
           fbOk: "Well done!",
           fbBad: "Books: one or more? Start with Where.",
           fbText: "<b>Where are</b> my books? Books are more than one, so it’s <b>are</b>."
@@ -635,9 +636,10 @@ SLID.section("eng", {
           sk: "gram",
           title: "Put the words in order.",
           body: `<p>Emma asks Andrii a question.</p>`,
-          tiles: ["are", "there", "any", "posters", "in", "your", "room"],
-          answer: ["Are there any posters in your room?", "In your room are there any posters?"],
+          tiles: ["Are", "there", "any", "posters", "in", "your", "room"],
+          answer: "Are there any posters in your room?",
           extra: ["is"],
+          keepCase: true,
           hint: "A question: which word comes first?",
           fbOk: "Good eye!",
           fbBad: "In a question, are comes first.",
@@ -691,7 +693,7 @@ SLID.section("eng", {
           type: "intro",
           eyebrow: "Lesson 6",
           title: "What’s in Andrii’s dream room?",
-          body: `<p class="lead">The pen-friend club has a new task: “My dream room”.</p><p>A dream room is the room you want. Andrii writes a post about his dream room.</p><p>What is in it? Read and find out.</p>`,
+          body: `<p class="lead">The penfriend club has a new task: “My dream room”.</p><p>A dream room is the room you want. Andrii writes a post about his dream room.</p><p>What is in it? Read and find out.</p>`,
           cta: "Let’s read"
         },
         {
@@ -840,7 +842,7 @@ SLID.section("eng", {
           type: "intro",
           eyebrow: "Section final · points ×2",
           title: "Can you help Taras?",
-          body: `<p class="lead">Taras’s family has got a new flat in Lviv. Taras writes to the pen-friend club about it.</p><p>Read his messages and help him. You need everything from this section.</p>`,
+          body: `<p class="lead">Taras’s family has got a new flat in Lviv. Taras writes to the penfriend club about it.</p><p>Read his messages and help him. You need everything from this section.</p>`,
           cta: "Let’s go"
         },
         {

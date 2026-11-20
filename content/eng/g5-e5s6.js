@@ -34,7 +34,7 @@ SLID.section("eng", {
           type: "intro",
           eyebrow: "Lesson 1",
           title: "What do they do after school?",
-          body: `<p class="lead">The pen-friend club asks: “What do you do in your free time?”</p><p><b>Andrii:</b> I read books and play chess at home.<br><b>Emma:</b> I go for a walk with my dog.<br><b>Mariia:</b> I play the guitar.<br><b>Oksana:</b> I ride my bike in the village.</p><p>At home or outside: where do they do it?</p>`,
+          body: `<p class="lead">The penfriend club asks: “What do you do in your free time?”</p><p><b>Andrii:</b> I read books and play chess at home.<br><b>Emma:</b> I go for a walk with my dog.<br><b>Mariia:</b> I play the guitar.<br><b>Oksana:</b> I ride my bike in the village.</p><p>At home or outside: where do they do it?</p>`,
           cta: "Let’s see"
         },
         {
@@ -163,7 +163,7 @@ SLID.section("eng", {
           type: "intro",
           eyebrow: "Lesson 2",
           title: "What does Mariia love?",
-          body: `<p class="lead">Mariia writes to the pen-friend club.</p><p><i>I love drawing! I like reading too. I don’t like running. And I hate getting up early on Saturdays!</i></p><p>Love, like, don’t like, hate: what do they mean?</p>`,
+          body: `<p class="lead">Mariia writes to the penfriend club.</p><p><i>I love drawing! I like reading too. I don’t like running. And I hate getting up early on Saturdays!</i></p><p>Love, like, don’t like, hate: what do they mean?</p>`,
           cta: "Let’s see"
         },
         {
@@ -767,7 +767,7 @@ SLID.section("eng", {
           sk: "read",
           eyebrow: "Reading: Oksana’s summer, part 1 of 2",
           title: "Read and choose.",
-          body: `<p><i>Hi Emma! I love the summer holidays! In June, we go to Odesa. My uncle Ivan lives there, near the Black Sea. I go swimming in the sea every day. My brother Dmytro doesn’t like swimming. He likes playing football on the beach.</i></p><p>What does Dmytro like doing in Odesa?</p>`,
+          body: `<p><i>Hi Emma! I love the summer holidays! In July, we go to Odesa. My uncle Ivan lives there, near the Black Sea. I go swimming in the sea every day. My brother Dmytro doesn’t like swimming. He likes playing football on the beach.</i></p><p>What does Dmytro like doing in Odesa?</p>`,
           opts: [
             "swimming in the sea",
             "playing football on the beach",
@@ -789,7 +789,7 @@ SLID.section("eng", {
             "They go camping in the Carpathians.",
             "Oksana’s dad plays the guitar.",
             "Oksana hates getting up early in the mountains.",
-            "They go camping in June."
+            "They go camping in July."
           ],
           correct: [0, 1],
           hint: "Check the month and the mountains.",
@@ -868,7 +868,7 @@ SLID.section("eng", {
           type: "intro",
           eyebrow: "Section final · points ×2",
           title: "Can you help on hobby day?",
-          body: `<p class="lead">Today is hobby day at the pen-friend club. You help Ms Kravets.</p><p>A new member, Khrystyna, writes to the club. Read her messages and help her. You need everything from this section.</p>`,
+          body: `<p class="lead">Today is hobby day at the penfriend club. You help Ms Kravets.</p><p>A new member, Khrystyna, writes to the club. Read her messages and help her. You need everything from this section.</p>`,
           cta: "Let’s go"
         },
         {

@@ -34,7 +34,7 @@ SLID.section("eng", {
           type: "intro",
           eyebrow: "Lesson 1",
           title: "What would you like?",
-          body: `<p class="lead">It’s Mariia’s birthday. Her friends are at a café in Kharkiv.</p><p><b>Waiter:</b> Hello! What would you like?<br><b>Mariia:</b> I’d like a pizza, please.<br><b>Bohdan:</b> Can I have an orange juice, please?<br><b>Waiter:</b> Here you are.<br><b>Bohdan:</b> Thank you!</p><p>How do the children ask for food?</p>`,
+          body: `<p class="lead">It’s Mariia’s birthday. Her friends are at a café in Kharkiv.</p><p><b>Waiter:</b> Hello! What would you like?<br><b>Mariia:</b> I’d like a pizza, please.<br><b>Danylo:</b> Can I have an orange juice, please?<br><b>Waiter:</b> Here you are.<br><b>Danylo:</b> Thank you!</p><p>How do the children ask for food?</p>`,
           cta: "Let’s see"
         },
         {
@@ -80,12 +80,12 @@ SLID.section("eng", {
           type: "gaps",
           sk: "gram",
           title: "Fill in the gaps.",
-          body: `<p>Bohdan orders food.</p>`,
-          text: "Waiter: What {*would|do} you like? Bohdan: {*I’d like|I like} a cheese sandwich, please. Waiter: Would you like some juice? Bohdan: {*Yes, please.|Yes, I like.}",
+          body: `<p>Danylo orders food.</p>`,
+          text: "Waiter: What {*would|do} you like? Danylo: {*I’d like|I like} a cheese sandwich, please. Waiter: Would you like some juice? Danylo: {*Yes, please.|Yes, I like.}",
           hint: "Look at the questions and answers in the rule.",
           fbOk: "Exactly.",
           fbBad: "Check the rule: What would you like?",
-          fbText: "The waiter asks: <b>What would you like?</b> Bohdan orders: <b>I’d like</b> a sandwich, please. The answer is <b>Yes, please.</b>"
+          fbText: "The waiter asks: <b>What would you like?</b> Danylo orders: <b>I’d like</b> a sandwich, please. The answer is <b>Yes, please.</b>"
         },
         {
           type: "info",
@@ -131,11 +131,11 @@ SLID.section("eng", {
           eyebrow: "Final",
           title: "Complete the sentences.",
           body: `<p>The party ends at 6 pm.</p>`,
-          text: "Waiter: Here’s your cake. Mariia: {*Thank you|Sorry}! Kateryna: Oh no, my juice is on your bag! {*Sorry|Thank you}! Mariia: It’s OK. Bohdan: It’s 6 pm. {*Goodbye|Good morning}, everyone! {*See you|Here you are}!",
+          text: "Waiter: Here’s your cake. Mariia: {*Thank you|Sorry}! Kateryna: Oh no, my juice is on your bag! {*Sorry|Thank you}! Mariia: It’s OK. Danylo: It’s 6 pm. {*Goodbye|Good morning}, everyone! {*See you|Here you are}!",
           hint: "Who does something nice? Who does something bad?",
           fbOk: "Good eye!",
           fbBad: "Look at the thank you, sorry, goodbye list.",
-          fbText: "The waiter brings cake: <b>Thank you!</b> Juice on a bag: <b>Sorry!</b> Bohdan goes home: <b>Goodbye! See you!</b>"
+          fbText: "The waiter brings cake: <b>Thank you!</b> Juice on a bag: <b>Sorry!</b> Danylo goes home: <b>Goodbye! See you!</b>"
         }
       ],
       outro: {
@@ -170,7 +170,7 @@ SLID.section("eng", {
           eyebrow: "Guess!",
           title: "What do you think?",
           hyp: true,
-          text: "Bohdan’s party is {in|*on|at} Sunday.",
+          text: "Danylo’s party is {in|*on|at} Sunday.",
           fbTitle: "Let’s find out.",
           fbOk: "Good guess!",
           fbText: "We say <b>on</b> Sunday. With days, we say <b>on</b>. The next screen shows more."
@@ -185,7 +185,7 @@ SLID.section("eng", {
           type: "gaps",
           sk: "gram",
           title: "Fill in the gaps.",
-          text: "The school concert is {*on|in|at} Friday. It starts {*at|on|in} 5 pm. Bohdan’s birthday is {*in|on|at} June.",
+          text: "The school concert is {*on|in|at} Friday. It starts {*at|on|in} 5 pm. Danylo’s birthday is {*in|on|at} June.",
           hint: "Is it a day, a time or a month?",
           fbOk: "Exactly.",
           fbBad: "Look at the list: days, time, months.",
@@ -211,7 +211,7 @@ SLID.section("eng", {
           type: "word",
           sk: "func",
           title: "Write the missing word.",
-          body: `<p>Bohdan asks Mariia about the party.</p>`,
+          body: `<p>Danylo asks Mariia about the party.</p>`,
           before: "What",
           after: "is the party? – At 3 pm.",
           answer: "time",
@@ -231,9 +231,10 @@ SLID.section("eng", {
           sk: "gram",
           title: "Put the words in order.",
           body: `<p>Kateryna asks Mariia about the party.</p>`,
-          tiles: ["time", "is", "what", "the", "party"],
+          tiles: ["time", "is", "What", "the", "party"],
           answer: "What time is the party?",
           extra: ["does"],
+          keepCase: true,
           hint: "Start with What time…",
           fbOk: "Yes!",
           fbBad: "Look at the questions in the rule.",
@@ -244,8 +245,8 @@ SLID.section("eng", {
           sk: "func",
           eyebrow: "Final",
           title: "Complete the sentences.",
-          body: `<p><i>Hi Kateryna! My brother’s birthday party is on Sunday. It’s at 4 pm at our flat. Can you come? Bohdan</i></p>`,
-          text: "Kateryna: Thank you, Bohdan! {*Yes, I can.|Yes, I am.} What time is the party? Bohdan: {*At|On|In} 4 pm. Kateryna: See you {*on|at|in} Sunday!",
+          body: `<p><i>Hi Kateryna! My brother’s birthday party is on Sunday. It’s at 4 pm at our flat. Can you come? Danylo</i></p>`,
+          text: "Kateryna: Thank you, Danylo! {*Yes, I can.|Yes, I am.} What time is the party? Danylo: {*At|On|In} 4 pm. Kateryna: See you {*on|at|in} Sunday!",
           hint: "Can you come? – Yes, I … . Then: a time or a day?",
           fbOk: "Well done!",
           fbBad: "Read the rules again: Can you come? At or on?",
@@ -333,7 +334,7 @@ SLID.section("eng", {
           words: ["+birth|day", "De|+cem|ber", "+Christ|mas"],
           fbOk: "Well done!",
           fbBad: "Look at the underlined parts again.",
-          fbText: "<u>birth</u>day, De<u>cem</u>ber, <u>Christ</u>mas: the underlined part is strong."
+          fbText: "<u>birth</u>day, De<u>cem</u>ber, <u>Christ</u>mas: the <u>underlined</u> part is strong."
         },
         {
           type: "word",
@@ -352,8 +353,8 @@ SLID.section("eng", {
           type: "pick",
           sk: "func",
           title: "Find the mistake.",
-          body: `<p>One word in Bohdan’s card is wrong.</p>`,
-          text: "Dear Mariia, it’s your birthday today. Happy [Christmas]! Have a great party! Love, Bohdan",
+          body: `<p>One word in Danylo’s card is wrong.</p>`,
+          text: "Dear Mariia, it’s your birthday today. Happy [Christmas]! Have a great party! Love, Danylo",
           hint: "What day is it today?",
           fbOk: "Good eye!",
           fbBad: "Is it Christmas or Mariia’s birthday?",
@@ -566,7 +567,7 @@ SLID.section("eng", {
           type: "gaps",
           sk: "gram",
           title: "Fill in the gaps.",
-          text: "Every Saturday, Bohdan {*plays|is playing} chess. Look! Now he {plays|*is playing} football. His sisters usually {*go|are going} to the park. Now they {go|*are going} home.",
+          text: "Every Saturday, Danylo {*plays|is playing} chess. Look! Now he {plays|*is playing} football. His sisters usually {*go|are going} to the park. Now they {go|*are going} home.",
           hint: "Find the words every, usually, now and Look!",
           fbOk: "Exactly.",
           fbBad: "Every day or now? Check the words.",
@@ -617,7 +618,7 @@ SLID.section("eng", {
           sk: "gram",
           eyebrow: "Final",
           title: "Complete the sentences.",
-          body: `<p>Bohdan writes to Mariia.</p>`,
+          body: `<p>Danylo writes to Mariia.</p>`,
           text: "Hi Mariia! I usually {*go|am going} to the park on Sundays. But today it’s our school fair. Now I {sell|*am selling} cakes with my mum. Look at the photo! My dad {*is dancing|dances} with my sister!",
           hint: "Usually = every day. Now and Look! = now.",
           fbOk: "Well done!",
@@ -723,17 +724,17 @@ SLID.section("eng", {
           type: "choice",
           sk: "write",
           title: "Choose the correct answer.",
-          body: `<p>Bohdan is at the park. He is back home at 7 pm. Which note is right?</p>`,
+          body: `<p>Danylo is at the park. He is back home at 7 pm. Which note is right?</p>`,
           opts: [
-            "Mum, I’m at the park. Back at 7 am. Bohdan",
-            "Mum, I’m at the shop. Back at 7 pm. Bohdan",
-            "Mum, I’m at the park. Back at 7 pm. Bohdan"
+            "Mum, I’m at the park. Back at 7 am. Danylo",
+            "Mum, I’m at the shop. Back at 7 pm. Danylo",
+            "Mum, I’m at the park. Back at 7 pm. Danylo"
           ],
           correct: 2,
           hint: "Check two things: where and what time.",
           fbOk: "Yes!",
-          fbBad: "Where is Bohdan? What time is he back?",
-          fbText: "Bohdan is <b>at the park</b>. He is <b>back at 7 pm</b>. 7 am is in the morning."
+          fbBad: "Where is Danylo? What time is he back?",
+          fbText: "Danylo is <b>at the park</b>. He is <b>back at 7 pm</b>. 7 am is in the morning."
         },
         {
           type: "gaps",

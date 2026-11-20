@@ -16,7 +16,7 @@ SLID.section("eng", {
   why: "To tell people about your family and friends. And to say where you live: in a city, a town or a village.",
   meta: { author: "writer-e4s1", created: "2026-11-19", factcheck: "verifier-e4s1 (reports/verify/e4s1.md)", teacher: null },
   badges: [
-    { id: "e4s1boss", name: "Pen-friend club", icon: "trophy", desc: "Finish the final lesson “Me, my family and friends: where we live”" }
+    { id: "e4s1boss", name: "Penfriend club", icon: "trophy", desc: "Finish the final lesson “Me, my family and friends: where we live”" }
   ],
   lessons: [
     /* ───────────── Урок 1 ───────────── */
@@ -400,7 +400,7 @@ SLID.section("eng", {
           type: "intro",
           eyebrow: "Lesson 4",
           title: "Where do they live?",
-          body: `<p class="lead">Three pen friends write about their homes.</p><p><b>Andrii:</b> I live in Kyiv. It’s a very big city.<br><b>Emma:</b> I live in a small town in England.<br><b>Oksana:</b> I live in a village near Poltava. It’s small and green.</p><p>City, town or village: what is different?</p>`,
+          body: `<p class="lead">Three penfriends write about their homes.</p><p><b>Andrii:</b> I live in Kyiv. It’s a very big city.<br><b>Emma:</b> I live in a small town in England.<br><b>Oksana:</b> I live in a village near Poltava. It’s small and green.</p><p>City, town or village: what is different?</p>`,
           cta: "Let’s see"
         },
         {
@@ -649,7 +649,7 @@ SLID.section("eng", {
           type: "intro",
           eyebrow: "Lesson 6",
           title: "Can you fill in a form?",
-          body: `<p class="lead">The pen-friend club has a form for new members. Andrii fills it in.</p><p>First name: <b>Andrii</b><br>Surname: <b>Tkachenko</b><br>Age: <b>10</b><br>Nationality: <b>Ukrainian</b><br>Address: <b>25 Lisova Street, Kyiv, Ukraine</b></p><p>What does each line mean?</p>`,
+          body: `<p class="lead">The penfriend club has a form for new members. Andrii fills it in.</p><p>First name: <b>Andrii</b><br>Surname: <b>Tkachenko</b><br>Age: <b>10</b><br>Nationality: <b>Ukrainian</b><br>Address: <b>25 Lisova Street, Kyiv, Ukraine</b></p><p>What does each line mean?</p>`,
           cta: "Let’s see"
         },
         {
@@ -713,7 +713,7 @@ SLID.section("eng", {
           words: ["+sur|name", "U|+krai|ni|an", "na|tion|+al|i|ty"],
           fbOk: "Yes!",
           fbBad: "Look at the underlined parts again.",
-          fbText: "<u>Sur</u>name, U<u>krai</u>nian, nation<u>al</u>ity: the underlined part is strong."
+          fbText: "<u>Sur</u>name, U<u>krai</u>nian, nation<u>al</u>ity: the <u>underlined</u> part is strong."
         },
         {
           type: "word",
@@ -765,8 +765,8 @@ SLID.section("eng", {
         {
           type: "intro",
           eyebrow: "Section final · points ×2",
-          title: "Can you help the pen-friend club?",
-          body: `<p class="lead">Today you help Ms Kravets at the pen-friend club.</p><p>A new member, Taras, writes to the club. Read his messages and check his form. You need everything from this section.</p>`,
+          title: "Can you help the penfriend club?",
+          body: `<p class="lead">Today you help Ms Kravets at the penfriend club.</p><p>A new member, Taras, writes to the club. Read his messages and check his form. You need everything from this section.</p>`,
           cta: "Let’s go"
         },
         {
@@ -787,8 +787,8 @@ SLID.section("eng", {
           sk: "vocab",
           eyebrow: "Task 2",
           title: "Write the word.",
-          body: `<p>Taras: “Roman is my dad’s brother. He has got a little girl, Sofiia.”</p>`,
-          before: "Sofiia is Taras’s",
+          body: `<p>Taras: “Roman is my dad’s brother. He has got a little girl, Marta.”</p>`,
+          before: "Marta is Taras’s",
           after: ".",
           answer: "cousin",
           pre: "e4s1l2",
