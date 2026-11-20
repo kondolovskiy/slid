@@ -7,7 +7,7 @@ subject: eng
 grade: 5
 section: e5s8
 depends_on: [write-eng-g5-e5s8, engine-eng-diag-pool, engine-eng-tools]
-status: review
+status: done
 claimed_by: writer-pe5s8
 created: 2026-11-19
 source: design-eng
@@ -53,3 +53,6 @@ source: design-eng
 2. l1 phon (a06–a08) і l2 phon (a20–a22) — лише слова з `<u>` уроку, тож комбінації повторюються (у l1 — три слова на три вправи).
 3. a46 — «carols — songs at Christmas»: значення в уроці не дано окремо, лише контекст «children sing carols» на Christmas Eve (OALD carol_1 «a Christian religious song sung at Christmas»).
 4. a11 — один пропуск із трьома фразами-варіантами (the fifth of May / the five of May / the May of fifth), як l2 #2 уроку.
+
+## Нотатки верифікатора (verifier-pe5s8, 2026-11-20)
+**Вердикт: verified** — reports/verify/pe5s8.md. Усі 68 вправ розв'язав сам: неправильних ключів, других правильних відповідей і вправ без опори немає. `build` (a23, a25, a41, a57, a60, a65) — усі перестановки всіх підмножин з `extra` через `SLID_LANG.check`: приймається лише ключ. `word` — `wordVerdict` на хибних кандидатах. Наголос 7 слів звірено за CD + OALD (curl); факти — за en/uk.wikipedia, OALD, CD; сторінки МП-ІМ (с. 16, 18, 20, 21, 22) — за PDF (SHA-1 збігається). WebSearch 6 фрагментів — збігів немає. Правка: a05 body (вибір, не «Write»); статус → verified. validate --pool pe5s8 — 0/0; personalization-qa --strict — без «БРАКУЄ». TQ немає.

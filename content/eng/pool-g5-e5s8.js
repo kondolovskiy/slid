@@ -1,5 +1,5 @@
 /* Слід · Англійська мова, 5 клас — пул вправ для тренування до розділу «Festivals and traditions» (e5s8)
-   Статус: draft (автор writer-pe5s8, 2026-11-20). Уроки e5s8l1–e5s8l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e5s8l7 без вправ.
+   Статус: verified (автор writer-pe5s8, 2026-11-20; verifier-pe5s8, reports/verify/pe5s8.md; approved — лише вчитель). Уроки e5s8l1–e5s8l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e5s8l7 без вправ.
    Вправи власні (docs/design/english.md §8): лише слова, форми й правила уроків e5s8 і попередніх розділів; англійською, британська норма (D-054).
    Джерело — програма класу (program: true): МП-ІМ, 5–6 кл. — тема «Свята і традиції» (с. 20); «Пише короткі вітальні листівки»,
    «Занотовує події, відповідні дати» (с. 18); читання листів A2 (с. 16); Exclamations: What a … (с. 21); Past simple (was/were, с. 22).
@@ -9,8 +9,8 @@
 SLID.pool("eng", {
   id: "pe5s8",
   section: "e5s8",
-  status: "draft",
-  meta: { author: "writer-pe5s8", created: "2026-11-20", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "writer-pe5s8", created: "2026-11-20", factcheck: "verifier-pe5s8 (reports/verify/pe5s8.md)", teacher: null },
   sources: [
     { id: "mpim", short: "МП-ІМ", program: true,
       title: "Модельна навчальна програма «Іноземна мова. 5–9 класи» (Редько В. Г., Шаленко О. П., Сотникова С. І. та ін.), наказ МОН від 12.07.2021 № 795",
@@ -42,7 +42,7 @@ SLID.pool("eng", {
       steps: ["We put months in order: May is the <b>fifth</b> month, October is the <b>tenth</b> month.", "<i>The sixth month</i> is correct."] },
     { id: "a05", lesson: "e5s8l1", lvl: 3, sk: "vocab", src: "mpim с. 18",
       type: "gaps", title: "Choose the correct word.",
-      body: "<p>Write the numbers as words.</p>",
+      body: "<p>Which word is right for each number?</p>",
       text: "12th – the {*twelfth|twelveth} month. 20th – the {*twentieth|twentyth} day. 30th – the {*thirtieth|thirteenth} day.",
       hint: "Look at the list: 12th, 20th, 30th. 13th is a different number.",
       steps: ["12th is <b>twelfth</b> (not <s>twelveth</s>).", "20th is <b>twentieth</b>, 30th is <b>thirtieth</b>.", "<i>Thirteenth</i> is 13th."] },
