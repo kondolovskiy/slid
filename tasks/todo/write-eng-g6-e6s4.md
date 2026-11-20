@@ -15,8 +15,10 @@ source: design-eng
 ## З програми
 - Тема й підтеми: види спорту; спортивні уподобання — МП-ІМ с. 20 (розд. 4.2.2), граматика — с. 21–22.
 - Рівень: A2 (наприкінці 6 кл., МП-ІМ с. 3).
-- Граматика (пропозиція розподілу, docs/design/english.md §4): Past Continuous; Past Simple with when. Остаточно — за `content/eng/plan.js` (curate-eng-plan-g6): якщо план інший, план головніший.
+- Граматика (план 6 кл., content/eng/plan.js; розподіл наш, концентричний — reports/verify/plan-eng-g6.md §2): Past Continuous: affirmative, negative, questions; background events, events in progress (A2); Past Simple with when (A2: with ‘when’ in subordinate clauses); Could: abilities (I could swim when I was five); повторення — play / go / do + sport (e4s3l1), can (e5s6l4), Exclamations: What a… (e5s8).
 - Джерела програми — docs/design/english.md §0: ТОП 3–4 (4 кл.) — https://lib.iitta.gov.ua/714276/1/%D0%A2%D0%9E%D0%9F_3_4_2018.pdf; МП-ІМ (5–9 кл., наказ МОН № 795 від 12.07.2021) — https://osvita.ua/doc/files/news/831/83117/Inoz_mov_5-9-kl_Redko_ta_in_14_07.pdf; П1407 (10–11 кл., наказ МОН № 1407 від 23.10.2017; для 10–11 кл. — розділ спеціалізованих шкіл, B2) — https://osvita.ua/doc/files/news/589/58921/inozemni-movi-10-11-19_09_2017.pdf.
+
+- **Специфіка (plan-eng-g6):** BrE: sport у загальному значенні (не sports), але sports news, sports day; football pitch — B2 (CD), у назвах не виносити. Past Continuous vs Past Simple: «when» з короткою дією — Past Simple; другу правильну відповідь (while / when, обидва часи в одному реченні) відсікати контекстом. «What were you doing at six o’clock?» — час без am/pm, якщо контекст однозначний. Спортсмени України — лише з двох джерел; без результатів «на сьогодні». Герої: Emma плаває, Tom катається, але не плаває (e5s6); Andrii — шахи. `requires`: e4s3l1, e5s6l4, e4s6l2 (Present Continuous — форма -ing); після e6s3 — урок Past Simple irregular з e6s3 (оркестратор). Герої — та сама серія, що в 4–5 кл., на два роки старші (канон — memory/short/inbox.md NOTE (герої), plan-eng-g6.md §7).
 
 ## Рішення людини, обов'язкові
 Рішення людини 2026-11-19 (docs/design/english.md §11.1): британська норма; увесь зміст англійською (інтерфейс рушія — українською); варіанти A/B/C; поки без звуку й голосу; ціль B2 в 11 кл.; 4 клас робимо; словники дозволено.

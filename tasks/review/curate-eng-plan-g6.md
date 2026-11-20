@@ -6,7 +6,7 @@ type: curate
 subject: eng
 grade: 6
 depends_on: [curate-eng-plan-g5]
-status: todo
+status: review
 claimed_by: curator-plan-eng-g6
 created: 2026-11-19
 source: design-eng
@@ -36,3 +36,11 @@ source: design-eng
 
 ## Готово, коли
 - [ ] План у plan.js, звіт, рядки в inbox; задача → tasks/review для content-verifier зі свіжим контекстом.
+
+## Нотатки агента (curator-plan-eng-g6, 2026-11-20)
+- План e6s1–e6s8 у content/eng/plan.js (англійською, без `lessons` і `requires`), 8 × 6 рядків `plan`, тижні [1,4] [5,8] [9,13] [14,18] [19,23] [24,27] [28,31] [32,35] = 35.
+- Звіт: reports/verify/plan-eng-g6.md (МП-ІМ с. 20–22 звірено з PDF, SHA-1 як у plan-eng-g5; 8 тем, 18 підтем, 7 функцій; граматика — наш концентричний розподіл, без дубля з g5-*.js — §2б; відкладене на 7 кл. — §2в; `requires` — таблиця §6 з реальними id 4–5 кл.; герої — §7).
+- Склад розділів і id не змінено → нових задач немає, зайвих немає. У tasks/todo/write-eng-g6-e6s1…e6s8 рядок «Граматика» замінено на остаточний, додано «Специфіка (plan-eng-g6)».
+- Синхронізовано 18 назв уроків 4–5 кл. у plan.js з verified-розділами (звіт §9; 7 з доручення + 11 у 4 кл.).
+- Спірне: adjective order не в інвентарі A2 (лишено мінімум); too → e6s2; will/going to в e6s5 — лише повторення; `requires` не в plan.js (скіл), хоча уроки 4–5 кл. уже є.
+- validate: 0 помилок, 235 попереджень (жодного для plan.js / e6s*). Build не запускав.

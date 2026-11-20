@@ -15,8 +15,10 @@ source: design-eng
 ## З програми
 - Тема й підтеми: столиця; визначні місця — МП-ІМ с. 20 (розд. 4.2.2), граматика — с. 21–22.
 - Рівень: A2 (наприкінці 6 кл., МП-ІМ с. 3).
-- Граматика (пропозиція розподілу, docs/design/english.md §4): if + Present Simple (real conditions); reported statements with say/tell (вступ). Остаточно — за `content/eng/plan.js` (curate-eng-plan-g6): якщо план інший, план головніший.
+- Граматика (план 6 кл., content/eng/plan.js; розподіл наш, концентричний — reports/verify/plan-eng-g6.md §2): if + Present Simple: real conditions (If it rains, go to a museum! — головне речення імператив або Present Simple, не will: first conditional — 7 кл.); reported statements with say and tell (A2): Emma said (that)…, Emma told me (that)…; повторення — Present Perfect (e6s7), comparatives / superlatives (e5s10l4, e5s10l5), Past Simple passive (e6s7).
 - Джерела програми — docs/design/english.md §0: ТОП 3–4 (4 кл.) — https://lib.iitta.gov.ua/714276/1/%D0%A2%D0%9E%D0%9F_3_4_2018.pdf; МП-ІМ (5–9 кл., наказ МОН № 795 від 12.07.2021) — https://osvita.ua/doc/files/news/831/83117/Inoz_mov_5-9-kl_Redko_ta_in_14_07.pdf; П1407 (10–11 кл., наказ МОН № 1407 від 23.10.2017; для 10–11 кл. — розділ спеціалізованих шкіл, B2) — https://osvita.ua/doc/files/news/589/58921/inozemni-movi-10-11-19_09_2017.pdf.
+
+- **Специфіка (plan-eng-g6):** say vs tell: told + особа (told me), said без особи — це предмет уроку; узгодження часів (backshift) у 6 кл. не вимагати: «Emma said she likes…» і «…liked…» — обидва в ключі або контекст. London — on the Thames (inbox verifier-e4s6: en/uk.wikipedia); факти про пам'ятки — facts/eng.md чи два джерела. Порівняння Kyiv / London — лише перевірені числа (площа, населення — з джерелом і роком). Герої: Emma — Англія (місто не назване; мама Sarah, кішка Snowy) — «Emma told me about London» не означає, що вона живе в Лондоні. `requires`: e4s7l3, e5s10l3, e5s10l4; після e6s7 — урок Present Perfect (оркестратор). Герої — та сама серія, що в 4–5 кл., на два роки старші (канон — memory/short/inbox.md NOTE (герої), plan-eng-g6.md §7).
 
 ## Рішення людини, обов'язкові
 Рішення людини 2026-11-19 (docs/design/english.md §11.1): британська норма; увесь зміст англійською (інтерфейс рушія — українською); варіанти A/B/C; поки без звуку й голосу; ціль B2 в 11 кл.; 4 клас робимо; словники дозволено.
