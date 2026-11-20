@@ -1,5 +1,5 @@
 /* Слід · Англійська мова, 5 клас — пул вправ для тренування до розділу «My town or village» (e5s7)
-   Статус: draft (автор writer-pe5s7, 2026-11-20). 64 вправи: уроки e5s7l1–e5s7l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e5s7l7 без вправ.
+   Статус: verified (автор writer-pe5s7, 2026-11-20; верифікатор verifier-pe5s7 — reports/verify/pe5s7.md). 64 вправи: уроки e5s7l1–e5s7l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e5s7l7 без вправ.
    Вправи власні (docs/design/english.md §8): лише слова, форми й правила уроків e5s7 і попередніх розділів; англійською, британська норма (D-054).
    Джерело — програма класу (program: true): МП-ІМ, 5 кл. — с. 20 (тема «Рідне місто/село»: місцезнаходження, історичні й культурні відомості;
    «Прогулянка містом/селом»), с. 21 (imperatives, interrogatives, negative declarative; directions), с. 22 (prepositions),
@@ -11,8 +11,8 @@
 SLID.pool("eng", {
   id: "pe5s7",
   section: "e5s7",
-  status: "draft",
-  meta: { author: "writer-pe5s7", created: "2026-11-20", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "writer-pe5s7", created: "2026-11-20", factcheck: "verifier-pe5s7 (reports/verify/pe5s7.md)", teacher: null },
   sources: [
     { id: "mpim", program: true, title: "Модельна навчальна програма «Іноземна мова. 5–9 класи» (Редько В. Г., Шаленко О. П., Сотникова С. І. та ін.), наказ МОН від 12.07.2021 № 795 — 5 клас (с. 16, 18, 20–22)", url: "https://osvita.ua/doc/files/news/831/83117/Inoz_mov_5-9-kl_Redko_ta_in_14_07.pdf" }
   ],
@@ -175,7 +175,7 @@ SLID.pool("eng", {
       img: "img/eng/e5s7/town-map.svg", fit: true, cap: "A map of the centre of Emma’s town",
       body: "<p>Look at the map. Tom: “Where is the museum?”</p>",
       before: "", after: "opposite the library.",
-      answer: "It’s", contractions: true,
+      answer: ["It’s", "The museum is"], contractions: true,
       hint: "Where is the bank? – … between the café and the library.",
       steps: ["Where is the museum? – <b>It’s</b> opposite the library.", "<b>It’s</b> = it is."] },
     { id: "a26", lesson: "e5s7l3", lvl: 1, sk: "read", src: "mpim с. 16",
@@ -317,7 +317,7 @@ SLID.pool("eng", {
       img: "img/eng/e5s7/town-map.svg", fit: true, cap: "A map of the centre of Emma’s town",
       body: "<p>Tell a friend the first part of the way from the station to the park.</p>",
       tiles: ["Go", "along", "Station Road", "and", "turn", "left"],
-      extra: ["right"],
+      extra: ["goes"],
       keepCase: true,
       answer: "Go along Station Road and turn left.",
       hint: "Start with Go. Is the park on the left or on the right of Station Road?",
@@ -379,7 +379,7 @@ SLID.pool("eng", {
     { id: "a55", lesson: "e5s7l6", lvl: 3, sk: "read", src: "mpim с. 16",
       type: "multi", title: "Choose all the correct answers.",
       body: "<p><i>Eneida is a poem by Ivan Kotliarevskyi. The first parts are from 1798. New Ukrainian literature starts with this poem.</i></p><p>What is true?</p>",
-      opts: ["The first parts of Eneida are more than 200 years old.", "New Ukrainian literature starts with Eneida.", "Eneida is a film.", "The first parts are from 1898."],
+      opts: ["1798 is more than 200 years ago.", "New Ukrainian literature starts with Eneida.", "Eneida is a film.", "The first parts are from 1898."],
       correct: [0, 1],
       hint: "Find the number in the text. Is 1798 more than 200 years ago?",
       steps: ["1798 is more than 200 years ago. New Ukrainian literature starts with Eneida.", "Eneida is a poem, not a film. The year is 1798, not 1898."] },

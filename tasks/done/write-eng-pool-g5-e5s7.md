@@ -7,7 +7,7 @@ subject: eng
 grade: 5
 section: e5s7
 depends_on: [write-eng-g5-e5s7, engine-eng-diag-pool, engine-eng-tools]
-status: review
+status: done
 claimed_by: writer-pe5s7
 created: 2026-11-19
 source: design-eng
@@ -57,3 +57,8 @@ source: design-eng
 3. a64: «Poltava … famous for the writer» — формулювання outro l6.
 4. a32: «Turn left at the church and go along this street» не приймається (keepCase; «turn» з малої) — як у build l5 уроку.
 5. a45: «Turn right and walk to the school» — уточнено, щоб «Go across» вело саме до cinema.
+
+## Нотатки верифікатора (verifier-pe5s7, 2026-11-20)
+**Вердикт: verified** — reports/verify/pe5s7.md. 64 вправи розв'язано самостійно; маршрути звірено з town-map.svg (знімок Chromium + координати); `build` — повний перебір через `SLID_LANG.check`; матриця урок × sk звірена вручну (кожна пара ≥ 3 вправи, рівні 1–3); наголос — CD + OALD (curl); факти — en/uk.wikipedia + ЕСУ article-887900; WebSearch 6 фрагментів — збігів немає.
+**Правки (3):** a25 — у ключ додано «The museum is» (друга правильна відповідь); a46 — пастка `right` → `goes` («Go right along Station Road…» = all the way, OALD right_2 — правильне речення); a55 — «…more than 200 years old» → «1798 is more than 200 years ago.» (рамка розділу, «years old» в уроках немає). Статус → verified.
+`validate --pool pe5s7` — 0/0. Не запускав: test-answer-ui, плейтест (немає Python playwright; build — оркестратор).
