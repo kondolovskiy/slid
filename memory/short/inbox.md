@@ -416,3 +416,6 @@
 - 2026-11-20 · writer-pe4s8 · FACT (eng): school fete — BrE, синонім school fair (CD fete «UK (also fête)») — у `word` на fair класти обидва.
 - 2026-11-20 · writer-pe5s3 · NOTE (герої eng, пул pe5s3): по неділях Oksana з бабусею Hanna ліплять varenyky з сиром, Dmytro їх любить (a44); porridge Emma — oats, milk, banana (a45). Нових героїв немає.
 - 2026-11-20 · writer-pe5s3 · PITFALL (eng, build): «My favourite X is Y» обертається на «Y is my favourite X»; keepCase цього не відсікає (велика й мала перша плитка обидві можливі) — «Start with My.» у `body` або обидва порядки в `answer`.
+- 2026-11-20 · writer-pe5s9 · NOTE (герої eng, пул pe5s9): Sofiia хотіла б у Carpathians (любить гори, a08); Mariia хотіла б відвідати Oksana в селі (a23); Andrii з татом минулого літа були в Kamianets-Podilskyi (a50, a63–a65); Daryna з мамою їде до тітки в Odesa, сестра лишається вдома (a29); щоденник Emma з України (a57–a59) узгоджено з boss e5s9 T7. Звірити в наступному style-sync.
+- 2026-11-20 · writer-pe5s9 · PITFALL (eng): `at` не ставити хибним варіантом поруч з `on the beach` — «at the beach» нормативне; хибним може бути лише `in`.
+- 2026-11-20 · writer-pe5s9 · NOTE (eng, пули): якщо `phon` в уроці — кількість складів (-ed як окремий склад), у пулі його тренують choice/multi/pick, не `stress`.
