@@ -4,7 +4,7 @@
 
 ## Еталони
 - **e4s1** (4 кл., content/eng/g4-e4s1.js) — verified 2026-11-19 (reports/verify/e4s1.md): правило — списком `<ul>` з «→» (таблиці правил — після engine-eng-rule-tables); пояснення наголосу — «The underlined part is strong»; у поясненнях 4–5 кл. без слів B1+ (whose, region, underlined); один герой — одне місце проживання в розділі; `word` без кінцевого знака в ключі, регістр через `keepCase` + нагадування у `fbBad`.
-- **e5s1** (5 кл.) — після верифікації.
+- **e5s1** (5 кл., content/eng/g5-e5s1.js) — verified 2026-11-20 (reports/verify/e5s1.md): кожне `build` перебрано через `SLID_LANG.check` з пастками; у `word` кладемо в ключ усі правильні слова рівня (grandchild поруч із grandson); без кальок з української («What is he for Hanna?» → «Petro is Hanna’s …»); у підкресленні сполук — головний наголос (<u>shop</u> assistant); герої — один набір фактів про сім'ю на всю серію (Taras: two brothers and a little sister Zlata, a dog and a cat; Mariia — only child). Уніфікувати: питання в `build` — з `keepCase` і великою першою плиткою (style-eng-g4-5).
 
 ## Мова змісту: усе англійською, британська норма (D-054)
 - **Англійською** — увесь зміст уроку, розділу, тесту рівня й пулу: `title`, `short`, `why`, `plan`, `learned`, `outro.text`, `eyebrow`, теорія, інструкції, `hint`, `fbOk`, `fbText`, `fbBad`, варіанти, тексти, діалоги, `cap` і `alt`. `credits` — як у джерелі ліцензії.

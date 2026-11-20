@@ -103,11 +103,11 @@ SLID.section("eng", {
           sk: "vocab",
           title: "Find the mistake.",
           body: `<p>One word in Taras’s message is wrong.</p>`,
-          text: "Today is my sister’s [nine] birthday. She is the second child in our family.",
+          text: "Today is my sister’s [nine] birthday. She is the fourth child in our family.",
           hint: "Is it counting or order?",
           fbOk: "Good eye!",
           fbBad: "Check each number word.",
-          fbText: "We say <b>my sister’s ninth birthday</b>, not <i>nine birthday</i>. <b>The second child</b> is correct."
+          fbText: "We say <b>my sister’s ninth birthday</b>, not <i>nine birthday</i>. <b>The fourth child</b> is correct."
         },
         {
           type: "gaps",
