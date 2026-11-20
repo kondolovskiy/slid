@@ -4,7 +4,7 @@
    чого в кеші цієї версії немає. Нова версія: встановлення (кожен файл перевіряється на сервері, cache: "no-cache") → skipWaiting →
    activate (старі кеші видаляються) → clients.claim → сторінка отримує controllerchange й перезавантажується,
    коли це безпечно (app/update.js: не посеред уроку чи тесту рівня). Google Fonts — з кешу з фоновим оновленням. */
-const VERSION = "b0e5f1386f";
+const VERSION = "c95d7decf9";
 const CACHE = "slid-" + VERSION;
 const FONTS = "slid-fonts";
 const ASSETS = [
@@ -27,6 +27,16 @@ const ASSETS = [
   "./content/eng/g4-e4s6.js",
   "./content/eng/g4-e4s7.js",
   "./content/eng/g4-e4s8.js",
+  "./content/eng/g5-e5s1.js",
+  "./content/eng/g5-e5s10.js",
+  "./content/eng/g5-e5s2.js",
+  "./content/eng/g5-e5s3.js",
+  "./content/eng/g5-e5s4.js",
+  "./content/eng/g5-e5s5.js",
+  "./content/eng/g5-e5s6.js",
+  "./content/eng/g5-e5s7.js",
+  "./content/eng/g5-e5s8.js",
+  "./content/eng/g5-e5s9.js",
   "./content/hist/plan.js",
   "./content/hist/diag-g10.js",
   "./content/hist/diag-g11.js",
@@ -414,6 +424,27 @@ const ASSETS = [
   "./app/config.js",
   "./app/sync.js",
   "./app/app.js",
+  "./img/eng/e5s4/clothes-1.svg",
+  "./img/eng/e5s4/clothes-2.svg",
+  "./img/eng/e5s4/coat.svg",
+  "./img/eng/e5s4/dress.svg",
+  "./img/eng/e5s4/gloves.svg",
+  "./img/eng/e5s4/hat.svg",
+  "./img/eng/e5s4/jumper.svg",
+  "./img/eng/e5s4/scarf.svg",
+  "./img/eng/e5s4/school.svg",
+  "./img/eng/e5s4/shorts.svg",
+  "./img/eng/e5s4/skirt.svg",
+  "./img/eng/e5s4/socks.svg",
+  "./img/eng/e5s4/trainers.svg",
+  "./img/eng/e5s4/trousers.svg",
+  "./img/eng/e5s4/tshirt.svg",
+  "./img/eng/e5s5/fog.svg",
+  "./img/eng/e5s5/phenomena.svg",
+  "./img/eng/e5s5/rainbow.svg",
+  "./img/eng/e5s5/snow.svg",
+  "./img/eng/e5s5/storm.svg",
+  "./img/eng/e5s7/town-map.svg",
   "./img/h5-anna.jpg",
   "./img/h5-kma.jpg",
   "./img/h5-lviv.jpg",
