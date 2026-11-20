@@ -1649,7 +1649,7 @@ async function buildScenario(browser) {
   ok(!(await page.evaluate(() => SLID_LANG.check(SLID_SUBJECTS.find(c => c.id === "ukr").sections[0].lessons[0].screens[0], [...document.querySelectorAll("#stage .bank .bt")].map(b => +b.dataset.t).filter(k => k < 4), ""))), "build: плитки показано не в правильному порядку");
   ok(same(await line(), []) && await page.locator("#action").isDisabled(), "build: рядок порожній, «Перевірити» неактивна");
   ok(await page.evaluate(() => document.querySelector("#stage .bank").closest("[lang]")?.getAttribute("lang") === "en" && document.querySelector("#stage .fix").getAttribute("lang") === "uk"), "build: плитки — зміст (lang=en), інструкція — хром (uk)");
-  ok(await page.evaluate(() => [...document.querySelectorAll("#stage .bank .bt")].every(b => { const r = b.getBoundingClientRect(); return r.height >= 44 && r.width >= 44; })), "build: плитка ≥ 44 × 44 px");
+  ok(await page.evaluate(() => [...document.querySelectorAll("#stage .bank .bt")].every(b => b.offsetHeight >= 44 && b.offsetWidth >= 44)), "build: плитка ≥ 44 × 44 px");   // offset* — розмір розкладки без transform: getBoundingClientRect під час анімації .screen «in» дає 43.99998 (рев'ю P1-1)
   // 2) дотик: у рядок; ще раз у банку — назад; дотик у рядку — прибрати
   await page.tap(tile(3)); await page.tap(tile(2));
   ok(same(await line(), ["live", "Where"]) && await page.getAttribute(tile(3), "aria-pressed") === "true" && await page.locator("#action").isEnabled(), "build: дотик — плитка в рядку, aria-pressed true, «Перевірити» активна");
@@ -1742,7 +1742,7 @@ async function matchScenario(browser) {
   const dock = () => page.evaluate(() => ({ kind: document.querySelector("#dock").className, text: document.querySelector("#fbText").textContent, title: document.querySelector("#fbTitle").textContent }));
   const noScroll = () => page.evaluate(() => { const p = document.querySelector("#player"), d = document.documentElement;
     return p.scrollWidth <= p.clientWidth + 1 && d.scrollWidth <= d.clientWidth + 1 && [...document.querySelectorAll("#stage .gopt")].every(b => { const r = b.getBoundingClientRect(); return r.left >= 0 && r.right <= innerWidth + 0.5; }); });
-  const sizes = () => page.evaluate(() => [...document.querySelectorAll("#stage .ml, #stage .mr")].map(b => { const r = b.getBoundingClientRect(); return [Math.round(r.width * 10) / 10, Math.round(r.height * 10) / 10]; }));
+  const sizes = () => page.evaluate(() => [...document.querySelectorAll("#stage .ml, #stage .mr")].map(b => [b.offsetWidth, b.offsetHeight]));   // розмір розкладки без transform анімації «in» (рев'ю engine-eng-build P1-1)
   const big = async () => { const z = await sizes(); ok(z.length && z.every(([w, h]) => w >= 44 && h >= 44), `match: кнопки ≥ 44 × 44 px, а ${JSON.stringify(z)}`); return true; };
 
   await boot(LES, "en"); await page.evaluate(() => window.__slidStart("fml1"));

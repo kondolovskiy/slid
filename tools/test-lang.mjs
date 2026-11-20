@@ -397,6 +397,10 @@ for (const s of [{ type: "gaps", text: "с{*е|и}ло" }, { type: "pick", text:
   ok(L.issues(B({ tiles: ["does", "<b>she</b>", "Where", "live"], answer: "Where does <b>she</b> live?" })).length, "build: HTML у плитці — помилка");
   ok(L.issues({ type: "build", tiles: ["сat", "runs"], answer: "сat runs" }).length, "build: кирилиця й латиниця в плитці — помилка");
   ok(L.issues({ type: "build", tiles: ["no", "no"], answer: "no no" }).length, "build: усі плитки однакові — помилка");
+  // рев'ю P3-1: плитка лише зі знака — B_TAIL зрізав би « ?», і речення без неї зараховувалось би
+  ok(L.issues({ type: "build", tiles: ["does", "she", "Where", "live", "?"], answer: "Where does she live ?" }).some(e => /без літери/.test(e)), "build: плитка «?» — помилка");
+  ok(L.issues(B({ extra: ["…"] })).some(e => /без літери/.test(e)), "build: пастка «…» — помилка");
+  ok(L.issues({ type: "build", tiles: ["Yes,", "I", "do"], answer: "Yes, I do." }).every(e => !/без літери/.test(e)), "build: знак, приклеєний до слова («Yes,»), — можна");
   ok(L.issues(B({ answer: ["Where does she live?", "Where does she live"] })).length, "build: answer повторюються — помилка");
   ok(L.warnings(B({ extra: ["she"] }), "en").some(w => /extra/.test(w)), "build warnings: пастка = плитка — попередження");
   ok(L.warnings({ type: "build", tiles: ["My", "favourite", "colour"], answer: "My favourite colour", extra: ["color"] }, "en").some(w => /extra/.test(w)), "build warnings en: AmE-пастка дає правильне речення — попередження");

@@ -44,3 +44,10 @@ source: design-eng
 - `python3 -m py_compile tools/playtest.py` — ок. playtest.py і test-answer-ui.py локально не запускались (немає Python playwright) — лише CI (job browser); живого змісту з build ще немає, тож гілки build у playtest.py вперше відпрацюють на першому розділі eng з build.
 
 **Обмеження.** Примітка «In British English…» для build не показується (вона лише в word); aria-label «Речення»/«Слова» — українською всередині section lang=en (як наявні split/stress); index.html CSS не змінено — inline-стилі; тест рівня й тренування eng з build у браузері — engine-eng-diag-pool / engine-eng-playtest.
+
+## Виправлення після рев'ю (reports/review/engine-eng-build.md, ea22a3a)
+- **P1-1:** test-ui №28 «плитка ≥ 44 × 44 px» і №29 match «кнопки ≥ 44 × 44 px» міряють `offsetWidth/offsetHeight` (розмір розкладки без transform анімації `.screen` «in»), а не `getBoundingClientRect` (43.99998 під час `translateY`).
+- **P3-1:** `buildIssues` — помилка для плитки без літери чи цифри (`"?"`, `"…"`): кінцевий знак зрізається з обох боків, тож речення без неї зараховувалось. Тести test-lang (+3: «?» у tiles, «…» в extra, «Yes,» — можна); CONTENT_SCHEMA §4.1 (обмеження).
+- P3-2…P3-6 — окрема задача engine-eng-build-p3 (за рішенням координатора).
+
+**Прогони.** `npm run check` — rc 0 (validate 0 помилок). `NODE_PATH=/opt/node22/lib/node_modules node tools/test-ui.mjs` — 6 прогонів поспіль: усі `433 ok, 0 ✗`. Мутанти на копії в scratchpad (`BTILE="padding:2px 7px"`; у match `MBTN` без `min-height:44px`, `padding:1px 4px`) — `430 ok, 3 ✗`: «build: плитка ≥ 44 × 44 px» і двічі «match: кнопки ≥ 44 × 44 px» (висоти 28 px).
