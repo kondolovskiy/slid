@@ -7,7 +7,7 @@ subject: eng
 grade: 4
 section: e4s7
 depends_on: [write-eng-g4-e4s7, engine-eng-diag-pool, engine-eng-tools]
-status: review
+status: done
 claimed_by: writer-pe4s7
 created: 2026-11-19
 source: design-eng
@@ -53,3 +53,12 @@ sk read і phon (є в l1–l3) у пулі не тренуються: тип `s
 **Лексика поза e4s7:** hungry, thirsty, tired, sandwich, juice (e4s5), lift, stairs, flat (e4s2), °C (e4s6), football (e4s3), bed (e4s2). pizza (лише e4s8) замінено на ice cream.
 **Словники (звірено):** URL у reports/verify/e4s7.md §2 «Форми й норма» (CD Grammar By; CD across / along / over; CD Grammar Comparison: adjectives; OALD old; CD go/swim/see/eat; CD Grammar Will; OALD dear_1, love_1). Додатково: CD tall (High or tall?, «tallest mountain») — https://dictionary.cambridge.org/dictionary/english/tall; CD warm — https://dictionary.cambridge.org/dictionary/english/warm.
 **Спірне для верифікатора:** a12 (інверсія в answer — поблажливо); a28 «How big is the mountain?» не прийнято; a19 «kyiv» дає «Almost: check the spelling» (як l3 розділу); a35/a32 — «Find the mistake.» з двома словами (body: «Two words … are wrong»).
+
+## Нотатки верифікатора (verifier-pe4s7, 2026-11-20)
+**Вердикт: пул придатний → `status: "verified"`.** Звіт: reports/verify/pe4s7.md.
+- Розв'язав усі 59 вправ сам. `build` перебрав через app/lang.js (усі впорядковані підмножини tiles + extra): a12, a23, a33 і a40 приймають рівно порядки з `answer`. `validate --pool pe4s7` — 0/0; `personalization-qa --pool pe4s7 --strict` — без «БРАКУЄ».
+- ❌ → виправлено: a21 `word` — «America» додано в ключ (CD america «the United States of America», OALD «used as a name for the United States»).
+- Додав a45–a59: `stress` (phon) l1 і l3, читання (read: choice / gaps / multi на власних коротких текстах) l1, l2, l3 — по 3 вправи рівнів 1–3. Наголос — CD + OALD, URL у звіті §2. **transport не взяв:** у дієслова наголос на 2-му складі.
+- a52 `hint` більше не видає відповідь. Шапка файлу оновлена.
+- Спірне автора: a12 інверсію лишаю (граматична, прецедент l2 «Along the river we walk»); a28, a19, a32/a35 — як у автора.
+- Факти (столиці, Hoverla 2,061 m, the Dnipro, Kyiv the biggest) — по 2 відкриті джерела. Авторське право: 9 фрагментів, збігів немає.
