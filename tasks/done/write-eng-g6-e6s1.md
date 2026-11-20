@@ -7,7 +7,7 @@ subject: eng
 grade: 6
 section: e6s1
 depends_on: [curate-eng-plan-g6, engine-eng-lang-core, engine-eng-validate, engine-eng-stats, skills-eng, curate-eng-style, curate-eng-glossary]
-status: review
+status: done
 claimed_by: writer-e6s1
 created: 2026-11-19
 source: design-eng
@@ -77,3 +77,6 @@ writer-e6s1, 2026-11-20. Файл content/eng/g6-e6s1.js (draft), img/eng/e6s1/*
 5. Власні SVG (img/eng/e6s1) — credits у формі e5s4 («own work, no third-party material») до рішення людини (DECISION-NEEDED writer-e5s4). alt у match описує картинку — диктор так само видає пару, як у e5s5.
 6. l5 «Very, quite, really»: really = very (CD really A1 «very or very much»); між very і really не розрізняю.
 7. Канон зовнішності героїв задано тут — рядок NOTE (герої) в inbox (текстом у відповіді оркестратору). Узгоджено з e4s7 (Emma 145 см найвища, Taras 135 см — нижчий): Emma tall, Taras not tall.
+
+## Нотатки верифікатора
+verifier-e6s1, 2026-11-20. Звіт — reports/verify/e6s1.md. **Вердикт: verified (усі 7 уроків).** Зміст не правив: кожне оцінюване завдання розв'язано наново; `build` перебрано повністю через SLID_LANG.check (лише ключі), `word` — через wordVerdict (кінцевих знаків у ключах немає). Другої правильної відповіді немає: be like ніде не хибне для зовнішності, хибне лише looks like для характеру (CD Grammar «Like»); quite відсічено умовою «a little, but not very» (CD Grammar «Quite»). Опора (D-019) є для кожного завдання. Шість SVG переглянуто в Chromium headless, і кожен однозначний. Канон героїв перевірено проти 4–6 кл., суперечностей немає. 12 запитів WebSearch з лапками — збігів немає. Спірні 1–7 автора прийнято (звіт §5). validate — 0/0; stats — без прапорців; playtest — лише в CI (немає python playwright). Людині: ліцензія власних SVG (DECISION-NEEDED writer-e5s4), не блокує.

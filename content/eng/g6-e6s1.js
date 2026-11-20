@@ -11,7 +11,7 @@
    Ruby (нова подруга Emma, England).
    Увесь зміст — англійською, британська норма (D-054). Тексти, діалоги, герої й малюнки — власні (docs/design/english.md §8).
    Форми, рівні слів і наголос — за Cambridge Dictionary і OALD (URL — tasks/…/write-eng-g6-e6s1.md, «Нотатки агента»).
-   Статус: draft. 7 уроків (6 + фінал).
+   Статус: verified (verifier-e6s1, 2026-11-20, reports/verify/e6s1.md). 7 уроків (6 + фінал).
    Перевірка: node tools/validate.mjs --section e6s1 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -21,7 +21,7 @@ SLID.section("eng", {
   title: "Describing people",
   why: "To say what people look like. And to say what they are like: kind, friendly or shy.",
   requires: ["e5s1l6"],
-  meta: { author: "writer-e6s1", created: "2026-11-20", factcheck: "self", teacher: null },
+  meta: { author: "writer-e6s1", created: "2026-11-20", factcheck: "verifier-e6s1 (reports/verify/e6s1.md)", teacher: null },
   credits: [
     ["Portraits and hair drawings for the section “Describing people” (img/eng/e6s1/*.svg)", "Slid (writer-e6s1)", "own work, no third-party material", "https://github.com/kondolovskiy/slid"]
   ],
@@ -35,7 +35,7 @@ SLID.section("eng", {
       title: "What does he look like? Tall or short?",
       short: "Look like",
       icon: "user",
-      status: "draft",
+      status: "verified",
       why: "Friends often ask about new people. Say what a person looks like.",
       screens: [
         {
@@ -167,7 +167,7 @@ SLID.section("eng", {
       title: "Long dark hair and big blue eyes",
       short: "Hair and eyes",
       icon: "eye",
-      status: "draft",
+      status: "verified",
       why: "Describe hair and eyes in the right order: long dark hair, big blue eyes.",
       screens: [
         {
@@ -292,7 +292,7 @@ SLID.section("eng", {
       title: "A girl with glasses, a man with a beard",
       short: "With, without",
       icon: "users",
-      status: "draft",
+      status: "verified",
       why: "Who is who in a photo? Find people with with and without.",
       screens: [
         {
@@ -434,7 +434,7 @@ SLID.section("eng", {
       title: "What is she like? Kind, friendly, shy",
       short: "Character",
       icon: "star",
-      status: "draft",
+      status: "verified",
       why: "People are kind, funny or shy. Learn words to describe a person’s character.",
       screens: [
         {
@@ -570,7 +570,7 @@ SLID.section("eng", {
       title: "He looks happy! Very, quite, really",
       short: "Look happy",
       icon: "bulb",
-      status: "draft",
+      status: "verified",
       why: "Look at a face and say how a person feels. Say how much with very, quite and really.",
       screens: [
         {
@@ -709,7 +709,7 @@ SLID.section("eng", {
       title: "She looks like her mum, but she’s like her dad",
       short: "Look like, be like",
       icon: "users",
-      status: "draft",
+      status: "verified",
       why: "Who do you look like in your family? And who are you like? Say it in English.",
       screens: [
         {
@@ -846,7 +846,7 @@ SLID.section("eng", {
       title: "People from the English club",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e6s1boss",
       why: "Check everything from this section. Your points are doubled.",
