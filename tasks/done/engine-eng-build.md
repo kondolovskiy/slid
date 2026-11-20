@@ -5,7 +5,7 @@ id: engine-eng-build
 type: engine
 subject: eng
 depends_on: [engine-eng-lang-core]
-status: review
+status: done
 claimed_by: eng-build
 created: 2026-11-19
 source: design-eng
