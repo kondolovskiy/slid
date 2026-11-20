@@ -7,7 +7,7 @@ subject: eng
 grade: 4
 section: e4s1
 depends_on: [write-eng-g4-e4s1, engine-eng-diag-pool, engine-eng-tools]
-status: review
+status: done
 claimed_by: writer-pe4s1
 created: 2026-11-19
 source: design-eng
@@ -59,3 +59,8 @@ source: design-eng
 3. a54: пропуск на початку рядка бланка («___: 10») → «age»; регістр не оцінюється (keepCase немає).
 
 **Доповнення (корекція оркестратора: пули можуть мати stress/choice/multi).** phon уже покрито `stress` (l1, l3, l6 — по 3 вправи); read (l2, l4 — по 3) — `gaps`/`word` на короткому тексті з однією правильною відповіддю, тож `choice`/`multi` не додавав. Усі слова `stress` мають один наголос і в CD, і в OALD: CD/OALD — звіт reports/verify/e4s1.md §2; бракувало OALD для teacher /ˈtiːtʃə(r)/, driver /ˈdraɪvə(r)/, Ukrainian /juːˈkreɪniən/ — звірено 2026-11-20: https://www.oxfordlearnersdictionaries.com/definition/english/teacher, …/driver, …/ukrainian (IPA лише для звірки, у пул не перенесено).
+
+## Нотатки верифікатора (verifier-pe4s1, 2026-11-20)
+Звіт: reports/verify/pe4s1.md. **Вердикт: придатний, `status: "verified"`.** 55 вправ розв'язано; другої правильної відповіді й завдань без опори немає; build — перебір усіх перестановок через SLID_LANG.check; word — wordVerdict; stress — 13 слів, один наголос у CD і OALD (URL у звіті); ТОП 3–4 с. 54, 62, 63 звірено з PDF (SHA-1 збігається); WebSearch 6 фрагментів — збігів немає.
+Правки: a50 (майже дослівна копія екрана word l6 — умову переписано, ключ той самий), a08 steps (коротше речення), status/factcheck. validate --pool pe4s1 — 0/0; personalization-qa --strict — без зауважень. test-answer-ui не запускався (немає Python playwright) — CI.
+Людині: нічого (TQ не додано).

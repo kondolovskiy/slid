@@ -7,8 +7,8 @@
    Контракт — docs/CONTENT_SCHEMA.md §10 «Пули мовних предметів».
    Перевірка: node tools/validate.mjs --pool pe4s1 && node tools/personalization-qa.mjs --pool pe4s1 --strict */
 SLID.pool("eng", {
-  id: "pe4s1", section: "e4s1", status: "draft",
-  meta: { author: "writer-pe4s1", created: "2026-11-20", factcheck: "self", teacher: null },
+  id: "pe4s1", section: "e4s1", status: "verified",
+  meta: { author: "writer-pe4s1", created: "2026-11-20", factcheck: "verifier-pe4s1 (reports/verify/pe4s1.md)", teacher: null },
   sources: [
     { id: "top34", short: "ТОП 3–4", program: true,
       title: "Типова освітня програма для закладів загальної середньої освіти, 3–4 класи (розроблена під керівництвом О. Я. Савченко), 2018",
@@ -58,7 +58,7 @@ SLID.pool("eng", {
       type: "stress", title: "Find the stressed syllable.",
       words: ["good|+bye", "af|ter|+noon", "hel|+lo"],
       hint: "Look at the strong part. Is it at the start or at the end?",
-      steps: ["good<u>bye</u>, after<u>noon</u>, hel<u>lo</u>.", "In all three words, the strong part is at the end."] },
+      steps: ["good<u>bye</u>, after<u>noon</u>, hel<u>lo</u>.", "All three: the strong part is at the end."] },
     { id: "a09", lesson: "e4s1l1", lvl: 3, sk: "gram", src: "top34 с. 62",
       type: "build", title: "Put the words in order.",
       body: "<p>Emma is ten. Her brother Tom is eight. Emma writes about Tom and her.</p>",
@@ -308,11 +308,11 @@ SLID.pool("eng", {
       steps: ["<u>Sur</u>name: the strong part is at the start.", "U<u>krai</u>nian: the strong part is <u>krai</u>."] },
     { id: "a50", lesson: "e4s1l6", lvl: 2, sk: "write", src: "top34 с. 54",
       type: "word", title: "Write the word.",
-      body: "<p>Mariia is from Ukraine. Write her nationality with a capital letter.</p>",
+      body: "<p>Mariia fills in the club form. She lives in Kharkiv, in Ukraine.</p><p>Write her nationality with a capital letter.</p>",
       before: "Nationality:",
       answer: "Ukrainian", keepCase: true,
-      hint: "From Ukraine: I’m …",
-      steps: ["From Ukraine: <b>Ukrainian</b>.", "Nationalities start with a capital letter."] },
+      hint: "Mariia is from Ukraine. She’s …",
+      steps: ["Mariia is from Ukraine: she’s <b>Ukrainian</b>.", "Nationalities start with a capital letter."] },
     { id: "a51", lesson: "e4s1l6", lvl: 2, sk: "vocab", src: "top34 с. 54",
       type: "gaps", title: "Fill in the gaps.",
       text: "Emma is from {*England|English}. She is {England|*English}. Andrii is from {*Ukraine|Ukrainian}. He is {Ukraine|*Ukrainian}.",
