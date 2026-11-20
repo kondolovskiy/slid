@@ -6,7 +6,7 @@ type: style
 subject: eng
 grade: 
 depends_on: [write-eng-g4-e4s1, write-eng-g4-e4s2, write-eng-g4-e4s3, write-eng-g4-e4s4, write-eng-g4-e4s5, write-eng-g4-e4s6, write-eng-g4-e4s7, write-eng-g4-e4s8, write-eng-g5-e5s1, write-eng-g5-e5s2, write-eng-g5-e5s3, write-eng-g5-e5s4, write-eng-g5-e5s5, write-eng-g5-e5s6, write-eng-g5-e5s7, write-eng-g5-e5s8, write-eng-g5-e5s9, write-eng-g5-e5s10]
-status: review
+status: done
 claimed_by: style-eng-g4-5
 created: 2026-11-19
 source: design-eng
@@ -24,3 +24,7 @@ source: design-eng
 - Пропозиція профілю — STYLE в inbox (текстом у відповіді оркестратору), style/profiles.json не змінено.
 - Перевірки: validate --section для 17 розділів — 0 помилок; повний validate — 0 помилок; stats --subject eng. build не запускав.
 - Точкова повторна верифікація — reports/style/eng-g4-5.md §8.
+
+## Верифікація (verifier-style-eng-g4-5, 2026-11-20)
+- Звіт: reports/verify/style-eng-g4-5.md — **прийнято**. 65 `build` перебрано (усі підмножини tiles+extra) — пастки не зараховуються, правильні порядки приймаються; e4s8l2 «What is the party time?» не додано (CD/OALD статті немає, Wiktionary — «time for enjoying oneself»).
+- Правка: e5s4 l1 — *skirt* жирним у визначенні dress. Рекомендація: e5s9 l5 gaps дублює intro Mariia (Lviv, small hotel).
