@@ -7,7 +7,7 @@ subject: eng
 grade: 5
 section: e5s1
 depends_on: [curate-eng-plan-g5, engine-eng-lang-core, engine-eng-validate, engine-eng-stats, skills-eng, curate-eng-style, curate-eng-glossary, write-eng-g4-e4s1]
-status: review
+status: done
 claimed_by: writer-e5s1
 created: 2026-11-19
 source: design-eng
@@ -81,3 +81,13 @@ Build не запускай (AGENTS.md §4 п. 8).
 5. Уривки Final l6 (part 1 + part 2 ≈ 120 слів) — трохи менше за пропозицію 130–180 (TQ-123); для уроку (не уроку читання) прийнятно.
 6. Помітив у **e4s1l3** (не мій файл): intro — тато Андрія engineer, а `pick` «One word in Andrii’s message is wrong» — «My dad is [an] farmer». Суперечність героя — рядок в inbox.
 7. `uk` не додавав.
+
+<!-- verifier-e5s1, 2026-11-20 -->
+**Верифікація (reports/verify/e5s1.md): verified, 7 уроків.** 10 правок у файлі розділу:
+- герой Taras: у e4s7 («My brothers were happy») і e5s8 у нього є брати → «two brothers and a little sister, Zlata»; l2 #5 тепер «Yes, he has.», boss T2 — «Has Zlata got a bike? – No, she hasn’t.»; Злата — «We’ve got a dog and a cat» (собака — e4s5, кішка — boss T3);
+- l2 #4: Sofiia (Andrii) «hasn’t got any pets» суперечило e4s6 (кішка) → Mariia;
+- друга правильна відповідь: l1 #7 + `grandchild` у ключ; l3 #9 — «Whose cat is it?» (без питання годилось «It’s a cat»);
+- l5: nurse «helps doctors» → «looks after sick people» (CD, OALD); «shop as<u>sis</u>tant» → «<u>shop</u> assistant» (CD /ˈʃɒp əˌsɪs.tənt/), у `stress` assistant → police;
+- l1 #2, #4: калька «What is he for Hanna?» → «Petro is Hanna’s …».
+Спірні місця автора: 1 (whose — тема уроку) ✅; 2 (quiet — визначено) ✅; 3 (this/that лише з явною відстанню) ✅; 4 (довжина речень) ✅; 5 (Final l6 ≈ 120 слів) ✅; 6 (e4s1 farmer — уже виправлено оркестратором) ✅; 7 (`uk` не потрібне) ✅.
+Відкрите поза файлом: CONFLICT e5s9 (Mariia only child ↔ «My brother» у Final e5s9); ENGINE these/those → «check the spelling»; плейтест — після build.

@@ -8,7 +8,7 @@
    Andrii — Kyiv, Mariia — Kharkiv, Taras — Lviv, Emma — town in England; Halyna — подруга Оксани з e4s8).
    Увесь зміст — англійською, британська норма (D-054). Тексти, діалоги й герої — власні (docs/design/english.md §8).
    Форми, рівні слів і наголос — за Cambridge Dictionary і OALD (URL — tasks/…/write-eng-g5-e5s1.md, «Нотатки агента»).
-   Статус: draft. 7 уроків (6 + фінал).
+   Статус: verified (verifier-e5s1, reports/verify/e5s1.md). 7 уроків (6 + фінал).
    Перевірка: node tools/validate.mjs --section e5s1 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -18,7 +18,7 @@ SLID.section("eng", {
   title: "Me, my family and friends",
   why: "To talk about your family and your friends. And to say what your parents do.",
   requires: ["e4s1l1", "e4s1l2", "e4s1l3"],
-  meta: { author: "writer-e5s1", created: "2026-11-19", factcheck: null, teacher: null },
+  meta: { author: "writer-e5s1", created: "2026-11-19", factcheck: "verifier-e5s1 (reports/verify/e5s1.md)", teacher: null },
   badges: [
     { id: "e5s1boss", name: "Family album", icon: "trophy", desc: "Finish the final lesson “Me, my family and friends”" }
   ],
@@ -29,7 +29,7 @@ SLID.section("eng", {
       title: "My family tree: who is who?",
       short: "Family tree",
       icon: "users",
-      status: "draft",
+      status: "verified",
       why: "Families can be big. Learn new words for your family tree.",
       screens: [
         {
@@ -45,11 +45,11 @@ SLID.section("eng", {
           eyebrow: "Guess!",
           title: "What do you think?",
           hyp: true,
-          body: `<p>Petro is Hanna’s child. He is a boy. What is he for Hanna?</p>`,
+          body: `<p>Petro is Hanna’s child. He is a boy.</p><p>Petro is Hanna’s …</p>`,
           opts: [
-            "her daughter",
-            "her son",
-            "her husband"
+            "daughter",
+            "son",
+            "husband"
           ],
           correct: 1,
           fbTitle: "Let’s find out.",
@@ -66,11 +66,11 @@ SLID.section("eng", {
           type: "choice",
           sk: "vocab",
           title: "Choose the correct answer.",
-          body: `<p>Olena is Oksana’s mum. Who is Oksana for Olena?</p>`,
+          body: `<p>Olena is Oksana’s mum.</p><p>Oksana is Olena’s …</p>`,
           opts: [
-            "her son",
-            "her wife",
-            "her daughter"
+            "son",
+            "wife",
+            "daughter"
           ],
           correct: 2,
           hint: "Is Oksana a boy or a girl?",
@@ -107,7 +107,7 @@ SLID.section("eng", {
           body: `<p>Hanna is Dmytro’s grandma.</p>`,
           before: "Dmytro is Hanna’s",
           after: ".",
-          answer: "grandson",
+          answer: ["grandson", "grandchild"],
           hint: "Dmytro is a boy. Look at the list.",
           fbOk: "Yes!",
           fbBad: "A boy and his grandma: he is her …",
@@ -142,14 +142,14 @@ SLID.section("eng", {
       title: "Have you got any brothers or sisters?",
       short: "Have got",
       icon: "voice",
-      status: "draft",
+      status: "verified",
       why: "New friends ask about your family. Ask and answer with have got.",
       screens: [
         {
           type: "intro",
           eyebrow: "Lesson 2",
           title: "Who has got a big family?",
-          body: `<p class="lead">It’s September at the English club. Ms Kravets says: “Tell us about your family!”</p><p><b>Taras:</b> I’ve got a little sister, Zlata. I haven’t got any brothers.<br><b>Mariia:</b> I haven’t got any brothers or sisters. I’m an only child.<br><b>Andrii:</b> I’ve got a sister, Sofiia, and five cousins!</p><p>What is an only child?</p>`,
+          body: `<p class="lead">It’s September at the English club. Ms Kravets says: “Tell us about your family!”</p><p><b>Taras:</b> I’ve got two brothers and a little sister, Zlata.<br><b>Mariia:</b> I haven’t got any brothers or sisters. I’m an only child.<br><b>Andrii:</b> I’ve got a sister, Sofiia, and five cousins!</p><p>What is an only child?</p>`,
           cta: "Let’s see"
         },
         {
@@ -177,27 +177,27 @@ SLID.section("eng", {
           type: "gaps",
           sk: "gram",
           title: "Fill in the gaps.",
-          text: "{*Have|Has} you got any cousins? – Yes, I {*have|has}. {*Has|Have} Sofiia got {*a|any} dog? – No, she {*hasn’t|haven’t}. She hasn’t got {*any|a} pets.",
+          text: "{*Have|Has} you got any cousins? – Yes, I {*have|has}. {*Has|Have} Mariia got {*a|any} dog? – No, she {*hasn’t|haven’t}. She hasn’t got {*any|a} pets.",
           hint: "One or more? Then choose a or any.",
           fbOk: "Exactly.",
           fbBad: "Look at the rule: one → a, more → any.",
-          fbText: "<b>Have</b> you got…? – Yes, I <b>have</b>. Sofiia is <b>she</b>: <b>Has</b> she got <b>a</b> dog? – No, she <b>hasn’t</b>. Pets are more than one: <b>any</b> pets."
+          fbText: "<b>Have</b> you got…? – Yes, I <b>have</b>. Mariia is <b>she</b>: <b>Has</b> she got <b>a</b> dog? – No, she <b>hasn’t</b>. Pets are more than one: <b>any</b> pets."
         },
         {
           type: "choice",
           sk: "gram",
           title: "Choose the correct answer.",
-          body: `<p>Taras: “I’ve got a little sister, Zlata. I haven’t got any brothers.”</p><p>Emma asks: “Has Taras got any brothers?”</p>`,
+          body: `<p>Taras: “I’ve got two brothers and a little sister, Zlata.”</p><p>Emma asks: “Has Taras got any brothers?”</p>`,
           opts: [
-            "No, he haven’t.",
-            "No, he isn’t.",
-            "No, he hasn’t."
+            "Yes, he have.",
+            "Yes, he is.",
+            "Yes, he has."
           ],
           correct: 2,
           hint: "Taras is he. Has he got…?",
           fbOk: "Right.",
           fbBad: "Look at the short answers again.",
-          fbText: "<b>Has</b> he got…? – No, he <b>hasn’t</b>. <i>No, he isn’t</i> answers <i>Is he…?</i>"
+          fbText: "<b>Has</b> he got…? – Yes, he <b>has</b>. <i>Yes, he is</i> answers <i>Is he…?</i>"
         },
         {
           type: "build",
@@ -229,11 +229,11 @@ SLID.section("eng", {
           sk: "gram",
           title: "Find the mistake.",
           body: `<p>One word in Zlata’s message is wrong.</p>`,
-          text: "I’m Zlata. I’ve got a brother, Taras. He [have] got a big bike. We haven’t got any pets.",
+          text: "I’m Zlata. Taras is my brother. He [have] got a big bike. We’ve got a dog and a cat.",
           hint: "Check have and has. Who is it?",
           fbOk: "Good eye!",
           fbBad: "Check each have and has.",
-          fbText: "Taras is <b>he</b>. He <b>has</b> got a bike. <b>I’ve got</b> and <b>We haven’t got</b> are correct."
+          fbText: "Taras is <b>he</b>. He <b>has</b> got a bike. <b>We’ve got</b> is correct."
         },
         {
           type: "gaps",
@@ -264,7 +264,7 @@ SLID.section("eng", {
       title: "Whose is it? My, your, his, her",
       short: "My, his, her",
       icon: "check",
-      status: "draft",
+      status: "verified",
       why: "Is it your bag or his bag? Learn to say whose things they are.",
       screens: [
         {
@@ -353,7 +353,7 @@ SLID.section("eng", {
           type: "word",
           sk: "gram",
           title: "Write the missing word.",
-          body: `<p>Oksana and Dmytro have got a cat.</p>`,
+          body: `<p>Oksana and Dmytro have got a cat. Whose cat is it?</p>`,
           before: "It’s",
           after: "cat. Its name is Murka.",
           answer: "their",
@@ -391,7 +391,7 @@ SLID.section("eng", {
       title: "This, that, these, those: a family photo",
       short: "This, that",
       icon: "eye",
-      status: "draft",
+      status: "verified",
       why: "Show your family photos to a friend. Say who is near and who is not.",
       screens: [
         {
@@ -507,7 +507,7 @@ SLID.section("eng", {
       title: "What do your parents do? Jobs",
       short: "Jobs",
       icon: "user",
-      status: "draft",
+      status: "verified",
       why: "People often ask: “What does your mum do?” Learn to answer.",
       screens: [
         {
@@ -552,7 +552,7 @@ SLID.section("eng", {
         {
           type: "info",
           title: "Jobs",
-          body: `<ul><li>a <b>nurse</b> – helps doctors in a hospital</li><li>a <b><u>den</u>tist</b> – looks after your teeth</li><li>a <b>me<u>chan</u>ic</b> – repairs cars</li><li>a <b>po<u>lice</u> officer</b> – keeps people safe</li><li>a <b>shop as<u>sis</u>tant</b> – works in a shop</li><li>a <b>pho<u>tog</u>rapher</b> – takes photos</li></ul><p>The <u>underlined</u> part is strong.</p>`,
+          body: `<ul><li>a <b>nurse</b> – looks after sick people</li><li>a <b><u>den</u>tist</b> – looks after your teeth</li><li>a <b>me<u>chan</u>ic</b> – repairs cars</li><li>a <b>po<u>lice</u> officer</b> – keeps people safe</li><li>a <b><u>shop</u> assistant</b> – works in a shop</li><li>a <b>pho<u>tog</u>rapher</b> – takes photos</li></ul><p>The <u>underlined</u> part is strong.</p>`,
           cta: "Next"
         },
         {
@@ -601,10 +601,10 @@ SLID.section("eng", {
           type: "stress",
           sk: "phon",
           title: "Find the stressed syllable.",
-          words: ["me|+chan|ic", "+den|tist", "as|+sis|tant", "pho|+tog|ra|pher"],
+          words: ["me|+chan|ic", "+den|tist", "po|+lice", "pho|+tog|ra|pher"],
           fbOk: "Yes!",
           fbBad: "Look at the job list again.",
-          fbText: "me<u>chan</u>ic, as<u>sis</u>tant, pho<u>tog</u>rapher: the second part is strong. <u>den</u>tist: the first part."
+          fbText: "me<u>chan</u>ic, po<u>lice</u>, pho<u>tog</u>rapher: the second part is strong. <u>den</u>tist: the first part."
         },
         {
           type: "word",
@@ -653,7 +653,7 @@ SLID.section("eng", {
       title: "My best friend: what does she like?",
       short: "Best friend",
       icon: "star",
-      status: "draft",
+      status: "verified",
       why: "Tell people about your best friend. Say what your friend likes.",
       screens: [
         {
@@ -795,7 +795,7 @@ SLID.section("eng", {
       title: "Our family album",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e5s1boss",
       why: "Check everything from this section. Your points are doubled.",
@@ -825,15 +825,15 @@ SLID.section("eng", {
           sk: "gram",
           eyebrow: "Task 2",
           title: "Write the missing word.",
-          body: `<p>Taras: “I’ve got a little sister, Zlata. I haven’t got any brothers.”</p>`,
-          before: "Has Taras got any brothers? – No, he",
+          body: `<p>Taras: “I’ve got two brothers and a little sister, Zlata. She hasn’t got a bike.”</p>`,
+          before: "Has Zlata got a bike? – No, she",
           after: ".",
           answer: "hasn’t",
           contractions: true,
           pre: "e5s1l2",
           fbOk: "Well done!",
-          fbBad: "Has he got…? – No, he …",
-          fbText: "<b>Has</b> he got any brothers? – No, he <b>hasn’t</b>."
+          fbBad: "Has she got…? – No, she …",
+          fbText: "<b>Has</b> she got a bike? – No, she <b>hasn’t</b>."
         },
         {
           type: "gaps",
