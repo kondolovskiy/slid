@@ -243,7 +243,7 @@ SLID.section("eng", {
           body: `<p>One word in Taras’s message is wrong.</p>`,
           text: "Today I’m going to the bookshop [for] buy a book about Lviv. Then I’m going to the baker’s to get some cakes.",
           hint: "Check the words before buy and get.",
-          fbOk: "Good eye!",
+          fbOk: "Right.",
           fbBad: "Look at the rule: to + verb.",
           fbText: "Not <s>for buy</s>, but <b>to buy</b>: I’m going to the bookshop <b>to buy</b> a book. <b>To get</b> some cakes is correct."
         },

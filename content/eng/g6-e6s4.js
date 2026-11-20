@@ -373,7 +373,7 @@ SLID.section("eng", {
           body: `<p>One word in Vlad’s message is wrong.</p>`,
           text: "When I was six, I [can] ride a bike, but I couldn’t swim. Now I can do both!",
           hint: "Which part is about the past?",
-          fbOk: "Good eye!",
+          fbOk: "Right.",
           fbBad: "When I was six is the past.",
           fbText: "<b>When I was six</b> is the past: I <b>could</b> ride a bike. <b>Now I can</b> is correct."
         },
@@ -768,17 +768,17 @@ SLID.section("eng", {
           sk: "read",
           eyebrow: "Reading: Sports day, part 2 of 2",
           title: "Read and choose.",
-          body: `<p><i>Emma won the girls’ running race! Her brother Tom was in a race too. He was running very fast when he fell. Everyone was quiet. Then Tom got up and ran again. He didn’t win, but everyone shouted, “Well done, Tom!” What a day!</i></p><p>What happened when Tom was running?</p>`,
+          body: `<p><i>Emma won the girls’ running race! Her classmate Oliver was in a race too. He was running very fast when he fell. Everyone was quiet. Then Oliver got up and ran again. He didn’t win, but everyone shouted, “Well done, Oliver!” What a day!</i></p><p>What happened when Oliver was running?</p>`,
           opts: [
             "He won the race.",
             "He stopped and went home.",
             "He fell."
           ],
           correct: 2,
-          hint: "Find Tom was running in the text.",
+          hint: "Find Oliver was running in the text.",
           fbOk: "Yes!",
-          fbBad: "Read about Tom again.",
-          fbText: "Tom <b>was running</b> very fast <b>when</b> he <b>fell</b>. Then he got up and ran again. He didn’t win."
+          fbBad: "Read about Oliver again.",
+          fbText: "Oliver <b>was running</b> very fast <b>when</b> he <b>fell</b>. Then he got up and ran again. He didn’t win."
         },
         {
           type: "gaps",

@@ -901,7 +901,7 @@ SLID.section("eng", {
           type: "intro",
           eyebrow: "Section final · points ×2",
           title: "Can you help Andrii cook?",
-          body: `<p class="lead">Andrii’s grandparents, Nina and Vasyl, visit from Chernihiv. Andrii and Sofiia cook lunch for them in Kyiv.</p><p>Help Andrii. You need everything from this section.</p>`,
+          body: `<p class="lead">Andrii’s grandparents, Nina and Vasyl, visit from Chernihiv. Andrii, Sofiia and Dad cook lunch for them in Kyiv.</p><p>Help Andrii. You need everything from this section.</p>`,
           cta: "Let’s go"
         },
         {
@@ -953,13 +953,13 @@ SLID.section("eng", {
           eyebrow: "Task 4",
           title: "Write the missing word.",
           body: `<p>make → ?</p>`,
-          before: "This morning, Andrii",
-          after: "deruny for his grandparents.",
+          before: "This morning, Andrii and Dad",
+          after: "deruny for the grandparents.",
           answer: "made",
           pre: "e6s3l4",
           fbOk: "Yes!",
           fbBad: "Make is irregular. Look at the list in Lesson 4.",
-          fbText: "make → <b>made</b>: This morning, Andrii <b>made</b> deruny."
+          fbText: "make → <b>made</b>: This morning, Andrii and Dad <b>made</b> deruny."
         },
         {
           type: "build",

@@ -142,7 +142,7 @@ SLID.section("eng", {
           sk: "read",
           eyebrow: "Final",
           title: "Read and choose.",
-          body: `<p><i>Hi Taras! My grandparents are coming to Kyiv next week. They live in Chernihiv. Grandad wants to go by car, but Grandma loves the coach. It’s cheaper than the car and very comfortable. So they’re going to come by coach! – Andrii</i></p><p>Why does Grandma love the coach?</p>`,
+          body: `<p><i>Hi Taras! My grandparents are coming to Kyiv in July. They live in Chernihiv. Grandad wants to go by car, but Grandma loves the coach. It’s cheaper than the car and very comfortable. So they’re going to come by coach! – Andrii</i></p><p>Why does Grandma love the coach?</p>`,
           opts: [
             "It’s faster than a plane.",
             "It’s cheaper than the car and comfortable.",
@@ -294,7 +294,7 @@ SLID.section("eng", {
           ],
           correct: 1,
           hint: "Find the word arrives.",
-          fbOk: "Good eye!",
+          fbOk: "Well done!",
           fbBad: "Nine o’clock is when the train leaves.",
           fbText: "The train <b>leaves</b> at nine o’clock and <b>arrives</b> at five past two."
         }
@@ -711,7 +711,7 @@ SLID.section("eng", {
           ],
           correct: 1,
           hint: "Find the word print in the text.",
-          fbOk: "Good eye!",
+          fbOk: "Well done!",
           fbBad: "Read the last two sentences again.",
           fbText: "The tickets are <b>on Mum’s phone</b>. So they <b>don’t have to</b> print them."
         }
@@ -838,7 +838,7 @@ SLID.section("eng", {
         {
           type: "gaps",
           sk: "func",
-          title: "Complete the dialogue.",
+          title: "Complete the sentences.",
           text: "Emma: Hello. Two {*returns|return} to London, please. We’re coming back on Sunday. Man: That’s £36, please. Emma: What time {*does|is} the next train leave? Man: At 10.15, from platform 2. Emma: Sorry, could you say that {*again|repeat}, please?",
           hint: "Two tickets: return or returns? Questions about a timetable: does.",
           fbOk: "Yes!",
@@ -888,7 +888,7 @@ SLID.section("eng", {
           type: "intro",
           eyebrow: "Section final · points ×2",
           title: "Can you help Andrii?",
-          body: `<p class="lead">Andrii and his family are visiting his grandparents in Chernihiv next weekend.</p><p>Help Andrii get ready: transport, the timetable, plans, packing, rules and tickets. You need everything from this section.</p>`,
+          body: `<p class="lead">It’s October. Andrii and his family are visiting his grandparents in Chernihiv next weekend.</p><p>Help Andrii get ready: transport, the timetable, plans, packing, rules and tickets. You need everything from this section.</p>`,
           cta: "Let’s go"
         },
         {

@@ -265,7 +265,7 @@ SLID.section("eng", {
           body: `<p>Taras writes to Andrii.</p>`,
           text: "Hi Andrii! This week in IT we {*are making|makes} a video about Lviv. I {*am taking|takes} the photos. In science we often {*do|does} experiments. Yesterday we {*did|do} a test in maths. It was easy! Taras",
           hint: "Who is it: we or I? Is it now, often or yesterday?",
-          fbOk: "Well done!",
+          fbOk: "Yes!",
           fbBad: "Check who: we, I. Check when: this week, often, yesterday.",
           fbText: "We <b>are making</b> (this week). I <b>am taking</b>. We often <b>do</b>. Yesterday → Past Simple: <b>did</b>."
         }
@@ -800,7 +800,7 @@ SLID.section("eng", {
           body: `<p>Kyrylo writes about his best lesson.</p>`,
           text: "My best lesson this year {*was|were} in history. In April, we {*went|go} to a museum in Kyiv. We {*saw|see} old maps and coins there. It was {*amazing|boring}, and I loved it!",
           hint: "It’s about the past. And he loved it: was it amazing or boring?",
-          fbOk: "Well done!",
+          fbOk: "Exactly.",
           fbBad: "Past Simple: go → went, see → saw.",
           fbText: "Past Simple: <b>was</b>, <b>went</b>, <b>saw</b>. He loved it, so it was <b>amazing</b>."
         }
@@ -922,7 +922,7 @@ SLID.section("eng", {
           answer: "You should ask your teacher for help.",
           pre: "e6s6l5",
           hint: "Start with You. After should: no -s.",
-          fbOk: "Well done!",
+          fbOk: "Right.",
           fbBad: "After should: ask, not asks.",
           fbText: "<b>You should ask your teacher for help.</b> should + verb, no -s."
         },

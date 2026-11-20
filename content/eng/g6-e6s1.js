@@ -885,6 +885,7 @@ SLID.section("eng", {
           answer: "Roksolana has got big blue eyes.",
           extra: ["eye"],
           pre: "e6s1l2",
+          hint: "What comes first: how big or the colour?",
           fbOk: "Well done!",
           fbBad: "How big comes first. Then the colour.",
           fbText: "<b>Roksolana has got big blue eyes.</b> First how big, then the colour."
@@ -926,6 +927,7 @@ SLID.section("eng", {
           body: `<p>Ms Kravets writes about the photos. Emma is a little tired, but not very.</p>`,
           text: "Emma {*looks|looks like} {*quite|very} tired. Mariia looks really {*happy|happily}.",
           pre: "e6s1l5",
+          hint: "Look + an adjective (tired, happy): no like, no -ly.",
           fbOk: "Well done!",
           fbBad: "Look + tired. Quite = a little, but not very.",
           fbText: "Emma <b>looks quite tired</b>: a little, but not very. Mariia looks really <b>happy</b>, without -ly."
@@ -943,6 +945,7 @@ SLID.section("eng", {
           ],
           correct: 0,
           pre: "e6s1l6",
+          hint: "Funny stories, friendly: is it the face or the character?",
           fbOk: "Yes!",
           fbBad: "Funny and friendly is character.",
           fbText: "The same character → Mariia <b>is like</b> her dad. <i>Look like</i> is about the face and hair, and Mariia is <i>she</i>: <i>looks</i>."

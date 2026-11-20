@@ -19,7 +19,7 @@ SLID.section("eng", {
   grade: 6,
   weeks: [28, 31],
   title: "Kyiv, the capital of Ukraine",
-  why: "To tell people about Kyiv and its famous places. And to talk about places you have visited.",
+  why: "To tell people about Kyiv and its famous places. And to ask a friend: “Have you ever been to Kyiv?”",
   requires: ["e4s7l3", "e5s10l1", "e5s10l5", "e5s7l6", "e6s3l4", "e6s3l5"],
   meta: { author: "writer-e6s7", created: "2026-11-20", factcheck: "verifier-e6s7 (reports/verify/e6s7.md)", teacher: null },
   badges: [
@@ -256,7 +256,7 @@ SLID.section("eng", {
           body: `<p>Daryna writes to Amelia.</p>`,
           text: "Hi Amelia! I’m Daryna. I live in Kyiv. Khreshchatyk is {*the main|main} street of the city. Independence Square is {*on|at} Khreshchatyk. My school is {*the only|only} school in our street. Kyiv is one of {*the oldest|oldest} cities in Eastern Europe. See you in May!",
           hint: "Main, only, oldest: say the. A place in a street: on Khreshchatyk.",
-          fbOk: "Well done!",
+          fbOk: "Good eye!",
           fbBad: "Check: the main, the only, the oldest.",
           fbText: "<b>The main</b> street. Independence Square is <b>on</b> Khreshchatyk. <b>The only</b> school. One of <b>the oldest</b> cities."
         }
@@ -662,7 +662,7 @@ SLID.section("eng", {
           ],
           correct: [0, 2],
           hint: "Find have, has, never and went in the text.",
-          fbOk: "Well done!",
+          fbOk: "Yes!",
           fbBad: "Has Zoriana ever been to London?",
           fbText: "Zoriana <b>has visited</b> the Golden Gate. She <b>went</b> to St Andrew’s Church <b>last Sunday</b>. She has <b>never</b> been to London. She <b>has seen</b> the Dnipro from the funicular."
         }
@@ -784,7 +784,7 @@ SLID.section("eng", {
           extra: ["saw"],
           keepCase: true,
           hint: "Start with Have. After ever: the third form of see.",
-          fbOk: "Well done!",
+          fbOk: "Good eye!",
           fbBad: "Look at the rule: Have you ever + seen…?",
           fbText: "<b>Have you ever seen the Dnipro from a bridge?</b> After <b>have</b>, say <b>seen</b>, not <i>saw</i>."
         },

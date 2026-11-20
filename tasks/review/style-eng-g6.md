@@ -6,7 +6,7 @@ type: style
 subject: eng
 grade: 6
 depends_on: [write-eng-g6-e6s1, write-eng-g6-e6s2, write-eng-g6-e6s3, write-eng-g6-e6s4, write-eng-g6-e6s5, write-eng-g6-e6s6, write-eng-g6-e6s7, write-eng-g6-e6s8]
-status: todo
+status: review
 claimed_by: style-eng-g6
 created: 2026-11-20
 source: orchestrator
@@ -24,3 +24,14 @@ source: orchestrator
 
 ## Готово, коли
 - [ ] Правки в content/eng/g6-*.js, звіт reports/style/eng-g6.md, рядки STYLE в inbox; зміни ключів і фактів — перелік для точкової повторної верифікації; задача → review.
+
+## Нотатки агента (style-eng-g6, 2026-11-20)
+- Звіт: reports/style/eng-g6.md. Змінено 8 розділів e6s1–e6s8 (31 рядок), статус `verified` лишено, ключі завдань не змінено.
+- Герої: e6s4l6 sports day — Tom → Oliver (Tom 10 р., у UK primary; Emma 12 — secondary); e6s5 — бабуся й дідусь до Kyiv «in July» (l1), поїздка до Chernihiv — «It’s October… next weekend» (boss); e6s3l7 — «Andrii, Sofiia and Dad», Task 4 «Andrii and Dad made».
+- `why` розділу: правило для 6 кл. — граматика, що вже була; нова форма — лише цитатою (як e5s8). Змінено e6s7 → «…ask a friend: “Have you ever been to Kyiv?”»; plan.js синхронізувати куратору.
+- «the third form of the verb» — лише в e6s7 після екрана з рядом трьох форм; past participle ніде; правок не треба (TQ-125).
+- Дрібне: «Complete the dialogue.» → «Complete the sentences.» (e6s5l6); 11 повторів `fbOk` поспіль; 3 `hint` у фіналі e6s1 (було 0 з 6).
+- `build`: усі 40 перебрано з `extra` через app/lang.js — пастки не зараховуються, кількість прийнятих = кількості answer.
+- validate --section e6s1…e6s8 — 0 помилок, 0 попереджень; повний validate — 0 помилок; stats — reports/style-eng.md (не комічу).
+- Пропозиція профілю: «5-6».readWordsPerScreen 5–40 → 5–45 (решта без змін); ENGINE — z-оцінка в межах класу. Рядки STYLE/NOTE/TERM — у відповіді оркестратору.
+- Повторна верифікація (точково): reports/style/eng-g6.md §9.

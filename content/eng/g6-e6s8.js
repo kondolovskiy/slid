@@ -770,7 +770,7 @@ SLID.section("eng", {
           body: `<p>Oksana tells her class about Emma’s post.</p>`,
           text: "Emma {*told|said} us about her trip to London. She {*said|told} that the view from the London Eye was amazing. Her friend Liliia was a bit {*afraid|amazing}. Emma says: if it {*rains|will rain}, go to a museum!",
           hint: "Use everything from this section: told + a person, said, if + Present Simple.",
-          fbOk: "Well done!",
+          fbOk: "Right.",
           fbBad: "Check: told + a person, said – no person, if + Present Simple.",
           fbText: "Emma <b>told</b> us. She <b>said</b> that… Liliia was a bit <b>afraid</b>. If it <b>rains</b>, go to a museum!"
         }
