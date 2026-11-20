@@ -479,3 +479,7 @@
 - 2026-11-20 · verifier-pe5s1 · VERIFY: pe5s1 → verified, 2 правки (a26 — лексика l5 в уроці l3; a31 — cow → dog), reports/verify/pe5s1.md.
 - 2026-11-20 · verifier-pe5s1 · PITFALL (eng, пул): перевіряй лексику всієї вправи (body, неоцінювані речення pick, дистрактори), не лише ключ — слова поза уроками там не давати.
 - 2026-11-20 · verifier-pe5s1 · NOTE (герої eng): pe5s1 a42 — Aunt Iryna (artist, «paints pictures») — тітка Andrii; style-sync зафіксувати (у e4s1 без мовця).
+- 2026-11-20 · verifier-pe5s2 · VERIFY: pe5s2 → verified, 4 правки (a10 stress subject → history; a11 дистрактор; a16 + am/a.m.; a55 + write), reports/verify/pe5s2.md.
+- 2026-11-20 · verifier-pe5s2 · PITFALL (eng): «at nine ___» з ключем o'clock — «am» теж правильне (класти am, a.m.); «How do you ___ "X"?» — write поруч зі spell; «I've got a new {timetable|subject}» — subject граматичне, дистрактор має бути безглуздим (break).
+- 2026-11-20 · verifier-pe5s2 · FACT (eng): «We don't use could to give or refuse permission. We use can» — CD Grammar could; a.m. — CD am, OALD a-m.
+- 2026-11-20 · orchestrator · FIX (eng): CONFLICT verifier-pe5s2 закрито — pe5s3 a03 «Mariia gets up at half past six» (як e5s2l2, pe5s2 a26); e5s2l1 stress «+sub|ject» → «+mu|sic» (subject — ім. ˈsʌb- / дієсл. səbˈ-; music підкреслене в l1, один наголос CD/OALD). PITFALL: subject у `stress` не брати.

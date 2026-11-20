@@ -31,7 +31,7 @@ SLID.pool("eng", {
       steps: ["We drink <b>tea</b> and <b>milk</b>.", "We eat bread, cheese, eggs and potatoes."] },
     { id: "a03", lesson: "e5s3l1", lvl: 2, sk: "vocab", src: "mpim с. 20",
       type: "word", title: "Write the word.",
-      body: "<p>Mariia gets up at 7 o’clock. Before school, she has bread and cheese in the kitchen.</p>",
+      body: "<p>Mariia gets up at half past six. Before school, she has bread and cheese in the kitchen.</p>",
       before: "This meal is",
       answer: "breakfast",
       hint: "Which meal is in the morning?",

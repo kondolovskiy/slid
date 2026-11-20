@@ -109,10 +109,10 @@ SLID.section("eng", {
           type: "stress",
           sk: "phon",
           title: "Find the stressed syllable.",
-          words: ["+time|ta|ble", "+his|to|ry", "+sci|ence", "+sub|ject"],
+          words: ["+time|ta|ble", "+his|to|ry", "+sci|ence", "+mu|sic"],
           fbOk: "Well done!",
           fbBad: "Look at the underlined parts again.",
-          fbText: "<u>time</u>table, <u>his</u>tory, <u>sci</u>ence, <u>sub</u>ject: the strong part is at the start."
+          fbText: "<u>time</u>table, <u>his</u>tory, <u>sci</u>ence, <u>mu</u>sic: the strong part is at the start."
         },
         {
           type: "word",
