@@ -7,7 +7,7 @@ subject: eng
 grade: 6
 section: e6s8
 depends_on: [curate-eng-plan-g6, engine-eng-lang-core, engine-eng-validate, engine-eng-stats, skills-eng, curate-eng-style, curate-eng-glossary]
-status: review
+status: done
 claimed_by: writer-e6s8
 created: 2026-11-19
 source: design-eng
@@ -84,3 +84,11 @@ writer-e6s8, 2026-11-20. Файл content/eng/g6-e6s8.js (status draft), мап�
 3. Населення — округлене з роками (2024 / 2022); Київ — оцінка до 2022 р.
 4. stats: sentenceWords у l2, l5, l6 (6,4–6,6) і readWordsPerScreen l6 (40) «нетипово для сім'ї» — у межах профілю 5-6 (3–10 слів; maxText ≤ 110); сім'я змішує 4–6 кл.; l6 — урок читання (як e6s2l5, e6s4l6 з тим самим прапорцем).
 5. Авторське право: WebSearch трьох найдовших фрагментів (George’s page, «Our teacher told us that Big Ben was really a bell», «The London Eye is a very big wheel, 135 metres high…») — збігів немає.
+
+## Верифікація (verifier-e6s8, 2026-11-20)
+Вердикт: **придатний**, усі 7 уроків → `verified`; звіт reports/verify/e6s8.md.
+- Факти: для кожного щонайменше 2 джерела, відкриті в сесії (en/uk.wikipedia через curl action=raw, CD, OALD, ЕСУ). Buckingham Palace — OALD «the official London home of the British king or queen» і CD london «the King's main home». Kyiv Metro 1960 — ЕСУ article-11337. Рік «(2024)» для 9 млн є лише у фрагментах WebSearch (ONS mid-2024), але «about 9 million» підтверджують uk.wiki (2021: 8,8 млн) і en.wiki (2025: 9,1 млн).
+- Відповіді: усі розв'язано; другої правильної немає; build перебрано через SLID_LANG.check.
+- Правки (2): l3 build — у body «Start with <b>if</b>.» (порядок «Visit the NHM if you like dinosaurs» інакше лишався можливим); l2 learned — прибрано «near».
+- Спірне автора: п. 1 (requires e6s7l4 — додано оркестратором, id існує ✅); п. 2 (capital of England — CD ✅); п. 3 (роки населення ✅); п. 4 (stats — у межах профілю ✅); п. 5 (авторське право — ще 8 запитів, збігів немає ✅).
+- Людині: ліцензія власних SVG — DECISION-NEEDED (writer-e5s4), розділ не блокує. Нових TQ немає.

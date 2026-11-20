@@ -8,7 +8,7 @@
    Герої: Emma й Tom — місто в Англії (не назване), Emma була в Лондоні з класом; Andrii — Kyiv, був у Лондоні в 4 кл. (e4s7);
    нові — George (живе в Лондоні) і Liliia (однокласниця Emma). Зовнішність героїв не описано (канон задає e6s1).
    Факти про Лондон і Київ — два джерела на кожен, URL — tasks/…/write-eng-g6-e6s8.md, «Нотатки агента».
-   Статус: draft. 7 уроків (6 + фінал).
+   Статус: verified (verifier-e6s8, reports/verify/e6s8.md). 7 уроків (6 + фінал).
    Перевірка: node tools/validate.mjs --section e6s8 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -18,7 +18,7 @@ SLID.section("eng", {
   title: "London, the capital of the UK",
   why: "To tell people about London and its famous places. And to tell a friend what other people said.",
   requires: ["e4s7l3", "e5s10l3", "e5s10l4", "e6s7l4"],
-  meta: { author: "writer-e6s8", created: "2026-11-20", factcheck: null, teacher: null },
+  meta: { author: "writer-e6s8", created: "2026-11-20", factcheck: "verifier-e6s8, 2026-11-20, reports/verify/e6s8.md", teacher: null },
   credits: [
     ["A simple map of central London (img/eng/e6s8/london-map.svg), own drawing for this section", "Slid authors (writer-e6s8)", "CC0 1.0", "https://github.com/kondolovskiy/slid/blob/main/img/eng/e6s8/london-map.svg"]
   ],
@@ -32,7 +32,7 @@ SLID.section("eng", {
       title: "London: a city on the Thames",
       short: "London",
       icon: "river",
-      status: "draft",
+      status: "verified",
       why: "London is a big and famous city. Learn the main facts about it and ask: Have you ever been there?",
       screens: [
         {
@@ -150,7 +150,7 @@ SLID.section("eng", {
       title: "Famous places in London: a map",
       short: "Famous places",
       icon: "map",
-      status: "draft",
+      status: "verified",
       why: "Big Ben, the London Eye, the Tower of London: find them on a map and say what they are.",
       screens: [
         {
@@ -267,7 +267,7 @@ SLID.section("eng", {
         text: "Big Ben is a bell, the London Eye is a wheel, and the Tower of London is a very old castle.",
         learned: [
           "Name famous places in London and say what they are.",
-          "Find places on a map: next to, near, opposite.",
+          "Find places on a map: next to, opposite.",
           "Say when a place was built: It was built more than 900 years ago."
         ]
       }
@@ -279,7 +279,7 @@ SLID.section("eng", {
       title: "If it rains, go to a museum!",
       short: "If it rains",
       icon: "bulb",
-      status: "draft",
+      status: "verified",
       why: "Help visitors to London. Say what to do if it rains or if they like dinosaurs.",
       screens: [
         {
@@ -359,7 +359,7 @@ SLID.section("eng", {
           type: "build",
           sk: "write",
           title: "Put the words in order.",
-          body: `<p>Write George’s advice for visitors.</p>`,
+          body: `<p>Write George’s advice for visitors. Start with <b>if</b>.</p>`,
           tiles: ["if you like", "dinosaurs,", "visit", "the Natural History Museum"],
           extra: ["will like"],
           answer: "If you like dinosaurs, visit the Natural History Museum.",
@@ -397,7 +397,7 @@ SLID.section("eng", {
       title: "Kyiv and London: two capitals",
       short: "Two capitals",
       icon: "scale",
-      status: "draft",
+      status: "verified",
       why: "Compare Kyiv and London: their rivers, people and underground trains.",
       screens: [
         {
@@ -522,7 +522,7 @@ SLID.section("eng", {
       title: "Emma told me about London: said and told",
       short: "Said and told",
       icon: "voice",
-      status: "draft",
+      status: "verified",
       why: "Tell a friend what another person said. Use said and told.",
       screens: [
         {
@@ -658,7 +658,7 @@ SLID.section("eng", {
       title: "A post from London: what I liked most",
       short: "A post",
       icon: "book",
-      status: "draft",
+      status: "verified",
       why: "Read a post about a trip to London. Then say what you liked most.",
       screens: [
         {
@@ -791,7 +791,7 @@ SLID.section("eng", {
       title: "London quiz",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e6s8boss",
       why: "Check everything from this section. Your points are doubled.",
