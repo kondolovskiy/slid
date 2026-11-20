@@ -7,7 +7,7 @@ subject: eng
 grade: 6
 section: e6s4
 depends_on: [curate-eng-plan-g6, engine-eng-lang-core, engine-eng-validate, engine-eng-stats, skills-eng, curate-eng-style, curate-eng-glossary]
-status: review
+status: done
 claimed_by: writer-e6s4
 created: 2026-11-19
 source: design-eng
@@ -87,3 +87,11 @@ writer-e6s4, 2026-11-20. Файл `content/eng/g6-e6s4.js`, 7 уроків (6 + 
 - l5 pick: «I was drawing in the park while it started to rain» — помилка за CD Grammar (while — для тривалих дій).
 - l1 hyp: athletics (B1) вводиться здогадкою й поясненням; high jump / long jump — лише в fbText здогадки й у текстах (не оцінюються).
 - `requires` + e5s8l5, e5s8l6 — понад задачу.
+
+## Нотатки верифікатора
+verifier-e6s4, 2026-11-20. Звіт — reports/verify/e6s4.md. **Вердикт: verified** (7 уроків, `meta.factcheck` заповнено).
+- Факт про Магучіх (з Дніпра; золото Парижа, серпень 2024): uk.wikipedia і en.wikipedia (raw, curl, у тому числі стаття про фінал 4 August 2024) плюс WebSearch з офіційних сайтів (mms.gov.ua, kmu.gov.ua, president.gov.ua) і Суспільного Дніпро. Самі сторінки з контейнера не відкриваються → ✅, формулювання не змінював.
+- Правки: l6 #4 — «Yesterday,» (без маркера часу BrE «Our team win 3–2» було другою правильною відповіддю); l6 info й outro — «what was going on» → «what was happening at that time» (go on — B1).
+- Спірне автора: позначки long / short у l5 #4 і boss T5 відсікають другу відповідь (перебрано всі комбінації); «Yes, I can» у l3 #5 хибне; «while it started to rain» — помилка за CD Grammar; `requires` e5s8l5, e5s8l6 — обґрунтовано, лишено.
+- build: перебрано всі підмножини й перестановки плиток з extra (app/lang.js `check`), рушій приймає лише ключ у всіх шести. word: ключі без кінцевого знака.
+- Авторське право: 12 запитів WebSearch, збігів немає.

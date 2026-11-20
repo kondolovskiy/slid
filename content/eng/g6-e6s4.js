@@ -10,7 +10,7 @@
    Нові герої: Myroslava і Vlad (Lviv, знайомі Тараса), Oliver (однокласник Emma в Англії).
    Увесь зміст — англійською, британська норма (D-054). Тексти, діалоги й герої — власні (docs/design/english.md §8).
    Форми, рівні слів і наголос — за Cambridge Dictionary, Cambridge Grammar і OALD (URL — tasks/…/write-eng-g6-e6s4.md, «Нотатки агента»).
-   Статус: draft. 7 уроків (6 + фінал). Будова — за еталонами e4s1, e5s1.
+   Статус: verified (reports/verify/e6s4.md). 7 уроків (6 + фінал). Будова — за еталонами e4s1, e5s1.
    Перевірка: node tools/validate.mjs --section e6s4 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -20,7 +20,7 @@ SLID.section("eng", {
   title: "Sport",
   why: "To talk about different sports and say which ones you prefer. And to tell people what happened in a match.",
   requires: ["e4s3l1", "e4s6l2", "e5s4l3", "e5s6l4", "e5s8l5", "e5s8l6", "e6s3l4"],
-  meta: { author: "writer-e6s4", created: "2026-11-20", factcheck: null, teacher: null },
+  meta: { author: "writer-e6s4", created: "2026-11-20", factcheck: "verifier-e6s4 (reports/verify/e6s4.md)", teacher: null },
   badges: [
     { id: "e6s4boss", name: "Sports reporter", icon: "trophy", desc: "Finish the final lesson “Sport”" }
   ],
@@ -31,7 +31,7 @@ SLID.section("eng", {
       title: "Football, judo, swimming: kinds of sport",
       short: "Kinds of sport",
       icon: "target",
-      status: "draft",
+      status: "verified",
       why: "Everyone has a favourite sport. Learn the names of sports and the verbs for them.",
       screens: [
         {
@@ -155,7 +155,7 @@ SLID.section("eng", {
       title: "Which sport do you prefer and why?",
       short: "Prefer",
       icon: "scale",
-      status: "draft",
+      status: "verified",
       why: "Friends often ask about your favourite sport. Say which one you prefer and why.",
       screens: [
         {
@@ -280,7 +280,7 @@ SLID.section("eng", {
       title: "I could swim when I was five",
       short: "Could",
       icon: "star",
-      status: "draft",
+      status: "verified",
       why: "You can do lots of things now. Say what you could and couldn’t do when you were little.",
       screens: [
         {
@@ -411,7 +411,7 @@ SLID.section("eng", {
       title: "What were you doing at six o’clock? The Past Continuous",
       short: "Past Continuous",
       icon: "eye",
-      status: "draft",
+      status: "verified",
       why: "Sometimes people ask where you were. Say what you were doing at a time in the past.",
       screens: [
         {
@@ -544,7 +544,7 @@ SLID.section("eng", {
       title: "I was running when it started to rain",
       short: "When and while",
       icon: "path",
-      status: "draft",
+      status: "verified",
       why: "Stories have long actions and short ones. Join them with when and while.",
       screens: [
         {
@@ -676,7 +676,7 @@ SLID.section("eng", {
       title: "What a match! Sports news",
       short: "Sports news",
       icon: "book",
-      status: "draft",
+      status: "verified",
       why: "Sports news is fun to read. Read short news stories and say “What a match!”",
       screens: [
         {
@@ -705,15 +705,15 @@ SLID.section("eng", {
         {
           type: "info",
           title: "Writing sports news",
-          body: `<ul><li>what happened → Past Simple: we <b>played</b>, he <b>fell</b>, we <b>won</b></li><li>what was going on around it → Past Continuous: it <b>was raining</b>, the fans <b>were singing</b></li><li>feelings → <b>What a</b> goal! <b>What an</b> exciting match!</li></ul><p>win → <b>won</b>, lose → <b>lost</b>, fall → <b>fell</b>: We won 1–0. They lost.</p>`,
+          body: `<ul><li>what happened → Past Simple: we <b>played</b>, he <b>fell</b>, we <b>won</b></li><li>what was happening at that time → Past Continuous: it <b>was raining</b>, the fans <b>were singing</b></li><li>feelings → <b>What a</b> goal! <b>What an</b> exciting match!</li></ul><p>win → <b>won</b>, lose → <b>lost</b>, fall → <b>fell</b>: We won 1–0. They lost.</p>`,
           cta: "Next"
         },
         {
           type: "gaps",
           sk: "gram",
           title: "Fill in the gaps.",
-          text: "What {*a|an} great goal! What {*an|a} exciting match! Our team {*won|win} 3–2, and the other team {*lost|lose}.",
-          hint: "Exciting starts with a vowel sound. The match was in the past.",
+          text: "What {*a|an} great goal! What {*an|a} exciting match! Yesterday, our team {*won|win} 3–2, and the other team {*lost|lose}.",
+          hint: "Exciting starts with a vowel sound. The match was yesterday.",
           fbOk: "Exactly.",
           fbBad: "Great → a, exciting → an. And it’s the past: won, lost.",
           fbText: "<b>What a</b> great goal! <b>What an</b> exciting match: <i>exciting</i> starts with a vowel sound. In the past: we <b>won</b>, they <b>lost</b>."
@@ -794,7 +794,7 @@ SLID.section("eng", {
         }
       ],
       outro: {
-        text: "Sports news tells what happened and what was going on. And it says: What a match!",
+        text: "Sports news tells what happened and what was happening at that time. And it says: What a match!",
         learned: [
           "Read short sports news and say what happened.",
           "Use won and lost, the Past Simple and the Past Continuous in a story.",
@@ -809,7 +809,7 @@ SLID.section("eng", {
       title: "Our sports page",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e6s4boss",
       why: "Check everything from this section. Your points are doubled.",
