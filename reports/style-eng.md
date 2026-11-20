@@ -136,7 +136,7 @@
 | e6s1l4 What is she like? Kind, friendly, shy | 6 | 10 | 0.7 | 25 | 51 | 47 | 5.2 | 0.092 | 6 | — |
 | e6s1l5 He looks happy! Very, quite, really | 6 | 11 | 0.55 | 31 | 60 | 49 | 5 | 0.029 | 6 | — |
 | e6s1l6 She looks like her mum, but she’s like her dad | 6 | 9 | 0.78 | 34 | 46 | 41 | 5.5 | 0.023 | 5 | — |
-| e6s1l7 People from the English club (фінал) | 6 | 7 | 0.86 | 23 | 32 | 25 | 5.2 | 0.044 | 3 | — |
+| e6s1l7 People from the English club (фінал) | 6 | 7 | 0.86 | 23 | 32 | 25 | 5.3 | 0.046 | 3 | — |
 | e6s2l1 At the chemist’s, at the newsagent’s: types of shops | 6 | 9 | 0.67 | 30 | 61 | 56 | 5.5 | 0.13 | 6 | longWordShare нетипово для сім'ї (z=2.1) |
 | e6s2l2 Why do you go there? To buy some bread | 6 | 9 | 0.67 | 37 | 60 | 57 | 6.1 | 0.09 | 6 | — |
 | e6s2l3 A few, both, all, no: a shopping list | 6 | 10 | 0.6 | 33 | 65 | 61 | 5.7 | 0.041 | 5 | — |
@@ -150,13 +150,13 @@
 | e6s3l4 We ate pancakes: irregular verbs | 6 | 10 | 0.7 | 26 | 72 | 65 | 4.6 | 0.092 | 6 | maxReadWords нетипово для сім'ї (z=2.1) |
 | e6s3l5 Did you try it? I didn’t like it: questions and negatives | 6 | 10 | 0.7 | 28 | 68 | 64 | 4.4 | 0.056 | 6 | — |
 | e6s3l6 Food traditions in Ukraine and the UK | 6 | 10 | 0.6 | 39 | 64 | 59 | 6.4 | 0.083 | 5 | readWordsPerScreen нетипово для сім'ї (z=2); sentenceWords нетипово для сім'ї (z=2) |
-| e6s3l7 Lunch for Grandma and Grandad (фінал) | 6 | 7 | 0.86 | 21 | 30 | 25 | 5 | 0.115 | 4 | longWordShare нетипово для сім'ї (z=2) |
+| e6s3l7 Lunch for Grandma and Grandad (фінал) | 6 | 7 | 0.86 | 21 | 31 | 26 | 5 | 0.114 | 4 | longWordShare нетипово для сім'ї (z=2) |
 | e6s4l1 Football, judo, swimming: kinds of sport | 6 | 9 | 0.67 | 28 | 63 | 58 | 5.6 | 0.081 | 6 | — |
 | e6s4l2 Which sport do you prefer and why? | 6 | 10 | 0.6 | 25 | 49 | 46 | 4.6 | 0.073 | 6 | — |
-| e6s4l3 I could swim when I was five | 6 | 9 | 0.78 | 31 | 51 | 47 | 5.4 | 0.027 | 5 | — |
+| e6s4l3 I could swim when I was five | 6 | 9 | 0.78 | 31 | 51 | 47 | 5.3 | 0.027 | 5 | — |
 | e6s4l4 What were you doing at six o’clock? The Past Continuous | 6 | 10 | 0.6 | 31 | 60 | 57 | 5 | 0.065 | 5 | — |
 | e6s4l5 I was running when it started to rain | 6 | 9 | 0.67 | 33 | 58 | 55 | 6.4 | 0.041 | 5 | sentenceWords нетипово для сім'ї (z=2) |
-| e6s4l6 What a match! Sports news | 6 | 9 | 0.78 | 40 | 77 | 71 | 5.8 | 0.051 | 5 | readWordsPerScreen нетипово для сім'ї (z=2.3); maxReadWords нетипово для сім'ї (z=2.7); maxText нетипово для сім'ї (z=2.6) |
+| e6s4l6 What a match! Sports news | 6 | 9 | 0.78 | 40 | 77 | 71 | 5.8 | 0.062 | 5 | readWordsPerScreen нетипово для сім'ї (z=2.3); maxReadWords нетипово для сім'ї (z=2.7); maxText нетипово для сім'ї (z=2.6) |
 | e6s4l7 Our sports page (фінал) | 6 | 7 | 0.86 | 19 | 35 | 28 | 4.5 | 0.059 | 4 | — |
 | e6s5l1 By train, by plane or by ferry? | 6 | 9 | 0.67 | 35 | 60 | 57 | 5.9 | 0.043 | 5 | — |
 | e6s5l2 When does the train leave? Timetables | 6 | 10 | 0.6 | 40 | 62 | 50 | 6.1 | 0.036 | 6 | readWordsPerScreen нетипово для сім'ї (z=2.3) |
@@ -164,14 +164,14 @@
 | e6s5l4 Packing a suitcase: it might be cold | 6 | 11 | 0.64 | 28 | 59 | 55 | 4.9 | 0.044 | 6 | — |
 | e6s5l5 Tickets and passports: you have to show them | 6 | 10 | 0.6 | 36 | 62 | 57 | 5.4 | 0.018 | 5 | — |
 | e6s5l6 Buying a train ticket at the station | 6 | 10 | 0.6 | 35 | 54 | 50 | 5.2 | 0.019 | 5 | — |
-| e6s5l7 Ready for the journey (фінал) | 6 | 7 | 0.86 | 24 | 34 | 30 | 5.4 | 0.079 | 4 | — |
+| e6s5l7 Ready for the journey (фінал) | 6 | 7 | 0.86 | 25 | 36 | 32 | 5.3 | 0.081 | 4 | — |
 | e6s6l1 My favourite subject and why | 6 | 10 | 0.6 | 26 | 41 | 36 | 4.8 | 0.123 | 6 | — |
-| e6s6l2 Projects, tests, experiments: what we do in lessons | 6 | 10 | 0.6 | 36 | 53 | 50 | 5.5 | 0.081 | 5 | — |
+| e6s6l2 Projects, tests, experiments: what we do in lessons | 6 | 10 | 0.6 | 36 | 53 | 50 | 5.5 | 0.082 | 5 | — |
 | e6s6l3 A subject that I love, a teacher who helps | 6 | 9 | 0.67 | 34 | 56 | 50 | 6.5 | 0.069 | 6 | sentenceWords нетипово для сім'ї (z=2.2) |
 | e6s6l4 School rules: you must, you mustn’t | 6 | 10 | 0.6 | 37 | 60 | 55 | 5.7 | 0.038 | 4 | — |
 | e6s6l5 You should ask for help: advice | 6 | 10 | 0.6 | 32 | 52 | 46 | 5.4 | 0.046 | 5 | — |
-| e6s6l6 The best lesson of the year | 6 | 10 | 0.7 | 37 | 52 | 49 | 5.8 | 0.061 | 5 | — |
-| e6s6l7 Our school magazine (фінал) | 6 | 8 | 0.88 | 26 | 40 | 27 | 5.5 | 0.077 | 4 | — |
+| e6s6l6 The best lesson of the year | 6 | 10 | 0.7 | 37 | 52 | 49 | 5.8 | 0.062 | 5 | — |
+| e6s6l7 Our school magazine (фінал) | 6 | 8 | 0.88 | 26 | 40 | 27 | 5.4 | 0.077 | 4 | — |
 | e6s7l1 Kyiv on the map: a city on the Dnipro | 6 | 8 | 0.75 | 34 | 76 | 73 | 6.2 | 0.015 | 4 | maxReadWords нетипово для сім'ї (z=2.6); maxText нетипово для сім'ї (z=2.9) |
 | e6s7l2 The main street, the main square: sightseeing in Kyiv | 6 | 10 | 0.6 | 35 | 58 | 53 | 6 | 0.1 | 4 | — |
 | e6s7l3 When was it built? Old buildings in Kyiv | 6 | 11 | 0.64 | 33 | 53 | 49 | 6.4 | 0.104 | 6 | sentenceWords нетипово для сім'ї (z=2) |
@@ -194,4 +194,4 @@
 - **4:lesson**: screens 9.13±0.67, gradedShare 0.62±0.06, readWordsPerScreen 26.19±2.86, maxReadWords 47.38±5.45, sentenceWords 4.67±0.39, longWordShare 0.06±0.04, typeVariety 4.5±0.61, maxText 43.23±5.66
 - **4:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 23.63±1.73, maxReadWords 36.13±3.48, sentenceWords 4.84±0.26, longWordShare 0.04±0.01, typeVariety 3.75±0.83, maxText 30.25±3.6
 - **5-6:lesson**: screens 9.52±0.67, gradedShare 0.65±0.07, readWordsPerScreen 30.54±4.18, maxReadWords 55.15±8, sentenceWords 5.26±0.58, longWordShare 0.06±0.03, typeVariety 5.06±0.68, maxText 50.65±7.76
-- **5-6:boss**: screens 7.22±0.42, gradedShare 0.86±0.01, readWordsPerScreen 23.11±3.36, maxReadWords 35.72±5.04, sentenceWords 5.01±0.32, longWordShare 0.07±0.02, typeVariety 3.72±0.56, maxText 29.17±5.15
+- **5-6:boss**: screens 7.22±0.42, gradedShare 0.86±0.01, readWordsPerScreen 23.17±3.39, maxReadWords 35.89±4.97, sentenceWords 5±0.31, longWordShare 0.07±0.02, typeVariety 3.72±0.56, maxText 29.33±5.14
