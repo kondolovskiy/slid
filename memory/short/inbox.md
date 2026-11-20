@@ -483,3 +483,7 @@
 - 2026-11-20 · verifier-pe5s2 · PITFALL (eng): «at nine ___» з ключем o'clock — «am» теж правильне (класти am, a.m.); «How do you ___ "X"?» — write поруч зі spell; «I've got a new {timetable|subject}» — subject граматичне, дистрактор має бути безглуздим (break).
 - 2026-11-20 · verifier-pe5s2 · FACT (eng): «We don't use could to give or refuse permission. We use can» — CD Grammar could; a.m. — CD am, OALD a-m.
 - 2026-11-20 · orchestrator · FIX (eng): CONFLICT verifier-pe5s2 закрито — pe5s3 a03 «Mariia gets up at half past six» (як e5s2l2, pe5s2 a26); e5s2l1 stress «+sub|ject» → «+mu|sic» (subject — ім. ˈsʌb- / дієсл. səbˈ-; music підкреслене в l1, один наголос CD/OALD). PITFALL: subject у `stress` не брати.
+- 2026-11-20 · verifier-pe5s9 · VERIFY: pe5s9 → verified, 4 дрібні правки (a08, a09 узгодження бажань героїв; a15, a36 скорочено), reports/verify/pe5s9.md; style-sync: hint a20, a21, title a53 > 8 слів.
+- 2026-11-20 · verifier-pe5s9 · FACT (eng, verified): Hoverla — найвища вершина України, 2061 м — ЕСУ article-25087, en.wikipedia; Kyiv — на обох берегах Дніпра — ЕСУ article-11194, en.wikipedia; on/at the beach — обидва в OALD beach_1.
+- 2026-11-20 · verifier-pe5s9 · NOTE (герої eng): Andrii в e5s9 хоче до Lviv (old towns); мама Mariia в «can’t choose» хоче в гори.
+- 2026-11-20 · verifier-pe5s9 · PITFALL (eng, пули): перевіряй героїв і всередині пулу — одна сцена чи бажання героя в різних вправах не має давати різні місця.
