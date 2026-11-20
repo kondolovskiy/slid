@@ -7,7 +7,7 @@
    Увесь зміст — англійською, британська норма (D-054). Тексти, діалоги, герої й мапа — власні (docs/design/english.md §8); герої й місця — як у 4 кл.
    Маршрут — «Go straight ahead» (CD straight; «go straight on» у вправах не даємо — pitfalls-content «Англійська» п. 11).
    Факти про І. Котляревського й «Енеїду» — ЕСУ + en/uk.wikipedia; форми й наголос — CD і OALD (URL — tasks/…/write-eng-g5-e5s7.md, «Нотатки агента»).
-   Статус: draft. 7 уроків (6 + фінал).
+   Статус: verified (reports/verify/e5s7.md). 7 уроків (6 + фінал).
    Перевірка: node tools/validate.mjs --section e5s7 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -17,7 +17,7 @@ SLID.section("eng", {
   title: "My town or village",
   why: "To say what there is in your town or village. And to ask the way and give directions.",
   requires: ["e4s1l4", "e4s2l2", "e4s2l4", "e4s2l5", "e4s7l2"],
-  meta: { author: "writer-e5s7", created: "2026-11-19", factcheck: null, teacher: null },
+  meta: { author: "writer-e5s7", created: "2026-11-19", factcheck: "verifier-e5s7 (reports/verify/e5s7.md)", teacher: null },
   badges: [
     { id: "e5s7boss", name: "Young town guide", icon: "trophy", desc: "Finish the final lesson “My town or village”" }
   ],
@@ -31,7 +31,7 @@ SLID.section("eng", {
       title: "Places in town: a library, a bank, a park",
       short: "Places",
       icon: "city",
-      status: "draft",
+      status: "verified",
       why: "Every town has a library, a bank and a park. Learn their names in English.",
       screens: [
         {
@@ -141,7 +141,7 @@ SLID.section("eng", {
       title: "Is there a cinema? There is, there are",
       short: "There is, there are",
       icon: "home",
-      status: "draft",
+      status: "verified",
       why: "Tell a friend what there is in your town or village. Ask about their place too.",
       screens: [
         {
@@ -244,11 +244,11 @@ SLID.section("eng", {
           eyebrow: "Final",
           title: "Complete the sentences.",
           body: `<p>Emma writes about her town.</p>`,
-          text: "My town isn’t big, but there {*are|is} two parks. There {*is|are} a cinema and a museum. {*Is|Are} there a cinema in your village? How many shops {*are|is} there?",
+          text: "My town isn’t big, but there {*are|is} two parks. There {*is|are} a museum near the station. {*Is|Are} there a cinema in your village? How many shops {*are|is} there?",
           hint: "Look at the word after the gap: one or more?",
           fbOk: "Well done!",
           fbBad: "Look at the list again.",
-          fbText: "Two parks: <b>there are</b>. A cinema and a museum: <b>there is</b> a cinema… One cinema: <b>Is there</b>? Shops: how many shops <b>are</b> there?"
+          fbText: "Two parks: <b>there are</b>. One museum: <b>there is</b>. One cinema: <b>Is there</b>? Shops: how many shops <b>are</b> there?"
         }
       ],
       outro: {
@@ -267,7 +267,7 @@ SLID.section("eng", {
       title: "Next to, opposite, between: where is it?",
       short: "Where is it?",
       icon: "map",
-      status: "draft",
+      status: "verified",
       why: "Read a map and say where places are. Help a friend find the bank.",
       screens: [
         {
@@ -426,7 +426,7 @@ SLID.section("eng", {
       title: "Excuse me, where is the bus stop?",
       short: "Directions",
       icon: "path",
-      status: "draft",
+      status: "verified",
       why: "Someone asks you the way. Help them in English.",
       screens: [
         {
@@ -568,7 +568,7 @@ SLID.section("eng", {
       title: "A walk around the town with a map",
       short: "Map walk",
       icon: "target",
-      status: "draft",
+      status: "verified",
       why: "A map helps you in a new town. Read it and find the way.",
       screens: [
         {
@@ -730,7 +730,7 @@ SLID.section("eng", {
       title: "My town: history and culture",
       short: "History",
       icon: "book",
-      status: "draft",
+      status: "verified",
       why: "Every town has a story. Tell a friend about famous people and places.",
       screens: [
         {
@@ -875,7 +875,7 @@ SLID.section("eng", {
       title: "Welcome to our town!",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e5s7boss",
       why: "Check everything from this section. Your points are doubled.",

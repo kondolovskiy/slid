@@ -7,7 +7,7 @@ subject: eng
 grade: 5
 section: e5s7
 depends_on: [curate-eng-plan-g5, engine-eng-lang-core, engine-eng-validate, engine-eng-stats, skills-eng, curate-eng-style, curate-eng-glossary, write-eng-g4-e4s1]
-status: review
+status: done
 claimed_by: writer-e5s7
 created: 2026-11-19
 source: design-eng
@@ -93,3 +93,10 @@ Build не запускай (AGENTS.md §4 п. 8).
 3. **Ліво/право на мапі** (l5, boss T5) — навичка повороту відносно напрямку руху; є `hint` «Put your finger on the map». Спостерігати в плейтесті.
 4. l2 #2 — оцінюваний choice до info (eyebrow «Remember?»): повторення e4s2l5 (у requires).
 5. Плейтест не запускався (build робить оркестратор; модуля playwright у контейнері немає) — після build: `python3 tools/playtest.py --section e5s7`; мапу відрендерив headless Chromium — читається.
+
+**verifier-e5s7, 2026-11-20.** Звіт: reports/verify/e5s7.md. **Вердикт: verified (7/7 уроків).**
+- ❌ → виправлено: l2 Final gaps «There {*is|are} a cinema and a museum» — за правилом уроку («two or more → there are») дитина обере «are», правило першого іменника не подано й не універсальне (British Council LearnEnglish) → «There {*is|are} a museum near the station.», fbText узгоджено.
+- Факти (ЕСУ article-887900, en/uk.wikipedia Kotliarevsky, en.wikipedia Eneida) — ✅ по два джерела; окремої статті ЕСУ про І. П. Котляревського онлайн немає.
+- Мапа й усі маршрути (l3, l5, boss T3/T5) — однозначні; `build` — повний перебір через SLID_LANG.check: приймається лише ключ; `word` — ключі без кінцевого знака.
+- Авторське право — 6 запитів, збігів немає. Назва l4 — відхилення від плану виправдане (inbox куратору).
+- Людині: ліцензія власних SVG (DECISION-NEEDED writer-e5s4; URL на github/main — після злиття). Плейтест — після build оркестратора.
