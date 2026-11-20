@@ -1,5 +1,5 @@
 /* Слід · Англійська мова, 4 клас — пул вправ для тренування до розділу «Shops and shopping» (e4s4)
-   Статус: draft (автор writer-pe4s4, 2026-11-20). 50 вправ: уроки e4s4l1–e4s4l6, кожна пара (урок, sk) — ≥ 3 вправи; boss e4s4l7 без вправ.
+   Статус: verified (автор writer-pe4s4, 2026-11-20; verifier-pe4s4, reports/verify/pe4s4.md; approved — лише вчитель). 50 вправ: уроки e4s4l1–e4s4l6, кожна пара (урок, sk) — ≥ 3 вправи; boss e4s4l7 без вправ.
    Вправи власні (docs/design/english.md §8): лише слова, форми й правила уроків e4s4 і попередніх розділів; англійською, британська норма (D-054).
    Джерело — програма класу (program: true): ТОП 3–4, «4-ий клас» — тема «магазини і покупки», граматика how many / how much,
    ‘would like to’ + infinitive (с. 63); функції подякувати, вибачитися, попрощатися (с. 62); дескриптор A1 про торгові центри й вказівники (с. 52).
@@ -9,8 +9,8 @@
 SLID.pool("eng", {
   id: "pe4s4",
   section: "e4s4",
-  status: "draft",
-  meta: { author: "writer-pe4s4", created: "2026-11-20", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "writer-pe4s4", created: "2026-11-20", factcheck: "verifier-pe4s4 (reports/verify/pe4s4.md)", teacher: null },
   sources: [
     { id: "top34", program: true, title: "Типова освітня програма для ЗЗСО, 3–4 класи (під керівництвом О. Я. Савченко), 2018 — «Англійська мова», 4-ий клас (с. 62–63)", url: "https://lib.iitta.gov.ua/714276/1/%D0%A2%D0%9E%D0%9F_3_4_2018.pdf" }
   ],
@@ -30,7 +30,7 @@ SLID.pool("eng", {
       type: "word", title: "Write the name of the shop.",
       body: "<p>Mariia wants to buy a book about horses.</p>",
       before: "She goes to the", after: ".",
-      answer: ["bookshop", "book shop"],
+      answer: ["bookshop", "book shop", "bookstore"],
       hint: "Where can you buy books?",
       steps: ["You can buy books at the <b>bookshop</b>."] },
     { id: "a04", lesson: "e4s4l1", lvl: 2, sk: "vocab", src: "top34 с. 63",
@@ -163,6 +163,7 @@ SLID.pool("eng", {
       type: "stress", title: "Find the stressed syllable.",
       body: "<p>Prices: ₴16 – sixteen hryvnias, ₴60 – sixty hryvnias.</p>",
       words: ["six|+teen", "+six|ty"],
+      hint: "Sixteen is like fifteen. Sixty is like fifty.",
       steps: ["six<u>teen</u>: the strong part is at the end, like fif<u>teen</u>.", "<u>six</u>ty: the strong part is at the start, like <u>fif</u>ty."] },
     { id: "a25", lesson: "e4s4l4", lvl: 2, sk: "phon", src: "top34 с. 63",
       type: "stress", title: "Find the stressed syllable.",
@@ -302,7 +303,7 @@ SLID.pool("eng", {
       steps: ["Mariia says: “It’s my <b>friend’s</b> birthday.”", "The assistant says: “It’s <b>₴300</b>.”"] },
     { id: "a46", lesson: "e4s4l6", lvl: 2, sk: "read", src: "top34 с. 63",
       type: "word", title: "Read and write the word.",
-      body: "<p><b>Assistant:</b> This game is ₴150.<br><b>Mariia:</b> Great! I’d like the game, please. Here you are.<br><b>Assistant:</b> Thank you. Would you like a bag?<br><b>Mariia:</b> Yes, please. Goodbye!</p><p>What does Mariia buy?</p>",
+      body: "<p>Mariia wants a present for her friend.</p><p><b>Assistant:</b> This game is ₴150.<br><b>Mariia:</b> Great! I’d like the game, please. Here you are.<br><b>Assistant:</b> Thank you. Would you like a bag?<br><b>Mariia:</b> Yes, please. Goodbye!</p><p>What present does Mariia buy?</p>",
       before: "She buys a", after: ".",
       answer: "game",
       hint: "Read what Mariia says: I’d like…",

@@ -7,7 +7,7 @@ subject: eng
 grade: 4
 section: e4s4
 depends_on: [write-eng-g4-e4s4, engine-eng-diag-pool, engine-eng-tools]
-status: review
+status: done
 claimed_by: writer-pe4s4
 created: 2026-11-19
 source: design-eng
@@ -52,3 +52,7 @@ source: design-eng
 3. l4 phon: sixteen / sixty … seventy, eighty — в уроці підкреслено лише fifteen / fifty (thirteen / thirty — у вправі), решта — за правилом «-teen в кінці, -ty на початку» (D-019: виводиться міркуванням). Наголос -teen поза контекстом — за CD (головний на -teen).
 4. a18, a29, a41 — `keepCase: true` (як l3 #7 уроку): мала «how» на початку не зарахується.
 5. a11 і a47 — читання з виведенням (поверх ±1, решта ₴200 − ₴150) — рівень 3.
+
+## Нотатки верифікатора (verifier-pe4s4, 2026-11-20)
+**Вердикт: verified.** Звіт — reports/verify/pe4s4.md. 50 вправ розв'язано; build — усі порядки з extra через app/lang.js; наголос 16 слів — CD + OALD (curl); 6 фрагментів — WebSearch без збігів. validate --pool pe4s4 — 0/0; personalization-qa --pool pe4s4 --strict — чисто.
+Правки: a03 + «bookstore» у ключ (TQ-122 «як зараз»); a46 — друга відповідь «bag» відсічена («What present does Mariia buy?» + рядок про подарунок); a24 — hint. Спірні 1–5 автора прийнято. TQ не додано.
