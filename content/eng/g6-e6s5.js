@@ -21,7 +21,7 @@ SLID.section("eng", {
   weeks: [19, 23],
   title: "Getting ready for a trip",
   why: "To talk about transport and travel plans. And to get ready for a trip: tickets, documents and a suitcase.",
-  requires: ["e4s7l1", "e4s7l6", "e5s5l5", "e5s9l3", "e5s9l4"],
+  requires: ["e4s7l1", "e4s7l6", "e5s5l4", "e5s5l5", "e5s9l3", "e5s9l4"],
   meta: { author: "writer-e6s5", created: "2026-11-20", factcheck: "verifier-e6s5", teacher: null },
   badges: [
     { id: "e6s5boss", name: "Ready to travel", icon: "trophy", desc: "Finish the final lesson “Getting ready for a trip”" }
