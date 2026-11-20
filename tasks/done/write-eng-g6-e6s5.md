@@ -7,7 +7,7 @@ subject: eng
 grade: 6
 section: e6s5
 depends_on: [curate-eng-plan-g6, engine-eng-lang-core, engine-eng-validate, engine-eng-stats, skills-eng, curate-eng-style, curate-eng-glossary]
-status: review
+status: done
 claimed_by: writer-e6s5
 created: 2026-11-19
 source: design-eng
@@ -83,3 +83,11 @@ writer-e6s5, 2026-11-20. Файл `content/eng/g6-e6s5.js`, 7 уроків (6 + 
 5. l4 sort — umbrella лише «for the rain».
 
 validate --section e6s5: 0 помилок, 0 попереджень. stats: усі уроки в профілі «5-6».
+
+## Нотатки верифікатора
+verifier-e6s5, 2026-11-20. Звіт: reports/verify/e6s5.md. **Вердикт: verified** (7 уроків).
+- Факт Dover (паспортний контроль Франції в порту Dover до посадки) — ✅: en.wikipedia Juxtaposed controls (WebFetch) + P&O Ferries blog «What to Expect when you Check-In at Dover» (WebSearch); irishferries, kentonline, connexionfrance з контейнера не відкриваються.
+- Майбутні форми: твердження автора підтверджено — хибні варіанти лише граматично неможливі; build (4) перебрано через app/lang.js — поза ключем граматичних порядків немає.
+- Правки: 3 × друга правильна відповідь у `word` (l4 should — body «maybe it won’t»; l5 didn’t — умова з питанням Tom; l6 slowly — body «say it one more time»); l6 gaps дистрактор back → repeat.
+- Спірне автора: 1 — should у ключ не кладемо, відсічено умовою; 2 — ок (лише читання); 3 — ок, екран часу потрібен; 4 — «Two returns» ✅ (OALD return_2 «two singles»); 5 — umbrella «for the rain» ✅.
+- Рекомендації: requires + e5s5l4 (more expensive); розвести в часі два візити Andrii (l1 / boss).

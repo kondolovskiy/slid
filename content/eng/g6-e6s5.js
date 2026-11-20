@@ -12,7 +12,7 @@
    а «обидві правильні» — явно, вправою multi (урок 3). Час і розклади в уроках — вигадані, не справжній розклад.
    Увесь зміст — англійською, британська норма (D-054). Тексти, діалоги й герої — власні (docs/design/english.md §8).
    Форми, рівні слів, наголос і факти — URL у tasks/…/write-eng-g6-e6s5.md, «Нотатки агента».
-   Статус: draft. 7 уроків (6 + фінал).
+   Статус: verified (verifier-e6s5, reports/verify/e6s5.md). 7 уроків (6 + фінал).
    Перевірка: node tools/validate.mjs --section e6s5 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -22,7 +22,7 @@ SLID.section("eng", {
   title: "Getting ready for a trip",
   why: "To talk about transport and travel plans. And to get ready for a trip: tickets, documents and a suitcase.",
   requires: ["e4s7l1", "e4s7l6", "e5s5l5", "e5s9l3", "e5s9l4"],
-  meta: { author: "writer-e6s5", created: "2026-11-20", factcheck: null, teacher: null },
+  meta: { author: "writer-e6s5", created: "2026-11-20", factcheck: "verifier-e6s5", teacher: null },
   badges: [
     { id: "e6s5boss", name: "Ready to travel", icon: "trophy", desc: "Finish the final lesson “Getting ready for a trip”" }
   ],
@@ -33,7 +33,7 @@ SLID.section("eng", {
       title: "By train, by plane or by ferry?",
       short: "Transport",
       icon: "map",
-      status: "draft",
+      status: "verified",
       why: "Learn new words for transport. Choose the best way to travel.",
       screens: [
         {
@@ -171,7 +171,7 @@ SLID.section("eng", {
       title: "When does the train leave? Timetables",
       short: "Timetables",
       icon: "chart",
-      status: "draft",
+      status: "verified",
       why: "Read a train timetable. Ask and answer: What time does the train leave?",
       screens: [
         {
@@ -315,7 +315,7 @@ SLID.section("eng", {
       title: "We’re leaving on Friday: travel plans",
       short: "Travel plans",
       icon: "path",
-      status: "draft",
+      status: "verified",
       why: "Talk about your travel plans with a day and a time. Choose between -ing, going to and will.",
       screens: [
         {
@@ -441,7 +441,7 @@ SLID.section("eng", {
       title: "Packing a suitcase: it might be cold",
       short: "Packing",
       icon: "bulb",
-      status: "draft",
+      status: "verified",
       why: "Pack for a trip. Say what might happen: It might rain.",
       screens: [
         {
@@ -528,7 +528,7 @@ SLID.section("eng", {
           type: "word",
           sk: "gram",
           title: "Write the missing word.",
-          body: `<p>Mum isn’t sure about the weather tomorrow. Maybe it will be sunny.</p>`,
+          body: `<p>Mum isn’t sure about the weather tomorrow. Maybe it will be sunny, maybe it won’t.</p>`,
           before: "Mum: Pack your sun cream. It",
           after: "be sunny tomorrow.",
           answer: ["might", "may", "could"],
@@ -595,7 +595,7 @@ SLID.section("eng", {
       title: "Tickets and passports: you have to show them",
       short: "Have to",
       icon: "shield",
-      status: "draft",
+      status: "verified",
       why: "Talk about travel rules: You have to show your passport. Ask: Do I have to…?",
       screens: [
         {
@@ -660,8 +660,8 @@ SLID.section("eng", {
           type: "word",
           sk: "gram",
           title: "Write the missing word.",
-          body: `<p>Dad: “The tickets are on Mum’s phone.”</p>`,
-          before: "We",
+          body: `<p>Tom: “Do we have to print the tickets?”<br>Dad: “No. The tickets are on Mum’s phone.”</p>`,
+          before: "Dad: We",
           after: "have to print the tickets.",
           answer: ["don’t", "won’t"],
           contractions: true,
@@ -732,7 +732,7 @@ SLID.section("eng", {
       title: "Buying a train ticket at the station",
       short: "Buying a ticket",
       icon: "voice",
-      status: "draft",
+      status: "verified",
       why: "Buy a train ticket. Ask again when you don’t understand.",
       screens: [
         {
@@ -812,7 +812,7 @@ SLID.section("eng", {
           type: "word",
           sk: "func",
           title: "Write the missing word.",
-          body: `<p>The man speaks very fast. Emma asks him again.</p>`,
+          body: `<p>Emma doesn’t understand the man. She wants him to say it one more time.</p>`,
           before: "Emma: Sorry, could you say that",
           after: ", please?",
           answer: "again",
@@ -839,7 +839,7 @@ SLID.section("eng", {
           type: "gaps",
           sk: "func",
           title: "Complete the dialogue.",
-          text: "Emma: Hello. Two {*returns|return} to London, please. We’re coming back on Sunday. Man: That’s £36, please. Emma: What time {*does|is} the next train leave? Man: At 10.15, from platform 2. Emma: Sorry, could you say that {*again|back}, please?",
+          text: "Emma: Hello. Two {*returns|return} to London, please. We’re coming back on Sunday. Man: That’s £36, please. Emma: What time {*does|is} the next train leave? Man: At 10.15, from platform 2. Emma: Sorry, could you say that {*again|repeat}, please?",
           hint: "Two tickets: return or returns? Questions about a timetable: does.",
           fbOk: "Yes!",
           fbBad: "Look at the ticket office words again.",
@@ -879,7 +879,7 @@ SLID.section("eng", {
       title: "Ready for the journey",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e6s5boss",
       why: "Check everything from this section. Your points are doubled.",
