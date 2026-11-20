@@ -1,5 +1,5 @@
 /* Слід · Англійська мова, 5 клас — пул вправ для тренування до розділу «Travel: places to see» (e5s9)
-   Статус: draft (автор writer-pe5s9, 2026-11-20). 65 вправ: уроки e5s9l1–e5s9l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e5s9l7 без вправ.
+   Статус: verified (автор writer-pe5s9, верифікатор verifier-pe5s9, reports/verify/pe5s9.md, 2026-11-20). 65 вправ: уроки e5s9l1–e5s9l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e5s9l7 без вправ.
    Вправи власні (docs/design/english.md §8): лише слова, форми й правила уроків e5s9 і попередніх розділів; англійською, британська норма (D-054).
    Джерело — програма класу (program: true): МП-ІМ, с. 20 — тема «Подорож: улюблені напрямки подорожі», функції «аргументувати свій вибір»,
    «запитувати та надавати інформацію»; с. 19 — плани на канікули, щоденник про екскурсії; с. 21 — Future with be going to, Future with will;
@@ -10,8 +10,8 @@
 SLID.pool("eng", {
   id: "pe5s9",
   section: "e5s9",
-  status: "draft",
-  meta: { author: "writer-pe5s9", created: "2026-11-20", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "writer-pe5s9", created: "2026-11-20", factcheck: "verifier-pe5s9 (reports/verify/pe5s9.md)", teacher: null },
   sources: [
     { id: "mpim", program: true, title: "Модельна навчальна програма «Іноземна мова. 5–9 класи» (Редько В. Г., Шаленко О. П., Сотникова С. І. та ін.), наказ МОН від 12.07.2021 № 795 — 5 клас (с. 19–22)", url: "https://osvita.ua/doc/files/news/831/83117/Inoz_mov_5-9-kl_Redko_ta_in_14_07.pdf" }
   ],
@@ -60,16 +60,16 @@ SLID.pool("eng", {
       steps: ["Taras writes: “I’d like to see the <b>old castle</b>.”"] },
     { id: "a08", lesson: "e5s9l1", lvl: 2, sk: "read", src: "mpim с. 20",
       type: "choice", title: "Read and choose.",
-      body: "<p><i>Hi Taras! My sister Sofiia would like to go to the Carpathians because she loves mountains. I’d like to visit Odesa because I love the sea. – Andrii</i></p><p>Why would Sofiia like to go to the Carpathians?</p>",
+      body: "<p><i>Hi Taras! My sister Sofiia would like to go to the Carpathians because she loves mountains. I’d like to visit Lviv because I love old towns. – Andrii</i></p><p>Why would Sofiia like to go to the Carpathians?</p>",
       opts: ["because she loves the sea", "because she loves mountains", "because she loves old towns"], correct: 1,
       hint: "Find Sofiia in the message.",
-      steps: ["Sofiia <b>loves mountains</b>.", "Andrii loves the sea."] },
+      steps: ["Sofiia <b>loves mountains</b>.", "Andrii loves old towns."] },
     { id: "a09", lesson: "e5s9l1", lvl: 3, sk: "read", src: "mpim с. 20",
       type: "multi", title: "Choose all the correct answers.",
-      body: "<p><i>Hi Emma! My family can’t choose. Mum would like to go to Lviv because she loves old towns. Dad would like to go to Odesa because he loves the sea. I’d like to go to Odesa too! – Mariia</i></p><p>What is true?</p>",
-      opts: ["Mum would like to go to Lviv.", "Dad loves the sea.", "Mariia would like to go to Lviv.", "Mariia would like to go to Odesa."], correct: [0, 1, 3],
+      body: "<p><i>Hi Emma! My family can’t choose. Mum would like to go to the Carpathians because she loves mountains. Dad would like to go to Odesa because he loves the sea. I’d like to go to Odesa too! – Mariia</i></p><p>What is true?</p>",
+      opts: ["Mum would like to go to the Carpathians.", "Dad loves the sea.", "Mariia would like to go to Lviv.", "Mariia would like to go to Odesa."], correct: [0, 1, 3],
       hint: "Find Mum, Dad and “I” in the message.",
-      steps: ["Mum: <b>Lviv</b>. Dad: Odesa, he <b>loves the sea</b>.", "Mariia: “I’d like to go to <b>Odesa</b> too!”"] },
+      steps: ["Mum: <b>the Carpathians</b>. Dad: Odesa, he <b>loves the sea</b>.", "Mariia: “I’d like to go to <b>Odesa</b> too!”"] },
 
     /* ───────────── Урок 2. At the seaside or in the mountains? ───────────── */
     { id: "a10", lesson: "e5s9l2", lvl: 1, sk: "vocab", src: "mpim с. 20",
@@ -103,7 +103,7 @@ SLID.pool("eng", {
       type: "pick", title: "Find the mistake.",
       body: "<p>One word in Oksana’s message is wrong.</p>",
       text: "Hi Emma! I’m [on] the seaside with my uncle. Every day I swim in the sea and play on the beach.",
-      hint: "Check the small words before the seaside, the sea and the beach.",
+      hint: "Check the small words: at, on, in.",
       steps: ["We say <b>at</b> the seaside. Not: <s>on the seaside</s>.", "In the sea, on the beach: correct."] },
     { id: "a16", lesson: "e5s9l2", lvl: 1, sk: "func", src: "mpim с. 20",
       type: "choice", title: "Choose the correct answer.",
@@ -229,7 +229,7 @@ SLID.pool("eng", {
     { id: "a36", lesson: "e5s9l4", lvl: 1, sk: "gram", src: "mpim с. 21",
       type: "gaps", title: "Fill in the gaps.",
       text: "{*Are|Is|Do} you going to visit Odesa? – Yes, I {*am|do}.",
-      steps: ["<b>Are</b> you going to …? – Yes, I <b>am</b>.", "Not <i>do</i>: questions with going to start with am, is or are."] },
+      steps: ["<b>Are</b> you going to …? – Yes, I <b>am</b>.", "Not <i>do</i>. Start with am, is or are."] },
     { id: "a37", lesson: "e5s9l4", lvl: 2, sk: "gram", src: "mpim с. 21",
       type: "word", title: "Write the missing word.",
       body: "<p>Andrii: “Is Tom going to come to Ukraine too?” Tom has got a ticket too.</p>",

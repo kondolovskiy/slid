@@ -7,7 +7,7 @@ subject: eng
 grade: 5
 section: e5s9
 depends_on: [write-eng-g5-e5s9, engine-eng-diag-pool, engine-eng-tools]
-status: review
+status: done
 claimed_by: writer-pe5s9
 created: 2026-11-19
 source: design-eng
@@ -54,3 +54,7 @@ source: design-eng
 3. a32 — I’ll / I’m у gaps: I’m відсічено граматикою, а не правилом рішення в мить мовлення.
 4. Рівень 3 у read — multi з 4 тверджень або питання «план чи минуле» (a59).
 5. a11 «lots of museums {in a big city|in the mountains}»: варіант «at the seaside» свідомо не брав (Odesa — місто біля моря з музеями).
+
+## Нотатки верифікатора (verifier-pe5s9, 2026-11-20)
+**Вердикт: verified** — reports/verify/pe5s9.md. Пул писав не я. Усі 65 вправ розв'язано самостійно — розбіжностей із ключем немає; друга правильна відповідь не знайдена (Past Simple з часовою ознакою, will / going to, a04, a32, at/on the beach, seaside/beach). `build` a29, a38, a64 — перебір усіх підмножин і перестановок з extra через app/lang.js (1956 станів кожна): приймаються лише порядки з ключа. Ключі `word` — без кінцевого знака. `validate --pool pe5s9` — 0/0; `personalization-qa --pool pe5s9 --strict` — без зауважень. Факти (5) — ЕСУ + en.wikipedia, відкрито в сесії; наголос і форми — CD + OALD/Wiktionary (curl). WebSearch 10 фрагментів ≥ 12 слів — збігів немає. Спірне автора 1–5 — погоджуюсь (§4 звіту).
+**Правки (4):** a08 (Andrii → Lviv / old towns, як a06 і l1), a09 (мама Mariia → the Carpathians / mountains, як l2 і a24), a15 hint і a36 steps — коротші за 8 слів. Ключі й id не змінено. `status: "verified"`. Людині — нічого.
