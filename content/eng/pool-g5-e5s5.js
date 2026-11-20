@@ -1,5 +1,5 @@
 /* Слід · Англійська мова, 5 клас — пул вправ для тренування до розділу «Weather: rain, sun and storms» (e5s5)
-   Статус: draft (автор writer-pe5s5, 2026-11-20). Уроки e5s5l1–e5s5l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e5s5l7 без вправ.
+   Статус: verified (verifier-pe5s5, reports/verify/pe5s5.md; автор writer-pe5s5, 2026-11-20). Уроки e5s5l1–e5s5l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e5s5l7 без вправ.
    Вправи власні (docs/design/english.md §8): лише слова, форми й правила уроків e5s5 і попередніх розділів; англійською, британська норма (D-054).
    Джерело — програма класу (program: true): МП-ІМ, с. 20 — тема «Природа» (погода, природні явища), функції «описувати», «порівнювати»;
    с. 21 — граматика A2: comparatives (form, use), Future with will.
@@ -11,8 +11,8 @@
 SLID.pool("eng", {
   id: "pe5s5",
   section: "e5s5",
-  status: "draft",
-  meta: { author: "writer-pe5s5", created: "2026-11-20", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "writer-pe5s5", created: "2026-11-20", factcheck: "verifier-pe5s5 (reports/verify/pe5s5.md)", teacher: null },
   sources: [
     { id: "mpim", program: true, title: "Модельна навчальна програма «Іноземна мова. 5–9 класи» (Редько В. Г. та ін.), наказ МОН № 795 від 12.07.2021 — тема «Природа» (с. 20), граматика A2 (с. 21)", url: "https://osvita.ua/doc/files/news/831/83117/Inoz_mov_5-9-kl_Redko_ta_in_14_07.pdf" }
   ],
@@ -139,7 +139,7 @@ SLID.pool("eng", {
     { id: "a21", lesson: "e5s5l2", lvl: 3, sk: "phon", src: "mpim с. 20",
       type: "stress", title: "Find the stressed syllable.",
       words: ["+weath|er", "+mi|nus", "de|+grees", "+light|ning"],
-      hint: "Careful: one word is different.",
+      hint: "One word is different.",
       steps: ["<u>weath</u>er, <u>mi</u>nus, <u>light</u>ning: the strong part is at the start.", "de<u>grees</u>: the strong part is at the end."] },
 
     /* ───────────── e5s5l3 · Hotter, colder, wetter ───────────── */
@@ -196,8 +196,8 @@ SLID.pool("eng", {
     { id: "a30", lesson: "e5s5l3", lvl: 2, sk: "write", src: "mpim с. 20",
       type: "gaps", title: "Complete the message.",
       body: "<p>Kharkiv: −2 °C, no wind. Lviv: 4 °C, a strong wind. Mariia writes to Taras.</p>",
-      text: "It’s minus two in Kharkiv. Lviv is {*warmer|warm|warmmer}: it’s four degrees there. But Lviv is {*windier|windyer|windy} than Kharkiv.",
-      hint: "warm: just add -er. windy: y → i.",
+      text: "It’s minus two in Kharkiv. Lviv is {*warmer|warm|warmmer} than Kharkiv: it’s four degrees there. But Lviv is {*windier|windyer|windy} than Kharkiv.",
+      hint: "warm: add -er. windy: y → i.",
       steps: ["warm → <b>warmer</b>.", "windy → <b>windier</b> (y → i)."] },
     { id: "a31", lesson: "e5s5l3", lvl: 3, sk: "write", src: "mpim с. 20",
       type: "gaps", title: "Complete the message.",
@@ -243,7 +243,7 @@ SLID.pool("eng", {
       steps: ["Long word: <b>more beautiful</b>.", "bad → <b>worse</b>.", "Short word: <b>colder</b>. Not <i>more</i> and <i>-er</i> together."] },
     { id: "a38", lesson: "e5s5l4", lvl: 3, sk: "gram", src: "mpim с. 21",
       type: "word", title: "Write the missing words.",
-      body: "<p>Use <b>interesting</b>. Andrii loves snow. Rain is boring for him.</p>",
+      body: "<p>Use <b>interesting</b>. Andrii loves snow. He doesn’t like rain.</p>",
       before: "For Andrii, snow is", after: "than rain.",
       answer: "more interesting",
       hint: "interesting is a long word.",
@@ -255,7 +255,7 @@ SLID.pool("eng", {
       steps: ["good → <b>better</b>."] },
     { id: "a40", lesson: "e5s5l4", lvl: 2, sk: "write", src: "mpim с. 20",
       type: "gaps", title: "Complete the message.",
-      body: "<p>Taras writes about autumn and summer.</p>",
+      body: "<p>Mariia writes about autumn and summer.</p>",
       text: "I think autumn is {*more beautiful|beautifuller} than summer. But autumn weather is {*worse|badder}: it’s often wet and cold.",
       hint: "Long word: more. bad → …?",
       steps: ["Long word: <b>more beautiful</b>.", "bad → <b>worse</b>."] },
@@ -358,7 +358,7 @@ SLID.pool("eng", {
       type: "choice", title: "Read and choose.",
       body: "<p>Andrii writes: <i>I live in Kyiv. Winters here are cold, and there is usually snow. I love winter! Summer is warm, and sometimes it’s hot.</i></p><p>What is summer in Kyiv like?</p>",
       opts: ["It’s cold, and there is usually snow.", "It’s warm, and sometimes it’s hot.", "It’s always foggy."], correct: 1,
-      steps: ["Andrii writes: “Summer is <b>warm</b>, and <b>sometimes it’s hot</b>.”", "Cold and snow — that’s winter."] },
+      steps: ["Andrii writes: “Summer is <b>warm</b>, and <b>sometimes it’s hot</b>.”", "Cold and snow – that’s winter."] },
     { id: "a56", lesson: "e5s5l6", lvl: 2, sk: "read", src: "mpim с. 20",
       type: "gaps", title: "Read and fill in the gaps.",
       body: "<p>Emma writes: <i>In England, winters aren’t very cold. It’s usually wet and windy. In London, it doesn’t often snow.</i></p>",

@@ -7,7 +7,7 @@ subject: eng
 grade: 5
 section: e5s5
 depends_on: [write-eng-g5-e5s5, engine-eng-diag-pool, engine-eng-tools]
-status: review
+status: done
 claimed_by: writer-pe5s5
 created: 2026-11-19
 source: design-eng
@@ -43,3 +43,9 @@ source: design-eng
 - Словники (curl, 2026-11-20): наголос — CD https://dictionary.cambridge.org/dictionary/english/{rainbow,thunder,lightning,foggy,degree,minus,weather} (UK: ˈreɪn.bəʊ, ˈθʌn.dər, ˈlaɪt.nɪŋ, ˈfɒɡ.i, dɪˈɡriː, ˈmaɪ.nəs, ˈweð.ər); OALD https://www.oxfordlearnersdictionaries.com/definition/english/{rainbow,thunder_1,lightning_1,foggy,degree,minus_1,weather_1} — збігається; усі слова stress підкреслені в l1 #3 або l2 #3. stormy не брав (поділ storm|y / stor|my неочевидний), temperature, interesting — неоднозначна кількість складів. Comparatives: OALD cloudy («cloudier»), rainy, cool («cooler»); wetter, sunnier, windier — reports/verify/e5s5.md.
 - Не запускав: test-answer-ui.py --pool pe5s5 (браузерний; на оркестраторі).
 - Спірне для верифікатора: a03 (10 °C cool / 0 °C cold — лише за шкалою уроку); a28 cloudier (перенесення правила); a49 «What will be the weather like» рушій не приймає (нестандартне).
+
+## Нотатки верифікатора (verifier-pe5s5, 2026-11-20)
+- Вердикт: **verified** — reports/verify/pe5s5.md. 68 вправ розв'язано; `build` — перебір усіх перестановок з extra через app/lang.js (лише ключі); `word` — wordVerdict; матриця урок × sk звірена вручну (усі пари ≥ 3, рівні 1–3).
+- Правки (6): a21 hint (careful), a30 «than Kharkiv» + hint (just), a38 body (boring → He doesn’t like rain), a40 Taras → Mariia (канон l4), a55 тире, статус. Ключі не змінено.
+- Спірні місця автора (a03, a28, a49) — прийнято. Словники наголосу й cloudier/cooler, клімат (≥ 2 джерела) — URL у звіті.
+- Не запускав: test-answer-ui.py --pool pe5s5 (немає Python playwright).
