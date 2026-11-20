@@ -7,7 +7,7 @@ subject: eng
 grade: 5
 section: e5s6
 depends_on: [curate-eng-plan-g5, engine-eng-lang-core, engine-eng-validate, engine-eng-stats, skills-eng, curate-eng-style, curate-eng-glossary, write-eng-g4-e4s1]
-status: review
+status: done
 claimed_by: writer-e5s6
 created: 2026-11-19
 source: design-eng
@@ -83,3 +83,11 @@ Oksana (село біля Полтави, karate, любить воду; бра�
 3. l6 #3 info: рядок «Remember: guitar, weekend» додано, щоб `stress` спирався на екран цього уроку (weekend — з e4s3).
 4. l5 intro і `info` «Let’s = you and I, together» — пояснення без «let us» (CD: let us — дуже формальне).
 5. Збігів з опублікованими текстами не шукав системно; WebSearch «My hobby is taking photos. I've got an old camera» — збігів немає.
+
+**verifier-e5s6, 2026-11-20 — вердикт: придатний, усі 7 уроків `verified`** (звіт reports/verify/e5s6.md).
+- Факти: Odesa біля Black Sea (CD + en.wiki), the Carpathians (ЕСУ article-9920 + en/uk.wiki), старий центр Lviv (ЕСУ article-59624 + en.wiki); форми й BrE — CD Grammar і OALD; наголос 8 слів — CD UK + OALD BrE. Усе ✅.
+- Завдання: розв'язав усі. `word` і `build` прогнав через app/lang.js (`wordVerdict`, `check`, перебір усіх наборів плиток з extra). Друга правильна відповідь була одна: l1 #8 («loves» з умови) — умову переписано («Use a verb from the list»). Інші граматичні перестановки build у l4 і l7 відсікає умова й шкала уроку l4.
+- Авторське право: 16 дослівних WebSearch-запитів, збігів немає.
+- Правки: 5 змістових (l1 #8 body; fbText l2 #4, l3 #5, l5 #8, l7 T5 — речення ≤ 8 слів) + status/meta.
+- validate --section e5s6 — 0/0; stats — у e5s6 прапорців немає. Плейтест — у CI (playwright у контейнері немає).
+- Людині: нічого. Inbox — 3 рядки (pen-friend → penfriend серією; назви уроків vs plan.js; м'які розбіжності героїв Mariia/e5s9 Odesa).

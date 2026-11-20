@@ -6,7 +6,7 @@
    Концентрично спирається на e4s3 (play / go / do, like / don’t like) — `requires` за plan-eng-g5.md §6.
    Увесь зміст — англійською, британська норма (D-054). Тексти, діалоги й герої — власні (docs/design/english.md §8).
    Форми й наголос — за Cambridge Dictionary, Cambridge Grammar і OALD (URL — tasks/…/write-eng-g5-e5s6.md, «Нотатки агента»).
-   Статус: draft. 7 уроків (6 + фінал). Будова — за еталоном e4s1.
+   Статус: verified (verifier-e5s6, reports/verify/e5s6.md). 7 уроків (6 + фінал). Будова — за еталоном e4s1.
    Перевірка: node tools/validate.mjs --section e5s6 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -16,7 +16,7 @@ SLID.section("eng", {
   title: "Free time, hobbies and holidays",
   why: "To talk about your hobbies and what you can do well. And to make plans with a friend: say yes or say no politely.",
   requires: ["e4s3l1", "e4s3l4"],
-  meta: { author: "writer-e5s6", created: "2026-11-19", factcheck: null, teacher: null },
+  meta: { author: "writer-e5s6", created: "2026-11-19", factcheck: "verifier-e5s6 (reports/verify/e5s6.md)", teacher: null },
   badges: [
     { id: "e5s6boss", name: "Hobby club star", icon: "trophy", desc: "Finish the final lesson “Free time, hobbies and holidays”" }
   ],
@@ -27,7 +27,7 @@ SLID.section("eng", {
       title: "Free time: at home and outside",
       short: "Free time",
       icon: "home",
-      status: "draft",
+      status: "verified",
       why: "What do you do after school? Tell your friends about it.",
       screens: [
         {
@@ -113,7 +113,7 @@ SLID.section("eng", {
           type: "word",
           sk: "vocab",
           title: "Write the missing word.",
-          body: `<p>Dmytro loves cartoons. What does he do every evening?</p>`,
+          body: `<p>What does Dmytro do every evening? Use a verb from the list.</p>`,
           before: "He",
           after: "cartoons on TV.",
           answer: "watches",
@@ -156,7 +156,7 @@ SLID.section("eng", {
       title: "I love drawing, I don’t like running",
       short: "Like, love, hate",
       icon: "star",
-      status: "draft",
+      status: "verified",
       why: "Tell your friends what you love and what you hate.",
       screens: [
         {
@@ -203,7 +203,7 @@ SLID.section("eng", {
           hint: "A lot: how many dots?",
           fbOk: "Right.",
           fbBad: "Taras likes football a lot.",
-          fbText: "A lot, every day: <b>I love playing football.</b> Hate and don’t like are about things we don’t like."
+          fbText: "A lot, every day: <b>I love playing football.</b> Love is ●●●."
         },
         {
           type: "info",
@@ -288,7 +288,7 @@ SLID.section("eng", {
       title: "Swimming is fun! My hobby",
       short: "My hobby",
       icon: "eye",
-      status: "draft",
+      status: "verified",
       why: "Everyone has got a hobby. Tell your friends about yours.",
       screens: [
         {
@@ -344,7 +344,7 @@ SLID.section("eng", {
           correct: 1,
           fbOk: "Right.",
           fbBad: "Andrii plays chess. And we need -ing.",
-          fbText: "Andrii loves chess, so his hobby is <b>playing chess</b>. After <i>is</i>, we say <b>playing</b>, not <i>play</i>."
+          fbText: "Andrii loves chess. His hobby is <b>playing chess</b>. After <i>is</i>, we say <b>playing</b>, not <i>play</i>."
         },
         {
           type: "choice",
@@ -435,7 +435,7 @@ SLID.section("eng", {
       title: "I can swim well, but I can’t skate",
       short: "Can, can’t",
       icon: "target",
-      status: "draft",
+      status: "verified",
       why: "Say what you can do well. And say what you can’t do yet.",
       screens: [
         {
@@ -571,7 +571,7 @@ SLID.section("eng", {
       title: "Let’s go! Saying yes or no",
       short: "Let’s…",
       icon: "users",
-      status: "draft",
+      status: "verified",
       why: "Make plans with a friend. Say yes or say no politely.",
       screens: [
         {
@@ -663,7 +663,7 @@ SLID.section("eng", {
           hint: "How do we say no? Say sorry and say why.",
           fbOk: "Right.",
           fbBad: "Andrii can’t go. Say sorry and say why.",
-          fbText: "To say no, say <b>Sorry, I can’t</b> and say why: <b>I’ve got an English lesson.</b> Just <i>No!</i> is not polite."
+          fbText: "To say no: <b>Sorry, I can’t.</b> Then say why: <b>I’ve got an English lesson.</b> Just <i>No!</i> is not polite."
         },
         {
           type: "word",
@@ -714,7 +714,7 @@ SLID.section("eng", {
       title: "School holidays: what do you like doing?",
       short: "Holidays",
       icon: "map",
-      status: "draft",
+      status: "verified",
       why: "The holidays are a great time. Tell your friends what you like doing.",
       screens: [
         {
@@ -859,7 +859,7 @@ SLID.section("eng", {
       title: "Hobby day at the club",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e5s6boss",
       why: "Check everything from this section. Your points are doubled.",
@@ -944,7 +944,7 @@ SLID.section("eng", {
           pre: "e5s6l5",
           fbOk: "Good eye!",
           fbBad: "She can’t go. Say sorry and say why.",
-          fbText: "Khrystyna can’t go, so she says <b>Sorry, I can’t</b> and says why: <b>I’ve got a dance lesson.</b>"
+          fbText: "Khrystyna can’t go. She says <b>Sorry, I can’t.</b> Then she says why: <b>I’ve got a dance lesson.</b>"
         },
         {
           type: "match",
