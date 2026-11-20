@@ -496,3 +496,7 @@
 - 2026-11-20 · verifier-pe5s5 · PITFALL (eng, пул): канон уподобань героїв у пулі — проти уроку (Taras — літо улюблене, e5s5l4); лексика й рамки — і в hint/body (grep кожного слова по уроках до `lesson`).
 - 2026-11-20 · verifier-pe5s5 · ENGINE (eng): `word` з ключем «is going to» — введення «’s going to» дає Almost замість ok (engine-eng-rule-tables).
 - 2026-11-20 · verifier-pe5s5 · FACT (eng): cloudier (OALD cloudy; CD приклад), cooler (OALD cool_1); weather, minus — один наголос на 1-му складі (CD, OALD).
+- 2026-11-20 · verifier-pe5s7 · VERIFY: pe5s7 → verified, 3 правки (a25 + «The museum is»; a46 пастка right → goes; a55 «years old» поза уроками → «years ago»), reports/verify/pe5s7.md.
+- 2026-11-20 · verifier-pe5s7 · PITFALL (eng, build): пастка `right` з go + along/to/up дає правильне «Go right along X…» (OALD right_2 — all the way); у build з напрямками пасткою брати `goes`.
+- 2026-11-20 · verifier-pe5s7 · PITFALL (eng, word): відповідь на «Where is the X?» з порожнім `before` — і «It’s», і «The X is» в `answer`.
+- 2026-11-20 · verifier-pe5s7 · NOTE (eng, лексика): «years old» до e5s7 в уроках 4–5 кл. немає; давність — «more than N years ago» (e5s7l6).
