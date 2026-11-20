@@ -17,7 +17,7 @@ SLID.section("eng", {
   weeks: [32, 35],
   title: "London, the capital of the UK",
   why: "To tell people about London and its famous places. And to tell a friend what other people said.",
-  requires: ["e4s7l3", "e5s10l3", "e5s10l4"],
+  requires: ["e4s7l3", "e5s10l3", "e5s10l4", "e6s7l4"],
   meta: { author: "writer-e6s8", created: "2026-11-20", factcheck: null, teacher: null },
   credits: [
     ["A simple map of central London (img/eng/e6s8/london-map.svg), own drawing for this section", "Slid authors (writer-e6s8)", "CC0 1.0", "https://github.com/kondolovskiy/slid/blob/main/img/eng/e6s8/london-map.svg"]

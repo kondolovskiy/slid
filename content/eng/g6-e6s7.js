@@ -20,7 +20,7 @@ SLID.section("eng", {
   weeks: [28, 31],
   title: "Kyiv, the capital of Ukraine",
   why: "To tell people about Kyiv and its famous places. And to talk about places you have visited.",
-  requires: ["e4s7l3", "e5s10l1", "e5s10l5", "e5s7l6"],
+  requires: ["e4s7l3", "e5s10l1", "e5s10l5", "e5s7l6", "e6s3l4", "e6s3l5"],
   meta: { author: "writer-e6s7", created: "2026-11-20", factcheck: null, teacher: null },
   badges: [
     { id: "e6s7boss", name: "Kyiv guide", icon: "trophy", desc: "Finish the final lesson “Kyiv, the capital of Ukraine”" }
