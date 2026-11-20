@@ -1,9 +1,9 @@
 /* Слід · Англійська мова, 4 клас — тест рівня «What do you know?» (dge4)
-   Статус: draft — writer-dge4 (write-eng-diag-g4), 2026-11-20; до незалежної верифікації (content-verify).
-   8 baseline-опор вхідного рівня Pre A1 (3 кл., по 2 завдання) + 8 тем 4 класу (по 1 завданню на розділ e4s1–e4s8) = 24 завдання.
+   Статус: verified — verifier-dge4, 2026-11-20 (reports/verify/dge4.md); автор — writer-dge4 (write-eng-diag-g4).
+   8 baseline-опор вхідного рівня Pre A1–A1 (інвентар 3 кл., по 2 завдання) + 8 тем 4 класу (по 1 завданню на розділ e4s1–e4s8) = 24 завдання.
    Опори — за Типовою освітньою програмою 3–4 кл. (під керівництвом О. Я. Савченко, 2018), «Англійська мова», «3-ий клас»:
    лексичний діапазон і функції — PDF с. 61–62, граматика 3 кл. — с. 62 (there is(n’t)/are(n’t), ’s for possession, irregular plural,
-   prepositions of place, present simple for daily routines); рівень Pre A1 на кінець 3 кл. → A1 на кінець 4 кл. — с. 40:
+   prepositions of place, present simple for daily routines); рівень Pre A1 — на кінець 2 кл., A1 — на кінець 4 кл. (с. 40):
    https://lib.iitta.gov.ua/714276/1/%D0%A2%D0%9E%D0%9F_3_4_2018.pdf
    Уроків 3 класу англійської в застосунку немає (dge4 — перший клас предмета), тому опори — baseline: lessons порожні, for обов'язковий,
    see — урок 4 кл., де тему повторюють (CONTENT_SCHEMA §9; механіка engine-eng-diag-pool, reports/review/engine-eng-diag-pool.md).
@@ -18,10 +18,10 @@ SLID.diag("eng", {
   grade: 4,
   title: "What do you know?",
   why: "Let’s see what you know. Then we can find the best place to start.",
-  status: "draft",
-  meta: { author: "writer-dge4", created: "2026-11-20", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "writer-dge4", created: "2026-11-20", factcheck: "verifier-dge4 (reports/verify/dge4.md)", teacher: null },
   topics: [
-    // опори вхідного рівня Pre A1 (3 кл.; baseline: уроків 3 класу в застосунку немає)
+    // опори вхідного рівня Pre A1–A1 (інвентар 3 кл.; baseline: уроків 3 класу в застосунку немає)
     { id: "be", title: "I am, she is, we are", kind: "pre", baseline: true, lessons: [], for: ["e4s1"], see: ["e4s1l1"] },
     { id: "family", title: "Family words", kind: "pre", baseline: true, lessons: [], for: ["e4s1"], see: ["e4s1l2"] },
     { id: "poss", title: "Oksana’s cat: ’s", kind: "pre", baseline: true, lessons: [], for: ["e4s1"], see: ["e4s1l2"] },
@@ -41,7 +41,7 @@ SLID.diag("eng", {
     { id: "cur-e4s8", title: "I play, I’m playing", kind: "cur", lessons: ["e4s8l5"] }
   ],
   items: [
-    /* ── базові завдання опор (Pre A1) ── */
+    /* ── базові завдання опор (інвентар 3 кл.) ── */
     {
       topic: "be",
       type: "choice",

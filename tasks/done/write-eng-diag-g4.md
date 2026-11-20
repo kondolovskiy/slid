@@ -7,7 +7,7 @@ subject: eng
 grade: 4
 section: dge4
 depends_on: [write-eng-g4-e4s1, write-eng-g4-e4s2, write-eng-g4-e4s3, write-eng-g4-e4s4, write-eng-g4-e4s5, write-eng-g4-e4s6, write-eng-g4-e4s7, write-eng-g4-e4s8, engine-eng-diag-pool]
-status: review
+status: done
 claimed_by: writer-dge4
 created: 2026-11-19
 source: design-eng
@@ -56,3 +56,8 @@ AGENTS.md §4; скіли `math-pool-diag` («Тест рівня») і `content
 - Герої — за канонами inbox: Andrii (Kyiv, мама doctor, тато engineer, тітка artist — e4s1l3; має кота; без TV у кімнаті, три полиці — e4s2l5; застуда — e4s5l4), Taras (Lviv, два постери — e4s2), Oksana (брат Dmytro), Bohdan (любить теніс — e4s3l1). Mariia — без брата (e5s1), тому pick з «brothers» — від Oksana. Нові дрібниці: Bohdan грає в теніс з татом по суботах і має кота; Emma не певна щодо суботи.
 
 **Порядок:** 1–8 — базові завдання опор; 9–24 — складніші опори впереміш з cur. Правильні варіанти choice розкладено по A/B/C.
+
+## Нотатки верифікатора (verifier-dge4, 2026-11-20)
+**Вердикт: verified** — звіт reports/verify/dge4.md. 24/24 завдання розв'язано самостійно, ключі збіглися; другої правильної відповіді немає (build №14 і №22 — повний перебір підмножин і перестановок з extra через SLID_LANG.check: зараховано рівно ключ). Ключ word №8 без кінцевого знака. Опори звірено з PDF ТОП 3–4 (SHA-1 aa8d161a…, с. 40, 61–62); форми — CD + OALD (URL у звіті); авторське право — 3 запити, збігів немає. `validate --diag dge4` — 0/0.
+`see` на уроки повторення — правильно за PERSONALIZATION.md «Baseline» (дозволяє «перший урок e4s1 чи урок, де тему повторюють»); `baseStart` для новачка однаково веде на e4s1l1 (опори e4s1 найтерміновіші, закриті розділи пропускаються). english.md §7 — неповний (DOC в inbox).
+Правки: лише коментарі й метадані (7) — «Pre A1 на кінець 3 кл.» → «Pre A1 — кінець 2 кл., A1 — кінець 4 кл.» (с. 40), status verified, factcheck. Спостереження (не блокують): cur-e4s7 не перевіряє won’t/offer; порядок see plural; «Find the mistake» у тесті без фідбеку.
