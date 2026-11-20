@@ -11,7 +11,7 @@
    Зовнішність героїв не описано (канон — автор e6s1).
    Увесь зміст — англійською, британська норма (D-054). Тексти, діалоги й герої — власні (docs/design/english.md §8).
    Форми, рівні слів, наголос і факти про гроші — Cambridge Dictionary, OALD, джерела в tasks/…/write-eng-g6-e6s2.md, «Нотатки агента».
-   Статус: draft. 7 уроків (6 + фінал).
+   Статус: verified (verifier-e6s2, reports/verify/e6s2.md). 7 уроків (6 + фінал).
    Перевірка: node tools/validate.mjs --section e6s2 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -21,7 +21,7 @@ SLID.section("eng", {
   title: "Shopping and money",
   why: "To talk about shops and the things they sell. And to ask about prices and buy things politely.",
   requires: ["e4s4l1", "e4s4l4", "e4s4l5", "e5s3l4", "e5s2l6"],
-  meta: { author: "writer-e6s2", created: "2026-11-20", factcheck: null, teacher: null },
+  meta: { author: "writer-e6s2", created: "2026-11-20", factcheck: "verifier-e6s2 (reports/verify/e6s2.md)", teacher: null },
   badges: [
     { id: "e6s2boss", name: "Shopping expert", icon: "trophy", desc: "Finish the final lesson “Shopping and money”" }
   ],
@@ -32,7 +32,7 @@ SLID.section("eng", {
       title: "At the chemist’s, at the newsagent’s: types of shops",
       short: "Types of shops",
       icon: "city",
-      status: "draft",
+      status: "verified",
       why: "Some shops sell only one kind of thing. Learn their British names.",
       screens: [
         {
@@ -155,7 +155,7 @@ SLID.section("eng", {
       title: "Why do you go there? To buy some bread",
       short: "To buy…",
       icon: "target",
-      status: "draft",
+      status: "verified",
       why: "People often ask why you are going somewhere. Answer with to and a verb.",
       screens: [
         {
@@ -281,7 +281,7 @@ SLID.section("eng", {
       title: "A few, both, all, no: a shopping list",
       short: "A few, both, no",
       icon: "scale",
-      status: "draft",
+      status: "verified",
       why: "Make a shopping list. Say what you have got and what you need.",
       screens: [
         {
@@ -412,7 +412,7 @@ SLID.section("eng", {
       title: "Paying and getting change: pounds and hryvnias",
       short: "Change",
       icon: "plus",
-      status: "draft",
+      status: "verified",
       why: "In a shop, you pay and get your change. Say prices and count your change.",
       screens: [
         {
@@ -514,7 +514,7 @@ SLID.section("eng", {
           body: `<p>A pen is 60p. Tom pays with a £1 coin. £1 = 100p.</p>`,
           before: "Tom’s change is",
           after: "p.",
-          answer: "40",
+          answer: ["40", "forty"],
           hint: "100p – 60p = ?",
           fbOk: "Yes!",
           fbBad: "Tom pays 100p. The pen is 60p.",
@@ -554,7 +554,7 @@ SLID.section("eng", {
       title: "Can I help you? In a clothes shop",
       short: "In a clothes shop",
       icon: "voice",
-      status: "draft",
+      status: "verified",
       why: "Shop assistants offer help. Say yes or no politely and ask to try clothes on.",
       screens: [
         {
@@ -685,7 +685,7 @@ SLID.section("eng", {
       title: "It’s too big! Too small, too expensive",
       short: "Too big",
       icon: "eye",
-      status: "draft",
+      status: "verified",
       why: "Sometimes clothes aren’t right for you. Say what the problem is and choose.",
       screens: [
         {
@@ -704,7 +704,7 @@ SLID.section("eng", {
           body: `<p>Emma says: “It’s too big!” What does she mean?</p>`,
           opts: [
             "It’s big, and it’s OK for her.",
-            "It’s very big, and that’s a problem.",
+            "It’s big, and that’s a problem.",
             "It’s small, and that’s a problem."
           ],
           correct: 1,
@@ -821,7 +821,7 @@ SLID.section("eng", {
       title: "A shopping day in Lviv",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e6s2boss",
       why: "Check everything from this section. Your points are doubled.",
@@ -916,9 +916,9 @@ SLID.section("eng", {
           eyebrow: "Task 6",
           title: "Fill in the gaps.",
           body: `<p>Taras has got ₴1,000.</p>`,
-          text: "The green jacket is too {*small|big}. Taras can’t put it on. The black jacket is ₴2,000. It’s too {*expensive|cheap} for him. The blue jacket is ₴900. He says: “I’ll take the blue one, {*because|but} it isn’t too expensive.”",
+          text: "The green jacket is too {*small|big}. It’s Zlata’s size! Taras can’t put it on. The black jacket is ₴2,000. It’s too {*expensive|cheap} for him. The blue jacket is ₴900. He says: “I’ll take the blue one, {*because|but} it isn’t too expensive.”",
           pre: "e6s2l6",
-          hint: "He can’t put it on: is it big or small? ₴2,000 or ₴1,000?",
+          hint: "Zlata is his little sister: is the jacket big or small? ₴2,000 or ₴1,000?",
           fbOk: "Well done!",
           fbBad: "Look at the problem with each jacket.",
           fbText: "He can’t put it on: it’s <b>too small</b>. ₴2,000 is more than ₴1,000: <b>too expensive</b>. I’ll take it, <b>because</b> it isn’t too expensive."

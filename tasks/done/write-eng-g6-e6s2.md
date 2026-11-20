@@ -7,7 +7,7 @@ subject: eng
 grade: 6
 section: e6s2
 depends_on: [curate-eng-plan-g6, engine-eng-lang-core, engine-eng-validate, engine-eng-stats, skills-eng, curate-eng-style, curate-eng-glossary]
-status: review
+status: done
 claimed_by: writer-e6s2
 created: 2026-11-19
 source: design-eng
@@ -97,3 +97,9 @@ Build не запускай (AGENTS.md §4 п. 8).
 3. l4 `word` «Tom’s change is ___p» — ключ «40» (число); інші записи (forty) не прийнято.
 4. «I’ll take…» — will як рішення в мить мовлення подано готовою фразою (I’ll = I will. You decide now.).
 5. try on — у задачі «B2 (OALD)», у CD — A2; дано з поясненням в info l5.
+
+**verifier-e6s2, 2026-11-20.** Вердикт: **verified**, усі 7 уроків. Звіт: reports/verify/e6s2.md.
+- Правки (3): l4 `word` — ключ `["40", "forty"]`; l6 hyp — правильний варіант «It’s big, and that’s a problem.» (не суперечить info «very big → maybe OK»); l7 T6 — «It’s Zlata’s size!» + hint (інакше «can’t put it on» за аналогією з l6 «too big → can’t wear it» давало «big»).
+- Факти про гроші (£1 = 100p; 50p, £1, £2 coins; £5, £10 notes; ₴10 coin, ₴100 note) — en.wikipedia + uk.wikipedia (curl), BoE/НБУ — WebSearch; bankofengland.co.uk, bank.gov.ua, royalmint.com, ukrinform.ua, minfin.com.ua з контейнера закриті.
+- build — усі перестановки всіх підмножин tiles + extra: рушій приймає лише порядки з `answer`. Авторське право — 10 запитів, збігів немає. validate 0/0; плейтест — лише в CI (немає playwright у Python).
+- Спірні 1, 2, 4, 5 — прийнято; 3 — виправлено. TQ не потрібні.
