@@ -476,3 +476,6 @@
 - 2026-11-20 · verifier-pe5s3 · VERIFY: pe5s3 → verified, 1 правка (a48 hint «texts and the poster»), reports/verify/pe5s3.md.
 - 2026-11-20 · verifier-pe5s3 · PITFALL (eng, пул): `hint` «Remember the poster» має вести туди, де справді є всі відповіді; якщо частина фактів лише в тексті для читання — посилатися й на texts.
 - 2026-11-20 · verifier-pe5s3 · FACT (eng): porridge — CD «made from oats boiled in milk or water, eaten hot for breakfast», OALD «eaten hot, especially for breakfast»; chip (BrE) — CD «a long, thin piece of potato that is fried», OALD chip_1; banana в CD [C] і [U] — у пулах a/some і much/many з нею не оцінювати.
+- 2026-11-20 · verifier-pe5s1 · VERIFY: pe5s1 → verified, 2 правки (a26 — лексика l5 в уроці l3; a31 — cow → dog), reports/verify/pe5s1.md.
+- 2026-11-20 · verifier-pe5s1 · PITFALL (eng, пул): перевіряй лексику всієї вправи (body, неоцінювані речення pick, дистрактори), не лише ключ — слова поза уроками там не давати.
+- 2026-11-20 · verifier-pe5s1 · NOTE (герої eng): pe5s1 a42 — Aunt Iryna (artist, «paints pictures») — тітка Andrii; style-sync зафіксувати (у e4s1 без мовця).
