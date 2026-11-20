@@ -333,7 +333,7 @@ SLID.section("eng", {
     "At the chemist’s, at the newsagent’s: types of shops",
     "Why do you go there? To buy some bread",
     "A few, both, all, no: a shopping list",
-    "Pounds, pence and hryvnias: money",
+    "Paying and getting change: pounds and hryvnias",
     "Can I help you? In a clothes shop",
     "It’s too big! Too small, too expensive"
   ]

@@ -6,7 +6,7 @@ type: curate
 subject: eng
 grade: 6
 depends_on: [curate-eng-plan-g5]
-status: review
+status: done
 claimed_by: curator-plan-eng-g6
 created: 2026-11-19
 source: design-eng
@@ -44,3 +44,9 @@ source: design-eng
 - Синхронізовано 18 назв уроків 4–5 кл. у plan.js з verified-розділами (звіт §9; 7 з доручення + 11 у 4 кл.).
 - Спірне: adjective order не в інвентарі A2 (лишено мінімум); too → e6s2; will/going to в e6s5 — лише повторення; `requires` не в plan.js (скіл), хоча уроки 4–5 кл. уже є.
 - validate: 0 помилок, 235 попереджень (жодного для plan.js / e6s*). Build не запускав.
+
+## Нотатки верифікатора (verifier-curate-eng-plan-g6, 2026-11-20)
+- Вердикт: **план придатний** — reports/verify/curate-eng-plan-g6.md. МП-ІМ (PDF заново, SHA-1 як у куратора) с. 3, 15–22: 8 тем, 18 підтем, 7 функцій покрито; граматика — з інвентаря A2; порядок розділів без забігання; тижні 1–35.
+- 9 дрібних правок: plan.js e6s2 l4 (рядок повторював e4s4l4); задачі e6s2–e6s7: `requires` (+e4s4l5, +e4s7l5, +e5s4l3), e4s7l5 вже має went/swam/ate/saw, функції «пропонувати…» і «розпитувати для уточнення», атрибуція Past Continuous neg/questions і passive-питання, Zoriana замість Kateryna, Ostap — друг.
+- plan 4–5 кл. ↔ назви уроків після style-eng-g4-5: розбіжностей 0.
+- validate: 0 помилок, 235 попереджень (для plan.js / e6s* — жодного).
