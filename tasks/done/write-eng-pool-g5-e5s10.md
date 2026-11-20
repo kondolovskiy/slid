@@ -7,7 +7,7 @@ subject: eng
 grade: 5
 section: e5s10
 depends_on: [write-eng-g5-e5s10, engine-eng-diag-pool, engine-eng-tools]
-status: review
+status: done
 claimed_by: writer-pe5s10
 created: 2026-11-19
 source: design-eng
@@ -50,3 +50,7 @@ source: design-eng
 - a47: як і в уроці l4, `answer` приймає обидва питання («Is Ben Nevis higher than Hoverla?»), хоча умова каже «Make a true sentence». Це поблажливість, а не помилка.
 - Порядок без коми «In Ukraine Kyiv is…» і «Because my grandma lives there I want…» я поклав у `answer` (PITFALL pe4s3).
 - l2 gram (the з назвами країн) посилається на МП-ІМ с. 21 «Articles». Окремого рядка про артиклі з назвами країн у програмі немає.
+
+## Нотатки верифікатора (verifier-pe5s10, 2026-11-20)
+**Вердикт: verified** — reports/verify/pe5s10.md. Кожну з 71 вправи розв'язано. Неправильних ключів немає. Друга правильна відповідь ніде не зараховується як хибна (build перебрано через app/lang.js, word — через wordVerdict). Матрицю урок × sk звірено вручну: усі пари мають ≥ 3 вправи рівнів 1–3. Наголос у stress звірено з CD і OALD, факти — з двома відкритими джерелами кожен. Авторське право — 6 дослівних WebSearch, збігів немає. Grace, Chloe й Owen — не нові герої: їх уведено в уроці e5s10l2–l3, а дрібниці пулу з каноном сумісні.
+**Правки (5):** a44 — суперечність канону («For Oksana, art…» → «For me»); a45 — word → gaps {*worse|badder}, бо рушій дає хибне «Almost» на worst, а worst з'являється лише в l5; a42, a49, a52 — замість дослівних копій екранів e5s10l4/l5 нові контексти. Статус → verified. validate 0/0.
