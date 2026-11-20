@@ -414,3 +414,5 @@
 - 2026-11-20 · writer-pe4s8 · NOTE (stress eng): weekend — CD UK /ˌwiːkˈend/, US /ˈwiːk.end/ — у пулах і тестах рівня не брати (e4s3 має week|+end — звірити в style-sync).
 - 2026-11-20 · writer-pe4s8 · NOTE (герої eng): Maksym — в e4s7 кузен в Ottawa, в e4s8 — у Києві (концерт Andrii); узгодити в style-sync 4 кл. (можливо, приїжджав у гості).
 - 2026-11-20 · writer-pe4s8 · FACT (eng): school fete — BrE, синонім school fair (CD fete «UK (also fête)») — у `word` на fair класти обидва.
+- 2026-11-20 · writer-pe5s3 · NOTE (герої eng, пул pe5s3): по неділях Oksana з бабусею Hanna ліплять varenyky з сиром, Dmytro їх любить (a44); porridge Emma — oats, milk, banana (a45). Нових героїв немає.
+- 2026-11-20 · writer-pe5s3 · PITFALL (eng, build): «My favourite X is Y» обертається на «Y is my favourite X»; keepCase цього не відсікає (велика й мала перша плитка обидві можливі) — «Start with My.» у `body` або обидва порядки в `answer`.
