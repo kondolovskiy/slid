@@ -453,3 +453,9 @@
 - 2026-11-20 · verifier-pe4s2 · PITFALL (eng, пули): автор за старим переліком типів пропустив phon/read/write пари (pe4s2) — додано 15 вправ a36–a50; personalization-qa --pool матрицю урок × sk не перевіряє — звіряти вручну (ENGINE: додати перевірку).
 - 2026-11-20 · verifier-pe4s2 · FACT (eng): наголос на 1-му складі, один, CD UK і OALD: garden, balcony, furniture, wardrobe, carpet, kitchen, bedroom, bathroom.
 - 2026-11-20 · verifier-pe4s2 · NOTE (герої eng): Mariia (Kharkiv, квартира) — велика вітальня з трьома вікнами, мала кухня, ліфт; Taras — «very high up», ліфт.
+- 2026-11-20 · verifier-pe4s3 · PITFALL (eng, stress): weekend (CD UK ˌwiːkˈend / US ˈwiːk.end; OALD два варіанти) не брати в `stress` і phon-`pick` пулів і тестів рівня, навіть як дистрактор (D-054 доп. п. 1); вилучено з pe4s3 a25–a27, a51; e4s3 week|+end — на розсуд style-sync.
+- 2026-11-20 · verifier-pe4s3 · PITFALL (eng): «do + -ing» як хибний варіант не давати в контексті клубу чи школи («In winter, we do skating» від учительки природне) — брати особистий контекст.
+- 2026-11-20 · verifier-pe4s3 · NOTE (герої eng): канон writer-pe4s3 перевірено проти 4–6 кл. — суперечностей немає. Для style-sync: Super Kit у pe4s3 a46 «very funny» (в e4s3l5 — brave, kind); Yurii (a44) «can lift a car» (в e4s3l5 — helps old people).
+- 2026-11-20 · verifier-pe4s3 · VERIFY: pe4s3 → verified, 7 правок (weekend вилучено, a05, a21, a42, a47, a48), reports/verify/pe4s3.md.
+- 2026-11-20 · verifier-pe4s1 · VERIFY: pe4s1 → verified, 2 правки (a50 копія умови уроку → новий контекст; a08 скорочено), reports/verify/pe4s1.md. Наголос CD+OALD звірено: hello, goodbye, afternoon, doctor, teacher, pilot, engineer, driver, artist, farmer, surname, Ukrainian, nationality.
+- 2026-11-20 · verifier-pe4s1 · PITFALL (eng, пул): `word` пулу, що повторює умову екрана уроку з іншим ім'ям, — копія; змінюй контекст (хто, де, яка дія), а не лише ім'я.
