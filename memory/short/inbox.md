@@ -487,3 +487,12 @@
 - 2026-11-20 · verifier-pe5s9 · FACT (eng, verified): Hoverla — найвища вершина України, 2061 м — ЕСУ article-25087, en.wikipedia; Kyiv — на обох берегах Дніпра — ЕСУ article-11194, en.wikipedia; on/at the beach — обидва в OALD beach_1.
 - 2026-11-20 · verifier-pe5s9 · NOTE (герої eng): Andrii в e5s9 хоче до Lviv (old towns); мама Mariia в «can’t choose» хоче в гори.
 - 2026-11-20 · verifier-pe5s9 · PITFALL (eng, пули): перевіряй героїв і всередині пулу — одна сцена чи бажання героя в різних вправах не має давати різні місця.
+- 2026-11-20 · verifier-dge5 · VERIFY: dge5 → verified, 3 правки (тема will: for = e5s9; статус), reports/verify/dge5.md. Оркестратор: `why` «Year 4 and Year 5» → «from your English lessons» (британський Year 5 = укр. 4 кл.).
+- 2026-11-20 · verifier-dge5 · NOTE (eng, герої): Taras — день народження 5 May (канон: e5s8l2 build, pe5s8, dge5); «My birthday is on 9 October» у e5s8l2 — без мовця. Нове з dge5: Taras із Zlata їдуть потягом до Kyiv; Taras купався в річці в Carpathians; Oksana — karate.
+- 2026-11-20 · verifier-dge5 · NOTE (requires): e5s5l5 — will для прогнозу, але e4s7l6 немає в requires e5s5 → куратору розглянути (тоді повернути e5s5 у `for` теми will dge5).
+- 2026-11-20 · verifier-dge5 · PITFALL (eng): «two pair of» — неформальна NAmE (OALD pair_1) — хибний дистрактор у BrE коректний; «do cycling» нормативне лише з кількісним словом — без нього go cycling.
+- 2026-11-20 · verifier-dge5 · STYLE (eng): у `why` тестів рівня не писати «Year N» про український клас.
+- 2026-11-20 · verifier-pe5s5 · VERIFY: pe5s5 → verified, 6 дрібних правок (a21, a30 + than, a38 boring поза уроками, a40 Taras → Mariia за каноном пір року, a55, статус), reports/verify/pe5s5.md; style-sync: hint a14 «fo + gg» майже видає відповідь.
+- 2026-11-20 · verifier-pe5s5 · PITFALL (eng, пул): канон уподобань героїв у пулі — проти уроку (Taras — літо улюблене, e5s5l4); лексика й рамки — і в hint/body (grep кожного слова по уроках до `lesson`).
+- 2026-11-20 · verifier-pe5s5 · ENGINE (eng): `word` з ключем «is going to» — введення «’s going to» дає Almost замість ok (engine-eng-rule-tables).
+- 2026-11-20 · verifier-pe5s5 · FACT (eng): cloudier (OALD cloudy; CD приклад), cooler (OALD cool_1); weather, minus — один наголос на 1-му складі (CD, OALD).

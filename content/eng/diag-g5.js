@@ -13,7 +13,7 @@ SLID.diag("eng", {
   id: "dge5",
   grade: 5,
   title: "What do you know?",
-  why: "Let’s see what you know from Year 4 and Year 5. Then we can find the best place to start.",
+  why: "Let’s see what you know from your English lessons. Then we can find the best place to start.",
   status: "verified",
   meta: { author: "writer-dge5", created: "2026-11-20", factcheck: "verifier-dge5 (reports/verify/dge5.md)", teacher: null },
   topics: [
