@@ -459,3 +459,7 @@
 - 2026-11-20 · verifier-pe4s3 · VERIFY: pe4s3 → verified, 7 правок (weekend вилучено, a05, a21, a42, a47, a48), reports/verify/pe4s3.md.
 - 2026-11-20 · verifier-pe4s1 · VERIFY: pe4s1 → verified, 2 правки (a50 копія умови уроку → новий контекст; a08 скорочено), reports/verify/pe4s1.md. Наголос CD+OALD звірено: hello, goodbye, afternoon, doctor, teacher, pilot, engineer, driver, artist, farmer, surname, Ukrainian, nationality.
 - 2026-11-20 · verifier-pe4s1 · PITFALL (eng, пул): `word` пулу, що повторює умову екрана уроку з іншим ім'ям, — копія; змінюй контекст (хто, де, яка дія), а не лише ім'я.
+- 2026-11-20 · verifier-pe4s6 · VERIFY: pe4s6 → verified, 3 правки (a42, a49, a53), reports/verify/pe4s6.md.
+- 2026-11-20 · verifier-pe4s6 · PITFALL (eng, пул): `word` з відкритим питанням «What do we put in the bin?» допускає інші правильні слова — прив'язувати до формули уроку («Put ___ in the bin.»). Рамка вправи — теж лексика уроків (yesterday, was до e4s7 не вводились).
+- 2026-11-20 · verifier-pe4s6 · NOTE (герої eng): Dmytro (6) не в класі Oksana — у сценах «our class» з Dmytro писати «our school».
+- 2026-11-20 · verifier-pe4s6 · FACT (eng): Kyiv Jan high −0.8 / low −5.5 °C (en.wikipedia Kyiv); London Jan high 8.5 / low 5.0 °C (en.wikipedia Climate_of_London); London Jan mean 5.5 °C (uk.wikipedia Лондон) → «In winter, Kyiv is usually colder than London» ✅.
