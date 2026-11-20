@@ -7,7 +7,7 @@ subject: eng
 grade: 4
 section: e4s3
 depends_on: [write-eng-g4-e4s3, engine-eng-diag-pool, engine-eng-tools]
-status: review
+status: done
 claimed_by: writer-pe4s3
 created: 2026-11-19
 source: design-eng
@@ -35,3 +35,9 @@ source: design-eng
 - **Пастки inbox враховано:** «play/do sport» не вжито зовсім; do як хибний варіант лише з cycling/skating (OALD skating — лише go), swimming з do — не протиставлено в нових gaps (a01 cycling, a05/a07 skating); «on the weekend» (AmE) хибним варіантом не дано (лише at/in); заперечень з and немає (CD Grammar or).
 - **Герої — лише канон, без суперечностей:** Tom — skating, never swimming (не вміє плавати); Emma — tennis on Fridays, swimming; Mariia — swimming Mon/Wed/Fri, cycling з татом at the weekend, не football; Taras — basketball, не swimming, не judo; Dmytro — cycling, не swimming; Yurii — football щодня, без велосипеда; Oksana — karate, swimming, skating з Dmytro at the weekend, не judo; Sofiia — gymnastics (e4s3l1 «My sister and I do gymnastics»); Ostap (Lviv, друг Taras) — football; Daryna (Kyiv). Персонажі книжок — лише Super Kit, Polly, Robin Hood, Kotyhoroshko. Нових героїв не введено. Нові дрібні факти для style-sync: Polina — gymnastics on Tuesdays, skating з мамою at the weekend, tennis after school; Bohdan — tennis Mon/Thu і Saturdays, cycling on Fridays, не любить football, улюблений герой Robin Hood; Kateryna — football з друзями, skating з мамою; Sofiia — gymnastics on Saturdays, не любить football; Ostap — football Mon/Thu, sometimes cycling з Taras.
 - **Спірне:** (1) read покрито gaps/pick/word на коротких текстах (choice/multi не брав — не потрібні для покриття); (2) a13 «I {*am always|always am} happy» — емфатичне «always am» у мовленні трапляється, але урок вчить «after am, is, are» — лишив як хибне; (3) a42 match «A brave hero ↔ is not afraid», «A kind hero ↔ helps people» — пари за означеннями уроку, «brave hero helps people» теж життєве, але не за правилом уроку; (4) a57 «Ostap ___ goes cycling» — «also» граматичне, але не відповідає на «How often?» з `body`.
+
+## Нотатки верифікатора (verifier-pe4s3, 2026-11-20)
+- **Вердикт: verified** — reports/verify/pe4s3.md. Усі 64 вправи розв'язано; `build` перебрано (усі впорядковані підмножини з extra) через app/lang.js; `validate --pool pe4s3` — 0/0.
+- **Блокувальне (виправлено):** weekend у stress/phon-pick (a25, a26, a27, a51) — CD UK ˌwiːkˈend / US ˈwiːk.end, OALD /ˌwiːkˈend/ / /ˈwiːkend/ — два наголоси, BrE ≠ AmE → вилучено.
+- **Дрібне (виправлено):** a05 (контекст клубу «we do skating» → Oksana and Dmytro go skating), a21 («Change do» → «Write do or does»), a42 hint, a47 title, a48 (animals → books, hint без last), hints a27/a51.
+- Спірні 1–4 автора прийнято (звіт §6). TQ не додано.
