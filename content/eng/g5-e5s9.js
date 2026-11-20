@@ -8,7 +8,7 @@
    will ніде не стоїть хибним варіантом поруч із be going to: варіанти відрізняються формою (am / is / are, visit / visits).
    Увесь зміст — англійською, британська норма (D-054). Тексти, діалоги й герої — власні (docs/design/english.md §8).
    Форми, наголос і факти — URL у tasks/…/write-eng-g5-e5s9.md, «Нотатки агента».
-   Статус: draft. 7 уроків (6 + фінал).
+   Статус: verified (verifier-e5s9, reports/verify/e5s9.md). 7 уроків (6 + фінал).
    Перевірка: node tools/validate.mjs --section e5s9 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -18,7 +18,7 @@ SLID.section("eng", {
   title: "Travel: places to see",
   why: "To talk about trips and places you want to visit. And to tell people about your plans and your last trip.",
   requires: ["e4s4l5", "e4s5l6", "e4s7l1", "e4s7l3", "e4s7l5", "e4s7l6", "e5s8l5"],
-  meta: { author: "writer-e5s9", created: "2026-11-19", factcheck: "self", teacher: null },
+  meta: { author: "writer-e5s9", created: "2026-11-19", factcheck: "verifier-e5s9 (reports/verify/e5s9.md)", teacher: null },
   badges: [
     { id: "e5s9boss", name: "Young explorer", icon: "trophy", desc: "Finish the final lesson “Travel: places to see”" }
   ],
@@ -29,7 +29,7 @@ SLID.section("eng", {
       title: "Where would you like to go?",
       short: "Places to go",
       icon: "map",
-      status: "draft",
+      status: "verified",
       why: "Talk about places you’d like to visit. Say why you’d like to go there.",
       screens: [
         {
@@ -163,7 +163,7 @@ SLID.section("eng", {
       title: "At the seaside or in the mountains?",
       short: "Seaside or mountains",
       icon: "leaf",
-      status: "draft",
+      status: "verified",
       why: "Choose a place for a holiday. Say what you can do there.",
       screens: [
         {
@@ -217,7 +217,7 @@ SLID.section("eng", {
           type: "gaps",
           sk: "gram",
           title: "Fill in the gaps.",
-          body: `<p>Sofiia writes about her aunt.</p>`,
+          body: `<p>Daryna writes about her aunt.</p>`,
           text: "My aunt lives in Odesa, {*at|on} the seaside. I like playing {*on|in} the beach. We swim {*in|on} the sea. In winter we go {*to|in} the mountains.",
           hint: "At the seaside, on the beach, in the sea.",
           fbOk: "Exactly.",
@@ -253,7 +253,7 @@ SLID.section("eng", {
           type: "pick",
           sk: "gram",
           title: "Find the mistake.",
-          body: `<p>One word in Sofiia’s message is wrong.</p>`,
+          body: `<p>One word in Daryna’s message is wrong.</p>`,
           text: "My aunt lives [on] the seaside. Every day we swim in the sea.",
           hint: "Look at the rule: … the seaside.",
           fbOk: "Good eye!",
@@ -267,7 +267,7 @@ SLID.section("eng", {
           body: `<p>Dad: “We can swim in the sea and play on the beach.”</p>`,
           before: "Let’s go to the",
           after: "!",
-          answer: ["seaside", "beach", "sea", "coast"],
+          answer: ["seaside", "beach", "sea", "coast", "seashore"],
           hint: "It’s a place next to the sea.",
           fbOk: "Yes!",
           fbBad: "Where can you swim in the sea?",
@@ -307,7 +307,7 @@ SLID.section("eng", {
       title: "I’m going to visit my grandma: plans",
       short: "Plans",
       icon: "target",
-      status: "draft",
+      status: "verified",
       why: "You’ve got a plan for the holidays. Tell your friends about it.",
       screens: [
         {
@@ -344,7 +344,7 @@ SLID.section("eng", {
           type: "gaps",
           sk: "gram",
           title: "Fill in the gaps.",
-          body: `<p>Sofiia writes about her plan.</p>`,
+          body: `<p>Daryna writes about her plan.</p>`,
           text: "I {*am|is|are} going to visit my aunt. My sister {*is|am|are} going to stay at home. We {*are|is} going to {*take|takes|taking} the train.",
           hint: "I – am, she – is, we – are.",
           fbOk: "Yes!",
@@ -416,11 +416,11 @@ SLID.section("eng", {
           eyebrow: "Final",
           title: "Complete the sentences.",
           body: `<p>Mariia writes to Emma about her summer plan.</p>`,
-          text: "Hi Emma! We’ve got the tickets! In August we {*are|is|am} going to visit the Carpathians. My brother {*is|are} going to take his bike. I’m {*not|no} going to take my tablet. We’re going to {*walk|walks|walking} in the mountains.",
+          text: "Hi Emma! We’ve got the tickets! In August we {*are|is|am} going to visit the Carpathians. My dad {*is|are} going to take his bike. I’m {*not|no} going to take my tablet. We’re going to {*walk|walks|walking} in the mountains.",
           hint: "We – are, he – is. After going to: a verb without -s.",
           fbOk: "Well done!",
           fbBad: "Look at the going to list again.",
-          fbText: "We <b>are</b> going to. My brother (he) <b>is</b> going to. I’m <b>not</b> going to. Going to <b>walk</b>."
+          fbText: "We <b>are</b> going to. My dad (he) <b>is</b> going to. I’m <b>not</b> going to. Going to <b>walk</b>."
         }
       ],
       outro: {
@@ -439,7 +439,7 @@ SLID.section("eng", {
       title: "Are you going to travel this summer? Questions",
       short: "Questions",
       icon: "voice",
-      status: "draft",
+      status: "verified",
       why: "Ask your friends about their plans. Answer their questions.",
       screens: [
         {
@@ -580,7 +580,7 @@ SLID.section("eng", {
       title: "We visited Lviv: the Past Simple",
       short: "The Past Simple",
       icon: "book",
-      status: "draft",
+      status: "verified",
       why: "Tell your friends about your last trip.",
       screens: [
         {
@@ -610,14 +610,14 @@ SLID.section("eng", {
         {
           type: "info",
           title: "The Past Simple: -ed",
-          body: `<p>Yesterday, last week, last summer → <b>-ed</b>.</p><ul><li>visit → visit<b>ed</b>, walk → walk<b>ed</b></li><li>stay → stay<b>ed</b>, play → play<b>ed</b></li><li>love → love<b>d</b>, like → like<b>d</b> (<i>e</i> at the end: add <b>d</b>)</li></ul><p>It’s the same for I, he, she, we and they: She visit<b>ed</b>. They visit<b>ed</b>.</p><p>This is the <b>Past Simple</b>.</p>`,
+          body: `<p>Yesterday, last week, last summer → <b>-ed</b>.</p><ul><li>visit → visit<b>ed</b>, walk → walk<b>ed</b></li><li>stay → stay<b>ed</b>, play → play<b>ed</b></li><li>love → love<b>d</b>, like → like<b>d</b> (<i>e</i> at the end: add <b>d</b>)</li></ul><p>I, he, she, we, they: the same. She visit<b>ed</b>. They visit<b>ed</b>.</p><p>This is the <b>Past Simple</b>.</p>`,
           cta: "Next"
         },
         {
           type: "gaps",
           sk: "gram",
           title: "Fill in the gaps.",
-          body: `<p>Sofiia writes about her trip.</p>`,
+          body: `<p>Daryna writes about her trip.</p>`,
           text: "Last summer we {*visited|visit|visitted} Kyiv. We {*stayed|staied} in a small hotel. I {*liked|likeed} the big park.",
           hint: "Last summer: add -ed. Like ends in e: add d.",
           fbOk: "Exactly.",
@@ -664,7 +664,7 @@ SLID.section("eng", {
           sk: "write",
           title: "Write the missing word.",
           body: `<p>stop → ?</p>`,
-          before: "The bus",
+          before: "Last week our bus",
           after: "near the old town.",
           answer: "stopped",
           hint: "Look at the list: stop → …",
@@ -676,7 +676,7 @@ SLID.section("eng", {
           type: "pick",
           sk: "write",
           title: "Find the mistake.",
-          body: `<p>One word in Sofiia’s message is wrong.</p>`,
+          body: `<p>One word in Daryna’s message is wrong.</p>`,
           text: "Last week we travelled to Odesa. We [stoped] near the sea and visited a museum.",
           hint: "Check the spelling of each verb.",
           fbOk: "Good eye!",
@@ -712,7 +712,7 @@ SLID.section("eng", {
       title: "My travel diary",
       short: "Travel diary",
       icon: "scroll",
-      status: "draft",
+      status: "verified",
       why: "Read a travel diary. Write about your trip and your plans.",
       screens: [
         {
@@ -784,7 +784,7 @@ SLID.section("eng", {
           type: "order",
           sk: "write",
           title: "Put the sentences in order.",
-          body: `<p>Sofiia writes in her travel diary.</p>`,
+          body: `<p>Daryna writes in her travel diary.</p>`,
           items: [
             "Day 1. We’re at the seaside in Odesa.",
             "We travelled here by train.",
@@ -803,13 +803,13 @@ SLID.section("eng", {
           sk: "write",
           title: "Write the missing word.",
           body: `<p>climb → ?</p>`,
-          before: "Day 3. Today we",
-          after: "Hoverla!",
+          before: "Day 3. This morning we",
+          after: "Hoverla! It was hard.",
           answer: "climbed",
           hint: "It’s in the past: climb + -ed.",
           fbOk: "Yes!",
-          fbBad: "Today they did it. Use the Past Simple.",
-          fbText: "climb → <b>climbed</b>: Today we <b>climbed</b> Hoverla!"
+          fbBad: "They did it this morning. Use the Past Simple.",
+          fbText: "climb → <b>climbed</b>: This morning we <b>climbed</b> Hoverla!"
         },
         {
           type: "build",
@@ -853,7 +853,7 @@ SLID.section("eng", {
       title: "Emma’s trip to Ukraine",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e5s9boss",
       why: "Check everything from this section. Your points are doubled.",
@@ -883,7 +883,7 @@ SLID.section("eng", {
           sk: "vocab",
           eyebrow: "Task 2",
           title: "Choose the correct answer.",
-          body: `<p>Tom loves swimming and playing on the beach. Which place is the best for him?</p>`,
+          body: `<p>Emma loves swimming and playing on the beach. Which place is the best for her?</p>`,
           opts: [
             "the Carpathians, in the mountains",
             "Odesa, at the seaside",
@@ -894,22 +894,22 @@ SLID.section("eng", {
           hint: "Where can you swim in the sea?",
           fbOk: "Right.",
           fbBad: "Where is the beach?",
-          fbText: "Odesa is on the Black Sea. Tom can swim <b>at the seaside</b>."
+          fbText: "Odesa is on the Black Sea. Emma can swim <b>at the seaside</b>."
         },
         {
           type: "word",
           sk: "gram",
           eyebrow: "Task 3",
           title: "Write the missing word.",
-          body: `<p>Tom’s plan: <i>swim in the sea every day</i>.</p>`,
-          before: "Tom",
+          body: `<p>Emma’s plan: <i>swim in the sea every day</i>.</p>`,
+          before: "Emma",
           after: "going to swim in the sea every day.",
           answer: "is",
           pre: "e5s9l3",
-          hint: "Tom = he. He … going to.",
+          hint: "Emma = she. She … going to.",
           fbOk: "Well done!",
-          fbBad: "He: am, is or are?",
-          fbText: "Tom (he) <b>is</b> going to swim in the sea."
+          fbBad: "She: am, is or are?",
+          fbText: "Emma (she) <b>is</b> going to swim in the sea."
         },
         {
           type: "choice",
@@ -948,7 +948,7 @@ SLID.section("eng", {
           eyebrow: "Task 6",
           title: "Write the missing word.",
           body: `<p>study → ?</p>`,
-          before: "In the evening I",
+          before: "Yesterday I",
           after: "new Ukrainian words.",
           answer: "studied",
           pre: "e5s9l5",

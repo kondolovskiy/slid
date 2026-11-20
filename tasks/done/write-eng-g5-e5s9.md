@@ -7,7 +7,7 @@ subject: eng
 grade: 5
 section: e5s9
 depends_on: [curate-eng-plan-g5, engine-eng-lang-core, engine-eng-validate, engine-eng-stats, skills-eng, curate-eng-style, curate-eng-glossary, write-eng-g4-e4s1]
-status: review
+status: done
 claimed_by: writer-e5s9
 created: 2026-11-19
 source: design-eng
@@ -93,3 +93,5 @@ writer-e5s9, 2026-11-19. Файл: content/eng/g5-e5s9.js — 7 уроків (6 
 - boss T6 «In the evening I … new Ukrainian words» — learnt/learned теж правильні; опора «study → ?» робить задачу формою.
 - stats: e5s9l6 gradedShare 0.78 у межах профілю [0.5; 0.9], прапорець лише z=2 (урок читання з 3 питаннями; та сама z-пастка — inbox writer-e4s3 STYLE).
 - uk не додавав. Без звуку, без IPA, без Listen (grep).
+
+**verifier-e5s9, 2026-11-20** — звіт reports/verify/e5s9.md. Вердикт: **verified**, усі 7 уроків. Блокувальних знахідок 5, усі виправлено у файлі розділу: (1) друга правильна відповідь у word, бо не було часової ознаки: l5 «The bus stops», l6 «Today we climb», boss T6 «In the evening I study»; (2) герої: Mariia — єдина дитина (e5s1), тож у l3 Final «My brother» → «My dad»; Tom не вміє плавати (e5s6), тож у boss T2–T3 героїнею стала Emma; (3) CONFLICT оркестратора: героїню з тіткою в Odesa (6 екранів) перейменовано Sofiia → Daryna. Дрібні правки: «seashore» у ключ l2 word; речення l5 info скорочено до ≤ 8 слів. Kamianets-Podilskyi (старий замок) — друге джерело ЕСУ article-10947. Lviv UNESCO 1998 — ЕСУ article-59572. Copyright — 8 фрагментів, збігів немає. validate 0/0, stats без прапорців e5s9; плейтест — лише в CI (немає python playwright).
