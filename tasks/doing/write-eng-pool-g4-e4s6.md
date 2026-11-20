@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-20T10:59:41.150Z
 id: write-eng-pool-g4-e4s6
 type: write-pool
 subject: eng
@@ -6,7 +8,7 @@ grade: 4
 section: e4s6
 depends_on: [write-eng-g4-e4s6, engine-eng-diag-pool, engine-eng-tools]
 status: todo
-claimed_by: 
+claimed_by: writer-pe4s6
 created: 2026-11-19
 source: design-eng
 ---
