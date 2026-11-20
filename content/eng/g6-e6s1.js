@@ -927,7 +927,7 @@ SLID.section("eng", {
           body: `<p>Ms Kravets writes about the photos. Emma is a little tired, but not very.</p>`,
           text: "Emma {*looks|looks like} {*quite|very} tired. Mariia looks really {*happy|happily}.",
           pre: "e6s1l5",
-          hint: "Look + an adjective (tired, happy): no like, no -ly.",
+          hint: "Tired, happy: a person or a feeling? And how tired is Emma?",
           fbOk: "Well done!",
           fbBad: "Look + tired. Quite = a little, but not very.",
           fbText: "Emma <b>looks quite tired</b>: a little, but not very. Mariia looks really <b>happy</b>, without -ly."

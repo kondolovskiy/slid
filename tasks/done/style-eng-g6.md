@@ -6,7 +6,7 @@ type: style
 subject: eng
 grade: 6
 depends_on: [write-eng-g6-e6s1, write-eng-g6-e6s2, write-eng-g6-e6s3, write-eng-g6-e6s4, write-eng-g6-e6s5, write-eng-g6-e6s6, write-eng-g6-e6s7, write-eng-g6-e6s8]
-status: review
+status: done
 claimed_by: style-eng-g6
 created: 2026-11-20
 source: orchestrator
@@ -35,3 +35,7 @@ source: orchestrator
 - validate --section e6s1…e6s8 — 0 помилок, 0 попереджень; повний validate — 0 помилок; stats — reports/style-eng.md (не комічу).
 - Пропозиція профілю: «5-6».readWordsPerScreen 5–40 → 5–45 (решта без змін); ENGINE — z-оцінка в межах класу. Рядки STYLE/NOTE/TERM — у відповіді оркестратору.
 - Повторна верифікація (точково): reports/style/eng-g6.md §9.
+
+## Верифікація (verifier-style-eng-g6, 2026-11-20)
+- Звіт: reports/verify/style-eng-g6.md — **прийнято**. Diff 898b947 = заявлене; ключі не змінено, другої відповіді немає (e6s3l7 T4, e6s5 часові маркери), Oliver узгоджено з e6s4l2.
+- Правка (1): e6s1l7 Task 5 `hint` видавав відповідь («no like, no -ly») → навідне питання. validate e6s1…e6s8 — 0/0. Плейтест — у CI.
