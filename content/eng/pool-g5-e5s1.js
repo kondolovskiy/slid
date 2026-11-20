@@ -8,8 +8,8 @@
    Контракт — docs/CONTENT_SCHEMA.md §10 «Пули мовних предметів».
    Перевірка: node tools/validate.mjs --pool pe5s1 && node tools/personalization-qa.mjs --pool pe5s1 --strict */
 SLID.pool("eng", {
-  id: "pe5s1", section: "e5s1", status: "draft",
-  meta: { author: "writer-pe5s1", created: "2026-11-20", factcheck: "self", teacher: null },
+  id: "pe5s1", section: "e5s1", status: "verified",
+  meta: { author: "writer-pe5s1", created: "2026-11-20", factcheck: "verifier-pe5s1 (reports/verify/pe5s1.md)", teacher: null },
   sources: [
     { id: "mpim", short: "МП-ІМ", program: true,
       title: "Модельна навчальна програма «Іноземна мова. 5–9 класи» (Редько В. Г., Шаленко О. П., Сотникова С. І. та ін.), наказ МОН від 12.07.2021 № 795",
@@ -175,9 +175,9 @@ SLID.pool("eng", {
     { id: "a26", lesson: "e5s1l3", lvl: 3, sk: "gram", src: "mpim с. 22",
       type: "gaps", title: "Complete the sentences.",
       body: "<p>Mariia writes to Emma about a photo.</p>",
-      text: "This is {*my|me} dad. {*His|Her} job is to keep people safe. Mum and Dad like {*their|our} jobs. What do {*your|you} parents do?",
+      text: "This is {*my|me} dad. {*His|Her} car is black. Mum and Dad like {*their|our} jobs. Have {*your|you} parents got a car?",
       hint: "Dad is he. Mum and Dad = they.",
-      steps: ["<b>My</b> dad. Dad is he: <b>his</b> job.", "Mum and Dad are they: <b>their</b> jobs.", "Mariia asks Emma: <b>your</b> parents."] },
+      steps: ["<b>My</b> dad. Dad is he: <b>his</b> car.", "Mum and Dad are they: <b>their</b> jobs.", "Mariia asks Emma: <b>your</b> parents."] },
 
     /* ───────────── e5s1l4 · This, that, these, those ───────────── */
     { id: "a27", lesson: "e5s1l4", lvl: 1, sk: "gram", src: "mpim с. 21",
@@ -207,10 +207,10 @@ SLID.pool("eng", {
       steps: ["Two people, not near: <b>those</b>.", "<b>Are those your parents?</b>"] },
     { id: "a31", lesson: "e5s1l4", lvl: 3, sk: "gram", src: "mpim с. 21",
       type: "pick", title: "Find the mistake.",
-      body: "<p>Halyna is at the window. Two horses and a cow are in the field. They are far away. One word is wrong.</p>",
-      text: "Look! [That] horses are very big. That cow is black and white.",
-      hint: "Horses: one or two? Cow: one or two?",
-      steps: ["Two horses, far away: <b>those</b> horses.", "One cow, far away: <b>that</b> cow. That is correct."] },
+      body: "<p>Halyna is at the window. Two horses and a dog are in the field. They are far away. One word is wrong.</p>",
+      text: "Look! [That] horses are very big. That dog is black and white.",
+      hint: "Horses: one or two? Dog: one or two?",
+      steps: ["Two horses, far away: <b>those</b> horses.", "One dog, far away: <b>that</b> dog. That is correct."] },
     { id: "a32", lesson: "e5s1l4", lvl: 3, sk: "gram", src: "mpim с. 21",
       type: "word", title: "Write the missing word.",
       body: "<p>Oksana has got two new books in her hands. Write this, that, these or those.</p>",

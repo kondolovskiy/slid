@@ -7,7 +7,7 @@ subject: eng
 grade: 5
 section: e5s1
 depends_on: [write-eng-g5-e5s1, engine-eng-diag-pool, engine-eng-tools]
-status: review
+status: done
 claimed_by: writer-pe5s1
 created: 2026-11-19
 source: design-eng
@@ -60,3 +60,7 @@ source: design-eng
 2. a32 — Engine: «those» на ключ «these» дає «Almost: check the spelling.» (відомий ENGINE verifier-e5s1, engine-eng-rule-tables п. 2).
 3. a47 stress змішує l5 з husband, daughter з l1 (підкреслені в l1 того ж розділу).
 4. a33 match: «A dentist» ↔ «looks after sick people» не вважаю правильним (визначення уроку l5 #4 розводять nurse/dentist).
+
+## Нотатки верифікатора (verifier-pe5s1, 2026-11-20)
+**Вердикт: verified** — reports/verify/pe5s1.md. 57 вправ розв'язано; build — усі підмножини tiles ∪ extra через SLID_LANG.check (лише ключі); word — wordVerdict; stress — CD + OALD (один наголос); src — МП-ІМ с. 20–22 (PDF SHA-1 43925b25…, перевірено). Спірні 1–4 — прийнято як є.
+Правки: a26 (лексика l5 в уроці l3 → «His car is black… Have your parents got a car?»), a31 (cow, якого немає в уроках → dog); status → verified. validate --pool pe5s1 — 0/0. test-answer-ui не запускався (немає Python playwright) — CI.
