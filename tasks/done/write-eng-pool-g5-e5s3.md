@@ -7,7 +7,7 @@ subject: eng
 grade: 5
 section: e5s3
 depends_on: [write-eng-g5-e5s3, engine-eng-diag-pool, engine-eng-tools]
-status: review
+status: done
 claimed_by: writer-pe5s3
 created: 2026-11-19
 source: design-eng
@@ -52,3 +52,7 @@ source: design-eng
 3. a01/a04 — ключ «dinner in the evening» за l1 info (спрощення, reports/verify/e5s3.md §6 п. 3); варіантом поруч — лише morning/breakfast.
 4. a12 — `keepCase` не приймає «Breakfast is my favourite meal.» (граматичне); відсічено вказівкою «Start with My.» у body.
 5. a39 — «Would you like {*some|a} rice?»: rice [U] чисте за CD.
+
+## Нотатки верифікатора (verifier-pe5s3, 2026-11-20)
+**Вердикт: verified**, звіт reports/verify/pe5s3.md. Усі 52 вправи розв'язано самостійно. Усі 12 `build` перебрано через SLID_LANG.check: кожен граматичний порядок є в `answer`. Ключі `word` без кінцевого знака. Наголос 5 слів збігається в CD і OALD (curl). Факти (borscht, porridge, chips, varenyky) мають по 2 відкриті джерела. Сторінки МП-ІМ 16, 20–22 звірено з PDF. 8 фрагментів ≥ 12 слів перевірено WebSearch: збігів немає. Лексика не виходить за уроки. Покриття урок × sk ≥ 3 з рівнями 1–3.
+Правка одна: a48 `hint` («texts and the poster»: дві половини є лише в тексті l6 ч. 2). Спірні 1–5 приймаю. TQ немає. Плейтест і test-answer-ui — після build.

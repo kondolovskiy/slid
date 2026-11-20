@@ -1,5 +1,5 @@
 /* Слід · Англійська мова, 5 клас — пул вправ для тренування до розділу «Food and drink» (e5s3)
-   Статус: draft (автор writer-pe5s3, 2026-11-20). 52 вправи: уроки e5s3l1–e5s3l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e5s3l7 без вправ.
+   Статус: verified (verifier-pe5s3, reports/verify/pe5s3.md; автор writer-pe5s3, 2026-11-20). 52 вправи: уроки e5s3l1–e5s3l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e5s3l7 без вправ.
    Вправи власні (docs/design/english.md §8): лише слова, форми й правила уроків e5s3 і 4 кл.; англійською, британська норма (D-054).
    Джерело — програма класу (program: true): МП-ІМ, тема «Харчування», функції «запитувати та надавати інформацію»,
    «пропонувати, приймати, відхиляти пропозицію» (с. 20); some / any, much, many, a lot of (с. 21); uncountables, would like (с. 22);
@@ -12,8 +12,8 @@
 SLID.pool("eng", {
   id: "pe5s3",
   section: "e5s3",
-  status: "draft",
-  meta: { author: "writer-pe5s3", created: "2026-11-20", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "writer-pe5s3", created: "2026-11-20", factcheck: "verifier-pe5s3 (reports/verify/pe5s3.md)", teacher: null },
   sources: [
     { id: "mpim", program: true, title: "Модельна навчальна програма «Іноземна мова. 5–9 класи» (Редько В. Г., Шаленко О. П., Сотникова С. І. та ін.), наказ МОН від 12.07.2021 № 795 (с. 16, 20–22)", url: "https://osvita.ua/doc/files/news/831/83117/Inoz_mov_5-9-kl_Redko_ta_in_14_07.pdf" }
   ],
@@ -335,7 +335,7 @@ SLID.pool("eng", {
       type: "match", title: "Match the halves.",
       left: ["Borscht is", "Varenyky have", "Porridge is", "Chips are"],
       right: ["a soup with beetroot.", "potato or cheese inside.", "a hot breakfast.", "long, thin pieces of potato."],
-      hint: "Remember the poster: Ukraine and the UK.",
+      hint: "Remember the texts and the poster: Ukraine and the UK.",
       steps: ["Ukraine: borscht – <b>a soup with beetroot</b>; varenyky – <b>potato or cheese inside</b>.", "The UK: porridge – <b>a hot breakfast</b>; chips – <b>long, thin pieces of potato</b>."] },
     { id: "a49", lesson: "e5s3l6", lvl: 3, sk: "cult", src: "mpim с. 20",
       type: "word", title: "Write the word.",
