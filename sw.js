@@ -4,7 +4,7 @@
    чого в кеші цієї версії немає. Нова версія: встановлення (кожен файл перевіряється на сервері, cache: "no-cache") → skipWaiting →
    activate (старі кеші видаляються) → clients.claim → сторінка отримує controllerchange й перезавантажується,
    коли це безпечно (app/update.js: не посеред уроку чи тесту рівня). Google Fonts — з кешу з фоновим оновленням. */
-const VERSION = "27c4acfa8e";
+const VERSION = "de91a35ba1";
 const CACHE = "slid-" + VERSION;
 const FONTS = "slid-fonts";
 const ASSETS = [
@@ -19,6 +19,8 @@ const ASSETS = [
   "./content/subjects/ukr.js",
   "./content/subjects/world.js",
   "./content/eng/plan.js",
+  "./content/eng/diag-g4.js",
+  "./content/eng/diag-g5.js",
   "./content/eng/g4-e4s1.js",
   "./content/eng/g4-e4s2.js",
   "./content/eng/g4-e4s3.js",
@@ -45,6 +47,24 @@ const ASSETS = [
   "./content/eng/g6-e6s6.js",
   "./content/eng/g6-e6s7.js",
   "./content/eng/g6-e6s8.js",
+  "./content/eng/pool-g4-e4s1.js",
+  "./content/eng/pool-g4-e4s2.js",
+  "./content/eng/pool-g4-e4s3.js",
+  "./content/eng/pool-g4-e4s4.js",
+  "./content/eng/pool-g4-e4s5.js",
+  "./content/eng/pool-g4-e4s6.js",
+  "./content/eng/pool-g4-e4s7.js",
+  "./content/eng/pool-g4-e4s8.js",
+  "./content/eng/pool-g5-e5s1.js",
+  "./content/eng/pool-g5-e5s10.js",
+  "./content/eng/pool-g5-e5s2.js",
+  "./content/eng/pool-g5-e5s3.js",
+  "./content/eng/pool-g5-e5s4.js",
+  "./content/eng/pool-g5-e5s5.js",
+  "./content/eng/pool-g5-e5s6.js",
+  "./content/eng/pool-g5-e5s7.js",
+  "./content/eng/pool-g5-e5s8.js",
+  "./content/eng/pool-g5-e5s9.js",
   "./content/hist/plan.js",
   "./content/hist/diag-g10.js",
   "./content/hist/diag-g11.js",

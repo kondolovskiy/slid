@@ -136,7 +136,7 @@
 | e6s1l4 What is she like? Kind, friendly, shy | 6 | 10 | 0.7 | 25 | 51 | 47 | 5.2 | 0.092 | 6 | — |
 | e6s1l5 He looks happy! Very, quite, really | 6 | 11 | 0.55 | 31 | 60 | 49 | 5 | 0.029 | 6 | — |
 | e6s1l6 She looks like her mum, but she’s like her dad | 6 | 9 | 0.78 | 34 | 46 | 41 | 5.5 | 0.023 | 5 | — |
-| e6s1l7 People from the English club (фінал) | 6 | 7 | 0.86 | 23 | 32 | 25 | 5.3 | 0.046 | 3 | — |
+| e6s1l7 People from the English club (фінал) | 6 | 7 | 0.86 | 23 | 32 | 25 | 5.3 | 0.043 | 3 | — |
 | e6s2l1 At the chemist’s, at the newsagent’s: types of shops | 6 | 9 | 0.67 | 30 | 61 | 56 | 5.5 | 0.13 | 6 | longWordShare нетипово для сім'ї (z=2.1) |
 | e6s2l2 Why do you go there? To buy some bread | 6 | 9 | 0.67 | 37 | 60 | 57 | 6.1 | 0.09 | 6 | — |
 | e6s2l3 A few, both, all, no: a shopping list | 6 | 10 | 0.6 | 33 | 65 | 61 | 5.7 | 0.041 | 5 | — |
