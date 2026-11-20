@@ -7,7 +7,7 @@ subject: eng
 grade: 5
 section: e5s3
 depends_on: [curate-eng-plan-g5, engine-eng-lang-core, engine-eng-validate, engine-eng-stats, skills-eng, curate-eng-style, curate-eng-glossary, write-eng-g4-e4s1]
-status: review
+status: done
 claimed_by: writer-e5s3
 created: 2026-11-19
 source: design-eng
@@ -94,3 +94,8 @@ writer-e5s3, 2026-11-19. Файл: content/eng/g5-e5s3.js (status draft, factche
 5. Рецепт (l6) — власний, мінімальний (flour, eggs, milk), з «Ask an adult to help you!».
 
 **Перевірки:** `node tools/validate.mjs --section e5s3` — 0 помилок, 0 попереджень. `node tools/stats.mjs --subject eng` — див. п. 3. Build не запускав.
+
+## Нотатки верифікатора
+verifier-e5s3, 2026-11-20. Звіт: reports/verify/e5s3.md. **Вердикт: verified** (7 уроків). Факти (borscht, varenyky, fish and chips, porridge, Pancake Day) — по 2+ відкриті джерела (CD, OALD, en.wikipedia, Wiktionary, UNESCO через WebSearch); програма — МП-ІМ с. 16, 20–22 (PDF завантажено заново). Збігів з опублікованими текстами немає (8 запитів).
+Правки (мої, мінімальні): 1) boss T1 — BrE *dinner* опівдні (CD, OALD) давав другу правильну відповідь → ранок, ключ breakfast; 2) l3 build — додано порядок «Haven’t we got any eggs?»; 3) l6 — після ч. 3 вставлено info «Taras and Emma’s poster», щоб match і word не питали деталей з попередніх екранів (style/eng.md «Питання до тексту»; спірне 1 автора); 4) Dmytro → Ostap (Dmytro — брат Оксани в e4s1–e4s7); 5) l4 Final «after the picnic» → «at the picnic»; 6) статуси verified, factcheck.
+validate --section e5s3: 0 помилок, 0 попереджень; stats — без «поза профілем». Плейтест не запускався (немає в manifest до build; немає Python playwright). TQ не додавав. borscht у тексті + borshch/borsch у ключі — приймаю (TERM для куратора — у відповіді оркестратору).

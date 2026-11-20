@@ -7,7 +7,7 @@
    Увесь зміст — англійською, британська норма (D-054). Тексти, діалоги, рецепт і герої — власні (docs/design/english.md §8).
    Форми, злічуваність і факти — за Cambridge Dictionary і OALD (URL — tasks/…/write-eng-g5-e5s3.md, «Нотатки агента»).
    borscht — за CD і OALD (і назвою елемента ЮНЕСКО 2022); у ключі `word` — ще borshch (КМУ № 55) і borsch (OALD: British English also).
-   Статус: draft. 7 уроків (6 + фінал).
+   Статус: verified (verifier-e5s3, reports/verify/e5s3.md). 7 уроків (6 + фінал).
    Перевірка: node tools/validate.mjs --section e5s3 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -16,7 +16,7 @@ SLID.section("eng", {
   weeks: [9, 12],
   title: "Food and drink",
   why: "To talk about the food you like. And to offer food to a friend and say “Yes, please” or “No, thank you”.",
-  meta: { author: "writer-e5s3", created: "2026-11-19", factcheck: "self", teacher: null },
+  meta: { author: "writer-e5s3", created: "2026-11-19", factcheck: "verifier-e5s3 (reports/verify/e5s3.md)", teacher: null },
   requires: ["e4s4l3", "e4s4l5", "e4s2l5", "e4s8l1"],
   badges: [
     { id: "e5s3boss", name: "Food fair star", icon: "trophy", desc: "Finish the final lesson “Food and drink”" }
@@ -28,7 +28,7 @@ SLID.section("eng", {
       title: "Food and drink: my favourite meals",
       short: "Meals",
       icon: "pot",
-      status: "draft",
+      status: "verified",
       why: "What do you have for breakfast? Talk about your meals and your favourite food.",
       screens: [
         {
@@ -180,7 +180,7 @@ SLID.section("eng", {
       title: "An apple or some bread? Countable and uncountable",
       short: "Count it",
       icon: "scale",
-      status: "draft",
+      status: "verified",
       why: "Can you count it? Learn when to say a, an or some.",
       screens: [
         {
@@ -324,7 +324,7 @@ SLID.section("eng", {
       title: "Is there any milk? Some and any",
       short: "Some, any",
       icon: "eye",
-      status: "draft",
+      status: "verified",
       why: "Check the kitchen before you cook. Ask: Is there any milk?",
       screens: [
         {
@@ -418,7 +418,7 @@ SLID.section("eng", {
           title: "Put the words in order.",
           body: `<p>Dad looks in the fridge. There are no eggs.</p>`,
           tiles: ["we", "haven’t", "got", "any", "eggs"],
-          answer: "We haven’t got any eggs.",
+          answer: ["We haven’t got any eggs.", "Haven’t we got any eggs?"],
           extra: ["some"],
           hint: "Start with We. It’s a (−) sentence.",
           fbOk: "Good eye!",
@@ -453,7 +453,7 @@ SLID.section("eng", {
       title: "How much? How many? A lot of",
       short: "A lot of",
       icon: "chart",
-      status: "draft",
+      status: "verified",
       why: "Ask about food for a picnic: how much, how many? Answer: a lot of, not much, not many.",
       screens: [
         {
@@ -555,7 +555,7 @@ SLID.section("eng", {
           sk: "write",
           eyebrow: "Final",
           title: "Complete the sentences.",
-          body: `<p>Mariia writes to Taras after the picnic.</p>`,
+          body: `<p>Mariia writes to Taras at the picnic.</p>`,
           text: "Hi Taras! Our picnic is great. We’ve got {*a lot of|much} sandwiches. But there isn’t {*much|many} bread now, and there aren’t {*many|much} apples. How {*much|many} water have you got at your picnic? Love, Mariia",
           hint: "(+) a lot of. (−) and (?): can you count it?",
           fbOk: "Well done!",
@@ -579,14 +579,14 @@ SLID.section("eng", {
       title: "Would you like some juice? Offers",
       short: "Offers",
       icon: "users",
-      status: "draft",
+      status: "verified",
       why: "Offer food to a friend. Say “Yes, please” or “No, thank you”.",
       screens: [
         {
           type: "intro",
           eyebrow: "Lesson 5",
           title: "Would you like some juice?",
-          body: `<p class="lead">Dmytro visits Taras in Lviv. Taras’s mum is in the kitchen.</p><p><b>Mum:</b> Would you like some juice, Dmytro?<br><b>Dmytro:</b> Yes, please!<br><b>Mum:</b> Would you like a sandwich?<br><b>Dmytro:</b> No, thank you. I’m not hungry.</p><p>How does Mum offer food? How does Dmytro answer?</p>`,
+          body: `<p class="lead">Ostap visits his friend Taras at home in Lviv. Taras’s mum is in the kitchen.</p><p><b>Mum:</b> Would you like some juice, Ostap?<br><b>Ostap:</b> Yes, please!<br><b>Mum:</b> Would you like a sandwich?<br><b>Ostap:</b> No, thank you. I’m not hungry.</p><p>How does Mum offer food? How does Ostap answer?</p>`,
           cta: "Let’s see"
         },
         {
@@ -595,7 +595,7 @@ SLID.section("eng", {
           eyebrow: "Guess!",
           title: "What do you think?",
           hyp: true,
-          body: `<p>Mum offers tea to Dmytro. What does she say?</p>`,
+          body: `<p>Mum offers tea to Ostap. What does she say?</p>`,
           opts: [
             "Do you like some tea?",
             "Would you like some tea?",
@@ -616,7 +616,7 @@ SLID.section("eng", {
           type: "choice",
           sk: "func",
           title: "Choose the correct answer.",
-          body: `<p>Dmytro is hungry. Taras’s mum has got sandwiches. What does she say?</p>`,
+          body: `<p>Ostap is hungry. Taras’s mum has got sandwiches. What does she say?</p>`,
           opts: [
             "Would you like a sandwich?",
             "Do you like a sandwich?",
@@ -631,8 +631,8 @@ SLID.section("eng", {
           type: "gaps",
           sk: "func",
           title: "Fill in the gaps.",
-          body: `<p>Taras’s mum offers food to Dmytro.</p>`,
-          text: "Mum: Would you like {*some|a} bread? Dmytro: Yes, {*please|I do}. Mum: Would you like {*a|some} sandwich too? Dmytro: No, {*thank you|I don’t}. I’m not hungry now.",
+          body: `<p>Taras’s mum offers food to Ostap.</p>`,
+          text: "Mum: Would you like {*some|a} bread? Ostap: Yes, {*please|I do}. Mum: Would you like {*a|some} sandwich too? Ostap: No, {*thank you|I don’t}. I’m not hungry now.",
           hint: "Look at the answers on the screen: Yes, please. / No, thank you.",
           fbOk: "Exactly.",
           fbBad: "Look at the screen with offers again.",
@@ -662,7 +662,7 @@ SLID.section("eng", {
           type: "word",
           sk: "gram",
           title: "Write the missing word.",
-          body: `<p>Dmytro is at Taras’s home. Mum offers a biscuit.</p>`,
+          body: `<p>Ostap is at Taras’s home. Mum offers a biscuit.</p>`,
           before: "Mum:",
           after: "you like a biscuit?",
           answer: "would",
@@ -675,7 +675,7 @@ SLID.section("eng", {
           type: "build",
           sk: "write",
           title: "Put the words in order.",
-          body: `<p>Taras offers tea to Dmytro.</p>`,
+          body: `<p>Taras offers tea to Ostap.</p>`,
           tiles: ["Would", "you", "like", "some", "tea"],
           answer: "Would you like some tea?",
           extra: ["likes"],
@@ -714,7 +714,7 @@ SLID.section("eng", {
       title: "Dishes from Ukraine and the UK",
       short: "Dishes",
       icon: "globe",
-      status: "draft",
+      status: "verified",
       why: "Read about famous dishes from Ukraine and the UK. And read a simple recipe.",
       screens: [
         {
@@ -799,6 +799,12 @@ SLID.section("eng", {
           fbText: "Emma needs <b>flour</b>, <b>eggs</b> and <b>milk</b>. There is no fish or rice in the recipe."
         },
         {
+          type: "info",
+          title: "Taras and Emma’s poster",
+          body: `<p><b>Ukraine</b></p><ul><li><b>borscht</b> → a soup with beetroot</li><li><b>varenyky</b> → potato or cheese inside</li></ul><p><b>The UK</b></p><ul><li><b>fish and chips</b> → a popular dish</li><li><b>porridge</b> → oats and milk or water</li><li><b>Pancake Day</b> → pancakes</li></ul>`,
+          cta: "Next"
+        },
+        {
           type: "match",
           sk: "cult",
           title: "Match the halves.",
@@ -814,7 +820,7 @@ SLID.section("eng", {
             "oats and milk or water.",
             "pancakes."
           ],
-          hint: "Look at the text again: Ukraine, the UK, Pancake Day.",
+          hint: "Look at the poster again: Ukraine, the UK, Pancake Day.",
           fbOk: "Yes!",
           fbText: "Borscht is a soup with <b>beetroot</b>. Inside varenyky, there is <b>potato or cheese</b>. Porridge: <b>oats and milk or water</b>. On Pancake Day, people make <b>pancakes</b>."
         },
@@ -825,9 +831,9 @@ SLID.section("eng", {
           body: `<p>It’s a famous Ukrainian soup with beetroot.</p>`,
           before: "It’s",
           answer: ["borscht", "borshch", "borsch"],
-          hint: "Look at part 1 of the text.",
+          hint: "Look at the poster: Ukraine.",
           fbOk: "Well done!",
-          fbBad: "Look at part 1 of the text again.",
+          fbBad: "Look at the poster again.",
           fbText: "<b>Borscht</b> is a famous Ukrainian soup with beetroot."
         },
         {
@@ -859,7 +865,7 @@ SLID.section("eng", {
       title: "Food fair",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e5s3boss",
       why: "Check everything from this section. Your points are doubled.",
@@ -876,17 +882,17 @@ SLID.section("eng", {
           sk: "vocab",
           eyebrow: "Task 1",
           title: "Choose the correct answer.",
-          body: `<p>The fair starts at one o’clock. The pupils eat soup there. Which meal is it?</p>`,
+          body: `<p>The fair starts at nine o’clock in the morning. Before the fair, Taras has eggs and bread at home. Which meal is it?</p>`,
           opts: [
-            "breakfast",
+            "lunch",
             "dinner",
-            "lunch"
+            "breakfast"
           ],
           correct: 2,
           pre: "e5s3l1",
           fbOk: "Right.",
-          fbBad: "Which meal is in the middle of the day?",
-          fbText: "At one o’clock, in the middle of the day, we have <b>lunch</b>."
+          fbBad: "Which meal is in the morning?",
+          fbText: "In the morning, we have <b>breakfast</b>. Lunch is in the middle of the day. Dinner is in the evening."
         },
         {
           type: "gaps",
@@ -894,7 +900,7 @@ SLID.section("eng", {
           eyebrow: "Task 2",
           title: "Fill in the gaps.",
           body: `<p>Taras writes a list for the fair.</p>`,
-          text: "We need {*some|a} rice, {*a|some} sandwich for Dmytro and three {*bananas|banana}.",
+          text: "We need {*some|a} rice, {*a|some} sandwich for Ostap and three {*bananas|banana}.",
           pre: "e5s3l2",
           hint: "Can you count it?",
           fbOk: "Exactly.",
