@@ -463,3 +463,6 @@
 - 2026-11-20 · verifier-pe4s6 · PITFALL (eng, пул): `word` з відкритим питанням «What do we put in the bin?» допускає інші правильні слова — прив'язувати до формули уроку («Put ___ in the bin.»). Рамка вправи — теж лексика уроків (yesterday, was до e4s7 не вводились).
 - 2026-11-20 · verifier-pe4s6 · NOTE (герої eng): Dmytro (6) не в класі Oksana — у сценах «our class» з Dmytro писати «our school».
 - 2026-11-20 · verifier-pe4s6 · FACT (eng): Kyiv Jan high −0.8 / low −5.5 °C (en.wikipedia Kyiv); London Jan high 8.5 / low 5.0 °C (en.wikipedia Climate_of_London); London Jan mean 5.5 °C (uk.wikipedia Лондон) → «In winter, Kyiv is usually colder than London» ✅.
+- 2026-11-20 · verifier-pe4s7 · VERIFY: pe4s7 → verified, a21 + «America» у ключ, +15 вправ a45–a59 (phon stress, read), reports/verify/pe4s7.md; a12 інверсія «Up the hill walks Taras.» лишена (прецедент e4s7l2).
+- 2026-11-20 · verifier-pe4s7 · FACT (eng): America = the United States — CD america, OALD america. PITFALL: у `word` «the capital of ___» для США класти й «America».
+- 2026-11-20 · verifier-pe4s7 · PITFALL (eng, stress): transport у `stress` не брати (іменник ˈtræn.spɔːt / дієслово trænˈspɔːt); Canberra — три склади (Can|ber|ra).
