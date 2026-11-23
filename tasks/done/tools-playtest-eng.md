@@ -3,7 +3,7 @@ id: tools-playtest-eng
 type: tools
 subject: eng
 depends_on: []
-status: review
+status: done
 claimed_by: orchestrator
 created: 2026-11-23
 source: CI PR #25 (job browser, playtest.py)
