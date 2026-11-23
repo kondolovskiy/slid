@@ -111,7 +111,8 @@ async def lang_seen(pg, s):
     elif t == "stress":
         for k, w in enumerate(s["words"]):
             seen = "".join(await pg.locator(f'#stage .sword >> nth={k}').all_text_contents())
-            if seen != w.replace("+", ""): bad.append(f"слово {k+1}: на екрані «{seen}», очікувалось «{w.replace('+', '')}»")
+            want = w.replace("+", "").replace("|", "")   # склади («doc|tor», мови з targetLang) на екрані — суцільним словом
+            if seen != want: bad.append(f"слово {k+1}: на екрані «{seen}», очікувалось «{want}»")
     elif t == "split":
         w = (s["word"] if isinstance(s["word"], str) else s["word"][0]).replace("|", "")
         seen = "".join(await pg.locator("#stage .split .sl:not(.zero)").all_text_contents())
@@ -130,6 +131,9 @@ async def lang_seen(pg, s):
         if seen != list(s["left"]): bad.append(f"ліва колонка {seen} ≠ {s['left']}")
         ks = [int(k) for k in await pg.eval_on_selector_all("#mright .mr", "bs => bs.map(b => b.dataset.r)")]
         if sorted(ks) != list(range(len(s["right"]))) or ks == sorted(ks): bad.append(f"права колонка {ks} — не перестановка або в порядку розмітки (пари навпроти)")
+        if any(not isinstance(r, str) for r in s["right"]):   # картинки вантажаться асинхронно — чекаємо завершення, а не перевіряємо миттєво
+            try: await pg.wait_for_function("() => [...document.querySelectorAll('#mright img')].every(i => i.complete)", timeout=5000)
+            except Exception: pass
         for j in ks:
             r, el = s["right"][j], f'#mright .mr[data-r="{j}"]'
             if isinstance(r, str):
