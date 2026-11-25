@@ -15,7 +15,7 @@
    Листування вигадане: без адрес, телефонів і соцмереж; правило безпеки — не давати незнайомим адресу (МП-ІМ с. 30).
    Форми й рівні слів — CD / OALD (URL — tasks/…/write-eng-g8-e8s1.md, «Нотатки агента»).
    Увесь зміст — англійською, британська норма (D-055). Тексти, діалоги й герої — власні (docs/design/english.md §8).
-   Статус: draft. 7 уроків (6 + фінал).
+   Статус: verified (verifier-e8s1). 7 уроків (6 + фінал).
    Перевірка: node tools/validate.mjs --section e8s1 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -25,7 +25,7 @@ SLID.section("eng", {
   title: "Pen friends and letters",
   why: "To write to a pen friend and answer letters and emails. And to talk about what you have been doing.",
   requires: ["e6s7l4", "e5s2l3", "e5s8l6", "e4s8l6", "e7s1l2", "e7s1l3", "e7s1l4", "e7s1l5"],
-  meta: { author: "writer-e8s1", created: "2026-11-25", factcheck: null, teacher: null },
+  meta: { author: "writer-e8s1", created: "2026-11-25", factcheck: "verifier-e8s1 (reports/verify/write-eng-g8-e8s1.md)", teacher: null },
   badges: [
     { id: "e8s1boss", name: "Pen friend", icon: "trophy", desc: "Finish the final lesson “Our pen friend club”" }
   ],
@@ -36,7 +36,7 @@ SLID.section("eng", {
       title: "Looking for a pen friend: a profile",
       short: "Profiles",
       icon: "users",
-      status: "draft",
+      status: "verified",
       why: "A pen friend helps you practise English. Learn to read and write a short profile.",
       screens: [
         {
@@ -85,11 +85,11 @@ SLID.section("eng", {
           sk: "gram",
           title: "Fill in the gaps.",
           body: `<p>Mariia writes more questions to Zofia.</p>`,
-          text: "{*Do|Does} you draw every day? What {*do|does} you like to draw? {*Does|Do} your sister draw too? Where {*does|do} your family live?",
-          hint: "You → do. Your sister and your family → she, it → does.",
+          text: "{*Do|Does} you draw every day? What {*do|does} you like to draw? {*Does|Do} your sister draw too? What music {*does|do} your best friend like?",
+          hint: "You → do. Your sister, your best friend → he or she → does.",
           fbOk: "Exactly.",
           fbBad: "Who is it: you or she?",
-          fbText: "<b>Do</b> you…? What <b>do</b> you…? <b>Does</b> your sister (she)…? Where <b>does</b> your family (it) live?"
+          fbText: "<b>Do</b> you…? What <b>do</b> you…? <b>Does</b> your sister (she)…? What music <b>does</b> your best friend (he or she) like?"
         },
         {
           type: "info",
@@ -151,7 +151,7 @@ SLID.section("eng", {
           body: `<p>Andrii likes chess and science fiction a lot.</p>`,
           before: "I’m",
           after: "chess and science fiction.",
-          answer: ["into", "interested in"],
+          answer: ["into", "interested in", "keen on", "mad about", "crazy about", "fond of"],
           hint: "I like it a lot = I’m … it.",
           fbOk: "Exactly.",
           fbBad: "Look at the profile words: I’m … comics.",
@@ -186,7 +186,7 @@ SLID.section("eng", {
       title: "I’ve been learning English for five years",
       short: "Have been doing",
       icon: "book",
-      status: "draft",
+      status: "verified",
       why: "Pen friends often ask how long you have been doing things. Learn to answer with have been + -ing.",
       screens: [
         {
@@ -319,7 +319,7 @@ SLID.section("eng", {
       title: "What have you been doing? News in an email",
       short: "News",
       icon: "spiral",
-      status: "draft",
+      status: "verified",
       why: "Friends often ask for your news. Learn to say what you have been doing and what you have done.",
       screens: [
         {
@@ -451,7 +451,7 @@ SLID.section("eng", {
       title: "You like music, don’t you? Question tags",
       short: "Question tags",
       icon: "voice",
-      status: "draft",
+      status: "verified",
       why: "Sometimes you think something is true, but you want to check. Learn to ask with don’t you? and isn’t he?",
       screens: [
         {
@@ -594,7 +594,7 @@ SLID.section("eng", {
       title: "Dear…, Best wishes: writing an email",
       short: "Emails",
       icon: "scroll",
-      status: "draft",
+      status: "verified",
       why: "A good email is easy to read. Learn how to start and finish an email to a friend.",
       screens: [
         {
@@ -742,7 +742,7 @@ SLID.section("eng", {
       title: "We write to each other: a letter from England",
       short: "Each other",
       icon: "globe",
-      status: "draft",
+      status: "verified",
       why: "Friends often do things together. Learn to say each other, and read a long letter from a pen friend.",
       screens: [
         {
@@ -886,7 +886,7 @@ SLID.section("eng", {
       title: "Our pen friend club",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e8s1boss",
       why: "Check everything from this section. Your points are doubled.",

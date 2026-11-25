@@ -7,7 +7,7 @@ subject: eng
 grade: 8
 section: e8s1
 depends_on: [curate-eng-plan-g7-9, engine-eng-lang-core, engine-eng-validate, engine-eng-stats, skills-eng, curate-eng-style, curate-eng-glossary, engine-eng-dialog]
-status: review
+status: done
 claimed_by: writer-e8s1
 created: 2026-11-19
 source: design-eng
@@ -81,3 +81,5 @@ writer-e8s1, 2026-11-25. Файл `content/eng/g8-e8s1.js` — draft, 7 урок
 **stats:** e8s1l6 — maxText / maxReadWords / sentenceWords «нетипово для сім'ї» (z ≈ 2,1–2,3): урок читання, лист Emma ≈ 170 слів на 2 екрани (уривок + питання ≤ 95 слів, у межах профілю 7–9 кл. 140; обсяг тексту 8 кл. — style/eng.md 230–300), сім'я 8 кл. поки з одного розділу. Інші уроки — без прапорців.
 
 **Плейтест-питання:** чи зрозуміле правило l3 екр. 5 «How long or how many?» без перекладу; чи не задовгий лист у l6.
+
+**verifier-e8s1, 2026-11-25:** усі 7 уроків → verified; 2 правки (❌ друга правильна відповідь: l1 екр. 5 «do your family» — BrE; l1 екр. 10 — keen on / mad about / crazy about / fond of у ключ). Звіт — reports/verify/write-eng-g8-e8s1.md. Build не запускав.
