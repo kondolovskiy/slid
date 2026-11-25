@@ -7,7 +7,7 @@ subject: eng
 grade: 8
 section: e8s8
 depends_on: [curate-eng-plan-g7-9, engine-eng-lang-core, engine-eng-validate, engine-eng-stats, skills-eng, curate-eng-style, curate-eng-glossary, engine-eng-dialog]
-status: review
+status: done
 claimed_by: writer-e8s8
 created: 2026-11-19
 source: design-eng

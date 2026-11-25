@@ -18,7 +18,7 @@
    Погода в повідомленнях героїв (l2) — вигадана; клімат і числа про країни — з джерел (tasks/…/write-eng-g8-e8s8.md, «Нотатки агента»).
    Звуку немає (D-055 п. 4); діалоги — репліками в body + gaps / choice (D-056).
    Увесь зміст — англійською, британська норма (D-055). Тексти, діалоги й герої — власні (docs/design/english.md §8).
-   Статус: draft. 7 уроків (6 + фінал).
+   Статус: verified (verifier-e8s8). 7 уроків (6 + фінал).
    Перевірка: node tools/validate.mjs --section e8s8 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -28,7 +28,7 @@ SLID.section("eng", {
   title: "English-speaking countries: land, climate and people",
   why: "To talk about where English-speaking countries are, their climate and their people. And to imagine life in another country.",
   requires: ["e5s10l2", "e5s10l3", "e5s10l4", "e6s8l3", "e5s9l1", "e7s4l5"],
-  meta: { author: "writer-e8s8", created: "2026-11-25", factcheck: null, teacher: null },
+  meta: { author: "writer-e8s8", created: "2026-11-25", factcheck: "verifier-e8s8 (reports/verify/write-eng-g8-e8s8.md)", teacher: null },
   badges: [
     { id: "e8s8boss", name: "World explorer", icon: "trophy", desc: "Finish the final lesson “Around the English-speaking world”" }
   ],
@@ -39,7 +39,7 @@ SLID.section("eng", {
       title: "The UK, Ireland, Canada, Australia: where are they?",
       short: "Where are they?",
       icon: "globe",
-      status: "draft",
+      status: "verified",
       why: "English-speaking countries are on different continents. Learn to say where they are.",
       screens: [
         {
@@ -164,7 +164,7 @@ SLID.section("eng", {
       title: "Rainy, dry or snowy? Climate around the world",
       short: "Climate",
       icon: "leaf",
-      status: "draft",
+      status: "verified",
       why: "Every country has its own climate. Learn to describe it.",
       screens: [
         {
@@ -291,7 +291,7 @@ SLID.section("eng", {
       title: "British, Irish, Canadian: people and nationalities",
       short: "Nationalities",
       icon: "users",
-      status: "draft",
+      status: "verified",
       why: "We have special words for people from each country. Learn to use them correctly.",
       screens: [
         {
@@ -316,7 +316,7 @@ SLID.section("eng", {
           correct: 2,
           fbTitle: "Let’s check.",
           fbOk: "Good guess!",
-          fbText: "We say <b>the Irish</b>. Words with <i>-ish</i> have no <i>-s</i>. The next screen shows more."
+          fbText: "We say <b>the Irish</b>, with no <i>-s</i>: like <i>the British</i> and <i>the Welsh</i>. The next screen shows more."
         },
         {
           type: "info",
@@ -427,7 +427,7 @@ SLID.section("eng", {
       title: "Much bigger, a bit smaller: comparing countries",
       short: "Comparing countries",
       icon: "scale",
-      status: "draft",
+      status: "verified",
       why: "Numbers tell us a lot about a country. Compare countries with much and a bit.",
       screens: [
         {
@@ -553,7 +553,7 @@ SLID.section("eng", {
       title: "If I lived in Canada, I would…",
       short: "If I lived…",
       icon: "bulb",
-      status: "draft",
+      status: "verified",
       why: "Sometimes we imagine a different life. Learn to talk about imagined situations.",
       screens: [
         {
@@ -590,7 +590,7 @@ SLID.section("eng", {
           type: "gaps",
           sk: "gram",
           title: "Fill in the gaps.",
-          text: "If I {*lived|would live} in Dublin, I {*would see|will see} Liam every weekend. If Maksym {*had|has} more time, he {*would visit|visits} Kyiv more often.",
+          text: "If I {*lived|would live} in Dublin, I {*would see|will see} Liam every weekend. If Maksym {*had|would have} more time, he {*would visit|visits} Kyiv more often.",
           hint: "After if: the Past Simple. In the other part: would + verb.",
           fbOk: "Exactly.",
           fbBad: "Look at the rule: if + Past Simple → would + verb.",
@@ -685,7 +685,7 @@ SLID.section("eng", {
       title: "If you could visit one country, which would you choose?",
       short: "Which would you choose?",
       icon: "map",
-      status: "draft",
+      status: "verified",
       why: "Ask friends about their dreams. Choose a country and give your reasons.",
       screens: [
         {
@@ -796,7 +796,7 @@ SLID.section("eng", {
           eyebrow: "Final",
           title: "Complete the sentences.",
           body: `<p>Andrii writes an answer to Ms Lysenko’s question.</p>`,
-          text: "If I could visit one English-speaking country, I {*would|will} choose Ireland. I would stay with my pen friend Liam in Dublin. If we {*had|have} more time, we {*could|can} go to the west coast. It’s much {*wetter|wet} there than in Dublin, so I would take an umbrella!",
+          text: "If I could visit one English-speaking country, I {*would|will} choose Ireland. I would stay with my pen friend Liam in Dublin. If we {*had|would have} more time, we {*could|can} go to the west coast. It’s much {*wetter|wet} there than in Dublin, so I would take an umbrella!",
           hint: "If + Past Simple, would or could + verb. After much: a comparative.",
           fbOk: "Well done!",
           fbBad: "Look at the rules: if + Past Simple; would or could in the other part; much + comparative.",
@@ -819,7 +819,7 @@ SLID.section("eng", {
       title: "Around the English-speaking world",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e8s8boss",
       why: "Check everything from this section. Your points are doubled.",
@@ -883,7 +883,7 @@ SLID.section("eng", {
           keepCase: true,
           pre: "e8s8l3",
           fbOk: "Yes!",
-          fbBad: "Check the capital letter. Words with -ish have no -s.",
+          fbBad: "Check the capital letter. The Irish, like the British, has no -s.",
           fbText: "All the people from Ireland are <b>the Irish</b>: no <i>-s</i>, with a capital letter."
         },
         {
