@@ -5,7 +5,7 @@
    docs/curriculum/shyian-3-4-ukr.md). Порядок і терміни — Г. Остапенко та ін. «Українська мова та читання. 4 клас», ч. 1
    (Світич, 2021), §47, 49, 50, 52, 54 (с. 81–94). Норма — «Український правопис» (2019), словники (D-041).
    Межі частин слова в split — як у підручнику (кіт — котик, §52) і в розділах u5s3, u9s10 (під|сніж|ник|и); перелік — у нотатках задачі.
-   6 уроків (u4s5l6 — фінал). Статус: verified (verifier-u4s5, 2026-11-19); l3, l6 — draft після style-ukr-g4 (gaps ≤ 3), чекають переверифікації.
+   6 уроків (u4s5l6 — фінал). Статус: verified (verifier-u4s5, 2026-11-19; l3, l6 — повторно після style-ukr-g4, 2026-11-25).
    Перевірка: node tools/validate.mjs --section u4s5 && node tools/stats.mjs --subject ukr
    Схема й правила: docs/CONTENT_SCHEMA.md §4.1, style/ukr.md («4 клас») */
 SLID.section("ukr", {
@@ -260,7 +260,7 @@ SLID.section("ukr", {
       title: "Злетів чи прилетів?",
       short: "Префікс",
       icon: "path",
-      status: "draft",   // verifier-u4s5 (2026-11-19): reports/verify/u4s5.md
+      status: "verified",   // verifier-u4s5 (2026-11-19): reports/verify/u4s5.md; переверифікація після style-ukr-g4: reports/verify/style-ukr-g4-u4s5.md
       why: "Префікс змінює значення слова. Навчимося його знаходити й не плутати з прийменником.",
       screens: [
         {
@@ -591,7 +591,7 @@ SLID.section("ukr", {
       title: "Лабораторія слів",
       short: "Фінал",
       icon: "trophy",
-      status: "draft",   // verifier-u4s5 (2026-11-19): reports/verify/u4s5.md
+      status: "verified",   // verifier-u4s5 (2026-11-19): reports/verify/u4s5.md; переверифікація після style-ukr-g4: reports/verify/style-ukr-g4-u4s5.md
       boss: true,
       badge: "u4s5boss",
       why: "Перевір, як ти розбираєш слово на частини. Бали за фінал — подвійні.",
