@@ -8,7 +8,7 @@
    §74–75 (с. 128–129). Норма — «Український правопис» (2019): § 3, 7, 26, 27, 30; словники (D-041), facts/ukr.md №27–61.
    Нотація — як у 5 кл. (glossary/ukr.md): м'якість ′, пом'якшеність ’, подовження двокрапкою.
    Розділ спирається на u4s5 «Будова слова» (корінь, спільнокореневі слова). Продовження — у 5 класі (u5s4–u5s7).
-   7 уроків (u4s6l7 — фінал). Статус: verified (verifier-u4s6); l1–l4 — draft після style-ukr-g4 (gaps ≤ 3, вкладені лапки), чекають переверифікації.
+   7 уроків (u4s6l7 — фінал). Статус: verified (verifier-u4s6; l1–l4 після style-ukr-g4 — переверифіковано, reports/verify/style-ukr-g4-u4s6.md).
    Перевірка: node tools/validate.mjs --section u4s6 && node tools/stats.mjs --subject ukr
    Схема й правила: docs/CONTENT_SCHEMA.md §4.1, style/ukr.md («4 клас») */
 SLID.section("ukr", {
@@ -29,7 +29,7 @@ SLID.section("ukr", {
       title: "Три букви, чотири звуки",
       short: "Звуки і букви",
       icon: "voice",
-      status: "draft",
+      status: "verified",
       why: "Звуки ми чуємо, а букви бачимо. Навчимося рахувати звуки й букви, а ще ділити слово на склади.",
       screens: [
         {
@@ -145,7 +145,7 @@ SLID.section("ukr", {
       title: "Рис для рисі?",
       short: "М'які й пом'якшені",
       icon: "bulb",
-      status: "draft",
+      status: "verified",
       why: "Одна маленька буква ь може перетворити крупу на дику кішку. Навчимося чути м'які звуки й позначати їх.",
       screens: [
         {
@@ -259,7 +259,7 @@ SLID.section("ukr", {
       title: "М'ясо чи мясо?",
       short: "Апостроф",
       icon: "eye",
-      status: "draft",
+      status: "verified",
       why: "Звук [й] ховається в різних буквах. Навчимося його знаходити й ставити апостроф там, де треба.",
       screens: [
         {
@@ -374,7 +374,7 @@ SLID.section("ukr", {
       title: "Прозьба чи просьба?",
       short: "Дзвінкі й глухі",
       icon: "scale",
-      status: "draft",
+      status: "verified",
       why: "Деякі звуки в слові звучать не так, як пишуться. Навчимося перевіряти такі букви.",
       screens: [
         {
