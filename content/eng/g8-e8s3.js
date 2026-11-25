@@ -13,7 +13,7 @@
    Герої — серія 4–7 кл., на чотири роки старші, ніж у 4 кл. (memory/short/inbox.md, NOTE (герої)); нові: Ms Kvitka
    (директорка школи Тараса, Lviv), Mr Pavliuk (бібліотекар тієї ж школи).
    Увесь зміст — англійською, британська норма (D-055). Тексти, діалоги й герої — власні (docs/design/english.md §8).
-   Статус: draft. 7 уроків (6 + фінал). Будова — за розділами 6 кл. (verified) і 7 кл. (e7s5).
+   Статус: verified (verifier-e8s3, reports/verify/write-eng-g8-e8s3.md). 7 уроків (6 + фінал). Будова — за розділами 6 кл. (verified) і 7 кл. (e7s5).
    Перевірка: node tools/validate.mjs --section e8s3 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -23,7 +23,7 @@ SLID.section("eng", {
   title: "The media: the internet and the press",
   why: "To talk about newspapers, magazines and news websites. And to report what other people said.",
   requires: ["e4s6l2", "e6s3l2", "e6s7l3", "e6s8l5"],
-  meta: { author: "writer-e8s3", created: "2026-11-25", factcheck: "self", teacher: null },
+  meta: { author: "writer-e8s3", created: "2026-11-25", factcheck: "verifier-e8s3 (reports/verify/write-eng-g8-e8s3.md)", teacher: null },
   badges: [
     { id: "e8s3boss", name: "Young reporter", icon: "trophy", desc: "Finish the final lesson “The media: the internet and the press”" }
   ],
@@ -34,7 +34,7 @@ SLID.section("eng", {
       title: "Newspapers, magazines and news websites",
       short: "The press",
       icon: "book",
-      status: "draft",
+      status: "verified",
       why: "Where do you get your news? Learn the words for newspapers, magazines and news websites.",
       screens: [
         {
@@ -146,7 +146,7 @@ SLID.section("eng", {
       title: "Is it true? Reading the news online",
       short: "Is it true?",
       icon: "eye",
-      status: "draft",
+      status: "verified",
       why: "Not every post on the internet is true. Learn some easy ways to check the news.",
       screens: [
         {
@@ -279,7 +279,7 @@ SLID.section("eng", {
       title: "A new park is being built: news reports",
       short: "Is being built",
       icon: "city",
-      status: "draft",
+      status: "verified",
       why: "News reports often tell us about work that is happening now. Learn to say: A new park is being built.",
       screens: [
         {
@@ -389,7 +389,7 @@ SLID.section("eng", {
           eyebrow: "Final",
           title: "Complete the sentences.",
           body: `<p>Taras writes to Emma.</p>`,
-          text: "Big news from Lviv! A new park {*is being built|is building|was built} next to the station. This week, two hundred trees {*are being planted|are planting|is being planted}. The old bridge {*is being repaired|is repairing|repairs}, so we can’t use it now. It {*was built|is being built|builds} in 1900, so it’s very old!",
+          text: "Big news from Lviv! A new park {*is being built|is building|are being built} next to the station. This week, two hundred trees {*are being planted|are planting|is being planted}. The old bridge {*is being repaired|is repairing|repairs}, so we can’t use it now. It {*was built|is being built|builds} in 1900, so it’s very old!",
           hint: "Now → is / are being + third form. In 1900 → was + third form.",
           fbOk: "Well done!",
           fbBad: "Check: now or in 1900? One or two or more?",
@@ -412,7 +412,7 @@ SLID.section("eng", {
       title: "She said she was tired: reported statements",
       short: "She said…",
       icon: "voice",
-      status: "draft",
+      status: "verified",
       why: "Reporters tell us what other people said. Learn how the verb changes: She said she was tired.",
       screens: [
         {
@@ -544,7 +544,7 @@ SLID.section("eng", {
       title: "He told us that…: reporting the news",
       short: "Said or told",
       icon: "users",
-      status: "draft",
+      status: "verified",
       why: "Report school news to a friend. Use said and told in the right way.",
       screens: [
         {
@@ -681,7 +681,7 @@ SLID.section("eng", {
       title: "Our school newspaper: a short article",
       short: "An article",
       icon: "scroll",
-      status: "draft",
+      status: "verified",
       why: "Read an article from a school newspaper. See how a good article is built.",
       screens: [
         {
@@ -785,7 +785,7 @@ SLID.section("eng", {
           eyebrow: "Final",
           title: "Complete the sentences.",
           body: `<p>Oksana writes a short article for her school website in Zelena Dolyna.</p>`,
-          text: "<b>A garden for our school</b><br>This week, a school garden {*is being made|is making|was made} behind our school. Apple trees {*are being planted|are planting|is being planted} next to it. Our head teacher {*told|said} us that the apples were for the school canteen. Dmytro said he {*wanted|wanting|want} to plant a tree too! The garden opens in spring.",
+          text: "<b>A garden for our school</b><br>This week, a school garden {*is being made|is making|are being made} behind our school. Apple trees {*are being planted|are planting|is being planted} next to it. Our head teacher {*told|said} us that the apples were for the school canteen. Dmytro said he {*wanted|wanting|want} to plant a tree too! The garden opens in spring.",
           hint: "Now → is / are being + third form. A person after the gap → told.",
           fbOk: "Well done!",
           fbBad: "Check: one garden, two or more trees; told + a person.",
@@ -808,7 +808,7 @@ SLID.section("eng", {
       title: "The school newspaper team",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e8s3boss",
       why: "Check everything from this section. Your points are doubled.",

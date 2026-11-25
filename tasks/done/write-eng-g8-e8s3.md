@@ -7,7 +7,7 @@ subject: eng
 grade: 8
 section: e8s3
 depends_on: [curate-eng-plan-g7-9, engine-eng-lang-core, engine-eng-validate, engine-eng-stats, skills-eng, curate-eng-style, curate-eng-glossary, engine-eng-dialog]
-status: review
+status: done
 claimed_by: writer-e8s3
 created: 2026-11-19
 source: design-eng
@@ -67,3 +67,5 @@ Build не запускай (AGENTS.md §4 п. 8).
 **Факти:** справжніх ЗМІ, назв видань і дат немає — Lviv Today, School 5 News, усі новини вигадані.
 **Герої (8 кл., на 4 роки старші):** Taras — фотограф шкільної газети (Lviv, School 5 News), Myroslava пише статті; Ms Kvitka (head teacher) і Mr Pavliuk (librarian) — нові, школа Тараса; Andrii пише статтю для шкільної газети (Kyiv), Ms Lysenko веде газету; Daryna — новий фотограф газети Andrii; Zoriana пише про IT/роботів; Kyrylo читає history magazine; Bohdan «too tired/busy»; Mariia малює комікс для журналу; Emma читає weekly magazine про тварин; дідусь Emma читає газету; Dmytro (10) — пост «schools closed».
 **Сумнівне / для верифікатора:** l1 longWordShare 0,179 (stats: «нетипово для сім'ї», z = 3,9) і l7 (z = 2,1) — тема: newspaper, magazine, photographer, journalist (3+ склади) не замінити; validate без попереджень. l4 #5 «that day» (today → that day) — у тексті, не в пропуску й не пояснено. l7 T6 пастка `we` («The players said we were tired») — граматично можливе, але суперечить завданню «Report their words». l5 #3 «said to us» — лише згадано, не оцінюється. Термін — «third form» (TQ-128, як 6 кл.), хоча e7s2 (draft) пише «past participle».
+
+**verifier-e8s3, 2026-11-25.** Звіт reports/verify/write-eng-g8-e8s3.md. 7 уроків → verified. Правки: 2 хибні варіанти gaps, що були другою правильною відповіддю (l3 екран 10 «was built» → «are being built»; l6 екран 8 «was made» → «are being made»). TQ-144 внесено в docs/teacher-questions.md. requires: g7-e7s7.js немає — e7s7 додати пізніше. Сумнів автора щодо фіналу T6 (пастка «we») знято: рушій вимагає всіх tiles.
