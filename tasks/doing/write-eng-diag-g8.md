@@ -1,4 +1,6 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-25T12:53:04.110Z
 id: write-eng-diag-g8
 type: write-diag
 subject: eng
@@ -6,7 +8,7 @@ grade: 8
 section: dge8
 depends_on: [write-eng-g8-e8s1, write-eng-g8-e8s2, write-eng-g8-e8s3, write-eng-g8-e8s4, write-eng-g8-e8s5, write-eng-g8-e8s6, write-eng-g8-e8s7, write-eng-g8-e8s8, engine-eng-diag-pool, write-eng-diag-g7]
 status: todo
-claimed_by: 
+claimed_by: writer-write-eng-diag-g8
 created: 2026-11-19
 source: design-eng
 ---
