@@ -7,7 +7,7 @@ subject: eng
 grade: 9
 section: e9s4
 depends_on: [curate-eng-plan-g7-9, engine-eng-lang-core, engine-eng-validate, engine-eng-stats, skills-eng, curate-eng-style, curate-eng-glossary, engine-eng-dialog]
-status: todo
+status: review
 claimed_by: writer-e9s4
 created: 2026-11-19
 source: design-eng
@@ -47,3 +47,16 @@ Build не запускай (AGENTS.md §4 п. 8).
 
 ## Нотатки агента
 <!-- що зроблено, джерела форм і фактів, спірне -->
+writer-e9s4, 2026-11-25. Файл `content/eng/g9-e9s4.js`, статус draft, 7 уроків (6 + boss), 8–11 екранів.
+- l1 TV, radio and podcasts (лексика: channel, radio station, programme, podcast, presenter, the news, weather forecast, quiz show, talk / chat show, documentary, series, episode); l2 My favourite programme (says / tells me + present, «be on»; читання 2 екрани); l3 Chatting online: safe and polite (password, username, profile, block, report, post; імперативи — повторення e5s2l5); l4 reported questions (if / whether, wh- + порядок підмет + дієслово); l5 reported requests (told / asked + object + (not) to + verb; question vs request); l6 I wonder what… (wonder / wondered, will → would; читання 2 екрани); l7 boss (7 завдань, pre l1–l6).
+- `requires`: e4s3l6, e5s2l3, e5s2l5, e6s8l5 (план), e8s3l4, e8s3l5 (reported statements, said / told — звірено з файлом e8s3).
+- Назва розділу — «the internet» з малої, як у verified e8s3 (OALD, CD); у plan.js «the Internet» — за потреби вирівнює куратор плану (рядок в inbox).
+- **Джерела граматики:** CD Grammar «Reported speech: indirect speech» — питання if / whether, statement order, без «?», накази to-infinitive, «warned us not to», Present simple reporting verb, No backshift, will → would: https://dictionary.cambridge.org/grammar/british-grammar/reported-speech-indirect-speech ; ask + object + to-inf.: https://dictionary.cambridge.org/grammar/british-grammar/ask ; tell + object + to-inf., «Not: They said us to come»: https://dictionary.cambridge.org/grammar/british-grammar/tell ; wonder + question word / if / whether: https://dictionary.cambridge.org/dictionary/english/wonder
+- **Лексика й наголос (CD, curl):** chat show «(US also UK talk show)» — https://dictionary.cambridge.org/dictionary/english/chat-show ; OALD chat show «(also talk show North American English, British English)» — talk show (як у plan.js) у BrE допустиме, у теорії дано обидва. Наголос: pre'senter, docu'mentary, 'episode, 'podcast, 'channel, 'programme (CD presenter, documentary, episode, podcast, channel, programme). programme — BrE (glossary).
+- **TQ-144 (backshift):** теперішня форма в reported question / statement ніде не хибний варіант; у l4 екран 7 (multi) «asked if I like» — у ключі, правило — l4 екран 5. У gaps, де досі правда (where the office is, how old I am), теперішньої форми серед варіантів немає. В `word` / build — плитки лише з минулим.
+- **Друга правильна:** if / whether — ніколи в одному пропуску, у `word` (l4, boss) обидва; told / asked не протиставлені; дистрактори — неможливі форми (said us to, to don’t, інверсія, did). build: l2 — два порядки (…her favourite programme is Music Box / …Music Box is her favourite programme); l5 — put our hands up / put up our hands; «not to» — одна плитка (щоб не було «to not talk»). l6 build навмисно з what time + starts (варіант «who the presenters will be» мав би другий порядок «who will be the presenters»).
+- **Опори (D-019):** l2 екран 11 «it’s on» — правило «be on» на екрані 6; l3 multi / sort — поради на екранах 3 і 5; l5 sort — правило «A question or a request?» (екран 7); boss — лише з уроків.
+- **Вигадане:** Quiz Time, Music Box, Bright Radio, School 5 Radio, шкільний подкаст Andrii; телестудія в Kyiv без назви; Lviv Today і School 5 News — з e8s3. Справжніх ЗМІ, соцмереж, блогерів немає. Безпека — порадами (незнайомий гравець просить пароль за «free coins», Dmytro блокує й каже мамі).
+- Новий герой: Mr Moroz (менеджер телестудії, Kyiv). Деталі: Kyrylo слухає history podcast; Daryna дивиться Music Box із сестрою; Andrii — chess podcast; Bohdan — Quiz Time; Mariia — комікс про детектива в онлайн-клубі (Polina, Zofia, Roksolana коментують); у школі Taras починається шкільне радіо.
+- validate --section e9s4: 0 помилок, 0 попереджень. stats: e9s4l2 readWordsPerScreen 48 — у межах профілю 7–9 (≤ 50), «нетипово для сім'ї» z = 2,1: урок із читанням (2 екрани тексту), як e7s7l6; скорочено, далі — style-sync.
+- Build не запускав.

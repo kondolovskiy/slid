@@ -596,7 +596,7 @@ SLID.section("eng", {
   id: "e8s3",
   grade: 8,
   weeks: [9, 13],
-  title: "The media: the Internet and the press",
+  title: "The media: the internet and the press",
   why: "To talk about newspapers, magazines and news websites. And to report what other people said.",
   plan: [
     "Newspapers, magazines and news websites",
@@ -740,7 +740,7 @@ SLID.section("eng", {
   id: "e9s4",
   grade: 9,
   weeks: [13, 16],
-  title: "The media: the Internet, TV and radio",
+  title: "The media: the internet, TV and radio",
   why: "To talk about TV, radio and communicating online. And to report questions and requests.",
   plan: [
     "TV, radio and podcasts: what do you like?",
@@ -996,11 +996,11 @@ SLID.section("eng", {
   id: "e11s3",
   grade: 11,
   weeks: [10, 13],
-  title: "Leisure: clubs, film, TV and the Internet",
+  title: "Leisure: clubs, film, TV and the internet",
   why: "To talk about clubs, films, plays, TV programmes and life online. And to review a film or a show and keep a conversation going.",
   plan: [
     "Clubs for every interest",
-    "Cinema, theatre, TV or the Internet?",
+    "Cinema, theatre, TV or the internet?",
     "A well-known actor, a two-hour film: compound adjectives",
     "It was great, wasn’t it? Question tags",
     "My favourite film or show: a review",
