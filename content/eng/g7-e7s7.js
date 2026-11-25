@@ -11,7 +11,7 @@
    George — London (e6s8: любить British Museum, у Києві ще не був). Нових героїв немає.
    Факти — по два відкриті джерела кожен (URL — tasks/…/write-eng-g7-e7s7.md, «Нотатки агента»); спірні роки — лише століття чи десятиліття.
    Увесь зміст — англійською, британська норма (D-055). Тексти, діалоги й герої — власні (docs/design/english.md §8). Без зображень.
-   Статус: draft. 7 уроків (6 + фінал).
+   Статус: verified (verifier-e7s7). 7 уроків (6 + фінал).
    Перевірка: node tools/validate.mjs --section e7s7 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -21,7 +21,7 @@ SLID.section("eng", {
   title: "Kyiv and London: history and culture",
   why: "To talk about museums, monuments and old buildings in Kyiv and London. And to say who built them and when.",
   requires: ["e6s7l2", "e6s7l3", "e6s8l2", "e6s3l2", "e5s10l5", "e5s7l6"],
-  meta: { author: "writer-e7s7", created: "2026-11-25", factcheck: null, teacher: null },
+  meta: { author: "writer-e7s7", created: "2026-11-25", factcheck: "verifier-e7s7 (reports/verify/write-eng-g7-e7s7.md)", teacher: null },
   badges: [
     { id: "e7s7boss", name: "Culture guide", icon: "trophy", desc: "Finish the final lesson “Kyiv and London: history and culture”" }
   ],
@@ -32,7 +32,7 @@ SLID.section("eng", {
       title: "Museums and monuments in Kyiv",
       short: "Museums",
       icon: "city",
-      status: "draft",
+      status: "verified",
       why: "Kyiv has got lots of museums and monuments. Learn to name them and say what is kept there.",
       screens: [
         {
@@ -157,7 +157,7 @@ SLID.section("eng", {
       title: "It was built by…: who made it?",
       short: "Built by",
       icon: "user",
-      status: "draft",
+      status: "verified",
       why: "Visitors often ask who made a famous building or picture. Learn to answer with by.",
       screens: [
         {
@@ -239,9 +239,8 @@ SLID.section("eng", {
           title: "Put the words in order.",
           body: `<p>Andrii tells George about St Andrew’s Church.</p>`,
           tiles: ["St Andrew’s Church", "was", "designed", "by", "Rastrelli"],
-          answer: "St Andrew’s Church was designed by Rastrelli.",
+          answer: ["St Andrew’s Church was designed by Rastrelli.", "Was St Andrew’s Church designed by Rastrelli?"],
           extra: ["were"],
-          keepCase: true,
           hint: "Start with St Andrew’s Church. Who did it goes after by.",
           fbOk: "Well done!",
           fbBad: "One church → was + designed + by.",
@@ -262,7 +261,7 @@ SLID.section("eng", {
           type: "word",
           sk: "vocab",
           title: "Write the missing word.",
-          body: `<p>A legend tells us who started Kyiv.</p>`,
+          body: `<p>A legend tells us who started Kyiv. Use the verb <b>found</b>.</p>`,
           before: "Kyiv was",
           after: "by Kyi, his brothers and his sister.",
           answer: "founded",
@@ -300,7 +299,7 @@ SLID.section("eng", {
       title: "Was it destroyed? When was it rebuilt?",
       short: "Destroyed",
       icon: "flame",
-      status: "draft",
+      status: "verified",
       why: "Some old buildings were destroyed and then built again. Learn to ask and answer about them.",
       screens: [
         {
@@ -357,7 +356,7 @@ SLID.section("eng", {
         {
           type: "info",
           title: "Two old cathedrals in Kyiv",
-          body: `<ul><li><b>St Michael’s Cathedral</b> – built in the 12th century, destroyed in the 1930s, rebuilt in the 1990s</li><li><b>St Sophia’s Cathedral</b> – built in the 11th century. It <b>wasn’t</b> destroyed in the 1930s: scientists saved it.</li></ul>`,
+          body: `<ul><li><b>St Michael’s Cathedral</b> – built in the 12th century, destroyed in the 1930s, rebuilt in the 1990s</li><li><b>St Sophia’s Cathedral</b> – built in the 11th century. It <b>wasn’t</b> destroyed in the 1930s: historians saved it.</li></ul>`,
           cta: "Next"
         },
         {
@@ -413,13 +412,13 @@ SLID.section("eng", {
           title: "Write the missing word.",
           body: `<p>George: “Was St Sophia’s Cathedral destroyed in the 1930s?”</p>`,
           before: "Andrii: “No, it",
-          after: ". Scientists saved it.”",
+          after: ". Historians saved it.”",
           answer: ["wasn’t", "was not"],
           contractions: true,
           hint: "A short answer with no: No, it …",
           fbOk: "Right.",
           fbBad: "Look at the rule: Yes, it was. / No, it …",
-          fbText: "<b>No, it wasn’t.</b> (was not) St Sophia’s Cathedral wasn’t destroyed: scientists saved it."
+          fbText: "<b>No, it wasn’t.</b> (was not) St Sophia’s Cathedral wasn’t destroyed: historians saved it."
         }
       ],
       outro: {
@@ -438,7 +437,7 @@ SLID.section("eng", {
       title: "One of the oldest: history and culture in London",
       short: "One of the oldest",
       icon: "globe",
-      status: "draft",
+      status: "verified",
       why: "London has got very old museums, theatres and trains. Learn to say: It’s one of the oldest…",
       screens: [
         {
@@ -507,10 +506,9 @@ SLID.section("eng", {
           sk: "gram",
           title: "Put the words in order.",
           body: `<p>The Monument to Prince Volodymyr was built in 1853. The Monument to Bohdan Khmelnytskyi on Sofiiska Square was built in 1888. There aren’t many older monuments in Kyiv.</p><p>Andrii writes about the Monument to Bohdan Khmelnytskyi.</p>`,
-          tiles: ["It’s", "one of", "the oldest", "monuments", "in Kyiv"],
-          answer: "It’s one of the oldest monuments in Kyiv.",
+          tiles: ["it’s", "one of", "the oldest", "monuments", "in Kyiv"],
+          answer: ["It’s one of the oldest monuments in Kyiv.", "In Kyiv it’s one of the oldest monuments."],
           extra: ["monument"],
-          keepCase: true,
           hint: "one of the oldest + a plural noun.",
           fbOk: "Right.",
           fbBad: "After one of the oldest, say monuments.",
@@ -570,7 +568,7 @@ SLID.section("eng", {
       title: "St Paul’s Cathedral: who was it designed by?",
       short: "St Paul’s",
       icon: "star",
-      status: "draft",
+      status: "verified",
       why: "St Paul’s is one of the most famous buildings in London. Learn to ask who designed it and what happened to it.",
       screens: [
         {
@@ -707,7 +705,7 @@ SLID.section("eng", {
       title: "A culture trip: Kyiv or London?",
       short: "Culture trip",
       icon: "map",
-      status: "draft",
+      status: "verified",
       why: "Read a plan for a culture trip in two cities. Then choose places for your own trip.",
       screens: [
         {
@@ -722,11 +720,11 @@ SLID.section("eng", {
           sk: "read",
           eyebrow: "Reading: a culture trip, part 1 of 2",
           title: "Read and choose.",
-          body: `<p><i><b>Kyiv, by Andrii.</b> If you like history, start at St Sophia’s Cathedral. It was built in the 11th century, and it wasn’t destroyed in the 1930s. Then walk to St Michael’s Golden-Domed Monastery. Its cathedral was destroyed in the 1930s, but it was rebuilt in the 1990s. Between them, on Sofiiska Square, there’s the Monument to Bohdan Khmelnytskyi. It’s one of the oldest monuments in Kyiv. If you like art, visit the National Museum of Taras Shevchenko.</i></p><p>Which cathedral was destroyed and then rebuilt?</p>`,
+          body: `<p><i><b>Kyiv, by Andrii.</b> If you like history, start at St Sophia’s Cathedral. It was built in the 11th century, and it wasn’t destroyed in the 1930s. Then walk to St Michael’s Golden-Domed Monastery. Its cathedral was destroyed in the 1930s, but it was rebuilt in the 1990s. Between them, on Sofiiska Square, there’s the Monument to Bohdan Khmelnytskyi. It’s one of the oldest monuments in Kyiv. If you like art, visit the National Museum of Taras Shevchenko.</i></p><p>In Andrii’s part, which cathedral was destroyed and then rebuilt?</p>`,
           opts: [
             "St Sophia’s Cathedral",
             "St Michael’s Cathedral",
-            "St Paul’s Cathedral"
+            "both cathedrals"
           ],
           correct: 1,
           hint: "Find rebuilt in the text.",
@@ -841,7 +839,7 @@ SLID.section("eng", {
       title: "Two capitals: a culture quiz",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e7s7boss",
       why: "Check everything from this section. Your points are doubled.",
@@ -888,7 +886,7 @@ SLID.section("eng", {
           sk: "vocab",
           eyebrow: "Task 3",
           title: "Write the missing word.",
-          body: `<p>Quiz question: “Who started Kyiv? Tell the legend.”</p>`,
+          body: `<p>Quiz question: “Who started Kyiv? Tell the legend.” Use the verb <b>found</b>.</p>`,
           before: "Kyiv was",
           after: "by Kyi, Shchek, Khoryv and Lybid.",
           answer: "founded",

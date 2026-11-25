@@ -7,7 +7,7 @@ subject: eng
 grade: 7
 section: e7s7
 depends_on: [curate-eng-plan-g7-9, engine-eng-lang-core, engine-eng-validate, engine-eng-stats, skills-eng, curate-eng-style, curate-eng-glossary, engine-eng-dialog]
-status: review
+status: done
 claimed_by: writer-e7s7
 created: 2026-11-19
 source: design-eng
@@ -74,3 +74,5 @@ Build не запускай (AGENTS.md §4 п. 8).
 
 **stats (eng):** l6 — gradedShare 0.78 і readWordsPerScreen «нетипово для сім'ї» (z = 2,1): урок читання (два уривки ≤ 90 слів, у межах профілю 7–9: maxText 87 ≤ 140, gradedShare ≤ 0,9). Решта уроків — без прапорців.
 **Відкрите:** без зображень (у Україні немає свободи панорами; фото St Paul’s можна додати окремою задачею images-*). «Find the mistake» — l2, l3. Плейтест не запускав: Python-модуля playwright у контейнері немає. Питань вчителю немає (TQ-135 не знадобився). Build не запускав.
+
+**verifier-e7s7, 2026-11-25.** Перевірено незалежно: факти (≥ 2 відкриті джерела кожен), словник CD+OALD, авторське право, усі 50 оцінюваних завдань розв'язано й прив'язано до опори. 6 правок (4 ❌: два build без другого порядку, два word «founded» з другою правильною відповіддю, дистрактор St Paul’s у l6; плюс «scientists» → «historians»). Усі уроки → `verified`. Твердження про Успенський собор Лаври (червень 2026) у розділі й нотатках відсутнє — не перевірялось. Звіт: reports/verify/write-eng-g7-e7s7.md.
