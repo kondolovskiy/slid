@@ -7,7 +7,7 @@ subject: eng
 grade: 8
 section: e8s3
 depends_on: [curate-eng-plan-g7-9, engine-eng-lang-core, engine-eng-validate, engine-eng-stats, skills-eng, curate-eng-style, curate-eng-glossary, engine-eng-dialog]
-status: todo
+status: review
 claimed_by: writer-e8s3
 created: 2026-11-19
 source: design-eng
@@ -47,3 +47,23 @@ Build не запускай (AGENTS.md §4 п. 8).
 
 ## Нотатки агента
 <!-- що зроблено, джерела форм і фактів, спірне -->
+**writer-e8s3, 2026-11-25.** Файл `content/eng/g8-e8s3.js`, 7 уроків (6 + фінал e8s3l7, значок e8s3boss «Young reporter»), status draft.
+- l1 Newspapers, magazines and news websites — лексика преси (newspaper, magazine, news website, daily/weekly/monthly, the press, headline, article, journalist, reporter, photographer).
+- l2 Is it true? Reading the news online — 4 питання для перевірки новини, fact / opinion, чи стаття відповідає заголовку (МП-ІМ с. 28). Без страшилок: вигаданий пост «schools closed», Оксана перевіряє шкільний сайт.
+- l3 A new park is being built — Present Continuous passive; контраст is made / was built / is being repaired; заперечення й питання.
+- l4 She said she was tired — reported statements з backshift (am/is → was, are → were, Present Simple → Past Simple, am reading → was reading, can → could); екран 6 «Is it still true?» — backshift необов'язковий, екран 7 multi — обидві форми в ключі.
+- l5 He told us that… — said / told + person, said to + person (згадано), we → they, our → their.
+- l6 Our school newspaper — стаття «A new life for our library» (≈ 170 слів, 2 екрани), будова статті, order, фінал — допис Оксани.
+- l7 boss — 7 завдань, по одному на урок (l5 — двічі).
+**requires:** e4s6l2, e6s3l2, e6s7l3, e6s8l5. Після появи e7s7 — додати урок Past passive (оркестратор).
+**Друга правильна відповідь (backshift):** у `gaps` варіант без backshift (is, loves, doesn't, can) ніде не дається як хибний — дистрактори граматично неправильні (were для he, am, couldn't to…); у `word` (l4 #9, l7 T4) контекст «потім знайшов», «today he's free» — сказане вже неправда. Кожне `build` перебрано через `SLID_LANG.check` з усіма підмножинами плиток — рівно один прийнятий порядок. `word` l1 #8 — journalist / reporter / writer.
+**Джерела:**
+- Backshift і «still true»: CD Grammar «Reported speech: indirect speech» — https://dictionary.cambridge.org/grammar/british-grammar/reported-speech-indirect-speech
+- Present continuous passive (am/are/is being): CD Grammar «Passive: forms» — https://dictionary.cambridge.org/grammar/british-grammar/passive-forms
+- Форми: build–built–built, write–wrote–written, tell–told, say–said (OALD build_1, write_1, tell_1, say_1); show має shown/showed — у вправах не взято; shelf → shelves (CD shelf).
+- Наголос (CD, UK): ˌmæɡ.əˈziːn, ˈdʒɜː.nə.lɪst, ˈnjuːzˌpeɪ.pər, rɪˈpɔː.tər, ˈɑː.tɪ.kəl, ˈhed.laɪn, ˈweb.saɪt, əˈpɪn.jən — https://dictionary.cambridge.org/dictionary/english/<word>
+- Рівні CD: headline, article, journalist, reporter, press, monthly, opinion, canteen B1; magazine, weekly, daily, fact, shelf, borrow, share A2; editor, source, survey B2 і fake C2 — не вжито.
+- the internet з малої: OALD internet «(also Internet) (usually the internet)», CD — заголовне слово internet, приклади «the internet»; так і в e6s7l3.
+**Факти:** справжніх ЗМІ, назв видань і дат немає — Lviv Today, School 5 News, усі новини вигадані.
+**Герої (8 кл., на 4 роки старші):** Taras — фотограф шкільної газети (Lviv, School 5 News), Myroslava пише статті; Ms Kvitka (head teacher) і Mr Pavliuk (librarian) — нові, школа Тараса; Andrii пише статтю для шкільної газети (Kyiv), Ms Lysenko веде газету; Daryna — новий фотограф газети Andrii; Zoriana пише про IT/роботів; Kyrylo читає history magazine; Bohdan «too tired/busy»; Mariia малює комікс для журналу; Emma читає weekly magazine про тварин; дідусь Emma читає газету; Dmytro (10) — пост «schools closed».
+**Сумнівне / для верифікатора:** l1 longWordShare 0,179 (stats: «нетипово для сім'ї», z = 3,9) і l7 (z = 2,1) — тема: newspaper, magazine, photographer, journalist (3+ склади) не замінити; validate без попереджень. l4 #5 «that day» (today → that day) — у тексті, не в пропуску й не пояснено. l7 T6 пастка `we` («The players said we were tired») — граматично можливе, але суперечить завданню «Report their words». l5 #3 «said to us» — лише згадано, не оцінюється. Термін — «third form» (TQ-128, як 6 кл.), хоча e7s2 (draft) пише «past participle».
