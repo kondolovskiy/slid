@@ -14,7 +14,7 @@
    Hoverla з татом і Zlata (e8s2); Daryna (Kyiv) — любить geography (e6s6); Mariia — Kharkiv; Oksana — Zelena Dolyna.
    Числа й факти — по два відкриті джерела (URL — tasks/…/write-eng-g8-e8s7.md, «Нотатки агента»).
    Увесь зміст — англійською, британська норма (D-055). Тексти, діалоги й герої — власні (docs/design/english.md §8).
-   Статус: draft. 7 уроків (6 + фінал).
+   Статус: verified (verifier-e8s7). 7 уроків (6 + фінал).
    Перевірка: node tools/validate.mjs --section e8s7 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -24,7 +24,7 @@ SLID.section("eng", {
   title: "Ukraine: land, climate and people",
   why: "To talk about where Ukraine is, its climate and its people. And to use numbers and statistics.",
   requires: ["e5s10l1", "e5s10l5", "e5s10l6", "e5s5l6", "e4s6l4"],
-  meta: { author: "writer-e8s7", created: "2026-11-25", factcheck: null, teacher: null },
+  meta: { author: "writer-e8s7", created: "2026-11-25", factcheck: "verifier-e8s7, 2026-11-25 (reports/verify/write-eng-g8-e8s7.md)", teacher: null },
   badges: [
     { id: "e8s7boss", name: "Ukraine expert", icon: "trophy", desc: "Finish the final lesson “Ukraine: the class project”" }
   ],
@@ -35,7 +35,7 @@ SLID.section("eng", {
       title: "Where is Ukraine? Borders and neighbours",
       short: "Neighbours",
       icon: "map",
-      status: "draft",
+      status: "verified",
       why: "People often ask where Ukraine is. Learn to name its neighbours and say where they are.",
       screens: [
         {
@@ -65,7 +65,7 @@ SLID.section("eng", {
         {
           type: "info",
           title: "Ukraine and its neighbours",
-          body: `<p>Ukraine is in <b>Eastern Europe</b>. In the south, it is on the Black Sea and the Sea of Azov.</p><p>Ukraine <b><u>bor</u>ders</b> seven countries:</p><ul><li>to the north – <b>Belarus</b></li><li>to the west – <b>Poland</b>, <b>Slovakia</b>, <b>Hungary</b></li><li>to the south-west – <b>Romania</b>, <b>Moldova</b></li><li>to the east – <b>Russia</b></li></ul><p>to <b>border</b> a country = to be next to it</p>`,
+          body: `<p>Ukraine is in <b>Eastern Europe</b>. In the south, it is on the Black Sea and the Sea of Azov.</p><p>Ukraine <b><u>bor</u>ders</b> seven countries:</p><ul><li>to the north – <b>Belarus</b></li><li>to the west – <b>Poland</b>, <b>Slovakia</b>, <b>Hungary</b></li><li>to the south-west – <b>Romania</b>, <b>Moldova</b></li><li>to the north-east and east – <b>Russia</b></li></ul><p>to <b>border</b> a country = to be next to it</p>`,
           cta: "Next"
         },
         {
@@ -77,7 +77,7 @@ SLID.section("eng", {
           hint: "Look at the list of neighbours again. Start with Belarus.",
           fbOk: "Good eye!",
           fbBad: "Check the list: north, west, south-west, east.",
-          fbText: "Belarus – to the <b>north</b>. Russia – to the <b>east</b>. Poland – to the <b>west</b>. Moldova – to the <b>south-west</b>."
+          fbText: "Belarus – to the <b>north</b>. Russia – to the <b>east</b> (and north-east). Poland – to the <b>west</b>. Moldova – to the <b>south-west</b>."
         },
         {
           type: "choice",
@@ -179,7 +179,7 @@ SLID.section("eng", {
       title: "The Carpathians, the Black Sea, the Dnipro: the or no article?",
       short: "Articles: places",
       icon: "river",
-      status: "draft",
+      status: "verified",
       why: "Some place names have the, and some don’t. Learn which ones need the.",
       screens: [
         {
@@ -330,7 +330,7 @@ SLID.section("eng", {
       title: "Hot summers, cold winters: the climate of Ukraine",
       short: "Climate",
       icon: "leaf",
-      status: "draft",
+      status: "verified",
       why: "The weather changes every day, but the climate doesn’t. Learn to talk about the climate of Ukraine.",
       screens: [
         {
@@ -478,7 +478,7 @@ SLID.section("eng", {
       title: "Millions, per cent and half: numbers and statistics",
       short: "Statistics",
       icon: "chart",
-      status: "draft",
+      status: "verified",
       why: "Reports and the news are full of numbers. Learn to read big numbers and talk about statistics.",
       screens: [
         {
@@ -553,7 +553,7 @@ SLID.section("eng", {
         {
           type: "info",
           title: "Big numbers",
-          body: `<ul><li>603,628 km² – six hundred and three thousand, six hundred and twenty-eight square kilometres. This is the area of Ukraine.</li><li>48.5 million – forty-eight <b>point</b> five million</li></ul><p>In English, a comma separates thousands (2,500). A point shows a part (2.5).</p><p><b>million</b> after a number – no -s: two <b>million</b> people. But: <b>millions of</b> people.</p>`,
+          body: `<ul><li>more than 600,000 km² – more than six hundred thousand square kilometres. This is the area of Ukraine.</li><li>2,061 m – two thousand and sixty-one metres. This is the height of Hoverla.</li><li>48.5 million – forty-eight <b>point</b> five million</li></ul><p>In English, a comma separates thousands (2,500). A point shows a part (2.5).</p><p><b>million</b> after a number – no -s: two <b>million</b> people. But: <b>millions of</b> people.</p>`,
           cta: "Next"
         },
         {
@@ -614,7 +614,7 @@ SLID.section("eng", {
           "Say parts: half, a third, a quarter, three quarters.",
           "Use per cent and million without -s after a number.",
           "Use most of, some of and none of with the, us or them.",
-          "Read big numbers like 603,628 and 48.5 million."
+          "Read big numbers like 2,061 and 48.5 million."
         ]
       }
     },
@@ -625,7 +625,7 @@ SLID.section("eng", {
       title: "Who lives in Ukraine? People and nationalities",
       short: "Nationalities",
       icon: "users",
-      status: "draft",
+      status: "verified",
       why: "Many nationalities live in Ukraine. Learn their names and how to talk about them.",
       screens: [
         {
@@ -760,7 +760,7 @@ SLID.section("eng", {
       title: "Ukraine in numbers: a short report",
       short: "Report",
       icon: "scroll",
-      status: "draft",
+      status: "verified",
       why: "A good report has facts, numbers and sources. Learn to read and write a short report.",
       screens: [
         {
@@ -775,7 +775,7 @@ SLID.section("eng", {
           sk: "read",
           eyebrow: "Reading: Ukraine in numbers, part 1 of 2",
           title: "Read and choose.",
-          body: `<p><i>Ukraine is in Eastern Europe. Its area is 603,628 km². It borders seven countries, and in the south it is on the Black Sea and the Sea of Azov. The longest river is the Dnipro. The highest mountain is Hoverla (2,061 m), in the Carpathians. Most of Ukraine has a continental climate, with warm or hot summers and cold winters.</i></p><p>What is 603,628 km²?</p>`,
+          body: `<p><i>Ukraine is in Eastern Europe. Its area is more than 600,000 km². It borders seven countries, and in the south it is on the Black Sea and the Sea of Azov. The longest river is the Dnipro. The highest mountain is Hoverla (2,061 m), in the Carpathians. Most of Ukraine has a continental climate, with warm or hot summers and cold winters.</i></p><p>What is “more than 600,000 km²” about?</p>`,
           opts: [
             "the area of Ukraine",
             "the population of Ukraine",
@@ -785,7 +785,7 @@ SLID.section("eng", {
           hint: "km² is for land, not people.",
           fbOk: "Yes!",
           fbBad: "Read the second sentence again.",
-          fbText: "<b>The area of Ukraine</b> is 603,628 km². Hoverla is 2,061 m high."
+          fbText: "<b>The area of Ukraine</b> is more than 600,000 km². Hoverla is 2,061 m high."
         },
         {
           type: "multi",
@@ -866,7 +866,7 @@ SLID.section("eng", {
           type: "build",
           sk: "write",
           title: "Put the words in order.",
-          body: `<p>Andrii writes about towns and villages in 2001.</p>`,
+          body: `<p>Andrii writes about towns and villages in 2001. Start with <i>About</i>.</p>`,
           tiles: ["about", "two thirds", "of the people", "lived", "in towns and cities"],
           answer: "About two thirds of the people lived in towns and cities.",
           extra: ["two third"],
@@ -905,7 +905,7 @@ SLID.section("eng", {
       title: "Ukraine: the class project",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e8s7boss",
       why: "Check everything from this section. Your points are doubled.",
@@ -1046,7 +1046,7 @@ SLID.section("eng", {
           sk: "write",
           eyebrow: "Task 9",
           title: "Put the words in order.",
-          body: `<p>Emma writes the last sentence of the report. Start with <i>According to</i>.</p>`,
+          body: `<p>Emma writes the last sentence of the report. Start with <i>According to</i> and end with <i>in Ukraine</i>.</p>`,
           tiles: ["According to", "the 2001 census,", "people of", "more than 130 nationalities", "lived", "in Ukraine"],
           answer: "According to the 2001 census, people of more than 130 nationalities lived in Ukraine.",
           extra: ["lives"],

@@ -7,7 +7,7 @@ subject: eng
 grade: 8
 section: e8s7
 depends_on: [curate-eng-plan-g7-9, engine-eng-lang-core, engine-eng-validate, engine-eng-stats, skills-eng, curate-eng-style, curate-eng-glossary, engine-eng-dialog]
-status: review
+status: done
 claimed_by: writer-e8s7
 created: 2026-11-19
 source: design-eng
@@ -90,3 +90,5 @@ Build не запускай (AGENTS.md §4 п. 8).
 - Розподіл регіонів «the south and the south-east — the least rain» — en.wiki пише «east and southeast», Britannica (через en.wiki) і outdoorukraine — «Black Sea lowlands and Crimea / south and south-east». Можна звузити до «the south-east».
 - «Mediterranean climate» узбережжя Криму — за класифікацією Алісова (uk.wiki); за Кеппеном en.wiki пише «humid subtropical / cold semi-arid» на південних узбережжях. Для 8 кл. лишив Mediterranean (так і CIA-текст).
 - Нові деталі героїв: Taras, Dad і Zlata після Hoverla їздили до Lake Svitiaz (серпень, l2); Taras із Zlata в Odesa в липні (l2 word). Daryna — geography club (квіз, постер про клімат). Emma — проєкт «Countries of Europe» (мапа). Клас Emma — 30 учнів (фінал T5, вигадане опитування).
+
+**verifier-e8s7, 2026-11-25.** Верифіковано: 7 уроків → `verified`, 9 правок (Росія — north-east and east; площа → «more than 600,000 km²» через розбіжність джерел; два `build` — інструкція в body відсікає інверсію). Звіт — reports/verify/write-eng-g8-e8s7.md. Плейтест — лише CI (немає Python playwright).
