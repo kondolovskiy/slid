@@ -13,7 +13,7 @@
    Факти (Червона книга України, зубр, рись, лелека чорний, підсніжник, Карпатський біосферний заповідник, руда білка у Великій
    Британії) і форми (CD, CD Grammar, British Council) — URL у tasks/…/write-eng-g9-e9s2.md, «Нотатки агента».
    Увесь зміст — англійською, британська норма (D-055). Тексти, діалоги й герої — власні (docs/design/english.md §8).
-   Статус: draft (writer-e9s2). 7 уроків (6 + фінал). Будова — за розділами 7–8 кл. (e7s2, e8s2, e8s3).
+   Статус: verified (verifier-e9s2, 2026-11-25; reports/verify/write-eng-g9-e9s2.md). 7 уроків (6 + фінал). Будова — за розділами 7–8 кл. (e7s2, e8s2, e8s3).
    Перевірка: node tools/validate.mjs --section e9s2 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -23,7 +23,7 @@ SLID.section("eng", {
   title: "The environment",
   why: "To talk about the environment, plants and animals. And to make predictions about the future of our planet.",
   requires: ["e4s6l4", "e4s6l6", "e5s5l5", "e5s9l3", "e6s5l4", "e7s2l4"],
-  meta: { author: "writer-e9s2", created: "2026-11-25", factcheck: null, teacher: null },
+  meta: { author: "writer-e9s2", created: "2026-11-25", factcheck: "verifier-e9s2, 2026-11-25 (reports/verify/write-eng-g9-e9s2.md)", teacher: null },
   badges: [
     { id: "e9s2boss", name: "Planet reporter", icon: "trophy", desc: "Finish the final lesson “The environment”" }
   ],
@@ -34,7 +34,7 @@ SLID.section("eng", {
       title: "Air, water and land: our environment",
       short: "Environment",
       icon: "globe",
-      status: "draft",
+      status: "verified",
       why: "Clean air, water and land are important for everyone. Learn the words to talk about the environment.",
       screens: [
         {
@@ -160,7 +160,7 @@ SLID.section("eng", {
       title: "Rare plants and animals of Ukraine",
       short: "Rare species",
       icon: "leaf",
-      status: "draft",
+      status: "verified",
       why: "Some animals and plants in Ukraine are rare. Learn about them and how people protect them.",
       screens: [
         {
@@ -273,7 +273,7 @@ SLID.section("eng", {
           body: `<p>There are a lot of grey squirrels in the UK, but not many red ones.</p>`,
           before: "Grey squirrels are common, but red squirrels are",
           after: ".",
-          answer: ["rare", "uncommon", "endangered"],
+          answer: ["rare", "uncommon", "endangered", "scarce", "not common", "less common"],
           hint: "The opposite of common: r…",
           fbOk: "Well done!",
           fbBad: "There aren’t many of them. Look at the list of words about the Red Book.",
@@ -308,7 +308,7 @@ SLID.section("eng", {
       title: "It’s going to be a hot summer: predictions",
       short: "Predictions",
       icon: "eye",
-      status: "draft",
+      status: "verified",
       why: "We often talk about what will happen. Make predictions and say how sure you are.",
       screens: [
         {
@@ -458,7 +458,7 @@ SLID.section("eng", {
       title: "In 2050 we will be living…: the Future Continuous",
       short: "Future Continuous",
       icon: "bulb",
-      status: "draft",
+      status: "verified",
       why: "Imagine your life in the future. Say what will be happening at a time in the future.",
       screens: [
         {
@@ -560,7 +560,7 @@ SLID.section("eng", {
           body: `<p>Use the Future Continuous of <i>sleep</i>.</p>`,
           before: "Please don’t call me at midnight. I",
           after: "!",
-          answer: ["will be sleeping", "’ll be sleeping"],
+          answer: ["will be sleeping", "’ll be sleeping", "shall be sleeping"],
           contractions: true,
           hint: "will + be + sleep + -ing.",
           fbOk: "Right.",
@@ -596,7 +596,7 @@ SLID.section("eng", {
       title: "Forests must be protected: what can we do?",
       short: "Must be protected",
       icon: "shield",
-      status: "draft",
+      status: "verified",
       why: "Rules for nature often use must be, can be and should be. Read signs and say what must be done.",
       screens: [
         {
@@ -626,7 +626,7 @@ SLID.section("eng", {
         {
           type: "info",
           title: "Must be done: rules and signs",
-          body: `<p>Remember: <b>can / should / must</b> + <b>be</b> + past participle.</p><ul><li>You must take rubbish home. → Rubbish <b>must be taken</b> home.</li><li>Don’t pick flowers. → Flowers <b>must not be picked</b>.</li><li>Plastic <b>can be recycled</b>. Trees <b>should be planted</b>.</li></ul><p>Signs and rules use this form: the action is important, not the person.</p>`,
+          body: `<p>Remember: <b>can / should / must</b> + <b>be</b> + past participle (the third form).</p><ul><li>You must take rubbish home. → Rubbish <b>must be taken</b> home.</li><li>Don’t pick flowers. → Flowers <b>must not be picked</b>.</li><li>Plastic <b>can be recycled</b>. Trees <b>should be planted</b>.</li></ul><p>Signs and rules use this form: the action is important, not the person.</p>`,
           cta: "Next"
         },
         {
@@ -733,7 +733,7 @@ SLID.section("eng", {
       title: "An eco project for our school",
       short: "Eco project",
       icon: "users",
-      status: "draft",
+      status: "verified",
       why: "A good idea needs good reasons. Say what you believe, give reasons and plan an eco event.",
       screens: [
         {
@@ -888,7 +888,7 @@ SLID.section("eng", {
       title: "Our planet week at the penfriend club",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e9s2boss",
       why: "Check everything from this section. Your points are doubled.",
