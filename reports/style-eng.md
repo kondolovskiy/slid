@@ -186,12 +186,12 @@
 | e6s8l5 Emma told me about London: said and told | 6 | 10 | 0.6 | 30 | 61 | 58 | 6.5 | 0.012 | 5 | sentenceWords нетипово для сім'ї (z=2.2) |
 | e6s8l6 A post from London: what I liked most | 6 | 9 | 0.78 | 40 | 62 | 59 | 6.4 | 0.047 | 4 | readWordsPerScreen нетипово для сім'ї (z=2.3); sentenceWords нетипово для сім'ї (z=2) |
 | e6s8l7 London quiz (фінал) | 6 | 7 | 0.86 | 21 | 37 | 34 | 5.7 | 0.036 | 3 | — |
-| e7s1l1 Housework: who does what at home? | 7 | 9 | 0.78 | 32 | 71 | 69 | 5.8 | 0.114 | 5 | gradedShare нетипово для сім'ї (z=2.2) |
+| e7s1l1 Housework: who does what at home? | 7 | 9 | 0.78 | 32 | 71 | 69 | 5.8 | 0.114 | 5 | gradedShare нетипово для сім'ї (z=2.1) |
 | e7s1l2 I’ve just washed the dishes: just and already | 7 | 11 | 0.64 | 34 | 57 | 52 | 5.7 | 0.079 | 5 | — |
 | e7s1l3 Have you tidied your room yet? | 7 | 11 | 0.73 | 31 | 56 | 51 | 5.2 | 0.066 | 5 | — |
 | e7s1l4 We’ve lived here for ten years: for and since | 7 | 11 | 0.64 | 31 | 57 | 51 | 6.1 | 0.049 | 6 | — |
-| e7s1l5 We made it ourselves: myself, yourself, ourselves | 7 | 11 | 0.73 | 27 | 49 | 46 | 5 | 0.04 | 6 | readWordsPerScreen нетипово для сім'ї (z=-2.2) |
-| e7s1l6 Family traditions and celebrations | 7 | 10 | 0.8 | 39 | 79 | 76 | 5.8 | 0.124 | 6 | gradedShare нетипово для сім'ї (z=2.5); longWordShare нетипово для сім'ї (z=2.3) |
+| e7s1l5 We made it ourselves: myself, yourself, ourselves | 7 | 11 | 0.73 | 27 | 49 | 46 | 5 | 0.04 | 6 | readWordsPerScreen нетипово для сім'ї (z=-2.4); maxReadWords нетипово для сім'ї (z=-2) |
+| e7s1l6 Family traditions and celebrations | 7 | 10 | 0.8 | 39 | 79 | 76 | 5.8 | 0.124 | 6 | gradedShare нетипово для сім'ї (z=2.4); longWordShare нетипово для сім'ї (z=2.1) |
 | e7s1l7 Our family, our traditions (фінал) | 7 | 9 | 0.89 | 24 | 35 | 29 | 5 | 0.092 | 5 | — |
 | e7s2l1 Pots, pans and plates: kitchen things | 7 | 9 | 0.56 | 43 | 68 | 64 | 6.8 | 0.031 | 5 | — |
 | e7s2l2 Boil, fry or bake? Ways of cooking | 7 | 10 | 0.6 | 36 | 67 | 63 | 6.2 | 0.04 | 5 | — |
@@ -213,21 +213,42 @@
 | e7s4l4 Bored or boring? Interested or interesting? | 7 | 9 | 0.67 | 33 | 69 | 66 | 6.5 | 0.087 | 6 | — |
 | e7s4l5 Much better, a bit longer, not as funny as the book | 7 | 11 | 0.64 | 43 | 75 | 68 | 7.1 | 0.046 | 4 | — |
 | e7s4l6 Old enough to watch it? A film review | 7 | 10 | 0.6 | 47 | 86 | 81 | 7.4 | 0.037 | 5 | readWordsPerScreen нетипово для сім'ї (z=2.1) |
-| e7s4l7 A weekend of films and plays (фінал) | 7 | 7 | 0.86 | 35 | 60 | 37 | 5.7 | 0.055 | 3 | readWordsPerScreen нетипово для сім'ї (z=2) |
+| e7s4l7 A weekend of films and plays (фінал) | 7 | 7 | 0.86 | 35 | 60 | 37 | 5.7 | 0.055 | 3 | readWordsPerScreen нетипово для сім'ї (z=2.5); maxReadWords нетипово для сім'ї (z=2.1) |
 | e7s5l1 A race, a match, a tournament: competitions | 7 | 10 | 0.6 | 38 | 74 | 72 | 6.1 | 0.086 | 5 | — |
-| e7s5l2 Joining a club: which club is right for you? | 7 | 11 | 0.64 | 38 | 92 | 88 | 5.1 | 0.062 | 6 | maxReadWords нетипово для сім'ї (z=2); maxText нетипово для сім'ї (z=2.1) |
+| e7s5l2 Joining a club: which club is right for you? | 7 | 11 | 0.64 | 38 | 92 | 88 | 5.1 | 0.062 | 6 | — |
 | e7s5l3 I used to play football, but now I swim | 7 | 11 | 0.64 | 37 | 85 | 82 | 6.5 | 0.034 | 5 | — |
 | e7s5l4 While we were playing, it started to snow | 7 | 10 | 0.7 | 34 | 66 | 61 | 5.9 | 0.04 | 5 | — |
-| e7s5l5 The first Ukrainian to win: famous athletes | 7 | 11 | 0.64 | 41 | 80 | 77 | 7.7 | 0.067 | 5 | sentenceWords нетипово для сім'ї (z=2.3) |
-| e7s5l6 The day we won: a story about a competition | 7 | 9 | 0.78 | 45 | 88 | 83 | 7.1 | 0.031 | 6 | gradedShare нетипово для сім'ї (z=2.2) |
+| e7s5l5 The first Ukrainian to win: famous athletes | 7 | 11 | 0.64 | 41 | 80 | 77 | 7.7 | 0.067 | 5 | sentenceWords нетипово для сім'ї (z=2.2) |
+| e7s5l6 The day we won: a story about a competition | 7 | 9 | 0.78 | 45 | 88 | 83 | 7.1 | 0.031 | 6 | gradedShare нетипово для сім'ї (z=2.1) |
 | e7s5l7 Our club newsletter (фінал) | 7 | 8 | 0.88 | 23 | 31 | 25 | 5.2 | 0.037 | 5 | — |
 | e7s6l1 After-school clubs | 7 | 9 | 0.56 | 40 | 75 | 69 | 6.5 | 0.051 | 4 | — |
-| e7s6l2 First bell, last bell: school traditions | 7 | 9 | 0.56 | 48 | 80 | 75 | 7.4 | 0.063 | 4 | readWordsPerScreen нетипово для сім'ї (z=2.4) |
+| e7s6l2 First bell, last bell: school traditions | 7 | 9 | 0.56 | 48 | 80 | 75 | 7.4 | 0.063 | 4 | readWordsPerScreen нетипово для сім'ї (z=2.3) |
 | e7s6l3 If we win, we’ll play in the final: the First Conditional | 7 | 10 | 0.6 | 35 | 73 | 67 | 6.3 | 0.027 | 6 | — |
 | e7s6l4 Unless it rains… As soon as we finish… | 7 | 10 | 0.6 | 36 | 69 | 63 | 6.5 | 0.021 | 4 | — |
 | e7s6l5 Shall we make a poster? Planning a school event | 7 | 9 | 0.56 | 38 | 61 | 57 | 5.3 | 0.065 | 4 | — |
-| e7s6l6 Our school festival: an invitation | 7 | 9 | 0.56 | 42 | 71 | 65 | 5.7 | 0.116 | 4 | longWordShare нетипово для сім'ї (z=2) |
+| e7s6l6 Our school festival: an invitation | 7 | 9 | 0.56 | 42 | 71 | 65 | 5.7 | 0.116 | 4 | — |
 | e7s6l7 School life after lessons (фінал) | 7 | 8 | 0.88 | 28 | 47 | 44 | 5.7 | 0.068 | 3 | — |
+| e8s1l1 Looking for a pen friend: a profile | 8 | 11 | 0.73 | 38 | 64 | 61 | 5.7 | 0.06 | 6 | — |
+| e8s1l2 I’ve been learning English for five years | 8 | 10 | 0.6 | 36 | 61 | 58 | 6.2 | 0.045 | 5 | — |
+| e8s1l3 What have you been doing? News in an email | 8 | 10 | 0.7 | 40 | 69 | 64 | 6.1 | 0.039 | 5 | — |
+| e8s1l4 You like music, don’t you? Question tags | 8 | 11 | 0.64 | 32 | 64 | 62 | 5.1 | 0.05 | 6 | — |
+| e8s1l5 Dear…, Best wishes: writing an email | 8 | 11 | 0.64 | 34 | 66 | 60 | 5.6 | 0.068 | 6 | — |
+| e8s1l6 We write to each other: a letter from England | 8 | 10 | 0.7 | 46 | 95 | 92 | 7.6 | 0.066 | 6 | maxReadWords нетипово для сім'ї (z=2.2); sentenceWords нетипово для сім'ї (z=2.1); maxText нетипово для сім'ї (z=2.3) |
+| e8s1l7 Our pen friend club (фінал) | 8 | 9 | 0.89 | 24 | 40 | 33 | 5.5 | 0.034 | 5 | — |
+| e8s2l1 Sleep, food and exercise: a healthy lifestyle | 8 | 9 | 0.56 | 39 | 93 | 88 | 6.7 | 0.088 | 5 | maxReadWords нетипово для сім'ї (z=2) |
+| e8s2l2 Too much sugar, not enough sleep | 8 | 9 | 0.67 | 38 | 73 | 67 | 6.1 | 0.042 | 5 | — |
+| e8s2l3 I enjoy cycling, I want to try climbing: -ing or to? | 8 | 9 | 0.67 | 36 | 83 | 79 | 5.9 | 0.06 | 5 | — |
+| e8s2l4 Take up a sport, give up fast food: phrasal verbs | 8 | 9 | 0.67 | 44 | 75 | 73 | 6.9 | 0.052 | 5 | — |
+| e8s2l5 Hiking, camping, cycling: active weekends | 8 | 8 | 0.63 | 44 | 78 | 71 | 6.9 | 0.038 | 5 | — |
+| e8s2l6 How do we spend our free time? A class survey | 8 | 8 | 0.63 | 37 | 63 | 60 | 6.4 | 0.045 | 4 | — |
+| e8s2l7 Healthy week at the penfriend club (фінал) | 8 | 7 | 0.86 | 25 | 33 | 26 | 5.9 | 0.031 | 4 | — |
+| e8s3l1 Newspapers, magazines and news websites | 8 | 9 | 0.56 | 39 | 86 | 80 | 6.4 | 0.179 | 5 | longWordShare нетипово для сім'ї (z=3.9) |
+| e8s3l2 Is it true? Reading the news online | 8 | 9 | 0.56 | 37 | 64 | 59 | 5.9 | 0.059 | 5 | — |
+| e8s3l3 A new park is being built: news reports | 8 | 10 | 0.6 | 35 | 59 | 55 | 6.3 | 0.023 | 5 | — |
+| e8s3l4 She said she was tired: reported statements | 8 | 10 | 0.6 | 42 | 80 | 78 | 6.3 | 0.084 | 6 | — |
+| e8s3l5 He told us that…: reporting the news | 8 | 10 | 0.7 | 35 | 60 | 57 | 7.1 | 0.09 | 5 | — |
+| e8s3l6 Our school newspaper: a short article | 8 | 8 | 0.75 | 46 | 86 | 83 | 7.2 | 0.098 | 5 | — |
+| e8s3l7 The school newspaper team (фінал) | 8 | 8 | 0.88 | 24 | 50 | 47 | 5.5 | 0.113 | 6 | longWordShare нетипово для сім'ї (z=2.1) |
 
 ## Середні по сім'ях (предмет + класи + звичайний урок / фінал)
 
@@ -237,5 +258,5 @@
 - **4:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 23.63±1.73, maxReadWords 36.13±3.48, sentenceWords 4.84±0.26, longWordShare 0.04±0.01, typeVariety 3.75±0.83, maxText 30.25±3.6
 - **5-6:lesson**: screens 9.52±0.67, gradedShare 0.65±0.07, readWordsPerScreen 30.54±4.18, maxReadWords 55.15±8, sentenceWords 5.26±0.58, longWordShare 0.06±0.03, typeVariety 5.06±0.68, maxText 50.65±7.76
 - **5-6:boss**: screens 7.22±0.42, gradedShare 0.86±0.01, readWordsPerScreen 23.17±3.39, maxReadWords 35.89±4.97, sentenceWords 5±0.31, longWordShare 0.07±0.02, typeVariety 3.72±0.56, maxText 29.33±5.14
-- **7-9:lesson**: screens 10.11±0.81, gradedShare 0.64±0.06, readWordsPerScreen 37.22±4.57, maxReadWords 69.89±10.88, sentenceWords 6.07±0.72, longWordShare 0.06±0.03, typeVariety 5.11±0.66, maxText 65.31±10.82
-- **7-9:boss**: screens 8±0.58, gradedShare 0.88±0.01, readWordsPerScreen 26.67±4.19, maxReadWords 41.5±9.73, sentenceWords 5.27±0.31, longWordShare 0.06±0.02, typeVariety 4.17±0.9, maxText 33.17±6.96
+- **7-9:lesson**: screens 9.91±0.91, gradedShare 0.64±0.06, readWordsPerScreen 37.74±4.46, maxReadWords 71.02±11.15, sentenceWords 6.17±0.69, longWordShare 0.06±0.03, typeVariety 5.15±0.62, maxText 66.63±11.12
+- **7-9:boss**: screens 8±0.67, gradedShare 0.88±0.01, readWordsPerScreen 25.89±3.6, maxReadWords 41.33±8.91, sentenceWords 5.39±0.33, longWordShare 0.06±0.03, typeVariety 4.44±0.96, maxText 33.89±7.67
