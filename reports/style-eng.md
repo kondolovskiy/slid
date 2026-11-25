@@ -215,10 +215,10 @@
 | e7s4l6 Old enough to watch it? A film review | 7 | 10 | 0.6 | 47 | 86 | 81 | 7.4 | 0.037 | 5 | readWordsPerScreen нетипово для сім'ї (z=2.3) |
 | e7s4l7 A weekend of films and plays (фінал) | 7 | 7 | 0.86 | 35 | 60 | 37 | 5.7 | 0.055 | 3 | — |
 | e7s5l1 A race, a match, a tournament: competitions | 7 | 10 | 0.6 | 38 | 74 | 72 | 6.1 | 0.086 | 5 | — |
-| e7s5l2 Joining a club: which club is right for you? | 7 | 11 | 0.64 | 37 | 92 | 88 | 5.2 | 0.062 | 6 | maxText нетипово для сім'ї (z=2) |
+| e7s5l2 Joining a club: which club is right for you? | 7 | 11 | 0.64 | 38 | 92 | 88 | 5.1 | 0.062 | 6 | maxText нетипово для сім'ї (z=2) |
 | e7s5l3 I used to play football, but now I swim | 7 | 11 | 0.64 | 37 | 85 | 82 | 6.5 | 0.034 | 5 | — |
-| e7s5l4 While we were playing, it started to snow | 7 | 10 | 0.7 | 33 | 66 | 61 | 5.9 | 0.04 | 5 | — |
-| e7s5l5 The first Ukrainian to win: famous athletes | 7 | 11 | 0.64 | 41 | 80 | 77 | 7.6 | 0.067 | 5 | sentenceWords нетипово для сім'ї (z=2.2) |
+| e7s5l4 While we were playing, it started to snow | 7 | 10 | 0.7 | 34 | 66 | 61 | 5.9 | 0.04 | 5 | — |
+| e7s5l5 The first Ukrainian to win: famous athletes | 7 | 11 | 0.64 | 41 | 80 | 77 | 7.7 | 0.067 | 5 | sentenceWords нетипово для сім'ї (z=2.3) |
 | e7s5l6 The day we won: a story about a competition | 7 | 9 | 0.78 | 45 | 88 | 83 | 7.1 | 0.031 | 6 | — |
 | e7s5l7 Our club newsletter (фінал) | 7 | 8 | 0.88 | 23 | 31 | 25 | 5.2 | 0.037 | 5 | — |
 
@@ -230,5 +230,5 @@
 - **4:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 23.63±1.73, maxReadWords 36.13±3.48, sentenceWords 4.84±0.26, longWordShare 0.04±0.01, typeVariety 3.75±0.83, maxText 30.25±3.6
 - **5-6:lesson**: screens 9.52±0.67, gradedShare 0.65±0.07, readWordsPerScreen 30.54±4.18, maxReadWords 55.15±8, sentenceWords 5.26±0.58, longWordShare 0.06±0.03, typeVariety 5.06±0.68, maxText 50.65±7.76
 - **5-6:boss**: screens 7.22±0.42, gradedShare 0.86±0.01, readWordsPerScreen 23.17±3.39, maxReadWords 35.89±4.97, sentenceWords 5±0.31, longWordShare 0.07±0.02, typeVariety 3.72±0.56, maxText 29.33±5.14
-- **7-9:lesson**: screens 10.27±0.77, gradedShare 0.66±0.06, readWordsPerScreen 36.63±4.45, maxReadWords 69.57±11.6, sentenceWords 6.03±0.71, longWordShare 0.06±0.03, typeVariety 5.27±0.51, maxText 65.17±11.58
+- **7-9:lesson**: screens 10.27±0.77, gradedShare 0.66±0.06, readWordsPerScreen 36.7±4.44, maxReadWords 69.57±11.6, sentenceWords 6.03±0.72, longWordShare 0.06±0.03, typeVariety 5.27±0.51, maxText 65.17±11.58
 - **7-9:boss**: screens 8±0.63, gradedShare 0.88±0.01, readWordsPerScreen 26.4±4.54, maxReadWords 40.4±10.31, sentenceWords 5.18±0.27, longWordShare 0.06±0.02, typeVariety 4.4±0.8, maxText 31±5.48

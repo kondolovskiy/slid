@@ -11,7 +11,7 @@
    Lviv Junior Athletics Club), Lesia й Ilona (бігуньї клубу, Lviv).
    Факти про спортсменів (Baiul, Bubka, Mahuchikh, Bannister) — з двох джерел, URL — tasks/…/write-eng-g7-e7s5.md, «Нотатки агента».
    Увесь зміст — англійською, британська норма (D-055). Тексти, діалоги й герої — власні (docs/design/english.md §8).
-   Статус: draft. 7 уроків (6 + фінал). Будова — за еталонами e4s1, e5s1 і розділами 6 кл. (e6s4).
+   Статус: verified (verifier-e7s5). 7 уроків (6 + фінал). Будова — за еталонами e4s1, e5s1 і розділами 6 кл. (e6s4).
    Перевірка: node tools/validate.mjs --section e7s5 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -21,7 +21,7 @@ SLID.section("eng", {
   title: "Sport: competitions and clubs",
   why: "To talk about sports competitions, clubs and famous athletes. And to tell a story about a match or a race.",
   requires: ["e5s10l5", "e6s3l4", "e6s4l1", "e6s4l3", "e6s4l4", "e6s4l5"],
-  meta: { author: "writer-e7s5", created: "2026-11-25", factcheck: "self", teacher: null },
+  meta: { author: "writer-e7s5", created: "2026-11-25", factcheck: "verifier-e7s5, 2026-11-25 (reports/verify/write-eng-g7-e7s5.md)", teacher: null },
   badges: [
     { id: "e7s5boss", name: "Club reporter", icon: "trophy", desc: "Finish the final lesson “Sport: competitions and clubs”" }
   ],
@@ -32,7 +32,7 @@ SLID.section("eng", {
       title: "A race, a match, a tournament: competitions",
       short: "Competitions",
       icon: "target",
-      status: "draft",
+      status: "verified",
       why: "There are lots of different sports competitions. Learn their names and talk about places and medals.",
       screens: [
         {
@@ -160,7 +160,7 @@ SLID.section("eng", {
       title: "Joining a club: which club is right for you?",
       short: "Clubs",
       icon: "users",
-      status: "draft",
+      status: "verified",
       why: "Do you want to start a new sport? Read about clubs and ask the right questions.",
       screens: [
         {
@@ -219,7 +219,7 @@ SLID.section("eng", {
           type: "gaps",
           sk: "func",
           title: "Complete the sentences.",
-          body: `<p>Taras writes questions for Mr Hnatiuk.</p>`,
+          body: `<p>Taras writes questions for Mr Hnatiuk. He wants to know: How many times a week? How much money? Can beginners join? What things?</p>`,
           text: "How {*often|much|many} do you train? How {*much|often|many} does it cost? {*Can|Are|Is} beginners join the club? What do I need to {*bring|join|cost}?",
           hint: "How often → days in a week. How much → money.",
           fbOk: "Exactly.",
@@ -281,7 +281,7 @@ SLID.section("eng", {
           eyebrow: "Final",
           title: "Complete the sentences.",
           body: `<p>Taras writes to Emma.</p>`,
-          text: "Guess what? I {*joined|joined to|join to} the athletics club! I’m a beginner, but the {*coach|member|beginner}, Mr Hnatiuk, is very kind. We {*train|training|trains} twice a week. Myroslava is a {*member|coach|beginner} too, so I’m not alone.",
+          text: "Guess what? I {*joined|joined to|join to} the athletics club! I’m a beginner, but the {*coach|member|beginner}, Mr Hnatiuk, is very kind. We {*train|training|trains} twice a week. Myroslava is a {*member|members|join} too, so I’m not alone.",
           hint: "Who helps the runners? Myroslava is in the club too.",
           fbOk: "Well done!",
           fbBad: "Check: join a club, no to. Who helps the team?",
@@ -304,7 +304,7 @@ SLID.section("eng", {
       title: "I used to play football, but now I swim",
       short: "Used to",
       icon: "scale",
-      status: "draft",
+      status: "verified",
       why: "People and their hobbies change. Say what you did in the past but don’t do now.",
       screens: [
         {
@@ -396,7 +396,7 @@ SLID.section("eng", {
         {
           type: "word",
           sk: "gram",
-          title: "Write the missing word.",
+          title: "Complete the sentence with used to.",
           body: `<p>Andrii: “I played chess only with my grandad. Now I play in a club.”</p>`,
           before: "Andrii",
           after: "to play chess only with his grandad.",
@@ -451,7 +451,7 @@ SLID.section("eng", {
       title: "While we were playing, it started to snow",
       short: "While",
       icon: "eye",
-      status: "draft",
+      status: "verified",
       why: "A good story says what was happening and what happened. Use while, not and questions in the Past Continuous.",
       screens: [
         {
@@ -520,7 +520,7 @@ SLID.section("eng", {
         {
           type: "word",
           sk: "gram",
-          title: "Write the missing word.",
+          title: "Write the missing word: was or were + not.",
           body: `<p>The coach asked Ostap a question. Ostap didn’t hear it.</p>`,
           before: "Sorry, I",
           after: "listening.",
@@ -536,10 +536,9 @@ SLID.section("eng", {
           sk: "func",
           title: "Put the words in order.",
           body: `<p>Emma asks Ostap about the match.</p>`,
-          tiles: ["Were", "you", "playing", "when", "it", "started", "to snow"],
-          answer: "Were you playing when it started to snow?",
-          extra: ["Was"],
-          keepCase: true,
+          tiles: ["were", "you", "playing", "when", "it", "started", "to snow"],
+          answer: ["Were you playing when it started to snow?", "When it started to snow were you playing?"],
+          extra: ["was"],
           hint: "Start with Were you. Then when.",
           fbOk: "Well done!",
           fbBad: "A question: Were you + -ing?",
@@ -591,7 +590,7 @@ SLID.section("eng", {
       title: "The first Ukrainian to win: famous athletes",
       short: "The first to…",
       icon: "star",
-      status: "draft",
+      status: "verified",
       why: "Some athletes did something before anyone else. Say who was the first to do it.",
       screens: [
         {
@@ -628,7 +627,7 @@ SLID.section("eng", {
           type: "gaps",
           sk: "gram",
           title: "Fill in the gaps.",
-          text: "Lesia was the youngest girl {*to take|took|taking} part in the race. Vlad was the only player {*to score|scored|scores} three points. Ostap was the first boy in his class {*to join|joined|join} a football club.",
+          text: "Lesia was the youngest girl {*to take|took|takes} part in the race. Vlad was the only player {*to score|scored|scores} three points. Ostap was the first boy in his class {*to join|joined|join} a football club.",
           hint: "The youngest, the only, the first + noun + to + verb.",
           fbOk: "Exactly.",
           fbBad: "Look at the rule: to + verb, no -ed.",
@@ -653,7 +652,7 @@ SLID.section("eng", {
         {
           type: "info",
           title: "Stories about athletes",
-          body: `<p>Stories about athletes are in the Past Simple.</p><ul><li>win → <b>won</b>, run → <b>ran</b></li><li>become → <b>became</b>: She became a champion.</li><li>break → <b>broke</b>: She broke the world record.</li></ul><p>a <b>world record</b> = the best result in the world</p>`,
+          body: `<p>Stories about athletes are in the Past Simple.</p><ul><li>win → <b>won</b>, run → <b>ran</b></li><li>become → <b>became</b>: She became a champion.</li><li>break → <b>broke</b>: She broke the world record.</li></ul><p>a <b>world record</b> = the best result in the world</p><p><u>ath</u>lete, O<u>lym</u>pic, <u>he</u>ro</p>`,
           cta: "Next"
         },
         {
@@ -694,14 +693,14 @@ SLID.section("eng", {
           type: "word",
           sk: "gram",
           title: "Write the missing word.",
-          body: `<p>Lesia is eleven. She came third. All the other runners are twelve or thirteen, and they all finished the race too.</p>`,
+          body: `<p>Ten girls ran the race, and they all finished. Lesia is eleven, and she came third. All the other runners are twelve or thirteen.</p>`,
           before: "Lesia was the",
           after: "runner to finish the race.",
-          answer: "youngest",
+          answer: ["youngest", "third"],
           hint: "Young → the …est, like the longest river.",
           fbOk: "Right.",
           fbBad: "Lesia is younger than everyone. Young → ?",
-          fbText: "Lesia is younger than all the others, so she was <b>the youngest</b> runner to finish the race."
+          fbText: "Lesia is younger than all the others, so she was <b>the youngest</b> runner to finish the race. (She came third, so <b>the third</b> runner to finish is true too.)"
         },
         {
           type: "gaps",
@@ -732,7 +731,7 @@ SLID.section("eng", {
       title: "The day we won: a story about a competition",
       short: "A sports story",
       icon: "book",
-      status: "draft",
+      status: "verified",
       why: "Everyone loves a good sports story. Read one, then say what you think about it.",
       screens: [
         {
@@ -831,7 +830,7 @@ SLID.section("eng", {
         {
           type: "word",
           sk: "gram",
-          title: "Write the missing word.",
+          title: "Complete the sentence with used to.",
           body: `<p>Every year, Vlad’s team lost to School 3. This year they won!</p>`,
           before: "Vlad’s team",
           after: "to lose to School 3, but this year they won.",
@@ -870,7 +869,7 @@ SLID.section("eng", {
       title: "Our club newsletter",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e7s5boss",
       why: "Check everything from this section. Your points are doubled.",
@@ -915,7 +914,7 @@ SLID.section("eng", {
           type: "word",
           sk: "gram",
           eyebrow: "Task 3",
-          title: "Write the missing word.",
+          title: "Complete the sentence with used to.",
           body: `<p>Taras watched races on TV. Now he runs in them!</p>`,
           before: "Taras",
           after: "to watch races on TV. Now he runs in them!",
