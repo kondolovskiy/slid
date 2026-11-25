@@ -7,7 +7,7 @@ subject: eng
 grade: 7
 section: e7s3
 depends_on: [curate-eng-plan-g7-9, engine-eng-lang-core, engine-eng-validate, engine-eng-stats, skills-eng, curate-eng-style, curate-eng-glossary, engine-eng-dialog]
-status: review
+status: done
 claimed_by: writer-e7s3
 created: 2026-11-19
 source: design-eng
@@ -80,3 +80,5 @@ writer-e7s3, 2026-11-25. Файл `content/eng/g7-e7s3.js`, 7 уроків (6 + 
 - Етикетка з дозуванням для дорослих (вигадана) — пропоную TQ-154 (рядок в inbox).
 - ought not to vs oughtn’t to: учу лише ought not to (CD: oughtn’t to — скорочення); у `word` l5 ключ «ought» — скорочення не виникає.
 - Герої (нові факти): Oksana — flu, Dr Kovalenko; Dmytro (9) — backache і sore throat після футболу; Halyna — застуда; Taras упав з велосипеда в парку (Lviv), Ostap подзвонив татові; Tom (11) зламав руку на skatepark, у лікарні з мамою; Mariia порізала палець (Kharkiv); Andrii — кашель з понеділка, Dr Bondar; Sofiia — застуда; Zoriana — earache; Bohdan — sore throat, застуда; Kyrylo впав зі сходів (boss); дідусь Emma — кашель, окуляри. NOTE — в inbox.
+
+verifier-e7s3, 2026-11-25: verified, звіт reports/verify/write-eng-g7-e7s3.md. Правки: requires + e7s1l2, e7s1l4; l3/l4 — повторення just і since/for; етикетки без «under 12». Питання вчителю — TQ-137.

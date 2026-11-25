@@ -4,14 +4,14 @@
    інформація на упаковках лікарських засобів (с. 28); граматика B1 — Present Perfect (recent past), Past Simple vs Present Perfect,
    Ought (advice), Pronouns — indefinite (с. 34–35, розд. 5.4.1): https://osvita.ua/doc/files/news/831/83117/Inoz_mov_5-9-kl_Redko_ta_in_14_07.pdf
    Концентрично: What’s the matter? (e4s5l4), At the doctor’s (e4s5l5), have to (e6s5l5), should (e6s6l5), Present Perfect vs Past Simple (e6s7l5);
-   just і for / since — e7s1 (пишеться паралельно; тут подано коротко, requires на e7s1 додає оркестратор).
+   just — e7s1l2, for / since — e7s1l4: тут лише повторення з посиланням (requires; verifier-e7s3).
    Не повторює e4s5l4–l5: тут медичні заклади, нові симптоми, травми, ліки й етикетка.
    Герої — серія 4–6 кл., на три роки старші: Andrii, Sofiia, Kyrylo, Bohdan, Zoriana (Kyiv), Dr Bondar (Kyiv, e4s5l5); Oksana, мама Olena (nurse),
    Dmytro (9), подруга Halyna (Zelena Dolyna), Dr Kovalenko (e4s5l5); Taras і Ostap (Lviv); Mariia (Kharkiv); Emma, Tom (11), дідусь Emma (Англія).
    Етикетка ліків — вигадана, без назв справжніх препаратів; у уроці — «ask a doctor or a chemist».
    Увесь зміст — англійською, британська норма (D-055). Тексти, діалоги й герої — власні (docs/design/english.md §8).
    Форми, рівні слів і наголос — за Cambridge Dictionary (URL — tasks/…/write-eng-g7-e7s3.md, «Нотатки агента»).
-   Статус: draft. 7 уроків (6 + фінал).
+   Статус: verified (verifier-e7s3, 2026-11-25; звіт reports/verify/write-eng-g7-e7s3.md). 7 уроків (6 + фінал).
    Перевірка: node tools/validate.mjs --section e7s3 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -20,8 +20,8 @@ SLID.section("eng", {
   weeks: [11, 15],
   title: "Health and medicine",
   why: "To talk about illnesses, symptoms and medicines. And to ask for help and give advice.",
-  requires: ["e4s5l4", "e4s5l5", "e6s6l5", "e6s5l5", "e6s7l5"],
-  meta: { author: "writer-e7s3", created: "2026-11-25", factcheck: null, teacher: null },
+  requires: ["e4s5l4", "e4s5l5", "e6s6l5", "e6s5l5", "e6s7l5", "e7s1l2", "e7s1l4"],
+  meta: { author: "writer-e7s3", created: "2026-11-25", factcheck: "verifier-e7s3 (reports/verify/write-eng-g7-e7s3.md)", teacher: null },
   badges: [
     { id: "e7s3boss", name: "Health helper", icon: "trophy", desc: "Finish the final lesson “Health and medicine”" }
   ],
@@ -32,7 +32,7 @@ SLID.section("eng", {
       title: "A hospital, a chemist’s, a dentist’s: where to go",
       short: "Where to go",
       icon: "map",
-      status: "draft",
+      status: "verified",
       why: "When you feel ill, you need the right place. Learn where to go and how to ask for help.",
       screens: [
         {
@@ -173,7 +173,7 @@ SLID.section("eng", {
       title: "I’ve got a sore throat: illnesses and symptoms",
       short: "Symptoms",
       icon: "user",
-      status: "draft",
+      status: "verified",
       why: "A doctor needs to know how you feel. Learn to say what is wrong.",
       screens: [
         {
@@ -315,7 +315,7 @@ SLID.section("eng", {
       title: "I’ve hurt my knee! What has happened?",
       short: "What has happened?",
       icon: "bolt",
-      status: "draft",
+      status: "verified",
       why: "Accidents happen. Say what has just happened and ask for help.",
       screens: [
         {
@@ -328,9 +328,8 @@ SLID.section("eng", {
         {
           type: "choice",
           sk: "gram",
-          eyebrow: "Guess!",
-          title: "What do you think?",
-          hyp: true,
+          eyebrow: "Remember?",
+          title: "Choose the correct answer.",
           body: `<p>Taras says: “I’ve just fallen off my bike.” When did it happen?</p>`,
           opts: [
             "a very short time ago",
@@ -338,14 +337,15 @@ SLID.section("eng", {
             "every day"
           ],
           correct: 0,
-          fbTitle: "Let’s find out.",
-          fbOk: "Good guess!",
+          hint: "Remember the lesson “I’ve just washed the dishes”.",
+          fbOk: "Yes, you remember!",
+          fbBad: "Remember: just = a very short time ago.",
           fbText: "<b>just</b> = a very short time ago. It’s news: it has happened, and it’s important now."
         },
         {
           type: "info",
           title: "News: I’ve hurt my knee",
-          body: `<p>Something has happened, and it’s important now:</p><ul><li>I<b>’ve hurt</b> my knee.</li><li>Ostap <b>has called</b> Taras’s dad.</li><li>I<b>’ve just fallen</b> off my bike. (<b>just</b> = a very short time ago)</li></ul><p><b>have / has</b> + the third form. This is the Present Perfect.<br><b>What’s happened?</b> = What has happened?</p>`,
+          body: `<p>Something has happened, and it’s important now:</p><ul><li>I<b>’ve hurt</b> my knee.</li><li>Ostap <b>has called</b> Taras’s dad.</li><li>I<b>’ve just fallen</b> off my bike. (<b>just</b> = a very short time ago – remember “I’ve just washed the dishes”?)</li></ul><p><b>have / has</b> + the third form. This is the Present Perfect.<br><b>What’s happened?</b> = What has happened?</p>`,
           cta: "Next"
         },
         {
@@ -454,7 +454,7 @@ SLID.section("eng", {
       title: "When did it start? The Past Simple or the Present Perfect",
       short: "Since Monday",
       icon: "scale",
-      status: "draft",
+      status: "verified",
       why: "A doctor asks when it started and how long you’ve had it. Answer both questions.",
       screens: [
         {
@@ -467,9 +467,8 @@ SLID.section("eng", {
         {
           type: "choice",
           sk: "gram",
-          eyebrow: "Guess!",
-          title: "What do you think?",
-          hyp: true,
+          eyebrow: "Remember?",
+          title: "Choose the correct answer.",
           body: `<p>It’s Thursday. Andrii has had a cough since Monday. Has he got the cough now?</p>`,
           opts: [
             "Yes, he still has it.",
@@ -477,14 +476,15 @@ SLID.section("eng", {
             "No, it stopped yesterday."
           ],
           correct: 0,
-          fbTitle: "Let’s find out.",
-          fbOk: "Good guess!",
+          hint: "Remember the lesson “We’ve lived here for ten years”.",
+          fbOk: "Yes, you remember!",
+          fbBad: "Present Perfect + since: it started in the past, and it’s still true now.",
           fbText: "<b>I’ve had it since Monday</b> = it started on Monday, and Andrii still has it now."
         },
         {
           type: "info",
-          title: "since and for",
-          body: `<p>I<b>’ve had</b> a cough <b>since</b> Monday. = It started on Monday, and I still have it now.</p><ul><li><b>since</b> + the start: since Monday, since yesterday, since 8 o’clock</li><li><b>for</b> + how long: for three days, for a week</li></ul><p>Ask: <b>How long have you had</b> it?<br>Not: <s>I have a cough since Monday.</s></p>`,
+          title: "Remember: since and for",
+          body: `<p>You know it from the lesson “We’ve lived here for ten years”.</p><p>I<b>’ve had</b> a cough <b>since</b> Monday. = It started on Monday, and I still have it now.</p><ul><li><b>since</b> + the start: since Monday, since yesterday, since 8 o’clock</li><li><b>for</b> + how long: for three days, for a week</li></ul><p>Ask: <b>How long have you had</b> it?<br>Not: <s>I have a cough since Monday.</s></p>`,
           cta: "Next"
         },
         {
@@ -599,7 +599,7 @@ SLID.section("eng", {
       title: "You ought to stay in bed: advice",
       short: "Ought to",
       icon: "bulb",
-      status: "draft",
+      status: "verified",
       why: "Friends give good advice when you are ill. Give advice with ought to and should.",
       screens: [
         {
@@ -750,7 +750,7 @@ SLID.section("eng", {
       title: "Take one tablet twice a day: reading medicine labels",
       short: "Medicine labels",
       icon: "book",
-      status: "draft",
+      status: "verified",
       why: "Labels tell you how to take medicine. Learn to read them, and always ask an adult first.",
       screens: [
         {
@@ -805,7 +805,7 @@ SLID.section("eng", {
           sk: "read",
           eyebrow: "Reading: a medicine label",
           title: "Read and choose.",
-          body: `<p><i>COUGH TABLETS (not a real medicine)<br>Adults: take one tablet twice a day, after meals, with a glass of water.<br>Do not take more than two tablets a day.<br>Children under 12: ask a doctor.<br>Keep away from children.</i></p><p>When does Grandad take a tablet?</p>`,
+          body: `<p><i>COUGH TABLETS (not a real medicine)<br>Adults: take one tablet twice a day, after meals, with a glass of water.<br>Do not take more than two tablets a day.<br>Children: ask an adult, a doctor or a chemist.<br>Keep away from children.</i></p><p>When does Grandad take a tablet?</p>`,
           opts: [
             "before meals",
             "only at night",
@@ -822,18 +822,18 @@ SLID.section("eng", {
           sk: "read",
           eyebrow: "Reading: a medicine label",
           title: "Choose all the correct answers.",
-          body: `<p><i>COUGH TABLETS (not a real medicine)<br>Adults: take one tablet twice a day, after meals, with a glass of water.<br>Do not take more than two tablets a day.<br>Children under 12: ask a doctor.<br>Keep away from children.</i></p><p>What does the label say?</p>`,
+          body: `<p><i>COUGH TABLETS (not a real medicine)<br>Adults: take one tablet twice a day, after meals, with a glass of water.<br>Do not take more than two tablets a day.<br>Children: ask an adult, a doctor or a chemist.<br>Keep away from children.</i></p><p>What does the label say?</p>`,
           opts: [
             "Take the tablets with water.",
             "Don’t take more than two tablets a day.",
             "Take three tablets a day.",
-            "Children can take the tablets without asking a doctor."
+            "Children can take the tablets without asking an adult."
           ],
           correct: [0, 1],
           hint: "Check each answer against the label.",
           fbOk: "Well done!",
-          fbBad: "How many tablets a day? What about children under 12?",
-          fbText: "With <b>a glass of water</b>; <b>not more than two</b> a day. Children under 12 have to ask a doctor."
+          fbBad: "How many tablets a day? What about children?",
+          fbText: "With <b>a glass of water</b>; <b>not more than two</b> a day. Children have to ask an adult, a doctor or a chemist."
         },
         {
           type: "gaps",
@@ -904,7 +904,7 @@ SLID.section("eng", {
       title: "A health page for new pupils",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e7s3boss",
       why: "Check everything from this section. Your points are doubled.",
@@ -1010,18 +1010,18 @@ SLID.section("eng", {
           sk: "read",
           eyebrow: "Task 7",
           title: "Read and choose.",
-          body: `<p>Part 6: A label.</p><p><i>THROAT TABLETS (not a real medicine)<br>Adults: take one tablet three times a day, after meals.<br>Children under 12: ask a doctor.</i></p><p>How many tablets a day can an adult take?</p>`,
+          body: `<p>Part 6: A label.</p><p><i>THROAT TABLETS (not a real medicine)<br>Adults: take one tablet three times a day, after meals.<br>Children: ask an adult, a doctor or a chemist.</i></p><p>How many tablets a day can an adult take?</p>`,
           opts: [
             "one",
             "three",
-            "twelve"
+            "two"
           ],
           correct: 1,
           pre: "e7s3l6",
           hint: "Find the words times a day.",
           fbOk: "Yes!",
           fbBad: "One tablet, but how many times a day?",
-          fbText: "One tablet <b>three times a day</b> = three tablets a day. 12 is the age for children."
+          fbText: "One tablet <b>three times a day</b> = three tablets a day."
         }
       ],
       outro: {
