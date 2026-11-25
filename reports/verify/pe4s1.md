@@ -110,7 +110,7 @@ PDF відкрито в цій сесії: https://lib.iitta.gov.ua/714276/1/%D0
 | a54 | age | l6 info «Age – how old you are» | ні | ✅ |
 
 ## 6. Мова, рівень, BrE, лексика
-- BrE: mum, grandad, auntie/aunty, café, «at 8 pm» (формат TQ-120 «3.30 pm» без крапок). AmE-правопису й лексики немає. A, B, C, IPA, «Listen» — немає. `uk` немає.
+- BrE: mum, grandad, auntie/aunty, café, «at 8 pm» (формат TQ-123 «3.30 pm» без крапок). AmE-правопису й лексики немає. A, B, C, IPA, «Listen» — немає. `uk` немає.
 - Нові слова поза уроками (скрипт: слова пулу мінус слова розділу): імена канону (Danylo, Odesa); інструкції з glossary/eng.md («Match the halves», «Match the questions and the answers»); у поясненнях — same, most, last, always, remember, countries, goes, tells (tell — у `why` l2); у тексті вправи — лише «ball» (a20, Pre A1, Cambridge YLE Starters) — на відповідь не впливає. ✅
 - Довжина речень у поясненнях: кілька речень по 9–11 слів (переважно лапки з текстом); a08 steps спрощено (правка 2). Для 4 кл. зрозуміло, `uk` не потрібне.
 - Вправи власні: дослівних копій екранів уроку немає, крім a50 (до правки: та сама умова, що в l6 word, з іншим ім'ям) — переписано.

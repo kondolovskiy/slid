@@ -52,7 +52,7 @@ assert.equal(sentences("1958 р. — Мао.").length, 1);
 assert.equal(sentences("Подія була у 1958 р. Далі вони пішли.").length, 2, "дата в кінці речення, не на початку");
 assert.equal(sentences("Це було. 1958 р. Далі.").length, 2, "після крапки дата й подія — одне речення");
 
-// engine-eng-stats (docs/design/english.md §6.1, D-054): англійські склади й речення — лише для lang "en"; українські метрики не змінюються
+// engine-eng-stats (docs/design/english.md §6.1, D-055): англійські склади й речення — лише для lang "en"; українські метрики не змінюються
 let n = 46;
 const ok = (a, b, m) => { assert.deepEqual(a, b, m); n++; };
 const EN_SYL = { cat: 1, the: 1, she: 1, be: 1, are: 1, I: 1, year: 1, your: 1, "don't": 1, make: 1, makes: 1, smile: 1, there: 1, played: 1, lives: 1, goes: 1, school: 1,

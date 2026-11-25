@@ -7,7 +7,7 @@ const SUBJ = window.SLID_SUBJECTS;
 const $ = s => document.querySelector(s);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const course = id => SUBJ.find(c=>c.id===id) || SUBJ[0];
-/* Мова змісту (engine-eng-lang-attr, D-054; CONTENT_SCHEMA §1): предмет з targetLang — зміст плеєра (section.screen і зміст у панелі
+/* Мова змісту (engine-eng-lang-attr, D-055; CONTENT_SCHEMA §1): предмет з targetLang — зміст плеєра (section.screen і зміст у панелі
    відповіді) з lang цієї мови, хром рушія — мовою сторінки (<html lang>). Предмет без targetLang — розмітка без жодного lang, як раніше.
    Правило — SLID.subjectLang (app/registry.js), спільне з tools/lib.mjs. Помилка реєстру — "" (мова сторінки), не зупинка уроку. */
 const UI_LANG = document.documentElement.lang || "uk";
@@ -990,7 +990,7 @@ const answerSig = () => { const s=L.screens[idx], v= LAB && s?.type==="lab"? LAB
 /* правильну відповідь не блокуємо ніколи, навіть якщо відбиток збігся (напр. «5,» без цифри після коми, а потім «5») */
 const sameAsTried = () => tried!==null && !checked && answerSig()===tried && !gradeNow(L.screens[idx]);
 /* Літери варіантів choice/multi: український алфавіт без Ґ, Є, Ї, Й, Ь (як у тестах ЗНО/НМТ — літери, які не сплутати); 28 літер.
-   Предмет з мовою змісту — літери цієї мови (OPT_LETTERS_LANG; англійська — A, B, C…, D-054 п. 3, engine-eng-validate): літера — частина
+   Предмет з мовою змісту — літери цієї мови (OPT_LETTERS_LANG; англійська — A, B, C…, D-055 п. 3, engine-eng-validate): літера — частина
    змісту (span.k усередині section.screen lang="en"). Мова — TL() поточного предмета плеєра (урок, тест рівня, тренування).
    Варіант понад алфавіт отримує номер, а не «undefined»; validate (OPT_LETTERS, OPT_LETTERS_LANG) не пропускає більше варіантів, ніж літер. */
 const OPT_LETTERS="АБВГДЕЖЗИІКЛМНОПРСТУФХЦЧШЩЮЯ";
@@ -1204,7 +1204,7 @@ function noteHtml(s){
   const links = (n.links||[]).map(([t,u])=>`<li><a href="${urlAttr(u)}" target="_blank" rel="noopener">${t}</a></li>`).join("");
   return `<details class="note"><summary>${ic("info")}<span>${n.label||inUi("Чому дві дати?")}</span></summary><div class="note-b">${n.text}${links?`<ul>${links}</ul>`:""}</div></details>`;
 }
-/* Згорнутий український переклад правила (engine-eng-lang-attr, D-054; docs/design/english.md §2 п. 5): поле uk екрана теорії уроку
+/* Згорнутий український переклад правила (engine-eng-lang-attr, D-055; docs/design/english.md §2 п. 5): поле uk екрана теорії уроку
    в предметі з targetLang — details, закритий за замовчуванням, lang мови сторінки. Деінде (оцінюваний екран, тест, тренування,
    предмет без targetLang) не показується; validate — помилка. Відкриття — подія журналу uk_open (item), раз на показ екрана. */
 function ukHtml(s){

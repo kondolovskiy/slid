@@ -3,7 +3,7 @@
    функції — вибачитися, подякувати, попрощатися (с. 62), ставити запитання і відповідати на них (с. 63);
    граматика — «‘how’ questions for … quantity» (how much / how many), «‘would like to’ + infinitive» (с. 63):
    https://lib.iitta.gov.ua/714276/1/%D0%A2%D0%9E%D0%9F_3_4_2018.pdf
-   Увесь зміст — англійською, британська норма (D-054). Тексти, діалоги й герої — власні (docs/design/english.md §8).
+   Увесь зміст — англійською, британська норма (D-055). Тексти, діалоги й герої — власні (docs/design/english.md §8).
    Форми й наголос — за Cambridge Dictionary і OALD (URL — tasks/…/write-eng-g4-e4s4.md, «Нотатки агента»).
    Статус: verified (verifier-e4s4, reports/verify/e4s4.md; approved — лише вчитель). 7 уроків (6 + фінал).
    Перевірка: node tools/validate.mjs --section e4s4 && node tools/stats.mjs --subject eng

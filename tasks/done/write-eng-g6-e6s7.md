@@ -93,5 +93,5 @@ Build не запускай (AGENTS.md §4 п. 8).
 1. «almost a thousand years» → «about a thousand years» (l3 intro, l6 part 1). Дату 1011 визнали ЮНЕСКО й уряд, 1000-річчя відзначали у 2011 (en/uk.wikipedia), тож собор може бути й старшим за 1000 років.
 2. l2 `word` «the ___ café»: ключ ["only", "one"], бо «the one café» правильне (OALD one_1).
 3. l5 info: ряд see – saw – seen, eat – ate – eaten, be – was / were – been, щоб «the third form» мав опору.
-4. l6 part 3: +«Have dinner in a café near the square.». Текст тепер 160 слів (TQ-123), readWordsPerScreen = 40.
-`build` перебрано через app/lang.js, пропущених порядків немає. Авторське право: 8 запитів, збігів немає. TQ-125 — термін «the third form» чи «past participle». validate 0/0. Плейтест — після build (у контейнері немає Python-модуля playwright).
+4. l6 part 3: +«Have dinner in a café near the square.». Текст тепер 160 слів (TQ-126), readWordsPerScreen = 40.
+`build` перебрано через app/lang.js, пропущених порядків немає. Авторське право: 8 запитів, збігів немає. TQ-128 — термін «the third form» чи «past participle». validate 0/0. Плейтест — після build (у контейнері немає Python-модуля playwright).

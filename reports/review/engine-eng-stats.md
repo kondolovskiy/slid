@@ -1,7 +1,7 @@
 # Рев'ю: engine-eng-stats
 
 Рецензент: незалежний агент (D-026, скіл engineering-review), не автор. Дата: 2026-11-19.
-Перевірено: коміт коду **857a0d7** (tools/lib.mjs, tools/stats.mjs, tools/validate.mjs, tools/test-metrics.mjs, tools/fixtures/eng-lesson.mjs, docs/WORKFLOW.md) і нотатки 873fe96, 9dc9a29. Контекст: docs/design/english.md §6.1, D-054.
+Перевірено: коміт коду **857a0d7** (tools/lib.mjs, tools/stats.mjs, tools/validate.mjs, tools/test-metrics.mjs, tools/fixtures/eng-lesson.mjs, docs/WORKFLOW.md) і нотатки 873fe96, 9dc9a29. Контекст: docs/design/english.md §6.1, D-055.
 
 ## Вердикт: **прийнято**
 

@@ -1,5 +1,5 @@
 /* Слід · Англійська мова, 5 клас — пул тренування до розділу e5s1 «Me, my family and friends»
-   Джерело — програма класу (вправи власні, D-054; docs/design/english.md §8): МП-ІМ (Редько В. Г. та ін., наказ МОН № 795 від 12.07.2021):
+   Джерело — програма класу (вправи власні, D-055; docs/design/english.md §8): МП-ІМ (Редько В. Г. та ін., наказ МОН № 795 від 12.07.2021):
    с. 20 — тема «Я, моя родина, мої друзі» (родинні зв'язки, професії батьків, друзі та їхні уподобання; функції описувати, розповідати, характеризувати);
    с. 21 — Interrogatives (Yes/No, Wh-), Determiners: demonstratives, quantity (any), Clauses: be like;
    с. 22 — Pronouns: possessive, Present simple (affirmative, negative, questions).

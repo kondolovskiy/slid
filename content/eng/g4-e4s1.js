@@ -3,7 +3,7 @@
    населені пункти» (PDF с. 62); граматика — ’s, a/an with jobs (інвентар 3 кл., с. 62; a/an with jobs — і 4 кл., с. 63); to be, have got — повторення за content/eng/plan.js;
    функції — привітатися, попрощатися, представити себе (с. 62–63); бланк з ім'ям, адресою, віком, національністю (A1, с. 54):
    https://lib.iitta.gov.ua/714276/1/%D0%A2%D0%9E%D0%9F_3_4_2018.pdf
-   Увесь зміст — англійською, британська норма (D-054). Тексти, діалоги й герої — власні (docs/design/english.md §8).
+   Увесь зміст — англійською, британська норма (D-055). Тексти, діалоги й герої — власні (docs/design/english.md §8).
    Форми й наголос — за Cambridge Dictionary і OALD (URL — tasks/…/write-eng-g4-e4s1.md, «Нотатки агента»).
    Статус: verified (verifier-e4s1, reports/verify/e4s1.md). 7 уроків (6 + фінал).
    Перевірка: node tools/validate.mjs --section e4s1 && node tools/stats.mjs --subject eng

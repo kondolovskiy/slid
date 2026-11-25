@@ -7,7 +7,7 @@
    Past Simple (e5s9, e6s3) — у підсумковому уроці. Не повторює e5s2l7 (порівняння шкіл): фінальний урок — враження.
    Герої — серія 4–5 кл., на два роки старші: Andrii (Kyiv), Ms Lysenko — його вчителька англійської; Bohdan, Daryna, Zoriana — його клас;
    Kyrylo — новий учень цього класу (новий герой); Emma — школа в Англії з формою; Taras і Yaryna — Lviv. Зовнішність героїв не описано (канон — e6s1).
-   Увесь зміст — англійською, британська норма (D-054). Тексти, діалоги й герої — власні (docs/design/english.md §8).
+   Увесь зміст — англійською, британська норма (D-055). Тексти, діалоги й герої — власні (docs/design/english.md §8).
    Форми, рівні слів і наголос — за Cambridge Dictionary і OALD (URL — tasks/…/write-eng-g6-e6s6.md, «Нотатки агента»).
    Статус: verified (verifier-e6s6, reports/verify/e6s6.md). 7 уроків (6 + фінал).
    Перевірка: node tools/validate.mjs --section e6s6 && node tools/stats.mjs --subject eng

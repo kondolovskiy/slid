@@ -4,7 +4,7 @@
    на рівні зразків, how-questions for time (с. 63); функції — вітати зі святом, подякувати, вибачитися, попрощатися (с. 62–63);
    запрошення в певне місце й час (A1, с. 51); записки (A1, с. 54):
    https://lib.iitta.gov.ua/714276/1/%D0%A2%D0%9E%D0%9F_3_4_2018.pdf
-   Увесь зміст — англійською, британська норма (D-054). Тексти, діалоги й герої — власні (docs/design/english.md §8).
+   Увесь зміст — англійською, британська норма (D-055). Тексти, діалоги й герої — власні (docs/design/english.md §8).
    Форми, наголос і дати свят — за Cambridge Dictionary, OALD і джерелами з tasks/…/write-eng-g4-e4s8.md, «Нотатки агента».
    Статус: verified (verifier-e4s8, reports/verify/e4s8.md). 7 уроків (6 + фінал).
    Перевірка: node tools/validate.mjs --section e4s8 && node tools/stats.mjs --subject eng

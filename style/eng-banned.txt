@@ -110,7 +110,7 @@ more easier
 most biggest
 most best
 
-# 3. Американська норма в тексті (ключ і текст — BrE, D-054; відповідь дитини з AmE-правописом рушій приймає сам)
+# 3. Американська норма в тексті (ключ і текст — BrE, D-055; відповідь дитини з AmE-правописом рушій приймає сам)
 # at the weekend, at weekends (BrE) (OALD weekend_1: «at the weekend (British English)… on the weekend (especially North American English)»; CD weekend: «at weekends UK (US on (the) weekends)»)
 on the weekend
 on weekends
@@ -138,7 +138,7 @@ odessa
 lvov
 kharkov
 
-# 4. Звуку немає (D-054 п. 4; glossary/eng.md «Загальне»): аудіювання текстом не імітуємо
+# 4. Звуку немає (D-055 п. 4; glossary/eng.md «Загальне»): аудіювання текстом не імітуємо
 listen and repeat
 listen and choose
 listen and match

@@ -19,7 +19,7 @@ const profiles = readJSON("style/profiles.json");
 // заборонені фрази шукаємо як цілі слова: «вірно» не має ловити «ймовірно» (CC.parseBanned)
 const BANNED_FILE = "style/banned-phrases.txt";
 const bannedUk = CC.parseBanned(fs.readFileSync(path.join(ROOT, BANNED_FILE), "utf8"));
-// предмет з мовою змісту (engine-eng-validate, D-054): свій список — style/<предмет>-banned.txt (eng — кальки з української, curate-eng-style);
+// предмет з мовою змісту (engine-eng-validate, D-055): свій список — style/<предмет>-banned.txt (eng — кальки з української, curate-eng-style);
 // українського списку там не застосовуємо. Файлу немає — список порожній, мовчки (у тесті — фікстура)
 const bannedOwn = {};
 const bannedFor = c => { if (!subjectLang(c)) return [BANNED_FILE, bannedUk];
@@ -48,7 +48,7 @@ const gridFigCheck = (S, f) => {
   if (f.look !== "chocolate" && !f.cap) W(S, "fig grid без cap: підпиши, що означає сітка й клітинка («грядка 6 м × 4 м, клітинка — 1 м²»)");
 };
 // літери варіантів choice/multi — з рушія (app/app.js OPT_LETTERS), щоб ліміт не розходився з тим, що бачить дитина.
-// Предмет з мовою змісту — свої літери (OPT_LETTERS_LANG, engine-eng-validate: англійська — A, B, C; D-054 п. 3)
+// Предмет з мовою змісту — свої літери (OPT_LETTERS_LANG, engine-eng-validate: англійська — A, B, C; D-055 п. 3)
 const APP_SRC = fs.readFileSync(path.join(ROOT, "app/app.js"), "utf8");
 const OPT_LETTERS = APP_SRC.match(/const OPT_LETTERS="([^"]+)"/)?.[1];
 if (!OPT_LETTERS) { console.error("ПОМИЛКА ЗАВАНТАЖЕННЯ: app/app.js не має const OPT_LETTERS"); process.exit(1); }
@@ -64,7 +64,7 @@ const authorWarn = (where, meta) => { const a = meta?.author;
 
 for (const c of subjects) {
   if (!c.colors?.light?.accent || !c.colors?.dark?.accent) E(`предмет ${c.id}`, "немає colors.light/dark");
-  // мова змісту (engine-eng-lang-attr, D-054): рушій невідоме значення мовчки ігнорує — тут помилка
+  // мова змісту (engine-eng-lang-attr, D-055): рушій невідоме значення мовчки ігнорує — тут помилка
   if (c.targetLang !== undefined && !TARGET_LANGS.includes(c.targetLang)) E(`предмет ${c.id}`, `targetLang «${c.targetLang}» — лише ${TARGET_LANGS.map(x => `"${x}"`).join(", ")} (CONTENT_SCHEMA §1)`);
   if (c.diagOrder !== undefined && !Number.isFinite(c.diagOrder)) E(`предмет ${c.id}`, "diagOrder — число (порядок тесту рівня після вибору класу, CONTENT_SCHEMA §1)");
   for (const sec of c.sections) {
@@ -322,7 +322,7 @@ function diagLangIssues(s) {
   if (s.type === "match" && Array.isArray(s.left) && s.left.length > DIAG_LANG_LIMITS.matchPairs) E.push(`у тесті рівня — не більше ${DIAG_LANG_LIMITS.matchPairs} пар (є ${s.left.length})`);
   return E;
 }
-// згорнутий переклад правила uk — лише 4–5 кл. (D-054, доповнення п. 5; docs/design/english.md §2 п. 5)
+// згорнутий переклад правила uk — лише 4–5 кл. (D-055, доповнення п. 5; docs/design/english.md §2 п. 5)
 const UK_GRADES = [4, 5];
 // найдовший текст екрана — та сама метрика maxText, що в профілі уроку (lessonMetrics, engine-eng-stats): body або текст мовної вправи
 const screenText = s => lessonMetrics({ screens: [s] }).maxText;
@@ -344,7 +344,7 @@ function matchImgIssues(s, c, credits) {
   return out;
 }
 function checkScreen(S, s, c, diag, pool = false, credits = undefined) {
-  // мова змісту (engine-eng-validate, D-054): tl — "" (українська, як раніше) або мова предмета ("en"): українські правила (заборонені фрази,
+  // мова змісту (engine-eng-validate, D-055): tl — "" (українська, як раніше) або мова предмета ("en"): українські правила (заборонені фрази,
   // «Пригадай», наказові ASK_RE, позиційні посилання й «варіант N», рід у звертанні, латиниця в кириличному слові, милозвучність) — лише для "";
   // для "en" — англійські відповідники (CC.*, lang "en") і кирилиця в змісті (CC.cyrillicInEnglish)
   const tl = subjectLang(c);
@@ -358,7 +358,7 @@ function checkScreen(S, s, c, diag, pool = false, credits = undefined) {
     for (const b of bannedUk) if (b.re.test(stripS(s.uk))) W(S, `uk: заборонена фраза «${b.phrase}» (${BANNED_FILE})`); }
   if (!TYPES.includes(s.type)) return E(S, `невідомий тип «${s.type}»`);
   if (!s.title && !(diag && !pool)) E(S, "немає title");   // у тесті рівня «немає title» уже дає learn.validate — не дублюємо (рев'ю diag-answer-kinds, P3-4)
-  // згорнутий український переклад правила (engine-eng-lang-attr, D-054; CONTENT_SCHEMA §4): рушій показує його лише на екрані теорії
+  // згорнутий український переклад правила (engine-eng-lang-attr, D-055; CONTENT_SCHEMA §4): рушій показує його лише на екрані теорії
   // уроку в предметі з targetLang — деінде поле мовчки зникло б. Обмеження «лише 4–5 кл.» — engine-eng-validate
   if (s.uk !== undefined) {
     if (typeof s.uk !== "string" || !s.uk.trim()) E(S, "uk — непорожній HTML-рядок (переклад правила українською)");
@@ -499,8 +499,8 @@ for (const c of subjects) for (const sec of c.sections) {
     if (l.screens?.[0]?.type !== "intro") E(L, "перший екран має бути intro (проблема, з якої починається урок)");
     if (EUPHONY[c.id] && !tl) euphonyWarn(L, [l.title, l.why, l.outro?.text, ...(l.outro?.learned || [])].filter(t => typeof t === "string").flatMap(euphonyIssues));
     l.screens.forEach((s, i) => { checkScreen(`${L} екран ${i + 1} (${s.type})`, s, c, false, false, sec.credits); figRef(`${L} екран ${i + 1} (${s.type})`, s, l.screens[i - 1], subjectLang(c));
-      // згорнутий переклад uk — лише 4–5 кл. (D-054, доповнення п. 5); решту правил uk — checkScreen
-      if (s.uk !== undefined && !UK_GRADES.includes(sec.grade)) E(`${L} екран ${i + 1} (${s.type})`, `uk — лише ${UK_GRADES.join("–")} кл. (D-054, доповнення п. 5), а розділ ${sec.grade} кл.`); });
+      // згорнутий переклад uk — лише 4–5 кл. (D-055, доповнення п. 5); решту правил uk — checkScreen
+      if (s.uk !== undefined && !UK_GRADES.includes(sec.grade)) E(`${L} екран ${i + 1} (${s.type})`, `uk — лише ${UK_GRADES.join("–")} кл. (D-055, доповнення п. 5), а розділ ${sec.grade} кл.`); });
     if (tl) for (const m of CC.cyrillicInEnglish({ title: l.title, why: l.why, outro: l.outro })) W(L, m);
     // профіль складності
     const m = lessonMetrics(l, { lang: subjectLang(c) }), p = profileFor(profiles, c, sec.grade);   // engine-eng-stats: англійські метрики, ключі точного класу

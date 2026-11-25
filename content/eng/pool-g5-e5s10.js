@@ -1,6 +1,6 @@
 /* Слід · Англійська мова, 5 клас — пул вправ для тренування до розділу «Ukraine and English-speaking countries» (e5s10)
    Статус: verified (автор writer-pe5s10, 2026-11-20; верифікатор verifier-pe5s10, reports/verify/pe5s10.md). 71 вправа: уроки e5s10l1–e5s10l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e5s10l7 без вправ.
-   Вправи власні (docs/design/english.md §8): лише слова, форми й правила уроків e5s10 і попередніх розділів; англійською, британська норма (D-054).
+   Вправи власні (docs/design/english.md §8): лише слова, форми й правила уроків e5s10 і попередніх розділів; англійською, британська норма (D-055).
    Джерело — програма класу (program: true): МП-ІМ, 5 кл. — теми «Україна», «Країни виучуваної мови», функції «порівнювати»,
    «аргументувати свій вибір» (с. 20); comparatives and superlatives, articles: the + superlatives (с. 21); prepositions (с. 22).
    Факти про країни — лише з уроків e5s10 (reports/verify/e5s10.md §2) і facts/eng.md К1. Герої — канон розділу й попередніх (Andrii, Taras, Mariia, Oksana, Emma, Liam, Isla, Owen, Grace, Chloe).

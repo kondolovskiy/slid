@@ -216,14 +216,14 @@ for (const s of [{ type: "gaps", text: "с{*е|и}ло" }, { type: "pick", text:
 { const lc = { console, JSON, Math }; lc.window = lc; vm.createContext(lc); vm.runInContext(fs.readFileSync(path.join(ROOT, "app/learn.js"), "utf8"), lc);
   eq(L.TYPES.filter(t => !lc.SLID_LEARN.DIAG_TYPES.includes(t)), [], "кожен мовний тип дозволено в тесті рівня (learn.DIAG_TYPES)"); }
 
-/* мова змісту предмета (engine-eng-lang-attr, D-054): SLID.subjectLang (app/registry.js) і обгортки tools/lib.mjs — одне правило */
+/* мова змісту предмета (engine-eng-lang-attr, D-055): SLID.subjectLang (app/registry.js) і обгортки tools/lib.mjs — одне правило */
 { const rc = { console }; rc.window = rc; vm.createContext(rc); vm.runInContext(fs.readFileSync(path.join(ROOT, "app/registry.js"), "utf8"), rc);
   const R = rc.SLID, col = { light: { accent: "#000" }, dark: { accent: "#fff" } };
   R.subject({ id: "fxen", subject: "English", short: "Eng", colors: col, targetLang: "en" });
   R.subject({ id: "fxuk", subject: "Фікстура", short: "Ф", colors: col });
   R.subject({ id: "fxxx", subject: "Фікстура", short: "Ф", colors: col, targetLang: "xx" });
   R.subject({ id: "fxEN", subject: "Фікстура", short: "Ф", colors: col, targetLang: "EN" });
-  eq([...R.TARGET_LANGS], ["en"], "TARGET_LANGS: поки лише en (D-054)");
+  eq([...R.TARGET_LANGS], ["en"], "TARGET_LANGS: поки лише en (D-055)");
   eq(["fxen", "fxuk", "fxxx", "fxEN", "nope"].map(id => R.subjectLang(id)), ["en", "", "", "", ""], "subjectLang за id: en / без поля / невідома мова / регістр / невідомий предмет");
   eq(R.subjectLang(R.subjects.find(c => c.id === "fxen")), "en", "subjectLang за об'єктом предмета");
   eq([null, undefined, 5, {}].map(x => R.subjectLang(x)), ["", "", "", ""], "subjectLang: сміття — порожньо, без винятку");
@@ -235,7 +235,7 @@ for (const s of [{ type: "gaps", text: "с{*е|и}ло" }, { type: "pick", text:
   // живі предмети (без прив'язки до складу): лише значення з TARGET_LANGS або без поля
   for (const c of lib.loadContent().subjects) ok(c.targetLang === undefined || lib.TARGET_LANGS.includes(c.targetLang), `предмет ${c.id}: targetLang з TARGET_LANGS`); }
 
-/* англійська (engine-eng-lang-core; docs/design/english.md §5.4, §5.6; D-054 з доповненням; glossary/eng.md): поведінка — від lang
+/* англійська (engine-eng-lang-core; docs/design/english.md §5.4, §5.6; D-055 з доповненням; glossary/eng.md): поведінка — від lang
    третього аргументу (рушій передає SLID.subjectLang предмета); без lang (і для "") — як було, українські предмети не змінюються */
 { const W = (answer, more = {}) => ({ type: "word", answer, ...more });
   const V = (s, v) => { const r = L.wordVerdict(s, v, "en"); return [r.ok, r.note || "", r.hint || "", r.kb || ""]; };
@@ -272,7 +272,7 @@ for (const s of [{ type: "gaps", text: "с{*е|и}ло" }, { type: "pick", text:
   for (const [b, a] of [["centre", "center"], ["theatre", "theater"], ["metres", "meters"], ["travelled", "traveled"], ["travelling", "traveling"], ["grey", "gray"], ["programme", "program"],
     ["neighbours", "neighbors"], ["analyse", "analyze"], ["jewellery", "jewelry"], ["pyjamas", "pajamas"], ["cancelled", "canceled"], ["catalogue", "catalog"], ["defence", "defense"]])
     eq(V(W(b), a)[0], true, `en word: ${a} → ok (ключ ${b})`);
-  eq(V(W("realise"), "realize"), [true, "In British English we usually write realise.", "", ""], "en word: -ize — примітка без «American» (TQ-121)");
+  eq(V(W("realise"), "realize"), [true, "In British English we usually write realise.", "", ""], "en word: -ize — примітка без «American» (TQ-124)");
   eq(V(W("organisation"), "organization")[1], "In British English we usually write organisation.", "en word: -ization");
   ok(!/American/i.test(V(W("recognised"), "recognized")[1]), "en word: -ized — без «American»");
   eq(V(W("colour"), "colour"), [true, "", "", ""], "en word: британський запис — без примітки");
@@ -283,7 +283,7 @@ for (const s of [{ type: "gaps", text: "с{*е|и}ло" }, { type: "pick", text:
   eq(V(W("flat"), "apartment"), [false, "", "", ""], "en word: лексика (apartment) не нормалізується");
   no(L.check(W("color"), "colour", "en"), "en word: пара працює лише від британського ключа (AmE-ключ — помилка автора, validate)");
   no(L.check(W("colour"), "color", ""), "ukr: color ≠ colour, як раніше");
-  // час: «15.30» = «15:30»; «3.30 pm» = «3:30 pm» = «3.30 p.m.» = «3.30pm» (TQ-120)
+  // час: «15.30» = «15:30»; «3.30 pm» = «3:30 pm» = «3.30 p.m.» = «3.30pm» (TQ-123)
   for (const [k, v] of [["15.30", "15:30"], ["15:30", "15.30"], ["3.30 pm", "3:30 pm"], ["3.30 pm", "3.30 p.m."], ["3.30 pm", "3.30pm"], ["3.30 pm", "3.30 P.M."], ["at 7.15 am", "at 7:15 a.m."], ["It's 3.30 pm.", "it's 3:30 p.m."]])
     ok(L.check(W(k), v, "en"), `en word час: «${v}» = «${k}»`);
   no(L.check(W("3.30 pm"), "3.30 am", "en"), "en word час: pm ≠ am");

@@ -4,7 +4,7 @@
    граматика (с. 21–22, розд. 4.4): there is/are, prepositions of place, imperatives for directions — за content/eng/plan.js:
    https://osvita.ua/doc/files/news/831/83117/Inoz_mov_5-9-kl_Redko_ta_in_14_07.pdf
    Концентрично спирається на 4 кл.: e4s1l4 (city, town, village), e4s2l2/l4/l5 (there is/are, next to, Is there…?), e4s7l2 (along, across).
-   Увесь зміст — англійською, британська норма (D-054). Тексти, діалоги, герої й мапа — власні (docs/design/english.md §8); герої й місця — як у 4 кл.
+   Увесь зміст — англійською, британська норма (D-055). Тексти, діалоги, герої й мапа — власні (docs/design/english.md §8); герої й місця — як у 4 кл.
    Маршрут — «Go straight ahead» (CD straight; «go straight on» у вправах не даємо — pitfalls-content «Англійська» п. 11).
    Факти про І. Котляревського й «Енеїду» — ЕСУ + en/uk.wikipedia; форми й наголос — CD і OALD (URL — tasks/…/write-eng-g5-e5s7.md, «Нотатки агента»).
    Статус: verified (reports/verify/e5s7.md). 7 уроків (6 + фінал).

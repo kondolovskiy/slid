@@ -10,7 +10,7 @@
    розклад — Present Simple, але й «is leaving»; домовленість — Present Continuous, але й «going to leave» і Present Simple.
    Тому у виборі форми хибні варіанти лише граматично неможливі (leave / leaving, is meet, might to rain),
    а «обидві правильні» — явно, вправою multi (урок 3). Час і розклади в уроках — вигадані, не справжній розклад.
-   Увесь зміст — англійською, британська норма (D-054). Тексти, діалоги й герої — власні (docs/design/english.md §8).
+   Увесь зміст — англійською, британська норма (D-055). Тексти, діалоги й герої — власні (docs/design/english.md §8).
    Форми, рівні слів, наголос і факти — URL у tasks/…/write-eng-g6-e6s5.md, «Нотатки агента».
    Статус: verified (verifier-e6s5, reports/verify/e6s5.md). 7 уроків (6 + фінал).
    Перевірка: node tools/validate.mjs --section e6s5 && node tools/stats.mjs --subject eng

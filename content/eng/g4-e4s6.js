@@ -4,7 +4,7 @@
    how-questions for size and measurement (How long…? How high…? How big…?) (с. 63):
    https://lib.iitta.gov.ua/714276/1/%D0%A2%D0%9E%D0%9F_3_4_2018.pdf
    Розподіл граматики — content/eng/plan.js, reports/verify/plan-eng-g4.md. Present Simple vs Present Continuous — у e4s8; тут лише Present Continuous.
-   Увесь зміст — англійською, британська норма (D-054). Тексти, діалоги й герої — власні (docs/design/english.md §8); герої — з e4s1.
+   Увесь зміст — англійською, британська норма (D-055). Тексти, діалоги й герої — власні (docs/design/english.md §8); герої — з e4s1.
    Факти (річки, гори, площі, зима в Києві й Лондоні), форми й наголос — за en.wikipedia, ЕСУ, Cambridge Dictionary, OALD
    (URL — tasks/…/write-eng-g4-e4s6.md, «Нотатки агента»).
    Статус: verified (verifier-e4s6, reports/verify/e4s6.md); approved — лише вчитель. 7 уроків (6 + фінал).

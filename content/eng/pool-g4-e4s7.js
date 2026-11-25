@@ -4,7 +4,7 @@
    l6 gram/func); a45–a59 (stress і читання — phon, read) додав верифікатор.
    Джерело — програма класу (program: true): ТОП 3–4 (Савченко, 2018), 4 кл.: теми й граматика с. 63, Past Simple і was/were — с. 62,
    листівка (A1) — с. 54. Вправи, речення й тексти — власні; герої — канон розділів 4 кл. (Andrii, Oksana, Emma, Tom, Mariia, Taras,
-   Sofiia, Dmytro, Maksym). Усе англійською, британська норма (D-054). Словники, за якими звірено форми, — у нотатках задачі
+   Sofiia, Dmytro, Maksym). Усе англійською, британська норма (D-055). Словники, за якими звірено форми, — у нотатках задачі
    tasks/…/write-eng-pool-g4-e4s7.md. Перевірка: node tools/validate.mjs --pool pe4s7 && node tools/personalization-qa.mjs --pool pe4s7
    Схема: docs/CONTENT_SCHEMA.md §10 «Пули мовних предметів» */
 SLID.pool("eng", {

@@ -366,7 +366,7 @@ expectRun("drag: at і без drag — без попередження", one("fx
     expectRun("diagOrder: число — без помилки", files({ diagOrder: 2 }), ["--section", "fxdo"], {});
     expectRun("diagOrder: рядок — помилка", files({ diagOrder: "1" }), ["--section", "fxdo"], { err: "diagOrder — число" });
     fs.rmSync(path.join(tmp, "content/fxdo"), { recursive: true, force: true }); }
-  // engine-eng-lang-attr (D-054): targetLang предмета — лише з TARGET_LANGS; поле uk — лише екран теорії уроку в предметі з targetLang
+  // engine-eng-lang-attr (D-055): targetLang предмета — лише з TARGET_LANGS; поле uk — лише екран теорії уроку в предметі з targetLang
   { const subj = o => `SLID.subject(${JSON.stringify({ id: "fxtl", subject: "Фікстура", short: "Ф", icon: "frac", colors: { light: { accent: "#000" }, dark: { accent: "#fff" } }, skills: MATH_SKILLS, ...o })});\n`;
     const withUk = (sc, ex = {}) => { const sec = mathSec("fxtl", ex); sec.grade = 5; sec.lessons[0].screens[sc].uk = "<p>Переклад правила.</p>"; return sec; };   // uk — лише 4–5 кл. (engine-eng-validate)
     const files = (o, sec = mathSec("fxtl")) => ({ "content/fxtl/aa-subj.js": subj(o), "content/fxtl/g8-fxtl.js": secJS("fxtl", sec) });
@@ -404,7 +404,7 @@ expectRun("drag: at і без drag — без попередження", one("fx
       expectRun("build без targetLang: та сама пастка — без попередження", files({}, bd({ tiles: ["I", "like", "this", "colour"], answer: "I like this colour.", extra: ["color"] })), ["--section", "fxtl"], { noWarn: "пастка extra" });
       expectRun("build з poll — помилка", files({ targetLang: "en" }, bd({ poll: "p1", fbTitle: "Good guess." })), ["--section", "fxtl"], { err: "poll лише для choice" }); }
     fs.rmSync(path.join(tmp, "content/fxtl"), { recursive: true, force: true }); }
-  // engine-eng-validate (D-054; docs/design/english.md §2 п. 3, §6.3): предмет з targetLang "en" — англійські правила замість українських,
+  // engine-eng-validate (D-055; docs/design/english.md §2 п. 3, §6.3): предмет з targetLang "en" — англійські правила замість українських,
   // кирилиця в змісті — попередження, uk — лише 4–5 кл., літери варіантів A, B, C, список кальок style/<предмет>-banned.txt, ліміт тексту з профілю
   { const SUBJ = (o = {}) => `SLID.subject(${JSON.stringify({ id: "fxen", subject: "Фікстура", short: "Ф", icon: "frac", colors: { light: { accent: "#000" }, dark: { accent: "#fff" } },
       skills: { gram: { name: "Граматика", hint: "Будувати речення" } }, targetLang: "en", ...o })});\n`;

@@ -1,6 +1,6 @@
 /* Слід · Англійська мова, 5 клас — пул вправ для тренування до розділу «School life» (e5s2)
    Статус: verified (автор writer-pe5s2, 2026-11-20; reports/verify/pe5s2.md). 57 вправ: уроки e5s2l1–e5s2l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e5s2l7 без вправ.
-   Вправи власні (docs/design/english.md §8): лише слова, форми й правила уроків e5s2 і 4 кл.; англійською, британська норма (D-054).
+   Вправи власні (docs/design/english.md §8): лише слова, форми й правила уроків e5s2 і 4 кл.; англійською, британська норма (D-055).
    Джерело — програма класу (program: true): МП-ІМ, 5 кл. — тема «Шкільне життя» і функція «розпитувати з метою роз'яснення» (с. 20);
    Adverbs position, Imperatives, Can: permission, Could: requests (с. 21); Present Simple affirmative, negative, questions, with adverbs of frequency (с. 22).
    Герої — канон розділу (Andrii, Sofiia, Bohdan, Daryna, Zoriana, Ms Lysenko — Kyiv; Oksana і Dmytro; Emma; Taras; Mariia і Polina).

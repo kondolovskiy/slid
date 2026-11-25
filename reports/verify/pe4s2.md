@@ -11,7 +11,7 @@
 | Твердження | Джерело (відкрите в сесії) | Вердикт |
 |---|---|---|
 | `src` «top34 с. 62»: тема «Помешкання», there is(n’t)/are(n’t), some/any, irregular plural, prepositions of place | ТОП 3–4, https://lib.iitta.gov.ua/714276/1/%D0%A2%D0%9E%D0%9F_3_4_2018.pdf (curl, SHA-1 aa8d161a330bbede5b21484f47be92d12548f785, `pdftotext -f 62 -l 62`: рядки «there is(n’t)/are(n’t)», «'some' and 'any' in questions and negative statements», «irregular nouns – plural», «basic prepositions of place and direction», «Помешкання») | ✅ |
-| a02 ключ «elevator» поруч із «lift» | CD elevator: «A2 US (UK lift)», https://dictionary.cambridge.org/dictionary/english/elevator | ✅ AmE-лексика в ключі `word` поруч із BrE (TQ-122, рішення людини) |
+| a02 ключ «elevator» поруч із «lift» | CD elevator: «A2 US (UK lift)», https://dictionary.cambridge.org/dictionary/english/elevator | ✅ AmE-лексика в ключі `word` поруч із BrE (TQ-125, рішення людини) |
 | a13 ключ «closet» поруч із «wardrobe», «cupboard» | CD closet: «A2 mainly US a cupboard or a small room with a door, used for storing things, especially clothes», https://dictionary.cambridge.org/dictionary/english/closet | ✅ так само; cupboard — правильна BrE-відповідь на «big and tall, clothes are in it», тож вона мусить бути в ключі |
 
 ### Наголос (`stress`): CD (UK) + OALD (BrE), curl у сесії

@@ -9,7 +9,7 @@
    Герої — та сама серія, що в 4–5 кл. (Mariia — Kharkiv, Oksana і брат Dmytro — Zelena Dolyna біля Poltava, Andrii і Sofiia — Kyiv,
    Taras — Lviv, Emma, її мама Sarah і брат Tom — town in England). Нові: Harry (продавець у newsagent’s, Англія), Matvii (хлопець у Kyiv).
    Зовнішність героїв не описано (канон — автор e6s1).
-   Увесь зміст — англійською, британська норма (D-054). Тексти, діалоги й герої — власні (docs/design/english.md §8).
+   Увесь зміст — англійською, британська норма (D-055). Тексти, діалоги й герої — власні (docs/design/english.md §8).
    Форми, рівні слів, наголос і факти про гроші — Cambridge Dictionary, OALD, джерела в tasks/…/write-eng-g6-e6s2.md, «Нотатки агента».
    Статус: verified (verifier-e6s2, reports/verify/e6s2.md). 7 уроків (6 + фінал).
    Перевірка: node tools/validate.mjs --section e6s2 && node tools/stats.mjs --subject eng

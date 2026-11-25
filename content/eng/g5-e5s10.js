@@ -3,7 +3,7 @@
    «Країни виучуваної мови — загальні відомості»; функції — порівнювати, описувати місця, аргументувати свій вибір (because);
    граматика A2 (с. 21–22): comparatives (концентрично від e4s6l5), superlatives, the + superlatives (від e4s7l4), one of the + -est:
    https://osvita.ua/doc/files/news/831/83117/Inoz_mov_5-9-kl_Redko_ta_in_14_07.pdf
-   Увесь зміст — англійською, британська норма (D-054). Тексти й герої — власні (docs/design/english.md §8).
+   Увесь зміст — англійською, британська норма (D-055). Тексти й герої — власні (docs/design/english.md §8).
    Склад UK — лише перелік England, Scotland, Wales and Northern Ireland, без родового слова (facts/eng.md К1).
    «Fact file» немає в CD/OALD — урок 6 «Facts about my country» (reports/verify/plan-eng-g5.md Р3).
    Форми, наголос і факти — URL у tasks/…/write-eng-g5-e5s10.md, «Нотатки агента».

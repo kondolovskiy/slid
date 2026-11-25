@@ -7,7 +7,7 @@
    e5s3l6 (borscht, varenyky, recipe) — reports/verify/plan-eng-g6.md §6.
    Герої — серія 4–5 кл., на два роки старші: Taras і його друг Ostap (Lviv), Oksana і бабуся Hanna (Zelena Dolyna),
    Andrii, сестра Sofiia, бабуся Nina й дідусь Vasyl (Kyiv, Chernihiv), Mariia (Kharkiv), Emma і Tom (England).
-   Увесь зміст — англійською, британська норма (D-054). Тексти, діалоги, рецепти й герої — власні (docs/design/english.md §8).
+   Увесь зміст — англійською, британська норма (D-055). Тексти, діалоги, рецепти й герої — власні (docs/design/english.md §8).
    Форми, рівні слів, наголос і факти про страви — Cambridge Dictionary, OALD, en/uk.wikipedia, Wiktionary
    (URL — tasks/…/write-eng-g6-e6s3.md, «Нотатки агента»). borscht — як у e5s3 (CD, OALD, назва елемента ЮНЕСКО 2022).
    Статус: verified (verifier-e6s3, reports/verify/e6s3.md). 7 уроків (6 + фінал).

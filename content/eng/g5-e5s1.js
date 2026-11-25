@@ -6,7 +6,7 @@
    https://osvita.ua/doc/files/news/831/83117/Inoz_mov_5-9-kl_Redko_ta_in_14_07.pdf
    Концентрично спирається на e4s1 (reports/verify/plan-eng-g5.md §6). Герої й місця — як у 4 кл. (Oksana — село Zelena Dolyna біля Полтави,
    Andrii — Kyiv, Mariia — Kharkiv, Taras — Lviv, Emma — town in England; Halyna — подруга Оксани з e4s8).
-   Увесь зміст — англійською, британська норма (D-054). Тексти, діалоги й герої — власні (docs/design/english.md §8).
+   Увесь зміст — англійською, британська норма (D-055). Тексти, діалоги й герої — власні (docs/design/english.md §8).
    Форми, рівні слів і наголос — за Cambridge Dictionary і OALD (URL — tasks/…/write-eng-g5-e5s1.md, «Нотатки агента»).
    Статус: verified (verifier-e5s1, reports/verify/e5s1.md). 7 уроків (6 + фінал).
    Перевірка: node tools/validate.mjs --section e5s1 && node tools/stats.mjs --subject eng

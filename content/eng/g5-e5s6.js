@@ -4,7 +4,7 @@
    (с. 21–22, розд. 4.4; розподіл — content/eng/plan.js, reports/verify/plan-eng-g5.md):
    https://osvita.ua/doc/files/news/831/83117/Inoz_mov_5-9-kl_Redko_ta_in_14_07.pdf
    Концентрично спирається на e4s3 (play / go / do, like / don’t like) — `requires` за plan-eng-g5.md §6.
-   Увесь зміст — англійською, британська норма (D-054). Тексти, діалоги й герої — власні (docs/design/english.md §8).
+   Увесь зміст — англійською, британська норма (D-055). Тексти, діалоги й герої — власні (docs/design/english.md §8).
    Форми й наголос — за Cambridge Dictionary, Cambridge Grammar і OALD (URL — tasks/…/write-eng-g5-e5s6.md, «Нотатки агента»).
    Статус: verified (verifier-e5s6, reports/verify/e5s6.md). 7 уроків (6 + фінал). Будова — за еталоном e4s1.
    Перевірка: node tools/validate.mjs --section e5s6 && node tools/stats.mjs --subject eng

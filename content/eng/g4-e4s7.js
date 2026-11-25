@@ -5,7 +5,7 @@
    glossary/eng.md), how-questions (How far…? How high…?, с. 63); Past Simple, was/were — повторення інвентаря 3 кл. (с. 62)
    за content/eng/plan.js; короткий опис маршруту (A1, с. 52), листівка (с. 54):
    https://lib.iitta.gov.ua/714276/1/%D0%A2%D0%9E%D0%9F_3_4_2018.pdf
-   Увесь зміст — англійською, британська норма (D-054). Тексти, діалоги й герої — власні (docs/design/english.md §8).
+   Увесь зміст — англійською, британська норма (D-055). Тексти, діалоги й герої — власні (docs/design/english.md §8).
    will — рішення в мить мовлення, «I think I’ll…» (CD Grammar «Will»); be going to у вправах не дається як варіант,
    а в `word` прийнято як другу правильну відповідь. Форми, наголос і факти — URL у tasks/…/write-eng-g4-e4s7.md, «Нотатки агента».
    Статус: verified (verifier-e4s7, reports/verify/e4s7.md). 7 уроків (6 + фінал).

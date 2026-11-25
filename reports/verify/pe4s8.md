@@ -90,7 +90,7 @@ weekend автор свідомо не взяв (UK /ˌwiːkˈend/) — прав
 | a48 build | Sorry, I can’t come to the fair. | = | l6 info #5; fair — l4 | «Sorry, I can come…», «Sorry, can I come…», «Sorry, can’t I come…» — граматичні, але суперечать умові (Bohdan is ill, can’t come); рушій їх не приймає | ✅ |
 | a49 pick | [on] | = | l6 info #3; l2 info | ні | ✅ |
 
-Ключі `word` без кінцевого `.!?` (would, Where, Christmas, fair/fete/fête, making, cooks, for) ✅. Дати у форматі BrE «25 December» ✅. AmE-правопису, AmE-лексики, IPA, «Listen» / «You hear» і літер A/B/C в `opts` немає ✅. Час — «11 am», «4 pm» (TQ-120 «як зараз»).
+Ключі `word` без кінцевого `.!?` (would, Where, Christmas, fair/fete/fête, making, cooks, for) ✅. Дати у форматі BrE «25 December» ✅. AmE-правопису, AmE-лексики, IPA, «Listen» / «You hear» і літер A/B/C в `opts` немає ✅. Час — «11 am», «4 pm» (TQ-123 «як зараз»).
 
 ## 4. Лексика, герої, рівень, авторське право
 - **Лексика за уроками:** у вправах уроку 2 a09 і a11 була «school fair». Слово fair уперше з'являється в l4, а в e4s1–e4s7 його немає (grep). Тож для дитини, яка пройшла лише l2, це нове слово → правки 1–2. Решта слів є в e4s8 або раніше: thirsty (e4s5), cook (e4s1), apple, milk, bread (e4s4), raining (e4s6), homework (e4s2), ill (e4s5).

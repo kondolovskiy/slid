@@ -30,7 +30,7 @@
 | never | ˈnev.ər / ˈnev.ɚ | /ˈnevə(r)/ | ✅ |
 | Monday | ˈmʌn.deɪ | /ˈmʌndeɪ/, /ˈmʌndi/ | ✅ |
 | Saturday | ˈsæt.ə.deɪ / ˈsæt̬.ɚ.deɪ | /ˈsætədeɪ/, /ˈsætədi/ | ✅ |
-| **weekend** | **UK ˌwiːkˈend / US ˈwiːk.end** | **/ˌwiːkˈend/ / /ˈwiːkend/** | ❌ для пулу: два наголоси, у BrE і AmE головний на різних складах. Дитина з AmE-вимовою дістане «неправильно», а це суперечить D-054 (доп. п. 1). Те саме вже зафіксовано в inbox, writer-pe4s8 NOTE (stress eng). → вилучив з a25, a26, a27, a51 |
+| **weekend** | **UK ˌwiːkˈend / US ˈwiːk.end** | **/ˌwiːkˈend/ / /ˈwiːkend/** | ❌ для пулу: два наголоси, у BrE і AmE головний на різних складах. Дитина з AmE-вимовою дістане «неправильно», а це суперечить D-055 (доп. п. 1). Те саме вже зафіксовано в inbox, writer-pe4s8 NOTE (stress eng). → вилучив з a25, a26, a27, a51 |
 | favourite | ˈfeɪ.vər.ɪt | /ˈfeɪvərɪt/ (favourite_1) | ✅ |
 | hero | ˈhɪə.rəʊ / ˈhɪr.oʊ | /ˈhɪərəʊ/ | ✅ |
 | clever | ˈklev.ər | /ˈklevə(r)/ | ✅ |

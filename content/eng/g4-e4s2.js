@@ -3,7 +3,7 @@
    функція «називати/описувати когось/щось» (с. 62–63); описує предмет чи малюнок (A1, с. 55); граматика — there is(n’t)/are(n’t),
    basic prepositions of place, ‘some’ and ‘any’ in questions and negative statements, irregular plural (інвентар 3 кл., с. 62 — повторення за content/eng/plan.js):
    https://lib.iitta.gov.ua/714276/1/%D0%A2%D0%9E%D0%9F_3_4_2018.pdf
-   Увесь зміст — англійською, британська норма (D-054). Тексти, діалоги й герої — власні (docs/design/english.md §8); герої й місця — як у e4s1.
+   Увесь зміст — англійською, британська норма (D-055). Тексти, діалоги й герої — власні (docs/design/english.md §8); герої й місця — як у e4s1.
    Форми й наголос — за Cambridge Dictionary і OALD (URL — tasks/…/write-eng-g4-e4s2.md, «Нотатки агента»).
    Статус: verified (verifier-e4s2, 2026-11-19, reports/verify/e4s2.md). 7 уроків (6 + фінал).
    Перевірка: node tools/validate.mjs --section e4s2 && node tools/stats.mjs --subject eng

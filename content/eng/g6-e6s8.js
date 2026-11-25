@@ -4,7 +4,7 @@
    (головне речення — імператив чи Present Simple, без will: first conditional — 7 кл.); Reported statements with say and tell
    (без вимоги backshift); повторення — Present Perfect і Past Simple passive (e6s7), comparatives / superlatives (e5s10l4, e5s10l5):
    https://osvita.ua/doc/files/news/831/83117/Inoz_mov_5-9-kl_Redko_ta_in_14_07.pdf
-   Увесь зміст — англійською, британська норма (D-054). Тексти, діалоги, герої й мапа — власні (docs/design/english.md §8).
+   Увесь зміст — англійською, британська норма (D-055). Тексти, діалоги, герої й мапа — власні (docs/design/english.md §8).
    Герої: Emma й Tom — місто в Англії (не назване), Emma була в Лондоні з класом; Andrii — Kyiv, був у Лондоні в 4 кл. (e4s7);
    нові — George (живе в Лондоні) і Liliia (однокласниця Emma). Зовнішність героїв не описано (канон задає e6s1).
    Факти про Лондон і Київ — два джерела на кожен, URL — tasks/…/write-eng-g6-e6s8.md, «Нотатки агента».

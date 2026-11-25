@@ -32,7 +32,7 @@ source: design-eng
 - Джерело: `top34` з `program: true` — ТОП 3–4, PDF с. 63 (тема «Природа і навколишнє середовище… — довкілля, природні явища» і граматика 4 кл.: comparatives, ‘how’ questions for measurement and size, Present Continuous) — сторінку звірено `pdftotext -f 62 -l 63` (PDF той самий, SHA-1 як у facts/eng.md). Усі `src` — «top34 с. 63». Вправи власні, з підручників нічого.
 - Розв'язано кожну вправу; `word` прогнано через `SLID_LANG.wordVerdict(s, v, "en")`, `build` — усі перестановки підмножин плиток (k−1, k, k+1) з extra через `SLID_LANG.check` (скрипт: scratchpad/pe4s6/js/run.mjs): рушій приймає лише ключ у кожному з a15, a19, a21, a46, a52.
 - Друга правильна відповідь — що вирішено:
-  - a04 autumn: у ключі й AmE `fall` (TQ-122: AmE-лексику рушій не нормалізує; контекстом не відсікти).
+  - a04 autumn: у ключі й AmE `fall` (TQ-125: AmE-лексику рушій не нормалізує; контекстом не відсікти).
   - a31 forest / wood (як в уроці l4); a39 colder / cooler (як в уроці l5); a40 bigger / larger; a49 rubbish / litter (UK) / trash / garbage (AmE, OALD «North American English»).
   - a33 — ключ `long` (відповідь «346 km long»; *How high* для річки не підходить); навмисно не взяв *How ___ is Ben Nevis* (tall).
   - build: a15, a52, a46 — питальний порядок з тих самих плиток відсічено умовою «tells … Make his/her sentence» (як e4s6l6, e5s5); a19, a21 — «Make his/her question» відсікає розповідний порядок. Обставин місця/часу в плитках немає (фронтування). a21: «the boys are doing what» (ехо-питання, розмовне) рушій не прийме — не стандарт A1, як рішення verifier-e4s6 щодо «In Lviv is it raining».

@@ -1,7 +1,7 @@
 # Рев'ю: engine-eng-lang-attr (D-026)
 
 - **Перевірено:** коміти `78be412` (app/app.js, app/registry.js, tools/lib.mjs, tools/validate.mjs, тести, docs, sw.js) і `c43905e` (нотатки, inbox), гілка `claude/eng-tasks`.
-- **Контекст:** docs/design/english.md §2 (п. 2, 5), D-054, нотатки задачі.
+- **Контекст:** docs/design/english.md §2 (п. 2, 5), D-055, нотатки задачі.
 - **Рецензент:** незалежний агент зі свіжим контекстом, не автор.
 - **Вердикт: прийнято.** Блокувальних (P1) і P2 знахідок немає. P3 нижче можна закрити наступними задачами eng (engine-eng-tools / engine-eng-validate) або follow-up.
 

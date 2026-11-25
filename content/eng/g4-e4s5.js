@@ -4,7 +4,7 @@
    граматика — «‘because’ for causes and reasons» (с. 63); have got — повторення (e4s1l2); imperatives — як функція «вказівки» (с. 63);
    irregular plurals (children, teeth, feet) — наскрізно (reports/verify/plan-eng-g4.md):
    https://lib.iitta.gov.ua/714276/1/%D0%A2%D0%9E%D0%9F_3_4_2018.pdf
-   Увесь зміст — англійською, британська норма (D-054). Тексти, діалоги й герої — власні (docs/design/english.md §8).
+   Увесь зміст — англійською, британська норма (D-055). Тексти, діалоги й герої — власні (docs/design/english.md §8).
    Поради про гігієну й здоров'я — лише загальновідомі (мити руки, чистити зуби, пити воду, спати); без медичних порад.
    Форми й наголос — за Cambridge Dictionary і OALD (URL — tasks/…/write-eng-g4-e4s5.md, «Нотатки агента»).
    Статус: verified (verifier-e4s5, reports/verify/e4s5.md). 7 уроків (6 + фінал).

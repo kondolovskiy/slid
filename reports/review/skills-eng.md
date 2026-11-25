@@ -2,11 +2,11 @@
 
 **Рецензент:** reviewer-skills-eng (не автор), 2026-11-19.
 **Перевірено:** коміти a59589d (`.claude/skills/content-author/SKILL.md`, `content-verify/SKILL.md`, `math-pool-diag/SKILL.md`, AGENTS.md §6) і 1788199 (задача → review). Гілка claude/eng-tasks.
-**Звірено з:** decisions.md D-054 з доповненням; docs/design/english.md §2, §5.3–5.6, §6, §7, §8, §11; style/eng.md, style/eng-banned.txt; glossary/facts eng; pitfalls-content.md «Англійська»; teacher-questions TQ-119…123; CONTENT_SCHEMA §1, §4, §4.1, §9, §10; app/lang.js (51e0092), app/app.js (`OPT_LETTERS_LANG`, `TL()`), app/learn.js `validatePool`, tools/validate.mjs, tools/content-checks.mjs (1015bd1); reports/verify/plan-eng-g4.md, plan-eng-g5.md; tasks/todo/write-eng-pool-g4-*.md, write-eng-diag-g4.md, engine-eng-diag-pool.md.
+**Звірено з:** decisions.md D-055 з доповненням; docs/design/english.md §2, §5.3–5.6, §6, §7, §8, §11; style/eng.md, style/eng-banned.txt; glossary/facts eng; pitfalls-content.md «Англійська»; teacher-questions TQ-122…123; CONTENT_SCHEMA §1, §4, §4.1, §9, §10; app/lang.js (51e0092), app/app.js (`OPT_LETTERS_LANG`, `TL()`), app/learn.js `validatePool`, tools/validate.mjs, tools/content-checks.mjs (1015bd1); reports/verify/plan-eng-g4.md, plan-eng-g5.md; tasks/todo/write-eng-pool-g4-*.md, write-eng-diag-g4.md, engine-eng-diag-pool.md.
 
 ## Вердикт: **потрібні виправлення** (1 × P1, 3 × P2, 5 × P3)
 
-Розділи загалом точні й добре прив'язані до джерел: BrE-пастки (sport, holiday(s)/festivals, greetings card, at the weekend, will / be going to) збігаються з reports/verify/plan-eng-g4/g5 і словниками; `uk` (4–5 кл., лише intro/info/explore, помилка в тесті й пулі, за показаною потребою) — з D-054 доп. п. 5, CONTENT_SCHEMA §4 і validate.mjs:346–349, 483–484; `requires` — з plan-eng-g4/g5 §6 і validate.mjs:466; без IPA і без звуку — з D-054; поріг авторського права ≥ 12 слів — з дизайну §8; id `dge<клас>`, `pe4s1` — з дизайну §7 і задач write-eng-pool-g4-*; TQ-119…123 — відповідають таблиці. Розділи ukr/math/hist не зламано (зміна в §1 лише дописує «eng — …»). Але одне твердження про рушій хибне так, що веде до неправильного оцінювання дитини, і його не зловить ні validate, ні верифікатор (той самий текст є в обох скілах).
+Розділи загалом точні й добре прив'язані до джерел: BrE-пастки (sport, holiday(s)/festivals, greetings card, at the weekend, will / be going to) збігаються з reports/verify/plan-eng-g4/g5 і словниками; `uk` (4–5 кл., лише intro/info/explore, помилка в тесті й пулі, за показаною потребою) — з D-055 доп. п. 5, CONTENT_SCHEMA §4 і validate.mjs:346–349, 483–484; `requires` — з plan-eng-g4/g5 §6 і validate.mjs:466; без IPA і без звуку — з D-055; поріг авторського права ≥ 12 слів — з дизайну §8; id `dge<клас>`, `pe4s1` — з дизайну §7 і задач write-eng-pool-g4-*; TQ-122…123 — відповідають таблиці. Розділи ukr/math/hist не зламано (зміна в §1 лише дописує «eng — …»). Але одне твердження про рушій хибне так, що веде до неправильного оцінювання дитини, і його не зловить ні validate, ні верифікатор (той самий текст є в обох скілах).
 
 ## Знахідки
 
@@ -19,7 +19,7 @@
 
 ### P2-1. Список «що робить рушій сам» не каже, що це лише `word` (введення), і не забороняє AmE-написання як хибний варіант
 - `content-author/SKILL.md:57`, `content-verify/SKILL.md:39`.
-- Уся нормалізація — у `wordVerdict` (app/lang.js:266–284); у `gaps`/`choice`/`pick` вибраний варіант порівнюється точно. Отже `{*colour|color}` у `gaps` чи `color` як хибна опція `choice` оцінить AmE-правопис як помилку — це суперечить D-054 доп. п. 1. style/eng.md:15 це прямо забороняє («не будуй `choice`, де AmE-написання — «неправильний» варіант»), а скіли згадують лише `fbBad`.
+- Уся нормалізація — у `wordVerdict` (app/lang.js:266–284); у `gaps`/`choice`/`pick` вибраний варіант порівнюється точно. Отже `{*colour|color}` у `gaps` чи `color` як хибна опція `choice` оцінить AmE-правопис як помилку — це суперечить D-055 доп. п. 1. style/eng.md:15 це прямо забороняє («не будуй `choice`, де AmE-написання — «неправильний» варіант»), а скіли згадують лише `fbBad`.
 - Очікувано: «(лише `word`)» у заголовку пункту і рядок «AmE-написання не буває хибним варіантом `gaps`/`choice`/`multi`» — в автора й у чеклісті верифікатора (❌, бо правильний дистрактор).
 - Дрібне в тому ж рядку: «Almost» — це **неправильно** з підказкою після першої спроби (CONTENT_SCHEMA §4.1), а не прийнята відповідь; варто дописати «(відповідь неправильна)», щоб «не дублюй у ключі» не прочитали як «одруківки зараховуються».
 

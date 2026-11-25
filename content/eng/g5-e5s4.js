@@ -5,7 +5,7 @@
    https://osvita.ua/doc/files/news/831/83117/Inoz_mov_5-9-kl_Redko_ta_in_14_07.pdf
    Розподіл граматики — content/eng/plan.js, reports/verify/plan-eng-g5.md. Концентрично спирається на e4s6 (Present Continuous)
    і e4s8 (I play, I’m playing); «аргументувати свій вибір» — через because (Р1 верифікатора плану).
-   Увесь зміст — англійською, британська норма (D-054): jumper, trousers, trainers. Тексти, діалоги, герої й малюнки — власні
+   Увесь зміст — англійською, британська норма (D-055): jumper, trousers, trainers. Тексти, діалоги, герої й малюнки — власні
    (docs/design/english.md §8); герої — з розділів 4 кл. Форми, наголос і позначки UK/US — за Cambridge Dictionary і OALD;
    День вишиванки — en/uk.wikipedia, zn.ua (URL — tasks/…/write-eng-g5-e5s4.md, «Нотатки агента»).
    Малюнки img/eng/e5s4/*.svg — власні (writer-e5s4), без стороннього матеріалу.

@@ -6,7 +6,7 @@
 window.SLID = (() => {
   const subjects = [], soonList = [], graphs = [];
   const find = id => subjects.find(s => s.id === id);
-  /* Мова змісту предмета (engine-eng-lang-attr, D-054; CONTENT_SCHEMA §1): SLID.subject({ targetLang: "en" }) — увесь зміст предмета
+  /* Мова змісту предмета (engine-eng-lang-attr, D-055; CONTENT_SCHEMA §1): SLID.subject({ targetLang: "en" }) — увесь зміст предмета
      цією мовою, хром рушія — мовою сторінки (uk). Одне джерело для рушія (lang на змісті плеєра) і tools/lib.mjs (subjectLang,
      isEnglishSubject: validate, stats, content-checks). Невідоме значення рушій ігнорує (""), validate — помилка. */
   const TARGET_LANGS = Object.freeze(["en"]);

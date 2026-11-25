@@ -6,7 +6,7 @@
    Концентрично від 4 кл.: e4s7 (I think I’ll…, листівка з Past Simple, транспорт), e4s4l5 (I’d like), e4s5l6 (because).
    be going to — уже складений план (є квитки, план записано); will — рішення в мить мовлення (CD Grammar «Be going to», «Will»).
    will ніде не стоїть хибним варіантом поруч із be going to: варіанти відрізняються формою (am / is / are, visit / visits).
-   Увесь зміст — англійською, британська норма (D-054). Тексти, діалоги й герої — власні (docs/design/english.md §8).
+   Увесь зміст — англійською, британська норма (D-055). Тексти, діалоги й герої — власні (docs/design/english.md §8).
    Форми, наголос і факти — URL у tasks/…/write-eng-g5-e5s9.md, «Нотатки агента».
    Статус: verified (verifier-e5s9, reports/verify/e5s9.md). 7 уроків (6 + фінал).
    Перевірка: node tools/validate.mjs --section e5s9 && node tools/stats.mjs --subject eng

@@ -9,7 +9,7 @@
    Герої — та сама серія, що в 4–5 кл., на два роки старші. Зовнішність героїв уперше задано тут (канон — NOTE (герої) у inbox,
    задача write-eng-g6-e6s1). Нові герої: Orest (новий однокласник Тараса, Lviv), Roksolana (нова однокласниця Mariia, Kharkiv),
    Ruby (нова подруга Emma, England).
-   Увесь зміст — англійською, британська норма (D-054). Тексти, діалоги, герої й малюнки — власні (docs/design/english.md §8).
+   Увесь зміст — англійською, британська норма (D-055). Тексти, діалоги, герої й малюнки — власні (docs/design/english.md §8).
    Форми, рівні слів і наголос — за Cambridge Dictionary і OALD (URL — tasks/…/write-eng-g6-e6s1.md, «Нотатки агента»).
    Статус: verified (verifier-e6s1, 2026-11-20, reports/verify/e6s1.md). 7 уроків (6 + фінал).
    Перевірка: node tools/validate.mjs --section e6s1 && node tools/stats.mjs --subject eng

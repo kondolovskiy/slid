@@ -144,7 +144,7 @@ eq(C.poolFirstSessionIssues(pool([it("a", "l1", "x"), it("b", "l1", "x"), it("c"
 eq(C.poolFirstSessionIssues(pool([it("a", "l1", "x"), it("b", "l1", "y"), it("c", "l1", "z"), it("d", "l1", "w"), it("e", "l1", "v"), it("f", "l1", "v")])).length, 0, "п. 5: одиночні sk у 4 різних парах — типова будова ukr, не вичерпання (пара < 3 вправ)");
 eq(C.poolFirstSessionIssues(pool([it("a", "l1", "x", 2), it("b", "l1", "x", 2), it("c", "l1", "x", 2), it("d", "l1", "y"), it("e", "l1", "y"), it("f", "l1", "z"), it("g", "l1", "z")])).length, 0, "п. 5: вичерпана sk без вправи рівня 1 — помилка рівня 1 неможлива");
 
-// ---- англійська (engine-eng-validate, D-054; docs/design/english.md §2 п. 3, §6.3) ----
+// ---- англійська (engine-eng-validate, D-055; docs/design/english.md §2 п. 3, §6.3) ----
 // п. 10 англійською: питання — «?», «…» чи шаблонна інструкція (glossary/eng.md «Інструкції-шаблони»), wh-слово
 const qe = (o, lang = "en", type = "choice") => C.choiceNoQuestion({ type, opts: ["a", "b"], correct: 0, ...o }, lang).length;
 ok(qe({ title: "My family", body: "Olena has a brother." }) === 1, "en п. 10: ні «?», ні інструкції — попередження");
@@ -174,7 +174,7 @@ const on = t => C.OPT_NUM_EN.test(t);
 ok(on("The second option is wrong.") && on("Option B is a verb.") && on("Look at option 2.") && on("the last answer") && on("Answer C has a mistake."), "OPT_NUM_EN: «the second option», «option B», «option 2», «last answer», «Answer C»");
 ok(!on("There are two options here.") && !on("Choose the best answer.") && !on("Answer the question.") && !on("an option before lunch") && !on("Answer a question."), "OPT_NUM_EN: звичайні речення — чисто");
 
-// п. 1 англійською: кирилиця в змісті (D-054); дозволено лише в uk і credits (і службових полях)
+// п. 1 англійською: кирилиця в змісті (D-055); дозволено лише в uk і credits (і службових полях)
 const cy = o => C.cyrillicInEnglish(o);
 ok(cy({ title: "Cats", body: "<p>One cat, two cats.</p>", opts: ["cat", "cats"], fbText: "We add -s." }).length === 0, "en п. 1: усе латиницею — чисто");
 ok(cy({ title: "Cats", body: "<p>Привіт, cats!</p>" }).length === 1 && /body/.test(cy({ title: "Cats", body: "<p>Привіт, cats!</p>" })[0]), "en п. 1: кирилиця в body — попередження з назвою поля");

@@ -129,7 +129,7 @@ ${sec.plan.map((t, i) => `${i + 1}. ${t}`).join("\n")}
 ${sec.plan.length + 1}. Фінальний урок розділу (boss: true, бали ×2, свій значок у sec.badges)
 
 ## Рішення людини, обов'язкові
-docs/design/english.md §11.1 (D-054): британська норма; увесь зміст англійською (інтерфейс рушія — українською); варіанти A/B/C; поки без звуку й голосу; ціль B2 в 11 кл.; словники дозволено. Програма й рівень класу — у коментарі \`content/${c.id}/plan.js\` і docs/design/english.md §4.
+docs/design/english.md §11.1 (D-055): британська норма; увесь зміст англійською (інтерфейс рушія — українською); варіанти A/B/C; поки без звуку й голосу; ціль B2 в 11 кл.; словники дозволено. Програма й рівень класу — у коментарі \`content/${c.id}/plan.js\` і docs/design/english.md §4.
 
 ## Прочитати перед роботою
 - AGENTS.md; скіл автора \`.claude/skills/content-author/SKILL.md\` (розділ про англійську); docs/design/english.md §2, §5, §6, §8${img ? "\n- Скіл зображень \`.claude/skills/hist-images/SKILL.md\` і docs/IMAGES.md (D-027)" : ""}

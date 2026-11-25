@@ -55,4 +55,4 @@ source: design-eng
 
 ## Нотатки верифікатора (verifier-pe4s4, 2026-11-20)
 **Вердикт: verified.** Звіт — reports/verify/pe4s4.md. 50 вправ розв'язано; build — усі порядки з extra через app/lang.js; наголос 16 слів — CD + OALD (curl); 6 фрагментів — WebSearch без збігів. validate --pool pe4s4 — 0/0; personalization-qa --pool pe4s4 --strict — чисто.
-Правки: a03 + «bookstore» у ключ (TQ-122 «як зараз»); a46 — друга відповідь «bag» відсічена («What present does Mariia buy?» + рядок про подарунок); a24 — hint. Спірні 1–5 автора прийнято. TQ не додано.
+Правки: a03 + «bookstore» у ключ (TQ-125 «як зараз»); a46 — друга відповідь «bag» відсічена («What present does Mariia buy?» + рядок про подарунок); a24 — hint. Спірні 1–5 автора прийнято. TQ не додано.

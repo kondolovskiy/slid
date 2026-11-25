@@ -48,7 +48,7 @@ export function serviceIdsLesson(l) {
 export const ASK_RE = /\?|(?<![\p{L}])(?:обери|оберіть|вибери|виберіть|познач|позначте|визнач|вкажи|знайди|встанови|віднови|зістав|розклади|допиши|заверши|постав)(?![\p{L}])/iu;
 // наказові звороти «Обери / Познач / Розклади…» і ширше: «Вибери», «Оціни», «Скажи», «Порівняй», «Розстав», «Назви»… — дитині сказано, що робити
 const ASK_WIDE = /(?<![\p{L}])(?:обер\p{L}*|вибер\p{L}*|вибир\p{L}*|позна\p{L}*|визна\p{L}*|вкаж\p{L}*|знайд\p{L}*|встанов\p{L}*|віднов\p{L}*|зістав\p{L}*|розклад\p{L}*|розстав\p{L}*|допиш\p{L}*|заверш\p{L}*|постав\p{L}*|оціни\p{L}*|скаж\p{L}*|порівня\p{L}*|назви\p{L}*|поясн\p{L}*|відпов\p{L}*|вирішуй\p{L}*|продовж\p{L}*|добер\p{L}*|підбер\p{L}*|відшукай\p{L}*|з'ясуй\p{L}*|викрес\p{L}*|укаж\p{L}*|пригадай\p{L}*|придума\p{L}*|розкри\p{L}*|спрост\p{L}*|округл\p{L}*|розв['’]яж\p{L}*|запиш\p{L}*|скорот\p{L}*|помнож\p{L}*|перемнож\p{L}*|обчисл\p{L}*|перебуд\p{L}*|об['’]єдн\p{L}*|скористай\p{L}*|подума\p{L}*|перевір\p{L}*|зроб\p{L}*|виконай\p{L}*|порахуй\p{L}*|склад\p{L}*|підстав\p{L}*|поділ\p{L}*|розбер\p{L}*|уяв\p{L}*|згада\p{L}*|прочита\p{L}*|подив\p{L}*|скільки|який|яка|яке|які|якого|якій|яких|яким|чому|чи|що|хто|де|коли|навіщо|куди|звідки|як)(?![\p{L}])/iu;
-// англійською (engine-eng-validate, D-054): шаблонні інструкції glossary/eng.md («Choose / Match / Fill in / Put the words in order…») і wh-слова
+// англійською (engine-eng-validate, D-055): шаблонні інструкції glossary/eng.md («Choose / Match / Fill in / Put the words in order…») і wh-слова
 export const ASK_EN = /\?|(?<![\p{L}])(?:choose|read|select|pick|complete|match|find|fill|tick|put|write|sort|click|tap|mark|circle|underline|guess|which|what|who|whose|whom|where|when|why|how)(?![\p{L}])/iu;
 /** lang — мова змісту предмета (subjectLang): "" — українські правила, "en" — англійські, інша — правил немає (мовчить). */
 export function choiceNoQuestion(s, lang = "") {
@@ -233,7 +233,7 @@ export function genderedAddress(s) {
   return out;
 }
 
-// ---- предмет з мовою змісту (engine-eng-validate, D-054; docs/design/english.md §2 п. 3) ----
+// ---- предмет з мовою змісту (engine-eng-validate, D-055; docs/design/english.md §2 п. 3) ----
 // Кирилиця в змісті англійської — попередження: увесь зміст англійською; українською — лише поле uk (згорнутий переклад правила)
 // і credits (як у джерелі ліцензії). Службові поля (id, sk, img, src, meta…) — не текст для учня. Формули $…$ не чіпаємо (там лише TeX).
 export const FOREIGN_SKIP = new Set(["id", "sk", "type", "img", "svg", "pre", "u", "uk", "credits", "meta", "src", "lesson", "section", "topic", "kind", "status", "icon"]);
@@ -252,7 +252,7 @@ export function cyrillicInEnglish(o, skip = FOREIGN_SKIP) {
   const mixed = [...new Set(hits.flatMap(([, w]) => w).filter(w => /\p{Script=Latin}/u.test(w)))];
   const code = mixed.length ? ` (кирилиця в латинському слові «${mixed[0]}»: ${[...mixed[0]].filter(c => CYR.test(c)).map(c => "U+" + c.codePointAt(0).toString(16).toUpperCase().padStart(4, "0")).join(" ")} — заміни латинською літерою)` : "";
   const list = hits.slice(0, 3).map(([p, w]) => `${p} «${w.slice(0, 3).join(" ")}»`).join(", ") + (hits.length > 3 ? ` і ще ${hits.length - 3}` : "");
-  return [`кирилиця в змісті англійською: ${list}${code} — увесь зміст англійською (D-054); українською лише uk на екрані теорії 4–5 кл. і credits`];
+  return [`кирилиця в змісті англійською: ${list}${code} — увесь зміст англійською (D-055); українською лише uk на екрані теорії 4–5 кл. і credits`];
 }
 
 // ---- заборонені фрази (style/banned-phrases.txt; предмет з мовою змісту — style/<предмет>-banned.txt) ----

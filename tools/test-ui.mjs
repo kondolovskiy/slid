@@ -47,7 +47,7 @@
 //  23) Читабельність рендеру (engine-render-legibility-1117), 360 px: підписи numline (дуги стрибків, точка біля краю, дві точки в одному місці),
 //      смужок fraction і solid з осями — у межах SVG і без накладань; назва повзунка «$\alpha$» — «α» без «\»; знак кореня — маска до риски;
 //      \to ширша за «−»; підкреслення <u> з відступом; align — роки шкали цілком у полі й «N з 18 кілець»; strata — знахідки не налазять на стрілку; клік по точці numline — фокус на її ручку, стрілки рухають її (qa-drag-points B1).
-//  26) Мова змісту предмета (engine-eng-lang-attr, D-054): targetLang: "en" — lang="en" на змісті уроку, тесту й тренування, хром рушія — uk;
+//  26) Мова змісту предмета (engine-eng-lang-attr, D-055): targetLang: "en" — lang="en" на змісті уроку, тесту й тренування, хром рушія — uk;
 //      літери варіантів A, B, C (engine-eng-validate), без targetLang — А, Б, В;
 //      згорнутий переклад uk на екрані теорії й подія uk_open; предмет без targetLang — жодного lang у плеєрі.
 //  27) Мовні вправи англійською (engine-eng-lang-core): word — примітка «In British English: colour.» (en), «Almost: check the spelling.» (en),
@@ -1450,7 +1450,7 @@ async function renderLegibilityScenario(browser) {
   await ctx.close();
 }
 
-/* 26) Мова змісту предмета (engine-eng-lang-attr, D-054; docs/design/english.md §2): фікстура — предмет ukr з targetLang: "en".
+/* 26) Мова змісту предмета (engine-eng-lang-attr, D-055; docs/design/english.md §2): фікстура — предмет ukr з targetLang: "en".
    Урок, тест рівня й тренування: section.screen — lang="en" (заголовок, текст, варіанти, поля); хром рушія всередині (eyebrow тесту,
    «Тренування ·», .fix, «Підказка:», «Правильна відповідь:», «Джерело:») — lang="uk"; у панелі відповіді зміст (fbOk/fbBad/fbText)
    — у span lang="en", службові повідомлення — мовою сторінки (uk). Поле uk екрана теорії — згорнутий details lang="uk"

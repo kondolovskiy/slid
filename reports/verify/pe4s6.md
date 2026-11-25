@@ -36,7 +36,7 @@
 | Що | CD | OALD | Вердикт |
 |---|---|---|---|
 | `stress`: winter, summer, autumn, weather, Saturday, river, forest, mountain, nature, garden — 1-й склад; computer, assistant — 2-й | UK /ˈwɪn.tər/, /ˈsʌm.ər/, /ˈɔː.təm/, /ˈweð.ər/, /ˈsæt.ə.deɪ/, /ˈrɪv.ər/, /ˈfɒr.ɪst/, /ˈmaʊn.tɪn/, /ˈneɪ.tʃər/, /ˈɡɑː.dən/, /kəmˈpjuː.tər/, /əˈsɪs.tənt/ — https://dictionary.cambridge.org/dictionary/english/<word> | /ˈwɪntə(r)/, /ˈsʌmə(r)/, /ˈɔːtəm/, /ˈweðə(r)/, /ˈsætədeɪ/, /ˈrɪvə(r)/, /ˈfɒrɪst/, /ˈmaʊntən/, /ˈneɪtʃə(r)/, /ˈɡɑːdn/, /kəmˈpjuːtə(r)/, /əˈsɪstənt/ — https://www.oxfordlearnersdictionaries.com/definition/english/{winter_1, summer_1, autumn, weather_1, saturday, river, forest, mountain, nature, garden_1, computer, assistant} | ✅ один наголос у кожному, склад збігається з ключем; усі слова мали `<u>` в e4s1–e4s6 (Saturday — e4s3, garden — e4s2, assistant — e4s4, computer — e4s5) |
-| fall (a04, AmE у ключі) | «US ( UK autumn )» — …/english/fall | fall_2 «(North American English) (also especially British English autumn)» | ✅ у ключі поруч з autumn — допустимо (рішення людини, TQ-122) |
+| fall (a04, AmE у ключі) | «US ( UK autumn )» — …/english/fall | fall_2 «(North American English) (also especially British English autumn)» | ✅ у ключі поруч з autumn — допустимо (рішення людини, TQ-125) |
 | litter, trash, garbage (a49) | — | litter_1 «small pieces of rubbish…»; trash_1 «(North American English) things that you throw away»; garbage «(especially North American English) waste food, paper, etc.» | ✅ |
 | cooler (a39), larger (a40) | cool: «…cooler than the optimum temperature»; large: «We need a larger car» | cool_1 «(comparative cooler)… fairly cold»; large «(comparative larger)… big in size» | ✅ правильно, що в ключі |
 | wood = forest (a31) | за reports/verify/e4s6.md (CD wood «A2… an area of land covered with… trees») | — | ✅ у ключі, як в уроці l4 |
@@ -100,7 +100,7 @@
 
 **Лексика:** слова пулу звірено `grep` з e4s1–e4s6. Поза уроками були лише *yesterday* і *was* в a42 (правка 1). *notes* (a30, інструкція) є як *note* в e4s4 — прийнятно.
 
-**Спірні місця автора** (нотатки задачі, «Друга правильна відповідь — що вирішено»): 1) a04 fall у ключі — приймаю (TQ-122, рішення людини); 2) forest/wood, colder/cooler, bigger/larger, rubbish/litter/trash/garbage — приймаю, словники вище; 3) a33 ключ long, Ben Nevis з tall не взято — приймаю; 4) build з «tells / Make his question», a21 без ехо-питання, a46 без плитки today — приймаю, перебір підтвердив. Almost-мітка для «mountains» / «forests» після «a» (a28, a31) — вердикт правильний (неправильно), мітка неточна. Це відомий ENGINE-рядок (engine-rule-tables), не блокує.
+**Спірні місця автора** (нотатки задачі, «Друга правильна відповідь — що вирішено»): 1) a04 fall у ключі — приймаю (TQ-125, рішення людини); 2) forest/wood, colder/cooler, bigger/larger, rubbish/litter/trash/garbage — приймаю, словники вище; 3) a33 ключ long, Ben Nevis з tall не взято — приймаю; 4) build з «tells / Make his question», a21 без ехо-питання, a46 без плитки today — приймаю, перебір підтвердив. Almost-мітка для «mountains» / «forests» після «a» (a28, a31) — вердикт правильний (неправильно), мітка неточна. Це відомий ENGINE-рядок (engine-rule-tables), не блокує.
 
 **Герої:** канон дотримано (Oksana — Poltava, Dmytro, Nazar; Andrii — Kyiv, Sofiia; Emma — Tom, місто з річкою і лісом; Taras — Lviv), крім a53 (правка 3).
 

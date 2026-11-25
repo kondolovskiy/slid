@@ -8,7 +8,7 @@
    What a…! (e5s8l6), Past Simple irregular (e6s3l4) — `requires` за plan-eng-g6.md §6 і задачею.
    Герої — серія 4–5 кл., на два роки старші (memory/short/inbox.md, NOTE (герої)); зовнішність героїв не описуємо (канон — e6s1).
    Нові герої: Myroslava і Vlad (Lviv, знайомі Тараса), Oliver (однокласник Emma в Англії).
-   Увесь зміст — англійською, британська норма (D-054). Тексти, діалоги й герої — власні (docs/design/english.md §8).
+   Увесь зміст — англійською, британська норма (D-055). Тексти, діалоги й герої — власні (docs/design/english.md §8).
    Форми, рівні слів і наголос — за Cambridge Dictionary, Cambridge Grammar і OALD (URL — tasks/…/write-eng-g6-e6s4.md, «Нотатки агента»).
    Статус: verified (reports/verify/e6s4.md). 7 уроків (6 + фінал). Будова — за еталонами e4s1, e5s1.
    Перевірка: node tools/validate.mjs --section e6s4 && node tools/stats.mjs --subject eng

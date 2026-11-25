@@ -41,7 +41,7 @@ export function loadContent(root = ROOT) {
   return { subjects: ctx.SLID_SUBJECTS, soon: ctx.SLID_SOON, files, origin, graphOrigin, poolOrigin, diagOrigin, graphs: ctx.SLID.graphs || [], lab: ctx.SLID_LAB, learn: ctx.SLID_LEARN, math: ctx.SLID_MATH, lang: ctx.SLID_LANG };
 }
 
-/* Мова змісту предмета (engine-eng-lang-attr, D-054): правило одне — SLID.subjectLang з app/registry.js (рушій ставить за ним lang
+/* Мова змісту предмета (engine-eng-lang-attr, D-055): правило одне — SLID.subjectLang з app/registry.js (рушій ставить за ним lang
    на зміст плеєра). validate, stats і content-checks вимикають українські правила для предмета з subjectLang(c) !== "" (engine-eng-validate,
    engine-eng-stats). subj — об'єкт предмета (з loadContent) або meta з SLID.subject; рядок-id тут не розпізнати (немає змісту) — "". */
 let REG = null;
@@ -164,7 +164,7 @@ export function screenAllText(s) {
   return parts.filter(Boolean).map(mplain).filter(Boolean).map(t => /[.!?…]$/.test(t) ? t : t + ".").join(" ");
 }
 
-/** Метрики, які stats.mjs зводить у звіт і z-оцінки «сім'ї». maxText — лише для предмета з мовою змісту (targetLang, D-054):
+/** Метрики, які stats.mjs зводить у звіт і z-оцінки «сім'ї». maxText — лише для предмета з мовою змісту (targetLang, D-055):
     найдовший текст для читання на екрані, ліміти — style/<предмет>.md (docs/design/english.md §6.1). Українські предмети — як раніше. */
 export const METRIC_KEYS = Object.freeze(["screens","gradedShare","readWordsPerScreen","maxReadWords","sentenceWords","longWordShare","typeVariety"]);
 export const metricKeys = subj => subjectLang(subj) ? [...METRIC_KEYS, "maxText"] : [...METRIC_KEYS];
@@ -204,7 +204,7 @@ export function lessonMetrics(l, { lang = "" } = {}) {
 }
 
 /** Звіт stats.mjs для одного предмета: рядки уроків із метриками, z-оцінки «сім'ї» (предмет + діапазон класів + урок/фінал),
-    прапорці профілю. Мова змісту (targetLang, D-054): "en" — англійські склади, речення й поріг довгого слова, ще й maxText (engine-eng-stats).
+    прапорці профілю. Мова змісту (targetLang, D-055): "en" — англійські склади, речення й поріг довгого слова, ще й maxText (engine-eng-stats).
     origin — id розділу → файл (з loadContent). Повертає { bands, rows, keys }. */
 export function subjectStats(c, profiles = {}, origin = {}) {
   const rows = [], KEYS = metricKeys(c), lang = subjectLang(c), bands = {};

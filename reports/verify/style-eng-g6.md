@@ -33,7 +33,7 @@
 - Побіжно (не з diff, до правки стиліста, не блокує): e6s5l7 Task 3 «Andrii’s dad has got the tickets for Saturday», а Task 6 «Andrii is at the ticket office… What does he say?» — сюжетно можна прочитати як інше питання в касі; на розсуд при наступному `refine-eng-*`.
 
 ## 5. `why` e6s7 і `fbOk`
-- `why`: «To tell people about Kyiv and its famous places. And to ask a friend: “Have you ever been to Kyiv?”» — нова граматика лише цитатою-зразком (як e5s8, e4s8), зразок = назва e6s7l4 і рядок `learned` l4; лапки “ ” за TQ-119. ✅ plan.js e6s7 `why` розходиться — синхронізація куратору (рядок STYLE стиліста).
+- `why`: «To tell people about Kyiv and its famous places. And to ask a friend: “Have you ever been to Kyiv?”» — нова граматика лише цитатою-зразком (як e5s8, e4s8), зразок = назва e6s7l4 і рядок `learned` l4; лапки “ ” за TQ-122. ✅ plan.js e6s7 `why` розходиться — синхронізація куратору (рядок STYLE стиліста).
 - 11 `fbOk`: скрипт по всіх уроках e6s1–e6s8 — у жодному уроці немає двох однакових `fbOk` поспіль (з `hyp` і без). Усі значення — з переліку style/eng.md («Yes!», «Right.», «Exactly.», «Well done!», «Good eye!»). ✅
 
 ## 6. Авторське право (нові англійські фрагменти ≥ 12 слів)

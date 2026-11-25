@@ -18,8 +18,8 @@ source: design-eng
 Спільні файли куратора — не під час паралельного пакета (AGENTS.md §5). Build — оркестратор.
 
 ## Нотатки orchestrator-eng (2026-11-19)
-- content/subjects/eng.js створено: `targetLang: "en"`, `diagOrder: 5`, `short: "Англійська"`, `icon: "voice"` (globe вже має world), кольори з catalog.js + soft/mid/ink, навички read, vocab, gram, phon, func, write, cult (`listen` — лише зі звуком, D-054), значок `estar`.
-- **Назви й підказки навичок — українською:** картка прогресу й назва предмета — інтерфейс рушія (D-054: українською — лише хром), закриває P3-3 рев'ю curate-eng-agents-rule. Записати в style/eng.md (curate-eng-style).
+- content/subjects/eng.js створено: `targetLang: "en"`, `diagOrder: 5`, `short: "Англійська"`, `icon: "voice"` (globe вже має world), кольори з catalog.js + soft/mid/ink, навички read, vocab, gram, phon, func, write, cult (`listen` — лише зі звуком, D-055), значок `estar`.
+- **Назви й підказки навичок — українською:** картка прогресу й назва предмета — інтерфейс рушія (D-055: українською — лише хром), закриває P3-3 рев'ю curate-eng-agents-rule. Записати в style/eng.md (curate-eng-style).
 - `SLID.soon({ id: "eng" })` видалено з content/catalog.js тим самим комітом (дубль картки). Перед тим тимчасово було «4 клас».
 - **Чому не чекали першого verified-розділу:** `SLID.section("eng", …)` у plan.js кидає «Невідомий предмет», якщо предмета немає (app/registry.js:26), тож subjects/eng.js потрібен до curate-eng-plan-g4. Предмет без розділів на головній не показується; з планом без уроків — картка «план» і «уроки готуються» (app/app.js:381, :391), як було з ukr.
 - `node tools/validate.mjs` — 0 помилок, 230 попереджень. build — оркестратор після етапу B (паралельно працюють агенти рушія).

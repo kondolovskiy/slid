@@ -188,7 +188,7 @@
     const t = normEn(v, s.keepCase, wordAnswers(s).every(a => !/[\u0400-\u04FF]/.test(a)), !wordAnswers(s).some(a => /[.!?]$/.test(String(a).trim())));
     return s.contractions ? t.split(" ").map(x => expandTok(x)[1] || x).join(" ") : t; };
 
-  /* ---------- word англійською (engine-eng-lang-core; docs/design/english.md §5.4; D-054 з доповненням; glossary/eng.md) ----------
+  /* ---------- word англійською (engine-eng-lang-core; docs/design/english.md §5.4; D-055 з доповненням; glossary/eng.md) ----------
      Вмикає lang === "en" (рушій передає SLID.subjectLang предмета); інакше — гілка вище без змін. Тексти для дитини (примітка, «Almost») —
      англійською, бо це зміст предмета; службове «Перемкни клавіатуру…» — хром рушія, українською. */
   const EN = "en";
@@ -198,7 +198,7 @@
   const CYR = /[\u0400-\u04FF]/;
   const KB_MSG = "Перемкни клавіатуру на англійську.", ALMOST = "Almost: check the spelling.";
   /* Британський правопис ключа → американський у відповіді (рішення людини 2026-11-19, §11.2 п. 1): явний список; лише від британського ключа.
-     Лексика (flat / apartment) — не тут (TQ-122). ize: -ise/-ize і -isation/-ization — британська оксфордська норма теж (TQ-121), тож
+     Лексика (flat / apartment) — не тут (TQ-125). ize: -ise/-ize і -isation/-ization — британська оксфордська норма теж (TQ-124), тож
      примітка не називає форму американською. practise / practice не включено: у BrE це різні частини мови. */
   const SPELL = new Map(), IZE = new Set();
   { const add = (b, a, ize) => { SPELL.set(b, a); if (ize) IZE.add(b); };
@@ -239,7 +239,7 @@
   function normEn(v, keepCase, mirror, punct) {
     let t = baseNorm(v);
     if (mirror) t = t.replace(/[\u0400-\u04FF]/g, c => LOOK_EN[c] || c);
-    // час (TQ-120): «15.30» = «15:30»; «3.30 p.m.» = «3.30 pm» = «3.30pm» (крапка після m — частина скорочення й кінця речення водночас)
+    // час (TQ-123): «15.30» = «15:30»; «3.30 p.m.» = «3.30 pm» = «3.30pm» (крапка після m — частина скорочення й кінця речення водночас)
     t = t.replace(/(^|[^\d.:])(\d{1,2})\s?[.:]\s?([0-5]\d)(?![\d.:]\d)/g, "$1$2:$3").replace(/(\d)\s*([ap])\.?\s?m\b\.?/gi, (x, d, ap) => `${d} ${ap.toLowerCase()}m`);
     if (punct) t = t.replace(/\s*[.!?]+$/, "");
     return keepCase ? t : t.toLocaleLowerCase(EN);

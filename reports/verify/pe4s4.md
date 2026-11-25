@@ -38,7 +38,7 @@ CD: https://dictionary.cambridge.org/dictionary/english/<слово> (UK); OALD:
 | assistant (a49, a50) | as<u>sis</u>tant | əˈsɪs.tənt | /əˈsɪstənt/ | ✅ |
 | bakery (a49) | <u>ba</u>kery | ˈbeɪ.kər.i | /ˈbeɪkəri/ | ✅ |
 | supermarket (a50) | <u>su</u>permarket | ˈsuː.pəˌmɑː.kɪt | /ˈsuːpəmɑːkɪt/ | ✅ |
-| bookstore (a03, правка 1) | — | «noun [C] mainly US … (also mainly UK bookshop)» | — | AmE-синонім → у ключ за TQ-122 «як зараз» |
+| bookstore (a03, правка 1) | — | «noun [C] mainly US … (also mainly UK bookshop)» | — | AmE-синонім → у ключ за TQ-125 «як зараз» |
 
 Решта норм (поверхи BrE, on the … floor, how much/many з [U]/[C], would like + to, Here you are, Have a nice day, lift, closed) — ті самі, що звірено в reports/verify/e4s4.md §2 з URL; у пулі нових форм немає. Злічуваність: у how much / how many — лише carrots, oranges, sandwiches, bananas, eggs, sweets, pens, apples [C] і milk, water, bread, rice [U]; juice, cheese, cake, chocolate і неправильної множини немає (NOTE verifier-e4s4).
 
@@ -113,7 +113,7 @@ CD: https://dictionary.cambridge.org/dictionary/english/<слово> (UK); OALD:
 | a46/a47 «This game is» + «Great! I’d like the game, please. Here you are» | збігу немає |
 
 ## 5. Правки (зроблені мною в content/eng/pool-g4-e4s4.js)
-1. **a03:** до ключа додано «bookstore» (CD: «mainly US … also mainly UK bookshop»; TQ-122 «як зараз» — AmE-слово не карати; сцена в Kharkiv, британського контексту немає).
+1. **a03:** до ключа додано «bookstore» (CD: «mainly US … also mainly UK bookshop»; TQ-125 «як зараз» — AmE-слово не карати; сцена в Kharkiv, британського контексту немає).
 2. **a46:** друга правильна відповідь «bag» (Mariia на «Would you like a bag?» каже «Yes, please»). Додано рядок «Mariia wants a present for her friend.», питання → «What present does Mariia buy?». Ключ «game» без змін; «bag» рушій не зараховує.
 3. **a24 (lvl 1):** додано `hint` «Sixteen is like fifteen. Sixty is like fifty.» — місток до підкреслених в уроці слів.
 4. Статус `draft` → `verified`, `meta.factcheck`, рядок «Статус» у шапці.
