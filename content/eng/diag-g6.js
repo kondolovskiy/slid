@@ -1,5 +1,5 @@
 /* Слід · Англійська мова, 6 клас — тест рівня «What do you know?» (dge6)
-   Статус: draft — автор writer-write-eng-diag-g6 (задача write-eng-diag-g6), 2026-11-25.
+   Статус: verified — автор writer-write-eng-diag-g6, верифікатор verifier-write-eng-diag-g6 (reports/verify/write-eng-diag-g6.md), 2026-11-25.
    10 тем-передумов з 5 класу (по 2 завдання: базове → складніше) + 8 тем 6 класу (по 1 завданню на розділ e6s1–e6s8) = 28 завдань.
    Передумови — уроки e5s*, на які посилаються requires розділів 6 кл. (файли content/eng/g6-*.js; reports/verify/plan-eng-g6.md §6).
    Теми cur — один урок розділу (без boss); завдання охоплює ядро його learned; лексика й граматика — лише з цих уроків.
@@ -13,20 +13,20 @@ SLID.diag("eng", {
   id: "dge6",
   grade: 6,
   title: "What do you know?",
-  why: "Let’s see what you remember from Year 5 and what you already know. Then we can plan your lessons.",
-  status: "draft",
-  meta: { author: "writer-write-eng-diag-g6", created: "2026-11-25", factcheck: "self", teacher: null },
+  why: "Let’s see what you remember from your English lessons and what you already know. Then we can plan your lessons.",
+  status: "verified",
+  meta: { author: "writer-write-eng-diag-g6", created: "2026-11-25", factcheck: "verifier-write-eng-diag-g6 (reports/verify/write-eng-diag-g6.md)", teacher: null },
   topics: [
     // передумови з 5 класу (уроки, на які спираються розділи 6 кл.)
     { id: "like", title: "What is she like?", kind: "pre", lessons: ["e5s1l6"], for: ["e6s1"] },
     { id: "much", title: "A lot of, much, many", kind: "pre", lessons: ["e5s3l4"], for: ["e6s2"] },
     { id: "cani", title: "Can I…? Could you…?", kind: "pre", lessons: ["e5s2l6"], for: ["e6s2", "e6s6"] },
     { id: "was", title: "Was and were", kind: "pre", lessons: ["e5s8l5"], for: ["e6s3", "e6s4"] },
-    { id: "ed", title: "Visited, stopped, studied", kind: "pre", lessons: ["e5s9l5"], for: ["e6s3", "e6s7"] },
+    { id: "ed", title: "Visited, stopped, studied", kind: "pre", lessons: ["e5s9l5"], for: ["e6s3"] },
     { id: "can", title: "I can swim, I can’t skate", kind: "pre", lessons: ["e5s6l4"], for: ["e6s4"] },
     { id: "going", title: "I’m going to …", kind: "pre", lessons: ["e5s9l3", "e5s9l4"], for: ["e6s5"] },
     { id: "will", title: "It will be sunny", kind: "pre", lessons: ["e5s5l5"], for: ["e6s5"] },
-    { id: "imp", title: "Open your books! Don’t talk!", kind: "pre", lessons: ["e5s2l5"], for: ["e6s6", "e6s3"] },
+    { id: "imp", title: "Open your books! Don’t talk!", kind: "pre", lessons: ["e5s2l5"], for: ["e6s6"] },
     { id: "comp", title: "Bigger, the biggest", kind: "pre", lessons: ["e5s10l4", "e5s10l5"], for: ["e6s8", "e6s7"] },
     // теми 6 класу: по одному уроку на розділ (без boss)
     { id: "cur-e6s1", title: "She looks like her mum", kind: "cur", lessons: ["e6s1l6"] },
@@ -63,8 +63,8 @@ SLID.diag("eng", {
       type: "choice",
       sk: "func",
       title: "Choose the correct answer.",
-      body: "<p>Bohdan doesn’t understand the teacher. What does he say?</p>",
-      opts: ["Could you repeat that, please?", "Can I repeat that, please?", "You repeat that!"],
+      body: "<p>Bohdan can’t find the page. He wants the teacher to help him. What does he say?</p>",
+      opts: ["Could you help me, please?", "Can I help you, please?", "You help me!"],
       correct: 0
     },
     {
@@ -100,7 +100,7 @@ SLID.diag("eng", {
       type: "choice",
       sk: "gram",
       title: "Choose the correct answer.",
-      body: "<p>Sofiia has got the tickets. Next week she ___ visit Lviv.</p>",
+      body: "<p>Sofiia has got the tickets. In June she ___ visit Odesa.</p>",
       opts: ["is going to", "going to", "are going to"],
       correct: 0
     },
@@ -109,7 +109,7 @@ SLID.diag("eng", {
       type: "choice",
       sk: "gram",
       title: "Choose the correct answer.",
-      body: "<p>The forecast for Kharkiv: “Tomorrow: sunny and warm.”</p><p>Tomorrow it ___ sunny.</p>",
+      body: "<p>The forecast for Kharkiv: “Tomorrow: windy and cold.”</p><p>It ___ windy tomorrow.</p>",
       opts: ["will is", "will be", "is be"],
       correct: 1
     },
@@ -118,8 +118,8 @@ SLID.diag("eng", {
       type: "choice",
       sk: "gram",
       title: "Choose the correct answer.",
-      body: "<p>Ms Lysenko wants the children to be quiet. What does she say?</p>",
-      opts: ["Doesn’t talk, please.", "Not talk, please.", "Don’t talk, please."],
+      body: "<p>Ms Lysenko doesn’t want the children to run in the classroom. What does she say?</p>",
+      opts: ["Doesn’t run, please.", "Not run, please.", "Don’t run, please."],
       correct: 2
     },
     {
@@ -128,7 +128,7 @@ SLID.diag("eng", {
       type: "choice",
       sk: "gram",
       title: "Choose the correct answer.",
-      body: "<p>Ukraine: about 600,000 km². The UK: about 240,000 km².</p><p>Ukraine is ___ the UK.</p>",
+      body: "<p>The red house: six rooms. The blue house: three rooms.</p><p>The red house is ___ the blue house.</p>",
       opts: ["more big than", "bigger than", "big than"],
       correct: 1
     },
@@ -139,16 +139,16 @@ SLID.diag("eng", {
       type: "gaps",
       sk: "gram",
       title: "Fill in the gaps.",
-      body: "<p>Andrii writes about his friend Yaroslav. Then Emma asks a question.</p>",
-      text: "Yaroslav {*likes|like} chess. He {*doesn’t|don’t} like football. Emma: What {*is|does} he like? Andrii: He’s friendly and funny."
+      body: "<p>Andrii writes about his friend Ostap. Then Emma asks a question.</p>",
+      text: "Ostap {*likes|like} basketball. He {*doesn’t|don’t} like swimming. Emma: What {*is|does} he like? Andrii: He’s quiet and kind."
     },
     {
       topic: "cur-e6s1",
       type: "gaps",
       sk: "gram",
       title: "Fill in the gaps.",
-      body: "<p>Taras writes about his sister Zlata.</p>",
-      text: "Zlata {*looks like|looks} our mum: they’ve both got curly dark hair. But she {*is like|looks like} our dad: they’re both quiet and honest. Today Zlata {*looks|looks like} very happy."
+      body: "<p>Taras writes about his cousin Marta.</p>",
+      text: "Marta {*looks like|looks} her dad: they’ve both got fair hair and blue eyes. But she {*is like|looks like} her mum: they’re both kind and quiet. Today Marta {*looks|looks like} tired."
     },
     {
       topic: "much",
@@ -163,8 +163,8 @@ SLID.diag("eng", {
       type: "gaps",
       sk: "gram",
       title: "Fill in the gaps.",
-      body: "<p>Sofiia writes to Mum. The baker’s and the greengrocer’s are near their flat.</p>",
-      text: "There’s {*no|any} bread at home, and we’ve only got {*a few|much} apples. I’m going to the baker’s and the greengrocer’s. {*Both|All} of them close at nine."
+      body: "<p>Mariia writes to Taras.</p>",
+      text: "I’ve got {*no|any} homework today! And I’ve got {*a few|much} new books from the library. My friends Polina and Roksolana love books too. {*Both|All} of them are in the library now."
     },
     {
       topic: "was",
@@ -172,15 +172,15 @@ SLID.diag("eng", {
       sk: "gram",
       title: "Fill in the gaps.",
       body: "<p>Oksana writes to Emma about her birthday.</p>",
-      text: "My party {*was|were} great. My cousins {*were|was} there too. {*Were|Was} you at a party last weekend?"
+      text: "My birthday party {*was|were} fun. Grandma and Grandad {*were|was} there too. {*Were|Was} you at a party last weekend?"
     },
     {
       topic: "cur-e6s3",
       type: "gaps",
       sk: "gram",
       title: "Fill in the gaps.",
-      body: "<p>Oksana writes about last Sunday.</p>",
-      text: "Last Sunday, Mum and I {*made|maked} varenyky. Dmytro {*ate|eated} ten! Then we {*drank|drinked} some tea."
+      body: "<p>Oksana writes about Friday evening.</p>",
+      text: "On Friday evening, Mum and I {*made|maked} varenyky. My brother Dmytro {*ate|eated} ten! Then we {*drank|drinked} some tea."
     },
     {
       topic: "ed",
@@ -188,23 +188,23 @@ SLID.diag("eng", {
       sk: "gram",
       title: "Fill in the gaps.",
       body: "<p>Taras writes about his trip.</p>",
-      text: "Last week we {*travelled|travel} to Odesa. We {*stopped|stoped} near the sea. Then we {*studied|studyed} a map of the old town."
+      text: "Last month we {*travelled|travel} to Kharkiv by car. We {*stopped|stoped} at a café on the way. Then we {*studied|studyed} a map of the city."
     },
     {
       topic: "can",
       type: "gaps",
       sk: "gram",
       title: "Fill in the gaps.",
-      body: "<p>Andrii: chess – yes, skating – no.</p>",
-      text: "Andrii can {*play|plays} chess very well. He {can|*can’t} skate. Emma: Can you skate, Andrii? Andrii: No, I {*can’t|don’t}."
+      body: "<p>Polina: swimming – yes, the guitar – no.</p>",
+      text: "Polina can {*swim|swims} very well. She {can|*can’t} play the guitar. Emma: Can you play the guitar, Polina? Polina: No, I {*can’t|don’t}."
     },
     {
       topic: "cur-e6s4",
       type: "gaps",
       sk: "gram",
       title: "Fill in the gaps.",
-      body: "<p>Ms Kravets asks about yesterday evening.</p>",
-      text: "Ms Kravets: What {*were|was} you doing at six o’clock, Taras? Taras: I {*was playing|was play|were playing} football. Ostap and Bohdan {*weren’t|wasn’t} playing. They were at home."
+      body: "<p>Emma asks Taras about Saturday.</p>",
+      text: "Emma: What {*were|was} you doing at three o’clock on Saturday, Taras? Taras: I {*was playing|was play|were playing} football in the park. Ostap and Bohdan {*weren’t|wasn’t} playing. They were at home."
     },
     {
       topic: "going",
@@ -213,39 +213,39 @@ SLID.diag("eng", {
       sk: "gram",
       title: "Fill in the gaps.",
       body: "<p>Emma asks Taras about his summer plan.</p>",
-      text: "Emma: {*Are|Do|Is} you going to travel this summer? Taras: Yes, I {*am|do}. Emma: Where {*are|do} you going to stay? Taras: At my aunt’s flat in Odesa."
+      text: "Emma: {*Are|Do|Is} you going to visit your grandma this summer? Taras: Yes, I {*am|do}. Emma: What {*are|do} you going to do there? Taras: I’m going to help her in the garden."
     },
     {
       topic: "will",
       type: "gaps",
       sk: "gram",
       title: "Fill in the gaps.",
-      body: "<p>The forecast for Saturday: Lviv — rain, 8 °C. Odesa — sunny, no rain.</p>",
-      text: "Will it rain in Odesa on Saturday? – No, it {*won’t|isn’t|doesn’t}. In Lviv it {*will rain|will rains|rains will}. It {*will be|will|be} cold."
+      body: "<p>The forecast for Saturday: Kharkiv — snow, −3 °C. Poltava — sunny, no snow.</p>",
+      text: "Will it snow in Poltava on Saturday? – No, it {*won’t|isn’t|doesn’t}. In Kharkiv it {*will snow|will snows|snows will}. It {*will be|will|be} very cold."
     },
     {
       topic: "cur-e6s5",
       type: "gaps",
       sk: "gram",
       title: "Fill in the gaps.",
-      body: "<p>Andrii and his dad are taking the train to Lviv. The tickets are on Dad’s phone.</p>",
-      text: "Dad: We {*have to|has to} be at the station at seven. We {*don’t have to|doesn’t have to} print the tickets. Andrii: {*Do|Does} I have to show my ticket? Dad: Yes, you do."
+      body: "<p>Andrii and his dad are taking the train to Lviv. Sofiia can stay at home with Mum.</p>",
+      text: "Dad: We {*have to|has to} be at the station at seven. Sofiia {*doesn’t have to|don’t have to} come with us. Andrii: {*Do|Does} I have to wear a coat? Dad: Yes, you do. It’s cold."
     },
     {
       topic: "imp",
       type: "gaps",
       sk: "gram",
       title: "Fill in the gaps.",
-      body: "<p>Here are the rules on Ms Lysenko’s poster.</p>",
-      text: "{*Come|Comes} to lessons on time. {*Don’t|Not} eat in class. {*Put|Puts} your hand up."
+      body: "<p>Here are the rules in the school library.</p>",
+      text: "{*Close|Closes} the door. {*Don’t|Not} eat in the library. {*Put|Puts} the books on the shelf."
     },
     {
       topic: "cur-e6s6",
       type: "gaps",
       sk: "gram",
       title: "Fill in the gaps.",
-      body: "<p>Bohdan’s school:<br>1. A uniform: it’s a rule.<br>2. Phones in lessons: no!<br>3. The chess club: it’s your choice.</p>",
-      text: "You {*must|must to|mustn’t} wear a uniform. You {*mustn’t|don’t have to} use your phone in lessons. You {*don’t have to|mustn’t} go to the chess club."
+      body: "<p>Bohdan’s class trip to the museum:<br>1. A school T-shirt: it’s a rule.<br>2. Eating in the museum: no!<br>3. A camera: it’s your choice.</p>",
+      text: "You {*must|must to|mustn’t} wear a school T-shirt. You {*mustn’t|don’t have to} eat in the museum. You {*don’t have to|mustn’t} take a camera."
     },
     {
       topic: "comp",
@@ -253,32 +253,32 @@ SLID.diag("eng", {
       type: "gaps",
       sk: "gram",
       title: "Fill in the gaps.",
-      body: "<p>Sofiia writes about Ukraine.</p>",
-      text: "The Dnipro is {*the longest|the longer|longest} river {*in|of} Ukraine. Hoverla is the {*highest|most high} mountain in Ukraine."
+      body: "<p>Taras writes about his town.</p>",
+      text: "This is {*the oldest|oldest|the most old} church {*in|of} our town. The park near it is the {*biggest|most big} park in our town."
     },
     {
       topic: "cur-e6s7",
       type: "gaps",
       sk: "gram",
       title: "Fill in the gaps.",
-      body: "<p>Emma asks Taras about Kyiv.</p>",
-      text: "Emma: {*Have|Has} you ever been to Kyiv? Taras: Yes, I {*have|did}. But my cousin Marta has {*never|ever} been there."
+      body: "<p>Emma asks Taras about the Carpathians.</p>",
+      text: "Emma: {*Have|Has} you ever been to the Carpathians? Taras: Yes, I {*have|did}. But my cousin Marta has {*never|ever} been there."
     },
     {
       topic: "cani",
       type: "gaps",
       sk: "func",
       title: "Fill in the gaps.",
-      body: "<p>Mariia is hot. She wants to open the window herself.</p>",
-      text: "Mariia: {*Can I|Could you} open the window, please? Ms Lysenko: Yes, you {*can|could}. Mariia: Thank you. Sorry, I don’t understand the task. {*Could you|Can I} repeat it, please?"
+      body: "<p>Mariia hasn’t got a pencil. She wants to use Polina’s pencil.</p>",
+      text: "Mariia: {*Can I|Could you} use your pencil, Polina? Polina: Yes, you {*can|could}. Mariia: Thanks! Ms Lysenko, I don’t know this word. {*Could you|Can I} help me, please?"
     },
     {
       topic: "cur-e6s8",
       type: "gaps",
       sk: "gram",
       title: "Fill in the gaps.",
-      body: "<p>Amelia: “I love the Tower of London.”</p><p>Andrii tells Oksana about it.</p>",
-      text: "Amelia {*told|said} me about the Tower of London. She {*said|told} that {*she|I} loved it."
+      body: "<p>George: “I like the Natural History Museum.”</p><p>Andrii tells Oksana about it.</p>",
+      text: "George {*told|said} us about London. He {*said|told} that {*he|I} liked the Natural History Museum."
     }
   ]
 });
