@@ -7,7 +7,7 @@ subject: eng
 grade: 7
 section: e7s4
 depends_on: [curate-eng-plan-g7-9, engine-eng-lang-core, engine-eng-validate, engine-eng-stats, skills-eng, curate-eng-style, curate-eng-glossary, engine-eng-dialog]
-status: todo
+status: review
 claimed_by: writer-e7s4
 created: 2026-11-19
 source: design-eng
@@ -47,3 +47,36 @@ Build не запускай (AGENTS.md §4 п. 8).
 
 ## Нотатки агента
 <!-- що зроблено, джерела форм і фактів, спірне -->
+writer-e7s4, 2026-11-25. Файл content/eng/g7-e7s4.js, 7 уроків (6 + boss), status draft.
+- e7s4l1 «Comedy, cartoon or adventure film? Film genres» (9 екр.); e7s4l2 «At the theatre: the stage, the seats, the box office» (9);
+  e7s4l3 «We could see a play! Suggestions» (10); e7s4l4 «Bored or boring? Interested or interesting?» (9);
+  e7s4l5 «Much better, a bit longer, not as funny as the book» (11); e7s4l6 «Old enough to watch it? A film review» (10);
+  e7s4l7 boss «A weekend of films and plays» (6 завдань, `pre` на l1–l6). Значок e7s4boss «Film critic».
+- `requires` (у файлі): e5s5l3, e5s5l4, e6s2l6, e6s1l5, e5s6l5, e4s3l5 — усі існують.
+- validate --section e7s4: 0 помилок, 0 попереджень. stats --subject eng: прапорців «нетипово» для e7s4l1–l7 немає.
+- Діалоги — репліками в body + gaps / choice (D-056), без type "dialog". Звуку немає, «Listen…» ніде.
+
+**Джерела форм (Cambridge Dictionary, curl 2026-11-25):**
+- box office — «the place in a cinema or theatre where tickets are sold» — https://dictionary.cambridge.org/dictionary/english/box-office
+- interval — B1, «UK (US intermission) a short period between the parts of a performance» — https://dictionary.cambridge.org/dictionary/english/interval
+- stage (THEATRE) A2; curtain (у театрі — «the large screen of heavy material in a theatre»); audience B1 — …/stage, …/curtain, …/audience
+- seat, row (B1, «seats in the front row of the theatre») — …/seat, …/row
+- comedy B1 /ˈkɒm.ə.di/; cartoon A2 (FILM: «a TV programme or short film») /kɑːˈtuːn/; horror film B1 UK (also mainly US horror movie) /ˈhɒr.ə ˌfɪlm/; documentary B1; science fiction B1 /ˌsaɪ.əns ˈfɪk.ʃən/; adventure A2 /ədˈven.tʃər/; action film «mainly UK» (не вжито) — …/comedy, …/cartoon, …/horror-film, …/documentary, …/science-fiction, …/adventure, …/action-film
+- cinema «mainly UK (US usually movie theater)»; film/movie — …/cinema, …/film
+- boring A1, bored A1, interested/interesting, excited/exciting, tiring B1, scary B1 — …/boring, …/bored, …/tiring, …/scary
+- could (SUGGESTION) B1 «used for making a suggestion» — https://dictionary.cambridge.org/dictionary/english/could; Why don’t we…? — CD Grammar «Suggestions» https://dictionary.cambridge.org/grammar/british-grammar/suggestions
+- enough after adjective + to-inf.; too + adj. + to-inf. — https://dictionary.cambridge.org/dictionary/english/enough, CD Grammar «Too» https://dictionary.cambridge.org/grammar/british-grammar/too
+- Наголос у stress: +com|e|dy, car|+toon, ad|+ven|ture, +hor|ror, +au|di|ence (/ˈɔː.di.əns/), +in|ter|val (/ˈɪn.tə.vəl/), +cur|tain (/ˈkɜː.tən/) — CD.
+
+**Факт про Україну:** «The Lviv Opera House opened in 1900» (e7s4l2 intro, outro) — en.wikipedia «Lviv Theatre of Opera and Ballet» («opened on 4 October 1900») https://en.wikipedia.org/wiki/Lviv_Theatre_of_Opera_and_Ballet; Center for Urban History, Lviv Interactive «Opera house» (будівля 1897–1900, відкрито 4.10.1900) https://lia.lvivcenter.org/en/objects/opera-house , https://lia.lvivcenter.org/en/events/opening-city-theater . Назву подано як «the Lviv Opera House» (поширена англ. назва; офіційна — Solomiya Krushelnytska Lviv National Academic Theatre of Opera and Ballet).
+
+**Спірне / для верифікатора:**
+- the stalls не вжито (CD — лише церква). interval — звірено (CD B1 UK).
+- Вікові обмеження — лише вигадані афіші вигаданих фільмів («For people aged 12 and over»), без BBFC/справжніх позначок.
+- l1 info згадує AmE *movie* як інформацію («Americans often say movie») — не пастка, не варіант.
+- bored / boring: «Andrii was [boring]» (l4 pick) граматично можливе, але контекст «because he doesn’t like cartoons» вимагає -ed; fbText пояснює інший зміст. Те саме в gaps l4 і boss T4 — причина в реченні.
+- much / a bit — завжди з числами (хвилини, ціни), щоб не було другої відповіді; «a lot better» як варіант не дано.
+- l5 build «The film isn’t as good as the book.»: обмін «The film» ↔ «the book» дає граматичне речення з протилежним змістом — відсікає body («Bohdan liked the book … more»).
+- Опори D-019: l2 ticket choice — екран 5 (квиток на екрані); l4 multi — info екр. 3 (interested in, excited about); l6 order — info «How to write a film review» (екр. 7).
+- Вік героїв: Oksana 13, Emma 13, Tom 11 (канон: 10 / 10 / 8 у 4 кл.); Sofiia (10) і Zlata — без віку в оцінюваних місцях. Lviv: Taras, Zlata, Ostap — Lviv Opera House; Polina — Kharkiv (подруга Mariia).
+- Функції: пропонувати / приймати / відхиляти — l3; оцінка й враження — l4, l6 (відгук).
