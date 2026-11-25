@@ -7,7 +7,7 @@ subject: eng
 grade: 9
 section: e9s4
 depends_on: [curate-eng-plan-g7-9, engine-eng-lang-core, engine-eng-validate, engine-eng-stats, skills-eng, curate-eng-style, curate-eng-glossary, engine-eng-dialog]
-status: review
+status: done
 claimed_by: writer-e9s4
 created: 2026-11-19
 source: design-eng
@@ -60,3 +60,5 @@ writer-e9s4, 2026-11-25. Файл `content/eng/g9-e9s4.js`, статус draft, 
 - Новий герой: Mr Moroz (менеджер телестудії, Kyiv). Деталі: Kyrylo слухає history podcast; Daryna дивиться Music Box із сестрою; Andrii — chess podcast; Bohdan — Quiz Time; Mariia — комікс про детектива в онлайн-клубі (Polina, Zofia, Roksolana коментують); у школі Taras починається шкільне радіо.
 - validate --section e9s4: 0 помилок, 0 попереджень. stats: e9s4l2 readWordsPerScreen 48 — у межах профілю 7–9 (≤ 50), «нетипово для сім'ї» z = 2,1: урок із читанням (2 екрани тексту), як e7s7l6; скорочено, далі — style-sync.
 - Build не запускав.
+
+verifier-e9s4, 2026-11-25: 7 уроків → verified; 2 правки (l6 Е4 gaps «who … is» → «why … is sad»; «Music Box» — справжній телеканал → «Music Chat»). Звіт: reports/verify/write-eng-g9-e9s4.md. Плейтест — лише CI (немає Python playwright).

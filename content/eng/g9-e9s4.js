@@ -15,13 +15,13 @@
    необов'язковий, якщо досі правда (TQ-144) — теперішня форма ніде не дається хибним варіантом, у multi (l4) — у ключі;
    told / asked з to-infinitive обидва граматичні — у пропусках не протиставляються; хибні варіанти — неможливі форми
    (said us to, don’t, інверсія, did).
-   Канали, передачі, студія й шкільне радіо — вигадані (Quiz Time, Music Box, Lviv Today з e8s3); справжніх ЗМІ,
+   Канали, передачі, студія й шкільне радіо — вигадані (Quiz Time, Music Chat, Lviv Today з e8s3); справжніх ЗМІ,
    соцмереж і блогерів немає. Безпека в мережі — порадами, без страшилок. Діалоги — репліками в body (D-056), без звуку
    (D-055 п. 4). Написання «the internet» — як в OALD і CD та в e8s3 (заголовне слово з малої).
    Герої — серія 4–8 кл., на п'ять років старші, ніж у 4 кл. (memory/short/inbox.md, NOTE (герої)); новий: Mr Moroz
    (менеджер телестудії в Kyiv, l5).
    Увесь зміст — англійською, британська норма (D-055). Тексти, діалоги й герої — власні (docs/design/english.md §8).
-   Статус: draft (writer-e9s4). 7 уроків (6 + фінал). Будова — за e8s3 (verified).
+   Статус: verified (verifier-e9s4; правки — reports/verify/write-eng-g9-e9s4.md). 7 уроків (6 + фінал). Будова — за e8s3 (verified).
    Перевірка: node tools/validate.mjs --section e9s4 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -31,7 +31,7 @@ SLID.section("eng", {
   title: "The media: the internet, TV and radio",
   why: "To talk about TV, radio and communicating online. And to report questions and requests.",
   requires: ["e4s3l6", "e5s2l3", "e5s2l5", "e6s8l5", "e8s3l4", "e8s3l5"],
-  meta: { author: "writer-e9s4", created: "2026-11-25", factcheck: null, teacher: null },
+  meta: { author: "writer-e9s4", created: "2026-11-25", factcheck: "verifier-e9s4 (reports/verify/write-eng-g9-e9s4.md)", teacher: null },
   badges: [
     { id: "e9s4boss", name: "Radio star", icon: "trophy", desc: "Finish the final lesson “The media: the internet, TV and radio”" }
   ],
@@ -42,7 +42,7 @@ SLID.section("eng", {
       title: "TV, radio and podcasts: what do you like?",
       short: "TV and radio",
       icon: "play",
-      status: "draft",
+      status: "verified",
       why: "What do you watch or listen to? Learn the words for TV, radio and podcasts.",
       screens: [
         {
@@ -154,14 +154,14 @@ SLID.section("eng", {
       title: "My favourite programme: a quiz or a talk show?",
       short: "My favourite",
       icon: "star",
-      status: "draft",
+      status: "verified",
       why: "Talk about your favourite programme. And report what your friends say about theirs.",
       screens: [
         {
           type: "intro",
           eyebrow: "Lesson 2",
           title: "What’s your favourite programme?",
-          body: `<p class="lead">Ms Lysenko asks Andrii’s class in Kyiv: “What’s your favourite programme?”</p><p><b>Bohdan:</b> Quiz Time! It’s a quiz show for teenagers.<br><b>Daryna:</b> I love Music Box. It’s a talk show about music.<br><b>Kyrylo:</b> I listen to a history podcast. There’s a new episode every week.</p><p>After school, Andrii writes to Taras: <i>Bohdan <b>says</b> his favourite programme <b>is</b> Quiz Time.</i></p><p>Why <i>says</i>, not <i>said</i>?</p>`,
+          body: `<p class="lead">Ms Lysenko asks Andrii’s class in Kyiv: “What’s your favourite programme?”</p><p><b>Bohdan:</b> Quiz Time! It’s a quiz show for teenagers.<br><b>Daryna:</b> I love Music Chat. It’s a talk show about music.<br><b>Kyrylo:</b> I listen to a history podcast. There’s a new episode every week.</p><p>After school, Andrii writes to Taras: <i>Bohdan <b>says</b> his favourite programme <b>is</b> Quiz Time.</i></p><p>Why <i>says</i>, not <i>said</i>?</p>`,
           cta: "Let’s see"
         },
         {
@@ -225,7 +225,7 @@ SLID.section("eng", {
           sk: "read",
           eyebrow: "Reading: My favourite programme, part 1 of 2",
           title: "Read and choose.",
-          body: `<p><b>My favourite programme</b><br><i>by Daryna</i></p><p><i>My favourite programme is Music Box. It’s a talk show for teenagers, and it’s on every Saturday at 6 pm. In each episode, the presenter talks to two young musicians from different cities in Ukraine. Last week, a girl from Odesa played the bandura and talked about her music school. Every episode ends with a song. I watch it with my sister.</i></p><p>When is Music Box on?</p>`,
+          body: `<p><b>My favourite programme</b><br><i>by Daryna</i></p><p><i>My favourite programme is Music Chat. It’s a talk show for teenagers, and it’s on every Saturday at 6 pm. In each episode, the presenter talks to two young musicians from different cities in Ukraine. Last week, a girl from Odesa played the bandura and talked about her music school. Every episode ends with a song. I watch it with my sister.</i></p><p>When is Music Chat on?</p>`,
           opts: [
             "every Sunday at 6 pm",
             "every Saturday at 6 pm",
@@ -242,7 +242,7 @@ SLID.section("eng", {
           sk: "read",
           eyebrow: "Reading: My favourite programme, part 2 of 2",
           title: "Choose all the correct answers.",
-          body: `<p><i>Why do I like it? The guests are my age, so I understand their problems. The presenter asks good questions, and he’s really funny. Sometimes the guests play music together in the studio. My mum says the songs are too loud, but she always watches the end with us!</i></p><p>Why does Daryna like Music Box?</p>`,
+          body: `<p><i>Why do I like it? The guests are my age, so I understand their problems. The presenter asks good questions, and he’s really funny. Sometimes the guests play music together in the studio. My mum says the songs are too loud, but she always watches the end with us!</i></p><p>Why does Daryna like Music Chat?</p>`,
           opts: [
             "The songs are quiet.",
             "The guests are her age.",
@@ -259,14 +259,14 @@ SLID.section("eng", {
           type: "build",
           sk: "gram",
           title: "Put the words in order.",
-          body: `<p>Daryna: “My favourite programme is Music Box.” It’s still her favourite.</p><p>Report her words with <b>says</b>.</p>`,
-          tiles: ["Daryna", "says", "her", "favourite programme", "is", "Music Box"],
+          body: `<p>Daryna: “My favourite programme is Music Chat.” It’s still her favourite.</p><p>Report her words with <b>says</b>.</p>`,
+          tiles: ["Daryna", "says", "her", "favourite programme", "is", "Music Chat"],
           extra: ["my"],
-          answer: ["Daryna says her favourite programme is Music Box.", "Daryna says Music Box is her favourite programme."],
+          answer: ["Daryna says her favourite programme is Music Chat.", "Daryna says Music Chat is her favourite programme."],
           hint: "Daryna says + her (not my) + …",
           fbOk: "Yes!",
           fbBad: "When you report Daryna’s words, my → her.",
-          fbText: "<b>Daryna says her favourite programme is Music Box.</b> <i>My</i> changes to <b>her</b>, and the present stays: it’s still true."
+          fbText: "<b>Daryna says her favourite programme is Music Chat.</b> <i>My</i> changes to <b>her</b>, and the present stays: it’s still true."
         },
         {
           type: "pick",
@@ -285,7 +285,7 @@ SLID.section("eng", {
           eyebrow: "Final",
           title: "Complete the sentences.",
           body: `<p>Andrii writes to Taras.</p>`,
-          text: "Hi Taras! Ms Lysenko asked us about our favourite programmes. Bohdan says his favourite {*is|are|be} Quiz Time: it’s {*on|in|at} every Friday at 7 pm. Daryna {*says|tells|say} she loves Music Box, a talk show about music. Last Monday, Kyrylo said he {*was|were|is being} too busy for TV, but he listens to a history podcast on the bus. What’s your favourite programme?",
+          text: "Hi Taras! Ms Lysenko asked us about our favourite programmes. Bohdan says his favourite {*is|are|be} Quiz Time: it’s {*on|in|at} every Friday at 7 pm. Daryna {*says|tells|say} she loves Music Chat, a talk show about music. Last Monday, Kyrylo said he {*was|were|is being} too busy for TV, but he listens to a history podcast on the bus. What’s your favourite programme?",
           hint: "When is it? → it’s on. Tells needs a person. Last Monday → the past.",
           fbOk: "Well done!",
           fbBad: "Check: tells + a person; he → was.",
@@ -308,7 +308,7 @@ SLID.section("eng", {
       title: "Chatting online: safe and polite",
       short: "Online",
       icon: "shield",
-      status: "draft",
+      status: "verified",
       why: "Chat online and stay safe. Learn easy rules for safe and polite messages.",
       screens: [
         {
@@ -452,7 +452,7 @@ SLID.section("eng", {
       title: "She asked if I liked…: reported questions",
       short: "She asked…",
       icon: "voice",
-      status: "draft",
+      status: "verified",
       why: "Tell a friend what people asked you. Learn the word order: She asked where I lived.",
       screens: [
         {
@@ -601,7 +601,7 @@ SLID.section("eng", {
       title: "He told us to switch off our phones: reported requests",
       short: "He told us to…",
       icon: "users",
-      status: "draft",
+      status: "verified",
       why: "Tell a friend what people asked you to do. Learn: He told us to…, She asked us not to…",
       screens: [
         {
@@ -753,7 +753,7 @@ SLID.section("eng", {
       title: "I wonder what…: comments and online posts",
       short: "I wonder…",
       icon: "bulb",
-      status: "draft",
+      status: "verified",
       why: "Write friendly comments online. Learn to say what you want to know: I wonder what happens next.",
       screens: [
         {
@@ -791,11 +791,11 @@ SLID.section("eng", {
           sk: "gram",
           title: "Fill in the gaps.",
           body: `<p>More comments on Mariia’s comic.</p>`,
-          text: "<b>Roksolana:</b> I wonder who {*the girl in the red coat is|is the girl in the red coat|does the girl in the red coat}.<br><b>Polina:</b> I wonder {*if|what|who} the detective will open the door.<br><b>Zofia:</b> I wonder what {*happens|does it happen|happen} next!",
+          text: "<b>Roksolana:</b> I wonder why {*the girl in the red coat is|is the girl in the red coat|does the girl in the red coat} sad.<br><b>Polina:</b> I wonder {*if|what|who} the detective will open the door.<br><b>Zofia:</b> I wonder what {*happens|does it happen|happen} next!",
           hint: "Person or thing + verb. Yes / no idea → if.",
           fbOk: "Exactly.",
           fbBad: "Look at the rule: no do / does, and the verb goes after the person.",
-          fbText: "Who <b>the girl in the red coat is</b>; <b>if</b> the detective will open the door; what <b>happens</b> next."
+          fbText: "Why <b>the girl in the red coat is</b> sad;<b>if</b> the detective will open the door; what <b>happens</b> next."
         },
         {
           type: "info",
@@ -907,7 +907,7 @@ SLID.section("eng", {
       title: "Our school podcast",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e9s4boss",
       why: "Check everything from this section. Your points are doubled.",
