@@ -7,7 +7,7 @@ subject: eng
 grade: 8
 section: e8s2
 depends_on: [curate-eng-plan-g7-9, engine-eng-lang-core, engine-eng-validate, engine-eng-stats, skills-eng, curate-eng-style, curate-eng-glossary, engine-eng-dialog]
-status: review
+status: done
 claimed_by: writer-e8s2
 created: 2026-11-19
 source: design-eng
@@ -67,3 +67,5 @@ Build не запускай (AGENTS.md §4 п. 8).
 **stats:** e8s2l1 maxReadWords 93 / maxText 88 «нетипово для сім'ї» (z=2) — intro з трьома репліками; у межах профілю «7-9» (≤ 140); сім'я eng ще переважно 4–6 кл. Решта уроків без прапорців.
 
 **Герої (нове):** Mariia — часто лягає після півночі, встає о 6, бігає (узгоджено з e7s5); Andrii — спить 9 год, хоче take up tennis; Emma — плаває 4 рази на тиждень, любить чипси, give up fizzy drinks, Cornwall влітку (вчиться серфінгу); Tom — works out з Emma; Taras — cola й ігри до першої ночі (l2), Carpathians з татом і Zlata: Hoverla, кемпінг; Daryna — хайкінг біля Yaremche з мамою; Dmytro — took up football «last year»; мама Olena — без цукру в чаї; тато Petro — тренується вдома; Kyrylo — хоче до Kamianets-Podilskyi у травні; Roksolana — gave up skating, took up gymnastics (= e7s5); Zoriana — art club; клас Andrii — 24 учні (вигадане опитування).
+
+**verifier-e8s2, 2026-11-25.** Verified, 4 правки — reports/verify/write-eng-g8-e8s2.md.

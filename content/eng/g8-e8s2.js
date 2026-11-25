@@ -11,7 +11,7 @@
    Твердження про здоров'я (сон 8–10 год для 13–18 років — AASM, CDC; ≥ 60 хв активності на день для 5–17 років — WHO) і форми
    (CD, CD Grammar) — URL у tasks/…/write-eng-g8-e8s2.md, «Нотатки агента».
    Увесь зміст — англійською, британська норма (D-055). Тексти, діалоги й герої — власні (docs/design/english.md §8).
-   Статус: draft. 7 уроків (6 + фінал). Будова — за розділами 6–7 кл. (e6s2, e7s5).
+   Статус: verified (verifier-e8s2). 7 уроків (6 + фінал). Будова — за розділами 6–7 кл. (e6s2, e7s5).
    Перевірка: node tools/validate.mjs --section e8s2 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -20,8 +20,8 @@ SLID.section("eng", {
   weeks: [5, 8],
   title: "Healthy living and free time",
   why: "To talk about healthy living, active free time and everyday habits. And to say what you enjoy doing and what you want to try.",
-  requires: ["e4s5l2", "e5s3l4", "e5s6l1", "e5s6l2", "e6s2l2", "e6s2l6", "e6s6l5"],
-  meta: { author: "writer-e8s2", created: "2026-11-25", factcheck: "self", teacher: null },
+  requires: ["e4s5l2", "e5s3l4", "e5s6l1", "e5s6l2", "e6s2l2", "e6s2l6", "e6s6l5", "e7s4l6"],
+  meta: { author: "writer-e8s2", created: "2026-11-25", factcheck: "verifier-e8s2, 2026-11-25 (reports/verify/write-eng-g8-e8s2.md)", teacher: null },
   badges: [
     { id: "e8s2boss", name: "Healthy week editor", icon: "trophy", desc: "Finish the final lesson “Healthy living and free time”" }
   ],
@@ -32,7 +32,7 @@ SLID.section("eng", {
       title: "Sleep, food and exercise: a healthy lifestyle",
       short: "Healthy lifestyle",
       icon: "leaf",
-      status: "draft",
+      status: "verified",
       why: "Sleep, food and exercise make a big difference. Talk about healthy habits and give advice.",
       screens: [
         {
@@ -152,7 +152,7 @@ SLID.section("eng", {
       title: "Too much sugar, not enough sleep",
       short: "Too much, not enough",
       icon: "scale",
-      status: "draft",
+      status: "verified",
       why: "Sometimes we have too much of a thing, and sometimes not enough. Learn to say it correctly.",
       screens: [
         {
@@ -238,7 +238,7 @@ SLID.section("eng", {
           type: "word",
           sk: "gram",
           title: "Write the missing word.",
-          body: `<p>Bohdan plays computer games for five hours every day. He never goes outside.</p>`,
+          body: `<p>Bohdan plays computer games for five hours every day.</p>`,
           before: "Mum: “You spend too",
           after: "time on your computer!”",
           answer: "much",
@@ -276,14 +276,14 @@ SLID.section("eng", {
       title: "I enjoy cycling, I want to try climbing: -ing or to?",
       short: "-ing or to?",
       icon: "star",
-      status: "draft",
+      status: "verified",
       why: "After some verbs we use -ing, and after others we use to. Talk about hobbies and plans without mistakes.",
       screens: [
         {
           type: "intro",
           eyebrow: "Lesson 3",
           title: "Something new for Oksana",
-          body: `<p class="lead">Oksana writes to the penfriend club.</p><p>I enjoy playing the piano, and I love doing karate. But last month I decided to try something new: climbing! There’s a climbing wall at a sports centre in Poltava. I want to get better at it, and I hope to go there every Saturday. I avoid going on Sundays: there are too many people.</p><p>Look at the verbs: enjoy <b>playing</b>, decided <b>to try</b>. Why -ing in one and to in the other?</p>`,
+          body: `<p class="lead">Oksana writes to the penfriend club.</p><p>I enjoy playing the piano, and I love doing karate. But last month I decided to try something new: climbing! There’s a climbing wall at a new sports centre near us. I want to get better at it, and I hope to go there every Saturday. I avoid going on Sundays: there are too many people.</p><p>Look at the verbs: enjoy <b>playing</b>, decided <b>to try</b>. Why -ing in one and to in the other?</p>`,
           cta: "Let’s see"
         },
         {
@@ -403,7 +403,7 @@ SLID.section("eng", {
       title: "Take up a sport, give up fast food: phrasal verbs",
       short: "Phrasal verbs",
       icon: "bolt",
-      status: "draft",
+      status: "verified",
       why: "Two short words can make a new meaning. Talk about your daily routine and new habits.",
       screens: [
         {
@@ -527,7 +527,7 @@ SLID.section("eng", {
       title: "Hiking, camping, cycling: active weekends",
       short: "Active weekends",
       icon: "map",
-      status: "draft",
+      status: "verified",
       why: "An active weekend outside is good for you. Talk about outdoor activities and what you need for them.",
       screens: [
         {
@@ -641,7 +641,7 @@ SLID.section("eng", {
       title: "How do we spend our free time? A class survey",
       short: "Class survey",
       icon: "chart",
-      status: "draft",
+      status: "verified",
       why: "A survey shows what people really do. Learn to talk about numbers in your class.",
       screens: [
         {
@@ -755,7 +755,7 @@ SLID.section("eng", {
           body: `<p>18 pupils watch videos. That’s more than any other activity in the survey.</p>`,
           before: "Watching videos is the most",
           after: "activity in our class.",
-          answer: "popular",
+          answer: ["popular", "common"],
           hint: "Look at the rules: the most … activity.",
           fbOk: "Well done!",
           fbBad: "The activity that most people do is the most p…",
@@ -790,7 +790,7 @@ SLID.section("eng", {
       title: "Healthy week at the penfriend club",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e8s2boss",
       why: "Check everything from this section. Your points are doubled.",
