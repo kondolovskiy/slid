@@ -1,12 +1,9 @@
 {
-  "date": "2026-11-25T12:40:36.575Z",
+  "date": "2026-11-25T12:42:53.208Z",
   "errors": [],
   "warnings": [
-    "content/eng/g8-e8s7.js#e8s7l1 екран 2 (choice): умова посилається на рисунок («on the map»), а ілюстрації (fig, img, svg, lab) немає — додай рисунок точно за умовою або перепиши умову",
-    "content/eng/g8-e8s7.js#e8s7l1 екран 3 (info): умова посилається на рисунок («on the map»), а ілюстрації (fig, img, svg, lab) немає — додай рисунок точно за умовою або перепиши умову",
-    "content/eng/g8-e8s7.js#e8s7l1 екран 9 (word): умова посилається на рисунок («on the map»), а ілюстрації (fig, img, svg, lab) немає — додай рисунок точно за умовою або перепиши умову",
-    "content/eng/g8-e8s7.js#e8s7l1: typeVariety=7 поза профілем [2; 6] для eng, 7-9 кл.",
-    "content/eng/g8-e8s7.js#e8s7l5: typeVariety=8 поза профілем [2; 6] для eng, 7-9 кл.",
-    "content/eng/g8-e8s7.js#e8s7l7: typeVariety=7 поза профілем [2; 6] для eng, 7-9 кл."
+    "content/eng/g8-e8s8.js#e8s8l4 екран 1 (intro): дуже довге речення (53 слів): «Area: Canada – almost 10 million km² Ukraine – about 600,000…»",
+    "content/eng/g8-e8s8.js#e8s8l7: у 2 з 2 завдань choice правильний варіант — B: переставляй варіанти",
+    "content/eng/g8-e8s8.js#e8s8: розділ: у 5 з 8 завдань choice правильний варіант — B (> 50 %): переставляй варіанти"
   ]
 }

@@ -198,7 +198,7 @@
 | e7s2l3 A slice of bread, a little salt: how much? | 7 | 10 | 0.6 | 35 | 79 | 73 | 5.4 | 0.043 | 5 | — |
 | e7s2l4 It should be cooked for ten minutes: recipes | 7 | 10 | 0.6 | 37 | 73 | 67 | 6.2 | 0.048 | 5 | — |
 | e7s2l5 Laying the table: another plate, the other fork | 7 | 10 | 0.6 | 41 | 83 | 77 | 5.6 | 0.088 | 5 | — |
-| e7s2l6 Do have some more! Guests at the table | 7 | 10 | 0.6 | 35 | 69 | 64 | 4.9 | 0.072 | 5 | sentenceWords нетипово для сім'ї (z=-2) |
+| e7s2l6 Do have some more! Guests at the table | 7 | 10 | 0.6 | 35 | 69 | 64 | 4.9 | 0.072 | 5 | sentenceWords нетипово для сім'ї (z=-2.1) |
 | e7s2l7 Dinner at Taras’s flat (фінал) | 7 | 8 | 0.88 | 23 | 35 | 26 | 5 | 0.051 | 4 | — |
 | e7s3l1 A hospital, a chemist’s, a dentist’s: where to go | 7 | 11 | 0.64 | 34 | 56 | 53 | 5.8 | 0.086 | 5 | — |
 | e7s3l2 I’ve got a sore throat: illnesses and symptoms | 7 | 11 | 0.64 | 36 | 57 | 53 | 5.6 | 0.091 | 6 | — |
@@ -211,45 +211,45 @@
 | e7s4l2 At the theatre: the stage, the seats, the box office | 7 | 9 | 0.67 | 40 | 70 | 64 | 6.8 | 0.045 | 5 | — |
 | e7s4l3 We could see a play! Suggestions | 7 | 10 | 0.6 | 34 | 73 | 67 | 5.7 | 0.058 | 5 | — |
 | e7s4l4 Bored or boring? Interested or interesting? | 7 | 9 | 0.67 | 33 | 69 | 66 | 6.5 | 0.087 | 6 | — |
-| e7s4l5 Much better, a bit longer, not as funny as the book | 7 | 11 | 0.64 | 43 | 75 | 68 | 7.1 | 0.046 | 4 | — |
+| e7s4l5 Much better, a bit longer, not as funny as the book | 7 | 11 | 0.64 | 43 | 75 | 68 | 7.1 | 0.046 | 4 | typeVariety нетипово для сім'ї (z=-2) |
 | e7s4l6 Old enough to watch it? A film review | 7 | 10 | 0.6 | 47 | 86 | 81 | 7.4 | 0.037 | 5 | readWordsPerScreen нетипово для сім'ї (z=2) |
-| e7s4l7 A weekend of films and plays (фінал) | 7 | 7 | 0.86 | 35 | 60 | 37 | 5.7 | 0.055 | 3 | — |
+| e7s4l7 A weekend of films and plays (фінал) | 7 | 7 | 0.86 | 35 | 60 | 37 | 5.7 | 0.055 | 3 | readWordsPerScreen нетипово для сім'ї (z=2); maxReadWords нетипово для сім'ї (z=2) |
 | e7s5l1 A race, a match, a tournament: competitions | 7 | 10 | 0.6 | 38 | 74 | 72 | 6.1 | 0.086 | 5 | — |
-| e7s5l2 Joining a club: which club is right for you? | 7 | 11 | 0.64 | 38 | 92 | 88 | 5.1 | 0.062 | 6 | maxText нетипово для сім'ї (z=2) |
+| e7s5l2 Joining a club: which club is right for you? | 7 | 11 | 0.64 | 38 | 92 | 88 | 5.1 | 0.062 | 6 | maxReadWords нетипово для сім'ї (z=2); maxText нетипово для сім'ї (z=2) |
 | e7s5l3 I used to play football, but now I swim | 7 | 11 | 0.64 | 37 | 85 | 82 | 6.5 | 0.034 | 5 | — |
 | e7s5l4 While we were playing, it started to snow | 7 | 10 | 0.7 | 34 | 66 | 61 | 5.9 | 0.04 | 5 | — |
-| e7s5l5 The first Ukrainian to win: famous athletes | 7 | 11 | 0.64 | 41 | 80 | 77 | 7.7 | 0.067 | 5 | sentenceWords нетипово для сім'ї (z=2.2) |
+| e7s5l5 The first Ukrainian to win: famous athletes | 7 | 11 | 0.64 | 41 | 80 | 77 | 7.7 | 0.067 | 5 | sentenceWords нетипово для сім'ї (z=2.1) |
 | e7s5l6 The day we won: a story about a competition | 7 | 9 | 0.78 | 45 | 88 | 83 | 7.1 | 0.031 | 6 | gradedShare нетипово для сім'ї (z=2.1) |
 | e7s5l7 Our club newsletter (фінал) | 7 | 8 | 0.88 | 23 | 31 | 25 | 5.2 | 0.037 | 5 | — |
-| e7s6l1 After-school clubs | 7 | 9 | 0.56 | 40 | 75 | 69 | 6.5 | 0.051 | 4 | — |
-| e7s6l2 First bell, last bell: school traditions | 7 | 9 | 0.56 | 48 | 80 | 75 | 7.4 | 0.063 | 4 | readWordsPerScreen нетипово для сім'ї (z=2.2) |
+| e7s6l1 After-school clubs | 7 | 9 | 0.56 | 40 | 75 | 69 | 6.5 | 0.051 | 4 | typeVariety нетипово для сім'ї (z=-2) |
+| e7s6l2 First bell, last bell: school traditions | 7 | 9 | 0.56 | 48 | 80 | 75 | 7.4 | 0.063 | 4 | readWordsPerScreen нетипово для сім'ї (z=2.2); typeVariety нетипово для сім'ї (z=-2) |
 | e7s6l3 If we win, we’ll play in the final: the First Conditional | 7 | 10 | 0.6 | 35 | 73 | 67 | 6.3 | 0.027 | 6 | — |
-| e7s6l4 Unless it rains… As soon as we finish… | 7 | 10 | 0.6 | 36 | 69 | 63 | 6.4 | 0.021 | 4 | — |
-| e7s6l5 Shall we make a poster? Planning a school event | 7 | 9 | 0.56 | 38 | 61 | 57 | 5.3 | 0.065 | 4 | — |
-| e7s6l6 Our school festival: an invitation | 7 | 9 | 0.56 | 42 | 71 | 65 | 5.7 | 0.116 | 4 | — |
+| e7s6l4 Unless it rains… As soon as we finish… | 7 | 10 | 0.6 | 36 | 69 | 63 | 6.4 | 0.021 | 4 | typeVariety нетипово для сім'ї (z=-2) |
+| e7s6l5 Shall we make a poster? Planning a school event | 7 | 9 | 0.56 | 38 | 61 | 57 | 5.3 | 0.065 | 4 | typeVariety нетипово для сім'ї (z=-2) |
+| e7s6l6 Our school festival: an invitation | 7 | 9 | 0.56 | 42 | 71 | 65 | 5.7 | 0.116 | 4 | typeVariety нетипово для сім'ї (z=-2) |
 | e7s6l7 School life after lessons (фінал) | 7 | 8 | 0.88 | 28 | 47 | 44 | 5.7 | 0.068 | 3 | — |
 | e7s7l1 Museums and monuments in Kyiv | 7 | 10 | 0.7 | 38 | 70 | 66 | 6.9 | 0.097 | 5 | — |
 | e7s7l2 It was built by…: who made it? | 7 | 11 | 0.64 | 33 | 71 | 68 | 5.9 | 0.084 | 6 | — |
-| e7s7l3 Was it destroyed? When was it rebuilt? | 7 | 11 | 0.55 | 33 | 61 | 58 | 6.1 | 0.086 | 6 | — |
-| e7s7l4 One of the oldest: history and culture in London | 7 | 11 | 0.55 | 42 | 63 | 58 | 7.4 | 0.084 | 4 | — |
+| e7s7l3 Was it destroyed? When was it rebuilt? | 7 | 11 | 0.55 | 33 | 61 | 58 | 6.1 | 0.089 | 6 | — |
+| e7s7l4 One of the oldest: history and culture in London | 7 | 11 | 0.55 | 42 | 63 | 58 | 7.4 | 0.084 | 4 | typeVariety нетипово для сім'ї (z=-2) |
 | e7s7l5 St Paul’s Cathedral: who was it designed by? | 7 | 10 | 0.6 | 39 | 67 | 62 | 6.5 | 0.058 | 6 | — |
-| e7s7l6 A culture trip: Kyiv or London? | 7 | 9 | 0.78 | 47 | 87 | 84 | 6.6 | 0.08 | 4 | gradedShare нетипово для сім'ї (z=2.1); readWordsPerScreen нетипово для сім'ї (z=2) |
-| e7s7l7 Two capitals: a culture quiz (фінал) | 7 | 9 | 0.89 | 26 | 50 | 45 | 5.8 | 0.073 | 6 | — |
+| e7s7l6 A culture trip: Kyiv or London? | 7 | 9 | 0.78 | 47 | 90 | 87 | 6.6 | 0.08 | 4 | gradedShare нетипово для сім'ї (z=2.1); readWordsPerScreen нетипово для сім'ї (z=2); typeVariety нетипово для сім'ї (z=-2) |
+| e7s7l7 Two capitals: a culture quiz (фінал) | 7 | 9 | 0.89 | 27 | 50 | 45 | 5.8 | 0.073 | 6 | — |
 | e8s1l1 Looking for a pen friend: a profile | 8 | 11 | 0.73 | 38 | 64 | 61 | 5.7 | 0.055 | 6 | — |
 | e8s1l2 I’ve been learning English for five years | 8 | 10 | 0.6 | 36 | 61 | 58 | 6.2 | 0.045 | 5 | — |
 | e8s1l3 What have you been doing? News in an email | 8 | 10 | 0.7 | 40 | 69 | 64 | 6.1 | 0.039 | 5 | — |
 | e8s1l4 You like music, don’t you? Question tags | 8 | 11 | 0.64 | 32 | 64 | 62 | 5.1 | 0.05 | 6 | — |
 | e8s1l5 Dear…, Best wishes: writing an email | 8 | 11 | 0.64 | 34 | 66 | 60 | 5.6 | 0.068 | 6 | — |
-| e8s1l6 We write to each other: a letter from England | 8 | 10 | 0.7 | 46 | 95 | 92 | 7.5 | 0.065 | 6 | maxReadWords нетипово для сім'ї (z=2.2); maxText нетипово для сім'ї (z=2.3) |
+| e8s1l6 We write to each other: a letter from England | 8 | 10 | 0.7 | 46 | 95 | 92 | 7.5 | 0.065 | 6 | maxReadWords нетипово для сім'ї (z=2.2); maxText нетипово для сім'ї (z=2.4) |
 | e8s1l7 Our pen friend club (фінал) | 8 | 9 | 0.89 | 24 | 40 | 33 | 5.5 | 0.034 | 5 | — |
-| e8s2l1 Sleep, food and exercise: a healthy lifestyle | 8 | 9 | 0.56 | 39 | 93 | 88 | 6.7 | 0.088 | 5 | maxReadWords нетипово для сім'ї (z=2); maxText нетипово для сім'ї (z=2) |
+| e8s2l1 Sleep, food and exercise: a healthy lifestyle | 8 | 9 | 0.56 | 39 | 93 | 88 | 6.7 | 0.088 | 5 | maxReadWords нетипово для сім'ї (z=2.1); maxText нетипово для сім'ї (z=2) |
 | e8s2l2 Too much sugar, not enough sleep | 8 | 9 | 0.67 | 37 | 73 | 67 | 6.1 | 0.042 | 5 | — |
 | e8s2l3 I enjoy cycling, I want to try climbing: -ing or to? | 8 | 9 | 0.67 | 36 | 84 | 80 | 5.9 | 0.058 | 5 | — |
 | e8s2l4 Take up a sport, give up fast food: phrasal verbs | 8 | 9 | 0.67 | 44 | 75 | 73 | 6.9 | 0.052 | 5 | — |
 | e8s2l5 Hiking, camping, cycling: active weekends | 8 | 8 | 0.63 | 44 | 78 | 71 | 6.9 | 0.038 | 5 | screens нетипово для сім'ї (z=-2) |
-| e8s2l6 How do we spend our free time? A class survey | 8 | 8 | 0.63 | 37 | 63 | 60 | 6.4 | 0.045 | 4 | screens нетипово для сім'ї (z=-2) |
+| e8s2l6 How do we spend our free time? A class survey | 8 | 8 | 0.63 | 37 | 63 | 60 | 6.4 | 0.045 | 4 | screens нетипово для сім'ї (z=-2); typeVariety нетипово для сім'ї (z=-2) |
 | e8s2l7 Healthy week at the penfriend club (фінал) | 8 | 7 | 0.86 | 25 | 33 | 26 | 5.9 | 0.031 | 4 | — |
-| e8s3l1 Newspapers, magazines and news websites | 8 | 9 | 0.56 | 39 | 86 | 80 | 6.4 | 0.179 | 5 | longWordShare нетипово для сім'ї (z=3.5) |
+| e8s3l1 Newspapers, magazines and news websites | 8 | 9 | 0.56 | 39 | 86 | 80 | 6.4 | 0.179 | 5 | longWordShare нетипово для сім'ї (z=3.1) |
 | e8s3l2 Is it true? Reading the news online | 8 | 9 | 0.56 | 37 | 64 | 59 | 5.9 | 0.059 | 5 | — |
 | e8s3l3 A new park is being built: news reports | 8 | 10 | 0.6 | 35 | 59 | 55 | 6.3 | 0.023 | 5 | — |
 | e8s3l4 She said she was tired: reported statements | 8 | 10 | 0.6 | 42 | 81 | 79 | 6.3 | 0.085 | 6 | — |
@@ -257,7 +257,7 @@
 | e8s3l6 Our school newspaper: a short article | 8 | 8 | 0.75 | 46 | 86 | 83 | 7.2 | 0.098 | 5 | screens нетипово для сім'ї (z=-2) |
 | e8s3l7 The school newspaper team (фінал) | 8 | 8 | 0.88 | 24 | 50 | 47 | 5.5 | 0.113 | 6 | — |
 | e8s4l1 Pop, rock, folk or classical? Music styles | 8 | 9 | 0.67 | 37 | 73 | 68 | 6.5 | 0.111 | 6 | — |
-| e8s4l2 The bandura, the violin, the drums: instruments | 8 | 9 | 0.67 | 36 | 79 | 75 | 6.4 | 0.173 | 6 | longWordShare нетипово для сім'ї (z=3.3) |
+| e8s4l2 The bandura, the violin, the drums: instruments | 8 | 9 | 0.67 | 36 | 79 | 75 | 6.4 | 0.173 | 6 | longWordShare нетипово для сім'ї (z=3) |
 | e8s4l3 A singer who writes her own songs: who, which, that | 8 | 9 | 0.67 | 31 | 60 | 56 | 7.3 | 0.04 | 6 | — |
 | e8s4l4 My favourite band, which…: extra information | 8 | 10 | 0.7 | 30 | 70 | 67 | 6.7 | 0.061 | 6 | — |
 | e8s4l5 World-famous musicians and composers | 8 | 10 | 0.7 | 41 | 76 | 70 | 6.7 | 0.122 | 6 | — |
@@ -265,18 +265,32 @@
 | e8s4l7 A weekend of music (фінал) | 8 | 8 | 0.88 | 25 | 44 | 37 | 6.1 | 0.121 | 4 | — |
 | e8s5l1 Fantasy, poetry or a detective story? Genres | 8 | 10 | 0.6 | 40 | 80 | 68 | 6.7 | 0.065 | 5 | — |
 | e8s5l2 At the library: borrowing books and other services | 8 | 10 | 0.7 | 41 | 63 | 58 | 6.8 | 0.123 | 6 | — |
-| e8s5l3 A writer, a poet, a hero: my favourite book | 8 | 11 | 0.55 | 35 | 64 | 62 | 5.9 | 0.102 | 5 | — |
-| e8s5l4 When I got to the library, it had closed: the Past Perfect | 8 | 11 | 0.55 | 40 | 65 | 60 | 5.9 | 0.082 | 5 | — |
+| e8s5l3 A writer, a poet, a hero: my favourite book | 8 | 11 | 0.55 | 36 | 64 | 62 | 5.9 | 0.1 | 5 | — |
+| e8s5l4 When I got to the library, it had closed: the Past Perfect | 8 | 11 | 0.55 | 41 | 65 | 60 | 5.9 | 0.082 | 5 | — |
 | e8s5l5 It was raining, and she had lost her key: telling a story | 8 | 10 | 0.6 | 36 | 59 | 53 | 6.5 | 0.044 | 5 | — |
 | e8s5l6 A book I recommend: a book review | 8 | 10 | 0.7 | 43 | 74 | 71 | 6.3 | 0.071 | 6 | — |
-| e8s5l7 Book week at school (фінал) | 8 | 8 | 0.88 | 37 | 56 | 36 | 6.3 | 0.087 | 5 | readWordsPerScreen нетипово для сім'ї (z=2.4) |
+| e8s5l7 Book week at school (фінал) | 8 | 8 | 0.88 | 37 | 56 | 36 | 6.3 | 0.087 | 5 | readWordsPerScreen нетипово для сім'ї (z=2.5) |
 | e8s6l1 Primary, secondary or boarding school? Types of schools | 8 | 10 | 0.6 | 43 | 86 | 82 | 6.8 | 0.073 | 5 | — |
 | e8s6l2 A science lab, a gym, a canteen: school rooms | 8 | 10 | 0.6 | 33 | 75 | 70 | 5.5 | 0.112 | 6 | — |
 | e8s6l3 It must be a school in England: guessing | 8 | 11 | 0.64 | 41 | 90 | 85 | 6.2 | 0.048 | 5 | — |
 | e8s6l4 May I leave early? Are we allowed to…? | 8 | 11 | 0.64 | 41 | 81 | 77 | 5.4 | 0.039 | 6 | — |
 | e8s6l5 You mustn’t or you don’t have to? School rules | 8 | 11 | 0.64 | 43 | 78 | 74 | 6 | 0.055 | 5 | — |
-| e8s6l6 Schools in Ukraine and the UK: what’s different? | 8 | 10 | 0.8 | 48 | 87 | 84 | 7.6 | 0.079 | 5 | gradedShare нетипово для сім'ї (z=2.4); readWordsPerScreen нетипово для сім'ї (z=2.2); sentenceWords нетипово для сім'ї (z=2) |
+| e8s6l6 Schools in Ukraine and the UK: what’s different? | 8 | 10 | 0.8 | 48 | 87 | 84 | 7.6 | 0.079 | 5 | gradedShare нетипово для сім'ї (z=2.4); readWordsPerScreen нетипово для сім'ї (z=2.2) |
 | e8s6l7 A guide for new pupils (фінал) | 8 | 8 | 0.88 | 28 | 34 | 29 | 6 | 0.061 | 5 | — |
+| e8s7l1 Where is Ukraine? Borders and neighbours | 8 | 11 | 0.64 | 35 | 59 | 52 | 5.8 | 0.07 | 6 | — |
+| e8s7l2 The Carpathians, the Black Sea, the Dnipro: the or no article? | 8 | 11 | 0.64 | 29 | 54 | 49 | 5.3 | 0.085 | 5 | readWordsPerScreen нетипово для сім'ї (z=-2) |
+| e8s7l3 Hot summers, cold winters: the climate of Ukraine | 8 | 11 | 0.73 | 33 | 64 | 60 | 6.8 | 0.07 | 6 | — |
+| e8s7l4 Millions, per cent and half: numbers and statistics | 8 | 12 | 0.58 | 42 | 66 | 60 | 7 | 0.036 | 5 | screens нетипово для сім'ї (z=2) |
+| e8s7l5 Who lives in Ukraine? People and nationalities | 8 | 11 | 0.55 | 30 | 60 | 55 | 6.1 | 0.15 | 6 | longWordShare нетипово для сім'ї (z=2.3) |
+| e8s7l6 Ukraine in numbers: a short report | 8 | 10 | 0.8 | 39 | 70 | 67 | 7.1 | 0.062 | 6 | gradedShare нетипово для сім'ї (z=2.4) |
+| e8s7l7 Ukraine: the class project (фінал) | 8 | 10 | 0.9 | 22 | 43 | 30 | 5.4 | 0.063 | 6 | — |
+| e8s8l1 The UK, Ireland, Canada, Australia: where are they? | 8 | 10 | 0.6 | 41 | 81 | 77 | 6.8 | 0.123 | 5 | — |
+| e8s8l2 Rainy, dry or snowy? Climate around the world | 8 | 9 | 0.56 | 38 | 66 | 63 | 7.4 | 0.09 | 5 | — |
+| e8s8l3 British, Irish, Canadian: people and nationalities | 8 | 10 | 0.6 | 34 | 70 | 64 | 6.1 | 0.161 | 5 | longWordShare нетипово для сім'ї (z=2.6) |
+| e8s8l4 Much bigger, a bit smaller: comparing countries | 8 | 9 | 0.67 | 42 | 91 | 86 | 7.8 | 0.15 | 5 | sentenceWords нетипово для сім'ї (z=2.2); longWordShare нетипово для сім'ї (z=2.3) |
+| e8s8l5 If I lived in Canada, I would… | 8 | 10 | 0.6 | 38 | 74 | 68 | 6.6 | 0.078 | 5 | — |
+| e8s8l6 If you could visit one country, which would you choose? | 8 | 9 | 0.67 | 35 | 71 | 66 | 6.6 | 0.064 | 5 | — |
+| e8s8l7 Around the English-speaking world (фінал) | 8 | 10 | 0.9 | 28 | 50 | 42 | 6.5 | 0.118 | 5 | — |
 
 ## Середні по сім'ях (предмет + класи + звичайний урок / фінал)
 
@@ -286,5 +300,5 @@
 - **4:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 23.63±1.73, maxReadWords 36.13±3.48, sentenceWords 4.84±0.26, longWordShare 0.04±0.01, typeVariety 3.75±0.83, maxText 30.25±3.6
 - **5-6:lesson**: screens 9.52±0.67, gradedShare 0.65±0.07, readWordsPerScreen 30.54±4.18, maxReadWords 55.15±8, sentenceWords 5.26±0.58, longWordShare 0.06±0.03, typeVariety 5.06±0.68, maxText 50.65±7.76
 - **5-6:boss**: screens 7.22±0.42, gradedShare 0.86±0.01, readWordsPerScreen 23.17±3.39, maxReadWords 35.89±4.97, sentenceWords 5±0.31, longWordShare 0.07±0.02, typeVariety 3.72±0.56, maxText 29.33±5.14
-- **7-9:lesson**: screens 9.97±0.86, gradedShare 0.64±0.06, readWordsPerScreen 38.05±4.53, maxReadWords 71.55±10.63, sentenceWords 6.26±0.66, longWordShare 0.07±0.03, typeVariety 5.23±0.64, maxText 67.15±10.61
-- **7-9:boss**: screens 8.08±0.62, gradedShare 0.88±0.01, readWordsPerScreen 26.85±4.24, maxReadWords 42.77±8.94, sentenceWords 5.59±0.42, longWordShare 0.07±0.03, typeVariety 4.62±0.92, maxText 34.77±7.23
+- **7-9:lesson**: screens 10.01±0.88, gradedShare 0.64±0.06, readWordsPerScreen 37.84±4.53, maxReadWords 71.22±10.59, sentenceWords 6.3±0.67, longWordShare 0.07±0.03, typeVariety 5.24±0.62, maxText 66.76±10.63
+- **7-9:boss**: screens 8.33±0.87, gradedShare 0.88±0.01, readWordsPerScreen 26.67±4.14, maxReadWords 43.27±8.51, sentenceWords 5.64±0.46, longWordShare 0.07±0.03, typeVariety 4.73±0.93, maxText 34.93±7.09
