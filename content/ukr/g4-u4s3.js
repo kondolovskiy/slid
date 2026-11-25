@@ -5,7 +5,7 @@
    Порядок і терміни: Г. Остапенко, О. Волощенко, О. Козак «Українська мова та читання. 4 клас», ч. 1 (Світич, 2021),
    §24 (с. 44), §32 (с. 55), §37 (с. 63), §39–40 (с. 68–69). Другорядні члени — без поділу на види (назви — у 5 класі, u5s9).
    Розділ спирається на u4s2 «Речення» (граматична основа, підмет і присудок).
-   5 уроків (u4s3l5 — фінал). Статус: verified (reports/verify/u4s3.md); l1, l3, l5 — draft після style-ukr-g4 (крапка й лапки), чекають переверифікації.
+   5 уроків (u4s3l5 — фінал). Статус: verified (reports/verify/u4s3.md; l1, l3, l5 після style-ukr-g4 — reports/verify/style-ukr-g4-u4s3.md).
    Перевірка: node tools/validate.mjs --section u4s3 && node tools/stats.mjs --subject ukr
    Схема й правила: docs/CONTENT_SCHEMA.md §4.1, style/ukr.md («4 клас») */
 SLID.section("ukr", {
@@ -26,7 +26,7 @@ SLID.section("ukr", {
       title: "Яблука чи зелені яблука?",
       short: "Словосполучення",
       icon: "plus",
-      status: "draft",
+      status: "verified",
       why: "Одне слово лише називає, два слова разом кажуть точніше, а речення передає думку. Навчимося їх розрізняти.",
       screens: [
         {
@@ -236,7 +236,7 @@ SLID.section("ukr", {
       title: "Як речення виростає?",
       short: "Другорядні члени",
       icon: "leaf",
-      status: "draft",
+      status: "verified",
       why: "Другорядні члени роблять речення точним і цікавим. Навчимося їх знаходити й додавати.",
       screens: [
         {
@@ -474,7 +474,7 @@ SLID.section("ukr", {
       title: "Справа про загублений ключ",
       short: "Фінал розділу",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "u4s3boss",
       why: "Усе про словосполучення і члени речення в одній детективній справі. Бали подвоєні.",
