@@ -1,5 +1,12 @@
 {
-  "date": "2026-11-25T12:39:00.471Z",
+  "date": "2026-11-25T12:40:36.575Z",
   "errors": [],
-  "warnings": []
+  "warnings": [
+    "content/eng/g8-e8s7.js#e8s7l1 екран 2 (choice): умова посилається на рисунок («on the map»), а ілюстрації (fig, img, svg, lab) немає — додай рисунок точно за умовою або перепиши умову",
+    "content/eng/g8-e8s7.js#e8s7l1 екран 3 (info): умова посилається на рисунок («on the map»), а ілюстрації (fig, img, svg, lab) немає — додай рисунок точно за умовою або перепиши умову",
+    "content/eng/g8-e8s7.js#e8s7l1 екран 9 (word): умова посилається на рисунок («on the map»), а ілюстрації (fig, img, svg, lab) немає — додай рисунок точно за умовою або перепиши умову",
+    "content/eng/g8-e8s7.js#e8s7l1: typeVariety=7 поза профілем [2; 6] для eng, 7-9 кл.",
+    "content/eng/g8-e8s7.js#e8s7l5: typeVariety=8 поза профілем [2; 6] для eng, 7-9 кл.",
+    "content/eng/g8-e8s7.js#e8s7l7: typeVariety=7 поза профілем [2; 6] для eng, 7-9 кл."
+  ]
 }

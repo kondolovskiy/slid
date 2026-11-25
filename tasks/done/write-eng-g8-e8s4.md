@@ -7,7 +7,7 @@ subject: eng
 grade: 8
 section: e8s4
 depends_on: [curate-eng-plan-g7-9, engine-eng-lang-core, engine-eng-validate, engine-eng-stats, skills-eng, curate-eng-style, curate-eng-glossary, engine-eng-dialog]
-status: review
+status: done
 claimed_by: writer-e8s4
 created: 2026-11-19
 source: design-eng
@@ -77,3 +77,5 @@ Build не запускай (AGENTS.md §4 п. 8).
 **stats:** e8s4l2 longWordShare 0.171 — «нетипово для сім'ї» (z=3.1), але в межах профілю 7–9 кл. (≤ 0,18): тема — назви інструментів і музикантів (guitarist, violinist, musician, orchestra, instrument, bandura). Решта уроків без прапорців.
 
 **Сумнівне / для верифікатора:** (1) правило пропуску займенника в l3 спрощене до «наступне слово» (B1-евристика; випадки на кшталт «the song that is…» узгоджуються). (2) «in English it’s called Carol of the Bells» — англійська пісня має слова Вільговського; у тексті — «people know the music as»/«it’s called», без тверджень про авторство слів. (3) «Mila Kvitka», «Kashtan», «Olha» — вигадані; перевірити, що немає відомих однойменних виконавців, які заплутають.
+
+**verifier-e8s4, 2026-11-25.** Перевірено: reports/verify/write-eng-g8-e8s4.md. Усі 7 уроків → verified. Правки: Mila Kvitka → Mila Lastivka (реальні Mariia Kvitka, Kvitka Cisyk; Ms Kvitka в e8s3); l1 word + «traditional»; l2 word + «piano player». Факти — по 2 відкриті джерела; правило «next word» (l3) не хибне.

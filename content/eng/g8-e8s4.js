@@ -9,13 +9,13 @@
    однокласники Bohdan, Daryna, Zoriana, Kyrylo, вчителька Ms Lysenko; Oksana і брат Dmytro — Zelena Dolyna (Oksana грає
    на піаніно — pe5s6); Mariia — Kharkiv, подруга Polina (грає на гітарі — pe5s6), мама — dentist, дядько Oleh;
    Taras — Lviv, сестра Zlata; Emma і брат Tom — England. Нове: Zlata вчиться грати на бандурі в музичній школі Lviv,
-   Tom грає на барабанах. Вигадані: співачка Mila Kvitka (пісня «Blue Sky»), гурт Kashtan із Kyiv і його співачка Olha.
+   Tom грає на барабанах. Вигадані: співачка Mila Lastivka (пісня «Blue Sky»), гурт Kashtan із Kyiv і його співачка Olha.
    Україна: бандура; Микола Лисенко, Микола Леонтович і «Щедрик»; Kalush Orchestra (Євробачення-2022) — джерела в нотатках задачі.
    Тексти пісень не цитуємо (pitfalls-content «Англійська» п. 8) — лише назви.
    Звуку немає (D-055 п. 4): музику не «слухаємо» текстом; діалоги — репліками в body + gaps / choice (D-056).
    Увесь зміст — англійською, британська норма (D-055). Тексти, діалоги й герої — власні (docs/design/english.md §8).
    Форми, рівні слів, наголос — Cambridge Dictionary (URL — tasks/…/write-eng-g8-e8s4.md, «Нотатки агента»).
-   Статус: draft. 7 уроків (6 + фінал).
+   Статус: verified (verifier-e8s4, 2026-11-25). 7 уроків (6 + фінал).
    Перевірка: node tools/validate.mjs --section e8s4 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -25,7 +25,7 @@ SLID.section("eng", {
   title: "Music",
   why: "To talk about music styles, instruments and musicians. And to describe a concert and say what you liked about it.",
   requires: ["e6s6l3", "e4s8l4", "e5s6l2", "e7s4l4", "e7s4l6"],
-  meta: { author: "writer-e8s4", created: "2026-11-25", factcheck: null, teacher: null },
+  meta: { author: "writer-e8s4", created: "2026-11-25", factcheck: "verifier-e8s4, 2026-11-25 (reports/verify/write-eng-g8-e8s4.md)", teacher: null },
   badges: [
     { id: "e8s4boss", name: "Music critic", icon: "trophy", desc: "Finish the final lesson “Music”" }
   ],
@@ -36,7 +36,7 @@ SLID.section("eng", {
       title: "Pop, rock, folk or classical? Music styles",
       short: "Music styles",
       icon: "voice",
-      status: "draft",
+      status: "verified",
       why: "People love different kinds of music. Learn their names and say what you like.",
       screens: [
         {
@@ -123,7 +123,7 @@ SLID.section("eng", {
           body: `<p>Daryna’s grandma sings old songs from her village. People sang them a hundred years ago.</p>`,
           before: "This kind of music is called",
           after: "music.",
-          answer: "folk",
+          answer: ["folk", "traditional"],
           hint: "Old songs from villages: which kind of music?",
           fbOk: "Well done!",
           fbBad: "Look at the list: old songs from villages.",
@@ -158,7 +158,7 @@ SLID.section("eng", {
       title: "The bandura, the violin, the drums: instruments",
       short: "Instruments",
       icon: "star",
-      status: "draft",
+      status: "verified",
       why: "Learn the names of instruments and the people who play them.",
       screens: [
         {
@@ -240,7 +240,7 @@ SLID.section("eng", {
           body: `<p>Oksana plays the piano at home and at school concerts.</p>`,
           before: "Oksana is a",
           after: ".",
-          answer: ["pianist", "musician"],
+          answer: ["pianist", "musician", "piano player"],
           hint: "the guitar → a guitarist. the piano → ?",
           fbOk: "Well done!",
           fbBad: "Look at the list: the piano → a …",
@@ -275,14 +275,14 @@ SLID.section("eng", {
       title: "A singer who writes her own songs: who, which, that",
       short: "Who, which, that",
       icon: "users",
-      status: "draft",
+      status: "verified",
       why: "Say which person or thing you mean. And learn when you can leave out who, which and that.",
       screens: [
         {
           type: "intro",
           eyebrow: "Lesson 3",
-          title: "Who is Mila Kvitka?",
-          body: `<p class="lead">Sofiia writes to Mariia.</p><p><i>Do you know Mila Kvitka? She’s a singer who writes her own songs. She plays a guitar which was her grandad’s. Blue Sky is the song I like best. And the musicians that play with her are great too!</i></p><p>Look at <i>the song I like best</i>. Where is who, which or that?</p>`,
+          title: "Who is Mila Lastivka?",
+          body: `<p class="lead">Sofiia writes to Mariia.</p><p><i>Do you know Mila Lastivka? She’s a singer who writes her own songs. She plays a guitar which was her grandad’s. Blue Sky is the song I like best. And the musicians that play with her are great too!</i></p><p>Look at <i>the song I like best</i>. Where is who, which or that?</p>`,
           cta: "Let’s see"
         },
         {
@@ -312,7 +312,7 @@ SLID.section("eng", {
           type: "gaps",
           sk: "gram",
           title: "Fill in the gaps.",
-          body: `<p>Sofiia tells Andrii about Mila Kvitka.</p>`,
+          body: `<p>Sofiia tells Andrii about Mila Lastivka.</p>`,
           text: "Mila is the singer {*who|which} sings Blue Sky. She’s got a guitar {*which|who} is fifty years old. The man {*who|which} plays the drums with her is her brother.",
           hint: "Is it a person or a thing?",
           fbOk: "Exactly.",
@@ -402,7 +402,7 @@ SLID.section("eng", {
       title: "My favourite band, which…: extra information",
       short: "Extra information",
       icon: "book",
-      status: "draft",
+      status: "verified",
       why: "Add extra information about people and things. Use who and which with commas.",
       screens: [
         {
@@ -548,7 +548,7 @@ SLID.section("eng", {
       title: "World-famous musicians and composers",
       short: "Famous musicians",
       icon: "globe",
-      status: "draft",
+      status: "verified",
       why: "Learn about famous musicians from Ukraine and the UK. And make adjectives from two words.",
       screens: [
         {
@@ -691,7 +691,7 @@ SLID.section("eng", {
       title: "At a concert: an online review",
       short: "Concert review",
       icon: "eye",
-      status: "draft",
+      status: "verified",
       why: "Say what you liked and didn’t like at a concert. And write a short review.",
       screens: [
         {
@@ -837,7 +837,7 @@ SLID.section("eng", {
       title: "A weekend of music",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e8s4boss",
       why: "Check everything from this section. Your points are doubled.",
