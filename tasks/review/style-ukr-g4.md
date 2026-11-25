@@ -4,7 +4,7 @@ claimed_at: 2026-11-25T11:44:09.940Z
 id: style-ukr-g4
 type: style
 subject: ukr
-status: todo
+status: review
 claimed_by: orchestrator-style-ukr-g4
 created: 2026-11-19
 source: memory-curate 2026-11-19 (inbox writer/verifier u4)
@@ -24,3 +24,7 @@ source: memory-curate 2026-11-19 (inbox writer/verifier u4)
 
 ## Готово
 validate 0 помилок для u4s1–u4s11; `node tools/stats.mjs --subject ukr`; звіт reports/style-ukr-g4.md; рядок в inbox.
+
+## Нотатки (orchestrator-style-ukr-g4, 2026-11-25)
+Пункти 1–4, 7 виконано; звіт reports/style-ukr-g4.md. Змінені уроки й pu4s3 переверифіковано (reports/verify/style-ukr-g4-u4s{2,3,4,5,6}.md) — усе verified. stats до/після — у звіті; `npm run check` зелений.
+**У review, бо чекає рішення людини:** п. 5 (еталон) і п. 6 («Що не питати в 4 кл.») — пропозиція в decisions.md «Чекає рішення людини» (номер при ухваленні — D-070). Після рішення куратор вписує в style/ukr.md «4 клас» і переносить задачу в done. Перевірено: dgu4 і pu4s* тем із п. 6 не питають.
