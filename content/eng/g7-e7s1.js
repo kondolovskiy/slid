@@ -12,7 +12,7 @@
    Emma (Англія) — мама Sarah, брат Tom (11), кішка Snowy, тато робить Christmas pudding (e5s8); Andrii — Kyiv, шахи з п'яти років (e6s4).
    Факти про свята — по два відкриті джерела (URL — tasks/…/write-eng-g7-e7s1.md, «Нотатки агента»).
    Увесь зміст — англійською, британська норма (D-055). Тексти, діалоги й герої — власні (docs/design/english.md §8).
-   Статус: draft. 7 уроків (6 + фінал).
+   Статус: verified (verifier-e7s1, 2026-11-25). 7 уроків (6 + фінал).
    Перевірка: node tools/validate.mjs --section e7s1 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -22,7 +22,7 @@ SLID.section("eng", {
   title: "Family life: housework and traditions",
   why: "To talk about housework and who does what at home. And to talk about family traditions and things you have just done.",
   requires: ["e6s7l4", "e6s7l5", "e6s3l4", "e5s8l4", "e6s5l5"],
-  meta: { author: "writer-e7s1", created: "2026-11-25", factcheck: null, teacher: null },
+  meta: { author: "writer-e7s1", created: "2026-11-25", factcheck: "verifier-e7s1 (reports/verify/write-eng-g7-e7s1.md)", teacher: null },
   badges: [
     { id: "e7s1boss", name: "Family helper", icon: "trophy", desc: "Finish the final lesson “Our family, our traditions”" }
   ],
@@ -33,7 +33,7 @@ SLID.section("eng", {
       title: "Housework: who does what at home?",
       short: "Housework",
       icon: "home",
-      status: "draft",
+      status: "verified",
       why: "Every family has housework. Learn to say who does what at home.",
       screens: [
         {
@@ -61,7 +61,7 @@ SLID.section("eng", {
         {
           type: "info",
           title: "Housework words",
-          body: `<p><b><u>house</u>work</b> – the work you do to keep your home clean and tidy</p><ul><li><b>do the washing-up</b> = wash the dishes: the plates, cups and pans after a meal</li><li><b><u>ti</u>dy</b> your room – put things in the right place</li><li><b>make</b> your bed – after you get up</li><li><b>do the ironing</b> – make clothes flat with an iron</li><li><b>put the <u>rub</u>bish out</b> – take it outside to the bin</li><li><b>feed</b> the cat, <b>water</b> the plants</li></ul>`,
+          body: `<p><b><u>house</u>work</b> (no -s) – the work you do to keep your home clean and tidy</p><ul><li><b>do the washing-up</b> = wash the dishes: the plates, cups and pans after a meal</li><li><b><u>ti</u>dy</b> your room – put things in the right place</li><li><b>make</b> your bed – after you get up</li><li><b>do the ironing</b> – make clothes flat with an iron</li><li><b>put the <u>rub</u>bish out</b> – take it outside to the bin</li><li><b>feed</b> the cat, <b>water</b> the plants</li></ul>`,
           cta: "Next"
         },
         {
@@ -164,7 +164,7 @@ SLID.section("eng", {
       title: "I’ve just washed the dishes: just and already",
       short: "Just, already",
       icon: "check",
-      status: "draft",
+      status: "verified",
       why: "Sometimes you finish a job a moment ago. Learn to say: I’ve just done it. I’ve already done it.",
       screens: [
         {
@@ -308,7 +308,7 @@ SLID.section("eng", {
       title: "Have you tidied your room yet?",
       short: "Yet",
       icon: "target",
-      status: "draft",
+      status: "verified",
       why: "Parents often ask about jobs at home. Learn to ask and answer with yet.",
       screens: [
         {
@@ -457,7 +457,7 @@ SLID.section("eng", {
       title: "We’ve lived here for ten years: for and since",
       short: "For and since",
       icon: "users",
-      status: "draft",
+      status: "verified",
       why: "Friends ask how long you have lived somewhere or known someone. Learn to answer with for and since.",
       screens: [
         {
@@ -612,7 +612,7 @@ SLID.section("eng", {
       title: "We made it ourselves: myself, yourself, ourselves",
       short: "Ourselves",
       icon: "cake",
-      status: "draft",
+      status: "verified",
       why: "Sometimes you do a job with no help. Learn to say: I did it myself.",
       screens: [
         {
@@ -749,7 +749,7 @@ SLID.section("eng", {
       title: "Family traditions and celebrations",
       short: "Traditions",
       icon: "star",
-      status: "draft",
+      status: "verified",
       why: "Every family has its own traditions. Read about traditions in Ukraine and the UK and talk about yours.",
       screens: [
         {
@@ -871,13 +871,13 @@ SLID.section("eng", {
           eyebrow: "Final",
           title: "Write the missing word.",
           body: `<p>Emma’s dad makes the Christmas pudding with no help.</p>`,
-          before: "Emma: Dad makes it",
+          before: "Emma: Dad makes it by",
           after: "every year.",
           answer: "himself",
-          hint: "Dad – he – …self.",
+          hint: "Dad – he – by …self.",
           fbOk: "Yes!",
           fbBad: "Dad is he: he → …",
-          fbText: "Dad (he) → <b>himself</b>: he makes the Christmas pudding with no help."
+          fbText: "Dad (he) → <b>by himself</b>: he makes the Christmas pudding with no help."
         }
       ],
       outro: {
@@ -896,7 +896,7 @@ SLID.section("eng", {
       title: "Our family, our traditions",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e7s1boss",
       why: "Check everything from this section. Your points are doubled.",

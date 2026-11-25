@@ -7,7 +7,7 @@ subject: eng
 grade: 7
 section: e7s1
 depends_on: [curate-eng-plan-g7-9, engine-eng-lang-core, engine-eng-validate, engine-eng-stats, skills-eng, curate-eng-style, curate-eng-glossary, engine-eng-dialog]
-status: review
+status: done
 claimed_by: writer-e7s1
 created: 2026-11-19
 source: design-eng
@@ -88,3 +88,5 @@ Build не запускай (AGENTS.md §4 п. 8).
 7. Плейтест не запускав. Build і коміт не робив (вказівка оркестратора).
 
 **requires:** e6s7l4, e6s7l5, e6s3l4, e5s8l4 — з задачі; + e6s5l5 (have to на l1 #5), id існують (validate).
+
+**verifier-e7s1, 2026-11-25.** Вердикт: усі 7 уроків verified. Правки: l6 #10 word — «by ___» (друга відповідь «alone»); l1 info — «housework (no -s)» (опора D-019 для #10). validate 0/0; плейтест — у CI (немає python playwright). Звіт — reports/verify/write-eng-g7-e7s1.md.
