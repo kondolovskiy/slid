@@ -12,7 +12,7 @@
    (член penfriend club, народився в Dnipro).
    Форми, наголос і значення — CD, CD Grammar (used to, would, future in the past); URL — tasks/…/write-eng-g9-e9s1.md, «Нотатки агента».
    Увесь зміст — англійською, британська норма (D-055). Тексти, діалоги й герої — власні (docs/design/english.md §8).
-   Статус: draft. 7 уроків (6 + фінал). Будова — за розділами 7–8 кл. (e7s5, e8s2).
+   Статус: verified (verifier-e9s1, 2026-11-25). 7 уроків (6 + фінал). Будова — за розділами 7–8 кл. (e7s5, e8s2).
    Перевірка: node tools/validate.mjs --section e9s1 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -21,8 +21,8 @@ SLID.section("eng", {
   weeks: [1, 4],
   title: "Who am I? Personality and life story",
   why: "To fill in forms and talk about your personality. And to write about your life and how you have changed.",
-  requires: ["e4s1l6", "e5s1l1", "e5s8l2", "e6s1l4", "e6s1l6", "e6s4l3", "e7s5l3", "e8s4l5"],
-  meta: { author: "writer-e9s1", created: "2026-11-25", factcheck: null, teacher: null },
+  requires: ["e4s1l6", "e5s1l1", "e5s8l2", "e6s1l4", "e6s1l6", "e6s4l3", "e7s5l3", "e8s4l5", "e8s5l4", "e8s5l5"],
+  meta: { author: "writer-e9s1", created: "2026-11-25", factcheck: "verifier-e9s1, 2026-11-25 (reports/verify/write-eng-g9-e9s1.md)", teacher: null },
   badges: [
     { id: "e9s1boss", name: "Life story editor", icon: "trophy", desc: "Finish the final lesson “Who am I? Personality and life story”" }
   ],
@@ -33,14 +33,14 @@ SLID.section("eng", {
       title: "Name, date of birth, nationality: filling in a form",
       short: "A form",
       icon: "user",
-      status: "draft",
+      status: "verified",
       why: "Schools, clubs and camps ask for personal information. Fill in a form and check information politely.",
       screens: [
         {
           type: "intro",
           eyebrow: "Lesson 1",
           title: "A new member",
-          body: `<p class="lead">A new member joins Ms Kravets’s penfriend club. He fills in the club form.</p><ul><li>First name: <b>Stepan</b></li><li>Surname: <b>Lytvyn</b></li><li>Date of birth: <b>14 March 2011</b></li><li>Place of birth: <b>Dnipro, Ukraine</b></li><li>Nationality: <b>Ukrainian</b></li><li>Languages: <b>Ukrainian, English</b></li></ul><p>Which line tells you where Stepan was born?</p>`,
+          body: `<p class="lead">A new member joins Ms Kravets’s penfriend club. He fills in the club form.</p><ul><li>First name: <b>Stepan</b></li><li>Surname: <b>Lytvyn</b></li><li>Date of birth: <b>14 March</b></li><li>Place of birth: <b>Dnipro, Ukraine</b></li><li>Nationality: <b>Ukrainian</b></li><li>Languages: <b>Ukrainian, English</b></li></ul><p>Which line tells you where Stepan was born?</p>`,
           cta: "Let’s see"
         },
         {
@@ -63,7 +63,7 @@ SLID.section("eng", {
         {
           type: "info",
           title: "Personal information",
-          body: `<p>A form asks for personal infor<u>ma</u>tion:</p><ul><li><b>date of birth</b> → the day you were born: 14 March 2011</li><li><b>place of birth</b> → the town or city where you were born</li><li><b>nation<u>al</u>ity</b> → Ukrainian, British</li><li><b><u>sur</u>name</b> → your family name</li></ul><p>Write a date like this: <b>14 March 2011</b> (day, month, year). Say: <i>the fourteenth of March</i>.</p>`,
+          body: `<p>A form asks for personal infor<u>ma</u>tion:</p><ul><li><b>date of birth</b> → the day you were born: 14 March</li><li><b>place of birth</b> → the town or city where you were born</li><li><b>nation<u>al</u>ity</b> → Ukrainian, British</li><li><b><u>sur</u>name</b> → your family name</li></ul><p>Write a date like this: <b>14 March</b> (day, then month). Say: <i>the fourteenth of March</i>.</p>`,
           cta: "Next"
         },
         {
@@ -81,18 +81,18 @@ SLID.section("eng", {
         {
           type: "info",
           title: "Born on, born in",
-          body: `<p>We say <b>was / were born</b>: it happened in the past.</p><ul><li><b>on</b> + a date: born <b>on</b> 14 March</li><li><b>in</b> + a month, a year or a place: born <b>in</b> March, <b>in</b> 2011, <b>in</b> Dnipro</li></ul><p>When <b>were</b> you born? – I <b>was</b> born on 14 March.<br>Not: <s>I am born in Dnipro.</s> <s>I born in 2011.</s></p>`,
+          body: `<p>We say <b>was / were born</b>: it happened in the past.</p><ul><li><b>on</b> + a date: born <b>on</b> 14 March</li><li><b>in</b> + a month, a year or a place: born <b>in</b> March, <b>in</b> Dnipro; my grandad was born <b>in</b> 1960</li></ul><p>When <b>were</b> you born? – I <b>was</b> born on 14 March.<br>Not: <s>I am born in Dnipro.</s> <s>I born in March.</s></p>`,
           cta: "Next"
         },
         {
           type: "gaps",
           sk: "gram",
           title: "Complete the sentences.",
-          text: "Stepan {*was|is|has} born {*in|on|at} Dnipro. His birthday is in March: he was born {*on|in|at} 14 March 2011. Emma {*was|is|were} born in May. Where {*were|did|was} you born?",
+          text: "Stepan {*was|is|has} born {*in|on|at} Dnipro. His birthday is in March: he was born {*on|in|at} 14 March. Emma {*was|is|were} born in May. Where {*were|did|was} you born?",
           hint: "A date → on. A place or a month → in. Born is about the past.",
           fbOk: "Exactly.",
           fbBad: "Look at the rule: was born, on + a date, in + a place.",
-          fbText: "Stepan <b>was</b> born <b>in</b> Dnipro, <b>on</b> 14 March 2011. Emma <b>was</b> born in May. Where <b>were</b> you born?"
+          fbText: "Stepan <b>was</b> born <b>in</b> Dnipro, <b>on</b> 14 March. Emma <b>was</b> born in May. Where <b>were</b> you born?"
         },
         {
           type: "info",
@@ -167,7 +167,7 @@ SLID.section("eng", {
       title: "Easy-going or hard-working? Personality",
       short: "Personality",
       icon: "star",
-      status: "draft",
+      status: "verified",
       why: "Kind and funny are not enough. Learn more words to describe a person’s personality.",
       screens: [
         {
@@ -292,7 +292,7 @@ SLID.section("eng", {
       title: "What shapes us? Family, friends and choices",
       short: "What shapes us",
       icon: "users",
-      status: "draft",
+      status: "verified",
       why: "Family, friends and our own choices make us who we are. Talk about the people and things that changed you.",
       screens: [
         {
@@ -353,7 +353,7 @@ SLID.section("eng", {
           title: "Write the missing word.",
           body: `<p>In chess, you sometimes wait for a long time. Andrii learnt to wait calmly.</p>`,
           before: "Chess made Andrii",
-          answer: ["patient", "calm", "relaxed"],
+          answer: ["patient", "calm", "calmer", "relaxed"],
           hint: "Someone who can wait calmly is …",
           fbOk: "Yes!",
           fbBad: "Look at the rules: can wait calmly →",
@@ -417,7 +417,7 @@ SLID.section("eng", {
       title: "When I was little, I used to… and I would…",
       short: "Used to, would",
       icon: "scroll",
-      status: "draft",
+      status: "verified",
       why: "Stories about childhood are full of habits. Use used to and would to tell them.",
       screens: [
         {
@@ -510,11 +510,11 @@ SLID.section("eng", {
           sk: "gram",
           title: "Find the mistake.",
           body: `<p>One word in Mariia’s message is wrong.</p>`,
-          text: "When I was little, my grandma [would] have a dog called Bim. I would play with him every evening.",
-          hint: "Have a dog: is it an action or a state?",
+          text: "When I was little, my grandma [would] live next door. I would visit her every evening.",
+          hint: "Live next door: is it an action or a state?",
           fbOk: "Good eye!",
           fbBad: "Would is only for actions.",
-          fbText: "Having a dog is a state, so: my grandma <b>used to have</b> a dog. <i>I would play with him</i> is correct: it’s an action."
+          fbText: "Living next door is a state, so: my grandma <b>used to live</b> next door. <i>I would visit her</i> is correct: it’s an action."
         },
         {
           type: "choice",
@@ -550,7 +550,7 @@ SLID.section("eng", {
       title: "I knew I was going to be a…: the future in the past",
       short: "Future in the past",
       icon: "path",
-      status: "draft",
+      status: "verified",
       why: "Sometimes our plans change. Say what you were going to do and what you thought would happen.",
       screens: [
         {
@@ -692,7 +692,7 @@ SLID.section("eng", {
       title: "My life story: a short autobiography",
       short: "Autobiography",
       icon: "book",
-      status: "draft",
+      status: "verified",
       why: "An autobiography tells the story of your life. Read one and learn how to build it.",
       screens: [
         {
@@ -793,7 +793,7 @@ SLID.section("eng", {
           text: "I was very tired at the competition because I [have] trained all morning.",
           hint: "Training happened before the competition, in the past.",
           fbOk: "Good eye!",
-          fbBad: "Earlier past: had + -ed form.",
+          fbBad: "Earlier past: had + the third form.",
           fbText: "Earlier in the past: I <b>had</b> trained all morning (Past Perfect)."
         },
         {
@@ -838,7 +838,7 @@ SLID.section("eng", {
       title: "The club book: our life stories",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e9s1boss",
       why: "Check everything from this section. Your points are doubled.",

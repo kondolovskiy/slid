@@ -7,7 +7,7 @@ subject: eng
 grade: 9
 section: e9s1
 depends_on: [curate-eng-plan-g7-9, engine-eng-lang-core, engine-eng-validate, engine-eng-stats, skills-eng, curate-eng-style, curate-eng-glossary, engine-eng-dialog]
-status: review
+status: done
 claimed_by: writer-e9s1
 created: 2026-11-19
 source: design-eng
@@ -73,3 +73,5 @@ Build не запускай (AGENTS.md §4 п. 8).
 - stats: e9s1l2 longWordShare 0.165 (у межах профілю ≤ 0.18), але «нетипово для сім'ї» (z=2.7): тема уроку — personality, self-confident, open-minded тощо; евристика складів рахує складні прикметники як довгі. Інших прапорців немає.
 - Нові деталі героїв (NOTE в inbox): Stepan Lytvyn — новий член penfriend club, народився 14 March 2011 у Dnipro; Oksana народилася в Poltava (у лікарні, де працює мама), почала карате в дев'ять, перед змаганням у Poltava (2-ге місце, e7s5) травмувала руку, у дитинстві хотіла бути nurse, тепер думає про vet; 15 дерев дідуся Mykola (e7s1: 13 у 7 кл.); Taras народився в Lviv, у дитинстві був сором'язливий, хотів бути футболістом; Andrii — літа в Chernihiv, рибалка з дідом Vasyl, бабуся Nina — вареники з вишнями; Emma — у шість років вступила в swimming club, у першому запливі загубила окуляри; Tom хоче бути барабанщиком; Zlata грає на бандурі на концертах.
 - Рік народження Stepan (2011) неявно задає рік серії (9 кл. ≈ 2026/27) — якщо це небажано, прибрати рік з анкети.
+
+**verifier-e9s1, 2026-11-25.** Вердикт: усі 7 уроків verified після 12 мінімальних правок (requires + e8s5l4, e8s5l5; рік 2011 прибрано з анкети й прикладів; l3 word + calmer; l4 pick → «would live next door»; l6 fbBad «the third form»). Звіт — reports/verify/write-eng-g9-e9s1.md. Плейтест — у CI (playwright у контейнері немає).
