@@ -7,7 +7,7 @@ subject: eng
 grade: 7
 section: e7s2
 depends_on: [curate-eng-plan-g7-9, engine-eng-lang-core, engine-eng-validate, engine-eng-stats, skills-eng, curate-eng-style, curate-eng-glossary, engine-eng-dialog]
-status: todo
+status: review
 claimed_by: writer-e7s2
 created: 2026-11-19
 source: design-eng
@@ -47,3 +47,15 @@ Build не запускай (AGENTS.md §4 п. 8).
 
 ## Нотатки агента
 <!-- що зроблено, джерела форм і фактів, спірне -->
+**writer-e7s2, 2026-11-25.** Файл `content/eng/g7-e7s2.js`, статус draft. `validate --section e7s2`: 0 помилок, 0 попереджень. stats: жодного прапорця «нетипово для сім'ї» (l1 після скорочення intro — readWordsPerScreen 43).
+
+**Уроки (6 + фінал):** e7s2l1 «Pots, pans and plates: kitchen things» (Andrii, Kyiv) · e7s2l2 «Boil, fry or bake? Ways of cooking» (Oksana, Grandma Hanna; paska) · e7s2l3 «A slice of bread, a little salt: how much?» (Emma, Tom, Sarah; Pancake Day) · e7s2l4 «It should be cooked for ten minutes: recipes» (Taras, Zlata; упаковка вареників, Lviv) · e7s2l5 «Laying the table: another plate, the other fork» (Mariia, Kharkiv; нові — бабуся Марії без імені, дядько Ihor) · e7s2l6 «Do have some more! Guests at the table» (Grandma Hanna, Oksana, Halyna) · e7s2l7 boss «Dinner at Taras’s flat», значок e7s2boss. `requires`: e6s3l2, e6s3l3, e5s3l2, e5s3l4, e5s3l5, e6s6l5. Тип `dialog` не вжито (D-056): репліки в body + gaps/choice/match.
+
+**Форми й рівні (CD — https://dictionary.cambridge.org/dictionary/english/<слово>, curl):** cooker A2 (stove — «mainly US (UK usually cooker)»; тому stove — лише в info як US-слово, не пастка); frying pan B1; saucepan B1 (/ˈsɔː.spən/); kettle B1; cupboard A2 (/ˈkʌb.əd/); microwave (/ˈmaɪ.krə.weɪv/); oven B1; fridge A2; sink A2; bake A2; roast A2; fry B1; peel B2; chop B2; slice A2 (ім.), B2 (дієсл.); napkin B2 (/ˈnæp.kɪn/); tablecloth B2; delicious B1 (/dɪˈlɪʃ.əs/); lovely A2; frozen B1; boiling B2; packet B1; freezer B1; help yourself B1 (CD help); full «having eaten so much food that you cannot eat any more» B2 (CD full); a bit of A2 (CD bit); cutlery — C2, тому не вжито. B2-слова (peel, chop, napkin, tablecloth, full) подано з поясненням до першого завдання (Р1 верифікатора плану).
+**OALD:** lay_1 «lay the table (British English)», лay → laid, laid — https://www.oxfordlearnersdictionaries.com/definition/english/lay_1; roast → roasted (https://…/roast_1); keep → kept (…/keep_1); fry → fried (…/fry_1). set the table — CD «B1 (UK also lay the table)» https://dictionary.cambridge.org/dictionary/english/set-the-table → у word e7s2l5 ключ ["lay","set"].
+**Граматика (Cambridge Grammar):** another — «one more… or an alternative or different», лише з одниною; the other + однина — «the second of two» (https://dictionary.cambridge.org/grammar/british-grammar/other-others-the-other-or-another); a little + uncountable, a few + plural countable (…/little-a-little-few-a-few); a bit of — «informal alternative to some, or a piece of» (…/a-bit); let me — «direct… suggestion or offer» (…/let-let-s); emphatic do з імперативом (…/do — уже звірено в curate-eng-plan-g7-9); passive «modal simple: can/will/might be + -ed» (…/passive-forms).
+**Факти:** (1) paska — «traditional Ukrainian Easter bread», печуть удома — https://en.wikipedia.org/wiki/Paska_(bread); https://archive.kyivpost.com/lifestyle/easter-cake-has-truly-risen-2-8345.html (через WebSearch). У уроці: «Paska is a sweet Easter bread. In Ukraine, many families bake paska for Easter.» «On Thursday, Grandma baked paska» — традиція пекти в четвер (сніпети WebSearch; як деталь сюжету, не як факт). (2) Pancake Day — CD «UK informal (also Shrove Tuesday)» https://dictionary.cambridge.org/dictionary/english/pancake-day; OALD «the day before the beginning of Lent, when people traditionally eat pancakes» https://www.oxfordlearnersdictionaries.com/definition/english/pancake-day. У уроці: «In the UK, people traditionally eat pancakes on this day.» Дату не даю.
+
+**Друга правильна відповідь — що зроблено:** у gaps з модальним пасивом немає голої основи (boil, cook, fry — ергативні: «They should boil for five minutes» граматичне), лише `boiled` / `be boil`; slice / piece ніколи не стоять поруч як варіанти; another / the other — контекст «a lot of forks in the cupboard» або «two glasses»; lay / set — обидва в ключі word; у boss build — обидва порядки («For five minutes they should be boiled»); у word l1 — saucepan і pot; word l4 — cut і sliced.
+
+**Спірне для верифікатора:** (а) e7s2l1 pick — хибна група «kitchen cupboard» серед «things for cooking» (cooker — теж «for cooking»; ок?). (б) e7s2l5 sort «a fork» → «On the table» (виделкою й готують — але бін «for cooking» має лише посуд з l1). (в) e7s2l4 «fish fingers» — BrE (US fish sticks), не оцінюється. (г) Сервірування «fork on the left» не вводив як факт про країну — у тексті лише «a plate, a knife and a fork for each person».
