@@ -356,6 +356,7 @@
 720. 2026-11-17 · verifier-hist2-1117 · FACT (hist 10, g11s1l3): айнзацгрупи — пересувні загони поліції безпеки й СД (СС), «mobile killing units» — https://en.wikipedia.org/wiki/Einsatzgruppen ; https://encyclopedia.ushmm.org/content/en/article/einsatzgruppen-and-other-ss-and-police-units-in-the-soviet-union — **verified**
 721. 2026-11-18 · images-hist-1117 / verifier-images-hist-1117 · FACT (hist 5, h23): Поділля — між Дністром і Південним Бугом, історичний центр — Кам'янець-Подільський — https://uk.wikipedia.org/wiki/Поділля — **verified**
 722. 2026-11-18 · images-hist-1117 / verifier-images-hist-1117 · FACT (hist 9, g9s1l1): Житомир — центр Київського воєводства після 1667 р. (до 1793) — https://uk.wikipedia.org/wiki/Київське_воєводство — **verified**
+723. 2026-11-18 · verifier-hist-1118 · FACT ✅ (hist 5, h43/h44): Анна Ярославна — королева Франції 1051 (en.wiki Anne_of_Kiev, epistolae.unisi.it/woman/116.html); VS-300 — 14.09.1939 (ebsco first-successful-helicopter-flight, sikorskyarchives.com); Каденюк — STS-87 «Колумбія» 1997 (britannica Leonid-Kadenyuk, en.wiki); Острозьку Біблію 1581 надрукував Іван Федоров (museumofthebible 32387, zn.ua). Збігається з facts/hist №34–37. Звіт reports/verify/hist-1118.md. — **verified** (повторне підтвердження №34–37)
 
 ## Розбіжності між джерелами (CONFLICT; автор обрав тимчасове рішення, куратор не вирішував)
 
