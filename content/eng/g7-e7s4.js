@@ -15,7 +15,7 @@
    Звуку немає (D-055 п. 4); діалоги — репліками в body + gaps / choice (D-056).
    Увесь зміст — англійською, британська норма (D-055). Тексти, діалоги й герої — власні (docs/design/english.md §8).
    Форми, рівні слів, наголос — Cambridge Dictionary (URL — tasks/…/write-eng-g7-e7s4.md, «Нотатки агента»).
-   Статус: draft. 7 уроків (6 + фінал).
+   Статус: verified (verifier-e7s4, reports/verify/write-eng-g7-e7s4.md). 7 уроків (6 + фінал).
    Перевірка: node tools/validate.mjs --section e7s4 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -25,7 +25,7 @@ SLID.section("eng", {
   title: "Cinema and theatre",
   why: "To talk about films, plays and their genres. And to give your opinion about a film or a play.",
   requires: ["e5s5l3", "e5s5l4", "e6s2l6", "e6s1l5", "e5s6l5", "e4s3l5"],
-  meta: { author: "writer-e7s4", created: "2026-11-25", factcheck: null, teacher: null },
+  meta: { author: "writer-e7s4", created: "2026-11-25", factcheck: "verifier-e7s4, 2026-11-25", teacher: null },
   badges: [
     { id: "e7s4boss", name: "Film critic", icon: "trophy", desc: "Finish the final lesson “Cinema and theatre”" }
   ],
@@ -36,7 +36,7 @@ SLID.section("eng", {
       title: "Comedy, cartoon or adventure film? Film genres",
       short: "Film genres",
       icon: "play",
-      status: "draft",
+      status: "verified",
       why: "There are many kinds of films. Learn their names and choose a film you like.",
       screens: [
         {
@@ -86,7 +86,7 @@ SLID.section("eng", {
           title: "Find the stressed syllable.",
           words: ["+com|e|dy", "car|+toon", "ad|+ven|ture", "+hor|ror"],
           fbOk: "Yes!",
-          fbBad: "Look at the underlined parts in the list of films.",
+          fbBad: "Look at the underlined parts on the screen “Kinds of films”.",
           fbText: "<u>com</u>edy, <u>hor</u>ror: the first part is strong. car<u>toon</u>: the last part. ad<u>ven</u>ture: the middle part."
         },
         {
@@ -158,7 +158,7 @@ SLID.section("eng", {
       title: "At the theatre: the stage, the seats, the box office",
       short: "At the theatre",
       icon: "star",
-      status: "draft",
+      status: "verified",
       why: "A theatre has its own words. Learn them and find your seat.",
       screens: [
         {
@@ -285,7 +285,7 @@ SLID.section("eng", {
       title: "We could see a play! Suggestions",
       short: "Suggestions",
       icon: "users",
-      status: "draft",
+      status: "verified",
       why: "Make plans with friends: give an idea, say yes or say no politely.",
       screens: [
         {
@@ -422,7 +422,7 @@ SLID.section("eng", {
       title: "Bored or boring? Interested or interesting?",
       short: "Bored or boring?",
       icon: "bulb",
-      status: "draft",
+      status: "verified",
       why: "Say how a film or a play was. And say how you felt.",
       screens: [
         {
@@ -555,7 +555,7 @@ SLID.section("eng", {
       title: "Much better, a bit longer, not as funny as the book",
       short: "Much better",
       icon: "scale",
-      status: "draft",
+      status: "verified",
       why: "Compare a film and a book, or two films. Say how big the difference is.",
       screens: [
         {
@@ -677,7 +677,7 @@ SLID.section("eng", {
           sk: "write",
           eyebrow: "Final",
           title: "Complete the sentences.",
-          body: `<p>Andrii writes to Taras about Captain Cat.</p>`,
+          body: `<p>Andrii writes to Taras about a new film.</p>`,
           text: "I read the book first, and then I saw the film. The book is 100 pages, but the film is three hours! It’s {*much|very} longer than I thought. The film is good, but the book is {*even|very} better. The film isn’t as funny {*as|than} the book. But the ending is the {*same|as} as in the book, and I love it!",
           hint: "Three hours is a lot. The film is good, but the book is better.",
           fbOk: "Well done!",
@@ -701,7 +701,7 @@ SLID.section("eng", {
       title: "Old enough to watch it? A film review",
       short: "Film review",
       icon: "book",
-      status: "draft",
+      status: "verified",
       why: "Say who a film is good for. Then write a short review of a film.",
       screens: [
         {
@@ -845,7 +845,7 @@ SLID.section("eng", {
       title: "A weekend of films and plays",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e7s4boss",
       why: "Check everything from this section. Your points are doubled.",
