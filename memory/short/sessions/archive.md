@@ -33,3 +33,4 @@
 - **2026-11-04-1** — ukr 7 кл. за Заболотними 2024 (D-045): план і u7s1–u7s13 — 80 уроків verified; style-ukr-g5/g6-unify, engine-lang-p3, engine-lang-gaps-shuffle, style-sync-ukr-g7; facts/ukr №154–211.
 - **2026-11-04-2** — пакет після 03–04.11 (гілка claude/brave-feynman-iql21g): fix-ukr-validate-warnings, пули pg11m2/pg11m6, style-hist g5, world w9s4–w9s5, server-hardening, tools-lang-p4; facts/world №26–40.
 - **2026-11-05-1** — D-046/D-047: відкриті змістові питання за рекомендаціями МОН (reports/research/mon-{ukr,hist,math}-2026-11.md); виправлено ukr/hist/math, style/profiles.json (ukr і hist 7–9), boss до 7 завдань; гілка claude/brave-feynman-iql21g.
+- **2026-11-05-2** — куратор: старий inbox 03–04.11 (PR #17 Істер: міграція, пули, фінали, fix-math-figs; world w8s1–w9s4) → facts/math №226–252, facts/world №41–78, D-048; задачі curate-math-graph/plan-ister-gaps, fix-math-pools-ister-formats, engine-math-ister-p3.
