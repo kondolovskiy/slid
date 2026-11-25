@@ -12,7 +12,7 @@
    Увесь зміст — англійською, британська норма (D-055). Тексти, діалоги, інструкції на упаковці й герої — власні (docs/design/english.md §8).
    Форми, рівні слів і наголос — Cambridge Dictionary, OALD, Cambridge Grammar; факти (paska, Pancake Day) — URL у
    tasks/…/write-eng-g7-e7s2.md, «Нотатки агента». lay the table (OALD lay_1) і set the table (CD) — обидва в ключі.
-   Статус: draft (writer-e7s2). 7 уроків (6 + фінал).
+   Статус: verified (verifier-e7s2, reports/verify/write-eng-g7-e7s2.md). 7 уроків (6 + фінал).
    Перевірка: node tools/validate.mjs --section e7s2 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -22,7 +22,7 @@ SLID.section("eng", {
   title: "In the kitchen: cooking and laying the table",
   why: "To talk about kitchen things and different ways of cooking. And to lay the table and invite guests to eat.",
   requires: ["e6s3l2", "e6s3l3", "e5s3l2", "e5s3l4", "e5s3l5", "e6s6l5"],
-  meta: { author: "writer-e7s2", created: "2026-11-25", factcheck: null, teacher: null },
+  meta: { author: "writer-e7s2", created: "2026-11-25", factcheck: "verifier-e7s2 (reports/verify/write-eng-g7-e7s2.md)", teacher: null },
   badges: [
     { id: "e7s2boss", name: "Kitchen star", icon: "trophy", desc: "Finish the final lesson “In the kitchen: cooking and laying the table”" }
   ],
@@ -33,7 +33,7 @@ SLID.section("eng", {
       title: "Pots, pans and plates: kitchen things",
       short: "Kitchen things",
       icon: "pot",
-      status: "draft",
+      status: "verified",
       why: "Name the things in a kitchen. Say what each thing is for.",
       screens: [
         {
@@ -126,11 +126,11 @@ SLID.section("eng", {
           body: `<p>It’s a deep pan with a handle. You make soup in it.</p>`,
           before: "Dad makes borscht in a big",
           after: ".",
-          answer: ["saucepan", "pot"],
+          answer: ["saucepan", "pot", "pan"],
           hint: "Look at the list: a deep pan for boiling and soup.",
           fbOk: "Yes!",
           fbBad: "Look at the list of things for cooking: a deep pan…",
-          fbText: "A deep pan for soup is a <b>saucepan</b>: <u>sauce</u>pan, one word. A big <b>pot</b> is also right."
+          fbText: "A deep pan for soup is a <b>saucepan</b>: <u>sauce</u>pan, one word. A big <b>pot</b> or <b>pan</b> is also right."
         },
         {
           type: "gaps",
@@ -161,7 +161,7 @@ SLID.section("eng", {
       title: "Boil, fry or bake? Ways of cooking",
       short: "Ways of cooking",
       icon: "flame",
-      status: "draft",
+      status: "verified",
       why: "Say how food is cooked and prepared. Use boil, fry, bake, roast, peel, chop and slice.",
       screens: [
         {
@@ -280,8 +280,8 @@ SLID.section("eng", {
           eyebrow: "Final",
           title: "Complete the sentences.",
           body: `<p>After Easter, Oksana writes to Emma.</p>`,
-          text: "Hi Emma! Easter was great. On Thursday, Grandma {*baked|boiled} paska. It’s a sweet Easter bread. On Sunday, we {*roasted|boiled} a chicken in the oven. I {*peeled|baked} the potatoes, and Grandma {*fried|baked} some fish in a frying pan. Love, Oksana",
-          hint: "Bread in the oven, meat in the oven, fish in a frying pan.",
+          text: "Hi Emma! Easter was great. On Thursday, Grandma {*baked|boiled} paska. It’s a sweet Easter bread. On Sunday, we {*roasted|boiled} a chicken in the oven. I {*peeled|baked} the potatoes, and then Grandma boiled them. She {*fried|baked} some fish in a frying pan. Love, Oksana",
+          hint: "Bread in the oven, meat in the oven, take the skin off, fish in a frying pan.",
           fbOk: "Well done!",
           fbBad: "Look at the two lists again.",
           fbText: "Bread → <b>baked</b>. A chicken in the oven → <b>roasted</b>. Take the skin off potatoes → <b>peeled</b>. Fish in a frying pan → <b>fried</b>."
@@ -303,7 +303,7 @@ SLID.section("eng", {
       title: "A slice of bread, a little salt: how much?",
       short: "How much?",
       icon: "scale",
-      status: "draft",
+      status: "verified",
       why: "Talk about small amounts of food. Use a little, a few, a bit of, a slice of and a piece of.",
       screens: [
         {
@@ -437,7 +437,7 @@ SLID.section("eng", {
       title: "It should be cooked for ten minutes: recipes",
       short: "Should be cooked",
       icon: "check",
-      status: "draft",
+      status: "verified",
       why: "Read cooking instructions on a packet. Use can be, should be and must be with a past participle.",
       screens: [
         {
@@ -570,7 +570,7 @@ SLID.section("eng", {
       title: "Laying the table: another plate, the other fork",
       short: "Laying the table",
       icon: "home",
-      status: "draft",
+      status: "verified",
       why: "Lay the table for a family dinner. Use another and the other.",
       screens: [
         {
@@ -687,7 +687,7 @@ SLID.section("eng", {
           eyebrow: "Final",
           title: "Complete the sentences.",
           body: `<p>Mariia writes to Taras.</p>`,
-          text: "Hi Taras! Yesterday was Grandma’s birthday. I {*laid|lay} the table for seven people. First, I put a {*tablecloth|napkin} on the table. Then I put a {*napkin|tablecloth} next to each plate. Uncle Ihor came with his friend, so we needed {*another|the other} chair. I had two presents for Grandma. She opened one before dinner and {*the other|another} after dinner. Mariia",
+          text: "Hi Taras! Yesterday was Grandma’s birthday. I {*laid|lay} the table for seven people. First, I put a {*tablecloth|napkin} over the whole table. Then I put a {*napkin|tablecloth} next to each plate. Uncle Ihor came with his friend, so we needed {*another|the other} chair. I had two presents for Grandma. She opened one before dinner and {*the other|another} after dinner. Mariia",
           hint: "Yesterday: lay → … A big cloth for the table. Two presents: one… and …",
           fbOk: "Well done!",
           fbBad: "Look at the two rules again.",
@@ -710,7 +710,7 @@ SLID.section("eng", {
       title: "Do have some more! Guests at the table",
       short: "Guests",
       icon: "users",
-      status: "draft",
+      status: "verified",
       why: "Invite guests to eat and offer help. Say yes or no politely.",
       screens: [
         {
@@ -850,7 +850,7 @@ SLID.section("eng", {
       title: "Dinner at Taras’s flat",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e7s2boss",
       why: "Check everything from this section. Your points are doubled.",
@@ -957,7 +957,7 @@ SLID.section("eng", {
           body: `<p>Zlata: “Do have some more cake, Grandma!” Grandma can’t eat any more.</p>`,
           before: "Grandma: No, thank you. It was delicious, but I’m",
           after: ".",
-          answer: "full",
+          answer: ["full", "full up"],
           pre: "e7s2l6",
           fbOk: "Well done!",
           fbBad: "I can’t eat any more = I’m …",
