@@ -6,7 +6,7 @@ type: curate
 subject: eng
 grade: 
 depends_on: [curate-eng-plan-g7-9]
-status: todo
+status: review
 claimed_by: curator-plan-eng-g10-11
 created: 2026-11-19
 source: design-eng
@@ -47,3 +47,12 @@ source: design-eng
 
 ## Готово, коли
 - [ ] План у plan.js, звіт, рядки в inbox; задача → tasks/review для content-verifier зі свіжим контекстом.
+
+## Нотатки агента (curator-plan-eng-g10-11, 2026-11-25)
+- План e10s1–e10s8, e11s1–e11s8 у кінці content/eng/plan.js (англійською, без `lessons` і `requires`), 16 × 6 рядків `plan`; тижні 10 кл. [1,4] [5,9] [10,13] [14,18] [19,22] [23,26] [27,31] [32,35]; 11 кл. [1,5] [6,9] [10,13] [14,17] [18,22] [23,26] [27,31] [32,35] = 35. У шапку plan.js додано абзац про П1407.
+- Звіт: reports/verify/plan-eng-g10-11.md (П1407 з osvita.ua, SHA-1 38df1f7ff398f0921f2852bc77fd374c77e1c0ff, 72 с.; с. 17–25 звірено, с. 24 — за рендером: «клуби за інтересами» і «фестивалі» — тема «Дозвілля»; 10 кл. — 10 тем, 26 підтем, 7 функцій, 15 позицій граматики; 11 кл. — 10 тем, 34 підтеми, 11 функцій, 15 позицій; усі 30 позицій розподілено — §2б).
+- Склад і id не змінено → нових задач немає, зайвих немає. Назви: e10s4 → «Weather, nature and natural disasters», e11s7 → «Ukraine in the world». У tasks/todo/write-eng-g10/11-* замінено «Тема й підтеми», «Граматика», заголовок (e10s4, e11s7), додано «Специфіка (plan-eng-g10-11)».
+- Граматика (наш розподіл, §4): question tags → e11s3, participles → e11s4, reported speech → e11s1, separable/inseparable → e11s6, огляд часів — пасив e11s5 / актив e11s8; (наш) be/get used to, If I were you, reply questions, I wish.
+- План 7–9 кл. (curator-plan-eng-g7-9) з’явився в plan.js під час роботи: повтори позначено за ним; 4 рядки 10 кл. переписано, щоб не дублювати e8s2, e8s5, e9s2. Після верифікації 7–9 — звірити (inbox).
+- Спірне: «position of indirect object» (TQ-140); державні свята під час воєнного стану (TQ-141); фестивалі з «Дозвілля» в e11s4; (наш) граматика поза інвентарем; факти ООН / Рада Європи / ЄС, ст. 133 Конституції, НМТ — не звіряв, доручено авторам.
+- validate: 0 помилок, 235 попереджень (для plan.js / e10s* / e11s* — жодного). Build не запускав, коміту немає.
