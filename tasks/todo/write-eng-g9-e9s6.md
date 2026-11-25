@@ -15,8 +15,10 @@ source: design-eng
 ## З програми
 - Тема й підтеми: відомі вчені та винахідники; винаходи; сучасні пристрої в житті й побуті — МП-ІМ с. 33 (розд. 5.2.3), граматика — с. 34–35.
 - Рівень: B1 (наприкінці 9 кл., МП-ІМ с. 3).
-- Граматика (пропозиція розподілу, docs/design/english.md §4): Passive (common forms). Остаточно — за `content/eng/plan.js` (curate-eng-plan-g7-9): якщо план інший, план головніший.
+- Граматика (план 7–9 кл., content/eng/plan.js; розподіл наш, концентричний — reports/verify/plan-eng-g7-8-9.md §2; позиції — МП-ІМ с. 34–35, B1): passive (common forms): Present Simple, Past Simple, Present Continuous, після модальних (B1: Passives — Infinitive, Past simple, Present continuous, Present simple) — повторення й узагальнення (e6s3l2, e6s7l3, e7s2, e7s7, e8s3); Can: general truths — Phones can be used to… (B1: Can) — нове; повторення: could (ability) (e6s4l3).
 - Джерела програми — docs/design/english.md §0: ТОП 3–4 (4 кл.) — https://lib.iitta.gov.ua/714276/1/%D0%A2%D0%9E%D0%9F_3_4_2018.pdf; МП-ІМ (5–9 кл., наказ МОН № 795 від 12.07.2021) — https://osvita.ua/doc/files/news/831/83117/Inoz_mov_5-9-kl_Redko_ta_in_14_07.pdf; П1407 (10–11 кл., наказ МОН № 1407 від 23.10.2017; для 10–11 кл. — розділ спеціалізованих шкіл, B2) — https://osvita.ua/doc/files/news/589/58921/inozemni-movi-10-11-19_09_2017.pdf.
+
+- **Специфіка (plan-eng-g7-8-9):** by + agent — лише коли важливо, хто; винахідники й дати — з двох джерел (Ivan Puluj, Igor Sikorsky та ін.); спірних «першостей» не стверджувати; inventor — B2 у CD, gadget — C1 (не вводити; device). Опис приладу — с. 31 («Пише короткий, простий опис знайомого прилада чи продукту»); бренди не називати. `requires`: e6s3l2, e6s7l3, e6s4l3; після появи e7s7, e8s3 — уроки пасиву (оркестратор). Герої — та сама серія, що в 4–6 кл., на 5 років старші, ніж у 4 кл. (канон — memory/short/inbox.md NOTE (герої), reports/verify/plan-eng-g6.md §7); одне ім'я — одна людина.
 
 ## Рішення людини, обов'язкові
 Рішення людини 2026-11-19 (docs/design/english.md §11.1): британська норма; увесь зміст англійською (інтерфейс рушія — українською); варіанти A/B/C; поки без звуку й голосу; ціль B2 в 11 кл.; 4 клас робимо; словники дозволено.

@@ -15,8 +15,10 @@ source: design-eng
 ## З програми
 - Тема й підтеми: навколишнє середовище; охорона довкілля; рослинний і тваринний світ — МП-ІМ с. 33 (розд. 5.2.3), граматика — с. 34–35.
 - Рівень: B1 (наприкінці 9 кл., МП-ІМ с. 3).
-- Граматика (пропозиція розподілу, docs/design/english.md §4): future forms (will, going to, Future Continuous). Остаточно — за `content/eng/plan.js` (curate-eng-plan-g7-9): якщо план інший, план головніший.
+- Граматика (план 7–9 кл., content/eng/plan.js; розподіл наш, концентричний — reports/verify/plan-eng-g7-8-9.md §2; позиції — МП-ІМ с. 34–35, B1): Future Continuous: affirmative, negative (B1; відкладене з 6 кл.) — нове; predictions: will / be going to (B1: Will, Be going to — predictions) — повторення з контрастом; adverbs of certainty: probably, definitely, perhaps (B1: Adverbs — certainty) — нове; повторення: passive infinitive — must be protected (e7s2), might (e6s5l4).
 - Джерела програми — docs/design/english.md §0: ТОП 3–4 (4 кл.) — https://lib.iitta.gov.ua/714276/1/%D0%A2%D0%9E%D0%9F_3_4_2018.pdf; МП-ІМ (5–9 кл., наказ МОН № 795 від 12.07.2021) — https://osvita.ua/doc/files/news/831/83117/Inoz_mov_5-9-kl_Redko_ta_in_14_07.pdf; П1407 (10–11 кл., наказ МОН № 1407 від 23.10.2017; для 10–11 кл. — розділ спеціалізованих шкіл, B2) — https://osvita.ua/doc/files/news/589/58921/inozemni-movi-10-11-19_09_2017.pdf.
+
+- **Специфіка (plan-eng-g7-8-9):** will / going to для прогнозу — часто обидва (pitfalls-content «Англійська» п. 12) → контекст «ознаки видно зараз» або обидва в ключі; probably — позиція: will probably / probably won’t. Червона книга України — англійська назва і види — з джерела (en/uk.wikipedia, сайт Мінприроди); без алармізму й політики; екопроєкт — посильні дії учнів. Підтема «рослинний і тваринний світ» — Україна поруч з країнами мови. `requires`: e4s6l4, e4s6l6, e5s5l5, e5s9l3, e6s5l4; після появи e7s2 — урок passive infinitive (оркестратор). Герої — та сама серія, що в 4–6 кл., на 5 років старші, ніж у 4 кл. (канон — memory/short/inbox.md NOTE (герої), reports/verify/plan-eng-g6.md §7); одне ім'я — одна людина.
 
 ## Рішення людини, обов'язкові
 Рішення людини 2026-11-19 (docs/design/english.md §11.1): британська норма; увесь зміст англійською (інтерфейс рушія — українською); варіанти A/B/C; поки без звуку й голосу; ціль B2 в 11 кл.; 4 клас робимо; словники дозволено.
