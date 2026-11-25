@@ -1,9 +1,5 @@
 {
-  "date": "2026-11-25T12:42:53.208Z",
+  "date": "2026-11-25T12:46:04.987Z",
   "errors": [],
-  "warnings": [
-    "content/eng/g8-e8s8.js#e8s8l4 екран 1 (intro): дуже довге речення (53 слів): «Area: Canada – almost 10 million km² Ukraine – about 600,000…»",
-    "content/eng/g8-e8s8.js#e8s8l7: у 2 з 2 завдань choice правильний варіант — B: переставляй варіанти",
-    "content/eng/g8-e8s8.js#e8s8: розділ: у 5 з 8 завдань choice правильний варіант — B (> 50 %): переставляй варіанти"
-  ]
+  "warnings": []
 }
