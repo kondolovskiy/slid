@@ -7,7 +7,7 @@ subject: eng
 grade: 9
 section: e9s5
 depends_on: [curate-eng-plan-g7-9, engine-eng-lang-core, engine-eng-validate, engine-eng-stats, skills-eng, curate-eng-style, curate-eng-glossary, engine-eng-dialog]
-status: todo
+status: review
 claimed_by: writer-e9s5
 created: 2026-11-19
 source: design-eng
@@ -47,3 +47,25 @@ Build не запускай (AGENTS.md §4 п. 8).
 
 ## Нотатки агента
 <!-- що зроблено, джерела форм і фактів, спірне -->
+**writer-e9s5, 2026-11-25.** `content/eng/g9-e9s5.js` — 7 уроків (6 + boss), status draft; validate --section e9s5: 0 помилок, 0 попереджень; stats — без «нетипово для сім'ї» (l6 після переробки: gradedShare 0.7, typeVariety 5). Euphony для eng не застосовна (лише підказка).
+- l1 Youth culture (into, fan, gamer, skater, vlogger, hang out, trend); l2 Plast, the Scouts, DofE (читання 2 частини; повтор who/which/that — e8s4l3); l3 where / when + where vs which; l4 whose (≠ who’s); l5 the reason why, that’s why + вибір і відповідь на запрошення; l6 постер і запрошення (читання 2 частини); l7 boss, 9 завдань з `pre`.
+- `requires`: e6s6l3, e5s1l3, e5s7l1, e5s6l1, e5s6l5 (yes/no на пропозицію), e7s6l1 (after-school clubs, member, join), e8s4l3, e8s4l4 (non-defining з комами — урок уже є, тож додав сам).
+
+**Факти (≥ 2 джерела):**
+- Plast — Scout organisation of Ukraine; перші групи в Lviv 1911, офіційно 12 April 1912 → в уроці обидві дати з поясненням + «more than 100 years ago»; назва від plastuny (козацькі розвідники); табори й походи — https://en.wikipedia.org/wiki/Plast (infobox «First groups in 1911, officially established on 12 April 1912»); https://uk.wikipedia.org/wiki/Пласт_(організація) («засновано — осінь 1911», «перша присяга — 12 квітня 1912», походження назви від пластунів); FACT verifier-curate-eng-plan-g7-9 в inbox.
+- The Scouts: Baden-Powell, табір на Brownsea Island 1907, «about twenty boys» — https://en.wikipedia.org/wiki/Brownsea_Island_Scout_camp; https://en.wikipedia.org/wiki/Robert_Baden-Powell,_1st_Baron_Baden-Powell; uk.wikipedia Пласт («скаутський рух Робертом Бейден-Пауелом у 1907 році»).
+- DofE: UK, 1956; 14–24 (завершити до 25-річчя); Bronze / Silver / Gold; volunteering, physical, skills, expedition (+ residential на Gold); Bronze expedition 2 дні / 1 ніч — https://en.wikipedia.org/wiki/The_Duke_of_Edinburgh%27s_Award; https://www.royal.uk/duke-edinburghs-award; https://www.pkc.gov.uk/article/17414/What-is-involved-in-The-Duke-of-E... (WebSearch; dofe.org з контейнера — 403).
+- «Plast has members in other countries too» (l4 match) — en.wikipedia Plast: «3,000 members in other countries» (2006), розділ про діаспору.
+- Опитування в l5 (41/27/20/12) — вигадане опитування шкільної газети Andrii, подано як таке.
+
+**Форми й граматика:** CD Grammar «Relative pronouns» (when / where / why для defining; leave out лише object) — https://dictionary.cambridge.org/grammar/british-grammar/relative-pronouns; «Relative clauses: defining and non-defining» — …/relative-clauses-defining-and-non-defining; «Whose» (people, animals, things; ≠ who’s) — …/whose; «When» (the week when…, non-defining «11 am, when…») — …/when. Наголос: CD teenager ˈtiːnˌeɪ.dʒə, culture, computer, vlogger, member, volunteer ˌvɒl.ənˈtɪə, expedition ˌek.spəˈdɪʃ.ən, organisation (headword organization, BrE -ise) — https://dictionary.cambridge.org/dictionary/english/<слово>. hang out — CD «to spend a lot of time in a place or with someone»; gamer, skater, vlogger, youth club — CD.
+
+**Друга правильна відповідь (перевірено):** that при when / why не дається хибним варіантом; у `word` на when і why — ["when","that"], ["why","that"]; where vs which — лише з неперехідними дієсловами без прийменника в кінці (skate, play, meet) або з дієсловом одразу після (which meets); in which не вчимо й не даємо. build: l3 — 2 порядки, l4 — 2 порядки, boss T8 — питання й ствердження (кінцевий знак необов'язковий). `word` «Would you ___ to come» — like, love, care.
+
+**Спірне для верифікатора:**
+- l2 info — 8 пунктів словника (≈ 70 слів, більше за орієнтир 60 для info); ділити не став, бо всі слова потрібні для читання.
+- l4 match «Plast is an organisation whose ideas started the Scouts» граматичне, але хибне за фактом (з l2: Scouts — Baden-Powell) — пара однозначна лише за змістом.
+- l6 hyp про початок постера — оцінка стилю, тому `hyp`.
+- l2 final «I’m a {member|leader}» — відсікає наступне речення «Our leader is Mr Price».
+
+**Опора D-019:** l2 multi — на екрани 4–5 (обидві частини тексту); l6 match і Marko — на постер (екран 3); boss T3 — l2 екран 4; l4 match — правило where/when/whose/which (l3, l4) + факти l2.
