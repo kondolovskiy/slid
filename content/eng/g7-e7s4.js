@@ -940,7 +940,7 @@ SLID.section("eng", {
           extra: ["too"],
           keepCase: true,
           pre: "e7s4l6",
-          hint: "Start with You aren’t. Then the adjective.",
+          hint: "Start with You aren’t. Where does enough go: before or after the adjective?",
           fbOk: "Good eye!",
           fbBad: "enough comes after the adjective.",
           fbText: "<b>You aren’t old enough to see it.</b> <i>enough</i> comes after <i>old</i>."

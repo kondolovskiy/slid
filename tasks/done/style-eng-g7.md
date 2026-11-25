@@ -6,7 +6,7 @@ type: style
 subject: eng
 grade: 7
 depends_on: [write-eng-g7-e7s1, write-eng-g7-e7s2, write-eng-g7-e7s3, write-eng-g7-e7s4, write-eng-g7-e7s5, write-eng-g7-e7s6, write-eng-g7-e7s7]
-status: review
+status: done
 claimed_by: style-eng-g7
 created: 2026-11-25
 source: orchestrator
@@ -36,3 +36,8 @@ source: orchestrator
 - validate --section e7s1…e7s7 — 0/0; повний validate — 0 помилок. Build не запускав.
 - Профіль «7-9»: без змін (7 кл. в межах із запасом); rwps → 6–55 лише за TQ-126. Рядки STYLE/TERM/PITFALL/NOTE/ENGINE — у inbox.
 - Повторна верифікація: reports/style/eng-g7.md §9.
+
+## Нотатки верифікатора (verifier-style-eng-g7, 2026-11-25)
+- Звіт: reports/verify/style-eng-g7.md. Перелік §9 і diff b68f92f перевірено: ключі не зламано, другої правильної відповіді немає; e7s5l4 #8 — звуження коректне.
+- 1 правка: e7s4l7 T6 `hint` видавав відповідь («Then the adjective») → «Where does enough go: before or after the adjective?».
+- Вік героїв 6→7 кл. узгоджений (Dmytro 8→9, Tom 10→11). validate e7s1–e7s7 — 0/0. Build і плейтест — оркестратору.
