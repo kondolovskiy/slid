@@ -12,7 +12,7 @@
    Факти про письменників — з двох джерел (URL — tasks/…/write-eng-g8-e8s5.md, «Нотатки агента»); тексти творів не цитуємо.
    Увесь зміст — англійською, британська норма (D-055). Тексти, діалоги й герої — власні (docs/design/english.md §8). Без dialog (D-056), без звуку.
    Форми, рівні слів і наголос — за Cambridge Dictionary і OALD (URL — у нотатках задачі).
-   Статус: draft (writer-e8s5, 2026-11-25). 7 уроків (6 + фінал).
+   Статус: verified (verifier-e8s5, reports/verify/write-eng-g8-e8s5.md). 7 уроків (6 + фінал).
    Перевірка: node tools/validate.mjs --section e8s5 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -22,7 +22,7 @@ SLID.section("eng", {
   title: "Books and libraries",
   why: "To talk about books, writers and literary genres. And to tell a story about what had happened.",
   requires: ["e4s3l5", "e5s7l1", "e6s3l3", "e6s3l4", "e6s3l5", "e6s4l4", "e6s4l5", "e6s7l5", "e7s1l2"],
-  meta: { author: "writer-e8s5", created: "2026-11-25", factcheck: "self", teacher: null },
+  meta: { author: "writer-e8s5", created: "2026-11-25", factcheck: "verifier-e8s5, 2026-11-25 (reports/verify/write-eng-g8-e8s5.md)", teacher: null },
   badges: [
     { id: "e8s5boss", name: "Book expert", icon: "trophy", desc: "Finish the final lesson “Books and libraries”" }
   ],
@@ -33,7 +33,7 @@ SLID.section("eng", {
       title: "Fantasy, poetry or a detective story? Genres",
       short: "Genres",
       icon: "book",
-      status: "draft",
+      status: "verified",
       why: "Every reader likes different books. Learn the names of book types and find books you will enjoy.",
       screens: [
         {
@@ -127,7 +127,7 @@ SLID.section("eng", {
           body: `<p>Zlata finds a book with a dragon on the cover. Inside, a boy finds a magic key to another world.</p>`,
           before: "This book is",
           after: ".",
-          answer: "fantasy",
+          answer: ["fantasy", "a fantasy"],
           hint: "Magic, dragons, other worlds: f…",
           fbOk: "Good eye!",
           fbBad: "It isn’t science fiction: there are no robots or space. There’s magic.",
@@ -162,7 +162,7 @@ SLID.section("eng", {
       title: "At the library: borrowing books and other services",
       short: "At the library",
       icon: "city",
-      status: "draft",
+      status: "verified",
       why: "A library gives you more than books. Learn to borrow books and use other services.",
       screens: [
         {
@@ -228,7 +228,7 @@ SLID.section("eng", {
           sk: "func",
           title: "Match the halves.",
           body: `<p>What does each reader need?</p>`,
-          left: ["I want to read this novel at home.", "I need to print my project.", "I want to talk about books with other readers.", "I need a book about the history of Poltava."],
+          left: ["I want to read this novel at home.", "I need to print my project.", "I want to talk about books with other readers.", "Where can I find books about the history of Poltava?"],
           right: ["Borrow it with your library card.", "Use the printer next to the computers.", "Join the book club.", "Look on the non-fiction shelves."],
           hint: "Which one is about true facts? Which one is about other readers?",
           fbOk: "Right.",
@@ -295,7 +295,7 @@ SLID.section("eng", {
       title: "A writer, a poet, a hero: my favourite book",
       short: "Writers",
       icon: "user",
-      status: "draft",
+      status: "verified",
       why: "Everybody has a favourite book. Learn about famous writers and talk about your favourite book.",
       screens: [
         {
@@ -397,7 +397,7 @@ SLID.section("eng", {
           type: "word",
           sk: "vocab",
           title: "Write the word.",
-          body: `<p>Taras Shevchenko wrote lots of poems.</p>`,
+          body: `<p>Taras Shevchenko wrote lots of poems. Write the word for a person who writes poems.</p>`,
           before: "Taras Shevchenko was a Ukrainian",
           after: "and artist.",
           answer: "poet",
@@ -435,7 +435,7 @@ SLID.section("eng", {
       title: "When I got to the library, it had closed: the Past Perfect",
       short: "Past Perfect",
       icon: "path",
-      status: "draft",
+      status: "verified",
       why: "Sometimes one thing happened before another thing in the past. The Past Perfect shows which came first.",
       screens: [
         {
@@ -536,14 +536,14 @@ SLID.section("eng", {
           type: "word",
           sk: "gram",
           title: "Write the missing word.",
-          body: `<p>Andrii got home, but his library book wasn’t in his bag. Write the third form of <i>leave</i>.</p>`,
-          before: "Oh no! I had",
-          after: "it on the bus!",
+          body: `<p>Andrii got home, but his library book wasn’t in his bag. Where was it? Write the third form of <i>leave</i>.</p>`,
+          before: "He had",
+          after: "it on the bus.",
           answer: "left",
           hint: "Look at the list: leave – left – …",
           fbOk: "Exactly.",
           fbBad: "leave – left – left: the third form is the same as the Past Simple.",
-          fbText: "leave – left – <b>left</b>: I had <b>left</b> it on the bus."
+          fbText: "leave – left – <b>left</b>: he had <b>left</b> it on the bus earlier."
         },
         {
           type: "gaps",
@@ -574,7 +574,7 @@ SLID.section("eng", {
       title: "It was raining, and she had lost her key: telling a story",
       short: "Telling a story",
       icon: "scroll",
-      status: "draft",
+      status: "verified",
       why: "Good stories use three past forms. Learn to tell a story in the right order.",
       screens: [
         {
@@ -717,7 +717,7 @@ SLID.section("eng", {
       title: "A book I recommend: a book review",
       short: "Book review",
       icon: "star",
-      status: "draft",
+      status: "verified",
       why: "A good review helps other people choose a book. Read a review and learn to write your own.",
       screens: [
         {
@@ -812,8 +812,8 @@ SLID.section("eng", {
           type: "pick",
           sk: "gram",
           title: "Find the mistake.",
-          body: `<p>Andrii writes a review of a science fiction novel. One word is wrong.</p>`,
-          text: "It’s a great book about robots on Mars. I recommend [to] read it, because the ending is amazing.",
+          body: `<p>Andrii writes a review of a science fiction novel. One part is wrong.</p>`,
+          text: "It’s a great book about [!robots on Mars]. I recommend [to read] it, because the ending is amazing.",
           hint: "What comes after recommend?",
           fbOk: "Good eye!",
           fbBad: "recommend + -ing, without to.",
@@ -826,11 +826,11 @@ SLID.section("eng", {
           body: `<p>A good review doesn’t tell you the end of the story.</p>`,
           before: "I won’t tell you the",
           after: ", but it’s really surprising!",
-          answer: "ending",
+          answer: ["ending", "end"],
           hint: "Look at part 2 of Taras’s review.",
           fbOk: "Right.",
           fbBad: "The end of a story is its e…",
-          fbText: "The end of a story is the <b>ending</b>. Don’t tell it in a review!"
+          fbText: "The end of a story is the <b>ending</b> (or <b>the end</b>). Don’t tell it in a review!"
         },
         {
           type: "build",
@@ -864,7 +864,7 @@ SLID.section("eng", {
       title: "Book week at school",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e8s5boss",
       why: "Check everything from this section. Your points are doubled.",
@@ -967,8 +967,8 @@ SLID.section("eng", {
           sk: "gram",
           eyebrow: "Task 7",
           title: "Find the mistake.",
-          body: `<p>Part 6: A review of The Lighthouse Riddle. One word is wrong.</p>`,
-          text: "It’s an exciting detective story about a girl called Yeva. I recommend [to] read it to anyone who likes the sea.",
+          body: `<p>Part 6: A review of The Lighthouse Riddle. One part is wrong.</p>`,
+          text: "It’s an exciting [!detective story] about a girl called Yeva. I recommend [to read] it to anyone who likes the sea.",
           pre: "e8s5l6",
           hint: "What comes after recommend?",
           fbOk: "Right.",

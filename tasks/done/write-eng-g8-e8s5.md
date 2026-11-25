@@ -7,7 +7,7 @@ subject: eng
 grade: 8
 section: e8s5
 depends_on: [curate-eng-plan-g7-9, engine-eng-lang-core, engine-eng-validate, engine-eng-stats, skills-eng, curate-eng-style, curate-eng-glossary, engine-eng-dialog]
-status: review
+status: done
 claimed_by: writer-e8s5
 created: 2026-11-19
 source: design-eng
@@ -80,3 +80,5 @@ Past Perfect Continuous — не вводив (за задачею «на виб
 - l3 info «Ukrainian writers» — ~65 слів (межа теорії 6–9 кл. ≤ 60): це перелік фактів, не правило; можна розбити на два екрани.
 - l6 пастка «I recommend [to] read it» — кнопка «to», але виправлення — «reading» (fbText це пояснює).
 - stats: boss l7 — readWordsPerScreen «нетипово для сім'ї» (z=2.3), у межах профілю 7–9; решта уроків без прапорців.
+
+**verifier-e8s5, 2026-11-25.** Усі 7 уроків → verified; 7 правок (4 критичні: l2 match, l6 pick, l6 word «end», boss T7 pick; 3 дрібні: l1 word, l3 word poet, l4 word left). Факти — 2 відкриті джерела кожен; «The Lighthouse Riddle» / Vira Morska — реальної книжки немає; TQ-146 не створено. Звіт: reports/verify/write-eng-g8-e8s5.md.
