@@ -20,7 +20,7 @@ SLID.section("eng", {
   grade: 7,
   weeks: [1, 5],
   title: "Family life: housework and traditions",
-  why: "To talk about housework and who does what at home. And to talk about family traditions and things you have just done.",
+  why: "To talk about housework and who does what at home. And to talk about family traditions and say: “I’ve just washed the dishes!”",
   requires: ["e6s7l4", "e6s7l5", "e6s3l4", "e5s8l4", "e6s5l5"],
   meta: { author: "writer-e7s1", created: "2026-11-25", factcheck: "verifier-e7s1 (reports/verify/write-eng-g7-e7s1.md)", teacher: null },
   badges: [
@@ -130,7 +130,7 @@ SLID.section("eng", {
           after: "your room!",
           answer: ["tidy", "clean"],
           hint: "Put things in the right place: … your room.",
-          fbOk: "Well done!",
+          fbOk: "Yes!",
           fbBad: "What do you do with a room when things are on the floor?",
           fbText: "<b>Tidy</b> your room = put things in the right place. Toys go in the box, and books go on the shelf."
         },
@@ -142,7 +142,7 @@ SLID.section("eng", {
           body: `<p>Oksana writes to Emma.</p>`,
           text: "Hi Emma! In our family, everybody helps with the {*housework|houseworks}. I {*do|make} the washing-up after dinner. Dmytro is nine. He {*makes|does} his bed and waters the plants. Grandad puts the {*rubbish|ironing} out. What do you have to do at home?",
           hint: "Look at the housework words: is there an -s? Do the washing-up, make your bed.",
-          fbOk: "Well done!",
+          fbOk: "Exactly.",
           fbBad: "Check: do the washing-up, make your bed, put the rubbish out.",
           fbText: "Everybody helps with the <b>housework</b>. I <b>do</b> the washing-up. He <b>makes</b> his bed. Grandad puts the <b>rubbish</b> out. <i>Housework</i> has no -s."
         }
@@ -590,7 +590,7 @@ SLID.section("eng", {
           body: `<p>Oksana writes about her grandparents.</p>`,
           text: "My grandparents {*have lived|live} in Zelena Dolyna for fifty years. They’ve lived with us {*since|for} I was three. Grandad has {*known|knew} everybody in the village {*for|since} a long time.",
           hint: "It’s still true now → have + the third form. A long time: how long?",
-          fbOk: "Well done!",
+          fbOk: "Right.",
           fbBad: "Check: have lived, have known; for + how long, since + start.",
           fbText: "They <b>have lived</b> there for fifty years: it’s still true. <b>since</b> I was three: the start. Grandad has <b>known</b> everybody <b>for</b> a long time."
         }
@@ -848,7 +848,7 @@ SLID.section("eng", {
           body: `<p>Oksana writes back to Emma.</p>`,
           text: "Of course! Have you {*ever|since} seen a real pysanka? I’ve {*never|ever} tried a Christmas pudding. We’ve celebrated Easter like this {*for|since} many years. Grandma and I have {*just|for} decorated a pysanka for you. We did it {*ourselves|themselves}!",
           hint: "Have you ever…? Many years: how long? Grandma and I → we.",
-          fbOk: "Well done!",
+          fbOk: "Right.",
           fbBad: "Check: ever, never, for + how long, we → ourselves.",
           fbText: "Have you <b>ever</b> seen…? I’ve <b>never</b> tried… <b>for</b> many years: how long. We’ve <b>just</b> decorated: a very short time ago. Grandma and I (we) → <b>ourselves</b>."
         },

@@ -6,7 +6,7 @@ type: style
 subject: eng
 grade: 7
 depends_on: [write-eng-g7-e7s1, write-eng-g7-e7s2, write-eng-g7-e7s3, write-eng-g7-e7s4, write-eng-g7-e7s5, write-eng-g7-e7s6, write-eng-g7-e7s7]
-status: todo
+status: review
 claimed_by: style-eng-g7
 created: 2026-11-25
 source: orchestrator
@@ -24,3 +24,15 @@ source: orchestrator
 
 ## Готово, коли
 - [ ] Правки в content/eng/g7-*.js, звіт reports/style/eng-g7.md, рядки STYLE в inbox; зміни ключів і фактів — перелік для точкової повторної верифікації; задача → review.
+
+## Нотатки агента (style-eng-g7, 2026-11-25)
+- Звіт: reports/style/eng-g7.md. Змінено e7s1–e7s6 (e7s7 без змін); статус `verified` і id не змінено; ключі — лише e7s5l4 #8 (прибрано другий порядок без коми, «Start with Were»).
+- Герої: вік 7 кл. узгоджений (Oksana 13, Dmytro 9, Emma 13, Tom 11 — +1 до 6 кл.); e7s6l2 #9 — минулорічний sports day: «girls’ running race», Oliver замість Tom (як e6s4l6). Taras «doesn’t do much sport» = e6s4l1 (розбіжність з 4–5 кл. — NOTE в inbox).
+- `why`: e7s1 → цитата «“I’ve just washed the dishes!”»; plan.js — куратору.
+- Термін: e7s2 «past participle» → «the third form» (13 місць + назва екрана).
+- Повтори: while — «Remember» (e7s5l4 #3); just/since, Shall we, used to, пасив — подано один раз.
+- Кома у build: єдиний виняток (e7s5l4 #8) виправлено; усі 32 build перебрано через app/lang.js — 0 розбіжностей.
+- Дрібне: 6 назв екранів за шаблоном, 8 `fbOk` поспіль, 5 нових `hint` у фіналах e7s4l7, e7s5l7, intro e7s4l7.
+- validate --section e7s1…e7s7 — 0/0; повний validate — 0 помилок. Build не запускав.
+- Профіль «7-9»: без змін (7 кл. в межах із запасом); rwps → 6–55 лише за TQ-126. Рядки STYLE/TERM/PITFALL/NOTE/ENGINE — у inbox.
+- Повторна верифікація: reports/style/eng-g7.md §9.

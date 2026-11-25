@@ -253,7 +253,7 @@ SLID.section("eng", {
           sk: "read",
           eyebrow: "Final",
           title: "Read and choose.",
-          body: `<p><i>Thanks, Oksana! We don’t have a First Bell or a Last Bell. But we have a sports day every year. Last year I won the egg-and-spoon race! Tom didn’t win, but he loved it. Our school fair is on Saturday. I’m making cakes for our class stall. – Emma</i></p><p>What is Emma doing for the school fair?</p>`,
+          body: `<p><i>Thanks, Oksana! We don’t have a First Bell or a Last Bell. But we have a sports day every year. Last year I won the girls’ running race! Oliver didn’t win, but he loved it. Our school fair is on Saturday. I’m making cakes for our class stall. – Emma</i></p><p>What is Emma doing for the school fair?</p>`,
           opts: [
             "She’s running an egg-and-spoon race.",
             "She’s ringing a bell.",
@@ -263,7 +263,7 @@ SLID.section("eng", {
           hint: "Find “school fair” in the message.",
           fbOk: "Well done!",
           fbBad: "Read the sentences about the school fair again.",
-          fbText: "Emma writes: “Our school fair is on Saturday. <b>I’m making cakes</b> for our class stall.” She won the egg-and-spoon race last year, on sports day."
+          fbText: "Emma writes: “Our school fair is on Saturday. <b>I’m making cakes</b> for our class stall.” She won the girls’ running race last year, on sports day."
         }
       ],
       outro: {

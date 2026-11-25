@@ -453,7 +453,7 @@ SLID.section("eng", {
   grade: 7,
   weeks: [1, 5],
   title: "Family life: housework and traditions",
-  why: "To talk about housework and who does what at home. And to talk about family traditions and things you have just done.",
+  why: "To talk about housework and who does what at home. And to talk about family traditions and say: “I’ve just washed the dishes!”",
   plan: [
     "Housework: who does what at home?",
     "I’ve just washed the dishes: just and already",

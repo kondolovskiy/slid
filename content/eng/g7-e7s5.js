@@ -396,7 +396,7 @@ SLID.section("eng", {
         {
           type: "word",
           sk: "gram",
-          title: "Complete the sentence with used to.",
+          title: "Write the missing word with used to.",
           body: `<p>Andrii: “I played chess only with my grandad. Now I play in a club.”</p>`,
           before: "Andrii",
           after: "to play chess only with his grandad.",
@@ -481,7 +481,7 @@ SLID.section("eng", {
         {
           type: "info",
           title: "While: long actions",
-          body: `<p><b>While</b> + a long action:</p><ul><li>long + short: <b>While</b> we <b>were playing</b>, it <b>started</b> to snow.</li><li>long + long: <b>While</b> the fans <b>were singing</b>, the coach <b>was shouting</b>.</li></ul><p>Long + long = two actions at the same time. Both are in the Past Continuous.</p>`,
+          body: `<p>Remember: <b>while</b> + a long action.</p><ul><li>long + short: <b>While</b> we <b>were playing</b>, it <b>started</b> to snow.</li><li>long + long: <b>While</b> the fans <b>were singing</b>, the coach <b>was shouting</b>.</li></ul><p>Long + long = two actions at the same time. Both are in the Past Continuous.</p>`,
           cta: "Next"
         },
         {
@@ -535,9 +535,9 @@ SLID.section("eng", {
           type: "build",
           sk: "func",
           title: "Put the words in order.",
-          body: `<p>Emma asks Ostap about the match.</p>`,
+          body: `<p>Emma asks Ostap about the match. Start with <b>Were</b>.</p>`,
           tiles: ["were", "you", "playing", "when", "it", "started", "to snow"],
-          answer: ["Were you playing when it started to snow?", "When it started to snow were you playing?"],
+          answer: "Were you playing when it started to snow?",
           extra: ["was"],
           hint: "Start with Were you. Then when.",
           fbOk: "Well done!",
@@ -830,7 +830,7 @@ SLID.section("eng", {
         {
           type: "word",
           sk: "gram",
-          title: "Complete the sentence with used to.",
+          title: "Write the missing word with used to.",
           body: `<p>Every year, Vlad’s team lost to School 3. This year they won!</p>`,
           before: "Vlad’s team",
           after: "to lose to School 3, but this year they won.",
@@ -914,12 +914,13 @@ SLID.section("eng", {
           type: "word",
           sk: "gram",
           eyebrow: "Task 3",
-          title: "Complete the sentence with used to.",
+          title: "Write the missing word with used to.",
           body: `<p>Taras watched races on TV. Now he runs in them!</p>`,
           before: "Taras",
           after: "to watch races on TV. Now he runs in them!",
           answer: "used",
           pre: "e7s5l3",
+          hint: "Does Taras watch races on TV now, or did he do it in the past?",
           fbOk: "Well done!",
           fbBad: "True in the past, not now: … to + verb.",
           fbText: "Taras <b>used</b> to watch races. Now he runs in them."
@@ -932,6 +933,7 @@ SLID.section("eng", {
           body: `<p>One word in the newsletter is wrong.</p>`,
           text: "While we [was] warming up, our fans were singing. It wasn’t raining.",
           pre: "e7s5l4",
+          hint: "Check each verb with its subject: we, our fans, it.",
           fbOk: "Good eye!",
           fbBad: "We → was or were?",
           fbText: "We <b>were</b> warming up. <b>Our fans were singing</b> and <b>It wasn’t raining</b> are correct."

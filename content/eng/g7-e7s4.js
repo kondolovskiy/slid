@@ -351,7 +351,7 @@ SLID.section("eng", {
         {
           type: "sort",
           sk: "func",
-          title: "Sort the answers.",
+          title: "Sort the sentences.",
           body: `<p>Is it yes or no?</p>`,
           bins: ["Yes", "No"],
           items: [
@@ -397,7 +397,7 @@ SLID.section("eng", {
           type: "gaps",
           sk: "func",
           eyebrow: "Final",
-          title: "Complete the dialogue.",
+          title: "Complete the sentences.",
           body: `<p>Sofiia and Andrii are making plans in Kyiv.</p>`,
           text: "Sofiia: What shall we do this evening? Andrii: Why don’t we {*watch|to watch} the new science fiction film? Sofiia: {*I’m not sure|That sounds great}. Robots are a bit boring for me. We {*could|could to} see a play instead. Andrii: OK, {*why not|I’m busy}? Let’s go to the theatre!",
           hint: "Sofiia doesn’t like robots. Then Andrii says yes.",
@@ -812,7 +812,7 @@ SLID.section("eng", {
           ],
           correct: [1, 3],
           hint: "Find bored, exciting, young children and the mark in the text.",
-          fbOk: "Well done!",
+          fbOk: "Good eye!",
           fbBad: "Read about the start, the middle part and young children again.",
           fbText: "Bohdan was bored only <b>at the start</b>. The middle part is <b>exciting</b>. It’s <b>too scary for young children</b>. His mark is <b>4 out of 5</b>."
         },
@@ -820,11 +820,11 @@ SLID.section("eng", {
           type: "gaps",
           sk: "write",
           eyebrow: "Final",
-          title: "Complete the review.",
+          title: "Complete the sentences.",
           body: `<p>Taras writes a review for his little sister’s class blog.</p>`,
           text: "Captain Cat is a {*cartoon|documentary} about a cat who flies a plane. It’s for children, but I wasn’t {*bored|boring} at all. It’s funny and really {*exciting|excited}. It isn’t scary, so my little sister Zlata is old {*enough|too} to watch it. She loved it! My mark: 5 out of 5.",
           hint: "A cat who flies a plane: is it real life? How did Taras feel?",
-          fbOk: "Well done!",
+          fbOk: "Yes!",
           fbBad: "Check: kind of film, -ed or -ing, enough.",
           fbText: "A cat who flies a plane → a <b>cartoon</b>. Taras’s feelings: I wasn’t <b>bored</b>. The film is <b>exciting</b>. Zlata is old <b>enough</b> to watch it."
         }
@@ -854,7 +854,7 @@ SLID.section("eng", {
           type: "intro",
           eyebrow: "Section final · points ×2",
           title: "Can you help Taras and Ostap plan a weekend?",
-          body: `<p class="lead">Taras and his friend Ostap want to go to the cinema and the theatre in Lviv this weekend.</p><p>Help them choose, buy tickets and write a review. You need everything from this section.</p>`,
+          body: `<p class="lead">Taras and his friend Ostap want to go to the cinema and the theatre in Lviv this weekend.</p><p>Help them choose, buy tickets and write about the play and the film. You need everything from this section.</p>`,
           cta: "Let’s go"
         },
         {
@@ -911,6 +911,7 @@ SLID.section("eng", {
           body: `<p>Ostap writes about the play.</p>`,
           text: "The play was really {*interesting|interested}. I wasn’t {*bored|boring} at all. Taras is very {*interested|interesting} in theatre now.",
           pre: "e7s4l4",
+          hint: "Is it about the play or about how a person feels?",
           fbOk: "Well done!",
           fbBad: "-ing for a play, -ed for how a person feels.",
           fbText: "The play was <b>interesting</b>. Ostap’s feelings: I wasn’t <b>bored</b>. Taras is <b>interested in</b> theatre."
@@ -923,6 +924,7 @@ SLID.section("eng", {
           body: `<p>On Sunday, they saw a film. The first part was 100 minutes long. This new part is 105 minutes.</p>`,
           text: "The new part is {*a bit|much} longer than the first part. The first part was good, but the new one is {*even|very} better. The new part isn’t {*as|than} funny as the first part, but it’s more exciting.",
           pre: "e7s4l5",
+          hint: "100 and 105 minutes: is it a big difference or a small one?",
           fbOk: "Exactly.",
           fbBad: "Five minutes: a big or a small difference? Look at the rules: even, as … as.",
           fbText: "Five minutes: <b>a bit</b> longer. Both are good: <b>even</b> better. isn’t <b>as</b> funny as."
@@ -938,6 +940,7 @@ SLID.section("eng", {
           extra: ["too"],
           keepCase: true,
           pre: "e7s4l6",
+          hint: "Start with You aren’t. Then the adjective.",
           fbOk: "Good eye!",
           fbBad: "enough comes after the adjective.",
           fbText: "<b>You aren’t old enough to see it.</b> <i>enough</i> comes after <i>old</i>."

@@ -438,7 +438,7 @@ SLID.section("eng", {
       short: "Should be cooked",
       icon: "check",
       status: "verified",
-      why: "Read cooking instructions on a packet. Use can be, should be and must be with a past participle.",
+      why: "Read cooking instructions on a packet. Use can be, should be and must be with the third form.",
       screens: [
         {
           type: "intro",
@@ -467,7 +467,7 @@ SLID.section("eng", {
         {
           type: "info",
           title: "Should be boiled",
-          body: `<p>You <b>should boil</b> them. → They <b>should be boiled</b>.</p><p><b>can</b> / <b>should</b> / <b>must</b> + <b>be</b> + past participle:</p><ul><li>They <b>can be fried</b>.</li><li>Varenyky <b>should be eaten</b> hot.</li><li>Ice cream <b>must be kept</b> in the freezer.</li></ul><p>This is the <b>passive</b>. Packets and recipes use it a lot.</p>`,
+          body: `<p>You <b>should boil</b> them. → They <b>should be boiled</b>.</p><p><b>can</b> / <b>should</b> / <b>must</b> + <b>be</b> + the third form:</p><ul><li>They <b>can be fried</b>.</li><li>Varenyky <b>should be eaten</b> hot.</li><li>Ice cream <b>must be kept</b> in the freezer.</li></ul><p>This is the <b>passive</b>. Packets and recipes use it a lot.</p>`,
           cta: "Next"
         },
         {
@@ -476,10 +476,10 @@ SLID.section("eng", {
           title: "Fill in the gaps.",
           body: `<p>Zlata reads more packets in the kitchen.</p>`,
           text: "Pasta should {*be boiled|boiled|be boil} for ten minutes. These fish fingers can {*be fried|fried|be fry} in a frying pan. Butter must {*be kept|kept|be keep} in the fridge.",
-          hint: "can / should / must + be + past participle.",
+          hint: "can / should / must + be + the third form.",
           fbOk: "Exactly.",
           fbBad: "We need two words: be + boiled, be + fried…",
-          fbText: "should <b>be boiled</b>, can <b>be fried</b>, must <b>be kept</b>: modal verb + <b>be</b> + past participle."
+          fbText: "should <b>be boiled</b>, can <b>be fried</b>, must <b>be kept</b>: modal verb + <b>be</b> + the third form."
         },
         {
           type: "choice",
@@ -499,7 +499,7 @@ SLID.section("eng", {
         },
         {
           type: "info",
-          title: "Past participles",
+          title: "Third forms",
           body: `<ul><li>boil → <b>boiled</b>, fry → <b>fried</b>, bake → <b>baked</b>, roast → <b>roasted</b>, serve → <b>served</b></li><li>eat → <b>eaten</b>, keep → <b>kept</b>, cut → <b>cut</b>, put → <b>put</b></li></ul><p>The cake should be <b>baked</b> for 30 minutes.<br>The bread can be <b>cut</b> into slices.</p>`,
           cta: "Next"
         },
@@ -509,10 +509,10 @@ SLID.section("eng", {
           title: "Find the mistake.",
           body: `<p>One word on a pizza box is wrong.</p>`,
           text: "This pizza should be [bake] for 15 minutes. It can be eaten hot or cold.",
-          hint: "should be + past participle. Check each verb.",
+          hint: "should be + the third form. Check each verb.",
           fbOk: "Good eye!",
           fbBad: "Look at the word after should be.",
-          fbText: "should be + past participle: should be <b>baked</b>. <i>Can be eaten</i> is correct."
+          fbText: "should be + the third form: should be <b>baked</b>. <i>Can be eaten</i> is correct."
         },
         {
           type: "build",
@@ -523,7 +523,7 @@ SLID.section("eng", {
           answer: "It should be eaten hot.",
           extra: ["ate"],
           keepCase: true,
-          hint: "Start with It. Then should + be + past participle.",
+          hint: "Start with It. Then should + be + the third form.",
           fbOk: "Well done!",
           fbBad: "Look at the list: eat → eaten.",
           fbText: "<b>It should be eaten hot.</b> should + be + <b>eaten</b> (not <i>ate</i>)."
@@ -536,7 +536,7 @@ SLID.section("eng", {
           before: "The bread should be",
           after: "into thin slices.",
           answer: ["cut", "sliced"],
-          hint: "Look at the list of past participles: cut → …",
+          hint: "Look at the list of third forms: cut → …",
           fbOk: "Yes!",
           fbBad: "cut → cut: the same form.",
           fbText: "cut → <b>cut</b>: The bread should be <b>cut</b> into thin slices. <i>Sliced</i> is also right."
@@ -548,9 +548,9 @@ SLID.section("eng", {
           title: "Complete the sentences.",
           body: `<p>Taras writes to Andrii.</p>`,
           text: "Hi Andrii! Today I cooked lunch for Zlata. The packet said: “Varenyky should {*be boiled|boiled|be boil} for 5–7 minutes.” So I boiled them for six minutes. It also said: “They can {*be eaten|be ate|eaten} with sour cream.” Zlata ate ten varenyky! Mum says frozen varenyky must {*be kept|kept|be keep} in the freezer. Taras",
-          hint: "should / can / must + be + past participle.",
+          hint: "should / can / must + be + the third form.",
           fbOk: "Well done!",
-          fbBad: "Look at the rule: be + past participle.",
+          fbBad: "Look at the rule: be + the third form.",
           fbText: "should <b>be boiled</b>, can <b>be eaten</b> (not <i>ate</i>), must <b>be kept</b>."
         }
       ],
@@ -558,8 +558,8 @@ SLID.section("eng", {
         text: "Packets and recipes say: It should be boiled. It can be fried. It must be kept in the fridge.",
         learned: [
           "Read cooking instructions on a packet.",
-          "Use can be, should be and must be + past participle.",
-          "Use past participles: boiled, fried, baked, eaten, kept, cut."
+          "Use can be, should be and must be + the third form.",
+          "Use the third forms: boiled, fried, baked, eaten, kept, cut."
         ]
       }
     },
@@ -916,7 +916,7 @@ SLID.section("eng", {
           extra: ["boil"],
           pre: "e7s2l4",
           fbOk: "Good eye!",
-          fbBad: "should + be + past participle.",
+          fbBad: "should + be + the third form.",
           fbText: "<b>They should be boiled for five minutes.</b> should + <b>be</b> + <b>boiled</b>."
         },
         {

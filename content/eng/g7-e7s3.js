@@ -152,7 +152,7 @@ SLID.section("eng", {
           body: `<p>Andrii’s class writes the page for new pupils.</p>`,
           text: "Where to go when you feel ill. Toothache? Go to the {*dentist’s|chemist’s}. Need some medicine? Buy it at the {*chemist’s|dentist’s}. A sore throat and a temperature? Make an {*appointment|ambulance} at the doctor’s. Somebody is very ill? Call {*103|999} for an {*ambulance|appointment}.",
           hint: "The page is for pupils in Kyiv. And which word means “a time to see the doctor”?",
-          fbOk: "Well done!",
+          fbOk: "Right.",
           fbBad: "Read each line: teeth, medicine, a time to see the doctor, very ill.",
           fbText: "Teeth – the <b>dentist’s</b>. Medicine – the <b>chemist’s</b>. A time to see the doctor – an <b>appointment</b>. In Kyiv, call <b>103</b> for an <b>ambulance</b>."
         }
@@ -294,7 +294,7 @@ SLID.section("eng", {
           body: `<p>Two days later, Oksana writes to Halyna again.</p>`,
           text: "Hi Halyna! I’m much better. I haven’t got a temperature now, but I still cough a lot. I’ve still got a {*cough|backache}. My ear doesn’t hurt, so I haven’t got {*earache|toothache} now. Mum says I don’t need {*anything|something} from the chemist’s. See you soon!",
           hint: "She still coughs. Her ear doesn’t hurt now. And look for don’t.",
-          fbOk: "Well done!",
+          fbOk: "Right.",
           fbBad: "Read each sentence again. Which part of the body is it about?",
           fbText: "She still coughs: a <b>cough</b>. Her ear doesn’t hurt: no <b>earache</b>. With don’t: <b>anything</b>."
         }
