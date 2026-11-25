@@ -7,7 +7,7 @@ subject: eng
 grade: 8
 section: e8s6
 depends_on: [curate-eng-plan-g7-9, engine-eng-lang-core, engine-eng-validate, engine-eng-stats, skills-eng, curate-eng-style, curate-eng-glossary, engine-eng-dialog]
-status: review
+status: done
 claimed_by: writer-e8s6
 created: 2026-11-19
 source: design-eng
@@ -68,3 +68,5 @@ Build не запускай (AGENTS.md §4 п. 8).
 **stats:** l6 — gradedShare 0.8, readWordsPerScreen, sentenceWords «нетипово для сім'ї» (z 2–2.4), у межах профілю: урок читання з текстом на 3 екрани, як e4s2l6; решта уроків без прапорців. l2 спершу мав 8 типів (поза профілем) — прибрано pick і build.
 
 **Спірне / вчителю:** TQ-147 (пропозиція, inbox) — як називати класи українських шкіл англійською: «Year 8» (BrE, як тут) чи «Grade 8 / Form 8», і чи давати ліцей як «the last years of school» без чисел до повного переходу на 10–12 (1.09.2027).
+
+**verifier-e8s6, 2026-11-25.** Verified, 3 правки (l1 `word` + state/comprehensive/grammar; l1 intro «gymnasium now» — канон e7s6; статуси й meta). TQ-147 не створено: e7s6 (verified) уже вживає «Year N» для українських класів. Звіт — reports/verify/write-eng-g8-e8s6.md.

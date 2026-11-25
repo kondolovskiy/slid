@@ -14,7 +14,7 @@
    Zelena Dolyna, без форми; Emma — школа в Англії, форма (white shirt, grey jumper, blue tie); Andrii — Kyiv, без
    форми, Ms Lysenko; нові: Freya (14, boarding school в Англії), Denys (кузен Оксани, 16, ліцей у Poltava).
    Увесь зміст — англійською, британська норма (D-055). Тексти, діалоги й герої — власні (docs/design/english.md §8).
-   Статус: draft. 7 уроків (6 + фінал). Будова — за розділами 6 кл. (verified) і 7 кл. (e7s5).
+   Статус: verified (verifier-e8s6). 7 уроків (6 + фінал). Будова — за розділами 6 кл. (verified) і 7 кл. (e7s5).
    Перевірка: node tools/validate.mjs --section e8s6 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -24,7 +24,7 @@ SLID.section("eng", {
   title: "Schools in Ukraine and abroad",
   why: "To talk about types of schools, school buildings and rules. And to make guesses about things you see in photos.",
   requires: ["e6s6l4", "e6s5l5", "e6s5l4", "e5s2l6", "e5s2l7"],
-  meta: { author: "writer-e8s6", created: "2026-11-25", factcheck: "self", teacher: null },
+  meta: { author: "writer-e8s6", created: "2026-11-25", factcheck: "verifier-e8s6 (reports/verify/write-eng-g8-e8s6.md)", teacher: null },
   badges: [
     { id: "e8s6boss", name: "School explorer", icon: "trophy", desc: "Finish the final lesson “Schools in Ukraine and abroad”" }
   ],
@@ -35,14 +35,14 @@ SLID.section("eng", {
       title: "Primary, secondary or boarding school? Types of schools",
       short: "Types of schools",
       icon: "city",
-      status: "draft",
+      status: "verified",
       why: "Schools are different in different countries. Learn the names of types of schools in England and Ukraine.",
       screens: [
         {
           type: "intro",
           eyebrow: "Lesson 1",
           title: "What kind of school?",
-          body: `<p class="lead">Ms Kravets asks the penfriend club: “What kind of school do you go to?”</p><p><b>Freya:</b> I go to a boarding school in England. I live there in term time and go home for the holidays.<br><b>Emma:</b> I go to a secondary school in my town. I go home every day after school.<br><b>Oksana:</b> My school in Zelena Dolyna is a gymnasium.<br><b>Denys:</b> I’m Oksana’s cousin. I’m 16, and I study at a lyceum in Poltava.</p><p>Boarding school, gymnasium, lyceum: what are they?</p>`,
+          body: `<p class="lead">Ms Kravets asks the penfriend club: “What kind of school do you go to?”</p><p><b>Freya:</b> I go to a boarding school in England. I live there in term time and go home for the holidays.<br><b>Emma:</b> I go to a secondary school in my town. I go home every day after school.<br><b>Oksana:</b> My school in Zelena Dolyna is a gymnasium now.<br><b>Denys:</b> I’m Oksana’s cousin. I’m 16, and I study at a lyceum in Poltava.</p><p>Boarding school, gymnasium, lyceum: what are they?</p>`,
           cta: "Let’s see"
         },
         {
@@ -128,7 +128,7 @@ SLID.section("eng", {
           body: `<p>Emma is 14. She goes home every day after school.</p>`,
           before: "Emma isn’t at primary school now. She goes to a",
           after: "school.",
-          answer: ["secondary", "day", "high"],
+          answer: ["secondary", "day", "high", "state", "comprehensive", "grammar"],
           hint: "Primary school is for ages 5 to 11. After 11 → ?",
           fbOk: "Yes!",
           fbBad: "Emma is 14. Look at the list of schools in England.",
@@ -163,7 +163,7 @@ SLID.section("eng", {
       title: "A science lab, a gym, a canteen: school rooms",
       short: "School rooms",
       icon: "map",
-      status: "draft",
+      status: "verified",
       why: "Every school has special rooms. Say what they are and what you do there.",
       screens: [
         {
@@ -294,7 +294,7 @@ SLID.section("eng", {
       title: "It must be a school in England: guessing",
       short: "Must, might, can’t",
       icon: "eye",
-      status: "draft",
+      status: "verified",
       why: "Sometimes you aren’t sure about something. Learn to make good guesses about photos and things you see.",
       screens: [
         {
@@ -448,7 +448,7 @@ SLID.section("eng", {
       title: "May I leave early? Are we allowed to…?",
       short: "Permission",
       icon: "voice",
-      status: "draft",
+      status: "verified",
       why: "Ask for permission politely. And talk about what you are allowed to do at school.",
       screens: [
         {
@@ -593,7 +593,7 @@ SLID.section("eng", {
       title: "You mustn’t or you don’t have to? School rules",
       short: "Mustn’t, don’t have to",
       icon: "shield",
-      status: "draft",
+      status: "verified",
       why: "Some things are rules, and some things are your choice. Learn to say which is which.",
       screens: [
         {
@@ -742,7 +742,7 @@ SLID.section("eng", {
       title: "Schools in Ukraine and the UK: what’s different?",
       short: "Two countries",
       icon: "scale",
-      status: "draft",
+      status: "verified",
       why: "Read a project about schools in two countries. Say what is the same and what is different.",
       screens: [
         {
@@ -891,7 +891,7 @@ SLID.section("eng", {
       title: "A guide for new pupils",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e8s6boss",
       why: "Check everything from this section. Your points are doubled.",
