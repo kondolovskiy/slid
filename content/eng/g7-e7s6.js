@@ -15,7 +15,7 @@
    Факти про Перший і Останній дзвоник, sports day, school fair — по два джерела, URL — tasks/…/write-eng-g7-e7s6.md, «Нотатки агента».
    Звуку немає (D-055 п. 4); діалоги — репліками в body + gaps / choice / match (D-056).
    Увесь зміст — англійською, британська норма (D-055). Тексти, діалоги й герої — власні (docs/design/english.md §8).
-   Статус: draft. 7 уроків (6 + фінал).
+   Статус: verified (verifier-e7s6, 2026-11-25). 7 уроків (6 + фінал).
    Перевірка: node tools/validate.mjs --section e7s6 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -25,7 +25,7 @@ SLID.section("eng", {
   title: "School life after lessons",
   why: "To talk about after-school clubs, school events and traditions. And to make plans for a school event.",
   requires: ["e6s8l3", "e5s5l5", "e5s9l3", "e6s5l3", "e4s8l4", "e6s6l4", "e5s6l5"],
-  meta: { author: "writer-e7s6", created: "2026-11-25", factcheck: null, teacher: null },
+  meta: { author: "writer-e7s6", created: "2026-11-25", factcheck: "verifier-e7s6 (reports/verify/write-eng-g7-e7s6.md)", teacher: null },
   badges: [
     { id: "e7s6boss", name: "Event planner", icon: "trophy", desc: "Finish the final lesson “School life after lessons”" }
   ],
@@ -36,7 +36,7 @@ SLID.section("eng", {
       title: "After-school clubs",
       short: "Clubs",
       icon: "users",
-      status: "draft",
+      status: "verified",
       why: "Most schools have clubs after lessons. Find out what pupils do there and say when a club meets.",
       screens: [
         {
@@ -159,7 +159,7 @@ SLID.section("eng", {
       title: "First bell, last bell: school traditions",
       short: "Traditions",
       icon: "star",
-      status: "draft",
+      status: "verified",
       why: "Every school has special days. Read about school traditions in Ukraine and in the UK.",
       screens: [
         {
@@ -282,7 +282,7 @@ SLID.section("eng", {
       title: "If we win, we’ll play in the final: the First Conditional",
       short: "If we win…",
       icon: "target",
-      status: "draft",
+      status: "verified",
       why: "Talk about things that can happen in the future and what will happen then.",
       screens: [
         {
@@ -409,7 +409,7 @@ SLID.section("eng", {
       title: "Unless it rains… As soon as we finish…",
       short: "Unless, as soon as",
       icon: "bulb",
-      status: "draft",
+      status: "verified",
       why: "Say what will happen if something doesn’t happen. And say what you’ll do right after something.",
       screens: [
         {
@@ -478,10 +478,10 @@ SLID.section("eng", {
           type: "build",
           sk: "write",
           title: "Put the words in order.",
-          body: `<p>Emma promises to send Oksana photos from sports day.</p>`,
+          body: `<p>Emma promises to send Oksana photos from sports day. Start with <b>I’ll</b>.</p>`,
           tiles: ["I’ll send", "you photos", "as soon as", "I get", "home"],
           extra: ["I will get"],
-          answer: ["I’ll send you photos as soon as I get home.", "As soon as I get home I’ll send you photos."],
+          answer: "I’ll send you photos as soon as I get home.",
           hint: "After as soon as: the Present Simple.",
           fbOk: "Well done!",
           fbBad: "After as soon as, don’t use will.",
@@ -545,7 +545,7 @@ SLID.section("eng", {
       title: "Shall we make a poster? Planning a school event",
       short: "Shall I…?",
       icon: "voice",
-      status: "draft",
+      status: "verified",
       why: "Make plans with your friends. Offer help, ask for ideas and say yes or no politely.",
       screens: [
         {
@@ -575,7 +575,7 @@ SLID.section("eng", {
         {
           type: "info",
           title: "Shall I…? Shall we…? What shall we do?",
-          body: `<ul><li><b>Shall I</b> make a poster? → an offer: I can do it for you.</li><li><b>Shall we</b> have a concert? → a suggestion: let’s do it together.</li><li><b>What shall we</b> do? → asking for ideas or advice.</li></ul><p>Use <i>shall</i> with <i>I</i> and <i>we</i>. After it – a verb without <i>to</i>: Shall I <b>help</b>?</p>`,
+          body: `<ul><li><b>Shall I</b> make a poster? → an offer: I can do it for you.</li><li><b>Shall we</b> have a concert? → a suggestion: let’s do it together. (You know this one!)</li><li><b>What shall we</b> do? → asking for ideas or advice.</li></ul><p>Use <i>shall</i> with <i>I</i> and <i>we</i>. After it – a verb without <i>to</i>: Shall I <b>help</b>?</p>`,
           cta: "Next"
         },
         {
@@ -664,7 +664,7 @@ SLID.section("eng", {
       title: "Our school festival: an invitation",
       short: "Invitation",
       icon: "scroll",
-      status: "draft",
+      status: "verified",
       why: "Read an invitation to a school event and answer it. And say what you think.",
       screens: [
         {
@@ -786,7 +786,7 @@ SLID.section("eng", {
       title: "School life after lessons",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e7s6boss",
       why: "Check everything from this section. Your points are doubled.",

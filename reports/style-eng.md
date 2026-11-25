@@ -224,16 +224,16 @@
 | e7s6l1 After-school clubs | 7 | 9 | 0.56 | 40 | 75 | 69 | 6.5 | 0.051 | 4 | — |
 | e7s6l2 First bell, last bell: school traditions | 7 | 9 | 0.56 | 48 | 80 | 75 | 7.4 | 0.063 | 4 | readWordsPerScreen нетипово для сім'ї (z=2.3) |
 | e7s6l3 If we win, we’ll play in the final: the First Conditional | 7 | 10 | 0.6 | 35 | 73 | 67 | 6.3 | 0.027 | 6 | — |
-| e7s6l4 Unless it rains… As soon as we finish… | 7 | 10 | 0.6 | 36 | 69 | 63 | 6.5 | 0.021 | 4 | — |
+| e7s6l4 Unless it rains… As soon as we finish… | 7 | 10 | 0.6 | 36 | 69 | 63 | 6.4 | 0.021 | 4 | — |
 | e7s6l5 Shall we make a poster? Planning a school event | 7 | 9 | 0.56 | 38 | 61 | 57 | 5.3 | 0.065 | 4 | — |
 | e7s6l6 Our school festival: an invitation | 7 | 9 | 0.56 | 42 | 71 | 65 | 5.7 | 0.116 | 4 | — |
 | e7s6l7 School life after lessons (фінал) | 7 | 8 | 0.88 | 28 | 47 | 44 | 5.7 | 0.068 | 3 | — |
-| e8s1l1 Looking for a pen friend: a profile | 8 | 11 | 0.73 | 38 | 64 | 61 | 5.7 | 0.06 | 6 | — |
+| e8s1l1 Looking for a pen friend: a profile | 8 | 11 | 0.73 | 38 | 64 | 61 | 5.7 | 0.059 | 6 | — |
 | e8s1l2 I’ve been learning English for five years | 8 | 10 | 0.6 | 36 | 61 | 58 | 6.2 | 0.045 | 5 | — |
 | e8s1l3 What have you been doing? News in an email | 8 | 10 | 0.7 | 40 | 69 | 64 | 6.1 | 0.039 | 5 | — |
 | e8s1l4 You like music, don’t you? Question tags | 8 | 11 | 0.64 | 32 | 64 | 62 | 5.1 | 0.05 | 6 | — |
 | e8s1l5 Dear…, Best wishes: writing an email | 8 | 11 | 0.64 | 34 | 66 | 60 | 5.6 | 0.068 | 6 | — |
-| e8s1l6 We write to each other: a letter from England | 8 | 10 | 0.7 | 46 | 95 | 92 | 7.6 | 0.066 | 6 | maxReadWords нетипово для сім'ї (z=2.2); sentenceWords нетипово для сім'ї (z=2.1); maxText нетипово для сім'ї (z=2.3) |
+| e8s1l6 We write to each other: a letter from England | 8 | 10 | 0.7 | 46 | 95 | 92 | 7.5 | 0.065 | 6 | maxReadWords нетипово для сім'ї (z=2.1); maxText нетипово для сім'ї (z=2.3) |
 | e8s1l7 Our pen friend club (фінал) | 8 | 9 | 0.89 | 24 | 40 | 33 | 5.5 | 0.034 | 5 | — |
 | e8s2l1 Sleep, food and exercise: a healthy lifestyle | 8 | 9 | 0.56 | 39 | 93 | 88 | 6.7 | 0.088 | 5 | maxReadWords нетипово для сім'ї (z=2) |
 | e8s2l2 Too much sugar, not enough sleep | 8 | 9 | 0.67 | 38 | 73 | 67 | 6.1 | 0.042 | 5 | — |
@@ -245,7 +245,7 @@
 | e8s3l1 Newspapers, magazines and news websites | 8 | 9 | 0.56 | 39 | 86 | 80 | 6.4 | 0.179 | 5 | longWordShare нетипово для сім'ї (z=3.9) |
 | e8s3l2 Is it true? Reading the news online | 8 | 9 | 0.56 | 37 | 64 | 59 | 5.9 | 0.059 | 5 | — |
 | e8s3l3 A new park is being built: news reports | 8 | 10 | 0.6 | 35 | 59 | 55 | 6.3 | 0.023 | 5 | — |
-| e8s3l4 She said she was tired: reported statements | 8 | 10 | 0.6 | 42 | 80 | 78 | 6.3 | 0.084 | 6 | — |
+| e8s3l4 She said she was tired: reported statements | 8 | 10 | 0.6 | 42 | 81 | 79 | 6.3 | 0.085 | 6 | — |
 | e8s3l5 He told us that…: reporting the news | 8 | 10 | 0.7 | 35 | 60 | 57 | 7.1 | 0.09 | 5 | — |
 | e8s3l6 Our school newspaper: a short article | 8 | 8 | 0.75 | 46 | 86 | 83 | 7.2 | 0.098 | 5 | — |
 | e8s3l7 The school newspaper team (фінал) | 8 | 8 | 0.88 | 24 | 50 | 47 | 5.5 | 0.113 | 6 | longWordShare нетипово для сім'ї (z=2.1) |
@@ -258,5 +258,5 @@
 - **4:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 23.63±1.73, maxReadWords 36.13±3.48, sentenceWords 4.84±0.26, longWordShare 0.04±0.01, typeVariety 3.75±0.83, maxText 30.25±3.6
 - **5-6:lesson**: screens 9.52±0.67, gradedShare 0.65±0.07, readWordsPerScreen 30.54±4.18, maxReadWords 55.15±8, sentenceWords 5.26±0.58, longWordShare 0.06±0.03, typeVariety 5.06±0.68, maxText 50.65±7.76
 - **5-6:boss**: screens 7.22±0.42, gradedShare 0.86±0.01, readWordsPerScreen 23.17±3.39, maxReadWords 35.89±4.97, sentenceWords 5±0.31, longWordShare 0.07±0.02, typeVariety 3.72±0.56, maxText 29.33±5.14
-- **7-9:lesson**: screens 9.91±0.91, gradedShare 0.64±0.06, readWordsPerScreen 37.74±4.46, maxReadWords 71.02±11.15, sentenceWords 6.17±0.69, longWordShare 0.06±0.03, typeVariety 5.15±0.62, maxText 66.63±11.12
+- **7-9:lesson**: screens 9.91±0.91, gradedShare 0.64±0.06, readWordsPerScreen 37.74±4.46, maxReadWords 71.04±11.17, sentenceWords 6.16±0.69, longWordShare 0.06±0.03, typeVariety 5.15±0.62, maxText 66.65±11.14
 - **7-9:boss**: screens 8±0.67, gradedShare 0.88±0.01, readWordsPerScreen 25.89±3.6, maxReadWords 41.33±8.91, sentenceWords 5.39±0.33, longWordShare 0.06±0.03, typeVariety 4.44±0.96, maxText 33.89±7.67
