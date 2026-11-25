@@ -7,7 +7,7 @@
    Порядок і терміни: Г. Остапенко та ін. «Українська мова та читання. 4 клас», ч. 1 (Світич, 2021), §42, §44, §45.
    Значення слів звірено з СУМ-11 (slovnyk.ua) і СУМ-20 (goroh.pp.ua); формулювання термінів — glossary/ukr.md.
    Пароніми, синонімічний ряд з опорним словом, «не»-пастка в антонімах — 5 клас (u5s2); походження фразеологізмів — 6 клас (u6s4).
-   7 уроків (u4s4l7 — фінал). Статус: verified (verifier-u4s4, звіт reports/verify/u4s4.md); l2 — draft після style-ukr-g4 (вкладені лапки), чекає переверифікації.
+   7 уроків (u4s4l7 — фінал). Статус: verified (verifier-u4s4, звіт reports/verify/u4s4.md; l2 після style-ukr-g4 — reports/verify/style-ukr-g4-u4s4.md).
    Перевірка: node tools/validate.mjs --section u4s4 && node tools/stats.mjs --subject ukr
    Схема й правила: docs/CONTENT_SCHEMA.md §4.1, style/ukr.md («4 клас») */
 SLID.section("ukr", {
@@ -148,7 +148,7 @@ SLID.section("ukr", {
       title: "Ніжки в стола",
       short: "Багатозначні слова",
       icon: "bulb",
-      status: "draft",
+      status: "verified",
       why: "Одне слово може мати кілька значень. Це допомагає говорити яскраво й розуміти загадки.",
       screens: [
         {
