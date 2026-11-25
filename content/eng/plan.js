@@ -555,7 +555,7 @@ SLID.section("eng", {
     "It was built by…: who made it?",
     "Was it destroyed? When was it rebuilt?",
     "One of the oldest: history and culture in London",
-    "The Tower of London: questions and answers",
+    "St Paul’s Cathedral: who was it designed by?",
     "A culture trip: Kyiv or London?"
   ]
 });
@@ -581,7 +581,7 @@ SLID.section("eng", {
   grade: 8,
   weeks: [5, 8],
   title: "Healthy living and free time",
-  why: "To talk about a healthy lifestyle, active free time and everyday habits. And to say what you enjoy doing and what you want to try.",
+  why: "To talk about healthy living, active free time and everyday habits. And to say what you enjoy doing and what you want to try.",
   plan: [
     "Sleep, food and exercise: a healthy lifestyle",
     "Too much sugar, not enough sleep",
@@ -618,7 +618,7 @@ SLID.section("eng", {
     "Pop, rock, folk or classical? Music styles",
     "The bandura, the violin, the drums: instruments",
     "A singer who writes her own songs: who, which, that",
-    "A famous composer, who…: extra information",
+    "My favourite band, which…: extra information",
     "World-famous musicians and composers",
     "At a concert: an online review"
   ]
@@ -634,7 +634,7 @@ SLID.section("eng", {
     "Fantasy, poetry or a detective story? Genres",
     "At the library: borrowing books and other services",
     "A writer, a poet, a hero: my favourite book",
-    "When we arrived, the film had started: the Past Perfect",
+    "When I got to the library, it had closed: the Past Perfect",
     "It was raining, and she had lost her key: telling a story",
     "A book I recommend: a book review"
   ]
@@ -663,7 +663,7 @@ SLID.section("eng", {
   title: "Ukraine: land, climate and people",
   why: "To talk about where Ukraine is, its climate and its people. And to use numbers and statistics.",
   plan: [
-    "Ukraine on the map: borders and neighbours",
+    "Where is Ukraine? Borders and neighbours",
     "The Carpathians, the Black Sea, the Dnipro: the or no article?",
     "Hot summers, cold winters: the climate of Ukraine",
     "Millions, per cent and half: numbers and statistics",
@@ -827,7 +827,7 @@ SLID.section("eng", {
     "I agree, but…: agreeing and disagreeing politely",
     "Sorry to interrupt, but…: joining a discussion",
     "Although, however, so: linking ideas",
-    "First, also, finally: planning an argument",
+    "First, also, finally: putting your ideas in order",
     "Paper books or e-books? A class debate"
   ]
 });

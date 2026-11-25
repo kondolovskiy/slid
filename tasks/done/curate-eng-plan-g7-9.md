@@ -6,7 +6,7 @@ type: curate
 subject: eng
 grade: 
 depends_on: [curate-eng-plan-g6]
-status: review
+status: done
 claimed_by: curator-plan-eng-g7-9
 created: 2026-11-19
 source: design-eng
@@ -66,3 +66,9 @@ source: design-eng
 - Відхилення від орієнтовного плану (звіт §4): «Види дозвілля» → e8s2 (с. 32 звірено координатами; рядок «Тема й підтеми» в задачах e8s2, e8s3 виправлено); e7s2, e7s3, e7s7 — imperatives/sequencing, should/must/have to, Present/Past passive affirmative уже в 6 кл. → лише повторення, нові позиції B1 замість них; ought to — з e9s7 у e7s3; second conditional складено з позицій інвентаря (так не названий).
 - Спірне: e7s7 — одна секція на дві теми (TQ-130); населення України в e8s7 (TQ-129); would для звичок (e9s1), be allowed to (e8s6), -ed/-ing (e7s4) — «наш» вибір без позиції інвентаря; e9s9 — розділ функцій, 3 тижні.
 - validate: 0 помилок, 235 попереджень (для plan.js / e7s*–e9s* — жодного). Build не запускав, коміту не робив.
+
+## Нотатки верифікатора (verifier-curate-eng-plan-g7-9, 2026-11-25)
+- Звіт: reports/verify/curate-eng-plan-g7-9.md. **План придатний.** МП-ІМ завантажено curl у сесії (SHA-1 той самий), с. 3, 21–22, 27–35 звірено: 75 підтем, функції, «Види дозвілля» → e8s2 підтверджено; граматика не забігає вище B1; порядок усередині 7–9 кл. без забігань; тижні 1–35; 116 `requires` існують і за змістом відповідають.
+- Правки plan.js (6): e7s7 l5 Tower of London (уже в e6s8) → St Paul’s; e8s4 l4 non-defining з означеним антецедентом; e8s5 l4 приклад з бібліотеки; e8s7 l1 не повторює назву e5s10l1; e9s9 l5 «argument» (B1 = сварка) → «putting your ideas in order»; e8s2 why lifestyle (B2) → healthy living. id не змінено.
+- Правки задач (6): e7s6 Shall we — повторення e5s6l5 (+ requires); e8s5 + e6s7l5; e8s8 атрибуція Would (A2); e7s3 внутрішній зв'язок just / already; e7s7 St Paul’s і факти; e9s5 дата Plast.
+- validate: 0 помилок, 235 попереджень. Build і коміт не робив. Нових TQ немає; відкриті TQ-129, TQ-130 (куратор).
