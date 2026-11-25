@@ -11,12 +11,3 @@ SLID.soon({
   why: "Щоб пояснювати явища навколо: чому йде дощ, як росте насіння, куди зникає лід.",
   colors: { light: { accent: "#1C7C86" }, dark: { accent: "#62C2CC" } }
 });
-SLID.soon({
-  id: "eng",
-  short: "Англійська мова",
-  subject: "Англійська мова",
-  grade: "5 клас",
-  icon: "globe",
-  why: "Щоб розуміти пісні, ігри й людей з інших країн і не боятися говорити.",
-  colors: { light: { accent: "#7A4BA8" }, dark: { accent: "#B592E0" } }
-});

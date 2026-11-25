@@ -366,6 +366,174 @@ expectRun("drag: at і без drag — без попередження", one("fx
     expectRun("diagOrder: число — без помилки", files({ diagOrder: 2 }), ["--section", "fxdo"], {});
     expectRun("diagOrder: рядок — помилка", files({ diagOrder: "1" }), ["--section", "fxdo"], { err: "diagOrder — число" });
     fs.rmSync(path.join(tmp, "content/fxdo"), { recursive: true, force: true }); }
+  // engine-eng-lang-attr (D-055): targetLang предмета — лише з TARGET_LANGS; поле uk — лише екран теорії уроку в предметі з targetLang
+  { const subj = o => `SLID.subject(${JSON.stringify({ id: "fxtl", subject: "Фікстура", short: "Ф", icon: "frac", colors: { light: { accent: "#000" }, dark: { accent: "#fff" } }, skills: MATH_SKILLS, ...o })});\n`;
+    const withUk = (sc, ex = {}) => { const sec = mathSec("fxtl", ex); sec.grade = 5; sec.lessons[0].screens[sc].uk = "<p>Переклад правила.</p>"; return sec; };   // uk — лише 4–5 кл. (engine-eng-validate)
+    const files = (o, sec = mathSec("fxtl")) => ({ "content/fxtl/aa-subj.js": subj(o), "content/fxtl/g8-fxtl.js": secJS("fxtl", sec) });
+    const iInfo = mathSec("fxtl").lessons[0].screens.findIndex(x => ["intro", "info", "explore"].includes(x.type)),
+      iGraded = mathSec("fxtl").lessons[0].screens.findIndex(x => !["intro", "info", "explore"].includes(x.type));
+    ok(iInfo >= 0 && iGraded >= 0, "targetLang: у фікстурі mathSec є екран теорії й оцінюваний");
+    expectRun("targetLang: \"en\" — без помилки", files({ targetLang: "en" }), ["--section", "fxtl"], {});
+    expectRun("targetLang: \"de\" — помилка", files({ targetLang: "de" }), ["--section", "fxtl"], { err: "targetLang «de»" });
+    expectRun("targetLang: 1 — помилка", files({ targetLang: 1 }), ["--section", "fxtl"], { err: "targetLang «1»" });
+    expectRun("uk на екрані теорії в предметі з targetLang — без помилки", files({ targetLang: "en" }, withUk(iInfo)), ["--section", "fxtl"], {});
+    expectRun("uk у предметі без targetLang — помилка", files({}, withUk(iInfo)), ["--section", "fxtl"], { err: "uk — лише в предметі з targetLang" });
+    expectRun("uk на оцінюваному екрані — помилка", files({ targetLang: "en" }, withUk(iGraded)), ["--section", "fxtl"], { err: "uk — лише на неоцінюваному екрані" });
+    { const sec = mathSec("fxtl"); sec.grade = 5; sec.lessons[0].screens[iInfo].uk = "  ";
+      expectRun("uk порожній — помилка", files({ targetLang: "en" }, sec), ["--section", "fxtl"], { err: "uk — непорожній" }); }
+    // engine-eng-lang-core: contractions у word — лише в предметі з targetLang (рушій без мови змісту поле ігнорує); склади в stress
+    { const withWord = more => { const sec = mathSec("fxtl"), g = sec.lessons[0].screens[iGraded];
+        sec.lessons[0].screens.push({ type: "word", sk: g.sk, title: "Type the words", body: "Write it in full.", answer: "do not", fbOk: "Yes.", fbText: "Do not is the full form of the short form.", ...more }); return sec; };
+      expectRun("contractions у предметі з targetLang — без помилки", files({ targetLang: "en" }, withWord({ contractions: true })), ["--section", "fxtl"], {});
+      expectRun("contractions у предметі без targetLang — помилка", files({}, withWord({ contractions: true })), ["--section", "fxtl"], { err: "contractions — лише в предметі з targetLang" });
+      expectRun("contractions не boolean — помилка", files({ targetLang: "en" }, withWord({ contractions: "yes" })), ["--section", "fxtl"], { err: "contractions — true/false" });
+      const st = words => { const sec = mathSec("fxtl"), g = sec.lessons[0].screens[iGraded];
+        sec.lessons[0].screens.push({ type: "stress", sk: g.sk, title: "Find the stressed syllable", words, fbOk: "Yes.", fbText: "The stress is on the first syllable in both words here." }); return sec; };
+      expectRun("stress складами — без помилки", files({ targetLang: "en" }, st(["+pho|to|graph", "pho|+tog|ra|pher"])), ["--section", "fxtl"], {});
+      expectRun("stress: англійське слово без складів — помилка", files({ targetLang: "en" }, st(["+photograph"])), ["--section", "fxtl"], { err: "розмітка складами" }); }
+    // engine-eng-build: build — речення з плиток (docs/design/english.md §5.5); пастка, яку рушій зарахує, — попередження з мовою предмета
+    { const bd = more => { const sec = mathSec("fxtl"), g = sec.lessons[0].screens[iGraded];
+        sec.lessons[0].screens.push({ type: "build", sk: g.sk, title: "Put the words in order", tiles: ["does", "she", "Where", "live"], answer: ["Where does she live?"], extra: ["do"],
+          fbOk: "Yes.", fbText: "In a question, does comes before she.", ...more }); return sec; };
+      expectRun("build — без помилки", files({ targetLang: "en" }, bd({})), ["--section", "fxtl"], { noWarn: "build" });
+      expectRun("build без targetLang — без помилки", files({}, bd({})), ["--section", "fxtl"], { noWarn: "build" });
+      expectRun("build: answer не з плиток — помилка", files({ targetLang: "en" }, bd({ answer: "Where does she lives?" })), ["--section", "fxtl"], { err: "не складається рівно з плиток" });
+      expectRun("build: 10 плиток — помилка", files({ targetLang: "en" }, bd({ tiles: ["a", "b", "c", "d", "e", "f", "g", "h"], answer: "a b c d e f g h", extra: ["x", "y"] })), ["--section", "fxtl"], { err: "не більше 9" });
+      expectRun("build: 3 пастки — помилка", files({ targetLang: "en" }, bd({ extra: ["do", "did", "done"] })), ["--section", "fxtl"], { err: "не більше 2" });
+      expectRun("build en: AmE-пастка — попередження", files({ targetLang: "en" }, bd({ tiles: ["I", "like", "this", "colour"], answer: "I like this colour.", extra: ["color"] })), ["--section", "fxtl"], { warn: "пастка extra «color»" });
+      expectRun("build без targetLang: та сама пастка — без попередження", files({}, bd({ tiles: ["I", "like", "this", "colour"], answer: "I like this colour.", extra: ["color"] })), ["--section", "fxtl"], { noWarn: "пастка extra" });
+      expectRun("build з poll — помилка", files({ targetLang: "en" }, bd({ poll: "p1", fbTitle: "Good guess." })), ["--section", "fxtl"], { err: "poll лише для choice" }); }
+    fs.rmSync(path.join(tmp, "content/fxtl"), { recursive: true, force: true }); }
+  // engine-eng-validate (D-055; docs/design/english.md §2 п. 3, §6.3): предмет з targetLang "en" — англійські правила замість українських,
+  // кирилиця в змісті — попередження, uk — лише 4–5 кл., літери варіантів A, B, C, список кальок style/<предмет>-banned.txt, ліміт тексту з профілю
+  { const SUBJ = (o = {}) => `SLID.subject(${JSON.stringify({ id: "fxen", subject: "Фікстура", short: "Ф", icon: "frac", colors: { light: { accent: "#000" }, dark: { accent: "#fff" } },
+      skills: { gram: { name: "Граматика", hint: "Будувати речення" } }, targetLang: "en", ...o })});\n`;
+    const CH = { type: "choice", sk: "gram", title: "Which word is plural?", body: "<p>Choose the correct answer.</p>", opts: ["cats", "cat"], correct: 0, fbOk: "Yes!", fbText: "Cats ends in -s, so it means more than one cat.", hint: "Look at the end of the word." };
+    const enSec = ({ grade = 5, extra = [], info = {}, les = {}, sec = {} } = {}) => ({ id: "fxen", grade, weeks: [1, 2], title: "Plurals", why: "To talk about one thing and many things.",
+      meta: { author: "test", created: "2026-11-19", factcheck: null, teacher: null }, ...sec,
+      lessons: [{ id: "fxenl1", title: "Plurals", why: "To talk about more than one thing.", icon: "pot", status: "draft", outro: { text: "Well done.", learned: ["I can add -s.", "I can say two cats."] }, ...les,
+        screens: [{ type: "intro", title: "Two cats", body: "<p>Look! One cat and two cats.</p>" }, { type: "info", title: "One cat, two cats", body: "<p>We add -s: cat, cats.</p>", ...info }, CH, ...extra] }] });
+    const files = (o = {}, subj = {}) => ({ "content/fxen/aa-subj.js": SUBJ(subj), "content/fxen/g5-fxen.js": secJS("fxen", enSec(o)) });
+    const run = (name, o, exp, subj) => expectRun(`eng: ${name}`, files(o, subj), ["--section", "fxen"], exp);
+    const has = (rep, s) => rep && rep.warnings.some(w => w.includes(s));
+    { const rep = run("чистий англійський розділ з uk (5 кл.) — без помилок", { info: { uk: "<p>Додаємо -s.</p>" }, extra: [{ ...CH, title: "Plurals", body: "<p>Choose the plural.</p>", correct: 1, opts: ["cat", "cats"] }] }, { noWarn: "кирилиця" });
+      for (const w of ["без питання", "заборонена фраза", "позиційне посилання", "номер варіанта", "звертання з родом"]) ok(rep && !has(rep, w), `eng: чистий розділ — без «${w}»`, rep && rep.warnings.join("\n  ")); }
+    // українські правила вимкнено: «Choose the plural.» без «?» — для українського предмета це «без питання»
+    run("ukr-правило «без питання» вимкнено, «Choose» — питання", { extra: [{ ...CH, title: "Plurals", body: "<p>Choose the plural.</p>" }] }, { noWarn: "без питання" });
+    run("той самий екран без targetLang — українське правило спрацьовує (контроль)", { extra: [{ ...CH, title: "Plurals", body: "<p>Choose the plural.</p>" }] }, { warn: "без питання" }, { targetLang: undefined });
+    run("англійський choice без питання — попередження", { extra: [{ ...CH, title: "Pets", body: "<p>Cats are pets.</p>", correct: 1, opts: ["dog", "cat"] }] }, { warn: "без питання" });
+    run("позиційне посилання англійською", { extra: [{ type: "sort", sk: "gram", title: "Sort the words", bins: ["One", "Many"], items: [["cat", 0], ["cats", 1]], fbOk: "Yes!", fbText: "Cats ends in -s, so it means more than one.", hint: "Look at the last line." }] }, { warn: "позиційне посилання «last line»" });
+    run("«Option B» у поясненні", { extra: [{ ...CH, correct: 1, opts: ["cat", "cats"], fbText: "Option B ends in -s, so it means more than one cat." }] }, { warn: "посилається на номер варіанта («Option B»)" });
+    run("кирилиця в body — попередження з полем", { info: { body: "<p>Привіт! We add -s.</p>" } }, { warn: "екран 2 (info): кирилиця в змісті англійською: body «Привіт»" });
+    run("кирилиця в why уроку", { les: { why: "Щоб говорити про багато речей." } }, { warn: "#fxenl1: кирилиця в змісті англійською: why" });
+    run("кирилиця в назві розділу", { sec: { title: "Множина" } }, { warn: "#fxen: кирилиця в змісті англійською: title" });
+    run("кирилиця в credits розділу й uk — не попередження", { sec: { credits: [["Кіт", "Автор", "CC0", "https://example.org/a.png"]] }, info: { uk: "<p>Переклад.</p>" } }, { noWarn: "кирилиця" });
+    run("кирилична «с» у «сats»", { extra: [{ ...CH, opts: ["сats", "cat"] }] }, { warn: "U+0441" });
+    // engine-eng-tools: figRef — англійські сигнали (Look at the picture) для предмета з targetLang; з img — чисто
+    run("«Look at the picture» без ілюстрації — попередження", { extra: [{ ...CH, body: "<p>Look at the picture. Which word is plural?</p>" }] }, { warn: "умова посилається на рисунок («Look at the picture»)" });
+    run("«Look at the picture» з fig — чисто", { extra: [{ ...CH, body: "<p>Look at the picture. Which word is plural?</p>", fig: { kind: "bar", parts: 4, filled: 1 } }] }, { noWarn: "умова посилається на рисунок" });
+    // uk — лише 4–5 кл.
+    run("uk у 4 кл. — без помилки", { grade: 4, info: { uk: "<p>Додаємо -s.</p>" } }, {});
+    run("uk у 6 кл. — помилка", { grade: 6, info: { uk: "<p>Додаємо -s.</p>" } }, { err: "uk — лише 4–5 кл." });
+    run("uk: українські правила (рід у звертанні)", { info: { uk: "<p>Ти вже зрозумів правило.</p>" } }, { warn: "uk: звертання з родом" });
+    run("uk: українські заборонені фрази", { info: { uk: "<p>Як відомо, додаємо -s.</p>" } }, { warn: "заборонена фраза «як відомо»" });
+    // кальки: style/<предмет>-banned.txt — є файл → попередження з виправленням; немає — мовчки
+    { const bf = path.join(tmp, "style/fxen-banned.txt");
+      fs.writeFileSync(bf, "# кальки\nmake a photo → take a photo\n");
+      run("калька зі style/fxen-banned.txt — попередження", { info: { body: "<p>Let's make a photo of the cats.</p>" } }, { warn: "заборонена фраза «make a photo» (style/fxen-banned.txt) — краще «take a photo»" });
+      run("калька в «лапках» — згадка, не попередження", { info: { body: "<p>We say “take a photo”, not “make a photo”.</p>" } }, { noWarn: "заборонена фраза" });
+      fs.rmSync(bf);
+      run("файлу кальок немає — мовчки", { info: { body: "<p>Let's make a photo of the cats.</p>" } }, { noWarn: "заборонена фраза" }); }
+    // літери варіантів — з предмета: A, B, C (OPT_LETTERS_LANG.en в app/app.js)
+    { const rep = run("D-016: літера латиницею", { extra: [{ ...CH, title: "Plurals", body: "<p>Choose the plural.</p>", opts: ["dogs", "dog"] }] }, { warn: "правильний варіант — A:" });
+      ok(rep && !has(rep, "правильний варіант — А:"), "eng: D-016 — не кирилична «А»", rep && rep.warnings.join("\n  ")); }
+    run("той самий урок без targetLang — кирилична «А» (контроль)", { extra: [{ ...CH, title: "Plurals", body: "<p>Choose the plural?</p>", opts: ["dogs", "dog"] }] }, { warn: "правильний варіант — А:" }, { targetLang: undefined });
+    run("multi з 27 варіантами — більше, ніж латинських літер (26)", { extra: [{ type: "multi", sk: "gram", title: "Which are plural?", opts: Array.from({ length: 27 }, (_, i) => `w${i}s`), correct: [0], fbOk: "Yes!", fbText: "Plural words end in -s, so they mean more than one." }] }, { err: "більше, ніж літер (26)" });
+    // ліміт тексту екрана з профілю предмета (maxText) — з номером екрана; тест рівня — по завданню
+    { const pf = path.join(tmp, "style/profiles.json"), orig = fs.readFileSync(pf, "utf8"), P = JSON.parse(orig);
+      P.fxen = { "5": { maxText: [0, 20] } }; fs.writeFileSync(pf, JSON.stringify(P));
+      const long = "<p>" + Array.from({ length: 30 }, (_, i) => i % 2 ? "cats" : "two").join(" ") + ".</p>";
+      try {
+        run("maxText понад профіль — номер екрана", { extra: [{ type: "info", title: "Read", body: long }] }, { warn: "maxText=30 поза профілем [0; 20] для fxen, 5-6 кл. (найдовший текст: екран 4" });
+        const diag = item => `SLID.diag("fxen", ${JSON.stringify({ id: "dgfxen", grade: 5, title: "Level test", why: "Regression test of the validator for English.", status: "draft",
+          meta: { author: "test", created: "2026-11-19", factcheck: null, teacher: null }, topics: [{ id: "t", title: "Plurals", kind: "cur", lessons: ["fxenl1"] }],
+          items: [{ topic: "t", type: "choice", sk: "gram", title: "Which is plural?", body: "<p>Choose one.</p>", opts: ["pens", "pen"], correct: 0, ...item }] }, null, 1)});\n`;
+        const dfiles = item => ({ ...files(), "content/fxen/diag-g5.js": diag(item) });
+        expectRun("eng: тест рівня — текст завдання понад maxText", dfiles({ body: long }), ["--diag", "dgfxen"], { warn: "завдання 1 (choice): текст 30 слів — понад maxText 20" });
+        expectRun("eng: тест рівня — кирилиця в завданні", dfiles({ title: "Яке слово?" }), ["--diag", "dgfxen"], { warn: "кирилиця в змісті англійською: title" });
+        expectRun("eng: тест рівня — кирилиця в назві теми", { ...files(), "content/fxen/diag-g5.js": diag({}).replace('"title": "Plurals"', '"title": "Множина"') }, ["--diag", "dgfxen"], { warn: "кирилиця в змісті англійською: topics[0].title" });
+        fs.rmSync(path.join(tmp, "content/fxen/diag-g5.js"), { force: true });
+      } finally { fs.writeFileSync(pf, orig); } }
+    // engine-eng-match (docs/design/english.md §5.7): зображення правої колонки — файл у img/<предмет>/, alt, credits; emoji — помилка
+    { fs.mkdirSync(path.join(tmp, "img/fxen/fxen"), { recursive: true });
+      for (const f of ["sun", "tree"]) fs.copyFileSync(path.join(ROOT, `tools/fixtures/match-${f}.svg`), path.join(tmp, `img/fxen/fxen/${f}.svg`));
+      const CR = { credits: [["Sun and tree", "Slid", "CC0", "https://example.org/sun"]] };
+      const MT = (more = {}) => ({ type: "match", sk: "gram", title: "Match the words and the pictures", left: ["sun", "tree", "cat"],
+        right: [{ img: "img/fxen/fxen/sun.svg", alt: "the sun" }, { img: "img/fxen/fxen/tree.svg", alt: "a tree" }, "a pet that says miaow"], fbOk: "Yes!", fbText: "The sun is in the sky, a tree is green and a cat is a pet.", hint: "Look at the colours.", ...more });
+      run("match з картинками й credits — чисто", { extra: [MT()], sec: CR }, { noWarn: "match" });
+      run("match лише з текстом, без credits — чисто", { extra: [MT({ right: ["a star", "a plant", "a pet"] })] }, { noWarn: "match" });
+      run("match: картинки без credits розділу — помилка", { extra: [MT()] }, { err: "credits порожні" });
+      run("match: немає файлу — помилка", { extra: [MT({ right: [{ img: "img/fxen/fxen/moon.svg", alt: "the moon" }, "a plant", "a pet"] })], sec: CR }, { err: "match: немає файлу img/fxen/fxen/moon.svg" });
+      run("match: файл поза img/<предмет>/ — помилка", { extra: [MT({ right: [{ img: "tools/fixtures/match-sun.svg", alt: "the sun" }, "a plant", "a pet"] })], sec: CR }, { err: "у теці img/fxen/" });
+      run("match: картинка без alt — помилка", { extra: [MT({ right: [{ img: "img/fxen/fxen/sun.svg" }, "a plant", "a pet"] })], sec: CR }, { err: "alt обов'язковий" });
+      run("match: emoji замість картинки — помилка", { extra: [MT({ right: ["\u2600\uFE0F", "a plant", "a pet"] })] }, { err: "emoji системного шрифту" });
+      run("match: 2 пари — помилка", { extra: [MT({ left: ["sun", "tree"], right: ["a star", "a plant"] })] }, { err: "3–6 пар" });
+      run("match: alt українською — попередження кирилиці", { extra: [MT({ right: [{ img: "img/fxen/fxen/sun.svg", alt: "сонце" }, { img: "img/fxen/fxen/tree.svg", alt: "a tree" }, "a pet"] })], sec: CR }, { warn: "кирилиця в змісті англійською" });
+      run("match з poll — помилка", { extra: [MT({ poll: "p1", fbTitle: "Good guess." })], sec: CR }, { err: "poll лише для choice" });
+      // тест рівня: власних credits немає — джерело в credits предмета чи будь-якого розділу
+      const dg = item => `SLID.diag("fxen", ${JSON.stringify({ id: "dgfxen", grade: 5, title: "Level test", why: "Regression test of the validator for English.", status: "draft",
+        meta: { author: "test", created: "2026-11-19", factcheck: null, teacher: null }, topics: [{ id: "t", title: "Plurals", kind: "cur", lessons: ["fxenl1"] }],
+        items: [{ topic: "t", ...MT(), fbOk: undefined, fbText: undefined, hint: undefined, ...item }] }, null, 1)});\n`;
+      expectRun("eng: match у тесті рівня з credits розділу — чисто", { "content/fxen/aa-subj.js": SUBJ(), "content/fxen/g5-fxen.js": secJS("fxen", enSec({ sec: CR })), "content/fxen/diag-g5.js": dg({}) }, ["--diag", "dgfxen"], { noWarn: "match" });
+      expectRun("eng: match у тесті рівня без жодних credits — помилка", { ...files(), "content/fxen/diag-g5.js": dg({}) }, ["--diag", "dgfxen"], { err: "credits порожні" });
+      fs.rmSync(path.join(tmp, "content/fxen/diag-g5.js"), { force: true }); }
+    // engine-eng-diag-pool (docs/design/english.md §7): тест рівня — межі build і match «одне завдання = одне вміння» (CONTENT_SCHEMA §9);
+    // перший клас предмета — pre з baseline: true, lessons: [] і see на перший урок класу; пул — джерело-програма program: true (рев'ю skills-eng P2-4)
+    { const META = { author: "test", created: "2026-11-20", factcheck: null, teacher: null };
+      const BT = { type: "build", tiles: ["Where", "does", "she", "live?"], answer: ["Where does she live?"] };
+      const MP = n => ({ type: "match", left: ["big", "hot", "old", "fast", "happy"].slice(0, n), right: ["small", "cold", "new", "slow", "sad"].slice(0, n) });
+      const dg = (items, grade = 5, topics = [{ id: "t", title: "Plurals", kind: "cur", lessons: ["fxenl1"] }]) => `SLID.diag("fxen", ${JSON.stringify({ id: "dgfxen", grade, title: "Level test",
+        why: "Regression test of the validator for English.", status: "draft", meta: META, topics, items: items.map(x => ({ topic: "t", sk: "gram", title: "Put the words in order", ...x })) }, null, 1)});\n`;
+      const dfiles = items => ({ ...files(), "content/fxen/diag-g5.js": dg(items) });
+      { const two = [{ id: "t", title: "Plurals", kind: "cur", lessons: ["fxenl1"] }, { id: "t2", title: "Opposites", kind: "cur", lessons: ["fxenl1"] }];
+        expectRun("eng: тест рівня — build 4 плитки + 1 пастка, match 4 пари — чисто", { ...files(), "content/fxen/diag-g5.js": dg([{ ...BT, extra: ["do"] }, { ...MP(4), topic: "t2", title: "Match the opposites" }], 5, two) }, ["--diag", "dgfxen"], {}); }
+      expectRun("eng: тест рівня — build 8 плиток разом з extra — помилка", dfiles([{ type: "build", tiles: ["I", "usually", "walk", "to", "school", "with", "Tom."], answer: ["I usually walk to school with Tom."], extra: ["do"] }]), ["--diag", "dgfxen"], { err: "не більше 7 плиток разом з extra (є 8)" });
+      expectRun("eng: тест рівня — build з 2 пастками — помилка", dfiles([{ ...BT, extra: ["do", "lives"] }]), ["--diag", "dgfxen"], { err: "не більше 1 плитки-пастки extra (є 2)" });
+      expectRun("eng: тест рівня — match 5 пар — помилка", dfiles([{ ...MP(5), title: "Match the opposites" }]), ["--diag", "dgfxen"], { err: "не більше 4 пар (є 5)" });
+      // в уроці ті самі 8 плиток, 2 пастки й 5 пар — без помилок (межі уроку: 9, 2, 6)
+      run("урок — build 8 плиток і 2 пастки, match 5 пар — чисто (межі тесту рівня лише в тесті)", { extra: [{ ...BT, extra: ["do", "lives"], sk: "gram", title: "Put the words in order", fbOk: "Yes!", fbText: "Where + does + she + live?" },
+        { ...MP(5), sk: "gram", title: "Match the opposites", fbOk: "Yes!", fbText: "Big and small are opposites." }] }, {});
+      // dge4: найнижчий клас предмета — baseline-передумова без уроків, see — перший урок класу (gap → план веде на нього, без «до дорослого»)
+      const PRE = { id: "p", title: "Greetings", kind: "pre", baseline: true, lessons: [], for: ["fxen"], see: ["fxenl1"] };
+      const CHP = (title, correct) => ({ topic: "p", type: "choice", title, body: "<p>Choose the answer.</p>", opts: ["Hello!", "Goodbye!"], correct });
+      const d4 = dg([CHP("You meet a friend. What do you say?", 0), CHP("You leave school. What do you say?", 1), { ...BT, topic: "t" }], 4, [PRE, { id: "t", title: "Questions", kind: "cur", lessons: ["fxenl1"] }]).replace('"dgfxen"', '"dgfxen4"');
+      fs.rmSync(path.join(tmp, "content/fxen"), { recursive: true, force: true });   // runTree теку fxen не чистить: розділ 5 кл. з тим самим id
+      const g4 = { "content/fxen/aa-subj.js": SUBJ(), "content/fxen/g4-fxen.js": secJS("fxen", enSec({ grade: 4 })), "content/fxen/diag-g4.js": d4 };
+      expectRun("eng: dge4 — pre baseline з lessons: [] і see на перший урок 4 кл. — чисто", g4, ["--diag", "dgfxen4"], {});
+      const g3 = { ...g4, "content/fxen/g3-fxen3.js": secJS("fxen", { ...enSec({ grade: 3 }), id: "fxen3", lessons: [{ ...enSec().lessons[0], id: "fxen3l1" }] }) };
+      expectRun("eng: dge4 — є урок 3 кл. — baseline заборонено (лише найнижчий клас)", g3, ["--diag", "dgfxen4"], { err: "baseline заборонено" });
+      fs.rmSync(path.join(tmp, "content/fxen/diag-g4.js"), { force: true }); fs.rmSync(path.join(tmp, "content/fxen/g3-fxen3.js"), { force: true }); fs.rmSync(path.join(tmp, "content/fxen/g4-fxen.js"), { force: true });
+      // пул eng: build і match; джерело — програма класу (program: true)
+      const it = (id, x) => ({ id, lesson: "fxenl1", lvl: 1, sk: "gram", src: "top34 с. 62", title: "Put the words in order", steps: ["Where + does + she + live?"], ...x });
+      const ITEMS = [it("a01", BT), it("a02", { ...BT, extra: ["do"] }), it("a03", { ...MP(5), title: "Match the opposites", steps: ["Big and small are opposites."] }), it("a04", { ...MP(3), title: "Match the opposites", steps: ["Hot and cold are opposites."] })];
+      const pool = (src = {}, items = ITEMS) => `SLID.pool("fxen", ${JSON.stringify({ id: "pfxen", section: "fxen", status: "draft", meta: META,
+        sources: [{ id: "top34", title: "Typical curriculum, grades 3–4", url: "https://example.org/top34.pdf", ...src }], items }, null, 1)});\n`;
+      const pfiles = (src, items) => ({ ...files(), "content/fxen/pool-g5-fxen.js": pool(src, items) });
+      expectRun("eng: пул з build і match, джерело program: true — чисто", pfiles({ program: true }), ["--pool", "pfxen"], { noWarn: "program" });
+      expectRun("eng: пул без program — попередження (тренування показало б «Джерело»)", pfiles({}), ["--pool", "pfxen"], { warn: "джерело «top34»: у предметі з мовою змісту вправи власні — для програми класу постав program: true" });
+      expectRun("eng: пул — program не boolean — помилка", pfiles({ program: "yes" }), ["--pool", "pfxen"], { err: "program має бути boolean" });
+      expectRun("eng: пул — adapted у вправи з джерела-програми — помилка", pfiles({ program: true }, [...ITEMS.slice(1), it("a01", { ...BT, adapted: true })]), ["--pool", "pfxen"], { err: "у джерела-програми «top34» (program: true) вправи власні" });
+      fs.rmSync(path.join(tmp, "content/fxen/pool-g5-fxen.js"), { force: true }); fs.rmSync(path.join(tmp, "content/fxen/diag-g5.js"), { force: true }); }
+    // soon з id справжнього предмета — помилка (рушій показав би предмет двічі: справжній і «скоро»)
+    { const soon = id => `SLID.soon(${JSON.stringify({ id, short: "Ф", subject: "Фікстура", grade: "5 клас", icon: "leaf", why: "Скоро.", colors: { light: { accent: "#000" }, dark: { accent: "#fff" } } })});\n`;
+      const r1 = runTree({ ...files(), "content/catalog.js": soon("fxen") }, []);
+      ok(r1.rep && r1.rep.errors.some(e => e.startsWith("catalog fxen:") && e.includes("уже є справжній предмет")), "soon з id справжнього предмета — помилка", r1.rep ? r1.rep.errors.join("\n  ") : r1.out);
+      const r2 = runTree({ "content/catalog.js": soon("fxnew") + soon("fxnew") }, []);
+      ok(r2.rep && r2.rep.errors.some(e => e.startsWith("catalog fxnew:") && e.includes("не унікальний")), "soon: id двічі — помилка", r2.rep ? r2.rep.errors.join("\n  ") : r2.out);
+      const r3 = runTree({ "content/catalog.js": soon("fxnew") }, []);
+      ok(r3.rep && !r3.rep.errors.some(e => e.startsWith("catalog")), "soon з новим id — без помилки catalog", r3.rep ? r3.rep.errors.join("\n  ") : r3.out);
+      fs.rmSync(path.join(tmp, "content/catalog.js"), { force: true }); }
+    fs.rmSync(path.join(tmp, "content/fxen"), { recursive: true, force: true }); }
   // діагностика: поля answer перевіряються лише тоді, коли answer дозволено в тесті (learn.DIAG_TYPES). Обидва стани задаємо явно
   // в копії app/learn.js, щоб тест не залежав від того, чи дозволено answer у діагностиці зараз (engine-diag-answer-kinds)
   { const lp = path.join(tmp, "app/learn.js"), orig = fs.readFileSync(lp, "utf8"), DT = /const DIAG_TYPES = \[[^\]]*\];/;
@@ -720,6 +888,24 @@ const { figCues: figCuesT, figPoints: figPointsT } = await import(path.join(ROOT
     // intro: cue з intro: true; validate мовчить, fig-audit — група intro
     const ci = figCuesT({ type: "intro", title: "Двір", body: "На кресленні двору є трикутний газон." });
     ok(ci?.level === "ref" && ci.intro === true && figCuesT({ type: "answer", body: "На кресленні двору." })?.intro === false, "figCues: intro повертає cue з intro: true", JSON.stringify(ci)); }
+  // engine-eng-tools: мова змісту "en" (subjectLang) — англійські сигнали замість українських; geo (українська геометрія) вимкнено
+  { const en = (body, type = "choice") => figCuesT({ type, title: "Task", body }, null, "en")?.level ?? null;
+    for (const b of ["Look at the picture. Who is it?", "What can you see in the photo?", "Find London on the map.", "Look at the pictures below and answer.",
+      "The picture below shows a park.", "Use the chart to answer the question.", "Look at picture 2.", "Who is in the drawing?", "Study this diagram."])
+      ok(en(b) === "ref", `figCues en: «${b}» — посилання (ref)`, String(en(b)));
+    for (const b of ["Draw a picture of your family.", "Look at the end of the word.", "Look at the sentences and choose.", "I like taking photos.", "My plan for the weekend.",
+      "Make a chart of your favourite food.", "На рисунку кіт.", "In triangle $ABC$ find the angle."])
+      ok(en(b) === null, `figCues en: «${b}» — не посилання`, String(en(b)));
+    ok(en("A map of the town has three streets.") === "graph" && en("The bar chart shows our pets.") === "graph" && en("Read the bar chart about pets.") === "ref", "figCues en: map / chart без прямого посилання — згадка (graph); «read the bar chart» — ref");
+    ok(figCuesT({ type: "choice", title: "Task", body: "Look at the picture." }) === null && figCuesT({ type: "choice", body: "На рисунку кіт." })?.level === "ref",
+      "figCues без мови — українські сигнали, як раніше (англійські не діють)");
+    const ei = figCuesT({ type: "intro", title: "Hi", body: "Look at the picture of the park." }, null, "en");
+    ok(ei?.level === "ref" && ei.intro === true, "figCues en: intro — cue з intro: true", JSON.stringify(ei));
+    ok(figCuesT({ type: "choice", body: "Look at the picture.", img: "img/eng/x/a.png" }, null, "en")?.ill === true, "figCues en: img на екрані — ill"); }
+  // engine-eng-tools: noPool — поле розділу noPool: true або назва «Пишемо самі…» (NO_POOL_SECTION)
+  { const { noPool } = await import(path.join(ROOT, "tools/lib.mjs"));
+    ok(noPool({ title: "Write it yourself", noPool: true }) && noPool({ title: "Пишемо самі: лист" }) && !noPool({ title: "Plurals" }) && !noPool({ title: "x", noPool: "yes" }) && !noPool(null),
+      "noPool: noPool: true або «Пишемо самі»; інакше (і noPool не true) — ні"); }
   const introTree = files => Object.fromEntries(Object.entries(files).map(([f, src]) => [f, src.replace('"Як записати число?"', '"На кресленні двору трикутник $ABC$ і газон $|x|$."')]));
   expectRun("intro «На кресленні двору» без ілюстрації — validate не попереджає", introTree(one("fxf", {})), ["--section", "fxf"], { noWarn: REF });
   runTree(introTree(one("fxf", { body: "У паралелепіпеді $ABCDA_1B_1C_1D_1$ знайди ребро $BB_1$.", extra: { type: "answer", title: "Висота", body: "За графіком знайди висоту.", answer: 4 } })), ["--section", "fxf"]);
@@ -743,6 +929,19 @@ const { figCues: figCuesT, figPoints: figPointsT } = await import(path.join(ROOT
       const r2 = spawnSync(process.execPath, [path.join(tmp, "tools/fig-audit.mjs"), "--subject", dir, "--json"], { cwd: tmp, encoding: "utf8" });
       let j = null; try { j = JSON.parse(r2.stdout); } catch {}
       ok(j && JSON.stringify(j.rows.map(x => `${x.where}:${x.group}`)) === JSON.stringify(want), `fig-audit ${dir}: «На схемі» → ${JSON.stringify(want)}`, (r2.stdout || "") + (r2.stderr || "")); } }
+  // engine-eng-tools: предмет з targetLang "en" — англійські сигнали (subjectLang): «Look at the picture» без ілюстрації — ref, «a map of» — graph,
+  // з fig — не в звіті; українська геометрія (geo) і «На схемі» не діють
+  { const subj = `SLID.subject(${JSON.stringify({ id: "fxfa", subject: "Фікстура", short: "Ф", icon: "frac", colors: { light: { accent: "#000" }, dark: { accent: "#fff" } }, skills: { gram: { name: "Граматика", hint: "Речення" } }, targetLang: "en" })});\n`;
+    const sc = (body, x = {}) => ({ type: "choice", sk: "gram", title: "Task", body: `<p>${body}</p>`, opts: ["a", "b"], correct: 0, fbText: "Because.", ...x });
+    const sec = { id: "fxfa", grade: 5, weeks: [1, 2], title: "Pictures", why: "To read pictures and maps in English.", meta: { author: "test", created: "2026-11-19", factcheck: null, teacher: null },
+      lessons: [{ id: "fxfal1", title: "Pictures", status: "draft", screens: [{ type: "intro", title: "Hi", body: "<p>Hello!</p>" }, sc("Look at the picture. Who is it?"), sc("A map of the town has three streets."),
+        sc("Look at the picture.", { fig: { kind: "bar", parts: 4, filled: 1 } }), sc("In triangle $ABC$ find the angle $B$."), sc("На схемі кіт.")] }] };
+    runTree({ "content/fxfa/aa-subj.js": subj, "content/fxfa/g5-fxfa.js": secJS("fxfa", sec) }, ["--section", "fxfa"]);
+    const r3 = spawnSync(process.execPath, [path.join(tmp, "tools/fig-audit.mjs"), "--subject", "fxfa", "--json"], { cwd: tmp, encoding: "utf8" });
+    let j = null; try { j = JSON.parse(r3.stdout); } catch {}
+    ok(j && JSON.stringify(j.rows.map(x => `${x.where}:${x.group}`)) === JSON.stringify(["fxfal1 екран 2:ref", "fxfal1 екран 3:graph"]) && j.screens === 6,
+      "fig-audit eng: «Look at the picture» — ref, «A map of» — graph; з fig, геометрія й «На схемі» — ні", (r3.stdout || "") + (r3.stderr || ""));
+    fs.rmSync(path.join(tmp, "content/fxfa"), { recursive: true, force: true }); }
   const bad = spawnSync(process.execPath, [path.join(tmp, "tools/fig-audit.mjs"), "--subjekt", "math"], { cwd: tmp, encoding: "utf8" });
   ok(bad.status === 2, "fig-audit: невідомий аргумент — код 2", String(bad.status)); }
 

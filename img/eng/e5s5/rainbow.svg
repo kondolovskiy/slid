@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 150" role="img" aria-label="a rainbow in the sky">
+  <rect width="200" height="150" fill="#bfe3ff"/>
+  <g fill="none" stroke-width="7">
+    <path d="M20 140 A80 80 0 0 1 180 140" stroke="#e53935"/>
+    <path d="M27 140 A73 73 0 0 1 173 140" stroke="#fb8c00"/>
+    <path d="M34 140 A66 66 0 0 1 166 140" stroke="#fdd835"/>
+    <path d="M41 140 A59 59 0 0 1 159 140" stroke="#43a047"/>
+    <path d="M48 140 A52 52 0 0 1 152 140" stroke="#1e88e5"/>
+    <path d="M55 140 A45 45 0 0 1 145 140" stroke="#3949ab"/>
+    <path d="M62 140 A38 38 0 0 1 138 140" stroke="#8e24aa"/>
+  </g>
+  <circle cx="172" cy="26" r="14" fill="#ffd23f"/>
+</svg>

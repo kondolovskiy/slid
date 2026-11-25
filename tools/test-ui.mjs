@@ -47,6 +47,23 @@
 //  23) Читабельність рендеру (engine-render-legibility-1117), 360 px: підписи numline (дуги стрибків, точка біля краю, дві точки в одному місці),
 //      смужок fraction і solid з осями — у межах SVG і без накладань; назва повзунка «$\alpha$» — «α» без «\»; знак кореня — маска до риски;
 //      \to ширша за «−»; підкреслення <u> з відступом; align — роки шкали цілком у полі й «N з 18 кілець»; strata — знахідки не налазять на стрілку; клік по точці numline — фокус на її ручку, стрілки рухають її (qa-drag-points B1).
+//  26) Мова змісту предмета (engine-eng-lang-attr, D-055): targetLang: "en" — lang="en" на змісті уроку, тесту й тренування, хром рушія — uk;
+//      літери варіантів A, B, C (engine-eng-validate), без targetLang — А, Б, В;
+//      згорнутий переклад uk на екрані теорії й подія uk_open; предмет без targetLang — жодного lang у плеєрі.
+//  27) Мовні вправи англійською (engine-eng-lang-core): word — примітка «In British English: colour.» (en), «Almost: check the spelling.» (en),
+//      «Перемкни клавіатуру на англійську.» (uk), кирилична «с» у «сat», «Yes.»; stress складами; без targetLang — як раніше.
+//  28) Речення з плиток build (engine-eng-build; docs/design/english.md §5.5), 360 px: банк — усі плитки й пастка, перемішані, рядок порожній, «Перевірити»
+//      неактивна; дотик — у рядок, ще раз — назад; клавіатура (Enter, фокус після прибирання); хибний порядок — позначки з «неправильно», повідомлення,
+//      та сама відповідь не витрачає спробу; кілька правильних порядків; показ відповіді; raw — зібране речення; тест рівня — без позначок;
+//      без targetLang — точне порівняння; без горизонтальної прокрутки, плитки ≥ 44 px.
+//  30) «Тренування» англійської (engine-eng-diag-pool): пул з build і match (targetLang "en", 360 px, дотик) — build хибно → hint → друга спроба,
+//      «Пояснення»; match з першої; джерело-програма (program: true) — без рядка «Джерело» (рев'ю skills-eng P2-4), звичайне джерело — з ним;
+//      seen, SRS, журнал (raw build — речення, match — масив).
+//  29) Пари match (engine-eng-match; docs/design/english.md §5.7), 360 px: права колонка перемішана, картинки з alt (SVG-фікстури tools/fixtures/),
+//      «Перевірити» — лише коли всі пари складено; дотик лівий → правий і правий → лівий, роз'єднання, перехід правого до іншої пари; клавіатура
+//      (Enter, пробіл, фокус), aria-pressed і #mlive; перша помилка — правильні пари закріплено (зелені, неактивні), хибні — «неправильно»,
+//      та сама відповідь не витрачає спробу; друга — показ усіх пар (alt замість картинки); 6 пар без горизонтальної прокрутки, кнопки ≥ 44 px;
+//      raw — масив за лівими; тест рівня — без позначок; без targetLang — жодного lang.
 // Запуск: node tools/test-ui.mjs [--browser /opt/pw-browsers/chromium]
 // Playwright: require("playwright") (NODE_PATH) або PLAYWRIGHT_MODULE / /opt/node-tools/node_modules/playwright.
 // Браузер, як у test-answer-ui.py: --browser / SLID_BROWSER → /opt/pw-browsers/chromium, якщо є (PW_DEFAULT=1 вимикає) → Chromium самого
@@ -1047,6 +1064,21 @@ try {
 
   // 25) Випадковий тап по полю не зсуває єдину точку: переносить лише короткий тап без руху (engine-lab-p4-1118 п. 2)
   await tapMoveScenario(browser);
+
+  // 26) Мова змісту предмета: targetLang, lang="en" на змісті, згорнутий переклад uk (engine-eng-lang-attr)
+  await contentLangScenario(browser);
+
+  // 27) Мовні вправи англійською: word з примітками, stress складами (engine-eng-lang-core)
+  await engLangScenario(browser);
+
+  // 28) Речення з плиток build (engine-eng-build)
+  await buildScenario(browser);
+
+  // 29) Пари match: слово ↔ картинка / значення (engine-eng-match)
+  await matchScenario(browser);
+
+  // 30) «Тренування» англійської: build і match у пулі, джерело-програма без рядка «Джерело» (engine-eng-diag-pool)
+  await practiceEngScenario(browser);
 } finally { await browser.close(); server.close(); swServer.close(); }
 
 console.log(`test-ui: ${pass} ok, ${fail} ✗`);
@@ -1415,5 +1447,442 @@ async function renderLegibilityScenario(browser) {
   await page.evaluate(() => { const r = document.querySelector("#alrng"); r.value = 1212 - 18 + 1 - 1180; r.dispatchEvent(new Event("input")); });
   ok(await page.locator("#almatch").innerText() === "18 з 18 кілець" && await page.locator("#almeter.full").count() === 1, "align: на правильному зсуві — «18 з 18 кілець», шкала повна");
   ok(!errors.length, "читабельність рендеру: помилки сторінки: " + errors.join(" | "));
+  await ctx.close();
+}
+
+/* 26) Мова змісту предмета (engine-eng-lang-attr, D-055; docs/design/english.md §2): фікстура — предмет ukr з targetLang: "en".
+   Урок, тест рівня й тренування: section.screen — lang="en" (заголовок, текст, варіанти, поля); хром рушія всередині (eyebrow тесту,
+   «Тренування ·», .fix, «Підказка:», «Правильна відповідь:», «Джерело:») — lang="uk"; у панелі відповіді зміст (fbOk/fbBad/fbText)
+   — у span lang="en", службові повідомлення — мовою сторінки (uk). Поле uk екрана теорії — згорнутий details lang="uk"
+   «Переклад українською», подія журналу uk_open один раз на показ; на оцінюваному екрані й у предметі без targetLang блоку немає.
+   Регресія: той самий урок без targetLang — жодного lang усередині #stage і #dock (українські предмети як раніше). */
+async function contentLangScenario(browser) {
+  const ctx = await browser.newContext({ viewport: { width: 400, height: 860 }, serviceWorkers: "block" });
+  const page = await ctx.newPage(), errors = []; page.on("pageerror", e => errors.push(String(e))); page.setDefaultTimeout(8000);
+  await page.route("**/fonts.googleapis.com/**", r => r.abort());
+  const LES = { id: "fen1", title: "Plurals", icon: "book", outro: { text: "Well done.", learned: ["I can make plurals."] }, screens: [
+    { type: "info", title: "One cat, two cats", body: "<p>We add <b>-s</b>.</p>", uk: "<p>Додаємо <b>-s</b>.</p>" },
+    { type: "choice", title: "Choose", body: "Which word is plural?", opts: ["cat", "cats", "dog"], correct: 1, fbOk: "Yes!", fbBad: "Not quite.", fbText: "Plurals end in -s.", hint: "Look at the end.", uk: "<p>Не має показатися.</p>" },
+    { type: "pick", title: "Find", text: "Two [cats] and one [!dog].", fbOk: "Great!", fbText: "Cats is plural." }] };
+  const POOL = { id: "pfen", section: "fen", status: "draft", sources: [{ id: "z", title: "Fixture book", url: "https://example.org/" }],
+    items: [{ id: "a01", lesson: "fen1", lvl: 1, sk: "orth", src: "z p. 3", type: "choice", title: "Pick one", body: "Which is plural?", opts: ["dogs", "dog"], correct: 0, steps: ["Dogs ends in -s."] }] };
+  const DIAG = { id: "dgfen", grade: 5, title: "Level test", why: "QA", status: "draft", topics: [{ id: "t", title: "Plurals", kind: "cur", lessons: ["fen1"] }],
+    items: [{ topic: "t", type: "choice", sk: "orth", title: "Which?", body: "Which is plural?", opts: ["pens", "pen"], correct: 0 }] };
+  const install = ([les, pool, diag, tl]) => { const c = SLID_SUBJECTS.find(c => c.id === "ukr");
+    c.sections = [{ id: "fen", grade: 5, weeks: [1, 2], title: "QA en", why: "QA", lessons: [les] }]; c.pools = [pool]; c.diags = [diag]; delete c.graph;
+    if (tl) c.targetLang = tl; else delete c.targetLang; };
+  // мова, якою браузер читає елемент: найближчий предок з lang
+  const langOf = sel => page.evaluate(sel => { const e = document.querySelector(sel); return e ? (e.closest("[lang]")?.getAttribute("lang") ?? null) : "немає"; }, sel);
+  // мова, якою браузер читає ТЕКСТ елемента: перший непорожній текстовий вузол усередині (обгортки span lang — усередині заголовків)
+  const textLang = sel => page.evaluate(sel => { const e = document.querySelector(sel); if (!e) return "немає";
+    const w = document.createTreeWalker(e, NodeFilter.SHOW_TEXT, { acceptNode: n => n.textContent.trim() ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP }), t = w.nextNode();
+    return t ? (t.parentElement.closest("[lang]")?.getAttribute("lang") ?? null) : "без тексту"; }, sel);
+  const ukOpens = () => page.evaluate(async () => { if (!window.SLID_EVIDENCE) return null; await SLID_EVIDENCE.flush?.();
+    return (await SLID_EVIDENCE.export()).events.filter(e => e.type === "uk_open").map(e => [e.d.mode, e.d.l, e.d.i]); });
+  const boot = async st => { await page.goto(URL0); await page.evaluate(s => { localStorage.clear(); localStorage.setItem("slid.v1", JSON.stringify(s)); }, st); await page.reload(); };
+
+  // урок
+  await boot({ grade: 5, subject: "ukr", unlockAll: true });
+  await page.evaluate(install, [LES, POOL, DIAG, "en"]);
+  ok(await page.evaluate(() => SLID.subjectLang("ukr") === "en" && SLID.subjectLang(SLID_SUBJECTS.find(c => c.id === "ukr")) === "en"), "мова змісту: SLID.subjectLang(id і предмет) — en");
+  await page.evaluate(() => window.__slidStart("fen1"));
+  ok(await langOf("#stage section.screen") === "en", `урок en: section.screen lang="en", а ${await langOf("#stage section.screen")}`);
+  ok(await langOf("#stage h2") === "en", "урок en: заголовок екрана — en");
+  ok(await langOf("#action") === "uk", `урок en: кнопка дії — мовою сторінки uk, а ${await langOf("#action")}`);
+  ok(await langOf("#pClose") === "uk", "урок en: ✕ — uk");
+  const uk = page.locator("#stage details.uktr");
+  ok(await uk.count() === 1, "урок en: екран теорії з uk — блок перекладу");
+  ok(await uk.count() === 1 && !(await uk.evaluate(d => d.open)), "урок en: переклад згорнуто за замовчуванням");
+  ok(await langOf("#stage details.uktr .note-b") === "uk", "урок en: текст перекладу — lang uk");
+  ok(await langOf("#stage details.uktr summary") === "uk" && /Переклад українською/.test(await page.locator("#stage details.uktr summary").innerText()), "урок en: кнопка «Переклад українською» — хром uk");
+  ok(same(await ukOpens(), []), "урок en: до відкриття uk_open немає");
+  if (await uk.count()) { await page.click("#stage details.uktr summary"); await page.click("#stage details.uktr summary"); await page.click("#stage details.uktr summary"); }
+  ok(await uk.count() && await uk.evaluate(d => d.open), "урок en: переклад відкривається");
+  ok(same(await ukOpens(), [["lesson", "fen1", 0]]), `урок en: uk_open один раз на показ екрана (mode, l, i), а ${JSON.stringify(await ukOpens())}`);
+  await page.click("#action");
+  // choice: помилка → «Підказка:» uk, підказка en; fbBad — en; повідомлення рушія — uk
+  ok(await page.locator("#stage details.uktr").count() === 0, "урок en: на оцінюваному екрані uk не показано");
+  ok(await langOf('#stage .opt[data-k="0"]') === "en", "урок en: варіанти — en");
+  const optKs = () => page.locator("#stage .opt .k").allInnerTexts();
+  ok(same(await optKs(), ["A", "B", "C"]), `урок en: літери варіантів — латиниця A, B, C (engine-eng-validate), а ${JSON.stringify(await optKs())}`);
+  await page.click('#stage .opt[data-k="0"]'); await page.click("#action");
+  ok(await page.evaluate(() => document.querySelector("#fbTitle [lang]")?.getAttribute("lang") === "en" && document.querySelector("#fbTitle [lang=en]").textContent === "Not quite."), "урок en: fbBad у span lang=en");
+  ok(await page.evaluate(() => { const t = document.querySelector("#fbText"); return /Обери інший варіант/.test(t.textContent) && !t.querySelector("[lang=en]"); }), "урок en: службове повідомлення після помилки — без lang en");
+  ok(await langOf("#hintHost .hint b") === "uk", `урок en: «Підказка:» — uk, а ${await langOf("#hintHost .hint b")}`);
+  ok(await page.evaluate(() => { const h = document.querySelector("#hintHost .hint span"); const tx = [...h.childNodes].filter(n => n.nodeType === 3).map(n => n.textContent).join(""); return /Look at the end/.test(tx) && h.closest("[lang]").getAttribute("lang") === "en"; }), "урок en: текст підказки — en");
+  await page.click('#stage .opt[data-k="2"]'); await page.click("#action");
+  ok(await page.evaluate(() => { const t = document.querySelector("#fbTitle"); return /Ось правильна відповідь/.test(t.textContent) && !t.querySelector("[lang=en]"); }), "урок en: «Ось правильна відповідь.» — хром без lang en");
+  ok(await page.evaluate(() => document.querySelector("#fbText [lang=en]")?.textContent === "Plurals end in -s."), "урок en: fbText — у span lang=en");
+  await page.click("#action");
+  ok(await langOf("#stage .fix") === "uk", `урок en: інструкція рушія .fix (pick) — uk, а ${await langOf("#stage .fix")}`);
+  ok(await langOf("#stage .pw") === "en", "урок en: слова pick — en");
+  await page.locator(".pw", { hasText: /^cats$/ }).click(); await page.click("#action");
+  ok(await page.evaluate(() => document.querySelector("#fbTitle [lang=en]")?.textContent === "Great!"), "урок en: fbOk — у span lang=en");
+  await page.click("#action");
+  ok(await textLang("#stage h1") === "en" && await textLang("#stage .learned .li") === "en" && await textLang("#stage .endhero > div:has(> p)") === "en", "підсумок уроку en: назва, outro й «умієш» — en");
+  ok(await textLang("#stage .endhero > .eyebrow") === "uk" && await textLang("#stage .learned > .eyebrow") === "uk", "підсумок уроку en: службові eyebrow — uk");
+  await page.click("#action");
+
+  // тест рівня
+  await page.evaluate(() => document.querySelector('.tab[data-tab="path"]').click());
+  await page.click('button[data-subject="ukr"]'); { const d = page.locator("[data-diag]"); if (await d.count()) await d.first().click(); else await page.click('[data-plan="ukr"]'); }
+  await page.click("[data-diag-go]");
+  ok(await langOf("#stage section.screen") === "en", "тест en: section.screen — en");
+  ok(same(await optKs(), ["A", "B"]), `тест en: літери варіантів — A, B, а ${JSON.stringify(await optKs())}`);
+  ok(await textLang("#stage .eyebrow") === "uk" && /Тест рівня/.test(await page.locator("#stage .eyebrow").textContent()), `тест en: «Тест рівня · завдання N» — uk, а ${await textLang("#stage .eyebrow")}`);
+  ok(await langOf("#skip") === "uk", "тест en: «Ще не знаю» — uk");
+  await page.click('#stage .opt[data-k="0"]'); await page.click("#action");
+  ok(await textLang("#stage .learned .li .grow") === "en" && await textLang("#stage .learned .li .tchip") === "uk", `підсумок тесту en: назви тем — en, статус теми — uk, а ${await textLang("#stage .learned .li .grow")}`);
+  await page.locator("#pClose").click();
+
+  // тренування
+  await boot({ grade: 5, subject: "ukr", unlockAll: false, lessons: { fen1: { done: true, stars: 3 } } });
+  await page.evaluate(install, [LES, POOL, DIAG, "en"]);
+  await page.evaluate(() => document.querySelector('.tab[data-tab="path"]').click());
+  await page.click('button[data-subject="ukr"]'); await page.click('[data-practice-view="ukr"]'); await page.click('[data-practice="fen1"]');
+  ok(await langOf("#stage section.screen") === "en", "тренування en: section.screen — en");
+  ok(await page.evaluate(() => { const e = document.querySelector("#stage .eyebrow"); const u = e.querySelector("[lang=uk]"); return !!u && /Тренування/.test(u.textContent) && !/Plurals/.test(u.textContent) && e.closest("[lang]").getAttribute("lang") === "en"; }), "тренування en: «Тренування ·» — uk, назва уроку — en");
+  ok(await langOf("#stage .srcnote") === "uk", "тренування en: «Джерело:» — uk");
+  ok(same(await optKs(), ["A", "B"]), `тренування en: літери варіантів — A, B, а ${JSON.stringify(await optKs())}`);
+  await page.click('#stage .opt[data-k="0"]'); await page.click("#action");
+  ok(await page.evaluate(() => { const t = document.querySelector("#fbTitle"); const u = t.querySelector("[lang=uk]"); return !!u && u.textContent === "Правильно."; }), "тренування en: типове «Правильно.» — uk, хоч і в обгортці змісту");
+  ok(await page.evaluate(() => { const b = document.querySelector("#fbText .steps b"); return b && b.closest("[lang]").getAttribute("lang") === "uk" && document.querySelector("#fbText .steps > span").closest("[lang]").getAttribute("lang") === "en"; }), "тренування en: «Пояснення» — uk, кроки — en");
+
+  // регресія: предмет без targetLang — жодного lang у плеєрі, uk не показано
+  await boot({ grade: 5, subject: "ukr", unlockAll: true });
+  await page.evaluate(install, [LES, POOL, DIAG, null]);
+  ok(await page.evaluate(() => SLID.subjectLang("ukr") === ""), "без targetLang: SLID.subjectLang — порожньо");
+  await page.evaluate(() => window.__slidStart("fen1"));
+  ok(await page.locator("#stage details.uktr").count() === 0, "без targetLang: блоку перекладу немає");
+  await page.click("#action");
+  ok(same(await optKs(), ["А", "Б", "В"]), `без targetLang: літери варіантів — кирилиця А, Б, В (як раніше), а ${JSON.stringify(await optKs())}`);
+  await page.click('#stage .opt[data-k="0"]'); await page.click("#action");
+  ok(await page.evaluate(() => !document.querySelector("#stage [lang], #dock [lang]")), "без targetLang: у #stage і #dock немає жодного lang (як раніше)");
+  // невідома мова — ігнорується (validate — помилка)
+  await page.evaluate(install, [LES, POOL, DIAG, "xx"]);
+  ok(await page.evaluate(() => SLID.subjectLang("ukr") === ""), "targetLang: \"xx\" — рушій ігнорує");
+  ok(!errors.length, "мова змісту: помилки сторінки: " + errors.join(" | "));
+  await ctx.close();
+}
+
+/* 27) Мовні вправи англійською (engine-eng-lang-core; docs/design/english.md §5.4, §5.6; CONTENT_SCHEMA §4.1): фікстура — предмет ukr
+   з targetLang: "en". word: color на ключ colour — ok і примітка «In British English: colour.» у span lang=en; becuase — «Almost: check
+   the spelling.» (en) після першої спроби; «дім» — «Перемкни клавіатуру на англійську.» (хром uk); «сat» з кириличною «с» — ok; «Yes.» — ok.
+   stress складами: кнопки — склади, інструкція «Торкнись наголошеного складу.». Регресія: без targetLang color ≠ colour, без примітки. */
+async function engLangScenario(browser) {
+  const ctx = await browser.newContext({ viewport: { width: 400, height: 860 }, serviceWorkers: "block" });
+  const page = await ctx.newPage(), errors = []; page.on("pageerror", e => errors.push(String(e))); page.setDefaultTimeout(8000);
+  await page.route("**/fonts.googleapis.com/**", r => r.abort());
+  const fb = t => ({ fbOk: "Yes!", fbBad: "Not quite.", fbText: t });
+  const LES = { id: "fen2", title: "Spelling", icon: "book", outro: { text: "Well done.", learned: ["I can spell."] }, screens: [
+    { type: "word", title: "Type the word", body: "What is red, blue or green? A …", answer: "colour", ...fb("Red is a colour.") },
+    { type: "word", title: "Type the word", body: "I stay at home … I am ill.", answer: "because", ...fb("Because tells us why.") },
+    { type: "word", title: "Type the word", body: "A small pet that says meow.", answer: "cat", ...fb("A cat says meow.") },
+    { type: "stress", title: "Find the stressed syllable", words: ["+pho|to|graph", "pho|+tog|ra|pher"], ...fb("PHOtograph, phoTOGrapher.") },
+    { type: "word", title: "Answer", body: "Is London in the UK?", answer: "yes", ...fb("London is the capital of the UK.") }] };
+  const install = ([les, tl]) => { const c = SLID_SUBJECTS.find(c => c.id === "ukr");
+    c.sections = [{ id: "fen", grade: 5, weeks: [1, 2], title: "QA en", why: "QA", lessons: [les] }]; c.pools = []; c.diags = []; delete c.graph;
+    if (tl) c.targetLang = tl; else delete c.targetLang; };
+  const boot = async tl => { await page.goto(URL0); await page.evaluate(() => { localStorage.clear(); localStorage.setItem("slid.v1", JSON.stringify({ grade: 5, subject: "ukr", unlockAll: true })); });
+    await page.reload(); await page.evaluate(install, [LES, tl]); await page.evaluate(() => window.__slidStart("fen2")); };
+  const answer = async v => { await page.fill("#numIn", v); await page.click("#action"); };
+  const dock = () => page.evaluate(() => ({ kind: document.querySelector("#dock").className, text: document.querySelector("#fbText").textContent,
+    en: [...document.querySelectorAll("#fbText [lang=en]")].map(e => e.textContent), lang: (() => { const t = [...document.querySelector("#fbText").childNodes].find(n => n.textContent.trim()); return t ? (t.nodeType === 3 ? t.parentElement : t).closest("[lang]")?.getAttribute("lang") ?? null : null; })() }));
+
+  await boot("en");
+  await answer("Color");
+  let d = await dock();
+  ok(/\bok\b/.test(d.kind) && d.en.includes("In British English: colour."), `en word: color → ok і примітка в span lang=en, а ${JSON.stringify(d)}`);
+  ok(d.en.includes("Red is a colour."), "en word: fbText після примітки — en");
+  await page.click("#action");
+  await answer("becuase"); d = await dock();
+  ok(/\bbad\b/.test(d.kind) && d.en.includes("Almost: check the spelling."), `en word: одруківка — «Almost» у span lang=en, а ${JSON.stringify(d)}`);
+  ok(await page.locator("#action").isDisabled(), "en word: та сама відповідь — «Спробувати ще раз» неактивна");
+  await answer("because"); d = await dock();
+  ok(/\bok\b/.test(d.kind) && !/British/.test(d.text), "en word: друга спроба правильна, без примітки");
+  await page.click("#action");
+  await answer("дім"); d = await dock();
+  ok(/\bbad\b/.test(d.kind) && d.text.includes("Перемкни клавіатуру на англійську.") && d.lang !== "en", `en word: кирилиця — повідомлення рушія мовою сторінки, а ${JSON.stringify(d)}`);
+  await answer("\u0441at"); d = await dock();
+  ok(/\bok\b/.test(d.kind), `en word: «сat» з кириличною «с» — ok, а ${JSON.stringify(d)}`);
+  await page.click("#action");
+  ok(same(await page.locator("#stage .sv").allTextContents(), ["pho", "to", "graph", "pho", "tog", "ra", "pher"]), "stress складами: кнопки — склади");
+  ok(/Торкнись наголошеного складу/.test(await page.locator("#stage .fix").textContent()), "stress складами: інструкція про склад");
+  await page.click('#stage .sv[data-w="0"][data-i="0"]'); await page.click('#stage .sv[data-w="1"][data-i="1"]'); await page.click("#action");
+  ok(/\bok\b/.test((await dock()).kind), "stress складами: правильно");
+  await page.click("#action");
+  await answer("Yes."); d = await dock();
+  ok(/\bok\b/.test(d.kind), `en word: «Yes.» = yes, а ${JSON.stringify(d)}`);
+
+  // регресія: той самий урок без targetLang — правила англійської вимкнені
+  await boot(null);
+  await answer("color"); d = await dock();
+  ok(/\bbad\b/.test(d.kind) && !/British/.test(d.text) && /Зміни відповідь/.test(d.text), `без targetLang: color ≠ colour, без примітки, а ${JSON.stringify(d)}`);
+  ok(!errors.length, "мовні вправи en: помилки сторінки: " + errors.join(" | "));
+  await ctx.close();
+}
+
+/* 28) build — речення з плиток (engine-eng-build; docs/design/english.md §5.5; CONTENT_SCHEMA §4.1): фікстура — предмет ukr з targetLang "en",
+   телефон 360 px з дотиком. Без targetLang — той самий урок з українським реченням, точне порівняння. */
+async function buildScenario(browser) {
+  const ctx = await browser.newContext({ viewport: { width: 360, height: 780 }, hasTouch: true, serviceWorkers: "block" });
+  const page = await ctx.newPage(), errors = []; page.on("pageerror", e => errors.push(String(e))); page.setDefaultTimeout(8000);
+  await page.route("**/fonts.googleapis.com/**", r => r.abort());
+  const fb = t => ({ fbOk: "Yes!", fbBad: "Not quite.", fbText: t });
+  const Q = { type: "build", title: "Put the words in order", body: "Ask about Kate's home.", tiles: ["does", "she", "Where", "live"], answer: ["Where does she live?"], extra: ["do"], ...fb("Where + does + she + live?") };
+  const U = { type: "build", title: "Put the words in order", tiles: ["usually", "I", "walk", "to school"], answer: ["I usually walk to school.", "Usually I walk to school."], ...fb("Usually can go first.") };
+  const LES = { id: "fbl1", title: "Questions", icon: "book", outro: { text: "Well done.", learned: ["I can ask questions."] }, screens: [Q, U, { ...U, title: "Again" }] };
+  const UKR = { id: "fbl1", title: "Речення", icon: "book", outro: { text: "Готово.", learned: ["Складаю речення."] }, screens: [
+    { type: "build", title: "Склади речення", tiles: ["яскраво", "Сонце", "світить"], answer: "Сонце яскраво світить.", fbOk: "Так.", fbText: "Підмет — сонце." }] };
+  const DIAG = { id: "dgfb", grade: 5, title: "Що ти вже вмієш?", why: "QA", status: "draft", topics: [{ id: "c", title: "Questions", kind: "cur", lessons: ["fbl1"] }],
+    items: [{ ...Q, topic: "c", sk: "orth" }, { ...U, topic: "c", sk: "orth" }] };
+  const install = ([les, tl, diag]) => { const c = SLID_SUBJECTS.find(c => c.id === "ukr");
+    c.sections = [{ id: "fb", grade: 5, weeks: [1, 2], title: "QA build", why: "QA", lessons: [les] }]; c.pools = []; c.diags = diag ? [diag] : []; delete c.graph;
+    if (tl) c.targetLang = tl; else delete c.targetLang; };
+  const boot = async (les, tl, diag) => { await page.goto(URL0); await page.evaluate(() => { localStorage.clear(); localStorage.setItem("slid.v1", JSON.stringify({ grade: 5, subject: "ukr", unlockAll: true })); });
+    await page.reload(); await page.evaluate(install, [les, tl, diag]); };
+  const bank = () => page.evaluate(() => [...document.querySelectorAll("#stage .bank .bt")].map(b => [+b.dataset.t, b.textContent, b.getAttribute("aria-pressed")]));
+  const line = () => page.evaluate(() => [...document.querySelectorAll("#bline .bl")].map(b => b.textContent));
+  const tile = k => `#stage .bank .bt[data-t="${k}"]`;
+  const dock = () => page.evaluate(() => ({ kind: document.querySelector("#dock").className, text: document.querySelector("#fbText").textContent, title: document.querySelector("#fbTitle").textContent }));
+  const noScroll = () => page.evaluate(() => { const p = document.querySelector("#player"), d = document.documentElement;
+    return p.scrollWidth <= p.clientWidth + 1 && d.scrollWidth <= d.clientWidth + 1 && [...document.querySelectorAll("#stage .gopt")].every(b => { const r = b.getBoundingClientRect(); return r.left >= 0 && r.right <= innerWidth + 0.5; }); });
+
+  await boot(LES, "en"); await page.evaluate(() => window.__slidStart("fbl1"));
+  // 1) банк: усі плитки й пастка рівно раз, рядок порожній, «Перевірити» неактивна, у тексті екрана lang=en
+  let b = await bank();
+  ok(same(b.map(x => x[0]).sort(), [0, 1, 2, 3, 4]) && b.every(([k, t]) => t === ["does", "she", "Where", "live", "do"][k]) && b.every(x => x[2] === "false"), `build: банк — усі tiles і extra, aria-pressed false, а ${JSON.stringify(b)}`);
+  ok(!(await page.evaluate(() => SLID_LANG.check(SLID_SUBJECTS.find(c => c.id === "ukr").sections[0].lessons[0].screens[0], [...document.querySelectorAll("#stage .bank .bt")].map(b => +b.dataset.t).filter(k => k < 4), ""))), "build: плитки показано не в правильному порядку");
+  ok(same(await line(), []) && await page.locator("#action").isDisabled(), "build: рядок порожній, «Перевірити» неактивна");
+  ok(await page.evaluate(() => document.querySelector("#stage .bank").closest("[lang]")?.getAttribute("lang") === "en" && document.querySelector("#stage .fix").getAttribute("lang") === "uk"), "build: плитки — зміст (lang=en), інструкція — хром (uk)");
+  ok(await page.evaluate(() => [...document.querySelectorAll("#stage .bank .bt")].every(b => b.offsetHeight >= 44 && b.offsetWidth >= 44)), "build: плитка ≥ 44 × 44 px");   // offset* — розмір розкладки без transform: getBoundingClientRect під час анімації .screen «in» дає 43.99998 (рев'ю P1-1)
+  // 2) дотик: у рядок; ще раз у банку — назад; дотик у рядку — прибрати
+  await page.tap(tile(3)); await page.tap(tile(2));
+  ok(same(await line(), ["live", "Where"]) && await page.getAttribute(tile(3), "aria-pressed") === "true" && await page.locator("#action").isEnabled(), "build: дотик — плитка в рядку, aria-pressed true, «Перевірити» активна");
+  await page.tap(tile(3)); ok(same(await line(), ["Where"]) && await page.getAttribute(tile(3), "aria-pressed") === "false", "build: дотик по плитці банку ще раз — прибрано");
+  await page.tap("#bline .bl >> nth=0"); ok(same(await line(), []) && await page.locator("#action").isDisabled(), "build: дотик по плитці рядка — прибрано, «Перевірити» неактивна");
+  // 3) клавіатура: Enter на плитці банку; прибрана з рядка плитка повертає фокус у банк
+  await page.focus(tile(2)); await page.keyboard.press("Enter"); await page.focus(tile(1)); await page.keyboard.press("Enter");
+  ok(same(await line(), ["Where", "she"]), `build: Enter на плитці — у рядок (${JSON.stringify(await line())})`);
+  await page.focus("#bline .bl >> nth=1"); await page.keyboard.press("Enter");
+  ok(same(await line(), ["Where"]) && await page.evaluate(() => document.activeElement?.dataset?.t) === "1", "build: Enter на плитці рядка — прибрано, фокус на ту саму плитку банку");
+  // 4) хибний порядок: позначки по місцях, «неправильно» для диктора, повідомлення; та сама відповідь — кнопка неактивна
+  for (const k of [1, 0, 3]) await page.tap(tile(k));
+  ok(await noScroll(), "build: 360 px — без горизонтальної прокрутки, плитки в межах екрана");
+  await page.click("#action"); let d = await dock();
+  const marks = await page.evaluate(() => [...document.querySelectorAll("#bline .bl")].map(b => [b.textContent, b.classList.contains("is-ok") ? 1 : b.classList.contains("is-bad") ? 0 : null, b.getAttribute("aria-label")]));
+  ok(/\bbad\b/.test(d.kind) && /не на своїх місцях/.test(d.text), `build: хибний порядок — повідомлення, а ${JSON.stringify(d)}`);
+  ok(same(marks.map(m => m.slice(0, 2)), [["Where", 1], ["she", 0], ["does", 0], ["live", 1]]) && marks.every(m => /— (не)?правильно$/.test(m[2])), `build: позначки по місцях з aria-label, а ${JSON.stringify(marks)}`);
+  ok(await page.getAttribute("#bline", "aria-label") === "Речення — неправильно", "build: рядок — «Речення — неправильно»");
+  ok(await page.locator("#action").isDisabled(), "build: без змін — «Спробувати ще раз» неактивна");
+  // та сама відповідь з іншої плитки — ні; прибрати й повернути ту саму — теж та сама (кнопка неактивна)
+  await page.tap("#bline .bl >> nth=3"); await page.tap(tile(3)); ok(await page.locator("#action").isDisabled(), "build: те саме речення ще раз — спробу не витрачено");
+  // 5) друга спроба — неповне речення: «бракує слів»; показ відповіді
+  await page.tap("#bline .bl >> nth=3");
+  await page.tap("#bline .bl >> nth=2"); await page.tap("#bline .bl >> nth=1"); for (const k of [0, 1]) await page.tap(tile(k));
+  ok(same(await line(), ["Where", "does", "she"]), "build: «Where does she» у рядку");
+  await page.click("#action"); d = await dock();
+  ok(/\bbad\b/.test(d.kind) && /Ось правильна відповідь/.test(d.title), `build: друга хибна спроба — показ відповіді, а ${JSON.stringify(d)}`);
+  ok(/Правильно:\s*Where does she live\?/.test(await page.locator("#hintHost").innerText()), "build: підказка з правильним реченням");
+  ok(await page.locator("#stage .bank .bt:not([disabled])").count() === 0 && await page.locator("#bline .bl:not([disabled])").count() === 0, "build: після відповіді плитки заблоковано");
+  // 6) кілька правильних порядків: «Usually I walk…» і «I usually walk…»
+  await page.click("#action");
+  for (const k of [0, 1, 2, 3]) await page.tap(tile(k));
+  await page.click("#action"); d = await dock();
+  ok(/\bok\b/.test(d.kind), `build: «usually I walk to school» (перша літера — поза плитками) — правильно, а ${JSON.stringify(d)}`);
+  ok(await page.evaluate(() => [...document.querySelectorAll("#bline .bl")].every(b => b.classList.contains("is-ok"))), "build: правильне речення — усі плитки зелені");
+  await page.click("#action");
+  for (const k of [1, 0, 2, 3]) await page.tap(tile(k));
+  await page.click("#action"); ok(/\bok\b/.test((await dock()).kind), "build: другий порядок — правильно");
+  // 7) журнал: raw — зібране речення
+  const ev = await page.evaluate(async () => { if (!window.SLID_EVIDENCE) return null; await SLID_EVIDENCE.flush?.();
+    return (await SLID_EVIDENCE.export()).events.filter(e => e.type === "answer" && e.d.l === "fbl1").map(e => [e.d.i, e.d.type, e.d.try, e.d.verdict, e.d.raw, e.d.ans]); });
+  ok(same(ev, [[0, "build", 1, "bad", "Where she does live", "Where does she live?"], [0, "build", 2, "bad", "Where does she", "Where does she live?"],
+    [1, "build", 1, "ok", "usually I walk to school", "I usually walk to school."], [2, "build", 1, "ok", "I usually walk to school", "I usually walk to school."]]), `build: журнал — raw зібране речення, ans — перший answer, а ${JSON.stringify(ev)}`);
+
+  // 8) тест рівня: без позначок і показу відповіді; вердикт LANG.check
+  await boot(LES, "en", DIAG); await page.evaluate(() => document.querySelector('.tab[data-tab="path"]').click());
+  await page.click('button[data-subject="ukr"]'); { const dg = page.locator("[data-diag]"); if (await dg.count()) await dg.first().click(); else await page.click('[data-plan="ukr"]'); }
+  await page.click("[data-diag-go]");
+  for (const k of [2, 0, 1, 3]) await page.tap(tile(k)); await page.click("#action");
+  ok(await page.evaluate(() => !document.querySelector("#stage .is-ok, #stage .is-bad")), "build у тесті рівня: без позначок");
+  for (const k of [1, 2, 0, 3]) await page.tap(tile(k)); await page.click("#action");
+  const rec = await page.evaluate(() => JSON.parse(localStorage.getItem("slid.v1")).diag?.dgfb);
+  ok(rec && same(rec.res, { 0: 1, 1: 0 }), `build у тесті рівня: OK і BAD, а ${JSON.stringify(rec && rec.res)}`);
+
+  // 9) без targetLang: українське речення, точне порівняння
+  await boot(UKR, null); await page.evaluate(() => window.__slidStart("fbl1"));
+  ok(await page.evaluate(() => !document.querySelector("#player [lang]")), "build без targetLang: жодного lang у плеєрі");
+  for (const k of [1, 0, 2]) await page.tap(tile(k)); await page.click("#action");
+  ok(/\bok\b/.test((await dock()).kind), "build без targetLang: «Сонце яскраво світить» (ключ з крапкою) — правильно");
+  ok(!errors.length, "build: помилки сторінки: " + errors.join(" | "));
+  await ctx.close();
+}
+
+/* 29) match — пари слово ↔ картинка / значення (engine-eng-match; docs/design/english.md §5.7; CONTENT_SCHEMA §4.1): фікстура — предмет ukr
+   з targetLang "en", картинки — tools/fixtures/match-*.svg, телефон 360 px з дотиком. Без targetLang — той самий тип з українським змістом. */
+async function matchScenario(browser) {
+  const ctx = await browser.newContext({ viewport: { width: 360, height: 780 }, hasTouch: true, serviceWorkers: "block" });
+  const page = await ctx.newPage(), errors = []; page.on("pageerror", e => errors.push(String(e))); page.setDefaultTimeout(8000);
+  await page.route("**/fonts.googleapis.com/**", r => r.abort());
+  const fb = t => ({ fbOk: "Yes!", fbBad: "Not quite.", fbText: t });
+  const P = { type: "match", title: "Match the words and the pictures", left: ["sun", "tree", "cat"],
+    right: [{ img: "tools/fixtures/match-sun.svg", alt: "the sun" }, { img: "tools/fixtures/match-tree.svg", alt: "a tree" }, "a pet that says miaow"], ...fb("The sun is in the sky, a tree is green, a cat is a pet.") };
+  const T = { type: "match", title: "Match the opposites", left: ["big", "hot", "old"], right: ["small", "cold", "new"], ...fb("Big — small, hot — cold, old — new.") };
+  const SIX = { type: "match", title: "Match the questions and the answers", left: ["How old are you?", "Where do you live?", "What is your favourite colour?", "Have you got a pet?", "Can you swim?", "Is it a pencil?"],
+    right: ["I am ten years old.", "I live in a small flat in Lviv.", "My favourite colour is dark green.", "Yes, I have got a white rabbit.", "No, I can't, but I can ride a bike.", "No, it isn't. It is a long blue pen."], ...fb("Each answer fits its question.") };
+  const LES = { id: "fml1", title: "Pairs", icon: "book", outro: { text: "Well done.", learned: ["I can match words."] }, screens: [P, T, SIX] };
+  const UKR = { id: "fml1", title: "Пари", icon: "book", outro: { text: "Готово.", learned: ["Добираю пари."] }, screens: [
+    { type: "match", title: "Добери антоніми", left: ["великий", "гарячий", "старий"], right: ["малий", "холодний", "новий"], fbOk: "Так.", fbText: "Антоніми — слова з протилежним значенням." }] };
+  const DIAG = { id: "dgfm", grade: 5, title: "Що ти вже вмієш?", why: "QA", status: "draft", topics: [{ id: "c", title: "Pairs", kind: "cur", lessons: ["fml1"] }],
+    items: [{ ...P, topic: "c", sk: "orth" }, { ...T, topic: "c", sk: "orth" }] };
+  const install = ([les, tl, diag]) => { const c = SLID_SUBJECTS.find(c => c.id === "ukr");
+    c.sections = [{ id: "fm", grade: 5, weeks: [1, 2], title: "QA match", why: "QA", lessons: [les] }]; c.pools = []; c.diags = diag ? [diag] : []; delete c.graph;
+    if (tl) c.targetLang = tl; else delete c.targetLang; };
+  const boot = async (les, tl, diag) => { await page.goto(URL0); await page.evaluate(() => { localStorage.clear(); localStorage.setItem("slid.v1", JSON.stringify({ grade: 5, subject: "ukr", unlockAll: true })); });
+    await page.reload(); await page.evaluate(install, [les, tl, diag]); };
+  const Lb = i => `#mleft .ml[data-l="${i}"]`, Rb = j => `#mright .mr[data-r="${j}"]`;
+  const pair = async (i, j) => { await page.tap(Lb(i)); await page.tap(Rb(j)); };
+  const cls = sel => page.evaluate(sel => { const b = document.querySelector(sel); return b.classList.contains("is-ok") ? 1 : b.classList.contains("is-bad") ? 0 : null; }, sel);
+  const al = sel => page.getAttribute(sel, "aria-label");
+  const dock = () => page.evaluate(() => ({ kind: document.querySelector("#dock").className, text: document.querySelector("#fbText").textContent, title: document.querySelector("#fbTitle").textContent }));
+  const noScroll = () => page.evaluate(() => { const p = document.querySelector("#player"), d = document.documentElement;
+    return p.scrollWidth <= p.clientWidth + 1 && d.scrollWidth <= d.clientWidth + 1 && [...document.querySelectorAll("#stage .gopt")].every(b => { const r = b.getBoundingClientRect(); return r.left >= 0 && r.right <= innerWidth + 0.5; }); });
+  const sizes = () => page.evaluate(() => [...document.querySelectorAll("#stage .ml, #stage .mr")].map(b => [b.offsetWidth, b.offsetHeight]));   // розмір розкладки без transform анімації «in» (рев'ю engine-eng-build P1-1)
+  const big = async () => { const z = await sizes(); ok(z.length && z.every(([w, h]) => w >= 44 && h >= 44), `match: кнопки ≥ 44 × 44 px, а ${JSON.stringify(z)}`); return true; };
+
+  await boot(LES, "en"); await page.evaluate(() => window.__slidStart("fml1"));
+  // 1) колонки: ліва в порядку розмітки, права — перестановка, не тотожна; картинки завантажено, з alt; «Перевірити» неактивна
+  const shown = await page.evaluate(() => [...document.querySelectorAll("#mright .mr")].map(b => +b.dataset.r));
+  ok(same([...shown].sort(), [0, 1, 2]) && shown.some((k, i) => k !== i), `match: права колонка — перестановка, не в порядку розмітки, а ${JSON.stringify(shown)}`);
+  ok(same(await page.evaluate(() => [...document.querySelectorAll("#mleft .ml")].map(b => b.textContent.replace(/^\d+/, "").trim())), ["sun", "tree", "cat"]), "match: ліва колонка — у порядку розмітки, з номерами");
+  await page.waitForFunction(() => [...document.querySelectorAll("#mright img")].every(i => i.complete));
+  ok(same(await page.evaluate(() => [...document.querySelectorAll("#mright img")].map(i => [i.alt, i.naturalWidth > 0]).sort()), [["a tree", true], ["the sun", true]]), "match: картинки завантажено, alt — з розмітки");
+  ok(await page.locator("#action").isDisabled(), "match: без пар — «Перевірити» неактивна");
+  ok(await page.evaluate(() => document.querySelector("#stage .match").closest("[lang]")?.getAttribute("lang") === "en" && document.querySelector("#stage .fix").getAttribute("lang") === "uk" && document.querySelector("#mlive").getAttribute("lang") === "uk"), "match: колонки — зміст (lang=en), інструкція й #mlive — хром (uk)");
+  await big();
+  // 2) дотик: лівий → правий — пара; ще раз — роз'єднати; правий → лівий; правий переходить до іншого лівого
+  await page.tap(Lb(0)); ok(await page.getAttribute(Lb(0), "aria-pressed") === "true", "match: обраний лівий — aria-pressed true");
+  ok(/Обрано «sun»\. Тепер — пара праворуч/.test(await page.textContent("#mlive")), "match: #mlive — що обрано й що далі");
+  await page.tap(Rb(0));
+  ok(await page.getAttribute(Lb(0), "aria-pressed") === "false" && /^1\. sun — пара: the sun$/.test(await al(Lb(0))) && /^the sun — пара: 1\. sun$/.test(await al(Rb(0))), `match: пара — у назвах обох кнопок (${await al(Lb(0))} / ${await al(Rb(0))})`);
+  ok(/Пара: «sun» — «the sun»/.test(await page.textContent("#mlive")), "match: #mlive — «Пара: …»");
+  ok(await page.evaluate(() => document.querySelector('#mright .mr[data-r="0"] .mtag').textContent) === "1", "match: правий у парі — з номером лівого");
+  await pair(0, 0); ok(await al(Lb(0)) === "1. sun" && /Пару роз'єднано/.test(await page.textContent("#mlive")), "match: та сама пара ще раз — роз'єднано");
+  await page.tap(Rb(1)); await page.tap(Lb(1)); ok(/пара: a tree$/.test(await al(Lb(1))), "match: правий → лівий — теж пара");
+  await pair(0, 1); ok(await al(Lb(1)) === "2. tree" && /пара: a tree$/.test(await al(Lb(0))), "match: правий з іншої пари переходить до нового лівого");
+  await page.tap(Lb(2)); await page.tap(Lb(2)); ok(await page.getAttribute(Lb(2), "aria-pressed") === "false", "match: дотик ще раз по обраному — вибір знято");
+  ok(await page.locator("#action").isDisabled(), "match: не всі пари — «Перевірити» неактивна");
+  // 3) клавіатура: Enter на лівому, пробіл на правому; фокус лишається на кнопці
+  await page.focus(Lb(1)); await page.keyboard.press("Enter"); await page.focus(Rb(0)); await page.keyboard.press(" ");
+  ok(/пара: the sun$/.test(await al(Lb(1))) && await page.evaluate(() => document.activeElement?.dataset?.r) === "0", "match: клавіатура — пара, фокус на тій самій кнопці");
+  // 4) хибна спроба: sun–tree, tree–sun, cat–pet → правильна пара закріплена, хибні червоні, повідомлення
+  await pair(2, 2); ok(await page.locator("#action").isEnabled(), "match: усі пари — «Перевірити» активна");
+  ok(await noScroll(), "match: 360 px — без горизонтальної прокрутки");
+  await page.click("#action"); let d = await dock();
+  ok(/\bbad\b/.test(d.kind) && /Червоні пари/.test(d.text), `match: хибна спроба — повідомлення, а ${JSON.stringify(d)}`);
+  ok(await cls(Lb(2)) === 1 && await cls(Rb(2)) === 1 && await page.locator(Lb(2)).isDisabled() && await page.locator(Rb(2)).isDisabled() && /правильно, закріплено$/.test(await al(Lb(2))), "match: правильна пара — зелена й закріплена");
+  ok(await cls(Lb(0)) === 0 && await cls(Lb(1)) === 0 && await cls(Rb(0)) === 0 && /— неправильно$/.test(await al(Lb(0))) && await page.locator(Lb(0)).isEnabled(), "match: хибні пари — червоні, «неправильно», їх можна змінити");
+  ok(await page.locator("#action").isDisabled(), "match: без змін — «Спробувати ще раз» неактивна");
+  await pair(0, 1); await pair(0, 1); ok(await page.locator("#action").isDisabled(), "match: ту саму відповідь складено знову — спробу не витрачено");
+  ok(await cls(Lb(2)) === 1 && await page.locator(Lb(2)).isDisabled(), "match: після змін закріплена пара лишилась зеленою");
+  // 5) друга спроба — правильно (з другої спроби)
+  await pair(0, 0); await pair(1, 1); await page.click("#action"); d = await dock();
+  ok(/\bok\b/.test(d.kind), `match: друга спроба правильно, а ${JSON.stringify(d)}`);
+  ok(await page.evaluate(() => [...document.querySelectorAll("#stage .ml, #stage .mr")].every(b => b.disabled && b.classList.contains("is-ok"))), "match: усі пари зелені й заблоковані");
+  // 6) дві хибні спроби (усі пари хибні — нічого не закріплено) — показ усіх пар
+  await page.click("#action");
+  await pair(0, 1); await pair(1, 2); await pair(2, 0); await page.click("#action");
+  ok(await page.locator("#stage .ml[disabled], #stage .mr[disabled]").count() === 0, "match: жодної правильної пари — нічого не закріплено");
+  await pair(0, 2); await pair(1, 0);   // правий іде від попереднього лівого: tree без пари
+  ok(await page.locator("#action").isDisabled() && await al(Lb(2)) === "3. old", "match: правий перейшов до іншого лівого — той без пари, «Перевірити» неактивна");
+  await pair(2, 1); await page.click("#action"); d = await dock();
+  ok(/\bbad\b/.test(d.kind) && /Ось правильна відповідь/.test(d.title), `match: друга хибна спроба — показ відповіді, а ${JSON.stringify(d)}`);
+  ok(/Правильно:\s*big — small; hot — cold; old — new/.test(await page.locator("#hintHost").innerText()), "match: підказка — усі пари");
+  ok(await page.locator("#stage .ml:not([disabled]), #stage .mr:not([disabled])").count() === 0, "match: після відповіді кнопки заблоковано");
+  // 7) 6 пар з довгим текстом на 360 px
+  await page.click("#action");
+  ok(await noScroll(), "match: 6 пар — без горизонтальної прокрутки"); await big();
+  for (let i = 0; i < 6; i++) await pair(i, i);
+  await page.click("#action"); ok(/\bok\b/.test((await dock()).kind), "match: 6 пар — правильно з першої спроби");
+  // 8) журнал: raw — масив за лівими (індекс правого в розмітці)
+  const ev = await page.evaluate(async () => { if (!window.SLID_EVIDENCE) return null; await SLID_EVIDENCE.flush?.();
+    return (await SLID_EVIDENCE.export()).events.filter(e => e.type === "answer" && e.d.l === "fml1").map(e => [e.d.i, e.d.type, e.d.try, e.d.verdict, e.d.raw]); });
+  ok(same(ev, [[0, "match", 1, "bad", [1, 0, 2]], [0, "match", 2, "ok", [0, 1, 2]], [1, "match", 1, "bad", [1, 2, 0]], [1, "match", 2, "bad", [2, 0, 1]], [2, "match", 1, "ok", [0, 1, 2, 3, 4, 5]]]), `match: журнал — raw масив за лівими, а ${JSON.stringify(ev)}`);
+
+  // 9) тест рівня: без позначок, вердикт LANG.check
+  await boot(LES, "en", DIAG); await page.evaluate(() => document.querySelector('.tab[data-tab="path"]').click());
+  await page.click('button[data-subject="ukr"]'); { const dg = page.locator("[data-diag]"); if (await dg.count()) await dg.first().click(); else await page.click('[data-plan="ukr"]'); }
+  await page.click("[data-diag-go]");
+  for (let i = 0; i < 3; i++) await pair(i, i); await page.click("#action");
+  ok(await page.evaluate(() => !document.querySelector("#stage .is-ok, #stage .is-bad")), "match у тесті рівня: без позначок");
+  await pair(0, 1); await pair(1, 0); await pair(2, 2); await page.click("#action");
+  const rec = await page.evaluate(() => JSON.parse(localStorage.getItem("slid.v1")).diag?.dgfm);
+  ok(rec && same(rec.res, { 0: 1, 1: 0 }), `match у тесті рівня: OK і BAD, а ${JSON.stringify(rec && rec.res)}`);
+
+  // 10) без targetLang: українські пари, жодного lang у плеєрі
+  await boot(UKR, null); await page.evaluate(() => window.__slidStart("fml1"));
+  ok(await page.evaluate(() => !document.querySelector("#player [lang]")), "match без targetLang: жодного lang у плеєрі");
+  for (let i = 0; i < 3; i++) await pair(i, i); await page.click("#action");
+  ok(/\bok\b/.test((await dock()).kind), "match без targetLang: правильні пари — зараховано");
+  ok(!errors.length, "match: помилки сторінки: " + errors.join(" | "));
+  await ctx.close();
+}
+
+/* 30) «Тренування» англійської (engine-eng-diag-pool; docs/design/english.md §7): фікстура — предмет ukr з targetLang "en", пул з build, match
+   і choice. Джерело top34 — програма класу (program: true; вправи власні): рядка «Джерело» під вправою немає (рев'ю skills-eng P2-4: читався б
+   як «вправа з програми», а назву програми диктор читав би англійською); choice з джерела без program — рядок є, як раніше. build: хибний
+   порядок → «Спробувати ще раз» і hint, друга спроба правильно → «Пояснення»; match — з першої. Підсумок: seen, SRS, журнал answer. */
+async function practiceEngScenario(browser) {
+  const ctx = await browser.newContext({ viewport: { width: 360, height: 780 }, hasTouch: true, serviceWorkers: "block" });
+  const page = await ctx.newPage(), errors = []; page.on("pageerror", e => errors.push(String(e))); page.setDefaultTimeout(8000);
+  await page.route("**/fonts.googleapis.com/**", r => r.abort());
+  const it = (id, lesson, x) => ({ id, lesson, lvl: 2, sk: "orth", src: "top34 с. 62", ...x });
+  const POOL = { id: "pfpe", section: "fpe", status: "draft",
+    sources: [{ id: "top34", title: "Типова освітня програма, 3–4 класи", url: "https://example.org/top34.pdf", program: true }, { id: "dict", title: "Fixture dictionary", url: "https://example.org/dict" }],
+    items: [it("a01", "fpe1", { type: "build", title: "Put the words in order", tiles: ["Where", "does", "she", "live?"], answer: ["Where does she live?"], hint: "Start with Where.", steps: ["Where + does + she + live?"] }),
+      it("a02", "fpe1", { type: "match", title: "Match the opposites", left: ["big", "hot", "old"], right: ["small", "cold", "new"], hint: "Big is not small.", steps: ["Big — small, hot — cold, old — new."] }),
+      it("a03", "fpe2", { type: "choice", lvl: 1, src: "dict p. 3", title: "Which word is plural?", body: "<p>Choose one.</p>", opts: ["cats", "cat"], correct: 0, steps: ["Cats ends in -s."] })] };
+  const install = pool => { const c = SLID_SUBJECTS.find(c => c.id === "ukr");
+    const lesson = id => ({ id, title: "Lesson " + id, icon: "book", screens: [{ type: "intro", title: id, body: "QA" }] });
+    c.sections = [{ id: "fpe", grade: 5, weeks: [1, 2], title: "QA practice en", why: "QA", lessons: ["fpe1", "fpe2"].map(lesson) }];
+    c.pools = [pool]; c.diags = []; delete c.graph; c.targetLang = "en"; };
+  await page.goto(URL0);
+  await page.evaluate(() => { localStorage.clear(); localStorage.setItem("slid.v1", JSON.stringify({ grade: 5, subject: "ukr", unlockAll: false, lessons: { fpe1: { done: true, stars: 3 }, fpe2: { done: true, stars: 3 } } })); });
+  await page.reload(); await page.evaluate(install, POOL);
+  await page.evaluate(() => document.querySelector('.tab[data-tab="path"]').click());
+  await page.click('button[data-subject="ukr"]'); await page.click('[data-practice-view="ukr"]'); await page.click('[data-practice="fpe1"]');
+  const title = () => page.locator("#stage h2").first().innerText();
+  const srcnote = () => page.evaluate(() => [...document.querySelectorAll("#stage .srcnote")].map(e => e.textContent));
+  const tile = k => `#stage .bank .bt[data-t="${k}"]`;
+  const seen = {};
+  for (let n = 0; n < 3; n++) {
+    const t = await title(); seen[t] = await srcnote();
+    if (t === "Put the words in order") {
+      for (const k of [1, 0, 2, 3]) await page.tap(tile(k)); await page.click("#action");
+      ok(/Спробувати ще раз/.test(await page.locator("#action").innerText()) && /Start with Where/.test(await page.locator("#hintHost").innerText()), "practice en: build хибно — друга спроба й hint");
+      for (let i = 0; i < 4; i++) await page.tap("#bline .bl >> nth=0");
+      for (const k of [0, 1, 2, 3]) await page.tap(tile(k)); await page.click("#action");
+      const d = await page.locator("#dock").innerText();
+      ok(/Пояснення/.test(d) && !/Розв'язання/.test(d) && /Where \+ does/.test(d), `practice en: build з другої спроби — «Пояснення» зі steps («${d.slice(0, 120)}»)`);
+    } else if (t === "Match the opposites") {
+      for (let i = 0; i < 3; i++) { await page.tap(`#mleft .ml[data-l="${i}"]`); await page.tap(`#mright .mr[data-r="${i}"]`); }
+      await page.click("#action");
+      ok(/Правильно/.test(await page.locator("#dock").innerText()), "practice en: match з першої — «Правильно»");
+    } else if (t === "Which word is plural?") {
+      await page.click('#stage .opt[data-k="0"]'); await page.click("#action");
+    } else { ok(false, `practice en: несподівана вправа «${t}»`); break; }
+    await page.click("#action");
+  }
+  ok(same(seen["Put the words in order"], []) && same(seen["Match the opposites"], []), `practice en: джерело-програма (program: true) — рядка «Джерело» немає, а ${JSON.stringify(seen)}`);
+  ok((seen["Which word is plural?"] || []).length === 1 && /^Джерело: Fixture dictionary, (p\. 3|с\. 3|p\. 3)/.test(seen["Which word is plural?"][0]), `practice en: звичайне джерело — рядок «Джерело» як раніше, а ${JSON.stringify(seen["Which word is plural?"])}`);
+  const S = await page.evaluate(() => JSON.parse(localStorage.getItem("slid.v1")));
+  ok(same(S.seen, { "pfpe:a01": 0, "pfpe:a02": 1, "pfpe:a03": 1 }), `practice en: seen — build з другої спроби 0, match і choice 1, а ${JSON.stringify(S.seen)}`);
+  ok(S.srs?.fpe1?.box === 0 && S.srs?.fpe2?.box === 1, `practice en: SRS — fpe1 (build з другої спроби) коробка 0, fpe2 — 1, а ${JSON.stringify(S.srs)}`);
+  const ev = await page.evaluate(async () => { if (!window.SLID_EVIDENCE) return null; await SLID_EVIDENCE.flush?.();
+    return (await SLID_EVIDENCE.export()).events.filter(e => e.type === "answer" && e.d.mode === "practice" && e.d.type !== "choice").map(e => [e.d.key, e.d.type, e.d.try, e.d.verdict, e.d.raw]); });
+  ok(same(ev, [["pfpe:a01", "build", 1, "bad", "does Where she live?"], ["pfpe:a01", "build", 2, "ok", "Where does she live?"], ["pfpe:a02", "match", 1, "ok", [0, 1, 2]]]),
+    `practice en: журнал — raw build (речення) і match (масив), а ${JSON.stringify(ev)}`);
+  ok(!errors.length, "practice en: помилки сторінки: " + errors.join(" | "));
   await ctx.close();
 }

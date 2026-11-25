@@ -9,7 +9,7 @@
 ## Файли й порядок завантаження
 ```
 index.html              оболонка + CSS (токени кольорів, світла/темна тема)
-  app/registry.js       window.SLID: subject() / section() / soon() / finalize()
+  app/registry.js       window.SLID: subject() / section() / soon() / finalize(); subjectLang() — мова змісту предмета (targetLang, CONTENT_SCHEMA §1)
   content/subjects/*.js метадані предметів
   content/<предмет>/plan.js      плановані розділи (без уроків)
   content/<предмет>/g*-*.js      розділи з уроками (замінюють записи плану з тим самим id)
@@ -28,6 +28,10 @@ index.html              оболонка + CSS (токени кольорів, �
 - **Формули**: `mathHTML()` / `fmt()` — власний мініпарсер `$…$` → HTML (дроби стовпчиком, ·, :). KaTeX не використовується: йому потрібні шрифти, які не вантажаться офлайн і блокуються в артефакті.
 - **Навігація**: вкладки «Навчання / Прогрес / Профіль». «Навчання»: предмети → план року (розділи) → уроки розділу. Стан `nav = {v: home|subject|topic, id, sec}`.
 - **Плеєр уроку**: `renderScreen()` будує екран за типом, `check()` оцінює, `setDock()` показує фідбек у нижній панелі.
+- **Мова змісту** (engine-eng-lang-attr, D-055): для предмета з `targetLang` (`SLID.subjectLang`) `section.screen` плеєра має `lang` цієї мови, зміст у панелі відповіді й на підсумках — `inL()` (`<span lang>`), хром усередині змісту — `inUi()` / `uiA()` (мова `<html lang>`). Без `targetLang` усі три — тотожність, розмітка як раніше. Згорнутий переклад правила — `ukHtml()` (поле `uk`, CONTENT_SCHEMA §4), подія `uk_open`. Сценарій — test-ui №26.
+- **Перевірка мовних вправ за мовою змісту** (engine-eng-lang-core): `TL()` — `SLID.subjectLang` поточного предмета (без порівняння з мовою сторінки) — третій аргумент `LANG.check`, `LANG.wordInput` і `LANG.wordVerdict` (app/lang.js). `"en"` вмикає правила `word` англійською (CONTENT_SCHEMA §4.1): примітка «In British English: …» під відповіддю (`ok`), «Almost: check the spelling.» чи «Перемкни клавіатуру на англійську.» після першої помилки. `stress` складами — від розмітки (`|`), не від мови. Сценарій — test-ui №27.
+- **Речення з плиток `build`** (engine-eng-build): розбір, перевірка, позначки й порядок показу — у `app/lang.js` (`buildTiles`, `buildText`, `buildMarks`, `buildOrder`; стан — індекси плиток у рядку), розмітка й дотики — `langHtml` / `bindLang` / `langMarks` у app.js (рядок `#bline`, банк `.bank .bt`; стилі — наявні `.ltext`/`.gopt` і inline, без змін index.html). Журнал: `raw` — зібране речення (`evRaw`), відбиток спроби — те саме речення (`answerSig`). Сценарій — test-ui №28.
+- **Пари `match`** (engine-eng-match): перевірка, розмітка й порядок правої колонки — у `app/lang.js` (`matchOrder`, `matchLabel`; стан — за лівими, індекс правого в розмітці), кнопки й дотики — `langHtml` / `bindLang` (`matchDraw`) / `langMarks` у app.js (`#mleft .ml`, `#mright .mr`, повідомлення для диктора `#mlive`; стилі — `.gopt` і inline). Вибраний елемент (`mSel`) і пари, закріплені після першої помилки (`mLock`), — стан плеєра, не відповідь. Журнал: `raw` — масив за лівими. Сценарій — test-ui №29.
 - **Кольори предметів**: `subjectCSS()` генерує CSS-змінні з `colors` у контенті; під час уроку `data-subject` на `<html>` перемикає акцент.
 - **Ілюстрації**: `svgFig(name)` — іменовані SVG (історія); `mathFig(spec)` — параметричні фігури (математика).
 

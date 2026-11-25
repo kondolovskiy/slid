@@ -32,7 +32,7 @@ const listTasks = dir => ["todo", "doing", "review", "done"].flatMap(d => fs.exi
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "slid-test-make-tasks-"));
 process.on("exit", () => fs.rmSync(tmp, { recursive: true, force: true }));
 const T = path.join(tmp, "tasks"); for (const d of ["todo", "doing", "review", "done"]) fs.mkdirSync(path.join(T, d), { recursive: true });
-fs.writeFileSync(path.join(T, "done", "pool-zz3-renamed.md"), "---\nid: write-math-pool-zz3\ntype: write-pool\n---\n# Стара задача\n");
+fs.writeFileSync(path.join(T, "done", "pool-zz3-renamed.md"), "---\r\nid: write-math-pool-zz3\r\ntype: write-pool\r\n---\r\n# Стара задача\r\n");   // CRLF (Windows, core.autocrlf): frontmatter має читатись (рев'ю engine-eng-tools P2-1)
 fs.writeFileSync(path.join(T, "review", "write-math-pool-zz4.md"), "---\nid: write-math-pool-zz4\n---\n");
 fs.writeFileSync(path.join(T, "doing", "write-math-pool-zz6.md"), "# без frontmatter id — пропуск лише за іменем файлу\n");
 const L = (section, lesson, scope, extra = {}) => ({ grade: 8, section, lesson, title: `Урок ${lesson}`, curricularScope: scope, reason: `причина ${lesson}`,
@@ -123,7 +123,7 @@ const newTasks = name => { const d = path.join(tmp, name); for (const s of ["tod
   fs.writeFileSync(path.join(TU, "done", "renamed.md"), "---\nid: write-ukr-pool-fu5c\n---\n");
   const r0 = run("--subject", "ukr", "--content", FX, "--tasks", TU, "--dry-run");
   ok(r0.status === 0 && /^\[dry-run\] ukr: створилося б задач на пули: 2 \(fu5a, fu6a\)$/m.test(r0.out), "ukr --dry-run: лише fu5a і fu6a", r0.out);
-  ok(/задача вже є — 1 \(fu5c\); пул уже є — 2 \(fu5b, fu5d\); без пулу \(«Пишемо самі»\) — 1 \(fu5rm\)/.test(r0.out), "ukr: пропущено задачу (id у frontmatter), пул за файлом і за id, «Пишемо самі»", r0.out);
+  ok(/задача вже є — 1 \(fu5c\); пул уже є — 2 \(fu5b, fu5d\); без пулу \(noPool чи «Пишемо самі»\) — 1 \(fu5rm\)/.test(r0.out), "ukr: пропущено задачу (id у frontmatter), пул за файлом і за id, «Пишемо самі»", r0.out);
   ok(!fs.readdirSync(path.join(TU, "todo")).length, "ukr --dry-run: нічого не записано");
   const r = run("--subject", "ukr", "--content", FX, "--tasks", TU, "--grade", "5");
   ok(r.status === 0 && /^ukr: створено задач на пули: 1 \(fu5a\)$/m.test(r.out), "ukr --grade 5: створено лише fu5a", r.out);
@@ -146,11 +146,60 @@ const newTasks = name => { const d = path.join(tmp, name); for (const s of ["tod
   // предмет без пулів — код 2
   const rh = run("--subject", "hist", "--content", FX, "--tasks", TD, "--dry-run");
   ok(rh.status === 2 && /hist/.test(rh.out), "--write-pool --subject hist: пули не заплановано — код 2", rh.out); }
+// engine-eng-tools: предмет з targetLang "en" (subjectLang) — фікстура tools/fixtures/make-tasks/content-eng поверх FX.
+// Звичайний режим: задачі write-<предмет>-g<клас>-<розділ> із шаблоном «усе англійською»; дедуплікація ще й за frontmatter
+// (type: write-section + subject + section), бо задачі eng названо не write-eng-<розділ>; задача пулу (type: write-pool) задачу розділу не заступає.
+// --write-pool: write-<предмет>-pool-g<клас>-<розділ>, шаблон англійською; noPool: true (у файлі розділу чи в plan.js) — без пулу.
+{ const FXE = path.join(tmp, "content-root-eng"); fs.cpSync(FX, FXE, { recursive: true });
+  fs.cpSync(path.join(ROOT, "tools/fixtures/make-tasks/content-eng"), path.join(FXE, "content"), { recursive: true });
+  const TE = newTasks("tasks-eng");
+  fs.writeFileSync(path.join(TE, "review", "renamed-fe5b.md"), "---\nid: write-eng-g5-fe5b-v2\ntype: write-section\nsubject: eng\ngrade: 5\nsection: fe5b\n---\n");
+  fs.writeFileSync(path.join(TE, "doing", "write-eng-fe5q.md"), "# стара назва без frontmatter\n");
+  fs.writeFileSync(path.join(TE, "todo", "write-eng-pool-g5-fe5p.md"), "---\nid: write-eng-pool-g5-fe5p\ntype: write-pool\nsubject: eng\ngrade: 5\nsection: fe5p\n---\n");
+  fs.writeFileSync(path.join(TE, "todo", "math-same-section.md"), "---\nid: write-math-fe5a\ntype: write-section\nsubject: math\nsection: fe5a\n---\n");
+  fs.writeFileSync(path.join(TE, "done", "pool-fe5d.md"), "---\nid: eng-pool-fe5d-old\ntype: write-pool\nsubject: eng\ngrade: 5\nsection: fe5d\n---\n");
+  const r0 = runN("--content", FXE, "--tasks", TE, "--subject", "eng", "--dry-run");
+  ok(r0.status === 0 && /^\[dry-run\] Створилося б задач: 3 \(write-eng-g4-fe4a\.md, write-eng-g5-fe5a\.md, write-eng-g5-fe5p\.md\)$/m.test(r0.out),
+    "eng --dry-run: fe4a, fe5a, fe5p у форматі g<клас>; fe5b (section у frontmatter) і fe5q (стара назва) — пропущено; задача пулу й задача іншого предмета не заступають", r0.out);
+  const r = runN("--content", FXE, "--tasks", TE, "--subject", "eng");
+  ok(r.status === 0 && /Створено задач: 3\b/.test(r.out), "eng: створено 3 задачі", r.out);
+  const f = path.join(TE, "todo", "write-eng-g5-fe5a.md"), b = fs.existsSync(f) ? fs.readFileSync(f, "utf8") : "";
+  ok(b.startsWith("---\nid: write-eng-g5-fe5a\ntype: write-section\nsubject: eng\ngrade: 5\nsection: fe5a\nweeks: [1, 4]\nstatus: todo\n"), "eng шаблон: frontmatter з id write-eng-g5-fe5a", b.slice(0, 220));
+  ok(b.includes("# Написати розділ «Fixture: my family» (Англійська мова, 5 клас)") && b.includes("1. Family words\n2. Фінальний урок розділу"), "eng шаблон: назва й теми з плану", b);
+  ok(/Усе англійською/.test(b) && b.includes("британська норма") && b.includes("docs/design/english.md §11.1"), "eng шаблон: усе англійською, британська норма, рішення людини", b);
+  for (const ref of ["style/common.md", "style/eng.md", "memory/long/glossary/eng.md", "memory/long/facts/eng.md", "«Джерела»", "pitfalls-content.md", "«Англійська»", ".claude/skills/content-author/SKILL.md", "`content/eng/g5-fe5a.js`", "`node tools/validate.mjs --section fe5a` — 0 помилок", "AGENTS.md §4 п. 8"])
+    ok(b.includes(ref), `eng шаблон: є ${ref}`, b);
+  ok(/[Бб]ез звуку/.test(b) && /власні/.test(b), "eng шаблон: без звуку, тексти власні", b);
+  ok(!b.includes("З<клас>") && !b.includes("D-041") && b.includes("- Розділи цього ж класу з уроками: fe5n, fe5c, fe5d, fe5w — вирівнюйся по них"), "eng шаблон: без українських джерел; сусіди 5 кл. з уроками", b);
+  ok(fs.existsSync(path.join(TE, "todo", "write-eng-g4-fe4a.md")) && !fs.existsSync(path.join(TE, "todo", "write-eng-fe4a.md")), "eng: нова задача — у форматі write-eng-g4-fe4a");
+  const r2 = runN("--content", FXE, "--tasks", TE, "--subject", "eng");
+  ok(r2.status === 0 && /Створено задач: 0\b/.test(r2.out), "eng: повторний запуск — 0 нових", r2.out);
+  // предмет без targetLang у тому самому дереві — як раніше (write-<предмет>-<розділ>)
+  const rm = runN("--content", FXE, "--tasks", newTasks("tasks-eng-math"), "--subject", "math", "--dry-run");
+  ok(/Створилося б задач: 2 \(write-math-fm5\.md, write-math-fm6\.md\)/.test(rm.out), "math у дереві з eng: назви як раніше", rm.out);
+  // --write-pool --subject eng
+  const p0 = run("--subject", "eng", "--content", FXE, "--tasks", TE, "--dry-run");
+  ok(p0.status === 0 && /^\[dry-run\] eng: створилося б задач на пули: 1 \(fe5c\)$/m.test(p0.out), "eng --write-pool --dry-run: лише fe5c", p0.out);
+  ok(/задача вже є — 1 \(fe5d\); пул уже є — 0; без пулу \(noPool чи «Пишемо самі»\) — 2 \(fe5n, fe5w\)/.test(p0.out), "eng пули: задача за section у frontmatter; noPool у файлі розділу й у плані", p0.out);
+  const p1 = run("--subject", "eng", "--content", FXE, "--tasks", TE);
+  ok(p1.status === 0 && /^eng: створено задач на пули: 1 \(fe5c\)$/m.test(p1.out), "eng --write-pool: створено fe5c", p1.out);
+  const pf = path.join(TE, "todo", "write-eng-pool-g5-fe5c.md"), pb = fs.existsSync(pf) ? fs.readFileSync(pf, "utf8") : "";
+  ok(pb.startsWith("---\nid: write-eng-pool-g5-fe5c\ntype: write-pool\nsubject: eng\ngrade: 5\nsection: fe5c\nstatus: todo\nclaimed_by:\n"), "eng пул: frontmatter, id write-eng-pool-g5-fe5c", pb.slice(0, 220));
+  ok(/\ndepends_on: \[engine-eng-diag-pool\]\n/.test(pb) && pb.includes("Не брати, доки"), "eng пул: engine-eng-diag-pool ще не в done — залежність", pb.slice(0, 400));
+  ok(pb.includes("`content/eng/pool-g5-fe5c.js`") && pb.includes('SLID.pool("eng", { id: "pfe5c", section: "fe5c"'), "eng пул: файл і id p<розділ>", pb);
+  ok(pb.includes("- `fe5cl1` — Fruit\n- `fe5cl2` — Breakfast\n") && !pb.includes("fe5cb"), "eng пул: уроки без фіналу", pb);
+  ok(/Усе англійською/.test(pb) && pb.includes("британська норма") && pb.includes("style/eng.md") && pb.includes("memory/long/facts/eng.md") && /власні/.test(pb), "eng пул: англійською, британська норма, style/eng.md, facts/eng.md, вправи власні", pb);
+  ok(pb.includes("node tools/validate.mjs --pool pfe5c") && pb.includes("node tools/personalization-qa.mjs --pool pfe5c") && pb.includes("content-verifier") && pb.includes("D-019"), "eng пул: validate, personalization-qa, верифікатор, D-019", pb);
+  ok(!pb.includes("З5 впр") && !pb.includes("D-041") && !pb.includes("euphony"), "eng пул: без українських джерел, норми D-041 і милозвучності", pb);
+  const TD2 = newTasks("tasks-eng-done"); fs.writeFileSync(path.join(TD2, "done", "engine-eng-diag-pool.md"), "---\nid: engine-eng-diag-pool\n---\n");
+  run("--subject", "eng", "--content", FXE, "--tasks", TD2);
+  const pd = path.join(TD2, "todo", "write-eng-pool-g5-fe5c.md"), pdb = fs.existsSync(pd) ? fs.readFileSync(pd, "utf8") : "";
+  ok(/\ndepends_on: \[\]\n/.test(pdb) && !pdb.includes("Не брати, доки"), "eng пул: engine-eng-diag-pool у done — без залежності", pdb.slice(0, 300)); }
 // справжній зміст ukr — лише інваріанти: код 0, нічого не записано, кожен розділ з уроками — рівно в одній групі
 { const before = listTasks(path.join(ROOT, "tasks"));
   const r = run("--subject", "ukr", "--dry-run");
   ok(r.status === 0 && JSON.stringify(listTasks(path.join(ROOT, "tasks"))) === JSON.stringify(before), "ukr справжня черга: код 0, dry-run нічого не записав", r.out);
-  const m = r.out.match(/створилося б задач на пули: (\d+)/), s = r.out.match(/задача вже є — (\d+)(?: \([^)]*\))?; пул уже є — (\d+)(?: \([^)]*\))?; без пулу \(«Пишемо самі»\) — (\d+)/);
+  const m = r.out.match(/створилося б задач на пули: (\d+)/), s = r.out.match(/задача вже є — (\d+)(?: \([^)]*\))?; пул уже є — (\d+)(?: \([^)]*\))?; без пулу \(noPool чи «Пишемо самі»\) — (\d+)/);
   const { subjects } = await import(path.join(ROOT, "tools/lib.mjs")).then(l => l.loadContent());
   const secs = subjects.find(c => c.id === "ukr").sections.filter(x => x.lessons?.length).length;
   ok(m && s && +m[1] + +s[1] + +s[2] + +s[3] === secs, `ukr справжня черга: made + task + pool + «Пишемо самі» = ${secs} розділів з уроками`, r.out); }

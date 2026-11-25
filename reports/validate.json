@@ -1,7 +1,12 @@
 {
-  "date": "2026-11-19T11:11:22.157Z",
+  "date": "2026-11-25T10:03:30.623Z",
   "errors": [],
   "warnings": [
+    "content/eng/g4-e4s1.js#e4s1l6: longWordShare=0.165 поза профілем [0; 0.12] для eng, 4 кл.",
+    "content/eng/g4-e4s2.js#e4s2l6: readWordsPerScreen=33 поза профілем [4; 30] для eng, 4 кл.",
+    "content/eng/g4-e4s7.js#e4s7l3: longWordShare=0.19 поза профілем [0; 0.12] для eng, 4 кл.",
+    "content/eng/g5-e5s8.js#e5s8l3: longWordShare=0.16 поза профілем [0; 0.14] для eng, 5-6 кл.",
+    "content/eng/g5-e5s10.js#e5s10l2: longWordShare=0.201 поза профілем [0; 0.14] для eng, 5-6 кл.",
     "content/hist/g5-s1.js#l1 екран 9 (multi): fbText: позиційне посилання «Перші три твердження» — порядок варіантів може змінитися, назви сам варіант чи зміст",
     "content/hist/g5-s1.js#l5 екран 4 (sort): дуже довге речення (28 слів): «Відомо з уроку й досліджень: легенду про Кия записано в «Пов…»",
     "content/hist/g5-s2.js#h23 екран 6 (choice): оцінюваний choice без питання: ні title, ні body не питають і не кажуть, що обрати («Центр Слобожанщини…») — додай «?» чи «Обери / Познач …»",

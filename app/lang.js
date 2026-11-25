@@ -4,7 +4,14 @@
      gaps   — text: "с{*е|и}ло"           пропуски з варіантами; * — правильний; «—» — нічого не писати (дитина бачить «∅»); «–» (U+2013) — тире (бачить «—»)
      pick   — text: "[Сонце] світить."     дитина торкається слів; правильні — у [дужках] (група в дужках — одна кнопка); [!група] — хибна група-кнопка
      stress — words: ["черг+овий"]         торкнутися наголошеного голосного; + перед ним
+              words: ["+pho|to|graph"]     або складу: склади через «|», + перед наголошеним складом (англійська, §5.6 дизайну)
      word   — answer: "пів'яблука" | [...]  дитина вписує слово; регістр, апостроф і дефіс нормалізуються
+              предмет з targetLang "en" (lang у check / wordVerdict / wordInput): ще кінцевий знак, кирилиця-двійник, contractions,
+              американський правопис за списком (ok з приміткою), запис часу, «Almost» (docs/design/english.md §5.4)
+     build  — tiles: [...], answer: "…" | [...], extra: [...]   речення з плиток-слів (docs/design/english.md §5.5): кожен answer — усі tiles
+                                            рівно раз (кінцевий .!? і велика перша літера — поза плитками); extra — ≤ 2 пастки; разом ≤ 9 плиток
+     match  — left: [...], right: ["…" | { img, alt }]   пари (docs/design/english.md §5.7): left[i] ↔ right[i], 3–6 пар; праву колонку
+                                            плеєр показує перемішаною (matchOrder); картинка — файл з alt, emoji системного шрифту — ні
      split  — word: "мо|ло|ко" | [...]     поділ слова рисками між літерами (склади, перенос, будова слова); zero: true — після слова
                                             клітинка нульового закінчення «□» (межа перед нею — «стіл|») */
 (function () {
@@ -61,16 +68,28 @@
 
   /** pick: [{t:"text", v}, {t:"word", v, ok, n, group?}] або { error }. Слово — літери, апостроф, дефіс; група в [ ] — одна кнопка
       (group: true — кнопка з дужок, навіть з одного слова). [!група] — хибна кнопка; пробіли біля «!» дозволені: [ ! слово ]. */
-  const WORD = /[\p{L}\p{M}'’ʼ]+(?:[-\u2011][\p{L}\p{M}'’ʼ]+)*/gu;
+  /* Токен — літери, цифри, апострофи, дефіс усередині; кнопкою стає лише токен з літерою («5th», «3pm» — одна кнопка; «1991» — текст).
+     Апостроф-лапки на краях (engine-eng-lang-core, §5.4 дизайну): початкові ' ‘ ’ ʼ — завжди в текст; кінцеві — лише в парі з початковими
+     ('hello', ‘hello’ → hello), бо кінцевий апостроф без пари — присвійний (the boys'). */
+  const WORD = /[\p{L}\p{M}\p{N}'’ʼ‘]+(?:[-\u2011][\p{L}\p{M}\p{N}'’ʼ‘]+)*/gu;
+  const QUOTE = /^['’ʼ‘]+/, QUOTE_END = /['’ʼ‘]+$/;
+  /** Межі слова-кнопки в токені: [початок, кінець) або null (немає літери) */
+  function tokenCore(tok) {
+    const a = (tok.match(QUOTE) || [""])[0].length, z = a ? (tok.slice(a).match(QUOTE_END) || [""])[0].length : 0;
+    const core = tok.slice(a, tok.length - z);
+    return /\p{L}/u.test(core) ? [a, tok.length - z] : null;
+  }
   function parsePick(text) {
     const src = String(text ?? ""), out = [];
     let n = 0;
     const words = (chunk, ok) => {
       let last = 0;
       for (const m of chunk.matchAll(WORD)) {
-        if (m.index > last) out.push({ t: "text", v: chunk.slice(last, m.index) });
-        out.push({ t: "word", v: m[0], ok, n: n++ });
-        last = m.index + m[0].length;
+        const c = tokenCore(m[0]); if (!c) continue;
+        const a = m.index + c[0], z = m.index + c[1];
+        if (a > last) out.push({ t: "text", v: chunk.slice(last, a) });
+        out.push({ t: "word", v: chunk.slice(a, z), ok, n: n++ });
+        last = z;
       }
       if (last < chunk.length) out.push({ t: "text", v: chunk.slice(last) });
     };
@@ -86,7 +105,7 @@
       // [!група] — хибна група: одна кнопка, але не правильна (щоб багатослівні кнопки не видавали відповідь)
       const wrong = inner.trimStart().startsWith("!"), v = (wrong ? inner.trimStart().slice(1) : inner).trim();
       if (wrong && v.startsWith("!")) return { error: `[${inner}]: «!» двічі — хибну групу позначає один «!»` };
-      if (!v.match(WORD)) return { error: `[${inner}]: у дужках немає слова` };
+      if (!/\p{L}/u.test(v)) return { error: `[${inner}]: у дужках немає слова` };
       out.push({ t: "word", v, ok: !wrong, n: n++, group: true });
       i = b + 1;
     }
@@ -97,14 +116,24 @@
     return { parts: out, words: all, correct: all.filter(w => w.ok).map(w => w.n) };
   }
 
-  /** stress: { letters: [{ch, v (голосний), i}], correct: індекс літери } або { error }. «+» стоїть перед наголошеним голосним. */
+  /** stress: { letters: [{ch, v (голосний), i}], correct: індекс літери } або { error }. «+» стоїть перед наголошеним голосним.
+      Склади (є «|»): "+pho|to|graph" → letters — склади (усі кнопки, i — номер складу), correct — номер наголошеного складу, syl: true. */
   function parseStress(word) {
     const src = String(word ?? "").normalize("NFC");
     if (/\p{M}/u.test(src)) return { error: `«${src}»: знак наголосу чи інший комбінований знак у слові — наголос тут позначає лише «+»` };
     const plus = (src.match(/\+/g) || []).length;
+    if (src.includes("|")) {
+      if (plus !== 1) return { error: `«${src}»: має бути рівно один «+» перед наголошеним складом` };
+      const syl = src.split("|");
+      if (syl.some(x => !x || x === "+")) return { error: `«${src}»: порожній склад — «|» на краю слова чи дві поспіль` };
+      if (syl.some(x => x.indexOf("+") > 0)) return { error: `«${src}»: «+» ставимо на початку наголошеного складу: pho|+tog|ra|pher` };
+      const clean = syl.map(x => x.replace("+", ""));
+      if (clean.some(x => !/^[\p{L}'’ʼ-]+$/u.test(x))) return { error: `«${src}»: у складі — лише літери (без пробілів і знаків)` };
+      return { letters: clean.map((ch, i) => ({ ch, v: true, i })), correct: syl.findIndex(x => x.startsWith("+")), word: clean.join(""), syl: true };
+    }
     if (plus !== 1) return { error: `«${src}»: має бути рівно один «+» перед наголошеним голосним` };
     const p = src.indexOf("+"), ch = src[p + 1];
-    if (!ch || !isVowel(ch)) return { error: `«${src}»: після «+» має стояти голосна літера` };
+    if (!ch || !isVowel(ch)) return { error: /[A-Za-z]/.test(src) ? `«${src}»: англійське слово — розмітка складами: склади через «|», «+» перед наголошеним складом («+pho|to|graph»)` : `«${src}»: після «+» має стояти голосна літера` };
     const clean = src.replace("+", "");
     const letters = [...clean].map((c, i) => ({ ch: c, v: isVowel(c), i }));
     if (letters.filter(l => l.v).length < 2) return { error: `«${src}»: в односкладовому слові наголос не вибирають` };
@@ -140,9 +169,10 @@
 
   /** word: нормалізація введеного слова — регістр, апострофи (’ ʼ ` ´ ‘ ′ ʹ ″ ” → '), дефіси й мінус (‐ ‑ – — − → -), пробіли, знак наголосу,
       латинські двійники (i → і, o → о, k → к…) — у кириличному слові або коли кирилична очікувана відповідь (cyr): «i» латиницею як сполучник «і» */
-  function normWord(v, keepCase, cyr) {
-    let t = String(v ?? "").normalize("NFD").replace(/\u0301/g, "").normalize("NFC").replace(/[\u2019\u02BC`\u00B4\u2018\u2032\u02B9\u2033\u201D]/g, "'").replace(/[\u2010\u2011\u2013\u2014\u2212]/g, "-")
+  const baseNorm = v => String(v ?? "").normalize("NFD").replace(/\u0301/g, "").normalize("NFC").replace(/[\u2019\u02BC`\u00B4\u2018\u2032\u02B9\u2033\u201D]/g, "'").replace(/[\u2010\u2011\u2013\u2014\u2212]/g, "-")
       .replace(/\s*-\s*/g, "-").replace(/\s+/g, " ").trim();
+  function normWord(v, keepCase, cyr) {
+    let t = baseNorm(v);
     // латинські літери-двійники в кириличному слові (i замість і, o замість о…) — те саме, що й кириличні: на екрані їх не розрізнити
     if (cyr || /[\u0400-\u04FF]/.test(t)) t = t.replace(/[aceikopxyACEIOPXYKMHTBïÏ]/g, c => LOOK[c]);
     return keepCase ? t : t.toLocaleLowerCase("uk");
@@ -152,16 +182,252 @@
   const wordAnswers = s => (Array.isArray(s.answer) ? s.answer : [s.answer]).filter(x => typeof x === "string");
   const isCyr = v => /[\u0400-\u04FF]/.test(v);
   /** word: введене в тій самій нормалізації, що й порівняння (ключ «та сама відповідь» у плеєрі): двійники зводимо, якщо хоч одна відповідь кирилична */
-  const wordInput = (s, v) => normWord(v, s.keepCase, wordAnswers(s).some(isCyr));
+  /*  lang "en" — нормалізація англійської гілки (скорочення — у повній формі), щоб «I'm» після «I am» не витрачало другу спробу */
+  const wordInput = (s, v, lang) => {
+    if (lang !== "en") return normWord(v, s.keepCase, wordAnswers(s).some(isCyr));
+    const t = normEn(v, s.keepCase, wordAnswers(s).every(a => !/[\u0400-\u04FF]/.test(a)), !wordAnswers(s).some(a => /[.!?]$/.test(String(a).trim())));
+    return s.contractions ? t.split(" ").map(x => expandTok(x)[1] || x).join(" ") : t; };
 
-  /** Перевірка відповіді st (стан плеєра) для екрана s. true/false. */
-  function check(s, st) {
+  /* ---------- word англійською (engine-eng-lang-core; docs/design/english.md §5.4; D-055 з доповненням; glossary/eng.md) ----------
+     Вмикає lang === "en" (рушій передає SLID.subjectLang предмета); інакше — гілка вище без змін. Тексти для дитини (примітка, «Almost») —
+     англійською, бо це зміст предмета; службове «Перемкни клавіатуру…» — хром рушія, українською. */
+  const EN = "en";
+  // кирилиця-двійник → латиниця (дзеркало LOOK), коли всі ключі латинські: розкладка не перемкнулася, а на екрані літер не розрізнити
+  const LOOK_EN = { "с": "c", "е": "e", "о": "o", "а": "a", "р": "p", "х": "x", "і": "i", "у": "y", "к": "k", "м": "m", "т": "t", "н": "h", "в": "b",
+    "С": "C", "Е": "E", "О": "O", "А": "A", "Р": "P", "Х": "X", "І": "I", "У": "Y", "К": "K", "М": "M", "Т": "T", "Н": "H", "В": "B" };
+  const CYR = /[\u0400-\u04FF]/;
+  const KB_MSG = "Перемкни клавіатуру на англійську.", ALMOST = "Almost: check the spelling.";
+  /* Британський правопис ключа → американський у відповіді (рішення людини 2026-11-19, §11.2 п. 1): явний список; лише від британського ключа.
+     Лексика (flat / apartment) — не тут (TQ-125). ize: -ise/-ize і -isation/-ization — британська оксфордська норма теж (TQ-124), тож
+     примітка не називає форму американською. practise / practice не включено: у BrE це різні частини мови. */
+  const SPELL = new Map(), IZE = new Set();
+  { const add = (b, a, ize) => { SPELL.set(b, a); if (ize) IZE.add(b); };
+    for (const w of ["colour", "favour", "neighbour", "honour", "behaviour", "flavour", "harbour", "humour", "labour", "rumour", "armour", "odour", "vapour", "parlour"])
+      for (const x of ["", "s", "ed", "ing", "ful", "less", "able", "ite", "ites", "hood", "hoods", "er", "ers"]) add(w + x, w.replace(/our$/, "or") + x);
+    for (const w of ["centre", "theatre", "metre", "litre", "kilometre", "centimetre", "millimetre", "fibre", "spectre", "sombre", "calibre", "lustre"])
+      for (const x of ["", "s"]) add(w + x, w.replace(/re$/, "er") + x);
+    for (const w of ["realis", "organis", "recognis", "apologis", "memoris", "criticis", "emphasis", "summaris", "specialis", "prioritis", "sympathis", "standardis",
+      "visualis", "finalis", "categoris", "minimis", "maximis", "modernis", "popularis", "civilis", "personalis", "characteris", "familiaris", "authoris", "energis", "harmonis", "mobilis", "colonis", "fertilis", "hospitalis", "immunis", "industrialis", "globalis", "legalis", "localis", "normalis", "privatis", "socialis", "symbolis", "utilis"])
+      for (const x of ["e", "es", "ed", "ing", "er", "ers", "ation", "ations"]) add(w + x, w.replace(/s$/, "z") + x, true);
+    for (const w of ["analys", "paralys", "catalys"]) for (const x of ["e", "es", "ed", "ing"]) add(w + x, w.replace(/s$/, "z") + x);
+    for (const w of ["travel", "cancel", "label", "level", "model", "quarrel", "signal", "fuel", "dial", "marvel", "tunnel", "total", "counsel", "equal", "jewel", "rival", "shovel", "snorkel", "pedal", "panel"])
+      for (const x of ["ed", "ing", "er", "ers"]) add(w + "l" + x, w + x);
+    for (const [b, a] of [["jewellery", "jewelry"], ["marvellous", "marvelous"], ["grey", "gray"], ["greys", "grays"], ["programme", "program"], ["programmes", "programs"],
+      ["pyjamas", "pajamas"], ["tyre", "tire"], ["tyres", "tires"], ["catalogue", "catalog"], ["catalogues", "catalogs"], ["dialogue", "dialog"], ["dialogues", "dialogs"],
+      ["analogue", "analog"], ["defence", "defense"], ["offence", "offense"], ["licence", "license"], ["skilful", "skillful"], ["wilful", "willful"], ["enrol", "enroll"],
+      ["fulfil", "fulfill"], ["enrolment", "enrollment"], ["fulfilment", "fulfillment"], ["cosy", "cozy"], ["plough", "plow"], ["mould", "mold"], ["moustache", "mustache"],
+      ["aluminium", "aluminum"], ["sceptical", "skeptical"], ["storey", "story"], ["storeys", "stories"], ["kerb", "curb"], ["doughnut", "donut"], ["mum", "mom"],
+      ["ageing", "aging"], ["judgement", "judgment"], ["foetus", "fetus"], ["manoeuvre", "maneuver"], ["oestrogen", "estrogen"], ["paediatric", "pediatric"],
+      ["encyclopaedia", "encyclopedia"]]) add(b, a); }
+  /* скорочення (contractions: true): токен → його повні форми; сам токен лишається варіантом (Kate's — присвійне, а не «Kate is») */
+  const CONTR = { "can't": ["cannot", "can not"], "won't": ["will not"], "shan't": ["shall not"], "let's": ["let us"], "ain't": [] };
+  function expandTok(t) {
+    const lo = t.toLowerCase();
+    if (CONTR[lo]) return [t, ...CONTR[lo].map(x => t[0] !== lo[0] ? x[0].toUpperCase() + x.slice(1) : x)];
+    let m = t.match(/^(.+)n't$/i); if (m) return [t, m[1] + " not"];
+    m = t.match(/^(.+)'(s|re|ve|ll|m|d)$/i); if (!m) return [t];
+    const full = { s: ["is", "has"], re: ["are"], ve: ["have"], ll: ["will"], m: ["am"], d: ["would", "had"] }[m[2].toLowerCase()];
+    return [t, ...full.map(x => m[1] + " " + x)];
+  }
+  /** усі прочитання рядка зі скороченнями (≤ 64): кожен токен — оригінал або його повна форма */
+  function expandAll(t) {
+    let out = [""];
+    for (const tok of t.split(" ")) { const alt = expandTok(tok); out = out.flatMap(p => alt.map(a => p ? p + " " + a : a)).slice(0, 64); }
+    return out;
+  }
+  /** нормалізація англійської відповіді: mirror — кирилиця-двійник → латиниця; punct — кінцевий .!? прибрати (ключ без нього) */
+  function normEn(v, keepCase, mirror, punct) {
+    let t = baseNorm(v);
+    if (mirror) t = t.replace(/[\u0400-\u04FF]/g, c => LOOK_EN[c] || c);
+    // час (TQ-123): «15.30» = «15:30»; «3.30 p.m.» = «3.30 pm» = «3.30pm» (крапка після m — частина скорочення й кінця речення водночас)
+    t = t.replace(/(^|[^\d.:])(\d{1,2})\s?[.:]\s?([0-5]\d)(?![\d.:]\d)/g, "$1$2:$3").replace(/(\d)\s*([ap])\.?\s?m\b\.?/gi, (x, d, ap) => `${d} ${ap.toLowerCase()}m`);
+    if (punct) t = t.replace(/\s*[.!?]+$/, "");
+    return keepCase ? t : t.toLocaleLowerCase(EN);
+  }
+  const endsPunct = a => /[.!?]$/.test(baseNorm(a).replace(/(\d)\s*([ap])\.?\s?m\b\.?$/i, "$1 $2m"));
+  /** відстань Дамерау — Левенштейна (сусідня перестановка — 1) з ранньою зупинкою: true, якщо ≤ 1 */
+  function near1(a, b) {
+    if (a === b || Math.abs(a.length - b.length) > 1) return false;
+    let i = 0; while (i < a.length && i < b.length && a[i] === b[i]) i++;
+    if (a.length === b.length) return a.slice(i + 1) === b.slice(i + 1) || (a[i] === b[i + 1] && a[i + 1] === b[i] && a.slice(i + 2) === b.slice(i + 2));
+    return a.length > b.length ? a.slice(i + 1) === b.slice(i) : a.slice(i) === b.slice(i + 1);
+  }
+  const splitTok = t => { const m = t.match(/^([^\p{L}\p{N}]*)(.*?)([^\p{L}\p{N}]*)$/u); return [m[1], m[2], m[3]]; };
+  /** ключ k і відповідь v (обидва нормалізовані) збігаються з точністю до американського правопису: масив британських слів ключа або null */
+  function spellDiff(k, v) {
+    const K = k.split(" "), I = v.split(" ");
+    if (K.length !== I.length) return null;
+    const out = [];
+    for (let j = 0; j < K.length; j++) {
+      if (K[j] === I[j]) continue;
+      const [kp, kc, ks] = splitTok(K[j]), [ip, ic, is] = splitTok(I[j]);
+      if (kp !== ip || ks !== is || SPELL.get(kc.toLowerCase()) !== ic.toLowerCase() || kc[0] !== ic[0]) return null;   // пари мають ту саму першу літеру; її регістр — як у ключі (keepCase)
+      out.push(kc);
+    }
+    return out.length ? out : null;
+  }
+  const allLatin = s => wordAnswers(s).every(a => !CYR.test(a));
+  /** word: вердикт з примітками. lang "en" → { ok, note?, hint?, kb? }; інакше { ok } (як check). note / hint — англійською, kb — українською. */
+  function wordVerdict(s, v, lang) {
+    if (lang !== EN) return { ok: wordAnswers(s).some(a => { const x = normWord(v, s.keepCase, isCyr(a)); return x !== "" && normWord(a, s.keepCase) === x; }) };
+    const keys = wordAnswers(s), mirror = allLatin(s), kc = !!s.contractions;
+    if (baseNorm(v) === "") return { ok: false };
+    let notes = null, almost = false, kb = false;
+    for (const a of keys) {
+      const p = !endsPunct(a), kn = normEn(a, s.keepCase, false, false), vn = normEn(v, s.keepCase, mirror, p);
+      if (mirror && CYR.test(vn)) { kb = true; continue; }
+      const KV = kc ? expandAll(kn) : [kn], IV = kc ? expandAll(vn) : [vn];
+      if (KV.some(x => IV.includes(x))) return { ok: true };
+      for (const x of KV) for (const y of IV) { const d = spellDiff(x, y); if (d && !notes) notes = d; }
+      if (kn.length >= 3 && /\p{L}/u.test(kn) && KV.some(x => IV.some(y => near1(x, y)))) almost = true;
+    }
+    if (notes) { const ize = notes.filter(w => IZE.has(w.toLowerCase())), rest = notes.filter(w => !IZE.has(w.toLowerCase()));
+      return { ok: true, note: [rest.length ? `In British English: ${rest.join(", ")}.` : "", ize.length ? `In British English we usually write ${ize.join(", ")}.` : ""].filter(Boolean).join(" ") }; }
+    if (kb) return { ok: false, kb: KB_MSG };
+    return almost ? { ok: false, hint: ALMOST } : { ok: false };
+  }
+
+  /* ---------- build: речення з плиток (engine-eng-build; docs/design/english.md §5.5) ----------
+     Стан — масив індексів плиток у рядку: 0…tiles−1 — tiles, далі extra (buildTiles). Кожен answer складено рівно з tiles (кожна — один раз,
+     через пробіл); поза плитками дозволено лише кінцевий .!?… і велику першу літеру речення («usually I…» → «Usually I…», кілька порядків).
+     Перевірка: зібране речення проти кожного answer без кінцевого знака; lang "en" — нормалізація wordVerdict (регістр, двійники…),
+     інакше — точно, з нормалізацією пробілів і першої літери. */
+  const BUILD_MAX = 9, BUILD_EXTRA = 2, B_TAIL = /\s*[.!?…]+$/;
+  const sp = v => String(v ?? "").replace(/\s+/g, " ").trim();
+  const ucFirst = v => v.charAt(0).toLocaleUpperCase() + v.slice(1);
+  const buildTiles = s => [...(Array.isArray(s.tiles) ? s.tiles : []), ...(Array.isArray(s.extra) ? s.extra : [])].map(t => typeof t === "string" ? t : "");
+  /** розклад речення a на плитки tiles (кожна рівно раз): масив індексів tiles або null */
+  function buildSplit(tiles, a) {
+    const T = tiles.map(sp);
+    if (!T.length || T.some(t => !t)) return null;
+    const one = str => { const used = T.map(() => false), out = [];
+      const go = pos => {
+        if (pos === str.length) return out.length === T.length;
+        const p = out.length ? (str[pos] === " " ? pos + 1 : -1) : pos;
+        if (p < 0) return false;
+        const tried = new Set();
+        for (let k = 0; k < T.length; k++) {
+          if (used[k] || tried.has(T[k])) continue;
+          const w = !out.length && p === 0 && str.startsWith(ucFirst(T[k])) ? ucFirst(T[k]) : T[k];   // перша плитка — і з великої літери
+          if (!str.startsWith(w, p)) continue;
+          tried.add(T[k]); used[k] = true; out.push(k);
+          if (go(p + w.length)) return true;
+          used[k] = false; out.pop();
+        }
+        return false; };
+      return go(0) ? out : null; };
+    const v = sp(a);
+    return one(v) || (B_TAIL.test(v) ? one(v.replace(B_TAIL, "")) : null);
+  }
+  const buildText = (s, st) => { const all = buildTiles(s); return Array.isArray(st) ? st.map(k => all[k]).filter(x => typeof x === "string").join(" ") : ""; };
+  const buildState = (s, st) => { const n = buildTiles(s).length;
+    return Array.isArray(st) && st.length > 0 && new Set(st).size === st.length && st.every(k => Number.isInteger(k) && k >= 0 && k < n); };
+  function buildOk(s, st, lang) {
+    if (!buildState(s, st)) return false;
+    const v = sp(buildText(s, st)).replace(B_TAIL, ""), keys = wordAnswers(s).map(a => sp(a).replace(B_TAIL, ""));
+    if (!v) return false;
+    if (lang === EN) return wordVerdict({ type: "word", answer: keys, keepCase: s.keepCase }, v, EN).ok;
+    return keys.some(k => ucFirst(k) === ucFirst(v));
+  }
+  /** позначки рядка: позиція правильна, якщо там та сама плитка (за текстом), що в найближчому answer */
+  function buildMarks(s, st) {
+    const all = buildTiles(s).map(sp), T = (Array.isArray(s.tiles) ? s.tiles : []).map(sp), got = (Array.isArray(st) ? st : []).map(k => all[k]);
+    let best = [], bn = -1;
+    for (const a of wordAnswers(s)) { const ix = buildSplit(T, a); if (!ix) continue;
+      const q = ix.map(k => T[k]), n = got.filter((w, i) => q[i] === w).length; if (n > bn) { bn = n; best = q; } }
+    return got.map((w, i) => best[i] === w);
+  }
+  /** порядок показу плиток (усіх, з extra): перемішано; плитки tiles не стоять у правильному порядку (інакше відповідь уже на екрані) */
+  function buildOrder(s, rnd = Math.random) {
+    const n = buildTiles(s).length, nt = Array.isArray(s.tiles) ? s.tiles.length : 0, bad = o => buildOk(s, o.filter(k => k < nt), "");
+    let o = rowOrder(n, rnd);
+    for (let t = 0; t < 12 && bad(o); t++) o = rowOrder(n, rnd);
+    for (let r = 1; r < n && bad(o); r++) o = o.slice(1).concat(o[0]);   // детермінований запас: зсув по колу
+    return o;
+  }
+  function buildIssues(s, E) {
+    const T = s.tiles, X = s.extra === undefined ? [] : s.extra;
+    if (!Array.isArray(T) || T.length < 2) return E.push("build: tiles — масив з 2 і більше плиток");
+    if (!Array.isArray(X)) return E.push("build: extra — масив плиток-пасток");
+    if (X.length > BUILD_EXTRA) E.push(`build: extra — не більше ${BUILD_EXTRA} плиток-пасток (є ${X.length})`);
+    const all = [...T, ...X];
+    if (all.length > BUILD_MAX) E.push(`build: забагато плиток (${all.length}; разом з extra — не більше ${BUILD_MAX})`);
+    if (all.some(t => typeof t !== "string" || !t.trim())) return E.push("build: плитка — непорожній рядок");
+    if (all.some(t => t !== sp(t))) E.push("build: у плитці — без пробілів на краях і подвійних пробілів");
+    // плитка лише зі знаків (« ?», «…»): перевірка зрізає кінцевий .!? з обох боків — речення без неї зараховувалось би (рев'ю P3-1)
+    if (all.some(t => !/[\p{L}\p{N}]/u.test(t))) E.push("build: плитка без літери чи цифри (лише знак) — знак приклей до слова («live?») або лиши поза плитками в answer");
+    if (all.some(t => /[<>&$]/.test(t))) E.push("build: у плитці не може бути HTML чи формули ($) — пиши простим текстом");
+    if (all.some(mixedScript)) E.push("build: у плитці змішано кирилицю й латиницю");
+    if (new Set(T).size === 1) E.push("build: усі плитки однакові — порядок нічого не перевіряє");
+    const A = wordAnswers(s);
+    if (!A.length || A.length !== (Array.isArray(s.answer) ? s.answer.length : 1)) return E.push("build: answer — рядок або масив рядків (кожен — правильний порядок)");
+    for (const a of A) if (!buildSplit(T, a)) E.push(`build: answer «${a}» не складається рівно з плиток tiles (кожна — один раз, через пробіл; пастки extra — ні; поза плитками — лише кінцевий .!? і велика перша літера)`);
+    if (new Set(A.map(a => ucFirst(sp(a).replace(B_TAIL, "")))).size !== A.length) E.push("build: answer повторюються");
+    if (s.keepCase !== undefined && typeof s.keepCase !== "boolean") E.push("build: keepCase — true/false");
+  }
+  /** попередження build: пастка extra, яку рушій зарахує (та сама плитка; для lang "en" — інший регістр чи AmE-правопис ключа) */
+  function buildWarnings(s, lang, W) {
+    const T = Array.isArray(s.tiles) ? s.tiles : [], X = Array.isArray(s.extra) ? s.extra : [];
+    if (!X.length || T.length < 2) return;
+    const ix = wordAnswers(s).map(a => buildSplit(T, a)).filter(Boolean);
+    X.forEach((x, j) => { const xi = T.length + j;
+      if (ix.some(q => q.some((k, p) => buildOk(s, q.map((v, i) => i === p ? xi : v), lang))))
+        W.push(`build: пастка extra «${x}» на місці плитки дає правильне речення — рушій її зарахує${lang === EN ? " (регістр, AmE-правопис — нормалізація word)" : ""}; візьми іншу пастку`); });
+  }
+
+  /* ---------- match: пари слово ↔ картинка / значення / відповідь (engine-eng-match; docs/design/english.md §5.7) ----------
+     У розмітці пари стоять навпроти: left[i] ↔ right[i]; праву колонку плеєр показує перемішаною (matchOrder, ніколи не в порядку розмітки).
+     Правий елемент — текст або { img, alt } (файл зображення з відкритою ліцензією; alt — що на ньому, для диктора й показу відповіді).
+     Стан — масив за лівими: індекс правого елемента в розмітці або null. Правильно — st[i] === i для кожного i (повтори validate забороняє). */
+  const MATCH_MIN = 3, MATCH_MAX = 6;
+  const MATCH_IMG = /^(?![a-z][\w+.-]*:)(?!\/)(?!.*\.\.)[\w./-]+\.(?:svg|png|jpe?g|webp)$/i;   // відносний шлях до файлу застосунку (офлайн-кеш)
+  // emoji системного шрифту (вигляд залежить від пристрою, docs/design/english.md §5.7): піктограми, символи, прапори, варіант-селектор і ZWJ
+  const EMOJI = /[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{FE0F}\u{200D}]/u;
+  const matchN = s => Array.isArray(s.left) && Array.isArray(s.right) && s.left.length === s.right.length ? s.left.length : 0;
+  /** що назвати для правого елемента (показ відповіді, aria-label): текст або alt картинки */
+  const matchLabel = r => typeof r === "string" ? r : r && typeof r === "object" && typeof r.alt === "string" ? r.alt : "";
+  function matchOk(s, st) { const n = matchN(s); return n > 0 && Array.isArray(st) && st.length === n && st.every((j, i) => j === i); }
+  /** порядок показу правої колонки: перестановка індексів right, не тотожна (інакше пари стоять навпроти — відповідь на екрані) */
+  function matchOrder(s, rnd = Math.random) {
+    const n = matchN(s), same = o => o.every((k, i) => k === i);
+    let o = rowOrder(n, rnd);
+    for (let t = 0; t < 12 && n > 1 && same(o); t++) o = rowOrder(n, rnd);
+    if (n > 1 && same(o)) o = o.slice(1).concat(o[0]);   // детермінований запас: зсув по колу
+    return o;
+  }
+  function matchIssues(s, E) {
+    const Lf = s.left, R = s.right;
+    if (!Array.isArray(Lf) || !Array.isArray(R)) return E.push("match: left і right — масиви (пара — left[i] ↔ right[i])");
+    if (Lf.length !== R.length) return E.push(`match: left і right — однакова кількість (є ${Lf.length} і ${R.length}); пара — left[i] ↔ right[i]`);
+    if (Lf.length < MATCH_MIN || Lf.length > MATCH_MAX) E.push(`match: ${MATCH_MIN}–${MATCH_MAX} пар (є ${Lf.length})`);
+    Lf.forEach((x, i) => { if (typeof x !== "string" || !x.trim()) E.push(`match: left ${i + 1} — непорожній рядок`); });
+    R.forEach((r, i) => {
+      if (typeof r === "string") { if (!r.trim()) E.push(`match: right ${i + 1} — непорожній рядок`); return; }
+      if (!r || typeof r !== "object" || Array.isArray(r)) return E.push(`match: right ${i + 1} — рядок або { img, alt }`);
+      const extra = Object.keys(r).filter(k => k !== "img" && k !== "alt");
+      if (extra.length) E.push(`match: right ${i + 1} — лише { img, alt } (зайве: ${extra.join(", ")})`);
+      if (typeof r.img !== "string" || !MATCH_IMG.test(r.img)) E.push(`match: right ${i + 1} — img: відносний шлях до файлу .svg, .png, .jpg чи .webp (img/<предмет>/<розділ>/…), без адреси й «..»`);
+      if (typeof r.alt !== "string" || !r.alt.trim()) E.push(`match: right ${i + 1} — alt обов'язковий: що на зображенні (його чує екранний диктор і бачить дитина в показі відповіді)`); });
+    const L2 = Lf.filter(x => typeof x === "string"), R2 = R.map(matchLabel).filter(Boolean), all = [...L2, ...R2];
+    if (all.some(t => /[<>&$]/.test(t))) E.push("match: у left, right і alt — простий текст без HTML і формул ($)");
+    if (all.some(t => EMOJI.test(t))) E.push("match: emoji системного шрифту не беремо (на різних пристроях різний вигляд) — картинка { img, alt } з відкритою ліцензією (docs/design/english.md §5.7)");
+    if (all.some(mixedScript)) E.push("match: змішано кирилицю й латиницю (латинська c, o, a… у кириличному слові чи навпаки?)");
+    const key = t => sp(t).toLocaleLowerCase();
+    if (new Set(L2.map(key)).size !== L2.length) E.push("match: у left повтор — пари мають бути однозначні");
+    const imgs = R.filter(r => r && typeof r === "object" && typeof r.img === "string").map(r => r.img);
+    if (new Set(R2.map(key)).size !== R2.length || new Set(imgs).size !== imgs.length) E.push("match: у right повтор (текст, alt чи та сама картинка) — пари мають бути однозначні");
+  }
+
+  /** Перевірка відповіді st (стан плеєра) для екрана s. true/false. lang — мова змісту предмета (SLID.subjectLang): "en" вмикає правила word англійською. */
+  function check(s, st, lang) {
     switch (s.type) {
       case "gaps": { const g = parseGaps(s.text); return !g.error && Array.isArray(st) && g.gaps.every((x, k) => st[k] === x.correct); }
       case "pick": { const p = parsePick(s.text); if (p.error || !isSet(st)) return false; return p.correct.length === st.size && p.correct.every(n => st.has(n)); }
       case "stress": { const ws = (s.words || []).map(parseStress); return ws.every(w => !w.error) && Array.isArray(st) && ws.every((w, k) => st[k] === w.correct); }
-      case "word": return wordAnswers(s).some(a => { const v = normWord(st, s.keepCase, isCyr(a)); return v !== "" && normWord(a, s.keepCase) === v; });
+      case "word": return wordVerdict(s, st, lang).ok;
       case "split": { const p = parseSplit(s.word, s.zero); return !p.error && isSet(st) && p.variants.some(c => sameCuts(c, [...st])); }
+      case "build": return buildOk(s, st, lang);
+      case "match": return matchOk(s, st);
     }
     return false;
   }
@@ -174,6 +440,8 @@
       case "stress": return s.words.map(w => parseStress(w).correct);
       case "word": return wordAnswers(s)[0];
       case "split": return new Set(parseSplit(s.word, s.zero).variants[0]);
+      case "build": return buildSplit(Array.isArray(s.tiles) ? s.tiles : [], wordAnswers(s)[0]);
+      case "match": return Array.from({ length: matchN(s) }, (x, i) => i);
     }
   }
 
@@ -193,10 +461,13 @@
         else if (a.some(x => !normWord(x))) E.push("word: порожня відповідь");
         else if (a.some(x => normWord(x).length > 60)) E.push("word: відповідь довша за 60 символів");
         else if (a.some(mixedScript)) E.push("word: у відповіді змішано кирилицю й латиницю (латинська i, o, a… замість кириличної?)");
+        if (s.contractions !== undefined && typeof s.contractions !== "boolean") E.push("word: contractions — true/false");
         if (s.keys !== undefined && !(Array.isArray(s.keys) && s.keys.every(k => typeof k === "string" && k.length >= 1 && k.length <= 3))) E.push("word: keys — масив коротких рядків (1–3 символи)");
         break; }
       case "split": { if (s.zero !== undefined && typeof s.zero !== "boolean") { E.push("split: zero — true/false"); break; }
         const p = parseSplit(s.word, s.zero); if (p.error) E.push("split: " + p.error); break; }
+      case "build": buildIssues(s, E); break;
+      case "match": matchIssues(s, E); break;
     }
     return E;
   }
@@ -210,9 +481,11 @@
     return R;
   }
   const BLOCK_TAG = /<\/?(?:p|br|hr|li|ul|ol|div|h[1-6]|table|thead|tbody|tr|td|th|blockquote|section|figure|figcaption|dl|dt|dd)\b[^>]*>/gi;
-  /** Попередження розмітки (не ламають екран, але підказують відповідь чи плутають дитину): масив рядків. Розмітка з помилкою — [] (її дає issues) */
-  function warnings(s) {
+  /** Попередження розмітки (не ламають екран, але підказують відповідь чи плутають дитину): масив рядків. Розмітка з помилкою — [] (її дає issues).
+      lang — мова змісту предмета (як у check): build зважає на неї, коли шукає пастку, яку рушій зарахує */
+  function warnings(s, lang) {
     const W = [];
+    if (s.type === "build") buildWarnings(s, lang, W);
     if (s.type === "pick") { const p = parsePick(s.text);
       if (!p.error) { const multi = p.words.filter(w => /\s/.test(w.v)), ok = multi.filter(w => w.ok), bad = multi.length - ok.length;
         // хибних груп з кількох слів — щонайменше половина правильних: одна хибна на три правильні все ще видає відповідь (рев'ю pick-groups P3)
@@ -234,16 +507,19 @@
             return !gw.some(([a, z]) => a <= i && e <= z); })) { W.push(`gaps: слово з пропуском розірване HTML-тегом («${m[0].replace(/^(?:<[^>]*>)+|(?:<[^>]*>)+$/g, "").replace(/\u0001/g, "{…}")}») — рядок може перенестися посеред слова; обгорни тегом усе слово або винеси тег за його межі`); break; } } }
     return W;
   }
-  const TYPES = ["gaps", "pick", "stress", "word", "split"];
+  const TYPES = ["gaps", "pick", "stress", "word", "split", "build", "match"];
   /** Текст вправи, який дитина читає (для метрик stats/validate): пропуски — правильним варіантом, без дужок і «+» */
   function readText(s) {
     // «—» / «–» замінюємо, лише коли варіант цілком дорівнює токену: «1–2», «», —» лишаються як є (engine-lang-dash P3-1)
     if (s.type === "gaps" && typeof s.text === "string") return s.text.replace(/\{([^}]*)\}/g, (m, x) => { const o = (x.split("|").find(o => o.trim().startsWith("*")) || "").replace(/^\s*\*/, "").trim();
       return o === NONE ? "" : o === DASH ? "\u2014" : o; });
     if (s.type === "pick" && typeof s.text === "string") return s.text.replace(/\[\s*!\s*/g, "[").replace(/[[\]]/g, "");
-    if (s.type === "stress" && Array.isArray(s.words)) return s.words.join(", ").replace(/\+/g, "");
+    if (s.type === "stress" && Array.isArray(s.words)) return s.words.join(", ").replace(/[+|]/g, "");
     if (s.type === "split") return [].concat(s.word)[0]?.replace?.(/\|/g, "") || "";
+    if (s.type === "build") return wordAnswers(s)[0] || "";
+    // match: ліва колонка й текст правої (alt картинки дитина не читає — його чує диктор)
+    if (s.type === "match") return [...(Array.isArray(s.left) ? s.left : []), ...(Array.isArray(s.right) ? s.right : [])].filter(x => typeof x === "string").join(", ");
     return "";
   }
-  window.SLID_LANG = { TYPES, warnings, readText, NONE, DASH, optView, gapOrder, rowOrder, isVowel, parseGaps, parsePick, parseStress, parseSplit, splitShow, normWord, wordInput, wordAnswers, check, solution, issues, sameCuts };
+  window.SLID_LANG = { TYPES, warnings, readText, NONE, DASH, optView, gapOrder, rowOrder, isVowel, parseGaps, parsePick, parseStress, parseSplit, splitShow, normWord, wordInput, wordAnswers, wordVerdict, check, solution, issues, sameCuts, buildTiles, buildText, buildMarks, buildOrder, matchLabel, matchOrder };
 })();

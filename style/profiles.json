@@ -18,6 +18,14 @@
     "7-9":     {"screens": [6, 12],  "gradedShare": [0.5, 0.9],  "readWordsPerScreen": [8, 45],  "maxReadWords": [0, 70],  "sentenceWords": [4, 12],  "longWordShare": [0, 0.12],  "typeVariety": [2, 6]},
     "10-11":   {"screens": [6, 12],  "gradedShare": [0.5, 0.9],  "readWordsPerScreen": [8, 50],  "maxReadWords": [0, 80],  "sentenceWords": [4, 13],  "longWordShare": [0, 0.13],  "typeVariety": [2, 6]}
   },
+  "eng": {
+    "_comment": "Початкові значення (curate-eng-style, 2026-11-19), уроків eng ще немає; обґрунтування — tasks/review/curate-eng-style.md, style/eng.md. maxText — найдовший текст екрана (уривок + питання), не обсяг тексту за програмою. longWordShare — з запасом (евристика складів, engine-eng-stats-p2). Калібрування — style-eng-g4-5.",
+    "4":       {"screens": [5, 10],  "gradedShare": [0.5, 0.9],  "readWordsPerScreen": [4, 30],  "maxReadWords": [0, 70],  "maxText": [0, 60],  "sentenceWords": [2.5, 7],  "longWordShare": [0, 0.12],  "typeVariety": [2, 6]},
+    "5":       {"readWordsPerScreen": [5, 35],  "maxReadWords": [0, 95],  "maxText": [0, 85],  "sentenceWords": [2.5, 8]},
+    "5-6":     {"screens": [6, 11],  "gradedShare": [0.5, 0.9],  "readWordsPerScreen": [5, 40],  "maxReadWords": [0, 120],  "maxText": [0, 110],  "sentenceWords": [3, 10],  "longWordShare": [0, 0.14],  "typeVariety": [2, 6]},
+    "7-9":     {"screens": [6, 12],  "gradedShare": [0.5, 0.9],  "readWordsPerScreen": [6, 50],  "maxReadWords": [0, 150],  "maxText": [0, 140],  "sentenceWords": [3.5, 12],  "longWordShare": [0, 0.18],  "typeVariety": [2, 6]},
+    "10-11":   {"screens": [6, 12],  "gradedShare": [0.5, 0.9],  "readWordsPerScreen": [8, 65],  "maxReadWords": [0, 200],  "maxText": [0, 190],  "sentenceWords": [4, 16],  "longWordShare": [0, 0.24],  "typeVariety": [2, 6]}
+  },
   "hist": {
     "7-9":     {"screens": [5, 11],  "gradedShare": [0.5, 0.9],  "readWordsPerScreen": [8, 45],  "maxReadWords": [0, 75],  "sentenceWords": [5, 13],  "longWordShare": [0, 0.11],  "typeVariety": [2, 6]}
   }

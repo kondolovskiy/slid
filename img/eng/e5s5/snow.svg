@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 150" role="img" aria-label="snowflakes and snow on the ground">
+  <rect width="200" height="150" fill="#9ec3e6"/>
+  <path d="M0 118 Q50 104 100 116 T200 112 V150 H0 Z" fill="#ffffff"/>
+  <g stroke="#ffffff" stroke-width="3" stroke-linecap="round">
+    <g transform="translate(60 50)"><line x1="0" y1="-18" x2="0" y2="18"/><line x1="-16" y1="-9" x2="16" y2="9"/><line x1="-16" y1="9" x2="16" y2="-9"/></g>
+    <g transform="translate(140 40)"><line x1="0" y1="-14" x2="0" y2="14"/><line x1="-12" y1="-7" x2="12" y2="7"/><line x1="-12" y1="7" x2="12" y2="-7"/></g>
+    <g transform="translate(105 85)"><line x1="0" y1="-12" x2="0" y2="12"/><line x1="-10" y1="-6" x2="10" y2="6"/><line x1="-10" y1="6" x2="10" y2="-6"/></g>
+  </g>
+  <g fill="#ffffff"><circle cx="30" cy="90" r="3"/><circle cx="175" cy="80" r="3"/><circle cx="90" cy="25" r="3"/><circle cx="160" cy="100" r="3"/><circle cx="25" cy="30" r="3"/></g>
+</svg>
