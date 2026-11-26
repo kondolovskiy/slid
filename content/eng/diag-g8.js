@@ -1,5 +1,5 @@
 /* Слід · Англійська мова, 8 клас — тест рівня «What do you know?» (dge8)
-   Статус: draft — автор writer-write-eng-diag-g8, 2026-11-26.
+   Статус: verified — автор writer-write-eng-diag-g8, верифікатор verifier-write-eng-diag-g8 (reports/verify/write-eng-diag-g8.md), 2026-11-26.
    10 тем-передумов (уроки 7 кл. і наскрізна граматика 6 кл., по 2 завдання: базове → складніше)
    + 8 тем 8 класу (по 1 завданню на розділ e8s1–e8s8) = 28 завдань.
    Передумови — уроки, на які посилаються requires розділів 8 кл. (файли content/eng/g8-*.js; reports/verify/plan-eng-g7-8-9.md §6);
@@ -17,8 +17,8 @@ SLID.diag("eng", {
   grade: 8,
   title: "What do you know?",
   why: "Let’s see what you remember from your English lessons and what you already know. Then we can plan your lessons.",
-  status: "draft",
-  meta: { author: "writer-write-eng-diag-g8", created: "2026-11-26", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "writer-write-eng-diag-g8", created: "2026-11-26", factcheck: "verifier-write-eng-diag-g8 (reports/verify/write-eng-diag-g8.md)", teacher: null },
   topics: [
     // передумови: уроки 7 кл. і наскрізна граматика 6 кл. (requires розділів 8 кл.)
     { id: "ppadv", title: "Just, already, yet", kind: "pre", lessons: ["e7s1l2", "e7s1l3"], for: ["e8s1"] },
@@ -162,7 +162,7 @@ SLID.diag("eng", {
       sk: "gram",
       title: "Fill in the gaps.",
       body: "<p>In an email, Emma describes her family.</p>",
-      text: "My grandad {*has lived|lives} by the sea {*for|since} forty years. Mum has {*known|knew} her best friend since she was six."
+      text: "My grandad lives by the sea. He {*has had|has} his little boat {*for|since} forty years. My mum {*has been|is} a doctor since 2015."
     },
     {
       topic: "cur-e8s2",
@@ -202,7 +202,7 @@ SLID.diag("eng", {
       sk: "gram",
       title: "Fill in the gaps.",
       body: "<p>Oksana tells Emma about Halyna’s band.</p>",
-      text: "Halyna plays in a band {*which|who} practises at our school. The boy {*who|which} plays the violin is in our class. Our music teacher has given them an old piano {*which|who} still sounds great."
+      text: "Halyna’s band practises in a room {*which|who} is next to our gym. The boy {*who|which} plays the violin is in our class. Our music teacher has given them an old piano {*which|who} still sounds great."
     },
     {
       topic: "enough",
@@ -210,7 +210,7 @@ SLID.diag("eng", {
       sk: "gram",
       title: "Fill in the gaps.",
       body: "<p>A sign at the climbing wall: “Ages 12+”. Dmytro is ten. Oksana is fourteen.</p>",
-      text: "Dmytro is {*too|enough} young to climb it. He isn’t {*old enough|enough old} yet. But Oksana is {*old enough|too old} to try it."
+      text: "Dmytro can’t climb the wall: he’s {*too|enough} young. He isn’t {*old enough|enough old} yet. Oksana can climb it, but the wall is very high. She says it’s too high {*to climb|climbing} on her first day."
     },
     {
       topic: "cur-e8s5",
@@ -227,7 +227,7 @@ SLID.diag("eng", {
       sk: "gram",
       title: "Fill in the gaps.",
       body: "<p>Sunday afternoon by the Dnipro:<br>Andrii and Sofiia – walking from 2 to 4 pm (long).<br>Sofiia – taking photos of the river (long).<br>Dad – calls them at 3 pm (short).</p>",
-      text: "While Andrii and Sofiia {*were walking|walked} by the river, Sofiia took lots of photos. She {*was taking|took} a photo of a boat when Dad {*called|was calling} them."
+      text: "While Andrii and Sofiia {*were walking|was walking} by the river, Sofiia took lots of photos. She {*was taking|took} a photo of a boat when Dad {*called|was calling} them."
     },
     {
       topic: "cur-e8s6",
@@ -251,7 +251,7 @@ SLID.diag("eng", {
       sk: "gram",
       title: "Fill in the gaps.",
       body: "<p>Andrii writes to Liam about his class trip next summer.</p>",
-      text: "First, we want to climb {*Hoverla|the Hoverla}. Then we’ll take a train to Odesa and swim in {*the Black Sea|Black Sea}. After that, we’ll take a train to {*Dnipro|the Dnipro} and stay in my cousin’s flat for two days."
+      text: "First, we want to walk around {*Lake Synevyr|the Lake Synevyr} in the Carpathians. Then we’ll take a train to Odesa. Some of my classmates have never seen {*the Black Sea|Black Sea}! After that, we’ll take a train to {*Dnipro|the Dnipro} and stay in my cousin’s flat for two days."
     },
     {
       topic: "pass",
@@ -268,7 +268,7 @@ SLID.diag("eng", {
       sk: "gram",
       title: "Fill in the gaps.",
       body: "<p>Taras dreams about a different life.</p>",
-      text: "If Taras {*lived|would live} in Australia, he {*would surf|will surf} every weekend. If his family {*had|would have} a boat, they would sail along the coast."
+      text: "If Taras’s family {*had|would have} a boat, they {*would travel|will travel} along the coast. If Taras {*lived|would live} by the sea, he would surf every day."
     },
     {
       topic: "must",
@@ -276,8 +276,8 @@ SLID.diag("eng", {
       type: "gaps",
       sk: "gram",
       title: "Fill in the gaps.",
-      body: "<p>Rules of the school chess club:<br>1. Turn off your phone – a rule.<br>2. Your own chess board – not necessary.<br>3. Talking during a game – no!</p>",
-      text: "You {*have to|don’t have to} turn off your phone. You {*don’t have to|mustn’t} bring your own chess board. You {*mustn’t|don’t have to} talk during a game."
+      body: "<p>Rules of the school chess club:<br>1. Turn off your phone – a rule.<br>2. Your own chess board – not necessary.<br>3. Talking when you play – no!</p>",
+      text: "You {*have to|don’t have to} turn off your phone. You {*don’t have to|mustn’t} bring your own chess board. You {*mustn’t|don’t have to} talk when you play."
     },
     {
       topic: "if",
@@ -285,7 +285,7 @@ SLID.diag("eng", {
       sk: "gram",
       title: "Fill in the gaps.",
       body: "<p>Sofiia writes tips for tourists in Kyiv.</p>",
-      text: "If you {*like|will like} old buildings, {*visit|visits} St Sophia’s Cathedral. If it {*is|will be} hot, buy an ice cream and walk by the Dnipro."
+      text: "If you {*are|will be} interested in old buildings, {*go|goes} to St Sophia’s Cathedral. If it {*is|will be} hot, buy an ice cream and walk by the Dnipro."
     }
   ]
 });
