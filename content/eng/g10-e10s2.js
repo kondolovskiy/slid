@@ -19,7 +19,7 @@
    Діалоги — репліками в body (D-056), без звуку (D-055 п. 4).
    Герої — серія 4–9 кл., 16 років (Tom 14, Dmytro 12) (memory/short/inbox.md, NOTE (герої)); нових героїв немає.
    Увесь зміст — англійською, британська норма (D-055). Тексти, діалоги й герої — власні (docs/design/english.md §8).
-   Статус: draft. 7 уроків (6 + фінал). Будова — за розділами 9 кл. (e9s7, e9s9).
+   Статус: verified (verifier-e10s2, 2026-11-26). 7 уроків (6 + фінал). Будова — за розділами 9 кл. (e9s7, e9s9).
    Перевірка: node tools/validate.mjs --section e10s2 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -29,7 +29,7 @@ SLID.section("eng", {
   title: "Sport, health and leisure",
   why: "To talk about the role of sport in society and in your life and about big sports events. And to explain how sport helps you stay healthy.",
   requires: ["e5s6l2", "e5s6l6", "e6s4l1", "e6s4l2", "e7s5l1", "e7s5l5", "e8s2l3", "e8s2l4", "e9s9l1"],
-  meta: { author: "writer-e10s2", created: "2026-11-26", factcheck: null, teacher: null },
+  meta: { author: "writer-e10s2", created: "2026-11-26", factcheck: "verifier-e10s2, 2026-11-26 (reports/verify/write-eng-g10-e10s2.md)", teacher: null },
   badges: [
     { id: "e10s2boss", name: "Sports editor", icon: "trophy", desc: "Finish the final lesson “Sport, health and leisure”" }
   ],
@@ -40,7 +40,7 @@ SLID.section("eng", {
       title: "Why do people love sport?",
       short: "Why sport?",
       icon: "users",
-      status: "draft",
+      status: "verified",
       why: "Sport gives people much more than medals. Talk about what sport means for you and for society.",
       screens: [
         {
@@ -173,7 +173,7 @@ SLID.section("eng", {
       title: "Risk losing, refuse to give up: verb patterns",
       short: "Verb patterns",
       icon: "bolt",
-      status: "draft",
+      status: "verified",
       why: "After some verbs we use -ing, and after others we use to. Learn more of them and tell a sports story without mistakes.",
       screens: [
         {
@@ -337,7 +337,7 @@ SLID.section("eng", {
       title: "Big sports events in Ukraine and the world",
       short: "Sports events",
       icon: "globe",
-      status: "draft",
+      status: "verified",
       why: "The Olympics, the Paralympics and big championships bring the world together. Read about them and talk about sports events.",
       screens: [
         {
@@ -410,7 +410,7 @@ SLID.section("eng", {
           sk: "read",
           eyebrow: "Reading: From Athens to Kyiv, part 3 of 3",
           title: "Read and choose.",
-          body: `<p><i>In 2012, Ukraine and Poland hosted Euro 2012, the European Football Championship. Matches took place in eight stadiums, four in each country. The final was held at the Olympic Stadium in Kyiv on 1 July 2012, and Spain beat Italy 4–0. Big events also make heroes. At the Paris Olympics in 2024, the fencer Olha Kharlan won a bronze medal and a team gold. She now has six Olympic medals, more than any other athlete who has competed for Ukraine.</i></p><p>Which sentence is true?</p>`,
+          body: `<p><i>In 2012, Ukraine and Poland hosted Euro 2012, the European Football Championship. Matches took place in eight stadiums, four in each country. The final was held at the Olympic Stadium in Kyiv on 1 July 2012, and Spain beat Italy 4–0. Big events also make heroes. At the Paris Olympics in 2024, the fencer Olha Kharlan won a bronze medal and a team gold. She now has six Olympic medals, more than any other athlete has won for Ukraine.</i></p><p>Which sentence is true?</p>`,
           opts: [
             "Italy won the final in Kyiv.",
             "Olha Kharlan won six medals in Paris.",
@@ -500,7 +500,7 @@ SLID.section("eng", {
       title: "Stop, remember, try: a change in meaning",
       short: "Change in meaning",
       icon: "spiral",
-      status: "draft",
+      status: "verified",
       why: "With some verbs, -ing and to have different meanings. Choose the right form and say exactly what you mean.",
       screens: [
         {
@@ -660,7 +660,7 @@ SLID.section("eng", {
       title: "Avoid injuries, keep moving: sport and health",
       short: "Sport and health",
       icon: "shield",
-      status: "draft",
+      status: "verified",
       why: "Sport is good for your body and your mind, but it has risks too. Talk about training safely and read what health experts say.",
       screens: [
         {
@@ -708,17 +708,17 @@ SLID.section("eng", {
           type: "choice",
           sk: "read",
           title: "Read and choose.",
-          body: `<p><i>Sport is good for your body and your mind. The World Health Organization (WHO) says that regular physical activity is good for young people’s mental health. It can reduce anxiety and help them feel more confident. But sport has risks too. The NHS, the UK’s health service, says that warming up before exercise helps to prevent injuries.</i></p><p>Which sentence is true, according to the text?</p>`,
+          body: `<p><i>Sport is good for your body and your mind. The World Health Organization (WHO) says that regular physical activity is good for young people’s mental health. It can reduce anxiety and help them feel more confident. But sport has risks too. The NHS, the UK’s health service, says that warming up before exercise can help to prevent injuries.</i></p><p>Which sentence is true, according to the text?</p>`,
           opts: [
             "WHO says that sport is bad for young people’s mood.",
-            "The UK’s health service says a warm-up helps to prevent injuries.",
+            "The UK’s health service says a warm-up can help to prevent injuries.",
             "The text says that sport has no risks."
           ],
           correct: 1,
           hint: "Find the sentence about the NHS.",
           fbOk: "Exactly.",
           fbBad: "Read the last sentence again.",
-          fbText: "The NHS says that <b>warming up</b> helps to prevent injuries. WHO says activity is good for mental health, and the text says sport has risks too."
+          fbText: "The NHS says that <b>warming up</b> can help to prevent injuries. WHO says activity is good for mental health, and the text says sport has risks too."
         },
         {
           type: "gaps",
@@ -809,7 +809,7 @@ SLID.section("eng", {
       title: "Is sport good for everyone? Giving your opinion",
       short: "Your opinion",
       icon: "scale",
-      status: "draft",
+      status: "verified",
       why: "In a discussion, a good opinion has reasons and examples. Look at both sides of a question and support your view.",
       screens: [
         {
@@ -962,7 +962,7 @@ SLID.section("eng", {
       title: "Sports Week: the club magazine",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e10s2boss",
       why: "Check everything from this section. Your points are doubled.",
@@ -1056,7 +1056,7 @@ SLID.section("eng", {
           sk: "read",
           eyebrow: "Task 7",
           title: "Read and choose.",
-          body: `<p><i>At the Paris Olympics in 2024, the fencer Olha Kharlan won a bronze medal and a team gold. She now has six Olympic medals, more than any other athlete who has competed for Ukraine.</i></p><p>Which sentence is true?</p>`,
+          body: `<p><i>At the Paris Olympics in 2024, the fencer Olha Kharlan won a bronze medal and a team gold. She now has six Olympic medals, more than any other athlete has won for Ukraine.</i></p><p>Which sentence is true?</p>`,
           opts: [
             "Kharlan won only a bronze medal in Paris.",
             "Kharlan has two Olympic medals.",
