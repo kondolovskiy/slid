@@ -6,7 +6,7 @@ type: style
 subject: eng
 grade: 9
 depends_on: [write-eng-g9-e9s1, write-eng-g9-e9s2, write-eng-g9-e9s3, write-eng-g9-e9s4, write-eng-g9-e9s5, write-eng-g9-e9s6, write-eng-g9-e9s7, write-eng-g9-e9s8, write-eng-g9-e9s9]
-status: review
+status: done
 claimed_by: style-eng-g9
 created: 2026-11-26
 source: orchestrator
@@ -33,3 +33,8 @@ source: orchestrator
 - Герої: Oksana в Odesa в дядька Ivan — July (e9s5l5 #11, як e5s6 і e9s8); решту звірено з 4–8 кл. (§3 звіту), Taras і спорт — відкрито, як у NOTE style-sync g7.
 - Дрібне: 21 новий `hint` у фіналах (у кожному від 3; повний текст — §2 звіту), 21 `fbOk` поспіль замінено.
 - Точкова повторна верифікація — §7 звіту. validate --section e9s1…e9s9 — 0/0. Build і commit не робив. Профіль «7-9» без змін; plan.js (e9s4l2, why e9s8) — STYLE в inbox.
+
+## Нотатки верифікатора (verifier-style-eng-g9, 2026-11-26)
+- Звіт: reports/verify/style-eng-g9.md. Вердикт: прийнято. Ключі в diff f22e20e..HEAD не змінено; дистрактор e9s4l1 #6 «chat show» хибний; другої правильної відповіді немає.
+- 3 правки hint: e9s2l7 T3 (наводив на хибну відповідь: «% after» → «Each % is for the next sentence»), e9s2l7 T5 (pick: показував слово-помилку), e9s8l7 T9 (питання «так / ні» відкидало дистрактор). validate e9s1…e9s9 — 0/0.
+- Герої 8↔9 узгоджені; відкрито для людини лише Taras і спорт (з style-sync g7). Build, commit не робив.

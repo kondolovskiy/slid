@@ -980,7 +980,7 @@ SLID.section("eng", {
           body: `<p>Taras writes a tip for the quiz page.</p>`,
           text: "The best way to see Lviv’s Old Town is {*on foot|by foot}. Don’t miss the Town Hall tower: it’s worth {*climbing|to climb}. And book your opera tickets online! If my cousin Marta {*had booked|would have booked} hers, she would have seen a ballet.",
           pre: "e9s8l6",
-          hint: "Which form comes after worth? And can would go after if?",
+          hint: "Which form comes after worth? And which form comes after if when we imagine the past?",
           fbOk: "Yes!",
           fbBad: "on foot; worth + -ing; no would after if.",
           fbText: "<b>On foot</b>. It’s worth <b>climbing</b>. If Marta <b>had booked</b> hers…"
