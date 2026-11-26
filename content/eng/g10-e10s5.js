@@ -433,7 +433,7 @@ SLID.section("eng", {
           body: `<p>Oksana finishes her part of the poster.</p>`,
           text: "Kateryna Bilokur {*taught|teached} herself to paint. Like Mariia Prymachenko, she was a {*folk|abstract} artist. Her first {*exhibition|masterpiece} opened in Poltava in 1940. Today she is famous {*for|of} her paintings of flowers.",
           hint: "teach – taught – taught. A village artist. A show of paintings opened. famous …?",
-          fbOk: "Exactly.",
+          fbOk: "Brilliant!",
           fbBad: "teach is irregular. A show of paintings opens. famous for…",
           fbText: "She <b>taught</b> herself (teach – taught – taught). She was a <b>folk</b> artist. Her first <b>exhibition</b> opened in 1940. She is famous <b>for</b> her flowers."
         }
@@ -975,6 +975,7 @@ SLID.section("eng", {
           body: `<p>Emma writes about The Hay Wain.</p>`,
           text: "The Hay Wain {*was painted|painted} by John Constable in 1821. Constable is famous {*for|of} his landscapes.",
           pre: "e10s5l2",
+          hint: "Did the painting do the action? And which preposition goes with famous?",
           fbOk: "Well done!",
           fbBad: "The painting didn’t paint itself: was + the third form. famous …?",
           fbText: "It <b>was painted</b> by Constable: the passive. Famous <b>for</b> his landscapes."
@@ -987,7 +988,7 @@ SLID.section("eng", {
           left: ["Kateryna Bilokur", "Mariia Prymachenko", "Oleksandr Murashko"],
           right: ["had her first exhibition in Poltava in 1940.", "painted a blue bull and other fantastic animals.", "painted Girl in a Red Hat."],
           pre: "e10s5l3",
-          fbOk: "Well done!",
+          fbOk: "Brilliant!",
           fbBad: "Who painted fantastic animals? Who was the portrait painter?",
           fbText: "<b>Bilokur</b> – Poltava, 1940. <b>Prymachenko</b> – a blue bull. <b>Murashko</b> – Girl in a Red Hat."
         },
@@ -1005,6 +1006,7 @@ SLID.section("eng", {
           ],
           correct: [1, 3],
           pre: "e10s5l4",
+          hint: "Is the story about now or about the past? Which forms can show how long, up to a moment?",
           fbOk: "Exactly.",
           fbBad: "Two answers are correct. With for and an action verb…",
           fbText: "<b>had been painting</b> and <b>had painted</b> are both correct with <i>for two hours</i>. Not <s>has been painting</s> (it’s about now), and <i>was painting</i> doesn’t go with <i>for two hours</i> up to a moment."
@@ -1017,6 +1019,7 @@ SLID.section("eng", {
           body: `<p>Mariia writes for the online exhibition.</p>`,
           text: "By the end of the day, I {*had painted|had been painting} three pictures for the exhibition. I {*had known|had been knowing} about Bilokur for years before I saw her paintings in real life.",
           pre: "e10s5l4",
+          hint: "Is it a finished result or an action that went on? Is know an action or a state?",
           fbOk: "Right.",
           fbBad: "How many pictures? Is know an action?",
           fbText: "Three pictures – a finished result: <b>had painted</b>. know doesn’t take -ing: <b>had known</b>."

@@ -73,7 +73,7 @@ SLID.section("eng", {
           sk: "read",
           eyebrow: "Reading: Food with a story, part 1 of 3",
           title: "Read and choose.",
-          body: `<p><i><b>Two Ukrainian dishes</b> – by Taras<br>Ask ten Ukrainian families how they make borscht, and you’ll get ten different recipes. Some cook it with beef, some with chicken, and some make it with no meat at all. But almost everyone adds beetroot, and it’s usually served with sour cream. In 2022, UNESCO added the culture of Ukrainian borscht cooking to its list of heritage that needs urgent protection.<br>Last summer in the Carpathians, I tried a regional dish called banosh. It’s a Hutsul dish: cornmeal cooked in sour cream and served with brynza, a salty sheep’s cheese. Our guide told us that shepherds used to cook it over a fire in the mountains.</i></p><p>Which dish is typical of one part of Ukraine?</p>`,
+          body: `<p><i><b>Two Ukrainian dishes</b> – by Taras<br>Ask ten Ukrainian families how they make borscht, and you’ll get ten different recipes. Some cook it with beef, some with chicken, and some make it with no meat at all. But almost everyone adds beetroot, and it’s usually served with sour cream. In 2022, UNESCO added the culture of Ukrainian borscht cooking to its list of heritage that needs urgent protection.<br>Last summer in the Carpathians, I tried a regional dish called banosh. It’s a Hutsul dish: cornmeal cooked in sour cream and served with brynza, a salty sheep’s cheese. Our guide told us that shepherds used to cook it over a fire in the mountains. It was so filling that I didn’t want anything else for the rest of the day!</i></p><p>Which dish is typical of one part of Ukraine?</p>`,
           opts: [
             "borscht",
             "brynza",
@@ -90,7 +90,7 @@ SLID.section("eng", {
           sk: "read",
           eyebrow: "Reading: Food with a story, part 2 of 3",
           title: "Read and choose.",
-          body: `<p><i><b>A night for haggis</b> – by Emma<br>My friend Isla lives in Edinburgh, and every year on 25 January her family has a Burns supper. Burns Night celebrates the birthday of Robert Burns, Scotland’s national poet. The main dish is haggis, which many people call Scotland’s national dish. It’s a savoury pudding made from parts of a sheep, such as the heart and the liver, with oats, onions and spices. Isla says it tastes much better than it sounds! It’s served with mashed swede and potatoes, called “neeps and tatties” in Scotland. Before they eat the haggis, someone reads Burns’s poem about it.</i></p><p>Why do people in Scotland have a Burns supper on 25 January?</p>`,
+          body: `<p><i><b>A night for haggis</b> – by Emma<br>My friend Isla lives in Edinburgh, and every year on 25 January her family has a Burns supper. Burns Night celebrates the birthday of Robert Burns, Scotland’s national poet. The main dish is haggis, which many people call Scotland’s national dish. It’s a savoury pudding made from parts of a sheep, such as the heart and the liver, with oats, onions and spices. Isla says it tastes much better than it sounds! It’s served with mashed swede and potatoes, called “neeps and tatties” in Scotland. Before they eat the haggis, someone reads Burns’s poem about it. Last year, Isla sent me a photo of the haggis on her family’s table. I’d love to try it one day!</i></p><p>Why do people in Scotland have a Burns supper on 25 January?</p>`,
           opts: [
             "It’s the day haggis was first cooked.",
             "It’s Robert Burns’s birthday.",
@@ -107,7 +107,7 @@ SLID.section("eng", {
           sk: "read",
           eyebrow: "Reading: Food with a story, part 3 of 3",
           title: "Choose all the correct answers.",
-          body: `<p><i><b>A Ukrainian name in British shops</b> – by Emma<br>When I was little, my mum would buy chicken Kyiv every Friday. It’s a piece of chicken with butter inside, covered in breadcrumbs and then fried or baked. The dish is named after Ukraine’s capital, but nobody knows for sure where it was first cooked. In 1979, the shop Marks &amp; Spencer started selling chilled chicken Kyiv, and it soon became very popular. For many years, British packs used the old spelling, “Kiev”. In 2022, the supermarket Sainsbury’s changed it to “Kyiv”, the spelling that comes from Ukrainian.</i></p><p>Which sentences are true?</p>`,
+          body: `<p><i><b>A Ukrainian name in British shops</b> – by Emma<br>When I was little, my mum would buy chicken Kyiv every Friday. It’s a piece of chicken with butter inside, covered in breadcrumbs and then fried or baked. The dish is named after Ukraine’s capital, but nobody knows for sure where it was first cooked. In 1979, the shop Marks &amp; Spencer started selling chilled chicken Kyiv, and it soon became very popular. For many years, British packs used the old spelling, “Kiev”. In 2022, the supermarket Sainsbury’s changed it to “Kyiv”, the spelling that comes from Ukrainian. Now I always look for the new spelling on the pack, and I tell my friends why it matters.</i></p><p>Which sentences are true?</p>`,
           opts: [
             "We know that the dish was first cooked in Kyiv.",
             "Chicken Kyiv has butter inside.",
@@ -312,7 +312,7 @@ SLID.section("eng", {
           body: `<p>Mariia sends her quiz answer to the magazine.</p>`,
           text: "I’m definitely not a fussy eater! I love spicy food, and I’d rather {*try|to try|trying} a new dish than eat the same thing every day. I prefer savoury food {*to|than|as} sweet food. But I can’t {*stand|prefer|rather} bitter tastes, like dark coffee.",
           hint: "would rather + verb; prefer A to B; can’t … = really don’t like.",
-          fbOk: "Well done!",
+          fbOk: "Brilliant!",
           fbBad: "Check the rules for would rather, prefer and can’t stand.",
           fbText: "I’d rather <b>try</b> a new dish. I prefer savoury food <b>to</b> sweet food. I can’t <b>stand</b> bitter tastes."
         }
@@ -456,7 +456,7 @@ SLID.section("eng", {
           ],
           correct: 2,
           hint: "Once = one time. Would = again and again.",
-          fbOk: "Right.",
+          fbOk: "Brilliant!",
           fbBad: "Look at would and at once in the text.",
           fbText: "Her grandmother <b>would make uzvar</b> on winter evenings: a habit. The honey was <b>once</b>, one birthday. And she had a sweet tooth, so she liked sweet food."
         }
@@ -861,7 +861,7 @@ SLID.section("eng", {
           ],
           correct: [1, 2, 4],
           hint: "After be / get used to: a noun or -ing.",
-          fbOk: "Well done!",
+          fbOk: "Brilliant!",
           fbBad: "Three answers are correct. Check the verb after be used to and get used to.",
           fbText: "Correct: <b>getting used to the rain</b>, <b>used to eat</b> (a past habit), <b>not used to having</b>. We say <i>I’m used to drinking</i> and <i>I’m getting used to speaking</i>."
         },
@@ -959,6 +959,7 @@ SLID.section("eng", {
           title: "Fill in the gaps.",
           text: "Tom prefers pasta {*to|than} rice. He’d rather {*have|to have} soup than salad.",
           pre: "e10s3l2",
+          hint: "Remember the patterns: prefer A … B, and would rather + which form of the verb?",
           fbOk: "Exactly.",
           fbBad: "prefer A to B; would rather + verb.",
           fbText: "Prefers pasta <b>to</b> rice. He’d rather <b>have</b> soup (no <i>to</i>)."
@@ -994,6 +995,7 @@ SLID.section("eng", {
           ],
           correct: [1, 2],
           pre: "e10s3l3",
+          hint: "Find the states and the actions. Which of them can go with would?",
           fbOk: "Yes!",
           fbBad: "Two answers are correct. Would is only for actions.",
           fbText: "<b>used to love</b> (a state with <i>used to</i>) and <b>would help</b> (an action). <i>Be shy</i> and <i>know</i> are states: only <i>used to be</i>, <i>used to know</i>."
@@ -1064,6 +1066,7 @@ SLID.section("eng", {
           title: "Fill in the gaps.",
           text: "Orysia {*used to|is used to} live in Vinnytsia. Now she {*is getting used to|used to} the rain in England. She isn’t used to {*having|have} dinner so early.",
           pre: "e10s3l6",
+          hint: "In each sentence, is it a past state, something that is becoming normal or something that is normal now?",
           fbOk: "Yes!",
           fbBad: "A past state → used to + verb. Becoming normal → getting used to. be used to + -ing.",
           fbText: "She <b>used to live</b> in Vinnytsia (the past). She <b>is getting used to</b> the rain. She isn’t used to <b>having</b> dinner so early."

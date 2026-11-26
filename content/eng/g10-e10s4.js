@@ -659,7 +659,7 @@ SLID.section("eng", {
         {
           type: "info",
           title: "The Future Perfect",
-          body: `<p>It shows an action that will be finished before a time in the future.</p><ul><li><b>will have</b> + past participle (the third form):<br>By June, we <b>will have planted</b> 200 trees.</li><li><b>won’t have</b> + past participle:<br>The trees <b>won’t have grown</b> tall by next year.</li><li><b>by</b> + time → not later than: <i>by June, by the end of April, by 2030</i></li></ul><p>Often <i>will</i> + verb is correct too: We <b>will plant</b> the trees by June.</p><p>Not: <s>will have plant</s>, <s>will has planted</s></p>`,
+          body: `<p>It shows an action that will be finished before a time in the future.</p><ul><li><b>will have</b> + past participle (the third form):<br>By June, we <b>will have planted</b> 200 trees.</li><li><b>won’t have</b> + the third form:<br>The trees <b>won’t have grown</b> tall by next year.</li><li><b>by</b> + time → not later than: <i>by June, by the end of April, by 2030</i></li></ul><p>Often <i>will</i> + verb is correct too: We <b>will plant</b> the trees by June.</p><p>Not: <s>will have plant</s>, <s>will has planted</s></p>`,
           cta: "Next"
         },
         {
@@ -671,7 +671,7 @@ SLID.section("eng", {
           hint: "will have / won’t have + the third form.",
           fbOk: "Right.",
           fbBad: "Check each gap: have, not has, and the third form of the verb.",
-          fbText: "I <b>will have finished</b>, Tom <b>will have learnt</b>, we <b>won’t have spent</b>: will / won’t + have + past participle."
+          fbText: "I <b>will have finished</b>, Tom <b>will have learnt</b>, we <b>won’t have spent</b>: will / won’t + have + the third form."
         },
         {
           type: "info",
@@ -766,7 +766,7 @@ SLID.section("eng", {
       outro: {
         text: "Will have cleaned, will have planted, by 2030: now you can say what will be finished in the future.",
         learned: [
-          "Use the Future Perfect: will have + past participle.",
+          "Use the Future Perfect: will have + the third form.",
           "Use by and until with time phrases.",
           "Talk about plans for nature and their deadlines."
         ]
@@ -834,7 +834,7 @@ SLID.section("eng", {
           sk: "cult",
           eyebrow: "Reading: National parks, part 2 of 3",
           title: "Choose all the correct answers.",
-          body: `<p>Ukraine has many national parks too. The first one is the Carpathian National Nature Park. It was created in 1980 in Ivano-Frankivsk region to protect the landscapes of the Carpathian Mountains. In 1983, the Shatsk National Nature Park was created in Volyn region, in the north-west of Ukraine. It is famous for its lakes: there are 23 of them in the park. One of them, Svitiaz, is the deepest lake in Ukraine. In some places, it is more than 58 metres deep. Taras from Lviv visited Svitiaz two summers ago. He still remembers how clear and cool the water was.</p><p>Which sentences are true?</p>`,
+          body: `<p>Ukraine has many national parks too. The first one is the Carpathian National Nature Park. It was created in 1980 in Ivano-Frankivsk region to protect the landscapes of the Carpathian Mountains. In 1983, the Shatsk National Nature Park was created in Volyn region, in the north-west of Ukraine. It is famous for its lakes: there are 23 of them in the park. One of them, Svitiaz, is the deepest lake in Ukraine. In some places, it is more than 58 metres deep. Taras from Lviv visited Svitiaz two summers ago. He still remembers how clear and cool the water was. Next summer, he wants to go back there with his little sister, Zlata.</p><p>Which sentences are true?</p>`,
           opts: [
             "The Carpathian National Nature Park is the oldest national park in Ukraine.",
             "The Shatsk park is in the east of Ukraine.",
@@ -852,7 +852,7 @@ SLID.section("eng", {
           sk: "read",
           eyebrow: "Reading: National parks, part 3 of 3",
           title: "Read and choose.",
-          body: `<p>How can young people help national parks? Our class has some ideas. Stay on the paths, so you don’t damage rare plants. Take all your rubbish home. Don’t pick wild flowers, and don’t feed wild animals. Keep your dog on a lead near farm animals and birds. Never start a fire in hot, dry weather: a small fire can quickly become a wildfire. These ideas are simple, but they only work if everyone follows them. So tell your friends and family what you have learnt. By the end of this term, our class will have made a poster with these rules for our school. If every visitor follows them, the parks will still be beautiful when our grandchildren visit them.</p><p>What is the main idea of the whole article?</p>`,
+          body: `<p>How can young people help national parks? Our class has some ideas. Stay on the paths, so you don’t damage rare plants. Take all your rubbish home. Don’t pick wild flowers, and don’t feed wild animals. Keep your dog on a lead near farm animals and birds. Never start a fire in hot, dry weather: a small fire can quickly become a wildfire. These ideas are simple, but they only work if everyone follows them. Small actions like these really make a difference. So tell your friends and family what you have learnt. By the end of this term, our class will have made a poster with these rules for our school. If every visitor follows them, the parks will still be beautiful when our grandchildren visit them.</p><p>What is the main idea of the whole article?</p>`,
           opts: [
             "There are national parks only in the UK.",
             "National parks protect nature, and every visitor can help them.",
@@ -898,7 +898,7 @@ SLID.section("eng", {
           hint: "What you see in an area: …? The natural home of an animal: …? was + the third form.",
           fbOk: "Right.",
           fbBad: "Look at the list of words for the article.",
-          fbText: "Parks protect <b>landscapes</b> and the <b>habitats</b> of animals and plants. The park <b>was created</b> in 1980: was + past participle."
+          fbText: "Parks protect <b>landscapes</b> and the <b>habitats</b> of animals and plants. The park <b>was created</b> in 1980: was + the third form."
         },
         {
           type: "gaps",
@@ -976,6 +976,7 @@ SLID.section("eng", {
           title: "Complete the sentences.",
           text: "Taras: Look at those black clouds! It {*is going to|are going to|going to} rain. The forecast says the storm {*is likely to|is likely|likely to} end soon, and more rain {*is unlikely to|is unlikely|unlikely to} fall tonight.",
           pre: "e10s4l2",
+          hint: "Can Taras see the clouds? And what comes after be likely and be unlikely?",
           fbOk: "Exactly.",
           fbBad: "is going to; be (un)likely to + verb.",
           fbText: "It <b>is going to</b> rain: he can see the clouds. The storm <b>is likely to</b> end. More rain <b>is unlikely to</b> fall."
@@ -1036,6 +1037,7 @@ SLID.section("eng", {
           title: "Complete the sentences.",
           text: "Oksana: By June, we {*will have planted|will have plant|will planted} 200 trees. The road to the river is closed {*until|by} Monday, so we can’t start before then. But we {*will have cleaned|will has cleaned|will have clean} the river bank by the end of April.",
           pre: "e10s4l5",
+          hint: "Will the action be finished before the time, or will it go on all the time up to it?",
           fbOk: "Exactly.",
           fbBad: "will have + the third form; until → all the time up to.",
           fbText: "We <b>will have planted</b> the trees. The road is closed <b>until</b> Monday: all the time up to Monday. We <b>will have cleaned</b> the bank by the end of April."
@@ -1053,6 +1055,7 @@ SLID.section("eng", {
           ],
           correct: 2,
           pre: "e10s4l6",
+          hint: "Remember the dates in the article about national parks.",
           fbOk: "Right.",
           fbBad: "Which park was created in 1980?",
           fbText: "The <b>Carpathian National Nature Park</b> (1980) is Ukraine’s first. Shatsk came in 1983, and the Peak District is in England."

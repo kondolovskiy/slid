@@ -15,7 +15,7 @@
    Діалоги — репліками в body (D-056), без звуку (D-055 п. 4).
    Герої — серія 4–9 кл., на шість років старші, ніж у 4 кл. (memory/short/inbox.md, NOTE (герої)): Oksana, Emma,
    Andrii, Taras, Zoriana — 16, Dmytro — 12; Denys (кузен Оксани, e8s6) — 18, університет у Kyiv; нові — Arsen (17, ще один
-   кузен Ostap, коледж у Lviv; не Marko: тому в e9s5 12, тут 13 — verifier-e10s8), Leah (19, кузина Emma, apprentice), Iryna Tkachuk, Viktor Hnatyshyn (гості ярмарку).
+   кузен Ostap, коледж у Lviv; не Marko: тому в e9s5 12, тут 13 — verifier-e10s8), Leah (19, кузина Emma, apprentice), Iryna Kostenko, Viktor Hnatyshyn (гості ярмарку).
    Увесь зміст — англійською, британська норма (D-055). Тексти, діалоги й герої — власні (docs/design/english.md §8).
    Статус: verified (verifier-e10s8, 2026-11-26). 7 уроків (6 + фінал). Будова — за розділами 10 кл. (e10s1, e10s3).
    Перевірка: node tools/validate.mjs --section e10s8 && node tools/stats.mjs --subject eng
@@ -202,17 +202,17 @@ SLID.section("eng", {
           sk: "read",
           eyebrow: "Reading: Three paths after school, part 1 of 3",
           title: "Read and choose.",
-          body: `<p><i><b>1. Denys, 18, Kyiv</b><br>Last summer, I took the NMT. I prepared for it for a whole year with online lessons. You do it on a computer at a test centre, and you need it to apply to university in Ukraine. In 2026, it had four subjects: Ukrainian, maths and the history of Ukraine for everyone, and one more subject that you chose. I chose English, of course! My friend Nazar lives in Poland now, so he took the test at a centre there. With my results, I applied to several universities and got into one in Kyiv. Now I’m in my first year of computer science. A bachelor’s degree here usually takes four years, so I’ll graduate in 2030.</i></p><p>Which sentence is true?</p>`,
+          body: `<p><i><b>1. Denys, 18, Kyiv</b><br>Last summer, I took the NMT. I prepared for it for a whole year with online lessons. You do it on a computer at a test centre, and you need it to apply to university in Ukraine. In 2026, it had four subjects: Ukrainian, maths and the history of Ukraine for everyone, and one more subject that you chose. I chose English, of course! My friend Ruslan lives in Poland now, so he took the test at a centre there. With my results, I applied to several universities and got into one in Kyiv. Now I’m in my first year of computer science. A bachelor’s degree here usually takes four years, so I’ll graduate in 2030.</i></p><p>Which sentence is true?</p>`,
           opts: [
             "Denys took the NMT on paper at his school.",
             "Everyone took the same four subjects in 2026.",
             "Denys’s friend took the NMT outside Ukraine."
           ],
           correct: 2,
-          hint: "Where does Nazar live? Where did he take the test?",
+          hint: "Where does Ruslan live? Where did he take the test?",
           fbOk: "Right.",
           fbBad: "Check each sentence against the text.",
-          fbText: "Nazar lives in Poland, so he took the NMT <b>outside Ukraine</b>. The test is on a computer at a test centre, and the fourth subject was different: everyone chose one."
+          fbText: "Ruslan lives in Poland, so he took the NMT <b>outside Ukraine</b>. The test is on a computer at a test centre, and the fourth subject was different: everyone chose one."
         },
         {
           type: "choice",
@@ -592,7 +592,7 @@ SLID.section("eng", {
           type: "word",
           sk: "gram",
           title: "Write the missing words.",
-          body: `<p>Ms Lysenko gives Kateryna the camp form. Write two words.</p>`,
+          body: `<p>Ms Lysenko gives Daryna the camp form. Write two words.</p>`,
           before: "Ms Lysenko: “Here’s the camp form. Please fill",
           after: "today.”",
           answer: ["it in", "it out"],
@@ -607,9 +607,9 @@ SLID.section("eng", {
           eyebrow: "Final",
           title: "Complete the sentences.",
           body: `<p>Andrii writes to Emma about the camp.</p>`,
-          text: "Ms Lysenko gave us the camp form yesterday. I filled {*it in|in it} last night, and today I handed {*it in|in it}. Kateryna lost her form, so now she’s looking {*for it|it for}. Bohdan can’t come, so he turned {*the invitation down|down it}.",
+          text: "Ms Lysenko gave us the camp form yesterday. I filled {*it in|in it} last night, and today I handed {*it in|in it}. Daryna lost her form, so now she’s looking {*for it|it for}. Bohdan can’t come, so he turned {*the invitation down|down it}.",
           hint: "Pronoun with a phrasal verb → in the middle. With look for → after.",
-          fbOk: "Well done!",
+          fbOk: "Brilliant!",
           fbBad: "Check where it goes in each sentence.",
           fbText: "Filled <b>it in</b>, handed <b>it in</b>, looking <b>for it</b>, turned <b>the invitation down</b> (= turned down the invitation)."
         }
@@ -749,7 +749,7 @@ SLID.section("eng", {
           body: `<p>Zoriana writes to Andrii.</p>`,
           text: "I’ve wanted to go to the Summer IT School {*since|for} last summer! Each course lasts {*for|since} three weeks. Applications are open {*until|by} 31 May, but I’ll send my form {*by|until} Friday. They’ll answer by 15 June.",
           hint: "Starting point or period? Does it continue, or is it done by then?",
-          fbOk: "Well done!",
+          fbOk: "Brilliant!",
           fbBad: "Check each time phrase again.",
           fbText: "<b>Since</b> last summer (a starting point). <b>For</b> three weeks (a period). Open <b>until</b> 31 May (it continues). Send my form <b>by</b> Friday (a deadline)."
         }
@@ -777,7 +777,7 @@ SLID.section("eng", {
           type: "intro",
           eyebrow: "Lesson 6",
           title: "Careers fair",
-          body: `<p class="lead">It’s careers fair day at Andrii’s school in Kyiv. Three guests talk about modern jobs.</p><p><b>Iryna Tkachuk:</b> I’m a cybersecurity specialist. I protect a bank’s computers from hackers.<br><b>Viktor Hnatyshyn:</b> I’m a UX designer. I work on apps for a company in Lviv.<br><b>Leah</b> (on a video call from England): I’m training to be a wind turbine technician.</p><p>What skills do these jobs need?</p>`,
+          body: `<p class="lead">It’s careers fair day at Andrii’s school in Kyiv. Three guests talk about modern jobs.</p><p><b>Iryna Kostenko:</b> I’m a cybersecurity specialist. I protect a bank’s computers from hackers.<br><b>Viktor Hnatyshyn:</b> I’m a UX designer. I work on apps for a company in Lviv.<br><b>Leah</b> (on a video call from England): I’m training to be a wind turbine technician.</p><p>What skills do these jobs need?</p>`,
           cta: "Let’s see"
         },
         {
@@ -824,7 +824,7 @@ SLID.section("eng", {
           type: "choice",
           sk: "read",
           title: "Read and choose.",
-          body: `<p><i>“In my job, I protect a bank’s computers and data from hackers. People think it’s all about coding, but you also need to be good at problem-solving: every attack is a new puzzle. Communication skills are important too, because I often explain problems to people who aren’t experts. And you need attention to detail, because one small mistake can let a hacker in. At school, I wasn’t the best at maths, but I was always curious. Later, I studied computer science at university in Kharkiv.” – Iryna Tkachuk</i></p><p>Why does Iryna need attention to detail?</p>`,
+          body: `<p><i>“In my job, I protect a bank’s computers and data from hackers. People think it’s all about coding, but you also need to be good at problem-solving: every attack is a new puzzle. Communication skills are important too, because I often explain problems to people who aren’t experts. And you need attention to detail, because one small mistake can let a hacker in. At school, I wasn’t the best at maths, but I was always curious. Later, I studied computer science at university in Kharkiv.” – Iryna Kostenko</i></p><p>Why does Iryna need attention to detail?</p>`,
           opts: [
             "Because she explains problems to people.",
             "Because every attack is a new puzzle.",
@@ -980,6 +980,7 @@ SLID.section("eng", {
           title: "Fill in the gaps.",
           text: "Denys applied {*to|for} several universities. Leah applied {*for|to} an apprenticeship. Before the course, please find {*out|up} the dates and hand {*in|off} your form at the office.",
           pre: "e10s8l3",
+          hint: "Is it a place or the thing you want? Then remember the phrasal verbs for information and forms.",
           fbOk: "Right.",
           fbBad: "The place → apply to. The thing you want → apply for.",
           fbText: "Applied <b>to</b> universities (the place). Applied <b>for</b> an apprenticeship (the thing). Find <b>out</b> the dates, hand <b>in</b> your form."
@@ -999,6 +1000,7 @@ SLID.section("eng", {
           ],
           correct: [0, 2, 4],
           pre: "e10s8l4",
+          hint: "Is it a phrasal verb or a verb with a preposition? Then check where the pronoun goes.",
           fbOk: "Well done!",
           fbBad: "Three sentences are correct. Where does a pronoun go?",
           fbText: "Correct: <b>fill the form in</b>, <b>fill it in</b>, <b>looking for it</b>. A pronoun goes in the middle of a phrasal verb, but after a preposition."
@@ -1024,6 +1026,7 @@ SLID.section("eng", {
           title: "Fill in the gaps.",
           text: "The office is open {*until|by} 6 pm. Send your form {*by|until} 31 May. Zoriana has been in the coding club {*since|for} Year 7.",
           pre: "e10s8l5",
+          hint: "Does it continue, is it a deadline or is it a starting point?",
           fbOk: "Exactly.",
           fbBad: "until → it continues; by → a deadline; since → a starting point.",
           fbText: "Open <b>until</b> 6 pm (it continues). Send it <b>by</b> 31 May (a deadline). <b>Since</b> Year 7 (a starting point)."
@@ -1047,15 +1050,15 @@ SLID.section("eng", {
           title: "Choose the correct answer.",
           body: `<p>Bohdan talks about his plans. Which sentence is correct?</p>`,
           opts: [
-            "I’m thinking to become an app developer.",
-            "I’m thinking of become an app developer.",
-            "I’m thinking of becoming an app developer."
+            "I’m thinking to become a wind turbine technician.",
+            "I’m thinking of become a wind turbine technician.",
+            "I’m thinking of becoming a wind turbine technician."
           ],
           correct: 2,
           pre: "e10s8l6",
           fbOk: "Well done!",
           fbBad: "thinking of + which form?",
-          fbText: "<b>I’m thinking of becoming</b> an app developer: after <i>thinking of</i>, use the -ing form."
+          fbText: "<b>I’m thinking of becoming</b> a wind turbine technician: after <i>thinking of</i>, use the -ing form."
         }
       ],
       outro: {

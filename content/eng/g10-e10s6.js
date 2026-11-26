@@ -612,7 +612,7 @@ SLID.section("eng", {
           after: "a scientist, I’d work on clean energy.",
           answer: ["were", "was"],
           hint: "Imagined → if + the Past Simple of be.",
-          fbOk: "Well done!",
+          fbOk: "Correct!",
           fbBad: "After if in an imagined situation: the Past Simple of be.",
           fbText: "If I <b>were</b> a scientist… <b>Was</b> is correct too in everyday English, but <b>were</b> is more usual in writing."
         },
@@ -775,7 +775,7 @@ SLID.section("eng", {
           body: `<p>Emma answers Mariia in the “Tech help” chat.</p>`,
           text: "Mariia, if I {*were|would be} you, I’d back up your photos first. Then I {*would delete|will delete} the old videos. I {*wouldn’t|won’t} buy a new phone if I were you: yours is only two years old. What would you do if you {*were|are} me?",
           hint: "If I were you, I’d… / I wouldn’t… In the question: if you … me?",
-          fbOk: "Well done!",
+          fbOk: "Brilliant!",
           fbBad: "It’s imagined advice: were and would, no will.",
           fbText: "If I <b>were</b> you, I’d…; I <b>would delete</b>…; I <b>wouldn’t</b> buy…; What would you do if you <b>were</b> me? No <i>would</i> in the if part, no <i>will</i> in the other part."
         }

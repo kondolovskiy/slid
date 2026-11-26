@@ -124,7 +124,7 @@ SLID.section("eng", {
           body: `<p>One word in Andrii’s post is wrong.</p>`,
           text: "Chess is a real sport. It teaches me discipline, and it helps me deal [about] stress before a big tournament.",
           hint: "Look at the phrase with stress.",
-          fbOk: "Good eye!",
+          fbOk: "Brilliant!",
           fbBad: "deal … stress: which small word?",
           fbText: "We say deal <b>with</b> stress: it helps me deal <b>with</b> stress. <i>Discipline</i> and <i>tournament</i> are correct."
         },
@@ -375,7 +375,7 @@ SLID.section("eng", {
           sk: "read",
           eyebrow: "Reading: From Athens to Kyiv, part 1 of 3",
           title: "Read and choose.",
-          body: `<p><i>The first modern Olympic Games took place in Athens in 1896. Since then, many cities have hosted them. London was the first city to host the Summer Olympics three times: in 1908, in 1948 and in 2012. Hosting the Games is a huge job. A city needs stadiums, transport and thousands of volunteers. But for many spectators, the best moment comes at the very start: the opening ceremony, when teams from every country walk into the stadium together.</i></p><p>Which sentence is true?</p>`,
+          body: `<p><i>The first modern Olympic Games took place in Athens in 1896. Since then, many cities have hosted them. London was the first city to host the Summer Olympics three times: in 1908, in 1948 and in 2012. Hosting the Games is a huge job. A city needs stadiums, transport and thousands of volunteers. But for many spectators, the best moment comes at the very start: the opening ceremony, when teams from every country walk into the stadium together. In our flat, the whole family watches it on TV. Everyone cheers when the Ukrainian team appears, and my little sister always waves a small flag. For me, that moment shows what the Games are about: people from many countries in one place.</i></p><p>Which sentence is true?</p>`,
           opts: [
             "The first modern Olympic Games took place in London.",
             "London was the first city to host the Summer Olympics three times.",
@@ -392,7 +392,7 @@ SLID.section("eng", {
           sk: "read",
           eyebrow: "Reading: From Athens to Kyiv, part 2 of 3",
           title: "Choose all the correct answers.",
-          body: `<p><i>The Paralympic Games started in England. In 1948, Dr Ludwig Guttmann organised a sports competition for patients in wheelchairs at Stoke Mandeville Hospital. The competition grew every year, and in 1960 the first Paralympic Games were held in Rome. In March 2022, less than two weeks after Russia’s full-scale invasion of Ukraine began, Ukrainian athletes competed at the Winter Paralympics in Beijing. They won 29 medals, 11 of them gold. Only China, the host country, won more.</i></p><p>What does part 2 say?</p>`,
+          body: `<p><i>The Paralympic Games started in England. In 1948, Dr Ludwig Guttmann organised a sports competition for patients in wheelchairs at Stoke Mandeville Hospital. The competition grew every year, and in 1960 the first Paralympic Games were held in Rome. In March 2022, less than two weeks after Russia’s full-scale invasion of Ukraine began, Ukrainian athletes competed at the Winter Paralympics in Beijing. They won 29 medals, 11 of them gold. Only China, the host country, won more. When I read about this team, I understood what team spirit really means. The athletes supported each other, they refused to give up, and they made the whole country proud. For me, their story is the best part of this article.</i></p><p>What does part 2 say?</p>`,
           opts: [
             "The first competition took place at a hospital in England.",
             "The first Paralympic Games were held in Rome.",
@@ -410,7 +410,7 @@ SLID.section("eng", {
           sk: "read",
           eyebrow: "Reading: From Athens to Kyiv, part 3 of 3",
           title: "Read and choose.",
-          body: `<p><i>In 2012, Ukraine and Poland hosted Euro 2012, the European Football Championship. Matches took place in eight stadiums, four in each country. The final was held at the Olympic Stadium in Kyiv on 1 July 2012, and Spain beat Italy 4–0. Big events also make heroes. At the Paris Olympics in 2024, the fencer Olha Kharlan won a bronze medal and a team gold. She now has six Olympic medals, more than any other athlete has won for Ukraine.</i></p><p>Which sentence is true?</p>`,
+          body: `<p><i>In 2012, Ukraine and Poland hosted Euro 2012, the European Football Championship. Matches took place in eight stadiums, four in each country. The final was held at the Olympic Stadium in Kyiv on 1 July 2012, and Spain beat Italy 4–0. Big events also make heroes. At the Paris Olympics in 2024, the fencer Olha Kharlan won a bronze medal and a team gold. She now has six Olympic medals, more than any other athlete has won for Ukraine. I was too young to remember Euro 2012, but my dad still often talks about the exciting final in Kyiv. And Kharlan is my sister’s role model: she started fencing lessons because of her.</i></p><p>Which sentence is true?</p>`,
           opts: [
             "Italy won the final in Kyiv.",
             "Olha Kharlan won six medals in Paris.",
@@ -760,7 +760,7 @@ SLID.section("eng", {
           sk: "phon",
           title: "Find the stressed syllable.",
           words: ["+in|ju|ry", "re|+cov|er", "+ex|er|cise", "+en|er|gy"],
-          fbOk: "Good eye!",
+          fbOk: "Brilliant!",
           fbBad: "Look at the underlined parts in the list.",
           fbText: "<u>in</u>jury, re<u>cov</u>er, <u>ex</u>ercise, <u>en</u>ergy."
         },
@@ -993,6 +993,7 @@ SLID.section("eng", {
           title: "Fill in the gaps.",
           text: "Daryna keeps {*training|to train} in the rain. Bohdan refused {*to give up|giving up} after he lost the first set. Kateryna managed {*to finish|finishing} her first 5 km race.",
           pre: "e10s2l2",
+          hint: "Look at the verb before each gap: keep, refuse, manage. Which pattern goes with each one?",
           fbOk: "Yes!",
           fbBad: "keep → -ing. refuse, manage → to.",
           fbText: "keeps <b>training</b>; refused <b>to give up</b>; managed <b>to finish</b>."
@@ -1021,6 +1022,7 @@ SLID.section("eng", {
           title: "Fill in the gaps.",
           text: "Please remember {*to bring|bringing} your PE kit on Friday. I’ll never forget {*watching|to watch} my first match at the stadium. On the way to the park, we stopped {*to buy|buying} some water.",
           pre: "e10s2l4",
+          hint: "In each sentence, is it a job to do, a memory or the reason for stopping?",
           fbOk: "Well done!",
           fbBad: "A job → to. A memory → -ing. Stop in order to → to.",
           fbText: "remember <b>to bring</b> (a job); never forget <b>watching</b> (a memory); stopped <b>to buy</b> (in order to)."
@@ -1064,6 +1066,7 @@ SLID.section("eng", {
           ],
           correct: 2,
           pre: "e10s2l3",
+          hint: "How many medals did Kharlan win in Paris? And how many does she have in total?",
           fbOk: "Well done!",
           fbBad: "Read the first sentence again: a bronze and a team gold.",
           fbText: "In Paris, Kharlan won <b>two medals</b>: a bronze and a team gold. She has six Olympic medals in total."

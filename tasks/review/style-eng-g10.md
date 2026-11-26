@@ -6,7 +6,7 @@ type: style
 subject: eng
 grade: 10
 depends_on: [write-eng-g10-e10s1, write-eng-g10-e10s2, write-eng-g10-e10s3, write-eng-g10-e10s4, write-eng-g10-e10s5, write-eng-g10-e10s6, write-eng-g10-e10s7, write-eng-g10-e10s8]
-status: todo
+status: review
 claimed_by: style-eng-g10
 created: 2026-11-26
 source: orchestrator
@@ -26,3 +26,12 @@ source: orchestrator
 
 ## Готово, коли
 - [ ] Правки в content/eng/g10-*.js, звіт reports/style/eng-g10.md, рядки STYLE в inbox; перелік для точкової повторної верифікації; задача → review.
+
+## Нотатки агента (style-eng-g10, 2026-11-26)
+- Звіт: reports/style/eng-g10.md. Змінено e10s1–e10s8 (база diff — HEAD 02f2e1d, не закомічено); статус `verified` і id не змінено; ключі (`correct`, `{*…}`, `answer`, `tiles`, `extra`) не змінено ніде; варіанти e10s8l7 T9 — лише професія (app developer → wind turbine technician, як e10s8l6).
+- Тексти читання (лише уривки): e10s2l3 234 → 352, e10s3l1 310 → 366, e10s4l6 334 → 355 — додано речення без нових фактів (думки й побут героїв); maxText ≤ 137. Решта текстів уже ≥ 350.
+- Герої: e10s8l4 Kateryna → Daryna; e10s8l2 Nazar → Ruslan; e10s8l6 Iryna Tkachuk → Iryna Kostenko; e10s1l3 «In July, Ostap had a birthday party» (22 July, e5s8); e10s1l5 «his neighbour Mr Lukashuk». Leah / «one cousin, Jack» і Taras і спорт — відкрито (inbox).
+- Терміни: e10s4 «past participle» → «the third form» (4 місця, місток лишився); email, the internet, penfriend, Mariia Prymachenko — однаково, правок не треба.
+- 15 нових `hint` у фіналах e10s2l7, e10s3l7, e10s4l7, e10s5l7, e10s8l7 (по 3; текст — §2 звіту); 16 `fbOk` поспіль замінено.
+- validate --section e10s1…e10s8 — 0 помилок; 1 попередження e10s4l6 readWordsPerScreen 67 > 65 (наслідок обсягу 355 слів) → STYLE-пропозиція «10-11» rwps 65 → 70 в inbox. Профіль і style/ не змінював; plan.js (e10s4l5 «By 2050» vs «By 2030») — STYLE в inbox. Build і commit не робив.
+- Точкова повторна верифікація — §7 звіту.

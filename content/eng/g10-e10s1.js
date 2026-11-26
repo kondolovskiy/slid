@@ -315,7 +315,7 @@ SLID.section("eng", {
           body: `<p>Mariia finishes her blog post.</p>`,
           text: "I’m lucky. I get {*on|in|off} well with my classmates, and I can count {*on|in|for} my friends. Ivanna is just an {*acquaintance|close friend|teammate}, but maybe one day we’ll be friends. And I keep {*in touch|in common|on touch} with Zofia every week.",
           hint: "get on, count on, an + a word for someone you hardly know, keep in touch.",
-          fbOk: "Well done!",
+          fbOk: "Brilliant!",
           fbBad: "Check the phrases in the list and the article: an + a vowel sound.",
           fbText: "I get <b>on</b> well; count <b>on</b> my friends; just an <b>acquaintance</b>; keep <b>in touch</b> with Zofia."
         }
@@ -343,7 +343,7 @@ SLID.section("eng", {
           type: "intro",
           eyebrow: "Lesson 3",
           title: "Too late for the cake",
-          body: `<p class="lead">Taras writes to Emma.</p><p><i>Yesterday was Ostap’s birthday party. My athletics training finished at seven, and I got there at half past seven. By the time I arrived, everyone had eaten the cake! Ostap had already opened his presents too. But he wasn’t angry. He’d saved a piece of cake for me.</i></p><p>Did Taras eat the cake with everyone?</p>`,
+          body: `<p class="lead">Taras writes to Emma.</p><p><i>In July, Ostap had a birthday party. That day, my athletics training finished at seven, and I got there at half past seven. By the time I arrived, everyone had eaten the cake! Ostap had already opened his presents too. But he wasn’t angry. He’d saved a piece of cake for me.</i></p><p>Did Taras eat the cake with everyone?</p>`,
           cta: "Let’s see"
         },
         {
@@ -738,7 +738,7 @@ SLID.section("eng", {
           type: "choice",
           sk: "func",
           title: "Read the dialogue and choose the best answer.",
-          body: `<p>Ostap sees his old neighbour, Mr Lukashuk, in the street in Lviv. Mr Lukashuk has two heavy bags.</p><p><b>Mr Lukashuk:</b> Oh, these bags are so heavy!<br><b>Ostap:</b> …</p><p>What does Ostap say?</p>`,
+          body: `<p>Ostap sees his neighbour Mr Lukashuk in the street in Lviv. Mr Lukashuk has two heavy bags.</p><p><b>Mr Lukashuk:</b> Oh, these bags are so heavy!<br><b>Ostap:</b> …</p><p>What does Ostap say?</p>`,
           opts: [
             "Sorry, I’ll let you down.",
             "You can’t count on me.",

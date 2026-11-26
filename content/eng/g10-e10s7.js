@@ -145,7 +145,7 @@ SLID.section("eng", {
           body: `<p>One word in Bohdan’s sentence is wrong.</p>`,
           text: "Ukraine is a republic. It is divided into 24 [states], and each of them is divided into raions.",
           hint: "What are Ukraine’s 24 regions called?",
-          fbOk: "Good eye!",
+          fbOk: "Brilliant!",
           fbBad: "Look at the word before the comma.",
           fbText: "Ukraine is divided into 24 <b>oblasts</b> (regions). The USA, for example, is divided into states, but Ukraine isn’t."
         },
@@ -302,7 +302,7 @@ SLID.section("eng", {
           body: `<p>Daryna checks the quiz cards.</p>`,
           text: "Card 1: the Verkhovna Rada. It’s the {*parliament|government}, and it passes {*laws|presidents}. Card 2: the President, the head of {*state|parliament}. Card 3: the Cabinet of Ministers. It {*runs|elects} the country every day, and the Prime Minister {*leads|passes} it.",
           hint: "Which body makes the laws? Which one runs the country?",
-          fbOk: "Well done!",
+          fbOk: "Brilliant!",
           fbBad: "Look at the box “Who does what?” again.",
           fbText: "The Verkhovna Rada is the <b>parliament</b> and passes <b>laws</b>. The President is the head of <b>state</b>. The Cabinet of Ministers <b>runs</b> the country, and the Prime Minister <b>leads</b> it."
         }
@@ -891,7 +891,7 @@ SLID.section("eng", {
           after: "holiday.",
           answer: ["bank"],
           hint: "Who is closed on these days?",
-          fbOk: "Well done!",
+          fbOk: "Brilliant!",
           fbBad: "Look at the first line of the box “Bank holidays in the UK”.",
           fbText: "In the UK, a public holiday is usually called a <b>bank</b> holiday: banks and most businesses are closed."
         },
@@ -1020,7 +1020,7 @@ SLID.section("eng", {
           correct: [0, 2, 3],
           pre: "e10s7l5",
           hint: "The storm is a noun. Does therefore show a reason or a result?",
-          fbOk: "Well done!",
+          fbOk: "Brilliant!",
           fbBad: "Three answers are correct. Therefore shows a result.",
           fbText: "<b>Due to</b>, <b>Owing to</b>, <b>Because of</b> + noun give the reason. <i>Therefore</i> shows a result, and it doesn’t go before a noun."
         },
