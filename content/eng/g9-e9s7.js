@@ -19,7 +19,7 @@
    Герої — серія 4–8 кл., на п'ять років старші, ніж у 4 кл. (memory/short/inbox.md, NOTE (герої)); нові: Hlib (медбрат,
    колега Olena в Poltava), Ms Datsenko (організаторка курсу Young Coders, Kyiv).
    Увесь зміст — англійською, британська норма (D-055). Тексти, діалоги й герої — власні (docs/design/english.md §8).
-   Статус: draft. 7 уроків (6 + фінал). Будова — за e8s6 (verified).
+   Статус: verified (verifier-e9s7). 7 уроків (6 + фінал). Будова — за e8s6 (verified).
    Перевірка: node tools/validate.mjs --section e9s7 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -29,7 +29,7 @@ SLID.section("eng", {
   title: "Jobs and careers",
   why: "To talk about jobs, abilities and professional qualities. And to make polite requests and talk about your future job.",
   requires: ["e4s1l3", "e5s1l5", "e5s3l5", "e6s5l5", "e6s6l4", "e6s6l5", "e7s3l5", "e8s2l3", "e8s6l5", "e9s1l2"],
-  meta: { author: "writer-e9s7", created: "2026-11-25", factcheck: null, teacher: null },
+  meta: { author: "writer-e9s7", created: "2026-11-25", factcheck: "verifier-e9s7, 2026-11-26 (reports/verify/write-eng-g9-e9s7.md)", teacher: null },
   badges: [
     { id: "e9s7boss", name: "Career guide", icon: "trophy", desc: "Finish the final lesson “Jobs and careers”" }
   ],
@@ -40,7 +40,7 @@ SLID.section("eng", {
       title: "Jobs and what people do at work",
       short: "Jobs",
       icon: "users",
-      status: "draft",
+      status: "verified",
       why: "Every job is different. Learn new job names and say what people do at work.",
       screens: [
         {
@@ -105,7 +105,7 @@ SLID.section("eng", {
           type: "choice",
           sk: "read",
           title: "Read and choose.",
-          body: `<p>Daryna: “I talked to a pilot at the airport in Kyiv. Her name is Ms Bilyk. She says pilots travel a lot and often sleep in hotels in different cities. They work in a team with other pilots. They sometimes work long hours.”</p><p>Which sentence is true?</p>`,
+          body: `<p>Daryna: “I talked to a pilot at the careers fair in Kyiv. Her name is Ms Bilyk. She says pilots travel a lot and often sleep in hotels in different cities. They work in a team with other pilots. They sometimes work long hours.”</p><p>Which sentence is true?</p>`,
           opts: [
             "Pilots always work alone.",
             "Pilots often sleep in hotels in different cities.",
@@ -123,7 +123,7 @@ SLID.section("eng", {
           title: "Find the stressed syllable.",
           words: ["+ar|chi|tect", "+jour|na|list", "+pro|gram|mer", "en|gi|+neer"],
           fbOk: "Good eye!",
-          fbBad: "Look at the underlined parts in the list of jobs.",
+          fbBad: "Look at the underlined parts in the list of jobs. And engineer: is the stress at the start?",
           fbText: "<u>ar</u>chitect, <u>jour</u>nalist, <u>pro</u>grammer, but engi<u>neer</u>: the stress is at the end."
         },
         {
@@ -145,7 +145,7 @@ SLID.section("eng", {
           eyebrow: "Final",
           title: "Complete the sentences.",
           body: `<p>Taras writes to the penfriend club.</p>`,
-          text: "I take photos for our school newspaper, and I write short news stories too. So I’d like to be a {*journalist|programmer|vet}. Journalists don’t always work {*indoors|shifts|long hours}: they often go out and talk to people. They also {*travel|design|fly} a lot. My cousin Marta wants to be an {*architect|firefighter|pilot}: she loves drawing houses.",
+          text: "I take photos for our school newspaper, and I write short news stories too. So I’d like to be a {*journalist|programmer|vet}. Journalists don’t always work {*indoors|shifts|long hours}: they often go out and talk to people. They also {*travel|design|put out fires} a lot. My cousin Marta wants to be an {*architect|firefighter|pilot}: she loves drawing houses.",
           hint: "News stories → ? Houses → ?",
           fbOk: "Well done!",
           fbBad: "Check: news stories, going out, travelling, designing houses.",
@@ -168,7 +168,7 @@ SLID.section("eng", {
       title: "Good at maths, interested in people: abilities",
       short: "Good at doing",
       icon: "star",
-      status: "draft",
+      status: "verified",
       why: "Your abilities and interests can help you choose a job. Talk about them without mistakes.",
       screens: [
         {
@@ -297,7 +297,7 @@ SLID.section("eng", {
       title: "A good nurse should be patient: qualities",
       short: "Qualities",
       icon: "user",
-      status: "draft",
+      status: "verified",
       why: "Every job needs special qualities. Say what a good nurse, vet or teacher should be like.",
       screens: [
         {
@@ -404,7 +404,7 @@ SLID.section("eng", {
           body: `<p>Mariia: “Architects design new buildings, so they need new ideas all the time.”</p>`,
           before: "A good architect should be",
           after: ".",
-          answer: "creative",
+          answer: ["creative", "imaginative"],
           hint: "Which quality means you have new ideas?",
           fbOk: "Right.",
           fbBad: "Look at the list of qualities: new ideas.",
@@ -439,7 +439,7 @@ SLID.section("eng", {
       title: "Which job is right for me? Asking for advice",
       short: "Advice",
       icon: "bulb",
-      status: "draft",
+      status: "verified",
       why: "Choosing a job isn’t easy. Ask for advice and give it, and say what is necessary.",
       screens: [
         {
@@ -585,7 +585,7 @@ SLID.section("eng", {
       title: "I would like to…: applying for a summer course",
       short: "Polite requests",
       icon: "voice",
-      status: "draft",
+      status: "verified",
       why: "When you apply for a course, you write to people you don’t know. Learn to make polite requests.",
       screens: [
         {
@@ -662,7 +662,7 @@ SLID.section("eng", {
         {
           type: "info",
           title: "Applying: a form, a letter, a CV",
-          body: `<ul><li>For a course, you often fill in an <b>application form</b> or write a letter.</li><li>For a job, people often send a <b>CV</b>: a short text about their education, skills and work.</li></ul><p>In the US, people usually say <b>résumé</b>.</p><p>Never send your real personal data online without your parents.</p>`,
+          body: `<ul><li>For a course, you often fill in an <b>application form</b>. Or you write a letter.</li><li>For a job, people often send a <b>CV</b>. It’s a short text about their education, skills and work.</li></ul><p>In the US, people usually say <b>résumé</b>.</p><p>Never send your real personal data online without your parents.</p>`,
           cta: "Next"
         },
         {
@@ -718,7 +718,7 @@ SLID.section("eng", {
       title: "My future job: I’ll be able to…",
       short: "Will be able to",
       icon: "path",
-      status: "draft",
+      status: "verified",
       why: "Talk about your future job and what you will be able to do.",
       screens: [
         {
@@ -877,7 +877,7 @@ SLID.section("eng", {
       title: "Careers week: the club guide",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e9s7boss",
       why: "Check everything from this section. Your points are doubled.",
