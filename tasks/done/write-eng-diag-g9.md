@@ -7,7 +7,7 @@ subject: eng
 grade: 9
 section: dge9
 depends_on: [write-eng-g9-e9s1, write-eng-g9-e9s2, write-eng-g9-e9s3, write-eng-g9-e9s4, write-eng-g9-e9s5, write-eng-g9-e9s6, write-eng-g9-e9s7, write-eng-g9-e9s8, write-eng-g9-e9s9, engine-eng-diag-pool, write-eng-diag-g8]
-status: review
+status: done
 claimed_by: writer-write-eng-diag-g9
 created: 2026-11-19
 source: design-eng
@@ -38,3 +38,6 @@ AGENTS.md §4; скіли `math-pool-diag` («Тест рівня») і `content
 - Одне завдання не підказує інше: базові й складніші завдання теми мають різні дієслова й рамки (had bought / had left; be watered / are being put; avoids / decided, avoid, enjoy; world-famous у варіантах №3 — не ключ №15).
 - Фактичних тверджень немає (Kyiv, Lviv, Dnipro, Odesa, Lutsk, Kharkiv, Carpathians — лише назви; Mr Koval, Coach, Nadiia, Uncle Petro — вигадані). Лексика — з уроків 4–9 кл. (vocab.cjs: поза уроками лише власні назви й дистрактор cutting; puppy, garage, entry, planned замінено).
 - Прогін: validate --diag dge9 — 0 помилок, 0 попереджень (було 1: 6 з 10 правильних — B, переставлено); euphony --diag dge9 — без зауважень; test-answer-ui не запускав (немає Python-playwright) — CI. Build і commit не робив (за задачею). Нових TQ немає.
+
+## Верифікація (verifier-write-eng-diag-g9, 2026-11-26)
+- Звіт: reports/verify/write-eng-diag-g9.md. **verified** після правок №8 (❌ вигаданий факт про Харківський зоопарк → museum in Zelena Dolyna), №16, 18, 24, 25 (копії рамок уроків e9s3l4 ек. 7, e9s4l4 ек. 4, e9s7l2 ек. 10, e8s6l5 ек. 8). Ключі 29/29 збіглися з моїми; других правильних відповідей немає. №11 залежить від TQ-158. validate --diag dge9 і euphony: 0 зауважень.

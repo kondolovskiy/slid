@@ -1,5 +1,5 @@
 /* Слід · Англійська мова, 9 клас — тест рівня «What do you know?» (dge9)
-   Статус: draft — автор writer-write-eng-diag-g9, 2026-11-26.
+   Статус: verified — автор writer-write-eng-diag-g9, верифікатор verifier-write-eng-diag-g9 (reports/verify/write-eng-diag-g9.md), 2026-11-26.
    10 тем-передумов (уроки 8 кл. і наскрізна граматика 7 кл., по 2 завдання: базове → складніше)
    + 9 тем 9 класу (по 1 завданню на розділ e9s1–e9s9) = 29 завдань.
    Передумови — уроки, на які посилаються requires розділів 9 кл. (файли content/eng/g9-*.js; reports/verify/plan-eng-g7-8-9.md §2, §6);
@@ -17,8 +17,8 @@ SLID.diag("eng", {
   grade: 9,
   title: "What do you know?",
   why: "Let’s see what you remember from your English lessons and what you already know. Then we can plan your lessons.",
-  status: "draft",
-  meta: { author: "writer-write-eng-diag-g9", created: "2026-11-26", factcheck: null, teacher: null },
+  status: "verified",
+  meta: { author: "writer-write-eng-diag-g9", created: "2026-11-26", factcheck: "verifier-write-eng-diag-g9 (reports/verify/write-eng-diag-g9.md)", teacher: null },
   topics: [
     // передумови: уроки 8 кл. і наскрізна граматика 7 кл. (requires розділів 9 кл.)
     { id: "usedto", title: "I used to…, did you use to…?", kind: "pre", lessons: ["e7s5l3"], for: ["e9s1"] },
@@ -116,7 +116,7 @@ SLID.diag("eng", {
       type: "choice",
       sk: "gram",
       title: "Choose the correct answer.",
-      body: "<p>A notice at the zoo in Kharkiv: “On Sundays, the zoo is free for everyone.”</p><p>On Sundays, visitors ___ pay.</p>",
+      body: "<p>A notice at the little museum in Zelena Dolyna: “On Sundays, the museum is free for everyone.”</p><p>On Sundays, visitors ___ pay.</p>",
       opts: ["mustn’t", "have to", "don’t have to"],
       correct: 2
     },
@@ -187,8 +187,8 @@ SLID.diag("eng", {
       type: "gaps",
       sk: "gram",
       title: "Fill in the gaps.",
-      body: "<p>Zlata writes about her autumn clothes.</p>",
-      text: "The weather in Lviv was {*so|such|such a} rainy last week that I bought a raincoat. It’s {*such a|so|such} light coat that I can put it in my school bag. And Mum bought me {*such|such a|so} warm socks that my feet are never cold now."
+      body: "<p>Mariia writes about the school concert.</p>",
+      text: "It was {*such a|so|such} long concert that we got home at ten. Our music teacher was {*so|such|such a} happy that she bought us pizza. And our parents were {*such|such a|so} loud fans that everyone in the hall could hear them!"
     },
     {
       topic: "said",
@@ -204,8 +204,8 @@ SLID.diag("eng", {
       type: "gaps",
       sk: "gram",
       title: "Fill in the gaps.",
-      body: "<p>At a summer camp, the leader asked Daryna three questions: “Where do you live?” “Can you swim?” “What are you reading at the moment?”</p>",
-      text: "The leader asked Daryna where {*she lived|did she live|lived she}. She asked {*if|that} Daryna could swim. Then she asked what {*Daryna was reading|was Daryna reading}."
+      body: "<p>At a summer camp, the leader asked Daryna three questions: “Where do you live?” “Can you swim?” “How often do you go camping?”</p>",
+      text: "The leader asked Daryna where {*she lived|did she live|lived she}. She asked {*if|that} Daryna could swim. Then she asked how often {*Daryna went|did Daryna go} camping."
     },
     {
       topic: "rel",
@@ -255,7 +255,7 @@ SLID.diag("eng", {
       sk: "gram",
       title: "Fill in the gaps.",
       body: "<p>Polina writes about the job she wants.</p>",
-      text: "I’m keen {*on|in} {*designing|to design} clothes, and I’d like to work in fashion. I’m bad {*at|of} cooking, so I won’t be a chef!"
+      text: "I love clothes, and I’m good {*at|on} {*making|to make} them. Last month, I made a dress for my sister! I’m also keen {*on|of} designing T-shirts, so I’d like to work in fashion."
     },
     {
       topic: "must",
@@ -263,7 +263,7 @@ SLID.diag("eng", {
       sk: "gram",
       title: "Fill in the gaps.",
       body: "<p>Two years ago, Daryna moved from Lutsk to Kyiv. She compares her old and new schools.</p>",
-      text: "At my old school in Lutsk, we {*had to|must|have to} wear a white shirt every day. At my new school, pupils {*don’t have to|mustn’t} do homework at weekends: it’s their choice. But they {*mustn’t|don’t have to} eat in the computer room: it’s a rule."
+      text: "At my old school in Lutsk, lessons started at eight, so we {*had to|must|have to} get up very early. At my new school, pupils {*don’t have to|mustn’t} do homework at weekends: it’s their choice. But they {*mustn’t|don’t have to} eat in the computer room: it’s a rule."
     },
     {
       topic: "cur-e9s8",
