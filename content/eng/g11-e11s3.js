@@ -20,7 +20,7 @@
    Герої — серія 4–10 кл., на рік старші, ніж у 10 кл. (17 років; Tom 15, Dmytro 13); нові — лише персонажі вигаданого фільму.
    Діалоги — репліками в body (D-056), без звуку (D-055 п. 4). Зображень немає.
    Увесь зміст — англійською, британська норма (D-055). Тексти, діалоги й герої — власні (docs/design/english.md §8).
-   Статус: draft. 7 уроків (6 + фінал). Будова — за розділами 10 кл. (e10s2, e10s5).
+   Статус: verified (verifier-e11s3). 7 уроків (6 + фінал). Будова — за розділами 10 кл. (e10s2, e10s5).
    Перевірка: node tools/validate.mjs --section e11s3 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -30,7 +30,7 @@ SLID.section("eng", {
   title: "Leisure: clubs, film, TV and the internet",
   why: "To talk about clubs, films, plays, TV programmes and life online. And to review a film or a show and keep a conversation going.",
   requires: ["e7s4l1", "e7s4l2", "e7s4l6", "e8s1l4", "e9s4l2", "e9s5l6"],
-  meta: { author: "writer-e11s3", created: "2026-11-26", factcheck: null, teacher: null },
+  meta: { author: "writer-e11s3", created: "2026-11-26", factcheck: "verifier-e11s3, 2026-11-26 (reports/verify/write-eng-g11-e11s3.md)", teacher: null },
   badges: [
     { id: "e11s3boss", name: "Film club critic", icon: "trophy", desc: "Finish the final lesson “Leisure: clubs, film, TV and the internet”" }
   ],
@@ -41,7 +41,7 @@ SLID.section("eng", {
       title: "Clubs for every interest",
       short: "Clubs",
       icon: "users",
-      status: "draft",
+      status: "verified",
       why: "Clubs and online communities bring like-minded people together. Learn to describe a club and its rules.",
       screens: [
         {
@@ -90,7 +90,7 @@ SLID.section("eng", {
           sk: "vocab",
           title: "Fill in the gaps.",
           body: `<p>Kateryna describes her drama club.</p>`,
-          text: "Our drama club {*meets|joins|signs} every Tuesday and Thursday at the youth centre. There are twenty {*members|moderators|spoilers} now, and five of them are {*newcomers|spoilers|moderators} who joined in September. If you want to join, sign {*up|in|on} for a free trial on our page.",
+          text: "Our drama club {*meets|joins|signs} every Tuesday and Thursday at the youth centre. There are twenty {*members|moderators|spoilers} now, and five of them are {*newcomers|spoilers|moderators} who joined in September. If you want to join, sign {*up|in|out} for a free trial on our page.",
           hint: "A new member is a … . To become a member, you sign … for a club.",
           fbOk: "Exactly.",
           fbBad: "Check each word in the list “Club words”.",
@@ -174,7 +174,7 @@ SLID.section("eng", {
       title: "Cinema, theatre, TV or the internet?",
       short: "Ways to watch",
       icon: "play",
-      status: "draft",
+      status: "verified",
       why: "There are many ways to watch a story: on a stage, on a big screen or on your laptop. Compare them and say which you prefer.",
       screens: [
         {
@@ -325,7 +325,7 @@ SLID.section("eng", {
       title: "A well-known actor, a two-hour film: compound adjectives",
       short: "Compound adjectives",
       icon: "star",
-      status: "draft",
+      status: "verified",
       why: "Two words can work together as one adjective: a well-known director, a two-hour film. Learn to use them and write them correctly.",
       screens: [
         {
@@ -458,7 +458,7 @@ SLID.section("eng", {
           eyebrow: "Final",
           title: "Complete the sentences.",
           body: `<p>Kyrylo writes about the film evening.</p>`,
-          text: "Our history club is planning a {*three-part|three-parts} film evening about Ukrainian cinema. Part one is <i>Earth</i>, a silent film by the {*well-known|well-knowing} director Oleksandr Dovzhenko. Part two is <i>Shadows of Forgotten Ancestors</i>, an {*award-winning|award-won} film based on a book by Mykhailo Kotsiubynskyi. It was filmed in Kryvorivnia, a village in the Carpathians. Each evening ends with a {*ten-minute|ten-minutes} discussion.",
+          text: "Our history club is planning a {*three-part|three-parts} film evening about Ukrainian cinema. Part one is <i>Earth</i>, a silent film by the {*well-known|well-knowing} director Oleksandr Dovzhenko. Part two is <i>Shadows of Forgotten Ancestors</i>, an {*award-winning|award-won} film based on a book by Mykhailo Kotsiubynskyi. Many scenes were filmed in Kryvorivnia, a village in the Carpathians. Each part ends with a {*ten-minute|ten-minutes} discussion.",
           hint: "Number + noun → singular. well-…, award-… : look at the list.",
           fbOk: "Brilliant!",
           fbBad: "Check the forms in the list “Compound adjectives”.",
@@ -481,7 +481,7 @@ SLID.section("eng", {
       title: "It was great, wasn’t it? Question tags",
       short: "Question tags",
       icon: "voice",
-      status: "draft",
+      status: "verified",
       why: "Question tags help you check something and invite the other person to talk. Use them with all tenses, modal verbs and Let’s.",
       screens: [
         {
@@ -560,7 +560,7 @@ SLID.section("eng", {
           type: "match",
           sk: "gram",
           title: "Match the halves.",
-          left: ["Let’s sit in the front row,", "I’m late again,", "There’s a show on Sunday,", "Kateryna has seen the film,", "You won’t forget your lines,"],
+          left: ["Let’s sit in the front row,", "I’m in the next scene,", "There’s a show on Sunday,", "Kateryna has seen the film,", "You won’t forget your lines,"],
           right: ["shall we?", "aren’t I?", "isn’t there?", "hasn’t she?", "will you?"],
           hint: "Let’s → ? I’m → ? There’s → ? Then look at has and won’t.",
           fbOk: "Good eye!",
@@ -633,7 +633,7 @@ SLID.section("eng", {
       title: "My favourite film or show: a review",
       short: "A review",
       icon: "scroll",
-      status: "draft",
+      status: "verified",
       why: "A good review helps people choose a film without spoiling it. Read a review and learn how to write one.",
       screens: [
         {
@@ -748,7 +748,7 @@ SLID.section("eng", {
           type: "word",
           sk: "write",
           title: "Write the missing word.",
-          body: `<p>Taras ends with a mark.</p>`,
+          body: `<p>Complete the last sentence of Taras’s review.</p>`,
           before: "I’d",
           after: "it four stars out of five.",
           answer: "give",
@@ -815,7 +815,7 @@ SLID.section("eng", {
       title: "Really? Did you? Showing interest",
       short: "Showing interest",
       icon: "bulb",
-      status: "draft",
+      status: "verified",
       why: "A good listener shows interest and asks more. Learn reply questions like Did you? and Can’t you? and keep a conversation going.",
       screens: [
         {
@@ -896,14 +896,14 @@ SLID.section("eng", {
           type: "word",
           sk: "gram",
           title: "Write the missing word.",
-          body: `<p><b>Daryna:</b> I can’t stand horror films.</p>`,
+          body: `<p><b>Daryna:</b> I can’t stand musicals.</p>`,
           before: "Andrii:",
           after: "you? Why not?",
           answer: "can’t",
           hint: "Daryna’s sentence is negative. Which verb is in it?",
           fbOk: "Yes!",
           fbBad: "Use the same verb as Daryna: can’t.",
-          fbText: "I <b>can’t</b> stand horror films. → <b>Can’t you?</b> Negative sentence → negative reply question."
+          fbText: "I <b>can’t</b> stand musicals. → <b>Can’t you?</b> Negative sentence → negative reply question."
         },
         {
           type: "pick",
@@ -920,9 +920,9 @@ SLID.section("eng", {
           type: "build",
           sk: "func",
           title: "Put the words in order.",
-          body: `<p>Oksana: “I went to the cinema with Halyna yesterday.” Reply and ask a follow-up question.</p>`,
+          body: `<p>Oksana: “I went to the cinema with Halyna yesterday.” First reply with a reply question, then ask a follow-up question.</p>`,
           tiles: ["Did", "you?", "What", "was", "it", "like?"],
-          answer: ["Did you? What was it like?", "What was it like? Did you?"],
+          answer: "Did you? What was it like?",
           extra: ["Were"],
           hint: "First a reply question with did, then What was it like?",
           fbOk: "Exactly.",
@@ -958,7 +958,7 @@ SLID.section("eng", {
       title: "Film club night",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e11s3boss",
       why: "Check everything from this section. Your points are doubled.",
@@ -1066,13 +1066,13 @@ SLID.section("eng", {
           sk: "gram",
           eyebrow: "Task 8",
           title: "Write the missing word.",
-          body: `<p><b>Emma:</b> We didn’t watch the film at the cinema. We streamed it at home.</p>`,
+          body: `<p><b>Emma:</b> We didn’t watch the film at the cinema.</p>`,
           before: "Oksana:",
           after: "you? Why not?",
           answer: "didn’t",
           pre: "e11s3l6",
           fbOk: "Yes!",
-          fbBad: "Emma’s first sentence is negative: We didn’t…",
+          fbBad: "Emma’s sentence is negative: We didn’t…",
           fbText: "We <b>didn’t</b> watch → <b>Didn’t you?</b> Negative sentence → negative reply question."
         },
         {
