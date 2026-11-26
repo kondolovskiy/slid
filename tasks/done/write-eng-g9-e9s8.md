@@ -7,7 +7,7 @@ subject: eng
 grade: 9
 section: e9s8
 depends_on: [curate-eng-plan-g7-9, engine-eng-lang-core, engine-eng-validate, engine-eng-stats, skills-eng, curate-eng-style, curate-eng-glossary, engine-eng-dialog]
-status: review
+status: done
 claimed_by: writer-e9s8
 created: 2026-11-19
 source: design-eng
@@ -79,3 +79,5 @@ Build не запускай (AGENTS.md §4 п. 8).
 **stats:** e9s8l3 longWordShare 0.158 (у межах профілю ≤ 0.18; «нетипово для сім'ї» z=2.3) — власні назви (Edinburgh, Australia, Toronto, UNESCO, Liberty, Transfiguration); e9s8l6 gradedShare 0.78 і readWordsPerScreen 48 — у межах профілю 7–9 (≤ 0.9, ≤ 50), z≈2.1 через два уривки тексту для читання; лишаю до style-sync.
 
 **Нові деталі героїв:** Emma з мамою на Великдень у гостях в Isla (Edinburgh), не купили квитків у замок, пропустили потяг до Glasgow; Oksana в Odesa в липні — дощовий день удома з дядьком Іваном (його старі фото Одеси), не взяла камеру на Потьомкінські сходи; Taras — путівник Lviv для Isla, піднімався на вежу ратуші; кузина Тараса Marta торік не потрапила на балет (не купила квитків онлайн); Halyna хотіла б жити в Lviv; Liam не хотів би жити у великому місті; Isla планує поїздку до Ukraine «next summer».
+
+**verifier-e9s8, 2026-11-26.** Verified (7 уроків), 6 правок — reports/verify/write-eng-g9-e9s8.md. «Svobody Avenue, the main street» — Львів, підтверджено (uk.wikipedia Проспект Свободи + discover-ukraine/Lonely Planet).

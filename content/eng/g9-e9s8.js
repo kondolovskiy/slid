@@ -4,7 +4,7 @@
    пояснювати, як дістатися (с. 28–31); граматика B1 (с. 34–35): Third Conditional — if + Past Perfect, would have
    (B1: ‘would have’ + ‘if’ + past perfect, imagined past, regret) — нове; повторення — Second Conditional (e8s8l5–l6),
    First Conditional (e7s6l3), Past Perfect (e8s5l4), one of the + superlative (e7s7l4), Past Simple passive (e7s7l2).
-   should have (regret) — на вибір автора, не взято (обсяг уроку 5). where (e9s5) — лише в текстах, не оцінюється (e9s5 ще немає).
+   should have (regret) — на вибір автора, не взято (обсяг уроку 5). where (e9s5l3) — у визначенні port і в текстах; requires e9s5l3, e5s10l1 (on a river / a sea) — verifier-e9s8.
    https://osvita.ua/doc/files/news/831/83117/Inoz_mov_5-9-kl_Redko_ta_in_14_07.pdf
    Розподіл — content/eng/plan.js, reports/verify/plan-eng-g7-8-9.md.
    Не повторює e6s7, e6s8, e7s7 (Київ, Лондон): тут Lviv, Odesa, Kharkiv, Chernihiv; Edinburgh, Dublin, Sydney, Toronto, New York.
@@ -16,7 +16,7 @@
    Факти — по два джерела (en.wikipedia + uk.wikipedia; URL — tasks/…/write-eng-g9-e9s8.md, «Нотатки агента»).
    Форми, наголос і рівні слів — CD, CD Grammar (Conditionals: if; Punctuation). Звуку немає (D-055 п. 4); діалоги — репліками в body (D-056).
    Увесь зміст — англійською, британська норма (D-055). Тексти, діалоги й герої — власні (docs/design/english.md §8).
-   Статус: draft. 7 уроків (6 + фінал).
+   Статус: verified (verifier-e9s8, 2026-11-26; reports/verify/write-eng-g9-e9s8.md). 7 уроків (6 + фінал).
    Перевірка: node tools/validate.mjs --section e9s8 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -25,7 +25,7 @@ SLID.section("eng", {
   weeks: [29, 32],
   title: "Cities of Ukraine and English-speaking countries",
   why: "To talk about big cities, famous places and historic monuments. And to imagine how things could have been different.",
-  requires: ["e5s7l6", "e6s7l2", "e6s7l3", "e6s8l2", "e6s8l4", "e7s6l3", "e7s7l2", "e7s7l4", "e8s5l4", "e8s8l5", "e8s8l6"],
+  requires: ["e5s7l6", "e6s7l2", "e6s7l3", "e6s8l2", "e6s8l4", "e7s6l3", "e7s7l2", "e7s7l4", "e8s5l4", "e8s8l5", "e8s8l6", "e5s10l1", "e9s5l3"],
   meta: { author: "writer-e9s8", created: "2026-11-26", factcheck: null, teacher: null },
   badges: [
     { id: "e9s8boss", name: "City explorer", icon: "trophy", desc: "Finish the final lesson “Cities of Ukraine and the world”" }
@@ -37,7 +37,7 @@ SLID.section("eng", {
       title: "Big cities of Ukraine: Lviv, Odesa, Kharkiv",
       short: "Big cities",
       icon: "city",
-      status: "draft",
+      status: "verified",
       why: "Every big city has its own story. Learn to describe big cities of Ukraine.",
       screens: [
         {
@@ -171,7 +171,7 @@ SLID.section("eng", {
       title: "Old towns and historic monuments",
       short: "Old towns",
       icon: "scroll",
-      status: "draft",
+      status: "verified",
       why: "Old buildings tell the history of a city. Learn to say what they are and when they were built.",
       screens: [
         {
@@ -276,7 +276,7 @@ SLID.section("eng", {
           eyebrow: "Final",
           title: "Complete the sentences.",
           body: `<p>Mariia writes about her favourite building in Kharkiv.</p>`,
-          text: "My favourite building is Derzhprom. It {*was built|built} in 1925–1928. For me, it’s one of the most interesting {*buildings|building} in Kharkiv. My friend Taras lives in Lviv. He loves Rynok Square, in the middle of the Old {*Town|Square}. The Town Hall is in the centre of the square, and you can climb its {*tower|stairs}.",
+          text: "My favourite building is Derzhprom. It {*was built|built} in 1925–1928. For me, it’s one of the most interesting {*buildings|building} in Kharkiv. My friend Taras lives in Lviv. He loves Rynok Square, in the middle of the Old {*Town|Square}. The Town Hall is in the centre of the square, and you can climb its {*tower|cathedral}.",
           hint: "Look at both screens “Famous places”.",
           fbOk: "Well done!",
           fbBad: "was + third form; one of the… + plural noun; the Old Town; climb the tower.",
@@ -299,7 +299,7 @@ SLID.section("eng", {
       title: "Big cities in English-speaking countries",
       short: "Cities of the world",
       icon: "globe",
-      status: "draft",
+      status: "verified",
       why: "Edinburgh, Dublin, Sydney, Toronto: learn about famous places in English-speaking countries.",
       screens: [
         {
@@ -351,7 +351,7 @@ SLID.section("eng", {
         {
           type: "info",
           title: "Sydney, Toronto, New York",
-          body: `<ul><li><b>Sydney</b> isn’t the capital of Australia: the capital is Canberra. The Sydney Opera House was opened in 1973. It was designed by Jørn Utzon, a Danish architect. It has been on the UNESCO list since 2007.</li><li><b>Toronto</b> → the largest city in Canada. The CN Tower was finished in 1976.</li><li><b>New York</b> → the Statue of Liberty was a gift from the people of France. It has stood there since 1886.</li></ul>`,
+          body: `<ul><li><b>Sydney</b> isn’t the capital of Australia: the capital is Canberra. The Sydney Opera House was opened in 1973. It was designed by Jørn Utzon, a Danish architect. It has been on the UNESCO list since 2007.</li><li><b>Toronto</b> → the largest city in Canada. The CN Tower was opened in 1976.</li><li><b>New York</b> → the Statue of Liberty was a gift from the people of France. It has stood there since 1886.</li></ul>`,
           cta: "Next"
         },
         {
@@ -359,7 +359,7 @@ SLID.section("eng", {
           sk: "cult",
           title: "Match the halves.",
           left: ["Edinburgh Castle", "Trinity College", "The Sydney Opera House", "The CN Tower", "The Statue of Liberty"],
-          right: ["stands on Castle Rock.", "was founded in 1592.", "was designed by Jørn Utzon.", "was finished in 1976.", "was a gift from the people of France."],
+          right: ["stands on Castle Rock.", "was founded in 1592.", "was designed by Jørn Utzon.", "was opened in 1976.", "was a gift from the people of France."],
           hint: "Which building was designed by a Danish architect? Which one was a gift?",
           fbOk: "Well done!",
           fbBad: "Look at both screens about the cities again.",
@@ -369,8 +369,8 @@ SLID.section("eng", {
           type: "sort",
           sk: "cult",
           title: "Sort the words.",
-          body: `<p>Is the city a capital?</p>`,
-          bins: ["A capital", "Not a capital"],
+          body: `<p>Is the city the capital of a country?</p>`,
+          bins: ["The capital of a country", "Not the capital of a country"],
           items: [
             ["Edinburgh", 0],
             ["Dublin", 0],
@@ -383,7 +383,7 @@ SLID.section("eng", {
           hint: "Look at the intro and the screen “Sydney, Toronto, New York”.",
           fbOk: "Right.",
           fbBad: "Sydney and Toronto are very big, but are they capitals?",
-          fbText: "Capitals: <b>Edinburgh</b> (Scotland), <b>Dublin</b> (Ireland), <b>Ottawa</b> (Canada), <b>Kyiv</b> (Ukraine). Sydney, Toronto and Kharkiv are big cities, but not capitals."
+          fbText: "Capitals: <b>Edinburgh</b> (Scotland), <b>Dublin</b> (Ireland), <b>Ottawa</b> (Canada), <b>Kyiv</b> (Ukraine). Sydney, Toronto and Kharkiv are big cities, but not capitals of countries."
         },
         {
           type: "word",
@@ -427,7 +427,7 @@ SLID.section("eng", {
       title: "Which city would you like to live in?",
       short: "Where would you live?",
       icon: "home",
-      status: "draft",
+      status: "verified",
       why: "Big or small, by the sea or in the mountains? Talk about real plans and imagined lives.",
       screens: [
         {
@@ -544,10 +544,10 @@ SLID.section("eng", {
           eyebrow: "Final",
           title: "Complete the sentences.",
           body: `<p>Halyna writes her answer for the club.</p>`,
-          text: "I live in a village near Poltava. It’s {*quieter|more quiet} than a big city, and I like that. But if I lived in a city, I {*would choose|will choose} Lviv because I love old towns. I {*could|can} climb the Town Hall tower every Saturday! And if I go to Lviv next summer, I {*will visit|would visit} Taras.",
+          text: "I live in a village near Poltava. It’s {*quieter|more quieter} than a big city, and I like that. But if I lived in a city, I {*would choose|will choose} Lviv because I love old towns. I {*could|can} climb the Town Hall tower every Saturday! And if I go to Lviv next summer, I {*will visit|would visit} Taras.",
           hint: "Which part is imagined, and which part is a real plan?",
           fbOk: "Well done!",
-          fbBad: "quiet → quieter. Imagined → would, could. Real plan → will.",
+          fbBad: "quiet → quieter (not more quieter). Imagined → would, could. Real plan → will.",
           fbText: "<b>Quieter</b> than a city. If I lived…, I <b>would choose</b>… I <b>could</b> climb… If I go next summer, I <b>will visit</b> Taras: a real plan."
         }
       ],
@@ -567,7 +567,7 @@ SLID.section("eng", {
       title: "If we had left earlier…: the Third Conditional",
       short: "Third Conditional",
       icon: "path",
-      status: "draft",
+      status: "verified",
       why: "Sometimes things go wrong. Learn to imagine a different past and talk about regrets.",
       screens: [
         {
@@ -714,7 +714,7 @@ SLID.section("eng", {
       title: "A city guide for a friend from abroad",
       short: "A city guide",
       icon: "map",
-      status: "draft",
+      status: "verified",
       why: "A friend from another country wants to see your city. Write a short guide and explain how to get around.",
       screens: [
         {
@@ -844,7 +844,7 @@ SLID.section("eng", {
       title: "Cities of Ukraine and the world",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e9s8boss",
       why: "Check everything from this section. Your points are doubled.",
