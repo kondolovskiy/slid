@@ -4,7 +4,7 @@
    суспільства; технології (с. 22); функції — давати поради, реагувати на поради інших; обговорювати перспективи;
    аргументувати свою точку зору (с. 22); граматика (с. 23): first and second conditionals — повторення e6s8l3, e7s6l3–l4,
    e8s8l5–l6; нове для B2: контраст реальної й уявної умови, will / might / could / can / імператив у головному реченні,
-   unless — не для відомого факту (CD Grammar «Unless»), If I were you, I’d… для поради. Розподіл — content/eng/plan.js,
+   unless — для реальних умов (CD Grammar «Unless»; правило «не для протилежного реальності» в оцінюваних завданнях не перевіряємо — reports/verify/write-eng-g10-e10s6.md), If I were you, I’d… для поради. Розподіл — content/eng/plan.js,
    reports/verify/plan-eng-g10-11.md: https://osvita.ua/doc/files/news/589/58921/inozemni-movi-10-11-19_09_2017.pdf
    Друга правильна відповідь (plan-eng-g10-11): If I were / If I was — обидва в ключі `word` (OALD if_1: «If I was in
    charge… (rather formal) If I were…»), у `gaps` was поруч із were не стоїть; will / might / could у головному реченні
@@ -18,7 +18,7 @@
    Taras, Emma — 16. Нових героїв немає.
    Форми, наголос і значення — Cambridge Dictionary (CD), CD Grammar, OALD; URL — tasks/…/write-eng-g10-e10s6.md, «Нотатки агента».
    Увесь зміст — англійською, британська норма (D-055). Тексти, діалоги й герої — власні (docs/design/english.md §8).
-   Статус: draft. 7 уроків (6 + фінал). Будова — за розділами 10 кл. (e10s1–e10s3).
+   Статус: verified (verifier-e10s6, 2026-11-26). 7 уроків (6 + фінал). Будова — за розділами 10 кл. (e10s1–e10s3).
    Перевірка: node tools/validate.mjs --section e10s6 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -39,7 +39,7 @@ SLID.section("eng", {
       title: "Computer equipment: what do you use?",
       short: "Computers",
       icon: "bolt",
-      status: "draft",
+      status: "verified",
       why: "Desktop or laptop? Webcam or microphone? Learn the words you need to talk about computers and what they do.",
       screens: [
         {
@@ -147,7 +147,7 @@ SLID.section("eng", {
           type: "word",
           sk: "vocab",
           title: "Write the missing word.",
-          body: `<p>Andrii’s computer suddenly stopped working in the middle of a game.</p>`,
+          body: `<p>Andrii’s computer suddenly stopped working in the middle of a game. Use a verb from “Hardware and software”.</p>`,
           before: "Oh no! My computer has",
           after: "again!",
           answer: "crashed",
@@ -190,7 +190,7 @@ SLID.section("eng", {
       title: "Messages, calls and news: modern communication",
       short: "Communication",
       icon: "voice",
-      status: "draft",
+      status: "verified",
       why: "Text, call or email? And where does your news come from? Talk about modern ways to keep in touch and to get information.",
       screens: [
         {
@@ -271,7 +271,7 @@ SLID.section("eng", {
         {
           type: "info",
           title: "Ukraine: a government app",
-          body: `<p>In February 2020, Ukraine launched <b>Diia</b>, a government app and website.</p><ul><li>People can keep <b>digital documents</b> in it, for example an ID card.</li><li>They can use many government services online.</li><li>Since 2021, a digital passport in the app has been equal to a paper one inside Ukraine. You can’t use it to cross a border.</li></ul><p><u>dig</u>ital</p>`,
+          body: `<p>In February 2020, Ukraine launched <b>Diia</b>, a government app and website.</p><ul><li>People can keep <b>digital documents</b> in it, for example an ID card.</li><li>They can use many government services online.</li><li>Since 2021, a digital passport in the app has been equal to an ordinary one inside Ukraine. You can’t use it to cross a border.</li></ul><p><u>dig</u>ital</p>`,
           cta: "Next"
         },
         {
@@ -288,7 +288,7 @@ SLID.section("eng", {
           hint: "Read the information about Diia again.",
           fbOk: "Right.",
           fbBad: "Diia is a government app. What does it do?",
-          fbText: "In <b>Diia</b>, people keep <b>digital documents</b> and use <b>government services online</b>. A digital passport in the app is equal to a paper one inside Ukraine, but not for crossing a border."
+          fbText: "In <b>Diia</b>, people keep <b>digital documents</b> and use <b>government services online</b>. A digital passport in the app is equal to an ordinary one inside Ukraine, but not for crossing a border."
         },
         {
           type: "pick",
@@ -330,7 +330,7 @@ SLID.section("eng", {
       title: "If the battery dies…: real conditions",
       short: "Real conditions",
       icon: "bulb",
-      status: "draft",
+      status: "verified",
       why: "Plans can go wrong. Talk about what will, might or can happen if they do.",
       screens: [
         {
@@ -484,7 +484,7 @@ SLID.section("eng", {
       title: "If I could invent anything…: unreal conditions",
       short: "Unreal conditions",
       icon: "bulb",
-      status: "draft",
+      status: "verified",
       why: "Some ideas are real plans, and some are only dreams. Learn to show the difference.",
       screens: [
         {
@@ -570,8 +570,8 @@ SLID.section("eng", {
         },
         {
           type: "info",
-          title: "Imagined: if … not, not unless",
-          body: `<p>Zoriana has a laptop. She imagines life without it:</p><ul><li>If I <b>didn’t have</b> a laptop, I couldn’t do my coding course.</li></ul><p>Not: <s>Unless I had a laptop, I couldn’t…</s></p><p><b>unless</b> means “except if”. It doesn’t go with a situation that is the opposite of real life. For that, use <b>if … not</b>.</p><p><i>unless</i> is fine in real situations: I’ll use the school computer <b>unless</b> my laptop is ready.</p>`,
+          title: "Imagined: if … not",
+          body: `<p>Zoriana has a laptop. She imagines life without it:</p><ul><li>If I <b>didn’t have</b> a laptop, I couldn’t do my coding course.</li></ul><p>For the opposite of real life, use <b>if</b> + the Past Simple with <b>not</b>: <i>didn’t have</i>, <i>weren’t</i>. No <i>would</i> in the <i>if</i> part. Not: <s>If I wouldn’t have a laptop</s>.</p><p><b>unless</b> (“except if”) is best for real, possible situations: I’ll use the school computer <b>unless</b> my laptop is ready.</p>`,
           cta: "Next"
         },
         {
@@ -580,15 +580,15 @@ SLID.section("eng", {
           title: "Choose the correct answer.",
           body: `<p>Daryna has a phone, and she uses it all the time. She imagines a day without it.</p>`,
           opts: [
-            "Unless I had my phone, I’d feel lost.",
+            "If I wouldn’t have my phone, I’d feel lost.",
             "If I don’t have my phone, I’d feel lost.",
             "If I didn’t have my phone, I’d feel lost."
           ],
           correct: 2,
-          hint: "It’s imagined: the opposite of real life. if … not or unless?",
+          hint: "It’s imagined: the opposite of real life. Which form comes after if?",
           fbOk: "Yes!",
           fbBad: "Daryna has a phone. This day is imagined.",
-          fbText: "<b>If I didn’t have my phone, I’d feel lost.</b> Imagined → if + Past Simple. For the opposite of real life, use <i>if … not</i>, not <i>unless</i>."
+          fbText: "<b>If I didn’t have my phone, I’d feel lost.</b> Imagined → if + Past Simple. No <i>would</i> in the <i>if</i> part, and no Present Simple with <i>I’d</i>."
         },
         {
           type: "build",
@@ -634,7 +634,7 @@ SLID.section("eng", {
         learned: [
           "Tell real situations from imagined ones: If it works, I’ll… / If I had…, I’d…",
           "Use could and might in imagined results.",
-          "Use if … not, not unless, for the opposite of real life."
+          "Imagine the opposite of real life: If I didn’t have…, I’d…"
         ]
       }
     },
@@ -645,7 +645,7 @@ SLID.section("eng", {
       title: "If I were you, I’d…: giving advice",
       short: "Giving advice",
       icon: "users",
-      status: "draft",
+      status: "verified",
       why: "Friends often ask for help with tech problems. Learn to give advice with If I were you and to react to advice.",
       screens: [
         {
@@ -693,7 +693,7 @@ SLID.section("eng", {
           sk: "func",
           title: "Match the problems and the advice.",
           left: ["My phone is full.", "I’m always tired in the morning.", "Someone wants my password.", "I always lose my homework when my laptop crashes."],
-          right: ["If I were you, I’d delete the old videos.", "I’d leave the phone in the kitchen at night if I were you.", "I wouldn’t answer if I were you.", "If I were you, I’d back up my files every day."],
+          right: ["If I were you, I’d delete the old videos.", "I’d leave the phone in the kitchen at night if I were you.", "I wouldn’t answer if I were you.", "If I were you, I’d back up your files every day."],
           hint: "Which advice helps with sleep? Which one is about a strange message?",
           fbOk: "Well done!",
           fbBad: "Read each problem. Which advice helps with it?",
@@ -796,7 +796,7 @@ SLID.section("eng", {
       title: "How science changes society: for and against",
       short: "For and against",
       icon: "scale",
-      status: "draft",
+      status: "verified",
       why: "Technology brings good and bad things. Read an essay for and against, and learn to argue your point of view.",
       screens: [
         {
@@ -969,7 +969,7 @@ SLID.section("eng", {
       title: "Tech Week: the club magazine",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e10s6boss",
       why: "Check everything from this section. Your points are doubled.",
@@ -1029,11 +1029,11 @@ SLID.section("eng", {
           sk: "gram",
           eyebrow: "Task 4",
           title: "Fill in the gaps.",
-          text: "If the Wi-Fi at school {*doesn’t work|won’t work|didn’t work}, we’ll make the magazine at Andrii’s flat. We’ll finish it on Friday unless the laptop {*crashes|doesn’t crash|will crash}.",
+          text: "If the Wi-Fi at school {*doesn’t work|don’t work|didn’t work}, we’ll make the magazine at Andrii’s flat. We’ll finish it on Friday unless the laptop {*crashes|doesn’t crash|will crash}.",
           pre: "e10s6l3",
           hint: "After if and unless: the Present Simple. unless = if … not.",
           fbOk: "Well done!",
-          fbBad: "No will after if and unless, and no not after unless.",
+          fbBad: "Wi-Fi is one thing, so: doesn’t. No will after unless, and no not after unless.",
           fbText: "If the Wi-Fi <b>doesn’t work</b>, we’ll… Unless the laptop <b>crashes</b> = if it doesn’t crash."
         },
         {
@@ -1072,12 +1072,12 @@ SLID.section("eng", {
           eyebrow: "Task 7",
           title: "Find the mistake.",
           body: `<p>Bohdan has a phone. One part of his sentence for the magazine is wrong.</p>`,
-          text: "[Unless] I had a phone, I [!would read] more books.",
+          text: "If I [wouldn’t have] a phone, I [!would read] more books.",
           pre: "e10s6l4",
-          hint: "Bohdan has a phone. This is the opposite of real life.",
+          hint: "Bohdan has a phone. This is imagined. What comes after if?",
           fbOk: "Good eye!",
-          fbBad: "For the opposite of real life: if … not or unless?",
-          fbText: "<b>If I didn’t have</b> a phone, I would read more books. <i>Unless</i> doesn’t go with the opposite of real life."
+          fbBad: "In the if part of an imagined situation: the Past Simple, no would.",
+          fbText: "<b>If I didn’t have</b> a phone, I would read more books. In the <i>if</i> part: the Past Simple, no <i>would</i>."
         },
         {
           type: "word",
