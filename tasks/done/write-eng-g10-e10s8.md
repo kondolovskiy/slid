@@ -7,7 +7,7 @@ subject: eng
 grade: 10
 section: e10s8
 depends_on: [curate-eng-plan-g10-11, engine-eng-lang-core, engine-eng-validate, engine-eng-stats, skills-eng, curate-eng-style, curate-eng-glossary, engine-eng-dialog]
-status: review
+status: done
 claimed_by: writer-e10s8
 created: 2026-11-19
 source: design-eng

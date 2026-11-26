@@ -14,10 +14,10 @@
    A levels, apprenticeship) — по два джерела; URL — tasks/…/write-eng-g10-e10s8.md, «Нотатки агента».
    Діалоги — репліками в body (D-056), без звуку (D-055 п. 4).
    Герої — серія 4–9 кл., на шість років старші, ніж у 4 кл. (memory/short/inbox.md, NOTE (герої)): Oksana, Emma,
-   Andrii, Taras, Zoriana — 16, Dmytro — 12; Denys (кузен Оксани, e8s6) — 18, університет у Kyiv; Marko (кузен Ostap,
-   e10s2) — 17, коледж у Lviv; нові — Leah (19, кузина Emma, apprentice), Iryna Tkachuk, Viktor Hnatiuk (гості ярмарку).
+   Andrii, Taras, Zoriana — 16, Dmytro — 12; Denys (кузен Оксани, e8s6) — 18, університет у Kyiv; нові — Arsen (17, ще один
+   кузен Ostap, коледж у Lviv; не Marko: тому в e9s5 12, тут 13 — verifier-e10s8), Leah (19, кузина Emma, apprentice), Iryna Tkachuk, Viktor Hnatyshyn (гості ярмарку).
    Увесь зміст — англійською, британська норма (D-055). Тексти, діалоги й герої — власні (docs/design/english.md §8).
-   Статус: draft (writer-e10s8). 7 уроків (6 + фінал). Будова — за розділами 10 кл. (e10s1, e10s3).
+   Статус: verified (verifier-e10s8, 2026-11-26). 7 уроків (6 + фінал). Будова — за розділами 10 кл. (e10s1, e10s3).
    Перевірка: node tools/validate.mjs --section e10s8 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -27,7 +27,7 @@ SLID.section("eng", {
   title: "Education and careers",
   why: "To talk about schools, colleges and universities in Ukraine and abroad. And to talk about modern jobs and how to get ready for them.",
   requires: ["e6s6l1", "e6s6l2", "e7s1l4", "e8s2l4", "e9s7l1", "e9s7l5"],
-  meta: { author: "writer-e10s8", created: "2026-11-26", factcheck: null, teacher: null },
+  meta: { author: "writer-e10s8", created: "2026-11-26", factcheck: "verifier-e10s8, 2026-11-26 (reports/verify/write-eng-g10-e10s8.md)", teacher: null },
   badges: [
     { id: "e10s8boss", name: "Careers guide editor", icon: "trophy", desc: "Finish the final lesson “Education and careers”" }
   ],
@@ -38,14 +38,14 @@ SLID.section("eng", {
       title: "Lyceum, college, university: where to study",
       short: "Where to study",
       icon: "city",
-      status: "draft",
+      status: "verified",
       why: "After Year 9 and after school, you can choose where to study. Learn the words for places and ways of studying.",
       screens: [
         {
           type: "intro",
           eyebrow: "Lesson 1",
           title: "Where are you studying now?",
-          body: `<p class="lead">This month, the penfriend club magazine asks: “Where are you studying now?”</p><p><b>Oksana:</b> This year, I started at a lyceum in Poltava. I take the bus there every morning.<br><b>Denys:</b> I’m Oksana’s cousin. I’m in my first year at university in Kyiv.<br><b>Marko:</b> I’m Ostap’s cousin. After Year 9, I went to a college in Lviv.<br><b>Emma:</b> I’m taking my GCSEs this summer. Then I’m staying at my school for the sixth form.</p><p>Lyceum, college, university: what’s the difference?</p>`,
+          body: `<p class="lead">This month, the penfriend club magazine asks: “Where are you studying now?”</p><p><b>Oksana:</b> This year, I started at a lyceum in Poltava. I take the bus there every morning.<br><b>Denys:</b> I’m Oksana’s cousin. I’m in my first year at university in Kyiv.<br><b>Arsen:</b> I’m Ostap’s cousin. After Year 9, I went to a college in Lviv.<br><b>Emma:</b> I’m taking my GCSEs this summer. Then I’m staying at my school for the sixth form.</p><p>Lyceum, college, university: what’s the difference?</p>`,
           cta: "Let’s see"
         },
         {
@@ -58,12 +58,12 @@ SLID.section("eng", {
           opts: [
             "Oksana",
             "Denys",
-            "Marko"
+            "Arsen"
           ],
           correct: 1,
           fbTitle: "Let’s find out.",
           fbOk: "Good guess!",
-          fbText: "<b>Denys</b>. Students at university study for a <b>degree</b>. Oksana is still at school, and Marko is learning a profession at a college."
+          fbText: "<b>Denys</b>. Students at university study for a <b>degree</b>. Oksana is still at school, and Arsen is learning a profession at a college."
         },
         {
           type: "info",
@@ -86,7 +86,7 @@ SLID.section("eng", {
           type: "choice",
           sk: "read",
           title: "Read and choose.",
-          body: `<p><i>“I finished Year 9 at my gymnasium and went to a college in Lviv. Now I’m in my second year. We still have school subjects, like maths and Ukrainian, but two days a week we have practice days at a garage. I’m learning to repair electric cars. When I finish college, I’ll get a diploma. Then I can find a job or study more.” – Marko, 17</i></p><p>What is Marko learning at college?</p>`,
+          body: `<p><i>“I finished Year 9 at my gymnasium and went to a college in Lviv. Now I’m in my second year. We still have school subjects, like maths and Ukrainian, but two days a week we have practice days at a garage. I’m learning to repair electric cars. When I finish college, I’ll get a diploma. Then I can find a job or study more.” – Arsen, 17</i></p><p>What is Arsen learning at college?</p>`,
           opts: [
             "to repair electric cars",
             "to drive a car",
@@ -96,7 +96,7 @@ SLID.section("eng", {
           hint: "What does he do on his practice days?",
           fbOk: "Right.",
           fbBad: "Read the sentences about the garage again.",
-          fbText: "Marko is learning <b>to repair electric cars</b>. He also has school subjects, because he went to college after Year 9."
+          fbText: "Arsen is learning <b>to repair electric cars</b>. He also has school subjects, because he went to college after Year 9."
         },
         {
           type: "info",
@@ -181,7 +181,7 @@ SLID.section("eng", {
       title: "After school: studying in Ukraine and abroad",
       short: "After school",
       icon: "globe",
-      status: "draft",
+      status: "verified",
       why: "After school, there is more than one good path. Read how three young people chose theirs in Ukraine and in the UK.",
       screens: [
         {
@@ -314,7 +314,7 @@ SLID.section("eng", {
           eyebrow: "Final",
           title: "Complete the sentences.",
           body: `<p>Taras writes a comment under the article.</p>`,
-          text: "Great article! I’m in Year 10, so next year I’ll take the {*NMT|A levels|UCAS}. I’d love to study photography. A bachelor’s degree here usually takes {*four|three|two} years. Leah’s idea of an {*apprenticeship|A level|test centre} sounds great too: you get paid and learn a job. We can all choose different {*paths|tests|degrees}!",
+          text: "Great article! I’m in Year 10, so next year I’ll take the {*NMT|A levels|UCAS}. I’d love to study photography. A bachelor’s degree here usually takes {*four|three|two} years. Leah’s idea of an {*apprenticeship|A level|test centre} sounds great too: you get paid and learn a job. We can all choose different {*paths|tests|centres}!",
           hint: "Taras lives in Lviv, Ukraine. Which test do students take there?",
           fbOk: "Well done!",
           fbBad: "Check: a test in Ukraine, a degree in Ukraine, Leah’s path.",
@@ -337,7 +337,7 @@ SLID.section("eng", {
       title: "Apply for, fill in, find out: phrasal and prepositional verbs",
       short: "Apply for, fill in",
       icon: "scroll",
-      status: "draft",
+      status: "verified",
       why: "Forms, courses and offers come with their own verbs. Learn the phrasal and prepositional verbs you need to apply.",
       screens: [
         {
@@ -418,7 +418,7 @@ SLID.section("eng", {
           type: "gaps",
           sk: "gram",
           title: "Fill in the gaps.",
-          text: "Please hand {*in|up|off} your forms at the school office. Did you find {*out|up|off} when the course starts? Marko signed {*up|out|off} for a weekend course. The garage offered him a job, but he turned it {*down|off|out}.",
+          text: "Please hand {*in|up|off} your forms at the school office. Did you find {*out|up|off} when the course starts? Arsen signed {*up|out|off} for a weekend course. The garage offered him a job, but he turned it {*down|off|out}.",
           hint: "Give a form to an office; learn information; join a course; say no to an offer.",
           fbOk: "Yes!",
           fbBad: "Look at the box on phrasal verbs again.",
@@ -428,7 +428,7 @@ SLID.section("eng", {
           type: "choice",
           sk: "read",
           title: "Read and choose.",
-          body: `<p>Marko writes:</p><p><i>“The garage where I have my practice days offered me a full-time job. It was a great offer, but I turned it down. I want to finish college first. I’ve also signed up for an online course about electric car batteries.”</i></p><p>What did Marko do?</p>`,
+          body: `<p>Arsen writes:</p><p><i>“The garage where I have my practice days offered me a full-time job. It was a great offer, but I turned it down. I want to finish college first. I’ve also signed up for an online course about electric car batteries.”</i></p><p>What did Arsen do?</p>`,
           opts: [
             "He took the full-time job.",
             "He finished college.",
@@ -484,7 +484,7 @@ SLID.section("eng", {
       title: "Fill it in: where the object goes",
       short: "Fill it in",
       icon: "target",
-      status: "draft",
+      status: "verified",
       why: "Fill in the form or fill the form in? Learn where the object goes in phrasal verbs.",
       screens: [
         {
@@ -542,10 +542,10 @@ SLID.section("eng", {
           body: `<p>Andrii tells Ms Lysenko what he did. There are two correct orders.</p>`,
           tiles: ["I", "filled", "in", "the form"],
           answer: ["I filled in the form.", "I filled the form in."],
-          extra: ["it"],
+          extra: ["on"],
           hint: "With a noun, in can go before or after it.",
           fbOk: "Yes!",
-          fbBad: "Use all the words except one. Do you need it?",
+          fbBad: "Use all the words except one. Fill in or fill on?",
           fbText: "<b>I filled in the form.</b> = <b>I filled the form in.</b> With a noun, both orders are correct."
         },
         {
@@ -555,7 +555,7 @@ SLID.section("eng", {
           body: `<p>Ms Lysenko: “Where’s your form, Andrii?”</p>`,
           tiles: ["I’ve", "handed", "it", "in"],
           answer: "I’ve handed it in.",
-          extra: ["on"],
+          extra: ["for"],
           hint: "Where does a pronoun go?",
           fbOk: "Right.",
           fbBad: "With it, there’s only one correct order.",
@@ -571,7 +571,7 @@ SLID.section("eng", {
           type: "gaps",
           sk: "gram",
           title: "Fill in the gaps.",
-          text: "I can’t find my form. I’m looking {*for it|it for}. Here it is! Now I can fill {*it in|in it}. There’s one free place, so I’ll apply {*for it|it for} today. Marko got a job offer, but he turned {*it down|down it}.",
+          text: "I can’t find my form. I’m looking {*for it|it for}. Here it is! Now I can fill {*it in|in it}. There’s one free place, so I’ll apply {*for it|it for} today. Arsen got a job offer, but he turned {*it down|down it}.",
           hint: "Phrasal verb → pronoun in the middle. Verb + preposition → pronoun after.",
           fbOk: "Exactly.",
           fbBad: "Look at the two boxes again: fill it in, but apply for it.",
@@ -630,7 +630,7 @@ SLID.section("eng", {
       title: "By Friday or until Friday? Time phrases",
       short: "Time phrases",
       icon: "line",
-      status: "draft",
+      status: "verified",
       why: "Deadlines matter when you apply. Use for, since, by, until, till and before correctly.",
       screens: [
         {
@@ -770,14 +770,14 @@ SLID.section("eng", {
       title: "Modern jobs and the skills they need",
       short: "Modern jobs",
       icon: "bulb",
-      status: "draft",
+      status: "verified",
       why: "Many jobs today didn’t exist when your grandparents were young. Talk about modern jobs, skills and the future.",
       screens: [
         {
           type: "intro",
           eyebrow: "Lesson 6",
           title: "Careers fair",
-          body: `<p class="lead">It’s careers fair day at Andrii’s school in Kyiv. Three guests talk about modern jobs.</p><p><b>Iryna Tkachuk:</b> I’m a cybersecurity specialist. I protect a bank’s computers from hackers.<br><b>Viktor Hnatiuk:</b> I’m a UX designer. I work on apps for a company in Lviv.<br><b>Leah</b> (on a video call from England): I’m training to be a wind turbine technician.</p><p>What skills do these jobs need?</p>`,
+          body: `<p class="lead">It’s careers fair day at Andrii’s school in Kyiv. Three guests talk about modern jobs.</p><p><b>Iryna Tkachuk:</b> I’m a cybersecurity specialist. I protect a bank’s computers from hackers.<br><b>Viktor Hnatyshyn:</b> I’m a UX designer. I work on apps for a company in Lviv.<br><b>Leah</b> (on a video call from England): I’m training to be a wind turbine technician.</p><p>What skills do these jobs need?</p>`,
           cta: "Let’s see"
         },
         {
@@ -800,7 +800,7 @@ SLID.section("eng", {
         {
           type: "info",
           title: "Modern jobs",
-          body: `<ul><li>a <b><u>cy</u>bersecurity specialist</b> → protects computers and data from hackers</li><li>a <b>data <u>an</u>alyst</b> → studies large amounts of data and finds useful patterns</li><li>an <b>app de<u>vel</u>oper</b> → creates apps for phones and computers</li><li>a <b>UX de<u>sign</u>er</b> → makes apps and websites easy to use (UX = user experience)</li><li>a <b>wind <u>tur</u>bine tech<u>ni</u>cian</b> → looks after and repairs wind turbines</li></ul>`,
+          body: `<ul><li>a <b>cybersecurity specialist</b> → protects computers and data from hackers</li><li>a <b>data <u>an</u>alyst</b> → studies large amounts of data and finds useful patterns</li><li>an <b>app de<u>vel</u>oper</b> → creates apps for phones and computers</li><li>a <b>UX de<u>sign</u>er</b> → makes apps and websites easy to use (UX = user experience)</li><li>a <b>wind <u>tur</u>bine tech<u>ni</u>cian</b> → looks after and repairs wind turbines</li></ul>`,
           cta: "Next"
         },
         {
@@ -919,7 +919,7 @@ SLID.section("eng", {
       title: "Our guide: after school",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e10s8boss",
       why: "Check everything from this section. Your points are doubled.",
@@ -936,7 +936,7 @@ SLID.section("eng", {
           sk: "vocab",
           eyebrow: "Task 1",
           title: "Choose the correct answer.",
-          body: `<p>Marko finished Year 9 at his gymnasium. Now he’s learning a profession and finishing his school subjects at the same time.</p><p>Where is he studying?</p>`,
+          body: `<p>Arsen finished Year 9 at his gymnasium. Now he’s learning a profession and finishing his school subjects at the same time.</p><p>Where is he studying?</p>`,
           opts: [
             "at a lyceum",
             "at a college",
@@ -1008,10 +1008,10 @@ SLID.section("eng", {
           sk: "gram",
           eyebrow: "Task 6",
           title: "Put the words in order.",
-          body: `<p>The garage offered Marko a job. What did he do? There are two correct orders.</p>`,
+          body: `<p>The garage offered Arsen a job. What did he do? There are two correct orders.</p>`,
           tiles: ["He", "turned", "the offer", "down"],
           answer: ["He turned the offer down.", "He turned down the offer."],
-          extra: ["it"],
+          extra: ["off"],
           pre: "e10s8l4",
           fbOk: "Yes!",
           fbBad: "With a noun, down can go before or after it.",
