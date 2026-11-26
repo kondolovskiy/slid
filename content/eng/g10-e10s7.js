@@ -23,7 +23,7 @@
    Ms Lysenko, Daryna, Bohdan), Emma і Tom (England), Isla (Edinburgh), Owen (Wales), Oksana (Zelena Dolyna біля Poltava),
    Mariia (Kharkiv), Taras (Lviv). Новий проєкт: сайт «Two countries» класу Andrii і класу Emma.
    Увесь зміст — англійською, британська норма (D-055). Тексти, діалоги й герої — власні (docs/design/english.md §8).
-   Статус: draft. 7 уроків (6 + фінал). Будова — за розділами 9–10 кл. (e9s3, e10s1).
+   Статус: verified (verifier-e10s7). 7 уроків (6 + фінал). Будова — за розділами 9–10 кл. (e9s3, e10s1).
    Перевірка: node tools/validate.mjs --section e10s7 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -33,7 +33,7 @@ SLID.section("eng", {
   title: "Ukraine and English-speaking countries",
   why: "To talk about how Ukraine and the UK are governed, their natural resources and their public holidays. And to explain reasons and results.",
   requires: ["e5s10l1", "e5s10l3", "e6s7l1", "e6s8l1", "e8s7l1", "e8s8l1", "e9s3l4", "e9s9l4"],
-  meta: { author: "writer-e10s7", created: "2026-11-26", factcheck: null, teacher: null },
+  meta: { author: "writer-e10s7", created: "2026-11-26", factcheck: "verifier-e10s7, 2026-11-26 (reports/verify/write-eng-g10-e10s7.md)", teacher: null },
   badges: [
     { id: "e10s7boss", name: "Two-country expert", icon: "trophy", desc: "Finish the final lesson “Ukraine and the UK: two countries”" }
   ],
@@ -44,7 +44,7 @@ SLID.section("eng", {
       title: "How Ukraine is organised: regions and the capital",
       short: "Regions",
       icon: "map",
-      status: "draft",
+      status: "verified",
       why: "People abroad often ask what an oblast is. Learn to explain how Ukraine is organised.",
       screens: [
         {
@@ -110,7 +110,7 @@ SLID.section("eng", {
         {
           type: "info",
           title: "Crimea is part of Ukraine",
-          body: `<p>The Constitution (Article 134) says that the Autonomous Republic of Crimea is an <b><u>in</u>tegral part</b> of Ukraine. <b>integral</b> = necessary to make something whole.</p><p>Russia has <b><u>oc</u>cupied</b> Crimea since 2014. <b>occupy</b> = take control of a place by force.</p><p>But under Ukraine’s laws, Crimea is still part of Ukraine. In 2014, the UN General Assembly called on all countries not to recognise any change in its status.</p>`,
+          body: `<p>The Constitution (Article 134) says that the Autonomous Republic of Crimea is an <b><u>in</u>tegral part</b> of Ukraine. <b>integral</b> = necessary to make something whole.</p><p>Russia has <b><u>oc</u>cupied</b> Crimea since 2014. <b>occupy</b> = take control of a place by force.</p><p>Ukraine’s laws call Crimea a <b>temporarily occupied</b> territory: it is still part of Ukraine. In March 2014, the UN General Assembly (Resolution 68/262) supported Ukraine’s territorial integrity. It called on all countries not to recognise any change in the status of Crimea and Sevastopol.</p>`,
           cta: "Next"
         },
         {
@@ -178,7 +178,7 @@ SLID.section("eng", {
       title: "Who makes the laws? Parliament, president, government",
       short: "Power in Ukraine",
       icon: "vote",
-      status: "draft",
+      status: "verified",
       why: "Laws, elections, the government: learn the words to explain who does what in Ukraine.",
       screens: [
         {
@@ -208,7 +208,7 @@ SLID.section("eng", {
         {
           type: "info",
           title: "Who does what?",
-          body: `<ul><li><b>the Verkhovna Rada</b> – the <b><u>par</u>liament</b>. It is the only body that makes laws. By the Constitution, it has 450 <b>MPs</b> (Members of Parliament), elected for five years.</li><li><b>the <u>Pres</u>ident</b> – the <b>head of state</b>, elected for five years.</li><li><b>the Cabinet of Ministers</b> – the government. It runs the country every day. The <b>Prime Minister</b> leads it.</li></ul>`,
+          body: `<ul><li><b>the Verkhovna Rada</b> – the <b><u>par</u>liament</b>. It is the only body that makes laws. Under the Constitution, it has 450 <b>MPs</b> (Members of Parliament), elected for five years.</li><li><b>the <u>Pres</u>ident</b> – the <b>head of state</b>, elected for five years.</li><li><b>the Cabinet of Ministers</b> – the government. It runs the country every day. The <b>Prime Minister</b> leads it.</li></ul>`,
           cta: "Next"
         },
         {
@@ -275,7 +275,7 @@ SLID.section("eng", {
           sk: "gram",
           title: "Find the mistake.",
           body: `<p>One word in the quiz answer is wrong.</p>`,
-          text: "By the Constitution of Ukraine, the 450 MPs are [elect] for five years.",
+          text: "Under the Constitution of Ukraine, the 450 MPs are [elect] for five years.",
           hint: "The people vote for the MPs. Which form comes after are?",
           fbOk: "Good eye!",
           fbBad: "Look at the verb after are.",
@@ -323,7 +323,7 @@ SLID.section("eng", {
       title: "How the UK is governed",
       short: "Power in the UK",
       icon: "flag",
-      status: "draft",
+      status: "verified",
       why: "The UK has a king, but he doesn’t make the laws. Find out who does, and compare it with Ukraine and the USA.",
       screens: [
         {
@@ -475,7 +475,7 @@ SLID.section("eng", {
       title: "Natural resources: so rich that…",
       short: "Resources",
       icon: "leaf",
-      status: "draft",
+      status: "verified",
       why: "Black soil, iron ore, North Sea oil, wind: talk about what Ukraine and the UK are rich in and what it leads to.",
       screens: [
         {
@@ -623,7 +623,7 @@ SLID.section("eng", {
       title: "Due to, owing to, therefore: reasons and results",
       short: "Reasons and results",
       icon: "bulb",
-      status: "draft",
+      status: "verified",
       why: "News, reports and notices explain why things happen. Learn to give reasons, results and purposes.",
       screens: [
         {
@@ -783,14 +783,14 @@ SLID.section("eng", {
       title: "Public holidays in Ukraine and the UK",
       short: "Public holidays",
       icon: "star",
-      status: "draft",
+      status: "verified",
       why: "Independence Day, Boxing Day, St Andrew’s Day: learn what the public holidays in Ukraine and the UK are and why they are on these dates.",
       screens: [
         {
           type: "intro",
           eyebrow: "Lesson 6",
           title: "Happy St Andrew’s Day!",
-          body: `<p class="lead">It’s 30 November. Isla sends a message from Edinburgh.</p><p><b>Isla:</b> Happy St Andrew’s Day! It’s a bank holiday in Scotland today. Is there a public holiday in Ukraine soon?<br><b>Andrii:</b> Yes, our next one is Christmas, on 25 December.</p><p>What public holidays do Ukraine and the UK have?</p>`,
+          body: `<p class="lead">It’s 30 November. Isla sends a message from Edinburgh.</p><p><b>Isla:</b> Happy St Andrew’s Day! It’s a bank holiday in Scotland. Is there a public holiday in Ukraine soon?<br><b>Andrii:</b> Yes, our next one is Christmas, on 25 December.</p><p>What public holidays do Ukraine and the UK have?</p>`,
           cta: "Let’s see"
         },
         {
@@ -799,7 +799,7 @@ SLID.section("eng", {
           eyebrow: "Guess!",
           title: "What do you think?",
           hyp: true,
-          body: `<p>How many bank holidays a year are there in Scotland?</p>`,
+          body: `<p>How many bank holidays are there in Scotland in a usual year?</p>`,
           opts: [
             "three",
             "nine",
@@ -808,12 +808,12 @@ SLID.section("eng", {
           correct: 1,
           fbTitle: "Let’s find out.",
           fbOk: "Good guess!",
-          fbText: "Scotland has <b>nine</b> bank holidays a year. England and Wales have eight, and Northern Ireland has ten. More later in the lesson."
+          fbText: "In a usual year, Scotland has <b>nine</b> bank holidays. England and Wales have eight, and Northern Ireland has ten. More later in the lesson."
         },
         {
           type: "info",
           title: "Public holidays in Ukraine",
-          body: `<p>The Labour Code of Ukraine (Article 73) lists the <b>public holidays</b>. Here are some of them:</p><ul><li>1 January – New Year’s Day</li><li>28 June – Constitution Day</li><li>15 July – Statehood Day</li><li>24 August – Independence Day</li><li>1 October – Day of Defenders of Ukraine</li><li>25 December – Christmas</li></ul><p>Until 2023, 7 January was a public holiday too, and the Day of Defenders was on 14 October.</p>`,
+          body: `<p>The Labour Code of Ukraine (Article 73) lists the <b>public holidays</b>. Here are some of them:</p><ul><li>1 January – New Year’s Day</li><li>28 June – Constitution Day</li><li>15 July – Statehood Day</li><li>24 August – Independence Day</li><li>1 October – Day of Defenders of Ukraine</li><li>25 December – Christmas</li></ul><p>Until a new law in July 2023, 7 January was a public holiday too, and the Day of Defenders was on 14 October.</p>`,
           cta: "Next"
         },
         {
@@ -846,7 +846,7 @@ SLID.section("eng", {
         {
           type: "info",
           title: "Bank holidays in the UK",
-          body: `<p>In the UK, public holidays are usually called <b>bank holidays</b>: banks and most businesses are closed.</p><ul><li>England and Wales have eight bank holidays a year, Scotland has nine, and Northern Ireland has ten.</li><li>Christmas Day and <b>Boxing Day</b> (26 December) are bank holidays everywhere in the UK.</li><li>Scotland also has <b>St Andrew’s Day</b> (30 November), and Northern Ireland has <b>St Patrick’s Day</b> (17 March).</li></ul>`,
+          body: `<p>In the UK, public holidays are usually called <b>bank holidays</b>: banks and most businesses are closed.</p><ul><li>In a usual year, England and Wales have eight bank holidays, Scotland has nine, and Northern Ireland has ten.</li><li>Christmas Day and <b>Boxing Day</b> (26 December) are bank holidays everywhere in the UK.</li><li>Scotland also has <b>St Andrew’s Day</b> (30 November), and Northern Ireland has <b>St Patrick’s Day</b> (17 March).</li><li>If 30 November is at the weekend, the Scottish bank holiday is on the next Monday.</li></ul>`,
           cta: "Next"
         },
         {
@@ -935,7 +935,7 @@ SLID.section("eng", {
       title: "Ukraine and the UK: two countries",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e10s7boss",
       why: "Check everything from this section. Your points are doubled.",
@@ -1060,7 +1060,7 @@ SLID.section("eng", {
           sk: "read",
           eyebrow: "Task 8 · Reading: Two countries, part 1 of 3",
           title: "Read and choose.",
-          body: `<p><i>Ukraine and the UK both have a parliament and a Prime Minister, but they are organised in different ways. Ukraine is a republic. Its head of state is the President, and the people elect him or her for five years. The laws are made by the Verkhovna Rada, the parliament. By the Constitution, it has 450 MPs. The Cabinet of Ministers, led by the Prime Minister, runs the country every day. The country is divided into 24 oblasts, the Autonomous Republic of Crimea and two cities with special status, Kyiv and Sevastopol. Russia has occupied Crimea since 2014, but under Ukraine’s laws, it is still part of Ukraine.</i></p><p>Who makes the laws in Ukraine?</p>`,
+          body: `<p><i>Ukraine and the UK both have a parliament and a Prime Minister, but they are organised in different ways. Ukraine is a republic. Its head of state is the President, and the people elect him or her for five years. The laws are made by the Verkhovna Rada, the parliament. Under the Constitution, it has 450 MPs. The Cabinet of Ministers, led by the Prime Minister, runs the country every day. The country is divided into 24 oblasts, the Autonomous Republic of Crimea and two cities with special status, Kyiv and Sevastopol. Russia has occupied Crimea since 2014, but Crimea is still an integral part of Ukraine.</i></p><p>Who makes the laws in Ukraine?</p>`,
           opts: [
             "the Cabinet of Ministers",
             "the oblasts",
