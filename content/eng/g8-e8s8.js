@@ -141,7 +141,7 @@ SLID.section("eng", {
           eyebrow: "Final",
           title: "Complete the sentences.",
           body: `<p>Andrii writes to Chloe.</p>`,
-          text: "My cousin Maksym lives in Ottawa. Canada is {*north of|in the north of} the USA. My pen friend Liam lives in Ireland. It’s on an {*island|ocean}, west of Great Britain. And you live in Australia. It’s a country and a {*continent|city}!",
+          text: "My cousin Maksym lives in Ottawa. Canada is {*north of|in the north of} the USA. My penfriend Liam lives in Ireland. It’s on an {*island|ocean}, west of Great Britain. And you live in Australia. It’s a country and a {*continent|city}!",
           hint: "Canada and the USA are two countries. What is land with sea all around it?",
           fbOk: "Well done!",
           fbBad: "Look at the rules: north of, island, continent.",
@@ -503,7 +503,7 @@ SLID.section("eng", {
         {
           type: "word",
           sk: "gram",
-          title: "Write much or a bit.",
+          title: "Write the missing word: much or a bit.",
           body: `<p>Area: Australia – about 7.7 million km², Ukraine – about 600,000 km².</p>`,
           before: "Australia is",
           after: "bigger than Ukraine.",
@@ -721,7 +721,7 @@ SLID.section("eng", {
         {
           type: "gaps",
           sk: "func",
-          title: "Complete the dialogue.",
+          title: "Complete the sentences.",
           text: "Bohdan: If you {*could|would} visit any country, which one {*would|did} you choose? Daryna: I’d choose New Zealand. Bohdan: Would you go alone? Daryna: No, I {*wouldn’t|didn’t}. I’d go with my mum.",
           hint: "No would after if. The question and the short answer use the same verb.",
           fbOk: "Exactly.",
@@ -796,7 +796,7 @@ SLID.section("eng", {
           eyebrow: "Final",
           title: "Complete the sentences.",
           body: `<p>Andrii writes an answer to Ms Lysenko’s question.</p>`,
-          text: "If I could visit one English-speaking country, I {*would|will} choose Ireland. I would stay with my pen friend Liam in Dublin. If we {*had|would have} more time, we {*could|can} go to the west coast. It’s much {*wetter|wet} there than in Dublin, so I would take an umbrella!",
+          text: "If I could visit one English-speaking country, I {*would|will} choose Ireland. I would stay with my penfriend Liam in Dublin. If we {*had|would have} more time, we {*could|can} go to the west coast. It’s much {*wetter|wet} there than in Dublin, so I would take an umbrella!",
           hint: "If + Past Simple, would or could + verb. After much: a comparative.",
           fbOk: "Well done!",
           fbBad: "Look at the rules: if + Past Simple; would or could in the other part; much + comparative.",
@@ -855,6 +855,7 @@ SLID.section("eng", {
           title: "Fill in the gaps.",
           text: "Kharkiv is {*in the north-east of|north-east of} Ukraine. Ireland is {*west of|in the west of} Great Britain. New Zealand has two big {*islands|continents} in the Pacific.",
           pre: "e8s8l1",
+          hint: "Is the place inside the other place or outside it?",
           fbOk: "Exactly.",
           fbBad: "Inside → in the north-east of. Outside → west of.",
           fbText: "Kharkiv is a city in Ukraine: <b>in the north-east of</b> Ukraine. Ireland isn’t inside Great Britain: <b>west of</b> Great Britain. New Zealand has two big <b>islands</b>."
@@ -899,6 +900,7 @@ SLID.section("eng", {
           ],
           correct: 2,
           pre: "e8s8l4",
+          hint: "Compare 67 and 37 million. Is the difference big or small?",
           fbOk: "Right.",
           fbBad: "Which number is bigger: 67 million or 37 million? Is the difference big or small?",
           fbText: "67 million and 37 million: a big difference. The population of the UK is <b>much bigger</b>."
@@ -911,6 +913,7 @@ SLID.section("eng", {
           body: `<p>Chloe lives in Canberra. She imagines life in Kyiv.</p>`,
           text: "If I {*lived|would live} in Kyiv, I {*would learn|will learn} Ukrainian. If I {*had|have} more free time, I would practise every day.",
           pre: "e8s8l5",
+          hint: "Does Chloe live in Kyiv? Then which form comes after if?",
           fbOk: "Well done!",
           fbBad: "After if: the Past Simple. In the other part: would + verb.",
           fbText: "If I <b>lived</b>…, I <b>would learn</b>… If I <b>had</b>… No <i>would</i> after <i>if</i>."
@@ -952,6 +955,7 @@ SLID.section("eng", {
           body: `<p>Oksana answers the quiz question.</p>`,
           text: "If I could visit one country, I’d choose Canada. It’s {*much|very} bigger than Ukraine, and my friend Maksym lives there. If I {*were|would be} in Ottawa in winter, I {*could|can} go skating every day. Maksym speaks English, and he’s learning {*French|the French} at school.",
           pre: "e8s8l6",
+          hint: "Compare the sizes of Canada and Ukraine. And which language does Maksym learn?",
           fbOk: "Well done!",
           fbBad: "Remember: much + comparative; if + were; could + verb; no the before a language.",
           fbText: "<b>Much</b> bigger. If I <b>were</b> in Ottawa, I <b>could</b> go skating. He’s learning <b>French</b> – no <i>the</i>."

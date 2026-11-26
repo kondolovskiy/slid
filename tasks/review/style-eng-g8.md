@@ -6,7 +6,7 @@ type: style
 subject: eng
 grade: 8
 depends_on: [write-eng-g8-e8s1, write-eng-g8-e8s2, write-eng-g8-e8s3, write-eng-g8-e8s4, write-eng-g8-e8s5, write-eng-g8-e8s6, write-eng-g8-e8s7, write-eng-g8-e8s8]
-status: todo
+status: review
 claimed_by: style-eng-g8
 created: 2026-11-25
 source: orchestrator
@@ -26,3 +26,11 @@ source: orchestrator
 
 ## Готово, коли
 - [ ] Правки в content/eng/g8-*.js, звіт reports/style/eng-g8.md, рядки STYLE в inbox; перелік для точкової повторної верифікації; задача → review.
+
+## Нотатки агента (style-eng-g8, 2026-11-26)
+- Звіт: reports/style/eng-g8.md. Змінено e8s1–e8s8; статус `verified` і id не змінено; ключ змінено лише в e8s1l1 #9 (плитка й ключ «a penfriend», перебір через app/lang.js — 1 прийняте речення).
+- penfriend: одне написання в 8 кл. (як 4–7, 9 кл. і e8s2/e8s3/e8s6); e8s1 (назва, уроки l1/l7, значок, текст), e8s8 (2 тексти). 4 кл. не чіпав; TERM в inbox.
+- Зібране із задачі: e8s3 requires + e7s7l2, e7s7l3; профіль Zofia (e8s1l1 #3) переписано; речення 14 слів (e8s1l3 #3) розбито; intro e8s2l1 скорочено (прапорець знято); «the third form» у e8s3 (11 місць); email / the internet — однаково, правок не треба; `why` e8s1, e8s2, e8s5 — нова граматика лише цитатою.
+- Герої: canteen у школі Оксани (e8s3l6 #8 → school lunches), Freya/Oksana → Andrii/Daryna (e8s6l3 #4), клуб penfriend не «started» (e8s1l7); вік і школи зведено (§3).
+- Дрібне: 4 інструкції за шаблоном, назва e8s6l6 → England, 15 `fbOk` поспіль, 16 `hint` у 5 фіналах.
+- validate --section e8s1…e8s8 — 0/0. Build не запускав. Профіль «7-9» без змін (STYLE в inbox).

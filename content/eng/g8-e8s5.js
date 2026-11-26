@@ -20,7 +20,7 @@ SLID.section("eng", {
   grade: 8,
   weeks: [18, 22],
   title: "Books and libraries",
-  why: "To talk about books, writers and literary genres. And to tell a story about what had happened.",
+  why: "To talk about books, writers and literary genres. And to tell a story: “When I got to the library, it had closed.”",
   requires: ["e4s3l5", "e5s7l1", "e6s3l3", "e6s3l4", "e6s3l5", "e6s4l4", "e6s4l5", "e6s7l5", "e7s1l2"],
   meta: { author: "writer-e8s5", created: "2026-11-25", factcheck: "verifier-e8s5, 2026-11-25 (reports/verify/write-eng-g8-e8s5.md)", teacher: null },
   badges: [
@@ -274,7 +274,7 @@ SLID.section("eng", {
           body: `<p>Oksana writes to Emma on Saturday evening.</p>`,
           text: "Hi Emma! Today I went to the library in Poltava. I {*borrowed|lent} two novels with my library {*card|book}. The {*librarian|writer}, Ms Shevchuk, helped me find a book about the history of Poltava on the {*non-fiction|fiction} shelves. I have to {*return|borrow} the books in three weeks.",
           hint: "Oksana takes the books. Who helps readers? History is true facts.",
-          fbOk: "Well done!",
+          fbOk: "Brilliant!",
           fbBad: "Check: take for a short time, a card for the library, a person who works there, true facts.",
           fbText: "I <b>borrowed</b> two novels with my library <b>card</b>. The <b>librarian</b> helped me. History – <b>non-fiction</b>. Bring the books back – <b>return</b> them."
         }

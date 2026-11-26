@@ -535,7 +535,7 @@ SLID.section("eng", {
   title: "School life after lessons",
   why: "To talk about after-school clubs, school events and traditions. And to make plans for a school event.",
   plan: [
-    "After-school clubs: what do you do after lessons?",
+    "After-school clubs",
     "First bell, last bell: school traditions",
     "If we win, we’ll play in the final: the First Conditional",
     "Unless it rains… As soon as we finish…",
@@ -564,10 +564,10 @@ SLID.section("eng", {
   id: "e8s1",
   grade: 8,
   weeks: [1, 4],
-  title: "Pen friends and letters",
-  why: "To write to a pen friend and answer letters and emails. And to talk about what you have been doing.",
+  title: "Penfriends and letters",
+  why: "To write to a penfriend and answer letters and emails. And to ask a friend: “What have you been doing?”",
   plan: [
-    "Looking for a pen friend: a profile",
+    "Looking for a penfriend: a profile",
     "I’ve been learning English for five years",
     "What have you been doing? News in an email",
     "You like music, don’t you? Question tags",
@@ -581,7 +581,7 @@ SLID.section("eng", {
   grade: 8,
   weeks: [5, 8],
   title: "Healthy living and free time",
-  why: "To talk about healthy living, active free time and everyday habits. And to say what you enjoy doing and what you want to try.",
+  why: "To talk about healthy living, active free time and everyday habits. And to say: “I enjoy cycling, and I want to try climbing!”",
   plan: [
     "Sleep, food and exercise: a healthy lifestyle",
     "Too much sugar, not enough sleep",
@@ -629,7 +629,7 @@ SLID.section("eng", {
   grade: 8,
   weeks: [18, 22],
   title: "Books and libraries",
-  why: "To talk about books, writers and literary genres. And to tell a story about what had happened.",
+  why: "To talk about books, writers and literary genres. And to tell a story: “When I got to the library, it had closed.”",
   plan: [
     "Fantasy, poetry or a detective story? Genres",
     "At the library: borrowing books and other services",
@@ -652,7 +652,7 @@ SLID.section("eng", {
     "It must be a school in England: guessing",
     "May I leave early? Are we allowed to…?",
     "You mustn’t or you don’t have to? School rules",
-    "Schools in Ukraine and the UK: what’s different?"
+    "Schools in Ukraine and England: what’s different?"
   ]
 });
 

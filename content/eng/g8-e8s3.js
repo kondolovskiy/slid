@@ -22,7 +22,7 @@ SLID.section("eng", {
   weeks: [9, 13],
   title: "The media: the internet and the press",
   why: "To talk about newspapers, magazines and news websites. And to report what other people said.",
-  requires: ["e4s6l2", "e6s3l2", "e6s7l3", "e6s8l5"],
+  requires: ["e4s6l2", "e6s3l2", "e6s7l3", "e6s8l5", "e7s7l2", "e7s7l3"],
   meta: { author: "writer-e8s3", created: "2026-11-25", factcheck: "verifier-e8s3 (reports/verify/write-eng-g8-e8s3.md)", teacher: null },
   badges: [
     { id: "e8s3boss", name: "Young reporter", icon: "trophy", desc: "Finish the final lesson “The media: the internet and the press”" }
@@ -309,7 +309,7 @@ SLID.section("eng", {
         {
           type: "info",
           title: "It is being built",
-          body: `<p>Workers <b>are building</b> a park. →<br>A park <b>is being built</b>.</p><ul><li>one → <b>is being</b> + third form: The bridge <b>is being repaired</b>.</li><li>two or more → <b>are being</b> + third form: Trees <b>are being planted</b>.</li></ul><p>build – built – <b>built</b>, plant – planted – <b>planted</b></p><p>This is the <b>Present Continuous passive</b>. It’s happening now. The news is about the thing, not the workers.</p>`,
+          body: `<p>Workers <b>are building</b> a park. →<br>A park <b>is being built</b>.</p><ul><li>one → <b>is being</b> + the third form: The bridge <b>is being repaired</b>.</li><li>two or more → <b>are being</b> + the third form: Trees <b>are being planted</b>.</li></ul><p>build – built – <b>built</b>, plant – planted – <b>planted</b></p><p>This is the <b>Present Continuous passive</b>. It’s happening now. The news is about the thing, not the workers.</p>`,
           cta: "Next"
         },
         {
@@ -320,7 +320,7 @@ SLID.section("eng", {
           text: "The old bridge {*is|are|am} being repaired. New benches {*are|is|am} being made for the park. The station {*is being|are being|being} painted this month. Two new playgrounds {*are being built|are building|is being built} next to the river.",
           hint: "One thing → is being. Two or more → are being.",
           fbOk: "Exactly.",
-          fbBad: "Is it one thing or two or more? Then: is / are + being + third form.",
+          fbBad: "Is it one thing or two or more? Then: is / are + being + the third form.",
           fbText: "The bridge <b>is</b> being repaired. Benches <b>are</b> being made. The station <b>is being</b> painted. Playgrounds <b>are being built</b>: the workers build them, the playgrounds don’t build anything."
         },
         {
@@ -340,7 +340,7 @@ SLID.section("eng", {
             "Our school is being painted."
           ],
           correct: 2,
-          hint: "Right now → is being + third form.",
+          hint: "Right now → is being + the third form.",
           fbOk: "Right.",
           fbBad: "Is it happening every day, in the past or now?",
           fbText: "It’s happening now: our school <b>is being painted</b>. <i>Is painted every day</i> – always; <i>was painted</i> – in the past."
@@ -364,10 +364,10 @@ SLID.section("eng", {
           before: "The bridge is",
           after: "repaired, so it’s closed.",
           answer: "being",
-          hint: "is + ? + third form",
+          hint: "is + ? + the third form",
           fbOk: "Well done!",
           fbBad: "Now: is + … + repaired.",
-          fbText: "The bridge is <b>being</b> repaired: is + being + third form."
+          fbText: "The bridge is <b>being</b> repaired: is + being + the third form."
         },
         {
           type: "build",
@@ -378,7 +378,7 @@ SLID.section("eng", {
           extra: ["been"],
           answer: "What is being built next to the station?",
           keepCase: true,
-          hint: "A question: What + is + being + third form…",
+          hint: "A question: What + is + being + the third form…",
           fbOk: "Yes!",
           fbBad: "Start with What. Then is + being (not been) + built.",
           fbText: "<b>What is being built next to the station?</b> – A new park is being built."
@@ -390,7 +390,7 @@ SLID.section("eng", {
           title: "Complete the sentences.",
           body: `<p>Taras writes to Emma.</p>`,
           text: "Big news from Lviv! A new park {*is being built|is building|are being built} next to the station. This week, two hundred trees {*are being planted|are planting|is being planted}. The old bridge {*is being repaired|is repairing|repairs}, so we can’t use it now. It {*was built|is being built|builds} in 1900, so it’s very old!",
-          hint: "Now → is / are being + third form. In 1900 → was + third form.",
+          hint: "Now → is / are being + the third form. In 1900 → was + the third form.",
           fbOk: "Well done!",
           fbBad: "Check: now or in 1900? One or two or more?",
           fbText: "Now: a park <b>is being built</b>, trees <b>are being planted</b>, the bridge <b>is being repaired</b>. In the past: it <b>was built</b> in 1900."
@@ -785,8 +785,8 @@ SLID.section("eng", {
           eyebrow: "Final",
           title: "Complete the sentences.",
           body: `<p>Oksana writes a short article for her school website in Zelena Dolyna.</p>`,
-          text: "<b>A garden for our school</b><br>This week, a school garden {*is being made|is making|are being made} behind our school. Apple trees {*are being planted|are planting|is being planted} next to it. Our head teacher {*told|said} us that the apples were for the school canteen. Dmytro said he {*wanted|wanting|want} to plant a tree too! The garden opens in spring.",
-          hint: "Now → is / are being + third form. A person after the gap → told.",
+          text: "<b>A garden for our school</b><br>This week, a school garden {*is being made|is making|are being made} behind our school. Apple trees {*are being planted|are planting|is being planted} next to it. Our head teacher {*told|said} us that the apples were for school lunches. Dmytro said he {*wanted|wanting|want} to plant a tree too! The garden opens in spring.",
+          hint: "Now → is / are being + the third form. A person after the gap → told.",
           fbOk: "Well done!",
           fbBad: "Check: one garden, two or more trees; told + a person.",
           fbText: "A garden <b>is being made</b>. Apple trees <b>are being planted</b>. The head teacher <b>told</b> us. Dmytro said he <b>wanted</b> to plant a tree."
@@ -863,8 +863,9 @@ SLID.section("eng", {
           ],
           correct: 2,
           pre: "e8s3l3",
+          hint: "Is it happening now, every day or in the past?",
           fbOk: "Right.",
-          fbBad: "Now → is being + third form.",
+          fbBad: "Now → is being + the third form.",
           fbText: "It’s happening now: the gym <b>is being repaired</b>. The gym doesn’t repair anything, so <i>is repairing</i> is wrong."
         },
         {
@@ -889,6 +890,7 @@ SLID.section("eng", {
           body: `<p>One part of Zoriana’s notes is wrong.</p>`,
           text: "Kyrylo [said me] that he wanted to write about history. Daryna [!told us] that she had a new camera.",
           pre: "e8s3l5",
+          hint: "Said or told: which one needs a person after it?",
           fbOk: "Good eye!",
           fbBad: "said + a person: is it correct?",
           fbText: "Not <i>said me</i>: Kyrylo <b>told me</b> that he wanted to write about history. <i>Daryna told us</i> is correct."
@@ -903,6 +905,7 @@ SLID.section("eng", {
           extra: ["we"],
           answer: "The players said they were tired.",
           pre: "e8s3l5",
+          hint: "Start with The players said. Then change we and are.",
           fbOk: "Yes!",
           fbBad: "we → they, are → were.",
           fbText: "<b>The players said they were tired.</b> we → they, are → were."

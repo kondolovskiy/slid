@@ -331,17 +331,17 @@ SLID.section("eng", {
           type: "choice",
           sk: "gram",
           title: "Choose the correct answer.",
-          body: `<p>Freya finds a bag in the library. Oksana’s name is on it.</p><p>What does Freya say?</p>`,
+          body: `<p>Andrii finds a bag in the school library. Daryna’s name is on it.</p><p>What does Andrii say?</p>`,
           opts: [
-            "It can’t be Oksana’s bag.",
-            "It might Oksana’s bag.",
-            "It must be Oksana’s bag."
+            "It can’t be Daryna’s bag.",
+            "It might Daryna’s bag.",
+            "It must be Daryna’s bag."
           ],
           correct: 2,
-          hint: "Her name is on it. Is Freya sure?",
+          hint: "Her name is on it. Is Andrii sure?",
           fbOk: "Right.",
           fbBad: "The name is on the bag. Sure or not sure?",
-          fbText: "Oksana’s name is on the bag, so Freya is sure: it <b>must be</b> Oksana’s bag. <i>It might Oksana’s bag</i> has no verb: <b>might be</b>."
+          fbText: "Daryna’s name is on the bag, so Andrii is sure: it <b>must be</b> Daryna’s bag. <i>It might Daryna’s bag</i> has no verb: <b>might be</b>."
         },
         {
           type: "gaps",
@@ -390,7 +390,7 @@ SLID.section("eng", {
         {
           type: "word",
           sk: "gram",
-          title: "Write might or could.",
+          title: "Write the missing word: might or could.",
           body: `<p>Freya sees a photo of a girl with a karate medal. Oksana does karate, but the photo is small. Freya isn’t sure.</p>`,
           before: "It",
           after: "be Oksana.",
@@ -739,7 +739,7 @@ SLID.section("eng", {
     /* ───────────── Урок 6 ───────────── */
     {
       id: "e8s6l6",
-      title: "Schools in Ukraine and the UK: what’s different?",
+      title: "Schools in Ukraine and England: what’s different?",
       short: "Two countries",
       icon: "scale",
       status: "verified",
@@ -940,6 +940,7 @@ SLID.section("eng", {
           ],
           correct: 2,
           pre: "e8s6l3",
+          hint: "Is Andrii sure? Is it true or not true?",
           fbOk: "Well done!",
           fbBad: "Sure it isn’t true → ?",
           fbText: "Andrii is sure it isn’t true: she <b>can’t be</b> at school. <i>Mustn’t</i> is for rules."
@@ -979,6 +980,7 @@ SLID.section("eng", {
           body: `<p>One phrase in the guide is wrong.</p>`,
           text: "There’s no uniform at Andrii’s school, so pupils [mustn’t] wear [!a uniform]. They can wear their own clothes.",
           pre: "e8s6l5",
+          hint: "No uniform: is it a rule or the pupils’ choice?",
           fbOk: "Right.",
           fbBad: "Is it a rule or their choice?",
           fbText: "It’s their choice: pupils <b>don’t have to</b> wear a uniform. <i>Mustn’t</i> would mean a uniform is not allowed."

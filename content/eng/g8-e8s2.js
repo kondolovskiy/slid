@@ -19,7 +19,7 @@ SLID.section("eng", {
   grade: 8,
   weeks: [5, 8],
   title: "Healthy living and free time",
-  why: "To talk about healthy living, active free time and everyday habits. And to say what you enjoy doing and what you want to try.",
+  why: "To talk about healthy living, active free time and everyday habits. And to say: “I enjoy cycling, and I want to try climbing!”",
   requires: ["e4s5l2", "e5s3l4", "e5s6l1", "e5s6l2", "e6s2l2", "e6s2l6", "e6s6l5", "e7s4l6"],
   meta: { author: "writer-e8s2", created: "2026-11-25", factcheck: "verifier-e8s2, 2026-11-25 (reports/verify/write-eng-g8-e8s2.md)", teacher: null },
   badges: [
@@ -39,7 +39,7 @@ SLID.section("eng", {
           type: "intro",
           eyebrow: "Lesson 1",
           title: "How healthy is your day?",
-          body: `<p class="lead">This month, the penfriend club’s topic is healthy living. Ms Kravets asks: “How healthy is your day?”</p><p><b>Mariia:</b> I run in the park every morning, and I eat a lot of fruit. But I often stay up late and go to bed after midnight.<br><b>Andrii:</b> I sleep nine hours a night. But I play chess for hours, and I don’t move much.<br><b>Emma:</b> I swim four times a week. But I love crisps and eat them every day!</p><p>Everybody does something healthy. What isn’t healthy in their days?</p>`,
+          body: `<p class="lead">The penfriend club’s topic is healthy living. Ms Kravets asks: “How healthy is your day?”</p><p><b>Mariia:</b> I run in the park every morning, and I eat a lot of fruit. But I often stay up late and go to bed after midnight.<br><b>Andrii:</b> I sleep nine hours a night. But I play chess for hours, and I don’t move much.<br><b>Emma:</b> I swim four times a week. But I love crisps and eat them every day!</p><p>What isn’t healthy in their days?</p>`,
           cta: "Let’s see"
         },
         {
@@ -131,7 +131,7 @@ SLID.section("eng", {
           body: `<p>Mariia writes her plan for a healthier week.</p>`,
           text: "From Monday, I’m going to go to bed at ten. Teenagers need eight to ten hours of {*sleep|exercise|energy}. I already run every morning, so I’m quite {*active|lazy|slow}. But I eat a lot of cake, and cake is {*junk food|exercise|energy}. I {*shouldn’t|should|don’t should} eat it every evening!",
           hint: "What do you need eight to ten hours of? Running every morning: are you active or lazy?",
-          fbOk: "Well done!",
+          fbOk: "Brilliant!",
           fbBad: "Check the words in the rules: sleep, active, junk food.",
           fbText: "Teenagers need 8–10 hours of <b>sleep</b>. Mariia runs every day, so she is <b>active</b>. Cake is <b>junk food</b>, and junk food every evening isn’t healthy: I <b>shouldn’t</b> eat it."
         }
@@ -219,7 +219,7 @@ SLID.section("eng", {
           left: ["There are too many cars in the street,", "I’ve got too much homework,", "We haven’t got enough chairs,", "I didn’t drink enough water,"],
           right: ["so the air isn’t clean.", "so I can’t go out tonight.", "so two people have to stand.", "so I was thirsty after the race."],
           hint: "Which problem makes you thirsty? Which one is about sitting?",
-          fbOk: "Good eye!",
+          fbOk: "Right.",
           fbBad: "Think: what happens because of each problem?",
           fbText: "Too many cars → the air isn’t clean. Too much homework → no time to go out. Not enough chairs → people stand. Not enough water → thirsty."
         },
@@ -826,6 +826,7 @@ SLID.section("eng", {
           title: "Fill in the gaps.",
           text: "Tip 2: Don’t eat too {*many|much} sweets or drink too {*much|many} cola. And eat {*enough|too many} fruit and vegetables!",
           pre: "e8s2l2",
+          hint: "Can you count sweets? Can you count cola?",
           fbOk: "Yes!",
           fbBad: "Sweets → plural. Cola → uncountable.",
           fbText: "Too <b>many</b> sweets, too <b>much</b> cola. Eat <b>enough</b> fruit: enough before the noun."
@@ -837,6 +838,7 @@ SLID.section("eng", {
           title: "Fill in the gaps.",
           text: "Mariia: I enjoy {*running|to run} in the park. This year I want {*to take|taking} part in a race, and I hope {*to finish|finishing} in the top ten!",
           pre: "e8s2l3",
+          hint: "Which verbs take -ing, and which take to?",
           fbOk: "Exactly.",
           fbBad: "enjoy → -ing. want, hope → to.",
           fbText: "enjoy <b>running</b>: -ing. want <b>to take</b> part, hope <b>to finish</b>: to + verb."
@@ -880,6 +882,7 @@ SLID.section("eng", {
           ],
           correct: 1,
           pre: "e8s2l6",
+          hint: "24 members: 12 is half. What is 6?",
           fbOk: "Yes!",
           fbBad: "6 out of 24: half or a quarter?",
           fbText: "6 out of 24 is <b>a quarter</b>. Half would be 12."

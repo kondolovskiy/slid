@@ -1,4 +1,4 @@
-/* Слід · Англійська мова, 8 клас — «Pen friends and letters» (e8s1)
+/* Слід · Англійська мова, 8 клас — «Penfriends and letters» (e8s1)
    Програма: модельна програма «Іноземна мова. 5–9 класи» (Редько В. Г. та ін., наказ МОН № 795 від 12.07.2021):
    8 кл., тема «Я і мої друзі» — друзі по листуванню; кореспонденція (с. 32, розд. 5.2.2); листування — функції
    «онлайн-взаємодія», особисті листи (с. 28, 30); граматика B1 (с. 34–35): Present Perfect Continuous (affirmative,
@@ -22,51 +22,51 @@ SLID.section("eng", {
   id: "e8s1",
   grade: 8,
   weeks: [1, 4],
-  title: "Pen friends and letters",
-  why: "To write to a pen friend and answer letters and emails. And to talk about what you have been doing.",
+  title: "Penfriends and letters",
+  why: "To write to a penfriend and answer letters and emails. And to ask a friend: “What have you been doing?”",
   requires: ["e6s7l4", "e5s2l3", "e5s8l6", "e4s8l6", "e7s1l2", "e7s1l3", "e7s1l4", "e7s1l5"],
   meta: { author: "writer-e8s1", created: "2026-11-25", factcheck: "verifier-e8s1 (reports/verify/write-eng-g8-e8s1.md)", teacher: null },
   badges: [
-    { id: "e8s1boss", name: "Pen friend", icon: "trophy", desc: "Finish the final lesson “Our pen friend club”" }
+    { id: "e8s1boss", name: "Penfriend", icon: "trophy", desc: "Finish the final lesson “Our penfriend club”" }
   ],
   lessons: [
     /* ───────────── Урок 1 ───────────── */
     {
       id: "e8s1l1",
-      title: "Looking for a pen friend: a profile",
+      title: "Looking for a penfriend: a profile",
       short: "Profiles",
       icon: "users",
       status: "verified",
-      why: "A pen friend helps you practise English. Learn to read and write a short profile.",
+      why: "A penfriend helps you practise English. Learn to read and write a short profile.",
       screens: [
         {
           type: "intro",
           eyebrow: "Lesson 1",
-          title: "Who can be Mariia’s pen friend?",
-          body: `<p class="lead">Mariia’s school in Kharkiv has a pen friend page. Pupils from different countries write short profiles there.</p><p><i>Hi! I’m Mariia. I’m 14, and I live in Ukraine. I love drawing, and I’m into comics. I’m looking for a pen friend. I’d like to write about art and films.</i></p><p>What would Mariia like to write about?</p>`,
+          title: "Who can be Mariia’s penfriend?",
+          body: `<p class="lead">Mariia’s school in Kharkiv has a penfriend page. Pupils from different countries write short profiles there.</p><p><i>Hi! I’m Mariia. I’m 14, and I live in Ukraine. I love drawing, and I’m into comics. I’m looking for a penfriend. I’d like to write about art and films.</i></p><p>What would Mariia like to write about?</p>`,
           cta: "Let’s see"
         },
         {
           type: "info",
-          title: "A pen friend and a profile",
-          body: `<p>A <b>pen friend</b> lives in another town or country. You write letters or emails to them, but you usually haven’t met.</p><ul><li>a <b><u>pro</u>file</b> – a short text about you: name, age, country, hobbies</li><li>I’m <b>into</b> comics. = I like comics a lot.</li><li>I’m <b>interested in</b> music.</li><li>I’m <b>looking for</b> a pen friend.</li><li>I’d <b>like to</b> write about films.</li></ul>`,
+          title: "A penfriend and a profile",
+          body: `<p>A <b>penfriend</b> lives in another town or country. You write letters or emails to them, but you usually haven’t met.</p><ul><li>a <b><u>pro</u>file</b> – a short text about you: name, age, country, hobbies</li><li>I’m <b>into</b> comics. = I like comics a lot.</li><li>I’m <b>interested in</b> music.</li><li>I’m <b>looking for</b> a penfriend.</li><li>I’d <b>like to</b> write about films.</li></ul>`,
           cta: "Next"
         },
         {
           type: "choice",
           sk: "read",
           title: "Read and choose.",
-          body: `<p><i><b>Zofia, 14, Poland:</b> I love drawing, and I’m into comics. I’d like to write about art and films.<br><b>Noah, 13, Wales:</b> I’m into football and computer games. I’d like to write about sport.<br><b>Leo, 15, England:</b> I’m interested in history. I play the guitar in a band.</i></p><p>Mariia is into comics and art. Who is the best pen friend for her?</p>`,
+          body: `<p><i><b>Zofia, 14, Poland:</b> I draw comics every week, and I’m into art. I’d like to write about films and books.<br><b>Noah, 13, Wales:</b> I’m into football and computer games. I’d like to write about sport.<br><b>Leo, 15, England:</b> I’m interested in history. I play the guitar in a band.</i></p><p>Mariia is into comics and art. Who is the best penfriend for her?</p>`,
           opts: [
             "Noah",
             "Zofia",
             "Leo"
           ],
           correct: 1,
-          hint: "Find the words drawing and comics.",
+          hint: "Find the words comics and art.",
           fbOk: "Yes!",
-          fbBad: "Who likes drawing?",
-          fbText: "<b>Zofia</b> loves drawing and is into comics, like Mariia. Noah is into football, and Leo is interested in history."
+          fbBad: "Who is into comics and art?",
+          fbText: "<b>Zofia</b> draws comics and is into art, like Mariia. Noah is into football, and Leo is interested in history."
         },
         {
           type: "match",
@@ -94,14 +94,14 @@ SLID.section("eng", {
         {
           type: "info",
           title: "Stay safe online",
-          body: `<p>On a pen friend page, write only your first name, your age, your country and your hobbies.</p><ul><li>Don’t write your home address or phone number.</li><li>Don’t send photos to people you don’t know.</li><li>Don’t meet an online friend without your parents.</li><li>Is something strange? Tell an adult.</li></ul>`,
+          body: `<p>On a penfriend page, write only your first name, your age, your country and your hobbies.</p><ul><li>Don’t write your home address or phone number.</li><li>Don’t send photos to people you don’t know.</li><li>Don’t meet an online friend without your parents.</li><li>Is something strange? Tell an adult.</li></ul>`,
           cta: "Next"
         },
         {
           type: "multi",
           sk: "func",
           title: "Choose all the correct answers.",
-          body: `<p>Mariia is writing her profile. What can she write on the pen friend page?</p>`,
+          body: `<p>Mariia is writing her profile. What can she write on the penfriend page?</p>`,
           opts: [
             "her first name",
             "her home address",
@@ -126,7 +126,7 @@ SLID.section("eng", {
             "He has never played computer games."
           ],
           correct: 0,
-          hint: "Look at the words on the pen friend screen.",
+          hint: "Look at the words on the penfriend screen.",
           fbOk: "Right.",
           fbBad: "I’m into comics = I like comics a lot.",
           fbText: "<b>I’m into</b> computer games = I like them a lot. It’s informal, so it’s good for a profile or an email to a friend."
@@ -136,13 +136,13 @@ SLID.section("eng", {
           sk: "write",
           title: "Put the words in order.",
           body: `<p>Andrii writes a profile too.</p>`,
-          tiles: ["I’m", "looking", "for", "a pen friend"],
-          answer: "I’m looking for a pen friend.",
+          tiles: ["I’m", "looking", "for", "a penfriend"],
+          answer: "I’m looking for a penfriend.",
           extra: ["to"],
-          hint: "I’m looking … a pen friend.",
+          hint: "I’m looking … a penfriend.",
           fbOk: "Well done!",
-          fbBad: "Look at the profile words: I’m looking … a pen friend.",
-          fbText: "<b>I’m looking for a pen friend.</b> <b>look for</b> = try to find."
+          fbBad: "Look at the profile words: I’m looking … a penfriend.",
+          fbText: "<b>I’m looking for a penfriend.</b> <b>look for</b> = try to find."
         },
         {
           type: "word",
@@ -162,8 +162,8 @@ SLID.section("eng", {
           sk: "write",
           eyebrow: "Final",
           title: "Complete the sentences.",
-          body: `<p>Andrii’s profile for the pen friend page.</p>`,
-          text: "Hi! I’m Andrii. I’m 14, and I {*live|lives} in Ukraine. I’m {*into|in} chess. I’m also {*interested|interesting} in science fiction. I’m {*looking|look} for a pen friend. I’d like {*to write|write} about books and films.",
+          body: `<p>Andrii’s profile for the penfriend page.</p>`,
+          text: "Hi! I’m Andrii. I’m 14, and I {*live|lives} in Ukraine. I’m {*into|in} chess. I’m also {*interested|interesting} in science fiction. I’m {*looking|look} for a penfriend. I’d like {*to write|write} about books and films.",
           hint: "Look at the profile words: into, interested in, looking for, would like to.",
           fbOk: "Well done!",
           fbBad: "Check: I’m into…, I’m interested in…, I’d like to…",
@@ -173,7 +173,7 @@ SLID.section("eng", {
       outro: {
         text: "A profile says who you are and what you are into. Online, write only your first name, age, country and hobbies.",
         learned: [
-          "Read pen friend profiles and choose a pen friend.",
+          "Read penfriend profiles and choose a penfriend.",
           "Write a short profile: I’m into…, I’d like to write about…",
           "Say what is safe to write online."
         ]
@@ -187,7 +187,7 @@ SLID.section("eng", {
       short: "Have been doing",
       icon: "book",
       status: "verified",
-      why: "Pen friends often ask how long you have been doing things. Learn to answer with have been + -ing.",
+      why: "Penfriends often ask how long you have been doing things. Learn to answer with have been + -ing.",
       screens: [
         {
           type: "intro",
@@ -347,7 +347,7 @@ SLID.section("eng", {
         {
           type: "info",
           title: "What have you been doing?",
-          body: `<p>Use <b>have been + -ing</b> for an activity until now or a short time ago. Often you can see the result now:</p><ul><li>Why are you so tired? – I<b>’ve been training</b>.</li><li>Your hands are blue! – I<b>’ve been painting</b>.</li><li>What <b>have</b> you <b>been doing</b>? – I<b>’ve been studying</b> for a test.</li></ul>`,
+          body: `<p>Use <b>have been + -ing</b> for an activity until now. It can also be an activity that has just stopped. Often you can see the result:</p><ul><li>Why are you so tired? – I<b>’ve been training</b>.</li><li>Your hands are blue! – I<b>’ve been painting</b>.</li><li>What <b>have</b> you <b>been doing</b>? – I<b>’ve been studying</b> for a test.</li></ul>`,
           cta: "Next"
         },
         {
@@ -721,7 +721,7 @@ SLID.section("eng", {
           body: `<p>Mariia writes to Zofia again.</p>`,
           text: "Hi Zofia, {*Thanks|Thank} for your email. I’ve been {*drawing|draw} a new comic. You draw cats, {*don’t you|doesn’t you}? I can’t send you my home address, but my teacher says we can put our comics on the school page. Write {*soon|early}! {*Best wishes|Yours sincerely}, Mariia",
           hint: "Look at the parts of an email. You draw → … you?",
-          fbOk: "Well done!",
+          fbOk: "Brilliant!",
           fbBad: "Check: Thanks for…, been + -ing, Write soon!, Best wishes.",
           fbText: "<b>Thanks</b> for your email. I’ve been <b>drawing</b>. You draw → <b>don’t you</b>? Write <b>soon</b>! <b>Best wishes</b> – for a friend. Mariia doesn’t send her address: that’s safe."
         }
@@ -743,7 +743,7 @@ SLID.section("eng", {
       short: "Each other",
       icon: "globe",
       status: "verified",
-      why: "Friends often do things together. Learn to say each other, and read a long letter from a pen friend.",
+      why: "Friends often do things together. Learn to say each other, and read a long letter from a penfriend.",
       screens: [
         {
           type: "intro",
@@ -807,9 +807,9 @@ SLID.section("eng", {
           sk: "read",
           eyebrow: "Reading: a letter from England, part 2 of 2",
           title: "Choose all the correct answers.",
-          body: `<p><i>Last week, I told my class about Ukraine. I showed them your photos of Zelena Dolyna and your pysanky. Now my friends want pen friends in Ukraine too! Can your class write to us? Mr Price says the two classes can write to each other through our schools, so we don’t need home addresses. I’ve put a photo of Snowy in the envelope.<br>Write back soon!<br>Love,<br>Emma</i></p><p>What is true?</p>`,
+          body: `<p><i>Last week, I told my class about Ukraine. I showed them your photos of Zelena Dolyna and your pysanky. Now my friends want penfriends in Ukraine too! Can your class write to us? Mr Price says the two classes can write to each other through our schools, so we don’t need home addresses. I’ve put a photo of Snowy in the envelope.<br>Write back soon!<br>Love,<br>Emma</i></p><p>What is true?</p>`,
           opts: [
-            "Emma’s friends want pen friends in Ukraine.",
+            "Emma’s friends want penfriends in Ukraine.",
             "Emma needs Oksana’s home address.",
             "Emma has put a photo of Snowy in the envelope.",
             "Emma is going to send a photo next week."
@@ -818,7 +818,7 @@ SLID.section("eng", {
           hint: "Find Snowy and home addresses in the letter.",
           fbOk: "Well done!",
           fbBad: "Read about the addresses and the photo again.",
-          fbText: "Emma’s friends <b>want pen friends in Ukraine</b>, and Emma <b>has put a photo of Snowy</b> in the envelope. The classes write through the schools, so they don’t need home addresses."
+          fbText: "Emma’s friends <b>want penfriends in Ukraine</b>, and Emma <b>has put a photo of Snowy</b> in the envelope. The classes write through the schools, so they don’t need home addresses."
         },
         {
           type: "word",
@@ -829,7 +829,7 @@ SLID.section("eng", {
           after: "through their schools.",
           answer: ["each other", "one another"],
           hint: "A writes to B, and B writes to A.",
-          fbOk: "Well done!",
+          fbOk: "Exactly.",
           fbBad: "Look at the rule: A to B and B to A.",
           fbText: "The two classes are going to write to <b>each other</b>."
         },
@@ -865,7 +865,7 @@ SLID.section("eng", {
           body: `<p>Oksana writes back to Emma.</p>`,
           text: "Dear Emma, Thank you {*for|to} your letter! Snowy looks so sweet in the photo. My class wants to write to your class, so we can all write to {*each other|ourselves}. Dmytro has {*been asking|asking} about Tom all morning. Write back soon! {*Love|Yours sincerely}, Oksana",
           hint: "Our class to your class, your class to our class → … Emma is a close friend.",
-          fbOk: "Well done!",
+          fbOk: "Brilliant!",
           fbBad: "Check: thank you for, each other, has been + -ing, Love.",
           fbText: "Thank you <b>for</b> your letter. We can all write to <b>each other</b>. Dmytro has <b>been asking</b>. <b>Love</b> – for a close friend."
         }
@@ -875,7 +875,7 @@ SLID.section("eng", {
         learned: [
           "Use each other: We write to each other.",
           "Choose each other or themselves.",
-          "Read a letter from a pen friend and find details."
+          "Read a letter from a penfriend and find details."
         ]
       }
     },
@@ -883,7 +883,7 @@ SLID.section("eng", {
     /* ───────────── Урок 7 · фінал ───────────── */
     {
       id: "e8s1l7",
-      title: "Our pen friend club",
+      title: "Our penfriend club",
       short: "Section final",
       icon: "trophy",
       status: "verified",
@@ -894,8 +894,8 @@ SLID.section("eng", {
         {
           type: "intro",
           eyebrow: "Section final · points ×2",
-          title: "Can you help the pen friend club?",
-          body: `<p class="lead">Oksana’s class and Emma’s class have started a pen friend club. Mariia, Andrii and their friends are writing too.</p><p>Help them with their profiles, emails and letters. You need everything from this section.</p>`,
+          title: "Can you help the penfriend club?",
+          body: `<p class="lead">Oksana’s class and Emma’s class are writing to each other now. Mariia, Andrii and their friends from the penfriend club are writing too.</p><p>Help them with their profiles, emails and letters. You need everything from this section.</p>`,
           cta: "Let’s go"
         },
         {
@@ -933,7 +933,7 @@ SLID.section("eng", {
           sk: "func",
           eyebrow: "Task 3",
           title: "Put the words in order.",
-          body: `<p>Emma asks a new pen friend from Ukraine.</p>`,
+          body: `<p>Emma asks a new penfriend from Ukraine.</p>`,
           tiles: ["How long", "have", "you", "been", "learning", "English"],
           answer: "How long have you been learning English?",
           extra: ["learn"],
@@ -979,7 +979,7 @@ SLID.section("eng", {
           eyebrow: "Task 6",
           title: "Fill in the gaps.",
           body: `<p>Liam checks some facts.</p>`,
-          text: "Andrii lives in Kyiv, {*doesn’t he|don’t he}? You aren’t busy, {*are you|aren’t you}? I’m your best pen friend, {*aren’t I|isn’t I}?",
+          text: "Andrii lives in Kyiv, {*doesn’t he|don’t he}? You aren’t busy, {*are you|aren’t you}? I’m your best penfriend, {*aren’t I|isn’t I}?",
           pre: "e8s1l4",
           hint: "Positive → negative tag. Negative → positive tag. I’m → aren’t I?",
           fbOk: "Exactly.",
@@ -1008,15 +1008,15 @@ SLID.section("eng", {
           after: "comics.",
           answer: ["each other", "one another"],
           pre: "e8s1l6",
-          fbOk: "Well done!",
+          fbOk: "Exactly.",
           fbBad: "A sends to B, and B sends to A.",
           fbText: "They often send <b>each other</b> comics."
         }
       ],
       outro: {
-        text: "Well done! Now you can write to a pen friend: start and finish an email, say what you have been doing and check things with question tags.",
+        text: "Well done! Now you can write to a penfriend: start and finish an email, say what you have been doing and check things with question tags.",
         learned: [
-          "Write a profile and an email to a pen friend.",
+          "Write a profile and an email to a penfriend.",
           "Use the Present Perfect Continuous: I’ve been learning English for five years.",
           "Check information with question tags.",
           "Use each other."

@@ -254,7 +254,7 @@ SLID.section("eng", {
           body: `<p>Oksana writes to Taras.</p>`,
           text: "I play the {*piano|guitar}. It’s big and heavy, and it’s in our living room. My brother Dmytro wants to be a {*drummer|violinist}: he hits the table with two pencils all day! Our school band has got five {*musicians|orchestras}: two guitarists, a pianist, a drummer and a singer.",
           hint: "Big and heavy, hits the table, people who play music: which words?",
-          fbOk: "Well done!",
+          fbOk: "Brilliant!",
           fbBad: "Read the clues again: big and heavy, two pencils, five people.",
           fbText: "Big and heavy, in the living room → the <b>piano</b>. He hits the table like the drums → a <b>drummer</b>. Five people who play music → five <b>musicians</b>. An orchestra is a big group."
         }
@@ -381,7 +381,7 @@ SLID.section("eng", {
           body: `<p>Mariia answers Sofiia.</p>`,
           text: "Thanks! Now Mila is the singer {*who|which} I like best too. The song {*I like|which like} most is Blue Sky. My uncle Oleh gave me a guitar {*which|who} is twenty years old. I want to play the songs {*that|who} Mila writes!",
           hint: "Person or thing? And is there a verb after the gap?",
-          fbOk: "Well done!",
+          fbOk: "Brilliant!",
           fbBad: "Person → who, thing → which. Which like: who likes?",
           fbText: "Mila is a person: <b>who</b>. <b>The song I like</b>: we left out <i>that</i>, but <i>which like</i> has no person. The guitar is a thing: <b>which</b>. The songs are things: <b>that</b>."
         }
@@ -491,7 +491,7 @@ SLID.section("eng", {
           answer: "Zlata, who is my sister, plays the bandura.",
           keepCase: true,
           hint: "Start with Zlata. The extra information is between the commas.",
-          fbOk: "Well done!",
+          fbOk: "Exactly.",
           fbBad: "With commas, we don’t use that.",
           fbText: "<b>Zlata, who is my sister, plays the bandura.</b> Zlata is a person, so we use <b>who</b>, not <i>that</i>."
         },
@@ -670,7 +670,7 @@ SLID.section("eng", {
           body: `<p>The end of Emma’s project.</p>`,
           text: "Shchedryk is a {*world-famous|two-hour} song from Ukraine. Mykola Leontovych, {*who|which} was a Ukrainian composer, made a version of it for a {*choir|drummer}. People sing it in many countries, and in English it’s called Carol of the Bells.",
           hint: "Known all over the world? A group of people who sing together?",
-          fbOk: "Well done!",
+          fbOk: "Brilliant!",
           fbBad: "Look at the list “Two words, one adjective” and the word for a group of singers.",
           fbText: "Known all over the world → <b>world-famous</b>. Leontovych is a person, and there are commas: <b>who</b>. A group of people who sing together → a <b>choir</b>."
         }
@@ -792,7 +792,7 @@ SLID.section("eng", {
           ],
           shuffle: [3, 1, 4, 0, 2],
           hint: "Where and when → what happened → the best part → the problem → advice and mark.",
-          fbOk: "Well done!",
+          fbOk: "Right.",
           fbBad: "Start with when and where. End with your advice and mark.",
           fbText: "When and where → how long → <b>the best part</b> → <b>the only problem</b> → <b>I’d recommend</b> and the mark."
         },
@@ -811,7 +811,7 @@ SLID.section("eng", {
           type: "gaps",
           sk: "write",
           eyebrow: "Final",
-          title: "Complete the review.",
+          title: "Complete the sentences.",
           body: `<p>Oksana writes a review of her school concert in Zelena Dolyna.</p>`,
           text: "Last Friday, our school had a {*two-hour|two-hours} concert. I played the piano. The {*best part|only problem} was the folk choir: twenty children sang old village songs. The only problem was the hall: it was too hot. I’d {*recommend|recommended} our next concert to everyone!",
           hint: "A number before a noun. Was the choir good or bad? I’d + which form?",
@@ -888,6 +888,7 @@ SLID.section("eng", {
           after: "writes all their songs.",
           answer: ["who", "that"],
           pre: "e8s4l3",
+          hint: "Is Olha a person or a thing? What comes after the gap?",
           fbOk: "Well done!",
           fbBad: "Olha is a person, and a verb comes next.",
           fbText: "Olha is a person: the singer <b>who</b> (or <b>that</b>) writes all their songs. A verb comes next, so we can’t leave the word out."
@@ -905,6 +906,7 @@ SLID.section("eng", {
           ],
           correct: 2,
           pre: "e8s4l4",
+          hint: "Count the commas. Which words can we use with commas?",
           fbOk: "Yes!",
           fbBad: "With commas: who or which, never that. And two commas.",
           fbText: "<b>Kyiv, which is our city, has…</b> Extra information goes between two commas, with <i>which</i> for things, never <i>that</i>."
@@ -949,6 +951,7 @@ SLID.section("eng", {
           answer: "Mariia, who plays the guitar, lives in Kharkiv.",
           keepCase: true,
           pre: "e8s4l4",
+          hint: "Start with Mariia. The extra information goes between the commas.",
           fbOk: "Good eye!",
           fbBad: "With commas, a person → who, not that.",
           fbText: "<b>Mariia, who plays the guitar, lives in Kharkiv.</b> The extra information is between the commas."

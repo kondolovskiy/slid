@@ -145,7 +145,7 @@ SLID.section("eng", {
           answer: "Belarus is to the north of Ukraine.",
           extra: ["in the north"],
           hint: "Belarus is outside Ukraine: in or to?",
-          fbOk: "Well done!",
+          fbOk: "Exactly.",
           fbBad: "Belarus is outside Ukraine.",
           fbText: "<b>Belarus is to the north of Ukraine.</b> It is outside Ukraine, so we say <b>to</b> the north."
         },
@@ -445,7 +445,7 @@ SLID.section("eng", {
           answer: "The Carpathians get the most rain and snow.",
           extra: ["gets"],
           hint: "The Carpathians are many mountains: get or gets?",
-          fbOk: "Well done!",
+          fbOk: "Yes!",
           fbBad: "The Carpathians – they: get, not gets.",
           fbText: "<b>The Carpathians get the most rain and snow.</b> The Carpathians are plural, so the verb is <b>get</b>."
         },
@@ -603,7 +603,7 @@ SLID.section("eng", {
           body: `<p>Andrii’s article for the school newspaper. (There are 24 pupils in the class.)</p>`,
           text: "We asked 24 pupils about places in Ukraine. Three {*quarters|quarter} of them have been to the Black Sea. {*Half|A third} the class have been to the Carpathians, and {*a third|a quarter} have climbed Hoverla. Only 25 {*per cent|per cents} have swum in Lake Svitiaz. {*None|Some} of us have been to the Danube.",
           hint: "18, 12, 8, 6 and 0 of 24: look at the box “Half, a third, per cent”.",
-          fbOk: "Well done!",
+          fbOk: "Brilliant!",
           fbBad: "Check: 18 – three quarters, 12 – half, 8 – a third, 0 – none.",
           fbText: "18 → three <b>quarters</b>. 12 → <b>half</b>. 8 → <b>a third</b>. 6 → 25 <b>per cent</b>. 0 → <b>none</b> of us."
         }
@@ -883,7 +883,7 @@ SLID.section("eng", {
           body: `<p>Andrii finishes his report.</p>`,
           text: "Ukraine is a big country in Eastern Europe. {*Most of|Most} its land has a continental climate. {*The Carpathians|Carpathians} get the most rain and snow. According to the 2001 census, people of more {*than|that} 130 nationalities lived in {*Ukraine|the Ukraine}, and about 48.5 {*million|millions} people lived there.",
           hint: "Check: most of, the with mountain ranges, more than, no article with countries.",
-          fbOk: "Well done!",
+          fbOk: "Brilliant!",
           fbBad: "Look at the lessons about articles and numbers again.",
           fbText: "<b>Most of</b> its land. <b>The Carpathians</b> – a mountain range. More <b>than</b> 130. <b>Ukraine</b> – no article. 48.5 <b>million</b> – no -s."
         }
