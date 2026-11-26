@@ -905,7 +905,7 @@ SLID.section("eng", {
           extra: ["we"],
           answer: "The players said they were tired.",
           pre: "e8s3l5",
-          hint: "Start with The players said. Then change we and are.",
+          hint: "Start with The players said. You report their words: what changes?",
           fbOk: "Yes!",
           fbBad: "we → they, are → were.",
           fbText: "<b>The players said they were tired.</b> we → they, are → were."

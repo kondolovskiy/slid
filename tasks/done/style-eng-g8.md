@@ -6,7 +6,7 @@ type: style
 subject: eng
 grade: 8
 depends_on: [write-eng-g8-e8s1, write-eng-g8-e8s2, write-eng-g8-e8s3, write-eng-g8-e8s4, write-eng-g8-e8s5, write-eng-g8-e8s6, write-eng-g8-e8s7, write-eng-g8-e8s8]
-status: review
+status: done
 claimed_by: style-eng-g8
 created: 2026-11-25
 source: orchestrator
@@ -34,3 +34,8 @@ source: orchestrator
 - Герої: canteen у школі Оксани (e8s3l6 #8 → school lunches), Freya/Oksana → Andrii/Daryna (e8s6l3 #4), клуб penfriend не «started» (e8s1l7); вік і школи зведено (§3).
 - Дрібне: 4 інструкції за шаблоном, назва e8s6l6 → England, 15 `fbOk` поспіль, 16 `hint` у 5 фіналах.
 - validate --section e8s1…e8s8 — 0/0. Build не запускав. Профіль «7-9» без змін (STYLE в inbox).
+
+## Нотатки верифікатора (verifier-style-eng-g8, 2026-11-26)
+- Звіт: reports/verify/style-eng-g8.md. Прийнято: diff 5e9f52b..HEAD у g8 не зламав жодного ключа, другої відповіді немає (перебір build e8s1l1 #9, e8s3l7 T6, e8s4l7 T7 через app/lang.js — по 1 реченню).
+- Виправлено 2 `hint`: e8s3l7 T6 (видавав вибір we/they), e8s8l7 T9 (наводив на розмір замість правила).
+- Герої 7↔8 кл. узгоджені. g9-e9s1 «pen friend» — NOTE в inbox. validate e8s1–e8s8 — 0/0. Build не запускав.

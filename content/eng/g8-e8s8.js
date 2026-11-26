@@ -955,7 +955,7 @@ SLID.section("eng", {
           body: `<p>Oksana answers the quiz question.</p>`,
           text: "If I could visit one country, I’d choose Canada. It’s {*much|very} bigger than Ukraine, and my friend Maksym lives there. If I {*were|would be} in Ottawa in winter, I {*could|can} go skating every day. Maksym speaks English, and he’s learning {*French|the French} at school.",
           pre: "e8s8l6",
-          hint: "Compare the sizes of Canada and Ukraine. And which language does Maksym learn?",
+          hint: "Which word can go before a comparative like bigger? Do we use the before a language?",
           fbOk: "Well done!",
           fbBad: "Remember: much + comparative; if + were; could + verb; no the before a language.",
           fbText: "<b>Much</b> bigger. If I <b>were</b> in Ottawa, I <b>could</b> go skating. He’s learning <b>French</b> – no <i>the</i>."
