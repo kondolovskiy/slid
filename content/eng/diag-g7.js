@@ -1,5 +1,5 @@
 /* Слід · Англійська мова, 7 клас — тест рівня «What do you know?» (dge7)
-   Статус: draft — автор writer-write-eng-diag-g7, 2026-11-25.
+   Статус: verified — автор writer-write-eng-diag-g7, верифікатор verifier-write-eng-diag-g7 (reports/verify/write-eng-diag-g7.md), 2026-11-25.
    10 тем-передумов з 6 класу (по 2 завдання: базове → складніше) + 7 тем 7 класу (по 1 завданню на розділ e7s1–e7s7) = 27 завдань.
    Передумови — уроки e6s*, на які посилаються requires розділів 7 кл. (файли content/eng/g7-*.js; reports/verify/plan-eng-g7-8-9.md §6).
    Теми cur — один урок розділу (без boss); завдання охоплює ядро його learned; лексика й граматика — лише з цих уроків.
@@ -15,8 +15,8 @@ SLID.diag("eng", {
   grade: 7,
   title: "What do you know?",
   why: "Let’s see what you remember from your English lessons and what you already know. Then we can plan your lessons.",
-  status: "draft",
-  meta: { author: "writer-write-eng-diag-g7", created: "2026-11-25", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "writer-write-eng-diag-g7", created: "2026-11-25", factcheck: "verifier-write-eng-diag-g7 (reports/verify/write-eng-diag-g7.md)", teacher: null },
   topics: [
     // передумови з 6 класу (уроки, на які спираються розділи 7 кл.)
     { id: "ever", title: "Have you ever been…?", kind: "pre", lessons: ["e6s7l4"], for: ["e7s1"] },
@@ -187,7 +187,7 @@ SLID.diag("eng", {
       sk: "gram",
       title: "Fill in the gaps.",
       body: "<p>Andrii writes about the food at the school picnic.</p>",
-      text: "The sandwiches {*are|is} made with cheese and tomatoes. The plum cake {*is|are} made with plums from Grandma’s garden. It {*is served|served|is serve} with ice cream."
+      text: "The sandwiches {*are|is} made with cheese and tomatoes. The fruit salad {*is|are} made with apples, pears and bananas. It {*is served|served|is serve} with ice cream."
     },
     {
       topic: "cur-e7s4",
@@ -267,8 +267,8 @@ SLID.diag("eng", {
       type: "gaps",
       sk: "gram",
       title: "Fill in the gaps.",
-      body: "<p>Taras gives advice to people who visit Lviv.</p>",
-      text: "If you {*come|will come} to Lviv, {*visit|visits} the old town. If it {*snows|will snow}, wear warm boots."
+      body: "<p>Emma is going to visit Oksana in Zelena Dolyna in January. Oksana gives her advice.</p>",
+      text: "If you {*are|will be} hungry, {*try|tries} Grandma Hanna’s deruny. If it {*snows|will snow}, wear warm boots."
     }
   ]
 });

@@ -7,7 +7,7 @@ subject: eng
 grade: 7
 section: dge7
 depends_on: [write-eng-g7-e7s1, write-eng-g7-e7s2, write-eng-g7-e7s3, write-eng-g7-e7s4, write-eng-g7-e7s5, write-eng-g7-e7s6, write-eng-g7-e7s7, engine-eng-diag-pool, write-eng-diag-g6]
-status: review
+status: done
 claimed_by: writer-write-eng-diag-g7
 created: 2026-11-19
 source: design-eng
