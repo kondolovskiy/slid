@@ -404,7 +404,7 @@
 | e10s7l6 Public holidays in Ukraine and the UK | 10 | 12 | 0.58 | 39 | 87 | 82 | 7.7 | 0.134 | 6 | — |
 | e10s7l7 Ukraine and the UK: two countries (фінал) | 10 | 12 | 0.83 | 52 | 141 | 138 | 8.3 | 0.135 | 5 | screens нетипово для сім'ї (z=2.1); sentenceWords нетипово для сім'ї (z=2.3); longWordShare нетипово для сім'ї (z=2) |
 | e10s8l1 Lyceum, college, university: where to study | 10 | 11 | 0.64 | 47 | 84 | 79 | 7.2 | 0.111 | 5 | — |
-| e10s8l2 After school: studying in Ukraine and abroad | 10 | 11 | 0.82 | 63 | 137 | 133 | 8.4 | 0.091 | 6 | gradedShare нетипово для сім'ї (z=2.6); readWordsPerScreen нетипово для сім'ї (z=2.3); maxReadWords нетипово для сім'ї (z=2); maxText нетипово для сім'ї (z=2) |
+| e10s8l2 After school: studying in Ukraine and abroad | 10 | 11 | 0.82 | 63 | 137 | 133 | 8.4 | 0.091 | 6 | gradedShare нетипово для сім'ї (z=2.6); readWordsPerScreen нетипово для сім'ї (z=2.2); maxReadWords нетипово для сім'ї (z=2); maxText нетипово для сім'ї (z=2) |
 | e10s8l3 Apply for, fill in, find out: phrasal and prepositional verbs | 10 | 11 | 0.64 | 40 | 80 | 76 | 7.4 | 0.048 | 6 | — |
 | e10s8l4 Fill it in: where the object goes | 10 | 11 | 0.64 | 35 | 71 | 66 | 6.7 | 0.028 | 6 | — |
 | e10s8l5 By Friday or until Friday? Time phrases | 10 | 11 | 0.73 | 36 | 79 | 74 | 7.3 | 0.054 | 5 | — |
@@ -426,11 +426,11 @@
 | e11s2l7 Our club cookbook (фінал) | 11 | 10 | 0.9 | 21 | 37 | 32 | 6 | 0.069 | 3 | — |
 | e11s3l1 Clubs for every interest | 11 | 10 | 0.7 | 47 | 94 | 87 | 7.7 | 0.109 | 6 | — |
 | e11s3l2 Cinema, theatre, TV or the internet? | 11 | 11 | 0.64 | 49 | 96 | 92 | 8.1 | 0.107 | 6 | — |
-| e11s3l3 A well-known actor, a two-hour film: compound adjectives | 11 | 12 | 0.67 | 43 | 93 | 91 | 8.1 | 0.149 | 6 | — |
+| e11s3l3 A well-known actor, a two-hour film: compound adjectives | 11 | 12 | 0.67 | 43 | 93 | 91 | 8.1 | 0.148 | 6 | — |
 | e11s3l4 It was great, wasn’t it? Question tags | 11 | 12 | 0.67 | 36 | 83 | 80 | 5.3 | 0.07 | 6 | sentenceWords нетипово для сім'ї (z=-2.8) |
-| e11s3l5 My favourite film or show: a review | 11 | 12 | 0.83 | 64 | 166 | 161 | 8.8 | 0.074 | 6 | gradedShare нетипово для сім'ї (z=2.7); readWordsPerScreen нетипово для сім'ї (z=2.4); maxReadWords нетипово для сім'ї (z=3.4); maxText нетипово для сім'ї (z=3.3) |
-| e11s3l6 Really? Did you? Showing interest | 11 | 11 | 0.64 | 45 | 84 | 82 | 5 | 0.093 | 6 | sentenceWords нетипово для сім'ї (z=-3.2) |
-| e11s3l7 Film club night (фінал) | 11 | 10 | 0.9 | 27 | 47 | 44 | 6.4 | 0.096 | 5 | — |
+| e11s3l5 My favourite film or show: a review | 11 | 12 | 0.83 | 65 | 166 | 161 | 8.8 | 0.073 | 6 | gradedShare нетипово для сім'ї (z=2.7); readWordsPerScreen нетипово для сім'ї (z=2.5); maxReadWords нетипово для сім'ї (z=3.4); maxText нетипово для сім'ї (z=3.3) |
+| e11s3l6 Really? Did you? Showing interest | 11 | 11 | 0.64 | 46 | 84 | 82 | 5 | 0.095 | 6 | sentenceWords нетипово для сім'ї (z=-3.2) |
+| e11s3l7 Film club night (фінал) | 11 | 10 | 0.9 | 27 | 47 | 44 | 6.4 | 0.097 | 5 | — |
 | e11s4l1 Kinds and genres of art | 11 | 11 | 0.64 | 37 | 82 | 79 | 7 | 0.092 | 6 | — |
 | e11s4l2 Learning from art: museums, galleries and theatres | 11 | 11 | 0.55 | 50 | 86 | 81 | 8.6 | 0.133 | 6 | — |
 | e11s4l3 Amazing or amazed? Art and emotions | 11 | 11 | 0.64 | 36 | 63 | 60 | 6.7 | 0.085 | 6 | — |
@@ -449,5 +449,5 @@
 - **5-6:boss**: screens 7.22±0.42, gradedShare 0.86±0.01, readWordsPerScreen 23.17±3.39, maxReadWords 35.89±4.97, sentenceWords 5±0.31, longWordShare 0.07±0.02, typeVariety 3.72±0.56, maxText 29.33±5.14
 - **7-9:lesson**: screens 10.15±0.86, gradedShare 0.65±0.06, readWordsPerScreen 38.15±4.61, maxReadWords 71.87±10.13, sentenceWords 6.37±0.66, longWordShare 0.08±0.04, typeVariety 5.33±0.59, maxText 67.45±10.2
 - **7-9:boss**: screens 8.54±0.96, gradedShare 0.88±0.01, readWordsPerScreen 26.58±3.88, maxReadWords 44.13±8.79, sentenceWords 5.81±0.45, longWordShare 0.07±0.03, typeVariety 4.83±0.85, maxText 36.83±7.87
-- **10-11:lesson**: screens 11.18±0.71, gradedShare 0.65±0.07, readWordsPerScreen 44.85±8.05, maxReadWords 93.35±21.54, sentenceWords 7.39±0.75, longWordShare 0.08±0.04, typeVariety 5.74±0.44, maxText 89.17±21.95
+- **10-11:lesson**: screens 11.18±0.71, gradedShare 0.65±0.07, readWordsPerScreen 44.88±8.08, maxReadWords 93.35±21.54, sentenceWords 7.39±0.75, longWordShare 0.08±0.04, typeVariety 5.74±0.44, maxText 89.17±21.95
 - **10-11:boss**: screens 9.92±0.86, gradedShare 0.89±0.02, readWordsPerScreen 33.67±13.04, maxReadWords 70.67±49.5, sentenceWords 6.69±0.7, longWordShare 0.09±0.03, typeVariety 4.75±1.01, maxText 66.17±50.35

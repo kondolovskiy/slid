@@ -19,7 +19,7 @@
    (майстерня в школі Andrii). Вистави й виставки героїв — вигадані; у реальних закладах вигаданих правил і подій не приписуємо.
    Діалогів немає (D-056); без звуку (D-055 п. 4). Зображень немає (пропозиція images-* — в inbox).
    Увесь зміст — англійською, британська норма (D-055). Тексти й герої — власні (docs/design/english.md §8).
-   Статус: draft. 7 уроків (6 + фінал). Будова — за розділами 10 кл. (e10s5).
+   Статус: verified (verifier-e11s4, 2026-11-26). 7 уроків (6 + фінал). Будова — за розділами 10 кл. (e10s5).
    Перевірка: node tools/validate.mjs --section e11s4 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -29,7 +29,7 @@ SLID.section("eng", {
   title: "Art and festivals",
   why: "To talk about kinds and genres of art, galleries, concert halls and festivals. And to describe the emotions that art makes you feel.",
   requires: ["e7s4l2", "e7s4l4", "e7s7l2", "e8s4l6", "e10s1l1", "e10s5l1", "e10s5l5"],
-  meta: { author: "writer-e11s4", created: "2026-11-26", factcheck: null, teacher: null },
+  meta: { author: "writer-e11s4", created: "2026-11-26", factcheck: "verifier-e11s4, 2026-11-26 (reports/verify/write-eng-g11-e11s4.md)", teacher: null },
   badges: [
     { id: "e11s4boss", name: "Festival reviewer", icon: "trophy", desc: "Finish the final lesson “Art and festivals”" }
   ],
@@ -40,7 +40,7 @@ SLID.section("eng", {
       title: "Kinds and genres of art",
       short: "Kinds of art",
       icon: "eye",
-      status: "draft",
+      status: "verified",
       why: "Some art you look at, some art people perform, and some art is made of words. Learn to name the arts, the artists and their works.",
       screens: [
         {
@@ -192,7 +192,7 @@ SLID.section("eng", {
       title: "Learning from art: museums, galleries and theatres",
       short: "Learning from art",
       icon: "book",
-      status: "draft",
+      status: "verified",
       why: "You don’t need a teacher to learn about art. Find out what galleries, theatres and concert halls offer, and how to use it.",
       screens: [
         {
@@ -231,7 +231,7 @@ SLID.section("eng", {
           title: "Read and choose.",
           body: `<p>What do Mystetskyi Arsenal and Tate Modern have in common?</p>`,
           opts: [
-            "Both opened in 2000.",
+            "Both are in London.",
             "Both are in old buildings that were used for something else in the past.",
             "Both are on the River Thames."
           ],
@@ -336,7 +336,7 @@ SLID.section("eng", {
       title: "Amazing or amazed? Art and emotions",
       short: "Art and emotions",
       icon: "star",
-      status: "draft",
+      status: "verified",
       why: "Art makes us feel things. Learn the adjectives for strong feelings and how to say what a work of art did to you.",
       screens: [
         {
@@ -491,7 +491,7 @@ SLID.section("eng", {
       title: "Unusual, colourful, priceless: building adjectives",
       short: "Building adjectives",
       icon: "bulb",
-      status: "draft",
+      status: "verified",
       why: "One word can grow into many. Learn the suffixes and prefixes that make adjectives, and the traps to watch out for.",
       screens: [
         {
@@ -634,7 +634,7 @@ SLID.section("eng", {
       title: "Festivals in Ukraine and the UK",
       short: "Festivals",
       icon: "flag",
-      status: "draft",
+      status: "verified",
       why: "Every summer, millions of people go to arts and music festivals. Learn about four of them in the UK and in Kyiv.",
       screens: [
         {
@@ -703,7 +703,7 @@ SLID.section("eng", {
         {
           type: "info",
           title: "Two festivals in Kyiv",
-          body: `<p><b>Book Arsenal</b> is an international festival of books and art. It started in 2011 and takes place every year, usually at the end of May, at Mystetskyi Arsenal. Writers, illustrators and artists come from Ukraine and other countries. In 2019, it was named the best literary festival of the year at the London Book Fair. In 2022, because of Russia’s full-scale invasion, it didn’t take place, but it came back in 2023.</p><p><b>Atlas Weekend</b> was a huge music festival in Kyiv every summer from 2015 to 2021. In 2024, it came back as a charity festival that raised money for Ukraine’s army.</p>`,
+          body: `<p><b>Book Arsenal</b> is an international festival of books and art. It started in 2011 and takes place every year, usually in late May or June, at Mystetskyi Arsenal. Writers, illustrators and artists come from Ukraine and other countries. In 2019, it was named the best literary festival of the year at the London Book Fair. It didn’t take place in 2020 because of COVID-19, or in 2022 because of Russia’s full-scale invasion, but it came back in 2023.</p><p><b>Atlas Weekend</b> was a huge music festival in Kyiv. It took place every summer from 2015 to 2021, except 2020. In 2024, it came back as a charity festival that raised money for Ukraine’s army.</p>`,
           cta: "Next"
         },
         {
@@ -782,7 +782,7 @@ SLID.section("eng", {
       title: "A festival review: how it made me feel",
       short: "A festival review",
       icon: "voice",
-      status: "draft",
+      status: "verified",
       why: "A good review tells readers what happened and how it felt. Read Isla’s review of a day at the Fringe and learn to write your own.",
       screens: [
         {
@@ -962,7 +962,7 @@ SLID.section("eng", {
       title: "Our arts and festivals magazine",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e11s4boss",
       why: "Check everything from this section. Your points are doubled.",
