@@ -17,7 +17,7 @@
    Звуку немає (D-055 п. 4); діалоги — репліками в body + gaps / choice (D-056).
    Увесь зміст — англійською, британська норма (D-055). Тексти, діалоги й герої — власні (docs/design/english.md §8).
    Форми, рівні слів, наголос — Cambridge Dictionary й OALD (URL — tasks/…/write-eng-g9-e9s3.md, «Нотатки агента»).
-   Статус: draft. 7 уроків (6 + фінал).
+   Статус: verified (verifier-e9s3). 7 уроків (6 + фінал).
    Перевірка: node tools/validate.mjs --section e9s3 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -27,7 +27,7 @@ SLID.section("eng", {
   title: "Fashion and clothes",
   why: "To talk about fashion and describe clothes in detail. And to say what you think about fashion and style.",
   requires: ["e5s4l1", "e5s4l5", "e6s1l2", "e6s1l5", "e6s2l6", "e7s4l6"],
-  meta: { author: "writer-e9s3", created: "2026-11-25", factcheck: null, teacher: null },
+  meta: { author: "writer-e9s3", created: "2026-11-25", factcheck: "verifier-e9s3 (reports/verify/write-eng-g9-e9s3.md)", teacher: null },
   badges: [
     { id: "e9s3boss", name: "Style expert", icon: "trophy", desc: "Finish the final lesson “Fashion and clothes”" }
   ],
@@ -38,7 +38,7 @@ SLID.section("eng", {
       title: "Fashion then and now",
       short: "Fashion",
       icon: "scroll",
-      status: "draft",
+      status: "verified",
       why: "Fashion changes all the time. Learn the words to talk about fashion then and now.",
       screens: [
         {
@@ -166,7 +166,7 @@ SLID.section("eng", {
       title: "Hoodies, trainers and jeans: clothes words",
       short: "Clothes words",
       icon: "user",
-      status: "draft",
+      status: "verified",
       why: "Describe your everyday clothes in detail: a checked shirt, baggy jeans, white trainers.",
       screens: [
         {
@@ -301,7 +301,7 @@ SLID.section("eng", {
       title: "A long black woollen coat: the order of adjectives",
       short: "Adjective order",
       icon: "path",
-      status: "draft",
+      status: "verified",
       why: "Sometimes we put two or three adjectives before a noun. Learn the right order: a long black woollen coat.",
       screens: [
         {
@@ -450,7 +450,7 @@ SLID.section("eng", {
       title: "So comfortable that…, such a nice jacket that…",
       short: "So, such",
       icon: "star",
-      status: "draft",
+      status: "verified",
       why: "Say what happened because something was very good or very bad: They were so comfortable that I wore them every day.",
       screens: [
         {
@@ -599,7 +599,7 @@ SLID.section("eng", {
       title: "You look as if you’re going to a party",
       short: "As if",
       icon: "eye",
-      status: "draft",
+      status: "verified",
       why: "We often guess from people’s clothes. Learn to say: You look as if you’re going to a party.",
       screens: [
         {
@@ -742,7 +742,7 @@ SLID.section("eng", {
       title: "Buy less, wear longer: my opinion about fashion",
       short: "My opinion",
       icon: "leaf",
-      status: "draft",
+      status: "verified",
       why: "People have different opinions about fashion. Learn to give yours and to agree or disagree politely.",
       screens: [
         {
@@ -778,7 +778,7 @@ SLID.section("eng", {
         {
           type: "info",
           title: "Giving your opinion",
-          body: `<ul><li><b>I think</b> … / <b>In my opinion</b>, …</li><li>you agree → <b>I agree with</b> Zoriana. <b>I think</b> Bohdan <b>is right</b>.</li><li>you don’t agree → <b>I don’t agree with</b> Bohdan.</li><li>you don’t agree, but you’re polite → <b>That’s true, but</b> … / <b>Maybe you’re right, but</b> …</li><li>say why → … <b>because</b> …</li></ul><p>Not: <s>I am agree.</s> → I agree.</p><p>Talk about the idea, not the person.</p>`,
+          body: `<ul><li><b>I think</b> … / <b>In my opinion</b>, …</li><li>you agree → <b>I agree with</b> Zoriana. <b>I think</b> Bohdan <b>is right</b>.</li><li>you don’t agree → <b>I don’t agree with</b> Bohdan.</li><li>you partly agree, but you’ve got a different idea → <b>That’s true, but</b> … / <b>Maybe you’re right, but</b> … It’s a polite way to disagree.</li><li>say why → … <b>because</b> …</li></ul><p>Not: <s>I am agree.</s> → I agree.</p><p>Talk about the idea, not the person.</p>`,
           cta: "Next"
         },
         {
@@ -819,20 +819,20 @@ SLID.section("eng", {
           type: "sort",
           sk: "func",
           title: "Sort the sentences.",
-          body: `<p>Do they agree or not?</p>`,
-          bins: ["agree", "don’t agree"],
+          body: `<p>Do they agree, partly agree or not agree?</p>`,
+          bins: ["agree", "partly agree", "don’t agree"],
           items: [
             ["I agree with Daryna.", 0],
             ["I think Bohdan is right.", 0],
             ["That’s a great idea!", 0],
-            ["I don’t agree with Zoriana.", 1],
+            ["I don’t agree with Zoriana.", 2],
             ["Maybe you’re right, but I don’t like old clothes.", 1],
             ["That’s true, but nobody has to take anything.", 1]
           ],
-          hint: "“That’s true, but…” and “Maybe you’re right, but…” – the person doesn’t agree, but is polite.",
+          hint: "“That’s true, but…” and “Maybe you’re right, but…” – the person partly agrees, but has a different idea.",
           fbOk: "Well done!",
           fbBad: "Look at the rule “Giving your opinion” again.",
-          fbText: "Agree: <i>I agree with…</i>, <i>… is right</i>, <i>That’s a great idea!</i> Don’t agree: <i>I don’t agree with…</i> and the polite <i>Maybe you’re right, but…</i>, <i>That’s true, but…</i>"
+          fbText: "Agree: <i>I agree with…</i>, <i>… is right</i>, <i>That’s a great idea!</i> Partly agree (a polite way to disagree): <i>Maybe you’re right, but…</i>, <i>That’s true, but…</i> Don’t agree: <i>I don’t agree with…</i>"
         },
         {
           type: "gaps",
@@ -866,11 +866,11 @@ SLID.section("eng", {
           body: `<p><b>Kyrylo:</b> Let’s have a clothes swap!<br><b>Zoriana:</b> That’s a great idea!</p>`,
           before: "Zoriana",
           after: "with Kyrylo.",
-          answer: "agrees",
+          answer: ["agrees", "agreed"],
           hint: "She likes his idea. She … with him.",
           fbOk: "Well done!",
           fbBad: "She likes the idea: she agrees or doesn’t agree?",
-          fbText: "Zoriana <b>agrees</b> with Kyrylo: she likes his idea. He, she → agree<b>s</b>."
+          fbText: "Zoriana <b>agrees</b> with Kyrylo: she likes his idea. He, she → agree<b>s</b>. <i>Agreed</i> is correct too."
         },
         {
           type: "gaps",
@@ -901,7 +901,7 @@ SLID.section("eng", {
       title: "The school clothes swap",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e9s3boss",
       why: "Check everything from this section. Your points are doubled.",
