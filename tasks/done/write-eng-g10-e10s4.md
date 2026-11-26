@@ -7,7 +7,7 @@ subject: eng
 grade: 10
 section: e10s4
 depends_on: [curate-eng-plan-g10-11, engine-eng-lang-core, engine-eng-validate, engine-eng-stats, skills-eng, curate-eng-style, curate-eng-glossary, engine-eng-dialog]
-status: review
+status: done
 claimed_by: writer-e10s4
 created: 2026-11-19
 source: design-eng
@@ -70,3 +70,5 @@ Build не запускай (AGENTS.md §4 п. 8).
 **Форми (CD / CD Grammar):** stress — CD IPA: ˈhʌr.ɪ.kən (hurricane), ˈæv.ə.lɑːntʃ (avalanche), vɒlˈkeɪ.nəʊ (volcano), tɔːˈneɪ.dəʊ, dɪˈzɑː.stər (disaster), ˈɜːθ.kweɪk, ˈlænd.slaɪd, ˈwaɪld.faɪər, ˈhiːtˌweɪv — https://dictionary.cambridge.org/dictionary/english/<word>; under the weather (C2, «feel ill») — https://dictionary.cambridge.org/dictionary/english/under-the-weather ; sunburned «(also sunburnt)» — https://dictionary.cambridge.org/dictionary/english/sunburned ; likely to (B1) — https://dictionary.cambridge.org/dictionary/english/likely ; Future Perfect з by + час — https://dictionary.cambridge.org/grammar/british-grammar/future-perfect-simple ; be going to — evidence now, will «often used in a similar way» — https://dictionary.cambridge.org/grammar/british-grammar/will-or-be-going-to ; by, not until, для дедлайну; till = until — https://dictionary.cambridge.org/grammar/british-grammar/until . shall have finished (I) — за аналогією з PITFALL verifier-e9s2 (shall + Future Continuous з I/we).
 
 **Сумнівне / верифікатору:** (1) факти про повінь 2008 і імена штормів — лише зі сніпетів WebSearch; (2) heat wave (два слова) у ключі word l3 — AmE-подібне написання, рушій правопис не нормалізує для цього слова; (3) «Our village by 2030 will have planted…» у build l5 — маргінальний порядок, додано, щоб не відхиляти; (4) прогнози погоди, план еко-групи Zelena Dolyna, ідеї класу Andrii — вигадані; (5) l6 «most of the land… belongs to farmers and other owners, not to the state» — переказ en.wikipedia «largely in private ownership».
+
+**verifier-e10s4, 2026-11-26.** Звіт — reports/verify/write-eng-g10-e10s4.md. Усі 7 уроків → verified; 6 правок (збіг репліки l3 з прикладом CD under-the-weather — переписано; «since 2011» South Downs прибрано; дрібні узгодження l2, l3; статус/meta). heatwave + heat wave у ключі лишено (BrE + AmE-варіант за D-055); «Our village by 2030 will have planted…» лишено як граматичний порядок. Плейтест — у CI (немає Python playwright). FACT — в inbox.

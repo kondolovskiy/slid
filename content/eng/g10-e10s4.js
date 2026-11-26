@@ -15,7 +15,7 @@
    вітамін D, національні парки UK, Карпатський і Шацький НПП, Світязь) і форми (CD, CD Grammar) — URL у
    tasks/…/write-eng-g10-e10s4.md, «Нотатки агента».
    Увесь зміст — англійською, британська норма (D-055). Тексти, діалоги й герої — власні (docs/design/english.md §8).
-   Статус: draft. 7 уроків (6 + фінал). Будова — за розділами 9 кл. (e9s2).
+   Статус: verified (verifier-e10s4, reports/verify/write-eng-g10-e10s4.md). 7 уроків (6 + фінал). Будова — за розділами 9 кл. (e9s2).
    Перевірка: node tools/validate.mjs --section e10s4 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -25,7 +25,7 @@ SLID.section("eng", {
   title: "Weather, nature and natural disasters",
   why: "To talk about natural disasters and how the weather affects our health and mood. And to make predictions about nature and say how we can protect it.",
   requires: ["e5s5l2", "e5s5l5", "e5s9l3", "e9s2l3", "e9s2l4"],
-  meta: { author: "writer-e10s4", created: "2026-11-26", factcheck: null, teacher: null },
+  meta: { author: "writer-e10s4", created: "2026-11-26", factcheck: "verifier-e10s4, 2026-11-26 (reports/verify/write-eng-g10-e10s4.md)", teacher: null },
   badges: [
     { id: "e10s4boss", name: "Storm watcher", icon: "trophy", desc: "Finish the final lesson “Weather, nature and natural disasters”" }
   ],
@@ -36,7 +36,7 @@ SLID.section("eng", {
       title: "Floods, storms, earthquakes: natural disasters",
       short: "Natural disasters",
       icon: "bolt",
-      status: "draft",
+      status: "verified",
       why: "Nature can be dangerous. Learn the words to talk about floods, storms, earthquakes and other natural disasters.",
       screens: [
         {
@@ -196,7 +196,7 @@ SLID.section("eng", {
       title: "Look at those clouds! Will or going to?",
       short: "Predictions",
       icon: "eye",
-      status: "draft",
+      status: "verified",
       why: "Forecasts and warnings are predictions. Say what is going to happen, what will probably happen and what is likely.",
       screens: [
         {
@@ -296,7 +296,7 @@ SLID.section("eng", {
           type: "build",
           sk: "gram",
           title: "Put the words in order.",
-          body: `<p>Write a prediction for the weekend forecast.</p>`,
+          body: `<p>Write a prediction for this week’s forecast.</p>`,
           tiles: ["temperatures", "are", "likely", "to rise", "this week"],
           extra: ["rises"],
           answer: ["Temperatures are likely to rise this week.", "This week temperatures are likely to rise.", "Temperatures this week are likely to rise."],
@@ -315,7 +315,7 @@ SLID.section("eng", {
           answer: ["unlikely", "not likely"],
           hint: "Is 10% a big chance or a small one? Think of the opposite of likely.",
           fbOk: "Right.",
-          fbBad: "Look at the rules: are … to + verb.",
+          fbBad: "Look at the rules: be (un)likely to + verb.",
           fbText: "A 10% chance → rain is <b>unlikely</b> to spoil the picnic. It probably won’t happen."
         },
         {
@@ -347,14 +347,14 @@ SLID.section("eng", {
       title: "Weather, health and mood",
       short: "Health and mood",
       icon: "user",
-      status: "draft",
+      status: "verified",
       why: "Hot days, grey days, sunny days: the weather changes how we feel. Talk about your health and mood.",
       screens: [
         {
           type: "intro",
           eyebrow: "Lesson 3",
           title: "How does the weather make you feel?",
-          body: `<p class="lead">In July, there’s a heatwave in Kharkiv. Mariia writes to the club.</p><p><b>Mariia:</b> It’s 35 °C today! Hot weather makes me tired, and I’ve got a headache. But sunny autumn mornings always put me in a good mood.<br><b>Emma:</b> Here it’s grey and rainy. I’m feeling a bit under the weather – I think I’ve got a cold.<br><b>Andrii:</b> Grey November days make me gloomy, but snow makes me cheerful!</p><p>How does the weather change how they feel?</p>`,
+          body: `<p class="lead">In July, there’s a heatwave in Kharkiv. Mariia writes to the club.</p><p><b>Mariia:</b> It’s 35 °C today! Hot weather makes me tired, and I’ve got a headache. But sunny autumn mornings always put me in a good mood.<br><b>Emma:</b> Here it’s grey and rainy, and I’ve caught a cold. I’m a bit under the weather today.<br><b>Andrii:</b> Grey November days make me gloomy, but snow makes me cheerful!</p><p>How does the weather change how they feel?</p>`,
           cta: "Let’s see"
         },
         {
@@ -363,7 +363,7 @@ SLID.section("eng", {
           eyebrow: "Guess!",
           title: "What do you think?",
           hyp: true,
-          body: `<p>Emma: “I’m feeling a bit <b>under the weather</b>.”</p><p>What does she mean?</p>`,
+          body: `<p>Emma: “I’m a bit <b>under the weather</b> today.”</p><p>What does she mean?</p>`,
           opts: [
             "She is standing outside in the rain.",
             "She feels a bit ill.",
@@ -372,7 +372,7 @@ SLID.section("eng", {
           correct: 1,
           fbTitle: "Let’s find out.",
           fbOk: "Good guess!",
-          fbText: "<b>Under the weather</b> means a bit ill. Emma thinks she has a cold. The next screen has more words."
+          fbText: "<b>Under the weather</b> means a bit ill. Emma has caught a cold. The next screen has more words."
         },
         {
           type: "info",
@@ -482,7 +482,7 @@ SLID.section("eng", {
       title: "Temperatures will be falling: forecasts and warnings",
       short: "Forecasts",
       icon: "chart",
-      status: "draft",
+      status: "verified",
       why: "Weather forecasts and warnings help us plan and stay safe. Understand them and write your own.",
       screens: [
         {
@@ -629,7 +629,7 @@ SLID.section("eng", {
       title: "By 2030 we will have…: the Future Perfect",
       short: "Future Perfect",
       icon: "flag",
-      status: "draft",
+      status: "verified",
       why: "Plans for nature have deadlines. Say what will be finished by a time in the future.",
       screens: [
         {
@@ -779,7 +779,7 @@ SLID.section("eng", {
       title: "Protecting nature in Ukraine and the UK",
       short: "National parks",
       icon: "leaf",
-      status: "draft",
+      status: "verified",
       why: "National parks protect nature for everyone. Read an article about national parks in Ukraine and the UK.",
       screens: [
         {
@@ -817,7 +817,7 @@ SLID.section("eng", {
           sk: "read",
           eyebrow: "Reading: National parks, part 1 of 3",
           title: "Read and choose.",
-          body: `<p>The UK has 15 national parks: ten in England, three in Wales and two in Scotland. Northern Ireland has none. The first one was the Peak District in England. It became a national park in 1951. The newest one is the South Downs, in the south of England, since 2011. In Wales, there is Eryri, which is also called Snowdonia. National parks in the UK are not empty, wild places. People live, work and farm in them, and there are towns and villages too. In fact, most of the land in the parks belongs to farmers and other owners, not to the state. Every year, lots of visitors come to walk, cycle and enjoy the landscape.</p><p>Which sentence is true?</p>`,
+          body: `<p>The UK has 15 national parks: ten in England, three in Wales and two in Scotland. Northern Ireland has none. The first one was the Peak District in England. It became a national park in 1951. The newest one is the South Downs, in the south of England. In Wales, there is Eryri, which is also called Snowdonia. National parks in the UK are not empty, wild places. People live, work and farm in them, and there are towns and villages too. In fact, most of the land in the parks belongs to farmers and other owners, not to the state. Every year, lots of visitors come to walk, cycle and enjoy the landscape.</p><p>Which sentence is true?</p>`,
           opts: [
             "The Peak District became the UK’s first national park in 1951.",
             "Nobody lives in the UK’s national parks.",
@@ -929,7 +929,7 @@ SLID.section("eng", {
       title: "Wild weather week at the penfriend club",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e10s4boss",
       why: "Check everything from this section. Your points are doubled.",
