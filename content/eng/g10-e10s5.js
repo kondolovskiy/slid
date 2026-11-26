@@ -11,13 +11,13 @@
    кількість / результат («had painted twelve pictures») — лише simple; дієслова стану (know) — лише simple.
    Факти про художників — з двох джерел кожен (URL — tasks/…/write-eng-g10-e10s5.md, «Нотатки агента»); цитат не наводимо
    (слова Пікассо про Примаченко й Білокур — легенда, не беремо). Імена: Kateryna Bilokur, Oleksandr Murashko — КМУ № 55;
-   Maria Prymachenko — усталене англійське написання (en.wikipedia, Google Arts & Culture; за КМУ № 55 було б Mariia).
+   Mariia Prymachenko — за glossary/eng.md «Імена» (таблиця КМУ № 55); усталене англійське «Maria» (en.wikipedia) — згадка на екрані l3 (verifier-e10s5).
    Герої — серія 4–9 кл., на шість років старші, ніж у 4 кл.: Oksana, Halyna (Zelena Dolyna; Halyna малює), Mariia (Kharkiv,
    комікси на планшеті), Taras (Lviv), Andrii, Daryna (Kyiv), Emma (Англія). Нові: Mr Hill — учитель малювання в школі Emma; Megan — подруга Emma;
    Priya — гід у National Gallery; Sam — однокласник Emma. Картини героїв (Halyna, Mariia, Daryna) — вигадані.
    Діалоги — репліками в body (D-056), без звуку (D-055 п. 4). Зображень немає (пропозиція images-* — в inbox).
    Увесь зміст — англійською, британська норма (D-055). Тексти, діалоги й герої — власні (docs/design/english.md §8).
-   Статус: draft. 7 уроків (6 + фінал). Будова — за розділами 9 кл. (e9s5).
+   Статус: verified (verifier-e10s5). 7 уроків (6 + фінал). Будова — за розділами 9 кл. (e9s5).
    Перевірка: node tools/validate.mjs --section e10s5 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -27,7 +27,7 @@ SLID.section("eng", {
   title: "Painting and Ukrainian artists",
   why: "To talk about genres of painting and famous artists and their works. And to tell the story of an artist’s life and describe a visit to a gallery.",
   requires: ["e4s8l5", "e5s7l2", "e6s4l4", "e7s7l1", "e7s7l2", "e8s5l4", "e8s5l5", "e10s1l3"],
-  meta: { author: "writer-e10s5", created: "2026-11-26", factcheck: null, teacher: null },
+  meta: { author: "writer-e10s5", created: "2026-11-26", factcheck: "verifier-e10s5, 2026-11-26 (reports/verify/write-eng-g10-e10s5.md)", teacher: null },
   badges: [
     { id: "e10s5boss", name: "Gallery guide", icon: "trophy", desc: "Finish the final lesson “Painting and Ukrainian artists”" }
   ],
@@ -38,7 +38,7 @@ SLID.section("eng", {
       title: "Portrait, landscape, still life: genres of painting",
       short: "Genres",
       icon: "eye",
-      status: "draft",
+      status: "verified",
       why: "Paintings can show people, places or things. Learn the names of the main genres and the paints artists use.",
       screens: [
         {
@@ -178,7 +178,7 @@ SLID.section("eng", {
       title: "Famous artists and their paintings",
       short: "Famous paintings",
       icon: "star",
-      status: "draft",
+      status: "verified",
       why: "Some paintings are famous all over the world. Learn about two great English painters and say who painted what and when.",
       screens: [
         {
@@ -295,7 +295,7 @@ SLID.section("eng", {
           eyebrow: "Final",
           title: "Complete the sentences.",
           body: `<p>Emma’s class poster about the two paintings.</p>`,
-          text: "Both of these {*masterpieces|portraits} hang in the National Gallery in London. The Fighting Temeraire {*was painted|painted} by Turner, who is famous {*for|of} his skies. In 2005, people {*voted|were voted} for it as the greatest painting in Britain.",
+          text: "Both of these {*masterpieces|portraits} belong to the National Gallery in London. The Fighting Temeraire {*was painted|painted} by Turner, who is famous {*for|of} his skies. In 2005, people {*voted|were voted} for it as the greatest painting in Britain.",
           hint: "Great paintings of a ship and a cart. The painting didn’t paint itself. famous …? Who voted?",
           fbOk: "Exactly.",
           fbBad: "Neither painting shows a person. was painted by… famous for… People did the voting.",
@@ -318,14 +318,14 @@ SLID.section("eng", {
       title: "Ukrainian artists and their works",
       short: "Ukrainian artists",
       icon: "leaf",
-      status: "draft",
+      status: "verified",
       why: "Ukraine has great artists, from village painters to famous portrait painters. Learn about three of them and their works.",
       screens: [
         {
           type: "intro",
           eyebrow: "Lesson 3",
           title: "Who should be on the poster?",
-          body: `<p class="lead">Oksana writes to the English club.</p><p><i>Let’s make a poster: “Ukrainian artists the world should know”. I’m writing about Kateryna Bilokur. She never went to art school, but her flowers are amazing! Mariia is choosing Maria Prymachenko, and Andrii wants Oleksandr Murashko.</i></p><p>What do you know about these three artists?</p>`,
+          body: `<p class="lead">Oksana writes to the English club.</p><p><i>Let’s make a poster: “Ukrainian artists the world should know”. I’m writing about Kateryna Bilokur. She never went to art school, but her flowers are amazing! Mariia is choosing Mariia Prymachenko, and Andrii wants Oleksandr Murashko.</i></p><p>What do you know about these three artists?</p>`,
           cta: "Let’s see"
         },
         {
@@ -369,19 +369,19 @@ SLID.section("eng", {
         },
         {
           type: "info",
-          title: "Maria Prymachenko (1909–1997)",
-          body: `<p>Maria Prymachenko lived almost all her life in the village of Bolotnia, near Kyiv. She was a self-taught folk artist too.</p><p>She painted bright, <b>fantastic animals</b> and flowers, inspired by nature and Ukrainian <b>folk tales</b>: a blue bull, birds and beasts that don’t exist. Her paintings are full of colour.</p><p>In February 2022, during Russia’s full-scale invasion, a museum in Ivankiv that kept some of her works burned.</p>`,
+          title: "Mariia Prymachenko (1909–1997)",
+          body: `<p>Mariia Prymachenko lived almost all her life in the village of Bolotnia, in the Kyiv region. She was a self-taught folk artist too. In many English books, her name is written <i>Maria</i>.</p><p>She painted bright, <b>fantastic animals</b> and flowers, inspired by nature and Ukrainian <b>folk tales</b>: a blue bull, birds and beasts that don’t exist. Her paintings are full of colour.</p><p>In February 2022, during Russia’s full-scale invasion, a museum in Ivankiv that kept some of her works burned.</p>`,
           cta: "Next"
         },
         {
           type: "gaps",
           sk: "vocab",
           title: "Fill in the gaps.",
-          body: `<p>Mariia writes about Maria Prymachenko for the poster.</p>`,
-          text: "Maria Prymachenko was a {*self-taught|famous portrait} artist. She painted {*fantastic animals|abstract shapes} in bright colours. Many of her ideas came from nature and Ukrainian {*folk tales|museums}.",
+          body: `<p>Mariia writes about Mariia Prymachenko for the poster.</p>`,
+          text: "Mariia Prymachenko was a {*self-taught|famous portrait} artist. She painted {*fantastic animals|abstract shapes} in bright colours. Many of her ideas came from nature and Ukrainian {*folk tales|museums}.",
           hint: "Did anybody teach her? What did she paint? Where did her ideas come from?",
           fbOk: "Well done!",
-          fbBad: "Look at the screen about Maria Prymachenko again.",
+          fbBad: "Look at the screen about Mariia Prymachenko again.",
           fbText: "She was a <b>self-taught</b> folk artist. She painted <b>fantastic animals</b>, like a blue bull. Her ideas came from nature and <b>folk tales</b>."
         },
         {
@@ -405,7 +405,7 @@ SLID.section("eng", {
           type: "match",
           sk: "cult",
           title: "Match the halves.",
-          left: ["Kateryna Bilokur", "Maria Prymachenko", "Oleksandr Murashko", "John Constable"],
+          left: ["Kateryna Bilokur", "Mariia Prymachenko", "Oleksandr Murashko", "John Constable"],
           right: ["had her first exhibition in Poltava in 1940.", "painted a blue bull and other fantastic animals.", "painted Girl in a Red Hat.", "painted The Hay Wain."],
           hint: "Who painted fantastic animals? Who painted a farm cart in a river?",
           fbOk: "Well done!",
@@ -416,7 +416,7 @@ SLID.section("eng", {
           type: "word",
           sk: "gram",
           title: "Write the missing word.",
-          body: `<p>Nobody taught Maria Prymachenko to paint.</p>`,
+          body: `<p>Nobody taught Mariia Prymachenko to paint.</p>`,
           before: "She taught",
           after: "to paint.",
           answer: "herself",
@@ -431,7 +431,7 @@ SLID.section("eng", {
           eyebrow: "Final",
           title: "Complete the sentences.",
           body: `<p>Oksana finishes her part of the poster.</p>`,
-          text: "Kateryna Bilokur {*taught|teached} herself to paint. Like Maria Prymachenko, she was a {*folk|abstract} artist. Her first {*exhibition|masterpiece} opened in Poltava in 1940. Today she is famous {*for|of} her paintings of flowers.",
+          text: "Kateryna Bilokur {*taught|teached} herself to paint. Like Mariia Prymachenko, she was a {*folk|abstract} artist. Her first {*exhibition|masterpiece} opened in Poltava in 1940. Today she is famous {*for|of} her paintings of flowers.",
           hint: "teach – taught – taught. A village artist. A show of paintings opened. famous …?",
           fbOk: "Exactly.",
           fbBad: "teach is irregular. A show of paintings opens. famous for…",
@@ -454,7 +454,7 @@ SLID.section("eng", {
       title: "She had been painting for years: the Past Perfect Continuous",
       short: "Past Perfect Continuous",
       icon: "path",
-      status: "draft",
+      status: "verified",
       why: "Sometimes an action went on for a long time before something else happened in the past. The Past Perfect Continuous shows how long.",
       screens: [
         {
@@ -607,7 +607,7 @@ SLID.section("eng", {
       title: "A visit to a museum, an exhibition or a gallery",
       short: "At the gallery",
       icon: "city",
-      status: "draft",
+      status: "verified",
       why: "Before you visit a gallery, it helps to know the signs and the words. Then read about a class trip and say what you think.",
       screens: [
         {
@@ -751,7 +751,7 @@ SLID.section("eng", {
           eyebrow: "Final",
           title: "Complete the sentences.",
           body: `<p>Oksana answers Emma.</p>`,
-          text: "Thanks for the postcard! When it arrived, I {*had been waiting|have been waiting} for your story for a week. Last month, my class went to an {*exhibition|gift shop} of folk art in Poltava. We had a {*guided tour|display}, and the {*guide|queue} told us about Bilokur. In my {*opinion|think}, her flowers are even better in real life!",
+          text: "Thanks for the postcard! When it arrived, I {*had been waiting|have been waiting} for your story for a week. Last month, my class went to {*an exhibition|a gift shop} of folk art in Poltava. We had a {*guided tour|display}, and the {*guide|queue} told us about Bilokur. In my {*opinion|think}, her flowers are even better in real life!",
           hint: "When it arrived: a moment in the past. A show of paintings. A visit with a guide. In my …",
           fbOk: "Well done!",
           fbBad: "had been + -ing up to a past moment. A tour with a guide. In my opinion…",
@@ -774,7 +774,7 @@ SLID.section("eng", {
       title: "My favourite painting: describing a picture",
       short: "Describing a picture",
       icon: "voice",
-      status: "draft",
+      status: "verified",
       why: "To talk about a painting, say what is where and what is happening. Then say what you think about it.",
       screens: [
         {
@@ -921,7 +921,7 @@ SLID.section("eng", {
       title: "Our online exhibition",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e10s5boss",
       why: "Check everything from this section. Your points are doubled.",
@@ -984,7 +984,7 @@ SLID.section("eng", {
           sk: "cult",
           eyebrow: "Task 4",
           title: "Match the halves.",
-          left: ["Kateryna Bilokur", "Maria Prymachenko", "Oleksandr Murashko"],
+          left: ["Kateryna Bilokur", "Mariia Prymachenko", "Oleksandr Murashko"],
           right: ["had her first exhibition in Poltava in 1940.", "painted a blue bull and other fantastic animals.", "painted Girl in a Red Hat."],
           pre: "e10s5l3",
           fbOk: "Well done!",
