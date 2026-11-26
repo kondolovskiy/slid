@@ -15,7 +15,7 @@
    Діалоги — репліками в body (D-056), без звуку (D-055 п. 4).
    Форми, наголос і значення — CD, CD Grammar (relative pronouns, whose, when).
    Увесь зміст — англійською, британська норма (D-055). Тексти, діалоги й герої — власні (docs/design/english.md §8).
-   Статус: draft. 7 уроків (6 + фінал). Будова — за e8s4.
+   Статус: verified (verifier-e9s5, 2026-11-26). 7 уроків (6 + фінал). Будова — за e8s4.
    Перевірка: node tools/validate.mjs --section e9s5 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -25,7 +25,7 @@ SLID.section("eng", {
   title: "Youth culture and clubs",
   why: "To talk about youth culture, youth organisations and clubs. And to give more information about people, places and times.",
   requires: ["e6s6l3", "e5s1l3", "e5s7l1", "e5s6l1", "e5s6l5", "e7s6l1", "e8s4l3", "e8s4l4"],
-  meta: { author: "writer-e9s5", created: "2026-11-25", factcheck: null, teacher: null },
+  meta: { author: "writer-e9s5", created: "2026-11-25", factcheck: "verifier-e9s5, 2026-11-26 (reports/verify/write-eng-g9-e9s5.md)", teacher: null },
   badges: [
     { id: "e9s5boss", name: "Club captain", icon: "trophy", desc: "Finish the final lesson “Youth culture and clubs”" }
   ],
@@ -36,7 +36,7 @@ SLID.section("eng", {
       title: "Music, style and hobbies: youth culture",
       short: "Youth culture",
       icon: "voice",
-      status: "draft",
+      status: "verified",
       why: "Teenagers have different music, clothes and hobbies. Learn the words and say what you are into.",
       screens: [
         {
@@ -66,7 +66,26 @@ SLID.section("eng", {
         {
           type: "info",
           title: "Youth culture",
-          body: `<p><b>Youth <u>cul</u>ture</b> → the music, clothes and hobbies of young people. Every <u>teen</u>ager is different!</p><ul><li>I’m <b>into</b> rap. → I like it a lot.</li><li>a <b>fan</b> → a person who loves a singer, a team or a game</li><li>a <b>gamer</b> → a person who plays com<u>pu</u>ter games</li><li>a <b>skater</b> → a person who rides a skateboard</li><li>a <b><u>vlog</u>ger</b> → a person who makes videos for the internet</li><li><b>hang out</b> → spend time with friends</li><li>a <b>trend</b> → something popular right now</li></ul>`,
+          body: `<p><b>Youth <u>cul</u>ture</b> → the music, clothes and hobbies of young people. Every <u>teen</u>ager is different!</p><ul><li>I’m <b>into</b> rap. → I like it a lot.</li><li>a <b>fan</b> → a person who loves a singer, a team or a game</li><li><b>hang out</b> → spend time with friends</li><li>a <b>trend</b> → something popular right now</li></ul>`,
+          cta: "Next"
+        },
+        {
+          type: "word",
+          sk: "vocab",
+          title: "Write the missing word.",
+          body: `<p>Zoriana plays online games every day. She likes them a lot.</p>`,
+          before: "Zoriana is really",
+          after: "online games.",
+          answer: ["into"],
+          hint: "I like rap a lot. → I’m … rap.",
+          fbOk: "Well done!",
+          fbBad: "Look at the list: I’m … rap.",
+          fbText: "Zoriana is really <b>into</b> online games: she likes them a lot."
+        },
+        {
+          type: "info",
+          title: "Gamers, skaters, vloggers",
+          body: `<ul><li>a <b>gamer</b> → a person who plays com<u>pu</u>ter games</li><li>a <b>skater</b> → a person who rides a skateboard</li><li>a <b><u>vlog</u>ger</b> → a person who makes videos for the internet</li></ul>`,
           cta: "Next"
         },
         {
@@ -77,7 +96,7 @@ SLID.section("eng", {
           right: ["a person who plays computer games", "a person who rides a skateboard", "a person who makes videos for the internet", "something popular right now", "spend time with friends"],
           hint: "Which one is about videos? Which one is about time with friends?",
           fbOk: "Well done!",
-          fbBad: "Look at the list “Youth culture” again.",
+          fbBad: "Look at the lists “Youth culture” and “Gamers, skaters, vloggers” again.",
           fbText: "A <b>gamer</b> plays computer games. A <b>skater</b> rides a skateboard. A <b>vlogger</b> makes videos. A <b>trend</b> is popular right now. <b>Hang out</b> = spend time with friends."
         },
         {
@@ -85,7 +104,7 @@ SLID.section("eng", {
           sk: "phon",
           title: "Find the stressed syllable.",
           words: ["+teen|ag|er", "+cul|ture", "com|+pu|ter", "+vlog|ger"],
-          hint: "Look at the underlined parts on the list “Youth culture”.",
+          hint: "Look at the underlined parts on the lists “Youth culture” and “Gamers, skaters, vloggers”.",
           fbOk: "Yes!",
           fbBad: "In one word, the strong part isn’t at the start.",
           fbText: "<u>teen</u>ager, <u>cul</u>ture, <u>vlog</u>ger: the first part is strong. com<u>pu</u>ter: the second part is strong."
@@ -118,19 +137,6 @@ SLID.section("eng", {
           fbText: "Not <s>hang in</s>, but <b>hang out</b> with my friends. <b>We’re all into skateboarding</b> is correct."
         },
         {
-          type: "word",
-          sk: "vocab",
-          title: "Write the missing word.",
-          body: `<p>Zoriana plays online games every day. She likes them a lot.</p>`,
-          before: "Zoriana is really",
-          after: "online games.",
-          answer: ["into"],
-          hint: "I like rap a lot. → I’m … rap.",
-          fbOk: "Well done!",
-          fbBad: "Look at the list: I’m … rap.",
-          fbText: "Zoriana is really <b>into</b> online games: she likes them a lot."
-        },
-        {
           type: "gaps",
           sk: "read",
           eyebrow: "Final",
@@ -139,7 +145,7 @@ SLID.section("eng", {
           text: "I’m really {*into|in} vintage clothes. On Saturdays, I {*hang out|hang on} with my friends in second-hand shops. My brother Tom is a {*skater|gamer}: he spends hours at the skatepark. Is vintage a big {*trend|fan} in Ukraine too?",
           hint: "I like it a lot. Spend time with friends. The skatepark. Popular right now.",
           fbOk: "Exactly.",
-          fbBad: "Look at the list “Youth culture” again.",
+          fbBad: "Look at the lists “Youth culture” and “Gamers, skaters, vloggers” again.",
           fbText: "I’m <b>into</b> = I like a lot. <b>Hang out</b> = spend time with friends. The skatepark → a <b>skater</b>. Popular right now → a <b>trend</b>. A fan is a person."
         }
       ],
@@ -159,7 +165,7 @@ SLID.section("eng", {
       title: "Plast and the Scouts: youth organisations",
       short: "Youth organisations",
       icon: "path",
-      status: "draft",
+      status: "verified",
       why: "Learn about Plast, the Scouts and the Duke of Edinburgh’s Award. And talk about camps, hikes and volunteers.",
       screens: [
         {
@@ -189,7 +195,7 @@ SLID.section("eng", {
         {
           type: "info",
           title: "Youth organisations",
-          body: `<ul><li>a youth <b>organi<u>sa</u>tion</b> → a big group for young people, with groups in many towns</li><li>a <b><u>mem</u>ber</b> → a person in a club; <b>join</b> → become a member</li><li>a <b>camp</b> → a place where you stay in tents</li><li><b>go hiking</b> → go for a long walk in the mountains</li><li>a <b>volun<u>teer</u></b> → a person who helps without pay; to <b>volunteer</b></li><li>a <b>leader</b> → an adult who leads a group</li><li>an <b>award</b> → a prize for good work</li><li>an <b>expe<u>di</u>tion</b> → a long trip with a team</li></ul>`,
+          body: `<ul><li>a youth <b>organi<u>sa</u>tion</b> → a big group for young people, with groups in many towns</li><li>a <b><u>mem</u>ber</b> → a person in a club; <b>join</b> → become a member</li><li>a <b>camp</b> → a place where you stay in tents</li><li><b>go hiking</b> → go for a long walk in the mountains</li></ul>`,
           cta: "Next"
         },
         {
@@ -210,11 +216,17 @@ SLID.section("eng", {
           fbText: "In <b>1911</b>, the first groups met in Lviv. <b>12 April 1912</b> was the official start. So we can say: Plast started <b>more than 100 years ago</b>."
         },
         {
+          type: "info",
+          title: "Volunteers and awards",
+          body: `<ul><li>a <b>volun<u>teer</u></b> → a person who helps without pay; to <b>volunteer</b></li><li>a <b>leader</b> → an adult who leads a group</li><li>an <b>award</b> → a prize for good work</li><li>an <b>expe<u>di</u>tion</b> → a long trip with a team</li></ul>`,
+          cta: "Next"
+        },
+        {
           type: "choice",
           sk: "read",
           eyebrow: "Reading: Youth organisations, part 2 of 2",
           title: "Read and choose.",
-          body: `<p><i>The Scouts started in England. In 1907, Robert Baden-Powell took about twenty boys to a camp on Brownsea Island. Soon there were Scouts in many countries. In the UK, lots of teenagers also do the Duke of Edinburgh’s Award (DofE). It started in 1956. Young people from 14 to 24 can take part. There are three levels: Bronze, Silver and Gold. You volunteer, do a sport, learn a new skill and go on an expedition.</i></p><p>Emma is fifteen. Can she do the DofE?</p>`,
+          body: `<p><i>The Scouts started in England. In 1907, Robert Baden-Powell took about twenty boys to a camp on Brownsea Island. Soon there were Scouts in many countries. In the UK, lots of teenagers also do the Duke of Edinburgh’s Award (DofE). It started in the UK in 1956. Young people from 14 to 24 can take part. There are three levels: Bronze, Silver and Gold. You volunteer, do a sport, learn a new skill and go on an expedition.</i></p><p>Emma is fifteen. Can she do the DofE?</p>`,
           opts: [
             "No, because it’s only for adults.",
             "Yes, because it’s for young people from 14 to 24.",
@@ -260,7 +272,7 @@ SLID.section("eng", {
           sk: "phon",
           title: "Find the stressed syllable.",
           words: ["+mem|ber", "vol|un|+teer", "ex|pe|+di|tion", "or|gan|i|+sa|tion"],
-          hint: "Look at the underlined parts on the list “Youth organisations”.",
+          hint: "Look at the underlined parts on the lists “Youth organisations” and “Volunteers and awards”.",
           fbOk: "Good eye!",
           fbBad: "Only one of these words has the strong part at the start.",
           fbText: "<u>mem</u>ber: the first part. volun<u>teer</u>: the last part. expe<u>di</u>tion, organi<u>sa</u>tion: the part before <i>-tion</i> is strong."
@@ -287,7 +299,7 @@ SLID.section("eng", {
           text: "I’m a {*member|leader} of the DofE group at my school. Our {*leader|member} is Mr Price, our teacher. Every Saturday, I {*volunteer|join} at the library: I help little children with reading. Next month, our group is going on an {*expedition|award}: two days on foot, with tents!",
           hint: "Emma is in the group. Mr Price is an adult. She helps without pay. A long trip.",
           fbOk: "Well done!",
-          fbBad: "Look at the list “Youth organisations” again.",
+          fbBad: "Look at the lists “Youth organisations” and “Volunteers and awards” again.",
           fbText: "Emma is a <b>member</b>. Mr Price, an adult, is the <b>leader</b>. She helps without pay: she <b>volunteers</b>. A long trip with a team → an <b>expedition</b>. An award is a prize."
         }
       ],
@@ -307,7 +319,7 @@ SLID.section("eng", {
       title: "A club where…, a day when…: relative clauses",
       short: "Where, when",
       icon: "map",
-      status: "draft",
+      status: "verified",
       why: "Say more about places and times. Use where and when, and choose between where and which.",
       screens: [
         {
@@ -399,7 +411,7 @@ SLID.section("eng", {
           body: `<p>Taras shows Emma a photo from Ostap.</p>`,
           tiles: ["this", "is", "the camp", "where", "Ostap", "stayed", "in July"],
           extra: ["when"],
-          answer: ["This is the camp where Ostap stayed in July.", "The camp where Ostap stayed in July is this."],
+          answer: ["This is the camp where Ostap stayed in July.", "The camp where Ostap stayed in July is this.", "Is this the camp where Ostap stayed in July?", "Is the camp where Ostap stayed in July this?"],
           hint: "Start with This is the camp…",
           fbOk: "Good eye!",
           fbBad: "A camp is a place: where or when?",
@@ -458,7 +470,7 @@ SLID.section("eng", {
       title: "A friend whose hobby is…: whose",
       short: "Whose",
       icon: "users",
-      status: "draft",
+      status: "verified",
       why: "Say whose things you mean in one sentence. And don’t mix up whose and who’s.",
       screens: [
         {
@@ -523,11 +535,11 @@ SLID.section("eng", {
           sk: "gram",
           title: "Match the halves.",
           left: ["Lviv is the city", "1912 is the year", "Baden-Powell is the man", "Plast is an organisation"],
-          right: ["where Plast started.", "when Plast had its official start.", "whose ideas started the Scouts.", "which has members in other countries too."],
+          right: ["where Plast started.", "when Plast had its official start.", "who took about twenty boys to a camp in 1907.", "which has members in other countries too."],
           hint: "A place, a time, a person or a thing?",
           fbOk: "Well done!",
-          fbBad: "Place → where. Time → when. His ideas → whose. A thing + a verb → which.",
-          fbText: "Lviv: <b>where</b>. 1912: <b>when</b>. Baden-Powell: <b>whose</b> ideas (his ideas). Plast: <b>which</b> has members."
+          fbBad: "Place → where. Time → when. A person → who. A thing + a verb → which.",
+          fbText: "Lviv: <b>where</b>. 1912: <b>when</b>. Baden-Powell is a person: <b>who</b> took the boys to a camp. Plast is a thing: <b>which</b> has members."
         },
         {
           type: "build",
@@ -536,7 +548,7 @@ SLID.section("eng", {
           body: `<p>Andrii tells Bohdan about Emma.</p>`,
           tiles: ["Emma", "is", "the girl", "whose", "brother", "skates"],
           extra: ["who’s"],
-          answer: ["Emma is the girl whose brother skates.", "The girl whose brother skates is Emma."],
+          answer: ["Emma is the girl whose brother skates.", "The girl whose brother skates is Emma.", "Is Emma the girl whose brother skates?", "Is the girl whose brother skates Emma?"],
           hint: "Start with Emma is the girl…",
           fbOk: "Good eye!",
           fbBad: "Her brother: whose or who’s?",
@@ -595,7 +607,7 @@ SLID.section("eng", {
       title: "Why do teenagers join clubs? The reason why…",
       short: "The reason why",
       icon: "bulb",
-      status: "draft",
+      status: "verified",
       why: "Give reasons for your choice. And say yes or no to an invitation politely.",
       screens: [
         {
@@ -742,7 +754,7 @@ SLID.section("eng", {
       title: "Join our club! A poster and an online invitation",
       short: "Poster and invitation",
       icon: "star",
-      status: "draft",
+      status: "verified",
       why: "Read a club poster and an invitation. And learn how to invite friends and answer.",
       screens: [
         {
@@ -828,7 +840,7 @@ SLID.section("eng", {
           body: `<p>Myroslava invites her friend Ivanka to the club.</p>`,
           before: "Would you",
           after: "to come to our first meeting?",
-          answer: ["like", "love", "care"],
+          answer: ["like", "love", "care", "want"],
           hint: "Look at the list: Would you … to come?",
           fbOk: "Well done!",
           fbBad: "A polite invitation: Would you … to come?",
@@ -890,7 +902,7 @@ SLID.section("eng", {
       title: "The club fair",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e9s5boss",
       why: "Check everything from this section. Your points are doubled.",

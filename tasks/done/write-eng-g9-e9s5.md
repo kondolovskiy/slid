@@ -1,14 +1,14 @@
 ---
-claimed_from: todo
-claimed_at: 2026-11-25T12:44:41.373Z
+claimed_from: review
+claimed_at: 2026-11-25T12:55:51.166Z
 id: write-eng-g9-e9s5
 type: write-section
 subject: eng
 grade: 9
 section: e9s5
 depends_on: [curate-eng-plan-g7-9, engine-eng-lang-core, engine-eng-validate, engine-eng-stats, skills-eng, curate-eng-style, curate-eng-glossary, engine-eng-dialog]
-status: review
-claimed_by: writer-e9s5
+status: done
+claimed_by: verifier-e9s5
 created: 2026-11-19
 source: design-eng
 ---
@@ -69,3 +69,9 @@ Build не запускай (AGENTS.md §4 п. 8).
 - l2 final «I’m a {member|leader}» — відсікає наступне речення «Our leader is Mr Price».
 
 **Опора D-019:** l2 multi — на екрани 4–5 (обидві частини тексту); l6 match і Marko — на постер (екран 3); boss T3 — l2 екран 4; l4 match — правило where/when/whose/which (l3, l4) + факти l2.
+
+**verifier-e9s5, 2026-11-26.** Verified, 7 уроків. Звіт: reports/verify/write-eng-g9-e9s5.md. 7 правок у змісті, з них 4 критичні:
+- build l3 і l4 — додано питальні порядки;
+- match l4 — пару з whose замінено на «who took about twenty boys…»;
+- word l6 — додано «want».
+Ще 3 правки: info l1 і l2 розділено (ліміт 60 слів); у читання l2 додано «started in the UK». validate: 0/0. Плейтест — у CI.
