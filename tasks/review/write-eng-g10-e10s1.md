@@ -7,7 +7,7 @@ subject: eng
 grade: 10
 section: e10s1
 depends_on: [curate-eng-plan-g10-11, engine-eng-lang-core, engine-eng-validate, engine-eng-stats, skills-eng, curate-eng-style, curate-eng-glossary, engine-eng-dialog]
-status: todo
+status: review
 claimed_by: writer-e10s1
 created: 2026-11-19
 source: design-eng
@@ -47,3 +47,18 @@ Build не запускай (AGENTS.md §4 п. 8).
 
 ## Нотатки агента
 <!-- що зроблено, джерела форм і фактів, спірне -->
+writer-e10s1, 2026-11-26. Файл `content/eng/g10-e10s1.js`, 7 уроків (6 + boss `e10s1l7`, значок `e10s1boss` «Peacemaker»), status draft.
+`validate --section e10s1` — 0 помилок, 0 попереджень; `stats --subject eng` — e10s1 без «нетипово для сім'ї» (екранів 10–12, gradedShare 0.58–0.9, maxText ≤ 186).
+
+**Уроки:** l1 Personality (reliable, loyal, generous, selfish, stubborn, moody, sensitive, considerate, tolerant; un-/in-/dis-; What is she like? — повт. e6s1l4) · l2 Kinds of relationships (close friend, classmate, teammate, neighbour, penfriend, acquaintance; get on with, have a lot in common, rely on / count on, keep in touch, fall out with) · l3 by the time + Past Perfect; when + PS vs PP (різний зміст); by / until / before + час · l4 as soon as, after, before, until, when; PS і PP після after / as soon as — обидва (multi), кома після фронтального підрядного · l5 give a hand, help out, be there for, stand by, let down; причина / наслідок (because + PP, so, as a result, that’s why) · l6 конфлікт (conflict, argument, misunderstanding, blame for, apologise for, calm down, compromise, make up) + вступ у дискусію (повт. e9s9l3: Can I say something? Sorry to interrupt, but… Hang on a minute) + пояснення причин і наслідків (order) · l7 boss: 6 завдань + текст для читання «The missing episode» у 2 частинах (173 + 176 = 349 слів, П1407 с. 21: 350–400) + питання на головну думку після останньої частини.
+`requires`: e6s1l4, e6s4l5, e8s5l4, e9s1l2, e9s9l3 (усі існують).
+
+**Друга правильна відповідь — як обійдено:** після after / as soon as PS і PP не протиставляються в gaps — лише multi з обома (l4 #5, l7 Task 3); у gaps на PP хибні — has + третя форма і неправильні форми (had ate, had open, had chose); when PS/PP — шкала часу на екрані (l3 #6); by / until — лише ці два, before у пропуск дедлайну не ставлю («finish before» = «finish by»); у time-word gaps l4 #6 «Until he joined…, had never written» було б правильним — тому варіанти Before / After / As soon as; final l4 «kept reading until midnight» — без before. `word`: keep in touch / contact; made up / peace; had eaten з contractions. `build`: кома в плитці («home,», «the message,», «rang,»), «Start with …»; два розподіли ім'я/займенник у l4 #9 і l5 #8 — обидва в answer; l2 #9 — обидва порядки імен.
+
+**Джерела (CD — https://dictionary.cambridge.org/…):** grammar/british-grammar/past-perfect-simple-or-past-simple («The music started / had (already) started when the curtains opened»); …/past-perfect-simple-i-had-worked («I’d seen all … by the time I was 20»); …/until (by, not until, для дедлайну; until-підрядне зазвичай не на початку); dictionary/english/: reliable (B1, re<u>li</u>able), loyal (B2), generous (B1), selfish (B1), stubborn (B2), moody, sensitive (B2 «easily upset»), considerate, tolerant (C1), intolerant (C2), unreliable (B2), inconsiderate (C1), disloyal (C2), unselfish, acquaintance (C1), classmate, teammate, relationship (B1), get-on (B1, UK), common («have something in common»), keep-in-touch (B1), fall-out (B2 «to argue with someone and stop being friendly»), rely (B2), count-on (B2), hand («give someone a hand»), help-out (B2), be-there-for, stand-by (B2), let-down (B2), a-friend-in-need-is-a-friend-indeed, as-a-result (B2), conflict (B2, <u>con</u>flict), argument (B1), misunderstanding (B2), blame (B1), apologize («UK usually apologise»), calm-down (B2), compromise (B2), make-up («to forgive someone and be friendly with them again after an argument»), hang-on (B1 «Hang on a minute»), angry («angry at/with»), heated («excited or angry»).
+Нових фактів про країни немає (Україна — Kyiv, Lviv, Kharkiv, Dnipro, Plast-група Ostap — канон e9s5). FACT-рядків немає.
+
+**Герої (10 кл.: +6 років до 4 кл.):** нові — Artem (однокласник Mariia, Kharkiv), Ivanna (працює в магазині коміксів біля школи Mariia), Mr Lukashuk (літній сусід Ostap, Lviv; зламав ногу минулої зими). Епізоди — у рядку NOTE в inbox. Школу Оксани в 10 кл. не згадую (гімназія Years 1–9, NOTE verifier-e8s6).
+
+**Сумнівне для верифікатора:** l1 sort «Good / Bad for a friendship» — оцінне (stubborn прибрав як спірне); l6 word «They made ___» — ключ up, peace (made friends не беру: це «подружитися вперше»); l1 sensitive подано лише як «gets upset easily» (друге значення CD B2 не вводжу); «Hang on a minute» — CD «to wait for a short time», як спосіб утримати слово — наш вжиток (informal); l3 info «By the time … works like by» — спрощення; boss Task 1 об'єднує l1 і l2 (pre — e10s1l2).
+Опора завдань: l2 #2 hyp (acquaintance вводиться на #3); l5 #2 hyp (прислів'я); l6 #2 — відповідь у цитаті на екрані.
