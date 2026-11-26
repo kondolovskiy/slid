@@ -935,6 +935,7 @@ SLID.section("eng", {
           title: "Complete the sentences.",
           text: "Mariia: Look at those dark clouds! It {*is going to|are going to|going to} rain. (100%) We will {*definitely|probably} stay at home this afternoon. (25%) It {*probably won’t|won’t probably} be sunny later.",
           pre: "e9s2l3",
+          hint: "Look at the % after each sentence. Can Mariia see the clouds?",
           fbOk: "Exactly.",
           fbBad: "is going to; 100% → definitely; probably + won’t.",
           fbText: "It <b>is going to</b> rain: she can see the clouds. 100% → will <b>definitely</b>. 25% → it <b>probably won’t</b> be sunny."
@@ -950,6 +951,7 @@ SLID.section("eng", {
           answer: ["will be flying", "’ll be flying"],
           contractions: true,
           pre: "e9s2l4",
+          hint: "Is it a finished action or an action in progress at that moment?",
           fbOk: "Well done!",
           fbBad: "will + be + verb-ing.",
           fbText: "This time tomorrow, they <b>will be flying</b> to Kyiv: will be + verb-ing."
@@ -962,6 +964,7 @@ SLID.section("eng", {
           body: `<p>One word on Daryna’s photo of a sign is wrong.</p>`,
           text: "Flowers must not be [pick]. Rubbish must be taken home.",
           pre: "e9s2l5",
+          hint: "must not be + which form of the verb?",
           fbOk: "Good eye!",
           fbBad: "must not be + past participle.",
           fbText: "Correct: flowers must not be <b>picked</b>. <i>Must be taken</i> is correct."

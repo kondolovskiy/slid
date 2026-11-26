@@ -744,7 +744,7 @@ SLID.section("eng", {
   why: "To talk about TV, radio and communicating online. And to report questions and requests.",
   plan: [
     "TV, radio and podcasts: what do you like?",
-    "My favourite programme: a quiz or a talk show?",
+    "My favourite programme: a quiz or a chat show?",
     "Chatting online: safe and polite",
     "She asked if I liked…: reported questions",
     "He told us to switch off our phones: reported requests",
@@ -805,7 +805,7 @@ SLID.section("eng", {
   grade: 9,
   weeks: [29, 32],
   title: "Cities of Ukraine and English-speaking countries",
-  why: "To talk about big cities, famous places and historic monuments. And to imagine how things could have been different.",
+  why: "To talk about big cities, famous places and historic monuments. And to imagine a different past: “If we had booked tickets, we would have seen the castle!”",
   plan: [
     "Big cities of Ukraine: Lviv, Odesa, Kharkiv",
     "Old towns and historic monuments",

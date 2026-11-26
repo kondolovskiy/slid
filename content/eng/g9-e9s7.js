@@ -856,7 +856,7 @@ SLID.section("eng", {
           body: `<p>Taras writes “My future job” for the club.</p>`,
           text: "I’m interested in {*taking|take} photos and writing news stories, so I’d like to be a journalist. A good journalist {*should be|should to be} brave and reliable. In five years, {*I’ll be able to|I’ll can} write for a real newspaper. I {*won’t be able to|won’t can} stay at home much, but I love travelling!",
           hint: "interested in + -ing; should + be; will be able to.",
-          fbOk: "Well done!",
+          fbOk: "Brilliant!",
           fbBad: "Check: preposition + -ing; should without to; will be able to.",
           fbText: "interested in <b>taking</b>; a journalist <b>should be</b> brave; <b>I’ll be able to</b> write; I <b>won’t be able to</b> stay at home much."
         }
@@ -908,6 +908,7 @@ SLID.section("eng", {
           title: "Fill in the gaps.",
           text: "Mariia is good at {*drawing|draw|to draw}. Bohdan is interested in {*building|to build|built} bridges. Daryna is keen {*on|at|in} reading maps.",
           pre: "e9s7l2",
+          hint: "Which verb form comes after a preposition? And which preposition goes with keen?",
           fbOk: "Yes!",
           fbBad: "After a preposition → -ing. keen + ?",
           fbText: "good at <b>drawing</b>, interested in <b>building</b>, keen <b>on</b>: preposition + -ing."
@@ -936,6 +937,7 @@ SLID.section("eng", {
             ["You don’t have to choose a job this year.", 2]
           ],
           pre: "e9s7l4",
+          hint: "Is it a good idea, something you must do, or something you don’t need to do?",
           fbOk: "Well done!",
           fbBad: "should, ought to → advice. have to → ? don’t have to → ?",
           fbText: "Advice: <b>ought to</b>, <b>should</b>. Necessary: <b>have to</b>. Not necessary: <b>don’t have to</b>."
@@ -963,6 +965,7 @@ SLID.section("eng", {
           body: `<p>One phrase in the guide is wrong.</p>`,
           text: "After the course, Zoriana [will can] write simple programs, and she [!will be able to] build a robot.",
           pre: "e9s7l6",
+          hint: "Check the verbs after will.",
           fbOk: "Right.",
           fbBad: "Can we use can after will?",
           fbText: "Zoriana <b>will be able to</b> write simple programs. <i>Will can</i> is wrong: after will, use <b>be able to</b>."

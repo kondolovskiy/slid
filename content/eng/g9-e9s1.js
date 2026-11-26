@@ -263,7 +263,7 @@ SLID.section("eng", {
           sk: "read",
           eyebrow: "Final",
           title: "Read and choose.",
-          body: `<p><i>My pen friend Zofia is open-minded: she loves learning about new countries. She’s hard-working too. She draws comics every evening, and they are really good. And she’s easy-going. Last month I forgot to write back for three weeks, but she wasn’t angry at all! – Mariia</i></p><p>Which sentence is true?</p>`,
+          body: `<p><i>My penfriend Zofia is open-minded: she loves learning about new countries. She’s hard-working too. She draws comics every evening, and they are really good. And she’s easy-going. Last month I forgot to write back for three weeks, but she wasn’t angry at all! – Mariia</i></p><p>Which sentence is true?</p>`,
           opts: [
             "Zofia got angry with Mariia.",
             "Zofia likes learning about other countries.",
@@ -892,6 +892,7 @@ SLID.section("eng", {
           ],
           correct: 1,
           pre: "e9s1l2",
+          hint: "Does Kyrylo work a lot or a little?",
           fbOk: "Exactly.",
           fbBad: "He works a lot. Which word means that?",
           fbText: "He works a lot: <b>hard-working</b>. The opposite is <i>lazy</i>."
@@ -949,6 +950,7 @@ SLID.section("eng", {
           extra: ["were"],
           keepCase: true,
           pre: "e9s1l6",
+          hint: "Which action is long, and which is short?",
           fbOk: "Yes!",
           fbBad: "While + was + -ing, then the short action.",
           fbText: "<b>While she was swimming, Emma lost her goggles.</b> Long action: Past Continuous. Short action: Past Simple."

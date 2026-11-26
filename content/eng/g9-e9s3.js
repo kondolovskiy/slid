@@ -280,7 +280,7 @@ SLID.section("eng", {
           body: `<p>Emma writes about her weekend clothes.</p>`,
           text: "At school, I wear a uniform. But at the weekend, I wear my own clothes. My favourite is a {*striped|checked|plain} jumper with blue and white lines. I wear it with {*baggy|tight|spotted} jeans: they’re big and comfortable. On my feet, I wear white {*trainers|hoodies|tracksuits}. For PE, I wear trousers and a top for sport: my {*tracksuit|hoodie|jumper}.",
           hint: "Lines → ? Big → ? Shoes → ? Trousers and a top for sport → ?",
-          fbOk: "Well done!",
+          fbOk: "Brilliant!",
           fbBad: "Check: lines or squares? Big or small? Shoes or tops?",
           fbText: "Lines: a <b>striped</b> jumper. Big: <b>baggy</b> jeans. Shoes: <b>trainers</b>. Trousers and a top for sport: a <b>tracksuit</b>."
         }
@@ -429,7 +429,7 @@ SLID.section("eng", {
           body: `<p>Mariia writes to the lost property office again.</p>`,
           text: "Thank you for your email! The scarf, the jacket and the hat aren’t mine. My coat is {*a long black woollen|a black long woollen|a woollen long black} coat with big pockets. In one pocket, there’s {*a small blue cotton|a cotton small blue|a blue cotton small} bag with my keys. My friend Polina found {*a nice new leather|a leather nice new|a new nice leather} wallet in the changing room. Is it someone’s?",
           hint: "Opinion → size → age → colour → material → noun.",
-          fbOk: "Well done!",
+          fbOk: "Exactly.",
           fbBad: "Check each gap: which group comes first?",
           fbText: "<b>a long black woollen</b> coat (size → colour → material), <b>a small blue cotton</b> bag (size → colour → material), <b>a nice new leather</b> wallet (opinion → age → material)."
         }
@@ -778,7 +778,7 @@ SLID.section("eng", {
         {
           type: "info",
           title: "Giving your opinion",
-          body: `<ul><li><b>I think</b> … / <b>In my opinion</b>, …</li><li>you agree → <b>I agree with</b> Zoriana. <b>I think</b> Bohdan <b>is right</b>.</li><li>you don’t agree → <b>I don’t agree with</b> Bohdan.</li><li>you partly agree, but you’ve got a different idea → <b>That’s true, but</b> … / <b>Maybe you’re right, but</b> … It’s a polite way to disagree.</li><li>say why → … <b>because</b> …</li></ul><p>Not: <s>I am agree.</s> → I agree.</p><p>Talk about the idea, not the person.</p>`,
+          body: `<ul><li><b>I think</b> … / <b>In my opinion</b>, …</li><li>you agree → <b>I agree with</b> Zoriana. <b>I think</b> Bohdan <b>is right</b>.</li><li>you don’t agree → <b>I don’t agree with</b> Bohdan.</li><li>you partly agree, but you’ve got a different idea → <b>That’s true, but</b> … / <b>Maybe you’re right, but</b> … It’s a polite way to give a different idea.</li><li>say why → … <b>because</b> …</li></ul><p>Not: <s>I am agree.</s> → I agree.</p><p>Talk about the idea, not the person.</p>`,
           cta: "Next"
         },
         {
@@ -832,7 +832,7 @@ SLID.section("eng", {
           hint: "“That’s true, but…” and “Maybe you’re right, but…” – the person partly agrees, but has a different idea.",
           fbOk: "Well done!",
           fbBad: "Look at the rule “Giving your opinion” again.",
-          fbText: "Agree: <i>I agree with…</i>, <i>… is right</i>, <i>That’s a great idea!</i> Partly agree (a polite way to disagree): <i>Maybe you’re right, but…</i>, <i>That’s true, but…</i> Don’t agree: <i>I don’t agree with…</i>"
+          fbText: "Agree: <i>I agree with…</i>, <i>… is right</i>, <i>That’s a great idea!</i> Partly agree (a polite way to give a different idea): <i>Maybe you’re right, but…</i>, <i>That’s true, but…</i> Don’t agree: <i>I don’t agree with…</i>"
         },
         {
           type: "gaps",
@@ -880,7 +880,7 @@ SLID.section("eng", {
           body: `<p>Andrii writes a short article for the school newspaper.</p>`,
           text: "<b>Fashion and us</b><br>Is fashion important to us? Bohdan thinks fashion is fun, but Zoriana doesn’t {*agree|agrees|agreed} with him. Daryna buys {*second-hand|expensive} clothes because they’re cheap. Kyrylo had {*such a|so|such} good idea that everyone liked it: a clothes swap! It’s on 12 December. {*In|On|At} my opinion, a swap is a great way to buy less and wear clothes longer.",
           hint: "doesn’t + ? Cheap clothes → ? Adjective + noun → ? … my opinion.",
-          fbOk: "Well done!",
+          fbOk: "Right.",
           fbBad: "Check: doesn’t + verb, Daryna’s part of the text, such a + adjective + noun.",
           fbText: "doesn’t <b>agree</b>, <b>second-hand</b> clothes, <b>such a</b> good idea, <b>In</b> my opinion."
         }
@@ -889,7 +889,7 @@ SLID.section("eng", {
         text: "Give your opinion, say why, and agree or disagree politely: talk about the idea, not the person.",
         learned: [
           "Give your opinion: I think…, In my opinion…",
-          "Agree or disagree politely: That’s true, but…",
+          "Partly agree politely: That’s true, but…",
           "Read people’s opinions about fashion and say who thinks what."
         ]
       }
@@ -974,6 +974,7 @@ SLID.section("eng", {
           title: "Fill in the gaps.",
           text: "The hall was {*so|such|such a} busy that we couldn’t find a chair. There were {*such|so|such a} nice clothes that I took three things. It was {*such a|so|such} great day!",
           pre: "e9s3l4",
+          hint: "What comes after each gap: an adjective alone or an adjective + a noun? One thing or more?",
           fbOk: "Yes!",
           fbBad: "Adjective alone → so. Adjective + noun → such (a).",
           fbText: "<b>so</b> busy that, <b>such</b> nice clothes (two or more things), <b>such a</b> great day (one)."
@@ -1009,7 +1010,7 @@ SLID.section("eng", {
           sk: "func",
           eyebrow: "Task 8",
           title: "Choose the correct answer.",
-          body: `<p><b>Bohdan:</b> In my opinion, everyone should buy new clothes every month.</p><p>Zoriana doesn’t agree, but she wants to be polite. What does she say?</p>`,
+          body: `<p><b>Bohdan:</b> In my opinion, everyone should buy new clothes every month.</p><p>Zoriana agrees only partly, and she wants to be polite. What does she say?</p>`,
           opts: [
             "I agree with you.",
             "That’s true, but new clothes cost a lot of money.",
@@ -1017,9 +1018,10 @@ SLID.section("eng", {
           ],
           correct: 1,
           pre: "e9s3l6",
+          hint: "How do we partly agree? Remember the rule “Giving your opinion”.",
           fbOk: "Well done!",
-          fbBad: "She doesn’t agree, but she’s polite: That’s true, but…",
-          fbText: "<b>That’s true, but…</b> – polite disagreement. <i>I agree with you</i> and <i>I think you’re right</i> mean she agrees."
+          fbBad: "She agrees only partly, and she’s polite: That’s true, but…",
+          fbText: "<b>That’s true, but…</b> – partly agree: a polite way to give a different idea. <i>I agree with you</i> and <i>I think you’re right</i> mean she agrees."
         }
       ],
       outro: {

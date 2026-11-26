@@ -95,7 +95,7 @@ SLID.section("eng", {
           left: ["a gamer", "a skater", "a vlogger", "a trend", "hang out"],
           right: ["a person who plays computer games", "a person who rides a skateboard", "a person who makes videos for the internet", "something popular right now", "spend time with friends"],
           hint: "Which one is about videos? Which one is about time with friends?",
-          fbOk: "Well done!",
+          fbOk: "Brilliant!",
           fbBad: "Look at the lists “Youth culture” and “Gamers, skaters, vloggers” again.",
           fbText: "A <b>gamer</b> plays computer games. A <b>skater</b> rides a skateboard. A <b>vlogger</b> makes videos. A <b>trend</b> is popular right now. <b>Hang out</b> = spend time with friends."
         },
@@ -298,7 +298,7 @@ SLID.section("eng", {
           body: `<p>Emma writes more about her DofE.</p>`,
           text: "I’m a {*member|leader} of the DofE group at my school. Our {*leader|member} is Mr Price, our teacher. Every Saturday, I {*volunteer|join} at the library: I help little children with reading. Next month, our group is going on an {*expedition|award}: two days on foot, with tents!",
           hint: "Emma is in the group. Mr Price is an adult. She helps without pay. A long trip.",
-          fbOk: "Well done!",
+          fbOk: "Exactly.",
           fbBad: "Look at the lists “Youth organisations” and “Volunteers and awards” again.",
           fbText: "Emma is a <b>member</b>. Mr Price, an adult, is the <b>leader</b>. She helps without pay: she <b>volunteers</b>. A long trip with a team → an <b>expedition</b>. An award is a prize."
         }
@@ -424,7 +424,7 @@ SLID.section("eng", {
           body: `<p>One word in Emma’s message is wrong.</p>`,
           text: "Wednesday is the day [where] our DofE group meets. We meet in the library, where I volunteer.",
           hint: "Wednesday is a time. Which word do we use for times?",
-          fbOk: "Good eye!",
+          fbOk: "Right.",
           fbBad: "Look at the first sentence: Wednesday is a day, not a place.",
           fbText: "Not <s>the day where</s>, but <b>the day when</b> our group meets. <b>The library, where I volunteer</b> is correct: the library is a place."
         },
@@ -561,7 +561,7 @@ SLID.section("eng", {
           body: `<p>One word in Mariia’s message is wrong.</p>`,
           text: "Polina is the friend [who’s] comics I like most. She’s the best artist in our club.",
           hint: "Her comics: which word?",
-          fbOk: "Good eye!",
+          fbOk: "Yes!",
           fbBad: "Look at the first sentence. Who’s = who is.",
           fbText: "Not <s>who’s comics</s>, but <b>whose comics</b> (her comics). <b>She’s the best artist</b> is correct."
         },
@@ -586,7 +586,7 @@ SLID.section("eng", {
           body: `<p>Mariia writes on the club blog.</p>`,
           text: "Polina, {*whose|who} comics are very funny, is my best friend. Our club meets in a café {*where|which} we can draw for hours. Thursday is the day {*when|where} we meet. Zofia, {*who|whose} lives in Poland, reads our comics online.",
           hint: "A noun next → whose. A verb next → who. Place → where. Time → when.",
-          fbOk: "Well done!",
+          fbOk: "Correct!",
           fbBad: "Look at the next word after each gap.",
           fbText: "Polina, <b>whose</b> comics (her comics). A café: we draw <i>there</i> → <b>where</b>. Thursday is a time: <b>when</b>. Zofia, <b>who</b> lives: a verb comes next."
         }
@@ -721,7 +721,7 @@ SLID.section("eng", {
           after: "I joined the chess club is that I love chess.",
           answer: ["why", "that"],
           hint: "Look at the list “The reason why…”.",
-          fbOk: "Well done!",
+          fbOk: "Brilliant!",
           fbBad: "Not because. The reason …",
           fbText: "<b>The reason why</b> (or <b>that</b>) I joined the chess club is that I love chess."
         },
@@ -730,8 +730,8 @@ SLID.section("eng", {
           sk: "write",
           eyebrow: "Final",
           title: "Complete the sentences.",
-          body: `<p>Emma invites Oksana to England in June. Oksana answers.</p>`,
-          text: "Thanks for asking! I’d {*love|loving} to come to England. But I’m {*afraid|happy} I can’t come in June. The reason {*why|because} I can’t come is simple: every June, we visit my uncle Ivan in Odesa. {*That’s why|Because} August is better for me.",
+          body: `<p>Emma invites Oksana to England in July. Oksana answers.</p>`,
+          text: "Thanks for asking! I’d {*love|loving} to come to England. But I’m {*afraid|happy} I can’t come in July. The reason {*why|because} I can’t come is simple: every July, we visit my uncle Ivan in Odesa. {*That’s why|Because} August is better for me.",
           hint: "Oksana says no politely and gives a reason.",
           fbOk: "Exactly.",
           fbBad: "I’d love to… I’m afraid I can’t… The reason why… That’s why…",
@@ -968,6 +968,7 @@ SLID.section("eng", {
           body: `<p>Andrii writes about the fair.</p>`,
           text: "The fair is in the hall {*where|which} we have concerts. The chess club has a table {*which|where} is near the door. Saturday is the day {*when|where} the fair opens.",
           pre: "e9s5l3",
+          hint: "Look before and after each gap: a place, a thing or a time? A person or a verb next?",
           fbOk: "Well done!",
           fbBad: "Place + a person + a verb → where. A verb next → which. Time → when.",
           fbText: "We have concerts <i>there</i>: <b>where</b>. <i>is</i> is a verb: <b>which</b>. Saturday is a time: <b>when</b>."
@@ -997,6 +998,7 @@ SLID.section("eng", {
           body: `<p>One word in Kateryna’s message is wrong.</p>`,
           text: "I love acting. That’s [because] I joined the drama club. Our first show is in May.",
           pre: "e9s5l5",
+          hint: "Is acting the reason or the result?",
           fbOk: "Good eye!",
           fbBad: "I love acting, so I joined. That’s …",
           fbText: "Not <s>That’s because</s>, but <b>That’s why</b> I joined the drama club: <i>that’s why</i> = so."
@@ -1040,6 +1042,7 @@ SLID.section("eng", {
           body: `<p>After the fair, Andrii writes for the school newspaper.</p>`,
           text: "The club fair was the day {*when|where} 60 pupils joined new clubs. The chess club, {*which|where} meets on Mondays, has six new members. Kyrylo is the boy {*whose|who’s} history quiz was the most popular. The reason {*why|because} the fair was great is simple: everybody found a club!",
           pre: "e9s5l4",
+          hint: "Which gap is about a reason, a thing, a time or someone’s things?",
           fbOk: "Exactly.",
           fbBad: "Time → when. A verb next → which. His quiz → whose. The reason …",
           fbText: "A time: <b>when</b>. <i>meets</i> is a verb: <b>which</b>. His quiz: <b>whose</b>. <b>The reason why</b> the fair was great…"

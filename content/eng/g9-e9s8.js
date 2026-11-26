@@ -24,7 +24,7 @@ SLID.section("eng", {
   grade: 9,
   weeks: [29, 32],
   title: "Cities of Ukraine and English-speaking countries",
-  why: "To talk about big cities, famous places and historic monuments. And to imagine how things could have been different.",
+  why: "To talk about big cities, famous places and historic monuments. And to imagine a different past: “If we had booked tickets, we would have seen the castle!”",
   requires: ["e5s7l6", "e6s7l2", "e6s7l3", "e6s8l2", "e6s8l4", "e7s6l3", "e7s7l2", "e7s7l4", "e8s5l4", "e8s8l5", "e8s8l6", "e5s10l1", "e9s5l3"],
   meta: { author: "writer-e9s8", created: "2026-11-26", factcheck: null, teacher: null },
   badges: [
@@ -150,8 +150,8 @@ SLID.section("eng", {
           body: `<p>Emma writes the first page of the class project.</p>`,
           text: "Kharkiv is in the north-east. It’s the {*second-largest|second-large} city in Ukraine. Lviv is in the west. Its historic centre has been on the UNESCO World Heritage List {*since|for} 1998. Odesa is a big {*port|square} on the Black Sea. Its historic centre {*was added|added} to the UNESCO list in 2023.",
           hint: "Look at the screen “Three big cities”. 1998 is a point in time.",
-          fbOk: "Well done!",
-          fbBad: "since + a point in time; a city where ships come and go; the passive: was + third form.",
+          fbOk: "Brilliant!",
+          fbBad: "since + a point in time; a city where ships come and go; the passive: was + the third form.",
           fbText: "The <b>second-largest</b> city. On the list <b>since</b> 1998. A big <b>port</b>. The historic centre <b>was added</b> to the list in 2023."
         }
       ],
@@ -232,7 +232,7 @@ SLID.section("eng", {
         {
           type: "info",
           title: "Famous places: Odesa and Kharkiv",
-          body: `<ul><li><b>Odesa:</b> the Potemkin Stairs were built in 1837–1841. They have 192 steps. The Opera House was built in 1887. It was designed by two architects, Fellner and Helmer.</li><li><b>Kharkiv:</b> Derzhprom, a very big office building, was built in 1925–1928.</li></ul><p>Remember the passive: <b>was / were</b> + third form (+ <b>by</b> …).</p>`,
+          body: `<ul><li><b>Odesa:</b> the Potemkin Stairs were built in 1837–1841. They have 192 steps. The Opera House was built in 1887. It was designed by two architects, Fellner and Helmer.</li><li><b>Kharkiv:</b> Derzhprom, a very big office building, was built in 1925–1928.</li></ul><p>Remember the passive: <b>was / were</b> + the third form (+ <b>by</b> …).</p>`,
           cta: "Next"
         },
         {
@@ -240,10 +240,10 @@ SLID.section("eng", {
           sk: "gram",
           title: "Complete the sentences with the Past Simple passive.",
           text: "The Potemkin Stairs {*were built|was built} in 1837–1841. The Opera House in Odesa {*was designed|designed} by Fellner and Helmer. Derzhprom {*was built|built} in 1925–1928.",
-          hint: "One building or many steps? was / were + third form.",
+          hint: "One building or many steps? was / were + the third form.",
           fbOk: "Exactly.",
           fbBad: "The Stairs – plural: were. A building can’t build itself: was built.",
-          fbText: "The Stairs <b>were built</b> (plural). The Opera House <b>was designed</b> by… Derzhprom <b>was built</b>. The passive: was / were + third form."
+          fbText: "The Stairs <b>were built</b> (plural). The Opera House <b>was designed</b> by… Derzhprom <b>was built</b>. The passive: was / were + the third form."
         },
         {
           type: "build",
@@ -254,7 +254,7 @@ SLID.section("eng", {
           answer: "The Opera House was designed by Fellner and Helmer.",
           extra: ["designing"],
           keepCase: true,
-          hint: "Start with The Opera House. Then was + third form + by…",
+          hint: "Start with The Opera House. Then was + the third form + by…",
           fbOk: "Well done!",
           fbBad: "The passive: was + designed, then by + the architects.",
           fbText: "<b>The Opera House was designed by Fellner and Helmer.</b> was + <b>designed</b>, not <i>designing</i>."
@@ -279,7 +279,7 @@ SLID.section("eng", {
           text: "My favourite building is Derzhprom. It {*was built|built} in 1925–1928. For me, it’s one of the most interesting {*buildings|building} in Kharkiv. My friend Taras lives in Lviv. He loves Rynok Square, in the middle of the Old {*Town|Square}. The Town Hall is in the centre of the square, and you can climb its {*tower|cathedral}.",
           hint: "Look at both screens “Famous places”.",
           fbOk: "Well done!",
-          fbBad: "was + third form; one of the… + plural noun; the Old Town; climb the tower.",
+          fbBad: "was + the third form; one of the… + plural noun; the Old Town; climb the tower.",
           fbText: "Derzhprom <b>was built</b> in 1925–1928. One of the most interesting <b>buildings</b>. Rynok Square is in the middle of the Old <b>Town</b>. You can climb the Town Hall <b>tower</b>."
         }
       ],
@@ -361,7 +361,7 @@ SLID.section("eng", {
           left: ["Edinburgh Castle", "Trinity College", "The Sydney Opera House", "The CN Tower", "The Statue of Liberty"],
           right: ["stands on Castle Rock.", "was founded in 1592.", "was designed by Jørn Utzon.", "was opened in 1976.", "was a gift from the people of France."],
           hint: "Which building was designed by a Danish architect? Which one was a gift?",
-          fbOk: "Well done!",
+          fbOk: "Exactly.",
           fbBad: "Look at both screens about the cities again.",
           fbText: "Edinburgh Castle – <b>Castle Rock</b>. Trinity College – <b>1592</b>. The Opera House – <b>Jørn Utzon</b>. The CN Tower – <b>1976</b>. The Statue of Liberty – a gift from <b>France</b>."
         },
@@ -407,7 +407,7 @@ SLID.section("eng", {
           text: "I live in Canberra, the {*capital|largest city} of Australia. But my favourite building is in Sydney: the Opera House. It {*was opened|opened by} in 1973. It {*was designed|is designed} by a Danish architect, Jørn Utzon. It has been on the UNESCO list {*since|for} 2007.",
           hint: "Is Canberra the capital? Each building fact is in the past passive.",
           fbOk: "Well done!",
-          fbBad: "Canberra is the capital. The passive in the past: was + third form. since + a year.",
+          fbBad: "Canberra is the capital. The passive in the past: was + the third form. since + a year.",
           fbText: "Canberra is the <b>capital</b>. The Opera House <b>was opened</b> in 1973 and <b>was designed</b> by Jørn Utzon. On the list <b>since</b> 2007."
         }
       ],
@@ -520,7 +520,7 @@ SLID.section("eng", {
           ],
           correct: [0, 2, 3],
           hint: "Look for would after if. Does the other part match the if part?",
-          fbOk: "Well done!",
+          fbOk: "Yes!",
           fbBad: "Imagined: if + Past Simple, would. Real: if + Present Simple, will.",
           fbText: "Correct: <b>If I lived…, I’d go…</b>, <b>I wouldn’t like… because…</b>, <b>If I go…, I’ll walk…</b> Not <s>If I would live</s>. Not <s>If I lived…, I will</s>: lived → would."
         },
@@ -596,7 +596,7 @@ SLID.section("eng", {
         {
           type: "info",
           title: "The Third Conditional",
-          body: `<p>We imagine a different past. It didn’t happen, and we often feel sorry about it.</p><ul><li><b>if</b> + Past Perfect → <b>would have</b> + third form</li><li>If we <b>had booked</b> tickets, we <b>would have seen</b> the castle.</li><li>If Isla <b>had known</b>, she <b>would have helped</b> us.</li></ul><p>Not: <s>If we would have booked</s>.</p>`,
+          body: `<p>We imagine a different past. It didn’t happen, and we often feel sorry about it.</p><ul><li><b>if</b> + Past Perfect → <b>would have</b> + the third form</li><li>If we <b>had booked</b> tickets, we <b>would have seen</b> the castle.</li><li>If Isla <b>had known</b>, she <b>would have helped</b> us.</li></ul><p>Not: <s>If we would have booked</s>.</p>`,
           cta: "Next"
         },
         {
@@ -604,9 +604,9 @@ SLID.section("eng", {
           sk: "gram",
           title: "Fill in the gaps.",
           text: "If we {*had got|would have got} up earlier, we {*would have caught|would catch} the first bus. If Mum {*had brought|brought} her umbrella, she wouldn’t have got wet.",
-          hint: "After if: had + third form. In the other part: would have + third form.",
+          hint: "After if: had + the third form. In the other part: would have + the third form.",
           fbOk: "Exactly.",
-          fbBad: "Look at the rule: if + had + third form → would have + third form.",
+          fbBad: "Look at the rule: if + had + the third form → would have + the third form.",
           fbText: "If we <b>had got</b> up earlier, we <b>would have caught</b>… If Mum <b>had brought</b>… It’s all about the past, and it didn’t happen."
         },
         {
@@ -620,7 +620,7 @@ SLID.section("eng", {
             "If I had taken my camera, I would have taken great photos."
           ],
           correct: 2,
-          hint: "Find had + third form after if, and would have in the other part.",
+          hint: "Find had + the third form after if, and would have in the other part.",
           fbOk: "Well done!",
           fbBad: "No would after if. And it’s the past: would have, not will have.",
           fbText: "<b>If I had taken my camera, I would have taken great photos.</b> Not <s>If I would have taken</s>, not <s>will have taken</s>."
@@ -628,7 +628,7 @@ SLID.section("eng", {
         {
           type: "info",
           title: "’d = had or would?",
-          body: `<p>In speaking, we often use short forms:</p><ul><li>If we<b>’d</b> booked tickets, we<b>’d</b> have seen the castle.</li><li>’d + third form (booked) → <b>had</b></li><li>’d + have → <b>would</b></li></ul><p>Negative: If I <b>hadn’t</b> missed the bus, I <b>wouldn’t have</b> been late.</p><p>Remember: a comma after the if part when it comes first.</p>`,
+          body: `<p>In speaking, we often use short forms:</p><ul><li>If we<b>’d</b> booked tickets, we<b>’d</b> have seen the castle.</li><li>’d + the third form (booked) → <b>had</b></li><li>’d + have → <b>would</b></li></ul><p>Negative: If I <b>hadn’t</b> missed the bus, I <b>wouldn’t have</b> been late.</p><p>Remember: a comma after the if part when it comes first.</p>`,
           cta: "Next"
         },
         {
@@ -645,7 +645,7 @@ SLID.section("eng", {
           hint: "What comes after the first ’d: have or a third form?",
           fbOk: "Good eye!",
           fbBad: "After the first ’d there is a third form: told.",
-          fbText: "If you<b>’d told</b> = if you <b>had</b> told (’d + third form). I<b>’d have</b> booked = I <b>would</b> have booked (’d + have)."
+          fbText: "If you<b>’d told</b> = if you <b>had</b> told (’d + the third form). I<b>’d have</b> booked = I <b>would</b> have booked (’d + have)."
         },
         {
           type: "build",
@@ -656,7 +656,7 @@ SLID.section("eng", {
           answer: "If we had left earlier, we wouldn’t have missed the train.",
           extra: ["leave"],
           keepCase: true,
-          hint: "If + we + had + third form…, we + wouldn’t have + third form…",
+          hint: "If + we + had + the third form…, we + wouldn’t have + the third form…",
           fbOk: "Well done!",
           fbBad: "After had: the third form left, not leave.",
           fbText: "<b>If we had left earlier, we wouldn’t have missed the train.</b> leave – left – <b>left</b>. A comma after the if part."
@@ -692,16 +692,16 @@ SLID.section("eng", {
           title: "Complete the sentences.",
           body: `<p>Oksana answers Emma.</p>`,
           text: "Poor you! If you {*had booked|would have booked} the tickets, you {*would have seen|would see} the castle. Something like that happened to me in Odesa last July. I didn’t check the weather. If I {*had checked|checked} it, I would have taken my umbrella. But never mind: if we hadn’t stayed at home, Uncle Ivan {*wouldn’t have shown|won’t show} me his old photos of Odesa!",
-          hint: "Each sentence imagines a different past: had + third form, would have + third form.",
+          hint: "Each sentence imagines a different past: had + the third form, would have + the third form.",
           fbOk: "Well done!",
-          fbBad: "if + had + third form; the other part: would (not) have + third form.",
+          fbBad: "if + had + the third form; the other part: would (not) have + the third form.",
           fbText: "If you <b>had booked</b>…, you <b>would have seen</b>… If I <b>had checked</b>… Uncle Ivan <b>wouldn’t have shown</b> me his photos. All of these didn’t happen – we only imagine them."
         }
       ],
       outro: {
         text: "If we had booked…, we would have seen…: now you can imagine a different past and talk about regrets.",
         learned: [
-          "Form the Third Conditional: if + had + third form, would have + third form.",
+          "Form the Third Conditional: if + had + the third form, would have + the third form.",
           "Tell ’d = had from ’d = would.",
           "Talk about things that went wrong in the past."
         ]
@@ -880,6 +880,7 @@ SLID.section("eng", {
           title: "Fill in the gaps.",
           text: "Lviv’s historic centre has been on the UNESCO list {*since|for} 1998. Taras thinks Lviv is one of the most beautiful {*cities|city} in Ukraine. Odesa is a big port {*on|in} the Black Sea.",
           pre: "e9s8l1",
+          hint: "1998: a point in time or a period? One of the… → one city or many?",
           fbOk: "Exactly.",
           fbBad: "since + a year; one of the… + plural noun; a city on a sea.",
           fbText: "<b>Since</b> 1998. One of the most beautiful <b>cities</b>. A port <b>on</b> the Black Sea."
@@ -934,6 +935,7 @@ SLID.section("eng", {
           title: "Fill in the gaps.",
           text: "Isla lives in Edinburgh. If she {*lived|lives} in Lviv, she would climb the Town Hall tower every week. But she has a real plan: if she goes to Ukraine next summer, she {*will visit|would visit} Taras.",
           pre: "e9s8l4",
+          hint: "Does Isla really live in Lviv? Is the trip to Ukraine a real plan?",
           fbOk: "Well done!",
           fbBad: "Imagined → if + Past Simple. Real plan → will.",
           fbText: "If she <b>lived</b> in Lviv… (imagined). If she goes…, she <b>will visit</b>… (a real plan)."
@@ -952,7 +954,7 @@ SLID.section("eng", {
           correct: 0,
           pre: "e9s8l5",
           fbOk: "Right.",
-          fbBad: "if + had + third form → would have + third form.",
+          fbBad: "if + had + the third form → would have + the third form.",
           fbText: "<b>If Emma had booked tickets, she would have seen the castle.</b> No <i>would</i> after <i>if</i>."
         },
         {
@@ -978,7 +980,8 @@ SLID.section("eng", {
           body: `<p>Taras writes a tip for the quiz page.</p>`,
           text: "The best way to see Lviv’s Old Town is {*on foot|by foot}. Don’t miss the Town Hall tower: it’s worth {*climbing|to climb}. And book your opera tickets online! If my cousin Marta {*had booked|would have booked} hers, she would have seen a ballet.",
           pre: "e9s8l6",
-          fbOk: "Well done!",
+          hint: "Which form comes after worth? And can would go after if?",
+          fbOk: "Yes!",
           fbBad: "on foot; worth + -ing; no would after if.",
           fbText: "<b>On foot</b>. It’s worth <b>climbing</b>. If Marta <b>had booked</b> hers…"
         }

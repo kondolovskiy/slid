@@ -158,7 +158,7 @@ SLID.section("eng", {
           body: `<p>Oksana answers the posts.</p>`,
           text: "Andrii, I see why you love Kyiv. {*In|On|At} my opinion, cities are exciting. But I {*don’t think|am not thinking|not think} I could live there: it’s too noisy for me. {*Actually|Because|What}, Zelena Dolyna isn’t boring at all: we’ve got a river, a school and two farms! What do you {*think|opinion|agree}, Mariia?",
           hint: "… my opinion; I don’t …; in fact → ?; What do you …?",
-          fbOk: "Well done!",
+          fbOk: "Brilliant!",
           fbBad: "Check: I don’t think…, and the word for “in fact”.",
           fbText: "<b>In</b> my opinion, I <b>don’t think</b>, <b>Actually</b> (in fact), What do you <b>think</b>?"
         }
@@ -303,7 +303,7 @@ SLID.section("eng", {
           body: `<p>Myroslava writes for School 5 News.</p>`,
           text: "Should Bright Radio play music in every break? Ostap thinks it should, and I {*agree|am agree|agreeing} with him. Taras agrees {*up to a point|very much|at all}: he says, “That’s {*true|truth|truly}, but some students want a quiet break.” Some teachers aren’t sure {*about|at|to} it. So now we play music in two breaks a day, and the other breaks are quiet.",
           hint: "I … with him; Taras agrees only partly; That’s …, but…; not sure … it.",
-          fbOk: "Well done!",
+          fbOk: "Exactly.",
           fbBad: "Check: Taras agrees only partly. And I agree – no am.",
           fbText: "I <b>agree</b>; Taras agrees <b>up to a point</b> (partly); That’s <b>true</b>, but…; not sure <b>about</b> it."
         }
@@ -450,7 +450,7 @@ SLID.section("eng", {
           body: `<p>Oksana writes about the meeting for the school website.</p>`,
           text: "At our last eco club meeting, Halyna said we could {*either|both} plant trees or clean the river bank. I said, “Sorry to {*interrupt|interrupting|interrupts}, but let’s do both!” Ms Marchenko asked Dmytro, “What do you {*think|opinion|agree}?” {*Both|Either} Dmytro and Halyna are bringing bags.",
           hint: "either … or; Sorry to + verb; What do you …?; both … and.",
-          fbOk: "Well done!",
+          fbOk: "Right.",
           fbBad: "Check the pairs: either … or, both … and.",
           fbText: "<b>either</b> … or; Sorry to <b>interrupt</b>; What do you <b>think</b>?; <b>Both</b> Dmytro and Halyna."
         }
@@ -894,7 +894,7 @@ SLID.section("eng", {
           body: `<p>Andrii writes about the debate for the school newspaper.</p>`,
           text: "Our class debate was great. {*First|Finally|However}, Bohdan talked about e-books: they’re light. Zoriana agreed only up to a {*point|place|part}. She said, “{*Although|However|So} e-readers are light, they need a battery.” Daryna often finds cheaper e-books, {*so|because|although} she can buy more books. {*Finally|First|Although}, Kyrylo said we can enjoy {*both|either|or} kinds.",
           hint: "First → … → Finally; up to a …; Although + idea, + idea; the result → ?; the two kinds → ?",
-          fbOk: "Well done!",
+          fbOk: "Yes!",
           fbBad: "Check the order words and the result word.",
           fbText: "<b>First</b>, Bohdan…; up to a <b>point</b>; <b>Although</b> e-readers are light, …; cheaper, <b>so</b> she can buy more; <b>Finally</b>, Kyrylo…; enjoy <b>both</b> kinds."
         }
@@ -953,6 +953,7 @@ SLID.section("eng", {
           ],
           correct: 0,
           pre: "e9s9l1",
+          hint: "Is Andrii right about Taras?",
           fbOk: "Right.",
           fbBad: "Taras says “that’s not right” and gives a fact.",
           fbText: "<b>Actually</b> – in fact, that’s not right. <i>Personally</i> is for opinions; with <i>I agree</i>, Taras agrees, but he doesn’t."
@@ -1021,6 +1022,7 @@ SLID.section("eng", {
           body: `<p>Taras writes his opinion.</p>`,
           text: "{*Although|However|But} I like football, I prefer running. I run alone. {*However|Although|Because}, I sometimes train with my club. I want to get faster, {*so|because|although} I train three times a week.",
           pre: "e9s9l4",
+          hint: "Look at the commas and the full stops. Which gap starts a new sentence? Which one shows a result?",
           fbOk: "Exactly.",
           fbBad: "Although + idea, + idea; a new sentence + comma; the result → ?",
           fbText: "<b>Although</b> I like football, …; new sentence: <b>However</b>, …; I want to get faster, <b>so</b> I train (result)."

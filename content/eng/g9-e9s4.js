@@ -89,7 +89,7 @@ SLID.section("eng", {
         {
           type: "info",
           title: "What’s on TV?",
-          body: `<ul><li><b>the news</b> → what’s happening in the world today</li><li>a <b>weather forecast</b> → tomorrow’s weather</li><li>a <b>quiz show</b> → people answer questions and win prizes</li><li>a <b>talk show</b> (also <b>chat show</b>) → a presenter talks to famous guests</li><li>a <b>documentary</b> → facts about real life: nature, history, science</li><li>a <b>series</b> → a story in many parts; one part is an <b>episode</b></li></ul><p>docu<u>men</u>tary, <u>ep</u>isode</p>`,
+          body: `<ul><li><b>the news</b> → what’s happening in the world today</li><li>a <b>weather forecast</b> → tomorrow’s weather</li><li>a <b>quiz show</b> → people answer questions and win prizes</li><li>a <b>chat show</b> (also <b>talk show</b>) → a presenter talks to famous guests</li><li>a <b>documentary</b> → facts about real life: nature, history, science</li><li>a <b>series</b> → a story in many parts; one part is an <b>episode</b></li></ul><p>docu<u>men</u>tary, <u>ep</u>isode</p>`,
           cta: "Next"
         },
         {
@@ -97,7 +97,7 @@ SLID.section("eng", {
           sk: "vocab",
           title: "Fill in the gaps.",
           body: `<p>Oksana writes about her family’s favourite programmes.</p>`,
-          text: "Every morning, Grandad listens to {*the news|a cartoon|an episode} on the radio: he wants to know what’s happening in Ukraine. Dad always checks the {*weather forecast|talk show|quiz show} before he works in the garden. Dmytro and I watch a {*quiz show|weather forecast|documentary}: people answer questions and win prizes. Mum likes a hospital {*series|presenter|channel}: there’s a new episode every Tuesday.",
+          text: "Every morning, Grandad listens to {*the news|a cartoon|an episode} on the radio: he wants to know what’s happening in Ukraine. Dad always checks the {*weather forecast|chat show|quiz show} before he works in the garden. Dmytro and I watch a {*quiz show|weather forecast|documentary}: people answer questions and win prizes. Mum likes a hospital {*series|presenter|channel}: there’s a new episode every Tuesday.",
           hint: "What’s happening today → ? Tomorrow’s weather → ? A new episode every week → ?",
           fbOk: "Exactly.",
           fbBad: "Look at the list “What’s on TV?” again.",
@@ -151,7 +151,7 @@ SLID.section("eng", {
     /* ───────────── Урок 2 ───────────── */
     {
       id: "e9s4l2",
-      title: "My favourite programme: a quiz or a talk show?",
+      title: "My favourite programme: a quiz or a chat show?",
       short: "My favourite",
       icon: "star",
       status: "verified",
@@ -161,7 +161,7 @@ SLID.section("eng", {
           type: "intro",
           eyebrow: "Lesson 2",
           title: "What’s your favourite programme?",
-          body: `<p class="lead">Ms Lysenko asks Andrii’s class in Kyiv: “What’s your favourite programme?”</p><p><b>Bohdan:</b> Quiz Time! It’s a quiz show for teenagers.<br><b>Daryna:</b> I love Music Chat. It’s a talk show about music.<br><b>Kyrylo:</b> I listen to a history podcast. There’s a new episode every week.</p><p>After school, Andrii writes to Taras: <i>Bohdan <b>says</b> his favourite programme <b>is</b> Quiz Time.</i></p><p>Why <i>says</i>, not <i>said</i>?</p>`,
+          body: `<p class="lead">Ms Lysenko asks Andrii’s class in Kyiv: “What’s your favourite programme?”</p><p><b>Bohdan:</b> Quiz Time! It’s a quiz show for teenagers.<br><b>Daryna:</b> I love Music Chat. It’s a chat show about music.<br><b>Kyrylo:</b> I listen to a history podcast. There’s a new episode every week.</p><p>After school, Andrii writes to Taras: <i>Bohdan <b>says</b> his favourite programme <b>is</b> Quiz Time.</i></p><p>Why <i>says</i>, not <i>said</i>?</p>`,
           cta: "Let’s see"
         },
         {
@@ -192,7 +192,7 @@ SLID.section("eng", {
           sk: "gram",
           title: "Fill in the gaps.",
           body: `<p>Andrii tells Taras about his classmates.</p>`,
-          text: "Daryna says she {*watches|watch|watching} a talk show about music. She says the presenter {*is|are|be} really funny. Kyrylo tells me he {*listens|listen|listening} to a history podcast. He says there {*is|are|be} a new episode every week.",
+          text: "Daryna says she {*watches|watch|watching} a chat show about music. She says the presenter {*is|are|be} really funny. Kyrylo tells me he {*listens|listen|listening} to a history podcast. He says there {*is|are|be} a new episode every week.",
           hint: "says + the present: she watches, he listens, the presenter is.",
           fbOk: "Exactly.",
           fbBad: "After says, use the present: he / she + -s, the presenter + is.",
@@ -225,7 +225,7 @@ SLID.section("eng", {
           sk: "read",
           eyebrow: "Reading: My favourite programme, part 1 of 2",
           title: "Read and choose.",
-          body: `<p><b>My favourite programme</b><br><i>by Daryna</i></p><p><i>My favourite programme is Music Chat. It’s a talk show for teenagers, and it’s on every Saturday at 6 pm. In each episode, the presenter talks to two young musicians from different cities in Ukraine. Last week, a girl from Odesa played the bandura and talked about her music school. Every episode ends with a song. I watch it with my sister.</i></p><p>When is Music Chat on?</p>`,
+          body: `<p><b>My favourite programme</b><br><i>by Daryna</i></p><p><i>My favourite programme is Music Chat. It’s a chat show for teenagers, and it’s on every Saturday at 6 pm. In each episode, the presenter talks to two young musicians from different cities in Ukraine. Last week, a girl from Odesa played the bandura and talked about her music school. Every episode ends with a song. I watch it with my sister.</i></p><p>When is Music Chat on?</p>`,
           opts: [
             "every Sunday at 6 pm",
             "every Saturday at 6 pm",
@@ -285,7 +285,7 @@ SLID.section("eng", {
           eyebrow: "Final",
           title: "Complete the sentences.",
           body: `<p>Andrii writes to Taras.</p>`,
-          text: "Hi Taras! Ms Lysenko asked us about our favourite programmes. Bohdan says his favourite {*is|are|be} Quiz Time: it’s {*on|in|at} every Friday at 7 pm. Daryna {*says|tells|say} she loves Music Chat, a talk show about music. Last Monday, Kyrylo said he {*was|were|is being} too busy for TV, but he listens to a history podcast on the bus. What’s your favourite programme?",
+          text: "Hi Taras! Ms Lysenko asked us about our favourite programmes. Bohdan says his favourite {*is|are|be} Quiz Time: it’s {*on|in|at} every Friday at 7 pm. Daryna {*says|tells|say} she loves Music Chat, a chat show about music. Last Monday, Kyrylo said he {*was|were|is being} too busy for TV, but he listens to a history podcast on the bus. What’s your favourite programme?",
           hint: "When is it? → it’s on. Tells needs a person. Last Monday → the past.",
           fbOk: "Well done!",
           fbBad: "Check: tells + a person; he → was.",
@@ -580,7 +580,7 @@ SLID.section("eng", {
           body: `<p>Taras writes to Emma.</p>`,
           text: "Hi Emma! Guess what? A journalist from Lviv Today asked me about our school newspaper. She asked {*if|that|what} I liked taking photos. Then she asked me what camera {*I used|did I use|I did use}. She asked {*where I took|where did I take|where took I} my best photos. And she asked {*whether|what|who} I wanted to be a journalist one day. I said I wasn’t sure!",
           hint: "Yes / no question → if, whether. Wh- question → person + verb.",
-          fbOk: "Well done!",
+          fbOk: "Brilliant!",
           fbBad: "Check: no did, and person + verb.",
           fbText: "She asked <b>if</b> I liked photos, what camera <b>I used</b>, <b>where I took</b> my photos and <b>whether</b> I wanted to be a journalist."
         }
@@ -649,7 +649,7 @@ SLID.section("eng", {
           type: "match",
           sk: "gram",
           title: "Match the halves.",
-          body: `<p>What did the presenter of Quiz Time say? Match his words and the report.</p>`,
+          body: `<p>What did Mr Moroz say? Match his words and the report.</p>`,
           left: ["“Switch off your phones.”", "“Don’t take photos.”", "“Could you clap, please?”", "“Wait for me, please.”"],
           right: ["He told us to switch off our phones.", "He told us not to take photos.", "He asked us to clap.", "He asked us to wait for him."],
           hint: "Find the same verb: switch off, take, clap, wait.",
@@ -732,7 +732,7 @@ SLID.section("eng", {
           body: `<p>Andrii writes to Liam.</p>`,
           text: "Hi Liam! Yesterday our class went to a TV studio to watch a quiz show. Before the show, the manager {*told|said|says} us to switch off our phones. He told us {*not to|don’t|no to} talk. The presenter asked Bohdan {*to answer|answer|answering} a question about rap, and he won a T-shirt! At the end, the presenter asked us {*to clap|clap|clapping}, so we clapped really loudly.",
           hint: "A person after the gap → told. Then: to + verb, not to + verb.",
-          fbOk: "Well done!",
+          fbOk: "Exactly.",
           fbBad: "Check: told + us; asked + person + to + verb.",
           fbText: "The manager <b>told</b> us to switch off our phones and told us <b>not to</b> talk. The presenter asked Bohdan <b>to answer</b> and asked us <b>to clap</b>."
         }
@@ -976,6 +976,7 @@ SLID.section("eng", {
           extra: ["did"],
           answer: "She asked me where we recorded the podcast.",
           pre: "e9s4l4",
+          hint: "A reported question has the word order of a statement.",
           fbOk: "Yes!",
           fbBad: "No did: where + we + recorded.",
           fbText: "<b>She asked me where we recorded the podcast.</b> No <i>did</i>; person + verb."
@@ -1019,6 +1020,7 @@ SLID.section("eng", {
           ],
           correct: 0,
           pre: "e9s4l6",
+          hint: "After I wonder what…, is the word order like a question or like a statement?",
           fbOk: "Good eye!",
           fbBad: "I wonder what + person + verb.",
           fbText: "<b>I wonder what our listeners think.</b> No <i>do</i>; the verb goes after <i>our listeners</i>."

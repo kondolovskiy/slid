@@ -200,7 +200,7 @@ SLID.section("eng", {
         {
           type: "info",
           title: "Invented or discovered?",
-          body: `<ul><li><b>invent</b> → make something new:<br>The Web <b>was invented by</b> Tim Berners-Lee, a British scientist, in 1989.</li><li><b>discover</b> → find something that was already there:<br>Penicillin <b>was discovered by</b> Alexander Fleming in London in 1928.</li></ul><p>Remember: <b>was / were</b> + third form + <b>by</b> + who did it.</p>`,
+          body: `<ul><li><b>invent</b> → make something new:<br>The Web <b>was invented by</b> Tim Berners-Lee, a British scientist, in 1989.</li><li><b>discover</b> → find something that was already there:<br>Penicillin <b>was discovered by</b> Alexander Fleming in London in 1928.</li></ul><p>Remember: <b>was / were</b> + the third form + <b>by</b> + who did it.</p>`,
           cta: "Next"
         },
         {
@@ -254,7 +254,7 @@ SLID.section("eng", {
         {
           type: "info",
           title: "Questions",
-          body: `<ul><li><b>Who invented</b> the Web? = <b>Who was</b> the Web <b>invented by</b>?</li><li><b>When was</b> penicillin <b>discovered</b>? – In 1928.</li><li><b>Was</b> penicillin <b>invented</b>? – No, it <b>wasn’t</b>. It was discovered.</li></ul><p>Remember: no <i>did</i> with <b>was / were</b> + third form.</p>`,
+          body: `<ul><li><b>Who invented</b> the Web? = <b>Who was</b> the Web <b>invented by</b>?</li><li><b>When was</b> penicillin <b>discovered</b>? – In 1928.</li><li><b>Was</b> penicillin <b>invented</b>? – No, it <b>wasn’t</b>. It was discovered.</li></ul><p>Remember: no <i>did</i> with <b>was / were</b> + the third form.</p>`,
           cta: "Next"
         },
         {
@@ -280,7 +280,7 @@ SLID.section("eng", {
           hint: "Start with When. Then was.",
           fbOk: "Yes!",
           fbBad: "When + was + penicillin + discovered. No did.",
-          fbText: "<b>When was penicillin discovered?</b> – In 1928. No <i>did</i> with <i>was</i> + third form."
+          fbText: "<b>When was penicillin discovered?</b> – In 1928. No <i>did</i> with <i>was</i> + the third form."
         },
         {
           type: "pick",
@@ -290,7 +290,7 @@ SLID.section("eng", {
           text: "The World Wide Web was [invent] by Tim Berners-Lee in 1989. Penicillin [!was] discovered by Alexander Fleming in 1928.",
           hint: "Check the word after was in each sentence.",
           fbOk: "Good eye!",
-          fbBad: "was + third form: invent or invented?",
+          fbBad: "was + the third form: invent or invented?",
           fbText: "After <b>was</b>, use the third form: The Web was <b>invented</b>. <i>Penicillin was discovered</i> is correct."
         },
         {
@@ -380,7 +380,7 @@ SLID.section("eng", {
         {
           type: "info",
           title: "Can: things that are often true",
-          body: `<p>We use <b>can</b> to say what is often true, but not always:</p><ul><li>Smartphones <b>can be</b> very useful.</li><li>Long calls <b>can be</b> expensive.</li></ul><p><b>can be</b> + third form:</p><ul><li>Phones <b>can be used</b> to pay in shops.</li><li>Phones <b>can be charged</b> at home or at school.</li></ul>`,
+          body: `<p>We use <b>can</b> to say what is often true, but not always:</p><ul><li>Smartphones <b>can be</b> very useful.</li><li>Long calls <b>can be</b> expensive.</li></ul><p><b>can be</b> + the third form:</p><ul><li>Phones <b>can be used</b> to pay in shops.</li><li>Phones <b>can be charged</b> at home or at school.</li></ul>`,
           cta: "Next"
         },
         {
@@ -395,10 +395,10 @@ SLID.section("eng", {
             "A smartphone can be very useful."
           ],
           correct: [1, 3],
-          hint: "can + be + third form.",
+          hint: "can + be + the third form.",
           fbOk: "Well done!",
           fbBad: "Check each sentence: can + be + used.",
-          fbText: "<b>can be used</b> – can + be + third form. <i>can used</i> has no <i>be</i>. <i>can be use</i> has no third form. <b>can be very useful</b> is correct too."
+          fbText: "<b>can be used</b> – can + be + the third form. <i>can used</i> has no <i>be</i>. <i>can be use</i> has no third form. <b>can be very useful</b> is correct too."
         },
         {
           type: "word",
@@ -408,10 +408,10 @@ SLID.section("eng", {
           before: "Phones can",
           after: "used to watch films.",
           answer: "be",
-          hint: "can + ? + third form",
+          hint: "can + ? + the third form",
           fbOk: "Yes!",
           fbBad: "Look at the rule: can + … + used.",
-          fbText: "Phones can <b>be</b> used to watch films: can + <b>be</b> + third form."
+          fbText: "Phones can <b>be</b> used to watch films: can + <b>be</b> + the third form."
         },
         {
           type: "build",
@@ -423,7 +423,7 @@ SLID.section("eng", {
           answer: ["Smartphones can be used to take photos.", "Can smartphones be used to take photos?"],
           hint: "Smartphones + can + be + used…",
           fbOk: "Well done!",
-          fbBad: "can + be + third form. Do you need are?",
+          fbBad: "can + be + the third form. Do you need are?",
           fbText: "<b>Smartphones can be used to take photos.</b> After <b>can</b>, use <b>be</b>, not <i>are</i>."
         },
         {
@@ -434,8 +434,8 @@ SLID.section("eng", {
           body: `<p>Oksana writes to Emma.</p>`,
           text: "Yesterday Grandad showed us his first mobile phone. Twenty years ago, it {*could|can|cans} only make calls and send texts. It {*couldn’t|couldn’t to|not could} take photos. Now Grandad has got a smartphone. It {*can be used|can used|can be use} to pay in shops, and he {*can|cans|can to} see all our photos!",
           hint: "Twenty years ago → the past. Now → can.",
-          fbOk: "Well done!",
-          fbBad: "Past or now? can + be + third form.",
+          fbOk: "Brilliant!",
+          fbBad: "Past or now? can + be + the third form.",
           fbText: "The first phone <b>could</b> only make calls. It <b>couldn’t</b> take photos. The smartphone <b>can be used</b> to pay, and he <b>can</b> see our photos."
         }
       ],
@@ -485,7 +485,7 @@ SLID.section("eng", {
         {
           type: "info",
           title: "How is glass made?",
-          body: `<ul><li>First, sand and other materials <b>are mixed</b>.</li><li>Then the mix <b>is heated</b> until it melts.</li><li>After that, the hot glass <b>is shaped</b>.</li><li>Finally, it <b>is cooled</b> slowly.</li></ul><p>Remember: <b>is / are</b> + third form. We talk about the process, not the workers, so there’s no <i>by</i>.</p><p><b>melt</b> → become liquid when it’s very hot</p>`,
+          body: `<ul><li>First, sand and other materials <b>are mixed</b>.</li><li>Then the mix <b>is heated</b> until it melts.</li><li>After that, the hot glass <b>is shaped</b>.</li><li>Finally, it <b>is cooled</b> slowly.</li></ul><p>Remember: <b>is / are</b> + the third form. We talk about the process, not the workers, so there’s no <i>by</i>.</p><p><b>melt</b> → become liquid when it’s very hot</p>`,
           cta: "Next"
         },
         {
@@ -548,10 +548,10 @@ SLID.section("eng", {
           title: "Find the mistake.",
           body: `<p>One word in Taras’s notes is wrong.</p>`,
           text: "A telescope is [use] to look at stars. A microscope [!is] used for looking at small things.",
-          hint: "is + third form.",
+          hint: "is + the third form.",
           fbOk: "Good eye!",
           fbBad: "Check the word after is in each sentence.",
-          fbText: "A telescope is <b>used</b>: is + third form. <i>A microscope is used</i> is correct."
+          fbText: "A telescope is <b>used</b>: is + the third form. <i>A microscope is used</i> is correct."
         },
         {
           type: "build",
@@ -565,7 +565,7 @@ SLID.section("eng", {
           hint: "Start with How. Then is.",
           fbOk: "Yes!",
           fbBad: "How + is + glass + made. No does.",
-          fbText: "<b>How is glass made?</b> – It’s made from sand. No <i>does</i> with is + third form."
+          fbText: "<b>How is glass made?</b> – It’s made from sand. No <i>does</i> with is + the third form."
         },
         {
           type: "gaps",
@@ -574,7 +574,7 @@ SLID.section("eng", {
           title: "Complete the sentences.",
           body: `<p>Taras writes an article for School 5 News.</p>`,
           text: "Glass {*is made|is making|made} mostly from sand. First, the sand and other materials {*are mixed|is mixed|are mix}. Then the mix {*is heated|are heated|is heat} until it melts. The hot glass is shaped and cooled. Glass {*is used|are used|is use} to make windows, bottles and phone screens.",
-          hint: "is / are + third form. One thing or more?",
+          hint: "is / are + the third form. One thing or more?",
           fbOk: "Well done!",
           fbBad: "Check: is or are? Third form?",
           fbText: "Glass <b>is made</b> from sand. The materials <b>are mixed</b>. The mix <b>is heated</b>. Glass <b>is used</b> to make windows and screens."
@@ -710,9 +710,9 @@ SLID.section("eng", {
           title: "Complete the sentences.",
           body: `<p>Tom writes to Andrii.</p>`,
           text: "Our new smart speaker {*can|cans|can to} answer questions. Our lights {*can be switched|can switched|can be switch} on with an app. And right now, our robot vacuum cleaner {*is being charged|are being charged|is charged being}. Grandad still doesn’t like the speaker!",
-          hint: "can + verb. can + be + third form. Now → is being + third form.",
+          hint: "can + verb. can + be + the third form. Now → is being + the third form.",
           fbOk: "Well done!",
-          fbBad: "Check: can + be + third form; one thing → is being.",
+          fbBad: "Check: can + be + the third form; one thing → is being.",
           fbText: "It <b>can</b> answer. The lights <b>can be switched</b> on. Now the vacuum cleaner <b>is being charged</b>: one thing → is being."
         }
       ],
@@ -852,7 +852,7 @@ SLID.section("eng", {
           title: "Complete the sentences.",
           body: `<p>Emma writes about her favourite device.</p>`,
           text: "My favourite device is my {*smartwatch|smart speaker|charger}. It’s small and light, and it {*is made|made|is make} of plastic and glass. It {*was given|gave|was give} to me by my mum. It’s used {*for counting|for count|to counting} my steps, and it {*can|cans|can to} show the time in the swimming pool. The best thing is that it helps me train.",
-          hint: "Which device counts your steps? is + third form, for + -ing, can + verb.",
+          hint: "Which device counts your steps? is + the third form, for + -ing, can + verb.",
           fbOk: "Well done!",
           fbBad: "Check: is made, was given, for + -ing, can + verb.",
           fbText: "A <b>smartwatch</b> counts steps. It <b>is made</b> of plastic and glass. It <b>was given</b> to her by her mum. It’s used <b>for counting</b> steps, and it <b>can</b> show the time."
@@ -929,7 +929,7 @@ SLID.section("eng", {
           correct: 2,
           pre: "e9s6l2",
           fbOk: "Exactly.",
-          fbBad: "Question: When + was + … + third form. No did.",
+          fbBad: "Question: When + was + … + the third form. No did.",
           fbText: "<b>When was the World Wide Web invented?</b> – In 1989. <b>Was</b> goes before the Web; no <i>did</i>."
         },
         {
@@ -958,9 +958,10 @@ SLID.section("eng", {
           ],
           correct: [1, 3],
           pre: "e9s6l3",
+          hint: "Check two things in each sentence: be after can, and the third form.",
           fbOk: "Right.",
-          fbBad: "can + be + third form.",
-          fbText: "<b>can be used</b>, <b>can be switched</b>: can + be + third form. <i>can be use</i> and <i>can switched</i> are wrong."
+          fbBad: "can + be + the third form.",
+          fbText: "<b>can be used</b>, <b>can be switched</b>: can + be + the third form. <i>can be use</i> and <i>can switched</i> are wrong."
         },
         {
           type: "order",
