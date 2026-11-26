@@ -16,7 +16,7 @@
    Mr Lukashuk (літній сусід Ostap, Lviv).
    Форми, наголос і значення — Cambridge Dictionary (CD) і CD Grammar; URL — tasks/…/write-eng-g10-e10s1.md, «Нотатки агента».
    Увесь зміст — англійською, британська норма (D-055). Тексти, діалоги й герої — власні (docs/design/english.md §8).
-   Статус: draft. 7 уроків (6 + фінал). Будова — за розділами 9 кл. (e9s1, e9s9).
+   Статус: verified (verifier-e10s1). 7 уроків (6 + фінал). Будова — за розділами 9 кл. (e9s1, e9s9).
    Перевірка: node tools/validate.mjs --section e10s1 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -26,7 +26,7 @@ SLID.section("eng", {
   title: "Relationships and conflicts",
   why: "To describe people’s personalities and the relationships between them. And to talk about how friends help each other and solve conflicts.",
   requires: ["e6s1l4", "e6s4l5", "e8s5l4", "e9s1l2", "e9s9l3"],
-  meta: { author: "writer-e10s1", created: "2026-11-26", factcheck: null, teacher: null },
+  meta: { author: "writer-e10s1", created: "2026-11-26", factcheck: "verifier-e10s1, 2026-11-26 (reports/verify/write-eng-g10-e10s1.md)", teacher: null },
   badges: [
     { id: "e10s1boss", name: "Peacemaker", icon: "trophy", desc: "Finish the final lesson “Relationships and conflicts”" }
   ],
@@ -37,7 +37,7 @@ SLID.section("eng", {
       title: "What kind of person are you? Personality",
       short: "Personality",
       icon: "user",
-      status: "draft",
+      status: "verified",
       why: "Kind and friendly are only the beginning. Learn words that describe what a person is really like.",
       screens: [
         {
@@ -193,7 +193,7 @@ SLID.section("eng", {
       title: "Friends, classmates, neighbours: kinds of relationships",
       short: "Relationships",
       icon: "users",
-      status: "draft",
+      status: "verified",
       why: "We have close friends, classmates, neighbours and people we hardly know. Talk about the people in your life and how you get on.",
       screens: [
         {
@@ -336,7 +336,7 @@ SLID.section("eng", {
       title: "By the time I came, they had left: the Past Perfect again",
       short: "By the time",
       icon: "path",
-      status: "draft",
+      status: "verified",
       why: "You came late, and everything had already happened. Say what had happened by a moment in the past.",
       screens: [
         {
@@ -438,7 +438,7 @@ SLID.section("eng", {
           body: `<p>Use the Past Perfect of <i>eat</i>.</p>`,
           before: "By the time Taras got to the party, his friends",
           after: "the cake.",
-          answer: "had eaten",
+          answer: ["had eaten", "had already eaten"],
           contractions: true,
           hint: "had + the third form: eat – ate – …",
           fbOk: "Yes!",
@@ -485,7 +485,7 @@ SLID.section("eng", {
       title: "As soon as, after, before: time clauses",
       short: "Time clauses",
       icon: "path",
-      status: "draft",
+      status: "verified",
       why: "Tell a story in the right order. Use as soon as, after, before and until with past tenses.",
       screens: [
         {
@@ -636,7 +636,7 @@ SLID.section("eng", {
       title: "A friend in need: helping each other",
       short: "Helping",
       icon: "shield",
-      status: "draft",
+      status: "verified",
       why: "Good friends help each other. Talk about help and support, and explain causes and results.",
       screens: [
         {
@@ -784,7 +784,7 @@ SLID.section("eng", {
       title: "Can I say something? Solving a conflict",
       short: "Conflicts",
       icon: "scale",
-      status: "draft",
+      status: "verified",
       why: "Friends sometimes argue. Join a heated discussion politely, explain what caused the problem and find a way to make up.",
       screens: [
         {
@@ -874,14 +874,14 @@ SLID.section("eng", {
             "The problem started when Ostap changed Myroslava’s playlist.",
             "He did it because he thought she had agreed.",
             "As a result, they had a big argument.",
-            "Then we found a compromise: half her songs and half his.",
-            "In the end, Ostap apologised, and they made up."
+            "Then Ostap apologised, and we found a compromise: half her songs and half his.",
+            "In the end, they made up."
           ],
           shuffle: [2, 4, 0, 3, 1],
           hint: "The problem started… → because… → As a result… → Then… → In the end…",
           fbOk: "Well done!",
           fbBad: "Follow the words: started → because → as a result → then → in the end.",
-          fbText: "Start → cause (<b>because</b>) → result (<b>As a result</b>) → <b>Then</b> the compromise → <b>In the end</b> they made up."
+          fbText: "Start → cause (<b>because</b>) → result (<b>As a result</b>) → <b>Then</b> the apology and the compromise → <b>In the end</b> they made up."
         },
         {
           type: "word",
@@ -889,7 +889,7 @@ SLID.section("eng", {
           title: "Write the missing word.",
           body: `<p>After the argument, Ostap said sorry. Now he and Myroslava are friends again.</p>`,
           before: "They made",
-          answer: ["up", "peace"],
+          answer: ["up", "peace", "it up"],
           hint: "make … → be friends again after an argument.",
           fbOk: "Right.",
           fbBad: "Look at the list “Conflict words”.",
@@ -899,7 +899,7 @@ SLID.section("eng", {
           type: "pick",
           sk: "vocab",
           title: "Find the mistake.",
-          body: `<p>One word in Ms Kvitka’s sentence is wrong.</p>`,
+          body: `<p>One word in the sentence by Ms Kvitka, the head teacher, is wrong.</p>`,
           text: "When people argue, they first need to calm [up] and listen to each other.",
           hint: "Which phrase means stop being angry?",
           fbOk: "Good eye!",
@@ -935,7 +935,7 @@ SLID.section("eng", {
       title: "Friends again: relationships and conflicts",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e10s1boss",
       why: "Check everything from this section. Your points are doubled.",
@@ -1033,7 +1033,7 @@ SLID.section("eng", {
           sk: "read",
           eyebrow: "Reading: The missing episode, part 1 of 2",
           title: "Read and choose.",
-          body: `<p><i>Andrii and Bohdan have been friends since primary school. But last autumn, they fell out for the first time. It started with the school podcast. Andrii and Daryna had recorded a new episode about chess, and Bohdan had promised to edit it by Friday. On Friday morning, Andrii checked the podcast page. There was nothing there. He sent Bohdan a message, but Bohdan didn’t answer. By the time Andrii found him at lunch, he was really angry. “You let us down!” he said. “We’d worked on it for a week!” Bohdan didn’t say anything. He just walked away. Daryna had to tell the listeners that the new episode was late. For three days, the two boys didn’t talk to each other. Daryna tried to help. “Can I say something?” she asked Andrii. “Bohdan isn’t lazy. He’s one of the most reliable people I know. Something must be wrong.” Andrii wasn’t sure. He was still upset, but he also missed his friend. They had always sat together at lunch, and now he ate alone.</i></p><p>Why was Andrii angry?</p>`,
+          body: `<p><i>Andrii and Bohdan have been friends since primary school. But last autumn, they fell out for the first time. It started with the school podcast. Andrii and Daryna had recorded a new episode about chess, and Bohdan had promised to edit it by Friday. On Friday morning, Andrii checked the podcast page. There was nothing there. He sent Bohdan a message, but Bohdan didn’t answer. By the time Andrii found him at lunch, he was really angry. “You let us down!” he said. “We’d worked on it for a week!” Bohdan didn’t say anything. He just turned round and walked away. Daryna had to tell the listeners that the new episode was late. For three days, the two boys didn’t talk to each other. Daryna tried to help. “Can I say something?” she asked Andrii. “Bohdan isn’t lazy. He’s one of the most reliable people I know. Something must be wrong.” Andrii wasn’t sure. He was still upset, but he also missed his friend. They had always sat together at lunch, and now he ate alone.</i></p><p>Why was Andrii angry?</p>`,
           opts: [
             "Bohdan hadn’t edited the episode by Friday.",
             "Daryna had recorded the episode without him.",
