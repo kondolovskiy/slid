@@ -13,7 +13,7 @@
    Діалоги — репліками в body (D-056), без звуку (D-055 п. 4).
    Герої — серія 4–8 кл., на п'ять років старші, ніж у 4 кл. (memory/short/inbox.md, NOTE (герої)); нових немає.
    Увесь зміст — англійською, британська норма (D-055). Тексти, діалоги й герої — власні (docs/design/english.md §8).
-   Статус: draft. 7 уроків (6 + фінал). Будова — за розділами 7–8 кл. (e7s7, e8s3).
+   Статус: verified (verifier-e9s6, reports/verify/write-eng-g9-e9s6.md). 7 уроків (6 + фінал). Будова — за розділами 7–8 кл. (e7s7, e8s3).
    Перевірка: node tools/validate.mjs --section e9s6 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -23,7 +23,7 @@ SLID.section("eng", {
   title: "Science and inventions",
   why: "To talk about famous scientists, inventions and modern devices. And to say who invented things and how they are used.",
   requires: ["e6s3l2", "e6s4l3", "e6s7l3", "e7s2l4", "e7s7l2", "e7s7l3", "e8s3l3"],
-  meta: { author: "writer-e9s6", created: "2026-11-25", factcheck: null, teacher: null },
+  meta: { author: "writer-e9s6", created: "2026-11-25", factcheck: "verifier-e9s6, 2026-11-26 (reports/verify/write-eng-g9-e9s6.md)", teacher: null },
   badges: [
     { id: "e9s6boss", name: "Young inventor", icon: "trophy", desc: "Finish the final lesson “Science and inventions”" }
   ],
@@ -34,7 +34,7 @@ SLID.section("eng", {
       title: "Famous scientists and inventors",
       short: "Scientists",
       icon: "bulb",
-      status: "draft",
+      status: "verified",
       why: "Some people changed the world with new ideas. Learn the words to talk about them.",
       screens: [
         {
@@ -91,14 +91,14 @@ SLID.section("eng", {
           body: `<p>Which sentence is true?</p>`,
           opts: [
             "Marie Curie created a programming language.",
-            "Igor Sikorsky designed helicopters in Ukraine.",
+            "Igor Sikorsky was born in the USA.",
             "Igor Sikorsky was born in Kyiv."
           ],
           correct: 2,
-          hint: "Look at the last screen. Where did Sikorsky design helicopters?",
+          hint: "Look at the last screen. Check each name and each place.",
           fbOk: "Well done!",
           fbBad: "Check the names and the countries on the last screen.",
-          fbText: "Sikorsky was born in <b>Kyiv</b>, but he designed helicopters in the <b>USA</b>. The programming language was created by <b>Kateryna Yushchenko</b>, not Marie Curie."
+          fbText: "Sikorsky was born in <b>Kyiv</b>. Later, he moved to the <b>USA</b>. The programming language was created by <b>Kateryna Yushchenko</b>, not Marie Curie."
         },
         {
           type: "sort",
@@ -132,7 +132,7 @@ SLID.section("eng", {
           type: "word",
           sk: "vocab",
           title: "Write the missing word.",
-          body: `<p>invent → invention</p><p>Now make a noun from <b>discover</b>.</p>`,
+          body: `<p>invent → invention</p><p>Now make a noun from <b>discover</b>. It’s a thing, not a person.</p>`,
           before: "discover →",
           after: "",
           answer: "discovery",
@@ -170,7 +170,7 @@ SLID.section("eng", {
       title: "Who invented it? It was invented by…",
       short: "Invented by",
       icon: "user",
-      status: "draft",
+      status: "verified",
       why: "Quizzes often ask who invented or discovered something. Learn to answer with the passive and by.",
       screens: [
         {
@@ -232,16 +232,16 @@ SLID.section("eng", {
         {
           type: "info",
           title: "By: only when it’s important",
-          body: `<p>Use <b>by</b> when it’s important who did it:<br>The Web was invented <b>by Tim Berners-Lee</b>.</p><p>No <b>by</b> when we don’t know who did it, or it isn’t important:<br>My phone <b>was repaired</b> yesterday.<br>Not: My phone was repaired <s>by someone</s> yesterday.</p>`,
+          body: `<p>Use <b>by</b> when it’s important who did it:<br>The Web was invented <b>by Tim Berners-Lee</b>.</p><p>No <b>by</b> when we don’t know who did it, or it isn’t important:<br>My phone <b>was repaired</b> yesterday.<br>We don’t need “by someone” here. It tells us nothing.</p>`,
           cta: "Next"
         },
         {
           type: "choice",
           sk: "gram",
-          title: "Choose the best answer.",
+          title: "Choose the correct answer.",
           body: `<p>Andrii writes in the school newspaper. Nobody knows who repaired the computers, and it isn’t important.</p>`,
           opts: [
-            "Our school computers were repaired by somebody last week.",
+            "Our school computers were repaired by Ms Lysenko last week.",
             "Our school computers were repaired last week.",
             "Our school computers repaired last week."
           ],
@@ -249,7 +249,7 @@ SLID.section("eng", {
           hint: "Is it important who did it?",
           fbOk: "Well done!",
           fbBad: "We don’t know who did it. Do we need by?",
-          fbText: "<b>Our school computers were repaired last week.</b> We don’t know who did it, so no <i>by</i>. And the computers didn’t repair anything: we need <b>were</b>."
+          fbText: "<b>Our school computers were repaired last week.</b> Nobody knows who did it, so we can’t say <i>by Ms Lysenko</i>. No <i>by</i> here. And the computers didn’t repair anything: we need <b>were</b>."
         },
         {
           type: "info",
@@ -323,7 +323,7 @@ SLID.section("eng", {
       title: "From the telephone to the smartphone",
       short: "Phones",
       icon: "voice",
-      status: "draft",
+      status: "verified",
       why: "Phones have changed a lot. Learn to say what old phones could do and what phones can do now.",
       screens: [
         {
@@ -336,7 +336,7 @@ SLID.section("eng", {
         {
           type: "info",
           title: "Phones: part 1",
-          body: `<ul><li><b>1876</b> – Alexander Graham Bell got a <b>patent</b> for the telephone. Other inventors worked on telephones too.</li><li><b>1973</b> – Martin Cooper made a famous call on a mobile phone in a street in New York. The phone weighed more than a kilogram. Its battery took ten hours to charge.</li></ul><p>a <b><u>pa</u>tent</b> → an official paper: “This invention is yours.”</p>`,
+          body: `<ul><li><b>1876</b> – Alexander Graham Bell got a <b>patent</b> for the telephone. Other inventors worked on telephones too.</li><li><b>1973</b> – Martin Cooper made a famous call on a mobile phone in a street in New York. The phone weighed more than a kilogram.</li></ul><p>a <b><u>pa</u>tent</b> → an official paper: “This invention is yours.”</p>`,
           cta: "Next"
         },
         {
@@ -455,7 +455,7 @@ SLID.section("eng", {
       title: "How is it made? How is it used?",
       short: "Made and used",
       icon: "flame",
-      status: "draft",
+      status: "verified",
       why: "Science articles explain how things are made and used. Learn to describe a process with the passive.",
       screens: [
         {
@@ -596,7 +596,7 @@ SLID.section("eng", {
       title: "Smart devices in our homes",
       short: "Smart devices",
       icon: "bolt",
-      status: "draft",
+      status: "verified",
       why: "Many homes have smart devices now. Learn to talk about what they can do.",
       screens: [
         {
@@ -732,7 +732,7 @@ SLID.section("eng", {
       title: "My favourite device: a short description",
       short: "My device",
       icon: "star",
-      status: "draft",
+      status: "verified",
       why: "Can you describe a device without its name? Learn to plan a short description.",
       screens: [
         {
@@ -826,11 +826,11 @@ SLID.section("eng", {
           body: `<p>Mariia writes about her tablet.</p>`,
           before: "It’s used",
           after: "drawing comics.",
-          answer: ["for", "in"],
+          answer: ["for", "in", "when", "while"],
           hint: "used … + -ing",
           fbOk: "Right.",
           fbBad: "Before -ing: used to or used for?",
-          fbText: "It’s used <b>for</b> drawing comics: used for + -ing. <i>Used in drawing</i> is also possible."
+          fbText: "It’s used <b>for</b> drawing comics: used for + -ing. <i>Used in / when / while drawing</i> is also possible."
         },
         {
           type: "build",
@@ -874,7 +874,7 @@ SLID.section("eng", {
       title: "Science Week: the final quiz",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e9s6boss",
       why: "Check everything from this section. Your points are doubled.",
