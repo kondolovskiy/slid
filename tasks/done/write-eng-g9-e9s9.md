@@ -7,7 +7,7 @@ subject: eng
 grade: 9
 section: e9s9
 depends_on: [curate-eng-plan-g7-9, engine-eng-lang-core, engine-eng-validate, engine-eng-stats, skills-eng, curate-eng-style, curate-eng-glossary, engine-eng-dialog]
-status: review
+status: done
 claimed_by: writer-e9s9
 created: 2026-11-19
 source: design-eng
@@ -65,3 +65,5 @@ Build не запускай (AGENTS.md §4 п. 8).
 - requires — лише з плану (e4s3l4, e4s5l6, e6s4l2). Сцени спираються на e9s2 (eco club Zelena Dolyna), e9s4 (Bright Radio, comic club Mariia), e9s3 (I think / In my opinion, e9s3l6) — оркестратору додати уроки e9s1–e9s8 за plan-eng-g7-8-9 §6.
 
 Опори D-019: l6 sort (екран 6) спирається на уривки 2–3 і нове info «The debate: who said what?»; boss T8 — уривок на тому ж екрані.
+
+**verifier-e9s9, 2026-11-26.** Verified, 4 правки (reports/verify/write-eng-g9-e9s9.md): l5 gaps дистрактор However → Although (друга правильна); l3 match + «You have finished.»; l2 learned узгоджено з info; requires + e9s2l6, e9s3l6, e9s4l6, e9s8l4. validate 0/0; плейтест — лише CI.

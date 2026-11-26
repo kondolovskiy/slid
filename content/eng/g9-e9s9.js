@@ -19,7 +19,7 @@
    Нових фактичних тверджень немає: усе — думки героїв. Діалоги — репліками в body (D-056), без звуку (D-055 п. 4).
    Герої — серія 4–9 кл. (memory/short/inbox.md, NOTE (герої)), 15 років; Dmytro 11. Нових героїв немає.
    Увесь зміст — англійською, британська норма (D-055). Тексти, діалоги й герої — власні (docs/design/english.md §8).
-   Статус: draft. 7 уроків (6 + фінал). Будова — за e9s4 (verified).
+   Статус: verified (verifier-e9s9). 7 уроків (6 + фінал). Будова — за e9s4 (verified).
    Перевірка: node tools/validate.mjs --section e9s9 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -28,8 +28,8 @@ SLID.section("eng", {
   weeks: [33, 35],
   title: "Let’s discuss: agreeing and disagreeing",
   why: "To give your opinion and join a discussion politely. And to agree, disagree and link your ideas.",
-  requires: ["e4s3l4", "e4s5l6", "e6s4l2"],
-  meta: { author: "writer-e9s9", created: "2026-11-26", factcheck: null, teacher: null },
+  requires: ["e4s3l4", "e4s5l6", "e6s4l2", "e9s2l6", "e9s3l6", "e9s4l6", "e9s8l4"],
+  meta: { author: "writer-e9s9", created: "2026-11-26", factcheck: "verifier-e9s9 (reports/verify/write-eng-g9-e9s9.md)", teacher: null },
   badges: [
     { id: "e9s9boss", name: "Great debater", icon: "trophy", desc: "Finish the final lesson “Let’s discuss: agreeing and disagreeing”" }
   ],
@@ -40,7 +40,7 @@ SLID.section("eng", {
       title: "I think…, In my opinion…: giving opinions",
       short: "Opinions",
       icon: "voice",
-      status: "draft",
+      status: "verified",
       why: "Say what you think and ask other people for their opinion.",
       screens: [
         {
@@ -179,7 +179,7 @@ SLID.section("eng", {
       title: "I agree, but…: agreeing and disagreeing politely",
       short: "Agree, disagree",
       icon: "scale",
-      status: "draft",
+      status: "verified",
       why: "Agree, partly agree and disagree politely. Talk about the idea, not the person.",
       screens: [
         {
@@ -313,7 +313,7 @@ SLID.section("eng", {
         learned: [
           "Agree: I agree. I couldn’t agree more!",
           "Partly agree: That’s true, but… I agree up to a point.",
-          "Disagree politely: I’m not sure about that. I see your point, but…"
+          "Disagree politely: I’m not sure about that. I’m afraid I disagree."
         ]
       }
     },
@@ -324,7 +324,7 @@ SLID.section("eng", {
       title: "Sorry to interrupt, but…: joining a discussion",
       short: "Join in",
       icon: "users",
-      status: "draft",
+      status: "verified",
       why: "Join a discussion politely, ask others what they think and talk about two ideas with both … and, either … or.",
       screens: [
         {
@@ -365,7 +365,7 @@ SLID.section("eng", {
             "You want to speak, but someone is talking:",
             "Your friend is quiet. You want her opinion:",
             "Someone starts talking, but you haven’t finished:",
-            "A friend asks, “Can I add something?”"
+            "You have finished. A friend asks, “Can I add something?”"
           ],
           right: [
             "Sorry to interrupt, but…",
@@ -471,7 +471,7 @@ SLID.section("eng", {
       title: "Although, however, so: linking ideas",
       short: "Linking ideas",
       icon: "path",
-      status: "draft",
+      status: "verified",
       why: "Link your ideas: show a contrast, a result and a purpose.",
       screens: [
         {
@@ -620,7 +620,7 @@ SLID.section("eng", {
       title: "First, also, finally: putting your ideas in order",
       short: "In order",
       icon: "target",
-      status: "draft",
+      status: "verified",
       why: "Put your ideas in order so the reader can follow them.",
       screens: [
         {
@@ -687,7 +687,7 @@ SLID.section("eng", {
           sk: "write",
           title: "Fill in the gaps.",
           body: `<p>Daryna writes about the school podcast.</p>`,
-          text: "Why do I love our podcast? {*First|Finally|However}, it’s fun to make. {*Also|However|Finally}, I learn a lot from our guests. {*However|First|Finally}, it takes a lot of time. {*Finally|First|However}, I love working with Andrii: he’s a great team player!",
+          text: "Why do I love our podcast? {*First|Finally|However}, it’s fun to make. {*Also|However|Finally}, I learn a lot from our guests. {*However|First|Finally}, it takes a lot of time. {*Finally|First|Although}, I love working with Andrii: he’s a great team player!",
           hint: "The first idea → ? One more → ? The other side → ? The last idea → ?",
           fbOk: "Right.",
           fbBad: "Which idea is the other side: something not so good?",
@@ -764,7 +764,7 @@ SLID.section("eng", {
       title: "Paper books or e-books? A class debate",
       short: "A debate",
       icon: "book",
-      status: "draft",
+      status: "verified",
       why: "Read a class debate and use everything from this section.",
       screens: [
         {
@@ -915,7 +915,7 @@ SLID.section("eng", {
       title: "Our debate club",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e9s9boss",
       why: "Check everything from this section. Your points are doubled.",
