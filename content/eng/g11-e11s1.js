@@ -17,7 +17,7 @@
    Факти (Конвенція ООН про права дитини, International Volunteer Day) — з двох джерел; URL — tasks/…/write-eng-g11-e11s1.md.
    Форми, наголос і значення — Cambridge Dictionary (CD), CD Grammar, OALD.
    Увесь зміст — англійською, британська норма (D-055). Тексти, діалоги й герої — власні (docs/design/english.md §8).
-   Статус: draft (writer-e11s1). 7 уроків (6 + фінал). Будова — за розділами 10 кл. (e10s1).
+   Статус: verified (verifier-e11s1, reports/verify/write-eng-g11-e11s1.md). 7 уроків (6 + фінал). Будова — за розділами 10 кл. (e10s1).
    Перевірка: node tools/validate.mjs --section e11s1 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -27,7 +27,7 @@ SLID.section("eng", {
   title: "Rights, responsibilities and tolerance",
   why: "To talk about young people’s rights and responsibilities, good manners and helping others. And to report what other people said.",
   requires: ["e6s8l5", "e7s1l1", "e8s3l4", "e8s3l5", "e9s4l4", "e9s4l5", "e9s9l3", "e10s1l1", "e10s1l6"],
-  meta: { author: "writer-e11s1", created: "2026-11-26", factcheck: null, teacher: null },
+  meta: { author: "writer-e11s1", created: "2026-11-26", factcheck: "verifier-e11s1, 2026-11-26 (reports/verify/write-eng-g11-e11s1.md)", teacher: null },
   badges: [
     { id: "e11s1boss", name: "Fair Player", icon: "trophy", desc: "Finish the final lesson “Rights, responsibilities and tolerance”" }
   ],
@@ -38,7 +38,7 @@ SLID.section("eng", {
       title: "Young people’s rights and responsibilities",
       short: "Rights",
       icon: "scale",
-      status: "draft",
+      status: "verified",
       why: "Every child has rights, and every right comes with responsibilities. Learn how to talk about both.",
       screens: [
         {
@@ -189,7 +189,7 @@ SLID.section("eng", {
       title: "Good manners: how we behave and communicate",
       short: "Manners",
       icon: "users",
-      status: "draft",
+      status: "verified",
       why: "Polite or rude? Talk about good manners and ask people for things politely.",
       screens: [
         {
@@ -339,7 +339,7 @@ SLID.section("eng", {
       title: "The day before, the next day: reported speech",
       short: "Reported speech",
       icon: "voice",
-      status: "draft",
+      status: "verified",
       why: "Report what people said days ago. Change the tenses and the words for time and place.",
       screens: [
         {
@@ -490,7 +490,7 @@ SLID.section("eng", {
       title: "She admitted that…, he promised that…: reporting verbs",
       short: "Reporting verbs",
       icon: "scroll",
-      status: "draft",
+      status: "verified",
       why: "Said and told aren’t the only verbs. Show how people said things: admitted, denied, promised, suggested.",
       screens: [
         {
@@ -647,7 +647,7 @@ SLID.section("eng", {
       title: "Tolerance, kindness and charity",
       short: "Kindness",
       icon: "shield",
-      status: "draft",
+      status: "verified",
       why: "Small acts of kindness can make a big difference. Talk about tolerance, charity and volunteering.",
       screens: [
         {
@@ -788,7 +788,7 @@ SLID.section("eng", {
       title: "Housework: is it fair? A family discussion",
       short: "Fair housework",
       icon: "home",
-      status: "draft",
+      status: "verified",
       why: "Who does the washing-up at your home? Give reasons for your opinion and keep a family discussion going.",
       screens: [
         {
@@ -935,7 +935,7 @@ SLID.section("eng", {
       title: "Fair play: rights, responsibilities and tolerance",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e11s1boss",
       why: "Check everything from this section. Your points are doubled.",
@@ -964,7 +964,7 @@ SLID.section("eng", {
           sk: "gram",
           eyebrow: "Task 2",
           title: "Fill in the gaps.",
-          body: `<p>On Saturday, Bohdan said: “I have baked forty cakes. I will sell them here tomorrow.” Andrii writes about it a week later.</p>`,
+          body: `<p>On Friday, Bohdan said: “I have baked forty cakes. I will sell them here tomorrow.” Andrii writes about it a week later.</p>`,
           text: "Bohdan said he {*had baked|had bake|have baked} forty cakes. He said he would sell them {*there|that} {*the next day|the day before}.",
           pre: "e11s1l3",
           hint: "Present Perfect → …; here → …; tomorrow → …",
@@ -1060,7 +1060,7 @@ SLID.section("eng", {
           sk: "read",
           eyebrow: "Reading: The missing money box, part 3 of 3",
           title: "Read and choose.",
-          body: `<p><i>They found Ms Lysenko in the staff room. She was holding the red box. “Oh, I’m so sorry!” she said. “I saw the box on an empty table, so I brought it here for safety. I meant to tell you.” She explained that she had wanted to keep the money safe. Andrii laughed with relief. Later, the boy who had blamed Yehor came to him. He admitted that he had been unfair, and he apologised. Yehor accepted his apology. At the end of the day, they counted the money. The fair had raised 18,600 hryvnias for the shelter. The next week, Zoriana wrote an article about the fair. Her title was “Don’t judge too quickly”.</i></p><p>Why had Ms Lysenko taken the box?</p>`,
+          body: `<p><i>They found Ms Lysenko in the staffroom. She was holding the red box. “Oh, I’m so sorry!” she said. “I saw the box on an empty table, so I brought it here for safety. I meant to tell you.” She explained that she had wanted to keep the money safe. Andrii laughed with relief. Later, the boy who had blamed Yehor came to him. He admitted that he had been unfair, and he apologised. Yehor accepted his apology. At the end of the day, they counted the money. The fair had raised 18,600 hryvnias for the shelter. The next week, Zoriana wrote an article about the fair. Her title was “Don’t judge too quickly”.</i></p><p>Why had Ms Lysenko taken the box?</p>`,
           opts: [
             "She wanted to count the money.",
             "She thought Yehor had taken it.",
