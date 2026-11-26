@@ -6,7 +6,7 @@ type: style
 subject: eng
 grade: 10
 depends_on: [write-eng-g10-e10s1, write-eng-g10-e10s2, write-eng-g10-e10s3, write-eng-g10-e10s4, write-eng-g10-e10s5, write-eng-g10-e10s6, write-eng-g10-e10s7, write-eng-g10-e10s8]
-status: review
+status: done
 claimed_by: style-eng-g10
 created: 2026-11-26
 source: orchestrator
@@ -35,3 +35,8 @@ source: orchestrator
 - 15 нових `hint` у фіналах e10s2l7, e10s3l7, e10s4l7, e10s5l7, e10s8l7 (по 3; текст — §2 звіту); 16 `fbOk` поспіль замінено.
 - validate --section e10s1…e10s8 — 0 помилок; 1 попередження e10s4l6 readWordsPerScreen 67 > 65 (наслідок обсягу 355 слів) → STYLE-пропозиція «10-11» rwps 65 → 70 в inbox. Профіль і style/ не змінював; plan.js (e10s4l5 «By 2050» vs «By 2030») — STYLE в inbox. Build і commit не робив.
 - Точкова повторна верифікація — §7 звіту.
+
+## Нотатки верифікатора (verifier-style-eng-g10, 2026-11-26)
+- Звіт: reports/verify/style-eng-g10.md — **прийнято**. Ключі в g10-e10s1…e10s8 не змінено (механічна звірка з 02f2e1d), другої правильної відповіді й нових фактів немає; e10s8l7 T9 узгоджено з l6; перейменування героїв узгоджені з 4–9 кл.
+- 3 ⚠️ виправлено: порядок категорій у hint e10s2l7 T4, e10s3l7 T9, e10s8l7 T7 (збігався з порядком пропусків; у звіті style твердження «порядок навмисно не той» для e10s3l7 T9 було хибним).
+- validate e10s1…e10s8 — 0 помилок; 1 попередження e10s4l6 rwps 67 > 65 — калібрування профілю «10-11» (людина, decisions.md). Build/commit/плейтест не робив.

@@ -1026,7 +1026,7 @@ SLID.section("eng", {
           title: "Fill in the gaps.",
           text: "The office is open {*until|by} 6 pm. Send your form {*by|until} 31 May. Zoriana has been in the coding club {*since|for} Year 7.",
           pre: "e10s8l5",
-          hint: "Does it continue, is it a deadline or is it a starting point?",
+          hint: "Is it a starting point or a deadline, or does it continue?",
           fbOk: "Exactly.",
           fbBad: "until → it continues; by → a deadline; since → a starting point.",
           fbText: "Open <b>until</b> 6 pm (it continues). Send it <b>by</b> 31 May (a deadline). <b>Since</b> Year 7 (a starting point)."

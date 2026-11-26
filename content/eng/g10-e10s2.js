@@ -1022,7 +1022,7 @@ SLID.section("eng", {
           title: "Fill in the gaps.",
           text: "Please remember {*to bring|bringing} your PE kit on Friday. I’ll never forget {*watching|to watch} my first match at the stadium. On the way to the park, we stopped {*to buy|buying} some water.",
           pre: "e10s2l4",
-          hint: "In each sentence, is it a job to do, a memory or the reason for stopping?",
+          hint: "In each sentence, is it a memory, a job to do or the reason for stopping?",
           fbOk: "Well done!",
           fbBad: "A job → to. A memory → -ing. Stop in order to → to.",
           fbText: "remember <b>to bring</b> (a job); never forget <b>watching</b> (a memory); stopped <b>to buy</b> (in order to)."

@@ -1066,7 +1066,7 @@ SLID.section("eng", {
           title: "Fill in the gaps.",
           text: "Orysia {*used to|is used to} live in Vinnytsia. Now she {*is getting used to|used to} the rain in England. She isn’t used to {*having|have} dinner so early.",
           pre: "e10s3l6",
-          hint: "In each sentence, is it a past state, something that is becoming normal or something that is normal now?",
+          hint: "In each sentence, is it something that is becoming normal, a past state or something that is normal now?",
           fbOk: "Yes!",
           fbBad: "A past state → used to + verb. Becoming normal → getting used to. be used to + -ing.",
           fbText: "She <b>used to live</b> in Vinnytsia (the past). She <b>is getting used to</b> the rain. She isn’t used to <b>having</b> dinner so early."
