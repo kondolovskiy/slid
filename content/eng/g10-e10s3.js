@@ -14,7 +14,7 @@
    Форми й значення — CD, CD Grammar («Used to», «Would», «Prefer», «Would rather»), OALD habit; факти — по два джерела;
    URL — tasks/…/write-eng-g10-e10s3.md, «Нотатки агента».
    Увесь зміст — англійською, британська норма (D-055). Тексти, діалоги й герої — власні (docs/design/english.md §8).
-   Статус: draft (writer-e10s3). 7 уроків (6 + фінал). Будова — за розділами 9 кл. (e9s1).
+   Статус: verified (verifier-e10s3, 2026-11-26). 7 уроків (6 + фінал). Будова — за розділами 9 кл. (e9s1).
    Перевірка: node tools/validate.mjs --section e10s3 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -24,7 +24,7 @@ SLID.section("eng", {
   title: "Food and habits",
   why: "To talk about national dishes, tastes and healthy food. And to talk about habits, good and bad, in the past and now.",
   requires: ["e5s3l6", "e6s3l4", "e6s3l6", "e7s5l3", "e8s2l1", "e8s2l4", "e9s1l4"],
-  meta: { author: "writer-e10s3", created: "2026-11-26", factcheck: null, teacher: null },
+  meta: { author: "writer-e10s3", created: "2026-11-26", factcheck: "verifier-e10s3, 2026-11-26 (reports/verify/write-eng-g10-e10s3.md)", teacher: null },
   badges: [
     { id: "e10s3boss", name: "Food magazine editor", icon: "trophy", desc: "Finish the final lesson “Food and habits”" }
   ],
@@ -35,7 +35,7 @@ SLID.section("eng", {
       title: "National dishes of Ukraine and the UK",
       short: "National dishes",
       icon: "globe",
-      status: "draft",
+      status: "verified",
       why: "Many dishes have a story behind them. Read about national and regional dishes from Ukraine and the UK.",
       screens: [
         {
@@ -90,7 +90,7 @@ SLID.section("eng", {
           sk: "read",
           eyebrow: "Reading: Food with a story, part 2 of 3",
           title: "Read and choose.",
-          body: `<p><i><b>A night for haggis</b> – by Emma<br>My friend Isla lives in Edinburgh, and every year on 25 January her family has a Burns supper. Burns Night celebrates the birthday of Robert Burns, Scotland’s national poet. The main dish is haggis, which many people call Scotland’s national dish. It’s a savoury pudding made from parts of a sheep, such as the heart and the liver, with oats, onions and spices. Isla says it tastes much better than it sounds! It’s served with mashed swede and potatoes, called “neeps and tatties” in Scotland. Before the meal, someone reads Burns’s poem about haggis.</i></p><p>Why do people in Scotland have a Burns supper on 25 January?</p>`,
+          body: `<p><i><b>A night for haggis</b> – by Emma<br>My friend Isla lives in Edinburgh, and every year on 25 January her family has a Burns supper. Burns Night celebrates the birthday of Robert Burns, Scotland’s national poet. The main dish is haggis, which many people call Scotland’s national dish. It’s a savoury pudding made from parts of a sheep, such as the heart and the liver, with oats, onions and spices. Isla says it tastes much better than it sounds! It’s served with mashed swede and potatoes, called “neeps and tatties” in Scotland. Before they eat the haggis, someone reads Burns’s poem about it.</i></p><p>Why do people in Scotland have a Burns supper on 25 January?</p>`,
           opts: [
             "It’s the day haggis was first cooked.",
             "It’s Robert Burns’s birthday.",
@@ -192,7 +192,7 @@ SLID.section("eng", {
       title: "Sweet, spicy or sour? Tastes and preferences",
       short: "Tastes",
       icon: "pot",
-      status: "draft",
+      status: "verified",
       why: "Everybody likes different tastes. Describe tastes and say what you prefer.",
       screens: [
         {
@@ -333,7 +333,7 @@ SLID.section("eng", {
       title: "I used to love sweets, Grandma would bake: states and actions",
       short: "Used to, would",
       icon: "scroll",
-      status: "draft",
+      status: "verified",
       why: "You already know used to and would. Learn when would is impossible and when you need the Past Simple.",
       screens: [
         {
@@ -388,7 +388,7 @@ SLID.section("eng", {
         {
           type: "info",
           title: "One time or many times?",
-          body: `<p><b>Used to</b> and <b>would</b> are for habits. For one event, or when you say <b>how many times</b>, use the <b>Past Simple</b>:</p><ul><li>Every Saturday, my mother <b>would bake</b> bread. (a habit)</li><li><b>Once</b>, in 1975, I <b>baked</b> the bread on my own. (one time)</li><li>I <b>went</b> to Poltava three times that summer. Not: <s>I used to go to Poltava three times.</s></li></ul><p>The Past Simple is fine for habits too: <i>Every Saturday, she baked bread.</i></p>`,
+          body: `<p><b>Used to</b> and <b>would</b> are for habits. For one event, or when you say <b>how many times</b>, use the <b>Past Simple</b>:</p><ul><li>Every Saturday, my mother <b>would bake</b> bread. (a habit)</li><li><b>Once</b>, in 1975, I <b>baked</b> the bread on my own. (one time)</li><li>I <b>went</b> to Poltava three times that summer. Not: <s>I used to go to Poltava three times.</s></li><li>But a habit is fine: I <b>used to go</b> swimming three times a week.</li></ul><p>The Past Simple is fine for habits too: <i>Every Saturday, she baked bread.</i></p>`,
           cta: "Next"
         },
         {
@@ -477,7 +477,7 @@ SLID.section("eng", {
       title: "Healthy food: what is good for you?",
       short: "Healthy food",
       icon: "leaf",
-      status: "draft",
+      status: "verified",
       why: "Food gives you energy and helps you stay healthy. Talk about what is in food and why your body needs it.",
       screens: [
         {
@@ -623,7 +623,7 @@ SLID.section("eng", {
       title: "Bad habits and how to break them",
       short: "Habits and advice",
       icon: "target",
-      status: "draft",
+      status: "verified",
       why: "Everybody has a habit they want to change. Give advice and react to other people’s advice.",
       screens: [
         {
@@ -775,7 +775,7 @@ SLID.section("eng", {
       title: "I’m used to it: getting used to new food",
       short: "Be used to",
       icon: "path",
-      status: "draft",
+      status: "verified",
       why: "In a new place, food and habits feel strange at first. Say what is normal for you and what is still new.",
       screens: [
         {
@@ -923,7 +923,7 @@ SLID.section("eng", {
       title: "Our food magazine",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e10s3boss",
       why: "Check everything from this section. Your points are doubled.",
