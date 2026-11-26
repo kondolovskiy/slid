@@ -7,7 +7,7 @@ subject: eng
 grade: 11
 section: e11s2
 depends_on: [curate-eng-plan-g10-11, engine-eng-lang-core, engine-eng-validate, engine-eng-stats, skills-eng, curate-eng-style, curate-eng-glossary, engine-eng-dialog]
-status: review
+status: done
 claimed_by: writer-e11s2
 created: 2026-11-19
 source: design-eng
@@ -81,3 +81,5 @@ Build не запускай (AGENTS.md §4 п. 8).
 **stats:** прапорці «нетипово для сім'ї» лише в уроках читання — e11s2l1 (readWordsPerScreen z=2) і e11s2l6 (readWordsPerScreen z=2,5, maxReadWords) — повний текст П1407 для 11 кл.; усі значення в межах профілю eng 10-11 (validate без попереджень). Як STYLE writer-e10s3: калібрувати після сім'ї 11 кл.
 
 **Сумнівне / для верифікатора:** (1) elevenses — UK informal, лише в info, не оцінюється. (2) «Few / little on their own sound quite formal» (l3 екр. 5) — за CD Grammar «They are used in formal contexts». (3) word l6 екр. 11 — ключ також AmE «milliliters» (рушій може й сам нормалізувати; TQ-125). (4) l1 «Fizzy drinks are too sweet for me» поруч із sparkling water — у BrE fizzy drinks = солодкі газовані напої (CD fizzy «having a lot of bubbles»; OALD fizzy drink) — на розсуд верифікатора. (5) Ms Kravets — редакторка онлайн-кулінарної книжки клубу (як журнал у e10s3).
+
+**verifier-e11s2, 2026-11-26.** Verified (7 уроків). Правки: l4 екр. 10 build + 3 порядки («Taste matters more than price to me» та ін.); l1 екр. 3 elevenses — «(UK, informal, a bit old-fashioned)». validate 0/0. Звіт: reports/verify/write-eng-g11-e11s2.md.

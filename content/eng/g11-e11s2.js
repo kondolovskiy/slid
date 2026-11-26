@@ -17,7 +17,7 @@
    «Lots, a lot, plenty», «Hardly»); факти — по два джерела; URL — tasks/…/write-eng-g11-e11s2.md, «Нотатки агента».
    Увесь зміст — англійською, британська норма (D-055). Тексти, діалоги й герої — власні (docs/design/english.md §8).
    Діалоги — репліками в body (D-056), без звуку (D-055 п. 4).
-   Статус: draft (writer-e11s2, 2026-11-26). 7 уроків (6 + фінал). Будова — за e10s3.
+   Статус: verified (verifier-e11s2, 2026-11-26; reports/verify/write-eng-g11-e11s2.md); автор — writer-e11s2. 7 уроків (6 + фінал). Будова — за e10s3.
    Перевірка: node tools/validate.mjs --section e11s2 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -27,7 +27,7 @@ SLID.section("eng", {
   title: "Food and recipes",
   why: "To talk about food, drinks and snacks, healthy eating and your priorities. And to read and write recipes with exact amounts.",
   requires: ["e5s3l2", "e5s3l3", "e5s3l4", "e6s2l3", "e6s3l3", "e7s2l3", "e7s2l4", "e8s2l2", "e9s9l3"],
-  meta: { author: "writer-e11s2", created: "2026-11-26", factcheck: null, teacher: null },
+  meta: { author: "writer-e11s2", created: "2026-11-26", factcheck: "verifier-e11s2, 2026-11-26 (reports/verify/write-eng-g11-e11s2.md)", teacher: null },
   badges: [
     { id: "e11s2boss", name: "Cookbook editor", icon: "pot", desc: "Finish the final lesson “Food and recipes”" }
   ],
@@ -38,7 +38,7 @@ SLID.section("eng", {
       title: "Meals, snacks and drinks",
       short: "Meals and drinks",
       icon: "pot",
-      status: "draft",
+      status: "verified",
       why: "People eat at different times and call their meals different names. Talk about meals, snacks and drinks.",
       screens: [
         {
@@ -68,7 +68,7 @@ SLID.section("eng", {
         {
           type: "info",
           title: "Meals and snacks",
-          body: `<ul><li><b>brunch</b> → a late breakfast and an early lunch in one meal</li><li>a <b>packed lunch</b> → food you take with you to school or work</li><li>a <b>snack</b> → a small amount of food between meals</li><li>e<u>lev</u>enses (UK) → a drink and a snack in the middle of the morning</li><li>a <b><u>take</u>away</b> → a meal you buy at a restaurant and eat at home</li><li>a <b>ready meal</b> → a meal from a supermarket that you only heat</li><li><b>tea</b> (UK) → an early evening meal, or a small meal with cake in the afternoon</li></ul>`,
+          body: `<ul><li><b>brunch</b> → a late breakfast and an early lunch in one meal</li><li>a <b>packed lunch</b> → food you take with you to school or work</li><li>a <b>snack</b> → a small amount of food between meals</li><li>e<u>lev</u>enses (UK, informal, a bit old-fashioned) → a drink and a snack in the middle of the morning</li><li>a <b><u>take</u>away</b> → a meal you buy at a restaurant and eat at home</li><li>a <b>ready meal</b> → a meal from a supermarket that you only heat</li><li><b>tea</b> (UK) → an early evening meal, or a small meal with cake in the afternoon</li></ul>`,
           cta: "Next"
         },
         {
@@ -201,7 +201,7 @@ SLID.section("eng", {
       title: "Plenty of, hardly any: quantifiers",
       short: "Plenty of, hardly any",
       icon: "scale",
-      status: "draft",
+      status: "verified",
       why: "Before you cook, you check what you have. Say there is more than enough of something, or almost none.",
       screens: [
         {
@@ -358,7 +358,7 @@ SLID.section("eng", {
       title: "A few or few? A little or little?",
       short: "Few or a few?",
       icon: "eye",
-      status: "draft",
+      status: "verified",
       why: "One small word, a, can change the meaning. Say if there is some of something or not enough.",
       screens: [
         {
@@ -501,7 +501,7 @@ SLID.section("eng", {
       title: "Healthy and unhealthy food: what are your priorities?",
       short: "Food priorities",
       icon: "leaf",
-      status: "draft",
+      status: "verified",
       why: "Everyone chooses food in a different way. Explain what comes first for you and compare two lifestyles.",
       screens: [
         {
@@ -598,7 +598,7 @@ SLID.section("eng", {
           title: "Put the words in order.",
           body: `<p>For Andrii, taste is more important than price. What does he say?</p>`,
           tiles: ["taste", "matters", "more", "to me", "than", "price"],
-          answer: ["Taste matters more to me than price.", "Taste matters to me more than price.", "To me taste matters more than price."],
+          answer: ["Taste matters more to me than price.", "Taste matters more than price to me.", "Taste matters to me more than price.", "To me taste matters more than price.", "Taste to me matters more than price.", "More than price taste matters to me."],
           extra: ["that"],
           hint: "X matters more to me … Y.",
           fbOk: "Yes!",
@@ -647,7 +647,7 @@ SLID.section("eng", {
       title: "Most of us, none of them: quantifiers with of",
       short: "Most of us",
       icon: "chart",
-      status: "draft",
+      status: "verified",
       why: "Surveys are full of most of, all of and none of. Talk about groups of people and things.",
       screens: [
         {
@@ -785,7 +785,7 @@ SLID.section("eng", {
       title: "A family recipe, step by step",
       short: "A family recipe",
       icon: "cake",
-      status: "draft",
+      status: "verified",
       why: "Family recipes often live only in someone’s head. Read and write a recipe with exact amounts.",
       screens: [
         {
@@ -958,7 +958,7 @@ SLID.section("eng", {
       title: "Our club cookbook",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e11s2boss",
       why: "Check everything from this section. Your points are doubled.",
