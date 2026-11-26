@@ -7,7 +7,7 @@ subject: eng
 grade: 9
 section: e9s9
 depends_on: [curate-eng-plan-g7-9, engine-eng-lang-core, engine-eng-validate, engine-eng-stats, skills-eng, curate-eng-style, curate-eng-glossary, engine-eng-dialog]
-status: todo
+status: review
 claimed_by: writer-e9s9
 created: 2026-11-19
 source: design-eng
@@ -47,3 +47,21 @@ Build не запускай (AGENTS.md §4 п. 8).
 
 ## Нотатки агента
 <!-- що зроблено, джерела форм і фактів, спірне -->
+**writer-e9s9, 2026-11-26.** content/eng/g9-e9s9.js — 7 уроків (6 + boss `e9s9boss` «Great debater»), draft. validate --section e9s9: 0 помилок, 0 попереджень. stats: e9s9l6 gradedShare z = 2,4 (урок читання + вправи, 0,8 — у межах профілю 7–9), e9s9l7 maxText z = 2,3 (T8 — уривок дискусії, ≈ 55 слів, у межах ≤ 140); прапорців «поза профілем» немає.
+
+Уроки: l1 opinions + personally / honestly / actually (penfriend club: city or village); l2 agree / partly agree / disagree (Bright Radio, Lviv); l3 joining a discussion + both … and / either … or (eco club, Zelena Dolyna); l4 although / but / however, because / so / so that (comic club Mariia–Zofia); l5 First / Also / In addition / However / Finally (статті Andrii, Kyrylo, Daryna, Zoriana; Kyiv); l6 дебати «Paper books or e-books?» (клас Ms Lysenko, 3 уривки); l7 boss — онлайн-дебати «Team sport or sport alone?».
+
+Джерела форм (CD, curl): up to a point — B2 «partly» https://dictionary.cambridge.org/dictionary/english/up-to-a-point ; couldn’t agree more https://dictionary.cambridge.org/dictionary/english/couldn-t-agree-more ; see someone’s point / take your point https://dictionary.cambridge.org/dictionary/english/point ; personally — B1 «used when you give your opinion» https://dictionary.cambridge.org/dictionary/english/personally ; actually — B1 surprise, «correcting what someone else has said» https://dictionary.cambridge.org/dictionary/english/actually ; so that — «We often leave out that after so in informal situations» https://dictionary.cambridge.org/grammar/british-grammar/so-that ; although — підрядне потребує головного https://dictionary.cambridge.org/grammar/british-grammar/although-or-though ; both … and, either … or — https://dictionary.cambridge.org/grammar/british-grammar/both , https://dictionary.cambridge.org/grammar/british-grammar/either-or ; firstly B2, however A2, although B1 — reports/verify/plan-eng-g7-8-9.md. Наголос personally, honestly, actually (1-й склад), opinion (2-й), interrupt (3-й), addition (2-й), finally (1-й) — CD UK; верифікатору звірити поділ на склади в `stress` l1.
+
+Фактів про країни немає: усе — думки героїв (Daryna «often finds cheaper e-books» — її досвід, не загальне твердження).
+
+Спірне / на перевірку:
+- «That’s true, but…» тут — **часткова згода** (кошик «partly agree», l2 sort, l6 sort, boss T3), за PITFALL оркестратора. У e9s3l6 sort ця фраза — у кошику «don’t agree» (polite disagreement), у e9s3l7 T8 — «polite disagreement». Суперечність між розділами — inbox CONFLICT; мій розділ не протиставляє partly agree і disagree для цієї фрази в одному завданні.
+- so / so that для мети — не протиставлено (CD: that можна опустити); so лише як результат проти because. therefore не вводив.
+- although / but / however у пропусках розведено пунктуацією: Although + кома в середині речення; However — нове речення + кома; but — після коми, проти because / or (не проти although, бо «…, although…» граматичне).
+- Also і In addition ніколи не стоять в одному пропуску; order (l5, boss T7) — лише один «adding» маркер, тож порядок єдиний.
+- build з both … and (l3, boss T5) — 4 порядки в `answer` (Both X and Y / Both Y and X / X and Y both / Y and X both).
+- choice l1 і boss T2: «Personally, there’s a cinema…» хибне, бо personally — для думки, а не факту (CD personally); верифікатору оцінити, чи не надто тонко.
+- requires — лише з плану (e4s3l4, e4s5l6, e6s4l2). Сцени спираються на e9s2 (eco club Zelena Dolyna), e9s4 (Bright Radio, comic club Mariia), e9s3 (I think / In my opinion, e9s3l6) — оркестратору додати уроки e9s1–e9s8 за plan-eng-g7-8-9 §6.
+
+Опори D-019: l6 sort (екран 6) спирається на уривки 2–3 і нове info «The debate: who said what?»; boss T8 — уривок на тому ж екрані.
