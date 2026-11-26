@@ -21,7 +21,7 @@
    Факти (Резиденція митрополитів у Chernivtsi, Sofiyivka, Synevyr, Lake District, Scafell Pike, Windermere) — з двох
    джерел; URL — tasks/…/write-eng-g11-e11s6.md. Форми й наголос — Cambridge Dictionary (CD), CD Grammar, OALD.
    Увесь зміст — англійською, британська норма (D-055). Тексти, діалоги й герої — власні (docs/design/english.md §8).
-   Статус: draft (writer-e11s6). 7 уроків (6 + фінал). Будова — за розділами 10 кл. (e10s4).
+   Статус: verified (verifier-e11s6, 2026-11-26; reports/verify/write-eng-g11-e11s6.md). 7 уроків (6 + фінал). Будова — за розділами 10 кл. (e10s4).
    Перевірка: node tools/validate.mjs --section e11s6 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -31,7 +31,7 @@ SLID.section("eng", {
   title: "Travel and tourism",
   why: "To talk about travelling around Ukraine and English-speaking countries and about kinds of tourism. And to tell the story of a trip in the right order.",
   requires: ["e6s3l3", "e6s5l1", "e9s9l5", "e10s4l6", "e10s8l3", "e10s8l4"],
-  meta: { author: "writer-e11s6", created: "2026-11-26", factcheck: null, teacher: null },
+  meta: { author: "writer-e11s6", created: "2026-11-26", factcheck: "verifier-e11s6, 2026-11-26 (reports/verify/write-eng-g11-e11s6.md)", teacher: null },
   badges: [
     { id: "e11s6boss", name: "Seasoned Traveller", icon: "trophy", desc: "Finish the final lesson “Travel and tourism”" }
   ],
@@ -42,7 +42,7 @@ SLID.section("eng", {
       title: "Kinds of tourism: active, cultural, green",
       short: "Kinds of tourism",
       icon: "globe",
-      status: "draft",
+      status: "verified",
       why: "Some people travel for adventure, some for history and some for nature. Learn to name different kinds of tourism.",
       screens: [
         {
@@ -185,7 +185,7 @@ SLID.section("eng", {
       title: "Travelling around Ukraine: places to visit",
       short: "Around Ukraine",
       icon: "map",
-      status: "draft",
+      status: "verified",
       why: "Ukraine has old cities, beautiful parks and mountain lakes. Read an article about three places to visit.",
       screens: [
         {
@@ -337,7 +337,7 @@ SLID.section("eng", {
       title: "Check in, look around, get on: travel verbs",
       short: "Travel verbs",
       icon: "path",
-      status: "draft",
+      status: "verified",
       why: "Every journey has its own verbs: set off, get on, check in. Learn the phrasal verbs you need when you travel.",
       screens: [
         {
@@ -450,7 +450,7 @@ SLID.section("eng", {
           eyebrow: "Final",
           title: "Complete the sentences.",
           body: `<p>Taras finishes his post for the club.</p>`,
-          text: "We {*set off|got off|checked out} from Lviv very early. Ostap’s mum {*saw us off|picked us up|checked us in} at the station. In the afternoon, Mrs Popovych {*picked us up|saw us off|got us on} at the bus stop. We {*checked in|checked out|got off} at her guesthouse and then {*looked around|set off|dropped off} the village. On Sunday, we {*got on|got into|got out of} the train home, tired but happy.",
+          text: "We {*set off|picked up|checked out} from Lviv very early. Ostap’s mum {*saw us off|picked us up|checked us in} at the station. In the afternoon, Mrs Popovych {*picked us up|saw us off|got us on} at the bus stop. We {*checked in|checked out|got off} at her guesthouse and then {*looked around|set off|dropped off} the village. On Sunday, we {*got on|got into|got out of} the train home, tired but happy.",
           hint: "Start a journey; say goodbye; collect; arrive at a hotel; visit; a train.",
           fbOk: "Brilliant!",
           fbBad: "Check each verb in the list of travel verbs.",
@@ -473,7 +473,7 @@ SLID.section("eng", {
       title: "Pick it up, look after it: phrasal or prepositional?",
       short: "Pick it up, look after it",
       icon: "target",
-      status: "draft",
+      status: "verified",
       why: "Pick him up, but look after him: the object doesn’t always go in the same place. Learn which verbs can be separated.",
       screens: [
         {
@@ -635,7 +635,7 @@ SLID.section("eng", {
       title: "At first, then, eventually: the order of events",
       short: "The order of events",
       icon: "line",
-      status: "draft",
+      status: "verified",
       why: "A good story about a trip tells the events in the right order. Learn the words that show what happened when.",
       screens: [
         {
@@ -789,7 +789,7 @@ SLID.section("eng", {
       title: "Beforehand and afterwards: a trip abroad",
       short: "A trip abroad",
       icon: "flag",
-      status: "draft",
+      status: "verified",
       why: "What did you do before a trip, and what happened after it? Read about a trip to England and use beforehand and afterwards.",
       screens: [
         {
@@ -855,7 +855,7 @@ SLID.section("eng", {
           sk: "cult",
           eyebrow: "Reading: My first trip abroad, part 2 of 3",
           title: "Choose all the correct answers.",
-          body: `<p>On Saturday, Emma’s family and I set off for the Lake District, in the north-west of England. It is the largest national park in England, and since 2017 it has been a UNESCO World Heritage Site. We stayed in a small guesthouse near Windermere, the largest lake in England. On Sunday, we climbed Scafell Pike, England’s highest mountain (978 metres). Beforehand, Emma’s dad checked the weather forecast, because the weather in the mountains can change quickly. We set off early in the morning. The path was steep and rocky, and Emma’s brother Tom complained all the way up. At first, we couldn’t see anything because of the clouds. But in the end, the sky cleared, and the view from the top was amazing. Afterwards, we were tired and hungry, so we had a huge dinner at the guesthouse.</p><p>Which sentences are true?</p>`,
+          body: `<p>On Saturday, Emma’s family and I set off for the Lake District, in the north-west of England. It is the largest national park in England, and since 2017 it has been a UNESCO World Heritage Site. We stayed in a small guesthouse near Windermere, the largest lake in England. On Sunday, we climbed Scafell Pike, England’s highest mountain (978 metres). The UK’s highest, Ben Nevis, is in Scotland. Beforehand, Emma’s dad checked the weather forecast, because the weather in the mountains can change quickly. The path was steep and rocky, and Emma’s brother Tom complained all the way up. At first, we couldn’t see anything because of the clouds. But in the end, the sky cleared, and the view from the top was amazing. Afterwards, we were tired and hungry, so we had a huge dinner at the guesthouse.</p><p>Which sentences are true?</p>`,
           opts: [
             "The Lake District is the largest national park in England.",
             "Scafell Pike is the highest mountain in the UK.",
@@ -946,7 +946,7 @@ SLID.section("eng", {
       title: "Travel week at the penfriend club",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e11s6boss",
       why: "Check everything from this section. Your points are doubled.",
@@ -1008,7 +1008,7 @@ SLID.section("eng", {
           sk: "vocab",
           eyebrow: "Task 4",
           title: "Complete the sentences.",
-          text: "Taras: We {*set off|got off|looked around} from Lviv at six. At the station, we got {*on|in|out of} the train. Later, Mrs Popovych {*picked us up|saw us off|checked us out} at the bus stop, and we {*checked in|checked out|set off} at her guesthouse.",
+          text: "Taras: We {*set off|picked up|looked around} from Lviv at six. At the station, we got {*on|in|out of} the train. Later, Mrs Popovych {*picked us up|saw us off|checked us out} at the bus stop, and we {*checked in|checked out|set off} at her guesthouse.",
           pre: "e11s6l3",
           fbOk: "Well done!",
           fbBad: "Start a journey; a train; collect; arrive at a hotel.",
