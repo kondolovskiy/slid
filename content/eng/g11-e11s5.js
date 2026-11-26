@@ -23,7 +23,7 @@
    Mr Ivanenko (lab technician) — день відкритих дверей Oksana й Mariia (l2).
    Форми, наголос і значення — Cambridge Dictionary (CD), CD Grammar, OALD.
    Увесь зміст — англійською, британська норма (D-055). Тексти, діалоги й герої — власні (docs/design/english.md §8).
-   Статус: draft (writer-e11s5). 7 уроків (6 + фінал). Будова — за розділами 10 кл. (e10s6).
+   Статус: verified (verifier-e11s5, 2026-11-26; reports/verify/write-eng-g11-e11s5.md). 7 уроків (6 + фінал). Будова — за розділами 10 кл. (e10s6).
    Перевірка: node tools/validate.mjs --section e11s5 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -33,7 +33,7 @@ SLID.section("eng", {
   title: "Science and its impact",
   why: "To talk about branches of science and how science and technology affect people and the environment. And to describe research in Ukraine and abroad.",
   requires: ["e6s3l2", "e6s7l3", "e7s2l4", "e7s7l2", "e7s7l3", "e8s3l3", "e9s2l5", "e9s6l2", "e9s6l4", "e10s6l6"],
-  meta: { author: "writer-e11s5", created: "2026-11-26", factcheck: null, teacher: null },
+  meta: { author: "writer-e11s5", created: "2026-11-26", factcheck: "verifier-e11s5, 2026-11-26 (reports/verify/write-eng-g11-e11s5.md)", teacher: null },
   badges: [
     { id: "e11s5boss", name: "Science reporter", icon: "trophy", desc: "Finish the final lesson “Science and its impact”" }
   ],
@@ -44,7 +44,7 @@ SLID.section("eng", {
       title: "Biology, physics, IT: branches of science",
       short: "Branches of science",
       icon: "bulb",
-      status: "draft",
+      status: "verified",
       why: "Biology, geology or astronomy: which branch of science interests you? Learn the names of the sciences and of the people who work in them.",
       screens: [
         {
@@ -171,7 +171,7 @@ SLID.section("eng", {
       title: "In the lab: equipment and the people who work there",
       short: "In the lab",
       icon: "eye",
-      status: "draft",
+      status: "verified",
       why: "Who works in a laboratory, and what do they use? Learn the words for lab jobs and equipment.",
       screens: [
         {
@@ -312,7 +312,7 @@ SLID.section("eng", {
       title: "It has been discovered, it is being tested: the passive",
       short: "Passive tenses",
       icon: "chart",
-      status: "draft",
+      status: "verified",
       why: "Science news often says what has been done, not who did it. Use the passive in all the main tenses.",
       screens: [
         {
@@ -458,7 +458,7 @@ SLID.section("eng", {
       title: "It can be recycled, it must be tested: modals and the passive",
       short: "Modals + passive",
       icon: "shield",
-      status: "draft",
+      status: "verified",
       why: "Rules, possibilities and plans are often about things, not people. Use can, could, might, will, must and have to with the passive.",
       screens: [
         {
@@ -599,7 +599,7 @@ SLID.section("eng", {
       title: "Science and the environment: good or bad?",
       short: "Argue your view",
       icon: "leaf",
-      status: "draft",
+      status: "verified",
       why: "Has science helped the planet or harmed it? Learn words about the environment and argue your point of view.",
       screens: [
         {
@@ -748,7 +748,7 @@ SLID.section("eng", {
       title: "Science in Ukraine and abroad",
       short: "Ukrainian science",
       icon: "globe",
-      status: "draft",
+      status: "verified",
       why: "Read an article about Ukrainian science, from Kyiv to Antarctica and Geneva. Then use the passive to talk about it.",
       screens: [
         {
@@ -786,17 +786,17 @@ SLID.section("eng", {
           sk: "read",
           eyebrow: "Reading: Ukrainian science, part 1 of 3",
           title: "Read and choose.",
-          body: `<p><i>When I started this article, I knew very little about Ukrainian scientists. Here is what I found out. Ukrainian science has a long history. The Ukrainian Academy of Sciences was founded in Kyiv in 1918. Its first president was the scientist Volodymyr Vernadsky, who studied minerals and the Earth. Today it is called the National Academy of Sciences of Ukraine. Research is carried out in its many institutes, from physics and chemistry to biology and history.</i></p><p><i>For many years, the Academy was led by Borys Paton. He was born in Kyiv in 1918, the same year that the Academy was founded. Paton was an expert in welding, a way of joining metal. He was president of the Academy for 58 years, from 1962 to 2020. His father, Yevhen Paton, was a famous engineer too: a bridge over the Dnipro in Kyiv, opened in 1953, is named after him.</i></p><p>Which sentence is true?</p>`,
+          body: `<p><i>When I started this article, I knew very little about Ukrainian scientists. Here is what I found out. Ukrainian science has a long history. The Ukrainian Academy of Sciences was founded in Kyiv in 1918. Its first president was the scientist Volodymyr Vernadskyi, who studied minerals and the Earth. Today it is called the National Academy of Sciences of Ukraine. Research is carried out in its many institutes, from physics and chemistry to biology and history.</i></p><p><i>For many years, the Academy was led by Borys Paton. He was born in Kyiv in 1918, the same year that the Academy was founded. Paton was an expert in welding, a way of joining metal. He was president of the Academy for 58 years, from 1962 to 2020. His father, Yevhen Paton, was a famous engineer too: a bridge over the Dnipro in Kyiv, opened in 1953, is named after him.</i></p><p>Which sentence is true?</p>`,
           opts: [
             "Borys Paton was the first president of the Academy.",
-            "Volodymyr Vernadsky led the Academy for 58 years.",
+            "Volodymyr Vernadskyi led the Academy for 58 years.",
             "The Academy was founded in Kyiv in 1918."
           ],
           correct: 2,
           hint: "Find the words first president and 58 years in the text.",
           fbOk: "Right.",
           fbBad: "Who was the first president? Who led the Academy for 58 years?",
-          fbText: "The Academy <b>was founded in Kyiv in 1918</b>. Its first president was <b>Vernadsky</b>; <b>Paton</b> led it for 58 years."
+          fbText: "The Academy <b>was founded in Kyiv in 1918</b>. Its first president was <b>Vernadskyi</b>; <b>Paton</b> led it for 58 years."
         },
         {
           type: "multi",
@@ -902,7 +902,7 @@ SLID.section("eng", {
           body: `<p>Finish Andrii’s article with your own view. Use <i>has to</i> and the passive.</p>`,
           tiles: ["science", "has to", "be", "supported", "in Ukraine"],
           extra: ["support"],
-          answer: ["Science has to be supported in Ukraine.", "In Ukraine science has to be supported."],
+          answer: ["Science has to be supported in Ukraine.", "In Ukraine science has to be supported.", "Science in Ukraine has to be supported."],
           hint: "After has to be, which form of support do you need?",
           fbOk: "Brilliant!",
           fbBad: "After has to be: the third form.",
@@ -925,7 +925,7 @@ SLID.section("eng", {
       title: "Science Week: the club magazine",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e11s5boss",
       why: "Check everything from this section. Your points are doubled.",
