@@ -360,27 +360,27 @@
 | e10s1l4 As soon as, after, before: time clauses | 10 | 11 | 0.73 | 40 | 79 | 72 | 7.3 | 0.02 | 6 | — |
 | e10s1l5 A friend in need: helping each other | 10 | 11 | 0.64 | 45 | 100 | 97 | 7.5 | 0.063 | 5 | — |
 | e10s1l6 Can I say something? Solving a conflict | 10 | 12 | 0.67 | 44 | 116 | 111 | 6.4 | 0.104 | 6 | — |
-| e10s1l7 Friends again: relationships and conflicts (фінал) | 10 | 10 | 0.9 | 57 | 186 | 183 | 7 | 0.095 | 5 | readWordsPerScreen нетипово для сім'ї (z=2); maxReadWords нетипово для сім'ї (z=2.5); maxText нетипово для сім'ї (z=2.5) |
+| e10s1l7 Friends again: relationships and conflicts (фінал) | 10 | 10 | 0.9 | 57 | 186 | 183 | 7 | 0.095 | 5 | maxReadWords нетипово для сім'ї (z=2.4); maxText нетипово для сім'ї (z=2.4) |
 | e10s2l1 Why do people love sport? | 10 | 10 | 0.7 | 43 | 94 | 89 | 7.5 | 0.071 | 6 | — |
-| e10s2l2 Risk losing, refuse to give up: verb patterns | 10 | 12 | 0.67 | 38 | 99 | 94 | 6 | 0.03 | 6 | — |
+| e10s2l2 Risk losing, refuse to give up: verb patterns | 10 | 12 | 0.67 | 38 | 99 | 94 | 6 | 0.03 | 6 | sentenceWords нетипово для сім'ї (z=-2) |
 | e10s2l3 Big sports events in Ukraine and the world | 10 | 11 | 0.73 | 60 | 128 | 125 | 8.5 | 0.104 | 5 | — |
 | e10s2l4 Stop, remember, try: a change in meaning | 10 | 12 | 0.58 | 40 | 78 | 73 | 8.2 | 0.078 | 5 | — |
 | e10s2l5 Avoid injuries, keep moving: sport and health | 10 | 11 | 0.73 | 41 | 69 | 66 | 7 | 0.083 | 6 | — |
 | e10s2l6 Is sport good for everyone? Giving your opinion | 10 | 11 | 0.73 | 44 | 87 | 82 | 7.3 | 0.078 | 6 | — |
-| e10s2l7 Sports Week: the club magazine (фінал) | 10 | 8 | 0.88 | 30 | 42 | 39 | 7.3 | 0.058 | 5 | — |
-| e10s3l1 National dishes of Ukraine and the UK | 10 | 11 | 0.73 | 63 | 140 | 137 | 8.3 | 0.086 | 6 | readWordsPerScreen нетипово для сім'ї (z=2) |
+| e10s2l7 Sports Week: the club magazine (фінал) | 10 | 8 | 0.88 | 30 | 42 | 39 | 7.3 | 0.058 | 5 | screens нетипово для сім'ї (z=-2) |
+| e10s3l1 National dishes of Ukraine and the UK | 10 | 11 | 0.73 | 63 | 140 | 137 | 8.3 | 0.086 | 6 | — |
 | e10s3l2 Sweet, spicy or sour? Tastes and preferences | 10 | 11 | 0.73 | 40 | 77 | 71 | 6.1 | 0.051 | 6 | — |
 | e10s3l3 I used to love sweets, Grandma would bake: states and actions | 10 | 10 | 0.7 | 47 | 91 | 86 | 7.7 | 0.047 | 6 | — |
 | e10s3l4 Healthy food: what is good for you? | 10 | 11 | 0.64 | 41 | 89 | 86 | 7 | 0.075 | 6 | — |
 | e10s3l5 Bad habits and how to break them | 10 | 11 | 0.64 | 43 | 99 | 96 | 6.2 | 0.052 | 5 | — |
 | e10s3l6 I’m used to it: getting used to new food | 10 | 10 | 0.7 | 41 | 86 | 82 | 8.1 | 0.051 | 6 | — |
-| e10s3l7 Our food magazine (фінал) | 10 | 10 | 0.9 | 23 | 33 | 27 | 6.3 | 0.042 | 4 | — |
+| e10s3l7 Our food magazine (фінал) | 10 | 10 | 0.9 | 23 | 33 | 27 | 6.3 | 0.042 | 4 | longWordShare нетипово для сім'ї (z=-2) |
 | e10s4l1 Floods, storms, earthquakes: natural disasters | 10 | 11 | 0.73 | 48 | 91 | 89 | 7.7 | 0.066 | 6 | — |
 | e10s4l2 Look at those clouds! Will or going to? | 10 | 10 | 0.7 | 38 | 79 | 74 | 7.4 | 0.106 | 6 | — |
-| e10s4l3 Weather, health and mood | 10 | 9 | 0.67 | 46 | 83 | 76 | 7 | 0.021 | 6 | — |
+| e10s4l3 Weather, health and mood | 10 | 9 | 0.67 | 46 | 83 | 76 | 7 | 0.021 | 6 | screens нетипово для сім'ї (z=-2) |
 | e10s4l4 Temperatures will be falling: forecasts and warnings | 10 | 10 | 0.7 | 43 | 79 | 73 | 7.4 | 0.074 | 6 | — |
 | e10s4l5 By 2030 we will have…: the Future Perfect | 10 | 11 | 0.64 | 42 | 80 | 77 | 7.9 | 0.026 | 5 | — |
-| e10s4l6 Protecting nature in Ukraine and the UK | 10 | 10 | 0.7 | 67 | 140 | 137 | 8.3 | 0.094 | 5 | readWordsPerScreen=67 поза [8; 65]; readWordsPerScreen нетипово для сім'ї (z=2.5) |
+| e10s4l6 Protecting nature in Ukraine and the UK | 10 | 10 | 0.7 | 67 | 140 | 137 | 8.3 | 0.094 | 5 | readWordsPerScreen=67 поза [8; 65]; readWordsPerScreen нетипово для сім'ї (z=2.4) |
 | e10s4l7 Wild weather week at the penfriend club (фінал) | 10 | 9 | 0.89 | 25 | 40 | 37 | 7.1 | 0.076 | 3 | — |
 | e10s5l1 Portrait, landscape, still life: genres of painting | 10 | 11 | 0.64 | 39 | 82 | 77 | 7 | 0.048 | 6 | — |
 | e10s5l2 Famous artists and their paintings | 10 | 11 | 0.55 | 42 | 90 | 87 | 7.1 | 0.059 | 5 | — |
@@ -402,9 +402,9 @@
 | e10s7l4 Natural resources: so rich that… | 10 | 12 | 0.58 | 42 | 75 | 71 | 8.3 | 0.087 | 6 | — |
 | e10s7l5 Due to, owing to, therefore: reasons and results | 10 | 12 | 0.58 | 40 | 73 | 68 | 7.2 | 0.036 | 6 | — |
 | e10s7l6 Public holidays in Ukraine and the UK | 10 | 12 | 0.58 | 39 | 87 | 82 | 7.7 | 0.135 | 6 | — |
-| e10s7l7 Ukraine and the UK: two countries (фінал) | 10 | 12 | 0.83 | 52 | 141 | 138 | 8.3 | 0.136 | 5 | screens нетипово для сім'ї (z=2.1); sentenceWords нетипово для сім'ї (z=2.3); longWordShare нетипово для сім'ї (z=2) |
+| e10s7l7 Ukraine and the UK: two countries (фінал) | 10 | 12 | 0.83 | 52 | 141 | 138 | 8.3 | 0.136 | 5 | longWordShare нетипово для сім'ї (z=2.1) |
 | e10s8l1 Lyceum, college, university: where to study | 10 | 11 | 0.64 | 47 | 84 | 79 | 7.2 | 0.111 | 5 | — |
-| e10s8l2 After school: studying in Ukraine and abroad | 10 | 11 | 0.82 | 63 | 137 | 133 | 8.4 | 0.091 | 6 | gradedShare нетипово для сім'ї (z=2.6); readWordsPerScreen нетипово для сім'ї (z=2) |
+| e10s8l2 After school: studying in Ukraine and abroad | 10 | 11 | 0.82 | 63 | 137 | 133 | 8.4 | 0.091 | 6 | gradedShare нетипово для сім'ї (z=2.7) |
 | e10s8l3 Apply for, fill in, find out: phrasal and prepositional verbs | 10 | 11 | 0.64 | 40 | 80 | 76 | 7.4 | 0.048 | 6 | — |
 | e10s8l4 Fill it in: where the object goes | 10 | 11 | 0.64 | 35 | 71 | 66 | 6.7 | 0.029 | 6 | — |
 | e10s8l5 By Friday or until Friday? Time phrases | 10 | 11 | 0.73 | 36 | 79 | 74 | 7.3 | 0.055 | 5 | — |
@@ -416,42 +416,56 @@
 | e11s1l4 She admitted that…, he promised that…: reporting verbs | 11 | 12 | 0.58 | 44 | 95 | 91 | 7.7 | 0.104 | 6 | — |
 | e11s1l5 Tolerance, kindness and charity | 11 | 11 | 0.64 | 47 | 86 | 83 | 7.7 | 0.126 | 5 | — |
 | e11s1l6 Housework: is it fair? A family discussion | 11 | 12 | 0.67 | 52 | 125 | 122 | 7.3 | 0.094 | 5 | — |
-| e11s1l7 Fair play: rights, responsibilities and tolerance (фінал) | 11 | 10 | 0.9 | 58 | 132 | 129 | 7.5 | 0.077 | 4 | readWordsPerScreen нетипово для сім'ї (z=2.1) |
+| e11s1l7 Fair play: rights, responsibilities and tolerance (фінал) | 11 | 10 | 0.9 | 58 | 132 | 129 | 7.5 | 0.077 | 4 | — |
 | e11s2l1 Meals, snacks and drinks | 11 | 12 | 0.67 | 62 | 113 | 110 | 8.4 | 0.064 | 6 | — |
 | e11s2l2 Plenty of, hardly any: quantifiers | 11 | 11 | 0.64 | 36 | 74 | 70 | 6.1 | 0.058 | 6 | — |
 | e11s2l3 A few or few? A little or little? | 11 | 10 | 0.6 | 41 | 93 | 90 | 7.3 | 0.051 | 6 | — |
 | e11s2l4 Healthy and unhealthy food: what are your priorities? | 11 | 12 | 0.58 | 40 | 77 | 74 | 6.9 | 0.143 | 6 | — |
 | e11s2l5 Most of us, none of them: quantifiers with of | 11 | 10 | 0.6 | 42 | 85 | 82 | 7.6 | 0.048 | 6 | — |
-| e11s2l6 A family recipe, step by step | 11 | 12 | 0.67 | 65 | 150 | 147 | 7.9 | 0.049 | 6 | readWordsPerScreen нетипово для сім'ї (z=2.2); maxReadWords нетипово для сім'ї (z=2.3); maxText нетипово для сім'ї (z=2.4) |
+| e11s2l6 A family recipe, step by step | 11 | 12 | 0.67 | 65 | 150 | 147 | 7.9 | 0.049 | 6 | readWordsPerScreen нетипово для сім'ї (z=2.2); maxReadWords нетипово для сім'ї (z=2.1); maxText нетипово для сім'ї (z=2.1) |
 | e11s2l7 Our club cookbook (фінал) | 11 | 10 | 0.9 | 21 | 37 | 32 | 6 | 0.069 | 3 | — |
 | e11s3l1 Clubs for every interest | 11 | 10 | 0.7 | 47 | 94 | 87 | 7.7 | 0.109 | 6 | — |
 | e11s3l2 Cinema, theatre, TV or the internet? | 11 | 11 | 0.64 | 49 | 96 | 92 | 8.1 | 0.107 | 6 | — |
 | e11s3l3 A well-known actor, a two-hour film: compound adjectives | 11 | 12 | 0.67 | 43 | 93 | 91 | 8.1 | 0.148 | 6 | — |
-| e11s3l4 It was great, wasn’t it? Question tags | 11 | 12 | 0.67 | 36 | 83 | 80 | 5.3 | 0.07 | 6 | sentenceWords нетипово для сім'ї (z=-2.8) |
-| e11s3l5 My favourite film or show: a review | 11 | 12 | 0.83 | 65 | 166 | 161 | 8.8 | 0.073 | 6 | gradedShare нетипово для сім'ї (z=2.8); readWordsPerScreen нетипово для сім'ї (z=2.2); maxReadWords нетипово для сім'ї (z=3); maxText нетипово для сім'ї (z=2.9) |
-| e11s3l6 Really? Did you? Showing interest | 11 | 11 | 0.64 | 46 | 84 | 82 | 5 | 0.095 | 6 | sentenceWords нетипово для сім'ї (z=-3.2) |
+| e11s3l4 It was great, wasn’t it? Question tags | 11 | 12 | 0.67 | 36 | 83 | 80 | 5.3 | 0.07 | 6 | sentenceWords нетипово для сім'ї (z=-2.9) |
+| e11s3l5 My favourite film or show: a review | 11 | 12 | 0.83 | 65 | 166 | 161 | 8.8 | 0.073 | 6 | gradedShare нетипово для сім'ї (z=2.8); readWordsPerScreen нетипово для сім'ї (z=2.2); maxReadWords нетипово для сім'ї (z=2.8); maxText нетипово для сім'ї (z=2.7) |
+| e11s3l6 Really? Did you? Showing interest | 11 | 11 | 0.64 | 46 | 84 | 82 | 5 | 0.095 | 6 | sentenceWords нетипово для сім'ї (z=-3.3) |
 | e11s3l7 Film club night (фінал) | 11 | 10 | 0.9 | 27 | 47 | 44 | 6.4 | 0.097 | 5 | — |
 | e11s4l1 Kinds and genres of art | 11 | 11 | 0.64 | 37 | 82 | 79 | 7 | 0.092 | 6 | — |
 | e11s4l2 Learning from art: museums, galleries and theatres | 11 | 11 | 0.55 | 50 | 86 | 81 | 8.6 | 0.133 | 6 | — |
 | e11s4l3 Amazing or amazed? Art and emotions | 11 | 11 | 0.64 | 36 | 63 | 60 | 6.7 | 0.085 | 6 | — |
 | e11s4l4 Unusual, colourful, priceless: building adjectives | 11 | 12 | 0.58 | 37 | 67 | 58 | 6.5 | 0.19 | 5 | longWordShare нетипово для сім'ї (z=2.9) |
-| e11s4l5 Festivals in Ukraine and the UK | 11 | 12 | 0.5 | 51 | 117 | 113 | 8.4 | 0.125 | 6 | gradedShare нетипово для сім'ї (z=-2.2) |
-| e11s4l6 A festival review: how it made me feel | 11 | 12 | 0.83 | 64 | 150 | 147 | 7.9 | 0.074 | 6 | gradedShare нетипово для сім'ї (z=2.8); readWordsPerScreen нетипово для сім'ї (z=2.1); maxReadWords нетипово для сім'ї (z=2.3); maxText нетипово для сім'ї (z=2.4) |
+| e11s4l5 Festivals in Ukraine and the UK | 11 | 12 | 0.5 | 51 | 117 | 113 | 8.4 | 0.125 | 6 | gradedShare нетипово для сім'ї (z=-2.3) |
+| e11s4l6 A festival review: how it made me feel | 11 | 12 | 0.83 | 64 | 150 | 147 | 7.9 | 0.074 | 6 | gradedShare нетипово для сім'ї (z=2.8); readWordsPerScreen нетипово для сім'ї (z=2); maxReadWords нетипово для сім'ї (z=2.1); maxText нетипово для сім'ї (z=2.1) |
 | e11s4l7 Our arts and festivals magazine (фінал) | 11 | 10 | 0.9 | 28 | 49 | 42 | 5.7 | 0.118 | 6 | — |
 | e11s5l1 Biology, physics, IT: branches of science | 11 | 10 | 0.6 | 38 | 77 | 72 | 6.8 | 0.153 | 6 | — |
 | e11s5l2 In the lab: equipment and the people who work there | 11 | 12 | 0.58 | 42 | 108 | 101 | 6.8 | 0.143 | 6 | — |
 | e11s5l3 It has been discovered, it is being tested: the passive | 11 | 12 | 0.58 | 40 | 70 | 67 | 7.7 | 0.031 | 5 | — |
 | e11s5l4 It can be recycled, it must be tested: modals and the passive | 11 | 11 | 0.55 | 46 | 100 | 96 | 7.4 | 0.057 | 6 | — |
 | e11s5l5 Science and the environment: good or bad? | 11 | 11 | 0.55 | 51 | 123 | 119 | 8.2 | 0.097 | 5 | — |
-| e11s5l6 Science in Ukraine and abroad | 11 | 12 | 0.67 | 65 | 155 | 152 | 8.7 | 0.113 | 5 | readWordsPerScreen нетипово для сім'ї (z=2.2); maxReadWords нетипово для сім'ї (z=2.6); maxText нетипово для сім'ї (z=2.6) |
+| e11s5l6 Science in Ukraine and abroad | 11 | 12 | 0.67 | 65 | 155 | 152 | 8.7 | 0.113 | 5 | readWordsPerScreen нетипово для сім'ї (z=2.2); maxReadWords нетипово для сім'ї (z=2.3); maxText нетипово для сім'ї (z=2.3) |
 | e11s5l7 Science Week: the club magazine (фінал) | 11 | 10 | 0.9 | 24 | 37 | 28 | 7 | 0.102 | 4 | — |
 | e11s6l1 Kinds of tourism: active, cultural, green | 11 | 10 | 0.7 | 43 | 84 | 77 | 7.2 | 0.112 | 6 | — |
 | e11s6l2 Travelling around Ukraine: places to visit | 11 | 10 | 0.7 | 58 | 113 | 110 | 8 | 0.134 | 6 | — |
 | e11s6l3 Check in, look around, get on: travel verbs | 11 | 10 | 0.7 | 53 | 91 | 86 | 7.9 | 0.023 | 5 | — |
 | e11s6l4 Pick it up, look after it: phrasal or prepositional? | 11 | 12 | 0.58 | 44 | 86 | 80 | 7.2 | 0.048 | 6 | — |
 | e11s6l5 At first, then, eventually: the order of events | 11 | 11 | 0.64 | 41 | 82 | 77 | 7 | 0.075 | 5 | — |
-| e11s6l6 Beforehand and afterwards: a trip abroad | 11 | 10 | 0.7 | 65 | 147 | 142 | 8.6 | 0.072 | 6 | readWordsPerScreen нетипово для сім'ї (z=2.2); maxReadWords нетипово для сім'ї (z=2.2); maxText нетипово для сім'ї (z=2.1) |
+| e11s6l6 Beforehand and afterwards: a trip abroad | 11 | 10 | 0.7 | 65 | 148 | 143 | 8.6 | 0.072 | 6 | readWordsPerScreen нетипово для сім'ї (z=2.2); maxReadWords нетипово для сім'ї (z=2); maxText нетипово для сім'ї (z=2) |
 | e11s6l7 Travel week at the penfriend club (фінал) | 11 | 10 | 0.9 | 26 | 39 | 35 | 6.4 | 0.107 | 3 | — |
+| e11s7l1 Ukraine, the EU, the UN and the Council of Europe | 11 | 12 | 0.58 | 47 | 111 | 107 | 8.6 | 0.109 | 6 | — |
+| e11s7l2 Laws and rights: what the law says | 11 | 12 | 0.58 | 49 | 115 | 111 | 9 | 0.095 | 5 | sentenceWords нетипово для сім'ї (z=2) |
+| e11s7l3 Is it polite? Etiquette in different countries | 11 | 12 | 0.58 | 46 | 120 | 113 | 7.9 | 0.109 | 6 | — |
+| e11s7l4 Who or whom? Relative pronouns: an overview | 11 | 12 | 0.67 | 45 | 122 | 118 | 8 | 0.092 | 6 | — |
+| e11s7l5 We won, which surprised everyone: comments with which | 11 | 12 | 0.67 | 44 | 107 | 104 | 8.3 | 0.095 | 6 | — |
+| e11s7l6 Ukraine and English-speaking countries: events and people | 11 | 12 | 0.67 | 65 | 156 | 153 | 7.9 | 0.143 | 5 | readWordsPerScreen нетипово для сім'ї (z=2.2); maxReadWords нетипово для сім'ї (z=2.4); maxText нетипово для сім'ї (z=2.4) |
+| e11s7l7 Ukraine in the world: section final (фінал) | 11 | 10 | 0.9 | 47 | 121 | 118 | 8.3 | 0.088 | 4 | — |
+| e11s8l1 Final exams: getting ready | 11 | 12 | 0.67 | 55 | 91 | 87 | 8.3 | 0.106 | 5 | — |
+| e11s8l2 International programmes and exchanges | 11 | 12 | 0.75 | 64 | 166 | 163 | 8.8 | 0.095 | 6 | readWordsPerScreen нетипово для сім'ї (z=2); maxReadWords нетипово для сім'ї (z=2.8); maxText нетипово для сім'ї (z=2.8) |
+| e11s8l3 If I pass, if I passed, if I had passed: conditionals | 11 | 12 | 0.67 | 49 | 85 | 80 | 7.8 | 0.044 | 6 | — |
+| e11s8l4 Choosing a career: what suits you? | 11 | 12 | 0.67 | 55 | 136 | 130 | 8.3 | 0.108 | 6 | — |
+| e11s8l5 Prestigious jobs in Ukraine and abroad | 11 | 11 | 0.64 | 46 | 80 | 76 | 7.7 | 0.117 | 6 | — |
+| e11s8l6 Goodbye, school! Friends, plans and wishes | 11 | 12 | 0.75 | 46 | 98 | 95 | 6.9 | 0.078 | 6 | — |
+| e11s8l7 Ready for the future (фінал) | 11 | 12 | 0.83 | 50 | 117 | 114 | 7.8 | 0.085 | 4 | — |
 
 ## Середні по сім'ях (предмет + класи + звичайний урок / фінал)
 
@@ -463,5 +477,5 @@
 - **5-6:boss**: screens 7.22±0.42, gradedShare 0.86±0.01, readWordsPerScreen 23.17±3.39, maxReadWords 35.89±4.97, sentenceWords 5±0.31, longWordShare 0.07±0.02, typeVariety 3.72±0.56, maxText 29.33±5.14
 - **7-9:lesson**: screens 10.15±0.86, gradedShare 0.65±0.06, readWordsPerScreen 38.15±4.61, maxReadWords 71.87±10.13, sentenceWords 6.37±0.66, longWordShare 0.08±0.04, typeVariety 5.33±0.59, maxText 67.45±10.2
 - **7-9:boss**: screens 8.54±0.96, gradedShare 0.88±0.01, readWordsPerScreen 26.58±3.88, maxReadWords 44.13±8.79, sentenceWords 5.81±0.45, longWordShare 0.07±0.03, typeVariety 4.83±0.85, maxText 36.83±7.87
-- **10-11:lesson**: screens 11.14±0.74, gradedShare 0.65±0.07, readWordsPerScreen 45.67±8.65, maxReadWords 95.51±23.24, sentenceWords 7.43±0.75, longWordShare 0.08±0.04, typeVariety 5.71±0.45, maxText 91.25±23.65
-- **10-11:boss**: screens 9.93±0.8, gradedShare 0.89±0.02, readWordsPerScreen 32.43±12.45, maxReadWords 66±47.23, sentenceWords 6.76±0.64, longWordShare 0.09±0.02, typeVariety 4.57±1.05, maxText 61.21±48.19
+- **10-11:lesson**: screens 11.24±0.75, gradedShare 0.65±0.07, readWordsPerScreen 46.32±8.63, maxReadWords 98.03±24.48, sentenceWords 7.52±0.76, longWordShare 0.08±0.04, typeVariety 5.72±0.45, maxText 93.78±24.85
+- **10-11:boss**: screens 10.06±0.9, gradedShare 0.89±0.02, readWordsPerScreen 34.44±12.82, maxReadWords 72.63±47.54, sentenceWords 6.93±0.74, longWordShare 0.09±0.02, typeVariety 4.5±1, maxText 68.06±48.59
