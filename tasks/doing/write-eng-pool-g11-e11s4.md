@@ -1,16 +1,18 @@
 ---
-id: write-eng-pool-g11-e11s1
+claimed_from: todo
+claimed_at: 2026-11-27T12:09:38.517Z
+id: write-eng-pool-g11-e11s4
 type: write-pool
 subject: eng
 grade: 11
-section: e11s1
+section: e11s4
 status: todo
-claimed_by:
+claimed_by: writer-pe11s4
 created: 2026-11-27
 depends_on: []
 generated_by: tools/make-tasks.mjs --write-pool --subject eng
 ---
-# Зібрати пул тренування «Rights, responsibilities and tolerance» (Англійська мова, 11 клас, e11s1)
+# Зібрати пул тренування «Art and festivals» (Англійська мова, 11 клас, e11s4)
 
 ## Навіщо
 Пул — вправи для самостійного тренування після уроку з інтервальним повторенням (docs/PERSONALIZATION.md §3).
@@ -18,15 +20,15 @@ generated_by: tools/make-tasks.mjs --write-pool --subject eng
 Контракт полів — docs/CONTENT_SCHEMA.md §10, «Пули мовних предметів»; якщо він розходиться з цим текстом — правий CONTENT_SCHEMA. Рішення людини — docs/design/english.md §7, §11.1.
 
 ## Результат
-Один файл `content/eng/pool-g11-e11s1.js`: `SLID.pool("eng", { id: "pe11s1", section: "e11s1", status: "draft", meta: {…}, sources: [...], items: [...] })`. **id `pe11s1` і id вправ — ключі прогресу, не перейменовувати.**
+Один файл `content/eng/pool-g11-e11s4.js`: `SLID.pool("eng", { id: "pe11s4", section: "e11s4", status: "draft", meta: {…}, sources: [...], items: [...] })`. **id `pe11s4` і id вправ — ключі прогресу, не перейменовувати.**
 
 ## Уроки для покриття (без фіналу)
-- `e11s1l1` — Young people’s rights and responsibilities
-- `e11s1l2` — Good manners: how we behave and communicate
-- `e11s1l3` — The day before, the next day: reported speech
-- `e11s1l4` — She admitted that…, he promised that…: reporting verbs
-- `e11s1l5` — Tolerance, kindness and charity
-- `e11s1l6` — Housework: is it fair? A family discussion
+- `e11s4l1` — Kinds and genres of art
+- `e11s4l2` — Learning from art: museums, galleries and theatres
+- `e11s4l3` — Amazing or amazed? Art and emotions
+- `e11s4l4` — Unusual, colourful, priceless: building adjectives
+- `e11s4l5` — Festivals in Ukraine and the UK
+- `e11s4l6` — A festival review: how it made me feel
 
 ## Що зробити (скіли `math-pool-diag` — розділ про пули мовних предметів — і `content-author`, розділ про англійську)
 1. Прочитай уроки розділу повністю: лексика, граматика, приклади, `sk` екранів, `learned`. **Чесне завдання (D-019):** вправа тренує лише слова й граматику, яких урок навчив; нового правила пул не вчить.
@@ -37,10 +39,10 @@ generated_by: tools/make-tasks.mjs --write-pool --subject eng
 6. Глосарій і пастки — memory/long/glossary/eng.md, memory/long/facts/eng.md, memory/long/pitfalls-content.md «Англійська».
 
 ## Обмеження
-Змінюй лише `content/eng/pool-g11-e11s1.js`, цю задачу й дописуй inbox. build і check — оркестратор. Уроки розділу не правити — пропозиції в inbox.
+Змінюй лише `content/eng/pool-g11-e11s4.js`, цю задачу й дописуй inbox. build і check — оркестратор. Уроки розділу не правити — пропозиції в inbox.
 
 ## Готово, коли
-- [ ] `node tools/validate.mjs --pool pe11s1` і `node tools/personalization-qa.mjs --pool pe11s1` — 0 помилок; `status: "draft"`.
+- [ ] `node tools/validate.mjs --pool pe11s4` і `node tools/personalization-qa.mjs --pool pe11s4` — 0 помилок; `status: "draft"`.
 - [ ] Нотатки: таблиця «урок → кількість / рівні / типи», словники, за якими звірено форми; рядок в inbox.
 - [ ] Задача → `tasks/review/` для **content-verifier зі свіжим контекстом** (розв'язати кожну вправу, звірити форми за словником).
 

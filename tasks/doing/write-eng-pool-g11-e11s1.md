@@ -1,16 +1,18 @@
 ---
-id: write-eng-pool-g11-e11s2
+claimed_from: todo
+claimed_at: 2026-11-27T12:09:38.409Z
+id: write-eng-pool-g11-e11s1
 type: write-pool
 subject: eng
 grade: 11
-section: e11s2
+section: e11s1
 status: todo
-claimed_by:
+claimed_by: writer-pe11s1
 created: 2026-11-27
 depends_on: []
 generated_by: tools/make-tasks.mjs --write-pool --subject eng
 ---
-# Зібрати пул тренування «Food and recipes» (Англійська мова, 11 клас, e11s2)
+# Зібрати пул тренування «Rights, responsibilities and tolerance» (Англійська мова, 11 клас, e11s1)
 
 ## Навіщо
 Пул — вправи для самостійного тренування після уроку з інтервальним повторенням (docs/PERSONALIZATION.md §3).
@@ -18,15 +20,15 @@ generated_by: tools/make-tasks.mjs --write-pool --subject eng
 Контракт полів — docs/CONTENT_SCHEMA.md §10, «Пули мовних предметів»; якщо він розходиться з цим текстом — правий CONTENT_SCHEMA. Рішення людини — docs/design/english.md §7, §11.1.
 
 ## Результат
-Один файл `content/eng/pool-g11-e11s2.js`: `SLID.pool("eng", { id: "pe11s2", section: "e11s2", status: "draft", meta: {…}, sources: [...], items: [...] })`. **id `pe11s2` і id вправ — ключі прогресу, не перейменовувати.**
+Один файл `content/eng/pool-g11-e11s1.js`: `SLID.pool("eng", { id: "pe11s1", section: "e11s1", status: "draft", meta: {…}, sources: [...], items: [...] })`. **id `pe11s1` і id вправ — ключі прогресу, не перейменовувати.**
 
 ## Уроки для покриття (без фіналу)
-- `e11s2l1` — Meals, snacks and drinks
-- `e11s2l2` — Plenty of, hardly any: quantifiers
-- `e11s2l3` — A few or few? A little or little?
-- `e11s2l4` — Healthy and unhealthy food: what are your priorities?
-- `e11s2l5` — Most of us, none of them: quantifiers with of
-- `e11s2l6` — A family recipe, step by step
+- `e11s1l1` — Young people’s rights and responsibilities
+- `e11s1l2` — Good manners: how we behave and communicate
+- `e11s1l3` — The day before, the next day: reported speech
+- `e11s1l4` — She admitted that…, he promised that…: reporting verbs
+- `e11s1l5` — Tolerance, kindness and charity
+- `e11s1l6` — Housework: is it fair? A family discussion
 
 ## Що зробити (скіли `math-pool-diag` — розділ про пули мовних предметів — і `content-author`, розділ про англійську)
 1. Прочитай уроки розділу повністю: лексика, граматика, приклади, `sk` екранів, `learned`. **Чесне завдання (D-019):** вправа тренує лише слова й граматику, яких урок навчив; нового правила пул не вчить.
@@ -37,10 +39,10 @@ generated_by: tools/make-tasks.mjs --write-pool --subject eng
 6. Глосарій і пастки — memory/long/glossary/eng.md, memory/long/facts/eng.md, memory/long/pitfalls-content.md «Англійська».
 
 ## Обмеження
-Змінюй лише `content/eng/pool-g11-e11s2.js`, цю задачу й дописуй inbox. build і check — оркестратор. Уроки розділу не правити — пропозиції в inbox.
+Змінюй лише `content/eng/pool-g11-e11s1.js`, цю задачу й дописуй inbox. build і check — оркестратор. Уроки розділу не правити — пропозиції в inbox.
 
 ## Готово, коли
-- [ ] `node tools/validate.mjs --pool pe11s2` і `node tools/personalization-qa.mjs --pool pe11s2` — 0 помилок; `status: "draft"`.
+- [ ] `node tools/validate.mjs --pool pe11s1` і `node tools/personalization-qa.mjs --pool pe11s1` — 0 помилок; `status: "draft"`.
 - [ ] Нотатки: таблиця «урок → кількість / рівні / типи», словники, за якими звірено форми; рядок в inbox.
 - [ ] Задача → `tasks/review/` для **content-verifier зі свіжим контекстом** (розв'язати кожну вправу, звірити форми за словником).
 
