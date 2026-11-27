@@ -1,5 +1,5 @@
 /* Слід · Англійська мова, 11 клас — пул тренування до розділу e11s8 «Exams, careers and plans»
-   Статус: draft; автор writer-pe11s8, 2026-11-27. Уроки e11s8l1–e11s8l6, кожна пара (урок, sk) з оцінюваних екранів — ≥ 3 вправи
+   Статус: verified (verifier-pe11s7-pe11s8, 2026-11-27; reports/verify/write-eng-pool-g11-e11s8.md); автор writer-pe11s8, 2026-11-27. Уроки e11s8l1–e11s8l6, кожна пара (урок, sk) з оцінюваних екранів — ≥ 3 вправи
    рівнів 1–3 (hyp-здогадки e11s8l2 `cult` і e11s8l5 `vocab` мають і оцінювані екрани); boss e11s8l7 без вправ.
    Джерело — програма класу (program: true): П1407 (наказ МОН № 1407 від 23.10.2017), спеціалізовані школи, 11 кл.:
    с. 23 — функції: порівнювати, висловлювати побажання, підводити підсумки обговорення, завершувати розмову (l5, l6);
@@ -24,8 +24,8 @@
 SLID.pool("eng", {
   id: "pe11s8",
   section: "e11s8",
-  status: "draft",
-  meta: { author: "writer-pe11s8", created: "2026-11-27", factcheck: null, teacher: null },
+  status: "verified",
+  meta: { author: "writer-pe11s8", created: "2026-11-27", factcheck: "verifier-pe11s7-pe11s8, 2026-11-27 (reports/verify/write-eng-pool-g11-e11s8.md)", teacher: null },
   sources: [
     { id: "p1407", short: "П1407", program: true,
       title: "Навчальна програма «Іноземні мови. 10–11 класи (рівень стандарту, профільний рівень)», наказ МОН від 23.10.2017 № 1407 — спеціалізовані школи, 11 клас: функції (с. 23), лексика (с. 24), граматика (с. 25)",
@@ -46,7 +46,7 @@ SLID.pool("eng", {
     { id: "a03", lesson: "e11s8l1", lvl: 3, sk: "vocab", src: "p1407 с. 24",
       type: "word", title: "Write the missing word.",
       body: "<p>In a practice test, you need 100 points to pass. Bohdan got only 90.</p>",
-      before: "Bohdan", after: "the practice test, so he’s going to do another one.",
+      before: "Bohdan", after: "the practice test yesterday, so he’s going to do another one.",
       answer: ["failed", "didn’t pass", "did not pass"],
       hint: "pass ↔ ? And it happened in the past.",
       steps: ["pass ↔ <b>fail</b>; 90 points isn’t enough.", "It’s a finished action: Bohdan <b>failed</b> the practice test."] },
@@ -119,7 +119,7 @@ SLID.pool("eng", {
       type: "gaps", title: "Complete the sentences.",
       body: "<p>Zoriana writes a post for the penfriend club.</p>",
       text: "I {*’ve been revising|revised|revise} since January, and I {*’ve done|did|do} ten practice tests so far. I {*’ve never been|never was|’m never being} to the test centre, so I’m going to find it on a map tonight.",
-      hint: "Look at the time words: since, so far, never… before.",
+      hint: "Look at the time words: since, so far, never.",
       steps: ["<i>since January</i>, still going → <b>’ve been revising</b>; <i>so far</i> → a result now: <b>’ve done</b>.", "experience up to now → <b>’ve never been</b>."] },
     { id: "a16", lesson: "e11s8l1", lvl: 3, sk: "write", src: "p1407 с. 25",
       type: "gaps", title: "Complete the sentences.",
@@ -258,7 +258,7 @@ SLID.pool("eng", {
       body: "<p>Bohdan left home late and missed the bus. Start with If.</p>",
       tiles: ["if", "Bohdan", "had left", "home earlier,", "he", "wouldn’t have missed", "the bus"],
       extra: ["would leave"],
-      answer: "If Bohdan had left home earlier, he wouldn’t have missed the bus.",
+      answer: ["If Bohdan had left home earlier, he wouldn’t have missed the bus.", "If he had left home earlier, Bohdan wouldn’t have missed the bus."],
       hint: "A different past: if + had + the third form.",
       steps: ["<b>If Bohdan had left home earlier, he wouldn’t have missed the bus.</b>", "if + Past Perfect, wouldn’t have + the third form; no would in the if part."] },
     { id: "a38", lesson: "e11s8l3", lvl: 1, sk: "write", src: "p1407 с. 25",
@@ -350,7 +350,7 @@ SLID.pool("eng", {
     { id: "a52", lesson: "e11s8l4", lvl: 1, sk: "write", src: "p1407 с. 25",
       type: "gaps", title: "Complete the sentences.",
       body: "<p>Zoriana writes to Emma.</p>",
-      text: "I’ve made up my {*mind|head}: I’m going to apply for computer science. The university’s open day is on Saturday, and I{*’m going|go} with my mum.",
+      text: "After a long talk with my mum, I’ve finally made up my {*mind|head}. Computer science is the course for me! The university’s open day is on Saturday, and I{*’m going|go} with my mum.",
       steps: ["make up your <b>mind</b> → decide.", "an arrangement → the Present Continuous: <b>I’m going</b> with my mum."] },
     { id: "a53", lesson: "e11s8l4", lvl: 2, sk: "write", src: "p1407 с. 25",
       type: "gaps", title: "Complete the sentences.",
@@ -405,10 +405,10 @@ SLID.pool("eng", {
       steps: ["Something bad about a job → <b>One disadvantage is that</b>…", "<b>It depends on</b> the person (it → -s)."] },
     { id: "a62", lesson: "e11s8l5", lvl: 2, sk: "func", src: "p1407 с. 23",
       type: "match", title: "Match the halves.",
-      left: ["The main advantage of working from home", "It depends", "For me, interesting work matters", "One disadvantage of being a pilot"],
-      right: ["is that you don’t travel to the office.", "on the person.", "more than a big salary.", "is that you’re often away from home."],
+      left: ["The main advantage of working from home", "It depends", "For me, interesting work matters", "One disadvantage of being a farmer"],
+      right: ["is that you don’t travel to the office.", "on the person.", "more than a big salary.", "is that you get up very early."],
       hint: "Which half goes with depends? Which one is about something bad?",
-      steps: ["working from home → <b>you don’t travel to the office</b>; It depends → <b>on the person</b>.", "matters → <b>more than a big salary</b>; a pilot → <b>often away from home</b>."] },
+      steps: ["working from home → <b>you don’t travel to the office</b>; It depends → <b>on the person</b>.", "matters → <b>more than a big salary</b>; a farmer → <b>you get up very early</b>."] },
     { id: "a63", lesson: "e11s8l5", lvl: 3, sk: "func", src: "p1407 с. 23",
       type: "build", title: "Put the words in order.",
       body: "<p>Oksana talks about being a vet. Start with One.</p>",
@@ -456,13 +456,13 @@ SLID.pool("eng", {
     { id: "a71", lesson: "e11s8l5", lvl: 2, sk: "write", src: "p1407 с. 23",
       type: "gaps", title: "Complete the sentences.",
       body: "<p>Bohdan writes about being a wind turbine technician.</p>",
-      text: "The main {*advantage|disadvantage|salary} of this job is that you help the environment. It isn’t as well paid {*as|than|like} some IT jobs, but technicians are in demand. For me, a job I enjoy matters more {*than|as|that} a big salary.",
+      text: "The main {*advantage|disadvantage|salary} of this job is that you help the environment. It probably won’t be as well paid {*as|than|like} some other jobs, but technicians are in demand. For me, a job I enjoy matters more {*than|as|that} a big salary.",
       hint: "Look at the box “Comparing jobs” again.",
       steps: ["something good → <b>the main advantage</b>; <b>not as … as</b>.", "matters more <b>than</b> a big salary."] },
     { id: "a72", lesson: "e11s8l5", lvl: 3, sk: "write", src: "p1407 с. 24",
       type: "gaps", title: "Complete the sentences.",
       body: "<p>Emma writes about the jobs she has wanted.</p>",
-      text: "Being a doctor is a {*prestigious|competitive|in demand} job: people respect and admire doctors. Doctors are {*highly|high|highest} skilled, and many hospitals need them, so they’re {*in demand|in salary|demand}. It’s also hard to get a place to study medicine because so many students apply: it’s very {*competitive|highly|salary}. It depends {*on|of|from} the person, but for me, helping people matters most.",
+      text: "Now I’d like to be a doctor. It’s a {*prestigious|competitive|in demand} job: people respect and admire doctors very much. Doctors train for many years, so they are {*highly|high|highest} skilled people, and many hospitals need them, so they’re {*in demand|in salary|demand}. It’s also hard to get a place to study medicine because so many students apply: it’s very {*competitive|highly|salary}. It depends {*on|of|from} the person, but for me, helping people matters most.",
       hint: "Read the end of each sentence carefully. Then look at the box “Talking about prestigious jobs”.",
       steps: ["respected and admired → <b>prestigious</b>; <b>highly</b> skilled; many hospitals need them → <b>in demand</b>.", "many students apply → <b>competitive</b>; It depends <b>on</b> the person."] },
 
@@ -558,8 +558,8 @@ SLID.pool("eng", {
     { id: "a87", lesson: "e11s8l6", lvl: 3, sk: "write", src: "p1407 с. 23",
       type: "gaps", title: "Complete the sentences.",
       body: "<p>Zoriana writes a post for the class chat.</p>",
-      text: "{*All in all|All of all|In all all}, it’s been an amazing year. So we all {*agree|agreeing|agrees} to meet in the school yard in August. I {*wish|hope} I could stop time, but I {*hope|wish} you all get great scores. It’s been great being in your class. Let’s keep in {*touch|touching|mind}!",
+      text: "{*All in all|All of all|In all all}, it’s been a busy but happy year. So we all {*agree|agreeing|agrees} that our class was the best! I {*wish|hope} I could stop time, but I {*hope|wish} you all get great scores. Let’s keep in {*touch|touched|touches}!",
       hint: "Look at the boxes “Hopes and wishes” and “Summing up and ending a conversation”.",
-      steps: ["<b>All in all</b>, …; So we all <b>agree</b> to…", "<b>wish</b> I could (not possible); <b>hope</b> you get (a possible future); keep in <b>touch</b>."] }
+      steps: ["<b>All in all</b>, …; So we all <b>agree</b> that…", "<b>wish</b> I could (not possible); <b>hope</b> you get (a possible future); keep in <b>touch</b>."] }
   ]
 });

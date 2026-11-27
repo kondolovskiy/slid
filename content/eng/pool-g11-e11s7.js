@@ -1,5 +1,5 @@
 /* Слід · Англійська мова, 11 клас — пул тренування до розділу e11s7 «Ukraine in the world»
-   Статус: draft; автор writer-pe11s7, 2026-11-27. Уроки e11s7l1–e11s7l6, кожна пара (урок, sk) з оцінюваних екранів — ≥ 3 вправи
+   Статус: verified (verifier-pe11s7-pe11s8, 2026-11-27; reports/verify/write-eng-pool-g11-e11s7.md); автор writer-pe11s7, 2026-11-27. Уроки e11s7l1–e11s7l6, кожна пара (урок, sk) з оцінюваних екранів — ≥ 3 вправи
    рівнів 1–3; e11s7l6 `cult` — лише hyp-здогадка, пари немає; boss e11s7l7 без вправ.
    Джерело — програма класу (program: true): П1407 (наказ МОН № 1407 від 23.10.2017), спеціалізовані школи, 11 кл.:
    с. 23 — функції: порівнювати звичаї й традиції (l3), підводити підсумки обговорення (l6);
@@ -25,8 +25,8 @@
 SLID.pool("eng", {
   id: "pe11s7",
   section: "e11s7",
-  status: "draft",
-  meta: { author: "writer-pe11s7", created: "2026-11-27", factcheck: null, teacher: null },
+  status: "verified",
+  meta: { author: "writer-pe11s7", created: "2026-11-27", factcheck: "verifier-pe11s7-pe11s8, 2026-11-27 (reports/verify/write-eng-pool-g11-e11s7.md)", teacher: null },
   sources: [
     { id: "p1407", short: "П1407", program: true,
       title: "Навчальна програма «Іноземні мови. 10–11 класи (рівень стандарту, профільний рівень)», наказ МОН від 23.10.2017 № 1407 — спеціалізовані школи, 11 клас: функції (с. 23), лексика (с. 24), граматика (с. 25)",
@@ -43,7 +43,7 @@ SLID.pool("eng", {
       type: "word", title: "Write the missing word.",
       body: "<p>In 2022, Ukraine officially asked to become a member of the EU.</p>",
       before: "In 2022, Ukraine applied to", after: "the EU.",
-      answer: "join",
+      answer: ["join", "enter"],
       hint: "Look at the list “International organisations” again.",
       steps: ["<b>apply to join</b> → officially ask to become a member.", "In 2022, Ukraine applied to <b>join</b> the EU."] },
     { id: "a03", lesson: "e11s7l1", lvl: 3, sk: "vocab", src: "p1407 с. 24",
@@ -379,9 +379,9 @@ SLID.pool("eng", {
     { id: "a55", lesson: "e11s7l5", lvl: 3, sk: "write", src: "p1407 с. 25",
       type: "gaps", title: "Complete the sentences.",
       body: "<p>Mariia ends her blog post.</p>",
-      text: "Last spring, I had a lot of exams, {*which|what|that} is why I watched only the final. My mum, {*who|which|what} doesn’t usually like pop music, watched it too. The UK hosted the contest on behalf of Ukraine, {*which|who|what} was very kind.",
+      text: "Last spring, I had a lot of exams, {*which|what|that} is why I watched only the final. My mum, {*who|which|what} doesn’t usually like pop music, watched it too. Our neighbours invited us to watch it on their big TV, {*which|who|what} was very kind.",
       hint: "Remember the box “Useful comments with which”.",
-      steps: ["…, <b>which is why</b> I watched only the final (the exams were the reason).", "My mum, <b>who</b>… (a person); …, <b>which</b> was very kind (a comment)."] },
+      steps: ["…, <b>which is why</b> I watched only the final (the exams were the reason).", "My mum, <b>who</b>… (a person); …, <b>which</b> was very kind (a comment on the whole sentence: the invitation was kind)."] },
 
     /* ───────────── e11s7l6 · Ukraine and English-speaking countries: events and people ───────────── */
     { id: "a56", lesson: "e11s7l6", lvl: 1, sk: "read", src: "p1407 с. 24",
