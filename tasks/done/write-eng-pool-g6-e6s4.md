@@ -6,7 +6,7 @@ type: write-pool
 subject: eng
 grade: 6
 section: e6s4
-status: review
+status: done
 claimed_by: writer-pe6s4
 created: 2026-11-27
 depends_on: []
@@ -83,3 +83,6 @@ Boss l7 — без вправ.
 2. a30 — варіант «swim» у тексті не згадано (стандартний дистрактор читання).
 3. a65 — висновок «2–2, потім гол Andrii → перемога» (рівень 3).
 4. a75 — дистрактор «June 2024» (sports day Emma) — пастка з уроку l6.
+
+### verifier-pe6s3-pe6s4, 2026-11-27
+Незалежна верифікація: reports/verify/write-eng-pool-g6-e6s4.md. Пул → `status: "verified"` після мінімальних правок (перелік — у звіті §6). validate --pool pe6s4 — 0 помилок, 0 попереджень. Build не запускав.

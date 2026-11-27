@@ -1,5 +1,5 @@
 /* Слід · Англійська мова, 6 клас — пул вправ для тренування до розділу «Food traditions and dishes» (e6s3)
-   Статус: draft (автор writer-pe6s3, 2026-11-27). Уроки e6s3l1–e6s3l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e6s3l7 без вправ.
+   Статус: verified (автор writer-pe6s3, 2026-11-27; верифікатор verifier-pe6s3-pe6s4, reports/verify/write-eng-pool-g6-e6s3.md). Уроки e6s3l1–e6s3l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e6s3l7 без вправ.
    Вправи власні (docs/design/english.md §8): лише слова, форми й правила уроків e6s3 і попередніх розділів; англійською, британська норма (D-055).
    Джерело — програма класу (program: true): МП-ІМ, 6 кл. — тема «Харчування»: традиції харчування, назви страв (с. 20);
    читання A2 — меню, прості рецепти (с. 16); граматика A2 — Imperatives, Adverbs: sequencing (с. 21);
@@ -10,8 +10,8 @@
 SLID.pool("eng", {
   id: "pe6s3",
   section: "e6s3",
-  status: "draft",
-  meta: { author: "writer-pe6s3", created: "2026-11-27", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "writer-pe6s3", created: "2026-11-27", factcheck: "verifier-pe6s3-pe6s4 (reports/verify/write-eng-pool-g6-e6s3.md)", teacher: null },
   sources: [
     { id: "mpim", program: true, title: "Модельна навчальна програма «Іноземна мова. 5–9 класи» (Редько В. Г., Шаленко О. П., Сотникова С. І. та ін.), наказ МОН від 12.07.2021 № 795 — 6 клас (с. 16, 20–22)", url: "https://osvita.ua/doc/files/news/831/83117/Inoz_mov_5-9-kl_Redko_ta_in_14_07.pdf" }
   ],
@@ -55,8 +55,8 @@ SLID.pool("eng", {
       steps: ["A sweet dish at the end of a meal is a <b>dessert</b>: two letters <i>s</i>."] },
     { id: "a07", lesson: "e6s3l1", lvl: 1, sk: "phon", src: "mpim с. 20",
       type: "stress", title: "Find the stressed syllable.",
-      words: ["+star|ter", "+ov|en"],
-      steps: ["<u>star</u>ter, <u>ov</u>en: the first part is strong."] },
+      words: ["+ov|en", "des|+sert"],
+      steps: ["<u>ov</u>en: the first part is strong.", "des<u>sert</u>: the second part is strong."] },
     { id: "a08", lesson: "e6s3l1", lvl: 2, sk: "phon", src: "mpim с. 20",
       type: "stress", title: "Find the stressed syllable.",
       words: ["des|+sert", "+star|ter", "+men|u"],
@@ -376,7 +376,7 @@ SLID.pool("eng", {
       steps: ["<b>Did</b> you try…? – Yes, I <b>did</b>. <b>Do</b> you like…? – Yes, I <b>do</b>.", "Did <b>Tom</b>…? – Yes, <b>he</b> did. <b>What</b> did you eat? – Varenyky."] },
     { id: "a57", lesson: "e6s3l5", lvl: 1, sk: "write", src: "mpim с. 22",
       type: "build", title: "Put the words in order.",
-      body: "<p>Mariia didn’t like the fish at the café. She writes to Oksana.</p>",
+      body: "<p>Mariia didn’t like the fish at the café. She writes to Oksana. Start with I.</p>",
       tiles: ["I", "didn’t", "like", "the fish"],
       answer: "I didn’t like the fish.",
       extra: ["liked"],
@@ -451,9 +451,9 @@ SLID.pool("eng", {
     { id: "a68", lesson: "e6s3l6", lvl: 3, sk: "write", src: "mpim с. 22",
       type: "word", title: "Write the missing word.",
       body: "<p>eat → ?</p><p>Tom loves scones!</p>",
-      before: "Last Sunday, Tom", after: "four scones at afternoon tea!",
+      before: "Last Saturday, Tom", after: "four scones at afternoon tea!",
       answer: "ate",
-      hint: "Last Sunday, Tom did it: the past. Not eaten!",
-      steps: ["<i>Scones are eaten</i> tells us about the food. Here Tom does it.", "Last Sunday: eat → <b>ate</b>. Tom <b>ate</b> four scones."] }
+      hint: "Last Saturday is in the past. Is the sentence about the scones or about Tom?",
+      steps: ["<i>Scones are eaten</i> tells us about the food. Here Tom does it.", "Last Saturday: eat → <b>ate</b>. Tom <b>ate</b> four scones."] }
   ]
 });

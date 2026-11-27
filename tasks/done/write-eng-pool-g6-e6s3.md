@@ -6,7 +6,7 @@ type: write-pool
 subject: eng
 grade: 6
 section: e6s3
-status: review
+status: done
 claimed_by: writer-pe6s3
 created: 2026-11-27
 depends_on: []
@@ -81,3 +81,6 @@ Boss l7 — без вправ.
 2. a05 / a12: деруни — «main course» (меню l1), хоч це теж pancakes — пастка рівня 3 з уроку.
 3. a28 «Then cook them in the hot water for ten minutes» — побутова деталь рецепта (варені яйця), «Ask an adult» не повторював.
 4. a64 «roast {meat|cake}» і «sandwiches and {scones|borscht}» — дистрактори безглузді, а не граматичні.
+
+### verifier-pe6s3-pe6s4, 2026-11-27
+Незалежна верифікація: reports/verify/write-eng-pool-g6-e6s3.md. Пул → `status: "verified"` після мінімальних правок (перелік — у звіті §6). validate --pool pe6s3 — 0 помилок, 0 попереджень. Build не запускав.
