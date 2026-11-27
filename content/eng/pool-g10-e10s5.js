@@ -1,9 +1,10 @@
 /* Слід · Англійська мова, 10 клас — пул тренування до розділу e10s5 «Painting and Ukrainian artists»
-   Статус: draft; автор writer-pe10s5, 2026-11-27. Уроки e10s5l1–e10s5l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e10s5l7 без вправ.
+   Статус: verified (verifier-pe10s5, 2026-11-27; reports/verify/write-eng-pool-g10-e10s5.md); автор writer-pe10s5, 2026-11-27. Уроки e10s5l1–e10s5l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e10s5l7 без вправ.
    Джерело — програма класу (program: true): П1407 (наказ МОН № 1407 від 23.10.2017; спеціалізовані школи, B1 → B2), 10 кл.:
    с. 22 — тема «Живопис»: жанри живопису; відомі художники та їхні твори; відвідування музею, виставки або галереї; українські
    митці; функція — описувати події в логічній послідовності, висловлюючи власну точку зору; с. 23 — граматика: Past Perfect
-   Continuous (контраст з Past Perfect і Past Continuous), пасив Past Simple (повторення).
+   Continuous (контраст з Past Perfect і Past Continuous). Пасив Past Simple (повторення e7s7l2) у граматиці с. 23 не названо —
+   вправи на пасив (a16–a18, a22–a24) посилаються на тему с. 22 «відомі художники та їхні твори» (verifier-pe10s5).
    Вправи власні (docs/design/english.md §8): лише слова, форми й правила уроків content/eng/g10-e10s5.js і раніших розділів (D-019);
    рамки уроків з тим самим ключем не повторюються. Факти (Turner, Constable, The Fighting Temeraire, The Hay Wain, голосування 2005,
    банкнота £20, National Gallery — «belong to / are kept»; Kateryna Bilokur, Maria Prymachenko — D-057, Oleksandr Murashko) — лише
@@ -17,8 +18,8 @@
 SLID.pool("eng", {
   id: "pe10s5",
   section: "e10s5",
-  status: "draft",
-  meta: { author: "writer-pe10s5", created: "2026-11-27", factcheck: null, teacher: null },
+  status: "verified",
+  meta: { author: "writer-pe10s5", created: "2026-11-27", factcheck: "verifier-pe10s5, 2026-11-27 (reports/verify/write-eng-pool-g10-e10s5.md)", teacher: null },
   sources: [
     { id: "p1407", short: "П1407", program: true,
       title: "Навчальна програма «Іноземні мови. 10–11 класи (рівень стандарту, профільний рівень)», наказ МОН від 23.10.2017 № 1407 — спеціалізовані школи, 10 клас: тема (с. 22), граматика (с. 23)",
@@ -118,17 +119,17 @@ SLID.pool("eng", {
       correct: 0,
       hint: "Find what happened in London and what happened in Paris.",
       steps: ["In London in 1821, <b>nobody bought it</b>.", "The gold medal came later, <b>in Paris</b>. The text doesn’t say Constable painted it there."] },
-    { id: "a16", lesson: "e10s5l2", lvl: 1, sk: "gram", src: "p1407 с. 23",
+    { id: "a16", lesson: "e10s5l2", lvl: 1, sk: "gram", src: "p1407 с. 22",
       type: "gaps", title: "Complete the sentences with the Past Simple passive.",
       text: "The Fighting Temeraire {*was painted|was paint|were painted} by Turner. Both paintings {*were painted|was painted|were paint} by English artists.",
       steps: ["The paintings didn’t do the action: <b>was / were</b> + the third form.", "One painting → <b>was painted</b>. Two paintings → <b>were painted</b>."] },
-    { id: "a17", lesson: "e10s5l2", lvl: 2, sk: "gram", src: "p1407 с. 23",
+    { id: "a17", lesson: "e10s5l2", lvl: 2, sk: "gram", src: "p1407 с. 22",
       type: "gaps", title: "Fill in the gaps.",
       body: "<p>Ruby writes about The Fighting Temeraire.</p>",
       text: "Turner {*painted|was painted} The Fighting Temeraire. In 2005, it {*was voted|voted} the greatest painting in Britain. Today, it is {*kept|keeping} in the National Gallery.",
       hint: "In each sentence, ask: is the person or the painting more important? Who did the action?",
       steps: ["Turner did the action → <b>painted</b>.", "People voted, the painting didn’t → it <b>was voted</b>. Today → the present passive: it is <b>kept</b>."] },
-    { id: "a18", lesson: "e10s5l2", lvl: 3, sk: "gram", src: "p1407 с. 23",
+    { id: "a18", lesson: "e10s5l2", lvl: 3, sk: "gram", src: "p1407 с. 22",
       type: "word", title: "Write the missing words.",
       body: "<p>Use the Past Simple passive of <i>show</i>.</p>",
       before: "The Fighting Temeraire", after: "for the first time in 1839.",
@@ -152,14 +153,14 @@ SLID.pool("eng", {
       text: "Turner is [!famous] for his skies, and Constable is known [of] his paintings of the countryside. Both of them painted [!masterpieces].",
       hint: "Look at the little words after famous and known.",
       steps: ["Not <s>known of</s>, but <b>known for</b>: like <i>famous for</i>.", "“Constable is known for his paintings of the countryside.”"] },
-    { id: "a22", lesson: "e10s5l2", lvl: 1, sk: "write", src: "p1407 с. 23",
+    { id: "a22", lesson: "e10s5l2", lvl: 1, sk: "write", src: "p1407 с. 22",
       type: "build", title: "Put the words in order.",
       body: "<p>Write a caption for a poster. The painting is more important.</p>",
       tiles: ["The Fighting Temeraire", "was painted", "by", "J. M. W. Turner"],
       extra: ["painted"],
-      answer: ["The Fighting Temeraire was painted by J. M. W. Turner.", "By J. M. W. Turner The Fighting Temeraire was painted."],
+      answer: "The Fighting Temeraire was painted by J. M. W. Turner.",
       steps: ["The painting first, then <b>was painted by</b> + the person.", "<b>The Fighting Temeraire was painted by J. M. W. Turner.</b>"] },
-    { id: "a23", lesson: "e10s5l2", lvl: 2, sk: "write", src: "p1407 с. 23",
+    { id: "a23", lesson: "e10s5l2", lvl: 2, sk: "write", src: "p1407 с. 22",
       type: "build", title: "Put the words in order.",
       body: "<p>Ruby writes about the two paintings for the class blog.</p>",
       tiles: ["both", "paintings", "are kept", "in the National Gallery"],
@@ -167,7 +168,7 @@ SLID.pool("eng", {
       answer: ["Both paintings are kept in the National Gallery.", "In the National Gallery both paintings are kept."],
       hint: "The paintings don’t do the action. Which passive form do you need?",
       steps: ["The present passive: <b>are</b> + the third form: <b>are kept</b>.", "<b>Both paintings are kept in the National Gallery.</b>"] },
-    { id: "a24", lesson: "e10s5l2", lvl: 3, sk: "write", src: "p1407 с. 23",
+    { id: "a24", lesson: "e10s5l2", lvl: 3, sk: "write", src: "p1407 с. 22",
       type: "gaps", title: "Complete the sentences.",
       body: "<p>Emma writes about The Fighting Temeraire for the class blog.</p>",
       text: "The Fighting Temeraire {*was painted|painted|was paint} by J. M. W. Turner. It {*shows|is shown|was shown} an old warship on the River Thames. Turner is famous {*for|of|in} his bright skies.",
@@ -322,7 +323,7 @@ SLID.pool("eng", {
     { id: "a48", lesson: "e10s5l4", lvl: 3, sk: "write", src: "p1407 с. 23",
       type: "gaps", title: "Complete the sentences.",
       body: "<p>Emma writes about a visit to a museum in her town with Grandad.</p>",
-      text: "We {*had been standing|have been standing} in the queue for half an hour when the doors finally opened. Grandad {*had known|had been knowing} the guide since school, so she showed us round. By lunch, we {*had seen|had been seeing} twenty old paintings.",
+      text: "We {*had been standing|have been standing} outside the museum for half an hour when the doors finally opened. Grandad {*had known|had been knowing} the guide since school, so she showed us round. By lunch, we {*had seen|had been seeing} twenty old paintings.",
       hint: "The story is in the past. Is know an action? Twenty paintings: how long or how many?",
       steps: ["How long, up to a past moment → <b>had been standing</b>.", "know doesn’t take -ing → <b>had known</b>.", "Twenty paintings – how many → <b>had seen</b>."] },
 

@@ -1,5 +1,5 @@
 /* Слід · Англійська мова, 10 клас — пул тренування до розділу e10s6 «Science and technology»
-   Статус: draft; автор writer-pe10s6, 2026-11-27. Уроки e10s6l1–e10s6l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e10s6l7 без вправ.
+   Статус: verified (verifier-pe10s6, 2026-11-27; reports/verify/write-eng-pool-g10-e10s6.md); автор writer-pe10s6, 2026-11-27. Уроки e10s6l1–e10s6l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e10s6l7 без вправ.
    Джерело — програма класу (program: true): П1407 (наказ МОН № 1407 від 23.10.2017; спеціалізовані школи, B1 → B2), 10 кл.:
    с. 22 — тема «Наука і технічний прогрес»: комп’ютерне обладнання; сучасні засоби комунікації та інформації; вплив науки на
    розвиток суспільства; функції — давати поради, реагувати на поради інших, аргументувати свою точку зору; с. 23 — граматика:
@@ -18,8 +18,8 @@
 SLID.pool("eng", {
   id: "pe10s6",
   section: "e10s6",
-  status: "draft",
-  meta: { author: "writer-pe10s6", created: "2026-11-27", factcheck: null, teacher: null },
+  status: "verified",
+  meta: { author: "writer-pe10s6", created: "2026-11-27", factcheck: "verifier-pe10s6, 2026-11-27 (reports/verify/write-eng-pool-g10-e10s6.md)", teacher: null },
   sources: [
     { id: "p1407", short: "П1407", program: true,
       title: "Навчальна програма «Іноземні мови. 10–11 класи (рівень стандарту, профільний рівень)», наказ МОН від 23.10.2017 № 1407 — спеціалізовані школи, 10 клас: тема (с. 22), граматика (с. 23)",
@@ -142,7 +142,7 @@ SLID.pool("eng", {
       steps: ["Ukraine launched <b>Diia</b> in February <b>2020</b>.", "Since 2021, a digital passport in the app has been equal to an ordinary one inside Ukraine."] },
     { id: "a18", lesson: "e10s6l2", lvl: 2, sk: "cult", src: "p1407 с. 22",
       type: "multi", title: "Choose all the correct answers.",
-      body: "<p>Kyrylo asks: “What can people do with Diia?”</p>",
+      body: "<p>Kyrylo is making a poster about Diia for the club magazine. Which things can people do with it?</p>",
       opts: ["keep digital documents, for example an ID card", "use many government services online", "cross a border with a digital passport", "make free video calls to any country"],
       correct: [0, 1],
       hint: "Two answers are correct. Diia is a government app and website.",
@@ -193,7 +193,7 @@ SLID.pool("eng", {
     /* ───────────── e10s6l3 · If the battery dies…: real conditions ───────────── */
     { id: "a26", lesson: "e10s6l3", lvl: 1, sk: "gram", src: "p1407 с. 23",
       type: "gaps", title: "Fill in the gaps.",
-      text: "If it {*snows|will snow} tomorrow, we’ll stay at home. If you {*finish|will finish} early, you can call me.",
+      text: "If it {*snows|will snow} tomorrow, we’ll stay at home. If you {*finish|will finish} early, you can come to the park with us.",
       steps: ["After <i>if</i>: the Present Simple, no <i>will</i>.", "If it <b>snows</b>…, if you <b>finish</b>…"] },
     { id: "a27", lesson: "e10s6l3", lvl: 1, sk: "gram", src: "p1407 с. 23",
       type: "build", title: "Put the words in order.",
@@ -230,7 +230,7 @@ SLID.pool("eng", {
     { id: "a32", lesson: "e10s6l3", lvl: 1, sk: "write", src: "p1407 с. 23",
       type: "gaps", title: "Complete the sentences.",
       body: "<p>Ostap writes to his mum from the mountains.</p>",
-      text: "If it {*rains|will rain} tomorrow, we’ll stay in the hut. If there’s a signal at the top, I {*might|might to} send you a video.",
+      text: "If it {*rains|will rain} tomorrow, we’ll play cards in the hut. If there’s a signal at the top, I {*might|might to} send you a video.",
       steps: ["After <i>if</i>: the Present Simple → if it <b>rains</b>.", "No <i>to</i> after might: I <b>might</b> send."] },
     { id: "a33", lesson: "e10s6l3", lvl: 2, sk: "write", src: "p1407 с. 23",
       type: "build", title: "Put the words in order.",
@@ -307,7 +307,7 @@ SLID.pool("eng", {
     /* ───────────── e10s6l5 · If I were you, I’d…: giving advice ───────────── */
     { id: "a44", lesson: "e10s6l5", lvl: 1, sk: "gram", src: "p1407 с. 23",
       type: "gaps", title: "Fill in the gaps.",
-      text: "If I {*were|am} you, I’d switch off the notifications. I {*wouldn’t|won’t} play games till midnight if I were you.",
+      text: "If I {*were|am} you, I’d switch off the notifications. I {*wouldn’t|won’t} lend your laptop to anyone if I were you.",
       steps: ["Advice → <b>If I were you</b>, I’d…", "Negative advice → I <b>wouldn’t</b> + verb."] },
     { id: "a45", lesson: "e10s6l5", lvl: 2, sk: "gram", src: "p1407 с. 23",
       type: "word", title: "Write the missing word.",
@@ -320,14 +320,14 @@ SLID.pool("eng", {
     { id: "a46", lesson: "e10s6l5", lvl: 3, sk: "gram", src: "p1407 с. 23",
       type: "pick", title: "Find the mistake.",
       body: "<p>One word in Emma’s advice is wrong.</p>",
-      text: "[!If I were you], I [will] back up the photos first. Then I’d [!delete] the old videos.",
+      text: "[!If I were you], I [will] save your photos on a USB stick. Then I’d [!delete] them from your phone.",
       hint: "Advice with if I were you is imagined. Which form goes in the other part?",
       steps: ["Not <s>If I were you, I will</s>, but <b>If I were you, I’d</b> (I would).", "<i>Then I’d delete</i> is correct."] },
     { id: "a47", lesson: "e10s6l5", lvl: 1, sk: "func", src: "p1407 с. 22",
       type: "match", title: "Match the problems and the advice.",
       left: ["My laptop is very slow.", "I can’t find my USB stick.", "Someone I don’t know wants my password.", "My phone battery always dies by lunch."],
-      right: ["If I were you, I’d delete the games you don’t play.", "I’d look in your school bag if I were you.", "I wouldn’t answer if I were you.", "If I were you, I’d take a charger to school."],
-      steps: ["A slow laptop → delete old games. A lost USB stick → look in your bag.", "A stranger wants your password → <b>don’t answer</b>. A battery that dies → take a <b>charger</b>."] },
+      right: ["If I were you, I’d delete the games you don’t play.", "I’d look in your school bag if I were you.", "I wouldn’t send it to them if I were you.", "If I were you, I’d take a charger to school."],
+      steps: ["A slow laptop → delete old games. A lost USB stick → look in your bag.", "A stranger wants your password → <b>don’t send it</b>. A battery that dies → take a <b>charger</b>."] },
     { id: "a48", lesson: "e10s6l5", lvl: 2, sk: "func", src: "p1407 с. 22",
       type: "choice", title: "Read the dialogue and choose the best answer.",
       body: "<p><b>Kyrylo:</b> I always forget to charge my phone. What would you do if you were me?<br><b>Zoriana:</b> If I were you, I’d charge it every night before bed.<br><b>Kyrylo:</b> …</p><p>Kyrylo has never thought of this idea, and he likes it. What does he say?</p>",
@@ -351,7 +351,7 @@ SLID.pool("eng", {
       body: "<p>Daryna gives Bohdan advice. Start with <b>if</b>.</p>",
       tiles: ["if I were you,", "I’d", "switch off", "the notifications", "at night"],
       extra: ["I’ll"],
-      answer: "If I were you, I’d switch off the notifications at night.",
+      answer: ["If I were you, I’d switch off the notifications at night.", "If I were you, at night I’d switch off the notifications."],
       hint: "If I were you, then I + would or will?",
       steps: ["Advice → <b>If I were you, I’d</b> + verb. Not <s>I’ll</s>.", "<b>If I were you, I’d switch off the notifications at night.</b>"] },
     { id: "a52", lesson: "e10s6l5", lvl: 3, sk: "write", src: "p1407 с. 23",
