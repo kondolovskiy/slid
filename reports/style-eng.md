@@ -107,7 +107,7 @@
 | e5s7l3 Next to, opposite, between: where is it? | 5 | 9 | 0.67 | 26 | 59 | 55 | 5.9 | 0.101 | 5 | — |
 | e5s7l4 Excuse me, where is the bus stop? | 5 | 10 | 0.7 | 34 | 59 | 54 | 5.5 | 0.029 | 6 | — |
 | e5s7l5 A walk around the town with a map | 5 | 9 | 0.78 | 29 | 62 | 59 | 5.1 | 0.056 | 5 | — |
-| e5s7l6 My town: history and culture | 5 | 10 | 0.7 | 30 | 53 | 50 | 5.2 | 0.105 | 5 | — |
+| e5s7l6 My town: history and culture | 5 | 10 | 0.7 | 31 | 53 | 50 | 5.2 | 0.109 | 5 | — |
 | e5s7l7 Welcome to our town! (фінал) | 5 | 7 | 0.86 | 21 | 33 | 23 | 5 | 0.08 | 3 | — |
 | e5s8l1 First, second, third: ordinal numbers | 5 | 9 | 0.56 | 28 | 53 | 50 | 4.4 | 0.062 | 5 | — |
 | e5s8l2 When’s your birthday? Months and dates | 5 | 9 | 0.67 | 24 | 46 | 45 | 4.9 | 0.076 | 5 | — |
@@ -326,7 +326,7 @@
 | e9s5l5 Why do teenagers join clubs? The reason why… | 9 | 11 | 0.73 | 39 | 73 | 68 | 5.4 | 0.036 | 5 | — |
 | e9s5l6 Join our club! A poster and an online invitation | 9 | 10 | 0.7 | 41 | 80 | 77 | 5.4 | 0.067 | 5 | — |
 | e9s5l7 The club fair (фінал) | 9 | 10 | 0.9 | 30 | 59 | 47 | 5.8 | 0.045 | 4 | — |
-| e9s6l1 Famous scientists and inventors | 9 | 10 | 0.6 | 30 | 60 | 56 | 5.5 | 0.171 | 6 | longWordShare нетипово для сім'ї (z=2.7) |
+| e9s6l1 Famous scientists and inventors | 9 | 10 | 0.6 | 31 | 69 | 66 | 5.5 | 0.175 | 6 | longWordShare нетипово для сім'ї (z=2.8) |
 | e9s6l2 Who invented it? It was invented by… | 9 | 12 | 0.58 | 32 | 54 | 52 | 5.7 | 0.175 | 5 | longWordShare нетипово для сім'ї (z=2.8) |
 | e9s6l3 From the telephone to the smartphone | 9 | 11 | 0.55 | 36 | 55 | 52 | 6.3 | 0.061 | 5 | — |
 | e9s6l4 How is it made? How is it used? | 9 | 11 | 0.64 | 32 | 56 | 52 | 5.7 | 0.06 | 6 | — |
@@ -347,7 +347,7 @@
 | e9s8l5 If we had left earlier…: the Third Conditional | 9 | 11 | 0.73 | 38 | 82 | 77 | 7.5 | 0.043 | 5 | — |
 | e9s8l6 A city guide for a friend from abroad | 9 | 9 | 0.78 | 48 | 81 | 78 | 6.6 | 0.052 | 5 | gradedShare нетипово для сім'ї (z=2); readWordsPerScreen нетипово для сім'ї (z=2.1) |
 | e9s8l7 Cities of Ukraine and the world (фінал) | 9 | 10 | 0.9 | 27 | 50 | 39 | 6.3 | 0.091 | 5 | — |
-| e9s9l1 I think…, In my opinion…: giving opinions | 9 | 11 | 0.64 | 34 | 75 | 70 | 5.9 | 0.145 | 6 | longWordShare нетипово для сім'ї (z=2) |
+| e9s9l1 I think…, In my opinion…: giving opinions | 9 | 11 | 0.64 | 34 | 75 | 70 | 5.9 | 0.145 | 6 | — |
 | e9s9l2 I agree, but…: agreeing and disagreeing politely | 9 | 10 | 0.7 | 37 | 73 | 69 | 6.3 | 0.063 | 6 | — |
 | e9s9l3 Sorry to interrupt, but…: joining a discussion | 9 | 10 | 0.6 | 42 | 79 | 73 | 6.1 | 0.095 | 5 | — |
 | e9s9l4 Although, however, so: linking ideas | 9 | 11 | 0.64 | 37 | 65 | 61 | 6.9 | 0.074 | 5 | — |
@@ -384,7 +384,7 @@
 | e10s4l7 Wild weather week at the penfriend club (фінал) | 10 | 9 | 0.89 | 25 | 40 | 37 | 7.1 | 0.076 | 3 | — |
 | e10s5l1 Portrait, landscape, still life: genres of painting | 10 | 11 | 0.64 | 39 | 82 | 77 | 7 | 0.048 | 6 | — |
 | e10s5l2 Famous artists and their paintings | 10 | 11 | 0.55 | 42 | 90 | 87 | 7.1 | 0.059 | 5 | — |
-| e10s5l3 Ukrainian artists and their works | 10 | 11 | 0.55 | 42 | 83 | 79 | 7.3 | 0.139 | 5 | — |
+| e10s5l3 Ukrainian artists and their works | 10 | 11 | 0.55 | 42 | 84 | 80 | 7.4 | 0.144 | 5 | — |
 | e10s5l4 She had been painting for years: the Past Perfect Continuous | 10 | 12 | 0.58 | 46 | 88 | 82 | 7.5 | 0.062 | 5 | — |
 | e10s5l5 A visit to a museum, an exhibition or a gallery | 10 | 11 | 0.73 | 65 | 139 | 136 | 8.5 | 0.063 | 6 | readWordsPerScreen нетипово для сім'ї (z=2.1) |
 | e10s5l6 My favourite painting: describing a picture | 10 | 11 | 0.64 | 38 | 67 | 63 | 6.4 | 0.08 | 6 | — |
@@ -426,7 +426,7 @@
 | e11s2l7 Our club cookbook (фінал) | 11 | 10 | 0.9 | 21 | 37 | 32 | 6.2 | 0.065 | 3 | — |
 | e11s3l1 Clubs for every interest | 11 | 10 | 0.7 | 47 | 94 | 87 | 7.7 | 0.11 | 6 | — |
 | e11s3l2 Cinema, theatre, TV or the internet? | 11 | 11 | 0.64 | 49 | 96 | 92 | 8.1 | 0.107 | 6 | — |
-| e11s3l3 A well-known actor, a two-hour film: compound adjectives | 11 | 12 | 0.67 | 43 | 93 | 91 | 8.1 | 0.149 | 6 | — |
+| e11s3l3 A well-known actor, a two-hour film: compound adjectives | 11 | 12 | 0.67 | 44 | 93 | 91 | 8.2 | 0.153 | 6 | — |
 | e11s3l4 It was great, wasn’t it? Question tags | 11 | 12 | 0.67 | 36 | 83 | 80 | 5.3 | 0.07 | 6 | sentenceWords нетипово для сім'ї (z=-2.9) |
 | e11s3l5 My favourite film or show: a review | 11 | 12 | 0.83 | 65 | 166 | 161 | 8.8 | 0.073 | 6 | gradedShare нетипово для сім'ї (z=2.8); readWordsPerScreen нетипово для сім'ї (z=2.1); maxReadWords нетипово для сім'ї (z=2.8); maxText нетипово для сім'ї (z=2.7) |
 | e11s3l6 Really? Did you? Showing interest | 11 | 11 | 0.64 | 46 | 84 | 82 | 5 | 0.095 | 6 | sentenceWords нетипово для сім'ї (z=-3.3) |
@@ -443,7 +443,7 @@
 | e11s5l3 It has been discovered, it is being tested: the passive | 11 | 12 | 0.58 | 40 | 70 | 67 | 7.7 | 0.031 | 5 | — |
 | e11s5l4 It can be recycled, it must be tested: modals and the passive | 11 | 11 | 0.55 | 46 | 100 | 96 | 7.4 | 0.057 | 6 | — |
 | e11s5l5 Science and the environment: good or bad? | 11 | 11 | 0.55 | 51 | 123 | 119 | 8.2 | 0.097 | 5 | — |
-| e11s5l6 Science in Ukraine and abroad | 11 | 12 | 0.67 | 65 | 155 | 152 | 8.7 | 0.114 | 5 | readWordsPerScreen нетипово для сім'ї (z=2.1); maxReadWords нетипово для сім'ї (z=2.3); maxText нетипово для сім'ї (z=2.3) |
+| e11s5l6 Science in Ukraine and abroad | 11 | 12 | 0.67 | 65 | 155 | 152 | 8.7 | 0.116 | 5 | readWordsPerScreen нетипово для сім'ї (z=2.1); maxReadWords нетипово для сім'ї (z=2.3); maxText нетипово для сім'ї (z=2.3) |
 | e11s5l7 Science Week: the club magazine (фінал) | 11 | 10 | 0.9 | 24 | 37 | 28 | 7 | 0.102 | 4 | — |
 | e11s6l1 Kinds of tourism: active, cultural, green | 11 | 10 | 0.7 | 43 | 84 | 77 | 7.2 | 0.112 | 6 | — |
 | e11s6l2 Travelling around Ukraine: places to visit | 11 | 10 | 0.7 | 58 | 113 | 110 | 8 | 0.134 | 6 | — |
@@ -453,17 +453,17 @@
 | e11s6l6 Beforehand and afterwards: a trip abroad | 11 | 10 | 0.7 | 67 | 149 | 146 | 8.6 | 0.072 | 6 | readWordsPerScreen=67 поза [8; 65]; readWordsPerScreen нетипово для сім'ї (z=2.4); maxReadWords нетипово для сім'ї (z=2.1); maxText нетипово для сім'ї (z=2.1) |
 | e11s6l7 Travel week at the penfriend club (фінал) | 11 | 10 | 0.9 | 26 | 39 | 35 | 6.7 | 0.103 | 3 | — |
 | e11s7l1 Ukraine, the EU, the UN and the Council of Europe | 11 | 12 | 0.58 | 47 | 111 | 107 | 8.6 | 0.109 | 6 | — |
-| e11s7l2 Laws and rights: what the law says | 11 | 12 | 0.58 | 49 | 115 | 111 | 9 | 0.096 | 5 | sentenceWords нетипово для сім'ї (z=2) |
+| e11s7l2 Laws and rights: what the law says | 11 | 12 | 0.58 | 49 | 115 | 111 | 9 | 0.096 | 5 | — |
 | e11s7l3 Is it polite? Etiquette in different countries | 11 | 12 | 0.58 | 46 | 122 | 115 | 7.9 | 0.108 | 6 | — |
 | e11s7l4 Who or whom? Relative pronouns: an overview | 11 | 12 | 0.67 | 45 | 122 | 118 | 8 | 0.092 | 6 | — |
-| e11s7l5 We won, which surprised everyone: comments with which | 11 | 12 | 0.67 | 44 | 109 | 106 | 8.2 | 0.093 | 6 | — |
-| e11s7l6 Ukraine and English-speaking countries: events and people | 11 | 12 | 0.67 | 65 | 156 | 153 | 7.9 | 0.143 | 5 | readWordsPerScreen нетипово для сім'ї (z=2.1); maxReadWords нетипово для сім'ї (z=2.4); maxText нетипово для сім'ї (z=2.4) |
+| e11s7l5 We won, which surprised everyone: comments with which | 11 | 12 | 0.67 | 45 | 109 | 106 | 8.2 | 0.097 | 6 | — |
+| e11s7l6 Ukraine and English-speaking countries: events and people | 11 | 12 | 0.67 | 65 | 156 | 153 | 7.9 | 0.147 | 5 | readWordsPerScreen нетипово для сім'ї (z=2.1); maxReadWords нетипово для сім'ї (z=2.4); maxText нетипово для сім'ї (z=2.4) |
 | e11s7l7 Our class project: Ukraine in the world (фінал) | 11 | 10 | 0.9 | 47 | 121 | 118 | 8.3 | 0.088 | 4 | — |
 | e11s8l1 Final exams: getting ready | 11 | 12 | 0.67 | 55 | 91 | 87 | 8.3 | 0.106 | 5 | — |
 | e11s8l2 International programmes and exchanges | 11 | 12 | 0.75 | 64 | 168 | 165 | 8.9 | 0.096 | 6 | readWordsPerScreen нетипово для сім'ї (z=2); maxReadWords нетипово для сім'ї (z=2.8); maxText нетипово для сім'ї (z=2.8) |
 | e11s8l3 If I pass, if I passed, if I had passed: conditionals | 11 | 12 | 0.67 | 49 | 85 | 80 | 7.8 | 0.045 | 6 | — |
 | e11s8l4 Choosing a career: what suits you? | 11 | 12 | 0.67 | 55 | 136 | 130 | 8.3 | 0.106 | 6 | — |
-| e11s8l5 Prestigious jobs in Ukraine and abroad | 11 | 11 | 0.64 | 46 | 80 | 76 | 7.7 | 0.117 | 6 | — |
+| e11s8l5 Prestigious jobs in Ukraine and abroad | 11 | 11 | 0.64 | 47 | 80 | 76 | 7.7 | 0.115 | 6 | — |
 | e11s8l6 Goodbye, school! Friends, plans and wishes | 11 | 12 | 0.75 | 46 | 98 | 95 | 6.9 | 0.078 | 6 | — |
 | e11s8l7 Ready for the future (фінал) | 11 | 12 | 0.83 | 50 | 117 | 114 | 7.8 | 0.085 | 4 | — |
 
@@ -473,9 +473,9 @@
 
 - **4:lesson**: screens 9.13±0.67, gradedShare 0.62±0.06, readWordsPerScreen 26.19±2.86, maxReadWords 47.38±5.45, sentenceWords 4.67±0.39, longWordShare 0.06±0.04, typeVariety 4.5±0.61, maxText 43.23±5.66
 - **4:boss**: screens 7±0, gradedShare 0.86±0, readWordsPerScreen 23.63±1.73, maxReadWords 36.13±3.48, sentenceWords 4.84±0.26, longWordShare 0.04±0.01, typeVariety 3.75±0.83, maxText 30.25±3.6
-- **5-6:lesson**: screens 9.52±0.67, gradedShare 0.65±0.07, readWordsPerScreen 30.54±4.18, maxReadWords 55.15±8, sentenceWords 5.26±0.58, longWordShare 0.06±0.03, typeVariety 5.06±0.68, maxText 50.65±7.76
+- **5-6:lesson**: screens 9.52±0.67, gradedShare 0.65±0.07, readWordsPerScreen 30.55±4.18, maxReadWords 55.15±8, sentenceWords 5.26±0.58, longWordShare 0.06±0.03, typeVariety 5.06±0.68, maxText 50.65±7.76
 - **5-6:boss**: screens 7.22±0.42, gradedShare 0.86±0.01, readWordsPerScreen 23.17±3.39, maxReadWords 35.89±4.97, sentenceWords 5±0.31, longWordShare 0.07±0.02, typeVariety 3.72±0.56, maxText 29.33±5.14
-- **7-9:lesson**: screens 10.15±0.86, gradedShare 0.65±0.06, readWordsPerScreen 38.15±4.61, maxReadWords 71.87±10.13, sentenceWords 6.37±0.66, longWordShare 0.08±0.04, typeVariety 5.33±0.59, maxText 67.45±10.2
+- **7-9:lesson**: screens 10.15±0.86, gradedShare 0.65±0.06, readWordsPerScreen 38.16±4.6, maxReadWords 71.93±10.08, sentenceWords 6.37±0.66, longWordShare 0.08±0.04, typeVariety 5.33±0.59, maxText 67.52±10.15
 - **7-9:boss**: screens 8.54±0.96, gradedShare 0.88±0.01, readWordsPerScreen 26.58±3.88, maxReadWords 44.13±8.79, sentenceWords 5.81±0.45, longWordShare 0.07±0.03, typeVariety 4.83±0.85, maxText 36.83±7.87
-- **10-11:lesson**: screens 11.24±0.75, gradedShare 0.65±0.07, readWordsPerScreen 46.34±8.68, maxReadWords 98.1±24.59, sentenceWords 7.52±0.76, longWordShare 0.09±0.04, typeVariety 5.72±0.45, maxText 93.88±25
+- **10-11:lesson**: screens 11.24±0.75, gradedShare 0.65±0.07, readWordsPerScreen 46.38±8.67, maxReadWords 98.11±24.58, sentenceWords 7.52±0.76, longWordShare 0.09±0.04, typeVariety 5.72±0.45, maxText 93.89±25
 - **10-11:boss**: screens 10.06±0.9, gradedShare 0.89±0.02, readWordsPerScreen 34.88±13.7, maxReadWords 73.75±49.12, sentenceWords 7.02±0.68, longWordShare 0.09±0.02, typeVariety 4.5±1, maxText 69.19±50.17
