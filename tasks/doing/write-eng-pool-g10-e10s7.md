@@ -1,16 +1,18 @@
 ---
-id: write-eng-pool-g10-e10s8
+claimed_from: todo
+claimed_at: 2026-11-27T12:02:17.529Z
+id: write-eng-pool-g10-e10s7
 type: write-pool
 subject: eng
 grade: 10
-section: e10s8
+section: e10s7
 status: todo
-claimed_by:
+claimed_by: writer-pe10s7
 created: 2026-11-27
 depends_on: []
 generated_by: tools/make-tasks.mjs --write-pool --subject eng
 ---
-# Зібрати пул тренування «Education and careers» (Англійська мова, 10 клас, e10s8)
+# Зібрати пул тренування «Ukraine and English-speaking countries» (Англійська мова, 10 клас, e10s7)
 
 ## Навіщо
 Пул — вправи для самостійного тренування після уроку з інтервальним повторенням (docs/PERSONALIZATION.md §3).
@@ -18,15 +20,15 @@ generated_by: tools/make-tasks.mjs --write-pool --subject eng
 Контракт полів — docs/CONTENT_SCHEMA.md §10, «Пули мовних предметів»; якщо він розходиться з цим текстом — правий CONTENT_SCHEMA. Рішення людини — docs/design/english.md §7, §11.1.
 
 ## Результат
-Один файл `content/eng/pool-g10-e10s8.js`: `SLID.pool("eng", { id: "pe10s8", section: "e10s8", status: "draft", meta: {…}, sources: [...], items: [...] })`. **id `pe10s8` і id вправ — ключі прогресу, не перейменовувати.**
+Один файл `content/eng/pool-g10-e10s7.js`: `SLID.pool("eng", { id: "pe10s7", section: "e10s7", status: "draft", meta: {…}, sources: [...], items: [...] })`. **id `pe10s7` і id вправ — ключі прогресу, не перейменовувати.**
 
 ## Уроки для покриття (без фіналу)
-- `e10s8l1` — Lyceum, college, university: where to study
-- `e10s8l2` — After school: studying in Ukraine and abroad
-- `e10s8l3` — Apply for, fill in, find out: phrasal and prepositional verbs
-- `e10s8l4` — Fill it in: where the object goes
-- `e10s8l5` — By Friday or until Friday? Time phrases
-- `e10s8l6` — Modern jobs and the skills they need
+- `e10s7l1` — How Ukraine is organised: regions and the capital
+- `e10s7l2` — Who makes the laws? Parliament, president, government
+- `e10s7l3` — How the UK is governed
+- `e10s7l4` — Natural resources: so rich that…
+- `e10s7l5` — Due to, owing to, therefore: reasons and results
+- `e10s7l6` — Public holidays in Ukraine and the UK
 
 ## Що зробити (скіли `math-pool-diag` — розділ про пули мовних предметів — і `content-author`, розділ про англійську)
 1. Прочитай уроки розділу повністю: лексика, граматика, приклади, `sk` екранів, `learned`. **Чесне завдання (D-019):** вправа тренує лише слова й граматику, яких урок навчив; нового правила пул не вчить.
@@ -37,10 +39,10 @@ generated_by: tools/make-tasks.mjs --write-pool --subject eng
 6. Глосарій і пастки — memory/long/glossary/eng.md, memory/long/facts/eng.md, memory/long/pitfalls-content.md «Англійська».
 
 ## Обмеження
-Змінюй лише `content/eng/pool-g10-e10s8.js`, цю задачу й дописуй inbox. build і check — оркестратор. Уроки розділу не правити — пропозиції в inbox.
+Змінюй лише `content/eng/pool-g10-e10s7.js`, цю задачу й дописуй inbox. build і check — оркестратор. Уроки розділу не правити — пропозиції в inbox.
 
 ## Готово, коли
-- [ ] `node tools/validate.mjs --pool pe10s8` і `node tools/personalization-qa.mjs --pool pe10s8` — 0 помилок; `status: "draft"`.
+- [ ] `node tools/validate.mjs --pool pe10s7` і `node tools/personalization-qa.mjs --pool pe10s7` — 0 помилок; `status: "draft"`.
 - [ ] Нотатки: таблиця «урок → кількість / рівні / типи», словники, за якими звірено форми; рядок в inbox.
 - [ ] Задача → `tasks/review/` для **content-verifier зі свіжим контекстом** (розв'язати кожну вправу, звірити форми за словником).
 
