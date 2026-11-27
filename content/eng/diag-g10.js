@@ -1,5 +1,6 @@
 /* Слід · Англійська мова, 10 клас — тест рівня «What do you know?» (dge10)
-   Статус: draft — автор writer-write-eng-diag-g10, 2026-11-26.
+   Статус: verified — автор writer-write-eng-diag-g10, 2026-11-26; верифікатор verifier-write-eng-diag-g10, 2026-11-26
+   (правки №14, 19, 21–23, 25–28 — reports/verify/write-eng-diag-g10.md).
    10 тем-передумов (уроки 9 кл. і наскрізна граматика й лексика 6–8 кл., по 2 завдання: базове → складніше)
    + 8 тем 10 класу (по 1 завданню на розділ e10s1–e10s8) = 28 завдань.
    Передумови — уроки, на які посилаються requires розділів 10 кл. (файли content/eng/g10-*.js);
@@ -17,8 +18,8 @@ SLID.diag("eng", {
   grade: 10,
   title: "What do you know?",
   why: "Let’s see what you remember from your English lessons and what you already know. Then we can plan your lessons.",
-  status: "draft",
-  meta: { author: "writer-write-eng-diag-g10", created: "2026-11-26", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "writer-write-eng-diag-g10", created: "2026-11-26", factcheck: "verifier-write-eng-diag-g10 (reports/verify/write-eng-diag-g10.md)", teacher: null },
   topics: [
     // передумови: уроки 9 кл. і наскрізна граматика й лексика 6–8 кл. (requires розділів 10 кл.)
     { id: "pers", title: "Honest, easy-going, open-minded", kind: "pre", lessons: ["e6s1l4", "e9s1l2"], for: ["e10s1"] },
@@ -174,7 +175,7 @@ SLID.diag("eng", {
       type: "gaps",
       sk: "gram",
       title: "Fill in the gaps.",
-      body: "<p>Last Sunday, Mariia was in the garden from two to four. At three, her phone rang.</p>",
+      body: "<p>Last Sunday, Mariia was in the garden from two to four. At three, her friend called her.</p>",
       text: "Mariia {*was reading|were reading|was read} a book in the garden when her phone {*rang|ringed|was ring}. While she {*was talking|were talking|was talk} to her friend, it started to rain."
     },
     {
@@ -215,7 +216,7 @@ SLID.diag("eng", {
       sk: "vocab",
       title: "Fill in the gaps.",
       body: "<p>Andrii writes about his new habits.</p>",
-      text: "Last autumn, I {*took up|gave up} basketball, and now I go to training after school. At the same time, I {*gave up|took up} chocolate bars: I don’t eat them now. On rainy days, I {*work out|get up} in the school gym."
+      text: "In January, I {*gave up|took up} burgers and cola, and now I feel much better. My dad {*works out|gets up} in the park every morning before work. I wanted to get fit too, so in March I {*took up|gave up} basketball."
     },
     {
       topic: "usedto",
@@ -232,7 +233,7 @@ SLID.diag("eng", {
       sk: "gram",
       title: "Fill in the gaps.",
       body: "<p>Ben moved from Leeds to Lviv with his parents last autumn.</p>",
-      text: "In Leeds, Ben {*used to|was used to} cycle everywhere. In Lviv, he takes a tram, and at first he {*wasn’t used to|didn’t use to} travelling in such busy trams. But now he’s {*getting used to|get used to} it."
+      text: "In Leeds, Ben {*used to|was used to} speak only English at school. Now he goes to a school in Lviv, and at first he {*wasn’t used to|didn’t use to} reading and writing in Ukrainian. But now he’s {*getting used to|get used to} it."
     },
     {
       topic: "fut",
@@ -243,14 +244,14 @@ SLID.diag("eng", {
       body: "<p>Yaryna’s train to Lviv leaves at 8 am on Friday and arrives at 12 pm. She writes to Emma: “Sorry, I can’t chat at ten on Friday: …”</p>",
       tiles: ["I’ll", "be", "sitting", "on the train", "then"],
       extra: ["sit"],
-      answer: ["I’ll be sitting on the train then.", "Then I’ll be sitting on the train."]
+      answer: ["I’ll be sitting on the train then.", "Then I’ll be sitting on the train.", "I’ll then be sitting on the train."]
     },
     {
       topic: "cur-e10s4",
       type: "gaps",
       sk: "gram",
       title: "Fill in the gaps.",
-      body: "<p>Oksana writes about the new playground in Zelena Dolyna.<br>March – 28 April: workers are building it.<br>1 May: it opens.</p>",
+      body: "<p>Mykyta writes about the new playground near his school.<br>March – 28 April: workers are building it.<br>1 May: it opens.</p>",
       text: "The workers {*will have built|will be built|have built} the new playground by 28 April. Nobody can play there {*until|by} 1 May. By September, lots of children {*will have played|will have play|will played} on it."
     },
     {
@@ -267,8 +268,8 @@ SLID.diag("eng", {
       type: "gaps",
       sk: "func",
       title: "Fill in the gaps.",
-      body: "<p>Kyrylo’s tablet is very slow. He asks his sister Yaryna for advice.</p>",
-      text: "Kyrylo: My tablet is really slow. What should I do? Yaryna: I’d ask Dad to look at it if I {*were|am|will be} you. And I {*wouldn’t|won’t|didn’t} play games on it till midnight. Kyrylo: That {*makes|does|gives} sense. Thanks!"
+      body: "<p>Kyrylo has got a karate competition soon. He asks his sister Yaryna for advice.</p>",
+      text: "Kyrylo: I’ve got a karate competition on Saturday, and I’m really nervous. What should I do? Yaryna: I’d ask your coach for some extra training if I {*were|am|will be} you. And I {*wouldn’t|won’t|didn’t} stay up late on Friday. Kyrylo: That {*makes|does|gives} sense. Thanks!"
     },
     {
       topic: "link",
@@ -277,23 +278,23 @@ SLID.diag("eng", {
       sk: "gram",
       title: "Fill in the gaps.",
       body: "<p>Mariia writes about her summer visits.</p>",
-      text: "{*Although|However|Because} Lviv is far from Kharkiv, I visit my cousin there every summer. The journey takes almost a day. {*However|Although|So}, I never get bored on the train."
+      text: "{*Although|However|Because} Lviv is far from Kharkiv, I visit my cousin there every summer. The train journey takes many hours. {*However|Although|So}, I never get bored on the train."
     },
     {
       topic: "cur-e10s7",
       type: "gaps",
       sk: "gram",
       title: "Fill in the gaps.",
-      body: "<p>Oksana writes about a snowy day in her village.</p>",
-      text: "The village library is closed today {*owing to|because} the heavy snow. The roads are icy. {*Therefore|Because|Although}, the bus from the town isn’t running. Volunteers are cleaning the path {*so that|due to} readers can come in tomorrow."
+      body: "<p>Oksana writes about her village library.</p>",
+      text: "The village library is closed this week {*owing to|because} the repairs. The roof was very old. {*Therefore|Because|Although}, workers are putting on a new one. The librarian is bringing books to our school {*so that|due to} we can still read them."
     },
     {
       topic: "cur-e10s8",
       type: "gaps",
       sk: "gram",
       title: "Fill in the gaps.",
-      body: "<p>Zoriana wants to go on a coding course in the summer.</p>",
-      text: "Zoriana got the application form on Monday, and she didn’t put {*it off|off it}: she sent her answers the same evening. Now there’s an online test for new pupils, and she’s preparing {*for it|it for}. Her friend Daryna wants to join the course too. She’ll fill {*in her form|in it} after dinner."
+      body: "<p>Vadym wants to join the school photo club.</p>",
+      text: "Vadym got the application form on Monday, and he didn’t put {*it off|off it}: he sent his answers the same evening. Now there’s a short interview for new members, and he’s preparing {*for it|it for}. His friend Mykyta wants to join the club too. He’ll fill {*in his form|in it} after dinner."
     }
   ]
 });
