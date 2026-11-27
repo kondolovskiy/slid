@@ -31,3 +31,4 @@ priority: P3
 - e7s4l2: екран наголосів — та сама вада (verifier-pe7s3-pe7s4).
 - e8s3l1: вправа stress з magazine з одним BrE-ключем — та сама вада, що e6s2l1 (verifier-pe8s3-pe8s4).
 - Площа України: e8s7 «more than 600,000 km²» vs e8s8l4 «about 600,000 km²» — звести до одного (writer-pe8s7-pe8s8).
+- e10s2l1 екран #7 stress: spectator має BrE/AmE розбіжність (OALD US /ˈspekteɪtər/) — замінити слово (верифікатор pe10s2).
