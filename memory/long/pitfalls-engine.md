@@ -175,3 +175,7 @@ _Розбито з `pitfalls.md` 2026-11-05 (куратор пам'яті): за
 ## Додано 2026-11-19 (дизайн англійської, design-eng)
 
 - **Новий предмет і картка «скоро».** Якщо додати `content/subjects/<id>.js` і не прибрати `SLID.soon({id:"<id>"})` з content/catalog.js, на головній буде дві картки: `soon()` у registry.js не дедуплікує. Для eng обидві зміни робить curate-eng-subject одним комітом; validate має це ловити (engine-eng-validate п. 4) (design-eng-1119).
+
+## Додано 2026-11-27, сесія 2 (пули eng 6–11 кл.)
+
+- 2026-11-27 · orchestrator · PITFALL (engine/CI): плейтест піднабору CI для великого пакета eng 7–11 (245 уроків) не вклався в 30 хв — уроки eng 7–11 ≈ 8 с на урок проти ≈ 3,3 с у середньому; ліміти підняли до 45 (крок) / 60 (job) — engine-eng-ci-playtest-timeout; повний прогін — tools-playtest-full-duration.

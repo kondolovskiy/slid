@@ -32,3 +32,10 @@ priority: P3
 - e8s3l1: вправа stress з magazine з одним BrE-ключем — та сама вада, що e6s2l1 (verifier-pe8s3-pe8s4).
 - Площа України: e8s7 «more than 600,000 km²» vs e8s8l4 «about 600,000 km²» — звести до одного (writer-pe8s7-pe8s8).
 - e10s2l1 екран #7 stress: spectator має BrE/AmE розбіжність (OALD US /ˈspekteɪtər/) — замінити слово (верифікатор pe10s2).
+
+## Додано 2026-11-27, сесія 2 (куратор, inbox пулів pe6s1…pe11s8)
+- **Уже виправлено оркестратором (лише перевірити при refine, не повторювати):** e11s4l3 фінал `{*inspiring|inspired}` → fascinating|fascinated (inspired — друга правильна, verifier-pe11s4); e8s7l3 info con<u>ti</u>nental → conti<u>nen</u>tal (verifier-pe8s7-pe8s8; після цього continental можна повернути в stress pe8s8 a06); e9s2l7 Task 4 «flying to Kyiv» → «flying to Kraków. Then they’ll take the train to Kyiv.» (verifier-pe9s1-pe9s2 ✅).
+- **e7s5l3 #6:** дистрактор «used» після did / didn’t (Did you used to…?) — залежить від TQ-158; замінити на uses / using / was (writer-pe7s5).
+- **Шапки-коментарі src (на зміст не впливають):** g7-e7s5.js — функції «надавати оцінку» МП-ІМ с. 32, не 33; g8-e8s6.js — «Шкільне життя» с. 33, не 32 (writer-pe7s5, writer-pe8s6; pdftotext, SHA-1 43925b25…).
+- **Emma і Sunday roast (6 кл.):** пул pe6s3 a61/a62 — тато готує вдома; фінал e6s3l6 — «at Grandad’s house»; тато Emma в каноні не описаний (glossary/eng-heroes.md «Не зведено» п. 1). Звести одним формулюванням (verifier-pe6s3-pe6s4).
+- **Пули 10 кл.:** `title` джерела `p1407` різний у pe10s2, pe10s4, pe10s5, pe10s6 — уніфікувати дослівно за facts/eng.md «Джерела» (writer-pe10s5; `program: true`, у тренуванні не видно).

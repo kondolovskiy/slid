@@ -175,3 +175,7 @@ _Розбито з `pitfalls.md` 2026-11-05 (куратор пам'яті): за
 - **Недоступні з контейнера (19–26.11):** britannica.com (403), encyclopediaofukraine.com (не резолвиться), learnenglish(kids).britishcouncil.org, gov.uk, parliament.uk, ons.gov.uk, metoffice.gov.uk, nhs.uk, who.int, cdc.gov, paho.org, ich.unesco.org, whc.unesco.org, historicengland.org.uk, statcan / abs.gov.au / cso.ie / stats.govt.nz / cia.gov, bank.gov.ua і royalmint.com (403), kmu.gov.ua, ukrinform, worldathletics.org і olympics.com (403), wikidata.org (403), coe.int, un.org, nato.int, radiosvoboda.org. **zakon.rada.gov.ua** — 26.11 вдалося через `curl --compressed …/print`, того ж дня пізніше — «Access is temporarily restricted»: не розраховуй.
 - **Переглянути власний SVG без rsvg:** Chromium headless `/opt/pw-browsers/chromium-*/chrome-linux64/chrome --screenshot` з HTML-сторінкою (verifier-e5s4).
 
+
+## Додано 2026-11-27, сесія 2 (пули eng 6–11 кл.)
+
+- 2026-11-27 · orchestrator · PITFALL (процес): коміт нового файлу content/ без build ламає CI job build («Згенеровані файли закомічені»). Під час паралельного пакета build — у чистому worktree HEAD (git worktree add --detach <scratch> HEAD; node tools/build.mjs; скопіювати index.html, sw.js, content/manifest.json), щоб не захопити незавершені файли агентів.
