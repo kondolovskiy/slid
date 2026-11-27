@@ -359,7 +359,7 @@ SLID.section("eng", {
         {
           type: "info",
           title: "Weather or climate?",
-          body: `<ul><li><b><u>wea</u>ther</b> – what it is like today or this week: It’s snowing in Lviv today.</li><li><b><u>cli</u>mate</b> – the usual weather in a place for many years: In Ukraine, winters are usually cold.</li></ul><p>Most of Ukraine has a <b>con<u>ti</u>nental</b> climate: warm or hot summers and cold winters.</p>`,
+          body: `<ul><li><b><u>wea</u>ther</b> – what it is like today or this week: It’s snowing in Lviv today.</li><li><b><u>cli</u>mate</b> – the usual weather in a place for many years: In Ukraine, winters are usually cold.</li></ul><p>Most of Ukraine has a <b>conti<u>nen</u>tal</b> climate: warm or hot summers and cold winters.</p>`,
           cta: "Next"
         },
         {

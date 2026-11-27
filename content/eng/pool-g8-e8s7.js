@@ -1,5 +1,5 @@
 /* Слід · Англійська мова, 8 клас — пул вправ для тренування до розділу «Ukraine: land, climate and people» (e8s7)
-   Статус: draft; автор writer-pe8s7, 2026-11-27. Уроки e8s7l1–e8s7l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e8s7l7 без вправ.
+   Статус: verified (verifier-pe8s7-pe8s8, 2026-11-27; reports/verify/write-eng-pool-g8-e8s7.md); автор writer-pe8s7, 2026-11-27. Уроки e8s7l1–e8s7l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e8s7l7 без вправ.
    Вправи власні (docs/design/english.md §8): лише слова, форми й правила уроків e8s7 і попередніх розділів; англійською, британська норма (D-055).
    Джерело — програма класу (program: true): МП-ІМ, 8 кл. — тема «Україна»: географічне положення, клімат, населення,
    національності; функція «коментувати статистичні дані» (с. 33); граматика B1: Articles — no article (с. 34),
@@ -14,8 +14,8 @@
 SLID.pool("eng", {
   id: "pe8s7",
   section: "e8s7",
-  status: "draft",
-  meta: { author: "writer-pe8s7", created: "2026-11-27", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "writer-pe8s7", created: "2026-11-27", factcheck: "verifier-pe8s7-pe8s8, 2026-11-27 (reports/verify/write-eng-pool-g8-e8s7.md)", teacher: null },
   sources: [
     { id: "mpim", program: true, title: "Модельна навчальна програма «Іноземна мова. 5–9 класи» (Редько В. Г. та ін.), наказ МОН № 795 від 12.07.2021 — 8 клас: тема «Україна» (географічне положення, клімат, населення, національності) і коментувати статистичні дані (с. 33), граматика B1: articles — no article (с. 34), pronouns — quantity, prepositions (с. 35)", url: "https://osvita.ua/doc/files/news/831/83117/Inoz_mov_5-9-kl_Redko_ta_in_14_07.pdf" }
   ],
@@ -299,7 +299,7 @@ SLID.pool("eng", {
       steps: ["After a number, no -s: six hundred <b>thousand</b>. A point shows a part: two <b>point</b> five.", "18 of 24 is more than one quarter: three <b>quarters</b>."] },
     { id: "a44", lesson: "e8s7l4", lvl: 1, sk: "write", src: "mpim с. 33",
       type: "gaps", title: "Complete the sentences.",
-      body: "<p>Oksana’s English club has 12 members. Been to Odesa – 6. Been to Lviv – 3. Climbed Hoverla – 0.</p>",
+      body: "<p>Oksana’s eco club has 12 members. Been to Odesa – 6. Been to Lviv – 3. Climbed Hoverla – 0.</p>",
       text: "{*Half|A quarter} of our club have been to Odesa. {*A quarter|A third} have been to Lviv. {*None|Most} of us have climbed Hoverla.",
       steps: ["6 of 12 → <b>half</b>. 3 of 12 → <b>a quarter</b>.", "0 → <b>none</b> of us."] },
     { id: "a45", lesson: "e8s7l4", lvl: 2, sk: "write", src: "mpim с. 33",
@@ -355,7 +355,7 @@ SLID.pool("eng", {
       body: "<p><i>In 2001, 67.5 per cent of the people said Ukrainian was their native language.</i></p><p>What does this mean?</p>",
       opts: ["About two thirds of the people said Ukrainian was their native language.", "Less than half of the people said Ukrainian was their native language.", "All the people said Ukrainian was their native language."],
       correct: 0,
-      hint: "Is 67.5 more or less than 50? Is it close to 66?",
+      hint: "Is 67.5 more or less than half? Remember the census numbers about towns and cities.",
       steps: ["67.5 per cent is more than half and close to two thirds (about 67 per cent).", "So: <b>about two thirds</b> of the people."] },
     { id: "a53", lesson: "e8s7l5", lvl: 1, sk: "phon", src: "mpim с. 33",
       type: "stress", title: "Find the stressed syllable.",

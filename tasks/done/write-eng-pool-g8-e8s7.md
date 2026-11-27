@@ -6,7 +6,7 @@ type: write-pool
 subject: eng
 grade: 8
 section: e8s7
-status: review
+status: done
 claimed_by: writer-pe8s7
 created: 2026-11-27
 depends_on: []
@@ -66,3 +66,7 @@ generated_by: tools/make-tasks.mjs --write-pool --subject eng
 Самоперевірка: (1) `SLID_LANG.check(solution)` для всіх gaps/pick/stress/word/build/match — ok; build — перебір усіх перестановок tiles + extra (a20 і a69 — по два порядки в ключі); (2) лексика проти g4–g8-e8s7 до свого уроку (скрипт verify-pe8s2 lex.mjs) — нових слів немає (warmest — від warm); (3) 6-грами проти уроків — збіги лише в описових фактах і шаблонних інструкціях; речень уроку з тим самим ключем немає (переписано a33, a37, a49, a58, a68, a31). Друга правильна: half / half of і «over» (a66) — у ключі; per cent ≠ percent — percent ніде не хибний; population is/are не оцінюється; «to the north of» і «north of» — у e8s7 лише перше (друге — e8s8).
 
 Словники (форми, наголос): Cambridge — https://dictionary.cambridge.org/dictionary/english/nationality , /belarus , /hungary , /ukrainian , /population , /ukraine , /continental , /climate , /border , /neighbour (verb), /half («half (of)»), /dry ; OALD — https://www.oxfordlearnersdictionaries.com/definition/english/nationality , /population , /continental , /climate , /hungarian , /per-cent , /dry_1 («comparative drier» — тому в a29 лише drier).
+
+## Нотатки верифікатора
+
+**verifier-pe8s7-pe8s8, 2026-11-27.** Звіт — reports/verify/write-eng-pool-g8-e8s7.md; пул → `status: "verified"`.

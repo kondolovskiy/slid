@@ -1,5 +1,5 @@
 /* Слід · Англійська мова, 8 клас — пул вправ для тренування до розділу «English-speaking countries: land, climate and people» (e8s8)
-   Статус: draft; автор writer-pe8s8, 2026-11-27. Уроки e8s8l1–e8s8l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e8s8l7 без вправ.
+   Статус: verified (verifier-pe8s7-pe8s8, 2026-11-27; reports/verify/write-eng-pool-g8-e8s8.md); автор writer-pe8s8, 2026-11-27. Уроки e8s8l1–e8s8l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e8s8l7 без вправ.
    Вправи власні (docs/design/english.md §8): лише слова, форми й правила уроків e8s8 і попередніх розділів (зокрема e8s7); англійською, британська норма (D-055).
    Джерело — програма класу (program: true): МП-ІМ, 8 кл. — тема «Країни виучуваної мови»: географічне положення, клімат, населення,
    національності (с. 33); функція «аргументувати власний вибір» (с. 32); граматика B1: Comparatives with (so) much, a (little) bit,
@@ -15,8 +15,8 @@
 SLID.pool("eng", {
   id: "pe8s8",
   section: "e8s8",
-  status: "draft",
-  meta: { author: "writer-pe8s8", created: "2026-11-27", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "writer-pe8s8", created: "2026-11-27", factcheck: "verifier-pe8s7-pe8s8, 2026-11-27 (reports/verify/write-eng-pool-g8-e8s8.md)", teacher: null },
   sources: [
     { id: "mpim", program: true, title: "Модельна навчальна програма «Іноземна мова. 5–9 класи» (Редько В. Г. та ін.), наказ МОН № 795 від 12.07.2021 — 8 клас: тема «Країни виучуваної мови» (географічне положення, клімат, населення, національності, с. 33), аргументувати власний вибір (с. 32), граматика B1: comparatives with much, a bit; could + if + past simple (с. 34); past simple after if, would — imagined situations (с. 35)", url: "https://osvita.ua/doc/files/news/831/83117/Inoz_mov_5-9-kl_Redko_ta_in_14_07.pdf" }
   ],
@@ -53,9 +53,9 @@ SLID.pool("eng", {
       steps: ["<u>con</u>tinent, <u>Can</u>ada: the first part.", "U<u>kraine</u>: the second part."] },
     { id: "a06", lesson: "e8s8l1", lvl: 3, sk: "phon", src: "mpim с. 33",
       type: "stress", title: "Find the stressed syllable.",
-      words: ["+con|ti|nent", "con|ti|+nen|tal", "Aus|+tra|li|a", "+is|land", "pop|u|+la|tion"],
-      hint: "Continent and continental look the same. Is the strong part the same?",
-      steps: ["<u>con</u>tinent, <u>is</u>land: the first part. Aus<u>tra</u>lia: the second part.", "conti<u>nen</u>tal, popu<u>la</u>tion: the third part."] },
+      words: ["+con|ti|nent", "Aus|+tra|li|a", "+is|land", "pop|u|+la|tion"],
+      hint: "Remember the stress screen in this lesson and the box “Countries and nationalities”.",
+      steps: ["<u>con</u>tinent, <u>is</u>land: the first part. Aus<u>tra</u>lia: the second part.", "popu<u>la</u>tion: the third part."] },
     { id: "a07", lesson: "e8s8l1", lvl: 1, sk: "gram", src: "mpim с. 33",
       type: "gaps", title: "Fill in the gaps.",
       body: "<p>Andrii marks two places on his map.</p>",
@@ -104,7 +104,7 @@ SLID.pool("eng", {
     { id: "a14", lesson: "e8s8l2", lvl: 2, sk: "cult", src: "mpim с. 33",
       type: "match", title: "Match the halves.",
       left: ["Canada", "Australia", "The UK", "Ukraine"],
-      right: ["Many parts have very cold, snowy winters.", "A large part of it is very dry, with deserts.", "Its west gets more rain than its east.", "In Crimea, on its southern coast, winters are mild."],
+      right: ["Many parts have very cold, snowy winters.", "A large part of it is very dry, with deserts.", "It has a mild climate, and its west gets more rain than its east.", "In Crimea, on its southern coast, winters are mild."],
       hint: "Which country is very dry? Which one has Crimea?",
       steps: ["Canada – very cold, snowy winters. Australia – very dry, with deserts.", "The UK – the west is wetter than the east. Ukraine – mild winters on the southern coast of Crimea."] },
     { id: "a15", lesson: "e8s8l2", lvl: 3, sk: "cult", src: "mpim с. 33",
@@ -162,9 +162,9 @@ SLID.pool("eng", {
     /* ───────────── e8s8l3 · British, Irish, Canadian: people and nationalities ───────────── */
     { id: "a23", lesson: "e8s8l3", lvl: 1, sk: "vocab", src: "mpim с. 33",
       type: "match", title: "Match the countries and the adjectives.",
-      left: ["Canada", "Australia", "Ireland", "Wales", "the UK"],
-      right: ["Canadian", "Australian", "Irish", "Welsh", "British"],
-      steps: ["Canada → <b>Canadian</b>, Australia → <b>Australian</b>.", "Ireland → <b>Irish</b>, Wales → <b>Welsh</b>, the UK → <b>British</b>."] },
+      left: ["Canada", "Australia", "Ireland", "the UK"],
+      right: ["Canadian", "Australian", "Irish", "British"],
+      steps: ["Canada → <b>Canadian</b>, Australia → <b>Australian</b>.", "Ireland → <b>Irish</b>, the UK → <b>British</b>."] },
     { id: "a24", lesson: "e8s8l3", lvl: 2, sk: "vocab", src: "mpim с. 33",
       type: "gaps", title: "Fill in the gaps.",
       body: "<p>Oksana writes about people from other countries.</p>",
@@ -312,7 +312,7 @@ SLID.pool("eng", {
       body: "<p>Andrii hasn’t got a boat. Which sentence is correct?</p>",
       opts: ["If Andrii had a boat, he would go fishing with his grandad every day.", "If Andrii would have a boat, he would go fishing with his grandad every day.", "If Andrii had a boat, he will go fishing with his grandad every day."],
       correct: 0,
-      hint: "Find the Past Simple after if and would in the other part.",
+      hint: "Look at the screen “The Second Conditional”.",
       steps: ["After <i>if</i> → the Past Simple: <b>had</b>. In the other part → <b>would go</b>.", "Not <s>if he would have</s>, not <s>had… will</s>."] },
     { id: "a47", lesson: "e8s8l5", lvl: 2, sk: "gram", src: "mpim с. 35",
       type: "word", title: "Write the missing word.",
@@ -331,7 +331,7 @@ SLID.pool("eng", {
       type: "gaps", title: "Fill in the gaps.",
       body: "<p>Bohdan is in Kyiv. He imagines a winter in Canada.</p>",
       text: "If I {*were|would be} in Canada now, I {*would go|went} skiing every weekend. And if I {*had|would have} more time, I would learn French.",
-      hint: "After if: the Past Simple. In the other part: would + verb.",
+      hint: "Look at the screens “The Second Conditional” and “If I were…”.",
       steps: ["After <i>if</i>: <b>were</b>, <b>had</b> – not <i>would</i>.", "In the other part: <b>would go</b>."] },
     { id: "a50", lesson: "e8s8l5", lvl: 1, sk: "write", src: "mpim с. 35",
       type: "gaps", title: "Complete the sentences.",
@@ -344,13 +344,13 @@ SLID.pool("eng", {
       tiles: ["if", "I", "were", "in Australia,", "I’d", "go", "to the beach"],
       answer: "If I were in Australia, I’d go to the beach.",
       extra: ["would be"],
-      hint: "If + I + were…, I’d + verb.",
+      hint: "Look at the screen “If I were…”.",
       steps: ["After <i>if</i>: <b>were</b>, not <s>would be</s>.", "<b>If I were in Australia, I’d go to the beach.</b> I’d = I would."] },
     { id: "a52", lesson: "e8s8l5", lvl: 3, sk: "write", src: "mpim с. 35",
       type: "gaps", title: "Complete the sentences.",
       body: "<p>Emma lives in England. She imagines a life in Ukraine.</p>",
       text: "If I {*lived|would live} in Ukraine, I {*would see|will see} Andrii and Oksana more often. If I {*were|would be} in Lviv, Taras {*would show|shows} me the old town. And if I {*had|have} more time, I would visit Oksana in Zelena Dolyna.",
-      hint: "After if: the Past Simple. In the other part: would + verb.",
+      hint: "Is it real or imagined? Look at the screens “The Second Conditional” and “If I were…”.",
       steps: ["After <i>if</i>: <b>lived</b>, <b>were</b>, <b>had</b> – no <i>would</i>.", "In the other part: <b>would see</b>, <b>would show</b>."] },
 
     /* ───────────── e8s8l6 · If you could visit one country, which would you choose? ───────────── */
@@ -384,7 +384,7 @@ SLID.pool("eng", {
       tiles: ["which", "city", "would", "you", "visit", "first"],
       answer: ["Which city would you visit first?", "Which city would you first visit?"],
       extra: ["visited"],
-      hint: "Which city + would + you + verb…",
+      hint: "Look at the screen “Questions, could and short answers”.",
       steps: ["In the question, <b>would</b> comes before <b>you</b>.", "After would → the verb without -ed: <b>visit</b>."] },
     { id: "a58", lesson: "e8s8l6", lvl: 2, sk: "func", src: "mpim с. 32",
       type: "choice", title: "Read the dialogue and choose the best answer.",
@@ -397,7 +397,7 @@ SLID.pool("eng", {
       type: "gaps", title: "Complete the sentences.",
       body: "<p>Liam and Andrii talk about an imagined visit.</p>",
       text: "Liam: If you {*came|would come} to Dublin, what {*would|do} you do first? Andrii: {*I’d|I’m} visit you, of course!",
-      hint: "No would after if. What does the question use? Answer with the same verb.",
+      hint: "Look at the screens “The Second Conditional” and “Questions, could and short answers”.",
       steps: ["If you <b>came</b>… – the Past Simple after if. What <b>would</b> you do?", "Answer: <b>I’d</b> (I would) visit you."] },
     { id: "a60", lesson: "e8s8l6", lvl: 1, sk: "write", src: "mpim с. 34",
       type: "gaps", title: "Complete the sentences.",
@@ -410,13 +410,13 @@ SLID.pool("eng", {
       tiles: ["if", "I", "could", "choose,", "I’d", "visit", "New Zealand"],
       answer: "If I could choose, I’d visit New Zealand.",
       extra: ["can"],
-      hint: "If + I + could…, I’d + verb.",
+      hint: "Look at the screen “Questions, could and short answers”.",
       steps: ["if + <b>could</b> for an imagined situation.", "<b>If I could choose, I’d visit New Zealand.</b>"] },
     { id: "a62", lesson: "e8s8l6", lvl: 3, sk: "write", src: "mpim с. 34",
       type: "gaps", title: "Complete the sentences.",
       body: "<p>Taras writes to Emma about a dream trip.</p>",
       text: "Canada is my dream country. If I {*were|would be} there in winter, I {*could|can} take photos of the snow. It’s much {*colder|cold} there than in Lviv. {*Would|Do} you come with me?",
-      hint: "if + Past Simple; would or could in the other part; much + comparative.",
+      hint: "The trip is imagined. Look at the screens about the Second Conditional and about much + comparative.",
       steps: ["If I <b>were</b> there, I <b>could</b> take photos.", "much + comparative → much <b>colder</b>. An imagined trip → <b>Would</b> you come?"] }
   ]
 });

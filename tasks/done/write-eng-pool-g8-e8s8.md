@@ -6,7 +6,7 @@ type: write-pool
 subject: eng
 grade: 8
 section: e8s8
-status: review
+status: done
 claimed_by: writer-pe8s8
 created: 2026-11-27
 depends_on: []
@@ -68,3 +68,7 @@ Second Conditional: were / was — обидва в ключі (a45); у голо
 Самоперевірка: check(solution) — ok; build — перебір усіх перестановок; лексика до свого уроку — нових слів немає (Lily з l3 прибрано з a01); 6-грами — речень уроку з тим самим ключем немає (переписано a07, a12, a30, a37, a43, a49, a52, a56, a60, a62).
 
 Словники: Cambridge — https://dictionary.cambridge.org/dictionary/english/canada , /australia , /continent , /island , /continental , /population , /ukraine , /climate , /desert (ім. ˈdez.ət; дієсл. dɪˈzɜːt — тому desert у stress не взято); OALD — https://www.oxfordlearnersdictionaries.com/definition/english/continent , /island , /continental , /population , /climate .
+
+## Нотатки верифікатора
+
+**verifier-pe8s7-pe8s8, 2026-11-27.** Звіт — reports/verify/write-eng-pool-g8-e8s8.md; пул → `status: "verified"`.
