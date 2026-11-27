@@ -1,11 +1,13 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-27T10:48:18.012Z
 id: write-eng-pool-g9-e9s9
 type: write-pool
 subject: eng
 grade: 9
 section: e9s9
 status: todo
-claimed_by:
+claimed_by: writer-pe9s9
 created: 2026-11-27
 depends_on: []
 generated_by: tools/make-tasks.mjs --write-pool --subject eng
