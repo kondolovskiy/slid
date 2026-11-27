@@ -6,7 +6,7 @@ type: write-pool
 subject: eng
 grade: 9
 section: e9s6
-status: todo
+status: review
 claimed_by: writer-pe9s6
 created: 2026-11-27
 depends_on: []
@@ -47,3 +47,20 @@ generated_by: tools/make-tasks.mjs --write-pool --subject eng
 - [ ] Задача → `tasks/review/` для **content-verifier зі свіжим контекстом** (розв'язати кожну вправу, звірити форми за словником).
 
 ## Нотатки виконавця
+writer-pe9s6, 2026-11-27. Файл `content/eng/pool-g9-e9s6.js` (pe9s6, draft), 75 вправ. `validate --pool pe9s6` — 0/0; `personalization-qa --pool pe9s6 --strict` — лише «ще не verified».
+
+| Урок | Вправ | sk (к-сть) | Рівні 1/2/3 | Типи |
+|---|---|---|---|---|
+| l1 | 14 | vocab 5, read 3, phon 3, write 3 | 5/5/4 | gaps, choice, word, pick, multi, stress |
+| l2 | 12 | vocab 3, gram 6, write 3 | 4/4/4 | choice, sort, pick, gaps, word, build |
+| l3 | 12 | read 3, gram 6, write 3 | 4/4/4 | choice, multi, order, gaps, build, pick |
+| l4 | 15 | read 3, gram 6, vocab 3, write 3 | 5/5/5 | choice, gaps, sort, build, pick, match, word |
+| l5 | 13 | vocab 4, read 3, phon 3, write 3 | 5/4/4 | gaps, match, word, pick, choice, multi, stress |
+| l6 | 9 | read 3, write 3, gram 3 | 3/3/3 | choice, multi, sort, order, gaps, build |
+
+Джерело — МП-ІМ (той самий PDF, SHA-1 43925b25…, колонтитули): с. 31 — «Пише короткий, простий опис знайомого прилада чи продукту» (l6); с. 33 — «Наука і технічний прогрес» (l1, l3 read, l4 read/vocab, l5); с. 34 — «Modality: Can: general truths and tendencies» (l3 gram/write, l5 write); с. 35 — «Passives: Passive forms: Infinitive, Past simple, Present continuous, Present simple» (l2, l4 gram/write, l6 gram).
+Наголос — CD (curl у цій сесії): thermometer /θəˈmɒm.ɪ.tər/, telescope /ˈtel.ɪ.skəʊp/, patent /ˈpeɪ.tənt/, device /dɪˈvaɪs/, battery /ˈbæt.ər.i/, charger /ˈtʃɑː.dʒər/, smartphone /ˈsmɑːt.fəʊn/, microscope /ˈmaɪ.krə.skəʊp/, computer /kəmˈpjuː.tər/; scientist, inventor, invention, discovery, experiment, engineer, science, famous — підкреслені в уроках (e9s6l1, e4s1, e5s2, e5s7).
+Факти — лише з уроків e9s6 (перелік у шапці файлу). Sikorsky: в уроці — «moved to the USA and designed helicopters there»; твердження «будував гелікоптери в Києві» (із завдання оркестратора) в уроці немає — у пулі не вжито й хибним не зроблено (a14: «In the USA, he designed new helicopters»).
+Перевірки скриптами: усі `solution` зараховуються; build a21, a45 (keepCase, один ключ), a33, a75 (без keepCase, усі порядки в ключі) — повний перебір; лексика проти g4–e9s5 і e9s6 до свого уроку — лишились helicopter (однина від helicopters), charge (charged — l3), plugged (plug in — l5), recharge (лише друга відповідь a56); 6-грами — збіги лише з фактами уроку (Bell / Cooper / Curie) не в ключі, рамки a18, a23, a55 замінено.
+Рішення: ергативні melt / cool / mix / heat активом хибними не робив; «could» як хибний варіант лише з маркером минулого (Twenty years ago, When Grandad was young) або у формі «could to»; by — лише a20 (умова: «wants to say who»); has been + V3 в уроках немає — не вжито.
+Сумнівне для верифікатора: a08 (висновок «перша премія — 1903» з «first woman in 1903» + «two Nobel Prizes»); a20 «These helicopters were designed.» граматичне, хибне лише за метою; a41 — пояснення «чому нагрівають перед формуванням» (опора — melt у l4); a74 «used to take» — в ключі лише цей варіант пропуску (to taking — хибний).
