@@ -947,14 +947,14 @@ SLID.section("eng", {
           title: "Write the missing words.",
           body: `<p>Use the Future Continuous of <i>fly</i>.</p>`,
           before: "This time tomorrow, Emma and Tom",
-          after: "to Kyiv.",
+          after: "to Kraków. Then they’ll take the train to Kyiv.",
           answer: ["will be flying", "’ll be flying"],
           contractions: true,
           pre: "e9s2l4",
           hint: "Is it a finished action or an action in progress at that moment?",
           fbOk: "Well done!",
           fbBad: "will + be + verb-ing.",
-          fbText: "This time tomorrow, they <b>will be flying</b> to Kyiv: will be + verb-ing."
+          fbText: "This time tomorrow, they <b>will be flying</b> to Kraków: will be + verb-ing."
         },
         {
           type: "pick",
