@@ -1,5 +1,5 @@
 /* Слід · Англійська мова, 6 клас — пул вправ для тренування до розділу «London, the capital of the UK» (e6s8)
-   Статус: draft (автор writer-pe6s8, 2026-11-27). 61 вправа: уроки e6s8l1–e6s8l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e6s8l7 без вправ.
+   Статус: verified (автор writer-pe6s8, 2026-11-27; verifier-pe6s7-pe6s8, reports/verify/write-eng-pool-g6-e6s8.md). 61 вправа: уроки e6s8l1–e6s8l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e6s8l7 без вправ.
    Вправи власні (docs/design/english.md §8): лише слова, форми й правила уроків e6s8 і попередніх розділів; англійською, британська норма (D-055).
    Джерело — програма класу (program: true): МП-ІМ, 6 кл. — с. 21 (тема «Країни виучуваної мови — столиця; визначні місця»; функції —
    порівнювати, висловлювати враження; Conditional — ‘if’ + Present simple, real conditions; comparatives and superlatives),
@@ -13,8 +13,8 @@
 SLID.pool("eng", {
   id: "pe6s8",
   section: "e6s8",
-  status: "draft",
-  meta: { author: "writer-pe6s8", created: "2026-11-27", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "writer-pe6s8", created: "2026-11-27", factcheck: "verifier-pe6s7-pe6s8, 2026-11-27, reports/verify/write-eng-pool-g6-e6s8.md", teacher: null },
   sources: [
     { id: "mpim", short: "МП-ІМ", program: true,
       title: "Модельна навчальна програма «Іноземна мова. 5–9 класи» (Редько В. Г., Шаленко О. П., Сотникова С. І. та ін.), наказ МОН від 12.07.2021 № 795",
@@ -104,9 +104,9 @@ SLID.pool("eng", {
     { id: "a15", lesson: "e6s8l2", lvl: 3, sk: "cult", src: "mpim с. 21",
       type: "pick", title: "Find the mistake.",
       body: "<p>One word in Bohdan’s quiz answers is wrong.</p>",
-      text: "Big Ben is next to the Thames. The London Eye is [!opposite] Big Ben. The Tower of London is a very old [palace].",
-      hint: "A bell, a wheel, a castle or a palace: what is the Tower of London?",
-      steps: ["The Tower of London is a very old <b>castle</b>. Buckingham Palace is the palace.", "The London Eye is <b>opposite</b> Big Ben – that’s correct."] },
+      text: "Big Ben is next to the Thames. The London Eye is [!opposite] Big Ben. The Tower of London is a very [new] castle.",
+      hint: "When was the Tower of London built: more than 900 years ago or in 2000?",
+      steps: ["The Tower of London was built more than 900 years ago, so it’s a very <b>old</b> castle.", "The London Eye is <b>opposite</b> Big Ben – that’s correct."] },
     { id: "a16", lesson: "e6s8l2", lvl: 1, sk: "gram", src: "mpim с. 22",
       type: "gaps", title: "Fill in the gaps.",
       text: "Big Ben’s tower {*was|were} finished in 1859. The Tower of London {*was built|built} more than 900 years ago.",
@@ -360,7 +360,7 @@ SLID.pool("eng", {
       body: "<p>Andrii asks Emma about her trip. Start with <b>What</b>.</p>",
       tiles: ["What", "did", "you", "like", "most"],
       extra: ["liked"],
-      answer: "What did you like most?",
+      answer: ["What did you like most?", "What did you most like?"],
       keepCase: true,
       hint: "After did: like or liked?",
       steps: ["After <b>did</b>, say <b>like</b>, not <i>liked</i>.", "<b>What did you like most?</b>"] },

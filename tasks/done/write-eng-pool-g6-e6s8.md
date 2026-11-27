@@ -6,7 +6,7 @@ type: write-pool
 subject: eng
 grade: 6
 section: e6s8
-status: review
+status: done
 claimed_by: writer-pe6s8
 created: 2026-11-27
 depends_on: []
@@ -81,3 +81,6 @@ Boss e6s8l7 — без вправ.
 - n-грами від 7 слів проти g4–g11, diag і пулів: рамки уроку з тим самим ключем переписано (a47, a49 — збіг з dge6, a53, a54, a56, a59); лишилися лише фактичні фрази («was built more than 900 years ago», «the London Eye is 135 metres high»).
 
 **Спірне (для верифікатора):** a45/a49 — дистрактор «my» граматичний як речення, але хибний щодо цитати в body (як choice e6s8l5); a16 — «was / were finished» (число), бо «The tower finished in 1859» неприродне; a57 — «What did you like» (без most) складається з частини плиток, як і в уроках.
+
+## Нотатки верифікатора (verifier-pe6s7-pe6s8, 2026-11-27)
+Звіт: reports/verify/write-eng-pool-g6-e6s8.md. Вердикт: verified (status у файлі пулу). Розв'язав усі вправи; build перевірено по всіх порядках (SLID_LANG.check). Факти — лише з уроків, звірено з відкритими джерелами. Правки — у §5 звіту. Build не запускав (паралельний запуск). test-answer-ui не запускав: немає Python-playwright, прогін у CI.

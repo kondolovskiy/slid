@@ -1,5 +1,5 @@
 /* Слід · Англійська мова, 6 клас — пул вправ для тренування до розділу «Kyiv, the capital of Ukraine» (e6s7)
-   Статус: draft (автор writer-pe6s7, 2026-11-27). 60 вправ: уроки e6s7l1–e6s7l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e6s7l7 без вправ.
+   Статус: verified (автор writer-pe6s7, 2026-11-27; verifier-pe6s7-pe6s8, reports/verify/write-eng-pool-g6-e6s7.md). 60 вправ: уроки e6s7l1–e6s7l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e6s7l7 без вправ.
    Вправи власні (docs/design/english.md §8): лише слова, форми й правила уроків e6s7 і попередніх розділів; англійською, британська норма (D-055).
    Джерело — програма класу (program: true): МП-ІМ, 6 кл. — с. 20 (мовленнєві функції: описувати, запитувати та надавати інформацію),
    с. 21 (тема «Україна — Київ, визначні місця»; Adjectives — limiting adjectives main, only; comparatives and superlatives;
@@ -12,8 +12,8 @@
 SLID.pool("eng", {
   id: "pe6s7",
   section: "e6s7",
-  status: "draft",
-  meta: { author: "writer-pe6s7", created: "2026-11-27", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "writer-pe6s7", created: "2026-11-27", factcheck: "verifier-pe6s7-pe6s8, 2026-11-27, reports/verify/write-eng-pool-g6-e6s7.md", teacher: null },
   sources: [
     { id: "mpim", short: "МП-ІМ", program: true,
       title: "Модельна навчальна програма «Іноземна мова. 5–9 класи» (Редько В. Г., Шаленко О. П., Сотникова С. І. та ін.), наказ МОН від 12.07.2021 № 795",
@@ -290,10 +290,10 @@ SLID.pool("eng", {
     { id: "a45", lesson: "e6s7l5", lvl: 2, sk: "gram", src: "mpim с. 22",
       type: "word", title: "Write the missing word.",
       body: "<p>Use the verb <i>eat</i>.</p>",
-      before: "Has Amelia ever", after: "borshch?",
+      before: "Has Amelia ever", after: "borscht?",
       answer: "eaten",
       hint: "eat → ate → …",
-      steps: ["After has: the third form. eat → ate → <b>eaten</b>.", "Has Amelia ever <b>eaten</b> borshch?"] },
+      steps: ["After has: the third form. eat → ate → <b>eaten</b>.", "Has Amelia ever <b>eaten</b> borscht?"] },
     { id: "a46", lesson: "e6s7l5", lvl: 2, sk: "gram", src: "mpim с. 22",
       type: "gaps", title: "Complete the sentences.",
       body: "<p>Zoriana chats with Bohdan.</p>",
@@ -378,7 +378,7 @@ SLID.pool("eng", {
       body: "<p>Write a sentence for the visitors’ page. Start with <b>The Golden Gate</b>.</p>",
       tiles: ["The Golden Gate", "was", "built", "again", "in 1982"],
       extra: ["were"],
-      answer: ["The Golden Gate was built again in 1982.", "The Golden Gate was built in 1982 again."],
+      answer: ["The Golden Gate was built again in 1982.", "The Golden Gate was built in 1982 again.", "The Golden Gate was again built in 1982."],
       keepCase: true,
       hint: "One gate: was or were?",
       steps: ["One gate → <b>was</b> + built.", "<b>The Golden Gate was built again in 1982.</b>"] },

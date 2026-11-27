@@ -6,7 +6,7 @@ type: write-pool
 subject: eng
 grade: 6
 section: e6s7
-status: review
+status: done
 claimed_by: writer-pe6s7
 created: 2026-11-27
 depends_on: []
@@ -79,3 +79,6 @@ Boss e6s7l7 — без вправ. choice/multi — для read, cult і пон�
 - n-грами від 6 слів проти g4–g11, diag і пулів (скрипт): збіги лише у фактичних фразах уроку («was built in the 11th century», «the Kyiv Metro was opened in 1960») і в `steps`; рамки вправ уроку з тим самим ключем переписано (a10, a13, a14, a31).
 
 **Спірне (для верифікатора):** a03 vocab (over → through) — межа vocab/gram, як в info l1; a17/a18 stress множини — форм у уроці не було, але наголос той самий; a34 «It was open in the 1960» — подвійна помилка в дистракторі навмисно.
+
+## Нотатки верифікатора (verifier-pe6s7-pe6s8, 2026-11-27)
+Звіт: reports/verify/write-eng-pool-g6-e6s7.md. Вердикт: verified (status у файлі пулу). Розв'язав усі вправи; build перевірено по всіх порядках (SLID_LANG.check). Факти — лише з уроків, звірено з відкритими джерелами. Правки — у §5 звіту. Build не запускав (паралельний запуск). test-answer-ui не запускав: немає Python-playwright, прогін у CI.
