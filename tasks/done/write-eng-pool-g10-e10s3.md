@@ -6,7 +6,7 @@ type: write-pool
 subject: eng
 grade: 10
 section: e10s3
-status: review
+status: done
 claimed_by: writer-pe10s3
 created: 2026-11-27
 depends_on: []
@@ -75,3 +75,5 @@ generated_by: tools/make-tasks.mjs --write-pool --subject eng
 **Нові дрібні деталі героїв (NOTE в inbox):** Isla’s dad читає вірш на Burns supper, гість-хлопець з London; дідусь Emma колись — кухар у великому готелі (пече chicken Kyiv удома); Vasyl (тато мами Andrii) колись працював у пекарні в Chernihiv; Grandad Mykola в дитинстві — пес Sirko, три корови; Bohdan — fussy eater; Zoriana — sweet tooth; Daryna — «I’ll try anything»; Emma — плавання о 6 ранку, Tom приєднався до ранкової групи; мама Orysia працює в кафе; Orysia підстриглась, у Vinnytsia ходила до школи без форми, уроки о 8.
 
 **Словники (форма, наголос; curl у цій сесії):** CD https://dictionary.cambridge.org/dictionary/english/<word>: national «/ˈnæʃ.ən.əl/», regional «/ˈriː.dʒən.əl/», savoury «/ˈseɪ.vər.i/», ingredient «/ɪnˈɡriː.di.ənt/», delicious «/dɪˈlɪʃ.əs/», potato «/pəˈteɪ.təʊ/», protein «/ˈprəʊ.tiːn/», carbohydrate «/ˌkɑː.bəʊˈhaɪ.dreɪt/», vitamin «/ˈvɪt.ə.mɪn/» (US /ˈvaɪ.t̬ə-/ — наголос той самий), fibre «/ˈfaɪ.bər/», balanced «/ˈbæl.ənst/»; kick (idiom «kick the habit»), picky, choosy. Граматика — як в уроці (CD Grammar «Used to», «Would», «Prefer», «Would rather»; URL — tasks/…/write-eng-g10-e10s3.md).
+
+**verifier-pe10s3-pe10s4, 2026-11-27.** Незалежна перевірка: reports/verify/write-eng-pool-g10-e10s3.md — verified. Кожну вправу розв'язано, build перебрано, словники CD/OALD (curl), факти по два джерела. Правки — у звіті §7.

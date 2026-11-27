@@ -6,7 +6,7 @@ type: write-pool
 subject: eng
 grade: 10
 section: e10s4
-status: review
+status: done
 claimed_by: writer-pe10s4
 created: 2026-11-27
 depends_on: []
@@ -76,3 +76,5 @@ generated_by: tools/make-tasks.mjs --write-pool --subject eng
 **Нові дрібні деталі героїв (NOTE в inbox):** Owen (Wales) — шторм на узбережжі біля його дому; Tom любить вітер і дощ, не любить спеку; Daryna — застуда в листопаді, смішні повідомлення сестри; Kyrylo — сонячний опік після пляжу; Bohdan — субота: теніс, допомога дідусеві в саду; Zoriana — пише першу гру в coding club; Andrii — шаховий турнір; Taras збирає на нову камеру, ходив на Світязь з татом, наступного липня — тиждень там із Zlata й татом; Emma з сім'єю була в Peak District; Oksana — повінь навесні біля села, посуха влітку, автобус до Poltava після ремонту мосту; Dmytro робить шпаківні.
 
 **Словники (форма, наголос; curl у цій сесії):** CD https://dictionary.cambridge.org/dictionary/english/<word>: wildfire «/ˈwaɪld.faɪər/», volcano «/vɒlˈkeɪ.nəʊ/», hurricane «/ˈhʌr.ɪ.kən/» (US /ˈhʌr.ɪ.keɪn/ — наголос той самий), disaster «/dɪˈzɑː.stər/», landslide «/ˈlænd.slaɪd/», avalanche «/ˈæv.əl.ɑːntʃ/», earthquake «/ˈɜːθ.kweɪk/», landscape «/ˈlænd.skeɪp/», habitat «/ˈhæb.ɪ.tæt/», heatwave «/ˈhiːtˌweɪv/». Граматика — як в уроці (CD Grammar «Will», «Be going to», «Future continuous», «Future perfect», «By», «Until»; URL — tasks/…/write-eng-g10-e10s4.md).
+
+**verifier-pe10s3-pe10s4, 2026-11-27.** Незалежна перевірка: reports/verify/write-eng-pool-g10-e10s4.md — verified. Кожну вправу розв'язано, build перебрано, словники CD/OALD (curl), факти по два джерела. Правки — у звіті §7.

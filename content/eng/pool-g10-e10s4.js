@@ -1,5 +1,5 @@
 /* Слід · Англійська мова, 10 клас — пул тренування до розділу e10s4 «Weather, nature and natural disasters»
-   Статус: draft; автор writer-pe10s4, 2026-11-27. Уроки e10s4l1–e10s4l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e10s4l7 без вправ.
+   Статус: verified (verifier-pe10s3-pe10s4, 2026-11-27, reports/verify/write-eng-pool-g10-e10s4.md); автор writer-pe10s4, 2026-11-27. Уроки e10s4l1–e10s4l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e10s4l7 без вправ.
    Джерело — програма класу (program: true): П1407 («Іноземні мови. 10–11 класи», наказ МОН № 1407 від 23.10.2017),
    спеціалізовані школи, 10 кл.: с. 22 — тема «Природа і погода» (природні катаклізми та їх види; вплив погоди на здоров’я
    та настрій; захист природи), функція «висловлювати власні припущення, прогнозувати ймовірність подій і наслідків»;
@@ -18,8 +18,8 @@
 SLID.pool("eng", {
   id: "pe10s4",
   section: "e10s4",
-  status: "draft",
-  meta: { author: "writer-pe10s4", created: "2026-11-27", factcheck: null, teacher: null },
+  status: "verified",
+  meta: { author: "writer-pe10s4", created: "2026-11-27", factcheck: "verifier-pe10s3-pe10s4, 2026-11-27 (reports/verify/write-eng-pool-g10-e10s4.md)", teacher: null },
   sources: [
     { id: "p1407", short: "П1407", program: true,
       title: "Навчальна програма «Іноземні мови. 10–11 класи» (рівень стандарту, профільний рівень), наказ МОН від 23.10.2017 № 1407 — 10 клас, спеціалізовані школи (B2): тематика, лексика й функції (с. 22), граматика (с. 23)",
@@ -221,7 +221,7 @@ SLID.pool("eng", {
       steps: ["Emma goes for a walk <b>every day at lunchtime</b>, when it’s light.", "Now she feels <b>more cheerful</b>, not gloomy."] },
     { id: "a31", lesson: "e10s4l3", lvl: 1, sk: "write", src: "p1407 с. 22",
       type: "gaps", title: "Complete the sentences.",
-      body: "<p>Oksana writes to the club in August.</p>",
+      body: "<p>Oksana writes to the club in summer.</p>",
       text: "It’s 36 °C in Zelena Dolyna. The {*heatwave|headache} has lasted for ten days, and the heat makes me {*feel|to feel} tired.",
       steps: ["A time of very hot weather → a <b>heatwave</b>.", "make me <b>feel</b> tired: no <i>to</i>."] },
     { id: "a32", lesson: "e10s4l3", lvl: 2, sk: "write", src: "p1407 с. 22",
@@ -265,10 +265,10 @@ SLID.pool("eng", {
       steps: ["<b>will be blowing</b> and <b>will blow</b> are both correct here.", "Not <s>will blowing</s>, not <s>will be blow</s>."] },
     { id: "a38", lesson: "e10s4l4", lvl: 3, sk: "gram", src: "p1407 с. 23",
       type: "gaps", title: "Complete the forecast.",
-      body: "<p>The forecast for the Carpathians tomorrow.</p>",
-      text: "Snow {*will start|will starting|will be start} at about 3 pm, and by the evening it {*will be snowing|will snowing|will be snow} in all the mountain villages. The roads {*will be|will being|will} icy.",
+      body: "<p>The forecast for Lviv tomorrow.</p>",
+      text: "Snow {*will start|will starting|will be start} in Lviv at about 3 pm. At 6 pm, it {*will be snowing|will snowing|will be snow} hard in the city centre, and the buses {*will be|will being|will} late.",
       hint: "Is each gap one event, something in progress or a fact? Check that each form has all its parts.",
-      steps: ["One event → snow <b>will start</b> at 3 pm.", "In progress → it <b>will be snowing</b> hard. A fact → the roads <b>will be</b> icy."] },
+      steps: ["One event → snow <b>will start</b> at 3 pm.", "In progress at 6 pm → it <b>will be snowing</b> hard. A fact → the buses <b>will be</b> late."] },
     { id: "a39", lesson: "e10s4l4", lvl: 3, sk: "gram", src: "p1407 с. 23",
       type: "build", title: "Put the words in order.",
       body: "<p>Write a forecast for Odesa.</p>",
@@ -413,7 +413,7 @@ SLID.pool("eng", {
       body: "<p>Taras is saving money for a new camera. What does he write?</p>",
       tiles: ["by June", "I", "will have", "saved", "enough money", "for a new camera"],
       extra: ["save"],
-      answer: ["By June I will have saved enough money for a new camera.", "I will have saved enough money for a new camera by June."],
+      answer: ["By June I will have saved enough money for a new camera.", "I will have saved enough money for a new camera by June.", "I will have saved enough money by June for a new camera."],
       steps: ["will have + the third form: <b>will have saved</b>.", "<i>By June</i> can go at the start or at the end."] },
     { id: "a60", lesson: "e10s4l5", lvl: 2, sk: "write", src: "p1407 с. 23",
       type: "gaps", title: "Complete the message.",
@@ -501,8 +501,8 @@ SLID.pool("eng", {
     { id: "a73", lesson: "e10s4l6", lvl: 3, sk: "write", src: "p1407 с. 23",
       type: "gaps", title: "Complete the message.",
       body: "<p>Taras writes about his plans.</p>",
-      text: "Dad has already planned our trip to Svitiaz: Zlata and I {*are going to|is going to|going to} stay there for a week in July. On 15 July at noon, we {*will be swimming|will swimming|will be swim} in the lake. And by the end of the trip, Zlata {*will have seen|will have see|will seen} the deepest lake in Ukraine!",
-      hint: "Remember the future forms from this section. Which one is for a plan, for something in progress and for something finished?",
-      steps: ["A plan → we <b>are going to</b> stay. In progress at a time → we <b>will be swimming</b>.", "Finished by the end of the trip → Zlata <b>will have seen</b> it."] }
+      text: "On 15 July at noon, Zlata and I {*will be swimming|will swimming|will be swim} in Svitiaz! Dad has already booked a room near the lake: we {*are going to|is going to|going to} stay there for a week. Zlata has never been to Svitiaz, but by the end of the week, she {*will have learnt|will have learn|will learnt} all about the deepest lake in Ukraine.",
+      hint: "Remember the future forms from this section. Which one is for something in progress at a time, for a plan and for something finished?",
+      steps: ["In progress at a time → we <b>will be swimming</b>. A plan (the room is booked) → we <b>are going to</b> stay.", "Finished by the end of the week → Zlata <b>will have learnt</b> (learn – learnt – learnt)."] }
   ]
 });

@@ -1,5 +1,5 @@
 /* Слід · Англійська мова, 10 клас — пул тренування до розділу e10s3 «Food and habits»
-   Статус: draft; автор writer-pe10s3, 2026-11-27. Уроки e10s3l1–e10s3l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e10s3l7 без вправ.
+   Статус: verified (verifier-pe10s3-pe10s4, 2026-11-27, reports/verify/write-eng-pool-g10-e10s3.md); автор writer-pe10s3, 2026-11-27. Уроки e10s3l1–e10s3l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e10s3l7 без вправ.
    Джерело — програма класу (program: true): П1407 («Іноземні мови. 10–11 класи», наказ МОН № 1407 від 23.10.2017),
    спеціалізовані школи, 10 кл.: с. 22 — тема «Харчування» (національні страви України та країн, мова яких вивчається;
    смаки, уподобання; здорова та корисна їжа; шкідливі звички), функція «давати поради, реагувати на поради інших»;
@@ -17,8 +17,8 @@
 SLID.pool("eng", {
   id: "pe10s3",
   section: "e10s3",
-  status: "draft",
-  meta: { author: "writer-pe10s3", created: "2026-11-27", factcheck: null, teacher: null },
+  status: "verified",
+  meta: { author: "writer-pe10s3", created: "2026-11-27", factcheck: "verifier-pe10s3-pe10s4, 2026-11-27 (reports/verify/write-eng-pool-g10-e10s3.md)", teacher: null },
   sources: [
     { id: "p1407", short: "П1407", program: true,
       title: "Навчальна програма «Іноземні мови. 10–11 класи» (рівень стандарту, профільний рівень), наказ МОН від 23.10.2017 № 1407 — 10 клас, спеціалізовані школи (B2): тематика, лексика й функції (с. 22), граматика (с. 23)",
@@ -61,7 +61,7 @@ SLID.pool("eng", {
       steps: ["Isla’s dad read the poem <b>first</b>, and then the meal started.", "The boy from London didn’t try the haggis: he only had <b>neeps and tatties</b>."] },
     { id: "a06", lesson: "e10s3l1", lvl: 3, sk: "read", src: "p1407 с. 22",
       type: "choice", title: "Read and choose.",
-      body: "<p><i>My grandad is a cook, and he makes chicken Kyiv at home. He puts butter inside the chicken, covers it in breadcrumbs and bakes it. He never fries it. He says the chilled ones from the shops are fine, but his are much better! – Emma</i></p><p>What does Emma’s grandad think?</p>",
+      body: "<p><i>My grandad used to be a cook, and he still makes chicken Kyiv at home. He puts butter inside the chicken, covers it in breadcrumbs and bakes it. He never fries it. He says the chilled ones from the shops are fine, but his are much better! – Emma</i></p><p>What does Emma’s grandad think?</p>",
       opts: ["His chicken Kyiv is better than the shop ones.", "Chicken Kyiv from the shops is better than his.", "Chicken Kyiv tastes best when it is fried."],
       correct: 0,
       hint: "Read the last sentence again. What does he never do?",
@@ -223,7 +223,7 @@ SLID.pool("eng", {
     { id: "a32", lesson: "e10s3l3", lvl: 1, sk: "gram", src: "p1407 с. 23",
       type: "gaps", title: "Fill in the gaps.",
       body: "<p>Grandad Mykola talks about his childhood.</p>",
-      text: "When I was a boy, I {*used to|would} have a dog called Sirko. Every morning, I {*would|was used to} take him to the river.",
+      text: "When I was a boy, I {*used to|would} have a big black dog. Every morning, I {*would|was used to} take him to the river.",
       steps: ["Have a dog (= own it) is a state → only <b>used to</b>.", "Take him to the river is an action, again and again → <b>would</b>."] },
     { id: "a33", lesson: "e10s3l3", lvl: 1, sk: "gram", src: "p1407 с. 23",
       type: "choice", title: "Choose the correct answer.",
@@ -594,10 +594,10 @@ SLID.pool("eng", {
       steps: ["Now she’s <b>used to</b> it and even <b>prefers</b> it to black tea.", "In Vinnytsia, she <b>used to</b> drink tea without milk."] },
     { id: "a88", lesson: "e10s3l6", lvl: 3, sk: "read", src: "p1407 с. 22",
       type: "multi", title: "Choose all the correct answers.",
-      body: "<p><i>In Vinnytsia, my school day used to start at eight. Here it starts at quarter to nine, so I’m used to sleeping a bit longer now. But I’m still getting used to the school uniform: in Vinnytsia, I used to wear my own clothes. – Orysia</i></p><p>Which sentences are true?</p>",
-      opts: ["Orysia’s school day in England starts later than in Vinnytsia.", "Orysia didn’t use to wear a uniform.", "The uniform is completely normal for her now.", "Orysia gets up earlier in England."],
+      body: "<p><i>In Vinnytsia, my school day used to start at eight. Here it starts at quarter to nine, but I go by bus, so I still get up early. And I’m still getting used to the school uniform: in Vinnytsia, I used to wear my own clothes. – Orysia</i></p><p>Which sentences are true?</p>",
+      opts: ["Orysia’s school day in England starts later than in Vinnytsia.", "Orysia didn’t use to wear a uniform.", "The uniform is completely normal for her now.", "Orysia walks to school in England."],
       correct: [0, 1],
-      hint: "Compare eight and quarter to nine. Is she used to the uniform, or still getting used to it?",
-      steps: ["Quarter to nine is later than eight, so she sleeps longer.", "She <b>used to wear</b> her own clothes, and she’s <b>still getting used to</b> the uniform."] }
+      hint: "Compare eight and quarter to nine. Is she used to the uniform, or still getting used to it? How does she go to school?",
+      steps: ["Quarter to nine is later than eight. She goes by bus, so she doesn’t walk.", "She <b>used to wear</b> her own clothes, and she’s <b>still getting used to</b> the uniform."] }
   ]
 });
