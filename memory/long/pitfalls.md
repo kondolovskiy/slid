@@ -6,6 +6,7 @@
 |---|---|---|
 | `pitfalls.md` (цей) | процес, агенти, паралельна робота й git, середовище, недоступні сайти, PWA й артефакт | будь-яка робота, особливо паралельна |
 | `pitfalls-content.md` | загальні правила змісту (id, fbText, eyebrow, `sk`), українська мова: мовні вправи, друга правильна відповідь, словники й підручники ukr, милозвучність; англійська (eng: BrE, AmE у відповіді, без IPA, `uk` 4–5 кл.) | автори й верифікатори уроків, особливо ukr |
+| `pitfalls-eng.md` | англійська (`eng`): повний перелік рядків PITFALL розділів 4–11 кл., тестів рівня й пулів (друга правильна відповідь, дистрактори, порядки `build`, `stress`, `hint`); зведення й основні правила — `pitfalls-content.md` «Англійська» | автори й верифікатори eng — перед завданням на ту саму граматику |
 | `pitfalls-math.md` | формули й TeX у контенті, лабораторія й креслення `plane`/`solid`, пули й формати відповідей, підручники math (сторінки, текстовий шар PDF) | автори й верифікатори math, пулів і тестів рівня |
 | `pitfalls-hist.md` | історія й всесвітня історія: факти-пастки, джерела (ЕІУ, EoU, літописи), зображення й Вікісховище (429, хибні описи, ліцензії, `cap`) | автори й верифікатори hist / world, фото-агенти |
 | `pitfalls-engine.md` | рушій, інструменти, validate, тести й CI, браузерні прогони, персоналізація, журнал, бекенд | інженерні задачі й рев'ю, QA |
@@ -166,3 +167,11 @@ _Розбито з `pitfalls.md` 2026-11-05 (куратор пам'яті): за
 
 ### Процес
 - **make-tasks дублює задачі розділів eng.** Задачі дизайну названо `write-eng-g<клас>-<розділ>`, а `make-tasks` створює `write-eng-<розділ>.md` і не бачить їх як ті самі. Доки не виконано engine-eng-tools п. 1 (дедуплікація write-eng-g*), `make-tasks --subject eng` запускай лише з `--dry-run` (design-eng-1119).
+
+## Додано 2026-11-27 (англійська 4–11 кл.; рядки NOTE «середовище» з inbox 19.11–26.11, зведено)
+
+### Середовище
+- **Для eng стабільно працюють:** en/uk.wikipedia через `curl` (`action=raw`, з User-Agent; назва — URL-кодована; API search дає 429, при двох агентах з фото Commons API — стабільно 429), dictionary.cambridge.org і oxfordlearnersdictionaries.com через `curl` (WebFetch їх не резолвить), ЕСУ без www (`curl --http1.1`; живий пошук — `curl -X POST --data-urlencode "query=…" https://esu.com.ua/search_live.php`). Решта — через WebSearch (видача як вторинне джерело, URL у звіт).
+- **Недоступні з контейнера (19–26.11):** britannica.com (403), encyclopediaofukraine.com (не резолвиться), learnenglish(kids).britishcouncil.org, gov.uk, parliament.uk, ons.gov.uk, metoffice.gov.uk, nhs.uk, who.int, cdc.gov, paho.org, ich.unesco.org, whc.unesco.org, historicengland.org.uk, statcan / abs.gov.au / cso.ie / stats.govt.nz / cia.gov, bank.gov.ua і royalmint.com (403), kmu.gov.ua, ukrinform, worldathletics.org і olympics.com (403), wikidata.org (403), coe.int, un.org, nato.int, radiosvoboda.org. **zakon.rada.gov.ua** — 26.11 вдалося через `curl --compressed …/print`, того ж дня пізніше — «Access is temporarily restricted»: не розраховуй.
+- **Переглянути власний SVG без rsvg:** Chromium headless `/opt/pw-browsers/chromium-*/chrome-linux64/chrome --screenshot` з HTML-сторінкою (verifier-e5s4).
+
