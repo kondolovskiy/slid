@@ -6,7 +6,7 @@ type: write-pool
 subject: eng
 grade: 7
 section: e7s1
-status: review
+status: done
 claimed_by: writer-pe7s1
 created: 2026-11-27
 depends_on: []
@@ -86,3 +86,7 @@ generated_by: tools/make-tasks.mjs --write-pool --subject eng
 2. a63/a75 stress: набір -self + слова l1 (housework, rubbish) — лексика з того ж розділу, але з раніших уроків; у l5 phon — інакше всі слова мали б наголос на 2-му складі.
 3. a68 — Christmas Eve у Chernihiv для сім'ї Andrii: нова деталь канону (у e6s5 — їздять coach до бабусі й дідуся).
 4. a39 «He has known Ostap since they were seven» — вік знайомства Taras і Ostap у каноні не заданий.
+
+## Верифікація
+
+**verifier-pe7s1-pe7s2, 2026-11-27.** Пул pe7s1 (81 вправ) → `verified`, 10 правок (a79 keepCase — блокувальна; a78 канон; a36, a41, a45, hint a51 — D-019; hint a14, a56, a60). Звіт — reports/verify/write-eng-pool-g7-e7s1.md. `validate --pool pe7s1` — 0/0; `personalization-qa --strict` — без «БРАКУЄ» після зміни статусу. Build не запускав.

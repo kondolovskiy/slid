@@ -10,8 +10,8 @@
    Контракт — docs/CONTENT_SCHEMA.md §10 «Пули мовних предметів».
    Перевірка: node tools/validate.mjs --pool pe7s2 && node tools/personalization-qa.mjs --pool pe7s2 --strict */
 SLID.pool("eng", {
-  id: "pe7s2", section: "e7s2", status: "draft",
-  meta: { author: "writer-pe7s2", created: "2026-11-27", factcheck: "self", teacher: null },
+  id: "pe7s2", section: "e7s2", status: "verified",
+  meta: { author: "writer-pe7s2", created: "2026-11-27", factcheck: "verifier-pe7s1-pe7s2 (reports/verify/write-eng-pool-g7-e7s2.md)", teacher: null },
   sources: [
     { id: "mpim", short: "МП-ІМ", program: true,
       title: "Модельна навчальна програма «Іноземна мова. 5–9 класи» (Редько В. Г., Шаленко О. П., Сотникова С. І. та ін.), наказ МОН від 12.07.2021 № 795",
@@ -139,7 +139,7 @@ SLID.pool("eng", {
       type: "gaps", title: "Complete the sentences.",
       body: "<p>Andrii writes to Taras about a family dinner.</p>",
       text: "Hi Taras! For Mum’s birthday, Dad {*baked|fried} a big cake. He {*roasted|boiled} some meat in the oven too. I {*sliced|peeled} the bread into thin pieces, and Sofiia {*chopped|sliced} the carrots into small pieces.",
-      hint: "Cake, chicken in the oven, thin pieces, small pieces.",
+      hint: "Cake, meat in the oven, thin pieces, small pieces.",
       steps: ["A cake → <b>baked</b>. Meat in the oven → <b>roasted</b>.", "Thin pieces → <b>sliced</b>. Small pieces → <b>chopped</b>."] },
 
     /* ───────────── e7s2l3 · A slice of bread, a little salt: how much? ───────────── */
@@ -160,7 +160,7 @@ SLID.pool("eng", {
       extra: ["a few"],
       answer: "Can I have a piece of cake?",
       keepCase: true,
-      hint: "Start with Can. Cake is uncountable.",
+      hint: "Start with Can. Look at the screen “A slice of bread”.",
       steps: ["We don’t say <i>a cake</i> for a small part: <b>a piece of</b> cake.", "<b>Can I have a piece of cake?</b>"] },
     { id: "a24", lesson: "e7s2l3", lvl: 2, sk: "gram", src: "mpim с. 34",
       type: "word", title: "Write the missing word.",
@@ -178,9 +178,9 @@ SLID.pool("eng", {
     { id: "a26", lesson: "e7s2l3", lvl: 3, sk: "gram", src: "mpim с. 34",
       type: "gaps", title: "Fill in the gaps.",
       body: "<p>Mum offers Tom some food after school.</p>",
-      text: "Mum: Would you like {*a slice|a few} of cake? Tom: Yes, please. And {*a glass|a little} of milk. Mum: Here you are. And {*a few|a little} strawberries too!",
-      hint: "a slice of, a glass of… Strawberries: countable?",
-      steps: ["<b>a slice of</b> cake, <b>a glass of</b> milk.", "Strawberries are countable → <b>a few</b> strawberries."] },
+      text: "Mum: Would you like {*a slice|a few} of cake? Tom: Yes, please. And {*a glass|a little} of milk. Mum: Here you are. And {*a few|a little} biscuits too!",
+      hint: "a slice of, a glass of… Biscuits: countable?",
+      steps: ["<b>a slice of</b> cake, <b>a glass of</b> milk.", "Biscuits are countable → <b>a few</b> biscuits."] },
     { id: "a27", lesson: "e7s2l3", lvl: 1, sk: "write", src: "mpim с. 34",
       type: "gaps", title: "Complete the sentences.",
       body: "<p>Andrii writes a message to Dad.</p>",

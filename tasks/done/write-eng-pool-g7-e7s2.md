@@ -6,7 +6,7 @@ type: write-pool
 subject: eng
 grade: 7
 section: e7s2
-status: review
+status: done
 claimed_by: writer-pe7s2
 created: 2026-11-27
 depends_on: []
@@ -82,3 +82,7 @@ generated_by: tools/make-tasks.mjs --write-pool --subject eng
 1. a43 «a fork — You eat with it, and it isn’t a spoon» — незграбне, але однозначне в межах чотирьох пар.
 2. a05 sort «You cook food in it or on it / You keep or wash things in it» — microwave і kettle свідомо не взяв (неоднозначні).
 3. a36–a38 — власні «упаковки» (pancakes, fish fingers, rice); fish fingers і freezer — з e7s2l4, rice — e4s4/e6s3.
+
+## Верифікація
+
+**verifier-pe7s1-pe7s2, 2026-11-27.** Пул pe7s2 (69 вправ) → `verified`, 3 правки (a26 strawberries → biscuits — D-019; hint a23, a20). Звіт — reports/verify/write-eng-pool-g7-e7s2.md. `validate --pool pe7s2` — 0/0; `personalization-qa --strict` — без «БРАКУЄ» після зміни статусу. Build не запускав.
