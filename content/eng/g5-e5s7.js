@@ -736,8 +736,8 @@ SLID.section("eng", {
         {
           type: "intro",
           eyebrow: "Lesson 6",
-          title: "Who is Ivan Kotliarevskyi?",
-          body: `<p class="lead">Oksana is at a museum in Poltava with her aunt. She writes to Emma.</p><p><i>Today we are at a museum. It’s about Ivan Kotliarevskyi. He was a famous writer from Poltava.</i></p><p>Why is he famous?</p>`,
+          title: "Who is Ivan Kotliarevsky?",
+          body: `<p class="lead">Oksana is at a museum in Poltava with her aunt. She writes to Emma.</p><p><i>Today we are at a museum. It’s about Ivan Kotliarevsky. He was a famous writer from Poltava.</i></p><p>In Ukrainian documents, his name is written <i>Ivan Kotliarevskyi</i>.</p><p>Why is he famous?</p>`,
           cta: "Let’s see"
         },
         {
@@ -760,7 +760,7 @@ SLID.section("eng", {
         {
           type: "info",
           title: "History and culture",
-          body: `<ul><li><b><u>his</u>tory</b> – the story of a place, from long ago to today</li><li><b><u>fa</u>mous</b> – lots of people know him, her or it</li><li>a <b><u>wri</u>ter</b> – writes books, poems and stories</li><li>a <b><u>po</u>em</b> – a text in short lines</li><li><b>old</b> ↔ <b>new</b></li></ul><p>Kotliarevskyi is famous <b>for</b> his poem.<br><b>There is</b> an old church in my village.</p>`,
+          body: `<ul><li><b><u>his</u>tory</b> – the story of a place, from long ago to today</li><li><b><u>fa</u>mous</b> – lots of people know him, her or it</li><li>a <b><u>wri</u>ter</b> – writes books, poems and stories</li><li>a <b><u>po</u>em</b> – a text in short lines</li><li><b>old</b> ↔ <b>new</b></li></ul><p>Kotliarevsky is famous <b>for</b> his poem.<br><b>There is</b> an old church in my village.</p>`,
           cta: "Next"
         },
         {
@@ -768,7 +768,7 @@ SLID.section("eng", {
           sk: "read",
           eyebrow: "Reading: a famous writer, part 1 of 2",
           title: "Read and choose.",
-          body: `<p><i>Ivan Kotliarevskyi was a famous Ukrainian writer. He lived in Poltava. His poem Eneida is long and funny. It’s in Ukrainian. The first parts are from 1798.</i></p><p>When are the first parts of Eneida from?</p>`,
+          body: `<p><i>Ivan Kotliarevsky was a famous Ukrainian writer. He lived in Poltava. His poem Eneida is long and funny. It’s in Ukrainian. The first parts are from 1798.</i></p><p>When are the first parts of Eneida from?</p>`,
           opts: [
             "1898",
             "1798",
@@ -784,7 +784,7 @@ SLID.section("eng", {
           sk: "cult",
           eyebrow: "Reading: a famous writer, part 2 of 2",
           title: "Read and choose.",
-          body: `<p><i>Eneida is very important. New Ukrainian literature starts with this poem. (Literature is books, poems and stories.) Today there is a museum about Kotliarevskyi in Poltava. People come to see his books and things.</i></p><p>What starts with Eneida?</p>`,
+          body: `<p><i>Eneida is very important. New Ukrainian literature starts with this poem. (Literature is books, poems and stories.) Today there is a museum about Kotliarevsky in Poltava. People come to see his books and things.</i></p><p>What starts with Eneida?</p>`,
           opts: [
             "new Ukrainian literature",
             "the history of Poltava",
@@ -794,17 +794,17 @@ SLID.section("eng", {
           hint: "Read the second sentence.",
           fbOk: "Good eye!",
           fbBad: "Read the text again.",
-          fbText: "<b>New Ukrainian literature</b> starts with Eneida. The museum is about Kotliarevskyi."
+          fbText: "<b>New Ukrainian literature</b> starts with Eneida. The museum is about Kotliarevsky."
         },
         {
           type: "gaps",
           sk: "vocab",
           title: "Fill in the gaps.",
           body: `<p>Oksana writes about the museum.</p>`,
-          text: "Kotliarevskyi was a {*famous|new} writer. His poem Eneida is very {*old|new}: the first parts are from 1798. It’s a {*funny|sad} poem. There {*is|are} a museum about him in Poltava.",
+          text: "Kotliarevsky was a {*famous|new} writer. His poem Eneida is very {*old|new}: the first parts are from 1798. It’s a {*funny|sad} poem. There {*is|are} a museum about him in Poltava.",
           hint: "Look at the text again. Is 1798 long ago?",
           fbOk: "Exactly.",
-          fbBad: "Read the text about Kotliarevskyi again.",
+          fbBad: "Read the text about Kotliarevsky again.",
           fbText: "Lots of people know him: he is <b>famous</b>. 1798 is long ago: the poem is <b>old</b>. It’s a <b>funny</b> poem. One museum: <b>there is</b>."
         },
         {
@@ -852,15 +852,15 @@ SLID.section("eng", {
           eyebrow: "Final",
           title: "Complete the sentences.",
           body: `<p>Oksana writes about her village and Poltava.</p>`,
-          text: "My village is small, but it’s very old. There {*is|are} an old church. There {*are|is} lots of old houses. Poltava is a city near my village. My favourite place there is the {*museum|bank} about Kotliarevskyi. His poem Eneida is {*funny|sad}. It’s {*in|from} Ukrainian.",
+          text: "My village is small, but it’s very old. There {*is|are} an old church. There {*are|is} lots of old houses. Poltava is a city near my village. My favourite place there is the {*museum|bank} about Kotliarevsky. His poem Eneida is {*funny|sad}. It’s {*in|from} Ukrainian.",
           hint: "One church, lots of houses: is or are?",
           fbOk: "Well done!",
-          fbBad: "Read the text about Kotliarevskyi again.",
-          fbText: "One church: <b>there is</b>. Lots of houses: <b>there are</b>. The <b>museum</b> is about Kotliarevskyi. Eneida is <b>funny</b>. It’s <b>in</b> Ukrainian."
+          fbBad: "Read the text about Kotliarevsky again.",
+          fbText: "One church: <b>there is</b>. Lots of houses: <b>there are</b>. The <b>museum</b> is about Kotliarevsky. Eneida is <b>funny</b>. It’s <b>in</b> Ukrainian."
         }
       ],
       outro: {
-        text: "Every town and village has history. Poltava is famous for the writer Ivan Kotliarevskyi.",
+        text: "Every town and village has history. Poltava is famous for the writer Ivan Kotliarevsky.",
         learned: [
           "Read a short text about a famous person from a town.",
           "Say what is old and famous in your place: There is an old church.",
@@ -974,7 +974,7 @@ SLID.section("eng", {
           sk: "cult",
           eyebrow: "Task 6",
           title: "Choose the correct answer.",
-          body: `<p>What is Eneida by Ivan Kotliarevskyi?</p>`,
+          body: `<p>What is Eneida by Ivan Kotliarevsky?</p>`,
           opts: [
             "a funny poem in Ukrainian",
             "a museum in Poltava",
@@ -983,8 +983,8 @@ SLID.section("eng", {
           correct: 0,
           pre: "e5s7l6",
           fbOk: "Right.",
-          fbBad: "Remember the text about Kotliarevskyi.",
-          fbText: "Eneida is a long and <b>funny poem in Ukrainian</b>. The first parts are from 1798. There is a museum about Kotliarevskyi in Poltava."
+          fbBad: "Remember the text about Kotliarevsky.",
+          fbText: "Eneida is a long and <b>funny poem in Ukrainian</b>. The first parts are from 1798. There is a museum about Kotliarevsky in Poltava."
         }
       ],
       outro: {

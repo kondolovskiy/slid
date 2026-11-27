@@ -11,7 +11,7 @@ on:
   workflow_dispatch:
     inputs:
       playtest:
-        description: "Плейтест: subset — змінені розділи + покриття типів екранів + тести рівня (≈ 5 хв); full — усі уроки (≈ 50 хв)"
+        description: "Плейтест: subset — змінені розділи + покриття типів екранів + тести рівня (≈ 5–45 хв); full — усі уроки (1800+ уроків, понад 90 хв — див. tools-playtest-full-duration)"
         type: choice
         options: [subset, full]
         default: subset
@@ -86,7 +86,9 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read   # код PR тут виконується — без pages/id-token
-    timeout-minutes: ${{ inputs.playtest == 'full' && 120 || 45 }}
+    # звичайно: ≈ 10 хв регресії й test-ui + піднабір плейтесту до 45 хв (уроки eng 7–11 — ≈ 8 с на урок, 245 уроків > 30 хв);
+    # full: піднабір пропускається, ≈ 10 + повний до 90 хв (1800+ уроків можуть не вкластися — задача tools-playtest-full-duration)
+    timeout-minutes: ${{ inputs.playtest == 'full' && 120 || 60 }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -171,7 +173,7 @@ jobs:
           echo "ids=$IDS" >> "$GITHUB_OUTPUT"
       - name: Плейтест піднабору
         if: ${{ !cancelled() && steps.pick.outcome == 'success' }}
-        timeout-minutes: 30
+        timeout-minutes: 45
         env:
           IDS: ${{ steps.pick.outputs.ids }}
         run: python tools/playtest.py --section "$IDS"

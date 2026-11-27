@@ -33,6 +33,35 @@
 | straight ahead (маршрут) | — | «go straight on» в OALD straight_2 і CD straight **не знайдено** (plan-eng-g5, 2026-11-19); формулу маршруту — лише зі словника, pitfalls-content «Англійська» п. 11 |
 | have got (I've got a sister) — у 4–6 кл. разом з have | have | — |
 
+**Лексика й написання, додано 2026-11-27 (розділи 4–11 кл.; рядки TERM з inbox):**
+| Пишемо | Не пишемо / примітка | Звірено |
+|---|---|---|
+| **penfriend(s)**, the penfriend club — разом | pen friend, pen-friend (вирівняно style-eng-g4-5, -g8, -g9) | OALD «British English also penfriend»; CD pen pal «UK pen friend» (style-eng-g8) |
+| **email** | e-mail | CD email «(also e-mail)» A1; OALD email_1 (writer-e8s1) |
+| **the internet** — з малої | the Internet | OALD internet «(usually the internet)»; CD (writer-e8s3); plan.js вирівняно 25.11 |
+| **chat show** — основне; talk show — «also» | — | CD chat-show; OALD chat-show (writer-e9s4, style-eng-g9) |
+| **the third form (of the verb)** у 6–10 кл., лише після екрана з рядом трьох форм; past participle — не вживаємо (e9s2 — 15 разів після містка: вирівняти або залишити як місток) | past participle | TQ-128 (style-eng-g6, -g7, verifier-style-eng-g10) |
+| **partly agree** — окремий рівень між agree і don’t agree: «That’s true, but…», «I see your point, but…», «up to a point» | «polite disagreement» для цих фраз | CD up to a point (style-eng-g9, verifier-e9s3) |
+| borscht — у тексті; у ключі `word` — borscht / borshch / borsch | — | CD; OALD «British English also borsch»; ЮНЕСКО «Culture of Ukrainian borscht cooking» (verifier-e5s3) |
+| Washington, DC — без крапок | D.C. | CD, OALD (verifier-e4s7) |
+| well known після be / well-known перед іменником; так само well paid / well-paid; award-winning, record-breaking, five-star — лише перед іменником; число в compound adjective — однина (a two-hour concert) | — | CD Grammar «Compounds» (writer-e8s4, -e11s3, -e11s8) |
+| classical music | classic music | CD Grammar «Classic or classical?» |
+| chemist’s / pharmacy (обидва в ключ), in hospital, feel sick (UK), burnt / burned | drugstore | CD (writer-e7s3) |
+| cooker, frying pan, saucepan, lay the table = set the table (обидва в ключ) | stove (mainly US); cutlery — C2, у 7 кл. не вживати | CD, OALD (writer-e7s2) |
+| do the washing-up = wash the dishes, put the rubbish out, do the ironing, hoover (UK) | chore (C1) — не вводити | CD, OALD (writer-e7s1) |
+| interval (театр), box office, horror film, action film, cinema, the stalls | intermission, movie theater | CD (writer-e7s4, verifier-e7s4) |
+| after-school club, school leaver, sports day | — | OALD (verifier-e7s6) |
+| borrow / lend (Not: Can I lend your…?); recommend + -ing; library card (library ticket — теж BrE, у дистрактори не брати) | recommend to do | CD Grammar (writer-e8s5) |
+| canteen (mainly UK); lyceum; дозвіл — can / may | «Yes, you could» як дозвіл | CD Grammar «Can, could or may?» (writer-e8s6) |
+| CV, careers adviser, organised | résumé | CD, OALD (writer-e9s7) |
+| USB stick, Wi-Fi | memory stick (торгова марка) | CD (writer-e10s6) |
+| graduate — лише про університет; leave / finish school | graduate high school (NAmE) | OALD graduate_2 (writer-e10s8) |
+| millilitre, tablespoon (15 ml), teaspoon «about 5 ml», homemade, tea (UK — і вечеря), flapjack (UK); elevenses — лише з позначкою UK informal | milliliter | CD, OALD (writer-e11s2, verifier-e11s2) |
+| lab technician, research assistant | lab assistant (лише Wiktionary) | OALD (writer-e11s5) |
+| revise (UK) для іспиту, sit an exam (UK), work experience | review | CD (writer-e11s8) |
+| green tourism — як синонім ecotourism (окремої статті в CD/OALD немає); rural tourism — окремо | — | writer-e11s6 |
+| staffroom — разом | staff room | CD, OALD (verifier-e11s1) |
+
 ## Дати, час, числа
 - **Дата:** «5 May 2026» — день, місяць, рік, без коми й без закінчень -th у записі (Cambridge Grammar «Dates»: «The most common way in British English… 20 January 1993» — https://dictionary.cambridge.org/grammar/british-grammar/dates). Читаємо: «the fifth of May». Десятиліття — «the 1990s» (без апострофа).
 - **Час:** словами в 4–6 кл. — «half past three», «quarter to four», «ten past six», «three o'clock»; цифрами — «3.30 pm» (крапка, pm без крапок) або 24-годинний «15.30» у розкладах (Cambridge Grammar «Time»: «12.30 pm», «13.15» — https://dictionary.cambridge.org/grammar/british-grammar/time; словники дають і «p.m.» з крапками — у ключі `word` приймати обидва записи; TQ-123). Американського «a quarter after three» не пишемо (CD quarter: «a quarter past… (also US a quarter after…)»).
@@ -103,9 +132,23 @@ _Вирівняно за style/eng.md «Шаблонні інструкції» 
 - Імена: Taras Shevchenko, Lesia Ukrainka, Ivan Franko — за таблицею. Якщо людина сама пише своє ім'я інакше (паспорт, офіційний сайт) — її написання, з джерелом у facts/eng.md.
 - Імена героїв уроків — українські (за таблицею: Oksana, Andrii, Yurii, Mariia, Dmytro) і англійські; без героїв підручників.
 
+## Імена історичних і відомих осіб (D-057, додано 2026-11-27)
+- **Історичні особи — усталене англійське написання** (як в англомовних енциклопедіях) **з приміткою КМУ55** при першій згадці в розділі, на неоцінюваному екрані: «In Ukrainian official documents, the name is written Mariia Prymachenko.» (у 11 кл. скорочено — «Official Ukrainian spelling: …», щоб не перевищити readWordsPerScreen; однакова форма скрізь — відкрите питання, handoff). Застосовано: fix-eng-historic-names (reports/verify/fix-eng-historic-names.md).
+- **Список (усталене — КМУ55):** Maria Prymachenko — Mariia; Volodymyr Vernadsky — Vernadskyi; Ivan Kotliarevsky — Kotliarevskyi; Mykhailo Kotsiubynsky — Kotsiubynskyi; Igor Sikorsky — Ihor Sikorskyi; Leonid Kadenyuk — Kadeniuk; **Ivan Pylypow** — Pylypiv (**не Pylypiw**: en.wikipedia Iwan_Pylypow, Wasyl_Eleniak, EoU «Pylypow, Ivan»; verifier-style-eng-g11, 2026-11-27); Wasyl Eleniak — Vasyl Yeleniak.
+- **Без примітки (КМУ55 = усталене або джерела розходяться):** Shevchenko, Franko, Lesia Ukrainka, Lysenko, Leontovych, Bilokur, Murashko, Dovzhenko, Borys / Yevhen Paton, Baiul.
+- **Назви об'єктів — офіційні:** станція Akademik Vernadsky (uac.gov.ua), не «Vernadskyi». **Вигадані герої й сучасні особи без усталеної форми — за КМУ55** (Mariia, Andrii).
+- **Не вирішено:** живі спортсмени з усталеним іншим написанням — Serhii Bubka (en.wiki «Sergey»), Olha Kharlan (en.wiki «Olga») — чи поширюється D-057; Khmelnytskyi у назві пам'ятника (Monument to Bohdan Khmelnytskyi, e7s7) — handoff «Відкриті питання». ~~TERM verifier-e10s5 «історичні особи — лише за КМУ55» (2026-11-26)~~ — замінено D-057.
+- **Українські класи в змісті — «Year N»** (Year 1 … Year 11; не Grade / Form; e7s6, e8s6); у `why` тестів рівня «Year N» не писати (британський Year ≠ український клас; verifier-dge5). Ліцей — «the last years of school» без чисел (verifier-e8s6; TQ-147 не створено).
+
+## Герої eng 4–11 кл.
+Канон (вік, сім'ї, міста, зайняті імена, відкриті розбіжності) — **`glossary/eng-heroes.md`** (2026-11-27). Головні: Oksana (Zelena Dolyna біля Poltava), Andrii (Kyiv), Mariia (Kharkiv, єдина дитина), Taras (Lviv), Emma і Tom (England). Відкрито: Taras і спорт; кузени Emma (Jack / Leah); Oksana — ветеринарія чи мистецтво.
+
 ## Не вирішено
 - **Лапки:** подвійні “ ” (рішення куратора 2026-11-19, причина вище) чи британські одинарні ‘ ’ — **TQ-122** (docs/teacher-questions.md), тимчасово “ ”.
 - **Час цифрами:** «3.30 pm» чи «3:30 pm» — обрано крапку (так у Cambridge Grammar «Time»); **TQ-123**, тимчасово «3.30 pm» у тексті, у відповіді — обидва записи.
 - **Лише -ise:** **TQ-124**, тимчасово -ise у тексті, -ize у відповіді — `ok` з приміткою.
 - **Американська лексика у відповіді `word`** (apartment на місці flat): рушій її не нормалізує (§5.4 п. 6); **TQ-125**, тимчасово — автор або робить завдання однозначним (картинка + слово з уроку), або кладе AmE-синонім у ключ; `bad` за словникове AmE-слово не ставимо.
-- **borshch чи borscht** (додано 2026-11-19, plan-eng-g5): транслітерація за КМУ № 55 дає «borshch» (facts/eng.md КМУ55), Cambridge Dictionary — «borscht» (https://dictionary.cambridge.org/dictionary/english/borscht). **Вирішити до write-eng-g5-e5s3** (автор або верифікатор e5s3 за D-046: словники D-041 → TQ, якщо сумнів лишився). До рішення в ключі `word` — обидві форми.
+- ~~**borshch чи borscht**~~ → вирішено 2026-11-20 (writer-e5s3, verifier-e5s3): borscht у тексті, у ключі — borscht / borshch / borsch (таблиця «Лексика… додано 2026-11-27»). Запис 2026-11-19: (plan-eng-g5): транслітерація за КМУ № 55 дає «borshch» (facts/eng.md КМУ55), Cambridge Dictionary — «borscht» (https://dictionary.cambridge.org/dictionary/english/borscht). **Вирішити до write-eng-g5-e5s3** (автор або верифікатор e5s3 за D-046: словники D-041 → TQ, якщо сумнів лишився). До рішення в ключі `word` — обидві форми.
+- **Примітка КМУ55 — дві форми** (2026-11-27): повна «In Ukrainian official documents, … is written …» і скорочена «Official Ukrainian spelling: …» (e11s5l6, e11s7l6) — уніфікувати чи лишити (handoff).
+- **Vernadsky / Vernadskyi** (2026-11-27): за D-057 людина — Volodymyr Vernadsky з приміткою «Vernadskyi», станція — Akademik Vernadsky; примітка «Vernadskyi» — у e11s5l6 і e11s7l6 (скорочена форма); звір, що в обох розділах однакова.
+
