@@ -6,7 +6,7 @@ type: write-pool
 subject: eng
 grade: 11
 section: e11s5
-status: todo
+status: review
 claimed_by: writer-pe11s5
 created: 2026-11-27
 depends_on: []
@@ -47,3 +47,23 @@ generated_by: tools/make-tasks.mjs --write-pool --subject eng
 - [ ] Задача → `tasks/review/` для **content-verifier зі свіжим контекстом** (розв'язати кожну вправу, звірити форми за словником).
 
 ## Нотатки виконавця
+
+**writer-pe11s5, 2026-11-27.** Файл `content/eng/pool-g11-e11s5.js` (pe11s5, draft), 68 вправ a01–a68, boss e11s5l7 без вправ.
+
+| Урок | Вправ | sk × рівні | Типи |
+|---|---|---|---|
+| e11s5l1 | 13 | vocab 1-2-2-3, phon 1-2-3, gram 1-2-3, read 1-2-3 | match, word, pick, choice, stress, gaps, multi |
+| e11s5l2 | 15 | vocab, phon, gram, func, write — по 1-2-3 | match, word, choice, stress, gaps, build, order |
+| e11s5l3 | 10 | gram 1-1-2-2-2-3-3, write 1-2-3 | gaps, choice, match, build, word, pick |
+| e11s5l4 | 9 | gram 1-1-2-2-3-3, write 1-2-3 | gaps, sort, word, build, choice, pick |
+| e11s5l5 | 9 | vocab, read, func — по 1-2-3 | gaps, match, choice, multi, build |
+| e11s5l6 | 12 | cult, read, gram, write — по 1-2-3 | choice, gaps, multi, word, pick, build |
+
+- Кожна пара (урок, sk) з оцінюваних екранів — 3+ вправи рівнів 1–3. Пар лише на екрані-здогадці (`hyp`) немає: vocab l1–l2, gram l3–l4, func l5, cult l6 є й на оцінюваних екранах.
+- `src`: p1407 с. 23 (функція «аргументувати точку зору», l5 func), с. 24 (лексика: галузі науки, обладнання й персонал, вплив на довкілля, наука в Україні), с. 25 (граматика: modals + passive, overview of tense forms active/passive). Назва джерела — як у facts/eng.md «Джерела» і пулах 10 кл.; сторінки звірено з текстом PDF (с. 23 — функції 11 кл., с. 24 — лексика, с. 25 — граматика).
+- Друга правильна відповідь: у пропусках хибні лише неграматичні форми (is + множина, has been + V1, can to be, putted, borned, will tested); scales — множина, equipment і research — незлічувані (is); `word`: can’t / cannot (contractions), дієслово задано в умові (watch, keep, check, carry out). `build` перебрано скриптом (SLID_LANG.check, усі перестановки з extra): a24, a33, a42 — один порядок (keepCase + велика перша плитка), a55 — один, a67 — два (обидва в ключі).
+- Перевірено скриптами: лексика не з пізніших уроків (зокрема waste / impact / warned прибрано з l4 і l5), 6-грами проти g4–g11 і фіналу — рамки з тим самим ключем не повторюються (залишились лише назви екранів, інструкції й речення фактів).
+- Факти — лише з e11s5l5 (озон) і e11s5l6 (Академія, Paton, станція, CERN). Реальним закладам нічого не приписано (Zoriana-думка в a62/a68 — оцінна, без фактів).
+- Герої — канон 11 кл.; нових імен немає. Нові дрібні деталі (NOTE в inbox): Daryna — колекція каменів, гори з рюкзаком (a12, a13); Mariia — дядько Oleh купив електромобіль, у школі Mariia збирають пляшки щоп’ятниці (a52); Kyrylo, Zoriana, Daryna, Bohdan, Emma — коментарі до статті Andrii (a60, a61).
+- Словники (форма, наголос): Cambridge Dictionary — https://dictionary.cambridge.org/dictionary/english/<word> для geology, ecology, biologist, geologist, ecologist, astronomer, physics, chemist, goggles, sample, announce, pollution, pollute, academy, welding, microscope, technician (усі — один наголос UK/US); researcher і laboratory у `stress` не брав (UK ≠ US). Пасив і модальні — CD Grammar «Passive: forms» (https://dictionary.cambridge.org/grammar/british-grammar/passive-forms), як у розділі.
+- `validate --pool pe11s5` — 0 помилок, 0 попереджень; `personalization-qa --pool pe11s5 --strict` — лише «ще не verified». test-answer-ui не запускав (немає Python-модуля playwright).
