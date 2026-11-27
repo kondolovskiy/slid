@@ -6,7 +6,7 @@ type: write-pool
 subject: eng
 grade: 9
 section: e9s5
-status: review
+status: done
 claimed_by: writer-pe9s5
 created: 2026-11-27
 depends_on: []
@@ -64,3 +64,6 @@ writer-pe9s5, 2026-11-27. Файл `content/eng/pool-g9-e9s5.js` (pe9s5, draft),
 Рішення: that після назви часу правильний — ніде не хибний (a31 word: when / that); the reason why / that — обидва в ключі (a55); who’s хибний лише перед іменником, a42 «who’s into rap» — правильний; where / which — за словами після пропуску (a30, a33, a37, a71 «a club which I want to join»); in which не вживаю (урок: «in which для 9 кл. не вчимо», хоча в завданні оркестратора згадано).
 Сумнівне для верифікатора: a66 «Do you like to come to our club?» — граматичне речення, але не запрошення (питання «polite invitation»); a58 «Sound great!» як хибний варіант; a11 — висновок, що друг Тома теж скейтер («My friends and I»).
 Дрібні нові деталі героїв (у межах канону): Emma — photography club у четвер (a36); у Andrii шаховий клуб у понеділок (як e8s*: Mondays); у Kateryna подруга Roksolana в drama club (a50); Orest — бабуся, день народження в п'ятницю (a57, a71); у школі Oksana — гурт із Poltava (a44, вигаданий).
+
+## Верифікація
+verifier-pe9s5 (сесія verifier-pe9s5-pe9s6), 2026-11-27: пул → `verified`. Звіт — reports/verify/write-eng-pool-g9-e9s5.md.

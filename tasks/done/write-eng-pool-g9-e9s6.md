@@ -6,7 +6,7 @@ type: write-pool
 subject: eng
 grade: 9
 section: e9s6
-status: review
+status: done
 claimed_by: writer-pe9s6
 created: 2026-11-27
 depends_on: []
@@ -64,3 +64,6 @@ writer-pe9s6, 2026-11-27. Файл `content/eng/pool-g9-e9s6.js` (pe9s6, draft),
 Перевірки скриптами: усі `solution` зараховуються; build a21, a45 (keepCase, один ключ), a33, a75 (без keepCase, усі порядки в ключі) — повний перебір; лексика проти g4–e9s5 і e9s6 до свого уроку — лишились helicopter (однина від helicopters), charge (charged — l3), plugged (plug in — l5), recharge (лише друга відповідь a56); 6-грами — збіги лише з фактами уроку (Bell / Cooper / Curie) не в ключі, рамки a18, a23, a55 замінено.
 Рішення: ергативні melt / cool / mix / heat активом хибними не робив; «could» як хибний варіант лише з маркером минулого (Twenty years ago, When Grandad was young) або у формі «could to»; by — лише a20 (умова: «wants to say who»); has been + V3 в уроках немає — не вжито.
 Сумнівне для верифікатора: a08 (висновок «перша премія — 1903» з «first woman in 1903» + «two Nobel Prizes»); a20 «These helicopters were designed.» граматичне, хибне лише за метою; a41 — пояснення «чому нагрівають перед формуванням» (опора — melt у l4); a74 «used to take» — в ключі лише цей варіант пропуску (to taking — хибний).
+
+## Верифікація
+verifier-pe9s6 (сесія verifier-pe9s5-pe9s6), 2026-11-27: пул → `verified`. Звіт — reports/verify/write-eng-pool-g9-e9s6.md.

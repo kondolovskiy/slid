@@ -1,5 +1,5 @@
 /* Слід · Англійська мова, 9 клас — пул тренування до розділу e9s5 «Youth culture and clubs»
-   Статус: draft; автор writer-pe9s5, 2026-11-27. Уроки e9s5l1–e9s5l6, кожна пара (урок, sk) — ≥ 3 вправи; рівні 1–3 на урок; boss e9s5l7 без вправ.
+   Статус: verified (verifier-pe9s5, 2026-11-27, reports/verify/write-eng-pool-g9-e9s5.md); автор writer-pe9s5, 2026-11-27. Уроки e9s5l1–e9s5l6, кожна пара (урок, sk) — ≥ 3 вправи; рівні 1–3 на урок; boss e9s5l7 без вправ.
    Джерело — програма класу (program: true): МП-ІМ (Редько В. Г. та ін., наказ МОН № 795 від 12.07.2021), 9 кл.:
    с. 33 — тема «Молодіжна культура»: течії молодіжної культури, молодіжні організації, клуби за інтересами (розд. 5.2.3);
    функції — приймати або відхиляти пропозицію, аргументувати вибір; с. 34 — Clause: Relative — with ‘whose…’, ‘where…’, ‘why…’, ‘when…’.
@@ -17,8 +17,8 @@
 SLID.pool("eng", {
   id: "pe9s5",
   section: "e9s5",
-  status: "draft",
-  meta: { author: "writer-pe9s5", created: "2026-11-27", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "writer-pe9s5", created: "2026-11-27", factcheck: "verifier-pe9s5, 2026-11-27 (reports/verify/write-eng-pool-g9-e9s5.md)", teacher: null },
   sources: [
     { id: "mpim", short: "МП-ІМ", program: true,
       title: "Модельна навчальна програма «Іноземна мова. 5–9 класи» (Редько В. Г., Шаленко О. П., Сотникова С. І. та ін.), наказ МОН від 12.07.2021 № 795 — 9 клас: тема й функції (с. 33), граматика B1 (с. 34)",
@@ -83,11 +83,11 @@ SLID.pool("eng", {
       steps: ["Videos online → Daryna is a <b>vlogger</b>. Games online → Zoriana is a <b>gamer</b>.", "Kyrylo hangs out with friends = he <b>spends time</b> with them. He doesn’t write about games."] },
     { id: "a11", lesson: "e9s5l1", lvl: 3, sk: "read", src: "mpim с. 33",
       type: "choice", title: "Read and choose.",
-      body: "<p><i>My friends and I spend hours at the skatepark every Saturday. One of my friends makes videos of us and puts them online every week. – Tom</i></p><p>What is Tom’s friend?</p>",
+      body: "<p><i>My friends and I ride our skateboards at the skatepark every Saturday. One of my friends makes videos of us and puts them online every week. – Tom</i></p><p>What is Tom’s friend?</p>",
       opts: ["a vlogger, but not a skater", "a skater and a vlogger", "a gamer"],
       correct: 1,
-      hint: "Read both sentences. Is the friend at the skatepark too?",
-      steps: ["“My friends and I” are at the skatepark → the friend is a <b>skater</b>.", "He makes videos for the internet → he’s a <b>vlogger</b> too."] },
+      hint: "Read both sentences. Does the friend ride a skateboard too?",
+      steps: ["“My friends and I ride our skateboards” → the friend rides a skateboard too: a <b>skater</b>.", "He makes videos for the internet → he’s a <b>vlogger</b> too."] },
 
     /* ───────────── e9s5l2 · Plast and the Scouts: youth organisations ───────────── */
     { id: "a12", lesson: "e9s5l2", lvl: 1, sk: "cult", src: "mpim с. 33",
@@ -124,11 +124,11 @@ SLID.pool("eng", {
       steps: ["“At night we slept <b>in tents</b>.” A camp is a place where you stay in tents."] },
     { id: "a17", lesson: "e9s5l2", lvl: 3, sk: "read", src: "mpim с. 33",
       type: "choice", title: "Read and choose.",
-      body: "<p>Tom is thirteen. He wants to do the DofE with Emma this year. Remember the reading “Youth organisations, part 2 of 2”.</p><p>What does Emma say?</p>",
-      opts: ["Yes, of course: the DofE is for everyone.", "No: the DofE is only for girls.", "Not yet: the DofE is for young people from 14 to 24."],
+      body: "<p>Emma’s mum, Sarah, wants to do the DofE with Emma this year. Remember the reading “Youth organisations, part 2 of 2”.</p><p>What does Emma say?</p>",
+      opts: ["Yes, of course: the DofE is for everyone.", "No: the DofE is only for girls.", "Sorry, Mum: the DofE is for young people from 14 to 24."],
       correct: 2,
-      hint: "Who can take part in the DofE? How old is Tom?",
-      steps: ["The DofE is for young people <b>from 14 to 24</b>.", "Tom is thirteen, so he can’t take part yet. When he’s fourteen, he can."] },
+      hint: "Who can take part in the DofE? Is Emma’s mum a young person?",
+      steps: ["The DofE is for young people <b>from 14 to 24</b>.", "Emma’s mum is an adult, so she can’t take part. It isn’t only for girls: boys do it too."] },
     { id: "a18", lesson: "e9s5l2", lvl: 1, sk: "gram", src: "mpim с. 34",
       type: "gaps", title: "Fill in the gaps.",
       body: "<p>Taras writes about Ostap’s camp.</p>",
@@ -395,8 +395,8 @@ SLID.pool("eng", {
     { id: "a60", lesson: "e9s5l5", lvl: 1, sk: "write", src: "mpim с. 33",
       type: "gaps", title: "Complete the sentences.",
       body: "<p>Myroslava asks Taras to help with the club poster. Taras answers.</p>",
-      text: "Sounds {*great|greatly}! I’d {*love|loving} to help with the poster.",
-      steps: ["<b>Sounds great!</b> says yes.", "<b>I’d love to</b> + verb: I’d love to help."] },
+      text: "{*Sounds|Sound} great! I’d {*love|loving} to help with the poster.",
+      steps: ["<b>Sounds great!</b> (= It sounds great.) says yes.", "<b>I’d love to</b> + verb: I’d love to help."] },
     { id: "a61", lesson: "e9s5l5", lvl: 2, sk: "write", src: "mpim с. 33",
       type: "gaps", title: "Complete the sentences.",
       body: "<p>Kateryna invites Mariia to a film on Thursday. Mariia answers.</p>",
@@ -452,9 +452,9 @@ SLID.pool("eng", {
     { id: "a69", lesson: "e9s5l6", lvl: 1, sk: "write", src: "mpim с. 33",
       type: "order", title: "Put the sentences in order.",
       body: "<p>Taras writes an invitation to Orest.</p>",
-      items: ["Hi Orest!", "Myroslava and I are starting a photo club at School 5.", "The first meeting is on Friday at 4 pm.", "Would you like to come?", "See you soon, Taras"],
+      items: ["Hi Orest!", "Myroslava and I are starting a photo club at School 5.", "The first meeting is on Friday at 4 pm.", "Would you like to come to the meeting?", "See you soon, Taras"],
       shuffle: [3, 0, 4, 2, 1],
-      steps: ["Start → say what → say when → invite → end.", "Hi Orest! → the club → Friday at 4 pm → Would you like to come? → See you soon."] },
+      steps: ["Start → say what → say when → invite → end.", "Hi Orest! → the club → Friday at 4 pm → Would you like to come to the meeting? → See you soon."] },
     { id: "a70", lesson: "e9s5l6", lvl: 2, sk: "write", src: "mpim с. 33",
       type: "gaps", title: "Complete the poster.",
       body: "<p>Emma makes a poster for her school’s drama club.</p>",

@@ -1,5 +1,5 @@
 /* Слід · Англійська мова, 9 клас — пул тренування до розділу e9s6 «Science and inventions»
-   Статус: draft; автор writer-pe9s6, 2026-11-27. Уроки e9s6l1–e9s6l6, кожна пара (урок, sk) — ≥ 3 вправи; рівні 1–3 на урок; boss e9s6l7 без вправ.
+   Статус: verified (verifier-pe9s6, 2026-11-27, reports/verify/write-eng-pool-g9-e9s6.md); автор writer-pe9s6, 2026-11-27. Уроки e9s6l1–e9s6l6, кожна пара (урок, sk) — ≥ 3 вправи; рівні 1–3 на урок; boss e9s6l7 без вправ.
    Джерело — програма класу (program: true): МП-ІМ (Редько В. Г. та ін., наказ МОН № 795 від 12.07.2021), 9 кл.:
    с. 31 — «короткий, простий опис знайомого прилада чи продукту»; с. 33 — тема «Наука і технічний прогрес»: відомі вчені та
    винахідники, винаходи, сучасні пристрої (розд. 5.2.3); с. 34 — Modality: Can — general truths and tendencies;
@@ -19,8 +19,8 @@
 SLID.pool("eng", {
   id: "pe9s6",
   section: "e9s6",
-  status: "draft",
-  meta: { author: "writer-pe9s6", created: "2026-11-27", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "writer-pe9s6", created: "2026-11-27", factcheck: "verifier-pe9s6, 2026-11-27 (reports/verify/write-eng-pool-g9-e9s6.md)", teacher: null },
   sources: [
     { id: "mpim", short: "МП-ІМ", program: true,
       title: "Модельна навчальна програма «Іноземна мова. 5–9 класи» (Редько В. Г., Шаленко О. П., Сотникова С. І. та ін.), наказ МОН від 12.07.2021 № 795 — 9 клас: опис прилада (с. 31), тема (с. 33), граматика B1 (с. 34–35)",
@@ -239,9 +239,9 @@ SLID.pool("eng", {
       steps: ["No <i>-s</i> after can: my phone <b>can</b> take photos.", "<i>it can be used to watch films</i> is correct."] },
     { id: "a35", lesson: "e9s6l3", lvl: 3, sk: "gram", src: "mpim с. 34",
       type: "gaps", title: "Fill in the gaps.",
-      text: "In 1992, the phone that got the first text {*couldn’t|can’t} reply. When Grandad was young, his phone {*couldn’t|can’t} use the internet. Now, texts {*can be sent|can sent} to any phone in seconds.",
+      text: "In 1876, Bell’s telephone {*couldn’t|can’t} send photos. When Grandad was young, his phone {*couldn’t|can’t} use the internet. Now, texts {*can be sent|can sent} to any phone in seconds.",
       hint: "The past or now? And can + … + the third form.",
-      steps: ["1992, when Grandad was young → the past → <b>couldn’t</b>.", "Now → <b>can be sent</b>: can + be + the third form."] },
+      steps: ["1876, when Grandad was young → the past → <b>couldn’t</b>.", "Now → <b>can be sent</b>: can + be + the third form."] },
     { id: "a36", lesson: "e9s6l3", lvl: 1, sk: "write", src: "mpim с. 34",
       type: "gaps", title: "Complete the sentences.",
       body: "<p>Oksana writes to Halyna.</p>",
@@ -426,7 +426,7 @@ SLID.pool("eng", {
     { id: "a66", lesson: "e9s6l5", lvl: 3, sk: "write", src: "mpim с. 34",
       type: "gaps", title: "Complete the sentences.",
       body: "<p>Andrii writes to Emma.</p>",
-      text: "Right now, my phone {*is being charged|are being charged} in the kitchen. The charger {*is plugged|plugged} in next to the window. Our smart speaker {*can|could to} answer questions, but it {*can’t|cans’t} do anything without electricity.",
+      text: "Right now, my phone {*is being charged|are being charged} in the kitchen. The charger {*is plugged|is plug} in next to the window. Our smart speaker {*can|could to} answer questions, but it {*can’t|cans’t} do anything without electricity.",
       hint: "One phone → ? is + the third form. No to and no -s after can.",
       steps: ["Now, one phone → <b>is being charged</b>. The charger <b>is plugged</b> in.", "It <b>can</b> answer, but it <b>can’t</b> do anything without electricity."] },
 
