@@ -433,7 +433,7 @@
 | e11s3l7 Film club night (фінал) | 11 | 10 | 0.9 | 27 | 47 | 44 | 6.8 | 0.092 | 5 | — |
 | e11s4l1 Kinds and genres of art | 11 | 11 | 0.64 | 37 | 82 | 79 | 7 | 0.092 | 6 | — |
 | e11s4l2 Learning from art: museums, galleries and theatres | 11 | 11 | 0.55 | 50 | 86 | 81 | 8.6 | 0.133 | 6 | — |
-| e11s4l3 Amazing or amazed? Art and emotions | 11 | 11 | 0.64 | 36 | 63 | 60 | 6.7 | 0.086 | 6 | — |
+| e11s4l3 Amazing or amazed? Art and emotions | 11 | 11 | 0.64 | 36 | 63 | 60 | 6.8 | 0.085 | 6 | — |
 | e11s4l4 Unusual, colourful, priceless: building adjectives | 11 | 12 | 0.58 | 37 | 67 | 58 | 6.5 | 0.19 | 5 | longWordShare нетипово для сім'ї (z=2.9) |
 | e11s4l5 Festivals in Ukraine and the UK | 11 | 12 | 0.5 | 51 | 117 | 113 | 8.4 | 0.125 | 6 | gradedShare нетипово для сім'ї (z=-2.3) |
 | e11s4l6 A festival review: how it made me feel | 11 | 12 | 0.83 | 64 | 150 | 147 | 7.9 | 0.074 | 6 | gradedShare нетипово для сім'ї (z=2.8); readWordsPerScreen нетипово для сім'ї (z=2); maxReadWords нетипово для сім'ї (z=2.1); maxText нетипово для сім'ї (z=2.1) |
