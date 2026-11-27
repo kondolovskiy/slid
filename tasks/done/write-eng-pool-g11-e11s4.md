@@ -6,7 +6,7 @@ type: write-pool
 subject: eng
 grade: 11
 section: e11s4
-status: review
+status: done
 claimed_by: writer-pe11s4
 created: 2026-11-27
 depends_on: []
@@ -72,3 +72,7 @@ generated_by: tools/make-tasks.mjs --write-pool --subject eng
 - [x] validate і personalization-qa — 0 помилок; `status: "draft"`.
 - [x] Нотатки, словники; рядок в inbox.
 - [x] → `tasks/review/`.
+
+## Верифікація
+
+**verifier-pe11s3-pe11s4, 2026-11-27:** verified. Звіт — reports/verify/write-eng-pool-g11-e11s4.md. Правки: a23, a30, a31 (inspired = «чудовий» як дистрактор); `status: "verified"`, `meta.factcheck`. `node tools/validate.mjs --pool pe11s4` — 0 помилок, 0 попереджень.

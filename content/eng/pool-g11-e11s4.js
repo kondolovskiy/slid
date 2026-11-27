@@ -1,5 +1,5 @@
 /* Слід · Англійська мова, 11 клас — пул тренування до розділу e11s4 «Art and festivals»
-   Статус: draft; автор writer-pe11s4, 2026-11-27. Уроки e11s4l1–e11s4l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e11s4l7 без вправ.
+   Статус: verified (verifier-pe11s3-pe11s4, 2026-11-27); автор writer-pe11s4, 2026-11-27. Уроки e11s4l1–e11s4l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e11s4l7 без вправ.
    Джерело — програма класу (program: true): П1407 (наказ МОН № 1407 від 23.10.2017), спеціалізовані школи, 11 кл. (B2):
    с. 23 — функція «висловлювати емоційне ставлення до ситуації або предмета обговорення»; с. 24 — тема «Мистецтво»: види
    та жанри мистецтва, відвідування мистецьких закладів для самоосвіти, емоції; тема «Дозвілля»: фестивалі;
@@ -23,8 +23,8 @@
 SLID.pool("eng", {
   id: "pe11s4",
   section: "e11s4",
-  status: "draft",
-  meta: { author: "writer-pe11s4", created: "2026-11-27", factcheck: null, teacher: null },
+  status: "verified",
+  meta: { author: "writer-pe11s4", created: "2026-11-27", factcheck: "verifier-pe11s3-pe11s4, 2026-11-27 (reports/verify/write-eng-pool-g11-e11s4.md)", teacher: null },
   sources: [
     { id: "p1407", short: "П1407", program: true,
       title: "Навчальна програма «Іноземні мови. 10–11 класи (рівень стандарту, профільний рівень)», наказ МОН від 23.10.2017 № 1407 — спеціалізовані школи (B2), 11 клас: функція «висловлювати емоційне ставлення до ситуації або предмета обговорення» (с. 23); теми «Мистецтво» (види та жанри мистецтва, відвідування мистецьких закладів для самоосвіти, емоції) і «Дозвілля» (фестивалі) (с. 24); граматика: adjectives formed with suffixes / prefixes, present / past participles as adjectives, active / passive (с. 25)",
@@ -174,8 +174,8 @@ SLID.pool("eng", {
     { id: "a23", lesson: "e11s4l3", lvl: 1, sk: "gram", src: "p1407 с. 25",
       type: "gaps", title: "Fill in the gaps.",
       body: "<p>Kyrylo writes about a history museum.</p>",
-      text: "Our guide was really {*inspiring|inspired}. We were {*fascinated|fascinating} by her stories.",
-      steps: ["The guide caused the feeling → <b>inspiring</b>.", "We had the feeling → <b>fascinated</b>."] },
+      text: "Our guide’s stories were really {*fascinating|fascinated}. We were {*inspired|inspiring} by her.",
+      steps: ["The stories caused the feeling → <b>fascinating</b>.", "We had the feeling → <b>inspired</b>."] },
     { id: "a24", lesson: "e11s4l3", lvl: 1, sk: "gram", src: "p1407 с. 25",
       type: "choice", title: "Choose the correct answer.",
       body: "<p>Tom couldn’t believe how high the street dancers jumped. “I was ___!”</p>",
@@ -217,17 +217,17 @@ SLID.pool("eng", {
       type: "build", title: "Put the words in order.",
       body: "<p>Daryna talks about a dance performance.</p>",
       tiles: ["I", "found", "the dance performance", "really", "inspiring"],
-      extra: ["inspired"],
+      extra: ["inspire"],
       answer: ["I found the dance performance really inspiring.", "I really found the dance performance inspiring."],
       hint: "I found + what? + how?",
       steps: ["<b>I found</b> + the thing + an <b>-ing</b> adjective: the performance caused the feeling.", "<b>I found the dance performance really inspiring.</b>"] },
     { id: "a31", lesson: "e11s4l3", lvl: 3, sk: "func", src: "p1407 с. 23",
       type: "choice", title: "Choose the correct answer.",
       body: "<p>Which sentence is correct?</p>",
-      opts: ["I found the exhibition inspired.", "The exhibition made me feel inspired.", "The exhibition made me to feel inspired."],
+      opts: ["I was inspiring by the exhibition.", "The exhibition made me feel inspired.", "The exhibition made me to feel inspired."],
       correct: 1,
       hint: "Check two things: -ing or -ed, and the verb after made me.",
-      steps: ["<b>The exhibition made me feel inspired.</b> – I have the feeling → <i>inspired</i>; no <i>to</i> after <i>made me</i>.", "<s>I found the exhibition inspired</s> → I found the exhibition <b>inspiring</b>."] },
+      steps: ["<b>The exhibition made me feel inspired.</b> – I have the feeling → <i>inspired</i>; no <i>to</i> after <i>made me</i>.", "<s>I was inspiring by the exhibition</s> → I was <b>inspired</b> by the exhibition."] },
     { id: "a32", lesson: "e11s4l3", lvl: 1, sk: "write", src: "p1407 с. 25",
       type: "gaps", title: "Fill in the gaps.",
       body: "<p>Dmytro writes about a concert.</p>",

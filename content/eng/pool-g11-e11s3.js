@@ -1,5 +1,5 @@
 /* Слід · Англійська мова, 11 клас — пул тренування до розділу e11s3 «Leisure: clubs, film, TV and the internet»
-   Статус: draft; автор writer-pe11s3, 2026-11-27. Уроки e11s3l1–e11s3l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e11s3l7 без вправ.
+   Статус: verified (verifier-pe11s3-pe11s4, 2026-11-27); автор writer-pe11s3, 2026-11-27. Уроки e11s3l1–e11s3l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e11s3l7 без вправ.
    Джерело — програма класу (program: true): П1407 (наказ МОН № 1407 від 23.10.2017), спеціалізовані школи, 11 кл. (B2):
    с. 23 — функції «демонструвати зацікавленість у предметі розмови», «порівнювати»; с. 24 — тема «Дозвілля»: клуби за
    інтересами; кіно, театр, телебачення, Інтернет; улюблена вистава / фільм; характеристика фільму / вистави / телепрограми;
@@ -21,8 +21,8 @@
 SLID.pool("eng", {
   id: "pe11s3",
   section: "e11s3",
-  status: "draft",
-  meta: { author: "writer-pe11s3", created: "2026-11-27", factcheck: null, teacher: null },
+  status: "verified",
+  meta: { author: "writer-pe11s3", created: "2026-11-27", factcheck: "verifier-pe11s3-pe11s4, 2026-11-27 (reports/verify/write-eng-pool-g11-e11s3.md)", teacher: null },
   sources: [
     { id: "p1407", short: "П1407", program: true,
       title: "Навчальна програма «Іноземні мови. 10–11 класи (рівень стандарту, профільний рівень)», наказ МОН від 23.10.2017 № 1407 — спеціалізовані школи (B2), 11 клас: функції «демонструвати зацікавленість у предметі розмови», «порівнювати» (с. 23); тема «Дозвілля»: клуби за інтересами, кіно, театр, телебачення, Інтернет, характеристика фільму / вистави / телепрограми (с. 24); граматика: compound adjectives, question tags (с. 25)",
@@ -68,7 +68,7 @@ SLID.pool("eng", {
       steps: ["“You only won because you were lucky!” isn’t polite, so he broke rule 1: <b>Be polite to other players</b>.", "He wrote about chess, and he didn’t say where anyone lives."] },
     { id: "a07", lesson: "e11s3l1", lvl: 2, sk: "read", src: "p1407 с. 24",
       type: "multi", title: "Choose all the correct answers.",
-      body: "<p><i>Taras: Our photo club started as a small online community, but now we have forty members. We meet up in a park every month. Newcomers often think their photos aren’t good enough, but nobody laughs at them: we’re all here to learn. There’s only one rule when we meet up: bring your camera or phone, and good shoes!</i></p><p>Which sentences are true?</p>",
+      body: "<p><i>Taras: Our photo club started at School 5 with just a few people, but now we have forty members. We meet up in a park every month. Newcomers often think their photos aren’t good enough, but nobody laughs at them: we’re all here to learn. There’s only one rule when we meet up: bring your camera or phone, and good shoes!</i></p><p>Which sentences are true?</p>",
       opts: ["The club has forty members.", "The members never meet in person.", "Newcomers sometimes think their photos aren’t good enough.", "Members must bring expensive cameras."],
       correct: [0, 2],
       hint: "Find forty, meet up and newcomers in the text.",
@@ -102,7 +102,7 @@ SLID.pool("eng", {
     { id: "a13", lesson: "e11s3l1", lvl: 2, sk: "gram", src: "p1407 с. 24",
       type: "pick", title: "Find the mistake.",
       body: "<p>One word in Taras’s message is wrong.</p>",
-      text: "Last month Ostap signed up for the Lviv Teen Photo Club, and a week later Orest joined [to] it too. Now they both post photos every day.",
+      text: "Last month Ostap’s cousin Marko signed up for the Lviv Teen Photo Club, and a week later Orest joined [to] it too. Now they both post photos every day.",
       hint: "Check the verbs and the small words after them.",
       steps: ["We say <b>join a club</b>, with no preposition: Orest <b>joined it</b> too.", "<i>signed up for</i> is correct."] },
     { id: "a14", lesson: "e11s3l1", lvl: 3, sk: "gram", src: "p1407 с. 24",
@@ -170,7 +170,7 @@ SLID.pool("eng", {
       steps: ["The quiz show is <b>live</b>, and the family watches TV together <b>on Sunday evenings</b>.", "<i>whereas</i> shows a contrast: Mum likes the chat show, but Dad goes to bed before it starts."] },
     { id: "a24", lesson: "e11s3l2", lvl: 3, sk: "read", src: "p1407 с. 24",
       type: "choice", title: "Read and choose.",
-      body: "<p><i>Andrii: At the cinema, everyone watches the same film at the same time. But at home it’s different: my sister Sofiia and I can never agree what to stream, so we each watch something different on our phones.</i></p><p>What does Andrii mean?</p>",
+      body: "<p><i>Andrii: At the cinema, everyone watches the same film, whereas at home my sister Sofiia and I can never agree what to stream. So we each watch something different on our phones.</i></p><p>What does Andrii mean?</p>",
       opts: ["At home, he and Sofiia often watch different things.", "At the cinema, he and Sofiia never agree.", "He never watches films on his phone."],
       correct: 0,
       hint: "whereas compares two things. What happens at home?",
