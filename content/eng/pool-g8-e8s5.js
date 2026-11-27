@@ -1,5 +1,5 @@
 /* Слід · Англійська мова, 8 клас — пул вправ для тренування до розділу «Books and libraries» (e8s5)
-   Статус: draft; автор writer-pe8s5, 2026-11-27. Уроки e8s5l1–e8s5l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e8s5l7 без вправ.
+   Статус: verified (verifier-pe8s5-pe8s6, 2026-11-27, reports/verify/write-eng-pool-g8-e8s5.md); автор writer-pe8s5, 2026-11-27. Уроки e8s5l1–e8s5l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e8s5l7 без вправ.
    Вправи власні (docs/design/english.md §8): лише слова, форми й правила уроків e8s5 і попередніх розділів; англійською, британська норма (D-055).
    Джерело — програма класу (program: true): МП-ІМ, 8 кл. — тема «Література»: улюблений письменник, поет, книга, літературний герой (с. 32);
    літературні жанри, відвідування бібліотеки, обладнання та послуги бібліотеки (с. 33); переказ книги й ставлення до неї (с. 31);
@@ -13,8 +13,8 @@
 SLID.pool("eng", {
   id: "pe8s5",
   section: "e8s5",
-  status: "draft",
-  meta: { author: "writer-pe8s5", created: "2026-11-27", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "writer-pe8s5", created: "2026-11-27", factcheck: "verifier-pe8s5-pe8s6, 2026-11-27 (reports/verify/write-eng-pool-g8-e8s5.md)", teacher: null },
   sources: [
     { id: "mpim", program: true, title: "Модельна навчальна програма «Іноземна мова. 5–9 класи» (Редько В. Г. та ін.), наказ МОН № 795 від 12.07.2021 — 8 клас: тема «Література» (с. 32–33), переказ книги (с. 31), граматика B1 (с. 35)", url: "https://osvita.ua/doc/files/news/831/83117/Inoz_mov_5-9-kl_Redko_ta_in_14_07.pdf" }
   ],
@@ -40,7 +40,7 @@ SLID.pool("eng", {
     { id: "a04", lesson: "e8s5l1", lvl: 2, sk: "vocab", src: "mpim с. 33",
       type: "pick", title: "Find the words for people who write books or poems.",
       body: "<p>Kyrylo writes about his family.</p>",
-      text: "My aunt is an [author]. She writes detective stories. Her friend Petro is a [poet], and his poems are about the sea. I’m only a reader: I read their books!",
+      text: "My aunt is an [author]. She writes detective stories. Her friend Hryhorii is a [poet], and his poems are about the sea. I’m only a reader: I read their books!",
       hint: "Look at the screen “A novel, a short story, a poem”: who writes stories? Who writes poems?",
       steps: ["An <b>author</b> (a writer) writes novels and stories. A <b>poet</b> writes poems.", "A <i>reader</i> reads books, but doesn’t write them."] },
     { id: "a05", lesson: "e8s5l1", lvl: 3, sk: "vocab", src: "mpim с. 33",
@@ -53,7 +53,7 @@ SLID.pool("eng", {
       type: "word", title: "Write the missing word.",
       body: "<p>Andrii’s new novel is about a girl and her robot. They live in space in the year 2400. There is no magic in it. Write two words.</p>",
       before: "It’s a", after: "novel.",
-      answer: ["science fiction", "sci-fi"],
+      answer: ["science fiction", "science-fiction", "sci-fi"],
       hint: "No magic, so it isn’t fantasy. Robots and the future → ?",
       steps: ["Robots, space and the future → <b>science fiction</b>.", "Fantasy has magic and other worlds."] },
     { id: "a07", lesson: "e8s5l1", lvl: 1, sk: "phon", src: "mpim с. 33",
@@ -67,9 +67,9 @@ SLID.pool("eng", {
       steps: ["<u>po</u>etry, <u>fan</u>tasy: the first part is strong.", "de<u>tec</u>tive: the second part."] },
     { id: "a09", lesson: "e8s5l1", lvl: 3, sk: "phon", src: "mpim с. 33",
       type: "stress", title: "Find the stressed syllable.",
-      words: ["+fic|tion", "de|+tec|tive", "+fan|ta|sy", "+nov|el", "+po|e|try"],
+      words: ["+li|brar|y", "de|+tec|tive", "+fan|ta|sy", "+nov|el", "+po|e|try"],
       hint: "Say each word. Four words have the strong part at the start.",
-      steps: ["<u>fic</u>tion, <u>fan</u>tasy, <u>nov</u>el, <u>po</u>etry: the first part is strong.", "de<u>tec</u>tive: the second part."] },
+      steps: ["<u>li</u>brary, <u>fan</u>tasy, <u>nov</u>el, <u>po</u>etry: the first part is strong.", "de<u>tec</u>tive: the second part."] },
     { id: "a10", lesson: "e8s5l1", lvl: 1, sk: "write", src: "mpim с. 33",
       type: "gaps", title: "Complete the sentences.",
       body: "<p>Ostap writes to Taras.</p>",
@@ -104,7 +104,7 @@ SLID.pool("eng", {
       body: "<p>Taras gave Ostap his book about football for a week. Write the past form of <i>lend</i>.</p>",
       before: "Yesterday, Taras", after: "Ostap his book about football.",
       answer: "lent",
-      hint: "lend – … – lent",
+      hint: "Look at the screen “borrow or lend?”: lend is an irregular verb.",
       steps: ["lend – <b>lent</b> – lent.", "Taras gives the book for a short time → he <b>lent</b> it."] },
     { id: "a16", lesson: "e8s5l2", lvl: 2, sk: "vocab", src: "mpim с. 33",
       type: "sort", title: "Sort the books.",
@@ -189,7 +189,7 @@ SLID.pool("eng", {
       steps: ["Fox Mykyta by Ivan Franko is a story in verse about a <b>clever fox</b>.", "Mavka, a magic girl of the forest, is in The Forest Song."] },
     { id: "a28", lesson: "e8s5l3", lvl: 2, sk: "cult", src: "mpim с. 32",
       type: "gaps", title: "Fill in the gaps.",
-      body: "<p>Polina makes a list of books and years for the poster.</p>",
+      body: "<p>Polina makes a list of books and years for a poster.</p>",
       text: "Kobzar – {*1840|1911}. The Forest Song – {*1911|1865}. Alice’s Adventures in Wonderland – {*1865|1840}.",
       hint: "Look at the screens “Ukrainian writers” and “British writers”.",
       steps: ["Kobzar – <b>1840</b>. The Forest Song – <b>1911</b>.", "Alice’s Adventures in Wonderland – <b>1865</b>."] },
@@ -267,7 +267,7 @@ SLID.pool("eng", {
         "I like it because it’s funny."
       ],
       shuffle: [2, 4, 0, 3, 1],
-      hint: "The book → who wrote it → what it’s about → the main character → why I like it.",
+      hint: "The first sentence names the book. The last one says why Kyrylo likes it.",
       steps: ["1. My favourite book is… 2. It was written by… 3. It’s about…", "4. The main character… 5. I like it because…"] },
     { id: "a40", lesson: "e8s5l3", lvl: 3, sk: "write", src: "mpim с. 32",
       type: "gaps", title: "Complete the sentences.",
@@ -308,7 +308,7 @@ SLID.pool("eng", {
       extra: ["hasn’t"],
       keepCase: true,
       answer: "She hadn’t read the book before.",
-      hint: "She + hadn’t + the third form.",
+      hint: "Zlata didn’t know the story then, in the past. Which form shows an earlier action?",
       steps: ["<b>She hadn’t read the book before.</b>", "The past: <b>hadn’t</b>, not <i>hasn’t</i>. read – read – <b>read</b>."] },
     { id: "a46", lesson: "e8s5l4", lvl: 3, sk: "gram", src: "mpim с. 35",
       type: "gaps", title: "Complete the conversation.",
@@ -321,7 +321,7 @@ SLID.pool("eng", {
       body: "<p>Ostap knew the ending of the story very well. He read the book twice last year. Write the third form of <i>read</i>.</p>",
       before: "Before the lesson, Ostap had", after: "the book twice.",
       answer: "read",
-      hint: "read – read – … : the forms sound different, but look the same.",
+      hint: "Look at the list “Third forms”.",
       steps: ["read – read – <b>read</b>: all three forms look the same.", "Ostap <b>had read</b> it before the lesson."] },
     { id: "a48", lesson: "e8s5l4", lvl: 1, sk: "write", src: "mpim с. 35",
       type: "gaps", title: "Complete the sentences with the Past Perfect.",
@@ -438,11 +438,11 @@ SLID.pool("eng", {
     { id: "a63", lesson: "e8s5l6", lvl: 3, sk: "read", src: "mpim с. 31",
       type: "choice", title: "Read and choose.",
       eyebrow: "Reading: two reviews",
-      body: "<p><b>Taras:</b> <i>Yeva is brave and clever. The beginning is a bit slow. Four stars out of five.</i></p><p><b>Halyna:</b> <i>I liked Yeva and her friend Lev: they are funny and brave. I knew the answer to the riddle on page 50. Three stars out of five.</i></p><p>Which sentence is true?</p>",
+      body: "<p><b>Taras:</b> <i>I liked Yeva: she is brave and clever. The beginning is a bit slow. Four stars out of five.</i></p><p><b>Halyna:</b> <i>I liked Yeva and her friend Lev: they are funny and brave. I knew the answer to the riddle on page 50. Three stars out of five.</i></p><p>Which sentence is true?</p>",
       opts: ["Both reviewers liked Yeva.", "Both reviewers gave the book four stars.", "Halyna tells us the ending of the story."],
       correct: 0,
       hint: "Read what each reviewer says about Yeva. Count the stars.",
-      steps: ["Taras: Yeva is brave and clever. Halyna: I liked Yeva. → <b>Both liked Yeva</b>.", "Taras gave four stars, Halyna three. Halyna doesn’t tell the answer to the riddle."] },
+      steps: ["Taras: I liked Yeva. Halyna: I liked Yeva. → <b>Both liked Yeva</b>.", "Taras gave four stars, Halyna three. Halyna doesn’t tell the answer to the riddle."] },
     { id: "a64", lesson: "e8s5l6", lvl: 1, sk: "write", src: "mpim с. 31",
       type: "order", title: "Put the sentences in order.",
       body: "<p>Bohdan writes a short review. Use the plan from the screen “A book review: the plan”.</p>",
