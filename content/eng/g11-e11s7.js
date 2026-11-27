@@ -16,7 +16,7 @@
    Герої — серія 4–11 кл. (17 років): Andrii (Kyiv, клас Ms Lysenko: Daryna, Bohdan, Kyrylo, Zoriana), Emma й Orysia (England),
    Owen (Cardiff), Mariia (Kharkiv). Нових імен немає.
    Увесь зміст — англійською, британська норма (D-055). Тексти, діалоги й герої — власні (docs/design/english.md §8).
-   Статус: draft (writer-e11s7). 7 уроків (6 + фінал). Будова — за розділами 10–11 кл. (e10s7, e11s1).
+   Статус: verified (verifier-e11s7, 2026-11-27; reports/verify/write-eng-g11-e11s7.md). 7 уроків (6 + фінал). Будова — за розділами 10–11 кл. (e10s7, e11s1).
    Перевірка: node tools/validate.mjs --section e11s7 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -26,7 +26,7 @@ SLID.section("eng", {
   title: "Ukraine in the world",
   why: "To talk about Ukraine and international organisations, laws, rights and etiquette. And to tell people about important events and outstanding people of English-speaking countries.",
   requires: ["e6s6l3", "e8s4l3", "e8s4l4", "e9s5l3", "e9s5l4", "e9s5l5", "e10s7l2", "e11s1l1", "e11s1l2", "e11s1l6"],
-  meta: { author: "writer-e11s7", created: "2026-11-26", factcheck: null, teacher: null },
+  meta: { author: "writer-e11s7", created: "2026-11-26", factcheck: "verifier-e11s7, 2026-11-27 (reports/verify/write-eng-g11-e11s7.md)", teacher: null },
   badges: [
     { id: "e11s7boss", name: "Global Citizen", icon: "trophy", desc: "Finish the final lesson “Ukraine in the world”" }
   ],
@@ -37,7 +37,7 @@ SLID.section("eng", {
       title: "Ukraine, the EU, the UN and the Council of Europe",
       short: "Organisations",
       icon: "globe",
-      status: "draft",
+      status: "verified",
       why: "Ukraine works with many countries. Talk about the international organisations it belongs to and the help they give.",
       screens: [
         {
@@ -180,7 +180,7 @@ SLID.section("eng", {
       title: "Laws and rights: what the law says",
       short: "Laws and rights",
       icon: "scale",
-      status: "draft",
+      status: "verified",
       why: "Laws protect our rights. Talk about the law, human rights and the courts that protect them.",
       screens: [
         {
@@ -331,14 +331,14 @@ SLID.section("eng", {
       title: "Is it polite? Etiquette in different countries",
       short: "Etiquette",
       icon: "users",
-      status: "draft",
+      status: "verified",
       why: "What is polite in one family or country can be strange in another. Compare customs without judging.",
       screens: [
         {
           type: "intro",
           eyebrow: "Lesson 3",
           title: "Five roses and a pair of slippers",
-          body: `<p class="lead">Emma writes to Oksana.</p><p><i>Last Saturday, I visited Orysia’s flat for the first time. Orysia, who moved here from Vinnytsia last year, had warned me about a few things. So at the door, I took off my shoes, and her mum gave me slippers. I’d bought five roses. Orysia said that was perfect: in Ukraine, people give an odd number of flowers, because even numbers are for funerals. Then I held out my hand to her mum across the doorway, and Orysia laughed: “Not across the threshold! Some people think it brings bad luck.” In my family, guests usually keep their shoes on, and nobody counts the flowers!</i></p><p>What was new for Emma?</p>`,
+          body: `<p class="lead">Emma writes to Oksana.</p><p><i>Last Saturday, I went to Orysia’s flat for her mum’s birthday. Orysia, who moved here from Vinnytsia two years ago, had warned me about a few things. So at the door, I took off my shoes, and her mum gave me slippers. I’d bought five roses. Orysia said that was perfect: in Ukraine, people give an odd number of flowers, because even numbers are for funerals. Then I held out my hand to her mum across the doorway, and Orysia laughed: “Not across the threshold! Some people think it brings bad luck.” In my family, guests usually keep their shoes on, and nobody counts the flowers!</i></p><p>What was new for Emma?</p>`,
           cta: "Let’s see"
         },
         {
@@ -486,7 +486,7 @@ SLID.section("eng", {
       title: "Who or whom? Relative pronouns: an overview",
       short: "Who or whom?",
       icon: "user",
-      status: "draft",
+      status: "verified",
       why: "Who, whom, which, that, whose: put them all together and use whom in formal writing.",
       screens: [
         {
@@ -585,7 +585,7 @@ SLID.section("eng", {
           sk: "gram",
           title: "Put the words in order.",
           body: `<p>Owen: “I wrote to a historian. She had written a book about Gareth Jones.” Make one formal sentence. Start with The historian.</p>`,
-          tiles: ["the historian", "to whom", "I wrote", "had written", "a book", "about Jones"],
+          tiles: ["the historian", "to whom", "I wrote", "had written", "a book about Jones"],
           extra: ["to who"],
           answer: "The historian to whom I wrote had written a book about Jones.",
           hint: "After a preposition: to + whom.",
@@ -649,14 +649,14 @@ SLID.section("eng", {
       title: "We won, which surprised everyone: comments with which",
       short: "Comments with which",
       icon: "star",
-      status: "draft",
+      status: "verified",
       why: "Comment on a whole event with which: …, which was amazing; …, which is why…",
       screens: [
         {
           type: "intro",
           eyebrow: "Lesson 5",
           title: "Eurovision in Liverpool",
-          body: `<p class="lead">Mariia writes on her blog in Kharkiv.</p><p><i>In May 2022, Kalush Orchestra won Eurovision with their song Stefania, which made millions of Ukrainians happy. Usually, the winning country hosts the next contest. But it wasn’t safe to hold it in Ukraine, which was a pity. So the UK, which had come second, hosted it in Liverpool <b>on behalf of</b> (= for) Ukraine. The final was on 13 May 2023, and it opened with Kalush Orchestra. My friend Emma watched it with her family in England, which became a new family tradition for them.</i></p><p>Look at <i>which made millions of Ukrainians happy</i>. What made them happy?</p>`,
+          body: `<p class="lead">Mariia writes on her blog in Kharkiv.</p><p><i>In May 2022, Kalush Orchestra won Eurovision in Turin, which made millions of Ukrainians happy. Their song was Stefania. Usually, the winning country hosts the next contest. But it wasn’t safe to hold it in Ukraine, which was a pity. So the UK, which had come second, hosted it in Liverpool <b>on behalf of</b> (= for) Ukraine. The final was on 13 May 2023, and it opened with Kalush Orchestra. My friend Emma watched it with her family in England, which became a new family tradition for them.</i></p><p>Look at <i>which made millions of Ukrainians happy</i>. What made them happy?</p>`,
           cta: "Let’s see"
         },
         {
@@ -665,9 +665,9 @@ SLID.section("eng", {
           eyebrow: "Guess!",
           title: "What do you think?",
           hyp: true,
-          body: `<p>“Kalush Orchestra won Eurovision with their song Stefania, <b>which</b> made millions of Ukrainians happy.”</p><p>What does <i>which</i> refer to?</p>`,
+          body: `<p>“Kalush Orchestra won Eurovision in Turin, <b>which</b> made millions of Ukrainians happy.”</p><p>What does <i>which</i> refer to?</p>`,
           opts: [
-            "the song Stefania",
+            "the city of Turin",
             "Eurovision",
             "the fact that Kalush Orchestra won"
           ],
@@ -813,7 +813,7 @@ SLID.section("eng", {
       title: "Ukraine and English-speaking countries: events and people",
       short: "Events and people",
       icon: "book",
-      status: "draft",
+      status: "verified",
       why: "Farmers, scientists and an astronaut: read about people and events that connect Ukraine with English-speaking countries. Then sum up a discussion.",
       screens: [
         {
@@ -851,7 +851,7 @@ SLID.section("eng", {
           sk: "read",
           eyebrow: "Reading: Small bridges, part 1 of 3",
           title: "Read and choose.",
-          body: `<p><i>What connects Ukraine with English-speaking countries? Our class found three stories from three different times. Each of them is about people who travelled far from home. In September 1891, two farmers from the village of Nebyliv in western Ukraine arrived in Montreal, Canada. Their journey across the Atlantic Ocean had taken more than a week. Their names were Ivan Pylypiw and Wasyl Eleniak, and they are often called the first Ukrainian settlers in Canada. They had heard that there was a lot of free land there, which was hard to believe at home, where families had very small fields. Pylypiw went back to his village and told his neighbours about Canada. Soon many families followed him. By 1914, thousands of Ukrainian families had settled in Canada, especially on the prairies, where they grew wheat. Today, more than a million Canadians have Ukrainian roots.</i></p><p>Why did Pylypiw and Eleniak go to Canada?</p>`,
+          body: `<p><i>What connects Ukraine with English-speaking countries? Our class found three stories from three different times. Each of them is about people who travelled far from home. In September 1891, two farmers from the village of Nebyliv in western Ukraine arrived in Montreal, Canada. Their journey across the Atlantic Ocean had taken more than a week. Their names were Ivan Pylypiw and Wasyl Eleniak, and they are often called the first Ukrainian settlers in Canada. They had heard that there was a lot of free land there, which was hard to believe at home, where families had very small fields. Pylypiw went back to his village and told his neighbours about Canada. Soon many families followed. By 1914, thousands of Ukrainian families had settled in Canada, especially on the prairies, where they grew wheat. Today, more than a million Canadians have Ukrainian roots.</i></p><p>Why did Pylypiw and Eleniak go to Canada?</p>`,
           opts: [
             "They wanted to study in Montreal.",
             "Their families already lived there.",
@@ -860,7 +860,7 @@ SLID.section("eng", {
           correct: 2,
           hint: "Find They had heard… in the text.",
           fbOk: "Right.",
-          fbBad: "Read the third sentence again.",
+          fbBad: "Find They had heard… in the text again.",
           fbText: "They had heard that there was <b>a lot of free land</b> in Canada. At home, families had very small fields."
         },
         {
@@ -868,7 +868,7 @@ SLID.section("eng", {
           sk: "read",
           eyebrow: "Reading: Small bridges, part 2 of 3",
           title: "Read and choose.",
-          body: `<p><i>About a hundred years later, a very different event connected Ukraine and the UK. Since 1947, British scientists had worked at Faraday, a research station on a small island near the Antarctic Peninsula. In the 1990s, the UK planned to close it. Instead, the station was handed over to Ukraine, which at that time had no station of its own in Antarctica. On 6 February 1996, the Ukrainian flag was raised there, and the station got a new name: Akademik Vernadsky. Volodymyr Vernadsky, after whom it was named, was a scientist who studied minerals and the Earth. He was also the first president of the Ukrainian Academy of Sciences. Today, Ukrainian scientists who work at the station study the weather, the ice and the animals of Antarctica, including penguins. Life there isn’t easy: the winters are long and dark, and the nearest town is very far away.</i></p><p>What happened on 6 February 1996?</p>`,
+          body: `<p><i>About a hundred years later, a very different event connected Ukraine and the UK. Since 1947, British scientists had worked at Faraday, a research station on a small island near the Antarctic Peninsula. In the 1990s, the UK planned to close it. Instead, the station was handed over to Ukraine, which at that time had no station of its own in Antarctica. On 6 February 1996, the Ukrainian flag was raised there, and the station got a new name: Akademik Vernadsky. Volodymyr Vernadskyi, after whom it was named, was a scientist who studied minerals and the Earth. He was also the first president of the Ukrainian Academy of Sciences. Today, Ukrainian scientists who work at the station study the weather, the ice and the animals of Antarctica, including penguins. Life there isn’t easy: the winters are long and dark, and the nearest town is very far away.</i></p><p>What happened on 6 February 1996?</p>`,
           opts: [
             "British scientists started working at Faraday.",
             "The Ukrainian flag was raised at the station.",
@@ -996,7 +996,7 @@ SLID.section("eng", {
       title: "Ukraine in the world: section final",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e11s7boss",
       why: "Check everything from this section. Your points are doubled.",
