@@ -1,5 +1,5 @@
 /* Слід · Англійська мова, 10 клас — пул тренування до розділу e10s2 «Sport, health and leisure»
-   Статус: draft; автор writer-pe10s2, 2026-11-27. Уроки e10s2l1–e10s2l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e10s2l7 без вправ.
+   Статус: verified (verifier-pe10s2, 2026-11-27; reports/verify/write-eng-pool-g10-e10s2.md); автор writer-pe10s2, 2026-11-27. Уроки e10s2l1–e10s2l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e10s2l7 без вправ.
    Джерело — програма класу (program: true): П1407 (наказ МОН № 1407 від 23.10.2017), спеціалізовані школи, 10 кл.:
    с. 22 — тема «Спорт і дозвілля»: роль спорту в житті суспільства та людини; спортивні події / змагання; здоров’я та спорт;
    функція — аргументувати свою точку зору; с. 23 — verbs taking gerund; verb + -ing vs + to infinitive.
@@ -16,8 +16,8 @@
 SLID.pool("eng", {
   id: "pe10s2",
   section: "e10s2",
-  status: "draft",
-  meta: { author: "writer-pe10s2", created: "2026-11-27", factcheck: null, teacher: null },
+  status: "verified",
+  meta: { author: "writer-pe10s2", created: "2026-11-27", factcheck: "verifier-pe10s2 (reports/verify/write-eng-pool-g10-e10s2.md)", teacher: null },
   sources: [
     { id: "p1407", short: "П1407", program: true,
       title: "Навчальні програми з іноземних мов для загальноосвітніх навчальних закладів і спеціалізованих шкіл з поглибленим вивченням іноземних мов, 10–11 класи, наказ МОН від 23.10.2017 № 1407 — спеціалізовані школи, 10 клас: тематика й функції (с. 22), граматика (с. 23)",
@@ -45,18 +45,18 @@ SLID.pool("eng", {
       steps: ["A person who watches a sports event → a <b>spectator</b>.", "two hundred → plural: <b>spectators</b>."] },
     { id: "a04", lesson: "e10s2l1", lvl: 1, sk: "phon", src: "p1407 с. 22",
       type: "stress", title: "Find the stressed syllable.",
-      words: ["+ath|lete", "spec|+ta|tor"],
-      steps: ["<u>ath</u>lete: the first part.", "spec<u>ta</u>tor: the second part."] },
+      words: ["+ath|lete", "com|pe|+ti|tion"],
+      steps: ["<u>ath</u>lete: the first part.", "compe<u>ti</u>tion: the third part."] },
     { id: "a05", lesson: "e10s2l1", lvl: 2, sk: "phon", src: "p1407 с. 22",
       type: "stress", title: "Find the stressed syllable.",
-      words: ["+dis|ci|pline", "com|pe|+ti|tion", "+ath|lete"],
-      hint: "Say each word slowly. Are they all stressed in the same place?",
-      steps: ["<u>dis</u>cipline, <u>ath</u>lete: the first part.", "compe<u>ti</u>tion: the third part."] },
+      words: ["+dis|ci|pline", "com|pe|+ti|tion"],
+      hint: "Say each word slowly. Are they stressed in the same place?",
+      steps: ["<u>dis</u>cipline: the first part.", "compe<u>ti</u>tion: the third part."] },
     { id: "a06", lesson: "e10s2l1", lvl: 3, sk: "phon", src: "p1407 с. 22",
       type: "stress", title: "Find the stressed syllable.",
-      words: ["spec|+ta|tor", "+dis|ci|pline", "com|pe|+ti|tion"],
-      hint: "Every word has its stress in a different place.",
-      steps: ["<u>dis</u>cipline: the first part. spec<u>ta</u>tor: the second part.", "compe<u>ti</u>tion: the third part."] },
+      words: ["com|pe|+ti|tion", "+dis|ci|pline", "+ath|lete"],
+      hint: "Remember the underlined parts in “Sport in our lives”.",
+      steps: ["<u>dis</u>cipline, <u>ath</u>lete: the first part.", "compe<u>ti</u>tion: the third part."] },
     { id: "a07", lesson: "e10s2l1", lvl: 1, sk: "read", src: "p1407 с. 22",
       type: "choice", title: "Read and choose.",
       body: "<p><i>I started swimming because I was worried about exams. Now, after a hard day, I swim for an hour, and I feel calm again. – Amelia</i></p><p>Why does Amelia swim?</p>",
@@ -80,7 +80,7 @@ SLID.pool("eng", {
     { id: "a10", lesson: "e10s2l1", lvl: 1, sk: "write", src: "p1407 с. 22",
       type: "gaps", title: "Complete the sentences.",
       body: "<p>Oksana writes about karate.</p>",
-      text: "Karate is a great way to {*keep|make} fit. And it needs a lot of {*discipline|spectators}: I train four times a week.",
+      text: "Karate is a great way to {*keep|make} fit. And it needs a lot of {*discipline|spectators}: I train on Tuesdays and Fridays.",
       steps: ["stay healthy and strong → <b>keep</b> fit.", "doing what you must, even when it’s hard → <b>discipline</b>."] },
     { id: "a11", lesson: "e10s2l1", lvl: 2, sk: "write", src: "p1407 с. 22",
       type: "gaps", title: "Complete the sentences.",
@@ -91,7 +91,7 @@ SLID.pool("eng", {
     { id: "a12", lesson: "e10s2l1", lvl: 3, sk: "write", src: "p1407 с. 22",
       type: "gaps", title: "Complete the sentences.",
       body: "<p>Taras writes about Myroslava for the club page.</p>",
-      text: "Myroslava trains every day, even in winter. That takes real {*discipline|team spirit|fair play}. After the city race, she shook hands with all the other runners: that’s fair {*play|spirit|model}. No wonder she is a {*role model|spectator|discipline} for the younger runners.",
+      text: "Myroslava trains every day, even in winter. That takes real {*discipline|team spirit|fair play}. After the city race, she shook hands with all the other runners: that’s fair {*play|spirit|model}. So she is a {*role model|spectator|discipline} for the younger runners.",
       hint: "Training even when it’s hard; playing honestly; a person you want to be like.",
       steps: ["Training every day, even in winter → <b>discipline</b>. Shaking hands with the other runners → fair <b>play</b>.", "The younger runners want to be like her → a <b>role model</b>."] },
 
@@ -205,7 +205,7 @@ SLID.pool("eng", {
       type: "gaps", title: "Fill in the gaps.",
       body: "<p>Kyrylo writes about Euro 2012.</p>",
       text: "In 2012, Kyiv {*hosted|took place|competed} the final of Euro 2012. There were four stadiums in each country, and many famous teams {*competed|hosted|took place} there. My dad says the opening {*ceremony|stadium|spectator} was amazing.",
-      hint: "A city → hosts; teams → take part to win; the big show at the start → ?",
+      hint: "Remember the words for sports events in Lesson 3. Who does the action: the city or the teams?",
       steps: ["A city <b>hosts</b> an event. Teams <b>competed</b> (= took part to win).", "The big show at the start → the opening <b>ceremony</b>."] },
     { id: "a29", lesson: "e10s2l3", lvl: 3, sk: "vocab", src: "p1407 с. 22",
       type: "word", title: "Write the missing words.",
@@ -243,7 +243,7 @@ SLID.pool("eng", {
       type: "gaps", title: "Complete the sentences.",
       body: "<p>Emma writes about her town.</p>",
       text: "This spring, our town {*hosted|took place|was held} a big swimming competition. It {*was held|held|hosted} at the new pool. Children from ten clubs {*competed|hosted|held}. Before the races, there was a short opening {*ceremony|stadium|spectator}.",
-      hint: "A town → ? The competition → was …? Children → ? The show at the start → ?",
+      hint: "For each gap: who or what is the subject? Does it do the action?",
       steps: ["The town <b>hosted</b> it. The competition <b>was held</b> at the pool.", "Children <b>competed</b>. The short show at the start → the opening <b>ceremony</b>."] },
 
     /* ───────────── e10s2l4 · Stop, remember, try: a change in meaning ───────────── */
@@ -286,13 +286,13 @@ SLID.pool("eng", {
       type: "gaps", title: "Complete the sentences.",
       body: "<p>Andrii writes about his grandad.</p>",
       text: "I’ll never forget {*playing|to play} chess with Grandad in Chernihiv when I was seven. But last week I forgot {*to call|calling} him on his birthday! So I stopped {*playing|to play} computer games and wrote him a long message.",
-      hint: "A memory, a job he didn’t do, or no more games?",
+      hint: "Remember the rules for remember, forget and stop in Lesson 4.",
       steps: ["A memory → never forget <b>playing</b>. A job he didn’t do → forgot <b>to call</b>.", "No more games → stopped <b>playing</b>."] },
     { id: "a43", lesson: "e10s2l4", lvl: 3, sk: "write", src: "p1407 с. 23",
       type: "gaps", title: "Complete the sentences.",
       body: "<p>Taras writes about his first race.</p>",
-      text: "I’ll never forget {*running|to run} my first race. Before the start, Mr Hnatiuk said, “Remember {*to drink|drinking} some water.” After two kilometres, I stopped {*to tie|tying} my shoe, and three runners passed me. Now I regret {*not checking|not to check} my shoes before the start!",
-      hint: "For each gap: a memory, a job, a reason to stop or a feeling about the past?",
+      text: "I’ll never forget {*running|to run} my first race. Before the start, Mr Hnatiuk said, “Remember {*to drink|drinking} some water.” After two kilometres, I stopped {*to tie|tying} my shoe, and three runners ran past me. Now I regret {*not checking|not to check} my shoes before the start!",
+      hint: "Remember the rules for forget, remember, stop and regret in Lesson 4.",
       steps: ["A memory → never forget <b>running</b>. A job → remember <b>to drink</b>.", "He stopped running in order to tie his shoe → stopped <b>to tie</b>. Sorry about the past → regret <b>not checking</b>."] },
 
     /* ───────────── e10s2l5 · Avoid injuries, keep moving: sport and health ───────────── */

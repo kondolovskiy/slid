@@ -6,7 +6,7 @@ type: write-pool
 subject: eng
 grade: 10
 section: e10s2
-status: review
+status: done
 claimed_by: writer-pe10s2
 created: 2026-11-27
 depends_on: []
@@ -73,3 +73,5 @@ generated_by: tools/make-tasks.mjs --write-pool --subject eng
 **Нові дрібні деталі героїв (NOTE в inbox):** Amelia почала плавати через хвилювання перед іспитами; літній футбольний матч Zelena Dolyna проти сусіднього села (грає Grandad Mykola); Andrii грає в шахи онлайн з людьми з десяти країн, турнір у його школі; Kyrylo — у волейбольній команді тренує стрибки; Bohdan — травма руки (урок: «can’t play tennis for three weeks»), хоче грати на міському турнірі; Ostap — бабуся / мама не може купити скельне взуття, допоміг дідусь; Tom у вісім боявся води; Mariia і Polina малюють прапори для шкільної олімпіади; Taras повісив фото паралімпійської збірної в клубі; Emma — травма руки від плавання, два тижні відпочинку; Oksana — grandma Hanna «has never done sport»; Halyna — подруга Oksana.
 
 **Словники (форма, наголос):** CD https://dictionary.cambridge.org/dictionary/english/<word>: discipline «ˈdɪs.ə.plɪn», spectator «spekˈteɪ.tər», athlete «ˈæθ.liːt», competition «ˌkɒm.pəˈtɪʃ.ən», Olympic «əˈlɪm.pɪk», Paralympic «ˌpær.əˈlɪm.pɪk», ceremony «ˈser.ɪ.mə.ni» (US ˈser.ə.moʊ.ni — наголос той самий), stadium «ˈsteɪ.di.əm», injury «ˈɪn.dʒər.i», recover «rɪˈkʌv.ər», exercise «ˈek.sə.saɪz», energy «ˈen.ə.dʒi»; afford — «can afford to». Verb patterns — CD Grammar https://dictionary.cambridge.org/grammar/british-grammar/verb-patterns-verb-infinitive-or-verb-ing (як в уроці).
+
+**verifier-pe10s2, 2026-11-27.** Незалежна перевірка: усі вправи розв'язано до ключа, розбіжностей немає; 11 правок (перелік — reports/verify/write-eng-pool-g10-e10s2.md §7). `status: "verified"`, validate --pool pe10s2 — 0/0, personalization-qa --strict — зауважень немає. Вердикт: verified.

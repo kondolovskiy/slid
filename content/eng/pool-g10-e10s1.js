@@ -1,5 +1,5 @@
 /* Слід · Англійська мова, 10 клас — пул тренування до розділу e10s1 «Relationships and conflicts»
-   Статус: draft; автор writer-pe10s1, 2026-11-27. Уроки e10s1l1–e10s1l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e10s1l7 без вправ.
+   Статус: verified (verifier-pe10s1, 2026-11-27; reports/verify/write-eng-pool-g10-e10s1.md); автор writer-pe10s1, 2026-11-27. Уроки e10s1l1–e10s1l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e10s1l7 без вправ.
    Джерело — програма класу (program: true): П1407 (наказ МОН № 1407 від 23.10.2017), спеціалізовані школи, 10 кл.:
    с. 22 — тема «Я, моя родина, мої друзі»: особистість та її якості; види особистісних стосунків; стосунки з товаришами;
    взаємодопомога; вирішення конфліктів; функції — аналізувати причини й наслідки, вступати в дискусію, привертаючи увагу;
@@ -16,8 +16,8 @@
 SLID.pool("eng", {
   id: "pe10s1",
   section: "e10s1",
-  status: "draft",
-  meta: { author: "writer-pe10s1", created: "2026-11-27", factcheck: null, teacher: null },
+  status: "verified",
+  meta: { author: "writer-pe10s1", created: "2026-11-27", factcheck: "verifier-pe10s1 (reports/verify/write-eng-pool-g10-e10s1.md)", teacher: null },
   sources: [
     { id: "p1407", short: "П1407", program: true,
       title: "Навчальні програми з іноземних мов для загальноосвітніх навчальних закладів і спеціалізованих шкіл з поглибленим вивченням іноземних мов, 10–11 класи, наказ МОН від 23.10.2017 № 1407 — спеціалізовані школи, 10 клас: тематика й функції (с. 22), граматика (с. 23)",
@@ -60,7 +60,7 @@ SLID.pool("eng", {
       body: "<p>Which questions ask about a person’s personality?</p>",
       opts: ["What is your sister like?", "What’s your sister like?", "What does your sister like?", "What does your sister look like?"],
       correct: [0, 1],
-      hint: "Look carefully at each verb. What’s = What is.",
+      hint: "Look carefully at each verb and at the word after it.",
       steps: ["Personality → <b>What is</b> she <b>like</b>? What’s = What is, so both are correct.", "<i>What does she like?</i> → things she enjoys. <i>What does she look like?</i> → appearance."] },
     { id: "a07", lesson: "e10s1l1", lvl: 1, sk: "phon", src: "p1407 с. 22",
       type: "stress", title: "Find the stressed syllable.",
@@ -110,7 +110,7 @@ SLID.pool("eng", {
       steps: ["A friend who writes from another country → a <b>penfriend</b>. The same team → <b>teammates</b>.", "You have met them, but you don’t know them well → <b>acquaintances</b>."] },
     { id: "a15", lesson: "e10s1l2", lvl: 3, sk: "vocab", src: "p1407 с. 22",
       type: "word", title: "Write the missing word.",
-      body: "<p>Use the Past Simple of <i>fall</i>.</p><p>Last year Artem and Mariia argued and stopped being friends for a while.</p>",
+      body: "<p>Use the Past Simple of <i>fall</i>.</p><p>Last year Artem and Mariia argued and stopped being friends.</p>",
       before: "Last year Artem", after: "out with Mariia.",
       answer: "fell",
       hint: "fall – ? – fallen. Which form is the Past Simple?",
@@ -124,7 +124,7 @@ SLID.pool("eng", {
       body: "<p>Taras writes about his friend Ostap.</p>",
       tiles: ["Ostap", "gets on", "well", "with", "his neighbours"],
       extra: ["is"],
-      answer: "Ostap gets on well with his neighbours.",
+      answer: ["Ostap gets on well with his neighbours.", "Ostap gets on with his neighbours well."],
       hint: "Start with Ostap. Then the phrase get on well with.",
       steps: ["get on well <b>with</b> someone → a good relationship.", "<b>Ostap gets on well with his neighbours.</b>"] },
     { id: "a18", lesson: "e10s1l2", lvl: 3, sk: "gram", src: "p1407 с. 22",
@@ -148,7 +148,7 @@ SLID.pool("eng", {
       type: "gaps", title: "Complete the sentences.",
       body: "<p>Mariia writes to Zofia.</p>",
       text: "Do you remember Artem? Last year we {*fell|fallen|have fallen} out, but now we get on well {*with|to|for} each other again. Last week I met a boy from the comic club. I don’t know him well: he’s just {*an acquaintance|a acquaintance|an acquaintances}.",
-      hint: "Last year → which form? get on well … someone. an + a vowel sound, and one person.",
+      hint: "Last year → which form? Then check the small words: get on well … someone; a or an?",
       steps: ["Last year → the Past Simple: we <b>fell</b> out. Get on well <b>with</b>.", "One person you hardly know → <b>an acquaintance</b> (an + a vowel sound)."] },
 
     /* ───────────── e10s1l3 · By the time I came, they had left: the Past Perfect again ───────────── */
@@ -207,7 +207,7 @@ SLID.pool("eng", {
       body: "<p>As soon as the swimming race …, Emma looked for Mum and Tom.</p>",
       opts: ["ended", "had ended", "has ended", "ends"],
       correct: [0, 1],
-      hint: "As soon as already shows the order. Which forms are past tenses?",
+      hint: "Remember Lesson 4: what do after, before and as soon as already show?",
       steps: ["After <b>as soon as</b>, both the Past Simple and the Past Perfect are correct: <b>ended</b>, <b>had ended</b>.", "<i>Has ended</i> and <i>ends</i> aren’t past tenses."] },
     { id: "a31", lesson: "e10s1l4", lvl: 2, sk: "gram", src: "p1407 с. 23",
       type: "choice", title: "Choose the correct answer.",
@@ -293,7 +293,7 @@ SLID.pool("eng", {
       steps: ["Cause → <b>because</b>: she had stayed up late.", "Result → <b>so</b>: she went to bed early."] },
     { id: "a44", lesson: "e10s1l5", lvl: 2, sk: "gram", src: "p1407 с. 22",
       type: "build", title: "Put the words in order.",
-      body: "<p>Explain the cause. Start with Taras.</p>",
+      body: "<p>Taras missed the bus. Then he was late for training.</p><p>Explain the cause. Start with Taras.</p>",
       tiles: ["Taras", "was late", "because", "he", "had missed", "the bus"],
       extra: ["has missed"],
       answer: "Taras was late because he had missed the bus.",
@@ -373,7 +373,7 @@ SLID.pool("eng", {
       type: "gaps", title: "Complete the dialogue.",
       body: "<p>Daryna and Kyrylo are planning the class trip.</p>",
       text: "Daryna: Sorry to {*interrupt|interrupting|interrupted}, but I have an idea. Kyrylo: Hang on a {*minute|time|clock}. I haven’t finished yet. … Daryna: OK. Now could I just {*say|saying|to say} something?",
-      hint: "Sorry to + verb; Hang on a … ; could I just + verb.",
+      hint: "Remember the phrases for a heated discussion in Lesson 6.",
       steps: ["<b>Sorry to interrupt, but…</b> and <b>Could I just say something?</b> → you want to speak.", "<b>Hang on a minute.</b> → you haven’t finished (informal)."] },
     { id: "a57", lesson: "e10s1l6", lvl: 3, sk: "func", src: "p1407 с. 22",
       type: "choice", title: "Read the dialogue and choose the best answer.",
@@ -418,7 +418,7 @@ SLID.pool("eng", {
       type: "gaps", title: "Complete the sentences.",
       body: "<p>Andrii writes for the school newspaper.</p>",
       text: "The problem started {*when|until} two teams wanted the gym at the same time. The basketball team blamed the volleyball team {*for|of} the problem. {*As a result|Because}, they had a heated discussion. Then the PE teacher helped them find a {*compromise|misunderstanding|conflict}: Mondays for one team and Thursdays for the other.",
-      hint: "How does a problem start? blame … for; a result; everyone gets part of what they want.",
+      hint: "Remember the conflict words and the words for causes and results.",
       steps: ["The problem started <b>when</b>…; blamed them <b>for</b> the problem.", "<b>As a result</b> → the result. Everyone gets part of what they want → a <b>compromise</b>."] }
   ]
 });

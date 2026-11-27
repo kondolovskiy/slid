@@ -6,7 +6,7 @@ type: write-pool
 subject: eng
 grade: 10
 section: e10s1
-status: review
+status: done
 claimed_by: writer-pe10s1
 created: 2026-11-27
 depends_on: []
@@ -73,3 +73,5 @@ generated_by: tools/make-tasks.mjs --write-pool --subject eng
 **Нові дрібні деталі героїв (NOTE в inbox):** Amelia віддала рушник молодшій дівчинці; новий тренер Emma з плавання (вона); Isla любить фотографію; Daryna — знайома з Odesa з літнього табору; Tom обіцяв годувати Snowy й прибрати кімнату; Grandad Mykola — «old hat»; Andrii — 2-ге місце на шаховому турнірі, дзвонить Grandad Vasyl; Oksana — пропущений автобус до Poltava, карате-клуб; Dmytro торік узимку зламав руку; Taras — забій коліна перед забігом, Myroslava підтримала; Zlata і шоколад; Kyrylo — допомагає в шкільній бібліотеці по п’ятницях; Kyrylo / Zoriana — принтер; Daryna / Zoriana — навушники.
 
 **Словники (форма, наголос):** CD https://dictionary.cambridge.org/dictionary/english/<word>: loyal «ˈlɔɪ.əl», selfish «ˈsel.fɪʃ», stubborn «ˈstʌb.ən», moody «ˈmuː.di», sensitive «ˈsen.sɪ.tɪv», considerate «kənˈsɪd.ər.ət», reliable «rɪˈlaɪ.ə.bəl», tolerant «ˈtɒl.ər.ənt», generous «ˈdʒen.ər.əs» (UK = US за наголосом); make-up — «(also UK make it up)». Граматика — як в уроці (CD Grammar «Past perfect simple or past simple?»; URL — tasks/…/write-eng-g10-e10s1.md).
+
+**verifier-pe10s1, 2026-11-27.** Незалежна перевірка: усі вправи розв'язано до ключа, розбіжностей немає; 9 правок (перелік — reports/verify/write-eng-pool-g10-e10s1.md §7). `status: "verified"`, validate --pool pe10s1 — 0/0, personalization-qa --strict — зауважень немає. Вердикт: verified.
