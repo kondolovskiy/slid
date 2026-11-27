@@ -6,7 +6,7 @@ type: write-pool
 subject: eng
 grade: 9
 section: e9s8
-status: review
+status: done
 claimed_by: writer-pe9s8
 created: 2026-11-27
 depends_on: []
@@ -65,3 +65,4 @@ generated_by: tools/make-tasks.mjs --write-pool --subject eng
 - Перевірки скриптами (scratchpad pool-e9s7-e9s8/bin): `SLID_LANG.check` — розв'язки зараховуються; build — перебір усіх підмножин: a14, a30 — лише ключ (умова «a sentence, not a question»), a53 — два порядки в ключі, a65 — лише ключ (кома в плитці «about the party,», «Start with If»). 6-грами: рамки уроку з a32, a34, a44, a57, a67 переписано; лишились лише імена місць і сполуки фактів («a big port on the Black Sea»). Лексика — з уроків до свого `lesson`.
 - Наголос (stress) — лише слова з `<u>` в уроках: cathedral, monument, historic, architect, population (e9s8), museum (e5s7), visitor (e6s7); у кожному наборі ≥ 2 позиції.
 - Словники: CD found («Boston was founded in 1630») https://dictionary.cambridge.org/dictionary/english/found ; CD worth («be worth doing») https://dictionary.cambridge.org/dictionary/english/worth ; CD Grammar «Conditionals: if» і OALD open (intransitive) — як у шапці уроку й reports/verify/write-eng-pool-g7-e7s7.md.
+- 2026-11-27 · verifier-pe9s8 (сесія verifier-pe9s7-pe9s8): перевірено, status "verified"; звіт reports/verify/write-eng-pool-g9-e9s8.md.

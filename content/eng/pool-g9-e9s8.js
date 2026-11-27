@@ -1,5 +1,5 @@
 /* Слід · Англійська мова, 9 клас — пул вправ для тренування до розділу «Cities of Ukraine and English-speaking countries» (e9s8)
-   Статус: draft; автор writer-pe9s8, 2026-11-27. Уроки e9s8l1–e9s8l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e9s8l7 без вправ.
+   Статус: verified (verifier-pe9s8, 2026-11-27; reports/verify/write-eng-pool-g9-e9s8.md); автор writer-pe9s8, 2026-11-27. Уроки e9s8l1–e9s8l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e9s8l7 без вправ.
    Вправи власні (docs/design/english.md §8): лише слова, форми й правила уроків e9s8 (до свого `lesson` включно) і попередніх розділів;
    англійською, британська норма (D-055).
    Факти про міста — лише з verified-уроку e9s8 (Kharkiv, Lviv, Odesa, Chernihiv, Kyiv; Edinburgh, Dublin, Sydney / Canberra,
@@ -21,8 +21,8 @@
 SLID.pool("eng", {
   id: "pe9s8",
   section: "e9s8",
-  status: "draft",
-  meta: { author: "writer-pe9s8", created: "2026-11-27", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "writer-pe9s8", created: "2026-11-27", factcheck: "verifier-pe9s8, 2026-11-27 (reports/verify/write-eng-pool-g9-e9s8.md)", teacher: null },
   sources: [
     { id: "mpim", program: true, title: "Модельна навчальна програма «Іноземна мова. 5–9 класи» (Редько В. Г. та ін.), наказ МОН № 795 від 12.07.2021 — 9 клас: теми «Україна» і «Країни виучуваної мови» — великі міста, визначні місця й історичні пам'ятки (с. 33); путівники (с. 28), як дістатися, порада (с. 29), уявні події (с. 31); граматика B1: one of the, conditionals (с. 34), Past simple passive, past perfect after if (с. 35)", url: "https://osvita.ua/doc/files/news/831/83117/Inoz_mov_5-9-kl_Redko_ta_in_14_07.pdf" }
   ],
@@ -520,9 +520,9 @@ SLID.pool("eng", {
       steps: ["If we <b>had booked</b>…, we <b>would have had</b> dinner…", "If you <b>have</b> time… (no <i>will</i> after <i>if</i>). It’s worth <b>seeing</b> them."] },
     { id: "a76", lesson: "e9s8l6", lvl: 1, sk: "gram", src: "mpim с. 34",
       type: "gaps", title: "Fill in the gaps.",
-      body: "<p>Isla didn’t read Taras’s guide, and she didn’t book tickets.</p>",
-      text: "If Isla {*had read|would have read} Taras’s guide, she would have booked tickets.",
-      steps: ["No <i>would</i> after <i>if</i>: if Isla <b>had read</b>…"] },
+      body: "<p>Liam didn’t read Taras’s guide, and he didn’t book tickets.</p>",
+      text: "If Liam {*had read|would have read} Taras’s guide, he would have booked tickets.",
+      steps: ["No <i>would</i> after <i>if</i>: if Liam <b>had read</b>…"] },
     { id: "a77", lesson: "e9s8l6", lvl: 2, sk: "gram", src: "mpim с. 34",
       type: "pick", title: "Find the mistake.",
       body: "<p>One part of Mariia’s guide is wrong.</p>",

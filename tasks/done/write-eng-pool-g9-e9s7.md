@@ -6,7 +6,7 @@ type: write-pool
 subject: eng
 grade: 9
 section: e9s7
-status: review
+status: done
 claimed_by: writer-pe9s7
 created: 2026-11-27
 depends_on: []
@@ -65,3 +65,4 @@ generated_by: tools/make-tasks.mjs --write-pool --subject eng
 - Герої — канон eng-heroes (Bohdan не любить football; Tom — drums і guitar; Halyna малює; Oksana — vet; Zoriana — programmer; Emma — firefighter; Ms Lysenko — вчителька Andrii); нових імен немає. Дрібниці: дядько Bohdan працює в офісі в Kyiv (a04), подруга мами Emma — programmer (a49).
 - Словники: CD keen («keen on (playing) tennis») https://dictionary.cambridge.org/dictionary/english/keen ; CD ought https://dictionary.cambridge.org/dictionary/english/ought ; CD Grammar «Should», «Would», «Be able to» (як у шапці уроку); OALD interested (interested to do — граматичне, тому хибним не дано).
 - Для верифікатора: a43 (don’t have to vs aren’t allowed — з e8s6), a46 (кілька форм питання), a53 (пропущене be в «Would it possible»).
+- 2026-11-27 · verifier-pe9s7 (сесія verifier-pe9s7-pe9s8): перевірено, status "verified"; звіт reports/verify/write-eng-pool-g9-e9s7.md.

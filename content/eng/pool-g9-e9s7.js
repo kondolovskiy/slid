@@ -1,5 +1,5 @@
 /* Слід · Англійська мова, 9 клас — пул вправ для тренування до розділу «Jobs and careers» (e9s7)
-   Статус: draft; автор writer-pe9s7, 2026-11-27. Уроки e9s7l1–e9s7l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e9s7l7 без вправ.
+   Статус: verified (verifier-pe9s7, 2026-11-27; reports/verify/write-eng-pool-g9-e9s7.md); автор writer-pe9s7, 2026-11-27. Уроки e9s7l1–e9s7l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e9s7l7 без вправ.
    Вправи власні (docs/design/english.md §8): лише слова, форми й правила уроків e9s7 (до свого `lesson` включно) і попередніх розділів;
    англійською, британська норма (D-055).
    Джерело — програма класу (program: true): МП-ІМ, 9 кл. — тема «Робота і професія» (с. 33); функції — дає пораду (с. 29),
@@ -17,8 +17,8 @@
 SLID.pool("eng", {
   id: "pe9s7",
   section: "e9s7",
-  status: "draft",
-  meta: { author: "writer-pe9s7", created: "2026-11-27", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "writer-pe9s7", created: "2026-11-27", factcheck: "verifier-pe9s7, 2026-11-27 (reports/verify/write-eng-pool-g9-e9s7.md)", teacher: null },
   sources: [
     { id: "mpim", program: true, title: "Модельна навчальна програма «Іноземна мова. 5–9 класи» (Редько В. Г. та ін.), наказ МОН № 795 від 12.07.2021 — 9 клас: тема «Робота і професія» (с. 33), функції — дає пораду (с. 29), подає заявку, реєструється на курс (с. 30), описує мрії й амбіції (с. 31); граматика B1: ought, must (с. 34), should, would, will, verb + -ing (с. 35)", url: "https://osvita.ua/doc/files/news/831/83117/Inoz_mov_5-9-kl_Redko_ta_in_14_07.pdf" }
   ],
@@ -74,9 +74,9 @@ SLID.pool("eng", {
       steps: ["<u>jour</u>nalist, <u>fire</u>fighter: the first part is strong.", "pho<u>tog</u>rapher: the second part is strong."] },
     { id: "a09", lesson: "e9s7l1", lvl: 3, sk: "phon", src: "mpim с. 33",
       type: "stress", title: "Find the stressed syllable.",
-      words: ["+pro|gram|mer", "me|+chan|ic", "en|gi|+neer", "+ar|chi|tect", "re|+port|er"],
+      words: ["+pro|gram|mer", "me|+chan|ic", "en|gi|+neer", "+ar|chi|tect", "pho|+tog|ra|pher"],
       hint: "Three different places: the start, the middle and the end.",
-      steps: ["<u>pro</u>grammer, <u>ar</u>chitect: the first part.", "me<u>chan</u>ic, re<u>port</u>er: the second part. engi<u>neer</u>: the last part."] },
+      steps: ["<u>pro</u>grammer, <u>ar</u>chitect: the first part.", "me<u>chan</u>ic, pho<u>tog</u>rapher: the second part. engi<u>neer</u>: the last part."] },
     { id: "a10", lesson: "e9s7l1", lvl: 1, sk: "write", src: "mpim с. 33",
       type: "gaps", title: "Complete the sentences.",
       body: "<p>Emma writes about her future job.</p>",
@@ -289,11 +289,11 @@ SLID.pool("eng", {
       steps: ["should + verb, no <i>to</i>: Do you think I <b>should</b> join…?", "<i>ought to ask</i> and <i>don’t have to decide</i> are correct."] },
     { id: "a43", lesson: "e9s7l4", lvl: 3, sk: "gram", src: "mpim с. 34",
       type: "choice", title: "Choose the correct answer.",
-      body: "<p>Ms Lysenko: “You don’t have to wear your school uniform at the careers fair.”</p><p>What does she mean?</p>",
-      opts: ["It isn’t necessary to wear a uniform.", "You aren’t allowed to wear a uniform.", "You must wear a uniform."],
+      body: "<p>Ms Lysenko: “You don’t have to bring a notebook to the careers fair.”</p><p>What does she mean?</p>",
+      opts: ["It isn’t necessary to bring a notebook.", "You aren’t allowed to bring a notebook.", "You must bring a notebook."],
       correct: 0,
       hint: "Look at the rule screen: necessary, not necessary.",
-      steps: ["<b>don’t have to</b> = it isn’t necessary. You can wear it, or you can wear other clothes.", "<i>Aren’t allowed</i> means you can’t. That isn’t what she says."] },
+      steps: ["<b>don’t have to</b> = it isn’t necessary. You can bring one, or you can come without it.", "<i>Aren’t allowed</i> means you can’t. That isn’t what she says."] },
     { id: "a44", lesson: "e9s7l4", lvl: 1, sk: "func", src: "mpim с. 29",
       type: "choice", title: "Choose the correct answer.",
       body: "<p>Andrii doesn’t know which job is right for him. How does he ask for advice?</p>",
@@ -329,7 +329,7 @@ SLID.pool("eng", {
     { id: "a49", lesson: "e9s7l4", lvl: 3, sk: "write", src: "mpim с. 34",
       type: "gaps", title: "Complete the sentences.",
       body: "<p>Emma answers Andrii’s message.</p>",
-      text: "You asked for advice. I think you {*ought to|ought|should to} talk to a programmer: my mum’s friend is one. Programmers {*don’t have to|doesn’t have to|mustn’t to} be good at drawing, so that isn’t a problem! But they {*have to|has to|haves to} be good at maths, and you are. {*Should I|I should|Do I should} send you her email?",
+      text: "You asked for advice. I think you {*ought to|ought|should to} talk to a programmer: my mum’s friend is one. Programmers {*don’t have to|doesn’t have to|mustn’t to} be good at drawing, so that isn’t a problem! But they {*have to|has to|haves to} be good at maths, and you are. {*Should I|Should I to|Do I should} send you her email?",
       hint: "Check each verb: ought + ?, programmers → they, a question with should.",
       steps: ["You <b>ought to</b> talk. Programmers (they) <b>don’t have to</b> / <b>have to</b>.", "A question: <b>Should I</b> send…?"] },
 
