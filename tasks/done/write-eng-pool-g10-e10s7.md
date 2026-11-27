@@ -6,7 +6,7 @@ type: write-pool
 subject: eng
 grade: 10
 section: e10s7
-status: review
+status: done
 claimed_by: writer-pe10s7
 created: 2026-11-27
 depends_on: []
@@ -64,3 +64,5 @@ generated_by: tools/make-tasks.mjs --write-pool --subject eng
 **Словники (curl у цій сесії):** наголос — CD https://dictionary.cambridge.org/dictionary/english/<word> і OALD https://www.oxfordlearnersdictionaries.com/definition/english/<word>: republic rɪˈpʌb.lɪk, capital ˈkæp.ɪ.təl (OALD capital_1), autonomous ɔːˈtɒn.ə.məs, constitution ˌkɒn.stɪˈtʃuː.ʃən, occupy ˈɒk.jə.paɪ (occupied — та сама основа) — по одному наголосу в CD і OALD; integral (два варіанти в CD) і oblast у stress не взято. Решта форм і сполук (due to / owing to / because of + noun, therefore, so / such … that, declare, honour, elect / pass / appoint / adopt) — як звірив verifier-e10s7 (reports/verify/write-eng-g10-e10s7.md).
 **Перевірки скриптами** (`/tmp/claude-0/-home-user-slid/a61632e4-a174-56af-8045-850c74131b2b/scratchpad/pool-e10s7-e10s8/bin/`): `chk.mjs` — `SLID_LANG.check(solution)` для всіх мовних вправ і повний перебір порядків build (a14, a26, a38, a50, a61, a62, a76 — зараховано лише порядки з ключа); `lex.mjs` — слова поза g4–e10s7 до уроку вправи: лише форми (exporter, resource) і `proclaimed` як друга відповідь у ключі a73; `ngram.mjs` (6-грами проти g*-*.js) — після правок збігаються лише шаблонні інструкції й рамки «X writes…».
 **Сумнівні місця для верифікатора:** a73 `word` — ключ declared + proclaimed (proclaimed поза уроками, але правильна); a38 build «The MPs are elected but the members of the House of Lords are not» — «Start with The MPs» відсікає зворотний (фактично хибний) порядок; a61 — фронтальне «Due to the bad weather the concert…» без коми в ключі (як e10s8l5 build); a48 — правильний варіант «so big you can’t see the end» (that опущено — урок, екран 5); a77 — so / because за напрямком причина → наслідок.
+
+**verifier-pe10s7, 2026-11-27.** Вердикт: verified, 6 правок (a69 банки в St Andrew’s Day — ❌ факт; a77 «nine because St Andrew’s» — ⚠️ факт; a63 рамка фіналу l5; a62 «Start with Oksana»; a48 hint; статус). Звіт — reports/verify/write-eng-pool-g10-e10s7.md. validate 0/0.

@@ -1,5 +1,5 @@
 /* Слід · Англійська мова, 10 клас — пул вправ для тренування до розділу «Education and careers» (e10s8)
-   Статус: draft; автор writer-pe10s8, 2026-11-27. Уроки e10s8l1–e10s8l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e10s8l7 без вправ.
+   Статус: verified (verifier-pe10s8, 2026-11-27; reports/verify/write-eng-pool-g10-e10s8.md); автор writer-pe10s8, 2026-11-27. Уроки e10s8l1–e10s8l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e10s8l7 без вправ.
    Вправи власні (docs/design/english.md §8): лише слова, форми й правила уроків e10s8 і попередніх розділів; англійською, британська норма (D-055).
    Джерело — програма класу (program: true): П1407, спеціалізовані школи (B2), 10 кл.: функція «обговорювати перспективи» (с. 22);
    теми «Шкільне життя» (заклади освіти; освіта в Україні та за кордоном) і «Робота і професії» (сучасні професії), граматика:
@@ -23,8 +23,8 @@
 SLID.pool("eng", {
   id: "pe10s8",
   section: "e10s8",
-  status: "draft",
-  meta: { author: "writer-pe10s8", created: "2026-11-27", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "writer-pe10s8", created: "2026-11-27", factcheck: "verifier-pe10s8, 2026-11-27 (reports/verify/write-eng-pool-g10-e10s8.md)", teacher: null },
   sources: [
     { id: "p1407", program: true, title: "Навчальна програма «Іноземні мови. 10–11 класи (рівень стандарту, профільний рівень)», наказ МОН № 1407 від 23.10.2017 — спеціалізовані школи (B2), 10 клас: функція «обговорювати перспективи» (с. 22); теми «Шкільне життя» (заклади освіти, освіта в Україні та за кордоном), «Робота і професії» (сучасні професії); граматика: phrasal and prepositional verbs, prepositions in time phrases (before, for, since, till, until, by) (с. 23)", url: "https://osvita.ua/doc/files/news/589/58921/inozemni-movi-10-11-19_09_2017.pdf" }
   ],
@@ -215,9 +215,9 @@ SLID.pool("eng", {
     { id: "a30", lesson: "e10s8l3", lvl: 3, sk: "vocab", src: "p1407 с. 23",
       type: "choice", title: "Choose the correct answer.",
       body: "<p>Which sentence is wrong?</p>",
-      opts: ["Please fill up this form.", "Please fill out this form.", "Please fill in this form."],
+      opts: ["Arsen filled up the form for the training day.", "Arsen filled out the form for the training day.", "Arsen filled in the form for the training day."],
       correct: 0,
-      hint: "Two of these sentences mean the same.",
+      hint: "Look at the line about forms in the box “Phrasal verbs for applying”.",
       steps: ["<b>fill in</b> and <b>fill out</b> a form are both correct in British English.", "<s>fill up a form</s> is wrong: <i>fill up</i> means ‘make full’, like a glass."] },
 
     { id: "a31", lesson: "e10s8l3", lvl: 1, sk: "gram", src: "p1407 с. 23",
@@ -240,13 +240,13 @@ SLID.pool("eng", {
     { id: "a34", lesson: "e10s8l3", lvl: 3, sk: "gram", src: "p1407 с. 23",
       type: "gaps", title: "Fill in the gaps.",
       body: "<p>Oksana writes about her plans.</p>",
-      text: "In two years, I want to apply {*to|for} a university in Kharkiv {*for|to} a place on the veterinary medicine course.",
+      text: "Next year, I want to apply {*to|for} a university in Kharkiv {*for|to} a place on the veterinary medicine course.",
       hint: "Which is the place, and which is the thing you want?",
       steps: ["the university is the place → apply <b>to</b>.", "a place on the course is the thing you want → apply <b>for</b>."] },
     { id: "a35", lesson: "e10s8l3", lvl: 3, sk: "gram", src: "p1407 с. 23",
       type: "multi", title: "Choose all the correct answers.",
       body: "<p>Which sentences are correct?</p>",
-      opts: ["Please fill out this form.", "I’m looking for my form.", "Please fill on this form.", "It depends of my results."],
+      opts: ["Denys filled out three application forms.", "I’m looking for my form.", "Mariia filled on the form for the drama course.", "It depends of my results."],
       correct: [0, 1],
       hint: "Check the small word after each verb.",
       steps: ["Correct: <b>fill out</b> (= fill in) a form; <b>look for</b> = try to find.", "<s>fill on</s> isn’t English; <s>depends of</s> → depends <b>on</b>."] },
@@ -413,12 +413,12 @@ SLID.pool("eng", {
       steps: ["when I was ten is a starting point → <b>since</b>."] },
     { id: "a61", lesson: "e10s8l5", lvl: 2, sk: "write", src: "p1407 с. 23",
       type: "build", title: "Put the words in order.",
-      body: "<p>Taras promises his mum. There are two correct orders.</p>",
-      tiles: ["I", "will hand in", "my form", "by", "Friday"],
+      body: "<p>Taras answers Ms Kravets about the photos for the magazine. There are two correct orders.</p>",
+      tiles: ["you", "will get", "my photos", "by", "the end of the week"],
       extra: ["until"],
-      answer: ["I will hand in my form by Friday.", "By Friday I will hand in my form."],
-      hint: "Handing in a form is an action with a deadline.",
-      steps: ["<b>I will hand in my form by Friday.</b>", "A deadline → <b>by</b>, not <i>until</i>."] },
+      answer: ["You will get my photos by the end of the week.", "By the end of the week you will get my photos."],
+      hint: "Getting the photos is an action with a deadline.",
+      steps: ["<b>You will get my photos by the end of the week.</b>", "A deadline → <b>by</b>, not <i>until</i>."] },
     { id: "a62", lesson: "e10s8l5", lvl: 3, sk: "write", src: "p1407 с. 23",
       type: "gaps", title: "Complete the sentences.",
       body: "<p>Taras writes to Ostap.</p>",
@@ -500,8 +500,8 @@ SLID.pool("eng", {
       steps: ["<b>There’s a growing demand for cybersecurity specialists.</b>", "a growing demand <b>for</b> – not <s>of</s>."] },
     { id: "a74", lesson: "e10s8l6", lvl: 3, sk: "write", src: "p1407 с. 23",
       type: "gaps", title: "Complete the sentences.",
-      body: "<p>Daryna writes about the careers fair for the school website.</p>",
-      text: "Leah told us about her job. It {*requires|depends|protects} teamwork, because technicians never climb a turbine alone. Iryna said you need good communication {*skills|details|demands} to explain problems to people. Now I’m {*thinking|demanding|requiring} of studying science at university.",
+      body: "<p>Daryna tells her mum about the careers fair.</p>",
+      text: "Leah told us about her job. It {*requires|depends|protects} teamwork, because she never climbs a turbine alone. Iryna said you need good communication {*skills|details|demands} to explain problems to people. Now I’m {*thinking|demanding|requiring} of studying science at university.",
       hint: "Look at the boxes “Skills for modern jobs” and “Talking about the future”.",
       steps: ["It needs teamwork → it <b>requires</b> teamwork; communication <b>skills</b>.", "I’m <b>thinking</b> of + -ing."] },
 

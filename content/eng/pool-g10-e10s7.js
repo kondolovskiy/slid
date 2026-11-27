@@ -1,5 +1,5 @@
 /* Слід · Англійська мова, 10 клас — пул вправ для тренування до розділу «Ukraine and English-speaking countries» (e10s7)
-   Статус: draft; автор writer-pe10s7, 2026-11-27. Уроки e10s7l1–e10s7l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e10s7l7 без вправ.
+   Статус: verified (verifier-pe10s7, 2026-11-27; reports/verify/write-eng-pool-g10-e10s7.md); автор writer-pe10s7, 2026-11-27. Уроки e10s7l1–e10s7l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e10s7l7 без вправ.
    (e10s7l4 cult — лише здогадка hyp, тож пари немає.)
    Вправи власні (docs/design/english.md §8): лише слова, форми й правила уроків e10s7 і попередніх розділів; англійською, британська норма (D-055).
    Джерело — програма класу (program: true): П1407, спеціалізовані школи (B2), 10 кл.: функції «описувати ситуації та реалії життя,
@@ -21,8 +21,8 @@
 SLID.pool("eng", {
   id: "pe10s7",
   section: "e10s7",
-  status: "draft",
-  meta: { author: "writer-pe10s7", created: "2026-11-27", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "writer-pe10s7", created: "2026-11-27", factcheck: "verifier-pe10s7, 2026-11-27 (reports/verify/write-eng-pool-g10-e10s7.md)", teacher: null },
   sources: [
     { id: "p1407", program: true, title: "Навчальна програма «Іноземні мови. 10–11 класи (рівень стандарту, профільний рівень)», наказ МОН № 1407 від 23.10.2017 — спеціалізовані школи (B2), 10 клас: функція «описувати ситуації та реалії життя, аналізувати їхні причини і наслідки» (с. 22); теми «Україна», «Країни виучуваної мови» — устрій, природні ресурси, державні свята; граматика: so … that, so / therefore, due to, owing to, so, because (с. 23)", url: "https://osvita.ua/doc/files/news/589/58921/inozemni-movi-10-11-19_09_2017.pdf" }
   ],
@@ -330,7 +330,7 @@ SLID.pool("eng", {
       body: "<p>Which sentence is wrong?</p>",
       opts: ["Kryvyi Rih has such rich iron ore that people have mined it for many years.", "The fields are so big you can’t see the end.", "Coal was so important resource that factories used a lot of it."],
       correct: 2,
-      hint: "Remember: you can leave out that.",
+      hint: "Look at the word after so or such in each sentence. Can you leave out that? Check the box “So … that, such … that”.",
       steps: ["<s>so important resource</s> – there is a noun, so it should be <b>such an important resource</b>.", "<i>such rich iron ore</i> is correct, and <i>so big you can’t see…</i> is correct too: you can leave out <i>that</i>."] },
 
     { id: "a49", lesson: "e10s7l4", lvl: 1, sk: "write", src: "p1407 с. 23",
@@ -428,7 +428,7 @@ SLID.pool("eng", {
       steps: ["<b>The concert was cancelled due to the bad weather.</b>", "due to + noun; <i>because</i> needs a subject and a verb."] },
     { id: "a62", lesson: "e10s7l5", lvl: 2, sk: "write", src: "p1407 с. 23",
       type: "build", title: "Put the words in order.",
-      body: "<p>Oksana writes why she is learning English.</p>",
+      body: "<p>Oksana writes why she is learning English. Start with <i>Oksana</i>.</p>",
       tiles: ["Oksana", "is learning", "English", "so", "that", "she can", "talk to", "her penfriends"],
       extra: ["than"],
       answer: "Oksana is learning English so that she can talk to her penfriends.",
@@ -437,9 +437,9 @@ SLID.pool("eng", {
     { id: "a63", lesson: "e10s7l5", lvl: 3, sk: "write", src: "p1407 с. 23",
       type: "gaps", title: "Complete the sentences.",
       body: "<p>Emma writes about the boat trip for the website.</p>",
-      text: "Last week, we finally went on our boat trip. The weather was {*so|such} good that the boat could go out. Our teacher booked a bigger boat {*so that|due to|therefore} everyone could sit inside. {*Therefore|Because of|Owing to}, all thirty students could come.",
+      text: "Last week, we finally went on our boat trip. The weather was {*so|such} good that the boat could go out. Our teacher chose a bigger boat {*so that|due to|therefore} everyone could sit inside. {*Therefore|Because of|Owing to}, all thirty students could come.",
       hint: "Look at the boxes about results and purposes again.",
-      steps: ["<b>so</b> good (adjective) that…; a bigger boat <b>so that</b> everyone could sit inside (a purpose).", "The result starts a new sentence → <b>Therefore</b>, all thirty students could come."] },
+      steps: ["<b>so</b> good (adjective) that…; a bigger boat <b>so that</b> everyone could sit inside (a purpose: why the teacher chose it).", "The result starts a new sentence → <b>Therefore</b>, all thirty students could come."] },
 
     /* ───────────── e10s7l6 · Public holidays in Ukraine and the UK ───────────── */
     { id: "a64", lesson: "e10s7l6", lvl: 1, sk: "cult", src: "p1407 с. 23",
@@ -477,7 +477,7 @@ SLID.pool("eng", {
     { id: "a69", lesson: "e10s7l6", lvl: 1, sk: "gram", src: "p1407 с. 23",
       type: "gaps", title: "Fill in the gaps.",
       body: "<p>Isla writes to Andrii.</p>",
-      text: "The banks are closed today {*because|due to} it’s St Andrew’s Day.",
+      text: "Today is a bank holiday in Scotland {*because|due to} it’s St Andrew’s Day.",
       steps: ["it’s St Andrew’s Day has a subject and a verb → <b>because</b>."] },
     { id: "a70", lesson: "e10s7l6", lvl: 2, sk: "gram", src: "p1407 с. 23",
       type: "gaps", title: "Fill in the gaps.",
@@ -527,8 +527,8 @@ SLID.pool("eng", {
     { id: "a77", lesson: "e10s7l6", lvl: 3, sk: "write", src: "p1407 с. 23",
       type: "gaps", title: "Complete the sentences.",
       body: "<p>Isla writes to Andrii on 26 December.</p>",
-      text: "Happy Boxing Day, Andrii! It’s a bank holiday everywhere in the UK, {*so|because} my mum isn’t working today. In Scotland, we have nine bank holidays {*because|therefore} we also have St Andrew’s Day.",
+      text: "Happy Boxing Day, Andrii! It’s a bank holiday everywhere in the UK, {*so|because} my mum isn’t working today. In Scotland, we also have a bank holiday on 30 November {*because|therefore} it’s St Andrew’s Day.",
       hint: "Which part is the reason, and which is the result?",
-      steps: ["It’s a bank holiday (reason), <b>so</b> Mum isn’t working (result).", "Nine bank holidays (result) <b>because</b> Scotland also has St Andrew’s Day (reason)."] }
+      steps: ["It’s a bank holiday (reason), <b>so</b> Mum isn’t working (result).", "A bank holiday on 30 November (result) <b>because</b> it’s St Andrew’s Day (reason)."] }
   ]
 });

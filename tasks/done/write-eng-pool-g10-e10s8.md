@@ -6,7 +6,7 @@ type: write-pool
 subject: eng
 grade: 10
 section: e10s8
-status: review
+status: done
 claimed_by: writer-pe10s8
 created: 2026-11-27
 depends_on: []
@@ -64,3 +64,5 @@ generated_by: tools/make-tasks.mjs --write-pool --subject eng
 **Словники:** наголос — CD (curl; verifier-e10s8 §48: university, qualification, graduate, college, apprenticeship, qualified, bachelor, technician, developer, analyst, designer, lyceum, communication) + у цій сесії CD/OALD: turbine ˈtɜː.baɪn (OALD /ˈtɜːbaɪn/), communication OALD /kəˌmjuːnɪˈkeɪʃn/. Фразові й прийменникові дієслова (fill in / fill out, hand in, turn down, put off, find out, sign up for, apply for / to, depend on, prepare for, look for) — OALD / CD, як у звіті verifier-e10s8 (fill-in, hand-in, turn-down). Дистрактори свідомо без: on до sign up (sign on — mainly US, pitfalls-eng 2026-11-26 verifier-e11s3), out / down / on до hand (hand out, hand down, hand on — інші значення), in до turn it (turn in = hand in), qualified до get … for it (get qualified — граматичне).
 **Перевірки скриптами** (`/tmp/claude-0/-home-user-slid/a61632e4-a174-56af-8045-850c74131b2b/scratchpad/pool-e10s7-e10s8/bin/`): `chk.mjs` — усі розв'язки зараховуються; перебір порядків build (a14, a26, a40, a49, a61, a73) — зараховано лише порядки з ключа, пастки не є займенником; `lex.mjs` — поза g4–e10s8 лише форми (qualification, prospect, requiring у дистракторі); `ngram.mjs` — рамки уроків переписано (Denys / Arsen / Zoriana / Leah / Mariia / Bohdan), лишились шаблони інструкцій і формули (a growing demand for … у match a69).
 **Сумнівні місця для верифікатора:** a53 — «open until 20 April» і день 20 April не оцінюється (опція про 15 April); a58 — till у пропуску без until серед варіантів; a62 — before проти since (until і before в одному пропуску не даю, pitfalls-eng writer-e10s1); a26, a40, a49, a61 — по два порядки; a71 — On the other hand проти Because, / Due to, (неграматичні з комою).
+
+**verifier-pe10s8, 2026-11-27.** Вердикт: verified, 7 правок (a61 нова рамка замість build l5; a30, a35 — нові речення замість multi l3, a30 hint; a34 «Next year»; a74 правило компанії Leah; статус). Звіт — reports/verify/write-eng-pool-g10-e10s8.md. validate 0/0.
