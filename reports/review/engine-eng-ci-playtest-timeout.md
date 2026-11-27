@@ -32,3 +32,13 @@
 - Повторний CI на PR #27 із новими лімітами (вкладеться чи ні 45 хв — лише там).
 - `npm run check` повністю не запускав (зміна .mjs — лише коментар); actionlint недоступний.
 - Повний плейтест (`playtest: full`) — тривалість оцінена, не виміряна.
+
+## Повторне рев'ю (коміт d608ec2)
+Перевірено: `git show d608ec2 -- .github/workflows/pages.yml docs/PUBLISHING.md`, `tasks/todo/tools-playtest-full-duration.md`, рядок PITFALL у `memory/short/inbox.md`.
+- P2-1 — **закрито.** Job: `full && 120 || 60` (`pages.yml:91`), у коментарі правильно сказано, що при full піднабір пропускається (≈ 10 + 90). Недостатній ліміт повного прогону виніс в окрему задачу `tasks/todo/tools-playtest-full-duration.md` (1827 уроків, 90 хв); туди ж пішов P3-1 (цикл build, `tools/playtest.py:230`).
+- P2-2 — **закрито.** `docs/PUBLISHING.md:26-27` і опис input `pages.yml:14` тепер узгоджені з лімітами (крок 45 хв / job 60; full — 1800+ уроків, понад 90 хв).
+- P3-1 (pitfalls) — PITFALL записано в inbox, куратор перенесе.
+- `yaml.safe_load` — workflow розбирається, вираз job — `${{ inputs.playtest == 'full' && 120 || 60 }}`.
+- Нових знахідок немає. Не перевірено, як і раніше: повторний CI на PR #27.
+
+**Повторний вердикт: прийнято.**

@@ -3,7 +3,7 @@ id: engine-eng-ci-playtest-timeout
 type: engine
 subject: eng
 depends_on: []
-status: review
+status: done
 claimed_by: orchestrator-eng-g7-11
 created: 2026-11-27
 source: CI PR #27 (job browser — timeout)
