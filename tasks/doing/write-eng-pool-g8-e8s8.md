@@ -1,16 +1,18 @@
 ---
-id: write-eng-pool-g9-e9s1
+claimed_from: todo
+claimed_at: 2026-11-27T10:29:02.086Z
+id: write-eng-pool-g8-e8s8
 type: write-pool
 subject: eng
-grade: 9
-section: e9s1
+grade: 8
+section: e8s8
 status: todo
-claimed_by:
+claimed_by: writer-pe8s8
 created: 2026-11-27
 depends_on: []
 generated_by: tools/make-tasks.mjs --write-pool --subject eng
 ---
-# Зібрати пул тренування «Who am I? Personality and life story» (Англійська мова, 9 клас, e9s1)
+# Зібрати пул тренування «English-speaking countries: land, climate and people» (Англійська мова, 8 клас, e8s8)
 
 ## Навіщо
 Пул — вправи для самостійного тренування після уроку з інтервальним повторенням (docs/PERSONALIZATION.md §3).
@@ -18,15 +20,15 @@ generated_by: tools/make-tasks.mjs --write-pool --subject eng
 Контракт полів — docs/CONTENT_SCHEMA.md §10, «Пули мовних предметів»; якщо він розходиться з цим текстом — правий CONTENT_SCHEMA. Рішення людини — docs/design/english.md §7, §11.1.
 
 ## Результат
-Один файл `content/eng/pool-g9-e9s1.js`: `SLID.pool("eng", { id: "pe9s1", section: "e9s1", status: "draft", meta: {…}, sources: [...], items: [...] })`. **id `pe9s1` і id вправ — ключі прогресу, не перейменовувати.**
+Один файл `content/eng/pool-g8-e8s8.js`: `SLID.pool("eng", { id: "pe8s8", section: "e8s8", status: "draft", meta: {…}, sources: [...], items: [...] })`. **id `pe8s8` і id вправ — ключі прогресу, не перейменовувати.**
 
 ## Уроки для покриття (без фіналу)
-- `e9s1l1` — Name, date of birth, nationality: filling in a form
-- `e9s1l2` — Easy-going or hard-working? Personality
-- `e9s1l3` — What shapes us? Family, friends and choices
-- `e9s1l4` — When I was little, I used to… and I would…
-- `e9s1l5` — I knew I was going to be a…: the future in the past
-- `e9s1l6` — My life story: a short autobiography
+- `e8s8l1` — The UK, Ireland, Canada, Australia: where are they?
+- `e8s8l2` — Rainy, dry or snowy? Climate around the world
+- `e8s8l3` — British, Irish, Canadian: people and nationalities
+- `e8s8l4` — Much bigger, a bit smaller: comparing countries
+- `e8s8l5` — If I lived in Canada, I would…
+- `e8s8l6` — If you could visit one country, which would you choose?
 
 ## Що зробити (скіли `math-pool-diag` — розділ про пули мовних предметів — і `content-author`, розділ про англійську)
 1. Прочитай уроки розділу повністю: лексика, граматика, приклади, `sk` екранів, `learned`. **Чесне завдання (D-019):** вправа тренує лише слова й граматику, яких урок навчив; нового правила пул не вчить.
@@ -37,10 +39,10 @@ generated_by: tools/make-tasks.mjs --write-pool --subject eng
 6. Глосарій і пастки — memory/long/glossary/eng.md, memory/long/facts/eng.md, memory/long/pitfalls-content.md «Англійська».
 
 ## Обмеження
-Змінюй лише `content/eng/pool-g9-e9s1.js`, цю задачу й дописуй inbox. build і check — оркестратор. Уроки розділу не правити — пропозиції в inbox.
+Змінюй лише `content/eng/pool-g8-e8s8.js`, цю задачу й дописуй inbox. build і check — оркестратор. Уроки розділу не правити — пропозиції в inbox.
 
 ## Готово, коли
-- [ ] `node tools/validate.mjs --pool pe9s1` і `node tools/personalization-qa.mjs --pool pe9s1` — 0 помилок; `status: "draft"`.
+- [ ] `node tools/validate.mjs --pool pe8s8` і `node tools/personalization-qa.mjs --pool pe8s8` — 0 помилок; `status: "draft"`.
 - [ ] Нотатки: таблиця «урок → кількість / рівні / типи», словники, за якими звірено форми; рядок в inbox.
 - [ ] Задача → `tasks/review/` для **content-verifier зі свіжим контекстом** (розв'язати кожну вправу, звірити форми за словником).
 

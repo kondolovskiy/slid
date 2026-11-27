@@ -1,16 +1,18 @@
 ---
-id: write-eng-pool-g9-e9s2
+claimed_from: todo
+claimed_at: 2026-11-27T10:29:02.123Z
+id: write-eng-pool-g9-e9s1
 type: write-pool
 subject: eng
 grade: 9
-section: e9s2
+section: e9s1
 status: todo
-claimed_by:
+claimed_by: writer-pe9s1
 created: 2026-11-27
 depends_on: []
 generated_by: tools/make-tasks.mjs --write-pool --subject eng
 ---
-# Зібрати пул тренування «The environment» (Англійська мова, 9 клас, e9s2)
+# Зібрати пул тренування «Who am I? Personality and life story» (Англійська мова, 9 клас, e9s1)
 
 ## Навіщо
 Пул — вправи для самостійного тренування після уроку з інтервальним повторенням (docs/PERSONALIZATION.md §3).
@@ -18,15 +20,15 @@ generated_by: tools/make-tasks.mjs --write-pool --subject eng
 Контракт полів — docs/CONTENT_SCHEMA.md §10, «Пули мовних предметів»; якщо він розходиться з цим текстом — правий CONTENT_SCHEMA. Рішення людини — docs/design/english.md §7, §11.1.
 
 ## Результат
-Один файл `content/eng/pool-g9-e9s2.js`: `SLID.pool("eng", { id: "pe9s2", section: "e9s2", status: "draft", meta: {…}, sources: [...], items: [...] })`. **id `pe9s2` і id вправ — ключі прогресу, не перейменовувати.**
+Один файл `content/eng/pool-g9-e9s1.js`: `SLID.pool("eng", { id: "pe9s1", section: "e9s1", status: "draft", meta: {…}, sources: [...], items: [...] })`. **id `pe9s1` і id вправ — ключі прогресу, не перейменовувати.**
 
 ## Уроки для покриття (без фіналу)
-- `e9s2l1` — Air, water and land: our environment
-- `e9s2l2` — Rare plants and animals of Ukraine
-- `e9s2l3` — It’s going to be a hot summer: predictions
-- `e9s2l4` — In 2050 we will be living…: the Future Continuous
-- `e9s2l5` — Forests must be protected: what can we do?
-- `e9s2l6` — An eco project for our school
+- `e9s1l1` — Name, date of birth, nationality: filling in a form
+- `e9s1l2` — Easy-going or hard-working? Personality
+- `e9s1l3` — What shapes us? Family, friends and choices
+- `e9s1l4` — When I was little, I used to… and I would…
+- `e9s1l5` — I knew I was going to be a…: the future in the past
+- `e9s1l6` — My life story: a short autobiography
 
 ## Що зробити (скіли `math-pool-diag` — розділ про пули мовних предметів — і `content-author`, розділ про англійську)
 1. Прочитай уроки розділу повністю: лексика, граматика, приклади, `sk` екранів, `learned`. **Чесне завдання (D-019):** вправа тренує лише слова й граматику, яких урок навчив; нового правила пул не вчить.
@@ -37,10 +39,10 @@ generated_by: tools/make-tasks.mjs --write-pool --subject eng
 6. Глосарій і пастки — memory/long/glossary/eng.md, memory/long/facts/eng.md, memory/long/pitfalls-content.md «Англійська».
 
 ## Обмеження
-Змінюй лише `content/eng/pool-g9-e9s2.js`, цю задачу й дописуй inbox. build і check — оркестратор. Уроки розділу не правити — пропозиції в inbox.
+Змінюй лише `content/eng/pool-g9-e9s1.js`, цю задачу й дописуй inbox. build і check — оркестратор. Уроки розділу не правити — пропозиції в inbox.
 
 ## Готово, коли
-- [ ] `node tools/validate.mjs --pool pe9s2` і `node tools/personalization-qa.mjs --pool pe9s2` — 0 помилок; `status: "draft"`.
+- [ ] `node tools/validate.mjs --pool pe9s1` і `node tools/personalization-qa.mjs --pool pe9s1` — 0 помилок; `status: "draft"`.
 - [ ] Нотатки: таблиця «урок → кількість / рівні / типи», словники, за якими звірено форми; рядок в inbox.
 - [ ] Задача → `tasks/review/` для **content-verifier зі свіжим контекстом** (розв'язати кожну вправу, звірити форми за словником).
 
