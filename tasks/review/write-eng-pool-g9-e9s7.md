@@ -6,7 +6,7 @@ type: write-pool
 subject: eng
 grade: 9
 section: e9s7
-status: todo
+status: review
 claimed_by: writer-pe9s7
 created: 2026-11-27
 depends_on: []
@@ -47,3 +47,21 @@ generated_by: tools/make-tasks.mjs --write-pool --subject eng
 - [ ] Задача → `tasks/review/` для **content-verifier зі свіжим контекстом** (розв'язати кожну вправу, звірити форми за словником).
 
 ## Нотатки виконавця
+- 2026-11-27 · writer-pe9s7 (агент writer-pe9s7-pe9s8). Файл `content/eng/pool-g9-e9s7.js`, 71 вправа a01–a71, `status: "draft"`. `validate --pool pe9s7` — 0/0; `personalization-qa --pool pe9s7` — правило виконано (лише «ще не verified»).
+- Кожна пара (урок, sk) — ≥ 3 вправи з рівнями 1, 2, 3:
+
+| Урок | Вправ | Рівні | Типи | sk: рівні |
+|---|---|---|---|---|
+| e9s7l1 | 12 | 1–3 | choice, word, gaps, multi, stress | vocab 1/2/3; read 1/2/3; phon 1/2/3; write 1/2/3 |
+| e9s7l2 | 11 | 1–3 | gaps, word, pick, choice, build | gram 1/1/2/2/3; func 1/2/3; write 1/2/3 |
+| e9s7l3 | 15 | 1–3 | choice, match, word, pick, gaps, build, stress | vocab 1/2/2/3; gram 1/2/2/3/3; phon 1/2/3; write 1/2/3 |
+| e9s7l4 | 11 | 1–3 | sort, gaps, word, pick, choice, build | gram 1/2/2/3/3; func 1/2/3; write 1/2/3 |
+| e9s7l5 | 11 | 1–3 | gaps, word, pick, build, choice | gram 1/2/2/3/3; func 1/2/3; write 1/2/3 |
+| e9s7l6 | 11 | 1–3 | gaps, word, pick, build, choice, multi | gram 1/2/2/3/3; read 1/2/3; write 1/2/3 |
+
+- `src` — сторінки PDF МП-ІМ (pdftotext, друк. = PDF): с. 33 — «Робота і професія»; с. 29 — «Дає пораду» (l4 func); с. 30 — заявки, реєстрація на курс (l5 func/write); с. 31 — «Описує … мрії, сподівання, амбіції» (l6 read/write); с. 34 — Ought: advice, Must: obligation (l4 gram/write); с. 35 — Should: ideal, Would: polite requests, Will, verbs + -ing (l2, l3, l5, l6 gram).
+- Перевірки скриптами (scratchpad pool-e9s7-e9s8/bin): `SLID_LANG.check` — усі розв'язки зараховуються; build — перебір усіх перестановок підмножин tiles + extra: кожен приймає лише ключ (a32, a45, a54, a65 — keepCase з «Start with …» / «?» у плитці; a22, a59, a70 — один порядок). 6-грами проти g4–g11: збігаються лише інструкції й шаблонні сполуки («be able to come to the», «Do you think I should become»), рамок уроків немає (a11, a66–a67 переписано). Лексика — з уроків до свого `lesson` (biology з l6 і physics з l4 у вправах l2 замінено на science / maths; veterinarian — лише другий ключ a02).
+- Друга правильна: should / ought to і must / have to не протиставлені; Could you / Would you — хибні лише Do/Are/Is…be; «I ___ like to» у word не беремо (I should like — BrE); doesn’t need to — у ключі a41; brave + courageous / fearless (a26); won’t / will not (a62, contractions). Дистрактор «ought» без to у короткій відповіді не взято (сумнів щодо «I think you ought»). had better в уроках немає — не взято.
+- Герої — канон eng-heroes (Bohdan не любить football; Tom — drums і guitar; Halyna малює; Oksana — vet; Zoriana — programmer; Emma — firefighter; Ms Lysenko — вчителька Andrii); нових імен немає. Дрібниці: дядько Bohdan працює в офісі в Kyiv (a04), подруга мами Emma — programmer (a49).
+- Словники: CD keen («keen on (playing) tennis») https://dictionary.cambridge.org/dictionary/english/keen ; CD ought https://dictionary.cambridge.org/dictionary/english/ought ; CD Grammar «Should», «Would», «Be able to» (як у шапці уроку); OALD interested (interested to do — граматичне, тому хибним не дано).
+- Для верифікатора: a43 (don’t have to vs aren’t allowed — з e8s6), a46 (кілька форм питання), a53 (пропущене be в «Would it possible»).
