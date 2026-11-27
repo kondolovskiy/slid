@@ -1,16 +1,18 @@
 ---
-id: write-eng-pool-g11-e11s5
+claimed_from: todo
+claimed_at: 2026-11-27T12:22:59.884Z
+id: write-eng-pool-g11-e11s7
 type: write-pool
 subject: eng
 grade: 11
-section: e11s5
+section: e11s7
 status: todo
-claimed_by:
+claimed_by: writer-pe11s7
 created: 2026-11-27
 depends_on: []
 generated_by: tools/make-tasks.mjs --write-pool --subject eng
 ---
-# Зібрати пул тренування «Science and its impact» (Англійська мова, 11 клас, e11s5)
+# Зібрати пул тренування «Ukraine in the world» (Англійська мова, 11 клас, e11s7)
 
 ## Навіщо
 Пул — вправи для самостійного тренування після уроку з інтервальним повторенням (docs/PERSONALIZATION.md §3).
@@ -18,15 +20,15 @@ generated_by: tools/make-tasks.mjs --write-pool --subject eng
 Контракт полів — docs/CONTENT_SCHEMA.md §10, «Пули мовних предметів»; якщо він розходиться з цим текстом — правий CONTENT_SCHEMA. Рішення людини — docs/design/english.md §7, §11.1.
 
 ## Результат
-Один файл `content/eng/pool-g11-e11s5.js`: `SLID.pool("eng", { id: "pe11s5", section: "e11s5", status: "draft", meta: {…}, sources: [...], items: [...] })`. **id `pe11s5` і id вправ — ключі прогресу, не перейменовувати.**
+Один файл `content/eng/pool-g11-e11s7.js`: `SLID.pool("eng", { id: "pe11s7", section: "e11s7", status: "draft", meta: {…}, sources: [...], items: [...] })`. **id `pe11s7` і id вправ — ключі прогресу, не перейменовувати.**
 
 ## Уроки для покриття (без фіналу)
-- `e11s5l1` — Biology, physics, IT: branches of science
-- `e11s5l2` — In the lab: equipment and the people who work there
-- `e11s5l3` — It has been discovered, it is being tested: the passive
-- `e11s5l4` — It can be recycled, it must be tested: modals and the passive
-- `e11s5l5` — Science and the environment: good or bad?
-- `e11s5l6` — Science in Ukraine and abroad
+- `e11s7l1` — Ukraine, the EU, the UN and the Council of Europe
+- `e11s7l2` — Laws and rights: what the law says
+- `e11s7l3` — Is it polite? Etiquette in different countries
+- `e11s7l4` — Who or whom? Relative pronouns: an overview
+- `e11s7l5` — We won, which surprised everyone: comments with which
+- `e11s7l6` — Ukraine and English-speaking countries: events and people
 
 ## Що зробити (скіли `math-pool-diag` — розділ про пули мовних предметів — і `content-author`, розділ про англійську)
 1. Прочитай уроки розділу повністю: лексика, граматика, приклади, `sk` екранів, `learned`. **Чесне завдання (D-019):** вправа тренує лише слова й граматику, яких урок навчив; нового правила пул не вчить.
@@ -37,10 +39,10 @@ generated_by: tools/make-tasks.mjs --write-pool --subject eng
 6. Глосарій і пастки — memory/long/glossary/eng.md, memory/long/facts/eng.md, memory/long/pitfalls-content.md «Англійська».
 
 ## Обмеження
-Змінюй лише `content/eng/pool-g11-e11s5.js`, цю задачу й дописуй inbox. build і check — оркестратор. Уроки розділу не правити — пропозиції в inbox.
+Змінюй лише `content/eng/pool-g11-e11s7.js`, цю задачу й дописуй inbox. build і check — оркестратор. Уроки розділу не правити — пропозиції в inbox.
 
 ## Готово, коли
-- [ ] `node tools/validate.mjs --pool pe11s5` і `node tools/personalization-qa.mjs --pool pe11s5` — 0 помилок; `status: "draft"`.
+- [ ] `node tools/validate.mjs --pool pe11s7` і `node tools/personalization-qa.mjs --pool pe11s7` — 0 помилок; `status: "draft"`.
 - [ ] Нотатки: таблиця «урок → кількість / рівні / типи», словники, за якими звірено форми; рядок в inbox.
 - [ ] Задача → `tasks/review/` для **content-verifier зі свіжим контекстом** (розв'язати кожну вправу, звірити форми за словником).
 
