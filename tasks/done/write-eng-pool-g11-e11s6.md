@@ -6,7 +6,7 @@ type: write-pool
 subject: eng
 grade: 11
 section: e11s6
-status: review
+status: done
 claimed_by: writer-pe11s6
 created: 2026-11-27
 depends_on: []
@@ -67,3 +67,5 @@ generated_by: tools/make-tasks.mjs --write-pool --subject eng
 - Герої — канон 11 кл.; нових імен немає. Нові дрібні деталі (NOTE в inbox): Daryna — торік літо на фермі біля Poltava (a04), прогулянка в Sofiyivka (a24); Emma — канікули на фермі у Wales (a11), дідусь любить дерева (a18), Ruby годує Snowy (a40); Oksana — вікенд у Taras у Lviv (a34, a38, a39); Mariia — поїздка до Kyiv потягом, метро (a36); Taras — вікенд у Kyiv (a28).
 - Словники (форма, наголос): Cambridge Dictionary — https://dictionary.cambridge.org/dictionary/english/<word> для active, cultural, rural, ecotourism, sightseeing, guesthouse, accommodation, destination, residence, waterfall, grotto, heritage, eventually, meanwhile, beforehand, afterwards (один наголос UK/US); фразові дієслова, at first / first, in the end / at the end of, after / afterwards — CD Grammar, як у розділі (https://dictionary.cambridge.org/grammar/british-grammar/after-afterwards, …/first-firstly-or-at-first).
 - `validate --pool pe11s6` — 0 помилок, 0 попереджень; `personalization-qa --pool pe11s6 --strict` — лише «ще не verified». test-answer-ui не запускав (немає Python-модуля playwright).
+
+**verifier-pe11s5-pe11s6, 2026-11-27.** Незалежна перевірка: reports/verify/write-eng-pool-g11-e11s6.md. Кожну вправу розв'язано, факти звірено за ≥ 2 відкритими джерелами, наголос — CD + OALD, build — перебір перестановок. Пул → `verified`; правки й причини — у звіті §4, §7. validate --pool 0/0.

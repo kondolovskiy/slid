@@ -6,7 +6,7 @@ type: write-pool
 subject: eng
 grade: 11
 section: e11s5
-status: review
+status: done
 claimed_by: writer-pe11s5
 created: 2026-11-27
 depends_on: []
@@ -67,3 +67,5 @@ generated_by: tools/make-tasks.mjs --write-pool --subject eng
 - Герої — канон 11 кл.; нових імен немає. Нові дрібні деталі (NOTE в inbox): Daryna — колекція каменів, гори з рюкзаком (a12, a13); Mariia — дядько Oleh купив електромобіль, у школі Mariia збирають пляшки щоп’ятниці (a52); Kyrylo, Zoriana, Daryna, Bohdan, Emma — коментарі до статті Andrii (a60, a61).
 - Словники (форма, наголос): Cambridge Dictionary — https://dictionary.cambridge.org/dictionary/english/<word> для geology, ecology, biologist, geologist, ecologist, astronomer, physics, chemist, goggles, sample, announce, pollution, pollute, academy, welding, microscope, technician (усі — один наголос UK/US); researcher і laboratory у `stress` не брав (UK ≠ US). Пасив і модальні — CD Grammar «Passive: forms» (https://dictionary.cambridge.org/grammar/british-grammar/passive-forms), як у розділі.
 - `validate --pool pe11s5` — 0 помилок, 0 попереджень; `personalization-qa --pool pe11s5 --strict` — лише «ще не verified». test-answer-ui не запускав (немає Python-модуля playwright).
+
+**verifier-pe11s5-pe11s6, 2026-11-27.** Незалежна перевірка: reports/verify/write-eng-pool-g11-e11s5.md. Кожну вправу розв'язано, факти звірено за ≥ 2 відкритими джерелами, наголос — CD + OALD, build — перебір перестановок. Пул → `verified`; правки й причини — у звіті §4, §7. validate --pool 0/0.

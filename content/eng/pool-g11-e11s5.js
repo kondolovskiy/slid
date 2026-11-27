@@ -1,5 +1,5 @@
 /* Слід · Англійська мова, 11 клас — пул тренування до розділу e11s5 «Science and its impact»
-   Статус: draft; автор writer-pe11s5, 2026-11-27. Уроки e11s5l1–e11s5l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e11s5l7 без вправ.
+   Статус: verified (verifier-pe11s5-pe11s6, 2026-11-27; reports/verify/write-eng-pool-g11-e11s5.md); автор writer-pe11s5, 2026-11-27. Уроки e11s5l1–e11s5l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e11s5l7 без вправ.
    Джерело — програма класу (program: true): П1407 (наказ МОН № 1407 від 23.10.2017; спеціалізовані школи, B2), 11 кл.:
    с. 23 — функція «висловлювати й аргументувати власну точку зору» (l5); с. 24 — лексика теми «Наука і технічний прогрес»:
    галузі науки (l1), обладнання та персонал (l2), вплив НТП на життя людини і довкілля (l5), розвиток науки і техніки в Україні
@@ -22,8 +22,8 @@
 SLID.pool("eng", {
   id: "pe11s5",
   section: "e11s5",
-  status: "draft",
-  meta: { author: "writer-pe11s5", created: "2026-11-27", factcheck: null, teacher: null },
+  status: "verified",
+  meta: { author: "writer-pe11s5", created: "2026-11-27", factcheck: "verifier-pe11s5-pe11s6, 2026-11-27 (reports/verify/write-eng-pool-g11-e11s5.md)", teacher: null },
   sources: [
     { id: "p1407", short: "П1407", program: true,
       title: "Навчальна програма «Іноземні мови. 10–11 класи (рівень стандарту, профільний рівень)», наказ МОН від 23.10.2017 № 1407 — спеціалізовані школи, 11 клас: функції (с. 23), лексика (с. 24), граматика (с. 25)",
@@ -322,15 +322,15 @@ SLID.pool("eng", {
     { id: "a46", lesson: "e11s5l4", lvl: 2, sk: "write", src: "p1407 с. 25",
       type: "gaps", title: "Complete the poster.",
       body: "<p>Daryna writes ideas for her project “Plastic at our school”.</p>",
-      text: "Old clothes {*could be given|could be give} to younger children. Broken toys {*might be repaired|might be repair} by older pupils. Plastic bags {*don’t have to be thrown|doesn’t have to be thrown} away. Next year, more bins {*will be bought|will be buy}.",
-      hint: "After a modal verb + be: the third form. Bags: do or does?",
-      steps: ["<b>could be given</b>, <b>might be repaired</b>, <b>will be bought</b>: modal verb + be + the third form.", "Plastic bags (more than one) → <b>don’t have to be thrown</b>."] },
+      text: "Old clothes {*could be given|could be give} to younger children. Broken toys {*might be repaired|might be repair} by older pupils. Old newspapers {*don’t have to be thrown|doesn’t have to be thrown} away. Next year, more bins {*will be bought|will be buy}.",
+      hint: "After a modal verb + be: the third form. Newspapers: do or does?",
+      steps: ["<b>could be given</b>, <b>might be repaired</b>, <b>will be bought</b>: modal verb + be + the third form.", "Old newspapers (more than one) → <b>don’t have to be thrown</b>."] },
     { id: "a47", lesson: "e11s5l4", lvl: 3, sk: "write", src: "p1407 с. 25",
       type: "gaps", title: "Complete the dialogue.",
       body: "<p>Daryna talks to Ms Lysenko about her poster.</p>",
-      text: "Daryna: {*Can|Is} this bottle be recycled? Ms Lysenko: Yes, but crisp packets {*can’t be|can’t} recycled here. Daryna: Does my poster {*have to be|has to be} finished today? Ms Lysenko: No, it {*won’t be|won’t} shown until Friday.",
+      text: "Daryna: {*Can|Is} this bottle be recycled? Ms Lysenko: Yes, but old batteries {*can’t be|can’t} recycled here. Daryna: Does my poster {*have to be|has to be} finished today? Ms Lysenko: No, it {*won’t be|won’t} shown until Friday.",
       hint: "Look at “Negatives and questions”.",
-      steps: ["<b>Can</b> this bottle be recycled? Crisp packets <b>can’t be</b> recycled.", "Does my poster <b>have to be</b> finished? It <b>won’t be</b> shown until Friday."] },
+      steps: ["<b>Can</b> this bottle be recycled? Old batteries <b>can’t be</b> recycled here.", "Does my poster <b>have to be</b> finished? It <b>won’t be</b> shown until Friday."] },
 
     /* ───────────── e11s5l5 · Science and the environment: good or bad? ───────────── */
     { id: "a48", lesson: "e11s5l5", lvl: 1, sk: "vocab", src: "p1407 с. 24",
@@ -361,7 +361,7 @@ SLID.pool("eng", {
       body: "<p><i>In Kharkiv, the air on busy streets is often dirty, because there are so many cars. But some things are changing. Our school has started a plastic waste project: bottles are collected every Friday. My uncle Oleh has bought an electric car, and he says it’s cheaper to run. I’m convinced that small changes like these have a real impact. – Mariia</i></p><p>Which sentences are true?</p>",
       opts: ["Mariia thinks small changes can help.", "There is no air pollution in Kharkiv.", "Plastic bottles are collected at Mariia’s school.", "Mariia’s uncle has bought a petrol car."],
       correct: [0, 2],
-      hint: "Find I’m convinced that, Friday and aunt in the text.",
+      hint: "Find I’m convinced that, Friday and uncle in the text.",
       steps: ["True: Mariia is <b>convinced</b> that small changes have an impact; bottles <b>are collected</b> every Friday.", "The air on busy streets is often dirty, and her uncle’s car is electric."] },
     { id: "a53", lesson: "e11s5l5", lvl: 3, sk: "read", src: "p1407 с. 24",
       type: "choice", title: "Read and choose.",
@@ -387,7 +387,7 @@ SLID.pool("eng", {
     { id: "a56", lesson: "e11s5l5", lvl: 3, sk: "func", src: "p1407 с. 23",
       type: "gaps", title: "Complete the sentences.",
       body: "<p>Kyrylo answers Bohdan in the online discussion.</p>",
-      text: "I {*see|look} your point about plastic. But I’m not {*convinced|convince} that we should stop all research. The evidence {*suggests|suggest} that science can help us. Let me {*give|giving} you an example: renewable energy.",
+      text: "I {*see|look} your point about plastic. But I’m not {*convinced|convince} that we should stop all research. The evidence {*suggests|suggest} that research helps us find answers. Let me {*give|giving} you an example: renewable energy.",
       hint: "Look at the phrases in “Arguing your point of view”. Check the form of each verb too.",
       steps: ["I <b>see</b> your point… I’m not <b>convinced</b> that…", "The evidence <b>suggests</b> (one thing → -s). Let me <b>give</b> you an example."] },
 

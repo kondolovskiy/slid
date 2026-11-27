@@ -1,10 +1,10 @@
 /* Слід · Англійська мова, 11 клас — пул тренування до розділу e11s6 «Travel and tourism»
-   Статус: draft; автор writer-pe11s6, 2026-11-27. Уроки e11s6l1–e11s6l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e11s6l7 без вправ.
+   Статус: verified (verifier-pe11s5-pe11s6, 2026-11-27; reports/verify/write-eng-pool-g11-e11s6.md); автор writer-pe11s6, 2026-11-27. Уроки e11s6l1–e11s6l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e11s6l7 без вправ.
    Джерело — програма класу (program: true): П1407 (наказ МОН № 1407 від 23.10.2017; спеціалізовані школи, B2), 11 кл.:
    с. 23 — функція «описувати життєві події» (розповідь про подорож, l3, l5, l6); с. 24 — лексика теми «Подорож»: подорож
    Україною та країнами виучуваної мови (l2, l6), види туризму (l1); с. 25 — граматика: prepositional vs phrasal verbs
    (separable / inseparable) (l3, l4), common linking words for chronological sequence (l5), advanced adverbials of time:
-   beforehand, afterwards (l6).
+   beforehand, afterwards (l6), overview of all tense forms (passive: l2 a19–a21).
    Вправи власні (docs/design/english.md §8): лише слова, форми й правила уроків content/eng/g11-e11s6.js (до свого `lesson`
    включно) і раніших розділів (D-019); рамки уроків і фіналу з тим самим ключем не повторюються.
    Друга правильна відповідь (як у розділі): after / before як прислівники можливі — тож у позиції без іменника вони ніде не хибні
@@ -26,8 +26,8 @@
 SLID.pool("eng", {
   id: "pe11s6",
   section: "e11s6",
-  status: "draft",
-  meta: { author: "writer-pe11s6", created: "2026-11-27", factcheck: null, teacher: null },
+  status: "verified",
+  meta: { author: "writer-pe11s6", created: "2026-11-27", factcheck: "verifier-pe11s5-pe11s6, 2026-11-27 (reports/verify/write-eng-pool-g11-e11s6.md)", teacher: null },
   sources: [
     { id: "p1407", short: "П1407", program: true,
       title: "Навчальна програма «Іноземні мови. 10–11 класи (рівень стандарту, профільний рівень)», наказ МОН від 23.10.2017 № 1407 — спеціалізовані школи, 11 клас: функції (с. 23), лексика (с. 24), граматика (с. 25)",
@@ -98,7 +98,7 @@ SLID.pool("eng", {
     { id: "a10", lesson: "e11s6l1", lvl: 1, sk: "write", src: "p1407 с. 24",
       type: "gaps", title: "Complete the post.",
       body: "<p>Taras writes his post for the club.</p>",
-      text: "I love {*active|rural} tourism: hiking, rafting and climbing. This summer, we’ll stay in a small {*guesthouse|destination} in the mountains.",
+      text: "I love {*active|rural} tourism: hiking, rafting and climbing. This summer, my family has booked a room in a small {*guesthouse|destination} in the mountains.",
       steps: ["Hiking, rafting, climbing → sport and adventure: <b>active</b> tourism.", "A small, cheap hotel → a <b>guesthouse</b>."] },
     { id: "a11", lesson: "e11s6l1", lvl: 2, sk: "write", src: "p1407 с. 24",
       type: "gaps", title: "Complete the post.",
@@ -153,19 +153,19 @@ SLID.pool("eng", {
       correct: 1,
       hint: "Which place has fountains and statues? Where do scientists study trees?",
       steps: ["Sofiyivka has <b>fountains and old statues</b>, and it is a dendrological park, where scientists <b>grow and study trees</b>.", "Synevyr is a lake in the mountains; the residence is part of a university."] },
-    { id: "a19", lesson: "e11s6l2", lvl: 1, sk: "gram", src: "p1407 с. 24",
+    { id: "a19", lesson: "e11s6l2", lvl: 1, sk: "gram", src: "p1407 с. 25",
       type: "gaps", title: "Complete the sentences with the passive.",
       body: "<p>Kyrylo writes a fact box for the article.</p>",
       text: "Sofiyivka Park {*was created|was create|were created} by Count Potocki. Today, the residence in Chernivtsi {*is used|is use|are used} by the university.",
       steps: ["The park (one), in the past → <b>was created</b>.", "The residence (one), today → <b>is used</b>: be + the third form."] },
-    { id: "a20", lesson: "e11s6l2", lvl: 2, sk: "gram", src: "p1407 с. 24",
+    { id: "a20", lesson: "e11s6l2", lvl: 2, sk: "gram", src: "p1407 с. 25",
       type: "word", title: "Write the missing word.",
       body: "<p>Remember Andrii’s article from “Science and its impact”.</p>",
       before: "The Ukrainian station in Antarctica is named", after: "Volodymyr Vernadsky.",
       answer: "after",
       hint: "Look at “Words for the article”: to get someone’s name.",
       steps: ["To get someone’s name → <b>be named after</b> someone.", "The station is named <b>after</b> Vernadsky, the first president of the Academy."] },
-    { id: "a21", lesson: "e11s6l2", lvl: 3, sk: "gram", src: "p1407 с. 24",
+    { id: "a21", lesson: "e11s6l2", lvl: 3, sk: "gram", src: "p1407 с. 25",
       type: "pick", title: "Find the mistake.",
       body: "<p>One part of Kyrylo’s fact box is wrong.</p>",
       text: "The residence [was design] by Josef Hlávka. Today, the buildings [!are used] by students, and the park in Uman [!is named after] Sofia.",
@@ -281,7 +281,7 @@ SLID.pool("eng", {
     { id: "a39", lesson: "e11s6l3", lvl: 3, sk: "write", src: "p1407 с. 25",
       type: "gaps", title: "Complete the message.",
       body: "<p>Oksana writes about the end of her weekend in Lviv.</p>",
-      text: "On Sunday evening, Taras’s dad {*dropped me off|picked me up} at the station, and Taras came to {*see me off|pick me up}. I {*got on|got into} the train with a big bag of Lviv chocolate. In Poltava, Mum {*picked me up|saw me off} at the station, and we {*got into|got on} the car and drove home.",
+      text: "On Sunday evening, Taras’s dad {*dropped me off|picked me up} at the station, and Taras came to {*see me off|pick me up}. I {*got on|got into} the train with a big bag of Lviv chocolate. In Poltava, Mum {*picked me up|saw me off} at the station, and I {*got into|got on} her old blue car.",
       hint: "Who is saying goodbye, and who is collecting Oksana? Is it a car or a train?",
       steps: ["In Lviv: the dad <b>dropped her off</b>, Taras came to <b>see her off</b>; a train → <b>got on</b>.", "In Poltava: Mum <b>picked her up</b>; a car → <b>got into</b>."] },
 
@@ -402,13 +402,13 @@ SLID.pool("eng", {
     { id: "a56", lesson: "e11s6l5", lvl: 2, sk: "write", src: "p1407 с. 25",
       type: "gaps", title: "Complete the story.",
       body: "<p>Taras writes about a rainy day near Lake Synevyr.</p>",
-      text: "{*At first|Firstly}, the weather was terrible, so we stayed in the guesthouse. We played cards for hours. {*Meanwhile|Firstly}, Mrs Popovych made us some tea. {*Eventually|At first}, after lunch, the rain stopped, and we went out. {*At|In} the end of the week, we walked round the lake.",
+      text: "{*At first|Firstly}, the weather was terrible, so we stayed in the guesthouse. We played cards for hours. {*Meanwhile|Firstly}, Mrs Popovych made us some tea. {*Eventually|At first}, after lunch, the rain stopped, and we went out. {*At|In} the end of the afternoon, we walked round the lake.",
       hint: "Which word shows a change, which shows the same time, and which shows ‘after a long time’?",
-      steps: ["<b>At first</b>: before a change. <b>Meanwhile</b>: at the same time.", "<b>Eventually</b>: after a long time. <b>At</b> the end of the day."] },
+      steps: ["<b>At first</b>: before a change. <b>Meanwhile</b>: at the same time.", "<b>Eventually</b>: after a long time. <b>At</b> the end of the afternoon."] },
     { id: "a57", lesson: "e11s6l5", lvl: 3, sk: "write", src: "p1407 с. 25",
       type: "gaps", title: "Complete the story.",
       body: "<p>Emma writes about her family’s day out.</p>",
-      text: "We couldn’t decide where to go. {*At first|Firstly}, Mum wanted to see a castle, but Tom wanted to go to the sea. We argued for half an hour, and in the {*end|ending} we chose the sea. {*Meanwhile|At first}, Dad was making sandwiches for everyone. {*At|In} the end of the evening, everyone was happy, even Tom!",
+      text: "We couldn’t decide where to go. {*At first|Firstly}, Mum wanted to see a castle, but Tom wanted to go to the sea. We argued for half an hour, but in the {*end|ending} Mum agreed to go to the sea. {*Meanwhile|At first}, Dad was making sandwiches for everyone. {*At|In} the end of the evening, everyone was happy, even Tom!",
       hint: "Look at the boxes “The order of events” and “In the end or at the end of?”.",
       steps: ["<b>At first</b> + a change; after a long discussion → in the <b>end</b>.", "<b>Meanwhile</b>: at the same time. <b>At</b> the end of + noun."] },
 
@@ -422,9 +422,9 @@ SLID.pool("eng", {
       type: "word", title: "Write the missing word.",
       body: "<p>Write one word from the lesson that means ‘after an event’. Don’t use <i>after</i> or <i>then</i>.</p>",
       before: "We climbed the hill, and", after: "we had a big lunch in the village.",
-      answer: ["afterwards", "afterward", "later"],
+      answer: ["afterwards", "afterward", "later", "next"],
       hint: "Look at the box on beforehand and afterwards.",
-      steps: ["After an event, with no noun → <b>afterwards</b>. <i>Later</i> is correct too."] },
+      steps: ["After an event, with no noun → <b>afterwards</b>. <i>Later</i> and <i>next</i> are correct too."] },
     { id: "a60", lesson: "e11s6l6", lvl: 3, sk: "gram", src: "p1407 с. 25",
       type: "pick", title: "Find the mistake.",
       body: "<p>One part of Andrii’s text is wrong.</p>",
@@ -439,7 +439,7 @@ SLID.pool("eng", {
       steps: ["<b>Beforehand</b> → before the event: before Andrii’s visit."] },
     { id: "a62", lesson: "e11s6l6", lvl: 2, sk: "read", src: "p1407 с. 24",
       type: "multi", title: "Choose all the correct answers.",
-      body: "<p><i>The journey to England took a long time. First, I went by night train to Poland. Then I flew from there to London. Emma’s dad picked me up, and two hours later we were at Emma’s house. – Andrii</i></p><p>Which sentences are true?</p>",
+      body: "<p><i>The journey to England took a long time. First, I went by night train to Poland. Then I flew from there to London. Emma’s dad picked me up at the airport, and two hours later we were at Emma’s house. – Andrii</i></p><p>Which sentences are true?</p>",
       opts: ["Andrii flew from Kyiv.", "Andrii took a train to Poland.", "Emma’s dad met Andrii at the airport.", "Andrii got to Emma’s house before he arrived in London."],
       correct: [1, 2],
       hint: "Put the journey in order: where did Andrii start, and where did he finish?",
@@ -485,8 +485,8 @@ SLID.pool("eng", {
     { id: "a69", lesson: "e11s6l6", lvl: 3, sk: "write", src: "p1407 с. 25",
       type: "gaps", title: "Complete the text.",
       body: "<p>Andrii writes more about his trip to England.</p>",
-      text: "{*Before|Beforehand} the trip, I made a list of things to pack. I bought a new rucksack a week {*beforehand|afterwards}. {*After|Afterwards} my first day in London, I wasn’t nervous any more. And I wrote about everything {*afterwards|beforehand}, when I was back home.",
+      text: "{*Before|Beforehand} the trip, I made a list of things to pack. I bought a new rucksack a week {*beforehand|afterwards}. {*After|Afterwards} a few days in London, I wasn’t nervous any more. And I wrote about everything {*afterwards|beforehand}, when I was back home.",
       hint: "Is there a noun after the gap? If not, think: before or after the trip?",
-      steps: ["+ noun → <b>Before</b> the trip, <b>After</b> my first day.", "No noun: a week <b>beforehand</b> (before the trip); I wrote <b>afterwards</b> (after the trip)."] }
+      steps: ["+ noun → <b>Before</b> the trip, <b>After</b> a few days.", "No noun: a week <b>beforehand</b> (before the trip); I wrote <b>afterwards</b> (after the trip)."] }
   ]
 });
