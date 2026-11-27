@@ -6,7 +6,7 @@ type: write-pool
 subject: eng
 grade: 6
 section: e6s6
-status: review
+status: done
 claimed_by: writer-pe6s6
 created: 2026-11-27
 depends_on: []
@@ -77,3 +77,6 @@ generated_by: tools/make-tasks.mjs --write-pool --subject eng
 2. a10 history — CD три склади (ˈhɪs.tər.i); поділ «+his|to|ry», наголос однозначний.
 3. a11 because — службове слово в stress; наголос на 2-му за CD.
 4. l6 vocab — лише hyp-sk (як у pe6s5 l6).
+
+### verifier-pe6s5-pe6s6, 2026-11-27
+Вердикт: **verified** — reports/verify/write-eng-pool-g6-e6s6.md. validate 0/0, personalization-qa --strict без «БРАКУЄ». Build не запускав.

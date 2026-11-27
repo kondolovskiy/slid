@@ -1,5 +1,5 @@
 /* Слід · Англійська мова, 6 клас — пул вправ для тренування до розділу «Getting ready for a trip» (e6s5)
-   Статус: draft (автор writer-pe6s5, 2026-11-27). 74 вправи: уроки e6s5l1–e6s5l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e6s5l7 без вправ.
+   Статус: verified (verifier-pe6s5-pe6s6, reports/verify/write-eng-pool-g6-e6s5.md; автор writer-pe6s5, 2026-11-27). 74 вправи: уроки e6s5l1–e6s5l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e6s5l7 без вправ.
    Вправи власні (docs/design/english.md §8): лише слова, форми й правила уроків e6s5 і попередніх розділів; англійською, британська норма (D-055).
    Джерело — програма класу (program: true): МП-ІМ, с. 20 — тема «Подорож»: транспорт, підготовка до подорожі, проїзні документи;
    функція «розпитувати з метою роз’яснення та уточнення інформації»; с. 21 — Present simple for future (timetables), Present continuous
@@ -12,8 +12,8 @@
 SLID.pool("eng", {
   id: "pe6s5",
   section: "e6s5",
-  status: "draft",
-  meta: { author: "writer-pe6s5", created: "2026-11-27", factcheck: null, teacher: null },
+  status: "verified",
+  meta: { author: "writer-pe6s5", created: "2026-11-27", factcheck: "verifier-pe6s5-pe6s6 (reports/verify/write-eng-pool-g6-e6s5.md)", teacher: null },
   sources: [
     { id: "mpim", short: "МП-ІМ", program: true,
       title: "Модельна навчальна програма «Іноземна мова. 5–9 класи» (Редько В. Г., Шаленко О. П., Сотникова С. І. та ін.), наказ МОН від 12.07.2021 № 795",
@@ -75,7 +75,7 @@ SLID.pool("eng", {
     { id: "a10", lesson: "e6s5l1", lvl: 2, sk: "phon", src: "mpim с. 20",
       type: "stress", title: "Find the stressed syllable.",
       words: ["ex|+pen|sive", "+jour|ney", "+sta|tion"],
-      hint: "One word has the strong part in the middle.",
+      hint: "Remember the underlined parts in the list of words.",
       steps: ["ex<u>pen</u>sive: the strong part is in the middle.", "<u>jour</u>ney, <u>sta</u>tion: it’s at the start."] },
     { id: "a11", lesson: "e6s5l1", lvl: 3, sk: "phon", src: "mpim с. 20",
       type: "stress", title: "Find the stressed syllable.",
@@ -266,10 +266,10 @@ SLID.pool("eng", {
       steps: ["might + verb: it might <b>rain</b>, not <s>might rains</s>.", "<b>We might not go</b> is correct."] },
     { id: "a39", lesson: "e6s5l4", lvl: 2, sk: "gram", src: "mpim с. 22",
       type: "gaps", title: "Fill in the gaps.",
-      body: "<p>Taras is sure about one thing, but not about the other.</p><ul><li><b>Sure:</b> Ostap is coming with us. He’s got a ticket.</li><li><b>Not sure:</b> the rain. Nobody knows.</li></ul>",
-      text: "Ostap {*will|might} come with us to the mountains. It {*might|will} rain there.",
+      body: "<p>Taras is sure about one thing, but not about the other.</p><ul><li><b>Sure:</b> it’s January. The mountains are always cold in January.</li><li><b>Not sure:</b> the snow. Nobody knows.</li></ul>",
+      text: "It {*will|might} be cold in the mountains. It {*might|will} snow there.",
       hint: "You’re sure → will. You aren’t sure → might.",
-      steps: ["Taras is sure about Ostap: he <b>will</b> come.", "Nobody knows about the rain: it <b>might</b> rain."] },
+      steps: ["Taras is sure about the cold: it <b>will</b> be cold.", "Nobody knows about the snow: it <b>might</b> snow."] },
     { id: "a40", lesson: "e6s5l4", lvl: 3, sk: "gram", src: "mpim с. 22",
       type: "build", title: "Put the words in order.",
       body: "<p>Taras isn’t sure about his little sister. Maybe she will stay at home with Dad.</p>",
@@ -287,8 +287,8 @@ SLID.pool("eng", {
       steps: ["For the cold: <b>a jumper</b>, <b>a warm coat</b>.", "For the sun: <b>sunglasses</b>, <b>sun cream</b>."] },
     { id: "a42", lesson: "e6s5l4", lvl: 2, sk: "vocab", src: "mpim с. 20",
       type: "word", title: "Write the word.",
-      body: "<p>Taras puts his things in a bag for the journey. Then he puts the bag on his back.</p>",
-      before: "It’s a",
+      body: "<p>Taras puts his things in a bag for the journey. Then he puts it on his back.</p>",
+      before: "This bag is a",
       after: ".",
       answer: ["rucksack", "backpack"],
       hint: "It isn’t a suitcase. It’s a bag for your back.",
@@ -318,7 +318,7 @@ SLID.pool("eng", {
       steps: ["Mum isn’t sure: it <b>might snow</b>, it <b>might be</b> sunny.", "After might: the verb with no <i>to</i> and no <i>-s</i>."] },
     { id: "a47", lesson: "e6s5l4", lvl: 3, sk: "func", src: "mpim с. 22",
       type: "build", title: "Put the words in order.",
-      body: "<p>Mum gives Taras advice about the mountains.</p>",
+      body: "<p>Mum talks to Taras about the mountains.</p>",
       tiles: ["Take", "a jumper", "because", "it", "might", "be", "cold"],
       extra: ["is"],
       keepCase: true,
@@ -332,7 +332,7 @@ SLID.pool("eng", {
     { id: "a49", lesson: "e6s5l4", lvl: 2, sk: "phon", src: "mpim с. 20",
       type: "stress", title: "Find the stressed syllable.",
       words: ["+ruck|sack", "+tooth|brush", "um|+brel|la"],
-      hint: "One word has three parts. The strong part is in the middle.",
+      hint: "Remember the underlined parts in the suitcase list.",
       steps: ["<u>ruck</u>sack, <u>tooth</u>brush: the strong part is at the start.", "um<u>brel</u>la: it’s in the middle."] },
     { id: "a50", lesson: "e6s5l4", lvl: 3, sk: "phon", src: "mpim с. 20",
       type: "stress", title: "Find the stressed syllable.",

@@ -1,5 +1,5 @@
 /* Слід · Англійська мова, 6 клас — пул вправ для тренування до розділу «School life: subjects and lessons» (e6s6)
-   Статус: draft (автор writer-pe6s6, 2026-11-27). 74 вправи: уроки e6s6l1–e6s6l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e6s6l7 без вправ.
+   Статус: verified (verifier-pe6s5-pe6s6, reports/verify/write-eng-pool-g6-e6s6.md; автор writer-pe6s6, 2026-11-27). 74 вправи: уроки e6s6l1–e6s6l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e6s6l7 без вправ.
    Вправи власні (docs/design/english.md §8): лише слова, форми й правила уроків e6s6 і попередніх розділів; англійською, британська норма (D-055).
    Джерело — програма класу (program: true): МП-ІМ, с. 21 — тема «Шкільне життя»: улюблені навчальні предмети, види діяльності на уроках;
    функції «висловлювати власні враження» й «аргументувати власний вибір»; Relative: defining with who, which, that;
@@ -13,8 +13,8 @@
 SLID.pool("eng", {
   id: "pe6s6",
   section: "e6s6",
-  status: "draft",
-  meta: { author: "writer-pe6s6", created: "2026-11-27", factcheck: null, teacher: null },
+  status: "verified",
+  meta: { author: "writer-pe6s6", created: "2026-11-27", factcheck: "verifier-pe6s5-pe6s6 (reports/verify/write-eng-pool-g6-e6s6.md)", teacher: null },
   sources: [
     { id: "mpim", short: "МП-ІМ", program: true,
       title: "Модельна навчальна програма «Іноземна мова. 5–9 класи» (Редько В. Г., Шаленко О. П., Сотникова С. І. та ін.), наказ МОН від 12.07.2021 № 795",
@@ -293,10 +293,10 @@ SLID.pool("eng", {
       steps: ["It’s a rule, do it: you <b>must</b> wear trainers."] },
     { id: "a43", lesson: "e6s6l4", lvl: 2, sk: "gram", src: "mpim с. 22",
       type: "gaps", title: "Fill in the gaps.",
-      body: "<p>Ms Lysenko talks about two things.</p><p>1. Food in the computer room: it’s a rule. No food!<br>2. The drama club after school: it’s your choice.</p>",
-      text: "You {*mustn’t|don’t have to} eat in the computer room. You {*don’t have to|mustn’t} go to the drama club.",
+      body: "<p>Andrii tells Kyrylo about two things at their school.</p><p>1. The music club on Tuesdays: it’s your choice.<br>2. Running in the art room: no! It’s a rule.</p>",
+      text: "You {*don’t have to|mustn’t} go to the music club. You {*mustn’t|don’t have to} run in the art room.",
       hint: "A rule → ? Your choice → ?",
-      steps: ["Food: it’s a rule, so you <b>mustn’t</b>.", "The club: it’s your choice, so you <b>don’t have to</b> go."] },
+      steps: ["The music club: it’s your choice, so you <b>don’t have to</b> go.", "Running in the art room: it’s a rule, so you <b>mustn’t</b> run there."] },
     { id: "a44", lesson: "e6s6l4", lvl: 3, sk: "gram", src: "mpim с. 22",
       type: "multi", title: "Choose all the correct answers.",
       body: "<p>At Emma’s school, trainers in PE are a rule. At Andrii’s school, the art club is your choice. Which sentences are true?</p>",

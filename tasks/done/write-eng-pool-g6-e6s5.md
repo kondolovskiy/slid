@@ -6,7 +6,7 @@ type: write-pool
 subject: eng
 grade: 6
 section: e6s5
-status: review
+status: done
 claimed_by: writer-pe6s5
 created: 2026-11-27
 depends_on: []
@@ -79,3 +79,6 @@ generated_by: tools/make-tasks.mjs --write-pool --subject eng
 2. a05 ₴800 «expensive» / ₴500 «cheap» — відносно, порівняння в body.
 3. l6 vocab — sk лише hyp-екрана (lessonSkills його рахує); якщо верифікатор вважає, що vocab l6 не тренується, — a66–a68 перевести на func.
 4. a23 «Does it stop in Poltava? Yes, it does» — опора на таблицю в body (one stop, Poltava), не реальний розклад.
+
+### verifier-pe6s5-pe6s6, 2026-11-27
+Вердикт: **verified** — reports/verify/write-eng-pool-g6-e6s5.md. validate 0/0, personalization-qa --strict без «БРАКУЄ». Build не запускав.
