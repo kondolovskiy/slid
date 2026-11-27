@@ -1,5 +1,5 @@
 /* Слід · Англійська мова, 11 клас — тест рівня «What do you know?» (dge11)
-   Статус: draft — автор writer-write-eng-diag-g11, 2026-11-27.
+   Статус: verified (verifier-write-eng-diag-g11, 2026-11-27; reports/verify/write-eng-diag-g11.md) — автор writer-write-eng-diag-g11, 2026-11-27.
    10 тем-передумов (уроки 10 кл. і наскрізна граматика й лексика 5–9 кл., по 2 завдання: базове → складніше)
    + 8 тем 11 класу (по 1 завданню на розділ e11s1–e11s8) = 28 завдань.
    Передумови — уроки, на які посилаються requires розділів 11 кл. (файли content/eng/g11-*.js);
@@ -18,8 +18,8 @@ SLID.diag("eng", {
   grade: 11,
   title: "What do you know?",
   why: "Let’s see what you remember from your English lessons and what you already know. Then we can plan your lessons.",
-  status: "draft",
-  meta: { author: "writer-write-eng-diag-g11", created: "2026-11-27", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "writer-write-eng-diag-g11", created: "2026-11-27", factcheck: "verifier-write-eng-diag-g11, 2026-11-27 (reports/verify/write-eng-diag-g11.md)", teacher: null },
   topics: [
     // передумови: уроки 10 кл. і наскрізна граматика й лексика 5–9 кл. (requires розділів 11 кл.)
     { id: "pers", title: "Reliable, loyal, stubborn", kind: "pre", lessons: ["e10s1l1"], for: ["e11s1", "e11s4"] },
@@ -28,7 +28,7 @@ SLID.diag("eng", {
     { id: "qtag", title: "You’re ready, aren’t you?", kind: "pre", lessons: ["e8s1l4"], for: ["e11s3"] },
     { id: "ingadj", title: "Bored or boring?", kind: "pre", lessons: ["e7s4l4"], for: ["e11s4"] },
     { id: "pass", title: "It is being built, it must be done", kind: "pre", lessons: ["e8s3l3", "e9s2l5"], for: ["e11s5"] },
-    { id: "phrv", title: "Hand it in, apply for it", kind: "pre", lessons: ["e10s8l4"], for: ["e11s6"] },
+    { id: "phrv", title: "Hand it in, apply for it", kind: "pre", lessons: ["e10s8l3", "e10s8l4"], for: ["e11s6"] },
     { id: "rel", title: "My aunt, whose son…", kind: "pre", lessons: ["e8s4l4", "e9s5l4"], for: ["e11s7"] },
     { id: "fut", title: "It’s going to…, it will have started", kind: "pre", lessons: ["e10s4l2", "e10s4l5"], for: ["e11s8"] },
     { id: "ppc", title: "We had been living there for years", kind: "pre", lessons: ["e10s5l4"], for: ["e11s8"] },
@@ -106,7 +106,7 @@ SLID.diag("eng", {
       type: "choice",
       sk: "vocab",
       title: "Choose the correct answer.",
-      body: "<p>Solomiia doesn’t know what time the castle museum opens on Sundays. She’ll check online to ___.</p>",
+      body: "<p>Ustyna doesn’t know what time the castle museum opens on Sundays. She’ll check online to ___.</p>",
       opts: ["hand in", "turn down", "find out"],
       correct: 2
     },
@@ -135,8 +135,8 @@ SLID.diag("eng", {
       type: "choice",
       sk: "gram",
       title: "Choose the correct answer.",
-      body: "<p>The rain started at 4 pm and stopped at 6 pm. The children waited in their tent.</p><p>By the time the rain stopped, the children ___ in the tent for two hours.</p>",
-      opts: ["have been sitting", "had been sitting", "had been sit"],
+      body: "<p>It rained all afternoon, so the children stayed in their tent and played cards.</p><p>When the rain finally stopped, they ___ cards in the tent since lunch.</p>",
+      opts: ["have been playing", "had been playing", "had been play"],
       correct: 1
     },
 
@@ -154,8 +154,8 @@ SLID.diag("eng", {
       type: "gaps",
       sk: "gram",
       title: "Fill in the gaps.",
-      body: "<p>The class is planning a trip to a museum.</p><p><b>Danylo:</b> I forgot to book the bus. Sorry, it’s my fault.<br><b>Ms Hrytsenko, the class teacher:</b> The museum doesn’t open on Mondays, so we can’t go then.<br><b>Iryna:</b> Why don’t we go on Tuesday instead?</p>",
-      text: "Danylo {*admitted|denied|promised} that he had forgotten to book the bus. Ms Hrytsenko explained {*to the class|the class} that the museum didn’t open on Mondays. Iryna suggested {*going|to go|us to go} on Tuesday instead."
+      body: "<p>The class is planning a trip to a museum.</p><p><b>Danylo:</b> I forgot to book the bus. Sorry, it’s my fault.<br><b>Ms Sydorenko, the class teacher:</b> The museum doesn’t open on Mondays, so we can’t go then.<br><b>Iryna:</b> Why don’t we go on Tuesday instead?</p>",
+      text: "Danylo {*admitted|denied|promised} that he had forgotten to book the bus. Ms Sydorenko explained {*to the class|the class} that the museum didn’t open on Mondays. Iryna suggested {*going|to go|us to go} on Tuesday instead."
     },
     {
       topic: "repst",
@@ -180,15 +180,15 @@ SLID.diag("eng", {
       type: "gaps",
       sk: "gram",
       title: "Fill in the gaps.",
-      body: "<p>Matvii writes about sport in his part of the city.</p>",
-      text: "The new sports centre is great, but it’s expensive, so {*few|a few} people from our street go there. Luckily, the park nearby has {*a few|few} free tennis courts. But there’s {*very little|a little|very few} shade there, so take a hat in summer."
+      body: "<p>Nastia writes about her new school.</p>",
+      text: "The school has {*a few|few} clubs after lessons, so it was easy to find one for me. But there’s {*very little|very few|a few} time between lessons, so I’m always running. And {*few|a few} pupils use the library because it’s so small and dark."
     },
     {
       topic: "qtag",
       type: "gaps",
       sk: "gram",
       title: "Fill in the gaps.",
-      body: "<p>Oleh talks to Zlata, a new girl at his school.</p>",
+      body: "<p>Oleh talks to Bozhena, a new girl at his school.</p>",
       text: "You’re in the school choir, {*aren’t you|don’t you|isn’t you}? The next concert isn’t on Friday, {*is it|does it|isn’t it}? And your dad plays the violin, {*doesn’t he|don’t he|isn’t he}?"
     },
     {
@@ -212,8 +212,8 @@ SLID.diag("eng", {
       type: "gaps",
       sk: "vocab",
       title: "Fill in the gaps.",
-      body: "<p>Hanna writes about a surprise in her grandma’s attic.</p>",
-      text: "Last spring, I found an old painting in Grandma’s attic. The attic stairs are old and {*dangerous|dangerive|dangeric}, so Dad carried it down. Under the dust, the artist’s name was almost {*invisible|disvisible|imvisible}. An expert from the local museum was amazed. She said the painting was {*priceless|worthless|priceful} and should hang in a museum."
+      body: "<p>Larysa writes about a surprise in her uncle’s garage.</p>",
+      text: "Last spring, my uncle found an old painting in his garage. There was broken glass all around it, and broken glass is {*dangerous|dangerive|dangeric}, so he wore gloves. Under the dust, the artist’s name was almost {*invisible|disvisible|imvisible}. An expert from the local museum was amazed. She said the painting was {*priceless|worthless|priceful} and should hang in a museum."
     },
     {
       topic: "pass",
@@ -229,8 +229,8 @@ SLID.diag("eng", {
       type: "gaps",
       sk: "gram",
       title: "Fill in the gaps.",
-      body: "<p>News from the school garden club.</p>",
-      text: "Great news: a new greenhouse {*has been built|has been build|have been built} behind the gym, and it’s ready to use! Last Thursday, while the roof {*was being put|was being putted|were being put} on, it started to snow, so the workers stopped for an hour. Next week, the first tomato seeds {*will be planted|will planted|will be plant}."
+      body: "<p>News from the school art competition.</p>",
+      text: "So far, more than two hundred pictures {*have been painted|has been painted|have been paint} for the competition. Last Monday, while the pictures {*were being moved|was being moved|were being move} to the school hall, one of them fell, but luckily it didn’t break. The best pictures {*will be shown|will shown|will be show} at the town library in May."
     },
     {
       topic: "phrv",
@@ -246,7 +246,7 @@ SLID.diag("eng", {
       sk: "gram",
       title: "Fill in the gaps.",
       body: "<p>Marichka writes about her first trip abroad.</p>",
-      text: "{*At first|Eventually|Meanwhile}, I was afraid to speak English, but after a few days it became easier. One evening, we got lost in Dublin. We walked around for two hours, and {*eventually|at first|meanwhile} we found our hotel. We flew home {*at the end of|in the end of|in the end} the week, tired but happy."
+      text: "{*At first|Eventually|Meanwhile}, I was afraid to speak English, but after a few days it became easier. One evening, we got lost in Dublin. We asked three people for directions, and {*eventually|at first|meanwhile} we found our hotel. We went home {*at the end of|in the end of|in the end} the week, tired but happy."
     },
     {
       topic: "rel",
@@ -255,7 +255,7 @@ SLID.diag("eng", {
       sk: "gram",
       title: "Fill in the gaps.",
       body: "<p>Vira writes about her neighbours.</p>",
-      text: "Our new neighbour is a woman {*whose|who’s|who} son plays in a rock band. The band’s drummer, {*who|that|whose} is only sixteen, also builds guitars. Their first album, {*which|that|who} came out last month, is already popular in our town."
+      text: "Our new neighbour is a woman {*whose|who’s|who} son repairs bikes for the whole street. Her husband, {*who|that|whose} works at the hospital, gets up at five every morning. Their old car, {*which|that|who} is bright yellow, is famous in our street."
     },
     {
       topic: "cur-e11s7",
@@ -287,8 +287,8 @@ SLID.diag("eng", {
       type: "gaps",
       sk: "gram",
       title: "Fill in the gaps.",
-      body: "<p>Marta writes about three of her friends.</p>",
-      text: "Yevhen’s bike is broken. If it worked, he {*would cycle|will cycle|would have cycled} to the river with us today. Liliia’s interview for a summer job is next Tuesday. If she prepares well, she {*will get|would get|would have got} the job. Ostap missed the deadline for the camp last week. If he had sent his form in time, he {*would have had|would have|will have} an interview last Friday."
+      body: "<p>Marta writes to her cousin in the summer.</p>",
+      text: "Last month, I sent my form for the climbing camp two days late. If I had sent it in time, I {*would have gone|would go|will go} to the camp last week. Now I’m helping at my aunt’s café instead. If I didn’t have this job, I {*would be|will be|am} bored at home. And my aunt says that if I work hard all month, she {*will pay|would pay|would have paid} for my climbing lessons in September."
     }
   ]
 });
