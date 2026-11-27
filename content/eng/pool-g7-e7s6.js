@@ -1,5 +1,5 @@
 /* Слід · Англійська мова, 7 клас — пул вправ для тренування до розділу «School life after lessons» (e7s6)
-   Статус: draft (автор writer-pe7s6, 2026-11-27). Уроки e7s6l1–e7s6l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e7s6l7 без вправ.
+   Статус: verified (автор writer-pe7s6, 2026-11-27; verifier-pe7s5-pe7s6 — reports/verify/write-eng-pool-g7-e7s6.md). Уроки e7s6l1–e7s6l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e7s6l7 без вправ.
    Вправи власні (docs/design/english.md §8): лише слова, форми й правила уроків e7s6 і попередніх розділів; англійською, британська норма (D-055).
    Джерело — програма класу (program: true): МП-ІМ, 7 кл. — тема «Шкільне життя» (позакласні заходи, шкільні свята і традиції)
    і функції «пропонувати, приймати, відхиляти пропозицію», «обмінюватись думками» (с. 32); граматика B1: Conditional — ‘if’ + Present simple
@@ -11,8 +11,8 @@
 SLID.pool("eng", {
   id: "pe7s6",
   section: "e7s6",
-  status: "draft",
-  meta: { author: "writer-pe7s6", created: "2026-11-27", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "writer-pe7s6", created: "2026-11-27", factcheck: "verifier-pe7s5-pe7s6, 2026-11-27 (reports/verify/write-eng-pool-g7-e7s6.md)", teacher: null },
   sources: [
     { id: "mpim", program: true, title: "Модельна навчальна програма «Іноземна мова. 5–9 класи» (Редько В. Г. та ін.), наказ МОН № 795 від 12.07.2021 — 7 клас: тема «Шкільне життя», функції (с. 32), граматика B1 (с. 34–35)", url: "https://osvita.ua/doc/files/news/831/83117/Inoz_mov_5-9-kl_Redko_ta_in_14_07.pdf" }
   ],
@@ -62,7 +62,7 @@ SLID.pool("eng", {
       steps: ["Every week: the swimming club <b>on Mondays</b>.", "This Wednesday: <b>she’s visiting her grandad</b>, not going to the photography club. The drama club party is on Saturday."] },
     { id: "a08", lesson: "e7s6l1", lvl: 1, sk: "gram", src: "mpim с. 34",
       type: "gaps", title: "Fill in the gaps.",
-      text: "The science club {*meets|meet|meeting} on Fridays. Andrii {*goes|go|going} to the chess club every Monday.",
+      text: "The science club {*meets|to meet|meeting} on Fridays. Andrii {*goes|go|going} to the chess club every Monday.",
       steps: ["Every week, a timetable → the Present Simple: the club <b>meets</b>, Andrii <b>goes</b>.", "He, she, it, the club → -s."] },
     { id: "a09", lesson: "e7s6l1", lvl: 2, sk: "gram", src: "mpim с. 34",
       type: "gaps", title: "Complete the sentences.",
@@ -175,9 +175,9 @@ SLID.pool("eng", {
       steps: ["After <i>if</i>: the Present Simple → If it <b>rains</b>.", "<i>We’ll put</i> is correct: it isn’t after if."] },
     { id: "a27", lesson: "e7s6l3", lvl: 3, sk: "gram", src: "mpim с. 34",
       type: "gaps", title: "Fill in the gaps.",
-      text: "What will you do if you {*lose|will lose|lost} the match? – If we lose, we {*won’t|don’t|didn’t} be sad. We’ll try again next year.",
+      text: "What will you do if you {*lose|will lose|lost} the match? – If we lose, we {*won’t|don’t|didn’t} be angry. We’ll train more.",
       hint: "After if: the Present Simple. In the other part: will not = …",
-      steps: ["After <i>if</i>: <b>lose</b>, not <i>will lose</i>.", "will not = <b>won’t</b>: we won’t be sad."] },
+      steps: ["After <i>if</i>: <b>lose</b>, not <i>will lose</i>.", "will not = <b>won’t</b>: we won’t be angry."] },
     { id: "a28", lesson: "e7s6l3", lvl: 2, sk: "gram", src: "mpim с. 34",
       type: "choice", title: "Choose the correct sentence.",
       opts: ["Sofiia will be late if she misses the bus.", "Sofiia will be late, if she will miss the bus.", "Sofiia is late if she will miss the bus."],
@@ -206,10 +206,10 @@ SLID.pool("eng", {
       steps: ["<b>What will you do if you win?</b>", "After <i>if</i>: <i>you win</i>, not <i>you will win</i>."] },
     { id: "a32", lesson: "e7s6l3", lvl: 3, sk: "write", src: "mpim с. 34",
       type: "gaps", title: "Complete the message.",
-      body: "<p>Andrii writes to Emma.</p>",
-      text: "Our chess club has a big match on Sunday. If we {*win|will win|won}, we {*will play|played|playing} in the final. If we {*lose|will lose|lost}, I {*won’t|don’t|didn’t} be sad. Will you {*watch|watched|watching} the match online?",
-      hint: "After if: the Present Simple. The other part: will / won’t + verb. Will you + verb?",
-      steps: ["If we <b>win</b>, we <b>will play</b>. If we <b>lose</b>, I <b>won’t</b> be sad.", "Will you <b>watch</b>…? – will + verb."] },
+      body: "<p>Mariia writes to Kateryna.</p>",
+      text: "My picture is in a drawing competition on Friday. If it {*wins|will win|won}, it {*will be|was|being} on the wall of the school hall. If it {*doesn’t win|won’t win|didn’t win}, I {*won’t|don’t|didn’t} be sad. I’ll draw a new one! Will you {*come|came|coming} to see it?",
+      hint: "After if: the Present Simple, and with not too. The other part: will / won’t + verb. Will you + verb?",
+      steps: ["If it <b>wins</b>, it <b>will be</b> on the wall. If it <b>doesn’t win</b>, I <b>won’t</b> be sad.", "After <i>if</i>: no <i>will</i>, also with not. Will you <b>come</b>…? – will + verb."] },
 
     /* ───────────── e7s6l4 · Unless it rains… As soon as we finish… ───────────── */
     { id: "a33", lesson: "e7s6l4", lvl: 1, sk: "gram", src: "mpim с. 34",
@@ -417,7 +417,7 @@ SLID.pool("eng", {
     { id: "a65", lesson: "e7s6l6", lvl: 3, sk: "write", src: "mpim с. 34",
       type: "gaps", title: "Complete the answer to the invitation.",
       body: "<p>Grandma Hanna answers Halyna’s invitation to the school festival.</p>",
-      text: "Thank you for the {*invitation|poster|stall}, Halyna! I {*will come|came|coming} to the festival, and I {*will bring|brought|bringing} a big cake for the stall. I think it {*will be|was|being} a great day. I’ll call you as soon as I {*get|will get|got} to the school.",
+      text: "Thank you for the {*invitation|poster|stall}, Halyna! I {*will come|came|coming} to the festival, and I {*will bring|brings|bringing} a big cake for the stall. I think it {*will be|was|being} a great day. I’ll call you as soon as I {*get|will get|got} to the school.",
       hint: "The festival is in the future: will + verb. After as soon as: the Present Simple.",
       steps: ["Thank you for the <b>invitation</b>. The future → <b>will come</b>, <b>will bring</b>, it <b>will be</b>.", "After <i>as soon as</i>: I <b>get</b>."] }
   ]

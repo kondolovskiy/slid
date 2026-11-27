@@ -6,7 +6,7 @@ type: write-pool
 subject: eng
 grade: 7
 section: e7s5
-status: review
+status: done
 claimed_by: writer-pe7s5
 created: 2026-11-27
 depends_on: []
@@ -82,3 +82,6 @@ writer-pe7s5, 2026-11-27. Файл `content/eng/pool-g7-e7s5.js`, пул `pe7s5`
 2. a71 — «the youngest team to win the town cup» (Ostap): вигадана деталь.
 3. a74 — дощ під час фіналу з плавання (відкритий басейн не названо).
 4. a20 — «How often do you meet?» / «What day do you meet?» для гуртка: meet (дієслово) — базова лексика, «meets» як термін гуртка вводить лише e7s6l1.
+
+## Верифікація
+verifier-pe7s5-pe7s6, 2026-11-27: **verified** — reports/verify/write-eng-pool-g7-e7s5.md. Правки й вердикт — у звіті; validate і personalization-qa — 0 помилок. Build не запускав.

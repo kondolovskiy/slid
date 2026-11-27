@@ -1,5 +1,5 @@
 /* Слід · Англійська мова, 7 клас — пул вправ для тренування до розділу «Sport: competitions and clubs» (e7s5)
-   Статус: draft (автор writer-pe7s5, 2026-11-27). Уроки e7s5l1–e7s5l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e7s5l7 без вправ.
+   Статус: verified (автор writer-pe7s5, 2026-11-27; verifier-pe7s5-pe7s6 — reports/verify/write-eng-pool-g7-e7s5.md). Уроки e7s5l1–e7s5l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e7s5l7 без вправ.
    Вправи власні (docs/design/english.md §8): лише слова, форми й правила уроків e7s5 і попередніх розділів; англійською, британська норма (D-055).
    Джерело — програма класу (program: true): МП-ІМ, 7 кл. — тема «Спорт» (види спорту, спортивні змагання, відомі спортсмени, клуби, секції)
    і функції «запитувати та надавати інформацію», «надавати оцінку подіям» (с. 32); граматика B1: Superlatives … ‘the best’ with noun and
@@ -11,8 +11,8 @@
 SLID.pool("eng", {
   id: "pe7s5",
   section: "e7s5",
-  status: "draft",
-  meta: { author: "writer-pe7s5", created: "2026-11-27", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "writer-pe7s5", created: "2026-11-27", factcheck: "verifier-pe7s5-pe7s6, 2026-11-27 (reports/verify/write-eng-pool-g7-e7s5.md)", teacher: null },
   sources: [
     { id: "mpim", program: true, title: "Модельна навчальна програма «Іноземна мова. 5–9 класи» (Редько В. Г. та ін.), наказ МОН № 795 від 12.07.2021 — 7 клас: тема «Спорт», функції (с. 32), граматика B1 (с. 34–35)", url: "https://osvita.ua/doc/files/news/831/83117/Inoz_mov_5-9-kl_Redko_ta_in_14_07.pdf" }
   ],
@@ -26,7 +26,7 @@ SLID.pool("eng", {
     { id: "a02", lesson: "e7s5l1", lvl: 1, sk: "vocab", src: "mpim с. 32",
       type: "match", title: "Match the competitions and the examples.",
       left: ["a race", "a match", "a tournament"],
-      right: ["Six swimmers swim 50 metres. Who is the fastest?", "Ostap’s team plays one game against School 7.", "Sixteen teams play over three days. One team gets the cup."],
+      right: ["Six girls swim 50 metres. Who is the fastest?", "Ostap’s team plays one game against School 7.", "Eight teams play for three days. One team gets the cup."],
       steps: ["Who is the fastest? → a <b>race</b>. One game → a <b>match</b>.", "Lots of teams, lots of games, one winner → a <b>tournament</b>."] },
     { id: "a03", lesson: "e7s5l1", lvl: 2, sk: "vocab", src: "mpim с. 32",
       type: "word", title: "Write the missing word.",
@@ -115,8 +115,8 @@ SLID.pool("eng", {
       steps: ["<b>join</b> a club, without <i>to</i>.", "He goes to <b>training</b> twice a week.", "The <b>coach</b> helps players get better."] },
     { id: "a17", lesson: "e7s5l2", lvl: 1, sk: "read", src: "mpim с. 32",
       type: "choice", title: "Read and choose.",
-      body: "<p><i><b>Kyiv Young Swimmers.</b> For ages 10–14. Beginners are welcome! Training: Wednesdays and Saturdays, 4–5 pm.</i></p><p>Can beginners join this club?</p>",
-      opts: ["Yes, they can.", "No, they can’t.", "Only good swimmers can join."],
+      body: "<p><i><b>Kyiv Junior Swimming Club.</b> For ages 10–14. Beginners are welcome! Training: Wednesdays and Saturdays, 4–5 pm.</i></p><p>Can beginners join this club?</p>",
+      opts: ["Yes, they can.", "No, they can’t.", "Only children who can swim well can join."],
       correct: 0,
       steps: ["The post says: <b>Beginners are welcome!</b> So yes, they can join."] },
     { id: "a18", lesson: "e7s5l2", lvl: 2, sk: "read", src: "mpim с. 32",
@@ -189,13 +189,13 @@ SLID.pool("eng", {
       type: "pick", title: "Find the mistake.",
       body: "<p>One word in Emma’s message is wrong.</p>",
       text: "Hello! My brother Tom and I want to swim more. Can we join [to] your club on Saturdays?",
-      hint: "Look at join. Do we need a word after it?",
+      hint: "One word isn’t needed. Read each verb and the word after it.",
       steps: ["We say <b>join a club</b>, without <i>to</i>: Can we join your club?"] },
     { id: "a29", lesson: "e7s5l2", lvl: 3, sk: "gram", src: "mpim с. 32",
       type: "pick", title: "Find the mistake.",
       body: "<p>One word in Vlad’s message is wrong.</p>",
       text: "Last year I joined the volleyball club. This year I want to join [to] the judo club too, because I’d like to try a new sport.",
-      hint: "There are three to in the message. Only one is wrong. Look at join.",
+      hint: "There are three to in the message. Two are correct: to + verb. Which one is wrong?",
       steps: ["<b>join the judo club</b>, without <i>to</i>.", "<i>want to join</i> and <i>I’d like to try</i> are correct: to + verb."] },
 
     /* ───────────── e7s5l3 · I used to play football, but now I swim ───────────── */
@@ -229,10 +229,11 @@ SLID.pool("eng", {
     { id: "a35", lesson: "e7s5l3", lvl: 3, sk: "gram", src: "mpim с. 35",
       type: "word", title: "Write the missing word with used to.",
       body: "<p>Taras: “Two years ago, I didn’t like running. Now I love it!”</p>",
-      before: "Taras didn’t", after: "to like running.",
-      answer: "use",
-      hint: "It’s a not sentence with didn’t. Look at the rule: no -d!",
-      steps: ["Not → <b>didn’t use to</b>: Taras didn’t <b>use</b> to like running."] },
+      before: "Taras", after: "use to like running.",
+      answer: "didn’t",
+      contractions: true,
+      hint: "Two years ago, Taras didn’t like running. Which rule is for not?",
+      steps: ["Not → <b>didn’t use to</b>: Taras <b>didn’t</b> use to like running.", "After <i>didn’t</i>: <b>use</b>, no -d."] },
     { id: "a36", lesson: "e7s5l3", lvl: 1, sk: "read", src: "mpim с. 35",
       type: "choice", title: "Read and choose.",
       body: "<p>Kyrylo: “I used to play basketball after school. Now I go to the history club.”</p><p>Does Kyrylo play basketball after school now?</p>",

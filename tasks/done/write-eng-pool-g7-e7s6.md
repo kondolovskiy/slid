@@ -6,7 +6,7 @@ type: write-pool
 subject: eng
 grade: 7
 section: e7s6
-status: review
+status: done
 claimed_by: writer-pe7s6
 created: 2026-11-27
 depends_on: []
@@ -83,3 +83,6 @@ writer-pe7s6, 2026-11-27. Файл `content/eng/pool-g7-e7s6.js`, пул `pe7s6`
 1. a26 — «If it will rain» як помилка: CD Grammar допускає will в if-частині для волі / наполягання; з it (погода) такого прочитання немає.
 2. a28 — правило коми (if-частина друга — без коми) з e7s6l3 info; варіант з комою оцінено хибним разом з «if she will miss».
 3. a18 — Last Bell у теперішньому часі («Today is the Last Bell…»), щоб не вводити rang / carried.
+
+## Верифікація
+verifier-pe7s5-pe7s6, 2026-11-27: **verified** — reports/verify/write-eng-pool-g7-e7s6.md. Правки й вердикт — у звіті; validate і personalization-qa — 0 помилок. Build не запускав.
