@@ -1,6 +1,6 @@
 # Стиль і складність: eng
 
-Згенеровано: 2026-11-26 · tools/stats.mjs
+Згенеровано: 2026-11-27 · tools/stats.mjs
 
 | урок | клас | екр. | частка завдань | слів/екран | макс. слів | макс. текст | слів/речення | довгі слова | типів | прапорці |
 |---|---|---|---|---|---|---|---|---|---|---|
@@ -454,13 +454,13 @@
 | e11s6l7 Travel week at the penfriend club (фінал) | 11 | 10 | 0.9 | 26 | 39 | 35 | 6.4 | 0.107 | 3 | — |
 | e11s7l1 Ukraine, the EU, the UN and the Council of Europe | 11 | 12 | 0.58 | 47 | 111 | 107 | 8.6 | 0.109 | 6 | — |
 | e11s7l2 Laws and rights: what the law says | 11 | 12 | 0.58 | 49 | 115 | 111 | 9 | 0.095 | 5 | sentenceWords нетипово для сім'ї (z=2) |
-| e11s7l3 Is it polite? Etiquette in different countries | 11 | 12 | 0.58 | 46 | 120 | 113 | 7.9 | 0.109 | 6 | — |
+| e11s7l3 Is it polite? Etiquette in different countries | 11 | 12 | 0.58 | 46 | 122 | 115 | 7.9 | 0.108 | 6 | — |
 | e11s7l4 Who or whom? Relative pronouns: an overview | 11 | 12 | 0.67 | 45 | 122 | 118 | 8 | 0.092 | 6 | — |
-| e11s7l5 We won, which surprised everyone: comments with which | 11 | 12 | 0.67 | 44 | 107 | 104 | 8.3 | 0.095 | 6 | — |
+| e11s7l5 We won, which surprised everyone: comments with which | 11 | 12 | 0.67 | 44 | 109 | 106 | 8.2 | 0.093 | 6 | — |
 | e11s7l6 Ukraine and English-speaking countries: events and people | 11 | 12 | 0.67 | 65 | 156 | 153 | 7.9 | 0.143 | 5 | readWordsPerScreen нетипово для сім'ї (z=2.2); maxReadWords нетипово для сім'ї (z=2.4); maxText нетипово для сім'ї (z=2.4) |
 | e11s7l7 Ukraine in the world: section final (фінал) | 11 | 10 | 0.9 | 47 | 121 | 118 | 8.3 | 0.088 | 4 | — |
 | e11s8l1 Final exams: getting ready | 11 | 12 | 0.67 | 55 | 91 | 87 | 8.3 | 0.106 | 5 | — |
-| e11s8l2 International programmes and exchanges | 11 | 12 | 0.75 | 64 | 166 | 163 | 8.8 | 0.095 | 6 | readWordsPerScreen нетипово для сім'ї (z=2); maxReadWords нетипово для сім'ї (z=2.8); maxText нетипово для сім'ї (z=2.8) |
+| e11s8l2 International programmes and exchanges | 11 | 12 | 0.75 | 64 | 168 | 165 | 8.9 | 0.095 | 6 | readWordsPerScreen нетипово для сім'ї (z=2); maxReadWords нетипово для сім'ї (z=2.8); maxText нетипово для сім'ї (z=2.9) |
 | e11s8l3 If I pass, if I passed, if I had passed: conditionals | 11 | 12 | 0.67 | 49 | 85 | 80 | 7.8 | 0.044 | 6 | — |
 | e11s8l4 Choosing a career: what suits you? | 11 | 12 | 0.67 | 55 | 136 | 130 | 8.3 | 0.108 | 6 | — |
 | e11s8l5 Prestigious jobs in Ukraine and abroad | 11 | 11 | 0.64 | 46 | 80 | 76 | 7.7 | 0.117 | 6 | — |
@@ -477,5 +477,5 @@
 - **5-6:boss**: screens 7.22±0.42, gradedShare 0.86±0.01, readWordsPerScreen 23.17±3.39, maxReadWords 35.89±4.97, sentenceWords 5±0.31, longWordShare 0.07±0.02, typeVariety 3.72±0.56, maxText 29.33±5.14
 - **7-9:lesson**: screens 10.15±0.86, gradedShare 0.65±0.06, readWordsPerScreen 38.15±4.61, maxReadWords 71.87±10.13, sentenceWords 6.37±0.66, longWordShare 0.08±0.04, typeVariety 5.33±0.59, maxText 67.45±10.2
 - **7-9:boss**: screens 8.54±0.96, gradedShare 0.88±0.01, readWordsPerScreen 26.58±3.88, maxReadWords 44.13±8.79, sentenceWords 5.81±0.45, longWordShare 0.07±0.03, typeVariety 4.83±0.85, maxText 36.83±7.87
-- **10-11:lesson**: screens 11.24±0.75, gradedShare 0.65±0.07, readWordsPerScreen 46.32±8.63, maxReadWords 98.03±24.48, sentenceWords 7.52±0.76, longWordShare 0.08±0.04, typeVariety 5.72±0.45, maxText 93.78±24.85
+- **10-11:lesson**: screens 11.24±0.75, gradedShare 0.65±0.07, readWordsPerScreen 46.32±8.63, maxReadWords 98.09±24.57, sentenceWords 7.52±0.76, longWordShare 0.08±0.04, typeVariety 5.72±0.45, maxText 93.84±24.94
 - **10-11:boss**: screens 10.06±0.9, gradedShare 0.89±0.02, readWordsPerScreen 34.44±12.82, maxReadWords 72.63±47.54, sentenceWords 6.93±0.74, longWordShare 0.09±0.02, typeVariety 4.5±1, maxText 68.06±48.59
