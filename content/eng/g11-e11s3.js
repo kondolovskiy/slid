@@ -332,7 +332,7 @@ SLID.section("eng", {
           type: "intro",
           eyebrow: "Lesson 3",
           title: "The 100 best Ukrainian films",
-          body: `<p class="lead">Kyrylo writes on his school history club page.</p><p>In 2021, the Dovzhenko Centre in Kyiv asked film experts to choose the 100 best Ukrainian films. Number one was <i>Shadows of Forgotten Ancestors</i> (1965), an <b>award-winning</b> film based on a book by Mykhailo Kotsiubynskyi. Number two was <i>Earth</i> (1930), a silent film by the <b>well-known</b> director Oleksandr Dovzhenko. Our club is planning a <b>two-hour</b> film evening.</p><p>Look at the words in bold. What do they have in common?</p>`,
+          body: `<p class="lead">Kyrylo writes on his school history club page.</p><p>In 2021, the Dovzhenko Centre in Kyiv asked film experts to choose the 100 best Ukrainian films. Number one was <i>Shadows of Forgotten Ancestors</i> (1965), an <b>award-winning</b> film based on a book by Mykhailo Kotsiubynsky. Number two was <i>Earth</i> (1930), a silent film by the <b>well-known</b> director Oleksandr Dovzhenko. Our club is planning a <b>two-hour</b> film evening.</p><p>In Ukrainian official documents, the writer’s name is written <i>Mykhailo Kotsiubynskyi</i>.</p><p>Look at the words in bold. What do they have in common?</p>`,
           cta: "Let’s see"
         },
         {
@@ -458,7 +458,7 @@ SLID.section("eng", {
           eyebrow: "Final",
           title: "Complete the sentences.",
           body: `<p>Kyrylo writes about the film evening.</p>`,
-          text: "Our history club is planning a {*three-part|three-parts} film evening about Ukrainian cinema. Part one is <i>Earth</i>, a silent film by the {*well-known|well-knowing} director Oleksandr Dovzhenko. Part two is <i>Shadows of Forgotten Ancestors</i>, an {*award-winning|award-won} film based on a book by Mykhailo Kotsiubynskyi. Many scenes were filmed in Kryvorivnia, a village in the Carpathians. Each part ends with a {*ten-minute|ten-minutes} discussion.",
+          text: "Our history club is planning a {*three-part|three-parts} film evening about Ukrainian cinema. Part one is <i>Earth</i>, a silent film by the {*well-known|well-knowing} director Oleksandr Dovzhenko. Part two is <i>Shadows of Forgotten Ancestors</i>, an {*award-winning|award-won} film based on a book by Mykhailo Kotsiubynsky. Many scenes were filmed in Kryvorivnia, a village in the Carpathians. Each part ends with a {*ten-minute|ten-minutes} discussion.",
           hint: "Number + noun → singular. well-…, award-… : look at the list.",
           fbOk: "Brilliant!",
           fbBad: "Check the forms in the list “Compound adjectives”.",

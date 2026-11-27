@@ -11,7 +11,7 @@
    кількість / результат («had painted twelve pictures») — лише simple; дієслова стану (know) — лише simple.
    Факти про художників — з двох джерел кожен (URL — tasks/…/write-eng-g10-e10s5.md, «Нотатки агента»); цитат не наводимо
    (слова Пікассо про Примаченко й Білокур — легенда, не беремо). Імена: Kateryna Bilokur, Oleksandr Murashko — КМУ № 55;
-   Mariia Prymachenko — за glossary/eng.md «Імена» (таблиця КМУ № 55); усталене англійське «Maria» (en.wikipedia) — згадка на екрані l3 (verifier-e10s5).
+   Maria Prymachenko — усталене англійське написання (D-057; en.wikipedia, Google Arts & Culture); форма за КМУ № 55 «Mariia» — примітка на екрані info l3.
    Герої — серія 4–9 кл., на шість років старші, ніж у 4 кл.: Oksana, Halyna (Zelena Dolyna; Halyna малює), Mariia (Kharkiv,
    комікси на планшеті), Taras (Lviv), Andrii, Daryna (Kyiv), Emma (Англія). Нові: Mr Hill — учитель малювання в школі Emma; Megan — подруга Emma;
    Priya — гід у National Gallery; Sam — однокласник Emma. Картини героїв (Halyna, Mariia, Daryna) — вигадані.
@@ -325,7 +325,7 @@ SLID.section("eng", {
           type: "intro",
           eyebrow: "Lesson 3",
           title: "Who should be on the poster?",
-          body: `<p class="lead">Oksana writes to the English club.</p><p><i>Let’s make a poster: “Ukrainian artists the world should know”. I’m writing about Kateryna Bilokur. She never went to art school, but her flowers are amazing! Mariia is choosing Mariia Prymachenko, and Andrii wants Oleksandr Murashko.</i></p><p>What do you know about these three artists?</p>`,
+          body: `<p class="lead">Oksana writes to the English club.</p><p><i>Let’s make a poster: “Ukrainian artists the world should know”. I’m writing about Kateryna Bilokur. She never went to art school, but her flowers are amazing! Mariia is choosing Maria Prymachenko, and Andrii wants Oleksandr Murashko.</i></p><p>What do you know about these three artists?</p>`,
           cta: "Let’s see"
         },
         {
@@ -369,19 +369,19 @@ SLID.section("eng", {
         },
         {
           type: "info",
-          title: "Mariia Prymachenko (1909–1997)",
-          body: `<p>Mariia Prymachenko lived almost all her life in the village of Bolotnia, in the Kyiv region. She was a self-taught folk artist too. In many English books, her name is written <i>Maria</i>.</p><p>She painted bright, <b>fantastic animals</b> and flowers, inspired by nature and Ukrainian <b>folk tales</b>: a blue bull, birds and beasts that don’t exist. Her paintings are full of colour.</p><p>In February 2022, during Russia’s full-scale invasion, a museum in Ivankiv that kept some of her works burned.</p>`,
+          title: "Maria Prymachenko (1909–1997)",
+          body: `<p>Maria Prymachenko lived almost all her life in the village of Bolotnia, in the Kyiv region. She was a self-taught folk artist too. In Ukrainian official documents, her name is written <i>Mariia Prymachenko</i>.</p><p>She painted bright, <b>fantastic animals</b> and flowers, inspired by nature and Ukrainian <b>folk tales</b>: a blue bull, birds and beasts that don’t exist. Her paintings are full of colour.</p><p>In February 2022, during Russia’s full-scale invasion, a museum in Ivankiv that kept some of her works burned.</p>`,
           cta: "Next"
         },
         {
           type: "gaps",
           sk: "vocab",
           title: "Fill in the gaps.",
-          body: `<p>Mariia writes about Mariia Prymachenko for the poster.</p>`,
-          text: "Mariia Prymachenko was a {*self-taught|famous portrait} artist. She painted {*fantastic animals|abstract shapes} in bright colours. Many of her ideas came from nature and Ukrainian {*folk tales|museums}.",
+          body: `<p>Mariia writes about Maria Prymachenko for the poster.</p>`,
+          text: "Maria Prymachenko was a {*self-taught|famous portrait} artist. She painted {*fantastic animals|abstract shapes} in bright colours. Many of her ideas came from nature and Ukrainian {*folk tales|museums}.",
           hint: "Did anybody teach her? What did she paint? Where did her ideas come from?",
           fbOk: "Well done!",
-          fbBad: "Look at the screen about Mariia Prymachenko again.",
+          fbBad: "Look at the screen about Maria Prymachenko again.",
           fbText: "She was a <b>self-taught</b> folk artist. She painted <b>fantastic animals</b>, like a blue bull. Her ideas came from nature and <b>folk tales</b>."
         },
         {
@@ -405,7 +405,7 @@ SLID.section("eng", {
           type: "match",
           sk: "cult",
           title: "Match the halves.",
-          left: ["Kateryna Bilokur", "Mariia Prymachenko", "Oleksandr Murashko", "John Constable"],
+          left: ["Kateryna Bilokur", "Maria Prymachenko", "Oleksandr Murashko", "John Constable"],
           right: ["had her first exhibition in Poltava in 1940.", "painted a blue bull and other fantastic animals.", "painted Girl in a Red Hat.", "painted The Hay Wain."],
           hint: "Who painted fantastic animals? Who painted a farm cart in a river?",
           fbOk: "Well done!",
@@ -416,7 +416,7 @@ SLID.section("eng", {
           type: "word",
           sk: "gram",
           title: "Write the missing word.",
-          body: `<p>Nobody taught Mariia Prymachenko to paint.</p>`,
+          body: `<p>Nobody taught Maria Prymachenko to paint.</p>`,
           before: "She taught",
           after: "to paint.",
           answer: "herself",
@@ -431,7 +431,7 @@ SLID.section("eng", {
           eyebrow: "Final",
           title: "Complete the sentences.",
           body: `<p>Oksana finishes her part of the poster.</p>`,
-          text: "Kateryna Bilokur {*taught|teached} herself to paint. Like Mariia Prymachenko, she was a {*folk|abstract} artist. Her first {*exhibition|masterpiece} opened in Poltava in 1940. Today she is famous {*for|of} her paintings of flowers.",
+          text: "Kateryna Bilokur {*taught|teached} herself to paint. Like Maria Prymachenko, she was a {*folk|abstract} artist. Her first {*exhibition|masterpiece} opened in Poltava in 1940. Today she is famous {*for|of} her paintings of flowers.",
           hint: "teach – taught – taught. A village artist. A show of paintings opened. famous …?",
           fbOk: "Brilliant!",
           fbBad: "teach is irregular. A show of paintings opens. famous for…",
@@ -985,7 +985,7 @@ SLID.section("eng", {
           sk: "cult",
           eyebrow: "Task 4",
           title: "Match the halves.",
-          left: ["Kateryna Bilokur", "Mariia Prymachenko", "Oleksandr Murashko"],
+          left: ["Kateryna Bilokur", "Maria Prymachenko", "Oleksandr Murashko"],
           right: ["had her first exhibition in Poltava in 1940.", "painted a blue bull and other fantastic animals.", "painted Girl in a Red Hat."],
           pre: "e10s5l3",
           fbOk: "Brilliant!",

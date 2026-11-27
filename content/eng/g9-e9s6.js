@@ -81,7 +81,7 @@ SLID.section("eng", {
         {
           type: "info",
           title: "Three famous names",
-          body: `<ul><li><b>Marie Curie</b> – a scientist. She worked in France. In 1903, she was the first woman to win a Nobel Prize.</li><li><b>Igor Sikorsky</b> – an inventor. He was born in Kyiv in 1889. Later, he moved to the USA and designed helicopters there.</li><li><b>Kateryna Yushchenko</b> – a Ukrainian computer scientist. In 1955, she created a programming language called Address.</li></ul>`,
+          body: `<ul><li><b>Marie Curie</b> – a scientist. She worked in France. In 1903, she was the first woman to win a Nobel Prize.</li><li><b>Igor Sikorsky</b> – an inventor. He was born in Kyiv in 1889. Later, he moved to the USA and designed helicopters there. In Ukrainian official documents, his name is written <i>Ihor Sikorskyi</i>.</li><li><b>Kateryna Yushchenko</b> – a Ukrainian computer scientist. In 1955, she created a programming language called Address.</li></ul>`,
           cta: "Next"
         },
         {

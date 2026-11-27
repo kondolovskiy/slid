@@ -730,7 +730,7 @@ SLID.section("eng", {
         {
           type: "info",
           title: "Useful comments with which",
-          body: `<ul><li><b>…, which was amazing / a pity / a surprise.</b> → your opinion</li><li><b>…, which means (that)…</b> → the result now</li><li><b>…, which is why…</b> → this is the reason for…</li></ul><p>More events that connect Ukraine and English-speaking countries:</p><ul><li>In 1996, the UK handed over its Faraday research station in Antarctica to Ukraine, which is why Ukraine has its own station there.</li><li>In 1997, Leonid Kadenyuk flew on the US Space Shuttle Columbia, which made him the first astronaut of independent Ukraine.</li></ul>`,
+          body: `<ul><li><b>…, which was amazing / a pity / a surprise.</b> → your opinion</li><li><b>…, which means (that)…</b> → the result now</li><li><b>…, which is why…</b> → this is the reason for…</li></ul><p>More events that connect Ukraine and English-speaking countries:</p><ul><li>In 1996, the UK handed over its Faraday research station in Antarctica to Ukraine, which is why Ukraine has its own station there.</li><li>In 1997, Leonid Kadenyuk flew on the US Space Shuttle Columbia, which made him the first astronaut of independent Ukraine.</li></ul><p>In Ukrainian official documents, the astronaut’s name is written <i>Leonid Kadeniuk</i>.</p>`,
           cta: "Next"
         },
         {
@@ -843,7 +843,7 @@ SLID.section("eng", {
         {
           type: "info",
           title: "Words for the article",
-          body: `<ul><li><b>settle</b> → go to live in a new place; a <b><u>set</u>tler</b> → a person who does this</li><li><b>roots</b> → the place where your family comes from</li><li>a <b>re<u>search</u> station</b> → a place where scientists live and work</li><li><b>hand over</b> → officially give something to someone</li><li><b>raise a flag</b> → put a flag up</li><li>an <b><u>as</u>tronaut</b>; a <b><u>mis</u>sion</b> → a trip into space</li><li><b>without gravity</b> → when things float and don’t fall</li></ul>`,
+          body: `<ul><li><b>settle</b> → go to live in a new place; a <b><u>set</u>tler</b> → a person who does this</li><li><b>roots</b> → the place where your family comes from</li><li>a <b>re<u>search</u> station</b> → a place where scientists live and work</li><li><b>hand over</b> → officially give something to someone</li><li><b>raise a flag</b> → put a flag up</li><li>an <b><u>as</u>tronaut</b>; a <b><u>mis</u>sion</b> → a trip into space</li><li><b>without gravity</b> → when things float and don’t fall</li></ul><p>In Ukrainian official documents, the names in the article are written <i>Ivan Pylypiv</i>, <i>Vasyl Yeleniak</i> and <i>Volodymyr Vernadskyi</i>.</p>`,
           cta: "Next"
         },
         {
@@ -868,7 +868,7 @@ SLID.section("eng", {
           sk: "read",
           eyebrow: "Reading: Small bridges, part 2 of 3",
           title: "Read and choose.",
-          body: `<p><i>About a hundred years later, a very different event connected Ukraine and the UK. Since 1947, British scientists had worked at Faraday, a research station on a small island near the Antarctic Peninsula. In the 1990s, the UK planned to close it. Instead, the station was handed over to Ukraine, which at that time had no station of its own in Antarctica. On 6 February 1996, the Ukrainian flag was raised there, and the station got a new name: Akademik Vernadsky. Volodymyr Vernadskyi, after whom it was named, was a scientist who studied minerals and the Earth. He was also the first president of the Ukrainian Academy of Sciences. Today, Ukrainian scientists who work at the station study the weather, the ice and the animals of Antarctica, including penguins. Life there isn’t easy: the winters are long and dark, and the nearest town is very far away.</i></p><p>What happened on 6 February 1996?</p>`,
+          body: `<p><i>About a hundred years later, a very different event connected Ukraine and the UK. Since 1947, British scientists had worked at Faraday, a research station on a small island near the Antarctic Peninsula. In the 1990s, the UK planned to close it. Instead, the station was handed over to Ukraine, which at that time had no station of its own in Antarctica. On 6 February 1996, the Ukrainian flag was raised there, and the station got a new name: Akademik Vernadsky. Volodymyr Vernadsky, after whom it was named, was a scientist who studied minerals and the Earth. He was also the first president of the Ukrainian Academy of Sciences. Today, Ukrainian scientists who work at the station study the weather, the ice and the animals of Antarctica, including penguins. Life there isn’t easy: the winters are long and dark, and the nearest town is very far away.</i></p><p>What happened on 6 February 1996?</p>`,
           opts: [
             "British scientists started working at Faraday.",
             "The Ukrainian flag was raised at the station.",

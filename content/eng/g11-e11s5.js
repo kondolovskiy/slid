@@ -778,7 +778,7 @@ SLID.section("eng", {
         {
           type: "info",
           title: "Words for the article",
-          body: `<ul><li>an <b>academy of sciences</b> → an organisation of scientists and their research institutes (a<u>cad</u>emy)</li><li>a <b>research institute</b> → a place where scientists do research</li><li>a <b>research station</b> → a place where scientists live and work</li><li><b>found</b> an organisation → start it: It was <b>founded</b> in 1918.</li><li><b>hand over</b> → give something to someone else: It was <b>handed over</b> to Ukraine.</li><li><b><u>weld</u>ing</b> → joining pieces of metal by melting them</li></ul>`,
+          body: `<ul><li>an <b>academy of sciences</b> → an organisation of scientists and their research institutes (a<u>cad</u>emy)</li><li>a <b>research institute</b> → a place where scientists do research</li><li>a <b>research station</b> → a place where scientists live and work</li><li><b>found</b> an organisation → start it: It was <b>founded</b> in 1918.</li><li><b>hand over</b> → give something to someone else: It was <b>handed over</b> to Ukraine.</li><li><b><u>weld</u>ing</b> → joining pieces of metal by melting them</li></ul><p>In Ukrainian official documents, Vernadsky is written <i>Vernadskyi</i>.</p>`,
           cta: "Next"
         },
         {
@@ -786,17 +786,17 @@ SLID.section("eng", {
           sk: "read",
           eyebrow: "Reading: Ukrainian science, part 1 of 3",
           title: "Read and choose.",
-          body: `<p><i>When I started this article, I knew very little about Ukrainian scientists. Here is what I found out. Ukrainian science has a long history. The Ukrainian Academy of Sciences was founded in Kyiv in 1918. Its first president was the scientist Volodymyr Vernadskyi, who studied minerals and the Earth. Today it is called the National Academy of Sciences of Ukraine. Research is carried out in its many institutes, from physics and chemistry to biology and history.</i></p><p><i>For many years, the Academy was led by Borys Paton. He was born in Kyiv in 1918, the same year that the Academy was founded. Paton was an expert in welding, a way of joining metal. He was president of the Academy for 58 years, from 1962 to 2020. His father, Yevhen Paton, was a famous engineer too: a bridge over the Dnipro in Kyiv, opened in 1953, is named after him.</i></p><p>Which sentence is true?</p>`,
+          body: `<p><i>When I started this article, I knew very little about Ukrainian scientists. Here is what I found out. Ukrainian science has a long history. The Ukrainian Academy of Sciences was founded in Kyiv in 1918. Its first president was the scientist Volodymyr Vernadsky, who studied minerals and the Earth. Today it is called the National Academy of Sciences of Ukraine. Research is carried out in its many institutes, from physics and chemistry to biology and history.</i></p><p><i>For many years, the Academy was led by Borys Paton. He was born in Kyiv in 1918, the same year that the Academy was founded. Paton was an expert in welding, a way of joining metal. He was president of the Academy for 58 years, from 1962 to 2020. His father, Yevhen Paton, was a famous engineer too: a bridge over the Dnipro in Kyiv, opened in 1953, is named after him.</i></p><p>Which sentence is true?</p>`,
           opts: [
             "Borys Paton was the first president of the Academy.",
-            "Volodymyr Vernadskyi led the Academy for 58 years.",
+            "Volodymyr Vernadsky led the Academy for 58 years.",
             "The Academy was founded in Kyiv in 1918."
           ],
           correct: 2,
           hint: "Find the words first president and 58 years in the text.",
           fbOk: "Right.",
           fbBad: "Who was the first president? Who led the Academy for 58 years?",
-          fbText: "The Academy <b>was founded in Kyiv in 1918</b>. Its first president was <b>Vernadskyi</b>; <b>Paton</b> led it for 58 years."
+          fbText: "The Academy <b>was founded in Kyiv in 1918</b>. Its first president was <b>Vernadsky</b>; <b>Paton</b> led it for 58 years."
         },
         {
           type: "multi",
