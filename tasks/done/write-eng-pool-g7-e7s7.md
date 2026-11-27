@@ -6,7 +6,7 @@ type: write-pool
 subject: eng
 grade: 7
 section: e7s7
-status: review
+status: done
 claimed_by: writer-pe7s7
 created: 2026-11-27
 depends_on: []
