@@ -1,5 +1,5 @@
 /* Слід · Англійська мова, 8 клас — пул вправ для тренування до розділу «The media: the internet and the press» (e8s3)
-   Статус: draft (автор writer-pe8s3, 2026-11-27). Уроки e8s3l1–e8s3l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e8s3l7 без вправ.
+   Статус: verified (автор writer-pe8s3, 2026-11-27; verifier-pe8s3-pe8s4, reports/verify/write-eng-pool-g8-e8s3.md). Уроки e8s3l1–e8s3l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e8s3l7 без вправ.
    Вправи власні (docs/design/english.md §8): лише слова, форми й правила уроків e8s3 і попередніх розділів; англійською, британська норма (D-055).
    Джерело — програма класу (program: true): МП-ІМ, 8 кл. — тема «Засоби масової інформації»: Інтернет, преса, періодичні видання (с. 32);
    B1-читання: оцінювати факти, визначати, чи стаття відповідає темі (с. 28); граматика B1: Passives — Present continuous, Reported statements (с. 35).
@@ -12,8 +12,8 @@
 SLID.pool("eng", {
   id: "pe8s3",
   section: "e8s3",
-  status: "draft",
-  meta: { author: "writer-pe8s3", created: "2026-11-27", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "writer-pe8s3", created: "2026-11-27", factcheck: "verifier-pe8s3-pe8s4 (reports/verify/write-eng-pool-g8-e8s3.md)", teacher: null },
   sources: [
     { id: "mpim", program: true, title: "Модельна навчальна програма «Іноземна мова. 5–9 класи» (Редько В. Г. та ін.), наказ МОН № 795 від 12.07.2021 — 8 клас: тема «Засоби масової інформації» (с. 32), B1-читання: факти, відповідність статті темі (с. 28), граматика B1: Passives — Present continuous, Reported statements (с. 35)", url: "https://osvita.ua/doc/files/news/831/83117/Inoz_mov_5-9-kl_Redko_ta_in_14_07.pdf" }
   ],
@@ -39,8 +39,8 @@ SLID.pool("eng", {
     { id: "a04", lesson: "e8s3l1", lvl: 3, sk: "vocab", src: "mpim с. 32",
       type: "pick", title: "Find the words for people.",
       body: "<p>Taras writes about School 5 News. Find the two words for people who make the newspaper.</p>",
-      text: "Every month, our [reporter] Orest finds the school news, and our [photographer] Yaryna takes the photos. The [!headlines] are in big letters, and the longest [!articles] are on page 2.",
-      hint: "Who finds the news? Who takes photos? Headlines and articles are parts of a newspaper.",
+      text: "Every month, our [reporter] Orest finds the school news, and I’m the [photographer]: I take the photos. The [!headlines] are in big letters, and the longest [!articles] are on page 2.",
+      hint: "Is it a person or a part of a newspaper? Look at the list “Who makes the news?”.",
       steps: ["People: a <b>reporter</b> (finds the news) and a <b>photographer</b> (takes photos).", "<i>Headlines</i> and <i>articles</i> are parts of a newspaper, not people."] },
     { id: "a05", lesson: "e8s3l1", lvl: 1, sk: "phon", src: "mpim с. 32",
       type: "stress", title: "Find the stressed syllable.",
@@ -48,14 +48,14 @@ SLID.pool("eng", {
       steps: ["<u>news</u>paper: the first part is strong.", "re<u>por</u>ter: the middle part is strong."] },
     { id: "a06", lesson: "e8s3l1", lvl: 2, sk: "phon", src: "mpim с. 32",
       type: "stress", title: "Find the stressed syllable.",
-      words: ["+ar|ti|cle", "ma|ga|+zine", "+head|line"],
-      hint: "Say the words. In one word, the strong part is at the end.",
-      steps: ["<u>ar</u>ticle, <u>head</u>line: the first part is strong.", "maga<u>zine</u>: the last part is strong."] },
+      words: ["+ar|ti|cle", "pho|+tog|ra|pher", "+head|line"],
+      hint: "Say the words slowly. Is the strong part in the same place in all three words?",
+      steps: ["<u>ar</u>ticle, <u>head</u>line: the first part is strong.", "pho<u>tog</u>rapher: the second part is strong."] },
     { id: "a07", lesson: "e8s3l1", lvl: 3, sk: "phon", src: "mpim с. 32",
       type: "stress", title: "Find the stressed syllable.",
-      words: ["+jour|na|list", "re|+por|ter", "+web|site", "ma|ga|+zine", "+head|line"],
+      words: ["+jour|na|list", "re|+por|ter", "+web|site", "car|+toon", "+head|line"],
       hint: "The strong part can be at the start, in the middle or at the end.",
-      steps: ["<u>jour</u>nalist, <u>web</u>site, <u>head</u>line: the first part.", "re<u>por</u>ter: the middle part. maga<u>zine</u>: the last part."] },
+      steps: ["<u>jour</u>nalist, <u>web</u>site, <u>head</u>line: the first part.", "re<u>por</u>ter: the middle part. car<u>toon</u>: the last part."] },
     { id: "a08", lesson: "e8s3l1", lvl: 1, sk: "write", src: "mpim с. 32",
       type: "gaps", title: "Complete the sentences.",
       body: "<p>Mariia writes to Emma.</p>",
@@ -276,11 +276,11 @@ SLID.pool("eng", {
       type: "gaps", title: "Complete the sentences.",
       body: "<p>Last Monday, Taras asked: “Where do you get your news?”</p><p><b>Yaryna:</b> I read Lviv Today on my phone.<br><b>Orest:</b> I don’t like the news. It’s boring.</p><p>Taras writes for School 5 News.</p>",
       text: "Yaryna said she {*read|reading} Lviv Today on her phone. Orest said he {*didn’t|don’t} like the news. He said it {*was|were} boring.",
-      hint: "The verb goes back: read → read, don’t → ?, is → ?",
+      hint: "The verb goes back. Look at the rule screen “Reported statements”.",
       steps: ["read → <b>read</b> (the past form looks the same).", "don’t → <b>didn’t</b>; is → <b>was</b>: it was boring."] },
     { id: "a42", lesson: "e8s3l4", lvl: 3, sk: "write", src: "mpim с. 35",
       type: "gaps", title: "Complete the sentences.",
-      body: "<p>Last Friday, Emma asked three friends from her class about books.</p><p><b>Ruby:</b> I’m writing a book.<br><b>Oliver:</b> I can’t write stories, but I can draw.<br><b>Tom:</b> I don’t like books!</p><p>Emma writes for her school newspaper.</p>",
+      body: "<p>Last Friday, Emma asked two friends from her class and her brother Tom about books.</p><p><b>Ruby:</b> I’m writing a book.<br><b>Oliver:</b> I can’t write stories, but I can draw.<br><b>Tom:</b> I don’t like books!</p><p>Emma writes for her school newspaper.</p>",
       text: "Ruby said she {*was writing|were writing|was write} a book. Oliver said he {*couldn’t|couldn’t to|wasn’t can} write stories, but he {*could|coulds|could to} draw. My brother Tom told me he {*didn’t|don’t|not} like books!",
       hint: "am writing → ?, can’t → ?, can → ?, don’t → ?",
       steps: ["am writing → <b>was writing</b>; can’t → <b>couldn’t</b>; can → <b>could</b>.", "don’t → <b>didn’t</b>: Tom told me he didn’t like books."] },
@@ -289,8 +289,8 @@ SLID.pool("eng", {
     { id: "a43", lesson: "e8s3l5", lvl: 1, sk: "gram", src: "mpim с. 35",
       type: "gaps", title: "Fill in the gaps.",
       body: "<p>Andrii tells Oksana about Ms Lysenko.</p>",
-      text: "Ms Lysenko {*told|said} us that the library was closed on Monday. He {*said|told} that it was open again on Tuesday.",
-      steps: ["A person after the gap (us) → <b>told</b> us.", "No person after the gap → he <b>said</b> that…"] },
+      text: "Ms Lysenko {*told|said} us that the library was closed on Monday. She {*said|told} that it was open again on Tuesday.",
+      steps: ["A person after the gap (us) → <b>told</b> us.", "No person after the gap → she <b>said</b> that…"] },
     { id: "a44", lesson: "e8s3l5", lvl: 1, sk: "gram", src: "mpim с. 35",
       type: "word", title: "Write the missing word.",
       body: "<p>Write <b>said</b> or <b>told</b>.</p>",
