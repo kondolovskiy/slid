@@ -6,7 +6,7 @@ type: write-pool
 subject: eng
 grade: 8
 section: e8s2
-status: review
+status: done
 claimed_by: writer-pe8s2
 created: 2026-11-27
 depends_on: []
@@ -74,3 +74,6 @@ writer-pe8s2, 2026-11-27. Файл `content/eng/pool-g8-e8s2.js` (pe8s2, draft),
 
 Словники: Cambridge Dictionary і OALD із сесії дали 403 (WebFetch), тож наголос і форми звірено за загальновідомими транскрипціями — **верифікатору звірити**: active /ˈæk.tɪv/, midnight /ˈmɪd.naɪt/, computer /kəmˈpjuː.tə/, teenager /ˈtiːnˌeɪ.dʒə/, exercise, energy, lifestyle, healthy (як в уроці); give up + -ing, take up / give up / get up / work out (OALD phrasal verbs); go + -ing (CD Grammar «Go»). URL: https://dictionary.cambridge.org/dictionary/english/teenager, …/midnight, …/computer, https://www.oxfordlearnersdictionaries.com/definition/english/active_1.
 Нова лексика поза уроками (мінімум, рівень A2): ketchup, chips, space, cousins, yellow belt, alarm clock, straight away, gym, paints — верифікатору оцінити.
+
+## Верифікація
+verifier-pe8s2, 2026-11-27: verified, 20 правок у 17 вправах — reports/verify/write-eng-pool-g8-e8s2.md. Наголоси active, midnight, computer, teenager звірено curl за CD і OALD; a08/a10 замінено через відсутність `<u>`-опори.
