@@ -11,7 +11,7 @@ on:
   workflow_dispatch:
     inputs:
       playtest:
-        description: "Плейтест: subset — змінені розділи + покриття типів екранів + тести рівня (≈ 5 хв); full — усі уроки (≈ 50 хв)"
+        description: "Плейтест: subset — змінені розділи + покриття типів екранів + тести рівня (≈ 5–45 хв); full — усі уроки (1800+ уроків, понад 90 хв — див. tools-playtest-full-duration)"
         type: choice
         options: [subset, full]
         default: subset
@@ -86,8 +86,9 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read   # код PR тут виконується — без pages/id-token
-    # піднабір плейтесту до 45 хв (уроки eng 7–11 — ≈ 8 с на урок, 245 уроків > 30 хв) + ≈ 10 хв регресії й test-ui
-    timeout-minutes: ${{ inputs.playtest == 'full' && 150 || 60 }}
+    # звичайно: ≈ 10 хв регресії й test-ui + піднабір плейтесту до 45 хв (уроки eng 7–11 — ≈ 8 с на урок, 245 уроків > 30 хв);
+    # full: піднабір пропускається, ≈ 10 + повний до 90 хв (1800+ уроків можуть не вкластися — задача tools-playtest-full-duration)
+    timeout-minutes: ${{ inputs.playtest == 'full' && 120 || 60 }}
     steps:
       - uses: actions/checkout@v4
         with:
