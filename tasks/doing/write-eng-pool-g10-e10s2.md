@@ -1,16 +1,18 @@
 ---
-id: write-eng-pool-g10-e10s1
+claimed_from: todo
+claimed_at: 2026-11-27T11:55:45.605Z
+id: write-eng-pool-g10-e10s2
 type: write-pool
 subject: eng
 grade: 10
-section: e10s1
+section: e10s2
 status: todo
-claimed_by:
+claimed_by: writer-pe10s2
 created: 2026-11-27
 depends_on: []
 generated_by: tools/make-tasks.mjs --write-pool --subject eng
 ---
-# Зібрати пул тренування «Relationships and conflicts» (Англійська мова, 10 клас, e10s1)
+# Зібрати пул тренування «Sport, health and leisure» (Англійська мова, 10 клас, e10s2)
 
 ## Навіщо
 Пул — вправи для самостійного тренування після уроку з інтервальним повторенням (docs/PERSONALIZATION.md §3).
@@ -18,15 +20,15 @@ generated_by: tools/make-tasks.mjs --write-pool --subject eng
 Контракт полів — docs/CONTENT_SCHEMA.md §10, «Пули мовних предметів»; якщо він розходиться з цим текстом — правий CONTENT_SCHEMA. Рішення людини — docs/design/english.md §7, §11.1.
 
 ## Результат
-Один файл `content/eng/pool-g10-e10s1.js`: `SLID.pool("eng", { id: "pe10s1", section: "e10s1", status: "draft", meta: {…}, sources: [...], items: [...] })`. **id `pe10s1` і id вправ — ключі прогресу, не перейменовувати.**
+Один файл `content/eng/pool-g10-e10s2.js`: `SLID.pool("eng", { id: "pe10s2", section: "e10s2", status: "draft", meta: {…}, sources: [...], items: [...] })`. **id `pe10s2` і id вправ — ключі прогресу, не перейменовувати.**
 
 ## Уроки для покриття (без фіналу)
-- `e10s1l1` — What kind of person are you? Personality
-- `e10s1l2` — Friends, classmates, neighbours: kinds of relationships
-- `e10s1l3` — By the time I came, they had left: the Past Perfect again
-- `e10s1l4` — As soon as, after, before: time clauses
-- `e10s1l5` — A friend in need: helping each other
-- `e10s1l6` — Can I say something? Solving a conflict
+- `e10s2l1` — Why do people love sport?
+- `e10s2l2` — Risk losing, refuse to give up: verb patterns
+- `e10s2l3` — Big sports events in Ukraine and the world
+- `e10s2l4` — Stop, remember, try: a change in meaning
+- `e10s2l5` — Avoid injuries, keep moving: sport and health
+- `e10s2l6` — Is sport good for everyone? Giving your opinion
 
 ## Що зробити (скіли `math-pool-diag` — розділ про пули мовних предметів — і `content-author`, розділ про англійську)
 1. Прочитай уроки розділу повністю: лексика, граматика, приклади, `sk` екранів, `learned`. **Чесне завдання (D-019):** вправа тренує лише слова й граматику, яких урок навчив; нового правила пул не вчить.
@@ -37,10 +39,10 @@ generated_by: tools/make-tasks.mjs --write-pool --subject eng
 6. Глосарій і пастки — memory/long/glossary/eng.md, memory/long/facts/eng.md, memory/long/pitfalls-content.md «Англійська».
 
 ## Обмеження
-Змінюй лише `content/eng/pool-g10-e10s1.js`, цю задачу й дописуй inbox. build і check — оркестратор. Уроки розділу не правити — пропозиції в inbox.
+Змінюй лише `content/eng/pool-g10-e10s2.js`, цю задачу й дописуй inbox. build і check — оркестратор. Уроки розділу не правити — пропозиції в inbox.
 
 ## Готово, коли
-- [ ] `node tools/validate.mjs --pool pe10s1` і `node tools/personalization-qa.mjs --pool pe10s1` — 0 помилок; `status: "draft"`.
+- [ ] `node tools/validate.mjs --pool pe10s2` і `node tools/personalization-qa.mjs --pool pe10s2` — 0 помилок; `status: "draft"`.
 - [ ] Нотатки: таблиця «урок → кількість / рівні / типи», словники, за якими звірено форми; рядок в inbox.
 - [ ] Задача → `tasks/review/` для **content-verifier зі свіжим контекстом** (розв'язати кожну вправу, звірити форми за словником).
 

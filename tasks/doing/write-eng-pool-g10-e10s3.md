@@ -1,16 +1,18 @@
 ---
-id: write-eng-pool-g10-e10s4
+claimed_from: todo
+claimed_at: 2026-11-27T11:55:45.638Z
+id: write-eng-pool-g10-e10s3
 type: write-pool
 subject: eng
 grade: 10
-section: e10s4
+section: e10s3
 status: todo
-claimed_by:
+claimed_by: writer-pe10s3
 created: 2026-11-27
 depends_on: []
 generated_by: tools/make-tasks.mjs --write-pool --subject eng
 ---
-# Зібрати пул тренування «Weather, nature and natural disasters» (Англійська мова, 10 клас, e10s4)
+# Зібрати пул тренування «Food and habits» (Англійська мова, 10 клас, e10s3)
 
 ## Навіщо
 Пул — вправи для самостійного тренування після уроку з інтервальним повторенням (docs/PERSONALIZATION.md §3).
@@ -18,15 +20,15 @@ generated_by: tools/make-tasks.mjs --write-pool --subject eng
 Контракт полів — docs/CONTENT_SCHEMA.md §10, «Пули мовних предметів»; якщо він розходиться з цим текстом — правий CONTENT_SCHEMA. Рішення людини — docs/design/english.md §7, §11.1.
 
 ## Результат
-Один файл `content/eng/pool-g10-e10s4.js`: `SLID.pool("eng", { id: "pe10s4", section: "e10s4", status: "draft", meta: {…}, sources: [...], items: [...] })`. **id `pe10s4` і id вправ — ключі прогресу, не перейменовувати.**
+Один файл `content/eng/pool-g10-e10s3.js`: `SLID.pool("eng", { id: "pe10s3", section: "e10s3", status: "draft", meta: {…}, sources: [...], items: [...] })`. **id `pe10s3` і id вправ — ключі прогресу, не перейменовувати.**
 
 ## Уроки для покриття (без фіналу)
-- `e10s4l1` — Floods, storms, earthquakes: natural disasters
-- `e10s4l2` — Look at those clouds! Will or going to?
-- `e10s4l3` — Weather, health and mood
-- `e10s4l4` — Temperatures will be falling: forecasts and warnings
-- `e10s4l5` — By 2030 we will have…: the Future Perfect
-- `e10s4l6` — Protecting nature in Ukraine and the UK
+- `e10s3l1` — National dishes of Ukraine and the UK
+- `e10s3l2` — Sweet, spicy or sour? Tastes and preferences
+- `e10s3l3` — I used to love sweets, Grandma would bake: states and actions
+- `e10s3l4` — Healthy food: what is good for you?
+- `e10s3l5` — Bad habits and how to break them
+- `e10s3l6` — I’m used to it: getting used to new food
 
 ## Що зробити (скіли `math-pool-diag` — розділ про пули мовних предметів — і `content-author`, розділ про англійську)
 1. Прочитай уроки розділу повністю: лексика, граматика, приклади, `sk` екранів, `learned`. **Чесне завдання (D-019):** вправа тренує лише слова й граматику, яких урок навчив; нового правила пул не вчить.
@@ -37,10 +39,10 @@ generated_by: tools/make-tasks.mjs --write-pool --subject eng
 6. Глосарій і пастки — memory/long/glossary/eng.md, memory/long/facts/eng.md, memory/long/pitfalls-content.md «Англійська».
 
 ## Обмеження
-Змінюй лише `content/eng/pool-g10-e10s4.js`, цю задачу й дописуй inbox. build і check — оркестратор. Уроки розділу не правити — пропозиції в inbox.
+Змінюй лише `content/eng/pool-g10-e10s3.js`, цю задачу й дописуй inbox. build і check — оркестратор. Уроки розділу не правити — пропозиції в inbox.
 
 ## Готово, коли
-- [ ] `node tools/validate.mjs --pool pe10s4` і `node tools/personalization-qa.mjs --pool pe10s4` — 0 помилок; `status: "draft"`.
+- [ ] `node tools/validate.mjs --pool pe10s3` і `node tools/personalization-qa.mjs --pool pe10s3` — 0 помилок; `status: "draft"`.
 - [ ] Нотатки: таблиця «урок → кількість / рівні / типи», словники, за якими звірено форми; рядок в inbox.
 - [ ] Задача → `tasks/review/` для **content-verifier зі свіжим контекстом** (розв'язати кожну вправу, звірити форми за словником).
 
