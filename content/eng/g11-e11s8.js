@@ -24,7 +24,7 @@
    Lviv, колишня учасниця penfriend club, семестр у Lithuania), Solomiia (студентка ветеринарії, Kharkiv).
    Форми, наголос і значення — Cambridge Dictionary (CD), CD Grammar «Wish», OALD.
    Увесь зміст — англійською, британська норма (D-055). Тексти, діалоги й герої — власні (docs/design/english.md §8).
-   Статус: draft (writer-e11s8). 7 уроків (6 + фінал). Будова — за розділами 10–11 кл. (e10s8, e11s1).
+   Статус: verified (verifier-e11s8, 2026-11-27). 7 уроків (6 + фінал). Будова — за розділами 10–11 кл. (e10s8, e11s1).
    Перевірка: node tools/validate.mjs --section e11s8 && node tools/stats.mjs --subject eng
    Схема й правила: docs/CONTENT_SCHEMA.md, style/ */
 SLID.section("eng", {
@@ -34,7 +34,7 @@ SLID.section("eng", {
   title: "Exams, careers and plans",
   why: "To talk about final exams, studying after school and international programmes. And to choose a career and share your plans and wishes.",
   requires: ["e7s6l3", "e8s1l2", "e8s5l4", "e8s8l5", "e9s2l4", "e9s7l4", "e9s8l5", "e10s2l6", "e10s4l2", "e10s4l5", "e10s5l4", "e10s6l4", "e10s6l5", "e10s8l2", "e10s8l6"],
-  meta: { author: "writer-e11s8", created: "2026-11-26", factcheck: null, teacher: null },
+  meta: { author: "writer-e11s8", created: "2026-11-26", factcheck: "verifier-e11s8, 2026-11-27 (reports/verify/write-eng-g11-e11s8.md)", teacher: null },
   badges: [
     { id: "e11s8boss", name: "Ready for the future", icon: "trophy", desc: "Finish the final lesson “Exams, careers and plans”" }
   ],
@@ -45,7 +45,7 @@ SLID.section("eng", {
       title: "Final exams: getting ready",
       short: "Final exams",
       icon: "book",
-      status: "draft",
+      status: "verified",
       why: "Final exams are coming. Learn the words for getting ready, and choose the right present or past form.",
       screens: [
         {
@@ -191,7 +191,7 @@ SLID.section("eng", {
       title: "International programmes and exchanges",
       short: "Exchanges",
       icon: "globe",
-      status: "draft",
+      status: "verified",
       why: "Study abroad for a term or work on a project with a school in another country. Read how three young people learn across borders.",
       screens: [
         {
@@ -240,11 +240,11 @@ SLID.section("eng", {
           sk: "read",
           eyebrow: "Reading: Learning across borders, part 1 of 3",
           title: "Read and choose.",
-          body: `<p><i><b>1. Yustyna, 20, Lviv</b><br>I was in the penfriend club at school, and now I’m in my second year of economics. This spring, I’m spending a term at a partner university in Lithuania through Erasmus+. It’s the European Union’s programme for education, training, youth and sport. The first Erasmus exchanges started in 1987. Students from Ukrainian universities can take part too, but only if their university has an agreement with a university abroad. Mine has a few partners, so I applied in the autumn. I had to write a letter about my reasons and show my level of English. I got a grant, so I don’t pay for my studies here. The courses I take are worth credits, and they will count towards my degree at home. At first, I was nervous about living abroad, but now I feel at home here. I share a flat with students from Spain and Georgia, and we speak English all the time.</i></p><p>Which sentence is true?</p>`,
+          body: `<p><i><b>1. Yustyna, 20, Lviv</b><br>I was in the penfriend club at school, and now I’m in my second year of economics. This spring, I’m spending a term at a partner university in Lithuania through Erasmus+. It’s the European Union’s programme for education, training, youth and sport. The first Erasmus exchanges started in 1987. Students from Ukrainian universities can spend a term abroad too, but only if their university has an agreement with a university abroad. Mine has a few partners, so I applied in the autumn. I had to write a letter about my reasons and show my level of English. I got a grant, so I don’t pay for my studies here. The courses I take are worth credits, and they will count towards my degree at home. At first, I was nervous about living abroad, but now I feel at home here. I share a flat with students from Spain and Georgia, and we speak English all the time.</i></p><p>Which sentence is true?</p>`,
           opts: [
             "Yustyna pays for her studies in Lithuania.",
             "Yustyna’s courses abroad will count towards her degree.",
-            "Any Ukrainian student can take part without an agreement."
+            "Any Ukrainian student can spend a term abroad without an agreement."
           ],
           correct: 1,
           hint: "What happens with her credits?",
@@ -308,7 +308,7 @@ SLID.section("eng", {
           type: "gaps",
           sk: "cult",
           title: "Complete the sentences.",
-          text: "The first Erasmus exchanges started in {*1987|2021|2027}. Students from Ukrainian universities can take part if their university has an {*agreement|exam|essay} with a partner abroad. The UK started the Turing scheme in {*2021|1987|2025}. eTwinning is an {*online platform|exchange term|open day} for school projects.",
+          text: "The first Erasmus exchanges started in {*1987|2021|2027}. Students from Ukrainian universities can spend a term abroad if their university has an {*agreement|exam|essay} with a partner abroad. The UK started the Turing scheme in {*2021|1987|2025}. eTwinning is an {*online platform|exchange term|open day} for school projects.",
           hint: "Look for the years in the texts of Yustyna and Emma.",
           fbOk: "Yes!",
           fbBad: "Read the three texts again: the years are there.",
@@ -365,7 +365,7 @@ SLID.section("eng", {
       title: "If I pass, if I passed, if I had passed: conditionals",
       short: "Conditionals",
       icon: "path",
-      status: "draft",
+      status: "verified",
       why: "A real future, an imagined present or a different past? Choose the right conditional for each situation.",
       screens: [
         {
@@ -523,7 +523,7 @@ SLID.section("eng", {
       title: "Choosing a career: what suits you?",
       short: "Choosing a career",
       icon: "target",
-      status: "draft",
+      status: "verified",
       why: "How do you choose a career? Talk about your strengths and plans, and choose the right form for the future.",
       screens: [
         {
@@ -594,7 +594,7 @@ SLID.section("eng", {
           sk: "gram",
           title: "Fill in the gaps.",
           body: `<p>On Friday evening, Dad talks to Oksana.</p>`,
-          text: "Dad: Our train {*leaves|left|has left} at 7.15 tomorrow morning. It’s on the timetable. Oksana: Then I{*’ll set|set|’d set} my alarm for six right now. Dad: Good idea. And Grandma {*is going to|went to|goes to} make us sandwiches for the journey. She told me yesterday.",
+          text: "Dad: Our train {*leaves|left|has left} at 7.15 tomorrow morning. It’s on the timetable. Oksana: Then I{*’ll set|set|’d set} my alarm for six right now. Dad: Good idea. And Grandma {*is going to|is going|goes to} make us sandwiches for the journey. She told me yesterday.",
           hint: "A timetable → ? A decision at this moment → ? A plan that Grandma has already made → ?",
           fbOk: "Yes!",
           fbBad: "Look at the box “The future: an overview, part 1”.",
@@ -669,7 +669,7 @@ SLID.section("eng", {
       title: "Prestigious jobs in Ukraine and abroad",
       short: "Prestigious jobs",
       icon: "star",
-      status: "draft",
+      status: "verified",
       why: "What makes a job prestigious? Learn words to talk about jobs, and compare how doctors train in Ukraine and the UK.",
       screens: [
         {
@@ -807,7 +807,7 @@ SLID.section("eng", {
       title: "Goodbye, school! Friends, plans and wishes",
       short: "Goodbye, school!",
       icon: "users",
-      status: "draft",
+      status: "verified",
       why: "It’s the last day of school. Say what you hope and wish, sum up a discussion and end a conversation warmly.",
       screens: [
         {
@@ -965,7 +965,7 @@ SLID.section("eng", {
       title: "Ready for the future",
       short: "Section final",
       icon: "trophy",
-      status: "draft",
+      status: "verified",
       boss: true,
       badge: "e11s8boss",
       why: "Check everything from this section. Your points are doubled.",
