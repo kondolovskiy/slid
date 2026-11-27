@@ -1,5 +1,5 @@
 /* Слід · Англійська мова, 7 клас — пул вправ для тренування до розділу «Cinema and theatre» (e7s4)
-   Статус: draft (автор writer-pe7s4, 2026-11-27). Уроки e7s4l1–e7s4l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e7s4l7 без вправ.
+   Статус: verified (verifier-pe7s3-pe7s4, 2026-11-27; звіт reports/verify/write-eng-pool-g7-e7s4.md); автор writer-pe7s4, 2026-11-27. Уроки e7s4l1–e7s4l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e7s4l7 без вправ.
    Вправи власні (docs/design/english.md §8): лише слова, форми й правила уроків e7s4 і попередніх розділів; англійською, британська норма (D-055).
    Джерело — програма класу (program: true): МП-ІМ, 7 кл. — тема «Кіно і театр» (відвідування театру, кінотеатру, жанри, елементи інтер'єру театру)
    і функції «пропонувати, приймати, відхиляти пропозицію», «висловлювати власні враження, почуття та емоції» (с. 32);
@@ -12,8 +12,8 @@
 SLID.pool("eng", {
   id: "pe7s4",
   section: "e7s4",
-  status: "draft",
-  meta: { author: "writer-pe7s4", created: "2026-11-27", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "writer-pe7s4", created: "2026-11-27", factcheck: "verifier-pe7s3-pe7s4 (reports/verify/write-eng-pool-g7-e7s4.md)", teacher: null },
   sources: [
     { id: "mpim", program: true, title: "Модельна навчальна програма «Іноземна мова. 5–9 класи» (Редько В. Г. та ін.), наказ МОН № 795 від 12.07.2021 — 7 клас: тема «Кіно і театр», функції (с. 32), відгук про фільм (с. 31), граматика B1 (с. 34)", url: "https://osvita.ua/doc/files/news/831/83117/Inoz_mov_5-9-kl_Redko_ta_in_14_07.pdf" }
   ],
@@ -134,13 +134,13 @@ SLID.pool("eng", {
       steps: ["Row 15 – they couldn’t see well, so the seats weren’t near the stage.", "There was an <b>interval</b> with juice, and the <b>audience clapped</b> at the end."] },
     { id: "a19", lesson: "e7s4l2", lvl: 1, sk: "phon", src: "mpim с. 32",
       type: "stress", title: "Find the stressed syllable.",
-      words: ["+cur|tain", "+au|di|ence"],
-      steps: ["<u>cur</u>tain, <u>au</u>dience: the first part is strong."] },
+      words: ["+cur|tain", "+au|di|ence", "car|+toon"],
+      steps: ["<u>cur</u>tain, <u>au</u>dience: the first part is strong.", "car<u>toon</u>: the last part is strong."] },
     { id: "a20", lesson: "e7s4l2", lvl: 2, sk: "phon", src: "mpim с. 32",
       type: "stress", title: "Find the stressed syllable.",
-      words: ["+in|ter|val", "+cur|tain"],
-      hint: "Say the words. Is the strong part at the start or at the end?",
-      steps: ["<u>in</u>terval, <u>cur</u>tain: the first part is strong."] },
+      words: ["+in|ter|val", "ad|+ven|ture", "+cur|tain"],
+      hint: "Say the words. Is the strong part at the start, in the middle or at the end?",
+      steps: ["<u>in</u>terval, <u>cur</u>tain: the first part is strong.", "ad<u>ven</u>ture: the middle part is strong."] },
     { id: "a21", lesson: "e7s4l2", lvl: 3, sk: "phon", src: "mpim с. 32",
       type: "stress", title: "Find the stressed syllable.",
       words: ["+in|ter|val", "car|+toon", "+au|di|ence", "ad|+ven|ture"],

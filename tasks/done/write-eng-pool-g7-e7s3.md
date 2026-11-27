@@ -6,7 +6,7 @@ type: write-pool
 subject: eng
 grade: 7
 section: e7s3
-status: review
+status: done
 claimed_by: writer-pe7s3
 created: 2026-11-27
 depends_on: []
@@ -84,3 +84,6 @@ writer-pe7s3, 2026-11-27. Файл `content/eng/pool-g7-e7s3.js`, пул `pe7s3`
 2. a16 — `order` для sk write (діалог прохання про допомогу); порядок однозначний репліками.
 3. a61 mustn’t vs don’t have to і a63/a64 shouldn’t/should — дистрактор граматичний, але суперечить умові («isn’t necessary», «with a bad ankle»), як в уроці e7s3l5 final.
 4. a12/a13 — stress з одним словом іншого наголосу (appointment); інші l1-слова наголошені на 1-му.
+
+## Верифікація
+verifier-pe7s3-pe7s4, 2026-11-27: verified, звіт reports/verify/write-eng-pool-g7-e7s3.md.

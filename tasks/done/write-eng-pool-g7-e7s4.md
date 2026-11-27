@@ -6,7 +6,7 @@ type: write-pool
 subject: eng
 grade: 7
 section: e7s4
-status: review
+status: done
 claimed_by: writer-pe7s4
 created: 2026-11-27
 depends_on: []
@@ -82,3 +82,6 @@ writer-pe7s4, 2026-11-27. Файл `content/eng/pool-g7-e7s4.js`, пул `pe7s4`
 1. a21 — stress lvl3 змішує слова l2 (interval, audience) і l1 (cartoon, adventure, підкреслені в e7s4l1): у l2 всі підкреслені слова мають наголос на 1-му складі, тож набір з іншим наголосом без l1 неможливий.
 2. a19, a20 — набори лише з першим наголошеним складом (як stress в уроці l2).
 3. a63 — «Can he watch it?» з 7+ і Dmytro 9 → old enough (зворотна пастка до інтро l6).
+
+## Верифікація
+verifier-pe7s3-pe7s4, 2026-11-27: verified, звіт reports/verify/write-eng-pool-g7-e7s4.md.

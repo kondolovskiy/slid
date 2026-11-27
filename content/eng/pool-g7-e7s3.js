@@ -1,5 +1,5 @@
 /* Слід · Англійська мова, 7 клас — пул вправ для тренування до розділу «Health and medicine» (e7s3)
-   Статус: draft (автор writer-pe7s3, 2026-11-27). Уроки e7s3l1–e7s3l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e7s3l7 без вправ.
+   Статус: verified (verifier-pe7s3-pe7s4, 2026-11-27; звіт reports/verify/write-eng-pool-g7-e7s3.md); автор writer-pe7s3, 2026-11-27. Уроки e7s3l1–e7s3l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e7s3l7 без вправ.
    Вправи власні (docs/design/english.md §8): лише слова, форми й правила уроків e7s3 і попередніх розділів; англійською, британська норма (D-055).
    Джерело — програма класу (program: true): МП-ІМ, 7 кл. — тема «Охорона здоров'я» (відвідування лікаря, медичні заклади, захворювання,
    симптоми, ліки) і функція «просити про допомогу» (с. 32); інформація на упаковках лікарських засобів (с. 28);
@@ -11,8 +11,8 @@
 SLID.pool("eng", {
   id: "pe7s3",
   section: "e7s3",
-  status: "draft",
-  meta: { author: "writer-pe7s3", created: "2026-11-27", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "writer-pe7s3", created: "2026-11-27", factcheck: "verifier-pe7s3-pe7s4 (reports/verify/write-eng-pool-g7-e7s3.md)", teacher: null },
   sources: [
     { id: "mpim", program: true, title: "Модельна навчальна програма «Іноземна мова. 5–9 класи» (Редько В. Г. та ін.), наказ МОН № 795 від 12.07.2021 — 7 клас: тема «Охорона здоров'я» (с. 32), упаковки лікарських засобів (с. 28), граматика B1 (с. 34–35)", url: "https://osvita.ua/doc/files/news/831/83117/Inoz_mov_5-9-kl_Redko_ta_in_14_07.pdf" }
   ],
@@ -77,7 +77,7 @@ SLID.pool("eng", {
       steps: ["Kharkiv is in Ukraine. In Ukraine, call <b>103</b> for an ambulance.", "999 is the number in the UK."] },
     { id: "a10", lesson: "e7s3l1", lvl: 3, sk: "cult", src: "mpim с. 32",
       type: "gaps", title: "Fill in the gaps.",
-      body: "<p>Emma’s class is visiting Kyiv. Andrii tells Emma about ambulances.</p>",
+      body: "<p>Emma is visiting Kyiv again. Andrii tells Emma about ambulances.</p>",
       text: "Andrii: Here in Ukraine, we phone {*103|999} for an ambulance. Emma: Really? At home in England, we phone {*999|103}.",
       hint: "Which country is each sentence about?",
       steps: ["Ukraine: <b>103</b> for an ambulance.", "England is in the UK: <b>999</b>."] },
@@ -149,7 +149,7 @@ SLID.pool("eng", {
       body: "<p><i>Hi Ostap! I can’t meet you in the park today. I’ve got a bad cold, but I haven’t got a temperature. – Taras</i></p><p>Why can’t Taras meet Ostap?</p>",
       opts: ["He’s got a cold.", "He’s got a temperature.", "He’s got toothache."],
       correct: 0,
-      steps: ["Taras writes: “I’ve got <b>a cold</b> and a sore throat.”", "He <b>hasn’t</b> got a temperature."] },
+      steps: ["Taras writes: “I’ve got <b>a bad cold</b>.”", "He <b>hasn’t</b> got a temperature."] },
     { id: "a22", lesson: "e7s3l2", lvl: 2, sk: "read", src: "mpim с. 32",
       type: "multi", title: "Choose all the correct answers.",
       body: "<p>Dr Bondar asks Bohdan about his symptoms.</p><p><b>Bohdan:</b> <i>I feel very tired, and I cough all day. My back hurts a bit too. But my ears and my throat are OK.</i></p><p>Which symptoms has Bohdan got?</p>",
@@ -208,9 +208,9 @@ SLID.pool("eng", {
     { id: "a31", lesson: "e7s3l2", lvl: 3, sk: "write", src: "mpim с. 32",
       type: "gaps", title: "Complete the sentences.",
       body: "<p>A week later, Andrii writes to Emma again.</p>",
-      text: "Hi Emma! I feel much better. {*Nothing|Anything} hurts now, and I haven’t got a temperature. Well, my throat is still a bit bad: I’ve still got a {*sore throat|backache}. But Mum says I don’t have to buy {*anything|nothing} at the chemist’s.",
-      hint: "Is there a not word in each sentence? And which part of Andrii is still bad?",
-      steps: ["No <i>not</i>: <b>Nothing</b> hurts. His throat is still bad: a <b>sore throat</b>.", "With <i>don’t</i>: I don’t have to buy <b>anything</b>."] },
+      text: "Hi Emma! I feel much better. My throat still hurts a bit: I’ve still got a {*sore throat|backache}. But {*nothing|anything} else hurts now, and I haven’t got a temperature. Mum says I don’t have to buy {*anything|nothing} at the chemist’s.",
+      hint: "Is there a not word in each sentence? And which part of Andrii still hurts?",
+      steps: ["His throat still hurts: a <b>sore throat</b>. No <i>not</i>: <b>nothing</b> else hurts.", "With <i>don’t</i>: I don’t have to buy <b>anything</b>."] },
 
     /* ───────────── e7s3l3 · I’ve hurt my knee! What has happened? ───────────── */
     { id: "a32", lesson: "e7s3l3", lvl: 1, sk: "gram", src: "mpim с. 35",
@@ -346,9 +346,9 @@ SLID.pool("eng", {
     { id: "a52", lesson: "e7s3l4", lvl: 3, sk: "write", src: "mpim с. 35",
       type: "gaps", title: "Complete the sentences.",
       body: "<p>Emma writes to Andrii.</p>",
-      text: "Hi Andrii! {*When did|When has} your cough start? Grandad is ill too. He {*has had|had} a cough for a week. He {*saw|has seen} the doctor on Monday.",
+      text: "Hi Andrii! {*When did|When has} your cough start? Grandad is ill too. He {*has had|had} a cough for a week now. He {*saw|has seen} the doctor on Monday.",
       hint: "When? → ? For a week, up to now → ? On Monday → ?",
-      steps: ["When…? → <b>When did</b> it start? On Monday → he <b>saw</b>.", "For a week up to now → he <b>has had</b>."] },
+      steps: ["When…? → <b>When did</b> it start? On Monday → he <b>saw</b>.", "A week up to now → he <b>has had</b>."] },
 
     /* ───────────── e7s3l5 · You ought to stay in bed: advice ───────────── */
     { id: "a53", lesson: "e7s3l5", lvl: 1, sk: "gram", src: "mpim с. 34",
