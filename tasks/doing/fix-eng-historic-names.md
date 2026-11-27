@@ -1,11 +1,13 @@
 ---
+claimed_from: todo
+claimed_at: 2026-11-27T07:47:27.428Z
 id: fix-eng-historic-names
 type: fix
 subject: eng
 grade: 
 depends_on: [style-eng-g11]
 status: todo
-claimed_by: 
+claimed_by: writer-fix-eng-historic-names
 created: 2026-11-27
 source: orchestrator (рішення людини D-057, memory/short/inbox.md)
 ---
