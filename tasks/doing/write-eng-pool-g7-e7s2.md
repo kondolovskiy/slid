@@ -1,16 +1,18 @@
 ---
-id: write-eng-pool-g7-e7s4
+claimed_from: todo
+claimed_at: 2026-11-27T09:47:14.716Z
+id: write-eng-pool-g7-e7s2
 type: write-pool
 subject: eng
 grade: 7
-section: e7s4
+section: e7s2
 status: todo
-claimed_by:
+claimed_by: writer-pe7s2
 created: 2026-11-27
 depends_on: []
 generated_by: tools/make-tasks.mjs --write-pool --subject eng
 ---
-# Зібрати пул тренування «Cinema and theatre» (Англійська мова, 7 клас, e7s4)
+# Зібрати пул тренування «In the kitchen: cooking and laying the table» (Англійська мова, 7 клас, e7s2)
 
 ## Навіщо
 Пул — вправи для самостійного тренування після уроку з інтервальним повторенням (docs/PERSONALIZATION.md §3).
@@ -18,15 +20,15 @@ generated_by: tools/make-tasks.mjs --write-pool --subject eng
 Контракт полів — docs/CONTENT_SCHEMA.md §10, «Пули мовних предметів»; якщо він розходиться з цим текстом — правий CONTENT_SCHEMA. Рішення людини — docs/design/english.md §7, §11.1.
 
 ## Результат
-Один файл `content/eng/pool-g7-e7s4.js`: `SLID.pool("eng", { id: "pe7s4", section: "e7s4", status: "draft", meta: {…}, sources: [...], items: [...] })`. **id `pe7s4` і id вправ — ключі прогресу, не перейменовувати.**
+Один файл `content/eng/pool-g7-e7s2.js`: `SLID.pool("eng", { id: "pe7s2", section: "e7s2", status: "draft", meta: {…}, sources: [...], items: [...] })`. **id `pe7s2` і id вправ — ключі прогресу, не перейменовувати.**
 
 ## Уроки для покриття (без фіналу)
-- `e7s4l1` — Comedy, cartoon or adventure film? Film genres
-- `e7s4l2` — At the theatre: the stage, the seats, the box office
-- `e7s4l3` — We could see a play! Suggestions
-- `e7s4l4` — Bored or boring? Interested or interesting?
-- `e7s4l5` — Much better, a bit longer, not as funny as the book
-- `e7s4l6` — Old enough to watch it? A film review
+- `e7s2l1` — Pots, pans and plates: kitchen things
+- `e7s2l2` — Boil, fry or bake? Ways of cooking
+- `e7s2l3` — A slice of bread, a little salt: how much?
+- `e7s2l4` — It should be cooked for ten minutes: recipes
+- `e7s2l5` — Laying the table: another plate, the other fork
+- `e7s2l6` — Do have some more! Guests at the table
 
 ## Що зробити (скіли `math-pool-diag` — розділ про пули мовних предметів — і `content-author`, розділ про англійську)
 1. Прочитай уроки розділу повністю: лексика, граматика, приклади, `sk` екранів, `learned`. **Чесне завдання (D-019):** вправа тренує лише слова й граматику, яких урок навчив; нового правила пул не вчить.
@@ -37,10 +39,10 @@ generated_by: tools/make-tasks.mjs --write-pool --subject eng
 6. Глосарій і пастки — memory/long/glossary/eng.md, memory/long/facts/eng.md, memory/long/pitfalls-content.md «Англійська».
 
 ## Обмеження
-Змінюй лише `content/eng/pool-g7-e7s4.js`, цю задачу й дописуй inbox. build і check — оркестратор. Уроки розділу не правити — пропозиції в inbox.
+Змінюй лише `content/eng/pool-g7-e7s2.js`, цю задачу й дописуй inbox. build і check — оркестратор. Уроки розділу не правити — пропозиції в inbox.
 
 ## Готово, коли
-- [ ] `node tools/validate.mjs --pool pe7s4` і `node tools/personalization-qa.mjs --pool pe7s4` — 0 помилок; `status: "draft"`.
+- [ ] `node tools/validate.mjs --pool pe7s2` і `node tools/personalization-qa.mjs --pool pe7s2` — 0 помилок; `status: "draft"`.
 - [ ] Нотатки: таблиця «урок → кількість / рівні / типи», словники, за якими звірено форми; рядок в inbox.
 - [ ] Задача → `tasks/review/` для **content-verifier зі свіжим контекстом** (розв'язати кожну вправу, звірити форми за словником).
 

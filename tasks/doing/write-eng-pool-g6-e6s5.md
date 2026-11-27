@@ -1,16 +1,18 @@
 ---
-id: write-eng-pool-g6-e6s4
+claimed_from: todo
+claimed_at: 2026-11-27T09:47:14.555Z
+id: write-eng-pool-g6-e6s5
 type: write-pool
 subject: eng
 grade: 6
-section: e6s4
+section: e6s5
 status: todo
-claimed_by:
+claimed_by: writer-pe6s5
 created: 2026-11-27
 depends_on: []
 generated_by: tools/make-tasks.mjs --write-pool --subject eng
 ---
-# Зібрати пул тренування «Sport» (Англійська мова, 6 клас, e6s4)
+# Зібрати пул тренування «Getting ready for a trip» (Англійська мова, 6 клас, e6s5)
 
 ## Навіщо
 Пул — вправи для самостійного тренування після уроку з інтервальним повторенням (docs/PERSONALIZATION.md §3).
@@ -18,15 +20,15 @@ generated_by: tools/make-tasks.mjs --write-pool --subject eng
 Контракт полів — docs/CONTENT_SCHEMA.md §10, «Пули мовних предметів»; якщо він розходиться з цим текстом — правий CONTENT_SCHEMA. Рішення людини — docs/design/english.md §7, §11.1.
 
 ## Результат
-Один файл `content/eng/pool-g6-e6s4.js`: `SLID.pool("eng", { id: "pe6s4", section: "e6s4", status: "draft", meta: {…}, sources: [...], items: [...] })`. **id `pe6s4` і id вправ — ключі прогресу, не перейменовувати.**
+Один файл `content/eng/pool-g6-e6s5.js`: `SLID.pool("eng", { id: "pe6s5", section: "e6s5", status: "draft", meta: {…}, sources: [...], items: [...] })`. **id `pe6s5` і id вправ — ключі прогресу, не перейменовувати.**
 
 ## Уроки для покриття (без фіналу)
-- `e6s4l1` — Football, judo, swimming: kinds of sport
-- `e6s4l2` — Which sport do you prefer and why?
-- `e6s4l3` — I could swim when I was five
-- `e6s4l4` — What were you doing at six o’clock? The Past Continuous
-- `e6s4l5` — I was running when it started to rain
-- `e6s4l6` — What a match! Sports news
+- `e6s5l1` — By train, by plane or by ferry?
+- `e6s5l2` — When does the train leave? Timetables
+- `e6s5l3` — We’re leaving on Friday: travel plans
+- `e6s5l4` — Packing a suitcase: it might be cold
+- `e6s5l5` — Tickets and passports: you have to show them
+- `e6s5l6` — Buying a train ticket at the station
 
 ## Що зробити (скіли `math-pool-diag` — розділ про пули мовних предметів — і `content-author`, розділ про англійську)
 1. Прочитай уроки розділу повністю: лексика, граматика, приклади, `sk` екранів, `learned`. **Чесне завдання (D-019):** вправа тренує лише слова й граматику, яких урок навчив; нового правила пул не вчить.
@@ -37,10 +39,10 @@ generated_by: tools/make-tasks.mjs --write-pool --subject eng
 6. Глосарій і пастки — memory/long/glossary/eng.md, memory/long/facts/eng.md, memory/long/pitfalls-content.md «Англійська».
 
 ## Обмеження
-Змінюй лише `content/eng/pool-g6-e6s4.js`, цю задачу й дописуй inbox. build і check — оркестратор. Уроки розділу не правити — пропозиції в inbox.
+Змінюй лише `content/eng/pool-g6-e6s5.js`, цю задачу й дописуй inbox. build і check — оркестратор. Уроки розділу не правити — пропозиції в inbox.
 
 ## Готово, коли
-- [ ] `node tools/validate.mjs --pool pe6s4` і `node tools/personalization-qa.mjs --pool pe6s4` — 0 помилок; `status: "draft"`.
+- [ ] `node tools/validate.mjs --pool pe6s5` і `node tools/personalization-qa.mjs --pool pe6s5` — 0 помилок; `status: "draft"`.
 - [ ] Нотатки: таблиця «урок → кількість / рівні / типи», словники, за якими звірено форми; рядок в inbox.
 - [ ] Задача → `tasks/review/` для **content-verifier зі свіжим контекстом** (розв'язати кожну вправу, звірити форми за словником).
 
