@@ -1,5 +1,5 @@
 /* Слід · Англійська мова, 9 клас — пул тренування до розділу e9s2 «The environment»
-   Статус: draft; автор writer-pe9s2, 2026-11-27. Уроки e9s2l1–e9s2l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e9s2l7 без вправ.
+   Статус: verified (verifier-pe9s2, 2026-11-27; reports/verify/write-eng-pool-g9-e9s2.md); автор writer-pe9s2, 2026-11-27. Уроки e9s2l1–e9s2l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e9s2l7 без вправ.
    Джерело — програма класу (program: true): МП-ІМ (Редько В. Г. та ін., наказ МОН № 795 від 12.07.2021), 9 кл.:
    с. 33 — тема «Природа і погода»: навколишнє середовище; охорона довкілля; рослинний і тваринний світ (розд. 5.2.3), функції —
    висловлювати переконання, аргументувати думку, організувати захід; с. 34 — Adverbs (certainty), Future continuous (affirmative,
@@ -16,8 +16,8 @@
 SLID.pool("eng", {
   id: "pe9s2",
   section: "e9s2",
-  status: "draft",
-  meta: { author: "writer-pe9s2", created: "2026-11-27", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "writer-pe9s2", created: "2026-11-27", factcheck: "verifier-pe9s2, 2026-11-27 (reports/verify/write-eng-pool-g9-e9s2.md)", teacher: null },
   sources: [
     { id: "mpim", short: "МП-ІМ", program: true,
       title: "Модельна навчальна програма «Іноземна мова. 5–9 класи» (Редько В. Г., Шаленко О. П., Сотникова С. І. та ін.), наказ МОН від 12.07.2021 № 795 — 9 клас: тема (с. 33), граматика B1 (с. 34–35)",
@@ -35,7 +35,7 @@ SLID.pool("eng", {
       body: "<p>Emma writes about a new park in her town.</p>",
       text: "Lots of {*wildlife|pollution|rubbish} lives in the new park: birds, squirrels and other animals. But some people leave {*rubbish|wildlife|pollution} on the grass after picnics.",
       hint: "Which word is about wild animals and plants? Which one means things we throw away?",
-      steps: ["Birds, squirrels and frogs are <b>wildlife</b>.", "Things people throw away on the grass are <b>rubbish</b>."] },
+      steps: ["Birds, squirrels and other wild animals are <b>wildlife</b>.", "Things people throw away on the grass are <b>rubbish</b>."] },
     { id: "a03", lesson: "e9s2l1", lvl: 3, sk: "vocab", src: "mpim с. 33",
       type: "word", title: "Write the missing word.",
       body: "<p>Use the word <i>recycle</i>. Change its form.</p>",
@@ -67,14 +67,14 @@ SLID.pool("eng", {
       steps: ["<u>wild</u>life: the first part.", "pro<u>tect</u>: the second part."] },
     { id: "a08", lesson: "e9s2l1", lvl: 2, sk: "phon", src: "mpim с. 33",
       type: "stress", title: "Find the stressed syllable.",
-      words: ["pol|+lute", "+rub|bish", "re|+cy|cle"],
+      words: ["+rub|bish", "re|+cy|cle", "+for|est"],
       hint: "Say each word slowly. Are they all stressed in the same place?",
-      steps: ["pol<u>lute</u>, re<u>cy</u>cle: the second part.", "<u>rub</u>bish: the first part."] },
+      steps: ["<u>rub</u>bish, <u>for</u>est: the first part.", "re<u>cy</u>cle: the second part."] },
     { id: "a09", lesson: "e9s2l1", lvl: 3, sk: "phon", src: "mpim с. 33",
       type: "stress", title: "Find the stressed syllable.",
-      words: ["en|+vi|ron|ment", "+plas|tic", "pol|+lu|tion", "+traf|fic"],
+      words: ["en|+vi|ron|ment", "+na|ture", "pol|+lu|tion", "+wild|life"],
       hint: "Two words have the stress at the start. The other two don’t.",
-      steps: ["<u>plas</u>tic, <u>traf</u>fic: the first part.", "en<u>vi</u>ronment, pol<u>lu</u>tion: the second part."] },
+      steps: ["<u>na</u>ture, <u>wild</u>life: the first part.", "en<u>vi</u>ronment, pol<u>lu</u>tion: the second part."] },
 
     /* ───────────── e9s2l2 · Rare plants and animals of Ukraine ───────────── */
     { id: "a10", lesson: "e9s2l2", lvl: 1, sk: "cult", src: "mpim с. 33",
@@ -105,7 +105,7 @@ SLID.pool("eng", {
       steps: ["The guide says black storks are <b>very shy</b>.", "Shy birds hide, so it’s lucky to see one."] },
     { id: "a14", lesson: "e9s2l2", lvl: 2, sk: "read", src: "mpim с. 33",
       type: "multi", title: "Choose all the correct answers.",
-      body: "<p><i>Last spring, our class visited a nature reserve in Polissia. A guide showed us snowdrops in the forest. “These flowers are rare,” she said. “Please don’t pick them.” We didn’t see a lynx, but the guide showed us a photo of one. – Daryna</i></p><p>Which sentences are true?</p>",
+      body: "<p><i>Last spring, our class visited a nature reserve in the Carpathians. A guide showed us snowdrops in the forest. “These flowers are rare,” she said. “Please don’t pick them.” We didn’t see a lynx, but the guide showed us a photo of one. – Daryna</i></p><p>Which sentences are true?</p>",
       opts: ["Daryna saw snowdrops in the forest.", "Daryna picked some snowdrops.", "Daryna saw a lynx in the forest.", "The guide asked them not to pick the flowers."],
       correct: [0, 3],
       hint: "Read about the snowdrops and the lynx again. What did the guide show them?",
@@ -124,7 +124,7 @@ SLID.pool("eng", {
     { id: "a17", lesson: "e9s2l2", lvl: 2, sk: "vocab", src: "mpim с. 33",
       type: "word", title: "Write the missing word.",
       body: "<p>Taras’s guide works in a place where wild animals and plants are protected.</p>",
-      before: "She works in a nature", after: ".",
+      before: "He works in a nature", after: ".",
       answer: ["reserve", "park"],
       hint: "Remember the words about the Red Book: a place where animals and plants are protected.",
       steps: ["A place where animals and plants are protected is a <b>nature reserve</b>."] },
@@ -175,7 +175,7 @@ SLID.pool("eng", {
       type: "word", title: "Write the missing words.",
       body: "<p>The sky over the park is very dark. Mariia writes to the club.</p>",
       before: "Look at the sky! It’s", after: "rain soon.",
-      answer: ["going to", "about to"],
+      answer: ["going to", "about to", "likely to", "definitely going to", "probably going to"],
       steps: ["She can see signs now: <b>It’s going to</b> rain.", "be going to + verb."] },
     { id: "a26", lesson: "e9s2l3", lvl: 2, sk: "write", src: "mpim с. 34",
       type: "gaps", title: "Complete the sentences.",
@@ -321,8 +321,8 @@ SLID.pool("eng", {
     { id: "a47", lesson: "e9s2l6", lvl: 1, sk: "func", src: "mpim с. 33",
       type: "gaps", title: "Complete the sentences.",
       body: "<p>Andrii talks to his class.</p>",
-      text: "We should use both sides of the paper {*because|that’s why} it saves trees. {*Let’s|Let} start today!",
-      steps: ["<b>because</b> + reason: it saves trees.", "<b>Let’s</b> + verb: a plan."] },
+      text: "We should use both sides of the paper {*because|that’s why} we need to protect forests. {*Let’s|Let} start today!",
+      steps: ["<b>because</b> + reason: we need to protect forests.", "<b>Let’s</b> + verb: a plan."] },
     { id: "a48", lesson: "e9s2l6", lvl: 2, sk: "func", src: "mpim с. 33",
       type: "choice", title: "Choose the correct answer.",
       body: "<p>Andrii’s class asked 25 pupils: “Which day is best for our eco event?” Every pupil chose one day.</p><p>What can Andrii say?</p>",
@@ -345,7 +345,7 @@ SLID.pool("eng", {
     { id: "a49", lesson: "e9s2l6", lvl: 3, sk: "func", src: "mpim с. 33",
       type: "gaps", title: "Complete the sentences.",
       body: "<p>The eco club plans a project in Oksana’s school.</p>",
-      text: "Oksana: People leave a lot of rubbish in the park in our village. {*That’s why|Because} we want to clean it on Saturday. Ms Marchenko: Good idea! {*Who’s going to|Who going to|Who are going to} tell the village about it? Dmytro: Me! I’ll make a poster with Halyna.",
+      text: "Oksana: People leave a lot of rubbish near the bus stop in our village. {*That’s why|Because} we want to clean it on Saturday. Ms Marchenko: Good idea! {*Who’s going to|Who going to|Who are going to} tell the village about it? Dmytro: Me! I’ll make a poster with Halyna.",
       hint: "Is the reason before or after the gap? Who + which form of be?",
       steps: ["Reason first, then <b>That’s why</b> + what we need.", "<b>Who’s going to</b> tell the village? (Who is going to…)"] },
     { id: "a50", lesson: "e9s2l6", lvl: 1, sk: "write", src: "mpim с. 33",

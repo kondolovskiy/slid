@@ -6,7 +6,7 @@ type: write-pool
 subject: eng
 grade: 9
 section: e9s2
-status: review
+status: done
 claimed_by: writer-pe9s2
 created: 2026-11-27
 depends_on: []
@@ -75,3 +75,6 @@ generated_by: tools/make-tasks.mjs --write-pool --subject eng
 **Словники (форма, наголос):** CD — https://dictionary.cambridge.org/dictionary/english/<word>: environment «ɪnˈvaɪ.rə.mənt», pollution «pəˈluː.ʃən», pollute «pəˈluːt», recycle «ˌriːˈsaɪ.kəl», protect «prəˈtekt», wildlife «ˈwaɪld.laɪf», rubbish «ˈrʌb.ɪʃ», plastic «ˈplæs.tɪk», traffic «ˈtræf.ɪk»; species — «plural species». OALD — https://www.oxfordlearnersdictionaries.com/definition/english/<word>: recycle «/ˌriːˈsaɪkl/», pollute «/pəˈluːt/», environment «/ɪnˈvaɪrənmənt/». Граматика — як в уроці (CD Grammar «Will», «Be going to», «Future continuous»; URL — tasks/…/write-eng-g9-e9s2.md).
 
 **Для людини/оркестратора (не в пулі):** урок e9s2l7 Task 4 «This time tomorrow, Emma and Tom will be flying to Kyiv» — суперечить pitfalls-content п. 21 (цивільні аеропорти України закриті); рядок FIX в inbox.
+
+## Верифікація
+**verifier-pe9s2 (verifier-pe9s1-pe9s2), 2026-11-27.** Вердикт: verified. Звіт — reports/verify/write-eng-pool-g9-e9s2.md. validate — 0 помилок; personalization-qa — без помилок.

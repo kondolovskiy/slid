@@ -6,7 +6,7 @@ type: write-pool
 subject: eng
 grade: 9
 section: e9s1
-status: review
+status: done
 claimed_by: writer-pe9s1
 created: 2026-11-27
 depends_on: []
@@ -73,3 +73,6 @@ generated_by: tools/make-tasks.mjs --write-pool --subject eng
 **Нові дрібні деталі героїв (NOTE в inbox):** Stepan — у дитинстві сором'язливий, бабуся читала казки; два роки вчить англійську онлайн; хоче бути вчителем; Halyna у 8 р. хотіла бути співачкою; Zlata вчиться в музичній школі з 7 р.; Dmytro навчився плавати в дядька Ivan в Odesa (10 р.); Andrii — тітка Iryna вплинула на нього; Bohdan — грав з татом у теніс у парку біля дому, у 10 р. хотів кинути теніс; Tom боявся води, дідусь водив у басейн; Mariia — тато навчив їздити на велосипеді; Kyrylo в 8 р. знайшов книжку про старий Київ.
 
 **Словники (форма, наголос):** CD — https://dictionary.cambridge.org/dictionary/english/<word>: surname «ˈsɜː.neɪm», ukrainian «juːˈkreɪ.ni.ən», british «ˈbrɪt.ɪʃ», nationality «ˌnæʃ.ənˈæl.ə.ti», information «ˌɪn.fəˈmeɪ.ʃən», personal «ˈpɜː.sən.əl», language «ˈlæŋ.ɡwɪdʒ», birthday «ˈbɜːθ.deɪ», character «ˈkær.ək.tər», relaxed «rɪˈlækst», personality «ˌpɜː.sənˈæl.ə.ti», confident «ˈkɒn.fɪ.dənt», afraid «əˈfreɪd», honest «ˈɒn.ɪst», angry «ˈæŋ.ɡri», autobiography, childhood, patient, influence; broad-minded «willing to accept many different types of behaviour, beliefs…». OALD — https://www.oxfordlearnersdictionaries.com/definition/english/<word>: ukrainian «/juːˈkreɪniən/», nationality «/ˌnæʃəˈnæləti/», personality «/ˌpɜːsəˈnæləti/». Граматика — як в уроці (CD Grammar used to, would, future in the past; URL — tasks/…/write-eng-g9-e9s1.md).
+
+## Верифікація
+**verifier-pe9s1 (verifier-pe9s1-pe9s2), 2026-11-27.** Вердикт: verified. Звіт — reports/verify/write-eng-pool-g9-e9s1.md. validate — 0 помилок; personalization-qa — без помилок.
