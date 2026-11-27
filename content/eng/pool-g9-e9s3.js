@@ -1,5 +1,5 @@
 /* Слід · Англійська мова, 9 клас — пул вправ для тренування до розділу «Fashion and clothes» (e9s3)
-   Статус: draft; автор writer-pe9s3, 2026-11-27. Уроки e9s3l1–e9s3l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e9s3l7 без вправ.
+   Статус: verified (verifier-pe9s3-pe9s4, reports/verify/write-eng-pool-g9-e9s3.md); автор writer-pe9s3, 2026-11-27. Уроки e9s3l1–e9s3l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e9s3l7 без вправ.
    Вправи власні (docs/design/english.md §8): лише слова, форми й правила уроків e9s3 і попередніх розділів; англійською, британська норма (D-055).
    Джерело — програма класу (program: true): МП-ІМ, 9 кл. — тема «Одяг»: мода, елементи одягу; функція «висловлювати власне
    ставлення до вчинків, думок, позицій інших людей» (с. 33); граматика B1 (с. 34): Adjectives — combining adjectives;
@@ -16,8 +16,8 @@
 SLID.pool("eng", {
   id: "pe9s3",
   section: "e9s3",
-  status: "draft",
-  meta: { author: "writer-pe9s3", created: "2026-11-27", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "writer-pe9s3", created: "2026-11-27", factcheck: "verifier-pe9s3-pe9s4 (reports/verify/write-eng-pool-g9-e9s3.md)", teacher: null },
   sources: [
     { id: "mpim", program: true, title: "Модельна навчальна програма «Іноземна мова. 5–9 класи» (Редько В. Г. та ін.), наказ МОН № 795 від 12.07.2021 — 9 клас: тема «Одяг» (мода, елементи одягу) і функція «висловлювати власне ставлення до думок інших людей» (с. 33), граматика B1: combining adjectives, so … that, as if, as though, like, enough, too (с. 34)", url: "https://osvita.ua/doc/files/news/831/83117/Inoz_mov_5-9-kl_Redko_ta_in_14_07.pdf" }
   ],
@@ -89,9 +89,9 @@ SLID.pool("eng", {
     { id: "a12", lesson: "e9s3l1", lvl: 3, sk: "write", src: "mpim с. 33",
       type: "gaps", title: "Complete the sentences.",
       body: "<p>Taras writes about clothes in his family for the school newspaper.</p>",
-      text: "My grandad’s brown hat from 1975 looks very {*old-fashioned|fashionable|in fashion}: nobody makes hats like that now. But Mum’s wide trousers from 1999 are {*fashionable|out of fashion|old-fashioned} again: lots of people wear them this year. My sister Zlata wears Grandma’s vyshyvanka with jeans, and her friends love it: it looks really {*fashionable|old-fashioned|out of fashion}. And my {*style|fashion|fashionable}? Jeans, a T-shirt and a good pair of shoes for running!",
+      text: "My grandad’s brown hat from 1975 looks very {*old-fashioned|fashionable|in fashion}: nobody makes hats like that now. But Mum’s wide trousers from 1999 are {*fashionable|out of fashion|old-fashioned} again: lots of people wear them this year. My sister Zlata wears Grandma’s vyshyvanka with jeans, and lots of her friends wear one too: it looks really {*fashionable|old-fashioned|out of fashion}. And my {*style|fashion|fashionable}? Jeans, a T-shirt and a good pair of shoes for running!",
       hint: "Is each thing modern or not? Do people wear it now? And which word means the way you dress?",
-      steps: ["Not modern → <b>old-fashioned</b>. Lots of people wear them → <b>fashionable</b>.", "Her friends love Zlata’s vyshyvanka → it looks <b>fashionable</b>: some clothes never go out of fashion.", "The way you dress → your <b>style</b>."] },
+      steps: ["Not modern → <b>old-fashioned</b>. Lots of people wear them → <b>fashionable</b>.", "Lots of her friends wear one too → it looks <b>fashionable</b>: some clothes never go out of fashion.", "The way you dress → your <b>style</b>."] },
 
     /* ───────────── e9s3l2 · Hoodies, trainers and jeans: clothes words ───────────── */
     { id: "a13", lesson: "e9s3l2", lvl: 1, sk: "vocab", src: "mpim с. 33",
@@ -210,7 +210,7 @@ SLID.pool("eng", {
       steps: ["Opinion → size → material: <b>a beautiful long cotton</b> dress, <b>a lovely small denim</b> bag.", "Size → age → material: <b>big old leather</b> boots."] },
     { id: "a31", lesson: "e9s3l3", lvl: 1, sk: "write", src: "mpim с. 34",
       type: "gaps", title: "Complete the sentences.",
-      body: "<p>Dmytro left his bag at the sports centre. He writes an email.</p>",
+      body: "<p>Dmytro left his bag on the bus to Poltava. He writes an email to the bus station.</p>",
       text: "Hello! I lost {*a small green|a green small} bag on Sunday. In the bag, there’s {*a white cotton|a cotton white} T-shirt.",
       steps: ["Size → colour: <b>a small green</b> bag.", "Colour → material: <b>a white cotton</b> T-shirt."] },
     { id: "a32", lesson: "e9s3l3", lvl: 2, sk: "write", src: "mpim с. 34",
@@ -254,9 +254,9 @@ SLID.pool("eng", {
     { id: "a38", lesson: "e9s3l4", lvl: 3, sk: "gram", src: "mpim с. 34",
       type: "gaps", title: "Fill in the gaps.",
       body: "<p>Dmytro tries on his winter things.</p>",
-      text: "These trainers are {*too|so|such} big to wear. They’re {*so|too|such} big that I can’t walk in them. My old jacket isn’t warm {*enough|so|too} for December. But it’s {*such a|so|such} cool jacket that I don’t want a new one!",
-      hint: "Remember: too + adjective + to, so + adjective + that, adjective + enough, such (a) + adjective + noun.",
-      steps: ["too big <b>to</b> wear → <b>too</b>. so big <b>that</b> I can’t walk → <b>so</b>.", "After the adjective → warm <b>enough</b>.", "Adjective + one thing → <b>such a</b> cool jacket."] },
+      text: "My winter boots from last year are {*too|so|such} small to put on. Grandad’s old coat is {*so|too|such} long that I can’t walk in it! My jacket isn’t {*warm enough|enough warm} for December. But it’s {*such a|so|such} cool jacket that I don’t want a new one!",
+      hint: "Look at the screen “Too, enough and so”. Is there a noun after the adjective?",
+      steps: ["too small <b>to</b> put on → <b>too</b>. so long <b>that</b> I can’t walk in it → <b>so</b>.", "enough goes after the adjective → <b>warm enough</b>.", "Adjective + one thing → <b>such a</b> cool jacket."] },
     { id: "a39", lesson: "e9s3l4", lvl: 3, sk: "gram", src: "mpim с. 34",
       type: "build", title: "Put the words in order.",
       body: "<p>Emma’s new boots were very comfortable. She walked in them all day.</p>",
@@ -274,7 +274,7 @@ SLID.pool("eng", {
     { id: "a41", lesson: "e9s3l4", lvl: 2, sk: "write", src: "mpim с. 34",
       type: "gaps", title: "Complete the sentences.",
       body: "<p>Kyrylo writes about a shopping day.</p>",
-      text: "On Saturday, the shoe shop was {*so|such|such a} far from our flat that we took a bus. There were {*such|so|such a} cool trainers in it that I wanted three pairs. But they were {*too|so|such} expensive for me to buy three, so I bought one pair.",
+      text: "On Saturday, the shoe shop was {*so|such|such a} far from our flat that we took a bus. There were {*such|so|such a} cool trainers in it that I wanted three pairs. But they were {*too|so|such} expensive for me to buy, so I didn’t buy any.",
       hint: "Look at the words after each gap: an adjective alone, an adjective + noun, or … to + verb?",
       steps: ["<b>so</b> far that (adjective alone).", "<b>such</b> cool trainers (two or more things).", "<b>too</b> expensive for me to buy (… to + verb)."] },
     { id: "a42", lesson: "e9s3l4", lvl: 3, sk: "write", src: "mpim с. 34",
@@ -356,10 +356,10 @@ SLID.pool("eng", {
       steps: ["Sentence → <b>as though</b> it’s going to snow.", "Noun → looks <b>like</b> a big orange. Adjective → looks <b>happy</b>."] },
     { id: "a54", lesson: "e9s3l5", lvl: 3, sk: "write", src: "mpim с. 34",
       type: "gaps", title: "Complete the sentences.",
-      body: "<p>Oksana writes to Emma.</p>",
-      text: "Yesterday, Dmytro came home in his football things. He looked {*as if|as|so} he was very tired. His trainers looked {*like|as if|as though} two black stones: they were so dirty! Mum said, “You look {*cold|like cold|as if cold}!” It was {*such a|so|such} cold day!",
-      hint: "What comes after each gap: a sentence, a noun, an adjective, or an adjective + noun?",
-      steps: ["Sentence → <b>as if</b> he was tired. Noun → looked <b>like</b> two stones.", "Adjective → you look <b>cold</b>.", "Adjective + one thing → <b>such a</b> cold day."] },
+      body: "<p>Oksana writes to Emma about Halyna’s birthday party at her house.</p>",
+      text: "Grandma Hanna made a big cake, and our kitchen looked {*like|as if|as though} a café! Dmytro came in from football, and he looked {*hungry|like hungry|as if hungry}. He looked {*as though|though|so} he wanted to eat the whole cake. It was {*such a|so|such} lovely party that nobody wanted to go home!",
+      hint: "Look after each gap. Then remember the screen “Look, look like, look as if” and such a.",
+      steps: ["Noun → looked <b>like</b> a café. Adjective → looked <b>hungry</b>.", "Sentence → looked <b>as though</b> he wanted to eat the cake.", "Adjective + one thing → <b>such a</b> lovely party."] },
 
     /* ───────────── e9s3l6 · Buy less, wear longer: my opinion about fashion ───────────── */
     { id: "a55", lesson: "e9s3l6", lvl: 1, sk: "read", src: "mpim с. 33",
@@ -384,7 +384,7 @@ SLID.pool("eng", {
       steps: ["<b>Maybe you’re right, but…</b> – Zoriana partly agrees: she has a different idea.", "Kyrylo thinks Daryna <i>is right</i>: he agrees. Bohdan likes the idea too: he answers Zoriana’s problem."] },
     { id: "a58", lesson: "e9s3l6", lvl: 1, sk: "func", src: "mpim с. 33",
       type: "gaps", title: "Fill in the gaps.",
-      body: "<p>Ostap gives his opinion about second-hand clothes.</p>",
+      body: "<p>Ostap gives his opinion about wide jeans.</p>",
       text: "{*In|On} my opinion, wide jeans are great. I {*agree|agrees} with Taras: they’re comfortable, and they’re in fashion now.",
       steps: ["<b>In</b> my opinion.", "I → <b>agree</b> (no -s): I agree with…"] },
     { id: "a59", lesson: "e9s3l6", lvl: 1, sk: "func", src: "mpim с. 33",
@@ -414,8 +414,8 @@ SLID.pool("eng", {
       steps: ["Not new, someone wore them before → <b>second-hand</b>.", "Stayed good for a long time → my coat <b>lasted</b> six years."] },
     { id: "a63", lesson: "e9s3l6", lvl: 2, sk: "write", src: "mpim с. 33",
       type: "gaps", title: "Complete the sentences.",
-      body: "<p>Andrii writes about the class clothes swap.</p>",
-      text: "At our {*clothes swap|second-hand shop} last Friday, nobody needed any money: we all brought clothes and took other ones. I think swaps are really useful, {*because|but} they’re free. Bohdan doesn’t {*agree|agrees} with me: he says swaps are boring.",
+      body: "<p>Andrii writes about the school clothes swap.</p>",
+      text: "At our {*clothes swap|second-hand shop} in the school hall, nobody needed any money: we all brought clothes and took other ones. I think swaps are really useful, {*because|but} they’re free. My sister Sofiia doesn’t {*agree|agrees} with me: she says swaps are boring.",
       hint: "Did they buy the clothes? Are you saying why? And after doesn’t: which form?",
       steps: ["No money: they brought clothes and took other ones → a <b>clothes swap</b>.", "Say why → <b>because</b>. doesn’t + verb → doesn’t <b>agree</b>."] },
     { id: "a64", lesson: "e9s3l6", lvl: 3, sk: "write", src: "mpim с. 33",

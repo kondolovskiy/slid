@@ -1,5 +1,5 @@
 /* Слід · Англійська мова, 9 клас — пул вправ для тренування до розділу «The media: the internet, TV and radio» (e9s4)
-   Статус: draft; автор writer-pe9s4, 2026-11-27. Уроки e9s4l1–e9s4l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e9s4l7 без вправ.
+   Статус: verified (verifier-pe9s3-pe9s4, reports/verify/write-eng-pool-g9-e9s4.md); автор writer-pe9s4, 2026-11-27. Уроки e9s4l1–e9s4l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e9s4l7 без вправ.
    Вправи власні (docs/design/english.md §8): лише слова, форми й правила уроків e9s4 і попередніх розділів; англійською, британська норма (D-055).
    Джерело — програма класу (program: true): МП-ІМ, 9 кл. — тема «Засоби масової інформації»: Інтернет, телебачення і радіо;
    спілкування у мережі Інтернет; улюблена радіо-телепередача (с. 33); граматика B1 (с. 35): Present simple with reporting
@@ -17,8 +17,8 @@
 SLID.pool("eng", {
   id: "pe9s4",
   section: "e9s4",
-  status: "draft",
-  meta: { author: "writer-pe9s4", created: "2026-11-27", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "writer-pe9s4", created: "2026-11-27", factcheck: "verifier-pe9s3-pe9s4 (reports/verify/write-eng-pool-g9-e9s4.md)", teacher: null },
   sources: [
     { id: "mpim", program: true, title: "Модельна навчальна програма «Іноземна мова. 5–9 класи» (Редько В. Г. та ін.), наказ МОН № 795 від 12.07.2021 — 9 клас: тема «Засоби масової інформації» (Інтернет, телебачення і радіо; спілкування в мережі; улюблена передача, с. 33), граматика B1: Present simple with reporting verbs, reported questions, reported thought with wonder, reported requests and commands (с. 35)", url: "https://osvita.ua/doc/files/news/831/83117/Inoz_mov_5-9-kl_Redko_ta_in_14_07.pdf" }
   ],
@@ -36,8 +36,8 @@ SLID.pool("eng", {
       steps: ["<b>the news</b> – what happened today; a <b>weather forecast</b> – tomorrow’s weather.", "a <b>quiz show</b> – questions and prizes; a <b>documentary</b> – real facts."] },
     { id: "a03", lesson: "e9s4l1", lvl: 2, sk: "vocab", src: "mpim с. 33",
       type: "word", title: "Write the missing word.",
-      body: "<p>Every Saturday, a woman leads Music Chat on TV. She talks to the guests and asks them questions.</p>",
-      before: "She’s the", after: "of Music Chat.",
+      body: "<p>Every Saturday, a man leads Music Chat on TV. He talks to the guests and asks them questions.</p>",
+      before: "He’s the", after: "of Music Chat.",
       answer: ["presenter", "host"],
       hint: "Look at the list “TV, radio and podcasts”: which word is a person?",
       steps: ["The person who leads a programme → the <b>presenter</b>.", "<i>Host</i> is correct too."] },
@@ -60,7 +60,7 @@ SLID.pool("eng", {
     { id: "a07", lesson: "e9s4l1", lvl: 2, sk: "phon", src: "mpim с. 33",
       type: "stress", title: "Find the stressed syllable.",
       words: ["+pro|gramme", "doc|u|+men|ta|ry", "+chan|nel"],
-      hint: "Say each word slowly. In one word, the strong part isn’t at the start.",
+      hint: "Look at the underlined parts in the lists “TV, radio and podcasts” and “What’s on TV?”.",
       steps: ["<u>pro</u>gramme, <u>chan</u>nel: the first part is strong.", "docu<u>men</u>tary: the third part is strong."] },
     { id: "a08", lesson: "e9s4l1", lvl: 3, sk: "phon", src: "mpim с. 33",
       type: "stress", title: "Find the stressed syllable.",
@@ -89,8 +89,8 @@ SLID.pool("eng", {
     { id: "a12", lesson: "e9s4l2", lvl: 1, sk: "gram", src: "mpim с. 35",
       type: "gaps", title: "Fill in the gaps.",
       body: "<p>Andrii tells Taras about Zoriana.</p>",
-      text: "Zoriana says she {*likes|like|liking} science quiz shows. She says her favourite presenter {*is|are|be} really clever.",
-      steps: ["says + the present: she <b>likes</b> (she + -s).", "One presenter → <b>is</b>."] },
+      text: "Zoriana says the science quiz {*is|are|be} on every Wednesday. She says she {*likes|like|liking} the presenter: she’s a scientist.",
+      steps: ["One quiz → <b>is</b>.", "says + the present: she <b>likes</b> (she + -s)."] },
     { id: "a13", lesson: "e9s4l2", lvl: 1, sk: "gram", src: "mpim с. 35",
       type: "choice", title: "Choose the correct answer.",
       body: "<p>Bohdan: “I watch Quiz Time with my dad.” It’s still true.</p><p>What does Andrii tell Taras?</p>",
@@ -114,9 +114,9 @@ SLID.pool("eng", {
     { id: "a16", lesson: "e9s4l2", lvl: 3, sk: "gram", src: "mpim с. 35",
       type: "gaps", title: "Fill in the gaps.",
       body: "<p>Andrii writes to Liam about his classmates.</p>",
-      text: "Zoriana says she {*is|are|be} building a robot for the science quiz. Last Friday, Bohdan said he {*was|were|be} too tired for TV. But today he {*says|tells|say} he watches Quiz Time every week. And Kyrylo {*tells|says|tell} me there’s a new history podcast.",
+      text: "Zoriana says she {*is|are|be} building a robot for the science quiz. Last Friday, Bohdan said he {*was|were|be} at a tennis match. But today he {*says|tells|say} he watches Quiz Time every week. And Kyrylo {*tells|says|tell} me there’s a new history podcast.",
       hint: "Still true now, or a story about the past? And which verb needs a person after it?",
-      steps: ["Still true now → says + the present: she <b>is</b> building.", "Last Friday → the past: he <b>was</b> too tired.", "No person after the gap → he <b>says</b>. A person (me) after the gap → Kyrylo <b>tells</b> me."] },
+      steps: ["Still true now → says + the present: she <b>is</b> building.", "Last Friday → the past: he <b>was</b> at a tennis match.", "No person after the gap → he <b>says</b>. A person (me) after the gap → Kyrylo <b>tells</b> me."] },
     { id: "a17", lesson: "e9s4l2", lvl: 1, sk: "read", src: "mpim с. 33",
       type: "choice", title: "Read and choose.",
       body: "<p><b>My favourite programme</b><br><i>by Zoriana</i></p><p><i>My favourite programme is a science quiz show for teenagers. It’s on every Wednesday at 5 pm. In each episode, two school teams make robots. Then they answer questions about science.</i></p><p>When is it on?</p>",
@@ -146,13 +146,13 @@ SLID.pool("eng", {
       type: "gaps", title: "Complete the sentences.",
       body: "<p>Taras writes to Andrii about Zlata’s favourite programme.</p>",
       text: "Zlata {*says|tells|say} her favourite programme is a cartoon series. It’s a series {*about|of|at} a cat detective. She {*tells|says|tell} me the cat is really funny.",
-      hint: "Which verb needs a person after it? And what is the show about?",
+      hint: "Which verb needs a person after it? Look at the screen “Talk about a programme”.",
       steps: ["No person after the gap → Zlata <b>says</b>.", "a series <b>about</b> a cat detective.", "A person (me) after the gap → she <b>tells</b> me."] },
     { id: "a22", lesson: "e9s4l2", lvl: 3, sk: "write", src: "mpim с. 33",
       type: "gaps", title: "Complete the sentences.",
-      body: "<p>Daryna writes for the school newspaper.</p>",
+      body: "<p>Andrii writes for the school newspaper.</p>",
       text: "<b>What do we watch?</b><br>Ms Lysenko asked us about TV and podcasts. Daryna {*says|tells|say} she watches Music Chat with her sister: it’s {*on|in|at} every Saturday evening. Zoriana tells us she {*listens|listen|listening} to a robot podcast. Last week, Kyrylo said he {*was|were|be} ill, but now he’s fine and he’s back to his history podcast.",
-      hint: "Which verb needs a person after it? When is a programme on? And what happened last week?",
+      hint: "Which verb needs a person after it? Look at the screen “Talk about a programme”. And what happened last week?",
       steps: ["No person after the gap → Daryna <b>says</b>. It’s <b>on</b> every Saturday.", "she + -s → she <b>listens</b>.", "Last week → the past: he <b>was</b> ill."] },
 
     /* ───────────── e9s4l3 · Chatting online: safe and polite ───────────── */
@@ -172,7 +172,7 @@ SLID.pool("eng", {
       type: "pick", title: "Find the mistake.",
       body: "<p>Mariia writes tips for the online comics club. One word is wrong.</p>",
       text: "Choose a [!username] that isn’t your real name. Keep your [!password] secret. If someone is rude to you, [post] them and tell your mum or dad.",
-      hint: "Which word means “stop someone sending you messages”?",
+      hint: "Check each word with the tips “Stay safe online”.",
       steps: ["Stop a rude person sending you messages → <b>block</b> them, not <i>post</i> them.", "post = put on the internet."] },
     { id: "a26", lesson: "e9s4l3", lvl: 1, sk: "func", src: "mpim с. 33",
       type: "choice", title: "Choose the correct answer.",
@@ -207,15 +207,15 @@ SLID.pool("eng", {
       steps: ["Someone helps you → say <b>thank you</b>.", "<b>Don’t write</b> in capitals: it looks like shouting.", "<b>Ask</b> Halyna before you post her drawings."] },
     { id: "a31", lesson: "e9s4l3", lvl: 3, sk: "write", src: "mpim с. 33",
       type: "gaps", title: "Complete the sentences.",
-      body: "<p>Oksana writes a message to Dmytro about his new game.</p>",
-      text: "Dmytro, never send your {*password|username|profile} to anyone. In the game, use a {*username|password|comment}: don’t use your real name. If a player is rude, {*block|post|share} them. And before you {*post|block|report} photos of your friends, ask them!",
-      hint: "Look at the two lists of tips in the lesson. Which word means “put on the internet”?",
-      steps: ["Your <b>password</b> is secret. Not your real name → a <b>username</b>.", "Stop a rude player writing to you → <b>block</b> them.", "Put photos on the internet → <b>post</b>."] },
+      body: "<p>Zlata is making a profile for an online music club. Taras gives her some tips.</p>",
+      text: "Don’t put your home address on your {*profile|password|username}. Everyone in the club can see your {*username|password|address}, so don’t use your full name: BanduraStar is a good one! Before you {*post|block|report} a video of your friends from the music school, ask them. And if someone is rude to you, {*block|post|share} them and tell Mum.",
+      hint: "Look at the two lists of tips in the lesson.",
+      steps: ["A <b>profile</b> is a page about you: don’t put your address on it.", "Everyone can see your <b>username</b>, so it isn’t your full name.", "Put on the internet → <b>post</b>. Stop a rude person writing to you → <b>block</b>."] },
 
     /* ───────────── e9s4l4 · She asked if I liked…: reported questions ───────────── */
     { id: "a32", lesson: "e9s4l4", lvl: 1, sk: "gram", src: "mpim с. 35",
       type: "gaps", title: "Fill in the gaps.",
-      body: "<p>After Quiz Time, the presenter asked Dmytro: “What’s your name?” “Which village are you from?”</p>",
+      body: "<p>After a children’s quiz show, the presenter asked Dmytro: “What’s your name?” “Which village are you from?”</p>",
       text: "She asked what {*my name was|was my name}. Then she asked which village {*I was|was I} from.",
       steps: ["Person or thing + verb, like a statement: what <b>my name was</b>.", "which village <b>I was</b> from: not <i>was I</i>."] },
     { id: "a33", lesson: "e9s4l4", lvl: 1, sk: "gram", src: "mpim с. 35",
@@ -265,10 +265,10 @@ SLID.pool("eng", {
       steps: ["A yes / no question → <b>whether</b>.", "Wh- question → person + verb: <b>what I thought</b>, <b>where we were going</b>."] },
     { id: "a40", lesson: "e9s4l4", lvl: 3, sk: "write", src: "mpim с. 35",
       type: "gaps", title: "Complete the sentences.",
-      body: "<p>Mariia writes to Zofia about an interview for the school website.</p>",
-      text: "Hi Zofia! Artem asked me some questions for our school website. He asked {*if|that|what} I drew comics every day. Then he asked {*how long I spent|how long did I spend|how long spent I} on one page. He asked {*where I got|where did I get|where got I} my ideas. And he asked {*whether|who|what} I wanted to make a comic book one day. I said yes!",
+      body: "<p>Mariia writes to Zofia about an article for the school website.</p>",
+      text: "Hi Zofia! Artem is writing an article about our comics club for the school website. First, he asked me {*when the club started|when did the club start|when started the club}. Then he asked {*whether|what|who} we met on Fridays. He also asked {*which comic I liked|which comic did I like|which did comic I like} best. At the end, he asked {*if|that|what} he could put my drawing in the article. So my drawing is going to be on the website!",
       hint: "A yes / no question → if or whether. A wh- question → person + verb, no did.",
-      steps: ["Yes / no questions → <b>if</b>, <b>whether</b>.", "Wh- questions → person + verb: <b>how long I spent</b>, <b>where I got</b>."] },
+      steps: ["Wh- questions → person + verb: <b>when the club started</b>, <b>which comic I liked</b>.", "Yes / no questions → <b>whether</b>, <b>if</b>; not <i>that</i>."] },
 
     /* ───────────── e9s4l5 · He told us to switch off our phones: reported requests ───────────── */
     { id: "a41", lesson: "e9s4l5", lvl: 1, sk: "gram", src: "mpim с. 35",
@@ -319,15 +319,15 @@ SLID.pool("eng", {
     { id: "a48", lesson: "e9s4l5", lvl: 2, sk: "write", src: "mpim с. 35",
       type: "gaps", title: "Complete the sentences.",
       body: "<p>Taras writes about training at the athletics club.</p>",
-      text: "Yesterday, Mr Hnatiuk {*told|said|says} us to run three kilometres. He told us {*not to|don’t|no to} stop. After that, he asked Myroslava {*to show|show|showing} us how to start a race.",
-      hint: "A person after the gap → ? Then: to + verb, not to + verb.",
-      steps: ["A person (us) after the gap → <b>told</b>, not <i>said</i>.", "He told us <b>not to</b> stop and asked Myroslava <b>to show</b> us how to start."] },
+      text: "Yesterday, Mr Hnatiuk asked Myroslava {*to show|show|showing} us how to start a race. Then he {*told|said|says} us to run three kilometres. He told us {*not to stop|don’t stop|to don’t stop} on the way.",
+      hint: "Look at the screen “He told us to…, he asked us to…”.",
+      steps: ["asked + person + <b>to</b> + verb: asked Myroslava <b>to show</b> us.", "A person (us) after the gap → <b>told</b>, not <i>said</i>. Don’t → told us <b>not to stop</b>."] },
     { id: "a49", lesson: "e9s4l5", lvl: 3, sk: "write", src: "mpim с. 35",
       type: "gaps", title: "Complete the sentences.",
-      body: "<p>Andrii writes to George about a visit to a radio station.</p>",
-      text: "Hi George! Yesterday our class visited a radio station in Kyiv. The manager {*told|said|says} us to leave our bags at the door. He asked us {*not to eat|don’t eat|to not eating} anything in the studio. The presenter asked {*if|to|that} we listened to the radio. Then she asked Zoriana {*to read|read|reading} the weather forecast on the radio!",
+      body: "<p>Oksana writes to Emma about a visit from a Poltava radio station.</p>",
+      text: "Hi Emma! Yesterday a presenter from a Poltava radio station came to our eco club. Before the interview, she {*told|said|says} us to sit at the big table. She asked us {*not to talk|don’t talk|to not talking} at the same time. Then she asked {*if|to|that} we recycled at home. At the end, she asked Halyna {*to read|read|reading} our eco tips on the radio!",
       hint: "Told + person? Don’t → ? A question → if. A request → person + to + verb.",
-      steps: ["A person (us) after the gap → <b>told</b>. Don’t → <b>not to eat</b>.", "“Do you listen…?” → asked <b>if</b> we listened.", "A request → asked Zoriana <b>to read</b>."] },
+      steps: ["A person (us) after the gap → <b>told</b>. Don’t → <b>not to talk</b>.", "“Do you recycle…?” → asked <b>if</b> we recycled.", "A request → asked Halyna <b>to read</b>."] },
 
     /* ───────────── e9s4l6 · I wonder what…: comments and online posts ───────────── */
     { id: "a50", lesson: "e9s4l6", lvl: 1, sk: "gram", src: "mpim с. 35",
@@ -395,8 +395,8 @@ SLID.pool("eng", {
     { id: "a60", lesson: "e9s4l6", lvl: 3, sk: "write", src: "mpim с. 35",
       type: "gaps", title: "Complete the sentences.",
       body: "<p>Kyrylo answers the comments under episode 2.</p>",
-      text: "Thanks for your comments! Bohdan, you wondered {*if|what|who} I could tell more stories. Yes, I can! Zoriana asked where {*we recorded|did we record|we did record} the podcast: in the school library. Ms Lysenko asked me {*to bring|bring|bringing} some old photos of Kyiv next time. I wonder {*what you will|what will you|will what you} say about them!",
-      hint: "A yes / no idea → ? Wh- word → person + verb. Asked me → to + verb.",
-      steps: ["A yes / no idea → wondered <b>if</b>. Person + verb: where <b>we recorded</b>.", "asked me + <b>to</b> + verb: <b>to bring</b>.", "I wonder + what + person + verb: <b>what you will</b> say."] }
+      text: "Hi everyone! Zoriana asked where {*we recorded|did we record|we did record} the podcast: in the school library. Bohdan wondered {*if|what|who} I could tell more stories next week, and yes, I can! Ms Lysenko asked me {*to bring|bring|bringing} some old photos of Kyiv next time. I wonder {*which photo you will like|which photo will you like|which will photo you like} best!",
+      hint: "Wh- word → person + verb. A yes / no idea → ? Asked me → to + verb.",
+      steps: ["Person + verb: where <b>we recorded</b>. A yes / no idea → wondered <b>if</b>.", "asked me + <b>to</b> + verb: <b>to bring</b>.", "I wonder + which photo + person + verb: <b>which photo you will like</b>."] }
   ]
 });
