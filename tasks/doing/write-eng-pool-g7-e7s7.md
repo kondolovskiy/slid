@@ -1,16 +1,18 @@
 ---
-id: write-eng-pool-g8-e8s1
+claimed_from: todo
+claimed_at: 2026-11-27T10:10:23.235Z
+id: write-eng-pool-g7-e7s7
 type: write-pool
 subject: eng
-grade: 8
-section: e8s1
+grade: 7
+section: e7s7
 status: todo
-claimed_by:
+claimed_by: writer-pe7s7
 created: 2026-11-27
 depends_on: []
 generated_by: tools/make-tasks.mjs --write-pool --subject eng
 ---
-# Зібрати пул тренування «Penfriends and letters» (Англійська мова, 8 клас, e8s1)
+# Зібрати пул тренування «Kyiv and London: history and culture» (Англійська мова, 7 клас, e7s7)
 
 ## Навіщо
 Пул — вправи для самостійного тренування після уроку з інтервальним повторенням (docs/PERSONALIZATION.md §3).
@@ -18,15 +20,15 @@ generated_by: tools/make-tasks.mjs --write-pool --subject eng
 Контракт полів — docs/CONTENT_SCHEMA.md §10, «Пули мовних предметів»; якщо він розходиться з цим текстом — правий CONTENT_SCHEMA. Рішення людини — docs/design/english.md §7, §11.1.
 
 ## Результат
-Один файл `content/eng/pool-g8-e8s1.js`: `SLID.pool("eng", { id: "pe8s1", section: "e8s1", status: "draft", meta: {…}, sources: [...], items: [...] })`. **id `pe8s1` і id вправ — ключі прогресу, не перейменовувати.**
+Один файл `content/eng/pool-g7-e7s7.js`: `SLID.pool("eng", { id: "pe7s7", section: "e7s7", status: "draft", meta: {…}, sources: [...], items: [...] })`. **id `pe7s7` і id вправ — ключі прогресу, не перейменовувати.**
 
 ## Уроки для покриття (без фіналу)
-- `e8s1l1` — Looking for a penfriend: a profile
-- `e8s1l2` — I’ve been learning English for five years
-- `e8s1l3` — What have you been doing? News in an email
-- `e8s1l4` — You like music, don’t you? Question tags
-- `e8s1l5` — Dear…, Best wishes: writing an email
-- `e8s1l6` — We write to each other: a letter from England
+- `e7s7l1` — Museums and monuments in Kyiv
+- `e7s7l2` — It was built by…: who made it?
+- `e7s7l3` — Was it destroyed? When was it rebuilt?
+- `e7s7l4` — One of the oldest: history and culture in London
+- `e7s7l5` — St Paul’s Cathedral: who was it designed by?
+- `e7s7l6` — A culture trip: Kyiv or London?
 
 ## Що зробити (скіли `math-pool-diag` — розділ про пули мовних предметів — і `content-author`, розділ про англійську)
 1. Прочитай уроки розділу повністю: лексика, граматика, приклади, `sk` екранів, `learned`. **Чесне завдання (D-019):** вправа тренує лише слова й граматику, яких урок навчив; нового правила пул не вчить.
@@ -37,10 +39,10 @@ generated_by: tools/make-tasks.mjs --write-pool --subject eng
 6. Глосарій і пастки — memory/long/glossary/eng.md, memory/long/facts/eng.md, memory/long/pitfalls-content.md «Англійська».
 
 ## Обмеження
-Змінюй лише `content/eng/pool-g8-e8s1.js`, цю задачу й дописуй inbox. build і check — оркестратор. Уроки розділу не правити — пропозиції в inbox.
+Змінюй лише `content/eng/pool-g7-e7s7.js`, цю задачу й дописуй inbox. build і check — оркестратор. Уроки розділу не правити — пропозиції в inbox.
 
 ## Готово, коли
-- [ ] `node tools/validate.mjs --pool pe8s1` і `node tools/personalization-qa.mjs --pool pe8s1` — 0 помилок; `status: "draft"`.
+- [ ] `node tools/validate.mjs --pool pe7s7` і `node tools/personalization-qa.mjs --pool pe7s7` — 0 помилок; `status: "draft"`.
 - [ ] Нотатки: таблиця «урок → кількість / рівні / типи», словники, за якими звірено форми; рядок в inbox.
 - [ ] Задача → `tasks/review/` для **content-verifier зі свіжим контекстом** (розв'язати кожну вправу, звірити форми за словником).
 
