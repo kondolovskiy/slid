@@ -199,7 +199,7 @@ SLID.section("eng", {
           type: "intro",
           eyebrow: "Lesson 2",
           title: "Can you learn art on your own?",
-          body: `<p class="lead">Oksana writes to Emma.</p><p><i>I want to study art history at university, so this year I’m trying to learn more about art on my own. Next month I’m going to Kyiv with Mum. Should I visit Mystetskyi Arsenal? And what can you really learn in a gallery without a teacher?</i></p><p>What is Mystetskyi Arsenal, and how can a gallery help you learn?</p>`,
+          body: `<p class="lead">Oksana writes to Emma.</p><p><i>I’m thinking of studying art history at university, so this year I’m trying to learn more about art on my own. Next month I’m going to Kyiv with Mum. Should I visit Mystetskyi Arsenal? And what can you really learn in a gallery without a teacher?</i></p><p>What is Mystetskyi Arsenal, and how can a gallery help you learn?</p>`,
           cta: "Let’s see"
         },
         {
@@ -440,7 +440,7 @@ SLID.section("eng", {
           body: `<p>One word in Artem’s post is wrong.</p>`,
           text: "The photos were amazing, and I was really [moving] by the stories of the people in them.",
           hint: "In each part of the sentence: who has the feeling, and what causes it?",
-          fbOk: "Good eye!",
+          fbOk: "Brilliant!",
           fbBad: "Artem had the feeling. Which word should end in -ed?",
           fbText: "Artem had the feeling, so: I was really <b>moved</b> by the stories, not <s>moving</s>. The photos caused the feeling, so <b>amazing</b> is correct."
         },
@@ -1016,6 +1016,7 @@ SLID.section("eng", {
           body: `<p>Mariia’s page: an exhibition in Kharkiv.</p>`,
           text: "The photos were really {*moving|moved}. I was {*amazed|amazing} by how brave the people in them were. The exhibition was {*impressive|impressed}.",
           pre: "e11s4l3",
+          hint: "In each sentence, is it the thing that causes the feeling or the person who has it?",
           fbOk: "Well done!",
           fbBad: "-ing for what causes a feeling, -ed for the person who has it. impressive / impressed.",
           fbText: "The photos caused the feeling → <b>moving</b>. Mariia had the feeling → <b>amazed</b>. The exhibition → <b>impressive</b>."
@@ -1040,6 +1041,7 @@ SLID.section("eng", {
           body: `<p>Oksana’s page: Grandma Hanna’s rushnyk.</p>`,
           text: "The rushnyk is more than a hundred years old. It’s {*priceless|worthless}: nobody can make another one like it. When you hold it, you must be very {*careful|careless}.",
           pre: "e11s4l4",
+          hint: "Read the words after the colon: what do they tell you about the rushnyk? And how should you hold something very old?",
           fbOk: "Right.",
           fbBad: "Extremely valuable or worth nothing? With care or without care?",
           fbText: "Extremely valuable → <b>priceless</b>. With care → <b>careful</b>."
@@ -1092,6 +1094,7 @@ SLID.section("eng", {
           body: `<p>Andrii writes a review of the school play.</p>`,
           text: "Our school play was about a family in Kyiv. I {*found|looked} it really touching. The only {*disappointing|disappointed} thing was the sound in the hall. I’d highly {*recommend|recommended} it to everyone.",
           pre: "e11s4l6",
+          hint: "Which verb can go before it + an adjective when you give your opinion? And which form of a verb comes after I’d?",
           fbOk: "Well done!",
           fbBad: "I found it… The thing caused the feeling. I’d + the base form.",
           fbText: "I <b>found</b> it touching. The only <b>disappointing</b> thing. I’d highly <b>recommend</b> it."

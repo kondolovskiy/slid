@@ -626,7 +626,7 @@ SLID.section("eng", {
           body: `<p>Taras writes the notes of the radio team meeting.</p>`,
           text: "At the meeting, Ostap {*admitted|denied} that he had dropped the microphone. Myroslava {*complained|promised} that our equipment was very old. Ms Kvitka {*explained|told} to us that a new microphone was expensive. I suggested {*selling|to sell} my photos at the next fair, and everyone {*agreed|denied} that it was a good idea.",
           hint: "Think about the meaning of each verb. Then: explain to, suggest + -ing.",
-          fbOk: "Well done!",
+          fbOk: "Brilliant!",
           fbBad: "Check the meanings and the box “Careful with explain and suggest”.",
           fbText: "Ostap <b>admitted</b>; Myroslava <b>complained</b>; Ms Kvitka <b>explained</b> to us (not <i>told to us</i>); I suggested <b>selling</b>; everyone <b>agreed</b>."
         }
@@ -1024,7 +1024,7 @@ SLID.section("eng", {
           sk: "read",
           eyebrow: "Reading: The missing money box, part 1 of 3",
           title: "Read and choose.",
-          body: `<p><i>On Saturday morning, the school hall was full of tables. Bohdan had baked forty cakes, and Kyrylo had brought two boxes of old books. Daryna was taking photos of pets for their owners. Yehor had made the posters, and they were everywhere: “Every hryvnia makes a difference!” The money went into a big red box on Andrii’s table. By twelve o’clock, the box was heavy. Andrii was very proud. Then a little boy dropped a glass of juice on the table. Andrii ran to get some paper towels. When he came back five minutes later, the red box had gone. He looked under the table and behind the posters. Nothing. Andrii’s heart was beating fast. All that money for the shelter!</i></p><p>What happened while Andrii was getting paper towels?</p>`,
+          body: `<p><i>On Saturday morning, the school hall was full of tables. Bohdan had baked forty cakes, and Kyrylo had brought two boxes of old books. Daryna was taking photos of pets for their owners. Yehor had made the posters, and they were everywhere: “Every hryvnia makes a difference!” The money went into a big red box on Andrii’s table. By twelve o’clock, the box was heavy. Andrii was very proud. More people were still arriving, and the queue for Bohdan’s cakes went all the way to the door. Then a little boy dropped a glass of juice on the table. Andrii ran to get some paper towels. When he came back five minutes later, the red box had gone. He looked under the table and behind the posters. Nothing. Andrii’s heart was beating fast. All that money for the shelter!</i></p><p>What happened while Andrii was getting paper towels?</p>`,
           opts: [
             "His cousin dropped the money box.",
             "Bohdan sold the last cake.",
@@ -1042,7 +1042,7 @@ SLID.section("eng", {
           sk: "read",
           eyebrow: "Reading: The missing money box, part 2 of 3",
           title: "Read and choose.",
-          body: `<p><i>A few students came to help. Then someone said, “I saw Yehor near your table.” People started to look at Yehor. He went red. “I didn’t take it,” he said quietly. “I was only putting up a new poster.” Some students didn’t believe him. “He’s new. We don’t really know him,” one boy said. Andrii felt uncomfortable. He remembered how people had judged Yehor in September. “Could I just say something?” he asked. “We don’t know what happened. Let’s not blame anyone yet.” Kyrylo agreed with him. He suggested asking the teachers first. Yehor looked at Andrii and smiled for the first time that day.</i></p><p>What did Andrii suggest?</p>`,
+          body: `<p><i>A few students came to help. Then someone said, “I saw Yehor near your table.” People started to look at Yehor. He went red. “I didn’t take it,” he said quietly. “I was only putting up a new poster.” Some students didn’t believe him. “He’s new. We don’t really know him,” one boy said. It was true that Yehor was quiet and didn’t talk much, but that didn’t make him a thief. Andrii felt uncomfortable. He remembered how people had judged Yehor in September. “Could I just say something?” he asked. “We don’t know what happened. Let’s not blame anyone yet.” Kyrylo agreed with him. He suggested asking the teachers first. Yehor looked at Andrii and smiled for the first time that day. Then Andrii, Kyrylo and Yehor went to look for the teachers together.</i></p><p>What did Andrii suggest?</p>`,
           opts: [
             "not blaming anyone before they knew what had happened",
             "calling the police at once",
@@ -1060,7 +1060,7 @@ SLID.section("eng", {
           sk: "read",
           eyebrow: "Reading: The missing money box, part 3 of 3",
           title: "Read and choose.",
-          body: `<p><i>They found Ms Lysenko in the staffroom. She was holding the red box. “Oh, I’m so sorry!” she said. “I saw the box on an empty table, so I brought it here for safety. I meant to tell you.” She explained that she had wanted to keep the money safe. Andrii laughed with relief. Later, the boy who had blamed Yehor came to him. He admitted that he had been unfair, and he apologised. Yehor accepted his apology. At the end of the day, they counted the money. The fair had raised 18,600 hryvnias for the shelter. The next week, Zoriana wrote an article about the fair. Her title was “Don’t judge too quickly”.</i></p><p>Why had Ms Lysenko taken the box?</p>`,
+          body: `<p><i>They found Ms Lysenko in the staffroom. She was holding the red box. “Oh, I’m so sorry!” she said. “I saw the box on an empty table, so I brought it here for safety. I meant to tell you.” She explained that she had wanted to keep the money safe. Andrii laughed with relief. Yehor laughed too, and suddenly the whole day felt bright again. Later, the boy who had blamed Yehor came to him. He admitted that he had been unfair, and he apologised. Yehor accepted his apology. At the end of the day, they counted the money. The fair had raised 18,600 hryvnias for the shelter. The next week, Zoriana wrote an article about the fair. Her title was “Don’t judge too quickly”. Yehor drew a small picture of a dog for it.</i></p><p>Why had Ms Lysenko taken the box?</p>`,
           opts: [
             "She wanted to count the money.",
             "She thought Yehor had taken it.",

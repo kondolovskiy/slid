@@ -19,7 +19,7 @@
    Спірного «першими» не стверджуємо; громадянства Вернадського не називаємо (the scientist).
    Діалоги — репліками в body (D-056), без звуку (D-055 п. 4). Зображень немає.
    Герої — серія 4–10 кл., на сім років старші, ніж у 4 кл.: Oksana, Andrii, Mariia, Emma, Daryna, Zoriana — 17.
-   Нові: Dr Shapoval (дослідниця, біологічна лабораторія університету в Kharkiv), Maksym (її research assistant),
+   Нові: Dr Shapoval (дослідниця, біологічна лабораторія університету в Kharkiv), Pavlo (її research assistant),
    Mr Ivanenko (lab technician) — день відкритих дверей Oksana й Mariia (l2).
    Форми, наголос і значення — Cambridge Dictionary (CD), CD Grammar, OALD.
    Увесь зміст — англійською, британська норма (D-055). Тексти, діалоги й герої — власні (docs/design/english.md §8).
@@ -178,7 +178,7 @@ SLID.section("eng", {
           type: "intro",
           eyebrow: "Lesson 2",
           title: "Who are the people in white coats?",
-          body: `<p class="lead">Oksana and Mariia go to an open day at a university in Kharkiv. Dr Shapoval shows them her biology lab.</p><p><b>Dr Shapoval:</b> Welcome to our lab! I’m a researcher: I plan experiments and study the results.<br><b>Oksana:</b> And who are the people in white coats?<br><b>Dr Shapoval:</b> Maksym is my research assistant. He helps me carry out the experiments. And that’s Mr Ivanenko, our lab technician. He prepares and looks after all the equipment.<br><b>Mariia:</b> What’s in those little glass tubes?<br><b>Dr Shapoval:</b> Water samples from the river. We’re checking them for pollution.</p><p>Who looks after the equipment in the lab?</p>`,
+          body: `<p class="lead">Oksana and Mariia go to an open day at a university in Kharkiv. Dr Shapoval shows them her biology lab.</p><p><b>Dr Shapoval:</b> Welcome to our lab! I’m a researcher: I plan experiments and study the results.<br><b>Oksana:</b> And who are the people in white coats?<br><b>Dr Shapoval:</b> Pavlo is my research assistant. He helps me carry out the experiments. And that’s Mr Ivanenko, our lab technician. He prepares and looks after all the equipment.<br><b>Mariia:</b> What’s in those little glass tubes?<br><b>Dr Shapoval:</b> Water samples from the river. We’re checking them for pollution.</p><p>Who looks after the equipment in the lab?</p>`,
           cta: "Let’s see"
         },
         {
@@ -187,7 +187,7 @@ SLID.section("eng", {
           eyebrow: "Guess!",
           title: "What do you think?",
           hyp: true,
-          body: `<p>Dr Shapoval: “Maksym is my <b>research assistant</b>.”</p><p>What does a research assistant do?</p>`,
+          body: `<p>Dr Shapoval: “Pavlo is my <b>research assistant</b>.”</p><p>What does a research assistant do?</p>`,
           opts: [
             "helps a researcher with experiments",
             "sells medicines in a shop",
@@ -196,7 +196,7 @@ SLID.section("eng", {
           correct: 0,
           fbTitle: "Let’s find out.",
           fbOk: "Good guess!",
-          fbText: "A <b>research assistant</b> helps a researcher: Maksym helps Dr Shapoval carry out the experiments."
+          fbText: "A <b>research assistant</b> helps a researcher: Pavlo helps Dr Shapoval carry out the experiments."
         },
         {
           type: "info",
@@ -225,7 +225,7 @@ SLID.section("eng", {
           type: "word",
           sk: "vocab",
           title: "Write the missing word.",
-          body: `<p>Maksym wants to know how heavy a soil sample is. Use a word from “Lab equipment”.</p>`,
+          body: `<p>Pavlo wants to know how heavy a soil sample is. Use a word from “Lab equipment”.</p>`,
           before: "He puts the sample on the",
           after: "",
           answer: "scales",
@@ -247,7 +247,7 @@ SLID.section("eng", {
           type: "gaps",
           sk: "vocab",
           title: "Complete the sentences.",
-          text: "Before an experiment, always put on your {*safety goggles|scales|samples} to protect your eyes. Maksym pours the river water into a {*test tube|lab coat|microscope}. Dr Shapoval looks at tiny river plants through a {*microscope|test tube|lab coat}.",
+          text: "Before an experiment, always put on your {*safety goggles|scales|samples} to protect your eyes. Pavlo pours the river water into a {*test tube|lab coat|microscope}. Dr Shapoval looks at tiny river plants through a {*microscope|test tube|lab coat}.",
           hint: "Which one protects your eyes? Which one is for liquids? Which one makes small things look bigger?",
           fbOk: "Well done!",
           fbBad: "Look at “Lab equipment” again.",
@@ -293,7 +293,7 @@ SLID.section("eng", {
           hint: "Who plans? Who helps? Who looks after the equipment?",
           fbOk: "Brilliant!",
           fbBad: "Look at the jobs in “People in a lab” again.",
-          fbText: "Dr Shapoval – a <b>researcher</b>; Maksym – her research <b>assistant</b>; Mr Ivanenko – the lab <b>technician</b>. Everyone wears <b>safety goggles</b>. The samples <b>are being tested</b>: is / are being + the third form."
+          fbText: "Dr Shapoval – a <b>researcher</b>; Pavlo – her research <b>assistant</b>; Mr Ivanenko – the lab <b>technician</b>. Everyone wears <b>safety goggles</b>. The samples <b>are being tested</b>: is / are being + the third form."
         }
       ],
       outro: {
@@ -874,7 +874,7 @@ SLID.section("eng", {
           body: `<p>Kyrylo writes a summary of Andrii’s article.</p>`,
           text: "The Ukrainian Academy of Sciences {*was founded|was founding|were founded} in 1918. The station in Antarctica {*was handed over|were handed over|was hand over} to Ukraine in 1996. Since then, a lot of data {*has been collected|has been collect|have been collect} there.",
           hint: "be + the third form. The Academy, the station, data: one thing each.",
-          fbOk: "Well done!",
+          fbOk: "Brilliant!",
           fbBad: "Check was or were, has or have, and the third form.",
           fbText: "The Academy <b>was founded</b>; the station <b>was handed over</b>; data <b>has been collected</b>. One thing → was, has; then the third form."
         },
@@ -955,9 +955,9 @@ SLID.section("eng", {
           sk: "vocab",
           eyebrow: "Task 2",
           title: "Fill in the gaps.",
-          text: "In the lab, Maksym pours the water sample into a {*test tube|lab coat|scales}. Before the experiment, everyone puts on {*safety goggles|test tubes|samples}. The lab {*technician|sample|microscope} looks after all the equipment.",
+          text: "In the lab, Pavlo pours the water sample into a {*test tube|lab coat|scales}. Before the experiment, everyone puts on {*safety goggles|test tubes|samples}. The lab {*technician|sample|microscope} looks after all the equipment.",
           pre: "e11s5l2",
-          hint: "Which one is for liquids? Which one protects your eyes?",
+          hint: "Which one protects your eyes? Which one is for liquids?",
           fbOk: "Yes!",
           fbBad: "Look at the words for lab equipment and lab jobs.",
           fbText: "Water goes into a <b>test tube</b>. <b>Safety goggles</b> protect your eyes. The lab <b>technician</b> looks after the equipment."

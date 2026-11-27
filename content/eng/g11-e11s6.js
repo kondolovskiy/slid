@@ -838,7 +838,7 @@ SLID.section("eng", {
           sk: "read",
           eyebrow: "Reading: My first trip abroad, part 1 of 3",
           title: "Read and choose.",
-          body: `<p>Last August, I visited Emma, my penfriend, in England. It was my first trip abroad on my own. Beforehand, I was really nervous. I made a list of everything I needed and checked my passport three times! Mum saw me off at the station in Kyiv. I took a night train to Poland, and from there I flew to London. On the train, I met a friendly family from Lviv, so the journey went quickly. Emma’s dad picked me up at the airport. At first, everything felt strange: the cars drove on the left, and I didn’t always understand people’s accents. But eventually I got used to it. Afterwards, Emma told me that I had looked completely lost at the airport!</p><p>How did Andrii get to London?</p>`,
+          body: `<p>Last August, I visited Emma, my penfriend, in England. It was my first trip abroad on my own. Beforehand, I was really nervous. I made a list of everything I needed and checked my passport three times! Mum saw me off at the station in Kyiv. I took a night train to Poland, and from there I flew to London. On the train, I met a friendly family from Lviv, so the journey went quickly. We shared our sandwiches and played cards until late at night. Emma’s dad picked me up at the airport. At first, everything felt strange: the cars drove on the left, and I didn’t always understand people’s accents. But eventually I got used to it. Afterwards, Emma told me that I had looked completely lost at the airport!</p><p>How did Andrii get to London?</p>`,
           opts: [
             "He took a train to Poland and then a plane.",
             "He flew from Kyiv to London.",
@@ -873,7 +873,7 @@ SLID.section("eng", {
           sk: "read",
           eyebrow: "Reading: My first trip abroad, part 3 of 3",
           title: "Read and choose.",
-          body: `<p>Last summer, I made two big trips. In July, I went to the Carpathians with my class, and in August I went to England. Both places have mountains, lakes and hiking trails, and in both places visitors stay on the paths and take their rubbish home. But they feel different. In the Carpathians, we stayed in a wooden guesthouse and ate banosh. In the Lake District, I tried fish and chips for the first time. Three weeks later, I was back at school and missed both places. So here is my advice: plan your trip beforehand, but don’t plan every minute. And afterwards, write about it. That’s the best way to remember it! Emma wants to visit Kyiv one day, and I’m already looking forward to showing her around.</p><p>What is the main idea of the whole text?</p>`,
+          body: `<p>Last summer, I made two big trips. In July, I went to the Carpathians with my class, and in August I went to England. Both places have mountains, lakes and hiking trails, and in both places visitors stay on the paths and take their rubbish home. But they feel different. In the Carpathians, we stayed in a wooden guesthouse and ate banosh. In the Lake District, I tried fish and chips for the first time. In both places, I took hundreds of photos. Three weeks later, I was back at school and missed both places. So here is my advice: plan your trip beforehand, but don’t plan every minute. And afterwards, write about it. That’s the best way to remember it! Emma wants to visit Kyiv one day, and I’m already looking forward to showing her around.</p><p>What is the main idea of the whole text?</p>`,
           opts: [
             "Andrii didn’t enjoy his trip to England.",
             "A first trip abroad can feel strange at first, but it can be a wonderful experience.",
@@ -965,6 +965,7 @@ SLID.section("eng", {
           title: "Complete the sentences.",
           text: "Taras loves hiking and rafting: that’s {*active|cultural|rural} tourism. Emma prefers museums and castles: {*cultural|active|rural} tourism. Oksana’s neighbours have a small {*guesthouse|destination|grotto} for guests from the city.",
           pre: "e11s6l1",
+          hint: "Which gap is about a place to stay? And which kind of tourism is about history and art, and which is about sport and adventure?",
           fbOk: "Right.",
           fbBad: "Sport, history and art, a small hotel.",
           fbText: "Sport and adventure → <b>active</b>. Museums and castles → <b>cultural</b>. A small, cheap hotel → a <b>guesthouse</b>."
@@ -1021,6 +1022,7 @@ SLID.section("eng", {
           title: "Fill in the gaps.",
           text: "Andrii: Emma’s dad picked {*me up|up me} at the airport. Sofiia looked {*after my plants|my plants after} while I was away. I didn’t know one word, so I looked {*it up|up it} online.",
           pre: "e11s6l4",
+          hint: "Is each verb separable or prepositional? Then check where the pronoun or the object goes.",
           fbOk: "Right.",
           fbBad: "Separable: a pronoun in the middle. Prepositional: the object after.",
           fbText: "Picked <b>me up</b>, looked <b>it up</b>: separable, the pronoun goes in the middle. Looked <b>after my plants</b>: prepositional, the object goes after."
@@ -1046,6 +1048,7 @@ SLID.section("eng", {
           title: "Complete the sentences.",
           text: "Oksana: {*At first|Firstly|Finally}, the trip was a disaster: our bus broke down. {*Meanwhile|Firstly}, it started to rain. But after two hours, another bus {*eventually|meanwhile|at first} came. {*At|In} the end of the day, we were all happy.",
           pre: "e11s6l5",
+          hint: "Which word means after a long time, which means at the same time, and which shows a change? And which preposition goes with the end of?",
           fbOk: "Exactly.",
           fbBad: "A change; at the same time; after a long time; at the end of + noun.",
           fbText: "<b>At first</b>: before a change. <b>Meanwhile</b>: at the same time. <b>Eventually</b>: after a long time. <b>At</b> the end of the day."

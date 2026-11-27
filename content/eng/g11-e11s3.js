@@ -141,7 +141,7 @@ SLID.section("eng", {
           body: `<p>One word in Emma’s post is wrong.</p>`,
           text: "Last month I joined [to] the school film club. We watch a film every Friday and then discuss it with like-minded people.",
           hint: "Check the verbs and the small words after them.",
-          fbOk: "Good eye!",
+          fbOk: "Brilliant!",
           fbBad: "We say join a club, with no small word after join.",
           fbText: "We say <b>join a club</b>, not <s>join to a club</s>: I joined the school film club. Or: I signed up <b>for</b> the club."
         },
@@ -374,7 +374,7 @@ SLID.section("eng", {
           ],
           correct: 0,
           hint: "Look at the years in brackets and at the numbers.",
-          fbOk: "Right.",
+          fbOk: "Brilliant!",
           fbBad: "Compare the years: 1930 and 1965.",
           fbText: "<i>Earth</i> (1930) is 35 years older than <i>Shadows of Forgotten Ancestors</i> (1965). <i>Shadows</i> was number one, and the list has 100 films."
         },
@@ -989,6 +989,7 @@ SLID.section("eng", {
           title: "Fill in the gaps.",
           text: "Tonight we’re watching the first {*episode|subtitle|stage} of a new series. It’s in English, but you can switch on Ukrainian {*subtitles|episodes|soaps}. Please don’t {*binge-watch|sign up|meet up} the whole series before next week!",
           pre: "e11s3l2",
+          hint: "Which word is for the words at the bottom of the screen, which is for one part of a series, and which is for watching a lot at once?",
           fbOk: "Yes!",
           fbBad: "One part of a series → ? Words at the bottom of the screen → ?",
           fbText: "The first <b>episode</b>; Ukrainian <b>subtitles</b>; don’t <b>binge-watch</b> the whole series."
@@ -1017,6 +1018,7 @@ SLID.section("eng", {
           title: "Fill in the gaps.",
           text: "Tonight’s film is a {*two-hour|two-hours} comedy with a {*ten-minute|ten-minutes} break in the middle. The director is {*well known|well-knowing} in Ukraine.",
           pre: "e11s3l3",
+          hint: "What comes after each gap: a noun or no noun? Remember the rules for compounds with numbers and for adjectives after be.",
           fbOk: "Well done!",
           fbBad: "Number + noun before a noun → singular. After be → well known.",
           fbText: "A <b>two-hour</b> comedy, a <b>ten-minute</b> break; after <i>is</i> – <b>well known</b>, usually without a hyphen."
@@ -1028,6 +1030,7 @@ SLID.section("eng", {
           title: "Fill in the gaps.",
           text: "You’ve all got the link, {*haven’t you|didn’t you|aren’t you}? Let’s start at seven, {*shall we|don’t we|aren’t we}? Andrii couldn’t come last time, {*could he|did he|was he}? Turn off your microphones, {*will you|do you|are you}?",
           pre: "e11s3l4",
+          hint: "What do we add after a request, and what after Let’s? In the other sentences, find the auxiliary or the modal verb.",
           fbOk: "Exactly.",
           fbBad: "Same auxiliary or modal; Let’s → shall we; a request → will you.",
           fbText: "You’<b>ve</b> got → <b>haven’t you</b>? Let’s → <b>shall we</b>? Andrii <b>couldn’t</b> → <b>could he</b>? A request → <b>will you</b>?"

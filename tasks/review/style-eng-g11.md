@@ -6,7 +6,7 @@ type: style
 subject: eng
 grade: 11
 depends_on: [write-eng-g11-e11s1, write-eng-g11-e11s2, write-eng-g11-e11s3, write-eng-g11-e11s4, write-eng-g11-e11s5, write-eng-g11-e11s6, write-eng-g11-e11s7, write-eng-g11-e11s8]
-status: todo
+status: review
 claimed_by: style-eng-g11
 created: 2026-11-27
 source: orchestrator
@@ -25,3 +25,12 @@ source: orchestrator
 
 ## Готово, коли
 - [ ] Правки в content/eng/g11-*.js, звіт reports/style/eng-g11.md, рядки STYLE в inbox; перелік для точкової повторної верифікації; задача → review.
+
+## Нотатки агента (style-eng-g11, 2026-11-27)
+- Звіт: reports/style/eng-g11.md. Змінено e11s1–e11s8 (база diff — HEAD 5988f40, не закомічено); статус `verified` і id не змінено; ключі (`correct`, `{*…}`, `answer`, `tiles`, `extra`) і `opts` не змінено ніде (механічна звірка). diag-g11.js (паралельний агент) не чіпав.
+- Тексти читання (лише уривки): e11s1l7 341 → 410, e11s6l6 389 → 408 — речення без нових фактів; maxText ≤ 147. Решта текстів 400–450 уже ≥ 400 (e11s2l6 402 … e11s3l5 429).
+- Герої: e11s5 Maksym → Pavlo; e11s8 Ms Hrytsenko → Ms Klymenko, Solomiia → Uliana; e11s4l2 «I’m thinking of studying art history»; e11s8l4 «Oksana thinks she has made up» / «I think I’ve made up my mind»; e11s8l5 Emma (astronomer узимку → doctor). Orysia «two years ago» — узгоджено, без правок.
+- 12 нових `hint` у фіналах e11s2l7, e11s3l7, e11s4l7, e11s6l7 (по 3; текст — §2 звіту); 5 наявних hint переставлено (e11s5l7 T2, e11s7l7 T3, e11s8l7 T1/T2/T4); 11 `fbOk` поспіль → «Brilliant!»; e11s7l7 title → «Our class project: Ukraine in the world».
+- Терміни: the third form, email, the internet, penfriend, chat show — однаково. Vernadskyi / Akademik Vernadsky — однаково; D-057 (нове) — задача fix-eng-historic-names, не правив.
+- validate --section e11s1…e11s8 — 0 помилок; 1 попередження e11s6l6 rwps 67 > 65 → остаточна STYLE-пропозиція «10-11»: rwps [8, 70], sentenceWords [4, 13], longWordShare [0, 0.22] (inbox). Профіль, style/, decisions.md, plan.js не змінював. Build і commit не робив.
+- Точкова повторна верифікація — §7 звіту.

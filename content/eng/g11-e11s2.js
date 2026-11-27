@@ -337,7 +337,7 @@ SLID.section("eng", {
           body: `<p>Mariia writes about the cooking evening for the club cookbook.</p>`,
           text: "Our cooking evening was a big success! We made {*plenty of|hardly any} food, so nobody went home hungry. {*A large number of|A great deal of} parents came too. There was {*hardly any|plenty of} time left at the end, so we’re cleaning the kitchen tomorrow.",
           hint: "Nobody was hungry. And why are they cleaning tomorrow?",
-          fbOk: "Well done!",
+          fbOk: "Brilliant!",
           fbBad: "Check the meaning: more than enough or almost none? And parents: plural.",
           fbText: "<b>Plenty of</b> food: nobody was hungry. <b>A large number of</b> parents (plural). <b>Hardly any</b> time left, so they’re cleaning tomorrow."
         }
@@ -626,7 +626,7 @@ SLID.section("eng", {
           body: `<p>Oksana writes a paragraph for the cookbook: “Our priorities”.</p>`,
           text: "My top {*priority|habit} is fresh, seasonal food, {*whereas|because} Emma’s is time: she trains every evening. {*Neither|Both} of us likes junk food very much. In summer, the vegetables at our market are very {*affordable|convenient}: they cost very little.",
           hint: "Two different facts → whereas. Likes: one or two? They cost very little → … .",
-          fbOk: "Well done!",
+          fbOk: "Brilliant!",
           fbBad: "Check the boxes on priorities, comparing and two things.",
           fbText: "My top <b>priority</b>. <b>Whereas</b> joins two different facts. <b>Neither</b> of us likes (singular verb). The vegetables are <b>affordable</b>: not expensive."
         }
@@ -937,7 +937,7 @@ SLID.section("eng", {
           body: `<p>Oksana sends the recipe to Emma.</p>`,
           text: "Hi Emma! Here’s Grandma’s recipe. You’ll need 500 {*grams|millilitres} of plain flour and 300 {*millilitres|grams} of warm milk. Knead the dough until it’s {*smooth|golden}, then leave it in a warm place for an hour. Don’t forget a {*pinch|bunch} of salt in the garlic oil! Love, Oksana",
           hint: "Flour → you weigh it. Milk → you measure it. When is it golden?",
-          fbOk: "Well done!",
+          fbOk: "Brilliant!",
           fbBad: "Check the recipe: amounts and step 2.",
           fbText: "500 <b>grams</b> of flour, 300 <b>millilitres</b> of milk. Knead the dough until it’s <b>smooth</b>: the pampushky are golden after baking. A <b>pinch</b> of salt."
         }
@@ -994,6 +994,7 @@ SLID.section("eng", {
           title: "Fill in the gaps.",
           text: "We’ve got {*plenty of|hardly any} bread, so we don’t need to buy any. There’s {*hardly any|plenty of} milk left: can you get some?",
           pre: "e11s2l2",
+          hint: "Which phrase means almost none, and which means more than enough? Then read the end of each sentence.",
           fbOk: "Exactly.",
           fbBad: "More than enough or almost none?",
           fbText: "<b>Plenty of</b> bread: more than enough. <b>Hardly any</b> milk: almost none, so they need some."
@@ -1050,6 +1051,7 @@ SLID.section("eng", {
           title: "Fill in the gaps.",
           text: "Emma and Oksana don’t drink cola. {*Neither|Both} of them likes fizzy drinks. We can cook on Saturday or Sunday: {*either|both} day is fine.",
           pre: "e11s2l4",
+          hint: "Which word means one or the other, and which means not one and not the other?",
           fbOk: "Exactly.",
           fbBad: "Not one and not the other → … . One or the other → … .",
           fbText: "<b>Neither</b> of them likes fizzy drinks. <b>Either</b> day is fine: Saturday or Sunday, it doesn’t matter."
@@ -1096,6 +1098,7 @@ SLID.section("eng", {
           title: "Fill in the gaps.",
           text: "Crush two {*cloves|bunches} of garlic. Add a {*pinch|clove} of salt and three {*tablespoons|bunches} of oil.",
           pre: "e11s2l6",
+          hint: "Look at each food. How do you usually measure oil, garlic and salt in a recipe?",
           fbOk: "Well done!",
           fbBad: "Garlic → … ; a very small amount of salt → … ; oil → spoons.",
           fbText: "Two <b>cloves</b> of garlic, a <b>pinch</b> of salt, three <b>tablespoons</b> of oil."

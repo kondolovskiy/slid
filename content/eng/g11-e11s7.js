@@ -310,7 +310,7 @@ SLID.section("eng", {
           body: `<p>Zoriana finishes her article.</p>`,
           text: "Human rights belong to everyone. The Universal Declaration, {*which|that} the UN adopted in 1948, says that all people are born free and {*equal|equality} in dignity and rights. People {*who|which} think their rights have been broken can go to {*court|fine}. And the European Court of Human Rights, {*which|that} is in Strasbourg, can help when Ukrainian courts can’t.",
           hint: "Commas → which, not that. born free and … (adjective). People → who.",
-          fbOk: "Well done!",
+          fbOk: "Brilliant!",
           fbBad: "Check the commas and the list “The law”.",
           fbText: "the Declaration, <b>which</b>…; born free and <b>equal</b>; people <b>who</b> think…; go to <b>court</b>; the Court, <b>which</b> is in Strasbourg."
         }
@@ -993,7 +993,7 @@ SLID.section("eng", {
     /* ───────────── Урок 7 · фінал ───────────── */
     {
       id: "e11s7l7",
-      title: "Ukraine in the world: section final",
+      title: "Our class project: Ukraine in the world",
       short: "Section final",
       icon: "trophy",
       status: "verified",
@@ -1040,7 +1040,7 @@ SLID.section("eng", {
           body: `<p>Orysia compares customs.</p>`,
           text: "In my family, guests take off their shoes, {*whereas|unlike} in Emma’s family, they keep them on. {*Unlike|Whereas} Emma, I always count the flowers. {*Both|Unlike} of us think that different doesn’t mean wrong.",
           pre: "e11s7l3",
-          hint: "Two facts → …; + noun → …; the same for two people → …",
+          hint: "The same for two people → …; + noun → …; two facts → …",
           fbOk: "Right.",
           fbBad: "Remember “Comparing customs” from Lesson 3.",
           fbText: "<b>whereas</b> + a whole sentence; <b>Unlike</b> + noun; <b>Both</b> of us (the same)."

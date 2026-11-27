@@ -20,8 +20,8 @@
    5) — по два джерела; URL — tasks/…/write-eng-g11-e11s8.md, «Нотатки агента». Опитування класу Andrii — вигадане.
    Діалоги — репліками в body (D-056), без звуку (D-055 п. 4).
    Герої — серія 4–11 кл., на сім років старші, ніж у 4 кл.: Oksana, Andrii, Mariia, Taras, Emma, Daryna, Kyrylo,
-   Zoriana, Bohdan — 17; Emma — Year 12. Нові: Ms Hrytsenko (кар’єрна радниця ліцею Oksana в Poltava), Yustyna (20,
-   Lviv, колишня учасниця penfriend club, семестр у Lithuania), Solomiia (студентка ветеринарії, Kharkiv).
+   Zoriana, Bohdan — 17; Emma — Year 12. Нові: Ms Klymenko (кар’єрна радниця ліцею Oksana в Poltava), Yustyna (20,
+   Lviv, колишня учасниця penfriend club, семестр у Lithuania), Uliana (студентка ветеринарії, Kharkiv).
    Форми, наголос і значення — Cambridge Dictionary (CD), CD Grammar «Wish», OALD.
    Увесь зміст — англійською, британська норма (D-055). Тексти, діалоги й герої — власні (docs/design/english.md §8).
    Статус: verified (verifier-e11s8, 2026-11-27). 7 уроків (6 + фінал). Будова — за розділами 10–11 кл. (e10s8, e11s1).
@@ -332,7 +332,7 @@ SLID.section("eng", {
           sk: "phon",
           title: "Find the stressed syllable.",
           words: ["ex|+change", "+part|ner", "a|+broad", "+dead|line"],
-          fbOk: "Right.",
+          fbOk: "Brilliant!",
           fbBad: "Look at the underlined parts in the boxes.",
           fbText: "ex<u>change</u>, <u>part</u>ner, a<u>broad</u>, <u>dead</u>line."
         },
@@ -502,7 +502,7 @@ SLID.section("eng", {
           body: `<p>Taras writes to Emma.</p>`,
           text: "The NMT is next month. If I {*get|got|had got} a good score, I’ll apply to study journalism in Lviv. If I {*lived|live|had lived} in Kyiv, I’d go to the open days there too, but it’s too far. Last year, I didn’t do any practice tests. If I {*had done|did|do} more, I’d have felt more confident in my school tests in March. So now I’m doing one every week!",
           hint: "Look at the other part: I’ll apply, I’d go, I’d have felt.",
-          fbOk: "Well done!",
+          fbOk: "Brilliant!",
           fbBad: "Check the box “How to choose”.",
           fbText: "<i>I’ll apply</i> → First → <b>get</b>. <i>I’d go</i>, he doesn’t live in Kyiv → Second → <b>lived</b>. <i>I’d have felt</i> → Third → <b>had done</b>."
         }
@@ -530,7 +530,7 @@ SLID.section("eng", {
           type: "intro",
           eyebrow: "Lesson 4",
           title: "A meeting with the careers adviser",
-          body: `<p class="lead">Oksana is in her last year at the lyceum in Poltava. Today she has a meeting with Ms Hrytsenko, the careers adviser.</p><p><b>Ms Hrytsenko:</b> So, Oksana, what are you good at?<br><b>Oksana:</b> Biology and chemistry. And I love animals: I’ve wanted to be a vet since I was little.<br><b>Ms Hrytsenko:</b> Is anything worrying you?<br><b>Oksana:</b> This year, I’ve become interested in art history too. I’m not sure which one suits me better.<br><b>Ms Hrytsenko:</b> Let’s look at your strengths. You’re patient and calm, and you’ve helped on a farm for three years.<br><b>Oksana:</b> You’re right. I’m going to apply for veterinary medicine in Kharkiv. Art can stay my hobby.<br><b>Ms Hrytsenko:</b> Good. The university’s open day is next Saturday. Are you going?<br><b>Oksana:</b> Yes, I’m going with my dad.</p>`,
+          body: `<p class="lead">Oksana is in her last year at the lyceum in Poltava. Today she has a meeting with Ms Klymenko, the careers adviser.</p><p><b>Ms Klymenko:</b> So, Oksana, what are you good at?<br><b>Oksana:</b> Biology and chemistry. And I love animals: I’ve wanted to be a vet since I was little.<br><b>Ms Klymenko:</b> Is anything worrying you?<br><b>Oksana:</b> This year, I’ve become interested in art history too. I’m not sure which one suits me better.<br><b>Ms Klymenko:</b> Let’s look at your strengths. You’re patient and calm, and you’ve helped on a farm for three years.<br><b>Oksana:</b> You’re right. I’m going to apply for veterinary medicine in Kharkiv. Art can stay my hobby.<br><b>Ms Klymenko:</b> Good. The university’s open day is next Saturday. Are you going?<br><b>Oksana:</b> Yes, I’m going with my dad.</p>`,
           cta: "Let’s see"
         },
         {
@@ -559,7 +559,7 @@ SLID.section("eng", {
           type: "match",
           sk: "vocab",
           title: "Match the halves.",
-          left: ["Ms Hrytsenko is a careers", "Being patient is one of Oksana’s", "Oksana has finally made up", "At the open day, she can"],
+          left: ["Ms Klymenko is a careers", "Being patient is one of Oksana’s", "Oksana thinks she has made up", "At the open day, she can"],
           right: ["adviser.", "strengths.", "her mind.", "see what the university is like."],
           hint: "What do you make up when you decide?",
           fbOk: "Well done!",
@@ -569,7 +569,7 @@ SLID.section("eng", {
         {
           type: "info",
           title: "The future: an overview, part 1",
-          body: `<ul><li><b>will</b> → a decision now, a prediction, a promise:<br>OK, I<b>’ll</b> call you tonight. I think I<b>’ll</b> enjoy it.</li><li><b>be going to</b> → a plan you have already made:<br>I<b>’m going to</b> apply for veterinary medicine.</li><li>Present Continuous → an arrangement with a time or a place:<br>I<b>’m meeting</b> Ms Hrytsenko on Monday.</li><li>Present Simple → a timetable:<br>The train <b>leaves</b> at 7.15.</li></ul><p>Often more than one form is correct: <i>I’m going to visit</i> / <i>I’m visiting</i> the university on Saturday.</p>`,
+          body: `<ul><li><b>will</b> → a decision now, a prediction, a promise:<br>OK, I<b>’ll</b> call you tonight. I think I<b>’ll</b> enjoy it.</li><li><b>be going to</b> → a plan you have already made:<br>I<b>’m going to</b> apply for veterinary medicine.</li><li>Present Continuous → an arrangement with a time or a place:<br>I<b>’m meeting</b> Ms Klymenko on Monday.</li><li>Present Simple → a timetable:<br>The train <b>leaves</b> at 7.15.</li></ul><p>Often more than one form is correct: <i>I’m going to visit</i> / <i>I’m visiting</i> the university on Saturday.</p>`,
           cta: "Next"
         },
         {
@@ -646,7 +646,7 @@ SLID.section("eng", {
           eyebrow: "Final",
           title: "Complete the sentences.",
           body: `<p>Oksana writes to Emma.</p>`,
-          text: "I’ve finally made up my {*mind|head|choice}: I’m going to apply for veterinary medicine in Kharkiv. My careers adviser says the job really {*suits|fits in|matches up} me. Dad and I {*are visiting|visited|visit} the university on Saturday: we’ve already got the tickets! And this time next year, I {*’ll be studying|’ll have studied|study} there.",
+          text: "I think I’ve made up my {*mind|head|choice}: I’m going to apply for veterinary medicine in Kharkiv. My careers adviser says the job really {*suits|fits in|matches up} me. Dad and I {*are visiting|visited|visit} the university on Saturday: we’ve already got the tickets! And this time next year, I {*’ll be studying|’ll have studied|study} there.",
           hint: "make up your …; be right for someone → ? an arrangement → ? in progress at a future time → ?",
           fbOk: "Well done!",
           fbBad: "Check the box “Choosing a career” and the two future boxes.",
@@ -717,7 +717,7 @@ SLID.section("eng", {
           type: "choice",
           sk: "cult",
           title: "Read and choose.",
-          body: `<p><b>Emma:</b> When I was fifteen, I wanted to be a firefighter. Now I’m studying biology and chemistry, and I’m thinking of becoming a doctor. I’ve read that in the UK, a medicine degree usually takes five years. Then new doctors continue their training in a hospital. In Ukraine, you study medicine at university for six years after school, and then you also continue your training.</p><p>Where does a medicine degree take longer?</p>`,
+          body: `<p><b>Emma:</b> When I was fifteen, I wanted to be a firefighter, and this winter I wanted to be an astronomer. But now I’m thinking of becoming a doctor. I’ve read that in the UK, a medicine degree usually takes five years. Then new doctors continue their training in a hospital. In Ukraine, you study medicine at university for six years after school, and then you also continue your training.</p><p>Where does a medicine degree take longer?</p>`,
           opts: [
             "in Ukraine",
             "in the UK",
@@ -984,7 +984,7 @@ SLID.section("eng", {
           title: "Complete the sentences.",
           text: "Zoriana made a revision {*timetable|deadline|grant}. She registered for the NMT before the {*deadline|timetable|term}. If you fail an exam, you can sometimes {*retake|revise|register} it.",
           pre: "e11s8l1",
-          hint: "a plan of what to revise → ? the last day → ? take it again → ?",
+          hint: "take it again → ? a plan of what to revise → ? the last day → ?",
           fbOk: "Yes!",
           fbBad: "Check the words from Lesson 1.",
           fbText: "a revision <b>timetable</b>; before the <b>deadline</b>; <b>retake</b> = take it again."
@@ -996,7 +996,7 @@ SLID.section("eng", {
           title: "Fill in the gaps.",
           text: "Kyrylo {*’s been revising|’s revising|revises} since March. Last Saturday, he {*took|has taken|takes} a practice test. He {*was doing|has done|does} the maths part when his phone rang.",
           pre: "e11s8l1",
-          hint: "since March → ? last Saturday → ? in progress when… → ?",
+          hint: "last Saturday → ? in progress when… → ? since March → ?",
           fbOk: "Exactly.",
           fbBad: "Look at the time words: since, last Saturday, when.",
           fbText: "<b>’s been revising</b> since March; last Saturday → <b>took</b>; in progress when the phone rang → <b>was doing</b>."
@@ -1027,7 +1027,7 @@ SLID.section("eng", {
           title: "Fill in the gaps.",
           text: "Our train {*leaves|left|has left} at 7.15 tomorrow. It’s on the timetable. By July, I {*’ll have finished|’ll be finishing|finish} school. This time next year, I {*’ll be studying|’ll have studied|study} in Kharkiv.",
           pre: "e11s8l4",
-          hint: "a timetable → ? finished before July → ? in progress next year → ?",
+          hint: "finished before July → ? in progress next year → ? a timetable → ?",
           fbOk: "Right.",
           fbBad: "Look at the time words: the timetable, by July, this time next year.",
           fbText: "a timetable → <b>leaves</b>; by July → <b>’ll have finished</b>; this time next year → <b>’ll be studying</b>."
@@ -1091,7 +1091,7 @@ SLID.section("eng", {
           sk: "read",
           eyebrow: "Reading: The train to Kharkiv, part 2 of 3",
           title: "Read and choose.",
-          body: `<p><i>At the university, a second-year student called Solomiia showed them around. She took them to the animal clinic, where students were helping a vet with a sick dog. Oksana watched carefully. The dog was scared, but the students were calm and patient. “Do you like it here?” Oksana asked Solomiia. “I love it,” Solomiia said. “It’s hard work, and there’s a lot to learn. But if I had chosen a different course, I would have missed all this,” she explained. Then she smiled and showed Oksana a small drawing of a cat in her notebook. “And I still draw every evening,” she added.</i></p><p>What does Solomiia think about her choice?</p>`,
+          body: `<p><i>At the university, a second-year student called Uliana showed them around. She took them to the animal clinic, where students were helping a vet with a sick dog. Oksana watched carefully. The dog was scared, but the students were calm and patient. “Do you like it here?” Oksana asked Uliana. “I love it,” Uliana said. “It’s hard work, and there’s a lot to learn. But if I had chosen a different course, I would have missed all this,” she explained. Then she smiled and showed Oksana a small drawing of a cat in her notebook. “And I still draw every evening,” she added.</i></p><p>What does Uliana think about her choice?</p>`,
           opts: [
             "She wishes she had chosen art.",
             "She’s happy that she chose this course.",
@@ -1099,9 +1099,9 @@ SLID.section("eng", {
           ],
           correct: 1,
           pre: "e11s8l3",
-          hint: "Find Solomiia’s sentence with if.",
+          hint: "Find Uliana’s sentence with if.",
           fbOk: "Well done!",
-          fbBad: "Read what Solomiia says after “I love it”.",
+          fbBad: "Read what Uliana says after “I love it”.",
           fbText: "<i>If I had chosen a different course, I would have missed all this.</i> She <b>loves</b> her course, and she still draws every evening."
         },
         {
@@ -1137,7 +1137,7 @@ SLID.section("eng", {
           pre: "e11s8l4",
           fbOk: "Well done!",
           fbBad: "How did Oksana feel before the visit, and after it?",
-          fbText: "Before the open day, Oksana wasn’t sure. After she saw the clinic and met Solomiia, she <b>made up her mind</b>. And Solomiia still draws, so Oksana can too."
+          fbText: "Before the open day, Oksana wasn’t sure. After she saw the clinic and met Uliana, she <b>made up her mind</b>. And Uliana still draws, so Oksana can too."
         }
       ],
       outro: {
