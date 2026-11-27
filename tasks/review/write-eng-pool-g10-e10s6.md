@@ -6,7 +6,7 @@ type: write-pool
 subject: eng
 grade: 10
 section: e10s6
-status: todo
+status: review
 claimed_by: writer-pe10s6
 created: 2026-11-27
 depends_on: []
@@ -47,3 +47,22 @@ generated_by: tools/make-tasks.mjs --write-pool --subject eng
 - [ ] Задача → `tasks/review/` для **content-verifier зі свіжим контекстом** (розв'язати кожну вправу, звірити форми за словником).
 
 ## Нотатки виконавця
+writer-pe10s6, 2026-11-27. Файл `content/eng/pool-g10-e10s6.js` — **61 вправа**, `status: "draft"`. `node tools/validate.mjs --pool pe10s6` — 0 помилок, 0 попереджень; `personalization-qa --pool pe10s6 --strict` — лише «ще не verified»; euphony — без зауважень. test-answer-ui не запускався (Python-модуля playwright немає — CI).
+
+| Урок | Вправ | Рівні | sk (кількість) | Типи |
+|---|---|---|---|---|
+| e10s6l1 | 10 | 1, 2, 3 | vocab 4, phon 3, read 3 | match, gaps, sort, word, stress, choice, multi |
+| e10s6l2 | 15 | 1, 2, 3 | func 3, vocab 3, cult 3, gram 3, write 3 | choice, multi, match, gaps, word, pick, build |
+| e10s6l3 | 9 | 1, 2, 3 | gram 6, write 3 | gaps, build, choice, pick, word |
+| e10s6l4 | 9 | 1, 2, 3 | gram 6, write 3 | gaps, choice, pick, word, build |
+| e10s6l5 | 9 | 1, 2, 3 | gram 3, func 3, write 3 | gaps, word, pick, match, choice, build |
+| e10s6l6 | 9 | 1, 2, 3 | func 3, read 3, write 3 | gaps, match, choice, multi, order, build |
+
+- **Джерело:** `p1407`, `program: true`; `src` — «p1407 с. 22» (тема, функції: поради, аргументація), «p1407 с. 23» (first / second conditionals).
+- **Умовні речення:** will / might / could / can у головному реченні не протиставлені в одному пропуску (значення — choice a28, a38); would у first conditional хибним не дається; пастки — will після if / unless, not після unless (a29, a30), will у second conditional (a43, a46, a52), would в if-частині (a39, a43), хибні форми. were / was — обидва в ключі `word` (a40); у `gaps` was поруч із were не стоїть. unless — лише в реальних умовах, правило «не для протилежного реальності» не перевіряється. a45: wouldn’t / would not / shouldn’t / should not + contractions (BrE should — CD should, як в уроці l5).
+- **Diia** — лише як в уроці l2 (лютий 2020; цифрові документи, послуги; з 2021 паспорт рівний звичайному в Україні; кордон — ні). Брендів немає.
+- **build:** if-частина з комою в плитці («is late,», «in London,», «if I were you,») і «Start with if / unless» в умові; a41 — другий порядок (every week на початку головного речення) у ключі; a61 — «is that» злито, щоб не складалось «One disadvantage is fake news that…».
+- **stress:** лише слова, підкреслені в l1, плюс computer / install (підкреслені в fbText вправи stress l1); у кожному наборі є слово з наголосом на 2-му складі.
+- **Перевірка лексики й копій:** той самий скрипт (scratchpad): слів з пізніших уроків розділу немає (instruction, dead прибрано; hurry → leave); 6-грами — рамки інструкцій, правила в `steps`, реакції на пораду (вони й є предметом l5) і факт Diia; рамки уроків з тим самим ключем замінено (3D printer, keep in touch, show it to the class).
+- **Словники:** CD https://dictionary.cambridge.org/dictionary/english/viral («go viral»), /back-up («back sth up … to make a copy of information»); наголос desktop, laptop, keyboard, webcam, microphone, printer, hardware, software, computer, install — reports/verify/write-eng-g10-e10s6.md (CD, OALD); unless, should, if I were / was — там само (CD Grammar «Unless», CD should, OALD if_1).
+- Нові дрібниці героїв (NOTE в inbox): у Grandad Vasyl старий desktop, Andrii віддав йому свою клавіатуру; комікс Mariia «went viral»; Kyrylo щоп’ятниці робить резервну копію; Myroslava чекає Ostap на концерт; Bohdan — тенісне відео; Daryna мріє літати до тітки в Odesa.
