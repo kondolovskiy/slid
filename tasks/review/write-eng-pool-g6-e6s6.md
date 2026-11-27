@@ -6,7 +6,7 @@ type: write-pool
 subject: eng
 grade: 6
 section: e6s6
-status: todo
+status: review
 claimed_by: writer-pe6s6
 created: 2026-11-27
 depends_on: []
@@ -47,3 +47,33 @@ generated_by: tools/make-tasks.mjs --write-pool --subject eng
 - [ ] Задача → `tasks/review/` для **content-verifier зі свіжим контекстом** (розв'язати кожну вправу, звірити форми за словником).
 
 ## Нотатки виконавця
+### writer-pe6s6, 2026-11-27
+**Результат:** `content/eng/pool-g6-e6s6.js`, пул `pe6s6`, 74 вправи a01–a74, `status: "draft"`. `node tools/validate.mjs --pool pe6s6` — 0 помилок, 0 попереджень; `personalization-qa --pool pe6s6 --strict` — лише «ще не verified». Build не запускав.
+
+| Урок | sk → кількість (рівні 1/2/3 у кожній парі) | Типи |
+|---|---|---|
+| l1 (14) | vocab 4, func 4, phon 3, write 3 | match, gaps, pick, build, word, stress |
+| l2 (14) | vocab 4, gram 4, read 3, write 3 | gaps, match, word, pick, choice, multi, build |
+| l3 (11) | gram 5, vocab 3, write 3 | gaps, word, pick, multi, build, match |
+| l4 (9) | gram 6, func 3 | gaps, pick, word, multi, choice, build |
+| l5 (10) | gram 4, func 3, write 3 | gaps, pick, match, build, choice |
+| l6 (16) | vocab 3 (sk з hyp-екрана; amazing / exciting / boring — з info l6), read 3, gram 4, func 3, write 3 | gaps, sort, pick, choice, multi, word, match, build |
+
+**Джерело:** `mpim` (program: true), PDF як у задачі; `pdftotext` у цій сесії: с. 21 — «Шкільне життя»: улюблені предмети, види діяльності на уроках; функції «висловлювати враження», «аргументувати»; Relative defining who / which / that; Have (got) to; с. 22 — Must, Should, Past simple, Present continuous.
+
+**Словники (curl CD, 2026-11-27):** useful ˈjuːs.fəl, difficult ˈdɪf.ɪ.kəlt, computer kəmˈpjuː.tər, history ˈhɪs.tər.i, because bɪˈkɒz, music ˈmjuː.zɪk, science ˈsaɪ.əns, amazing əˈmeɪ.zɪŋ — https://dictionary.cambridge.org/dictionary/english/<слово>. **geography у stress не брав** (pitfalls-content «Англійська» п. 19), хоча l1 її підкреслює.
+
+**Друга правильна відповідь — як відсічено:**
+- who / which: у word (a30) — which і that у ключі; у gaps that варіантом не дано; a32 multi — who + that.
+- must / mustn’t / don’t have to / should — лише з явною рамкою: «Write must or mustn’t» (a42), «rule / your choice» (a43, a44, a47), «rule / good idea» (a52).
+- a07 because / as / since; a17 pairs / a pair; a20 is doing / ’s doing (contractions).
+- `build` (a06, a13, a27, a33, a38, a48, a54, a57, a71, a73): перебір через SLID_LANG.check; a33 (The map which… — два порядки), a38 (Daryna is the girl… / The girl who… is Daryna), a73 (to the zoo / with our class) — обидва порядки в `answer`; решта — рівно один порядок.
+- n-грами ≥ 6 слів проти g*-*.js і diag-*.js: копії з тим самим ключем переписано (history boring — Zoriana, listen to the teacher, uniform-сцени l4, «You should ask Bohdan. He’s good at maths.», computer games all evening — dge7).
+
+**Герої — канон, дрібне нове:** Yaryna малює постер, Myroslava й Orest — експеримент (Lviv, клас Тараса); Bohdan грає на гітарі в пісні класу (a62–a64); Kyrylo пише бабусі; у школі Andrii є кафе й art club; у школі Emma — trainers on PE; Daryna пише сестрі; Mariia — урок у зоопарку; Emma — проєкт про дерева в парку.
+
+**Спірне для верифікатора:**
+1. a52 must / should — обидва граматичні; відсічено рамкою «rule / good idea» (learned l5 «Tell a rule from advice»).
+2. a10 history — CD три склади (ˈhɪs.tər.i); поділ «+his|to|ry», наголос однозначний.
+3. a11 because — службове слово в stress; наголос на 2-му за CD.
+4. l6 vocab — лише hyp-sk (як у pe6s5 l6).
