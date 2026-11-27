@@ -820,7 +820,7 @@ SLID.section("eng", {
           type: "intro",
           eyebrow: "Lesson 6",
           title: "What connects us?",
-          body: `<p class="lead">Andrii’s class in Kyiv is writing an article for the project.</p><p><b>Ms Lysenko:</b> What connects Ukraine with English-speaking countries?<br><b>Kyrylo:</b> Farmers!<br><b>Bohdan:</b> Penguins!<br><b>Zoriana:</b> Space!<br><b>Daryna:</b> Let’s read the article first. Then we can decide.</p><p>Who do you think is right?</p>`,
+          body: `<p class="lead">Andrii’s class in Kyiv is writing an article for the project.</p><p><b>Ms Lysenko:</b> What connects Ukraine with English-speaking countries?<br><b>Kyrylo:</b> Farmers!<br><b>Bohdan:</b> Penguins!<br><b>Zoriana:</b> Space!<br><b>Daryna:</b> Let’s read the article first.</p><p>Who do you think is right?</p>`,
           cta: "Let’s see"
         },
         {
@@ -843,7 +843,7 @@ SLID.section("eng", {
         {
           type: "info",
           title: "Words for the article",
-          body: `<ul><li><b>settle</b> → go to live in a new place; a <b><u>set</u>tler</b> → a person who does this</li><li><b>roots</b> → the place where your family comes from</li><li>a <b>re<u>search</u> station</b> → a place where scientists live and work</li><li><b>hand over</b> → officially give something to someone</li><li><b>raise a flag</b> → put a flag up</li><li>an <b><u>as</u>tronaut</b>; a <b><u>mis</u>sion</b> → a trip into space</li><li><b>without gravity</b> → when things float and don’t fall</li></ul><p>In Ukrainian official documents, the names in the article are written <i>Ivan Pylypiv</i>, <i>Vasyl Yeleniak</i> and <i>Volodymyr Vernadskyi</i>.</p>`,
+          body: `<ul><li><b>settle</b> → go to live in a new place; a <b><u>set</u>tler</b> → a person who does this</li><li><b>roots</b> → the place where your family comes from</li><li>a <b>re<u>search</u> station</b> → a place where scientists live and work</li><li><b>hand over</b> → officially give something to someone</li><li><b>raise a flag</b> → put a flag up</li><li>an <b><u>as</u>tronaut</b>; a <b><u>mis</u>sion</b> → a trip into space</li><li><b>without gravity</b> → when things float and don’t fall</li></ul><p>Official Ukrainian spelling: <i>Ivan Pylypiv</i>, <i>Vasyl Yeleniak</i>, <i>Volodymyr Vernadskyi</i>.</p>`,
           cta: "Next"
         },
         {
@@ -851,7 +851,7 @@ SLID.section("eng", {
           sk: "read",
           eyebrow: "Reading: Small bridges, part 1 of 3",
           title: "Read and choose.",
-          body: `<p><i>What connects Ukraine with English-speaking countries? Our class found three stories from three different times. Each of them is about people who travelled far from home. In September 1891, two farmers from the village of Nebyliv in western Ukraine arrived in Montreal, Canada. Their journey across the Atlantic Ocean had taken more than a week. Their names were Ivan Pylypiw and Wasyl Eleniak, and they are often called the first Ukrainian settlers in Canada. They had heard that there was a lot of free land there, which was hard to believe at home, where families had very small fields. Pylypiw went back to his village and told his neighbours about Canada. Soon many families followed. By 1914, thousands of Ukrainian families had settled in Canada, especially on the prairies, where they grew wheat. Today, more than a million Canadians have Ukrainian roots.</i></p><p>Why did Pylypiw and Eleniak go to Canada?</p>`,
+          body: `<p><i>What connects Ukraine with English-speaking countries? Our class found three stories from three different times. Each of them is about people who travelled far from home. In September 1891, two farmers from the village of Nebyliv in western Ukraine arrived in Montreal, Canada. Their journey across the Atlantic Ocean had taken more than a week. Their names were Ivan Pylypow and Wasyl Eleniak, and they are often called the first Ukrainian settlers in Canada. They had heard that there was a lot of free land there, which was hard to believe at home, where families had very small fields. Pylypow went back to his village and told his neighbours about Canada. Soon many families followed. By 1914, thousands of Ukrainian families had settled in Canada, especially on the prairies, where they grew wheat. Today, more than a million Canadians have Ukrainian roots.</i></p><p>Why did Pylypow and Eleniak go to Canada?</p>`,
           opts: [
             "They wanted to study in Montreal.",
             "Their families already lived there.",
@@ -973,11 +973,11 @@ SLID.section("eng", {
           eyebrow: "Final",
           title: "Complete the sentences.",
           body: `<p>Daryna writes the summary for the project page.</p>`,
-          text: "To sum up, Pylypiw and Eleniak, {*who|that} came to Canada in 1891, were the first of many Ukrainian settlers. Faraday, {*which|that} the UK handed over in 1996, is now Akademik Vernadsky. And Kadenyuk, {*whose|who’s} mission lasted about sixteen days, became the first astronaut of independent Ukraine. {*Overall|At overall}, our countries have been connected for a long time.",
+          text: "To sum up, Pylypow and Eleniak, {*who|that} came to Canada in 1891, were the first of many Ukrainian settlers. Faraday, {*which|that} the UK handed over in 1996, is now Akademik Vernadsky. And Kadenyuk, {*whose|who’s} mission lasted about sixteen days, became the first astronaut of independent Ukraine. {*Overall|At overall}, our countries have been connected for a long time.",
           hint: "Commas → not that. … + noun (mission). In general → …",
           fbOk: "Well done!",
           fbBad: "Check the commas and the box “Summing up a discussion”.",
-          fbText: "Pylypiw and Eleniak, <b>who</b>…; Faraday, <b>which</b>…; Kadenyuk, <b>whose</b> mission (who’s = who is); <b>Overall</b>, …"
+          fbText: "Pylypow and Eleniak, <b>who</b>…; Faraday, <b>which</b>…; Kadenyuk, <b>whose</b> mission (who’s = who is); <b>Overall</b>, …"
         }
       ],
       outro: {

@@ -778,7 +778,7 @@ SLID.section("eng", {
         {
           type: "info",
           title: "Words for the article",
-          body: `<ul><li>an <b>academy of sciences</b> → an organisation of scientists and their research institutes (a<u>cad</u>emy)</li><li>a <b>research institute</b> → a place where scientists do research</li><li>a <b>research station</b> → a place where scientists live and work</li><li><b>found</b> an organisation → start it: It was <b>founded</b> in 1918.</li><li><b>hand over</b> → give something to someone else: It was <b>handed over</b> to Ukraine.</li><li><b><u>weld</u>ing</b> → joining pieces of metal by melting them</li></ul><p>In Ukrainian official documents, Vernadsky is written <i>Vernadskyi</i>.</p>`,
+          body: `<ul><li>an <b>academy of sciences</b> → an organisation of scientists and their institutes (a<u>cad</u>emy)</li><li>a <b>research institute</b> → a place where scientists do research</li><li>a <b>research station</b> → a place where scientists live and work</li><li><b>found</b> an organisation → start it: It was <b>founded</b> in 1918.</li><li><b>hand over</b> → give something to someone: It was <b>handed over</b> to Ukraine.</li><li><b><u>weld</u>ing</b> → joining metal by melting it</li></ul><p>Official Ukrainian spelling: <i>Vernadskyi</i>.</p>`,
           cta: "Next"
         },
         {

@@ -6,7 +6,7 @@ type: style
 subject: eng
 grade: 11
 depends_on: [write-eng-g11-e11s1, write-eng-g11-e11s2, write-eng-g11-e11s3, write-eng-g11-e11s4, write-eng-g11-e11s5, write-eng-g11-e11s6, write-eng-g11-e11s7, write-eng-g11-e11s8]
-status: review
+status: done
 claimed_by: style-eng-g11
 created: 2026-11-27
 source: orchestrator
@@ -34,3 +34,6 @@ source: orchestrator
 - Терміни: the third form, email, the internet, penfriend, chat show — однаково. Vernadskyi / Akademik Vernadsky — однаково; D-057 (нове) — задача fix-eng-historic-names, не правив.
 - validate --section e11s1…e11s8 — 0 помилок; 1 попередження e11s6l6 rwps 67 > 65 → остаточна STYLE-пропозиція «10-11»: rwps [8, 70], sentenceWords [4, 13], longWordShare [0, 0.22] (inbox). Профіль, style/, decisions.md, plan.js не змінював. Build і commit не робив.
 - Точкова повторна верифікація — §7 звіту.
+
+## Нотатки верифікатора (verifier-style-eng-g11, 2026-11-27)
+- Прийнято, правок немає. Ключі не змінено (скрипт: усі key-поля до/після; змінено лише `left` e11s8l4 match — без другої пари). Перелік §7, 12 нових і 5 переставлених hint, тексти e11s1l7 і e11s6l6, перейменування — ✅. Звіт: reports/verify/style-eng-g11.md, частина 1.

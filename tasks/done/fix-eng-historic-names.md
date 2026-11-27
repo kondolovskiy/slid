@@ -6,7 +6,7 @@ type: fix
 subject: eng
 grade: 
 depends_on: [style-eng-g11]
-status: review
+status: done
 claimed_by: writer-fix-eng-historic-names
 created: 2026-11-27
 source: orchestrator (рішення людини D-057, memory/short/inbox.md)
@@ -28,3 +28,6 @@ source: orchestrator (рішення людини D-057, memory/short/inbox.md)
 - Змінено: g10-e10s5, g11-e11s5, g11-e11s7, g5-e5s7 (+ пул pe5s7 для однаковості), g11-e11s3, g9-e9s6. Перелік, джерела, відкриті питання — reports/verify/fix-eng-historic-names.md.
 - validate: 0 помилок у всіх; e11s5l6, e11s7l6 — попередження readWordsPerScreen 66–67 через примітки.
 - Відкрито: Khmelnytskyi у назві пам'ятника (e7s7), Bubka / Kharlan (живі, усталене Sergey / Olga).
+
+## Нотатки верифікатора (verifier-style-eng-g11, 2026-11-27)
+- Прийнято з 1 виправленням: Pylypiw → Pylypow у g11-e11s7 (en.wikipedia + EoU). Попередження readWordsPerScreen e11s5l6 і e11s7l6 знято (примітки скорочено, дрібні правки неоцінюваних екранів). validate 0/0. Звіт: reports/verify/style-eng-g11.md, частина 2. Відкрито для людини: Khmelnytskyi (пам'ятник), Bubka/Kharlan.
