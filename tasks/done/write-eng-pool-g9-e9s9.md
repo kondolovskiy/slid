@@ -6,7 +6,7 @@ type: write-pool
 subject: eng
 grade: 9
 section: e9s9
-status: review
+status: done
 claimed_by: writer-pe9s9
 created: 2026-11-27
 depends_on: []
@@ -75,3 +75,6 @@ generated_by: tools/make-tasks.mjs --write-pool --subject eng
 **Перевірка копій:** 6-грами проти всіх content/eng/*.js — змістові збіги з уроками прибрано (a10, a22, a24, a41, a44, a56, a58, a59, тіла a09, a37); лишились лише формули уроку (Sorry to interrupt, but can I…, I agree up to a point, I couldn’t agree more), назви списків у hint і шаблонні інструкції.
 
 **Герої:** лише канон уроку й glossary/eng-heroes.md; Taras — без спорту (відкрита розбіжність); Mariia — без братів/сестер; нових імен немає. Нових фактів немає.
+
+## Нотатки верифікатора
+**verifier-pe9s9, 2026-11-27.** Вердикт: verified. 5 правок: a36 (плитка «we can either» — непаралельне «Either we can … or plant…» більше не складається), a11 (канон Oksana: «often swim»), a15 (silly → bad), a08 hint (alike), статус і шапка. Звіт — reports/verify/write-eng-pool-g9-e9s9.md.

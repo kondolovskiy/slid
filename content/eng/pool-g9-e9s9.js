@@ -1,5 +1,5 @@
 /* Слід · Англійська мова, 9 клас — пул вправ для тренування до розділу «Let’s discuss: agreeing and disagreeing» (e9s9)
-   Статус: draft; автор writer-pe9s9, 2026-11-27. Уроки e9s9l1–e9s9l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e9s9l7 без вправ.
+   Статус: verified (verifier-pe9s9, 2026-11-27; reports/verify/write-eng-pool-g9-e9s9.md); автор writer-pe9s9, 2026-11-27. Уроки e9s9l1–e9s9l6, кожна пара (урок, sk) — ≥ 3 вправи рівнів 1–3; boss e9s9l7 без вправ.
    Вправи власні (docs/design/english.md §8): лише слова, форми й правила уроків e9s9 і попередніх розділів; англійською, британська норма (D-055).
    Джерело — програма класу (program: true): МП-ІМ, 9 кл. — функції «вести дискусію, привертаючи увагу співрозмовника»,
    «висловлювати власні переконання, думки, згоду або незгоду» (с. 33); граматика B1 (с. 34): Clause — subordinated: reason,
@@ -8,7 +8,7 @@
    Пастки (як в уроці): «That’s true, but…», «I agree up to a point» — partly agree (окремий кошик, не agree / disagree);
    «I see your point, but…» у сортуванні не вжито (в уроці — і partly agree, і ввічлива незгода); so / so that для мети —
    ніколи не в одному пропуску; Also / In addition — ніколи не в одному пропуску й не в різних позиціях одного order;
-   but і although після коми — не в одному пропуску; either … or лише після підмета; both … and — усі порядки в ключі build
+   but і although після коми — не в одному пропуску; either … or лише після підмета (a36: плитка «we can either» — CD: either … or з’єднує однаковий граматичний тип, тож «Either we can … or plant…» не складається); both … and — усі порядки в ключі build
    (both після be: «are both»); keepCase у build не ставимо. Honestly не вжито як хибний варіант до «Actually» (може бути правильним).
    Герої — канон glossary/eng-heroes.md і уроку: Lviv — Ostap, Myroslava, Taras (без спорту — відкрита розбіжність), Ms Kvitka
    (Bright Radio); Zelena Dolyna — Oksana, Halyna, Dmytro (11), Ms Marchenko (eco club); Kharkiv — Mariia (єдина дитина), Polina,
@@ -20,8 +20,8 @@
 SLID.pool("eng", {
   id: "pe9s9",
   section: "e9s9",
-  status: "draft",
-  meta: { author: "writer-pe9s9", created: "2026-11-27", factcheck: "self", teacher: null },
+  status: "verified",
+  meta: { author: "writer-pe9s9", created: "2026-11-27", factcheck: "verifier-pe9s9 (reports/verify/write-eng-pool-g9-e9s9.md)", teacher: null },
   sources: [
     { id: "mpim", program: true, title: "Модельна навчальна програма «Іноземна мова. 5–9 класи» (Редько В. Г. та ін.), наказ МОН № 795 від 12.07.2021 — 9 клас: функції «вести дискусію», «висловлювати переконання, думки, згоду або незгоду» (с. 33); граматика B1: subordinated clauses (reason, purpose, result, contrast), either … or, both … and (с. 34); discourse markers, attitude adverbs (с. 35)", url: "https://osvita.ua/doc/files/news/831/83117/Inoz_mov_5-9-kl_Redko_ta_in_14_07.pdf" }
   ],
@@ -69,7 +69,7 @@ SLID.pool("eng", {
     { id: "a08", lesson: "e9s9l1", lvl: 3, sk: "phon", src: "mpim с. 35",
       type: "stress", title: "Find the stressed syllable.",
       words: ["+per|son|al|ly", "per|son|+al|i|ty", "mu|+se|um", "+cin|e|ma", "+ac|tu|al|ly"],
-      hint: "Careful: personally and personality look alike, but the strong part is different.",
+      hint: "Careful: personally and personality look almost the same, but the strong part is different.",
       steps: ["<u>per</u>sonally, <u>cin</u>ema, <u>ac</u>tually: the first part is strong.", "mu<u>se</u>um: the second part. person<u>al</u>ity: the third part."] },
 
     { id: "a09", lesson: "e9s9l1", lvl: 1, sk: "write", src: "mpim с. 33",
@@ -88,7 +88,7 @@ SLID.pool("eng", {
     { id: "a11", lesson: "e9s9l1", lvl: 3, sk: "write", src: "mpim с. 33",
       type: "gaps", title: "Complete the sentences.",
       body: "<p>Taras says villages are boring. Oksana answers him.</p>",
-      text: "Personally, I love Zelena Dolyna {*because|what|in} it’s quiet. I {*don’t think|am not thinking|not think} I’d be happy in a big city. {*Actually|Because|What}, there’s a lot to do here: in summer, we swim in the river every day! What’s {*your|you|yours} opinion, Taras?",
+      text: "Personally, I love Zelena Dolyna {*because|what|in} it’s quiet. I {*don’t think|am not thinking|not think} I’d be happy in a big city. {*Actually|Because|What}, there’s a lot to do here: in summer, we often swim in the river! What’s {*your|you|yours} opinion, Taras?",
       hint: "Say why; I don’t …; in fact → ?; What’s … opinion?",
       steps: ["Say why → <b>because</b>. I <b>don’t think</b> – not <s>am not thinking</s>.", "Taras isn’t right → <b>Actually</b> (in fact). What’s <b>your</b> opinion?"] },
 
@@ -121,7 +121,7 @@ SLID.pool("eng", {
     { id: "a15", lesson: "e9s9l2", lvl: 3, sk: "func", src: "mpim с. 33",
       type: "choice", title: "Choose the best answer.",
       body: "<p><b>Ostap:</b> Let’s play music in lessons too!</p><p>Myroslava understands why Ostap likes music, but she doesn’t agree with this idea at all. What is the best answer for her?</p>",
-      opts: ["I see your point, Ostap, but I’m afraid I disagree.", "I agree up to a point, Ostap.", "That’s a silly idea. You never think, Ostap!"],
+      opts: ["I see your point, Ostap, but I’m afraid I disagree.", "I agree up to a point, Ostap.", "That’s a bad idea. You never think, Ostap!"],
       correct: 0,
       hint: "She doesn’t agree at all, and she is polite.",
       steps: ["<b>I see your point, but I’m afraid I disagree</b> – she understands him, but says no politely.", "<i>Up to a point</i> = partly. <i>You never think</i> is about the person, not the idea."] },
@@ -260,7 +260,7 @@ SLID.pool("eng", {
     { id: "a36", lesson: "e9s9l3", lvl: 2, sk: "write", src: "mpim с. 34",
       type: "build", title: "Put the words in order.",
       body: "<p>Halyna writes two ideas for the club. They can do one of them.</p>",
-      tiles: ["we can", "either", "clean the bus stop", "or", "plant flowers"],
+      tiles: ["we can either", "clean the bus stop", "or", "plant flowers"],
       extra: ["and"],
       answer: ["We can either clean the bus stop or plant flowers.", "We can either plant flowers or clean the bus stop."],
       hint: "One of the two: either … ?",
