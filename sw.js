@@ -4,7 +4,7 @@
    чого в кеші цієї версії немає. Нова версія: встановлення (кожен файл перевіряється на сервері, cache: "no-cache") → skipWaiting →
    activate (старі кеші видаляються) → clients.claim → сторінка отримує controllerchange й перезавантажується,
    коли це безпечно (app/update.js: не посеред уроку чи тесту рівня). Google Fonts — з кешу з фоновим оновленням. */
-const VERSION = "f6a0356c6f";
+const VERSION = "ff87cb07dc";
 const CACHE = "slid-" + VERSION;
 const FONTS = "slid-fonts";
 const ASSETS = [
@@ -97,6 +97,8 @@ const ASSETS = [
   "./content/eng/pool-g10-e10s2.js",
   "./content/eng/pool-g10-e10s3.js",
   "./content/eng/pool-g10-e10s4.js",
+  "./content/eng/pool-g10-e10s5.js",
+  "./content/eng/pool-g10-e10s6.js",
   "./content/eng/pool-g4-e4s1.js",
   "./content/eng/pool-g4-e4s2.js",
   "./content/eng/pool-g4-e4s3.js",
