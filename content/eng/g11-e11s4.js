@@ -468,11 +468,11 @@ SLID.section("eng", {
           eyebrow: "Final",
           title: "Complete the sentences.",
           body: `<p>Mariia writes about the exhibition for the English club.</p>`,
-          text: "The exhibition was {*inspiring|inspired}. I {*found|looked} it moving because the people in the photos never gave up. {*What|Which} impressed me most was a photo of a girl painting a mural on a broken wall. When I left, I felt {*inspired|inspiring} too: now I want to take photos of my city.",
+          text: "The exhibition was {*fascinating|fascinated}. I {*found|looked} it moving because the people in the photos never gave up. {*What|Which} impressed me most was a photo of a girl painting a mural on a broken wall. When I left, I felt {*inspired|inspiring} too: now I want to take photos of my city.",
           hint: "What caused the feeling? I … it moving. … impressed me most was… Mariia has the feeling at the end.",
           fbOk: "Well done!",
           fbBad: "Look at the screens “-ing or -ed?” and “Impressed or impressive?” again.",
-          fbText: "The exhibition was <b>inspiring</b>. I <b>found</b> it moving. <b>What</b> impressed me most was… Mariia had the feeling, so she felt <b>inspired</b>."
+          fbText: "The exhibition was <b>fascinating</b> (it caused the feeling). I <b>found</b> it moving. <b>What</b> impressed me most was… Mariia had the feeling, so she felt <b>inspired</b>."
         }
       ],
       outro: {
